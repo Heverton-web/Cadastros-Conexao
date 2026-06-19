@@ -479,8 +479,16 @@ function ClienteDetailPage() {
           </div>
           {(() => {
             const ruaLimpa = limparLogradouro(end.rua || "");
-            const parts = [ruaLimpa, end.numero && `nº ${end.numero}`, end.complemento, end.bairro, end.cidade && end.estado && `${end.cidade} - ${end.estado}`, end.cep].filter(Boolean);
-            const enderecoFull = parts.join(", ");
+            let enderecoFull = ruaLimpa;
+            if (end.numero) enderecoFull += `, ${end.numero}`;
+            if (end.complemento) enderecoFull += ` - ${end.complemento}`;
+            if (end.bairro) enderecoFull += ` - ${end.bairro}`;
+            if (end.cidade) enderecoFull += `, ${end.cidade}`;
+            if (end.estado) enderecoFull += ` - ${end.estado}`;
+            if (end.cep) enderecoFull += `, ${end.cep}`;
+            
+            if (!ruaLimpa && enderecoFull.startsWith(", ")) enderecoFull = enderecoFull.substring(2);
+            if (!ruaLimpa && enderecoFull.startsWith(" - ")) enderecoFull = enderecoFull.substring(3);
             return enderecoFull ? (
               <div className="flex items-start gap-2 mb-4 rounded-xl bg-accent/5 border border-accent/10 p-3">
                 <div className="flex-1 min-w-0">

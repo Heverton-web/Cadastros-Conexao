@@ -175,9 +175,11 @@ function ClientesPage() {
               </div>
               <div className="flex items-center gap-1.5 flex-wrap">
                 <span className={`rounded-full px-2.5 py-0.5 text-[10px] font-medium ${STATUS_COLOR[c.status]}`}>{STATUS_LABEL[c.status]}</span>
-                <span className={`rounded-full px-2.5 py-0.5 text-[10px] font-medium ${DOC_STATUS_COLOR[docsStatus[c.id]]}`}>
-                  {DOC_STATUS_LABEL[docsStatus[c.id]]}
-                </span>
+                {c.status !== "aprovado" && (
+                  <span className={`rounded-full px-2.5 py-0.5 text-[10px] font-medium ${DOC_STATUS_COLOR[docsStatus[c.id]]}`}>
+                    {DOC_STATUS_LABEL[docsStatus[c.id]]}
+                  </span>
+                )}
                 {c.tipo_pessoa && <span className="rounded-full bg-accent/10 px-2.5 py-0.5 text-[10px] font-medium text-accent">{c.tipo_pessoa}</span>}
                 {c.codigo_cliente && <span className="text-[10px] text-text-muted">Cód: {c.codigo_cliente}</span>}
               </div>
