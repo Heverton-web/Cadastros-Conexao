@@ -35,7 +35,7 @@ function LoginPage() {
     if (!currentUser) return;
     const { data: profile } = await supabase
       .from("profiles")
-      .select("ambiente, ativo, role")
+      .select("ambiente, ativo")
       .eq("id", currentUser.id)
       .single();
 
@@ -44,7 +44,7 @@ function LoginPage() {
     setRedirected(true);
     const amb = profile.ambiente;
     if (amb === "consultor") navigate({ to: "/consultor" });
-    else if (amb === "tecnologia") navigate({ to: "/credenciais" });
+    else if (amb === "tecnologia" || amb === "suporte") navigate({ to: "/credenciais" });
     else navigate({ to: "/dashboard" });
   }
 

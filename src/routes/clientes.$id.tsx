@@ -38,7 +38,7 @@ function limparLogradouro(rua: string): string {
 
 function ClienteDetailPage() {
   const navigate = useNavigate();
-  const { profile } = useAuth();
+  const { profile, permissoes } = useAuth();
   const { id } = clienteDetailRoute.useParams();
   const [data, setData] = useState<{ cadastro: any; pf: any; pj: any; endereco: any } | null>(null);
   const [docs, setDocs] = useState<Documento[]>([]);
@@ -157,7 +157,7 @@ function ClienteDetailPage() {
   const { cadastro: c, pf, pj, endereco: end } = data;
   const nome = c.lead_nome || c.nome_temporario || pf?.nome || pj?.razao_social || "—";
   const isFinal = c.status === "aprovado" || c.status === "reprovado";
-  const podeAcaoCampo = profile?.ambiente === "cadastro" || (profile?.ambiente === "ambos" && profile?.role === "admin");
+  const podeAcaoCampo = permissoes?.aprovar_campo === true;
 
   return (
     <div className="flex flex-col gap-4 p-4 pb-28">
@@ -196,6 +196,14 @@ function ClienteDetailPage() {
         </div>
       )}
 
+      {permissoes?.aprovar_cadastro === true && !isFinal && (c.status === "em_analise" || c.status === "dados_enviados" || c.status === "em_correcao") && (
+        <div className="w-full flex gap-2 px-4 py-3 bg-card rounded-xl shadow-lg">
+          <button onClick={abrirCorrecao} className="flex-1 rounded-xl bg-orange-600/80 py-3 text-sm font-medium text-white max-h-[45px]">Corrigir</button>
+          <button onClick={() => { setCodigoCliente(""); setShowAprovar(true); }} className="flex-1 rounded-xl bg-green-700/80 py-3 text-sm font-medium text-white max-h-[45px]">Aprovar</button>
+          <button onClick={abrirReprovar} className="flex-1 rounded-xl bg-red-700/80 py-3 text-sm font-medium text-white max-h-[45px]">Reprovar</button>
+        </div>
+      )}
+
       <div className="flex gap-1 rounded-xl bg-card p-1">
         {(["dados","endereco","documentos"] as Tab[]).map((t) => (
           <button key={t} onClick={() => setTab(t)} className={`flex-1 rounded-lg py-2 text-xs font-medium transition ${tab === t ? "bg-accent text-white" : "text-text-muted hover:text-text-main"}`}>
@@ -219,12 +227,12 @@ function ClienteDetailPage() {
             {pj?.inscricao_estadual && <CampoRevisavel campoKey="pj.inscricao_estadual" label="Inscrição Estadual" value={pj.inscricao_estadual} revisoes={revisoes} podeAcao={podeAcaoCampo && !isFinal} onAction={(tipo) => setFieldAction({ campo: "pj.inscricao_estadual", label: "Inscrição Estadual", tipo })} />}
 {(() => {
   const email = pf?.email_comunicacao || pj?.email_comunicacao;
-  return email ? <CampoRevisavel campoKey={pf ? "pf.email_comunicacao" : "pj.email_comunicacao"} label="E-mail Comunicação" value={email} revisoes={revisoes} podeAcao={podeAcaoCampo && !isFinal} onAction={(tipo) => setFieldAction({ campo: pf ? "pf.email_comunicacao" : "pj.email_comunicacao", label: "E-mail Comunicação", tipo })} actions={<a href={`mailto:${email}`} className="rounded-lg p-1 text-accent hover:bg-accent/10 transition" title="Enviar e-mail"><Mail size={14} /></a>} /> : null;
+  return email ? <CampoRevisavel campoKey={pf ? "pf.email_comunicacao" : "pj.email_comunicacao"} label="E-mail Comunicação" value={email} revisoes={revisoes} podeAcao={podeAcaoCampo && !isFinal} onAction={(tipo) => setFieldAction({ campo: pf ? "pf.email_comunicacao" : "pj.email_comunicacao", label: "E-mail Comunicação", tipo })} iconBefore={<a href={`mailto:${email}`} className="inline-flex items-center justify-center rounded-lg bg-accent/10 p-1.5 text-accent hover:bg-accent/20 transition" title="Enviar e-mail"><Mail size={14} /></a>} /> : null;
 })()}
 {(pf?.tel_fixo || pj?.tel_fixo) && <CampoRevisavel campoKey={pf ? "pf.tel_fixo" : "pj.tel_fixo"} label="Telefone Fixo" value={formatPhone(pf?.tel_fixo || pj?.tel_fixo)} revisoes={revisoes} podeAcao={podeAcaoCampo && !isFinal} onAction={(tipo) => setFieldAction({ campo: pf ? "pf.tel_fixo" : "pj.tel_fixo", label: "Telefone Fixo", tipo })} />}
 {(() => {
   const cel = pf?.celular1 || pj?.celular1;
-  return cel ? <CampoRevisavel campoKey={pf ? "pf.celular1" : "pj.celular1"} label="Celular" value={formatPhone(cel)} revisoes={revisoes} podeAcao={podeAcaoCampo && !isFinal} onAction={(tipo) => setFieldAction({ campo: pf ? "pf.celular1" : "pj.celular1", label: "Celular", tipo })} actions={<a href={`https://wa.me/${cel.replace(/\D/g, "")}`} target="_blank" rel="noopener noreferrer" className="rounded-lg p-1 text-green-400 hover:bg-green-500/10 transition" title="Abrir WhatsApp"><MessageCircle size={14} /></a>} /> : null;
+  return cel ? <CampoRevisavel campoKey={pf ? "pf.celular1" : "pj.celular1"} label="Celular" value={formatPhone(cel)} revisoes={revisoes} podeAcao={podeAcaoCampo && !isFinal} onAction={(tipo) => setFieldAction({ campo: pf ? "pf.celular1" : "pj.celular1", label: "Celular", tipo })} iconBefore={<a href={`https://wa.me/${cel.replace(/\D/g, "")}`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center rounded-lg bg-green-500/10 p-1.5 text-green-400 hover:bg-green-500/20 transition" title="Abrir WhatsApp"><MessageCircle size={14} /></a>} /> : null;
 })()}
           </div>
         </div>
@@ -274,7 +282,7 @@ function ClienteDetailPage() {
         <div className="rounded-xl bg-card p-4 shadow-lg">
           <DocList
             docs={docs}
-            podeVisualizar={profile?.is_super_admin === true || profile?.ambiente !== "consultor"}
+            podeVisualizar={permissoes?.visualizar_documento === true}
             podeAcao={podeAcaoCampo}
             onAprovar={async (docId) => {
               try {
@@ -310,27 +318,19 @@ function ClienteDetailPage() {
         </div>
       )}
 
-      {profile?.ambiente !== "consultor" && !isFinal && (c.status === "em_analise" || c.status === "dados_enviados" || c.status === "em_correcao") && (
-        <div className="fixed bottom-20 left-0 right-0 flex gap-2 px-4 py-3 bg-gradient-to-t from-bg-dark via-bg-dark/95 to-transparent">
-          <button onClick={abrirCorrecao} className="flex-1 rounded-xl border border-orange-500/50 py-3 text-sm font-medium text-orange-400">Corrigir</button>
-          <button onClick={() => { setCodigoCliente(""); setShowAprovar(true); }} className="flex-1 rounded-xl bg-green-600 py-3 text-sm font-medium text-white">Aprovar</button>
-          <button onClick={abrirReprovar} className="flex-1 rounded-xl bg-red-600 py-3 text-sm font-medium text-white">Reprovar</button>
-        </div>
-      )}
-
       {showAprovar && <Modal titulo="Aprovar Cadastro" descricao="Insira o Código do Novo Cliente gerado no Protheus" onClose={() => setShowAprovar(false)}>
         <input value={codigoCliente} onChange={(e) => setCodigoCliente(e.target.value)} placeholder="Código do Cliente" className="mb-4 w-full rounded-lg border border-input-border bg-input-bg px-4 py-3 text-sm text-text-main outline-none focus:border-accent min-h-[44px]" />
-        <div className="flex gap-3"><button onClick={() => setShowAprovar(false)} className="flex-1 rounded-xl border border-input-border py-3 text-sm font-medium text-text-muted">Cancelar</button><button onClick={handleAprovar} disabled={!codigoCliente || submitting} className="flex-1 rounded-xl bg-green-600 py-3 text-sm font-medium text-white disabled:opacity-50">Aprovar</button></div>
+        <div className="flex gap-3"><button onClick={() => setShowAprovar(false)} className="flex-1 rounded-xl border border-input-border py-3 text-sm font-medium text-text-muted max-h-[45px]">Cancelar</button><button onClick={handleAprovar} disabled={!codigoCliente || submitting} className="flex-1 rounded-xl bg-green-700/80 py-3 text-sm font-medium text-white disabled:opacity-50 max-h-[45px]">Aprovar</button></div>
       </Modal>}
 
       {showReprovar && <Modal titulo="Reprovar Cadastro" descricao="Descreva os Motivos da Reprovação" onClose={() => setShowReprovar(false)}>
         <textarea value={motivo} onChange={(e) => setMotivo(e.target.value)} placeholder="Motivo..." rows={6} className="mb-4 w-full resize-none rounded-lg border border-input-border bg-input-bg px-4 py-3 text-sm text-text-main outline-none focus:border-accent" />
-        <div className="flex gap-3"><button onClick={() => setShowReprovar(false)} className="flex-1 rounded-xl border border-input-border py-3 text-sm font-medium text-text-muted">Cancelar</button><button onClick={handleReprovar} disabled={!motivo || submitting} className="flex-1 rounded-xl bg-red-600 py-3 text-sm font-medium text-white disabled:opacity-50">Reprovar</button></div>
+        <div className="flex gap-3"><button onClick={() => setShowReprovar(false)} className="flex-1 rounded-xl border border-input-border py-3 text-sm font-medium text-text-muted max-h-[45px]">Cancelar</button><button onClick={handleReprovar} disabled={!motivo || submitting} className="flex-1 rounded-xl bg-red-700/80 py-3 text-sm font-medium text-white disabled:opacity-50 max-h-[45px]">Reprovar</button></div>
       </Modal>}
 
       {showCorrecao && <Modal titulo="Solicitar Correção" descricao="Descreva o que precisa ser corrigido" onClose={() => setShowCorrecao(false)}>
         <textarea value={motivo} onChange={(e) => setMotivo(e.target.value)} placeholder="Correções necessárias..." rows={6} className="mb-4 w-full resize-none rounded-lg border border-input-border bg-input-bg px-4 py-3 text-sm text-text-main outline-none focus:border-accent" />
-        <div className="flex gap-3"><button onClick={() => setShowCorrecao(false)} className="flex-1 rounded-xl border border-input-border py-3 text-sm font-medium text-text-muted">Cancelar</button><button onClick={handleCorrecao} disabled={!motivo || submitting} className="flex-1 rounded-xl bg-orange-600 py-3 text-sm font-medium text-white disabled:opacity-50">Solicitar</button></div>
+        <div className="flex gap-3"><button onClick={() => setShowCorrecao(false)} className="flex-1 rounded-xl border border-input-border py-3 text-sm font-medium text-text-muted max-h-[45px]">Cancelar</button><button onClick={handleCorrecao} disabled={!motivo || submitting} className="flex-1 rounded-xl bg-orange-600/80 py-3 text-sm font-medium text-white disabled:opacity-50 max-h-[45px]">Solicitar</button></div>
       </Modal>}
 
       {fieldAction && (
@@ -346,7 +346,7 @@ function ClienteDetailPage() {
   );
 }
 
-function CampoRevisavel({ campoKey, label, value, revisoes, podeAcao, onAction, actions }: {
+function CampoRevisavel({ campoKey, label, value, revisoes, podeAcao, onAction, actions, iconBefore }: {
   campoKey: string;
   label: string;
   value: string;
@@ -354,6 +354,7 @@ function CampoRevisavel({ campoKey, label, value, revisoes, podeAcao, onAction, 
   podeAcao: boolean;
   onAction: (tipo: "ok" | "reprovado" | "em_correcao") => void;
   actions?: React.ReactNode;
+  iconBefore?: React.ReactNode;
 }) {
   const rev = revisoes[campoKey];
   const status: RevisaoStatus = rev?.status || "pendente";
@@ -363,6 +364,7 @@ function CampoRevisavel({ campoKey, label, value, revisoes, podeAcao, onAction, 
       <div className="flex-1 min-w-0">
         <p className="text-[11px] text-text-muted mb-0.5">{label}</p>
         <div className="flex items-center gap-2">
+          {iconBefore && <span className="shrink-0">{iconBefore}</span>}
           <p className="text-sm text-text-main truncate">{value || "—"}</p>
           {status !== "pendente" && (
             <span className={`shrink-0 rounded-full px-2 py-0.5 text-[9px] font-medium ${STATUS_REVISAO_COLOR[status]}`}>{STATUS_REVISAO_LABEL[status]}</span>
@@ -423,11 +425,11 @@ function FieldActionModal({ action, onClose, onConfirm }: {
           />
         )}
         <div className="flex gap-3">
-          <button onClick={onClose} className="flex-1 rounded-xl border border-input-border py-3 text-sm font-medium text-text-muted">Cancelar</button>
+          <button onClick={onClose} className="flex-1 rounded-xl border border-input-border py-3 text-sm font-medium text-text-muted max-h-[45px]">Cancelar</button>
           <button onClick={() => onConfirm(comentario)}
             disabled={action.tipo !== "ok" && !comentario.trim()}
-            className={`flex-1 rounded-xl py-3 text-sm font-medium text-white disabled:opacity-50 ${
-              action.tipo === "ok" ? "bg-green-600" : action.tipo === "reprovado" ? "bg-red-600" : "bg-orange-600"
+            className={`flex-1 rounded-xl py-3 text-sm font-medium text-white disabled:opacity-50 max-h-[45px] ${
+              action.tipo === "ok" ? "bg-green-700/80" : action.tipo === "reprovado" ? "bg-red-700/80" : "bg-orange-600/80"
             }`}>
             {action.tipo === "ok" ? "Aprovar" : action.tipo === "reprovado" ? "Reprovar" : "Solicitar"}
           </button>

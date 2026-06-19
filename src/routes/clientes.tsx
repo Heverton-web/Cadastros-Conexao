@@ -15,8 +15,8 @@ export const clientesRoute = createRoute({
 
 function ClientesPage() {
   const navigate = useNavigate();
-  const { profile } = useAuth();
-  const isSuperAdmin = profile?.is_super_admin === true;
+  const { profile, permissoes } = useAuth();
+  const podeExcluir = permissoes?.excluir_cadastro === true;
   const [data, setData] = useState<(Cadastro & { profiles: { nome: string } | null })[]>([]);
   const [search, setSearch] = useState("");
   const [filtroStatus, setFiltroStatus] = useState<CadastroStatus | "">("");
@@ -46,7 +46,7 @@ function ClientesPage() {
       return;
     }
     carregar();
-  }, [filtroStatus, profile?.id, profile?.ambiente]);
+  }, [filtroStatus, profile]);
 
   async function carregar() {
     if (!profile) return;
@@ -54,7 +54,7 @@ function ClientesPage() {
     try {
       const filters: { status?: CadastroStatus; created_by?: string } = {};
       if (filtroStatus) filters.status = filtroStatus;
-      if (profile.ambiente === "consultor") filters.created_by = profile.id;
+      if (permissoes?.ver_todos_cadastros !== true) filters.created_by = profile.id;
       const res = await listarCadastros(Object.keys(filters).length ? filters : undefined);
       setData(res);
       const status = await getDocumentosStatusMap(res.map((c) => ({ id: c.id, tipo_pessoa: c.tipo_pessoa })));
@@ -130,7 +130,7 @@ function ClientesPage() {
               <div className="flex items-center justify-between">
                 <span className="font-semibold text-text-main text-sm">{c.lead_nome || c.nome_temporario || "Sem nome"}</span>
                 <div className="flex items-center gap-1">
-                  {isSuperAdmin && (
+                  {podeExcluir && (
                     <>
                       <button onClick={(e) => { e.stopPropagation(); setEditTarget(c); }} className="rounded-lg p-1.5 text-text-muted hover:text-accent hover:bg-accent/10 transition">
                         <Pencil size={14} />

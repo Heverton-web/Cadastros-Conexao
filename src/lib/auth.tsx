@@ -7,14 +7,14 @@ import {
 } from "react";
 import { supabase } from "./supabase";
 import type { User, AuthError } from "@supabase/supabase-js";
+import { getPermissoes, getPermissoesPadrao, type Permissoes, type Ambiente } from "./permissoes";
 import toast from "react-hot-toast";
 
 type Profile = {
   id: string;
   email: string;
   nome: string;
-  role: "admin" | "editor" | "viewer";
-  ambiente: "cadastro" | "consultor" | "tecnologia" | "ambos";
+  ambiente: Ambiente;
   ativo: boolean;
   is_super_admin?: boolean;
   departamento?: string;
@@ -23,6 +23,7 @@ type Profile = {
 type AuthContextType = {
   user: User | null;
   profile: Profile | null;
+  permissoes: Permissoes | null;
   loading: boolean;
   login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
@@ -35,6 +36,7 @@ const AuthContext = createContext<AuthContextType | null>(null);
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
+  const [permissoes, setPermissoes] = useState<Permissoes | null>(null);
   const [loading, setLoading] = useState(true);
 
   async function fetchProfile(userId: string) {
@@ -43,7 +45,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       .select("*")
       .eq("id", userId)
       .single();
-    setProfile(data as Profile | null);
+    const p = data as Profile | null;
+    setProfile(p);
+    if (p) {
+      const perms = await getPermissoes(userId, p.is_super_admin === true);
+      setPermissoes(perms || getPermissoesPadrao(p.ambiente));
+    }
   }
 
   useEffect(() => {
@@ -114,7 +121,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   return (
     <AuthContext.Provider
-      value={{ user, profile, loading, login, logout, register, resetPassword }}
+      value={{ user, profile, permissoes, loading, login, logout, register, resetPassword }}
     >
       {children}
     </AuthContext.Provider>

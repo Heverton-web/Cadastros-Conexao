@@ -11,10 +11,12 @@ import {
   listarWebhookLogs, dispararWebhooks, type Webhook, type WebhookInput, type WebhookLog,
   EVENTOS_STATUS_CHANGE, EVENTOS_BUTTON_ACTION,
 } from "~/lib/webhooks";
-import { Loader2, Save, Plus, X, ToggleLeft, ToggleRight, Trash2, Settings, Database, Shield, Webhook as WebhookIcon, RefreshCw, History } from "lucide-react";
+import { Loader2, Save, Plus, X, ToggleLeft, ToggleRight, Trash2, Settings, Database, Shield, Webhook as WebhookIcon, RefreshCw, History, UserRound as UserIcon, ShieldCheck, ShieldX } from "lucide-react";
 import toast from "react-hot-toast";
 
-type Tab = "supabase" | "credenciais" | "webhooks";
+import { listarPermissoesUsuarios, setPermissoes, getPermissoesPadrao, PERMISSOES_GROUPS, PERMISSOES_LABEL, PERMISSOES_DESC, type Permissoes } from "~/lib/permissoes";
+
+type Tab = "supabase" | "credenciais" | "webhooks" | "permissoes";
 
 export const adminConfigRoute = createRoute({
   getParentRoute: () => authLayout,
@@ -48,6 +50,7 @@ function AdminConfigPage() {
           { key: "supabase" as Tab, label: "Supabase", icon: Database },
           { key: "credenciais" as Tab, label: "Credenciais", icon: Shield },
           { key: "webhooks" as Tab, label: "Webhooks", icon: WebhookIcon },
+          { key: "permissoes" as Tab, label: "Permissões", icon: UserIcon },
         ].map(({ key, label, icon: Icon }) => (
           <button key={key} onClick={() => setTab(key)}
             className={`flex items-center justify-center gap-1.5 flex-1 rounded-lg py-2 text-xs font-medium transition ${tab === key ? "bg-accent text-white" : "text-text-muted hover:text-text-main"}`}>
@@ -59,6 +62,7 @@ function AdminConfigPage() {
       {tab === "supabase" && <SupabaseTab />}
       {tab === "credenciais" && <CredenciaisTab />}
       {tab === "webhooks" && <WebhooksTab />}
+      {tab === "permissoes" && <PermissoesTab />}
     </div>
   );
 }
@@ -465,6 +469,130 @@ function WebhooksTab() {
             <div className="flex gap-3">
               <button onClick={() => setShowForm(false)} className="flex-1 rounded-xl border border-input-border py-3 text-sm font-medium text-text-muted">Cancelar</button>
               <button onClick={handleSubmit} disabled={!form.nome || !form.evento || !form.url || submitting} className="flex-1 rounded-xl bg-accent py-3 text-sm font-medium text-white disabled:opacity-50">{submitting ? <Loader2 size={16} className="animate-spin mx-auto" /> : "Salvar"}</button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function PermissoesTab() {
+  const [usuarios, setUsuarios] = useState<{ usuario_id: string; permissoes: Permissoes; profiles: { id: string; email: string; nome: string; ambiente: string; is_super_admin: boolean } }[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [editUser, setEditUser] = useState<typeof usuarios[number] | null>(null);
+  const [editPerms, setEditPerms] = useState<Permissoes | null>(null);
+  const [saving, setSaving] = useState(false);
+
+  useEffect(() => { carregar(); }, []);
+
+  async function carregar() {
+    setLoading(true);
+    try { setUsuarios(await listarPermissoesUsuarios()); } catch { toast.error("Erro ao carregar"); }
+    finally { setLoading(false); }
+  }
+
+  function abrir(u: typeof usuarios[number]) {
+    setEditUser(u);
+    setEditPerms({ ...u.permissoes });
+  }
+
+  function toggle(key: keyof Permissoes) {
+    if (!editPerms) return;
+    setEditPerms(prev => prev ? { ...prev, [key]: !prev[key] } : prev);
+  }
+
+  async function salvar() {
+    if (!editUser || !editPerms) return;
+    setSaving(true);
+    try {
+      await setPermissoes(editUser.usuario_id, editPerms);
+      toast.success("Permissões atualizadas!");
+      setEditUser(null);
+      setEditPerms(null);
+      carregar();
+    } catch { toast.error("Erro ao salvar"); }
+    finally { setSaving(false); }
+  }
+
+  function restaurarPadrao() {
+    if (!editUser) return;
+    setEditPerms(getPermissoesPadrao(editUser.profiles.ambiente as any));
+  }
+
+  if (loading) return <div className="flex justify-center py-12"><Loader2 size={24} className="animate-spin text-accent" /></div>;
+
+  return (
+    <div className="flex flex-col gap-3">
+      <p className="text-xs text-text-muted">Gerencie as permissões individuais de cada usuário.</p>
+      {usuarios.length === 0 ? (
+        <p className="py-8 text-center text-sm text-text-muted">Nenhum usuário encontrado</p>
+      ) : (
+        usuarios.map((u) => {
+          const isSuper = u.profiles.is_super_admin;
+          const total = Object.values(u.permissoes).filter(Boolean).length;
+          return (
+            <button key={u.usuario_id} onClick={() => abrir(u)}
+              className="flex items-center gap-3 rounded-xl bg-card p-4 shadow-lg transition active:scale-[0.98] w-full text-left"
+            >
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-accent/10">
+                {isSuper ? <ShieldCheck size={18} className="text-accent" /> : <UserIcon size={18} className="text-text-muted" />}
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium text-text-main truncate">{u.profiles.nome || "Sem nome"}</p>
+                <p className="text-[11px] text-text-muted truncate">{u.profiles.email}</p>
+                <div className="flex items-center gap-1 mt-1">
+                  <span className="rounded-full bg-accent/10 px-2 py-0.5 text-[9px] font-medium text-accent">{u.profiles.ambiente}</span>
+                  {isSuper && <span className="rounded-full bg-yellow-500/10 px-2 py-0.5 text-[9px] font-medium text-yellow-400">Super Admin</span>}
+                  <span className="text-[9px] text-text-muted">{total}/17 permissões</span>
+                </div>
+              </div>
+              <Settings size={16} className="text-text-muted shrink-0" />
+            </button>
+          );
+        })
+      )}
+
+      {editUser && editPerms && (
+        <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black/60 px-4 py-8">
+          <div className="w-full max-w-md rounded-2xl bg-card p-6 shadow-xl mt-8 mb-8">
+            <div className="flex items-center justify-between mb-1">
+              <h2 className="text-base font-bold text-text-main truncate">{editUser.profiles.nome}</h2>
+              <button onClick={() => { setEditUser(null); setEditPerms(null); }} className="text-text-muted hover:text-text-main shrink-0 ml-2"><X size={20} /></button>
+            </div>
+            <p className="text-xs text-text-muted mb-1">{editUser.profiles.email}</p>
+            <div className="flex items-center gap-1 mb-4">
+              <span className="rounded-full bg-accent/10 px-2 py-0.5 text-[9px] font-medium text-accent">{editUser.profiles.ambiente}</span>
+              {editUser.profiles.is_super_admin && <span className="rounded-full bg-yellow-500/10 px-2 py-0.5 text-[9px] font-medium text-yellow-400">Super Admin</span>}
+              <button onClick={restaurarPadrao} className="ml-auto text-[10px] text-accent underline">Restaurar padrões</button>
+            </div>
+            <div className="flex flex-col gap-3 max-h-[55vh] overflow-y-auto pr-1">
+              {PERMISSOES_GROUPS.map((group) => (
+                <div key={group.label} className="rounded-xl bg-input-bg p-3">
+                  <p className="text-xs font-bold text-text-main mb-2">{group.label}</p>
+                  <div className="flex flex-col gap-2">
+                    {group.keys.map((key) => (
+                      <label key={key} className="flex items-center gap-3 cursor-pointer group">
+                        <button onClick={() => toggle(key)}
+                          className={`shrink-0 rounded-lg p-1.5 transition ${editPerms[key] ? 'bg-accent text-white' : 'bg-bg-dark text-text-muted group-hover:text-text-main'}`}
+                        >
+                          {editPerms[key] ? <ShieldCheck size={16} /> : <ShieldX size={16} />}
+                        </button>
+                        <div className="flex-1 min-w-0">
+                          <p className={`text-xs font-medium ${editPerms[key] ? 'text-text-main' : 'text-text-muted'}`}>{PERMISSOES_LABEL[key]}</p>
+                          <p className="text-[9px] text-text-muted">{PERMISSOES_DESC[key]}</p>
+                        </div>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className="flex gap-3 mt-4">
+              <button onClick={() => { setEditUser(null); setEditPerms(null); }} className="flex-1 rounded-xl border border-input-border py-3 text-sm font-medium text-text-muted">Cancelar</button>
+              <button onClick={salvar} disabled={saving} className="flex items-center justify-center gap-1 flex-1 rounded-xl bg-accent py-3 text-sm font-medium text-white disabled:opacity-50">
+                {saving ? <Loader2 size={16} className="animate-spin" /> : <Save size={16} />} Salvar
+              </button>
             </div>
           </div>
         </div>

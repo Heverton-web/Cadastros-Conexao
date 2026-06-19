@@ -12,15 +12,16 @@ export const credenciaisRoute = createRoute({
 });
 
 function CredenciaisPage() {
-  const { profile } = useAuth();
+  const { permissoes } = useAuth();
   const [credenciais, setCredenciais] = useState<Credencial[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState({ nome_completo: "", email_corporativo: "", whatsapp_corporativo: "", departamento: "" });
   const [submitting, setSubmitting] = useState(false);
-  const isAdmin = profile?.role === "admin";
+  const podeVer = permissoes?.gerenciar_credenciais === true;
+  const podeAdmin = permissoes?.gerenciar_credenciais_admin === true;
 
-  useEffect(() => { if (isAdmin) carregar(); else setLoading(false); }, [isAdmin]);
+  useEffect(() => { if (podeVer) carregar(); else setLoading(false); }, [podeVer]);
 
   async function carregar() {
     setLoading(true);
@@ -36,13 +37,13 @@ function CredenciaisPage() {
     } catch (e) { console.error(e); } finally { setSubmitting(false); }
   }
 
-  if (!isAdmin) return <div className="flex flex-col items-center justify-center gap-3 p-8 pt-20"><Shield size={40} className="text-text-muted" /><p className="text-sm text-text-muted">Apenas administradores podem gerenciar credenciais</p></div>;
+  if (!podeVer) return <div className="flex flex-col items-center justify-center gap-3 p-8 pt-20"><Shield size={40} className="text-text-muted" /><p className="text-sm text-text-muted">Acesso restrito</p></div>;
 
   return (
     <div className="flex flex-col gap-4 p-4 pb-24">
       <div className="flex items-center justify-between">
         <h1 className="text-lg font-bold text-text-main">Credenciais de Acesso</h1>
-        <button onClick={() => setShowForm(true)} className="flex items-center gap-2 rounded-xl bg-accent px-4 py-2.5 text-sm font-medium text-white"><Plus size={16} />Nova</button>
+        {podeAdmin && <button onClick={() => setShowForm(true)} className="flex items-center gap-2 rounded-xl bg-accent px-4 py-2.5 text-sm font-medium text-white"><Plus size={16} />Nova</button>}
       </div>
       {loading ? <div className="flex justify-center py-12"><Loader2 size={24} className="animate-spin text-accent" /></div>
       : credenciais.length === 0 ? <p className="py-12 text-center text-sm text-text-muted">Nenhuma credencial cadastrada</p>

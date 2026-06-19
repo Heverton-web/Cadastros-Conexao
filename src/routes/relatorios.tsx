@@ -15,9 +15,9 @@ export const relatoriosRoute = createRoute({
 });
 
 function RelatoriosPage() {
-  const { user, profile } = useAuth();
+  const { user, permissoes } = useAuth();
   const navigate = useNavigate();
-  const isConsultor = profile?.ambiente === "consultor" || (profile?.ambiente === "ambos" && profile?.role === "editor");
+  const verTodos = permissoes?.ver_todos_cadastros === true;
   const [periodo, setPeriodo] = useState("30");
   const [filtroStatus, setFiltroStatus] = useState<CadastroStatus | "">("");
   const [loading, setLoading] = useState(false);
@@ -35,7 +35,7 @@ function RelatoriosPage() {
         .from("cadastros")
         .select("*")
         .gte("created_at", diasAtras.toISOString())
-      if (isConsultor && user?.id) {
+      if (!verTodos && user?.id) {
         query = query.eq("created_by", user.id);
       }
       const { data: cadastros } = await query.order("created_at", { ascending: false });

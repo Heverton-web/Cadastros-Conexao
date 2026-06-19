@@ -1,29 +1,30 @@
 import { useNavigate, useLocation } from "@tanstack/react-router";
-import { LayoutDashboard, Users, UserRound, BarChart3, Link2, Shield, Settings } from "lucide-react";
+import { LayoutDashboard, Users, BarChart3, Link2, Shield, Settings, type LucideIcon } from "lucide-react";
 import { cn } from "~/lib/utils";
 import { useAuth } from "~/lib/auth";
+
+type NavItem = {
+  path: string;
+  label: string;
+  icon: LucideIcon;
+  matchPaths?: string[];
+};
 
 export function BottomNav() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { profile } = useAuth();
+  const { profile, permissoes } = useAuth();
   const amb = profile?.ambiente;
-  const isAdmin = amb === "cadastro" || amb === "ambos" || profile?.role === "admin";
-  const isConsultor = amb === "consultor" || amb === "ambos";
-  const isSuperAdmin = profile?.is_super_admin === true;
+  const p = permissoes;
 
-  const navItems = (isConsultor && !isAdmin ? [
-    { path: "/consultor", label: "Gerar Links", icon: Link2, matchPaths: [] },
-    { path: "/clientes", label: "Clientes", icon: Users, matchPaths: ["/consultor/clientes"] },
-    { path: "/relatorios", label: "Relatórios", icon: BarChart3, matchPaths: [] },
-  ] : [
-    { path: "/dashboard", label: "Dashboard", icon: LayoutDashboard, show: isAdmin, matchPaths: [] },
-    { path: "/consultor", label: "Consultor", icon: Link2, show: isConsultor, matchPaths: [] },
-    { path: "/clientes", label: "Clientes", icon: Users, matchPaths: ["/consultor/clientes"] },
-    { path: "/relatorios", label: "Relatórios", icon: BarChart3, show: isAdmin, matchPaths: [] },
-    { path: "/credenciais", label: "Credenciais", icon: Shield, show: isAdmin, matchPaths: [] },
-    { path: "/admin/config", label: "Config", icon: Settings, show: isSuperAdmin, matchPaths: [] },
-  ] as const).filter(item => item.show !== false);
+  const navItems: NavItem[] = [
+    ...(p?.ver_todos_cadastros === true ? [{ path: "/dashboard", label: "Dashboard", icon: LayoutDashboard }] : []),
+    ...(p?.gerar_links === true ? [{ path: "/consultor", label: amb === "consultor" ? "Gerar Links" : "Consultor", icon: Link2 }] : []),
+    ...((p?.ver_todos_cadastros === true || p?.gerar_links === true) ? [{ path: "/clientes", label: "Clientes", icon: Users, matchPaths: ["/consultor/clientes"] }] : []),
+    ...(p?.ver_relatorios === true ? [{ path: "/relatorios", label: "Relatórios", icon: BarChart3 }] : []),
+    ...(p?.gerenciar_credenciais === true ? [{ path: "/credenciais", label: "Credenciais", icon: Shield }] : []),
+    ...(p?.gerenciar_config === true ? [{ path: "/admin/config", label: "Config", icon: Settings }] : []),
+  ];
 
   return (
     <nav
@@ -33,8 +34,8 @@ export function BottomNav() {
       <div className="mx-auto flex max-w-lg items-center justify-around px-2 py-1">
         {(() => {
           const path = location.pathname;
-          const matchScore = (item: typeof navItems[number]) =>
-            path === item.path ? 3 : item.matchPaths.includes(path) ? 2 : path.startsWith(item.path + "/") ? 1 : 0;
+          const matchScore = (item: NavItem) =>
+            path === item.path ? 3 : (item.matchPaths || []).includes(path) ? 2 : path.startsWith(item.path + "/") ? 1 : 0;
           const bestMatch = navItems.reduce<string | null>((best, item) => {
             const score = matchScore(item);
             if (!score) return best;
