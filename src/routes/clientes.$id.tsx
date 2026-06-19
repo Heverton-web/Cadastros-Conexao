@@ -9,7 +9,7 @@ import { dispararWebhooks } from "~/lib/webhooks";
 import { DocList } from "~/components/ui/doc-viewer";
 import { getRevisoes, setRevisaoCampo, setRevisoesMassa, STATUS_REVISAO_LABEL, STATUS_REVISAO_COLOR, type Revisoes, type RevisaoStatus } from "~/lib/revisoes";
 import { formatPhone } from "~/lib/utils";
-import { ArrowLeft, Loader2, CheckCircle, XCircle, AlertTriangle, X, FileText, MapPin, Mail, MessageCircle, RotateCcw } from "lucide-react";
+import { ArrowLeft, Loader2, CheckCircle, XCircle, AlertTriangle, X, FileText, MapPin, Mail, MessageCircle, RotateCcw, Eye } from "lucide-react";
 
 const LABEL_MAP: Record<string, string> = {
   "pf.nome": "Nome", "pf.cpf": "CPF", "pf.data_nascimento": "Data de Nascimento", "pf.cro": "CRO", "pf.data_emissao_cro": "Emissão CRO",
@@ -59,6 +59,7 @@ function ClienteDetailPage() {
   const [showAprovar, setShowAprovar] = useState(false);
   const [showReprovar, setShowReprovar] = useState(false);
   const [showCorrecao, setShowCorrecao] = useState(false);
+  const [showResumo, setShowResumo] = useState(false);
   const [codigoCliente, setCodigoCliente] = useState("");
   const [motivo, setMotivo] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -82,37 +83,155 @@ function ClienteDetailPage() {
   }
 
   async function handleAprovar() {
-    if (!codigoCliente) return;
+    if (!codigoCliente || !data) return;
     setSubmitting(true);
     try {
       await aprovarCadastro(id, codigoCliente);
       await logAtividade("cadastro", id, "aprovado", `Aprovado código ${codigoCliente}`);
-      dispararWebhooks("botao_aprovar", { cadastro_id: id, codigo_cliente: codigoCliente });
-      dispararWebhooks("aprovado", { cadastro_id: id, codigo_cliente: codigoCliente });
+
+      const c = data.cadastro;
+      const pf = data.pf;
+      const pj = data.pj;
+      
+      const nomeCliente = c.lead_nome || c.nome_temporario || pf?.nome || pj?.razao_social || "";
+      const emailCliente = c.lead_email || pf?.email_comunicacao || pj?.email_comunicacao || "";
+      const whatsappCliente = c.lead_whatsapp || pf?.celular1 || pj?.celular1 || "";
+      
+      const emailConsultor = (c as any).profiles?.email || "";
+      const nomeConsultor = (c as any).profiles?.nome || c.colaborador || "";
+      const whatsappConsultor = "";
+      
+      const nomeUsuarioQueAprovou = profile?.nome || profile?.email || "Usuário do Sistema";
+      
+      const date = new Date();
+      const dd = String(date.getDate()).padStart(2, '0');
+      const mm = String(date.getMonth() + 1).padStart(2, '0');
+      const yyyy = date.getFullYear();
+      const hh = String(date.getHours()).padStart(2, '0');
+      const min = String(date.getMinutes()).padStart(2, '0');
+      const ss = String(date.getSeconds()).padStart(2, '0');
+      const dataAprovacao = `${dd}/${mm}/${yyyy} ${hh}:${min}:${ss}`;
+
+      const payload = {
+        cadastro_id: id,
+        codigo_cliente: codigoCliente,
+        nome_cliente: nomeCliente,
+        whatsapp_cliente: whatsappCliente,
+        email_cliente: emailCliente,
+        nome_consultor: nomeConsultor,
+        email_consultor: emailConsultor,
+        whatsapp_consultor: whatsappConsultor,
+        nome_usuario_que_aprovou: nomeUsuarioQueAprovou,
+        data_aprovacao: dataAprovacao,
+        status_cadastro: "aprovado"
+      };
+
+      dispararWebhooks("botao_aprovar", payload);
+      dispararWebhooks("aprovado", payload);
       setShowAprovar(false); carregar();
     } catch (e) { console.error(e); } finally { setSubmitting(false); }
   }
 
   async function handleReprovar() {
-    if (!motivo) return;
+    if (!motivo || !data) return;
     setSubmitting(true);
     try {
       await reprovarCadastro(id, motivo);
       await logAtividade("cadastro", id, "reprovado", motivo);
-      dispararWebhooks("botao_reprovar", { cadastro_id: id, motivo });
-      dispararWebhooks("reprovado", { cadastro_id: id, motivo });
+      
+      const c = data.cadastro;
+      const pf = data.pf;
+      const pj = data.pj;
+      
+      const nomeCliente = c.lead_nome || c.nome_temporario || pf?.nome || pj?.razao_social || "";
+      const emailCliente = c.lead_email || pf?.email_comunicacao || pj?.email_comunicacao || "";
+      const whatsappCliente = c.lead_whatsapp || pf?.celular1 || pj?.celular1 || "";
+      
+      const emailConsultor = (c as any).profiles?.email || "";
+      const nomeConsultor = (c as any).profiles?.nome || c.colaborador || "";
+      const whatsappConsultor = "";
+      
+      const nomeUsuarioQueAnalisou = profile?.nome || profile?.email || "Usuário do Sistema";
+      
+      const date = new Date();
+      const dd = String(date.getDate()).padStart(2, '0');
+      const mm = String(date.getMonth() + 1).padStart(2, '0');
+      const yyyy = date.getFullYear();
+      const hh = String(date.getHours()).padStart(2, '0');
+      const min = String(date.getMinutes()).padStart(2, '0');
+      const ss = String(date.getSeconds()).padStart(2, '0');
+      const dataAnalise = `${dd}/${mm}/${yyyy} ${hh}:${min}:${ss}`;
+
+      const payload = {
+        cadastro_id: id,
+        motivo,
+        nome_cliente: nomeCliente,
+        codigo_cliente: c.codigo_cliente || "",
+        whatsapp_cliente: whatsappCliente,
+        email_cliente: emailCliente,
+        nome_consultor: nomeConsultor,
+        email_consultor: emailConsultor,
+        whatsapp_consultor: whatsappConsultor,
+        texto_correcoes: motivo,
+        nome_usuario_que_analisou: nomeUsuarioQueAnalisou,
+        data_analise: dataAnalise,
+        status_cadastro: "reprovado"
+      };
+
+      dispararWebhooks("botao_reprovar", payload);
+      dispararWebhooks("reprovado", payload);
       setShowReprovar(false); carregar();
     } catch (e) { console.error(e); } finally { setSubmitting(false); }
   }
 
   async function handleCorrecao() {
-    if (!motivo) return;
+    if (!motivo || !data) return;
     setSubmitting(true);
     try {
       await solicitarCorrecao(id, motivo);
       await logAtividade("cadastro", id, "correcao", motivo);
-      dispararWebhooks("botao_corrigir", { cadastro_id: id, motivo });
-      dispararWebhooks("em_correcao", { cadastro_id: id, motivo });
+      
+      const c = data.cadastro;
+      const pf = data.pf;
+      const pj = data.pj;
+      
+      const nomeCliente = c.lead_nome || c.nome_temporario || pf?.nome || pj?.razao_social || "";
+      const emailCliente = c.lead_email || pf?.email_comunicacao || pj?.email_comunicacao || "";
+      const whatsappCliente = c.lead_whatsapp || pf?.celular1 || pj?.celular1 || "";
+      
+      const emailConsultor = (c as any).profiles?.email || "";
+      const nomeConsultor = (c as any).profiles?.nome || c.colaborador || "";
+      const whatsappConsultor = "";
+      
+      const nomeUsuarioQueSolicitou = profile?.nome || profile?.email || "Usuário do Sistema";
+      
+      const date = new Date();
+      const dd = String(date.getDate()).padStart(2, '0');
+      const mm = String(date.getMonth() + 1).padStart(2, '0');
+      const yyyy = date.getFullYear();
+      const hh = String(date.getHours()).padStart(2, '0');
+      const min = String(date.getMinutes()).padStart(2, '0');
+      const ss = String(date.getSeconds()).padStart(2, '0');
+      const dataSolicitacao = `${dd}/${mm}/${yyyy} ${hh}:${min}:${ss}`;
+
+      const payload = {
+        cadastro_id: id,
+        motivo,
+        nome_cliente: nomeCliente,
+        codigo_cliente: c.codigo_cliente || "",
+        whatsapp_cliente: whatsappCliente,
+        email_cliente: emailCliente,
+        nome_consultor: nomeConsultor,
+        email_consultor: emailConsultor,
+        whatsapp_consultor: whatsappConsultor,
+        texto_correcoes: motivo,
+        nome_usuario_solicitante: nomeUsuarioQueSolicitou,
+        data_solicitacao: dataSolicitacao,
+        status_cadastro: "em_correcao"
+      };
+
+      dispararWebhooks("botao_corrigir", payload);
+      dispararWebhooks("em_correcao", payload);
       setShowCorrecao(false); carregar();
     } catch (e) { console.error(e); } finally { setSubmitting(false); }
   }
@@ -275,30 +394,28 @@ function ClienteDetailPage() {
           {c.status === "aprovado" ? <CheckCircle size={14} /> : c.status === "reprovado" ? <XCircle size={14} /> : <AlertTriangle size={14} />}
           {STATUS_LABEL[c.status as CadastroStatus]}
         </span>
-        <span className={`flex items-center gap-1 self-start rounded-full px-3 py-1 text-[10px] font-medium ${DOC_STATUS_COLOR[docStatus as keyof typeof DOC_STATUS_COLOR]}`}>
-          <FileText size={12} />
-          {DOC_STATUS_LABEL[docStatus as keyof typeof DOC_STATUS_LABEL]}
-        </span>
+        {c.status !== "aprovado" && (
+          <span className={`flex items-center gap-1 self-start rounded-full px-3 py-1 text-[10px] font-medium ${DOC_STATUS_COLOR[docStatus as keyof typeof DOC_STATUS_COLOR]}`}>
+            <FileText size={12} />
+            {DOC_STATUS_LABEL[docStatus as keyof typeof DOC_STATUS_LABEL]}
+          </span>
+        )}
+        {c.status === "aprovado" && c.codigo_cliente && (
+          <span className="flex items-center gap-1 self-start rounded-full px-3 py-1 text-xs font-bold bg-accent/10 text-accent border border-accent/20" title="Código do Cliente">
+            CLI-{c.codigo_cliente}
+          </span>
+        )}
+        {c.comentario_reprovacao && !isFinal && (
+          <button onClick={() => setShowResumo(true)} className="flex h-7 w-7 items-center justify-center rounded-full bg-orange-500/10 border border-orange-500/20 text-orange-400 hover:bg-orange-500/20 transition" title="Ver Resumo">
+            <Eye size={14} />
+          </button>
+        )}
+        {c.comentario_reprovacao && c.status === "reprovado" && (
+          <button onClick={() => setShowResumo(true)} className="flex h-7 w-7 items-center justify-center rounded-full bg-red-500/10 border border-red-500/20 text-red-400 hover:bg-red-500/20 transition" title="Ver Resumo">
+            <Eye size={14} />
+          </button>
+        )}
       </div>
-
-      {c.comentario_reprovacao && !isFinal && (
-        <div className="rounded-xl bg-orange-500/5 border border-orange-500/20 p-3">
-          <p className="text-xs font-semibold text-orange-400 mb-1">Correção Solicitada</p>
-          <p className="text-sm text-text-main whitespace-pre-wrap">{c.comentario_reprovacao}</p>
-        </div>
-      )}
-      {c.comentario_reprovacao && c.status === "reprovado" && (
-        <div className="rounded-xl bg-red-500/5 border border-red-500/20 p-3">
-          <p className="text-xs font-semibold text-red-400 mb-1">Motivo da Reprovação</p>
-          <p className="text-sm text-text-main whitespace-pre-wrap">{c.comentario_reprovacao}</p>
-        </div>
-      )}
-      {c.codigo_cliente && (
-        <div className="rounded-xl bg-accent/5 border border-accent/20 p-3">
-          <p className="text-xs font-semibold text-accent mb-1">Código do Cliente (Protheus)</p>
-          <p className="text-sm text-text-main font-mono">{c.codigo_cliente}</p>
-        </div>
-      )}
 
       {permissoes?.aprovar_cadastro === true && !isFinal && (c.status === "em_analise" || c.status === "dados_enviados" || c.status === "em_correcao") && (
         <div className="w-full flex gap-2 px-4 py-3 bg-card rounded-xl shadow-lg">
@@ -462,6 +579,14 @@ function ClienteDetailPage() {
             await handleFieldAction(fieldAction.campo, fieldAction.tipo, fieldAction.label, comentario);
           }}
         />
+      )}
+
+      {showResumo && c.comentario_reprovacao && (
+        <Modal titulo={c.status === "reprovado" ? "Motivo da Reprovação" : "Correção Solicitada"} descricao="Resumo das pendências" onClose={() => setShowResumo(false)}>
+          <div className={`rounded-xl p-4 border ${c.status === "reprovado" ? "bg-red-500/5 border-red-500/20" : "bg-orange-500/5 border-orange-500/20"}`}>
+            <p className="text-sm whitespace-pre-wrap text-text-main font-mono leading-relaxed">{c.comentario_reprovacao}</p>
+          </div>
+        </Modal>
       )}
     </div>
   );

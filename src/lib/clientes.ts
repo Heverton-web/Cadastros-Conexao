@@ -74,9 +74,9 @@ export async function buscarCadastro(id: string) {
 }
 
 export async function buscarCadastroCompleto(id: string) {
-  const { data: cad, error } = await supabase
+    const { data: cad, error } = await supabase
     .from("cadastros")
-    .select("*, profiles!created_by(nome)")
+    .select("*, profiles!created_by(nome, email)")
     .eq("id", id)
     .single();
   if (error) throw error;
