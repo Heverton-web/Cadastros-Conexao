@@ -3,13 +3,22 @@ import { authLayout } from "./_auth";
 import { useState, useEffect } from "react";
 import { useAuth } from "~/lib/auth";
 import { buscarCadastroCompleto, aprovarCadastro, reprovarCadastro, solicitarCorrecao, STATUS_LABEL, STATUS_COLOR, type Cadastro, type CadastroStatus } from "~/lib/clientes";
-import { listarDocumentos, aprovarDocumento, reprovarDocumento, solicitarCorrecaoDocumento, getDocumentosStatus, DOC_STATUS_LABEL, DOC_STATUS_COLOR, type Documento } from "~/lib/documentos";
+import { listarDocumentos, aprovarDocumento, reprovarDocumento, solicitarCorrecaoDocumento, reverterDocumento, setDocumentosMassa, getDocumentosStatus, DOC_STATUS_LABEL, DOC_STATUS_COLOR, getTipoLabel, type Documento } from "~/lib/documentos";
 import { logAtividade } from "~/lib/atividades";
 import { dispararWebhooks } from "~/lib/webhooks";
 import { DocList } from "~/components/ui/doc-viewer";
-import { getRevisoes, setRevisaoCampo, STATUS_REVISAO_LABEL, STATUS_REVISAO_COLOR, type Revisoes, type RevisaoStatus } from "~/lib/revisoes";
+import { getRevisoes, setRevisaoCampo, setRevisoesMassa, STATUS_REVISAO_LABEL, STATUS_REVISAO_COLOR, type Revisoes, type RevisaoStatus } from "~/lib/revisoes";
 import { formatPhone } from "~/lib/utils";
-import { ArrowLeft, Loader2, CheckCircle, XCircle, AlertTriangle, X, FileText, MapPin, Mail, MessageCircle } from "lucide-react";
+import { ArrowLeft, Loader2, CheckCircle, XCircle, AlertTriangle, X, FileText, MapPin, Mail, MessageCircle, RotateCcw } from "lucide-react";
+
+const LABEL_MAP: Record<string, string> = {
+  "pf.nome": "Nome", "pf.cpf": "CPF", "pf.data_nascimento": "Data de Nascimento", "pf.cro": "CRO", "pf.data_emissao_cro": "Emissão CRO",
+  "pj.razao_social": "Razão Social", "pj.nome_fantasia": "Nome Fantasia", "pj.cnpj": "CNPJ", "pj.inscricao_estadual": "Insc. Estadual",
+  "pj.email_comunicacao": "Email Comunicação", "pj.tel_fixo": "Telefone Fixo", "pj.celular1": "Celular",
+  "pf.email_comunicacao": "Email Comunicação", "pf.tel_fixo": "Telefone Fixo", "pf.celular1": "Celular",
+  "email_comunicacao": "Email Comunicação", "tel_fixo": "Telefone Fixo", "celular1": "Celular",
+  "end.cep": "CEP", "end.rua": "Logradouro", "end.numero": "Número", "end.bairro": "Bairro", "end.complemento": "Complemento", "end.cidade": "Cidade", "end.estado": "UF"
+};
 
 export const clienteDetailRoute = createRoute({
   getParentRoute: () => authLayout,
@@ -54,6 +63,7 @@ function ClienteDetailPage() {
   const [motivo, setMotivo] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [fieldAction, setFieldAction] = useState<FieldAction | null>(null);
+  const [massaAction, setMassaAction] = useState<{ aba: Tab, tipo: RevisaoStatus } | null>(null);
 
   useEffect(() => { carregar(); }, [id]);
 
@@ -123,12 +133,16 @@ function ClienteDetailPage() {
     const partes: string[] = [];
     for (const [campo, r] of Object.entries(revisoes)) {
       if (r.status === "reprovado" || r.status === "em_correcao") {
-        partes.push(`- ${campo}: ${r.comentario || r.status}`);
+        const labelText = LABEL_MAP[campo] || campo;
+        const statusText = r.status === "em_correcao" ? "correção" : "reprovado";
+        partes.push(`- ${labelText}: ${r.comentario || "Nenhum comentário"} (${statusText})`);
       }
     }
     for (const doc of docs) {
       if (doc.status === "reprovado" || doc.status === "em_correcao") {
-        partes.push(`- Documento ${doc.tipo}: ${doc.comentario_reprovacao || doc.status}`);
+        const labelText = getTipoLabel(doc.tipo);
+        const statusText = doc.status === "em_correcao" ? "correção" : "reprovado";
+        partes.push(`- Documento ${labelText}: ${doc.comentario_reprovacao || "Nenhum comentário"} (${statusText})`);
       }
     }
     setMotivo(partes.length > 0 ? partes.join("\n") + "\n\n" : "");
@@ -139,12 +153,16 @@ function ClienteDetailPage() {
     const partes: string[] = [];
     for (const [campo, r] of Object.entries(revisoes)) {
       if (r.status === "reprovado" || r.status === "em_correcao") {
-        partes.push(`- ${campo}: ${r.comentario || r.status}`);
+        const labelText = LABEL_MAP[campo] || campo;
+        const statusText = r.status === "em_correcao" ? "correção" : "reprovado";
+        partes.push(`- ${labelText}: ${r.comentario || "Nenhum comentário"} (${statusText})`);
       }
     }
     for (const doc of docs) {
       if (doc.status === "reprovado" || doc.status === "em_correcao") {
-        partes.push(`- Documento ${doc.tipo}: ${doc.comentario_reprovacao || doc.status}`);
+        const labelText = getTipoLabel(doc.tipo);
+        const statusText = doc.status === "em_correcao" ? "correção" : "reprovado";
+        partes.push(`- Documento ${labelText}: ${doc.comentario_reprovacao || "Nenhum comentário"} (${statusText})`);
       }
     }
     setMotivo(partes.length > 0 ? partes.join("\n") + "\n\n" : "");
@@ -158,6 +176,92 @@ function ClienteDetailPage() {
   const nome = c.lead_nome || c.nome_temporario || pf?.nome || pj?.razao_social || "—";
   const isFinal = c.status === "aprovado" || c.status === "reprovado";
   const podeAcaoCampo = permissoes?.aprovar_campo === true;
+
+  const camposDados = [
+    pf?.nome && "pf.nome", pf?.cpf && "pf.cpf", pf?.data_nascimento && "pf.data_nascimento",
+    pf?.cro && "pf.cro", pf?.data_emissao_cro && "pf.data_emissao_cro",
+    pj?.razao_social && "pj.razao_social", pj?.nome_fantasia && "pj.nome_fantasia",
+    pj?.cnpj && "pj.cnpj", pj?.inscricao_estadual && "pj.inscricao_estadual",
+    (pf?.email_comunicacao || pj?.email_comunicacao) && (pf ? "pf.email_comunicacao" : "pj.email_comunicacao"),
+    (pf?.tel_fixo || pj?.tel_fixo) && (pf ? "pf.tel_fixo" : "pj.tel_fixo"),
+    (pf?.celular1 || pj?.celular1) && (pf ? "pf.celular1" : "pj.celular1")
+  ].filter(Boolean) as string[];
+
+  const camposEndereco = [
+    end?.cep && "end.cep", end?.rua && "end.rua", end?.numero && "end.numero",
+    end?.bairro && "end.bairro", end?.complemento && "end.complemento",
+    end?.cidade && "end.cidade", end?.estado && "end.estado"
+  ].filter(Boolean) as string[];
+
+  function BotoesAcaoMassa({ aba }: { aba: Tab }) {
+    if (!podeAcaoCampo || isFinal) return null;
+    return (
+      <div className="flex flex-col items-end gap-1">
+        <div className="flex items-center gap-1.5 flex-wrap justify-end">
+          <button onClick={() => handleMassaAction(aba, "ok")} disabled={submitting} className="flex items-center gap-1.5 rounded-lg bg-green-500/10 px-2.5 py-1.5 text-[10px] font-medium text-green-500 hover:bg-green-500/20 transition">
+            <CheckCircle size={14} /> Aprovar Todos
+          </button>
+          <button onClick={() => handleMassaAction(aba, "reprovado")} disabled={submitting} className="flex items-center gap-1.5 rounded-lg bg-red-500/10 px-2.5 py-1.5 text-[10px] font-medium text-red-500 hover:bg-red-500/20 transition">
+            <XCircle size={14} /> Reprovar Todos
+          </button>
+          <button onClick={() => handleMassaAction(aba, "em_correcao")} disabled={submitting} className="flex items-center gap-1.5 rounded-lg bg-orange-500/10 px-2.5 py-1.5 text-[10px] font-medium text-orange-500 hover:bg-orange-500/20 transition">
+            <AlertTriangle size={14} /> Corrigir Todos
+          </button>
+          <button onClick={() => handleMassaAction(aba, "pendente")} disabled={submitting} className="flex items-center gap-1.5 rounded-lg bg-accent/10 px-2.5 py-1.5 text-[10px] font-medium text-accent hover:bg-accent/20 transition">
+            <RotateCcw size={14} /> Revisar Todos
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  function handleMassaAction(aba: Tab, tipo: RevisaoStatus) {
+    if (tipo === "reprovado" || tipo === "em_correcao") {
+      setMassaAction({ aba, tipo });
+      setMotivo("");
+    } else {
+      executarMassaAction(aba, tipo, "");
+    }
+  }
+
+  async function executarMassaAction(aba: Tab, tipo: RevisaoStatus, comentario: string) {
+    if (!podeAcaoCampo || isFinal) return;
+    setSubmitting(true);
+    try {
+      if (aba === "documentos") {
+        const pendentes = docs.filter(d => d.status !== tipo);
+        if (pendentes.length > 0) {
+          await setDocumentosMassa(
+            pendentes.map(d => d.id),
+            tipo,
+            (tipo === "ok" || tipo === "pendente") ? null : comentario
+          );
+          await logAtividade("cadastro", id, `massa_${tipo}`, `${pendentes.length} documentos alterados para ${tipo}`);
+          const d = await listarDocumentos(id);
+          setDocs(d);
+        }
+      } else {
+        const campos = aba === "dados" ? camposDados : camposEndereco;
+        const pendentes = campos.filter(c => (revisoes[c]?.status || "pendente") !== tipo);
+        if (pendentes.length > 0) {
+          const updates: Record<string, any> = {};
+          pendentes.forEach(c => {
+            updates[c] = { status: tipo, comentario: (tipo === "ok" || tipo === "pendente") ? null : comentario };
+          });
+          await setRevisoesMassa(id, updates);
+          await logAtividade("cadastro", id, `massa_${tipo}`, `${pendentes.length} campos alterados para ${tipo}`);
+          const r = await getRevisoes(id);
+          setRevisoes(r);
+        }
+      }
+      setMassaAction(null);
+      setMotivo("");
+    } catch(e) { console.error(e); } finally { setSubmitting(false); }
+  }
+  const hasPendingOrErrors = camposDados.some(c => revisoes[c]?.status !== "ok") || 
+                             (end ? camposEndereco.some(c => revisoes[c]?.status !== "ok") : false) || 
+                             docs.length === 0 || docs.some(d => d.status !== "ok");
+  const isAprovacaoBloqueada = hasPendingOrErrors;
 
   return (
     <div className="flex flex-col gap-4 p-4 pb-28">
@@ -199,7 +303,7 @@ function ClienteDetailPage() {
       {permissoes?.aprovar_cadastro === true && !isFinal && (c.status === "em_analise" || c.status === "dados_enviados" || c.status === "em_correcao") && (
         <div className="w-full flex gap-2 px-4 py-3 bg-card rounded-xl shadow-lg">
           <button onClick={abrirCorrecao} className="flex-1 rounded-xl bg-orange-600/80 py-3 text-sm font-medium text-white max-h-[45px]">Corrigir</button>
-          <button onClick={() => { setCodigoCliente(""); setShowAprovar(true); }} className="flex-1 rounded-xl bg-green-700/80 py-3 text-sm font-medium text-white max-h-[45px]">Aprovar</button>
+          <button onClick={() => isAprovacaoBloqueada ? alert("Não é possível aprovar. Todos os dados e documentos precisam estar aprovados.") : (setCodigoCliente(""), setShowAprovar(true))} disabled={isAprovacaoBloqueada} title={isAprovacaoBloqueada ? "Todos os campos devem estar aprovados" : ""} className="flex-1 rounded-xl bg-green-700/80 py-3 text-sm font-medium text-white max-h-[45px] disabled:opacity-50">Aprovar</button>
           <button onClick={abrirReprovar} className="flex-1 rounded-xl bg-red-700/80 py-3 text-sm font-medium text-white max-h-[45px]">Reprovar</button>
         </div>
       )}
@@ -214,6 +318,10 @@ function ClienteDetailPage() {
 
       {tab === "dados" && (
         <div className="rounded-xl bg-card p-4 shadow-lg">
+          <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
+            <h2 className="text-sm font-bold text-text-main">Dados do Cliente</h2>
+            <BotoesAcaoMassa aba="dados" />
+          </div>
           <div className="flex flex-col gap-3">
             {c.tipo_pessoa && <span className="self-start rounded-full bg-accent/10 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-accent">{c.tipo_pessoa}</span>}
             {pf?.nome && <CampoRevisavel campoKey="pf.nome" label="Nome Completo" value={pf.nome} revisoes={revisoes} podeAcao={podeAcaoCampo && !isFinal} onAction={(tipo) => setFieldAction({ campo: "pf.nome", label: "Nome Completo", tipo })} />}
@@ -240,6 +348,10 @@ function ClienteDetailPage() {
 
       {tab === "endereco" && end && (
         <div className="rounded-xl bg-card p-4 shadow-lg">
+          <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
+            <h2 className="text-sm font-bold text-text-main">Endereço</h2>
+            <BotoesAcaoMassa aba="endereco" />
+          </div>
           <div className="flex gap-1 rounded-lg bg-bg-dark p-1 mb-4">
             {(["clinica","entrega","faturamento"] as const).map((t) => (
               <button key={t} onClick={() => setEndAddressType(t)}
@@ -280,6 +392,10 @@ function ClienteDetailPage() {
 
       {tab === "documentos" && (
         <div className="rounded-xl bg-card p-4 shadow-lg">
+          <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
+            <h2 className="text-sm font-bold text-text-main">Documentos</h2>
+            <BotoesAcaoMassa aba="documentos" />
+          </div>
           <DocList
             docs={docs}
             podeVisualizar={permissoes?.visualizar_documento === true}
@@ -323,14 +439,19 @@ function ClienteDetailPage() {
         <div className="flex gap-3"><button onClick={() => setShowAprovar(false)} className="flex-1 rounded-xl border border-input-border py-3 text-sm font-medium text-text-muted max-h-[45px]">Cancelar</button><button onClick={handleAprovar} disabled={!codigoCliente || submitting} className="flex-1 rounded-xl bg-green-700/80 py-3 text-sm font-medium text-white disabled:opacity-50 max-h-[45px]">Aprovar</button></div>
       </Modal>}
 
-      {showReprovar && <Modal titulo="Reprovar Cadastro" descricao="Descreva os Motivos da Reprovação" onClose={() => setShowReprovar(false)}>
-        <textarea value={motivo} onChange={(e) => setMotivo(e.target.value)} placeholder="Motivo..." rows={6} className="mb-4 w-full resize-none rounded-lg border border-input-border bg-input-bg px-4 py-3 text-sm text-text-main outline-none focus:border-accent" />
+      {showReprovar && <Modal titulo="Reprovar Cadastro" descricao="Revise os Motivos da Reprovação" onClose={() => setShowReprovar(false)}>
+        <textarea value={motivo} onChange={(e) => setMotivo(e.target.value)} placeholder="Nenhuma pendência encontrada. Motivo adicional..." rows={6} className="mb-4 w-full resize-none rounded-lg border border-input-border bg-input-bg px-4 py-3 text-sm text-text-main outline-none focus:border-accent" />
         <div className="flex gap-3"><button onClick={() => setShowReprovar(false)} className="flex-1 rounded-xl border border-input-border py-3 text-sm font-medium text-text-muted max-h-[45px]">Cancelar</button><button onClick={handleReprovar} disabled={!motivo || submitting} className="flex-1 rounded-xl bg-red-700/80 py-3 text-sm font-medium text-white disabled:opacity-50 max-h-[45px]">Reprovar</button></div>
       </Modal>}
 
-      {showCorrecao && <Modal titulo="Solicitar Correção" descricao="Descreva o que precisa ser corrigido" onClose={() => setShowCorrecao(false)}>
-        <textarea value={motivo} onChange={(e) => setMotivo(e.target.value)} placeholder="Correções necessárias..." rows={6} className="mb-4 w-full resize-none rounded-lg border border-input-border bg-input-bg px-4 py-3 text-sm text-text-main outline-none focus:border-accent" />
+      {showCorrecao && <Modal titulo="Solicitar Correção" descricao="Revise o que precisa ser corrigido" onClose={() => setShowCorrecao(false)}>
+        <textarea value={motivo} onChange={(e) => setMotivo(e.target.value)} placeholder="Nenhuma pendência encontrada. Correções..." rows={6} className="mb-4 w-full resize-none rounded-lg border border-input-border bg-input-bg px-4 py-3 text-sm text-text-main outline-none focus:border-accent" />
         <div className="flex gap-3"><button onClick={() => setShowCorrecao(false)} className="flex-1 rounded-xl border border-input-border py-3 text-sm font-medium text-text-muted max-h-[45px]">Cancelar</button><button onClick={handleCorrecao} disabled={!motivo || submitting} className="flex-1 rounded-xl bg-orange-600/80 py-3 text-sm font-medium text-white disabled:opacity-50 max-h-[45px]">Solicitar</button></div>
+      </Modal>}
+
+      {massaAction && <Modal titulo={`Ação em Massa (${massaAction.tipo === "reprovado" ? "Reprovação" : "Correção"})`} descricao={`Descreva o motivo para todos os itens da aba ${massaAction.aba === "dados" ? "Dados do Cliente" : massaAction.aba === "endereco" ? "Endereço" : "Documentos"}`} onClose={() => { setMassaAction(null); setMotivo(""); }}>
+        <textarea value={motivo} onChange={(e) => setMotivo(e.target.value)} placeholder="Descreva o motivo..." rows={5} className="mb-4 w-full resize-none rounded-lg border border-input-border bg-input-bg px-4 py-3 text-sm text-text-main outline-none focus:border-accent" autoFocus />
+        <div className="flex gap-3"><button onClick={() => { setMassaAction(null); setMotivo(""); }} className="flex-1 rounded-xl border border-input-border py-3 text-sm font-medium text-text-muted max-h-[45px]">Cancelar</button><button onClick={() => executarMassaAction(massaAction.aba, massaAction.tipo, motivo)} disabled={!motivo.trim() || submitting} className={`flex-1 rounded-xl py-3 text-sm font-medium text-white disabled:opacity-50 max-h-[45px] ${massaAction.tipo === "reprovado" ? "bg-red-700/80" : "bg-orange-600/80"}`}>{massaAction.tipo === "reprovado" ? "Reprovar Todos" : "Solicitar Correção"}</button></div>
       </Modal>}
 
       {fieldAction && (
@@ -359,6 +480,8 @@ function CampoRevisavel({ campoKey, label, value, revisoes, podeAcao, onAction, 
   const rev = revisoes[campoKey];
   const status: RevisaoStatus = rev?.status || "pendente";
 
+  const [isRevising, setIsRevising] = useState(false);
+
   return (
     <div className="flex items-start gap-2">
       <div className="flex-1 min-w-0">
@@ -366,7 +489,7 @@ function CampoRevisavel({ campoKey, label, value, revisoes, podeAcao, onAction, 
         <div className="flex items-center gap-2">
           {iconBefore && <span className="shrink-0">{iconBefore}</span>}
           <p className="text-sm text-text-main truncate">{value || "—"}</p>
-          {status !== "pendente" && (
+          {status !== "pendente" && !isRevising && (
             <span className={`shrink-0 rounded-full px-2 py-0.5 text-[9px] font-medium ${STATUS_REVISAO_COLOR[status]}`}>{STATUS_REVISAO_LABEL[status]}</span>
           )}
         </div>
@@ -378,20 +501,22 @@ function CampoRevisavel({ campoKey, label, value, revisoes, podeAcao, onAction, 
         {actions}
         {podeAcao && (
           <>
-            {status !== "ok" && (
-              <button onClick={() => onAction("ok")} className="rounded-lg p-1 text-green-400 hover:bg-green-500/10 transition" title="Aprovar campo">
-                <CheckCircle size={14} />
+            {status !== "pendente" && !isRevising ? (
+              <button onClick={() => setIsRevising(true)} className="rounded-lg px-2 py-1 text-[10px] font-medium text-accent hover:bg-accent/10 transition border border-accent/20">
+                Revisar
               </button>
-            )}
-            {status !== "reprovado" && (
-              <button onClick={() => onAction("reprovado")} className="rounded-lg p-1 text-red-400 hover:bg-red-500/10 transition" title="Reprovar campo">
-                <XCircle size={14} />
-              </button>
-            )}
-            {status !== "em_correcao" && (
-              <button onClick={() => onAction("em_correcao")} className="rounded-lg p-1 text-orange-400 hover:bg-orange-500/10 transition" title="Solicitar correção">
-                <AlertTriangle size={14} />
-              </button>
+            ) : (
+              <>
+                <button onClick={() => { setIsRevising(false); onAction("ok"); }} className="rounded-lg p-1 text-green-400 hover:bg-green-500/10 transition" title="Aprovar campo">
+                  <CheckCircle size={14} />
+                </button>
+                <button onClick={() => { setIsRevising(false); onAction("reprovado"); }} className="rounded-lg p-1 text-red-400 hover:bg-red-500/10 transition" title="Reprovar campo">
+                  <XCircle size={14} />
+                </button>
+                <button onClick={() => { setIsRevising(false); onAction("em_correcao"); }} className="rounded-lg p-1 text-orange-400 hover:bg-orange-500/10 transition" title="Solicitar correção">
+                  <AlertTriangle size={14} />
+                </button>
+              </>
             )}
           </>
         )}

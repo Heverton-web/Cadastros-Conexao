@@ -68,6 +68,7 @@ export function DocList({ docs, podeVisualizar = false, podeAcao = false, onApro
   const [actionDocId, setActionDocId] = useState<string | null>(null);
   const [actionTipo, setActionTipo] = useState<"aprovar" | "reprovar" | "corrigir" | null>(null);
   const [actionMotivo, setActionMotivo] = useState("");
+  const [revisandoDocs, setRevisandoDocs] = useState<Record<string, boolean>>({});
 
   if (docs.length === 0) return <p className="text-sm text-text-muted">Nenhum documento anexado</p>;
 
@@ -79,6 +80,7 @@ export function DocList({ docs, podeVisualizar = false, podeAcao = false, onApro
     } else if (actionTipo === "corrigir") {
       onCorrigir?.(docId, actionMotivo);
     }
+    setRevisandoDocs(prev => ({ ...prev, [docId]: false }));
     setActionDocId(null);
     setActionTipo(null);
     setActionMotivo("");
@@ -92,43 +94,49 @@ export function DocList({ docs, podeVisualizar = false, podeAcao = false, onApro
           const Icon = STATUS_DOC_ICON[d.status] || FileText;
           return (
             <div key={d.id}
-              className="flex items-center gap-3 rounded-lg bg-input-bg p-3 transition"
+              className={`flex items-center gap-3 rounded-lg bg-input-bg p-3 transition ${podeAcao || podeVisualizar ? "cursor-pointer hover:bg-white/5" : ""}`}
+              onClick={() => {
+                if (podeAcao || podeVisualizar) {
+                  setViewerIdx(i);
+                  setShowViewer(true);
+                }
+              }}
             >
               <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-accent/10">
-                {podeAcao || podeVisualizar ? (
-                  <button onClick={() => { setViewerIdx(i); setShowViewer(true); }} className="flex items-center justify-center w-full h-full">
-                    <FileText size={16} className="text-accent" />
-                  </button>
-                ) : (
-                  <FileText size={16} className="text-accent" />
-                )}
+                <FileText size={16} className="text-accent" />
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-medium text-text-main truncate">{getTipoLabel(d.tipo)}</p>
                 <div className="flex items-center gap-2 mt-0.5">
-                  <Icon size={11} className={STATUS_DOC_COLOR[d.status].split(" ")[1] || "text-text-muted"} />
-                  <span className={`text-[10px] font-medium ${STATUS_DOC_COLOR[d.status]}`}>{STATUS_DOC_LABEL[d.status]}</span>
+                  {!revisandoDocs[d.id] && (
+                    <>
+                      <Icon size={11} className={STATUS_DOC_COLOR[d.status].split(" ")[1] || "text-text-muted"} />
+                      <span className={`text-[10px] font-medium ${STATUS_DOC_COLOR[d.status]}`}>{STATUS_DOC_LABEL[d.status]}</span>
+                    </>
+                  )}
                 </div>
               </div>
               {podeAcao && (
                 <div className="flex items-center gap-1 shrink-0" onClick={(e) => e.stopPropagation()}>
-                  {d.status !== "ok" && (
-                    <button onClick={() => { setActionDocId(d.id); setActionTipo("aprovar"); setActionMotivo(""); }}
-                      className="rounded-lg p-1.5 text-green-400 hover:bg-green-500/10 transition" title="Aprovar">
-                      <CheckCircle size={16} />
+                  {d.status !== "pendente" && !revisandoDocs[d.id] ? (
+                    <button onClick={() => setRevisandoDocs(prev => ({ ...prev, [d.id]: true }))} className="rounded-lg px-2 py-1 text-[10px] font-medium text-accent hover:bg-accent/10 transition border border-accent/20">
+                      Revisar
                     </button>
-                  )}
-                  {d.status !== "reprovado" && (
-                    <button onClick={() => { setActionDocId(d.id); setActionTipo("reprovar"); setActionMotivo(""); }}
-                      className="rounded-lg p-1.5 text-red-400 hover:bg-red-500/10 transition" title="Reprovar">
-                      <XCircle size={16} />
-                    </button>
-                  )}
-                  {d.status !== "em_correcao" && (
-                    <button onClick={() => { setActionDocId(d.id); setActionTipo("corrigir"); setActionMotivo(""); }}
-                      className="rounded-lg p-1.5 text-orange-400 hover:bg-orange-500/10 transition" title="Solicitar Correção">
-                      <AlertTriangle size={16} />
-                    </button>
+                  ) : (
+                    <>
+                      <button onClick={() => { setActionDocId(d.id); setActionTipo("aprovar"); setActionMotivo(""); }}
+                        className="rounded-lg p-1.5 text-green-400 hover:bg-green-500/10 transition" title="Aprovar">
+                        <CheckCircle size={16} />
+                      </button>
+                      <button onClick={() => { setActionDocId(d.id); setActionTipo("reprovar"); setActionMotivo(""); }}
+                        className="rounded-lg p-1.5 text-red-400 hover:bg-red-500/10 transition" title="Reprovar">
+                        <XCircle size={16} />
+                      </button>
+                      <button onClick={() => { setActionDocId(d.id); setActionTipo("corrigir"); setActionMotivo(""); }}
+                        className="rounded-lg p-1.5 text-orange-400 hover:bg-orange-500/10 transition" title="Solicitar Correção">
+                        <AlertTriangle size={16} />
+                      </button>
+                    </>
                   )}
                 </div>
               )}

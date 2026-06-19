@@ -47,3 +47,16 @@ export async function setRevisaoCampo(
     .eq("id", cadastroId);
   if (error) throw error;
 }
+
+export async function setRevisoesMassa(
+  cadastroId: string,
+  novasRevisoes: Revisoes
+): Promise<void> {
+  const atuais = await getRevisoes(cadastroId);
+  const combinadas = { ...atuais, ...novasRevisoes };
+  const { error } = await supabase
+    .from("cadastros")
+    .update({ revisoes: combinadas })
+    .eq("id", cadastroId);
+  if (error) throw error;
+}

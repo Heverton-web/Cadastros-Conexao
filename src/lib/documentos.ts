@@ -108,6 +108,17 @@ export async function solicitarCorrecaoDocumento(id: string, comentario: string)
   return data as Documento;
 }
 
+export async function reverterDocumento(id: string) {
+  const { data, error } = await supabase
+    .from("documentos")
+    .update({ status: "pendente", comentario_reprovacao: null })
+    .eq("id", id)
+    .select()
+    .single();
+  if (error) throw error;
+  return data as Documento;
+}
+
 export const DOCS_PF_REQUIRED = ["cro_frente", "cro_verso", "cnh_frente", "cnh_verso", "comprovante_endereco"];
 
 export const DOCS_PJ_REQUIRED = [...DOCS_PF_REQUIRED, "contrato_social", "declaracao_prestacao_servico"];
@@ -173,4 +184,17 @@ export async function getDocumentosStatusMap(
     result[c.id] = determinarDocStatus(grouped[c.id] || [], c.tipo_pessoa);
   }
   return result;
+}
+
+export async function setDocumentosMassa(
+  ids: string[],
+  status: DocumentoStatus,
+  comentario: string | null
+): Promise<void> {
+  if (ids.length === 0) return;
+  const { error } = await supabase
+    .from("documentos")
+    .update({ status, comentario_reprovacao: comentario })
+    .in("id", ids);
+  if (error) throw error;
 }

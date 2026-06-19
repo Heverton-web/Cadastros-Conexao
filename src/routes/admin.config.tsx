@@ -230,7 +230,7 @@ function CredenciaisTab() {
               <option value="cadastro">Cadastro</option>
               <option value="consultor">Consultor</option>
               <option value="tecnologia">Tecnologia</option>
-              <option value="ambos">Ambos</option>
+
             </select>
             <div className="flex gap-3">
               <button onClick={() => setShowForm(false)} className="flex-1 rounded-xl border border-input-border py-3 text-sm font-medium text-text-muted">Cancelar</button>

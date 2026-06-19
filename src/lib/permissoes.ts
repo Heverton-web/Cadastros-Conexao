@@ -20,7 +20,7 @@ export type Permissoes = {
   ver_relatorios: boolean;
 };
 
-export type Ambiente = "cadastro" | "consultor" | "tecnologia" | "ambos" | "suporte";
+export type Ambiente = "cadastro" | "consultor" | "tecnologia" | "suporte";
 
 export function getPermissoesPadrao(ambiente: Ambiente): Permissoes {
   switch (ambiente) {
@@ -32,7 +32,7 @@ export function getPermissoesPadrao(ambiente: Ambiente): Permissoes {
       return { ver_todos_cadastros: false, aprovar_cadastro: false, reprovar_cadastro: false, solicitar_correcao_cadastro: false, aprovar_documento: false, reprovar_documento: false, solicitar_correcao_documento: false, aprovar_campo: false, reprovar_campo: false, solicitar_correcao_campo: false, visualizar_documento: false, excluir_cadastro: false, gerenciar_credenciais: true, gerenciar_credenciais_admin: true, gerenciar_config: false, gerar_links: false, ver_relatorios: false };
     case "suporte":
       return { ver_todos_cadastros: false, aprovar_cadastro: false, reprovar_cadastro: false, solicitar_correcao_cadastro: false, aprovar_documento: false, reprovar_documento: false, solicitar_correcao_documento: false, aprovar_campo: false, reprovar_campo: false, solicitar_correcao_campo: false, visualizar_documento: false, excluir_cadastro: false, gerenciar_credenciais: true, gerenciar_credenciais_admin: false, gerenciar_config: false, gerar_links: false, ver_relatorios: false };
-    default: // ambos, fallback
+    default:
       return { ver_todos_cadastros: true, aprovar_cadastro: true, reprovar_cadastro: true, solicitar_correcao_cadastro: true, aprovar_documento: true, reprovar_documento: true, solicitar_correcao_documento: true, aprovar_campo: true, reprovar_campo: true, solicitar_correcao_campo: true, visualizar_documento: true, excluir_cadastro: false, gerenciar_credenciais: true, gerenciar_credenciais_admin: true, gerenciar_config: false, gerar_links: true, ver_relatorios: true };
   }
 }

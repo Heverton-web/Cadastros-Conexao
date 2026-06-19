@@ -46,14 +46,13 @@ function ClientesPage() {
       return;
     }
     carregar();
-  }, [filtroStatus, profile]);
+  }, [profile]);
 
   async function carregar() {
     if (!profile) return;
     setLoading(true);
     try {
-      const filters: { status?: CadastroStatus; created_by?: string } = {};
-      if (filtroStatus) filters.status = filtroStatus;
+      const filters: { created_by?: string } = {};
       if (permissoes?.ver_todos_cadastros !== true) filters.created_by = profile.id;
       const res = await listarCadastros(Object.keys(filters).length ? filters : undefined);
       setData(res);
@@ -91,8 +90,19 @@ function ClientesPage() {
   }
 
   const consultores = [...new Set(data.map(c => c.profiles?.nome).filter(Boolean))].sort();
-  const filtered = data.filter((c) => {
+  
+  const dataForConsultor = data.filter((c) => {
     if (filtroConsultor && (c.profiles?.nome || "") !== filtroConsultor) return false;
+    return true;
+  });
+
+  const getCount = (s: CadastroStatus | "") => {
+    if (!s) return dataForConsultor.length;
+    return dataForConsultor.filter(c => c.status === s).length;
+  };
+
+  const filtered = dataForConsultor.filter((c) => {
+    if (filtroStatus && c.status !== filtroStatus) return false;
     if (!search) return true; const q = search.toLowerCase();
     return (c.lead_nome || c.nome_temporario || "").toLowerCase().includes(q) ||
       (c.codigo_cliente || "").toLowerCase().includes(q);
@@ -106,17 +116,37 @@ function ClientesPage() {
           <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted" />
           <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Buscar clientes..." className="w-full rounded-lg border border-input-border bg-input-bg py-3 pl-10 pr-4 text-sm text-text-main outline-none focus:border-accent focus:ring-2 focus:ring-ring min-h-[44px]" />
         </div>
-        <select value={filtroStatus} onChange={(e) => setFiltroStatus(e.target.value as CadastroStatus | "")} className="rounded-lg border border-input-border bg-input-bg px-3 py-3 text-sm text-text-main outline-none focus:border-accent min-h-[44px]">
-          <option value="">Todos</option>
-          {Object.entries(STATUS_LABEL).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
-        </select>
       </div>
-      <div className="flex gap-2">
-        <select value={filtroConsultor} onChange={(e) => setFiltroConsultor(e.target.value)} className="flex-1 rounded-lg border border-input-border bg-input-bg px-3 py-3 text-sm text-text-main outline-none focus:border-accent min-h-[44px]">
-          <option value="">Todos os consultores</option>
-          {consultores.map(nome => <option key={nome} value={nome!}>{nome}</option>)}
-        </select>
-      </div>
+      {permissoes?.ver_todos_cadastros && (
+        <>
+          <div className="flex gap-2">
+            <select value={filtroConsultor} onChange={(e) => setFiltroConsultor(e.target.value)} className="flex-1 rounded-lg border border-input-border bg-input-bg px-3 py-3 text-sm text-text-main outline-none focus:border-accent min-h-[44px]">
+              <option value="">Todos os consultores</option>
+              {consultores.map(nome => <option key={nome} value={nome!}>{nome}</option>)}
+            </select>
+          </div>
+
+          <div className="grid grid-cols-4 gap-2">
+            <button 
+              onClick={() => setFiltroStatus("")} 
+              className={`flex h-10 flex-col items-center justify-center rounded-lg px-1 transition ${filtroStatus === "" ? "bg-accent text-white shadow-md" : "bg-card text-text-muted hover:text-text-main border border-input-border"}`}
+            >
+              <span className="w-full truncate text-center text-[10px] leading-tight">Todos</span>
+              <span className="text-[11px] font-bold leading-none mt-0.5">{getCount("")}</span>
+            </button>
+            {Object.entries(STATUS_LABEL).map(([k, v]) => (
+              <button 
+                key={k} 
+                onClick={() => setFiltroStatus(k as CadastroStatus)} 
+                className={`flex h-10 flex-col items-center justify-center rounded-lg px-1 transition ${filtroStatus === k ? "bg-accent text-white shadow-md" : "bg-card text-text-muted hover:text-text-main border border-input-border"}`}
+              >
+                <span className="w-full truncate text-center text-[10px] leading-tight">{v}</span>
+                <span className="text-[11px] font-bold leading-none mt-0.5">{getCount(k as CadastroStatus)}</span>
+              </button>
+            ))}
+          </div>
+        </>
+      )}
       {loading ? (
         <div className="flex justify-center py-12"><Loader2 size={24} className="animate-spin text-accent" /></div>
       ) : filtered.length === 0 ? (

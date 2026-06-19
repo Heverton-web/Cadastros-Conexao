@@ -16,7 +16,7 @@ export type MockCredential = {
   email: string;
   password: string;
   role: "admin" | "editor" | "viewer";
-  ambiente: "cadastro" | "consultor" | "tecnologia" | "ambos" | null;
+  ambiente: "cadastro" | "consultor" | "tecnologia" | null;
   ativo: boolean;
   created_at: string;
   updated_at: string;
