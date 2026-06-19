@@ -1,0 +1,4232 @@
+[
+  {
+    "A. Cliente": "",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Nova Aliança",
+    "CEP": "14026556",
+    "CIDADE": "Ribeirão Preto",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "3547184",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "14801180",
+    "CIDADE": "Araraquara",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "3775653",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Jardim Santa Clara do Lago II",
+    "CEP": "13186-464",
+    "CIDADE": "Hortolândia",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "9547128",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "17900-113",
+    "CIDADE": "Dracena",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "9278918",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Trindade",
+    "CEP": "88036001",
+    "CIDADE": "Florianópolis",
+    "COMPLEMENTO": "Apto 502 E"
+  },
+  {
+    "A. Cliente": "",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Jardim Ângelo",
+    "CEP": "07400295",
+    "CIDADE": "Arujá",
+    "COMPLEMENTO": "Clinica"
+  },
+  {
+    "A. Cliente": "9189321",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "São Luiz",
+    "CEP": "32675595",
+    "CIDADE": "Betim",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Jardim Ângelo",
+    "CEP": "07400295",
+    "CIDADE": "Arujá",
+    "COMPLEMENTO": "Clinica"
+  },
+  {
+    "A. Cliente": "5848841",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Vila Aeroporto Bauru",
+    "CEP": "17012433",
+    "CIDADE": "Bauru",
+    "COMPLEMENTO": "Clínica evolve"
+  },
+  {
+    "A. Cliente": "2670979",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Jardim São Paulo(Zona Norte)",
+    "CEP": "02042000",
+    "CIDADE": "São Paulo",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "5917924",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Itaim Bibi",
+    "CEP": "04531-012",
+    "CIDADE": "São Paulo",
+    "COMPLEMENTO": "cj 27 "
+  },
+  {
+    "A. Cliente": "",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Sé",
+    "CEP": "",
+    "CIDADE": "São Paulo",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "2766473",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Vila Santo Antônio",
+    "CEP": "13465773",
+    "CIDADE": "Americana",
+    "COMPLEMENTO": "    Casa 24"
+  },
+  {
+    "A. Cliente": "3776212",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Jardim Vergueiro",
+    "CEP": "18030-050",
+    "CIDADE": "Sorocaba",
+    "COMPLEMENTO": "sala 42"
+  },
+  {
+    "A. Cliente": "0040354",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "09510005",
+    "CIDADE": "São Caetano do Sul",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "5353762",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "08674-170",
+    "CIDADE": "Suzano",
+    "COMPLEMENTO": "7 ANDAR- SALA 74"
+  },
+  {
+    "A. Cliente": "3695781",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Jardim São Francisco",
+    "CEP": "13940-172",
+    "CIDADE": "Águas de Lindóia",
+    "COMPLEMENTO": "Sala 12"
+  },
+  {
+    "A. Cliente": "",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Setor Oeste",
+    "CEP": "74110-030",
+    "CIDADE": "Goiânia",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "",
+    "CEP": "89157000",
+    "CIDADE": "Witmarsum",
+    "COMPLEMENTO": "Casa"
+  },
+  {
+    "A. Cliente": "3037054",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "",
+    "CEP": "25850000",
+    "CIDADE": "Paraíba do Sul",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "4638258",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Ipiranga",
+    "CEP": "04207030",
+    "CIDADE": "São Paulo",
+    "COMPLEMENTO": "apto 64"
+  },
+  {
+    "A. Cliente": "0996190",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Umarizal",
+    "CEP": "66055000",
+    "CIDADE": "Belém",
+    "COMPLEMENTO": "Apto2403"
+  },
+  {
+    "A. Cliente": "6292804",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Universitário",
+    "CEP": "88511110",
+    "CIDADE": "Lages",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "2619951",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Setor Leste Universitário",
+    "CEP": "74610130",
+    "CIDADE": "Goiânia",
+    "COMPLEMENTO": "QUADRA 72-A; LOTE 07"
+  },
+  {
+    "A. Cliente": "7527364",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Vila Nova das Belezas",
+    "CEP": "05777-180",
+    "CIDADE": "São Paulo",
+    "COMPLEMENTO": "Apartamento 505"
+  },
+  {
+    "A. Cliente": "5376387",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Sete de Setembro",
+    "CEP": "89114732",
+    "CIDADE": "Gaspar",
+    "COMPLEMENTO": "Sl1 Odontoexcellence"
+  },
+  {
+    "A. Cliente": "7447910",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Jardim Serra Dourada",
+    "CEP": "08597765",
+    "CIDADE": "Itaquaquecetuba",
+    "COMPLEMENTO": "Cada"
+  },
+  {
+    "A. Cliente": "8051248",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Lapa",
+    "CEP": "05075060",
+    "CIDADE": "São Paulo",
+    "COMPLEMENTO": "13"
+  },
+  {
+    "A. Cliente": "7057916",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "",
+    "CEP": "44190000",
+    "CIDADE": "Santo Estêvão",
+    "COMPLEMENTO": "CLINICA ELO ODONTO"
+  },
+  {
+    "A. Cliente": "4917240",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "36016903",
+    "CIDADE": "Juiz de Fora",
+    "COMPLEMENTO": "1323"
+  },
+  {
+    "A. Cliente": "4009231",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Barbosa Lima",
+    "CEP": "27511630",
+    "CIDADE": "Resende",
+    "COMPLEMENTO": "Edifício Tom Jobim apt 101"
+  },
+  {
+    "A. Cliente": "8221460",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "36010081",
+    "CIDADE": "Juiz de Fora",
+    "COMPLEMENTO": "201"
+  },
+  {
+    "A. Cliente": "7376831",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Paraíso",
+    "CEP": "04004903",
+    "CIDADE": "São Paulo",
+    "COMPLEMENTO": "Cj 34"
+  },
+  {
+    "A. Cliente": "8103186",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "",
+    "CEP": "35220-000",
+    "CIDADE": "Itueta",
+    "COMPLEMENTO": "Loja B"
+  },
+  {
+    "A. Cliente": "0813693",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "38184022",
+    "CIDADE": "Araxá",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "0452439",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "",
+    "CEP": "35117000",
+    "CIDADE": "Naque",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Duchas",
+    "CEP": "25680-050",
+    "CIDADE": "Petrópolis",
+    "COMPLEMENTO": "501"
+  },
+  {
+    "A. Cliente": "2967887",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "14160570",
+    "CIDADE": "Sertãozinho",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "0638013",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "",
+    "CEP": "69945000",
+    "CIDADE": "Acrelândia",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "7372760",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Setor Sul",
+    "CEP": "74093140",
+    "CIDADE": "Goiânia",
+    "COMPLEMENTO": "Cely Clin odontologia"
+  },
+  {
+    "A. Cliente": "2345648",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Jardim Centenário",
+    "CEP": "13845232",
+    "CIDADE": "Mogi Guaçu",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "5581922",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Mansões do Bom Pastor",
+    "CEP": "36021-710",
+    "CIDADE": "Juiz de Fora",
+    "COMPLEMENTO": "301"
+  },
+  {
+    "A. Cliente": "2024869",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "36010001",
+    "CIDADE": "Juiz de Fora",
+    "COMPLEMENTO": "303/305"
+  },
+  {
+    "A. Cliente": "8555501",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Ermitage",
+    "CEP": "25975550",
+    "CIDADE": "Teresópolis",
+    "COMPLEMENTO": "Condomínio Portal Serrano bloco 2 Apt 407"
+  },
+  {
+    "A. Cliente": "5031668",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "36900064",
+    "CIDADE": "Manhuaçu",
+    "COMPLEMENTO": "102"
+  },
+  {
+    "A. Cliente": "4424382",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Rudge Ramos",
+    "CEP": "09633-000",
+    "CIDADE": "São Bernardo do Campo",
+    "COMPLEMENTO": "Ap 87"
+  },
+  {
+    "A. Cliente": "1152216",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Santana",
+    "CEP": "24110013",
+    "CIDADE": "Niterói",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "6448100",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Santa Efigênia",
+    "CEP": "30140001",
+    "CIDADE": "Belo Horizonte",
+    "COMPLEMENTO": "1107"
+  },
+  {
+    "A. Cliente": "9722761",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Pedra de Guaratiba",
+    "CEP": "23027-260",
+    "CIDADE": "Rio de Janeiro",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Independência",
+    "CEP": "39404287",
+    "CIDADE": "Montes Claros",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "1189264",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "14801280",
+    "CIDADE": "Araraquara",
+    "COMPLEMENTO": "Clínica sorriso"
+  },
+  {
+    "A. Cliente": "",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "São José",
+    "CEP": "37133508",
+    "CIDADE": "Alfenas",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "1977890",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "17970970",
+    "CIDADE": "São João do Pau d'Alho",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "1059424",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Vila Rica",
+    "CEP": "37901080",
+    "CIDADE": "Passos",
+    "COMPLEMENTO": "casa cinza"
+  },
+  {
+    "A. Cliente": "1370160",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Jardim Amália",
+    "CEP": "13610340",
+    "CIDADE": "Leme",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "7346939",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Alphaville Centro Industrial e Empresarial/Alphaville.",
+    "CEP": "06454020",
+    "CIDADE": "Barueri",
+    "COMPLEMENTO": "1516"
+  },
+  {
+    "A. Cliente": "8994263",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "19970050",
+    "CIDADE": "Palmital",
+    "COMPLEMENTO": "Casa"
+  },
+  {
+    "A. Cliente": "9635444",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Lourdes",
+    "CEP": "30140072",
+    "CIDADE": "Belo Horizonte",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "7037785",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Consolação",
+    "CEP": "01228200",
+    "CIDADE": "São Paulo",
+    "COMPLEMENTO": "conj.91"
+  },
+  {
+    "A. Cliente": "",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "",
+    "CEP": "37215000",
+    "CIDADE": "Ingaí",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "6529670",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Jardim América",
+    "CEP": "74250030",
+    "CIDADE": "Goiânia",
+    "COMPLEMENTO": "Clínica Reabilitê Odontologia "
+  },
+  {
+    "A. Cliente": "9409142",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Bacaxá (Bacaxá)",
+    "CEP": "28994795",
+    "CIDADE": "Saquarema",
+    "COMPLEMENTO": "SUPERIOR GIRAU"
+  },
+  {
+    "A. Cliente": "2447276",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "38400095",
+    "CIDADE": "Uberlândia",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "8592749",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "35700019",
+    "CIDADE": "Sete Lagoas",
+    "COMPLEMENTO": "Predio"
+  },
+  {
+    "A. Cliente": "7193570",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Real Parque",
+    "CEP": "05687002",
+    "CIDADE": "São Paulo",
+    "COMPLEMENTO": "Ap14"
+  },
+  {
+    "A. Cliente": "2658447",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Vila Regente Feijó",
+    "CEP": "03335000",
+    "CIDADE": "São Paulo",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "4555146",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "36010-330",
+    "CIDADE": "Juiz de Fora",
+    "COMPLEMENTO": "LOJA"
+  },
+  {
+    "A. Cliente": "4689585",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "36010003",
+    "CIDADE": "Juiz de Fora",
+    "COMPLEMENTO": "Sala 1114 "
+  },
+  {
+    "A. Cliente": "8800127",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "19470-007",
+    "CIDADE": "Presidente Epitácio",
+    "COMPLEMENTO": "Prédio Impladent"
+  },
+  {
+    "A. Cliente": "5303830",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Vila Histórica de Mambucaba (Mambucaba)",
+    "CEP": "23951310",
+    "CIDADE": "Angra dos Reis",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "1669468",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "13720083",
+    "CIDADE": "São José do Rio Pardo",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "3918645",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Liberdade",
+    "CEP": "01502001",
+    "CIDADE": "São Paulo",
+    "COMPLEMENTO": "sobreloja 18"
+  },
+  {
+    "A. Cliente": "4247631",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Vila Mariana",
+    "CEP": "04117-091",
+    "CIDADE": "São Paulo",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "7770928",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Cinturão Verde",
+    "CEP": "69312397",
+    "CIDADE": "Boa Vista",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "8003761",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Santa Cruz Industrial",
+    "CEP": "32340430",
+    "CIDADE": "Contagem",
+    "COMPLEMENTO": "403"
+  },
+  {
+    "A. Cliente": "3962252",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "24030078",
+    "CIDADE": "Niterói",
+    "COMPLEMENTO": "ORTOZARA"
+  },
+  {
+    "A. Cliente": "6242054",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Asa Norte",
+    "CEP": "70712903",
+    "CIDADE": "Brasília",
+    "COMPLEMENTO": "TORRE B"
+  },
+  {
+    "A. Cliente": "5672632",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Itaquera",
+    "CEP": "08215550",
+    "CIDADE": "São Paulo",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "4902223",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "13930037",
+    "CIDADE": "Serra Negra",
+    "COMPLEMENTO": "sala 32 - Centro Empresarial"
+  },
+  {
+    "A. Cliente": "9960018",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Anhangabaú",
+    "CEP": "13208056",
+    "CIDADE": "Jundiaí",
+    "COMPLEMENTO": "sala 618"
+  },
+  {
+    "A. Cliente": "3156158",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "",
+    "CEP": "5420080",
+    "CIDADE": "",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "9689480",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Vila Gomes Cardim",
+    "CEP": "03319-001",
+    "CIDADE": "São Paulo",
+    "COMPLEMENTO": "ap. 76"
+  },
+  {
+    "A. Cliente": "4525691",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "13480100",
+    "CIDADE": "Limeira",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "0187174",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Umuarama",
+    "CEP": "06036048",
+    "CIDADE": "Osasco",
+    "COMPLEMENTO": "Apto 45 alabama "
+  },
+  {
+    "A. Cliente": "4335126",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "27600246",
+    "CIDADE": "Valença",
+    "COMPLEMENTO": "Ao lado do banco sicoob"
+  },
+  {
+    "A. Cliente": "3602510",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "São Paulo",
+    "CEP": "35030765",
+    "CIDADE": "Governador Valadares",
+    "COMPLEMENTO": "Lj. 05"
+  },
+  {
+    "A. Cliente": "4178892",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "13010-211",
+    "CIDADE": "Campinas",
+    "COMPLEMENTO": "predio easy office sala 1010"
+  },
+  {
+    "A. Cliente": "6147974",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Parque Pinheiros",
+    "CEP": "06767260",
+    "CIDADE": "Taboão da Serra",
+    "COMPLEMENTO": "sl 05"
+  },
+  {
+    "A. Cliente": "6391254",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Ingleses do Rio Vermelho",
+    "CEP": "88058690",
+    "CIDADE": "Florianópolis",
+    "COMPLEMENTO": "Casa"
+  },
+  {
+    "A. Cliente": "2637456",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Sé",
+    "CEP": "",
+    "CIDADE": "São Paulo",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "1459446",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Vila Hilst",
+    "CEP": "17207026",
+    "CIDADE": "Jaú",
+    "COMPLEMENTO": "A"
+  },
+  {
+    "A. Cliente": "4480757",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "São Cristóvão",
+    "CEP": "20940-200",
+    "CIDADE": "Rio de Janeiro",
+    "COMPLEMENTO": "B 103 entregar na GARAGEM"
+  },
+  {
+    "A. Cliente": "7902126",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Jardim Panorama",
+    "CEP": "35162115",
+    "CIDADE": "Ipatinga",
+    "COMPLEMENTO": "Apto 101"
+  },
+  {
+    "A. Cliente": "3324328",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "",
+    "CEP": "13500-090 ",
+    "CIDADE": "",
+    "COMPLEMENTO": "Entre AV 17 e 19"
+  },
+  {
+    "A. Cliente": "7744436",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Ribeirânia",
+    "CEP": "14096190",
+    "CIDADE": "Ribeirão Preto",
+    "COMPLEMENTO": "Apart 1301"
+  },
+  {
+    "A. Cliente": "0972828",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Jardim Paraíso",
+    "CEP": "13100-040",
+    "CIDADE": "Campinas",
+    "COMPLEMENTO": "Apto  64"
+  },
+  {
+    "A. Cliente": "0008984",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Canto",
+    "CEP": "88070700",
+    "CIDADE": "Florianópolis",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "9005552",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro I",
+    "CEP": "88350-340",
+    "CIDADE": "Brusque",
+    "COMPLEMENTO": "Odontonin Hospital Odontologico"
+  },
+  {
+    "A. Cliente": "4911573",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Vila Gomes Cardim",
+    "CEP": "03309000",
+    "CIDADE": "São Paulo",
+    "COMPLEMENTO": "interfone 1/2"
+  },
+  {
+    "A. Cliente": "6491385",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Cristo Rei",
+    "CEP": "88821594",
+    "CIDADE": "Içara",
+    "COMPLEMENTO": "Casa"
+  },
+  {
+    "A. Cliente": "0168408",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Marapé",
+    "CEP": "11070-400",
+    "CIDADE": "Santos",
+    "COMPLEMENTO": "196t1"
+  },
+  {
+    "A. Cliente": "",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "",
+    "CEP": "37490000",
+    "CIDADE": "São Gonçalo do Sapucaí",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Pilares",
+    "CEP": "20750092",
+    "CIDADE": "Rio de Janeiro",
+    "COMPLEMENTO": "201"
+  },
+  {
+    "A. Cliente": "7577371",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Alphaville Centro Industrial e Empresarial/Alphaville.",
+    "CEP": "06454000",
+    "CIDADE": "Barueri",
+    "COMPLEMENTO": "Sala 98"
+  },
+  {
+    "A. Cliente": "8581155",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Jardim Kawamoto",
+    "CEP": "07143040",
+    "CIDADE": "Guarulhos",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "2407417",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "",
+    "CEP": "76145-000",
+    "CIDADE": "Córrego do Ouro",
+    "COMPLEMENTO": "Sobrado ao lado da antena de internet "
+  },
+  {
+    "A. Cliente": "",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Jardim Boa Vista",
+    "CEP": "06322210",
+    "CIDADE": "Carapicuíba",
+    "COMPLEMENTO": "CASA DA MINHA SOGRA - TANIA (CASA CINZA)"
+  },
+  {
+    "A. Cliente": "0980701",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Socorro",
+    "CEP": "08780830",
+    "CIDADE": "Mogi das Cruzes",
+    "COMPLEMENTO": "sala 91"
+  },
+  {
+    "A. Cliente": "0464637",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Três Bandeiras",
+    "CEP": "85862200",
+    "CIDADE": "Foz do Iguaçu",
+    "COMPLEMENTO": "clinica odonto"
+  },
+  {
+    "A. Cliente": "1993157",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "",
+    "CEP": "72984-265",
+    "CIDADE": "",
+    "COMPLEMENTO": "RUA BENJAMIN CONTANT Nº 65 CENTRO, PIRENOPOLIS-GO, EM FRENTE A GARAGEM DA PREFEITURA"
+  },
+  {
+    "A. Cliente": "0956576",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Kobrasol",
+    "CEP": "88102401",
+    "CIDADE": "São José",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "6860084",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Cidade Santa Maria",
+    "CEP": "39401081",
+    "CIDADE": "Montes Claros",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "",
+    "CEP": "37270000",
+    "CIDADE": "Campo Belo",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Jardim dos Lírios",
+    "CEP": "13467260",
+    "CIDADE": "Americana",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "3130179",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Velha",
+    "CEP": "89036301",
+    "CIDADE": "Blumenau",
+    "COMPLEMENTO": "Sala 01.   UNIA "
+  },
+  {
+    "A. Cliente": "",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "",
+    "CEP": "89899000",
+    "CIDADE": "Iporã do Oeste",
+    "COMPLEMENTO": "Odontotop"
+  },
+  {
+    "A. Cliente": "3152116",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Tijuca",
+    "CEP": "20511320",
+    "CIDADE": "Rio de Janeiro",
+    "COMPLEMENTO": "502"
+  },
+  {
+    "A. Cliente": "7151188",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Jardim Morada do Sol",
+    "CEP": "14622-434",
+    "CIDADE": "Orlândia",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "1559086",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "36295-044",
+    "CIDADE": "Barroso",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "5861865",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Bigorrilho",
+    "CEP": "80730020",
+    "CIDADE": "Curitiba",
+    "COMPLEMENTO": "Apto 603"
+  },
+  {
+    "A. Cliente": "5797472",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "13840015",
+    "CIDADE": "Mogi Guaçu",
+    "COMPLEMENTO": "Segundo andar "
+  },
+  {
+    "A. Cliente": "7369013",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Freguesia (Jacarepaguá)",
+    "CEP": "22745004",
+    "CIDADE": "Rio de Janeiro",
+    "COMPLEMENTO": "Sala 731"
+  },
+  {
+    "A. Cliente": "1559409",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "88130090",
+    "CIDADE": "Palhoça",
+    "COMPLEMENTO": "SL 201"
+  },
+  {
+    "A. Cliente": "4140714",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Cambuí",
+    "CEP": "13025-141",
+    "CIDADE": "Campinas",
+    "COMPLEMENTO": "Sala 62"
+  },
+  {
+    "A. Cliente": "3151047",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "",
+    "CEP": "69120000",
+    "CIDADE": "Itapiranga",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "6991473",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "69151270",
+    "CIDADE": "Parintins",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "0966587",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Vila Leis",
+    "CEP": "13309150",
+    "CIDADE": "Itu",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Batel",
+    "CEP": "80240000",
+    "CIDADE": "Curitiba",
+    "COMPLEMENTO": "Sala 104"
+  },
+  {
+    "A. Cliente": "4212296",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "13600170",
+    "CIDADE": "Araras",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "9523863",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Jardim Europa",
+    "CEP": "74330-670",
+    "CIDADE": "Goiânia",
+    "COMPLEMENTO": "SPARISO ODONTOLOGIA EM FRENTE AO HOSP SANTA BÁRBARA"
+  },
+  {
+    "A. Cliente": "7689552",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Parque Franceschini",
+    "CEP": "13170460",
+    "CIDADE": "Sumaré",
+    "COMPLEMENTO": "Ap 41"
+  },
+  {
+    "A. Cliente": "",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Sítios Santa Luzia",
+    "CEP": "74922685",
+    "CIDADE": "Aparecida de Goiânia",
+    "COMPLEMENTO": "Quadra 86 lote 5 loja 2 "
+  },
+  {
+    "A. Cliente": "8535745",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Asa Norte",
+    "CEP": "70790157",
+    "CIDADE": "Brasília",
+    "COMPLEMENTO": "Edifício Golden Office, Bloco C salas 305 e 306"
+  },
+  {
+    "A. Cliente": "1228573",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "",
+    "CEP": "89600000",
+    "CIDADE": "Joaçaba",
+    "COMPLEMENTO": "odonto vida"
+  },
+  {
+    "A. Cliente": "2205872",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "37550026",
+    "CIDADE": "Pouso Alegre",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "",
+    "CEP": "64860000",
+    "CIDADE": "Uruçuí",
+    "COMPLEMENTO": "Em frente a Marmovidros "
+  },
+  {
+    "A. Cliente": "8457023",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Cerâmica",
+    "CEP": "69905-052",
+    "CIDADE": "Rio Branco",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Cidade Alta",
+    "CEP": "13416585",
+    "CIDADE": "Piracicaba",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "7689433",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Lagoa Santa",
+    "CEP": "35065104",
+    "CIDADE": "Governador Valadares",
+    "COMPLEMENTO": "Apto 201"
+  },
+  {
+    "A. Cliente": "2239935",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "36010003",
+    "CIDADE": "Juiz de Fora",
+    "COMPLEMENTO": "Sala 31"
+  },
+  {
+    "A. Cliente": "2232375",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Vila Pirituba",
+    "CEP": "02915100",
+    "CIDADE": "São Paulo",
+    "COMPLEMENTO": "Apto 104 torre 1 "
+  },
+  {
+    "A. Cliente": "1055084",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Condomínio Residencial Euroville",
+    "CEP": "12917-021",
+    "CIDADE": "Bragança Paulista",
+    "COMPLEMENTO": "Sala 103"
+  },
+  {
+    "A. Cliente": "4197334",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "",
+    "CEP": "37460000",
+    "CIDADE": "Passa Quatro",
+    "COMPLEMENTO": "Rua quilombo bairro quilombo sem número "
+  },
+  {
+    "A. Cliente": "6198656",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "",
+    "CEP": "36976000",
+    "CIDADE": "Alto Jequitibá",
+    "COMPLEMENTO": "EM CIMA DA IGREJA GREMIO ESPÍ"
+  },
+  {
+    "A. Cliente": "0510591",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Vila Planalto",
+    "CEP": "70802060",
+    "CIDADE": "Brasília",
+    "COMPLEMENTO": "Odontovila"
+  },
+  {
+    "A. Cliente": "",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Cidade Dutra",
+    "CEP": "04810-160",
+    "CIDADE": "São Paulo",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "1424414",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "",
+    "CEP": "04.734-004",
+    "CIDADE": "",
+    "COMPLEMENTO": "9° ANDAR CJ 93"
+  },
+  {
+    "A. Cliente": "2318887",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Vila Pereira Barreto",
+    "CEP": "02936000",
+    "CIDADE": "São Paulo",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "1389453",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Estrela Sul",
+    "CEP": "36030713",
+    "CIDADE": "Juiz de Fora",
+    "COMPLEMENTO": "Ap 202"
+  },
+  {
+    "A. Cliente": "6141915",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Flávio Marques Lisboa (Barreiro)",
+    "CEP": "30624000",
+    "CIDADE": "Belo Horizonte",
+    "COMPLEMENTO": "Casa"
+  },
+  {
+    "A. Cliente": "8998287",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Tatuapé",
+    "CEP": "03307-005",
+    "CIDADE": "São Paulo",
+    "COMPLEMENTO": "15"
+  },
+  {
+    "A. Cliente": "8640775",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Tapera da Base",
+    "CEP": "88049350",
+    "CIDADE": "Florianópolis",
+    "COMPLEMENTO": "frente de vidro"
+  },
+  {
+    "A. Cliente": "7718558",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "13561003",
+    "CIDADE": "São Carlos",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "5777848",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Bairro Alto",
+    "CEP": "82840240",
+    "CIDADE": "Curitiba",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "7908906",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Venda Nova",
+    "CEP": "31615250",
+    "CIDADE": "Belo Horizonte",
+    "COMPLEMENTO": "Bloco2/apto904"
+  },
+  {
+    "A. Cliente": "",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Sobradinho",
+    "CEP": "73026664",
+    "CIDADE": "Brasília",
+    "COMPLEMENTO": "Edifício Lions "
+  },
+  {
+    "A. Cliente": "0752089",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "São João",
+    "CEP": "75703050",
+    "CIDADE": "Catalão",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "1206634",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Manguinhos",
+    "CEP": "28953-570",
+    "CIDADE": "Armação dos Búzios",
+    "COMPLEMENTO": "Casa"
+  },
+  {
+    "A. Cliente": "6294909",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "",
+    "CEP": "88015-010 ",
+    "CIDADE": "",
+    "COMPLEMENTO": "Casa"
+  },
+  {
+    "A. Cliente": "",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Jacarepaguá",
+    "CEP": "22780085",
+    "CIDADE": "Rio de Janeiro",
+    "COMPLEMENTO": "Bloco 02 apto 1501"
+  },
+  {
+    "A. Cliente": "3714006",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "06401120",
+    "CIDADE": "Barueri",
+    "COMPLEMENTO": "CLINICA ODONTOLÓGICA"
+  },
+  {
+    "A. Cliente": "9014947",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "",
+    "CEP": "35148-000",
+    "CIDADE": "Dom Cavati",
+    "COMPLEMENTO": "prolab"
+  },
+  {
+    "A. Cliente": "0710744",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Central",
+    "CEP": "68900110",
+    "CIDADE": "Macapá",
+    "COMPLEMENTO": "Sala 01"
+  },
+  {
+    "A. Cliente": "2752008",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Vila Irba",
+    "CEP": "35570-542",
+    "CIDADE": "Formiga",
+    "COMPLEMENTO": "Consultório odontológico "
+  },
+  {
+    "A. Cliente": "7449067",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Torre",
+    "CEP": "58040-000",
+    "CIDADE": "João Pessoa",
+    "COMPLEMENTO": "Térreo "
+  },
+  {
+    "A. Cliente": "0842445",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "36400065",
+    "CIDADE": "Conselheiro Lafaiete",
+    "COMPLEMENTO": "202"
+  },
+  {
+    "A. Cliente": "0772854",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Jardim Boa Vista (Zona Oeste)",
+    "CEP": "05583070",
+    "CIDADE": "São Paulo",
+    "COMPLEMENTO": "Azaleia 171A"
+  },
+  {
+    "A. Cliente": "",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Boa Morte",
+    "CEP": "36201002",
+    "CIDADE": "Barbacena",
+    "COMPLEMENTO": "apto 202"
+  },
+  {
+    "A. Cliente": "6450473",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Estados",
+    "CEP": "58030000",
+    "CIDADE": "João Pessoa",
+    "COMPLEMENTO": "sala 102"
+  },
+  {
+    "A. Cliente": "2728725",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Ceilândia Centro",
+    "CEP": "72215507",
+    "CIDADE": "Brasília",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Rio Madeira",
+    "CEP": "76821-346",
+    "CIDADE": "Porto Velho",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "0943732",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "09715030",
+    "CIDADE": "São Bernardo do Campo",
+    "COMPLEMENTO": "31 B"
+  },
+  {
+    "A. Cliente": "7250639",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "09020000",
+    "CIDADE": "Santo André",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "2898775",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "São João",
+    "CEP": "27253220",
+    "CIDADE": "Volta Redonda",
+    "COMPLEMENTO": "Sala 104"
+  },
+  {
+    "A. Cliente": "0828225",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Boa Esperança",
+    "CEP": "23894-358",
+    "CIDADE": "Seropédica",
+    "COMPLEMENTO": "LOJA B             "
+  },
+  {
+    "A. Cliente": "0174272",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "36010240",
+    "CIDADE": "Juiz de Fora",
+    "COMPLEMENTO": "Sala 284"
+  },
+  {
+    "A. Cliente": "7570424",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "12940-640",
+    "CIDADE": "Atibaia",
+    "COMPLEMENTO": "Segundo andar"
+  },
+  {
+    "A. Cliente": "3283955",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Jardim da Glória",
+    "CEP": "06711500",
+    "CIDADE": "Cotia",
+    "COMPLEMENTO": "SALA 9"
+  },
+  {
+    "A. Cliente": "6514926",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "",
+    "CEP": "37370-000",
+    "CIDADE": "São Vicente de Minas",
+    "COMPLEMENTO": "Clínica"
+  },
+  {
+    "A. Cliente": "4372765",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "São Judas Tadeu",
+    "CEP": "36307042",
+    "CIDADE": "São João Del Rei",
+    "COMPLEMENTO": "Casa"
+  },
+  {
+    "A. Cliente": "1237091",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Baixada",
+    "CEP": "36902051",
+    "CIDADE": "Manhuaçu",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "5772020",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "13930071",
+    "CIDADE": "Serra Negra",
+    "COMPLEMENTO": "andar superior"
+  },
+  {
+    "A. Cliente": "7432192",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Jardim Nove de Julho",
+    "CEP": "03951060",
+    "CIDADE": "São Paulo",
+    "COMPLEMENTO": "Torre 01, apto 101"
+  },
+  {
+    "A. Cliente": "",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Residencial Primavera",
+    "CEP": "14182302",
+    "CIDADE": "Pontal",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "1679603",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "89580005",
+    "CIDADE": "Fraiburgo",
+    "COMPLEMENTO": "Oralplace"
+  },
+  {
+    "A. Cliente": "3845201",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "88301350",
+    "CIDADE": "Itajaí",
+    "COMPLEMENTO": "Sala 1"
+  },
+  {
+    "A. Cliente": "4465568",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Bela Vista",
+    "CEP": "13207-684",
+    "CIDADE": "Jundiaí",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "9360364",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Paranoá",
+    "CEP": "71572315",
+    "CIDADE": "Brasília",
+    "COMPLEMENTO": "Ao lado do sabin"
+  },
+  {
+    "A. Cliente": "5257288",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Vila Nova Parada",
+    "CEP": "02883070",
+    "CIDADE": "São Paulo",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "5048491",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "",
+    "CEP": "73790000",
+    "CIDADE": "Cavalcante",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "5081422",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Jardim Jurumirim",
+    "CEP": "18800370",
+    "CIDADE": "Piraju",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "2416961",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Jatobá (Barreiro)",
+    "CEP": "30692350",
+    "CIDADE": "Belo Horizonte",
+    "COMPLEMENTO": "Loja de esquina "
+  },
+  {
+    "A. Cliente": "7359568",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Asa Norte",
+    "CEP": "70770100",
+    "CIDADE": "Brasília",
+    "COMPLEMENTO": "Edifício Jaime Leal - sala 133"
+  },
+  {
+    "A. Cliente": "4136949",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Piratininga",
+    "CEP": "24350310",
+    "CIDADE": "Niterói",
+    "COMPLEMENTO": "Loja 209 - Shopping Barravento "
+  },
+  {
+    "A. Cliente": "2594898",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Ouro Verde",
+    "CEP": "37207622",
+    "CIDADE": "Lavras",
+    "COMPLEMENTO": "Casa"
+  },
+  {
+    "A. Cliente": "5067839",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Itu Novo Centro",
+    "CEP": "13303-532",
+    "CIDADE": "Itu",
+    "COMPLEMENTO": "PISO SUPERIOR"
+  },
+  {
+    "A. Cliente": "4365431",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Bangu",
+    "CEP": "21862005",
+    "CIDADE": "Rio de Janeiro",
+    "COMPLEMENTO": "Sala 201"
+  },
+  {
+    "A. Cliente": "7917538",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Sé",
+    "CEP": "01001001",
+    "CIDADE": "São Paulo",
+    "COMPLEMENTO": "SALA 1010"
+  },
+  {
+    "A. Cliente": "0492420",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Setor Leste Universitário",
+    "CEP": "74610190",
+    "CIDADE": "Goiânia",
+    "COMPLEMENTO": "Apto 1303/ residencial Arte Home "
+  },
+  {
+    "A. Cliente": "0917809",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Víviam Parque",
+    "CEP": "75135490",
+    "CIDADE": "Anápolis",
+    "COMPLEMENTO": "Qd 65 lt 04 sala 01 Ridente Odontologia "
+  },
+  {
+    "A. Cliente": "8137914",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Tapera da Base",
+    "CEP": "88049350",
+    "CIDADE": "Florianópolis",
+    "COMPLEMENTO": "Frente de vidro "
+  },
+  {
+    "A. Cliente": "8004752",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "16700009",
+    "CIDADE": "Guararapes",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "9913110",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Santa Teresinha",
+    "CEP": "02450001",
+    "CIDADE": "São Paulo",
+    "COMPLEMENTO": "CASA"
+  },
+  {
+    "A. Cliente": "2615991",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "",
+    "CEP": "39710000",
+    "CIDADE": "Coroaci",
+    "COMPLEMENTO": "Rua Antônio Pereira Ramos, 32, Centro"
+  },
+  {
+    "A. Cliente": "8041226",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "09750730",
+    "CIDADE": "São Bernardo do Campo",
+    "COMPLEMENTO": "Sala 721"
+  },
+  {
+    "A. Cliente": "1421467",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "",
+    "CEP": "88385000",
+    "CIDADE": "Penha",
+    "COMPLEMENTO": "Oralclin"
+  },
+  {
+    "A. Cliente": "4233021",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Vila Jardim São Judas Tadeu",
+    "CEP": "74685020",
+    "CIDADE": "Goiânia",
+    "COMPLEMENTO": "quadra 20 lote 22 "
+  },
+  {
+    "A. Cliente": "9605722",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "",
+    "CEP": "36660000",
+    "CIDADE": "Além Paraíba",
+    "COMPLEMENTO": "Av. Olimpio cortes, bairro jardim santa rosa"
+  },
+  {
+    "A. Cliente": "2633846",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Vila Aurora (Zona Norte)",
+    "CEP": "02410010",
+    "CIDADE": "São Paulo",
+    "COMPLEMENTO": "Ap72"
+  },
+  {
+    "A. Cliente": "7340471",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "",
+    "CEP": "89874000",
+    "CIDADE": "Maravilha",
+    "COMPLEMENTO": "Ed Stiler "
+  },
+  {
+    "A. Cliente": "9626414",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "",
+    "CEP": "65901610",
+    "CIDADE": "",
+    "COMPLEMENTO": "CLINICA EM FRENTE AO MATEUS SUPERMECADO"
+  },
+  {
+    "A. Cliente": "4498526",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "18540061",
+    "CIDADE": "Porto Feliz",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "9876542",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Vila Santa Cecília",
+    "CEP": "27260200",
+    "CIDADE": "Volta Redonda",
+    "COMPLEMENTO": "Shopping 33, Torre II, sala 1509"
+  },
+  {
+    "A. Cliente": "6587792",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "12940630",
+    "CIDADE": "Atibaia",
+    "COMPLEMENTO": "Clínica Rizzo "
+  },
+  {
+    "A. Cliente": "7845646",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Liberdade",
+    "CEP": "01508020",
+    "CIDADE": "São Paulo",
+    "COMPLEMENTO": "Apto 94"
+  },
+  {
+    "A. Cliente": "6146177",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "",
+    "CEP": "39100000",
+    "CIDADE": "Diamantina",
+    "COMPLEMENTO": "Tangari Odontologia "
+  },
+  {
+    "A. Cliente": "3540702",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "36016905",
+    "CIDADE": "Juiz de Fora",
+    "COMPLEMENTO": "Sala 1505"
+  },
+  {
+    "A. Cliente": "7588113",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "96015730",
+    "CIDADE": "Pelotas",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "7662466",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Cidade Monções",
+    "CEP": "04571000",
+    "CIDADE": "São Paulo",
+    "COMPLEMENTO": "cj. 121 e 122"
+  },
+  {
+    "A. Cliente": "4641656",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Jardim Doutor Júlio de Mesquita Filho",
+    "CEP": "12910401",
+    "CIDADE": "Bragança Paulista",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "1603559",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Jardim Nossa Senhora Auxiliadora",
+    "CEP": "13075-490",
+    "CIDADE": "Campinas",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "4425992",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "20051040",
+    "CIDADE": "Rio de Janeiro",
+    "COMPLEMENTO": "Sobreloja 202"
+  },
+  {
+    "A. Cliente": "3649641",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Osvaldo Rezende",
+    "CEP": "38400402",
+    "CIDADE": "Uberlândia",
+    "COMPLEMENTO": "Clínica cio "
+  },
+  {
+    "A. Cliente": "6693593",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "25620000",
+    "CIDADE": "Petrópolis",
+    "COMPLEMENTO": "Sl. 716"
+  },
+  {
+    "A. Cliente": "0957624",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Setor Bueno",
+    "CEP": "74215170",
+    "CIDADE": "Goiânia",
+    "COMPLEMENTO": "Sala 1008"
+  },
+  {
+    "A. Cliente": "7148429",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Indianópolis",
+    "CEP": "04089000",
+    "CIDADE": "São Paulo",
+    "COMPLEMENTO": "Predio comercial 5 andar cj 501"
+  },
+  {
+    "A. Cliente": "5520663",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Mercês",
+    "CEP": "38061050",
+    "CIDADE": "Uberaba",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "1844382",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Jordanésia (Jordanésia)",
+    "CEP": "07776-435",
+    "CIDADE": "Cajamar",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "0121668",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Parque Edu Chaves",
+    "CEP": "02229-000",
+    "CIDADE": "São Paulo",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "0911290",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "16010285",
+    "CIDADE": "Araçatuba",
+    "COMPLEMENTO": "Clinica espaço sorrir"
+  },
+  {
+    "A. Cliente": "1499400",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "69301110",
+    "CIDADE": "Boa Vista",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "2881439",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "São Sebastião",
+    "CEP": "36246024",
+    "CIDADE": "Santos Dumont",
+    "COMPLEMENTO": "Clínica Oraldents"
+  },
+  {
+    "A. Cliente": "8838872",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Vila Silva Teles",
+    "CEP": "08110150",
+    "CIDADE": "São Paulo",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "9901123",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "88200108",
+    "CIDADE": "Tijucas",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "6225517",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "",
+    "CEP": "38500000",
+    "CIDADE": "Monte Carmelo",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "5573213",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Várzea",
+    "CEP": "25953-390",
+    "CIDADE": "Teresópolis",
+    "COMPLEMENTO": "sobrado "
+  },
+  {
+    "A. Cliente": "0794057",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Vila Nossa Senhora de Fátima",
+    "CEP": "15015705",
+    "CIDADE": "São José do Rio Preto",
+    "COMPLEMENTO": "Bloco 6 AP 22"
+  },
+  {
+    "A. Cliente": "7908021",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "",
+    "CEP": "37490000",
+    "CIDADE": "São Gonçalo do Sapucaí",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Jardim das Cerejeiras",
+    "CEP": "07432-575",
+    "CIDADE": "Arujá",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "5768629",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Tijuca",
+    "CEP": "20520051",
+    "CIDADE": "Rio de Janeiro",
+    "COMPLEMENTO": "Sala 707"
+  },
+  {
+    "A. Cliente": "",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Jardim dos Lírios",
+    "CEP": "13467-260",
+    "CIDADE": "Americana",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Jardim dos Lírios",
+    "CEP": "13467260",
+    "CIDADE": "Americana",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "2850263",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Vila São Francisco",
+    "CEP": "14505006",
+    "CIDADE": "Ituverava",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "6948852",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "28610460",
+    "CIDADE": "Nova Friburgo",
+    "COMPLEMENTO": "108"
+  },
+  {
+    "A. Cliente": "1828608",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Jardim São Vicente",
+    "CEP": "06713630",
+    "CIDADE": "Cotia",
+    "COMPLEMENTO": "sala 1"
+  },
+  {
+    "A. Cliente": "6837285",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Setor Bueno",
+    "CEP": "74215200",
+    "CIDADE": "Goiânia",
+    "COMPLEMENTO": "Apto 1102"
+  },
+  {
+    "A. Cliente": "7760370",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "27600026",
+    "CIDADE": "Valença",
+    "COMPLEMENTO": "sala 309"
+  },
+  {
+    "A. Cliente": "0462689",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Cambuí",
+    "CEP": "13025087",
+    "CIDADE": "Campinas",
+    "COMPLEMENTO": "Apto 111"
+  },
+  {
+    "A. Cliente": "0047508",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Grã-Duquesa",
+    "CEP": "35057-070",
+    "CIDADE": "Governador Valadares",
+    "COMPLEMENTO": "Apto 302"
+  },
+  {
+    "A. Cliente": "7471850",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "88301041",
+    "CIDADE": "Itajaí",
+    "COMPLEMENTO": "Térreo"
+  },
+  {
+    "A. Cliente": "9661043",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Inhaúma",
+    "CEP": "21061560",
+    "CIDADE": "Rio de Janeiro",
+    "COMPLEMENTO": "casa 84"
+  },
+  {
+    "A. Cliente": "4763944",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Lagoa Santa",
+    "CEP": "35065100",
+    "CIDADE": "Governador Valadares",
+    "COMPLEMENTO": "Apartamento 101"
+  },
+  {
+    "A. Cliente": "7195623",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Tirol",
+    "CEP": "59020240",
+    "CIDADE": "Natal",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "3728516",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "",
+    "CEP": "68540-000",
+    "CIDADE": "Conceição do Araguaia",
+    "COMPLEMENTO": "PREDIO"
+  },
+  {
+    "A. Cliente": "5929519",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Vila Olímpia",
+    "CEP": "04551-010",
+    "CIDADE": "São Paulo",
+    "COMPLEMENTO": "cj 54"
+  },
+  {
+    "A. Cliente": "9455672",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Itanhangá",
+    "CEP": "22641680",
+    "CIDADE": "Rio de Janeiro",
+    "COMPLEMENTO": "Casa "
+  },
+  {
+    "A. Cliente": "1209339",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Cidade Alta",
+    "CEP": "13419080",
+    "CIDADE": "Piracicaba",
+    "COMPLEMENTO": "52"
+  },
+  {
+    "A. Cliente": "0081671",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Vila Isabel",
+    "CEP": "20560-040",
+    "CIDADE": "Rio de Janeiro",
+    "COMPLEMENTO": "Apto 402"
+  },
+  {
+    "A. Cliente": "4115403",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "",
+    "CEP": "68540-000",
+    "CIDADE": "Conceição do Araguaia",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "1265145",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Conjunto Riviera",
+    "CEP": "74730280",
+    "CIDADE": "Goiânia",
+    "COMPLEMENTO": "Esq com Av Liberdade qd 31 LT 38"
+  },
+  {
+    "A. Cliente": "3696705",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "25680195",
+    "CIDADE": "Petrópolis",
+    "COMPLEMENTO": "Ap 105"
+  },
+  {
+    "A. Cliente": "9527799",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Jardim Ana Maria",
+    "CEP": "13208760",
+    "CIDADE": "Jundiaí",
+    "COMPLEMENTO": "conj 901 Edifício Helbor"
+  },
+  {
+    "A. Cliente": "4438782",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Planalto Paulista",
+    "CEP": "04057000",
+    "CIDADE": "São Paulo",
+    "COMPLEMENTO": "-"
+  },
+  {
+    "A. Cliente": "",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Jardim dos Lírios",
+    "CEP": "13467260",
+    "CIDADE": "Americana",
+    "COMPLEMENTO": "CASA"
+  },
+  {
+    "A. Cliente": "2410686",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Mirandópolis",
+    "CEP": "04045-003",
+    "CIDADE": "São Paulo",
+    "COMPLEMENTO": "Cj607"
+  },
+  {
+    "A. Cliente": "4664344",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "36010060",
+    "CIDADE": "Juiz de Fora",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "3897244",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Capão Raso",
+    "CEP": "81130180",
+    "CIDADE": "Curitiba",
+    "COMPLEMENTO": "Apto 903."
+  },
+  {
+    "A. Cliente": "4558192",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "35140000",
+    "CIDADE": "Tarumirim",
+    "COMPLEMENTO": "Comercial"
+  },
+  {
+    "A. Cliente": "0111280",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Pagani",
+    "CEP": "88132149",
+    "CIDADE": "Palhoça",
+    "COMPLEMENTO": "ImplanteMais"
+  },
+  {
+    "A. Cliente": "5257186",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "73801400",
+    "CIDADE": "Formosa",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "9170987",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Assunção",
+    "CEP": "09850300",
+    "CIDADE": "São Bernardo do Campo",
+    "COMPLEMENTO": "SALA 06"
+  },
+  {
+    "A. Cliente": "9237871",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Campos Elíseos ",
+    "CEP": "14080420",
+    "CIDADE": "RIBEIRAO PRETO",
+    "COMPLEMENTO": "Sala 7"
+  },
+  {
+    "A. Cliente": "1627082",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Cambuí",
+    "CEP": "13024091",
+    "CIDADE": "Campinas",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "8785866",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "São João",
+    "CEP": "06683000",
+    "CIDADE": "Itapevi",
+    "COMPLEMENTO": "Dentista dentro do Lopes "
+  },
+  {
+    "A. Cliente": "5646246",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "17700-057",
+    "CIDADE": "Osvaldo Cruz",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "0051082",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "39800090",
+    "CIDADE": "Teófilo Otoni",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "7923971",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "17700-057",
+    "CIDADE": "Osvaldo Cruz",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "0336981",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "",
+    "CEP": "36893000",
+    "CIDADE": "Miradouro",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "7060103",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "13600140",
+    "CIDADE": "Araras",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "8281497",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Setor Campinas",
+    "CEP": "74510020",
+    "CIDADE": "Goiânia",
+    "COMPLEMENTO": "Camargo Odontologia "
+  },
+  {
+    "A. Cliente": "4145673",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Cidade líder ",
+    "CEP": "082750001",
+    "CIDADE": "São Paulo ",
+    "COMPLEMENTO": "Consultório "
+  },
+  {
+    "A. Cliente": "7244354",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Vila Nova Cidade Universitária",
+    "CEP": "17012-900",
+    "CIDADE": "Bauru",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "5510561",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Boqueirão",
+    "CEP": "11045003",
+    "CIDADE": "Santos",
+    "COMPLEMENTO": "2401"
+  },
+  {
+    "A. Cliente": "5949663",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Santa Cruz do José Jacques",
+    "CEP": "14020-750 ",
+    "CIDADE": "Ribeirão Preto",
+    "COMPLEMENTO": "Sala 1208"
+  },
+  {
+    "A. Cliente": "2231725",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Brooklin ",
+    "CEP": "04562-080 ",
+    "CIDADE": "São Paulo-SP ",
+    "COMPLEMENTO": "31"
+  },
+  {
+    "A. Cliente": "5255608",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Jóquei",
+    "CEP": "64048385",
+    "CIDADE": "Teresina",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "0825519",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Manoel Fernandes",
+    "CEP": "14182-294",
+    "CIDADE": "PONTAL",
+    "COMPLEMENTO": "Clinica"
+  },
+  {
+    "A. Cliente": "3151603",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Pirituba",
+    "CEP": "02916000",
+    "CIDADE": "São Paulo",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "0793755",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro ",
+    "CEP": "28640000",
+    "CIDADE": "Carmo",
+    "COMPLEMENTO": "Hotel Portugal "
+  },
+  {
+    "A. Cliente": "2353518",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro ",
+    "CEP": "46740000",
+    "CIDADE": "Boninal",
+    "COMPLEMENTO": "Casa "
+  },
+  {
+    "A. Cliente": "2473962",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "36770032",
+    "CIDADE": "Cataguases",
+    "COMPLEMENTO": "Sala 06"
+  },
+  {
+    "A. Cliente": "3664857",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Santa Teresinha",
+    "CEP": "02450-001",
+    "CIDADE": "São Paulo",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "7661328",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Jardim Nova Europa",
+    "CEP": "13040115",
+    "CIDADE": "Campinas",
+    "COMPLEMENTO": "Sala 01"
+  },
+  {
+    "A. Cliente": "7371794",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Chácara Santo Antônio ",
+    "CEP": "04713-002 ",
+    "CIDADE": "São Paulo ",
+    "COMPLEMENTO": "Sala 210"
+  },
+  {
+    "A. Cliente": "1233712",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "14955-025",
+    "CIDADE": "Borborema",
+    "COMPLEMENTO": "Consultorio "
+  },
+  {
+    "A. Cliente": "4069657",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Bonfim Paulista",
+    "CEP": "14110000",
+    "CIDADE": "Ribeirão Preto",
+    "COMPLEMENTO": "Ap 151 C"
+  },
+  {
+    "A. Cliente": "0660475",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Barra da Tijuca",
+    "CEP": "22640100",
+    "CIDADE": "Rio de Janeiro",
+    "COMPLEMENTO": "bloco 8 sala 203"
+  },
+  {
+    "A. Cliente": "8943769",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Picanço",
+    "CEP": "07080120",
+    "CIDADE": "Guarulhos",
+    "COMPLEMENTO": "33 a "
+  },
+  {
+    "A. Cliente": "5521147",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Vila Galvão",
+    "CEP": "07061002",
+    "CIDADE": "Guarulhos",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "1714132",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Vila Santa Catarina",
+    "CEP": "13466330",
+    "CIDADE": "Americana",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "7407207",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Granja Viana",
+    "CEP": "06709150",
+    "CIDADE": "Cotia",
+    "COMPLEMENTO": "Casa 4"
+  },
+  {
+    "A. Cliente": "7951096",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "07012020",
+    "CIDADE": "Guarulhos",
+    "COMPLEMENTO": "Sala 411"
+  },
+  {
+    "A. Cliente": "7144358",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Santo Amaro",
+    "CEP": "04709001",
+    "CIDADE": "São Paulo",
+    "COMPLEMENTO": "Salas 05 e 06"
+  },
+  {
+    "A. Cliente": "6447822",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "88015300",
+    "CIDADE": "Florianópolis",
+    "COMPLEMENTO": "Torre 1 - Sala 103"
+  },
+  {
+    "A. Cliente": "1193180",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Vila Santa Isabel",
+    "CEP": "74633365",
+    "CIDADE": "Goiânia",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "9339659",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Manaíra ",
+    "CEP": "58038-182 ",
+    "CIDADE": "João Pessoa ",
+    "COMPLEMENTO": "Ap 602"
+  },
+  {
+    "A. Cliente": "2235427",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Jardim Bela Vista",
+    "CEP": "13076415",
+    "CIDADE": "Campinas",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "1958900",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Morro da Glória",
+    "CEP": "36035180",
+    "CIDADE": "Juiz de Fora",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "1135617",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "SETOR BUENO",
+    "CEP": "74.223-060",
+    "CIDADE": "GOIANIA",
+    "COMPLEMENTO": "QUADRA102 LOTE 09/12 SALA 509"
+  },
+  {
+    "A. Cliente": "1750108",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "09710230",
+    "CIDADE": "São Bernardo do Campo",
+    "COMPLEMENTO": "Conjunto 31 - 3 andar "
+  },
+  {
+    "A. Cliente": "7579236",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Jardim Santista",
+    "CEP": "08730140",
+    "CIDADE": "Mogi das Cruzes",
+    "COMPLEMENTO": "Clinica Odontologica"
+  },
+  {
+    "A. Cliente": "7385133",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Eldorado",
+    "CEP": "32315000",
+    "CIDADE": "Contagem",
+    "COMPLEMENTO": "Sala 12"
+  },
+  {
+    "A. Cliente": "1627885",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Bom Pastor",
+    "CEP": "36504178",
+    "CIDADE": "Ubá",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "2072474",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Pinheiros",
+    "CEP": "05419000",
+    "CIDADE": "São Paulo",
+    "COMPLEMENTO": "Cj 24"
+  },
+  {
+    "A. Cliente": "7662350",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Fátima",
+    "CEP": "64049494",
+    "CIDADE": "Teresina",
+    "COMPLEMENTO": "Sl 1005 Torre Medical"
+  },
+  {
+    "A. Cliente": "2510912",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "36016-230",
+    "CIDADE": "Juiz de Fora",
+    "COMPLEMENTO": "805"
+  },
+  {
+    "A. Cliente": "8581955",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Aldeota",
+    "CEP": "60150900",
+    "CIDADE": "Fortaleza",
+    "COMPLEMENTO": "Apto 703 Bloco B"
+  },
+  {
+    "A. Cliente": "0382981",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Nova Vinhedo",
+    "CEP": "13284056",
+    "CIDADE": "Vinhedo",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "1902849",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "14801190",
+    "CIDADE": "Araraquara",
+    "COMPLEMENTO": "Instituto do Sono"
+  },
+  {
+    "A. Cliente": "1532478",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Vila Centenário",
+    "CEP": "03645-000",
+    "CIDADE": "São Paulo",
+    "COMPLEMENTO": "Sala 107"
+  },
+  {
+    "A. Cliente": "7537225",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro II",
+    "CEP": "6492000",
+    "CIDADE": "Cristino Castro",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "8629284",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "centro ",
+    "CEP": "86410000",
+    "CIDADE": "Ribeirão Claro",
+    "COMPLEMENTO": "Consultório "
+  },
+  {
+    "A. Cliente": "3247105",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro ",
+    "CEP": "28460000",
+    "CIDADE": "Miracema",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "3370194",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Vila Mendonça",
+    "CEP": "16015010",
+    "CIDADE": "Araçatuba",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "9113594",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Granja",
+    "CEP": "62430-000",
+    "CIDADE": "Granja",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "4982908",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Santa Amélia",
+    "CEP": "31560300",
+    "CIDADE": "Belo Horizonte",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "1913997",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Concórdia IV",
+    "CEP": "16013422",
+    "CIDADE": "Araçatuba",
+    "COMPLEMENTO": "ap 41 bloco B"
+  },
+  {
+    "A. Cliente": "5213887",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Tirol",
+    "CEP": "59020200",
+    "CIDADE": "Natal",
+    "COMPLEMENTO": "Salas 10 e 11 pelo mezanino "
+  },
+  {
+    "A. Cliente": "6857066",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Jardim Wilma Flor",
+    "CEP": "08473470",
+    "CIDADE": "São Paulo",
+    "COMPLEMENTO": "Casa "
+  },
+  {
+    "A. Cliente": "1616276",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "CIDADE KEMEL 1",
+    "CEP": "08130-050",
+    "CIDADE": "SAO PAULO",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "2489843",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "14500039",
+    "CIDADE": "Ituverava",
+    "COMPLEMENTO": "CLINICA "
+  },
+  {
+    "A. Cliente": "1069128",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Jardim Paulistano",
+    "CEP": "01451-001",
+    "CIDADE": "São Paulo",
+    "COMPLEMENTO": "Conjunto 904"
+  },
+  {
+    "A. Cliente": "3067215",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "08710150",
+    "CIDADE": "Mogi das Cruzes",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "1507669",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Flores",
+    "CEP": "69058448",
+    "CIDADE": "Manaus",
+    "COMPLEMENTO": "Torre Orion apto 406"
+  },
+  {
+    "A. Cliente": "8466808",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Jardim Rizzo",
+    "CEP": "07191-080",
+    "CIDADE": "Guarulhos",
+    "COMPLEMENTO": "Ao lado da farmácia "
+  },
+  {
+    "A. Cliente": "2685636",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "36500-069",
+    "CIDADE": "Uba",
+    "COMPLEMENTO": " Bloco A sala 202"
+  },
+  {
+    "A. Cliente": "5220264",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Vila Gumercindo",
+    "CEP": "04134-090",
+    "CIDADE": "São Paulo",
+    "COMPLEMENTO": "81"
+  },
+  {
+    "A. Cliente": "2349737",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Jardim Henriqueta ",
+    "CEP": "06764-290 ",
+    "CIDADE": "Taboão da serra ",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "6962867",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Setor Marista",
+    "CEP": "74150-070",
+    "CIDADE": "Goiânia",
+    "COMPLEMENTO": "Clínica Special Care"
+  },
+  {
+    "A. Cliente": "4101783",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "centro ",
+    "CEP": "3650000",
+    "CIDADE": "Ubá ",
+    "COMPLEMENTO": "Casa interfone n1"
+  },
+  {
+    "A. Cliente": "4566918",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Vila Nova",
+    "CEP": "16025320",
+    "CIDADE": "Araçatuba",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "4824983",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "80010010",
+    "CIDADE": "Curitiba",
+    "COMPLEMENTO": "Sala 308"
+  },
+  {
+    "A. Cliente": "1441264",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Jardim São Genaro",
+    "CEP": "16202450",
+    "CIDADE": "Birigui",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "3786236",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Vila Trinta e Um de Março",
+    "CEP": "13091-594",
+    "CIDADE": "109: 3509502",
+    "COMPLEMENTO": "Casa de portão verde"
+  },
+  {
+    "A. Cliente": "2226998",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Lago Azul",
+    "CEP": "69018153",
+    "CIDADE": "Manaus",
+    "COMPLEMENTO": "BL 06, APTO 508"
+  },
+  {
+    "A. Cliente": "9511197",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Vista bela ",
+    "CEP": "59650-000",
+    "CIDADE": "Açu",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "2790982",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "65300-019",
+    "CIDADE": "Santa Inês",
+    "COMPLEMENTO": "Predio do Hospital Vitallys"
+  },
+  {
+    "A. Cliente": "1702322",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Residencial Ibi-Aram",
+    "CEP": "13299470",
+    "CIDADE": "Itupeva",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "5935027",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro ",
+    "CEP": "36340000",
+    "CIDADE": "Resende Costa",
+    "COMPLEMENTO": "301 "
+  },
+  {
+    "A. Cliente": "9740150",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "84620000",
+    "CIDADE": "Cruz Machado",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "0736586",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "",
+    "CEP": "88735000",
+    "CIDADE": "Gravatal",
+    "COMPLEMENTO": "Consultório odontológico "
+  },
+  {
+    "A. Cliente": "5628266",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "centro",
+    "CEP": "35010-030",
+    "CIDADE": "Governador Valadares",
+    "COMPLEMENTO": "Sala 901 a 903"
+  },
+  {
+    "A. Cliente": "7798242",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Vila Praia",
+    "CEP": "05750260",
+    "CIDADE": "São Paulo",
+    "COMPLEMENTO": "T2Ap41"
+  },
+  {
+    "A. Cliente": "1962849",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Vila Ré",
+    "CEP": "03663010",
+    "CIDADE": "São Paulo",
+    "COMPLEMENTO": "Casa 7"
+  },
+  {
+    "A. Cliente": "9911188",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "18900071",
+    "CIDADE": "Santa Cruz do Rio Pardo",
+    "COMPLEMENTO": "Sala 03"
+  },
+  {
+    "A. Cliente": "3229322",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Guará II",
+    "CEP": "71065330",
+    "CIDADE": "Brasília",
+    "COMPLEMENTO": "Em frente a escola de inglês Wizard"
+  },
+  {
+    "A. Cliente": "3995062",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "85801021",
+    "CIDADE": "Cascavel",
+    "COMPLEMENTO": "CIEO"
+  },
+  {
+    "A. Cliente": "8270358",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Jardim Europa I",
+    "CEP": "13455425",
+    "CIDADE": "Santa Bárbara D'Oeste",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "3988503",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Icaraí",
+    "CEP": "24220-008",
+    "CIDADE": "Niterói",
+    "COMPLEMENTO": "202"
+  },
+  {
+    "A. Cliente": "7660040",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "09910-170",
+    "CIDADE": "Diadema",
+    "COMPLEMENTO": "Centro"
+  },
+  {
+    "A. Cliente": "9744121",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "37950014",
+    "CIDADE": "São Sebastião do Paraíso",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "5180350",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Barra da tijuca",
+    "CEP": "22793-340 ",
+    "CIDADE": "Rj",
+    "COMPLEMENTO": "1105"
+  },
+  {
+    "A. Cliente": "9294771",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Braga",
+    "CEP": "28908200",
+    "CIDADE": "Cabo Frio",
+    "COMPLEMENTO": "406.3"
+  },
+  {
+    "A. Cliente": "9382856",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Botafogo",
+    "CEP": "22271022",
+    "CIDADE": "Rio de Janeiro",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "2217769",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Vila Suissa",
+    "CEP": "08810020",
+    "CIDADE": "Mogi das Cruzes",
+    "COMPLEMENTO": "Torre 4 apto 21 "
+  },
+  {
+    "A. Cliente": "1723140",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Nova Divinéia",
+    "CEP": "88905234",
+    "CIDADE": "Araranguá",
+    "COMPLEMENTO": "Clinica Odontologica"
+  },
+  {
+    "A. Cliente": "5836011",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Belvedere",
+    "CEP": "30320-670",
+    "CIDADE": "BELO HORIZONTE",
+    "COMPLEMENTO": "1408"
+  },
+  {
+    "A. Cliente": "1489631",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Vila Nova",
+    "CEP": "89035300",
+    "CIDADE": "Blumenau",
+    "COMPLEMENTO": "Sala 1, consultório odontológico "
+  },
+  {
+    "A. Cliente": "3511858",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "17015410",
+    "CIDADE": "Bauru",
+    "COMPLEMENTO": "Casa"
+  },
+  {
+    "A. Cliente": "9189496",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Jardim Paraiso",
+    "CEP": "75466392",
+    "CIDADE": "Nerópolis",
+    "COMPLEMENTO": "QD 06, LT 07"
+  },
+  {
+    "A. Cliente": "5371169",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Sul (Águas Claras)",
+    "CEP": "71936250",
+    "CIDADE": "Brasília",
+    "COMPLEMENTO": "4° Andar"
+  },
+  {
+    "A. Cliente": "8979791",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Renascer",
+    "CEP": "78061368",
+    "CIDADE": "Cuiabá",
+    "COMPLEMENTO": "sobrado  "
+  },
+  {
+    "A. Cliente": "8236748",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Higienópolis",
+    "CEP": "01238001",
+    "CIDADE": "São Paulo",
+    "COMPLEMENTO": "Dra Nayara Freitas "
+  },
+  {
+    "A. Cliente": "7606562",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "",
+    "CEP": "37750000",
+    "CIDADE": "Machado",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "8481612",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "CENTRO",
+    "CEP": "88443000",
+    "CIDADE": "Vidal Ramos",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "6744417",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Jardim Santa Angelina",
+    "CEP": "14802-215",
+    "CIDADE": "Araraquara",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "3161332",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Cruzeiro ",
+    "CEP": "35720-000 ",
+    "CIDADE": "Matozinhos",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "0350488",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Sobradinho",
+    "CEP": "73026-664",
+    "CIDADE": "Brasília",
+    "COMPLEMENTO": "Sala"
+  },
+  {
+    "A. Cliente": "3191586",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Parque Fehr",
+    "CEP": "13563750",
+    "CIDADE": "São Carlos",
+    "COMPLEMENTO": "Casa"
+  },
+  {
+    "A. Cliente": "8185276",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Itaim Paulista",
+    "CEP": "08120-060",
+    "CIDADE": "São Paulo",
+    "COMPLEMENTO": "B"
+  },
+  {
+    "A. Cliente": "5968734",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Setor Sudoeste",
+    "CEP": "70673603",
+    "CIDADE": "Brasília",
+    "COMPLEMENTO": "Sala 123"
+  },
+  {
+    "A. Cliente": "9314723",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Cohafuma",
+    "CEP": "65071-750",
+    "CIDADE": "São Luís",
+    "COMPLEMENTO": "Ed. Hyde Park - Jardins sala 624"
+  },
+  {
+    "A. Cliente": "3864964",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Vila José Bonifácio",
+    "CEP": "14802304",
+    "CIDADE": "Araraquara",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "4309538",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "88600-000",
+    "CIDADE": "São Joaquim",
+    "COMPLEMENTO": "A"
+  },
+  {
+    "A. Cliente": "4208857",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Campinas",
+    "CEP": "88101170",
+    "CIDADE": "São José",
+    "COMPLEMENTO": "1014"
+  },
+  {
+    "A. Cliente": "8123389",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Humaitá",
+    "CEP": "22271044",
+    "CIDADE": "Rio de Janeiro",
+    "COMPLEMENTO": "304"
+  },
+  {
+    "A. Cliente": "8555057",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Ingá",
+    "CEP": "24210510",
+    "CIDADE": "Niterói",
+    "COMPLEMENTO": "Apto702"
+  },
+  {
+    "A. Cliente": "1135739",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Guará II",
+    "CEP": "71065-612",
+    "CIDADE": "Brasília",
+    "COMPLEMENTO": "Sala"
+  },
+  {
+    "A. Cliente": "3873538",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "14725015",
+    "CIDADE": "Taiaçu",
+    "COMPLEMENTO": "Qualite "
+  },
+  {
+    "A. Cliente": "6545881",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Sebastião Maltês",
+    "CEP": "59780000",
+    "CIDADE": "Caraúbas",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "4877962",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Bela Vista",
+    "CEP": "01311200",
+    "CIDADE": "São Paulo",
+    "COMPLEMENTO": "cj909"
+  },
+  {
+    "A. Cliente": "1229576",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "República",
+    "CEP": "01044000",
+    "CIDADE": "São Paulo",
+    "COMPLEMENTO": "Sala 505"
+  },
+  {
+    "A. Cliente": "1886943",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Vila América",
+    "CEP": "09110500",
+    "CIDADE": "Santo André",
+    "COMPLEMENTO": "Casa"
+  },
+  {
+    "A. Cliente": "7826765",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Jardim Vergueiro",
+    "CEP": "18030005",
+    "CIDADE": "Sorocaba",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "6871776",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Jardim Elite",
+    "CEP": "13417380",
+    "CIDADE": "Piracicaba",
+    "COMPLEMENTO": "APT 103"
+  },
+  {
+    "A. Cliente": "7489704",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Dionisio Torres",
+    "CEP": "60125121",
+    "CIDADE": "Fortaleza",
+    "COMPLEMENTO": "Ap 503"
+  },
+  {
+    "A. Cliente": "0599424",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "60110000",
+    "CIDADE": "Fortaleza",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "8531985",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Jardim Nazareth",
+    "CEP": "17512752",
+    "CIDADE": "Marília",
+    "COMPLEMENTO": "Casa 225"
+  },
+  {
+    "A. Cliente": "4330566",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Angelim",
+    "CEP": "65062750",
+    "CIDADE": "São Luís",
+    "COMPLEMENTO": "Cond. Fernando de Noronha BL 06 Apto 406"
+  },
+  {
+    "A. Cliente": "0658736",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Cidade Monções ",
+    "CEP": "045771-010",
+    "CIDADE": "São Paulo ",
+    "COMPLEMENTO": "Thera Office sala 305"
+  },
+  {
+    "A. Cliente": "4602877",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Parque oeste industrial ",
+    "CEP": "74375509",
+    "CIDADE": "Goiânia ",
+    "COMPLEMENTO": "Apt 807 torre 1"
+  },
+  {
+    "A. Cliente": "1245756",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Lapa",
+    "CEP": "05073000",
+    "CIDADE": "São Paulo",
+    "COMPLEMENTO": "sl"
+  },
+  {
+    "A. Cliente": "6641944",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Palmeiras",
+    "CEP": "35430226",
+    "CIDADE": "Ponte Nova",
+    "COMPLEMENTO": "Clínica Odoctor"
+  },
+  {
+    "A. Cliente": "2126499",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Praia dos Amores",
+    "CEP": "88331410",
+    "CIDADE": "Balneário Camboriú",
+    "COMPLEMENTO": "INSTITUTO VALCANAIA"
+  },
+  {
+    "A. Cliente": "9172127",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Vila Becker",
+    "CEP": "88140870",
+    "CIDADE": "Santo Amaro da Imperatriz",
+    "COMPLEMENTO": "Sala 404"
+  },
+  {
+    "A. Cliente": "3898037",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Jardim Abolição de Lourenço Dias",
+    "CEP": "13607362",
+    "CIDADE": "Araras",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "3758277",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Vila Cidade Universitária",
+    "CEP": "17012533",
+    "CIDADE": "Bauru",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "6078508",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Planalto",
+    "CEP": "31730530",
+    "CIDADE": "Belo Horizonte",
+    "COMPLEMENTO": "Endereço de entrega rua Osório duque estrada,186. Planalto"
+  },
+  {
+    "A. Cliente": "9506663",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Cidade Planejada II",
+    "CEP": "12922752",
+    "CIDADE": "Bragança Paulista",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "8109418",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Vila Clementino",
+    "CEP": "04023062",
+    "CIDADE": "São Paulo",
+    "COMPLEMENTO": "Cj 43"
+  },
+  {
+    "A. Cliente": "5691354",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "36010010",
+    "CIDADE": "Juiz de Fora",
+    "COMPLEMENTO": "Sala 301"
+  },
+  {
+    "A. Cliente": "8763543",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Vila Tibiriçá",
+    "CEP": "09130160",
+    "CIDADE": "Santo André",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "1623571",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Jardim São Gonçalo",
+    "CEP": "08370-120",
+    "CIDADE": "SAO PAULO",
+    "COMPLEMENTO": "Casa"
+  },
+  {
+    "A. Cliente": "9348637",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Residencial Califórnia Garden",
+    "CEP": "37953310",
+    "CIDADE": "São Sebastião do Paraíso",
+    "COMPLEMENTO": "Ap 101"
+  },
+  {
+    "A. Cliente": "4728493",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "25620001",
+    "CIDADE": "Petrópolis",
+    "COMPLEMENTO": "104"
+  },
+  {
+    "A. Cliente": "9799281",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Vila Santa Izabel",
+    "CEP": "17014003",
+    "CIDADE": "Bauru",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "2528707",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Vila Seixas",
+    "CEP": "14020080",
+    "CIDADE": "Ribeirão Preto",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "6511875",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Jardim São Luiz",
+    "CEP": "39401-048",
+    "CIDADE": "Montes Claros",
+    "COMPLEMENTO": "Clinica Grupo Bauman Odontologia"
+  },
+  {
+    "A. Cliente": "9117556",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Icaraí",
+    "CEP": "24230060",
+    "CIDADE": "Niterói",
+    "COMPLEMENTO": "Sala 715"
+  },
+  {
+    "A. Cliente": "9191781",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Parque das Aguas",
+    "CEP": "28470000",
+    "CIDADE": "Santo Antônio de Pádua",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "6634050",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Recreio dos Bandeirantes",
+    "CEP": "22795077",
+    "CIDADE": "Rio de Janeiro",
+    "COMPLEMENTO": "Clínica Hypolito "
+  },
+  {
+    "A. Cliente": "7234769",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Lagoa da Conceição",
+    "CEP": "88062020",
+    "CIDADE": "Florianópolis",
+    "COMPLEMENTO": "SALA 201 SHOPPING VIA LAGOA"
+  },
+  {
+    "A. Cliente": "8235849",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "37500013",
+    "CIDADE": "Itajubá",
+    "COMPLEMENTO": "Apto 907"
+  },
+  {
+    "A. Cliente": "6174701",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Coração de Jesus",
+    "CEP": "30380490",
+    "CIDADE": "Belo Horizonte",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "9407599",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Umarizal",
+    "CEP": "66055-000",
+    "CIDADE": "Belém",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "8991853",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Fátima",
+    "CEP": "64049-494",
+    "CIDADE": "Teresina",
+    "COMPLEMENTO": "Sala 1205"
+  },
+  {
+    "A. Cliente": "2843251",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Jóquei",
+    "CEP": "64048-380",
+    "CIDADE": "Teresina",
+    "COMPLEMENTO": "AP 601"
+  },
+  {
+    "A. Cliente": "6513232",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Aldeota",
+    "CEP": "60150190",
+    "CIDADE": "Fortaleza",
+    "COMPLEMENTO": "Torre 2, Salas 612-613"
+  },
+  {
+    "A. Cliente": "1240695",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "14160210",
+    "CIDADE": "Sertãozinho",
+    "COMPLEMENTO": "Sense Prime"
+  },
+  {
+    "A. Cliente": "5089849",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Santa Rosa",
+    "CEP": "58416540",
+    "CIDADE": "Campina Grande",
+    "COMPLEMENTO": "portas de vidro"
+  },
+  {
+    "A. Cliente": "2961824",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Aeroviário",
+    "CEP": "74435060",
+    "CIDADE": "Goiânia",
+    "COMPLEMENTO": "Predio verde"
+  },
+  {
+    "A. Cliente": "1952576",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Vila Osasco",
+    "CEP": "6083215",
+    "CIDADE": "Osasco",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "6510455",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Coração Eucarístico",
+    "CEP": "30535460",
+    "CIDADE": "Belo Horizonte",
+    "COMPLEMENTO": "salao 108"
+  },
+  {
+    "A. Cliente": "2727279",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Setor Bueno",
+    "CEP": "74230022",
+    "CIDADE": "Goiânia",
+    "COMPLEMENTO": "Qd. 112 Lt 07"
+  },
+  {
+    "A. Cliente": "5876718",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Parque dos Lagos",
+    "CEP": "14093017",
+    "CIDADE": "Ribeirão Preto",
+    "COMPLEMENTO": "AP 1701 TORRE 1 "
+  },
+  {
+    "A. Cliente": "8667185",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Praia de Itaipuaçu (Itaipuaçu)",
+    "CEP": "24936730",
+    "CIDADE": "Maricá",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "3521470",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Colina da Boa Vista",
+    "CEP": "18706240",
+    "CIDADE": "Avaré",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "2603939",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "33230055",
+    "CIDADE": "Lagoa Santa",
+    "COMPLEMENTO": "LOJA 2"
+  },
+  {
+    "A. Cliente": "1907490",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Setor Bueno",
+    "CEP": "74223070",
+    "CIDADE": "Goiânia",
+    "COMPLEMENTO": "Qd.112 Lt.7"
+  },
+  {
+    "A. Cliente": "2072833",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Cidade Mãe do Céu",
+    "CEP": "03305000",
+    "CIDADE": "São Paulo",
+    "COMPLEMENTO": "1407"
+  },
+  {
+    "A. Cliente": "5180777",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Estados",
+    "CEP": "58030-330",
+    "CIDADE": "João Pessoa",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "8735492",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Caminho das Árvores",
+    "CEP": "41820-021",
+    "CIDADE": "Salvador",
+    "COMPLEMENTO": "CEO Salvador Shopping, Sala: 2711/2712"
+  },
+  {
+    "A. Cliente": "6494388",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Santa Casa",
+    "CEP": "37904017",
+    "CIDADE": "Passos",
+    "COMPLEMENTO": "Clínica Oral Unic"
+  },
+  {
+    "A. Cliente": "8708468",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro/ Clínica Dentária Sorria",
+    "CEP": "28500-000",
+    "CIDADE": "CANTAGALO",
+    "COMPLEMENTO": "Centro"
+  },
+  {
+    "A. Cliente": "0826036",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Asa Sul",
+    "CEP": "70200-670",
+    "CIDADE": "Brasília",
+    "COMPLEMENTO": "L2 Sul"
+  },
+  {
+    "A. Cliente": "8075798",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "38440238",
+    "CIDADE": "Araguari",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "4097029",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "14160-740",
+    "CIDADE": "Sertãozinho",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "6103169",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "19840011",
+    "CIDADE": "Maracaí",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "8233679",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Jardim Vitória",
+    "CEP": "45605470",
+    "CIDADE": "Itabuna",
+    "COMPLEMENTO": "9 ANDAR, SALA 902"
+  },
+  {
+    "A. Cliente": "5774158",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Asa Norte",
+    "CEP": "70715900",
+    "CIDADE": "Brasília",
+    "COMPLEMENTO": "Mond Clinic torre norte"
+  },
+  {
+    "A. Cliente": "5346152",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Jardim Elite",
+    "CEP": "13635000",
+    "CIDADE": "Pirassununga",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "0303015",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "36520-000",
+    "CIDADE": "VISCONDE DO RIO BRANCO",
+    "COMPLEMENTO": "sala 103 - Edifício Florença"
+  },
+  {
+    "A. Cliente": "2810329",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Santa Cecília ",
+    "CEP": "36026-210",
+    "CIDADE": "Juiz de Fora",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "0005907",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Barra da Tijuca",
+    "CEP": "22640-102",
+    "CIDADE": "Rio de Janeiro",
+    "COMPLEMENTO": "Bloco 07 sala 711"
+  },
+  {
+    "A. Cliente": "7335657",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "28010272",
+    "CIDADE": "Campos dos Goytacazes",
+    "COMPLEMENTO": "Sala 217"
+  },
+  {
+    "A. Cliente": "3129507",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Vila Gomes Cardim",
+    "CEP": "03315000",
+    "CIDADE": "São Paulo",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "5678813",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Graminha",
+    "CEP": "36242326",
+    "CIDADE": "Santos Dumont",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "2090585",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "28035260",
+    "CIDADE": "Campos dos Goytacazes",
+    "COMPLEMENTO": "SALA 704"
+  },
+  {
+    "A. Cliente": "1271195",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Samambaia",
+    "CEP": "25710259",
+    "CIDADE": "Petrópolis",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "3588512",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "24020320",
+    "CIDADE": "Niterói",
+    "COMPLEMENTO": "204"
+  },
+  {
+    "A. Cliente": "0290210",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Várzea",
+    "CEP": "25953090",
+    "CIDADE": "Teresópolis",
+    "COMPLEMENTO": "sala 404,405 e 406"
+  },
+  {
+    "A. Cliente": "6487233",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Consolação",
+    "CEP": "01243001",
+    "CIDADE": "São Paulo",
+    "COMPLEMENTO": "11"
+  },
+  {
+    "A. Cliente": "6307695",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro ",
+    "CEP": "89294000",
+    "CIDADE": "Campo Alegre",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "0284831",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "35010151",
+    "CIDADE": "Governador Valadares",
+    "COMPLEMENTO": "Sala 202"
+  },
+  {
+    "A. Cliente": "0511731",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Dom Bosco ",
+    "CEP": "35.540-000",
+    "CIDADE": "Oliveira ",
+    "COMPLEMENTO": ""
+  },
+  {
+    "A. Cliente": "3694936",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Várzea",
+    "CEP": "25953090",
+    "CIDADE": "Teresópolis",
+    "COMPLEMENTO": "404/406"
+  },
+  {
+    "A. Cliente": "5308522",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Irajá",
+    "CEP": "21235-111",
+    "CIDADE": "Rio de Janeiro",
+    "COMPLEMENTO": "SALA 202"
+  },
+  {
+    "A. Cliente": "4826086",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Centro",
+    "CEP": "88015020",
+    "CIDADE": "Florianópolis",
+    "COMPLEMENTO": "sala 605"
+  },
+  {
+    "A. Cliente": "4879322",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Nova Ribeirânia",
+    "CEP": "14096570",
+    "CIDADE": "Ribeirão Preto",
+    "COMPLEMENTO": "Sala 1305"
+  },
+  {
+    "A. Cliente": "0320011",
+    "A. Cliente - deleted": "",
+    "B. Tipo de Endereço": "Principal",
+    "BAIRRO": "Jardim Guanabara",
+    "CEP": "13073-141",
+    "CIDADE": "Campinas",
+    "COMPLEMENTO": ""
+  }
+]
