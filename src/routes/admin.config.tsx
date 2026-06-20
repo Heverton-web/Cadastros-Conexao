@@ -19,8 +19,9 @@ import { listarPermissoesUsuarios, setPermissoes, getPermissoesPadrao, PERMISSOE
 import { listarLinksTestes, criarLinkTeste, excluirLinkTeste, listarDemoCredentials, criarDemoCredential, excluirDemoCredential, type LinkTeste, type DemoCredential } from "~/lib/demos";
 import { DemosTab } from "~/components/admin/DemosTab";
 import { ApiTesterTab } from "~/components/admin/ApiTesterTab";
+import { listarIntegracoes, salvarIntegracao, testarConexaoEvolution, type IntegracaoConfig } from "~/lib/integracoes";
 
-type Tab = "supabase" | "credenciais" | "api_connectors" | "webhooks" | "permissoes" | "demos" | "notificacoes";
+type Tab = "supabase" | "credenciais" | "api_connectors" | "webhooks" | "permissoes" | "demos" | "notificacoes" | "integracoes";
 
 export const adminConfigRoute = createRoute({
   getParentRoute: () => authLayout,
@@ -58,6 +59,7 @@ function AdminConfigPage() {
           { key: "permissoes" as Tab, label: "Permissões", icon: UserIcon },
           { key: "demos" as Tab, label: "Laboratório", icon: FlaskConical },
           { key: "notificacoes" as Tab, label: "Notificações", icon: Bell },
+          { key: "integracoes" as Tab, label: "Integrações Nativas", icon: RefreshCw },
         ].map(({ key, label, icon: Icon }) => (
           <button key={key} onClick={() => setTab(key)} title={label}
             className={`flex items-center justify-center gap-2 px-4 rounded-lg py-2.5 transition min-w-max ${tab === key ? "bg-accent text-white" : "text-text-muted hover:text-text-main hover:bg-bg-dark"}`}>
@@ -73,6 +75,7 @@ function AdminConfigPage() {
       {tab === "permissoes" && <PermissoesTab />}
       {tab === "demos" && <DemosTab />}
       {tab === "notificacoes" && <NotificacoesTab />}
+      {tab === "integracoes" && <IntegracoesTab />}
     </div>
   );
 }
@@ -737,6 +740,336 @@ function NotificacoesTab() {
           </div>
         </div>
       )}
+    </div>
+  );
+}
+
+function IntegracoesTab() {
+  const [integracoes, setIntegracoes] = useState<IntegracaoConfig[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [salvando, setSalvando] = useState<string | null>(null);
+  const [testando, setTestando] = useState<string | null>(null);
+  const [configsLocais, setConfigsLocais] = useState<Record<string, any>>({});
+
+  useEffect(() => { carregar(); }, []);
+
+  async function carregar() {
+    setLoading(true);
+    try {
+      const data = await listarIntegracoes();
+      setIntegracoes(data);
+      const initialConfigs: Record<string, any> = {};
+      data.forEach(item => {
+        initialConfigs[item.chave] = item.config || {};
+      });
+      setConfigsLocais(initialConfigs);
+    } catch {
+      toast.error("Erro ao carregar configurações de integrações");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function handleSalvar(item: IntegracaoConfig) {
+    setSalvando(item.chave);
+    try {
+      await salvarIntegracao(item.chave, item.ativo, configsLocais[item.chave]);
+      toast.success(`${item.nome} atualizada com sucesso!`);
+      carregar();
+    } catch {
+      toast.error("Erro ao salvar integração");
+    } finally {
+      setSalvando(null);
+    }
+  }
+
+  async function handleToggleAtivo(item: IntegracaoConfig) {
+    try {
+      const novoStatus = !item.ativo;
+      await salvarIntegracao(item.chave, novoStatus, configsLocais[item.chave]);
+      toast.success(`${item.nome} ${novoStatus ? "ativada" : "desativada"}`);
+      carregar();
+    } catch {
+      toast.error("Erro ao alterar status");
+    }
+  }
+
+  async function handleTestarConexao(item: IntegracaoConfig) {
+    if (item.chave !== "evolution_api") return;
+    setTestando(item.chave);
+    const cfg = configsLocais[item.chave] || {};
+    try {
+      const result = await testarConexaoEvolution(cfg.base_url, cfg.api_key, cfg.instancia);
+      if (result.conectado) {
+        toast.success(result.mensagem, { duration: 5000 });
+      } else {
+        toast.error(result.mensagem, { duration: 5000 });
+      }
+    } catch (e: any) {
+      toast.error("Falha ao testar conexão: " + e.message);
+    } finally {
+      setTestando(null);
+    }
+  }
+
+  const handleFieldChange = (chave: string, campo: string, valor: any) => {
+    setConfigsLocais(prev => ({
+      ...prev,
+      [chave]: {
+        ...prev[chave],
+        [campo]: valor
+      }
+    }));
+  };
+
+  if (loading) return <div className="flex justify-center py-12"><Loader2 size={24} className="animate-spin text-accent" /></div>;
+
+  return (
+    <div className="flex flex-col gap-6">
+      <div className="rounded-xl bg-card p-5 shadow-lg border border-input-border/20">
+        <h2 className="text-sm font-bold text-text-main flex items-center gap-2 mb-2">
+          <Settings size={16} className="text-accent" /> Painel de Integrações Nativas
+        </h2>
+        <p className="text-xs text-text-muted mb-6">
+          Ative e configure conexões diretas com plataformas externas. Apenas Super Administradores podem visualizar ou modificar essas credenciais de segurança.
+        </p>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {integracoes.map(item => {
+            const configLocal = configsLocais[item.chave] || {};
+            const isSaving = salvando === item.chave;
+            const isTesting = testando === item.chave;
+
+            return (
+              <div key={item.id} className="flex flex-col rounded-xl border border-input-border bg-bg-dark p-5 transition-all hover:border-input-border/60">
+                <div className="flex items-center justify-between gap-4 mb-4">
+                  <div>
+                    <h3 className="text-xs font-bold text-text-main flex items-center gap-1.5">
+                      {item.nome}
+                    </h3>
+                    <span className="text-[10px] text-text-muted font-mono">{item.chave}</span>
+                  </div>
+
+                  <button 
+                    onClick={() => handleToggleAtivo(item)}
+                    className="focus:outline-none transition-transform active:scale-95"
+                    title={item.ativo ? "Desativar Integração" : "Ativar Integração"}
+                  >
+                    {item.ativo ? (
+                      <ToggleRight size={38} className="text-green-500 hover:text-green-400" />
+                    ) : (
+                      <ToggleLeft size={38} className="text-text-muted hover:text-text-muted/80" />
+                    )}
+                  </button>
+                </div>
+
+                {/* Formulário de Configuração Dinâmica */}
+                <div className="flex-1 flex flex-col gap-3 pt-2 border-t border-input-border/30">
+                  {item.chave === "evolution_api" && (
+                    <>
+                      <div>
+                        <label className="text-[10px] text-text-muted ml-1 mb-1 block">URL Base da API</label>
+                        <input 
+                          value={configLocal.base_url || ""} 
+                          onChange={e => handleFieldChange(item.chave, "base_url", e.target.value)} 
+                          placeholder="https://sua-api.evolution.com.br" 
+                          className="w-full rounded-xl border border-input-border bg-card px-3 py-2 text-xs text-text-main outline-none focus:border-accent"
+                        />
+                      </div>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <div>
+                          <label className="text-[10px] text-text-muted ml-1 mb-1 block">API Key</label>
+                          <input 
+                            type="password"
+                            value={configLocal.api_key || ""} 
+                            onChange={e => handleFieldChange(item.chave, "api_key", e.target.value)} 
+                            placeholder="Chave de Autenticação" 
+                            className="w-full rounded-xl border border-input-border bg-card px-3 py-2 text-xs text-text-main outline-none focus:border-accent"
+                          />
+                        </div>
+                        <div>
+                          <label className="text-[10px] text-text-muted ml-1 mb-1 block">Nome da Instância</label>
+                          <input 
+                            value={configLocal.instancia || ""} 
+                            onChange={e => handleFieldChange(item.chave, "instancia", e.target.value)} 
+                            placeholder="Ex: conexao_zap" 
+                            className="w-full rounded-xl border border-input-border bg-card px-3 py-2 text-xs text-text-main outline-none focus:border-accent"
+                          />
+                        </div>
+                      </div>
+                    </>
+                  )}
+
+                  {item.chave === "cep_api" && (
+                    <div>
+                      <label className="text-[10px] text-text-muted ml-1 mb-1 block">Provedor Principal</label>
+                      <select 
+                        value={configLocal.provider || "brasilapi"} 
+                        onChange={e => handleFieldChange(item.chave, "provider", e.target.value)} 
+                        className="w-full rounded-xl border border-input-border bg-card px-3 py-2 text-xs text-text-main outline-none focus:border-accent"
+                      >
+                        <option value="brasilapi" className="text-black bg-white">BrasilAPI (Recomendado - CDN Rápido)</option>
+                        <option value="viacep" className="text-black bg-white">ViaCEP (Tradicional)</option>
+                      </select>
+                      <p className="text-[9px] text-text-muted mt-2">
+                        💡 A plataforma tentará o provedor selecionado primeiro. Se houver falha de conexão, fará fallback automático e transparente para o outro.
+                      </p>
+                    </div>
+                  )}
+
+                  {item.chave === "google_sheets" && (
+                    <>
+                      <div>
+                        <label className="text-[10px] text-text-muted ml-1 mb-1 block">ID da Planilha (Spreadsheet ID)</label>
+                        <input 
+                          value={configLocal.spreadsheet_id || ""} 
+                          onChange={e => handleFieldChange(item.chave, "spreadsheet_id", e.target.value)} 
+                          placeholder="Ex: 1a2B3c4D..." 
+                          className="w-full rounded-xl border border-input-border bg-card px-3 py-2 text-xs text-text-main outline-none focus:border-accent"
+                        />
+                      </div>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <div>
+                          <label className="text-[10px] text-text-muted ml-1 mb-1 block">E-mail da Conta de Serviço</label>
+                          <input 
+                            value={configLocal.client_email || ""} 
+                            onChange={e => handleFieldChange(item.chave, "client_email", e.target.value)} 
+                            placeholder="sheets-sync@projeto.iam.gserviceaccount.com" 
+                            className="w-full rounded-xl border border-input-border bg-card px-3 py-2 text-xs text-text-main outline-none focus:border-accent"
+                          />
+                        </div>
+                        <div>
+                          <label className="text-[10px] text-text-muted ml-1 mb-1 block">Private Key</label>
+                          <input 
+                            type="password"
+                            value={configLocal.private_key || ""} 
+                            onChange={e => handleFieldChange(item.chave, "private_key", e.target.value)} 
+                            placeholder="-----BEGIN PRIVATE KEY-----" 
+                            className="w-full rounded-xl border border-input-border bg-card px-3 py-2 text-xs text-text-main outline-none focus:border-accent"
+                          />
+                        </div>
+                      </div>
+                    </>
+                  )}
+
+                  {item.chave === "google_drive" && (
+                    <>
+                      <div>
+                        <label className="text-[10px] text-text-muted ml-1 mb-1 block">ID da Pasta Destino (Folder ID)</label>
+                        <input 
+                          value={configLocal.folder_id || ""} 
+                          onChange={e => handleFieldChange(item.chave, "folder_id", e.target.value)} 
+                          placeholder="Ex: 1xYz2A-bCd..." 
+                          className="w-full rounded-xl border border-input-border bg-card px-3 py-2 text-xs text-text-main outline-none focus:border-accent"
+                        />
+                      </div>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <div>
+                          <label className="text-[10px] text-text-muted ml-1 mb-1 block">E-mail da Conta de Serviço</label>
+                          <input 
+                            value={configLocal.client_email || ""} 
+                            onChange={e => handleFieldChange(item.chave, "client_email", e.target.value)} 
+                            placeholder="drive-upload@projeto.iam.gserviceaccount.com" 
+                            className="w-full rounded-xl border border-input-border bg-card px-3 py-2 text-xs text-text-main outline-none focus:border-accent"
+                          />
+                        </div>
+                        <div>
+                          <label className="text-[10px] text-text-muted ml-1 mb-1 block">Private Key</label>
+                          <input 
+                            type="password"
+                            value={configLocal.private_key || ""} 
+                            onChange={e => handleFieldChange(item.chave, "private_key", e.target.value)} 
+                            placeholder="-----BEGIN PRIVATE KEY-----" 
+                            className="w-full rounded-xl border border-input-border bg-card px-3 py-2 text-xs text-text-main outline-none focus:border-accent"
+                          />
+                        </div>
+                      </div>
+                    </>
+                  )}
+
+                  {item.chave === "google_maps" && (
+                    <div>
+                      <label className="text-[10px] text-text-muted ml-1 mb-1 block">Google Maps API Key</label>
+                      <input 
+                        type="password"
+                        value={configLocal.api_key || ""} 
+                        onChange={e => handleFieldChange(item.chave, "api_key", e.target.value)} 
+                        placeholder="AIzaSyA1..." 
+                        className="w-full rounded-xl border border-input-border bg-card px-3 py-2 text-xs text-text-main outline-none focus:border-accent"
+                      />
+                    </div>
+                  )}
+
+                  {item.chave === "gmail_smtp" && (
+                    <>
+                      <div className="grid grid-cols-3 gap-3">
+                        <div className="col-span-2">
+                          <label className="text-[10px] text-text-muted ml-1 mb-1 block">Host SMTP</label>
+                          <input 
+                            value={configLocal.host || ""} 
+                            onChange={e => handleFieldChange(item.chave, "host", e.target.value)} 
+                            placeholder="smtp.gmail.com" 
+                            className="w-full rounded-xl border border-input-border bg-card px-3 py-2 text-xs text-text-main outline-none focus:border-accent"
+                          />
+                        </div>
+                        <div>
+                          <label className="text-[10px] text-text-muted ml-1 mb-1 block">Porta</label>
+                          <input 
+                            type="number"
+                            value={configLocal.port || 587} 
+                            onChange={e => handleFieldChange(item.chave, "port", Number(e.target.value))} 
+                            className="w-full rounded-xl border border-input-border bg-card px-3 py-2 text-xs text-text-main outline-none focus:border-accent"
+                          />
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <div>
+                          <label className="text-[10px] text-text-muted ml-1 mb-1 block">Usuário / E-mail</label>
+                          <input 
+                            value={configLocal.user || ""} 
+                            onChange={e => handleFieldChange(item.chave, "user", e.target.value)} 
+                            placeholder="exemplo@gmail.com" 
+                            className="w-full rounded-xl border border-input-border bg-card px-3 py-2 text-xs text-text-main outline-none focus:border-accent"
+                          />
+                        </div>
+                        <div>
+                          <label className="text-[10px] text-text-muted ml-1 mb-1 block">Senha</label>
+                          <input 
+                            type="password"
+                            value={configLocal.pass || ""} 
+                            onChange={e => handleFieldChange(item.chave, "pass", e.target.value)} 
+                            placeholder="Senha do e-mail" 
+                            className="w-full rounded-xl border border-input-border bg-card px-3 py-2 text-xs text-text-main outline-none focus:border-accent"
+                          />
+                        </div>
+                      </div>
+                    </>
+                  )}
+                </div>
+
+                <div className="flex gap-2 justify-end mt-5 pt-3 border-t border-input-border/30">
+                  {item.chave === "evolution_api" && (
+                    <button 
+                      onClick={() => handleTestarConexao(item)} 
+                      disabled={isTesting}
+                      className="flex items-center justify-center gap-1 rounded-xl bg-bg-dark border border-input-border hover:bg-input-bg text-text-main px-3 py-1.5 text-[11px] font-semibold disabled:opacity-50 transition-colors"
+                    >
+                      {isTesting ? <Loader2 size={13} className="animate-spin" /> : <RefreshCw size={13} />} Testar Instância
+                    </button>
+                  )}
+                  <button 
+                    onClick={() => handleSalvar(item)} 
+                    disabled={isSaving}
+                    className="flex items-center justify-center gap-1 rounded-xl bg-accent hover:bg-accent/80 text-white px-4 py-1.5 text-[11px] font-semibold disabled:opacity-50 transition-all shadow-md"
+                  >
+                    {isSaving ? <Loader2 size={13} className="animate-spin" /> : <Save size={13} />} Salvar Credenciais
+                  </button>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
     </div>
   );
 }

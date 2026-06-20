@@ -1,11 +1,64 @@
 import { createRoute, useNavigate, useParams } from "@tanstack/react-router";
 import { rootRoute } from "./__root";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { supabase } from "~/lib/supabase";
-import { buscarCEP } from "~/lib/viacep";
+import { buscarCepResiliente } from "~/lib/integracoes";
 import { uploadDocumento } from "~/lib/documentos";
 import { dispararWebhooks } from "~/lib/webhooks";
-import { Loader2, CheckCircle, AlertTriangle, Send, KeyRound, Upload, Clock, ShieldCheck, Lock } from "lucide-react";
+import { Loader2, CheckCircle, AlertTriangle, Send, KeyRound, Upload, Clock, ShieldCheck, Lock, XCircle } from "lucide-react";
+
+// ─── Funções de Máscara ──────────────────────────────────────────────────────
+function limpar(v: string) { return v.replace(/\D/g, ""); }
+
+function mascaraCPF(v: string): string {
+  const d = limpar(v).slice(0, 11);
+  if (d.length <= 3) return d;
+  if (d.length <= 6) return `${d.slice(0,3)}.${d.slice(3)}`;
+  if (d.length <= 9) return `${d.slice(0,3)}.${d.slice(3,6)}.${d.slice(6)}`;
+  return `${d.slice(0,3)}.${d.slice(3,6)}.${d.slice(6,9)}-${d.slice(9,11)}`;
+}
+
+function mascaraCNPJ(v: string): string {
+  const d = limpar(v).slice(0, 14);
+  if (d.length <= 2) return d;
+  if (d.length <= 5) return `${d.slice(0,2)}.${d.slice(2)}`;
+  if (d.length <= 8) return `${d.slice(0,2)}.${d.slice(2,5)}.${d.slice(5)}`;
+  if (d.length <= 12) return `${d.slice(0,2)}.${d.slice(2,5)}.${d.slice(5,8)}/${d.slice(8)}`;
+  return `${d.slice(0,2)}.${d.slice(2,5)}.${d.slice(5,8)}/${d.slice(8,12)}-${d.slice(12,14)}`;
+}
+
+function mascaraTelFixo(v: string): string {
+  const d = limpar(v).slice(0, 10);
+  if (d.length <= 2) return d.length ? `(${d}` : d;
+  if (d.length <= 6) return `(${d.slice(0,2)}) ${d.slice(2)}`;
+  return `(${d.slice(0,2)}) ${d.slice(2,6)}-${d.slice(6)}`;
+}
+
+function mascaraCelular(v: string): string {
+  const d = limpar(v).slice(0, 11);
+  if (d.length <= 2) return d.length ? `(${d}` : d;
+  if (d.length <= 7) return `(${d.slice(0,2)}) ${d.slice(2)}`;
+  return `(${d.slice(0,2)}) ${d.slice(2,7)}-${d.slice(7)}`;
+}
+
+function mascaraCEP(v: string): string {
+  const d = limpar(v).slice(0, 8);
+  if (d.length <= 5) return d;
+  return `${d.slice(0,5)}-${d.slice(5)}`;
+}
+
+type TipoMascara = "cpf" | "cnpj" | "tel_fixo" | "celular" | "cep" | "none";
+
+function aplicarMascara(valor: string, mascara: TipoMascara): string {
+  switch (mascara) {
+    case "cpf": return mascaraCPF(valor);
+    case "cnpj": return mascaraCNPJ(valor);
+    case "tel_fixo": return mascaraTelFixo(valor);
+    case "celular": return mascaraCelular(valor);
+    case "cep": return mascaraCEP(valor);
+    default: return valor;
+  }
+}
 
 export const preCadastroRoute = createRoute({
   getParentRoute: () => rootRoute,
@@ -68,6 +121,9 @@ function PreCadastroPage() {
   // Timer States
   const [inicioPreenchimento, setInicioPreenchimento] = useState<string | null>(null);
   const [tempoRestante, setTempoRestante] = useState<number | null>(null);
+
+  // Modal Duplicado
+  const [modalDuplicado, setModalDuplicado] = useState<{ tipo: string } | null>(null);
 
   const [submitting, setSubmitting] = useState(false);
   const [erro, setErro] = useState("");
@@ -239,10 +295,45 @@ function PreCadastroPage() {
     }
   }
 
+  async function handleAvancarDados() {
+    // Verifica duplicidade de CPF (PF) ou CNPJ (PJ) antes de avançar
+    try {
+      if (form.tipo === "PF" && form.pf.cpf) {
+        const cpfLimpo = limpar(form.pf.cpf);
+        if (cpfLimpo.length === 11) {
+          const { data } = await supabase.rpc("verificar_documento_duplicado", {
+            documento_texto: cpfLimpo,
+            tipo_documento: "CPF",
+          });
+          if (data?.duplicado) {
+            setModalDuplicado({ tipo: "CPF" });
+            return;
+          }
+        }
+      }
+      if (form.tipo === "PJ" && form.pj.cnpj) {
+        const cnpjLimpo = limpar(form.pj.cnpj);
+        if (cnpjLimpo.length === 14) {
+          const { data } = await supabase.rpc("verificar_documento_duplicado", {
+            documento_texto: cnpjLimpo,
+            tipo_documento: "CNPJ",
+          });
+          if (data?.duplicado) {
+            setModalDuplicado({ tipo: "CNPJ" });
+            return;
+          }
+        }
+      }
+    } catch {
+      // Em caso de erro na verificação, permite avançar normalmente
+    }
+    setStep("endereco");
+  }
+
   async function handleBuscarCEP() {
-    const cep = form.endereco.cep;
+    const cep = limpar(form.endereco.cep);
     if (cep.length < 8) return;
-    const result = await buscarCEP(cep);
+    const result = await buscarCepResiliente(cep);
     if (result) {
       setForm(prev => ({
         ...prev,
@@ -324,12 +415,9 @@ function PreCadastroPage() {
         <div className="w-full max-w-sm rounded-2xl bg-card p-6 shadow-2xl border border-red-500/20 text-center flex flex-col items-center">
           <Clock size={48} className="text-red-500 mb-3 animate-pulse" />
           <h2 className="text-lg font-bold text-text-main mb-2">Tempo Esgotado!</h2>
-          <p className="text-xs text-text-muted mb-6 leading-relaxed">
+          <p className="text-xs text-text-muted leading-relaxed">
             O prazo limite de 24 horas para preenchimento dos seus dados expirou. O link foi bloqueado por motivos de segurança.
           </p>
-          <button onClick={() => navigate({ to: "/" })} className="w-full rounded-xl bg-accent py-3 text-sm font-medium text-white">
-            Voltar para o Início
-          </button>
         </div>
       </div>
     );
@@ -468,15 +556,15 @@ function PreCadastroPage() {
             <Campo label="Estado" value={form.pf.estado} onChange={v => setForm(prev => ({ ...prev, pf: { ...prev.pf, estado: v } }))} />
             <Campo label="Número do CRO/TPD *" value={form.pf.cro} onChange={v => setForm(prev => ({ ...prev, pf: { ...prev.pf, cro: v } }))} />
             <Campo label="Data emissão CRO/TPD" value={form.pf.data_emissao_cro} onChange={v => setForm(prev => ({ ...prev, pf: { ...prev.pf, data_emissao_cro: v } }))} type="date" />
-            <Campo label="CPF *" value={form.pf.cpf} onChange={v => setForm(prev => ({ ...prev, pf: { ...prev.pf, cpf: v } }))} type="tel" />
+            <CampoMascarado label="CPF *" value={form.pf.cpf} onChange={v => setForm(prev => ({ ...prev, pf: { ...prev.pf, cpf: v } }))} mascara="cpf" placeholder="000.000.000-00" />
             <Campo label="E-mail para Comunicação *" value={form.pf.email_comunicacao} onChange={v => setForm(prev => ({ ...prev, pf: { ...prev.pf, email_comunicacao: v } }))} type="email" />
             <Campo label="E-mail para NF" value={form.pf.email_nf} onChange={v => setForm(prev => ({ ...prev, pf: { ...prev.pf, email_nf: v } }))} type="email" />
-            <Campo label="Telefone Fixo" value={form.pf.tel_fixo} onChange={v => setForm(prev => ({ ...prev, pf: { ...prev.pf, tel_fixo: v } }))} type="tel" />
-            <Campo label="Celular 01" value={form.pf.celular1} onChange={v => setForm(prev => ({ ...prev, pf: { ...prev.pf, celular1: v } }))} type="tel" />
-            <Campo label="Celular 02" value={form.pf.celular2} onChange={v => setForm(prev => ({ ...prev, pf: { ...prev.pf, celular2: v } }))} type="tel" />
+            <CampoMascarado label="Telefone Fixo" value={form.pf.tel_fixo} onChange={v => setForm(prev => ({ ...prev, pf: { ...prev.pf, tel_fixo: v } }))} mascara="tel_fixo" placeholder="(00) 0000-0000" />
+            <CampoMascarado label="Celular 01" value={form.pf.celular1} onChange={v => setForm(prev => ({ ...prev, pf: { ...prev.pf, celular1: v } }))} mascara="celular" placeholder="(00) 00000-0000" />
+            <CampoMascarado label="Celular 02" value={form.pf.celular2} onChange={v => setForm(prev => ({ ...prev, pf: { ...prev.pf, celular2: v } }))} mascara="celular" placeholder="(00) 00000-0000" />
             <div className="flex gap-3 mt-4">
               <button onClick={() => setStep("tipo")} className="flex-1 rounded-xl border border-input-border py-3 text-sm text-text-muted">Voltar</button>
-              <button onClick={() => setStep("endereco")} className="flex-1 rounded-xl bg-accent py-3 text-sm font-medium text-white">Próximo</button>
+              <button onClick={handleAvancarDados} className="flex-1 rounded-xl bg-accent py-3 text-sm font-medium text-white">Próximo</button>
             </div>
           </div>
         )}
@@ -486,18 +574,18 @@ function PreCadastroPage() {
             <p className="text-xs text-text-muted mb-2">Preencha todos os campos obrigatórios sinalizados com *</p>
             <Campo label="Razão Social *" value={form.pj.razao_social} onChange={v => setForm(prev => ({ ...prev, pj: { ...prev.pj, razao_social: v } }))} />
             <Campo label="Nome Fantasia *" value={form.pj.nome_fantasia} onChange={v => setForm(prev => ({ ...prev, pj: { ...prev.pj, nome_fantasia: v } }))} />
-            <Campo label="CNPJ *" value={form.pj.cnpj} onChange={v => setForm(prev => ({ ...prev, pj: { ...prev.pj, cnpj: v } }))} type="tel" />
+            <CampoMascarado label="CNPJ *" value={form.pj.cnpj} onChange={v => setForm(prev => ({ ...prev, pj: { ...prev.pj, cnpj: v } }))} mascara="cnpj" placeholder="00.000.000/0000-00" />
             <Campo label="Inscrição Estadual *" value={form.pj.inscricao_estadual} onChange={v => setForm(prev => ({ ...prev, pj: { ...prev.pj, inscricao_estadual: v } }))} />
             <Campo label="Número do CRO/TPD *" value={form.pj.cro} onChange={v => setForm(prev => ({ ...prev, pj: { ...prev.pj, cro: v } }))} />
             <Campo label="Data emissão CRO/TPD" value={form.pj.data_emissao_cro} onChange={v => setForm(prev => ({ ...prev, pj: { ...prev.pj, data_emissao_cro: v } }))} type="date" />
             <Campo label="E-mail para Comunicação *" value={form.pj.email_comunicacao} onChange={v => setForm(prev => ({ ...prev, pj: { ...prev.pj, email_comunicacao: v } }))} type="email" />
             <Campo label="E-mail para NF" value={form.pj.email_nf} onChange={v => setForm(prev => ({ ...prev, pj: { ...prev.pj, email_nf: v } }))} type="email" />
-            <Campo label="Telefone Fixo" value={form.pj.tel_fixo} onChange={v => setForm(prev => ({ ...prev, pj: { ...prev.pj, tel_fixo: v } }))} type="tel" />
-            <Campo label="Celular 01" value={form.pj.celular1} onChange={v => setForm(prev => ({ ...prev, pj: { ...prev.pj, celular1: v } }))} type="tel" />
-            <Campo label="Celular 02" value={form.pj.celular2} onChange={v => setForm(prev => ({ ...prev, pj: { ...prev.pj, celular2: v } }))} type="tel" />
+            <CampoMascarado label="Telefone Fixo" value={form.pj.tel_fixo} onChange={v => setForm(prev => ({ ...prev, pj: { ...prev.pj, tel_fixo: v } }))} mascara="tel_fixo" placeholder="(00) 0000-0000" />
+            <CampoMascarado label="Celular 01" value={form.pj.celular1} onChange={v => setForm(prev => ({ ...prev, pj: { ...prev.pj, celular1: v } }))} mascara="celular" placeholder="(00) 00000-0000" />
+            <CampoMascarado label="Celular 02" value={form.pj.celular2} onChange={v => setForm(prev => ({ ...prev, pj: { ...prev.pj, celular2: v } }))} mascara="celular" placeholder="(00) 00000-0000" />
             <div className="flex gap-3 mt-4">
               <button onClick={() => setStep("tipo")} className="flex-1 rounded-xl border border-input-border py-3 text-sm text-text-muted">Voltar</button>
-              <button onClick={() => setStep("endereco")} className="flex-1 rounded-xl bg-accent py-3 text-sm font-medium text-white">Próximo</button>
+              <button onClick={handleAvancarDados} className="flex-1 rounded-xl bg-accent py-3 text-sm font-medium text-white">Próximo</button>
             </div>
           </div>
         )}
@@ -507,7 +595,7 @@ function PreCadastroPage() {
             <p className="text-xs text-text-muted mb-2">As informações completas de seu endereço serão exibidas ao digitar o CEP</p>
             <div className="flex gap-2">
               <div className="flex-1">
-                <Campo label="CEP *" value={form.endereco.cep} onChange={v => setForm(prev => ({ ...prev, endereco: { ...prev.endereco, cep: v } }))} type="tel" />
+                <CampoMascarado label="CEP *" value={form.endereco.cep} onChange={v => setForm(prev => ({ ...prev, endereco: { ...prev.endereco, cep: v } }))} mascara="cep" placeholder="00000-000" />
               </div>
               <button onClick={handleBuscarCEP} className="mt-6 rounded-lg bg-accent px-4 py-3 text-xs font-medium text-white min-h-[44px]">Buscar</button>
             </div>
@@ -548,15 +636,67 @@ function PreCadastroPage() {
           </div>
         )}
       </div>
+
+      {/* Modal de CPF/CNPJ Duplicado */}
+      {modalDuplicado && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 px-4 backdrop-blur-sm">
+          <div className="w-full max-w-sm rounded-2xl bg-card border border-red-500/30 p-6 shadow-2xl flex flex-col items-center gap-4">
+            <div className="flex h-14 w-14 items-center justify-center rounded-full bg-red-500/10">
+              <XCircle size={32} className="text-red-500" />
+            </div>
+            <h2 className="text-base font-bold text-text-main text-center">
+              {modalDuplicado.tipo} já cadastrado
+            </h2>
+            <p className="text-xs text-text-muted text-center leading-relaxed">
+              Este <strong className="text-text-main">{modalDuplicado.tipo}</strong> já possui uma solicitação de cadastro em andamento em nosso sistema.
+              <br /><br />
+              Por favor, entre em contato com o seu <strong className="text-accent">consultor responsável</strong> para mais informações.
+            </p>
+            <button
+              onClick={() => setModalDuplicado(null)}
+              className="w-full rounded-xl bg-accent py-3 text-sm font-semibold text-white"
+            >
+              Entendido
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
 
-function Campo({ label, value, onChange, type }: { label: string; value: string; onChange: (v: string) => void; type?: string }) {
+function Campo({ label, value, onChange, type, placeholder }: { label: string; value: string; onChange: (v: string) => void; type?: string; placeholder?: string }) {
   return <div>
     <p className="mb-1 text-xs font-medium text-text-muted">{label}</p>
-    <input value={value} onChange={e => onChange(e.target.value)} type={type || "text"}
-      className="w-full rounded-lg border border-input-border bg-input-bg px-4 py-3 text-sm text-text-main outline-none focus:border-accent min-h-[44px]" />
+    <input value={value} onChange={e => onChange(e.target.value)} type={type || "text"} placeholder={placeholder}
+      className="w-full rounded-lg border border-input-border bg-input-bg px-4 py-3 text-sm text-text-main outline-none focus:border-accent min-h-[44px] placeholder:text-text-muted/40" />
+  </div>;
+}
+
+function CampoMascarado({ label, value, onChange, mascara, placeholder }: {
+  label: string;
+  value: string;
+  onChange: (v: string) => void;
+  mascara: TipoMascara;
+  placeholder?: string;
+}) {
+  // value no estado é o valor com máscara; enviamos limpo para o pai apenas para persistência
+  // mas exibimos formatado
+  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const formatado = aplicarMascara(e.target.value, mascara);
+    onChange(formatado);
+  }, [mascara, onChange]);
+
+  return <div>
+    <p className="mb-1 text-xs font-medium text-text-muted">{label}</p>
+    <input
+      value={value}
+      onChange={handleChange}
+      type="tel"
+      inputMode="numeric"
+      placeholder={placeholder}
+      className="w-full rounded-lg border border-input-border bg-input-bg px-4 py-3 text-sm text-text-main outline-none focus:border-accent min-h-[44px] placeholder:text-text-muted/40 font-mono tracking-wide"
+    />
   </div>;
 }
 
