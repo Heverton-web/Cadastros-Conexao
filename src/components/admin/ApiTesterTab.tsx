@@ -10,6 +10,7 @@ import {
   type ApiConnector,
   type ApiConnectorInput,
 } from "~/lib/api_connectors";
+import { EVENTOS_STATUS_CHANGE, EVENTOS_BUTTON_ACTION } from "~/lib/webhooks";
 
 export function ApiTesterTab() {
   const [connectors, setConnectors] = useState<ApiConnector[]>([]);
@@ -26,6 +27,8 @@ export function ApiTesterTab() {
     body_template: "",
     response_schema: null,
     is_active: true,
+    evento: null,
+    tipo_evento: null,
   });
 
   const [saving, setSaving] = useState(false);
@@ -66,6 +69,8 @@ export function ApiTesterTab() {
       query_params: c.query_params || {},
       body_template: c.body_template || "",
       response_schema: c.response_schema,
+      evento: c.evento,
+      tipo_evento: c.tipo_evento,
       is_active: c.is_active,
     });
     setTestResult(null);
@@ -82,6 +87,8 @@ export function ApiTesterTab() {
       query_params: {},
       body_template: "{\n  \"chave\": \"{{variavel}}\"\n}",
       response_schema: null,
+      evento: null,
+      tipo_evento: null,
       is_active: true,
     });
     setTestResult(null);
@@ -258,7 +265,29 @@ export function ApiTesterTab() {
           </div>
 
           {/* URL & Method Row */}
-          <div className="p-4 lg:p-5 flex flex-col sm:flex-row gap-2 border-b border-input-border bg-input-bg/30">
+          {form.type === "webhook" && (
+            <div className="px-4 pt-4 lg:px-5 lg:pt-5 pb-2 flex flex-col sm:flex-row gap-2">
+              <select value={form.tipo_evento || ""} onChange={e => setForm({...form, tipo_evento: e.target.value as any, evento: ""})} className="w-full sm:w-1/3 rounded-lg border border-input-border bg-bg-dark px-3 py-2 text-xs font-bold text-accent outline-none">
+                <option value="" disabled>Qual tipo de gatilho?</option>
+                <option value="status_change">Mudança de Status</option>
+                <option value="button_action">Ação de Botão</option>
+              </select>
+              {form.tipo_evento === "status_change" && (
+                <select value={form.evento || ""} onChange={e => setForm({...form, evento: e.target.value})} className="flex-1 rounded-lg border border-input-border bg-bg-dark px-3 py-2 text-sm text-text-main outline-none focus:border-accent">
+                   <option value="" disabled>Qual status?</option>
+                   {EVENTOS_STATUS_CHANGE.map(e => <option key={e.value} value={e.value}>{e.label}</option>)}
+                </select>
+              )}
+              {form.tipo_evento === "button_action" && (
+                <select value={form.evento || ""} onChange={e => setForm({...form, evento: e.target.value})} className="flex-1 rounded-lg border border-input-border bg-bg-dark px-3 py-2 text-sm text-text-main outline-none focus:border-accent">
+                   <option value="" disabled>Qual botão?</option>
+                   {EVENTOS_BUTTON_ACTION.map(e => <option key={e.value} value={e.value}>{e.label}</option>)}
+                </select>
+              )}
+            </div>
+          )}
+
+          <div className={`p-4 lg:p-5 flex flex-col sm:flex-row gap-2 border-b border-input-border bg-input-bg/30 ${form.type === "webhook" ? "pt-2 lg:pt-2" : ""}`}>
             <select value={form.method} onChange={e => setForm({...form, method: e.target.value})} className="w-full sm:w-28 rounded-lg border border-input-border bg-bg-dark px-3 py-2 text-xs font-bold text-accent outline-none">
               {["GET", "POST", "PUT", "PATCH", "DELETE"].map(m => <option key={m} value={m} className="text-black bg-white">{m}</option>)}
             </select>

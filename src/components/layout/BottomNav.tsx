@@ -1,34 +1,15 @@
 import { useNavigate, useLocation } from "@tanstack/react-router";
-import { LayoutDashboard, Users, BarChart3, Link2, Shield, Settings, type LucideIcon } from "lucide-react";
 import { cn } from "~/lib/utils";
-import { useAuth } from "~/lib/auth";
-
-type NavItem = {
-  path: string;
-  label: string;
-  icon: LucideIcon;
-  matchPaths?: string[];
-};
+import { useNavItems, type NavItem } from "./useNavItems";
 
 export function BottomNav() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { profile, permissoes } = useAuth();
-  const amb = profile?.ambiente;
-  const p = permissoes;
-
-  const navItems: NavItem[] = [
-    ...(p?.ver_todos_cadastros === true ? [{ path: "/dashboard", label: "Dashboard", icon: LayoutDashboard }] : []),
-    ...(p?.gerar_links === true ? [{ path: "/consultor", label: amb === "consultor" ? "Gerar Links" : "Consultor", icon: Link2 }] : []),
-    ...((p?.ver_todos_cadastros === true || p?.gerar_links === true) ? [{ path: "/clientes", label: "Clientes", icon: Users, matchPaths: ["/consultor/clientes"] }] : []),
-    ...(p?.ver_relatorios === true ? [{ path: "/relatorios", label: "Relatórios", icon: BarChart3 }] : []),
-    ...(p?.gerenciar_credenciais === true ? [{ path: "/credenciais", label: "Credenciais", icon: Shield }] : []),
-    ...(p?.gerenciar_config === true ? [{ path: "/admin/config", label: "Config", icon: Settings }] : []),
-  ];
+  const navItems = useNavItems();
 
   return (
     <nav
-      className="fixed bottom-0 left-0 right-0 z-50 border-t border-border-subtle bg-header-bg/95 backdrop-blur-lg"
+      className="fixed bottom-0 left-0 right-0 z-50 border-t border-border-subtle bg-header-bg/95 backdrop-blur-lg lg:hidden"
       style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)" }}
     >
       <div className="mx-auto flex max-w-lg items-center justify-around px-2 py-1">

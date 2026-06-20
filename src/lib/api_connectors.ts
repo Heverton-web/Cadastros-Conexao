@@ -12,6 +12,8 @@ export type ApiConnector = {
   query_params: Record<string, string>;
   body_template: string | null;
   response_schema: any | null;
+  evento: string | null;
+  tipo_evento: "status_change" | "button_action" | null;
   is_active: boolean;
   created_at: string;
   updated_at: string;

@@ -65,7 +65,7 @@ function RelatoriosPage() {
   };
 
   return (
-    <div className="flex flex-col gap-4 p-4 pb-24">
+    <div className="flex flex-col gap-6 p-4 pb-24 lg:p-8 lg:pb-8">
       <div className="flex items-center gap-3">
         <button onClick={() => window.history.back()} className="text-text-muted hover:text-text-main"><ArrowLeft size={20} /></button>
         <h1 className="text-lg font-bold text-text-main">Relatórios</h1>
@@ -98,7 +98,7 @@ function RelatoriosPage() {
         <div className="flex justify-center py-10"><Loader2 size={24} className="animate-spin text-accent" /></div>
       ) : (
         <>
-          <div className="grid grid-cols-3 gap-2">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
             <StatCard label="Total" value={stats.total} color="text-accent" />
             <StatCard label="Links" value={stats.link_gerado} color="text-blue-400" />
             <StatCard label="Enviados" value={stats.dados_enviados} color="text-cyan-400" />
@@ -110,8 +110,8 @@ function RelatoriosPage() {
           {filtered.length > 0 && (
             <div>
               <h2 className="mb-3 text-sm font-bold text-text-main">Cadastros Recentes</h2>
-              <div className="flex flex-col gap-2">
-                {filtered.slice(0, 10).map((c: any) => (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                {filtered.slice(0, 30).map((c: any) => (
                   <button key={c.id} onClick={() => navigate({ to: "/clientes/$id", params: { id: c.id } })}
                     className="flex items-center gap-3 rounded-xl bg-card p-4 shadow-lg transition active:scale-[0.98] w-full text-left hover:ring-1 hover:ring-accent/30"
                   >
@@ -141,5 +141,5 @@ function RelatoriosPage() {
 }
 
 function StatCard({ label, value, color }: { label: string; value: number; color: string }) {
-  return <div className="rounded-xl bg-card p-3 shadow-lg"><span className={`text-lg font-bold ${color}`}>{value}</span><p className="text-[10px] text-text-muted">{label}</p></div>;
+  return <div className="flex flex-col gap-2 rounded-xl bg-card p-4 shadow-lg hover:-translate-y-1 transition-transform"><span className={`text-2xl font-bold ${color}`}>{value}</span><p className="text-xs text-text-muted font-medium uppercase tracking-wider">{label}</p></div>;
 }

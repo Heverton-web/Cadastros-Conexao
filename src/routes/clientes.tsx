@@ -109,9 +109,9 @@ function ClientesPage() {
   });
 
   return (
-    <div className="flex flex-col gap-4 p-4 pb-24">
+    <div className="flex flex-col gap-4 p-4 pb-24 lg:p-8 lg:pb-8">
       <h1 className="text-lg font-bold text-text-main">Clientes</h1>
-      <div className="flex gap-2">
+      <div className="flex flex-col lg:flex-row gap-2 lg:gap-4">
         <div className="relative flex-1">
           <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted" />
           <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Buscar clientes..." className="w-full rounded-lg border border-input-border bg-input-bg py-3 pl-10 pr-4 text-sm text-text-main outline-none focus:border-accent focus:ring-2 focus:ring-ring min-h-[44px]" />
@@ -119,14 +119,14 @@ function ClientesPage() {
       </div>
       {permissoes?.ver_todos_cadastros && (
         <>
-          <div className="flex gap-2">
-            <select value={filtroConsultor} onChange={(e) => setFiltroConsultor(e.target.value)} className="flex-1 rounded-lg border border-input-border bg-input-bg px-3 py-3 text-sm text-text-main outline-none focus:border-accent min-h-[44px]">
+          <div className="flex flex-col lg:flex-row gap-2 lg:gap-4">
+            <select value={filtroConsultor} onChange={(e) => setFiltroConsultor(e.target.value)} className="flex-1 lg:max-w-md rounded-lg border border-input-border bg-input-bg px-3 py-3 text-sm text-text-main outline-none focus:border-accent min-h-[44px]">
               <option value="">Todos os consultores</option>
               {consultores.map(nome => <option key={nome} value={nome!}>{nome}</option>)}
             </select>
           </div>
 
-          <div className="grid grid-cols-4 gap-2">
+          <div className="grid grid-cols-4 lg:grid-cols-8 gap-2">
             <button 
               onClick={() => setFiltroStatus("")} 
               className={`flex h-10 flex-col items-center justify-center rounded-lg px-1 transition ${filtroStatus === "" ? "bg-accent text-white shadow-md" : "bg-card text-text-muted hover:text-text-main border border-input-border"}`}
@@ -152,10 +152,10 @@ function ClientesPage() {
       ) : filtered.length === 0 ? (
         <p className="py-12 text-center text-sm text-text-muted">Nenhum cliente encontrado</p>
       ) : (
-          <div className="flex flex-col gap-2">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
           {filtered.map((c) => (
             <button key={c.id} onClick={() => navigate({ to: "/clientes/$id", params: { id: c.id } })}
-              className="flex flex-col gap-2 rounded-xl bg-card p-4 text-left shadow-lg transition active:scale-[0.98]"
+              className="flex flex-col gap-2 rounded-xl bg-card p-4 text-left shadow-lg transition hover:ring-2 hover:ring-accent/30 active:scale-[0.98] hover:-translate-y-1"
             >
               <div className="flex items-center justify-between">
                 <span className="font-semibold text-text-main text-sm">{c.lead_nome || c.nome_temporario || "Sem nome"}</span>

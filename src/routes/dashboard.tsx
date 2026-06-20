@@ -42,7 +42,7 @@ function DashboardPage() {
   const recentes = data.slice(0, 10);
 
   return (
-    <div className="flex flex-col gap-4 p-4 pb-24">
+    <div className="flex flex-col gap-6 p-4 pb-24 lg:p-8 lg:pb-8">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-lg font-bold text-text-main">Dashboard</h1>
@@ -54,7 +54,7 @@ function DashboardPage() {
       </div>
       <TutoriaisPopup open={showTutoriais} onClose={() => setShowTutoriais(false)} />
 
-      <div className="grid grid-cols-3 gap-2">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
         <StatCard label="Links" value={stats.link_gerado} icon={<Link2 size={16} />} color="text-blue-400" />
         <StatCard label="Enviados" value={stats.dados_enviados} icon={<Clock size={16} />} color="text-cyan-400" />
         <StatCard label="Análise" value={stats.em_analise} icon={<AlertTriangle size={16} />} color="text-yellow-400" />
@@ -63,12 +63,12 @@ function DashboardPage() {
         <StatCard label="Reprovados" value={stats.reprovados} icon={<XCircle size={16} />} color="text-red-400" />
       </div>
 
-      <div className="grid grid-cols-2 gap-3">
-        <a href="/clientes" className="flex items-center justify-between rounded-xl bg-card p-4 shadow-lg">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <a href="/clientes" className="flex items-center justify-between rounded-xl bg-card p-4 shadow-lg hover:ring-2 ring-accent transition-all">
           <span className="text-sm font-medium text-text-main">Ver todos os clientes</span>
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-arrow-right text-text-muted"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
         </a>
-        <a href="/relatorios" className="flex items-center justify-between rounded-xl bg-card p-4 shadow-lg">
+        <a href="/relatorios" className="flex items-center justify-between rounded-xl bg-card p-4 shadow-lg hover:ring-2 ring-accent transition-all">
           <span className="text-sm font-medium text-text-main">Relatórios</span>
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-arrow-right text-text-muted"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
         </a>
@@ -81,7 +81,7 @@ function DashboardPage() {
         ) : recentes.length === 0 ? (
           <p className="py-8 text-center text-sm text-text-muted">Nenhuma solicitação ainda</p>
         ) : (
-          <div className="flex flex-col gap-2">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
             {recentes.map((c) => (
               <Link key={c.id} to="/clientes/$id" params={{ id: c.id }}
                 className="flex items-center justify-between rounded-xl bg-card p-3 shadow-lg transition active:scale-[0.98]"
@@ -106,9 +106,9 @@ function DashboardPage() {
 
 function StatCard({ label, value, icon, color }: { label: string; value: number; icon: React.ReactNode; color: string }) {
   return (
-    <div className="flex flex-col gap-1 rounded-xl bg-card p-3 shadow-lg">
-      <div className={`flex items-center gap-1 ${color}`}>{icon}<span className="text-lg font-bold">{value}</span></div>
-      <span className="text-[10px] text-text-muted">{label}</span>
+    <div className="flex flex-col gap-2 rounded-xl bg-card p-4 shadow-lg hover:-translate-y-1 transition-transform">
+      <div className={`flex items-center gap-2 ${color}`}>{icon}<span className="text-2xl font-bold">{value}</span></div>
+      <span className="text-xs text-text-muted font-medium uppercase tracking-wider">{label}</span>
     </div>
   );
 }

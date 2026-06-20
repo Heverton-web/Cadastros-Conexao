@@ -383,7 +383,7 @@ function ClienteDetailPage() {
   const isAprovacaoBloqueada = hasPendingOrErrors;
 
   return (
-    <div className="flex flex-col gap-4 p-4 pb-28">
+    <div className="flex flex-col gap-4 p-4 pb-28 lg:p-8 lg:pb-8">
       <div className="flex items-center gap-3">
         <button onClick={() => window.history.back()} className="text-text-muted hover:text-text-main"><ArrowLeft size={20} /></button>
         <h1 className="text-lg font-bold text-text-main truncate">{nome}</h1>
@@ -425,7 +425,8 @@ function ClienteDetailPage() {
         </div>
       )}
 
-      <div className="flex gap-1 rounded-xl bg-card p-1">
+      {/* Mobile Tabs */}
+      <div className="flex md:hidden gap-1 rounded-xl bg-card p-1">
         {(["dados","endereco","documentos"] as Tab[]).map((t) => (
           <button key={t} onClick={() => setTab(t)} className={`flex-1 rounded-lg py-2 text-xs font-medium transition ${tab === t ? "bg-accent text-white" : "text-text-muted hover:text-text-main"}`}>
             {t === "dados" ? "Dados" : t === "endereco" ? "Endereço" : "Documentos"}
@@ -433,8 +434,9 @@ function ClienteDetailPage() {
         ))}
       </div>
 
-      {tab === "dados" && (
-        <div className="rounded-xl bg-card p-4 shadow-lg">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-start">
+        <div className="flex flex-col gap-4">
+          <div className={`${tab === "dados" ? "block" : "hidden md:block"} rounded-xl bg-card p-4 shadow-lg`}>
           <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
             <h2 className="text-sm font-bold text-text-main">Dados do Cliente</h2>
             <BotoesAcaoMassa aba="dados" />
@@ -461,10 +463,9 @@ function ClienteDetailPage() {
 })()}
           </div>
         </div>
-      )}
 
-      {tab === "endereco" && end && (
-        <div className="rounded-xl bg-card p-4 shadow-lg">
+      {end && (
+        <div className={`${tab === "endereco" ? "block" : "hidden md:block"} rounded-xl bg-card p-4 shadow-lg`}>
           <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
             <h2 className="text-sm font-bold text-text-main">Endereço</h2>
             <BotoesAcaoMassa aba="endereco" />
@@ -514,9 +515,10 @@ function ClienteDetailPage() {
           </div>
         </div>
       )}
+      </div>
 
-      {tab === "documentos" && (
-        <div className="rounded-xl bg-card p-4 shadow-lg">
+      <div className="flex flex-col gap-4">
+        <div className={`${tab === "documentos" ? "block" : "hidden md:block"} rounded-xl bg-card p-4 shadow-lg`}>
           <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
             <h2 className="text-sm font-bold text-text-main">Documentos</h2>
             <BotoesAcaoMassa aba="documentos" />
@@ -557,7 +559,8 @@ function ClienteDetailPage() {
             }}
           />
         </div>
-      )}
+      </div>
+      </div>
 
       {showAprovar && <Modal titulo="Aprovar Cadastro" descricao="Insira o Código do Novo Cliente gerado no Protheus" onClose={() => setShowAprovar(false)}>
         <input value={codigoCliente} onChange={(e) => setCodigoCliente(e.target.value)} placeholder="Código do Cliente" className="mb-4 w-full rounded-lg border border-input-border bg-input-bg px-4 py-3 text-sm text-text-main outline-none focus:border-accent min-h-[44px]" />

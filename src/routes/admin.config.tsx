@@ -19,7 +19,7 @@ import { listarLinksTestes, criarLinkTeste, excluirLinkTeste, listarDemoCredenti
 import { DemosTab } from "~/components/admin/DemosTab";
 import { ApiTesterTab } from "~/components/admin/ApiTesterTab";
 
-type Tab = "supabase" | "credenciais" | "api_connectors" | "permissoes" | "demos";
+type Tab = "supabase" | "credenciais" | "api_connectors" | "webhooks" | "permissoes" | "demos";
 
 export const adminConfigRoute = createRoute({
   getParentRoute: () => authLayout,
@@ -52,7 +52,8 @@ function AdminConfigPage() {
         {[
           { key: "supabase" as Tab, label: "Supabase", icon: Database },
           { key: "credenciais" as Tab, label: "Credenciais", icon: Shield },
-          { key: "api_connectors" as Tab, label: "APIs & Webhooks", icon: WebhookIcon },
+          { key: "api_connectors" as Tab, label: "Teste de APIs", icon: Link2 },
+          { key: "webhooks" as Tab, label: "Webhooks Gatilhos", icon: WebhookIcon },
           { key: "permissoes" as Tab, label: "Permissões", icon: UserIcon },
           { key: "demos" as Tab, label: "Laboratório", icon: FlaskConical },
         ].map(({ key, label, icon: Icon }) => (
@@ -66,6 +67,7 @@ function AdminConfigPage() {
       {tab === "supabase" && <SupabaseTab />}
       {tab === "credenciais" && <CredenciaisTab />}
       {tab === "api_connectors" && <ApiTesterTab />}
+      {tab === "webhooks" && <WebhooksTab />}
       {tab === "permissoes" && <PermissoesTab />}
       {tab === "demos" && <DemosTab />}
     </div>
@@ -257,6 +259,7 @@ function WebhooksTab() {
   const [editId, setEditId] = useState<string | null>(null);
   const [form, setForm] = useState<WebhookInput & { id?: string }>({ nome: "", evento: "", url: "", metodo: "POST", headers: {}, body_template: {}, ativo: true });
   const [headerInput, setHeaderInput] = useState("");
+  const [bodyInput, setBodyInput] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => { carregar(); carregarLogs(); }, []);
@@ -292,6 +295,7 @@ function WebhooksTab() {
     setEditId(w.id);
     setForm({ id: w.id, nome: w.nome, evento: w.evento, tipo_evento: w.tipo_evento, url: w.url, metodo: w.metodo, headers: w.headers || {}, body_template: w.body_template || {}, ativo: w.ativo });
     setHeaderInput(Object.entries(w.headers || {}).map(([k, v]) => `${k}: ${v}`).join("\n"));
+    setBodyInput(Object.keys(w.body_template || {}).length > 0 ? JSON.stringify(w.body_template, null, 2) : "{\n  \n}");
     setShowForm(true);
   }
 
@@ -304,7 +308,15 @@ function WebhooksTab() {
         const idx = line.indexOf(":");
         if (idx > 0) headers[line.slice(0, idx).trim()] = line.slice(idx + 1).trim();
       });
-      const payload = { ...form, headers };
+      let body_template = {};
+      try {
+        if (bodyInput.trim()) body_template = JSON.parse(bodyInput);
+      } catch (e) {
+        toast.error("JSON do Body Template inválido");
+        setSubmitting(false);
+        return;
+      }
+      const payload = { ...form, headers, body_template };
       if (editId) {
         await atualizarWebhook(editId, payload);
         toast.success("Webhook atualizado!");
@@ -469,8 +481,16 @@ function WebhooksTab() {
             <select value={form.metodo} onChange={(e) => setForm(prev => ({ ...prev, metodo: e.target.value }))} className="mb-3 w-full rounded-lg border border-input-border bg-input-bg px-4 py-3 text-sm text-text-main outline-none focus:border-accent min-h-[44px]">
               {["POST", "PUT", "PATCH", "GET"].map(m => <option key={m} value={m}>{m}</option>)}
             </select>
-            <p className="mb-1 text-xs font-medium text-text-muted">Headers (formato: Chave: Valor, um por linha)</p>
-            <textarea value={headerInput} onChange={(e) => setHeaderInput(e.target.value)} placeholder="Authorization: Bearer xxx&#10;X-Custom-Header: valor" rows={3} className="mb-4 w-full resize-none rounded-lg border border-input-border bg-input-bg px-4 py-3 text-xs text-text-main outline-none focus:border-accent font-mono" />
+            
+            <p className="mb-1 text-xs font-medium text-text-muted mt-2">Headers (formato: Chave: Valor, um por linha)</p>
+            <textarea value={headerInput} onChange={(e) => setHeaderInput(e.target.value)} placeholder="Authorization: Bearer xxx&#10;X-Custom-Header: valor" rows={3} className="mb-3 w-full resize-none rounded-lg border border-input-border bg-input-bg px-4 py-3 text-xs text-text-main outline-none focus:border-accent font-mono" />
+            
+            <div className="flex justify-between items-center mb-1">
+              <p className="text-xs font-medium text-text-muted">Body Template (Formato JSON)</p>
+              <span className="text-[10px] text-accent">Variáveis injetáveis automaticamente via código</span>
+            </div>
+            <textarea value={bodyInput} onChange={(e) => setBodyInput(e.target.value)} placeholder={'{\n  "meu_campo": "valor"\n}'} rows={6} className="mb-6 w-full resize-none rounded-lg border border-input-border bg-[#1e1e1e] text-green-400 px-4 py-3 text-xs outline-none focus:border-accent font-mono" />
+
             <div className="flex gap-3">
               <button onClick={() => setShowForm(false)} className="flex-1 rounded-xl border border-input-border py-3 text-sm font-medium text-text-muted">Cancelar</button>
               <button onClick={handleSubmit} disabled={!form.nome || !form.evento || !form.url || submitting} className="flex-1 rounded-xl bg-accent py-3 text-sm font-medium text-white disabled:opacity-50">{submitting ? <Loader2 size={16} className="animate-spin mx-auto" /> : "Salvar"}</button>
