@@ -94,7 +94,7 @@ html {
 body {
   background: var(--color-bg);
   color: var(--color-text-main);
-  font-family: system-ui, -apple-system, sans-serif;
+  font-family: "Outfit", system-ui, -apple-system, sans-serif;
   min-height: 100dvh;
   padding-top: env(safe-area-inset-top, 0px);
   padding-bottom: env(safe-area-inset-bottom, 0px);

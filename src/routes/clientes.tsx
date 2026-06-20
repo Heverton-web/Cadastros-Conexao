@@ -150,7 +150,11 @@ function ClientesPage() {
       {loading ? (
         <div className="flex justify-center py-12"><Loader2 size={24} className="animate-spin text-accent" /></div>
       ) : filtered.length === 0 ? (
-        <p className="py-12 text-center text-sm text-text-muted">Nenhum cliente encontrado</p>
+        <div className="flex flex-col items-center justify-center py-16 px-4 rounded-xl border border-dashed border-input-border bg-input-bg/20 mt-4">
+          <Search size={48} className="text-text-muted/30 mb-4" />
+          <p className="text-base font-medium text-text-muted">Nenhum cliente encontrado</p>
+          <p className="text-xs text-text-muted mt-1">Tente ajustar seus filtros ou termos de busca.</p>
+        </div>
       ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
           {filtered.map((c) => (

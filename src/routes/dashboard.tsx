@@ -54,7 +54,7 @@ function DashboardPage() {
       </div>
       <TutoriaisPopup open={showTutoriais} onClose={() => setShowTutoriais(false)} />
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
         <StatCard label="Links" value={stats.link_gerado} icon={<Link2 size={16} />} color="text-blue-400" />
         <StatCard label="Enviados" value={stats.dados_enviados} icon={<Clock size={16} />} color="text-cyan-400" />
         <StatCard label="Análise" value={stats.em_analise} icon={<AlertTriangle size={16} />} color="text-yellow-400" />
@@ -79,7 +79,11 @@ function DashboardPage() {
         {loading ? (
           <div className="flex justify-center py-8"><Loader2 size={20} className="animate-spin text-accent" /></div>
         ) : recentes.length === 0 ? (
-          <p className="py-8 text-center text-sm text-text-muted">Nenhuma solicitação ainda</p>
+          <div className="flex flex-col items-center justify-center py-12 px-4 rounded-xl border border-dashed border-input-border bg-input-bg/20">
+            <CheckCircle size={40} className="text-text-muted/30 mb-3" />
+            <p className="text-sm font-medium text-text-muted">Tudo limpo por aqui!</p>
+            <p className="text-xs text-text-muted mt-1">Nenhuma solicitação recente encontrada.</p>
+          </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
             {recentes.map((c) => (
