@@ -20,7 +20,7 @@ export function AppLayout() {
           </button>
         </div>
       </header>
-      <main className="mx-auto max-w-lg">
+      <main className="mx-auto max-w-7xl w-full">
         <Outlet />
       </main>
       <BottomNav />

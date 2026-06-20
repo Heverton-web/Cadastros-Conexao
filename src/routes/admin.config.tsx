@@ -17,8 +17,9 @@ import toast from "react-hot-toast";
 import { listarPermissoesUsuarios, setPermissoes, getPermissoesPadrao, PERMISSOES_GROUPS, PERMISSOES_LABEL, PERMISSOES_DESC, type Permissoes } from "~/lib/permissoes";
 import { listarLinksTestes, criarLinkTeste, excluirLinkTeste, listarDemoCredentials, criarDemoCredential, excluirDemoCredential, type LinkTeste, type DemoCredential } from "~/lib/demos";
 import { DemosTab } from "~/components/admin/DemosTab";
+import { ApiTesterTab } from "~/components/admin/ApiTesterTab";
 
-type Tab = "supabase" | "credenciais" | "webhooks" | "permissoes" | "demos";
+type Tab = "supabase" | "credenciais" | "api_connectors" | "permissoes" | "demos";
 
 export const adminConfigRoute = createRoute({
   getParentRoute: () => authLayout,
@@ -47,24 +48,24 @@ function AdminConfigPage() {
         <h1 className="text-lg font-bold text-text-main">Configurações</h1>
       </div>
 
-      <div className="flex gap-1 rounded-xl bg-card p-1">
+      <div className="flex gap-1 rounded-xl bg-card p-1 overflow-x-auto whitespace-nowrap scrollbar-hide">
         {[
           { key: "supabase" as Tab, label: "Supabase", icon: Database },
           { key: "credenciais" as Tab, label: "Credenciais", icon: Shield },
-          { key: "webhooks" as Tab, label: "Webhooks", icon: WebhookIcon },
+          { key: "api_connectors" as Tab, label: "APIs & Webhooks", icon: WebhookIcon },
           { key: "permissoes" as Tab, label: "Permissões", icon: UserIcon },
           { key: "demos" as Tab, label: "Laboratório", icon: FlaskConical },
         ].map(({ key, label, icon: Icon }) => (
           <button key={key} onClick={() => setTab(key)} title={label}
-            className={`flex items-center justify-center flex-1 rounded-lg py-2.5 transition ${tab === key ? "bg-accent text-white" : "text-text-muted hover:text-text-main hover:bg-bg-dark"}`}>
-            <Icon size={18} />
+            className={`flex items-center justify-center gap-2 px-4 rounded-lg py-2.5 transition min-w-max ${tab === key ? "bg-accent text-white" : "text-text-muted hover:text-text-main hover:bg-bg-dark"}`}>
+            <Icon size={18} /> <span className="text-xs font-medium">{label}</span>
           </button>
         ))}
       </div>
 
       {tab === "supabase" && <SupabaseTab />}
       {tab === "credenciais" && <CredenciaisTab />}
-      {tab === "webhooks" && <WebhooksTab />}
+      {tab === "api_connectors" && <ApiTesterTab />}
       {tab === "permissoes" && <PermissoesTab />}
       {tab === "demos" && <DemosTab />}
     </div>
