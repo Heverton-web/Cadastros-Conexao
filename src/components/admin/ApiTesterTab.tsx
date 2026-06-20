@@ -295,7 +295,7 @@ export function ApiTesterTab() {
           </div>
 
           {/* Abas Secundárias */}
-          <div className="flex border-b border-input-border px-2 sm:px-5 overflow-x-auto whitespace-nowrap scrollbar-hide">
+          <div className="flex border-b border-input-border px-2 sm:px-5 my-0.5 overflow-x-auto whitespace-nowrap scrollbar-hide">
             {[
               { id: "headers", label: "Headers" },
               { id: "query", label: "Query Params" },

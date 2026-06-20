@@ -59,7 +59,7 @@ function AdminConfigPage() {
         ].map(({ key, label, icon: Icon }) => (
           <button key={key} onClick={() => setTab(key)} title={label}
             className={`flex items-center justify-center gap-2 px-4 rounded-lg py-2.5 transition min-w-max ${tab === key ? "bg-accent text-white" : "text-text-muted hover:text-text-main hover:bg-bg-dark"}`}>
-            <Icon size={18} /> <span className="text-xs font-medium">{label}</span>
+            <Icon size={20} /> <span className="hidden md:inline text-xs font-medium">{label}</span>
           </button>
         ))}
       </div>

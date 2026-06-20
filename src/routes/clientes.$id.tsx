@@ -317,17 +317,17 @@ function ClienteDetailPage() {
     return (
       <div className="flex flex-col items-end gap-1">
         <div className="flex items-center gap-1.5 flex-wrap justify-end">
-          <button onClick={() => handleMassaAction(aba, "ok")} disabled={submitting} className="flex items-center gap-1.5 rounded-lg bg-green-500/10 px-2.5 py-1.5 text-[10px] font-medium text-green-500 hover:bg-green-500/20 transition">
-            <CheckCircle size={14} /> Aprovar Todos
+          <button onClick={() => handleMassaAction(aba, "ok")} disabled={submitting} className="flex items-center justify-center rounded-lg bg-green-500/10 p-2 text-green-500 hover:bg-green-500/20 transition" title="Aprovar Todos">
+            <CheckCircle size={14} />
           </button>
-          <button onClick={() => handleMassaAction(aba, "reprovado")} disabled={submitting} className="flex items-center gap-1.5 rounded-lg bg-red-500/10 px-2.5 py-1.5 text-[10px] font-medium text-red-500 hover:bg-red-500/20 transition">
-            <XCircle size={14} /> Reprovar Todos
+          <button onClick={() => handleMassaAction(aba, "reprovado")} disabled={submitting} className="flex items-center justify-center rounded-lg bg-red-500/10 p-2 text-red-500 hover:bg-red-500/20 transition" title="Reprovar Todos">
+            <XCircle size={14} />
           </button>
-          <button onClick={() => handleMassaAction(aba, "em_correcao")} disabled={submitting} className="flex items-center gap-1.5 rounded-lg bg-orange-500/10 px-2.5 py-1.5 text-[10px] font-medium text-orange-500 hover:bg-orange-500/20 transition">
-            <AlertTriangle size={14} /> Corrigir Todos
+          <button onClick={() => handleMassaAction(aba, "em_correcao")} disabled={submitting} className="flex items-center justify-center rounded-lg bg-orange-500/10 p-2 text-orange-500 hover:bg-orange-500/20 transition" title="Corrigir Todos">
+            <AlertTriangle size={14} />
           </button>
-          <button onClick={() => handleMassaAction(aba, "pendente")} disabled={submitting} className="flex items-center gap-1.5 rounded-lg bg-accent/10 px-2.5 py-1.5 text-[10px] font-medium text-accent hover:bg-accent/20 transition">
-            <RotateCcw size={14} /> Revisar Todos
+          <button onClick={() => handleMassaAction(aba, "pendente")} disabled={submitting} className="flex items-center justify-center rounded-lg bg-accent/10 p-2 text-accent hover:bg-accent/20 transition" title="Revisar Todos">
+            <RotateCcw size={14} />
           </button>
         </div>
       </div>
@@ -383,47 +383,51 @@ function ClienteDetailPage() {
   const isAprovacaoBloqueada = hasPendingOrErrors;
 
   return (
-    <div className="flex flex-col gap-4 p-4 pb-28 lg:p-8 lg:pb-8">
-      <div className="flex items-center gap-3">
-        <button onClick={() => window.history.back()} className="text-text-muted hover:text-text-main"><ArrowLeft size={20} /></button>
-        <h1 className="text-lg font-bold text-text-main truncate">{nome}</h1>
-      </div>
+    <div className="flex flex-col gap-6 p-4 pb-28 lg:p-8 lg:pb-8 lg:gap-8">
+      <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
+        <div className="flex flex-col gap-3">
+          <div className="flex items-center gap-3">
+            <button onClick={() => window.history.back()} className="text-text-muted hover:text-text-main"><ArrowLeft size={20} /></button>
+            <h1 className="text-lg font-bold text-text-main truncate">{nome}</h1>
+          </div>
 
-      <div className="flex flex-wrap items-center gap-1.5">
-        <span className={`flex items-center gap-1 self-start rounded-full px-3 py-1 text-xs font-medium ${STATUS_COLOR[c.status as CadastroStatus]}`}>
-          {c.status === "aprovado" ? <CheckCircle size={14} /> : c.status === "reprovado" ? <XCircle size={14} /> : <AlertTriangle size={14} />}
-          {STATUS_LABEL[c.status as CadastroStatus]}
-        </span>
-        {c.status !== "aprovado" && (
-          <span className={`flex items-center gap-1 self-start rounded-full px-3 py-1 text-[10px] font-medium ${DOC_STATUS_COLOR[docStatus as keyof typeof DOC_STATUS_COLOR]}`}>
-            <FileText size={12} />
-            {DOC_STATUS_LABEL[docStatus as keyof typeof DOC_STATUS_LABEL]}
-          </span>
-        )}
-        {c.status === "aprovado" && c.codigo_cliente && (
-          <span className="flex items-center gap-1 self-start rounded-full px-3 py-1 text-xs font-bold bg-accent/10 text-accent border border-accent/20" title="Código do Cliente">
-            CLI-{c.codigo_cliente}
-          </span>
-        )}
-        {c.comentario_reprovacao && !isFinal && (
-          <button onClick={() => setShowResumo(true)} className="flex h-7 w-7 items-center justify-center rounded-full bg-orange-500/10 border border-orange-500/20 text-orange-400 hover:bg-orange-500/20 transition" title="Ver Resumo">
-            <Eye size={14} />
-          </button>
-        )}
-        {c.comentario_reprovacao && c.status === "reprovado" && (
-          <button onClick={() => setShowResumo(true)} className="flex h-7 w-7 items-center justify-center rounded-full bg-red-500/10 border border-red-500/20 text-red-400 hover:bg-red-500/20 transition" title="Ver Resumo">
-            <Eye size={14} />
-          </button>
-        )}
-      </div>
-
-      {permissoes?.aprovar_cadastro === true && !isFinal && (c.status === "em_analise" || c.status === "dados_enviados" || c.status === "em_correcao") && (
-        <div className="w-full flex gap-2 px-4 py-3 bg-card rounded-xl shadow-lg">
-          <button onClick={abrirCorrecao} className="flex-1 rounded-xl bg-orange-600/80 py-3 text-sm font-medium text-white max-h-[45px]">Corrigir</button>
-          <button onClick={() => isAprovacaoBloqueada ? alert("Não é possível aprovar. Todos os dados e documentos precisam estar aprovados.") : (setCodigoCliente(""), setShowAprovar(true))} disabled={isAprovacaoBloqueada} title={isAprovacaoBloqueada ? "Todos os campos devem estar aprovados" : ""} className="flex-1 rounded-xl bg-green-700/80 py-3 text-sm font-medium text-white max-h-[45px] disabled:opacity-50">Aprovar</button>
-          <button onClick={abrirReprovar} className="flex-1 rounded-xl bg-red-700/80 py-3 text-sm font-medium text-white max-h-[45px]">Reprovar</button>
+          <div className="flex flex-wrap items-center gap-2">
+            <span className={`flex items-center gap-1 self-start rounded-full px-3 py-1 text-xs font-medium ${STATUS_COLOR[c.status as CadastroStatus]}`}>
+              {c.status === "aprovado" ? <CheckCircle size={14} /> : c.status === "reprovado" ? <XCircle size={14} /> : <AlertTriangle size={14} />}
+              {STATUS_LABEL[c.status as CadastroStatus]}
+            </span>
+            {c.status !== "aprovado" && (
+              <span className={`flex items-center gap-1 self-start rounded-full px-3 py-1 text-[10px] font-medium ${DOC_STATUS_COLOR[docStatus as keyof typeof DOC_STATUS_COLOR]}`}>
+                <FileText size={12} />
+                {DOC_STATUS_LABEL[docStatus as keyof typeof DOC_STATUS_LABEL]}
+              </span>
+            )}
+            {c.status === "aprovado" && c.codigo_cliente && (
+              <span className="flex items-center gap-1 self-start rounded-full px-3 py-1 text-xs font-bold bg-accent/10 text-accent border border-accent/20" title="Código do Cliente">
+                CLI-{c.codigo_cliente}
+              </span>
+            )}
+            {c.comentario_reprovacao && !isFinal && (
+              <button onClick={() => setShowResumo(true)} className="flex h-7 w-7 items-center justify-center rounded-full bg-orange-500/10 border border-orange-500/20 text-orange-400 hover:bg-orange-500/20 transition" title="Ver Resumo">
+                <Eye size={14} />
+              </button>
+            )}
+            {c.comentario_reprovacao && c.status === "reprovado" && (
+              <button onClick={() => setShowResumo(true)} className="flex h-7 w-7 items-center justify-center rounded-full bg-red-500/10 border border-red-500/20 text-red-400 hover:bg-red-500/20 transition" title="Ver Resumo">
+                <Eye size={14} />
+              </button>
+            )}
+          </div>
         </div>
-      )}
+
+        {permissoes?.aprovar_cadastro === true && !isFinal && (c.status === "em_analise" || c.status === "dados_enviados" || c.status === "em_correcao") && (
+          <div className="w-full lg:w-auto flex flex-wrap gap-2 lg:gap-3">
+            <button onClick={abrirCorrecao} className="flex-1 lg:flex-none lg:w-32 rounded-xl bg-orange-600/80 py-2.5 px-4 text-sm font-medium text-white max-h-[45px] hover:bg-orange-600 transition shadow-lg border border-orange-600/20">Corrigir</button>
+            <button onClick={() => isAprovacaoBloqueada ? alert("Não é possível aprovar. Todos os dados e documentos precisam estar aprovados.") : (setCodigoCliente(""), setShowAprovar(true))} disabled={isAprovacaoBloqueada} title={isAprovacaoBloqueada ? "Todos os campos devem estar aprovados" : ""} className="flex-1 lg:flex-none lg:w-32 rounded-xl bg-green-700/80 py-2.5 px-4 text-sm font-medium text-white max-h-[45px] hover:bg-green-700 transition shadow-lg border border-green-700/20 disabled:opacity-50">Aprovar</button>
+            <button onClick={abrirReprovar} className="flex-1 lg:flex-none lg:w-32 rounded-xl bg-red-700/80 py-2.5 px-4 text-sm font-medium text-white max-h-[45px] hover:bg-red-700 transition shadow-lg border border-red-700/20">Reprovar</button>
+          </div>
+        )}
+      </div>
 
       {/* Mobile Tabs */}
       <div className="flex md:hidden gap-1 rounded-xl bg-card p-1">
@@ -434,9 +438,8 @@ function ClienteDetailPage() {
         ))}
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-start">
-        <div className="flex flex-col gap-4">
-          <div className={`${tab === "dados" ? "block" : "hidden md:block"} rounded-xl bg-card p-4 shadow-lg`}>
+      <div className={`grid grid-cols-1 md:grid-cols-2 ${end ? 'lg:grid-cols-3' : 'lg:grid-cols-2'} gap-6 lg:gap-8 items-start`}>
+          <div className={`${tab === "dados" ? "block" : "hidden md:block"} rounded-xl bg-card p-4 shadow-lg w-full`}>
           <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
             <h2 className="text-sm font-bold text-text-main">Dados do Cliente</h2>
             <BotoesAcaoMassa aba="dados" />
@@ -465,7 +468,7 @@ function ClienteDetailPage() {
         </div>
 
       {end && (
-        <div className={`${tab === "endereco" ? "block" : "hidden md:block"} rounded-xl bg-card p-4 shadow-lg`}>
+        <div className={`${tab === "endereco" ? "block" : "hidden md:block"} rounded-xl bg-card p-4 shadow-lg w-full`}>
           <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
             <h2 className="text-sm font-bold text-text-main">Endereço</h2>
             <BotoesAcaoMassa aba="endereco" />
@@ -490,7 +493,7 @@ function ClienteDetailPage() {
             
             if (!ruaLimpa && enderecoFull.startsWith(", ")) enderecoFull = enderecoFull.substring(2);
             if (!ruaLimpa && enderecoFull.startsWith(" - ")) enderecoFull = enderecoFull.substring(3);
-            return enderecoFull ? (
+            return enderecoFull && profile?.ambiente !== "cadastro" ? (
               <div className="flex items-start gap-2 mb-4 rounded-xl bg-accent/5 border border-accent/10 p-3">
                 <div className="flex-1 min-w-0">
                   <p className="text-[11px] text-text-muted mb-0.5">Endereço Completo</p>
@@ -515,10 +518,8 @@ function ClienteDetailPage() {
           </div>
         </div>
       )}
-      </div>
-
-      <div className="flex flex-col gap-4">
-        <div className={`${tab === "documentos" ? "block" : "hidden md:block"} rounded-xl bg-card p-4 shadow-lg`}>
+      {/* Documentos */}
+        <div className={`${tab === "documentos" ? "block" : "hidden md:block"} rounded-xl bg-card p-4 shadow-lg w-full`}>
           <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
             <h2 className="text-sm font-bold text-text-main">Documentos</h2>
             <BotoesAcaoMassa aba="documentos" />
@@ -559,7 +560,6 @@ function ClienteDetailPage() {
             }}
           />
         </div>
-      </div>
       </div>
 
       {showAprovar && <Modal titulo="Aprovar Cadastro" descricao="Insira o Código do Novo Cliente gerado no Protheus" onClose={() => setShowAprovar(false)}>

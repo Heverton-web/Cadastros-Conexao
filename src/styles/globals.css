@@ -105,6 +105,7 @@ body {
 /* ── Scrollbar custom ── */
 ::-webkit-scrollbar {
   width: 4px;
+  height: 4px;
 }
 ::-webkit-scrollbar-track {
   background: transparent;
@@ -144,4 +145,14 @@ body.modal-open {
   textarea {
     font-size: 16px !important;
   }
+}
+
+/* ── Ajustes Globais Nativos (Formulários) ── */
+:root {
+  color-scheme: dark;
+}
+
+option {
+  background-color: var(--color-bg) !important;
+  color: var(--color-text-main) !important;
 }
