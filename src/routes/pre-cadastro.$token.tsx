@@ -5,6 +5,7 @@ import { supabase } from "~/lib/supabase";
 import { buscarCepResiliente } from "~/lib/integracoes";
 import { uploadDocumento } from "~/lib/documentos";
 import { dispararWebhooks } from "~/lib/webhooks";
+import { carregarSchema, type CampoSchema } from "~/lib/form-schema";
 import { Loader2, CheckCircle, AlertTriangle, Send, KeyRound, Upload, Clock, ShieldCheck, Lock, XCircle } from "lucide-react";
 
 // ─── Funções de Máscara ──────────────────────────────────────────────────────
@@ -125,6 +126,15 @@ function PreCadastroPage() {
   // Modal Duplicado
   const [modalDuplicado, setModalDuplicado] = useState<{ tipo: string } | null>(null);
 
+  // Schema dinâmico do formulário
+  const [schemaDados, setSchemaDados] = useState<CampoSchema[]>([]);
+  const [schemaEndereco, setSchemaEndereco] = useState<CampoSchema[]>([]);
+  const [schemaDocs, setSchemaDocs] = useState<CampoSchema[]>([]);
+  const [schemaLoading, setSchemaLoading] = useState(false);
+
+  // Campos extras (custom) preenchidos pelo lead
+  const [extras, setExtras] = useState<Record<string, string | string[]>>({});
+
   const [submitting, setSubmitting] = useState(false);
   const [erro, setErro] = useState("");
   const [form, setForm] = useState<FormData>({
@@ -140,6 +150,23 @@ function PreCadastroPage() {
   useEffect(() => {
     validarToken();
   }, [token]);
+
+  // Carrega schema dinâmico quando o tipo de pessoa é definido
+  useEffect(() => {
+    if (!form.tipo) return;
+    const tipo = form.tipo as "PF" | "PJ";
+    setSchemaLoading(true);
+    Promise.all([
+      carregarSchema(tipo, "dados"),
+      carregarSchema(tipo, "endereco"),
+      carregarSchema(tipo, "documentos"),
+    ]).then(([dados, endereco, docs]) => {
+      setSchemaDados(dados);
+      setSchemaEndereco(endereco);
+      setSchemaDocs(docs);
+      setSchemaLoading(false);
+    });
+  }, [form.tipo]);
 
   // Hook do Timer de 24 Horas
   useEffect(() => {
@@ -362,6 +389,11 @@ function PreCadastroPage() {
         endereco_data: form.endereco,
       });
 
+      // Persiste campos extras (custom) preenchidos pelo lead
+      if (cadastroId && Object.keys(extras).length > 0) {
+        await supabase.from("cadastros").update({ dados_extras: extras }).eq("id", cadastroId);
+      }
+
       // Atualiza status do cadastro para em análise após envio de dados e docs
       await supabase.from("cadastros").update({ status: "em_analise" }).eq("id", cadastroId);
 
@@ -548,84 +580,167 @@ function PreCadastroPage() {
           </div>
         )}
 
-        {step === "dados" && form.tipo === "PF" && (
-          <div className="flex flex-col gap-3">
-            <p className="text-xs text-text-muted mb-2">Preencha todos os campos obrigatórios sinalizados com *</p>
-            <Campo label="Nome Completo *" value={form.pf.nome} onChange={v => setForm(prev => ({ ...prev, pf: { ...prev.pf, nome: v } }))} />
-            <Campo label="Data de Nascimento *" value={form.pf.data_nascimento} onChange={v => setForm(prev => ({ ...prev, pf: { ...prev.pf, data_nascimento: v } }))} type="date" />
-            <Campo label="Estado" value={form.pf.estado} onChange={v => setForm(prev => ({ ...prev, pf: { ...prev.pf, estado: v } }))} />
-            <Campo label="Número do CRO/TPD *" value={form.pf.cro} onChange={v => setForm(prev => ({ ...prev, pf: { ...prev.pf, cro: v } }))} />
-            <Campo label="Data emissão CRO/TPD" value={form.pf.data_emissao_cro} onChange={v => setForm(prev => ({ ...prev, pf: { ...prev.pf, data_emissao_cro: v } }))} type="date" />
-            <CampoMascarado label="CPF *" value={form.pf.cpf} onChange={v => setForm(prev => ({ ...prev, pf: { ...prev.pf, cpf: v } }))} mascara="cpf" placeholder="000.000.000-00" />
-            <Campo label="E-mail para Comunicação *" value={form.pf.email_comunicacao} onChange={v => setForm(prev => ({ ...prev, pf: { ...prev.pf, email_comunicacao: v } }))} type="email" />
-            <Campo label="E-mail para NF" value={form.pf.email_nf} onChange={v => setForm(prev => ({ ...prev, pf: { ...prev.pf, email_nf: v } }))} type="email" />
-            <CampoMascarado label="Telefone Fixo" value={form.pf.tel_fixo} onChange={v => setForm(prev => ({ ...prev, pf: { ...prev.pf, tel_fixo: v } }))} mascara="tel_fixo" placeholder="(00) 0000-0000" />
-            <CampoMascarado label="Celular 01" value={form.pf.celular1} onChange={v => setForm(prev => ({ ...prev, pf: { ...prev.pf, celular1: v } }))} mascara="celular" placeholder="(00) 00000-0000" />
-            <CampoMascarado label="Celular 02" value={form.pf.celular2} onChange={v => setForm(prev => ({ ...prev, pf: { ...prev.pf, celular2: v } }))} mascara="celular" placeholder="(00) 00000-0000" />
-            <div className="flex gap-3 mt-4">
-              <button onClick={() => setStep("tipo")} className="flex-1 rounded-xl border border-input-border py-3 text-sm text-text-muted">Voltar</button>
-              <button onClick={handleAvancarDados} className="flex-1 rounded-xl bg-accent py-3 text-sm font-medium text-white">Próximo</button>
-            </div>
-          </div>
-        )}
+        {step === "dados" && form.tipo && (() => {
+          // Função auxiliar: lê valor do estado correto por campo_key
+          function lerValor(key: string): string {
+            const escopo = form.tipo === "PF" ? form.pf : form.pj;
+            return (escopo as any)[key] ?? (extras[key] as string) ?? "";
+          }
+          function setValor(key: string, v: string) {
+            const camposPF = ["nome","data_nascimento","cpf","cro","cro_uf","data_emissao_cro","email_comunicacao","email_nf","tel_fixo","celular1","celular2","estado"];
+            const camposPJ = ["razao_social","nome_fantasia","cnpj","inscricao_estadual","cro","cro_uf","data_emissao_cro","email_comunicacao","email_nf","tel_fixo","celular1","celular2"];
+            if (form.tipo === "PF" && camposPF.includes(key)) {
+              setForm(prev => ({ ...prev, pf: { ...prev.pf, [key]: v } }));
+            } else if (form.tipo === "PJ" && camposPJ.includes(key)) {
+              setForm(prev => ({ ...prev, pj: { ...prev.pj, [key]: v } }));
+            } else {
+              setExtras(prev => ({ ...prev, [key]: v }));
+            }
+          }
 
-        {step === "dados" && form.tipo === "PJ" && (
-          <div className="flex flex-col gap-3">
-            <p className="text-xs text-text-muted mb-2">Preencha todos os campos obrigatórios sinalizados com *</p>
-            <Campo label="Razão Social *" value={form.pj.razao_social} onChange={v => setForm(prev => ({ ...prev, pj: { ...prev.pj, razao_social: v } }))} />
-            <Campo label="Nome Fantasia *" value={form.pj.nome_fantasia} onChange={v => setForm(prev => ({ ...prev, pj: { ...prev.pj, nome_fantasia: v } }))} />
-            <CampoMascarado label="CNPJ *" value={form.pj.cnpj} onChange={v => setForm(prev => ({ ...prev, pj: { ...prev.pj, cnpj: v } }))} mascara="cnpj" placeholder="00.000.000/0000-00" />
-            <Campo label="Inscrição Estadual *" value={form.pj.inscricao_estadual} onChange={v => setForm(prev => ({ ...prev, pj: { ...prev.pj, inscricao_estadual: v } }))} />
-            <Campo label="Número do CRO/TPD *" value={form.pj.cro} onChange={v => setForm(prev => ({ ...prev, pj: { ...prev.pj, cro: v } }))} />
-            <Campo label="Data emissão CRO/TPD" value={form.pj.data_emissao_cro} onChange={v => setForm(prev => ({ ...prev, pj: { ...prev.pj, data_emissao_cro: v } }))} type="date" />
-            <Campo label="E-mail para Comunicação *" value={form.pj.email_comunicacao} onChange={v => setForm(prev => ({ ...prev, pj: { ...prev.pj, email_comunicacao: v } }))} type="email" />
-            <Campo label="E-mail para NF" value={form.pj.email_nf} onChange={v => setForm(prev => ({ ...prev, pj: { ...prev.pj, email_nf: v } }))} type="email" />
-            <CampoMascarado label="Telefone Fixo" value={form.pj.tel_fixo} onChange={v => setForm(prev => ({ ...prev, pj: { ...prev.pj, tel_fixo: v } }))} mascara="tel_fixo" placeholder="(00) 0000-0000" />
-            <CampoMascarado label="Celular 01" value={form.pj.celular1} onChange={v => setForm(prev => ({ ...prev, pj: { ...prev.pj, celular1: v } }))} mascara="celular" placeholder="(00) 00000-0000" />
-            <CampoMascarado label="Celular 02" value={form.pj.celular2} onChange={v => setForm(prev => ({ ...prev, pj: { ...prev.pj, celular2: v } }))} mascara="celular" placeholder="(00) 00000-0000" />
-            <div className="flex gap-3 mt-4">
-              <button onClick={() => setStep("tipo")} className="flex-1 rounded-xl border border-input-border py-3 text-sm text-text-muted">Voltar</button>
-              <button onClick={handleAvancarDados} className="flex-1 rounded-xl bg-accent py-3 text-sm font-medium text-white">Próximo</button>
-            </div>
-          </div>
-        )}
+          function renderCampoDinamico(c: CampoSchema) {
+            const label = c.label + (c.obrigatorio ? " *" : "");
+            const val = lerValor(c.campo_key);
+            const onChange = (v: string) => setValor(c.campo_key, v);
 
-        {step === "endereco" && (
-          <div className="flex flex-col gap-3">
-            <p className="text-xs text-text-muted mb-2">As informações completas de seu endereço serão exibidas ao digitar o CEP</p>
-            <div className="flex gap-2">
-              <div className="flex-1">
-                <CampoMascarado label="CEP *" value={form.endereco.cep} onChange={v => setForm(prev => ({ ...prev, endereco: { ...prev.endereco, cep: v } }))} mascara="cep" placeholder="00000-000" />
+            if (c.tipo_input === "tel") {
+              // Detecta máscara pelo campo_key
+              const mascara = c.campo_key === "cpf" ? "cpf"
+                : c.campo_key === "cnpj" ? "cnpj"
+                : c.campo_key === "tel_fixo" ? "tel_fixo"
+                : "celular";
+              const ph = mascara === "cpf" ? "000.000.000-00"
+                : mascara === "cnpj" ? "00.000.000/0000-00"
+                : mascara === "tel_fixo" ? "(00) 0000-0000"
+                : "(00) 00000-0000";
+              return <CampoMascarado key={c.id} label={label} value={val} onChange={onChange} mascara={mascara} placeholder={ph} />;
+            }
+            if (c.tipo_input === "textarea") {
+              return (
+                <div key={c.id}>
+                  <p className="mb-1 text-xs font-medium text-text-muted">{label}</p>
+                  <textarea value={val} onChange={e => onChange(e.target.value)} rows={3}
+                    className="w-full rounded-lg border border-input-border bg-input-bg px-4 py-3 text-sm text-text-main outline-none focus:border-accent resize-none" />
+                </div>
+              );
+            }
+            if (c.tipo_input === "select") {
+              return (
+                <div key={c.id}>
+                  <p className="mb-1 text-xs font-medium text-text-muted">{label}</p>
+                  <select value={val} onChange={e => onChange(e.target.value)}
+                    className="w-full rounded-lg border border-input-border bg-input-bg px-4 py-3 text-sm text-text-main outline-none focus:border-accent">
+                    <option value="">Selecione…</option>
+                    {(c.opcoes ?? []).map((op: string) => <option key={op} value={op}>{op}</option>)}
+                  </select>
+                </div>
+              );
+            }
+            if (c.tipo_input === "multiselect" || c.tipo_input === "checkbox") {
+              const selecionados: string[] = Array.isArray(extras[c.campo_key]) ? extras[c.campo_key] as string[] : [];
+              return (
+                <div key={c.id}>
+                  <p className="mb-1 text-xs font-medium text-text-muted">{label}</p>
+                  <div className="flex flex-col gap-1.5">
+                    {(c.opcoes ?? []).map((op: string) => (
+                      <button key={op} type="button"
+                        onClick={() => {
+                          const novo = selecionados.includes(op)
+                            ? selecionados.filter(s => s !== op)
+                            : [...selecionados, op];
+                          setExtras(prev => ({ ...prev, [c.campo_key]: novo }));
+                        }}
+                        className={`flex items-center gap-2 rounded-lg border px-3 py-2.5 text-xs transition ${
+                          selecionados.includes(op)
+                            ? "border-accent bg-accent/10 text-accent"
+                            : "border-input-border bg-input-bg text-text-muted"
+                        }`}>
+                        <div className={`h-4 w-4 rounded border-2 flex-shrink-0 flex items-center justify-center ${
+                          selecionados.includes(op) ? "border-accent bg-accent" : "border-input-border"
+                        }`}>
+                          {selecionados.includes(op) && <span className="text-white text-[10px]">✓</span>}
+                        </div>
+                        {op}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              );
+            }
+            // text, email, date e fallback
+            return <Campo key={c.id} label={label} value={val} onChange={onChange} type={c.tipo_input} />;
+          }
+
+          return (
+            <div className="flex flex-col gap-3">
+              {schemaLoading ? (
+                <div className="flex items-center justify-center py-8">
+                  <Loader2 size={24} className="animate-spin text-accent" />
+                </div>
+              ) : (
+                <>
+                  <p className="text-xs text-text-muted mb-2">Preencha todos os campos obrigatórios sinalizados com *</p>
+                  {schemaDados.map(c => renderCampoDinamico(c))}
+                </>
+              )}
+              <div className="flex gap-3 mt-4">
+                <button onClick={() => setStep("tipo")} className="flex-1 rounded-xl border border-input-border py-3 text-sm text-text-muted">Voltar</button>
+                <button onClick={handleAvancarDados} className="flex-1 rounded-xl bg-accent py-3 text-sm font-medium text-white">Próximo</button>
               </div>
-              <button onClick={handleBuscarCEP} className="mt-6 rounded-lg bg-accent px-4 py-3 text-xs font-medium text-white min-h-[44px]">Buscar</button>
             </div>
-            <Campo label="Rua *" value={form.endereco.rua} onChange={v => setForm(prev => ({ ...prev, endereco: { ...prev.endereco, rua: v } }))} />
-            <div className="flex gap-2">
-              <div className="flex-1"><Campo label="Número *" value={form.endereco.numero} onChange={v => setForm(prev => ({ ...prev, endereco: { ...prev.endereco, numero: v } }))} /></div>
-              <div className="flex-1"><Campo label="Bairro *" value={form.endereco.bairro} onChange={v => setForm(prev => ({ ...prev, endereco: { ...prev.endereco, bairro: v } }))} /></div>
+          );
+        })()}
+
+        {step === "endereco" && (() => {
+          function setEnd(key: string, v: string) {
+            setForm(prev => ({ ...prev, endereco: { ...prev.endereco, [key]: v } }));
+          }
+          function renderEndDinamico(c: CampoSchema) {
+            const label = c.label + (c.obrigatorio ? " *" : "");
+            const endKey = c.campo_key === "estado_end" ? "estado" : c.campo_key;
+            const val = (form.endereco as any)[endKey] ?? "";
+            if (c.campo_key === "cep") {
+              return (
+                <div key={c.id} className="flex gap-2">
+                  <div className="flex-1">
+                    <CampoMascarado label={label} value={val} onChange={v => setEnd("cep", v)} mascara="cep" placeholder="00000-000" />
+                  </div>
+                  <button onClick={handleBuscarCEP} className="mt-6 rounded-lg bg-accent px-4 py-3 text-xs font-medium text-white min-h-[44px]">Buscar</button>
+                </div>
+              );
+            }
+            return <Campo key={c.id} label={label} value={val} onChange={v => setEnd(endKey, v)} />;
+          }
+          return (
+            <div className="flex flex-col gap-3">
+              {schemaLoading ? (
+                <div className="flex items-center justify-center py-8"><Loader2 size={24} className="animate-spin text-accent" /></div>
+              ) : (
+                <>
+                  <p className="text-xs text-text-muted mb-2">As informações de endereço serão preenchidas automaticamente pelo CEP</p>
+                  {schemaEndereco.map(c => renderEndDinamico(c))}
+                </>
+              )}
+              <div className="flex gap-3 mt-4">
+                <button onClick={() => setStep("dados")} className="flex-1 rounded-xl border border-input-border py-3 text-sm text-text-muted">Voltar</button>
+                <button onClick={() => setStep("documentos")} className="flex-1 rounded-xl bg-accent py-3 text-sm font-medium text-white">Próximo</button>
+              </div>
             </div>
-            <Campo label="Complemento" value={form.endereco.complemento} onChange={v => setForm(prev => ({ ...prev, endereco: { ...prev.endereco, complemento: v } }))} />
-            <div className="flex gap-2">
-              <div className="flex-1"><Campo label="Cidade *" value={form.endereco.cidade} onChange={v => setForm(prev => ({ ...prev, endereco: { ...prev.endereco, cidade: v } }))} /></div>
-              <div className="flex-1"><Campo label="Estado *" value={form.endereco.estado} onChange={v => setForm(prev => ({ ...prev, endereco: { ...prev.endereco, estado: v } }))} /></div>
-            </div>
-            <div className="flex gap-3 mt-4">
-              <button onClick={() => setStep("dados")} className="flex-1 rounded-xl border border-input-border py-3 text-sm text-text-muted">Voltar</button>
-              <button onClick={() => setStep("documentos")} className="flex-1 rounded-xl bg-accent py-3 text-sm font-medium text-white">Próximo</button>
-            </div>
-          </div>
-        )}
+          );
+        })()}
 
         {step === "documentos" && (
           <div className="flex flex-col gap-3">
-            <p className="text-xs text-text-muted mb-2">Atente-se para os formatos permitidos: .jpeg | .jpg | .png | .pdf</p>
-            <DocUpload label="CRO/TPD - Frente" tipo="cro_frente" cadastroId={cadastroId} />
-            <DocUpload label="CRO/TPD - Verso" tipo="cro_verso" cadastroId={cadastroId} />
-            <DocUpload label="CNH/CPF/RG - Frente" tipo="cnh_frente" cadastroId={cadastroId} />
-            <DocUpload label="CNH/CPF/RG - Verso" tipo="cnh_verso" cadastroId={cadastroId} />
-            <DocUpload label="Comprovante de Endereço" tipo="comprovante_endereco" cadastroId={cadastroId} />
-            {form.tipo === "PJ" && <DocUpload label="Contrato Social" tipo="contrato_social" cadastroId={cadastroId} />}
-            {form.tipo === "PJ" && <DocUpload label="Declaração de Prestação de Serviço" tipo="declaracao_prestacao_servico" cadastroId={cadastroId} />}
+            {schemaLoading ? (
+              <div className="flex items-center justify-center py-8"><Loader2 size={24} className="animate-spin text-accent" /></div>
+            ) : (
+              <>
+                <p className="text-xs text-text-muted mb-2">Formatos permitidos: .jpeg | .jpg | .png | .pdf</p>
+                {schemaDocs.map(c => (
+                  <DocUpload key={c.id} label={c.label} tipo={c.campo_key} cadastroId={cadastroId} obrigatorio={c.obrigatorio} />
+                ))}
+              </>
+            )}
             {erro && <p className="text-xs text-red-400">{erro}</p>}
             <div className="flex gap-3 mt-4">
               <button onClick={() => setStep("endereco")} className="flex-1 rounded-xl border border-input-border py-3 text-sm text-text-muted">Voltar</button>
@@ -700,7 +815,7 @@ function CampoMascarado({ label, value, onChange, mascara, placeholder }: {
   </div>;
 }
 
-function DocUpload({ label, tipo, cadastroId }: { label: string; tipo: string; cadastroId: string | null }) {
+function DocUpload({ label, tipo, cadastroId, obrigatorio }: { label: string; tipo: string; cadastroId: string | null; obrigatorio?: boolean }) {
   const [nome, setNome] = useState("");
   const handleFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -711,10 +826,11 @@ function DocUpload({ label, tipo, cadastroId }: { label: string; tipo: string; c
     } catch { }
   };
   return <div>
-    <p className="mb-1 text-xs font-medium text-text-muted">{label}</p>
-    <label className="flex items-center gap-2 rounded-lg border border-dashed border-input-border bg-input-bg px-4 py-3 cursor-pointer">
-      <Upload size={16} className="text-accent" />
+    <p className="mb-1 text-xs font-medium text-text-muted">{label}{obrigatorio && <span className="text-accent ml-0.5">*</span>}</p>
+    <label className="flex items-center gap-2 rounded-lg border border-dashed border-input-border bg-input-bg px-4 py-3 cursor-pointer hover:border-accent/50 transition-colors">
+      <Upload size={16} className={nome ? "text-green-400" : "text-accent"} />
       <span className="flex-1 text-sm text-text-muted truncate">{nome || "Clique para anexar"}</span>
+      {nome && <span className="text-[10px] text-green-400 font-medium">✓</span>}
       <input type="file" accept=".jpeg,.jpg,.png,.pdf" onChange={handleFile} className="hidden" />
     </label>
   </div>;

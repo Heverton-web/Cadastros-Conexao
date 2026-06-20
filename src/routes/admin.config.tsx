@@ -11,7 +11,7 @@ import {
   listarWebhookLogs, dispararWebhooks, type Webhook, type WebhookInput, type WebhookLog,
   EVENTOS_STATUS_CHANGE, EVENTOS_BUTTON_ACTION,
 } from "~/lib/webhooks";
-import { Loader2, Save, Plus, X, ToggleLeft, ToggleRight, Trash2, Settings, Database, Shield, Webhook as WebhookIcon, RefreshCw, History, UserRound as UserIcon, ShieldCheck, ShieldX, FlaskConical, Link2, Bell } from "lucide-react";
+import { Loader2, Save, Plus, X, ToggleLeft, ToggleRight, Trash2, Settings, Database, Shield, Webhook as WebhookIcon, RefreshCw, History, UserRound as UserIcon, ShieldCheck, ShieldX, FlaskConical, Link2, Bell, FormInput } from "lucide-react";
 import { listarTemplates, atualizarTemplate, type NotificacaoTemplate } from "~/lib/notificacoes";
 import toast from "react-hot-toast";
 
@@ -19,9 +19,10 @@ import { listarPermissoesUsuarios, setPermissoes, getPermissoesPadrao, PERMISSOE
 import { listarLinksTestes, criarLinkTeste, excluirLinkTeste, listarDemoCredentials, criarDemoCredential, excluirDemoCredential, type LinkTeste, type DemoCredential } from "~/lib/demos";
 import { DemosTab } from "~/components/admin/DemosTab";
 import { ApiTesterTab } from "~/components/admin/ApiTesterTab";
+import { FormBuilderTab } from "~/components/admin/FormBuilderTab";
 import { listarIntegracoes, salvarIntegracao, testarConexaoEvolution, type IntegracaoConfig } from "~/lib/integracoes";
 
-type Tab = "supabase" | "credenciais" | "api_connectors" | "webhooks" | "permissoes" | "demos" | "notificacoes" | "integracoes";
+type Tab = "supabase" | "credenciais" | "api_connectors" | "webhooks" | "permissoes" | "demos" | "notificacoes" | "integracoes" | "formulario";
 
 export const adminConfigRoute = createRoute({
   getParentRoute: () => authLayout,
@@ -60,6 +61,7 @@ function AdminConfigPage() {
           { key: "demos" as Tab, label: "Laboratório", icon: FlaskConical },
           { key: "notificacoes" as Tab, label: "Notificações", icon: Bell },
           { key: "integracoes" as Tab, label: "Integrações Nativas", icon: RefreshCw },
+          { key: "formulario" as Tab, label: "Formulário do Lead", icon: FormInput },
         ].map(({ key, label, icon: Icon }) => (
           <button key={key} onClick={() => setTab(key)} title={label}
             className={`flex items-center justify-center gap-2 px-4 rounded-lg py-2.5 transition min-w-max ${tab === key ? "bg-accent text-white" : "text-text-muted hover:text-text-main hover:bg-bg-dark"}`}>
@@ -76,6 +78,7 @@ function AdminConfigPage() {
       {tab === "demos" && <DemosTab />}
       {tab === "notificacoes" && <NotificacoesTab />}
       {tab === "integracoes" && <IntegracoesTab />}
+      {tab === "formulario" && <FormBuilderTab />}
     </div>
   );
 }
