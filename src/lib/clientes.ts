@@ -44,6 +44,12 @@ export async function listarCadastros(filters?: {
   created_by?: string;
   search?: string;
 }) {
+  try {
+    await supabase.rpc("limpar_links_expirados");
+  } catch (err) {
+    console.error("Erro ao limpar links expirados:", err);
+  }
+
   let query = supabase
     .from("cadastros")
     .select("*, profiles!created_by(nome)")
@@ -74,7 +80,11 @@ export async function buscarCadastro(id: string) {
 }
 
 export async function buscarCadastroCompleto(id: string) {
-    const { data: cad, error } = await supabase
+  try {
+    await supabase.rpc("limpar_links_expirados");
+  } catch {}
+
+  const { data: cad, error } = await supabase
     .from("cadastros")
     .select("*, profiles!created_by(nome, email)")
     .eq("id", id)

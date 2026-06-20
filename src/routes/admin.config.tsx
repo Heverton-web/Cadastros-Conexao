@@ -11,7 +11,8 @@ import {
   listarWebhookLogs, dispararWebhooks, type Webhook, type WebhookInput, type WebhookLog,
   EVENTOS_STATUS_CHANGE, EVENTOS_BUTTON_ACTION,
 } from "~/lib/webhooks";
-import { Loader2, Save, Plus, X, ToggleLeft, ToggleRight, Trash2, Settings, Database, Shield, Webhook as WebhookIcon, RefreshCw, History, UserRound as UserIcon, ShieldCheck, ShieldX, FlaskConical, Link2 } from "lucide-react";
+import { Loader2, Save, Plus, X, ToggleLeft, ToggleRight, Trash2, Settings, Database, Shield, Webhook as WebhookIcon, RefreshCw, History, UserRound as UserIcon, ShieldCheck, ShieldX, FlaskConical, Link2, Bell } from "lucide-react";
+import { listarTemplates, atualizarTemplate, type NotificacaoTemplate } from "~/lib/notificacoes";
 import toast from "react-hot-toast";
 
 import { listarPermissoesUsuarios, setPermissoes, getPermissoesPadrao, PERMISSOES_GROUPS, PERMISSOES_LABEL, PERMISSOES_DESC, type Permissoes } from "~/lib/permissoes";
@@ -19,7 +20,7 @@ import { listarLinksTestes, criarLinkTeste, excluirLinkTeste, listarDemoCredenti
 import { DemosTab } from "~/components/admin/DemosTab";
 import { ApiTesterTab } from "~/components/admin/ApiTesterTab";
 
-type Tab = "supabase" | "credenciais" | "api_connectors" | "webhooks" | "permissoes" | "demos";
+type Tab = "supabase" | "credenciais" | "api_connectors" | "webhooks" | "permissoes" | "demos" | "notificacoes";
 
 export const adminConfigRoute = createRoute({
   getParentRoute: () => authLayout,
@@ -56,6 +57,7 @@ function AdminConfigPage() {
           { key: "webhooks" as Tab, label: "Webhooks Gatilhos", icon: WebhookIcon },
           { key: "permissoes" as Tab, label: "Permissões", icon: UserIcon },
           { key: "demos" as Tab, label: "Laboratório", icon: FlaskConical },
+          { key: "notificacoes" as Tab, label: "Notificações", icon: Bell },
         ].map(({ key, label, icon: Icon }) => (
           <button key={key} onClick={() => setTab(key)} title={label}
             className={`flex items-center justify-center gap-2 px-4 rounded-lg py-2.5 transition min-w-max ${tab === key ? "bg-accent text-white" : "text-text-muted hover:text-text-main hover:bg-bg-dark"}`}>
@@ -70,6 +72,7 @@ function AdminConfigPage() {
       {tab === "webhooks" && <WebhooksTab />}
       {tab === "permissoes" && <PermissoesTab />}
       {tab === "demos" && <DemosTab />}
+      {tab === "notificacoes" && <NotificacoesTab />}
     </div>
   );
 }
@@ -616,6 +619,118 @@ function PermissoesTab() {
             <div className="flex gap-3 mt-4">
               <button onClick={() => { setEditUser(null); setEditPerms(null); }} className="flex-1 rounded-xl border border-input-border py-3 text-sm font-medium text-text-muted">Cancelar</button>
               <button onClick={salvar} disabled={saving} className="flex items-center justify-center gap-1 flex-1 rounded-xl bg-accent py-3 text-sm font-medium text-white disabled:opacity-50">
+                {saving ? <Loader2 size={16} className="animate-spin" /> : <Save size={16} />} Salvar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function NotificacoesTab() {
+  const [templates, setTemplates] = useState<NotificacaoTemplate[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [editTemplate, setEditTemplate] = useState<NotificacaoTemplate | null>(null);
+  const [form, setForm] = useState({ titulo: "", corpo: "", ativo: true });
+  const [saving, setSaving] = useState(false);
+
+  useEffect(() => { carregar(); }, []);
+
+  async function carregar() {
+    setLoading(true);
+    try {
+      const data = await listarTemplates();
+      setTemplates(data);
+    } catch {
+      toast.error("Erro ao carregar templates de notificações");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  function iniciarEdicao(t: NotificacaoTemplate) {
+    setEditTemplate(t);
+    setForm({ titulo: t.titulo, corpo: t.corpo_template, ativo: t.ativo });
+  }
+
+  async function handleSalvar() {
+    if (!editTemplate) return;
+    setSaving(true);
+    try {
+      await atualizarTemplate(editTemplate.evento, form.titulo, form.corpo, form.ativo);
+      toast.success("Template atualizado com sucesso!");
+      setEditTemplate(null);
+      carregar();
+    } catch {
+      toast.error("Erro ao salvar template");
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  if (loading) return <div className="flex justify-center py-12"><Loader2 size={24} className="animate-spin text-accent" /></div>;
+
+  return (
+    <div className="flex flex-col gap-3">
+      <p className="text-xs text-text-muted">Personalize e gerencie os templates de notificações enviados aos usuários em cada evento do sistema.</p>
+      
+      <div className="flex flex-col gap-3">
+        {templates.map(t => (
+          <div key={t.id} className="rounded-xl bg-card p-4 shadow-lg flex flex-col gap-2 border border-border-subtle/30">
+            <div className="flex items-center justify-between">
+              <div className="flex flex-col">
+                <span className="text-sm font-bold text-text-main">{t.titulo}</span>
+                <span className="text-[10px] text-accent font-mono uppercase tracking-wider mt-0.5">{t.evento}</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <span className={`rounded-full px-2 py-0.5 text-[9px] font-medium ${t.ativo ? "bg-green-500/10 text-green-400" : "bg-red-500/10 text-red-400"}`}>
+                  {t.ativo ? "Ativo" : "Inativo"}
+                </span>
+                <button onClick={() => iniciarEdicao(t)} className="text-xs text-accent font-medium hover:underline">
+                  Editar
+                </button>
+              </div>
+            </div>
+            <p className="text-xs text-text-muted italic bg-bg-dark/50 p-2.5 rounded-lg border border-border-subtle/20 mt-1 whitespace-pre-wrap">{t.corpo_template}</p>
+          </div>
+        ))}
+      </div>
+
+      {editTemplate && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-6">
+          <div className="w-full max-w-md rounded-2xl bg-card p-6 shadow-xl border border-border-subtle" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex flex-col">
+                <h2 className="text-base font-bold text-text-main">Editar Template</h2>
+                <span className="text-[10px] text-accent font-mono uppercase mt-0.5">{editTemplate.evento}</span>
+              </div>
+              <button onClick={() => setEditTemplate(null)} className="text-text-muted hover:text-text-main"><X size={20} /></button>
+            </div>
+            
+            <div className="flex flex-col gap-3.5 mb-5">
+              <div>
+                <label className="text-xs font-semibold text-text-muted mb-1 block">Título</label>
+                <input value={form.titulo} onChange={e => setForm(prev => ({ ...prev, titulo: e.target.value }))} className="w-full rounded-lg border border-input-border bg-input-bg px-4 py-3 text-sm text-text-main outline-none focus:border-accent min-h-[44px]" />
+              </div>
+
+              <div>
+                <label className="text-xs font-semibold text-text-muted mb-1 block">Corpo do Template (Placeholders: {"{{lead_nome}}"}, {"{{motivo}}"}, {"{{codigo_cliente}}"}, {"{{nome}}"}, {"{{email}}"}, {"{{departamento}}"})</label>
+                <textarea value={form.corpo} onChange={e => setForm(prev => ({ ...prev, corpo: e.target.value }))} rows={4} className="w-full rounded-lg border border-input-border bg-input-bg px-4 py-3 text-sm text-text-main outline-none focus:border-accent resize-none min-h-[100px]" />
+              </div>
+
+              <div className="flex items-center justify-between p-2 rounded-lg bg-bg-dark/50 border border-border-subtle/20">
+                <span className="text-xs font-semibold text-text-muted">Template Ativo</span>
+                <button onClick={() => setForm(prev => ({ ...prev, ativo: !prev.ativo }))} className={form.ativo ? "text-green-400" : "text-text-muted"}>
+                  {form.ativo ? <ToggleRight size={28} /> : <ToggleLeft size={28} />}
+                </button>
+              </div>
+            </div>
+
+            <div className="flex gap-3">
+              <button onClick={() => setEditTemplate(null)} className="flex-1 rounded-xl border border-input-border py-3 text-sm font-semibold text-text-muted">Cancelar</button>
+              <button onClick={handleSalvar} disabled={saving || !form.titulo || !form.corpo} className="flex-1 rounded-xl bg-accent py-3 text-sm font-semibold text-white flex items-center justify-center gap-1.5">
                 {saving ? <Loader2 size={16} className="animate-spin" /> : <Save size={16} />} Salvar
               </button>
             </div>

@@ -3,6 +3,7 @@ import { authLayout } from "./_auth";
 import { useState, useEffect } from "react";
 import { useAuth } from "~/lib/auth";
 import { listarCredenciais, criarCredencial, toggleCredencial, type Credencial } from "~/lib/credenciais";
+import { dispararWebhooks } from "~/lib/webhooks";
 import { Loader2, Plus, UserPlus, ToggleLeft, ToggleRight, Shield, X } from "lucide-react";
 
 export const credenciaisRoute = createRoute({
@@ -32,6 +33,16 @@ function CredenciaisPage() {
     setSubmitting(true);
     try {
       await criarCredencial(form);
+      try {
+        await dispararWebhooks("criacao_credencial", {
+          nome: form.nome_completo,
+          email: form.email_corporativo,
+          whatsapp: form.whatsapp_corporativo || "",
+          departamento: form.departamento || "",
+        });
+      } catch (err) {
+        console.error("Erro ao disparar webhook de credencial:", err);
+      }
       setShowForm(false); setForm({ nome_completo: "", email_corporativo: "", whatsapp_corporativo: "", departamento: "" });
       carregar();
     } catch (e) { console.error(e); } finally { setSubmitting(false); }
