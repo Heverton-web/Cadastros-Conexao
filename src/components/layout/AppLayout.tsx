@@ -1,16 +1,62 @@
 import { Outlet, useNavigate, useLocation, Link } from "@tanstack/react-router";
 import { BottomNav } from "./BottomNav";
 import { useAuth } from "~/lib/auth";
-import { LogOut } from "lucide-react";
+import { LogOut, Bell } from "lucide-react";
 import { useNavItems } from "./useNavItems";
 import { cn } from "~/lib/utils";
 import { DeviceGate } from "./DeviceGate";
+import { useState, useEffect } from "react";
+import { listarNotificacoes, marcarComoLida, marcarTodasComoLidas, type Notificacao } from "~/lib/notificacoes";
 
 export function AppLayout() {
   const navigate = useNavigate();
   const location = useLocation();
   const { profile, logout } = useAuth();
   const navItems = useNavItems();
+
+  const [notifs, setNotifs] = useState<Notificacao[]>([]);
+  const [showNotifs, setShowNotifs] = useState(false);
+
+  useEffect(() => {
+    if (profile?.id) {
+      carregarNotifs();
+      const interval = setInterval(carregarNotifs, 10000);
+      return () => clearInterval(interval);
+    }
+  }, [profile?.id]);
+
+  async function carregarNotifs() {
+    if (!profile?.id) return;
+    try {
+      const data = await listarNotificacoes(profile.id);
+      setNotifs(data);
+    } catch (e) {
+      console.error("Erro ao carregar notificações:", e);
+    }
+  }
+
+  async function handleMarcarLida(id: string, cadastroId?: string) {
+    try {
+      await marcarComoLida(id);
+      await carregarNotifs();
+      if (cadastroId) {
+        setShowNotifs(false);
+        navigate({ to: "/clientes/$id", params: { id: cadastroId } });
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  async function handleMarcarTodasLidas() {
+    if (!profile?.id) return;
+    try {
+      await marcarTodasComoLidas(profile.id);
+      await carregarNotifs();
+    } catch (e) {
+      console.error(e);
+    }
+  }
 
   return (
     <DeviceGate>
@@ -42,10 +88,47 @@ export function AppLayout() {
           </nav>
           
           <div className="flex items-center gap-3">
-          <span className="text-[11px] text-text-muted block truncate max-w-[120px]">{profile?.nome}</span>
-          <button onClick={() => { logout(); navigate({ to: "/" }); }} className="flex items-center gap-1 text-xs text-text-muted hover:text-red-400 transition-colors">
-            <LogOut size={16} />
-          </button>
+            {/* Sino de Notificações */}
+            <div className="relative">
+              <button onClick={() => setShowNotifs(!showNotifs)} className="relative flex items-center justify-center p-1.5 rounded-lg text-text-muted hover:bg-input-bg hover:text-text-main transition-colors" title="Notificações">
+                <Bell size={18} />
+                {notifs.length > 0 && (
+                  <span className="absolute -top-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[9px] font-bold text-white ring-2 ring-header-bg">
+                    {notifs.length}
+                  </span>
+                )}
+              </button>
+
+              {showNotifs && (
+                <div className="absolute right-0 mt-2 w-72 rounded-xl bg-card border border-border-subtle shadow-2xl z-50 p-2 flex flex-col gap-1.5 max-h-[350px] overflow-y-auto">
+                  <div className="flex items-center justify-between px-2 py-1.5 border-b border-border-subtle/50 mb-1">
+                    <span className="text-xs font-bold text-text-main">Notificações</span>
+                    {notifs.length > 0 && (
+                      <button onClick={handleMarcarTodasLidas} className="text-[10px] text-accent font-medium hover:underline">
+                        Limpar tudo
+                      </button>
+                    )}
+                  </div>
+                  
+                  {notifs.length === 0 ? (
+                    <p className="text-center text-xs text-text-muted py-6">Nenhuma notificação nova</p>
+                  ) : (
+                    notifs.map(n => (
+                      <button key={n.id} onClick={() => handleMarcarLida(n.id, n.dados?.cadastro_id)} className="w-full text-left rounded-lg p-2 hover:bg-bg-dark transition flex flex-col gap-0.5 border border-transparent hover:border-border-subtle/30">
+                        <span className="text-xs font-bold text-text-main">{n.titulo}</span>
+                        <span className="text-[10px] text-text-muted leading-relaxed line-clamp-2">{n.mensagem}</span>
+                        <span className="text-[8px] text-text-muted mt-1 font-mono">{new Date(n.created_at).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })} - {new Date(n.created_at).toLocaleDateString("pt-BR")}</span>
+                      </button>
+                    ))
+                  )}
+                </div>
+              )}
+            </div>
+
+            <span className="text-[11px] text-text-muted block truncate max-w-[120px]">{profile?.nome}</span>
+            <button onClick={() => { logout(); navigate({ to: "/" }); }} className="flex items-center gap-1 text-xs text-text-muted hover:text-red-400 transition-colors">
+              <LogOut size={16} />
+            </button>
           </div>
         </div>
       </header>

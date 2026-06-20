@@ -10,6 +10,7 @@ import { DocList } from "~/components/ui/doc-viewer";
 import { getRevisoes, setRevisaoCampo, setRevisoesMassa, STATUS_REVISAO_LABEL, STATUS_REVISAO_COLOR, type Revisoes, type RevisaoStatus } from "~/lib/revisoes";
 import { formatPhone } from "~/lib/utils";
 import { ArrowLeft, Loader2, CheckCircle, XCircle, AlertTriangle, X, FileText, MapPin, Mail, MessageCircle, RotateCcw, Eye } from "lucide-react";
+import { enviarNotificacaoComTemplate } from "~/lib/notificacoes";
 
 const LABEL_MAP: Record<string, string> = {
   "pf.nome": "Nome", "pf.cpf": "CPF", "pf.data_nascimento": "Data de Nascimento", "pf.cro": "CRO", "pf.data_emissao_cro": "Emissão CRO",
@@ -90,6 +91,17 @@ function ClienteDetailPage() {
       await logAtividade("cadastro", id, "aprovado", `Aprovado código ${codigoCliente}`);
 
       const c = data.cadastro;
+      if (c.created_by) {
+        try {
+          await enviarNotificacaoComTemplate("cadastro_aprovado", id, c.created_by, {
+            lead_nome: c.lead_nome || c.nome_temporario || "Sem Nome",
+            codigo_cliente: codigoCliente,
+          });
+        } catch (err) {
+          console.error("Erro ao enviar notificacao aprovar:", err);
+        }
+      }
+
       const pf = data.pf;
       const pj = data.pj;
       
@@ -140,6 +152,17 @@ function ClienteDetailPage() {
       await logAtividade("cadastro", id, "reprovado", motivo);
       
       const c = data.cadastro;
+      if (c.created_by) {
+        try {
+          await enviarNotificacaoComTemplate("cadastro_reprovado", id, c.created_by, {
+            lead_nome: c.lead_nome || c.nome_temporario || "Sem Nome",
+            motivo: motivo,
+          });
+        } catch (err) {
+          console.error("Erro ao enviar notificacao reprovar:", err);
+        }
+      }
+
       const pf = data.pf;
       const pj = data.pj;
       
@@ -192,6 +215,17 @@ function ClienteDetailPage() {
       await logAtividade("cadastro", id, "correcao", motivo);
       
       const c = data.cadastro;
+      if (c.created_by) {
+        try {
+          await enviarNotificacaoComTemplate("cadastro_correcao", id, c.created_by, {
+            lead_nome: c.lead_nome || c.nome_temporario || "Sem Nome",
+            motivo: motivo,
+          });
+        } catch (err) {
+          console.error("Erro ao enviar notificacao correcao:", err);
+        }
+      }
+
       const pf = data.pf;
       const pj = data.pj;
       

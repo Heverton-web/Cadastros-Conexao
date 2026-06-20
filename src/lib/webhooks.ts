@@ -154,4 +154,5 @@ export const EVENTOS_BUTTON_ACTION = [
   { value: "botao_aprovar", label: "Aprovar Cadastro" },
   { value: "botao_reprovar", label: "Reprovar Cadastro" },
   { value: "botao_corrigir", label: "Solicitar Correção" },
+  { value: "criacao_credencial", label: "Criação de Credencial" },
 ];

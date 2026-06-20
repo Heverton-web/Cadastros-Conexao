@@ -1,11 +1,11 @@
 import { createRoute, useNavigate, useParams } from "@tanstack/react-router";
 import { rootRoute } from "./__root";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { supabase } from "~/lib/supabase";
 import { buscarCEP } from "~/lib/viacep";
 import { uploadDocumento } from "~/lib/documentos";
 import { dispararWebhooks } from "~/lib/webhooks";
-import { Loader2, CheckCircle, ArrowLeft, AlertTriangle, Send, KeyRound, Upload } from "lucide-react";
+import { Loader2, CheckCircle, AlertTriangle, Send, KeyRound, Upload, Clock, ShieldCheck, Lock } from "lucide-react";
 
 export const preCadastroRoute = createRoute({
   getParentRoute: () => rootRoute,
@@ -13,7 +13,7 @@ export const preCadastroRoute = createRoute({
   component: PreCadastroPage,
 });
 
-type Step = "tipo" | "dados" | "endereco" | "documentos" | "verificacao" | "token" | "sucesso" | "expirado";
+type Step = "2fa_solicitar" | "2fa_validar" | "tipo" | "dados" | "endereco" | "documentos" | "timer_expirado" | "sucesso" | "expirado";
 
 type FormData = {
   tipo: "PF" | "PJ" | null;
@@ -34,15 +34,41 @@ type FormData = {
   };
 };
 
+const PAISES = [
+  { nome: "Brasil", ddi: "55", bandeira: "🇧🇷" },
+  { nome: "Portugal", ddi: "351", bandeira: "🇵🇹" },
+  { nome: "Estados Unidos", ddi: "1", bandeira: "🇺🇸" },
+  { nome: "Argentina", ddi: "54", bandeira: "🇦🇷" },
+  { nome: "Chile", ddi: "56", bandeira: "🇨🇱" },
+  { nome: "Colômbia", ddi: "57", bandeira: "🇨🇴" },
+  { nome: "Uruguai", ddi: "598", bandeira: "🇺🇾" },
+  { nome: "Paraguai", ddi: "595", bandeira: "🇵🇾" },
+  { nome: "Peru", ddi: "51", bandeira: "🇵🇪" },
+  { nome: "Equador", ddi: "593", bandeira: "🇪🇨" },
+];
+
 function PreCadastroPage() {
   const { token } = useParams({ from: preCadastroRoute.id });
   const navigate = useNavigate();
   const [step, setStep] = useState<Step>("tipo");
   const [loading, setLoading] = useState(true);
   const [cadastroId, setCadastroId] = useState<string | null>(null);
-  const [emailToken, setEmailToken] = useState("");
-  const [tokenInput, setTokenInput] = useState("");
-  const [tokenValido, setTokenValido] = useState<boolean | null>(null);
+  
+  // 2FA Inicial States
+  const [canal2FA, setCanal2FA] = useState<"email" | "whatsapp">("whatsapp");
+  const [contatoEmail, setContatoEmail] = useState("");
+  const [contatoDdi, setContatoDdi] = useState("55");
+  const [contatoDdd, setContatoDdd] = useState("");
+  const [contatoPhone, setContatoPhone] = useState("");
+  const [pinInput, setPinInput] = useState("");
+  const [pinErro, setPinErro] = useState("");
+  const [pinSubmitting, setPinSubmitting] = useState(false);
+  const [tempo2FA, setTempo2FA] = useState<number | null>(null);
+
+  // Timer States
+  const [inicioPreenchimento, setInicioPreenchimento] = useState<string | null>(null);
+  const [tempoRestante, setTempoRestante] = useState<number | null>(null);
+
   const [submitting, setSubmitting] = useState(false);
   const [erro, setErro] = useState("");
   const [form, setForm] = useState<FormData>({
@@ -59,31 +85,157 @@ function PreCadastroPage() {
     validarToken();
   }, [token]);
 
+  // Hook do Timer de 24 Horas
+  useEffect(() => {
+    if (!inicioPreenchimento || ["sucesso", "expirado", "timer_expirado"].includes(step)) return;
+
+    const interval = setInterval(() => {
+      const limite = new Date(inicioPreenchimento).getTime() + 24 * 60 * 60 * 1000;
+      const restante = limite - Date.now();
+      if (restante <= 0) {
+        setStep("timer_expirado");
+        setTempoRestante(0);
+        clearInterval(interval);
+      } else {
+        setTempoRestante(restante);
+      }
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [inicioPreenchimento, step]);
+
+  // Hook do Timer do PIN 2FA (5 minutos)
+  useEffect(() => {
+    if (step !== "2fa_validar" || tempo2FA === null) return;
+
+    const interval = setInterval(() => {
+      setTempo2FA(prev => {
+        if (prev === null || prev <= 1) {
+          clearInterval(interval);
+          setPinErro("PIN expirado. Solicite um novo código.");
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [step, tempo2FA === null]);
+
   async function validarToken() {
     setLoading(true);
     try {
-      const { data, error } = await supabase.rpc("get_cadastro_by_token", { token_text: token });
+      // Registra acesso e limpa expirados de uma vez só
+      const { data, error } = await supabase.rpc("registrar_acesso_token", { token_text: token });
       if (error || !data) { setStep("expirado"); return; }
+      
       const c = typeof data === "string" ? JSON.parse(data) : data;
       setCadastroId(c.id);
-      setEmailToken(c.lead_email || "");
-      if (c.tipo_pessoa) {
-        setForm(prev => ({ ...prev, tipo: c.tipo_pessoa }));
-        if (c.status === "dados_enviados" || c.status === "em_analise" || c.status === "em_correcao") {
-          setStep("sucesso");
-        } else if (c.status_verificacao_token) {
-          setStep("sucesso");
-        } else {
-          setStep("dados");
-        }
-      }
+      
+      // Armazena contato de email inicial
+      if (c.lead_email && !contatoEmail) setContatoEmail(c.lead_email);
+
+      // Regra de Expiração do Link Geral
       if (c.link_expiracao && new Date(c.link_expiracao) < new Date()) {
         setStep("expirado");
+        return;
+      }
+
+      // Se já finalizou o preenchimento, vai para sucesso
+      if (["dados_enviados", "em_analise", "aprovado", "reprovado"].includes(c.status)) {
+        setStep("sucesso");
+        return;
+      }
+
+      // Verificação 2FA
+      if (!c.status_verificacao_token) {
+        setStep("2fa_solicitar");
+      } else {
+        // 2FA já validado
+        setInicioPreenchimento(c.inicio_preenchimento);
+        const limite = new Date(c.inicio_preenchimento).getTime() + 24 * 60 * 60 * 1000;
+        const restante = limite - Date.now();
+        if (restante <= 0) {
+          setStep("timer_expirado");
+        } else {
+          setTempoRestante(restante);
+          if (c.tipo_pessoa) {
+            setForm(prev => ({ ...prev, tipo: c.tipo_pessoa }));
+            setStep("dados");
+          } else {
+            setStep("tipo");
+          }
+        }
       }
     } catch (e) {
       setStep("expirado");
     } finally {
       setLoading(false);
+    }
+  }
+
+  async function handleEnviarPIN() {
+    setPinSubmitting(true);
+    setPinErro("");
+    try {
+      const pin = Math.floor(100000 + Math.random() * 900000).toString();
+      const contatoFormatado = canal2FA === "email" ? contatoEmail : (contatoDdi + contatoDdd + contatoPhone);
+
+      if (canal2FA === "email" && !contatoEmail.includes("@")) {
+        setPinErro("E-mail inválido");
+        return;
+      }
+      if (canal2FA === "whatsapp" && (!contatoDdd || contatoPhone.length < 8)) {
+        setPinErro("Telefone celular incompleto");
+        return;
+      }
+
+      // Salva dados no banco via RPC segura
+      await supabase.rpc("gerar_2fa_pin", {
+        token_text: token,
+        canal_text: canal2FA,
+        contato_text: contatoFormatado,
+        pin_text: pin,
+      });
+
+      // Dispara webhook de PIN
+      await dispararWebhooks("enviar_pin_2fa", {
+        cadastro_id: cadastroId,
+        canal: canal2FA,
+        contato: contatoFormatado,
+        pin,
+      });
+
+      console.log(`[2FA] PIN ${pin} enviado para ${contatoFormatado}`);
+      setTempo2FA(300);
+      setPinInput("");
+      setStep("2fa_validar");
+    } catch (e) {
+      setPinErro("Erro ao gerar PIN. Tente novamente.");
+    } finally {
+      setPinSubmitting(false);
+    }
+  }
+
+  async function handleValidarPIN() {
+    setPinSubmitting(true);
+    setPinErro("");
+    try {
+      const { data: valido } = await supabase.rpc("validar_2fa_pin", {
+        token_text: token,
+        pin_text: pinInput,
+      });
+
+      if (valido) {
+        // Recarregar dados e iniciar timer
+        await validarToken();
+      } else {
+        setPinErro("PIN inválido ou expirado. Tente novamente.");
+      }
+    } catch (e) {
+      setPinErro("Erro na validação do PIN.");
+    } finally {
+      setPinSubmitting(false);
     }
   }
 
@@ -118,8 +270,27 @@ function PreCadastroPage() {
         pj_data: pj,
         endereco_data: form.endereco,
       });
+
+      // Atualiza status do cadastro para em análise após envio de dados e docs
+      await supabase.from("cadastros").update({ status: "em_analise" }).eq("id", cadastroId);
+
+      // Dispara webhooks de finalização
       dispararWebhooks("dados_enviados", { cadastro_id: cadastroId, token });
-      setStep("verificacao");
+      dispararWebhooks("em_analise", { cadastro_id: cadastroId, email: contatoEmail || form.pf.email_comunicacao || form.pj.email_comunicacao });
+
+      // Dispara notificação com template para o consultor comercial
+      const { data: cad } = await supabase.from("cadastros").select("created_by, lead_nome").eq("id", cadastroId).single();
+      if (cad && cad.created_by) {
+        // Salva notificação interna para o consultor
+        await supabase.from("notificacoes").insert({
+          usuario_id: cad.created_by,
+          titulo: "Novo Cadastro Enviado",
+          mensagem: `O lead ${cad.lead_nome || "Sem Nome"} concluiu o envio de dados e documentos. Está aguardando análise.`,
+          dados: { cadastro_id: cadastroId }
+        });
+      }
+
+      setStep("sucesso");
     } catch (e: any) {
       setErro(e.message || "Erro ao salvar dados");
     } finally {
@@ -127,45 +298,12 @@ function PreCadastroPage() {
     }
   }
 
-  async function handleEnviarToken() {
-    try {
-      const codigo = Math.floor(100000 + Math.random() * 900000).toString();
-      await supabase
-        .from("cadastros")
-        .update({
-          token_gerado: codigo,
-          email_token: emailToken,
-          token_expiracao: new Date(Date.now() + 10 * 60 * 1000).toISOString(),
-          status: "em_analise",
-        })
-        .eq("id", cadastroId);
-      dispararWebhooks("em_analise", { cadastro_id: cadastroId, email: emailToken });
-      console.log(`[2FA] Token ${codigo} enviado para ${emailToken}`);
-      setStep("token");
-    } catch (e) {
-      setErro("Erro ao enviar token");
-    }
-  }
-
-  async function handleValidarToken() {
-    try {
-      const { data } = await supabase
-        .from("cadastros")
-        .select("token_gerado, token_expiracao")
-        .eq("id", cadastroId)
-        .single();
-      if (!data) { setTokenValido(false); return; }
-      if (new Date(data.token_expiracao) < new Date()) { setTokenValido(false); return; }
-      if (data.token_gerado === tokenInput) {
-        await supabase.from("cadastros").update({ status_verificacao_token: true }).eq("id", cadastroId);
-        setTokenValido(true);
-        setStep("sucesso");
-      } else {
-        setTokenValido(false);
-      }
-    } catch (e) {
-      setTokenValido(false);
-    }
+  function formatarTempo(ms: number) {
+    const totalSegundos = Math.floor(ms / 1000);
+    const horas = Math.floor(totalSegundos / 3600);
+    const minutos = Math.floor((totalSegundos % 3600) / 60);
+    const segundos = totalSegundos % 60;
+    return `${horas.toString().padStart(2, "0")}:${minutos.toString().padStart(2, "0")}:${segundos.toString().padStart(2, "0")}`;
   }
 
   if (loading) {
@@ -173,39 +311,139 @@ function PreCadastroPage() {
   }
 
   if (step === "expirado") {
-    return <div className="flex min-h-dvh flex-col items-center justify-center gap-4 bg-bg-dark p-8">
-      <AlertTriangle size={48} className="text-red-400" />
+    return <div className="flex min-h-dvh flex-col items-center justify-center gap-4 bg-bg-dark p-8 text-center">
+      <AlertTriangle size={48} className="text-red-400 animate-bounce" />
       <h1 className="text-xl font-bold text-text-main">Link Expirado</h1>
-      <p className="text-center text-sm text-text-muted">O link acessado expirou. Solicite um novo link ao seu Consultor(a).</p>
+      <p className="text-sm text-text-muted max-w-sm">O link acessado expirou. Solicite um novo link ao seu Consultor(a) comercial.</p>
     </div>;
+  }
+
+  if (step === "timer_expirado") {
+    return (
+      <div className="flex min-h-dvh items-center justify-center bg-black/85 px-6">
+        <div className="w-full max-w-sm rounded-2xl bg-card p-6 shadow-2xl border border-red-500/20 text-center flex flex-col items-center">
+          <Clock size={48} className="text-red-500 mb-3 animate-pulse" />
+          <h2 className="text-lg font-bold text-text-main mb-2">Tempo Esgotado!</h2>
+          <p className="text-xs text-text-muted mb-6 leading-relaxed">
+            O prazo limite de 24 horas para preenchimento dos seus dados expirou. O link foi bloqueado por motivos de segurança.
+          </p>
+          <button onClick={() => navigate({ to: "/" })} className="w-full rounded-xl bg-accent py-3 text-sm font-medium text-white">
+            Voltar para o Início
+          </button>
+        </div>
+      </div>
+    );
   }
 
   if (step === "sucesso") {
-    return <div className="flex min-h-dvh flex-col items-center justify-center gap-4 bg-bg-dark p-8">
-      <CheckCircle size={48} className="text-green-400" />
+    return <div className="flex min-h-dvh flex-col items-center justify-center gap-4 bg-bg-dark p-8 text-center">
+      <CheckCircle size={48} className="text-green-400 animate-pulse" />
       <h1 className="text-xl font-bold text-text-main">Cadastro Enviado!</h1>
-      <p className="text-center text-sm text-text-muted">Seus dados foram enviados com sucesso. Nossa equipe analisará as informações e você receberá um retorno em breve.</p>
+      <p className="text-sm text-text-muted max-w-sm">Seus dados foram enviados com sucesso. Nossa equipe analisará as informações e você receberá um retorno em breve.</p>
     </div>;
   }
 
-  const steps = ["tipo","dados","endereco","documentos","verificacao","token"];
+  const steps = ["tipo", "dados", "endereco", "documentos"];
   const currentIdx = steps.indexOf(step);
 
   return (
-    <div className="min-h-dvh bg-bg-dark">
+    <div className="min-h-dvh bg-bg-dark flex flex-col">
+      {/* Timer de 24 Horas */}
+      {tempoRestante !== null && currentIdx >= 0 && (
+        <div className="w-full bg-orange-500/10 border-b border-orange-500/20 px-4 py-2 flex items-center justify-center gap-2 text-xs text-orange-400 font-semibold sticky top-0 z-50 backdrop-blur-md">
+          <Clock size={14} className="animate-pulse" />
+          <span>Tempo restante para concluir o preenchimento:</span>
+          <span className="font-mono text-sm">{formatarTempo(tempoRestante)}</span>
+        </div>
+      )}
+
       <div className="flex items-center gap-3 border-b border-border-subtle bg-card px-4 py-3">
         <div className="flex gap-1">
-          {["tipo","dados","endereco","documentos","verificacao"].map((s, i) => (
+          {steps.map((s, i) => (
             <div key={s} className={`h-1 w-6 rounded-full ${i <= currentIdx ? "bg-accent" : "bg-input-bg"}`} />
           ))}
         </div>
       </div>
 
-      <div className="p-4">
+      <div className="p-4 flex-1 flex flex-col justify-center max-w-md mx-auto w-full">
         <div className="mb-6 text-center">
           <h1 className="text-lg font-bold text-accent">Conexão Implantes</h1>
           <p className="text-xs text-text-muted">Cadastro de Novos Clientes</p>
         </div>
+
+        {/* 2FA Solicitar PIN */}
+        {step === "2fa_solicitar" && (
+          <div className="rounded-2xl bg-card p-6 shadow-xl flex flex-col gap-4 border border-border-subtle">
+            <div className="flex flex-col items-center gap-2 mb-2">
+              <Lock size={36} className="text-accent" />
+              <h2 className="text-base font-bold text-text-main">Autenticação de Segurança</h2>
+              <p className="text-center text-xs text-text-muted">Por segurança, verifique sua identidade para prosseguir.</p>
+            </div>
+            
+            <p className="text-xs font-semibold text-text-muted">Selecione onde deseja receber o PIN:</p>
+            <div className="flex gap-2">
+              <button type="button" onClick={() => setCanal2FA("whatsapp")} className={`flex-1 rounded-lg py-2.5 text-xs font-semibold transition ${canal2FA === "whatsapp" ? "bg-accent text-white" : "bg-input-bg text-text-muted"}`}>WhatsApp</button>
+              <button type="button" onClick={() => setCanal2FA("email")} className={`flex-1 rounded-lg py-2.5 text-xs font-semibold transition ${canal2FA === "email" ? "bg-accent text-white" : "bg-input-bg text-text-muted"}`}>E-mail</button>
+            </div>
+
+            {canal2FA === "email" ? (
+              <Campo label="Seu E-mail de Contato *" value={contatoEmail} onChange={setContatoEmail} type="email" />
+            ) : (
+              <div className="flex flex-col gap-2">
+                <p className="text-xs font-semibold text-text-muted mb-0.5">Seu Celular (WhatsApp) *</p>
+                <div className="flex gap-2">
+                  <select value={contatoDdi} onChange={e => setContatoDdi(e.target.value)}
+                    className="min-w-0 flex-[1.5] rounded-lg border border-input-border bg-input-bg px-2.5 py-3 text-xs text-text-main outline-none focus:border-accent min-h-[44px]">
+                    {PAISES.map(p => <option key={p.ddi} value={p.ddi}>{p.bandeira} +{p.ddi}</option>)}
+                  </select>
+                  <input value={contatoDdd} onChange={e => setContatoDdd(e.target.value.replace(/\D/g, "").slice(0, 2))}
+                    placeholder="DDD" className="w-[60px] text-center rounded-lg border border-input-border bg-input-bg px-2 py-3 text-sm text-text-main outline-none focus:border-accent min-h-[44px]" />
+                  <input value={contatoPhone} onChange={e => setContatoPhone(e.target.value.replace(/\D/g, "").slice(0, 9))}
+                    placeholder="Número" className="flex-[3] rounded-lg border border-input-border bg-input-bg px-3 py-3 text-sm text-text-main outline-none focus:border-accent min-h-[44px]" />
+                </div>
+              </div>
+            )}
+
+            {pinErro && <p className="text-xs text-red-400 mt-1 font-medium">{pinErro}</p>}
+            <button onClick={handleEnviarPIN} disabled={pinSubmitting} className="w-full rounded-xl bg-accent py-3.5 text-sm font-semibold text-white mt-2 flex items-center justify-center gap-2">
+              {pinSubmitting ? <Loader2 size={16} className="animate-spin" /> : <Send size={16} />} Receber PIN de Acesso
+            </button>
+          </div>
+        )}
+
+        {/* 2FA Validar PIN */}
+        {step === "2fa_validar" && (
+          <div className="rounded-2xl bg-card p-6 shadow-xl flex flex-col gap-4 border border-border-subtle">
+            <div className="flex flex-col items-center gap-2 mb-2">
+              <KeyRound size={36} className="text-accent" />
+              <h2 className="text-base font-bold text-text-main">Insira o PIN de 6 Dígitos</h2>
+              <div className="text-center text-xs text-text-muted leading-relaxed">
+                <p>Insira o código enviado para o seu {canal2FA === "email" ? "e-mail" : "WhatsApp"}.</p>
+                {tempo2FA !== null && tempo2FA > 0 ? (
+                  <p className="mt-1.5 flex items-center justify-center gap-1.5 text-orange-400 font-semibold">
+                    <Clock size={12} className="animate-pulse" />
+                    O código expira em: <span className="font-mono text-sm">{Math.floor(tempo2FA / 60)}:{(tempo2FA % 60).toString().padStart(2, "0")}</span>
+                  </p>
+                ) : (
+                  <p className="mt-1.5 text-red-400 font-semibold">Código expirado</p>
+                )}
+              </div>
+            </div>
+            
+            <input value={pinInput} onChange={e => setPinInput(e.target.value.replace(/\D/g, "").slice(0, 6))} 
+              placeholder="000000" type="text" maxLength={6} disabled={tempo2FA === 0}
+              className="w-full rounded-lg border border-input-border bg-input-bg px-4 py-3 text-center text-lg font-mono tracking-widest text-text-main outline-none focus:border-accent min-h-[44px] disabled:opacity-50" />
+
+            {pinErro && <p className="text-xs text-red-400 font-medium text-center">{pinErro}</p>}
+            
+            <div className="flex gap-2.5 mt-2">
+              <button onClick={() => setStep("2fa_solicitar")} className="flex-1 rounded-xl border border-input-border py-3 text-xs font-semibold text-text-muted">Voltar</button>
+              <button onClick={handleValidarPIN} disabled={pinSubmitting || pinInput.length < 6 || tempo2FA === 0} className="flex-1 rounded-xl bg-accent py-3 text-xs font-semibold text-white flex items-center justify-center gap-1.5 disabled:opacity-50">
+                {pinSubmitting ? <Loader2 size={14} className="animate-spin" /> : <ShieldCheck size={14} />} Validar PIN
+              </button>
+            </div>
+          </div>
+        )}
 
         {step === "tipo" && (
           <div className="flex flex-col gap-4">
@@ -307,27 +545,6 @@ function PreCadastroPage() {
                 {submitting ? <Loader2 size={16} className="animate-spin mx-auto" /> : "Enviar Dados"}
               </button>
             </div>
-          </div>
-        )}
-
-        {step === "verificacao" && (
-          <div className="flex flex-col items-center gap-4 pt-8">
-            <Send size={48} className="text-accent" />
-            <h2 className="text-base font-bold text-text-main">Verificação de 2 Fatores</h2>
-            <p className="text-center text-sm text-text-muted">Digite seu e-mail para receber o Token de Verificação</p>
-            <input value={emailToken} onChange={e => setEmailToken(e.target.value)} placeholder="Digite seu e-mail" type="email" className="w-full rounded-lg border border-input-border bg-input-bg px-4 py-3 text-sm text-text-main outline-none focus:border-accent min-h-[44px]" />
-            <button onClick={handleEnviarToken} className="w-full rounded-xl bg-accent py-3 text-sm font-medium text-white">Receber Token de Validação</button>
-          </div>
-        )}
-
-        {step === "token" && (
-          <div className="flex flex-col items-center gap-4 pt-8">
-            <KeyRound size={48} className="text-accent" />
-            <h2 className="text-base font-bold text-text-main">Insira o Token de Validação</h2>
-            <p className="text-xs text-text-muted">Token expira em 10 minutos</p>
-            <input value={tokenInput} onChange={e => setTokenInput(e.target.value)} placeholder="000000" type="text" maxLength={6} className="w-full rounded-lg border border-input-border bg-input-bg px-4 py-3 text-center text-lg font-mono tracking-widest text-text-main outline-none focus:border-accent min-h-[44px]" />
-            {tokenValido === false && <p className="text-xs text-red-400">Token inválido ou expirado. Solicite um novo.</p>}
-            <button onClick={handleValidarToken} className="w-full rounded-xl bg-accent py-3 text-sm font-medium text-white">Validar Token</button>
           </div>
         )}
       </div>

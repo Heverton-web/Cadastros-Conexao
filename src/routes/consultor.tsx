@@ -139,13 +139,13 @@ function ConsultorPage() {
   }
 
   return (
-    <div className="flex flex-col gap-4 p-4 pb-24">
+    <div className="flex flex-col gap-6 md:gap-8 p-4 pb-24">
       <div>
         <h1 className="text-lg font-bold text-text-main">Dashboard do Consultor</h1>
         <p className="text-xs text-text-muted">Gerencie seus cadastros e crie novos links para clientes</p>
       </div>
 
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-2 gap-4 md:gap-6">
         <button onClick={() => { setLinkForm(prev => ({ ...prev, tipo_acao: "solicitar_cadastro" })); setShowGerarLink(true); }} className="flex flex-col items-center justify-center gap-2 rounded-xl bg-accent p-5 text-white shadow-lg transition active:scale-[0.98] min-h-[80px]">
           <Plus size={24} /><span className="text-xs font-bold">Solicitar Cadastro</span>
         </button>
@@ -155,21 +155,13 @@ function ConsultorPage() {
         </button>
       </div>
 
-      <div className="grid grid-cols-5 gap-1">
+      <div className="grid grid-cols-5 gap-2 md:gap-3">
         <FiltroCard label="Todos" value={cadastros.length} color="text-accent" ativo={filtroStatus === null} onClick={() => setFiltroStatus(null)} />
         <FiltroCard label="Links" value={cadastros.filter(s => s.status === "link_gerado").length} color="text-blue-400" ativo={filtroStatus === "link_gerado"} onClick={() => setFiltroStatus("link_gerado")} />
         <FiltroCard label="Análise" value={cadastros.filter(s => s.status === "em_analise" || s.status === "dados_enviados").length} color="text-yellow-400" ativo={filtroStatus === "em_analise"} onClick={() => setFiltroStatus("em_analise")} />
         <FiltroCard label="Aprovados" value={cadastros.filter(s => s.status === "aprovado").length} color="text-green-400" ativo={filtroStatus === "aprovado"} onClick={() => setFiltroStatus("aprovado")} />
         <FiltroCard label="Reprovados" value={cadastros.filter(s => s.status === "reprovado").length} color="text-red-400" ativo={filtroStatus === "reprovado"} onClick={() => setFiltroStatus("reprovado")} />
       </div>
-
-      <button onClick={() => navigate({ to: "/consultor/clientes" })} className="flex items-center justify-between rounded-xl bg-card p-4 shadow-lg transition active:scale-[0.98]">
-        <div className="flex items-center gap-3">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-users text-accent"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-          <span className="text-sm font-medium text-text-main">Meus Clientes</span>
-        </div>
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-arrow-right text-text-muted"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
-      </button>
 
       <div>
         <div className="flex items-center justify-between mb-3">
