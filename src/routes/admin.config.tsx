@@ -51,7 +51,7 @@ function AdminConfigPage() {
         <h1 className="text-lg font-bold text-text-main">Configurações</h1>
       </div>
 
-      <div className="flex gap-1 rounded-xl bg-card p-1 overflow-x-auto whitespace-nowrap scrollbar-hide">
+      <div className="flex justify-center gap-1 rounded-xl bg-card p-1 overflow-x-auto whitespace-nowrap scrollbar-hide">
         {[
           { key: "supabase" as Tab, label: "Supabase", icon: Database },
           { key: "credenciais" as Tab, label: "Credenciais", icon: Shield },
@@ -64,8 +64,8 @@ function AdminConfigPage() {
           { key: "formulario" as Tab, label: "Formulário do Lead", icon: FormInput },
         ].map(({ key, label, icon: Icon }) => (
           <button key={key} onClick={() => setTab(key)} title={label}
-            className={`flex items-center justify-center gap-2 px-4 rounded-lg py-2.5 transition min-w-max ${tab === key ? "bg-accent text-white" : "text-text-muted hover:text-text-main hover:bg-bg-dark"}`}>
-            <Icon size={20} /> <span className="hidden md:inline text-xs font-medium">{label}</span>
+            className={`flex items-center justify-center p-2.5 rounded-lg transition ${tab === key ? "bg-accent text-white" : "text-text-muted hover:text-text-main hover:bg-bg-dark"}`}>
+            <Icon size={20} />
           </button>
         ))}
       </div>
