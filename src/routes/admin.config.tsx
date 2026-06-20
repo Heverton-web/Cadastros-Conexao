@@ -11,12 +11,14 @@ import {
   listarWebhookLogs, dispararWebhooks, type Webhook, type WebhookInput, type WebhookLog,
   EVENTOS_STATUS_CHANGE, EVENTOS_BUTTON_ACTION,
 } from "~/lib/webhooks";
-import { Loader2, Save, Plus, X, ToggleLeft, ToggleRight, Trash2, Settings, Database, Shield, Webhook as WebhookIcon, RefreshCw, History, UserRound as UserIcon, ShieldCheck, ShieldX } from "lucide-react";
+import { Loader2, Save, Plus, X, ToggleLeft, ToggleRight, Trash2, Settings, Database, Shield, Webhook as WebhookIcon, RefreshCw, History, UserRound as UserIcon, ShieldCheck, ShieldX, FlaskConical, Link2 } from "lucide-react";
 import toast from "react-hot-toast";
 
 import { listarPermissoesUsuarios, setPermissoes, getPermissoesPadrao, PERMISSOES_GROUPS, PERMISSOES_LABEL, PERMISSOES_DESC, type Permissoes } from "~/lib/permissoes";
+import { listarLinksTestes, criarLinkTeste, excluirLinkTeste, listarDemoCredentials, criarDemoCredential, excluirDemoCredential, type LinkTeste, type DemoCredential } from "~/lib/demos";
+import { DemosTab } from "~/components/admin/DemosTab";
 
-type Tab = "supabase" | "credenciais" | "webhooks" | "permissoes";
+type Tab = "supabase" | "credenciais" | "webhooks" | "permissoes" | "demos";
 
 export const adminConfigRoute = createRoute({
   getParentRoute: () => authLayout,
@@ -51,10 +53,11 @@ function AdminConfigPage() {
           { key: "credenciais" as Tab, label: "Credenciais", icon: Shield },
           { key: "webhooks" as Tab, label: "Webhooks", icon: WebhookIcon },
           { key: "permissoes" as Tab, label: "Permissões", icon: UserIcon },
+          { key: "demos" as Tab, label: "Laboratório", icon: FlaskConical },
         ].map(({ key, label, icon: Icon }) => (
-          <button key={key} onClick={() => setTab(key)}
-            className={`flex items-center justify-center gap-1.5 flex-1 rounded-lg py-2 text-xs font-medium transition ${tab === key ? "bg-accent text-white" : "text-text-muted hover:text-text-main"}`}>
-            <Icon size={14} /> {label}
+          <button key={key} onClick={() => setTab(key)} title={label}
+            className={`flex items-center justify-center flex-1 rounded-lg py-2.5 transition ${tab === key ? "bg-accent text-white" : "text-text-muted hover:text-text-main hover:bg-bg-dark"}`}>
+            <Icon size={18} />
           </button>
         ))}
       </div>
@@ -63,6 +66,7 @@ function AdminConfigPage() {
       {tab === "credenciais" && <CredenciaisTab />}
       {tab === "webhooks" && <WebhooksTab />}
       {tab === "permissoes" && <PermissoesTab />}
+      {tab === "demos" && <DemosTab />}
     </div>
   );
 }
