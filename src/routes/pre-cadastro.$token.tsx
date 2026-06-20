@@ -63,6 +63,7 @@ function PreCadastroPage() {
   const [pinInput, setPinInput] = useState("");
   const [pinErro, setPinErro] = useState("");
   const [pinSubmitting, setPinSubmitting] = useState(false);
+  const [tempo2FA, setTempo2FA] = useState<number | null>(null);
 
   // Timer States
   const [inicioPreenchimento, setInicioPreenchimento] = useState<string | null>(null);
@@ -102,6 +103,24 @@ function PreCadastroPage() {
 
     return () => clearInterval(interval);
   }, [inicioPreenchimento, step]);
+
+  // Hook do Timer do PIN 2FA (5 minutos)
+  useEffect(() => {
+    if (step !== "2fa_validar" || tempo2FA === null) return;
+
+    const interval = setInterval(() => {
+      setTempo2FA(prev => {
+        if (prev === null || prev <= 1) {
+          clearInterval(interval);
+          setPinErro("PIN expirado. Solicite um novo código.");
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [step, tempo2FA === null]);
 
   async function validarToken() {
     setLoading(true);
@@ -188,6 +207,8 @@ function PreCadastroPage() {
       });
 
       console.log(`[2FA] PIN ${pin} enviado para ${contatoFormatado}`);
+      setTempo2FA(300);
+      setPinInput("");
       setStep("2fa_validar");
     } catch (e) {
       setPinErro("Erro ao gerar PIN. Tente novamente.");
@@ -396,20 +417,28 @@ function PreCadastroPage() {
             <div className="flex flex-col items-center gap-2 mb-2">
               <KeyRound size={36} className="text-accent" />
               <h2 className="text-base font-bold text-text-main">Insira o PIN de 6 Dígitos</h2>
-              <p className="text-center text-xs text-text-muted leading-relaxed">
-                Insira o código enviado para o seu {canal2FA === "email" ? "e-mail" : "WhatsApp"}. O código expira em 5 minutos.
-              </p>
+              <div className="text-center text-xs text-text-muted leading-relaxed">
+                <p>Insira o código enviado para o seu {canal2FA === "email" ? "e-mail" : "WhatsApp"}.</p>
+                {tempo2FA !== null && tempo2FA > 0 ? (
+                  <p className="mt-1.5 flex items-center justify-center gap-1.5 text-orange-400 font-semibold">
+                    <Clock size={12} className="animate-pulse" />
+                    O código expira em: <span className="font-mono text-sm">{Math.floor(tempo2FA / 60)}:{(tempo2FA % 60).toString().padStart(2, "0")}</span>
+                  </p>
+                ) : (
+                  <p className="mt-1.5 text-red-400 font-semibold">Código expirado</p>
+                )}
+              </div>
             </div>
             
             <input value={pinInput} onChange={e => setPinInput(e.target.value.replace(/\D/g, "").slice(0, 6))} 
-              placeholder="000000" type="text" maxLength={6} 
-              className="w-full rounded-lg border border-input-border bg-input-bg px-4 py-3 text-center text-lg font-mono tracking-widest text-text-main outline-none focus:border-accent min-h-[44px]" />
+              placeholder="000000" type="text" maxLength={6} disabled={tempo2FA === 0}
+              className="w-full rounded-lg border border-input-border bg-input-bg px-4 py-3 text-center text-lg font-mono tracking-widest text-text-main outline-none focus:border-accent min-h-[44px] disabled:opacity-50" />
 
             {pinErro && <p className="text-xs text-red-400 font-medium text-center">{pinErro}</p>}
             
             <div className="flex gap-2.5 mt-2">
               <button onClick={() => setStep("2fa_solicitar")} className="flex-1 rounded-xl border border-input-border py-3 text-xs font-semibold text-text-muted">Voltar</button>
-              <button onClick={handleValidarPIN} disabled={pinSubmitting || pinInput.length < 6} className="flex-1 rounded-xl bg-accent py-3 text-xs font-semibold text-white flex items-center justify-center gap-1.5">
+              <button onClick={handleValidarPIN} disabled={pinSubmitting || pinInput.length < 6 || tempo2FA === 0} className="flex-1 rounded-xl bg-accent py-3 text-xs font-semibold text-white flex items-center justify-center gap-1.5 disabled:opacity-50">
                 {pinSubmitting ? <Loader2 size={14} className="animate-spin" /> : <ShieldCheck size={14} />} Validar PIN
               </button>
             </div>

@@ -6,6 +6,20 @@ export type LinkTeste = {
   token: string;
   descricao: string;
   created_at: string;
+  cadastros?: {
+    id: string;
+    tipo_pessoa: "PF" | "PJ" | null;
+    status: string;
+    nome_temporario: string | null;
+    link_expiracao: string | null;
+    inicio_preenchimento: string | null;
+    "2fa_canal": string | null;
+    "2fa_contato": string | null;
+    "2fa_token": string | null;
+    "2fa_expiracao": string | null;
+    status_verificacao_token: boolean | null;
+    link_acessado: boolean | null;
+  } | null;
 };
 
 export type DemoCredential = {
@@ -19,9 +33,32 @@ export type DemoCredential = {
 };
 
 export async function listarLinksTestes() {
-  const { data, error } = await supabase.from("links_testes").select("*").order("created_at", { ascending: false });
+  const { data, error } = await supabase
+    .from("links_testes")
+    .select(`
+      id,
+      cadastro_id,
+      token,
+      descricao,
+      created_at,
+      cadastros:cadastro_id (
+        id,
+        tipo_pessoa,
+        status,
+        nome_temporario,
+        link_expiracao,
+        inicio_preenchimento,
+        2fa_canal,
+        2fa_contato,
+        2fa_token,
+        2fa_expiracao,
+        status_verificacao_token,
+        link_acessado
+      )
+    `)
+    .order("created_at", { ascending: false });
   if (error) throw error;
-  return data as LinkTeste[];
+  return data as any[] as LinkTeste[];
 }
 
 export async function criarLinkTeste(descricao: string, tipo: "PF" | "PJ") {
@@ -97,4 +134,36 @@ export async function excluirDemoCredential(id: string, user_id: string) {
   const { error } = await supabase.rpc("excluir_usuario_demo", { uid: user_id });
   if (error) throw error;
   // o user sendo deletado causa on delete cascade e some com a demo_credential
+}
+
+export async function atualizarExpiraLink(cadastroId: string, linkExpiracao: string | null) {
+  const { error } = await supabase
+    .from("cadastros")
+    .update({ link_expiracao: linkExpiracao })
+    .eq("id", cadastroId);
+  if (error) throw error;
+}
+
+export async function atualizarInicioPreenchimento(cadastroId: string, inicioPreenchimento: string | null) {
+  const { error } = await supabase
+    .from("cadastros")
+    .update({ inicio_preenchimento: inicioPreenchimento })
+    .eq("id", cadastroId);
+  if (error) throw error;
+}
+
+export async function resetar2FA(cadastroId: string) {
+  const { error } = await supabase
+    .from("cadastros")
+    .update({
+      "2fa_token": null,
+      "2fa_canal": null,
+      "2fa_contato": null,
+      "2fa_expiracao": null,
+      status_verificacao_token: false,
+      inicio_preenchimento: null,
+      link_acessado: false
+    })
+    .eq("id", cadastroId);
+  if (error) throw error;
 }
