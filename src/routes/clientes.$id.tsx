@@ -493,7 +493,7 @@ function ClienteDetailPage() {
             
             if (!ruaLimpa && enderecoFull.startsWith(", ")) enderecoFull = enderecoFull.substring(2);
             if (!ruaLimpa && enderecoFull.startsWith(" - ")) enderecoFull = enderecoFull.substring(3);
-            return enderecoFull && profile?.ambiente !== "cadastro" ? (
+            return enderecoFull && profile?.ambiente !== "cadastro" && profile?.ambiente !== "ambos" ? (
               <div className="flex items-start gap-2 mb-4 rounded-xl bg-accent/5 border border-accent/10 p-3">
                 <div className="flex-1 min-w-0">
                   <p className="text-[11px] text-text-muted mb-0.5">Endereço Completo</p>

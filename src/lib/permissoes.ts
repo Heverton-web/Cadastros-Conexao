@@ -20,7 +20,7 @@ export type Permissoes = {
   ver_relatorios: boolean;
 };
 
-export type Ambiente = "cadastro" | "consultor" | "tecnologia" | "suporte";
+export type Ambiente = "cadastro" | "consultor" | "tecnologia" | "suporte" | "ambos";
 
 export function getPermissoesPadrao(ambiente: Ambiente): Permissoes {
   switch (ambiente) {

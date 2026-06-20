@@ -63,16 +63,7 @@ function DashboardPage() {
         <StatCard label="Reprovados" value={stats.reprovados} icon={<XCircle size={16} />} color="text-red-400" />
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-        <a href="/clientes" className="flex items-center justify-between rounded-xl bg-card p-4 shadow-lg hover:ring-2 ring-accent transition-all">
-          <span className="text-sm font-medium text-text-main">Ver todos os clientes</span>
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-arrow-right text-text-muted"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
-        </a>
-        <a href="/relatorios" className="flex items-center justify-between rounded-xl bg-card p-4 shadow-lg hover:ring-2 ring-accent transition-all">
-          <span className="text-sm font-medium text-text-main">Relatórios</span>
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-arrow-right text-text-muted"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
-        </a>
-      </div>
+
 
       <div>
         <h2 className="mb-3 text-sm font-bold text-text-main">Solicitações Recentes</h2>
