@@ -57,6 +57,22 @@ export async function listarTemplates() {
   return data as NotificacaoTemplate[];
 }
 
+export async function criarTemplate(input: Omit<NotificacaoTemplate, "id" | "created_at" | "updated_at">) {
+  const { data, error } = await supabase
+    .from("notificacoes_templates")
+    .insert({
+      evento: input.evento,
+      titulo: input.titulo,
+      corpo_template: input.corpo_template,
+      ativo: input.ativo,
+      updated_at: new Date().toISOString()
+    })
+    .select()
+    .single();
+  if (error) throw error;
+  return data as NotificacaoTemplate;
+}
+
 export async function atualizarTemplate(evento: string, titulo: string, corpo: string, ativo: boolean) {
   const { data, error } = await supabase
     .from("notificacoes_templates")
@@ -71,6 +87,28 @@ export async function atualizarTemplate(evento: string, titulo: string, corpo: s
     .single();
   if (error) throw error;
   return data as NotificacaoTemplate;
+}
+
+export async function atualizarTemplatePorId(id: string, input: Partial<Omit<NotificacaoTemplate, "id">>) {
+  const { data, error } = await supabase
+    .from("notificacoes_templates")
+    .update({
+      ...input,
+      updated_at: new Date().toISOString()
+    })
+    .eq("id", id)
+    .select()
+    .single();
+  if (error) throw error;
+  return data as NotificacaoTemplate;
+}
+
+export async function deletarTemplate(id: string) {
+  const { error } = await supabase
+    .from("notificacoes_templates")
+    .delete()
+    .eq("id", id);
+  if (error) throw error;
 }
 
 export async function enviarNotificacaoComTemplate(
@@ -115,3 +153,4 @@ export async function enviarNotificacaoComTemplate(
     console.error("Erro ao enviar notificacao com template:", e);
   }
 }
+
