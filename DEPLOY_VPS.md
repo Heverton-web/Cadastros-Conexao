@@ -132,3 +132,110 @@ docker push hevertonperes/cadastros-conexao:v2
 # Editar image: hevertonperes/cadastros-conexao:v1 → v2
 docker stack deploy -c docker-compose.yml cadastros-conexao
 ```
+
+
+
+
+Viewed DEPLOY_VPS.md:79-100
+Viewed DEPLOY_VPS.md:1-135
+Viewed DEPLOY_VPS.md:1-135
+Searched for "."
+Viewed Dockerfile:1-17
+
+Aqui está o passo a passo completo e exato para gerar a imagem e fazer o deploy utilizando o Docker Swarm e Traefik.
+
+> [!IMPORTANT]
+> Como o projeto é construído sobre o **Vite**, as variáveis de ambiente com prefixo `VITE_` precisam ser injetadas **em tempo de compilação** (build-time). Portanto, devemos passá-las como `--build-arg` no comando de build local.
+
+---
+
+### 1. No Computador (Terminal Local)
+
+Execute estes comandos na pasta raiz do seu projeto local:
+
+```bash
+# 1. Faça login na sua conta do Docker Hub
+docker login
+
+# 2. Gere a build da imagem injetando as variáveis do Supabase
+docker build \
+  --build-arg VITE_SUPABASE_URL="https://cluuqzhizeqvkgvfdisx.supabase.co" \
+  --build-arg VITE_SUPABASE_ANON_KEY="SUA_ANON_KEY_AQUI" \
+  -t seu_usuario_dockerhub/cadastros-conexao:v1 .
+
+# 3. Envie a imagem gerada para o seu repositório no Docker Hub
+docker push seu_usuario_dockerhub/cadastros-conexao:v1
+```
+
+---
+
+### 2. Na VPS (Acesso via SSH)
+
+Conecte-se e configure o ambiente no servidor:
+
+```bash
+# 1. Conecte-se à VPS
+ssh usuario@ip-da-vps
+
+# 2. Garanta que a rede overlay externa "minha_rede" existe
+docker network create --driver overlay --attachable minha_rede
+
+# 3. Crie e acesse o diretório do projeto
+mkdir -p /opt/cadastros-conexao
+cd /opt/cadastros-conexao
+```
+
+#### Criar o arquivo `docker-compose.yml`
+
+Crie o arquivo usando o comando abaixo. Substitua `seu_usuario_dockerhub` e `subdominio.seudominio.com` pelos seus dados reais:
+
+```bash
+cat > docker-compose.yml << 'EOF'
+version: "3.8"
+
+services:
+  app:
+    image: seu_usuario_dockerhub/cadastros-conexao:v1
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+      labels:
+        - "traefik.enable=true"
+        # Roteador HTTPS com Let's Encrypt
+        - "traefik.http.routers.cadastros_conexao.rule=Host(`subdominio.seudominio.com`)"
+        - "traefik.http.routers.cadastros_conexao.entrypoints=websecure"
+        - "traefik.http.routers.cadastros_conexao.tls=true"
+        - "traefik.http.routers.cadastros_conexao.tls.certresolver=letsencryptresolver"
+        # Roteador HTTP para redirecionar para HTTPS automaticamente
+        - "traefik.http.routers.cadastros_conexao_http.rule=Host(`subdominio.seudominio.com`)"
+        - "traefik.http.routers.cadastros_conexao_http.entrypoints=web"
+        - "traefik.http.routers.cadastros_conexao_http.middlewares=cadastros_redirect"
+        - "traefik.http.middlewares.cadastros_redirect.redirectscheme.scheme=https"
+        # Porta interna que o Nginx do container está escutando
+        - "traefik.http.services.cadastros_conexao.loadbalancer.server.port=80"
+    networks:
+      - minha_rede
+
+networks:
+  minha_rede:
+    external: true
+    name: minha_rede
+EOF
+```
+
+> [!NOTE]
+> No Docker Swarm, as configurações do Traefik **devem** ser declaradas sob o bloco `deploy.labels` para que o Traefik consiga mapear o serviço corretamente através da API do Swarm.
+
+#### Iniciar o deploy e verificar execução
+
+```bash
+# 4. Inicie o serviço no Docker Swarm
+docker stack deploy -c docker-compose.yml cadastros-conexao
+
+# 5. Verifique se o serviço subiu com sucesso
+docker stack services cadastros-conexao
+
+# 6. Monitore os logs da aplicação se necessário
+docker service logs cadastros-conexao_app
+```

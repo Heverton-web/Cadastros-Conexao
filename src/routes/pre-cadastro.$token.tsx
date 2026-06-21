@@ -6,6 +6,7 @@ import { buscarCepResiliente } from "~/lib/integracoes";
 import { uploadDocumento } from "~/lib/documentos";
 import { dispararWebhooks } from "~/lib/webhooks";
 import { carregarSchema, type CampoSchema } from "~/lib/form-schema";
+import toast from "react-hot-toast";
 import { Loader2, CheckCircle, AlertTriangle, Send, KeyRound, Upload, Clock, ShieldCheck, Lock, XCircle } from "lucide-react";
 import { BannerCorrecao } from "~/components/BannerCorrecao";
 
@@ -979,7 +980,7 @@ function DocUpload({ label, tipo, cadastroId, obrigatorio, docStatus, docComenta
     setSubmitting(true);
     try {
       await uploadDocumento(cadastroId, tipo, file);
-    } catch { } finally { setSubmitting(false); }
+    } catch (e) { toast.error("Erro ao enviar documento: " + (e instanceof Error ? e.message : "tente novamente")); } finally { setSubmitting(false); }
   };
 
   const isOk = docStatus === "ok";

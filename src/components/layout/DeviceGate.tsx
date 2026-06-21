@@ -1,15 +1,15 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "~/lib/auth";
-import { MonitorX } from "lucide-react";
+import { LogOut, MonitorX } from "lucide-react";
 
 export function DeviceGate({ children }: { children: React.ReactNode }) {
-  const { profile } = useAuth();
+  const { profile, logout } = useAuth();
   const [isBlocked, setIsBlocked] = useState(false);
 
   useEffect(() => {
     function checkDevice() {
-      // Regra: CADASTRO e TECNOLOGIA bloqueados se width < 1024px (Tablet Vertical / Mobile)
-      if (profile?.ambiente === "cadastro" || profile?.ambiente === "tecnologia") {
+      // Regra: apenas TECNOLOGIA bloqueado se width < 1024px (Tablet Vertical / Mobile)
+      if (profile?.ambiente === "tecnologia") {
         if (window.innerWidth < 1024) {
           setIsBlocked(true);
         } else {
@@ -43,6 +43,13 @@ export function DeviceGate({ children }: { children: React.ReactNode }) {
               Por favor, acesse o sistema através de um computador para continuar.
             </p>
           </div>
+          <button
+            onClick={logout}
+            className="mt-6 flex w-full items-center justify-center gap-2 rounded-lg bg-accent px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-accent/90"
+          >
+            <LogOut size={16} />
+            Sair da conta
+          </button>
         </div>
       </div>
     );

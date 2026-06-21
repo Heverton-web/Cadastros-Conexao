@@ -5,6 +5,7 @@ import { LogOut, Bell } from "lucide-react";
 import { useNavItems } from "./useNavItems";
 import { cn } from "~/lib/utils";
 import { DeviceGate } from "./DeviceGate";
+import { PwaInstallPrompt } from "./PwaInstallPrompt";
 import { useState, useEffect } from "react";
 import { listarNotificacoes, marcarComoLida, marcarTodasComoLidas, type Notificacao } from "~/lib/notificacoes";
 
@@ -109,7 +110,7 @@ export function AppLayout() {
                     </button>
 
                     {showNotifs && (
-                      <div className="absolute right-0 mt-2 w-72 rounded-xl bg-card border border-border-subtle shadow-2xl z-50 p-2 flex flex-col gap-1.5 max-h-[350px] overflow-y-auto">
+                      <div className="absolute right-0 mt-2 w-72 max-sm:fixed max-sm:inset-x-4 max-sm:top-16 max-sm:w-auto rounded-xl bg-card border border-border-subtle shadow-2xl z-50 p-2 flex flex-col gap-1.5 max-h-[350px] max-sm:max-h-[60dvh] overflow-y-auto">
                         <div className="flex items-center justify-between px-2 py-1.5 border-b border-border-subtle/50 mb-1">
                           <div className="flex flex-col gap-0.5">
                             <span className="text-xs font-bold text-text-main">Notificações</span>
@@ -169,6 +170,7 @@ export function AppLayout() {
       </main>
       <BottomNav />
       </div>
+      <PwaInstallPrompt />
     </DeviceGate>
   );
 }
