@@ -93,7 +93,7 @@ function ClienteDetailPage() {
       const c = data.cadastro;
       if (c.created_by) {
         try {
-          await enviarNotificacaoComTemplate("cadastro_aprovado", id, c.created_by, {
+          await enviarNotificacaoComTemplate("aprovado", id, c.created_by, {
             lead_nome: c.lead_nome || c.nome_temporario || "Sem Nome",
             codigo_cliente: codigoCliente,
           });
@@ -154,7 +154,7 @@ function ClienteDetailPage() {
       const c = data.cadastro;
       if (c.created_by) {
         try {
-          await enviarNotificacaoComTemplate("cadastro_reprovado", id, c.created_by, {
+          await enviarNotificacaoComTemplate("reprovado", id, c.created_by, {
             lead_nome: c.lead_nome || c.nome_temporario || "Sem Nome",
             motivo: motivo,
           });
@@ -228,7 +228,7 @@ function ClienteDetailPage() {
       const c = data.cadastro;
       if (c.created_by) {
         try {
-          await enviarNotificacaoComTemplate("cadastro_correcao", id, c.created_by, {
+          await enviarNotificacaoComTemplate("em_correcao", id, c.created_by, {
             lead_nome: c.lead_nome || c.nome_temporario || "Sem Nome",
             motivo: motivo,
           });

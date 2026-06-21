@@ -189,22 +189,22 @@ export async function dispararNotificacaoIndividual(temp: NotificacaoTemplate, p
       const { data: cadastroUsers } = await supabase
         .from("profiles")
         .select("id")
-        .or("role.eq.cadastro,departamento.ilike.%cadastro%");
+        .eq("ambiente", "cadastro");
       if (cadastroUsers && cadastroUsers.length > 0) {
         destinatariosIds = cadastroUsers.map(u => u.id);
       } else {
-        const { data: admins } = await supabase.from("profiles").select("id").eq("role", "admin");
+        const { data: admins } = await supabase.from("profiles").select("id").or("is_super_admin.eq.true,role.eq.admin");
         if (admins) destinatariosIds = admins.map(a => a.id);
       }
     } else if (tipo === "ti") {
       const { data: tiUsers } = await supabase
         .from("profiles")
         .select("id")
-        .or("role.eq.ti,departamento.ilike.%ti%");
+        .eq("ambiente", "tecnologia");
       if (tiUsers && tiUsers.length > 0) {
         destinatariosIds = tiUsers.map(u => u.id);
       } else {
-        const { data: admins } = await supabase.from("profiles").select("id").eq("role", "admin");
+        const { data: admins } = await supabase.from("profiles").select("id").or("is_super_admin.eq.true,role.eq.admin");
         if (admins) destinatariosIds = admins.map(a => a.id);
       }
     }
