@@ -168,6 +168,15 @@ function CredenciaisTab() {
   const [loadingPerms, setLoadingPerms] = useState(false);
   const [savingPerms, setSavingPerms] = useState(false);
 
+  // Ordenação e Seleção de Credencial específica
+  const [ordenacao, setOrdenacao] = useState<"asc" | "desc">("asc");
+  const [selectedCredId, setSelectedCredId] = useState<string>("todas");
+
+  // Resetar credencial selecionada ao alterar o filtro de setor
+  useEffect(() => {
+    setSelectedCredId("todas");
+  }, [filtroSetor]);
+
   useEffect(() => { carregar(); }, []);
 
   async function carregar() {
@@ -326,8 +335,8 @@ function CredenciaisTab() {
     setEditPerms(getPermissoesPadrao(permCredencial.profile.ambiente));
   }
 
-  // Filtragem local
-  const credenciaisFiltradas = credenciais.filter(c => {
+  // Filtragem local por setor
+  const deparados = credenciais.filter(c => {
     if (filtroSetor === "todos") return true;
     if (filtroSetor === "mock") return c.isMock;
     // Nos demais filtros, só mostrar as credenciais reais
@@ -342,6 +351,22 @@ function CredenciaisTab() {
     if (filtroSetor === "ti") return ambiente === "tecnologia" || ambiente === "suporte" || depto === "ti";
     return true;
   });
+
+  // Ordenação alfabética por nome_completo
+  deparados.sort((a, b) => {
+    const nomeA = a.nome_completo.toLowerCase();
+    const nomeB = b.nome_completo.toLowerCase();
+    if (ordenacao === "asc") {
+      return nomeA.localeCompare(nomeB);
+    } else {
+      return nomeB.localeCompare(nomeA);
+    }
+  });
+
+  // Filtragem final para exibição (todas ou apenas a selecionada)
+  const credenciaisFiltradas = selectedCredId === "todas"
+    ? deparados
+    : deparados.filter(c => c.id === selectedCredId);
 
   if (loading) return <div className="flex justify-center py-12"><Loader2 size={24} className="animate-spin text-accent" /></div>;
 
@@ -378,6 +403,35 @@ function CredenciaisTab() {
             {item.label}
           </button>
         ))}
+      </div>
+
+      {/* Controles de Ordenação e Seleção de Credencial */}
+      <div className="flex flex-col sm:flex-row gap-2 mt-1 mb-2">
+        <div className="flex-1">
+          <select
+            value={selectedCredId}
+            onChange={(e) => setSelectedCredId(e.target.value)}
+            className="w-full rounded-lg border border-input-border bg-input-bg px-3 py-2.5 text-xs text-text-main outline-none focus:border-accent min-h-[38px] transition cursor-pointer"
+          >
+            <option value="todas">Exibir todas as credenciais</option>
+            {deparados.map(c => (
+              <option key={c.id} value={c.id}>
+                {c.nome_completo} ({c.email_corporativo})
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="w-full sm:w-44">
+          <select
+            value={ordenacao}
+            onChange={(e) => setOrdenacao(e.target.value as any)}
+            className="w-full rounded-lg border border-input-border bg-input-bg px-3 py-2.5 text-xs text-text-main outline-none focus:border-accent min-h-[38px] transition cursor-pointer"
+          >
+            <option value="asc">Ordem: Nome de A a Z</option>
+            <option value="desc">Ordem: Nome de Z a A</option>
+          </select>
+        </div>
       </div>
 
       {credenciaisFiltradas.length === 0 ? (
