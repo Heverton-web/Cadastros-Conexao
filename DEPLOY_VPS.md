@@ -1,66 +1,121 @@
 # Deploy em Produção — Cadastros Conexão
 
-## Pré-requisitos na VPS
+## Passo a passo detalhado — VPS (SSH)
 
-- Docker Swarm ativo
-- Rede `network_conexao` criada:
-  ```bash
-  docker network create --driver overlay --attachable network_conexao
-  ```
-- Traefik rodando nos entrypoints `web` (80) e `websecure` (443)
-- DNS: `cadastros.vpsconexao.org` apontando para o IP da VPS
-
----
-
-## Opção 1 — Portainer (recomendado)
-
-1. Acesse o Portainer → **Stacks** → **Add stack**
-2. Nome do stack: `cadastros-conexao`
-3. Cole o conteúdo do `docker-compose.yml` no editor
-4. Em **Environment variables**, adicione:
-
-   | Variável | Valor |
-   |---|---|
-   | `VITE_SUPABASE_URL` | `https://cluuqzhizeqvkgvfdisx.supabase.co` |
-   | `VITE_SUPABASE_ANON_KEY` | `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNsdXVxemhpemVxdmtndmZkaXN4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE3ODg3NjksImV4cCI6MjA5NzM2NDc2OX0.GM3quHA1z_9kCiMEYsfAh9Pi0KVdnCIFQEYe-wwE9MM` |
-
-5. **Deploy the stack**
-
----
-
-## Opção 2 — CLI na VPS (acesso SSH)
+### 1. Acessar a VPS via SSH
 
 ```bash
-# 1. Criar .env com as variáveis
-echo 'VITE_SUPABASE_URL=https://cluuqzhizeqvkgvfdisx.supabase.co' > .env
-echo 'VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNsdXVxemhpemVxdmtndmZkaXN4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE3ODg3NjksImV4cCI6MjA5NzM2NDc2OX0.GM3quHA1z_9kCiMEYsfAh9Pi0KVdnCIFQEYe-wwE9MM' >> .env
+ssh usuario@ip-da-vps
+```
 
-# 2. Fazer pull da imagem
+### 2. Criar a pasta do projeto
+
+```bash
+mkdir -p /opt/cadastros-conexao
+cd /opt/cadastros-conexao
+```
+
+### 3. Criar o arquivo `.env`
+
+```bash
+cat > .env << 'EOF'
+VITE_SUPABASE_URL=https://cluuqzhizeqvkgvfdisx.supabase.co
+VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNsdXVxemhpemVxdmtndmZkaXN4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE3ODg3NjksImV4cCI6MjA5NzM2NDc2OX0.GM3quHA1z_9kCiMEYsfAh9Pi0KVdnCIFQEYe-wwE9MM
+EOF
+```
+
+### 4. Criar o arquivo `docker-compose.yml`
+
+```bash
+cat > docker-compose.yml << 'EOF'
+version: "3.8"
+
+services:
+  app:
+    image: hevertonperes/cadastros-conexao:v1
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+    networks:
+      - network_conexao
+    environment:
+      - NODE_ENV=production
+      - TZ=America/Sao_Paulo
+      - VITE_SUPABASE_URL=${VITE_SUPABASE_URL}
+      - VITE_SUPABASE_ANON_KEY=${VITE_SUPABASE_ANON_KEY}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.cadastros_conexao.rule=Host(`cadastros.vpsconexao.org`)"
+      - "traefik.http.routers.cadastros_conexao.entrypoints=websecure"
+      - "traefik.http.routers.cadastros_conexao.tls.certresolver=letsencryptresolver"
+      - "traefik.http.routers.cadastros_conexao_http.rule=Host(`cadastros.vpsconexao.org`)"
+      - "traefik.http.routers.cadastros_conexao_http.entrypoints=web"
+      - "traefik.http.routers.cadastros_conexao_http.middlewares=cadastros_redirect"
+      - "traefik.http.middlewares.cadastros_redirect.redirectscheme.scheme=https"
+      - "traefik.http.services.cadastros_conexao.loadbalancer.server.port=80"
+
+networks:
+  network_conexao:
+    external: true
+    name: network_conexao
+EOF
+```
+
+### 5. Verificar se a rede existe
+
+```bash
+docker network ls | grep network_conexao
+```
+
+Se não existir, criar:
+
+```bash
+docker network create --driver overlay --attachable network_conexao
+```
+
+### 6. Fazer pull da imagem
+
+```bash
 docker pull hevertonperes/cadastros-conexao:v1
+```
 
-# 3. Subir o stack no Swarm
+### 7. Subir o stack no Swarm
+
+```bash
 docker stack deploy -c docker-compose.yml cadastros-conexao
+```
 
-# 4. Verificar se subiu
+### 8. Verificar se funcionou
+
+```bash
+# Listar serviços do stack
 docker stack services cadastros-conexao
+
+# Ver logs
 docker service logs cadastros-conexao_app
+
+# Verificar se o container está rodando
+docker ps | grep cadastros
+```
+
+### 9. Testar na VPS
+
+```bash
+curl -I http://localhost
 ```
 
 ---
 
-## Verificação
+## Troubleshooting
 
-Após o deploy, acesse: [https://cadastros.vpsconexao.org](https://cadastros.vpsconexao.org)
-
-Para monitorar:
-
-```bash
-# Logs do serviço
-docker service logs -f cadastros-conexao_app
-
-# Status dos serviços no stack
-docker stack ps cadastros-conexao
-```
+| Problema | Causa | Solução |
+|---|---|---|
+| `network network_conexao not found` | Rede não existe | `docker network create --driver overlay --attachable network_conexao` |
+| `no suitable host (missing passable admin role)` | Swarm não está ativo | `docker swarm init` |
+| `.env: no such file or directory` | `.env` não está na mesma pasta | Verifique se está em `/opt/cadastros-conexao/.env` |
+| Traefik 404 | DNS não aponta para VPS | Configure `cadastros.vpsconexao.org` → IP da VPS |
+| Imagem não encontrada | Pull falhou | `docker pull hevertonperes/cadastros-conexao:v1` |
 
 ---
 
@@ -69,10 +124,11 @@ docker stack ps cadastros-conexao
 Quando houver uma nova versão:
 
 ```bash
-# Na máquina local
+# Na máquina local: build e push
 docker build -t hevertonperes/cadastros-conexao:v2 .
 docker push hevertonperes/cadastros-conexao:v2
 
-# Na VPS, atualizar docker-compose.yml com a nova tag e redeploy:
+# Na VPS: atualizar a tag no docker-compose.yml e redeploy
+# Editar image: hevertonperes/cadastros-conexao:v1 → v2
 docker stack deploy -c docker-compose.yml cadastros-conexao
 ```
