@@ -59,103 +59,52 @@ export async function deleteApiConnector(id: string) {
 }
 
 /**
- * Executa a chamada do conector de API diretamente via fetch local,
- * interpolando as variáveis fornecidas na URL, Headers, Query Params e Body.
+ * Executa o conector de API via RPC server-side (pg_net),
+ * evitando bloqueios de CORS do browser.
  */
 export async function executeApiConnector(connector_id: string, variables: Record<string, any> = {}) {
   const startTime = Date.now();
   try {
-    const { data: conn, error: getErr } = await supabase
-      .from("api_connectors")
-      .select("*")
-      .eq("id", connector_id)
-      .single();
-
-    if (getErr || !conn) {
-      throw new Error(getErr?.message || "Conexão de API não encontrada no banco.");
-    }
-
-    const interpolar = (str: string | null | undefined) => {
-      if (!str) return str || "";
-      let res = str;
-      for (const [chave, valor] of Object.entries(variables)) {
-        const chaveEscapada = chave.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
-        const placeholder = new RegExp(`{{${chaveEscapada}}}`, "g");
-        res = res.replace(placeholder, valor !== undefined && valor !== null ? String(valor) : "");
-      }
-      return res;
-    };
-
-    let urlFinal = interpolar(conn.url);
-
-    const headersFinais: Record<string, string> = {
-      "Content-Type": "application/json"
-    };
-    if (conn.headers) {
-      for (const [k, v] of Object.entries(conn.headers)) {
-        headersFinais[interpolar(k)] = interpolar(v as any);
+    // Sanitizar variáveis: converter tudo para string para o jsonb
+    const vars: Record<string, string> = {};
+    for (const [k, v] of Object.entries(variables)) {
+      if (v !== undefined && v !== null) {
+        vars[k] = typeof v === "object" ? JSON.stringify(v) : String(v);
       }
     }
 
-    const queryParamsFinais: Record<string, string> = {};
-    if (conn.query_params) {
-      for (const [k, v] of Object.entries(conn.query_params)) {
-        queryParamsFinais[interpolar(k)] = interpolar(v as any);
-      }
-    }
-
-    try {
-      const isAbsolute = urlFinal.startsWith("http://") || urlFinal.startsWith("https://");
-      const baseForUrl = isAbsolute ? undefined : (typeof window !== "undefined" ? window.location.origin : "http://localhost");
-      const urlObj = new URL(urlFinal, baseForUrl);
-      Object.entries(queryParamsFinais).forEach(([k, v]) => {
-        urlObj.searchParams.set(k, v);
-      });
-      urlFinal = urlObj.toString();
-    } catch (urlErr) {
-      if (Object.keys(queryParamsFinais).length > 0) {
-        const queryStr = new URLSearchParams(queryParamsFinais).toString();
-        urlFinal += (urlFinal.includes("?") ? "&" : "?") + queryStr;
-      }
-    }
-
-    let bodyFinal: string | undefined = undefined;
-    if (conn.method !== "GET" && conn.body_template) {
-      bodyFinal = interpolar(conn.body_template);
-    }
-
-    const res = await fetch(urlFinal, {
-      method: conn.method || "POST",
-      headers: headersFinais,
-      body: bodyFinal
+    const { data, error } = await supabase.rpc("executar_api_connector_server", {
+      p_connector_id: connector_id,
+      p_variables: vars
     });
 
     const duration = Date.now() - startTime;
-    const text = await res.text();
-    let responseData: any;
-    try {
-      responseData = JSON.parse(text);
-    } catch {
-      responseData = text;
+
+    if (error) {
+      console.error("Erro RPC executar_api_connector_server:", error);
+      return {
+        status: 500,
+        duration,
+        headers: {},
+        data: { error: "Erro na RPC server-side", message: error.message }
+      };
     }
 
     return {
-      status: res.status,
+      status: (data as any)?.status ?? 200,
       duration,
-      headers: Object.fromEntries(res.headers.entries()),
-      data: responseData
+      headers: {},
+      data
     };
   } catch (err: any) {
     const duration = Date.now() - startTime;
-    console.error("Erro na chamada direta do executeApiConnector:", err);
+    console.error("Erro em executeApiConnector:", err);
     return {
       status: 500,
       duration,
       headers: {},
-      data: {
-        error: "Falha na chamada da API local",
-        message: err.message || String(err)
-      }
+      data: { error: "Falha na chamada da API", message: err.message || String(err) }
     };
   }
 }
+

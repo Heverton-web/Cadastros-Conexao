@@ -14,6 +14,7 @@ import { Loader2, Save, Plus, X, ToggleLeft, ToggleRight, Trash2, Settings, Data
 import toast from "react-hot-toast";
 
 import { listarPermissoesUsuarios, setPermissoes, getPermissoes, getPermissoesPadrao, PERMISSOES_GROUPS, PERMISSOES_LABEL, PERMISSOES_DESC, type Permissoes } from "~/lib/permissoes";
+import { listarDemoCredentials, type DemoCredential } from "~/lib/demos";
 import { DemosTab } from "~/components/admin/DemosTab";
 import { CentralAcoesTab } from "~/components/admin/CentralAcoesTab";
 import { FormBuilderTab } from "~/components/admin/FormBuilderTab";
@@ -130,8 +131,23 @@ function SupabaseTab() {
   );
 }
 
+// Tipo unificado: credencial real + profile vinculado + flag se é mock
+type CredencialItem = {
+  id: string;
+  nome_completo: string;
+  email_corporativo: string;
+  whatsapp_corporativo?: string | null;
+  departamento?: string | null;
+  ativo: boolean;
+  isMock: boolean;
+  mockRole?: string; // role_escolhida da demo_credential
+  userId?: string;  // user_id da demo_credential (para permissões)
+  profile?: any;
+  rawCredencial?: Credencial; // referência original para edição
+};
+
 function CredenciaisTab() {
-  const [credenciais, setCredenciais] = useState<(Credencial & { profile?: any })[]>([]);
+  const [credenciais, setCredenciais] = useState<CredencialItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [editId, setEditId] = useState<string | null>(null);
@@ -143,11 +159,11 @@ function CredenciaisTab() {
   });
   const [submitting, setSubmitting] = useState(false);
 
-  // Filtros de Setor/Role
-  const [filtroSetor, setFiltroSetor] = useState<"todos" | "cadastro" | "consultor" | "ti" | "super_admin">("todos");
+  // Filtros de Setor/Role (inclui "mock")
+  const [filtroSetor, setFiltroSetor] = useState<"todos" | "cadastro" | "consultor" | "ti" | "super_admin" | "mock">("todos");
 
   // Estado para Gerenciamento de Permissões integrado
-  const [permCredencial, setPermCredencial] = useState<(Credencial & { profile?: any }) | null>(null);
+  const [permCredencial, setPermCredencial] = useState<CredencialItem | null>(null);
   const [editPerms, setEditPerms] = useState<Permissoes | null>(null);
   const [loadingPerms, setLoadingPerms] = useState(false);
   const [savingPerms, setSavingPerms] = useState(false);
@@ -157,21 +173,50 @@ function CredenciaisTab() {
   async function carregar() {
     setLoading(true);
     try {
-      const [list, { data: profs, error: profsErr }] = await Promise.all([
+      const [list, demos, { data: profs, error: profsErr }] = await Promise.all([
         listarCredenciais(),
+        listarDemoCredentials(),
         supabase.from("profiles").select("*")
       ]);
       if (profsErr) throw profsErr;
 
-      const mapped = list.map((c: Credencial) => {
+      // Credenciais reais
+      const mapped: CredencialItem[] = list.map((c: Credencial) => {
         const found = profs?.find((p: any) => p.email?.toLowerCase() === c.email_corporativo?.toLowerCase());
         return {
-          ...c,
+          id: c.id,
+          nome_completo: c.nome_completo,
+          email_corporativo: c.email_corporativo,
+          whatsapp_corporativo: c.whatsapp_corporativo,
+          departamento: c.departamento,
+          ativo: c.ativo,
+          isMock: false,
+          profile: found,
+          rawCredencial: c
+        };
+      });
+
+      // Credenciais Mock (demo_credentials)
+      const mockMapped: CredencialItem[] = demos.map((d: DemoCredential) => {
+        const found = profs?.find((p: any) => p.id === d.user_id);
+        const roleLabel = d.role_escolhida === "consultor" ? "Consultor" :
+          d.role_escolhida === "cadastro" ? "Cadastro" :
+          d.role_escolhida === "ti" ? "TI" : d.role_escolhida;
+        return {
+          id: d.id,
+          nome_completo: found?.nome || d.email_demo.split("@")[0],
+          email_corporativo: d.email_demo,
+          whatsapp_corporativo: null,
+          departamento: roleLabel,
+          ativo: true,
+          isMock: true,
+          mockRole: d.role_escolhida,
+          userId: d.user_id,
           profile: found
         };
       });
 
-      setCredenciais(mapped);
+      setCredenciais([...mapped, ...mockMapped]);
     } catch { toast.error("Erro ao carregar credenciais"); }
     finally { setLoading(false); }
   }
@@ -241,7 +286,7 @@ function CredenciaisTab() {
   }
 
   // Permissões
-  async function abrirPermissoes(c: Credencial & { profile?: any }) {
+  async function abrirPermissoes(c: CredencialItem) {
     setPermCredencial(c);
     if (c.profile) {
       setLoadingPerms(true);
@@ -284,6 +329,9 @@ function CredenciaisTab() {
   // Filtragem local
   const credenciaisFiltradas = credenciais.filter(c => {
     if (filtroSetor === "todos") return true;
+    if (filtroSetor === "mock") return c.isMock;
+    // Nos demais filtros, só mostrar as credenciais reais
+    if (c.isMock) return false;
     const ambiente = c.profile?.ambiente?.toLowerCase() || "";
     const isSuper = c.profile?.is_super_admin || false;
     const depto = c.departamento?.toLowerCase() || "";
@@ -307,19 +355,24 @@ function CredenciaisTab() {
       {/* Barra de Filtros */}
       <div className="flex gap-1 overflow-x-auto pb-2 scrollbar-hide">
         {[
-          { key: "todos", label: "Todos" },
-          { key: "consultor", label: "Consultores" },
-          { key: "cadastro", label: "Cadastro" },
-          { key: "ti", label: "TI / Tecnologia" },
-          { key: "super_admin", label: "Super Admin" },
+          { key: "todos", label: "Todos", color: null },
+          { key: "consultor", label: "Consultores", color: null },
+          { key: "cadastro", label: "Cadastro", color: null },
+          { key: "ti", label: "TI / Tecnologia", color: null },
+          { key: "super_admin", label: "Super Admin", color: null },
+          { key: "mock", label: "🧪 Mock / Demo", color: "purple" },
         ].map(item => (
           <button
             key={item.key}
             onClick={() => setFiltroSetor(item.key as any)}
-            className={`rounded-lg px-3 py-1.5 text-xs font-medium transition ${
-              filtroSetor === item.key 
-                ? "bg-accent/15 text-accent border border-accent/35" 
-                : "bg-input-bg text-text-muted hover:text-text-main border border-transparent"
+            className={`rounded-lg px-3 py-1.5 text-xs font-medium transition whitespace-nowrap ${
+              filtroSetor === item.key
+                ? item.key === "mock"
+                  ? "bg-purple-500/15 text-purple-400 border border-purple-500/35"
+                  : "bg-accent/15 text-accent border border-accent/35"
+                : item.key === "mock"
+                  ? "bg-input-bg text-purple-400/60 hover:text-purple-400 border border-transparent"
+                  : "bg-input-bg text-text-muted hover:text-text-main border border-transparent"
             }`}
           >
             {item.label}
@@ -334,11 +387,16 @@ function CredenciaisTab() {
           const isRegistered = !!c.profile;
           const isSuper = c.profile?.is_super_admin || false;
           return (
-            <div key={c.id} className="flex items-center gap-3 rounded-xl bg-card p-4 shadow-lg">
+            <div key={c.id} className={`flex items-center gap-3 rounded-xl p-4 shadow-lg ${
+              c.isMock ? "bg-purple-500/5 border border-purple-500/15" : "bg-card"
+            }`}>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2">
                   <p className="text-sm font-medium text-text-main truncate">{c.nome_completo}</p>
-                  {!isRegistered && (
+                  {c.isMock && (
+                    <span className="rounded-full bg-purple-500/15 border border-purple-500/30 px-2 py-0.5 text-[8px] font-bold text-purple-400">🧪 Mock</span>
+                  )}
+                  {!c.isMock && !isRegistered && (
                     <span className="rounded-full bg-yellow-500/10 border border-yellow-500/20 px-2 py-0.5 text-[8px] font-semibold text-yellow-400">Pendente</span>
                   )}
                   {isSuper && (
@@ -347,17 +405,19 @@ function CredenciaisTab() {
                 </div>
                 <p className="text-[11px] text-text-muted truncate">{c.email_corporativo}</p>
                 <div className="flex flex-wrap gap-1 mt-1.5">
-                  {c.departamento && <span className="rounded-full bg-accent/10 px-2 py-0.5 text-[9px] font-medium text-accent">{c.departamento}</span>}
-                  {c.profile?.ambiente && c.profile.ambiente.toLowerCase() !== c.departamento?.toLowerCase() && (
+                  {c.departamento && <span className={`rounded-full px-2 py-0.5 text-[9px] font-medium ${
+                    c.isMock ? "bg-purple-500/10 text-purple-400" : "bg-accent/10 text-accent"
+                  }`}>{c.departamento}</span>}
+                  {!c.isMock && c.profile?.ambiente && c.profile.ambiente.toLowerCase() !== c.departamento?.toLowerCase() && (
                     <span className="rounded-full bg-purple-500/10 px-2 py-0.5 text-[9px] font-medium text-purple-400">{c.profile.ambiente}</span>
                   )}
                   {c.whatsapp_corporativo && <span className="rounded-full bg-blue-500/10 px-2 py-0.5 text-[9px] font-medium text-blue-400">{c.whatsapp_corporativo}</span>}
                 </div>
               </div>
               <button onClick={() => abrirPermissoes(c)} title="Permissões" className="rounded-lg p-2 text-text-muted hover:text-accent transition-colors"><Shield size={16} /></button>
-              <button onClick={() => abrirEditar(c)} className="rounded-lg p-2 text-text-muted hover:text-text-main"><Settings size={16} /></button>
-              <button onClick={() => handleToggle(c)} className={c.ativo ? "text-green-400" : "text-text-muted"}>{c.ativo ? <ToggleRight size={24} /> : <ToggleLeft size={24} />}</button>
-              <button onClick={() => handleDelete(c.id)} className="text-text-muted hover:text-red-400"><Trash2 size={16} /></button>
+              {!c.isMock && <button onClick={() => abrirEditar(c.rawCredencial!)} className="rounded-lg p-2 text-text-muted hover:text-text-main"><Settings size={16} /></button>}
+              {!c.isMock && <button onClick={() => handleToggle(c.rawCredencial!)} className={c.ativo ? "text-green-400" : "text-text-muted"}>{c.ativo ? <ToggleRight size={24} /> : <ToggleLeft size={24} />}</button>}
+              {!c.isMock && <button onClick={() => handleDelete(c.id)} className="text-text-muted hover:text-red-400"><Trash2 size={16} /></button>}
             </div>
           );
         })
