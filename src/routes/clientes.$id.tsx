@@ -339,7 +339,7 @@ function ClienteDetailPage() {
   const { cadastro: c, pf, pj, endereco: end } = data;
   const nome = c.lead_nome || c.nome_temporario || pf?.nome || pj?.razao_social || "—";
   const isFinal = c.status === "aprovado" || c.status === "reprovado";
-  const isBloqueado = c.status === "reprovado" || c.status === "em_correcao";
+  const isBloqueado = c.status === "reprovado" || c.status === "em_correcao" || c.status === "link_gerado";
   const podeAcaoCampo = permissoes?.aprovar_campo === true;
   const podeEditarCampos = podeAcaoCampo && !isBloqueado && !isFinal;
 
