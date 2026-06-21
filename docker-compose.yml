@@ -1,11 +1,44 @@
+version: "3.8"
+
+## --------------------------- CADASTROS CONEXÃO --------------------------- ##
+
 services:
   app:
-    build:
-      context: .
-      args:
-        VITE_SUPABASE_URL: ${VITE_SUPABASE_URL}
-        VITE_SUPABASE_ANON_KEY: ${VITE_SUPABASE_ANON_KEY}
-    container_name: cadastros-conexao
-    ports:
-      - "3000:80"
-    restart: unless-stopped
+    # Imagem pré-construída no Docker Hub para uso em Portainer/Swarm
+    image: hevertonperes/cadastros-conexao:v1
+
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+
+    networks:
+      - network_conexao
+
+    environment:
+      - NODE_ENV=production
+      - TZ=America/Sao_Paulo
+      - VITE_SUPABASE_URL=${VITE_SUPABASE_URL}
+      - VITE_SUPABASE_ANON_KEY=${VITE_SUPABASE_ANON_KEY}
+
+    ## 🌐 Configurações Traefik (Segurança e Redirecionamento)
+    labels:
+      - "traefik.enable=true"
+      # Roteador Seguro (HTTPS)
+      - "traefik.http.routers.cadastros_conexao.rule=Host(`cadastros.vpsconexao.org`)"
+      - "traefik.http.routers.cadastros_conexao.entrypoints=websecure"
+      - "traefik.http.routers.cadastros_conexao.tls.certresolver=letsencryptresolver"
+      # Redirecionamento Automático (HTTP -> HTTPS)
+      - "traefik.http.routers.cadastros_conexao_http.rule=Host(`cadastros.vpsconexao.org`)"
+      - "traefik.http.routers.cadastros_conexao_http.entrypoints=web"
+      - "traefik.http.routers.cadastros_conexao_http.middlewares=cadastros_redirect"
+      - "traefik.http.middlewares.cadastros_redirect.redirectscheme.scheme=https"
+      # Porta interna do container (Nginx)
+      - "traefik.http.services.cadastros_conexao.loadbalancer.server.port=80"
+
+## --------------------------- INFRA --------------------------- ##
+
+networks:
+  network_conexao:
+    external: true
+    name: network_conexao
