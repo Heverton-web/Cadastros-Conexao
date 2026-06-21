@@ -93,7 +93,7 @@ function ClienteDetailPage() {
       const c = data.cadastro;
       if (c.created_by) {
         try {
-          await enviarNotificacaoComTemplate("cadastro_aprovado", id, c.created_by, {
+          await enviarNotificacaoComTemplate("aprovado", id, c.created_by, {
             lead_nome: c.lead_nome || c.nome_temporario || "Sem Nome",
             codigo_cliente: codigoCliente,
           });
@@ -154,7 +154,7 @@ function ClienteDetailPage() {
       const c = data.cadastro;
       if (c.created_by) {
         try {
-          await enviarNotificacaoComTemplate("cadastro_reprovado", id, c.created_by, {
+          await enviarNotificacaoComTemplate("reprovado", id, c.created_by, {
             lead_nome: c.lead_nome || c.nome_temporario || "Sem Nome",
             motivo: motivo,
           });
@@ -211,13 +211,24 @@ function ClienteDetailPage() {
     if (!motivo || !data) return;
     setSubmitting(true);
     try {
-      await solicitarCorrecao(id, motivo);
+      const camposEmCorrecao: string[] = [];
+      for (const [campo, r] of Object.entries(revisoes)) {
+        if (r.status === "em_correcao" || r.status === "reprovado") {
+          camposEmCorrecao.push(campo);
+        }
+      }
+      for (const doc of docs) {
+        if (doc.status === "em_correcao" || doc.status === "reprovado") {
+          camposEmCorrecao.push(`doc.${doc.tipo}`);
+        }
+      }
+      await solicitarCorrecao(id, motivo, camposEmCorrecao);
       await logAtividade("cadastro", id, "correcao", motivo);
       
       const c = data.cadastro;
       if (c.created_by) {
         try {
-          await enviarNotificacaoComTemplate("cadastro_correcao", id, c.created_by, {
+          await enviarNotificacaoComTemplate("em_correcao", id, c.created_by, {
             lead_nome: c.lead_nome || c.nome_temporario || "Sem Nome",
             motivo: motivo,
           });
@@ -328,7 +339,10 @@ function ClienteDetailPage() {
   const { cadastro: c, pf, pj, endereco: end } = data;
   const nome = c.lead_nome || c.nome_temporario || pf?.nome || pj?.razao_social || "—";
   const isFinal = c.status === "aprovado" || c.status === "reprovado";
+  const isBloqueado = c.status === "reprovado" || c.status === "em_correcao" || c.status === "link_gerado";
   const podeAcaoCampo = permissoes?.aprovar_campo === true;
+  const podeEditarCampos = podeAcaoCampo && !isBloqueado && !isFinal;
+
 
   const camposDados = [
     pf?.nome && "pf.nome", pf?.cpf && "pf.cpf", pf?.data_nascimento && "pf.data_nascimento",
@@ -347,7 +361,7 @@ function ClienteDetailPage() {
   ].filter(Boolean) as string[];
 
   function BotoesAcaoMassa({ aba }: { aba: Tab }) {
-    if (!podeAcaoCampo || isFinal) return null;
+    if (!podeEditarCampos) return null;
     return (
       <div className="flex flex-col items-end gap-1">
         <div className="flex items-center gap-1.5 flex-wrap justify-end">
@@ -436,25 +450,23 @@ function ClienteDetailPage() {
                 {DOC_STATUS_LABEL[docStatus as keyof typeof DOC_STATUS_LABEL]}
               </span>
             )}
-            {c.status === "aprovado" && c.codigo_cliente && (
-              <span className="flex items-center gap-1 self-start rounded-full px-3 py-1 text-xs font-bold bg-accent/10 text-accent border border-accent/20" title="Código do Cliente">
-                CLI-{c.codigo_cliente}
-              </span>
-            )}
-            {c.comentario_reprovacao && !isFinal && (
-              <button onClick={() => setShowResumo(true)} className="flex h-7 w-7 items-center justify-center rounded-full bg-orange-500/10 border border-orange-500/20 text-orange-400 hover:bg-orange-500/20 transition" title="Ver Resumo">
-                <Eye size={14} />
-              </button>
-            )}
-            {c.comentario_reprovacao && c.status === "reprovado" && (
-              <button onClick={() => setShowResumo(true)} className="flex h-7 w-7 items-center justify-center rounded-full bg-red-500/10 border border-red-500/20 text-red-400 hover:bg-red-500/20 transition" title="Ver Resumo">
-                <Eye size={14} />
+            {c.status === "em_correcao" && c.token_acesso && (
+              <button
+                onClick={() => {
+                  const link = `${window.location.origin}/pre-cadastro/${c.token_acesso}`;
+                  navigator.clipboard.writeText(link);
+                  alert("Link de correção copiado com sucesso!");
+                }}
+                className="flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold bg-orange-500/10 text-orange-400 border border-orange-500/20 hover:bg-orange-500/20 transition"
+                title="Copiar Link de Correção"
+              >
+                Copiar Link de Correção
               </button>
             )}
           </div>
         </div>
 
-        {permissoes?.aprovar_cadastro === true && !isFinal && (c.status === "em_analise" || c.status === "dados_enviados" || c.status === "em_correcao") && (
+        {permissoes?.aprovar_cadastro === true && !isBloqueado && !isFinal && (c.status === "em_analise" || c.status === "dados_enviados") && (
           <div className="w-full lg:w-auto flex flex-wrap gap-2 lg:gap-3">
             <button onClick={abrirCorrecao} className="flex-1 lg:flex-none lg:w-32 rounded-xl bg-orange-600/80 py-2.5 px-4 text-sm font-medium text-white max-h-[45px] hover:bg-orange-600 transition shadow-lg border border-orange-600/20">Corrigir</button>
             <button onClick={() => isAprovacaoBloqueada ? alert("Não é possível aprovar. Todos os dados e documentos precisam estar aprovados.") : (setCodigoCliente(""), setShowAprovar(true))} disabled={isAprovacaoBloqueada} title={isAprovacaoBloqueada ? "Todos os campos devem estar aprovados" : ""} className="flex-1 lg:flex-none lg:w-32 rounded-xl bg-green-700/80 py-2.5 px-4 text-sm font-medium text-white max-h-[45px] hover:bg-green-700 transition shadow-lg border border-green-700/20 disabled:opacity-50">Aprovar</button>
@@ -480,23 +492,23 @@ function ClienteDetailPage() {
           </div>
           <div className="flex flex-col gap-3">
             {c.tipo_pessoa && <span className="self-start rounded-full bg-accent/10 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-accent">{c.tipo_pessoa}</span>}
-            {pf?.nome && <CampoRevisavel campoKey="pf.nome" label="Nome Completo" value={pf.nome} revisoes={revisoes} podeAcao={podeAcaoCampo && !isFinal} onAction={(tipo) => setFieldAction({ campo: "pf.nome", label: "Nome Completo", tipo })} />}
-            {pf?.cpf && <CampoRevisavel campoKey="pf.cpf" label="CPF" value={pf.cpf} revisoes={revisoes} podeAcao={podeAcaoCampo && !isFinal} onAction={(tipo) => setFieldAction({ campo: "pf.cpf", label: "CPF", tipo })} />}
-            {pf?.data_nascimento && <CampoRevisavel campoKey="pf.data_nascimento" label="Data de Nascimento" value={new Date(pf.data_nascimento).toLocaleDateString("pt-BR")} revisoes={revisoes} podeAcao={podeAcaoCampo && !isFinal} onAction={(tipo) => setFieldAction({ campo: "pf.data_nascimento", label: "Data de Nascimento", tipo })} />}
-            {pf?.cro && <CampoRevisavel campoKey="pf.cro" label="CRO/TPD" value={pf.cro} revisoes={revisoes} podeAcao={podeAcaoCampo && !isFinal} onAction={(tipo) => setFieldAction({ campo: "pf.cro", label: "CRO/TPD", tipo })} />}
-            {pf?.data_emissao_cro && <CampoRevisavel campoKey="pf.data_emissao_cro" label="Emissão CRO" value={new Date(pf.data_emissao_cro).toLocaleDateString("pt-BR")} revisoes={revisoes} podeAcao={podeAcaoCampo && !isFinal} onAction={(tipo) => setFieldAction({ campo: "pf.data_emissao_cro", label: "Emissão CRO", tipo })} />}
-            {pj?.razao_social && <CampoRevisavel campoKey="pj.razao_social" label="Razão Social" value={pj.razao_social} revisoes={revisoes} podeAcao={podeAcaoCampo && !isFinal} onAction={(tipo) => setFieldAction({ campo: "pj.razao_social", label: "Razão Social", tipo })} />}
-            {pj?.nome_fantasia && <CampoRevisavel campoKey="pj.nome_fantasia" label="Nome Fantasia" value={pj.nome_fantasia} revisoes={revisoes} podeAcao={podeAcaoCampo && !isFinal} onAction={(tipo) => setFieldAction({ campo: "pj.nome_fantasia", label: "Nome Fantasia", tipo })} />}
-            {pj?.cnpj && <CampoRevisavel campoKey="pj.cnpj" label="CNPJ" value={pj.cnpj} revisoes={revisoes} podeAcao={podeAcaoCampo && !isFinal} onAction={(tipo) => setFieldAction({ campo: "pj.cnpj", label: "CNPJ", tipo })} />}
-            {pj?.inscricao_estadual && <CampoRevisavel campoKey="pj.inscricao_estadual" label="Inscrição Estadual" value={pj.inscricao_estadual} revisoes={revisoes} podeAcao={podeAcaoCampo && !isFinal} onAction={(tipo) => setFieldAction({ campo: "pj.inscricao_estadual", label: "Inscrição Estadual", tipo })} />}
+            {pf?.nome && <CampoRevisavel campoKey="pf.nome" label="Nome Completo" value={pf.nome} revisoes={revisoes} podeAcao={podeEditarCampos} onAction={(tipo) => setFieldAction({ campo: "pf.nome", label: "Nome Completo", tipo })} />}
+            {pf?.cpf && <CampoRevisavel campoKey="pf.cpf" label="CPF" value={pf.cpf} revisoes={revisoes} podeAcao={podeEditarCampos} onAction={(tipo) => setFieldAction({ campo: "pf.cpf", label: "CPF", tipo })} />}
+            {pf?.data_nascimento && <CampoRevisavel campoKey="pf.data_nascimento" label="Data de Nascimento" value={new Date(pf.data_nascimento).toLocaleDateString("pt-BR")} revisoes={revisoes} podeAcao={podeEditarCampos} onAction={(tipo) => setFieldAction({ campo: "pf.data_nascimento", label: "Data de Nascimento", tipo })} />}
+            {pf?.cro && <CampoRevisavel campoKey="pf.cro" label="CRO/TPD" value={pf.cro} revisoes={revisoes} podeAcao={podeEditarCampos} onAction={(tipo) => setFieldAction({ campo: "pf.cro", label: "CRO/TPD", tipo })} />}
+            {pf?.data_emissao_cro && <CampoRevisavel campoKey="pf.data_emissao_cro" label="Emissão CRO" value={new Date(pf.data_emissao_cro).toLocaleDateString("pt-BR")} revisoes={revisoes} podeAcao={podeEditarCampos} onAction={(tipo) => setFieldAction({ campo: "pf.data_emissao_cro", label: "Emissão CRO", tipo })} />}
+            {pj?.razao_social && <CampoRevisavel campoKey="pj.razao_social" label="Razão Social" value={pj.razao_social} revisoes={revisoes} podeAcao={podeEditarCampos} onAction={(tipo) => setFieldAction({ campo: "pj.razao_social", label: "Razão Social", tipo })} />}
+            {pj?.nome_fantasia && <CampoRevisavel campoKey="pj.nome_fantasia" label="Nome Fantasia" value={pj.nome_fantasia} revisoes={revisoes} podeAcao={podeEditarCampos} onAction={(tipo) => setFieldAction({ campo: "pj.nome_fantasia", label: "Nome Fantasia", tipo })} />}
+            {pj?.cnpj && <CampoRevisavel campoKey="pj.cnpj" label="CNPJ" value={pj.cnpj} revisoes={revisoes} podeAcao={podeEditarCampos} onAction={(tipo) => setFieldAction({ campo: "pj.cnpj", label: "CNPJ", tipo })} />}
+            {pj?.inscricao_estadual && <CampoRevisavel campoKey="pj.inscricao_estadual" label="Inscrição Estadual" value={pj.inscricao_estadual} revisoes={revisoes} podeAcao={podeEditarCampos} onAction={(tipo) => setFieldAction({ campo: "pj.inscricao_estadual", label: "Inscrição Estadual", tipo })} />}
 {(() => {
   const email = pf?.email_comunicacao || pj?.email_comunicacao;
-  return email ? <CampoRevisavel campoKey={pf ? "pf.email_comunicacao" : "pj.email_comunicacao"} label="E-mail Comunicação" value={email} revisoes={revisoes} podeAcao={podeAcaoCampo && !isFinal} onAction={(tipo) => setFieldAction({ campo: pf ? "pf.email_comunicacao" : "pj.email_comunicacao", label: "E-mail Comunicação", tipo })} iconBefore={<a href={`mailto:${email}`} className="inline-flex items-center justify-center rounded-lg bg-accent/10 p-1.5 text-accent hover:bg-accent/20 transition" title="Enviar e-mail"><Mail size={14} /></a>} /> : null;
+  return email ? <CampoRevisavel campoKey={pf ? "pf.email_comunicacao" : "pj.email_comunicacao"} label="E-mail Comunicação" value={email} revisoes={revisoes} podeAcao={podeEditarCampos} onAction={(tipo) => setFieldAction({ campo: pf ? "pf.email_comunicacao" : "pj.email_comunicacao", label: "E-mail Comunicação", tipo })} iconBefore={<a href={`mailto:${email}`} className="inline-flex items-center justify-center rounded-lg bg-accent/10 p-1.5 text-accent hover:bg-accent/20 transition" title="Enviar e-mail"><Mail size={14} /></a>} /> : null;
 })()}
-{(pf?.tel_fixo || pj?.tel_fixo) && <CampoRevisavel campoKey={pf ? "pf.tel_fixo" : "pj.tel_fixo"} label="Telefone Fixo" value={formatPhone(pf?.tel_fixo || pj?.tel_fixo)} revisoes={revisoes} podeAcao={podeAcaoCampo && !isFinal} onAction={(tipo) => setFieldAction({ campo: pf ? "pf.tel_fixo" : "pj.tel_fixo", label: "Telefone Fixo", tipo })} />}
+{(pf?.tel_fixo || pj?.tel_fixo) && <CampoRevisavel campoKey={pf ? "pf.tel_fixo" : "pj.tel_fixo"} label="Telefone Fixo" value={formatPhone(pf?.tel_fixo || pj?.tel_fixo)} revisoes={revisoes} podeAcao={podeEditarCampos} onAction={(tipo) => setFieldAction({ campo: pf ? "pf.tel_fixo" : "pj.tel_fixo", label: "Telefone Fixo", tipo })} />}
 {(() => {
   const cel = pf?.celular1 || pj?.celular1;
-  return cel ? <CampoRevisavel campoKey={pf ? "pf.celular1" : "pj.celular1"} label="Celular" value={formatPhone(cel)} revisoes={revisoes} podeAcao={podeAcaoCampo && !isFinal} onAction={(tipo) => setFieldAction({ campo: pf ? "pf.celular1" : "pj.celular1", label: "Celular", tipo })} iconBefore={<a href={`https://wa.me/${cel.replace(/\D/g, "")}`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center rounded-lg bg-green-500/10 p-1.5 text-green-400 hover:bg-green-500/20 transition" title="Abrir WhatsApp"><MessageCircle size={14} /></a>} /> : null;
+  return cel ? <CampoRevisavel campoKey={pf ? "pf.celular1" : "pj.celular1"} label="Celular" value={formatPhone(cel)} revisoes={revisoes} podeAcao={podeEditarCampos} onAction={(tipo) => setFieldAction({ campo: pf ? "pf.celular1" : "pj.celular1", label: "Celular", tipo })} iconBefore={<a href={`https://wa.me/${cel.replace(/\D/g, "")}`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center rounded-lg bg-green-500/10 p-1.5 text-green-400 hover:bg-green-500/20 transition" title="Abrir WhatsApp"><MessageCircle size={14} /></a>} /> : null;
 })()}
           </div>
         </div>
@@ -542,13 +554,13 @@ function ClienteDetailPage() {
             ) : null;
           })()}
           <div className="flex flex-col gap-3">
-            {end.cep && <CampoRevisavel campoKey="end.cep" label="CEP" value={end.cep} revisoes={revisoes} podeAcao={podeAcaoCampo && !isFinal} onAction={(tipo) => setFieldAction({ campo: "end.cep", label: "CEP", tipo })} />}
-            {end.rua && <CampoRevisavel campoKey="end.rua" label="Rua" value={end.rua} revisoes={revisoes} podeAcao={podeAcaoCampo && !isFinal} onAction={(tipo) => setFieldAction({ campo: "end.rua", label: "Rua", tipo })} />}
-            {end.numero && <CampoRevisavel campoKey="end.numero" label="Número" value={end.numero} revisoes={revisoes} podeAcao={podeAcaoCampo && !isFinal} onAction={(tipo) => setFieldAction({ campo: "end.numero", label: "Número", tipo })} />}
-            {end.bairro && <CampoRevisavel campoKey="end.bairro" label="Bairro" value={end.bairro} revisoes={revisoes} podeAcao={podeAcaoCampo && !isFinal} onAction={(tipo) => setFieldAction({ campo: "end.bairro", label: "Bairro", tipo })} />}
-            {end.complemento && <CampoRevisavel campoKey="end.complemento" label="Complemento" value={end.complemento} revisoes={revisoes} podeAcao={podeAcaoCampo && !isFinal} onAction={(tipo) => setFieldAction({ campo: "end.complemento", label: "Complemento", tipo })} />}
-            {end.cidade && <CampoRevisavel campoKey="end.cidade" label="Cidade" value={end.cidade} revisoes={revisoes} podeAcao={podeAcaoCampo && !isFinal} onAction={(tipo) => setFieldAction({ campo: "end.cidade", label: "Cidade", tipo })} />}
-            {end.estado && <CampoRevisavel campoKey="end.estado" label="Estado" value={end.estado} revisoes={revisoes} podeAcao={podeAcaoCampo && !isFinal} onAction={(tipo) => setFieldAction({ campo: "end.estado", label: "Estado", tipo })} />}
+            {end.cep && <CampoRevisavel campoKey="end.cep" label="CEP" value={end.cep} revisoes={revisoes} podeAcao={podeEditarCampos} onAction={(tipo) => setFieldAction({ campo: "end.cep", label: "CEP", tipo })} />}
+            {end.rua && <CampoRevisavel campoKey="end.rua" label="Rua" value={end.rua} revisoes={revisoes} podeAcao={podeEditarCampos} onAction={(tipo) => setFieldAction({ campo: "end.rua", label: "Rua", tipo })} />}
+            {end.numero && <CampoRevisavel campoKey="end.numero" label="Número" value={end.numero} revisoes={revisoes} podeAcao={podeEditarCampos} onAction={(tipo) => setFieldAction({ campo: "end.numero", label: "Número", tipo })} />}
+            {end.bairro && <CampoRevisavel campoKey="end.bairro" label="Bairro" value={end.bairro} revisoes={revisoes} podeAcao={podeEditarCampos} onAction={(tipo) => setFieldAction({ campo: "end.bairro", label: "Bairro", tipo })} />}
+            {end.complemento && <CampoRevisavel campoKey="end.complemento" label="Complemento" value={end.complemento} revisoes={revisoes} podeAcao={podeEditarCampos} onAction={(tipo) => setFieldAction({ campo: "end.complemento", label: "Complemento", tipo })} />}
+            {end.cidade && <CampoRevisavel campoKey="end.cidade" label="Cidade" value={end.cidade} revisoes={revisoes} podeAcao={podeEditarCampos} onAction={(tipo) => setFieldAction({ campo: "end.cidade", label: "Cidade", tipo })} />}
+            {end.estado && <CampoRevisavel campoKey="end.estado" label="Estado" value={end.estado} revisoes={revisoes} podeAcao={podeEditarCampos} onAction={(tipo) => setFieldAction({ campo: "end.estado", label: "Estado", tipo })} />}
           </div>
         </div>
       )}
@@ -561,7 +573,7 @@ function ClienteDetailPage() {
           <DocList
             docs={docs}
             podeVisualizar={permissoes?.visualizar_documento === true}
-            podeAcao={podeAcaoCampo}
+            podeAcao={podeEditarCampos}
             onAprovar={async (docId) => {
               try {
                 await aprovarDocumento(docId);

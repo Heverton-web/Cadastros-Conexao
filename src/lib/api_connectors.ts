@@ -15,6 +15,7 @@ export type ApiConnector = {
   evento: string | null;
   tipo_evento: "status_change" | "button_action" | null;
   is_active: boolean;
+  ordem?: number;
   created_at: string;
   updated_at: string;
 };
@@ -58,18 +59,52 @@ export async function deleteApiConnector(id: string) {
 }
 
 /**
- * Invoca a Edge Function "api_runner" para disparar o webhook ou api_call
- * com as variáveis para interpolação.
+ * Executa o conector de API via RPC server-side (pg_net),
+ * evitando bloqueios de CORS do browser.
  */
 export async function executeApiConnector(connector_id: string, variables: Record<string, any> = {}) {
-  const { data, error } = await supabase.functions.invoke("api_runner", {
-    body: { connector_id, variables }
-  });
+  const startTime = Date.now();
+  try {
+    // Sanitizar variáveis: converter tudo para string para o jsonb
+    const vars: Record<string, string> = {};
+    for (const [k, v] of Object.entries(variables)) {
+      if (v !== undefined && v !== null) {
+        vars[k] = typeof v === "object" ? JSON.stringify(v) : String(v);
+      }
+    }
 
-  if (error) {
-    console.error("Erro na chamada da Edge Function:", error);
-    throw error;
+    const { data, error } = await supabase.rpc("executar_api_connector_server", {
+      p_connector_id: connector_id,
+      p_variables: vars
+    });
+
+    const duration = Date.now() - startTime;
+
+    if (error) {
+      console.error("Erro RPC executar_api_connector_server:", error);
+      return {
+        status: 500,
+        duration,
+        headers: {},
+        data: { error: "Erro na RPC server-side", message: error.message }
+      };
+    }
+
+    return {
+      status: (data as any)?.status ?? 200,
+      duration,
+      headers: {},
+      data
+    };
+  } catch (err: any) {
+    const duration = Date.now() - startTime;
+    console.error("Erro em executeApiConnector:", err);
+    return {
+      status: 500,
+      duration,
+      headers: {},
+      data: { error: "Falha na chamada da API", message: err.message || String(err) }
+    };
   }
-
-  return data; // O data já virá formatado pelo nosso edge function { status, duration, headers, data }
 }
+

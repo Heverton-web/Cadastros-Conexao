@@ -147,12 +147,29 @@ export async function reprovarCadastro(id: string, motivo: string) {
   });
 }
 
-export async function solicitarCorrecao(id: string, comentario: string) {
+export async function solicitarCorrecao(id: string, comentario: string, camposCorrecao: string[]) {
+  const novoToken = crypto.randomUUID();
+  const linkExpiracao = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
+  
   return atualizarCadastro(id, {
     status: "em_correcao",
     comentario_reprovacao: comentario,
+    token_acesso: novoToken,
+    link_expiracao: linkExpiracao,
+    inicio_preenchimento: null,
+    status_verificacao_token: true,
+    dados_extras: null, // Pode ser util resetar ou nao, mas o campos_correcao e o principal
+  } as any).then(async (res) => {
+    // Atualiza campos_correcao separadamente pois pode nao estar mapeado no tipo Cadastro (ou forçar via as any)
+    const { error } = await supabase
+      .from("cadastros")
+      .update({ campos_correcao: camposCorrecao })
+      .eq("id", id);
+    if (error) console.error("Erro ao salvar campos_correcao:", error);
+    return res;
   });
 }
+
 
 export const STATUS_LABEL: Record<CadastroStatus, string> = {
   link_gerado: "Link Gerado",

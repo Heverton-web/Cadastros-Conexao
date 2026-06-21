@@ -31,7 +31,7 @@ export function DemosTab() {
   const [criandoDemo, setCriandoDemo] = useState(false);
   const [emailDemo, setEmailDemo] = useState("");
   const [senhaDemo, setSenhaDemo] = useState("");
-  const [roleDemo, setRoleDemo] = useState("editor");
+  const [roleDemo, setRoleDemo] = useState("viewer");
   const [qtdMock, setQtdMock] = useState(5);
   const [confirmDeleteDemo, setConfirmDeleteDemo] = useState<{id: string, userId: string} | null>(null);
 
@@ -321,7 +321,7 @@ export function DemosTab() {
             <select value={roleDemo} onChange={e => setRoleDemo(e.target.value)} className="w-full rounded-xl border border-input-border bg-bg-dark px-3 py-2 text-sm text-text-main outline-none focus:border-accent">
               <option value="admin" className="text-black bg-white">Admin</option>
               <option value="editor" className="text-black bg-white">Editor</option>
-              <option value="consultor" className="text-black bg-white">Consultor</option>
+              <option value="viewer" className="text-black bg-white">Consultor (viewer)</option>
             </select>
           </div>
           <div className="w-full md:w-20">

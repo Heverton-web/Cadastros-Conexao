@@ -7,6 +7,8 @@ import { uploadDocumento } from "~/lib/documentos";
 import { dispararWebhooks } from "~/lib/webhooks";
 import { carregarSchema, type CampoSchema } from "~/lib/form-schema";
 import { Loader2, CheckCircle, AlertTriangle, Send, KeyRound, Upload, Clock, ShieldCheck, Lock, XCircle } from "lucide-react";
+import { BannerCorrecao } from "~/components/BannerCorrecao";
+
 
 // ─── Funções de Máscara ──────────────────────────────────────────────────────
 function limpar(v: string) { return v.replace(/\D/g, ""); }
@@ -107,6 +109,14 @@ function PreCadastroPage() {
   const [step, setStep] = useState<Step>("tipo");
   const [loading, setLoading] = useState(true);
   const [cadastroId, setCadastroId] = useState<string | null>(null);
+
+  // States para gerenciar correção do lead
+  const [cadastroStatus, setCadastroStatus] = useState<string | null>(null);
+  const [comentarioGeral, setComentarioGeral] = useState<string | null>(null);
+  const [revisoes, setRevisoes] = useState<Record<string, any>>({});
+  const [camposCorrecao, setCamposCorrecao] = useState<string[]>([]);
+  const [documentosSalvos, setDocumentosSalvos] = useState<any[]>([]);
+
   
   // 2FA Inicial States
   const [canal2FA, setCanal2FA] = useState<"email" | "whatsapp">("whatsapp");
@@ -214,6 +224,65 @@ function PreCadastroPage() {
       
       const c = typeof data === "string" ? JSON.parse(data) : data;
       setCadastroId(c.id);
+      setCadastroStatus(c.status);
+      setComentarioGeral(c.comentario_reprovacao);
+      setRevisoes(c.revisoes || {});
+      setCamposCorrecao(c.campos_correcao || []);
+
+      // Buscar dados PF/PJ/endereços/documentos para pré-população
+      const { data: pfData } = await supabase.from("cadastros_pf").select("*").eq("cadastro_id", c.id).maybeSingle();
+      const { data: pjData } = await supabase.from("cadastros_pj").select("*").eq("cadastro_id", c.id).maybeSingle();
+      const { data: endData } = await supabase.from("cadastros_enderecos").select("*").eq("cadastro_id", c.id).maybeSingle();
+      const { data: docsData } = await supabase.from("documentos").select("*").eq("cadastro_id", c.id);
+
+      setForm(prev => ({
+        tipo: c.tipo_pessoa || prev.tipo,
+        pf: {
+          nome: pfData?.nome || "",
+          data_nascimento: pfData?.data_nascimento ? new Date(pfData.data_nascimento).toISOString().split('T')[0] : "",
+          cpf: pfData?.cpf ? aplicarMascara(pfData.cpf, "cpf") : "",
+          cro: pfData?.cro || "",
+          cro_uf: pfData?.cro_uf || "",
+          data_emissao_cro: pfData?.data_emissao_cro ? new Date(pfData.data_emissao_cro).toISOString().split('T')[0] : "",
+          email_comunicacao: pfData?.email_comunicacao || "",
+          email_nf: pfData?.email_nf || "",
+          tel_fixo: pfData?.tel_fixo ? aplicarMascara(pfData.tel_fixo, "tel_fixo") : "",
+          celular1: pfData?.celular1 ? aplicarMascara(pfData.celular1, "celular") : "",
+          celular2: pfData?.celular2 ? aplicarMascara(pfData.celular2, "celular") : "",
+          estado: pfData?.estado || "",
+        },
+        pj: {
+          razao_social: pjData?.razao_social || "",
+          nome_fantasia: pjData?.nome_fantasia || "",
+          cnpj: pjData?.cnpj ? aplicarMascara(pjData.cnpj, "cnpj") : "",
+          inscricao_estadual: pjData?.inscricao_estadual || "",
+          cro: pjData?.cro || "",
+          cro_uf: pjData?.cro_uf || "",
+          data_emissao_cro: pjData?.data_emissao_cro ? new Date(pjData.data_emissao_cro).toISOString().split('T')[0] : "",
+          email_comunicacao: pjData?.email_comunicacao || "",
+          email_nf: pjData?.email_nf || "",
+          tel_fixo: pjData?.tel_fixo ? aplicarMascara(pjData.tel_fixo, "tel_fixo") : "",
+          celular1: pjData?.celular1 ? aplicarMascara(pjData.celular1, "celular") : "",
+          celular2: pjData?.celular2 ? aplicarMascara(pjData.celular2, "celular") : "",
+        },
+        endereco: {
+          cep: endData?.cep ? aplicarMascara(endData.cep, "cep") : "",
+          rua: endData?.rua || "",
+          numero: endData?.numero || "",
+          bairro: endData?.bairro || "",
+          complemento: endData?.complemento || "",
+          cidade: endData?.cidade || "",
+          estado: endData?.estado || "",
+        }
+      }));
+
+      if (c.dados_extras) {
+        setExtras(c.dados_extras);
+      }
+
+      if (docsData) {
+        setDocumentosSalvos(docsData);
+      }
       
       // Armazena contato de email inicial
       if (c.lead_email && !contatoEmail) setContatoEmail(c.lead_email);
@@ -225,18 +294,24 @@ function PreCadastroPage() {
       }
 
       // Se já finalizou o preenchimento, vai para sucesso
+      // Nota: permitimos o acesso se status for "em_correcao"
       if (["dados_enviados", "em_analise", "aprovado", "reprovado"].includes(c.status)) {
         setStep("sucesso");
         return;
       }
 
-      // Verificação 2FA
-      if (!c.status_verificacao_token) {
+      // Verificação 2FA (pula se status for em_correcao ou se status_verificacao_token for true)
+      if (!c.status_verificacao_token && c.status !== "em_correcao") {
         setStep("2fa_solicitar");
       } else {
         // 2FA já validado
-        setInicioPreenchimento(c.inicio_preenchimento);
-        const limite = new Date(c.inicio_preenchimento).getTime() + 24 * 60 * 60 * 1000;
+        let dataInicio = c.inicio_preenchimento;
+        if (!dataInicio) {
+          dataInicio = new Date().toISOString();
+          await supabase.from("cadastros").update({ inicio_preenchimento: dataInicio }).eq("id", c.id);
+        }
+        setInicioPreenchimento(dataInicio);
+        const limite = new Date(dataInicio).getTime() + 24 * 60 * 60 * 1000;
         const restante = limite - Date.now();
         if (restante <= 0) {
           setStep("timer_expirado");
@@ -394,8 +469,11 @@ function PreCadastroPage() {
         await supabase.from("cadastros").update({ dados_extras: extras }).eq("id", cadastroId);
       }
 
-      // Atualiza status do cadastro para em análise após envio de dados e docs
-      await supabase.from("cadastros").update({ status: "em_analise" }).eq("id", cadastroId);
+      // Atualiza status do cadastro para dados_enviados após envio de dados e docs e limpa campos_correcao
+      await supabase.from("cadastros").update({ 
+        status: "dados_enviados",
+        campos_correcao: []
+      }).eq("id", cadastroId);
 
       // Dispara webhooks de finalização
       dispararWebhooks("dados_enviados", { cadastro_id: cadastroId, token });
@@ -490,6 +568,10 @@ function PreCadastroPage() {
           <h1 className="text-lg font-bold text-accent">Conexão Implantes</h1>
           <p className="text-xs text-text-muted">Cadastro de Novos Clientes</p>
         </div>
+
+        {cadastroStatus === "em_correcao" && (
+          <BannerCorrecao comentarioGeral={comentarioGeral} />
+        )}
 
         {/* 2FA Solicitar PIN */}
         {step === "2fa_solicitar" && (
@@ -603,6 +685,12 @@ function PreCadastroPage() {
             const val = lerValor(c.campo_key);
             const onChange = (v: string) => setValor(c.campo_key, v);
 
+            const prefixo = form.tipo === "PF" ? "pf." : "pj.";
+            const chaveRevisao = prefixo + c.campo_key;
+            const revisao = revisoes[chaveRevisao];
+            const isCorrigir = camposCorrecao.includes(chaveRevisao) || (revisao?.status === "em_correcao" || revisao?.status === "reprovado");
+            const motivoCorrecao = isCorrigir ? (revisao?.comentario || "Campo necessita de correção") : undefined;
+
             if (c.tipo_input === "tel") {
               // Detecta máscara pelo campo_key
               const mascara = c.campo_key === "cpf" ? "cpf"
@@ -613,14 +701,19 @@ function PreCadastroPage() {
                 : mascara === "cnpj" ? "00.000.000/0000-00"
                 : mascara === "tel_fixo" ? "(00) 0000-0000"
                 : "(00) 00000-0000";
-              return <CampoMascarado key={c.id} label={label} value={val} onChange={onChange} mascara={mascara} placeholder={ph} />;
+              return <CampoMascarado key={c.id} label={label} value={val} onChange={onChange} mascara={mascara} placeholder={ph} motivoCorrecao={motivoCorrecao} />;
             }
             if (c.tipo_input === "textarea") {
               return (
                 <div key={c.id}>
                   <p className="mb-1 text-xs font-medium text-text-muted">{label}</p>
                   <textarea value={val} onChange={e => onChange(e.target.value)} rows={3}
-                    className="w-full rounded-lg border border-input-border bg-input-bg px-4 py-3 text-sm text-text-main outline-none focus:border-accent resize-none" />
+                    className={`w-full rounded-lg border ${motivoCorrecao ? 'border-orange-500 bg-orange-500/5 focus:border-orange-400' : 'border-input-border bg-input-bg focus:border-accent'} px-4 py-3 text-sm text-text-main outline-none resize-none transition`} />
+                  {motivoCorrecao && (
+                    <span className="text-orange-400 text-[10px] mt-1 block font-semibold flex items-center gap-1 animate-pulse">
+                      <AlertTriangle size={11} /> {motivoCorrecao}
+                    </span>
+                  )}
                 </div>
               );
             }
@@ -629,10 +722,15 @@ function PreCadastroPage() {
                 <div key={c.id}>
                   <p className="mb-1 text-xs font-medium text-text-muted">{label}</p>
                   <select value={val} onChange={e => onChange(e.target.value)}
-                    className="w-full rounded-lg border border-input-border bg-input-bg px-4 py-3 text-sm text-text-main outline-none focus:border-accent">
+                    className={`w-full rounded-lg border ${motivoCorrecao ? 'border-orange-500 bg-orange-500/5 focus:border-orange-400' : 'border-input-border bg-input-bg focus:border-accent'} px-4 py-3 text-sm text-text-main outline-none transition`}>
                     <option value="">Selecione…</option>
                     {(c.opcoes ?? []).map((op: string) => <option key={op} value={op}>{op}</option>)}
                   </select>
+                  {motivoCorrecao && (
+                    <span className="text-orange-400 text-[10px] mt-1 block font-semibold flex items-center gap-1 animate-pulse">
+                      <AlertTriangle size={11} /> {motivoCorrecao}
+                    </span>
+                  )}
                 </div>
               );
             }
@@ -664,11 +762,16 @@ function PreCadastroPage() {
                       </button>
                     ))}
                   </div>
+                  {motivoCorrecao && (
+                    <span className="text-orange-400 text-[10px] mt-1 block font-semibold flex items-center gap-1 animate-pulse">
+                      <AlertTriangle size={11} /> {motivoCorrecao}
+                    </span>
+                  )}
                 </div>
               );
             }
             // text, email, date e fallback
-            return <Campo key={c.id} label={label} value={val} onChange={onChange} type={c.tipo_input} />;
+            return <Campo key={c.id} label={label} value={val} onChange={onChange} type={c.tipo_input} motivoCorrecao={motivoCorrecao} />;
           }
 
           return (
@@ -699,17 +802,23 @@ function PreCadastroPage() {
             const label = c.label + (c.obrigatorio ? " *" : "");
             const endKey = c.campo_key === "estado_end" ? "estado" : c.campo_key;
             const val = (form.endereco as any)[endKey] ?? "";
+
+            const chaveRevisaoEnd = "end." + (c.campo_key === "estado_end" ? "estado" : c.campo_key);
+            const revisaoEnd = revisoes[chaveRevisaoEnd];
+            const isCorrigirEnd = camposCorrecao.includes(chaveRevisaoEnd) || (revisaoEnd?.status === "em_correcao" || revisaoEnd?.status === "reprovado");
+            const motivoCorrecaoEnd = isCorrigirEnd ? (revisaoEnd?.comentario || "Endereço necessita de correção") : undefined;
+
             if (c.campo_key === "cep") {
               return (
                 <div key={c.id} className="flex gap-2">
                   <div className="flex-1">
-                    <CampoMascarado label={label} value={val} onChange={v => setEnd("cep", v)} mascara="cep" placeholder="00000-000" />
+                    <CampoMascarado label={label} value={val} onChange={v => setEnd("cep", v)} mascara="cep" placeholder="00000-000" motivoCorrecao={motivoCorrecaoEnd} />
                   </div>
                   <button onClick={handleBuscarCEP} className="mt-6 rounded-lg bg-accent px-4 py-3 text-xs font-medium text-white min-h-[44px]">Buscar</button>
                 </div>
               );
             }
-            return <Campo key={c.id} label={label} value={val} onChange={v => setEnd(endKey, v)} />;
+            return <Campo key={c.id} label={label} value={val} onChange={v => setEnd(endKey, v)} motivoCorrecao={motivoCorrecaoEnd} />;
           }
           return (
             <div className="flex flex-col gap-3">
@@ -736,9 +845,21 @@ function PreCadastroPage() {
             ) : (
               <>
                 <p className="text-xs text-text-muted mb-2">Formatos permitidos: .jpeg | .jpg | .png | .pdf</p>
-                {schemaDocs.map(c => (
-                  <DocUpload key={c.id} label={c.label} tipo={c.campo_key} cadastroId={cadastroId} obrigatorio={c.obrigatorio} />
-                ))}
+                {schemaDocs.map(c => {
+                  const docSalvo = documentosSalvos.find(d => d.tipo === c.campo_key);
+                  return (
+                    <DocUpload 
+                      key={c.id} 
+                      label={c.label} 
+                      tipo={c.campo_key} 
+                      cadastroId={cadastroId} 
+                      obrigatorio={c.obrigatorio}
+                      docStatus={docSalvo?.status}
+                      docComentario={docSalvo?.comentario_reprovacao}
+                      docUrl={docSalvo?.url}
+                    />
+                  );
+                })}
               </>
             )}
             {erro && <p className="text-xs text-red-400">{erro}</p>}
@@ -780,20 +901,33 @@ function PreCadastroPage() {
   );
 }
 
-function Campo({ label, value, onChange, type, placeholder }: { label: string; value: string; onChange: (v: string) => void; type?: string; placeholder?: string }) {
+function Campo({ label, value, onChange, type, placeholder, motivoCorrecao }: { 
+  label: string; 
+  value: string; 
+  onChange: (v: string) => void; 
+  type?: string; 
+  placeholder?: string;
+  motivoCorrecao?: string;
+}) {
   return <div>
     <p className="mb-1 text-xs font-medium text-text-muted">{label}</p>
     <input value={value} onChange={e => onChange(e.target.value)} type={type || "text"} placeholder={placeholder}
-      className="w-full rounded-lg border border-input-border bg-input-bg px-4 py-3 text-sm text-text-main outline-none focus:border-accent min-h-[44px] placeholder:text-text-muted/40" />
+      className={`w-full rounded-lg border ${motivoCorrecao ? 'border-orange-500 bg-orange-500/5 focus:border-orange-400' : 'border-input-border bg-input-bg focus:border-accent'} px-4 py-3 text-sm text-text-main outline-none min-h-[44px] placeholder:text-text-muted/40 transition`} />
+    {motivoCorrecao && (
+      <span className="text-orange-400 text-[10px] mt-1 block font-semibold flex items-center gap-1 animate-pulse">
+        <AlertTriangle size={11} /> {motivoCorrecao}
+      </span>
+    )}
   </div>;
 }
 
-function CampoMascarado({ label, value, onChange, mascara, placeholder }: {
+function CampoMascarado({ label, value, onChange, mascara, placeholder, motivoCorrecao }: {
   label: string;
   value: string;
   onChange: (v: string) => void;
   mascara: TipoMascara;
   placeholder?: string;
+  motivoCorrecao?: string;
 }) {
   // value no estado é o valor com máscara; enviamos limpo para o pai apenas para persistência
   // mas exibimos formatado
@@ -810,28 +944,70 @@ function CampoMascarado({ label, value, onChange, mascara, placeholder }: {
       type="tel"
       inputMode="numeric"
       placeholder={placeholder}
-      className="w-full rounded-lg border border-input-border bg-input-bg px-4 py-3 text-sm text-text-main outline-none focus:border-accent min-h-[44px] placeholder:text-text-muted/40 font-mono tracking-wide"
+      className={`w-full rounded-lg border ${motivoCorrecao ? 'border-orange-500 bg-orange-500/5 focus:border-orange-400' : 'border-input-border bg-input-bg focus:border-accent'} px-4 py-3 text-sm text-text-main outline-none min-h-[44px] placeholder:text-text-muted/40 font-mono tracking-wide transition`}
     />
+    {motivoCorrecao && (
+      <span className="text-orange-400 text-[10px] mt-1 block font-semibold flex items-center gap-1 animate-pulse">
+        <AlertTriangle size={11} /> {motivoCorrecao}
+      </span>
+    )}
   </div>;
 }
 
-function DocUpload({ label, tipo, cadastroId, obrigatorio }: { label: string; tipo: string; cadastroId: string | null; obrigatorio?: boolean }) {
+function DocUpload({ label, tipo, cadastroId, obrigatorio, docStatus, docComentario, docUrl }: { 
+  label: string; 
+  tipo: string; 
+  cadastroId: string | null; 
+  obrigatorio?: boolean;
+  docStatus?: string;
+  docComentario?: string | null;
+  docUrl?: string;
+}) {
   const [nome, setNome] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+
+  useEffect(() => {
+    if (docUrl) {
+      setNome("Documento já enviado");
+    }
+  }, [docUrl]);
+
   const handleFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file || !cadastroId) return;
     setNome(file.name);
+    setSubmitting(true);
     try {
       await uploadDocumento(cadastroId, tipo, file);
-    } catch { }
+    } catch { } finally { setSubmitting(false); }
   };
+
+  const isOk = docStatus === "ok";
+  const needsCorrection = docStatus === "em_correcao" || docStatus === "reprovado";
+
   return <div>
-    <p className="mb-1 text-xs font-medium text-text-muted">{label}{obrigatorio && <span className="text-accent ml-0.5">*</span>}</p>
-    <label className="flex items-center gap-2 rounded-lg border border-dashed border-input-border bg-input-bg px-4 py-3 cursor-pointer hover:border-accent/50 transition-colors">
-      <Upload size={16} className={nome ? "text-green-400" : "text-accent"} />
-      <span className="flex-1 text-sm text-text-muted truncate">{nome || "Clique para anexar"}</span>
-      {nome && <span className="text-[10px] text-green-400 font-medium">✓</span>}
-      <input type="file" accept=".jpeg,.jpg,.png,.pdf" onChange={handleFile} className="hidden" />
+    <p className="mb-1 text-xs font-medium text-text-muted">
+      {label}
+      {obrigatorio && <span className="text-accent ml-0.5">*</span>}
+      {isOk && <span className="text-green-400 ml-2 text-[10px] font-bold uppercase tracking-wider">(Aprovado)</span>}
+    </p>
+    <label className={`flex items-center gap-2 rounded-lg border border-dashed px-4 py-3 transition-colors ${
+      isOk ? "border-green-500/30 bg-green-500/5 cursor-not-allowed" :
+      needsCorrection ? "border-orange-500 bg-orange-500/5 hover:border-orange-400 cursor-pointer" :
+      "border-input-border bg-input-bg hover:border-accent/50 cursor-pointer"
+    }`}>
+      <Upload size={16} className={isOk ? "text-green-400" : needsCorrection ? "text-orange-400 animate-bounce" : nome ? "text-green-400" : "text-accent"} />
+      <span className={`flex-1 text-sm truncate ${isOk ? "text-green-400" : needsCorrection ? "text-orange-300" : "text-text-muted"}`}>
+        {nome || "Clique para anexar"}
+      </span>
+      {submitting && <Loader2 size={14} className="animate-spin text-accent" />}
+      {isOk && <span className="text-[10px] text-green-400 font-medium">✓</span>}
+      {!isOk && <input type="file" accept=".jpeg,.jpg,.png,.pdf" onChange={handleFile} className="hidden" />}
     </label>
+    {needsCorrection && docComentario && (
+      <span className="text-orange-400 text-[10px] mt-1 block font-semibold flex items-center gap-1 animate-pulse">
+        <AlertTriangle size={11} /> Ajuste necessário: {docComentario}
+      </span>
+    )}
   </div>;
 }
