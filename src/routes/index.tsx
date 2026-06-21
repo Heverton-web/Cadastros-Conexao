@@ -5,7 +5,7 @@ import { Input } from "~/components/ui/input";
 import { useState, useEffect } from "react";
 import { supabase } from "~/lib/supabase";
 import { useAuth } from "~/lib/auth";
-import { Loader2, LogIn, Fingerprint, AlertTriangle, X, Mail } from "lucide-react";
+import { Loader2, Fingerprint, AlertTriangle, X, Mail, ChevronRight } from "lucide-react";
 import toast from "react-hot-toast";
 
 export const loginRoute = createRoute({
@@ -20,10 +20,10 @@ function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
 
   // Popups
-  const [popup, setPopup] = useState<"inativo" | "nao_encontrada" | "erro" | "reset" | null>(null);
-  const [popupMsg, setPopupMsg] = useState("");
+  const [popup, setPopup] = useState<"inativo" | "reset" | null>(null);
   const [redirected, setRedirected] = useState(false);
 
   useEffect(() => {
@@ -51,17 +51,18 @@ function LoginPage() {
   async function handleLogin() {
     if (!email || !password) return;
     setSubmitting(true);
-    setPopup(null);
+    setErrorMsg("");
     try {
       await login(email, password);
       await rotearPosLogin();
     } catch (e: any) {
       const msg = e?.message || "Erro ao fazer login";
-      if (msg.includes("Invalid login credentials")) {
-        setPopup("nao_encontrada");
+      if (msg.includes("Invalid login credentials") || msg.includes("invalid_credentials")) {
+        setErrorMsg("Email ou senha inválidos.");
+      } else if (msg.includes("Failed to fetch") || msg.includes("fetch")) {
+        setErrorMsg("Failed to fetch");
       } else {
-        setPopupMsg(msg);
-        setPopup("erro");
+        setErrorMsg(msg);
       }
     } finally {
       setSubmitting(false);
@@ -70,48 +71,102 @@ function LoginPage() {
 
   if (loading) {
     return (
-      <div className="flex min-h-dvh items-center justify-center bg-bg-dark">
+      <div className="flex min-h-dvh items-center justify-center bg-[#040914]">
         <Loader2 size={24} className="animate-spin text-accent" />
       </div>
     );
   }
 
   return (
-    <div className="flex min-h-dvh flex-col bg-bg-dark px-6">
-      <div className="flex flex-1 flex-col items-center justify-center">
-        <div className="mb-6 flex flex-col items-center gap-2">
-          <img src="/logos/logo-horizontal-branco.png" alt="Conexão Implantes" className="h-7 object-contain opacity-80" />
-          <div className="text-center">
-            <h1 className="text-base font-bold text-text-main">Entrar na Plataforma</h1>
-            <p className="text-xs text-text-muted mt-0.5">Acesse sua conta de cadastros</p>
-          </div>
+    <div className="relative flex min-h-dvh flex-col items-center justify-center bg-[#040914] px-6 overflow-hidden select-none">
+      {/* Luz de fundo (Glow Azul) */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[550px] rounded-full bg-blue-600/10 blur-[130px] pointer-events-none" />
+
+      <div className="relative z-10 w-full max-w-[390px] rounded-[2rem] bg-[#0b121f]/90 border border-[#1b2a47] p-8 md:p-10 shadow-[0_20px_50px_rgba(0,0,0,0.6)] backdrop-blur-md">
+        {/* Linha dourada brilhante superior */}
+        <div className="absolute top-0 inset-x-0 h-[1.5px] bg-gradient-to-r from-transparent via-[#c9a655] to-transparent rounded-t-[2rem] opacity-80" />
+
+        {/* Logo Container */}
+        <div className="mx-auto mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-[#070d17] border border-[#1e2d45] shadow-[0_0_20px_rgba(59,130,246,0.2)]">
+          <img src="/logos/logo-vertical-branco.png" className="h-9 w-9 object-contain" alt="Logo" />
         </div>
 
-        <form onSubmit={(e) => { e.preventDefault(); handleLogin(); }} className="flex w-full max-w-sm flex-col gap-4">
-          <Input id="email" label="Email" type="email" placeholder="seu@email.com" value={email} onChange={(e) => setEmail(e.target.value)} autoComplete="email" />
-          <Input id="password" label="Senha" type="password" placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)} autoComplete="current-password" />
+        {/* Título e Subtítulo */}
+        <div className="text-center mb-6 flex flex-col gap-0.5">
+          <h1 className="text-2xl font-bold text-white tracking-wide">Entrar</h1>
+          <span className="text-[10px] font-bold text-[#c9a655] tracking-[0.25em] uppercase">Conexão</span>
+        </div>
 
-          <Button type="submit" fullWidth disabled={submitting}>
-            {submitting ? <Loader2 size={18} className="animate-spin" /> : <LogIn size={18} />}
-            Entrar
-          </Button>
+        {/* Banner de Erro Inline */}
+        {errorMsg && (
+          <div className="mb-5 flex items-center gap-2.5 rounded-xl border border-red-500/20 bg-red-950/20 px-4 py-3 text-xs text-red-400 animate-in fade-in slide-in-from-top-2 duration-200">
+            <AlertTriangle size={14} className="shrink-0" />
+            <span>{errorMsg}</span>
+          </div>
+        )}
+
+        <form onSubmit={(e) => { e.preventDefault(); handleLogin(); }} className="flex flex-col gap-5">
+          <div>
+            <label className="text-[10px] font-bold text-[#4e6178] uppercase tracking-wider mb-1.5 block">
+              Email
+            </label>
+            <Input 
+              id="email" 
+              type="email" 
+              placeholder="seu@email.com" 
+              value={email} 
+              onChange={(e) => setEmail(e.target.value)} 
+              autoComplete="email" 
+              className="bg-[#131d30] border-[#1f2f4d] focus:border-[#c9a655]/50 focus:ring-0 text-white rounded-xl placeholder-[#41536b] text-sm h-11 w-full"
+            />
+          </div>
+
+          <div>
+            <label className="text-[10px] font-bold text-[#4e6178] uppercase tracking-wider mb-1.5 block">
+              Senha
+            </label>
+            <Input 
+              id="password" 
+              type="password" 
+              placeholder="••••••••" 
+              value={password} 
+              onChange={(e) => setPassword(e.target.value)} 
+              autoComplete="current-password" 
+              className="bg-[#131d30] border-[#1f2f4d] focus:border-[#c9a655]/50 focus:ring-0 text-white rounded-xl placeholder-[#41536b] text-sm h-11 w-full"
+            />
+          </div>
+
+          <button 
+            type="submit" 
+            disabled={submitting} 
+            className="mt-2 flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#d9b668] to-[#b39145] hover:from-[#e3c174] hover:to-[#c29f52] py-3 text-sm font-bold text-[#0d1625] transition-all duration-300 shadow-[0_4px_20px_rgba(201,166,85,0.2)] cursor-pointer group"
+          >
+            {submitting ? (
+              <Loader2 size={16} className="animate-spin text-[#0d1625]" />
+            ) : (
+              <>
+                <span className="flex-1 text-center pl-4">Entrar na Plataforma</span>
+                <ChevronRight size={16} className="text-[#0d1625] transition-transform group-hover:translate-x-0.5" />
+              </>
+            )}
+          </button>
         </form>
 
         <button type="button" onClick={() => setPopup("reset")}
-          className="mt-5 text-xs text-text-muted hover:text-accent transition-colors">
-          Deseja redefinir sua senha? <span className="underline">Clique Aqui</span>
+          className="mt-6 text-[10px] font-bold text-[#4e6178] hover:text-white transition-colors tracking-[0.2em] uppercase mx-auto block">
+          Primeiro Acesso / Esqueci Senha
         </button>
       </div>
 
-      <div className="flex items-center justify-center gap-2 pb-6 text-text-muted/30">
-        <Fingerprint size={14} />
-        <span className="text-[10px] tracking-wider uppercase">Conexão Implantes</span>
+      <div className="absolute bottom-6 flex items-center justify-center gap-2 text-text-muted/20">
+        <Fingerprint size={12} />
+        <span className="text-[8px] tracking-[0.2em] uppercase">Conexão Implantes</span>
       </div>
 
       {/* POPUP - INATIVO */}
       {popup === "inativo" && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-6">
-          <div className="w-full max-w-md rounded-2xl bg-card p-6 shadow-xl">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-6 backdrop-blur-sm">
+          <div className="w-full max-w-md rounded-2xl bg-[#0b121f] border border-[#1b2a47] p-6 shadow-xl">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2">
                 <AlertTriangle size={20} className="text-red-400" />
@@ -121,41 +176,6 @@ function LoginPage() {
             </div>
             <p className="text-sm text-text-muted mb-6">Sua conta está inativa. Entre em contato com o administrador do sistema.</p>
             <Button fullWidth onClick={() => { supabase.auth.signOut(); setPopup(null); }}>Sair</Button>
-          </div>
-        </div>
-      )}
-
-      {/* POPUP - CONTA NÃO ENCONTRADA */}
-      {popup === "nao_encontrada" && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-6">
-          <div className="w-full max-w-md rounded-2xl bg-card p-6 shadow-xl">
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center gap-2">
-                <AlertTriangle size={20} className="text-yellow-400" />
-                <h2 className="text-base font-bold text-text-main">Conta não encontrada</h2>
-              </div>
-              <button onClick={() => setPopup(null)} className="text-text-muted hover:text-text-main"><X size={20} /></button>
-            </div>
-            <p className="text-sm text-text-muted mb-2">Email ou senha inválidos. Verifique suas credenciais e tente novamente.</p>
-            <p className="text-xs text-text-muted mb-6">Se você não possui cadastro, entre em contato com o administrador.</p>
-            <Button fullWidth onClick={() => setPopup(null)}>Fechar</Button>
-          </div>
-        </div>
-      )}
-
-      {/* POPUP - ERROS */}
-      {popup === "erro" && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-6">
-          <div className="w-full max-w-md rounded-2xl bg-card p-6 shadow-xl">
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center gap-2">
-                <AlertTriangle size={20} className="text-red-400" />
-                <h2 className="text-base font-bold text-text-main">Erro</h2>
-              </div>
-              <button onClick={() => setPopup(null)} className="text-text-muted hover:text-text-main"><X size={20} /></button>
-            </div>
-            <p className="text-sm text-text-muted mb-6">{popupMsg}</p>
-            <Button fullWidth onClick={() => setPopup(null)}>Fechar</Button>
           </div>
         </div>
       )}
@@ -183,8 +203,8 @@ function ResetSenhaPopup({ onClose }: { onClose: () => void }) {
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-6">
-      <div className="w-full max-w-md rounded-2xl bg-card p-6 shadow-xl">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-6 backdrop-blur-sm">
+      <div className="w-full max-w-md rounded-2xl bg-[#0b121f] border border-[#1b2a47] p-6 shadow-xl">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-base font-bold text-text-main">Redefinir Senha</h2>
           <button onClick={onClose} className="text-text-muted hover:text-text-main"><X size={20} /></button>
@@ -197,8 +217,16 @@ function ResetSenhaPopup({ onClose }: { onClose: () => void }) {
         ) : (
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <p className="text-sm text-text-muted">Digite seu email para receber o link de recuperação.</p>
-            <Input id="reset-email" label="Email" type="email" placeholder="seu@email.com" value={email} onChange={(e) => setEmail(e.target.value)} />
-            <Button type="submit" fullWidth disabled={submitting}>
+            <Input 
+              id="reset-email" 
+              label="Email" 
+              type="email" 
+              placeholder="seu@email.com" 
+              value={email} 
+              onChange={(e) => setEmail(e.target.value)} 
+              className="bg-[#131d30] border-[#1f2f4d] focus:border-[#c9a655]/50 focus:ring-0 text-white rounded-xl placeholder-[#41536b] text-sm h-11 w-full"
+            />
+            <Button type="submit" fullWidth disabled={submitting} className="cursor-pointer">
               {submitting ? <Loader2 size={18} className="animate-spin" /> : <Mail size={18} />}
               Enviar link
             </Button>
@@ -208,3 +236,4 @@ function ResetSenhaPopup({ onClose }: { onClose: () => void }) {
     </div>
   );
 }
+

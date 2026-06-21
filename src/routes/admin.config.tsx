@@ -13,7 +13,7 @@ import { dispararWebhooks } from "~/lib/webhooks";
 import { Loader2, Save, Plus, X, ToggleLeft, ToggleRight, Trash2, Settings, Database, Shield, Webhook as WebhookIcon, RefreshCw, UserRound as UserIcon, ShieldCheck, ShieldX, FlaskConical, Bell, FormInput } from "lucide-react";
 import toast from "react-hot-toast";
 
-import { listarPermissoesUsuarios, setPermissoes, getPermissoes, getPermissoesPadrao, PERMISSOES_GROUPS, PERMISSOES_LABEL, PERMISSOES_DESC, type Permissoes } from "~/lib/permissoes";
+import { listarPermissoesUsuarios, setPermissoes, getPermissoes, getPermissoesPadrao, PERMISSOES_GROUPS, PERMISSOES_LABEL, PERMISSOES_DESC, type Permissoes } from "~/core/permissions";
 import { listarDemoCredentials, type DemoCredential } from "~/lib/demos";
 import { DemosTab } from "~/components/admin/DemosTab";
 import { CentralAcoesTab } from "~/components/admin/CentralAcoesTab";
