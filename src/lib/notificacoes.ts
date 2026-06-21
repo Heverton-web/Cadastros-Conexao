@@ -16,6 +16,8 @@ export type NotificacaoTemplate = {
   titulo: string;
   corpo_template: string;
   ativo: boolean;
+  ordem?: number;
+  destinatario_tipo?: string;
   created_at: string;
   updated_at: string;
 };
@@ -25,8 +27,8 @@ export async function listarNotificacoes(usuarioId: string) {
     .from("notificacoes")
     .select("*")
     .eq("usuario_id", usuarioId)
-    .eq("lida", false)
-    .order("created_at", { ascending: false });
+    .order("created_at", { ascending: false })
+    .limit(100);
   if (error) throw error;
   return data as Notificacao[];
 }
@@ -65,6 +67,8 @@ export async function criarTemplate(input: Omit<NotificacaoTemplate, "id" | "cre
       titulo: input.titulo,
       corpo_template: input.corpo_template,
       ativo: input.ativo,
+      ordem: input.ordem ?? 0,
+      destinatario_tipo: input.destinatario_tipo || "consultor",
       updated_at: new Date().toISOString()
     })
     .select()
@@ -133,7 +137,8 @@ export async function enviarNotificacaoComTemplate(
     let mensagemFinal = temp.corpo_template;
 
     for (const [chave, valor] of Object.entries(variaveis)) {
-      const placeholder = new RegExp(`{{${chave}}}`, "g");
+      const chaveEscapada = chave.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+      const placeholder = new RegExp(`{{${chaveEscapada}}}`, "g");
       tituloFinal = tituloFinal.replace(placeholder, valor || "");
       mensagemFinal = mensagemFinal.replace(placeholder, valor || "");
     }
@@ -153,4 +158,119 @@ export async function enviarNotificacaoComTemplate(
     console.error("Erro ao enviar notificacao com template:", e);
   }
 }
+
+export async function dispararNotificacaoIndividual(temp: NotificacaoTemplate, payload: Record<string, any>) {
+  try {
+    const cadastroId = payload.cadastro_id || payload.id;
+    if (!cadastroId) return;
+
+    let destinatariosIds: string[] = [];
+    const tipo = temp.destinatario_tipo || "consultor";
+
+    if (tipo === "consultor") {
+      const { data: cadastro } = await supabase
+        .from("cadastros")
+        .select("created_by")
+        .eq("id", cadastroId)
+        .maybeSingle();
+      const consultorId = cadastro?.created_by || payload.created_by || payload.destinatario_id || payload.usuario_id;
+      if (consultorId) {
+        destinatariosIds.push(consultorId);
+      }
+    } else if (tipo === "superadmin") {
+      const { data: admins } = await supabase
+        .from("profiles")
+        .select("id")
+        .or("is_super_admin.eq.true,role.eq.admin");
+      if (admins) {
+        destinatariosIds = admins.map(a => a.id);
+      }
+    } else if (tipo === "cadastro") {
+      const { data: cadastroUsers } = await supabase
+        .from("profiles")
+        .select("id")
+        .or("role.eq.cadastro,departamento.ilike.%cadastro%");
+      if (cadastroUsers && cadastroUsers.length > 0) {
+        destinatariosIds = cadastroUsers.map(u => u.id);
+      } else {
+        const { data: admins } = await supabase.from("profiles").select("id").eq("role", "admin");
+        if (admins) destinatariosIds = admins.map(a => a.id);
+      }
+    } else if (tipo === "ti") {
+      const { data: tiUsers } = await supabase
+        .from("profiles")
+        .select("id")
+        .or("role.eq.ti,departamento.ilike.%ti%");
+      if (tiUsers && tiUsers.length > 0) {
+        destinatariosIds = tiUsers.map(u => u.id);
+      } else {
+        const { data: admins } = await supabase.from("profiles").select("id").eq("role", "admin");
+        if (admins) destinatariosIds = admins.map(a => a.id);
+      }
+    }
+
+    if (destinatariosIds.length === 0) {
+      const fallbackId = payload.created_by || payload.destinatario_id || payload.usuario_id;
+      if (fallbackId) destinatariosIds.push(fallbackId);
+    }
+
+    // Carrega dados extras se necessário para a interpolação
+    const { data: cadastro } = await supabase
+      .from("cadastros")
+      .select("colaborador")
+      .eq("id", cadastroId)
+      .maybeSingle();
+
+    let tituloFinal = temp.titulo;
+    let mensagemFinal = temp.corpo_template;
+
+    const context = {
+      ...payload,
+      colaborador: cadastro?.colaborador || payload.colaborador || ""
+    };
+
+    for (const [chave, valor] of Object.entries(context)) {
+      const chaveEscapada = chave.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+      const placeholder = new RegExp(`{{${chaveEscapada}}}`, "g");
+      tituloFinal = tituloFinal.replace(placeholder, String(valor || ""));
+      mensagemFinal = mensagemFinal.replace(placeholder, String(valor || ""));
+    }
+
+    const insertPromises = destinatariosIds.map(destId => 
+      supabase.from("notificacoes").insert({
+        usuario_id: destId,
+        titulo: tituloFinal,
+        mensagem: mensagemFinal,
+        dados: { cadastro_id: cadastroId }
+      })
+    );
+    await Promise.all(insertPromises);
+  } catch (err) {
+    console.error("Erro ao enviar notificação individual:", err);
+    throw err;
+  }
+}
+
+export async function dispararNotificacoesInternas(evento: string, payload: Record<string, any>) {
+  try {
+    // 1. Busca templates ativos associados a este evento
+    const { data: templates, error } = await supabase
+      .from("notificacoes_templates")
+      .select("*")
+      .eq("evento", evento)
+      .eq("ativo", true);
+
+    if (error || !templates || templates.length === 0) return;
+
+    // 2. Dispara as notificações encontradas
+    for (const temp of templates) {
+      await dispararNotificacaoIndividual(temp, payload).catch((err) =>
+        console.error("Erro no disparo individual:", err)
+      );
+    }
+  } catch (err) {
+    console.error("Erro ao processar disparo dinâmico de notificações:", err);
+  }
+}
+
 

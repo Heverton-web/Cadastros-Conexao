@@ -2,20 +2,24 @@ import { createRoute, useNavigate } from "@tanstack/react-router";
 import { authLayout } from "./_auth";
 import { useState, useEffect } from "react";
 import { useAuth } from "~/lib/auth";
+import { supabase } from "~/lib/supabase";
 import {
   getAppConfig, updateAppConfig, type AppConfig,
-  listMockCredentials, createMockCredential, updateMockCredential, toggleMockCredential, deleteMockCredential, type MockCredential, type MockCredentialInput,
 } from "~/lib/admin";
+import {
+  listarCredenciais, criarCredencial, atualizarCredencial, toggleCredencial, deletarCredencial, type Credencial, type CredencialInput
+} from "~/lib/credenciais";
+import { dispararWebhooks } from "~/lib/webhooks";
 import { Loader2, Save, Plus, X, ToggleLeft, ToggleRight, Trash2, Settings, Database, Shield, Webhook as WebhookIcon, RefreshCw, UserRound as UserIcon, ShieldCheck, ShieldX, FlaskConical, Bell, FormInput } from "lucide-react";
 import toast from "react-hot-toast";
 
-import { listarPermissoesUsuarios, setPermissoes, getPermissoesPadrao, PERMISSOES_GROUPS, PERMISSOES_LABEL, PERMISSOES_DESC, type Permissoes } from "~/lib/permissoes";
+import { listarPermissoesUsuarios, setPermissoes, getPermissoes, getPermissoesPadrao, PERMISSOES_GROUPS, PERMISSOES_LABEL, PERMISSOES_DESC, type Permissoes } from "~/lib/permissoes";
 import { DemosTab } from "~/components/admin/DemosTab";
 import { CentralAcoesTab } from "~/components/admin/CentralAcoesTab";
 import { FormBuilderTab } from "~/components/admin/FormBuilderTab";
 import { listarIntegracoes, salvarIntegracao, testarConexaoEvolution, type IntegracaoConfig } from "~/lib/integracoes";
 
-type Tab = "supabase" | "credenciais" | "central_acoes" | "permissoes" | "demos" | "integracoes" | "formulario";
+type Tab = "supabase" | "credenciais" | "central_acoes" | "demos" | "integracoes" | "formulario";
 
 export const adminConfigRoute = createRoute({
   getParentRoute: () => authLayout,
@@ -49,7 +53,6 @@ function AdminConfigPage() {
           { key: "supabase" as Tab, label: "Supabase", icon: Database },
           { key: "credenciais" as Tab, label: "Credenciais", icon: Shield },
           { key: "central_acoes" as Tab, label: "Ações & Integrações", icon: WebhookIcon },
-          { key: "permissoes" as Tab, label: "Permissões", icon: UserIcon },
           { key: "demos" as Tab, label: "Laboratório", icon: FlaskConical },
           { key: "integracoes" as Tab, label: "Integrações Nativas", icon: RefreshCw },
           { key: "formulario" as Tab, label: "Formulário do Lead", icon: FormInput },
@@ -64,7 +67,6 @@ function AdminConfigPage() {
       {tab === "supabase" && <SupabaseTab />}
       {tab === "credenciais" && <CredenciaisTab />}
       {tab === "central_acoes" && <CentralAcoesTab />}
-      {tab === "permissoes" && <PermissoesTab />}
       {tab === "demos" && <DemosTab />}
       {tab === "integracoes" && <IntegracoesTab />}
       {tab === "formulario" && <FormBuilderTab />}
@@ -129,42 +131,92 @@ function SupabaseTab() {
 }
 
 function CredenciaisTab() {
-  const [credenciais, setCredenciais] = useState<MockCredential[]>([]);
+  const [credenciais, setCredenciais] = useState<(Credencial & { profile?: any })[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [editId, setEditId] = useState<string | null>(null);
-  const [form, setForm] = useState<MockCredentialInput & { id?: string }>({ identifier: "", email: "", password: "", role: "viewer", ambiente: "", ativo: true });
+  const [form, setForm] = useState<Omit<CredencialInput, "id"> & { whatsapp_corporativo: string; departamento: string }>({
+    nome_completo: "",
+    email_corporativo: "",
+    whatsapp_corporativo: "",
+    departamento: ""
+  });
   const [submitting, setSubmitting] = useState(false);
+
+  // Filtros de Setor/Role
+  const [filtroSetor, setFiltroSetor] = useState<"todos" | "cadastro" | "consultor" | "ti" | "super_admin">("todos");
+
+  // Estado para Gerenciamento de Permissões integrado
+  const [permCredencial, setPermCredencial] = useState<(Credencial & { profile?: any }) | null>(null);
+  const [editPerms, setEditPerms] = useState<Permissoes | null>(null);
+  const [loadingPerms, setLoadingPerms] = useState(false);
+  const [savingPerms, setSavingPerms] = useState(false);
 
   useEffect(() => { carregar(); }, []);
 
   async function carregar() {
     setLoading(true);
-    try { setCredenciais(await listMockCredentials()); } catch { toast.error("Erro ao carregar"); }
+    try {
+      const [list, { data: profs, error: profsErr }] = await Promise.all([
+        listarCredenciais(),
+        supabase.from("profiles").select("*")
+      ]);
+      if (profsErr) throw profsErr;
+
+      const mapped = list.map((c: Credencial) => {
+        const found = profs?.find((p: any) => p.email?.toLowerCase() === c.email_corporativo?.toLowerCase());
+        return {
+          ...c,
+          profile: found
+        };
+      });
+
+      setCredenciais(mapped);
+    } catch { toast.error("Erro ao carregar credenciais"); }
     finally { setLoading(false); }
   }
 
   function abrirNova() {
     setEditId(null);
-    setForm({ identifier: "", email: "", password: "", role: "viewer", ambiente: "", ativo: true });
+    setForm({ nome_completo: "", email_corporativo: "", whatsapp_corporativo: "", departamento: "" });
     setShowForm(true);
   }
 
-  function abrirEditar(c: MockCredential) {
+  function abrirEditar(c: Credencial) {
     setEditId(c.id);
-    setForm({ id: c.id, identifier: c.identifier, email: c.email, password: c.password, role: c.role, ambiente: c.ambiente || "", ativo: c.ativo });
+    setForm({
+      nome_completo: c.nome_completo,
+      email_corporativo: c.email_corporativo,
+      whatsapp_corporativo: c.whatsapp_corporativo || "",
+      departamento: c.departamento || ""
+    });
     setShowForm(true);
   }
 
   async function handleSubmit() {
-    if (!form.identifier || !form.email || !form.password) return;
+    if (!form.nome_completo || !form.email_corporativo) return;
     setSubmitting(true);
     try {
       if (editId) {
-        await updateMockCredential(editId, { identifier: form.identifier, email: form.email, password: form.password, role: form.role, ambiente: form.ambiente || undefined });
+        await atualizarCredencial(editId, {
+          nome_completo: form.nome_completo,
+          email_corporativo: form.email_corporativo,
+          whatsapp_corporativo: form.whatsapp_corporativo || undefined,
+          departamento: form.departamento || undefined
+        });
         toast.success("Credencial atualizada!");
       } else {
-        await createMockCredential(form);
+        await criarCredencial(form);
+        try {
+          await dispararWebhooks("criacao_credencial", {
+            nome: form.nome_completo,
+            email: form.email_corporativo,
+            whatsapp: form.whatsapp_corporativo || "",
+            departamento: form.departamento || "",
+          });
+        } catch (err) {
+          console.error("Erro ao disparar webhook de credencial:", err);
+        }
         toast.success("Credencial criada!");
       }
       setShowForm(false);
@@ -173,48 +225,144 @@ function CredenciaisTab() {
     finally { setSubmitting(false); }
   }
 
-  async function handleToggle(c: MockCredential) {
+  async function handleToggle(c: Credencial) {
     try {
-      await toggleMockCredential(c.id, !c.ativo);
+      await toggleCredencial(c.id, !c.ativo);
       carregar();
-    } catch { toast.error("Erro ao alternar"); }
+    } catch { toast.error("Erro ao alternar status"); }
   }
 
   async function handleDelete(id: string) {
     try {
-      await deleteMockCredential(id);
+      await deletarCredencial(id);
       toast.success("Credencial removida");
       carregar();
     } catch { toast.error("Erro ao excluir"); }
   }
+
+  // Permissões
+  async function abrirPermissoes(c: Credencial & { profile?: any }) {
+    setPermCredencial(c);
+    if (c.profile) {
+      setLoadingPerms(true);
+      try {
+        const perms = await getPermissoes(c.profile.id, c.profile.is_super_admin);
+        setEditPerms(perms || getPermissoesPadrao(c.profile.ambiente));
+      } catch {
+        toast.error("Erro ao carregar permissões");
+      } finally {
+        setLoadingPerms(false);
+      }
+    } else {
+      setEditPerms(null);
+    }
+  }
+
+  function togglePerm(key: keyof Permissoes) {
+    if (!editPerms) return;
+    setEditPerms(prev => prev ? { ...prev, [key]: !prev[key] } : prev);
+  }
+
+  async function salvarPermissoes() {
+    if (!permCredencial?.profile || !editPerms) return;
+    setSavingPerms(true);
+    try {
+      await setPermissoes(permCredencial.profile.id, editPerms);
+      toast.success("Permissões atualizadas!");
+      setPermCredencial(null);
+      setEditPerms(null);
+      carregar();
+    } catch { toast.error("Erro ao salvar permissões"); }
+    finally { setSavingPerms(false); }
+  }
+
+  function restaurarPermissoesPadrao() {
+    if (!permCredencial?.profile) return;
+    setEditPerms(getPermissoesPadrao(permCredencial.profile.ambiente));
+  }
+
+  // Filtragem local
+  const credenciaisFiltradas = credenciais.filter(c => {
+    if (filtroSetor === "todos") return true;
+    const ambiente = c.profile?.ambiente?.toLowerCase() || "";
+    const isSuper = c.profile?.is_super_admin || false;
+    const depto = c.departamento?.toLowerCase() || "";
+
+    if (filtroSetor === "super_admin") return isSuper;
+    if (filtroSetor === "consultor") return ambiente === "consultor" || depto === "vendas";
+    if (filtroSetor === "cadastro") return ambiente === "cadastro" || depto === "administrativo" || depto === "financeiro";
+    if (filtroSetor === "ti") return ambiente === "tecnologia" || ambiente === "suporte" || depto === "ti";
+    return true;
+  });
 
   if (loading) return <div className="flex justify-center py-12"><Loader2 size={24} className="animate-spin text-accent" /></div>;
 
   return (
     <div className="flex flex-col gap-3">
       <div className="flex items-center justify-between">
-        <p className="text-xs text-text-muted">Gerencie as credenciais mock de acesso ao sistema.</p>
+        <p className="text-xs text-text-muted">Gerencie as credenciais reais de acesso ao sistema.</p>
         <button onClick={abrirNova} className="flex items-center gap-1 rounded-lg bg-accent px-3 py-2 text-xs font-medium text-white"><Plus size={14} /> Nova</button>
       </div>
-      {credenciais.length === 0 ? (
-        <p className="py-8 text-center text-sm text-text-muted">Nenhuma credencial cadastrada</p>
+
+      {/* Barra de Filtros */}
+      <div className="flex gap-1 overflow-x-auto pb-2 scrollbar-hide">
+        {[
+          { key: "todos", label: "Todos" },
+          { key: "consultor", label: "Consultores" },
+          { key: "cadastro", label: "Cadastro" },
+          { key: "ti", label: "TI / Tecnologia" },
+          { key: "super_admin", label: "Super Admin" },
+        ].map(item => (
+          <button
+            key={item.key}
+            onClick={() => setFiltroSetor(item.key as any)}
+            className={`rounded-lg px-3 py-1.5 text-xs font-medium transition ${
+              filtroSetor === item.key 
+                ? "bg-accent/15 text-accent border border-accent/35" 
+                : "bg-input-bg text-text-muted hover:text-text-main border border-transparent"
+            }`}
+          >
+            {item.label}
+          </button>
+        ))}
+      </div>
+
+      {credenciaisFiltradas.length === 0 ? (
+        <p className="py-8 text-center text-sm text-text-muted">Nenhuma credencial encontrada neste setor</p>
       ) : (
-        credenciais.map((c) => (
-          <div key={c.id} className="flex items-center gap-3 rounded-xl bg-card p-4 shadow-lg">
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-text-main">{c.identifier}</p>
-              <p className="text-[11px] text-text-muted">{c.email}</p>
-              <div className="flex gap-1 mt-1">
-                <span className="rounded-full bg-accent/10 px-2 py-0.5 text-[9px] font-medium text-accent">{c.role}</span>
-                {c.ambiente && <span className="rounded-full bg-blue-500/10 px-2 py-0.5 text-[9px] font-medium text-blue-400">{c.ambiente}</span>}
+        credenciaisFiltradas.map((c) => {
+          const isRegistered = !!c.profile;
+          const isSuper = c.profile?.is_super_admin || false;
+          return (
+            <div key={c.id} className="flex items-center gap-3 rounded-xl bg-card p-4 shadow-lg">
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2">
+                  <p className="text-sm font-medium text-text-main truncate">{c.nome_completo}</p>
+                  {!isRegistered && (
+                    <span className="rounded-full bg-yellow-500/10 border border-yellow-500/20 px-2 py-0.5 text-[8px] font-semibold text-yellow-400">Pendente</span>
+                  )}
+                  {isSuper && (
+                    <span className="rounded-full bg-yellow-500/15 border border-yellow-500/35 px-2 py-0.5 text-[8px] font-bold text-yellow-400">Super Admin</span>
+                  )}
+                </div>
+                <p className="text-[11px] text-text-muted truncate">{c.email_corporativo}</p>
+                <div className="flex flex-wrap gap-1 mt-1.5">
+                  {c.departamento && <span className="rounded-full bg-accent/10 px-2 py-0.5 text-[9px] font-medium text-accent">{c.departamento}</span>}
+                  {c.profile?.ambiente && c.profile.ambiente.toLowerCase() !== c.departamento?.toLowerCase() && (
+                    <span className="rounded-full bg-purple-500/10 px-2 py-0.5 text-[9px] font-medium text-purple-400">{c.profile.ambiente}</span>
+                  )}
+                  {c.whatsapp_corporativo && <span className="rounded-full bg-blue-500/10 px-2 py-0.5 text-[9px] font-medium text-blue-400">{c.whatsapp_corporativo}</span>}
+                </div>
               </div>
+              <button onClick={() => abrirPermissoes(c)} title="Permissões" className="rounded-lg p-2 text-text-muted hover:text-accent transition-colors"><Shield size={16} /></button>
+              <button onClick={() => abrirEditar(c)} className="rounded-lg p-2 text-text-muted hover:text-text-main"><Settings size={16} /></button>
+              <button onClick={() => handleToggle(c)} className={c.ativo ? "text-green-400" : "text-text-muted"}>{c.ativo ? <ToggleRight size={24} /> : <ToggleLeft size={24} />}</button>
+              <button onClick={() => handleDelete(c.id)} className="text-text-muted hover:text-red-400"><Trash2 size={16} /></button>
             </div>
-            <button onClick={() => abrirEditar(c)} className="rounded-lg p-2 text-text-muted hover:text-text-main"><Settings size={16} /></button>
-            <button onClick={() => handleToggle(c)} className={c.ativo ? "text-green-400" : "text-text-muted"}>{c.ativo ? <ToggleRight size={24} /> : <ToggleLeft size={24} />}</button>
-            <button onClick={() => handleDelete(c.id)} className="text-text-muted hover:text-red-400"><Trash2 size={16} /></button>
-          </div>
-        ))
+          );
+        })
       )}
+
       {showForm && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-6">
           <div className="w-full max-w-md rounded-2xl bg-card p-6 shadow-xl max-h-[90vh] overflow-y-auto">
@@ -222,148 +370,90 @@ function CredenciaisTab() {
               <h2 className="text-base font-bold text-text-main">{editId ? "Editar Credencial" : "Nova Credencial"}</h2>
               <button onClick={() => setShowForm(false)} className="text-text-muted hover:text-text-main"><X size={20} /></button>
             </div>
-            <input value={form.identifier} onChange={(e) => setForm(prev => ({ ...prev, identifier: e.target.value }))} placeholder="Identificador (ex: SUPER_ADMIN)" className="mb-3 w-full rounded-lg border border-input-border bg-input-bg px-4 py-3 text-sm text-text-main outline-none focus:border-accent min-h-[44px]" />
-            <input value={form.email} onChange={(e) => setForm(prev => ({ ...prev, email: e.target.value }))} placeholder="Email" type="email" className="mb-3 w-full rounded-lg border border-input-border bg-input-bg px-4 py-3 text-sm text-text-main outline-none focus:border-accent min-h-[44px]" />
-            <input value={form.password} onChange={(e) => setForm(prev => ({ ...prev, password: e.target.value }))} placeholder="Senha" type="text" className="mb-3 w-full rounded-lg border border-input-border bg-input-bg px-4 py-3 text-sm text-text-main outline-none focus:border-accent min-h-[44px]" />
-            <select value={form.role} onChange={(e) => setForm(prev => ({ ...prev, role: e.target.value as any }))} className="mb-3 w-full rounded-lg border border-input-border bg-input-bg px-4 py-3 text-sm text-text-main outline-none focus:border-accent min-h-[44px]">
-              <option value="viewer">Viewer</option>
-              <option value="editor">Editor</option>
-              <option value="admin">Admin</option>
-            </select>
-            <select value={form.ambiente || ""} onChange={(e) => setForm(prev => ({ ...prev, ambiente: e.target.value }))} className="mb-4 w-full rounded-lg border border-input-border bg-input-bg px-4 py-3 text-sm text-text-main outline-none focus:border-accent min-h-[44px]">
-              <option value="">Sem ambiente</option>
-              <option value="cadastro">Cadastro</option>
-              <option value="consultor">Consultor</option>
-              <option value="tecnologia">Tecnologia</option>
+            <input value={form.nome_completo} onChange={(e) => setForm(prev => ({ ...prev, nome_completo: e.target.value }))} placeholder="Nome Completo" className="mb-3 w-full rounded-lg border border-input-border bg-input-bg px-4 py-3 text-sm text-text-main outline-none focus:border-accent min-h-[44px]" />
+            <input value={form.email_corporativo} onChange={(e) => setForm(prev => ({ ...prev, email_corporativo: e.target.value }))} placeholder="Email Corporativo" type="email" className="mb-3 w-full rounded-lg border border-input-border bg-input-bg px-4 py-3 text-sm text-text-main outline-none focus:border-accent min-h-[44px]" />
+            <input value={form.whatsapp_corporativo} onChange={(e) => setForm(prev => ({ ...prev, whatsapp_corporativo: e.target.value }))} placeholder="WhatsApp Corporativo (opcional)" className="mb-3 w-full rounded-lg border border-input-border bg-input-bg px-4 py-3 text-sm text-text-main outline-none focus:border-accent min-h-[44px]" />
+            <select value={form.departamento} onChange={(e) => setForm(prev => ({ ...prev, departamento: e.target.value }))} className="mb-4 w-full rounded-lg border border-input-border bg-input-bg px-4 py-3 text-sm text-text-main outline-none focus:border-accent min-h-[44px]">
+              <option value="">Selecione o Departamento</option>
+              {["Vendas", "Administrativo", "Financeiro", "TI"].map(d => <option key={d} value={d}>{d}</option>)}
             </select>
             <div className="flex gap-3">
               <button onClick={() => setShowForm(false)} className="flex-1 rounded-xl border border-input-border py-3 text-sm font-medium text-text-muted">Cancelar</button>
-              <button onClick={handleSubmit} disabled={!form.identifier || !form.email || !form.password || submitting} className="flex-1 rounded-xl bg-accent py-3 text-sm font-medium text-white disabled:opacity-50">{submitting ? <Loader2 size={16} className="animate-spin mx-auto" /> : "Salvar"}</button>
+              <button onClick={handleSubmit} disabled={!form.nome_completo || !form.email_corporativo || submitting} className="flex-1 rounded-xl bg-accent py-3 text-sm font-medium text-white disabled:opacity-50">{submitting ? <Loader2 size={16} className="animate-spin mx-auto" /> : "Salvar"}</button>
             </div>
           </div>
         </div>
       )}
-    </div>
-  );
-}
 
-function PermissoesTab() {
-  const [usuarios, setUsuarios] = useState<{ usuario_id: string; permissoes: Permissoes; profiles: { id: string; email: string; nome: string; ambiente: string; is_super_admin: boolean } }[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [editUser, setEditUser] = useState<typeof usuarios[number] | null>(null);
-  const [editPerms, setEditPerms] = useState<Permissoes | null>(null);
-  const [saving, setSaving] = useState(false);
-
-  useEffect(() => { carregar(); }, []);
-
-  async function carregar() {
-    setLoading(true);
-    try { setUsuarios(await listarPermissoesUsuarios()); } catch { toast.error("Erro ao carregar"); }
-    finally { setLoading(false); }
-  }
-
-  function abrir(u: typeof usuarios[number]) {
-    setEditUser(u);
-    setEditPerms({ ...u.permissoes });
-  }
-
-  function toggle(key: keyof Permissoes) {
-    if (!editPerms) return;
-    setEditPerms(prev => prev ? { ...prev, [key]: !prev[key] } : prev);
-  }
-
-  async function salvar() {
-    if (!editUser || !editPerms) return;
-    setSaving(true);
-    try {
-      await setPermissoes(editUser.usuario_id, editPerms);
-      toast.success("Permissões atualizadas!");
-      setEditUser(null);
-      setEditPerms(null);
-      carregar();
-    } catch { toast.error("Erro ao salvar"); }
-    finally { setSaving(false); }
-  }
-
-  function restaurarPadrao() {
-    if (!editUser) return;
-    setEditPerms(getPermissoesPadrao(editUser.profiles.ambiente as any));
-  }
-
-  if (loading) return <div className="flex justify-center py-12"><Loader2 size={24} className="animate-spin text-accent" /></div>;
-
-  return (
-    <div className="flex flex-col gap-3">
-      <p className="text-xs text-text-muted">Gerencie as permissões individuais de cada usuário.</p>
-      {usuarios.length === 0 ? (
-        <p className="py-8 text-center text-sm text-text-muted">Nenhum usuário encontrado</p>
-      ) : (
-        usuarios.map((u) => {
-          const isSuper = u.profiles.is_super_admin;
-          const total = Object.values(u.permissoes).filter(Boolean).length;
-          return (
-            <button key={u.usuario_id} onClick={() => abrir(u)}
-              className="flex items-center gap-3 rounded-xl bg-card p-4 shadow-lg transition active:scale-[0.98] w-full text-left"
-            >
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-accent/10">
-                {isSuper ? <ShieldCheck size={18} className="text-accent" /> : <UserIcon size={18} className="text-text-muted" />}
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-text-main truncate">{u.profiles.nome || "Sem nome"}</p>
-                <p className="text-[11px] text-text-muted truncate">{u.profiles.email}</p>
-                <div className="flex items-center gap-1 mt-1">
-                  <span className="rounded-full bg-accent/10 px-2 py-0.5 text-[9px] font-medium text-accent">{u.profiles.ambiente}</span>
-                  {isSuper && <span className="rounded-full bg-yellow-500/10 px-2 py-0.5 text-[9px] font-medium text-yellow-400">Super Admin</span>}
-                  <span className="text-[9px] text-text-muted">{total}/17 permissões</span>
-                </div>
-              </div>
-              <Settings size={16} className="text-text-muted shrink-0" />
-            </button>
-          );
-        })
-      )}
-
-      {editUser && editPerms && (
+      {/* Modal Integrado de Permissões */}
+      {permCredencial && (
         <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black/60 px-4 py-8">
-          <div className="w-full max-w-md rounded-2xl bg-card p-6 shadow-xl mt-8 mb-8">
+          <div className="w-full max-w-md rounded-2xl bg-card p-6 shadow-xl mt-8 mb-8 animate-in fade-in zoom-in-95 duration-150">
             <div className="flex items-center justify-between mb-1">
-              <h2 className="text-base font-bold text-text-main truncate">{editUser.profiles.nome}</h2>
-              <button onClick={() => { setEditUser(null); setEditPerms(null); }} className="text-text-muted hover:text-text-main shrink-0 ml-2"><X size={20} /></button>
+              <h2 className="text-base font-bold text-text-main truncate">{permCredencial.nome_completo}</h2>
+              <button onClick={() => { setPermCredencial(null); setEditPerms(null); }} className="text-text-muted hover:text-text-main shrink-0 ml-2"><X size={20} /></button>
             </div>
-            <p className="text-xs text-text-muted mb-1">{editUser.profiles.email}</p>
-            <div className="flex items-center gap-1 mb-4">
-              <span className="rounded-full bg-accent/10 px-2 py-0.5 text-[9px] font-medium text-accent">{editUser.profiles.ambiente}</span>
-              {editUser.profiles.is_super_admin && <span className="rounded-full bg-yellow-500/10 px-2 py-0.5 text-[9px] font-medium text-yellow-400">Super Admin</span>}
-              <button onClick={restaurarPadrao} className="ml-auto text-[10px] text-accent underline">Restaurar padrões</button>
-            </div>
-            <div className="flex flex-col gap-3 max-h-[55vh] overflow-y-auto pr-1">
-              {PERMISSOES_GROUPS.map((group) => (
-                <div key={group.label} className="rounded-xl bg-input-bg p-3">
-                  <p className="text-xs font-bold text-text-main mb-2">{group.label}</p>
-                  <div className="flex flex-col gap-2">
-                    {group.keys.map((key) => (
-                      <label key={key} className="flex items-center gap-3 cursor-pointer group">
-                        <button onClick={() => toggle(key)}
-                          className={`shrink-0 rounded-lg p-1.5 transition ${editPerms[key] ? 'bg-accent text-white' : 'bg-bg-dark text-text-muted group-hover:text-text-main'}`}
-                        >
-                          {editPerms[key] ? <ShieldCheck size={16} /> : <ShieldX size={16} />}
-                        </button>
-                        <div className="flex-1 min-w-0">
-                          <p className={`text-xs font-medium ${editPerms[key] ? 'text-text-main' : 'text-text-muted'}`}>{PERMISSOES_LABEL[key]}</p>
-                          <p className="text-[9px] text-text-muted">{PERMISSOES_DESC[key]}</p>
-                        </div>
-                      </label>
-                    ))}
-                  </div>
+            <p className="text-xs text-text-muted mb-1">{permCredencial.email_corporativo}</p>
+
+            {loadingPerms ? (
+              <div className="flex justify-center py-12"><Loader2 size={24} className="animate-spin text-accent" /></div>
+            ) : !permCredencial.profile ? (
+              <div className="flex flex-col items-center justify-center py-8 text-center">
+                <ShieldX size={36} className="text-yellow-400 mb-2" />
+                <p className="text-sm font-semibold text-text-main">Usuário não registrado</p>
+                <p className="text-[11px] text-text-muted mt-1 max-w-[280px]">
+                  O e-mail <strong>{permCredencial.email_corporativo}</strong> ainda não realizou o primeiro acesso no sistema.
+                  Não é possível personalizar permissões até que a conta seja criada no Supabase Auth.
+                </p>
+                <div className="mt-4 w-full rounded-xl bg-input-bg p-3 text-left">
+                  <p className="text-[10px] font-bold text-text-main mb-1">💡 Dica de Departamento:</p>
+                  <p className="text-[10px] text-text-muted">
+                    Ao registrar-se, o usuário receberá automaticamente as permissões padrão para o ambiente/departamento: <strong>{permCredencial.departamento || "Sem departamento"}</strong>.
+                  </p>
                 </div>
-              ))}
-            </div>
-            <div className="flex gap-3 mt-4">
-              <button onClick={() => { setEditUser(null); setEditPerms(null); }} className="flex-1 rounded-xl border border-input-border py-3 text-sm font-medium text-text-muted">Cancelar</button>
-              <button onClick={salvar} disabled={saving} className="flex items-center justify-center gap-1 flex-1 rounded-xl bg-accent py-3 text-sm font-medium text-white disabled:opacity-50">
-                {saving ? <Loader2 size={16} className="animate-spin" /> : <Save size={16} />} Salvar
-              </button>
-            </div>
+              </div>
+            ) : (
+              <>
+                <div className="flex items-center gap-1 mb-4">
+                  <span className="rounded-full bg-accent/10 px-2 py-0.5 text-[9px] font-medium text-accent">{permCredencial.profile.ambiente}</span>
+                  {permCredencial.profile.is_super_admin && <span className="rounded-full bg-yellow-500/10 px-2 py-0.5 text-[9px] font-medium text-yellow-400">Super Admin</span>}
+                  <button onClick={restaurarPermissoesPadrao} className="ml-auto text-[10px] text-accent underline">Restaurar padrões</button>
+                </div>
+
+                <div className="flex flex-col gap-3 max-h-[55vh] overflow-y-auto pr-1">
+                  {PERMISSOES_GROUPS.map((group) => (
+                    <div key={group.label} className="rounded-xl bg-input-bg p-3">
+                      <p className="text-xs font-bold text-text-main mb-2">{group.label}</p>
+                      <div className="flex flex-col gap-2">
+                        {group.keys.map((key) => {
+                          const isChecked = editPerms ? editPerms[key] : false;
+                          return (
+                            <label key={key} className="flex items-center gap-3 cursor-pointer group">
+                              <button onClick={() => togglePerm(key)}
+                                className={`shrink-0 rounded-lg p-1.5 transition ${isChecked ? 'bg-accent text-white' : 'bg-bg-dark text-text-muted group-hover:text-text-main'}`}
+                              >
+                                {isChecked ? <ShieldCheck size={16} /> : <ShieldX size={16} />}
+                              </button>
+                              <div className="flex-1 min-w-0">
+                                <p className={`text-xs font-medium ${isChecked ? 'text-text-main' : 'text-text-muted'}`}>{PERMISSOES_LABEL[key]}</p>
+                                <p className="text-[9px] text-text-muted">{PERMISSOES_DESC[key]}</p>
+                              </div>
+                            </label>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="flex gap-3 mt-4">
+                  <button onClick={() => { setPermCredencial(null); setEditPerms(null); }} className="flex-1 rounded-xl border border-input-border py-3 text-sm font-medium text-text-muted">Cancelar</button>
+                  <button onClick={salvarPermissoes} disabled={savingPerms} className="flex items-center justify-center gap-1 flex-1 rounded-xl bg-accent py-3 text-sm font-medium text-white disabled:opacity-50">
+                    {savingPerms ? <Loader2 size={16} className="animate-spin" /> : <Save size={16} />} Salvar
+                  </button>
+                </div>
+              </>
+            )}
           </div>
         </div>
       )}

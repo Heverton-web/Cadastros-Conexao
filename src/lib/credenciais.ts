@@ -47,3 +47,22 @@ export async function toggleCredencial(id: string, ativo: boolean) {
   if (error) throw error;
   return data as Credencial;
 }
+
+export async function deletarCredencial(id: string) {
+  const { error } = await supabase
+    .from("credenciais")
+    .delete()
+    .eq("id", id);
+  if (error) throw error;
+}
+
+export async function atualizarCredencial(id: string, input: Partial<CredencialInput>) {
+  const { data, error } = await supabase
+    .from("credenciais")
+    .update(input)
+    .eq("id", id)
+    .select()
+    .single();
+  if (error) throw error;
+  return data as Credencial;
+}
