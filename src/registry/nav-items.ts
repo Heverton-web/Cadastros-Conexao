@@ -10,7 +10,9 @@ export type NavItemRegistration = {
   moduloKey?: string;
 };
 
-const items = new Map<string, NavItemRegistration>();
+const glob = typeof window !== 'undefined' ? window as any : globalThis as any;
+const items: Map<string, NavItemRegistration> = glob.__nav_items_registry || new Map<string, NavItemRegistration>();
+glob.__nav_items_registry = items;
 
 export function registerNavItem(item: NavItemRegistration): void {
   if (items.has(item.id)) {

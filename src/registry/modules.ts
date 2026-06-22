@@ -30,7 +30,9 @@ export type ModuleDefinition = {
   setup?: () => void;
 };
 
-const moduleRegistry = new Map<string, ModuleDefinition>();
+const glob = typeof window !== 'undefined' ? window as any : globalThis as any;
+const moduleRegistry: Map<string, ModuleDefinition> = glob.__modules_registry || new Map<string, ModuleDefinition>();
+glob.__modules_registry = moduleRegistry;
 
 export function registerModule(mod: ModuleDefinition): void {
   if (moduleRegistry.has(mod.key)) return;
