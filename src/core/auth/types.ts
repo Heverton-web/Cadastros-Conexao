@@ -1,5 +1,16 @@
 import { type User } from "@supabase/supabase-js";
 
+export type EmpresaInfo = {
+  id: string;
+  nome: string;
+  slug: string;
+  logo_url?: string;
+  logo_index_url?: string;
+  logo_app_url?: string;
+  favicon_url?: string;
+  theme: Record<string, string>;
+};
+
 export type Profile = {
   id: string;
   email: string;
@@ -10,12 +21,15 @@ export type Profile = {
   departamento?: string;
   ativo: boolean;
   is_super_admin: boolean;
+  empresa_id?: string | null;
 };
 
 export type AuthContextType = {
   user: User | null;
   profile: Profile | null;
   permissoes: Record<string, boolean> | null;
+  empresa: EmpresaInfo | null;
+  modulosAtivos: string[];
   loading: boolean;
   login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;

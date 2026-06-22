@@ -2,6 +2,7 @@ export {
   type Credencial,
   type CredencialInput,
   listarCredenciais,
+  listarCredenciaisPorEmpresa,
   criarCredencial,
   toggleCredencial,
   deletarCredencial,

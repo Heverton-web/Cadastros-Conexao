@@ -7,6 +7,7 @@ export type NavItemRegistration = {
   to: string;
   permissionCheck: (perms: Record<string, boolean> | null) => boolean;
   order: number;
+  moduloKey?: string;
 };
 
 const items = new Map<string, NavItemRegistration>();
@@ -20,9 +21,22 @@ export function registerNavItem(item: NavItemRegistration): void {
 }
 
 export function getNavItems(
-  perms: Record<string, boolean> | null
+  perms: Record<string, boolean> | null,
+  moduloKey?: string
 ): NavItemRegistration[] {
   return Array.from(items.values())
+    .filter((item) => {
+      if (moduloKey === undefined) {
+        return item.moduloKey === undefined;
+      }
+      return item.moduloKey === undefined || item.moduloKey === moduloKey;
+    })
     .filter((item) => item.permissionCheck(perms))
+    .sort((a, b) => a.order - b.order);
+}
+
+export function getNavItemsByModule(moduloKey: string): NavItemRegistration[] {
+  return Array.from(items.values())
+    .filter((item) => item.moduloKey === moduloKey)
     .sort((a, b) => a.order - b.order);
 }

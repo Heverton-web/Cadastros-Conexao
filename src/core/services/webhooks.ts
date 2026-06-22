@@ -15,6 +15,9 @@ export type Webhook = {
   ordem?: number;
   created_at: string;
   updated_at: string;
+  modulo_key?: string | null;
+  evento_key?: string | null;
+  evento_custom?: string | null;
 };
 
 export type WebhookInput = {
@@ -27,6 +30,9 @@ export type WebhookInput = {
   body_template?: Record<string, any>;
   ativo?: boolean;
   ordem?: number;
+  modulo_key?: string;
+  evento_key?: string;
+  evento_custom?: string;
 };
 
 export type WebhookLog = {
@@ -306,6 +312,64 @@ export async function dispararWebhooks(evento: string, payload: Record<string, a
       console.error("Erro crítico no orquestrador de webhooks:", err);
     }
   });
+}
+
+export async function dispararEventoModulo(
+  moduloKey: string,
+  eventoKey: string,
+  payload: Record<string, any>
+) {
+  const { data: webhooks, error } = await supabase
+    .from("webhooks")
+    .select("*")
+    .eq("modulo_key", moduloKey)
+    .eq("evento_key", eventoKey)
+    .eq("ativo", true);
+
+  if (error) {
+    console.error(`Erro ao buscar webhooks do módulo ${moduloKey}/${eventoKey}:`, error);
+    return;
+  }
+
+  if (!webhooks?.length) return;
+
+  for (const wh of webhooks) {
+    try {
+      const body = { ...wh.body_template, ...payload, evento: eventoKey, modulo: moduloKey };
+      const headers: Record<string, string> = {
+        "Content-Type": "application/json",
+        ...(wh.headers || {}),
+      };
+
+      const res = await fetch(wh.url, {
+        method: wh.metodo || "POST",
+        headers,
+        body: JSON.stringify(body),
+      });
+      const text = await res.text();
+
+      await supabase.from("webhook_logs").insert({
+        webhook_id: wh.id,
+        evento: eventoKey,
+        url: wh.url,
+        status_code: res.status,
+        resposta: text.slice(0, 2000),
+        sucesso: res.ok,
+        payload_enviado: body,
+      });
+    } catch (err: any) {
+      console.error(`Erro no webhook de módulo ${wh.id}:`, err);
+      await supabase.from("webhook_logs").insert({
+        webhook_id: wh.id,
+        evento: eventoKey,
+        url: wh.url,
+        status_code: null,
+        resposta: err.message?.slice(0, 1900) || "Erro desconhecido",
+        sucesso: false,
+        payload_enviado: payload,
+      });
+    }
+  }
 }
 
 export const EVENTOS_STATUS_CHANGE = [

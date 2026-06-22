@@ -1,16 +1,50 @@
-import { type ReactNode, useEffect, useState } from "react";
+import { type ReactNode, useEffect, useState, useCallback } from "react";
 import { supabase } from "~/core/supabase";
 import { AuthContext } from "./useAuth";
-import { type Profile } from "./types";
+import { type Profile, type EmpresaInfo } from "./types";
 import toast from "react-hot-toast";
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<any>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
-  const [permissoes, setPermissoes] = useState<Record<string, boolean> | null>(
-    null
-  );
+  const [permissoes, setPermissoes] = useState<Record<string, boolean> | null>(null);
+  const [empresa, setEmpresa] = useState<EmpresaInfo | null>(null);
+  const [modulosAtivos, setModulosAtivos] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
+
+  const carregarEmpresa = useCallback(async (empresaId: string) => {
+    const { data: emp } = await supabase
+      .from("empresas")
+      .select("id, nome, slug")
+      .eq("id", empresaId)
+      .single();
+    if (!emp) return;
+
+    const { data: config } = await supabase
+      .from("empresas_config")
+      .select("logo_url, logo_index_url, logo_app_url, favicon_url, theme")
+      .eq("empresa_id", empresaId)
+      .single();
+
+    setEmpresa({
+      id: emp.id,
+      nome: emp.nome,
+      slug: emp.slug,
+      logo_url: config?.logo_url,
+      logo_index_url: config?.logo_index_url,
+      logo_app_url: config?.logo_app_url,
+      favicon_url: config?.favicon_url,
+      theme: (config?.theme ?? {}) as Record<string, string>,
+    });
+
+    const { data: modulos } = await supabase
+      .from("modulos_empresa")
+      .select("modulo_key, ativo")
+      .eq("empresa_id", empresaId)
+      .eq("ativo", true);
+
+    setModulosAtivos((modulos ?? []).map((m) => m.modulo_key));
+  }, []);
 
   useEffect(() => {
     const {
@@ -22,6 +56,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       } else {
         setProfile(null);
         setPermissoes(null);
+        setEmpresa(null);
+        setModulosAtivos([]);
       }
       setLoading(false);
     });
@@ -45,6 +81,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setProfile(p as Profile);
       const perms = await getPermissoesDoUsuario(userId, p.is_super_admin);
       setPermissoes(perms);
+
+      if (p.empresa_id) {
+        await carregarEmpresa(p.empresa_id);
+      }
     }
   }
 
@@ -111,6 +151,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         user,
         profile,
         permissoes,
+        empresa,
+        modulosAtivos,
         loading,
         login,
         logout,

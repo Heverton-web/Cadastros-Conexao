@@ -32,6 +32,7 @@ export {
   deletarWebhook,
   listarWebhookLogs,
   dispararWebhooks,
+  dispararEventoModulo,
   EVENTOS_STATUS_CHANGE,
   EVENTOS_BUTTON_ACTION,
 } from "./webhooks";

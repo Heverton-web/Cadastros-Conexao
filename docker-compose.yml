@@ -5,7 +5,7 @@ version: "3.8"
 services:
   app:
     # Imagem pré-construída no Docker Hub para uso em Portainer/Swarm
-    image: hevertonperes/cadastros-conexao:v7
+    image: hevertonperes/cadastros-conexao:v8
 
     deploy:
       replicas: 1

@@ -1,5 +1,10 @@
 import { supabase } from "~/core/supabase";
 
+export type EscopoCredencial = {
+  modulo: string;
+  abas: string[];
+};
+
 export type Credencial = {
   id: string;
   created_by: string | null;
@@ -9,6 +14,8 @@ export type Credencial = {
   departamento: string | null;
   ativo: boolean;
   created_at: string;
+  escopos: EscopoCredencial[];
+  empresa_id?: string | null;
 };
 
 export type CredencialInput = {
@@ -16,12 +23,24 @@ export type CredencialInput = {
   email_corporativo: string;
   whatsapp_corporativo?: string;
   departamento?: string;
+  escopos?: EscopoCredencial[];
+  empresa_id?: string;
 };
 
 export async function listarCredenciais() {
   const { data, error } = await supabase
     .from("credenciais")
     .select("*")
+    .order("created_at", { ascending: false });
+  if (error) throw error;
+  return data as Credencial[];
+}
+
+export async function listarCredenciaisPorEmpresa(empresaId: string) {
+  const { data, error } = await supabase
+    .from("credenciais")
+    .select("*")
+    .eq("empresa_id", empresaId)
     .order("created_at", { ascending: false });
   if (error) throw error;
   return data as Credencial[];

@@ -5,6 +5,7 @@ import { Input } from "~/components/ui/input";
 import { useState, useEffect } from "react";
 import { supabase } from "~/lib/supabase";
 import { useAuth } from "~/lib/auth";
+import { useEmpresaTheme } from "~/core/theme";
 import { Loader2, Fingerprint, AlertTriangle, X, Mail, ChevronRight } from "lucide-react";
 import toast from "react-hot-toast";
 
@@ -17,6 +18,7 @@ export const loginRoute = createRoute({
 function LoginPage() {
   const navigate = useNavigate();
   const { login, user, loading } = useAuth();
+  const { logoIndexUrl, empresaNome } = useEmpresaTheme();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -82,19 +84,25 @@ function LoginPage() {
       {/* Luz de fundo (Glow Azul) */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[550px] rounded-full bg-blue-600/10 blur-[130px] pointer-events-none" />
 
-      <div className="relative z-10 w-full max-w-[390px] rounded-[2rem] bg-[#0b121f]/90 border border-[#1b2a47] p-8 md:p-10 shadow-[0_20px_50px_rgba(0,0,0,0.6)] backdrop-blur-md">
+      <div className="relative z-10 w-full max-w-[390px] rounded-[2rem] bg-[#0b121f]/90 p-8 md:p-10 shadow-[0_20px_50px_rgba(0,0,0,0.6)] backdrop-blur-md">
         {/* Linha dourada brilhante superior */}
         <div className="absolute top-0 inset-x-0 h-[1.5px] bg-gradient-to-r from-transparent via-[#c9a655] to-transparent rounded-t-[2rem] opacity-80" />
 
-        {/* Logo Container */}
-        <div className="mx-auto mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-[#070d17] border border-[#1e2d45] shadow-[0_0_20px_rgba(59,130,246,0.2)]">
-          <img src="/logos/logo-vertical-branco.png" className="h-9 w-9 object-contain" alt="Logo" />
+        {/* Logo */}
+        <div className="mx-auto mb-6 flex items-center justify-center">
+          {logoIndexUrl ? (
+            <img src={logoIndexUrl} className="h-16 w-auto object-contain" alt="Logo" />
+          ) : (
+            <img src="/logos/logo-vertical-branco.png" className="h-16 w-auto object-contain" alt="Logo" />
+          )}
         </div>
 
         {/* Título e Subtítulo */}
         <div className="text-center mb-6 flex flex-col gap-0.5">
           <h1 className="text-2xl font-bold text-white tracking-wide">Entrar</h1>
-          <span className="text-[10px] font-bold text-[#c9a655] tracking-[0.25em] uppercase">Conexão</span>
+          <span className="text-[10px] font-bold text-[#c9a655] tracking-[0.25em] uppercase">
+            {empresaNome || "Conexão"}
+          </span>
         </div>
 
         {/* Banner de Erro Inline */}
@@ -151,11 +159,6 @@ function LoginPage() {
             )}
           </button>
         </form>
-
-        <button type="button" onClick={() => setPopup("reset")}
-          className="mt-6 text-[10px] font-bold text-[#4e6178] hover:text-white transition-colors tracking-[0.2em] uppercase mx-auto block">
-          Primeiro Acesso / Esqueci Senha
-        </button>
       </div>
 
       <div className="absolute bottom-6 flex items-center justify-center gap-2 text-text-muted/20">

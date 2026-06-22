@@ -1,5 +1,5 @@
 import { supabase } from "~/core/supabase";
-import { type Permissoes } from "./types";
+import { type Permissoes, type ModulosAcesso } from "./types";
 
 export async function getPermissoes(usuarioId: string, isSuperAdmin?: boolean): Promise<Permissoes | null> {
   if (isSuperAdmin) {
@@ -7,7 +7,7 @@ export async function getPermissoes(usuarioId: string, isSuperAdmin?: boolean): 
   }
   const { data } = await supabase
     .from("permissoes")
-    .select("permissoes")
+    .select("permissoes, modulos_acesso")
     .eq("usuario_id", usuarioId)
     .single();
   return data?.permissoes as Permissoes | null;
@@ -20,6 +20,31 @@ export async function setPermissoes(usuarioId: string, permissoes: Permissoes): 
     .upsert({
       usuario_id: usuarioId,
       permissoes: permissoes as any,
+      updated_by: user.user?.id || null,
+    }, { onConflict: "usuario_id" });
+  if (error) throw error;
+}
+
+export async function getModulosAcesso(usuarioId: string, isSuperAdmin?: boolean): Promise<ModulosAcesso> {
+  if (isSuperAdmin) {
+    // super admin = all modules full access
+    return {}; // handled by isSuperAdmin check at runtime
+  }
+  const { data } = await supabase
+    .from("permissoes")
+    .select("modulos_acesso")
+    .eq("usuario_id", usuarioId)
+    .single();
+  return (data?.modulos_acesso as ModulosAcesso) || {};
+}
+
+export async function setModulosAcesso(usuarioId: string, modulosAcesso: ModulosAcesso): Promise<void> {
+  const { data: user } = await supabase.auth.getUser();
+  const { error } = await supabase
+    .from("permissoes")
+    .upsert({
+      usuario_id: usuarioId,
+      modulos_acesso: modulosAcesso as any,
       updated_by: user.user?.id || null,
     }, { onConflict: "usuario_id" });
   if (error) throw error;

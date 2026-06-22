@@ -3,6 +3,8 @@ import { rootRoute } from "./__root";
 import { AppLayout } from "~/components/layout/AppLayout";
 import { Loader2 } from "lucide-react";
 import { useAuth } from "~/lib/auth";
+import { getModule, getAllModules } from "~/registry";
+import { useRef } from "react";
 
 export const authLayout = createRoute({
   getParentRoute: () => rootRoute,
@@ -11,8 +13,22 @@ export const authLayout = createRoute({
 });
 
 function AuthGuard() {
-  const { user, loading } = useAuth();
+  const { user, profile, permissoes, modulosAtivos, loading } = useAuth();
   const navigate = useNavigate();
+  const modulesInitialized = useRef(false);
+
+  if (profile && permissoes && !modulesInitialized.current) {
+    const mods = profile.is_super_admin
+      ? getAllModules().map((m) => m.key)
+      : modulosAtivos;
+
+    for (const key of mods) {
+      const mod = getModule(key);
+      mod?.setup?.();
+    }
+
+    modulesInitialized.current = true;
+  }
 
   if (loading) {
     return (

@@ -3,7 +3,13 @@ import { createRoot } from "react-dom/client";
 import { RouterProvider, createRouter } from "@tanstack/react-router";
 import { routeTree } from "./routeTree.gen";
 import { AuthProvider } from "~/lib/auth";
+import { registerModule } from "~/registry";
+import { cadastrosModule } from "~/features/cadastros/module";
+import { empresasModule } from "~/features/empresas/module";
 import "~/styles/globals.css";
+
+registerModule(cadastrosModule);
+registerModule(empresasModule);
 
 const router = createRouter({ routeTree });
 
