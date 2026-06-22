@@ -1,4 +1,4 @@
-const CACHE = "cadastros-conexao-v1";
+const CACHE = "cadastros-conexao-v2";
 const PRECACHE_URLS = [
   "/",
   "/manifest.json",
