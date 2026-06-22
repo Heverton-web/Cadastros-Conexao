@@ -24,10 +24,19 @@ export type Profile = {
   empresa_id?: string | null;
 };
 
+export type ModuloAcessoItem = {
+  acessar: boolean;
+  paginas: string[];
+  acoes: string[];
+};
+
+export type ModulosAcesso = Record<string, ModuloAcessoItem>;
+
 export type AuthContextType = {
   user: User | null;
   profile: Profile | null;
   permissoes: Record<string, boolean> | null;
+  modulosAcesso: ModulosAcesso | null;
   empresa: EmpresaInfo | null;
   modulosAtivos: string[];
   loading: boolean;

@@ -41,7 +41,8 @@ function LoginPage() {
       .eq("id", currentUser.id)
       .single();
 
-    if (!profile?.ativo) { setPopup("inativo"); return; }
+    if (!profile) return;
+    if (profile.ativo === false) { setPopup("inativo"); return; }
 
     setRedirected(true);
     const amb = profile.ambiente;

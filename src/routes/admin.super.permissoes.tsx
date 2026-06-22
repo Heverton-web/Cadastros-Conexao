@@ -352,23 +352,34 @@ function AdminSuperPermissoes() {
                                 )}
 
                                 {mod.acoes.length > 0 && (
-                                  <div>
-                                    <p className="text-[9px] font-bold text-text-muted uppercase mb-1">Ações</p>
-                                    <div className="flex flex-wrap gap-1">
-                                      {mod.acoes.map((acao) => {
-                                        const ativa = modAcesso?.acoes?.includes(acao.key) || false;
-                                        return (
-                                          <button key={acao.key} onClick={() => toggleAcao(u.id, mod.key, acao.key)}
-                                            className={cn("flex items-center gap-1 px-2 py-0.5 rounded text-[9px] font-medium transition-colors border",
-                                              ativa ? "bg-success/10 text-success border-success/20" : "bg-error/10 text-error border-error/20"
-                                            )}
-                                          >
-                                            {ativa ? <Check size={8} /> : <X size={8} />}
-                                            {acao.label}
-                                          </button>
-                                        );
-                                      })}
-                                    </div>
+                                  <div className="space-y-3 mt-2">
+                                    {Object.entries(
+                                      mod.acoes.reduce((acc, acao) => {
+                                        const g = acao.group || 'Outras Ações';
+                                        if (!acc[g]) acc[g] = [];
+                                        acc[g].push(acao);
+                                        return acc;
+                                      }, {} as Record<string, typeof mod.acoes>)
+                                    ).map(([groupName, acoesList]) => (
+                                      <div key={groupName}>
+                                        <p className="text-[9px] font-bold text-text-muted uppercase mb-1">{groupName}</p>
+                                        <div className="flex flex-wrap gap-1">
+                                          {acoesList.map((acao) => {
+                                            const ativa = modAcesso?.acoes?.includes(acao.key) || false;
+                                            return (
+                                              <button key={acao.key} onClick={() => toggleAcao(u.id, mod.key, acao.key)}
+                                                className={cn("flex items-center gap-1 px-2 py-0.5 rounded text-[9px] font-medium transition-colors border",
+                                                  ativa ? "bg-success/10 text-success border-success/20" : "bg-error/10 text-error border-error/20"
+                                                )}
+                                              >
+                                                {ativa ? <Check size={8} /> : <X size={8} />}
+                                                {acao.label}
+                                              </button>
+                                            );
+                                          })}
+                                        </div>
+                                      </div>
+                                    ))}
                                   </div>
                                 )}
                               </div>

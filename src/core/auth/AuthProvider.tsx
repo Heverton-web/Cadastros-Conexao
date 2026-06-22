@@ -1,13 +1,14 @@
 import { type ReactNode, useEffect, useState, useCallback } from "react";
 import { supabase } from "~/core/supabase";
 import { AuthContext } from "./useAuth";
-import { type Profile, type EmpresaInfo } from "./types";
+import { type Profile, type EmpresaInfo, type ModulosAcesso } from "./types";
 import toast from "react-hot-toast";
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<any>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
   const [permissoes, setPermissoes] = useState<Record<string, boolean> | null>(null);
+  const [modulosAcesso, setModulosAcesso] = useState<ModulosAcesso | null>(null);
   const [empresa, setEmpresa] = useState<EmpresaInfo | null>(null);
   const [modulosAtivos, setModulosAtivos] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
@@ -56,6 +57,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       } else {
         setProfile(null);
         setPermissoes(null);
+        setModulosAcesso(null);
         setEmpresa(null);
         setModulosAtivos([]);
       }
@@ -79,46 +81,43 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       .single();
     if (!error && p) {
       setProfile(p as Profile);
-      const perms = await getPermissoesDoUsuario(userId, p.is_super_admin);
-      setPermissoes(perms);
+      
+      if (p.is_super_admin) {
+        setPermissoes({
+          ver_todos_cadastros: true,
+          aprovar_cadastro: true,
+          reprovar_cadastro: true,
+          solicitar_correcao_cadastro: true,
+          aprovar_documento: true,
+          reprovar_documento: true,
+          solicitar_correcao_documento: true,
+          aprovar_campo: true,
+          reprovar_campo: true,
+          solicitar_correcao_campo: true,
+          visualizar_documento: true,
+          excluir_cadastro: true,
+          gerenciar_credenciais: true,
+          gerenciar_credenciais_admin: true,
+          gerenciar_config: true,
+          gerar_links: true,
+          ver_relatorios: true,
+        });
+        setModulosAcesso(null);
+      } else {
+        const { data } = await supabase
+          .from("permissoes")
+          .select("permissoes, modulos_acesso")
+          .eq("usuario_id", userId)
+          .maybeSingle();
+        
+        setPermissoes(data?.permissoes as Record<string, boolean> | null);
+        setModulosAcesso(data?.modulos_acesso as ModulosAcesso | null);
+      }
 
       if (p.empresa_id) {
         await carregarEmpresa(p.empresa_id);
       }
     }
-  }
-
-  async function getPermissoesDoUsuario(
-    userId: string,
-    isSuperAdmin?: boolean
-  ): Promise<Record<string, boolean> | null> {
-    if (isSuperAdmin) {
-      return {
-        ver_todos_cadastros: true,
-        aprovar_cadastro: true,
-        reprovar_cadastro: true,
-        solicitar_correcao_cadastro: true,
-        aprovar_documento: true,
-        reprovar_documento: true,
-        solicitar_correcao_documento: true,
-        aprovar_campo: true,
-        reprovar_campo: true,
-        solicitar_correcao_campo: true,
-        visualizar_documento: true,
-        excluir_cadastro: true,
-        gerenciar_credenciais: true,
-        gerenciar_credenciais_admin: true,
-        gerenciar_config: true,
-        gerar_links: true,
-        ver_relatorios: true,
-      };
-    }
-    const { data } = await supabase
-      .from("permissoes")
-      .select("permissoes")
-      .eq("usuario_id", userId)
-      .single();
-    return data?.permissoes as Record<string, boolean> | null;
   }
 
   async function login(email: string, password: string): Promise<void> {
@@ -151,6 +150,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         user,
         profile,
         permissoes,
+        modulosAcesso,
         empresa,
         modulosAtivos,
         loading,

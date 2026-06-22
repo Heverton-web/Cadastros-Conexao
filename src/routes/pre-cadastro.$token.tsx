@@ -85,9 +85,10 @@ type FormData = {
     email_comunicacao: string; email_nf: string;
     tel_fixo: string; celular1: string; celular2: string;
   };
-  endereco: {
-    cep: string; rua: string; numero: string; bairro: string;
-    complemento: string; cidade: string; estado: string;
+  enderecos: {
+    empresa: { cep: string; rua: string; numero: string; bairro: string; complemento: string; cidade: string; estado: string; };
+    entrega: { cep: string; rua: string; numero: string; bairro: string; complemento: string; cidade: string; estado: string; } | null;
+    cobranca: { cep: string; rua: string; numero: string; bairro: string; complemento: string; cidade: string; estado: string; } | null;
   };
 };
 
@@ -110,6 +111,7 @@ function PreCadastroPage() {
   const [step, setStep] = useState<Step>("tipo");
   const [loading, setLoading] = useState(true);
   const [cadastroId, setCadastroId] = useState<string | null>(null);
+  const [empresaId, setEmpresaId] = useState<string | null>(null);
 
   // States para gerenciar correção do lead
   const [cadastroStatus, setCadastroStatus] = useState<string | null>(null);
@@ -139,9 +141,13 @@ function PreCadastroPage() {
 
   // Schema dinâmico do formulário
   const [schemaDados, setSchemaDados] = useState<CampoSchema[]>([]);
-  const [schemaEndereco, setSchemaEndereco] = useState<CampoSchema[]>([]);
+  const [schemaEndEmpresa, setSchemaEndEmpresa] = useState<CampoSchema[]>([]);
+  const [schemaEndEntrega, setSchemaEndEntrega] = useState<CampoSchema[]>([]);
+  const [schemaEndCobranca, setSchemaEndCobranca] = useState<CampoSchema[]>([]);
   const [schemaDocs, setSchemaDocs] = useState<CampoSchema[]>([]);
   const [schemaLoading, setSchemaLoading] = useState(false);
+  const [mesmoEndEntrega, setMesmoEndEntrega] = useState(true);
+  const [mesmoEndCobranca, setMesmoEndCobranca] = useState(true);
 
   // Campos extras (custom) preenchidos pelo lead
   const [extras, setExtras] = useState<Record<string, string | string[]>>({});
@@ -155,7 +161,11 @@ function PreCadastroPage() {
     pj: { razao_social: "", nome_fantasia: "", cnpj: "", inscricao_estadual: "",
       cro: "", cro_uf: "", data_emissao_cro: "", email_comunicacao: "", email_nf: "",
       tel_fixo: "", celular1: "", celular2: "" },
-    endereco: { cep: "", rua: "", numero: "", bairro: "", complemento: "", cidade: "", estado: "" },
+    enderecos: {
+      empresa: { cep: "", rua: "", numero: "", bairro: "", complemento: "", cidade: "", estado: "" },
+      entrega: null,
+      cobranca: null,
+    },
   });
 
   useEffect(() => {
@@ -168,16 +178,20 @@ function PreCadastroPage() {
     const tipo = form.tipo as "PF" | "PJ";
     setSchemaLoading(true);
     Promise.all([
-      carregarSchema(tipo, "dados"),
-      carregarSchema(tipo, "endereco"),
-      carregarSchema(tipo, "documentos"),
-    ]).then(([dados, endereco, docs]) => {
+      carregarSchema(tipo, "dados", empresaId),
+      carregarSchema(tipo, "endereco_empresa", empresaId),
+      carregarSchema(tipo, "endereco_entrega", empresaId),
+      carregarSchema(tipo, "endereco_cobranca", empresaId),
+      carregarSchema(tipo, "documentos", empresaId),
+    ]).then(([dados, endEmpresa, endEntrega, endCobranca, docs]) => {
       setSchemaDados(dados);
-      setSchemaEndereco(endereco);
+      setSchemaEndEmpresa(endEmpresa);
+      setSchemaEndEntrega(endEntrega);
+      setSchemaEndCobranca(endCobranca);
       setSchemaDocs(docs);
       setSchemaLoading(false);
     });
-  }, [form.tipo]);
+  }, [form.tipo, empresaId]);
 
   // Hook do Timer de 24 Horas
   useEffect(() => {
@@ -225,6 +239,7 @@ function PreCadastroPage() {
       
       const c = typeof data === "string" ? JSON.parse(data) : data;
       setCadastroId(c.id);
+      setEmpresaId(c.empresa_id);
       setCadastroStatus(c.status);
       setComentarioGeral(c.comentario_reprovacao);
       setRevisoes(c.revisoes || {});
@@ -233,8 +248,19 @@ function PreCadastroPage() {
       // Buscar dados PF/PJ/endereços/documentos para pré-população
       const { data: pfData } = await supabase.from("cadastros_pf").select("*").eq("cadastro_id", c.id).maybeSingle();
       const { data: pjData } = await supabase.from("cadastros_pj").select("*").eq("cadastro_id", c.id).maybeSingle();
-      const { data: endData } = await supabase.from("cadastros_enderecos").select("*").eq("cadastro_id", c.id).maybeSingle();
+      const { data: endData } = await supabase.from("cadastros_enderecos").select("*").eq("cadastro_id", c.id);
       const { data: docsData } = await supabase.from("documentos").select("*").eq("cadastro_id", c.id);
+
+      const enderecosLista = endData ?? [];
+      const emp = enderecosLista.find(e => e.tipo_endereco === "empresa");
+      const ent = enderecosLista.find(e => e.tipo_endereco === "entrega");
+      const cob = enderecosLista.find(e => e.tipo_endereco === "cobranca");
+
+      const temEntregaDiferente = !!(ent && (ent.cep !== emp?.cep || ent.rua !== emp?.rua || ent.numero !== emp?.numero));
+      const temCobrancaDiferente = !!(cob && (cob.cep !== emp?.cep || cob.rua !== emp?.rua || cob.numero !== emp?.numero));
+
+      setMesmoEndEntrega(!temEntregaDiferente);
+      setMesmoEndCobranca(!temCobrancaDiferente);
 
       setForm(prev => ({
         tipo: c.tipo_pessoa || prev.tipo,
@@ -266,14 +292,34 @@ function PreCadastroPage() {
           celular1: pjData?.celular1 ? aplicarMascara(pjData.celular1, "celular") : "",
           celular2: pjData?.celular2 ? aplicarMascara(pjData.celular2, "celular") : "",
         },
-        endereco: {
-          cep: endData?.cep ? aplicarMascara(endData.cep, "cep") : "",
-          rua: endData?.rua || "",
-          numero: endData?.numero || "",
-          bairro: endData?.bairro || "",
-          complemento: endData?.complemento || "",
-          cidade: endData?.cidade || "",
-          estado: endData?.estado || "",
+        enderecos: {
+          empresa: {
+            cep: emp?.cep ? aplicarMascara(emp.cep, "cep") : "",
+            rua: emp?.rua || "",
+            numero: emp?.numero || "",
+            bairro: emp?.bairro || "",
+            complemento: emp?.complemento || "",
+            cidade: emp?.cidade || "",
+            estado: emp?.estado || "",
+          },
+          entrega: ent ? {
+            cep: ent.cep ? aplicarMascara(ent.cep, "cep") : "",
+            rua: ent.rua || "",
+            numero: ent.numero || "",
+            bairro: ent.bairro || "",
+            complemento: ent.complemento || "",
+            cidade: ent.cidade || "",
+            estado: ent.estado || "",
+          } : null,
+          cobranca: cob ? {
+            cep: cob.cep ? aplicarMascara(cob.cep, "cep") : "",
+            rua: cob.rua || "",
+            numero: cob.numero || "",
+            bairro: cob.bairro || "",
+            complemento: cob.complemento || "",
+            cidade: cob.cidade || "",
+            estado: cob.estado || "",
+          } : null,
         }
       }));
 
@@ -433,21 +479,40 @@ function PreCadastroPage() {
     setStep("endereco");
   }
 
-  async function handleBuscarCEP() {
-    const cep = limpar(form.endereco.cep);
+  async function handleBuscarCEP(tipo: "empresa" | "entrega" | "cobranca") {
+    const cep = limpar(tipo === "empresa" ? form.enderecos.empresa.cep : tipo === "entrega" ? form.enderecos.entrega?.cep || "" : form.enderecos.cobranca?.cep || "");
     if (cep.length < 8) return;
     const result = await buscarCepResiliente(cep);
     if (result) {
-      setForm(prev => ({
-        ...prev,
-        endereco: {
-          ...prev.endereco,
-          rua: result.logradouro,
-          bairro: result.bairro,
-          cidade: result.localidade,
-          estado: result.uf,
-        },
-      }));
+      setForm(prev => {
+        const novos = { ...prev.enderecos };
+        if (tipo === "empresa") {
+          novos.empresa = {
+            ...novos.empresa,
+            rua: result.logradouro,
+            bairro: result.bairro,
+            cidade: result.localidade,
+            estado: result.uf,
+          };
+        } else if (tipo === "entrega" && novos.entrega) {
+          novos.entrega = {
+            ...novos.entrega,
+            rua: result.logradouro,
+            bairro: result.bairro,
+            cidade: result.localidade,
+            estado: result.uf,
+          };
+        } else if (tipo === "cobranca" && novos.cobranca) {
+          novos.cobranca = {
+            ...novos.cobranca,
+            rua: result.logradouro,
+            bairro: result.bairro,
+            cidade: result.localidade,
+            estado: result.uf,
+          };
+        }
+        return { ...prev, enderecos: novos };
+      });
     }
   }
 
@@ -457,12 +522,29 @@ function PreCadastroPage() {
     try {
       const pf = form.tipo === "PF" ? form.pf : {};
       const pj = form.tipo === "PJ" ? form.pj : {};
+
+      const listEnderecos = [
+        { tipo: "empresa", ...form.enderecos.empresa }
+      ];
+
+      if (mesmoEndEntrega) {
+        listEnderecos.push({ tipo: "entrega", ...form.enderecos.empresa });
+      } else if (form.enderecos.entrega) {
+        listEnderecos.push({ tipo: "entrega", ...form.enderecos.entrega });
+      }
+
+      if (mesmoEndCobranca) {
+        listEnderecos.push({ tipo: "cobranca", ...form.enderecos.empresa });
+      } else if (form.enderecos.cobranca) {
+        listEnderecos.push({ tipo: "cobranca", ...form.enderecos.cobranca });
+      }
+
       await supabase.rpc("update_cadastro_from_precadastro", {
         token_text: token,
         tipo_pessoa: form.tipo,
         pf_data: pf,
         pj_data: pj,
-        endereco_data: form.endereco,
+        enderecos_data: listEnderecos,
       });
 
       // Persiste campos extras (custom) preenchidos pelo lead
@@ -796,39 +878,119 @@ function PreCadastroPage() {
         })()}
 
         {step === "endereco" && (() => {
-          function setEnd(key: string, v: string) {
-            setForm(prev => ({ ...prev, endereco: { ...prev.endereco, [key]: v } }));
+          function setEnd(tipo: "empresa" | "entrega" | "cobranca", key: string, v: string) {
+            setForm(prev => {
+              const novos = { ...prev.enderecos };
+              if (tipo === "empresa") {
+                novos.empresa = { ...novos.empresa, [key]: v };
+              } else if (tipo === "entrega") {
+                const atual = novos.entrega || { cep: "", rua: "", numero: "", bairro: "", complemento: "", cidade: "", estado: "" };
+                novos.entrega = { ...atual, [key]: v };
+              } else if (tipo === "cobranca") {
+                const atual = novos.cobranca || { cep: "", rua: "", numero: "", bairro: "", complemento: "", cidade: "", estado: "" };
+                novos.cobranca = { ...atual, [key]: v };
+              }
+              return { ...prev, enderecos: novos };
+            });
           }
-          function renderEndDinamico(c: CampoSchema) {
+          function renderEndDinamico(tipo: "empresa" | "entrega" | "cobranca", c: CampoSchema) {
             const label = c.label + (c.obrigatorio ? " *" : "");
             const endKey = c.campo_key === "estado_end" ? "estado" : c.campo_key;
-            const val = (form.endereco as any)[endKey] ?? "";
+            
+            const objEnd = tipo === "empresa" ? form.enderecos.empresa : tipo === "entrega" ? form.enderecos.entrega : form.enderecos.cobranca;
+            const val = (objEnd as any)?.[endKey] ?? "";
 
-            const chaveRevisaoEnd = "end." + (c.campo_key === "estado_end" ? "estado" : c.campo_key);
+            const prefixoRevisao = tipo === "empresa" ? "end." : tipo === "entrega" ? "end_entrega." : "end_cobranca.";
+            const chaveRevisaoEnd = prefixoRevisao + (c.campo_key === "estado_end" ? "estado" : c.campo_key);
             const revisaoEnd = revisoes[chaveRevisaoEnd];
             const isCorrigirEnd = camposCorrecao.includes(chaveRevisaoEnd) || (revisaoEnd?.status === "em_correcao" || revisaoEnd?.status === "reprovado");
-            const motivoCorrecaoEnd = isCorrigirEnd ? (revisaoEnd?.comentario || "Endereço necessita de correção") : undefined;
+            const motivoCorrecaoEnd = isCorrigirEnd ? (revisaoEnd?.comentario || "Campo necessita de correção") : undefined;
 
             if (c.campo_key === "cep") {
               return (
                 <div key={c.id} className="flex gap-2">
                   <div className="flex-1">
-                    <CampoMascarado label={label} value={val} onChange={v => setEnd("cep", v)} mascara="cep" placeholder="00000-000" motivoCorrecao={motivoCorrecaoEnd} />
+                    <CampoMascarado label={label} value={val} onChange={v => setEnd(tipo, "cep", v)} mascara="cep" placeholder="00000-000" motivoCorrecao={motivoCorrecaoEnd} />
                   </div>
-                  <button onClick={handleBuscarCEP} className="mt-6 rounded-lg bg-accent px-4 py-3 text-xs font-medium text-white min-h-[44px]">Buscar</button>
+                  <button onClick={() => handleBuscarCEP(tipo)} className="mt-6 rounded-lg bg-accent px-4 py-3 text-xs font-medium text-white min-h-[44px]">Buscar</button>
                 </div>
               );
             }
-            return <Campo key={c.id} label={label} value={val} onChange={v => setEnd(endKey, v)} motivoCorrecao={motivoCorrecaoEnd} />;
+            return <Campo key={c.id} label={label} value={val} onChange={v => setEnd(tipo, endKey, v)} motivoCorrecao={motivoCorrecaoEnd} />;
           }
           return (
-            <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-5">
               {schemaLoading ? (
                 <div className="flex items-center justify-center py-8"><Loader2 size={24} className="animate-spin text-accent" /></div>
               ) : (
                 <>
-                  <p className="text-xs text-text-muted mb-2">As informações de endereço serão preenchidas automaticamente pelo CEP</p>
-                  {schemaEndereco.map(c => renderEndDinamico(c))}
+                  {/* Bloco Empresa */}
+                  <div className="flex flex-col gap-3 border-b border-border-subtle pb-4">
+                    <h3 className="text-sm font-bold text-accent">Endereço da Empresa</h3>
+                    {schemaEndEmpresa.map(c => renderEndDinamico("empresa", c))}
+                  </div>
+
+                  {/* Bloco Entrega */}
+                  <div className="flex flex-col gap-3 border-b border-border-subtle pb-4">
+                    <label className="flex items-center gap-2 text-xs font-semibold text-text-main cursor-pointer select-none">
+                      <input 
+                        type="checkbox" 
+                        checked={mesmoEndEntrega} 
+                        onChange={e => {
+                          const val = e.target.checked;
+                          setMesmoEndEntrega(val);
+                          if (!val && !form.enderecos.entrega) {
+                            setForm(prev => ({
+                              ...prev,
+                              enderecos: {
+                                ...prev.enderecos,
+                                entrega: { cep: "", rua: "", numero: "", bairro: "", complemento: "", cidade: "", estado: "" }
+                              }
+                            }));
+                          }
+                        }}
+                        className="rounded border-input-border text-accent focus:ring-accent"
+                      />
+                      <span>Usar mesmo endereço para entrega</span>
+                    </label>
+                    {!mesmoEndEntrega && (
+                      <div className="flex flex-col gap-3 mt-2">
+                        <h4 className="text-xs font-bold text-text-muted">Endereço de Entrega</h4>
+                        {schemaEndEntrega.map(c => renderEndDinamico("entrega", c))}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Bloco Cobrança */}
+                  <div className="flex flex-col gap-3 pb-2">
+                    <label className="flex items-center gap-2 text-xs font-semibold text-text-main cursor-pointer select-none">
+                      <input 
+                        type="checkbox" 
+                        checked={mesmoEndCobranca} 
+                        onChange={e => {
+                          const val = e.target.checked;
+                          setMesmoEndCobranca(val);
+                          if (!val && !form.enderecos.cobranca) {
+                            setForm(prev => ({
+                              ...prev,
+                              enderecos: {
+                                ...prev.enderecos,
+                                cobranca: { cep: "", rua: "", numero: "", bairro: "", complemento: "", cidade: "", estado: "" }
+                              }
+                            }));
+                          }
+                        }}
+                        className="rounded border-input-border text-accent focus:ring-accent"
+                      />
+                      <span>Usar mesmo endereço para cobrança</span>
+                    </label>
+                    {!mesmoEndCobranca && (
+                      <div className="flex flex-col gap-3 mt-2">
+                        <h4 className="text-xs font-bold text-text-muted">Endereço de Cobrança</h4>
+                        {schemaEndCobranca.map(c => renderEndDinamico("cobranca", c))}
+                      </div>
+                    )}
+                  </div>
                 </>
               )}
               <div className="flex gap-3 mt-4">

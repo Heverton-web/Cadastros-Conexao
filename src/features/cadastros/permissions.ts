@@ -1,7 +1,7 @@
 import type { Permissoes, Ambiente } from "~/core/permissions/types";
 
 export const ALL_PERMISSIONS: { key: keyof Permissoes; label: string; description: string; group: string }[] = [
-  { key: "ver_todos_cadastros", label: "Ver todos os cadastros", description: "Permite visualizar todos os cadastros do sistema", group: "Visualização" },
+  { key: "ver_todos_cadastros", label: "Ver todos os cadastros da empresa (se inativo, vê apenas os que criou)", description: "Permite visualizar todos os cadastros do sistema", group: "Escopo de Dados" },
   { key: "ver_relatorios", label: "Ver relatórios", description: "Permite acessar a página de relatórios", group: "Visualização" },
   { key: "visualizar_documento", label: "Visualizar arquivos dos documentos", description: "Permite abrir e visualizar arquivos dos documentos", group: "Visualização" },
   { key: "aprovar_cadastro", label: "Aprovar cadastro", description: "Permite aprovar um cadastro (definir código do cliente)", group: "Aprovação de Cadastro" },
@@ -23,7 +23,8 @@ export const ALL_PERMISSIONS: { key: keyof Permissoes; label: string; descriptio
 export type PermGroup = { label: string; keys: (keyof Permissoes)[] };
 
 export const PERMISSOES_GROUPS: PermGroup[] = [
-  { label: "Visualização", keys: ["ver_todos_cadastros", "ver_relatorios", "visualizar_documento"] },
+  { label: "Escopo de Dados", keys: ["ver_todos_cadastros"] },
+  { label: "Visualização", keys: ["ver_relatorios", "visualizar_documento"] },
   { label: "Aprovação de Cadastro", keys: ["aprovar_cadastro", "reprovar_cadastro", "solicitar_correcao_cadastro"] },
   { label: "Aprovação de Documentos", keys: ["aprovar_documento", "reprovar_documento", "solicitar_correcao_documento"] },
   { label: "Aprovação de Campos", keys: ["aprovar_campo", "reprovar_campo", "solicitar_correcao_campo"] },

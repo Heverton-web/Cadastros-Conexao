@@ -2,6 +2,7 @@ import { X, Globe, type LucideIcon } from "lucide-react";
 import { useNavItems, useModulos } from "./useNavItems";
 import { useLocation, useNavigate } from "@tanstack/react-router";
 import { cn } from "~/lib/utils";
+import { useAuth } from "~/lib/auth";
 
 type ModuleInfo = {
   key: string;
@@ -22,11 +23,14 @@ export function ModuleDrawer({
   onModuleChange: (key: string | undefined) => void;
   modulos: ModuleInfo[];
 }) {
+  const { profile } = useAuth();
   const sections = useNavItems(selectedModuleKey);
   const location = useLocation();
   const navigate = useNavigate();
 
   if (!open) return null;
+
+  const mostrarGlobal = profile?.is_super_admin === true;
 
   return (
     <div className="fixed inset-0 z-50">
@@ -40,7 +44,7 @@ export function ModuleDrawer({
         </div>
 
         <div className="flex flex-col gap-0.5 px-2 py-3 border-b border-border-subtle/50">
-          {modulos.length > 0 && (
+          {mostrarGlobal && modulos.length > 0 && (
             <button
               onClick={() => { onModuleChange(undefined); onClose(); }}
               className={cn(

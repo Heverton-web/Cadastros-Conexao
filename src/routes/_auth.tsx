@@ -17,19 +17,6 @@ function AuthGuard() {
   const navigate = useNavigate();
   const modulesInitialized = useRef(false);
 
-  if (profile && permissoes && !modulesInitialized.current) {
-    const mods = profile.is_super_admin
-      ? getAllModules().map((m) => m.key)
-      : modulosAtivos;
-
-    for (const key of mods) {
-      const mod = getModule(key);
-      mod?.setup?.();
-    }
-
-    modulesInitialized.current = true;
-  }
-
   if (loading) {
     return (
       <div className="flex min-h-dvh items-center justify-center bg-background">
@@ -41,6 +28,19 @@ function AuthGuard() {
   if (!user) {
     navigate({ to: "/" });
     return null;
+  }
+
+  if (profile && permissoes && !modulesInitialized.current) {
+    const mods = profile.is_super_admin
+      ? getAllModules().map((m) => m.key)
+      : modulosAtivos;
+
+    for (const key of mods) {
+      const mod = getModule(key);
+      mod?.setup?.();
+    }
+
+    modulesInitialized.current = true;
   }
 
   return <AppLayout />;

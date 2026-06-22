@@ -3,6 +3,8 @@ import { useNavItems } from "./useNavItems";
 import { useLocation, useNavigate } from "@tanstack/react-router";
 import { cn } from "~/lib/utils";
 
+import { useAuth } from "~/lib/auth";
+
 type ModuleInfo = {
   key: string;
   nome: string;
@@ -22,49 +24,55 @@ export function NavSidebar({
   collapsed: boolean;
   onToggleCollapse: () => void;
 }) {
+  const { profile } = useAuth();
   const sections = useNavItems(selectedModuleKey);
   const location = useLocation();
   const navigate = useNavigate();
 
   const w = collapsed ? "w-16" : "w-60";
 
+  const mostrarGlobal = profile?.is_super_admin === true;
+  const exibirSecaoModulos = mostrarGlobal || modulos.length > 1;
+
   return (
     <aside className={cn("hidden lg:flex flex-col fixed left-0 top-[70px] bottom-0 border-r border-border-subtle bg-card z-30 transition-all duration-200", w)}>
-      <div className={cn("flex flex-col gap-0.5 px-2 py-3 border-b border-border-subtle/50", collapsed && "items-center")}>
-        {!collapsed && <p className="text-[10px] font-bold text-text-muted uppercase tracking-wider px-3 mb-2">Módulos</p>}
-        {modulos.length > 0 && (
-          <button
-            onClick={() => onModuleChange(undefined)}
-            title={collapsed ? "Global" : undefined}
-            className={cn(
-              "flex items-center gap-2.5 rounded-lg text-sm font-medium transition-colors",
-              collapsed ? "justify-center p-2" : "px-3 py-2",
-              selectedModuleKey === undefined ? "bg-accent/10 text-accent" : "text-text-main hover:bg-input-bg"
-            )}
-          >
-            <Globe size={16} />
-            {!collapsed && "Global"}
-          </button>
-        )}
-        {modulos.map((mod) => {
-          const Icon = mod.icon;
-          return (
+      {exibirSecaoModulos && (
+        <div className={cn("flex flex-col gap-0.5 px-2 py-3 border-b border-border-subtle/50", collapsed && "items-center")}>
+          {!collapsed && <p className="text-[10px] font-bold text-text-muted uppercase tracking-wider px-3 mb-2">Módulos</p>}
+          {mostrarGlobal && modulos.length > 0 && (
             <button
-              key={mod.key}
-              onClick={() => onModuleChange(mod.key)}
-              title={collapsed ? mod.nome : undefined}
+              onClick={() => onModuleChange(undefined)}
+              title={collapsed ? "Global" : undefined}
               className={cn(
                 "flex items-center gap-2.5 rounded-lg text-sm font-medium transition-colors",
                 collapsed ? "justify-center p-2" : "px-3 py-2",
-                selectedModuleKey === mod.key ? "bg-accent/10 text-accent" : "text-text-main hover:bg-input-bg"
+                selectedModuleKey === undefined ? "bg-accent/10 text-accent" : "text-text-main hover:bg-input-bg"
               )}
             >
-              <Icon size={16} />
-              {!collapsed && mod.nome}
+              <Globe size={16} />
+              {!collapsed && "Global"}
             </button>
-          );
-        })}
-      </div>
+          )}
+          {modulos.map((mod) => {
+            const Icon = mod.icon;
+            return (
+              <button
+                key={mod.key}
+                onClick={() => onModuleChange(mod.key)}
+                title={collapsed ? mod.nome : undefined}
+                className={cn(
+                  "flex items-center gap-2.5 rounded-lg text-sm font-medium transition-colors",
+                  collapsed ? "justify-center p-2" : "px-3 py-2",
+                  selectedModuleKey === mod.key ? "bg-accent/10 text-accent" : "text-text-main hover:bg-input-bg"
+                )}
+              >
+                <Icon size={16} />
+                {!collapsed && mod.nome}
+              </button>
+            );
+          })}
+        </div>
+      )}
 
       <div className={cn("flex-1 overflow-y-auto py-3", collapsed ? "px-1" : "px-2")}>
         {sections.map((section) => (

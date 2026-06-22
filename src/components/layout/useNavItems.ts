@@ -17,37 +17,71 @@ export type NavSection = {
 };
 
 export function useNavItems(selectedModuleKey?: string): NavSection[] {
-  const { profile, permissoes } = useAuth();
+  const { profile, permissoes, modulosAcesso, modulosAtivos } = useAuth();
   const p = permissoes;
+
+  // Obter chaves de módulos que o usuário de fato tem acesso
+  const modulosAcessiveis = useMemo(() => {
+    if (profile?.is_super_admin) {
+      return getAllModules().map((m) => m.key);
+    }
+    const ativos = modulosAtivos || [];
+    const isCompanyAdmin = profile?.role === "admin";
+    return getAllModules()
+      .filter((m) => {
+        if (m.key === "empresas-core") {
+          return isCompanyAdmin || modulosAcesso?.[m.key]?.acessar === true;
+        }
+        return ativos.includes(m.key) && modulosAcesso?.[m.key]?.acessar === true;
+      })
+      .map((m) => m.key);
+  }, [profile, modulosAtivos, modulosAcesso]);
 
   return useMemo(() => {
     const sections: NavSection[] = [];
 
-    const registryItems = getNavItems(p as Record<string, boolean> | null, selectedModuleKey);
+    // Fallback: se não for super admin e não houver modulo selecionado, usa o primeiro módulo que ele tem acesso
+    let moduloKey = selectedModuleKey;
+    if (!profile?.is_super_admin && !moduloKey && modulosAcessiveis.length > 0) {
+      moduloKey = modulosAcessiveis[0];
+    }
+
+    let registryItems = getNavItems(p as Record<string, boolean> | null, moduloKey);
+
+    const isSuper = profile?.is_super_admin === true;
+    const isCompanyAdmin = !isSuper && profile?.role === "admin" && !!profile?.empresa_id;
+
+    // Filtrar as abas/páginas com base no modulosAcesso do usuário (se não for Super Admin)
+    if (!isSuper && moduloKey) {
+      if (moduloKey === "empresas-core" && isCompanyAdmin) {
+        // não filtra empresas-core para admin da empresa
+      } else {
+        const paginasPermitidas = modulosAcesso?.[moduloKey]?.paginas ?? [];
+        registryItems = registryItems.filter((item) => paginasPermitidas.includes(item.id));
+      }
+    }
+
     const regNav: NavItem[] = registryItems.map((ri) => ({
       path: ri.to,
       label: ri.label,
       icon: ri.icon,
     }));
 
-    const isSuper = profile?.is_super_admin === true;
-    const isCompanyAdmin = !isSuper && profile?.role === "admin" && !!profile?.empresa_id;
-
     // Section: Navegação (registry items)
-    // Global (selectedModuleKey === undefined) é exclusivo do Super Admin
-    if (isSuper || selectedModuleKey) {
+    // Global (moduloKey === undefined) é exclusivo do Super Admin
+    if (isSuper || moduloKey) {
       const navItems: NavItem[] = [...regNav];
       // Config só aparece em módulos que não são sistema (exclui empresas-core)
-      if (selectedModuleKey && selectedModuleKey !== "empresas-core" && (isSuper || p?.gerenciar_config === true)) {
+      if (moduloKey && moduloKey !== "empresas-core" && (isSuper || p?.gerenciar_config === true)) {
         navItems.push({ path: "/admin/config", label: "Config", icon: Settings });
       }
       if (navItems.length > 0) {
-        sections.push({ label: selectedModuleKey ? "Navegação" : "Itens Globais", items: navItems });
+        sections.push({ label: moduloKey ? "Navegação" : "Itens Globais", items: navItems });
       }
     }
 
     // Section: Administração (super admin, global only)
-    if (isSuper && !selectedModuleKey) {
+    if (isSuper && !moduloKey) {
       sections.push({
         label: "Administração",
         items: [
@@ -63,7 +97,7 @@ export function useNavItems(selectedModuleKey?: string): NavSection[] {
     }
 
     // Section: Configuração (empresa context)
-    const showConfig = (isSuper && selectedModuleKey === "empresas-core") || isCompanyAdmin;
+    const showConfig = (isSuper && moduloKey === "empresas-core") || isCompanyAdmin;
     if (showConfig) {
       sections.push({
         label: "Configuração",
@@ -78,17 +112,32 @@ export function useNavItems(selectedModuleKey?: string): NavSection[] {
     }
 
     return sections;
-  }, [p, profile?.is_super_admin, profile?.role, profile?.empresa_id, selectedModuleKey]);
+  }, [p, profile?.is_super_admin, profile?.role, profile?.empresa_id, modulosAtivos, selectedModuleKey, modulosAcesso, modulosAcessiveis]);
 }
 
 export function useModulos() {
-  const { profile } = useAuth();
+  const { profile, modulosAtivos, modulosAcesso } = useAuth();
   return useMemo(() => {
-    if (!profile?.is_super_admin) return [];
-    return getAllModules().map((m) => ({
-      key: m.key,
-      nome: m.nome,
-      icon: m.icon,
-    }));
-  }, [profile?.is_super_admin]);
+    if (profile?.is_super_admin) {
+      return getAllModules().map((m) => ({
+        key: m.key,
+        nome: m.nome,
+        icon: m.icon,
+      }));
+    }
+    const ativos = modulosAtivos || [];
+    const isCompanyAdmin = profile?.role === "admin";
+    return getAllModules()
+      .filter((m) => {
+        if (m.key === "empresas-core") {
+          return isCompanyAdmin || modulosAcesso?.[m.key]?.acessar === true;
+        }
+        return ativos.includes(m.key) && modulosAcesso?.[m.key]?.acessar === true;
+      })
+      .map((m) => ({
+        key: m.key,
+        nome: m.nome,
+        icon: m.icon,
+      }));
+  }, [profile?.is_super_admin, profile?.role, modulosAtivos, modulosAcesso]);
 }

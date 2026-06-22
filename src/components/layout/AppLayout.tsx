@@ -19,7 +19,7 @@ const LS_SIDEBAR = "sidebarCollapsed";
 export function AppLayout() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { profile, logout, empresa } = useAuth();
+  const { profile, logout, empresa, permissoes, modulosAcesso, modulosAtivos } = useAuth();
   const { logoAppUrl } = useEmpresaTheme();
   const modulos = useModulos();
   const [showDrawer, setShowDrawer] = useState(false);
@@ -43,6 +43,15 @@ export function AppLayout() {
       localStorage.removeItem(LS_KEY);
     }
   }, [selectedModuleKey]);
+
+  useEffect(() => {
+    if (!profile?.is_super_admin) {
+      const temAcesso = selectedModuleKey ? modulos.some(m => m.key === selectedModuleKey) : false;
+      if (!temAcesso && modulos.length > 0) {
+        setSelectedModuleKey(modulos[0].key);
+      }
+    }
+  }, [profile, modulos, selectedModuleKey]);
 
   const [notifs, setNotifs] = useState<Notificacao[]>([]);
   const [showNotifs, setShowNotifs] = useState(false);
@@ -110,7 +119,7 @@ export function AppLayout() {
           </div>
 
           <div className="flex items-center gap-2">
-            {modulos.length > 0 && (
+            {modulos.length > 1 && (
               <button onClick={() => setShowDrawer(true)} className="lg:hidden flex items-center justify-center p-1.5 rounded-lg text-text-muted hover:bg-input-bg hover:text-text-main transition-colors" title="Módulos e navegação">
                 <Grid3X3 size={18} />
               </button>
@@ -168,7 +177,7 @@ export function AppLayout() {
       </header>
       <NavSidebar selectedModuleKey={selectedModuleKey} onModuleChange={setSelectedModuleKey} modulos={modulos} collapsed={sidebarCollapsed} onToggleCollapse={toggleSidebar} />
       <ModuleDrawer open={showDrawer} onClose={() => setShowDrawer(false)} selectedModuleKey={selectedModuleKey} onModuleChange={setSelectedModuleKey} modulos={modulos} />
-      <main className={cn("mx-auto max-w-7xl w-full transition-all duration-200", sidebarCollapsed ? "lg:ml-16" : "lg:ml-60")}>
+      <main className={cn("mx-auto max-w-7xl w-full transition-all duration-200 pb-20 lg:pb-0", sidebarCollapsed ? "lg:ml-16" : "lg:ml-60")}>
         <Outlet />
       </main>
       <BottomNav selectedModuleKey={selectedModuleKey} />

@@ -13,7 +13,7 @@ export type TipoInput =
   | "documento";
 
 export type TipoPessoa = "PF" | "PJ" | "ambos";
-export type Etapa = "dados" | "endereco" | "documentos";
+export type Etapa = "dados" | "endereco_empresa" | "endereco_entrega" | "endereco_cobranca" | "documentos";
 
 export type CampoSchema = {
   id: string;
@@ -33,15 +33,23 @@ export type NovoCampo = Omit<CampoSchema, "id" | "is_custom">;
 
 export async function carregarSchema(
   tipo_pessoa: "PF" | "PJ",
-  etapa: Etapa
+  etapa: Etapa,
+  empresaId?: string | null
 ): Promise<CampoSchema[]> {
-  const { data, error } = await supabase
+  let query = supabase
     .from("form_schema")
     .select("*")
     .in("tipo_pessoa", [tipo_pessoa, "ambos"])
     .eq("etapa", etapa)
-    .eq("visivel", true)
-    .order("ordem", { ascending: true });
+    .eq("visivel", true);
+
+  if (empresaId) {
+    query = query.or(`empresa_id.is.null,empresa_id.eq.${empresaId}`);
+  } else {
+    query = query.is("empresa_id", null);
+  }
+
+  const { data, error } = await query.order("ordem", { ascending: true });
 
   if (error) {
     console.error("[form-schema] carregarSchema:", error);

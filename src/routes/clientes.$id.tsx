@@ -50,7 +50,7 @@ function ClienteDetailPage() {
   const navigate = useNavigate();
   const { profile, permissoes } = useAuth();
   const { id } = clienteDetailRoute.useParams();
-  const [data, setData] = useState<{ cadastro: any; pf: any; pj: any; endereco: any } | null>(null);
+  const [data, setData] = useState<{ cadastro: any; pf: any; pj: any; enderecos: any[]; endEmpresa: any; endEntrega: any; endCobranca: any } | null>(null);
   const [docs, setDocs] = useState<Documento[]>([]);
   const [revisoes, setRevisoes] = useState<Revisoes>({});
   const [docStatus, setDocStatus] = useState<string>("nao_enviada");
@@ -336,7 +336,12 @@ function ClienteDetailPage() {
   if (loading) return <div className="flex min-h-[60vh] items-center justify-center"><Loader2 size={24} className="animate-spin text-accent" /></div>;
   if (!data) return <p className="p-4 text-text-muted">Cliente não encontrado</p>;
 
-  const { cadastro: c, pf, pj, endereco: end } = data;
+  const { cadastro: c, pf, pj } = data;
+  const end = endAddressType === "clinica" 
+    ? data.endEmpresa 
+    : endAddressType === "entrega" 
+      ? data.endEntrega 
+      : data.endCobranca;
   const nome = c.lead_nome || c.nome_temporario || pf?.nome || pj?.razao_social || "—";
   const isFinal = c.status === "aprovado" || c.status === "reprovado";
   const isBloqueado = c.status === "reprovado" || c.status === "em_correcao" || c.status === "link_gerado";
@@ -484,7 +489,7 @@ function ClienteDetailPage() {
         ))}
       </div>
 
-      <div className={`grid grid-cols-1 md:grid-cols-2 ${end ? 'lg:grid-cols-3' : 'lg:grid-cols-2'} gap-6 lg:gap-8 items-start`}>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 items-start">
           <div className={`${tab === "dados" ? "block" : "hidden md:block"} rounded-xl bg-card p-4 shadow-lg w-full`}>
           <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
             <h2 className="text-sm font-bold text-text-main">Dados do Cliente</h2>
@@ -513,11 +518,10 @@ function ClienteDetailPage() {
           </div>
         </div>
 
-      {end && (
         <div className={`${tab === "endereco" ? "block" : "hidden md:block"} rounded-xl bg-card p-4 shadow-lg w-full`}>
           <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
             <h2 className="text-sm font-bold text-text-main">Endereço</h2>
-            <BotoesAcaoMassa aba="endereco" />
+            {end && <BotoesAcaoMassa aba="endereco" />}
           </div>
           <div className="flex gap-1 rounded-lg bg-bg-dark p-1 mb-4">
             {(["clinica","entrega","faturamento"] as const).map((t) => (
@@ -527,43 +531,48 @@ function ClienteDetailPage() {
               </button>
             ))}
           </div>
-          {(() => {
-            const ruaLimpa = limparLogradouro(end.rua || "");
-            let enderecoFull = ruaLimpa;
-            if (end.numero) enderecoFull += `, ${end.numero}`;
-            if (end.complemento) enderecoFull += ` - ${end.complemento}`;
-            if (end.bairro) enderecoFull += ` - ${end.bairro}`;
-            if (end.cidade) enderecoFull += `, ${end.cidade}`;
-            if (end.estado) enderecoFull += ` - ${end.estado}`;
-            if (end.cep) enderecoFull += `, ${end.cep}`;
-            
-            if (!ruaLimpa && enderecoFull.startsWith(", ")) enderecoFull = enderecoFull.substring(2);
-            if (!ruaLimpa && enderecoFull.startsWith(" - ")) enderecoFull = enderecoFull.substring(3);
-            return enderecoFull && profile?.ambiente !== "cadastro" && profile?.ambiente !== "ambos" ? (
-              <div className="flex items-start gap-2 mb-4 rounded-xl bg-accent/5 border border-accent/10 p-3">
-                <div className="flex-1 min-w-0">
-                  <p className="text-[11px] text-text-muted mb-0.5">Endereço Completo</p>
-                  <p className="text-sm text-text-main">{enderecoFull}</p>
-                </div>
-                <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(enderecoFull)}`}
-                  target="_blank" rel="noopener noreferrer"
-                  className="flex items-center gap-1 shrink-0 rounded-lg bg-accent/10 px-3 py-2 text-[11px] font-medium text-accent hover:bg-accent/20 transition">
-                  <MapPin size={14} /> Abrir no Mapa
-                </a>
+          {!end ? (
+            <p className="text-center text-xs text-text-muted py-8">Nenhum endereço deste tipo cadastrado.</p>
+          ) : (
+            <>
+              {(() => {
+                const ruaLimpa = limparLogradouro(end.rua || "");
+                let enderecoFull = ruaLimpa;
+                if (end.numero) enderecoFull += `, ${end.numero}`;
+                if (end.complemento) enderecoFull += ` - ${end.complemento}`;
+                if (end.bairro) enderecoFull += ` - ${end.bairro}`;
+                if (end.cidade) enderecoFull += `, ${end.cidade}`;
+                if (end.estado) enderecoFull += ` - ${end.estado}`;
+                if (end.cep) enderecoFull += `, ${end.cep}`;
+                
+                if (!ruaLimpa && enderecoFull.startsWith(", ")) enderecoFull = enderecoFull.substring(2);
+                if (!ruaLimpa && enderecoFull.startsWith(" - ")) enderecoFull = enderecoFull.substring(3);
+                return enderecoFull && profile?.ambiente !== "cadastro" && profile?.ambiente !== "ambos" ? (
+                  <div className="flex items-start gap-2 mb-4 rounded-xl bg-accent/5 border border-accent/10 p-3">
+                    <div className="flex-1 min-w-0">
+                      <p className="text-[11px] text-text-muted mb-0.5">Endereço Completo</p>
+                      <p className="text-sm text-text-main">{enderecoFull}</p>
+                    </div>
+                    <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(enderecoFull)}`}
+                      target="_blank" rel="noopener noreferrer"
+                      className="flex items-center gap-1 shrink-0 rounded-lg bg-accent/10 px-3 py-2 text-[11px] font-medium text-accent hover:bg-accent/20 transition">
+                      <MapPin size={14} /> Abrir no Mapa
+                    </a>
+                  </div>
+                ) : null;
+              })()}
+              <div className="flex flex-col gap-3">
+                {end.cep && <CampoRevisavel campoKey="end.cep" label="CEP" value={end.cep} revisoes={revisoes} podeAcao={podeEditarCampos} onAction={(tipo) => setFieldAction({ campo: "end.cep", label: "CEP", tipo })} />}
+                {end.rua && <CampoRevisavel campoKey="end.rua" label="Rua" value={end.rua} revisoes={revisoes} podeAcao={podeEditarCampos} onAction={(tipo) => setFieldAction({ campo: "end.rua", label: "Rua", tipo })} />}
+                {end.numero && <CampoRevisavel campoKey="end.numero" label="Número" value={end.numero} revisoes={revisoes} podeAcao={podeEditarCampos} onAction={(tipo) => setFieldAction({ campo: "end.numero", label: "Número", tipo })} />}
+                {end.bairro && <CampoRevisavel campoKey="end.bairro" label="Bairro" value={end.bairro} revisoes={revisoes} podeAcao={podeEditarCampos} onAction={(tipo) => setFieldAction({ campo: "end.bairro", label: "Bairro", tipo })} />}
+                {end.complemento && <CampoRevisavel campoKey="end.complemento" label="Complemento" value={end.complemento} revisoes={revisoes} podeAcao={podeEditarCampos} onAction={(tipo) => setFieldAction({ campo: "end.complemento", label: "Complemento", tipo })} />}
+                {end.cidade && <CampoRevisavel campoKey="end.cidade" label="Cidade" value={end.cidade} revisoes={revisoes} podeAcao={podeEditarCampos} onAction={(tipo) => setFieldAction({ campo: "end.cidade", label: "Cidade", tipo })} />}
+                {end.estado && <CampoRevisavel campoKey="end.estado" label="Estado" value={end.estado} revisoes={revisoes} podeAcao={podeEditarCampos} onAction={(tipo) => setFieldAction({ campo: "end.estado", label: "Estado", tipo })} />}
               </div>
-            ) : null;
-          })()}
-          <div className="flex flex-col gap-3">
-            {end.cep && <CampoRevisavel campoKey="end.cep" label="CEP" value={end.cep} revisoes={revisoes} podeAcao={podeEditarCampos} onAction={(tipo) => setFieldAction({ campo: "end.cep", label: "CEP", tipo })} />}
-            {end.rua && <CampoRevisavel campoKey="end.rua" label="Rua" value={end.rua} revisoes={revisoes} podeAcao={podeEditarCampos} onAction={(tipo) => setFieldAction({ campo: "end.rua", label: "Rua", tipo })} />}
-            {end.numero && <CampoRevisavel campoKey="end.numero" label="Número" value={end.numero} revisoes={revisoes} podeAcao={podeEditarCampos} onAction={(tipo) => setFieldAction({ campo: "end.numero", label: "Número", tipo })} />}
-            {end.bairro && <CampoRevisavel campoKey="end.bairro" label="Bairro" value={end.bairro} revisoes={revisoes} podeAcao={podeEditarCampos} onAction={(tipo) => setFieldAction({ campo: "end.bairro", label: "Bairro", tipo })} />}
-            {end.complemento && <CampoRevisavel campoKey="end.complemento" label="Complemento" value={end.complemento} revisoes={revisoes} podeAcao={podeEditarCampos} onAction={(tipo) => setFieldAction({ campo: "end.complemento", label: "Complemento", tipo })} />}
-            {end.cidade && <CampoRevisavel campoKey="end.cidade" label="Cidade" value={end.cidade} revisoes={revisoes} podeAcao={podeEditarCampos} onAction={(tipo) => setFieldAction({ campo: "end.cidade", label: "Cidade", tipo })} />}
-            {end.estado && <CampoRevisavel campoKey="end.estado" label="Estado" value={end.estado} revisoes={revisoes} podeAcao={podeEditarCampos} onAction={(tipo) => setFieldAction({ campo: "end.estado", label: "Estado", tipo })} />}
-          </div>
+            </>
+          )}
         </div>
-      )}
       {/* Documentos */}
         <div className={`${tab === "documentos" ? "block" : "hidden md:block"} rounded-xl bg-card p-4 shadow-lg w-full`}>
           <div className="flex items-center justify-between mb-4 flex-wrap gap-2">

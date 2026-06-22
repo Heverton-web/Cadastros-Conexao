@@ -25,6 +25,10 @@ function CredenciaisPage() {
   const [credenciais, setCredenciais] = useState<Credencial[]>([]);
   const [loading, setLoading] = useState(true);
 
+  // Super Admin: filtros de empresa
+  const [empresas, setEmpresas] = useState<{ id: string; nome: string }[]>([]);
+  const [selectedEmpresaId, setSelectedEmpresaId] = useState<string>("todas");
+
   // Create/Edit form
   const [showForm, setShowForm] = useState(false);
   const [editId, setEditId] = useState<string | null>(null);
@@ -41,15 +45,38 @@ function CredenciaisPage() {
   const [deleteTarget, setDeleteTarget] = useState<Credencial | null>(null);
 
   useEffect(() => {
-    if (podeVer) carregar();
-    else setLoading(false);
-  }, [podeVer]);
+    if (podeVer) {
+      carregar();
+      if (isSuper) {
+        carregarEmpresas();
+      }
+    } else {
+      setLoading(false);
+    }
+  }, [podeVer, selectedEmpresaId]);
+
+  async function carregarEmpresas() {
+    try {
+      const { data } = await supabase
+        .from("empresas")
+        .select("id, nome")
+        .eq("ativo", true)
+        .order("nome");
+      setEmpresas(data ?? []);
+    } catch (e) {
+      console.error("Erro ao carregar empresas:", e);
+    }
+  }
 
   async function carregar() {
     setLoading(true);
     try {
       if (isSuper) {
-        setCredenciais(await listarCredenciais());
+        if (selectedEmpresaId === "todas") {
+          setCredenciais(await listarCredenciais());
+        } else {
+          setCredenciais(await listarCredenciaisPorEmpresa(selectedEmpresaId));
+        }
       } else if (minhaEmpresaId) {
         setCredenciais(await listarCredenciaisPorEmpresa(minhaEmpresaId));
       }
@@ -77,7 +104,8 @@ function CredenciaisPage() {
         await atualizarCredencial(editId, { nome_completo: form.nome_completo, email_corporativo: form.email_corporativo, whatsapp_corporativo: form.whatsapp_corporativo || undefined, departamento: form.departamento || undefined });
         toast.success("Credencial atualizada!");
       } else {
-        await criarCredencial({ ...form, empresa_id: minhaEmpresaId });
+        const empresaIdParaCriar = isSuper ? (selectedEmpresaId === "todas" ? null : selectedEmpresaId) : minhaEmpresaId;
+        await criarCredencial({ ...form, empresa_id: empresaIdParaCriar });
         toast.success("Credencial criada!");
       }
       setShowForm(false);
@@ -149,6 +177,21 @@ function CredenciaisPage() {
           </button>
         )}
       </div>
+
+      {isSuper && (
+        <div className="flex items-center gap-2.5 rounded-xl bg-card p-4 shadow-lg border border-border-subtle/50">
+          <Building2 size={16} className="text-accent shrink-0" />
+          <span className="text-xs font-semibold text-text-muted">Filtrar por Empresa:</span>
+          <select 
+            value={selectedEmpresaId} 
+            onChange={(e) => setSelectedEmpresaId(e.target.value)}
+            className="flex-1 rounded-lg border border-input-border bg-input-bg px-3 py-2 text-xs text-text-main outline-none focus:border-accent min-h-[36px]"
+          >
+            <option value="todas">Todas as Empresas</option>
+            {empresas.map(e => <option key={e.id} value={e.id}>{e.nome}</option>)}
+          </select>
+        </div>
+      )}
 
       {loading ? (
         <div className="flex justify-center py-12"><Loader2 size={24} className="animate-spin text-accent" /></div>

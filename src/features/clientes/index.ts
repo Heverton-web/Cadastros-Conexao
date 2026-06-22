@@ -2,6 +2,23 @@ import { supabase } from "~/core/supabase";
 
 export type CadastroStatus = "link_gerado" | "dados_enviados" | "em_analise" | "em_correcao" | "aprovado" | "reprovado";
 
+export type TipoEndereco = "empresa" | "entrega" | "cobranca";
+
+export type Endereco = {
+  id: string;
+  cadastro_id: string;
+  tipo_endereco: TipoEndereco;
+  cep: string;
+  rua: string;
+  numero: string;
+  bairro: string;
+  complemento: string;
+  cidade: string;
+  estado: string;
+  endereco_completo: string | null;
+  empresa_id: string | null;
+};
+
 export type Cadastro = {
   id: string;
   codigo_cliente: string | null;
@@ -93,9 +110,13 @@ export async function buscarCadastroCompleto(id: string) {
 
   const { data: pf } = await supabase.from("cadastros_pf").select("*").eq("cadastro_id", id).maybeSingle();
   const { data: pj } = await supabase.from("cadastros_pj").select("*").eq("cadastro_id", id).maybeSingle();
-  const { data: end } = await supabase.from("cadastros_enderecos").select("*").eq("cadastro_id", id).maybeSingle();
+  const { data: enderecos } = await supabase.from("cadastros_enderecos").select("*").eq("cadastro_id", id).order("tipo_endereco");
 
-  return { cadastro: cad, pf, pj, endereco: end };
+  const endEmpresa = (enderecos ?? []).find((e: any) => e.tipo_endereco === "empresa");
+  const endEntrega = (enderecos ?? []).find((e: any) => e.tipo_endereco === "entrega");
+  const endCobranca = (enderecos ?? []).find((e: any) => e.tipo_endereco === "cobranca");
+
+  return { cadastro: cad, pf, pj, enderecos: enderecos ?? [], endEmpresa, endEntrega, endCobranca };
 }
 
 export async function deletarCadastro(id: string) {
