@@ -181,7 +181,7 @@ export function NpsDashboardPage() {
   const fetchData = async () => {
     setLoading(true);
     const { data } = await supabase
-      .from('survey_responses')
+      .from('nps_respostas')
       .select('*')
       .order('created_at', { ascending: false });
     setResponses(data || []);
@@ -251,7 +251,7 @@ export function NpsDashboardPage() {
     setDeleting(true);
     try {
       const ids = filtered.map((r) => r.id);
-      const { error } = await supabase.from('survey_responses').delete().in('id', ids);
+      const { error } = await supabase.from('nps_respostas').delete().in('id', ids);
       if (error) throw error;
       toast.success(`${ids.length} resposta(s) excluída(s) com sucesso!`);
       fetchData();
@@ -390,60 +390,41 @@ export function NpsDashboardPage() {
   };
 
    return (
-    <div className="min-h-screen bg-gradient-to-br from-[hsl(222,47%,6%)] via-[hsl(220,50%,8%)] to-[hsl(225,55%,5%)] p-4 md:p-8">
+    <div className="min-h-screen p-4 md:p-8">
       <div className="max-w-7xl mx-auto space-y-6">
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-card/40 backdrop-blur-sm rounded-xl p-4 border border-border/30">
-          <div className="flex items-center gap-4">
-
-            <div>
-              <h1 className="text-xl font-bold text-foreground tracking-tight">Dashboard Analítico</h1>
-              {userName && <p className="text-xs text-muted-foreground mt-0.5">Olá, {userName}</p>}
-            </div>
-          </div>
-          <div className="flex items-center gap-1">
-            <Button variant="ghost" size="sm" onClick={fetchData} disabled={loading} className="text-muted-foreground hover:text-foreground">
-              <RefreshCw className={`w-4 h-4 mr-1.5 ${loading ? 'animate-spin' : ''}`} /> Atualizar
-            </Button>
-            <Button variant="ghost" size="sm" onClick={() => navigate({ to: '/nps/relatorios' })} className="text-muted-foreground hover:text-foreground">
-              <FileText className="w-4 h-4 mr-1.5" /> Relatórios
-            </Button>
-            <Button variant="ghost" size="sm" onClick={exportCSV} className="text-muted-foreground hover:text-foreground">
-              <Download className="w-4 h-4 mr-1.5" /> Exportar CSV
-            </Button>
-            <Button variant="ghost" size="sm" onClick={logout} className="text-muted-foreground hover:text-red-400">
-              <LogOut className="w-4 h-4 mr-1.5" /> Sair
-            </Button>
-          </div>
+        <div className="mb-2">
+          <h1 className="text-2xl font-bold text-white mb-1">NPS</h1>
+          <p className="text-sm text-muted-foreground">Dashboard analítico e visão geral das avaliações</p>
         </div>
 
         {/* Sticky Filters */}
-        <div className="sticky top-0 z-30 -mx-4 md:-mx-8 px-6 md:px-10 py-3 bg-background/85 backdrop-blur-xl border-b border-border/40">
-          <div className="max-w-5xl mx-auto space-y-4">
+        <div className="sticky top-0 z-30 -mx-2 px-2 py-2">
+          <div className="bg-card rounded-xl p-4 md:p-5 shadow-sm border border-border/50 max-w-6xl mx-auto space-y-4">
             {/* Filtros centralizados - 1 linha */}
-            <div className="flex flex-wrap items-end justify-center gap-3">
-              <div className="flex flex-col gap-1 min-w-fit">
+            <div className="flex flex-wrap items-end justify-between gap-4">
+              <div className="flex flex-col gap-1 w-[130px]">
                 <Label className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium px-1">De</Label>
                 <Input
                   type="date"
                   value={dateFrom}
                   onChange={(e) => setDateFrom(e.target.value)}
-                  className="h-9 w-[125px] bg-secondary/80 border-border/50 text-foreground text-sm"
+                  className="h-9 w-full bg-secondary/80 border-border/50 text-foreground text-sm"
                 />
               </div>
-              <div className="flex flex-col gap-1 min-w-fit">
+              <div className="flex flex-col gap-1 w-[130px]">
                 <Label className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium px-1">Até</Label>
                 <Input
                   type="date"
                   value={dateTo}
                   onChange={(e) => setDateTo(e.target.value)}
-                  className="h-9 w-[125px] bg-secondary/80 border-border/50 text-foreground text-sm"
+                  className="h-9 w-full bg-secondary/80 border-border/50 text-foreground text-sm"
                 />
               </div>
-              <div className="flex flex-col gap-1 min-w-fit">
+              <div className="flex flex-col gap-1 flex-1 min-w-[160px]">
                 <Label className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium px-1">Vendedor</Label>
                 <Select value={vendorFilter} onValueChange={setVendorFilter}>
-                  <SelectTrigger className="h-9 w-[140px] bg-secondary/80 border-border/50 text-foreground text-sm">
+                  <SelectTrigger className="h-9 w-full bg-secondary/80 border-border/50 text-foreground text-sm">
                     <SelectValue placeholder="Todos" />
                   </SelectTrigger>
                   <SelectContent>
@@ -452,10 +433,10 @@ export function NpsDashboardPage() {
                   </SelectContent>
                 </Select>
               </div>
-              <div className="flex flex-col gap-1 min-w-fit">
+              <div className="flex flex-col gap-1 flex-1 min-w-[150px]">
                 <Label className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium px-1">NPS</Label>
                 <Select value={npsBucketFilter} onValueChange={(v) => setNpsBucketFilter(v as NpsBucket)}>
-                  <SelectTrigger className="h-9 w-[125px] bg-secondary/80 border-border/50 text-foreground text-sm">
+                  <SelectTrigger className="h-9 w-full bg-secondary/80 border-border/50 text-foreground text-sm">
                     <SelectValue placeholder="Todas" />
                   </SelectTrigger>
                   <SelectContent>
@@ -466,10 +447,10 @@ export function NpsDashboardPage() {
                   </SelectContent>
                 </Select>
               </div>
-              <div className="flex flex-col gap-1 min-w-fit">
+              <div className="flex flex-col gap-1 flex-[1.5] min-w-[180px]">
                 <Label className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium px-1">Pergunta</Label>
                 <Select value={subjectiveFilter} onValueChange={(v) => setSubjectiveFilter(v as SubjectiveKey)}>
-                  <SelectTrigger className="h-9 w-[150px] bg-secondary/80 border-border/50 text-foreground text-sm">
+                  <SelectTrigger className="h-9 w-full bg-secondary/80 border-border/50 text-foreground text-sm">
                     <SelectValue placeholder="Todas" />
                   </SelectTrigger>
                   <SelectContent>
@@ -478,22 +459,25 @@ export function NpsDashboardPage() {
                   </SelectContent>
                 </Select>
               </div>
-              <div className="flex flex-col gap-1 min-w-fit">
-                <Label className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium px-1">Ações</Label>
-                <button
-                  onClick={() => {
-                    setDateFrom('');
-                    setDateTo('');
-                    setVendorFilter('all');
-                    setNpsBucketFilter('all');
-                    setSubjectiveFilter('all');
-                  }}
-                  disabled={!dateFrom && !dateTo && vendorFilter === 'all' && npsBucketFilter === 'all' && subjectiveFilter === 'all'}
-                  className="h-9 px-2.5 rounded-md bg-secondary/80 border border-border/50 text-muted-foreground hover:bg-secondary hover:text-foreground transition-colors disabled:opacity-40 disabled:cursor-not-allowed text-sm flex items-center gap-1.5 whitespace-nowrap"
-                >
-                  <RefreshCw className="w-3.5 h-3.5" />
-                  Limpar
-                </button>
+              
+              <div className="flex flex-col gap-1 min-w-fit mt-2 md:mt-0">
+                <Label className="text-[10px] uppercase tracking-wider text-transparent font-medium px-1 hidden md:block select-none">Ações</Label>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => {
+                      setDateFrom('');
+                      setDateTo('');
+                      setVendorFilter('all');
+                      setNpsBucketFilter('all');
+                      setSubjectiveFilter('all');
+                    }}
+                    disabled={!dateFrom && !dateTo && vendorFilter === 'all' && npsBucketFilter === 'all' && subjectiveFilter === 'all'}
+                    className="h-9 px-3 rounded-md bg-secondary/80 border border-border/50 text-muted-foreground hover:bg-secondary hover:text-foreground transition-colors disabled:opacity-40 disabled:cursor-not-allowed text-sm flex items-center gap-1.5 whitespace-nowrap"
+                  >
+                    <RefreshCw className="w-3.5 h-3.5" />
+                    Limpar
+                  </button>
+                </div>
               </div>
             </div>
 
@@ -517,18 +501,7 @@ export function NpsDashboardPage() {
                   {SUBJECTIVE_OPTIONS.find((o) => o.key === subjectiveFilter)?.label}
                 </span>
               )}
-              {profile?.is_super_admin && filtered.length > 0 && (
-                <Button
-                  variant="destructive"
-                  size="sm"
-                  onClick={deleteFilteredResponses}
-                  disabled={deleting}
-                  className="h-7 gap-1.5 ml-2"
-                >
-                  <Trash2 className="w-3.5 h-3.5" />
-                  {deleting ? 'Excluindo...' : `Excluir ${filtered.length}`}
-                </Button>
-              )}
+              
             </div>
           </div>
         </div>
@@ -544,7 +517,7 @@ export function NpsDashboardPage() {
             subtitle="Como estamos hoje — números-chave do recorte atual"
           />
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <Card className="bg-gradient-to-br from-card/90 to-card/60 backdrop-blur border-border/30 shadow-lg hover:shadow-xl transition-shadow">
+            <Card className="bg-card shadow-sm border-border">
               <CardContent className="pt-6 pb-5">
                 <div className="flex items-center gap-4">
                   <div className="p-2.5 rounded-xl bg-primary/10">
@@ -569,7 +542,7 @@ export function NpsDashboardPage() {
                 </div>
               </CardContent>
             </Card>
-            <Card className="bg-gradient-to-br from-card/90 to-card/60 backdrop-blur border-border/30 shadow-lg hover:shadow-xl transition-shadow">
+            <Card className="bg-card shadow-sm border-border">
               <CardContent className="pt-6 pb-5">
                 <div className="flex items-center gap-4">
                   <div className={`p-2.5 rounded-xl ${npsStats.score >= 50 ? 'bg-green-500/10' : npsStats.score >= 0 ? 'bg-yellow-500/10' : 'bg-red-500/10'}`}>
@@ -595,7 +568,7 @@ export function NpsDashboardPage() {
                 </div>
               </CardContent>
             </Card>
-            <Card className="bg-gradient-to-br from-card/90 to-card/60 backdrop-blur border-border/30 shadow-lg hover:shadow-xl transition-shadow">
+            <Card className="bg-card shadow-sm border-border">
               <CardContent className="pt-6 pb-5">
                 <div className="flex items-center gap-4">
                   <div className="p-2.5 rounded-xl bg-primary/10">
@@ -1029,7 +1002,7 @@ export function NpsDashboardPage() {
                                   <AlertDialogAction
                                     className="bg-red-600 hover:bg-red-700 text-white"
                                     onClick={async () => {
-                                      const { error } = await supabase.from('survey_responses').delete().eq('id', r.id);
+                                      const { error } = await supabase.from('nps_respostas').delete().eq('id', r.id);
                                       if (error) {
                                         toast.success('Erro ao excluir');
                                       } else {

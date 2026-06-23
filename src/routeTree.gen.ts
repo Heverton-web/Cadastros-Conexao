@@ -36,6 +36,7 @@ import { mapasAdminConsultoresRoute } from "./routes/mapas.gestao.consultores";
 
 import { npsRoute } from "./routes/nps";
 import { npsDashboardRoute } from "./routes/nps.dashboard";
+import { globalNpsDashboardRoute } from "./routes/global.nps";
 import { npsPesquisasRoute } from "./routes/nps.pesquisas";
 import { npsRelatoriosRoute } from "./routes/nps.relatorios";
 
@@ -77,6 +78,7 @@ export const routeTree = rootRoute.addChildren([
 
     npsRoute,
     npsDashboardRoute,
+    globalNpsDashboardRoute,
     npsPesquisasRoute,
     npsRelatoriosRoute,
   ]),

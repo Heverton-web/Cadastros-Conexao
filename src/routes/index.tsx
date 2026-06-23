@@ -59,7 +59,11 @@ function LoginPage() {
       await login(email, password);
       await rotearPosLogin();
     } catch (e: any) {
-      const msg = e?.message || "Erro ao fazer login";
+      const rawMsg = e?.message;
+      const msg = typeof rawMsg === 'string' && rawMsg.trim() !== '{}' && rawMsg.trim() !== '' 
+        ? rawMsg 
+        : "Erro ao fazer login. Verifique suas credenciais.";
+
       if (msg.includes("Invalid login credentials") || msg.includes("invalid_credentials")) {
         setErrorMsg("Email ou senha inválidos.");
       } else if (msg.includes("Failed to fetch") || msg.includes("fetch")) {
