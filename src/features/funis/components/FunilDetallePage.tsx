@@ -7,7 +7,7 @@ import { KanbanView } from "./KanbanView";
 import { ShareModal } from "./ShareModal";
 
 export function FunilDetallePage() {
-  const { funilId } = useParams({ from: "/funis/funil/$funilId" });
+  const { funilId } = useParams();
   const navigate = useNavigate();
   const { data: funil, isLoading } = useFunil(funilId);
   const [showShare, setShowShare] = useState(false);
