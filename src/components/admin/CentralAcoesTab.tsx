@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import { 
-  Loader2, Plus, Save, Play, Trash2, Code, Settings2, Webhook, 
+  Loader2, Plus, Save, Play, Trash2, Code, Settings2, Webhook as WebhookIcon, 
   Link2, PlusCircle, Bell, History, Settings, RefreshCw, X, ToggleRight, ToggleLeft, GitFork, Copy, Info,
   ArrowUp, ArrowDown
 } from "lucide-react";
 import toast from "react-hot-toast";
-import { supabase } from "~/lib/supabase";
+import { supabase } from "~/core/supabase";
 import {
   listApiConnectors,
   createApiConnector,
@@ -14,27 +14,32 @@ import {
   executeApiConnector,
   type ApiConnector,
   type ApiConnectorInput,
-} from "~/lib/api_connectors";
+} from "~/features/api-connectors";
 import {
   listarWebhookLogs,
-  EVENTOS_STATUS_CHANGE,
-  EVENTOS_BUTTON_ACTION,
-  type WebhookLog
-} from "~/lib/webhooks";
+  listarWebhooks,
+  criarWebhook,
+  atualizarWebhook,
+  deletarWebhook,
+  type WebhookLog,
+  type Webhook
+} from "~/core/services/webhooks";
 import {
   listarTemplates,
   criarTemplate,
   atualizarTemplatePorId,
   deletarTemplate,
   type NotificacaoTemplate
-} from "~/lib/notificacoes";
+} from "~/core/services/notificacoes";
+import { useAuth } from "~/core/auth";
+import { getAllModules, getModule } from "~/registry";
 
-type ItemType = "api_call" | "notification";
+type ItemType = "api_call" | "notification" | "webhook";
 
 type ListItem = {
   id: string;
   name: string;
-  type: ItemType;
+  type: "api_call" | "notification" | "webhook";
   subtitle: string;
   isActive: boolean;
   raw: any;
@@ -176,7 +181,19 @@ function parseCurl(curl: string) {
   return { method, url, headers, body };
 }
 
-export function CentralAcoesTab() {
+export function CentralAcoesTab({ empresaId }: { empresaId?: string } = {}) {
+  const { profile } = useAuth();
+  const isSuper = profile?.is_super_admin === true;
+  
+  const [empresas, setEmpresas] = useState<any[]>([]);
+  
+  // Se for passado via prop, ou se for admin de empresa (sem ser super), força o ID.
+  const forcedEmpresaId = empresaId || (!isSuper ? profile?.empresa_id : undefined);
+  const [activeEmpresaId, setActiveEmpresaId] = useState<string>(forcedEmpresaId || "global");
+  const canSelectEmpresa = isSuper && !empresaId;
+  
+  const [activeModuleKey, setActiveModuleKey] = useState<string>("empresas-core");
+
   const [items, setItems] = useState<ListItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeItem, setActiveItem] = useState<ListItem | null>(null);
@@ -230,17 +247,27 @@ export function CentralAcoesTab() {
 
   useEffect(() => {
     carregarTudo();
-  }, []);
+  }, [activeEmpresaId, activeModuleKey]);
 
   async function carregarTudo() {
     setLoading(true);
     try {
-      const [apis, templates, { data: esquema, error: errSchema }, { data: integracoesConfig, error: errInt }] = await Promise.all([
-        listApiConnectors(),
-        listarTemplates(),
+      // Se for global, passamos null pro backend
+      const empId = activeEmpresaId === "global" ? null : activeEmpresaId;
+      const modKey = activeModuleKey;
+
+      const [apis, templates, webhooks, { data: esquema, error: errSchema }, { data: integracoesConfig, error: errInt }] = await Promise.all([
+        listApiConnectors(undefined, empId, modKey),
+        listarTemplates(empId, modKey),
+        listarWebhooks(empId, modKey),
         supabase.rpc("obter_esquema_banco"),
         supabase.from("integracoes_config").select("*")
       ]);
+
+      if (isSuper && empresas.length === 0) {
+        const { data: emps } = await supabase.from("empresas").select("id, razao_social").order("razao_social");
+        if (emps) setEmpresas(emps);
+      }
 
       if (integracoesConfig && !errInt) {
         setIntegracoesNativas(integracoesConfig);
@@ -264,15 +291,27 @@ export function CentralAcoesTab() {
 
       const list: ListItem[] = [];
 
-      // APIs e Webhooks do api_connectors
+      // APIs do api_connectors
       apis.forEach(a => {
         list.push({
           id: a.id,
           name: a.name,
-          type: a.type,
+          type: a.type as ItemType,
           subtitle: a.type === "api_call" ? "API Externa" : `Webhook: ${a.evento || "Sem gatilho"}`,
           isActive: a.is_active,
           raw: a
+        });
+      });
+
+      // Webhooks Nativos da Tabela Webhooks
+      webhooks.forEach(w => {
+        list.push({
+          id: `webhook-${w.id}`,
+          name: w.nome,
+          type: "webhook",
+          subtitle: `Webhook: ${w.evento}`,
+          isActive: w.ativo,
+          raw: w
         });
       });
 
@@ -348,6 +387,16 @@ export function CentralAcoesTab() {
       setNotifEvento(item.raw.evento);
       setNotifDestinatarioTipo(item.raw.destinatario_tipo || "consultor");
       setEditorTab("template");
+    } else if (item.type === "webhook") {
+      const w = item.raw as Webhook;
+      setApiMethod(w.metodo || "POST");
+      setApiUrl(w.url || "");
+      setApiHeaders(w.headers || {});
+      setApiQuery({});
+      setApiBody(w.body_template ? JSON.stringify(w.body_template, null, 2) : "");
+      setApiEvento(w.evento || null);
+      setApiTipoEvento(w.tipo_evento || null);
+      setEditorTab("headers");
     } else {
       const c = item.raw as ApiConnector;
       setApiMethod(c.method || "POST");
@@ -365,7 +414,7 @@ export function CentralAcoesTab() {
     const tempId = `new-${tipo}-${Date.now()}`;
     const newItem: ListItem = {
       id: tempId,
-      name: tipo === "api_call" ? "Nova Chamada de API" : "Novo Template de Notificação",
+      name: tipo === "api_call" ? "Nova Chamada de API" : (tipo === "notification" ? "Novo Template de Notificação" : "Novo Webhook"),
       type: tipo,
       subtitle: "Criando novo...",
       isActive: true,
@@ -407,6 +456,9 @@ export function CentralAcoesTab() {
     try {
       const isNew = activeItem.id.startsWith("new-");
       
+      const empId = activeEmpresaId === "global" ? null : activeEmpresaId;
+      const modKey = activeModuleKey;
+      
       const eventoAlvo = activeItem.type === "notification" ? notifEvento : apiEvento;
       let proximaOrdem = 0;
       if (isNew && eventoAlvo) {
@@ -420,7 +472,9 @@ export function CentralAcoesTab() {
           titulo: notifTitulo,
           corpo_template: notifCorpo,
           destinatario_tipo: notifDestinatarioTipo,
-          ativo: formIsActive
+          ativo: formIsActive,
+          empresa_id: empId,
+          modulo_key: modKey
         };
 
         if (isNew) {
@@ -430,6 +484,30 @@ export function CentralAcoesTab() {
         } else {
           await atualizarTemplatePorId(activeItem.id.replace("notif-", ""), payload);
           toast.success("Notificação atualizada com sucesso!");
+        }
+      } else if (activeItem.type === "webhook") {
+        let parsedBody = {};
+        try { parsedBody = apiBody ? JSON.parse(apiBody) : {}; } catch(e) {}
+        
+        const payload: any = {
+          nome: formName,
+          evento: apiEvento,
+          url: apiUrl,
+          metodo: apiMethod,
+          headers: apiHeaders,
+          body_template: parsedBody,
+          ativo: formIsActive,
+          empresa_id: empId,
+          modulo_key: modKey
+        };
+
+        if (isNew) {
+          payload.ordem = proximaOrdem;
+          await criarWebhook(payload);
+          toast.success("Webhook criado com sucesso!");
+        } else {
+          await atualizarWebhook(activeItem.id.replace("webhook-", ""), payload);
+          toast.success("Webhook atualizado com sucesso!");
         }
       } else {
         const payload: any = {
@@ -443,7 +521,9 @@ export function CentralAcoesTab() {
           response_schema: isNew ? null : activeItem.raw.response_schema || null,
           evento: apiEvento,
           tipo_evento: apiTipoEvento,
-          is_active: formIsActive
+          is_active: formIsActive,
+          empresa_id: empId,
+          modulo_key: modKey
         };
 
         if (isNew) {
@@ -452,7 +532,7 @@ export function CentralAcoesTab() {
           setActiveItem({
             id: created.id,
             name: created.name,
-            type: created.type,
+            type: created.type as ItemType,
             subtitle: "API Externa",
             isActive: created.is_active,
             raw: created
@@ -479,6 +559,9 @@ export function CentralAcoesTab() {
       if (activeItem.type === "notification") {
         const id = activeItem.id.replace("notif-", "");
         await deletarTemplate(id);
+      } else if (activeItem.type === "webhook") {
+        const id = activeItem.id.replace("webhook-", "");
+        await deletarWebhook(id);
       } else {
         await deleteApiConnector(activeItem.id);
       }
@@ -695,10 +778,9 @@ export function CentralAcoesTab() {
                       setColunaSelecionada(esquemaTabelas[tab]?.[0] || "");
                     }}
                     className="w-full rounded-lg border border-input-border bg-bg-dark px-2 py-1.5 text-[10px] text-text-main outline-none focus:border-accent"
-                    style={{ backgroundColor: '#0f172a', color: '#f8fafc' }}
                   >
                     {Object.keys(esquemaTabelas).map(t => (
-                      <option key={t} value={t} style={{ backgroundColor: '#0f172a', color: '#f8fafc' }}>{t}</option>
+                      <option key={t} value={t} className="bg-bg-dark text-text-main">{t}</option>
                     ))}
                   </select>
                 </div>
@@ -710,10 +792,9 @@ export function CentralAcoesTab() {
                     value={colunaSelecionada}
                     onChange={e => setColunaSelecionada(e.target.value)}
                     className="w-full rounded-lg border border-input-border bg-bg-dark px-2 py-1.5 text-[10px] text-text-main outline-none focus:border-accent"
-                    style={{ backgroundColor: '#0f172a', color: '#f8fafc' }}
                   >
                     {(esquemaTabelas[tabelaSelecionada] || []).map(c => (
-                      <option key={c} value={c} style={{ backgroundColor: '#0f172a', color: '#f8fafc' }}>{c}</option>
+                      <option key={c} value={c} className="bg-bg-dark text-text-main">{c}</option>
                     ))}
                   </select>
                 </div>
@@ -740,10 +821,12 @@ export function CentralAcoesTab() {
     );
   }
 
-  const eventosGerais = [
-    ...EVENTOS_STATUS_CHANGE.map(e => ({ ...e, tipo: "status_change" })),
-    ...EVENTOS_BUTTON_ACTION.map(e => ({ ...e, tipo: "button_action" }))
-  ];
+  const activeModule = getModule(activeModuleKey);
+  const eventosGerais = activeModule?.events?.map(e => ({ 
+    value: e.key, 
+    label: e.label, 
+    tipo: "button_action" // Default fallback if needed
+  })) || [];
 
   return (
     <div className="flex flex-col gap-4">
@@ -761,6 +844,40 @@ export function CentralAcoesTab() {
         >
           <History size={14}/> Logs de Execução
         </button>
+      </div>
+
+      {/* Filtros da Central */}
+      <div className="flex flex-col sm:flex-row gap-6 py-4 mb-4 border-b border-input-border">
+        {canSelectEmpresa && (
+          <div className="flex flex-col gap-1 w-full md:w-64 shrink-0">
+            <label className="text-[10px] font-bold text-text-muted uppercase tracking-wider">Empresa</label>
+            <select
+              value={activeEmpresaId}
+              onChange={e => setActiveEmpresaId(e.target.value)}
+              className="w-full rounded-xl border border-input-border bg-bg-dark px-4 py-3 text-sm font-semibold text-text-main outline-none focus:border-accent transition-all cursor-pointer hover:border-input-border/80"
+            >
+              <option value="global" className="bg-bg-dark text-text-main font-bold" style={{ backgroundColor: '#0f172a', color: '#f8fafc' }}>Global (Padrão)</option>
+              <optgroup label="Específicas por Empresa" className="bg-bg-dark text-text-muted" style={{ backgroundColor: '#0f172a', color: '#94a3b8' }}>
+                {empresas.map(emp => (
+                  <option key={emp.id} value={emp.id} className="bg-bg-dark text-text-main font-medium" style={{ backgroundColor: '#0f172a', color: '#f8fafc' }}>{emp.razao_social}</option>
+                ))}
+              </optgroup>
+            </select>
+          </div>
+        )}
+        
+        <div className="flex flex-col gap-1 w-full md:w-64 shrink-0 md:ml-auto">
+          <label className="text-[10px] font-bold text-text-muted uppercase tracking-wider">Módulo</label>
+          <select
+            value={activeModuleKey}
+            onChange={e => setActiveModuleKey(e.target.value)}
+            className="w-full rounded-xl border border-input-border bg-bg-dark px-4 py-3 text-sm font-semibold text-text-main outline-none focus:border-accent transition-all cursor-pointer hover:border-input-border/80"
+          >
+            {getAllModules().map(mod => (
+              <option key={mod.key} value={mod.key} className="bg-bg-dark text-text-main font-medium py-1" style={{ backgroundColor: '#0f172a', color: '#f8fafc' }}>{mod.nome}</option>
+            ))}
+          </select>
+        </div>
       </div>
 
       {editorModalOpen && activeItem && (
@@ -819,14 +936,10 @@ export function CentralAcoesTab() {
                       value={notifEvento} 
                       onChange={e => setNotifEvento(e.target.value)} 
                       className="w-full rounded-lg border border-input-border bg-bg-dark px-3 py-2 text-xs text-text-main outline-none focus:border-accent"
-                      style={{ backgroundColor: '#0f172a', color: '#f8fafc' }}
                     >
-                      <option value="" style={{ backgroundColor: '#0f172a', color: '#f8fafc' }}>Vincular a qual evento?</option>
-                      <optgroup label="Mudanças de Status" style={{ backgroundColor: '#0f172a', color: '#94a3b8' }}>
-                        {EVENTOS_STATUS_CHANGE.map(e => <option key={e.value} value={e.value} style={{ backgroundColor: '#0f172a', color: '#f8fafc' }}>{e.label}</option>)}
-                      </optgroup>
-                      <optgroup label="Ações de Botões" style={{ backgroundColor: '#0f172a', color: '#94a3b8' }}>
-                        {EVENTOS_BUTTON_ACTION.map(e => <option key={e.value} value={e.value} style={{ backgroundColor: '#0f172a', color: '#f8fafc' }}>{e.label}</option>)}
+                      <option value="" className="bg-bg-dark text-text-main">Vincular a qual evento?</option>
+                      <optgroup label="Eventos do Módulo" className="bg-bg-dark text-text-muted">
+                        {eventosGerais.map(e => <option key={e.value} value={e.value} className="bg-bg-dark text-text-main">{e.label}</option>)}
                       </optgroup>
                     </select>
                   </div>
@@ -1068,99 +1181,98 @@ export function CentralAcoesTab() {
                       }
                     }} 
                     className="w-full rounded-lg border border-input-border bg-bg-dark px-3 py-2 text-xs text-text-main font-semibold outline-none focus:border-accent"
-                    style={{ backgroundColor: '#0f172a', color: '#f8fafc' }}
                     defaultValue="custom"
                   >
-                    <option value="custom" style={{ backgroundColor: '#0f172a', color: '#f8fafc' }}>API Personalizada (Criar do Zero)...</option>
+                    <option value="custom" className="bg-bg-dark text-text-main">API Personalizada (Criar do Zero)...</option>
                     
                     {activeItem.type === "api_call" && (
                       <>
                         {integracoesNativas.filter(int => int.chave === "evolution_api" && int.ativo).map(int => (
-                          <optgroup key={int.id} label="Evolution API (WhatsApp)" style={{ backgroundColor: '#0f172a', color: '#94a3b8' }}>
-                            <option value="native-evolution_api-sendText" style={{ backgroundColor: '#0f172a', color: '#f8fafc' }}>
+                          <optgroup key={int.id} label="Evolution API (WhatsApp)" className="bg-bg-dark text-text-muted">
+                            <option value="native-evolution_api-sendText" className="bg-bg-dark text-text-main">
                               Evolution: Enviar Texto
                             </option>
-                            <option value="native-evolution_api-sendMedia" style={{ backgroundColor: '#0f172a', color: '#f8fafc' }}>
+                            <option value="native-evolution_api-sendMedia" className="bg-bg-dark text-text-main">
                               Evolution: Enviar Mídia (Imagem/Documento)
                             </option>
-                            <option value="native-evolution_api-sendAudio" style={{ backgroundColor: '#0f172a', color: '#f8fafc' }}>
+                            <option value="native-evolution_api-sendAudio" className="bg-bg-dark text-text-main">
                               Evolution: Enviar Áudio Gravado
                             </option>
-                            <option value="native-evolution_api-sendContact" style={{ backgroundColor: '#0f172a', color: '#f8fafc' }}>
+                            <option value="native-evolution_api-sendContact" className="bg-bg-dark text-text-main">
                               Evolution: Enviar Contato (VCard)
                             </option>
-                            <option value="native-evolution_api-sendLocation" style={{ backgroundColor: '#0f172a', color: '#f8fafc' }}>
+                            <option value="native-evolution_api-sendLocation" className="bg-bg-dark text-text-main">
                               Evolution: Enviar Localização (Mapa)
                             </option>
-                            <option value="native-evolution_api-sendReaction" style={{ backgroundColor: '#0f172a', color: '#f8fafc' }}>
+                            <option value="native-evolution_api-sendReaction" className="bg-bg-dark text-text-main">
                               Evolution: Enviar Reação (Emoji)
                             </option>
-                            <option value="native-evolution_api-sendLinkPreview" style={{ backgroundColor: '#0f172a', color: '#f8fafc' }}>
+                            <option value="native-evolution_api-sendLinkPreview" className="bg-bg-dark text-text-main">
                               Evolution: Enviar Link com Preview
                             </option>
-                            <option value="native-evolution_api-sendButtons" style={{ backgroundColor: '#0f172a', color: '#f8fafc' }}>
+                            <option value="native-evolution_api-sendButtons" className="bg-bg-dark text-text-main">
                               Evolution: Enviar Mensagem com Botões
                             </option>
-                            <option value="native-evolution_api-sendList" style={{ backgroundColor: '#0f172a', color: '#f8fafc' }}>
+                            <option value="native-evolution_api-sendList" className="bg-bg-dark text-text-main">
                               Evolution: Enviar Mensagem com Lista
                             </option>
-                            <option value="native-evolution_api-sendStatus" style={{ backgroundColor: '#0f172a', color: '#f8fafc' }}>
+                            <option value="native-evolution_api-sendStatus" className="bg-bg-dark text-text-main">
                               Evolution: Enviar Status/Story
                             </option>
                           </optgroup>
                         ))}
 
                         {integracoesNativas.filter(int => int.chave === "cep_api" && int.ativo).map(int => (
-                          <optgroup key={int.id} label="CEP Resiliente (ViaCEP / BrasilAPI)" style={{ backgroundColor: '#0f172a', color: '#94a3b8' }}>
-                            <option value="native-cep_api-viacep" style={{ backgroundColor: '#0f172a', color: '#f8fafc' }}>
+                          <optgroup key={int.id} label="CEP Resiliente (ViaCEP / BrasilAPI)" className="bg-bg-dark text-text-muted">
+                            <option value="native-cep_api-viacep" className="bg-bg-dark text-text-main">
                               ViaCEP: Consultar CEP
                             </option>
-                            <option value="native-cep_api-brasilapi_v1" style={{ backgroundColor: '#0f172a', color: '#f8fafc' }}>
+                            <option value="native-cep_api-brasilapi_v1" className="bg-bg-dark text-text-main">
                               BrasilAPI v1: Consultar CEP
                             </option>
-                            <option value="native-cep_api-brasilapi_v2" style={{ backgroundColor: '#0f172a', color: '#f8fafc' }}>
+                            <option value="native-cep_api-brasilapi_v2" className="bg-bg-dark text-text-main">
                               BrasilAPI v2: Consultar CEP + Coordenadas
                             </option>
                           </optgroup>
                         ))}
 
                         {integracoesNativas.filter(int => int.chave === "google_maps" && int.ativo).map(int => (
-                          <optgroup key={int.id} label="Google Maps" style={{ backgroundColor: '#0f172a', color: '#94a3b8' }}>
-                            <option value="native-google_maps-geocode" style={{ backgroundColor: '#0f172a', color: '#f8fafc' }}>
+                          <optgroup key={int.id} label="Google Maps" className="bg-bg-dark text-text-muted">
+                            <option value="native-google_maps-geocode" className="bg-bg-dark text-text-main">
                               Google Maps: Geocodificar Endereço
                             </option>
-                            <option value="native-google_maps-distancematrix" style={{ backgroundColor: '#0f172a', color: '#f8fafc' }}>
+                            <option value="native-google_maps-distancematrix" className="bg-bg-dark text-text-main">
                               Google Maps: Calcular Distância entre Pontos
                             </option>
-                            <option value="native-google_maps-placeautocomplete" style={{ backgroundColor: '#0f172a', color: '#f8fafc' }}>
+                            <option value="native-google_maps-placeautocomplete" className="bg-bg-dark text-text-main">
                               Google Maps: Autocomplete de Locais
                             </option>
-                            <option value="native-google_maps-placedetails" style={{ backgroundColor: '#0f172a', color: '#f8fafc' }}>
+                            <option value="native-google_maps-placedetails" className="bg-bg-dark text-text-main">
                               Google Maps: Detalhes de um Local por ID
                             </option>
                           </optgroup>
                         ))}
 
                         {integracoesNativas.filter(int => int.chave === "google_sheets" && int.ativo).map(int => (
-                          <optgroup key={int.id} label="Google Sheets" style={{ backgroundColor: '#0f172a', color: '#94a3b8' }}>
-                            <option value="native-google_sheets-append" style={{ backgroundColor: '#0f172a', color: '#f8fafc' }}>
+                          <optgroup key={int.id} label="Google Sheets" className="bg-bg-dark text-text-muted">
+                            <option value="native-google_sheets-append" className="bg-bg-dark text-text-main">
                               Google Sheets: Inserir Linha em Planilha
                             </option>
-                            <option value="native-google_sheets-getvalues" style={{ backgroundColor: '#0f172a', color: '#f8fafc' }}>
+                            <option value="native-google_sheets-getvalues" className="bg-bg-dark text-text-main">
                               Google Sheets: Ler Linhas da Planilha
                             </option>
-                            <option value="native-google_sheets-update" style={{ backgroundColor: '#0f172a', color: '#f8fafc' }}>
+                            <option value="native-google_sheets-update" className="bg-bg-dark text-text-main">
                               Google Sheets: Atualizar Linha na Planilha
                             </option>
-                            <option value="native-google_sheets-clear" style={{ backgroundColor: '#0f172a', color: '#f8fafc' }}>
+                            <option value="native-google_sheets-clear" className="bg-bg-dark text-text-main">
                               Google Sheets: Limpar Células da Planilha
                             </option>
                           </optgroup>
                         ))}
 
                         {integracoesNativas.filter(int => int.chave === "gmail_smtp" && int.ativo).map(int => (
-                          <optgroup key={int.id} label="SMTP/E-mail (Gmail)" style={{ backgroundColor: '#0f172a', color: '#94a3b8' }}>
-                            <option value="native-gmail_smtp-send" style={{ backgroundColor: '#0f172a', color: '#f8fafc' }}>
+                          <optgroup key={int.id} label="SMTP/E-mail (Gmail)" className="bg-bg-dark text-text-muted">
+                            <option value="native-gmail_smtp-send" className="bg-bg-dark text-text-main">
                               Gmail SMTP: Enviar E-mail Personalizado
                             </option>
                           </optgroup>
@@ -1168,11 +1280,11 @@ export function CentralAcoesTab() {
                       </>
                     )}
 
-                    <optgroup label="Modelos Customizados Salvos" style={{ backgroundColor: '#0f172a', color: '#94a3b8' }}>
+                    <optgroup label="Modelos Customizados Salvos" className="bg-bg-dark text-text-muted">
                       {items
                         .filter(i => i.type === activeItem.type && i.isActive && !i.id.startsWith("new-") && i.id !== activeItem.id)
                         .map(i => (
-                          <option key={i.id} value={i.id} style={{ backgroundColor: '#0f172a', color: '#f8fafc' }}>
+                          <option key={i.id} value={i.id} className="bg-bg-dark text-text-main">
                             Usar modelo: {i.name || i.raw.nome} ({i.raw.method || i.raw.metodo || "POST"} {i.raw.url})
                           </option>
                         ))}
@@ -1219,9 +1331,8 @@ export function CentralAcoesTab() {
                     value={apiMethod} 
                     onChange={e => setApiMethod(e.target.value)} 
                     className="w-full sm:w-28 rounded-lg border border-input-border bg-bg-dark px-3 py-2 text-xs font-bold text-accent outline-none"
-                    style={{ backgroundColor: '#0f172a', color: '#f8fafc' }}
                   >
-                    {["GET", "POST", "PUT", "PATCH", "DELETE"].map(m => <option key={m} value={m} style={{ backgroundColor: '#0f172a', color: '#f8fafc' }}>{m}</option>)}
+                    {["GET", "POST", "PUT", "PATCH", "DELETE"].map(m => <option key={m} value={m} className="bg-bg-dark text-text-main">{m}</option>)}
                   </select>
                   <input 
                     value={apiUrl} 
@@ -1323,12 +1434,11 @@ export function CentralAcoesTab() {
                         value={notifDestinatarioTipo}
                         onChange={e => setNotifDestinatarioTipo(e.target.value)}
                         className="w-full rounded-lg border border-input-border bg-input-bg px-4 py-2.5 text-xs text-text-main outline-none focus:border-accent"
-                        style={{ backgroundColor: '#0f172a', color: '#f8fafc' }}
                       >
-                        <option value="consultor" style={{ backgroundColor: '#0f172a', color: '#f8fafc' }}>Consultor Responsável (Criador do Cadastro)</option>
-                        <option value="cadastro" style={{ backgroundColor: '#0f172a', color: '#f8fafc' }}>Setor de Cadastro</option>
-                        <option value="superadmin" style={{ backgroundColor: '#0f172a', color: '#f8fafc' }}>Super Admin / Administrador</option>
-                        <option value="ti" style={{ backgroundColor: '#0f172a', color: '#f8fafc' }}>Equipe de TI</option>
+                        <option value="consultor" className="bg-bg-dark text-text-main">Consultor Responsável (Criador do Cadastro)</option>
+                        <option value="cadastro" className="bg-bg-dark text-text-main">Setor de Cadastro</option>
+                        <option value="superadmin" className="bg-bg-dark text-text-main">Super Admin / Administrador</option>
+                        <option value="ti" className="bg-bg-dark text-text-main">Equipe de TI</option>
                       </select>
                     </div>
                     <div>
@@ -1413,17 +1523,11 @@ export function CentralAcoesTab() {
                 value={filtroGatilho}
                 onChange={e => setFiltroGatilho(e.target.value)}
                 className="w-full rounded-lg border border-input-border bg-bg-dark px-3 py-2 text-xs text-text-main font-semibold outline-none focus:border-accent"
-                style={{ backgroundColor: '#0f172a', color: '#f8fafc' }}
               >
-                <option value="todos" style={{ backgroundColor: '#0f172a', color: '#f8fafc' }}>Mostrar Todos</option>
-                <optgroup label="Mudanças de Status" style={{ backgroundColor: '#0f172a', color: '#94a3b8' }}>
-                  {EVENTOS_STATUS_CHANGE.map(e => (
-                    <option key={e.value} value={e.value} style={{ backgroundColor: '#0f172a', color: '#f8fafc' }}>{e.label}</option>
-                  ))}
-                </optgroup>
-                <optgroup label="Ações de Botões" style={{ backgroundColor: '#0f172a', color: '#94a3b8' }}>
-                  {EVENTOS_BUTTON_ACTION.map(e => (
-                    <option key={e.value} value={e.value} style={{ backgroundColor: '#0f172a', color: '#f8fafc' }}>{e.label}</option>
+                <option value="todos" className="bg-bg-dark text-text-main">Mostrar Todos</option>
+                <optgroup label="Eventos do Módulo" className="bg-bg-dark text-text-muted">
+                  {eventosGerais.map(e => (
+                    <option key={e.value} value={e.value} className="bg-bg-dark text-text-main">{e.label}</option>
                   ))}
                 </optgroup>
               </select>
@@ -1466,6 +1570,12 @@ export function CentralAcoesTab() {
                         <Plus size={10}/> Notificação
                       </button>
                       <button 
+                        onClick={() => adicionarAcaoInline(ev.value, ev.tipo, "webhook")}
+                        className="px-2 py-1 bg-accent/10 hover:bg-accent text-accent hover:text-white rounded-md text-[9px] font-bold transition-all flex items-center gap-1"
+                      >
+                        <Plus size={10}/> Webhook
+                      </button>
+                      <button 
                         onClick={() => adicionarAcaoInline(ev.value, ev.tipo, "api_call")}
                         className="px-2 py-1 bg-accent/10 hover:bg-accent text-accent hover:text-white rounded-md text-[9px] font-bold transition-all flex items-center gap-1"
                       >
@@ -1499,8 +1609,8 @@ export function CentralAcoesTab() {
 
                     {/* Passos Customizados (Passo 2, 3...) */}
                     {acoesVinculadas.map((a, idx) => {
-                      const Icon = a.type === "api_call" ? Link2 : Bell;
-                      const labelTipo = a.type === "api_call" ? "API Externa" : "Notificação";
+                      const Icon = a.type === "api_call" ? Link2 : (a.type === "webhook" ? WebhookIcon : Bell);
+                      const labelTipo = a.type === "api_call" ? "API Externa" : (a.type === "webhook" ? "Webhook" : "Notificação");
                       const numPasso = idx + 2;
 
                       return (

@@ -1,4 +1,4 @@
-import { Building2, Database, Shield, Palette, Image } from "lucide-react";
+import { Building2, Database, Shield, Palette, Image, Webhook } from "lucide-react";
 import { registerModule, registerNavItem } from "~/registry";
 import type { ModuleDefinition } from "~/registry";
 
@@ -10,7 +10,13 @@ export const empresasModule: ModuleDefinition = {
   routes: ["/admin/super/empresas", "/admin/empresa"],
   permissions: [],
   ambientes: [],
-  abas: [],
+  abas: [
+    { key: "empresa-banco", label: "Banco de Dados", descricao: "Acesso às configurações de banco de dados da empresa" },
+    { key: "empresa-dados", label: "Dados da Empresa", descricao: "Acesso ao perfil e informações principais da empresa" },
+    { key: "empresa-permissoes", label: "Permissões", descricao: "Gerenciamento de credenciais e permissões" },
+    { key: "empresa-design", label: "Design", descricao: "Configuração do tema visual (Cores, Fontes)" },
+    { key: "empresa-branding", label: "Branding", descricao: "Configuração de marca (Logo, Favicon)" }
+  ],
   events: [],
   setup: () => {
     registerNavItem({
@@ -61,6 +67,16 @@ export const empresasModule: ModuleDefinition = {
       to: "/admin/empresa/config/branding",
       permissionCheck: () => true,
       order: 50,
+      moduloKey: "empresas-core",
+    });
+
+    registerNavItem({
+      id: "empresa-acoes",
+      label: "Central de Ações",
+      icon: Webhook,
+      to: "/admin/empresa/config/acoes",
+      permissionCheck: () => true,
+      order: 60,
       moduloKey: "empresas-core",
     });
   },

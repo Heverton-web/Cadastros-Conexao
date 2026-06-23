@@ -10,6 +10,7 @@ export type ModuleEvent = {
   key: string;
   label: string;
   descricao: string;
+  type?: "status_change" | "button_action";
 };
 
 export type ModuleDefinition = {

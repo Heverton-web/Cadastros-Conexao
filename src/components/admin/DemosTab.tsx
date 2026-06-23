@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Loader2, Plus, Trash2, Link2, Copy, Shield, Database, Clock, KeyRound, AlertCircle, ShieldAlert } from "lucide-react";
+import { Loader2, Plus, Trash2, Link2, Copy, Shield, Database, Clock, KeyRound, AlertCircle, ShieldAlert, Mail, MessageSquare } from "lucide-react";
 import toast from "react-hot-toast";
 import { 
   listarLinksTestes, 
@@ -229,8 +229,8 @@ export function DemosTab() {
                             <span className="font-mono text-sm text-accent bg-accent/15 px-2 py-0.5 rounded font-bold border border-accent/25 w-max">
                               PIN: {cad["2fa_token"]}
                             </span>
-                            <span className="text-[9px] text-text-muted">
-                              Canal: {cad["2fa_canal"] === "email" ? "📧" : "💬"} {cad["2fa_contato"]}
+                            <span className="text-[9px] text-text-muted flex items-center gap-1">
+                              Canal: {cad["2fa_canal"] === "email" ? <Mail size={10} /> : <MessageSquare size={10} />} {cad["2fa_contato"]}
                             </span>
                             <span className="text-[9px] text-text-muted font-semibold">
                               expira em {Math.floor(expSec / 60)}m {expSec % 60}s {expSec === 0 && "(expirado)"}

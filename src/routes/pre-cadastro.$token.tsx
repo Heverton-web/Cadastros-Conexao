@@ -93,16 +93,16 @@ type FormData = {
 };
 
 const PAISES = [
-  { nome: "Brasil", ddi: "55", bandeira: "🇧🇷" },
-  { nome: "Portugal", ddi: "351", bandeira: "🇵🇹" },
-  { nome: "Estados Unidos", ddi: "1", bandeira: "🇺🇸" },
-  { nome: "Argentina", ddi: "54", bandeira: "🇦🇷" },
-  { nome: "Chile", ddi: "56", bandeira: "🇨🇱" },
-  { nome: "Colômbia", ddi: "57", bandeira: "🇨🇴" },
-  { nome: "Uruguai", ddi: "598", bandeira: "🇺🇾" },
-  { nome: "Paraguai", ddi: "595", bandeira: "🇵🇾" },
-  { nome: "Peru", ddi: "51", bandeira: "🇵🇪" },
-  { nome: "Equador", ddi: "593", bandeira: "🇪🇨" },
+  { nome: "Brasil", ddi: "55", bandeira: "BR" },
+  { nome: "Portugal", ddi: "351", bandeira: "PT" },
+  { nome: "Estados Unidos", ddi: "1", bandeira: "US" },
+  { nome: "Argentina", ddi: "54", bandeira: "AR" },
+  { nome: "Chile", ddi: "56", bandeira: "CL" },
+  { nome: "Colômbia", ddi: "57", bandeira: "CO" },
+  { nome: "Uruguai", ddi: "598", bandeira: "UY" },
+  { nome: "Paraguai", ddi: "595", bandeira: "PY" },
+  { nome: "Peru", ddi: "51", bandeira: "PE" },
+  { nome: "Equador", ddi: "593", bandeira: "EC" },
 ];
 
 function PreCadastroPage() {

@@ -86,7 +86,6 @@ export function useNavItems(selectedModuleKey?: string): NavSection[] {
           { path: "/admin/super/modulos", label: "Módulos", icon: Puzzle },
           { path: "/admin/super/permissoes", label: "Permissões", icon: KeyRound },
           { path: "/admin/config", label: "Central de Ações", icon: WebhookIcon },
-          { path: "/admin/webhooks", label: "Notificações", icon: Bell },
           { path: "/admin/super/banco", label: "Banco de Dados", icon: Database },
           { path: "/admin/super/integracoes", label: "Integrações", icon: Cable },
           { path: "/admin/super/demos", label: "Demos", icon: FlaskConical },

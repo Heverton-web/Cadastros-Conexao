@@ -10,7 +10,7 @@ import {
   listarCredenciais, criarCredencial, atualizarCredencial, toggleCredencial, deletarCredencial, type Credencial, type CredencialInput
 } from "~/lib/credenciais";
 import { dispararWebhooks } from "~/lib/webhooks";
-import { Loader2, Save, Plus, X, ToggleLeft, ToggleRight, Trash2, Settings, Database, Shield, Webhook as WebhookIcon, RefreshCw, UserRound as UserIcon, ShieldCheck, ShieldX, FlaskConical, Bell, FormInput } from "lucide-react";
+import { Loader2, Save, Plus, X, ToggleLeft, ToggleRight, Trash2, Settings, Database, Shield, Webhook as WebhookIcon, RefreshCw, UserRound as UserIcon, ShieldCheck, ShieldX, FlaskConical, Bell, FormInput, Lightbulb } from "lucide-react";
 import toast from "react-hot-toast";
 
 import { listarPermissoesUsuarios, setPermissoes, getPermissoes, getPermissoesPadrao, PERMISSOES_GROUPS, PERMISSOES_LABEL, PERMISSOES_DESC, type Permissoes } from "~/core/permissions";
@@ -31,7 +31,6 @@ export const adminConfigRoute = createRoute({
 function AdminConfigPage() {
   const { profile } = useAuth();
   const navigate = useNavigate();
-  const [tab, setTab] = useState<Tab>("supabase");
 
   if (!profile?.is_super_admin) {
     return (
@@ -45,32 +44,11 @@ function AdminConfigPage() {
   return (
     <div className="flex flex-col gap-4 p-4 pb-28">
       <div className="flex items-center gap-2">
-        <Settings size={20} className="text-accent" />
-        <h1 className="text-lg font-bold text-text-main">Configurações</h1>
+        <WebhookIcon size={20} className="text-accent" />
+        <h1 className="text-lg font-bold text-text-main">Central de Ações</h1>
       </div>
 
-      <div className="flex justify-center gap-1 rounded-xl bg-card p-1 overflow-x-auto whitespace-nowrap scrollbar-hide">
-        {[
-          { key: "supabase" as Tab, label: "Supabase", icon: Database },
-          { key: "credenciais" as Tab, label: "Credenciais", icon: Shield },
-          { key: "central_acoes" as Tab, label: "Ações & Integrações", icon: WebhookIcon },
-          { key: "demos" as Tab, label: "Laboratório", icon: FlaskConical },
-          { key: "integracoes" as Tab, label: "Integrações Nativas", icon: RefreshCw },
-          { key: "formulario" as Tab, label: "Formulário do Lead", icon: FormInput },
-        ].map(({ key, label, icon: Icon }) => (
-          <button key={key} onClick={() => setTab(key)} title={label}
-            className={`flex items-center justify-center p-2.5 rounded-lg transition ${tab === key ? "bg-accent text-white" : "text-text-muted hover:text-text-main hover:bg-bg-dark"}`}>
-            <Icon size={20} />
-          </button>
-        ))}
-      </div>
-
-      {tab === "supabase" && <SupabaseTab />}
-      {tab === "credenciais" && <CredenciaisTab />}
-      {tab === "central_acoes" && <CentralAcoesTab />}
-      {tab === "demos" && <DemosTab />}
-      {tab === "integracoes" && <IntegracoesTab />}
-      {tab === "formulario" && <FormBuilderTab />}
+      <CentralAcoesTab />
     </div>
   );
 }
@@ -385,7 +363,7 @@ function CredenciaisTab() {
           { key: "cadastro", label: "Cadastro", color: null },
           { key: "ti", label: "TI / Tecnologia", color: null },
           { key: "super_admin", label: "Super Admin", color: null },
-          { key: "mock", label: "🧪 Mock / Demo", color: "purple" },
+          { key: "mock", label: "Mock / Demo", color: "purple" },
         ].map(item => (
           <button
             key={item.key}
@@ -448,7 +426,7 @@ function CredenciaisTab() {
                 <div className="flex items-center gap-2">
                   <p className="text-sm font-medium text-text-main truncate">{c.nome_completo}</p>
                   {c.isMock && (
-                    <span className="rounded-full bg-purple-500/15 border border-purple-500/30 px-2 py-0.5 text-[8px] font-bold text-purple-400">🧪 Mock</span>
+                    <span className="rounded-full bg-purple-500/15 border border-purple-500/30 px-2 py-0.5 text-[8px] font-bold text-purple-400">Mock</span>
                   )}
                   {!c.isMock && !isRegistered && (
                     <span className="rounded-full bg-yellow-500/10 border border-yellow-500/20 px-2 py-0.5 text-[8px] font-semibold text-yellow-400">Pendente</span>
@@ -520,7 +498,7 @@ function CredenciaisTab() {
                   Não é possível personalizar permissões até que a conta seja criada no Supabase Auth.
                 </p>
                 <div className="mt-4 w-full rounded-xl bg-input-bg p-3 text-left">
-                  <p className="text-[10px] font-bold text-text-main mb-1">💡 Dica de Departamento:</p>
+                  <p className="text-[10px] font-bold text-text-main mb-1 flex items-center gap-1"><Lightbulb size={10} className="text-yellow-400" /> Dica de Departamento:</p>
                   <p className="text-[10px] text-text-muted">
                     Ao registrar-se, o usuário receberá automaticamente as permissões padrão para o ambiente/departamento: <strong>{permCredencial.departamento || "Sem departamento"}</strong>.
                   </p>
@@ -742,8 +720,8 @@ function IntegracoesTab() {
                         <option value="brasilapi" className="text-black bg-white">BrasilAPI (Recomendado - CDN Rápido)</option>
                         <option value="viacep" className="text-black bg-white">ViaCEP (Tradicional)</option>
                       </select>
-                      <p className="text-[9px] text-text-muted mt-2">
-                        💡 A plataforma tentará o provedor selecionado primeiro. Se houver falha de conexão, fará fallback automático e transparente para o outro.
+                      <p className="text-[9px] text-text-muted mt-2 flex items-start gap-1">
+                        <Lightbulb size={9} className="text-yellow-400 mt-0.5 shrink-0" /> A plataforma tentará o provedor selecionado primeiro. Se houver falha de conexão, fará fallback automático e transparente para o outro.
                       </p>
                     </div>
                   )}

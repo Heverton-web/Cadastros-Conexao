@@ -49,12 +49,20 @@ export type WebhookLog = {
   created_at: string;
 };
 
-export async function listarWebhooks(empresaId?: string | null) {
+export async function listarWebhooks(empresaId?: string | null, moduloKey?: string | null) {
   let query = supabase
     .from("webhooks")
     .select("*");
 
-  if (empresaId) query = query.eq("empresa_id", empresaId);
+  if (empresaId) {
+    query = query.eq("empresa_id", empresaId);
+  } else if (empresaId === null) {
+    query = query.is("empresa_id", null);
+  }
+
+  if (moduloKey) {
+    query = query.eq("modulo_key", moduloKey);
+  }
 
   const { data, error } = await query
     .order("created_at", { ascending: false });
@@ -165,7 +173,11 @@ export async function dispararWebhooks(evento: string, payload: Record<string, a
       }
 
       let webhooksQuery = supabase.from("webhooks").select("*").eq("evento", evento).eq("ativo", true);
-      if (empresaId) webhooksQuery = webhooksQuery.eq("empresa_id", empresaId);
+      if (empresaId) {
+        webhooksQuery = webhooksQuery.eq("empresa_id", empresaId);
+      } else {
+        webhooksQuery = webhooksQuery.is("empresa_id", null);
+      }
 
       const [notifsRes, webhooksRes, apisRes] = await Promise.all([
         supabase.from("notificacoes_templates").select("*").eq("evento", evento).eq("ativo", true),
@@ -339,7 +351,11 @@ export async function dispararEventoModulo(
     .eq("evento_key", eventoKey)
     .eq("ativo", true);
 
-  if (empresaId) query = query.eq("empresa_id", empresaId);
+  if (empresaId) {
+    query = query.eq("empresa_id", empresaId);
+  } else {
+    query = query.is("empresa_id", null);
+  }
 
   const { data: webhooks, error } = await query;
 

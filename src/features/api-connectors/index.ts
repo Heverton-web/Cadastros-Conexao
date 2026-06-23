@@ -18,14 +18,24 @@ export type ApiConnector = {
   ordem?: number;
   created_at: string;
   updated_at: string;
+  empresa_id?: string | null;
+  modulo_key?: string | null;
 };
 
 export type ApiConnectorInput = Omit<ApiConnector, "id" | "created_at" | "updated_at">;
 
-export async function listApiConnectors(type?: ApiConnectorType) {
+export async function listApiConnectors(type?: ApiConnectorType, empresaId?: string | null, moduloKey?: string | null) {
   let query = supabase.from("api_connectors").select("*").order("name", { ascending: true });
   if (type) {
     query = query.eq("type", type);
+  }
+  if (empresaId) {
+    query = query.eq("empresa_id", empresaId);
+  } else if (empresaId === null) {
+    // Para SuperAdmins que querem ver apenas configurações globais (se aplicável), ou deixe sem filtro para ver tudo
+  }
+  if (moduloKey) {
+    query = query.eq("modulo_key", moduloKey);
   }
   const { data, error } = await query;
   if (error) throw error;
