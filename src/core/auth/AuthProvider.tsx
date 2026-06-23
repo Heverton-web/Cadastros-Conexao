@@ -2,6 +2,7 @@ import { type ReactNode, useEffect, useState, useCallback } from "react";
 import { supabase } from "~/core/supabase";
 import { AuthContext } from "./useAuth";
 import { type Profile, type EmpresaInfo, type ModulosAcesso } from "./types";
+import { getAllPermissionKeys } from "~/registry";
 import toast from "react-hot-toast";
 
 export function AuthProvider({ children }: { children: ReactNode }) {
@@ -83,25 +84,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setProfile(p as Profile);
       
       if (p.is_super_admin) {
-        setPermissoes({
-          ver_todos_cadastros: true,
-          aprovar_cadastro: true,
-          reprovar_cadastro: true,
-          solicitar_correcao_cadastro: true,
-          aprovar_documento: true,
-          reprovar_documento: true,
-          solicitar_correcao_documento: true,
-          aprovar_campo: true,
-          reprovar_campo: true,
-          solicitar_correcao_campo: true,
-          visualizar_documento: true,
-          excluir_cadastro: true,
-          gerenciar_credenciais: true,
-          gerenciar_credenciais_admin: true,
-          gerenciar_config: true,
-          gerar_links: true,
-          ver_relatorios: true,
-        });
+        const allPerms: Record<string, boolean> = {};
+        for (const key of getAllPermissionKeys()) {
+          allPerms[key] = true;
+        }
+        setPermissoes(allPerms);
         setModulosAcesso(null);
       } else {
         const { data } = await supabase

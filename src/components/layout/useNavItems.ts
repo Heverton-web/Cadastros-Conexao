@@ -1,4 +1,4 @@
-import { Settings, Building2, Puzzle, KeyRound, Globe, Database, Cable, FlaskConical, Palette, Image, Shield, Beaker, type LucideIcon } from "lucide-react";
+import { Building2, Puzzle, KeyRound, Globe, Database, Cable, FlaskConical, Palette, Image, Shield, Beaker, type LucideIcon } from "lucide-react";
 import { useAuth } from "~/lib/auth";
 import { getNavItems, getAllModules } from "~/registry";
 import { useMemo } from "react";
@@ -72,13 +72,8 @@ export function useNavItems(selectedModuleKey?: string): NavSection[] {
     // Section: Navegação (registry items)
     // Global (moduloKey === undefined) é exclusivo do Super Admin
     if (isSuper || moduloKey) {
-      const navItems: NavItem[] = [...regNav];
-      // Config só aparece em módulos que não são sistema (exclui empresas-core)
-      if (moduloKey && moduloKey !== "empresas-core" && (isSuper || p?.gerenciar_config === true)) {
-        navItems.push({ path: "/admin/config", label: "Config", icon: Settings });
-      }
-      if (navItems.length > 0) {
-        sections.push({ label: moduloKey ? "Navegação" : "Itens Globais", items: navItems });
+      if (regNav.length > 0) {
+        sections.push({ label: moduloKey ? "Navegação" : "Itens Globais", items: regNav });
       }
     }
 
