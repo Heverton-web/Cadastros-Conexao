@@ -7,3 +7,5 @@ credentials.env
 scripts
 prints_telas
 analise-e-engenharia-reversa
+vps.env
+credentials.env

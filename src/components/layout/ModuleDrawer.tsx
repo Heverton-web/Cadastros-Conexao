@@ -65,7 +65,7 @@ export function ModuleDrawer({
                 onClick={() => { onModuleChange(mod.key); onClose(); }}
                 className={cn(
                   "flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium transition-colors",
-                  selectedModuleKey === mod.key ? "bg-accent/10 text-accent" : "text-text-main hover:bg-input-bg"
+                  selectedModuleKey === mod.key ? "bg-accent/10 text-text-muted" : "text-text-main hover:bg-input-bg"
                 )}
               >
                 <Icon size={16} />

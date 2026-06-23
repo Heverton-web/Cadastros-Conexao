@@ -65,6 +65,8 @@ export function useNavItems(selectedModuleKey?: string): NavSection[] {
       path: ri.to,
       label: ri.label,
       icon: ri.icon,
+      ...(ri.matchPaths ? { matchPaths: ri.matchPaths } : {}),
+      ...(ri.noChildMatch ? { noChildMatch: ri.noChildMatch } : {}),
     }));
 
     // Section: Navegação (registry items)

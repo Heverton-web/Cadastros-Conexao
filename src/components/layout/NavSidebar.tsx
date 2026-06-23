@@ -63,7 +63,7 @@ export function NavSidebar({
                 className={cn(
                   "flex items-center gap-2.5 rounded-lg text-sm font-medium transition-colors",
                   collapsed ? "justify-center p-2" : "px-3 py-2",
-                  selectedModuleKey === mod.key ? "bg-accent/10 text-accent" : "text-text-main hover:bg-input-bg"
+                  selectedModuleKey === mod.key ? "bg-accent/10 text-text-muted" : "text-text-main hover:bg-input-bg"
                 )}
               >
                 <Icon size={16} />

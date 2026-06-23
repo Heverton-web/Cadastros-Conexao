@@ -8,6 +8,8 @@ export type NavItemRegistration = {
   permissionCheck: (perms: Record<string, boolean> | null) => boolean;
   order: number;
   moduloKey?: string;
+  matchPaths?: string[];
+  noChildMatch?: boolean;
 };
 
 const glob = typeof window !== 'undefined' ? window as any : globalThis as any;
