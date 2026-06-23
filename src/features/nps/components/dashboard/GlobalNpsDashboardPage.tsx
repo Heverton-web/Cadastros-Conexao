@@ -1158,8 +1158,8 @@ export function GlobalNpsDashboardPage() {
 
         {/* Detail Dialog */}
         <Dialog open={!!detailResponse} onOpenChange={(open) => { if (!open) setDetailResponse(null); }}>
-          <DialogContent className="bg-card border-border max-w-2xl max-h-[85vh] overflow-y-auto">
-            <DialogHeader>
+          <DialogContent className="bg-card border-border max-w-2xl max-h-[90vh] w-[95vw] sm:w-full flex flex-col overflow-hidden p-0">
+            <DialogHeader className="px-6 py-4 border-b border-border/50 flex-shrink-0">
               <DialogTitle className="text-foreground text-lg">Detalhes da Resposta</DialogTitle>
               <DialogDescription className="text-muted-foreground">
                 {detailResponse && new Date(detailResponse.created_at).toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
@@ -1169,8 +1169,9 @@ export function GlobalNpsDashboardPage() {
               </DialogDescription>
             </DialogHeader>
 
-            {detailResponse && (
-              <div className="space-y-5 mt-2">
+            <div className="px-6 py-4 overflow-y-auto custom-scrollbar flex-1">
+              {detailResponse && (
+                <div className="space-y-5">
                 {/* Identification */}
                 <div>
                   <h3 className="text-sm font-semibold text-primary mb-3">Identificação</h3>
@@ -1277,7 +1278,8 @@ export function GlobalNpsDashboardPage() {
                 )}
               </div>
             )}
-          </DialogContent>
+          </div>
+        </DialogContent>
         </Dialog>
       </div>
     </div>

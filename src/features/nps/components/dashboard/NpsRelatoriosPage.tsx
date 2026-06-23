@@ -107,7 +107,7 @@ export function NpsRelatoriosPage() {
 
       <Card className="bg-card border-border shadow-sm">
         <CardContent className="pt-0 px-0">
-          <div className="flex-1 space-y-6 p-4 pt-6 md:p-8 overflow-y-auto bg-background/50 h-full w-full">
+          <div className="flex-1 space-y-6 p-4 pt-6 md:p-8 overflow-x-auto overflow-y-auto bg-background/50 h-full w-full custom-scrollbar">
             <table className="w-full text-sm">
               <thead className="bg-muted/30">
                 <tr className="border-b border-border text-muted-foreground text-xs uppercase tracking-wider">

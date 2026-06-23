@@ -164,7 +164,12 @@ export function NpsPesquisasPage() {
           <CardTitle className="text-base text-card-foreground flex items-center gap-2">
             <ListChecks className="w-5 h-5 text-primary" /> Perguntas da Pesquisa
           </CardTitle>
-          <Button onClick={openNew} size="sm" className="gap-1.5 shadow-md shadow-primary/20"><Plus className="w-4 h-4" /> Nova pergunta</Button>
+          <div className="flex items-center gap-2">
+            <Button variant="secondary" size="sm" asChild>
+              <a href="/nps-survey" target="_blank" rel="noopener noreferrer">Ver Pesquisa do Cliente</a>
+            </Button>
+            <Button onClick={openNew} size="sm" className="gap-1.5 shadow-md shadow-primary/20"><Plus className="w-4 h-4" /> Nova pergunta</Button>
+          </div>
         </CardHeader>
         <CardContent className="space-y-2">
           {loading && <p className="text-sm text-muted-foreground">Carregando…</p>}

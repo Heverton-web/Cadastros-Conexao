@@ -528,16 +528,16 @@ export function NpsDashboardPage() {
             title="Visão Geral"
             subtitle="Como estamos hoje — números-chave do recorte atual"
           />
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4">
             <Card className="bg-card shadow-sm border-border">
-              <CardContent className="pt-6 pb-5">
-                <div className="flex items-center gap-4">
-                  <div className="p-2.5 rounded-xl bg-primary/10">
-                    <Users className="w-6 h-6 text-primary" />
+              <CardContent className="pt-4 sm:pt-6 pb-3 sm:pb-5">
+                <div className="flex items-center gap-2 sm:gap-4">
+                  <div className="p-2 sm:p-2.5 rounded-xl bg-primary/10">
+                    <Users className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2">
-                      <p className="text-3xl font-bold text-foreground tracking-tight">{activeData.length}</p>
+                    <div className="flex items-center gap-1 sm:gap-2">
+                      <p className="text-xl sm:text-3xl font-bold text-foreground tracking-tight">{activeData.length}</p>
                       <TooltipProvider delayDuration={150}>
                         <Tooltip>
                           <TooltipTrigger asChild>
@@ -555,14 +555,14 @@ export function NpsDashboardPage() {
               </CardContent>
             </Card>
             <Card className="bg-card shadow-sm border-border">
-              <CardContent className="pt-6 pb-5">
-                <div className="flex items-center gap-4">
-                  <div className={`p-2.5 rounded-xl ${npsStats.score >= 50 ? 'bg-green-500/10' : npsStats.score >= 0 ? 'bg-yellow-500/10' : 'bg-red-500/10'}`}>
-                    <TrendingUp className={`w-6 h-6 ${getNPSColor(npsStats.score)}`} />
+              <CardContent className="pt-4 sm:pt-6 pb-3 sm:pb-5">
+                <div className="flex items-center gap-2 sm:gap-4">
+                  <div className={`p-2 sm:p-2.5 rounded-xl ${npsStats.score >= 50 ? 'bg-green-500/10' : npsStats.score >= 0 ? 'bg-yellow-500/10' : 'bg-red-500/10'}`}>
+                    <TrendingUp className={`w-5 h-5 sm:w-6 sm:h-6 ${getNPSColor(npsStats.score)}`} />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2">
-                      <p className={`text-3xl font-bold tracking-tight ${getNPSColor(npsStats.score)}`}>{npsStats.score}</p>
+                    <div className="flex items-center gap-1 sm:gap-2">
+                      <p className={`text-xl sm:text-3xl font-bold tracking-tight ${getNPSColor(npsStats.score)}`}>{npsStats.score}</p>
                       <TooltipProvider delayDuration={150}>
                         <Tooltip>
                           <TooltipTrigger asChild>
@@ -581,14 +581,14 @@ export function NpsDashboardPage() {
               </CardContent>
             </Card>
             <Card className="bg-card shadow-sm border-border">
-              <CardContent className="pt-6 pb-5">
-                <div className="flex items-center gap-4">
-                  <div className="p-2.5 rounded-xl bg-primary/10">
-                    <Star className="w-6 h-6 text-primary" />
+              <CardContent className="pt-4 sm:pt-6 pb-3 sm:pb-5">
+                <div className="flex items-center gap-2 sm:gap-4">
+                  <div className="p-2 sm:p-2.5 rounded-xl bg-primary/10">
+                    <Star className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2">
-                      <p className="text-3xl font-bold text-foreground tracking-tight">
+                    <div className="flex items-center gap-1 sm:gap-2">
+                      <p className="text-xl sm:text-3xl font-bold text-foreground tracking-tight">
                         {overallMatrixAvg}
                       </p>
                       <TooltipProvider delayDuration={150}>
@@ -611,14 +611,14 @@ export function NpsDashboardPage() {
               className="bg-gradient-to-br from-card/90 to-card/60 backdrop-blur border-border/30 shadow-lg hover:shadow-xl transition-shadow cursor-pointer"
               onClick={() => setActiveSection('insights')}
             >
-              <CardContent className="pt-6 pb-5">
-                <div className="flex items-center gap-4">
-                  <div className="p-2.5 rounded-xl bg-primary/10">
-                    <MessageSquare className="w-6 h-6 text-primary" />
+              <CardContent className="pt-4 sm:pt-6 pb-3 sm:pb-5">
+                <div className="flex items-center gap-2 sm:gap-4">
+                  <div className="p-2 sm:p-2.5 rounded-xl bg-primary/10">
+                    <MessageSquare className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2">
-                      <p className="text-3xl font-bold text-foreground tracking-tight">
+                    <div className="flex items-center gap-1 sm:gap-2">
+                      <p className="text-xl sm:text-3xl font-bold text-foreground tracking-tight">
                         {commentsCount}
                       </p>
                       <TooltipProvider delayDuration={150}>
@@ -908,7 +908,43 @@ export function NpsDashboardPage() {
             </CardHeader>
             {showResponsesTable && (
               <CardContent className="overflow-x-auto">
-                <table className="w-full text-sm">
+                {/* Mobile card view */}
+                <div className="md:hidden space-y-2">
+                  {filtered.slice(0, 50).map((r) => (
+                    <div
+                      key={r.id}
+                      className="bg-secondary/50 rounded-lg p-3 border border-border/30 cursor-pointer active:bg-accent/20"
+                      onClick={() => setDetailResponse(r)}
+                    >
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-xs text-muted-foreground">{new Date(r.created_at).toLocaleDateString('pt-BR')}</span>
+                        <span className={`inline-flex items-center justify-center w-7 h-7 rounded-lg font-bold text-xs ${
+                          (r.nps_score ?? 0) >= 9 ? 'bg-green-500/15 text-green-400' :
+                          (r.nps_score ?? 0) >= 7 ? 'bg-yellow-500/15 text-yellow-400' :
+                          'bg-red-500/15 text-red-400'
+                        }`}>
+                          {r.nps_score ?? '—'}
+                        </span>
+                      </div>
+                      <p className="text-sm font-medium text-foreground truncate">
+                        {(r as any).client_name || (r as any).client_id || <span className="text-muted-foreground italic">Anônimo</span>}
+                      </p>
+                      <div className="flex items-center gap-2 mt-1">
+                        {(r as any).vendor_name && (
+                          <span className="text-[10px] text-muted-foreground">Vendedor: {(r as any).vendor_name}</span>
+                        )}
+                        {r.source && (
+                          <span className="inline-block px-1.5 py-0.5 rounded text-[10px] font-medium bg-primary/10 text-primary">{r.source}</span>
+                        )}
+                      </div>
+                      {r.nps_comment && (
+                        <p className="text-xs text-muted-foreground mt-1 line-clamp-2">{r.nps_comment}</p>
+                      )}
+                    </div>
+                  ))}
+                </div>
+                {/* Desktop table view */}
+                <table className="w-full text-sm hidden md:table">
                   <thead>
                     <tr className="border-b border-border/50 text-muted-foreground">
                       <th className="text-left py-3 px-3 font-medium">Data</th>
@@ -1157,8 +1193,8 @@ export function NpsDashboardPage() {
 
         {/* Detail Dialog */}
         <Dialog open={!!detailResponse} onOpenChange={(open) => { if (!open) setDetailResponse(null); }}>
-          <DialogContent className="bg-card border-border max-w-2xl max-h-[85vh] overflow-y-auto">
-            <DialogHeader>
+          <DialogContent className="bg-card border-border max-w-2xl max-h-[90vh] w-[95vw] sm:w-full flex flex-col overflow-hidden p-0">
+            <DialogHeader className="px-6 py-4 border-b border-border/50 flex-shrink-0">
               <DialogTitle className="text-foreground text-lg">Detalhes da Resposta</DialogTitle>
               <DialogDescription className="text-muted-foreground">
                 {detailResponse && new Date(detailResponse.created_at).toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
@@ -1168,8 +1204,9 @@ export function NpsDashboardPage() {
               </DialogDescription>
             </DialogHeader>
 
-            {detailResponse && (
-              <div className="space-y-5 mt-2">
+            <div className="px-6 py-4 overflow-y-auto custom-scrollbar flex-1">
+              {detailResponse && (
+                <div className="space-y-5">
                 {/* Identification */}
                 <div>
                   <h3 className="text-sm font-semibold text-primary mb-3">Identificação</h3>
@@ -1276,7 +1313,8 @@ export function NpsDashboardPage() {
                 )}
               </div>
             )}
-          </DialogContent>
+          </div>
+        </DialogContent>
         </Dialog>
       </div>
     </div>

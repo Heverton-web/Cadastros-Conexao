@@ -604,8 +604,8 @@ function NovaCredencialModal({ onClose, modulos }: { onClose: () => void, modulo
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-6 py-4 overflow-y-auto">
-      <div className="w-full max-w-2xl rounded-2xl bg-card p-6 shadow-xl max-h-[90vh] overflow-y-auto custom-scrollbar">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4 sm:px-6 py-4 overflow-y-auto">
+      <div className="w-full max-w-2xl rounded-2xl bg-card p-4 sm:p-6 shadow-xl max-h-[90vh] overflow-y-auto custom-scrollbar">
         <div className="flex items-center justify-between mb-4 sticky top-0 bg-card z-10 pb-2 border-b border-border-subtle">
           <h2 className="text-base font-bold text-text-main flex items-center gap-2"><Plus size={18} className="text-accent" /> Nova Credencial com Permissões</h2>
           <button onClick={onClose} className="text-text-muted hover:text-text-main"><X size={20} /></button>
@@ -741,8 +741,8 @@ function EditCredencialModal({ usuario, onClose, onSave }: { usuario: ProfileRow
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-6">
-      <div className="w-full max-w-md rounded-2xl bg-card p-6 shadow-xl">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4 sm:px-6 py-4 overflow-y-auto">
+      <div className="w-full max-w-md rounded-2xl bg-card p-4 sm:p-6 shadow-xl max-h-[90vh] overflow-y-auto custom-scrollbar">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-base font-bold text-text-main">Editar Credencial</h2>
           <button onClick={onClose} className="text-text-muted hover:text-text-main">
