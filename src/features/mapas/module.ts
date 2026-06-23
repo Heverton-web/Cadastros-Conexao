@@ -26,7 +26,7 @@ export const mapasModule: ModuleDefinition = {
   events: [],
   setup: () => {
     for (const p of MAPAS_PERMISSIONS) {
-      registerPermission({ key: p.key, label: p.label, description: p.label, group: p.group });
+      registerPermission({ key: p.key, label: p.label, description: p.description, group: p.group });
     }
 
     registerNavItem({
