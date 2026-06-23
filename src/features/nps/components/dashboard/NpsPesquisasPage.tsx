@@ -261,10 +261,10 @@ export function NpsPesquisasPage() {
       </Card>
 
       <Dialog open={!!editing} onOpenChange={(o) => !o && close()}>
-        <DialogContent className="max-w-lg">
-          <DialogHeader><DialogTitle>{isNew ? "Nova pergunta" : "Editar pergunta"}</DialogTitle></DialogHeader>
+        <DialogContent className="max-w-lg w-[calc(100%-2rem)] max-h-[90vh] overflow-y-auto">
+          <DialogHeader className="pb-2"><DialogTitle>{isNew ? "Nova pergunta" : "Editar pergunta"}</DialogTitle></DialogHeader>
           {editing && (
-            <div className="space-y-4">
+            <div className="space-y-5 py-2">
               <div>
                 <Label className="text-xs text-muted-foreground">Tipo</Label>
                 <Select value={editing.type} onValueChange={(v) => setEditing({ ...editing, type: v as SurveyQuestionType })} disabled={editing.is_system}>
@@ -318,7 +318,7 @@ export function NpsPesquisasPage() {
               </div>
             </div>
           )}
-          <DialogFooter>
+          <DialogFooter className="pt-4 border-t border-border/30">
             <Button variant="secondary" onClick={close}>Cancelar</Button>
             <Button onClick={save}>Salvar</Button>
           </DialogFooter>

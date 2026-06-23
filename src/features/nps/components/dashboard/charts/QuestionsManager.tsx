@@ -224,12 +224,12 @@ const QuestionsManager = () => {
       </CardContent>
 
       <Dialog open={!!editing} onOpenChange={(o) => !o && close()}>
-        <DialogContent className="bg-card border-border max-w-lg">
-          <DialogHeader>
+        <DialogContent className="bg-card border-border max-w-lg w-[calc(100%-2rem)] max-h-[90vh] overflow-y-auto">
+          <DialogHeader className="pb-2">
             <DialogTitle className="text-foreground">{isNew ? 'Nova pergunta' : 'Editar pergunta'}</DialogTitle>
           </DialogHeader>
           {editing && (
-            <div className="space-y-4">
+            <div className="space-y-5 py-2">
               <div>
                 <Label className="text-xs text-muted-foreground">Tipo</Label>
                 <Select
@@ -312,7 +312,7 @@ const QuestionsManager = () => {
               </div>
             </div>
           )}
-          <DialogFooter>
+          <DialogFooter className="pt-4 border-t border-border/30">
             <Button variant="outline" onClick={close} className="border-border text-foreground">Cancelar</Button>
             <Button onClick={save} className="btn-gold">Salvar</Button>
           </DialogFooter>

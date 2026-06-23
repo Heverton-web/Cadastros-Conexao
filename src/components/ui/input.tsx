@@ -1,60 +1,21 @@
-import { forwardRef, useState, type InputHTMLAttributes } from "react";
+import * as React from "react";
+
 import { cn } from "~/lib/utils";
-import { Eye, EyeOff } from "lucide-react";
 
-interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
-  label?: string;
-  error?: string;
-}
-
-const Input = forwardRef<HTMLInputElement, InputProps>(
-  ({ className, label, error, id, type, ...props }, ref) => {
-    const [show, setShow] = useState(false);
-    const isPassword = type === "password";
-
+const Input = React.forwardRef<HTMLInputElement, React.ComponentProps<"input">>(
+  ({ className, type, ...props }, ref) => {
     return (
-      <div className="flex flex-col gap-1.5">
-        {label && (
-          <label
-            htmlFor={id}
-            className="text-text-muted text-xs font-medium uppercase tracking-wide"
-          >
-            {label}
-          </label>
+      <input
+        type={type}
+        className={cn(
+          "flex h-11 w-full rounded-md border border-border/70 bg-surface/60 px-3.5 py-2 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground hover:border-border focus-visible:outline-none focus-visible:border-primary/60 focus-visible:ring-2 focus-visible:ring-ring/60 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
+          className,
         )}
-        <div className="relative">
-          <input
-            ref={ref}
-            id={id}
-            type={isPassword && show ? "text" : type}
-            className={cn(
-              "rounded-lg border border-input-border bg-input-bg px-4 py-3 text-text-main text-sm outline-none transition-all w-full",
-              "placeholder:text-text-muted/50",
-              "focus:border-accent focus:ring-2 focus:ring-ring",
-              "min-h-[44px]",
-              isPassword && "pr-12",
-              error && "border-error focus:border-error focus:ring-error/30",
-              className
-            )}
-            {...props}
-          />
-          {isPassword && (
-            <button
-              type="button"
-              onClick={() => setShow((v) => !v)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted hover:text-text-main transition-colors"
-              tabIndex={-1}
-            >
-              {show ? <EyeOff size={18} /> : <Eye size={18} />}
-            </button>
-          )}
-        </div>
-        {error && (
-          <span className="text-xs text-error">{error}</span>
-        )}
-      </div>
+        ref={ref}
+        {...props}
+      />
     );
-  }
+  },
 );
 Input.displayName = "Input";
 

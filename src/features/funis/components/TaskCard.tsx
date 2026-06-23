@@ -1,69 +1,55 @@
-import { Calendar, AlertTriangle, Clock } from "lucide-react";
+import { Calendar, AlertTriangle, Clock, Flag, CheckCircle2 } from "lucide-react";
 import type { FunilTarefa } from "../types";
+import { priorityMeta, statusMeta, deadlineStatus, type Priority } from "~/lib/task-meta";
+import { Badge } from "~/components/ui/badge";
 
 type TaskCardProps = {
   tarefa: FunilTarefa;
   onClick: () => void;
 };
 
-const priorityColors = {
-  low: "bg-blue-500",
-  medium: "bg-yellow-500",
-  high: "bg-orange-500",
-  urgent: "bg-red-500",
-};
-
-const priorityLabels = {
-  low: "Baixa",
-  medium: "Media",
-  high: "Alta",
-  urgent: "Urgente",
-};
-
-function getDeadlineStatus(dataFim: string | null): { label: string; color: string } | null {
-  if (!dataFim) return null;
-  const now = new Date();
-  const deadline = new Date(dataFim);
-  const diffDays = Math.ceil((deadline.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
-
-  if (diffDays < 0) return { label: "Atrasado", color: "text-red-500" };
-  if (diffDays === 0) return { label: "Hoje", color: "text-orange-500" };
-  if (diffDays <= 3) return { label: `${diffDays}d`, color: "text-yellow-500" };
-  return { label: `${diffDays}d`, color: "text-text-muted" };
-}
-
 export function TaskCard({ tarefa, onClick }: TaskCardProps) {
-  const deadline = getDeadlineStatus(tarefa.data_fim);
+  const pMeta = priorityMeta((tarefa.prioridade as Priority) || "medium");
+  const isCompleted = !!tarefa.completed_at;
+  const dStatus = deadlineStatus({ end_date: tarefa.data_fim, completed_at: tarefa.completed_at });
+  const sMeta = statusMeta[dStatus];
 
   return (
     <div
       onClick={onClick}
-      className="bg-card rounded-lg p-3 cursor-pointer hover:shadow-md transition-shadow border border-border-subtle"
+      className={`group p-4 rounded-xl border bg-surface/70 cursor-pointer transition-all hover:shadow-lg hover:-translate-y-0.5 ${isCompleted ? "border-emerald-400/40 bg-emerald-500/5" : "border-border/50 hover:border-primary/40"}`}
     >
-      <div className={`h-1 rounded-full mb-2 ${priorityColors[tarefa.prioridade]}`} />
-      <h4 className="text-sm font-medium text-text-main mb-1">{tarefa.titulo}</h4>
+      <div className="flex items-start justify-between gap-3 mb-2">
+        <h4 className={`text-sm font-medium leading-tight ${isCompleted ? "line-through text-muted-foreground" : "text-foreground"}`}>{tarefa.titulo}</h4>
+        {isCompleted && <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0" />}
+      </div>
+      
       {tarefa.descricao && (
-        <p className="text-xs text-text-muted line-clamp-2 mb-2">{tarefa.descricao}</p>
+        <p className="text-xs text-muted-foreground line-clamp-2 mb-3 leading-relaxed">{tarefa.descricao}</p>
       )}
-      <div className="flex items-center gap-2 flex-wrap">
-        <span className="text-[10px] px-1.5 py-0.5 rounded bg-surface text-text-muted">
-          {priorityLabels[tarefa.prioridade]}
-        </span>
-        {deadline && (
-          <span className={`text-[10px] flex items-center gap-1 ${deadline.color}`}>
-            <Clock className="w-3 h-3" />
-            {deadline.label}
-          </span>
+
+      <div className="flex flex-wrap items-center gap-2 mt-3">
+        <Badge variant="outline" className={`gap-1 px-1.5 py-0 text-[10px] ${pMeta.chip}`}>
+          <Flag className="h-2.5 w-2.5" />
+          {pMeta.label}
+        </Badge>
+
+        {tarefa.data_fim && !isCompleted && (
+          <Badge variant="outline" className={`gap-1 px-1.5 py-0 text-[10px] ${sMeta.chip}`}>
+            <Clock className="h-2.5 w-2.5" />
+            {sMeta.label}
+          </Badge>
         )}
-        {tarefa.tools.length > 0 && (
-          <div className="flex gap-1">
+
+        {tarefa.tools && tarefa.tools.length > 0 && (
+          <div className="flex items-center gap-1 ml-auto">
             {tarefa.tools.slice(0, 2).map((tool) => (
-              <span key={tool} className="text-[10px] px-1.5 py-0.5 rounded bg-brand/10 text-brand">
+              <span key={tool} className="px-1.5 py-0.5 rounded-md bg-secondary text-secondary-foreground text-[9px] font-medium tracking-wide">
                 {tool}
               </span>
             ))}
             {tarefa.tools.length > 2 && (
-              <span className="text-[10px] text-text-muted">+{tarefa.tools.length - 2}</span>
+              <span className="text-[9px] text-muted-foreground px-1">+{tarefa.tools.length - 2}</span>
             )}
           </div>
         )}

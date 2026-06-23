@@ -1,105 +1,289 @@
-import { useState } from "react";
-import { X } from "lucide-react";
+import { useState, useMemo, useEffect } from "react";
 import { Button } from "~/components/ui/button";
+import { Input } from "~/components/ui/input";
+import { Label } from "~/components/ui/label";
+import { Textarea } from "~/components/ui/textarea";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "~/components/ui/dialog";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "~/components/ui/tabs";
+import { Badge } from "~/components/ui/badge";
+import { X, Plus, Trash2, GitBranch, Calendar as CalIcon, Flag, CheckCircle2, Circle } from "lucide-react";
+import { Checkbox } from "~/components/ui/checkbox";
+import { PRIORITIES, priorityMeta, type Priority } from "~/lib/task-meta";
+import { toast } from "react-hot-toast";
 import { useCriarTarefa, useAtualizarTarefa, useDeletarTarefa } from "../hooks/useFunisData";
 import type { FunilTarefa } from "../types";
+import { supabase } from "~/core/supabase";
+import { useAuth } from "~/lib/auth";
 
-type TaskModalProps = {
-  funilId: string;
-  colunaId: string;
-  task: FunilTarefa | null;
+type Props = {
+  open?: boolean;
   onClose: () => void;
-  onCreate: (data: { titulo: string; descricao?: string; prioridade?: string }) => void;
+  columnId: string;
+  funilId: string;
+  task?: FunilTarefa | null;
+  parentTaskId?: string | null;
+  allTasks?: FunilTarefa[];
+  canEdit?: boolean;
 };
 
-export function TaskModal({ funilId, colunaId, task, onClose, onCreate }: TaskModalProps) {
-  const atualizarTarefa = useAtualizarTarefa();
-  const deletarTarefa = useDeletarTarefa();
-  const [titulo, setTitulo] = useState(task?.titulo ?? "");
-  const [descricao, setDescricao] = useState(task?.descricao ?? "");
-  const [prioridade, setPrioridade] = useState(task?.prioridade ?? "medium");
-
-  const handleSave = async () => {
-    if (!titulo.trim()) return;
-    if (task) {
-      await atualizarTarefa.mutateAsync({
-        id: task.id,
-        updates: { titulo: titulo.trim(), descricao: descricao.trim() || undefined, prioridade: prioridade as any },
+export function TaskModal({ open = true, onClose, columnId, funilId, task, parentTaskId, allTasks = [], canEdit = true }: Props) {
+  const criar = useCriarTarefa();
+  const atualizar = useAtualizarTarefa();
+  const deletar = useDeletarTarefa();
+  const { empresa } = useAuth();
+  
+  const [profiles, setProfiles] = useState<any[]>([]);
+  useEffect(() => {
+    if (empresa?.id) {
+      supabase.from('users').select('*').eq('empresa_id', empresa.id).then(({data}) => {
+        if(data) setProfiles(data);
       });
-    } else {
-      await onCreate({ titulo: titulo.trim(), descricao: descricao.trim() || undefined, prioridade });
     }
-    onClose();
+  }, [empresa]);
+
+  const [title, setTitle] = useState(task?.titulo ?? "");
+  const [description, setDescription] = useState(task?.descricao ?? "");
+  const [assignedTo, setAssignedTo] = useState<string>(task?.atribuido_para ?? "none");
+  const [tools, setTools] = useState<string[]>(task?.tools ?? []);
+  const [toolInput, setToolInput] = useState("");
+  const [scheduleMode, setScheduleMode] = useState<"period" | "dependency">(task?.depende_tarefa_id ? "dependency" : "period");
+  const [startDate, setStartDate] = useState(task?.data_inicio?.slice(0, 10) ?? "");
+  const [endDate, setEndDate] = useState(task?.data_fim?.slice(0, 10) ?? "");
+  const [dependsOn, setDependsOn] = useState<string>(task?.depende_tarefa_id ?? "none");
+  const [priority, setPriority] = useState<Priority>((task?.prioridade as Priority) ?? "medium");
+  const [completed, setCompleted] = useState<boolean>(!!task?.completed_at);
+  const [showSubModal, setShowSubModal] = useState(false);
+  const [editingSub, setEditingSub] = useState<FunilTarefa | null>(null);
+
+  const subtasks = useMemo(() => task ? allTasks.filter((t) => t.parent_task_id === task.id) : [], [allTasks, task]);
+  const candidateDeps = useMemo(
+    () => allTasks.filter((t) => t.id !== task?.id && !t.parent_task_id),
+    [allTasks, task],
+  );
+
+  const addTool = () => { if (toolInput.trim()) { setTools([...tools, toolInput.trim()]); setToolInput(""); } };
+
+  const saveIsPending = criar.isPending || atualizar.isPending;
+
+  const submit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const payload = {
+      funil_id: funilId,
+      coluna_id: columnId,
+      parent_task_id: parentTaskId ?? task?.parent_task_id ?? undefined,
+      titulo: title,
+      descricao: description || undefined,
+      atribuido_para: assignedTo === "none" ? null : assignedTo,
+      tools: tools,
+      data_inicio: scheduleMode === "period" && startDate ? new Date(startDate).toISOString() : undefined,
+      data_fim: scheduleMode === "period" && endDate ? new Date(endDate).toISOString() : undefined,
+      depende_tarefa_id: scheduleMode === "dependency" && dependsOn !== "none" ? dependsOn : undefined,
+      prioridade: priority as any,
+      completed_at: completed && !task?.completed_at ? new Date().toISOString() : !completed ? null : task?.completed_at,
+    };
+    try {
+      if (task) {
+        await atualizar.mutateAsync({ id: task.id, ...payload });
+        toast.success("Tarefa atualizada");
+      } else {
+        await criar.mutateAsync(payload as any);
+        toast.success("Tarefa criada");
+      }
+      onClose();
+    } catch (e: any) {
+      toast.error(e.message);
+    }
   };
 
-  const handleDelete = async () => {
-    if (!task || !confirm("Excluir esta tarefa?")) return;
-    await deletarTarefa.mutateAsync(task.id);
-    onClose();
+  const remove = async () => {
+    if(task) {
+      try {
+        await deletar.mutateAsync(task.id);
+        toast.success("Tarefa excluida");
+        onClose();
+      } catch(e: any) {
+        toast.error(e.message);
+      }
+    }
   };
+
+  const subProgress = task && !parentTaskId
+    ? { done: subtasks.filter((s) => !!s.completed_at).length, total: subtasks.length }
+    : null;
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={onClose}>
-      <div className="bg-card rounded-xl w-full max-w-md shadow-xl" onClick={(e) => e.stopPropagation()}>
-        <div className="flex items-center justify-between p-4 border-b border-border-subtle">
-          <h2 className="text-lg font-semibold text-text-main">
-            {task ? "Editar Tarefa" : "Nova Tarefa"}
-          </h2>
-          <button onClick={onClose} className="text-text-muted hover:text-text-main">
-            <X className="w-5 h-5" />
-          </button>
-        </div>
-        <div className="p-4 space-y-4">
-          <div>
-            <label className="text-sm text-text-muted mb-1 block">Titulo *</label>
-            <input
-              type="text"
-              value={titulo}
-              onChange={(e) => setTitulo(e.target.value)}
-              className="w-full px-3 py-2 rounded-lg bg-surface border border-border-subtle text-text-main focus:outline-none focus:ring-2 focus:ring-brand"
-              autoFocus
-            />
+    <Dialog open={open} onOpenChange={(o) => !o && onClose()}>
+      <DialogContent className="max-w-2xl max-h-[92vh] overflow-y-auto p-0 gap-0">
+        <DialogHeader className="px-6 sm:px-8 pt-6 sm:pt-8 pb-4 border-b border-border/40 bg-surface">
+          <DialogTitle className="font-display text-2xl">
+            {task ? "Editar tarefa" : parentTaskId ? "Nova microtarefa" : "Nova tarefa"}
+          </DialogTitle>
+          <p className="text-sm text-muted-foreground">Preencha as informacoes da tarefa abaixo.</p>
+        </DialogHeader>
+
+        <form onSubmit={submit} className="px-6 sm:px-8 py-6 space-y-5">
+          <div className={`rounded-xl border p-4 flex items-center gap-3 ${completed ? "border-emerald-400/30 bg-emerald-500/10" : "border-border/50 bg-surface/30"}`}>
+            <label className="flex items-center gap-3 cursor-pointer flex-1 min-w-0">
+              <Checkbox checked={completed} onCheckedChange={(v: boolean) => setCompleted(!!v)} disabled={!canEdit} className="h-5 w-5" />
+              <div className="min-w-0">
+                <div className="text-sm font-medium flex items-center gap-2">
+                  {completed ? <CheckCircle2 className="h-4 w-4 text-emerald-400" /> : <Circle className="h-4 w-4 text-muted-foreground" />}
+                  {completed ? "Tarefa concluida" : "Marcar como concluida"}
+                </div>
+                {task?.created_at && (
+                  <div className="text-xs text-muted-foreground mt-0.5">
+                    Criada em {new Date(task.created_at).toLocaleDateString("pt-BR")}
+                    {task.completed_at && ` finalizada em ${new Date(task.completed_at).toLocaleDateString("pt-BR")}`}
+                  </div>
+                )}
+              </div>
+            </label>
+            <Badge variant="outline" className={`gap-1.5 shrink-0 ${priorityMeta(priority).chip}`}>
+              <Flag className="h-3 w-3" />{priorityMeta(priority).label}
+            </Badge>
           </div>
-          <div>
-            <label className="text-sm text-text-muted mb-1 block">Descricao</label>
-            <textarea
-              value={descricao}
-              onChange={(e) => setDescricao(e.target.value)}
-              className="w-full px-3 py-2 rounded-lg bg-surface border border-border-subtle text-text-main focus:outline-none focus:ring-2 focus:ring-brand min-h-[80px]"
-            />
-          </div>
-          <div>
-            <label className="text-sm text-text-muted mb-1 block">Prioridade</label>
-            <select
-              value={prioridade}
-              onChange={(e) => setPrioridade(e.target.value)}
-              className="w-full px-3 py-2 rounded-lg bg-surface border border-border-subtle text-text-main focus:outline-none focus:ring-2 focus:ring-brand"
-            >
-              <option value="low">Baixa</option>
-              <option value="medium">Media</option>
-              <option value="high">Alta</option>
-              <option value="urgent">Urgente</option>
-            </select>
-          </div>
-        </div>
-        <div className="flex items-center justify-between p-4 border-t border-border-subtle">
-          <div>
-            {task && (
-              <Button onClick={handleDelete} variant="destructive" size="sm">
-                Excluir
-              </Button>
+
+          <section className="rounded-xl border border-border/50 bg-surface/30 p-5 space-y-4">
+            <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Informacoes</h3>
+            <div className="space-y-2">
+              <Label>Titulo</Label>
+              <Input required value={title} onChange={(e) => setTitle(e.target.value)} disabled={!canEdit} placeholder="O que sera feito" />
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-[1fr_auto] gap-4">
+              <div className="space-y-2">
+                <Label>Descricao</Label>
+                <Textarea rows={4} value={description ?? ""} onChange={(e) => setDescription(e.target.value)} disabled={!canEdit} placeholder="Escopo, contexto, criterios de aceite..." className="min-h-[110px] resize-y" />
+              </div>
+              <div className="space-y-2 sm:w-44">
+                <Label>Prioridade</Label>
+                <Select value={priority} onValueChange={(v) => setPriority(v as Priority)} disabled={!canEdit}>
+                  <SelectTrigger>
+                    <span className="flex items-center gap-2">
+                      <span className={`h-2 w-2 rounded-full ${priorityMeta(priority).dot}`} />
+                      <SelectValue />
+                    </span>
+                  </SelectTrigger>
+                  <SelectContent>
+                    {PRIORITIES.map((p) => (
+                      <SelectItem key={p.value} value={p.value}>
+                        <span className="flex items-center gap-2"><span className={`h-2 w-2 rounded-full ${p.dot}`} />{p.label}</span>
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+          </section>
+
+          <section className="rounded-xl border border-border/50 bg-surface/30 p-5 space-y-4">
+            <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Atribuicao</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+              <div className="space-y-2">
+                <Label>Responsavel</Label>
+                <Select value={assignedTo} onValueChange={setAssignedTo} disabled={!canEdit}>
+                  <SelectTrigger><SelectValue placeholder="Selecionar" /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="none">Sem responsavel</SelectItem>
+                    {profiles.map((p) => <SelectItem key={p.id} value={p.id}>{p.nome || p.email}</SelectItem>)}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2">
+                <Label>Ferramentas</Label>
+                <div className="flex gap-2">
+                  <Input value={toolInput} onChange={(e) => setToolInput(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); addTool(); } }} placeholder="n8n, Docker..." disabled={!canEdit} />
+                  <Button type="button" variant="secondary" onClick={addTool} disabled={!canEdit} className="shrink-0">Adicionar</Button>
+                </div>
+                {tools.length > 0 && (
+                  <div className="flex flex-wrap gap-1.5 pt-1">
+                    {tools.map((t, i) => (
+                      <Badge key={i} variant="secondary" className="gap-1 py-1 px-2">{t}{canEdit && <button type="button" onClick={() => setTools(tools.filter((_, j) => j !== i))} className="hover:text-destructive"><X className="h-3 w-3" /></button>}</Badge>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          </section>
+
+          <section className="rounded-xl border border-border/50 bg-surface/30 p-5 space-y-4">
+            <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Quando sera feito</h3>
+            <Tabs value={scheduleMode} onValueChange={(v) => setScheduleMode(v as "period" | "dependency")}>
+              <TabsList className="grid grid-cols-2 w-full">
+                <TabsTrigger value="period" disabled={!canEdit}><CalIcon className="h-3.5 w-3.5 mr-1.5" />Por periodo</TabsTrigger>
+                <TabsTrigger value="dependency" disabled={!canEdit}><GitBranch className="h-3.5 w-3.5 mr-1.5" />Por dependencia</TabsTrigger>
+              </TabsList>
+              <TabsContent value="period" className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-5">
+                <div className="space-y-2"><Label className="text-xs">Inicio</Label><Input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} disabled={!canEdit} /></div>
+                <div className="space-y-2"><Label className="text-xs">Termino</Label><Input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} disabled={!canEdit} /></div>
+              </TabsContent>
+              <TabsContent value="dependency" className="mt-5">
+                <Select value={dependsOn} onValueChange={setDependsOn} disabled={!canEdit}>
+                  <SelectTrigger><SelectValue placeholder="Tarefa predecessora" /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="none">Nenhuma</SelectItem>
+                    {candidateDeps.map((t) => <SelectItem key={t.id} value={t.id}>{t.titulo}</SelectItem>)}
+                  </SelectContent>
+                </Select>
+                {dependsOn !== "none" && (
+                  <p className="text-xs text-muted-foreground mt-2">Esta tarefa so podera iniciar apos a conclusao da predecessora.</p>
+                )}
+              </TabsContent>
+            </Tabs>
+          </section>
+
+          {task && !parentTaskId && (
+            <section className="rounded-xl border border-border/50 bg-surface/30 p-5 space-y-4">
+              <div className="flex items-center justify-between gap-3 flex-wrap">
+                <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                  Microtarefas <span className="text-foreground/70 normal-case">({subProgress?.done ?? 0}/{subProgress?.total ?? 0})</span>
+                </h3>
+                {canEdit && <Button type="button" size="sm" variant="secondary" onClick={() => { setEditingSub(null); setShowSubModal(true); }}><Plus className="h-3.5 w-3.5 mr-1" />Adicionar</Button>}
+              </div>
+              {subProgress && subProgress.total > 0 && (
+                <div className="h-1.5 w-full rounded-full bg-background/60 overflow-hidden">
+                  <div className="h-full bg-emerald-500 transition-all" style={{ width: Math.round((subProgress.done / subProgress.total) * 100) + "%" }} />
+                </div>
+              )}
+              <div className="space-y-2">
+                {subtasks.map((st) => {
+                  const sm = priorityMeta(st.prioridade);
+                  return (
+                    <div key={st.id} className={`flex items-center gap-3 p-3 rounded-md border bg-background/40 hover:bg-surface-hover/60 cursor-pointer transition-colors ${st.completed_at ? "border-emerald-400/30" : "border-border/40"}`} onClick={() => { setEditingSub(st); setShowSubModal(true); }}>
+                      <span className={`h-2 w-2 rounded-full shrink-0 ${sm.dot}`} title={sm.label} />
+                      <span className={`text-sm truncate flex-1 ${st.completed_at ? "line-through text-muted-foreground" : ""}`}>{st.titulo}</span>
+                      {st.completed_at && <CheckCircle2 className="h-4 w-4 text-emerald-400 shrink-0" />}
+                      {st.atribuido_para && <span className="text-xs text-muted-foreground shrink-0 hidden sm:inline">{profiles.find((p) => p.id === st.atribuido_para)?.nome}</span>}
+                    </div>
+                  );
+                })}
+                {subtasks.length === 0 && <p className="text-xs text-muted-foreground text-center py-4">Nenhuma microtarefa</p>}
+              </div>
+            </section>
+          )}
+
+          <DialogFooter className="-mx-6 sm:-mx-8 px-6 sm:px-8 pt-5 mt-2 border-t border-border/40">
+            {task && canEdit && (
+              <Button type="button" variant="ghost" className="text-destructive hover:text-destructive sm:mr-auto" onClick={remove}><Trash2 className="h-4 w-4 mr-1.5" />Excluir</Button>
             )}
-          </div>
-          <div className="flex gap-2">
-            <Button onClick={onClose} variant="secondary" size="sm">
-              Cancelar
-            </Button>
-            <Button onClick={handleSave} size="sm" disabled={!titulo.trim()}>
-              {task ? "Salvar" : "Criar"}
-            </Button>
-          </div>
-        </div>
-      </div>
-    </div>
+            <Button type="button" variant="ghost" onClick={onClose}>Cancelar</Button>
+            {canEdit && <Button type="submit" disabled={saveIsPending} className="gradient-gold text-[#0f172a] font-semibold">{saveIsPending ? "Salvando..." : "Salvar"}</Button>}
+          </DialogFooter>
+        </form>
+      </DialogContent>
+
+      {showSubModal && task && (
+        <TaskModal
+          open={showSubModal}
+          onClose={() => setShowSubModal(false)}
+          columnId={columnId}
+          funilId={funilId}
+          parentTaskId={task.id}
+          task={editingSub}
+          allTasks={allTasks}
+          canEdit={canEdit}
+        />
+      )}
+    </Dialog>
   );
 }

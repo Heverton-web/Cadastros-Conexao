@@ -7,7 +7,7 @@ import { KanbanView } from "./KanbanView";
 import { ShareModal } from "./ShareModal";
 
 export function FunilDetallePage() {
-  const { funilId } = useParams();
+  const { funilId } = useParams({ strict: false }) as { funilId: string };
   const navigate = useNavigate();
   const { data: funil, isLoading } = useFunil(funilId);
   const [showShare, setShowShare] = useState(false);
@@ -21,8 +21,8 @@ export function FunilDetallePage() {
   }
 
   return (
-    <div className="flex flex-col h-full">
-      <div className="flex items-center justify-between px-4 py-3 border-b border-border-subtle bg-surface">
+    <div className="flex flex-col h-[calc(100dvh-180px)] lg:h-[calc(100dvh-150px)]">
+      <div className="flex items-center justify-between px-4 py-3 border-b border-border-subtle bg-surface rounded-t-xl">
         <div className="flex items-center gap-3">
           <button
             onClick={() => navigate({ to: "/funis/dashboard" })}

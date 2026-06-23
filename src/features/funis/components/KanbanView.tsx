@@ -48,7 +48,7 @@ export function KanbanView({ funil }: KanbanViewProps) {
     <div className="flex gap-4 p-4 overflow-x-auto h-full">
       {colunas.map((coluna) => {
         const colunaTarefas = tarefas
-          .filter((t) => t.coluna_id === coluna.id)
+          .filter((t) => t.coluna_id === coluna.id && !t.parent_task_id)
           .sort((a, b) => a.posicao - b.posicao);
 
         return (
@@ -77,10 +77,10 @@ export function KanbanView({ funil }: KanbanViewProps) {
       {showTaskModal && (
         <TaskModal
           funilId={funil.id}
-          colunaId={selectedColunaId!}
+          columnId={selectedColunaId!}
           task={editingTask}
+          allTasks={tarefas}
           onClose={() => setShowTaskModal(false)}
-          onCreate={handleCreateTask}
         />
       )}
     </div>
