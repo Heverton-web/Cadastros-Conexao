@@ -3,6 +3,7 @@ import { authLayout } from "./_auth";
 import { useMemo, useState, useEffect } from "react";
 import { useMapasConsultants, useUpsertConsultant, useDeleteConsultant } from "~/features/mapas/hooks/useMapasData";
 import { useAuth } from "~/lib/auth";
+import { supabase } from "~/lib/supabase";
 import { Plus, Pencil, Trash2, Search } from "lucide-react";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
@@ -26,7 +27,7 @@ const empty = (empresa_id: string): Partial<MapasConsultant> => ({
 function MapasAdminConsultoresPage() {
   const { profile } = useAuth();
   const consQ = useMapasConsultants();
-  const upsertM = useUpsertConsultant();
+  const upsertM = useUpsertConsultant(() => setEditing(null));
   const deleteM = useDeleteConsultant();
 
   const [search, setSearch] = useState("");
@@ -35,6 +36,12 @@ function MapasAdminConsultoresPage() {
 
   const [cities, setCities] = useState<string[]>([]);
   const [loadingCities, setLoadingCities] = useState(false);
+
+  async function getEmpresaId(): Promise<string | null> {
+    if (profile?.empresa_id) return profile.empresa_id;
+    const { data } = await supabase.from("empresas").select("id").limit(1).single();
+    return data?.id ?? null;
+  }
 
   useEffect(() => {
     if (!editing?.state) { setCities([]); return; }
@@ -65,7 +72,7 @@ function MapasAdminConsultoresPage() {
           <h1 className="text-2xl font-bold tracking-tight">Consultores</h1>
           <p className="text-sm text-muted-foreground">{consQ.data?.length ?? 0} cadastrados</p>
         </div>
-        <Button onClick={() => profile?.empresa_id && setEditing(empty(profile.empresa_id))} className="gap-2">
+        <Button onClick={async () => { const eid = await getEmpresaId(); if (eid) setEditing(empty(eid)); }} className="gap-2">
           <Plus className="h-4 w-4" /> Novo consultor
         </Button>
       </div>
@@ -107,29 +114,39 @@ function MapasAdminConsultoresPage() {
 
       <Dialog open={!!editing} onOpenChange={(o) => !o && setEditing(null)}>
         <DialogContent className="max-w-lg">
-          <DialogHeader><DialogTitle>{editing?.id ? "Editar consultor" : "Novo consultor"}</DialogTitle></DialogHeader>
+          <DialogHeader>
+            <div className="flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent/10">
+                <Plus className="h-5 w-5 text-accent" />
+              </div>
+              <div>
+                <DialogTitle>{editing?.id ? "Editar Consultor" : "Novo Consultor"}</DialogTitle>
+                <p className="text-xs text-text-muted mt-0.5">Preencha os dados do consultor</p>
+              </div>
+            </div>
+          </DialogHeader>
           {editing && (
-            <form className="space-y-3" onSubmit={(e) => {
+            <form className="space-y-4 px-6 pb-2" onSubmit={(e) => {
               e.preventDefault();
               editing && upsertM.mutate(editing);
             }}>
-              <fieldset>
-                <label className="text-sm font-medium">Nome *</label>
-                <Input required value={editing.name ?? ""} onChange={(e) => setEditing({ ...editing, name: e.target.value })} />
+              <fieldset className="space-y-1.5">
+                <label className="text-xs font-semibold text-text-muted uppercase tracking-wider">Nome *</label>
+                <Input required value={editing.name ?? ""} onChange={(e) => setEditing({ ...editing, name: e.target.value })} placeholder="Nome do consultor" />
               </fieldset>
               <div className="grid grid-cols-2 gap-3">
-                <fieldset>
-                  <label className="text-sm font-medium">Matrícula</label>
-                  <Input value={editing.registration ?? ""} onChange={(e) => setEditing({ ...editing, registration: e.target.value })} />
+                <fieldset className="space-y-1.5">
+                  <label className="text-xs font-semibold text-text-muted uppercase tracking-wider">Matrícula</label>
+                  <Input value={editing.registration ?? ""} onChange={(e) => setEditing({ ...editing, registration: e.target.value })} placeholder="Nº matrícula" />
                 </fieldset>
-                <fieldset>
-                  <label className="text-sm font-medium">Região</label>
-                  <Input value={editing.region ?? ""} onChange={(e) => setEditing({ ...editing, region: e.target.value })} />
+                <fieldset className="space-y-1.5">
+                  <label className="text-xs font-semibold text-text-muted uppercase tracking-wider">Região</label>
+                  <Input value={editing.region ?? ""} onChange={(e) => setEditing({ ...editing, region: e.target.value })} placeholder="Região de atuação" />
                 </fieldset>
               </div>
               <div className="grid grid-cols-2 gap-3">
-                <fieldset>
-                  <label className="text-sm font-medium">UF *</label>
+                <fieldset className="space-y-1.5">
+                  <label className="text-xs font-semibold text-text-muted uppercase tracking-wider">UF *</label>
                   <Select value={editing.state} onValueChange={(v) => setEditing({ ...editing, state: v, region: "" })}>
                     <SelectTrigger><SelectValue /></SelectTrigger>
                     <SelectContent className="max-h-60">
@@ -137,9 +154,9 @@ function MapasAdminConsultoresPage() {
                     </SelectContent>
                   </Select>
                 </fieldset>
-                <fieldset>
-                  <label className="text-sm font-medium">Supervisor</label>
-                  <Input value={editing.supervisor ?? ""} onChange={(e) => setEditing({ ...editing, supervisor: e.target.value })} />
+                <fieldset className="space-y-1.5">
+                  <label className="text-xs font-semibold text-text-muted uppercase tracking-wider">Supervisor</label>
+                  <Input value={editing.supervisor ?? ""} onChange={(e) => setEditing({ ...editing, supervisor: e.target.value })} placeholder="Nome do supervisor" />
                 </fieldset>
               </div>
               <DialogFooter>

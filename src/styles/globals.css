@@ -151,17 +151,17 @@ body.modal-open {
 :root {
   color-scheme: dark;
 
-  --state-exclusive: #c09c48;
-  --state-nonexclusive: #876e32;
-  --state-empty: #1e293b;
-  --state-empty-fg: #475569;
-  --map-stroke: rgb(98, 98, 98);
+  --state-exclusive: #c9a655;
+  --state-nonexclusive: #8b7340;
+  --state-empty: #162032;
+  --state-empty-fg: #3b5998;
+  --map-stroke: #2a3f5f;
   --map-stroke-selected: #c9a655;
-  --heat-1: #1e293b;
-  --heat-2: #463a1f;
-  --heat-3: #715b2f;
-  --heat-4: #a8873a;
-  --heat-5: #c9a655;
+  --heat-1: #162032;
+  --heat-2: #1a2d4a;
+  --heat-3: #1e3a5f;
+  --heat-4: #2563a0;
+  --heat-5: #3b82f6;
 }
 
 /* ── Select nativo estilizado ── */

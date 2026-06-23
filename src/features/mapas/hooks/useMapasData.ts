@@ -33,7 +33,7 @@ export function useMapasConsultants() {
   });
 }
 
-export function useUpsertDistributor() {
+export function useUpsertDistributor(onSuccess?: () => void) {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async (payload: Partial<MapasDistributor>) => {
@@ -55,6 +55,7 @@ export function useUpsertDistributor() {
     },
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["mapas", "distributors"] });
+      onSuccess?.();
     },
   });
 }
@@ -71,7 +72,7 @@ export function useDeleteDistributor() {
   });
 }
 
-export function useUpsertConsultant() {
+export function useUpsertConsultant(onSuccess?: () => void) {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async (payload: Partial<MapasConsultant>) => {
@@ -93,6 +94,7 @@ export function useUpsertConsultant() {
     },
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["mapas", "consultants"] });
+      onSuccess?.();
     },
   });
 }

@@ -3,6 +3,7 @@ import { authLayout } from "./_auth";
 import { useMemo, useState, useEffect } from "react";
 import { useMapasDistributors, useUpsertDistributor, useDeleteDistributor } from "~/features/mapas/hooks/useMapasData";
 import { useAuth } from "~/lib/auth";
+import { supabase } from "~/lib/supabase";
 import { Plus, Pencil, Trash2, Search } from "lucide-react";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
@@ -26,7 +27,7 @@ const empty = (empresa_id: string): Partial<MapasDistributor> => ({
 function MapasAdminDistribuidoresPage() {
   const { profile } = useAuth();
   const distQ = useMapasDistributors();
-  const upsertM = useUpsertDistributor();
+  const upsertM = useUpsertDistributor(() => setEditing(null));
   const deleteM = useDeleteDistributor();
 
   const [search, setSearch] = useState("");
@@ -35,6 +36,12 @@ function MapasAdminDistribuidoresPage() {
 
   const [cities, setCities] = useState<string[]>([]);
   const [loadingCities, setLoadingCities] = useState(false);
+
+  async function getEmpresaId(): Promise<string | null> {
+    if (profile?.empresa_id) return profile.empresa_id;
+    const { data } = await supabase.from("empresas").select("id").limit(1).single();
+    return data?.id ?? null;
+  }
 
   useEffect(() => {
     if (!editing?.state) { setCities([]); return; }
@@ -65,7 +72,7 @@ function MapasAdminDistribuidoresPage() {
           <h1 className="text-2xl font-bold tracking-tight">Distribuidores</h1>
           <p className="text-sm text-muted-foreground">{distQ.data?.length ?? 0} cadastrados</p>
         </div>
-        <Button onClick={() => profile?.empresa_id && setEditing(empty(profile.empresa_id))} className="gap-2">
+        <Button onClick={async () => { const eid = await getEmpresaId(); if (eid) setEditing(empty(eid)); }} className="gap-2">
           <Plus className="h-4 w-4" /> Novo distribuidor
         </Button>
       </div>
@@ -107,26 +114,36 @@ function MapasAdminDistribuidoresPage() {
 
       <Dialog open={!!editing} onOpenChange={(o) => !o && setEditing(null)}>
         <DialogContent className="max-w-lg">
-          <DialogHeader><DialogTitle>{editing?.id ? "Editar distribuidor" : "Novo distribuidor"}</DialogTitle></DialogHeader>
+          <DialogHeader>
+            <div className="flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent/10">
+                <Plus className="h-5 w-5 text-accent" />
+              </div>
+              <div>
+                <DialogTitle>{editing?.id ? "Editar Distribuidor" : "Novo Distribuidor"}</DialogTitle>
+                <p className="text-xs text-text-muted mt-0.5">Preencha os dados do distribuidor</p>
+              </div>
+            </div>
+          </DialogHeader>
           {editing && (
-            <form className="space-y-3" onSubmit={(e) => {
+            <form className="space-y-4 px-6 pb-2" onSubmit={(e) => {
               e.preventDefault();
               if (editing) {
                 const color = editing.category === "EXCLUSIVE" ? "#4169e1" : "#333333";
                 upsertM.mutate({ ...editing, pin_color: color });
               }
             }}>
-              <fieldset>
-                <label className="text-sm font-medium">Nome *</label>
-                <Input required value={editing.name ?? ""} onChange={(e) => setEditing({ ...editing, name: e.target.value })} />
+              <fieldset className="space-y-1.5">
+                <label className="text-xs font-semibold text-text-muted uppercase tracking-wider">Nome *</label>
+                <Input required value={editing.name ?? ""} onChange={(e) => setEditing({ ...editing, name: e.target.value })} placeholder="Nome do distribuidor" />
               </fieldset>
               <div className="grid grid-cols-2 gap-3">
-                <fieldset>
-                  <label className="text-sm font-medium">Código</label>
-                  <Input value={editing.code ?? ""} onChange={(e) => setEditing({ ...editing, code: e.target.value })} />
+                <fieldset className="space-y-1.5">
+                  <label className="text-xs font-semibold text-text-muted uppercase tracking-wider">Código</label>
+                  <Input value={editing.code ?? ""} onChange={(e) => setEditing({ ...editing, code: e.target.value })} placeholder="Código interno" />
                 </fieldset>
-                <fieldset>
-                  <label className="text-sm font-medium">Categoria *</label>
+                <fieldset className="space-y-1.5">
+                  <label className="text-xs font-semibold text-text-muted uppercase tracking-wider">Categoria *</label>
                   <Select value={editing.category} onValueChange={(v) => setEditing({ ...editing, category: v as MapasDistributor["category"] })}>
                     <SelectTrigger><SelectValue /></SelectTrigger>
                     <SelectContent>
@@ -137,8 +154,8 @@ function MapasAdminDistribuidoresPage() {
                 </fieldset>
               </div>
               <div className="grid grid-cols-[120px_1fr] gap-3">
-                <fieldset>
-                  <label className="text-sm font-medium">UF *</label>
+                <fieldset className="space-y-1.5">
+                  <label className="text-xs font-semibold text-text-muted uppercase tracking-wider">UF *</label>
                   <Select value={editing.state} onValueChange={(v) => setEditing({ ...editing, state: v, city: "" })}>
                     <SelectTrigger><SelectValue /></SelectTrigger>
                     <SelectContent className="max-h-60">
@@ -146,8 +163,8 @@ function MapasAdminDistribuidoresPage() {
                     </SelectContent>
                   </Select>
                 </fieldset>
-                <fieldset>
-                  <label className="text-sm font-medium">Cidade</label>
+                <fieldset className="space-y-1.5">
+                  <label className="text-xs font-semibold text-text-muted uppercase tracking-wider">Cidade</label>
                   <Input
                     list="dist-cities-list"
                     value={editing.city ?? ""}

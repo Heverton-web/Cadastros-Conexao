@@ -246,6 +246,12 @@ export function CentralAcoesTab({ empresaId }: { empresaId?: string } = {}) {
   const [showCurlImporter, setShowCurlImporter] = useState(false);
 
   useEffect(() => {
+    if (forcedEmpresaId) {
+      setActiveEmpresaId(forcedEmpresaId);
+    }
+  }, [forcedEmpresaId]);
+
+  useEffect(() => {
     carregarTudo();
   }, [activeEmpresaId, activeModuleKey]);
 
@@ -825,58 +831,67 @@ export function CentralAcoesTab({ empresaId }: { empresaId?: string } = {}) {
   const eventosGerais = activeModule?.events?.map(e => ({ 
     value: e.key, 
     label: e.label, 
-    tipo: "button_action" // Default fallback if needed
+    tipo: e.type || "status_change"
   })) || [];
+
+  const eventosStatus = eventosGerais.filter(e => e.tipo === "status_change");
+  const eventosBotao = eventosGerais.filter(e => e.tipo === "button_action");
 
   return (
     <div className="flex flex-col gap-4">
-      {/* Navegação da Central */}
-      <div className="flex gap-2 border-b border-input-border pb-2">
-        <button 
-          onClick={() => setActiveTab("workflows")} 
-          className={`flex items-center gap-1.5 px-4 py-2 text-xs font-bold rounded-lg transition-colors ${activeTab === "workflows" ? "bg-accent text-white" : "bg-card text-text-muted hover:text-text-main"}`}
-        >
-          <GitFork size={14}/> Matriz de Gatilhos (Workflows)
-        </button>
-        <button 
-          onClick={() => { setActiveTab("logs"); carregarLogs(); }} 
-          className={`flex items-center gap-1.5 px-4 py-2 text-xs font-bold rounded-lg transition-colors ${activeTab === "logs" ? "bg-accent text-white" : "bg-card text-text-muted hover:text-text-main"}`}
-        >
-          <History size={14}/> Logs de Execução
-        </button>
-      </div>
+      {/* Header com Abas e Filtros */}
+      <div className="flex flex-col xl:flex-row xl:items-end justify-between gap-4 border-b border-input-border pb-4 mb-8">
+        
+        {/* Abas */}
+        <div className="flex gap-2 w-full xl:w-auto overflow-x-auto scrollbar-hide">
+          <button 
+            onClick={() => setActiveTab("workflows")} 
+            className={`flex items-center justify-center gap-1.5 px-4 py-2.5 text-xs font-bold rounded-lg transition-colors shrink-0 flex-1 xl:flex-none ${activeTab === "workflows" ? "bg-accent text-white" : "bg-card text-text-muted hover:text-text-main border border-input-border/50"}`}
+          >
+            <GitFork size={14}/> 
+            <span className="hidden sm:inline">Matriz de Gatilhos (Workflows)</span>
+          </button>
+          <button 
+            onClick={() => { setActiveTab("logs"); carregarLogs(); }} 
+            className={`flex items-center justify-center gap-1.5 px-4 py-2.5 text-xs font-bold rounded-lg transition-colors shrink-0 flex-1 xl:flex-none ${activeTab === "logs" ? "bg-accent text-white" : "bg-card text-text-muted hover:text-text-main border border-input-border/50"}`}
+          >
+            <History size={14}/> 
+            <span className="hidden sm:inline">Logs de Execução</span>
+          </button>
+        </div>
 
-      {/* Filtros da Central */}
-      <div className="flex flex-col sm:flex-row gap-6 py-4 mb-4 border-b border-input-border">
-        {canSelectEmpresa && (
-          <div className="flex flex-col gap-1 w-full md:w-64 shrink-0">
-            <label className="text-[10px] font-bold text-text-muted uppercase tracking-wider">Empresa</label>
+        {/* Seletores */}
+        <div className="flex flex-col sm:flex-row gap-3 w-full xl:w-auto">
+          {canSelectEmpresa && (
+            <div className="flex flex-col gap-1 w-full sm:w-64 shrink-0">
+              <label className="text-[10px] font-bold text-text-muted uppercase tracking-wider">Empresa</label>
+              <select
+                value={activeEmpresaId}
+                onChange={e => setActiveEmpresaId(e.target.value)}
+                className="w-full rounded-xl border border-input-border bg-bg-dark px-4 py-2.5 text-sm font-semibold text-text-main outline-none focus:border-accent transition-all cursor-pointer hover:border-input-border/80"
+              >
+                <option value="global" className="bg-bg-dark text-text-main font-bold" style={{ backgroundColor: '#0f172a', color: '#f8fafc' }}>Global (Padrão)</option>
+                <optgroup label="Específicas por Empresa" className="bg-bg-dark text-text-muted" style={{ backgroundColor: '#0f172a', color: '#94a3b8' }}>
+                  {empresas.map(emp => (
+                    <option key={emp.id} value={emp.id} className="bg-bg-dark text-text-main font-medium" style={{ backgroundColor: '#0f172a', color: '#f8fafc' }}>{emp.razao_social}</option>
+                  ))}
+                </optgroup>
+              </select>
+            </div>
+          )}
+          
+          <div className="flex flex-col gap-1 w-full sm:w-64 shrink-0">
+            <label className="text-[10px] font-bold text-text-muted uppercase tracking-wider">Módulo</label>
             <select
-              value={activeEmpresaId}
-              onChange={e => setActiveEmpresaId(e.target.value)}
-              className="w-full rounded-xl border border-input-border bg-bg-dark px-4 py-3 text-sm font-semibold text-text-main outline-none focus:border-accent transition-all cursor-pointer hover:border-input-border/80"
+              value={activeModuleKey}
+              onChange={e => setActiveModuleKey(e.target.value)}
+              className="w-full rounded-xl border border-input-border bg-bg-dark px-4 py-2.5 text-sm font-semibold text-text-main outline-none focus:border-accent transition-all cursor-pointer hover:border-input-border/80"
             >
-              <option value="global" className="bg-bg-dark text-text-main font-bold" style={{ backgroundColor: '#0f172a', color: '#f8fafc' }}>Global (Padrão)</option>
-              <optgroup label="Específicas por Empresa" className="bg-bg-dark text-text-muted" style={{ backgroundColor: '#0f172a', color: '#94a3b8' }}>
-                {empresas.map(emp => (
-                  <option key={emp.id} value={emp.id} className="bg-bg-dark text-text-main font-medium" style={{ backgroundColor: '#0f172a', color: '#f8fafc' }}>{emp.razao_social}</option>
-                ))}
-              </optgroup>
+              {getAllModules().map(mod => (
+                <option key={mod.key} value={mod.key} className="bg-bg-dark text-text-main font-medium py-1">{mod.nome}</option>
+              ))}
             </select>
           </div>
-        )}
-        
-        <div className="flex flex-col gap-1 w-full md:w-64 shrink-0 md:ml-auto">
-          <label className="text-[10px] font-bold text-text-muted uppercase tracking-wider">Módulo</label>
-          <select
-            value={activeModuleKey}
-            onChange={e => setActiveModuleKey(e.target.value)}
-            className="w-full rounded-xl border border-input-border bg-bg-dark px-4 py-3 text-sm font-semibold text-text-main outline-none focus:border-accent transition-all cursor-pointer hover:border-input-border/80"
-          >
-            {getAllModules().map(mod => (
-              <option key={mod.key} value={mod.key} className="bg-bg-dark text-text-main font-medium py-1" style={{ backgroundColor: '#0f172a', color: '#f8fafc' }}>{mod.nome}</option>
-            ))}
-          </select>
         </div>
       </div>
 
@@ -938,9 +953,16 @@ export function CentralAcoesTab({ empresaId }: { empresaId?: string } = {}) {
                       className="w-full rounded-lg border border-input-border bg-bg-dark px-3 py-2 text-xs text-text-main outline-none focus:border-accent"
                     >
                       <option value="" className="bg-bg-dark text-text-main">Vincular a qual evento?</option>
-                      <optgroup label="Eventos do Módulo" className="bg-bg-dark text-text-muted">
-                        {eventosGerais.map(e => <option key={e.value} value={e.value} className="bg-bg-dark text-text-main">{e.label}</option>)}
-                      </optgroup>
+                      {eventosStatus.length > 0 && (
+                        <optgroup label="Eventos de Status" className="bg-bg-dark text-text-muted">
+                          {eventosStatus.map(e => <option key={e.value} value={e.value} className="bg-bg-dark text-text-main">{e.label}</option>)}
+                        </optgroup>
+                      )}
+                      {eventosBotao.length > 0 && (
+                        <optgroup label="Ações de Botão" className="bg-bg-dark text-text-muted">
+                          {eventosBotao.map(e => <option key={e.value} value={e.value} className="bg-bg-dark text-text-main">{e.label}</option>)}
+                        </optgroup>
+                      )}
                     </select>
                   </div>
                 </div>
@@ -1525,11 +1547,20 @@ export function CentralAcoesTab({ empresaId }: { empresaId?: string } = {}) {
                 className="w-full rounded-lg border border-input-border bg-bg-dark px-3 py-2 text-xs text-text-main font-semibold outline-none focus:border-accent"
               >
                 <option value="todos" className="bg-bg-dark text-text-main">Mostrar Todos</option>
-                <optgroup label="Eventos do Módulo" className="bg-bg-dark text-text-muted">
-                  {eventosGerais.map(e => (
-                    <option key={e.value} value={e.value} className="bg-bg-dark text-text-main">{e.label}</option>
-                  ))}
-                </optgroup>
+                {eventosStatus.length > 0 && (
+                  <optgroup label="Eventos de Status" className="bg-bg-dark text-text-muted">
+                    {eventosStatus.map(e => (
+                      <option key={e.value} value={e.value} className="bg-bg-dark text-text-main">{e.label}</option>
+                    ))}
+                  </optgroup>
+                )}
+                {eventosBotao.length > 0 && (
+                  <optgroup label="Ações de Botão" className="bg-bg-dark text-text-muted">
+                    {eventosBotao.map(e => (
+                      <option key={e.value} value={e.value} className="bg-bg-dark text-text-main">{e.label}</option>
+                    ))}
+                  </optgroup>
+                )}
               </select>
             </div>
           </div>
