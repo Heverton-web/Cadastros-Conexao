@@ -33,6 +33,10 @@
 - Adicionar UI de bind eventos→webhooks no configurador de módulo
 - Criar módulo `visitas` como segundo módulo completo
 
+## Global Rules
+- **Deploy**: commit, build docker, push e service update na VPS só executar quando o usuário disser "deploy", "/deploy" ou "fazer deploy" explicitamente. Usar a skill `deploy-vps` nestes casos.
+- **Build local**: `npm run build` pode ser executado livremente para verificar erros, sem precisar de autorização.
+
 ## Important
 - Pasta: `C:\Users\trcnologia\Desktop\bubble_reverse_engineering\erp-conexao`
 - Build: `npm run build` (compila sem erros)
@@ -40,3 +44,4 @@
 - MCP Supabase: `supabase-mcp-server/dist/index.js`
 - Super admin global (`empresa_id = null`)
 - ALL_PERMISSIONS movido para `features/cadastros/permissions.ts`
+- Skill de deploy: `.agents/skills/deploy-vps/SKILL.md`
