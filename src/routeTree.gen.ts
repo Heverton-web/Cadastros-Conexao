@@ -86,8 +86,9 @@ export const routeTree = rootRoute.addChildren([
     npsPesquisasRoute,
     npsRelatoriosRoute,
 
-    funisRoute,
-    funisDashboardRoute,
-    funilDetalleRoute,
+    funisRoute.addChildren([
+      funisDashboardRoute,
+      funilDetalleRoute,
+    ]),
   ]),
 ]);

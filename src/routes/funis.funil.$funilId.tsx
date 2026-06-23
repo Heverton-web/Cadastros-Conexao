@@ -1,9 +1,9 @@
 import { createRoute } from "@tanstack/react-router";
-import { authLayout } from "./_auth";
+import { funisRoute } from "./funis";
 import { FunilDetallePage } from "~/features/funis/components/FunilDetallePage";
 
 export const funilDetalleRoute = createRoute({
-  getParentRoute: () => authLayout,
-  path: "/funis/funil/$funilId",
+  getParentRoute: () => funisRoute,
+  path: "/funil/$funilId",
   component: FunilDetallePage,
 });
