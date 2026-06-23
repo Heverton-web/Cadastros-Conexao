@@ -6,10 +6,12 @@ import { AuthProvider } from "~/lib/auth";
 import { registerModule } from "~/registry";
 import { cadastrosModule } from "~/features/cadastros/module";
 import { empresasModule } from "~/features/empresas/module";
+import { mapasModule } from "~/features/mapas/module";
 import "~/styles/globals.css";
 
 registerModule(cadastrosModule);
 registerModule(empresasModule);
+registerModule(mapasModule);
 
 const router = createRouter({ routeTree });
 

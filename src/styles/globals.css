@@ -150,9 +150,38 @@ body.modal-open {
 /* ── Ajustes Globais Nativos (Formulários) ── */
 :root {
   color-scheme: dark;
+
+  --state-exclusive: #c09c48;
+  --state-nonexclusive: #876e32;
+  --state-empty: #1e293b;
+  --state-empty-fg: #475569;
+  --map-stroke: rgb(98, 98, 98);
+  --map-stroke-selected: #c9a655;
+  --heat-1: #1e293b;
+  --heat-2: #463a1f;
+  --heat-3: #715b2f;
+  --heat-4: #a8873a;
+  --heat-5: #c9a655;
 }
 
 option {
   background-color: var(--color-bg) !important;
   color: var(--color-text-main) !important;
 }
+
+/* ── Mapas ── */
+.state-faded {
+  opacity: 0.4;
+}
+
+/* ── Accordion (radix) ── */
+@keyframes accordion-up {
+  from { height: var(--radix-accordion-content-height); }
+  to { height: 0; }
+}
+@keyframes accordion-down {
+  from { height: 0; }
+  to { height: var(--radix-accordion-content-height); }
+}
+.animate-accordion-up { animation: accordion-up 0.2s ease-out; }
+.animate-accordion-down { animation: accordion-down 0.2s ease-out; }

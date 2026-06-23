@@ -23,6 +23,13 @@ import { adminSuperDemosRoute } from "./routes/admin.super.demos";
 import { adminLaboratorioRoute } from "./routes/admin.laboratorio";
 import { adminEmpresaConfigBancoRoute } from "./routes/admin.empresa.config.banco";
 import { adminEmpresaConfigBrandingRoute } from "./routes/admin.empresa.config.branding";
+import { mapasRoute } from "./routes/mapas";
+import { mapasDistribuidoresRoute } from "./routes/mapas.distribuidores";
+import { mapasConsultoresRoute } from "./routes/mapas.consultores";
+import { mapasAdminRoute } from "./routes/mapas.admin";
+import { mapasAdminInsightsRoute } from "./routes/mapas.admin.insights";
+import { mapasAdminDistribuidoresRoute } from "./routes/mapas.admin.distribuidores";
+import { mapasAdminConsultoresRoute } from "./routes/mapas.admin.consultores";
 
 export const routeTree = rootRoute.addChildren([
   loginRoute,
@@ -49,5 +56,12 @@ export const routeTree = rootRoute.addChildren([
     adminLaboratorioRoute,
     adminEmpresaConfigBancoRoute,
     adminEmpresaConfigBrandingRoute,
+    mapasRoute,
+    mapasDistribuidoresRoute,
+    mapasConsultoresRoute,
+    mapasAdminRoute,
+    mapasAdminInsightsRoute,
+    mapasAdminDistribuidoresRoute,
+    mapasAdminConsultoresRoute,
   ]),
 ]);
