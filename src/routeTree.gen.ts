@@ -23,6 +23,7 @@ import { adminSuperDemosRoute } from "./routes/admin.super.demos";
 import { adminLaboratorioRoute } from "./routes/admin.laboratorio";
 import { adminEmpresaConfigBancoRoute } from "./routes/admin.empresa.config.banco";
 import { adminEmpresaConfigBrandingRoute } from "./routes/admin.empresa.config.branding";
+import { adminWebhooksRoute } from "./routes/admin.webhooks";
 import { mapasRoute } from "./routes/mapas";
 import { mapasDistribuidoresRoute } from "./routes/mapas.distribuidores";
 import { mapasConsultoresRoute } from "./routes/mapas.consultores";
@@ -56,6 +57,7 @@ export const routeTree = rootRoute.addChildren([
     adminLaboratorioRoute,
     adminEmpresaConfigBancoRoute,
     adminEmpresaConfigBrandingRoute,
+    adminWebhooksRoute,
     mapasRoute,
     mapasDistribuidoresRoute,
     mapasConsultoresRoute,

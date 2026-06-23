@@ -1,5 +1,5 @@
 import {
-  LayoutDashboard, Users, UserCircle, BarChart3, Settings,
+  LayoutDashboard, Users, UserCircle, BarChart3, Settings, Globe,
 } from "lucide-react";
 import { registerModule, registerNavItem, registerPermission } from "~/registry";
 import type { ModuleDefinition } from "~/registry";
@@ -88,8 +88,14 @@ export const cadastrosModule: ModuleDefinition = {
       moduloKey: "cadastros-conexao",
     });
 
-    // credenciais removido — agora está em Configuração (nav lateral do módulo empresas-core)
-
-    // admin-config removido — é item global, não específico de módulo
+    registerNavItem({
+      id: "cadastros-webhooks",
+      label: "Webhooks",
+      icon: Globe,
+      to: "/admin/webhooks",
+      permissionCheck: (perms) => perms?.gerenciar_config === true,
+      order: 60,
+      moduloKey: "cadastros-conexao",
+    });
   },
 };

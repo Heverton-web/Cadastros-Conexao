@@ -1,4 +1,4 @@
-import { Map, Building2, UserCircle, BarChart3 } from "lucide-react";
+import { Map, Building2, UserCircle, BarChart3, Globe } from "lucide-react";
 import { registerModule, registerNavItem, registerPermission } from "~/registry";
 import type { ModuleDefinition } from "~/registry";
 import { MAPAS_PERMISSIONS } from "./permissions";
@@ -23,7 +23,16 @@ export const mapasModule: ModuleDefinition = {
     { key: "geral", label: "Geral" },
     { key: "permissoes", label: "Permissões" },
   ],
-  events: [],
+  events: [
+    { key: "mapas.distribuidor.criado", label: "Distribuidor Criado", descricao: "Dispara quando um novo distribuidor é adicionado" },
+    { key: "mapas.distribuidor.atualizado", label: "Distribuidor Atualizado", descricao: "Dispara quando um distribuidor é editado" },
+    { key: "mapas.distribuidor.excluido", label: "Distribuidor Excluído", descricao: "Dispara quando um distribuidor é removido" },
+    { key: "mapas.consultor.criado", label: "Consultor Criado", descricao: "Dispara quando um novo consultor é adicionado" },
+    { key: "mapas.consultor.atualizado", label: "Consultor Atualizado", descricao: "Dispara quando um consultor é editado" },
+    { key: "mapas.consultor.excluido", label: "Consultor Excluído", descricao: "Dispara quando um consultor é removido" },
+    { key: "mapas.estado.clicado", label: "Estado Clicado", descricao: "Dispara quando um estado é clicado no mapa" },
+    { key: "mapas.pin.clicado", label: "Pin Clicado", descricao: "Dispara quando um pin é clicado no mapa" },
+  ],
   setup: () => {
     for (const p of MAPAS_PERMISSIONS) {
       registerPermission({ key: p.key, label: p.label, description: p.description, group: p.group });
@@ -37,6 +46,8 @@ export const mapasModule: ModuleDefinition = {
       permissionCheck: (perms) => perms?.mapas_ver_mapa_publico === true,
       order: 10,
       moduloKey: "mapas-interativos",
+      noChildMatch: true,
+      matchPaths: ["/mapas/distribuidores", "/mapas/consultores"],
     });
 
     registerNavItem({
@@ -66,6 +77,16 @@ export const mapasModule: ModuleDefinition = {
       to: "/mapas/admin/insights",
       permissionCheck: (perms) => perms?.mapas_ver_insights === true,
       order: 40,
+      moduloKey: "mapas-interativos",
+    });
+
+    registerNavItem({
+      id: "mapas-webhooks",
+      label: "Webhooks",
+      icon: Globe,
+      to: "/admin/webhooks",
+      permissionCheck: (perms) => perms?.mapas_gerir_webhooks === true,
+      order: 50,
       moduloKey: "mapas-interativos",
     });
   },
