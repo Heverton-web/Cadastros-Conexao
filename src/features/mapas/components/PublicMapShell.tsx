@@ -91,12 +91,6 @@ export function PublicMapShell({ variant }: { variant: Variant }) {
             </button>
           </nav>
 
-          <button
-            onClick={() => navigate({ to: "/mapas/admin/insights" })}
-            className="shrink-0 rounded-md border border-accent/40 px-3 py-2 text-xs font-medium text-accent hover:bg-accent/10 sm:text-sm"
-          >
-            Admin
-          </button>
         </div>
       </header>
 

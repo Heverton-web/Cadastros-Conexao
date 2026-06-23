@@ -46,7 +46,7 @@ export function useNavItems(selectedModuleKey?: string): NavSection[] {
       moduloKey = modulosAcessiveis[0];
     }
 
-    let registryItems = getNavItems(p as Record<string, boolean> | null, moduloKey);
+    let registryItems = moduloKey ? getNavItemsByModule(moduloKey) : [];
 
     const isSuper = profile?.is_super_admin === true;
     const isCompanyAdmin = !isSuper && profile?.role === "admin" && !!profile?.empresa_id;

@@ -80,14 +80,5 @@ export const mapasModule: ModuleDefinition = {
       moduloKey: "mapas-interativos",
     });
 
-    registerNavItem({
-      id: "mapas-webhooks",
-      label: "Webhooks",
-      icon: Globe,
-      to: "/admin/webhooks",
-      permissionCheck: (perms) => perms?.mapas_gerir_webhooks === true,
-      order: 50,
-      moduloKey: "mapas-interativos",
-    });
   },
 };

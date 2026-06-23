@@ -61,6 +61,7 @@ export const cadastrosModule: ModuleDefinition = {
       label: "Clientes",
       icon: Users,
       to: "/clientes",
+      matchPaths: ["/consultor/clientes"],
       permissionCheck: (perms) =>
         perms?.ver_todos_cadastros === true || perms?.gerar_links === true,
       order: 2,
@@ -88,14 +89,5 @@ export const cadastrosModule: ModuleDefinition = {
       moduloKey: "cadastros-conexao",
     });
 
-    registerNavItem({
-      id: "cadastros-webhooks",
-      label: "Webhooks",
-      icon: Globe,
-      to: "/admin/webhooks",
-      permissionCheck: (perms) => perms?.gerenciar_config === true,
-      order: 60,
-      moduloKey: "cadastros-conexao",
-    });
   },
 };
