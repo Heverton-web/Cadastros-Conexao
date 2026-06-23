@@ -46,12 +46,12 @@ CREATE TABLE IF NOT EXISTS mapas_consultants (
 DROP TRIGGER IF EXISTS mapas_distributors_set_updated_at ON mapas_distributors;
 CREATE TRIGGER mapas_distributors_set_updated_at
   BEFORE UPDATE ON mapas_distributors FOR EACH ROW
-  EXECUTE FUNCTION set_updated_at();
+  EXECUTE FUNCTION update_updated_at_column();
 
 DROP TRIGGER IF EXISTS mapas_consultants_set_updated_at ON mapas_consultants;
 CREATE TRIGGER mapas_consultants_set_updated_at
   BEFORE UPDATE ON mapas_consultants FOR EACH ROW
-  EXECUTE FUNCTION set_updated_at();
+  EXECUTE FUNCTION update_updated_at_column();
 
 -- Índices
 CREATE INDEX IF NOT EXISTS mapas_distributors_empresa_idx ON mapas_distributors(empresa_id);
@@ -74,12 +74,14 @@ CREATE POLICY mapas_consultants_select_public ON mapas_consultants
 
 -- Policies: ALL para autenticados (controle via app permissions)
 DROP POLICY IF EXISTS mapas_distributors_all_authenticated ON mapas_distributors;
-CREATE POLICY mapas_distributors_all_authenticated ON mapas_distributors
-  FOR ALL TO authenticated USING (true) WITH CHECK (true);
+CREATE POLICY mapas_distributors_insert_authenticated ON mapas_distributors FOR INSERT TO authenticated WITH CHECK (true);
+CREATE POLICY mapas_distributors_update_authenticated ON mapas_distributors FOR UPDATE TO authenticated USING (true) WITH CHECK (true);
+CREATE POLICY mapas_distributors_delete_authenticated ON mapas_distributors FOR DELETE TO authenticated USING (true);
 
 DROP POLICY IF EXISTS mapas_consultants_all_authenticated ON mapas_consultants;
-CREATE POLICY mapas_consultants_all_authenticated ON mapas_consultants
-  FOR ALL TO authenticated USING (true) WITH CHECK (true);
+CREATE POLICY mapas_consultants_insert_authenticated ON mapas_consultants FOR INSERT TO authenticated WITH CHECK (true);
+CREATE POLICY mapas_consultants_update_authenticated ON mapas_consultants FOR UPDATE TO authenticated USING (true) WITH CHECK (true);
+CREATE POLICY mapas_consultants_delete_authenticated ON mapas_consultants FOR DELETE TO authenticated USING (true);
 
 -- Grants
 GRANT SELECT ON mapas_distributors TO anon, authenticated;
