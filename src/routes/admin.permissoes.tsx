@@ -15,10 +15,10 @@ import {
 import toast from "react-hot-toast";
 import { cn } from "~/lib/utils";
 
-export const adminSuperPermissoesRoute = createRoute({
+export const adminPermissoesRoute = createRoute({
   getParentRoute: () => authLayout,
-  path: "/admin/super/permissoes",
-  component: AdminSuperPermissoes,
+  path: "/admin/permissoes",
+  component: AdminPermissoes,
 });
 
 type ProfileRow = {
@@ -40,7 +40,7 @@ type ModuloUIO = {
   acoes: { key: string; label: string; group: string }[];
 };
 
-function AdminSuperPermissoes() {
+function AdminPermissoes() {
   const { profile } = useAuth();
   const isSuper = profile?.is_super_admin === true;
   const empresaVinculada = profile?.empresa_id as string | undefined;
@@ -89,7 +89,7 @@ function AdminSuperPermissoes() {
   }, []);
 
   useEffect(() => {
-    if (profile?.is_super_admin || (!profile?.is_super_admin && empresaVinculada)) {
+    if (isSuper || empresaVinculada) {
       Promise.all([carregarUsuarios(filtroEmpresa || undefined), listarEmpresas()])
         .then(([_, emps]) => {
           if (isSuper) setEmpresas(emps);
@@ -142,10 +142,10 @@ function AdminSuperPermissoes() {
     setLoading(false);
   }
 
-  if (!profile?.is_super_admin && !empresaVinculada) {
+  if (!isSuper && !empresaVinculada) {
     return (
       <div className="flex items-center justify-center p-8">
-        <p className="text-text-muted text-sm">Acesso restrito a Super Admin ou Admin de empresa.</p>
+        <p className="text-text-muted text-sm">Acesso restrito a Super Admin ou usuários com empresa vinculada.</p>
       </div>
     );
   }

@@ -10,8 +10,8 @@ import { empresasModule } from "~/features/empresas/module";
 import { mapasModule } from "~/features/mapas/module";
 import "~/styles/globals.css";
 
-registerModule(cadastrosModule);
 registerModule(empresasModule);
+registerModule(cadastrosModule);
 registerModule(mapasModule);
 
 const router = createRouter({ routeTree });

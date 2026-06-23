@@ -267,7 +267,7 @@ function CredenciaisTab() {
             email: form.email_corporativo,
             whatsapp: form.whatsapp_corporativo || "",
             departamento: form.departamento || "",
-          });
+          }, profile?.empresa_id);
         } catch (err) {
           console.error("Erro ao disparar webhook de credencial:", err);
         }

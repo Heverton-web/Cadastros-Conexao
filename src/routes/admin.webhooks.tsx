@@ -36,10 +36,10 @@ function AdminWebhooksPage() {
     );
   }
 
-  return <WebhooksContent isSuper={isSuper} defaultModulo={search.modulo} />;
+  return <WebhooksContent isSuper={isSuper} empresaId={profile?.empresa_id} defaultModulo={search.modulo} />;
 }
 
-function WebhooksContent({ isSuper, defaultModulo }: { isSuper: boolean; defaultModulo?: string }) {
+function WebhooksContent({ isSuper, empresaId, defaultModulo }: { isSuper: boolean; empresaId?: string | null; defaultModulo?: string }) {
   const [webhooks, setWebhooks] = useState<Webhook[]>([]);
   const [loading, setLoading] = useState(true);
   const [moduloKey, setModuloKey] = useState(defaultModulo || "");
@@ -53,13 +53,13 @@ function WebhooksContent({ isSuper, defaultModulo }: { isSuper: boolean; default
   useEffect(() => {
     if (!moduloKey) { setWebhooks([]); setLoading(false); return; }
     setLoading(true);
-    listarWebhooks()
+    listarWebhooks(empresaId)
       .then((data) => {
         setWebhooks(data.filter((w) => w.modulo_key === moduloKey));
       })
       .catch(() => toast.error("Erro ao carregar webhooks"))
       .finally(() => setLoading(false));
-  }, [moduloKey]);
+  }, [moduloKey, empresaId]);
 
   const webhooksByEvent = useMemo(() => {
     const map = new Map<string, Webhook[]>();
@@ -77,12 +77,12 @@ function WebhooksContent({ isSuper, defaultModulo }: { isSuper: boolean; default
         await atualizarWebhook(id, input);
         toast.success("Webhook atualizado");
       } else {
-        await criarWebhook(input);
+        await criarWebhook({ ...input, empresa_id: empresaId });
         toast.success("Webhook criado");
       }
       setEditing(null);
       setCreating(null);
-      const data = await listarWebhooks();
+      const data = await listarWebhooks(empresaId);
       setWebhooks(data.filter((w) => w.modulo_key === moduloKey));
     } catch {
       toast.error("Erro ao salvar webhook");

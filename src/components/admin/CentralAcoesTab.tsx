@@ -16,16 +16,9 @@ import {
   type ApiConnectorInput,
 } from "~/lib/api_connectors";
 import {
-  listarWebhooks,
-  criarWebhook,
-  atualizarWebhook,
-  toggleWebhook,
-  deletarWebhook,
   listarWebhookLogs,
   EVENTOS_STATUS_CHANGE,
   EVENTOS_BUTTON_ACTION,
-  type Webhook as WebhookLegacy,
-  type WebhookInput as WebhookLegacyInput,
   type WebhookLog
 } from "~/lib/webhooks";
 import {
@@ -36,7 +29,7 @@ import {
   type NotificacaoTemplate
 } from "~/lib/notificacoes";
 
-type ItemType = "api_call" | "webhook" | "notification";
+type ItemType = "api_call" | "notification";
 
 type ListItem = {
   id: string;
@@ -242,9 +235,8 @@ export function CentralAcoesTab() {
   async function carregarTudo() {
     setLoading(true);
     try {
-      const [apis, webhooks, templates, { data: esquema, error: errSchema }, { data: integracoesConfig, error: errInt }] = await Promise.all([
+      const [apis, templates, { data: esquema, error: errSchema }, { data: integracoesConfig, error: errInt }] = await Promise.all([
         listApiConnectors(),
-        listarWebhooks(),
         listarTemplates(),
         supabase.rpc("obter_esquema_banco"),
         supabase.from("integracoes_config").select("*")
@@ -281,18 +273,6 @@ export function CentralAcoesTab() {
           subtitle: a.type === "api_call" ? "API Externa" : `Webhook: ${a.evento || "Sem gatilho"}`,
           isActive: a.is_active,
           raw: a
-        });
-      });
-
-      // Webhooks legados (tabela webhooks)
-      webhooks.forEach(w => {
-        list.push({
-          id: `legacy-${w.id}`,
-          name: w.nome,
-          type: "webhook",
-          subtitle: `Gatilho: ${w.evento} (Legado)`,
-          isActive: w.ativo,
-          raw: w
         });
       });
 
@@ -369,26 +349,14 @@ export function CentralAcoesTab() {
       setNotifDestinatarioTipo(item.raw.destinatario_tipo || "consultor");
       setEditorTab("template");
     } else {
-      const isLegacy = item.id.startsWith("legacy-");
-      if (isLegacy) {
-        const w = item.raw as WebhookLegacy;
-        setApiMethod(w.metodo || "POST");
-        setApiUrl(w.url || "");
-        setApiHeaders(w.headers || {});
-        setApiQuery({});
-        setApiBody(w.body_template ? JSON.stringify(w.body_template, null, 2) : "");
-        setApiEvento(w.evento || null);
-        setApiTipoEvento(w.tipo_evento || null);
-      } else {
-        const c = item.raw as ApiConnector;
-        setApiMethod(c.method || "POST");
-        setApiUrl(c.url || "");
-        setApiHeaders(c.headers || {});
-        setApiQuery(c.query_params || {});
-        setApiBody(c.body_template || "");
-        setApiEvento(c.evento || null);
-        setApiTipoEvento(c.tipo_evento || null);
-      }
+      const c = item.raw as ApiConnector;
+      setApiMethod(c.method || "POST");
+      setApiUrl(c.url || "");
+      setApiHeaders(c.headers || {});
+      setApiQuery(c.query_params || {});
+      setApiBody(c.body_template || "");
+      setApiEvento(c.evento || null);
+      setApiTipoEvento(c.tipo_evento || null);
       setEditorTab("headers");
     }
   }
@@ -397,7 +365,7 @@ export function CentralAcoesTab() {
     const tempId = `new-${tipo}-${Date.now()}`;
     const newItem: ListItem = {
       id: tempId,
-      name: tipo === "api_call" ? "Nova Chamada de API" : tipo === "webhook" ? "Novo Webhook Gatilho" : "Novo Template de Notificação",
+      name: tipo === "api_call" ? "Nova Chamada de API" : "Novo Template de Notificação",
       type: tipo,
       subtitle: "Criando novo...",
       isActive: true,
@@ -464,64 +432,35 @@ export function CentralAcoesTab() {
           toast.success("Notificação atualizada com sucesso!");
         }
       } else {
-        // Tratar APIs e Webhooks
-        const isLegacy = activeItem.id.startsWith("legacy-");
-        
-        if (isLegacy) {
-          // Salvar na tabela legada webhooks
-          let parsedBody = {};
-          try {
-            if (apiBody.trim()) parsedBody = JSON.parse(apiBody);
-          } catch {
-            setSaving(false);
-            return toast.error("O Body Template precisa ser um JSON válido");
-          }
+        const payload: any = {
+          name: formName,
+          type: activeItem.type,
+          method: apiMethod,
+          url: apiUrl,
+          headers: apiHeaders,
+          query_params: apiQuery,
+          body_template: apiBody,
+          response_schema: isNew ? null : activeItem.raw.response_schema || null,
+          evento: apiEvento,
+          tipo_evento: apiTipoEvento,
+          is_active: formIsActive
+        };
 
-          const id = activeItem.id.replace("legacy-", "");
-          const payload: any = {
-            nome: formName,
-            url: apiUrl,
-            metodo: apiMethod,
-            headers: apiHeaders,
-            body_template: parsedBody,
-            evento: apiEvento || undefined,
-            tipo_evento: apiTipoEvento || undefined,
-            ativo: formIsActive
-          };
-          await atualizarWebhook(id, payload);
-          toast.success("Webhook atualizado!");
+        if (isNew) {
+          payload.ordem = proximaOrdem;
+          const created = await createApiConnector(payload);
+          setActiveItem({
+            id: created.id,
+            name: created.name,
+            type: created.type,
+            subtitle: "API Externa",
+            isActive: created.is_active,
+            raw: created
+          });
+          toast.success("Conexão criada com sucesso!");
         } else {
-          // Salvar na tabela api_connectors (Padrão)
-          const payload: any = {
-            name: formName,
-            type: activeItem.type as "api_call" | "webhook",
-            method: apiMethod,
-            url: apiUrl,
-            headers: apiHeaders,
-            query_params: apiQuery,
-            body_template: apiBody,
-            response_schema: isNew ? null : activeItem.raw.response_schema || null,
-            evento: apiEvento,
-            tipo_evento: apiTipoEvento,
-            is_active: formIsActive
-          };
-
-          if (isNew) {
-            payload.ordem = proximaOrdem;
-            const created = await createApiConnector(payload);
-            setActiveItem({
-              id: created.id,
-              name: created.name,
-              type: created.type,
-              subtitle: created.type === "api_call" ? "API Externa" : `Webhook: ${created.evento}`,
-              isActive: created.is_active,
-              raw: created
-            });
-            toast.success("Conexão criada com sucesso!");
-          } else {
-            await updateApiConnector(activeItem.id, payload);
-            toast.success("Conexão atualizada com sucesso!");
-          }
+          await updateApiConnector(activeItem.id, payload);
+          toast.success("Conexão atualizada com sucesso!");
         }
       }
 
@@ -540,9 +479,6 @@ export function CentralAcoesTab() {
       if (activeItem.type === "notification") {
         const id = activeItem.id.replace("notif-", "");
         await deletarTemplate(id);
-      } else if (activeItem.id.startsWith("legacy-")) {
-        const id = activeItem.id.replace("legacy-", "");
-        await deletarWebhook(id);
       } else {
         await deleteApiConnector(activeItem.id);
       }
@@ -593,8 +529,6 @@ export function CentralAcoesTab() {
           }
         });
         toast.success("Notificação testada com sucesso!");
-      } else if (activeItem.id.startsWith("legacy-")) {
-        toast.error("Testes diretos de Webhooks legados não são suportados. Converta para nova estrutura.");
       } else {
         const result = await executeApiConnector(activeItem.id, vars);
         setTestResult(result);
@@ -609,16 +543,12 @@ export function CentralAcoesTab() {
 
   async function toggleStatusAcao(item: ListItem) {
     try {
-      const isLegacy = item.id.startsWith("legacy-");
       const isNotif = item.type === "notification";
       const novoStatus = !item.isActive;
 
       if (isNotif) {
         const id = item.id.replace("notif-", "");
         await atualizarTemplatePorId(id, { ativo: novoStatus });
-      } else if (isLegacy) {
-        const id = item.id.replace("legacy-", "");
-        await toggleWebhook(id, novoStatus);
       } else {
         await updateApiConnector(item.id, { is_active: novoStatus });
       }
@@ -650,11 +580,9 @@ export function CentralAcoesTab() {
     setLoading(true);
     try {
       const promises = acoes.map((item, idx) => {
-        const idLimpo = item.id.replace("notif-", "").replace("legacy-", "");
+        const idLimpo = item.id.replace("notif-", "");
         if (item.type === "notification") {
           return atualizarTemplatePorId(idLimpo, { ordem: idx + 1 });
-        } else if (item.id.startsWith("legacy-")) {
-          return atualizarWebhook(idLimpo, { ordem: idx + 1 });
         } else {
           return updateApiConnector(item.id, { ordem: idx + 1 });
         }
@@ -687,7 +615,7 @@ export function CentralAcoesTab() {
     
     // Atualiza o state temporário da ordem (podemos injetar no activeItem depois)
     setEditorModalOpen(true);
-    toast.success(`Criando nova ${tipoAcao === "notification" ? "Notificação" : tipoAcao === "webhook" ? "Webhook" : "API"} pré-vinculada ao gatilho!`);
+    toast.success(`Criando nova ${tipoAcao === "notification" ? "Notificação" : "API"} pré-vinculada ao gatilho!`);
   }
 
   // KV Editor Helper para headers/query params
@@ -882,76 +810,33 @@ export function CentralAcoesTab() {
 
             {/* Corpo do Editor com scroll interno */}
             <div className="flex-1 overflow-y-auto flex flex-col bg-card">
-              {/* Parâmetros do Gatilho (Webhooks e Notificações) */}
-              {(activeItem.type === "webhook" || activeItem.type === "notification") && (
+              {/* Parâmetros do Gatilho (Notificações) */}
+              {activeItem.type === "notification" && (
                 <div className="px-5 pt-4 pb-2 border-b border-input-border bg-bg-dark/30 flex flex-col sm:flex-row gap-3">
-                  {activeItem.type === "webhook" ? (
-                    <>
-                      <select 
-                        value={apiTipoEvento || ""} 
-                        onChange={e => {
-                          const val = e.target.value as any;
-                          setApiTipoEvento(val);
-                          setApiEvento(null);
-                        }} 
-                        className="w-full sm:w-1/3 rounded-lg border border-input-border bg-bg-dark px-3 py-2 text-xs font-bold text-accent outline-none"
-                        style={{ backgroundColor: '#0f172a', color: '#f8fafc' }}
-                      >
-                        <option value="" style={{ backgroundColor: '#0f172a', color: '#f8fafc' }}>Tipo de Gatilho...</option>
-                        <option value="status_change" style={{ backgroundColor: '#0f172a', color: '#f8fafc' }}>Mudança de Status</option>
-                        <option value="button_action" style={{ backgroundColor: '#0f172a', color: '#f8fafc' }}>Ação de Botão</option>
-                      </select>
-                      {apiTipoEvento === "status_change" && (
-                        <select 
-                          value={apiEvento || ""} 
-                          onChange={e => setApiEvento(e.target.value)} 
-                          className="flex-1 rounded-lg border border-input-border bg-bg-dark px-3 py-2 text-xs text-text-main outline-none focus:border-accent"
-                          style={{ backgroundColor: '#0f172a', color: '#f8fafc' }}
-                        >
-                          <option value="" style={{ backgroundColor: '#0f172a', color: '#f8fafc' }}>Selecione o Status...</option>
-                          {EVENTOS_STATUS_CHANGE.map(e => <option key={e.value} value={e.value} style={{ backgroundColor: '#0f172a', color: '#f8fafc' }}>{e.label}</option>)}
-                        </select>
-                      )}
-                      {apiTipoEvento === "button_action" && (
-                        <select 
-                          value={apiEvento || ""} 
-                          onChange={e => setApiEvento(e.target.value)} 
-                          className="flex-1 rounded-lg border border-input-border bg-bg-dark px-3 py-2 text-xs text-text-main outline-none focus:border-accent"
-                          style={{ backgroundColor: '#0f172a', color: '#f8fafc' }}
-                        >
-                          <option value="" style={{ backgroundColor: '#0f172a', color: '#f8fafc' }}>Selecione o Botão...</option>
-                          {EVENTOS_BUTTON_ACTION.map(e => <option key={e.value} value={e.value} style={{ backgroundColor: '#0f172a', color: '#f8fafc' }}>{e.label}</option>)}
-                        </select>
-                      )}
-                    </>
-                  ) : (
-                    <div className="w-full">
-                      <label className="text-[10px] font-bold text-text-muted mb-1 block uppercase">Gatilho do Evento</label>
-                      <select 
-                        value={notifEvento} 
-                        onChange={e => setNotifEvento(e.target.value)} 
-                        className="w-full rounded-lg border border-input-border bg-bg-dark px-3 py-2 text-xs text-text-main outline-none focus:border-accent"
-                        style={{ backgroundColor: '#0f172a', color: '#f8fafc' }}
-                      >
-                        <option value="" style={{ backgroundColor: '#0f172a', color: '#f8fafc' }}>Vincular a qual evento?</option>
-                        <optgroup label="Mudanças de Status" style={{ backgroundColor: '#0f172a', color: '#94a3b8' }}>
-                          {EVENTOS_STATUS_CHANGE.map(e => <option key={e.value} value={e.value} style={{ backgroundColor: '#0f172a', color: '#f8fafc' }}>{e.label}</option>)}
-                        </optgroup>
-                        <optgroup label="Ações de Botões" style={{ backgroundColor: '#0f172a', color: '#94a3b8' }}>
-                          {EVENTOS_BUTTON_ACTION.map(e => <option key={e.value} value={e.value} style={{ backgroundColor: '#0f172a', color: '#f8fafc' }}>{e.label}</option>)}
-                        </optgroup>
-                      </select>
-                    </div>
-                  )}
+                  <div className="w-full">
+                    <label className="text-[10px] font-bold text-text-muted mb-1 block uppercase">Gatilho do Evento</label>
+                    <select 
+                      value={notifEvento} 
+                      onChange={e => setNotifEvento(e.target.value)} 
+                      className="w-full rounded-lg border border-input-border bg-bg-dark px-3 py-2 text-xs text-text-main outline-none focus:border-accent"
+                      style={{ backgroundColor: '#0f172a', color: '#f8fafc' }}
+                    >
+                      <option value="" style={{ backgroundColor: '#0f172a', color: '#f8fafc' }}>Vincular a qual evento?</option>
+                      <optgroup label="Mudanças de Status" style={{ backgroundColor: '#0f172a', color: '#94a3b8' }}>
+                        {EVENTOS_STATUS_CHANGE.map(e => <option key={e.value} value={e.value} style={{ backgroundColor: '#0f172a', color: '#f8fafc' }}>{e.label}</option>)}
+                      </optgroup>
+                      <optgroup label="Ações de Botões" style={{ backgroundColor: '#0f172a', color: '#94a3b8' }}>
+                        {EVENTOS_BUTTON_ACTION.map(e => <option key={e.value} value={e.value} style={{ backgroundColor: '#0f172a', color: '#f8fafc' }}>{e.label}</option>)}
+                      </optgroup>
+                    </select>
+                  </div>
                 </div>
               )}
 
-              {/* Seleção de API/Webhook Existente ou Personalizado */}
-              {(activeItem.type === "api_call" || activeItem.type === "webhook") && (
+              {/* Seleção de API Existente ou Personalizado */}
+              {activeItem.type === "api_call" && (
                 <div className="px-5 pt-4 pb-2 border-b border-input-border bg-bg-dark/25 flex flex-col gap-1.5">
-                  <label className="text-[10px] font-bold text-text-muted uppercase">
-                    {activeItem.type === "api_call" ? "Modelo de Integração API" : "Modelo de Webhook"}
-                  </label>
+                  <label className="text-[10px] font-bold text-text-muted uppercase">Modelo de Integração API</label>
                   <select 
                     onChange={e => {
                       const selectedId = e.target.value;
@@ -1186,9 +1071,7 @@ export function CentralAcoesTab() {
                     style={{ backgroundColor: '#0f172a', color: '#f8fafc' }}
                     defaultValue="custom"
                   >
-                    <option value="custom" style={{ backgroundColor: '#0f172a', color: '#f8fafc' }}>
-                      {activeItem.type === "api_call" ? "API Personalizada (Criar do Zero)..." : "Webhook Personalizado (Criar do Zero)..."}
-                    </option>
+                    <option value="custom" style={{ backgroundColor: '#0f172a', color: '#f8fafc' }}>API Personalizada (Criar do Zero)...</option>
                     
                     {activeItem.type === "api_call" && (
                       <>
@@ -1299,7 +1182,7 @@ export function CentralAcoesTab() {
               )}
 
               {/* Importador de Comando cURL */}
-              {(activeItem.type === "api_call" || activeItem.type === "webhook") && (
+              {activeItem.type === "api_call" && (
                 <div className="px-5 py-3 border-b border-input-border bg-bg-dark/10 flex flex-col gap-2.5">
                   <div className="flex items-center justify-between">
                     <button 
@@ -1329,7 +1212,7 @@ export function CentralAcoesTab() {
                 </div>
               )}
 
-              {/* Detalhes HTTP (Apenas para APIs e Webhooks) */}
+              {/* Detalhes HTTP (Apenas para APIs) */}
               {activeItem.type !== "notification" && (
                 <div className="p-4 flex flex-col sm:flex-row gap-2 border-b border-input-border bg-bg-dark/10">
                   <select 
@@ -1583,12 +1466,6 @@ export function CentralAcoesTab() {
                         <Plus size={10}/> Notificação
                       </button>
                       <button 
-                        onClick={() => adicionarAcaoInline(ev.value, ev.tipo, "webhook")}
-                        className="px-2 py-1 bg-accent/10 hover:bg-accent text-accent hover:text-white rounded-md text-[9px] font-bold transition-all flex items-center gap-1"
-                      >
-                        <Plus size={10}/> Webhook
-                      </button>
-                      <button 
                         onClick={() => adicionarAcaoInline(ev.value, ev.tipo, "api_call")}
                         className="px-2 py-1 bg-accent/10 hover:bg-accent text-accent hover:text-white rounded-md text-[9px] font-bold transition-all flex items-center gap-1"
                       >
@@ -1622,8 +1499,8 @@ export function CentralAcoesTab() {
 
                     {/* Passos Customizados (Passo 2, 3...) */}
                     {acoesVinculadas.map((a, idx) => {
-                      const Icon = a.type === "api_call" ? Link2 : a.type === "webhook" ? Webhook : Bell;
-                      const labelTipo = a.type === "api_call" ? "API Externa" : a.type === "webhook" ? "Webhook" : "Notificação";
+                      const Icon = a.type === "api_call" ? Link2 : Bell;
+                      const labelTipo = a.type === "api_call" ? "API Externa" : "Notificação";
                       const numPasso = idx + 2;
 
                       return (

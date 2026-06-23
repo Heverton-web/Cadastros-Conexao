@@ -18,6 +18,7 @@ export type Webhook = {
   modulo_key?: string | null;
   evento_key?: string | null;
   evento_custom?: string | null;
+  empresa_id?: string | null;
 };
 
 export type WebhookInput = {
@@ -33,6 +34,7 @@ export type WebhookInput = {
   modulo_key?: string;
   evento_key?: string;
   evento_custom?: string;
+  empresa_id?: string | null;
 };
 
 export type WebhookLog = {
@@ -47,10 +49,14 @@ export type WebhookLog = {
   created_at: string;
 };
 
-export async function listarWebhooks() {
-  const { data, error } = await supabase
+export async function listarWebhooks(empresaId?: string | null) {
+  let query = supabase
     .from("webhooks")
-    .select("*")
+    .select("*");
+
+  if (empresaId) query = query.eq("empresa_id", empresaId);
+
+  const { data, error } = await query
     .order("created_at", { ascending: false });
   if (error) throw error;
   return data as Webhook[];
@@ -109,7 +115,7 @@ type WorkflowTask = {
   raw: any;
 };
 
-export async function dispararWebhooks(evento: string, payload: Record<string, any>) {
+export async function dispararWebhooks(evento: string, payload: Record<string, any>, empresaId?: string | null) {
   Promise.resolve().then(async () => {
     try {
       let usuarioInfo = {
@@ -158,9 +164,12 @@ export async function dispararWebhooks(evento: string, payload: Record<string, a
         }
       }
 
+      let webhooksQuery = supabase.from("webhooks").select("*").eq("evento", evento).eq("ativo", true);
+      if (empresaId) webhooksQuery = webhooksQuery.eq("empresa_id", empresaId);
+
       const [notifsRes, webhooksRes, apisRes] = await Promise.all([
         supabase.from("notificacoes_templates").select("*").eq("evento", evento).eq("ativo", true),
-        supabase.from("webhooks").select("*").eq("evento", evento).eq("ativo", true),
+        webhooksQuery,
         supabase.from("api_connectors").select("*").eq("evento", evento).eq("is_active", true)
       ]);
 
@@ -275,6 +284,7 @@ export async function dispararWebhooks(evento: string, payload: Record<string, a
               resposta: text.slice(0, 2000),
               sucesso: res.ok,
               payload_enviado: body,
+              empresa_id: empresaId,
             });
           } else if (task.type === "api_connector") {
             const conn = task.raw as ApiConnector;
@@ -288,6 +298,7 @@ export async function dispararWebhooks(evento: string, payload: Record<string, a
               resposta: typeof result?.data === "object" ? JSON.stringify(result.data).slice(0, 2000) : String(result?.data).slice(0, 2000),
               sucesso: (result?.status >= 200 && result?.status < 300),
               payload_enviado: payloadCompleto,
+              empresa_id: empresaId,
             });
           }
         } catch (stepErr: any) {
@@ -302,6 +313,7 @@ export async function dispararWebhooks(evento: string, payload: Record<string, a
               resposta: `Falha no passo ${task.type}: ` + (stepErr.message?.slice(0, 1900) || "Erro desconhecido"),
               sucesso: false,
               payload_enviado: payload,
+              empresa_id: empresaId,
             });
           } catch (logErr) {
             console.error("Falha ao registrar log de erro:", logErr);
@@ -317,14 +329,19 @@ export async function dispararWebhooks(evento: string, payload: Record<string, a
 export async function dispararEventoModulo(
   moduloKey: string,
   eventoKey: string,
-  payload: Record<string, any>
+  payload: Record<string, any>,
+  empresaId?: string | null
 ) {
-  const { data: webhooks, error } = await supabase
+  let query = supabase
     .from("webhooks")
     .select("*")
     .eq("modulo_key", moduloKey)
     .eq("evento_key", eventoKey)
     .eq("ativo", true);
+
+  if (empresaId) query = query.eq("empresa_id", empresaId);
+
+  const { data: webhooks, error } = await query;
 
   if (error) {
     console.error(`Erro ao buscar webhooks do módulo ${moduloKey}/${eventoKey}:`, error);
@@ -356,6 +373,7 @@ export async function dispararEventoModulo(
         resposta: text.slice(0, 2000),
         sucesso: res.ok,
         payload_enviado: body,
+        empresa_id: empresaId,
       });
     } catch (err: any) {
       console.error(`Erro no webhook de módulo ${wh.id}:`, err);
@@ -367,6 +385,7 @@ export async function dispararEventoModulo(
         resposta: err.message?.slice(0, 1900) || "Erro desconhecido",
         sucesso: false,
         payload_enviado: payload,
+        empresa_id: empresaId,
       });
     }
   }

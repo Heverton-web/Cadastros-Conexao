@@ -110,7 +110,7 @@ function ConsultorPage() {
         lead_ddd: linkForm.ddd,
         lead_whatsapp_num: linkForm.whatsapp_num,
         expiracao_dias: linkForm.expiracao_dias,
-      });
+      }, profile?.empresa_id);
       dispararWebhooks("link_gerado", {
         cadastro_id: s.id,
         token_acesso: s.token_acesso,
@@ -126,7 +126,7 @@ function ConsultorPage() {
         lead_ddd: linkForm.ddd,
         lead_whatsapp_num: linkForm.whatsapp_num,
         expiracao_dias: linkForm.expiracao_dias,
-      });
+      }, profile?.empresa_id);
       const link = `${window.location.origin}/pre-cadastro/${s.token_acesso}`;
       setLinkGerado(link);
       setShowSuccess(true);

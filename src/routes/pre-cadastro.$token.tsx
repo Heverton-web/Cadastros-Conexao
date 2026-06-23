@@ -409,7 +409,7 @@ function PreCadastroPage() {
         canal: canal2FA,
         contato: contatoFormatado,
         pin,
-      });
+      }, empresaId);
 
       console.log(`[2FA] PIN ${pin} enviado para ${contatoFormatado}`);
       setTempo2FA(300);
@@ -559,8 +559,8 @@ function PreCadastroPage() {
       }).eq("id", cadastroId);
 
       // Dispara webhooks de finalização
-      dispararWebhooks("dados_enviados", { cadastro_id: cadastroId, token });
-      dispararWebhooks("em_analise", { cadastro_id: cadastroId, email: contatoEmail || form.pf.email_comunicacao || form.pj.email_comunicacao });
+      dispararWebhooks("dados_enviados", { cadastro_id: cadastroId, token }, empresaId);
+      dispararWebhooks("em_analise", { cadastro_id: cadastroId, email: contatoEmail || form.pf.email_comunicacao || form.pj.email_comunicacao }, empresaId);
 
       // Dispara notificação com template para o consultor comercial
       const { data: cad } = await supabase.from("cadastros").select("created_by, lead_nome").eq("id", cadastroId).single();

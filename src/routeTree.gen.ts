@@ -13,6 +13,7 @@ import { adminConfigRoute } from "./routes/admin.config";
 import { adminSuperEmpresasRoute } from "./routes/admin.super.empresas";
 import { adminSuperEmpresaDetailRoute } from "./routes/admin.super.empresas.$id";
 import { adminSuperPermissoesRoute } from "./routes/admin.super.permissoes";
+import { adminPermissoesRoute } from "./routes/admin.permissoes";
 import { adminSuperModulosRoute } from "./routes/admin.super.modulos";
 import { adminSuperModuloDetailRoute } from "./routes/admin.super.modulos.$key";
 import { adminTemaRoute } from "./routes/admin.tema";
@@ -47,6 +48,7 @@ export const routeTree = rootRoute.addChildren([
     adminSuperEmpresasRoute,
     adminSuperEmpresaDetailRoute,
     adminSuperPermissoesRoute,
+    adminPermissoesRoute,
     adminSuperModulosRoute,
     adminSuperModuloDetailRoute,
     adminTemaRoute,

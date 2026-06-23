@@ -1,6 +1,6 @@
-import { Building2, Puzzle, KeyRound, Globe, Database, Cable, FlaskConical, Palette, Image, Shield, Beaker, type LucideIcon } from "lucide-react";
+import { Building2, Puzzle, KeyRound, Globe, Database, Cable, FlaskConical, Palette, Image, Shield, Beaker, Bell, Webhook as WebhookIcon, type LucideIcon } from "lucide-react";
 import { useAuth } from "~/lib/auth";
-import { getNavItems, getAllModules } from "~/registry";
+import { getNavItems, getAllModules, getNavItemsByModule } from "~/registry";
 import { useMemo } from "react";
 
 export type NavItem = {
@@ -72,7 +72,7 @@ export function useNavItems(selectedModuleKey?: string): NavSection[] {
     // Section: Navegação (registry items)
     // Global (moduloKey === undefined) é exclusivo do Super Admin
     if (isSuper || moduloKey) {
-      if (regNav.length > 0) {
+      if (regNav.length > 0 && moduloKey !== "empresas-core") {
         sections.push({ label: moduloKey ? "Navegação" : "Itens Globais", items: regNav });
       }
     }
@@ -85,6 +85,8 @@ export function useNavItems(selectedModuleKey?: string): NavSection[] {
           { path: "/admin/super/empresas", label: "Empresas", icon: Building2 },
           { path: "/admin/super/modulos", label: "Módulos", icon: Puzzle },
           { path: "/admin/super/permissoes", label: "Permissões", icon: KeyRound },
+          { path: "/admin/config", label: "Central de Ações", icon: WebhookIcon },
+          { path: "/admin/webhooks", label: "Notificações", icon: Bell },
           { path: "/admin/super/banco", label: "Banco de Dados", icon: Database },
           { path: "/admin/super/integracoes", label: "Integrações", icon: Cable },
           { path: "/admin/super/demos", label: "Demos", icon: FlaskConical },
@@ -96,15 +98,17 @@ export function useNavItems(selectedModuleKey?: string): NavSection[] {
     // Section: Configuração (empresa context)
     const showConfig = (isSuper && moduloKey === "empresas-core") || isCompanyAdmin;
     if (showConfig) {
+      const configItems = getNavItemsByModule("empresas-core").map(ri => ({
+        path: ri.to,
+        label: ri.label,
+        icon: ri.icon,
+        ...(ri.matchPaths ? { matchPaths: ri.matchPaths } : {}),
+        ...(ri.noChildMatch ? { noChildMatch: ri.noChildMatch } : {}),
+      }));
+
       sections.push({
         label: "Configuração",
-        items: [
-          { path: "/admin/empresa/config/banco", label: "Banco de Dados", icon: Database },
-          { path: "/admin/empresa", label: "Dados da Empresa", icon: Building2, noChildMatch: true },
-          { path: "/credenciais", label: "Credenciais", icon: Shield },
-          { path: "/admin/tema", label: "Design", icon: Palette },
-          { path: "/admin/empresa/config/branding", label: "Branding", icon: Image },
-        ],
+        items: configItems,
       });
     }
 

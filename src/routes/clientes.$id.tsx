@@ -138,8 +138,8 @@ function ClienteDetailPage() {
         status_cadastro: "aprovado"
       };
 
-      dispararWebhooks("botao_aprovar", payload);
-      dispararWebhooks("aprovado", payload);
+      dispararWebhooks("botao_aprovar", payload, profile?.empresa_id);
+      dispararWebhooks("aprovado", payload, profile?.empresa_id);
       setShowAprovar(false); carregar();
     } catch (e) { console.error(e); } finally { setSubmitting(false); }
   }
@@ -201,8 +201,8 @@ function ClienteDetailPage() {
         status_cadastro: "reprovado"
       };
 
-      dispararWebhooks("botao_reprovar", payload);
-      dispararWebhooks("reprovado", payload);
+      dispararWebhooks("botao_reprovar", payload, profile?.empresa_id);
+      dispararWebhooks("reprovado", payload, profile?.empresa_id);
       setShowReprovar(false); carregar();
     } catch (e) { console.error(e); } finally { setSubmitting(false); }
   }
@@ -275,8 +275,8 @@ function ClienteDetailPage() {
         status_cadastro: "em_correcao"
       };
 
-      dispararWebhooks("botao_corrigir", payload);
-      dispararWebhooks("em_correcao", payload);
+      dispararWebhooks("botao_corrigir", payload, profile?.empresa_id);
+      dispararWebhooks("em_correcao", payload, profile?.empresa_id);
       setShowCorrecao(false); carregar();
     } catch (e) { console.error(e); } finally { setSubmitting(false); }
   }
@@ -588,7 +588,7 @@ function ClienteDetailPage() {
                 await aprovarDocumento(docId);
                 const doc = docs.find(d => d.id === docId);
                 await logAtividade("cadastro", id, "doc_aprovado", `Documento ${doc?.tipo} aprovado`);
-                dispararWebhooks("botao_aprovar", { cadastro_id: id, documento_id: docId });
+                dispararWebhooks("botao_aprovar", { cadastro_id: id, documento_id: docId }, profile?.empresa_id);
                 const d = await listarDocumentos(id);
                 setDocs(d);
               } catch (e) { console.error(e); }
@@ -598,7 +598,7 @@ function ClienteDetailPage() {
                 await reprovarDocumento(docId, motivo);
                 const doc = docs.find(d => d.id === docId);
                 await logAtividade("cadastro", id, "doc_reprovado", `Documento ${doc?.tipo} reprovado: ${motivo}`);
-                dispararWebhooks("botao_reprovar", { cadastro_id: id, documento_id: docId, motivo });
+                dispararWebhooks("botao_reprovar", { cadastro_id: id, documento_id: docId, motivo }, profile?.empresa_id);
                 const d = await listarDocumentos(id);
                 setDocs(d);
               } catch (e) { console.error(e); }
@@ -608,7 +608,7 @@ function ClienteDetailPage() {
                 await solicitarCorrecaoDocumento(docId, comentario);
                 const doc = docs.find(d => d.id === docId);
                 await logAtividade("cadastro", id, "doc_correcao", `Correção solicitada para ${doc?.tipo}: ${comentario}`);
-                dispararWebhooks("botao_corrigir", { cadastro_id: id, documento_id: docId, comentario });
+                dispararWebhooks("botao_corrigir", { cadastro_id: id, documento_id: docId, comentario }, profile?.empresa_id);
                 const d = await listarDocumentos(id);
                 setDocs(d);
               } catch (e) { console.error(e); }
