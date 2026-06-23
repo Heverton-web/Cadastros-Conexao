@@ -9,12 +9,14 @@ import { cadastrosModule } from "~/features/cadastros/module";
 import { empresasModule } from "~/features/empresas/module";
 import { mapasModule } from "~/features/mapas/module";
 import { npsModule } from "~/features/nps/module";
+import { funisModule } from "~/features/funis/module";
 import "~/styles/globals.css";
 
 registerModule(empresasModule);
 registerModule(cadastrosModule);
 registerModule(mapasModule);
 registerModule(npsModule);
+registerModule(funisModule);
 
 const router = createRouter({ routeTree });
 const queryClient = new QueryClient({

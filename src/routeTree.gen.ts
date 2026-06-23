@@ -40,6 +40,10 @@ import { globalNpsDashboardRoute } from "./routes/global.nps";
 import { npsPesquisasRoute } from "./routes/nps.pesquisas";
 import { npsRelatoriosRoute } from "./routes/nps.relatorios";
 
+import { funisRoute } from "./routes/funis";
+import { funisDashboardRoute } from "./routes/funis.dashboard";
+import { funilDetalleRoute } from "./routes/funis.funil.$funilId";
+
 export const routeTree = rootRoute.addChildren([
   loginRoute,
   preCadastroRoute,
@@ -81,5 +85,9 @@ export const routeTree = rootRoute.addChildren([
     globalNpsDashboardRoute,
     npsPesquisasRoute,
     npsRelatoriosRoute,
+
+    funisRoute,
+    funisDashboardRoute,
+    funilDetalleRoute,
   ]),
 ]);

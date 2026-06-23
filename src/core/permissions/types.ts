@@ -23,6 +23,14 @@ export type Permissoes = {
   nps_excluir_respostas: boolean;
   nps_ver_relatorios: boolean;
   nps_exportar_dados: boolean;
+  funis_ver_dashboard: boolean;
+  funis_criar_funil: boolean;
+  funis_editar_funil: boolean;
+  funis_excluir_funil: boolean;
+  funis_gerir_colunas: boolean;
+  funis_gerir_tarefas: boolean;
+  funis_compartilhar: boolean;
+  funis_ver_relatorios: boolean;
 };
 
 export type ModuloAcesso = {

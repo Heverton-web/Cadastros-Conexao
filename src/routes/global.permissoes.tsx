@@ -583,12 +583,21 @@ function NovaCredencialModal({ onClose, modulos }: { onClose: () => void, modulo
   async function handleSave() {
     setSalvando(true);
     try {
-      // Simulação da inserção / Aqui conectaria com o back-end para criar no Supabase auth.users ou profiles
-      await new Promise(resolve => setTimeout(resolve, 800));
+      const { data: userId, error: rpcErr } = await supabase.rpc("admin_criar_usuario", {
+        p_email: form.email_corporativo,
+        p_senha: "mock123",
+        p_nome: form.nome_completo,
+        p_empresa_id: null,
+        p_is_super_admin: false
+      });
+      if (rpcErr) throw rpcErr;
+      
+      await setModulosAcesso(userId, modulosMap);
       toast.success("Credencial e permissões criadas com sucesso!");
       onClose();
+      setTimeout(() => window.location.reload(), 1000);
     } catch (e: any) {
-      toast.error("Erro ao criar credencial.");
+      toast.error("Erro ao criar credencial: " + (e.message || "desconhecido"));
     } finally {
       setSalvando(false);
     }
@@ -793,4 +802,10 @@ const ALL_FALSE: Permissoes = {
   solicitar_correcao_campo: false, visualizar_documento: false, excluir_cadastro: false,
   gerenciar_credenciais: false, gerenciar_credenciais_admin: false, gerenciar_config: false,
   gerar_links: false, ver_relatorios: false,
+  nps_ver_dashboard: false, nps_ver_respostas: false, nps_gerenciar_perguntas: false,
+  nps_gerenciar_webhooks: false, nps_excluir_respostas: false, nps_ver_relatorios: false,
+  nps_exportar_dados: false,
+  funis_ver_dashboard: false, funis_criar_funil: false, funis_editar_funil: false,
+  funis_excluir_funil: false, funis_gerir_colunas: false, funis_gerir_tarefas: false,
+  funis_compartilhar: false, funis_ver_relatorios: false,
 };
