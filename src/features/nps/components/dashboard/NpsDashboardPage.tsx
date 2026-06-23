@@ -10,7 +10,7 @@ import { Input } from '~/components/ui/input';
 import { Label } from '~/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/components/ui/select';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
-import { Download, LogOut, RefreshCw, Users, TrendingUp, Star, MessageSquare, Copy, Share2, Check, Webhook, Save, TestTube, Eye, EyeOff, Trash2, FileText, Info, HelpCircle, ChevronDown, ChevronUp, LayoutDashboard, BarChart3, Smile, Quote, Settings, ListChecks, Briefcase, ThumbsUp, ShoppingCart, UserCheck, Trophy } from 'lucide-react';
+import { Download, LogOut, RefreshCw, Users, TrendingUp, Star, MessageSquare, Copy, Share2, Check, Webhook, Save, TestTube, Eye, EyeOff, Trash2, FileText, Info, HelpCircle, ChevronDown, ChevronUp, LayoutDashboard, BarChart3, Smile, Quote, Settings, ListChecks, Briefcase, ThumbsUp, ShoppingCart, UserCheck, Trophy, Filter } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 import { useAuth } from '~/lib/auth';
 import { NpsOperacaoPanel } from './NpsOperacaoPanel';
@@ -137,6 +137,7 @@ export function NpsDashboardPage() {
   const [vendorFilter, setVendorFilter] = useState('all');
   const [npsBucketFilter, setNpsBucketFilter] = useState<NpsBucket>('all');
   const [subjectiveFilter, setSubjectiveFilter] = useState<SubjectiveKey>('all');
+  const [showMobileFilters, setShowMobileFilters] = useState(false);
   const [userName, setUserName] = useState('');
   const [userRole, setUserRole] = useState('');
   const [detailResponse, setDetailResponse] = useState<SurveyResponse | null>(null);
@@ -393,17 +394,27 @@ export function NpsDashboardPage() {
     <div className="min-h-screen p-4 md:p-8">
       <div className="max-w-7xl mx-auto space-y-6">
         {/* Header */}
-        <div className="mb-2">
-          <h1 className="text-2xl font-bold text-white mb-1">NPS</h1>
-          <p className="text-sm text-muted-foreground">Dashboard analítico e visão geral das avaliações</p>
+        {/* Header */}
+        <div className="mb-2 flex items-start sm:items-center justify-between gap-4">
+          <div>
+            <h1 className="text-2xl font-bold text-white mb-1">NPS</h1>
+            <p className="text-sm text-muted-foreground">Dashboard analítico e visão geral das avaliações</p>
+          </div>
+          <button
+            onClick={() => setShowMobileFilters(!showMobileFilters)}
+            className="md:hidden flex items-center gap-2 px-3 py-2 bg-secondary/80 border border-border/50 rounded-lg text-sm text-foreground hover:bg-secondary transition-colors whitespace-nowrap"
+          >
+            <Filter className="w-4 h-4" />
+            {showMobileFilters ? 'Ocultar Filtros' : 'Filtros'}
+          </button>
         </div>
 
         {/* Sticky Filters */}
         <div className="sticky top-0 z-30 -mx-2 px-2 py-2">
-          <div className="bg-card rounded-xl p-4 md:p-5 shadow-sm border border-border/50 max-w-6xl mx-auto space-y-4">
-            {/* Filtros centralizados - 1 linha */}
-            <div className="flex flex-wrap items-end justify-between gap-4">
-              <div className="flex flex-col gap-1 w-[130px]">
+          <div className={`bg-card rounded-xl p-4 md:p-5 shadow-sm border border-border/50 max-w-6xl mx-auto space-y-4 ${showMobileFilters ? 'block' : 'hidden md:block'}`}>
+            {/* Filtros em Grid responsivo */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:flex md:flex-wrap items-end justify-between gap-4">
+              <div className="flex flex-col gap-1 w-full md:w-[130px]">
                 <Label className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium px-1">De</Label>
                 <Input
                   type="date"
@@ -412,7 +423,7 @@ export function NpsDashboardPage() {
                   className="h-9 w-full bg-secondary/80 border-border/50 text-foreground text-sm"
                 />
               </div>
-              <div className="flex flex-col gap-1 w-[130px]">
+              <div className="flex flex-col gap-1 w-full md:w-[130px]">
                 <Label className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium px-1">Até</Label>
                 <Input
                   type="date"
@@ -421,11 +432,11 @@ export function NpsDashboardPage() {
                   className="h-9 w-full bg-secondary/80 border-border/50 text-foreground text-sm"
                 />
               </div>
-              <div className="flex flex-col gap-1 flex-1 min-w-[160px]">
+              <div className="flex flex-col gap-1 w-full md:flex-1 md:min-w-[160px]">
                 <Label className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium px-1">Vendedor</Label>
                 <Select value={vendorFilter} onValueChange={setVendorFilter}>
                   <SelectTrigger className="h-9 w-full bg-secondary/80 border-border/50 text-foreground text-sm">
-                    <SelectValue placeholder="Todos" />
+                    <SelectValue placeholder="Todos" className="truncate" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="all">Todos os vendedores</SelectItem>
@@ -433,11 +444,11 @@ export function NpsDashboardPage() {
                   </SelectContent>
                 </Select>
               </div>
-              <div className="flex flex-col gap-1 flex-1 min-w-[150px]">
+              <div className="flex flex-col gap-1 w-full md:flex-1 md:min-w-[150px]">
                 <Label className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium px-1">NPS</Label>
                 <Select value={npsBucketFilter} onValueChange={(v) => setNpsBucketFilter(v as NpsBucket)}>
                   <SelectTrigger className="h-9 w-full bg-secondary/80 border-border/50 text-foreground text-sm">
-                    <SelectValue placeholder="Todas" />
+                    <SelectValue placeholder="Todas" className="truncate" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="all">Todas as notas</SelectItem>
@@ -447,11 +458,11 @@ export function NpsDashboardPage() {
                   </SelectContent>
                 </Select>
               </div>
-              <div className="flex flex-col gap-1 flex-[1.5] min-w-[180px]">
+              <div className="flex flex-col gap-1 w-full md:flex-[1.5] md:min-w-[180px] col-span-2 sm:col-span-1">
                 <Label className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium px-1">Pergunta</Label>
                 <Select value={subjectiveFilter} onValueChange={(v) => setSubjectiveFilter(v as SubjectiveKey)}>
                   <SelectTrigger className="h-9 w-full bg-secondary/80 border-border/50 text-foreground text-sm">
-                    <SelectValue placeholder="Todas" />
+                    <SelectValue placeholder="Todas" className="truncate" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="all">Todas as perguntas</SelectItem>
@@ -460,8 +471,9 @@ export function NpsDashboardPage() {
                 </Select>
               </div>
               
-              <div className="flex flex-col gap-1 min-w-fit mt-2 md:mt-0">
-                <Label className="text-[10px] uppercase tracking-wider text-transparent font-medium px-1 hidden md:block select-none">Ações</Label>
+              <div className="flex flex-col gap-1 min-w-fit md:mt-0 col-span-2 sm:col-span-1">
+                {/* Removido o label Ações no mobile para ficar mais clean, ou manter alinhado invisível no desk */}
+                <Label className="text-[10px] uppercase tracking-wider text-transparent font-medium px-1 hidden md:block select-none">&nbsp;</Label>
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => {
@@ -472,7 +484,7 @@ export function NpsDashboardPage() {
                       setSubjectiveFilter('all');
                     }}
                     disabled={!dateFrom && !dateTo && vendorFilter === 'all' && npsBucketFilter === 'all' && subjectiveFilter === 'all'}
-                    className="h-9 px-3 rounded-md bg-secondary/80 border border-border/50 text-muted-foreground hover:bg-secondary hover:text-foreground transition-colors disabled:opacity-40 disabled:cursor-not-allowed text-sm flex items-center gap-1.5 whitespace-nowrap"
+                    className="h-9 px-3 w-full md:w-auto rounded-md bg-secondary/80 border border-border/50 text-muted-foreground hover:bg-secondary hover:text-foreground transition-colors disabled:opacity-40 disabled:cursor-not-allowed text-sm flex items-center justify-center gap-1.5 whitespace-nowrap"
                   >
                     <RefreshCw className="w-3.5 h-3.5" />
                     Limpar
