@@ -177,9 +177,11 @@ export function AppLayout() {
       </header>
       <NavSidebar selectedModuleKey={selectedModuleKey} onModuleChange={setSelectedModuleKey} modulos={modulos} collapsed={sidebarCollapsed} onToggleCollapse={toggleSidebar} />
       <ModuleDrawer open={showDrawer} onClose={() => setShowDrawer(false)} selectedModuleKey={selectedModuleKey} onModuleChange={setSelectedModuleKey} modulos={modulos} />
-      <main className={cn("mx-auto max-w-7xl w-full transition-all duration-200 pb-20 lg:pb-0", sidebarCollapsed ? "lg:ml-16" : "lg:ml-60")}>
-        <Outlet />
-      </main>
+      <div className={cn("transition-all duration-200 pb-20 lg:pb-0", sidebarCollapsed ? "lg:ml-16" : "lg:ml-60")}>
+        <main className="mx-auto max-w-7xl w-full p-4 md:p-6 lg:p-8">
+          <Outlet />
+        </main>
+      </div>
       <BottomNav selectedModuleKey={selectedModuleKey} />
       </div>
       <PwaInstallPrompt />

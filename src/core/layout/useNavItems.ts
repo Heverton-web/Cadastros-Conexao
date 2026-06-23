@@ -19,7 +19,7 @@ export function useNavItems() {
     ...((p?.ver_todos_cadastros === true || p?.gerar_links === true) ? [{ path: "/clientes", label: "Clientes", icon: Users, matchPaths: ["/consultor/clientes"] }] : []),
     ...(p?.ver_relatorios === true ? [{ path: "/relatorios", label: "Relatórios", icon: BarChart3 }] : []),
     ...(p?.gerenciar_credenciais === true ? [{ path: "/credenciais", label: "Credenciais", icon: Shield }] : []),
-    ...(p?.gerenciar_config === true ? [{ path: "/admin/config", label: "Config", icon: Settings }] : []),
+    ...(p?.gerenciar_config === true ? [{ path: "/global/acoes", label: "Config", icon: Settings }] : []),
   ];
 
   return navItems;

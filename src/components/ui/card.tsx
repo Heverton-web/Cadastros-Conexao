@@ -36,4 +36,11 @@ const CardDescription = forwardRef<HTMLParagraphElement, HTMLAttributes<HTMLPara
 );
 CardDescription.displayName = "CardDescription";
 
-export { Card, CardHeader, CardTitle, CardDescription };
+const CardContent = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
+  ({ className, ...props }, ref) => (
+    <div ref={ref} className={cn("", className)} {...props} />
+  )
+);
+CardContent.displayName = "CardContent";
+
+export { Card, CardHeader, CardTitle, CardDescription, CardContent };

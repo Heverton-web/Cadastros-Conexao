@@ -10,7 +10,7 @@ export const cadastrosModule: ModuleDefinition = {
   nome: "Cadastros",
   descricao: "Gestao de cadastro de clientes PF/PJ",
   icon: Users,
-  routes: ["/dashboard", "/clientes", "/consultor", "/relatorios", "/admin/config", "/admin/tema"],
+  routes: ["/dashboard", "/clientes", "/consultor", "/relatorios", "/global/acoes", "/empresa/tema"],
   permissions: ALL_PERMISSIONS.map((p) => p.key),
   ambientes: ["cadastro", "consultor", "tecnologia", "suporte"],
   abas: [

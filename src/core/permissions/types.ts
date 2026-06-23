@@ -16,6 +16,13 @@ export type Permissoes = {
   gerenciar_config: boolean;
   gerar_links: boolean;
   ver_relatorios: boolean;
+  nps_ver_dashboard: boolean;
+  nps_ver_respostas: boolean;
+  nps_gerenciar_perguntas: boolean;
+  nps_gerenciar_webhooks: boolean;
+  nps_excluir_respostas: boolean;
+  nps_ver_relatorios: boolean;
+  nps_exportar_dados: boolean;
 };
 
 export type ModuloAcesso = {

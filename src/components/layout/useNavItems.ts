@@ -1,4 +1,4 @@
-import { Building2, Puzzle, KeyRound, Globe, Database, Cable, FlaskConical, Palette, Image, Shield, Beaker, Bell, Webhook as WebhookIcon, type LucideIcon } from "lucide-react";
+import { Building2, Puzzle, KeyRound, Globe, Database, Cable, FlaskConical, Palette, Image, Shield, Beaker, Bell, Webhook as WebhookIcon, BarChart3, type LucideIcon } from "lucide-react";
 import { useAuth } from "~/lib/auth";
 import { getNavItems, getAllModules, getNavItemsByModule } from "~/registry";
 import { useMemo } from "react";
@@ -82,14 +82,15 @@ export function useNavItems(selectedModuleKey?: string): NavSection[] {
       sections.push({
         label: "Administração",
         items: [
-          { path: "/admin/super/empresas", label: "Empresas", icon: Building2 },
-          { path: "/admin/super/modulos", label: "Módulos", icon: Puzzle },
-          { path: "/admin/super/permissoes", label: "Permissões", icon: KeyRound },
-          { path: "/admin/config", label: "Central de Ações", icon: WebhookIcon },
-          { path: "/admin/super/banco", label: "Banco de Dados", icon: Database },
-          { path: "/admin/super/integracoes", label: "Integrações", icon: Cable },
-          { path: "/admin/super/demos", label: "Demos", icon: FlaskConical },
-          { path: "/admin/laboratorio", label: "Laboratório", icon: Beaker },
+          { path: "/global/nps", label: "Dashboard NPS", icon: BarChart3 },
+          { path: "/global/empresas", label: "Empresas", icon: Building2 },
+          { path: "/global/modulos", label: "Módulos", icon: Puzzle },
+          { path: "/global/permissoes", label: "Permissões", icon: KeyRound },
+          { path: "/global/acoes", label: "Central de Ações", icon: WebhookIcon },
+          { path: "/global/banco", label: "Banco de Dados", icon: Database },
+          { path: "/global/integracoes", label: "Integrações", icon: Cable },
+          { path: "/global/demos", label: "Demos", icon: FlaskConical },
+          { path: "/global/laboratorio", label: "Laboratório", icon: Beaker },
         ],
       });
     }
