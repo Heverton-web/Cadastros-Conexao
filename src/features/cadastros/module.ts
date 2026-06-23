@@ -65,7 +65,6 @@ export const cadastrosModule: ModuleDefinition = {
         perms?.ver_todos_cadastros === true || perms?.gerar_links === true,
       order: 2,
       moduloKey: "cadastros-conexao",
-      matchPaths: ["/consultor/clientes"],
     });
 
     registerNavItem({
