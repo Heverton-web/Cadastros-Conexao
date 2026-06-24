@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Button } from "~/components/ui/button";
 import { supabase } from "~/core/supabase";
 import type { NpsPergunta } from "~/features/nps/types";
+import { buscarEmpresa, buscarEmpresaConfig, type Empresa, type EmpresaConfig } from "~/features/empresas";
 import { ArrowRight, ArrowLeft, CheckCircle2 } from "lucide-react";
 
 export const npsSurveyRoute = createRoute({
@@ -14,6 +15,8 @@ export const npsSurveyRoute = createRoute({
 
 function NpsSurveyPage() {
   const [questions, setQuestions] = useState<NpsPergunta[]>([]);
+  const [empresa, setEmpresa] = useState<Empresa | null>(null);
+  const [empresaConfig, setEmpresaConfig] = useState<EmpresaConfig | null>(null);
   const [loading, setLoading] = useState(true);
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<Record<string, any>>({});
@@ -26,28 +29,46 @@ function NpsSurveyPage() {
 
     async function load() {
       if (!e) { setLoading(false); return; }
-      const { data } = await supabase
-        .from("nps_perguntas")
-        .select("*")
-        .eq("empresa_id", e)
-        .eq("active", true)
-        .order("order_index", { ascending: true });
       
-      setQuestions((data as NpsPergunta[]) || []);
+      const [empData, configData, { data: perguntas }] = await Promise.all([
+        buscarEmpresa(e).catch(() => null),
+        buscarEmpresaConfig(e).catch(() => null),
+        supabase
+          .from("nps_perguntas")
+          .select("*")
+          .eq("empresa_id", e)
+          .eq("active", true)
+          .order("order_index", { ascending: true })
+      ]);
+      
+      setEmpresa(empData);
+      setEmpresaConfig(configData);
+      setQuestions((perguntas as NpsPergunta[]) || []);
       setLoading(false);
     }
     load();
   }, []);
 
-  if (loading) return <div className="min-h-screen bg-slate-50 flex items-center justify-center"><div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin"></div></div>;
-  if (!empresaId || questions.length === 0) return <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center p-4"><div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 max-w-md text-center"><p className="text-slate-600 font-medium">Esta pesquisa nao esta disponivel no momento.</p></div></div>;
+  if (loading) return (
+    <div className="min-h-screen bg-zinc-950 flex items-center justify-center">
+      <div className="w-10 h-10 border-4 border-zinc-800 border-t-[#C5A880] rounded-full animate-spin"></div>
+    </div>
+  );
+
+  if (!empresaId || questions.length === 0) return (
+    <div className="min-h-screen bg-zinc-950 flex flex-col items-center justify-center p-4">
+      <div className="bg-zinc-900/50 p-10 rounded-2xl border border-zinc-800 max-w-md text-center backdrop-blur-lg">
+        <p className="text-zinc-400 font-medium">Esta pesquisa não está disponível no momento.</p>
+      </div>
+    </div>
+  );
 
   const currentQ = questions[step];
   const isLast = step === questions.length;
-  const progress = isLast ? 100 : Math.round((step / questions.length) * 100);
+  const logoUrl = empresaConfig?.logo_app_url || empresaConfig?.logo_index_url;
 
   const handleNext = () => {
-    if (currentQ?.required && !answers[currentQ.id]) {
+    if (currentQ?.required && answers[currentQ.id] === undefined) {
       alert("Por favor, responda a pergunta antes de continuar.");
       return;
     }
@@ -56,149 +77,138 @@ function NpsSurveyPage() {
 
   const setAnswer = (val: any) => {
     setAnswers(p => ({ ...p, [currentQ.id]: val }));
-    if (currentQ.type === "nps") {
-      setTimeout(() => handleNext(), 400);
-    }
-  };
-
-  const getNpsColor = (num: number, isSelected: boolean) => {
-    if (!isSelected) return "bg-white border-slate-200 text-slate-600 hover:border-primary/50 hover:bg-slate-50";
-    if (num <= 6) return "bg-rose-500 border-rose-500 text-white shadow-lg shadow-rose-500/30 scale-110";
-    if (num <= 8) return "bg-amber-500 border-amber-500 text-white shadow-lg shadow-amber-500/30 scale-110";
-    return "bg-emerald-500 border-emerald-500 text-white shadow-lg shadow-emerald-500/30 scale-110";
   };
 
   return (
-    <div className="min-h-screen bg-[#fafafa] flex flex-col items-center justify-center px-4 py-8 md:py-12 font-sans selection:bg-primary/20">
-      <div className="w-full max-w-3xl mb-8 flex justify-center"></div>
+    <div className="min-h-screen flex flex-col items-center justify-center px-4 py-8 md:py-12 font-sans bg-zinc-950 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-amber-500/5 via-zinc-950 to-zinc-950 selection:bg-[#C5A880]/30 selection:text-white">
+      <div className="w-full max-w-md bg-zinc-900/50 border border-zinc-800 backdrop-blur-lg rounded-2xl p-6 md:p-8 shadow-2xl relative overflow-hidden">
+        
+        {/* Glow effect internally */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-px bg-gradient-to-r from-transparent via-[#C5A880]/20 to-transparent"></div>
 
-      <div className="w-full max-w-3xl">
-        <div className="mb-8">
-          <div className="h-1.5 w-full bg-slate-200 rounded-full overflow-hidden">
-            <div className="h-full bg-primary transition-all duration-700 ease-out" style={{ width: progress + "%" }}></div>
-          </div>
-          {!isLast && (
-            <div className="text-center mt-3">
-              <span className="text-xs font-semibold text-slate-400 uppercase tracking-widest">
-                Pergunta {step + 1} de {questions.length}
-              </span>
-            </div>
-          )}
-        </div>
+        {logoUrl ? (
+          <img src={logoUrl} alt={empresa?.nome || "Logo"} className="h-8 md:h-10 w-auto mx-auto mb-6 object-contain" />
+        ) : empresa?.nome ? (
+          <h2 className="text-xl font-bold text-white text-center mb-6 tracking-tight">{empresa.nome}</h2>
+        ) : null}
 
         {isLast ? (
-          <div className="bg-white rounded-[2rem] border border-slate-100 shadow-xl shadow-slate-200/50 p-10 md:p-16 text-center animate-in zoom-in-95 duration-500">
-            <div className="w-20 h-20 bg-emerald-50 rounded-full flex items-center justify-center mx-auto mb-8 ring-8 ring-emerald-50/50">
-              <CheckCircle2 className="w-10 h-10 text-emerald-500" />
+          <div className="text-center animate-in zoom-in-95 duration-700 py-6">
+            <div className="w-16 h-16 bg-[#C5A880]/10 rounded-full flex items-center justify-center mx-auto mb-6 border border-[#C5A880]/20">
+              <CheckCircle2 className="w-8 h-8 text-[#C5A880]" />
             </div>
-            <h1 className="text-3xl font-bold text-slate-900 mb-4 tracking-tight">Muito obrigado!</h1>
-            <p className="text-slate-500 text-lg max-w-md mx-auto leading-relaxed">Agradecemos pelo seu tempo e por nos ajudar a melhorar continuamente a sua experiencia conosco.</p>
-            <Button variant="outline" className="mt-10 rounded-full px-8 py-6 text-slate-600 border-slate-200 hover:bg-slate-50 transition-all" onClick={() => { setStep(0); setAnswers({}); }}>
-              Responder Novamente
-            </Button>
+            <h1 className="text-2xl font-semibold text-white mb-3 tracking-tight">Obrigado!</h1>
+            <p className="text-zinc-400 text-sm md:text-base leading-relaxed">Seu feedback é muito importante para nós.</p>
           </div>
         ) : (
-          <div key={currentQ.id} className="bg-white rounded-[2rem] border border-slate-100 shadow-xl shadow-slate-200/50 p-6 md:p-12 transition-all animate-in fade-in slide-in-from-bottom-8 duration-500">
-            <div className="space-y-10">
-              <h1 className="text-2xl md:text-3xl font-bold text-slate-900 leading-snug text-center tracking-tight">
+          <div key={currentQ.id} className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+            <div className="mb-6 flex flex-col items-center gap-1">
+              <span className="text-[10px] uppercase tracking-widest text-zinc-500 font-semibold">
+                Etapa {step + 1} de {questions.length}
+              </span>
+              <h1 className="text-xl md:text-2xl font-semibold text-white text-center tracking-tight mt-2">
                 {currentQ.question_text}
               </h1>
-              
-              {currentQ.type === "nps" && (
-                <div className="mt-12">
-                  <div className="flex flex-wrap justify-center sm:justify-between gap-2 md:gap-3">
-                    {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => {
-                      const isSelected = answers[currentQ.id] === num;
-                      return (
-                        <button
-                          key={num}
-                          onClick={() => setAnswer(num)}
-                          className={`w-11 h-11 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-2xl border-2 flex items-center justify-center text-lg md:text-xl font-bold transition-all duration-300 ease-out focus:outline-none focus-visible:ring-4 focus-visible:ring-primary/20 ${getNpsColor(num, isSelected)}`}
-                        >
-                          {num}
-                        </button>
-                      );
-                    })}
-                  </div>
-                  <div className="flex justify-between text-sm text-slate-400 mt-6 px-1 font-medium tracking-wide">
-                    <span>0 - Pouco provavel</span>
-                    <span>10 - Muito provavel</span>
-                  </div>
-                </div>
-              )}
-
-              {currentQ.type === "text" && (
-                <div className="mt-8 animate-in fade-in duration-500">
-                  <textarea 
-                    value={answers[currentQ.id] || ""}
-                    onChange={(e) => setAnswers(p => ({ ...p, [currentQ.id]: e.target.value }))}
-                    className="w-full rounded-2xl border-2 border-slate-100 bg-slate-50/50 px-6 py-5 text-slate-800 text-lg focus-visible:outline-none focus-visible:border-primary focus-visible:bg-white min-h-[160px] resize-y transition-all shadow-inner"
-                    placeholder="Deixe seu comentario detalhado aqui..."
-                  ></textarea>
-                </div>
-              )}
-
-              {currentQ.type === "single_choice" && (
-                <div className="space-y-4 mt-8 animate-in fade-in duration-500">
-                  {(currentQ.options || []).map((opt, i) => {
-                    const isSelected = answers[currentQ.id] === opt;
+            </div>
+            
+            {currentQ.type === "nps" && (
+              <div className="mt-8 mb-4">
+                <div className="flex w-full justify-between items-center gap-1">
+                  {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => {
+                    const isSelected = answers[currentQ.id] === num;
                     return (
-                      <label key={i} className={`flex items-center space-x-4 p-5 rounded-2xl border-2 transition-all cursor-pointer group ${isSelected ? "border-primary bg-primary/5 shadow-md shadow-primary/5" : "border-slate-100 hover:border-slate-300 bg-white hover:bg-slate-50"}`}>
-                        <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-colors ${isSelected ? "border-primary" : "border-slate-300 group-hover:border-slate-400"}`}>
-                          {isSelected && <div className="w-3 h-3 bg-primary rounded-full animate-in zoom-in" />}
-                        </div>
-                        <input 
-                          type="radio" 
-                          name={`q-${currentQ.id}`}
-                          value={opt}
-                          checked={isSelected}
-                          onChange={(e) => setAnswer(e.target.value)}
-                          className="hidden"
-                        />
-                        <span className={`text-lg flex-1 transition-colors ${isSelected ? "text-slate-900 font-medium" : "text-slate-600"}`}>{opt}</span>
-                      </label>
+                      <button
+                        key={num}
+                        onClick={() => setAnswer(num)}
+                        className={`aspect-square w-full max-w-[36px] flex items-center justify-center rounded-md md:rounded-lg font-medium text-[13px] md:text-sm transition-all duration-200 outline-none
+                          ${isSelected 
+                            ? 'bg-[#C5A880] text-zinc-950 shadow-lg shadow-amber-500/20 font-bold scale-110 z-10' 
+                            : 'bg-zinc-800/80 text-zinc-400 hover:bg-zinc-700 hover:text-white border border-transparent hover:border-zinc-600'
+                          }
+                        `}
+                      >
+                        {num}
+                      </button>
                     );
                   })}
                 </div>
-              )}
-
-              {currentQ.type === "multi_choice" && (
-                <div className="space-y-4 mt-8 animate-in fade-in duration-500">
-                  {(currentQ.options || []).map((opt, i) => {
-                    const isChecked = (answers[currentQ.id] || []).includes(opt);
-                    return (
-                      <label key={i} className={`flex items-center space-x-4 p-5 rounded-2xl border-2 transition-all cursor-pointer group ${isChecked ? "border-primary bg-primary/5 shadow-md shadow-primary/5" : "border-slate-100 hover:border-slate-300 bg-white hover:bg-slate-50"}`}>
-                        <div className={`w-6 h-6 rounded-[0.4rem] border-2 flex items-center justify-center transition-colors ${isChecked ? "border-primary bg-primary" : "border-slate-300 group-hover:border-slate-400"}`}>
-                          {isChecked && <svg className="w-4 h-4 text-white animate-in zoom-in" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>}
-                        </div>
-                        <input 
-                          type="checkbox"
-                          checked={isChecked}
-                          onChange={(e) => {
-                            const currentList = answers[currentQ.id] || [];
-                            if (e.target.checked) setAnswer([...currentList, opt]);
-                            else setAnswer(currentList.filter((x: string) => x !== opt));
-                          }}
-                          className="hidden"
-                        />
-                        <span className={`text-lg flex-1 transition-colors ${isChecked ? "text-slate-900 font-medium" : "text-slate-600"}`}>{opt}</span>
-                      </label>
-                    );
-                  })}
+                <div className="flex justify-between text-[11px] text-zinc-500 mt-4 px-1">
+                  <span>Nada provável</span>
+                  <span>Extremamente provável</span>
                 </div>
-              )}
-
-              <div className="flex justify-between items-center pt-8 mt-4 border-t border-slate-100">
-                <Button variant="ghost" onClick={() => setStep(s => Math.max(0, s - 1))} disabled={step === 0} className="text-slate-500 hover:text-slate-800 rounded-full px-6 py-6 font-medium">
-                  <ArrowLeft className="w-5 h-5 mr-2" /> Anterior
-                </Button>
-                {currentQ.type !== "nps" && (
-                  <Button onClick={handleNext} className="rounded-full px-8 py-6 font-semibold shadow-xl shadow-primary/25 hover:shadow-primary/40 transition-all hover:-translate-y-0.5 text-base">
-                    {step === questions.length - 1 ? "Finalizar" : "Proxima"} <ArrowRight className="w-5 h-5 ml-2" />
-                  </Button>
-                )}
-                {currentQ.type === "nps" && <div></div>}
               </div>
+            )}
+
+            {currentQ.type === "text" && (
+              <div className="mt-6">
+                <textarea 
+                  value={answers[currentQ.id] || ""}
+                  onChange={(e) => setAnswers(p => ({ ...p, [currentQ.id]: e.target.value }))}
+                  className="w-full bg-zinc-950/50 border border-zinc-800 rounded-xl px-4 py-4 text-zinc-200 text-sm focus-visible:outline-none focus-visible:border-[#C5A880] min-h-[120px] resize-y transition-colors placeholder:text-zinc-600"
+                  placeholder="Sinta-se livre para detalhar..."
+                ></textarea>
+              </div>
+            )}
+
+            {currentQ.type === "single_choice" && (
+              <div className="space-y-3 mt-6">
+                {(currentQ.options || []).map((opt, i) => {
+                  const isSelected = answers[currentQ.id] === opt;
+                  return (
+                    <label key={i} className={`flex items-center gap-3 p-4 rounded-xl border transition-all cursor-pointer group ${isSelected ? "border-[#C5A880] bg-[#C5A880]/5" : "border-zinc-800 bg-zinc-950/30 hover:border-zinc-700"}`}>
+                      <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors ${isSelected ? "border-[#C5A880]" : "border-zinc-600 group-hover:border-zinc-500"}`}>
+                        {isSelected && <div className="w-2.5 h-2.5 bg-[#C5A880] rounded-full" />}
+                      </div>
+                      <input type="radio" name={`q-${currentQ.id}`} value={opt} checked={isSelected} onChange={(e) => setAnswer(e.target.value)} className="hidden" />
+                      <span className={`text-sm flex-1 ${isSelected ? "text-white font-medium" : "text-zinc-400 group-hover:text-zinc-300"}`}>{opt}</span>
+                    </label>
+                  );
+                })}
+              </div>
+            )}
+
+            {currentQ.type === "multi_choice" && (
+              <div className="space-y-3 mt-6">
+                {(currentQ.options || []).map((opt, i) => {
+                  const isChecked = (answers[currentQ.id] || []).includes(opt);
+                  return (
+                    <label key={i} className={`flex items-center gap-3 p-4 rounded-xl border transition-all cursor-pointer group ${isChecked ? "border-[#C5A880] bg-[#C5A880]/5" : "border-zinc-800 bg-zinc-950/30 hover:border-zinc-700"}`}>
+                      <div className={`w-5 h-5 rounded-[4px] border-2 flex items-center justify-center transition-colors ${isChecked ? "border-[#C5A880] bg-[#C5A880]" : "border-zinc-600 group-hover:border-zinc-500"}`}>
+                        {isChecked && <svg className="w-3.5 h-3.5 text-zinc-950" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>}
+                      </div>
+                      <input 
+                        type="checkbox" checked={isChecked}
+                        onChange={(e) => {
+                          const list = answers[currentQ.id] || [];
+                          if (e.target.checked) setAnswer([...list, opt]);
+                          else setAnswer(list.filter((x: string) => x !== opt));
+                        }}
+                        className="hidden"
+                      />
+                      <span className={`text-sm flex-1 ${isChecked ? "text-white font-medium" : "text-zinc-400 group-hover:text-zinc-300"}`}>{opt}</span>
+                    </label>
+                  );
+                })}
+              </div>
+            )}
+
+            <div className="flex justify-between items-center mt-8 pt-6 border-t border-zinc-800/80">
+              {step > 0 ? (
+                <Button 
+                  variant="ghost" 
+                  onClick={() => setStep(s => s - 1)} 
+                  className="text-zinc-400 hover:text-white hover:bg-zinc-800 rounded-lg px-4 h-10 font-medium text-sm"
+                >
+                  <ArrowLeft className="w-4 h-4 mr-2" /> Voltar
+                </Button>
+              ) : <div></div>}
+              
+              <Button 
+                onClick={handleNext} 
+                className="bg-[#C5A880] hover:bg-[#b0946d] text-zinc-950 rounded-lg px-6 h-10 font-bold text-sm transition-colors"
+              >
+                {step === questions.length - 1 ? "Finalizar" : "Próxima"} <ArrowRight className="w-4 h-4 ml-2" />
+              </Button>
             </div>
           </div>
         )}
@@ -206,3 +216,4 @@ function NpsSurveyPage() {
     </div>
   );
 }
+

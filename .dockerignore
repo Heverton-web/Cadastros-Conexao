@@ -4,8 +4,13 @@ dist
 *.md
 .DS_Store
 credentials.env
+vps.env
 scripts
 prints_telas
 analise-e-engenharia-reversa
-vps.env
-credentials.env
+_temp/
+secret/
+.tanstack/
+.mimocode/
+test-results/
+json-exports/
