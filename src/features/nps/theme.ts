@@ -67,6 +67,17 @@ export const NPS_SURVEY_DEFAULTS: Record<string, string> = {
   show_company_name: "true",
   logo_height: "32",
   header_align: "center",
+  bg_type: "solid",
+  bg_color: "#09090b",
+  bg_gradient_1: "#0c162c",
+  bg_gradient_2: "#192539",
+  bg_gradient_3: "#0c162c",
+  bg_gradient_angle: "180",
+  bg_blobs_enabled: "true",
+  bg_blobs: JSON.stringify([
+    { id: "b1", color: "#0b5cf0", position: "sup-direito", size: 276, opacity: 7 },
+    { id: "b2", color: "#1b82f6", position: "inf-central", size: 275, opacity: 7 },
+  ]),
 };
 
 export interface NpsColorDef {
@@ -213,6 +224,132 @@ export function getNpsHeaderAlign(config: EmpresaConfig | null): "left" | "cente
 export function getNpsLogoHeight(config: EmpresaConfig | null): number {
   const survey = (config?.theme?.nps_survey ?? {}) as Record<string, string>;
   return parseInt(survey.logo_height ?? "32") || 32;
+}
+
+export type BlobPosition = 
+  | "sup-esquerdo" | "sup-central" | "sup-direito"
+  | "esquerdo" | "centro" | "direito"
+  | "inf-esquerdo" | "inf-central" | "inf-direito";
+
+export interface NpsBlob {
+  id: string;
+  color: string;
+  position: BlobPosition;
+  size: number;
+  opacity: number;
+}
+
+export const BLOB_POSITIONS: { value: BlobPosition; label: string }[] = [
+  { value: "sup-esquerdo", label: "Sup. esquerdo" },
+  { value: "sup-central", label: "Sup. central" },
+  { value: "sup-direito", label: "Sup. direito" },
+  { value: "esquerdo", label: "Esquerdo" },
+  { value: "centro", label: "Centro" },
+  { value: "direito", label: "Direito" },
+  { value: "inf-esquerdo", label: "Inf. esquerdo" },
+  { value: "inf-central", label: "Inf. central" },
+  { value: "inf-direito", label: "Inf. direito" },
+];
+
+function blobPositionToCoords(pos: BlobPosition): React.CSSProperties {
+  const map: Record<BlobPosition, React.CSSProperties> = {
+    "sup-esquerdo": { top: "-10%", left: "-10%" },
+    "sup-central": { top: "-10%", left: "50%", transform: "translateX(-50%)" },
+    "sup-direito": { top: "-10%", right: "-10%" },
+    "esquerdo": { top: "50%", left: "-10%", transform: "translateY(-50%)" },
+    "centro": { top: "50%", left: "50%", transform: "translate(-50%, -50%)" },
+    "direito": { top: "50%", right: "-10%", transform: "translateY(-50%)" },
+    "inf-esquerdo": { bottom: "-10%", left: "-10%" },
+    "inf-central": { bottom: "-10%", left: "50%", transform: "translateX(-50%)" },
+    "inf-direito": { bottom: "-10%", right: "-10%" },
+  };
+  return map[pos];
+}
+
+/** Parse blobs from config string */
+export function getNpsBlobs(config: EmpresaConfig | null): NpsBlob[] {
+  const survey = (config?.theme?.nps_survey ?? {}) as Record<string, string>;
+  if (survey.bg_blobs_enabled !== "true") return [];
+  try {
+    return JSON.parse(survey.bg_blobs ?? "[]");
+  } catch {
+    return [];
+  }
+}
+
+/** Check if blobs are enabled */
+export function getNpsBlobsEnabled(config: EmpresaConfig | null): boolean {
+  const survey = (config?.theme?.nps_survey ?? {}) as Record<string, string>;
+  return survey.bg_blobs_enabled === "true";
+}
+
+/** Get background type: solid, gradient-2, gradient-3 */
+export function getNpsBgType(config: EmpresaConfig | null): "solid" | "gradient-2" | "gradient-3" {
+  const survey = (config?.theme?.nps_survey ?? {}) as Record<string, string>;
+  const t = survey.bg_type;
+  if (t === "gradient-2" || t === "gradient-3") return t;
+  return "solid";
+}
+
+/** Get computed background CSS string for the survey */
+export function getNpsBackgroundStyle(config: EmpresaConfig | null): React.CSSProperties {
+  const survey = (config?.theme?.nps_survey ?? {}) as Record<string, string>;
+  const bgType = getNpsBgType(config);
+  const fallback = NPS_SURVEY_DEFAULTS;
+
+  if (bgType === "gradient-2") {
+    const c1 = survey.bg_gradient_1 ?? fallback.bg_gradient_1;
+    const c2 = survey.bg_gradient_2 ?? fallback.bg_gradient_2;
+    const angle = survey.bg_gradient_angle ?? fallback.bg_gradient_angle;
+    return { background: `linear-gradient(${angle}deg, ${c1}, ${c2})` };
+  }
+
+  if (bgType === "gradient-3") {
+    const c1 = survey.bg_gradient_1 ?? fallback.bg_gradient_1;
+    const c2 = survey.bg_gradient_2 ?? fallback.bg_gradient_2;
+    const c3 = survey.bg_gradient_3 ?? fallback.bg_gradient_3;
+    const angle = survey.bg_gradient_angle ?? fallback.bg_gradient_angle;
+    return { background: `linear-gradient(${angle}deg, ${c1}, ${c2}, ${c3})` };
+  }
+
+  return { backgroundColor: survey.bg_color ?? fallback.survey_bg };
+}
+
+/** Get background CSS for the preview editor (uses colors object directly) */
+export function getNpsBackgroundStyleFromColors(colors: Record<string, string>): React.CSSProperties {
+  const bgType = colors.bg_type ?? "solid";
+
+  if (bgType === "gradient-2") {
+    const c1 = colors.bg_gradient_1 ?? "#0c162c";
+    const c2 = colors.bg_gradient_2 ?? "#192539";
+    const angle = colors.bg_gradient_angle ?? "180";
+    return { background: `linear-gradient(${angle}deg, ${c1}, ${c2})` };
+  }
+
+  if (bgType === "gradient-3") {
+    const c1 = colors.bg_gradient_1 ?? "#0c162c";
+    const c2 = colors.bg_gradient_2 ?? "#192539";
+    const c3 = colors.bg_gradient_3 ?? "#0c162c";
+    const angle = colors.bg_gradient_angle ?? "180";
+    return { background: `linear-gradient(${angle}deg, ${c1}, ${c2}, ${c3})` };
+  }
+
+  return { backgroundColor: colors.bg_color ?? colors.survey_bg ?? "#09090b" };
+}
+
+/** Parse blobs from colors record (editor) */
+export function getBlobsFromColors(colors: Record<string, string>): NpsBlob[] {
+  if (colors.bg_blobs_enabled !== "true") return [];
+  try {
+    return JSON.parse(colors.bg_blobs ?? "[]");
+  } catch {
+    return [];
+  }
+}
+
+/** Convert blobs to string for colors record */
+export function blobsToColorsString(blobs: NpsBlob[]): string {
+  return JSON.stringify(blobs);
 }
 
 /** Returns CSS vars for NPS survey pages — old keys (backward compat) + expanded survey keys */

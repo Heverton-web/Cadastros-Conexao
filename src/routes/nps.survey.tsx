@@ -5,7 +5,8 @@ import { Button } from "~/components/ui/button";
 import { supabase } from "~/core/supabase";
 import type { NpsPergunta } from "~/features/nps/types";
 import { buscarEmpresa, buscarEmpresaConfig, type Empresa, type EmpresaConfig } from "~/features/empresas";
-import { getNpsThemeVars, getNpsNoBorders, getNpsShowCompanyName, getNpsLogoHeight, getNpsHeaderAlign } from "~/features/nps/theme";
+import { getNpsThemeVars, getNpsNoBorders, getNpsShowCompanyName, getNpsLogoHeight, getNpsHeaderAlign, getNpsBackgroundStyle, getNpsBlobs } from "~/features/nps/theme";
+import { NpsBackground } from "~/features/nps/NpsBackground";
 import { ArrowRight, ArrowLeft, CheckCircle2 } from "lucide-react";
 
 export const npsSurveyRoute = createRoute({
@@ -64,25 +65,27 @@ function NpsSurveyPage() {
   const noBorders = getNpsNoBorders(empresaConfig);
   const showCompanyName = getNpsShowCompanyName(empresaConfig);
   const logoHeight = getNpsLogoHeight(empresaConfig);
+  const bgStyle = getNpsBackgroundStyle(empresaConfig);
+  const bgBlobs = getNpsBlobs(empresaConfig);
 
   if (loading) return (
-    <div className="min-h-screen flex items-center justify-center" style={{ ...npsTheme, backgroundColor: "var(--nps-survey-bg)" }}>
+    <NpsBackground bgStyle={bgStyle} blobs={bgBlobs} className="flex items-center justify-center">
       <div 
         className="w-10 h-10 border-4 rounded-full animate-spin"
         style={{ borderColor: "var(--nps-card-border)", borderTopColor: "var(--nps-survey-accent)" }}
       ></div>
-    </div>
+    </NpsBackground>
   );
 
   if (!empresaId || questions.length === 0) return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-4" style={{ ...npsTheme, backgroundColor: "var(--nps-survey-bg)" }}>
+    <NpsBackground bgStyle={bgStyle} blobs={bgBlobs} className="flex flex-col items-center justify-center p-4">
       <div 
         className="p-10 rounded-2xl max-w-md text-center backdrop-blur-lg"
         style={{ backgroundColor: "var(--nps-card-bg)", borderColor: "var(--nps-card-border)", borderWidth: noBorders ? 0 : 1 }}
       >
         <p className="font-medium" style={{ color: "var(--nps-step-text)" }}>Esta pesquisa não está disponível no momento.</p>
       </div>
-    </div>
+    </NpsBackground>
   );
 
   const handleNext = () => {
@@ -98,7 +101,8 @@ function NpsSurveyPage() {
   };
 
   return (
-    <div className={`min-h-screen flex flex-col items-center justify-center px-4 py-8 md:py-12 font-sans selection:bg-[var(--nps-option-selected-bg)] selection:text-[var(--nps-option-text-selected)] ${noBorders ? 'nps-no-borders' : ''}`} style={{ ...npsTheme, backgroundColor: "var(--nps-survey-bg)" }}>
+    <NpsBackground bgStyle={bgStyle} blobs={bgBlobs} className={`flex flex-col items-center justify-center px-4 py-8 md:py-12 font-sans selection:bg-[var(--nps-option-selected-bg)] selection:text-[var(--nps-option-text-selected)] ${noBorders ? 'nps-no-borders' : ''}`}>
+      <div style={npsTheme}>
       <div 
         className="w-full max-w-md backdrop-blur-lg rounded-2xl p-6 md:p-8 shadow-2xl relative overflow-hidden"
         style={{ backgroundColor: "var(--nps-card-bg)", borderColor: "var(--nps-card-border)", borderWidth: noBorders ? 0 : 1 }}
@@ -362,7 +366,8 @@ function NpsSurveyPage() {
           </div>
         </div>
       )}
-    </div>
+      </div>
+    </NpsBackground>
   );
 }
 

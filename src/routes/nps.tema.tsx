@@ -4,7 +4,9 @@ import { useAuth } from "~/lib/auth";
 import { useState, useEffect } from "react";
 import { salvarEmpresaConfig, uploadEmpresaLogo, listarEmpresas, buscarEmpresa, buscarEmpresaConfig } from "~/features/empresas";
 import { NPS_SURVEY_DEFAULTS, SURVEY_COLOR_GROUPS } from "~/features/nps/theme";
-import { Palette, Save, Loader2, Eye, X, ArrowRight, ArrowLeft, CheckCircle2, Upload, Trash2, Image } from "lucide-react";
+import { Palette, Save, Loader2, Eye, X, ArrowRight, ArrowLeft, CheckCircle2, Upload, Trash2, Image, Plus } from "lucide-react";
+import { NpsBackground } from "~/features/nps/NpsBackground";
+import { BLOB_POSITIONS, type NpsBlob, type BlobPosition, getBlobsFromColors, blobsToColorsString, getNpsBackgroundStyleFromColors } from "~/features/nps/theme";
 import toast from "react-hot-toast";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
@@ -480,6 +482,286 @@ function NpsTemaPage() {
             </CardContent>
           </Card>
 
+          {/* Plano de fundo */}
+          <Card className="border border-border/40 bg-card/60 backdrop-blur-sm shadow-sm rounded-xl overflow-hidden">
+            <CardHeader className="py-2.5 px-4 bg-muted/20 border-b border-border/20">
+              <CardTitle className="text-[10px] font-bold text-foreground/80 uppercase tracking-wider">
+                Plano de Fundo
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="p-4 space-y-4">
+              {/* Tipo de fundo */}
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider block">
+                  Tipo de Fundo
+                </label>
+                <div className="flex gap-1.5">
+                  {[
+                    { value: "solid", label: "Sólido" },
+                    { value: "gradient-2", label: "Gradiente 2 cores" },
+                    { value: "gradient-3", label: "Gradiente 3 cores" },
+                  ].map((opt) => (
+                    <button
+                      key={opt.value}
+                      onClick={() => handleColorChange("bg_type", opt.value)}
+                      className={`flex-1 px-2 py-2 rounded-lg text-xs font-medium transition-all ${
+                        (colors.bg_type ?? "solid") === opt.value
+                          ? "bg-accent text-accent-fg"
+                          : "bg-muted/30 text-muted-foreground border border-border/40 hover:bg-muted/50"
+                      }`}
+                    >
+                      {opt.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Cores */}
+              {colors.bg_type === "solid" ? (
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider block">
+                    Cor de Fundo
+                  </label>
+                  <div className="flex items-center gap-2">
+                    <div className="relative w-8 h-8 rounded-lg overflow-hidden border border-border/50 cursor-pointer shadow-inner bg-muted/20 flex-shrink-0">
+                      <input
+                        type="color"
+                        value={colors.bg_color?.startsWith("#") ? colors.bg_color : "#09090b"}
+                        onChange={(e) => handleColorChange("bg_color", e.target.value)}
+                        className="absolute inset-0 w-[200%] h-[200%] -translate-x-1/4 -translate-y-1/4 cursor-pointer"
+                      />
+                    </div>
+                    <input
+                      type="text"
+                      value={colors.bg_color ?? "#09090b"}
+                      onChange={(e) => handleColorChange("bg_color", e.target.value)}
+                      className="flex-1 min-w-0 h-8 px-2 py-1 bg-muted/40 border border-border/50 rounded-lg text-foreground text-xs font-mono focus:outline-none focus:border-primary/50 transition-colors"
+                    />
+                  </div>
+                </div>
+              ) : (
+                <>
+                  <div className="space-y-1.5">
+                    <label className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider block">
+                      Cor 1
+                    </label>
+                    <div className="flex items-center gap-2">
+                      <div className="relative w-8 h-8 rounded-lg overflow-hidden border border-border/50 cursor-pointer shadow-inner bg-muted/20 flex-shrink-0">
+                        <input
+                          type="color"
+                          value={colors.bg_gradient_1?.startsWith("#") ? colors.bg_gradient_1 : "#0c162c"}
+                          onChange={(e) => handleColorChange("bg_gradient_1", e.target.value)}
+                          className="absolute inset-0 w-[200%] h-[200%] -translate-x-1/4 -translate-y-1/4 cursor-pointer"
+                        />
+                      </div>
+                      <input
+                        type="text"
+                        value={colors.bg_gradient_1 ?? "#0c162c"}
+                        onChange={(e) => handleColorChange("bg_gradient_1", e.target.value)}
+                        className="flex-1 min-w-0 h-8 px-2 py-1 bg-muted/40 border border-border/50 rounded-lg text-foreground text-xs font-mono focus:outline-none focus:border-primary/50 transition-colors"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <label className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider block">
+                      Cor 2
+                    </label>
+                    <div className="flex items-center gap-2">
+                      <div className="relative w-8 h-8 rounded-lg overflow-hidden border border-border/50 cursor-pointer shadow-inner bg-muted/20 flex-shrink-0">
+                        <input
+                          type="color"
+                          value={colors.bg_gradient_2?.startsWith("#") ? colors.bg_gradient_2 : "#192539"}
+                          onChange={(e) => handleColorChange("bg_gradient_2", e.target.value)}
+                          className="absolute inset-0 w-[200%] h-[200%] -translate-x-1/4 -translate-y-1/4 cursor-pointer"
+                        />
+                      </div>
+                      <input
+                        type="text"
+                        value={colors.bg_gradient_2 ?? "#192539"}
+                        onChange={(e) => handleColorChange("bg_gradient_2", e.target.value)}
+                        className="flex-1 min-w-0 h-8 px-2 py-1 bg-muted/40 border border-border/50 rounded-lg text-foreground text-xs font-mono focus:outline-none focus:border-primary/50 transition-colors"
+                      />
+                    </div>
+                  </div>
+
+                  {colors.bg_type === "gradient-3" && (
+                    <div className="space-y-1.5">
+                      <label className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider block">
+                        Cor 3
+                      </label>
+                      <div className="flex items-center gap-2">
+                        <div className="relative w-8 h-8 rounded-lg overflow-hidden border border-border/50 cursor-pointer shadow-inner bg-muted/20 flex-shrink-0">
+                          <input
+                            type="color"
+                            value={colors.bg_gradient_3?.startsWith("#") ? colors.bg_gradient_3 : "#0c162c"}
+                            onChange={(e) => handleColorChange("bg_gradient_3", e.target.value)}
+                            className="absolute inset-0 w-[200%] h-[200%] -translate-x-1/4 -translate-y-1/4 cursor-pointer"
+                          />
+                        </div>
+                        <input
+                          type="text"
+                          value={colors.bg_gradient_3 ?? "#0c162c"}
+                          onChange={(e) => handleColorChange("bg_gradient_3", e.target.value)}
+                          className="flex-1 min-w-0 h-8 px-2 py-1 bg-muted/40 border border-border/50 rounded-lg text-foreground text-xs font-mono focus:outline-none focus:border-primary/50 transition-colors"
+                        />
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="space-y-1.5">
+                    <label className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider block">
+                      Angulo: {colors.bg_gradient_angle ?? "180"}°
+                    </label>
+                    <input
+                      type="range"
+                      min={0}
+                      max={360}
+                      step={1}
+                      value={parseInt(colors.bg_gradient_angle ?? "180") || 180}
+                      onChange={(e) => handleColorChange("bg_gradient_angle", e.target.value)}
+                      className="w-full h-1.5 accent-primary cursor-pointer"
+                    />
+                  </div>
+                </>
+              )}
+
+              {/* Blobs decorativos */}
+              <div className="pt-3 border-t border-border/20">
+                <div className="flex items-center justify-between mb-3">
+                  <div>
+                    <p className="text-xs font-semibold text-foreground">Blobs decorativos</p>
+                    <p className="text-[10px] text-muted-foreground">Manchas suaves coloridas sobre o fundo</p>
+                  </div>
+                  <label className="relative inline-flex items-center cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={colors.bg_blobs_enabled === "true"}
+                      onChange={() => handleToggle("bg_blobs_enabled")}
+                      className="sr-only peer"
+                    />
+                    <div className="w-9 h-5 bg-muted/50 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-accent"></div>
+                  </label>
+                </div>
+
+                {colors.bg_blobs_enabled === "true" && (
+                  <div className="space-y-3">
+                    {(() => {
+                      let blobs: NpsBlob[] = [];
+                      try { blobs = JSON.parse(colors.bg_blobs ?? "[]"); } catch { blobs = []; }
+                      return blobs.map((blob, idx) => (
+                        <div key={blob.id} className="p-3 rounded-lg bg-muted/20 border border-border/30 space-y-2.5">
+                          <div className="flex items-center gap-2">
+                            <div className="relative w-7 h-7 rounded-lg overflow-hidden border border-border/50 cursor-pointer shadow-inner bg-muted/20 flex-shrink-0">
+                              <input
+                                type="color"
+                                value={blob.color?.startsWith("#") ? blob.color : "#0b5cf0"}
+                                onChange={(e) => {
+                                  const newBlobs = [...blobs];
+                                  newBlobs[idx] = { ...blob, color: e.target.value };
+                                  handleColorChange("bg_blobs", JSON.stringify(newBlobs));
+                                }}
+                                className="absolute inset-0 w-[200%] h-[200%] -translate-x-1/4 -translate-y-1/4 cursor-pointer"
+                              />
+                            </div>
+                            <span className="text-xs font-mono text-muted-foreground flex-1">{blob.color}</span>
+                            <button
+                              onClick={() => {
+                                const newBlobs = blobs.filter((_, i) => i !== idx);
+                                handleColorChange("bg_blobs", JSON.stringify(newBlobs));
+                              }}
+                              className="text-destructive/70 hover:text-destructive transition-colors"
+                            >
+                              <Trash2 size={14} />
+                            </button>
+                          </div>
+
+                          {/* Posição */}
+                          <div className="grid grid-cols-3 gap-1">
+                            {BLOB_POSITIONS.map((pos) => (
+                              <button
+                                key={pos.value}
+                                onClick={() => {
+                                  const newBlobs = [...blobs];
+                                  newBlobs[idx] = { ...blob, position: pos.value as BlobPosition };
+                                  handleColorChange("bg_blobs", JSON.stringify(newBlobs));
+                                }}
+                                className={`px-1.5 py-1.5 rounded text-[9px] font-medium transition-all ${
+                                  blob.position === pos.value
+                                    ? "bg-accent text-accent-fg"
+                                    : "bg-muted/30 text-muted-foreground border border-border/30 hover:bg-muted/50"
+                                }`}
+                              >
+                                {pos.label}
+                              </button>
+                            ))}
+                          </div>
+
+                          {/* Tamanho + Opacidade */}
+                          <div className="grid grid-cols-2 gap-3">
+                            <div className="space-y-1">
+                              <label className="text-[9px] text-muted-foreground font-semibold block">
+                                Tamanho: {blob.size}px
+                              </label>
+                              <input
+                                type="range"
+                                min={50}
+                                max={500}
+                                step={5}
+                                value={blob.size}
+                                onChange={(e) => {
+                                  const newBlobs = [...blobs];
+                                  newBlobs[idx] = { ...blob, size: Number(e.target.value) };
+                                  handleColorChange("bg_blobs", JSON.stringify(newBlobs));
+                                }}
+                                className="w-full h-1.5 accent-primary cursor-pointer"
+                              />
+                            </div>
+                            <div className="space-y-1">
+                              <label className="text-[9px] text-muted-foreground font-semibold block">
+                                Opacidade: {blob.opacity}%
+                              </label>
+                              <input
+                                type="range"
+                                min={1}
+                                max={30}
+                                step={1}
+                                value={blob.opacity}
+                                onChange={(e) => {
+                                  const newBlobs = [...blobs];
+                                  newBlobs[idx] = { ...blob, opacity: Number(e.target.value) };
+                                  handleColorChange("bg_blobs", JSON.stringify(newBlobs));
+                                }}
+                                className="w-full h-1.5 accent-primary cursor-pointer"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      ));
+                    })()}
+
+                    <button
+                      onClick={() => {
+                        const existing: NpsBlob[] = (() => { try { return JSON.parse(colors.bg_blobs ?? "[]"); } catch { return []; } })();
+                        const newBlob: NpsBlob = {
+                          id: `b${Date.now()}`,
+                          color: "#6366f1",
+                          position: "centro",
+                          size: 200,
+                          opacity: 5,
+                        };
+                        handleColorChange("bg_blobs", JSON.stringify([...existing, newBlob]));
+                      }}
+                      className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-muted/30 text-muted-foreground text-xs font-medium border border-border/30 hover:bg-muted/50 transition-colors w-full justify-center"
+                    >
+                      <Plus size={12} /> Adicionar blob
+                    </button>
+                  </div>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+
           {/* Sem bordas toggle */}
           <label className="flex items-center gap-3 p-3 rounded-xl bg-card border border-border/40 shadow-sm cursor-pointer hover:bg-muted/10 transition-colors">
             <input
@@ -565,15 +847,21 @@ function NpsTemaPage() {
             </div>
             
             {/* Window content */}
-            <div className="p-8 flex items-center justify-center transition-colors duration-300 min-h-[500px]" style={{ backgroundColor: colors.survey_bg || '#09090b' }}>
-              <TemaPreview
-                colors={colors}
-                logoUrl={logoUrl}
-                empresaNome={empresaNome}
-                showModal={showModal}
-                onToggleModal={() => setShowModal((v) => !v)}
-                noBorders={noBorders}
-              />
+            <div className="flex items-center justify-center min-h-[500px]">
+              <NpsBackground
+                bgStyle={getNpsBackgroundStyleFromColors(colors)}
+                blobs={getBlobsFromColors(colors)}
+                className="p-8 flex items-center justify-center w-full"
+              >
+                <TemaPreview
+                  colors={colors}
+                  logoUrl={logoUrl}
+                  empresaNome={empresaNome}
+                  showModal={showModal}
+                  onToggleModal={() => setShowModal((v) => !v)}
+                  noBorders={noBorders}
+                />
+              </NpsBackground>
             </div>
           </div>
         </div>

@@ -6,7 +6,8 @@ import { buscarEmpresa, buscarEmpresaConfig, listarEmpresas, type Empresa, type 
 import { Button } from "~/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
 import { ArrowRight, ArrowLeft, CheckCircle2, Eye } from "lucide-react";
-import { getNpsThemeVars, getNpsNoBorders, getNpsShowCompanyName, getNpsLogoHeight } from "~/features/nps/theme";
+import { getNpsThemeVars, getNpsNoBorders, getNpsShowCompanyName, getNpsLogoHeight, getNpsBackgroundStyle, getNpsBlobs } from "~/features/nps/theme";
+import { NpsBackground } from "~/features/nps/NpsBackground";
 
 export default function NpsPreviewPage() {
   const { profile } = useAuth();
@@ -82,6 +83,8 @@ export default function NpsPreviewPage() {
   const noBorders = getNpsNoBorders(empresaConfig);
   const showCompanyName = getNpsShowCompanyName(empresaConfig);
   const logoHeight = getNpsLogoHeight(empresaConfig);
+  const bgStyle = getNpsBackgroundStyle(empresaConfig);
+  const bgBlobs = getNpsBlobs(empresaConfig);
 
   const handleNext = () => {
     if (currentQ?.required && answers[currentQ.id] === undefined) {
@@ -99,7 +102,7 @@ export default function NpsPreviewPage() {
   const hasQuestions = questions.length > 0;
 
   return (
-    <div className={`min-h-screen p-4 md:p-8 ${noBorders ? 'nps-no-borders' : ''} transition-colors duration-300`} style={{ ...npsTheme, backgroundColor: "var(--nps-survey-bg)" }}>
+    <div className={`min-h-screen p-4 md:p-8 ${noBorders ? 'nps-no-borders' : ''} transition-colors duration-300`} style={npsTheme}>
       <div className="max-w-7xl mx-auto space-y-6">
         {/* Header */}
         <div className="mb-2 flex items-start sm:items-center justify-between gap-4">
@@ -144,7 +147,7 @@ export default function NpsPreviewPage() {
         {/* Preview da pesquisa */}
         {isReady && (
           <div className="flex justify-center">
-            <div className="w-full max-w-lg">
+            <NpsBackground bgStyle={bgStyle} blobs={bgBlobs} className="w-full max-w-lg rounded-2xl overflow-hidden p-8 min-h-[500px]">
               {!hasQuestions && !loading && (
                 <div 
                   className="backdrop-blur-lg rounded-2xl p-10 text-center"
@@ -431,7 +434,7 @@ export default function NpsPreviewPage() {
                   )}
                 </div>
               )}
-            </div>
+            </NpsBackground>
           </div>
         )}
 
