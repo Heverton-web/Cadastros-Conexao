@@ -47,10 +47,15 @@ import { funisRoute } from "./routes/funis";
 import { funisDashboardRoute } from "./routes/funis.dashboard";
 import { funilDetalleRoute } from "./routes/funis.funil.$funilId";
 
+import { linktreePublicRoute } from "./routes/linktree.$id";
+import { linktreeDashboardRoute } from "./routes/linktree.dashboard";
+import { linktreeTemaRoute } from "./routes/linktree.tema";
+
 export const routeTree = rootRoute.addChildren([
   loginRoute,
   preCadastroRoute,
   npsSurveyRoute,
+  linktreePublicRoute,
   authLayout.addChildren([
     dashboardRoute,
     clientesRoute,
@@ -95,5 +100,8 @@ export const routeTree = rootRoute.addChildren([
     funisRoute,
     funisDashboardRoute,
     funilDetalleRoute,
+
+    linktreeDashboardRoute,
+    linktreeTemaRoute,
   ]),
 ]);
