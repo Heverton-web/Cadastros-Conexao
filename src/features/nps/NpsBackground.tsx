@@ -19,9 +19,10 @@ interface NpsBackgroundProps {
   bgStyle: React.CSSProperties;
   blobs: NpsBlob[];
   className?: string;
+  children?: React.ReactNode;
 }
 
-export function NpsBackground({ bgStyle, blobs, className = "" }: NpsBackgroundProps) {
+export function NpsBackground({ bgStyle, blobs, className = "", children }: NpsBackgroundProps) {
   return (
     <div className={`relative min-h-screen ${className}`} style={bgStyle}>
       {blobs.map((blob) => {
@@ -40,6 +41,7 @@ export function NpsBackground({ bgStyle, blobs, className = "" }: NpsBackgroundP
           />
         );
       })}
+      {children}
     </div>
   );
 }
