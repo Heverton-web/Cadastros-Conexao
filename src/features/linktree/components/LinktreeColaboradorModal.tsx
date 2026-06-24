@@ -103,7 +103,7 @@ export function LinktreeColaboradorModal({ open, onOpenChange, collaborator, onS
       : await supabase.from("linktree_colaboradores").insert(payload);
     setSaving(false);
     if (error) {
-      toast.error("Nao foi possivel salvar", { description: error.message });
+      toast.error(`Nao foi possivel salvar: ${error.message}`);
       return;
     }
     toast.success(editing ? "Colaborador atualizado" : "Link Tree gerado com sucesso");

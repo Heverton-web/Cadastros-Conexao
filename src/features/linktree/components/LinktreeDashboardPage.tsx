@@ -50,7 +50,7 @@ export function LinktreeDashboardPage() {
       const data = await listarColaboradores(profile?.empresa_id ?? undefined);
       setRows(data);
     } catch (e: any) {
-      toast.error("Erro ao carregar", { description: e.message });
+      toast.error(`Erro ao carregar: ${e.message}`);
     }
   }
 
@@ -76,7 +76,7 @@ export function LinktreeDashboardPage() {
       setToDelete(null);
       load();
     } catch (e: any) {
-      toast.error("Falha ao excluir", { description: e.message });
+      toast.error(`Falha ao excluir: ${e.message}`);
     }
   }
 
