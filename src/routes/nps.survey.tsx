@@ -5,7 +5,7 @@ import { Button } from "~/components/ui/button";
 import { supabase } from "~/core/supabase";
 import type { NpsPergunta } from "~/features/nps/types";
 import { buscarEmpresa, buscarEmpresaConfig, type Empresa, type EmpresaConfig } from "~/features/empresas";
-import { getNpsThemeVars, getNpsNoBorders } from "~/features/nps/theme";
+import { getNpsThemeVars, getNpsNoBorders, getNpsShowCompanyName, getNpsLogoHeight, getNpsHeaderAlign } from "~/features/nps/theme";
 import { ArrowRight, ArrowLeft, CheckCircle2 } from "lucide-react";
 
 export const npsSurveyRoute = createRoute({
@@ -57,26 +57,33 @@ function NpsSurveyPage() {
     load();
   }, []);
 
-  if (loading) return (
-    <div className="min-h-screen bg-[var(--nps-bg)] flex items-center justify-center" style={npsTheme}>
-      <div className="w-10 h-10 border-4 border-[var(--nps-surface)] border-t-[var(--nps-accent)] rounded-full animate-spin"></div>
-    </div>
-  );
-
-  if (!empresaId || questions.length === 0) return (
-    <div className="min-h-screen bg-[var(--nps-bg)] flex flex-col items-center justify-center p-4" style={npsTheme}>
-      <div className="bg-[var(--nps-surface-50)] p-10 rounded-2xl border border-[var(--nps-surface)] max-w-md text-center backdrop-blur-lg">
-        <p className="text-[var(--nps-text-muted)] font-medium">Esta pesquisa não está disponível no momento.</p>
-      </div>
-    </div>
-  );
-
   const currentQ = questions[step];
   const isLast = step === questions.length;
   const logoUrl = empresaConfig?.logo_app_url || empresaConfig?.logo_index_url;
   const npsTheme = getNpsThemeVars(empresaConfig) as React.CSSProperties;
-
   const noBorders = getNpsNoBorders(empresaConfig);
+  const showCompanyName = getNpsShowCompanyName(empresaConfig);
+  const logoHeight = getNpsLogoHeight(empresaConfig);
+
+  if (loading) return (
+    <div className="min-h-screen flex items-center justify-center" style={{ ...npsTheme, backgroundColor: "var(--nps-survey-bg)" }}>
+      <div 
+        className="w-10 h-10 border-4 rounded-full animate-spin"
+        style={{ borderColor: "var(--nps-card-border)", borderTopColor: "var(--nps-survey-accent)" }}
+      ></div>
+    </div>
+  );
+
+  if (!empresaId || questions.length === 0) return (
+    <div className="min-h-screen flex flex-col items-center justify-center p-4" style={{ ...npsTheme, backgroundColor: "var(--nps-survey-bg)" }}>
+      <div 
+        className="p-10 rounded-2xl max-w-md text-center backdrop-blur-lg"
+        style={{ backgroundColor: "var(--nps-card-bg)", borderColor: "var(--nps-card-border)", borderWidth: noBorders ? 0 : 1 }}
+      >
+        <p className="font-medium" style={{ color: "var(--nps-step-text)" }}>Esta pesquisa não está disponível no momento.</p>
+      </div>
+    </div>
+  );
 
   const handleNext = () => {
     if (currentQ?.required && answers[currentQ.id] === undefined) {
@@ -91,41 +98,64 @@ function NpsSurveyPage() {
   };
 
   return (
-    <div className={`min-h-screen flex flex-col items-center justify-center px-4 py-8 md:py-12 font-sans bg-[var(--nps-bg)] bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-[var(--nps-accent-5)] via-[var(--nps-bg)] to-[var(--nps-bg)] selection:bg-[var(--nps-accent-20)] selection:text-[var(--nps-text)] ${noBorders ? 'nps-no-borders' : ''}`} style={npsTheme}>
-      <div className="w-full max-w-md bg-[var(--nps-surface-50)] border border-[var(--nps-surface)] backdrop-blur-lg rounded-2xl p-6 md:p-8 shadow-2xl relative overflow-hidden">
+    <div className={`min-h-screen flex flex-col items-center justify-center px-4 py-8 md:py-12 font-sans selection:bg-[var(--nps-option-selected-bg)] selection:text-[var(--nps-option-text-selected)] ${noBorders ? 'nps-no-borders' : ''}`} style={{ ...npsTheme, backgroundColor: "var(--nps-survey-bg)" }}>
+      <div 
+        className="w-full max-w-md backdrop-blur-lg rounded-2xl p-6 md:p-8 shadow-2xl relative overflow-hidden"
+        style={{ backgroundColor: "var(--nps-card-bg)", borderColor: "var(--nps-card-border)", borderWidth: noBorders ? 0 : 1 }}
+      >
         
         {/* Glow effect */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-px bg-gradient-to-r from-transparent via-[var(--nps-accent-20)] to-transparent"></div>
+        <div 
+          className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-px bg-gradient-to-r from-transparent via-[var(--nps-survey-glow)]/20 to-transparent"
+          style={{ opacity: noBorders ? 0 : 1 }}
+        ></div>
 
-        {logoUrl || empresa?.nome ? (
+        {(logoUrl || empresa?.nome) ? (
           <div className="flex items-center justify-center gap-3 mb-6">
             {logoUrl && (
-              <img src={logoUrl} alt={empresa?.nome || "Logo"} className="h-8 w-auto object-contain flex-shrink-0" />
+              <img src={logoUrl} alt={empresa?.nome || "Logo"} style={{ height: `${logoHeight}px` }} className="w-auto object-contain flex-shrink-0" />
             )}
-            {logoUrl && empresa?.nome && (
-              <div className="h-8 w-px bg-[var(--nps-header-divider)] flex-shrink-0" />
+            {logoUrl && showCompanyName && empresa?.nome && (
+              <div 
+                className="w-px flex-shrink-0" 
+                style={{ height: `${logoHeight}px`, backgroundColor: "var(--nps-header-divider)", opacity: noBorders ? 0 : 1 }}
+              />
             )}
-            {empresa?.nome && (
-              <h2 className="text-lg font-bold text-[var(--nps-header-logo-text)] tracking-tight">{empresa.nome}</h2>
+            {showCompanyName && empresa?.nome && (
+              <h2 
+                className="text-lg font-bold tracking-tight truncate"
+                style={{ color: "var(--nps-header-logo-text)" }}
+              >
+                {empresa.nome}
+              </h2>
             )}
           </div>
         ) : null}
 
         {isLast ? (
           <div className="text-center animate-in zoom-in-95 duration-700 py-6">
-            <div className="w-16 h-16 bg-[var(--nps-accent-10)] rounded-full flex items-center justify-center mx-auto mb-6 border border-[var(--nps-accent-20)]">
-              <CheckCircle2 className="w-8 h-8 text-[var(--nps-accent)]" />
+            <div 
+              className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6"
+              style={{ backgroundColor: "var(--nps-complete-icon-bg)", borderColor: "var(--nps-complete-icon-border)", borderWidth: noBorders ? 0 : 1 }}
+            >
+              <CheckCircle2 className="w-8 h-8" style={{ color: "var(--nps-complete-icon-color)" }} />
             </div>
-            <h1 className="text-2xl font-semibold text-[var(--nps-text)] mb-3 tracking-tight">Obrigado!</h1>
-            <p className="text-[var(--nps-text-muted)] text-sm md:text-base leading-relaxed">Seu feedback é muito importante para nós.</p>
+            <h1 className="text-2xl font-semibold mb-3 tracking-tight" style={{ color: "var(--nps-complete-title)" }}>Obrigado!</h1>
+            <p className="text-sm md:text-base leading-relaxed" style={{ color: "var(--nps-complete-subtitle)" }}>Seu feedback é muito importante para nós.</p>
           </div>
         ) : (
           <div key={currentQ.id} className="animate-in fade-in slide-in-from-bottom-4 duration-500">
             <div className="mb-6 flex flex-col items-center gap-1">
-              <span className="text-[10px] uppercase tracking-widest text-[var(--nps-text-muted)] font-semibold">
+              <span 
+                className="text-[10px] uppercase tracking-widest font-semibold"
+                style={{ color: "var(--nps-step-text)" }}
+              >
                 Etapa {step + 1} de {questions.length}
               </span>
-              <h1 className="text-xl md:text-2xl font-semibold text-[var(--nps-text)] text-center tracking-tight mt-2">
+              <h1 
+                className="text-xl md:text-2xl font-semibold text-center tracking-tight mt-2"
+                style={{ color: "var(--nps-question-text)" }}
+              >
                 {currentQ.question_text}
               </h1>
             </div>
@@ -140,18 +170,20 @@ function NpsSurveyPage() {
                         key={num}
                         onClick={() => setAnswer(num)}
                         className={`aspect-square w-full max-w-[36px] flex items-center justify-center rounded-md md:rounded-lg font-medium text-[13px] md:text-sm transition-all duration-200 outline-none
-                          ${isSelected 
-                            ? 'bg-[var(--nps-accent)] text-zinc-950 shadow-lg shadow-amber-500/20 font-bold scale-110 z-10' 
-                            : 'bg-[rgba(24,24,27,0.8)] text-[var(--nps-text-muted)] hover:bg-zinc-700 hover:text-white border border-transparent hover:border-zinc-600'
-                          }
+                          ${isSelected ? 'font-bold scale-110 z-10' : ''}
+                          ${noBorders ? '' : 'border border-transparent'}
                         `}
+                        style={{
+                          backgroundColor: isSelected ? "var(--nps-nps-btn-selected-bg)" : "var(--nps-nps-btn-bg)",
+                          color: isSelected ? "var(--nps-nps-btn-selected-text)" : "var(--nps-nps-btn-text)"
+                        }}
                       >
                         {num}
                       </button>
                     );
                   })}
                 </div>
-                <div className="flex justify-between text-[11px] text-[var(--nps-text-muted)] mt-4 px-1">
+                <div className="flex justify-between text-[11px] mt-4 px-1" style={{ color: "var(--nps-step-text)" }}>
                   <span>Nada provável</span>
                   <span>Extremamente provável</span>
                 </div>
@@ -163,7 +195,13 @@ function NpsSurveyPage() {
                 <textarea 
                   value={answers[currentQ.id] || ""}
                   onChange={(e) => setAnswers(p => ({ ...p, [currentQ.id]: e.target.value }))}
-                  className="w-full bg-[var(--nps-bg-50)] border border-[var(--nps-surface)] rounded-xl px-4 py-4 text-[var(--nps-text)] text-sm focus-visible:outline-none focus-visible:border-[var(--nps-accent)] min-h-[120px] resize-y transition-colors placeholder:text-[var(--nps-text-muted)]"
+                  className="w-full rounded-xl px-4 py-4 text-sm focus-visible:outline-none min-h-[120px] resize-y transition-colors"
+                  style={{
+                    backgroundColor: "var(--nps-input-bg)",
+                    color: "var(--nps-input-text)",
+                    borderColor: "var(--nps-input-border)",
+                    borderWidth: noBorders ? 0 : 1
+                  }}
                   placeholder="Sinta-se livre para detalhar..."
                 ></textarea>
               </div>
@@ -174,12 +212,32 @@ function NpsSurveyPage() {
                 {(currentQ.options || []).map((opt, i) => {
                   const isSelected = answers[currentQ.id] === opt;
                   return (
-                    <label key={i} className={`flex items-center gap-3 p-4 rounded-xl border transition-all cursor-pointer group ${isSelected ? "border-[var(--nps-accent)] bg-[var(--nps-accent-5)]" : "border-[var(--nps-surface)] bg-[var(--nps-bg-50)] hover:border-zinc-700"}`}>
-                      <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors ${isSelected ? "border-[var(--nps-accent)]" : "border-zinc-600 group-hover:border-zinc-500"}`}>
-                        {isSelected && <div className="w-2.5 h-2.5 bg-[var(--nps-accent)] rounded-full" />}
+                    <label 
+                      key={i} 
+                      className="flex items-center gap-3 p-4 rounded-xl transition-all cursor-pointer group"
+                      style={{
+                        backgroundColor: isSelected ? "var(--nps-option-selected-bg)" : "var(--nps-option-bg)",
+                        borderColor: isSelected ? "var(--nps-option-selected-border)" : "var(--nps-option-border)",
+                        borderWidth: noBorders ? 0 : 1
+                      }}
+                    >
+                      <div 
+                        className={`w-5 h-5 rounded-full flex items-center justify-center transition-colors ${noBorders ? '' : 'border-2'}`}
+                        style={{
+                          borderColor: isSelected ? "var(--nps-radio-selected)" : "var(--nps-radio-border)"
+                        }}
+                      >
+                        {isSelected && <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: "var(--nps-radio-selected)" }} />}
                       </div>
                       <input type="radio" name={`q-${currentQ.id}`} value={opt} checked={isSelected} onChange={(e) => setAnswer(e.target.value)} className="hidden" />
-                      <span className={`text-sm flex-1 ${isSelected ? "text-[var(--nps-text)] font-medium" : "text-[var(--nps-text-muted)] group-hover:text-zinc-300"}`}>{opt}</span>
+                      <span 
+                        className={`text-sm flex-1 transition-colors ${isSelected ? "font-medium" : ""}`}
+                        style={{
+                          color: isSelected ? "var(--nps-option-text-selected)" : "var(--nps-option-text)"
+                        }}
+                      >
+                        {opt}
+                      </span>
                     </label>
                   );
                 })}
@@ -191,9 +249,33 @@ function NpsSurveyPage() {
                 {(currentQ.options || []).map((opt, i) => {
                   const isChecked = (answers[currentQ.id] || []).includes(opt);
                   return (
-                    <label key={i} className={`flex items-center gap-3 p-4 rounded-xl border transition-all cursor-pointer group ${isChecked ? "border-[var(--nps-accent)] bg-[var(--nps-accent-5)]" : "border-[var(--nps-surface)] bg-[var(--nps-bg-50)] hover:border-zinc-700"}`}>
-                      <div className={`w-5 h-5 rounded-[4px] border-2 flex items-center justify-center transition-colors ${isChecked ? "border-[var(--nps-accent)] bg-[var(--nps-accent)]" : "border-zinc-600 group-hover:border-zinc-500"}`}>
-                        {isChecked && <svg className="w-3.5 h-3.5 text-zinc-950" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>}
+                    <label 
+                      key={i} 
+                      className="flex items-center gap-3 p-4 rounded-xl transition-all cursor-pointer group"
+                      style={{
+                        backgroundColor: isChecked ? "var(--nps-option-selected-bg)" : "var(--nps-option-bg)",
+                        borderColor: isChecked ? "var(--nps-option-selected-border)" : "var(--nps-option-border)",
+                        borderWidth: noBorders ? 0 : 1
+                      }}
+                    >
+                      <div 
+                        className={`w-5 h-5 rounded-[4px] flex items-center justify-center transition-colors ${noBorders ? '' : 'border-2'}`}
+                        style={{
+                          borderColor: isChecked ? "var(--nps-radio-selected)" : "var(--nps-radio-border)",
+                          backgroundColor: isChecked ? "var(--nps-radio-selected)" : "transparent"
+                        }}
+                      >
+                        {isChecked && (
+                          <svg 
+                            className="w-3.5 h-3.5" 
+                            style={{ color: "var(--nps-nps-btn-selected-text)" }}
+                            fill="none" 
+                            viewBox="0 0 24 24" 
+                            stroke="currentColor"
+                          >
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                          </svg>
+                        )}
                       </div>
                       <input 
                         type="checkbox" checked={isChecked}
@@ -204,27 +286,42 @@ function NpsSurveyPage() {
                         }}
                         className="hidden"
                       />
-                      <span className={`text-sm flex-1 ${isChecked ? "text-[var(--nps-text)] font-medium" : "text-[var(--nps-text-muted)] group-hover:text-zinc-300"}`}>{opt}</span>
+                      <span 
+                        className={`text-sm flex-1 transition-colors ${isChecked ? "font-medium" : ""}`}
+                        style={{
+                          color: isChecked ? "var(--nps-option-text-selected)" : "var(--nps-option-text)"
+                        }}
+                      >
+                        {opt}
+                      </span>
                     </label>
                   );
                 })}
               </div>
             )}
 
-            <div className="flex justify-between items-center mt-8 pt-6 border-t border-[var(--nps-surface)]/80">
+            <div 
+              className="flex justify-between items-center mt-8 pt-6"
+              style={{ borderTopColor: "var(--nps-divider-footer)", borderTopWidth: noBorders ? 0 : 1 }}
+            >
               {step > 0 ? (
                 <Button 
                   variant="ghost" 
                   onClick={() => setStep(s => s - 1)} 
-                  className="text-[var(--nps-text-muted)] hover:text-white hover:bg-zinc-800 rounded-lg px-4 h-10 font-medium text-sm"
+                  className="rounded-lg px-4 h-10 font-medium text-sm transition-colors"
+                  style={{ color: "var(--nps-btn-back-text)" }}
                 >
                   <ArrowLeft className="w-4 h-4 mr-2" /> Voltar
                 </Button>
-              ) : <div></div>}
+              ) : <div />}
               
               <Button 
                 onClick={handleNext} 
-                className="bg-[var(--nps-accent)] hover:bg-[var(--nps-accent-hover)] text-zinc-950 rounded-lg px-6 h-10 font-bold text-sm transition-colors"
+                className="rounded-lg px-6 h-10 font-bold text-sm transition-colors"
+                style={{
+                  backgroundColor: "var(--nps-btn-next-bg)",
+                  color: "var(--nps-btn-next-text)"
+                }}
               >
                 {step === questions.length - 1 ? "Finalizar" : "Próxima"} <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
@@ -235,17 +332,29 @@ function NpsSurveyPage() {
 
       {/* Modal de pergunta obrigatória */}
       {showRequiredAlert && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[var(--nps-modal-overlay)] backdrop-blur-sm" onClick={() => setShowRequiredAlert(false)}>
-          <div className="bg-[var(--nps-modal-bg)] border border-[var(--nps-modal-border)] rounded-2xl p-8 max-w-sm w-full mx-4 shadow-2xl" onClick={(e) => e.stopPropagation()}>
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm" 
+          style={{ backgroundColor: "var(--nps-modal-overlay)" }}
+          onClick={() => setShowRequiredAlert(false)}
+        >
+          <div 
+            className="rounded-2xl p-8 max-w-sm w-full mx-4 shadow-2xl" 
+            style={{ backgroundColor: "var(--nps-modal-bg)", borderColor: "var(--nps-modal-border)", borderWidth: noBorders ? 0 : 1 }}
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className="text-center">
-              <div className="w-12 h-12 bg-[var(--nps-modal-icon-bg)] rounded-full flex items-center justify-center mx-auto mb-4 border border-[var(--nps-modal-icon-border)]">
-                <svg className="w-6 h-6 text-[var(--nps-modal-icon-color)]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" /></svg>
+              <div 
+                className="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4"
+                style={{ backgroundColor: "var(--nps-modal-icon-bg)", borderColor: "var(--nps-modal-icon-border)", borderWidth: noBorders ? 0 : 1 }}
+              >
+                <svg className="w-6 h-6" style={{ color: "var(--nps-modal-icon-color)" }} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" /></svg>
               </div>
-              <h3 className="text-lg font-semibold text-[var(--nps-modal-title)] mb-2">Pergunta obrigatória</h3>
-              <p className="text-sm text-[var(--nps-modal-subtitle)] mb-6">Por favor, responda a pergunta antes de continuar.</p>
+              <h3 className="text-lg font-semibold mb-2" style={{ color: "var(--nps-modal-title)" }}>Pergunta obrigatória</h3>
+              <p className="text-sm mb-6" style={{ color: "var(--nps-modal-subtitle)" }}>Por favor, responda a pergunta antes de continuar.</p>
               <button
                 onClick={() => setShowRequiredAlert(false)}
-                className="w-full bg-[var(--nps-modal-btn-bg)] hover:bg-[var(--nps-modal-btn-hover)] text-[var(--nps-modal-btn-text)] rounded-lg px-6 py-2.5 text-sm font-bold transition-colors"
+                className="w-full rounded-lg px-6 py-2.5 text-sm font-bold transition-colors"
+                style={{ backgroundColor: "var(--nps-modal-btn-bg)", color: "var(--nps-modal-btn-text)" }}
               >
                 Entendi
               </button>

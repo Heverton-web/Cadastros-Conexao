@@ -64,6 +64,9 @@ export const NPS_SURVEY_DEFAULTS: Record<string, string> = {
   modal_btn_hover: "#b0946d",
   modal_btn_text: "#09090b",
   no_borders: "false",
+  show_company_name: "true",
+  logo_height: "32",
+  header_align: "center",
 };
 
 export interface NpsColorDef {
@@ -192,6 +195,26 @@ export function getNpsNoBorders(config: EmpresaConfig | null): boolean {
   return survey.no_borders === "true";
 }
 
+/** Returns whether the company name should appear in the survey header */
+export function getNpsShowCompanyName(config: EmpresaConfig | null): boolean {
+  const survey = (config?.theme?.nps_survey ?? {}) as Record<string, string>;
+  return survey.show_company_name !== "false";
+}
+
+/** Returns the header alignment (left/center/right) from empresa config */
+export function getNpsHeaderAlign(config: EmpresaConfig | null): "left" | "center" | "right" {
+  const survey = (config?.theme?.nps_survey ?? {}) as Record<string, string>;
+  const align = survey.header_align ?? "center";
+  if (align === "left" || align === "right") return align;
+  return "center";
+}
+
+/** Returns the logo height in pixels from empresa config */
+export function getNpsLogoHeight(config: EmpresaConfig | null): number {
+  const survey = (config?.theme?.nps_survey ?? {}) as Record<string, string>;
+  return parseInt(survey.logo_height ?? "32") || 32;
+}
+
 /** Returns CSS vars for NPS survey pages — old keys (backward compat) + expanded survey keys */
 export function getNpsThemeVars(config: EmpresaConfig | null): Record<string, string> {
   const t = config?.theme ?? {};
@@ -209,7 +232,7 @@ export function getNpsThemeVars(config: EmpresaConfig | null): Record<string, st
 
   const surveyVars: Record<string, string> = {};
   for (const key of Object.keys(NPS_SURVEY_DEFAULTS)) {
-    surveyVars[`--nps-${key}`] = s(key);
+    surveyVars[`--nps-${key.replace(/_/g, '-')}`] = s(key);
   }
 
   return {
