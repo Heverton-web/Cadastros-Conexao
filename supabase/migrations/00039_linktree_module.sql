@@ -59,7 +59,8 @@ CREATE POLICY linktree_colaboradores_select_auth ON linktree_colaboradores
 DROP POLICY IF EXISTS linktree_colaboradores_insert_auth ON linktree_colaboradores;
 CREATE POLICY linktree_colaboradores_insert_auth ON linktree_colaboradores
   FOR INSERT TO authenticated WITH CHECK (
-    created_by = auth.uid()
+    is_super_admin_session()
+    OR created_by = auth.uid()
   );
 
 DROP POLICY IF EXISTS linktree_colaboradores_update_auth ON linktree_colaboradores;

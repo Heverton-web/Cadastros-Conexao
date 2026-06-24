@@ -6,6 +6,7 @@ import { Button } from "~/components/ui/button";
 import { Loader2, Upload } from "lucide-react";
 import toast from "react-hot-toast";
 import { supabase } from "~/core/supabase";
+import { useAuth } from "~/core/auth";
 import { compressImage } from "~/features/linktree/lib/image-utils";
 import type { LinktreeColaborador } from "~/features/linktree/types";
 import {
@@ -35,6 +36,7 @@ interface Props {
 const EMPTY_PHONE: PhoneParts = { ddi: "55", ddd: "", number: "" };
 
 export function LinktreeColaboradorModal({ open, onOpenChange, collaborator, onSaved, empresaId }: Props) {
+  const { user } = useAuth();
   const editing = !!collaborator;
   const [credenciais, setCredenciais] = useState<CredencialOption[]>([]);
   const [selectedCredencialId, setSelectedCredencialId] = useState<string>("");
@@ -133,6 +135,7 @@ export function LinktreeColaboradorModal({ open, onOpenChange, collaborator, onS
       foto_url: foto || null,
       credencial_id: selectedCredencialId || null,
       empresa_id: empresaId,
+      created_by: user?.id,
     };
 
     const { error } = editing
