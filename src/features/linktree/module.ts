@@ -1,4 +1,4 @@
-import { Link2 } from "lucide-react";
+import { Link2, Palette } from "lucide-react";
 import { registerModule, registerNavItem, registerPermission } from "~/registry";
 import type { ModuleDefinition } from "~/registry";
 import { LINKTREE_PERMISSIONS } from "./permissions";
@@ -35,6 +35,16 @@ export const linktreeModule: ModuleDefinition = {
       to: "/linktree/dashboard",
       permissionCheck: (perms) => perms?.lt_ver_dashboard === true,
       order: 25,
+      moduloKey: "linktree-conexao",
+    });
+
+    registerNavItem({
+      id: "linktree-tema",
+      label: "Tema",
+      icon: Palette,
+      to: "/linktree/tema",
+      permissionCheck: (perms) => perms?.lt_gerenciar_tema === true,
+      order: 26,
       moduloKey: "linktree-conexao",
     });
   },
