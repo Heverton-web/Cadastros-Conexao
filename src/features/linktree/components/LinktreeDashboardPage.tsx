@@ -4,6 +4,7 @@ import { Plus, ExternalLink, Pencil, QrCode, Trash2, Loader2, Download } from "l
 import toast from "react-hot-toast";
 import { Button } from "~/components/ui/button";
 import { Switch } from "~/components/ui/switch";
+import { Input } from "~/components/ui/input";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -15,8 +16,8 @@ import {
   AlertDialogTitle,
 } from "~/components/ui/alert-dialog";
 import { useAuth } from "~/core/auth";
+import { supabase } from "~/core/supabase";
 import {
-  listarColaboradores,
   toggleColaboradorStatus,
   deletarColaborador,
   buildCardUrl,
@@ -24,31 +25,59 @@ import {
 } from "~/features/linktree/index";
 import { LinktreeColaboradorModal } from "./LinktreeColaboradorModal";
 import { LinktreeQrModal } from "./LinktreeQrModal";
-import type { LinktreeColaborador } from "~/features/linktree/types";
+import type { LinktreeColaboradorComCredencial } from "~/features/linktree/types";
 
 export function LinktreeDashboardPage() {
   const { profile, permissoes } = useAuth();
   const navigate = useNavigate();
-  const [rows, setRows] = useState<LinktreeColaborador[] | null>(null);
-  const [modalOpen, setModalOpen] = useState(false);
-  const [editing, setEditing] = useState<LinktreeColaborador | null>(null);
-  const [toDelete, setToDelete] = useState<LinktreeColaborador | null>(null);
-  const [qrView, setQrView] = useState<LinktreeColaborador | null>(null);
+  const isSuper = profile?.is_super_admin === true;
 
-  const can = (key: string) => permissoes?.[key] === true;
+  const [rows, setRows] = useState<LinktreeColaboradorComCredencial[] | null>(null);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [editing, setEditing] = useState<LinktreeColaboradorComCredencial | null>(null);
+  const [toDelete, setToDelete] = useState<LinktreeColaboradorComCredencial | null>(null);
+  const [qrView, setQrView] = useState<LinktreeColaboradorComCredencial | null>(null);
+
+  const [empresas, setEmpresas] = useState<{ id: string; nome: string }[]>([]);
+  const [filtroEmpresa, setFiltroEmpresa] = useState<string>(profile?.empresa_id ?? "");
+
+  const can = (key: string) => isSuper || permissoes?.[key] === true;
 
   useEffect(() => {
-    if (!permissoes && !profile?.is_super_admin) return;
-    if (!profile?.is_super_admin && !can("lt_ver_dashboard")) {
+    if (!permissoes && !isSuper) return;
+    if (!isSuper && !can("lt_ver_dashboard")) {
       toast.error("Voce nao tem permissao para acessar o Dashboard");
       navigate({ to: "/", replace: true });
     }
-  }, [permissoes, profile, navigate]);
+  }, [permissoes, isSuper, navigate]);
+
+  useEffect(() => {
+    if (!isSuper) return;
+    supabase.from("empresas").select("id, nome").order("nome").then(({ data }) => {
+      setEmpresas(data ?? []);
+    });
+  }, [isSuper]);
+
+  useEffect(() => {
+    if (!isSuper) setFiltroEmpresa(profile?.empresa_id ?? "");
+  }, [isSuper, profile]);
 
   async function load() {
     try {
-      const data = await listarColaboradores(profile?.empresa_id ?? undefined);
-      setRows(data);
+      let q = supabase
+        .from("linktree_colaboradores")
+        .select("*, credenciais(id, nome_completo, email_corporativo, whatsapp_corporativo, departamento)")
+        .order("created_at", { ascending: false });
+
+      if (isSuper && filtroEmpresa) {
+        q = q.eq("empresa_id", filtroEmpresa);
+      } else if (!isSuper && profile?.empresa_id) {
+        q = q.eq("empresa_id", profile.empresa_id);
+      }
+
+      const { data, error } = await q;
+      if (error) throw error;
+      setRows(data as LinktreeColaboradorComCredencial[]);
     } catch (e: any) {
       toast.error(`Erro ao carregar: ${e.message}`);
     }
@@ -56,9 +85,9 @@ export function LinktreeDashboardPage() {
 
   useEffect(() => {
     if (profile) load();
-  }, [profile]);
+  }, [profile, filtroEmpresa]);
 
-  async function toggleStatus(c: LinktreeColaborador) {
+  async function toggleStatus(c: LinktreeColaboradorComCredencial) {
     const next = c.status === "ativo" ? "inativo" : "ativo";
     try {
       await toggleColaboradorStatus(c.id, next);
@@ -93,11 +122,27 @@ export function LinktreeDashboardPage() {
           <Button onClick={() => { setEditing(null); setModalOpen(true); }}
             className="shrink-0 bg-primary text-primary-foreground hover:bg-primary/90">
             <Plus className="size-4" />
-            <span className="hidden sm:inline">Novo Colaborador</span>
+            <span className="hidden sm:inline">Novo LinkTree</span>
             <span className="sm:hidden">Novo</span>
           </Button>
         )}
       </header>
+
+      {isSuper && (
+        <div className="flex items-center gap-3">
+          <label className="text-sm font-medium text-muted-foreground">Filtrar por empresa:</label>
+          <select
+            value={filtroEmpresa}
+            onChange={(e) => setFiltroEmpresa(e.target.value)}
+            className="h-9 w-full max-w-xs rounded-md border border-border/70 bg-surface/60 px-3 text-sm"
+          >
+            <option value="">Todas as empresas</option>
+            {empresas.map((e) => (
+              <option key={e.id} value={e.id}>{e.nome}</option>
+            ))}
+          </select>
+        </div>
+      )}
 
       <div className="overflow-hidden rounded-xl border border-border bg-surface">
         {rows === null ? (
@@ -106,7 +151,7 @@ export function LinktreeDashboardPage() {
           </div>
         ) : rows.length === 0 ? (
           <div className="p-12 text-center text-muted-foreground">
-            Nenhum colaborador cadastrado ainda. Clique em <strong>Novo</strong> para comecar.
+            Nenhum colaborador cadastrado ainda. Clique em <strong>Novo LinkTree</strong> para comecar.
           </div>
         ) : (
           <div className="overflow-x-auto">
@@ -169,13 +214,13 @@ export function LinktreeDashboardPage() {
                           </Button>
                         )}
                         {can("lt_ver_qr") && (
-                          <Button variant="ghost" size="icon" title="Visualizar QR Code"
+                          <Button variant="ghost" size="icon" title="QR Code"
                             onClick={() => setQrView(c)}>
                             <QrCode className="size-4" />
                           </Button>
                         )}
                         {can("lt_baixar_qr") && (
-                          <Button variant="ghost" size="icon" title="Baixar QR Code"
+                          <Button variant="ghost" size="icon" title="Baixar QR"
                             onClick={() => downloadQrPng(c.id, c.nome)}>
                             <Download className="size-4" />
                           </Button>
@@ -197,12 +242,18 @@ export function LinktreeDashboardPage() {
         )}
       </div>
 
-      <LinktreeColaboradorModal open={modalOpen} onOpenChange={setModalOpen} collaborator={editing} onSaved={load} empresaId={profile?.empresa_id ?? null} />
+      <LinktreeColaboradorModal
+        open={modalOpen}
+        onOpenChange={setModalOpen}
+        collaborator={editing}
+        onSaved={load}
+        empresaId={isSuper ? (filtroEmpresa || null) : (profile?.empresa_id ?? null)}
+      />
 
       <AlertDialog open={!!toDelete} onOpenChange={(o) => !o && setToDelete(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Excluir colaborador?</AlertDialogTitle>
+            <AlertDialogTitle>Excluir LinkTree?</AlertDialogTitle>
             <AlertDialogDescription>
               Esta acao e irreversivel. O LinkTree de <strong>{toDelete?.nome}</strong> sera removido permanentemente.
             </AlertDialogDescription>
