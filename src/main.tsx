@@ -10,6 +10,7 @@ import { empresasModule } from "~/features/empresas/module";
 import { mapasModule } from "~/features/mapas/module";
 import { npsModule } from "~/features/nps/module";
 import { funisModule } from "~/features/funis/module";
+import { linktreeModule } from "~/features/linktree/module";
 import "~/styles/globals.css";
 
 registerModule(empresasModule);
@@ -17,6 +18,7 @@ registerModule(cadastrosModule);
 registerModule(mapasModule);
 registerModule(npsModule);
 registerModule(funisModule);
+registerModule(linktreeModule);
 
 const router = createRouter({ routeTree });
 const queryClient = new QueryClient({

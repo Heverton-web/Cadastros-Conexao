@@ -31,6 +31,15 @@ export type Permissoes = {
   funis_gerir_tarefas: boolean;
   funis_compartilhar: boolean;
   funis_ver_relatorios: boolean;
+  lt_ver_dashboard: boolean;
+  lt_criar_colaborador: boolean;
+  lt_editar_colaborador: boolean;
+  lt_excluir_colaborador: boolean;
+  lt_toggle_status: boolean;
+  lt_ver_link: boolean;
+  lt_ver_qr: boolean;
+  lt_baixar_qr: boolean;
+  lt_gerenciar_tema: boolean;
 };
 
 export type ModuloAcesso = {
