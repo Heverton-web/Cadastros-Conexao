@@ -786,7 +786,7 @@ function EditCredencialModal({ usuario, onClose, onSave }: { usuario: ProfileRow
   );
 }
 
-const ALL_FALSE: Permissoes = {
+const ALL_FALSE: any = {
   ver_todos_cadastros: false, aprovar_cadastro: false, reprovar_cadastro: false,
   solicitar_correcao_cadastro: false, aprovar_documento: false, reprovar_documento: false,
   solicitar_correcao_documento: false, aprovar_campo: false, reprovar_campo: false,

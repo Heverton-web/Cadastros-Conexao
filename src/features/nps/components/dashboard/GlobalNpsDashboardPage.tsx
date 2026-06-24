@@ -10,10 +10,9 @@ import { Input } from '~/components/ui/input';
 import { Label } from '~/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/components/ui/select';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
-import { Download, LogOut, RefreshCw, Users, TrendingUp, Star, MessageSquare, Copy, Share2, Check, Webhook, Save, TestTube, Eye, EyeOff, Trash2, FileText, Info, HelpCircle, ChevronDown, ChevronUp, LayoutDashboard, BarChart3, Smile, Quote, Settings, ListChecks, Briefcase, ThumbsUp, ShoppingCart, UserCheck, Trophy, Filter } from 'lucide-react';
+import { RefreshCw, Users, TrendingUp, Star, MessageSquare, Trash2, HelpCircle, ChevronDown, ChevronUp, LayoutDashboard, Smile, Quote, ListChecks, Briefcase, ShoppingCart, UserCheck, Trophy, Filter } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 import { useAuth } from '~/lib/auth';
-import { NpsOperacaoPanel } from './NpsOperacaoPanel';
 
 const TooltipProvider = ({children}: any) => <>{children}</>;
 const Tooltip = ({children}: any) => <>{children}</>;
@@ -40,7 +39,6 @@ import SellerComparison from './charts/SellerComparison';
 import SellerMatrixHeatmap from './charts/SellerMatrixHeatmap';
 import SentimentAnalysis from './charts/SentimentAnalysis';
 import EmergingThemes from './charts/EmergingThemes';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '~/components/ui/accordion';
 
 
 interface SurveyResponse {
@@ -80,13 +78,6 @@ const SUBJECTIVE_OPTIONS: { key: Exclude<SubjectiveKey, 'all'>; label: string }[
   { key: 'pergunta_final', label: 'Mudaria UMA coisa' },
 ];
 
-interface WebhookConfig {
-  id: string;
-  url: string;
-  active: boolean;
-  created_at: string;
-}
-
 // CSAT colors mapped by satisfaction level (best → worst)
 const CSAT_COLORS: Record<string, string> = {
   'Muito satisfeito': 'hsl(150,60%,42%)',
@@ -103,29 +94,7 @@ const getCsatColor = (name: string, index: number) => {
 
 const MATRIX_COLORS = ['hsl(38,60%,50%)', 'hsl(38,50%,45%)', 'hsl(38,45%,40%)', 'hsl(38,40%,38%)', 'hsl(38,35%,35%)'];
 
-const SAMPLE_PAYLOAD = {
-  nps_score: 9,
-  nps_comment: "Excelente atendimento!",
-  csat: "Muito satisfeito",
-  atendimento_comercial: "Excelente",
-  entendimento_consultor: "Sim totalmente",
-  melhoria_atendimento: "",
-  experiencia_compra: "Muito fácil",
-  matrix_facilidade_pedido: 5,
-  matrix_clareza_condicoes: 4,
-  matrix_prazo_entrega: 5,
-  matrix_disponibilidade_produtos: 4,
-  matrix_comunicacao: 5,
-  expansao_produtos: "",
-  oportunidade: "",
-  pergunta_final: "",
-  order_id: "ORD-001",
-  client_id: "CLI-001",
-  client_name: "Maria Silva",
-  vendor_name: "João Santos",
-  source: "whatsapp",
-  created_at: new Date().toISOString(),
-};
+
 
 export function GlobalNpsDashboardPage() {
   const { profile } = useAuth();
@@ -143,18 +112,7 @@ export function GlobalNpsDashboardPage() {
   const [detailResponse, setDetailResponse] = useState<SurveyResponse | null>(null);
   const [showResponsesTable, setShowResponsesTable] = useState(true);
   const [activeSection, setActiveSection] = useState<string>('todas');
-  // Webhook state
-  const [webhookUrl, setWebhookUrl] = useState('');
-  const [webhookActive, setWebhookActive] = useState(true);
-  const [webhookId, setWebhookId] = useState<string | null>(null);
-  const [savingWebhook, setSavingWebhook] = useState(false);
-  const [showPayload, setShowPayload] = useState(false);
 
-  // Share state
-  const [copied, setCopied] = useState<string | null>(null);
-  const baseUrl = 'https://feedback-conexao.lovable.app';
-  const surveyUrl = `${baseUrl}/`;
-  const registerUrl = `${baseUrl}/dashboard-register`;
 
   useEffect(() => {
     checkAuth();
@@ -176,7 +134,6 @@ export function GlobalNpsDashboardPage() {
     if (profile?.role) setUserRole(profile.role);
 
     fetchData();
-    fetchWebhook();
   };
 
   const fetchData = async () => {
@@ -187,55 +144,6 @@ export function GlobalNpsDashboardPage() {
       .order('created_at', { ascending: false });
     setResponses(data || []);
     setLoading(false);
-  };
-
-  const fetchWebhook = async () => {
-    const { data } = await supabase
-      .from('webhook_config')
-      .select('*')
-      .order('created_at', { ascending: false })
-      .limit(1);
-    if (data && data.length > 0) {
-      setWebhookUrl(data[0].url);
-      setWebhookActive(data[0].active);
-      setWebhookId(data[0].id);
-    }
-  };
-
-  const saveWebhook = async () => {
-    if (!webhookUrl.trim()) {
-      toast.error('Insira uma URL válida');
-      return;
-    }
-    setSavingWebhook(true);
-    try {
-      if (webhookId) {
-        await supabase.from('webhook_config').update({ url: webhookUrl, active: webhookActive }).eq('id', webhookId);
-      } else {
-        const { data } = await supabase.from('webhook_config').insert({ url: webhookUrl, active: webhookActive }).select().single();
-        if (data) setWebhookId(data.id);
-      }
-      toast.success('Webhook salvo com sucesso!');
-    } catch {
-      toast.error('Erro ao salvar webhook');
-    } finally {
-      setSavingWebhook(false);
-    }
-  };
-
-  const testWebhook = async () => {
-    if (!webhookUrl.trim()) return;
-    try {
-      await fetch(webhookUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(SAMPLE_PAYLOAD),
-        mode: 'no-cors',
-      });
-      toast.success('Teste enviado!');
-    } catch {
-      toast.error('Erro ao testar webhook');
-    }
   };
 
   const [deleting, setDeleting] = useState(false);
@@ -373,16 +281,6 @@ export function GlobalNpsDashboardPage() {
     navigate({ to: '/' });
   };
 
-  const copyLink = async (url: string, key: string) => {
-    await navigator.clipboard.writeText(url);
-    setCopied(key);
-    toast.success('Link copiado!');
-    setTimeout(() => setCopied(null), 2000);
-  };
-
-  const shareWhatsApp = (url: string, text: string) => {
-    window.open(`https://wa.me/?text=${encodeURIComponent(text + ' ' + url)}`, '_blank');
-  };
 
   const getNPSColor = (score: number) => {
     if (score >= 50) return 'text-green-400';
@@ -660,7 +558,6 @@ export function GlobalNpsDashboardPage() {
               ...(hasMultipleVendors ? [{ id: 'vendedores', label: 'Vendedores' }] : []),
               { id: 'insights', label: 'Insights' },
               { id: 'respostas', label: 'Respostas' },
-              ...(profile?.is_super_admin ? [{ id: 'operacao', label: 'Operação' }] : []),
             ]}
           />
         </div>
@@ -1042,118 +939,6 @@ export function GlobalNpsDashboardPage() {
             )}
           </Card>
         </section>
-        )}
-
-        {/* ============ [6] OPERAÇÃO (super_admin) ============ */}
-        {(activeSection === 'operacao' || activeSection === 'todas') && profile?.is_super_admin && (
-          <section className="space-y-4">
-
-            <SectionHeader
-              id="operacao"
-              icon={Settings}
-              title="Operação"
-              subtitle="Compartilhamento de links, integrações e gerenciamento de perguntas"
-            />
-            <Accordion type="multiple" className="space-y-3">
-              <AccordionItem value="share" className="bg-gradient-to-br from-card/90 to-card/60 backdrop-blur border border-border/30 rounded-xl shadow-lg px-4">
-                <AccordionTrigger className="hover:no-underline">
-                  <div className="flex items-center gap-3">
-                    <Share2 className="w-5 h-5 text-primary" />
-                    <span className="text-sm font-semibold text-foreground">Compartilhar</span>
-                  </div>
-                </AccordionTrigger>
-                <AccordionContent className="space-y-4 pt-2">
-                  <div>
-                    <Label className="text-xs text-muted-foreground mb-1 block">Link da Pesquisa (para clientes)</Label>
-                    <div className="flex flex-col sm:flex-row gap-2">
-                      <Input readOnly value={surveyUrl} className="bg-secondary border-border text-foreground text-sm flex-1" />
-                      <div className="flex gap-2">
-                        <Button variant="secondary" size="sm" onClick={() => copyLink(surveyUrl, 'survey')} className="border-border text-foreground gap-1.5">
-                          {copied === 'survey' ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-                          {copied === 'survey' ? 'Copiado' : 'Copiar'}
-                        </Button>
-                        <button onClick={() => shareWhatsApp(surveyUrl, 'Queremos ouvir sua opinião! Responda nossa pesquisa:')} className="btn-gold inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-xs transition-all">
-                          WhatsApp
-                        </button>
-                      </div>
-                    </div>
-                    <p className="text-xs text-muted-foreground mt-1">
-                      Use <code className="text-primary/80">?vend=Nome%20Vendedor&cli=Nome%20Cliente</code> para salvar vendedor e cliente.
-                    </p>
-                  </div>
-                  <div>
-                    <Label className="text-xs text-muted-foreground mb-1 block">Link de Cadastro (para gestores)</Label>
-                    <div className="flex flex-col sm:flex-row gap-2">
-                      <Input readOnly value={registerUrl} className="bg-secondary border-border text-foreground text-sm flex-1" />
-                      <div className="flex gap-2">
-                        <Button variant="secondary" size="sm" onClick={() => copyLink(registerUrl, 'register')} className="border-border text-foreground gap-1.5">
-                          {copied === 'register' ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-                          {copied === 'register' ? 'Copiado' : 'Copiar'}
-                        </Button>
-                        <button onClick={() => shareWhatsApp(registerUrl, 'Acesse o DashBird! Crie seu acesso aqui:')} className="btn-gold inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-xs transition-all">
-                          WhatsApp
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </AccordionContent>
-              </AccordionItem>
-
-              <AccordionItem value="webhook" className="bg-gradient-to-br from-card/90 to-card/60 backdrop-blur border border-border/30 rounded-xl shadow-lg px-4">
-                <AccordionTrigger className="hover:no-underline">
-                  <div className="flex items-center gap-3">
-                    <Webhook className="w-5 h-5 text-primary" />
-                    <span className="text-sm font-semibold text-foreground">Integração Webhook</span>
-                  </div>
-                </AccordionTrigger>
-                <AccordionContent className="space-y-4 pt-2">
-                  <p className="text-xs text-muted-foreground">
-                    Configure uma URL para receber automaticamente o JSON de cada resposta finalizada.
-                  </p>
-                  <div className="flex flex-col sm:flex-row gap-2">
-                    <Input
-                      value={webhookUrl}
-                      onChange={(e) => setWebhookUrl(e.target.value)}
-                      placeholder="https://sua-api.com/webhook"
-                      className="bg-secondary border-border text-foreground text-sm flex-1"
-                    />
-                    <div className="flex gap-2">
-                      <Button variant="secondary" size="sm" onClick={() => setWebhookActive(!webhookActive)} className="border-border text-foreground gap-1.5">
-                        {webhookActive ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
-                        {webhookActive ? 'Ativo' : 'Inativo'}
-                      </Button>
-                      <Button variant="secondary" size="sm" onClick={testWebhook} className="border-border text-foreground gap-1.5">
-                        <TestTube className="w-4 h-4" /> Testar
-                      </Button>
-                      <button onClick={saveWebhook} disabled={savingWebhook} className="btn-gold inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-xs transition-all disabled:opacity-50">
-                        <Save className="w-4 h-4" /> Salvar
-                      </button>
-                    </div>
-                  </div>
-                  <button onClick={() => setShowPayload(!showPayload)} className="text-xs text-primary hover:underline">
-                    {showPayload ? 'Ocultar' : 'Ver'} exemplo de payload JSON
-                  </button>
-                  {showPayload && (
-                    <pre className="bg-secondary/80 rounded-lg p-4 text-xs text-foreground overflow-x-auto border border-border/30">
-                      {JSON.stringify(SAMPLE_PAYLOAD, null, 2)}
-                    </pre>
-                  )}
-                </AccordionContent>
-              </AccordionItem>
-
-              <AccordionItem value="questions" className="bg-gradient-to-br from-card/90 to-card/60 backdrop-blur border border-border/30 rounded-xl shadow-lg px-4">
-                <AccordionTrigger className="hover:no-underline">
-                  <div className="flex items-center gap-3">
-                    <BarChart3 className="w-5 h-5 text-primary" />
-                    <span className="text-sm font-semibold text-foreground">Gerenciar Perguntas</span>
-                  </div>
-                </AccordionTrigger>
-                <AccordionContent className="pt-2">
-                  
-                </AccordionContent>
-              </AccordionItem>
-            </Accordion>
-          </section>
         )}
 
         {/* Detail Dialog */}

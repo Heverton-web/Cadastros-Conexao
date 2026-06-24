@@ -50,6 +50,22 @@ export async function criarFunil(input: FunilInput, empresaId?: string | null): 
     .single();
   if (error) throw error;
   const funil = data as Funil;
+
+  const colunasParaCriar = input.colunas && input.colunas.length > 0
+    ? input.colunas
+    : ["Backlog", "Em andamento", "Revisão", "Concluído"];
+
+  const colunasData = colunasParaCriar.map((titulo, index) => ({
+    funil_id: funil.id,
+    titulo,
+    posicao: index
+  }));
+
+  const { error: colunasError } = await supabase
+    .from("funis_colunas")
+    .insert(colunasData);
+  if (colunasError) throw colunasError;
+
   dispararEventoModulo(MODULO_KEY, "funil.criado", { funil }, funil.empresa_id).catch(() => {});
   return funil;
 }

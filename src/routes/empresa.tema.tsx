@@ -20,6 +20,18 @@ const CORES_PADRAO: Record<string, string> = {
   gradient_end: "#a8873a",
 };
 
+const LABELS_CORES: Record<string, string> = {
+  accent: "Destaque (Principal)",
+  accent_hover: "Destaque (Passar o Mouse)",
+  gradient_start: "Gradiente - Cor Inicial",
+  gradient_mid: "Gradiente - Cor Central",
+  gradient_end: "Gradiente - Cor Final",
+  text: "Cor do Texto",
+  primary: "Cor Primária",
+  secondary: "Cor Secundária",
+  background: "Fundo Geral",
+};
+
 function AdminTema() {
   const { profile, empresa: minhaEmpresa } = useAuth();
 
@@ -121,25 +133,27 @@ function AdminTema() {
         <div className="p-4 rounded-lg bg-card border border-border-subtle">
           <h2 className="text-sm font-bold text-text-main mb-3">Cores da Marca</h2>
           <div className="grid grid-cols-2 gap-3">
-            {Object.entries(cores).map(([key, value]) => (
-              <div key={key}>
-                <label className="text-[10px] text-text-muted font-medium block mb-1">{key}</label>
-                <div className="flex items-center gap-2">
-                  <input
-                    type="color"
-                    value={value}
-                    onChange={(e) => handleCorChange(key, e.target.value)}
-                    className="w-8 h-8 rounded border border-input-border cursor-pointer bg-transparent"
-                  />
-                  <input
-                    type="text"
-                    value={value}
-                    onChange={(e) => handleCorChange(key, e.target.value)}
-                    className="flex-1 px-2 py-1 rounded-lg bg-input-bg border border-input-border text-text-main text-xs font-mono"
-                  />
+            {Object.entries(cores)
+              .filter(([key]) => LABELS_CORES[key] !== undefined)
+              .map(([key, value]) => (
+                <div key={key}>
+                  <label className="text-[10px] text-text-muted font-medium block mb-1">{LABELS_CORES[key]}</label>
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="color"
+                      value={value}
+                      onChange={(e) => handleCorChange(key, e.target.value)}
+                      className="w-8 h-8 rounded border border-input-border cursor-pointer bg-transparent"
+                    />
+                    <input
+                      type="text"
+                      value={value}
+                      onChange={(e) => handleCorChange(key, e.target.value)}
+                      className="flex-1 px-2 py-1 rounded-lg bg-input-bg border border-input-border text-text-main text-xs font-mono"
+                    />
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
           </div>
         </div>
 

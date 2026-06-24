@@ -206,14 +206,14 @@ const QuestionsManager = () => {
                 <Switch checked={q.active} onCheckedChange={() => toggleActive(q)} />
                 <span className="text-xs text-muted-foreground hidden md:inline">{q.active ? 'Ativa' : 'Inativa'}</span>
               </div>
-              <Button variant="ghost" size="sm" onClick={() => openEdit(q)} className="text-muted-foreground hover:text-foreground">
+              <Button variant="ghost-edit" size="sm" onClick={() => openEdit(q)}>
                 <Pencil className="w-4 h-4" />
               </Button>
               <Button
-                variant="ghost" size="sm"
+                variant="ghost-destructive" size="sm"
                 onClick={() => remove(q)}
                 disabled={q.is_system}
-                className="text-muted-foreground hover:text-red-400 disabled:opacity-30"
+                className="disabled:opacity-30"
                 title={q.is_system ? 'Pergunta do sistema — não pode ser excluída' : 'Excluir'}
               >
                 <Trash2 className="w-4 h-4" />

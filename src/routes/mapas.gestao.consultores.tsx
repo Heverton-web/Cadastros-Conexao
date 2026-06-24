@@ -103,8 +103,8 @@ function MapasAdminConsultoresPage() {
                 <span className="text-sm">{r.state}</span>
                 <span className="text-sm text-muted-foreground">{r.supervisor ?? "—"}</span>
                 <div className="flex justify-end gap-1">
-                  <Button size="sm" variant="ghost" onClick={() => setEditing(r)}><Pencil className="h-4 w-4" /></Button>
-                  <Button size="sm" variant="ghost" onClick={() => setToDelete(r)}><Trash2 className="h-4 w-4 text-destructive" /></Button>
+                  <Button size="sm" variant="ghost-edit" onClick={() => setEditing(r)}><Pencil className="h-4 w-4" /></Button>
+                  <Button size="sm" variant="ghost-destructive" onClick={() => setToDelete(r)}><Trash2 className="h-4 w-4" /></Button>
                 </div>
               </li>
             ))}

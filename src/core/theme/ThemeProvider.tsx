@@ -14,6 +14,10 @@ const DEFAULT_THEME = {
   success: "#22c55e",
   warning: "#eab308",
   error: "#ef4444",
+  nps_bg: "#09090b",
+  nps_surface: "#18181b",
+  nps_text: "#fafafa",
+  nps_text_muted: "#71717a",
 };
 
 const THEME_KEYS: Record<string, string> = {
@@ -29,6 +33,10 @@ const THEME_KEYS: Record<string, string> = {
   success: "--color-success",
   warning: "--color-warning",
   error: "--color-error",
+  nps_bg: "--nps-bg",
+  nps_surface: "--nps-surface",
+  nps_text: "--nps-text",
+  nps_text_muted: "--nps-text-muted",
 };
 
 export function ThemeProvider({ children }: { children: ReactNode }) {

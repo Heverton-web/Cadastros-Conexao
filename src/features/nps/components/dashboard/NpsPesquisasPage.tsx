@@ -6,6 +6,7 @@ import { Label } from "~/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "~/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
 import { Plus, Pencil, Trash2, ArrowUp, ArrowDown, X, ListChecks } from "lucide-react";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "~/components/ui/alert-dialog";
 import { supabase } from "~/core/supabase";
 import { toast } from "react-hot-toast";
 import type { NpsPergunta, SurveyQuestionType } from "../../types";
@@ -52,6 +53,7 @@ export function NpsPesquisasPage() {
   const [editing, setEditing] = useState<Partial<NpsPergunta> | null>(null);
   const [isNew, setIsNew] = useState(false);
   const [optionInput, setOptionInput] = useState("");
+  const [deletingQuestion, setDeletingQuestion] = useState<NpsPergunta | null>(null);
 
   if (profile && !profile.is_super_admin) {
     return (
@@ -127,12 +129,17 @@ export function NpsPesquisasPage() {
     fetchAll(selectedEmpresaId);
   };
 
-  const remove = async (q: NpsPergunta) => {
-    if (q.is_system) { toast.error("Perguntas do sistema não podem ser excluídas"); return; }
-    if (!window.confirm(`Excluir "${q.question_text}"?`)) return;
-    const { error } = await supabase.from("nps_perguntas").delete().eq("id", q.id);
+  const remove = (q: NpsPergunta) => {
+    if (q.is_system && !profile?.is_super_admin) { toast.error("Perguntas do sistema não podem ser excluídas"); return; }
+    setDeletingQuestion(q);
+  };
+
+  const confirmDelete = async () => {
+    if (!deletingQuestion) return;
+    const { error } = await supabase.from("nps_perguntas").delete().eq("id", deletingQuestion.id);
     if (error) toast.error("Erro ao excluir");
     else { toast.success("Pergunta excluída"); fetchAll(selectedEmpresaId); }
+    setDeletingQuestion(null);
   };
 
   const openNew = () => {
@@ -216,16 +223,6 @@ export function NpsPesquisasPage() {
             </div>
           </div>
           <div className="flex items-center gap-2">
-            <Button 
-              variant="secondary" 
-              size="sm" 
-              disabled={!selectedEmpresaId}
-              onClick={() => {
-                if (selectedEmpresaId) window.open(`/nps-survey?e=${selectedEmpresaId}`, "_blank");
-              }}
-            >
-              Ver Pesquisa do Cliente
-            </Button>
             <Button onClick={openNew} size="sm" className="gap-1.5 shadow-md shadow-primary/20" disabled={!selectedEmpresaId}>
               <Plus className="w-4 h-4" /> Nova pergunta
             </Button>
@@ -252,8 +249,8 @@ export function NpsPesquisasPage() {
               </div>
               <div className="flex items-center gap-2">
                 <Toggle checked={q.active} onCheckedChange={() => toggleActive(q)} />
-                <Button variant="ghost" size="sm" onClick={() => openEdit(q)}><Pencil className="w-4 h-4" /></Button>
-                <Button variant="ghost" size="sm" onClick={() => remove(q)} disabled={q.is_system}><Trash2 className="w-4 h-4" /></Button>
+                <Button variant="ghost-edit" size="sm" onClick={() => openEdit(q)}><Pencil className="w-4 h-4" /></Button>
+                <Button variant="ghost-destructive" size="sm" onClick={() => remove(q)} disabled={q.is_system && !profile?.is_super_admin}><Trash2 className="w-4 h-4" /></Button>
               </div>
             </div>
           ))}
@@ -267,7 +264,7 @@ export function NpsPesquisasPage() {
             <div className="space-y-5 py-2">
               <div>
                 <Label className="text-xs text-muted-foreground">Tipo</Label>
-                <Select value={editing.type} onValueChange={(v) => setEditing({ ...editing, type: v as SurveyQuestionType })} disabled={editing.is_system}>
+                <Select value={editing.type} onValueChange={(v) => setEditing({ ...editing, type: v as SurveyQuestionType })} disabled={editing.is_system && !profile?.is_super_admin}>
                   <SelectTrigger><SelectValue placeholder="Selecione um tipo" /></SelectTrigger>
                   <SelectContent>
                     {Object.entries(TYPE_LABELS).map(([v, l]) => <SelectItem key={v} value={v}>{l}</SelectItem>)}
@@ -324,6 +321,23 @@ export function NpsPesquisasPage() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      <AlertDialog open={!!deletingQuestion} onOpenChange={(o) => !o && setDeletingQuestion(null)}>
+        <AlertDialogContent className="bg-card border-border">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-foreground">Excluir Pergunta?</AlertDialogTitle>
+            <AlertDialogDescription className="text-muted-foreground">
+              Tem certeza que deseja excluir a pergunta &ldquo;{deletingQuestion?.question_text}&rdquo;? Esta ação é permanente e não pode ser desfeita.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel className="border-border text-foreground">Cancelar</AlertDialogCancel>
+            <AlertDialogAction onClick={confirmDelete} className="bg-destructive hover:bg-destructive/90 text-white border-0">
+              Excluir
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

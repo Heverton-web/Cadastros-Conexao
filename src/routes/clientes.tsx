@@ -166,10 +166,10 @@ function ClientesPage() {
                 <div className="flex items-center gap-1">
                   {podeExcluir && (
                     <>
-                      <button onClick={(e) => { e.stopPropagation(); setEditTarget(c); }} className="rounded-lg p-1.5 text-text-muted hover:text-accent hover:bg-accent/10 transition">
+                      <button onClick={(e) => { e.stopPropagation(); setEditTarget(c); }} className="btn-hover-edit p-1.5 rounded-lg">
                         <Pencil size={14} />
                       </button>
-                      <button onClick={(e) => { e.stopPropagation(); setDeleteConfirm(c.id); }} className="rounded-lg p-1.5 text-text-muted hover:text-red-400 hover:bg-red-500/10 transition">
+                      <button onClick={(e) => { e.stopPropagation(); setDeleteConfirm(c.id); }} className="btn-hover-destructive p-1.5 rounded-lg">
                         <Trash2 size={14} />
                       </button>
                     </>

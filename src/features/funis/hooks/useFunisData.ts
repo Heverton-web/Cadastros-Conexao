@@ -80,7 +80,8 @@ export function useCriarColuna() {
 export function useAtualizarColuna() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, titulo }: { id: string; titulo: string }) => atualizarColuna(id, titulo),
+    mutationFn: ({ id, titulo, input }: { id: string; titulo?: string; input?: Partial<FunilColunaInput> }) =>
+      atualizarColuna(id, input ?? { titulo: titulo! }),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["funil"] }),
   });
 }

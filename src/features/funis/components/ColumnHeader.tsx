@@ -1,7 +1,17 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { MoreHorizontal, Pencil, Trash2 } from "lucide-react";
 import { useAtualizarColuna, useDeletarColuna } from "../hooks/useFunisData";
 import type { FunilColuna } from "../types";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "~/components/ui/alert-dialog";
 
 type ColumnHeaderProps = {
   coluna: FunilColuna;
@@ -14,6 +24,7 @@ export function ColumnHeader({ coluna, funilId }: ColumnHeaderProps) {
   const [editing, setEditing] = useState(false);
   const [titulo, setTitulo] = useState(coluna.titulo);
   const [showMenu, setShowMenu] = useState(false);
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
   const handleSave = async () => {
     if (!titulo.trim() || titulo === coluna.titulo) {
@@ -25,9 +36,8 @@ export function ColumnHeader({ coluna, funilId }: ColumnHeaderProps) {
   };
 
   const handleDelete = async () => {
-    if (!confirm("Excluir esta coluna e todas as tarefas?")) return;
     await deletarColuna.mutateAsync(coluna.id);
-    setShowMenu(false);
+    setShowDeleteDialog(false);
   };
 
   return (
@@ -73,7 +83,10 @@ export function ColumnHeader({ coluna, funilId }: ColumnHeaderProps) {
                 Renomear
               </button>
               <button
-                onClick={handleDelete}
+                onClick={() => {
+                  setShowDeleteDialog(true);
+                  setShowMenu(false);
+                }}
                 className="flex items-center gap-2 w-full px-3 py-2 text-sm text-error hover:bg-surface"
               >
                 <Trash2 className="w-4 h-4" />
@@ -83,6 +96,21 @@ export function ColumnHeader({ coluna, funilId }: ColumnHeaderProps) {
           </>
         )}
       </div>
+
+      <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Excluir coluna?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Esta acao e permanente. A coluna e todas as suas tarefas serao removidas.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+            <AlertDialogAction onClick={handleDelete} className="bg-destructive text-destructive-foreground">Excluir</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

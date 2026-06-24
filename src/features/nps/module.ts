@@ -1,4 +1,4 @@
-import { ClipboardCheck, Settings, FileText } from "lucide-react";
+import { ClipboardCheck, Settings, FileText, Eye, Palette } from "lucide-react";
 import { registerModule, registerNavItem, registerPermission } from "~/registry";
 import type { ModuleDefinition } from "~/registry";
 import { NPS_PERMISSIONS } from "./permissions";
@@ -8,7 +8,7 @@ export const npsModule: ModuleDefinition = {
   nome: "NPS Conexão",
   descricao: "Pesquisas de satisfação e Net Promoter Score",
   icon: ClipboardCheck,
-  routes: ["/nps", "/nps/survey", "/nps/dashboard", "/nps/pesquisas", "/nps/relatorios"],
+  routes: ["/nps", "/nps/survey", "/nps/dashboard", "/nps/pesquisas", "/nps/preview", "/nps/relatorios", "/nps/tema"],
   permissions: NPS_PERMISSIONS.map((p) => p.key),
   ambientes: ["cadastro", "consultor", "tecnologia"],
   abas: [
@@ -55,6 +55,26 @@ export const npsModule: ModuleDefinition = {
       to: "/nps/relatorios",
       permissionCheck: (perms) => perms?.nps_ver_relatorios === true,
       order: 17,
+      moduloKey: "nps-conexao",
+    });
+
+    registerNavItem({
+      id: "nps-preview",
+      label: "Preview da Pesquisa",
+      icon: Eye,
+      to: "/nps/preview",
+      permissionCheck: (perms) => perms?.nps_gerenciar_perguntas === true,
+      order: 18,
+      moduloKey: "nps-conexao",
+    });
+
+    registerNavItem({
+      id: "nps-tema",
+      label: "Tema da Pesquisa",
+      icon: Palette,
+      to: "/nps/tema",
+      permissionCheck: (perms) => perms?.nps_gerenciar_perguntas === true,
+      order: 19,
       moduloKey: "nps-conexao",
     });
   },

@@ -25,10 +25,10 @@ export async function criarColuna(input: FunilColunaInput): Promise<FunilColuna>
   return data as FunilColuna;
 }
 
-export async function atualizarColuna(id: string, titulo: string): Promise<FunilColuna> {
+export async function atualizarColuna(id: string, input: { titulo?: string; posicao?: number }): Promise<FunilColuna> {
   const { data, error } = await supabase
     .from("funis_colunas")
-    .update({ titulo })
+    .update(input)
     .eq("id", id)
     .select()
     .single();

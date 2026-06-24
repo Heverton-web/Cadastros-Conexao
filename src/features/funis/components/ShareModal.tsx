@@ -1,9 +1,12 @@
 import { useState } from "react";
-import { X, Search, Trash2 } from "lucide-react";
+import { Trash2, UserPlus, Users, Mail, Shield } from "lucide-react";
 import { Button } from "~/components/ui/button";
+import { Input } from "~/components/ui/input";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "~/components/ui/dialog";
 import { usePermissoesFunil, useConcederPermissao, useRevogarPermissao } from "../hooks/useFunisData";
 import { buscarUsuarioEmail } from "../services";
 import type { FunilPermissaoNivel } from "../types";
+import { Badge } from "~/components/ui/badge";
 
 type ShareModalProps = {
   funilId: string;
@@ -23,14 +26,19 @@ export function ShareModal({ funilId, onClose }: ShareModalProps) {
     if (!email.trim()) return;
     setSearching(true);
     setError("");
-    const user = await buscarUsuarioEmail(email.trim());
-    setSearching(false);
-    if (!user) {
-      setError("Usuario nao encontrado");
-      return;
+    try {
+      const user = await buscarUsuarioEmail(email.trim());
+      setSearching(false);
+      if (!user) {
+        setError("Usuário não encontrado.");
+        return;
+      }
+      await conceder.mutateAsync({ funilId, userId: user.id, nivel });
+      setEmail("");
+    } catch (e: any) {
+      setSearching(false);
+      setError("Erro ao buscar usuário.");
     }
-    await conceder.mutateAsync({ funilId, userId: user.id, nivel });
-    setEmail("");
   };
 
   const handleRevoke = async (id: string) => {
@@ -38,65 +46,136 @@ export function ShareModal({ funilId, onClose }: ShareModalProps) {
   };
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={onClose}>
-      <div className="bg-card rounded-xl w-full max-w-md shadow-xl" onClick={(e) => e.stopPropagation()}>
-        <div className="flex items-center justify-between p-4 border-b border-border-subtle">
-          <h2 className="text-lg font-semibold text-text-main">Compartilhar Funil</h2>
-          <button onClick={onClose} className="text-text-muted hover:text-text-main">
-            <X className="w-5 h-5" />
-          </button>
-        </div>
-        <div className="p-4 space-y-4">
-          <div className="flex gap-2">
-            <input
-              type="email"
-              placeholder="Email do usuario"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && handleAdd()}
-              className="flex-1 px-3 py-2 rounded-lg bg-surface border border-border-subtle text-text-main focus:outline-none focus:ring-2 focus:ring-brand"
-            />
-            <select
-              value={nivel}
-              onChange={(e) => setNivel(e.target.value as FunilPermissaoNivel)}
-              className="px-2 py-2 rounded-lg bg-surface border border-border-subtle text-text-main text-sm"
-            >
-              <option value="view">Visualizar</option>
-              <option value="edit">Editar</option>
-            </select>
-            <Button onClick={handleAdd} size="sm" disabled={searching || !email.trim()}>
-              <Search className="w-4 h-4" />
-            </Button>
-          </div>
-          {error && <p className="text-xs text-error">{error}</p>}
+    <Dialog open={true} onOpenChange={(open) => !open && onClose()}>
+      <DialogContent className="max-w-md border-0 shadow-2xl p-0 sm:p-0 gap-0">
+        <DialogHeader className="px-4 sm:px-5 pt-6 pb-2 bg-transparent">
+          <DialogTitle className="font-display text-xl flex items-center gap-2">
+            <Users className="h-5 w-5 text-muted-foreground" />
+            Compartilhar Funil
+          </DialogTitle>
+          <p className="text-xs text-muted-foreground">Convide membros por e-mail para colaborar no seu funil.</p>
+        </DialogHeader>
 
-          {permissoes && permissoes.length > 0 && (
-            <div className="space-y-2">
-              {permissoes.map((p) => (
-                <div key={p.id} className="flex items-center justify-between py-2 px-3 bg-surface rounded-lg">
-                  <div>
-                    <p className="text-sm text-text-main">{(p as any).user?.full_name ?? "Usuario"}</p>
-                    <p className="text-xs text-text-muted">{(p as any).user?.email}</p>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs text-text-muted px-2 py-1 rounded bg-surface">
-                      {p.nivel === "edit" ? "Editor" : "Visualizar"}
-                    </span>
-                    <button onClick={() => handleRevoke(p.id)} className="text-text-muted hover:text-error">
-                      <Trash2 className="w-4 h-4" />
-                    </button>
-                  </div>
-                </div>
-              ))}
+        <div className="px-4 sm:px-5 py-4 space-y-5">
+          {/* Adicionar Colaborador */}
+          <div className="space-y-3">
+            <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground/80">Adicionar Colaborador</label>
+            
+            {/* Linha 1: Input de e-mail (w-full) */}
+            <div className="relative">
+              <Mail className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
+              <Input
+                type="email"
+                placeholder="E-mail do colaborador"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && handleAdd()}
+                className="pl-9 h-10 w-full text-sm"
+              />
             </div>
-          )}
+
+            {/* Linha 2: Escolha de nível + Botão Adicionar */}
+            <div className="flex flex-col sm:flex-row gap-2.5">
+              {/* Seletores de Nível (Visualizar ou Editar) */}
+              <div className="flex gap-1 bg-muted/40 p-1 rounded-lg border border-border/20 flex-1">
+                <button
+                  type="button"
+                  onClick={() => setNivel("view")}
+                  className={`flex-1 flex items-center justify-center gap-1.5 py-1.5 px-3 rounded-md text-xs font-medium transition-all ${
+                    nivel === "view"
+                      ? "bg-background text-foreground shadow-sm"
+                      : "text-muted-foreground hover:text-foreground hover:bg-muted/10"
+                  }`}
+                >
+                  <Shield className="h-3.5 w-3.5" />
+                  Visualizar
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setNivel("edit")}
+                  className={`flex-1 flex items-center justify-center gap-1.5 py-1.5 px-3 rounded-md text-xs font-medium transition-all ${
+                    nivel === "edit"
+                      ? "bg-background text-foreground shadow-sm"
+                      : "text-muted-foreground hover:text-foreground hover:bg-muted/10"
+                  }`}
+                >
+                  <Shield className="h-3.5 w-3.5" />
+                  Editar
+                </button>
+              </div>
+
+              {/* Botão Adicionar */}
+              <Button
+                onClick={handleAdd}
+                size="sm"
+                className="h-10 px-4 sm:w-auto shrink-0 gradient-gold text-[#0f172a] font-semibold text-xs flex items-center justify-center gap-1.5"
+                disabled={searching || !email.trim()}
+              >
+                {searching ? (
+                  <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-current border-t-transparent" />
+                ) : (
+                  <UserPlus className="w-3.5 h-3.5" />
+                )}
+                Adicionar
+              </Button>
+            </div>
+            {error && <p className="text-xs text-destructive">{error}</p>}
+          </div>
+
+          {/* Lista de Permissões */}
+          <div className="space-y-2.5">
+            <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground/80">Colaboradores atuais</label>
+            <div className="space-y-2 max-h-[220px] overflow-y-auto pr-1">
+              {permissoes && permissoes.length > 0 ? (
+                permissoes.map((p) => {
+                  const userName = (p as any).user?.full_name || "Membro";
+                  const userEmail = (p as any).user?.email || "";
+                  const initials = userName.split(" ").map((n: string) => n[0]).join("").substring(0, 2).toUpperCase();
+                  
+                  return (
+                    <div key={p.id} className="flex items-center justify-between p-2.5 rounded-lg border border-border/40 bg-surface/20 hover:bg-surface/30 transition-colors">
+                      <div className="flex items-center gap-2.5 min-w-0">
+                        <div className="h-8 w-8 rounded-full bg-muted flex items-center justify-center text-xs font-medium text-muted-foreground shrink-0">
+                          {initials || <Users className="h-4 w-4" />}
+                        </div>
+                        <div className="min-w-0">
+                          <p className="text-sm font-medium truncate text-foreground">{userName}</p>
+                          <p className="text-xs text-muted-foreground truncate">{userEmail}</p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2 shrink-0">
+                        <Badge variant="secondary" className="gap-1 px-1.5 py-0.5 text-[10px] bg-muted/65 hover:bg-muted/65">
+                          <Shield className="h-2.5 w-2.5 text-muted-foreground" />
+                          {p.nivel === "edit" ? "Editor" : "Leitor"}
+                        </Badge>
+                        <Button 
+                          size="icon" 
+                          variant="ghost-destructive" 
+                          onClick={() => handleRevoke(p.id)} 
+                          className="h-8 w-8"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                      </div>
+                    </div>
+                  );
+                })
+              ) : (
+                <div className="text-center py-6 border border-dashed border-border/40 rounded-lg bg-surface/5">
+                  <Users className="h-8 w-8 text-muted-foreground/50 mx-auto mb-2" />
+                  <p className="text-xs text-muted-foreground">Este funil ainda não é compartilhado.</p>
+                </div>
+              )}
+            </div>
+          </div>
         </div>
-        <div className="flex justify-end p-4 border-t border-border-subtle">
-          <Button onClick={onClose} variant="secondary" size="sm">
+
+        <DialogFooter className="px-4 sm:px-5 py-4 border-t border-border/20">
+          <Button onClick={onClose} variant="ghost" className="h-9 text-xs">
             Fechar
           </Button>
-        </div>
-      </div>
-    </div>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }

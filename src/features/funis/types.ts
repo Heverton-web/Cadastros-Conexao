@@ -52,6 +52,7 @@ export type FunilPermissao = {
 export type FunilInput = {
   titulo: string;
   descricao?: string;
+  colunas?: string[];
 };
 
 export type FunilTarefaInput = {

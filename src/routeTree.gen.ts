@@ -39,6 +39,8 @@ import { npsDashboardRoute } from "./routes/nps.dashboard";
 import { globalNpsDashboardRoute } from "./routes/global.nps";
 import { npsPesquisasRoute } from "./routes/nps.pesquisas";
 import { npsRelatoriosRoute } from "./routes/nps.relatorios";
+import { npsPreviewRoute } from "./routes/nps.preview";
+import { npsTemaRoute } from "./routes/nps.tema";
 import { npsSurveyRoute } from "./routes/nps.survey";
 
 import { funisRoute } from "./routes/funis";
@@ -87,6 +89,8 @@ export const routeTree = rootRoute.addChildren([
     globalNpsDashboardRoute,
     npsPesquisasRoute,
     npsRelatoriosRoute,
+    npsPreviewRoute,
+    npsTemaRoute,
 
     funisRoute,
     funisDashboardRoute,
