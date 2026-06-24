@@ -1,4 +1,4 @@
-import QRCode from "qrcode";
+import QRCode from "qrcode/lib/browser";
 import { supabase } from "~/core/supabase";
 import type { LinktreeColaborador, LinktreeColaboradorComCredencial, LinktreeColaboradorInput, LinktreeThemeConfig } from "./types";
 import { normalizeLinktreeTheme } from "./types";

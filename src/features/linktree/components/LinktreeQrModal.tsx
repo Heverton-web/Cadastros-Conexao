@@ -17,10 +17,12 @@ export function LinktreeQrModal({ open, onOpenChange, collaborator }: Props) {
 
   async function loadQr(id: string) {
     setLoading(true);
+    setDataUrl(null);
     try {
       const url = await gerarQrCodeDataUrl(id);
       setDataUrl(url);
-    } catch {
+    } catch (e) {
+      console.error("QR Code generation failed:", e);
       setDataUrl(null);
     }
     setLoading(false);
