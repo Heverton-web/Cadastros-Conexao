@@ -1,4 +1,4 @@
-import QRCode from "qrcode/lib/browser";
+import * as QRCode from "qrcode";
 import { supabase } from "~/core/supabase";
 import type { LinktreeColaborador, LinktreeColaboradorComCredencial, LinktreeColaboradorInput, LinktreeThemeConfig } from "./types";
 import { normalizeLinktreeTheme } from "./types";
@@ -89,19 +89,21 @@ export function buildCardUrl(id: string): string {
 }
 
 export async function gerarQrCodeDataUrl(id: string): Promise<string> {
-  return QRCode.toDataURL(buildCardUrl(id), {
-    width: 1024,
+  const svgStr = await QRCode.toString(buildCardUrl(id), {
+    type: "svg",
     margin: 2,
     color: { dark: "#0f172a", light: "#ffffff" },
     errorCorrectionLevel: "H",
+    width: 512,
   });
+  return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svgStr)}`;
 }
 
 export async function downloadQrPng(id: string, name: string) {
   const dataUrl = await gerarQrCodeDataUrl(id);
   const a = document.createElement("a");
   a.href = dataUrl;
-  a.download = `qrcode-${slug(name)}.png`;
+  a.download = `qrcode-${slug(name)}.svg`;
   document.body.appendChild(a);
   a.click();
   a.remove();

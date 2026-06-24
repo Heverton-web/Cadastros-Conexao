@@ -81,14 +81,29 @@ export function LinktreeColaboradorModal({ open, onOpenChange, collaborator, onS
 
   useEffect(() => {
     if (!open) return;
-    let q = supabase.from("credenciais").select("id, nome_completo, email_corporativo, whatsapp_corporativo, departamento").eq("ativo", true);
-    if (empresaId) q = q.eq("empresa_id", empresaId);
-    q.order("nome_completo").then(({ data }) => {
-      const alreadyLinked = collaborator?.credencial_id ? [collaborator.credencial_id] : [];
-      const filtered = (data ?? []).filter((c: any) => !alreadyLinked.includes(c.id));
-      setCredenciais(filtered);
-    });
+
+    async function loadCredenciais() {
+      // Busca credenciais da empresa
+      let q = supabase.from("credenciais").select("id, nome_completo, email_corporativo, whatsapp_corporativo, departamento").eq("ativo", true);
+      if (empresaId) q = q.eq("empresa_id", empresaId);
+      const { data: allCreds } = await q.order("nome_completo");
+
+      // Busca credenciais já vinculadas a outros colaboradores
+      const { data: linked } = await supabase
+        .from("linktree_colaboradores")
+        .select("credencial_id")
+        .not("credencial_id", "is", null);
+
+      const usedIds = new Set((linked ?? []).map((r: any) => r.credencial_id));
+      // Permite a credencial do próprio colaborador sendo editado
+      if (collaborator?.credencial_id) usedIds.delete(collaborator.credencial_id);
+
+      setCredenciais((allCreds ?? []).filter((c: any) => !usedIds.has(c.id)));
+    }
+
+    loadCredenciais();
   }, [open, empresaId, collaborator?.credencial_id]);
+
 
   function handleCredencialSelect(credId: string) {
     setSelectedCredencialId(credId);

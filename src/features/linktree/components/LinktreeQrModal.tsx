@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useRef } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "~/components/ui/dialog";
 import { Button } from "~/components/ui/button";
-import { Loader2, Download } from "lucide-react";
-import { gerarQrCodeDataUrl, downloadQrPng, buildCardUrl } from "~/features/linktree/index";
+import { Download } from "lucide-react";
+import { QRCodeCanvas } from "qrcode.react";
+import { buildCardUrl } from "~/features/linktree/index";
 import type { LinktreeColaborador } from "~/features/linktree/types";
 
 interface Props {
@@ -12,55 +13,46 @@ interface Props {
 }
 
 export function LinktreeQrModal({ open, onOpenChange, collaborator }: Props) {
-  const [dataUrl, setDataUrl] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  async function loadQr(id: string) {
-    setLoading(true);
-    setDataUrl(null);
-    try {
-      const url = await gerarQrCodeDataUrl(id);
-      setDataUrl(url);
-    } catch (e) {
-      console.error("QR Code generation failed:", e);
-      setDataUrl(null);
-    }
-    setLoading(false);
-  }
-
-  function handleOpen(v: boolean) {
-    if (v && collaborator) {
-      loadQr(collaborator.id);
-    } else {
-      setDataUrl(null);
-    }
-    onOpenChange(v);
+  function handleDownload() {
+    const canvas = canvasRef.current;
+    if (!canvas || !collaborator) return;
+    const url = canvas.toDataURL("image/png");
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `qrcode-${collaborator.nome.toLowerCase().replace(/\s+/g, "-")}.png`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
   }
 
   return (
-    <Dialog open={open} onOpenChange={handleOpen}>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>QR Code — {collaborator?.nome}</DialogTitle>
         </DialogHeader>
         <div className="flex flex-col items-center gap-4 py-2">
-          {loading || !dataUrl ? (
-            <div className="flex size-64 items-center justify-center rounded-lg bg-surface-hover">
-              <Loader2 className="size-6 animate-spin text-muted-foreground" />
+          {collaborator && (
+            <div className="rounded-lg bg-white p-3">
+              <QRCodeCanvas
+                ref={canvasRef}
+                value={buildCardUrl(collaborator.id)}
+                size={256}
+                marginSize={2}
+                fgColor="#0f172a"
+                bgColor="#ffffff"
+                level="H"
+              />
             </div>
-          ) : (
-            <img src={dataUrl} alt={`QR Code ${collaborator?.nome}`} className="size-64 rounded-lg bg-white p-3" />
           )}
           {collaborator && (
             <p className="break-all text-center text-xs text-muted-foreground">
               {buildCardUrl(collaborator.id)}
             </p>
           )}
-          <Button
-            variant="outline"
-            onClick={() => collaborator && downloadQrPng(collaborator.id, collaborator.nome)}
-            disabled={!dataUrl}
-          >
+          <Button variant="outline" onClick={handleDownload} disabled={!collaborator}>
             <Download className="size-4" /> Baixar PNG
           </Button>
         </div>

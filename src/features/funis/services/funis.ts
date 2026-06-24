@@ -7,7 +7,7 @@ const MODULO_KEY = "funis-conexao";
 export async function listarFunis(empresaId?: string): Promise<Funil[]> {
   let query = supabase
     .from("funis")
-    .select("*")
+    .select("*, tarefas:funis_tarefas(*)")
     .order("created_at", { ascending: false });
   if (empresaId) {
     query = query.eq("empresa_id", empresaId);
