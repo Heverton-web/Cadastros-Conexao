@@ -19,6 +19,7 @@ const LS_SIDEBAR = "sidebarCollapsed";
 export function AppLayout() {
   const navigate = useNavigate();
   const location = useLocation();
+  const isFunilPage = location.pathname.startsWith("/funis/funil/");
   const { profile, logout, empresa, permissoes, modulosAcesso, modulosAtivos } = useAuth();
   const { logoAppUrl } = useEmpresaTheme();
   const modulos = useModulos();
@@ -177,8 +178,17 @@ export function AppLayout() {
       </header>
       <NavSidebar selectedModuleKey={selectedModuleKey} onModuleChange={setSelectedModuleKey} modulos={modulos} collapsed={sidebarCollapsed} onToggleCollapse={toggleSidebar} />
       <ModuleDrawer open={showDrawer} onClose={() => setShowDrawer(false)} selectedModuleKey={selectedModuleKey} onModuleChange={setSelectedModuleKey} modulos={modulos} />
-      <div className={cn("transition-all duration-200 pb-20 lg:pb-0", sidebarCollapsed ? "lg:ml-16" : "lg:ml-60")}>
-        <main className="mx-auto max-w-7xl w-full p-4 md:p-6 lg:p-8">
+      <div className={cn(
+        "transition-all duration-200",
+        isFunilPage ? "h-[calc(100vh-70px)] overflow-hidden" : "pb-20 lg:pb-0",
+        sidebarCollapsed ? "lg:ml-16" : "lg:ml-60"
+      )}>
+        <main className={cn(
+          "w-full",
+          isFunilPage 
+            ? "h-full max-w-none p-0 m-0 flex flex-col" 
+            : "mx-auto max-w-7xl p-4 md:p-6 lg:p-8"
+        )}>
           <Outlet />
         </main>
       </div>

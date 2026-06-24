@@ -50,7 +50,7 @@ export function FunisDashboardPage() {
           <DialogTrigger asChild>
             <Button className="gradient-gold text-[#0f172a] font-semibold w-full sm:w-auto"><Plus className="h-4 w-4 mr-2" />Novo funil</Button>
           </DialogTrigger>
-          <DialogContent>
+          <DialogContent className="border-none">
             <DialogHeader><DialogTitle className="font-display text-2xl">Criar novo funil</DialogTitle></DialogHeader>
             <form onSubmit={handleCreate} className="space-y-5">
               <div className="space-y-2"><Label>Nome</Label><Input required value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Ex.: Refatoracao do backend" /></div>
@@ -101,12 +101,12 @@ export function FunisDashboardPage() {
                     <span className="font-mono font-semibold">{prog.pct}%</span>
                   </div>
                   <div className="h-2 w-full rounded-full bg-background/60 overflow-hidden">
-                    <div className={h-full  + sm.bar +  transition-all} style={{ width: prog.pct + "%" }} />
+                    <div className={`h-full ${sm.bar} transition-all`} style={{ width: prog.pct + "%" }} />
                   </div>
                 </div>
 
                 <div className="flex flex-wrap items-center gap-1.5 text-[11px]">
-                  <Badge variant="outline" className={gap-1  + sm.chip}>
+                  <Badge variant="outline" className={`gap-1 ${sm.chip}`}>
                     {prog.status === "completed" ? <CheckCircle2 className="h-2.5 w-2.5" /> : prog.status === "overdue" ? <Clock className="h-2.5 w-2.5" /> : <Calendar className="h-2.5 w-2.5" />}
                     {sm.label}
                   </Badge>

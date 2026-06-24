@@ -21,8 +21,8 @@ export function FunilDetallePage() {
   }
 
   return (
-    <div className="flex flex-col h-[calc(100dvh-180px)] lg:h-[calc(100dvh-150px)]">
-      <div className="flex items-center justify-between px-4 py-3 border-b border-border-subtle bg-surface rounded-t-xl">
+    <div className="flex flex-col h-full w-full overflow-hidden">
+      <div className="flex items-center justify-between px-4 py-3 bg-transparent">
         <div className="flex items-center gap-3">
           <button
             onClick={() => navigate({ to: "/funis/dashboard" })}

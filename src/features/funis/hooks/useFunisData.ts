@@ -25,7 +25,7 @@ export function useFunis() {
   const { profile } = useAuth();
   return useQuery({
     queryKey: ["funis", profile?.empresa_id],
-    queryFn: () => listarFunis(profile?.empresa_id),
+    queryFn: () => listarFunis(profile?.empresa_id ?? undefined),
     staleTime: 30_000,
   });
 }

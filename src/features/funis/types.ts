@@ -60,12 +60,12 @@ export type FunilTarefaInput = {
   titulo: string;
   descricao?: string;
   prioridade?: FunilPrioridade;
-  atribuido_para?: string;
+  atribuido_para?: string | null;
   tools?: string[];
-  data_inicio?: string;
-  data_fim?: string;
-  depende_tarefa_id?: string;
-  parent_task_id?: string;
+  data_inicio?: string | null;
+  data_fim?: string | null;
+  depende_tarefa_id?: string | null;
+  parent_task_id?: string | null;
 };
 
 export type FunilColunaInput = {

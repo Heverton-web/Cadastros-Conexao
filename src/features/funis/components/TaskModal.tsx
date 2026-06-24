@@ -71,20 +71,20 @@ export function TaskModal({ open = true, onClose, columnId, funilId, task, paren
     const payload = {
       funil_id: funilId,
       coluna_id: columnId,
-      parent_task_id: parentTaskId ?? task?.parent_task_id ?? undefined,
+      parent_task_id: parentTaskId ?? task?.parent_task_id ?? null,
       titulo: title,
       descricao: description || undefined,
       atribuido_para: assignedTo === "none" ? null : assignedTo,
       tools: tools,
-      data_inicio: scheduleMode === "period" && startDate ? new Date(startDate).toISOString() : undefined,
-      data_fim: scheduleMode === "period" && endDate ? new Date(endDate).toISOString() : undefined,
-      depende_tarefa_id: scheduleMode === "dependency" && dependsOn !== "none" ? dependsOn : undefined,
+      data_inicio: scheduleMode === "period" && startDate ? new Date(startDate).toISOString() : null,
+      data_fim: scheduleMode === "period" && endDate ? new Date(endDate).toISOString() : null,
+      depende_tarefa_id: scheduleMode === "dependency" && dependsOn !== "none" ? dependsOn : null,
       prioridade: priority as any,
       completed_at: completed && !task?.completed_at ? new Date().toISOString() : !completed ? null : task?.completed_at,
     };
     try {
       if (task) {
-        await atualizar.mutateAsync({ id: task.id, ...payload });
+        await atualizar.mutateAsync({ id: task.id, updates: payload });
         toast.success("Tarefa atualizada");
       } else {
         await criar.mutateAsync(payload as any);
@@ -114,155 +114,174 @@ export function TaskModal({ open = true, onClose, columnId, funilId, task, paren
 
   return (
     <Dialog open={open} onOpenChange={(o) => !o && onClose()}>
-      <DialogContent className="max-w-2xl max-h-[92vh] overflow-y-auto p-0 gap-0">
-        <DialogHeader className="px-6 sm:px-8 pt-6 sm:pt-8 pb-4 border-b border-border/40 bg-surface">
+      <DialogContent className="max-w-2xl max-h-[92vh] overflow-y-auto p-0 gap-0 border-0 shadow-2xl">
+        <DialogHeader className="px-6 sm:px-8 pt-6 sm:pt-8 pb-2 bg-transparent">
           <DialogTitle className="font-display text-2xl">
             {task ? "Editar tarefa" : parentTaskId ? "Nova microtarefa" : "Nova tarefa"}
           </DialogTitle>
-          <p className="text-sm text-muted-foreground">Preencha as informacoes da tarefa abaixo.</p>
+          <p className="text-sm text-muted-foreground">Preencha as informações da tarefa abaixo.</p>
         </DialogHeader>
 
-        <form onSubmit={submit} className="px-6 sm:px-8 py-6 space-y-5">
-          <div className={`rounded-xl border p-4 flex items-center gap-3 ${completed ? "border-emerald-400/30 bg-emerald-500/10" : "border-border/50 bg-surface/30"}`}>
-            <label className="flex items-center gap-3 cursor-pointer flex-1 min-w-0">
+        <form onSubmit={submit} className="px-6 sm:px-8 py-4 space-y-6">
+          {/* Status e Conclusão (Mais discreto) */}
+          <div className="flex items-center justify-between gap-4 py-2 border-b border-border/20">
+            <label className="flex items-center gap-3 cursor-pointer text-sm font-medium">
               <Checkbox checked={completed} onCheckedChange={(v: boolean) => setCompleted(!!v)} disabled={!canEdit} className="h-5 w-5" />
-              <div className="min-w-0">
-                <div className="text-sm font-medium flex items-center gap-2">
-                  {completed ? <CheckCircle2 className="h-4 w-4 text-emerald-400" /> : <Circle className="h-4 w-4 text-muted-foreground" />}
-                  {completed ? "Tarefa concluida" : "Marcar como concluida"}
-                </div>
-                {task?.created_at && (
-                  <div className="text-xs text-muted-foreground mt-0.5">
-                    Criada em {new Date(task.created_at).toLocaleDateString("pt-BR")}
-                    {task.completed_at && ` finalizada em ${new Date(task.completed_at).toLocaleDateString("pt-BR")}`}
-                  </div>
-                )}
-              </div>
+              <span>{completed ? "Tarefa concluída" : "Marcar como concluída"}</span>
             </label>
-            <Badge variant="outline" className={`gap-1.5 shrink-0 ${priorityMeta(priority).chip}`}>
-              <Flag className="h-3 w-3" />{priorityMeta(priority).label}
-            </Badge>
+            {task?.created_at && (
+              <span className="text-xs text-muted-foreground">
+                Criada em {new Date(task.created_at).toLocaleDateString("pt-BR")}
+                {task.completed_at && ` • Fim: ${new Date(task.completed_at).toLocaleDateString("pt-BR")}`}
+              </span>
+            )}
           </div>
 
-          <section className="rounded-xl border border-border/50 bg-surface/30 p-5 space-y-4">
-            <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Informacoes</h3>
+          <div className="space-y-5">
+            {/* Título */}
             <div className="space-y-2">
-              <Label>Titulo</Label>
-              <Input required value={title} onChange={(e) => setTitle(e.target.value)} disabled={!canEdit} placeholder="O que sera feito" />
+              <Label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground/80">Título</Label>
+              <Input required value={title} onChange={(e) => setTitle(e.target.value)} disabled={!canEdit} placeholder="O que será feito" />
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-[1fr_auto] gap-4">
-              <div className="space-y-2">
-                <Label>Descricao</Label>
-                <Textarea rows={4} value={description ?? ""} onChange={(e) => setDescription(e.target.value)} disabled={!canEdit} placeholder="Escopo, contexto, criterios de aceite..." className="min-h-[110px] resize-y" />
-              </div>
-              <div className="space-y-2 sm:w-44">
-                <Label>Prioridade</Label>
-                <Select value={priority} onValueChange={(v) => setPriority(v as Priority)} disabled={!canEdit}>
-                  <SelectTrigger>
-                    <span className="flex items-center gap-2">
-                      <span className={`h-2 w-2 rounded-full ${priorityMeta(priority).dot}`} />
-                      <SelectValue />
-                    </span>
-                  </SelectTrigger>
-                  <SelectContent>
-                    {PRIORITIES.map((p) => (
-                      <SelectItem key={p.value} value={p.value}>
-                        <span className="flex items-center gap-2"><span className={`h-2 w-2 rounded-full ${p.dot}`} />{p.label}</span>
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-          </section>
 
-          <section className="rounded-xl border border-border/50 bg-surface/30 p-5 space-y-4">
-            <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Atribuicao</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-              <div className="space-y-2">
-                <Label>Responsavel</Label>
-                <Select value={assignedTo} onValueChange={setAssignedTo} disabled={!canEdit}>
-                  <SelectTrigger><SelectValue placeholder="Selecionar" /></SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="none">Sem responsavel</SelectItem>
-                    {profiles.map((p) => <SelectItem key={p.id} value={p.id}>{p.nome || p.email}</SelectItem>)}
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="space-y-2">
-                <Label>Ferramentas</Label>
-                <div className="flex gap-2">
-                  <Input value={toolInput} onChange={(e) => setToolInput(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); addTool(); } }} placeholder="n8n, Docker..." disabled={!canEdit} />
-                  <Button type="button" variant="secondary" onClick={addTool} disabled={!canEdit} className="shrink-0">Adicionar</Button>
+            {/* Grid de Atributos */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              {/* Prioridade & Responsável */}
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <Label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground/80">Prioridade</Label>
+                  <Select value={priority} onValueChange={(v) => setPriority(v as Priority)} disabled={!canEdit}>
+                    <SelectTrigger>
+                      <span className="flex items-center gap-2">
+                        <span className={`h-2 w-2 rounded-full ${priorityMeta(priority).dot}`} />
+                        <SelectValue />
+                      </span>
+                    </SelectTrigger>
+                    <SelectContent>
+                      {PRIORITIES.map((p) => (
+                        <SelectItem key={p.value} value={p.value}>
+                          <span className="flex items-center gap-2">
+                            <span className={`h-2 w-2 rounded-full ${p.dot}`} />
+                            {p.label}
+                          </span>
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
-                {tools.length > 0 && (
-                  <div className="flex flex-wrap gap-1.5 pt-1">
-                    {tools.map((t, i) => (
-                      <Badge key={i} variant="secondary" className="gap-1 py-1 px-2">{t}{canEdit && <button type="button" onClick={() => setTools(tools.filter((_, j) => j !== i))} className="hover:text-destructive"><X className="h-3 w-3" /></button>}</Badge>
-                    ))}
-                  </div>
-                )}
+
+                <div className="space-y-2">
+                  <Label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground/80">Responsável</Label>
+                  <Select value={assignedTo} onValueChange={setAssignedTo} disabled={!canEdit}>
+                    <SelectTrigger><SelectValue placeholder="Selecionar" /></SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="none">Sem responsável</SelectItem>
+                      {profiles.map((p) => <SelectItem key={p.id} value={p.id}>{p.nome || p.email}</SelectItem>)}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+
+              {/* Datas / Dependência */}
+              <div className="space-y-2">
+                <Label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground/80">Planejamento</Label>
+                <div className="border border-border/40 rounded-lg p-3 bg-surface/10 space-y-3">
+                  <Tabs value={scheduleMode} onValueChange={(v) => setScheduleMode(v as "period" | "dependency")}>
+                    <TabsList className="grid grid-cols-2 w-full h-8 p-0.5 bg-muted/50">
+                      <TabsTrigger value="period" disabled={!canEdit} className="text-xs"><CalIcon className="h-3 w-3 mr-1" />Por período</TabsTrigger>
+                      <TabsTrigger value="dependency" disabled={!canEdit} className="text-xs"><GitBranch className="h-3 w-3 mr-1" />Dependência</TabsTrigger>
+                    </TabsList>
+                    
+                    <TabsContent value="period" className="grid grid-cols-2 gap-2 mt-3">
+                      <div className="space-y-1">
+                        <span className="text-[10px] uppercase font-semibold text-muted-foreground">Início</span>
+                        <Input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} disabled={!canEdit} className="h-8 text-xs" />
+                      </div>
+                      <div className="space-y-1">
+                        <span className="text-[10px] uppercase font-semibold text-muted-foreground">Fim</span>
+                        <Input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} disabled={!canEdit} className="h-8 text-xs" />
+                      </div>
+                    </TabsContent>
+                    
+                    <TabsContent value="dependency" className="mt-3">
+                      <Select value={dependsOn} onValueChange={setDependsOn} disabled={!canEdit}>
+                        <SelectTrigger className="h-8 text-xs">
+                          <SelectValue placeholder="Tarefa predecessora" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="none">Nenhuma</SelectItem>
+                          {candidateDeps.map((t) => <SelectItem key={t.id} value={t.id} className="text-xs">{t.titulo}</SelectItem>)}
+                        </SelectContent>
+                      </Select>
+                      {dependsOn !== "none" && (
+                        <p className="text-[10px] text-muted-foreground mt-1.5">Inicia após a conclusão da predecessora.</p>
+                      )}
+                    </TabsContent>
+                  </Tabs>
+                </div>
               </div>
             </div>
-          </section>
 
-          <section className="rounded-xl border border-border/50 bg-surface/30 p-5 space-y-4">
-            <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Quando sera feito</h3>
-            <Tabs value={scheduleMode} onValueChange={(v) => setScheduleMode(v as "period" | "dependency")}>
-              <TabsList className="grid grid-cols-2 w-full">
-                <TabsTrigger value="period" disabled={!canEdit}><CalIcon className="h-3.5 w-3.5 mr-1.5" />Por periodo</TabsTrigger>
-                <TabsTrigger value="dependency" disabled={!canEdit}><GitBranch className="h-3.5 w-3.5 mr-1.5" />Por dependencia</TabsTrigger>
-              </TabsList>
-              <TabsContent value="period" className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-5">
-                <div className="space-y-2"><Label className="text-xs">Inicio</Label><Input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} disabled={!canEdit} /></div>
-                <div className="space-y-2"><Label className="text-xs">Termino</Label><Input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} disabled={!canEdit} /></div>
-              </TabsContent>
-              <TabsContent value="dependency" className="mt-5">
-                <Select value={dependsOn} onValueChange={setDependsOn} disabled={!canEdit}>
-                  <SelectTrigger><SelectValue placeholder="Tarefa predecessora" /></SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="none">Nenhuma</SelectItem>
-                    {candidateDeps.map((t) => <SelectItem key={t.id} value={t.id}>{t.titulo}</SelectItem>)}
-                  </SelectContent>
-                </Select>
-                {dependsOn !== "none" && (
-                  <p className="text-xs text-muted-foreground mt-2">Esta tarefa so podera iniciar apos a conclusao da predecessora.</p>
-                )}
-              </TabsContent>
-            </Tabs>
-          </section>
+            {/* Descrição */}
+            <div className="space-y-2">
+              <Label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground/80">Descrição</Label>
+              <Textarea rows={3} value={description ?? ""} onChange={(e) => setDescription(e.target.value)} disabled={!canEdit} placeholder="Escopo, contexto, critérios de aceite..." className="min-h-[80px] resize-y" />
+            </div>
 
-          {task && !parentTaskId && (
-            <section className="rounded-xl border border-border/50 bg-surface/30 p-5 space-y-4">
-              <div className="flex items-center justify-between gap-3 flex-wrap">
-                <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                  Microtarefas <span className="text-foreground/70 normal-case">({subProgress?.done ?? 0}/{subProgress?.total ?? 0})</span>
-                </h3>
-                {canEdit && <Button type="button" size="sm" variant="secondary" onClick={() => { setEditingSub(null); setShowSubModal(true); }}><Plus className="h-3.5 w-3.5 mr-1" />Adicionar</Button>}
+            {/* Ferramentas */}
+            <div className="space-y-2">
+              <Label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground/80">Ferramentas</Label>
+              <div className="flex gap-2">
+                <Input value={toolInput} onChange={(e) => setToolInput(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); addTool(); } }} placeholder="n8n, Docker..." disabled={!canEdit} className="h-9" />
+                <Button type="button" variant="secondary" onClick={addTool} disabled={!canEdit} className="shrink-0 h-9">Adicionar</Button>
               </div>
-              {subProgress && subProgress.total > 0 && (
-                <div className="h-1.5 w-full rounded-full bg-background/60 overflow-hidden">
-                  <div className="h-full bg-emerald-500 transition-all" style={{ width: Math.round((subProgress.done / subProgress.total) * 100) + "%" }} />
+              {tools.length > 0 && (
+                <div className="flex flex-wrap gap-1.5 pt-1">
+                  {tools.map((t, i) => (
+                    <Badge key={i} variant="secondary" className="gap-1 py-1 px-2 text-xs">{t}{canEdit && <button type="button" onClick={() => setTools(tools.filter((_, j) => j !== i))} className="hover:text-destructive"><X className="h-3 w-3" /></button>}</Badge>
+                  ))}
                 </div>
               )}
-              <div className="space-y-2">
-                {subtasks.map((st) => {
-                  const sm = priorityMeta(st.prioridade);
-                  return (
-                    <div key={st.id} className={`flex items-center gap-3 p-3 rounded-md border bg-background/40 hover:bg-surface-hover/60 cursor-pointer transition-colors ${st.completed_at ? "border-emerald-400/30" : "border-border/40"}`} onClick={() => { setEditingSub(st); setShowSubModal(true); }}>
-                      <span className={`h-2 w-2 rounded-full shrink-0 ${sm.dot}`} title={sm.label} />
-                      <span className={`text-sm truncate flex-1 ${st.completed_at ? "line-through text-muted-foreground" : ""}`}>{st.titulo}</span>
-                      {st.completed_at && <CheckCircle2 className="h-4 w-4 text-emerald-400 shrink-0" />}
-                      {st.atribuido_para && <span className="text-xs text-muted-foreground shrink-0 hidden sm:inline">{profiles.find((p) => p.id === st.atribuido_para)?.nome}</span>}
-                    </div>
-                  );
-                })}
-                {subtasks.length === 0 && <p className="text-xs text-muted-foreground text-center py-4">Nenhuma microtarefa</p>}
-              </div>
-            </section>
-          )}
+            </div>
 
-          <DialogFooter className="-mx-6 sm:-mx-8 px-6 sm:px-8 pt-5 mt-2 border-t border-border/40">
+            {/* Microtarefas */}
+            {task && !parentTaskId && (
+              <div className="border-t border-border/20 pt-4 space-y-3">
+                <div className="flex items-center justify-between gap-3 flex-wrap">
+                  <Label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground/80">
+                    Microtarefas <span className="text-foreground/60 normal-case">({subProgress?.done ?? 0}/{subProgress?.total ?? 0})</span>
+                  </Label>
+                  {canEdit && <Button type="button" size="sm" variant="outline" onClick={() => { setEditingSub(null); setShowSubModal(true); }} className="h-7 text-xs"><Plus className="h-3 w-3 mr-1" />Adicionar</Button>}
+                </div>
+                {subProgress && subProgress.total > 0 && (
+                  <div className="h-1.5 w-full rounded-full bg-muted/60 overflow-hidden">
+                    <div className="h-full bg-emerald-500 transition-all" style={{ width: Math.round((subProgress.done / subProgress.total) * 100) + "%" }} />
+                  </div>
+                )}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
+                  {subtasks.map((st) => {
+                    const sm = priorityMeta(st.prioridade);
+                    return (
+                      <div key={st.id} className={`flex items-center gap-2.5 p-2.5 rounded-lg border bg-surface/20 hover:bg-surface/40 cursor-pointer transition-colors ${st.completed_at ? "border-emerald-500/20 bg-emerald-500/5" : "border-border/30"}`} onClick={() => { setEditingSub(st); setShowSubModal(true); }}>
+                        <span className={`h-2 w-2 rounded-full shrink-0 ${sm.dot}`} title={sm.label} />
+                        <span className={`text-xs truncate flex-1 ${st.completed_at ? "line-through text-muted-foreground" : ""}`}>{st.titulo}</span>
+                        {st.completed_at ? (
+                          <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500 shrink-0" />
+                        ) : (
+                          st.atribuido_para && (
+                            <span className="text-[10px] bg-muted px-1.5 py-0.5 rounded text-muted-foreground shrink-0 max-w-[80px] truncate">{profiles.find((p) => p.id === st.atribuido_para)?.nome || "Membro"}</span>
+                          )
+                        )}
+                      </div>
+                    );
+                  })}
+                  {subtasks.length === 0 && <p className="text-xs text-muted-foreground text-center py-2 col-span-2">Nenhuma microtarefa criada.</p>}
+                </div>
+              </div>
+            )}
+          </div>
+
+          <DialogFooter className="-mx-6 sm:-mx-8 px-6 sm:px-8 pt-4 mt-2 border-t border-border/20">
             {task && canEdit && (
               <Button type="button" variant="ghost" className="text-destructive hover:text-destructive sm:mr-auto" onClick={remove}><Trash2 className="h-4 w-4 mr-1.5" />Excluir</Button>
             )}

@@ -11,13 +11,15 @@ type TaskCardProps = {
 export function TaskCard({ tarefa, onClick }: TaskCardProps) {
   const pMeta = priorityMeta((tarefa.prioridade as Priority) || "medium");
   const isCompleted = !!tarefa.completed_at;
-  const dStatus = deadlineStatus({ end_date: tarefa.data_fim, completed_at: tarefa.completed_at });
+  const dStatus = deadlineStatus({ data_fim: tarefa.data_fim, completed_at: tarefa.completed_at });
   const sMeta = statusMeta[dStatus];
 
   return (
     <div
+      draggable
+      onDragStart={(e) => { e.dataTransfer.setData("tarefaId", tarefa.id); }}
       onClick={onClick}
-      className={`group p-4 rounded-xl border bg-surface/70 cursor-pointer transition-all hover:shadow-lg hover:-translate-y-0.5 ${isCompleted ? "border-emerald-400/40 bg-emerald-500/5" : "border-border/50 hover:border-primary/40"}`}
+      className={`group p-4 rounded-xl border-2 bg-surface shadow-sm cursor-pointer transition-all hover:shadow-md hover:-translate-y-0.5 ${isCompleted ? "border-emerald-500/30 bg-emerald-500/10" : "border-border/60 hover:border-primary/50"}`}
     >
       <div className="flex items-start justify-between gap-3 mb-2">
         <h4 className={`text-sm font-medium leading-tight ${isCompleted ? "line-through text-muted-foreground" : "text-foreground"}`}>{tarefa.titulo}</h4>
