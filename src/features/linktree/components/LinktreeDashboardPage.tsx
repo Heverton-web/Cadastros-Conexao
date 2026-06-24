@@ -84,7 +84,7 @@ export function LinktreeDashboardPage() {
     <div className="space-y-6">
       <header className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-4 sm:flex sm:items-center sm:justify-between">
         <div className="min-w-0">
-          <h1 className="text-3xl font-bold text-text-main">Link Tree Corporativo</h1>
+          <h1 className="text-3xl font-bold text-text-main">LinkTree</h1>
           <p className="mt-1 text-sm text-muted-foreground">
             Gerencie os cartoes digitais e QR Codes dos colaboradores.
           </p>
@@ -156,7 +156,7 @@ export function LinktreeDashboardPage() {
                     <td className="p-4">
                       <div className="flex items-center justify-end gap-1">
                         {can("lt_ver_link") && (
-                          <Button variant="ghost" size="icon" title="Visualizar Link Tree" asChild>
+                          <Button variant="ghost" size="icon" title="Visualizar LinkTree" asChild>
                             <a href={buildCardUrl(c.id)} target="_blank" rel="noreferrer">
                               <ExternalLink className="size-4" />
                             </a>
@@ -197,14 +197,14 @@ export function LinktreeDashboardPage() {
         )}
       </div>
 
-      <LinktreeColaboradorModal open={modalOpen} onOpenChange={setModalOpen} collaborator={editing} onSaved={load} />
+      <LinktreeColaboradorModal open={modalOpen} onOpenChange={setModalOpen} collaborator={editing} onSaved={load} empresaId={profile?.empresa_id ?? null} />
 
       <AlertDialog open={!!toDelete} onOpenChange={(o) => !o && setToDelete(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Excluir colaborador?</AlertDialogTitle>
             <AlertDialogDescription>
-              Esta acao e irreversivel. O Link Tree de <strong>{toDelete?.nome}</strong> sera removido permanentemente.
+              Esta acao e irreversivel. O LinkTree de <strong>{toDelete?.nome}</strong> sera removido permanentemente.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

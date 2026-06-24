@@ -9,10 +9,21 @@ export interface LinktreeColaborador {
   telefone_fixo: string | null;
   foto_url: string | null;
   status: LinktreeColaboradorStatus;
-  created_by: string;
+  created_by: string | null;
   empresa_id: string | null;
+  credencial_id: string | null;
   created_at: string;
   updated_at: string;
+}
+
+export interface LinktreeColaboradorComCredencial extends LinktreeColaborador {
+  credenciais?: {
+    id: string;
+    nome_completo: string;
+    email_corporativo: string;
+    whatsapp_corporativo: string | null;
+    departamento: string | null;
+  } | null;
 }
 
 export type LinktreeColaboradorInput = {
@@ -24,6 +35,8 @@ export type LinktreeColaboradorInput = {
   foto_url?: string | null;
   status?: LinktreeColaboradorStatus;
   empresa_id?: string;
+  credencial_id?: string;
+  created_by?: string;
 };
 
 export type BlobPosition =

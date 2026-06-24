@@ -1,27 +1,27 @@
 import QRCode from "qrcode";
 import { supabase } from "~/core/supabase";
-import type { LinktreeColaborador, LinktreeColaboradorInput, LinktreeThemeConfig } from "./types";
+import type { LinktreeColaborador, LinktreeColaboradorComCredencial, LinktreeColaboradorInput, LinktreeThemeConfig } from "./types";
 import { normalizeLinktreeTheme } from "./types";
 
 export async function listarColaboradores(empresaId?: string) {
   let query = supabase
     .from("linktree_colaboradores")
-    .select("*")
+    .select("*, credenciais(id, nome_completo, email_corporativo, whatsapp_corporativo, departamento)")
     .order("created_at", { ascending: false });
   if (empresaId) query = query.eq("empresa_id", empresaId);
   const { data, error } = await query;
   if (error) throw error;
-  return data as LinktreeColaborador[];
+  return data as LinktreeColaboradorComCredencial[];
 }
 
 export async function criarColaborador(input: LinktreeColaboradorInput) {
   const { data, error } = await supabase
     .from("linktree_colaboradores")
     .insert(input)
-    .select()
+    .select("*, credenciais(id, nome_completo, email_corporativo, whatsapp_corporativo, departamento)")
     .single();
   if (error) throw error;
-  return data as LinktreeColaborador;
+  return data as LinktreeColaboradorComCredencial;
 }
 
 export async function atualizarColaborador(id: string, input: Partial<LinktreeColaboradorInput>) {
@@ -29,10 +29,10 @@ export async function atualizarColaborador(id: string, input: Partial<LinktreeCo
     .from("linktree_colaboradores")
     .update(input)
     .eq("id", id)
-    .select()
+    .select("*, credenciais(id, nome_completo, email_corporativo, whatsapp_corporativo, departamento)")
     .single();
   if (error) throw error;
-  return data as LinktreeColaborador;
+  return data as LinktreeColaboradorComCredencial;
 }
 
 export async function toggleColaboradorStatus(id: string, status: "ativo" | "inativo") {
@@ -57,11 +57,11 @@ export async function deletarColaborador(id: string) {
 export async function buscarColaboradorPorId(id: string) {
   const { data, error } = await supabase
     .from("linktree_colaboradores")
-    .select("*")
+    .select("*, credenciais(id, nome_completo, email_corporativo, whatsapp_corporativo, departamento)")
     .eq("id", id)
     .maybeSingle();
   if (error) throw error;
-  return data as LinktreeColaborador | null;
+  return data as LinktreeColaboradorComCredencial | null;
 }
 
 export async function buscarTemaConfig(empresaId?: string) {

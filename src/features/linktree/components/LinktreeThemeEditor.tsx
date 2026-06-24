@@ -76,7 +76,7 @@ export function LinktreeThemeEditor({ initialTheme, onSave }: Props) {
       <header className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-4">
         <div className="min-w-0">
           <h1 className="text-3xl font-bold text-text-main">Personalizacao Global</h1>
-          <p className="mt-1 text-sm text-muted-foreground">Ajuste cores, fontes e icones — valido para todos os Link Trees.</p>
+          <p className="mt-1 text-sm text-muted-foreground">Ajuste cores, fontes e icones — valido para todos os LinkTrees.</p>
         </div>
         <Button onClick={handleSave} disabled={saving} className="shrink-0 bg-primary text-primary-foreground hover:bg-primary/90">
           {saving ? <Loader2 className="size-4 animate-spin" /> : <Save className="size-4" />}

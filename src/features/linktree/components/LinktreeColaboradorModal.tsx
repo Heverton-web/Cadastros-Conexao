@@ -5,7 +5,6 @@ import { Label } from "~/components/ui/label";
 import { Button } from "~/components/ui/button";
 import { Loader2, Upload } from "lucide-react";
 import toast from "react-hot-toast";
-import { z } from "zod";
 import { supabase } from "~/core/supabase";
 import { compressImage } from "~/features/linktree/lib/image-utils";
 import type { LinktreeColaborador } from "~/features/linktree/types";
@@ -17,23 +16,28 @@ import {
   type TelefoneKind,
 } from "~/features/linktree/types";
 
-const schema = z.object({
-  nome: z.string().trim().min(2, "Nome obrigatorio").max(120),
-  cargo: z.string().trim().min(2, "Cargo obrigatorio").max(120),
-  email: z.string().trim().email("E-mail invalido").max(255),
-});
+interface CredencialOption {
+  id: string;
+  nome_completo: string;
+  email_corporativo: string;
+  whatsapp_corporativo: string | null;
+  departamento: string | null;
+}
 
 interface Props {
   open: boolean;
   onOpenChange: (v: boolean) => void;
   collaborator: LinktreeColaborador | null;
   onSaved: () => void;
+  empresaId: string | null;
 }
 
 const EMPTY_PHONE: PhoneParts = { ddi: "55", ddd: "", number: "" };
 
-export function LinktreeColaboradorModal({ open, onOpenChange, collaborator, onSaved }: Props) {
+export function LinktreeColaboradorModal({ open, onOpenChange, collaborator, onSaved, empresaId }: Props) {
   const editing = !!collaborator;
+  const [credenciais, setCredenciais] = useState<CredencialOption[]>([]);
+  const [selectedCredencialId, setSelectedCredencialId] = useState<string>("");
   const [nome, setNome] = useState("");
   const [cargo, setCargo] = useState("");
   const [email, setEmail] = useState("");
@@ -46,21 +50,56 @@ export function LinktreeColaboradorModal({ open, onOpenChange, collaborator, onS
 
   useEffect(() => {
     if (!open) return;
-    setNome(collaborator?.nome ?? "");
-    setCargo(collaborator?.cargo ?? "");
-    setEmail(collaborator?.email ?? "");
-    setFoto(collaborator?.foto_url ?? "");
-    const w = decodeTelefone(null);
-    const decoded = collaborator?.whatsapp ? (() => {
-      const parts = collaborator.whatsapp.replace(/\D/g, "");
-      return { ddi: parts.slice(0, 2) || "55", ddd: parts.slice(2, 4), number: parts.slice(4) };
-    })() : EMPTY_PHONE;
-    setWhats(decoded);
-    const t = decodeTelefone(collaborator?.telefone_fixo ?? "");
-    setTelKind(t.kind);
-    setTelFixo({ ddi: t.phone.ddi || "55", ddd: t.phone.ddd, number: t.phone.number });
-    setRamal(t.ramal);
+    if (editing && collaborator) {
+      setSelectedCredencialId(collaborator.credencial_id ?? "");
+      setNome(collaborator.nome);
+      setCargo(collaborator.cargo);
+      setEmail(collaborator.email);
+      setFoto(collaborator.foto_url ?? "");
+      if (collaborator.whatsapp) {
+        const d = collaborator.whatsapp.replace(/\D/g, "");
+        setWhats({ ddi: d.slice(0, 2) || "55", ddd: d.slice(2, 4), number: d.slice(4) });
+      }
+      const t = decodeTelefone(collaborator.telefone_fixo ?? "");
+      setTelKind(t.kind);
+      setTelFixo({ ddi: t.phone.ddi || "55", ddd: t.phone.ddd, number: t.phone.number });
+      setRamal(t.ramal);
+    } else {
+      setSelectedCredencialId("");
+      setNome("");
+      setCargo("");
+      setEmail("");
+      setFoto("");
+      setWhats(EMPTY_PHONE);
+      setTelKind("fixo");
+      setTelFixo(EMPTY_PHONE);
+      setRamal("");
+    }
   }, [open, collaborator]);
+
+  useEffect(() => {
+    if (!open) return;
+    let q = supabase.from("credenciais").select("id, nome_completo, email_corporativo, whatsapp_corporativo, departamento").eq("ativo", true);
+    if (empresaId) q = q.eq("empresa_id", empresaId);
+    q.order("nome_completo").then(({ data }) => {
+      const alreadyLinked = collaborator?.credencial_id ? [collaborator.credencial_id] : [];
+      const filtered = (data ?? []).filter((c: any) => !alreadyLinked.includes(c.id));
+      setCredenciais(filtered);
+    });
+  }, [open, empresaId, collaborator?.credencial_id]);
+
+  function handleCredencialSelect(credId: string) {
+    setSelectedCredencialId(credId);
+    const c = credenciais.find((x) => x.id === credId);
+    if (c) {
+      setNome(c.nome_completo);
+      setEmail(c.email_corporativo);
+      if (c.whatsapp_corporativo) {
+        const d = c.whatsapp_corporativo.replace(/\D/g, "");
+        setWhats({ ddi: d.slice(0, 2) || "55", ddd: d.slice(2, 4), number: d.slice(4) });
+      }
+    }
+  }
 
   async function handleFile(e: React.ChangeEvent<HTMLInputElement>) {
     const f = e.target.files?.[0];
@@ -78,35 +117,34 @@ export function LinktreeColaboradorModal({ open, onOpenChange, collaborator, onS
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    const parsed = schema.safeParse({ nome, cargo, email });
-    if (!parsed.success) {
-      toast.error(parsed.error.errors[0].message);
-      return;
-    }
-    if (!whats.ddd || !whats.number) {
-      toast.error("Informe DDD e numero do WhatsApp");
-      return;
-    }
-    if (telKind === "ramal" && !ramal) {
-      toast.error("Informe o ramal");
-      return;
-    }
+    if (!nome.trim()) { toast.error("Nome obrigatorio"); return; }
+    if (!cargo.trim()) { toast.error("Cargo obrigatorio"); return; }
+    if (!email.trim()) { toast.error("Email obrigatorio"); return; }
+    if (!whats.ddd || !whats.number) { toast.error("Informe DDD e numero do WhatsApp"); return; }
+    if (telKind === "ramal" && !ramal) { toast.error("Informe o ramal"); return; }
+
     setSaving(true);
     const payload = {
-      ...parsed.data,
+      nome: nome.trim(),
+      cargo: cargo.trim(),
+      email: email.trim(),
       whatsapp: encodePhone(whats),
       telefone_fixo: encodeTelefone({ kind: telKind, phone: telFixo, ramal }) || null,
       foto_url: foto || null,
+      credencial_id: selectedCredencialId || null,
+      empresa_id: empresaId,
     };
+
     const { error } = editing
       ? await supabase.from("linktree_colaboradores").update(payload).eq("id", collaborator!.id)
       : await supabase.from("linktree_colaboradores").insert(payload);
+
     setSaving(false);
     if (error) {
-      toast.error(`Nao foi possivel salvar: ${error.message}`);
+      toast.error(`Erro: ${error.message}`);
       return;
     }
-    toast.success(editing ? "Colaborador atualizado" : "Link Tree gerado com sucesso");
+    toast.success(editing ? "Colaborador atualizado" : "LinkTree criado com sucesso");
     onSaved();
     onOpenChange(false);
   }
@@ -116,11 +154,30 @@ export function LinktreeColaboradorModal({ open, onOpenChange, collaborator, onS
       <DialogContent className="max-h-[90vh] max-w-lg overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-xl font-semibold">
-            {editing ? "Editar colaborador" : "Novo colaborador"}
+            {editing ? "Editar LinkTree" : "Novo LinkTree"}
           </DialogTitle>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-4">
+          {!editing && (
+            <div className="space-y-1.5">
+              <Label className="text-sm font-semibold">Credencial (opcional)</Label>
+              <select
+                value={selectedCredencialId}
+                onChange={(e) => handleCredencialSelect(e.target.value)}
+                className="h-11 w-full rounded-md border border-border/70 bg-surface/60 px-3.5 py-2 text-base md:text-sm"
+              >
+                <option value="">Selecionar credencial existente...</option>
+                {credenciais.map((c) => (
+                  <option key={c.id} value={c.id}>{c.nome_completo} — {c.email_corporativo}</option>
+                ))}
+              </select>
+              <p className="text-xs text-muted-foreground">
+                Selecione uma credencial para preencher dados automaticamente
+              </p>
+            </div>
+          )}
+
           <div className="flex items-center gap-4">
             <div className="grid size-20 shrink-0 place-items-center overflow-hidden rounded-full border-2 border-border bg-surface-hover">
               {foto ? (
@@ -146,7 +203,7 @@ export function LinktreeColaboradorModal({ open, onOpenChange, collaborator, onS
               <Input value={nome} onChange={(e) => setNome(e.target.value)} required />
             </Field>
             <Field label="Cargo">
-              <Input value={cargo} onChange={(e) => setCargo(e.target.value)} required />
+              <Input value={cargo} onChange={(e) => setCargo(e.target.value)} required placeholder="Ex: Consultor Comercial" />
             </Field>
             <div className="sm:col-span-2">
               <Field label="E-mail institucional">
@@ -191,7 +248,7 @@ export function LinktreeColaboradorModal({ open, onOpenChange, collaborator, onS
               Cancelar
             </Button>
             <Button type="submit" disabled={saving} className="bg-primary text-primary-foreground hover:bg-primary/90">
-              {saving ? <Loader2 className="size-4 animate-spin" /> : editing ? "Salvar" : "Gerar"}
+              {saving ? <Loader2 className="size-4 animate-spin" /> : editing ? "Salvar" : "Criar LinkTree"}
             </Button>
           </DialogFooter>
         </form>
@@ -218,25 +275,10 @@ function PhoneFields({ value, onChange }: { value: PhoneParts; onChange: (v: Pho
   );
 }
 
-function KindBtn({
-  active,
-  onClick,
-  children,
-}: {
-  active: boolean;
-  onClick: () => void;
-  children: React.ReactNode;
-}) {
+function KindBtn({ active, onClick, children }: { active: boolean; onClick: () => void; children: React.ReactNode }) {
   return (
-    <button
-      type="button"
-      onClick={onClick}
-      className={`rounded-md px-3 py-1 text-xs font-medium transition ${
-        active
-          ? "bg-primary text-primary-foreground"
-          : "text-muted-foreground hover:text-text-main"
-      }`}
-    >
+    <button type="button" onClick={onClick}
+      className={`rounded-md px-3 py-1 text-xs font-medium transition ${active ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-text-main"}`}>
       {children}
     </button>
   );

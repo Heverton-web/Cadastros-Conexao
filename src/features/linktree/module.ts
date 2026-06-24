@@ -5,7 +5,7 @@ import { LINKTREE_PERMISSIONS } from "./permissions";
 
 export const linktreeModule: ModuleDefinition = {
   key: "linktree-conexao",
-  nome: "LinkTree Corporativo",
+  nome: "LinkTree",
   descricao: "Cartoes digitais e QR Codes dos colaboradores",
   icon: Link2,
   routes: ["/linktree/dashboard", "/linktree/tema"],
@@ -30,7 +30,7 @@ export const linktreeModule: ModuleDefinition = {
 
     registerNavItem({
       id: "linktree-dashboard",
-      label: "LinkTree",
+      label: "Dashboard",
       icon: Link2,
       to: "/linktree/dashboard",
       permissionCheck: (perms) => perms?.lt_ver_dashboard === true,
