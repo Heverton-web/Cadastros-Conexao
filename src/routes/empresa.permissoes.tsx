@@ -247,7 +247,7 @@ function AdminPermissoes() {
   async function handleDeletarCredencialConfirmada() {
     if (!credencialParaDeletar) return;
     try {
-      const { error } = await supabase.from("profiles").delete().eq("id", credencialParaDeletar.id);
+      const { error } = await supabase.rpc("admin_deletar_usuario", { p_user_id: credencialParaDeletar.id });
       if (error) throw error;
       toast.success("Credencial excluída com sucesso!");
       setCredencialParaDeletar(null);
@@ -662,12 +662,21 @@ function NovaCredencialModal({ onClose, modulos, empresaId }: { onClose: () => v
   async function handleSave() {
     setSalvando(true);
     try {
-      // Simulação da inserção / Aqui conectaria com o back-end para criar no Supabase auth.users ou profiles
-      await new Promise(resolve => setTimeout(resolve, 800));
+      const { data: userId, error: rpcErr } = await supabase.rpc("admin_criar_usuario", {
+        p_email: form.email_corporativo,
+        p_senha: form.senha_padrao || "conexao123",
+        p_nome: form.nome_completo,
+        p_empresa_id: empresaId || null,
+        p_is_super_admin: false
+      });
+      if (rpcErr) throw rpcErr;
+
+      await setModulosAcesso(userId, modulosMap);
       toast.success("Credencial e permissões criadas com sucesso!");
       onClose();
+      setTimeout(() => window.location.reload(), 1000);
     } catch (e: any) {
-      toast.error("Erro ao criar credencial.");
+      toast.error("Erro ao criar credencial: " + (e.message || "desconhecido"));
     } finally {
       setSalvando(false);
     }

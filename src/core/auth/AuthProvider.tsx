@@ -96,9 +96,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           .select("permissoes, modulos_acesso")
           .eq("usuario_id", userId)
           .maybeSingle();
-        
-        setPermissoes(data?.permissoes as Record<string, boolean> | null);
-        setModulosAcesso(data?.modulos_acesso as ModulosAcesso | null);
+
+        const flatPerms = { ...(data?.permissoes as Record<string, boolean> || {}) };
+        const modulosAcc = data?.modulos_acesso as ModulosAcesso | null;
+
+        if (modulosAcc) {
+          for (const [, modulo] of Object.entries(modulosAcc)) {
+            if (modulo?.acessar && Array.isArray(modulo.acoes)) {
+              for (const acao of modulo.acoes) {
+                flatPerms[acao] = true;
+              }
+            }
+          }
+        }
+
+        setPermissoes(Object.keys(flatPerms).length > 0 ? flatPerms : null);
+        setModulosAcesso(modulosAcc);
       }
 
       if (p.empresa_id) {

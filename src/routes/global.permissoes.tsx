@@ -247,7 +247,7 @@ function AdminSuperPermissoes() {
   async function handleDeletarCredencialConfirmada() {
     if (!credencialParaDeletar) return;
     try {
-      const { error } = await supabase.from("profiles").delete().eq("id", credencialParaDeletar.id);
+      const { error } = await supabase.rpc("admin_deletar_usuario", { p_user_id: credencialParaDeletar.id });
       if (error) throw error;
       toast.success("Credencial excluída com sucesso!");
       setCredencialParaDeletar(null);
