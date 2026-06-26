@@ -1,23 +1,55 @@
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "~/lib/auth";
+import { supabase } from "~/core/supabase/client";
 import { Button } from "~/components/ui/button";
-import { Plus, Edit, Trash2, Eye, EyeOff, Star } from "lucide-react";
-import { fetchHubMaterials, createHubMaterial, updateHubMaterial, deleteHubMaterial } from "../../services/materials";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
+import { Plus, Edit, Trash2, Eye, EyeOff, Star, Building2 } from "lucide-react";
+import { fetchHubMaterials, createHubMaterial, updateHubMaterial, deleteHubMaterial, upsertHubMaterialAsset } from "../../services/materials";
 import { MaterialFormModal } from "../../components/materials/MaterialFormModal";
-import type { HubMaterial } from "../../types";
+import type { HubMaterial, HubLanguage } from "../../types";
 
 function colorMix(c1: string, w: number, c2: string) { return `color-mix(in srgb, ${c1} ${w}%, ${c2})`; }
 
 export function AdminMateriaisPage() {
-  const { empresa } = useAuth();
+  const { empresa, is_super_admin } = useAuth() as any;
   const queryClient = useQueryClient();
   const [modal, setModal] = useState<{ open: boolean; edit?: HubMaterial }>({ open: false });
+  const [selectedEmpresa, setSelectedEmpresa] = useState<string>(empresa?.id || "");
 
-  const { data: materials = [], isLoading } = useQuery({ queryKey: ["hub-materials", empresa?.id], queryFn: () => fetchHubMaterials(empresa!.id), enabled: !!empresa?.id });
+  const { data: empresas = [] } = useQuery({
+    queryKey: ["empresas-list"],
+    queryFn: async () => {
+      const { data } = await supabase.from("empresas").select("id, nome").order("nome");
+      return data || [];
+    },
+    enabled: !!is_super_admin,
+  });
 
-  const save = useMutation({
-    mutationFn: (m: Partial<HubMaterial>) => m.id ? updateHubMaterial(m.id, m) : createHubMaterial({ ...m, empresa_id: empresa!.id, created_by: "" }),
+  const activeEmpresaId = is_super_admin ? selectedEmpresa : empresa?.id;
+
+  const { data: materials = [], isLoading } = useQuery({
+    queryKey: ["hub-materials", activeEmpresaId],
+    queryFn: () => fetchHubMaterials(activeEmpresaId),
+    enabled: is_super_admin || !!activeEmpresaId,
+  });
+
+  const saveMaterial = useMutation({
+    mutationFn: async ({ material, assets }: { material: Partial<HubMaterial>; assets: { language: HubLanguage; url: string; subtitle_url?: string }[] }) => {
+      let saved: HubMaterial;
+      const empId = material.empresa_id || activeEmpresaId;
+      if (material.id) {
+        saved = await updateHubMaterial(material.id, material);
+      } else {
+        saved = await createHubMaterial({ ...material, empresa_id: empId, created_by: "" });
+      }
+      if (saved.id && assets.length > 0) {
+        for (const a of assets) {
+          await upsertHubMaterialAsset({ material_id: saved.id, language: a.language, url: a.url, subtitle_url: a.subtitle_url });
+        }
+      }
+      return saved;
+    },
     onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["hub-materials"] }); setModal({ open: false }); },
   });
 
@@ -33,12 +65,28 @@ export function AdminMateriaisPage() {
 
   return (
     <div className="space-y-6 animate-fade-in">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl sm:text-3xl font-bold tracking-tight" style={{ color: "var(--color-text-main)" }}>Materiais</h1>
           <p className="text-sm" style={{ color: "var(--color-text-muted)" }}>{materials.length} materiais cadastrados</p>
         </div>
-        <Button onClick={() => setModal({ open: true })} className="gap-2"><Plus size={16} /> Novo Material</Button>
+        <div className="flex items-center gap-3">
+          {is_super_admin && empresas.length > 0 && (
+            <div className="flex items-center gap-2">
+              <Building2 size={14} style={{ color: "var(--color-accent)" }} />
+              <Select value={selectedEmpresa} onValueChange={setSelectedEmpresa}>
+                <SelectTrigger className="w-60" style={{ backgroundColor: "var(--color-input-bg)", borderColor: "var(--color-input-border)", color: "var(--color-text-main)" }}>
+                  <SelectValue placeholder="Filtrar por empresa" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="">Todas as empresas</SelectItem>
+                  {empresas.map((e: any) => <SelectItem key={e.id} value={e.id}>{e.nome}</SelectItem>)}
+                </SelectContent>
+              </Select>
+            </div>
+          )}
+          <Button onClick={() => setModal({ open: true })} className="gap-2"><Plus size={16} /> Novo Material</Button>
+        </div>
       </div>
 
       {isLoading ? (
@@ -57,7 +105,8 @@ export function AdminMateriaisPage() {
                 <div className="flex items-center gap-3 text-xs" style={{ color: "var(--color-text-muted)" }}>
                   <span className="uppercase font-bold">{m.type}</span>
                   <span className="flex items-center gap-1"><Star size={10} style={{ fill: "var(--color-warning)", color: "var(--color-warning)" }} /> {m.points} XP</span>
-                  <span>{m.tags?.slice(0, 3).join(", ")}</span>
+                  <span>{Array.isArray(m.allowed_roles) ? m.allowed_roles.join(", ") : m.allowed_roles}</span>
+                  {m.tags?.length > 0 && <span>{m.tags.slice(0, 3).join(", ")}</span>}
                 </div>
               </div>
               <div className="flex items-center gap-1">
@@ -72,7 +121,8 @@ export function AdminMateriaisPage() {
         </div>
       )}
 
-      <MaterialFormModal open={modal.open} onClose={() => setModal({ open: false })} onSave={(m) => save.mutate(m)} material={modal.edit} />
+      <MaterialFormModal open={modal.open} onClose={() => setModal({ open: false })}
+        onSave={(m, assets) => saveMaterial.mutate({ material: { ...m, empresa_id: activeEmpresaId }, assets })} material={modal.edit} />
     </div>
   );
 }

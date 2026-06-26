@@ -1,12 +1,10 @@
 import { supabase } from "~/core/supabase/client";
 import type { HubMaterial, HubMaterialAsset, HubLanguage } from "../types";
 
-export async function fetchHubMaterials(empresaId: string) {
-  const { data, error } = await supabase
-    .from("hub_materials")
-    .select("*")
-    .eq("empresa_id", empresaId)
-    .order("created_at", { ascending: false });
+export async function fetchHubMaterials(empresaId?: string) {
+  let query = supabase.from("hub_materials").select("*");
+  if (empresaId) query = query.eq("empresa_id", empresaId);
+  const { data, error } = await query.order("created_at", { ascending: false });
   if (error) throw error;
   return data as HubMaterial[];
 }

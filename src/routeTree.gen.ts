@@ -51,39 +51,31 @@ import { linktreePublicRoute } from "./routes/linktree.$id";
 import { linktreeDashboardRoute } from "./routes/linktree.dashboard";
 import { linktreeTemaRoute } from "./routes/linktree.tema";
 
-import { hubDashboardRoute } from "./routes/hub.dashboard";
-import { hubTrilhasRoute } from "./routes/hub.trilhas";
-import { hubTrilhaDetailRoute } from "./routes/hub.trilhas.$trilhaId";
-import { hubMateriaisRoute } from "./routes/hub.materiais";
-import { hubMaterialDetailRoute } from "./routes/hub.materiais.$materialId";
-import { hubRankingRoute } from "./routes/hub.ranking";
-import { hubConquistasRoute } from "./routes/hub.conquistas";
-import { hubAdminRoute } from "./routes/hub.admin";
+import { globalHubRoute } from "./routes/global.hub";
+import { empresaHubTemaRoute } from "./routes/empresa.hub.tema";
+import { hubClienteDashboardRoute } from "./routes/hub.cliente.dashboard.$empresaId";
+import { hubAdminDashboardRoute } from "./routes/hub.admin.dashboard";
 import { hubAdminMateriaisRoute } from "./routes/hub.admin.materiais";
-import { hubAdminUsuariosRoute } from "./routes/hub.admin.usuarios";
 import { hubAdminTrilhasRoute } from "./routes/hub.admin.trilhas";
 import { hubAdminAnalyticsRoute } from "./routes/hub.admin.analytics";
 import { hubAdminBadgesRoute } from "./routes/hub.admin.badges";
-import { hubAdminConfigRoute } from "./routes/hub.admin.config";
-import { hubAdminThemesRoute } from "./routes/hub.admin.themes";
 import { hubAdminChatbotRoute } from "./routes/hub.admin.chatbot";
-import { hubAdminIdentityRoute } from "./routes/hub.admin.identity";
-import { hubGestorRoute } from "./routes/hub.gestor";
-import { hubGestorMateriaisRoute } from "./routes/hub.gestor.materiais";
-import { hubGestorUsuariosRoute } from "./routes/hub.gestor.usuarios";
-import { hubGestorTrilhasRoute } from "./routes/hub.gestor.trilhas";
+import { hubGestorDashboardRoute } from "./routes/hub.gestor.dashboard";
 import { hubGestorAnalyticsRoute } from "./routes/hub.gestor.analytics";
-import { hubWebhooksRoute } from "./routes/hub.webhooks";
-import { hubConsultorRoute } from "./routes/hub.consultor";
-import { hubDistribuidorRoute } from "./routes/hub.distribuidor";
-import { hubClienteRoute } from "./routes/hub.cliente";
+import { hubGestorRankingRoute } from "./routes/hub.gestor.ranking";
+import { hubGestorConquistasRoute } from "./routes/hub.gestor.conquistas";
+import { hubConsultorDashboardRoute } from "./routes/hub.consultor.dashboard";
+import { hubConsultorRankingRoute } from "./routes/hub.consultor.ranking";
+import { hubConsultorConquistasRoute } from "./routes/hub.consultor.conquistas";
+import { hubDistribuidorDashboardRoute } from "./routes/hub.distribuidor.dashboard";
+import { hubDistribuidorConquistasRoute } from "./routes/hub.distribuidor.conquistas";
 
 export const routeTree = rootRoute.addChildren([
   loginRoute,
   preCadastroRoute,
   npsSurveyRoute,
   linktreePublicRoute,
-  hubClienteRoute,
+  hubClienteDashboardRoute,
   authLayout.addChildren([
     dashboardRoute,
     clientesRoute,
@@ -132,30 +124,22 @@ export const routeTree = rootRoute.addChildren([
     linktreeDashboardRoute,
     linktreeTemaRoute,
 
-    hubDashboardRoute,
-    hubTrilhasRoute,
-    hubTrilhaDetailRoute,
-    hubMateriaisRoute,
-    hubMaterialDetailRoute,
-    hubRankingRoute,
-    hubConquistasRoute,
-    hubAdminRoute,
+    globalHubRoute,
+    empresaHubTemaRoute,
+    hubAdminDashboardRoute,
     hubAdminMateriaisRoute,
-    hubAdminUsuariosRoute,
     hubAdminTrilhasRoute,
     hubAdminAnalyticsRoute,
     hubAdminBadgesRoute,
-    hubAdminConfigRoute,
-    hubAdminThemesRoute,
     hubAdminChatbotRoute,
-    hubAdminIdentityRoute,
-    hubGestorRoute,
-    hubGestorMateriaisRoute,
-    hubGestorUsuariosRoute,
-    hubGestorTrilhasRoute,
+    hubGestorDashboardRoute,
     hubGestorAnalyticsRoute,
-    hubWebhooksRoute,
-    hubConsultorRoute,
-    hubDistribuidorRoute,
+    hubGestorRankingRoute,
+    hubGestorConquistasRoute,
+    hubConsultorDashboardRoute,
+    hubConsultorRankingRoute,
+    hubConsultorConquistasRoute,
+    hubDistribuidorDashboardRoute,
+    hubDistribuidorConquistasRoute,
   ]),
 ]);

@@ -13,7 +13,20 @@ import type { HubMaterialType } from "../types";
 
 function colorMix(c1: string, w: number, c2: string) { return `color-mix(in srgb, ${c1} ${w}%, ${c2})`; }
 
-export function HubDashboardPage() {
+interface HubDashboardPageProps {
+  roleFilter?: "admin" | "manager" | "consultant" | "distributor" | "client";
+  conquistasPath?: string;
+  rankingPath?: string;
+}
+
+const ROLE_ALLOWED_MAP: Record<string, string> = {
+  manager: "manager",
+  consultant: "consultant",
+  distributor: "distributor",
+  client: "client",
+};
+
+export function HubDashboardPage({ roleFilter, conquistasPath = "/hub/conquistas", rankingPath }: HubDashboardPageProps = {}) {
   const { user, empresa } = useAuth();
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
@@ -30,10 +43,13 @@ export function HubDashboardPage() {
   const { data: collections = [] } = useQuery({ queryKey: ["hub-collections", empresa?.id], queryFn: () => fetchHubCollections(empresa!.id), enabled: !!empresa?.id });
   const { data: progress = [] } = useQuery({ queryKey: ["hub-progress", user?.id, empresa?.id], queryFn: () => fetchHubUserProgress(user!.id, empresa!.id), enabled: !!user?.id && !!empresa?.id });
 
+  const roleMapped = roleFilter ? ROLE_ALLOWED_MAP[roleFilter] : undefined;
+
   const filteredMaterials = useMemo(() => materials.filter((m) => {
+    if (roleMapped && m.allowed_roles && !m.allowed_roles.includes(roleMapped)) return false;
     const t = m.title?.["pt-br"] || "";
     return t.toLowerCase().includes(searchTerm.toLowerCase()) && (filterType === "all" || m.type === filterType) && (!filterTag || m.tags.includes(filterTag));
-  }), [materials, searchTerm, filterType, filterTag]);
+  }), [materials, searchTerm, filterType, filterTag, roleMapped]);
 
   const allTags = useMemo(() => { const s = new Set<string>(); materials.forEach((m) => m.tags.forEach((t) => s.add(t))); return Array.from(s).sort(); }, [materials]);
   const counts = useMemo(() => ({ all: materials.length, pdf: materials.filter((m) => m.type === "pdf").length, image: materials.filter((m) => m.type === "image").length, video: materials.filter((m) => m.type === "video").length, audio: materials.filter((m) => m.type === "audio").length, html: materials.filter((m) => m.type === "html").length }), [materials]);
@@ -155,7 +171,7 @@ export function HubDashboardPage() {
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 pb-20">
-              {collections.map((col, i) => <div key={col.id} className="animate-slide-up" style={{ animationDelay: `${i * 70}ms` }}><CollectionCard collection={col} onClick={() => navigate({ to: "/hub/trilhas/$trilhaId", params: { trilhaId: col.id } })} /></div>)}
+              {collections.map((col, i) => <div key={col.id} className="animate-slide-up" style={{ animationDelay: `${i * 70}ms` }}><CollectionCard collection={col} /></div>)}
             </div>
           )}
         </>)}
