@@ -169,16 +169,18 @@ export function NpsDashboardPage() {
 
 
   const [deleting, setDeleting] = useState(false);
+  const [showDeleteAllDialog, setShowDeleteAllDialog] = useState(false);
 
   const deleteFilteredResponses = async () => {
     if (!filtered.length) {
       toast.error('Nenhuma resposta para excluir');
       return;
     }
-    const confirmed = window.confirm(
-      `Tem certeza que deseja excluir ${filtered.length} resposta(s)? Esta ação não pode ser desfeita.`
-    );
-    if (!confirmed) return;
+    setShowDeleteAllDialog(true);
+  };
+
+  const confirmDeleteAll = async () => {
+    setShowDeleteAllDialog(false);
     setDeleting(true);
     try {
       const ids = filtered.map((r) => r.id);
@@ -1136,6 +1138,23 @@ export function NpsDashboardPage() {
           </div>
         </DialogContent>
         </Dialog>
+
+        <AlertDialog open={showDeleteAllDialog} onOpenChange={setShowDeleteAllDialog}>
+          <AlertDialogContent className="bg-card border-border">
+            <AlertDialogHeader>
+              <AlertDialogTitle className="text-foreground">Excluir respostas?</AlertDialogTitle>
+              <AlertDialogDescription className="text-muted-foreground">
+                Tem certeza que deseja excluir {filtered.length} resposta(s)? Esta ação não pode ser desfeita.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel className="border-border text-foreground">Cancelar</AlertDialogCancel>
+              <AlertDialogAction onClick={confirmDeleteAll} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+                Excluir
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </div>
     </div>
   );

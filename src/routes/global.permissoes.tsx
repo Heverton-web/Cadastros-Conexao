@@ -10,10 +10,12 @@ import { getAllModules, getNavItemsByModule, getAllPermissionDefs } from "~/regi
 import { useState, useEffect, useMemo } from "react";
 import {
   Shield, Loader2, Save, Check, X, ChevronDown, ChevronRight, Building2,
-  Lock, Unlock, Eye, EyeOff, Pencil, Power, Search, Plus
+  Lock, Unlock, Eye, EyeOff, Pencil, Power, Search, Plus, Trash2
 } from "lucide-react";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "~/components/ui/alert-dialog";
 import toast from "react-hot-toast";
 import { cn } from "~/lib/utils";
+import { PasswordInput } from "~/components/ui/password-input";
 
 export const adminSuperPermissoesRoute = createRoute({
   getParentRoute: () => authLayout,
@@ -58,6 +60,7 @@ function AdminSuperPermissoes() {
   const [filtroEmpresa, setFiltroEmpresa] = useState<string>(empresaVinculada || "");
   const [termoBusca, setTermoBusca] = useState("");
   const [criandoNovaCredencial, setCriandoNovaCredencial] = useState(false);
+  const [credencialParaDeletar, setCredencialParaDeletar] = useState<ProfileRow | null>(null);
 
   // Load modules once
   const modulos = useMemo(() => {
@@ -241,15 +244,40 @@ function AdminSuperPermissoes() {
     }
   }
 
+  async function handleDeletarCredencialConfirmada() {
+    if (!credencialParaDeletar) return;
+    try {
+      const { error } = await supabase.from("profiles").delete().eq("id", credencialParaDeletar.id);
+      if (error) throw error;
+      toast.success("Credencial excluída com sucesso!");
+      setCredencialParaDeletar(null);
+      carregarUsuarios(filtroEmpresa || undefined);
+    } catch (e: any) {
+      toast.error("Erro ao excluir credencial: " + (e.message || "desconhecido"));
+      console.error(e);
+    }
+  }
+
   async function handleSalvarEdicao(id: string, formData: any) {
     try {
-      // Atualizamos os campos disponíveis em profiles (como 'nome')
-      const { error } = await supabase.from("profiles").update({ 
+      const { error } = await supabase.from("profiles").update({
         nome: formData.nome_completo,
         ambiente: formData.departamento
       }).eq("id", id);
-      
+
       if (error) throw error;
+
+      if (formData.nova_senha && formData.nova_senha.length >= 6) {
+        const { error: pwdErr } = await supabase.rpc("admin_atualizar_senha", {
+          p_user_id: id,
+          p_nova_senha: formData.nova_senha
+        });
+        if (pwdErr) {
+          console.error("Erro ao atualizar senha:", pwdErr);
+          toast.success("Dados atualizados, mas não foi possível alterar a senha.");
+        }
+      }
+
       toast.success("Credencial atualizada!");
       setEditandoUsuario(null);
       carregarUsuarios(filtroEmpresa || undefined);
@@ -364,12 +392,19 @@ function AdminSuperPermissoes() {
                     </button>
                     <button
                       onClick={(e) => { e.stopPropagation(); handleToggleAtivoCredencial(u); }}
-                      className={cn("p-1.5 rounded-md transition-colors", 
+                      className={cn("p-1.5 rounded-md transition-colors",
                         u.ativo !== false ? "text-success hover:bg-success/10" : "text-text-muted hover:text-error hover:bg-error/10"
                       )}
                       title={u.ativo !== false ? "Desativar credencial" : "Ativar credencial"}
                     >
                       <Power size={14} />
+                    </button>
+                    <button
+                      onClick={(e) => { e.stopPropagation(); setCredencialParaDeletar(u); }}
+                      className="p-1.5 rounded-md text-text-muted hover:text-error hover:bg-error/10 transition-colors"
+                      title="Excluir credencial"
+                    >
+                      <Trash2 size={14} />
                     </button>
                     {isDirty && (
                       <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-accent/10 text-accent font-medium shrink-0 ml-2">Não salvo</span>
@@ -522,11 +557,28 @@ function AdminSuperPermissoes() {
       )}
 
       {criandoNovaCredencial && (
-        <NovaCredencialModal 
-          onClose={() => setCriandoNovaCredencial(false)} 
-          modulos={modulos} 
+        <NovaCredencialModal
+          onClose={() => setCriandoNovaCredencial(false)}
+          modulos={modulos}
         />
       )}
+
+      <AlertDialog open={!!credencialParaDeletar} onOpenChange={(o) => !o && setCredencialParaDeletar(null)}>
+        <AlertDialogContent className="bg-card border-border">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-foreground">Excluir credencial?</AlertDialogTitle>
+            <AlertDialogDescription className="text-muted-foreground">
+              A credencial de <strong>{credencialParaDeletar?.nome}</strong> será removida permanentemente. Esta ação não pode ser desfeita.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel className="border-border text-foreground">Cancelar</AlertDialogCancel>
+            <AlertDialogAction onClick={handleDeletarCredencialConfirmada} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+              Excluir
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
@@ -536,7 +588,8 @@ function NovaCredencialModal({ onClose, modulos }: { onClose: () => void, modulo
     nome_completo: "",
     email_corporativo: "",
     whatsapp_corporativo: "",
-    departamento: ""
+    departamento: "",
+    senha_padrao: ""
   });
   
   const [modulosMap, setModulosMap] = useState<Record<string, any>>({});
@@ -585,13 +638,13 @@ function NovaCredencialModal({ onClose, modulos }: { onClose: () => void, modulo
     try {
       const { data: userId, error: rpcErr } = await supabase.rpc("admin_criar_usuario", {
         p_email: form.email_corporativo,
-        p_senha: "mock123",
+        p_senha: form.senha_padrao || "conexao123",
         p_nome: form.nome_completo,
         p_empresa_id: null,
         p_is_super_admin: false
       });
       if (rpcErr) throw rpcErr;
-      
+
       await setModulosAcesso(userId, modulosMap);
       toast.success("Credencial e permissões criadas com sucesso!");
       onClose();
@@ -623,6 +676,7 @@ function NovaCredencialModal({ onClose, modulos }: { onClose: () => void, modulo
             <option value="Financeiro">Financeiro</option>
             <option value="TI">TI</option>
           </select>
+          <PasswordInput placeholder="Senha Padrão (mínimo 6 caracteres)" className="w-full rounded-lg border border-input-border bg-input-bg px-4 py-3 text-sm text-text-main outline-none focus:border-accent min-h-[44px]" value={form.senha_padrao} onChange={(e) => setForm(prev => ({ ...prev, senha_padrao: e.target.value }))}/>
         </div>
 
         {/* Módulos e Permissões */}
@@ -730,7 +784,8 @@ function EditCredencialModal({ usuario, onClose, onSave }: { usuario: ProfileRow
     nome_completo: usuario.nome || "",
     email_corporativo: usuario.email || "",
     whatsapp_corporativo: "",
-    departamento: usuario.ambiente || ""
+    departamento: usuario.ambiente || "",
+    nova_senha: ""
   });
   const [salvando, setSalvando] = useState(false);
 
@@ -769,8 +824,8 @@ function EditCredencialModal({ usuario, onClose, onSave }: { usuario: ProfileRow
           value={form.whatsapp_corporativo}
           onChange={(e) => setForm(prev => ({ ...prev, whatsapp_corporativo: e.target.value }))}
         />
-        <select 
-          className="mb-4 w-full rounded-lg border border-input-border bg-input-bg px-4 py-3 text-sm text-text-main outline-none focus:border-accent min-h-[44px]"
+        <select
+          className="mb-3 w-full rounded-lg border border-input-border bg-input-bg px-4 py-3 text-sm text-text-main outline-none focus:border-accent min-h-[44px]"
           value={form.departamento}
           onChange={(e) => setForm(prev => ({ ...prev, departamento: e.target.value }))}
         >
@@ -780,6 +835,12 @@ function EditCredencialModal({ usuario, onClose, onSave }: { usuario: ProfileRow
           <option value="Financeiro">Financeiro</option>
           <option value="TI">TI</option>
         </select>
+        <PasswordInput
+          placeholder="Nova senha (deixe vazio para manter)"
+          className="mb-4 w-full rounded-lg border border-input-border bg-input-bg px-4 py-3 text-sm text-text-main outline-none focus:border-accent min-h-[44px]"
+          value={form.nova_senha}
+          onChange={(e) => setForm(prev => ({ ...prev, nova_senha: e.target.value }))}
+        />
         <div className="flex gap-3">
           <button onClick={onClose} className="flex-1 rounded-xl border border-input-border py-3 text-sm font-medium text-text-muted">Cancelar</button>
           <button 

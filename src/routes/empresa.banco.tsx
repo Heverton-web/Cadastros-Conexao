@@ -5,6 +5,7 @@ import { buscarEmpresa, buscarEmpresaConfig, salvarEmpresaConfig, listarEmpresas
 import { useState, useEffect } from "react";
 import { Database, Save, Loader2, ArrowLeft, Copy, Check, Globe, Building2 } from "lucide-react";
 import toast from "react-hot-toast";
+import { PasswordInput } from "~/components/ui/password-input";
 
 export const adminEmpresaConfigBancoRoute = createRoute({
   getParentRoute: () => authLayout,
@@ -147,7 +148,7 @@ CREATE TABLE IF NOT EXISTS sync_logs (
               <Field label="Porta" value={dbConfig.port} onChange={(v) => setDbConfig(p => ({ ...p, port: v }))} />
               <Field label="Database" value={dbConfig.database} onChange={(v) => setDbConfig(p => ({ ...p, database: v }))} />
               <Field label="Usuário" value={dbConfig.user} onChange={(v) => setDbConfig(p => ({ ...p, user: v }))} />
-              <Field label="Senha" value={dbConfig.password} onChange={(v) => setDbConfig(p => ({ ...p, password: v }))} type="password" className="col-span-2" />
+              <div className="col-span-2"><label className="text-[10px] font-bold text-text-muted uppercase tracking-wider mb-1 block">Senha</label><PasswordInput value={dbConfig.password} onChange={(e) => setDbConfig(p => ({ ...p, password: e.target.value }))} className="w-full px-3 py-2 rounded-lg bg-input-bg border border-input-border text-text-main text-sm outline-none focus:border-accent" /></div>
             </div>
             <div className="flex justify-end mt-4">
               <button onClick={handleSave} disabled={saving}

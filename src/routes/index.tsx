@@ -2,6 +2,7 @@ import { createRoute, useNavigate } from "@tanstack/react-router";
 import { rootRoute } from "./__root";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
+import { PasswordInput } from "~/components/ui/password-input";
 import { useState, useEffect } from "react";
 import { supabase } from "~/lib/supabase";
 import { useAuth } from "~/lib/auth";
@@ -138,15 +139,10 @@ function LoginPage() {
             <label className="text-[10px] font-bold text-[#4e6178] uppercase tracking-wider mb-1.5 block">
               Senha
             </label>
-            <Input 
-              id="password" 
-              type="password" 
-              placeholder="••••••••" 
-              value={password} 
-              onChange={(e) => setPassword(e.target.value)} 
-              autoComplete="current-password" 
-              className="bg-[#131d30] border-[#1f2f4d] focus:border-[#c9a655]/50 focus:ring-0 text-white rounded-xl placeholder-[#41536b] text-sm h-11 w-full"
-            />
+<PasswordInput id="password" placeholder="••••••••"
+  value={password} onChange={(e) => setPassword(e.target.value)}
+  autoComplete="current-password"
+  className="bg-[#131d30] border-[#1f2f4d] text-white placeholder:text-gray-500 rounded-xl px-4 py-3 w-full outline-none focus:border-[#c9a655] transition-all pr-12" />
           </div>
 
           <button 

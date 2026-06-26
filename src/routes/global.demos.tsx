@@ -8,6 +8,7 @@ import { useState, useEffect } from "react";
 import { Plus, Trash2, Loader2, X, ChevronRight, FlaskConical, ToggleLeft, ToggleRight, Shield, Database } from "lucide-react";
 import toast from "react-hot-toast";
 import { cn } from "~/lib/utils";
+import { PasswordInput } from "~/components/ui/password-input";
 
 export const adminSuperDemosRoute = createRoute({
   getParentRoute: () => authLayout,
@@ -155,7 +156,7 @@ function CriarDemoModal({ onClose, onCreated }: { onClose: () => void; onCreated
             </div>
             <div>
               <label className="text-[10px] font-bold text-text-muted uppercase tracking-wider mb-1 block">Senha *</label>
-              <input type="password" value={senha} onChange={(e) => setSenha(e.target.value)}
+              <PasswordInput value={senha} onChange={(e) => setSenha(e.target.value)}
                 className="w-full px-3 py-2 rounded-lg bg-input-bg border border-input-border text-text-main text-sm outline-none focus:border-accent" required />
             </div>
             <div>

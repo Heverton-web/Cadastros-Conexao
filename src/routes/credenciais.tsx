@@ -110,7 +110,7 @@ function CredenciaisPage() {
       }
       setShowForm(false);
       carregar();
-    } catch { toast.error("Erro ao salvar"); }
+    } catch (e) { console.error("Erro ao salvar credencial:", e); toast.error("Erro ao salvar"); }
     setSubmitting(false);
   }
 
@@ -118,7 +118,7 @@ function CredenciaisPage() {
     try {
       await toggleCredencial(c.id, !c.ativo);
       carregar();
-    } catch { toast.error("Erro"); }
+    } catch (e) { console.error("Erro ao toggle credencial:", e); toast.error("Erro"); }
   }
 
   async function handleDelete(id: string) {
@@ -126,7 +126,11 @@ function CredenciaisPage() {
       await deletarCredencial(id);
       toast.success("Removida");
       carregar();
-    } catch { toast.error("Erro"); }
+    } catch (e) {
+      console.error("Erro ao deletar credencial:", e);
+      const msg = e instanceof Error ? e.message : "Erro desconhecido";
+      toast.error(msg);
+    }
   }
 
   async function abrirPermissoes(c: Credencial) {
@@ -140,7 +144,7 @@ function CredenciaisPage() {
       } else {
         setEditPerms(null);
       }
-    } catch { toast.error("Erro ao carregar permissões"); }
+    } catch (e) { console.error("Erro ao carregar permissões:", e); toast.error("Erro ao carregar permissões"); }
     setLoadingPerms(false);
   }
 
@@ -160,7 +164,7 @@ function CredenciaisPage() {
       }
       setPermCredencial(null);
       setEditPerms(null);
-    } catch { toast.error("Erro"); }
+    } catch (e) { console.error("Erro ao salvar permissões:", e); toast.error("Erro"); }
     setSavingPerms(false);
   }
 
@@ -222,7 +226,7 @@ function CredenciaisPage() {
               <button onClick={() => handleToggle(c)} className={c.ativo ? "text-green-400" : "text-text-muted"}>
                 {c.ativo ? <ToggleRight size={24} /> : <ToggleLeft size={24} />}
               </button>
-              {isSuper && (
+              {podeAdmin && (
                 <button onClick={() => setDeleteTarget(c)} className="text-text-muted hover:text-red-400" title="Remover">
                   <Trash2 size={16} />
                 </button>

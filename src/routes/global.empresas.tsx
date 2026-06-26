@@ -10,6 +10,7 @@ import { Plus, Power, Trash2, Building2, Loader2, X, ChevronRight, Pencil, Chevr
 import toast from "react-hot-toast";
 import { cn } from "~/lib/utils";
 import { SectionCard, Grid, Field, CollapsibleSection } from "~/features/empresas/components";
+import { PasswordInput } from "~/components/ui/password-input";
 
 export const adminSuperEmpresasRoute = createRoute({
   getParentRoute: () => authLayout,
@@ -243,28 +244,23 @@ function CriarEmpresaModal({ onClose, onCreated }: { onClose: () => void; onCrea
           console.error("Erro ao criar credencial:", credErr);
         }
 
-        // Criar auth user + atualizar profile
+        // Criar auth user via RPC (sem confirmacao de email)
         if (form.admin_senha) {
           try {
-            const { data: signUpData, error: signUpErr } = await supabase.auth.signUp({
-              email: form.admin_email,
-              password: form.admin_senha,
-              options: {
-                data: {
-                  nome: form.admin_nome,
-                  empresa_id: empresa.id,
-                },
-              },
+            const { data: userId, error: rpcErr } = await supabase.rpc("admin_criar_usuario", {
+              p_email: form.admin_email,
+              p_senha: form.admin_senha,
+              p_nome: form.admin_nome,
+              p_empresa_id: empresa.id,
+              p_is_super_admin: false
             });
-            if (signUpErr) {
-              toast.error("Admin criado, mas erro ao criar usuário auth: " + signUpErr.message);
-            } else if (signUpData?.user) {
-              // Aguarda trigger criar profile, depois atualiza role + celular
-              await new Promise((r) => setTimeout(r, 1000));
+            if (rpcErr) {
+              toast.error("Admin criado, mas erro ao criar usuário auth: " + rpcErr.message);
+            } else if (userId) {
               const { error: updateErr } = await supabase
                 .from("profiles")
                 .update({ role: form.admin_role, nome: form.admin_nome, celular: form.admin_celular || null })
-                .eq("id", signUpData.user.id);
+                .eq("id", userId);
               if (updateErr) console.error("Erro ao atualizar role do admin:", updateErr);
             }
           } catch (authErr: any) {
@@ -403,7 +399,7 @@ function CriarEmpresaModal({ onClose, onCreated }: { onClose: () => void; onCrea
               <Field label="Nome Completo" value={form.admin_nome} onChange={h("admin_nome")} />
               <Field label="Celular / WhatsApp" value={form.admin_celular} onChange={h("admin_celular")} />
               <Field label="Email" value={form.admin_email} onChange={h("admin_email")} type="email" />
-              <Field label="Senha" value={form.admin_senha} onChange={h("admin_senha")} type="password" />
+              <div className="flex flex-col gap-1.5"><label className="text-[10px] font-bold text-text-muted uppercase tracking-wider mb-1 block">Senha</label><PasswordInput value={form.admin_senha} onChange={(e) => h("admin_senha")(e.target.value)} className="w-full px-3 py-2 rounded-lg bg-card border border-input-border text-text-main text-sm outline-none focus:border-accent" /></div>
             </Grid>
             <div className="mt-3">
               <label className="text-[10px] font-bold text-text-muted uppercase tracking-wider mb-1.5 block">Role / Nível de Acesso</label>

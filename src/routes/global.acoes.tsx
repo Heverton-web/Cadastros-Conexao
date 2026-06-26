@@ -19,6 +19,7 @@ import { DemosTab } from "~/components/admin/DemosTab";
 import { CentralAcoesTab } from "~/components/admin/CentralAcoesTab";
 import { FormBuilderTab } from "~/components/admin/FormBuilderTab";
 import { listarIntegracoes, salvarIntegracao, testarConexaoEvolution, type IntegracaoConfig } from "~/lib/integracoes";
+import { PasswordInput } from "~/components/ui/password-input";
 
 type Tab = "supabase" | "credenciais" | "central_acoes" | "demos" | "integracoes" | "formulario";
 
@@ -93,8 +94,8 @@ function SupabaseTab() {
           {cfg.description && <p className="text-[10px] text-text-muted mb-2">{cfg.description}</p>}
           <div className="flex gap-2">
             {cfg.key.includes("PASSWORD") || cfg.key.includes("KEY") ? (
-              <input value={editValues[cfg.key] || ""} onChange={(e) => setEditValues(prev => ({ ...prev, [cfg.key]: e.target.value }))}
-                type="password" className="flex-1 rounded-lg border border-input-border bg-input-bg px-4 py-3 text-sm text-text-main outline-none focus:border-accent min-h-[44px] font-mono" />
+              <PasswordInput value={editValues[cfg.key] || ""} onChange={(e) => setEditValues(prev => ({ ...prev, [cfg.key]: e.target.value }))}
+                className="flex-1 rounded-lg border border-input-border bg-input-bg px-4 py-3 text-sm text-text-main outline-none focus:border-accent min-h-[44px] font-mono" />
             ) : (
               <input value={editValues[cfg.key] || ""} onChange={(e) => setEditValues(prev => ({ ...prev, [cfg.key]: e.target.value }))}
                 className="flex-1 rounded-lg border border-input-border bg-input-bg px-4 py-3 text-sm text-text-main outline-none focus:border-accent min-h-[44px] font-mono" />
@@ -688,8 +689,7 @@ function IntegracoesTab() {
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                         <div>
                           <label className="text-[10px] text-text-muted ml-1 mb-1 block">API Key</label>
-                          <input 
-                            type="password"
+                          <PasswordInput 
                             value={configLocal.api_key || ""} 
                             onChange={e => handleFieldChange(item.chave, "api_key", e.target.value)} 
                             placeholder="Chave de Autenticação" 
@@ -749,8 +749,7 @@ function IntegracoesTab() {
                         </div>
                         <div>
                           <label className="text-[10px] text-text-muted ml-1 mb-1 block">Private Key</label>
-                          <input 
-                            type="password"
+                          <PasswordInput 
                             value={configLocal.private_key || ""} 
                             onChange={e => handleFieldChange(item.chave, "private_key", e.target.value)} 
                             placeholder="-----BEGIN PRIVATE KEY-----" 
@@ -784,8 +783,7 @@ function IntegracoesTab() {
                         </div>
                         <div>
                           <label className="text-[10px] text-text-muted ml-1 mb-1 block">Private Key</label>
-                          <input 
-                            type="password"
+                          <PasswordInput 
                             value={configLocal.private_key || ""} 
                             onChange={e => handleFieldChange(item.chave, "private_key", e.target.value)} 
                             placeholder="-----BEGIN PRIVATE KEY-----" 
@@ -799,8 +797,7 @@ function IntegracoesTab() {
                   {item.chave === "google_maps" && (
                     <div>
                       <label className="text-[10px] text-text-muted ml-1 mb-1 block">Google Maps API Key</label>
-                      <input 
-                        type="password"
+                      <PasswordInput 
                         value={configLocal.api_key || ""} 
                         onChange={e => handleFieldChange(item.chave, "api_key", e.target.value)} 
                         placeholder="AIzaSyA1..." 
@@ -843,8 +840,7 @@ function IntegracoesTab() {
                         </div>
                         <div>
                           <label className="text-[10px] text-text-muted ml-1 mb-1 block">Senha</label>
-                          <input 
-                            type="password"
+                          <PasswordInput 
                             value={configLocal.pass || ""} 
                             onChange={e => handleFieldChange(item.chave, "pass", e.target.value)} 
                             placeholder="Senha do e-mail" 

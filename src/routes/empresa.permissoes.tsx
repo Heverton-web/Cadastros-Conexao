@@ -10,10 +10,12 @@ import { getAllModules, getNavItemsByModule, getAllPermissionDefs } from "~/regi
 import { useState, useEffect, useMemo } from "react";
 import {
   Shield, Loader2, Save, Check, X, ChevronDown, ChevronRight, Building2,
-  Lock, Unlock, Eye, EyeOff, Pencil, Power, Search, Plus
+  Lock, Unlock, Eye, EyeOff, Pencil, Power, Search, Plus, Trash2
 } from "lucide-react";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "~/components/ui/alert-dialog";
 import toast from "react-hot-toast";
 import { cn } from "~/lib/utils";
+import { PasswordInput } from "~/components/ui/password-input";
 
 export const adminPermissoesRoute = createRoute({
   getParentRoute: () => authLayout,
@@ -58,6 +60,7 @@ function AdminPermissoes() {
   const [filtroEmpresa, setFiltroEmpresa] = useState<string>(empresaVinculada || "");
   const [termoBusca, setTermoBusca] = useState("");
   const [criandoNovaCredencial, setCriandoNovaCredencial] = useState(false);
+  const [credencialParaDeletar, setCredencialParaDeletar] = useState<ProfileRow | null>(null);
 
   // Load modules once
   const modulos = useMemo(() => {
@@ -241,15 +244,40 @@ function AdminPermissoes() {
     }
   }
 
+  async function handleDeletarCredencialConfirmada() {
+    if (!credencialParaDeletar) return;
+    try {
+      const { error } = await supabase.from("profiles").delete().eq("id", credencialParaDeletar.id);
+      if (error) throw error;
+      toast.success("Credencial excluída com sucesso!");
+      setCredencialParaDeletar(null);
+      carregarUsuarios(filtroEmpresa || undefined);
+    } catch (e: any) {
+      toast.error("Erro ao excluir credencial: " + (e.message || "desconhecido"));
+      console.error(e);
+    }
+  }
+
   async function handleSalvarEdicao(id: string, formData: any) {
     try {
-      // Atualizamos os campos disponíveis em profiles (como 'nome')
-      const { error } = await supabase.from("profiles").update({ 
+      const { error } = await supabase.from("profiles").update({
         nome: formData.nome_completo,
         ambiente: formData.departamento
       }).eq("id", id);
-      
+
       if (error) throw error;
+
+      if (formData.nova_senha && formData.nova_senha.length >= 6) {
+        const { error: pwdErr } = await supabase.rpc("admin_atualizar_senha", {
+          p_user_id: id,
+          p_nova_senha: formData.nova_senha
+        });
+        if (pwdErr) {
+          console.error("Erro ao atualizar senha:", pwdErr);
+          toast.success("Dados atualizados, mas não foi possível alterar a senha.");
+        }
+      }
+
       toast.success("Credencial atualizada!");
       setEditandoUsuario(null);
       carregarUsuarios(filtroEmpresa || undefined);
@@ -364,12 +392,19 @@ function AdminPermissoes() {
                     </button>
                     <button
                       onClick={(e) => { e.stopPropagation(); handleToggleAtivoCredencial(u); }}
-                      className={cn("p-1.5 rounded-md transition-colors", 
+                      className={cn("p-1.5 rounded-md transition-colors",
                         u.ativo !== false ? "text-success hover:bg-success/10" : "text-text-muted hover:text-error hover:bg-error/10"
                       )}
                       title={u.ativo !== false ? "Desativar credencial" : "Ativar credencial"}
                     >
                       <Power size={14} />
+                    </button>
+                    <button
+                      onClick={(e) => { e.stopPropagation(); setCredencialParaDeletar(u); }}
+                      className="p-1.5 rounded-md text-text-muted hover:text-error hover:bg-error/10 transition-colors"
+                      title="Excluir credencial"
+                    >
+                      <Trash2 size={14} />
                     </button>
                     {isDirty && (
                       <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-accent/10 text-accent font-medium shrink-0 ml-2">Não salvo</span>
@@ -522,24 +557,68 @@ function AdminPermissoes() {
       )}
 
       {criandoNovaCredencial && (
-        <NovaCredencialModal 
-          onClose={() => setCriandoNovaCredencial(false)} 
-          modulos={modulos} 
+        <NovaCredencialModal
+          onClose={() => setCriandoNovaCredencial(false)}
+          modulos={modulos}
+          empresaId={empresaVinculada}
         />
       )}
+
+      <AlertDialog open={!!credencialParaDeletar} onOpenChange={(o) => !o && setCredencialParaDeletar(null)}>
+        <AlertDialogContent className="bg-card border-border">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-foreground">Excluir credencial?</AlertDialogTitle>
+            <AlertDialogDescription className="text-muted-foreground">
+              A credencial de <strong>{credencialParaDeletar?.nome}</strong> será removida permanentemente. Esta ação não pode ser desfeita.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel className="border-border text-foreground">Cancelar</AlertDialogCancel>
+            <AlertDialogAction onClick={handleDeletarCredencialConfirmada} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+              Excluir
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
 
-function NovaCredencialModal({ onClose, modulos }: { onClose: () => void, modulos: ModuloUIO[] }) {
+function NovaCredencialModal({ onClose, modulos, empresaId }: { onClose: () => void, modulos: ModuloUIO[], empresaId?: string }) {
   const [form, setForm] = useState({
     nome_completo: "",
     email_corporativo: "",
     whatsapp_corporativo: "",
-    departamento: ""
+    departamento: "",
+    senha_padrao: ""
   });
-  
   const [modulosMap, setModulosMap] = useState<Record<string, any>>({});
+  const [limitErrors, setLimitErrors] = useState<Record<string, string>>({});
+
+  useEffect(() => {
+    if (!empresaId) return;
+    const modulosAtivos = Object.entries(modulosMap).filter(([, v]: [string, any]) => v?.acessar === true);
+    if (modulosAtivos.length === 0) { setLimitErrors({}); return; }
+
+    Promise.all(
+      modulosAtivos.map(([key]) =>
+        supabase.rpc("check_empresa_modulo_limit", {
+          p_empresa_id: empresaId,
+          p_modulo_key: key
+        }).then(({ data }) => ({ key, allowed: data }))
+      )
+    ).then(results => {
+      const errors: Record<string, string> = {};
+      results.forEach(({ key, allowed }) => {
+        if (allowed === false) {
+          const mod = modulos.find(m => m.key === key);
+          errors[key] = `Limite atingido para o módulo ${mod?.nome || key}`;
+        }
+      });
+      setLimitErrors(errors);
+    });
+  }, [empresaId, modulosMap]);
+
   const [expandedModulosDetalhes, setExpandedModulosDetalhes] = useState<Record<string, boolean>>({});
   const [salvando, setSalvando] = useState(false);
 
@@ -614,6 +693,7 @@ function NovaCredencialModal({ onClose, modulos }: { onClose: () => void, modulo
             <option value="Financeiro">Financeiro</option>
             <option value="TI">TI</option>
           </select>
+          <PasswordInput placeholder="Senha Padrão (mínimo 6 caracteres)" className="w-full rounded-lg border border-input-border bg-input-bg px-4 py-3 text-sm text-text-main outline-none focus:border-accent min-h-[44px]" value={form.senha_padrao} onChange={(e) => setForm(prev => ({ ...prev, senha_padrao: e.target.value }))}/>
         </div>
 
         {/* Módulos e Permissões */}
@@ -705,9 +785,17 @@ function NovaCredencialModal({ onClose, modulos }: { onClose: () => void, modulo
           </div>
         </div>
 
+        {Object.keys(limitErrors).length > 0 && (
+          <div className="rounded-lg bg-error/10 border border-error/30 p-3 mb-4 space-y-1">
+            {Object.values(limitErrors).map((msg, i) => (
+              <p key={i} className="text-xs text-error font-medium">{msg}</p>
+            ))}
+          </div>
+        )}
+
         <div className="flex gap-3 sticky bottom-0 bg-card pt-4 border-t border-border-subtle mt-6">
           <button onClick={onClose} className="flex-1 rounded-xl border border-input-border py-3 text-sm font-medium text-text-muted hover:text-text-main transition-colors">Cancelar</button>
-          <button onClick={handleSave} disabled={!form.nome_completo || !form.email_corporativo || salvando} className="flex-1 rounded-xl bg-accent py-3 text-sm font-medium text-white disabled:opacity-50 flex items-center justify-center gap-2">
+          <button onClick={handleSave} disabled={!form.nome_completo || !form.email_corporativo || salvando || Object.keys(limitErrors).length > 0} className="flex-1 rounded-xl bg-accent py-3 text-sm font-medium text-white disabled:opacity-50 flex items-center justify-center gap-2">
             {salvando ? <Loader2 size={16} className="animate-spin" /> : <><Save size={16} /> Criar Credencial</>}
           </button>
         </div>
@@ -721,7 +809,8 @@ function EditCredencialModal({ usuario, onClose, onSave }: { usuario: ProfileRow
     nome_completo: usuario.nome || "",
     email_corporativo: usuario.email || "",
     whatsapp_corporativo: "",
-    departamento: usuario.ambiente || ""
+    departamento: usuario.ambiente || "",
+    nova_senha: ""
   });
   const [salvando, setSalvando] = useState(false);
 
@@ -760,8 +849,8 @@ function EditCredencialModal({ usuario, onClose, onSave }: { usuario: ProfileRow
           value={form.whatsapp_corporativo}
           onChange={(e) => setForm(prev => ({ ...prev, whatsapp_corporativo: e.target.value }))}
         />
-        <select 
-          className="mb-4 w-full rounded-lg border border-input-border bg-input-bg px-4 py-3 text-sm text-text-main outline-none focus:border-accent min-h-[44px]"
+        <select
+          className="mb-3 w-full rounded-lg border border-input-border bg-input-bg px-4 py-3 text-sm text-text-main outline-none focus:border-accent min-h-[44px]"
           value={form.departamento}
           onChange={(e) => setForm(prev => ({ ...prev, departamento: e.target.value }))}
         >
@@ -771,6 +860,12 @@ function EditCredencialModal({ usuario, onClose, onSave }: { usuario: ProfileRow
           <option value="Financeiro">Financeiro</option>
           <option value="TI">TI</option>
         </select>
+        <PasswordInput
+          placeholder="Nova senha (deixe vazio para manter)"
+          className="mb-4 w-full rounded-lg border border-input-border bg-input-bg px-4 py-3 text-sm text-text-main outline-none focus:border-accent min-h-[44px]"
+          value={form.nova_senha}
+          onChange={(e) => setForm(prev => ({ ...prev, nova_senha: e.target.value }))}
+        />
         <div className="flex gap-3">
           <button onClick={onClose} className="flex-1 rounded-xl border border-input-border py-3 text-sm font-medium text-text-muted">Cancelar</button>
           <button 

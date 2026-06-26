@@ -27,12 +27,17 @@ export function useNavItems(selectedModuleKey?: string): NavSection[] {
     }
     const ativos = modulosAtivos || [];
     const isCompanyAdmin = profile?.role === "admin";
+    const hasEmpresa = !!profile?.empresa_id;
     return getAllModules()
       .filter((m) => {
         if (m.key === "empresas-core") {
           return isCompanyAdmin || modulosAcesso?.[m.key]?.acessar === true;
         }
-        return ativos.includes(m.key) && modulosAcesso?.[m.key]?.acessar === true;
+        const temAcesso = modulosAcesso?.[m.key]?.acessar === true;
+        if (!hasEmpresa) {
+          return temAcesso;
+        }
+        return ativos.includes(m.key) && temAcesso;
       })
       .map((m) => m.key);
   }, [profile, modulosAtivos, modulosAcesso]);
@@ -93,6 +98,7 @@ export function useNavItems(selectedModuleKey?: string): NavSection[] {
           { path: "/global/integracoes", label: "Integrações Nativas", icon: Cable },
           { path: "/global/demos", label: "Credenciais Demos", icon: FlaskConical },
           { path: "/global/laboratorio", label: "Laboratório de Testes", icon: Beaker },
+          { path: "/global/limits", label: "Limites de Credenciais", icon: Shield },
         ],
       });
     }
@@ -130,17 +136,22 @@ export function useModulos() {
     }
     const ativos = modulosAtivos || [];
     const isCompanyAdmin = profile?.role === "admin";
+    const hasEmpresa = !!profile?.empresa_id;
     return getAllModules()
       .filter((m) => {
         if (m.key === "empresas-core") {
           return isCompanyAdmin || modulosAcesso?.[m.key]?.acessar === true;
         }
-        return ativos.includes(m.key) && modulosAcesso?.[m.key]?.acessar === true;
+        const temAcesso = modulosAcesso?.[m.key]?.acessar === true;
+        if (!hasEmpresa) {
+          return temAcesso;
+        }
+        return ativos.includes(m.key) && temAcesso;
       })
       .map((m) => ({
         key: m.key,
         nome: m.nome,
         icon: m.icon,
       }));
-  }, [profile?.is_super_admin, profile?.role, modulosAtivos, modulosAcesso]);
+  }, [profile?.is_super_admin, profile?.role, profile?.empresa_id, modulosAtivos, modulosAcesso]);
 }

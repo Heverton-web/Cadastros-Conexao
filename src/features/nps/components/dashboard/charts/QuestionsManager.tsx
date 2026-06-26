@@ -7,6 +7,7 @@ import { Textarea } from '~/components/ui/textarea';
 import { Switch } from '~/components/ui/switch';
 import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '~/components/ui/dialog';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter as AlertDialogFooter2, AlertDialogHeader, AlertDialogTitle as AlertDialogTitle2 } from '~/components/ui/alert-dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/components/ui/select';
 import { toast } from '~/hooks/use-toast';
 import { Plus, Pencil, Trash2, ArrowUp, ArrowDown, X, ListChecks } from 'lucide-react';
@@ -47,6 +48,7 @@ const QuestionsManager = () => {
   const [editing, setEditing] = useState<Partial<SurveyQuestion> | null>(null);
   const [isNew, setIsNew] = useState(false);
   const [optionInput, setOptionInput] = useState('');
+  const [questionToDelete, setQuestionToDelete] = useState<SurveyQuestion | null>(null);
 
   const fetchAll = async () => {
     setLoading(true);
@@ -92,10 +94,15 @@ const QuestionsManager = () => {
       toast({ title: 'Perguntas do sistema não podem ser excluídas', description: 'Use o botão Desativar.', variant: 'destructive' });
       return;
     }
-    if (!window.confirm(`Excluir "${q.question_text}"? Esta ação é permanente.`)) return;
-    const { error } = await supabase.from('survey_questions').delete().eq('id', q.id);
+    setQuestionToDelete(q);
+  };
+
+  const confirmRemove = async () => {
+    if (!questionToDelete) return;
+    const { error } = await supabase.from('survey_questions').delete().eq('id', questionToDelete.id);
     if (error) toast({ title: 'Erro', description: error.message, variant: 'destructive' });
     else { toast({ title: 'Pergunta excluída' }); fetchAll(); }
+    setQuestionToDelete(null);
   };
 
   const openNew = () => {
@@ -318,6 +325,23 @@ const QuestionsManager = () => {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      <AlertDialog open={!!questionToDelete} onOpenChange={(o) => !o && setQuestionToDelete(null)}>
+        <AlertDialogContent className="bg-card border-border">
+          <AlertDialogHeader>
+            <AlertDialogTitle2 className="text-foreground">Excluir pergunta?</AlertDialogTitle2>
+            <AlertDialogDescription className="text-muted-foreground">
+              Excluir "{questionToDelete?.question_text}"? Esta ação é permanente.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter2>
+            <AlertDialogCancel className="border-border text-foreground">Cancelar</AlertDialogCancel>
+            <AlertDialogAction onClick={confirmRemove} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+              Excluir
+            </AlertDialogAction>
+          </AlertDialogFooter2>
+        </AlertDialogContent>
+      </AlertDialog>
     </Card>
   );
 };

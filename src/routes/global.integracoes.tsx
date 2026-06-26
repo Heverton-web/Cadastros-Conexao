@@ -5,6 +5,7 @@ import { listarIntegracoes, salvarIntegracao, testarConexaoEvolution, type Integ
 import { useState, useEffect } from "react";
 import { Loader2, Save, ToggleLeft, ToggleRight, RefreshCw, Cable, Shield } from "lucide-react";
 import toast from "react-hot-toast";
+import { PasswordInput } from "~/components/ui/password-input";
 
 export const adminSuperIntegracoesRoute = createRoute({
   getParentRoute: () => authLayout,
@@ -121,7 +122,7 @@ function AdminSuperIntegracoes() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                       <div>
                         <label className="text-[10px] text-text-muted ml-1 mb-1 block">API Key</label>
-                        <input type="password" value={configLocal.api_key || ""} onChange={(e) => handleFieldChange(item.chave, "api_key", e.target.value)} placeholder="Chave de Autenticação"
+                        <PasswordInput value={configLocal.api_key || ""} onChange={(e) => handleFieldChange(item.chave, "api_key", e.target.value)} placeholder="Chave de Autenticação"
                           className="w-full rounded-xl border border-input-border bg-input-bg px-3 py-2 text-xs text-text-main outline-none focus:border-accent" />
                       </div>
                       <div>
@@ -160,7 +161,7 @@ function AdminSuperIntegracoes() {
                       </div>
                       <div>
                         <label className="text-[10px] text-text-muted ml-1 mb-1 block">Private Key</label>
-                        <input type="password" value={configLocal.private_key || ""} onChange={(e) => handleFieldChange(item.chave, "private_key", e.target.value)} placeholder="-----BEGIN PRIVATE KEY-----"
+                        <PasswordInput value={configLocal.private_key || ""} onChange={(e) => handleFieldChange(item.chave, "private_key", e.target.value)} placeholder="-----BEGIN PRIVATE KEY-----"
                           className="w-full rounded-xl border border-input-border bg-input-bg px-3 py-2 text-xs text-text-main outline-none focus:border-accent" />
                       </div>
                     </div>
@@ -182,7 +183,7 @@ function AdminSuperIntegracoes() {
                       </div>
                       <div>
                         <label className="text-[10px] text-text-muted ml-1 mb-1 block">Private Key</label>
-                        <input type="password" value={configLocal.private_key || ""} onChange={(e) => handleFieldChange(item.chave, "private_key", e.target.value)} placeholder="-----BEGIN PRIVATE KEY-----"
+                        <PasswordInput value={configLocal.private_key || ""} onChange={(e) => handleFieldChange(item.chave, "private_key", e.target.value)} placeholder="-----BEGIN PRIVATE KEY-----"
                           className="w-full rounded-xl border border-input-border bg-input-bg px-3 py-2 text-xs text-text-main outline-none focus:border-accent" />
                       </div>
                     </div>
@@ -192,7 +193,7 @@ function AdminSuperIntegracoes() {
                 {item.chave === "google_maps" && (
                   <div>
                     <label className="text-[10px] text-text-muted ml-1 mb-1 block">Google Maps API Key</label>
-                    <input type="password" value={configLocal.api_key || ""} onChange={(e) => handleFieldChange(item.chave, "api_key", e.target.value)} placeholder="AIzaSyA1..."
+                    <PasswordInput value={configLocal.api_key || ""} onChange={(e) => handleFieldChange(item.chave, "api_key", e.target.value)} placeholder="AIzaSyA1..."
                       className="w-full rounded-xl border border-input-border bg-input-bg px-3 py-2 text-xs text-text-main outline-none focus:border-accent" />
                   </div>
                 )}
@@ -219,7 +220,7 @@ function AdminSuperIntegracoes() {
                       </div>
                       <div>
                         <label className="text-[10px] text-text-muted ml-1 mb-1 block">Senha</label>
-                        <input type="password" value={configLocal.pass || ""} onChange={(e) => handleFieldChange(item.chave, "pass", e.target.value)} placeholder="Senha do e-mail"
+                        <PasswordInput value={configLocal.pass || ""} onChange={(e) => handleFieldChange(item.chave, "pass", e.target.value)} placeholder="Senha do e-mail"
                           className="w-full rounded-xl border border-input-border bg-input-bg px-3 py-2 text-xs text-text-main outline-none focus:border-accent" />
                       </div>
                     </div>
