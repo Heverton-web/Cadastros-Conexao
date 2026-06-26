@@ -104,20 +104,27 @@ export function useNavItems(selectedModuleKey?: string): NavSection[] {
     }
 
     // Section: Configuração (empresa context)
-    const showConfig = (isSuper && moduloKey === "empresas-core") || isCompanyAdmin;
+    const temAcessoEmpresas = modulosAcesso?.["empresas-core"]?.acessar === true;
+    const showConfig = (isSuper && moduloKey === "empresas-core") || isCompanyAdmin || temAcessoEmpresas;
     if (showConfig) {
-      const configItems = getNavItemsByModule("empresas-core").map(ri => ({
-        path: ri.to,
-        label: ri.label,
-        icon: ri.icon,
-        ...(ri.matchPaths ? { matchPaths: ri.matchPaths } : {}),
-        ...(ri.noChildMatch ? { noChildMatch: ri.noChildMatch } : {}),
-      }));
+      const paginasPermitidasEmpresas = modulosAcesso?.["empresas-core"]?.paginas ?? [];
+      const isSuperOrAdmin = isSuper || isCompanyAdmin;
+      const configItems = getNavItemsByModule("empresas-core")
+        .filter(ri => isSuperOrAdmin || paginasPermitidasEmpresas.includes(ri.id))
+        .map(ri => ({
+          path: ri.to,
+          label: ri.label,
+          icon: ri.icon,
+          ...(ri.matchPaths ? { matchPaths: ri.matchPaths } : {}),
+          ...(ri.noChildMatch ? { noChildMatch: ri.noChildMatch } : {}),
+        }));
 
-      sections.push({
-        label: "Configuração",
-        items: configItems,
-      });
+      if (configItems.length > 0) {
+        sections.push({
+          label: "Configuração",
+          items: configItems,
+        });
+      }
     }
 
     return sections;
