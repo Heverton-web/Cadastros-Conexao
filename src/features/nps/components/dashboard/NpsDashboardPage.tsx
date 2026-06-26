@@ -99,7 +99,7 @@ const MATRIX_COLORS = ['hsl(38,60%,50%)', 'hsl(38,50%,45%)', 'hsl(38,45%,40%)', 
 
 
 export function NpsDashboardPage() {
-  const { profile } = useAuth();
+  const { profile, empresa } = useAuth();
   const navigate = useNavigate();
   const [responses, setResponses] = useState<SurveyResponse[]>([]);
   const [loading, setLoading] = useState(true);
@@ -114,12 +114,29 @@ export function NpsDashboardPage() {
   const [detailResponse, setDetailResponse] = useState<SurveyResponse | null>(null);
   const [showResponsesTable, setShowResponsesTable] = useState(true);
   const [activeSection, setActiveSection] = useState<string>('todas');
+  const isSuperAdmin = profile?.is_super_admin === true;
+  const [selectedEmpresa, setSelectedEmpresa] = useState<string>(empresa?.id || "");
+  const [empresas, setEmpresas] = useState<{ id: string; nome: string }[]>([]);
+
+  useEffect(() => {
+    if (isSuperAdmin) {
+      supabase.from("empresas").select("id, nome").order("nome").then(({ data }) => {
+        if (data) setEmpresas(data);
+      });
+    }
+  }, [isSuperAdmin]);
+
+  const activeEmpresaId = isSuperAdmin ? selectedEmpresa : empresa?.id;
 
 
 
   useEffect(() => {
     checkAuth();
   }, []);
+
+  useEffect(() => {
+    if (!loading) fetchData(activeEmpresaId);
+  }, [activeEmpresaId]);
 
   const checkAuth = async () => {
     const { data: { session } } = await supabase.auth.getSession();
@@ -136,15 +153,16 @@ export function NpsDashboardPage() {
     if (profile?.full_name) setUserName(profile.full_name);
     if (profile?.role) setUserRole(profile.role);
 
-    fetchData();
+    fetchData(activeEmpresaId);
   };
 
-  const fetchData = async () => {
+  const fetchData = async (empresaFilter?: string) => {
     setLoading(true);
-    const { data } = await supabase
-      .from('nps_respostas')
-      .select('*')
-      .order('created_at', { ascending: false });
+    let query = supabase.from('nps_respostas').select('*');
+    if (empresaFilter) {
+      query = query.eq('empresa_id', empresaFilter);
+    }
+    const { data } = await query.order('created_at', { ascending: false });
     setResponses(data || []);
     setLoading(false);
   };
@@ -167,7 +185,7 @@ export function NpsDashboardPage() {
       const { error } = await supabase.from('nps_respostas').delete().in('id', ids);
       if (error) throw error;
       toast.success(`${ids.length} resposta(s) excluída(s) com sucesso!`);
-      fetchData();
+      fetchData(activeEmpresaId);
     } catch (err: any) {
       toast.success('Erro ao excluir respostas');
     } finally {
@@ -312,9 +330,9 @@ export function NpsDashboardPage() {
 
         {/* Sticky Filters */}
         <div className="sticky top-0 z-30 -mx-2 px-2 py-2">
-          <div className={`bg-card rounded-xl p-4 md:p-5 shadow-sm border border-border/50 max-w-6xl mx-auto space-y-4 ${showMobileFilters ? 'block' : 'hidden md:block'}`}>
+          <div className={`bg-card rounded-xl p-4 md:p-5 shadow-sm border border-border/50 max-w-6xl mx-auto space-y-4 overflow-y-auto max-h-[60vh] md:max-h-none ${showMobileFilters ? 'block' : 'hidden md:block'}`}>
             {/* Filtros em Grid responsivo */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:flex md:flex-wrap items-end justify-between gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-3 md:flex md:flex-wrap items-end justify-between gap-3 md:gap-4">
               <div className="flex flex-col gap-1 w-full md:w-[130px]">
                 <Label className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium px-1">De</Label>
                 <Input
@@ -345,6 +363,20 @@ export function NpsDashboardPage() {
                   </SelectContent>
                 </Select>
               </div>
+              {isSuperAdmin && empresas.length > 0 && (
+                <div className="flex flex-col gap-1 w-full md:flex-1 md:min-w-[160px]">
+                  <Label className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium px-1">Empresa</Label>
+                  <Select value={selectedEmpresa} onValueChange={(v) => { setSelectedEmpresa(v); }}>
+                    <SelectTrigger className="h-9 w-full bg-secondary/80 border-border/50 text-foreground text-sm">
+                      <SelectValue placeholder="Todas" className="truncate" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="">Todas as empresas</SelectItem>
+                      {empresas.map((e) => <SelectItem key={e.id} value={e.id}>{e.nome}</SelectItem>)}
+                    </SelectContent>
+                  </Select>
+                </div>
+              )}
               <div className="flex flex-col gap-1 w-full md:flex-1 md:min-w-[150px]">
                 <Label className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium px-1">NPS</Label>
                 <Select value={npsBucketFilter} onValueChange={(v) => setNpsBucketFilter(v as NpsBucket)}>

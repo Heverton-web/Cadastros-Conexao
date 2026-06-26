@@ -327,9 +327,9 @@ export function GlobalNpsDashboardPage() {
 
         {/* Sticky Filters */}
         <div className="sticky top-0 z-30 -mx-2 px-2 py-2">
-          <div className={`bg-card rounded-xl p-4 md:p-5 shadow-sm border border-border/50 max-w-6xl mx-auto space-y-4 ${showMobileFilters ? 'block' : 'hidden md:block'}`}>
+          <div className={`bg-card rounded-xl p-4 md:p-5 shadow-sm border border-border/50 max-w-6xl mx-auto space-y-4 overflow-y-auto max-h-[60vh] md:max-h-none ${showMobileFilters ? 'block' : 'hidden md:block'}`}>
             {/* Filtros em Grid responsivo */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:flex md:flex-wrap items-end justify-between gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-3 md:flex md:flex-wrap items-end justify-between gap-3 md:gap-4">
               <div className="flex flex-col gap-1 w-full md:w-[130px]">
                 <Label className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium px-1">De</Label>
                 <Input

@@ -82,17 +82,17 @@ export function useNavItems(selectedModuleKey?: string): NavSection[] {
       sections.push({
         label: "Administração",
         items: [
+          { path: "/global/modulos", label: "Módulos ERP", icon: Puzzle },
+          { path: "/global/empresas", label: "Empresas ERP", icon: Building2 },
           { path: "/global/nps", label: "Dashboard NPS", icon: BarChart3 },
-          { path: "/global/empresas", label: "Empresas", icon: Building2 },
-          { path: "/global/modulos", label: "Módulos", icon: Puzzle },
+          { path: "/global/hub", label: "Dashboard Hub", icon: Globe },
+          { path: "/empresa/hub/tema", label: "Temas Hub", icon: Palette },
           { path: "/global/permissoes", label: "Permissões", icon: KeyRound },
           { path: "/global/acoes", label: "Central de Ações", icon: WebhookIcon },
           { path: "/global/banco", label: "Banco de Dados", icon: Database },
-          { path: "/global/integracoes", label: "Integrações", icon: Cable },
-          { path: "/global/demos", label: "Demos", icon: FlaskConical },
-          { path: "/global/laboratorio", label: "Laboratório", icon: Beaker },
-          { path: "/global/hub", label: "Hub", icon: Globe },
-          { path: "/empresa/hub/tema", label: "Temas Hub", icon: Palette },
+          { path: "/global/integracoes", label: "Integrações Nativas", icon: Cable },
+          { path: "/global/demos", label: "Credenciais Demos", icon: FlaskConical },
+          { path: "/global/laboratorio", label: "Laboratório de Testes", icon: Beaker },
         ],
       });
     }
