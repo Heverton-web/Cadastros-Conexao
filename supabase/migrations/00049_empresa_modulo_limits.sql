@@ -3,7 +3,7 @@
 -- Limites de credenciais por MODULO para cada empresa
 -- ============================================================
 
--- Remover tabela antiga de limits por role
+-- Remover tabela antiga se existir
 DROP TABLE IF EXISTS public.empresa_role_limits;
 
 -- Tabela de limites por módulo
@@ -22,7 +22,7 @@ ALTER TABLE public.empresa_modulo_limits ENABLE ROW LEVEL SECURITY;
 -- Super admin pode tudo
 CREATE POLICY "empresa_modulo_limits_super_admin_all"
   ON public.empresa_modulo_limits FOR ALL
-  USING (is_super_admin());
+  USING (is_super_admin_session());
 
 -- Admin da empresa pode ver seus limites
 CREATE POLICY "empresa_modulo_limits_empresa_select"
@@ -37,6 +37,7 @@ CREATE POLICY "empresa_modulo_limits_empresa_select"
   );
 
 -- Funcao: contar credenciais com acesso a um modulo na empresa
+-- modulos_acesso eh um JSONB no formato: { "hub-conexao": { "acessar": true, "paginas": [...], "acoes": [...] } }
 CREATE OR REPLACE FUNCTION public.count_credenciais_by_empresa_modulo(
   p_empresa_id uuid,
   p_modulo_key text
@@ -46,13 +47,12 @@ LANGUAGE sql
 SECURITY DEFINER
 STABLE
 AS $$
-  SELECT COUNT(DISTINCT p.id)::integer
+  SELECT COUNT(*)::integer
   FROM public.profiles p
-  JOIN public.modulos_acesso ma ON ma.user_id = p.id
+  JOIN public.permissoes pm ON pm.usuario_id = p.id
   WHERE p.empresa_id = p_empresa_id
     AND (p.ativo = true OR p.ativo IS NULL)
-    AND ma.modulo_key = p_modulo_key
-    AND ma.acessar = true;
+    AND pm.modulos_acesso -> p_modulo_key -> 'acessar' = to_jsonb(true);
 $$;
 
 -- Funcao: verificar se empresa atingiu o limite de um modulo
