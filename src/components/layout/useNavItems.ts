@@ -91,6 +91,8 @@ export function useNavItems(selectedModuleKey?: string): NavSection[] {
           { path: "/global/integracoes", label: "Integrações", icon: Cable },
           { path: "/global/demos", label: "Demos", icon: FlaskConical },
           { path: "/global/laboratorio", label: "Laboratório", icon: Beaker },
+          { path: "/global/hub", label: "Hub", icon: Globe },
+          { path: "/empresa/hub/tema", label: "Temas Hub", icon: Palette },
         ],
       });
     }

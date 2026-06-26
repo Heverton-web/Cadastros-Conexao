@@ -61,7 +61,7 @@ export const hubModule: ModuleDefinition = {
 
     registerNavItem({
       id: "hub-admin-dashboard",
-      label: "Dashboard",
+      label: "Dash Admin",
       icon: LayoutDashboard,
       to: "/hub/admin/dashboard",
       permissionCheck: isAdmin,
@@ -71,7 +71,7 @@ export const hubModule: ModuleDefinition = {
 
     registerNavItem({
       id: "hub-admin-materiais",
-      label: "Materiais",
+      label: "Add Materiais",
       icon: FileText,
       to: "/hub/admin/materiais",
       permissionCheck: isAdmin,
@@ -81,7 +81,7 @@ export const hubModule: ModuleDefinition = {
 
     registerNavItem({
       id: "hub-admin-trilhas",
-      label: "Trilhas",
+      label: "Add Trilhas",
       icon: GraduationCap,
       to: "/hub/admin/trilhas",
       permissionCheck: isAdmin,
@@ -91,7 +91,7 @@ export const hubModule: ModuleDefinition = {
 
     registerNavItem({
       id: "hub-admin-badges",
-      label: "Badges",
+      label: "Add Badges",
       icon: Trophy,
       to: "/hub/admin/badges",
       permissionCheck: isAdmin,
@@ -101,7 +101,7 @@ export const hubModule: ModuleDefinition = {
 
     registerNavItem({
       id: "hub-admin-analytics",
-      label: "Analytics",
+      label: "BI Admin",
       icon: BarChart3,
       to: "/hub/admin/analytics",
       permissionCheck: isAdmin,
@@ -111,7 +111,7 @@ export const hubModule: ModuleDefinition = {
 
     registerNavItem({
       id: "hub-admin-chatbot",
-      label: "Chatbot",
+      label: "Config. Chatbot",
       icon: Bot,
       to: "/hub/admin/chatbot",
       permissionCheck: isAdmin,
@@ -121,7 +121,7 @@ export const hubModule: ModuleDefinition = {
 
     registerNavItem({
       id: "hub-gestor-dashboard",
-      label: "Dashboard",
+      label: "Dash Gestor",
       icon: LayoutDashboard,
       to: "/hub/gestor/dashboard",
       permissionCheck: isGestor,
@@ -131,7 +131,7 @@ export const hubModule: ModuleDefinition = {
 
     registerNavItem({
       id: "hub-gestor-analytics",
-      label: "Analytics",
+      label: "BI Gestor",
       icon: BarChart3,
       to: "/hub/gestor/analytics",
       permissionCheck: isGestor,
@@ -141,7 +141,7 @@ export const hubModule: ModuleDefinition = {
 
     registerNavItem({
       id: "hub-gestor-ranking",
-      label: "Ranking",
+      label: "Rank Gestor",
       icon: Medal,
       to: "/hub/gestor/ranking",
       permissionCheck: isGestor,
@@ -151,7 +151,7 @@ export const hubModule: ModuleDefinition = {
 
     registerNavItem({
       id: "hub-gestor-conquistas",
-      label: "Conquistas",
+      label: "Badges Gestor",
       icon: Star,
       to: "/hub/gestor/conquistas",
       permissionCheck: isGestor,
@@ -161,7 +161,7 @@ export const hubModule: ModuleDefinition = {
 
     registerNavItem({
       id: "hub-consultor-dashboard",
-      label: "Dashboard",
+      label: "Dash Consultor",
       icon: LayoutDashboard,
       to: "/hub/consultor/dashboard",
       permissionCheck: isConsultor,
@@ -171,7 +171,7 @@ export const hubModule: ModuleDefinition = {
 
     registerNavItem({
       id: "hub-consultor-ranking",
-      label: "Ranking",
+      label: "Rank Consultor",
       icon: Medal,
       to: "/hub/consultor/ranking",
       permissionCheck: isConsultor,
@@ -181,7 +181,7 @@ export const hubModule: ModuleDefinition = {
 
     registerNavItem({
       id: "hub-consultor-conquistas",
-      label: "Conquistas",
+      label: "Badges Consultor",
       icon: Star,
       to: "/hub/consultor/conquistas",
       permissionCheck: isConsultor,
@@ -191,7 +191,7 @@ export const hubModule: ModuleDefinition = {
 
     registerNavItem({
       id: "hub-distribuidor-dashboard",
-      label: "Dashboard",
+      label: "Dash Distribuidor",
       icon: LayoutDashboard,
       to: "/hub/distribuidor/dashboard",
       permissionCheck: isDistribuidor,
@@ -201,11 +201,31 @@ export const hubModule: ModuleDefinition = {
 
     registerNavItem({
       id: "hub-distribuidor-conquistas",
-      label: "Conquistas",
+      label: "Badges Distribuidor",
       icon: Star,
       to: "/hub/distribuidor/conquistas",
       permissionCheck: isDistribuidor,
       order: 56,
+      moduloKey: "hub-conexao",
+    });
+
+    registerNavItem({
+      id: "hub-global-dashboard",
+      label: "Hub",
+      icon: BookOpen,
+      to: "/global/hub",
+      permissionCheck: (perms: any) => perms?.hub_ver_materiais === true,
+      order: 60,
+      moduloKey: "hub-conexao",
+    });
+
+    registerNavItem({
+      id: "hub-empresa-tema",
+      label: "Temas Hub",
+      icon: Settings,
+      to: "/empresa/hub/tema",
+      permissionCheck: isAdmin,
+      order: 61,
       moduloKey: "hub-conexao",
     });
   },

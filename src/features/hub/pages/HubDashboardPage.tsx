@@ -2,7 +2,9 @@ import { useState, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { useAuth } from "~/lib/auth";
-import { Search, Grid, FileText, Image as ImageIcon, Video, Filter, Layers, Sparkles, BookOpen, Tag, Star, Headphones, Globe, Trophy } from "lucide-react";
+import { supabase } from "~/core/supabase/client";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
+import { Search, Grid, FileText, Image as ImageIcon, Video, Filter, Layers, Sparkles, BookOpen, Tag, Star, Headphones, Globe, Trophy, Building2 } from "lucide-react";
 import { fetchHubMaterials } from "../services/materials";
 import { fetchHubCollections } from "../services/collections";
 import { fetchHubUserProgress } from "../services/progress";
@@ -27,21 +29,33 @@ const ROLE_ALLOWED_MAP: Record<string, string> = {
 };
 
 export function HubDashboardPage({ roleFilter, conquistasPath = "/hub/conquistas", rankingPath }: HubDashboardPageProps = {}) {
-  const { user, empresa } = useAuth();
+  const { user, empresa, profile } = useAuth();
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
   const [filterType, setFilterType] = useState<HubMaterialType | "all">("all");
   const [filterTag, setFilterTag] = useState("");
   const [activeView, setActiveView] = useState<"materials" | "collections">("materials");
 
+  const isSuperAdmin = profile?.is_super_admin === true;
+  const [selectedEmpresa, setSelectedEmpresa] = useState<string>(empresa?.id || "");
+  const { data: empresas = [] } = useQuery({
+    queryKey: ["empresas-list"],
+    queryFn: async () => {
+      const { data } = await supabase.from("empresas").select("id, nome").order("nome");
+      return data || [];
+    },
+    enabled: !!isSuperAdmin,
+  });
+  const activeEmpresaId = isSuperAdmin ? selectedEmpresa : empresa?.id;
+
   const userPoints = (user as any)?.hub_points || 0;
   const userLevel = getHubUserLevel(userPoints);
   const nextThreshold = getHubNextLevelThreshold(userPoints);
   const levelProgress = nextThreshold > 0 ? Math.min(100, Math.round((userPoints / nextThreshold) * 100)) : 100;
 
-  const { data: materials = [], isLoading } = useQuery({ queryKey: ["hub-materials", empresa?.id], queryFn: () => fetchHubMaterials(empresa!.id), enabled: !!empresa?.id });
-  const { data: collections = [] } = useQuery({ queryKey: ["hub-collections", empresa?.id], queryFn: () => fetchHubCollections(empresa!.id), enabled: !!empresa?.id });
-  const { data: progress = [] } = useQuery({ queryKey: ["hub-progress", user?.id, empresa?.id], queryFn: () => fetchHubUserProgress(user!.id, empresa!.id), enabled: !!user?.id && !!empresa?.id });
+  const { data: materials = [], isLoading } = useQuery({ queryKey: ["hub-materials", activeEmpresaId], queryFn: () => fetchHubMaterials(activeEmpresaId!), enabled: isSuperAdmin || !!activeEmpresaId });
+  const { data: collections = [] } = useQuery({ queryKey: ["hub-collections", activeEmpresaId], queryFn: () => fetchHubCollections(activeEmpresaId!), enabled: isSuperAdmin || !!activeEmpresaId });
+  const { data: progress = [] } = useQuery({ queryKey: ["hub-progress", user?.id, activeEmpresaId], queryFn: () => fetchHubUserProgress(user!.id, activeEmpresaId!), enabled: !!user?.id && (isSuperAdmin || !!activeEmpresaId) });
 
   const roleMapped = roleFilter ? ROLE_ALLOWED_MAP[roleFilter] : undefined;
 
@@ -71,6 +85,20 @@ export function HubDashboardPage({ roleFilter, conquistasPath = "/hub/conquistas
     <div className="flex flex-col md:flex-row gap-8 relative">
       <aside className="w-full md:w-72 shrink-0 z-30">
         <div className="sticky top-28 space-y-4 animate-slide-up">
+          {isSuperAdmin && empresas.length > 0 && (
+            <div className="rounded-2xl p-3 border border-white/10 flex items-center gap-2" style={{ backgroundColor: colorMix("var(--color-surface)", 40, "rgba(30,41,59,0.4)") }}>
+              <Building2 size={14} style={{ color: "var(--color-accent)", flexShrink: 0 }} />
+              <Select value={selectedEmpresa} onValueChange={setSelectedEmpresa}>
+                <SelectTrigger className="w-full" style={{ backgroundColor: "var(--color-input-bg)", borderColor: "var(--color-input-border)", color: "var(--color-text-main)", height: "32px", fontSize: "13px" }}>
+                  <SelectValue placeholder="Filtrar por empresa" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="">Todas as empresas</SelectItem>
+                  {empresas.map((e: any) => <SelectItem key={e.id} value={e.id}>{e.nome}</SelectItem>)}
+                </SelectContent>
+              </Select>
+            </div>
+          )}
           {user && (
             <div className="rounded-2xl p-4 border border-white/10" style={{ backgroundColor: colorMix("var(--color-surface)", 40, "rgba(30,41,59,0.4)") }}>
               <div className="flex items-center gap-2 mb-3">
