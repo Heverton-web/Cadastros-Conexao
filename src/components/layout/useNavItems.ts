@@ -105,7 +105,7 @@ export function useNavItems(selectedModuleKey?: string): NavSection[] {
 
     // Section: Configuração (empresa context)
     const temAcessoEmpresas = modulosAcesso?.["empresas-core"]?.acessar === true;
-    const showConfig = (isSuper && moduloKey === "empresas-core") || isCompanyAdmin || temAcessoEmpresas;
+    const showConfig = moduloKey === "empresas-core" && (isSuper || isCompanyAdmin || temAcessoEmpresas);
     if (showConfig) {
       const paginasPermitidasEmpresas = modulosAcesso?.["empresas-core"]?.paginas ?? [];
       const isSuperOrAdmin = isSuper || isCompanyAdmin;
