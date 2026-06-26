@@ -87,7 +87,7 @@ export function HubDashboardPage({ roleFilter, conquistasPath = "/hub/conquistas
           {user && (
             <div className="rounded-2xl p-4 border border-white/10" style={{ backgroundColor: colorMix("var(--color-surface)", 40, "rgba(30,41,59,0.4)") }}>
               <div className="flex items-center gap-2 mb-3"><Trophy size={14} style={{ color: "var(--color-accent)" }} /><span className="text-xs font-bold uppercase tracking-wider" style={{ color: "var(--color-text-muted)" }}>Conquistas</span></div>
-              <button onClick={() => navigate({ to: "/hub/conquistas" })} className="text-xs font-bold transition-all hover:opacity-80" style={{ color: "var(--color-accent)" }}>Ver conquistas →</button>
+              <button onClick={() => navigate({ to: conquistasPath as any })} className="text-xs font-bold transition-all hover:opacity-80" style={{ color: "var(--color-accent)" }}>Ver conquistas →</button>
             </div>
           )}
           <div className="flex rounded-xl overflow-hidden border border-white/10" style={{ backgroundColor: colorMix("var(--color-surface)", 40, "rgba(30,41,59,0.4)") }}>

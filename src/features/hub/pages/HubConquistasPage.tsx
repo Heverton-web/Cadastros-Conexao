@@ -1,12 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "~/lib/auth";
 import { Trophy, Star, BookOpen, GraduationCap, Rocket, Diamond, Crown, Flame, Shield, Sparkles } from "lucide-react";
-import { fetchHubBadges, fetchHubUserBadges } from "../../services/gamification";
+import { fetchHubBadges, fetchHubUserBadges } from "../services/gamification";
 
 function colorMix(c1: string, w: number, c2: string) { return `color-mix(in srgb, ${c1} ${w}%, ${c2})`; }
 const iconMap: Record<string, React.ComponentType<{ size?: number; className?: string }>> = { star: Star, book: BookOpen, graduation: GraduationCap, rocket: Rocket, trophy: Trophy, diamond: Diamond, crown: Crown, flame: Flame, shield: Shield, stars: Sparkles };
 
-export function HubDistribuidorConquistasPage() {
+export function HubConquistasPage() {
   const { user, empresa } = useAuth();
   const { data: allBadges = [] } = useQuery({ queryKey: ["hub-badges", empresa?.id], queryFn: () => fetchHubBadges(empresa!.id), enabled: !!empresa?.id });
   const { data: userBadges = [] } = useQuery({ queryKey: ["hub-user-badges", user?.id, empresa?.id], queryFn: () => fetchHubUserBadges(user!.id, empresa!.id), enabled: !!user?.id && !!empresa?.id });
@@ -18,7 +18,7 @@ export function HubDistribuidorConquistasPage() {
         <div className="absolute inset-0 opacity-60" style={{ background: `linear-gradient(to right, ${colorMix("var(--color-accent)", 10, "rgba(201,166,85,0.1)")}, ${colorMix("var(--color-gradient-mid)", 10, "rgba(232,212,139,0.1)")}, transparent)` }} />
         <div className="relative z-10 p-5 sm:p-8 md:p-10">
           <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-3" style={{ color: "var(--color-text-main)" }}>Conquistas</h1>
-          <p className="text-sm sm:text-base max-w-lg font-medium" style={{ color: "var(--color-text-muted)" }}>Suas badges e conquistas desbloqueadas.</p>
+          <p className="text-sm sm:text-base max-w-lg font-medium" style={{ color: "var(--color-text-muted)" }}>Badges e conquistas desbloqueados.</p>
         </div>
       </div>
 

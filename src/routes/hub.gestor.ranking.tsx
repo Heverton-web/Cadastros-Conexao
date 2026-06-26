@@ -1,9 +1,9 @@
 import { createRoute } from "@tanstack/react-router";
 import { authLayout } from "./_auth";
-import { HubGestorRankingPage } from "~/features/hub/pages/gestor/HubGestorRankingPage";
+import { HubRankingPage } from "~/features/hub/pages/HubRankingPage";
 
 export const hubGestorRankingRoute = createRoute({
   getParentRoute: () => authLayout,
   path: "/hub/gestor/ranking",
-  component: HubGestorRankingPage,
+  component: HubRankingPage,
 });

@@ -1,9 +1,9 @@
 import { createRoute } from "@tanstack/react-router";
 import { authLayout } from "./_auth";
-import { HubConsultorDashboardPage } from "~/features/hub/pages/consultor/HubConsultorDashboardPage";
+import { HubDashboardPage } from "~/features/hub/pages/HubDashboardPage";
 
 export const hubConsultorDashboardRoute = createRoute({
   getParentRoute: () => authLayout,
   path: "/hub/consultor/dashboard",
-  component: HubConsultorDashboardPage,
+  component: () => <HubDashboardPage roleFilter="consultant" conquistasPath="/hub/consultor/conquistas" />,
 });

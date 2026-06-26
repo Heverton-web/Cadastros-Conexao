@@ -1,10 +1,10 @@
 import { Trophy, Medal } from "lucide-react";
-import { useHubRanking, useHubLevels } from "../../hooks/useHubGamification";
-import { getHubUserLevel } from "../../types";
+import { useHubRanking, useHubLevels } from "../hooks/useHubGamification";
+import { getHubUserLevel } from "../types";
 
 function colorMix(c1: string, w: number, c2: string) { return `color-mix(in srgb, ${c1} ${w}%, ${c2})`; }
 
-export function HubConsultorRankingPage() {
+export function HubRankingPage() {
   const { data: ranking = [] } = useHubRanking();
   const { data: levels = [] } = useHubLevels();
 
@@ -13,8 +13,8 @@ export function HubConsultorRankingPage() {
       <div className="relative rounded-[1.5rem] sm:rounded-[2rem] overflow-hidden">
         <div className="absolute inset-0 opacity-60" style={{ background: `linear-gradient(to right, ${colorMix("var(--color-accent)", 10, "rgba(201,166,85,0.1)")}, ${colorMix("var(--color-gradient-mid)", 10, "rgba(232,212,139,0.1)")}, transparent)` }} />
         <div className="relative z-10 p-5 sm:p-8 md:p-10">
-          <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-3" style={{ color: "var(--color-text-main)" }}>Ranking Consultores</h1>
-          <p className="text-sm sm:text-base max-w-lg font-medium" style={{ color: "var(--color-text-muted)" }}>Consultores com mais XP.</p>
+          <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-3" style={{ color: "var(--color-text-main)" }}>Ranking</h1>
+          <p className="text-sm sm:text-base max-w-lg font-medium" style={{ color: "var(--color-text-muted)" }}>Veja os usuários com mais XP no Hub.</p>
         </div>
       </div>
 

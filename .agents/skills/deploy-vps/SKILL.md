@@ -25,6 +25,9 @@ Só executar quando o usuário disser "deploy" ou "/deploy" explicitamente.
 
 ## Fluxo
 
+## 0. Economia de Tokens
+Sempre seguir as diretrizes de economia de tokens `C:\Users\trcnologia\Desktop\bubble_reverse_engineering\AGENTS.md`
+
 ### 1. Verificar mudanças locais
 ```bash
 git status --porcelain

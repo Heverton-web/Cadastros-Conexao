@@ -1,9 +1,9 @@
 import { createRoute } from "@tanstack/react-router";
 import { authLayout } from "./_auth";
-import { AdminDashboardPage } from "~/features/hub/pages/admin/AdminDashboardPage";
+import { HubDashboardPage } from "~/features/hub/pages/HubDashboardPage";
 
 export const hubAdminDashboardRoute = createRoute({
   getParentRoute: () => authLayout,
   path: "/hub/admin/dashboard",
-  component: AdminDashboardPage,
+  component: () => <HubDashboardPage conquistasPath="/hub/admin/badges" />,
 });
