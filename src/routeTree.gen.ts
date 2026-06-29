@@ -50,6 +50,8 @@ import { npsSurveyRoute } from "./routes/nps.survey";
 import { funisRoute } from "./routes/funis";
 import { funisDashboardRoute } from "./routes/funis.dashboard";
 import { funilDetalleRoute } from "./routes/funis.funil.$funilId";
+import { funisTemplatesRoute } from "./routes/funis.templates";
+import { funilAutomationsRoute } from "./routes/funis.funil.$funilId.automations";
 
 import { linktreePublicRoute } from "./routes/linktree.$id";
 import { linktreeDashboardRoute } from "./routes/linktree.dashboard";
@@ -101,6 +103,12 @@ import { mapasDesignRoute } from "./routes/mapas.design";
 import { funisDesignRoute } from "./routes/funis.design";
 import { cadastrosDesignRoute } from "./routes/cadastros.design";
 
+import { despesasRoute } from "./routes/despesas";
+import { despesasAprovacaoRoute } from "./routes/despesas.aprovacao";
+import { despesasConfigRoute } from "./routes/despesas.config";
+import { despesasRelatoriosRoute } from "./routes/despesas.relatorios";
+import { despesasDesignRoute } from "./routes/despesas.design";
+
 export const routeTree = rootRoute.addChildren([
   loginRoute,
   preCadastroRoute,
@@ -143,6 +151,12 @@ export const routeTree = rootRoute.addChildren([
     linktreeDesignRoute,
     funisDesignRoute,
     cadastrosDesignRoute,
+    despesasDesignRoute,
+
+    despesasRoute,
+    despesasAprovacaoRoute,
+    despesasConfigRoute,
+    despesasRelatoriosRoute,
 
     mapasRoute,
     mapasDistribuidoresRoute,
@@ -163,6 +177,8 @@ export const routeTree = rootRoute.addChildren([
     funisRoute,
     funisDashboardRoute,
     funilDetalleRoute,
+    funisTemplatesRoute,
+    funilAutomationsRoute,
 
     linktreeDashboardRoute,
     linktreeTemaRoute,

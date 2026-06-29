@@ -68,6 +68,7 @@ export const linktreeModule: ModuleDefinition = {
       permissionCheck: (perms) => perms?.lt_empresa_ver === true,
       order: 28,
       moduloKey: "linktree",
+      noChildMatch: true,
     });
 
     registerNavItem({
@@ -78,6 +79,7 @@ export const linktreeModule: ModuleDefinition = {
       permissionCheck: (perms) => perms?.lt_empresa_editar === true,
       order: 29,
       moduloKey: "linktree",
+      noChildMatch: true,
     });
 
     registerPermissionDefaults("linktree", {

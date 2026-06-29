@@ -9,7 +9,7 @@ import { getAllModules } from "~/registry";
 import { cn } from "~/lib/utils";
 import { DeviceGate } from "./DeviceGate";
 import { PwaInstallPrompt } from "./PwaInstallPrompt";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { listarNotificacoes, marcarComoLida, marcarTodasComoLidas, type Notificacao } from "~/core/services";
 import { useEmpresaTheme } from "~/core/theme";
 
@@ -53,6 +53,17 @@ export function AppLayout() {
       }
     }
   }, [profile, modulos, selectedModuleKey]);
+
+  const activeModuleKey = useMemo(() => {
+    const path = location.pathname;
+    const allMods = getAllModules();
+    for (const mod of allMods) {
+      if (mod.routes?.some((r) => path === r || path.startsWith(r + "/"))) {
+        return mod.key;
+      }
+    }
+    return selectedModuleKey;
+  }, [location.pathname, selectedModuleKey]);
 
   const [notifs, setNotifs] = useState<Notificacao[]>([]);
   const [showNotifs, setShowNotifs] = useState(false);
@@ -223,8 +234,8 @@ export function AppLayout() {
           </div>
         </header>
 
-        <NavSidebar selectedModuleKey={selectedModuleKey} onModuleChange={setSelectedModuleKey} collapsed={sidebarCollapsed} onToggleCollapse={toggleSidebar} />
-        <ModuleDrawer open={showDrawer} onClose={() => setShowDrawer(false)} selectedModuleKey={selectedModuleKey} onModuleChange={setSelectedModuleKey} modulos={modulos} />
+        <NavSidebar selectedModuleKey={activeModuleKey} onModuleChange={setSelectedModuleKey} collapsed={sidebarCollapsed} onToggleCollapse={toggleSidebar} />
+        <ModuleDrawer open={showDrawer} onClose={() => setShowDrawer(false)} selectedModuleKey={activeModuleKey} onModuleChange={setSelectedModuleKey} modulos={modulos} />
 
         <div className={cn(
           "transition-all duration-300 ease-in-out",
@@ -241,7 +252,7 @@ export function AppLayout() {
           </main>
         </div>
 
-        <BottomNav selectedModuleKey={selectedModuleKey} />
+        <BottomNav selectedModuleKey={activeModuleKey} />
       </div>
       <PwaInstallPrompt />
     </DeviceGate>
