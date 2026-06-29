@@ -85,13 +85,13 @@ export function KanbanAvancado({ onNovoCliente, onClienteClick }: Props) {
 
   // Buscar estágios do pipeline
   const { data: estagios } = useQuery({
-    queryKey: ["pipeline-estagios", perfil?.empresa_id],
-    enabled: !!perfil,
+    queryKey: ["pipeline-estagios", profile?.empresa_id],
+    enabled: !!profile,
     queryFn: async () => {
       const { data } = await supabase
         .from("pipeline_estagios")
         .select("*")
-        .eq("empresa_id", perfil!.empresa_id)
+        .eq("empresa_id", profile!.empresa_id)
         .eq("ativo", true)
         .order("ordem");
       return (data ?? []) as Estagio[];
@@ -100,8 +100,8 @@ export function KanbanAvancado({ onNovoCliente, onClienteClick }: Props) {
 
   // Buscar clientes com estágio
   const { data: clientes, isLoading } = useQuery({
-    queryKey: ["kanban-clientes", perfil?.id],
-    enabled: !!perfil,
+    queryKey: ["kanban-clientes", profile?.id],
+    enabled: !!profile,
     queryFn: async () => {
       const { data: clientesData } = await supabase
         .from("clientes")
@@ -109,7 +109,7 @@ export function KanbanAvancado({ onNovoCliente, onClienteClick }: Props) {
           `id, nome_doutor, nome_clinica, telefone_contato, estagio_id, criado_em,
            visitas:visitas(valor_estimado, data_visita, data_proximo_contato)`
         )
-        .eq("consultor_atual_id", perfil!.id)
+        .eq("consultor_atual_id", profile!.id)
         .order("criado_em", { ascending: false });
 
       const cards: ClienteCard[] = (clientesData ?? []).map((c: any) => {
