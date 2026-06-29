@@ -10,4 +10,16 @@ export default defineConfig({
       "~": resolve(__dirname, "./src"),
     },
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'react-vendor': ['react', 'react-dom'],
+          'tanstack': ['@tanstack/react-router', '@tanstack/react-query'],
+          'radix': ['@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu', '@radix-ui/react-alert-dialog'],
+          'charts': ['recharts'],
+        },
+      },
+    },
+  },
 });
