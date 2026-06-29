@@ -1,0 +1,103 @@
+import { LayoutDashboard, Users, UserCheck, BarChart3, ArrowLeftRight, Crown } from "lucide-react";
+import { registerModule, registerNavItem, registerPermission } from "~/registry";
+import type { ModuleDefinition } from "~/registry";
+import { CRM_PERMISSIONS } from "./permissions";
+
+export const crmModule: ModuleDefinition = {
+  key: "crm-conexao",
+  nome: "CRM",
+  descricao: "Gestão de relacionamento com clientes e equipe comercial",
+  icon: Users,
+  routes: [
+    "/crm/dashboard",
+    "/crm/carteira",
+    "/crm/cliente/$id",
+    "/crm/equipe",
+    "/crm/bi",
+    "/crm/transferencia",
+    "/crm/transferencia/consultores",
+    "/crm/diretoria",
+    "/crm/diretoria/gestor/$id",
+    "/crm/dev/convites",
+    "/crm/dev/demo",
+    "/crm/dev/usuarios",
+    "/crm/aceitar-convite/$token",
+  ],
+  permissions: CRM_PERMISSIONS.map((p) => p.key),
+  ambientes: ["cadastro", "consultor", "tecnologia"],
+  abas: [
+    { key: "geral", label: "Geral", descricao: "Configurações gerais do CRM" },
+    { key: "permissoes", label: "Permissões", descricao: "Gerenciar permissões do módulo" },
+    { key: "eventos", label: "Eventos", descricao: "Eventos e webhooks do CRM" },
+  ],
+  events: [
+    { key: "cliente.criado", label: "Cliente Criado", descricao: "Quando um novo cliente é adicionado", type: "status_change" },
+    { key: "cliente.transferido", label: "Cliente Transferido", descricao: "Quando um cliente é transferido", type: "status_change" },
+    { key: "visita.realizada", label: "Visita Realizada", descricao: "Quando uma visita é registrada", type: "button_action" },
+  ],
+  setup: () => {
+    for (const p of CRM_PERMISSIONS) {
+      registerPermission({ key: p.key, label: p.label, description: p.description, group: p.group });
+    }
+
+    registerNavItem({
+      id: "crm-dashboard",
+      label: "Dashboard CRM",
+      icon: LayoutDashboard,
+      to: "/crm/dashboard",
+      permissionCheck: (perms) => perms?.crm_dashboard === true,
+      order: 50,
+      moduloKey: "crm-conexao",
+    });
+
+    registerNavItem({
+      id: "crm-carteira",
+      label: "Carteira",
+      icon: Users,
+      to: "/crm/carteira",
+      permissionCheck: (perms) => perms?.crm_carteira === true,
+      order: 51,
+      moduloKey: "crm-conexao",
+    });
+
+    registerNavItem({
+      id: "crm-equipe",
+      label: "Equipe",
+      icon: UserCheck,
+      to: "/crm/equipe",
+      permissionCheck: (perms) => perms?.crm_equipe === true,
+      order: 52,
+      moduloKey: "crm-conexao",
+    });
+
+    registerNavItem({
+      id: "crm-bi",
+      label: "BI",
+      icon: BarChart3,
+      to: "/crm/bi",
+      permissionCheck: (perms) => perms?.crm_bi === true,
+      order: 53,
+      moduloKey: "crm-conexao",
+    });
+
+    registerNavItem({
+      id: "crm-transferencia",
+      label: "Transferência",
+      icon: ArrowLeftRight,
+      to: "/crm/transferencia",
+      permissionCheck: (perms) => perms?.crm_transferencia === true,
+      order: 54,
+      moduloKey: "crm-conexao",
+    });
+
+    registerNavItem({
+      id: "crm-diretoria",
+      label: "Diretoria",
+      icon: Crown,
+      to: "/crm/diretoria",
+      permissionCheck: (perms) => perms?.crm_diretoria === true,
+      order: 55,
+      moduloKey: "crm-conexao",
+    });
+  },
+};

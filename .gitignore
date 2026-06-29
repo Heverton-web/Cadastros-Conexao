@@ -11,3 +11,6 @@ vps.env
 .agents/skills/headroom/
 .agents/skills/lean-ctx/
 .agents/skills/rtk/
+
+*storybook.log
+storybook-static
