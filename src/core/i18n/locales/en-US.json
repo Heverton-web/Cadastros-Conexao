@@ -1,0 +1,59 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "create": "Create",
+    "search": "Search",
+    "filter": "Filter",
+    "export": "Export",
+    "import": "Import",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "confirm": "Confirm",
+    "yes": "Yes",
+    "no": "No"
+  },
+  "modules": {
+    "cadastros": {
+      "title": "Registrations",
+      "description": "PF/PJ registration management"
+    },
+    "empresas": {
+      "title": "Companies",
+      "description": "Company management"
+    },
+    "mapas": {
+      "title": "Maps",
+      "description": "Interactive commercial presence maps"
+    },
+    "nps": {
+      "title": "NPS",
+      "description": "Satisfaction surveys"
+    },
+    "funis": {
+      "title": "Funnels",
+      "description": "Kanban funnels"
+    },
+    "linktree": {
+      "title": "LinkTree",
+      "description": "Digital cards and QR Codes"
+    },
+    "hub": {
+      "title": "Hub",
+      "description": "Training and gamification platform"
+    }
+  },
+  "auth": {
+    "login": "Login",
+    "logout": "Logout",
+    "email": "Email",
+    "password": "Password",
+    "forgotPassword": "Forgot password?",
+    "resetPassword": "Reset password"
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "common": {
+    "loading": "Carregando...",
+    "error": "Erro",
+    "save": "Salvar",
+    "cancel": "Cancelar",
+    "delete": "Excluir",
+    "edit": "Editar",
+    "create": "Criar",
+    "search": "Buscar",
+    "filter": "Filtrar",
+    "export": "Exportar",
+    "import": "Importar",
+    "back": "Voltar",
+    "next": "Próximo",
+    "previous": "Anterior",
+    "confirm": "Confirmar",
+    "yes": "Sim",
+    "no": "Não"
+  },
+  "modules": {
+    "cadastros": {
+      "title": "Cadastros",
+      "description": "Gestão de cadastros PF/PJ"
+    },
+    "empresas": {
+      "title": "Empresas",
+      "description": "Gestão de empresas"
+    },
+    "mapas": {
+      "title": "Mapas",
+      "description": "Mapas interativos de presença comercial"
+    },
+    "nps": {
+      "title": "NPS",
+      "description": "Pesquisas de satisfação"
+    },
+    "funis": {
+      "title": "Funis",
+      "description": "Funis Kanban"
+    },
+    "linktree": {
+      "title": "LinkTree",
+      "description": "Cartões digitais e QR Codes"
+    },
+    "hub": {
+      "title": "Hub",
+      "description": "Plataforma de treinamento e gamificação"
+    }
+  },
+  "auth": {
+    "login": "Entrar",
+    "logout": "Sair",
+    "email": "E-mail",
+    "password": "Senha",
+    "forgotPassword": "Esqueceu a senha?",
+    "resetPassword": "Redefinir senha"
+  }
+}
