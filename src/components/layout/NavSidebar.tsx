@@ -35,7 +35,7 @@ export function NavSidebar({
   const exibirSecaoModulos = mostrarGlobal || modulos.length > 1;
 
   return (
-    <aside className={cn("hidden lg:flex flex-col fixed left-0 top-[70px] bottom-0 border-r border-border-subtle bg-card z-30 transition-all duration-200", w)}>
+    <aside className={cn("hidden lg:flex flex-col fixed left-0 top-[70px] bottom-0 border-r border-border bg-card z-30 transition-all duration-200", w)}>
       {exibirSecaoModulos && (
         <div className={cn("flex flex-col gap-0.5 px-2 py-3 border-b border-border-subtle/50", collapsed && "items-center")}>
           {!collapsed && <p className="text-[10px] font-bold text-text-muted uppercase tracking-wider px-3 mb-2">Módulos</p>}
@@ -43,8 +43,9 @@ export function NavSidebar({
             <button
               onClick={() => onModuleChange(undefined)}
               title={collapsed ? "Global" : undefined}
+              aria-label="Global"
               className={cn(
-                "flex items-center gap-2.5 rounded-lg text-sm font-medium transition-colors",
+                "flex items-center gap-2.5 rounded-lg text-sm font-medium transition-colors duration-150",
                 collapsed ? "justify-center p-2" : "px-3 py-2",
                 selectedModuleKey === undefined ? "bg-accent/10 text-accent" : "text-text-main hover:bg-input-bg"
               )}
@@ -60,10 +61,11 @@ export function NavSidebar({
                 key={mod.key}
                 onClick={() => onModuleChange(mod.key)}
                 title={collapsed ? mod.nome : undefined}
+                aria-label={mod.nome}
                 className={cn(
-                  "flex items-center gap-2.5 rounded-lg text-sm font-medium transition-colors",
+                  "flex items-center gap-2.5 rounded-lg text-sm font-medium transition-colors duration-150",
                   collapsed ? "justify-center p-2" : "px-3 py-2",
-                  selectedModuleKey === mod.key ? "bg-accent/10 text-text-muted" : "text-text-main hover:bg-input-bg"
+                  selectedModuleKey === mod.key ? "bg-accent/10 text-accent" : "text-text-main hover:bg-input-bg"
                 )}
               >
                 <Icon size={16} />
@@ -90,14 +92,20 @@ export function NavSidebar({
                     key={item.path}
                     onClick={() => navigate({ to: item.path })}
                     title={collapsed ? item.label : undefined}
+                    aria-label={item.label}
                     className={cn(
-                      "flex items-center gap-2.5 rounded-lg text-sm transition-colors",
+                      "flex items-center gap-2.5 rounded-lg text-sm transition-colors duration-150",
                       collapsed ? "justify-center p-2" : "px-3 py-2",
-                      isActive ? "bg-accent/10 text-accent" : "text-text-muted hover:text-text-main hover:bg-input-bg"
+                      isActive
+                        ? "bg-accent/10 text-accent font-semibold"
+                        : "text-text-muted hover:text-text-main hover:bg-input-bg"
                     )}
                   >
-                    <item.icon size={16} />
+                    <item.icon size={16} className={cn(isActive && "text-accent")} />
                     {!collapsed && item.label}
+                    {isActive && !collapsed && (
+                      <span className="ml-auto w-1.5 h-1.5 rounded-full bg-accent" />
+                    )}
                   </button>
                 );
               })}
@@ -109,7 +117,8 @@ export function NavSidebar({
       {/* Toggle */}
       <div className={cn("border-t border-border-subtle/50 p-2", collapsed && "flex justify-center")}>
         <button onClick={onToggleCollapse}
-          className={cn("flex items-center gap-2 rounded-lg text-xs font-medium text-text-muted hover:text-text-main hover:bg-input-bg transition-colors", collapsed ? "justify-center p-2" : "px-3 py-2 w-full")}
+          className={cn("flex items-center gap-2 rounded-lg text-xs font-medium text-text-muted hover:text-text-main hover:bg-input-bg transition-colors duration-150", collapsed ? "justify-center p-2" : "px-3 py-2 w-full")}
+          aria-label={collapsed ? "Expandir menu" : "Recolher menu"}
           title={collapsed ? "Expandir menu" : "Recolher menu"}
         >
           {collapsed ? <PanelLeft size={16} /> : <><PanelLeftClose size={16} /> Recolher</>}
