@@ -46,11 +46,7 @@ export function AppLayout() {
   }, [selectedModuleKey]);
 
   useEffect(() => {
-    if (profile?.is_super_admin) {
-      if (!selectedModuleKey && modulos.length > 0) {
-        setSelectedModuleKey(modulos[0].key);
-      }
-    } else {
+    if (!profile?.is_super_admin) {
       const temAcesso = selectedModuleKey ? modulos.some(m => m.key === selectedModuleKey) : false;
       if (!temAcesso && modulos.length > 0) {
         setSelectedModuleKey(modulos[0].key);
