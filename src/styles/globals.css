@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
 
 @theme {
   /* ── Base ── */
@@ -9,11 +10,12 @@
 
   /* ── Tipografia ── */
   --color-text-main: #f8fafc;
+  --color-text-secondary: #cbd5e1;
   --color-text-muted: #94a3b8;
   --color-text-inverted: #0f172a;
 
   /* ── Bordas ── */
-  --color-border: transparent;
+  --color-border: #334155;
   --color-border-subtle: #1e293b;
 
   /* ── Marca / Accent (Gold) ── */
@@ -74,7 +76,6 @@
   --color-accent-foreground: #f8fafc;
   --color-destructive: #ef4444;
   --color-destructive-foreground: #f8fafc;
-  --color-border: transparent;
   --color-input: #334155;
   --color-ring: #c9a65580;
 
@@ -83,6 +84,43 @@
   --radius-md: 0.5rem;
   --radius-lg: 0.75rem;
   --radius-xl: 1rem;
+
+  /* ── Shadows ── */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -4px rgba(0, 0, 0, 0.3);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+
+  /* ── Animations ── */
+  --animate-fade-in: fade-in 0.2s ease-out;
+  --animate-slide-up: slide-up 0.2s ease-out;
+  --animate-shimmer: shimmer 1.5s infinite;
+}
+
+/* ── Keyframes ── */
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes accordion-up {
+  from { height: var(--radix-accordion-content-height); }
+  to { height: 0; }
+}
+
+@keyframes accordion-down {
+  from { height: 0; }
+  to { height: var(--radix-accordion-content-height); }
 }
 
 /* ── Mobile-first base ── */
@@ -94,7 +132,7 @@ html {
 body {
   background: var(--color-bg);
   color: var(--color-text-main);
-  font-family: "Outfit", system-ui, -apple-system, sans-serif;
+  font-family: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
   min-height: 100dvh;
   padding-top: env(safe-area-inset-top, 0px);
   padding-bottom: env(safe-area-inset-bottom, 0px);
@@ -104,8 +142,8 @@ body {
 
 /* ── Scrollbar custom ── */
 ::-webkit-scrollbar {
-  width: 4px;
-  height: 4px;
+  width: 6px;
+  height: 6px;
 }
 ::-webkit-scrollbar-track {
   background: transparent;
@@ -113,6 +151,16 @@ body {
 ::-webkit-scrollbar-thumb {
   background: var(--color-scrollbar-thumb);
   border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-accent-hover);
+}
+
+/* ── Focus ring global ── */
+*:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
 }
 
 /* ── Gradiente-assinatura ── */
@@ -126,7 +174,7 @@ body {
   );
 }
 
-/* ── Modal overlay — resistente ao teclado virtual ── */
+/* ── Modal overlay ── */
 body.modal-open {
   overflow: hidden;
   position: fixed;
@@ -147,7 +195,19 @@ body.modal-open {
   }
 }
 
-/* ── Ajustes Globais Nativos (Formulários) ── */
+/* ── Reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── Ajustes Globais Nativos (Formularios) ── */
 :root {
   color-scheme: dark;
 
@@ -204,16 +264,21 @@ select optgroup option {
 }
 
 /* ── Accordion (radix) ── */
-@keyframes accordion-up {
-  from { height: var(--radix-accordion-content-height); }
-  to { height: 0; }
-}
-@keyframes accordion-down {
-  from { height: 0; }
-  to { height: var(--radix-accordion-content-height); }
-}
 .animate-accordion-up { animation: accordion-up 0.2s ease-out; }
 .animate-accordion-down { animation: accordion-down 0.2s ease-out; }
+
+/* ── Skeleton shimmer ── */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--color-surface) 25%,
+    var(--color-surface-hover) 50%,
+    var(--color-surface) 75%
+  );
+  background-size: 200% 100%;
+  animation: var(--animate-shimmer);
+  border-radius: var(--radius-md);
+}
 
 @utility btn-hover-destructive {
   color: var(--color-error);
@@ -261,4 +326,3 @@ select optgroup option {
 .nps-no-borders [class*="border-t-"] { border-top-width: 0 !important; }
 .nps-no-borders [class*="border-b-"] { border-bottom-width: 0 !important; }
 .nps-no-borders [class*="w-px"] { width: 0 !important; }
-
