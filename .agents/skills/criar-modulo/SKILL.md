@@ -51,6 +51,10 @@ src/features/<modulo>/
 - Criar arquivo em `src/routes/<modulo>/index.tsx`
 - Usar template de rota protegida
 
+### 6.5. Criar configuração de Design System (automático)
+- Executar skill `criar-design-modulo` para adicionar rota `/<modulo>/design`
+- Adicionar `hasDesignConfig: true, designRoute: "/<modulo>/design"` ao module.ts
+
 ### 7. Commit
 ```bash
 git add src/features/<modulo>/
@@ -61,3 +65,4 @@ git commit -m "feat(<modulo>): criar módulo <modulo>"
 - `npm run build` deve passar
 - `npm run lint` deve passar
 - Módulo deve aparecer no registry
+- Rota `/<modulo>/design` deve ser acessível

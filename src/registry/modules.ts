@@ -28,6 +28,8 @@ export type ModuleDefinition = {
   hasFormulario?: boolean;
   hasCustomActions?: boolean;
   hasApiConnectors?: boolean;
+  hasDesignConfig?: boolean;  // módulo possui rota de design própria
+  designRoute?: string;       // path da rota de design (ex: "/nps/design")
   setup?: () => void;
 };
 

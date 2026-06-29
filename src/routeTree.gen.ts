@@ -26,6 +26,9 @@ import { globalLimitsRoute } from "./routes/global.limits";
 import { adminEmpresaConfigBancoRoute } from "./routes/empresa.banco";
 import { adminEmpresaConfigBrandingRoute } from "./routes/empresa.branding";
 import { adminEmpresaConfigAcoesRoute } from "./routes/empresa.acoes";
+import { globalDesignRoute } from "./routes/global.design";
+import { empresaDesignRoute } from "./routes/empresa.design";
+import { npsDesignRoute } from "./routes/nps.design";
 
 import { mapasRoute } from "./routes/mapas";
 import { mapasDistribuidoresRoute } from "./routes/mapas.distribuidores";
@@ -118,6 +121,9 @@ export const routeTree = rootRoute.addChildren([
     adminEmpresaConfigBancoRoute,
     adminEmpresaConfigBrandingRoute,
     adminEmpresaConfigAcoesRoute,
+    globalDesignRoute,
+    empresaDesignRoute,
+    npsDesignRoute,
 
     mapasRoute,
     mapasDistribuidoresRoute,

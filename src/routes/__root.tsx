@@ -1,7 +1,7 @@
 import { createRootRoute, Outlet } from "@tanstack/react-router";
 import { Toaster } from "react-hot-toast";
 import { registerSW } from "~/pwa/registerSW";
-import { ThemeProvider } from "~/core/theme";
+import { DesignSystemProvider } from "~/design-system";
 
 registerSW();
 
@@ -11,7 +11,7 @@ export const rootRoute = createRootRoute({
 
 function RootLayout() {
   return (
-    <ThemeProvider>
+    <DesignSystemProvider>
       <Outlet />
       <Toaster
         position="top-center"
@@ -23,6 +23,7 @@ function RootLayout() {
           },
         }}
       />
-    </ThemeProvider>
+    </DesignSystemProvider>
   );
 }
+

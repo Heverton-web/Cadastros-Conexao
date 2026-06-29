@@ -23,6 +23,8 @@ export const npsModule: ModuleDefinition = {
     { key: "nps.pesquisa_enviada", label: "Pesquisa Enviada", descricao: "Dispara quando pesquisas são disparadas", type: "button_action" },
   ],
   hasCredentialScopes: true,
+  hasDesignConfig: true,
+  designRoute: "/nps/design",
   setup: () => {
     for (const p of NPS_PERMISSIONS) {
       registerPermission({ key: p.key, label: p.label, description: p.description, group: p.group });
