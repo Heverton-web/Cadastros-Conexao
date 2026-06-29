@@ -1,5 +1,5 @@
 import { ClipboardCheck, Settings, FileText, Eye, Palette } from "lucide-react";
-import { registerModule, registerNavItem, registerPermission } from "~/registry";
+import { registerModule, registerNavItem, registerPermission, registerPermissionDefaults } from "~/registry";
 import type { ModuleDefinition } from "~/registry";
 import { NPS_PERMISSIONS } from "./permissions";
 
@@ -76,6 +76,29 @@ export const npsModule: ModuleDefinition = {
       permissionCheck: (perms) => perms?.nps_gerenciar_perguntas === true,
       order: 19,
       moduloKey: "nps-conexao",
+    });
+
+    registerPermissionDefaults("nps-conexao", {
+      cadastro: {
+        nps_ver_dashboard: true, nps_ver_respostas: true, nps_gerenciar_perguntas: true,
+        nps_gerenciar_webhooks: false, nps_excluir_respostas: false, nps_ver_relatorios: true,
+        nps_exportar_dados: true,
+      },
+      consultor: {
+        nps_ver_dashboard: false, nps_ver_respostas: false, nps_gerenciar_perguntas: false,
+        nps_gerenciar_webhooks: false, nps_excluir_respostas: false, nps_ver_relatorios: false,
+        nps_exportar_dados: false,
+      },
+      tecnologia: {
+        nps_ver_dashboard: true, nps_ver_respostas: true, nps_gerenciar_perguntas: true,
+        nps_gerenciar_webhooks: true, nps_excluir_respostas: true, nps_ver_relatorios: true,
+        nps_exportar_dados: true,
+      },
+      suporte: {
+        nps_ver_dashboard: false, nps_ver_respostas: false, nps_gerenciar_perguntas: false,
+        nps_gerenciar_webhooks: false, nps_excluir_respostas: false, nps_ver_relatorios: false,
+        nps_exportar_dados: false,
+      },
     });
   },
 };

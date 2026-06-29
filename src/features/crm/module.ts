@@ -1,5 +1,5 @@
 import { LayoutDashboard, Users, UserCheck, BarChart3, ArrowLeftRight, Crown } from "lucide-react";
-import { registerModule, registerNavItem, registerPermission } from "~/registry";
+import { registerModule, registerNavItem, registerPermission, registerPermissionDefaults } from "~/registry";
 import type { ModuleDefinition } from "~/registry";
 import { CRM_PERMISSIONS } from "./permissions";
 
@@ -98,6 +98,21 @@ export const crmModule: ModuleDefinition = {
       permissionCheck: (perms) => perms?.crm_diretoria === true,
       order: 55,
       moduloKey: "crm-conexao",
+    });
+
+    const crmAllTrue = {
+      crm_dashboard: true, crm_carteira: true, crm_cliente_detalhe: true,
+      crm_equipe: true, crm_bi: true, crm_transferencia: true,
+      crm_diretoria: true, crm_dev_convites: true, crm_dev_demo: true,
+      crm_dev_usuarios: true,
+    };
+    const crmAllFalse = Object.fromEntries(Object.keys(crmAllTrue).map((k) => [k, false]));
+
+    registerPermissionDefaults("crm-conexao", {
+      cadastro: crmAllTrue,
+      consultor: { ...crmAllFalse, crm_dashboard: true, crm_carteira: true, crm_cliente_detalhe: true, crm_equipe: true },
+      tecnologia: crmAllTrue,
+      suporte: crmAllFalse,
     });
   },
 };

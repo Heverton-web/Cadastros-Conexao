@@ -583,6 +583,9 @@ function ClienteDetailPage() {
             docs={docs}
             podeVisualizar={permissoes?.visualizar_documento === true}
             podeAcao={podeEditarCampos}
+            getTipoLabel={getTipoLabel}
+            getStatusLabel={(s) => DOC_STATUS_LABEL[s as keyof typeof DOC_STATUS_LABEL] || s}
+            getStatusColor={(s) => DOC_STATUS_COLOR[s as keyof typeof DOC_STATUS_COLOR] || "text-text-muted"}
             onAprovar={async (docId) => {
               try {
                 await aprovarDocumento(docId);

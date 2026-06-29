@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Capítulo 4 — Permissionamento Granular | ERP Conexão</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --navy: #0B1E33; --navy-light: #122a45; --gold: #D4AF37;
+  --gold-light: #e8cc6a; --blue: #004892; --white: #FFFFFF;
+  --gray: #8899aa; --card-bg: rgba(255,255,255,0.04);
+  --card-border: rgba(212,175,55,0.15);
+}
+body { font-family: 'Inter', sans-serif; background: var(--navy); color: var(--white); line-height: 1.7; }
+.container { max-width: 900px; margin: 0 auto; padding: 40px 24px 80px; }
+.top-nav { display: flex; align-items: center; justify-content: space-between; padding: 16px 24px; border-bottom: 1px solid var(--card-border); background: rgba(11,30,51,0.9); backdrop-filter: blur(8px); position: sticky; top: 0; z-index: 100; }
+.top-nav a { color: var(--gray); text-decoration: none; font-size: 0.9rem; display: flex; align-items: center; gap: 6px; transition: color 0.2s; }
+.top-nav a:hover { color: var(--gold); }
+.top-nav .logo { font-weight: 700; color: var(--white); }
+.top-nav .logo span { color: var(--gold); }
+h1 { font-size: 2.4rem; font-weight: 800; margin: 48px 0 8px; letter-spacing: -0.02em; }
+h1 + .subtitle { color: var(--gray); font-size: 1.1rem; margin-bottom: 40px; }
+h2 { font-size: 1.5rem; font-weight: 700; margin: 48px 0 16px; color: var(--gold); }
+h3 { font-size: 1.15rem; font-weight: 600; margin: 28px 0 12px; }
+p { margin-bottom: 16px; color: #ccd; }
+p strong { color: var(--white); }
+ul, ol { margin: 12px 0 20px 24px; color: #ccd; }
+li { margin-bottom: 6px; }
+li strong { color: var(--white); }
+.info-box { background: rgba(0,72,146,0.08); border: 1px solid rgba(0,72,146,0.2); border-radius: 12px; padding: 20px 24px; margin: 24px 0; }
+.info-box strong { color: #6ab0ff; }
+.warn-box { background: rgba(212,175,55,0.06); border: 1px solid rgba(212,175,55,0.2); border-radius: 12px; padding: 20px 24px; margin: 24px 0; }
+.warn-box strong { color: var(--gold); }
+hr { border: none; border-top: 1px solid var(--card-border); margin: 40px 0; }
+.bottom-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 60px; padding-top: 24px; border-top: 1px solid var(--card-border); }
+.bottom-nav a { color: var(--gold); text-decoration: none; font-weight: 600; display: flex; align-items: center; gap: 8px; transition: opacity 0.2s; }
+.bottom-nav a:hover { opacity: 0.8; }
+.bottom-nav .prev { color: var(--gray); }
+
+table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 0.85rem; }
+thead th { text-align: left; padding: 12px 16px; border-bottom: 2px solid var(--gold); color: var(--gold); font-weight: 700; }
+tbody td { padding: 10px 16px; border-bottom: 1px solid var(--card-border); color: #ccd; }
+tbody tr:hover { background: var(--card-bg); }
+td.code { font-family: 'Courier New', monospace; font-size: 0.78rem; color: var(--gold-light); }
+td.count { text-align: center; font-weight: 700; color: var(--white); }
+
+@media (max-width: 640px) { h1 { font-size: 1.6rem; } table { font-size: 0.75rem; } thead th, tbody td { padding: 8px 10px; } }
+</style>
+</head>
+<body>
+<nav class="top-nav">
+  <a href="index.html" class="logo">ERP <span>Conexão</span></a>
+  <a href="index.html">&larr; Índice</a>
+</nav>
+<div class="container">
+
+<h1>Capítulo 4<br>Permissionamento Granular</h1>
+<p class="subtitle">86+ permissões distribuídas em 8 módulos, controle de acesso por grupo, ambiente e Super Admin.</p>
+
+<h2>Visão Geral do Sistema</h2>
+<p>O ERP Conexão possui um sistema de permissões <strong>granular e modular</strong>. Cada ação ou página do sistema pode ser controlada individualmente. As permissões são armazenadas como um flat <code>Record&lt;string, boolean&gt;</code> e são carregadas no AuthProvider durante o login.</p>
+
+<p>Usuários com <code>is_super_admin = true</code> recebem automaticamente TODAS as permissões do sistema, sem necessidade de configuração individual.</p>
+
+<h2>Estrutura de Dados</h2>
+<div class="info-box">
+<strong>Tipo:</strong> <code>Permissoes = Record&lt;string, boolean&gt;</code> &bull;
+<strong>ModuloAcesso:</strong> <code>{ acessar: boolean; paginas: string[]; acoes: string[] }</code> &bull;
+<strong>ModulosAcesso:</strong> <code>Record&lt;string, ModuloAcesso&gt;</code>
+</div>
+
+<h2>Permissões por Módulo</h2>
+
+<table>
+<thead>
+<tr><th>Módulo</th><th>Permissões</th><th>Qtd</th></tr>
+</thead>
+<tbody>
+<tr><td>Cadastros</td><td class="code">ver_todos_cadastros, ver_relatorios, visualizar_documento, aprovar_cadastro, reprovar_cadastro, solicitar_correcao_cadastro, aprovar_documento, reprovar_documento, solicitar_correcao_documento, aprovar_campo, reprovar_campo, solicitar_correcao_campo, gerenciar_credenciais, gerenciar_credenciais_admin, excluir_cadastro, gerenciar_config, gerar_links</td><td class="count">17</td></tr>
+<tr><td>CRM</td><td class="code">crm_dashboard, crm_carteira, crm_cliente_detalhe, crm_equipe, crm_bi, crm_transferencia, crm_diretoria, crm_dev_convites, crm_dev_demo, crm_dev_usuarios</td><td class="count">10</td></tr>
+<tr><td>Hub</td><td class="code">hub_ver_materiais, hub_criar_material, hub_editar_material, hub_excluir_material, hub_gerenciar_assets, hub_publicar_material, hub_ver_acessos_material, hub_exportar_materiais, hub_ver_trilhas, hub_criar_trilha, hub_editar_trilha, hub_excluir_trilha, hub_gerenciar_itens_trilha, hub_compartilhar_trilha, hub_ver_ranking, hub_gerenciar_badges, hub_gerenciar_niveis, hub_ver_conquistas, hub_ver_usuarios, hub_editar_usuario, hub_aprovar_usuario, hub_gerenciar_convites, hub_ver_analytics, hub_gerenciar_config, hub_gerenciar_integracoes, hub_gerenciar_chatbot, hub_gerenciar_webhooks_hub</td><td class="count">27</td></tr>
+<tr><td>NPS</td><td class="code">nps_ver_dashboard, nps_ver_respostas, nps_gerenciar_perguntas, nps_gerenciar_webhooks, nps_excluir_respostas, nps_ver_relatorios, nps_exportar_dados</td><td class="count">7</td></tr>
+<tr><td>Funis</td><td class="code">funis_ver_dashboard, funis_criar_funil, funis_editar_funil, funis_excluir_funil, funis_gerir_colunas, funis_gerir_tarefas, funis_compartilhar, funis_ver_relatorios</td><td class="count">8</td></tr>
+<tr><td>LinkTree</td><td class="code">lt_ver_dashboard, lt_criar_colaborador, lt_editar_colaborador, lt_excluir_colaborador, lt_toggle_status, lt_ver_link, lt_ver_qr, lt_baixar_qr, lt_gerenciar_tema</td><td class="count">9</td></tr>
+<tr><td>Mapas</td><td class="code">mapas_ver_mapa_publico, mapas_gerir_distribuidores, mapas_gerir_consultores, mapas_ver_insights, mapas_gerir_webhooks</td><td class="count">5</td></tr>
+</tbody>
+</table>
+
+<h2>Como as Permissões são Aplicadas</h2>
+
+<h3>1. Registro Centralizado</h3>
+<p>Cada módulo registra suas permissões no <strong>registry</strong> através da função <code>registerPermission()</code>, informando key, label, descrição e grupo.</p>
+
+<h3>2. AuthProvider</h3>
+<p>No login, o <code>AuthProvider</code> carrega as permissões do usuário e as armazena como um objeto plano. O Super Admin ganha acesso total automaticamente:</p>
+<div class="info-box">
+<strong>Super Admin:</strong> Se <code>profile.is_super_admin === true</code>, todas as permissões são atribuídas como <code>true</code>.
+</div>
+
+<h3>3. Navegação Filtrada</h3>
+<p>O hook <code>useNavItems()</code> em <code>src/components/layout/useNavItems.ts</code> filtra os itens de navegação com base nas permissões do usuário. Cada <code>NavItemRegistration</code> possui uma função <code>permissionCheck</code> que determina se o item deve aparecer.</p>
+
+<h3>4. Controle em Páginas</h3>
+<p>Individualmente, cada página pode verificar permissões específicas para liberar ou ocultar funcionalidades, botões e seções.</p>
+
+<h2>Grupos de Permissões (Cadastros - Exemplo)</h2>
+<ul>
+  <li><strong>Escopo de Dados</strong> — <code>ver_todos_cadastros</code></li>
+  <li><strong>Visualização</strong> — <code>ver_relatorios</code>, <code>visualizar_documento</code></li>
+  <li><strong>Aprovação de Cadastro</strong> — <code>aprovar_cadastro</code>, <code>reprovar_cadastro</code>, <code>solicitar_correcao_cadastro</code></li>
+  <li><strong>Aprovação de Documentos</strong> — <code>aprovar_documento</code>, <code>reprovar_documento</code>, <code>solicitar_correcao_documento</code></li>
+  <li><strong>Aprovação de Campos</strong> — <code>aprovar_campo</code>, <code>reprovar_campo</code>, <code>solicitar_correcao_campo</code></li>
+  <li><strong>Credenciais</strong> — <code>gerenciar_credenciais</code>, <code>gerenciar_credenciais_admin</code></li>
+  <li><strong>Administração</strong> — <code>excluir_cadastro</code>, <code>gerenciar_config</code>, <code>gerar_links</code></li>
+</ul>
+
+<h2>Ambientes vs Permissões</h2>
+<p>Além das permissões individuais, cada usuário possui um <strong>ambiente</strong> que define seu contexto de atuação. Um usuário do ambiente <em>consultor</em> pode ter permissões diferentes de um usuário do ambiente <em>cadastro</em>, mesmo dentro da mesma empresa. Os ambientes são:</p>
+<ul>
+  <li><strong>cadastro</strong> — Acesso operacional aos cadastros</li>
+  <li><strong>consultor</strong> — Acesso às ferramentas de campo (CRM, visitas)</li>
+  <li><strong>tecnologia</strong> — Acesso técnico e de configuração</li>
+  <li><strong>suporte</strong> — Acesso limitado para suporte</li>
+  <li><strong>ambos</strong> — Acesso a múltiplos contextos</li>
+</ul>
+
+<div class="bottom-nav">
+  <a href="capitulo-3.html" class="prev">&larr; Capítulo 3</a>
+  <a href="capitulo-5.html">Capítulo 5: Módulos do Sistema &rarr;</a>
+</div>
+
+</div>
+</body>
+</html>

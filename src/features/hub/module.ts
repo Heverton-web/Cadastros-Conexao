@@ -1,5 +1,5 @@
 import { BookOpen, LayoutDashboard, GraduationCap, Trophy, Settings, Users, BarChart3, Bot, FileText, Medal, Star } from "lucide-react";
-import { registerModule, registerNavItem, registerPermission } from "~/registry";
+import { registerModule, registerNavItem, registerPermission, registerPermissionDefaults } from "~/registry";
 import type { ModuleDefinition } from "~/registry";
 import { HUB_PERMISSIONS } from "./permissions";
 
@@ -227,6 +227,26 @@ export const hubModule: ModuleDefinition = {
       permissionCheck: isAdmin,
       order: 61,
       moduloKey: "hub-conexao",
+    });
+
+    const hubAllTrue = {
+      hub_ver_materiais: true, hub_criar_material: true, hub_editar_material: true,
+      hub_excluir_material: true, hub_gerenciar_assets: true, hub_publicar_material: true,
+      hub_ver_acessos_material: true, hub_exportar_materiais: true, hub_ver_trilhas: true,
+      hub_criar_trilha: true, hub_editar_trilha: true, hub_excluir_trilha: true,
+      hub_gerenciar_itens_trilha: true, hub_compartilhar_trilha: true, hub_ver_ranking: true,
+      hub_gerenciar_badges: true, hub_gerenciar_niveis: true, hub_ver_conquistas: true,
+      hub_ver_usuarios: true, hub_editar_usuario: true, hub_aprovar_usuario: true,
+      hub_gerenciar_convites: true, hub_ver_analytics: true, hub_gerenciar_config: true,
+      hub_gerenciar_integracoes: true, hub_gerenciar_chatbot: true, hub_gerenciar_webhooks_hub: true,
+    };
+    const hubAllFalse = Object.fromEntries(Object.keys(hubAllTrue).map((k) => [k, false]));
+
+    registerPermissionDefaults("hub-conexao", {
+      cadastro: hubAllTrue,
+      consultor: { ...hubAllFalse, hub_ver_materiais: true, hub_ver_ranking: true, hub_ver_conquistas: true },
+      tecnologia: hubAllTrue,
+      suporte: hubAllFalse,
     });
   },
 };

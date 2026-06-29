@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manual do ERP Conexão — Índice</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --navy: #0B1E33;
+  --navy-light: #122a45;
+  --gold: #D4AF37;
+  --gold-light: #e8cc6a;
+  --blue: #004892;
+  --white: #FFFFFF;
+  --gray: #8899aa;
+  --card-bg: rgba(255,255,255,0.04);
+  --card-border: rgba(212,175,55,0.15);
+}
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Inter', -apple-system, sans-serif;
+  background: var(--navy);
+  color: var(--white);
+  min-height: 100vh;
+  line-height: 1.6;
+}
+.container { max-width: 1200px; margin: 0 auto; padding: 40px 24px; }
+
+/* Hero */
+.hero {
+  text-align: center;
+  padding: 80px 24px 60px;
+  background: linear-gradient(180deg, var(--navy) 0%, rgba(0,72,146,0.15) 100%);
+  border-bottom: 1px solid var(--card-border);
+}
+.hero h1 { font-size: 3rem; font-weight: 800; letter-spacing: -0.02em; }
+.hero h1 span { color: var(--gold); }
+.hero p { font-size: 1.15rem; color: var(--gray); margin-top: 12px; max-width: 600px; margin-inline: auto; }
+.hero .badge {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 6px 18px;
+  border: 1px solid var(--gold);
+  border-radius: 20px;
+  color: var(--gold);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+
+/* Grid de capítulos */
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 20px; margin-top: 48px; }
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  padding: 28px 24px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 4px;
+  height: 100%;
+  background: var(--gold);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.card:hover { border-color: var(--gold); transform: translateY(-2px); background: rgba(255,255,255,0.06); }
+.card:hover::before { opacity: 1; }
+.card .numero {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--gold);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 8px;
+}
+.card h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 8px; }
+.card p { font-size: 0.9rem; color: var(--gray); line-height: 1.5; }
+.card .icon-wrap {
+  width: 44px; height: 44px;
+  border-radius: 12px;
+  background: rgba(212,175,55,0.1);
+  border: 1px solid rgba(212,175,55,0.2);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.4rem;
+  margin-bottom: 16px;
+}
+
+/* Info footer */
+.footer-info {
+  text-align: center;
+  margin-top: 60px;
+  padding-top: 32px;
+  border-top: 1px solid var(--card-border);
+  color: var(--gray);
+  font-size: 0.85rem;
+}
+.footer-info strong { color: var(--gold); }
+
+@media (max-width: 640px) {
+  .hero h1 { font-size: 2rem; }
+  .grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <div class="badge">v27 — 2026</div>
+  <h1>ERP <span>Conexão</span></h1>
+  <p>Manual completo da aplicação — arquitetura, módulos, permissões e navegação</p>
+</section>
+
+<div class="container">
+
+<div class="grid">
+
+  <a href="capitulo-1.html" class="card">
+    <div class="icon-wrap">&#9881;</div>
+    <div class="numero">Capítulo 1</div>
+    <h3>Visão Geral</h3>
+    <p>O que é o ERP Conexão, objetivos de negócio, público-alvo e stack tecnológica</p>
+  </a>
+
+  <a href="capitulo-2.html" class="card">
+    <div class="icon-wrap">&#9733;</div>
+    <div class="numero">Capítulo 2</div>
+    <h3>Arquitetura & Estrutura</h3>
+    <p>Organização do projeto, frameworks, pastas, registro de módulos e fluxo de navegação</p>
+  </a>
+
+  <a href="capitulo-3.html" class="card">
+    <div class="icon-wrap">&#9632;</div>
+    <div class="numero">Capítulo 3</div>
+    <h3>Multiempresa & Isolamento</h3>
+    <p>Arquitetura multiempresa, isolamento de dados por tenant, RLS e escopos de dados</p>
+  </a>
+
+  <a href="capitulo-4.html" class="card">
+    <div class="icon-wrap">&#9883;</div>
+    <div class="numero">Capítulo 4</div>
+    <h3>Permissionamento Granular</h3>
+    <p>Sistema de permissões, grupos, Super Admin, modulações por ambiente e controle de acesso</p>
+  </a>
+
+  <a href="capitulo-5.html" class="card">
+    <div class="icon-wrap">&#9635;</div>
+    <div class="numero">Capítulo 5</div>
+    <h3>Módulos do Sistema</h3>
+    <p>Cadastros, CRM, Mapas, NPS, Funis, LinkTree, Hub — rotas, funcionalidades e permissões</p>
+  </a>
+
+  <a href="capitulo-6.html" class="card">
+    <div class="icon-wrap">&#9733;</div>
+    <div class="numero">Capítulo 6</div>
+    <h3>Super Admin</h3>
+    <p>Módulos exclusivos: gestão de empresas, módulos, permissões globais, banco de dados e laboratório</p>
+  </a>
+
+</div>
+
+<div class="footer-info">
+  <strong>ERP Conexão</strong> &mdash; Documentação do Sistema &mdash; <strong>v27</strong>
+</div>
+
+</div>
+
+</body>
+</html>

@@ -1,7 +1,7 @@
 import {
   LayoutDashboard, Users, UserCircle, BarChart3, Settings, Globe,
 } from "lucide-react";
-import { registerModule, registerNavItem, registerPermission } from "~/registry";
+import { registerModule, registerNavItem, registerPermission, registerPermissionDefaults } from "~/registry";
 import type { ModuleDefinition } from "~/registry";
 import { ALL_PERMISSIONS } from "./permissions";
 
@@ -89,5 +89,39 @@ export const cadastrosModule: ModuleDefinition = {
       moduloKey: "cadastros-conexao",
     });
 
+    registerPermissionDefaults("cadastros-conexao", {
+      cadastro: {
+        ver_todos_cadastros: true, aprovar_cadastro: true, reprovar_cadastro: true,
+        solicitar_correcao_cadastro: true, aprovar_documento: true, reprovar_documento: true,
+        solicitar_correcao_documento: true, aprovar_campo: true, reprovar_campo: true,
+        solicitar_correcao_campo: true, visualizar_documento: true, excluir_cadastro: false,
+        gerenciar_credenciais: false, gerenciar_credenciais_admin: false, gerenciar_config: false,
+        gerar_links: false, ver_relatorios: true,
+      },
+      consultor: {
+        ver_todos_cadastros: false, aprovar_cadastro: false, reprovar_cadastro: false,
+        solicitar_correcao_cadastro: false, aprovar_documento: false, reprovar_documento: false,
+        solicitar_correcao_documento: false, aprovar_campo: false, reprovar_campo: false,
+        solicitar_correcao_campo: false, visualizar_documento: false, excluir_cadastro: false,
+        gerenciar_credenciais: false, gerenciar_credenciais_admin: false, gerenciar_config: false,
+        gerar_links: true, ver_relatorios: true,
+      },
+      tecnologia: {
+        ver_todos_cadastros: false, aprovar_cadastro: false, reprovar_cadastro: false,
+        solicitar_correcao_cadastro: false, aprovar_documento: false, reprovar_documento: false,
+        solicitar_correcao_documento: false, aprovar_campo: false, reprovar_campo: false,
+        solicitar_correcao_campo: false, visualizar_documento: false, excluir_cadastro: false,
+        gerenciar_credenciais: true, gerenciar_credenciais_admin: true, gerenciar_config: false,
+        gerar_links: false, ver_relatorios: false,
+      },
+      suporte: {
+        ver_todos_cadastros: false, aprovar_cadastro: false, reprovar_cadastro: false,
+        solicitar_correcao_cadastro: false, aprovar_documento: false, reprovar_documento: false,
+        solicitar_correcao_documento: false, aprovar_campo: false, reprovar_campo: false,
+        solicitar_correcao_campo: false, visualizar_documento: false, excluir_cadastro: false,
+        gerenciar_credenciais: true, gerenciar_credenciais_admin: false, gerenciar_config: false,
+        gerar_links: false, ver_relatorios: false,
+      },
+    });
   },
 };

@@ -1,5 +1,5 @@
 import { GitBranch, LayoutDashboard } from "lucide-react";
-import { registerModule, registerNavItem, registerPermission } from "~/registry";
+import { registerModule, registerNavItem, registerPermission, registerPermissionDefaults } from "~/registry";
 import type { ModuleDefinition } from "~/registry";
 import { FUNIS_PERMISSIONS } from "./permissions";
 
@@ -39,6 +39,29 @@ export const funisModule: ModuleDefinition = {
       permissionCheck: (perms) => perms?.funis_ver_dashboard === true,
       order: 20,
       moduloKey: "funis-conexao",
+    });
+
+    registerPermissionDefaults("funis-conexao", {
+      cadastro: {
+        funis_ver_dashboard: true, funis_criar_funil: true, funis_editar_funil: true,
+        funis_excluir_funil: false, funis_gerir_colunas: true, funis_gerir_tarefas: true,
+        funis_compartilhar: true, funis_ver_relatorios: true,
+      },
+      consultor: {
+        funis_ver_dashboard: true, funis_criar_funil: false, funis_editar_funil: false,
+        funis_excluir_funil: false, funis_gerir_colunas: false, funis_gerir_tarefas: true,
+        funis_compartilhar: false, funis_ver_relatorios: false,
+      },
+      tecnologia: {
+        funis_ver_dashboard: true, funis_criar_funil: true, funis_editar_funil: true,
+        funis_excluir_funil: true, funis_gerir_colunas: true, funis_gerir_tarefas: true,
+        funis_compartilhar: true, funis_ver_relatorios: true,
+      },
+      suporte: {
+        funis_ver_dashboard: false, funis_criar_funil: false, funis_editar_funil: false,
+        funis_excluir_funil: false, funis_gerir_colunas: false, funis_gerir_tarefas: false,
+        funis_compartilhar: false, funis_ver_relatorios: false,
+      },
     });
   },
 };

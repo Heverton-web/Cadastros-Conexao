@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Capítulo 5 — Módulos do Sistema | ERP Conexão</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --navy: #0B1E33; --navy-light: #122a45; --gold: #D4AF37;
+  --gold-light: #e8cc6a; --blue: #004892; --white: #FFFFFF;
+  --gray: #8899aa; --card-bg: rgba(255,255,255,0.04);
+  --card-border: rgba(212,175,55,0.15);
+}
+body { font-family: 'Inter', sans-serif; background: var(--navy); color: var(--white); line-height: 1.7; }
+.container { max-width: 960px; margin: 0 auto; padding: 40px 24px 80px; }
+.top-nav { display: flex; align-items: center; justify-content: space-between; padding: 16px 24px; border-bottom: 1px solid var(--card-border); background: rgba(11,30,51,0.9); backdrop-filter: blur(8px); position: sticky; top: 0; z-index: 100; }
+.top-nav a { color: var(--gray); text-decoration: none; font-size: 0.9rem; display: flex; align-items: center; gap: 6px; transition: color 0.2s; }
+.top-nav a:hover { color: var(--gold); }
+.top-nav .logo { font-weight: 700; color: var(--white); }
+.top-nav .logo span { color: var(--gold); }
+h1 { font-size: 2.4rem; font-weight: 800; margin: 48px 0 8px; letter-spacing: -0.02em; }
+h1 + .subtitle { color: var(--gray); font-size: 1.1rem; margin-bottom: 40px; }
+h2 { font-size: 1.5rem; font-weight: 700; margin: 56px 0 16px; color: var(--gold); padding-bottom: 8px; border-bottom: 1px solid var(--card-border); }
+h3 { font-size: 1.15rem; font-weight: 600; margin: 28px 0 12px; }
+p { margin-bottom: 16px; color: #ccd; }
+p strong { color: var(--white); }
+ul, ol { margin: 12px 0 20px 24px; color: #ccd; }
+li { margin-bottom: 6px; }
+li strong { color: var(--white); }
+
+.module-card {
+  background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 14px;
+  padding: 28px; margin: 28px 0;
+}
+.module-card h3 { margin-top: 0; font-size: 1.2rem; display: flex; align-items: center; gap: 10px; }
+.module-card h3 .icon { font-size: 1.3rem; }
+.module-card .meta { display: flex; gap: 8px; flex-wrap: wrap; margin: 8px 0 16px; }
+.module-card .tag { display: inline-block; padding: 3px 10px; border-radius: 10px; font-size: 0.75rem; font-weight: 600; }
+.module-card .tag.gold { background: rgba(212,175,55,0.12); color: var(--gold); border: 1px solid rgba(212,175,55,0.2); }
+.module-card .tag.blue { background: rgba(0,72,146,0.12); color: #6ab0ff; border: 1px solid rgba(0,72,146,0.2); }
+.module-card .tag.gray { background: rgba(255,255,255,0.05); color: var(--gray); border: 1px solid rgba(255,255,255,0.08); }
+.module-card .route-list { margin: 12px 0 0; list-style: none; margin-left: 0; }
+.module-card .route-list li { font-family: 'Courier New', monospace; font-size: 0.82rem; color: var(--gold-light); margin-bottom: 4px; padding: 4px 8px; background: rgba(0,0,0,0.2); border-radius: 4px; display: inline-block; margin-right: 6px; }
+.module-card .route-list li .desc { font-family: 'Inter', sans-serif; color: var(--gray); font-size: 0.78rem; }
+
+.perm-list { display: flex; flex-wrap: wrap; gap: 4px; margin: 8px 0; }
+.perm-list .perm { font-size: 0.72rem; padding: 2px 8px; border-radius: 8px; background: rgba(212,175,55,0.06); border: 1px solid rgba(212,175,55,0.12); color: var(--gold-light); }
+
+hr { border: none; border-top: 1px solid var(--card-border); margin: 40px 0; }
+.bottom-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 60px; padding-top: 24px; border-top: 1px solid var(--card-border); }
+.bottom-nav a { color: var(--gold); text-decoration: none; font-weight: 600; display: flex; align-items: center; gap: 8px; transition: opacity 0.2s; }
+.bottom-nav a:hover { opacity: 0.8; }
+.bottom-nav .prev { color: var(--gray); }
+
+@media (max-width: 640px) { h1 { font-size: 1.6rem; } .module-card { padding: 20px; } }
+</style>
+</head>
+<body>
+<nav class="top-nav">
+  <a href="index.html" class="logo">ERP <span>Conexão</span></a>
+  <a href="index.html">&larr; Índice</a>
+</nav>
+<div class="container">
+
+<h1>Capítulo 5<br>Módulos do Sistema</h1>
+<p class="subtitle">Detalhamento completo de cada módulo: funcionalidades, rotas de navegação e permissões.</p>
+
+<!-- ==================== CADASTROS ==================== -->
+<h2>Cadastros</h2>
+<div class="module-card">
+  <h3><span class="icon">&#9783;</span> Módulo de Cadastros</h3>
+  <p>Gerencia profissionais da saúde (cirurgiões-dentistas), distribuidores e consultores. Inclui fluxo completo de aprovação de cadastros, documentos e campos personalizados, além de geração de credenciais e relatórios.</p>
+  <div class="meta">
+    <span class="tag gold">Key: cadastros-conexao</span>
+    <span class="tag blue">Ambientes: cadastro, consultor</span>
+  </div>
+  <p><strong>Funcionalidades:</strong></p>
+  <ul>
+    <li>Cadastro de pessoas físicas (PF) e jurídicas (PJ)</li>
+    <li>Upload e aprovação de documentos</li>
+    <li>Aprovação de campos customizados</li>
+    <li>Gerenciamento de credenciais de acesso</li>
+    <li>Relatórios de cadastro</li>
+    <li>Geração de links de pré-cadastro</li>
+    <li>Exclusão e configuração de cadastros</li>
+  </ul>
+  <p><strong>Rotas:</strong></p>
+  <ul class="route-list">
+    <li>/dashboard <span class="desc">— Dashboard principal (misto com empresas)</span></li>
+    <li>/clientes <span class="desc">— Listagem de clientes</span></li>
+    <li>/clientes/$id <span class="desc">— Detalhe do cliente</span></li>
+    <li>/consultor <span class="desc">— Painel do consultor</span></li>
+    <li>/consultor/clientes <span class="desc">— Clientes do consultor</span></li>
+    <li>/relatorios <span class="desc">— Relatórios</span></li>
+    <li>/credenciais <span class="desc">— Credenciais</span></li>
+  </ul>
+  <p><strong>Permissões (17):</strong></p>
+  <div class="perm-list">
+    <span class="perm">ver_todos_cadastros</span>
+    <span class="perm">ver_relatorios</span>
+    <span class="perm">visualizar_documento</span>
+    <span class="perm">aprovar_cadastro</span>
+    <span class="perm">reprovar_cadastro</span>
+    <span class="perm">solicitar_correcao_cadastro</span>
+    <span class="perm">aprovar_documento</span>
+    <span class="perm">reprovar_documento</span>
+    <span class="perm">solicitar_correcao_documento</span>
+    <span class="perm">aprovar_campo</span>
+    <span class="perm">reprovar_campo</span>
+    <span class="perm">solicitar_correcao_campo</span>
+    <span class="perm">gerenciar_credenciais</span>
+    <span class="perm">gerenciar_credenciais_admin</span>
+    <span class="perm">excluir_cadastro</span>
+    <span class="perm">gerenciar_config</span>
+    <span class="perm">gerar_links</span>
+  </div>
+</div>
+
+<!-- ==================== CRM ==================== -->
+<h2>CRM</h2>
+<div class="module-card">
+  <h3><span class="icon">&#9782;</span> Módulo CRM</h3>
+  <p>Gestão completa do relacionamento com clientes: carteira de clientes, visitas comerciais, equipe, BI, transferência de consultores e diretoria.</p>
+  <div class="meta">
+    <span class="tag gold">Key: crm-conexao</span>
+    <span class="tag blue">Ambientes: cadastro, consultor</span>
+  </div>
+  <p><strong>Funcionalidades:</strong></p>
+  <ul>
+    <li>Dashboard com indicadores de desempenho</li>
+    <li>Carteira de clientes com filtros e busca</li>
+    <li>Detalhamento de cliente com histórico de visitas</li>
+    <li>Gestão de equipe e metas</li>
+    <li>BI com gráficos e análises</li>
+    <li>Transferência de consultores entre carteiras</li>
+    <li>Diretoria: visão gerencial de múltiplos gestores</li>
+    <li>Área DEV: convites, demo e usuários</li>
+    <li>Aceite de convite via token</li>
+  </ul>
+  <p><strong>Rotas:</strong></p>
+  <ul class="route-list">
+    <li>/crm/dashboard <span class="desc">— Dashboard CRM</span></li>
+    <li>/crm/carteira <span class="desc">— Carteira de clientes</span></li>
+    <li>/crm/cliente/$id <span class="desc">— Detalhe do cliente</span></li>
+    <li>/crm/equipe <span class="desc">— Gestão de equipe</span></li>
+    <li>/crm/bi <span class="desc">— BI e análises</span></li>
+    <li>/crm/transferencia <span class="desc">— Transferência de consultores</span></li>
+    <li>/crm/transferencia/consultores <span class="desc">— Consultores disponíveis</span></li>
+    <li>/crm/diretoria <span class="desc">— Painel da diretoria</span></li>
+    <li>/crm/diretoria/gestor/$id <span class="desc">— Detalhe do gestor</span></li>
+    <li>/crm/dev/convites <span class="desc">— Conites de acesso</span></li>
+    <li>/crm/dev/demo <span class="desc">— Modo demo CRM</span></li>
+    <li>/crm/dev/usuarios <span class="desc">— Usuários do CRM</span></li>
+    <li>/crm/aceitar-convite/$token <span class="desc">— Página pública de aceite</span></li>
+  </ul>
+  <p><strong>Permissões (10):</strong></p>
+  <div class="perm-list">
+    <span class="perm">crm_dashboard</span>
+    <span class="perm">crm_carteira</span>
+    <span class="perm">crm_cliente_detalhe</span>
+    <span class="perm">crm_equipe</span>
+    <span class="perm">crm_bi</span>
+    <span class="perm">crm_transferencia</span>
+    <span class="perm">crm_diretoria</span>
+    <span class="perm">crm_dev_convites</span>
+    <span class="perm">crm_dev_demo</span>
+    <span class="perm">crm_dev_usuarios</span>
+  </div>
+</div>
+
+<!-- ==================== MAPAS ==================== -->
+<h2>Mapas</h2>
+<div class="module-card">
+  <h3><span class="icon">&#9781;</span> Módulo Mapas Interativos</h3>
+  <p>Mapas georreferenciados para visualização de distribuidores e consultores por região. Inclui gestão de pontos no mapa, insights regionais e relatórios geográficos.</p>
+  <div class="meta">
+    <span class="tag gold">Key: mapas-interativos</span>
+    <span class="tag blue">Ambientes: cadastro, consultor, tecnologia</span>
+  </div>
+  <p><strong>Funcionalidades:</strong></p>
+  <ul>
+    <li>Mapa público com distribuidores e consultores</li>
+    <li>Gestão de pontos de distribuidores</li>
+    <li>Gestão de pontos de consultores</li>
+    <li>Visão gerencial do mapa</li>
+    <li>Insights e análises geográficas</li>
+    <li>Sub-rotas de gestão (distribuidores e consultores)</li>
+  </ul>
+  <p><strong>Rotas:</strong></p>
+  <ul class="route-list">
+    <li>/mapas <span class="desc">— Mapa principal</span></li>
+    <li>/mapas/distribuidores <span class="desc">— Distribuidores no mapa</span></li>
+    <li>/mapas/consultores <span class="desc">— Consultores no mapa</span></li>
+    <li>/mapas/gestao <span class="desc">— Gestão de mapas</span></li>
+    <li>/mapas/insights <span class="desc">— Insights geográficos</span></li>
+    <li>/mapas/gestao/distribuidores <span class="desc">— Gestão de distribuidores</span></li>
+    <li>/mapas/gestao/consultores <span class="desc">— Gestão de consultores</span></li>
+  </ul>
+  <p><strong>Permissões (5):</strong></p>
+  <div class="perm-list">
+    <span class="perm">mapas_ver_mapa_publico</span>
+    <span class="perm">mapas_gerir_distribuidores</span>
+    <span class="perm">mapas_gerir_consultores</span>
+    <span class="perm">mapas_ver_insights</span>
+    <span class="perm">mapas_gerir_webhooks</span>
+  </div>
+</div>
+
+<!-- ==================== NPS ==================== -->
+<h2>NPS</h2>
+<div class="module-card">
+  <h3><span class="icon">&#10003;</span> Módulo NPS Conexão</h3>
+  <p>Pesquisas de satisfação Net Promoter Score. Permite criar pesquisas, coletar respostas (inclusive via link público), visualizar dashboards, relatórios e exportar dados.</p>
+  <div class="meta">
+    <span class="tag gold">Key: nps-conexao</span>
+    <span class="tag blue">Ambientes: cadastro, tecnologia</span>
+  </div>
+  <p><strong>Funcionalidades:</strong></p>
+  <ul>
+    <li>Dashboard de métricas NPS</li>
+    <li>Pesquisas personalizadas</li>
+    <li>Preview do formulário de pesquisa</li>
+    <li>Relatórios detalhados</li>
+    <li>Tema visual da pesquisa (customizável)</li>
+    <li>Webhooks para integração</li>
+    <li>Rota pública para resposta: <code>/nps/survey</code></li>
+  </ul>
+  <p><strong>Rotas:</strong></p>
+  <ul class="route-list">
+    <li>/nps <span class="desc">— Hub NPS</span></li>
+    <li>/nps/dashboard <span class="desc">— Dashboard</span></li>
+    <li>/nps/pesquisas <span class="desc">— Pesquisas</span></li>
+    <li>/nps/relatorios <span class="desc">— Relatórios</span></li>
+    <li>/nps/preview <span class="desc">— Preview do formulário</span></li>
+    <li>/nps/tema <span class="desc">— Tema visual</span></li>
+    <li>/nps/survey <span class="desc">— Página pública de resposta</span></li>
+  </ul>
+  <p><strong>Permissões (7):</strong></p>
+  <div class="perm-list">
+    <span class="perm">nps_ver_dashboard</span>
+    <span class="perm">nps_ver_respostas</span>
+    <span class="perm">nps_gerenciar_perguntas</span>
+    <span class="perm">nps_gerenciar_webhooks</span>
+    <span class="perm">nps_excluir_respostas</span>
+    <span class="perm">nps_ver_relatorios</span>
+    <span class="perm">nps_exportar_dados</span>
+  </div>
+</div>
+
+<!-- ==================== FUNIS ==================== -->
+<h2>Funis</h2>
+<div class="module-card">
+  <h3><span class="icon">&#9776;</span> Módulo Funis (Kanban)</h3>
+  <p>Sistema Kanban para gestão de processos e tarefas. Criação de funis, colunas e tarefas com arrastar e soltar, compartilhamento e relatórios.</p>
+  <div class="meta">
+    <span class="tag gold">Key: funis-conexao</span>
+    <span class="tag blue">Ambientes: cadastro, consultor, tecnologia</span>
+  </div>
+  <p><strong>Funcionalidades:</strong></p>
+  <ul>
+    <li>Dashboard de funis</li>
+    <li>Criação e edição de funis</li>
+    <li>Gestão de colunas (estágios)</li>
+    <li>Gestão de tarefas com drag-and-drop</li>
+    <li>Compartilhamento de funis</li>
+    <li>Relatórios de produtividade</li>
+  </ul>
+  <p><strong>Rotas:</strong></p>
+  <ul class="route-list">
+    <li>/funis <span class="desc">— Hub Funis</span></li>
+    <li>/funis/dashboard <span class="desc">— Dashboard</span></li>
+    <li>/funis/funil/$funilId <span class="desc">— Detalhe do funil</span></li>
+  </ul>
+  <p><strong>Permissões (8):</strong></p>
+  <div class="perm-list">
+    <span class="perm">funis_ver_dashboard</span>
+    <span class="perm">funis_criar_funil</span>
+    <span class="perm">funis_editar_funil</span>
+    <span class="perm">funis_excluir_funil</span>
+    <span class="perm">funis_gerir_colunas</span>
+    <span class="perm">funis_gerir_tarefas</span>
+    <span class="perm">funis_compartilhar</span>
+    <span class="perm">funis_ver_relatorios</span>
+  </div>
+</div>
+
+<!-- ==================== LINKTREE ==================== -->
+<h2>LinkTree</h2>
+<div class="module-card">
+  <h3><span class="icon">&#8862;</span> Módulo LinkTree</h3>
+  <p>Plataforma de links inteligentes para profissionais. Cada usuário pode ter sua própria página de links (tipo Linktree) com tema personalizado e QR code.</p>
+  <div class="meta">
+    <span class="tag gold">Key: linktree-conexao</span>
+    <span class="tag blue">Ambientes: cadastro, consultor</span>
+  </div>
+  <p><strong>Funcionalidades:</strong></p>
+  <ul>
+    <li>Dashboard com métricas de cliques</li>
+    <li>Criação e edição de colaboradores</li>
+    <li>Ativar/desativar perfil</li>
+    <li>Geração de link público</li>
+    <li>QR code para download</li>
+    <li>Tema visual customizado</li>
+    <li>Rota pública: <code>/linktree/$id</code></li>
+  </ul>
+  <p><strong>Rotas:</strong></p>
+  <ul class="route-list">
+    <li>/linktree/dashboard <span class="desc">— Dashboard LinkTree</span></li>
+    <li>/linktree/tema <span class="desc">— Tema visual</span></li>
+    <li>/linktree/$id <span class="desc">— Página pública do link</span></li>
+  </ul>
+  <p><strong>Permissões (9):</strong></p>
+  <div class="perm-list">
+    <span class="perm">lt_ver_dashboard</span>
+    <span class="perm">lt_criar_colaborador</span>
+    <span class="perm">lt_editar_colaborador</span>
+    <span class="perm">lt_excluir_colaborador</span>
+    <span class="perm">lt_toggle_status</span>
+    <span class="perm">lt_ver_link</span>
+    <span class="perm">lt_ver_qr</span>
+    <span class="perm">lt_baixar_qr</span>
+    <span class="perm">lt_gerenciar_tema</span>
+  </div>
+</div>
+
+<!-- ==================== HUB ==================== -->
+<h2>Hub</h2>
+<div class="module-card">
+  <h3><span class="icon">&#9775;</span> Módulo Hub (Plataforma de Treinamento)</h3>
+  <p>Plataforma completa de educação e treinamento. Permite criar materiais, trilhas de aprendizado, gamificação com badges e níveis, rankings e chatbot de suporte. Disponível em 4 perfis de acesso.</p>
+  <div class="meta">
+    <span class="tag gold">Key: hub-conexao</span>
+    <span class="tag blue">Ambientes: cadastro, consultor, tecnologia</span>
+  </div>
+
+  <p><strong>Funcionalidades por Perfil:</strong></p>
+
+  <p><strong>Administrador Hub:</strong></p>
+  <ul>
+    <li>Dashboard administrativo</li>
+    <li>Gestão de materiais (criar, editar, publicar, assets)</li>
+    <li>Gestão de trilhas de aprendizado</li>
+    <li>Analytics de uso e acesso</li>
+    <li>Badges e gamificação</li>
+    <li>Chatbot de suporte</li>
+  </ul>
+
+  <p><strong>Gestor:</strong></p>
+  <ul>
+    <li>Dashboard do gestor</li>
+    <li>Analytics da equipe</li>
+    <li>Ranking da equipe</li>
+    <li>Conquistas da equipe</li>
+  </ul>
+
+  <p><strong>Consultor:</strong></p>
+  <ul>
+    <li>Dashboard pessoal</li>
+    <li>Ranking geral</li>
+    <li>Conquistas pessoais</li>
+  </ul>
+
+  <p><strong>Distribuidor:</strong></p>
+  <ul>
+    <li>Dashboard do distribuidor</li>
+    <li>Conquistas</li>
+  </ul>
+
+  <p><strong>Rotas:</strong></p>
+  <ul class="route-list">
+    <li>/hub/admin/dashboard <span class="desc">— Admin dashboard</span></li>
+    <li>/hub/admin/materiais <span class="desc">— Materiais</span></li>
+    <li>/hub/admin/trilhas <span class="desc">— Trilhas</span></li>
+    <li>/hub/admin/analytics <span class="desc">— Analytics</span></li>
+    <li>/hub/admin/badges <span class="desc">— Badges</span></li>
+    <li>/hub/admin/chatbot <span class="desc">— Chatbot</span></li>
+    <li>/hub/gestor/dashboard <span class="desc">— Gestor dashboard</span></li>
+    <li>/hub/gestor/analytics <span class="desc">— Gestor analytics</span></li>
+    <li>/hub/gestor/ranking <span class="desc">— Gestor ranking</span></li>
+    <li>/hub/gestor/conquistas <span class="desc">— Gestor conquistas</span></li>
+    <li>/hub/consultor/dashboard <span class="desc">— Consultor dashboard</span></li>
+    <li>/hub/consultor/ranking <span class="desc">— Consultor ranking</span></li>
+    <li>/hub/consultor/conquistas <span class="desc">— Consultor conquistas</span></li>
+    <li>/hub/distribuidor/dashboard <span class="desc">— Distribuidor dashboard</span></li>
+    <li>/hub/distribuidor/conquistas <span class="desc">— Distribuidor conquistas</span></li>
+    <li>/hub/cliente/dashboard/$empresaId <span class="desc">— Página pública</span></li>
+  </ul>
+
+  <p><strong>Permissões (27):</strong></p>
+  <div class="perm-list">
+    <span class="perm">hub_ver_materiais</span>
+    <span class="perm">hub_criar_material</span>
+    <span class="perm">hub_editar_material</span>
+    <span class="perm">hub_excluir_material</span>
+    <span class="perm">hub_gerenciar_assets</span>
+    <span class="perm">hub_publicar_material</span>
+    <span class="perm">hub_ver_acessos_material</span>
+    <span class="perm">hub_exportar_materiais</span>
+    <span class="perm">hub_ver_trilhas</span>
+    <span class="perm">hub_criar_trilha</span>
+    <span class="perm">hub_editar_trilha</span>
+    <span class="perm">hub_excluir_trilha</span>
+    <span class="perm">hub_gerenciar_itens_trilha</span>
+    <span class="perm">hub_compartilhar_trilha</span>
+    <span class="perm">hub_ver_ranking</span>
+    <span class="perm">hub_gerenciar_badges</span>
+    <span class="perm">hub_gerenciar_niveis</span>
+    <span class="perm">hub_ver_conquistas</span>
+    <span class="perm">hub_ver_usuarios</span>
+    <span class="perm">hub_editar_usuario</span>
+    <span class="perm">hub_aprovar_usuario</span>
+    <span class="perm">hub_gerenciar_convites</span>
+    <span class="perm">hub_ver_analytics</span>
+    <span class="perm">hub_gerenciar_config</span>
+    <span class="perm">hub_gerenciar_integracoes</span>
+    <span class="perm">hub_gerenciar_chatbot</span>
+    <span class="perm">hub_gerenciar_webhooks_hub</span>
+  </div>
+</div>
+
+<!-- ==================== EMPRESAS ==================== -->
+<h2>Empresa (Configurações)</h2>
+<div class="module-card">
+  <h3><span class="icon">&#9733;</span> Módulo Empresa</h3>
+  <p>Configurações da empresa logada: dados cadastrais, branding, tema, banco, Hub tema e permissões internas. Disponível para usuários administrativos da empresa.</p>
+  <div class="meta">
+    <span class="tag gold">Key: empresas-core</span>
+    <span class="tag blue">Ambientes: cadastro, tecnologia</span>
+  </div>
+  <p><strong>Funcionalidades:</strong></p>
+  <ul>
+    <li>Configurações gerais da empresa</li>
+    <li>Branding e identidade visual</li>
+    <li>Tema do sistema</li>
+    <li>Configurações de banco</li>
+    <li>Ações e logs</li>
+    <li>Hub tema</li>
+    <li>Permissões internas</li>
+  </ul>
+  <p><strong>Rotas:</strong></p>
+  <ul class="route-list">
+    <li>/empresa <span class="desc">— Configurações</span></li>
+    <li>/empresa/tema <span class="desc">— Tema</span></li>
+    <li>/empresa/banco <span class="desc">— Banco</span></li>
+    <li>/empresa/branding <span class="desc">— Branding</span></li>
+    <li>/empresa/acoes <span class="desc">— Ações e logs</span></li>
+    <li>/empresa/hub/tema <span class="desc">— Hub tema</span></li>
+    <li>/empresa/permissoes <span class="desc">— Permissões</span></li>
+  </ul>
+</div>
+
+<div class="bottom-nav">
+  <a href="capitulo-4.html" class="prev">&larr; Capítulo 4</a>
+  <a href="capitulo-6.html">Capítulo 6: Super Admin &rarr;</a>
+</div>
+
+</div>
+</body>
+</html>

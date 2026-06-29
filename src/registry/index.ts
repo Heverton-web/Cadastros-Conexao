@@ -26,3 +26,8 @@ export {
   registerActionExecutor,
   getActionExecutor,
 } from "./executors";
+
+export {
+  registerPermissionDefaults,
+  getMergedDefaults,
+} from "./defaults";

@@ -1,5 +1,5 @@
 import { Link2, Palette } from "lucide-react";
-import { registerModule, registerNavItem, registerPermission } from "~/registry";
+import { registerModule, registerNavItem, registerPermission, registerPermissionDefaults } from "~/registry";
 import type { ModuleDefinition } from "~/registry";
 import { LINKTREE_PERMISSIONS } from "./permissions";
 
@@ -46,6 +46,29 @@ export const linktreeModule: ModuleDefinition = {
       permissionCheck: (perms) => perms?.lt_gerenciar_tema === true,
       order: 26,
       moduloKey: "linktree-conexao",
+    });
+
+    registerPermissionDefaults("linktree-conexao", {
+      cadastro: {
+        lt_ver_dashboard: true, lt_criar_colaborador: true, lt_editar_colaborador: true,
+        lt_excluir_colaborador: true, lt_toggle_status: true, lt_ver_link: true,
+        lt_ver_qr: true, lt_baixar_qr: true, lt_gerenciar_tema: true,
+      },
+      consultor: {
+        lt_ver_dashboard: true, lt_criar_colaborador: false, lt_editar_colaborador: false,
+        lt_excluir_colaborador: false, lt_toggle_status: false, lt_ver_link: true,
+        lt_ver_qr: true, lt_baixar_qr: true, lt_gerenciar_tema: false,
+      },
+      tecnologia: {
+        lt_ver_dashboard: true, lt_criar_colaborador: true, lt_editar_colaborador: true,
+        lt_excluir_colaborador: true, lt_toggle_status: true, lt_ver_link: true,
+        lt_ver_qr: true, lt_baixar_qr: true, lt_gerenciar_tema: true,
+      },
+      suporte: {
+        lt_ver_dashboard: false, lt_criar_colaborador: false, lt_editar_colaborador: false,
+        lt_excluir_colaborador: false, lt_toggle_status: false, lt_ver_link: false,
+        lt_ver_qr: false, lt_baixar_qr: false, lt_gerenciar_tema: false,
+      },
     });
   },
 };

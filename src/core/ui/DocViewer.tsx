@@ -1,15 +1,22 @@
 import { useState } from "react";
 import { X, ChevronLeft, ChevronRight, FileText, Download, CheckCircle, XCircle, AlertTriangle } from "lucide-react";
-import { getTipoLabel, STATUS_DOC_LABEL, STATUS_DOC_COLOR, type Documento } from "~/features/documentos";
+
+export type CoreDocumento = {
+  id: string;
+  tipo: string;
+  url: string;
+  status: string;
+};
 
 type DocViewerProps = {
-  docs: Documento[];
+  docs: CoreDocumento[];
   open: boolean;
   initialIdx?: number;
   onClose: () => void;
+  getTipoLabel?: (tipo: string) => string;
 };
 
-export function DocViewer({ docs, open, initialIdx = 0, onClose }: DocViewerProps) {
+export function DocViewer({ docs, open, initialIdx = 0, onClose, getTipoLabel }: DocViewerProps) {
   const [idx, setIdx] = useState(initialIdx);
 
   if (!open) return null;
@@ -17,12 +24,13 @@ export function DocViewer({ docs, open, initialIdx = 0, onClose }: DocViewerProp
   if (!doc) return null;
 
   const isImage = /\.(png|jpe?g|webp)$/i.test(doc.url);
+  const label = getTipoLabel ? getTipoLabel(doc.tipo) : doc.tipo;
 
   return (
     <div className="fixed inset-0 z-50 flex flex-col bg-black/90" onClick={onClose}>
       <div className="flex items-center justify-between px-4 py-3" onClick={(e) => e.stopPropagation()}>
         <button onClick={onClose} className="text-white/70 hover:text-white"><X size={22} /></button>
-        <span className="text-xs text-white/60">{getTipoLabel(doc.tipo)}</span>
+        <span className="text-xs text-white/60">{label}</span>
         <a href={doc.url} target="_blank" rel="noopener noreferrer" className="text-white/70 hover:text-white"><Download size={20} /></a>
       </div>
 
@@ -46,13 +54,16 @@ export function DocViewer({ docs, open, initialIdx = 0, onClose }: DocViewerProp
 }
 
 type DocListProps = {
-  docs: Documento[];
+  docs: CoreDocumento[];
   podeVisualizar?: boolean;
   podeAcao?: boolean;
   onAprovar?: (id: string) => void;
   onReprovar?: (id: string, motivo: string) => void;
   onCorrigir?: (id: string, comentario: string) => void;
   onRefresh?: () => void;
+  getTipoLabel?: (tipo: string) => string;
+  getStatusLabel?: (status: string) => string;
+  getStatusColor?: (status: string) => string;
 };
 
 const STATUS_DOC_ICON: Record<string, typeof CheckCircle> = {
@@ -62,7 +73,7 @@ const STATUS_DOC_ICON: Record<string, typeof CheckCircle> = {
   pendente: AlertTriangle,
 };
 
-export function DocList({ docs, podeVisualizar = false, podeAcao = false, onAprovar, onReprovar, onCorrigir, onRefresh }: DocListProps) {
+export function DocList({ docs, podeVisualizar = false, podeAcao = false, onAprovar, onReprovar, onCorrigir, onRefresh, getTipoLabel, getStatusLabel, getStatusColor }: DocListProps) {
   const [viewerIdx, setViewerIdx] = useState(0);
   const [showViewer, setShowViewer] = useState(false);
   const [actionDocId, setActionDocId] = useState<string | null>(null);
@@ -87,6 +98,10 @@ export function DocList({ docs, podeVisualizar = false, podeAcao = false, onApro
     onRefresh?.();
   }
 
+  const tipoLabel = getTipoLabel || ((t: string) => t);
+  const statusLabel = getStatusLabel || ((s: string) => s);
+  const statusColor = getStatusColor || (() => "text-text-muted");
+
   return (
     <>
       <div className="flex flex-col gap-2">
@@ -106,12 +121,12 @@ export function DocList({ docs, podeVisualizar = false, podeAcao = false, onApro
                 <FileText size={16} className="text-accent" />
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-text-main truncate">{getTipoLabel(d.tipo)}</p>
+                <p className="text-sm font-medium text-text-main truncate">{tipoLabel(d.tipo)}</p>
                 <div className="flex items-center gap-2 mt-0.5">
                   {!revisandoDocs[d.id] && (
                     <>
-                      <Icon size={11} className={STATUS_DOC_COLOR[d.status].split(" ")[1] || "text-text-muted"} />
-                      <span className={`text-[10px] font-medium ${STATUS_DOC_COLOR[d.status]}`}>{STATUS_DOC_LABEL[d.status]}</span>
+                      <Icon size={11} className={statusColor(d.status).split(" ")[1] || "text-text-muted"} />
+                      <span className={`text-[10px] font-medium ${statusColor(d.status)}`}>{statusLabel(d.status)}</span>
                     </>
                   )}
                 </div>
@@ -144,7 +159,7 @@ export function DocList({ docs, podeVisualizar = false, podeAcao = false, onApro
           );
         })}
       </div>
-      <DocViewer docs={docs} open={showViewer} initialIdx={viewerIdx} onClose={() => setShowViewer(false)} />
+      <DocViewer docs={docs} open={showViewer} initialIdx={viewerIdx} onClose={() => setShowViewer(false)} getTipoLabel={getTipoLabel} />
 
       {actionDocId && actionTipo && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-6">
