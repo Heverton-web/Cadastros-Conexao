@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "~/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "~/components/ui/dialog";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { Textarea } from "~/components/ui/textarea";
@@ -171,24 +171,15 @@ export function NovaVisitaModal({ clienteId, open, onOpenChange }: Props) {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="bg-popover border-border max-w-3xl max-h-[92vh] overflow-y-auto p-0 gap-0">
-        <DialogHeader className="sticky top-0 z-10 border-b border-border bg-gradient-to-br from-primary/10 via-popover to-popover px-8 py-6">
-          <div className="flex items-start gap-4">
-            <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-lg shadow-primary/20 ring-1 ring-primary/30">
-              <Calendar className="h-6 w-6" />
-            </span>
-            <div className="flex-1 space-y-1">
-              <DialogTitle className="text-2xl font-semibold tracking-tight">
-                Nova visita
-              </DialogTitle>
-              <p className="text-sm text-muted-foreground">
-                Registre o que aconteceu e defina os próximos passos com o cliente.
-              </p>
-            </div>
-          </div>
+      <DialogContent className="max-w-3xl max-h-[92vh] overflow-y-auto">
+        <DialogHeader>
+          <DialogTitle>Nova visita</DialogTitle>
+          <p className="text-sm text-text-muted">
+            Registre o que aconteceu e defina os próximos passos com o cliente.
+          </p>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit} className="space-y-6 px-8 pb-8 pt-6">
+        <form onSubmit={handleSubmit} className="space-y-6">
           <Section icon={Calendar} title="Dados da visita">
             <Field label="Data da visita">
               <Input
@@ -354,14 +345,14 @@ export function NovaVisitaModal({ clienteId, open, onOpenChange }: Props) {
             </Field>
           </Section>
 
-          <div className="sticky bottom-0 -mx-8 -mb-8 flex items-center justify-end gap-3 border-t border-border bg-popover/95 backdrop-blur-md px-8 py-5">
+          <DialogFooter>
             <Button type="button" variant="ghost" onClick={() => onOpenChange(false)}>
               Cancelar
             </Button>
-            <Button type="submit" disabled={busy} className="min-w-[160px] shadow-lg shadow-primary/20">
+            <Button type="submit" disabled={busy}>
               {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : "Salvar visita"}
             </Button>
-          </div>
+          </DialogFooter>
         </form>
       </DialogContent>
     </Dialog>

@@ -1,4 +1,4 @@
-const CACHE = "cadastros-conexao-v3";
+const CACHE = "cadastros-conexao-v4";
 const PRECACHE_URLS = [
   "/",
   "/manifest.json",
@@ -24,6 +24,18 @@ self.addEventListener("activate", (event) => {
 });
 
 self.addEventListener("fetch", (event) => {
+  const url = new URL(event.request.url);
+  
+  // Ignorar requisições do Vite dev server e HMR
+  if (url.hostname === "localhost" && (url.port === "5173" || url.port === "5174" || url.port === "3000")) {
+    return;
+  }
+  
+  // Ignorar requisições não-HTTP (ex: chrome-extension://)
+  if (!url.protocol.startsWith("http")) {
+    return;
+  }
+
   if (event.request.mode === "navigate") {
     event.respondWith(
       fetch(event.request).catch(() => caches.match("/"))

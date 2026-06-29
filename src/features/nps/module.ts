@@ -4,11 +4,11 @@ import type { ModuleDefinition } from "~/registry";
 import { NPS_PERMISSIONS } from "./permissions";
 
 export const npsModule: ModuleDefinition = {
-  key: "nps-conexao",
-  nome: "NPS Conexão",
+  key: "nps",
+  nome: "NPS",
   descricao: "Pesquisas de satisfação e Net Promoter Score",
   icon: ClipboardCheck,
-  routes: ["/nps", "/nps/survey", "/nps/dashboard", "/nps/pesquisas", "/nps/preview", "/nps/relatorios", "/nps/tema"],
+  routes: ["/nps", "/nps/survey", "/nps/dashboard", "/nps/pesquisas", "/nps/preview", "/nps/relatorios", "/nps/tema", "/nps/design"],
   permissions: NPS_PERMISSIONS.map((p) => p.key),
   ambientes: ["cadastro", "consultor", "tecnologia"],
   abas: [
@@ -37,7 +37,7 @@ export const npsModule: ModuleDefinition = {
       to: "/nps/dashboard",
       permissionCheck: (perms) => perms?.nps_ver_dashboard === true,
       order: 15,
-      moduloKey: "nps-conexao",
+      moduloKey: "nps",
     });
 
     registerNavItem({
@@ -47,7 +47,7 @@ export const npsModule: ModuleDefinition = {
       to: "/nps/pesquisas",
       permissionCheck: (perms) => perms?.nps_gerenciar_perguntas === true,
       order: 16,
-      moduloKey: "nps-conexao",
+      moduloKey: "nps",
     });
 
     registerNavItem({
@@ -57,7 +57,7 @@ export const npsModule: ModuleDefinition = {
       to: "/nps/relatorios",
       permissionCheck: (perms) => perms?.nps_ver_relatorios === true,
       order: 17,
-      moduloKey: "nps-conexao",
+      moduloKey: "nps",
     });
 
     registerNavItem({
@@ -67,20 +67,20 @@ export const npsModule: ModuleDefinition = {
       to: "/nps/preview",
       permissionCheck: (perms) => perms?.nps_gerenciar_perguntas === true,
       order: 18,
-      moduloKey: "nps-conexao",
+      moduloKey: "nps",
     });
 
     registerNavItem({
-      id: "nps-tema",
-      label: "Tema da Pesquisa",
+      id: "nps-design",
+      label: "Design",
       icon: Palette,
-      to: "/nps/tema",
+      to: "/nps/design",
       permissionCheck: (perms) => perms?.nps_gerenciar_perguntas === true,
       order: 19,
-      moduloKey: "nps-conexao",
+      moduloKey: "nps",
     });
 
-    registerPermissionDefaults("nps-conexao", {
+    registerPermissionDefaults("nps", {
       cadastro: {
         nps_ver_dashboard: true, nps_ver_respostas: true, nps_gerenciar_perguntas: true,
         nps_gerenciar_webhooks: false, nps_excluir_respostas: false, nps_ver_relatorios: true,

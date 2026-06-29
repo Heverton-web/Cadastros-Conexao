@@ -225,8 +225,8 @@ async function main() {
     for (const uid of allUserIds) {
       await client.query(
         `INSERT INTO permissoes (usuario_id, permissoes, empresa_id, modulos_acesso)
-         VALUES ($1, $2, $3, '{"crm-conexao": {"acessar": true}}'::jsonb)
-         ON CONFLICT (usuario_id) DO UPDATE SET permissoes = permissoes.permissoes || $2, modulos_acesso = permissoes.modulos_acesso || '{"crm-conexao": {"acessar": true}}'::jsonb`,
+         VALUES ($1, $2, $3, '{"crm": {"acessar": true}}'::jsonb)
+         ON CONFLICT (usuario_id) DO UPDATE SET permissoes = permissoes.permissoes || $2, modulos_acesso = permissoes.modulos_acesso || '{"crm": {"acessar": true}}'::jsonb`,
         [uid, JSON.stringify(crmPerms), empresaId]
       );
     }

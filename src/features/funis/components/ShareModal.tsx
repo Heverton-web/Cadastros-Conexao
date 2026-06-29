@@ -47,16 +47,16 @@ export function ShareModal({ funilId, onClose }: ShareModalProps) {
 
   return (
     <Dialog open={true} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="max-w-md border-0 shadow-2xl p-0 sm:p-0 gap-0">
-        <DialogHeader className="px-4 sm:px-5 pt-6 pb-2 bg-transparent">
-          <DialogTitle className="font-display text-xl flex items-center gap-2">
+      <DialogContent className="max-w-md">
+        <DialogHeader>
+          <DialogTitle className="flex items-center gap-2">
             <Users className="h-5 w-5 text-muted-foreground" />
             Compartilhar Funil
           </DialogTitle>
-          <p className="text-xs text-muted-foreground">Convide membros por e-mail para colaborar no seu funil.</p>
+          <p className="text-xs text-text-muted">Convide membros por e-mail para colaborar no seu funil.</p>
         </DialogHeader>
 
-        <div className="px-4 sm:px-5 py-4 space-y-5">
+        <div className="space-y-5">
           {/* Adicionar Colaborador */}
           <div className="space-y-3">
             <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground/80">Adicionar Colaborador</label>
@@ -170,8 +170,8 @@ export function ShareModal({ funilId, onClose }: ShareModalProps) {
           </div>
         </div>
 
-        <DialogFooter className="px-4 sm:px-5 py-4 border-t border-border/20">
-          <Button onClick={onClose} variant="ghost" className="h-9 text-xs">
+        <DialogFooter>
+          <Button onClick={onClose} variant="ghost">
             Fechar
           </Button>
         </DialogFooter>

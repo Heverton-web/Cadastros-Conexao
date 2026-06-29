@@ -1,5 +1,5 @@
 -- ------------------------------------------
--- Migração Bubble → Supabase  |  cadastros-conexao
+-- Migração Bubble → Supabase  |  cadastros
 -- Gerado em: 2026-06-18T17:17:18.303Z
 --
 -- 563 cadastros  |  293 PF  |  174 PJ

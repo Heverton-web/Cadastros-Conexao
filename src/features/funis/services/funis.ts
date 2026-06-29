@@ -2,7 +2,7 @@ import { supabase } from "~/core/supabase";
 import { dispararEventoModulo } from "~/core/services/webhooks";
 import type { Funil, FunilInput } from "../types";
 
-const MODULO_KEY = "funis-conexao";
+const MODULO_KEY = "funis";
 
 export async function listarFunis(empresaId?: string): Promise<Funil[]> {
   let query = supabase

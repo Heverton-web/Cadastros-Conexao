@@ -1,4 +1,4 @@
-import { Map, Building2, UserCircle, BarChart3, Globe } from "lucide-react";
+import { Map, Building2, UserCircle, BarChart3, Globe, Palette } from "lucide-react";
 import { registerModule, registerNavItem, registerPermission } from "~/registry";
 import type { ModuleDefinition } from "~/registry";
 import { MAPAS_PERMISSIONS } from "./permissions";
@@ -16,6 +16,7 @@ export const mapasModule: ModuleDefinition = {
     "/mapas/insights",
     "/mapas/gestao/distribuidores",
     "/mapas/gestao/consultores",
+    "/mapas/design",
   ],
   permissions: MAPAS_PERMISSIONS.map(p => p.key),
   ambientes: ["cadastro", "consultor"],
@@ -33,6 +34,8 @@ export const mapasModule: ModuleDefinition = {
     { key: "mapas.estado.clicado", label: "Estado Clicado", descricao: "Dispara quando um estado é clicado no mapa" },
     { key: "mapas.pin.clicado", label: "Pin Clicado", descricao: "Dispara quando um pin é clicado no mapa" },
   ],
+  hasDesignConfig: true,
+  designRoute: "/mapas/design",
   setup: () => {
     for (const p of MAPAS_PERMISSIONS) {
       registerPermission({ key: p.key, label: p.label, description: p.description, group: p.group });
@@ -77,6 +80,16 @@ export const mapasModule: ModuleDefinition = {
       to: "/mapas/insights",
       permissionCheck: (perms) => perms?.mapas_ver_insights === true,
       order: 40,
+      moduloKey: "mapas-interativos",
+    });
+
+    registerNavItem({
+      id: "mapas-design",
+      label: "Design",
+      icon: Palette,
+      to: "/mapas/design",
+      permissionCheck: (perms) => perms?.mapas_gerir_webhooks === true,
+      order: 99,
       moduloKey: "mapas-interativos",
     });
 

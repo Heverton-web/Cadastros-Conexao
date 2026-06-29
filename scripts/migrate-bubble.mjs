@@ -121,7 +121,7 @@ const lines = [];
 const pad = (n, c = '-') => c.repeat(n);
 
 lines.push(`-- ${pad(42)}`);
-lines.push(`-- Migração Bubble → Supabase  |  cadastros-conexao`);
+lines.push(`-- Migração Bubble → Supabase  |  cadastros`);
 lines.push(`-- Gerado em: ${new Date().toISOString()}`);
 lines.push(`--`);
 lines.push(`-- ${CADASTROS.length} cadastros  |  ${PF.length} PF  |  ${PJ.length} PJ`);

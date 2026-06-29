@@ -19,9 +19,8 @@ export function EntityDetailDialog({ entity, open, onOpenChange }: Props) {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-sm overflow-hidden border-surface bg-card p-0 gap-0 sm:rounded-2xl">
-        <div className="h-3 w-full" style={{ backgroundColor: pinColor }} />
-        <div className="p-6 space-y-5">
+      <DialogContent className="max-w-sm">
+        <DialogHeader>
           <div className="flex items-start gap-4">
             <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-surface/80 border border-surface" style={{ color: pinColor }}>
               {isDist ? <Building2 className="h-6 w-6" /> : <User className="h-6 w-6" />}
@@ -33,10 +32,9 @@ export function EntityDetailDialog({ entity, open, onOpenChange }: Props) {
               <DialogTitle className="text-base font-semibold leading-tight text-foreground truncate">{item.name}</DialogTitle>
             </div>
           </div>
+        </DialogHeader>
 
-          <div className="border-t border-surface my-4" />
-
-          <div className="space-y-3.5">
+        <div className="space-y-3.5">
             {isDist ? (
               item.code && (
                 <div className="flex items-center gap-3 text-sm">
@@ -76,12 +74,11 @@ export function EntityDetailDialog({ entity, open, onOpenChange }: Props) {
             </div>
           </div>
 
-          <DialogFooter className="pt-2">
-            <Button type="button" className="w-full bg-surface text-foreground hover:bg-surface-hover border border-surface" onClick={() => onOpenChange(false)}>
-              Fechar
-            </Button>
-          </DialogFooter>
-        </div>
+        <DialogFooter>
+          <Button type="button" className="w-full" onClick={() => onOpenChange(false)}>
+            Fechar
+          </Button>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );

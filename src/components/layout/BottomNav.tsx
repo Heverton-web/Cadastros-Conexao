@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { useNavigate, useLocation } from "@tanstack/react-router";
 import { cn } from "~/lib/utils";
 import { useNavItems } from "./useNavItems";
@@ -5,8 +6,13 @@ import { useNavItems } from "./useNavItems";
 export function BottomNav({ selectedModuleKey }: { selectedModuleKey?: string }) {
   const navigate = useNavigate();
   const location = useLocation();
-  const sections = useNavItems(selectedModuleKey);
-  const navItems = sections.flatMap((s) => s.items);
+  const allSections = useNavItems();
+  const navItems = useMemo(() => {
+    const section = selectedModuleKey
+      ? allSections.find((s) => s.key === selectedModuleKey)
+      : allSections[0];
+    return section?.items ?? [];
+  }, [allSections, selectedModuleKey]);
 
   const path = location.pathname;
   const matchScore = (item: { path: string; matchPaths?: string[] }) =>

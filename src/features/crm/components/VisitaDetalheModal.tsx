@@ -1,4 +1,4 @@
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "~/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "~/components/ui/dialog";
 import { Button } from "~/components/ui/button";
 import { formatBRL, formatDate } from "~/features/crm/lib/comercial";
 import {
@@ -53,28 +53,19 @@ export function VisitaDetalheModal({ visita, open, onOpenChange }: Props) {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="bg-popover border-border max-w-2xl max-h-[92vh] overflow-y-auto p-0 gap-0">
-        <DialogHeader className="sticky top-0 z-10 border-b border-border bg-gradient-to-br from-primary/10 via-popover to-popover px-8 py-6">
-          <div className="flex items-start gap-4">
-            <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-lg shadow-primary/20 ring-1 ring-primary/30">
-              <Calendar className="h-6 w-6" />
-            </span>
-            <div className="flex-1 space-y-1">
-              <DialogTitle className="text-2xl font-semibold tracking-tight">
-                Visita de {formatDate(visita.data_visita)}
-              </DialogTitle>
-              <p className="text-sm text-muted-foreground">
-                {visita.tipo_visita} · registrada por {visita.executor?.nome_completo ?? "—"}
-              </p>
-            </div>
-            <span className={cn("flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-bold uppercase", tempMeta.bg, tempMeta.color)}>
-              <TempIcon className="h-3.5 w-3.5" />
-              {visita.temperatura_vendedor}
-            </span>
-          </div>
+      <DialogContent className="max-w-2xl max-h-[92vh] overflow-y-auto">
+        <DialogHeader>
+          <DialogTitle>Visita de {formatDate(visita.data_visita)}</DialogTitle>
+          <p className="text-sm text-text-muted">
+            {visita.tipo_visita} · registrada por {visita.executor?.nome_completo ?? "—"}
+          </p>
+          <span className={cn("inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-bold uppercase w-fit", tempMeta.bg, tempMeta.color)}>
+            <TempIcon className="h-3.5 w-3.5" />
+            {visita.temperatura_vendedor}
+          </span>
         </DialogHeader>
 
-        <div className="space-y-5 px-8 py-6">
+        <div className="space-y-5">
           <Section icon={User} title="Pessoa atendida">
             <Info label="Nome" value={visita.atendente} />
             <Info label="Cargo" value={visita.cargo_atendente} />
@@ -124,11 +115,11 @@ export function VisitaDetalheModal({ visita, open, onOpenChange }: Props) {
           )}
         </div>
 
-        <div className="sticky bottom-0 flex justify-end gap-2 border-t border-border bg-popover/95 backdrop-blur-md px-8 py-4">
+        <DialogFooter>
           <Button variant="ghost" onClick={() => onOpenChange(false)}>
             Fechar
           </Button>
-        </div>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );

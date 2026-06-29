@@ -17,7 +17,7 @@ import { useAuth } from '~/lib/auth';
 
 const TooltipProvider = ({children}: any) => <>{children}</>;
 const Tooltip = ({children}: any) => <>{children}</>;
-const TooltipTrigger = ({children, asChild, ...props}: any) => <span {...props}>{children}</span>;
+const TooltipTrigger = ({children, asChild: _asChild, ...props}: any) => <span {...props}>{children}</span>;
 const TooltipContent = ({children}: any) => <div className="hidden">{children}</div>;
 import NPSTrendChart from './charts/NPSTrendChart';
 import ResponseVolumeChart from './charts/ResponseVolumeChart';

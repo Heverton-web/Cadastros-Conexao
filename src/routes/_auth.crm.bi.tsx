@@ -545,7 +545,7 @@ function BIPage() {
       </section>
 
       <Dialog open={!!openVisita} onOpenChange={(o) => !o && setOpenVisita(null)}>
-        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto p-0 gap-0 border-border/50 bg-background">
+        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
           {openVisita && (() => {
             const temp = openVisita.temperatura_vendedor as Temperatura | undefined;
             const tempCfg =
@@ -557,73 +557,67 @@ function BIPage() {
             const TempIcon = tempCfg.icon;
             return (
               <>
-                {/* Hero header */}
-                <div className={`relative overflow-hidden rounded-t-lg bg-gradient-to-br ${tempCfg.grad} border-b border-border/50`}>
-                  <div className={`absolute inset-0 opacity-30 [background:radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] ${tempCfg.grad}`} />
-                  <div className="relative p-6 pr-14">
-                    <DialogHeader className="space-y-3 text-left">
-                      <div className="flex items-start gap-4">
-                        <div className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl ${tempCfg.bg} ring-1 ${tempCfg.ring} backdrop-blur-sm`}>
-                          <TempIcon className={`h-7 w-7 ${tempCfg.text}`} />
-                        </div>
-                        <div className="min-w-0 flex-1">
-                          <DialogTitle className="text-xl font-bold tracking-tight">
-                            {openVisita.cliente?.nome_clinica ?? "Detalhes da visita"}
-                          </DialogTitle>
-                          <DialogDescription className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
-                            {openVisita.cliente?.nome_doutor && (
-                              <span className="inline-flex items-center gap-1.5">
-                                <Stethoscope className="h-3.5 w-3.5" />
-                                {openVisita.cliente.nome_doutor}
-                              </span>
-                            )}
-                            <span className="inline-flex items-center gap-1.5">
-                              <Calendar className="h-3.5 w-3.5" />
-                              {new Date(openVisita.data_visita).toLocaleDateString("pt-BR")}
-                            </span>
-                            <span className="inline-flex items-center gap-1.5">
-                              <User className="h-3.5 w-3.5" />
-                              {openVisita.consultor?.nome_completo ?? "—"}
-                            </span>
-                          </DialogDescription>
-                        </div>
-                      </div>
-
-                      {/* Status chips */}
-                      <div className="flex flex-wrap gap-2 pt-1">
-                        <Chip className={`${tempCfg.bg} ${tempCfg.text} ring-1 ${tempCfg.ring}`}>
-                          <TempIcon className="h-3.5 w-3.5" />
-                          {tempCfg.label}
-                        </Chip>
-                        {openVisita.tipo_visita && (
-                          <Chip className="bg-secondary/60 text-foreground ring-1 ring-border">
-                            <Activity className="h-3.5 w-3.5" />
-                            {openVisita.tipo_visita}
-                          </Chip>
+                <DialogHeader>
+                  <div className="flex items-start gap-4">
+                    <div className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl ${tempCfg.bg} ring-1 ${tempCfg.ring} backdrop-blur-sm`}>
+                      <TempIcon className={`h-7 w-7 ${tempCfg.text}`} />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <DialogTitle>
+                        {openVisita.cliente?.nome_clinica ?? "Detalhes da visita"}
+                      </DialogTitle>
+                      <DialogDescription className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
+                        {openVisita.cliente?.nome_doutor && (
+                          <span className="inline-flex items-center gap-1.5">
+                            <Stethoscope className="h-3.5 w-3.5" />
+                            {openVisita.cliente.nome_doutor}
+                          </span>
                         )}
-                        {openVisita.gerou_pedido ? (
-                          <Chip className="bg-emerald-500/15 text-emerald-300 ring-1 ring-emerald-500/30">
-                            <CheckCircle2 className="h-3.5 w-3.5" />
-                            Pedido gerado
-                          </Chip>
-                        ) : (
-                          <Chip className="bg-muted/40 text-muted-foreground ring-1 ring-border">
-                            <XCircle className="h-3.5 w-3.5" />
-                            Sem pedido
-                          </Chip>
-                        )}
-                        {openVisita.gerou_orcamento && (
-                          <Chip className="bg-blue-500/15 text-blue-300 ring-1 ring-blue-500/30">
-                            <FileText className="h-3.5 w-3.5" />
-                            Orçamento
-                          </Chip>
-                        )}
-                      </div>
-                    </DialogHeader>
+                        <span className="inline-flex items-center gap-1.5">
+                          <Calendar className="h-3.5 w-3.5" />
+                          {new Date(openVisita.data_visita).toLocaleDateString("pt-BR")}
+                        </span>
+                        <span className="inline-flex items-center gap-1.5">
+                          <User className="h-3.5 w-3.5" />
+                          {openVisita.consultor?.nome_completo ?? "—"}
+                        </span>
+                      </DialogDescription>
+                    </div>
                   </div>
-                </div>
 
-                <div className="p-6 space-y-6">
+                  {/* Status chips */}
+                  <div className="flex flex-wrap gap-2 pt-1">
+                    <Chip className={`${tempCfg.bg} ${tempCfg.text} ring-1 ${tempCfg.ring}`}>
+                      <TempIcon className="h-3.5 w-3.5" />
+                      {tempCfg.label}
+                    </Chip>
+                    {openVisita.tipo_visita && (
+                      <Chip className="bg-secondary/60 text-foreground ring-1 ring-border">
+                        <Activity className="h-3.5 w-3.5" />
+                        {openVisita.tipo_visita}
+                      </Chip>
+                    )}
+                    {openVisita.gerou_pedido ? (
+                      <Chip className="bg-emerald-500/15 text-emerald-300 ring-1 ring-emerald-500/30">
+                        <CheckCircle2 className="h-3.5 w-3.5" />
+                        Pedido gerado
+                      </Chip>
+                    ) : (
+                      <Chip className="bg-muted/40 text-muted-foreground ring-1 ring-border">
+                        <XCircle className="h-3.5 w-3.5" />
+                        Sem pedido
+                      </Chip>
+                    )}
+                    {openVisita.gerou_orcamento && (
+                      <Chip className="bg-blue-500/15 text-blue-300 ring-1 ring-blue-500/30">
+                        <FileText className="h-3.5 w-3.5" />
+                        Orçamento
+                      </Chip>
+                    )}
+                  </div>
+                </DialogHeader>
+
+                <div className="space-y-6">
                   {/* Highlight stats */}
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                     <StatCard

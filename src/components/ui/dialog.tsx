@@ -49,9 +49,7 @@ const DialogContent = React.forwardRef<
       )}
       {...props}
     >
-      {/* Accent bar no topo */}
-      <div className="h-1 w-full bg-gradient-to-r from-accent via-accent-hover to-accent" />
-      <div className="p-6 sm:p-8">
+      <div className="p-6 sm:p-8 scrollbar-modal">
         {children}
       </div>
       <DialogPrimitive.Close className="absolute right-4 top-5 rounded-lg p-1.5 text-text-muted hover:text-text-main hover:bg-surface-hover transition-all duration-150 cursor-pointer focus:outline-none focus:ring-2 focus:ring-accent/50">

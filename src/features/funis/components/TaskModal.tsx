@@ -114,15 +114,15 @@ export function TaskModal({ open = true, onClose, columnId, funilId, task, paren
 
   return (
     <Dialog open={open} onOpenChange={(o) => !o && onClose()}>
-      <DialogContent className="max-w-2xl max-h-[92vh] overflow-y-auto p-0 sm:p-0 gap-0 border-0 shadow-2xl">
-        <DialogHeader className="px-4 sm:px-6 pt-6 pb-2 bg-transparent">
-          <DialogTitle className="font-display text-2xl">
+      <DialogContent className="max-w-2xl max-h-[92vh] overflow-y-auto">
+        <DialogHeader>
+          <DialogTitle>
             {task ? "Editar tarefa" : parentTaskId ? "Nova microtarefa" : "Nova tarefa"}
           </DialogTitle>
-          <p className="text-sm text-muted-foreground">Preencha as informações da tarefa abaixo.</p>
+          <p className="text-sm text-text-muted">Preencha as informações da tarefa abaixo.</p>
         </DialogHeader>
 
-        <form onSubmit={submit} className="px-4 sm:px-6 py-4 space-y-6">
+        <form onSubmit={submit} className="space-y-6">
           {/* Status e Conclusão (Mais discreto) */}
           <div className="flex items-center justify-between gap-4 py-2 border-b border-border/20">
             <label className="flex items-center gap-3 cursor-pointer text-sm font-medium">
@@ -281,12 +281,12 @@ export function TaskModal({ open = true, onClose, columnId, funilId, task, paren
             )}
           </div>
 
-          <DialogFooter className="-mx-4 sm:-mx-6 px-4 sm:px-6 pt-4 mt-2 border-t border-border/20">
+          <DialogFooter>
             {task && canEdit && (
               <Button type="button" variant="ghost-destructive" className="sm:mr-auto" onClick={remove}><Trash2 className="h-4 w-4 mr-1.5" />Excluir</Button>
             )}
             <Button type="button" variant="ghost" onClick={onClose}>Cancelar</Button>
-            {canEdit && <Button type="submit" disabled={saveIsPending} className="gradient-gold text-[#0f172a] font-semibold">{saveIsPending ? "Salvando..." : "Salvar"}</Button>}
+            {canEdit && <Button type="submit" disabled={saveIsPending}>{saveIsPending ? "Salvando..." : "Salvar"}</Button>}
           </DialogFooter>
         </form>
       </DialogContent>

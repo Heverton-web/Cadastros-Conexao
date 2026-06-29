@@ -54,6 +54,10 @@ import { funilDetalleRoute } from "./routes/funis.funil.$funilId";
 import { linktreePublicRoute } from "./routes/linktree.$id";
 import { linktreeDashboardRoute } from "./routes/linktree.dashboard";
 import { linktreeTemaRoute } from "./routes/linktree.tema";
+import { linktreeDesignRoute } from "./routes/linktree.design";
+import { empresaLinktreeDashboardRoute } from "./routes/linktree.empresa";
+import { empresaLinktreeEditorRoute } from "./routes/linktree.empresa.editor";
+import { empresaLinktreePublicRoute } from "./routes/e.$slug";
 
 import { globalHubRoute } from "./routes/global.hub";
 
@@ -88,12 +92,18 @@ import { hubConsultorRankingRoute } from "./routes/hub.consultor.ranking";
 import { hubConsultorConquistasRoute } from "./routes/hub.consultor.conquistas";
 import { hubDistribuidorDashboardRoute } from "./routes/hub.distribuidor.dashboard";
 import { hubDistribuidorConquistasRoute } from "./routes/hub.distribuidor.conquistas";
+import { hubDesignRoute } from "./routes/hub.design";
+import { crmDesignRoute } from "./routes/crm.design";
+import { mapasDesignRoute } from "./routes/mapas.design";
+import { funisDesignRoute } from "./routes/funis.design";
+import { cadastrosDesignRoute } from "./routes/cadastros.design";
 
 export const routeTree = rootRoute.addChildren([
   loginRoute,
   preCadastroRoute,
   npsSurveyRoute,
   linktreePublicRoute,
+  empresaLinktreePublicRoute,
   hubClienteDashboardRoute,
   crmAceitarConviteRoute,
   authLayout.addChildren([
@@ -124,6 +134,12 @@ export const routeTree = rootRoute.addChildren([
     globalDesignRoute,
     empresaDesignRoute,
     npsDesignRoute,
+    hubDesignRoute,
+    crmDesignRoute,
+    mapasDesignRoute,
+    linktreeDesignRoute,
+    funisDesignRoute,
+    cadastrosDesignRoute,
 
     mapasRoute,
     mapasDistribuidoresRoute,
@@ -147,6 +163,8 @@ export const routeTree = rootRoute.addChildren([
 
     linktreeDashboardRoute,
     linktreeTemaRoute,
+    empresaLinktreeDashboardRoute,
+    empresaLinktreeEditorRoute,
 
     globalHubRoute,
     empresaHubTemaRoute,

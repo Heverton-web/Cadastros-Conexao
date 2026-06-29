@@ -6,7 +6,7 @@ import { useAuth } from "~/lib/auth";
 import { useState } from "react";
 import { Plus, Loader2, UserPlus, User, Building2, Phone } from "lucide-react";
 import { Button } from "~/components/ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "~/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from "~/components/ui/dialog";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { formatBRL, type Temperatura } from "~/features/crm/lib/comercial";
@@ -179,23 +179,14 @@ function NovoClienteButton() {
           <Plus className="mr-1 h-4 w-4" /> Novo cliente
         </Button>
       </DialogTrigger>
-      <DialogContent className="bg-popover border-border max-w-md p-0 overflow-hidden">
-        <DialogHeader className="border-b border-border px-6 py-5">
-          <div className="flex items-center gap-3">
-            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/15 text-primary">
-              <UserPlus className="h-5 w-5" />
-            </span>
-            <div>
-              <DialogTitle className="text-xl font-semibold tracking-tight">
-                Novo cliente
-              </DialogTitle>
-              <p className="text-xs text-muted-foreground mt-0.5">
-                Adicione um doutor ou clínica à sua carteira.
-              </p>
-            </div>
-          </div>
+      <DialogContent className="max-w-md">
+        <DialogHeader>
+          <DialogTitle>Novo cliente</DialogTitle>
+          <p className="text-xs text-text-muted">
+            Adicione um doutor ou clínica à sua carteira.
+          </p>
         </DialogHeader>
-        <form onSubmit={submit} className="space-y-5 px-6 py-6">
+        <form onSubmit={submit} className="space-y-5">
           <FieldRow icon={User} label="Nome do doutor(a)" required>
             <Input
               required
@@ -218,14 +209,14 @@ function NovoClienteButton() {
               placeholder="(11) 99999-9999"
             />
           </FieldRow>
-          <div className="flex justify-end gap-2 pt-2 border-t border-border -mx-6 px-6 pb-0 -mb-0">
-            <Button type="button" variant="ghost" onClick={() => setOpen(false)} className="mt-4">
+          <DialogFooter>
+            <Button type="button" variant="ghost" onClick={() => setOpen(false)}>
               Cancelar
             </Button>
-            <Button type="submit" disabled={busy} className="mt-4 min-w-[140px]">
+            <Button type="submit" disabled={busy}>
               {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : "Adicionar cliente"}
             </Button>
-          </div>
+          </DialogFooter>
         </form>
       </DialogContent>
     </Dialog>

@@ -12,8 +12,6 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { fetchHubMaterialAssets, upsertHubMaterialAsset, deleteHubMaterialAsset } from "../../services/materials";
 import type { HubMaterial, HubLanguage, HubMaterialType } from "../../types";
 
-function colorMix(c1: string, w: number, c2: string) { return `color-mix(in srgb, ${c1} ${w}%, ${c2})`; }
-
 const TYPES = [
   { value: "pdf", label: "PDF" },
   { value: "image", label: "Imagem" },
@@ -106,27 +104,27 @@ export function MaterialFormModal({ open, onClose, onSave, material }: MaterialF
     <Dialog open={open} onOpenChange={(o) => !o && onClose()}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle style={{ color: "var(--color-text-main)" }}>{material ? "Editar Material" : "Novo Material"}</DialogTitle>
+          <DialogTitle>{material ? "Editar Material" : "Novo Material"}</DialogTitle>
         </DialogHeader>
 
         <div className="space-y-5">
           {/* Tipo + Status + XP */}
           <div className="grid grid-cols-3 gap-3">
             <div>
-              <label className="mb-1 block text-xs font-bold uppercase tracking-wider" style={{ color: "var(--color-text-muted)" }}>Tipo *</label>
+              <label className="mb-1 block text-xs font-bold uppercase tracking-wider text-text-muted">Tipo *</label>
               <Select value={type} onValueChange={(v) => setType(v as HubMaterialType)}>
-                <SelectTrigger style={{ backgroundColor: "var(--color-input-bg)", borderColor: "var(--color-input-border)", color: "var(--color-text-main)" }}><SelectValue /></SelectTrigger>
+                <SelectTrigger><SelectValue /></SelectTrigger>
                 <SelectContent>{TYPES.map((t) => <SelectItem key={t.value} value={t.value}>{t.label}</SelectItem>)}</SelectContent>
               </Select>
             </div>
             <div>
-              <label className="mb-1 block text-xs font-bold uppercase tracking-wider" style={{ color: "var(--color-text-muted)" }}>XP *</label>
-              <Input type="number" value={points} onChange={(e) => setPoints(Number(e.target.value))} style={{ backgroundColor: "var(--color-input-bg)", borderColor: "var(--color-input-border)", color: "var(--color-text-main)" }} />
+              <label className="mb-1 block text-xs font-bold uppercase tracking-wider text-text-muted">XP *</label>
+              <Input type="number" value={points} onChange={(e) => setPoints(Number(e.target.value))} />
             </div>
             <div className="flex flex-col items-center justify-end">
-              <label className="mb-1 block text-xs font-bold uppercase tracking-wider" style={{ color: "var(--color-text-muted)" }}>Status</label>
+              <label className="mb-1 block text-xs font-bold uppercase tracking-wider text-text-muted">Status</label>
               <div className="flex items-center gap-2">
-                <span className="text-xs" style={{ color: active ? "var(--color-success)" : "var(--color-text-muted)" }}>{active ? "Ativo" : "Inativo"}</span>
+                <span className={`text-xs ${active ? "text-green-500" : "text-text-muted"}`}>{active ? "Ativo" : "Inativo"}</span>
                 <Switch checked={active} onCheckedChange={setActive} />
               </div>
             </div>
@@ -134,12 +132,11 @@ export function MaterialFormModal({ open, onClose, onSave, material }: MaterialF
 
           {/* Público-alvo */}
           <div>
-            <label className="mb-2 block text-xs font-bold uppercase tracking-wider" style={{ color: "var(--color-text-muted)" }}>Público-alvo *</label>
+            <label className="mb-2 block text-xs font-bold uppercase tracking-wider text-text-muted">Público-alvo *</label>
             <div className="flex flex-wrap gap-2">
               {ROLES.map((r) => (
                 <button key={r.value} onClick={() => toggleRole(r.value)}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all border ${allowedRoles.includes(r.value) ? "liquid-glass-gold" : ""}`}
-                  style={allowedRoles.includes(r.value) ? { color: "var(--color-accent)" } : { borderColor: "var(--color-border)", color: "var(--color-text-muted)", backgroundColor: "var(--color-surface)" }}>
+                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all border ${allowedRoles.includes(r.value) ? "liquid-glass-gold text-accent" : "border-border text-text-muted bg-surface"}`}>
                   {r.label}
                 </button>
               ))}
@@ -148,7 +145,7 @@ export function MaterialFormModal({ open, onClose, onSave, material }: MaterialF
 
           {/* Conteúdo por idioma */}
           <div>
-            <label className="mb-2 block text-xs font-bold uppercase tracking-wider" style={{ color: "var(--color-text-muted)" }}>
+            <label className="mb-2 block text-xs font-bold uppercase tracking-wider text-text-muted">
               <Globe className="inline mr-1" size={12} /> Conteúdo por Idioma
             </label>
             <Tabs value={activeLangTab} onValueChange={(v) => setActiveLangTab(v as HubLanguage)}>
@@ -161,29 +158,25 @@ export function MaterialFormModal({ open, onClose, onSave, material }: MaterialF
               {(["pt-br", "en-us", "es-es"] as HubLanguage[]).map((lang) => (
                 <TabsContent key={lang} value={lang} className="space-y-3">
                   <div>
-                    <label className="mb-1 block text-xs font-bold" style={{ color: "var(--color-text-main)" }}>Título *</label>
-                    <Input value={titles[lang]} onChange={(e) => setTitles({ ...titles, [lang]: e.target.value })} placeholder={`Título em ${lang === "pt-br" ? "Português" : lang === "en-us" ? "Inglês" : "Espanhol"}`}
-                      style={{ backgroundColor: "var(--color-input-bg)", borderColor: "var(--color-input-border)", color: "var(--color-text-main)" }} />
+                    <label className="mb-1 block text-xs font-bold text-text-main">Título *</label>
+                    <Input value={titles[lang]} onChange={(e) => setTitles({ ...titles, [lang]: e.target.value })} placeholder={`Título em ${lang === "pt-br" ? "Português" : lang === "en-us" ? "Inglês" : "Espanhol"}`} />
                   </div>
 
                   {type !== "html" ? (
                     <div>
-                      <label className="mb-1 block text-xs font-bold" style={{ color: "var(--color-text-main)" }}>URL do Material</label>
-                      <Input value={urls[lang]} onChange={(e) => setUrls({ ...urls, [lang]: e.target.value })} placeholder="Link do Google Drive, YouTube, S3..."
-                        style={{ backgroundColor: "var(--color-input-bg)", borderColor: "var(--color-input-border)", color: "var(--color-text-main)" }} />
+                      <label className="mb-1 block text-xs font-bold text-text-main">URL do Material</label>
+                      <Input value={urls[lang]} onChange={(e) => setUrls({ ...urls, [lang]: e.target.value })} placeholder="Link do Google Drive, YouTube, S3..." />
                     </div>
                   ) : (
                     <div>
-                      <label className="mb-1 block text-xs font-bold" style={{ color: "var(--color-text-main)" }}>URL do Material</label>
-                      <Input value={urls[lang]} onChange={(e) => setUrls({ ...urls, [lang]: e.target.value })} placeholder="URL do HTML"
-                        style={{ backgroundColor: "var(--color-input-bg)", borderColor: "var(--color-input-border)", color: "var(--color-text-main)" }} />
+                      <label className="mb-1 block text-xs font-bold text-text-main">URL do Material</label>
+                      <Input value={urls[lang]} onChange={(e) => setUrls({ ...urls, [lang]: e.target.value })} placeholder="URL do HTML" />
                     </div>
                   )}
 
                   <div>
-                    <label className="mb-1 block text-xs font-bold" style={{ color: "var(--color-text-main)" }}>URL da Legenda (Opcional)</label>
-                    <Input value={subtitleUrls[lang]} onChange={(e) => setSubtitleUrls({ ...subtitleUrls, [lang]: e.target.value })} placeholder="Link da legenda .srt ou .vtt"
-                      style={{ backgroundColor: "var(--color-input-bg)", borderColor: "var(--color-input-border)", color: "var(--color-text-main)" }} />
+                    <label className="mb-1 block text-xs font-bold text-text-main">URL da Legenda (Opcional)</label>
+                    <Input value={subtitleUrls[lang]} onChange={(e) => setSubtitleUrls({ ...subtitleUrls, [lang]: e.target.value })} placeholder="Link da legenda .srt ou .vtt" />
                   </div>
                 </TabsContent>
               ))}
@@ -192,30 +185,26 @@ export function MaterialFormModal({ open, onClose, onSave, material }: MaterialF
 
           {/* Opções HTML */}
           {type === "html" && (
-            <div className="p-4 rounded-xl border space-y-3" style={{ borderColor: "var(--color-border)", backgroundColor: colorMix("var(--color-surface)", 40, "rgba(30,41,59,0.4)") }}>
-              <label className="text-xs font-bold uppercase tracking-wider" style={{ color: "var(--color-text-muted)" }}>Opção HTML</label>
+            <div className="p-4 rounded-xl border border-border bg-surface/40 space-y-3">
+              <label className="text-xs font-bold uppercase tracking-wider text-text-muted">Opção HTML</label>
               <div className="flex gap-2">
-                <button onClick={() => setHtmlMode("url")} className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all border ${htmlMode === "url" ? "liquid-glass-gold" : ""}`}
-                  style={htmlMode === "url" ? { color: "var(--color-accent)" } : { borderColor: "var(--color-border)", color: "var(--color-text-muted)" }}>
+                <button onClick={() => setHtmlMode("url")} className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all border ${htmlMode === "url" ? "liquid-glass-gold text-accent" : "border-border text-text-muted"}`}>
                   <Link size={12} /> URL
                 </button>
-                <button onClick={() => setHtmlMode("paste")} className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all border ${htmlMode === "paste" ? "liquid-glass-gold" : ""}`}
-                  style={htmlMode === "paste" ? { color: "var(--color-accent)" } : { borderColor: "var(--color-border)", color: "var(--color-text-muted)" }}>
+                <button onClick={() => setHtmlMode("paste")} className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all border ${htmlMode === "paste" ? "liquid-glass-gold text-accent" : "border-border text-text-muted"}`}>
                   <Code size={12} /> Colar Código
                 </button>
-                <button onClick={() => setHtmlMode("upload")} className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all border ${htmlMode === "upload" ? "liquid-glass-gold" : ""}`}
-                  style={htmlMode === "upload" ? { color: "var(--color-accent)" } : { borderColor: "var(--color-border)", color: "var(--color-text-muted)" }}>
+                <button onClick={() => setHtmlMode("upload")} className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all border ${htmlMode === "upload" ? "liquid-glass-gold text-accent" : "border-border text-text-muted"}`}>
                   <Upload size={12} /> Upload .html
                 </button>
               </div>
               {htmlMode === "paste" && (
-                <Textarea value={htmlCode} onChange={(e) => setHtmlCode(e.target.value)} placeholder="Cole o código HTML aqui..." rows={8}
-                  style={{ backgroundColor: "var(--color-input-bg)", borderColor: "var(--color-input-border)", color: "var(--color-text-main)", fontFamily: "monospace", fontSize: "12px" }} />
+                <Textarea value={htmlCode} onChange={(e) => setHtmlCode(e.target.value)} placeholder="Cole o código HTML aqui..." rows={8} className="font-mono text-xs" />
               )}
               {htmlMode === "upload" && (
                 <div>
-                  <input type="file" accept=".html" onChange={(e) => setHtmlFile(e.target.files?.[0] || null)} className="text-sm" style={{ color: "var(--color-text-muted)" }} />
-                  <p className="text-[10px] mt-1" style={{ color: "var(--color-text-muted)" }}>Máximo 5MB</p>
+                  <input type="file" accept=".html" onChange={(e) => setHtmlFile(e.target.files?.[0] || null)} className="text-sm text-text-muted" />
+                  <p className="text-[10px] mt-1 text-text-muted">Máximo 5MB</p>
                 </div>
               )}
             </div>
@@ -224,22 +213,20 @@ export function MaterialFormModal({ open, onClose, onSave, material }: MaterialF
           {/* Categoria + Tags */}
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="mb-1 block text-xs font-bold uppercase tracking-wider" style={{ color: "var(--color-text-muted)" }}>Categoria</label>
-              <Input value={category} onChange={(e) => setCategory(e.target.value)} placeholder="Ex: Odontologia"
-                style={{ backgroundColor: "var(--color-input-bg)", borderColor: "var(--color-input-border)", color: "var(--color-text-main)" }} />
+              <label className="mb-1 block text-xs font-bold uppercase tracking-wider text-text-muted">Categoria</label>
+              <Input value={category} onChange={(e) => setCategory(e.target.value)} placeholder="Ex: Odontologia" />
             </div>
             <div>
-              <label className="mb-1 block text-xs font-bold uppercase tracking-wider" style={{ color: "var(--color-text-muted)" }}>Tags</label>
-              <Input value={tags} onChange={(e) => setTags(e.target.value)} placeholder="tag1, tag2"
-                style={{ backgroundColor: "var(--color-input-bg)", borderColor: "var(--color-input-border)", color: "var(--color-text-main)" }} />
+              <label className="mb-1 block text-xs font-bold uppercase tracking-wider text-text-muted">Tags</label>
+              <Input value={tags} onChange={(e) => setTags(e.target.value)} placeholder="tag1, tag2" />
             </div>
           </div>
 
           {/* Ações */}
-          <div className="flex justify-end gap-2 pt-2">
-            <Button variant="outline" onClick={onClose}>Cancelar</Button>
+          <DialogFooter>
+            <Button variant="ghost" onClick={onClose}>Cancelar</Button>
             <Button onClick={handleSave}>{material ? "Salvar" : "Criar Material"}</Button>
-          </div>
+          </DialogFooter>
         </div>
       </DialogContent>
     </Dialog>

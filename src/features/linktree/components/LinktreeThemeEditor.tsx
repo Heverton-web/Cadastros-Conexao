@@ -31,6 +31,7 @@ const SAMPLE_COLLABORATOR: LinktreeColaborador = {
   status: "ativo",
   created_by: "",
   empresa_id: null,
+  credencial_id: null,
   created_at: "",
   updated_at: "",
 };

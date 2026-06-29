@@ -223,7 +223,7 @@ export function AppLayout() {
           </div>
         </header>
 
-        <NavSidebar selectedModuleKey={selectedModuleKey} onModuleChange={setSelectedModuleKey} modulos={modulos} collapsed={sidebarCollapsed} onToggleCollapse={toggleSidebar} />
+        <NavSidebar selectedModuleKey={selectedModuleKey} onModuleChange={setSelectedModuleKey} collapsed={sidebarCollapsed} onToggleCollapse={toggleSidebar} />
         <ModuleDrawer open={showDrawer} onClose={() => setShowDrawer(false)} selectedModuleKey={selectedModuleKey} onModuleChange={setSelectedModuleKey} modulos={modulos} />
 
         <div className={cn(

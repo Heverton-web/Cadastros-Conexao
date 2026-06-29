@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { X, Globe, type LucideIcon } from "lucide-react";
 import { useNavItems, useModulos } from "./useNavItems";
 import { useLocation, useNavigate } from "@tanstack/react-router";
@@ -24,9 +25,14 @@ export function ModuleDrawer({
   modulos: ModuleInfo[];
 }) {
   const { profile } = useAuth();
-  const sections = useNavItems(selectedModuleKey);
+  const allSections = useNavItems();
   const location = useLocation();
   const navigate = useNavigate();
+
+  const sections = useMemo(() => {
+    if (!selectedModuleKey) return allSections;
+    return allSections.filter((s) => s.key === selectedModuleKey);
+  }, [allSections, selectedModuleKey]);
 
   if (!open) return null;
 
@@ -78,7 +84,7 @@ export function ModuleDrawer({
 
         <div className="flex-1 overflow-y-auto px-2 py-3">
           {sections.map((section) => (
-            <div key={section.label} className="mb-4 last:mb-0">
+            <div key={section.key} className="mb-4 last:mb-0">
               <p className="text-xs font-bold text-text-muted uppercase tracking-wider px-3 mb-2">
                 {section.label}
               </p>

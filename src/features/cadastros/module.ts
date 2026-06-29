@@ -1,16 +1,16 @@
 import {
-  LayoutDashboard, Users, UserCircle, BarChart3, Settings, Globe,
+  LayoutDashboard, Users, UserCircle, BarChart3, Settings, Globe, Palette,
 } from "lucide-react";
 import { registerModule, registerNavItem, registerPermission, registerPermissionDefaults } from "~/registry";
 import type { ModuleDefinition } from "~/registry";
 import { ALL_PERMISSIONS } from "./permissions";
 
 export const cadastrosModule: ModuleDefinition = {
-  key: "cadastros-conexao",
+  key: "cadastros",
   nome: "Cadastros",
   descricao: "Gestao de cadastro de clientes PF/PJ",
   icon: Users,
-  routes: ["/dashboard", "/clientes", "/consultor", "/relatorios", "/global/acoes", "/empresa/tema"],
+  routes: ["/dashboard", "/clientes", "/consultor", "/relatorios", "/global/acoes", "/empresa/tema", "/cadastros/design"],
   permissions: ALL_PERMISSIONS.map((p) => p.key),
   ambientes: ["cadastro", "consultor", "tecnologia", "suporte"],
   abas: [
@@ -36,6 +36,8 @@ export const cadastrosModule: ModuleDefinition = {
   hasFormulario: true,
   hasCustomActions: true,
   hasApiConnectors: true,
+  hasDesignConfig: true,
+  designRoute: "/cadastros/design",
   setup: () => {
     for (const p of ALL_PERMISSIONS) {
       registerPermission({
@@ -53,7 +55,7 @@ export const cadastrosModule: ModuleDefinition = {
       to: "/dashboard",
       permissionCheck: (perms) => perms?.ver_todos_cadastros === true,
       order: 1,
-      moduloKey: "cadastros-conexao",
+      moduloKey: "cadastros",
     });
 
     registerNavItem({
@@ -65,7 +67,7 @@ export const cadastrosModule: ModuleDefinition = {
       permissionCheck: (perms) =>
         perms?.ver_todos_cadastros === true || perms?.gerar_links === true,
       order: 2,
-      moduloKey: "cadastros-conexao",
+      moduloKey: "cadastros",
     });
 
     registerNavItem({
@@ -75,7 +77,7 @@ export const cadastrosModule: ModuleDefinition = {
       to: "/consultor",
       permissionCheck: (perms) => perms?.gerar_links === true,
       order: 3,
-      moduloKey: "cadastros-conexao",
+      moduloKey: "cadastros",
       noChildMatch: true,
     });
 
@@ -86,10 +88,20 @@ export const cadastrosModule: ModuleDefinition = {
       to: "/relatorios",
       permissionCheck: (perms) => perms?.ver_relatorios === true,
       order: 4,
-      moduloKey: "cadastros-conexao",
+      moduloKey: "cadastros",
     });
 
-    registerPermissionDefaults("cadastros-conexao", {
+    registerNavItem({
+      id: "cadastros-design",
+      label: "Design",
+      icon: Palette,
+      to: "/cadastros/design",
+      permissionCheck: (perms) => perms?.gerenciar_config === true,
+      order: 99,
+      moduloKey: "cadastros",
+    });
+
+    registerPermissionDefaults("cadastros", {
       cadastro: {
         ver_todos_cadastros: true, aprovar_cadastro: true, reprovar_cadastro: true,
         solicitar_correcao_cadastro: true, aprovar_documento: true, reprovar_documento: true,

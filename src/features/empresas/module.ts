@@ -7,7 +7,7 @@ export const empresasModule: ModuleDefinition = {
   nome: "Empresa",
   descricao: "Gerenciamento de empresas",
   icon: Building2,
-  routes: ["/global/empresas", "/empresa"],
+  routes: ["/global/empresas", "/empresa", "/empresa/design"],
   permissions: [],
   ambientes: [],
   abas: [
@@ -18,6 +18,8 @@ export const empresasModule: ModuleDefinition = {
     { key: "empresa-branding", label: "Branding", descricao: "Configuração de marca (Logo, Favicon)" }
   ],
   events: [],
+  hasDesignConfig: true,
+  designRoute: "/empresa/design",
   setup: () => {
     registerNavItem({
       id: "empresa-banco",
@@ -54,7 +56,7 @@ export const empresasModule: ModuleDefinition = {
       id: "empresa-design",
       label: "Design",
       icon: Palette,
-      to: "/empresa/tema",
+      to: "/empresa/design",
       permissionCheck: () => true,
       order: 40,
       moduloKey: "empresas-core",

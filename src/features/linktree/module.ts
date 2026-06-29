@@ -1,14 +1,14 @@
-import { Link2, Palette } from "lucide-react";
+import { Link2, Palette, Paintbrush, Link, BarChart3 } from "lucide-react";
 import { registerModule, registerNavItem, registerPermission, registerPermissionDefaults } from "~/registry";
 import type { ModuleDefinition } from "~/registry";
 import { LINKTREE_PERMISSIONS } from "./permissions";
 
 export const linktreeModule: ModuleDefinition = {
-  key: "linktree-conexao",
+  key: "linktree",
   nome: "LinkTree",
   descricao: "Cartoes digitais e QR Codes dos colaboradores",
   icon: Link2,
-  routes: ["/linktree/dashboard", "/linktree/tema"],
+  routes: ["/linktree/dashboard", "/linktree/tema", "/linktree/design", "/linktree/empresa", "/linktree/empresa/editor"],
   permissions: LINKTREE_PERMISSIONS.map((p) => p.key),
   ambientes: ["cadastro", "consultor", "tecnologia"],
   abas: [
@@ -23,6 +23,8 @@ export const linktreeModule: ModuleDefinition = {
     { key: "colaborador.inativado", label: "Colaborador Inativado", descricao: "Dispara quando um colaborador e inativado", type: "status_change" },
   ],
   hasCredentialScopes: true,
+  hasDesignConfig: true,
+  designRoute: "/linktree/design",
   setup: () => {
     for (const p of LINKTREE_PERMISSIONS) {
       registerPermission({ key: p.key, label: p.label, description: p.description, group: p.group });
@@ -35,39 +37,73 @@ export const linktreeModule: ModuleDefinition = {
       to: "/linktree/dashboard",
       permissionCheck: (perms) => perms?.lt_ver_dashboard === true,
       order: 25,
-      moduloKey: "linktree-conexao",
+      moduloKey: "linktree",
     });
 
     registerNavItem({
       id: "linktree-tema",
       label: "Tema",
-      icon: Palette,
+      icon: Paintbrush,
       to: "/linktree/tema",
       permissionCheck: (perms) => perms?.lt_gerenciar_tema === true,
       order: 26,
-      moduloKey: "linktree-conexao",
+      moduloKey: "linktree",
     });
 
-    registerPermissionDefaults("linktree-conexao", {
+    registerNavItem({
+      id: "linktree-design",
+      label: "Design",
+      icon: Palette,
+      to: "/linktree/design",
+      permissionCheck: (perms) => perms?.lt_gerenciar_tema === true,
+      order: 27,
+      moduloKey: "linktree",
+    });
+
+    registerNavItem({
+      id: "linktree-empresa",
+      label: "Linktree Empresa",
+      icon: Link,
+      to: "/linktree/empresa",
+      permissionCheck: (perms) => perms?.lt_empresa_ver === true,
+      order: 28,
+      moduloKey: "linktree",
+    });
+
+    registerNavItem({
+      id: "linktree-empresa-editor",
+      label: "Editor",
+      icon: BarChart3,
+      to: "/linktree/empresa/editor",
+      permissionCheck: (perms) => perms?.lt_empresa_editar === true,
+      order: 29,
+      moduloKey: "linktree",
+    });
+
+    registerPermissionDefaults("linktree", {
       cadastro: {
         lt_ver_dashboard: true, lt_criar_colaborador: true, lt_editar_colaborador: true,
         lt_excluir_colaborador: true, lt_toggle_status: true, lt_ver_link: true,
         lt_ver_qr: true, lt_baixar_qr: true, lt_gerenciar_tema: true,
+        lt_empresa_ver: true, lt_empresa_editar: true, lt_empresa_ver_analytics: true, lt_empresa_gerar_qr: true,
       },
       consultor: {
         lt_ver_dashboard: true, lt_criar_colaborador: false, lt_editar_colaborador: false,
         lt_excluir_colaborador: false, lt_toggle_status: false, lt_ver_link: true,
         lt_ver_qr: true, lt_baixar_qr: true, lt_gerenciar_tema: false,
+        lt_empresa_ver: true, lt_empresa_editar: false, lt_empresa_ver_analytics: false, lt_empresa_gerar_qr: true,
       },
       tecnologia: {
         lt_ver_dashboard: true, lt_criar_colaborador: true, lt_editar_colaborador: true,
         lt_excluir_colaborador: true, lt_toggle_status: true, lt_ver_link: true,
         lt_ver_qr: true, lt_baixar_qr: true, lt_gerenciar_tema: true,
+        lt_empresa_ver: true, lt_empresa_editar: true, lt_empresa_ver_analytics: true, lt_empresa_gerar_qr: true,
       },
       suporte: {
         lt_ver_dashboard: false, lt_criar_colaborador: false, lt_editar_colaborador: false,
         lt_excluir_colaborador: false, lt_toggle_status: false, lt_ver_link: false,
         lt_ver_qr: false, lt_baixar_qr: false, lt_gerenciar_tema: false,
+        lt_empresa_ver: false, lt_empresa_editar: false, lt_empresa_ver_analytics: false, lt_empresa_gerar_qr: false,
       },
     });
   },

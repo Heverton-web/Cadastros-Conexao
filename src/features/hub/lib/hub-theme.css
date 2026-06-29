@@ -31,7 +31,7 @@
   --color-shadow: #00000040;
   --color-glass-tint: #ffffff10;
   --color-header-bg: #1e293b;
-  --color-scrollbar-thumb: #c9a655;
+  --color-scrollbar-thumb: #475569;
   --color-scrollbar-track: transparent;
   --color-ring: #c9a65580;
   --color-gradient-start: #c9a655;
@@ -53,11 +53,21 @@
   --env-glass-blur: 20px;
 }
 
-*::-webkit-scrollbar { width: 5px; height: 5px; }
+*::-webkit-scrollbar { width: 4px; height: 4px; }
 *::-webkit-scrollbar-track { background: transparent; }
-*::-webkit-scrollbar-thumb { background: var(--color-accent); border-radius: 999px; }
-*::-webkit-scrollbar-thumb:hover { background: color-mix(in srgb, var(--color-accent) 80%, black); }
-* { scrollbar-width: thin; scrollbar-color: var(--color-accent) transparent; }
+*::-webkit-scrollbar-thumb { background: #475569; border-radius: 999px; }
+*::-webkit-scrollbar-thumb:hover { background: #64748b; }
+* { scrollbar-width: thin; scrollbar-color: #475569 transparent; }
+
+/* Modal scrollbar - cinza suave */
+[data-radix-dialog-content]::-webkit-scrollbar-thumb,
+[role="dialog"] ::-webkit-scrollbar-thumb {
+  background: #475569;
+}
+[data-radix-dialog-content]::-webkit-scrollbar-thumb:hover,
+[role="dialog"] ::-webkit-scrollbar-thumb:hover {
+  background: #64748b;
+}
 
 .animation-delay-2000 { animation-delay: 2s; }
 .animation-delay-4000 { animation-delay: 4s; }

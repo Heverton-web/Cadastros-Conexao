@@ -2,7 +2,7 @@ import { supabase } from "~/core/supabase";
 import { dispararEventoModulo } from "~/core/services/webhooks";
 import type { FunilTarefa, FunilTarefaInput } from "../types";
 
-const MODULO_KEY = "funis-conexao";
+const MODULO_KEY = "funis";
 
 export async function criarTarefa(input: FunilTarefaInput): Promise<FunilTarefa> {
   const { data: { user } } = await supabase.auth.getUser();

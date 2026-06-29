@@ -1,14 +1,14 @@
-import { GitBranch, LayoutDashboard } from "lucide-react";
+import { GitBranch, LayoutDashboard, Palette } from "lucide-react";
 import { registerModule, registerNavItem, registerPermission, registerPermissionDefaults } from "~/registry";
 import type { ModuleDefinition } from "~/registry";
 import { FUNIS_PERMISSIONS } from "./permissions";
 
 export const funisModule: ModuleDefinition = {
-  key: "funis-conexao",
+  key: "funis",
   nome: "Funis",
   descricao: "Gerenciamento de funis Kanban para fluxos de trabalho",
   icon: GitBranch,
-  routes: ["/funis/dashboard", "/funis/funil/$funilId"],
+  routes: ["/funis/dashboard", "/funis/funil/$funilId", "/funis/design"],
   permissions: FUNIS_PERMISSIONS.map((p) => p.key),
   ambientes: ["cadastro", "consultor", "tecnologia"],
   abas: [
@@ -26,6 +26,8 @@ export const funisModule: ModuleDefinition = {
     { key: "tarefa.movida", label: "Tarefa Movida", descricao: "Quando uma tarefa é movida entre colunas", type: "button_action" },
   ],
   hasCredentialScopes: true,
+  hasDesignConfig: true,
+  designRoute: "/funis/design",
   setup: () => {
     for (const p of FUNIS_PERMISSIONS) {
       registerPermission({ key: p.key, label: p.label, description: p.description, group: p.group });
@@ -38,10 +40,20 @@ export const funisModule: ModuleDefinition = {
       to: "/funis/dashboard",
       permissionCheck: (perms) => perms?.funis_ver_dashboard === true,
       order: 20,
-      moduloKey: "funis-conexao",
+      moduloKey: "funis",
     });
 
-    registerPermissionDefaults("funis-conexao", {
+    registerNavItem({
+      id: "funis-design",
+      label: "Design",
+      icon: Palette,
+      to: "/funis/design",
+      permissionCheck: (perms) => perms?.funis_editar_funil === true,
+      order: 99,
+      moduloKey: "funis",
+    });
+
+    registerPermissionDefaults("funis", {
       cadastro: {
         funis_ver_dashboard: true, funis_criar_funil: true, funis_editar_funil: true,
         funis_excluir_funil: false, funis_gerir_colunas: true, funis_gerir_tarefas: true,

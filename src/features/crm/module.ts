@@ -1,16 +1,19 @@
-import { LayoutDashboard, Users, UserCheck, BarChart3, ArrowLeftRight, Crown } from "lucide-react";
+import { LayoutDashboard, Users, UserCheck, BarChart3, ArrowLeftRight, Crown, Palette, Kanban, ListTodo } from "lucide-react";
 import { registerModule, registerNavItem, registerPermission, registerPermissionDefaults } from "~/registry";
 import type { ModuleDefinition } from "~/registry";
 import { CRM_PERMISSIONS } from "./permissions";
 
 export const crmModule: ModuleDefinition = {
-  key: "crm-conexao",
+  key: "crm",
   nome: "CRM",
   descricao: "Gestão de relacionamento com clientes e equipe comercial",
   icon: Users,
   routes: [
     "/crm/dashboard",
     "/crm/carteira",
+    "/crm/pipeline",
+    "/crm/tarefas",
+    "/crm/metricas",
     "/crm/cliente/$id",
     "/crm/equipe",
     "/crm/bi",
@@ -35,6 +38,8 @@ export const crmModule: ModuleDefinition = {
     { key: "cliente.transferido", label: "Cliente Transferido", descricao: "Quando um cliente é transferido", type: "status_change" },
     { key: "visita.realizada", label: "Visita Realizada", descricao: "Quando uma visita é registrada", type: "button_action" },
   ],
+  hasDesignConfig: true,
+  designRoute: "/crm/design",
   setup: () => {
     for (const p of CRM_PERMISSIONS) {
       registerPermission({ key: p.key, label: p.label, description: p.description, group: p.group });
@@ -47,7 +52,7 @@ export const crmModule: ModuleDefinition = {
       to: "/crm/dashboard",
       permissionCheck: (perms) => perms?.crm_dashboard === true,
       order: 50,
-      moduloKey: "crm-conexao",
+      moduloKey: "crm",
     });
 
     registerNavItem({
@@ -57,7 +62,27 @@ export const crmModule: ModuleDefinition = {
       to: "/crm/carteira",
       permissionCheck: (perms) => perms?.crm_carteira === true,
       order: 51,
-      moduloKey: "crm-conexao",
+      moduloKey: "crm",
+    });
+
+    registerNavItem({
+      id: "crm-pipeline",
+      label: "Pipeline",
+      icon: Kanban,
+      to: "/crm/pipeline",
+      permissionCheck: (perms) => perms?.crm_pipeline === true,
+      order: 52,
+      moduloKey: "crm",
+    });
+
+    registerNavItem({
+      id: "crm-tarefas",
+      label: "Tarefas",
+      icon: ListTodo,
+      to: "/crm/tarefas",
+      permissionCheck: (perms) => perms?.crm_tarefas === true,
+      order: 53,
+      moduloKey: "crm",
     });
 
     registerNavItem({
@@ -66,8 +91,18 @@ export const crmModule: ModuleDefinition = {
       icon: UserCheck,
       to: "/crm/equipe",
       permissionCheck: (perms) => perms?.crm_equipe === true,
-      order: 52,
-      moduloKey: "crm-conexao",
+      order: 54,
+      moduloKey: "crm",
+    });
+
+    registerNavItem({
+      id: "crm-metricas",
+      label: "Métricas",
+      icon: BarChart3,
+      to: "/crm/metricas",
+      permissionCheck: (perms) => perms?.crm_metricas === true,
+      order: 55,
+      moduloKey: "crm",
     });
 
     registerNavItem({
@@ -76,8 +111,8 @@ export const crmModule: ModuleDefinition = {
       icon: BarChart3,
       to: "/crm/bi",
       permissionCheck: (perms) => perms?.crm_bi === true,
-      order: 53,
-      moduloKey: "crm-conexao",
+      order: 56,
+      moduloKey: "crm",
     });
 
     registerNavItem({
@@ -87,7 +122,7 @@ export const crmModule: ModuleDefinition = {
       to: "/crm/transferencia",
       permissionCheck: (perms) => perms?.crm_transferencia === true,
       order: 54,
-      moduloKey: "crm-conexao",
+      moduloKey: "crm",
     });
 
     registerNavItem({
@@ -97,20 +132,30 @@ export const crmModule: ModuleDefinition = {
       to: "/crm/diretoria",
       permissionCheck: (perms) => perms?.crm_diretoria === true,
       order: 55,
-      moduloKey: "crm-conexao",
+      moduloKey: "crm",
+    });
+
+    registerNavItem({
+      id: "crm-design",
+      label: "Design",
+      icon: Palette,
+      to: "/crm/design",
+      permissionCheck: (perms) => perms?.is_super_admin === true,
+      order: 99,
+      moduloKey: "crm",
     });
 
     const crmAllTrue = {
-      crm_dashboard: true, crm_carteira: true, crm_cliente_detalhe: true,
-      crm_equipe: true, crm_bi: true, crm_transferencia: true,
-      crm_diretoria: true, crm_dev_convites: true, crm_dev_demo: true,
-      crm_dev_usuarios: true,
+      crm_dashboard: true, crm_carteira: true, crm_pipeline: true, crm_tarefas: true,
+      crm_metricas: true, crm_cliente_detalhe: true, crm_equipe: true, crm_bi: true,
+      crm_transferencia: true, crm_diretoria: true, crm_dev_convites: true,
+      crm_dev_demo: true, crm_dev_usuarios: true,
     };
     const crmAllFalse = Object.fromEntries(Object.keys(crmAllTrue).map((k) => [k, false]));
 
-    registerPermissionDefaults("crm-conexao", {
+    registerPermissionDefaults("crm", {
       cadastro: crmAllTrue,
-      consultor: { ...crmAllFalse, crm_dashboard: true, crm_carteira: true, crm_cliente_detalhe: true, crm_equipe: true },
+      consultor: { ...crmAllFalse, crm_dashboard: true, crm_carteira: true, crm_pipeline: true, crm_tarefas: true, crm_cliente_detalhe: true, crm_equipe: true },
       tecnologia: crmAllTrue,
       suporte: crmAllFalse,
     });

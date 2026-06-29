@@ -1,10 +1,10 @@
-import { BookOpen, LayoutDashboard, GraduationCap, Trophy, Settings, Users, BarChart3, Bot, FileText, Medal, Star } from "lucide-react";
+import { BookOpen, LayoutDashboard, GraduationCap, Trophy, Settings, Users, BarChart3, Bot, FileText, Medal, Star, Palette } from "lucide-react";
 import { registerModule, registerNavItem, registerPermission, registerPermissionDefaults } from "~/registry";
 import type { ModuleDefinition } from "~/registry";
 import { HUB_PERMISSIONS } from "./permissions";
 
 export const hubModule: ModuleDefinition = {
-  key: "hub-conexao",
+  key: "hub",
   nome: "Hub",
   descricao: "Plataforma de treinamento e gamificação",
   icon: BookOpen,
@@ -27,6 +27,7 @@ export const hubModule: ModuleDefinition = {
     "/hub/distribuidor/dashboard",
     "/hub/distribuidor/conquistas",
     "/hub/cliente/dashboard/$empresaId",
+    "/hub/design",
   ],
   permissions: HUB_PERMISSIONS.map((p) => p.key),
   ambientes: ["cadastro", "consultor", "tecnologia"],
@@ -49,6 +50,8 @@ export const hubModule: ModuleDefinition = {
     { key: "usuario.status_alterado", label: "Status Alterado", descricao: "Quando status do usuário muda", type: "status_change" },
   ],
   hasCredentialScopes: true,
+  hasDesignConfig: true,
+  designRoute: "/hub/design",
   setup: () => {
     for (const p of HUB_PERMISSIONS) {
       registerPermission({ key: p.key, label: p.label, description: p.description, group: p.group });
@@ -66,7 +69,7 @@ export const hubModule: ModuleDefinition = {
       to: "/hub/admin/dashboard",
       permissionCheck: isAdmin,
       order: 25,
-      moduloKey: "hub-conexao",
+      moduloKey: "hub",
     });
 
     registerNavItem({
@@ -76,7 +79,7 @@ export const hubModule: ModuleDefinition = {
       to: "/hub/admin/materiais",
       permissionCheck: isAdmin,
       order: 26,
-      moduloKey: "hub-conexao",
+      moduloKey: "hub",
     });
 
     registerNavItem({
@@ -86,7 +89,7 @@ export const hubModule: ModuleDefinition = {
       to: "/hub/admin/trilhas",
       permissionCheck: isAdmin,
       order: 27,
-      moduloKey: "hub-conexao",
+      moduloKey: "hub",
     });
 
     registerNavItem({
@@ -96,7 +99,7 @@ export const hubModule: ModuleDefinition = {
       to: "/hub/admin/badges",
       permissionCheck: isAdmin,
       order: 28,
-      moduloKey: "hub-conexao",
+      moduloKey: "hub",
     });
 
     registerNavItem({
@@ -106,7 +109,7 @@ export const hubModule: ModuleDefinition = {
       to: "/hub/admin/analytics",
       permissionCheck: isAdmin,
       order: 29,
-      moduloKey: "hub-conexao",
+      moduloKey: "hub",
     });
 
     registerNavItem({
@@ -116,7 +119,7 @@ export const hubModule: ModuleDefinition = {
       to: "/hub/admin/chatbot",
       permissionCheck: isAdmin,
       order: 30,
-      moduloKey: "hub-conexao",
+      moduloKey: "hub",
     });
 
     registerNavItem({
@@ -126,7 +129,7 @@ export const hubModule: ModuleDefinition = {
       to: "/hub/gestor/dashboard",
       permissionCheck: isGestor,
       order: 35,
-      moduloKey: "hub-conexao",
+      moduloKey: "hub",
     });
 
     registerNavItem({
@@ -136,7 +139,7 @@ export const hubModule: ModuleDefinition = {
       to: "/hub/gestor/analytics",
       permissionCheck: isGestor,
       order: 36,
-      moduloKey: "hub-conexao",
+      moduloKey: "hub",
     });
 
     registerNavItem({
@@ -146,7 +149,7 @@ export const hubModule: ModuleDefinition = {
       to: "/hub/gestor/ranking",
       permissionCheck: isGestor,
       order: 37,
-      moduloKey: "hub-conexao",
+      moduloKey: "hub",
     });
 
     registerNavItem({
@@ -156,7 +159,7 @@ export const hubModule: ModuleDefinition = {
       to: "/hub/gestor/conquistas",
       permissionCheck: isGestor,
       order: 38,
-      moduloKey: "hub-conexao",
+      moduloKey: "hub",
     });
 
     registerNavItem({
@@ -166,7 +169,7 @@ export const hubModule: ModuleDefinition = {
       to: "/hub/consultor/dashboard",
       permissionCheck: isConsultor,
       order: 45,
-      moduloKey: "hub-conexao",
+      moduloKey: "hub",
     });
 
     registerNavItem({
@@ -176,7 +179,7 @@ export const hubModule: ModuleDefinition = {
       to: "/hub/consultor/ranking",
       permissionCheck: isConsultor,
       order: 46,
-      moduloKey: "hub-conexao",
+      moduloKey: "hub",
     });
 
     registerNavItem({
@@ -186,7 +189,7 @@ export const hubModule: ModuleDefinition = {
       to: "/hub/consultor/conquistas",
       permissionCheck: isConsultor,
       order: 47,
-      moduloKey: "hub-conexao",
+      moduloKey: "hub",
     });
 
     registerNavItem({
@@ -196,7 +199,7 @@ export const hubModule: ModuleDefinition = {
       to: "/hub/distribuidor/dashboard",
       permissionCheck: isDistribuidor,
       order: 55,
-      moduloKey: "hub-conexao",
+      moduloKey: "hub",
     });
 
     registerNavItem({
@@ -206,7 +209,7 @@ export const hubModule: ModuleDefinition = {
       to: "/hub/distribuidor/conquistas",
       permissionCheck: isDistribuidor,
       order: 56,
-      moduloKey: "hub-conexao",
+      moduloKey: "hub",
     });
 
     registerNavItem({
@@ -216,7 +219,7 @@ export const hubModule: ModuleDefinition = {
       to: "/global/hub",
       permissionCheck: (perms: any) => perms?.hub_ver_materiais === true,
       order: 60,
-      moduloKey: "hub-conexao",
+      moduloKey: "hub",
     });
 
     registerNavItem({
@@ -226,7 +229,17 @@ export const hubModule: ModuleDefinition = {
       to: "/empresa/hub/tema",
       permissionCheck: isAdmin,
       order: 61,
-      moduloKey: "hub-conexao",
+      moduloKey: "hub",
+    });
+
+    registerNavItem({
+      id: "hub-design",
+      label: "Design",
+      icon: Palette,
+      to: "/hub/design",
+      permissionCheck: isAdmin,
+      order: 99,
+      moduloKey: "hub",
     });
 
     const hubAllTrue = {
@@ -242,7 +255,7 @@ export const hubModule: ModuleDefinition = {
     };
     const hubAllFalse = Object.fromEntries(Object.keys(hubAllTrue).map((k) => [k, false]));
 
-    registerPermissionDefaults("hub-conexao", {
+    registerPermissionDefaults("hub", {
       cadastro: hubAllTrue,
       consultor: { ...hubAllFalse, hub_ver_materiais: true, hub_ver_ranking: true, hub_ver_conquistas: true },
       tecnologia: hubAllTrue,

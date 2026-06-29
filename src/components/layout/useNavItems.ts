@@ -11,19 +11,104 @@ export type NavItem = {
   noChildMatch?: boolean;
 };
 
-export type NavSection = {
-  label: string;
+export type NavSubGroup = {
+  label?: string;
   items: NavItem[];
 };
 
-export function useNavItems(selectedModuleKey?: string): NavSection[] {
+export type NavModuleSection = {
+  key: string;
+  label: string;
+  icon: LucideIcon;
+  items: NavItem[];
+  subGroups?: NavSubGroup[];
+};
+
+function filterRegistryItems(
+  moduloKey: string,
+  isSuper: boolean,
+  isCompanyAdmin: boolean,
+  modulosAcesso: Record<string, { acessar?: boolean; paginas?: string[] }> | null | undefined,
+): NavItem[] {
+  let registryItems = getNavItemsByModule(moduloKey);
+
+  if (!isSuper) {
+    if (moduloKey === "empresas-core" && isCompanyAdmin) {
+      // não filtra empresas-core para admin da empresa
+    } else {
+      const paginasPermitidas = modulosAcesso?.[moduloKey]?.paginas ?? [];
+      registryItems = registryItems.filter((item) => paginasPermitidas.includes(item.id));
+    }
+  }
+
+  return registryItems.map((ri) => ({
+    path: ri.to,
+    label: ri.label,
+    icon: ri.icon,
+    ...(ri.matchPaths ? { matchPaths: ri.matchPaths } : {}),
+    ...(ri.noChildMatch ? { noChildMatch: ri.noChildMatch } : {}),
+  }));
+}
+
+function buildHubSubGroups(items: NavItem[]): NavSubGroup[] {
+  const adminItems = items.filter(i => i.path.startsWith("/hub/admin/"));
+  const gestorItems = items.filter(i => i.path.startsWith("/hub/gestor/"));
+  const consultorItems = items.filter(i => i.path.startsWith("/hub/consultor/"));
+  const distribuidorItems = items.filter(i => i.path.startsWith("/hub/distribuidor/"));
+  const globalItems = items.filter(i => i.path.startsWith("/global/hub") || i.path.startsWith("/empresa/hub") || i.path === "/hub/design");
+
+  const subGroups: NavSubGroup[] = [];
+  if (adminItems.length) subGroups.push({ label: "Admin", items: adminItems });
+  if (gestorItems.length) subGroups.push({ label: "Gestor", items: gestorItems });
+  if (consultorItems.length) subGroups.push({ label: "Consultor", items: consultorItems });
+  if (distribuidorItems.length) subGroups.push({ label: "Distribuidor", items: distribuidorItems });
+  if (globalItems.length) subGroups.push({ label: "Global", items: globalItems });
+  return subGroups;
+}
+
+function buildAdminSection(): NavModuleSection {
+  const adminItems: NavItem[] = [
+    { path: "/global/modulos", label: "Módulos ERP", icon: Puzzle },
+    { path: "/global/empresas", label: "Empresas ERP", icon: Building2 },
+    { path: "/global/permissoes", label: "Permissões", icon: KeyRound },
+  ];
+  const infraItems: NavItem[] = [
+    { path: "/global/banco", label: "Banco de Dados", icon: Database },
+    { path: "/global/integracoes", label: "Integrações Nativas", icon: Cable },
+    { path: "/global/acoes", label: "Central de Ações", icon: WebhookIcon },
+  ];
+  const ferramentasItems: NavItem[] = [
+    { path: "/global/demos", label: "Credenciais Demos", icon: FlaskConical },
+    { path: "/global/laboratorio", label: "Laboratório de Testes", icon: Beaker },
+    { path: "/global/limits", label: "Limites de Credenciais", icon: Shield },
+  ];
+  const analyticsItems: NavItem[] = [
+    { path: "/global/nps", label: "Dashboard NPS", icon: BarChart3 },
+    { path: "/global/hub", label: "Dashboard Hub", icon: Globe },
+    { path: "/empresa/hub/tema", label: "Temas Hub", icon: Palette },
+  ];
+
+  return {
+    key: "__admin__",
+    label: "Administração",
+    icon: Shield,
+    items: [...adminItems, ...infraItems, ...ferramentasItems, ...analyticsItems],
+    subGroups: [
+      { label: "Gestão", items: adminItems },
+      { label: "Infraestrutura", items: infraItems },
+      { label: "Ferramentas", items: ferramentasItems },
+      { label: "Analytics", items: analyticsItems },
+    ],
+  };
+}
+
+export function useNavItems(): NavModuleSection[] {
   const { profile, permissoes, modulosAcesso, modulosAtivos } = useAuth();
   const p = permissoes;
 
-  // Obter chaves de módulos que o usuário de fato tem acesso
   const modulosAcessiveis = useMemo(() => {
     if (profile?.is_super_admin) {
-      return getAllModules().map((m) => m.key);
+      return getAllModules().map((m) => ({ key: m.key, nome: m.nome, icon: m.icon }));
     }
     const ativos = modulosAtivos || [];
     const isCompanyAdmin = profile?.role === "admin";
@@ -39,96 +124,72 @@ export function useNavItems(selectedModuleKey?: string): NavSection[] {
         }
         return ativos.includes(m.key) && temAcesso;
       })
-      .map((m) => m.key);
+      .map((m) => ({ key: m.key, nome: m.nome, icon: m.icon }));
   }, [profile, modulosAtivos, modulosAcesso]);
 
+const MODULE_ORDER: Record<string, number> = {
+  "__admin__": 0,
+  "empresas-core": 1,
+  "cadastros": 2,
+  "crm": 3,
+  "hub": 4,
+  "nps": 5,
+  "funis": 6,
+  "mapas-interativos": 7,
+  "linktree": 8,
+};
+
   return useMemo(() => {
-    const sections: NavSection[] = [];
-
-    // Fallback: se não for super admin e não houver modulo selecionado, usa o primeiro módulo que ele tem acesso
-    let moduloKey = selectedModuleKey;
-    if (!profile?.is_super_admin && !moduloKey && modulosAcessiveis.length > 0) {
-      moduloKey = modulosAcessiveis[0];
-    }
-
-    let registryItems = moduloKey ? getNavItemsByModule(moduloKey) : [];
-
     const isSuper = profile?.is_super_admin === true;
     const isCompanyAdmin = !isSuper && profile?.role === "admin" && !!profile?.empresa_id;
+    const sections: NavModuleSection[] = [];
 
-    // Filtrar as abas/páginas com base no modulosAcesso do usuário (se não for Super Admin)
-    if (!isSuper && moduloKey) {
-      if (moduloKey === "empresas-core" && isCompanyAdmin) {
-        // não filtra empresas-core para admin da empresa
-      } else {
-        const paginasPermitidas = modulosAcesso?.[moduloKey]?.paginas ?? [];
-        registryItems = registryItems.filter((item) => paginasPermitidas.includes(item.id));
-      }
+    // Administração (super admin only) — primeiro módulo
+    if (isSuper) {
+      sections.push(buildAdminSection());
     }
 
-    const regNav: NavItem[] = registryItems.map((ri) => ({
-      path: ri.to,
-      label: ri.label,
-      icon: ri.icon,
-      ...(ri.matchPaths ? { matchPaths: ri.matchPaths } : {}),
-      ...(ri.noChildMatch ? { noChildMatch: ri.noChildMatch } : {}),
-    }));
-
-    // Section: Navegação (registry items)
-    // Global (moduloKey === undefined) é exclusivo do Super Admin
-    if (isSuper || moduloKey) {
-      if (regNav.length > 0 && moduloKey !== "empresas-core") {
-        sections.push({ label: moduloKey ? "Navegação" : "Itens Globais", items: regNav });
-      }
-    }
-
-    // Section: Administração (super admin, global only)
-    if (isSuper && !moduloKey) {
-      sections.push({
-        label: "Administração",
-        items: [
-          { path: "/global/modulos", label: "Módulos ERP", icon: Puzzle },
-          { path: "/global/empresas", label: "Empresas ERP", icon: Building2 },
-          { path: "/global/nps", label: "Dashboard NPS", icon: BarChart3 },
-          { path: "/global/hub", label: "Dashboard Hub", icon: Globe },
-          { path: "/empresa/hub/tema", label: "Temas Hub", icon: Palette },
-          { path: "/global/permissoes", label: "Permissões", icon: KeyRound },
-          { path: "/global/acoes", label: "Central de Ações", icon: WebhookIcon },
-          { path: "/global/banco", label: "Banco de Dados", icon: Database },
-          { path: "/global/integracoes", label: "Integrações Nativas", icon: Cable },
-          { path: "/global/demos", label: "Credenciais Demos", icon: FlaskConical },
-          { path: "/global/laboratorio", label: "Laboratório de Testes", icon: Beaker },
-          { path: "/global/limits", label: "Limites de Credenciais", icon: Shield },
-        ],
-      });
-    }
-
-    // Section: Configuração (empresa context)
-    const temAcessoEmpresas = modulosAcesso?.["empresas-core"]?.acessar === true;
-    const showConfig = moduloKey === "empresas-core" && (isSuper || isCompanyAdmin || temAcessoEmpresas);
-    if (showConfig) {
-      const paginasPermitidasEmpresas = modulosAcesso?.["empresas-core"]?.paginas ?? [];
-      const isSuperOrAdmin = isSuper || isCompanyAdmin;
-      const configItems = getNavItemsByModule("empresas-core")
-        .filter(ri => isSuperOrAdmin || paginasPermitidasEmpresas.includes(ri.id))
-        .map(ri => ({
-          path: ri.to,
-          label: ri.label,
-          icon: ri.icon,
-          ...(ri.matchPaths ? { matchPaths: ri.matchPaths } : {}),
-          ...(ri.noChildMatch ? { noChildMatch: ri.noChildMatch } : {}),
-        }));
-
+    // Empresas-core como "Configuração" — segundo módulo
+    const hasEmpresasCore = modulosAcessiveis.some(m => m.key === "empresas-core");
+    if (hasEmpresasCore) {
+      const configItems = filterRegistryItems("empresas-core", isSuper, isCompanyAdmin, modulosAcesso);
       if (configItems.length > 0) {
         sections.push({
+          key: "empresas-core",
           label: "Configuração",
+          icon: Building2,
           items: configItems,
         });
       }
     }
 
+    // Demais módulos
+    const outros: NavModuleSection[] = [];
+    for (const mod of modulosAcessiveis) {
+      if (mod.key === "empresas-core") continue;
+
+      const items = filterRegistryItems(mod.key, isSuper, isCompanyAdmin, modulosAcesso);
+      if (items.length === 0) continue;
+
+      const section: NavModuleSection = {
+        key: mod.key,
+        label: mod.nome,
+        icon: mod.icon,
+        items,
+      };
+
+      if (mod.key === "hub") {
+        section.subGroups = buildHubSubGroups(items);
+      }
+
+      outros.push(section);
+    }
+
+    outros.sort((a, b) => (MODULE_ORDER[a.key] ?? 99) - (MODULE_ORDER[b.key] ?? 99));
+    sections.push(...outros);
+
     return sections;
-  }, [p, profile?.is_super_admin, profile?.role, profile?.empresa_id, modulosAtivos, selectedModuleKey, modulosAcesso, modulosAcessiveis]);
+  }, [p, profile?.is_super_admin, profile?.role, profile?.empresa_id, modulosAtivos, modulosAcesso, modulosAcessiveis]);
 }
 
 export function useModulos() {
