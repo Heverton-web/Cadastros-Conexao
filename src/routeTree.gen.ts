@@ -53,6 +53,21 @@ import { linktreeDashboardRoute } from "./routes/linktree.dashboard";
 import { linktreeTemaRoute } from "./routes/linktree.tema";
 
 import { globalHubRoute } from "./routes/global.hub";
+
+import { crmDashboardRoute } from "./routes/_auth.crm.dashboard";
+import { crmCarteiraRoute } from "./routes/_auth.crm.carteira";
+import { crmClienteDetailRoute } from "./routes/_auth.crm.cliente.$id";
+import { crmEquipeRoute } from "./routes/_auth.crm.equipe";
+import { crmBiRoute } from "./routes/_auth.crm.bi";
+import { crmTransferenciaRoute } from "./routes/_auth.crm.transferencia";
+import { crmTransferenciaIndexRoute } from "./routes/_auth.crm.transferencia.index";
+import { crmTransferenciaConsultoresRoute } from "./routes/_auth.crm.transferencia.consultores";
+import { crmDiretoriaIndexRoute } from "./routes/_auth.crm.diretoria.index";
+import { crmDiretoriaGestorRoute } from "./routes/_auth.crm.diretoria.gestor.$id";
+import { crmDevConvitesRoute } from "./routes/_auth.crm.dev.convites";
+import { crmDevDemoRoute } from "./routes/_auth.crm.dev.demo";
+import { crmDevUsuariosRoute } from "./routes/_auth.crm.dev.usuarios";
+import { crmAceitarConviteRoute } from "./routes/crm.aceitar-convite.$token";
 import { empresaHubTemaRoute } from "./routes/empresa.hub.tema";
 import { hubClienteDashboardRoute } from "./routes/hub.cliente.dashboard.$empresaId";
 import { hubAdminDashboardRoute } from "./routes/hub.admin.dashboard";
@@ -77,6 +92,7 @@ export const routeTree = rootRoute.addChildren([
   npsSurveyRoute,
   linktreePublicRoute,
   hubClienteDashboardRoute,
+  crmAceitarConviteRoute,
   authLayout.addChildren([
     dashboardRoute,
     clientesRoute,
@@ -143,5 +159,20 @@ export const routeTree = rootRoute.addChildren([
     hubConsultorConquistasRoute,
     hubDistribuidorDashboardRoute,
     hubDistribuidorConquistasRoute,
+
+    crmDashboardRoute,
+    crmCarteiraRoute,
+    crmClienteDetailRoute,
+    crmEquipeRoute,
+    crmBiRoute,
+    crmTransferenciaRoute.addChildren([
+      crmTransferenciaIndexRoute,
+      crmTransferenciaConsultoresRoute,
+    ]),
+    crmDiretoriaIndexRoute,
+    crmDiretoriaGestorRoute,
+    crmDevConvitesRoute,
+    crmDevDemoRoute,
+    crmDevUsuariosRoute,
   ]),
 ]);

@@ -1,14 +1,17 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createRoute, useNavigate } from "@tanstack/react-router";
+import { rootRoute } from "./__root";
 import { useEffect, useState } from "react";
-import { supabase } from "~/integrations/supabase/client";
+import { supabase } from "~/core/supabase";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
-import { Logo } from "~/components/Logo";
-import { toast } from "sonner";
+import { Logo } from "~/features/crm/components/Logo";
+import toast from "react-hot-toast";
 import { Loader2 } from "lucide-react";
 
-export const Route = createFileRoute("/aceitar-convite/$token")({
+export const crmAceitarConviteRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/crm/aceitar-convite/$token",
   component: AceitarConvite,
 });
 
@@ -19,7 +22,7 @@ async function sha256(input: string) {
 }
 
 function AceitarConvite() {
-  const { token } = Route.useParams();
+  const { token } = crmAceitarConviteRoute.useParams();
   const navigate = useNavigate();
   const [convite, setConvite] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -65,7 +68,7 @@ function AceitarConvite() {
       },
     });
     setBusy(false);
-    if (error) { toast.error("Erro ao criar conta", { description: error.message }); return; }
+    if (error) { toast.error("Erro ao criar conta: " + error.message); return; }
     await supabase.from("convites_acesso").update({ status: "utilizado" }).eq("id", convite.id);
     toast.success("Conta criada! Faça login.");
     navigate({ to: "/" });

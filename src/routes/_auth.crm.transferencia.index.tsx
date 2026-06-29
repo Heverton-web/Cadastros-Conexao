@@ -1,12 +1,15 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createRoute } from "@tanstack/react-router";
+import { crmTransferenciaRoute } from "./_auth.crm.transferencia";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { supabase } from "~/integrations/supabase/client";
+import { supabase } from "~/core/supabase";
 import { useState } from "react";
 import { Button } from "~/components/ui/button";
 import { ArrowRight, Loader2 } from "lucide-react";
-import { toast } from "sonner";
+import toast from "react-hot-toast";
 
-export const Route = createFileRoute("/_auth/transferencia/")({
+export const crmTransferenciaIndexRoute = createRoute({
+  getParentRoute: () => crmTransferenciaRoute,
+  path: "/",
   component: TransferenciaPage,
 });
 
@@ -63,7 +66,7 @@ function TransferenciaPage() {
       .eq("id", clienteId);
     setBusy(false);
     if (error) {
-      toast.error("Erro", { description: error.message });
+      toast.error(error.message);
       return;
     }
     toast.success("Cliente transferido");

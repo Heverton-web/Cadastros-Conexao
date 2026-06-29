@@ -1,11 +1,19 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createRoute, Link } from "@tanstack/react-router";
+import { authLayout } from "./_auth";
 import { useState } from "react";
-import { useAuth } from "~/hooks/useAuth";
+import { useAuth } from "~/lib/auth";
 import { useQuery } from "@tanstack/react-query";
-import { supabase } from "~/integrations/supabase/client";
+import { supabase } from "~/core/supabase";
 import { Button } from "~/components/ui/button";
-import { ClientePickerModal } from "~/components/ClientePickerModal";
-import { NovaVisitaModal } from "~/components/NovaVisitaModal";
+import { ClientePickerModal } from "~/features/crm/components/ClientePickerModal";
+import { NovaVisitaModal } from "~/features/crm/components/NovaVisitaModal";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "~/components/ui/select";
 import {
   Briefcase,
   TrendingUp,
@@ -20,34 +28,54 @@ import {
   Building2,
   UserCog,
   Plus,
+  Globe,
 } from "lucide-react";
 
-export const Route = createFileRoute("/_auth/dashboard")({
+export const crmDashboardRoute = createRoute({
+  getParentRoute: () => authLayout,
+  path: "/crm/dashboard",
   component: Dashboard,
 });
-
 
 function Dashboard() {
   const { perfil } = useAuth();
   const role = perfil?.role;
+  const isSuperAdmin = perfil?.is_super_admin === true;
   const [pickerOpen, setPickerOpen] = useState(false);
   const [clienteSelecionado, setClienteSelecionado] = useState<string | null>(null);
+  const [empresaFiltro, setEmpresaFiltro] = useState<string>("todas");
+
+  const { data: empresas } = useQuery({
+    queryKey: ["empresas-crm-list"],
+    enabled: isSuperAdmin,
+    queryFn: async () => {
+      const { data } = await supabase
+        .from("empresas")
+        .select("id, nome")
+        .eq("ativo", true)
+        .order("nome");
+      return data ?? [];
+    },
+  });
+
+  // Painel efetivo: super admin vê DevPanel, demais veem por role
+  const painelEfetivo = isSuperAdmin ? "dev" : role;
 
   const subtitle =
-    role === "dev"
-      ? "Ambiente do desenvolvedor: convites, usuários e demo cards."
-      : role === "diretor_comercial"
+    painelEfetivo === "dev"
+      ? "Visão global: métricas, usuários e convites de todas as empresas."
+      : painelEfetivo === "diretor_comercial"
       ? "Visão nacional: gestores, consultores e BI agregado."
-      : role === "gestor"
+      : painelEfetivo === "gestor"
       ? "Acompanhe a performance da sua equipe e a carteira agregada."
       : "Sua carteira de clientes e visitas em campo.";
 
   const tag =
-    role === "dev"
-      ? "Painel Desenvolvedor"
-      : role === "diretor_comercial"
+    painelEfetivo === "dev"
+      ? "Painel Super Admin"
+      : painelEfetivo === "diretor_comercial"
       ? "Painel Diretor Comercial"
-      : role === "gestor"
+      : painelEfetivo === "gestor"
       ? "Painel Gestor"
       : "Painel Consultor";
 
@@ -61,23 +89,43 @@ function Dashboard() {
           </h1>
           <p className="text-sm text-muted-foreground">{subtitle}</p>
         </div>
-        {role === "consultor" && (
-          <Button
-            onClick={() => setPickerOpen(true)}
-            className="h-11 px-5 gap-2 shadow-[0_8px_24px_-8px_oklch(0.745_0.115_80/0.5)]"
-          >
-            <Plus className="h-4 w-4" />
-            Nova visita
-          </Button>
-        )}
+        <div className="flex items-center gap-3">
+          {isSuperAdmin && empresas && empresas.length > 0 && (
+            <div className="flex items-center gap-2">
+              <Globe className="h-4 w-4 text-muted-foreground" />
+              <Select value={empresaFiltro} onValueChange={setEmpresaFiltro}>
+                <SelectTrigger className="w-[220px] h-9">
+                  <SelectValue placeholder="Filtrar por empresa" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="todas">Todas as empresas</SelectItem>
+                  {empresas.map((e) => (
+                    <SelectItem key={e.id} value={e.id}>
+                      {e.nome}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          )}
+          {painelEfetivo === "consultor" && (
+            <Button
+              onClick={() => setPickerOpen(true)}
+              className="h-11 px-5 gap-2 shadow-[0_8px_24px_-8px_oklch(0.745_0.115_80/0.5)]"
+            >
+              <Plus className="h-4 w-4" />
+              Nova visita
+            </Button>
+          )}
+        </div>
       </header>
 
-      {role === "consultor" && <ConsultorPanel uid={perfil!.id} />}
-      {role === "gestor" && <GestorPanel />}
-      {role === "diretor_comercial" && <DiretorPanel />}
-      {role === "dev" && <DevPanel />}
+      {painelEfetivo === "consultor" && <ConsultorPanel uid={perfil!.id} />}
+      {painelEfetivo === "gestor" && <GestorPanel />}
+      {painelEfetivo === "diretor_comercial" && <DiretorPanel />}
+      {painelEfetivo === "dev" && <DevPanel empresaId={empresaFiltro === "todas" ? undefined : empresaFiltro} />}
 
-      {role === "consultor" && perfil && (
+      {painelEfetivo === "consultor" && perfil && (
         <>
           <ClientePickerModal
             open={pickerOpen}
@@ -135,7 +183,7 @@ function ConsultorPanel({ uid }: { uid: string }) {
         <KpiCard icon={TrendingUp} label="Meta diária" value="3" hint="visitas" />
       </section>
 
-      <QuickAction to="/carteira" icon={Briefcase}
+      <QuickAction to="/crm/carteira" icon={Briefcase}
         title="Abrir minha Carteira"
         subtitle="Kanban por temperatura, registrar nova visita" />
 
@@ -148,7 +196,7 @@ function ConsultorPanel({ uid }: { uid: string }) {
             <p className="p-5 text-sm text-muted-foreground">Nenhum follow-up agendado.</p>
           )}
           {stats?.followups?.map((f: any) => (
-            <Link key={f.id} to="/cliente/$id" params={{ id: f.cliente_id }}
+            <Link key={f.id} to="/crm/cliente/$id" params={{ id: f.cliente_id }}
               className="flex items-center justify-between p-4 hover:bg-secondary/30 transition">
               <div>
                 <p className="font-medium text-sm">{f.clientes?.nome_doutor}</p>
@@ -192,9 +240,9 @@ function GestorPanel() {
       </section>
 
       <div className="grid gap-3 md:grid-cols-3">
-        <QuickAction to="/equipe" icon={Users} title="Equipe" subtitle="Performance por consultor" />
-        <QuickAction to="/transferencia" icon={ArrowLeftRight} title="Transferir clientes" subtitle="Reatribuir carteira" />
-        <QuickAction to="/bi" icon={BarChart3} title="BI da equipe" subtitle="Pipeline e conversão" />
+        <QuickAction to="/crm/equipe" icon={Users} title="Equipe" subtitle="Performance por consultor" />
+        <QuickAction to="/crm/transferencia" icon={ArrowLeftRight} title="Transferir clientes" subtitle="Reatribuir carteira" />
+        <QuickAction to="/crm/bi" icon={BarChart3} title="BI da equipe" subtitle="Pipeline e conversão" />
       </div>
     </>
   );
@@ -230,43 +278,95 @@ function DiretorPanel() {
       </section>
 
       <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-4">
-        <QuickAction to="/diretoria" icon={Building2} title="Diretoria" subtitle="Gestores e equipes" />
-        <QuickAction to="/transferencia/consultores" icon={UserCog} title="Transferir consultor" subtitle="Mover entre gestores" />
-        <QuickAction to="/transferencia" icon={ArrowLeftRight} title="Transferir cliente" subtitle="Realocar carteiras" />
-        <QuickAction to="/bi" icon={BarChart3} title="BI nacional" subtitle="Filtros e funil" />
+        <QuickAction to="/crm/diretoria" icon={Building2} title="Diretoria" subtitle="Gestores e equipes" />
+        <QuickAction to="/crm/transferencia/consultores" icon={UserCog} title="Transferir consultor" subtitle="Mover entre gestores" />
+        <QuickAction to="/crm/transferencia" icon={ArrowLeftRight} title="Transferir cliente" subtitle="Realocar carteiras" />
+        <QuickAction to="/crm/bi" icon={BarChart3} title="BI nacional" subtitle="Filtros e funil" />
       </div>
     </>
   );
 }
 
-function DevPanel() {
+function DevPanel({ empresaId }: { empresaId?: string }) {
   const { data } = useQuery({
-    queryKey: ["dash-dev"],
+    queryKey: ["dash-dev", empresaId],
     queryFn: async () => {
-      const [users, convites] = await Promise.all([
-        supabase.from("usuarios").select("id", { count: "exact", head: true }),
-        supabase.from("convites_acesso").select("id", { count: "exact", head: true }).eq("status", "pendente"),
+      // If filtering by empresa, get user IDs from that empresa first
+      let userIds: string[] | null = null;
+      if (empresaId) {
+        const { data: profiles } = await supabase
+          .from("profiles")
+          .select("id")
+          .eq("empresa_id", empresaId);
+        userIds = (profiles ?? []).map((p) => p.id);
+        if (userIds.length === 0) {
+          return { users: 0, consultores: 0, gestores: 0, clientes: 0, visitasHoje: 0, visitasTotal: 0, convitesPendentes: 0 };
+        }
+      }
+
+      const today = new Date().toISOString().slice(0, 10);
+
+      // Build queries
+      let usersQ = supabase.from("usuarios").select("id", { count: "exact", head: true });
+      let consultoresQ = supabase.from("usuarios").select("id", { count: "exact", head: true }).eq("role", "consultor");
+      let gestoresQ = supabase.from("usuarios").select("id", { count: "exact", head: true }).eq("role", "gestor");
+      let clientesQ = supabase.from("clientes").select("id", { count: "exact", head: true });
+      let visitasHojeQ = supabase.from("visitas").select("id", { count: "exact", head: true }).eq("data_visita", today);
+      let visitasTotalQ = supabase.from("visitas").select("id", { count: "exact", head: true });
+      let convitesQ = supabase.from("convites_acesso").select("id", { count: "exact", head: true }).eq("status", "pendente");
+
+      if (userIds) {
+        const inClause = userIds.join(",");
+        usersQ = usersQ.in("id", userIds);
+        consultoresQ = consultoresQ.in("id", userIds);
+        gestoresQ = gestoresQ.in("id", userIds);
+        clientesQ = clientesQ.in("consultor_atual_id", userIds);
+        visitasHojeQ = visitasHojeQ.in("consultor_executor_id", userIds);
+        visitasTotalQ = visitasTotalQ.in("consultor_executor_id", userIds);
+      }
+
+      const [users, consultores, gestores, clientes, visitasHoje, visitasTotal, convites] = await Promise.all([
+        usersQ, consultoresQ, gestoresQ, clientesQ, visitasHojeQ, visitasTotalQ, convitesQ,
       ]);
-      return { users: users.count ?? 0, convitesPendentes: convites.count ?? 0 };
+
+      return {
+        users: users.count ?? 0,
+        consultores: consultores.count ?? 0,
+        gestores: gestores.count ?? 0,
+        clientes: clientes.count ?? 0,
+        visitasHoje: visitasHoje.count ?? 0,
+        visitasTotal: visitasTotal.count ?? 0,
+        convitesPendentes: convites.count ?? 0,
+      };
     },
   });
 
   return (
     <>
-      <section className="grid grid-cols-2 md:grid-cols-3 gap-3">
-        <KpiCard icon={ShieldCheck} label="Usuários" value={data?.users ?? "—"} />
+      <section className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <KpiCard icon={Users} label="Usuários" value={data?.users ?? "—"} />
+        <KpiCard icon={Briefcase} label="Clientes" value={data?.clientes ?? "—"} />
+        <KpiCard icon={Calendar} label="Visitas hoje" value={data?.visitasHoje ?? "—"} />
+        <KpiCard icon={TrendingUp} label="Visitas total" value={data?.visitasTotal ?? "—"} />
+      </section>
+
+      <section className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <KpiCard icon={UserCheck} label="Consultores" value={data?.consultores ?? "—"} />
+        <KpiCard icon={Building2} label="Gestores" value={data?.gestores ?? "—"} />
         <KpiCard icon={UserPlus} label="Convites pendentes" value={data?.convitesPendentes ?? "—"} />
         <KpiCard icon={Settings} label="Demo cards" value="4" hint="papéis" />
       </section>
 
       <div className="grid gap-3 md:grid-cols-3">
-        <QuickAction to="/dev/usuarios" icon={ShieldCheck} title="Usuários" subtitle="Ativar, inativar, vincular" />
-        <QuickAction to="/dev/convites" icon={UserPlus} title="Convites" subtitle="CRUD com magic link" />
-        <QuickAction to="/dev/demo" icon={Settings} title="Cartões demo" subtitle="Habilitar/ocultar acesso rápido" />
+        <QuickAction to="/crm/dev/usuarios" icon={ShieldCheck} title="Usuários" subtitle="Ativar, inativar, vincular" />
+        <QuickAction to="/crm/dev/convites" icon={UserPlus} title="Convites" subtitle="CRUD com magic link" />
+        <QuickAction to="/crm/dev/demo" icon={Settings} title="Cartões demo" subtitle="Habilitar/ocultar acesso rápido" />
       </div>
     </>
   );
 }
+
+const UserCheck = Users;
 
 function KpiCard({ icon: Icon, label, value, hint }: {
   icon: typeof Users; label: string; value: string | number; hint?: string;

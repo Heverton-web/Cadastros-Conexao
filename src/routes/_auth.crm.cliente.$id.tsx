@@ -1,19 +1,22 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createRoute, Link } from "@tanstack/react-router";
+import { authLayout } from "./_auth";
 import { useQuery } from "@tanstack/react-query";
-import { supabase } from "~/integrations/supabase/client";
+import { supabase } from "~/core/supabase";
 import { useState } from "react";
 import { ArrowLeft, Plus, Phone } from "lucide-react";
 import { Button } from "~/components/ui/button";
-import { NovaVisitaModal } from "~/components/NovaVisitaModal";
-import { VisitaDetalheModal } from "~/components/VisitaDetalheModal";
-import { formatBRL, formatDate } from "~/lib/comercial";
+import { NovaVisitaModal } from "~/features/crm/components/NovaVisitaModal";
+import { VisitaDetalheModal } from "~/features/crm/components/VisitaDetalheModal";
+import { formatBRL, formatDate } from "~/features/crm/lib/comercial";
 
-export const Route = createFileRoute("/_auth/cliente/$id")({
+export const crmClienteDetailRoute = createRoute({
+  getParentRoute: () => authLayout,
+  path: "/crm/cliente/$id",
   component: ClientePage,
 });
 
 function ClientePage() {
-  const { id } = Route.useParams();
+  const { id } = crmClienteDetailRoute.useParams();
   const [open, setOpen] = useState(false);
   const [visitaSelecionada, setVisitaSelecionada] = useState<any | null>(null);
 
@@ -43,7 +46,7 @@ function ClientePage() {
 
   return (
     <div className="space-y-6">
-      <Link to="/carteira" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
+      <Link to="/crm/carteira" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
         <ArrowLeft className="h-4 w-4" /> Voltar para a carteira
       </Link>
 

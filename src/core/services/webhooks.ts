@@ -1,6 +1,6 @@
 import { supabase } from "~/core/supabase";
 import { dispararNotificacaoIndividual, type NotificacaoTemplate } from "~/core/services/notificacoes";
-import { executeApiConnector, type ApiConnector } from "~/features/api-connectors";
+import { getActionExecutor } from "~/registry";
 
 export type Webhook = {
   id: string;
@@ -299,8 +299,9 @@ export async function dispararWebhooks(evento: string, payload: Record<string, a
               empresa_id: empresaId,
             });
           } else if (task.type === "api_connector") {
-            const conn = task.raw as ApiConnector;
-            const result = await executeApiConnector(conn.id, payloadCompleto);
+            const conn = task.raw as { id: string; url: string };
+            const executor = getActionExecutor("api_connector");
+            const result = executor ? await executor(conn.id, payloadCompleto) : null;
 
             await supabase.from("webhook_logs").insert({
               webhook_id: null,

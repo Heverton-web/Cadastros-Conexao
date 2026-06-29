@@ -46,7 +46,12 @@ export function AppLayout() {
   }, [selectedModuleKey]);
 
   useEffect(() => {
-    if (!profile?.is_super_admin) {
+    if (profile?.is_super_admin) {
+      // For super admin, auto-select first module if none selected
+      if (!selectedModuleKey && modulos.length > 0) {
+        setSelectedModuleKey(modulos[0].key);
+      }
+    } else {
       const temAcesso = selectedModuleKey ? modulos.some(m => m.key === selectedModuleKey) : false;
       if (!temAcesso && modulos.length > 0) {
         setSelectedModuleKey(modulos[0].key);

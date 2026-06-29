@@ -1,4 +1,5 @@
 import { supabase } from "~/core/supabase";
+import { registerActionExecutor } from "~/registry";
 
 export type ApiConnectorType = "api_call" | "webhook";
 
@@ -112,3 +113,7 @@ export async function executeApiConnector(connector_id: string, variables: Recor
     };
   }
 }
+
+registerActionExecutor("api_connector", async (id: string, payload: Record<string, any>) => {
+  return executeApiConnector(id, payload);
+});

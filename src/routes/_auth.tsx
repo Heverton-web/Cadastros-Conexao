@@ -4,7 +4,7 @@ import { AppLayout } from "~/components/layout/AppLayout";
 import { Loader2 } from "lucide-react";
 import { useAuth } from "~/lib/auth";
 import { getModule, getAllModules } from "~/registry";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 export const authLayout = createRoute({
   getParentRoute: () => rootRoute,
@@ -13,9 +13,9 @@ export const authLayout = createRoute({
 });
 
 function AuthGuard() {
-  const { user, profile, permissoes, modulosAtivos, loading } = useAuth();
+  const { user, profile, permissoes, modulosAtivos, loading, fetchProfile } = useAuth();
   const navigate = useNavigate();
-  const modulesInitialized = useRef(false);
+  const [modulesReady, setModulesReady] = useState(false);
 
   if (loading) {
     return (
@@ -30,7 +30,7 @@ function AuthGuard() {
     return null;
   }
 
-  if (profile && permissoes && !modulesInitialized.current) {
+  if (profile && permissoes && !modulesReady) {
     const mods = profile.is_super_admin
       ? getAllModules().map((m) => m.key)
       : modulosAtivos;
@@ -40,7 +40,17 @@ function AuthGuard() {
       mod?.setup?.();
     }
 
-    modulesInitialized.current = true;
+    // For super admin, re-fetch profile to get all permission keys (including newly registered ones)
+    if (profile.is_super_admin) {
+      fetchProfile(user.id);
+    }
+
+    setModulesReady(true);
+    return (
+      <div className="flex min-h-dvh items-center justify-center bg-background">
+        <Loader2 size={24} className="animate-spin text-accent" />
+      </div>
+    );
   }
 
   return <AppLayout />;

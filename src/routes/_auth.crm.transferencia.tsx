@@ -1,5 +1,8 @@
-import { createFileRoute, Outlet } from "@tanstack/react-router";
+import { createRoute, Outlet } from "@tanstack/react-router";
+import { authLayout } from "./_auth";
 
-export const Route = createFileRoute("/_auth/transferencia")({
+export const crmTransferenciaRoute = createRoute({
+  getParentRoute: () => authLayout,
+  path: "/crm/transferencia",
   component: () => <Outlet />,
 });

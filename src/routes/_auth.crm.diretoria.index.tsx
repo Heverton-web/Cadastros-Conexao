@@ -1,10 +1,13 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createRoute, Link } from "@tanstack/react-router";
+import { authLayout } from "./_auth";
 import { useQuery } from "@tanstack/react-query";
-import { supabase } from "~/integrations/supabase/client";
+import { supabase } from "~/core/supabase";
 import { Building2, ArrowRight, Users } from "lucide-react";
-import { formatBRL } from "~/lib/comercial";
+import { formatBRL } from "~/features/crm/lib/comercial";
 
-export const Route = createFileRoute("/_auth/diretoria/")({
+export const crmDiretoriaIndexRoute = createRoute({
+  getParentRoute: () => authLayout,
+  path: "/crm/diretoria/",
   component: DiretoriaIndex,
 });
 
@@ -51,7 +54,7 @@ function DiretoriaIndex() {
         {(data ?? []).map((g: any) => (
           <Link
             key={g.id}
-            to="/diretoria/gestor/$id"
+            to="/crm/diretoria/gestor/$id"
             params={{ id: g.id }}
             className="group glass rounded-2xl p-5 space-y-3 hover:border-primary/40 transition"
           >

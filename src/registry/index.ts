@@ -21,3 +21,8 @@ export {
   type ModuleAba,
   type ModuleEvent,
 } from "./modules";
+
+export {
+  registerActionExecutor,
+  getActionExecutor,
+} from "./executors";

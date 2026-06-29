@@ -12,11 +12,10 @@ import {
   SelectValue,
 } from "~/components/ui/select";
 import { Switch } from "~/components/ui/switch";
-import { useServerFn } from "@tanstack/react-start";
 import { useQueryClient } from "@tanstack/react-query";
-import { registrarVisita } from "~/lib/visitas.functions";
-import { sugerirTemperatura } from "~/lib/comercial";
-import { toast } from "sonner";
+import { supabase } from "~/core/supabase";
+import { sugerirTemperatura } from "~/features/crm/lib/comercial";
+import toast from "react-hot-toast";
 import {
   Loader2,
   Calendar,
@@ -40,7 +39,6 @@ type Props = {
 const today = () => new Date().toISOString().slice(0, 10);
 
 export function NovaVisitaModal({ clienteId, open, onOpenChange }: Props) {
-  const fn = useServerFn(registrarVisita);
   const qc = useQueryClient();
   const [busy, setBusy] = useState(false);
 
@@ -79,8 +77,10 @@ export function NovaVisitaModal({ clienteId, open, onOpenChange }: Props) {
     e.preventDefault();
     setBusy(true);
     try {
-      const result = await fn({
-        data: {
+      const { data: { user } } = await supabase.auth.getUser();
+      const { data: visita, error } = await supabase
+        .from("visitas")
+        .insert({
           cliente_id: clienteId,
           data_visita: form.data_visita,
           atendente: form.atendente,
@@ -96,23 +96,18 @@ export function NovaVisitaModal({ clienteId, open, onOpenChange }: Props) {
           observacoes_vendedor: form.observacoes_vendedor || null,
           data_proximo_contato: form.data_proximo_contato || null,
           acao_prevista: form.acao_prevista || null,
-        },
-      });
-      if (result.webhook.ok) {
-        toast.success("Visita registrada", {
-          description: result.webhook.mensagem ?? "Sincronizada com o n8n.",
-        });
-      } else {
-        toast.success("Visita registrada", {
-          description: `Salva localmente. Sincronização externa: ${result.webhook.mensagem ?? "falhou"}.`,
-        });
-      }
+          consultor_executor_id: user?.id,
+        })
+        .select()
+        .single();
+      if (error) throw error;
+      toast.success("Visita registrada");
       qc.invalidateQueries({ queryKey: ["visitas", clienteId] });
       qc.invalidateQueries({ queryKey: ["carteira"] });
       qc.invalidateQueries({ queryKey: ["dashboard-stats"] });
       onOpenChange(false);
     } catch (err) {
-      toast.error("Erro ao registrar visita", { description: (err as Error).message });
+      toast.error((err as Error).message);
     } finally {
       setBusy(false);
     }

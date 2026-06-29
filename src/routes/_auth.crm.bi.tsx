@@ -1,9 +1,10 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createRoute } from "@tanstack/react-router";
+import { authLayout } from "./_auth";
 import { useEffect, useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { supabase } from "~/integrations/supabase/client";
-import { useAuth } from "~/hooks/useAuth";
-import { formatBRL, type Temperatura } from "~/lib/comercial";
+import { supabase } from "~/core/supabase";
+import { useAuth } from "~/lib/auth";
+import { formatBRL, type Temperatura } from "~/features/crm/lib/comercial";
 import {
   TrendingUp,
   Snowflake,
@@ -52,7 +53,9 @@ type BiSearch = {
   fim?: string;
 };
 
-export const Route = createFileRoute("/_auth/bi")({
+export const crmBiRoute = createRoute({
+  getParentRoute: () => authLayout,
+  path: "/crm/bi",
   validateSearch: (s: Record<string, unknown>): BiSearch => ({
     vendedor: typeof s.vendedor === "string" ? s.vendedor : undefined,
     inicio: typeof s.inicio === "string" ? s.inicio : undefined,
@@ -100,7 +103,7 @@ const EMPTY: Filters = {
 };
 
 function BIPage() {
-  const search = Route.useSearch();
+  const search = crmBiRoute.useSearch();
   const { isDiretor, isDev } = useAuth();
   const showGestorFilter = isDiretor || isDev;
   const [filters, setFilters] = useState<Filters>({

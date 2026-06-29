@@ -1,12 +1,15 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createRoute } from "@tanstack/react-router";
+import { authLayout } from "./_auth";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { supabase } from "~/integrations/supabase/client";
+import { supabase } from "~/core/supabase";
 import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
-import { toast } from "sonner";
-import { ROLE_LABEL, type AppRole } from "~/hooks/useAuth";
+import toast from "react-hot-toast";
+import { ROLE_LABEL, type AppRole } from "~/lib/auth";
 
-export const Route = createFileRoute("/_auth/dev/usuarios")({
+export const crmDevUsuariosRoute = createRoute({
+  getParentRoute: () => authLayout,
+  path: "/crm/dev/usuarios",
   component: UsuariosPage,
 });
 
@@ -27,7 +30,7 @@ function UsuariosPage() {
   async function toggleAtivo(id: string, ativo: boolean) {
     const { error } = await supabase.from("usuarios").update({ ativo: !ativo }).eq("id", id);
     if (error) {
-      toast.error("Erro", { description: error.message });
+      toast.error(error.message);
       return;
     }
     toast.success(ativo ? "Usuário inativado" : "Usuário ativado");

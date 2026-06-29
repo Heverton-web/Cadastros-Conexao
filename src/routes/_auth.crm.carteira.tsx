@@ -1,19 +1,20 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createRoute, Link } from "@tanstack/react-router";
+import { authLayout } from "./_auth";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useServerFn } from "@tanstack/react-start";
-import { supabase } from "~/integrations/supabase/client";
-import { useAuth } from "~/hooks/useAuth";
+import { supabase } from "~/core/supabase";
+import { useAuth } from "~/lib/auth";
 import { useState } from "react";
 import { Plus, Loader2, UserPlus, User, Building2, Phone } from "lucide-react";
 import { Button } from "~/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "~/components/ui/dialog";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
-import { criarCliente } from "~/lib/visitas.functions";
-import { formatBRL, type Temperatura } from "~/lib/comercial";
-import { toast } from "sonner";
+import { formatBRL, type Temperatura } from "~/features/crm/lib/comercial";
+import toast from "react-hot-toast";
 
-export const Route = createFileRoute("/_auth/carteira")({
+export const crmCarteiraRoute = createRoute({
+  getParentRoute: () => authLayout,
+  path: "/crm/carteira",
   component: Carteira,
 });
 
@@ -104,7 +105,7 @@ function Carteira() {
                   {items.map((c) => (
                     <Link
                       key={c.id}
-                      to="/cliente/$id"
+                      to="/crm/cliente/$id"
                       params={{ id: c.id }}
                       className="block rounded-xl border border-border bg-secondary/30 p-3 transition hover:border-primary/40 hover:bg-secondary/50"
                     >
@@ -141,7 +142,7 @@ function Carteira() {
 }
 
 function NovoClienteButton() {
-  const fn = useServerFn(criarCliente);
+  const { perfil } = useAuth();
   const qc = useQueryClient();
   const [open, setOpen] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -151,19 +152,21 @@ function NovoClienteButton() {
     e.preventDefault();
     setBusy(true);
     try {
-      await fn({
-        data: {
+      const { error } = await supabase
+        .from("clientes")
+        .insert({
           nome_doutor: form.nome_doutor,
           nome_clinica: form.nome_clinica || null,
           telefone_contato: form.telefone_contato || null,
-        },
-      });
+          consultor_atual_id: perfil?.id,
+        });
+      if (error) throw error;
       toast.success("Cliente adicionado");
       setForm({ nome_doutor: "", nome_clinica: "", telefone_contato: "" });
       setOpen(false);
       qc.invalidateQueries({ queryKey: ["carteira"] });
     } catch (err) {
-      toast.error("Erro", { description: (err as Error).message });
+      toast.error((err as Error).message);
     } finally {
       setBusy(false);
     }

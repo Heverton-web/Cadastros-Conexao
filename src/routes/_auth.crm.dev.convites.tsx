@@ -1,6 +1,7 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createRoute } from "@tanstack/react-router";
+import { authLayout } from "./_auth";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { supabase } from "~/integrations/supabase/client";
+import { supabase } from "~/core/supabase";
 import { useMemo, useState } from "react";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
@@ -9,11 +10,13 @@ import { Badge } from "~/components/ui/badge";
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "~/components/ui/select";
-import { toast } from "sonner";
+import toast from "react-hot-toast";
 import { Copy, Send, Trash2, RefreshCw, Ban, Loader2, MessageCircle, UserPlus } from "lucide-react";
-import { ROLE_LABEL, type AppRole } from "~/hooks/useAuth";
+import { ROLE_LABEL, type AppRole } from "~/lib/auth";
 
-export const Route = createFileRoute("/_auth/dev/convites")({
+export const crmDevConvitesRoute = createRoute({
+  getParentRoute: () => authLayout,
+  path: "/crm/dev/convites",
   component: ConvitesPage,
 });
 
@@ -131,13 +134,11 @@ function ConvitesPage() {
 
       const link = buildLink(token);
       await navigator.clipboard.writeText(link).catch(() => {});
-      toast.success("Convite criado", {
-        description: "Magic link copiado para a área de transferência.",
-      });
+      toast.success("Convite criado! Magic link copiado.");
       setForm({ ...EMPTY });
       qc.invalidateQueries({ queryKey: ["convites-list"] });
     } catch (e: any) {
-      toast.error("Erro", { description: e.message });
+      toast.error(e.message);
     } finally {
       setBusy(false);
     }
@@ -145,14 +146,14 @@ function ConvitesPage() {
 
   async function revogar(id: string) {
     const { error } = await supabase.from("convites_acesso").update({ status: "expirado" }).eq("id", id);
-    if (error) return toast.error("Erro", { description: error.message });
+    if (error) return toast.error(error.message);
     toast.success("Convite revogado");
     qc.invalidateQueries({ queryKey: ["convites-list"] });
   }
 
   async function excluir(id: string) {
     const { error } = await supabase.from("convites_acesso").delete().eq("id", id);
-    if (error) return toast.error("Erro", { description: error.message });
+    if (error) return toast.error(error.message);
     toast.success("Convite excluído");
     qc.invalidateQueries({ queryKey: ["convites-list"] });
   }
@@ -165,10 +166,10 @@ function ConvitesPage() {
       .from("convites_acesso")
       .update({ token_hash, data_expiracao, status: "pendente" })
       .eq("id", c.id);
-    if (error) return toast.error("Erro", { description: error.message });
+    if (error) return toast.error(error.message);
     const link = buildLink(token);
     await navigator.clipboard.writeText(link).catch(() => {});
-    toast.success("Novo link gerado", { description: "Copiado para a área de transferência." });
+    toast.success("Novo link gerado! Copiado para a área de transferência.");
     qc.invalidateQueries({ queryKey: ["convites-list"] });
   }
 

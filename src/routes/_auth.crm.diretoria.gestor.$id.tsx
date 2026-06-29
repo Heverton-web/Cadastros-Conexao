@@ -1,14 +1,17 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createRoute, Link } from "@tanstack/react-router";
+import { authLayout } from "./_auth";
 import { useQuery } from "@tanstack/react-query";
-import { supabase } from "~/integrations/supabase/client";
+import { supabase } from "~/core/supabase";
 import { ArrowRight, BarChart3 } from "lucide-react";
 
-export const Route = createFileRoute("/_auth/diretoria/gestor/$id")({
+export const crmDiretoriaGestorRoute = createRoute({
+  getParentRoute: () => authLayout,
+  path: "/crm/diretoria/gestor/$id",
   component: DiretoriaGestor,
 });
 
 function DiretoriaGestor() {
-  const { id } = Route.useParams();
+  const { id } = crmDiretoriaGestorRoute.useParams();
 
   const { data } = useQuery({
     queryKey: ["diretoria-gestor", id],
@@ -32,7 +35,7 @@ function DiretoriaGestor() {
         <p className="text-sm text-muted-foreground">{data?.gestor?.email_corporativo}</p>
       </header>
 
-      <Link to="/bi" search={{ vendedor: id }}
+      <Link to="/crm/bi" search={{ vendedor: id }}
         className="glass rounded-2xl p-4 flex items-center justify-between hover:border-primary/40 transition">
         <div className="flex items-center gap-3">
           <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/15 text-gold">
@@ -50,7 +53,7 @@ function DiretoriaGestor() {
         <h2 className="mb-3 text-xs uppercase tracking-wider text-muted-foreground font-semibold">Consultores</h2>
         <div className="grid gap-3 md:grid-cols-2">
           {data?.consultores.map((c: any) => (
-            <Link key={c.id} to="/bi" search={{ vendedor: c.id }}
+            <Link key={c.id} to="/crm/bi" search={{ vendedor: c.id }}
               className="group glass rounded-2xl p-4 flex items-center justify-between hover:border-primary/40 transition">
               <div>
                 <p className="font-semibold text-sm">{c.nome_completo}</p>

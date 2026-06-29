@@ -1,13 +1,16 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createRoute, Link } from "@tanstack/react-router";
+import { authLayout } from "./_auth";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { supabase } from "~/integrations/supabase/client";
-import { useAuth } from "~/hooks/useAuth";
-import { formatBRL } from "~/lib/comercial";
+import { supabase } from "~/core/supabase";
+import { useAuth } from "~/lib/auth";
+import { formatBRL } from "~/features/crm/lib/comercial";
 import { Users, TrendingUp, BarChart3, ArrowRight, Target, Check } from "lucide-react";
 import { useState } from "react";
-import { toast } from "sonner";
+import toast from "react-hot-toast";
 
-export const Route = createFileRoute("/_auth/equipe")({
+export const crmEquipeRoute = createRoute({
+  getParentRoute: () => authLayout,
+  path: "/crm/equipe",
   component: EquipePage,
 });
 
@@ -58,7 +61,7 @@ function EquipePage() {
         {(data ?? []).map((c: any) => (
           <div key={c.id} className="group glass rounded-2xl p-5 space-y-3 hover:border-primary/40 transition">
             <Link
-              to="/bi"
+              to="/crm/bi"
               search={{ vendedor: c.id }}
               className="block space-y-3"
             >
@@ -94,7 +97,7 @@ function EquipePage() {
               canEdit={canEditMeta}
             />
             <Link
-              to="/bi"
+              to="/crm/bi"
               search={{ vendedor: c.id }}
               className="pt-2 border-t border-border flex items-center justify-center gap-2 text-xs text-gold font-medium"
             >

@@ -1,12 +1,15 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createRoute } from "@tanstack/react-router";
+import { authLayout } from "./_auth";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { supabase } from "~/integrations/supabase/client";
+import { supabase } from "~/core/supabase";
 import { Switch } from "~/components/ui/switch";
-import { toast } from "sonner";
-import { DEMO_ACCOUNTS, type DemoRole } from "~/lib/demo";
+import toast from "react-hot-toast";
+import { DEMO_ACCOUNTS, type DemoRole } from "~/features/crm/lib/demo";
 import { Loader2 } from "lucide-react";
 
-export const Route = createFileRoute("/_auth/dev/demo")({
+export const crmDevDemoRoute = createRoute({
+  getParentRoute: () => authLayout,
+  path: "/crm/dev/demo",
   component: DevDemoCards,
 });
 
@@ -30,7 +33,7 @@ function DevDemoCards() {
       .from("app_config")
       .upsert({ key, value: next, atualizado_em: new Date().toISOString() });
     if (error) {
-      toast.error("Erro", { description: error.message });
+      toast.error(error.message);
       return;
     }
     toast.success(next ? "Cartão habilitado" : "Cartão ocultado");

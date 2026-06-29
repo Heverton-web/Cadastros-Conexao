@@ -1,6 +1,6 @@
-import type { Permissoes, Ambiente } from "~/core/permissions/types";
+import type { Ambiente } from "~/core/permissions/types";
 
-export const ALL_PERMISSIONS: { key: keyof Permissoes; label: string; description: string; group: string }[] = [
+export const ALL_PERMISSIONS: { key: string; label: string; description: string; group: string }[] = [
   { key: "ver_todos_cadastros", label: "Ver todos os cadastros da empresa (se inativo, vê apenas os que criou)", description: "Permite visualizar todos os cadastros do sistema", group: "Escopo de Dados" },
   { key: "ver_relatorios", label: "Ver relatórios", description: "Permite acessar a página de relatórios", group: "Visualização" },
   { key: "visualizar_documento", label: "Visualizar arquivos dos documentos", description: "Permite abrir e visualizar arquivos dos documentos", group: "Visualização" },
@@ -20,26 +20,7 @@ export const ALL_PERMISSIONS: { key: keyof Permissoes; label: string; descriptio
   { key: "gerar_links", label: "Gerar links de cadastro", description: "Permite gerar links de cadastro para leads", group: "Geração de Links" },
 ];
 
-export type PermGroup = { label: string; keys: (keyof Permissoes)[] };
-
-export const PERMISSOES_GROUPS: PermGroup[] = [
-  { label: "Escopo de Dados", keys: ["ver_todos_cadastros"] },
-  { label: "Visualização", keys: ["ver_relatorios", "visualizar_documento"] },
-  { label: "Aprovação de Cadastro", keys: ["aprovar_cadastro", "reprovar_cadastro", "solicitar_correcao_cadastro"] },
-  { label: "Aprovação de Documentos", keys: ["aprovar_documento", "reprovar_documento", "solicitar_correcao_documento"] },
-  { label: "Aprovação de Campos", keys: ["aprovar_campo", "reprovar_campo", "solicitar_correcao_campo"] },
-  { label: "Credenciais", keys: ["gerenciar_credenciais", "gerenciar_credenciais_admin"] },
-  { label: "Administração", keys: ["excluir_cadastro", "gerenciar_config"] },
-  { label: "Geração de Links", keys: ["gerar_links"] },
-];
-
-export const PERMISSOES_LABEL: Record<keyof Permissoes, string> = {} as any;
-export const PERMISSOES_DESC: Record<keyof Permissoes, string> = {} as any;
-
-for (const p of ALL_PERMISSIONS) {
-  PERMISSOES_LABEL[p.key] = p.label;
-  PERMISSOES_DESC[p.key] = p.description;
-}
+export type PermGroup = { label: string; keys: string[] };
 
 const LT_DEFAULTS = {
   lt_ver_dashboard: false, lt_criar_colaborador: false, lt_editar_colaborador: false,
@@ -47,7 +28,7 @@ const LT_DEFAULTS = {
   lt_ver_qr: false, lt_baixar_qr: false, lt_gerenciar_tema: false,
 };
 
-export function getPermissoesPadrao(ambiente: Ambiente): Permissoes {
+export function getPermissoesPadrao(ambiente: Ambiente): Record<string, boolean> {
   switch (ambiente) {
     case "consultor":
       return { ver_todos_cadastros: false, aprovar_cadastro: false, reprovar_cadastro: false, solicitar_correcao_cadastro: false, aprovar_documento: false, reprovar_documento: false, solicitar_correcao_documento: false, aprovar_campo: false, reprovar_campo: false, solicitar_correcao_campo: false, visualizar_documento: false, excluir_cadastro: false, gerenciar_credenciais: false, gerenciar_credenciais_admin: false, gerenciar_config: false, gerar_links: true, ver_relatorios: true, nps_ver_dashboard: false, nps_ver_respostas: false, nps_gerenciar_perguntas: false, nps_gerenciar_webhooks: false, nps_excluir_respostas: false, nps_ver_relatorios: false, nps_exportar_dados: false, funis_ver_dashboard: true, funis_criar_funil: false, funis_editar_funil: false, funis_excluir_funil: false, funis_gerir_colunas: false, funis_gerir_tarefas: true, funis_compartilhar: false, funis_ver_relatorios: false, ...LT_DEFAULTS, lt_ver_dashboard: true, lt_ver_link: true, lt_ver_qr: true, lt_baixar_qr: true };
