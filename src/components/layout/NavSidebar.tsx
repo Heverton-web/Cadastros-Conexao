@@ -38,7 +38,7 @@ export function NavSidebar({
     <aside className={cn("hidden lg:flex flex-col fixed left-0 top-[70px] bottom-0 border-r border-border bg-card z-30 transition-all duration-200", w)}>
       {exibirSecaoModulos && (
         <div className={cn("flex flex-col gap-0.5 px-2 py-3 border-b border-border-subtle/50", collapsed && "items-center")}>
-          {!collapsed && <p className="text-[10px] font-bold text-text-muted uppercase tracking-wider px-3 mb-2">Módulos</p>}
+          {!collapsed && <p className="text-xs font-bold text-text-muted uppercase tracking-wider px-3 mb-2">Módulos</p>}
           {mostrarGlobal && modulos.length > 0 && (
             <button
               onClick={() => onModuleChange(undefined)}
@@ -80,7 +80,7 @@ export function NavSidebar({
         {sections.map((section) => (
           <div key={section.label} className={cn("mb-4 last:mb-0", collapsed && "flex flex-col items-center")}>
             {!collapsed && (
-              <p className="text-[10px] font-bold text-text-muted uppercase tracking-wider px-3 mb-2">
+              <p className="text-xs font-bold text-text-muted uppercase tracking-wider px-3 mb-2">
                 {section.label}
               </p>
             )}

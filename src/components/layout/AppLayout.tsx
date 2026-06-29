@@ -149,7 +149,7 @@ export function AppLayout() {
                       >
                         <Bell size={18} />
                         {naoLidas.length > 0 && (
-                          <span className="absolute -top-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-error text-[9px] font-bold text-white ring-2 ring-header-bg">{naoLidas.length}</span>
+                          <span className="absolute -top-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-error text-xs font-bold text-white ring-2 ring-header-bg">{naoLidas.length}</span>
                         )}
                       </button>
                       {showNotifs && (
@@ -157,9 +157,9 @@ export function AppLayout() {
                           <div className="flex items-center justify-between px-2 py-1.5 border-b border-border-subtle/50 mb-1">
                             <div className="flex flex-col gap-0.5">
                               <span className="text-xs font-bold text-text-main">Notificações</span>
-                              <button onClick={() => setOcultarLidas(!ocultarLidas)} className="text-[10px] text-text-muted hover:text-accent font-semibold flex items-center gap-1 transition-colors self-start">{ocultarLidas ? "Ver lidas" : "Ocultar lidas"}</button>
+                              <button onClick={() => setOcultarLidas(!ocultarLidas)} className="text-xs text-text-muted hover:text-accent font-semibold flex items-center gap-1 transition-colors self-start">{ocultarLidas ? "Ver lidas" : "Ocultar lidas"}</button>
                             </div>
-                            {naoLidas.length > 0 && <button onClick={handleMarcarTodasLidas} className="text-[10px] text-accent font-medium hover:underline">Limpar tudo</button>}
+                            {naoLidas.length > 0 && <button onClick={handleMarcarTodasLidas} className="text-xs text-accent font-medium hover:underline">Limpar tudo</button>}
                           </div>
                           {notificacoesExibidas.length === 0 ? (
                             <p className="text-center text-xs text-text-muted py-6">Nenhuma notificação {ocultarLidas ? "nova" : "no histórico"}</p>
@@ -171,8 +171,8 @@ export function AppLayout() {
                                   <span className={cn("text-xs font-bold", n.lida ? "text-text-muted" : "text-text-main")}>{n.titulo}</span>
                                   {!n.lida && <span className="h-1.5 w-1.5 rounded-full bg-accent animate-pulse" />}
                                 </div>
-                                <span className="text-[11px] text-text-muted leading-relaxed line-clamp-2">{n.mensagem}</span>
-                                <span className="text-[10px] text-text-muted mt-1 font-mono">{new Date(n.created_at).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })} - {new Date(n.created_at).toLocaleDateString("pt-BR")}</span>
+                                <span className="text-xs text-text-muted leading-relaxed line-clamp-2">{n.mensagem}</span>
+                                <span className="text-xs text-text-muted mt-1 font-mono">{new Date(n.created_at).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })} - {new Date(n.created_at).toLocaleDateString("pt-BR")}</span>
                               </button>
                             ))
                           )}
@@ -183,7 +183,7 @@ export function AppLayout() {
                 })()}
               </div>
 
-              <span className="text-[11px] text-text-secondary block truncate max-w-[120px]">{profile?.nome}</span>
+              <span className="text-xs text-text-secondary block truncate max-w-[120px]">{profile?.nome}</span>
               <button
                 onClick={() => { logout(); navigate({ to: "/" }); }}
                 className="flex items-center gap-1 text-xs text-text-muted hover:text-error transition-colors duration-150 p-2 rounded-lg min-h-[44px] min-w-[44px] justify-center"

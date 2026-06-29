@@ -498,34 +498,34 @@ function BIPage() {
                                 {v.cliente?.nome_clinica ?? v.cliente?.nome_doutor ?? "Cliente"}
                               </p>
                               {v.cliente?.nome_clinica && v.cliente?.nome_doutor && (
-                                <p className="text-[11px] text-muted-foreground truncate">{v.cliente.nome_doutor}</p>
+                                <p className="text-xs text-muted-foreground truncate">{v.cliente.nome_doutor}</p>
                               )}
                             </div>
                           </div>
-                          <div className="flex items-center justify-between text-[11px] text-muted-foreground">
+                          <div className="flex items-center justify-between text-xs text-muted-foreground">
                             <span>{new Date(v.data_visita).toLocaleDateString("pt-BR")}</span>
                             <span className="truncate ml-2">{v.tipo_visita}</span>
                           </div>
                           {(v.gerou_pedido || v.gerou_orcamento || v.valor_estimado != null) && (
                             <div className="flex flex-wrap items-center gap-1.5 pt-1 border-t border-border/40">
                               {v.gerou_pedido && (
-                                <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300 ring-1 ring-emerald-500/30">
+                                <span className="text-xs px-1.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300 ring-1 ring-emerald-500/30">
                                   Pedido
                                 </span>
                               )}
                               {v.gerou_orcamento && (
-                                <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-blue-500/15 text-blue-300 ring-1 ring-blue-500/30">
+                                <span className="text-xs px-1.5 py-0.5 rounded-full bg-blue-500/15 text-blue-300 ring-1 ring-blue-500/30">
                                   Orçamento
                                 </span>
                               )}
                               {v.valor_estimado != null && (
-                                <span className="ml-auto text-[11px] font-semibold gradient-text-gold">
+                                <span className="ml-auto text-xs font-semibold gradient-text-gold">
                                   {formatBRL(Number(v.valor_estimado))}
                                 </span>
                               )}
                             </div>
                           )}
-                          <p className="text-[10px] text-muted-foreground/70 truncate">
+                          <p className="text-xs text-muted-foreground/70 truncate">
                             {v.consultor?.nome_completo ?? "—"}
                           </p>
                         </button>
@@ -690,7 +690,7 @@ function BIPage() {
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 relative">
                           <div className="rounded-xl bg-background/40 backdrop-blur-sm border border-border/60 p-4">
-                            <div className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-wider text-muted-foreground mb-2">
+                            <div className="flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-muted-foreground mb-2">
                               <Calendar className="h-3.5 w-3.5" />
                               Próximo contato
                             </div>
@@ -700,7 +700,7 @@ function BIPage() {
                               </span>
                               {statusLabel && (
                                 <span
-                                  className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-[11px] font-semibold ring-1 ${statusClass}`}
+                                  className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ring-1 ${statusClass}`}
                                 >
                                   {statusLabel}
                                 </span>
@@ -708,7 +708,7 @@ function BIPage() {
                             </div>
                           </div>
                           <div className="rounded-xl bg-background/40 backdrop-blur-sm border border-border/60 p-4">
-                            <div className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-wider text-muted-foreground mb-2">
+                            <div className="flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-muted-foreground mb-2">
                               <Target className="h-3.5 w-3.5" />
                               Ação prevista
                             </div>
@@ -751,7 +751,7 @@ function BIPage() {
                     </Section>
                   )}
 
-                  <div className="flex items-center gap-2 pt-2 text-[11px] text-muted-foreground border-t border-border/50">
+                  <div className="flex items-center gap-2 pt-2 text-xs text-muted-foreground border-t border-border/50">
                     <Clock className="h-3 w-3" />
                     Registrado em {new Date(openVisita.criado_em).toLocaleString("pt-BR")}
                   </div>
@@ -768,7 +768,7 @@ function BIPage() {
 function FilterField({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div className="space-y-1.5">
-      <Label className="text-[11px] uppercase tracking-wider text-muted-foreground">{label}</Label>
+      <Label className="text-xs uppercase tracking-wider text-muted-foreground">{label}</Label>
       {children}
     </div>
   );
@@ -777,7 +777,7 @@ function FilterField({ label, children }: { label: string; children: React.React
 function Field({ label, children, full }: { label: string; children: React.ReactNode; full?: boolean }) {
   return (
     <div className={`space-y-1 ${full ? "md:col-span-2" : ""}`}>
-      <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">{label}</p>
+      <p className="text-xs uppercase tracking-wider text-muted-foreground font-semibold">{label}</p>
       <p className="text-sm whitespace-pre-wrap break-words">{children}</p>
     </div>
   );
@@ -806,7 +806,7 @@ function Chip({ children, className }: { children: React.ReactNode; className?: 
 function StatCard({ icon: Icon, label, value, accent }: { icon: typeof TrendingUp; label: string; value: React.ReactNode; accent?: boolean }) {
   return (
     <div className="glass rounded-xl p-4 border border-border/50">
-      <div className="flex items-center gap-2 text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">
+      <div className="flex items-center gap-2 text-xs uppercase tracking-wider text-muted-foreground font-semibold">
         <Icon className="h-3.5 w-3.5 text-gold" />
         {label}
       </div>
@@ -836,7 +836,7 @@ function DetailRow({ icon: Icon, label, value, full }: { icon: typeof TrendingUp
         <Icon className="h-3.5 w-3.5 text-muted-foreground" />
       </div>
       <div className="min-w-0 flex-1">
-        <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">{label}</p>
+        <p className="text-xs uppercase tracking-wider text-muted-foreground font-semibold">{label}</p>
         <p className="text-sm text-foreground break-words">{value}</p>
       </div>
     </div>
@@ -846,7 +846,7 @@ function DetailRow({ icon: Icon, label, value, full }: { icon: typeof TrendingUp
 function NoteBlock({ icon: Icon, label, children }: { icon: typeof TrendingUp; label: string; children: React.ReactNode }) {
   return (
     <div className="sm:col-span-2 rounded-lg border border-border/40 bg-background/40 p-3">
-      <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-wider text-muted-foreground font-semibold mb-1.5">
+      <div className="flex items-center gap-1.5 text-xs uppercase tracking-wider text-muted-foreground font-semibold mb-1.5">
         <Icon className="h-3 w-3" />
         {label}
       </div>

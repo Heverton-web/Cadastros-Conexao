@@ -356,8 +356,8 @@ function CredenciaisTab({ empresaId }: { empresaId: string }) {
           <div key={c.id} className="flex items-center gap-3 rounded-xl bg-card p-4 shadow-lg">
             <div className="flex-1 min-w-0">
               <p className="text-sm font-medium text-text-main truncate">{c.nome_completo}</p>
-              <p className="text-[11px] text-text-muted truncate">{c.email_corporativo}</p>
-              {c.departamento && <span className="rounded-full bg-accent/10 px-2 py-0.5 text-[9px] font-medium text-accent mt-1 inline-block">{c.departamento}</span>}
+              <p className="text-xs text-text-muted truncate">{c.email_corporativo}</p>
+              {c.departamento && <span className="rounded-full bg-accent/10 px-2 py-0.5 text-xs font-medium text-accent mt-1 inline-block">{c.departamento}</span>}
             </div>
             <button onClick={() => abrirPermissoes(c)} className="rounded-lg p-2 text-text-muted hover:text-accent"><Shield size={16} /></button>
             <button onClick={() => abrirEditar(c)} className="rounded-lg p-2 text-text-muted hover:text-text-main"><Settings size={16} /></button>
@@ -406,12 +406,12 @@ function CredenciaisTab({ empresaId }: { empresaId: string }) {
               <div className="flex flex-col items-center justify-center py-8 text-center">
                 <ShieldX size={36} className="text-yellow-400 mb-2" />
                 <p className="text-sm font-semibold text-text-main">Usuário não registrado</p>
-                <p className="text-[11px] text-text-muted mt-1">O e-mail ainda não realizou o primeiro acesso.</p>
+                <p className="text-xs text-text-muted mt-1">O e-mail ainda não realizou o primeiro acesso.</p>
               </div>
             ) : (
               <>
                 <div className="flex items-center gap-1 mb-4">
-                  <button onClick={() => setEditPerms(getPermissoesPadrao("cadastro"))} className="ml-auto text-[10px] text-accent underline">Restaurar padrões</button>
+                  <button onClick={() => setEditPerms(getPermissoesPadrao("cadastro"))} className="ml-auto text-xs text-accent underline">Restaurar padrões</button>
                 </div>
                 <div className="flex flex-col gap-3 max-h-[55vh] overflow-y-auto pr-1">
                   {PERMISSOES_GROUPS.map((group) => (
@@ -426,7 +426,7 @@ function CredenciaisTab({ empresaId }: { empresaId: string }) {
                             </button>
                             <div className="flex-1 min-w-0">
                               <p className={cn("text-xs font-medium", editPerms[key] ? 'text-text-main' : 'text-text-muted')}>{PERMISSOES_LABEL[key]}</p>
-                              <p className="text-[9px] text-text-muted">{PERMISSOES_DESC[key]}</p>
+                              <p className="text-xs text-text-muted">{PERMISSOES_DESC[key]}</p>
                             </div>
                           </label>
                         ))}
@@ -512,13 +512,13 @@ CREATE TABLE IF NOT EXISTS sync_logs (
     <div className="space-y-4">
       <div className="rounded-xl bg-card p-4 border border-border-subtle">
         <h2 className="text-sm font-bold text-text-main mb-3 flex items-center gap-2"><Database size={14} /> Conexão com Banco Externo</h2>
-        <p className="text-[10px] text-text-muted mb-4">Configure a conexão com o banco de dados externo. Se vazio, o sistema usará o banco padrão da aplicação.</p>
+        <p className="text-xs text-text-muted mb-4">Configure a conexão com o banco de dados externo. Se vazio, o sistema usará o banco padrão da aplicação.</p>
         <div className="grid grid-cols-2 gap-3">
           <Field label="Host" value={dbConfig.host} onChange={(v) => setDbConfig(p => ({ ...p, host: v }))} />
           <Field label="Porta" value={dbConfig.port} onChange={(v) => setDbConfig(p => ({ ...p, port: v }))} />
           <Field label="Database" value={dbConfig.database} onChange={(v) => setDbConfig(p => ({ ...p, database: v }))} />
           <Field label="Usuário" value={dbConfig.user} onChange={(v) => setDbConfig(p => ({ ...p, user: v }))} />
-          <div className="col-span-2"><label className="text-[10px] font-bold text-text-muted uppercase tracking-wider mb-1 block">Senha</label><PasswordInput value={dbConfig.password} onChange={(e) => setDbConfig(p => ({ ...p, password: e.target.value }))} className="w-full px-3 py-2 rounded-lg bg-input-bg border border-input-border text-text-main text-sm outline-none focus:border-accent" /></div>
+          <div className="col-span-2"><label className="text-xs font-bold text-text-muted uppercase tracking-wider mb-1 block">Senha</label><PasswordInput value={dbConfig.password} onChange={(e) => setDbConfig(p => ({ ...p, password: e.target.value }))} className="w-full px-3 py-2 rounded-lg bg-input-bg border border-input-border text-text-main text-sm outline-none focus:border-accent" /></div>
         </div>
         <div className="flex justify-end mt-4">
           <button onClick={handleSave} disabled={saving}
@@ -538,8 +538,8 @@ CREATE TABLE IF NOT EXISTS sync_logs (
               {copied ? "Copiado!" : "Copiar Script"}
             </button>
           </div>
-          <p className="text-[10px] text-text-muted mb-3">Copie e execute este script no banco externo para criar as tabelas necessárias.</p>
-          <pre className="rounded-lg bg-bg-dark p-4 text-[10px] text-text-main font-mono overflow-x-auto whitespace-pre border border-border-subtle">{script}</pre>
+          <p className="text-xs text-text-muted mb-3">Copie e execute este script no banco externo para criar as tabelas necessárias.</p>
+          <pre className="rounded-lg bg-bg-dark p-4 text-xs text-text-main font-mono overflow-x-auto whitespace-pre border border-border-subtle">{script}</pre>
         </div>
       )}
     </div>
@@ -578,7 +578,7 @@ function DesignTab({ empresaId, config, onSaved }: { empresaId: string; config: 
             .filter(([key]) => LABELS_CORES[key] !== undefined)
             .map(([key, value]) => (
               <div key={key}>
-                <label className="text-[10px] text-text-muted font-medium block mb-1">{LABELS_CORES[key]}</label>
+                <label className="text-xs text-text-muted font-medium block mb-1">{LABELS_CORES[key]}</label>
                 <div className="flex items-center gap-2">
                   <input type="color" value={value} onChange={(e) => handleCorChange(key, e.target.value)}
                     className="w-8 h-8 rounded border border-input-border cursor-pointer bg-transparent" />
@@ -726,7 +726,7 @@ function BrandingTab({ empresaId, config, onSaved }: { empresaId: string; config
     <div className="space-y-4">
       <div className="rounded-xl bg-card p-4 border border-border-subtle">
         <h2 className="text-sm font-bold text-text-main mb-3 flex items-center gap-2"><Image size={14} /> Logomarcas e Favicon</h2>
-        <p className="text-[10px] text-text-muted mb-4">Faça upload dos arquivos ou cole uma URL externa. Os uploads vão para o storage do Supabase.</p>
+        <p className="text-xs text-text-muted mb-4">Faça upload dos arquivos ou cole uma URL externa. Os uploads vão para o storage do Supabase.</p>
         <div className="space-y-4">
           <LogoField label="Logo da Página de Login" tipo="logo_index" url={logoIndex} />
           <LogoField label="Logo da Aplicação (header)" tipo="logo_app" url={logoApp} />
@@ -763,7 +763,7 @@ function Field({ label, value, onChange, type, required, fontMono, className }: 
 }) {
   return (
     <div className={className}>
-      <label className="text-[10px] font-bold text-text-muted uppercase tracking-wider mb-1 block">{label}{required && " *"}</label>
+      <label className="text-xs font-bold text-text-muted uppercase tracking-wider mb-1 block">{label}{required && " *"}</label>
       <input type={type || "text"} value={value} onChange={(e) => onChange(e.target.value)}
         className={cn("w-full px-3 py-2 rounded-lg bg-input-bg border border-input-border text-text-main text-sm outline-none focus:border-accent", fontMono && "font-mono")}
         required={required} />

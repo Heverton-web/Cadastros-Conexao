@@ -152,7 +152,7 @@ function NpsSurveyPage() {
           <div key={currentQ.id} className="animate-in fade-in slide-in-from-bottom-4 duration-500">
             <div className="mb-6 flex flex-col items-center gap-1">
               <span 
-                className="text-[10px] uppercase tracking-widest font-semibold"
+                className="text-xs uppercase tracking-widest font-semibold"
                 style={{ color: "var(--nps-step-text)" }}
               >
                 Etapa {step + 1} de {questions.length}
@@ -188,7 +188,7 @@ function NpsSurveyPage() {
                     );
                   })}
                 </div>
-                <div className="flex justify-between text-[11px] mt-4 px-1" style={{ color: "var(--nps-step-text)" }}>
+                <div className="flex justify-between text-xs mt-4 px-1" style={{ color: "var(--nps-step-text)" }}>
                   <span>Nada provável</span>
                   <span>Extremamente provável</span>
                 </div>

@@ -91,7 +91,7 @@ function SupabaseTab() {
       {configs.map((cfg) => (
         <div key={cfg.id} className="rounded-xl bg-card p-4 shadow-lg">
           <label className="text-xs font-medium text-text-muted mb-1 block">{cfg.key}</label>
-          {cfg.description && <p className="text-[10px] text-text-muted mb-2">{cfg.description}</p>}
+          {cfg.description && <p className="text-xs text-text-muted mb-2">{cfg.description}</p>}
           <div className="flex gap-2">
             {cfg.key.includes("PASSWORD") || cfg.key.includes("KEY") ? (
               <PasswordInput value={editValues[cfg.key] || ""} onChange={(e) => setEditValues(prev => ({ ...prev, [cfg.key]: e.target.value }))}
@@ -436,15 +436,15 @@ function CredenciaisTab() {
                     <span className="rounded-full bg-yellow-500/15 border border-yellow-500/35 px-2 py-0.5 text-[8px] font-bold text-yellow-400">Super Admin</span>
                   )}
                 </div>
-                <p className="text-[11px] text-text-muted truncate">{c.email_corporativo}</p>
+                <p className="text-xs text-text-muted truncate">{c.email_corporativo}</p>
                 <div className="flex flex-wrap gap-1 mt-1.5">
-                  {c.departamento && <span className={`rounded-full px-2 py-0.5 text-[9px] font-medium ${
+                  {c.departamento && <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${
                     c.isMock ? "bg-purple-500/10 text-purple-400" : "bg-accent/10 text-accent"
                   }`}>{c.departamento}</span>}
                   {!c.isMock && c.profile?.ambiente && c.profile.ambiente.toLowerCase() !== c.departamento?.toLowerCase() && (
-                    <span className="rounded-full bg-purple-500/10 px-2 py-0.5 text-[9px] font-medium text-purple-400">{c.profile.ambiente}</span>
+                    <span className="rounded-full bg-purple-500/10 px-2 py-0.5 text-xs font-medium text-purple-400">{c.profile.ambiente}</span>
                   )}
-                  {c.whatsapp_corporativo && <span className="rounded-full bg-blue-500/10 px-2 py-0.5 text-[9px] font-medium text-blue-400">{c.whatsapp_corporativo}</span>}
+                  {c.whatsapp_corporativo && <span className="rounded-full bg-blue-500/10 px-2 py-0.5 text-xs font-medium text-blue-400">{c.whatsapp_corporativo}</span>}
                 </div>
               </div>
               <button onClick={() => abrirPermissoes(c)} title="Permissões" className="rounded-lg p-2 text-text-muted hover:text-accent transition-colors"><Shield size={16} /></button>
@@ -494,13 +494,13 @@ function CredenciaisTab() {
               <div className="flex flex-col items-center justify-center py-8 text-center">
                 <ShieldX size={36} className="text-yellow-400 mb-2" />
                 <p className="text-sm font-semibold text-text-main">Usuário não registrado</p>
-                <p className="text-[11px] text-text-muted mt-1 max-w-[280px]">
+                <p className="text-xs text-text-muted mt-1 max-w-[280px]">
                   O e-mail <strong>{permCredencial.email_corporativo}</strong> ainda não realizou o primeiro acesso no sistema.
                   Não é possível personalizar permissões até que a conta seja criada no Supabase Auth.
                 </p>
                 <div className="mt-4 w-full rounded-xl bg-input-bg p-3 text-left">
-                  <p className="text-[10px] font-bold text-text-main mb-1 flex items-center gap-1"><Lightbulb size={10} className="text-yellow-400" /> Dica de Departamento:</p>
-                  <p className="text-[10px] text-text-muted">
+                  <p className="text-xs font-bold text-text-main mb-1 flex items-center gap-1"><Lightbulb size={10} className="text-yellow-400" /> Dica de Departamento:</p>
+                  <p className="text-xs text-text-muted">
                     Ao registrar-se, o usuário receberá automaticamente as permissões padrão para o ambiente/departamento: <strong>{permCredencial.departamento || "Sem departamento"}</strong>.
                   </p>
                 </div>
@@ -508,9 +508,9 @@ function CredenciaisTab() {
             ) : (
               <>
                 <div className="flex items-center gap-1 mb-4">
-                  <span className="rounded-full bg-accent/10 px-2 py-0.5 text-[9px] font-medium text-accent">{permCredencial.profile.ambiente}</span>
-                  {permCredencial.profile.is_super_admin && <span className="rounded-full bg-yellow-500/10 px-2 py-0.5 text-[9px] font-medium text-yellow-400">Super Admin</span>}
-                  <button onClick={restaurarPermissoesPadrao} className="ml-auto text-[10px] text-accent underline">Restaurar padrões</button>
+                  <span className="rounded-full bg-accent/10 px-2 py-0.5 text-xs font-medium text-accent">{permCredencial.profile.ambiente}</span>
+                  {permCredencial.profile.is_super_admin && <span className="rounded-full bg-yellow-500/10 px-2 py-0.5 text-xs font-medium text-yellow-400">Super Admin</span>}
+                  <button onClick={restaurarPermissoesPadrao} className="ml-auto text-xs text-accent underline">Restaurar padrões</button>
                 </div>
 
                 <div className="flex flex-col gap-3 max-h-[55vh] overflow-y-auto pr-1">
@@ -529,7 +529,7 @@ function CredenciaisTab() {
                               </button>
                               <div className="flex-1 min-w-0">
                                 <p className={`text-xs font-medium ${isChecked ? 'text-text-main' : 'text-text-muted'}`}>{PERMISSOES_LABEL[key]}</p>
-                                <p className="text-[9px] text-text-muted">{PERMISSOES_DESC[key]}</p>
+                                <p className="text-xs text-text-muted">{PERMISSOES_DESC[key]}</p>
                               </div>
                             </label>
                           );
@@ -657,7 +657,7 @@ function IntegracoesTab() {
                     <h3 className="text-xs font-bold text-text-main flex items-center gap-1.5">
                       {item.nome}
                     </h3>
-                    <span className="text-[10px] text-text-muted font-mono">{item.chave}</span>
+                    <span className="text-xs text-text-muted font-mono">{item.chave}</span>
                   </div>
 
                   <button 
@@ -678,7 +678,7 @@ function IntegracoesTab() {
                   {item.chave === "evolution_api" && (
                     <>
                       <div>
-                        <label className="text-[10px] text-text-muted ml-1 mb-1 block">URL Base da API</label>
+                        <label className="text-xs text-text-muted ml-1 mb-1 block">URL Base da API</label>
                         <input 
                           value={configLocal.base_url || ""} 
                           onChange={e => handleFieldChange(item.chave, "base_url", e.target.value)} 
@@ -688,7 +688,7 @@ function IntegracoesTab() {
                       </div>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                         <div>
-                          <label className="text-[10px] text-text-muted ml-1 mb-1 block">API Key</label>
+                          <label className="text-xs text-text-muted ml-1 mb-1 block">API Key</label>
                           <PasswordInput 
                             value={configLocal.api_key || ""} 
                             onChange={e => handleFieldChange(item.chave, "api_key", e.target.value)} 
@@ -697,7 +697,7 @@ function IntegracoesTab() {
                           />
                         </div>
                         <div>
-                          <label className="text-[10px] text-text-muted ml-1 mb-1 block">Nome da Instância</label>
+                          <label className="text-xs text-text-muted ml-1 mb-1 block">Nome da Instância</label>
                           <input 
                             value={configLocal.instancia || ""} 
                             onChange={e => handleFieldChange(item.chave, "instancia", e.target.value)} 
@@ -711,7 +711,7 @@ function IntegracoesTab() {
 
                   {item.chave === "cep_api" && (
                     <div>
-                      <label className="text-[10px] text-text-muted ml-1 mb-1 block">Provedor Principal</label>
+                      <label className="text-xs text-text-muted ml-1 mb-1 block">Provedor Principal</label>
                       <select 
                         value={configLocal.provider || "brasilapi"} 
                         onChange={e => handleFieldChange(item.chave, "provider", e.target.value)} 
@@ -720,7 +720,7 @@ function IntegracoesTab() {
                         <option value="brasilapi" className="text-black bg-white">BrasilAPI (Recomendado - CDN Rápido)</option>
                         <option value="viacep" className="text-black bg-white">ViaCEP (Tradicional)</option>
                       </select>
-                      <p className="text-[9px] text-text-muted mt-2 flex items-start gap-1">
+                      <p className="text-xs text-text-muted mt-2 flex items-start gap-1">
                         <Lightbulb size={9} className="text-yellow-400 mt-0.5 shrink-0" /> A plataforma tentará o provedor selecionado primeiro. Se houver falha de conexão, fará fallback automático e transparente para o outro.
                       </p>
                     </div>
@@ -729,7 +729,7 @@ function IntegracoesTab() {
                   {item.chave === "google_sheets" && (
                     <>
                       <div>
-                        <label className="text-[10px] text-text-muted ml-1 mb-1 block">ID da Planilha (Spreadsheet ID)</label>
+                        <label className="text-xs text-text-muted ml-1 mb-1 block">ID da Planilha (Spreadsheet ID)</label>
                         <input 
                           value={configLocal.spreadsheet_id || ""} 
                           onChange={e => handleFieldChange(item.chave, "spreadsheet_id", e.target.value)} 
@@ -739,7 +739,7 @@ function IntegracoesTab() {
                       </div>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                         <div>
-                          <label className="text-[10px] text-text-muted ml-1 mb-1 block">E-mail da Conta de Serviço</label>
+                          <label className="text-xs text-text-muted ml-1 mb-1 block">E-mail da Conta de Serviço</label>
                           <input 
                             value={configLocal.client_email || ""} 
                             onChange={e => handleFieldChange(item.chave, "client_email", e.target.value)} 
@@ -748,7 +748,7 @@ function IntegracoesTab() {
                           />
                         </div>
                         <div>
-                          <label className="text-[10px] text-text-muted ml-1 mb-1 block">Private Key</label>
+                          <label className="text-xs text-text-muted ml-1 mb-1 block">Private Key</label>
                           <PasswordInput 
                             value={configLocal.private_key || ""} 
                             onChange={e => handleFieldChange(item.chave, "private_key", e.target.value)} 
@@ -763,7 +763,7 @@ function IntegracoesTab() {
                   {item.chave === "google_drive" && (
                     <>
                       <div>
-                        <label className="text-[10px] text-text-muted ml-1 mb-1 block">ID da Pasta Destino (Folder ID)</label>
+                        <label className="text-xs text-text-muted ml-1 mb-1 block">ID da Pasta Destino (Folder ID)</label>
                         <input 
                           value={configLocal.folder_id || ""} 
                           onChange={e => handleFieldChange(item.chave, "folder_id", e.target.value)} 
@@ -773,7 +773,7 @@ function IntegracoesTab() {
                       </div>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                         <div>
-                          <label className="text-[10px] text-text-muted ml-1 mb-1 block">E-mail da Conta de Serviço</label>
+                          <label className="text-xs text-text-muted ml-1 mb-1 block">E-mail da Conta de Serviço</label>
                           <input 
                             value={configLocal.client_email || ""} 
                             onChange={e => handleFieldChange(item.chave, "client_email", e.target.value)} 
@@ -782,7 +782,7 @@ function IntegracoesTab() {
                           />
                         </div>
                         <div>
-                          <label className="text-[10px] text-text-muted ml-1 mb-1 block">Private Key</label>
+                          <label className="text-xs text-text-muted ml-1 mb-1 block">Private Key</label>
                           <PasswordInput 
                             value={configLocal.private_key || ""} 
                             onChange={e => handleFieldChange(item.chave, "private_key", e.target.value)} 
@@ -796,7 +796,7 @@ function IntegracoesTab() {
 
                   {item.chave === "google_maps" && (
                     <div>
-                      <label className="text-[10px] text-text-muted ml-1 mb-1 block">Google Maps API Key</label>
+                      <label className="text-xs text-text-muted ml-1 mb-1 block">Google Maps API Key</label>
                       <PasswordInput 
                         value={configLocal.api_key || ""} 
                         onChange={e => handleFieldChange(item.chave, "api_key", e.target.value)} 
@@ -810,7 +810,7 @@ function IntegracoesTab() {
                     <>
                       <div className="grid grid-cols-3 gap-3">
                         <div className="col-span-2">
-                          <label className="text-[10px] text-text-muted ml-1 mb-1 block">Host SMTP</label>
+                          <label className="text-xs text-text-muted ml-1 mb-1 block">Host SMTP</label>
                           <input 
                             value={configLocal.host || ""} 
                             onChange={e => handleFieldChange(item.chave, "host", e.target.value)} 
@@ -819,7 +819,7 @@ function IntegracoesTab() {
                           />
                         </div>
                         <div>
-                          <label className="text-[10px] text-text-muted ml-1 mb-1 block">Porta</label>
+                          <label className="text-xs text-text-muted ml-1 mb-1 block">Porta</label>
                           <input 
                             type="number"
                             value={configLocal.port || 587} 
@@ -830,7 +830,7 @@ function IntegracoesTab() {
                       </div>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                         <div>
-                          <label className="text-[10px] text-text-muted ml-1 mb-1 block">Usuário / E-mail</label>
+                          <label className="text-xs text-text-muted ml-1 mb-1 block">Usuário / E-mail</label>
                           <input 
                             value={configLocal.user || ""} 
                             onChange={e => handleFieldChange(item.chave, "user", e.target.value)} 
@@ -839,7 +839,7 @@ function IntegracoesTab() {
                           />
                         </div>
                         <div>
-                          <label className="text-[10px] text-text-muted ml-1 mb-1 block">Senha</label>
+                          <label className="text-xs text-text-muted ml-1 mb-1 block">Senha</label>
                           <PasswordInput 
                             value={configLocal.pass || ""} 
                             onChange={e => handleFieldChange(item.chave, "pass", e.target.value)} 
@@ -857,7 +857,7 @@ function IntegracoesTab() {
                     <button 
                       onClick={() => handleTestarConexao(item)} 
                       disabled={isTesting}
-                      className="flex items-center justify-center gap-1 rounded-xl bg-bg-dark border border-input-border hover:bg-input-bg text-text-main px-3 py-1.5 text-[11px] font-semibold disabled:opacity-50 transition-colors"
+                      className="flex items-center justify-center gap-1 rounded-xl bg-bg-dark border border-input-border hover:bg-input-bg text-text-main px-3 py-1.5 text-xs font-semibold disabled:opacity-50 transition-colors"
                     >
                       {isTesting ? <Loader2 size={13} className="animate-spin" /> : <RefreshCw size={13} />} Testar Instância
                     </button>
@@ -865,7 +865,7 @@ function IntegracoesTab() {
                   <button 
                     onClick={() => handleSalvar(item)} 
                     disabled={isSaving}
-                    className="flex items-center justify-center gap-1 rounded-xl bg-accent hover:bg-accent/80 text-white px-4 py-1.5 text-[11px] font-semibold disabled:opacity-50 transition-all shadow-md"
+                    className="flex items-center justify-center gap-1 rounded-xl bg-accent hover:bg-accent/80 text-white px-4 py-1.5 text-xs font-semibold disabled:opacity-50 transition-all shadow-md"
                   >
                     {isSaving ? <Loader2 size={13} className="animate-spin" /> : <Save size={13} />} Salvar Credenciais
                   </button>

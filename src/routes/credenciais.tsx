@@ -210,8 +210,8 @@ function CredenciaisPage() {
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-medium text-text-main truncate">{c.nome_completo}</p>
-                <p className="text-[11px] text-text-muted truncate">{c.email_corporativo}</p>
-                {c.departamento && <span className="rounded-full bg-accent/10 px-2 py-0.5 text-[9px] font-medium text-accent mt-1 inline-block">{c.departamento}</span>}
+                <p className="text-xs text-text-muted truncate">{c.email_corporativo}</p>
+                {c.departamento && <span className="rounded-full bg-accent/10 px-2 py-0.5 text-xs font-medium text-accent mt-1 inline-block">{c.departamento}</span>}
               </div>
               {podeAdmin && (
                 <>
@@ -282,12 +282,12 @@ function CredenciaisPage() {
               <div className="flex flex-col items-center justify-center py-8 text-center">
                 <ShieldX size={36} className="text-yellow-400 mb-2" />
                 <p className="text-sm font-semibold text-text-main">Usuário não registrado</p>
-                <p className="text-[11px] text-text-muted mt-1">O e-mail ainda não realizou o primeiro acesso.</p>
+                <p className="text-xs text-text-muted mt-1">O e-mail ainda não realizou o primeiro acesso.</p>
               </div>
             ) : (
               <>
                 <div className="flex items-center gap-1 mb-4">
-                  <button onClick={() => setEditPerms(getPermissoesPadrao("cadastro"))} className="ml-auto text-[10px] text-accent underline">Restaurar padrões</button>
+                  <button onClick={() => setEditPerms(getPermissoesPadrao("cadastro"))} className="ml-auto text-xs text-accent underline">Restaurar padrões</button>
                 </div>
                 <div className="flex flex-col gap-3 max-h-[55vh] overflow-y-auto pr-1">
                   {PERMISSOES_GROUPS.map((group) => (
@@ -302,7 +302,7 @@ function CredenciaisPage() {
                             </button>
                             <div className="flex-1 min-w-0">
                               <p className={cn("text-xs font-medium", editPerms[key] ? 'text-text-main' : 'text-text-muted')}>{PERMISSOES_LABEL[key]}</p>
-                              <p className="text-[9px] text-text-muted">{PERMISSOES_DESC[key]}</p>
+                              <p className="text-xs text-text-muted">{PERMISSOES_DESC[key]}</p>
                             </div>
                           </label>
                         ))}

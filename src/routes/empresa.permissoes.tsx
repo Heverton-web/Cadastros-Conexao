@@ -379,7 +379,7 @@ function AdminPermissoes() {
                     {isOpen ? <ChevronDown size={14} className="shrink-0 text-text-muted" /> : <ChevronRight size={14} className="shrink-0 text-text-muted" />}
                     <div className="min-w-0">
                       <span className="text-sm font-medium text-text-main block truncate">{u.nome}</span>
-                      <span className="text-[10px] text-text-muted block truncate">{u.email} | {u.ambiente}{u.empresa_id ? ` | ${empresas.find((e) => e.id === u.empresa_id)?.nome || "—"}` : ""}</span>
+                      <span className="text-xs text-text-muted block truncate">{u.email} | {u.ambiente}{u.empresa_id ? ` | ${empresas.find((e) => e.id === u.empresa_id)?.nome || "—"}` : ""}</span>
                     </div>
                   </div>
                   <div className="flex items-center gap-2 shrink-0">
@@ -407,7 +407,7 @@ function AdminPermissoes() {
                       <Trash2 size={14} />
                     </button>
                     {isDirty && (
-                      <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-accent/10 text-accent font-medium shrink-0 ml-2">Não salvo</span>
+                      <span className="text-xs px-1.5 py-0.5 rounded-full bg-accent/10 text-accent font-medium shrink-0 ml-2">Não salvo</span>
                     )}
                   </div>
                 </button>
@@ -416,7 +416,7 @@ function AdminPermissoes() {
                   <div className="px-3 pb-3 pt-1 border-t border-border-subtle/50">
 
                     {/* Module-level permissions */}
-                    <p className="text-[10px] font-bold text-text-muted uppercase tracking-wider mb-2">
+                    <p className="text-xs font-bold text-text-muted uppercase tracking-wider mb-2">
                       Acesso por módulo
                     </p>
                     <div className="space-y-2">
@@ -448,7 +448,7 @@ function AdminPermissoes() {
                                 <button onClick={() => toggleModuloAcessar(u.id, mod.key)}
                                   className="flex items-center gap-2 group cursor-pointer"
                                 >
-                                  <div className="flex items-center gap-1.5 text-[10px] font-medium">
+                                  <div className="flex items-center gap-1.5 text-xs font-medium">
                                     {ativo ? <Unlock size={12} className="text-accent" /> : <Lock size={12} className="text-text-muted group-hover:text-text-main transition-colors" />}
                                     <span className={ativo ? "text-accent" : "text-text-muted group-hover:text-text-main transition-colors"}>
                                       {ativo ? "Acesso liberado" : "Sem acesso"}
@@ -473,13 +473,13 @@ function AdminPermissoes() {
                               <div className="pl-6 space-y-2 border-l border-border-subtle/30 ml-[7px]">
                                 {mod.paginas.length > 0 && (
                                   <div>
-                                    <p className="text-[9px] font-bold text-text-muted uppercase mb-1">Páginas</p>
+                                    <p className="text-xs font-bold text-text-muted uppercase mb-1">Páginas</p>
                                     <div className="flex flex-wrap gap-1">
                                       {mod.paginas.map((pag) => {
                                         const ativa = modAcesso?.paginas?.includes(pag.id) || false;
                                         return (
                                           <button key={pag.id} onClick={() => togglePagina(u.id, mod.key, pag.id)}
-                                            className={cn("flex items-center gap-1 px-2 py-0.5 rounded text-[9px] font-medium transition-colors border",
+                                            className={cn("flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium transition-colors border",
                                               ativa ? "bg-accent/10 text-accent border-accent/20" : "bg-bg-dark text-text-muted border-transparent hover:text-text-main"
                                             )}
                                           >
@@ -503,13 +503,13 @@ function AdminPermissoes() {
                                       }, {} as Record<string, typeof mod.acoes>)
                                     ).map(([groupName, acoesList]) => (
                                       <div key={groupName}>
-                                        <p className="text-[9px] font-bold text-text-muted uppercase mb-1">{groupName}</p>
+                                        <p className="text-xs font-bold text-text-muted uppercase mb-1">{groupName}</p>
                                         <div className="flex flex-wrap gap-1">
                                           {acoesList.map((acao) => {
                                             const ativa = modAcesso?.acoes?.includes(acao.key) || false;
                                             return (
                                               <button key={acao.key} onClick={() => toggleAcao(u.id, mod.key, acao.key)}
-                                                className={cn("flex items-center gap-1 px-2 py-0.5 rounded text-[9px] font-medium transition-colors border",
+                                                className={cn("flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium transition-colors border",
                                                   ativa ? "bg-success/10 text-success border-success/20" : "bg-error/10 text-error border-error/20"
                                                 )}
                                               >
@@ -707,7 +707,7 @@ function NovaCredencialModal({ onClose, modulos, empresaId }: { onClose: () => v
 
         {/* Módulos e Permissões */}
         <div className="mb-6 border-t border-border-subtle pt-4">
-          <p className="text-[11px] font-bold text-text-muted uppercase tracking-wider mb-3">Módulos e Permissões</p>
+          <p className="text-xs font-bold text-text-muted uppercase tracking-wider mb-3">Módulos e Permissões</p>
           <div className="space-y-3">
             {modulos.map((mod) => {
               const modAcesso = modulosMap[mod.key];
@@ -729,7 +729,7 @@ function NovaCredencialModal({ onClose, modulos, empresaId }: { onClose: () => v
                         </button>
                       )}
                       <button onClick={() => toggleModuloAcessar(mod.key)} className="flex items-center gap-2 group cursor-pointer">
-                        <div className="flex items-center gap-1.5 text-[10px] font-medium">
+                        <div className="flex items-center gap-1.5 text-xs font-medium">
                           {ativo ? <Unlock size={12} className="text-accent" /> : <Lock size={12} className="text-text-muted group-hover:text-text-main transition-colors" />}
                           <span className={ativo ? "text-accent" : "text-text-muted group-hover:text-text-main transition-colors"}>{ativo ? "Acesso liberado" : "Sem acesso"}</span>
                         </div>
@@ -744,12 +744,12 @@ function NovaCredencialModal({ onClose, modulos, empresaId }: { onClose: () => v
                     <div className="pl-8 space-y-3 border-l border-border-subtle/30 ml-2.5 mt-3 pt-1">
                       {mod.paginas.length > 0 && (
                         <div>
-                          <p className="text-[10px] font-bold text-text-muted uppercase mb-1.5">Páginas</p>
+                          <p className="text-xs font-bold text-text-muted uppercase mb-1.5">Páginas</p>
                           <div className="flex flex-wrap gap-1.5">
                             {mod.paginas.map((pag) => {
                               const ativa = modAcesso?.paginas?.includes(pag.id) || false;
                               return (
-                                <button key={pag.id} onClick={() => togglePagina(mod.key, pag.id)} className={cn("flex items-center gap-1 px-2.5 py-1 rounded text-[10px] font-medium transition-colors border", ativa ? "bg-accent/10 text-accent border-accent/20" : "bg-bg-dark text-text-muted border-transparent hover:text-text-main")}>
+                                <button key={pag.id} onClick={() => togglePagina(mod.key, pag.id)} className={cn("flex items-center gap-1 px-2.5 py-1 rounded text-xs font-medium transition-colors border", ativa ? "bg-accent/10 text-accent border-accent/20" : "bg-bg-dark text-text-muted border-transparent hover:text-text-main")}>
                                   {ativa ? <Check size={10} /> : <X size={10} />}
                                   {pag.label}
                                 </button>
@@ -770,12 +770,12 @@ function NovaCredencialModal({ onClose, modulos, empresaId }: { onClose: () => v
                             }, {} as Record<string, typeof mod.acoes>)
                           ).map(([groupName, acoesList]) => (
                             <div key={groupName}>
-                              <p className="text-[10px] font-bold text-text-muted uppercase mb-1.5">{groupName}</p>
+                              <p className="text-xs font-bold text-text-muted uppercase mb-1.5">{groupName}</p>
                               <div className="flex flex-wrap gap-1.5">
                                 {acoesList.map((acao) => {
                                   const ativa = modAcesso?.acoes?.includes(acao.key) || false;
                                   return (
-                                    <button key={acao.key} onClick={() => toggleAcao(mod.key, acao.key)} className={cn("flex items-center gap-1 px-2.5 py-1 rounded text-[10px] font-medium transition-colors border", ativa ? "bg-success/10 text-success border-success/20" : "bg-error/10 text-error border-error/20")}>
+                                    <button key={acao.key} onClick={() => toggleAcao(mod.key, acao.key)} className={cn("flex items-center gap-1 px-2.5 py-1 rounded text-xs font-medium transition-colors border", ativa ? "bg-success/10 text-success border-success/20" : "bg-error/10 text-error border-error/20")}>
                                       {ativa ? <Check size={10} /> : <X size={10} />}
                                       {acao.label}
                                     </button>

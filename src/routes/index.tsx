@@ -106,7 +106,7 @@ function LoginPage() {
         {/* Título e Subtítulo */}
         <div className="text-center mb-6 flex flex-col gap-0.5">
           <h1 className="text-2xl font-bold text-white tracking-wide">Entrar</h1>
-          <span className="text-[10px] font-bold text-[#c9a655] tracking-[0.25em] uppercase">
+          <span className="text-xs font-bold text-[#c9a655] tracking-[0.25em] uppercase">
             {empresaNome || "Conexão"}
           </span>
         </div>
@@ -121,7 +121,7 @@ function LoginPage() {
 
         <form onSubmit={(e) => { e.preventDefault(); handleLogin(); }} className="flex flex-col gap-5">
           <div>
-            <label className="text-[10px] font-bold text-[#4e6178] uppercase tracking-wider mb-1.5 block">
+            <label className="text-xs font-bold text-[#4e6178] uppercase tracking-wider mb-1.5 block">
               Email
             </label>
             <Input 
@@ -136,7 +136,7 @@ function LoginPage() {
           </div>
 
           <div>
-            <label className="text-[10px] font-bold text-[#4e6178] uppercase tracking-wider mb-1.5 block">
+            <label className="text-xs font-bold text-[#4e6178] uppercase tracking-wider mb-1.5 block">
               Senha
             </label>
 <PasswordInput id="password" placeholder="••••••••"

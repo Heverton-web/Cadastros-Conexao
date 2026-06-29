@@ -72,8 +72,8 @@ function AdminSuperDemos() {
             <div>
               <span className="text-sm font-medium text-text-main">{d.email_demo}</span>
               <div className="flex items-center gap-2 mt-0.5">
-                <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-accent/10 text-accent font-medium">{d.role_escolhida}</span>
-                <span className="text-[10px] text-text-muted">{d.qtd_cadastros_mock} mock{Number(d.qtd_cadastros_mock) !== 1 ? "s" : ""}</span>
+                <span className="text-xs px-1.5 py-0.5 rounded-full bg-accent/10 text-accent font-medium">{d.role_escolhida}</span>
+                <span className="text-xs text-text-muted">{d.qtd_cadastros_mock} mock{Number(d.qtd_cadastros_mock) !== 1 ? "s" : ""}</span>
               </div>
             </div>
             <button onClick={() => handleDelete(d)} className="p-1.5 rounded-lg text-text-muted hover:text-red-400 hover:bg-surface-hover transition-colors" title="Excluir">
@@ -150,17 +150,17 @@ function CriarDemoModal({ onClose, onCreated }: { onClose: () => void; onCreated
         <form onSubmit={handleCreate} className="flex flex-col gap-4">
           <div className="grid grid-cols-2 gap-3">
             <div className="col-span-2">
-              <label className="text-[10px] font-bold text-text-muted uppercase tracking-wider mb-1 block">Email *</label>
+              <label className="text-xs font-bold text-text-muted uppercase tracking-wider mb-1 block">Email *</label>
               <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="demo@email.com"
                 className="w-full px-3 py-2 rounded-lg bg-input-bg border border-input-border text-text-main text-sm outline-none focus:border-accent" required />
             </div>
             <div>
-              <label className="text-[10px] font-bold text-text-muted uppercase tracking-wider mb-1 block">Senha *</label>
+              <label className="text-xs font-bold text-text-muted uppercase tracking-wider mb-1 block">Senha *</label>
               <PasswordInput value={senha} onChange={(e) => setSenha(e.target.value)}
                 className="w-full px-3 py-2 rounded-lg bg-input-bg border border-input-border text-text-main text-sm outline-none focus:border-accent" required />
             </div>
             <div>
-              <label className="text-[10px] font-bold text-text-muted uppercase tracking-wider mb-1 block">Role / Nível</label>
+              <label className="text-xs font-bold text-text-muted uppercase tracking-wider mb-1 block">Role / Nível</label>
               <select value={role} onChange={(e) => setRole(e.target.value)}
                 className="w-full px-3 py-2 rounded-lg bg-input-bg border border-input-border text-text-main text-sm outline-none focus:border-accent">
                 <option value="admin">Admin</option>
@@ -169,14 +169,14 @@ function CriarDemoModal({ onClose, onCreated }: { onClose: () => void; onCreated
               </select>
             </div>
             <div>
-              <label className="text-[10px] font-bold text-text-muted uppercase tracking-wider mb-1 block">Qtd. Cadastros Mock</label>
+              <label className="text-xs font-bold text-text-muted uppercase tracking-wider mb-1 block">Qtd. Cadastros Mock</label>
               <input type="number" min={0} max={100} value={qtd} onChange={(e) => setQtd(Number(e.target.value))}
                 className="w-full px-3 py-2 rounded-lg bg-input-bg border border-input-border text-text-main text-sm outline-none focus:border-accent" />
             </div>
           </div>
 
           <div>
-            <label className="text-[10px] font-bold text-text-muted uppercase tracking-wider mb-1.5 block">Módulos Ativos</label>
+            <label className="text-xs font-bold text-text-muted uppercase tracking-wider mb-1.5 block">Módulos Ativos</label>
             <div className="space-y-1">
               {registeredModules.map((mod) => {
                 const ativo = modulos[mod.key] ?? false;
@@ -187,7 +187,7 @@ function CriarDemoModal({ onClose, onCreated }: { onClose: () => void; onCreated
                       <span className="text-sm text-text-main">{mod.nome}</span>
                     </div>
                     <button type="button" onClick={() => setModulos((p) => ({ ...p, [mod.key]: !ativo }))}
-                      className={`flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-medium transition-colors ${ativo ? "bg-success/10 text-success" : "bg-error/10 text-error"}`}>
+                      className={`flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium transition-colors ${ativo ? "bg-success/10 text-success" : "bg-error/10 text-error"}`}>
                       {ativo ? <><ToggleRight size={12} /> Ativo</> : <><ToggleLeft size={12} /> Inativo</>}
                     </button>
                   </div>

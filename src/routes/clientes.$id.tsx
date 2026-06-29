@@ -685,7 +685,7 @@ function CampoRevisavel({ campoKey, label, value, revisoes, podeAcao, onAction, 
           {iconBefore && <span className="shrink-0">{iconBefore}</span>}
           <p className="text-sm text-text-main truncate">{value || "—"}</p>
           {status !== "pendente" && !isRevising && (
-            <span className={`shrink-0 rounded-full px-2 py-0.5 text-[10px] font-medium ${STATUS_REVISAO_COLOR[status]}`}>{STATUS_REVISAO_LABEL[status]}</span>
+            <span className={`shrink-0 rounded-full px-2 py-0.5 text-xs font-medium ${STATUS_REVISAO_COLOR[status]}`}>{STATUS_REVISAO_LABEL[status]}</span>
           )}
         </div>
         {rev?.comentario && (

@@ -162,9 +162,9 @@ function GeralTab({ mod }: { mod: ModuleDefinition }) {
         <div className="flex flex-col gap-2">
           {mod.abas.map((aba) => (
             <div key={aba.key} className="flex items-center gap-2 text-sm">
-              <span className="px-2 py-0.5 rounded bg-accent/10 text-accent text-[11px] font-mono">{aba.key}</span>
+              <span className="px-2 py-0.5 rounded bg-accent/10 text-accent text-xs font-mono">{aba.key}</span>
               <span className="text-text-main">{aba.label}</span>
-              {aba.descricao && <span className="text-text-muted text-[11px]">— {aba.descricao}</span>}
+              {aba.descricao && <span className="text-text-muted text-xs">— {aba.descricao}</span>}
             </div>
           ))}
         </div>
@@ -229,8 +229,8 @@ function EventosTab({ mod }: { mod: ModuleDefinition }) {
               <Bell size={14} className="text-accent shrink-0 mt-0.5" />
               <div>
                 <span className="text-xs font-medium text-text-main">{evt.label}</span>
-                <span className="text-[10px] text-text-muted block">{evt.key}</span>
-                <span className="text-[11px] text-text-muted block mt-0.5">{evt.descricao}</span>
+                <span className="text-xs text-text-muted block">{evt.key}</span>
+                <span className="text-xs text-text-muted block mt-0.5">{evt.descricao}</span>
               </div>
             </div>
           ))}
@@ -246,7 +246,7 @@ function PlaceholderTab({ title, desc }: { title: string; desc: string }) {
       <FlaskConical size={32} className="text-text-muted mb-3" />
       <p className="text-sm font-medium text-text-main">{title}</p>
       <p className="text-xs text-text-muted mt-1 max-w-sm">{desc}</p>
-      <p className="text-[10px] text-text-muted mt-4 italic">Em desenvolvimento</p>
+      <p className="text-xs text-text-muted mt-4 italic">Em desenvolvimento</p>
     </div>
   );
 }

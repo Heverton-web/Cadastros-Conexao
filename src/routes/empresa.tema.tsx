@@ -137,7 +137,7 @@ function AdminTema() {
               .filter(([key]) => LABELS_CORES[key] !== undefined)
               .map(([key, value]) => (
                 <div key={key}>
-                  <label className="text-[10px] text-text-muted font-medium block mb-1">{LABELS_CORES[key]}</label>
+                  <label className="text-xs text-text-muted font-medium block mb-1">{LABELS_CORES[key]}</label>
                   <div className="flex items-center gap-2">
                     <input
                       type="color"

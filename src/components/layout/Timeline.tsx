@@ -51,7 +51,7 @@ export function Timeline({ entidade_tipo, entidade_id }: Props) {
             <span className="mt-0.5 text-sm">{(() => { const Icon = acaoIcons[a.acao] || FileText; return <Icon size={14} className="text-text-muted" />; })()}</span>
             <div className="flex-1 min-w-0">
               <p className="text-sm text-text-main">{a.descricao || a.acao}</p>
-              <div className="mt-0.5 flex items-center gap-2 text-[10px] text-text-muted">
+              <div className="mt-0.5 flex items-center gap-2 text-xs text-text-muted">
                 <span>
                   {new Date(a.created_at).toLocaleString("pt-BR")}
                 </span>

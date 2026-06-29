@@ -66,7 +66,7 @@ function DevDemoCards() {
                 <Switch checked={enabled} onCheckedChange={(v) => toggle(acc.flagKey, v)} />
               </div>
               <p className="text-xs text-muted-foreground leading-relaxed">{acc.description}</p>
-              <div className="rounded-lg border border-border bg-secondary/40 p-2 text-[11px] font-mono">
+              <div className="rounded-lg border border-border bg-secondary/40 p-2 text-xs font-mono">
                 <p>{acc.email}</p>
                 <p className="text-muted-foreground">senha: {acc.password}</p>
               </div>

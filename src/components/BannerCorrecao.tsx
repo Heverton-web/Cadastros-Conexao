@@ -19,7 +19,7 @@ export function BannerCorrecao({ comentarioGeral }: BannerCorrecaoProps) {
           </p>
           {comentarioGeral && (
             <div className="mt-3.5 rounded-xl bg-orange-950/20 border border-orange-500/15 p-3 text-xs text-orange-300/90 leading-relaxed font-mono">
-              <span className="font-bold text-[10px] uppercase tracking-wider block mb-1 text-orange-400">Mensagem da Equipe de Cadastro:</span>
+              <span className="font-bold text-xs uppercase tracking-wider block mb-1 text-orange-400">Mensagem da Equipe de Cadastro:</span>
               {comentarioGeral}
             </div>
           )}

@@ -96,14 +96,14 @@ function LinhaCampo({
           <div className="flex items-center gap-1.5">
             <span className="text-xs font-medium text-text-main truncate">{campo.label}</span>
             {campo.is_custom && (
-              <span className="rounded-full bg-accent/15 px-1.5 py-0.5 text-[10px] font-semibold text-accent">custom</span>
+              <span className="rounded-full bg-accent/15 px-1.5 py-0.5 text-xs font-semibold text-accent">custom</span>
             )}
             {campo.obrigatorio && (
               <span className="text-accent text-xs font-bold leading-none">*</span>
             )}
           </div>
         )}
-        <span className="text-[10px] text-text-muted">{campo.tipo_input} · {campo.campo_key}</span>
+        <span className="text-xs text-text-muted">{campo.tipo_input} · {campo.campo_key}</span>
       </div>
 
       {/* Ações */}
@@ -298,7 +298,7 @@ function ModalNovoCampo({
             placeholder="Ex: especialidade_clinica"
             className="w-full rounded-lg border border-input-border bg-input-bg px-3 py-2.5 text-xs text-text-main font-mono outline-none focus:border-accent"
           />
-          <p className="mt-1 text-[10px] text-text-muted">Apenas letras minúsculas, números e underscore</p>
+          <p className="mt-1 text-xs text-text-muted">Apenas letras minúsculas, números e underscore</p>
         </div>
 
         {/* Opções (para select/multiselect/checkbox) */}
@@ -476,7 +476,7 @@ export function FormBuilderTab() {
       </div>
 
       {/* Legenda */}
-      <div className="flex flex-wrap gap-3 rounded-xl bg-card border border-border-subtle p-3 text-[10px] text-text-muted">
+      <div className="flex flex-wrap gap-3 rounded-xl bg-card border border-border-subtle p-3 text-xs text-text-muted">
         <span className="flex items-center gap-1"><Eye size={11} className="text-green-400" /> visível</span>
         <span className="flex items-center gap-1"><EyeOff size={11} /> oculto</span>
         <span className="flex items-center gap-1"><Star size={11} className="text-accent" /> obrigatório</span>
@@ -535,7 +535,7 @@ export function FormBuilderTab() {
 
       {/* Contador */}
       {!loading && camposFiltrados.length > 0 && (
-        <p className="text-center text-[10px] text-text-muted">
+        <p className="text-center text-xs text-text-muted">
           {camposFiltrados.filter(c => c.visivel).length} visíveis ·{" "}
           {camposFiltrados.filter(c => !c.visivel).length} ocultos ·{" "}
           {camposFiltrados.filter(c => c.is_custom).length} custom

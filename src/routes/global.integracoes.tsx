@@ -102,7 +102,7 @@ function AdminSuperIntegracoes() {
               <div className="flex items-center justify-between gap-4 mb-4">
                 <div>
                   <h3 className="text-xs font-bold text-text-main flex items-center gap-1.5">{item.nome}</h3>
-                  <span className="text-[10px] text-text-muted font-mono">{item.chave}</span>
+                  <span className="text-xs text-text-muted font-mono">{item.chave}</span>
                 </div>
                 <button onClick={() => handleToggleAtivo(item)}
                   className="focus:outline-none transition-transform active:scale-95"
@@ -115,18 +115,18 @@ function AdminSuperIntegracoes() {
                 {item.chave === "evolution_api" && (
                   <>
                     <div>
-                      <label className="text-[10px] text-text-muted ml-1 mb-1 block">URL Base da API</label>
+                      <label className="text-xs text-text-muted ml-1 mb-1 block">URL Base da API</label>
                       <input value={configLocal.base_url || ""} onChange={(e) => handleFieldChange(item.chave, "base_url", e.target.value)} placeholder="https://sua-api.evolution.com.br"
                         className="w-full rounded-xl border border-input-border bg-input-bg px-3 py-2 text-xs text-text-main outline-none focus:border-accent" />
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                       <div>
-                        <label className="text-[10px] text-text-muted ml-1 mb-1 block">API Key</label>
+                        <label className="text-xs text-text-muted ml-1 mb-1 block">API Key</label>
                         <PasswordInput value={configLocal.api_key || ""} onChange={(e) => handleFieldChange(item.chave, "api_key", e.target.value)} placeholder="Chave de Autenticação"
                           className="w-full rounded-xl border border-input-border bg-input-bg px-3 py-2 text-xs text-text-main outline-none focus:border-accent" />
                       </div>
                       <div>
-                        <label className="text-[10px] text-text-muted ml-1 mb-1 block">Nome da Instância</label>
+                        <label className="text-xs text-text-muted ml-1 mb-1 block">Nome da Instância</label>
                         <input value={configLocal.instancia || ""} onChange={(e) => handleFieldChange(item.chave, "instancia", e.target.value)} placeholder="Ex: conexao_zap"
                           className="w-full rounded-xl border border-input-border bg-input-bg px-3 py-2 text-xs text-text-main outline-none focus:border-accent" />
                       </div>
@@ -136,31 +136,31 @@ function AdminSuperIntegracoes() {
 
                 {item.chave === "cep_api" && (
                   <div>
-                    <label className="text-[10px] text-text-muted ml-1 mb-1 block">Provedor Principal</label>
+                    <label className="text-xs text-text-muted ml-1 mb-1 block">Provedor Principal</label>
                     <select value={configLocal.provider || "brasilapi"} onChange={(e) => handleFieldChange(item.chave, "provider", e.target.value)}
                       className="w-full rounded-xl border border-input-border bg-input-bg px-3 py-2 text-xs text-text-main outline-none focus:border-accent">
                       <option value="brasilapi">BrasilAPI (Recomendado - CDN Rápido)</option>
                       <option value="viacep">ViaCEP (Tradicional)</option>
                     </select>
-                    <p className="text-[9px] text-text-muted mt-2">A plataforma tentará o provedor selecionado primeiro. Se houver falha, fará fallback automático para o outro.</p>
+                    <p className="text-xs text-text-muted mt-2">A plataforma tentará o provedor selecionado primeiro. Se houver falha, fará fallback automático para o outro.</p>
                   </div>
                 )}
 
                 {item.chave === "google_sheets" && (
                   <>
                     <div>
-                      <label className="text-[10px] text-text-muted ml-1 mb-1 block">ID da Planilha (Spreadsheet ID)</label>
+                      <label className="text-xs text-text-muted ml-1 mb-1 block">ID da Planilha (Spreadsheet ID)</label>
                       <input value={configLocal.spreadsheet_id || ""} onChange={(e) => handleFieldChange(item.chave, "spreadsheet_id", e.target.value)} placeholder="Ex: 1a2B3c4D..."
                         className="w-full rounded-xl border border-input-border bg-input-bg px-3 py-2 text-xs text-text-main outline-none focus:border-accent" />
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                       <div>
-                        <label className="text-[10px] text-text-muted ml-1 mb-1 block">E-mail da Conta de Serviço</label>
+                        <label className="text-xs text-text-muted ml-1 mb-1 block">E-mail da Conta de Serviço</label>
                         <input value={configLocal.client_email || ""} onChange={(e) => handleFieldChange(item.chave, "client_email", e.target.value)} placeholder="sheets-sync@projeto.iam.gserviceaccount.com"
                           className="w-full rounded-xl border border-input-border bg-input-bg px-3 py-2 text-xs text-text-main outline-none focus:border-accent" />
                       </div>
                       <div>
-                        <label className="text-[10px] text-text-muted ml-1 mb-1 block">Private Key</label>
+                        <label className="text-xs text-text-muted ml-1 mb-1 block">Private Key</label>
                         <PasswordInput value={configLocal.private_key || ""} onChange={(e) => handleFieldChange(item.chave, "private_key", e.target.value)} placeholder="-----BEGIN PRIVATE KEY-----"
                           className="w-full rounded-xl border border-input-border bg-input-bg px-3 py-2 text-xs text-text-main outline-none focus:border-accent" />
                       </div>
@@ -171,18 +171,18 @@ function AdminSuperIntegracoes() {
                 {item.chave === "google_drive" && (
                   <>
                     <div>
-                      <label className="text-[10px] text-text-muted ml-1 mb-1 block">ID da Pasta Destino (Folder ID)</label>
+                      <label className="text-xs text-text-muted ml-1 mb-1 block">ID da Pasta Destino (Folder ID)</label>
                       <input value={configLocal.folder_id || ""} onChange={(e) => handleFieldChange(item.chave, "folder_id", e.target.value)} placeholder="Ex: 1xYz2A-bCd..."
                         className="w-full rounded-xl border border-input-border bg-input-bg px-3 py-2 text-xs text-text-main outline-none focus:border-accent" />
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                       <div>
-                        <label className="text-[10px] text-text-muted ml-1 mb-1 block">E-mail da Conta de Serviço</label>
+                        <label className="text-xs text-text-muted ml-1 mb-1 block">E-mail da Conta de Serviço</label>
                         <input value={configLocal.client_email || ""} onChange={(e) => handleFieldChange(item.chave, "client_email", e.target.value)} placeholder="drive-upload@projeto.iam.gserviceaccount.com"
                           className="w-full rounded-xl border border-input-border bg-input-bg px-3 py-2 text-xs text-text-main outline-none focus:border-accent" />
                       </div>
                       <div>
-                        <label className="text-[10px] text-text-muted ml-1 mb-1 block">Private Key</label>
+                        <label className="text-xs text-text-muted ml-1 mb-1 block">Private Key</label>
                         <PasswordInput value={configLocal.private_key || ""} onChange={(e) => handleFieldChange(item.chave, "private_key", e.target.value)} placeholder="-----BEGIN PRIVATE KEY-----"
                           className="w-full rounded-xl border border-input-border bg-input-bg px-3 py-2 text-xs text-text-main outline-none focus:border-accent" />
                       </div>
@@ -192,7 +192,7 @@ function AdminSuperIntegracoes() {
 
                 {item.chave === "google_maps" && (
                   <div>
-                    <label className="text-[10px] text-text-muted ml-1 mb-1 block">Google Maps API Key</label>
+                    <label className="text-xs text-text-muted ml-1 mb-1 block">Google Maps API Key</label>
                     <PasswordInput value={configLocal.api_key || ""} onChange={(e) => handleFieldChange(item.chave, "api_key", e.target.value)} placeholder="AIzaSyA1..."
                       className="w-full rounded-xl border border-input-border bg-input-bg px-3 py-2 text-xs text-text-main outline-none focus:border-accent" />
                   </div>
@@ -202,24 +202,24 @@ function AdminSuperIntegracoes() {
                   <>
                     <div className="grid grid-cols-3 gap-3">
                       <div className="col-span-2">
-                        <label className="text-[10px] text-text-muted ml-1 mb-1 block">Host SMTP</label>
+                        <label className="text-xs text-text-muted ml-1 mb-1 block">Host SMTP</label>
                         <input value={configLocal.host || ""} onChange={(e) => handleFieldChange(item.chave, "host", e.target.value)} placeholder="smtp.gmail.com"
                           className="w-full rounded-xl border border-input-border bg-input-bg px-3 py-2 text-xs text-text-main outline-none focus:border-accent" />
                       </div>
                       <div>
-                        <label className="text-[10px] text-text-muted ml-1 mb-1 block">Porta</label>
+                        <label className="text-xs text-text-muted ml-1 mb-1 block">Porta</label>
                         <input type="number" value={configLocal.port || 587} onChange={(e) => handleFieldChange(item.chave, "port", Number(e.target.value))}
                           className="w-full rounded-xl border border-input-border bg-input-bg px-3 py-2 text-xs text-text-main outline-none focus:border-accent" />
                       </div>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                       <div>
-                        <label className="text-[10px] text-text-muted ml-1 mb-1 block">Usuário / E-mail</label>
+                        <label className="text-xs text-text-muted ml-1 mb-1 block">Usuário / E-mail</label>
                         <input value={configLocal.user || ""} onChange={(e) => handleFieldChange(item.chave, "user", e.target.value)} placeholder="exemplo@gmail.com"
                           className="w-full rounded-xl border border-input-border bg-input-bg px-3 py-2 text-xs text-text-main outline-none focus:border-accent" />
                       </div>
                       <div>
-                        <label className="text-[10px] text-text-muted ml-1 mb-1 block">Senha</label>
+                        <label className="text-xs text-text-muted ml-1 mb-1 block">Senha</label>
                         <PasswordInput value={configLocal.pass || ""} onChange={(e) => handleFieldChange(item.chave, "pass", e.target.value)} placeholder="Senha do e-mail"
                           className="w-full rounded-xl border border-input-border bg-input-bg px-3 py-2 text-xs text-text-main outline-none focus:border-accent" />
                       </div>
@@ -231,12 +231,12 @@ function AdminSuperIntegracoes() {
               <div className="flex gap-2 justify-end mt-5 pt-3 border-t border-border-subtle/30">
                 {item.chave === "evolution_api" && (
                   <button onClick={() => handleTestarConexao(item)} disabled={isTesting}
-                    className="flex items-center justify-center gap-1 rounded-xl bg-input-bg border border-input-border hover:bg-surface-hover text-text-main px-3 py-1.5 text-[11px] font-semibold disabled:opacity-50 transition-colors">
+                    className="flex items-center justify-center gap-1 rounded-xl bg-input-bg border border-input-border hover:bg-surface-hover text-text-main px-3 py-1.5 text-xs font-semibold disabled:opacity-50 transition-colors">
                     {isTesting ? <Loader2 size={13} className="animate-spin" /> : <RefreshCw size={13} />} Testar Instância
                   </button>
                 )}
                 <button onClick={() => handleSalvar(item)} disabled={isSaving}
-                  className="flex items-center justify-center gap-1 rounded-xl bg-accent hover:bg-accent-hover text-accent-fg px-4 py-1.5 text-[11px] font-semibold disabled:opacity-50 transition-all">
+                  className="flex items-center justify-center gap-1 rounded-xl bg-accent hover:bg-accent-hover text-accent-fg px-4 py-1.5 text-xs font-semibold disabled:opacity-50 transition-all">
                   {isSaving ? <Loader2 size={13} className="animate-spin" /> : <Save size={13} />} Salvar Credenciais
                 </button>
               </div>

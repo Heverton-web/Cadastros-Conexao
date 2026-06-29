@@ -54,7 +54,7 @@ export function ModuleDrawer({
             >
               <Globe size={16} />
               Global
-              {selectedModuleKey === undefined && <span className="ml-auto text-[10px] text-accent">Ativo</span>}
+              {selectedModuleKey === undefined && <span className="ml-auto text-xs text-accent">Ativo</span>}
             </button>
           )}
           {modulos.map((mod) => {
@@ -70,7 +70,7 @@ export function ModuleDrawer({
               >
                 <Icon size={16} />
                 {mod.nome}
-                {selectedModuleKey === mod.key && <span className="ml-auto text-[10px] text-accent">Ativo</span>}
+                {selectedModuleKey === mod.key && <span className="ml-auto text-xs text-accent">Ativo</span>}
               </button>
             );
           })}
@@ -79,7 +79,7 @@ export function ModuleDrawer({
         <div className="flex-1 overflow-y-auto px-2 py-3">
           {sections.map((section) => (
             <div key={section.label} className="mb-4 last:mb-0">
-              <p className="text-[10px] font-bold text-text-muted uppercase tracking-wider px-3 mb-2">
+              <p className="text-xs font-bold text-text-muted uppercase tracking-wider px-3 mb-2">
                 {section.label}
               </p>
               <div className="flex flex-col gap-0.5">

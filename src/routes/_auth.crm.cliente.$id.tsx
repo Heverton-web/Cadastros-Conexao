@@ -139,7 +139,7 @@ function TempBadge({ t }: { t: string }) {
     Quente: "text-[var(--color-quente)] border-[var(--color-quente)]",
   };
   return (
-    <span className={`text-[10px] uppercase font-bold px-2 py-1 rounded-full border ${map[t] ?? ""}`}>
+    <span className={`text-xs uppercase font-bold px-2 py-1 rounded-full border ${map[t] ?? ""}`}>
       {t}
     </span>
   );

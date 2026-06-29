@@ -124,7 +124,7 @@ function Carteira() {
                         </span>
                       </div>
                       {c.proxima_data && (
-                        <p className="mt-1 text-[11px] text-muted-foreground">
+                        <p className="mt-1 text-xs text-muted-foreground">
                           Próx: {new Date(c.proxima_data).toLocaleDateString("pt-BR")} ·{" "}
                           {c.proxima_acao}
                         </p>

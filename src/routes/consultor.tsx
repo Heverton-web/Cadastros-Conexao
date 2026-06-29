@@ -166,7 +166,7 @@ function ConsultorPage() {
       <div>
         <div className="flex items-center justify-between mb-3">
           <h2 className="text-sm font-bold text-text-main">{filtroStatus ? STATUS_LABEL[filtroStatus as CadastroStatus] || filtroStatus : "Minhas Solicitações"}</h2>
-          {filtroStatus && <button onClick={() => setFiltroStatus(null)} className="text-[10px] text-accent underline">Limpar filtro</button>}
+          {filtroStatus && <button onClick={() => setFiltroStatus(null)} className="text-xs text-accent underline">Limpar filtro</button>}
         </div>
         {loading ? <div className="flex justify-center py-8"><Loader2 size={20} className="animate-spin text-accent" /></div>
         : cadastros.length === 0 ? <p className="text-center text-sm text-text-muted py-8">Nenhuma solicitação ainda. Crie seu primeiro link!</p>
@@ -187,8 +187,8 @@ function ConsultorPage() {
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-medium text-text-main truncate">{s.lead_nome || "Sem nome"}</p>
                 <div className="flex items-center gap-1.5 flex-wrap mt-0.5">
-                  <span className={`rounded-full px-2 py-0.5 text-[9px] font-medium ${STATUS_COLOR[s.status]}`}>{STATUS_LABEL[s.status]}</span>
-                  <span className={`rounded-full px-2 py-0.5 text-[9px] font-medium ${DOC_STATUS_COLOR[docsStatus[s.id]]}`}>{DOC_STATUS_LABEL[docsStatus[s.id]]}</span>
+                  <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${STATUS_COLOR[s.status]}`}>{STATUS_LABEL[s.status]}</span>
+                  <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${DOC_STATUS_COLOR[docsStatus[s.id]]}`}>{DOC_STATUS_LABEL[docsStatus[s.id]]}</span>
                 </div>
               </div>
               <ArrowRight size={16} className="text-text-muted shrink-0" />
@@ -233,13 +233,13 @@ function ConsultorPage() {
                     placeholder="Número" autoComplete="tel-national" className="w-full rounded-lg border border-input-border bg-input-bg px-3 py-3 text-base text-text-main outline-none focus:border-accent min-h-[44px]" />
                 </div>
                 {numeroCompleto.length > 2 && (
-                  <p className="mb-3 text-[11px] text-text-muted italic">Número configurado: <span className="not-italic font-mono">{numeroCompleto}</span></p>
+                  <p className="mb-3 text-xs text-text-muted italic">Número configurado: <span className="not-italic font-mono">{numeroCompleto}</span></p>
                 )}
               </form>
             ) : (
               <InputField label="E-mail do Lead" value={linkForm.email_lead} onChange={v => setLinkForm(prev => ({ ...prev, email_lead: v }))} placeholder="cliente@email.com" type="email" />
             )}
-            {linkForm.receber_por === "whatsapp" && <p className="mb-4 text-[11px] text-text-muted">O WhatsApp será aberto em uma nova guia.</p>}
+            {linkForm.receber_por === "whatsapp" && <p className="mb-4 text-xs text-text-muted">O WhatsApp será aberto em uma nova guia.</p>}
             <button onClick={gerarLink} disabled={submitting || !linkForm.nome_lead} className="flex w-full items-center justify-center gap-2 rounded-xl bg-accent py-3 text-sm font-medium text-white disabled:opacity-50">
               {submitting ? <Loader2 size={16} className="animate-spin" /> : <Share2 size={16} />} Compartilhar Link
             </button>
@@ -267,7 +267,7 @@ function FiltroCard({ label, value, color, ativo, onClick }: { label: string; va
   return (
     <button onClick={onClick} className={`flex flex-col items-center gap-0.5 rounded-xl p-2 shadow-lg transition active:scale-[0.98] ${ativo ? 'bg-accent/20 ring-2 ring-accent/50' : 'bg-card'}`}>
       <span className={`text-sm sm:text-base font-bold ${color}`}>{value}</span>
-      <span className={`text-[9px] leading-tight ${ativo ? 'text-accent' : 'text-text-muted'}`}>{label}</span>
+      <span className={`text-xs leading-tight ${ativo ? 'text-accent' : 'text-text-muted'}`}>{label}</span>
     </button>
   );
 }

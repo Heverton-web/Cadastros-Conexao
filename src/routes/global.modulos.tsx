@@ -47,11 +47,11 @@ function AdminSuperModulos() {
                 </div>
                 <div>
                   <span className="text-sm font-medium text-text-main">{mod.nome}</span>
-                  <span className="text-[10px] text-text-muted block">{mod.descricao}</span>
+                  <span className="text-xs text-text-muted block">{mod.descricao}</span>
                 </div>
               </div>
               <div className="flex items-center gap-3">
-                <span className="text-[10px] text-text-muted">{mod.ambientes.length} ambientes · {mod.abas.length} abas</span>
+                <span className="text-xs text-text-muted">{mod.ambientes.length} ambientes · {mod.abas.length} abas</span>
                 <ChevronRight size={16} className="text-text-muted group-hover:text-accent transition-colors" />
               </div>
             </Link>

@@ -793,7 +793,7 @@ function PreCadastroPage() {
                   <textarea value={val} onChange={e => onChange(e.target.value)} rows={3}
                     className={`w-full rounded-lg border ${motivoCorrecao ? 'border-orange-500 bg-orange-500/5 focus:border-orange-400' : 'border-input-border bg-input-bg focus:border-accent'} px-4 py-3 text-sm text-text-main outline-none resize-none transition`} />
                   {motivoCorrecao && (
-                    <span className="text-orange-400 text-[10px] mt-1 block font-semibold flex items-center gap-1 animate-pulse">
+                    <span className="text-orange-400 text-xs mt-1 block font-semibold flex items-center gap-1 animate-pulse">
                       <AlertTriangle size={11} /> {motivoCorrecao}
                     </span>
                   )}
@@ -810,7 +810,7 @@ function PreCadastroPage() {
                     {(c.opcoes ?? []).map((op: string) => <option key={op} value={op}>{op}</option>)}
                   </select>
                   {motivoCorrecao && (
-                    <span className="text-orange-400 text-[10px] mt-1 block font-semibold flex items-center gap-1 animate-pulse">
+                    <span className="text-orange-400 text-xs mt-1 block font-semibold flex items-center gap-1 animate-pulse">
                       <AlertTriangle size={11} /> {motivoCorrecao}
                     </span>
                   )}
@@ -839,14 +839,14 @@ function PreCadastroPage() {
                         <div className={`h-4 w-4 rounded border-2 flex-shrink-0 flex items-center justify-center ${
                           selecionados.includes(op) ? "border-accent bg-accent" : "border-input-border"
                         }`}>
-                          {selecionados.includes(op) && <span className="text-white text-[10px]">✓</span>}
+                          {selecionados.includes(op) && <span className="text-white text-xs">✓</span>}
                         </div>
                         {op}
                       </button>
                     ))}
                   </div>
                   {motivoCorrecao && (
-                    <span className="text-orange-400 text-[10px] mt-1 block font-semibold flex items-center gap-1 animate-pulse">
+                    <span className="text-orange-400 text-xs mt-1 block font-semibold flex items-center gap-1 animate-pulse">
                       <AlertTriangle size={11} /> {motivoCorrecao}
                     </span>
                   )}
@@ -1077,7 +1077,7 @@ function Campo({ label, value, onChange, type, placeholder, motivoCorrecao }: {
     <input value={value} onChange={e => onChange(e.target.value)} type={type || "text"} placeholder={placeholder}
       className={`w-full rounded-lg border ${motivoCorrecao ? 'border-orange-500 bg-orange-500/5 focus:border-orange-400' : 'border-input-border bg-input-bg focus:border-accent'} px-4 py-3 text-sm text-text-main outline-none min-h-[44px] placeholder:text-text-muted/40 transition`} />
     {motivoCorrecao && (
-      <span className="text-orange-400 text-[10px] mt-1 block font-semibold flex items-center gap-1 animate-pulse">
+      <span className="text-orange-400 text-xs mt-1 block font-semibold flex items-center gap-1 animate-pulse">
         <AlertTriangle size={11} /> {motivoCorrecao}
       </span>
     )}
@@ -1110,7 +1110,7 @@ function CampoMascarado({ label, value, onChange, mascara, placeholder, motivoCo
       className={`w-full rounded-lg border ${motivoCorrecao ? 'border-orange-500 bg-orange-500/5 focus:border-orange-400' : 'border-input-border bg-input-bg focus:border-accent'} px-4 py-3 text-sm text-text-main outline-none min-h-[44px] placeholder:text-text-muted/40 font-mono tracking-wide transition`}
     />
     {motivoCorrecao && (
-      <span className="text-orange-400 text-[10px] mt-1 block font-semibold flex items-center gap-1 animate-pulse">
+      <span className="text-orange-400 text-xs mt-1 block font-semibold flex items-center gap-1 animate-pulse">
         <AlertTriangle size={11} /> {motivoCorrecao}
       </span>
     )}
@@ -1152,7 +1152,7 @@ function DocUpload({ label, tipo, cadastroId, obrigatorio, docStatus, docComenta
     <p className="mb-1 text-xs font-medium text-text-muted">
       {label}
       {obrigatorio && <span className="text-accent ml-0.5">*</span>}
-      {isOk && <span className="text-green-400 ml-2 text-[10px] font-bold uppercase tracking-wider">(Aprovado)</span>}
+      {isOk && <span className="text-green-400 ml-2 text-xs font-bold uppercase tracking-wider">(Aprovado)</span>}
     </p>
     <label className={`flex items-center gap-2 rounded-lg border border-dashed px-4 py-3 transition-colors ${
       isOk ? "border-green-500/30 bg-green-500/5 cursor-not-allowed" :
@@ -1164,11 +1164,11 @@ function DocUpload({ label, tipo, cadastroId, obrigatorio, docStatus, docComenta
         {nome || "Clique para anexar"}
       </span>
       {submitting && <Loader2 size={14} className="animate-spin text-accent" />}
-      {isOk && <span className="text-[10px] text-green-400 font-medium">✓</span>}
+      {isOk && <span className="text-xs text-green-400 font-medium">✓</span>}
       {!isOk && <input type="file" accept=".jpeg,.jpg,.png,.pdf" onChange={handleFile} className="hidden" />}
     </label>
     {needsCorrection && docComentario && (
-      <span className="text-orange-400 text-[10px] mt-1 block font-semibold flex items-center gap-1 animate-pulse">
+      <span className="text-orange-400 text-xs mt-1 block font-semibold flex items-center gap-1 animate-pulse">
         <AlertTriangle size={11} /> Ajuste necessário: {docComentario}
       </span>
     )}

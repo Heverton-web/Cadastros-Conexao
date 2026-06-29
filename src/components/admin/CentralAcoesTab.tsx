@@ -767,10 +767,10 @@ export function CentralAcoesTab({ empresaId }: { empresaId?: string } = {}) {
         {/* Assistente de Tabelas Dinâmico */}
         {Object.keys(esquemaTabelas).length > 0 && (
           <div className="flex flex-col gap-2">
-            <h4 className="text-[11px] font-bold text-accent uppercase tracking-wider flex items-center gap-1.5 mb-1">
+            <h4 className="text-xs font-bold text-accent uppercase tracking-wider flex items-center gap-1.5 mb-1">
               <Info size={14}/> Assistente de Colunas do Banco de Dados
             </h4>
-            <p className="text-[10px] text-text-muted mb-2">Selecione uma tabela e coluna para copiar como variável de banco de dados.</p>
+            <p className="text-xs text-text-muted mb-2">Selecione uma tabela e coluna para copiar como variável de banco de dados.</p>
             <div className="flex flex-col sm:flex-row gap-2.5 items-end sm:items-center">
               <div className="flex-1 flex gap-2 w-full">
                 {/* Select Tabela */}
@@ -783,7 +783,7 @@ export function CentralAcoesTab({ empresaId }: { empresaId?: string } = {}) {
                       setTabelaSelecionada(tab);
                       setColunaSelecionada(esquemaTabelas[tab]?.[0] || "");
                     }}
-                    className="w-full rounded-lg border border-input-border bg-bg-dark px-2 py-1.5 text-[10px] text-text-main outline-none focus:border-accent"
+                    className="w-full rounded-lg border border-input-border bg-bg-dark px-2 py-1.5 text-xs text-text-main outline-none focus:border-accent"
                   >
                     {Object.keys(esquemaTabelas).map(t => (
                       <option key={t} value={t} className="bg-bg-dark text-text-main">{t}</option>
@@ -797,7 +797,7 @@ export function CentralAcoesTab({ empresaId }: { empresaId?: string } = {}) {
                   <select 
                     value={colunaSelecionada}
                     onChange={e => setColunaSelecionada(e.target.value)}
-                    className="w-full rounded-lg border border-input-border bg-bg-dark px-2 py-1.5 text-[10px] text-text-main outline-none focus:border-accent"
+                    className="w-full rounded-lg border border-input-border bg-bg-dark px-2 py-1.5 text-xs text-text-main outline-none focus:border-accent"
                   >
                     {(esquemaTabelas[tabelaSelecionada] || []).map(c => (
                       <option key={c} value={c} className="bg-bg-dark text-text-main">{c}</option>
@@ -813,12 +813,12 @@ export function CentralAcoesTab({ empresaId }: { empresaId?: string } = {}) {
                     copyToClipboard(`${tabelaSelecionada}.${colunaSelecionada}`);
                   }
                 }}
-                className="w-full sm:w-auto px-4 py-1.5 bg-accent text-white hover:bg-accent/90 rounded-lg text-[10px] font-bold transition-colors flex items-center justify-center gap-1.5 self-stretch sm:self-auto sm:mt-4 shrink-0"
+                className="w-full sm:w-auto px-4 py-1.5 bg-accent text-white hover:bg-accent/90 rounded-lg text-xs font-bold transition-colors flex items-center justify-center gap-1.5 self-stretch sm:self-auto sm:mt-4 shrink-0"
               >
                 <Copy size={12}/> Copiar Variável
               </button>
             </div>
-            <p className="text-[9px] text-text-muted font-mono bg-bg-dark/30 p-1.5 rounded-lg border border-input-border/30 self-start">
+            <p className="text-xs text-text-muted font-mono bg-bg-dark/30 p-1.5 rounded-lg border border-input-border/30 self-start">
               Exemplo de uso: <span className="text-accent font-semibold">{`{{${tabelaSelecionada || "tabela"}.${colunaSelecionada || "coluna"}}}`}</span>
             </p>
           </div>
@@ -864,7 +864,7 @@ export function CentralAcoesTab({ empresaId }: { empresaId?: string } = {}) {
         <div className="flex flex-col sm:flex-row gap-3 w-full xl:w-auto">
           {canSelectEmpresa && (
             <div className="flex flex-col gap-1 w-full sm:w-64 shrink-0">
-              <label className="text-[10px] font-bold text-text-muted uppercase tracking-wider">Empresa</label>
+              <label className="text-xs font-bold text-text-muted uppercase tracking-wider">Empresa</label>
               <select
                 value={activeEmpresaId}
                 onChange={e => setActiveEmpresaId(e.target.value)}
@@ -881,7 +881,7 @@ export function CentralAcoesTab({ empresaId }: { empresaId?: string } = {}) {
           )}
           
           <div className="flex flex-col gap-1 w-full sm:w-64 shrink-0">
-            <label className="text-[10px] font-bold text-text-muted uppercase tracking-wider">Módulo</label>
+            <label className="text-xs font-bold text-text-muted uppercase tracking-wider">Módulo</label>
             <select
               value={activeModuleKey}
               onChange={e => setActiveModuleKey(e.target.value)}
@@ -946,7 +946,7 @@ export function CentralAcoesTab({ empresaId }: { empresaId?: string } = {}) {
               {activeItem.type === "notification" && (
                 <div className="px-5 pt-4 pb-2 border-b border-input-border bg-bg-dark/30 flex flex-col sm:flex-row gap-3">
                   <div className="w-full">
-                    <label className="text-[10px] font-bold text-text-muted mb-1 block uppercase">Gatilho do Evento</label>
+                    <label className="text-xs font-bold text-text-muted mb-1 block uppercase">Gatilho do Evento</label>
                     <select 
                       value={notifEvento} 
                       onChange={e => setNotifEvento(e.target.value)} 
@@ -971,7 +971,7 @@ export function CentralAcoesTab({ empresaId }: { empresaId?: string } = {}) {
               {/* Seleção de API Existente ou Personalizado */}
               {activeItem.type === "api_call" && (
                 <div className="px-5 pt-4 pb-2 border-b border-input-border bg-bg-dark/25 flex flex-col gap-1.5">
-                  <label className="text-[10px] font-bold text-text-muted uppercase">Modelo de Integração API</label>
+                  <label className="text-xs font-bold text-text-muted uppercase">Modelo de Integração API</label>
                   <select 
                     onChange={e => {
                       const selectedId = e.target.value;
@@ -1328,7 +1328,7 @@ export function CentralAcoesTab({ empresaId }: { empresaId?: string } = {}) {
                   </div>
                   {showCurlImporter && (
                     <div className="flex flex-col gap-2 bg-card p-3 rounded-lg border border-input-border/60">
-                      <p className="text-[10px] text-text-muted">{"Cole o comando cURL completo. Ex: curl -X POST https://api.exemplo.com -H \"Authorization: Bearer token\" -d '{\"data\": \"exemplo\"}'"}</p>
+                      <p className="text-xs text-text-muted">{"Cole o comando cURL completo. Ex: curl -X POST https://api.exemplo.com -H \"Authorization: Bearer token\" -d '{\"data\": \"exemplo\"}'"}</p>
                       <textarea
                         value={curlInput}
                         onChange={e => setCurlInput(e.target.value)}
@@ -1398,7 +1398,7 @@ export function CentralAcoesTab({ empresaId }: { empresaId?: string } = {}) {
                 {editorTab === "headers" && activeItem.type !== "notification" && (
                   <div className="max-w-3xl flex flex-col gap-4">
                     <div>
-                      <p className="text-[11px] text-text-muted mb-4">Envie cabeçalhos HTTP na requisição. Suporta variáveis `{"{{var}}"}`.</p>
+                      <p className="text-xs text-text-muted mb-4">Envie cabeçalhos HTTP na requisição. Suporta variáveis `{"{{var}}"}`.</p>
                       <KVEditor data={apiHeaders} onChange={v => setApiHeaders(v)} />
                     </div>
                     <DicionarioVariaveis evento={apiEvento}/>
@@ -1408,7 +1408,7 @@ export function CentralAcoesTab({ empresaId }: { empresaId?: string } = {}) {
                 {editorTab === "query" && activeItem.type !== "notification" && (
                   <div className="max-w-3xl flex flex-col gap-4">
                     <div>
-                      <p className="text-[11px] text-text-muted mb-4">Parâmetros anexados ao final da URL (ex: ?origem=app). Suporta variáveis `{"{{var}}"}`.</p>
+                      <p className="text-xs text-text-muted mb-4">Parâmetros anexados ao final da URL (ex: ?origem=app). Suporta variáveis `{"{{var}}"}`.</p>
                       <KVEditor data={apiQuery} onChange={v => setApiQuery(v)} />
                     </div>
                     <DicionarioVariaveis evento={apiEvento}/>
@@ -1418,11 +1418,11 @@ export function CentralAcoesTab({ empresaId }: { empresaId?: string } = {}) {
                 {editorTab === "body" && activeItem.type !== "notification" && (
                   <div className="flex flex-col h-full max-w-4xl min-h-[250px] gap-4">
                     <div className="flex items-center justify-between gap-4">
-                      <p className="text-[11px] text-text-muted">Defina o corpo JSON da chamada. Use `{"{{campo}}"}` para interpolar informações dinâmicas do lead.</p>
+                      <p className="text-xs text-text-muted">Defina o corpo JSON da chamada. Use `{"{{campo}}"}` para interpolar informações dinâmicas do lead.</p>
                       {apiEvento && (
                         <button 
                           onClick={() => setConfirmPayloadModal(true)}
-                          className="px-2.5 py-1 text-[9px] font-extrabold bg-accent/10 hover:bg-accent text-accent hover:text-white rounded-lg transition-all shrink-0"
+                          className="px-2.5 py-1 text-xs font-extrabold bg-accent/10 hover:bg-accent text-accent hover:text-white rounded-lg transition-all shrink-0"
                         >
                           Carregar Payload Padrão
                         </button>
@@ -1481,7 +1481,7 @@ export function CentralAcoesTab({ empresaId }: { empresaId?: string } = {}) {
                   <div className="flex flex-col lg:flex-row gap-6 h-full min-h-[350px]">
                     <div className="flex-1 flex flex-col w-full lg:max-w-xs">
                       <h3 className="text-xs font-bold text-text-main mb-2">Variáveis de Teste (Mock)</h3>
-                      <p className="text-[10px] text-text-muted mb-4">JSON contendo os valores para testar a injeção nos templates e parâmetros.</p>
+                      <p className="text-xs text-text-muted mb-4">JSON contendo os valores para testar a injeção nos templates e parâmetros.</p>
                       <textarea 
                         value={testVars} 
                         onChange={e => setTestVars(e.target.value)}
@@ -1495,14 +1495,14 @@ export function CentralAcoesTab({ empresaId }: { empresaId?: string } = {}) {
                       >
                         {testing ? <Loader2 size={14} className="animate-spin"/> : <Play size={14}/>} Testar Ação
                       </button>
-                      {activeItem.id.startsWith("new-") && <p className="text-[9px] text-center text-red-400 mt-2">Salve antes de poder testar.</p>}
+                      {activeItem.id.startsWith("new-") && <p className="text-xs text-center text-red-400 mt-2">Salve antes de poder testar.</p>}
                     </div>
 
                     <div className="flex-1 flex flex-col bg-bg-dark rounded-lg border border-input-border overflow-hidden">
                       <div className="bg-input-bg p-3 border-b border-input-border flex justify-between items-center">
                         <h3 className="text-xs font-bold text-text-main flex items-center gap-1"><Code size={14}/> Retorno</h3>
                         {testResult && (
-                          <div className="flex gap-3 text-[10px] font-mono">
+                          <div className="flex gap-3 text-xs font-mono">
                             <span className={testResult.status >= 200 && testResult.status < 300 ? "text-green-400" : "text-red-400"}>Status: {testResult.status}</span>
                             <span className="text-accent">Duração: {testResult.duration}ms</span>
                           </div>
@@ -1540,7 +1540,7 @@ export function CentralAcoesTab({ empresaId }: { empresaId?: string } = {}) {
             </div>
 
             <div className="flex flex-col gap-1 w-full md:w-72 shrink-0">
-              <label className="text-[10px] font-bold text-text-muted uppercase">Filtrar por Gatilho</label>
+              <label className="text-xs font-bold text-text-muted uppercase">Filtrar por Gatilho</label>
               <select 
                 value={filtroGatilho}
                 onChange={e => setFiltroGatilho(e.target.value)}
@@ -1588,27 +1588,27 @@ export function CentralAcoesTab({ empresaId }: { empresaId?: string } = {}) {
                       <h3 className="text-xs font-bold text-text-main flex items-center gap-1.5">
                         {ev.label}
                       </h3>
-                      <span className="text-[10px] text-text-muted font-mono">{ev.value} ({ev.tipo === "status_change" ? "Mudança de Status" : "Ação de Botão"})</span>
+                      <span className="text-xs text-text-muted font-mono">{ev.value} ({ev.tipo === "status_change" ? "Mudança de Status" : "Ação de Botão"})</span>
                     </div>
 
                     {/* Botões rápidos de adicionar ação */}
                     <div className="flex flex-wrap gap-1.5 items-center">
-                      <span className="text-[9px] font-bold text-text-muted mr-1">ADICIONAR:</span>
+                      <span className="text-xs font-bold text-text-muted mr-1">ADICIONAR:</span>
                       <button 
                         onClick={() => adicionarAcaoInline(ev.value, ev.tipo, "notification")}
-                        className="px-2 py-1 bg-accent/10 hover:bg-accent text-accent hover:text-white rounded-md text-[9px] font-bold transition-all flex items-center gap-1"
+                        className="px-2 py-1 bg-accent/10 hover:bg-accent text-accent hover:text-white rounded-md text-xs font-bold transition-all flex items-center gap-1"
                       >
                         <Plus size={10}/> Notificação
                       </button>
                       <button 
                         onClick={() => adicionarAcaoInline(ev.value, ev.tipo, "webhook")}
-                        className="px-2 py-1 bg-accent/10 hover:bg-accent text-accent hover:text-white rounded-md text-[9px] font-bold transition-all flex items-center gap-1"
+                        className="px-2 py-1 bg-accent/10 hover:bg-accent text-accent hover:text-white rounded-md text-xs font-bold transition-all flex items-center gap-1"
                       >
                         <Plus size={10}/> Webhook
                       </button>
                       <button 
                         onClick={() => adicionarAcaoInline(ev.value, ev.tipo, "api_call")}
-                        className="px-2 py-1 bg-accent/10 hover:bg-accent text-accent hover:text-white rounded-md text-[9px] font-bold transition-all flex items-center gap-1"
+                        className="px-2 py-1 bg-accent/10 hover:bg-accent text-accent hover:text-white rounded-md text-xs font-bold transition-all flex items-center gap-1"
                       >
                         <Plus size={10}/> API
                       </button>
@@ -1625,12 +1625,12 @@ export function CentralAcoesTab({ empresaId }: { empresaId?: string } = {}) {
                       
                       <div className="rounded-xl border border-accent/20 bg-accent/5 p-3.5">
                         <div className="flex items-center gap-1.5 justify-between mb-2">
-                          <span className="text-[10px] font-bold text-accent uppercase tracking-wider">Passo 1: Ação Nativa do Sistema</span>
+                          <span className="text-xs font-bold text-accent uppercase tracking-wider">Passo 1: Ação Nativa do Sistema</span>
                           <span className="px-2 py-0.5 rounded-full bg-accent/20 text-[8px] font-bold text-accent">Fixo</span>
                         </div>
                         <ul className="list-disc list-inside space-y-1">
                           {acoesNativas.map((nat, i) => (
-                            <li key={i} className="text-[10px] text-text-muted leading-relaxed font-medium">
+                            <li key={i} className="text-xs text-text-muted leading-relaxed font-medium">
                               {nat}
                             </li>
                           ))}
@@ -1658,10 +1658,10 @@ export function CentralAcoesTab({ empresaId }: { empresaId?: string } = {}) {
                               </div>
                               <div className="min-w-0">
                                 <div className="flex items-center gap-2">
-                                  <span className="text-[10px] font-bold text-text-main">Passo {numPasso}: {a.name}</span>
+                                  <span className="text-xs font-bold text-text-main">Passo {numPasso}: {a.name}</span>
                                   <span className="text-[8px] font-bold px-1.5 py-0.5 rounded bg-bg-dark text-text-muted border border-input-border/30">{labelTipo}</span>
                                 </div>
-                                <p className="text-[9px] text-text-muted truncate max-w-[300px] mt-0.5">
+                                <p className="text-xs text-text-muted truncate max-w-[300px] mt-0.5">
                                   {a.type === "notification" ? `Mensagem: "${a.raw.corpo_template}"` : `URL: ${a.raw.url}`}
                                 </p>
                               </div>
@@ -1705,7 +1705,7 @@ export function CentralAcoesTab({ empresaId }: { empresaId?: string } = {}) {
                                   selecionar(a);
                                   setEditorModalOpen(true);
                                 }}
-                                className="px-2.5 py-1 bg-input-bg border border-input-border hover:border-accent rounded-lg text-[9px] font-bold text-text-main hover:text-accent transition-colors"
+                                className="px-2.5 py-1 bg-input-bg border border-input-border hover:border-accent rounded-lg text-xs font-bold text-text-main hover:text-accent transition-colors"
                               >
                                 Configurar
                               </button>
@@ -1718,7 +1718,7 @@ export function CentralAcoesTab({ empresaId }: { empresaId?: string } = {}) {
                     {acoesVinculadas.length === 0 && (
                       <div className="relative py-1">
                         <span className="absolute -left-[30px] top-2.5 w-4 h-4 rounded-full bg-card border border-input-border border-dashed flex items-center justify-center text-[8px] font-extrabold text-text-muted">+</span>
-                        <p className="text-[10px] text-text-muted italic ml-2 mt-1">Nenhuma etapa customizada configurada para este gatilho.</p>
+                        <p className="text-xs text-text-muted italic ml-2 mt-1">Nenhuma etapa customizada configurada para este gatilho.</p>
                       </div>
                     )}
                   </div>
@@ -1751,17 +1751,17 @@ export function CentralAcoesTab({ empresaId }: { empresaId?: string } = {}) {
                     <div className="flex items-center gap-2">
                       <span className={`h-2 w-2 rounded-full ${log.sucesso ? "bg-green-400" : "bg-red-400"}`} />
                       <span className="text-xs font-bold text-text-main">{log.evento}</span>
-                      <span className={`text-[10px] font-mono font-bold px-1.5 py-0.5 rounded ${log.status_code && log.status_code < 300 ? "bg-green-500/10 text-green-400" : "bg-red-500/10 text-red-400"}`}>
+                      <span className={`text-xs font-mono font-bold px-1.5 py-0.5 rounded ${log.status_code && log.status_code < 300 ? "bg-green-500/10 text-green-400" : "bg-red-500/10 text-red-400"}`}>
                         Status: {log.status_code || "FALHA"}
                       </span>
                     </div>
-                    <span className="text-[10px] text-text-muted font-mono">{new Date(log.created_at).toLocaleString("pt-BR")}</span>
+                    <span className="text-xs text-text-muted font-mono">{new Date(log.created_at).toLocaleString("pt-BR")}</span>
                   </div>
-                  <div className="mt-2 text-[10px] text-text-muted break-all font-mono">
+                  <div className="mt-2 text-xs text-text-muted break-all font-mono">
                     <span className="font-bold text-text-main">URL:</span> {log.url || "N/A"}
                   </div>
                   {log.resposta && (
-                    <div className="mt-1.5 bg-bg-dark p-2 rounded text-[10px] text-text-muted font-mono whitespace-pre-wrap max-h-24 overflow-y-auto">
+                    <div className="mt-1.5 bg-bg-dark p-2 rounded text-xs text-text-muted font-mono whitespace-pre-wrap max-h-24 overflow-y-auto">
                       {log.resposta}
                     </div>
                   )}

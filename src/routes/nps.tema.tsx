@@ -76,7 +76,7 @@ function TemaPreview({
         {/* Body */}
         <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
           <div className="mb-6 flex flex-col items-center gap-1">
-            <span className="text-[10px] uppercase tracking-widest text-[var(--nps-step-text)] font-semibold">
+            <span className="text-xs uppercase tracking-widest text-[var(--nps-step-text)] font-semibold">
               Etapa 1 de 3
             </span>
             <h1 className="text-xl md:text-2xl font-semibold text-[var(--nps-question-text)] text-center tracking-tight mt-2">
@@ -105,7 +105,7 @@ function TemaPreview({
                 );
               })}
             </div>
-            <div className="flex justify-between text-[11px] text-[var(--nps-step-text)] mt-4 px-1">
+            <div className="flex justify-between text-xs text-[var(--nps-step-text)] mt-4 px-1">
               <span>Nada provável</span>
               <span>Extremamente provável</span>
             </div>
@@ -369,7 +369,7 @@ function NpsTemaPage() {
           {/* Logo do cabeçalho */}
           <Card className="border border-border/40 bg-card/60 backdrop-blur-sm shadow-sm rounded-xl overflow-hidden">
             <CardHeader className="py-2.5 px-4 bg-muted/20 border-b border-border/20">
-              <CardTitle className="text-[10px] font-bold text-foreground/80 uppercase tracking-wider">
+              <CardTitle className="text-xs font-bold text-foreground/80 uppercase tracking-wider">
                 Logo do Cabeçalho da Pesquisa
               </CardTitle>
             </CardHeader>
@@ -383,7 +383,7 @@ function NpsTemaPage() {
                   }
                 </div>
                 <div className="flex-1 min-w-0 space-y-2">
-                  <p className="text-[11px] text-muted-foreground leading-relaxed">
+                  <p className="text-xs text-muted-foreground leading-relaxed">
                     Esta imagem será exibida no cabeçalho da pesquisa. Configure as opções abaixo.
                   </p>
                   <div className="flex items-center gap-2">
@@ -411,7 +411,7 @@ function NpsTemaPage() {
               <div className="mt-4 pt-4 border-t border-border/20 grid grid-cols-2 gap-4">
                 {/* Tamanho do logo */}
                 <div className="space-y-1.5">
-                  <label className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider block">
+                  <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
                     Altura do Logo (px)
                   </label>
                   <div className="flex items-center gap-2">
@@ -424,7 +424,7 @@ function NpsTemaPage() {
                       onChange={(e) => handleColorChange("logo_height", String(Math.max(16, Math.min(120, Number(e.target.value)))))}
                       className="w-full h-8 px-2 py-1 bg-muted/40 border border-border/50 rounded-lg text-foreground text-xs font-mono focus:outline-none focus:border-primary/50 transition-colors"
                     />
-                    <span className="text-[10px] text-muted-foreground shrink-0">px</span>
+                    <span className="text-xs text-muted-foreground shrink-0">px</span>
                   </div>
                   <input
                     type="range"
@@ -439,7 +439,7 @@ function NpsTemaPage() {
 
                 {/* Mostrar nome da empresa */}
                 <div className="space-y-1.5">
-                  <label className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider block">
+                  <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
                     Nome da Empresa
                   </label>
                   <label className="flex items-center gap-2 p-2.5 rounded-lg bg-muted/30 border border-border/40 cursor-pointer hover:bg-muted/50 transition-colors">
@@ -450,15 +450,15 @@ function NpsTemaPage() {
                       className="w-3.5 h-3.5 rounded border-border accent-primary cursor-pointer"
                     />
                     <div>
-                      <span className="text-[11px] font-medium text-foreground block">Exibir nome</span>
-                      <span className="text-[10px] text-muted-foreground">ao lado do logo</span>
+                      <span className="text-xs font-medium text-foreground block">Exibir nome</span>
+                      <span className="text-xs text-muted-foreground">ao lado do logo</span>
                     </div>
                   </label>
                 </div>
 
                 {/* Alinhamento do cabeçalho */}
                 <div className="space-y-1.5">
-                  <label className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider block">
+                  <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
                     Alinhamento do Cabeçalho
                   </label>
                   <div className="flex gap-1.5">
@@ -485,14 +485,14 @@ function NpsTemaPage() {
           {/* Plano de fundo */}
           <Card className="border border-border/40 bg-card/60 backdrop-blur-sm shadow-sm rounded-xl overflow-hidden">
             <CardHeader className="py-2.5 px-4 bg-muted/20 border-b border-border/20">
-              <CardTitle className="text-[10px] font-bold text-foreground/80 uppercase tracking-wider">
+              <CardTitle className="text-xs font-bold text-foreground/80 uppercase tracking-wider">
                 Plano de Fundo
               </CardTitle>
             </CardHeader>
             <CardContent className="p-4 space-y-4">
               {/* Tipo de fundo */}
               <div className="space-y-1.5">
-                <label className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider block">
+                <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
                   Tipo de Fundo
                 </label>
                 <div className="flex gap-1.5">
@@ -519,7 +519,7 @@ function NpsTemaPage() {
               {/* Cores */}
               {colors.bg_type === "solid" ? (
                 <div className="space-y-1.5">
-                  <label className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider block">
+                  <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
                     Cor de Fundo
                   </label>
                   <div className="flex items-center gap-2">
@@ -542,7 +542,7 @@ function NpsTemaPage() {
               ) : (
                 <>
                   <div className="space-y-1.5">
-                    <label className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider block">
+                    <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
                       Cor 1
                     </label>
                     <div className="flex items-center gap-2">
@@ -564,7 +564,7 @@ function NpsTemaPage() {
                   </div>
 
                   <div className="space-y-1.5">
-                    <label className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider block">
+                    <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
                       Cor 2
                     </label>
                     <div className="flex items-center gap-2">
@@ -587,7 +587,7 @@ function NpsTemaPage() {
 
                   {colors.bg_type === "gradient-3" && (
                     <div className="space-y-1.5">
-                      <label className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider block">
+                      <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
                         Cor 3
                       </label>
                       <div className="flex items-center gap-2">
@@ -610,7 +610,7 @@ function NpsTemaPage() {
                   )}
 
                   <div className="space-y-1.5">
-                    <label className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider block">
+                    <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
                       Angulo: {colors.bg_gradient_angle ?? "180"}°
                     </label>
                     <input
@@ -631,7 +631,7 @@ function NpsTemaPage() {
                 <div className="flex items-center justify-between mb-3">
                   <div>
                     <p className="text-xs font-semibold text-foreground">Blobs decorativos</p>
-                    <p className="text-[10px] text-muted-foreground">Manchas suaves coloridas sobre o fundo</p>
+                    <p className="text-xs text-muted-foreground">Manchas suaves coloridas sobre o fundo</p>
                   </div>
                   <label className="relative inline-flex items-center cursor-pointer">
                     <input
@@ -686,7 +686,7 @@ function NpsTemaPage() {
                                   newBlobs[idx] = { ...blob, position: pos.value as BlobPosition };
                                   handleColorChange("bg_blobs", JSON.stringify(newBlobs));
                                 }}
-                                className={`px-1.5 py-1.5 rounded text-[9px] font-medium transition-all ${
+                                className={`px-1.5 py-1.5 rounded text-xs font-medium transition-all ${
                                   blob.position === pos.value
                                     ? "bg-accent text-accent-fg"
                                     : "bg-muted/30 text-muted-foreground border border-border/30 hover:bg-muted/50"
@@ -700,7 +700,7 @@ function NpsTemaPage() {
                           {/* Tamanho + Opacidade */}
                           <div className="grid grid-cols-2 gap-3">
                             <div className="space-y-1">
-                              <label className="text-[9px] text-muted-foreground font-semibold block">
+                              <label className="text-xs text-muted-foreground font-semibold block">
                                 Tamanho: {blob.size}px
                               </label>
                               <input
@@ -718,7 +718,7 @@ function NpsTemaPage() {
                               />
                             </div>
                             <div className="space-y-1">
-                              <label className="text-[9px] text-muted-foreground font-semibold block">
+                              <label className="text-xs text-muted-foreground font-semibold block">
                                 Opacidade: {blob.opacity}%
                               </label>
                               <input
@@ -772,7 +772,7 @@ function NpsTemaPage() {
             />
             <div>
               <span className="text-xs font-semibold text-foreground">Sem bordas</span>
-              <p className="text-[10px] text-muted-foreground">Remove todas as bordas do card, opções e modal</p>
+              <p className="text-xs text-muted-foreground">Remove todas as bordas do card, opções e modal</p>
             </div>
           </label>
 
@@ -782,7 +782,7 @@ function NpsTemaPage() {
                 <TabsTrigger
                   key={tab.id}
                   value={tab.id}
-                  className="rounded-lg text-[10px] md:text-xs font-bold py-1.5 transition-all data-[state=active]:bg-card data-[state=active]:text-foreground data-[state=active]:shadow-sm"
+                  className="rounded-lg text-xs md:text-xs font-bold py-1.5 transition-all data-[state=active]:bg-card data-[state=active]:text-foreground data-[state=active]:shadow-sm"
                 >
                   {tab.label}
                 </TabsTrigger>
@@ -794,7 +794,7 @@ function NpsTemaPage() {
                 {SURVEY_COLOR_GROUPS.filter((g) => tab.groups.includes(g.group)).map((group) => (
                   <Card key={group.group} className="border border-border/40 bg-card/60 backdrop-blur-sm shadow-sm rounded-xl overflow-hidden">
                     <CardHeader className="py-2.5 px-4 bg-muted/20 border-b border-border/20">
-                      <CardTitle className="text-[10px] font-bold text-foreground/80 uppercase tracking-wider">
+                      <CardTitle className="text-xs font-bold text-foreground/80 uppercase tracking-wider">
                         {group.label}
                       </CardTitle>
                     </CardHeader>
@@ -802,7 +802,7 @@ function NpsTemaPage() {
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-3.5">
                         {group.colors.map((def) => (
                           <div key={def.key} className="space-y-1">
-                            <label className="text-[10px] text-muted-foreground font-semibold block truncate" title={def.label}>
+                            <label className="text-xs text-muted-foreground font-semibold block truncate" title={def.label}>
                               {def.label}
                             </label>
                             <div className="flex items-center gap-2">
@@ -842,7 +842,7 @@ function NpsTemaPage() {
                 <span className="w-3 h-3 rounded-full bg-yellow-500/80" />
                 <span className="w-3 h-3 rounded-full bg-green-500/80" />
               </div>
-              <span className="text-[10px] text-muted-foreground/70 font-mono">pesquisa_nps_preview.html</span>
+              <span className="text-xs text-muted-foreground/70 font-mono">pesquisa_nps_preview.html</span>
               <div className="w-12" /> {/* spacer */}
             </div>
             

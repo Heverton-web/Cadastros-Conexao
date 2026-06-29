@@ -93,13 +93,13 @@ function AdminSuperEmpresas() {
               <Building2 size={20} className="text-accent" />
               <div>
                 <span className="text-sm font-medium text-text-main">{emp.nome}</span>
-                <span className="text-[10px] text-text-muted block">
+                <span className="text-xs text-text-muted block">
                   {emp.slug} {emp.cnpj ? `| ${emp.cnpj}` : ""}
                 </span>
               </div>
             </div>
             <div className="flex items-center gap-2">
-              <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-medium ${emp.ativo ? "bg-success-bg text-success" : "bg-error-bg text-error"}`}>
+              <span className={`text-xs px-1.5 py-0.5 rounded-full font-medium ${emp.ativo ? "bg-success-bg text-success" : "bg-error-bg text-error"}`}>
                 {emp.ativo ? "Ativo" : "Inativo"}
               </span>
               <Link to="/global/empresas/$id" params={{ id: emp.id }} className="p-1.5 rounded-lg text-text-muted hover:text-accent hover:bg-surface-hover transition-colors" title="Editar">
@@ -337,7 +337,7 @@ function CriarEmpresaModal({ onClose, onCreated }: { onClose: () => void; onCrea
             <div className="grid grid-cols-2 gap-3">
               {Object.entries(cores).map(([key, value]) => (
                 <div key={key}>
-                  <label className="text-[10px] text-text-muted font-medium block mb-1">{key}</label>
+                  <label className="text-xs text-text-muted font-medium block mb-1">{key}</label>
                   <div className="flex items-center gap-2">
                     <input type="color" value={value} onChange={(e) => setCores((p) => ({ ...p, [key]: e.target.value }))}
                       className="w-8 h-8 rounded border border-input-border cursor-pointer bg-transparent" />
@@ -359,7 +359,7 @@ function CriarEmpresaModal({ onClose, onCreated }: { onClose: () => void; onCrea
 
           {/* Branding */}
           <CollapsibleSection icon={Image} title="Branding (Logos e Favicon)" open={sections.branding} onToggle={() => toggleSection("branding")}>
-            <p className="text-[10px] text-text-muted mb-3">Cole URLs externas para as imagens. Upload pode ser feito depois na edição da empresa.</p>
+            <p className="text-xs text-text-muted mb-3">Cole URLs externas para as imagens. Upload pode ser feito depois na edição da empresa.</p>
             <Field label="Logo da Página de Login (URL)" value={form.logo_index_url} onChange={h("logo_index_url")} />
             <Field label="Logo da Aplicação / Header (URL)" value={form.logo_app_url} onChange={h("logo_app_url")} />
             <Field label="Favicon (URL)" value={form.favicon_url} onChange={h("favicon_url")} />
@@ -367,7 +367,7 @@ function CriarEmpresaModal({ onClose, onCreated }: { onClose: () => void; onCrea
 
           {/* Módulos Ativos */}
           <CollapsibleSection icon={ToggleRight} title="Módulos da Empresa" open={sections.modulos} onToggle={() => toggleSection("modulos")}>
-            <p className="text-[10px] text-text-muted mb-3">Selecione os módulos que estarão disponíveis para esta empresa.</p>
+            <p className="text-xs text-text-muted mb-3">Selecione os módulos que estarão disponíveis para esta empresa.</p>
             <div className="space-y-1">
               {registeredModules.map((mod) => {
                 const ativo = modulosAtivos[mod.key] ?? false;
@@ -377,7 +377,7 @@ function CriarEmpresaModal({ onClose, onCreated }: { onClose: () => void; onCrea
                       <mod.icon size={16} className={ativo ? "text-accent" : "text-text-muted"} />
                       <div>
                         <span className="text-sm font-medium text-text-main">{mod.nome}</span>
-                        <span className="text-[10px] text-text-muted block">{mod.descricao}</span>
+                        <span className="text-xs text-text-muted block">{mod.descricao}</span>
                       </div>
                     </div>
                     <button type="button" onClick={() => setModulosAtivos((p) => ({ ...p, [mod.key]: !ativo }))}
@@ -394,15 +394,15 @@ function CriarEmpresaModal({ onClose, onCreated }: { onClose: () => void; onCrea
 
           {/* Credencial Admin */}
           <CollapsibleSection icon={Shield} title="Credencial de Acesso do Admin" open={sections.admin} onToggle={() => toggleSection("admin")}>
-            <p className="text-[10px] text-text-muted mb-3">Crie o usuário administrador da empresa. Ele receberá acesso ao sistema com as permissões definidas abaixo.</p>
+            <p className="text-xs text-text-muted mb-3">Crie o usuário administrador da empresa. Ele receberá acesso ao sistema com as permissões definidas abaixo.</p>
             <Grid>
               <Field label="Nome Completo" value={form.admin_nome} onChange={h("admin_nome")} />
               <Field label="Celular / WhatsApp" value={form.admin_celular} onChange={h("admin_celular")} />
               <Field label="Email" value={form.admin_email} onChange={h("admin_email")} type="email" />
-              <div className="flex flex-col gap-1.5"><label className="text-[10px] font-bold text-text-muted uppercase tracking-wider mb-1 block">Senha</label><PasswordInput value={form.admin_senha} onChange={(e) => h("admin_senha")(e.target.value)} className="w-full px-3 py-2 rounded-lg bg-card border border-input-border text-text-main text-sm outline-none focus:border-accent" /></div>
+              <div className="flex flex-col gap-1.5"><label className="text-xs font-bold text-text-muted uppercase tracking-wider mb-1 block">Senha</label><PasswordInput value={form.admin_senha} onChange={(e) => h("admin_senha")(e.target.value)} className="w-full px-3 py-2 rounded-lg bg-card border border-input-border text-text-main text-sm outline-none focus:border-accent" /></div>
             </Grid>
             <div className="mt-3">
-              <label className="text-[10px] font-bold text-text-muted uppercase tracking-wider mb-1.5 block">Role / Nível de Acesso</label>
+              <label className="text-xs font-bold text-text-muted uppercase tracking-wider mb-1.5 block">Role / Nível de Acesso</label>
               <div className="flex gap-2">
                 {(["admin", "editor", "viewer"] as const).map((role) => (
                   <button key={role} type="button" onClick={() => setForm((p) => ({ ...p, admin_role: role }))}

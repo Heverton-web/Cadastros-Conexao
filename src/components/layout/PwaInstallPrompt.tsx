@@ -87,7 +87,7 @@ export function PwaInstallPrompt() {
           {iosDevice && (
             <div className="mt-2 flex items-center gap-1.5 rounded-lg bg-bg-dark px-3 py-2">
               <Share2 size={14} className="text-accent shrink-0" />
-              <span className="text-[10px] text-text-muted leading-relaxed">
+              <span className="text-xs text-text-muted leading-relaxed">
                 1. Toque em <strong className="text-text-main">Compartilhar</strong>{" "}
                 2. Role até <strong className="text-text-main">Adicionar à Tela de Início</strong>
               </span>

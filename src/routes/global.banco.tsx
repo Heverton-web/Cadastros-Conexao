@@ -98,13 +98,13 @@ function AdminSuperBanco() {
           <CheckCircle2 size={14} className="text-success" />
           <span className="text-sm font-medium text-text-main">Conectado</span>
         </div>
-        <p className="text-[10px] text-text-muted font-mono">Supabase PostgreSQL — cluuqzhizeqvkgvfdisx.supabase.co</p>
+        <p className="text-xs text-text-muted font-mono">Supabase PostgreSQL — cluuqzhizeqvkgvfdisx.supabase.co</p>
       </div>
 
       {/* Configurações Supabase (substitui .env) */}
       <div className="rounded-xl bg-card border border-border-subtle p-4">
         <h2 className="text-sm font-bold text-text-main mb-1 flex items-center gap-2"><Database size={14} /> Configurações de Conexão</h2>
-        <p className="text-[10px] text-text-muted mb-4">Gerencie as variáveis de ambiente do Supabase. Estas configs substituem o arquivo .env global.</p>
+        <p className="text-xs text-text-muted mb-4">Gerencie as variáveis de ambiente do Supabase. Estas configs substituem o arquivo .env global.</p>
         {loadingConfig ? (
           <div className="flex justify-center py-4"><Loader2 size={16} className="animate-spin text-accent" /></div>
         ) : (
@@ -114,8 +114,8 @@ function AdminSuperBanco() {
               const show = showPasswords[cfg.key] ?? false;
               return (
                 <div key={cfg.id}>
-                  <label className="text-[10px] font-bold text-text-muted uppercase tracking-wider mb-1 block">{cfg.key}</label>
-                  {cfg.description && <p className="text-[10px] text-text-muted mb-1.5">{cfg.description}</p>}
+                  <label className="text-xs font-bold text-text-muted uppercase tracking-wider mb-1 block">{cfg.key}</label>
+                  {cfg.description && <p className="text-xs text-text-muted mb-1.5">{cfg.description}</p>}
                   <div className="flex gap-2">
                     <div className="flex-1 relative">
                       <input value={editValues[cfg.key] || ""} onChange={(e) => setEditValues((p) => ({ ...p, [cfg.key]: e.target.value }))}
@@ -150,7 +150,7 @@ function AdminSuperBanco() {
             {tabelas.map((t) => (
               <div key={t.nome} className="flex items-center justify-between py-1.5 px-2 rounded-lg hover:bg-surface-hover">
                 <span className="text-sm font-mono text-text-main">{t.nome}</span>
-                <span className="text-[11px] text-text-muted">{t.linhas} linha{t.linhas !== 1 ? "s" : ""}</span>
+                <span className="text-xs text-text-muted">{t.linhas} linha{t.linhas !== 1 ? "s" : ""}</span>
               </div>
             ))}
             {tabelas.length === 0 && <p className="text-center text-sm text-text-muted py-4">Nenhuma tabela encontrada.</p>}

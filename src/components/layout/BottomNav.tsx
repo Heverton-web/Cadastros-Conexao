@@ -50,7 +50,7 @@ export function BottomNav({ selectedModuleKey }: { selectedModuleKey?: string })
             >
               <item.icon size={20} />
               <span className={cn(
-                "text-[10px] mt-0.5 leading-tight truncate max-w-[52px]",
+                "text-xs mt-0.5 leading-tight truncate max-w-[52px]",
                 isActive ? "font-semibold" : "font-medium"
               )}>
                 {item.label}
@@ -67,7 +67,7 @@ export function BottomNav({ selectedModuleKey }: { selectedModuleKey?: string })
             aria-label="Mais opções"
           >
             <span className="text-lg leading-none">···</span>
-            <span className="text-[10px] mt-0.5 font-medium">Mais</span>
+            <span className="text-xs mt-0.5 font-medium">Mais</span>
           </button>
         )}
       </div>

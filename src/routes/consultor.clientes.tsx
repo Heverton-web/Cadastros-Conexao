@@ -57,8 +57,8 @@ function ConsultorClientes() {
           <div className="flex-1 min-w-0">
             <p className="text-base font-semibold text-text-main truncate">{c.nome}</p>
             <div className="flex items-center gap-2 mt-0.5">
-              {c.codigo_cliente && <span className="text-[10px] text-text-muted">#{c.codigo_cliente}</span>}
-              {c.tipo_pessoa && <span className="text-[10px] text-text-muted">{c.tipo_pessoa}</span>}
+              {c.codigo_cliente && <span className="text-xs text-text-muted">#{c.codigo_cliente}</span>}
+              {c.tipo_pessoa && <span className="text-xs text-text-muted">{c.tipo_pessoa}</span>}
             </div>
           </div>
           <ArrowRight size={16} className="text-text-muted shrink-0" />

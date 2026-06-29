@@ -119,7 +119,7 @@ export function DocList({ docs, podeVisualizar = false, podeAcao = false, onApro
                   {!revisandoDocs[d.id] && (
                     <>
                       <Icon size={11} className={statusColor(d.status).split(" ")[1] || "text-text-muted"} />
-                      <span className={`text-[10px] font-medium ${statusColor(d.status)}`}>{statusLabel(d.status)}</span>
+                      <span className={`text-xs font-medium ${statusColor(d.status)}`}>{statusLabel(d.status)}</span>
                     </>
                   )}
                 </div>
@@ -127,7 +127,7 @@ export function DocList({ docs, podeVisualizar = false, podeAcao = false, onApro
               {podeAcao && (
                 <div className="flex items-center gap-1 shrink-0" onClick={(e) => e.stopPropagation()}>
                   {d.status !== "pendente" && !revisandoDocs[d.id] ? (
-                    <button onClick={() => setRevisandoDocs(prev => ({ ...prev, [d.id]: true }))} className="rounded-lg px-2 py-1 text-[10px] font-medium text-accent hover:bg-accent/10 transition border border-accent/20">
+                    <button onClick={() => setRevisandoDocs(prev => ({ ...prev, [d.id]: true }))} className="rounded-lg px-2 py-1 text-xs font-medium text-accent hover:bg-accent/10 transition border border-accent/20">
                       Revisar
                     </button>
                   ) : (

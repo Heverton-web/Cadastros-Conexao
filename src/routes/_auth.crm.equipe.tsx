@@ -176,7 +176,7 @@ function Stat({ label, value, accent }: { label: string; value: number; accent?:
   return (
     <div className="text-center">
       <p className={`text-lg font-bold ${accent ? "text-gold" : ""}`}>{value}</p>
-      <p className="text-[10px] uppercase tracking-wide text-muted-foreground">{label}</p>
+      <p className="text-xs uppercase tracking-wide text-muted-foreground">{label}</p>
     </div>
   );
 }

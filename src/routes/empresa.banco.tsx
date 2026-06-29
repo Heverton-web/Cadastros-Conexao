@@ -16,7 +16,7 @@ export const adminEmpresaConfigBancoRoute = createRoute({
 function Field({ label, value, onChange, type, className }: { label: string; value: string; onChange: (v: string) => void; type?: string; className?: string }) {
   return (
     <div className={className}>
-      <label className="text-[10px] font-bold text-text-muted uppercase tracking-wider mb-1 block">{label}</label>
+      <label className="text-xs font-bold text-text-muted uppercase tracking-wider mb-1 block">{label}</label>
       <input type={type || "text"} value={value} onChange={(e) => onChange(e.target.value)}
         className="w-full px-3 py-2 rounded-lg bg-input-bg border border-input-border text-text-main text-sm outline-none focus:border-accent" />
     </div>
@@ -142,13 +142,13 @@ CREATE TABLE IF NOT EXISTS sync_logs (
         <div className="space-y-4">
           <div className="rounded-xl bg-card p-4 border border-border-subtle">
             <h2 className="text-sm font-bold text-text-main mb-3 flex items-center gap-2"><Database size={14} /> Conexão</h2>
-            <p className="text-[10px] text-text-muted mb-4">Configure a conexão com banco externo. Se vazio, usa banco padrão da aplicação.</p>
+            <p className="text-xs text-text-muted mb-4">Configure a conexão com banco externo. Se vazio, usa banco padrão da aplicação.</p>
             <div className="grid grid-cols-2 gap-3">
               <Field label="Host" value={dbConfig.host} onChange={(v) => setDbConfig(p => ({ ...p, host: v }))} />
               <Field label="Porta" value={dbConfig.port} onChange={(v) => setDbConfig(p => ({ ...p, port: v }))} />
               <Field label="Database" value={dbConfig.database} onChange={(v) => setDbConfig(p => ({ ...p, database: v }))} />
               <Field label="Usuário" value={dbConfig.user} onChange={(v) => setDbConfig(p => ({ ...p, user: v }))} />
-              <div className="col-span-2"><label className="text-[10px] font-bold text-text-muted uppercase tracking-wider mb-1 block">Senha</label><PasswordInput value={dbConfig.password} onChange={(e) => setDbConfig(p => ({ ...p, password: e.target.value }))} className="w-full px-3 py-2 rounded-lg bg-input-bg border border-input-border text-text-main text-sm outline-none focus:border-accent" /></div>
+              <div className="col-span-2"><label className="text-xs font-bold text-text-muted uppercase tracking-wider mb-1 block">Senha</label><PasswordInput value={dbConfig.password} onChange={(e) => setDbConfig(p => ({ ...p, password: e.target.value }))} className="w-full px-3 py-2 rounded-lg bg-input-bg border border-input-border text-text-main text-sm outline-none focus:border-accent" /></div>
             </div>
             <div className="flex justify-end mt-4">
               <button onClick={handleSave} disabled={saving}
@@ -168,7 +168,7 @@ CREATE TABLE IF NOT EXISTS sync_logs (
                   {copied ? "Copiado!" : "Copiar"}
                 </button>
               </div>
-              <pre className="rounded-lg bg-bg-dark p-4 text-[10px] text-text-main font-mono overflow-x-auto whitespace-pre border border-border-subtle">{script}</pre>
+              <pre className="rounded-lg bg-bg-dark p-4 text-xs text-text-main font-mono overflow-x-auto whitespace-pre border border-border-subtle">{script}</pre>
             </div>
           )}
         </div>

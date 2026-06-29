@@ -123,9 +123,9 @@ function RelatoriosPage() {
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium text-text-main truncate">{c.lead_nome || c.nome_temporario || "—"}</p>
                       <div className="flex items-center gap-1.5 mt-0.5">
-                        <span className={`rounded-full px-2 py-0.5 text-[9px] font-medium ${STATUS_COLOR[c.status as CadastroStatus]}`}>{STATUS_LABEL[c.status as CadastroStatus]}</span>
-                        <span className={`rounded-full px-2 py-0.5 text-[9px] font-medium ${DOC_STATUS_COLOR[docsStatus[c.id]]}`}>{DOC_STATUS_LABEL[docsStatus[c.id]]}</span>
-                        {c.codigo_cliente && <span className="text-[10px] text-text-muted">#{c.codigo_cliente}</span>}
+                        <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${STATUS_COLOR[c.status as CadastroStatus]}`}>{STATUS_LABEL[c.status as CadastroStatus]}</span>
+                        <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${DOC_STATUS_COLOR[docsStatus[c.id]]}`}>{DOC_STATUS_LABEL[docsStatus[c.id]]}</span>
+                        {c.codigo_cliente && <span className="text-xs text-text-muted">#{c.codigo_cliente}</span>}
                       </div>
                     </div>
                     <ArrowRight size={16} className="text-text-muted shrink-0" />

@@ -71,15 +71,15 @@ function DiretoriaIndex() {
             <div className="grid grid-cols-3 gap-2 pt-2 border-t border-border text-center">
               <div>
                 <p className="text-lg font-bold">{g.consultores}</p>
-                <p className="text-[10px] uppercase tracking-wide text-muted-foreground">Consultores</p>
+                <p className="text-xs uppercase tracking-wide text-muted-foreground">Consultores</p>
               </div>
               <div>
                 <p className="text-lg font-bold">{g.visitas}</p>
-                <p className="text-[10px] uppercase tracking-wide text-muted-foreground">Visitas</p>
+                <p className="text-xs uppercase tracking-wide text-muted-foreground">Visitas</p>
               </div>
               <div>
                 <p className="text-lg font-bold text-gold">{g.conv}%</p>
-                <p className="text-[10px] uppercase tracking-wide text-muted-foreground">Conv.</p>
+                <p className="text-xs uppercase tracking-wide text-muted-foreground">Conv.</p>
               </div>
             </div>
             <div className="flex items-center justify-between text-xs">

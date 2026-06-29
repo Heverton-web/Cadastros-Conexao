@@ -227,7 +227,7 @@ function AdminSuperEmpresaDetail() {
           <div className="grid grid-cols-2 gap-3">
             {Object.entries(cores).map(([key, value]) => (
               <div key={key}>
-                <label className="text-[10px] text-text-muted font-medium block mb-1">{key}</label>
+                <label className="text-xs text-text-muted font-medium block mb-1">{key}</label>
                 <div className="flex items-center gap-2">
                   <input type="color" value={value} onChange={(e) => setCores((p) => ({ ...p, [key]: e.target.value }))}
                     className="w-8 h-8 rounded border border-input-border cursor-pointer bg-transparent" />
@@ -249,7 +249,7 @@ function AdminSuperEmpresaDetail() {
 
         {/* Branding */}
         <CollapsibleSection icon={Image} title="Branding (Logos e Favicon)" open={sections.branding} onToggle={() => toggleSection("branding")}>
-          <p className="text-[10px] text-text-muted mb-3">URLs externas para as imagens.</p>
+          <p className="text-xs text-text-muted mb-3">URLs externas para as imagens.</p>
           <Field label="Logo da Página de Login (URL)" value={form.logo_index_url} onChange={h("logo_index_url")} />
           <Field label="Logo da Aplicação / Header (URL)" value={form.logo_app_url} onChange={h("logo_app_url")} />
           <Field label="Favicon (URL)" value={form.favicon_url} onChange={h("favicon_url")} />
@@ -266,7 +266,7 @@ function AdminSuperEmpresaDetail() {
                     <mod.icon size={16} className={ativo ? "text-accent" : "text-text-muted"} />
                     <div>
                       <span className="text-sm font-medium text-text-main">{mod.nome}</span>
-                      <span className="text-[10px] text-text-muted block">{mod.descricao}</span>
+                      <span className="text-xs text-text-muted block">{mod.descricao}</span>
                     </div>
                   </div>
                   <button type="button" onClick={() => handleToggleModulo(mod.key, !ativo)}

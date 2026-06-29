@@ -153,7 +153,7 @@ function AdminEmpresaConfigBranding() {
         <div className="space-y-4">
           <div className="rounded-xl bg-card p-4 border border-border-subtle">
             <h2 className="text-sm font-bold text-text-main mb-3">Logomarcas e Favicon</h2>
-            <p className="text-[10px] text-text-muted mb-4">Upload de arquivos ou URL externa. Uploads vão p/ storage Supabase.</p>
+            <p className="text-xs text-text-muted mb-4">Upload de arquivos ou URL externa. Uploads vão p/ storage Supabase.</p>
             <div className="space-y-4">
               <LogoField label="Logo Página de Login" tipo="logo_index" url={logoIndex} />
               <LogoField label="Logo Aplicação (header)" tipo="logo_app" url={logoApp} />

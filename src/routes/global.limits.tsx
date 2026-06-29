@@ -174,7 +174,7 @@ function GlobalLimitsPage() {
                       </div>
                       <div>
                         <span className="text-sm font-semibold text-text-main block">{empresa.nome}</span>
-                        <span className="text-[10px] text-text-muted">
+                        <span className="text-xs text-text-muted">
                           {modulosComLimite} módulo(s) com limite definido
                         </span>
                       </div>
@@ -197,7 +197,7 @@ function GlobalLimitsPage() {
                                 <div className={cn("p-1 rounded", current > 0 ? "bg-accent/10 text-accent" : "bg-bg-dark text-text-muted")}>
                                   <Icon size={12} />
                                 </div>
-                                <label className="text-[10px] font-bold text-text-muted uppercase tracking-wider truncate">
+                                <label className="text-xs font-bold text-text-muted uppercase tracking-wider truncate">
                                   {mod.nome}
                                 </label>
                               </div>
@@ -209,7 +209,7 @@ function GlobalLimitsPage() {
                                   onChange={(e) => setLimitLocal(empresa.id, mod.key, Math.max(0, parseInt(e.target.value) || 0))}
                                   className="w-full rounded-md border border-input-border bg-input-bg px-3 py-1.5 text-sm text-text-main outline-none focus:border-accent text-center"
                                 />
-                                <span className="text-[10px] text-text-muted whitespace-nowrap">
+                                <span className="text-xs text-text-muted whitespace-nowrap">
                                   {current === 0 ? "Ilimitado" : `máx ${current}`}
                                 </span>
                               </div>
