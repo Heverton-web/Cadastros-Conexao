@@ -1,8 +1,8 @@
 import { createRoute } from "@tanstack/react-router";
 import { authLayout } from "./_auth";
 import { useState, useEffect } from "react";
-import { listarCadastros, STATUS_LABEL, STATUS_COLOR, type Cadastro } from "~/lib/clientes";
-import { getDocumentosStatusMap, DOC_STATUS_LABEL, DOC_STATUS_COLOR, type DocStatus } from "~/lib/documentos";
+import { listarCadastros, STATUS_LABEL, STATUS_COLOR, type Cadastro } from "~/features/clientes";
+import { getDocumentosStatusMap, DOC_STATUS_LABEL, DOC_STATUS_COLOR, type DocStatus } from "~/features/documentos";
 import { useAuth } from "~/lib/auth";
 import { Link } from "@tanstack/react-router";
 import { Loader2, CheckCircle, XCircle, Link2, Clock, AlertTriangle, HelpCircle } from "lucide-react";

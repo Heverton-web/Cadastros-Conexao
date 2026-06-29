@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { listarAtividades, type Atividade } from "~/lib/atividades";
+import { listarAtividades, type Atividade } from "~/core/services";
 import { Loader2, Clock, User, Plus, Pencil, ArrowRight, Check, X, FileText } from "lucide-react";
 
 type Props = {

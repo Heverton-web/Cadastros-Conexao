@@ -13,7 +13,7 @@ import {
   resetar2FA, 
   type LinkTeste, 
   type DemoCredential 
-} from "~/lib/demos";
+} from "~/features/demos";
 
 export function DemosTab() {
   const [links, setLinks] = useState<LinkTeste[]>([]);

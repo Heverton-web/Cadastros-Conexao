@@ -10,7 +10,7 @@ import { cn } from "~/lib/utils";
 import { DeviceGate } from "./DeviceGate";
 import { PwaInstallPrompt } from "./PwaInstallPrompt";
 import { useState, useEffect } from "react";
-import { listarNotificacoes, marcarComoLida, marcarTodasComoLidas, type Notificacao } from "~/lib/notificacoes";
+import { listarNotificacoes, marcarComoLida, marcarTodasComoLidas, type Notificacao } from "~/core/services";
 import { useEmpresaTheme } from "~/core/theme";
 
 const LS_KEY = "selectedModule";

@@ -4,7 +4,7 @@ import { CentralAcoesTab } from "~/components/admin/CentralAcoesTab";
 import { Webhook as WebhookIcon, ArrowLeft, Building2, Loader2 } from "lucide-react";
 import { useAuth } from "~/lib/auth";
 import { useState, useEffect } from "react";
-import { listarEmpresas, type Empresa } from "~/lib/empresas";
+import { listarEmpresas, type Empresa } from "~/features/empresas";
 
 export const adminEmpresaConfigAcoesRoute = createRoute({
   getParentRoute: () => authLayout,

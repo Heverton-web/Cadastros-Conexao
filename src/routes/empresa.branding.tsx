@@ -1,7 +1,7 @@
 import { createRoute, useNavigate } from "@tanstack/react-router";
 import { authLayout } from "./_auth";
 import { useAuth } from "~/lib/auth";
-import { buscarEmpresaConfig, salvarEmpresaConfig, uploadEmpresaLogo, deletarEmpresaLogo, listarEmpresas, type Empresa, type EmpresaConfig } from "~/lib/empresas";
+import { buscarEmpresaConfig, salvarEmpresaConfig, uploadEmpresaLogo, deletarEmpresaLogo, listarEmpresas, type Empresa, type EmpresaConfig } from "~/features/empresas";
 import { useState, useEffect } from "react";
 import { Image, Save, Loader2, ArrowLeft, Upload, Trash2, Building2 } from "lucide-react";
 import toast from "react-hot-toast";

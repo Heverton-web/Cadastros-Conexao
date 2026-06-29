@@ -1,7 +1,7 @@
 import { createRoute } from "@tanstack/react-router";
 import { authLayout } from "./_auth";
 import { useAuth } from "~/lib/auth";
-import { listarIntegracoes, salvarIntegracao, testarConexaoEvolution, type IntegracaoConfig } from "~/lib/integracoes";
+import { listarIntegracoes, salvarIntegracao, testarConexaoEvolution, type IntegracaoConfig } from "~/features/integracoes";
 import { useState, useEffect } from "react";
 import { Loader2, Save, ToggleLeft, ToggleRight, RefreshCw, Cable, Shield } from "lucide-react";
 import toast from "react-hot-toast";

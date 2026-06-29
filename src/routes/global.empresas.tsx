@@ -1,8 +1,8 @@
 import { createRoute, Link } from "@tanstack/react-router";
 import { authLayout } from "./_auth";
 import { useAuth } from "~/lib/auth";
-import { listarEmpresas, toggleEmpresa, deletarEmpresa, criarEmpresa, type Empresa } from "~/lib/empresas";
-import { criarCredencial } from "~/lib/credenciais";
+import { listarEmpresas, toggleEmpresa, deletarEmpresa, criarEmpresa, type Empresa } from "~/features/empresas";
+import { criarCredencial } from "~/features/credenciais";
 import { getAllModules } from "~/registry";
 import { supabase } from "~/core/supabase";
 import { useState, useEffect, useCallback } from "react";

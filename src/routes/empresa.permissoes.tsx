@@ -5,7 +5,7 @@ import { supabase } from "~/core/supabase";
 import { type Permissoes, type ModulosAcesso, type ModuloAcesso } from "~/core/permissions/types";
 import { setPermissoes, getModulosAcesso, setModulosAcesso } from "~/core/permissions/services";
 
-import { listarEmpresas, type Empresa } from "~/lib/empresas";
+import { listarEmpresas, type Empresa } from "~/features/empresas";
 import { getAllModules, getNavItemsByModule, getAllPermissionDefs } from "~/registry";
 import { useState, useEffect, useMemo } from "react";
 import {

@@ -2,15 +2,15 @@ import { createRoute, useNavigate } from "@tanstack/react-router";
 import { authLayout } from "./_auth";
 import { useState, useEffect } from "react";
 import { useAuth } from "~/lib/auth";
-import { buscarCadastroCompleto, aprovarCadastro, reprovarCadastro, solicitarCorrecao, STATUS_LABEL, STATUS_COLOR, type Cadastro, type CadastroStatus } from "~/lib/clientes";
-import { listarDocumentos, aprovarDocumento, reprovarDocumento, solicitarCorrecaoDocumento, reverterDocumento, setDocumentosMassa, getDocumentosStatus, DOC_STATUS_LABEL, DOC_STATUS_COLOR, getTipoLabel, type Documento } from "~/lib/documentos";
-import { logAtividade } from "~/lib/atividades";
+import { buscarCadastroCompleto, aprovarCadastro, reprovarCadastro, solicitarCorrecao, STATUS_LABEL, STATUS_COLOR, type Cadastro, type CadastroStatus } from "~/features/clientes";
+import { listarDocumentos, aprovarDocumento, reprovarDocumento, solicitarCorrecaoDocumento, reverterDocumento, setDocumentosMassa, getDocumentosStatus, DOC_STATUS_LABEL, DOC_STATUS_COLOR, getTipoLabel, type Documento } from "~/features/documentos";
+import { logAtividade } from "~/core/services";
 import { dispararWebhooks } from "~/lib/webhooks";
 import { DocList } from "~/components/ui/doc-viewer";
-import { getRevisoes, setRevisaoCampo, setRevisoesMassa, STATUS_REVISAO_LABEL, STATUS_REVISAO_COLOR, type Revisoes, type RevisaoStatus } from "~/lib/revisoes";
+import { getRevisoes, setRevisaoCampo, setRevisoesMassa, STATUS_REVISAO_LABEL, STATUS_REVISAO_COLOR, type Revisoes, type RevisaoStatus } from "~/features/revisoes";
 import { formatPhone } from "~/lib/utils";
 import { ArrowLeft, Loader2, CheckCircle, XCircle, AlertTriangle, X, FileText, MapPin, Mail, MessageCircle, RotateCcw, Eye } from "lucide-react";
-import { enviarNotificacaoComTemplate } from "~/lib/notificacoes";
+import { enviarNotificacaoComTemplate } from "~/core/services";
 
 const LABEL_MAP: Record<string, string> = {
   "pf.nome": "Nome", "pf.cpf": "CPF", "pf.data_nascimento": "Data de Nascimento", "pf.cro": "CRO", "pf.data_emissao_cro": "Emissão CRO",

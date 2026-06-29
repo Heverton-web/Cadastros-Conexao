@@ -3,8 +3,8 @@ import { authLayout } from "./_auth";
 import { useState, useEffect } from "react";
 import { supabase } from "~/lib/supabase";
 import { useAuth } from "~/lib/auth";
-import { STATUS_LABEL, STATUS_COLOR, type CadastroStatus } from "~/lib/clientes";
-import { getDocumentosStatusMap, DOC_STATUS_LABEL, DOC_STATUS_COLOR, type DocStatus } from "~/lib/documentos";
+import { STATUS_LABEL, STATUS_COLOR, type CadastroStatus } from "~/features/clientes";
+import { getDocumentosStatusMap, DOC_STATUS_LABEL, DOC_STATUS_COLOR, type DocStatus } from "~/features/documentos";
 import { Loader2, ArrowLeft, CheckCircle, XCircle, Clock, ArrowRight, AlertTriangle } from "lucide-react";
 import toast from "react-hot-toast";
 

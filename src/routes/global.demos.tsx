@@ -3,7 +3,7 @@ import { authLayout } from "./_auth";
 import { useAuth } from "~/lib/auth";
 import { getAllModules } from "~/registry";
 import { supabase } from "~/core/supabase";
-import { listarDemoCredentials, criarDemoCredential, excluirDemoCredential, type DemoCredential } from "~/lib/demos";
+import { listarDemoCredentials, criarDemoCredential, excluirDemoCredential, type DemoCredential } from "~/features/demos";
 import { useState, useEffect } from "react";
 import { Plus, Trash2, Loader2, X, ChevronRight, FlaskConical, ToggleLeft, ToggleRight, Shield, Database } from "lucide-react";
 import toast from "react-hot-toast";

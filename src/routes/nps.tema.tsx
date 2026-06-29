@@ -10,7 +10,7 @@ import { BLOB_POSITIONS, type NpsBlob, type BlobPosition, getBlobsFromColors, bl
 import toast from "react-hot-toast";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
-import type { Empresa } from "~/features/empresas";
+import type { Empresa } from "~/core/empresa";
 
 export const npsTemaRoute = createRoute({
   getParentRoute: () => authLayout,

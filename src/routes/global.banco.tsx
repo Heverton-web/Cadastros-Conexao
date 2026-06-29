@@ -2,7 +2,7 @@ import { createRoute } from "@tanstack/react-router";
 import { authLayout } from "./_auth";
 import { useAuth } from "~/lib/auth";
 import { supabase } from "~/core/supabase";
-import { getAppConfig, updateAppConfig, type AppConfig } from "~/lib/admin";
+import { getAppConfig, updateAppConfig, type AppConfig } from "~/features/admin";
 import { useState, useEffect } from "react";
 import { Database, Loader2, Table, CheckCircle2, Save, Eye, EyeOff } from "lucide-react";
 import toast from "react-hot-toast";

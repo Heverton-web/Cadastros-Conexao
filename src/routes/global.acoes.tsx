@@ -5,20 +5,20 @@ import { useAuth } from "~/lib/auth";
 import { supabase } from "~/lib/supabase";
 import {
   getAppConfig, updateAppConfig, type AppConfig,
-} from "~/lib/admin";
+} from "~/features/admin";
 import {
   listarCredenciais, criarCredencial, atualizarCredencial, toggleCredencial, deletarCredencial, type Credencial, type CredencialInput
-} from "~/lib/credenciais";
+} from "~/features/credenciais";
 import { dispararWebhooks } from "~/lib/webhooks";
 import { Loader2, Save, Plus, X, ToggleLeft, ToggleRight, Trash2, Settings, Database, Shield, Webhook as WebhookIcon, RefreshCw, UserRound as UserIcon, ShieldCheck, ShieldX, FlaskConical, Bell, FormInput, Lightbulb } from "lucide-react";
 import toast from "react-hot-toast";
 
 import { listarPermissoesUsuarios, setPermissoes, getPermissoes, getPermissoesPadrao, PERMISSOES_GROUPS, PERMISSOES_LABEL, PERMISSOES_DESC, type Permissoes } from "~/core/permissions";
-import { listarDemoCredentials, type DemoCredential } from "~/lib/demos";
+import { listarDemoCredentials, type DemoCredential } from "~/features/demos";
 import { DemosTab } from "~/components/admin/DemosTab";
 import { CentralAcoesTab } from "~/components/admin/CentralAcoesTab";
 import { FormBuilderTab } from "~/components/admin/FormBuilderTab";
-import { listarIntegracoes, salvarIntegracao, testarConexaoEvolution, type IntegracaoConfig } from "~/lib/integracoes";
+import { listarIntegracoes, salvarIntegracao, testarConexaoEvolution, type IntegracaoConfig } from "~/features/integracoes";
 import { PasswordInput } from "~/components/ui/password-input";
 
 type Tab = "supabase" | "credenciais" | "central_acoes" | "demos" | "integracoes" | "formulario";

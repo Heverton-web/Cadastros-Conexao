@@ -6,11 +6,11 @@ import {
   buscarEmpresa, atualizarEmpresa, listarEmpresas, buscarEmpresaConfig, salvarEmpresaConfig,
   uploadEmpresaLogo, deletarEmpresaLogo,
   type Empresa, type EmpresaConfig,
-} from "~/lib/empresas";
+} from "~/features/empresas";
 import {
   listarCredenciaisPorEmpresa, criarCredencial, atualizarCredencial, toggleCredencial, deletarCredencial,
   type Credencial, type CredencialInput,
-} from "~/lib/credenciais";
+} from "~/features/credenciais";
 import { getPermissoes, setPermissoes, getPermissoesPadrao, PERMISSOES_GROUPS, PERMISSOES_LABEL, PERMISSOES_DESC, type Permissoes } from "~/core/permissions";
 import { useState, useEffect } from "react";
 import {

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { X, ChevronLeft, ChevronRight, FileText, Download, CheckCircle, XCircle, AlertTriangle } from "lucide-react";
-import { getTipoLabel, STATUS_DOC_LABEL, STATUS_DOC_COLOR, type Documento } from "~/lib/documentos";
+import { getTipoLabel, STATUS_DOC_LABEL, STATUS_DOC_COLOR, type Documento } from "~/features/documentos";
 
 type DocViewerProps = {
   docs: Documento[];

@@ -2,8 +2,8 @@ import { createRoute, useNavigate } from "@tanstack/react-router";
 import { authLayout } from "./_auth";
 import { useState, useEffect } from "react";
 import { useAuth } from "~/lib/auth";
-import { listarCadastros, deletarCadastro, atualizarCadastro, STATUS_LABEL, STATUS_COLOR, type Cadastro, type CadastroStatus } from "~/lib/clientes";
-import { getDocumentosStatusMap, DOC_STATUS_LABEL, DOC_STATUS_COLOR, type DocStatus } from "~/lib/documentos";
+import { listarCadastros, deletarCadastro, atualizarCadastro, STATUS_LABEL, STATUS_COLOR, type Cadastro, type CadastroStatus } from "~/features/clientes";
+import { getDocumentosStatusMap, DOC_STATUS_LABEL, DOC_STATUS_COLOR, type DocStatus } from "~/features/documentos";
 import { Search, Loader2, ArrowRight, Trash2, Pencil, CheckCircle, XCircle, Clock, AlertTriangle } from "lucide-react";
 import toast from "react-hot-toast";
 

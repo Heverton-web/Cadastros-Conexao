@@ -1,7 +1,7 @@
 import { createRoute, useNavigate } from "@tanstack/react-router";
 import { authLayout } from "./_auth";
 import { useAuth } from "~/lib/auth";
-import { buscarEmpresa, atualizarEmpresa, buscarEmpresaConfig, salvarEmpresaConfig, listarModulosEmpresa, upsertModuloEmpresa, type Empresa, type EmpresaConfig, type ModuloEmpresa } from "~/lib/empresas";
+import { buscarEmpresa, atualizarEmpresa, buscarEmpresaConfig, salvarEmpresaConfig, listarModulosEmpresa, upsertModuloEmpresa, type Empresa, type EmpresaConfig, type ModuloEmpresa } from "~/features/empresas";
 import { getAllModules } from "~/registry";
 import { useState, useEffect } from "react";
 import { Save, Loader2, ArrowLeft, Building2, AtSign, MapPin, Globe, Palette, Image, ToggleRight, ToggleLeft, ChevronRight, X, Check } from "lucide-react";

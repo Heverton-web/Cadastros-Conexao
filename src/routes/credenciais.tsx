@@ -3,7 +3,7 @@ import { authLayout } from "./_auth";
 import { useState, useEffect } from "react";
 import { useAuth } from "~/lib/auth";
 import { supabase } from "~/core/supabase";
-import { listarCredenciais, criarCredencial, atualizarCredencial, toggleCredencial, deletarCredencial, listarCredenciaisPorEmpresa, type Credencial } from "~/lib/credenciais";
+import { listarCredenciais, criarCredencial, atualizarCredencial, toggleCredencial, deletarCredencial, listarCredenciaisPorEmpresa, type Credencial } from "~/features/credenciais";
 import { getPermissoes, setPermissoes, getPermissoesPadrao, PERMISSOES_GROUPS, PERMISSOES_LABEL, PERMISSOES_DESC, type Permissoes } from "~/core/permissions";
 import { Loader2, Plus, UserPlus, ToggleLeft, ToggleRight, Shield, ShieldCheck, ShieldX, X, Save, Settings, Trash2, Building2 } from "lucide-react";
 import toast from "react-hot-toast";

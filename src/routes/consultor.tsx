@@ -2,9 +2,9 @@ import { createRoute, useNavigate } from "@tanstack/react-router";
 import { authLayout } from "./_auth";
 import { useState, useEffect } from "react";
 import { useAuth } from "~/lib/auth";
-import { listarCadastros, criarCadastro, STATUS_LABEL, STATUS_COLOR, type Cadastro, type CadastroStatus } from "~/lib/clientes";
-import { getDocumentosStatusMap, DOC_STATUS_LABEL, DOC_STATUS_COLOR, type DocStatus } from "~/lib/documentos";
-import { logAtividade } from "~/lib/atividades";
+import { listarCadastros, criarCadastro, STATUS_LABEL, STATUS_COLOR, type Cadastro, type CadastroStatus } from "~/features/clientes";
+import { getDocumentosStatusMap, DOC_STATUS_LABEL, DOC_STATUS_COLOR, type DocStatus } from "~/features/documentos";
+import { logAtividade } from "~/core/services";
 import { dispararWebhooks } from "~/lib/webhooks";
 import { Loader2, Link2, Plus, Share2, ArrowRight, Copy, X, Clock, CheckCircle, XCircle, AlertTriangle } from "lucide-react";
 

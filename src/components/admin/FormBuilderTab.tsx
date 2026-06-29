@@ -3,7 +3,7 @@ import {
   listarTodosCampos, salvarCampo, excluirCampo, reordenarCampos,
   toggleCampo, editarLabel,
   type CampoSchema, type Etapa, type TipoInput, type TipoPessoa,
-} from "~/lib/form-schema";
+} from "~/features/form-schema";
 import {
   Eye, EyeOff, Star, StarOff, ArrowUp, ArrowDown, Pencil, Trash2,
   Plus, X, Check, ChevronDown, GripVertical, FileText, FormInput,
