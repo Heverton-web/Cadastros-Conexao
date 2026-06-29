@@ -75,6 +75,9 @@ import { crmDevConvitesRoute } from "./routes/_auth.crm.dev.convites";
 import { crmDevDemoRoute } from "./routes/_auth.crm.dev.demo";
 import { crmDevUsuariosRoute } from "./routes/_auth.crm.dev.usuarios";
 import { crmAceitarConviteRoute } from "./routes/crm.aceitar-convite.$token";
+import { crmPipelineRoute } from "./routes/_auth.crm.pipeline";
+import { crmTarefasRoute } from "./routes/_auth.crm.tarefas";
+import { crmMetricasRoute } from "./routes/_auth.crm.metricas";
 import { empresaHubTemaRoute } from "./routes/empresa.hub.tema";
 import { hubClienteDashboardRoute } from "./routes/hub.cliente.dashboard.$empresaId";
 import { hubAdminDashboardRoute } from "./routes/hub.admin.dashboard";
@@ -186,6 +189,9 @@ export const routeTree = rootRoute.addChildren([
 
     crmDashboardRoute,
     crmCarteiraRoute,
+    crmPipelineRoute,
+    crmTarefasRoute,
+    crmMetricasRoute,
     crmClienteDetailRoute,
     crmEquipeRoute,
     crmBiRoute,
