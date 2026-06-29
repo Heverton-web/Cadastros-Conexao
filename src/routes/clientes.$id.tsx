@@ -10,6 +10,7 @@ import { DocList } from "~/components/ui/doc-viewer";
 import { getRevisoes, setRevisaoCampo, setRevisoesMassa, STATUS_REVISAO_LABEL, STATUS_REVISAO_COLOR, type Revisoes, type RevisaoStatus } from "~/features/revisoes";
 import { formatPhone } from "~/lib/utils";
 import { ArrowLeft, Loader2, CheckCircle, XCircle, AlertTriangle, X, FileText, MapPin, Mail, MessageCircle, RotateCcw, Eye } from "lucide-react";
+import toast from "react-hot-toast";
 import { enviarNotificacaoComTemplate } from "~/core/services";
 
 const LABEL_MAP: Record<string, string> = {
@@ -450,7 +451,7 @@ function ClienteDetailPage() {
               {STATUS_LABEL[c.status as CadastroStatus]}
             </span>
             {c.status !== "aprovado" && (
-              <span className={`flex items-center gap-1 self-start rounded-full px-3 py-1 text-[10px] font-medium ${DOC_STATUS_COLOR[docStatus as keyof typeof DOC_STATUS_COLOR]}`}>
+              <span className={`flex items-center gap-1 self-start rounded-full px-3 py-1 text-xs font-medium ${DOC_STATUS_COLOR[docStatus as keyof typeof DOC_STATUS_COLOR]}`}>
                 <FileText size={12} />
                 {DOC_STATUS_LABEL[docStatus as keyof typeof DOC_STATUS_LABEL]}
               </span>
@@ -460,7 +461,7 @@ function ClienteDetailPage() {
                 onClick={() => {
                   const link = `${window.location.origin}/pre-cadastro/${c.token_acesso}`;
                   navigator.clipboard.writeText(link);
-                  alert("Link de correção copiado com sucesso!");
+                  toast.success("Link de correção copiado!");
                 }}
                 className="flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold bg-orange-500/10 text-orange-400 border border-orange-500/20 hover:bg-orange-500/20 transition"
                 title="Copiar Link de Correção"
@@ -473,9 +474,9 @@ function ClienteDetailPage() {
 
         {permissoes?.aprovar_cadastro === true && !isBloqueado && !isFinal && (c.status === "em_analise" || c.status === "dados_enviados") && (
           <div className="w-full lg:w-auto flex flex-wrap gap-2 lg:gap-3">
-            <button onClick={abrirCorrecao} className="flex-1 lg:flex-none lg:w-32 rounded-xl bg-orange-600/80 py-2.5 px-4 text-sm font-medium text-white max-h-[45px] hover:bg-orange-600 transition shadow-lg border border-orange-600/20">Corrigir</button>
-            <button onClick={() => isAprovacaoBloqueada ? alert("Não é possível aprovar. Todos os dados e documentos precisam estar aprovados.") : (setCodigoCliente(""), setShowAprovar(true))} disabled={isAprovacaoBloqueada} title={isAprovacaoBloqueada ? "Todos os campos devem estar aprovados" : ""} className="flex-1 lg:flex-none lg:w-32 rounded-xl bg-green-700/80 py-2.5 px-4 text-sm font-medium text-white max-h-[45px] hover:bg-green-700 transition shadow-lg border border-green-700/20 disabled:opacity-50">Aprovar</button>
-            <button onClick={abrirReprovar} className="flex-1 lg:flex-none lg:w-32 rounded-xl bg-red-700/80 py-2.5 px-4 text-sm font-medium text-white max-h-[45px] hover:bg-red-700 transition shadow-lg border border-red-700/20">Reprovar</button>
+            <button onClick={abrirCorrecao} className="flex-1 lg:flex-none lg:w-32 rounded-xl bg-orange-600/80 py-2.5 px-4 text-sm font-medium text-white min-h-[44px] hover:bg-orange-600 transition-all duration-200 shadow-md border border-orange-600/20">Corrigir</button>
+            <button onClick={() => isAprovacaoBloqueada ? toast.error("Todos os campos e documentos precisam estar aprovados.") : (setCodigoCliente(""), setShowAprovar(true))} disabled={isAprovacaoBloqueada} title={isAprovacaoBloqueada ? "Todos os campos devem estar aprovados" : ""} className="flex-1 lg:flex-none lg:w-32 rounded-xl bg-green-700/80 py-2.5 px-4 text-sm font-medium text-white min-h-[44px] hover:bg-green-700 transition-all duration-200 shadow-md border border-green-700/20 disabled:opacity-50">Aprovar</button>
+            <button onClick={abrirReprovar} className="flex-1 lg:flex-none lg:w-32 rounded-xl bg-red-700/80 py-2.5 px-4 text-sm font-medium text-white min-h-[44px] hover:bg-red-700 transition-all duration-200 shadow-md border border-red-700/20">Reprovar</button>
           </div>
         )}
       </div>
@@ -496,7 +497,7 @@ function ClienteDetailPage() {
             <BotoesAcaoMassa aba="dados" />
           </div>
           <div className="flex flex-col gap-3">
-            {c.tipo_pessoa && <span className="self-start rounded-full bg-accent/10 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-accent">{c.tipo_pessoa}</span>}
+            {c.tipo_pessoa && <span className="self-start rounded-full bg-accent/10 px-3 py-1 text-xs font-bold uppercase tracking-wider text-accent">{c.tipo_pessoa}</span>}
             {pf?.nome && <CampoRevisavel campoKey="pf.nome" label="Nome Completo" value={pf.nome} revisoes={revisoes} podeAcao={podeEditarCampos} onAction={(tipo) => setFieldAction({ campo: "pf.nome", label: "Nome Completo", tipo })} />}
             {pf?.cpf && <CampoRevisavel campoKey="pf.cpf" label="CPF" value={pf.cpf} revisoes={revisoes} podeAcao={podeEditarCampos} onAction={(tipo) => setFieldAction({ campo: "pf.cpf", label: "CPF", tipo })} />}
             {pf?.data_nascimento && <CampoRevisavel campoKey="pf.data_nascimento" label="Data de Nascimento" value={new Date(pf.data_nascimento).toLocaleDateString("pt-BR")} revisoes={revisoes} podeAcao={podeEditarCampos} onAction={(tipo) => setFieldAction({ campo: "pf.data_nascimento", label: "Data de Nascimento", tipo })} />}
@@ -526,7 +527,7 @@ function ClienteDetailPage() {
           <div className="flex gap-1 rounded-lg bg-bg-dark p-1 mb-4">
             {(["clinica","entrega","faturamento"] as const).map((t) => (
               <button key={t} onClick={() => setEndAddressType(t)}
-                className={`flex-1 rounded-md py-1.5 text-[10px] font-medium transition ${endAddressType === t ? "bg-accent text-white" : "text-text-muted hover:text-text-main"}`}>
+                className={`flex-1 rounded-md py-1.5 text-xs font-medium transition ${endAddressType === t ? "bg-accent text-white" : "text-text-muted hover:text-text-main"}`}>
                 {t === "clinica" ? "Clínica" : t === "entrega" ? "Entrega" : "Faturamento"}
               </button>
             ))}
@@ -550,12 +551,12 @@ function ClienteDetailPage() {
                 return enderecoFull && profile?.ambiente !== "cadastro" && profile?.ambiente !== "ambos" ? (
                   <div className="flex items-start gap-2 mb-4 rounded-xl bg-accent/5 border border-accent/10 p-3">
                     <div className="flex-1 min-w-0">
-                      <p className="text-[11px] text-text-muted mb-0.5">Endereço Completo</p>
+                      <p className="text-xs text-text-muted mb-0.5">Endereço Completo</p>
                       <p className="text-sm text-text-main">{enderecoFull}</p>
                     </div>
                     <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(enderecoFull)}`}
                       target="_blank" rel="noopener noreferrer"
-                      className="flex items-center gap-1 shrink-0 rounded-lg bg-accent/10 px-3 py-2 text-[11px] font-medium text-accent hover:bg-accent/20 transition">
+                      className="flex items-center gap-1 shrink-0 rounded-lg bg-accent/10 px-3 py-2 text-xs font-medium text-accent hover:bg-accent/20 transition">
                       <MapPin size={14} /> Abrir no Mapa
                     </a>
                   </div>
@@ -679,16 +680,16 @@ function CampoRevisavel({ campoKey, label, value, revisoes, podeAcao, onAction, 
   return (
     <div className="flex items-start gap-2">
       <div className="flex-1 min-w-0">
-        <p className="text-[11px] text-text-muted mb-0.5">{label}</p>
+        <p className="text-xs text-text-muted mb-0.5">{label}</p>
         <div className="flex items-center gap-2">
           {iconBefore && <span className="shrink-0">{iconBefore}</span>}
           <p className="text-sm text-text-main truncate">{value || "—"}</p>
           {status !== "pendente" && !isRevising && (
-            <span className={`shrink-0 rounded-full px-2 py-0.5 text-[9px] font-medium ${STATUS_REVISAO_COLOR[status]}`}>{STATUS_REVISAO_LABEL[status]}</span>
+            <span className={`shrink-0 rounded-full px-2 py-0.5 text-[10px] font-medium ${STATUS_REVISAO_COLOR[status]}`}>{STATUS_REVISAO_LABEL[status]}</span>
           )}
         </div>
         {rev?.comentario && (
-          <p className="text-[10px] text-text-muted mt-0.5 italic">{rev.comentario}</p>
+          <p className="text-xs text-text-muted mt-0.5 italic">{rev.comentario}</p>
         )}
       </div>
       <div className="flex items-center gap-1 shrink-0 pt-4">
@@ -696,7 +697,7 @@ function CampoRevisavel({ campoKey, label, value, revisoes, podeAcao, onAction, 
         {podeAcao && (
           <>
             {status !== "pendente" && !isRevising ? (
-              <button onClick={() => setIsRevising(true)} className="rounded-lg px-2 py-1 text-[10px] font-medium text-accent hover:bg-accent/10 transition border border-accent/20">
+              <button onClick={() => setIsRevising(true)} className="rounded-lg px-2 py-1 text-xs font-medium text-accent hover:bg-accent/10 transition border border-accent/20">
                 Revisar
               </button>
             ) : (

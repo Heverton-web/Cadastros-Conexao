@@ -6,6 +6,7 @@ import { listarCadastros, deletarCadastro, atualizarCadastro, STATUS_LABEL, STAT
 import { getDocumentosStatusMap, DOC_STATUS_LABEL, DOC_STATUS_COLOR, type DocStatus } from "~/features/documentos";
 import { Search, Loader2, ArrowRight, Trash2, Pencil, CheckCircle, XCircle, Clock, AlertTriangle } from "lucide-react";
 import toast from "react-hot-toast";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "~/components/ui/alert-dialog";
 
 export const clientesRoute = createRoute({
   getParentRoute: () => authLayout,
@@ -131,8 +132,8 @@ function ClientesPage() {
               onClick={() => setFiltroStatus("")} 
               className={`flex h-10 w-full lg:w-32 flex-col items-center justify-center rounded-lg px-1 transition ${filtroStatus === "" ? "bg-accent text-white shadow-md" : "bg-card text-text-muted hover:text-text-main border border-input-border"}`}
             >
-              <span className="w-full truncate text-center text-[10px] leading-tight">Todos</span>
-              <span className="text-[11px] font-bold leading-none mt-0.5">{getCount("")}</span>
+              <span className="w-full truncate text-center text-xs leading-tight">Todos</span>
+              <span className="text-xs font-bold leading-none mt-0.5">{getCount("")}</span>
             </button>
             {Object.entries(STATUS_LABEL).map(([k, v]) => (
               <button 
@@ -140,8 +141,8 @@ function ClientesPage() {
                 onClick={() => setFiltroStatus(k as CadastroStatus)} 
                 className={`flex h-10 w-full lg:w-32 flex-col items-center justify-center rounded-lg px-1 transition ${filtroStatus === k ? "bg-accent text-white shadow-md" : "bg-card text-text-muted hover:text-text-main border border-input-border"}`}
               >
-                <span className="w-full truncate text-center text-[10px] leading-tight">{v}</span>
-                <span className="text-[11px] font-bold leading-none mt-0.5">{getCount(k as CadastroStatus)}</span>
+                <span className="w-full truncate text-center text-xs leading-tight">{v}</span>
+                <span className="text-xs font-bold leading-none mt-0.5">{getCount(k as CadastroStatus)}</span>
               </button>
             ))}
           </div>
@@ -166,10 +167,10 @@ function ClientesPage() {
                 <div className="flex items-center gap-1">
                   {podeExcluir && (
                     <>
-                      <button onClick={(e) => { e.stopPropagation(); setEditTarget(c); }} className="btn-hover-edit p-1.5 rounded-lg">
+                      <button onClick={(e) => { e.stopPropagation(); setEditTarget(c); }} className="btn-hover-edit p-2 rounded-lg min-h-[44px] min-w-[44px] flex items-center justify-center">
                         <Pencil size={14} />
                       </button>
-                      <button onClick={(e) => { e.stopPropagation(); setDeleteConfirm(c.id); }} className="btn-hover-destructive p-1.5 rounded-lg">
+                      <button onClick={(e) => { e.stopPropagation(); setDeleteConfirm(c.id); }} className="btn-hover-destructive p-2 rounded-lg min-h-[44px] min-w-[44px] flex items-center justify-center">
                         <Trash2 size={14} />
                       </button>
                     </>
@@ -178,16 +179,16 @@ function ClientesPage() {
                 </div>
               </div>
               <div className="flex items-center gap-1.5 flex-wrap">
-                <span className={`rounded-full px-2.5 py-0.5 text-[10px] font-medium ${STATUS_COLOR[c.status]}`}>{STATUS_LABEL[c.status]}</span>
+                <span className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${STATUS_COLOR[c.status]}`}>{STATUS_LABEL[c.status]}</span>
                 {c.status !== "aprovado" && (
-                  <span className={`rounded-full px-2.5 py-0.5 text-[10px] font-medium ${DOC_STATUS_COLOR[docsStatus[c.id]]}`}>
+                  <span className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${DOC_STATUS_COLOR[docsStatus[c.id]]}`}>
                     {DOC_STATUS_LABEL[docsStatus[c.id]]}
                   </span>
                 )}
-                {c.tipo_pessoa && <span className="rounded-full bg-accent/10 px-2.5 py-0.5 text-[10px] font-medium text-accent">{c.tipo_pessoa}</span>}
-                {c.codigo_cliente && <span className="text-[10px] text-text-muted">Cód: {c.codigo_cliente}</span>}
+                {c.tipo_pessoa && <span className="rounded-full bg-accent/10 px-2.5 py-0.5 text-xs font-medium text-accent">{c.tipo_pessoa}</span>}
+                {c.codigo_cliente && <span className="text-xs text-text-muted">Cód: {c.codigo_cliente}</span>}
               </div>
-              <div className="flex items-center justify-between text-[11px] text-text-muted">
+              <div className="flex items-center justify-between text-xs text-text-muted">
                 <span>{c.profiles?.nome || "—"}</span>
                 <span>{new Date(c.created_at).toLocaleDateString("pt-BR")}</span>
               </div>
@@ -196,19 +197,25 @@ function ClientesPage() {
         </div>
       )}
 
-      {deleteConfirm && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-6">
-          <div className="w-full max-w-sm rounded-2xl bg-card p-6 shadow-xl text-center">
-            <div className="mb-3 flex justify-center"><XCircle size={40} className="text-red-400" /></div>
-            <h2 className="text-base font-bold text-text-main mb-2">Confirmar exclusão</h2>
-            <p className="text-sm text-text-muted mb-5">Tem certeza? Esta ação não pode ser desfeita.</p>
-            <div className="flex gap-3">
-              <button onClick={() => setDeleteConfirm(null)} className="flex-1 rounded-xl border border-input-border py-3 text-sm font-medium text-text-muted">Cancelar</button>
-              <button onClick={() => handleDelete(deleteConfirm)} className="flex-1 rounded-xl bg-red-500 py-3 text-sm font-medium text-white">Excluir</button>
-            </div>
-          </div>
-        </div>
-      )}
+      <AlertDialog open={!!deleteConfirm} onOpenChange={(o) => !o && setDeleteConfirm(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle className="flex items-center gap-2">
+              <XCircle className="text-error" size={20} />
+              Confirmar exclusão
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              Tem certeza? Esta ação não pode ser desfeita.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+            <AlertDialogAction onClick={() => deleteConfirm && handleDelete(deleteConfirm)} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+              Excluir
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
 
       {editTarget && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-6">
