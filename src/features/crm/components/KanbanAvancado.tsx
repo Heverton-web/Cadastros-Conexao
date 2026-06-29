@@ -17,7 +17,7 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { supabase } from "~/core/supabase";
+import { supabase } from "~/lib/supabase";
 import { useAuth } from "~/lib/auth";
 import { formatBRL } from "~/features/crm/lib/comercial";
 import { cn } from "~/lib/utils";

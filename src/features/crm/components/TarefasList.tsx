@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { supabase } from "~/core/supabase";
+import { supabase } from "~/lib/supabase";
 import { useAuth } from "~/lib/auth";
 import { cn } from "~/lib/utils";
 import {

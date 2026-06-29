@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { supabase } from "~/core/supabase";
+import { supabase } from "~/lib/supabase";
 import { useAuth } from "~/lib/auth";
 import { cn } from "~/lib/utils";
 import { Search, User, FileText, Calendar, X, Loader2 } from "lucide-react";
