@@ -12,7 +12,10 @@ import { npsModule } from "~/features/nps/module";
 import { funisModule } from "~/features/funis/module";
 import { linktreeModule } from "~/features/linktree/module";
 import { hubModule } from "~/features/hub/module";
+import { initSentry } from "~/core/monitoring/sentry";
 import "~/styles/globals.css";
+
+initSentry();
 
 registerModule(empresasModule);
 registerModule(cadastrosModule);
