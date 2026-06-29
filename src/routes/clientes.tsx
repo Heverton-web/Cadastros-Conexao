@@ -4,9 +4,15 @@ import { useState, useEffect } from "react";
 import { useAuth } from "~/lib/auth";
 import { listarCadastros, deletarCadastro, atualizarCadastro, STATUS_LABEL, STATUS_COLOR, type Cadastro, type CadastroStatus } from "~/features/clientes";
 import { getDocumentosStatusMap, DOC_STATUS_LABEL, DOC_STATUS_COLOR, type DocStatus } from "~/features/documentos";
-import { Search, Loader2, ArrowRight, Trash2, Pencil, CheckCircle, XCircle, Clock, AlertTriangle } from "lucide-react";
+import { Search, Loader2, ArrowUpRight, Trash2, Pencil, XCircle, UserPlus, Filter, X } from "lucide-react";
 import toast from "react-hot-toast";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "~/components/ui/alert-dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from "~/components/ui/dialog";
+import { Input } from "~/components/ui/input";
+import { Button } from "~/components/ui/button";
+import { EmptyState } from "~/components/ui/empty-state";
+import { Skeleton } from "~/components/ui/skeleton";
+import { cn } from "~/lib/utils";
 
 export const clientesRoute = createRoute({
   getParentRoute: () => authLayout,
@@ -67,11 +73,11 @@ function ClientesPage() {
     setEditSubmitting(true);
     try {
       await atualizarCadastro(editTarget.id, editForm);
-      toast.success("Registro atualizado");
+      toast.success("Registro atualizado com sucesso");
       setEditTarget(null);
       carregar();
     } catch (e) {
-      toast.error("Erro ao atualizar");
+      toast.error("Erro ao atualizar registro");
       console.error(e);
     } finally {
       setEditSubmitting(false);
@@ -81,11 +87,11 @@ function ClientesPage() {
   async function handleDelete(id: string) {
     try {
       await deletarCadastro(id);
-      toast.success("Registro excluído");
+      toast.success("Registro excluído com sucesso");
       setDeleteConfirm(null);
       carregar();
     } catch (e) {
-      toast.error("Erro ao excluir");
+      toast.error("Erro ao excluir registro");
       console.error(e);
     }
   }
@@ -110,137 +116,267 @@ function ClientesPage() {
   });
 
   return (
-    <div className="flex flex-col gap-6 p-4 pb-24 lg:p-8 lg:pb-8 lg:gap-8">
-      <h1 className="text-lg font-bold text-text-main">Clientes</h1>
-      <div className="flex flex-col lg:flex-row gap-4 lg:gap-6">
+    <div className="space-y-6 animate-fade-in">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold text-text-main tracking-tight">Clientes</h1>
+          <p className="text-sm text-text-muted mt-1">
+            {data.length} {data.length === 1 ? "cliente cadastrado" : "clientes cadastrados"}
+          </p>
+        </div>
+      </div>
+
+      {/* Search + Filters */}
+      <div className="flex flex-col lg:flex-row gap-3">
         <div className="relative flex-1">
-          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted" />
-          <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Buscar clientes..." className="w-full rounded-lg border border-input-border bg-input-bg py-3 pl-10 pr-4 text-sm text-text-main outline-none focus:border-accent focus:ring-2 focus:ring-ring min-h-[44px]" />
+          <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted" />
+          <Input
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Buscar por nome ou código..."
+            className="pl-11 h-12"
+          />
+          {search && (
+            <button
+              onClick={() => setSearch("")}
+              className="absolute right-3 top-1/2 -translate-y-1/2 p-1 rounded-lg text-text-muted hover:text-text-main hover:bg-surface-hover transition-colors"
+            >
+              <X size={14} />
+            </button>
+          )}
         </div>
         {permissoes?.ver_todos_cadastros && (
-          <select value={filtroConsultor} onChange={(e) => setFiltroConsultor(e.target.value)} className="w-full lg:max-w-md rounded-lg border border-input-border bg-input-bg px-3 py-3 text-sm text-text-main outline-none focus:border-accent min-h-[44px]">
+          <select
+            value={filtroConsultor}
+            onChange={(e) => setFiltroConsultor(e.target.value)}
+            className="w-full lg:w-56 h-12 rounded-xl border border-border bg-input-bg px-4 text-sm text-text-main font-medium focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent transition-all duration-200"
+          >
             <option value="">Todos os consultores</option>
             {consultores.map(nome => <option key={nome} value={nome!}>{nome}</option>)}
           </select>
         )}
       </div>
-      {permissoes?.ver_todos_cadastros && (
-        <>
 
-          <div className="grid grid-cols-4 lg:flex lg:flex-wrap lg:justify-center gap-3">
-            <button 
-              onClick={() => setFiltroStatus("")} 
-              className={`flex h-10 w-full lg:w-32 flex-col items-center justify-center rounded-lg px-1 transition ${filtroStatus === "" ? "bg-accent text-white shadow-md" : "bg-card text-text-muted hover:text-text-main border border-input-border"}`}
+      {/* Status Filter Pills */}
+      {permissoes?.ver_todos_cadastros && (
+        <div className="flex flex-wrap gap-2">
+          <button
+            onClick={() => setFiltroStatus("")}
+            className={cn(
+              "inline-flex items-center gap-2 h-9 rounded-full px-4 text-xs font-semibold transition-all duration-200",
+              filtroStatus === ""
+                ? "bg-accent text-accent-fg shadow-md shadow-accent/25"
+                : "bg-surface border border-border text-text-muted hover:text-text-main hover:border-accent/30"
+            )}
+          >
+            Todos
+            <span className={cn(
+              "inline-flex items-center justify-center min-w-[20px] h-5 rounded-full px-1.5 text-[10px] font-bold",
+              filtroStatus === "" ? "bg-accent-fg/20 text-accent-fg" : "bg-surface-hover text-text-muted"
+            )}>
+              {getCount("")}
+            </span>
+          </button>
+          {Object.entries(STATUS_LABEL).map(([k, v]) => (
+            <button
+              key={k}
+              onClick={() => setFiltroStatus(k as CadastroStatus)}
+              className={cn(
+                "inline-flex items-center gap-2 h-9 rounded-full px-4 text-xs font-semibold transition-all duration-200",
+                filtroStatus === k
+                  ? "bg-accent text-accent-fg shadow-md shadow-accent/25"
+                  : "bg-surface border border-border text-text-muted hover:text-text-main hover:border-accent/30"
+              )}
             >
-              <span className="w-full truncate text-center text-xs leading-tight">Todos</span>
-              <span className="text-xs font-bold leading-none mt-0.5">{getCount("")}</span>
+              {v}
+              <span className={cn(
+                "inline-flex items-center justify-center min-w-[20px] h-5 rounded-full px-1.5 text-[10px] font-bold",
+                filtroStatus === k ? "bg-accent-fg/20 text-accent-fg" : "bg-surface-hover text-text-muted"
+              )}>
+                {getCount(k as CadastroStatus)}
+              </span>
             </button>
-            {Object.entries(STATUS_LABEL).map(([k, v]) => (
-              <button 
-                key={k} 
-                onClick={() => setFiltroStatus(k as CadastroStatus)} 
-                className={`flex h-10 w-full lg:w-32 flex-col items-center justify-center rounded-lg px-1 transition ${filtroStatus === k ? "bg-accent text-white shadow-md" : "bg-card text-text-muted hover:text-text-main border border-input-border"}`}
-              >
-                <span className="w-full truncate text-center text-xs leading-tight">{v}</span>
-                <span className="text-xs font-bold leading-none mt-0.5">{getCount(k as CadastroStatus)}</span>
-              </button>
-            ))}
-          </div>
-        </>
-      )}
-      {loading ? (
-        <div className="flex justify-center py-12"><Loader2 size={24} className="animate-spin text-accent" /></div>
-      ) : filtered.length === 0 ? (
-        <div className="flex flex-col items-center justify-center py-16 px-4 rounded-xl border border-dashed border-input-border bg-input-bg/20 mt-4">
-          <Search size={48} className="text-text-muted/30 mb-4" />
-          <p className="text-base font-medium text-text-muted">Nenhum cliente encontrado</p>
-          <p className="text-xs text-text-muted mt-1">Tente ajustar seus filtros ou termos de busca.</p>
+          ))}
         </div>
+      )}
+
+      {/* Content */}
+      {loading ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <Skeleton key={i} className="h-36 rounded-2xl" />
+          ))}
+        </div>
+      ) : filtered.length === 0 ? (
+        <EmptyState
+          icon={<Search className="w-10 h-10 text-text-muted/30" />}
+          title="Nenhum cliente encontrado"
+          description="Tente ajustar seus filtros ou termos de busca."
+        />
       ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {filtered.map((c) => (
-            <button key={c.id} onClick={() => navigate({ to: "/clientes/$id", params: { id: c.id } })}
-              className="flex flex-col gap-2 rounded-xl bg-card p-4 text-left shadow-lg transition hover:ring-2 hover:ring-accent/30 active:scale-[0.98] hover:-translate-y-1"
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {filtered.map((c, i) => (
+            <button
+              key={c.id}
+              onClick={() => navigate({ to: "/clientes/$id", params: { id: c.id } })}
+              className="group flex flex-col gap-4 rounded-2xl bg-surface border border-border/60 p-5 text-left transition-all duration-300 hover:border-accent/30 hover:shadow-lg hover:shadow-accent/5 hover:-translate-y-0.5 active:scale-[0.99]"
+              style={{ animationDelay: `${i * 30}ms` }}
             >
-              <div className="flex items-center justify-between">
-                <span className="font-semibold text-text-main text-sm">{c.lead_nome || c.nome_temporario || "Sem nome"}</span>
-                <div className="flex items-center gap-1">
-                  {podeExcluir && (
-                    <>
-                      <button onClick={(e) => { e.stopPropagation(); setEditTarget(c); }} className="btn-hover-edit p-2 rounded-lg min-h-[44px] min-w-[44px] flex items-center justify-center">
-                        <Pencil size={14} />
-                      </button>
-                      <button onClick={(e) => { e.stopPropagation(); setDeleteConfirm(c.id); }} className="btn-hover-destructive p-2 rounded-lg min-h-[44px] min-w-[44px] flex items-center justify-center">
-                        <Trash2 size={14} />
-                      </button>
-                    </>
-                  )}
-                  <ArrowRight size={16} className="text-text-muted shrink-0" />
+              {/* Top row: avatar + name + actions */}
+              <div className="flex items-start justify-between gap-3">
+                <div className="flex items-center gap-3 min-w-0">
+                  <div className="w-10 h-10 rounded-full bg-accent/15 flex items-center justify-center shrink-0 group-hover:bg-accent/25 transition-colors">
+                    <span className="text-sm font-bold text-accent">
+                      {(c.lead_nome || c.nome_temporario || "S")[0].toUpperCase()}
+                    </span>
+                  </div>
+                  <div className="min-w-0">
+                    <p className="text-sm font-semibold text-text-main truncate group-hover:text-accent transition-colors">
+                      {c.lead_nome || c.nome_temporario || "Sem nome"}
+                    </p>
+                    {c.profiles?.nome && (
+                      <p className="text-xs text-text-muted mt-0.5">Por: {c.profiles.nome}</p>
+                    )}
+                  </div>
                 </div>
+                {podeExcluir && (
+                  <div className="flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
+                    <button
+                      onClick={(e) => { e.stopPropagation(); setEditTarget(c); }}
+                      className="p-2 rounded-lg text-blue-400 hover:bg-blue-500/10 transition-colors"
+                      title="Editar"
+                    >
+                      <Pencil size={14} />
+                    </button>
+                    <button
+                      onClick={(e) => { e.stopPropagation(); setDeleteConfirm(c.id); }}
+                      className="p-2 rounded-lg text-error hover:bg-error/10 transition-colors"
+                      title="Excluir"
+                    >
+                      <Trash2 size={14} />
+                    </button>
+                  </div>
+                )}
               </div>
-              <div className="flex items-center gap-1.5 flex-wrap">
-                <span className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${STATUS_COLOR[c.status]}`}>{STATUS_LABEL[c.status]}</span>
-                {c.status !== "aprovado" && (
-                  <span className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${DOC_STATUS_COLOR[docsStatus[c.id]]}`}>
+
+              {/* Status badges */}
+              <div className="flex items-center gap-2 flex-wrap">
+                <span className={`inline-flex items-center rounded-lg px-2.5 py-1 text-xs font-semibold ${STATUS_COLOR[c.status]}`}>
+                  {STATUS_LABEL[c.status]}
+                </span>
+                {c.status !== "aprovado" && docsStatus[c.id] && (
+                  <span className={`inline-flex items-center rounded-lg px-2.5 py-1 text-xs font-semibold ${DOC_STATUS_COLOR[docsStatus[c.id]]}`}>
                     {DOC_STATUS_LABEL[docsStatus[c.id]]}
                   </span>
                 )}
-                {c.tipo_pessoa && <span className="rounded-full bg-accent/10 px-2.5 py-0.5 text-xs font-medium text-accent">{c.tipo_pessoa}</span>}
-                {c.codigo_cliente && <span className="text-xs text-text-muted">Cód: {c.codigo_cliente}</span>}
               </div>
-              <div className="flex items-center justify-between text-xs text-text-muted">
-                <span>{c.profiles?.nome || "—"}</span>
-                <span>{new Date(c.created_at).toLocaleDateString("pt-BR")}</span>
+
+              {/* Footer */}
+              <div className="flex items-center justify-between pt-2 border-t border-border/30">
+                <div className="flex items-center gap-2">
+                  {c.tipo_pessoa && (
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-accent/60">{c.tipo_pessoa}</span>
+                  )}
+                  {c.codigo_cliente && (
+                    <span className="text-[10px] text-text-muted">Cód: {c.codigo_cliente}</span>
+                  )}
+                </div>
+                <span className="text-[10px] text-text-muted/60">
+                  {new Date(c.created_at).toLocaleDateString("pt-BR")}
+                </span>
               </div>
             </button>
           ))}
         </div>
       )}
 
+      {/* Delete AlertDialog */}
       <AlertDialog open={!!deleteConfirm} onOpenChange={(o) => !o && setDeleteConfirm(null)}>
         <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle className="flex items-center gap-2">
-              <XCircle className="text-error" size={20} />
-              Confirmar exclusão
-            </AlertDialogTitle>
-            <AlertDialogDescription>
-              Tem certeza? Esta ação não pode ser desfeita.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancelar</AlertDialogCancel>
-            <AlertDialogAction onClick={() => deleteConfirm && handleDelete(deleteConfirm)} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
-              Excluir
-            </AlertDialogAction>
-          </AlertDialogFooter>
+          <div className="h-1 w-full bg-gradient-to-r from-error via-error to-error rounded-t-2xl" />
+          <div className="p-6 sm:p-8">
+            <AlertDialogHeader>
+              <AlertDialogTitle className="flex items-center gap-3 text-lg">
+                <div className="w-10 h-10 rounded-xl bg-error/15 flex items-center justify-center">
+                  <XCircle className="text-error" size={20} />
+                </div>
+                Confirmar exclusão
+              </AlertDialogTitle>
+              <AlertDialogDescription className="text-sm text-text-muted leading-relaxed">
+                Tem certeza que deseja excluir este cliente? Esta ação não pode ser desfeita e todos os dados associados serão removidos permanentemente.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancelar</AlertDialogCancel>
+              <AlertDialogAction onClick={() => deleteConfirm && handleDelete(deleteConfirm)} className="bg-error text-white hover:bg-error/90 shadow-lg shadow-error/25">
+                Excluir permanentemente
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </div>
         </AlertDialogContent>
       </AlertDialog>
 
-      {editTarget && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-6">
-          <div className="w-full max-w-md rounded-2xl bg-card p-6 shadow-xl max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-base font-bold text-text-main">Editar Cliente</h2>
-              <button onClick={() => setEditTarget(null)} className="text-text-muted hover:text-text-main"><XCircle size={20} /></button>
+      {/* Edit Dialog */}
+      <Dialog open={!!editTarget} onOpenChange={(o) => !o && setEditTarget(null)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Editar Cliente</DialogTitle>
+            <DialogDescription>Atualize as informações do cliente abaixo.</DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 py-2">
+            <div className="space-y-2">
+              <label className="block text-sm font-semibold text-text-secondary">Nome do Lead</label>
+              <Input
+                value={editForm.lead_nome}
+                onChange={(e) => setEditForm(prev => ({ ...prev, lead_nome: e.target.value }))}
+                placeholder="Nome completo"
+              />
             </div>
-            <label className="mb-1 block text-xs font-medium text-text-muted">Nome do Lead</label>
-            <input value={editForm.lead_nome} onChange={(e) => setEditForm(prev => ({ ...prev, lead_nome: e.target.value }))} className="mb-3 w-full rounded-lg border border-input-border bg-input-bg px-4 py-3 text-sm text-text-main outline-none focus:border-accent min-h-[44px]" />
-            <label className="mb-1 block text-xs font-medium text-text-muted">E-mail do Lead</label>
-            <input value={editForm.lead_email} onChange={(e) => setEditForm(prev => ({ ...prev, lead_email: e.target.value }))} type="email" className="mb-3 w-full rounded-lg border border-input-border bg-input-bg px-4 py-3 text-sm text-text-main outline-none focus:border-accent min-h-[44px]" />
-            <label className="mb-1 block text-xs font-medium text-text-muted">WhatsApp do Lead</label>
-            <input value={editForm.lead_whatsapp} onChange={(e) => setEditForm(prev => ({ ...prev, lead_whatsapp: e.target.value }))} className="mb-3 w-full rounded-lg border border-input-border bg-input-bg px-4 py-3 text-sm text-text-main outline-none focus:border-accent min-h-[44px]" />
-            <label className="mb-1 block text-xs font-medium text-text-muted">Código do Cliente</label>
-            <input value={editForm.codigo_cliente} onChange={(e) => setEditForm(prev => ({ ...prev, codigo_cliente: e.target.value }))} className="mb-3 w-full rounded-lg border border-input-border bg-input-bg px-4 py-3 text-sm text-text-main outline-none focus:border-accent min-h-[44px]" />
-            <label className="mb-1 block text-xs font-medium text-text-muted">Observações</label>
-            <textarea value={editForm.observacoes} onChange={(e) => setEditForm(prev => ({ ...prev, observacoes: e.target.value }))} rows={3} className="mb-4 w-full rounded-lg border border-input-border bg-input-bg px-4 py-3 text-sm text-text-main outline-none focus:border-accent resize-none" />
-            <div className="flex gap-3">
-              <button onClick={() => setEditTarget(null)} className="flex-1 rounded-xl border border-input-border py-3 text-sm font-medium text-text-muted">Cancelar</button>
-              <button onClick={handleEditSave} disabled={editSubmitting} className="flex-1 rounded-xl bg-accent py-3 text-sm font-medium text-white disabled:opacity-50">{editSubmitting ? "Salvando..." : "Salvar"}</button>
+            <div className="space-y-2">
+              <label className="block text-sm font-semibold text-text-secondary">E-mail do Lead</label>
+              <Input
+                value={editForm.lead_email}
+                onChange={(e) => setEditForm(prev => ({ ...prev, lead_email: e.target.value }))}
+                type="email"
+                placeholder="email@exemplo.com"
+              />
+            </div>
+            <div className="space-y-2">
+              <label className="block text-sm font-semibold text-text-secondary">WhatsApp do Lead</label>
+              <Input
+                value={editForm.lead_whatsapp}
+                onChange={(e) => setEditForm(prev => ({ ...prev, lead_whatsapp: e.target.value }))}
+                placeholder="(00) 00000-0000"
+              />
+            </div>
+            <div className="space-y-2">
+              <label className="block text-sm font-semibold text-text-secondary">Código do Cliente</label>
+              <Input
+                value={editForm.codigo_cliente}
+                onChange={(e) => setEditForm(prev => ({ ...prev, codigo_cliente: e.target.value }))}
+                placeholder="Código interno"
+              />
+            </div>
+            <div className="space-y-2">
+              <label className="block text-sm font-semibold text-text-secondary">Observações</label>
+              <textarea
+                value={editForm.observacoes}
+                onChange={(e) => setEditForm(prev => ({ ...prev, observacoes: e.target.value }))}
+                rows={3}
+                className="flex w-full rounded-xl border border-border bg-input-bg px-4 py-3 text-sm text-text-main font-medium shadow-sm transition-all duration-200 placeholder:text-text-muted/60 hover:border-accent/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 focus-visible:ring-offset-1 focus-visible:ring-offset-background focus-visible:border-accent resize-none"
+                placeholder="Anotações sobre o cliente..."
+              />
             </div>
           </div>
-        </div>
-      )}
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setEditTarget(null)}>Cancelar</Button>
+            <Button onClick={handleEditSave} loading={editSubmitting}>
+              {editSubmitting ? "Salvando..." : "Salvar alterações"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

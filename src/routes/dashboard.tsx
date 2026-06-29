@@ -54,7 +54,7 @@ function DashboardPage() {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-text-main tracking-tight">
-            Olá, {profile?.nome?.split(" ")[0] || "Usuário"} 👋
+            Olá, {profile?.nome?.split(" ")[0] || "Usuário"}
           </h1>
           <p className="text-sm text-text-muted mt-1">
             Aqui está o resumo das suas solicitações de cadastro

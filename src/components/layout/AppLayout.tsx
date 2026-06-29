@@ -3,7 +3,7 @@ import { BottomNav } from "./BottomNav";
 import { ModuleDrawer } from "./ModuleDrawer";
 import { NavSidebar } from "./NavSidebar";
 import { useAuth } from "~/lib/auth";
-import { LogOut, Bell, Building2, Grid3X3 } from "lucide-react";
+import { LogOut, Bell, Building2, Grid3X3, Search } from "lucide-react";
 import { useModulos } from "./useNavItems";
 import { getAllModules } from "~/registry";
 import { cn } from "~/lib/utils";
@@ -104,14 +104,18 @@ export function AppLayout() {
   return (
     <DeviceGate>
       <div className="min-h-dvh bg-bg-dark">
-        <header className="sticky top-0 z-40 border-b border-border bg-header-bg/95 backdrop-blur-lg">
-          <div className="flex items-center justify-between px-4 py-3 lg:h-[70px] max-w-7xl mx-auto w-full relative">
-            <div className="flex items-center gap-1">
+        {/* Header */}
+        <header className="sticky top-0 z-40 border-b border-border/50 bg-header-bg/80 backdrop-blur-xl">
+          <div className="flex items-center justify-between px-4 lg:px-6 h-[70px] max-w-[1600px] mx-auto w-full">
+            {/* Logo */}
+            <div className="flex items-center gap-3">
               {logoAppUrl ? (
                 <img src={logoAppUrl} alt={empresa?.nome ?? "Conexão"} className="h-7 object-contain" />
               ) : (
-                <div className="flex items-center gap-2">
-                  <Building2 size={20} className="text-accent" />
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-lg bg-accent/20 flex items-center justify-center shrink-0">
+                    <Building2 size={16} className="text-accent" />
+                  </div>
                   <span className="text-sm font-bold text-text-main truncate max-w-[160px]">
                     {empresa?.nome ?? "Conexão"}
                   </span>
@@ -119,18 +123,20 @@ export function AppLayout() {
               )}
             </div>
 
+            {/* Actions */}
             <div className="flex items-center gap-2">
               {modulos.length > 1 && (
                 <button
                   onClick={() => setShowDrawer(true)}
-                  className="lg:hidden flex items-center justify-center p-2 rounded-lg text-text-muted hover:bg-input-bg hover:text-text-main transition-colors duration-150 min-h-[44px] min-w-[44px]"
+                  className="lg:hidden flex items-center justify-center p-2 rounded-xl text-text-muted hover:bg-surface-hover hover:text-text-main transition-all duration-200 min-h-[44px] min-w-[44px]"
                   title="Módulos e navegação"
                   aria-label="Módulos e navegação"
                 >
-                  <Grid3X3 size={18} />
+                  <Grid3X3 size={20} />
                 </button>
               )}
 
+              {/* Notifications */}
               <div className="relative">
                 {(() => {
                   const naoLidas = notifs.filter(n => !n.lida);
@@ -139,39 +145,57 @@ export function AppLayout() {
                     <>
                       <button
                         onClick={() => setShowNotifs(!showNotifs)}
-                        className="relative flex items-center justify-center p-2 rounded-lg text-text-muted hover:bg-input-bg hover:text-text-main transition-colors duration-150 min-h-[44px] min-w-[44px]"
+                        className="relative flex items-center justify-center p-2 rounded-xl text-text-muted hover:bg-surface-hover hover:text-text-main transition-all duration-200 min-h-[44px] min-w-[44px]"
                         title="Notificações"
                         aria-label={`Notificações${naoLidas.length > 0 ? ` (${naoLidas.length} não lidas)` : ""}`}
                       >
-                        <Bell size={18} />
+                        <Bell size={20} />
                         {naoLidas.length > 0 && (
-                          <span className="absolute -top-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-error text-xs font-bold text-white ring-2 ring-header-bg">{naoLidas.length}</span>
+                          <span className="absolute top-1 right-1 flex h-4 w-4 items-center justify-center rounded-full bg-error text-[9px] font-bold text-white ring-2 ring-header-bg">{naoLidas.length}</span>
                         )}
                       </button>
                       {showNotifs && (
-                        <div className="absolute right-0 mt-2 w-80 max-sm:fixed max-sm:inset-x-4 max-sm:top-16 max-sm:w-auto rounded-xl bg-card border border-border shadow-xl z-50 p-2 flex flex-col gap-1.5 max-h-[350px] max-sm:max-h-[60dvh] overflow-y-auto animate-slide-up">
-                          <div className="flex items-center justify-between px-2 py-1.5 border-b border-border-subtle/50 mb-1">
-                            <div className="flex flex-col gap-0.5">
-                              <span className="text-xs font-bold text-text-main">Notificações</span>
-                              <button onClick={() => setOcultarLidas(!ocultarLidas)} className="text-xs text-text-muted hover:text-accent font-semibold flex items-center gap-1 transition-colors self-start">{ocultarLidas ? "Ver lidas" : "Ocultar lidas"}</button>
+                        <div className="absolute right-0 mt-3 w-80 max-sm:fixed max-sm:inset-x-4 max-sm:top-16 max-sm:w-auto rounded-2xl bg-surface border border-border/50 shadow-2xl shadow-black/30 z-50 overflow-hidden animate-slide-up">
+                          <div className="p-4 border-b border-border/30">
+                            <div className="flex items-center justify-between">
+                              <span className="text-sm font-bold text-text-main">Notificações</span>
+                              <div className="flex items-center gap-2">
+                                <button onClick={() => setOcultarLidas(!ocultarLidas)} className="text-xs text-text-muted hover:text-accent font-medium transition-colors">
+                                  {ocultarLidas ? "Ver lidas" : "Ocultar lidas"}
+                                </button>
+                                {naoLidas.length > 0 && (
+                                  <button onClick={handleMarcarTodasLidas} className="text-xs text-accent font-semibold hover:text-accent-hover transition-colors">
+                                    Limpar tudo
+                                  </button>
+                                )}
+                              </div>
                             </div>
-                            {naoLidas.length > 0 && <button onClick={handleMarcarTodasLidas} className="text-xs text-accent font-medium hover:underline">Limpar tudo</button>}
                           </div>
-                          {notificacoesExibidas.length === 0 ? (
-                            <p className="text-center text-xs text-text-muted py-6">Nenhuma notificação {ocultarLidas ? "nova" : "no histórico"}</p>
-                          ) : (
-                            notificacoesExibidas.map(n => (
-                              <button key={n.id} onClick={() => handleMarcarLida(n.id, n.dados?.cadastro_id, n.lida)}
-                                className={cn("w-full text-left rounded-lg p-2 transition-colors duration-150 flex flex-col gap-0.5 border min-h-[44px]", n.lida ? "bg-transparent border-transparent opacity-60 hover:bg-bg-dark" : "bg-accent/5 border-accent/20 hover:bg-accent/10")}>
-                                <div className="flex items-center justify-between w-full">
-                                  <span className={cn("text-xs font-bold", n.lida ? "text-text-muted" : "text-text-main")}>{n.titulo}</span>
-                                  {!n.lida && <span className="h-1.5 w-1.5 rounded-full bg-accent animate-pulse" />}
-                                </div>
-                                <span className="text-xs text-text-muted leading-relaxed line-clamp-2">{n.mensagem}</span>
-                                <span className="text-xs text-text-muted mt-1 font-mono">{new Date(n.created_at).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })} - {new Date(n.created_at).toLocaleDateString("pt-BR")}</span>
-                              </button>
-                            ))
-                          )}
+                          <div className="max-h-[350px] overflow-y-auto p-2">
+                            {notificacoesExibidas.length === 0 ? (
+                              <div className="py-8 text-center">
+                                <Bell size={24} className="mx-auto text-text-muted/30 mb-2" />
+                                <p className="text-xs text-text-muted">Nenhuma notificação {ocultarLidas ? "nova" : "no histórico"}</p>
+                              </div>
+                            ) : (
+                              notificacoesExibidas.map(n => (
+                                <button key={n.id} onClick={() => handleMarcarLida(n.id, n.dados?.cadastro_id, n.lida)}
+                                  className={cn(
+                                    "w-full text-left rounded-xl p-3 transition-all duration-200 flex flex-col gap-1.5 min-h-[44px] mb-1",
+                                    n.lida
+                                      ? "opacity-50 hover:opacity-80 hover:bg-surface-hover"
+                                      : "bg-accent/5 hover:bg-accent/10 border border-accent/10"
+                                  )}>
+                                  <div className="flex items-center justify-between w-full">
+                                    <span className={cn("text-xs font-bold", n.lida ? "text-text-muted" : "text-text-main")}>{n.titulo}</span>
+                                    {!n.lida && <span className="h-2 w-2 rounded-full bg-accent animate-pulse" />}
+                                  </div>
+                                  <span className="text-xs text-text-muted leading-relaxed line-clamp-2">{n.mensagem}</span>
+                                  <span className="text-[10px] text-text-muted/60 font-mono">{new Date(n.created_at).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })} - {new Date(n.created_at).toLocaleDateString("pt-BR")}</span>
+                                </button>
+                              ))
+                            )}
+                          </div>
                         </div>
                       )}
                     </>
@@ -179,33 +203,44 @@ export function AppLayout() {
                 })()}
               </div>
 
-              <span className="text-xs text-text-secondary block truncate max-w-[120px]">{profile?.nome}</span>
+              {/* User */}
+              <div className="hidden sm:flex items-center gap-3 pl-3 ml-1 border-l border-border/30">
+                <div className="w-8 h-8 rounded-full bg-accent/15 flex items-center justify-center">
+                  <span className="text-xs font-bold text-accent">{profile?.nome?.[0]?.toUpperCase() || "U"}</span>
+                </div>
+                <span className="text-xs font-medium text-text-secondary truncate max-w-[100px]">{profile?.nome}</span>
+              </div>
+
               <button
                 onClick={() => { logout(); navigate({ to: "/" }); }}
-                className="flex items-center gap-1 text-xs text-text-muted hover:text-error transition-colors duration-150 p-2 rounded-lg min-h-[44px] min-w-[44px] justify-center"
+                className="flex items-center justify-center p-2 rounded-xl text-text-muted hover:text-error hover:bg-error/10 transition-all duration-200 min-h-[44px] min-w-[44px]"
                 aria-label="Sair"
+                title="Sair"
               >
-                <LogOut size={16} />
+                <LogOut size={18} />
               </button>
             </div>
           </div>
         </header>
+
         <NavSidebar selectedModuleKey={selectedModuleKey} onModuleChange={setSelectedModuleKey} modulos={modulos} collapsed={sidebarCollapsed} onToggleCollapse={toggleSidebar} />
         <ModuleDrawer open={showDrawer} onClose={() => setShowDrawer(false)} selectedModuleKey={selectedModuleKey} onModuleChange={setSelectedModuleKey} modulos={modulos} />
+
         <div className={cn(
-          "transition-all duration-200",
+          "transition-all duration-300 ease-in-out",
           isFunilPage ? "h-[calc(100vh-70px)] overflow-hidden" : "pb-20 lg:pb-0",
-          sidebarCollapsed ? "lg:ml-16" : "lg:ml-60"
+          sidebarCollapsed ? "lg:ml-[72px]" : "lg:ml-64"
         )}>
           <main className={cn(
             "w-full",
             isFunilPage
               ? "h-full max-w-none p-0 m-0 flex flex-col"
-              : "mx-auto max-w-7xl p-4 md:p-6 lg:p-8"
+              : "mx-auto max-w-[1600px] p-4 md:p-6 lg:p-8"
           )}>
             <Outlet />
           </main>
         </div>
+
         <BottomNav selectedModuleKey={selectedModuleKey} />
       </div>
       <PwaInstallPrompt />
