@@ -201,12 +201,12 @@ export const STATUS_LABEL: Record<CadastroStatus, string> = {
 };
 
 export const STATUS_COLOR: Record<CadastroStatus, string> = {
-  link_gerado: "bg-blue-500/10 text-blue-400",
-  dados_enviados: "bg-cyan-500/10 text-cyan-400",
-  em_analise: "bg-yellow-500/10 text-yellow-400",
-  em_correcao: "bg-orange-500/10 text-orange-400",
-  aprovado: "bg-green-500/10 text-green-400",
-  reprovado: "bg-red-500/10 text-red-400",
+  link_gerado: "bg-blue-500/15 text-blue-400 border border-blue-500/20",
+  dados_enviados: "bg-cyan-500/15 text-cyan-400 border border-cyan-500/20",
+  em_analise: "bg-yellow-500/15 text-yellow-400 border border-yellow-500/20",
+  em_correcao: "bg-orange-500/15 text-orange-400 border border-orange-500/20",
+  aprovado: "bg-green-500/15 text-green-400 border border-green-500/20",
+  reprovado: "bg-red-500/15 text-red-400 border border-red-500/20",
 };
 
 const STATUS_ORDER: Record<CadastroStatus, number> = {

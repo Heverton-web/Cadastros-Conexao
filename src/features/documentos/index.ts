@@ -134,11 +134,11 @@ export const DOC_STATUS_LABEL: Record<DocStatus, string> = {
 };
 
 export const DOC_STATUS_COLOR: Record<DocStatus, string> = {
-  inclusa: "bg-green-500/10 text-green-400",
-  incompleta: "bg-yellow-500/10 text-yellow-400",
-  nao_enviada: "bg-gray-500/10 text-gray-400",
-  pendente: "bg-orange-500/10 text-orange-400",
-  em_analise: "bg-blue-500/10 text-blue-400",
+  inclusa: "bg-green-500/15 text-green-400 border border-green-500/20",
+  incompleta: "bg-yellow-500/15 text-yellow-400 border border-yellow-500/20",
+  nao_enviada: "bg-gray-500/15 text-gray-400 border border-gray-500/20",
+  pendente: "bg-orange-500/15 text-orange-400 border border-orange-500/20",
+  em_analise: "bg-blue-500/15 text-blue-400 border border-blue-500/20",
 };
 
 export function determinarDocStatus(docs: Documento[], tipo_pessoa: string | null): DocStatus {
