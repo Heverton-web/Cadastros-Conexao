@@ -101,6 +101,14 @@ import { mapasDesignRoute } from "./routes/mapas.design";
 import { funisDesignRoute } from "./routes/funis.design";
 import { cadastrosDesignRoute } from "./routes/cadastros.design";
 
+import { despesasRoute } from "./routes/despesas";
+import { despesasNovoRoute } from "./routes/despesas.novo";
+import { despesasEnvioRoute } from "./routes/despesas.envio";
+import { despesasAprovacaoRoute } from "./routes/despesas.aprovacao";
+import { despesasConfigRoute } from "./routes/despesas.config";
+import { despesasRelatoriosRoute } from "./routes/despesas.relatorios";
+import { despesasDesignRoute } from "./routes/despesas.design";
+
 export const routeTree = rootRoute.addChildren([
   loginRoute,
   preCadastroRoute,
@@ -143,6 +151,14 @@ export const routeTree = rootRoute.addChildren([
     linktreeDesignRoute,
     funisDesignRoute,
     cadastrosDesignRoute,
+
+    despesasRoute,
+    despesasNovoRoute,
+    despesasEnvioRoute,
+    despesasAprovacaoRoute,
+    despesasConfigRoute,
+    despesasRelatoriosRoute,
+    despesasDesignRoute,
 
     mapasRoute,
     mapasDistribuidoresRoute,
