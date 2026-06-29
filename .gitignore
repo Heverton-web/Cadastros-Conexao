@@ -5,3 +5,9 @@ dist/
 *.tsbuildinfo
 credentials.env
 vps.env
+
+# Skills com repo Git próprio (clonados)
+.agents/skills/caveman/
+.agents/skills/headroom/
+.agents/skills/lean-ctx/
+.agents/skills/rtk/
