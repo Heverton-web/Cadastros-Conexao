@@ -13,23 +13,34 @@ import type { ClienteBaseFilters } from "../types";
 
 export function useClientesBase(filters?: ClienteBaseFilters) {
   const { empresa } = useEmpresa();
-  const { user } = useAuth();
+  const { user, profile } = useAuth();
+
+  const isSuperAdmin = profile?.is_super_admin;
 
   return useQuery({
     queryKey: ["clientes-base", empresa?.id, user?.id, filters],
-    queryFn: () => listarClientesBase(empresa!.id, user!.id, filters),
-    enabled: !!empresa?.id && !!user?.id,
+    queryFn: () => listarClientesBase(
+      isSuperAdmin ? null : empresa?.id,
+      isSuperAdmin ? null : user?.id,
+      filters
+    ),
+    enabled: !!user?.id,
   });
 }
 
 export function useContarClientesBase() {
   const { empresa } = useEmpresa();
-  const { user } = useAuth();
+  const { user, profile } = useAuth();
+
+  const isSuperAdmin = profile?.is_super_admin;
 
   return useQuery({
     queryKey: ["clientes-base-count", empresa?.id, user?.id],
-    queryFn: () => contarClientesBase(empresa!.id, user!.id),
-    enabled: !!empresa?.id && !!user?.id,
+    queryFn: () => contarClientesBase(
+      isSuperAdmin ? null : empresa?.id,
+      isSuperAdmin ? null : user?.id
+    ),
+    enabled: !!user?.id,
   });
 }
 

@@ -18,12 +18,18 @@ import type { RotaFormData, RotaStatus } from "../types";
 
 export function useRotas(filtros?: { status?: RotaStatus; data_inicio?: string; data_fim?: string }) {
   const { empresa } = useEmpresa();
-  const { user } = useAuth();
+  const { user, profile } = useAuth();
+
+  const isSuperAdmin = profile?.is_super_admin;
 
   return useQuery({
     queryKey: ["rotas", empresa?.id, user?.id, filtros],
-    queryFn: () => listarRotas(empresa!.id, user!.id, filtros),
-    enabled: !!empresa?.id && !!user?.id,
+    queryFn: () => listarRotas(
+      isSuperAdmin ? null : empresa?.id,
+      isSuperAdmin ? null : user?.id,
+      filtros
+    ),
+    enabled: !!user?.id,
   });
 }
 
@@ -46,10 +52,14 @@ export function useRotaComClientes(id: string) {
 export function useCriarRota() {
   const qc = useQueryClient();
   const { empresa } = useEmpresa();
-  const { user } = useAuth();
+  const { user, profile } = useAuth();
 
   return useMutation({
-    mutationFn: (form: RotaFormData) => criarRota(empresa!.id, user!.id, form),
+    mutationFn: (form: RotaFormData & { empresa_id?: string }) => {
+      const empresaId = form.empresa_id || empresa?.id;
+      if (!empresaId) throw new Error("Selecione uma empresa para criar a rota");
+      return criarRota(empresaId, user!.id, form);
+    },
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["rotas"] });
     },

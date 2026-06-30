@@ -2,16 +2,17 @@ import { supabase } from "~/core/supabase";
 import type { Rota, RotaCliente, RotaFormData, RotaStatus } from "../types";
 
 export async function listarRotas(
-  empresaId: string,
-  usuarioId: string,
+  empresaId?: string | null,
+  usuarioId?: string | null,
   filtros?: { status?: RotaStatus; data_inicio?: string; data_fim?: string }
 ): Promise<Rota[]> {
   let query = supabase
     .from("rotas")
     .select("*")
-    .eq("empresa_id", empresaId)
-    .eq("usuario_id", usuarioId)
     .order("data_rota", { ascending: false });
+
+  if (empresaId) query = query.eq("empresa_id", empresaId);
+  if (usuarioId) query = query.eq("usuario_id", usuarioId);
 
   if (filtros?.status) query = query.eq("status", filtros.status);
   if (filtros?.data_inicio) query = query.gte("data_rota", filtros.data_inicio);
