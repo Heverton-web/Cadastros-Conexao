@@ -9,6 +9,7 @@ export interface RotasConfig {
   empresa_id: string;
   valor_km_reembolso: number;
   raio_permitido_metros: number;
+  google_maps_api_key: string;
   created_at: string;
   updated_at: string;
 }

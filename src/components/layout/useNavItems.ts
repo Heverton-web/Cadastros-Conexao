@@ -1,4 +1,4 @@
-import { Building2, Puzzle, KeyRound, Globe, Database, Cable, FlaskConical, Palette, Image, Shield, Beaker, Bell, Webhook as WebhookIcon, BarChart3, type LucideIcon } from "lucide-react";
+import { Building2, Puzzle, KeyRound, Globe, Database, Cable, FlaskConical, Palette, Image, Shield, Beaker, Bell, Webhook as WebhookIcon, BarChart3, FileText, type LucideIcon } from "lucide-react";
 import { useAuth } from "~/lib/auth";
 import { getNavItems, getAllModules, getNavItemsByModule } from "~/registry";
 import { useMemo } from "react";
@@ -117,6 +117,7 @@ function buildAdminSection(): NavModuleSection {
     { path: "/global/acoes", label: "Central de Ações", icon: WebhookIcon },
   ];
   const ferramentasItems: NavItem[] = [
+    { path: "/global/testes", label: "Central de Testes", icon: FileText },
     { path: "/global/demos", label: "Credenciais Demos", icon: FlaskConical },
     { path: "/global/laboratorio", label: "Laboratório de Testes", icon: Beaker },
     { path: "/global/limits", label: "Limites de Credenciais", icon: Shield },

@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { X, Globe, type LucideIcon } from "lucide-react";
 import { useNavItems, useModulos } from "./useNavItems";
 import { useLocation, useNavigate } from "@tanstack/react-router";
@@ -29,10 +29,21 @@ export function ModuleDrawer({
   const location = useLocation();
   const navigate = useNavigate();
 
+  // Estado local para gerenciar o módulo sendo visualizado no drawer, permitindo que a lista
+  // de rotas mude ao tocar no módulo sem fechar o drawer de imediato.
+  const [localSelectedKey, setLocalSelectedKey] = useState<string | undefined>(selectedModuleKey);
+
+  // Sincroniza o estado local quando o drawer é aberto
+  useEffect(() => {
+    if (open) {
+      setLocalSelectedKey(selectedModuleKey);
+    }
+  }, [open, selectedModuleKey]);
+
   const sections = useMemo(() => {
-    if (!selectedModuleKey) return allSections;
-    return allSections.filter((s) => s.key === selectedModuleKey);
-  }, [allSections, selectedModuleKey]);
+    if (!localSelectedKey) return allSections;
+    return allSections.filter((s) => s.key === localSelectedKey);
+  }, [allSections, localSelectedKey]);
 
   if (!open) return null;
 
@@ -53,31 +64,32 @@ export function ModuleDrawer({
           <div className="flex flex-col gap-0.5 px-2 py-3 border-b border-border-subtle/50">
             {mostrarGlobal && modulos.length > 0 && (
               <button
-                onClick={() => { onModuleChange(undefined); onClose(); }}
+                onClick={() => { setLocalSelectedKey(undefined); onModuleChange(undefined); }}
                 className={cn(
                   "flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium transition-colors",
-                  selectedModuleKey === undefined ? "bg-accent/10 text-accent" : "text-text-main hover:bg-input-bg"
+                  localSelectedKey === undefined ? "bg-accent/15 text-accent font-semibold" : "text-text-main hover:bg-input-bg"
                 )}
               >
                 <Globe size={16} />
                 Global
-                {selectedModuleKey === undefined && <span className="ml-auto text-xs text-accent">Ativo</span>}
+                {localSelectedKey === undefined && <span className="ml-auto text-xs text-accent">Ativo</span>}
               </button>
             )}
             {modulos.map((mod) => {
               const Icon = mod.icon;
+              const isSelected = localSelectedKey === mod.key;
               return (
                 <button
                   key={mod.key}
-                  onClick={() => { onModuleChange(mod.key); onClose(); }}
+                  onClick={() => { setLocalSelectedKey(mod.key); onModuleChange(mod.key); }}
                   className={cn(
                     "flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium transition-colors",
-                    selectedModuleKey === mod.key ? "bg-accent/10 text-text-muted" : "text-text-main hover:bg-input-bg"
+                    isSelected ? "bg-accent/15 text-accent font-semibold" : "text-text-main hover:bg-input-bg"
                   )}
                 >
                   <Icon size={16} />
                   {mod.nome}
-                  {selectedModuleKey === mod.key && <span className="ml-auto text-xs text-accent">Ativo</span>}
+                  {isSelected && <span className="ml-auto text-xs text-accent">Ativo</span>}
                 </button>
               );
             })}
@@ -98,7 +110,7 @@ export function ModuleDrawer({
                         onClick={() => { navigate({ to: item.path }); onClose(); }}
                         className={cn(
                           "flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm transition-colors",
-                          isActive ? "bg-accent/10 text-accent" : "text-text-muted hover:text-text-main hover:bg-input-bg"
+                          isActive ? "bg-accent/15 text-accent font-semibold" : "text-text-muted hover:text-text-main hover:bg-input-bg"
                         )}
                       >
                         <item.icon size={16} />

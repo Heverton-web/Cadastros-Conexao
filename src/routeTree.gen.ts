@@ -22,6 +22,7 @@ import { adminSuperBancoRoute } from "./routes/global.banco";
 import { adminSuperIntegracoesRoute } from "./routes/global.integracoes";
 import { adminSuperDemosRoute } from "./routes/global.demos";
 import { adminLaboratorioRoute } from "./routes/global.laboratorio";
+import { adminSuperTestesRoute } from "./routes/global.testes";
 import { globalLimitsRoute } from "./routes/global.limits";
 import { adminEmpresaConfigBancoRoute } from "./routes/empresa.banco";
 import { adminEmpresaConfigBrandingRoute } from "./routes/empresa.branding";
@@ -153,6 +154,7 @@ export const routeTree = rootRoute.addChildren([
     adminSuperBancoRoute,
     adminSuperIntegracoesRoute,
     adminSuperDemosRoute,
+    adminSuperTestesRoute,
     adminLaboratorioRoute,
     globalLimitsRoute,
     adminEmpresaConfigBancoRoute,

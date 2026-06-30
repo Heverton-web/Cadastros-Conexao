@@ -304,7 +304,7 @@ export function ConfigRotasPage() {
                     value={config?.valor_km_reembolso ?? 0}
                     onChange={(e) =>
                       setConfig((prev) => ({
-                        ...(prev ?? { id: "", empresa_id: "", created_at: "", updated_at: "", valor_km_reembolso: 0, raio_permitido_metros: 300 }),
+                        ...(prev ?? { id: "", empresa_id: "", created_at: "", updated_at: "", valor_km_reembolso: 0, raio_permitido_metros: 300, google_maps_api_key: "" }),
                         valor_km_reembolso: Number(e.target.value),
                       }))
                     }
@@ -319,13 +319,36 @@ export function ConfigRotasPage() {
                     value={config?.raio_permitido_metros ?? 300}
                     onChange={(e) =>
                       setConfig((prev) => ({
-                        ...(prev ?? { id: "", empresa_id: "", created_at: "", updated_at: "", valor_km_reembolso: 0, raio_permitido_metros: 300 }),
+                        ...(prev ?? { id: "", empresa_id: "", created_at: "", updated_at: "", valor_km_reembolso: 0, raio_permitido_metros: 300, google_maps_api_key: "" }),
                         raio_permitido_metros: Number(e.target.value),
                       }))
                     }
                   />
                 </div>
               </div>
+
+              <div className="border-t border-border/30 pt-4 space-y-4">
+                <h3 className="font-semibold">Google Maps</h3>
+                <div className="space-y-1.5">
+                  <Label>Chave da API Google Maps</Label>
+                  <Input
+                    type="text"
+                    placeholder="AIzaSy..."
+                    value={config?.google_maps_api_key ?? ""}
+                    onChange={(e) =>
+                      setConfig((prev) => ({
+                        ...(prev ?? { id: "", empresa_id: "", created_at: "", updated_at: "", valor_km_reembolso: 0, raio_permitido_metros: 300, google_maps_api_key: "" }),
+                        google_maps_api_key: e.target.value,
+                      }))
+                    }
+                  />
+                  <p className="text-xs text-muted-foreground">
+                    Chave usada para calcular distâncias entre clientes nas rotas.
+                    Esta chave nunca é exposta ao navegador.
+                  </p>
+                </div>
+              </div>
+
               <Button onClick={handleSaveConfig} disabled={saving}>
                 {saving ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : <Save className="h-4 w-4 mr-2" />}
                 Salvar Configurações

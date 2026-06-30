@@ -29,13 +29,14 @@ import { useRotaComClientes } from "../hooks/useRotas";
 import { useAtualizarRota } from "../hooks/useRotas";
 import { ClienteRotaCard } from "./ClienteRotaCard";
 import { FormularioPosVisita } from "./FormularioPosVisita";
+import { getConfig } from "../services/config.service";
 import { getCurrentPosition } from "../lib/geolocation";
 import {
   ROTA_STATUS_LABEL,
   ROTA_STATUS_COLOR,
   ROTA_TIPO_LABEL,
 } from "../types";
-import type { RotaCliente } from "../types";
+import type { RotaCliente, RotasConfig } from "../types";
 import { formatDate } from "~/lib/utils/format";
 import toast from "react-hot-toast";
 
@@ -50,6 +51,13 @@ export function DetalheRotaPage({ id }: Props) {
 
   const [showFinalizarVisita, setShowFinalizarVisita] = useState<string | null>(null);
   const [showCancelarRota, setShowCancelarRota] = useState(false);
+  const [rotasConfig, setRotasConfig] = useState<RotasConfig | null>(null);
+
+  useEffect(() => {
+    if (rota?.empresa_id) {
+      getConfig(rota.empresa_id).then(setRotasConfig).catch(console.error);
+    }
+  }, [rota?.empresa_id]);
 
   const handleIniciarRota = useCallback(async () => {
     try {
@@ -218,7 +226,7 @@ export function DetalheRotaPage({ id }: Props) {
                 key={cliente.id}
                 cliente={cliente}
                 rotaStatus={rota.status}
-                raioPermitido={300}
+                raioPermitido={rotasConfig?.raio_permitido_metros ?? 300}
                 onFinalizarVisita={() => setShowFinalizarVisita(cliente.id)}
               />
             ))

@@ -1,9 +1,10 @@
 import { supabase } from "~/core/supabase";
 import type { RotaTrajeto, RotaVisita } from "../types";
+import { calcularDistanciaGoogle } from "./google-maps.service";
 
 // Haversine formula for distance calculation (fallback)
 function haversineDistance(lat1: number, lng1: number, lat2: number, lng2: number): number {
-  const R = 6371; // Earth's radius in km
+  const R = 6371;
   const dLat = ((lat2 - lat1) * Math.PI) / 180;
   const dLng = ((lng2 - lng1) * Math.PI) / 180;
   const a =
@@ -16,34 +17,26 @@ function haversineDistance(lat1: number, lng1: number, lat2: number, lng2: numbe
   return R * c;
 }
 
-// Calculate distance between two points
+// Calculate distance between two points using company's Google Maps key
 export async function calcularDistancia(
+  empresaId: string,
   origem: { lat: number; lng: number },
-  destino: { lat: number; lng: number }
+  destino: { lat: number; lng: number },
 ): Promise<{ distancia_km: number; duracao_minutos: number }> {
-  const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
-
-  if (apiKey) {
-    try {
-      const url = `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${origem.lat},${origem.lng}&destinations=${destino.lat},${destino.lng}&key=${apiKey}&mode=driving`;
-      const response = await fetch(url);
-      const data = await response.json();
-
-      if (data.status === "OK" && data.rows?.[0]?.elements?.[0]?.status === "OK") {
-        const element = data.rows[0].elements[0];
-        return {
-          distancia_km: Math.round((element.distance.value / 1000) * 100) / 100,
-          duracao_minutos: Math.round(element.duration.value / 60),
-        };
-      }
-    } catch (err) {
-      console.warn("[trajetos] Erro ao usar Google Distance Matrix, usando Haversine:", err);
+  try {
+    const result = await calcularDistanciaGoogle(empresaId, origem, destino);
+    if (result.distancia_km > 0) {
+      return {
+        distancia_km: result.distancia_km,
+        duracao_minutos: result.duracao_minutos,
+      };
     }
+  } catch (err) {
+    console.warn("[trajetos] Edge Function fallback, usando Haversine:", err);
   }
 
-  // Fallback: Haversine
   const distancia = haversineDistance(origem.lat, origem.lng, destino.lat, destino.lng);
-  const duracaoMinutos = Math.round((distancia / 40) * 60); // Assume 40km/h average
+  const duracaoMinutos = Math.round((distancia / 40) * 60);
 
   return {
     distancia_km: Math.round(distancia * 100) / 100,
