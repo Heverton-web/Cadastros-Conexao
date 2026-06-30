@@ -10,10 +10,10 @@ function formatarMoeda(v: number) {
   return new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(v);
 }
 
-export function TiposDespesaTable() {
-  const { data: tipos, isLoading } = useTiposDespesa();
-  const excluir = useExcluirTipoDespesa();
-  const atualizar = useAtualizarTipoDespesa();
+export function TiposDespesaTable({ empresaId }: { empresaId?: string }) {
+  const { data: tipos, isLoading } = useTiposDespesa(empresaId);
+  const excluir = useExcluirTipoDespesa(empresaId);
+  const atualizar = useAtualizarTipoDespesa(empresaId);
   const [formOpen, setFormOpen] = useState(false);
   const [editando, setEditando] = useState<DespesaTipo | null>(null);
   const [deletar, setDeletar] = useState<DespesaTipo | null>(null);
@@ -106,7 +106,7 @@ export function TiposDespesaTable() {
         </table>
       </div>
 
-      <TipoDespesaForm open={formOpen} onOpenChange={setFormOpen} editando={editando} />
+      <TipoDespesaForm open={formOpen} onOpenChange={setFormOpen} editando={editando} empresaId={empresaId} />
 
       <AlertDialog open={!!deletar} onOpenChange={(o) => !o && setDeletar(null)}>
         <AlertDialogContent className="bg-card border-border">

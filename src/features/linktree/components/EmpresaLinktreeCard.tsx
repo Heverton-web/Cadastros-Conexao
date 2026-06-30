@@ -1,5 +1,6 @@
 import { ExternalLink, Star } from "lucide-react";
 import type { EmpresaLinktreeLink, EmpresaLinktreeSection, EmpresaLinktreeTheme } from "../types-empresa";
+import { DynamicIcon } from "./DynamicIcon";
 
 interface Props {
   sections: EmpresaLinktreeSection[];
@@ -97,11 +98,13 @@ export function EmpresaLinktreeCard({ sections, links, theme, bio, bannerUrl, em
                       }}
                     >
                       {link.icone && (
-                        <span className="text-lg">{link.icone.startsWith("http") ? (
-                          <img src={link.icone} alt="" className="size-5" />
-                        ) : (
-                          link.icone
-                        )}</span>
+                        <span className="text-lg">
+                          {link.icone.startsWith("http") ? (
+                            <img src={link.icone} alt="" className="size-5" />
+                          ) : (
+                            <DynamicIcon name={link.icone} size={20} />
+                          )}
+                        </span>
                       )}
                       <span className="flex-1 truncate text-sm font-medium">{link.titulo}</span>
                       {link.destaque && <Star className="size-4 shrink-0 fill-current opacity-60" />}

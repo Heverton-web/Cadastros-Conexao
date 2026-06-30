@@ -1,17 +1,22 @@
 import { useState } from "react";
-import { Settings, List, Calendar } from "lucide-react";
+import { Settings, List, Calendar, Clock } from "lucide-react";
 import { TiposDespesaTable } from "./TiposDespesaTable";
 import { PeriodosTable } from "./PeriodosTable";
+import { ConfigForm } from "./ConfigForm";
+import { useEmpresaSuperAdmin } from "../../hooks/useEmpresaSuperAdmin";
+import { EmpresaSuperAdminSelector } from "../shared/EmpresaSuperAdminSelector";
 import { PageHeader } from "~/components/ui/page-header";
 import { cn } from "~/lib/utils";
 
 const TABS = [
   { key: "tipos", label: "Tipos", icon: List },
   { key: "periodos", label: "Períodos", icon: Calendar },
+  { key: "config", label: "Configuração", icon: Clock },
 ];
 
 export function ConfigDespesasPage() {
   const [tab, setTab] = useState("tipos");
+  const { empresaId, empresas, empresaSelecionada, setEmpresaSelecionada, isSuperAdmin } = useEmpresaSuperAdmin();
 
   return (
     <div className="space-y-4 md:space-y-6">
@@ -20,6 +25,10 @@ export function ConfigDespesasPage() {
         description="Gerencie os tipos de despesa, valores máximos e períodos de envio."
         icon={Settings}
       />
+
+      {isSuperAdmin && empresas.length > 0 && (
+        <EmpresaSuperAdminSelector empresas={empresas} value={empresaSelecionada} onChange={setEmpresaSelecionada} />
+      )}
 
       <div className="flex gap-1 border-b border-border overflow-x-auto">
         {TABS.map((t) => (
@@ -39,8 +48,9 @@ export function ConfigDespesasPage() {
         ))}
       </div>
 
-      {tab === "tipos" && <TiposDespesaTable />}
-      {tab === "periodos" && <PeriodosTable />}
+      {tab === "tipos" && <TiposDespesaTable empresaId={empresaId} />}
+      {tab === "periodos" && <PeriodosTable empresaId={empresaId} />}
+      {tab === "config" && <ConfigForm empresaId={empresaId} />}
     </div>
   );
 }

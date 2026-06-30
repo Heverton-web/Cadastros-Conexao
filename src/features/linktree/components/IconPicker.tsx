@@ -3,6 +3,7 @@ import { Search, Upload, X } from "lucide-react";
 import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
 import { Label } from "~/components/ui/label";
+import { DynamicIcon } from "./DynamicIcon";
 
 const ICON_LIST = [
   "Globe", "ShoppingCart", "BookOpen", "Music", "Camera", "Heart", "Star", "Zap",
@@ -70,7 +71,7 @@ export function IconPicker({ value, onChange }: Props) {
                 }`}
                 title={icon}
               >
-                {icon.slice(0, 2)}
+                <DynamicIcon name={icon} size={16} />
               </button>
             ))}
           </div>

@@ -1,10 +1,10 @@
 import { supabase } from "~/core/supabase";
 import type { DespesaEnvio, EnvioFiltros } from "../types";
 
-export async function listarEnvios(empresa_id: string, filtros?: EnvioFiltros): Promise<DespesaEnvio[]> {
+export async function listarEnviosEmpresa(empresa_id: string, filtros?: EnvioFiltros): Promise<DespesaEnvio[]> {
   let query = supabase
     .from("despesas_envios")
-    .select("*, periodo:despesas_periodos(*), usuario:auth.users!usuario_id(email, raw_user_meta_data), aprovador:auth.users!aprovador_id(email, raw_user_meta_data)")
+    .select("*, periodo:despesas_periodos(*), usuario:profiles!usuario_id(nome, email), aprovador:profiles!aprovador_id(nome, email)")
     .eq("empresa_id", empresa_id)
     .order("created_at", { ascending: false });
 
@@ -18,17 +18,17 @@ export async function listarEnvios(empresa_id: string, filtros?: EnvioFiltros): 
 }
 
 export async function listarEnviosPendentes(empresa_id: string): Promise<DespesaEnvio[]> {
-  return listarEnvios(empresa_id, { status: "pendente" });
+  return listarEnviosEmpresa(empresa_id, { status: "pendente" });
 }
 
 export async function listarMeusEnvios(empresa_id: string, usuario_id: string): Promise<DespesaEnvio[]> {
-  return listarEnvios(empresa_id, { usuario_id });
+  return listarEnviosEmpresa(empresa_id, { usuario_id });
 }
 
 export async function buscarEnvio(id: string): Promise<DespesaEnvio> {
   const { data, error } = await supabase
     .from("despesas_envios")
-    .select("*, periodo:despesas_periodos(*), usuario:auth.users!usuario_id(email, raw_user_meta_data), aprovador:auth.users!aprovador_id(email, raw_user_meta_data)")
+    .select("*, periodo:despesas_periodos(*), usuario:profiles!usuario_id(nome, email), aprovador:profiles!aprovador_id(nome, email)")
     .eq("id", id)
     .single();
   if (error) throw error;

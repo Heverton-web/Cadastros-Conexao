@@ -12,3 +12,4 @@ export * from "./hooks/usePeriodos";
 export * from "./hooks/useDespesas";
 export * from "./hooks/useEnvios";
 export * from "./hooks/usePagamento";
+export * from "./hooks/useEmpresaSuperAdmin";

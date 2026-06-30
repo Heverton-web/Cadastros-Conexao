@@ -18,22 +18,24 @@ import {
 } from "../services/empresa";
 import type { EmpresaLinkInput, EmpresaSectionInput, AnalyticsPeriodo } from "../types-empresa";
 
-export function useEmpresaConfig() {
+export function useEmpresaConfig(empresaId?: string | null) {
   const { profile } = useAuth();
+  const eid = empresaId ?? profile?.empresa_id;
   return useQuery({
-    queryKey: ["empresa-linktree-config", profile?.empresa_id],
-    queryFn: () => listarEmpresaConfig(profile!.empresa_id!),
-    enabled: !!profile?.empresa_id,
+    queryKey: ["empresa-linktree-config", eid],
+    queryFn: () => listarEmpresaConfig(eid!),
+    enabled: !!eid,
     staleTime: 30_000,
   });
 }
 
-export function useSalvarEmpresaConfig() {
+export function useSalvarEmpresaConfig(empresaId?: string | null) {
   const { profile } = useAuth();
+  const eid = empresaId ?? profile?.empresa_id;
   const qc = useQueryClient();
   return useMutation({
     mutationFn: (config: Parameters<typeof salvarEmpresaConfig>[1]) =>
-      salvarEmpresaConfig(profile!.empresa_id!, config),
+      salvarEmpresaConfig(eid!, config),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["empresa-linktree-config"] }),
   });
 }
@@ -47,20 +49,22 @@ export function useSlugDisponivel(slug: string, empresaId?: string) {
   });
 }
 
-export function useSecoes() {
+export function useSecoes(empresaId?: string | null) {
   const { profile } = useAuth();
+  const eid = empresaId ?? profile?.empresa_id;
   return useQuery({
-    queryKey: ["empresa-linktree-secoes", profile?.empresa_id],
-    queryFn: () => listarSecoes(profile!.empresa_id!),
-    enabled: !!profile?.empresa_id,
+    queryKey: ["empresa-linktree-secoes", eid],
+    queryFn: () => listarSecoes(eid!),
+    enabled: !!eid,
   });
 }
 
-export function useCriarSecao() {
+export function useCriarSecao(empresaId?: string | null) {
   const { profile } = useAuth();
+  const eid = empresaId ?? profile?.empresa_id;
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: (input: EmpresaSectionInput) => criarSecao(profile!.empresa_id!, input),
+    mutationFn: (input: EmpresaSectionInput) => criarSecao(eid!, input),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["empresa-linktree-secoes"] }),
   });
 }
@@ -81,21 +85,23 @@ export function useDeletarSecao() {
   });
 }
 
-export function useLinks() {
+export function useLinks(empresaId?: string | null) {
   const { profile } = useAuth();
+  const eid = empresaId ?? profile?.empresa_id;
   return useQuery({
-    queryKey: ["empresa-linktree-links", profile?.empresa_id],
-    queryFn: () => listarLinks(profile!.empresa_id!),
-    enabled: !!profile?.empresa_id,
+    queryKey: ["empresa-linktree-links", eid],
+    queryFn: () => listarLinks(eid!),
+    enabled: !!eid,
   });
 }
 
-export function useCriarLink() {
+export function useCriarLink(empresaId?: string | null) {
   const { profile } = useAuth();
+  const eid = empresaId ?? profile?.empresa_id;
   const qc = useQueryClient();
   return useMutation({
     mutationFn: ({ sectionId, input }: { sectionId: string; input: EmpresaLinkInput }) =>
-      criarLink(profile!.empresa_id!, sectionId, input),
+      criarLink(eid!, sectionId, input),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["empresa-linktree-links"] }),
   });
 }
@@ -132,12 +138,13 @@ export function useReordenarSecoes() {
   });
 }
 
-export function useAnalytics(periodo: AnalyticsPeriodo) {
+export function useAnalytics(periodo: AnalyticsPeriodo, empresaId?: string | null) {
   const { profile } = useAuth();
+  const eid = empresaId ?? profile?.empresa_id;
   return useQuery({
-    queryKey: ["empresa-linktree-analytics", profile?.empresa_id, periodo],
-    queryFn: () => listarAnalytics(profile!.empresa_id!, periodo),
-    enabled: !!profile?.empresa_id,
+    queryKey: ["empresa-linktree-analytics", eid, periodo],
+    queryFn: () => listarAnalytics(eid!, periodo),
+    enabled: !!eid,
     staleTime: 60_000,
   });
 }

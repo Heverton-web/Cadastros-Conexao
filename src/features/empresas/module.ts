@@ -1,4 +1,4 @@
-import { Building2, Database, Shield, Palette, Image, Webhook } from "lucide-react";
+import { Building2, Database, Shield, Palette, Image, Webhook, Receipt } from "lucide-react";
 import { registerModule, registerNavItem } from "~/registry";
 import type { ModuleDefinition } from "~/registry";
 
@@ -7,7 +7,7 @@ export const empresasModule: ModuleDefinition = {
   nome: "Empresa",
   descricao: "Gerenciamento de empresas",
   icon: Building2,
-  routes: ["/global/empresas", "/empresa", "/empresa/design"],
+  routes: ["/global/empresas", "/empresa", "/empresa/design", "/empresa/despesas-config"],
   permissions: [],
   ambientes: [],
   abas: [
@@ -79,6 +79,16 @@ export const empresasModule: ModuleDefinition = {
       to: "/empresa/acoes",
       permissionCheck: () => true,
       order: 60,
+      moduloKey: "empresas-core",
+    });
+
+    registerNavItem({
+      id: "empresa-despesas-config",
+      label: "Despesas",
+      icon: Receipt,
+      to: "/empresa/despesas-config",
+      permissionCheck: () => true,
+      order: 70,
       moduloKey: "empresas-core",
     });
   },

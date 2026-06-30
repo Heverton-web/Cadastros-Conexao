@@ -1,25 +1,25 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "~/lib/auth";
 import {
-  listarEnvios, listarEnviosPendentes, listarMeusEnvios, buscarEnvio,
+  listarEnviosEmpresa, listarEnviosPendentes, listarMeusEnvios, buscarEnvio,
   criarOuAtualizarEnvio, aprovarEnvio, reprovarEnvio, aprovarEnvioParcial,
 } from "../services/envios.service";
 import type { EnvioFiltros } from "../types";
 
-export function useEnvios(filtros?: EnvioFiltros) {
+export function useEnviosEmpresa(filtros?: EnvioFiltros, overrideEmpresaId?: string) {
   const { profile } = useAuth();
-  const empresa_id = profile?.empresa_id ?? "";
+  const empresa_id = overrideEmpresaId || (profile?.empresa_id ?? "");
 
   return useQuery({
     queryKey: ["despesas-envios", empresa_id, filtros],
-    queryFn: () => listarEnvios(empresa_id, filtros),
+    queryFn: () => listarEnviosEmpresa(empresa_id, filtros),
     enabled: !!empresa_id,
   });
 }
 
-export function useEnviosPendentes() {
+export function useEnviosPendentes(overrideEmpresaId?: string) {
   const { profile } = useAuth();
-  const empresa_id = profile?.empresa_id ?? "";
+  const empresa_id = overrideEmpresaId || (profile?.empresa_id ?? "");
 
   return useQuery({
     queryKey: ["despesas-envios-pendentes", empresa_id],
@@ -28,9 +28,9 @@ export function useEnviosPendentes() {
   });
 }
 
-export function useMeusEnvios() {
+export function useMeusEnvios(overrideEmpresaId?: string) {
   const { profile } = useAuth();
-  const empresa_id = profile?.empresa_id ?? "";
+  const empresa_id = overrideEmpresaId || (profile?.empresa_id ?? "");
   const usuario_id = profile?.id ?? "";
 
   return useQuery({
@@ -74,7 +74,7 @@ export function useAprovarEnvio() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["despesas-envios", empresa_id] });
       queryClient.invalidateQueries({ queryKey: ["despesas-envios-pendentes", empresa_id] });
-      queryClient.invalidateQueries({ queryKey: ["despesas", empresa_id] });
+      queryClient.invalidateQueries({ queryKey: ["despesas-empresa", empresa_id] });
     },
   });
 }
@@ -90,7 +90,7 @@ export function useReprovarEnvio() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["despesas-envios", empresa_id] });
       queryClient.invalidateQueries({ queryKey: ["despesas-envios-pendentes", empresa_id] });
-      queryClient.invalidateQueries({ queryKey: ["despesas", empresa_id] });
+      queryClient.invalidateQueries({ queryKey: ["despesas-empresa", empresa_id] });
     },
   });
 }
@@ -107,7 +107,7 @@ export function useAprovarEnvioParcial() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["despesas-envios", empresa_id] });
       queryClient.invalidateQueries({ queryKey: ["despesas-envios-pendentes", empresa_id] });
-      queryClient.invalidateQueries({ queryKey: ["despesas", empresa_id] });
+      queryClient.invalidateQueries({ queryKey: ["despesas-empresa", empresa_id] });
     },
   });
 }

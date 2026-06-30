@@ -3,10 +3,10 @@ import { useAuth } from "~/lib/auth";
 import { criarPagamento, marcarComoPago, cancelarPagamento } from "../services/pagamentos.service";
 import type { FormaPagamento } from "../types";
 
-export function useCriarPagamento() {
+export function useCriarPagamento(overrideEmpresaId?: string) {
   const { profile } = useAuth();
   const queryClient = useQueryClient();
-  const empresa_id = profile?.empresa_id ?? "";
+  const empresa_id = overrideEmpresaId || (profile?.empresa_id ?? "");
 
   return useMutation({
     mutationFn: (pagamento: { empresa_id: string; envio_id: string; valor: number; forma_pagamento: FormaPagamento; data_pagamento: string }) =>
@@ -18,10 +18,10 @@ export function useCriarPagamento() {
   });
 }
 
-export function useMarcarComoPago() {
+export function useMarcarComoPago(overrideEmpresaId?: string) {
   const { profile } = useAuth();
   const queryClient = useQueryClient();
-  const empresa_id = profile?.empresa_id ?? "";
+  const empresa_id = overrideEmpresaId || (profile?.empresa_id ?? "");
 
   return useMutation({
     mutationFn: ({ id, comprovante }: { id: string; comprovante?: string }) => marcarComoPago(id, comprovante),
@@ -31,10 +31,10 @@ export function useMarcarComoPago() {
   });
 }
 
-export function useCancelarPagamento() {
+export function useCancelarPagamento(overrideEmpresaId?: string) {
   const { profile } = useAuth();
   const queryClient = useQueryClient();
-  const empresa_id = profile?.empresa_id ?? "";
+  const empresa_id = overrideEmpresaId || (profile?.empresa_id ?? "");
 
   return useMutation({
     mutationFn: (id: string) => cancelarPagamento(id),

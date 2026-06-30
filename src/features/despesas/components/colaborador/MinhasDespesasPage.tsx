@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Plus, Send, Receipt, Eye, ChevronRight } from "lucide-react";
 import { useMinhasDespesas } from "../../hooks/useDespesas";
 import { useMeusEnvios } from "../../hooks/useEnvios";
+import { useEmpresaSuperAdmin } from "../../hooks/useEmpresaSuperAdmin";
+import { EmpresaSuperAdminSelector } from "../shared/EmpresaSuperAdminSelector";
 import { PageHeader } from "~/components/ui/page-header";
 import { Button } from "~/components/ui/button";
 import { DespesaStatusBadge, EnvioStatusBadge } from "../shared/StatusBadge";
@@ -20,8 +22,9 @@ function formatarData(data: string) {
 }
 
 export function MinhasDespesasPage() {
-  const { data: despesas, isLoading } = useMinhasDespesas();
-  const { data: envios } = useMeusEnvios();
+  const { empresaId, empresas, empresaSelecionada, setEmpresaSelecionada, isSuperAdmin } = useEmpresaSuperAdmin();
+  const { data: despesas, isLoading } = useMinhasDespesas(undefined, empresaId);
+  const { data: envios } = useMeusEnvios(empresaId);
   const [detalhe, setDetalhe] = useState<Despesa | null>(null);
   const [modalNova, setModalNova] = useState(false);
   const [modalEnviar, setModalEnviar] = useState(false);
@@ -36,6 +39,10 @@ export function MinhasDespesasPage() {
         description="Lance e acompanhe suas despesas em rota."
         icon={Receipt}
       />
+
+      {isSuperAdmin && empresas.length > 0 && (
+        <EmpresaSuperAdminSelector empresas={empresas} value={empresaSelecionada} onChange={setEmpresaSelecionada} />
+      )}
 
       <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
         <Button onClick={() => setModalNova(true)} className="gap-1.5 w-full sm:w-auto">

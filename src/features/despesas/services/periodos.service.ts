@@ -1,5 +1,5 @@
 import { supabase } from "~/core/supabase";
-import type { DespesaPeriodo } from "../types";
+import type { DespesaPeriodo, Frequencia } from "../types";
 
 export async function listarPeriodos(empresa_id: string): Promise<DespesaPeriodo[]> {
   const { data, error } = await supabase
@@ -57,7 +57,72 @@ export async function fecharPeriodo(id: string): Promise<DespesaPeriodo> {
   return atualizarPeriodo(id, { status: "fechado" });
 }
 
-export async function gerarPeriodos(empresa_id: string): Promise<void> {
-  const { error } = await supabase.rpc("gerar_periodos_automaticos", { p_empresa_id: empresa_id });
-  if (error) throw error;
+function getLastDayOfMonth(year: number, month: number): number {
+  return new Date(year, month + 1, 0).getDate();
+}
+
+function formatarData(year: number, month: number, day: number): string {
+  return `${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+}
+
+export async function gerarPeriodos(
+  empresa_id: string,
+  frequencia: Frequencia,
+  meses: string[]
+): Promise<void> {
+  const periodos: Partial<DespesaPeriodo>[] = [];
+
+  for (const mesAno of meses) {
+    const [ano, mes] = mesAno.split("-").map(Number);
+    const mesIndex = mes - 1;
+
+    if (frequencia === "mensal") {
+      const ultimoDia = getLastDayOfMonth(ano, mesIndex);
+      periodos.push({
+        empresa_id,
+        data_inicio: formatarData(ano, mesIndex, 1),
+        data_fim: formatarData(ano, mesIndex, ultimoDia),
+        status: "aberto",
+      });
+    } else if (frequencia === "quinzenal") {
+      periodos.push({
+        empresa_id,
+        data_inicio: formatarData(ano, mesIndex, 1),
+        data_fim: formatarData(ano, mesIndex, 15),
+        status: "aberto",
+      });
+      const ultimoDia = getLastDayOfMonth(ano, mesIndex);
+      periodos.push({
+        empresa_id,
+        data_inicio: formatarData(ano, mesIndex, 16),
+        data_fim: formatarData(ano, mesIndex, ultimoDia),
+        status: "aberto",
+      });
+    } else if (frequencia === "semanal") {
+      const primeiroDia = new Date(ano, mesIndex, 1);
+      let inicio = new Date(primeiroDia);
+      while (inicio.getMonth() === mesIndex) {
+        const fim = new Date(inicio);
+        fim.setDate(fim.getDate() + 6);
+        if (fim.getMonth() !== mesIndex) {
+          fim.setDate(getLastDayOfMonth(ano, mesIndex));
+        }
+        periodos.push({
+          empresa_id,
+          data_inicio: inicio.toISOString().split("T")[0],
+          data_fim: fim.toISOString().split("T")[0],
+          status: "aberto",
+        });
+        inicio = new Date(fim);
+        inicio.setDate(inicio.getDate() + 1);
+      }
+    }
+  }
+
+  if (periodos.length > 0) {
+    const { error } = await supabase
+      .from("despesas_periodos")
+      .upsert(periodos, { onConflict: "empresa_id,data_inicio,data_fim", ignoreDuplicates: true });
+    if (error) throw error;
+  }
 }

@@ -1,24 +1,6 @@
 import { supabase } from "~/core/supabase";
 import type { Despesa, DespesaFormData, DespesaFiltros } from "../types";
 
-export async function listarDespesas(empresa_id: string, filtros?: DespesaFiltros): Promise<Despesa[]> {
-  let query = supabase
-    .from("despesas")
-    .select("*, tipo:despesas_tipos(*), periodo:despesas_periodos(*)")
-    .eq("empresa_id", empresa_id)
-    .order("data_despesa", { ascending: false });
-
-  if (filtros?.periodo_id) query = query.eq("periodo_id", filtros.periodo_id);
-  if (filtros?.status) query = query.eq("status", filtros.status);
-  if (filtros?.tipo_id) query = query.eq("tipo_id", filtros.tipo_id);
-  if (filtros?.data_inicio) query = query.gte("data_despesa", filtros.data_inicio);
-  if (filtros?.data_fim) query = query.lte("data_despesa", filtros.data_fim);
-
-  const { data, error } = await query;
-  if (error) throw error;
-  return data as Despesa[];
-}
-
 export async function listarMinhasDespesas(empresa_id: string, usuario_id: string, filtros?: DespesaFiltros): Promise<Despesa[]> {
   let query = supabase
     .from("despesas")
@@ -30,6 +12,25 @@ export async function listarMinhasDespesas(empresa_id: string, usuario_id: strin
   if (filtros?.periodo_id) query = query.eq("periodo_id", filtros.periodo_id);
   if (filtros?.status) query = query.eq("status", filtros.status);
   if (filtros?.tipo_id) query = query.eq("tipo_id", filtros.tipo_id);
+
+  const { data, error } = await query;
+  if (error) throw error;
+  return data as Despesa[];
+}
+
+export async function listarDespesasEmpresa(empresa_id: string, filtros?: DespesaFiltros): Promise<Despesa[]> {
+  let query = supabase
+    .from("despesas")
+    .select("*, tipo:despesas_tipos(*), periodo:despesas_periodos(*), usuario:profiles!usuario_id(nome, email)")
+    .eq("empresa_id", empresa_id)
+    .order("data_despesa", { ascending: false });
+
+  if (filtros?.periodo_id) query = query.eq("periodo_id", filtros.periodo_id);
+  if (filtros?.status) query = query.eq("status", filtros.status);
+  if (filtros?.tipo_id) query = query.eq("tipo_id", filtros.tipo_id);
+  if (filtros?.usuario_id) query = query.eq("usuario_id", filtros.usuario_id);
+  if (filtros?.data_inicio) query = query.gte("data_despesa", filtros.data_inicio);
+  if (filtros?.data_fim) query = query.lte("data_despesa", filtros.data_fim);
 
   const { data, error } = await query;
   if (error) throw error;

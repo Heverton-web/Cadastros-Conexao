@@ -9,9 +9,13 @@ const PERIODOS: { value: AnalyticsPeriodo; label: string }[] = [
   { value: "90d", label: "90 dias" },
 ];
 
-export function AnalyticsPanel() {
+interface Props {
+  empresaId?: string | null;
+}
+
+export function AnalyticsPanel({ empresaId }: Props) {
   const [periodo, setPeriodo] = useState<AnalyticsPeriodo>("30d");
-  const { data: analytics = [], isLoading } = useAnalytics(periodo);
+  const { data: analytics = [], isLoading } = useAnalytics(periodo, empresaId);
 
   const maxCliques = Math.max(...analytics.map((a) => a.total_cliques), 1);
 

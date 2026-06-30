@@ -18,15 +18,16 @@ import { useCriarSecao, useAtualizarSecao, useDeletarSecao } from "../hooks/useE
 
 interface Props {
   sections: EmpresaLinktreeSection[];
+  empresaId?: string | null;
 }
 
-export function SectionManager({ sections }: Props) {
+export function SectionManager({ sections, empresaId }: Props) {
   const [newTitulo, setNewTitulo] = useState("");
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editTitulo, setEditTitulo] = useState("");
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
-  const criar = useCriarSecao();
+  const criar = useCriarSecao(empresaId);
   const atualizar = useAtualizarSecao();
   const deletar = useDeletarSecao();
 

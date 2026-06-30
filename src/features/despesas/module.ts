@@ -11,9 +11,7 @@ export const despesasModule: ModuleDefinition = {
   routes: [
     "/despesas",
     "/despesas/aprovacao",
-    "/despesas/config",
-    "/despesas/config/tipos",
-    "/despesas/config/periodos",
+    "/despesas/meus-relatorios",
     "/despesas/relatorios",
     "/despesas/design",
   ],
@@ -52,6 +50,7 @@ export const despesasModule: ModuleDefinition = {
       label: "Despesas",
       icon: Receipt,
       to: "/despesas",
+      noChildMatch: true,
       permissionCheck: (perms) => perms?.despesas_lancar === true,
       order: 20,
       moduloKey: "despesas",
@@ -68,11 +67,11 @@ export const despesasModule: ModuleDefinition = {
     });
 
     registerNavItem({
-      id: "despesas-config",
-      label: "Configurações",
-      icon: Settings,
-      to: "/despesas/config",
-      permissionCheck: (perms) => perms?.despesas_configurar === true,
+      id: "despesas-meus-relatorios",
+      label: "Meus Relatórios",
+      icon: BarChart3,
+      to: "/despesas/meus-relatorios",
+      permissionCheck: (perms) => perms?.despesas_lancar === true || perms?.despesas_enviar === true,
       order: 24,
       moduloKey: "despesas",
     });

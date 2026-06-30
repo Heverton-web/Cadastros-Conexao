@@ -3,9 +3,9 @@ import { useAuth } from "~/lib/auth";
 import { listarTiposDespesa, listarTiposDespesaAtivos, criarTipoDespesa, atualizarTipoDespesa, excluirTipoDespesa } from "../services/tipos.service";
 import type { DespesaTipo } from "../types";
 
-export function useTiposDespesa() {
+export function useTiposDespesa(overrideEmpresaId?: string) {
   const { profile } = useAuth();
-  const empresa_id = profile?.empresa_id ?? "";
+  const empresa_id = overrideEmpresaId || profile?.empresa_id || "";
 
   return useQuery({
     queryKey: ["despesas-tipos", empresa_id],
@@ -14,9 +14,9 @@ export function useTiposDespesa() {
   });
 }
 
-export function useTiposDespesaAtivos() {
+export function useTiposDespesaAtivos(overrideEmpresaId?: string) {
   const { profile } = useAuth();
-  const empresa_id = profile?.empresa_id ?? "";
+  const empresa_id = overrideEmpresaId || profile?.empresa_id || "";
 
   return useQuery({
     queryKey: ["despesas-tipos-ativos", empresa_id],
@@ -25,10 +25,10 @@ export function useTiposDespesaAtivos() {
   });
 }
 
-export function useCriarTipoDespesa() {
+export function useCriarTipoDespesa(overrideEmpresaId?: string) {
   const { profile } = useAuth();
   const queryClient = useQueryClient();
-  const empresa_id = profile?.empresa_id ?? "";
+  const empresa_id = overrideEmpresaId || profile?.empresa_id || "";
 
   return useMutation({
     mutationFn: (tipo: Partial<DespesaTipo>) => criarTipoDespesa({ ...tipo, empresa_id }),
@@ -39,10 +39,10 @@ export function useCriarTipoDespesa() {
   });
 }
 
-export function useAtualizarTipoDespesa() {
+export function useAtualizarTipoDespesa(overrideEmpresaId?: string) {
   const { profile } = useAuth();
   const queryClient = useQueryClient();
-  const empresa_id = profile?.empresa_id ?? "";
+  const empresa_id = overrideEmpresaId || profile?.empresa_id || "";
 
   return useMutation({
     mutationFn: ({ id, updates }: { id: string; updates: Partial<DespesaTipo> }) => atualizarTipoDespesa(id, updates),
@@ -53,10 +53,10 @@ export function useAtualizarTipoDespesa() {
   });
 }
 
-export function useExcluirTipoDespesa() {
+export function useExcluirTipoDespesa(overrideEmpresaId?: string) {
   const { profile } = useAuth();
   const queryClient = useQueryClient();
-  const empresa_id = profile?.empresa_id ?? "";
+  const empresa_id = overrideEmpresaId || profile?.empresa_id || "";
 
   return useMutation({
     mutationFn: (id: string) => excluirTipoDespesa(id),

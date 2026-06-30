@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { Send, CheckCircle } from "lucide-react";
+import { Send, CheckCircle, AlertTriangle } from "lucide-react";
 import { useMinhasDespesas, useEnviarDespesas } from "../../hooks/useDespesas";
 import { usePeriodosAbertos } from "../../hooks/usePeriodos";
 import { useCriarOuAtualizarEnvio } from "../../hooks/useEnvios";
+import { usePrazoEnvio } from "../../hooks/usePrazoEnvio";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "~/components/ui/dialog";
 import { Button } from "~/components/ui/button";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "~/components/ui/alert-dialog";
@@ -25,6 +26,7 @@ export function EnviarDespesasModal({ open, onOpenChange }: { open: boolean; onO
 
   const rascunhos = despesas?.filter((d) => d.status === "rascunho") ?? [];
   const total = rascunhos.reduce((acc, d) => acc + d.valor, 0);
+  const { prazoExpirado, diasRestantes, deadline, isLoading: prazoLoading } = usePrazoEnvio(periodoId);
 
   async function handleEnviar() {
     if (!periodoId) return;
@@ -61,6 +63,26 @@ export function EnviarDespesasModal({ open, onOpenChange }: { open: boolean; onO
 
             {periodoId && (
               <>
+                {!prazoLoading && prazoExpirado && (
+                  <div className="flex items-start gap-2 p-3 rounded-xl bg-error/10 border border-error/20">
+                    <AlertTriangle size={18} className="text-error shrink-0 mt-0.5" />
+                    <div>
+                      <p className="text-sm font-medium text-error">Prazo de envio expirado</p>
+                      <p className="text-xs text-text-muted mt-0.5">
+                        O prazo para enviar despesas deste período era até {deadline?.toLocaleDateString("pt-BR")}.
+                        Entre em contato com o administrador.
+                      </p>
+                    </div>
+                  </div>
+                )}
+                {!prazoLoading && !prazoExpirado && diasRestantes > 0 && diasRestantes <= 3 && (
+                  <div className="flex items-start gap-2 p-3 rounded-xl bg-warning/10 border border-warning/20">
+                    <AlertTriangle size={18} className="text-warning shrink-0 mt-0.5" />
+                    <p className="text-sm text-warning">
+                      Prazo de envio termina em {diasRestantes} dia{diasRestantes !== 1 ? "s" : ""}.
+                    </p>
+                  </div>
+                )}
                 {isLoading ? (
                   <div className="text-text-muted text-sm">Carregando...</div>
                 ) : rascunhos.length === 0 ? (
@@ -106,11 +128,11 @@ export function EnviarDespesasModal({ open, onOpenChange }: { open: boolean; onO
               <Button variant="outline" onClick={() => onOpenChange(false)}>Cancelar</Button>
               <Button
                 onClick={() => setConfirmOpen(true)}
-                disabled={!periodoId || rascunhos.length === 0 || enviar.isPending || criarEnvio.isPending}
+                disabled={!periodoId || rascunhos.length === 0 || enviar.isPending || criarEnvio.isPending || prazoExpirado}
                 className="gap-1.5"
               >
                 <Send size={16} />
-                {enviar.isPending || criarEnvio.isPending ? "Enviando..." : "Enviar"}
+                {prazoExpirado ? "Prazo expirado" : enviar.isPending || criarEnvio.isPending ? "Enviando..." : "Enviar"}
               </Button>
             </DialogFooter>
           </div>

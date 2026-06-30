@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { CheckCircle, XCircle, FileText, Eye, ChevronRight } from "lucide-react";
 import { useEnviosPendentes, useAprovarEnvio, useReprovarEnvio } from "../../hooks/useEnvios";
-import { useDespesas } from "../../hooks/useDespesas";
+import { useDespesasEmpresa } from "../../hooks/useDespesas";
 import { useCriarPagamento } from "../../hooks/usePagamento";
+import { useEmpresaSuperAdmin } from "../../hooks/useEmpresaSuperAdmin";
+import { EmpresaSuperAdminSelector } from "../shared/EmpresaSuperAdminSelector";
 import { PageHeader } from "~/components/ui/page-header";
 import { Button } from "~/components/ui/button";
 import { EnvioStatusBadge, DespesaStatusBadge } from "../shared/StatusBadge";
@@ -22,7 +24,8 @@ function formatarData(data: string) {
 }
 
 export function AprovacaoDespesasPage() {
-  const { data: envios, isLoading } = useEnviosPendentes();
+  const { empresaId, empresas, empresaSelecionada, setEmpresaSelecionada, isSuperAdmin } = useEmpresaSuperAdmin();
+  const { data: envios, isLoading } = useEnviosPendentes(empresaId);
   const [envioSelecionado, setEnvioSelecionado] = useState<DespesaEnvio | null>(null);
   const [reprovarEnvio, setReprovarEnvio] = useState<DespesaEnvio | null>(null);
   const [pagamentoEnvio, setPagamentoEnvio] = useState<DespesaEnvio | null>(null);
@@ -30,8 +33,9 @@ export function AprovacaoDespesasPage() {
   const [formaPagamento, setFormaPagamento] = useState<FormaPagamento>("pix");
   const [dataPagamento, setDataPagamento] = useState("");
 
-  const { data: despesasEnvio } = useDespesas(
-    envioSelecionado ? { periodo_id: envioSelecionado.periodo_id } : undefined
+  const { data: despesasEnvio } = useDespesasEmpresa(
+    envioSelecionado ? { periodo_id: envioSelecionado.periodo_id } : undefined,
+    empresaId
   );
   const aprovar = useAprovarEnvio();
   const reprovar = useReprovarEnvio();
@@ -67,7 +71,7 @@ export function AprovacaoDespesasPage() {
   }
 
   const nomeUsuario = (envio: DespesaEnvio) =>
-    envio.usuario?.raw_user_meta_data?.nome ?? envio.usuario?.email ?? "—";
+    envio.usuario?.nome ?? envio.usuario?.email ?? "—";
 
   return (
     <div className="space-y-4 md:space-y-6">
@@ -76,6 +80,10 @@ export function AprovacaoDespesasPage() {
         description="Analise e aprove/reprove os envios de despesas da equipe."
         icon={FileText}
       />
+
+      {isSuperAdmin && empresas.length > 0 && (
+        <EmpresaSuperAdminSelector empresas={empresas} value={empresaSelecionada} onChange={setEmpresaSelecionada} />
+      )}
 
       {isLoading ? (
         <div className="text-text-muted text-sm">Carregando...</div>

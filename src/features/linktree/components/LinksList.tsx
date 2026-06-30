@@ -14,20 +14,22 @@ import {
 import type { EmpresaLinktreeLink, EmpresaLinktreeSection, EmpresaLinkInput } from "../types-empresa";
 import { useDeletarLink, useAtualizarLink, useCriarLink } from "../hooks/useEmpresaLinktree";
 import { LinkForm } from "./LinkForm";
+import { DynamicIcon } from "./DynamicIcon";
 
 interface Props {
   sections: EmpresaLinktreeSection[];
   links: EmpresaLinktreeLink[];
+  empresaId?: string | null;
 }
 
-export function LinksList({ sections, links }: Props) {
+export function LinksList({ sections, links, empresaId }: Props) {
   const [editingLink, setEditingLink] = useState<EmpresaLinktreeLink | null>(null);
   const [showCreate, setShowCreate] = useState(false);
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
   const deletar = useDeletarLink();
   const atualizar = useAtualizarLink();
-  const criar = useCriarLink();
+  const criar = useCriarLink(empresaId);
 
   const linksBySection = new Map<string, EmpresaLinktreeLink[]>();
   for (const link of links) {
@@ -116,7 +118,7 @@ export function LinksList({ sections, links }: Props) {
               >
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
-                    {link.icone && <span className="text-sm">{link.icone}</span>}
+                    {link.icone && <span className="text-sm"><DynamicIcon name={link.icone} size={14} /></span>}
                     <span className="truncate text-sm font-medium">{link.titulo}</span>
                     {link.destaque && <Star className="size-3 shrink-0 fill-current text-yellow-500" />}
                   </div>

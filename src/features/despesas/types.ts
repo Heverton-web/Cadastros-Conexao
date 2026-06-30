@@ -53,7 +53,7 @@ export interface Despesa {
   updated_at: string;
   tipo?: DespesaTipo;
   periodo?: DespesaPeriodo;
-  usuario?: { email: string; raw_user_meta_data?: { nome?: string } };
+  usuario?: { email: string; nome: string };
 }
 
 export interface DespesaEnvio {
@@ -70,8 +70,8 @@ export interface DespesaEnvio {
   created_at: string;
   updated_at: string;
   periodo?: DespesaPeriodo;
-  usuario?: { email: string; raw_user_meta_data?: { nome?: string } };
-  aprovador?: { email: string; raw_user_meta_data?: { nome?: string } };
+  usuario?: { email: string; nome: string };
+  aprovador?: { email: string; nome: string };
   despesas?: Despesa[];
 }
 
@@ -102,6 +102,7 @@ export interface DespesaFiltros {
   periodo_id?: string;
   status?: DespesaStatus;
   tipo_id?: string;
+  usuario_id?: string;
   data_inicio?: string;
   data_fim?: string;
 }
@@ -110,6 +111,14 @@ export interface EnvioFiltros {
   status?: EnvioStatus;
   periodo_id?: string;
   usuario_id?: string;
+}
+
+export interface OcrResultado {
+  texto: string;
+  valor?: number;
+  data?: string;
+  descricao?: string;
+  tipoSugestao?: string;
 }
 
 export const DESPESA_STATUS_LABEL: Record<DespesaStatus, string> = {

@@ -16,9 +16,9 @@ const schema = z.object({
 
 type FormData = z.infer<typeof schema>;
 
-export function TipoDespesaForm({ open, onOpenChange, editando }: { open: boolean; onOpenChange: (open: boolean) => void; editando: DespesaTipo | null }) {
-  const criar = useCriarTipoDespesa();
-  const atualizar = useAtualizarTipoDespesa();
+export function TipoDespesaForm({ open, onOpenChange, editando, empresaId }: { open: boolean; onOpenChange: (open: boolean) => void; editando: DespesaTipo | null; empresaId?: string }) {
+  const criar = useCriarTipoDespesa(empresaId);
+  const atualizar = useAtualizarTipoDespesa(empresaId);
 
   const { register, handleSubmit, reset, formState: { errors } } = useForm<FormData>({
     resolver: zodResolver(schema),
