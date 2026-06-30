@@ -14,6 +14,7 @@ import { linktreeModule } from "~/features/linktree/module";
 import { hubModule } from "~/features/hub/module";
 import { crmModule } from "~/features/crm/module";
 import { despesasModule } from "~/features/despesas/module";
+import { rotasModule } from "~/features/rotas/module";
 import { initSentry } from "~/core/monitoring/sentry";
 import "~/styles/globals.css";
 
@@ -28,6 +29,7 @@ registerModule(linktreeModule);
 registerModule(hubModule);
 registerModule(crmModule);
 registerModule(despesasModule);
+registerModule(rotasModule);
 
 const router = createRouter({ routeTree });
 const queryClient = new QueryClient({

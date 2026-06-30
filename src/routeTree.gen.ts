@@ -105,9 +105,14 @@ import { cadastrosDesignRoute } from "./routes/cadastros.design";
 
 import { despesasRoute } from "./routes/despesas";
 import { despesasAprovacaoRoute } from "./routes/despesas.aprovacao";
-import { despesasConfigRoute } from "./routes/despesas.config";
+import { despesasMeusRelatoriosRoute } from "./routes/despesas.meus-relatorios";
 import { despesasRelatoriosRoute } from "./routes/despesas.relatorios";
 import { despesasDesignRoute } from "./routes/despesas.design";
+import { empresaDespesasConfigRoute } from "./routes/empresa.despesas-config";
+
+import { rotasRoute } from "./routes/rotas";
+import { rotaDetailRoute } from "./routes/rotas.$id";
+import { rotasConfigRoute } from "./routes/rotas.config";
 
 export const routeTree = rootRoute.addChildren([
   loginRoute,
@@ -153,10 +158,15 @@ export const routeTree = rootRoute.addChildren([
     cadastrosDesignRoute,
     despesasDesignRoute,
 
+    rotasRoute,
+    rotaDetailRoute,
+    rotasConfigRoute,
+
     despesasRoute,
     despesasAprovacaoRoute,
-    despesasConfigRoute,
+    despesasMeusRelatoriosRoute,
     despesasRelatoriosRoute,
+    empresaDespesasConfigRoute,
 
     mapasRoute,
     mapasDistribuidoresRoute,
