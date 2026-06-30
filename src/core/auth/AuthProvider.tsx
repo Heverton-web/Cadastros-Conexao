@@ -129,6 +129,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     toast.success("Login realizado!");
   }
 
+  function refreshPermissoes(): void {
+    if (profile?.is_super_admin) {
+      const allPerms: Record<string, boolean> = {};
+      for (const key of getAllPermissionKeys()) {
+        allPerms[key] = true;
+      }
+      setPermissoes(allPerms);
+    }
+  }
+
   async function logout(): Promise<void> {
     await supabase.auth.signOut();
   }
@@ -159,6 +169,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         register,
         resetPassword,
         fetchProfile,
+        refreshPermissoes,
       }}
     >
       {children}

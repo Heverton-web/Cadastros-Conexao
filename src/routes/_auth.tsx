@@ -4,7 +4,7 @@ import { AppLayout } from "~/components/layout/AppLayout";
 import { Loader2 } from "lucide-react";
 import { useAuth } from "~/lib/auth";
 import { getModule, getAllModules } from "~/registry";
-import { useRef, useState } from "react";
+import { useState } from "react";
 
 export const authLayout = createRoute({
   getParentRoute: () => rootRoute,
@@ -13,7 +13,7 @@ export const authLayout = createRoute({
 });
 
 function AuthGuard() {
-  const { user, profile, permissoes, modulosAtivos, loading, fetchProfile } = useAuth();
+  const { user, profile, permissoes, modulosAtivos, loading, refreshPermissoes } = useAuth();
   const navigate = useNavigate();
   const [modulesReady, setModulesReady] = useState(false);
 
@@ -40,9 +40,8 @@ function AuthGuard() {
       mod?.setup?.();
     }
 
-    // For super admin, re-fetch profile to get all permission keys (including newly registered ones)
     if (profile.is_super_admin) {
-      fetchProfile(user.id);
+      refreshPermissoes?.();
     }
 
     setModulesReady(true);

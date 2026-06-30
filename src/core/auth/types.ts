@@ -45,4 +45,5 @@ export type AuthContextType = {
   register: (email: string, password: string) => Promise<void>;
   resetPassword: (email: string) => Promise<void>;
   fetchProfile?: (userId: string) => Promise<void>;
+  refreshPermissoes?: () => void;
 };

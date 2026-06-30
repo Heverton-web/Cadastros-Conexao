@@ -48,32 +48,25 @@ export function BottomNav({ selectedModuleKey }: { selectedModuleKey?: string })
               aria-label={item.label}
               aria-current={isActive ? "page" : undefined}
               className={cn(
-                "flex flex-col items-center justify-center min-w-[56px] min-h-[52px] px-1 py-1 rounded-lg transition-colors duration-150",
+                "flex flex-col items-center justify-center min-w-[48px] min-h-[44px] rounded-lg transition-colors duration-150",
                 isActive
                   ? "text-accent"
                   : "text-text-muted hover:text-text-main"
               )}
             >
-              <item.icon size={20} />
-              <span className={cn(
-                "text-xs mt-0.5 leading-tight truncate max-w-[52px]",
-                isActive ? "font-semibold" : "font-medium"
-              )}>
-                {item.label}
-              </span>
+              <item.icon size={22} />
               {isActive && (
-                <span className="mt-0.5 w-1 h-1 rounded-full bg-accent" />
+                <span className="mt-1 w-1 h-1 rounded-full bg-accent" />
               )}
             </button>
           );
         })}
         {overflowItems.length > 0 && (
           <button
-            className="flex flex-col items-center justify-center min-w-[56px] min-h-[52px] px-1 py-1 rounded-lg text-text-muted hover:text-text-main transition-colors duration-150"
+            className="flex flex-col items-center justify-center min-w-[48px] min-h-[44px] rounded-lg text-text-muted hover:text-text-main transition-colors duration-150"
             aria-label="Mais opções"
           >
-            <span className="text-lg leading-none">···</span>
-            <span className="text-xs mt-0.5 font-medium">Mais</span>
+            <span className="text-lg leading-none font-bold">···</span>
           </button>
         )}
       </div>
