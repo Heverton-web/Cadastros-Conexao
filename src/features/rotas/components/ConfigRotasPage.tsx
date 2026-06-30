@@ -25,7 +25,7 @@ import {
 } from "~/components/ui/alert-dialog";
 import { Loader2, Save, Plus, Trash2, GripVertical, Upload, Download } from "lucide-react";
 import { useEmpresa } from "~/core/empresa/useEmpresa";
-import { useAuth } from "~/core/auth";
+import { useAuth } from "~/lib/auth";
 import { getConfig, upsertConfig } from "../services/config.service";
 import {
   listarPerguntas,

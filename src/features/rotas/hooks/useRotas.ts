@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEmpresa } from "~/core/empresa/useEmpresa";
-import { useAuth } from "~/core/auth";
+import { useAuth } from "~/lib/auth";
 import {
   listarRotas,
   buscarRota,
