@@ -1,13 +1,19 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState, useCallback } from "react";
 import { geoMercator, geoPath } from "d3-geo";
 import type { Feature, FeatureCollection } from "geojson";
 import { cn } from "~/lib/utils";
-import { GEOJSON_NAME_TO_UF, UF_NAMES, type UF } from "../constants/brazil-states";
+import { GEOJSON_NAME_TO_UF, UF_NAMES, ALL_UFS, UF_REGION, type UF } from "../constants/brazil-states";
 import type { StatePresence, MapPinData } from "../types";
 
 export type PresenceByState = Partial<Record<UF, StatePresence>>;
 
 type Mode = "presence-distributors" | "presence-consultants" | "presence-both" | "heatmap";
+
+interface TooltipData {
+  uf: UF;
+  x: number;
+  y: number;
+}
 
 interface BrazilMapProps {
   presenceByState: PresenceByState;
@@ -18,10 +24,12 @@ interface BrazilMapProps {
   selectedUF?: UF | null;
   className?: string;
   heatmapMax?: number;
+  filterRegion?: string | null;
 }
 
 const WIDTH = 800;
 const HEIGHT = 800;
+const ANIMATION_DELAY_STEP = 30;
 
 export function BrazilMap({
   presenceByState,
@@ -32,9 +40,13 @@ export function BrazilMap({
   selectedUF = null,
   className,
   heatmapMax,
+  filterRegion = null,
 }: BrazilMapProps) {
   const [geo, setGeo] = useState<FeatureCollection | null>(null);
   const [hover, setHover] = useState<UF | null>(null);
+  const [tooltip, setTooltip] = useState<TooltipData | null>(null);
+  const [mounted, setMounted] = useState(false);
+  const svgRef = useRef<SVGSVGElement>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -43,6 +55,11 @@ export function BrazilMap({
       .then((d) => { if (!cancelled) setGeo(d as FeatureCollection); })
       .catch(() => {});
     return () => { cancelled = true; };
+  }, []);
+
+  useEffect(() => {
+    const id = setTimeout(() => setMounted(true), 100);
+    return () => clearTimeout(id);
   }, []);
 
   const { pathGen, projection } = useMemo(() => {
@@ -72,12 +89,19 @@ export function BrazilMap({
     return m;
   }, [presenceByState, heatmapMax]);
 
-  function fillFor(uf: UF): string {
+  const ufOrder = useMemo(() => {
+    return ALL_UFS.slice();
+  }, []);
+
+  function getCounts(uf: UF) {
     const p = presenceByState[uf];
-    const d = p?.distributors ?? 0;
-    const c = p?.consultants ?? 0;
-    if (mode === "presence-distributors") return d > 0 ? "var(--state-exclusive)" : "var(--state-empty)";
-    if (mode === "presence-consultants") return c > 0 ? "var(--state-exclusive)" : "var(--state-empty)";
+    return { d: p?.distributors ?? 0, c: p?.consultants ?? 0 };
+  }
+
+  function fillFor(uf: UF): string {
+    const { d, c } = getCounts(uf);
+    if (mode === "presence-distributors") return d > 0 ? "url(#grad-exclusive)" : "var(--state-empty)";
+    if (mode === "presence-consultants") return c > 0 ? "url(#grad-exclusive)" : "var(--state-empty)";
     if (mode === "heatmap") {
       const v = d + c;
       if (v === 0) return "var(--heat-1)";
@@ -87,104 +111,213 @@ export function BrazilMap({
       if (ratio < 0.7) return "var(--heat-4)";
       return "var(--heat-5)";
     }
-    if (d > 0 && c > 0) return "var(--state-exclusive)";
-    if (d > 0 || c > 0) return "var(--state-nonexclusive)";
+    if (d > 0 && c > 0) return "url(#grad-exclusive)";
+    if (d > 0 || c > 0) return "url(#grad-partial)";
     return "var(--state-empty)";
   }
 
   function isFaded(uf: UF): boolean {
-    const p = presenceByState[uf];
-    const d = p?.distributors ?? 0;
-    const c = p?.consultants ?? 0;
+    const { d, c } = getCounts(uf);
+    if (filterRegion && UF_REGION[uf] !== filterRegion) return true;
     if (mode === "presence-distributors") return d === 0;
     if (mode === "presence-consultants") return c === 0;
     if (mode === "heatmap") return d + c === 0;
     return d === 0 && c === 0;
   }
 
+  const handleMouseMove = useCallback((e: React.MouseEvent, uf: UF) => {
+    const rect = svgRef.current?.getBoundingClientRect();
+    if (!rect) return;
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    setTooltip({ uf, x, y });
+  }, []);
+
+  const handleMouseLeave = useCallback(() => {
+    setHover(null);
+    setTooltip(null);
+  }, []);
+
+  const selData = selectedUF ? getCounts(selectedUF) : null;
+
   if (!geo || !pathGen) {
     return <div className={cn("aspect-square w-full animate-pulse rounded-xl bg-surface", className)} />;
   }
 
   const pinsByStateCount: Record<string, number> = {};
+  const statePinClusters: Record<string, { pins: MapPinData[]; centroid: [number, number] }> = {};
+
+  for (const p of pins) {
+    const hasCoords = p.lat != null && p.lng != null && p.lat !== 0 && p.lng !== 0;
+    if (!hasCoords) {
+      if (!statePinClusters[p.state]) {
+        const centroid = centroids[p.state as UF];
+        if (centroid) {
+          statePinClusters[p.state] = { pins: [], centroid };
+        }
+      }
+      if (statePinClusters[p.state]) {
+        statePinClusters[p.state].pins.push(p);
+      }
+    }
+  }
 
   return (
-    <div className={cn("w-full", className)}>
-      <svg viewBox={`0 0 ${WIDTH} ${HEIGHT}`} className="h-auto w-full select-none" role="img" aria-label="Mapa do Brasil">
-        <g>
-          {geo.features.map((feature: Feature) => {
-            const name = (feature.properties as { name?: string } | null)?.name ?? "";
-            const uf = GEOJSON_NAME_TO_UF[name];
-            if (!uf) return null;
-            const d = pathGen(feature) ?? "";
-            const faded = isFaded(uf);
-            const isSel = selectedUF === uf;
-            const isHover = hover === uf;
-            const presence = presenceByState[uf];
-            const totalLabel = presence
-              ? `${presence.distributors} distribuidor(es), ${presence.consultants} consultor(es)`
-              : "Sem presença";
+    <div className={cn("relative w-full", className)}>
+      <svg
+        ref={svgRef}
+        viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
+        className="h-auto w-full select-none"
+        role="img"
+        aria-label="Mapa do Brasil"
+      >
+        <defs>
+          <linearGradient id="grad-exclusive" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stopColor="var(--grad-exclusive-1)" />
+            <stop offset="100%" stopColor="var(--grad-exclusive-2)" />
+          </linearGradient>
+          <linearGradient id="grad-partial" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stopColor="var(--grad-partial-1)" />
+            <stop offset="100%" stopColor="var(--grad-partial-2)" />
+          </linearGradient>
+        </defs>
 
-            return (
-              <path
-                key={uf}
-                d={d}
-                fill={fillFor(uf)}
-                stroke={isSel ? "var(--map-stroke-selected)" : "var(--map-stroke)"}
-                strokeWidth={isSel ? 2 : 0.9}
-                className={cn(
-                  "cursor-pointer transition-[opacity,filter,stroke] duration-150",
-                  faded && "state-faded",
-                  isHover && !faded && "brightness-110",
-                )}
-                onMouseEnter={() => setHover(uf)}
-                onMouseLeave={() => setHover(null)}
-                onClick={() => onStateClick?.(uf)}
-              >
-                <title>{`${UF_NAMES[uf]} (${uf}) — ${totalLabel}`}</title>
-              </path>
-            );
-          })}
-        </g>
+        {geo.features.map((feature: Feature, idx: number) => {
+          const name = (feature.properties as { name?: string } | null)?.name ?? "";
+          const uf = GEOJSON_NAME_TO_UF[name];
+          if (!uf) return null;
+          const d = pathGen(feature) ?? "";
+          const faded = isFaded(uf);
+          const isSel = selectedUF === uf;
+          const isHover = hover === uf;
+          const { d: distCount, c: consCount } = getCounts(uf);
+
+          return (
+            <path
+              key={uf}
+              d={d}
+              fill={fillFor(uf)}
+              stroke={isSel ? "var(--map-stroke-selected)" : "var(--map-stroke)"}
+              strokeWidth={isSel ? 2 : 0.7}
+              className={cn(
+                "cursor-pointer transition-[opacity,filter,stroke] duration-200",
+                faded && "state-faded",
+                isHover && !faded && "brightness-110",
+                isSel && "state-glow",
+              )}
+              style={{
+                opacity: mounted ? undefined : 0,
+                transform: mounted ? undefined : "translateY(-4px)",
+                transition: `opacity 0.3s ease-out, transform 0.3s ease-out, filter 0.2s, stroke 0.2s`,
+                transitionDelay: mounted ? `${idx * ANIMATION_DELAY_STEP}ms` : "0ms",
+              }}
+              onMouseEnter={() => setHover(uf)}
+              onMouseMove={(e) => handleMouseMove(e, uf)}
+              onMouseLeave={handleMouseLeave}
+              onClick={() => onStateClick?.(uf)}
+            >
+              <title>{`${UF_NAMES[uf]} (${uf}) — ${distCount} distribuidor(es), ${consCount} consultor(es)`}</title>
+            </path>
+          );
+        })}
 
         {pins.length > 0 && (
           <g>
             {pins.map((p) => {
+              const hasCoords = p.lat != null && p.lng != null && p.lat !== 0 && p.lng !== 0;
+              if (!hasCoords) return null;
+
               const color = p.pin_color ?? "#4169e1";
-              let x = 0, y = 0, hasPos = false;
-              if (p.lat != null && p.lng != null && p.lat !== 0 && p.lng !== 0) {
-                const coords = projection ? projection([p.lng, p.lat]) : null;
-                if (coords) { [x, y] = coords; hasPos = true; }
-              }
-              if (!hasPos) {
-                const centroid = centroids[p.state as UF];
-                if (centroid) {
-                  const idx = pinsByStateCount[p.state] ?? 0;
-                  pinsByStateCount[p.state] = idx + 1;
-                  const angle = (idx * 2 * Math.PI) / 8;
-                  const radius = 10 + Math.floor(idx / 8) * 6;
-                  x = centroid[0] + Math.cos(angle) * radius;
-                  y = centroid[1] + Math.sin(angle) * radius;
-                  hasPos = true;
-                }
-              }
-              if (!hasPos) return null;
+              const coords = projection ? projection([p.lng!, p.lat!]) : null;
+              if (!coords) return null;
+              const [x, y] = coords;
 
               return (
-                <g key={p.id}>
-                  <circle cx={x} cy={y} r={7} fill={color} className="animate-pulse opacity-30 pointer-events-none" />
-                  <circle
-                    cx={x} cy={y} r={4} fill={color} stroke="#ffffff" strokeWidth={1}
-                    className="cursor-pointer transition-transform hover:scale-125"
+                <g key={p.id} transform={`translate(${x}, ${y})`}>
+                  <path
+                    d="M0,-16 C-6,-10 -10,-4 -10,2 C-10,8 -4,14 0,18 C4,14 10,8 10,2 C10,-4 6,-10 0,-16Z"
+                    fill={color}
+                    stroke="#fff"
+                    strokeWidth={1}
+                    className="cursor-pointer transition-transform duration-150 hover:scale-125"
                     onClick={(e) => { e.stopPropagation(); onPinClick?.(p); }}
                   />
+                  <circle cx="0" cy="2" r="3" fill="#fff" className="pointer-events-none" />
                   <title>{p.name}</title>
+                </g>
+              );
+            })}
+
+            {Object.entries(statePinClusters).map(([state, cluster]) => {
+              const [cx, cy] = cluster.centroid;
+              const count = cluster.pins.length;
+              const firstColor = cluster.pins[0]?.pin_color ?? "#4169e1";
+              return (
+                <g key={`cluster-${state}`} transform={`translate(${cx}, ${cy})`}>
+                  <circle r={count > 9 ? 14 : 10} fill={firstColor} fillOpacity={0.2} stroke={firstColor} strokeWidth={2} />
+                  <circle r={count > 9 ? 11 : 8} fill={firstColor} className="cursor-pointer transition-transform hover:scale-110"
+                    onClick={(e) => { e.stopPropagation(); onPinClick?.(cluster.pins[0]); }}
+                  />
+                  <text textAnchor="middle" dy="0.35em" fill="#fff" fontSize={count > 9 ? 11 : 10} fontWeight={700} className="pointer-events-none select-none">
+                    {count}
+                  </text>
+                  <title>{count} entidade(s) em {UF_NAMES[state as UF]}</title>
                 </g>
               );
             })}
           </g>
         )}
       </svg>
+
+      {tooltip && (
+        <div
+          className="pointer-events-none absolute z-50 rounded-xl border border-surface bg-card/95 px-3 py-2.5 shadow-xl backdrop-blur-sm"
+          style={{
+            left: tooltip.x + 16,
+            top: tooltip.y - 10,
+            transform: "translateY(-100%)",
+          }}
+        >
+          <p className="whitespace-nowrap text-sm font-semibold text-foreground">
+            {UF_NAMES[tooltip.uf]} ({tooltip.uf})
+          </p>
+          <div className="mt-1.5 space-y-1 text-xs text-muted-foreground">
+            {mode !== "presence-consultants" && (
+              <p className="flex items-center gap-1.5 whitespace-nowrap">
+                <Building2Icon />
+                {getCounts(tooltip.uf).d} distribuidor(es)
+              </p>
+            )}
+            {mode !== "presence-distributors" && (
+              <p className="flex items-center gap-1.5 whitespace-nowrap">
+                <UserIcon />
+                {getCounts(tooltip.uf).c} consultor(es)
+              </p>
+            )}
+          </div>
+        </div>
+      )}
     </div>
+  );
+}
+
+function Building2Icon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0 text-accent">
+      <rect x="4" y="2" width="16" height="20" rx="2" ry="2" />
+      <path d="M9 22v-4h6v4" />
+      <path d="M8 6h.01" /><path d="M16 6h.01" />
+      <path d="M8 10h.01" /><path d="M16 10h.01" />
+      <path d="M8 14h.01" /><path d="M16 14h.01" />
+    </svg>
+  );
+}
+
+function UserIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0 text-accent">
+      <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+      <circle cx="12" cy="7" r="4" />
+    </svg>
   );
 }

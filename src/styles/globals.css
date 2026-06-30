@@ -280,17 +280,22 @@ body.modal-open {
 :root {
   color-scheme: dark;
 
-  --state-exclusive: #c9a655;
-  --state-nonexclusive: #8b7340;
-  --state-empty: #162032;
+  --state-exclusive: #d4a843;
+  --state-nonexclusive: #b8944a;
+  --state-empty: #0f1724;
   --state-empty-fg: #3b5998;
-  --map-stroke: #2a3f5f;
-  --map-stroke-selected: #c9a655;
-  --heat-1: #162032;
-  --heat-2: #1a2d4a;
-  --heat-3: #1e3a5f;
-  --heat-4: #2563a0;
-  --heat-5: #3b82f6;
+  --map-stroke: #1e2d45;
+  --map-stroke-selected: #f0d080;
+  --state-glow: drop-shadow(0 0 8px rgba(212,168,67,0.5));
+  --grad-exclusive-1: #d4a843;
+  --grad-exclusive-2: #b8862e;
+  --grad-partial-1: #b8944a;
+  --grad-partial-2: #9a7a3a;
+  --heat-1: #0f1724;
+  --heat-2: #1a3a6a;
+  --heat-3: #2563a0;
+  --heat-4: #3b82f6;
+  --heat-5: #60a5fa;
 }
 
 /* ── Select nativo estilizado ── */
@@ -329,7 +334,10 @@ select optgroup option {
 
 /* ── Mapas ── */
 .state-faded {
-  opacity: 0.4;
+  opacity: 0.35;
+}
+.state-glow {
+  filter: var(--state-glow);
 }
 
 /* ── Accordion (radix) ── */
