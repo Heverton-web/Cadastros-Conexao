@@ -57,7 +57,7 @@ const MESES = [
 
 const DIAS_SEMANA = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
 
-const CORES_TIPO: Record<CalendarioEventoTipo, string> = {
+const CORES_TIPO: Record<string, string> = {
   post_blog: "bg-blue-500/20 text-blue-400 border-blue-500/30",
   email: "bg-green-500/20 text-green-400 border-green-500/30",
   landing_page: "bg-purple-500/20 text-purple-400 border-purple-500/30",
@@ -65,7 +65,7 @@ const CORES_TIPO: Record<CalendarioEventoTipo, string> = {
   criativo: "bg-pink-500/20 text-pink-400 border-pink-500/30",
 };
 
-const LABELS_TIPO: Record<CalendarioEventoTipo, string> = {
+const LABELS_TIPO: Record<string, string> = {
   post_blog: "Post Blog",
   email: "E-mail",
   landing_page: "Landing Page",
@@ -92,7 +92,10 @@ export function CalendarioGrid() {
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
-    if (!empresaId) return;
+    if (!empresaId) {
+      setLoading(false);
+      return;
+    }
     carregarEventos();
   }, [empresaId, mesRef, anoRef]);
 
@@ -119,7 +122,7 @@ export function CalendarioGrid() {
   const eventosPorDia = useMemo(() => {
     const map = new Map<number, CalendarioEvento[]>();
     for (const e of eventos) {
-      const dia = new Date(e.data_inicio).getDate();
+      const dia = new Date(e.data).getDate();
       if (!map.has(dia)) map.set(dia, []);
       map.get(dia)!.push(e);
     }
@@ -166,8 +169,11 @@ export function CalendarioGrid() {
         titulo: formTitulo.trim(),
         descricao: formDescricao.trim() || null,
         tipo: formTipo,
-        data_inicio: dataInicio,
+        data: dataInicio,
         status: formStatus,
+        hora: null,
+        plataforma: null,
+        responsavel: null,
       });
       toast.success("Evento criado com sucesso");
       setDialogOpen(false);

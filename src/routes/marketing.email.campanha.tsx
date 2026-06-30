@@ -8,7 +8,7 @@ function CampanhaEditor() {
   return (
     <div className="p-6 space-y-6">
       <PageHeader title="Editor de Campanha" description="Crie e edite campanhas de e-mail" />
-      <EmptyState icon={Mail} title="Editor" description="Configure sua campanha de e-mail." />
+      <EmptyState icon={<Mail className="w-8 h-8 text-text-muted" />} title="Editor" description="Configure sua campanha de e-mail." />
     </div>
   );
 }

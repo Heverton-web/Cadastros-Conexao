@@ -8,7 +8,7 @@ function EmailAnalytics() {
   return (
     <div className="p-6 space-y-6">
       <PageHeader title="Analytics E-mail" description="Metricas das campanhas de e-mail" />
-      <EmptyState icon={BarChart3} title="Analytics" description="Visualize as metricas das suas campanhas de e-mail." />
+      <EmptyState icon={<BarChart3 className="w-8 h-8 text-text-muted" />} title="Analytics" description="Visualize as metricas das suas campanhas de e-mail." />
     </div>
   );
 }

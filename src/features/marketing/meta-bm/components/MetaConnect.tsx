@@ -13,22 +13,25 @@ import {
 import { verificarConexao, desconectar } from "../services/auth.service";
 
 export function MetaConnect() {
-  const { user } = useAuth();
+  const { profile } = useAuth();
   const [conectado, setConectado] = useState(false);
   const [carregando, setCarregando] = useState(true);
 
   useEffect(() => {
-    if (!user?.empresa_id) return;
-    verificarConexao(user.empresa_id).then((conta) => {
-      setConectado(!!conta);
+    if (!profile?.empresa_id) {
       setCarregando(false);
-    });
-  }, [user?.empresa_id]);
+      return;
+    }
+    verificarConexao(profile.empresa_id)
+      .then((conta) => setConectado(!!conta))
+      .catch(console.error)
+      .finally(() => setCarregando(false));
+  }, [profile?.empresa_id]);
 
   async function handleDesconectar() {
-    if (!user?.empresa_id) return;
+    if (!profile?.empresa_id) return;
     setCarregando(true);
-    const ok = await desconectar(user.empresa_id);
+    const ok = await desconectar(profile.empresa_id);
     if (ok) {
       setConectado(false);
       toast.success("Desconectado do Meta Business Manager");

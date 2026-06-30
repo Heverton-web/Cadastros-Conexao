@@ -14,29 +14,34 @@ import {
 import { buscarMetricas, buscarEventosAgregados } from "../../lib/analytics";
 
 export function MarketingDashboard() {
-  const { user } = useAuth();
-  const empresaId = user?.empresa_id;
+  const { profile } = useAuth();
+  const empresaId = profile?.empresa_id;
   const [metricas, setMetricas] = useState<
     { label: string; valor: number | string }[]
   >([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!empresaId) return;
-    Promise.all([buscarMetricas(empresaId)]).then(([met]) => {
-      setMetricas(
-        met.map((m) => ({
-          label: m.label,
-          valor:
-            typeof m.valor === "number"
-              ? m.label.includes("Taxa")
-                ? `${m.valor}%`
-                : m.valor.toLocaleString("pt-BR")
-              : m.valor,
-        })),
-      );
+    if (!empresaId) {
       setLoading(false);
-    });
+      return;
+    }
+    Promise.all([buscarMetricas(empresaId)])
+      .then(([met]) => {
+        setMetricas(
+          met.map((m) => ({
+            label: m.label,
+            valor:
+              typeof m.valor === "number"
+                ? m.label.includes("Taxa")
+                  ? `${m.valor}%`
+                  : m.valor.toLocaleString("pt-BR")
+                : m.valor,
+          })),
+        );
+      })
+      .catch(console.error)
+      .finally(() => setLoading(false));
   }, [empresaId]);
 
   const icons = [

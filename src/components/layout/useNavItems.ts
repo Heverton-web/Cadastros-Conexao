@@ -143,6 +143,66 @@ function buildConfigSubGroups(items: NavItem[]): NavSubGroup[] {
   return subGroups;
 }
 
+function buildMarketingSubGroups(items: NavItem[]): NavSubGroup[] {
+  // 1. Dashboard & Analytics
+  const analyticsPaths = [
+    "/marketing/dashboard",
+    "/marketing/seo",
+    "/marketing/email/analytics",
+  ];
+  const analyticsItems = items.filter((i) => analyticsPaths.includes(i.path));
+
+  // 2. Captação & Leads
+  const captePaths = ["/marketing/leads", "/marketing/landing-pages"];
+  const capteItems = items.filter(
+    (i) => captePaths.includes(i.path) || i.path.startsWith("/marketing/leads/"),
+  );
+
+  // 3. Canais & Campanhas
+  const canaisPaths = [
+    "/marketing/email",
+    "/marketing/criativos",
+    "/marketing/calendario",
+    "/marketing/utms",
+    "/marketing/pixels",
+  ];
+  const canaisItems = items.filter((i) => canaisPaths.includes(i.path));
+
+  // 4. Meta Ads & Redes
+  const metaPaths = [
+    "/marketing/meta-bm",
+    "/marketing/meta-bm/campanhas",
+    "/marketing/meta-bm/posts",
+  ];
+  const metaItems = items.filter((i) => metaPaths.includes(i.path));
+
+  // 5. LinkTree
+  const linktreePaths = [
+    "/marketing/linktree",
+    "/linktree/dashboard",
+    "/linktree/empresa",
+    "/linktree/empresa/editor",
+    "/linktree/tema",
+  ];
+  const linktreeItems = items.filter(
+    (i) => linktreePaths.includes(i.path) || i.path.startsWith("/linktree/"),
+  );
+
+  const subGroups: NavSubGroup[] = [];
+  if (analyticsItems.length)
+    subGroups.push({ label: "Dashboard & Analytics", items: analyticsItems });
+  if (capteItems.length)
+    subGroups.push({ label: "Captação & Leads", items: capteItems });
+  if (canaisItems.length)
+    subGroups.push({ label: "Canais & Campanhas", items: canaisItems });
+  if (metaItems.length)
+    subGroups.push({ label: "Meta Ads & Redes", items: metaItems });
+  if (linktreeItems.length)
+    subGroups.push({ label: "LinkTree", items: linktreeItems });
+
+  return subGroups;
+}
+
 function buildAdminSection(): NavModuleSection {
   const adminItems: NavItem[] = [
     { path: "/global/modulos", label: "Módulos ERP", icon: Puzzle },
@@ -285,6 +345,10 @@ export function useNavItems(): NavModuleSection[] {
 
       if (mod.key === "hub") {
         section.subGroups = buildHubSubGroups(items);
+      }
+
+      if (mod.key === "marketing") {
+        section.subGroups = buildMarketingSubGroups(items);
       }
 
       outros.push(section);

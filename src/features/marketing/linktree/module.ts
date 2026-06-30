@@ -18,14 +18,6 @@ export const marketingLinktreeModule: ModuleDefinition = {
   abas: [],
   events: [],
   setup: () => {
-    registerNavItem({
-      id: "mktg-linktree",
-      label: "LinkTree",
-      icon: GitBranch,
-      to: "/marketing/linktree",
-      permissionCheck: (perms) => perms?.lt_ver === true,
-      order: 120,
-      moduloKey: "marketing",
-    });
+    // Nav items reais do Linktree foram migrados para o Marketing no módulo principal do Linktree
   },
 };

@@ -1,5 +1,5 @@
-export type CalendarioEventoTipo = "post" | "reuniao" | "deadline" | "evento" | "lancamento";
-export type CalendarioEventoStatus = "pendente" | "em_andamento" | "concluido" | "cancelado";
+export type CalendarioEventoTipo = "post_blog" | "email" | "landing_page" | "post_rede" | "criativo" | "post" | "reuniao" | "deadline" | "evento" | "lancamento";
+export type CalendarioEventoStatus = "rascunho" | "agendado" | "publicado" | "cancelado" | "pendente" | "em_andamento" | "concluido";
 
 export type CalendarioEvento = {
   id: string;

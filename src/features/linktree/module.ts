@@ -77,12 +77,12 @@ export const linktreeModule: ModuleDefinition = {
 
     registerNavItem({
       id: "linktree-dashboard",
-      label: "Dashboard",
+      label: "LinkTree Dashboard",
       icon: Link2,
       to: "/linktree/dashboard",
       permissionCheck: (perms) => perms?.lt_ver_dashboard === true,
-      order: 25,
-      moduloKey: "linktree",
+      order: 120,
+      moduloKey: "marketing",
     });
 
     registerNavItem({
@@ -91,19 +91,19 @@ export const linktreeModule: ModuleDefinition = {
       icon: Link,
       to: "/linktree/empresa",
       permissionCheck: (perms) => perms?.lt_empresa_ver === true,
-      order: 28,
-      moduloKey: "linktree",
+      order: 121,
+      moduloKey: "marketing",
       noChildMatch: true,
     });
 
     registerNavItem({
       id: "linktree-empresa-editor",
-      label: "Editor",
+      label: "LinkTree Editor",
       icon: BarChart3,
       to: "/linktree/empresa/editor",
       permissionCheck: (perms) => perms?.lt_empresa_editar === true,
-      order: 29,
-      moduloKey: "linktree",
+      order: 122,
+      moduloKey: "marketing",
       noChildMatch: true,
     });
 

@@ -21,7 +21,6 @@ export const marketingModule: ModuleDefinition = {
       permissionCheck: () => true,
       order: 30,
       moduloKey: "marketing",
-      isGroup: true,
     });
   },
 };

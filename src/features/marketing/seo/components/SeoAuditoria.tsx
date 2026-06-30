@@ -18,14 +18,14 @@ import {
 import { toast } from "react-hot-toast";
 
 const severityConfig = {
-  error: {
+  erro: {
     icon: XCircle,
     color: "text-error",
     bg: "bg-error/10",
     border: "border-error/20",
     label: "Erro",
   },
-  warning: {
+  aviso: {
     icon: AlertTriangle,
     color: "text-warning",
     bg: "bg-warning/10",
@@ -161,13 +161,13 @@ export function SeoAuditoria() {
             <div className="grid grid-cols-3 gap-4 mt-4">
               <div className="text-center">
                 <p className="text-2xl font-bold text-error">
-                  {resultado.issues.filter((i) => i.tipo === "error").length}
+                  {resultado.issues.filter((i) => i.tipo === "erro").length}
                 </p>
                 <p className="text-xs text-text-muted">Erros</p>
               </div>
               <div className="text-center">
                 <p className="text-2xl font-bold text-warning">
-                  {resultado.issues.filter((i) => i.tipo === "warning").length}
+                  {resultado.issues.filter((i) => i.tipo === "aviso").length}
                 </p>
                 <p className="text-xs text-text-muted">Avisos</p>
               </div>
@@ -231,9 +231,9 @@ export function SeoAuditoria() {
                       <div className="flex items-center gap-2 mb-1">
                         <Badge
                           variant={
-                            issue.tipo === "error"
+                            issue.tipo === "erro"
                               ? "destructive"
-                              : issue.tipo === "warning"
+                              : issue.tipo === "aviso"
                                 ? "warning"
                                 : "default"
                           }
@@ -244,9 +244,11 @@ export function SeoAuditoria() {
                       <p className="text-sm font-medium text-text-main">
                         {issue.mensagem}
                       </p>
-                      <p className="text-sm text-text-muted mt-1">
-                        {issue.recomendacao}
-                      </p>
+                      {issue.tag && (
+                        <p className="text-xs text-text-muted mt-1 font-mono">
+                          Elemento: {issue.tag}
+                        </p>
+                      )}
                     </div>
                   </div>
                 </div>

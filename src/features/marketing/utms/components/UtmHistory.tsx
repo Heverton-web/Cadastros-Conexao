@@ -26,9 +26,9 @@ import {
   AlertDialogTitle,
 } from "~/components/ui/alert-dialog";
 import { listarUtms, deletarUtm } from "../services/utm.service";
-import type { Utm, UtmSource } from "../types";
+import type { Utm } from "../services/utm.service";
 
-const UTM_SOURCES: { value: UtmSource | "all"; label: string }[] = [
+const UTM_SOURCES = [
   { value: "all", label: "Todos" },
   { value: "google", label: "Google" },
   { value: "facebook", label: "Facebook" },
@@ -40,21 +40,24 @@ const UTM_SOURCES: { value: UtmSource | "all"; label: string }[] = [
 ];
 
 export function UtmHistory() {
-  const { user } = useAuth();
+  const { profile } = useAuth();
   const [utms, setUtms] = useState<Utm[]>([]);
   const [carregando, setCarregando] = useState(true);
-  const [filtroSource, setFiltroSource] = useState<UtmSource | "all">("all");
+  const [filtroSource, setFiltroSource] = useState("all");
   const [busca, setBusca] = useState("");
   const [itemParaDeletar, setItemParaDeletar] = useState<Utm | null>(null);
   const [copiadoId, setCopiadoId] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!user?.empresa_id) return;
-    listarUtms(user.empresa_id)
+    if (!profile?.empresa_id) {
+        setCarregando(false);
+        return;
+    }
+    listarUtms(profile.empresa_id)
       .then(setUtms)
       .catch(() => toast.error("Erro ao carregar UTMs"))
       .finally(() => setCarregando(false));
-  }, [user?.empresa_id]);
+  }, [profile?.empresa_id]);
 
   const filtradas = utms.filter((utm) => {
     const matchSource =
@@ -62,7 +65,7 @@ export function UtmHistory() {
     const matchBusca =
       !busca ||
       utm.nome.toLowerCase().includes(busca.toLowerCase()) ||
-      utm.url_base.toLowerCase().includes(busca.toLowerCase());
+      utm.url_destino.toLowerCase().includes(busca.toLowerCase());
     return matchSource && matchBusca;
   });
 
@@ -79,11 +82,11 @@ export function UtmHistory() {
 
   async function handleConfirmDelete() {
     if (!itemParaDeletar) return;
-    const ok = await deletarUtm(itemParaDeletar.id);
-    if (ok) {
+    try {
+      await deletarUtm(itemParaDeletar.id);
       setUtms((prev) => prev.filter((u) => u.id !== itemParaDeletar.id));
       toast.success("UTM excluída");
-    } else {
+    } catch {
       toast.error("Erro ao excluir UTM");
     }
     setItemParaDeletar(null);
@@ -129,7 +132,7 @@ export function UtmHistory() {
           <Filter className="w-4 h-4 text-text-muted shrink-0" />
           <Select
             value={filtroSource}
-            onValueChange={(v) => setFiltroSource(v as UtmSource | "all")}
+            onValueChange={setFiltroSource}
           >
             <SelectTrigger className="w-40">
               <SelectValue />
@@ -161,7 +164,7 @@ export function UtmHistory() {
                     {utm.nome}
                   </p>
                   <p className="text-xs text-text-muted truncate">
-                    {utm.url_base}
+                    {utm.url_destino}
                   </p>
                   <div className="flex items-center gap-3 text-xs mt-1">
                     <span className="inline-flex items-center gap-1 bg-surface border border-border rounded-md px-2 py-0.5">
@@ -178,14 +181,14 @@ export function UtmHistory() {
                     </span>
                   </div>
                   <p className="text-xs font-mono text-text-muted truncate mt-1">
-                    {utm.url_final}
+                    {utm.url_destino}
                   </p>
                 </div>
                 <div className="flex items-center gap-1 shrink-0">
                   <Button
                     variant="ghost"
                     size="xs"
-                    onClick={() => handleCopiar(utm.url_final, utm.id)}
+                    onClick={() => handleCopiar(utm.url_destino, utm.id)}
                   >
                     {copiadoId === utm.id ? (
                       <Check className="w-3.5 h-3.5" />
