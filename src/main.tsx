@@ -15,6 +15,20 @@ import { hubModule } from "~/features/hub/module";
 import { crmModule } from "~/features/crm/module";
 import { despesasModule } from "~/features/despesas/module";
 import { rotasModule } from "~/features/rotas/module";
+import {
+  marketingModule,
+  dashboardModule,
+  landingPagesModule,
+  metaBmModule,
+  utmsModule,
+  criativosModule,
+  emailMarketingModule,
+  seoModule,
+  calendarioModule,
+  leadsModule,
+  pixelsModule,
+  marketingLinktreeModule,
+} from "~/features/marketing";
 import { initSentry } from "~/core/monitoring/sentry";
 import "~/styles/globals.css";
 
@@ -30,6 +44,19 @@ registerModule(hubModule);
 registerModule(crmModule);
 registerModule(despesasModule);
 registerModule(rotasModule);
+
+registerModule(marketingModule);
+registerModule(dashboardModule);
+registerModule(landingPagesModule);
+registerModule(metaBmModule);
+registerModule(utmsModule);
+registerModule(criativosModule);
+registerModule(emailMarketingModule);
+registerModule(seoModule);
+registerModule(calendarioModule);
+registerModule(leadsModule);
+registerModule(pixelsModule);
+registerModule(marketingLinktreeModule);
 
 const router = createRouter({ routeTree });
 const queryClient = new QueryClient({

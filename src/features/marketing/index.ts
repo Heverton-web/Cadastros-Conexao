@@ -5,7 +5,7 @@ export { landingPagesModule } from "./landing-pages/module";
 export { metaBmModule } from "./meta-bm/module";
 export { utmsModule } from "./utms/module";
 export { criativosModule } from "./criativos/module";
-export { linktreeModule as marketingLinktreeModule } from "./linktree/module";
+export { marketingLinktreeModule } from "./linktree/module";
 export { emailMarketingModule } from "./email-marketing/module";
 export { seoModule } from "./seo/module";
 export { calendarioModule } from "./calendario-editorial/module";

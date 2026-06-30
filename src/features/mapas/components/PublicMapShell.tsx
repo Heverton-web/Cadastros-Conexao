@@ -189,75 +189,56 @@ export function PublicMapShell({ variant }: { variant: Variant }) {
       </header>
 
       <main className="mx-auto max-w-6xl px-4 pb-24 pt-6 sm:px-6 sm:pt-10">
-        {/* Título + Stats */}
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-          <div className="min-w-0">
-            <div className="flex items-center gap-2">
-              <Icon size={18} className="text-accent" />
-              <p className="text-xs font-semibold uppercase tracking-widest text-accent">
-                Mapa de Presença
-              </p>
-            </div>
-            <h1 className="mt-1.5 text-2xl font-bold tracking-tight sm:text-3xl">
-              {title}
-            </h1>
-            <p className="mt-1 text-sm text-muted-foreground">
-              Toque em um estado para ver os detalhes.
-            </p>
-          </div>
+        {/* Título */}
+        <div className="flex items-center gap-2">
+          <Icon size={18} className="text-accent" />
+          <p className="text-xs font-semibold uppercase tracking-widest text-accent">
+            Mapa de Presença
+          </p>
+        </div>
+        <div className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:gap-3">
+          <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
+            {title}
+          </h1>
+          <p className="text-sm text-muted-foreground">
+            Toque em um estado para ver os detalhes.
+          </p>
+        </div>
 
-          {/* Cards de stats */}
-          <div className="flex flex-wrap gap-2 text-xs sm:flex-nowrap sm:text-sm">
-            <div className="rounded-xl border border-surface bg-surface/40 px-3.5 py-2.5 backdrop-blur-sm">
-              <div className="flex items-center gap-1.5 text-muted-foreground">
-                <BarChart3 size={12} />
-                <span>Total</span>
-              </div>
-              <p className="mt-0.5 text-lg font-bold text-accent">{total}</p>
-            </div>
-            <div className="rounded-xl border border-surface bg-surface/40 px-3.5 py-2.5 backdrop-blur-sm">
-              <div className="flex items-center gap-1.5 text-muted-foreground">
-                <MapPin size={12} />
-                <span>Estados</span>
-              </div>
-              <p className="mt-0.5 text-lg font-bold text-accent">
-                {coveredStates.length}
-                <span className="text-sm font-normal text-muted-foreground">
-                  /{ALL_UFS.length}
+        {/* Stats em uma linha */}
+        <div className="mt-3 flex flex-wrap items-center gap-3 text-xs text-muted-foreground sm:text-sm">
+          <span className="flex items-center gap-1.5 rounded-lg border border-surface bg-surface/40 px-3 py-1.5">
+            <BarChart3 size={12} className="text-accent" />
+            <span>Total</span>
+            <span className="font-bold text-accent">{total}</span>
+          </span>
+          <span className="flex items-center gap-1.5 rounded-lg border border-surface bg-surface/40 px-3 py-1.5">
+            <MapPin size={12} className="text-accent" />
+            <span>Estados</span>
+            <span className="font-bold text-accent">
+              {coveredStates.length}/{ALL_UFS.length}
+            </span>
+          </span>
+          {REGIONS.map((r) => {
+            const s = regionStats[r];
+            return (
+              <span
+                key={r}
+                className="flex items-center gap-1 rounded-lg border border-surface bg-surface/40 px-2.5 py-1.5"
+                title={`${REGION_NAMES[r]}: ${s.covered}/${s.total}`}
+              >
+                <span
+                  className="text-[10px] font-bold"
+                  style={{ color: getRegionColor(r) }}
+                >
+                  {r}
                 </span>
-              </p>
-            </div>
-            {/* Stats por região - desktop */}
-            <div className="hidden rounded-xl border border-surface bg-surface/40 px-3.5 py-2.5 backdrop-blur-sm sm:block">
-              <div className="flex items-center gap-1.5 text-muted-foreground">
-                <BarChart3 size={12} />
-                <span>Regiões</span>
-              </div>
-              <div className="mt-1 flex items-center gap-2.5">
-                {REGIONS.map((r) => {
-                  const s = regionStats[r];
-                  const pct = Math.round((s.covered / s.total) * 100);
-                  return (
-                    <div
-                      key={r}
-                      className="flex flex-col items-center gap-0.5"
-                      title={`${REGION_NAMES[r]}: ${s.covered}/${s.total} (${pct}%)`}
-                    >
-                      <span
-                        className="text-[10px] font-bold"
-                        style={{ color: getRegionColor(r) }}
-                      >
-                        {r}
-                      </span>
-                      <span className="text-xs font-semibold text-foreground">
-                        {s.covered}/{s.total}
-                      </span>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
+                <span className="font-semibold text-foreground">
+                  {s.covered}/{s.total}
+                </span>
+              </span>
+            );
+          })}
         </div>
 
         {/* Mapa */}

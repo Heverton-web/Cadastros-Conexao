@@ -126,6 +126,26 @@ import { rotaDetailRoute } from "./routes/rotas.$id";
 import { rotasConfigRoute } from "./routes/rotas.config";
 import { empresaRotasConfigRoute } from "./routes/empresa.rotas-config";
 
+import { marketingDashboardRoute } from "./routes/marketing.dashboard";
+import { marketingLandingPagesRoute } from "./routes/marketing.landing-pages";
+import { marketingMetaBmRoute } from "./routes/marketing.meta-bm";
+import { marketingMetaBmCampanhasRoute } from "./routes/marketing.meta-bm.campanhas";
+import { marketingMetaBmPostsRoute } from "./routes/marketing.meta-bm.posts";
+import { marketingUtmsRoute } from "./routes/marketing.utms";
+import { marketingCriativosRoute } from "./routes/marketing.criativos";
+import { marketingEmailRoute } from "./routes/marketing.email";
+import { marketingEmailCampanhaRoute } from "./routes/marketing.email.campanha";
+import { marketingEmailAnalyticsRoute } from "./routes/marketing.email.analytics";
+import { marketingSeoRoute } from "./routes/marketing.seo";
+import { marketingCalendarioRoute } from "./routes/marketing.calendario";
+import { marketingLeadsRoute } from "./routes/marketing.leads";
+import { marketingLeadsDetailRoute } from "./routes/marketing.leads.$id";
+import { marketingPixelsRoute } from "./routes/marketing.pixels";
+import { marketingLinktreeRoute } from "./routes/marketing.linktree";
+import { marketingLinktreeDesignRoute } from "./routes/marketing.linktree.design";
+import { marketingLinktreeEditorRoute } from "./routes/marketing.linktree.editor";
+import { marketingLinktreeTemaRoute } from "./routes/marketing.linktree.tema";
+
 export const routeTree = rootRoute.addChildren([
   loginRoute,
   preCadastroRoute,
@@ -256,5 +276,25 @@ export const routeTree = rootRoute.addChildren([
     empresaNpsTemaRoute,
     empresaLinktreeTemaRoute,
     empresaHubChatbotRoute,
+
+    marketingDashboardRoute,
+    marketingLandingPagesRoute,
+    marketingMetaBmRoute,
+    marketingMetaBmCampanhasRoute,
+    marketingMetaBmPostsRoute,
+    marketingUtmsRoute,
+    marketingCriativosRoute,
+    marketingEmailRoute,
+    marketingEmailCampanhaRoute,
+    marketingEmailAnalyticsRoute,
+    marketingSeoRoute,
+    marketingCalendarioRoute,
+    marketingLeadsRoute,
+    marketingLeadsDetailRoute,
+    marketingPixelsRoute,
+    marketingLinktreeRoute,
+    marketingLinktreeDesignRoute,
+    marketingLinktreeEditorRoute,
+    marketingLinktreeTemaRoute,
   ]),
 ]);
