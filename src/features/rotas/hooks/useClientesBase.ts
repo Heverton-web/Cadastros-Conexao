@@ -67,7 +67,11 @@ export function useCriarClientesBaseEmLote() {
   return useMutation({
     mutationFn: (clientes: Parameters<typeof criarClientesBaseEmLote>[0]) =>
       criarClientesBaseEmLote(
-        clientes.map((c) => ({ ...c, empresa_id: empresa!.id, usuario_id: user!.id }))
+        clientes.map((c) => ({
+          ...c,
+          empresa_id: c.empresa_id || empresa?.id || "",
+          usuario_id: c.usuario_id || user?.id || "",
+        }))
       ),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["clientes-base"] });

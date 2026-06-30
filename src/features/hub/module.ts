@@ -16,7 +16,7 @@ export const hubModule: ModuleDefinition = {
     "/hub/admin/trilhas",
     "/hub/admin/analytics",
     "/hub/admin/badges",
-    "/hub/admin/chatbot",
+    "/empresa/hub/chatbot",
     "/hub/gestor/dashboard",
     "/hub/gestor/analytics",
     "/hub/gestor/ranking",
@@ -27,7 +27,6 @@ export const hubModule: ModuleDefinition = {
     "/hub/distribuidor/dashboard",
     "/hub/distribuidor/conquistas",
     "/hub/cliente/dashboard/$empresaId",
-    "/hub/design",
   ],
   permissions: HUB_PERMISSIONS.map((p) => p.key),
   ambientes: ["cadastro", "consultor", "tecnologia"],
@@ -51,7 +50,7 @@ export const hubModule: ModuleDefinition = {
   ],
   hasCredentialScopes: true,
   hasDesignConfig: true,
-  designRoute: "/hub/design",
+  designRoute: "/empresa/hub/design",
   setup: () => {
     for (const p of HUB_PERMISSIONS) {
       registerPermission({ key: p.key, label: p.label, description: p.description, group: p.group });
@@ -232,15 +231,6 @@ export const hubModule: ModuleDefinition = {
       moduloKey: "hub",
     });
 
-    registerNavItem({
-      id: "hub-design",
-      label: "Design",
-      icon: Palette,
-      to: "/hub/design",
-      permissionCheck: isAdmin,
-      order: 99,
-      moduloKey: "hub",
-    });
 
     const hubAllTrue = {
       hub_ver_materiais: true, hub_criar_material: true, hub_editar_material: true,

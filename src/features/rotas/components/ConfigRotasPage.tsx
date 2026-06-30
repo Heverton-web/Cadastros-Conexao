@@ -23,9 +23,18 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "~/components/ui/alert-dialog";
-import { Loader2, Save, Plus, Trash2, GripVertical, Upload, Download } from "lucide-react";
-import { useEmpresa } from "~/core/empresa/useEmpresa";
+import { Loader2, Save, Plus, Trash2, GripVertical, Upload, Download, ChevronUp, ChevronDown, Eye } from "lucide-react";
+import { useEmpresaSuperAdmin } from "~/components/shared/useEmpresaSuperAdmin";
+import { EmpresaSuperAdminSelector } from "~/components/shared/EmpresaSuperAdminSelector";
 import { useAuth } from "~/lib/auth";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "~/components/ui/dialog";
 import { getConfig, upsertConfig } from "../services/config.service";
 import {
   listarPerguntas,
@@ -40,7 +49,7 @@ import type { RotasConfig, RotasFormPergunta, FormPerguntaTipo } from "../types"
 import toast from "react-hot-toast";
 
 export function ConfigRotasPage() {
-  const { empresa } = useEmpresa();
+  const { empresaId, empresas, empresaSelecionada, setEmpresaSelecionada, isSuperAdmin } = useEmpresaSuperAdmin();
   const { user } = useAuth();
   const uploadEmLote = useCriarClientesBaseEmLote();
 
@@ -57,14 +66,39 @@ export function ConfigRotasPage() {
     obrigatorio: true,
   });
   const [showExcluir, setShowExcluir] = useState<string | null>(null);
+  const [showPreview, setShowPreview] = useState(false);
+
+  async function handleMoverPergunta(index: number, direcao: "cima" | "baixo") {
+    const novas = [...perguntas];
+    const targetIndex = direcao === "cima" ? index - 1 : index + 1;
+    if (targetIndex < 0 || targetIndex >= novas.length) return;
+
+    const temp = novas[index];
+    novas[index] = novas[targetIndex];
+    novas[targetIndex] = temp;
+
+    const atualizadas = novas.map((p, idx) => ({ ...p, ordem: idx + 1 }));
+    setPerguntas(atualizadas);
+
+    try {
+      await reordenarPerguntas(atualizadas.map(p => ({ id: p.id, ordem: p.ordem })));
+      toast.success("Ordem atualizada!");
+    } catch (err) {
+      toast.error("Erro ao reordenar: " + (err as Error).message);
+    }
+  }
 
   useEffect(() => {
     async function load() {
-      if (!empresa?.id) return;
+      if (!empresaId) {
+        setLoading(false);
+        return;
+      }
+      setLoading(true);
       try {
         const [configData, perguntasData] = await Promise.all([
-          getConfig(empresa.id),
-          listarPerguntas(empresa.id),
+          getConfig(empresaId),
+          listarPerguntas(empresaId),
         ]);
         setConfig(configData);
         setPerguntas(perguntasData);
@@ -75,16 +109,17 @@ export function ConfigRotasPage() {
       }
     }
     load();
-  }, [empresa?.id]);
+  }, [empresaId]);
 
   async function handleSaveConfig() {
-    if (!empresa?.id || !config) return;
+    if (!empresaId) return;
     setSaving(true);
     try {
-      await upsertConfig(empresa.id, {
-        valor_km_reembolso: config.valor_km_reembolso,
-        raio_permitido_metros: config.raio_permitido_metros,
+      const saved = await upsertConfig(empresaId, {
+        valor_km_reembolso: config?.valor_km_reembolso ?? 0,
+        raio_permitido_metros: config?.raio_permitido_metros ?? 300,
       });
+      setConfig(saved);
       toast.success("Configurações salvas!");
     } catch (err) {
       toast.error((err as Error).message);
@@ -94,7 +129,7 @@ export function ConfigRotasPage() {
   }
 
   async function handleAddPergunta() {
-    if (!empresa?.id) return;
+    if (!empresaId) return;
     if (!novaPergunta.titulo.trim()) {
       toast.error("Digite o título da pergunta");
       return;
@@ -107,7 +142,7 @@ export function ConfigRotasPage() {
 
     try {
       const pergunta = await criarPergunta({
-        empresa_id: empresa.id,
+        empresa_id: empresaId,
         titulo: novaPergunta.titulo,
         tipo: novaPergunta.tipo,
         opcoes: novaPergunta.opcoes,
@@ -145,7 +180,7 @@ export function ConfigRotasPage() {
 
   async function handleUploadCSV(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
-    if (!file || !empresa?.id || !user?.id) return;
+    if (!file || !empresaId || !user?.id) return;
 
     const text = await file.text();
     const lines = text.split("\n").filter((l) => l.trim());
@@ -168,7 +203,7 @@ export function ConfigRotasPage() {
         headers.forEach((h, i) => (row[h] = values[i] ?? ""));
 
         return {
-          empresa_id: empresa.id,
+          empresa_id: empresaId,
           usuario_id: user.id,
           nome: row.nome,
           telefone: row.telefone || null,
@@ -211,13 +246,39 @@ export function ConfigRotasPage() {
     );
   }
 
+  if (!empresaId) {
+    return (
+      <div className="space-y-6">
+        <div>
+          <h1 className="text-2xl font-bold">Configurações das Rotas</h1>
+          <p className="text-muted-foreground">
+            Configure valores, formulário e importação de clientes
+          </p>
+        </div>
+        {isSuperAdmin && empresas.length > 0 && (
+          <div className="p-4 bg-surface border border-border/30 rounded-xl">
+            <EmpresaSuperAdminSelector empresas={empresas} value={empresaSelecionada} onChange={setEmpresaSelecionada} />
+          </div>
+        )}
+        <div className="p-8 border border-dashed rounded-xl text-center text-muted-foreground">
+          Nenhuma empresa selecionada ou vinculada ao seu usuário.
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold">Configurações das Rotas</h1>
-        <p className="text-muted-foreground">
-          Configure valores, formulário e importação de clientes
-        </p>
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold">Configurações das Rotas</h1>
+          <p className="text-muted-foreground">
+            Configure valores, formulário e importação de clientes
+          </p>
+        </div>
+        {isSuperAdmin && empresas.length > 0 && (
+          <EmpresaSuperAdminSelector empresas={empresas} value={empresaSelecionada} onChange={setEmpresaSelecionada} />
+        )}
       </div>
 
       <Tabs defaultValue="geral">
@@ -242,11 +303,10 @@ export function ConfigRotasPage() {
                     min="0"
                     value={config?.valor_km_reembolso ?? 0}
                     onChange={(e) =>
-                      setConfig((prev) =>
-                        prev
-                          ? { ...prev, valor_km_reembolso: Number(e.target.value) }
-                          : null
-                      )
+                      setConfig((prev) => ({
+                        ...(prev ?? { id: "", empresa_id: "", created_at: "", updated_at: "", valor_km_reembolso: 0, raio_permitido_metros: 300 }),
+                        valor_km_reembolso: Number(e.target.value),
+                      }))
                     }
                   />
                 </div>
@@ -258,11 +318,10 @@ export function ConfigRotasPage() {
                     max="1000"
                     value={config?.raio_permitido_metros ?? 300}
                     onChange={(e) =>
-                      setConfig((prev) =>
-                        prev
-                          ? { ...prev, raio_permitido_metros: Number(e.target.value) }
-                          : null
-                      )
+                      setConfig((prev) => ({
+                        ...(prev ?? { id: "", empresa_id: "", created_at: "", updated_at: "", valor_km_reembolso: 0, raio_permitido_metros: 300 }),
+                        raio_permitido_metros: Number(e.target.value),
+                      }))
                     }
                   />
                 </div>
@@ -277,21 +336,53 @@ export function ConfigRotasPage() {
 
         <TabsContent value="formulario" className="space-y-4">
           <Card>
-            <CardHeader>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
               <CardTitle>Formulário Pós-Visita</CardTitle>
+              {perguntas.length > 0 && (
+                <Button variant="outline" size="sm" onClick={() => setShowPreview(true)} className="gap-1.5">
+                  <Eye className="h-4 w-4" />
+                  Visualizar Preview
+                </Button>
+              )}
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="space-y-4">
-                {perguntas.map((pergunta) => (
+              <div className="space-y-3">
+                {perguntas.map((pergunta, index) => (
                   <div
                     key={pergunta.id}
-                    className="flex items-center justify-between p-3 border rounded-lg"
+                    className="flex items-center justify-between p-4 border border-border/30 rounded-xl bg-surface/50 hover:bg-surface/80 transition-all duration-200"
                   >
-                    <div>
-                      <div className="font-medium">{pergunta.titulo}</div>
-                      <div className="text-sm text-muted-foreground">
-                        {FORM_PERGUNTA_TIPO_LABEL[pergunta.tipo]}
-                        {pergunta.obrigatorio && " • Obrigatória"}
+                    <div className="flex items-center gap-4">
+                      {/* Botões de Ordenação */}
+                      <div className="flex flex-col gap-0.5 shrink-0">
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-6 w-6 text-text-muted hover:text-text-main hover:bg-surface-hover"
+                          disabled={index === 0}
+                          onClick={() => handleMoverPergunta(index, "cima")}
+                          title="Mover para cima"
+                        >
+                          <ChevronUp className="h-4 w-4" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-6 w-6 text-text-muted hover:text-text-main hover:bg-surface-hover"
+                          disabled={index === perguntas.length - 1}
+                          onClick={() => handleMoverPergunta(index, "baixo")}
+                          title="Mover para baixo"
+                        >
+                          <ChevronDown className="h-4 w-4" />
+                        </Button>
+                      </div>
+
+                      <div>
+                        <div className="font-medium">{pergunta.titulo}</div>
+                        <div className="text-sm text-muted-foreground">
+                          {FORM_PERGUNTA_TIPO_LABEL[pergunta.tipo]}
+                          {pergunta.obrigatorio && " • Obrigatória"}
+                        </div>
                       </div>
                     </div>
                     <Button
@@ -305,7 +396,7 @@ export function ConfigRotasPage() {
                 ))}
               </div>
 
-              <div className="border-t pt-4 space-y-3">
+              <div className="border-t border-border/30 pt-4 space-y-3">
                 <h4 className="font-medium">Nova Pergunta</h4>
                 <div className="grid grid-cols-2 gap-3">
                   <div className="space-y-1.5">
@@ -437,6 +528,80 @@ export function ConfigRotasPage() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      {/* Modal de Preview do Formulário */}
+      <Dialog open={showPreview} onOpenChange={setShowPreview}>
+        <DialogContent className="sm:max-w-[500px]">
+          <DialogHeader>
+            <DialogTitle>Preview do Formulário</DialogTitle>
+            <DialogDescription>
+              Veja como o formulário pós-visita será exibido no celular do consultor.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-5 py-4 max-h-[60vh] overflow-y-auto pr-2">
+            {perguntas.map((pergunta) => (
+              <div key={pergunta.id} className="space-y-2 p-4 border border-border/30 rounded-xl bg-surface/30">
+                <Label className="text-sm font-semibold flex items-center gap-1.5 text-text-main">
+                  {pergunta.titulo}
+                  {pergunta.obrigatorio && <span className="text-destructive font-bold">*</span>}
+                </Label>
+                <div className="text-[10px] text-text-muted font-mono uppercase tracking-wider mb-2">
+                  Tipo: {FORM_PERGUNTA_TIPO_LABEL[pergunta.tipo]}
+                </div>
+                <PreviewInput tipo={pergunta.tipo} opcoes={pergunta.opcoes} />
+              </div>
+            ))}
+          </div>
+          <DialogFooter>
+            <Button onClick={() => setShowPreview(false)}>
+              Fechar Preview
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
+}
+
+function PreviewInput({ tipo, opcoes }: { tipo: FormPerguntaTipo; opcoes: string[] }) {
+  switch (tipo) {
+    case "texto_curto":
+      return <Input disabled placeholder="Resposta curta..." className="bg-surface-hover/20 cursor-not-allowed" />;
+    case "texto_longo":
+      return <Textarea disabled placeholder="Resposta detalhada..." rows={2} className="bg-surface-hover/20 cursor-not-allowed resize-none" />;
+    case "data":
+      return <Input type="date" disabled className="bg-surface-hover/20 cursor-not-allowed" />;
+    case "selecao":
+      return (
+        <Select disabled>
+          <SelectTrigger className="bg-surface-hover/20 cursor-not-allowed">
+            <SelectValue placeholder="Selecione uma opção..." />
+          </SelectTrigger>
+        </Select>
+      );
+    case "radio":
+      return (
+        <div className="space-y-2 pl-1">
+          {opcoes.map((op) => (
+            <div key={op} className="flex items-center space-x-2.5">
+              <input type="radio" disabled className="h-4 w-4 accent-accent opacity-50 cursor-not-allowed" />
+              <span className="text-sm text-text-muted select-none">{op}</span>
+            </div>
+          ))}
+        </div>
+      );
+    case "multipla_escolha":
+      return (
+        <div className="space-y-2 pl-1">
+          {opcoes.map((op) => (
+            <div key={op} className="flex items-center space-x-2.5">
+              <input type="checkbox" disabled className="h-4 w-4 rounded border-border/50 accent-accent opacity-50 cursor-not-allowed" />
+              <span className="text-sm text-text-muted select-none">{op}</span>
+            </div>
+          ))}
+        </div>
+      );
+    default:
+      return null;
+  }
 }

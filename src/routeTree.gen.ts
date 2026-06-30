@@ -73,10 +73,20 @@ import { crmTransferenciaIndexRoute } from "./routes/_auth.crm.transferencia.ind
 import { crmTransferenciaConsultoresRoute } from "./routes/_auth.crm.transferencia.consultores";
 import { crmDiretoriaIndexRoute } from "./routes/_auth.crm.diretoria.index";
 import { crmDiretoriaGestorRoute } from "./routes/_auth.crm.diretoria.gestor.$id";
-import { crmDevConvitesRoute } from "./routes/_auth.crm.dev.convites";
-import { crmDevDemoRoute } from "./routes/_auth.crm.dev.demo";
-import { crmDevUsuariosRoute } from "./routes/_auth.crm.dev.usuarios";
 import { crmAceitarConviteRoute } from "./routes/crm.aceitar-convite.$token";
+import { rotasDesignRoute } from "./routes/rotas.design";
+import { empresaNpsDesignRoute } from "./routes/empresa.nps-design";
+import { empresaLinktreeDesignRoute } from "./routes/empresa.linktree-design";
+import { empresaHubDesignRoute } from "./routes/empresa.hub-design";
+import { empresaMapasDesignRoute } from "./routes/empresa.mapas-design";
+import { empresaFunisDesignRoute } from "./routes/empresa.funis-design";
+import { empresaCrmDesignRoute } from "./routes/empresa.crm-design";
+import { empresaCadastrosDesignRoute } from "./routes/empresa.cadastros-design";
+import { empresaDespesasDesignRoute } from "./routes/empresa.despesas-design";
+import { empresaRotasDesignRoute } from "./routes/empresa.rotas-design";
+import { empresaNpsTemaRoute } from "./routes/empresa.nps-tema";
+import { empresaLinktreeTemaRoute } from "./routes/empresa.linktree-tema";
+import { empresaHubChatbotRoute } from "./routes/empresa.hub-chatbot";
 import { crmPipelineRoute } from "./routes/_auth.crm.pipeline";
 import { crmTarefasRoute } from "./routes/_auth.crm.tarefas";
 import { crmMetricasRoute } from "./routes/_auth.crm.metricas";
@@ -113,6 +123,7 @@ import { empresaDespesasConfigRoute } from "./routes/empresa.despesas-config";
 import { rotasRoute } from "./routes/rotas";
 import { rotaDetailRoute } from "./routes/rotas.$id";
 import { rotasConfigRoute } from "./routes/rotas.config";
+import { empresaRotasConfigRoute } from "./routes/empresa.rotas-config";
 
 export const routeTree = rootRoute.addChildren([
   loginRoute,
@@ -161,6 +172,8 @@ export const routeTree = rootRoute.addChildren([
     rotasRoute,
     rotaDetailRoute,
     rotasConfigRoute,
+
+    empresaRotasConfigRoute,
 
     despesasRoute,
     despesasAprovacaoRoute,
@@ -227,8 +240,19 @@ export const routeTree = rootRoute.addChildren([
     ]),
     crmDiretoriaIndexRoute,
     crmDiretoriaGestorRoute,
-    crmDevConvitesRoute,
-    crmDevDemoRoute,
-    crmDevUsuariosRoute,
+
+    rotasDesignRoute,
+    empresaNpsDesignRoute,
+    empresaLinktreeDesignRoute,
+    empresaHubDesignRoute,
+    empresaMapasDesignRoute,
+    empresaFunisDesignRoute,
+    empresaCrmDesignRoute,
+    empresaCadastrosDesignRoute,
+    empresaDespesasDesignRoute,
+    empresaRotasDesignRoute,
+    empresaNpsTemaRoute,
+    empresaLinktreeTemaRoute,
+    empresaHubChatbotRoute,
   ]),
 ]);

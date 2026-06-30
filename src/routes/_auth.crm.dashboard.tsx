@@ -357,11 +357,6 @@ function DevPanel({ empresaId }: { empresaId?: string }) {
         <KpiCard icon={Settings} label="Demo cards" value="4" hint="papéis" />
       </section>
 
-      <div className="grid gap-3 md:grid-cols-3">
-        <QuickAction to="/crm/dev/usuarios" icon={ShieldCheck} title="Usuários" subtitle="Ativar, inativar, vincular" />
-        <QuickAction to="/crm/dev/convites" icon={UserPlus} title="Convites" subtitle="CRUD com magic link" />
-        <QuickAction to="/crm/dev/demo" icon={Settings} title="Cartões demo" subtitle="Habilitar/ocultar acesso rápido" />
-      </div>
     </>
   );
 }

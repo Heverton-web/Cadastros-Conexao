@@ -57,6 +57,18 @@ export async function fecharPeriodo(id: string): Promise<DespesaPeriodo> {
   return atualizarPeriodo(id, { status: "fechado" });
 }
 
+export async function reabrirPeriodo(id: string): Promise<DespesaPeriodo> {
+  return atualizarPeriodo(id, { status: "aberto" });
+}
+
+export async function excluirPeriodo(id: string): Promise<void> {
+  const { error } = await supabase
+    .from("despesas_periodos")
+    .delete()
+    .eq("id", id);
+  if (error) throw error;
+}
+
 function getLastDayOfMonth(year: number, month: number): number {
   return new Date(year, month + 1, 0).getDate();
 }

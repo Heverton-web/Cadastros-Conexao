@@ -36,7 +36,7 @@ import {
   ROTA_TIPO_LABEL,
 } from "../types";
 import type { RotaCliente } from "../types";
-import { formatDate } from "~/features/crm/lib/comercial";
+import { formatDate } from "~/lib/utils/format";
 import toast from "react-hot-toast";
 
 type Props = {

@@ -16,7 +16,6 @@ export const mapasModule: ModuleDefinition = {
     "/mapas/insights",
     "/mapas/gestao/distribuidores",
     "/mapas/gestao/consultores",
-    "/mapas/design",
   ],
   permissions: MAPAS_PERMISSIONS.map(p => p.key),
   ambientes: ["cadastro", "consultor"],
@@ -35,7 +34,7 @@ export const mapasModule: ModuleDefinition = {
     { key: "mapas.pin.clicado", label: "Pin Clicado", descricao: "Dispara quando um pin é clicado no mapa" },
   ],
   hasDesignConfig: true,
-  designRoute: "/mapas/design",
+  designRoute: "/empresa/mapas/design",
   setup: () => {
     for (const p of MAPAS_PERMISSIONS) {
       registerPermission({ key: p.key, label: p.label, description: p.description, group: p.group });
@@ -83,15 +82,6 @@ export const mapasModule: ModuleDefinition = {
       moduloKey: "mapas-interativos",
     });
 
-    registerNavItem({
-      id: "mapas-design",
-      label: "Design",
-      icon: Palette,
-      to: "/mapas/design",
-      permissionCheck: (perms) => perms?.mapas_gerir_webhooks === true,
-      order: 99,
-      moduloKey: "mapas-interativos",
-    });
 
   },
 };

@@ -8,7 +8,7 @@ export const npsModule: ModuleDefinition = {
   nome: "NPS",
   descricao: "Pesquisas de satisfação e Net Promoter Score",
   icon: ClipboardCheck,
-  routes: ["/nps", "/nps/survey", "/nps/dashboard", "/nps/pesquisas", "/nps/preview", "/nps/relatorios", "/nps/tema", "/nps/design"],
+  routes: ["/nps", "/nps/survey", "/nps/dashboard", "/nps/pesquisas", "/nps/preview", "/nps/relatorios"],
   permissions: NPS_PERMISSIONS.map((p) => p.key),
   ambientes: ["cadastro", "consultor", "tecnologia"],
   abas: [
@@ -24,7 +24,7 @@ export const npsModule: ModuleDefinition = {
   ],
   hasCredentialScopes: true,
   hasDesignConfig: true,
-  designRoute: "/nps/design",
+  designRoute: "/empresa/nps/design",
   setup: () => {
     for (const p of NPS_PERMISSIONS) {
       registerPermission({ key: p.key, label: p.label, description: p.description, group: p.group });
@@ -70,15 +70,6 @@ export const npsModule: ModuleDefinition = {
       moduloKey: "nps",
     });
 
-    registerNavItem({
-      id: "nps-design",
-      label: "Design",
-      icon: Palette,
-      to: "/nps/design",
-      permissionCheck: (perms) => perms?.nps_gerenciar_perguntas === true,
-      order: 19,
-      moduloKey: "nps",
-    });
 
     registerPermissionDefaults("nps", {
       cadastro: {

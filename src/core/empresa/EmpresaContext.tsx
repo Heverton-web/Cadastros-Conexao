@@ -33,14 +33,21 @@ export function EmpresaProvider({ children }: { children: ReactNode }) {
 
     async function load() {
       setLoading(true);
-      const [empresaRes, configRes] = await Promise.all([
-        supabase.from("empresas").select("*").eq("id", profile!.empresa_id).single(),
-        supabase.from("empresas_config").select("*").eq("empresa_id", profile!.empresa_id).single(),
-      ]);
-      if (!cancelled) {
-        setEmpresa(empresaRes.data as Empresa | null);
-        setConfig(configRes.data as EmpresaConfig | null);
-        setLoading(false);
+      try {
+        const [empresaRes, configRes] = await Promise.all([
+          supabase.from("empresas").select("*").eq("id", profile!.empresa_id).single(),
+          supabase.from("empresas_config").select("*").eq("empresa_id", profile!.empresa_id).single(),
+        ]);
+        if (!cancelled) {
+          setEmpresa(empresaRes.data as Empresa | null);
+          setConfig(configRes.data as EmpresaConfig | null);
+        }
+      } catch (err) {
+        console.error("Erro ao carregar EmpresaContext:", err);
+      } finally {
+        if (!cancelled) {
+          setLoading(false);
+        }
       }
     }
 

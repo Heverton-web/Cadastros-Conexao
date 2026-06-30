@@ -74,3 +74,40 @@ export type FunilColunaInput = {
   titulo: string;
   posicao?: number;
 };
+
+export type TemplateColuna = {
+  id: string;
+  template_id: string;
+  titulo: string;
+  posicao: number;
+};
+
+export type TemplateTarefa = {
+  id: string;
+  template_id: string;
+  template_col_idx: number;
+  titulo: string;
+  descricao: string | null;
+  prioridade: string;
+  posicao: number;
+};
+
+export type Template = {
+  id: string;
+  nome: string;
+  descricao: string | null;
+  is_public: boolean;
+  created_by: string;
+  empresa_id: string | null;
+  created_at: string;
+  colunas?: TemplateColuna[];
+  tarefas?: TemplateTarefa[];
+};
+
+export type TemplateInput = {
+  nome: string;
+  descricao?: string;
+  is_public?: boolean;
+  colunas?: string[];
+  tarefas?: { col_idx: number; titulo: string; descricao?: string; prioridade?: string }[];
+};

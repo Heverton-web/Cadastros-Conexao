@@ -21,9 +21,6 @@ export const crmModule: ModuleDefinition = {
     "/crm/transferencia/consultores",
     "/crm/diretoria",
     "/crm/diretoria/gestor/$id",
-    "/crm/dev/convites",
-    "/crm/dev/demo",
-    "/crm/dev/usuarios",
     "/crm/aceitar-convite/$token",
   ],
   permissions: CRM_PERMISSIONS.map((p) => p.key),
@@ -39,7 +36,7 @@ export const crmModule: ModuleDefinition = {
     { key: "visita.realizada", label: "Visita Realizada", descricao: "Quando uma visita é registrada", type: "button_action" },
   ],
   hasDesignConfig: true,
-  designRoute: "/crm/design",
+  designRoute: "/empresa/crm/design",
   setup: () => {
     for (const p of CRM_PERMISSIONS) {
       registerPermission({ key: p.key, label: p.label, description: p.description, group: p.group });
@@ -135,21 +132,10 @@ export const crmModule: ModuleDefinition = {
       moduloKey: "crm",
     });
 
-    registerNavItem({
-      id: "crm-design",
-      label: "Design",
-      icon: Palette,
-      to: "/crm/design",
-      permissionCheck: (perms) => perms?.is_super_admin === true,
-      order: 99,
-      moduloKey: "crm",
-    });
-
     const crmAllTrue = {
       crm_dashboard: true, crm_carteira: true, crm_pipeline: true, crm_tarefas: true,
       crm_metricas: true, crm_cliente_detalhe: true, crm_equipe: true, crm_bi: true,
-      crm_transferencia: true, crm_diretoria: true, crm_dev_convites: true,
-      crm_dev_demo: true, crm_dev_usuarios: true,
+      crm_transferencia: true, crm_diretoria: true,
     };
     const crmAllFalse = Object.fromEntries(Object.keys(crmAllTrue).map((k) => [k, false]));
 

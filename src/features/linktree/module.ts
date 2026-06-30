@@ -8,7 +8,7 @@ export const linktreeModule: ModuleDefinition = {
   nome: "LinkTree",
   descricao: "Cartoes digitais e QR Codes dos colaboradores",
   icon: Link2,
-  routes: ["/linktree/dashboard", "/linktree/tema", "/linktree/design", "/linktree/empresa", "/linktree/empresa/editor"],
+  routes: ["/linktree/dashboard", "/linktree/empresa", "/linktree/empresa/editor"],
   permissions: LINKTREE_PERMISSIONS.map((p) => p.key),
   ambientes: ["cadastro", "consultor", "tecnologia"],
   abas: [
@@ -18,13 +18,13 @@ export const linktreeModule: ModuleDefinition = {
     { key: "eventos", label: "Eventos", descricao: "Eventos e webhooks do LinkTree" },
   ],
   events: [
-    { key: "colaborador.criado", label: "Colaborador Criado", descricao: "Dispara quando um novo colaborador e cadastrado", type: "status_change" },
+    { key: "colaborador.criado", label: "Colaborador Criado", descricao: "Dispara quando um new colaborador e cadastrado", type: "status_change" },
     { key: "colaborador.ativado", label: "Colaborador Ativado", descricao: "Dispara quando um colaborador e ativado", type: "status_change" },
     { key: "colaborador.inativado", label: "Colaborador Inativado", descricao: "Dispara quando um colaborador e inativado", type: "status_change" },
   ],
   hasCredentialScopes: true,
   hasDesignConfig: true,
-  designRoute: "/linktree/design",
+  designRoute: "/empresa/linktree/design",
   setup: () => {
     for (const p of LINKTREE_PERMISSIONS) {
       registerPermission({ key: p.key, label: p.label, description: p.description, group: p.group });
@@ -40,25 +40,6 @@ export const linktreeModule: ModuleDefinition = {
       moduloKey: "linktree",
     });
 
-    registerNavItem({
-      id: "linktree-tema",
-      label: "Tema",
-      icon: Paintbrush,
-      to: "/linktree/tema",
-      permissionCheck: (perms) => perms?.lt_gerenciar_tema === true,
-      order: 26,
-      moduloKey: "linktree",
-    });
-
-    registerNavItem({
-      id: "linktree-design",
-      label: "Design",
-      icon: Palette,
-      to: "/linktree/design",
-      permissionCheck: (perms) => perms?.lt_gerenciar_tema === true,
-      order: 27,
-      moduloKey: "linktree",
-    });
 
     registerNavItem({
       id: "linktree-empresa",

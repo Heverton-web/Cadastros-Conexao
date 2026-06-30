@@ -8,7 +8,7 @@ export const funisModule: ModuleDefinition = {
   nome: "Funis",
   descricao: "Gerenciamento de funis Kanban para fluxos de trabalho",
   icon: GitBranch,
-  routes: ["/funis/dashboard", "/funis/funil/$funilId", "/funis/design", "/funis/templates", "/funis/funil/$funilId/automations"],
+  routes: ["/funis/dashboard", "/funis/funil/$funilId", "/funis/templates", "/funis/funil/$funilId/automations"],
   permissions: FUNIS_PERMISSIONS.map((p) => p.key),
   ambientes: ["cadastro", "consultor", "tecnologia"],
   abas: [
@@ -33,7 +33,7 @@ export const funisModule: ModuleDefinition = {
   ],
   hasCredentialScopes: true,
   hasDesignConfig: true,
-  designRoute: "/funis/design",
+  designRoute: "/empresa/funis/design",
   setup: () => {
     for (const p of FUNIS_PERMISSIONS) {
       registerPermission({ key: p.key, label: p.label, description: p.description, group: p.group });
@@ -59,15 +59,6 @@ export const funisModule: ModuleDefinition = {
       moduloKey: "funis",
     });
 
-    registerNavItem({
-      id: "funis-design",
-      label: "Design",
-      icon: Palette,
-      to: "/funis/design",
-      permissionCheck: (perms) => perms?.funis_editar_funil === true,
-      order: 99,
-      moduloKey: "funis",
-    });
 
     registerPermissionDefaults("funis", {
       cadastro: {

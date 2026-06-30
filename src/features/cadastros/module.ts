@@ -10,7 +10,7 @@ export const cadastrosModule: ModuleDefinition = {
   nome: "Cadastros",
   descricao: "Gestao de cadastro de clientes PF/PJ",
   icon: Users,
-  routes: ["/dashboard", "/clientes", "/consultor", "/relatorios", "/global/acoes", "/empresa/tema", "/cadastros/design"],
+  routes: ["/dashboard", "/clientes", "/consultor", "/relatorios", "/global/acoes", "/empresa/tema"],
   permissions: ALL_PERMISSIONS.map((p) => p.key),
   ambientes: ["cadastro", "consultor", "tecnologia", "suporte"],
   abas: [
@@ -37,7 +37,7 @@ export const cadastrosModule: ModuleDefinition = {
   hasCustomActions: true,
   hasApiConnectors: true,
   hasDesignConfig: true,
-  designRoute: "/cadastros/design",
+  designRoute: "/empresa/cadastros/design",
   setup: () => {
     for (const p of ALL_PERMISSIONS) {
       registerPermission({
@@ -91,15 +91,6 @@ export const cadastrosModule: ModuleDefinition = {
       moduloKey: "cadastros",
     });
 
-    registerNavItem({
-      id: "cadastros-design",
-      label: "Design",
-      icon: Palette,
-      to: "/cadastros/design",
-      permissionCheck: (perms) => perms?.gerenciar_config === true,
-      order: 99,
-      moduloKey: "cadastros",
-    });
 
     registerPermissionDefaults("cadastros", {
       cadastro: {

@@ -66,6 +66,45 @@ function buildHubSubGroups(items: NavItem[]): NavSubGroup[] {
   return subGroups;
 }
 
+function buildConfigSubGroups(items: NavItem[]): NavSubGroup[] {
+  // 1. EMPRESA
+  const empresaPaths = [
+    "/empresa",
+    "/empresa/banco",
+    "/empresa/permissoes",
+    "/empresa/branding",
+    "/empresa/design",
+    "/empresa/acoes"
+  ];
+  const empresaItems = items.filter(i => empresaPaths.includes(i.path));
+
+  // 2. CONFIGURAÇÃO DE RECURSOS
+  const configPaths = [
+    "/empresa/despesas-config",
+    "/empresa/rotas/config",
+    "/empresa/hub/chatbot"
+  ];
+  const configItems = items.filter(i => configPaths.includes(i.path));
+
+  // 3. TEMAS DE MÓDULOS
+  const temaPaths = [
+    "/empresa/nps/tema",
+    "/empresa/linktree/tema"
+  ];
+  const temaItems = items.filter(i => temaPaths.includes(i.path));
+
+  // 4. DESIGN SYSTEM
+  const designItems = items.filter(i => i.path.endsWith("/design") && i.path !== "/empresa/design");
+
+  const subGroups: NavSubGroup[] = [];
+  if (empresaItems.length) subGroups.push({ label: "Empresa", items: empresaItems });
+  if (configItems.length) subGroups.push({ label: "Configurações de Módulos", items: configItems });
+  if (temaItems.length) subGroups.push({ label: "Temas e Aparência", items: temaItems });
+  if (designItems.length) subGroups.push({ label: "Design System", items: designItems });
+
+  return subGroups;
+}
+
 function buildAdminSection(): NavModuleSection {
   const adminItems: NavItem[] = [
     { path: "/global/modulos", label: "Módulos ERP", icon: Puzzle },
@@ -159,6 +198,7 @@ const MODULE_ORDER: Record<string, number> = {
           label: "Configuração",
           icon: Building2,
           items: configItems,
+          subGroups: buildConfigSubGroups(configItems),
         });
       }
     }

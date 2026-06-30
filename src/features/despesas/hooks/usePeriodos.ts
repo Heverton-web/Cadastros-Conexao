@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "~/lib/auth";
-import { listarPeriodos, listarPeriodosAbertos, criarPeriodo, atualizarPeriodo, fecharPeriodo, gerarPeriodos } from "../services/periodos.service";
+import { listarPeriodos, listarPeriodosAbertos, criarPeriodo, atualizarPeriodo, fecharPeriodo, reabrirPeriodo, excluirPeriodo, gerarPeriodos } from "../services/periodos.service";
 import type { DespesaPeriodo, Frequencia } from "../types";
 
 export function usePeriodos(overrideEmpresaId?: string) {
@@ -60,6 +60,34 @@ export function useFecharPeriodo(overrideEmpresaId?: string) {
 
   return useMutation({
     mutationFn: (id: string) => fecharPeriodo(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["despesas-periodos", empresa_id] });
+      queryClient.invalidateQueries({ queryKey: ["despesas-periodos-abertos", empresa_id] });
+    },
+  });
+}
+
+export function useReabrirPeriodo(overrideEmpresaId?: string) {
+  const { profile } = useAuth();
+  const queryClient = useQueryClient();
+  const empresa_id = overrideEmpresaId || profile?.empresa_id || "";
+
+  return useMutation({
+    mutationFn: (id: string) => reabrirPeriodo(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["despesas-periodos", empresa_id] });
+      queryClient.invalidateQueries({ queryKey: ["despesas-periodos-abertos", empresa_id] });
+    },
+  });
+}
+
+export function useExcluirPeriodo(overrideEmpresaId?: string) {
+  const { profile } = useAuth();
+  const queryClient = useQueryClient();
+  const empresa_id = overrideEmpresaId || profile?.empresa_id || "";
+
+  return useMutation({
+    mutationFn: (id: string) => excluirPeriodo(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["despesas-periodos", empresa_id] });
       queryClient.invalidateQueries({ queryKey: ["despesas-periodos-abertos", empresa_id] });

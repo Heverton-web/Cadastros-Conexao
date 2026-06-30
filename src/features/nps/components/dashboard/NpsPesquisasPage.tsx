@@ -12,7 +12,7 @@ import { toast } from "react-hot-toast";
 import type { NpsPergunta, SurveyQuestionType } from "../../types";
 import { useAuth } from "~/lib/auth";
 import { Badge } from "~/components/ui/badge";
-import { listarEmpresas } from "~/features/empresas";
+import { listarEmpresas } from "~/shared/empresas";
 import type { Empresa } from "~/core/empresa";
 
 const TYPE_LABELS: Record<SurveyQuestionType, string> = {

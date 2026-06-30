@@ -13,7 +13,6 @@ export const despesasModule: ModuleDefinition = {
     "/despesas/aprovacao",
     "/despesas/meus-relatorios",
     "/despesas/relatorios",
-    "/despesas/design",
   ],
   permissions: DESPESAS_PERMISSIONS.map((p) => p.key),
   ambientes: ["cadastro", "consultor", "tecnologia", "suporte"],
@@ -34,7 +33,7 @@ export const despesasModule: ModuleDefinition = {
   ],
   hasCredentialScopes: true,
   hasDesignConfig: true,
-  designRoute: "/despesas/design",
+  designRoute: "/empresa/despesas/design",
   setup: () => {
     for (const p of DESPESAS_PERMISSIONS) {
       registerPermission({
@@ -86,15 +85,6 @@ export const despesasModule: ModuleDefinition = {
       moduloKey: "despesas",
     });
 
-    registerNavItem({
-      id: "despesas-design",
-      label: "Design",
-      icon: Palette,
-      to: "/despesas/design",
-      permissionCheck: (perms) => perms?.despesas_configurar === true,
-      order: 99,
-      moduloKey: "despesas",
-    });
 
     registerPermissionDefaults("despesas", {
       cadastro: {

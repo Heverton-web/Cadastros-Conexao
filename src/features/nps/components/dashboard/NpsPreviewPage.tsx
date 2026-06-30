@@ -3,7 +3,7 @@ import { supabase } from "~/core/supabase";
 import { useAuth } from "~/lib/auth";
 import type { NpsPergunta } from "~/features/nps/types";
 import type { Empresa, EmpresaConfig } from "~/core/empresa";
-import { buscarEmpresa, buscarEmpresaConfig, listarEmpresas } from "~/features/empresas";
+import { buscarEmpresa, buscarEmpresaConfig, listarEmpresas } from "~/shared/empresas";
 import { Button } from "~/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
 import { ArrowRight, ArrowLeft, CheckCircle2, Eye } from "lucide-react";

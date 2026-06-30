@@ -27,7 +27,7 @@ type Props = {
 };
 
 export function FormularioPosVisita({ rotaClienteId, onDone }: Props) {
-  const { empresa } = useEmpresa();
+  const { empresa, loading: empresaLoading } = useEmpresa();
   const [perguntas, setPerguntas] = useState<RotasFormPergunta[]>([]);
   const [respostas, setRespostas] = useState<Record<string, unknown>>({});
   const [loading, setLoading] = useState(true);
@@ -35,7 +35,11 @@ export function FormularioPosVisita({ rotaClienteId, onDone }: Props) {
 
   useEffect(() => {
     async function load() {
-      if (!empresa?.id) return;
+      if (empresaLoading) return;
+      if (!empresa?.id) {
+        setLoading(false);
+        return;
+      }
       try {
         const data = await listarPerguntas(empresa.id);
         setPerguntas(data);
@@ -46,7 +50,7 @@ export function FormularioPosVisita({ rotaClienteId, onDone }: Props) {
       }
     }
     load();
-  }, [empresa?.id]);
+  }, [empresa?.id, empresaLoading]);
 
   function updateResposta(perguntaId: string, valor: unknown) {
     setRespostas((prev) => ({ ...prev, [perguntaId]: valor }));
@@ -89,7 +93,7 @@ export function FormularioPosVisita({ rotaClienteId, onDone }: Props) {
     }
   }
 
-  if (loading) {
+  if (empresaLoading || loading) {
     return (
       <div className="flex items-center justify-center p-8">
         <Loader2 className="h-6 w-6 animate-spin" />

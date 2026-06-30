@@ -1,4 +1,4 @@
-import { Route, MapPin, Settings, Upload, BarChart3, Palette, FileText } from "lucide-react";
+import { Route, MapPin, Upload, BarChart3, Palette, FileText } from "lucide-react";
 import { registerModule, registerNavItem, registerPermission, registerPermissionDefaults } from "~/registry";
 import type { ModuleDefinition } from "~/registry";
 import { ROTAS_PERMISSIONS } from "./permissions";
@@ -11,7 +11,7 @@ export const rotasModule: ModuleDefinition = {
   routes: [
     "/rotas",
     "/rotas/$id",
-    "/rotas/config",
+    "/rotas/design",
   ],
   permissions: ROTAS_PERMISSIONS.map((p) => p.key),
   ambientes: ["cadastro", "consultor", "tecnologia"],
@@ -27,7 +27,7 @@ export const rotasModule: ModuleDefinition = {
     { key: "visita.registrada", label: "Visita Registrada", descricao: "Quando uma visita é finalizada", type: "button_action" },
   ],
   hasDesignConfig: true,
-  designRoute: "/rotas/config",
+  designRoute: "/empresa/rotas/design",
   setup: () => {
     for (const p of ROTAS_PERMISSIONS) {
       registerPermission({ key: p.key, label: p.label, description: p.description, group: p.group });
@@ -41,16 +41,6 @@ export const rotasModule: ModuleDefinition = {
       noChildMatch: true,
       permissionCheck: (perms) => perms?.rotas_planejar === true || perms?.rotas_executar === true,
       order: 30,
-      moduloKey: "rotas",
-    });
-
-    registerNavItem({
-      id: "rotas-config",
-      label: "Config Rotas",
-      icon: Settings,
-      to: "/rotas/config",
-      permissionCheck: (perms) => perms?.rotas_configurar === true,
-      order: 31,
       moduloKey: "rotas",
     });
 

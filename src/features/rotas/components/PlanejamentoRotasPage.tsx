@@ -17,7 +17,7 @@ import { useContarClientesBase } from "../hooks/useClientesBase";
 import { NovaRotaModal } from "./NovaRotaModal";
 import { ROTA_STATUS_LABEL, ROTA_STATUS_COLOR, ROTA_TIPO_LABEL } from "../types";
 import type { RotaStatus } from "../types";
-import { formatDate } from "~/features/crm/lib/comercial";
+import { formatDate } from "~/lib/utils/format";
 
 export function PlanejamentoRotasPage() {
   const navigate = useNavigate();
