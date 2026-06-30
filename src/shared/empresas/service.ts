@@ -2,10 +2,7 @@ import { supabase } from "~/core/supabase";
 import type { Empresa, EmpresaConfig, ModuloEmpresa } from "./types";
 
 export async function listarEmpresas(): Promise<Empresa[]> {
-  const { data } = await supabase
-    .from("empresas")
-    .select("*")
-    .order("nome");
+  const { data } = await supabase.from("empresas").select("*").order("nome");
   return (data ?? []) as Empresa[];
 }
 
@@ -42,7 +39,8 @@ export async function criarEmpresa(input: {
   logo_app_url?: string;
   favicon_url?: string;
 }): Promise<Empresa> {
-  const { theme, logo_index_url, logo_app_url, favicon_url, ...empresaData } = input;
+  const { theme, logo_index_url, logo_app_url, favicon_url, ...empresaData } =
+    input;
   const { data, error } = await supabase
     .from("empresas")
     .insert(empresaData)
@@ -50,24 +48,42 @@ export async function criarEmpresa(input: {
     .single();
   if (error) throw error;
   const empresa = data as Empresa;
-  const { error: configError } = await supabase
-    .from("empresas_config")
-    .upsert({
-      empresa_id: empresa.id,
-      logo_url: null,
-      logo_index_url: logo_index_url || null,
-      logo_app_url: logo_app_url || null,
-      favicon_url: favicon_url || null,
-      theme: theme || {},
-      updated_at: new Date().toISOString(),
-    });
+  const { error: configError } = await supabase.from("empresas_config").upsert({
+    empresa_id: empresa.id,
+    logo_url: null,
+    logo_index_url: logo_index_url || null,
+    logo_app_url: logo_app_url || null,
+    favicon_url: favicon_url || null,
+    theme: theme || {},
+    updated_at: new Date().toISOString(),
+  });
   if (configError) console.error("Erro ao criar config:", configError);
   return empresa;
 }
 
 export async function atualizarEmpresa(
   id: string,
-  input: Partial<{ nome: string; slug: string; cnpj: string; razao_social: string; nome_app: string; email: string; celular: string; telefone: string; logradouro: string; numero: string; bairro: string; cidade: string; estado: string; cep: string; instagram: string; youtube: string; linkedin: string; site: string; ativo: boolean }>
+  input: Partial<{
+    nome: string;
+    slug: string;
+    cnpj: string;
+    razao_social: string;
+    nome_app: string;
+    email: string;
+    celular: string;
+    telefone: string;
+    logradouro: string;
+    numero: string;
+    bairro: string;
+    cidade: string;
+    estado: string;
+    cep: string;
+    instagram: string;
+    youtube: string;
+    linkedin: string;
+    site: string;
+    ativo: boolean;
+  }>,
 ): Promise<void> {
   const { error } = await supabase
     .from("empresas")
@@ -85,7 +101,9 @@ export async function toggleEmpresa(id: string, ativo: boolean): Promise<void> {
   await atualizarEmpresa(id, { ativo });
 }
 
-export async function buscarEmpresaConfig(empresaId: string): Promise<EmpresaConfig | null> {
+export async function buscarEmpresaConfig(
+  empresaId: string,
+): Promise<EmpresaConfig | null> {
   const { data } = await supabase
     .from("empresas_config")
     .select("*")
@@ -96,7 +114,14 @@ export async function buscarEmpresaConfig(empresaId: string): Promise<EmpresaCon
 
 export async function salvarEmpresaConfig(
   empresaId: string,
-  input: { logo_url?: string; logo_index_url?: string; logo_app_url?: string; favicon_url?: string; theme?: Record<string, string>; db_config?: Record<string, string> }
+  input: {
+    logo_url?: string;
+    logo_index_url?: string;
+    logo_app_url?: string;
+    favicon_url?: string;
+    theme?: Record<string, string>;
+    db_config?: Record<string, string>;
+  },
 ): Promise<void> {
   const payload = { ...input, updated_at: new Date().toISOString() };
   const { error } = await supabase
@@ -105,7 +130,9 @@ export async function salvarEmpresaConfig(
   if (error) throw error;
 }
 
-export async function listarModulosEmpresa(empresaId: string): Promise<ModuloEmpresa[]> {
+export async function listarModulosEmpresa(
+  empresaId: string,
+): Promise<ModuloEmpresa[]> {
   const { data } = await supabase
     .from("modulos_empresa")
     .select("*")
@@ -114,7 +141,10 @@ export async function listarModulosEmpresa(empresaId: string): Promise<ModuloEmp
   return (data ?? []) as ModuloEmpresa[];
 }
 
-export async function toggleModuloEmpresa(id: string, ativo: boolean): Promise<void> {
+export async function toggleModuloEmpresa(
+  id: string,
+  ativo: boolean,
+): Promise<void> {
   const { error } = await supabase
     .from("modulos_empresa")
     .update({ ativo })
@@ -125,13 +155,13 @@ export async function toggleModuloEmpresa(id: string, ativo: boolean): Promise<v
 export async function upsertModuloEmpresa(
   empresaId: string,
   moduloKey: string,
-  ativo: boolean
+  ativo: boolean,
 ): Promise<void> {
   const { error } = await supabase
     .from("modulos_empresa")
     .upsert(
       { empresa_id: empresaId, modulo_key: moduloKey, ativo },
-      { onConflict: "empresa_id,modulo_key" }
+      { onConflict: "empresa_id,modulo_key" },
     );
   if (error) throw error;
 }
@@ -139,7 +169,7 @@ export async function upsertModuloEmpresa(
 export async function uploadEmpresaLogo(
   empresaId: string,
   tipo: "logo_index" | "logo_app" | "favicon",
-  file: File
+  file: File,
 ): Promise<string> {
   const ext = file.name.split(".").pop() || "png";
   const fileName = `logos/${empresaId}/${tipo}.${ext}`;
@@ -156,17 +186,24 @@ export async function uploadEmpresaLogo(
   return urlData?.publicUrl || "";
 }
 
-export async function deletarEmpresaLogo(empresaId: string, tipo: "logo_index" | "logo_app" | "favicon") {
-  const { data: files } = await supabase.storage.from("logos").list(`logos/${empresaId}`);
+export async function deletarEmpresaLogo(
+  empresaId: string,
+  tipo: "logo_index" | "logo_app" | "favicon",
+) {
+  const { data: files } = await supabase.storage
+    .from("logos")
+    .list(`logos/${empresaId}`);
   const match = files?.find((f) => f.name.startsWith(tipo));
   if (match) {
-    await supabase.storage.from("logos").remove([`logos/${empresaId}/${match.name}`]);
+    await supabase.storage
+      .from("logos")
+      .remove([`logos/${empresaId}/${match.name}`]);
   }
 }
 
 export async function ativarModulosParaEmpresa(
   empresaId: string,
-  modulos: string[]
+  modulos: string[],
 ): Promise<void> {
   const inserts = modulos.map((modulo_key) => ({
     empresa_id: empresaId,

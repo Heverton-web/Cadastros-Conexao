@@ -1,8 +1,12 @@
-import { vi } from 'vitest';
+import { vi } from "vitest";
 
-type MockResponse = { data: unknown; error: null } | { data: null; error: Error };
+type MockResponse =
+  { data: unknown; error: null } | { data: null; error: Error };
 
-function createResponse(data: unknown, error: Error | null = null): MockResponse {
+function createResponse(
+  data: unknown,
+  error: Error | null = null,
+): MockResponse {
   return error ? { data: null, error } : { data, error: null };
 }
 
@@ -16,28 +20,66 @@ export class MockQueryBuilder {
   private _response: MockResponse;
 
   constructor(table: string, initialData?: unknown) {
-    this._response = initialData !== undefined
-      ? createResponse(initialData)
-      : createResponse([]);
+    this._response =
+      initialData !== undefined
+        ? createResponse(initialData)
+        : createResponse([]);
   }
 
-  select(q?: string) { this._select = q; return this; }
-  eq(col: string, val: unknown) { this._filters[col] = val; return this; }
-  order(col: string, opts?: { ascending?: boolean }) { this._orderCol = col; this._orderAsc = opts?.ascending ?? false; return this; }
-  single() { this._single = true; return this; }
-  limit(n: number) { this._limitCount = n; return this; }
-  insert(data: unknown) { this._response = createResponse(data); return this; }
-  update(data: unknown) { this._response = createResponse(data); return this; }
-  delete() { this._response = createResponse(null); return this; }
-  then(resolve: (val: MockResponse) => void) { resolve(this._response); return this._response; }
+  select(q?: string) {
+    this._select = q;
+    return this;
+  }
+  eq(col: string, val: unknown) {
+    this._filters[col] = val;
+    return this;
+  }
+  order(col: string, opts?: { ascending?: boolean }) {
+    this._orderCol = col;
+    this._orderAsc = opts?.ascending ?? false;
+    return this;
+  }
+  single() {
+    this._single = true;
+    return this;
+  }
+  limit(n: number) {
+    this._limitCount = n;
+    return this;
+  }
+  insert(data: unknown) {
+    this._response = createResponse(data);
+    return this;
+  }
+  update(data: unknown) {
+    this._response = createResponse(data);
+    return this;
+  }
+  delete() {
+    this._response = createResponse(null);
+    return this;
+  }
+  then(resolve: (val: MockResponse) => void) {
+    resolve(this._response);
+    return this._response;
+  }
 }
 
-export function createMockSupabase(overrides?: Partial<ReturnType<typeof createMockSupabase>>) {
+export function createMockSupabase(
+  overrides?: Partial<ReturnType<typeof createMockSupabase>>,
+) {
   const mock = {
     from: vi.fn((table: string) => new MockQueryBuilder(table)),
     auth: {
-      getUser: vi.fn().mockResolvedValue({ data: { user: { id: 'test-user' } }, error: null }),
-      onAuthStateChange: vi.fn(() => ({ data: { subscription: { unsubscribe: vi.fn() } } })),
+      getUser: vi
+        .fn()
+        .mockResolvedValue({
+          data: { user: { id: "test-user" } },
+          error: null,
+        }),
+      onAuthStateChange: vi.fn(() => ({
+        data: { subscription: { unsubscribe: vi.fn() } },
+      })),
     },
     ...overrides,
   };

@@ -1,5 +1,23 @@
-import { BookOpen, LayoutDashboard, GraduationCap, Trophy, Settings, Users, BarChart3, Bot, FileText, Medal, Star, Palette } from "lucide-react";
-import { registerModule, registerNavItem, registerPermission, registerPermissionDefaults } from "~/registry";
+import {
+  BookOpen,
+  LayoutDashboard,
+  GraduationCap,
+  Trophy,
+  Settings,
+  Users,
+  BarChart3,
+  Bot,
+  FileText,
+  Medal,
+  Star,
+  Palette,
+} from "lucide-react";
+import {
+  registerModule,
+  registerNavItem,
+  registerPermission,
+  registerPermissionDefaults,
+} from "~/registry";
 import type { ModuleDefinition } from "~/registry";
 import { HUB_PERMISSIONS } from "./permissions";
 
@@ -32,34 +50,102 @@ export const hubModule: ModuleDefinition = {
   ambientes: ["cadastro", "consultor", "tecnologia"],
   abas: [
     { key: "geral", label: "Geral", descricao: "Configurações gerais do Hub" },
-    { key: "permissoes", label: "Permissões", descricao: "Gerenciar permissões do módulo" },
-    { key: "credenciais", label: "Credenciais", descricao: "Credenciais com escopo no Hub" },
-    { key: "eventos", label: "Eventos", descricao: "Eventos e webhooks do Hub" },
-    { key: "integracoes", label: "Integrações", descricao: "Integrações AI do Hub" },
+    {
+      key: "permissoes",
+      label: "Permissões",
+      descricao: "Gerenciar permissões do módulo",
+    },
+    {
+      key: "credenciais",
+      label: "Credenciais",
+      descricao: "Credenciais com escopo no Hub",
+    },
+    {
+      key: "eventos",
+      label: "Eventos",
+      descricao: "Eventos e webhooks do Hub",
+    },
+    {
+      key: "integracoes",
+      label: "Integrações",
+      descricao: "Integrações AI do Hub",
+    },
     { key: "chatbot", label: "Chatbot", descricao: "Configuração do chatbot" },
   ],
   events: [
-    { key: "material.acessado", label: "Material Acessado", descricao: "Quando um material é visualizado", type: "status_change" },
-    { key: "material.concluido", label: "Material Concluído", descricao: "Quando um material é concluído", type: "status_change" },
-    { key: "trilha.concluida", label: "Trilha Concluída", descricao: "Quando uma trilha é concluída", type: "status_change" },
-    { key: "gamification.level_up", label: "Level Up", descricao: "Quando um usuário sobe de nível", type: "status_change" },
-    { key: "badge.conquistado", label: "Badge Conquistado", descricao: "Quando um badge é desbloqueado", type: "status_change" },
-    { key: "convite.gerado", label: "Convite Gerado", descricao: "Quando um convite é criado", type: "button_action" },
-    { key: "usuario.registrado", label: "Usuário Registrado", descricao: "Quando um usuário se registra via convite", type: "status_change" },
-    { key: "usuario.status_alterado", label: "Status Alterado", descricao: "Quando status do usuário muda", type: "status_change" },
+    {
+      key: "material.acessado",
+      label: "Material Acessado",
+      descricao: "Quando um material é visualizado",
+      type: "status_change",
+    },
+    {
+      key: "material.concluido",
+      label: "Material Concluído",
+      descricao: "Quando um material é concluído",
+      type: "status_change",
+    },
+    {
+      key: "trilha.concluida",
+      label: "Trilha Concluída",
+      descricao: "Quando uma trilha é concluída",
+      type: "status_change",
+    },
+    {
+      key: "gamification.level_up",
+      label: "Level Up",
+      descricao: "Quando um usuário sobe de nível",
+      type: "status_change",
+    },
+    {
+      key: "badge.conquistado",
+      label: "Badge Conquistado",
+      descricao: "Quando um badge é desbloqueado",
+      type: "status_change",
+    },
+    {
+      key: "convite.gerado",
+      label: "Convite Gerado",
+      descricao: "Quando um convite é criado",
+      type: "button_action",
+    },
+    {
+      key: "usuario.registrado",
+      label: "Usuário Registrado",
+      descricao: "Quando um usuário se registra via convite",
+      type: "status_change",
+    },
+    {
+      key: "usuario.status_alterado",
+      label: "Status Alterado",
+      descricao: "Quando status do usuário muda",
+      type: "status_change",
+    },
   ],
   hasCredentialScopes: true,
   hasDesignConfig: true,
   designRoute: "/empresa/hub/design",
   setup: () => {
     for (const p of HUB_PERMISSIONS) {
-      registerPermission({ key: p.key, label: p.label, description: p.description, group: p.group });
+      registerPermission({
+        key: p.key,
+        label: p.label,
+        description: p.description,
+        group: p.group,
+      });
     }
 
     const isAdmin = (perms: any) => perms?.hub_gerenciar_config === true;
-    const isGestor = (perms: any) => perms?.hub_ver_analytics === true && perms?.hub_gerenciar_config !== true;
-    const isConsultor = (perms: any) => perms?.hub_ver_materiais === true && perms?.hub_gerenciar_config !== true && perms?.hub_ver_analytics !== true;
-    const isDistribuidor = (perms: any) => perms?.hub_ver_materiais === true && perms?.hub_gerenciar_config !== true && perms?.hub_ver_analytics !== true;
+    const isGestor = (perms: any) =>
+      perms?.hub_ver_analytics === true && perms?.hub_gerenciar_config !== true;
+    const isConsultor = (perms: any) =>
+      perms?.hub_ver_materiais === true &&
+      perms?.hub_gerenciar_config !== true &&
+      perms?.hub_ver_analytics !== true;
+    const isDistribuidor = (perms: any) =>
+      perms?.hub_ver_materiais === true &&
+      perms?.hub_gerenciar_config !== true &&
+      perms?.hub_ver_analytics !== true;
 
     registerNavItem({
       id: "hub-admin-dashboard",
@@ -231,23 +317,47 @@ export const hubModule: ModuleDefinition = {
       moduloKey: "hub",
     });
 
-
     const hubAllTrue = {
-      hub_ver_materiais: true, hub_criar_material: true, hub_editar_material: true,
-      hub_excluir_material: true, hub_gerenciar_assets: true, hub_publicar_material: true,
-      hub_ver_acessos_material: true, hub_exportar_materiais: true, hub_ver_trilhas: true,
-      hub_criar_trilha: true, hub_editar_trilha: true, hub_excluir_trilha: true,
-      hub_gerenciar_itens_trilha: true, hub_compartilhar_trilha: true, hub_ver_ranking: true,
-      hub_gerenciar_badges: true, hub_gerenciar_niveis: true, hub_ver_conquistas: true,
-      hub_ver_usuarios: true, hub_editar_usuario: true, hub_aprovar_usuario: true,
-      hub_gerenciar_convites: true, hub_ver_analytics: true, hub_gerenciar_config: true,
-      hub_gerenciar_integracoes: true, hub_gerenciar_chatbot: true, hub_gerenciar_webhooks_hub: true,
+      hub_ver_materiais: true,
+      hub_criar_material: true,
+      hub_editar_material: true,
+      hub_excluir_material: true,
+      hub_gerenciar_assets: true,
+      hub_publicar_material: true,
+      hub_ver_acessos_material: true,
+      hub_exportar_materiais: true,
+      hub_ver_trilhas: true,
+      hub_criar_trilha: true,
+      hub_editar_trilha: true,
+      hub_excluir_trilha: true,
+      hub_gerenciar_itens_trilha: true,
+      hub_compartilhar_trilha: true,
+      hub_ver_ranking: true,
+      hub_gerenciar_badges: true,
+      hub_gerenciar_niveis: true,
+      hub_ver_conquistas: true,
+      hub_ver_usuarios: true,
+      hub_editar_usuario: true,
+      hub_aprovar_usuario: true,
+      hub_gerenciar_convites: true,
+      hub_ver_analytics: true,
+      hub_gerenciar_config: true,
+      hub_gerenciar_integracoes: true,
+      hub_gerenciar_chatbot: true,
+      hub_gerenciar_webhooks_hub: true,
     };
-    const hubAllFalse = Object.fromEntries(Object.keys(hubAllTrue).map((k) => [k, false]));
+    const hubAllFalse = Object.fromEntries(
+      Object.keys(hubAllTrue).map((k) => [k, false]),
+    );
 
     registerPermissionDefaults("hub", {
       cadastro: hubAllTrue,
-      consultor: { ...hubAllFalse, hub_ver_materiais: true, hub_ver_ranking: true, hub_ver_conquistas: true },
+      consultor: {
+        ...hubAllFalse,
+        hub_ver_materiais: true,
+        hub_ver_ranking: true,
+        hub_ver_conquistas: true,
+      },
       tecnologia: hubAllTrue,
       suporte: hubAllFalse,
     });

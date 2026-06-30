@@ -1,4 +1,5 @@
-export type DespesaStatus = "rascunho" | "pendente" | "aprovada" | "reprovada" | "paga";
+export type DespesaStatus =
+  "rascunho" | "pendente" | "aprovada" | "reprovada" | "paga";
 export type EnvioStatus = "pendente" | "aprovado" | "reprovado" | "parcial";
 export type PagamentoStatus = "pendente" | "pago" | "cancelado";
 export type FormaPagamento = "pix" | "transferencia" | "dinheiro";

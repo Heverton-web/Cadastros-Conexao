@@ -9,17 +9,19 @@ interface SectionNavProps {
   onChange: (id: string) => void;
 }
 
-const ALL_SECTIONS_ID = 'todas';
+const ALL_SECTIONS_ID = "todas";
 
 interface SectionNavPropsExtended extends SectionNavProps {
   allLabel?: string;
 }
 
-const SectionNav = ({ items, value, onChange, allLabel = 'Ver todas as métricas' }: SectionNavPropsExtended) => {
-  const allItems = [
-    { id: ALL_SECTIONS_ID, label: allLabel },
-    ...items,
-  ];
+const SectionNav = ({
+  items,
+  value,
+  onChange,
+  allLabel = "Ver todas as métricas",
+}: SectionNavPropsExtended) => {
+  const allItems = [{ id: ALL_SECTIONS_ID, label: allLabel }, ...items];
 
   return (
     <>
@@ -35,9 +37,9 @@ const SectionNav = ({ items, value, onChange, allLabel = 'Ver todas as métricas
               className={`px-5 py-2.5 rounded-xl text-sm font-semibold whitespace-nowrap transition-all border ${
                 active
                   ? isAll
-                    ? 'bg-primary/20 text-primary border-primary/50 shadow-[0_0_0_2px_hsl(var(--primary)/0.15)] ring-1 ring-primary/20'
-                    : 'bg-primary/15 text-primary border-primary/40 shadow-[0_0_0_1px_hsl(var(--primary)/0.2)]'
-                  : 'bg-secondary/60 text-muted-foreground border-border/40 hover:text-foreground hover:bg-accent/40 hover:border-border/60'
+                    ? "bg-primary/20 text-primary border-primary/50 shadow-[0_0_0_2px_hsl(var(--primary)/0.15)] ring-1 ring-primary/20"
+                    : "bg-primary/15 text-primary border-primary/40 shadow-[0_0_0_1px_hsl(var(--primary)/0.2)]"
+                  : "bg-secondary/60 text-muted-foreground border-border/40 hover:text-foreground hover:bg-accent/40 hover:border-border/60"
               }`}
             >
               {item.label}

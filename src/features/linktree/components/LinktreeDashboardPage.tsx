@@ -1,6 +1,14 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
-import { Plus, ExternalLink, Pencil, QrCode, Trash2, Loader2, Download } from "lucide-react";
+import {
+  Plus,
+  ExternalLink,
+  Pencil,
+  QrCode,
+  Trash2,
+  Loader2,
+  Download,
+} from "lucide-react";
 import toast from "react-hot-toast";
 import { Button } from "~/components/ui/button";
 import { Switch } from "~/components/ui/switch";
@@ -32,14 +40,22 @@ export function LinktreeDashboardPage() {
   const navigate = useNavigate();
   const isSuper = profile?.is_super_admin === true;
 
-  const [rows, setRows] = useState<LinktreeColaboradorComCredencial[] | null>(null);
+  const [rows, setRows] = useState<LinktreeColaboradorComCredencial[] | null>(
+    null,
+  );
   const [modalOpen, setModalOpen] = useState(false);
-  const [editing, setEditing] = useState<LinktreeColaboradorComCredencial | null>(null);
-  const [toDelete, setToDelete] = useState<LinktreeColaboradorComCredencial | null>(null);
-  const [qrView, setQrView] = useState<LinktreeColaboradorComCredencial | null>(null);
+  const [editing, setEditing] =
+    useState<LinktreeColaboradorComCredencial | null>(null);
+  const [toDelete, setToDelete] =
+    useState<LinktreeColaboradorComCredencial | null>(null);
+  const [qrView, setQrView] = useState<LinktreeColaboradorComCredencial | null>(
+    null,
+  );
 
   const [empresas, setEmpresas] = useState<{ id: string; nome: string }[]>([]);
-  const [filtroEmpresa, setFiltroEmpresa] = useState<string>(profile?.empresa_id ?? "");
+  const [filtroEmpresa, setFiltroEmpresa] = useState<string>(
+    profile?.empresa_id ?? "",
+  );
 
   const can = (key: string) => isSuper || permissoes?.[key] === true;
 
@@ -53,9 +69,13 @@ export function LinktreeDashboardPage() {
 
   useEffect(() => {
     if (!isSuper) return;
-    supabase.from("empresas").select("id, nome").order("nome").then(({ data }) => {
-      setEmpresas(data ?? []);
-    });
+    supabase
+      .from("empresas")
+      .select("id, nome")
+      .order("nome")
+      .then(({ data }) => {
+        setEmpresas(data ?? []);
+      });
   }, [isSuper]);
 
   useEffect(() => {
@@ -66,7 +86,9 @@ export function LinktreeDashboardPage() {
     try {
       let q = supabase
         .from("linktree_colaboradores")
-        .select("*, credenciais(id, nome_completo, email_corporativo, whatsapp_corporativo, departamento)")
+        .select(
+          "*, credenciais(id, nome_completo, email_corporativo, whatsapp_corporativo, departamento)",
+        )
         .order("created_at", { ascending: false });
 
       if (isSuper && filtroEmpresa) {
@@ -91,7 +113,11 @@ export function LinktreeDashboardPage() {
     const next = c.status === "ativo" ? "inativo" : "ativo";
     try {
       await toggleColaboradorStatus(c.id, next);
-      setRows((prev) => prev?.map((r) => (r.id === c.id ? { ...r, status: next } : r)) ?? null);
+      setRows(
+        (prev) =>
+          prev?.map((r) => (r.id === c.id ? { ...r, status: next } : r)) ??
+          null,
+      );
     } catch {
       toast.error("Falha ao atualizar status");
     }
@@ -119,8 +145,13 @@ export function LinktreeDashboardPage() {
           </p>
         </div>
         {can("lt_criar_colaborador") && (
-          <Button onClick={() => { setEditing(null); setModalOpen(true); }}
-            className="shrink-0 bg-primary text-primary-foreground hover:bg-primary/90">
+          <Button
+            onClick={() => {
+              setEditing(null);
+              setModalOpen(true);
+            }}
+            className="shrink-0 bg-primary text-primary-foreground hover:bg-primary/90"
+          >
             <Plus className="size-4" />
             <span className="hidden sm:inline">Novo LinkTree</span>
             <span className="sm:hidden">Novo</span>
@@ -130,7 +161,9 @@ export function LinktreeDashboardPage() {
 
       {isSuper && (
         <div className="flex items-center gap-3">
-          <label className="text-sm font-medium text-muted-foreground">Filtrar por empresa:</label>
+          <label className="text-sm font-medium text-muted-foreground">
+            Filtrar por empresa:
+          </label>
           <select
             value={filtroEmpresa}
             onChange={(e) => setFiltroEmpresa(e.target.value)}
@@ -138,7 +171,9 @@ export function LinktreeDashboardPage() {
           >
             <option value="">Todas as empresas</option>
             {empresas.map((e) => (
-              <option key={e.id} value={e.id}>{e.nome}</option>
+              <option key={e.id} value={e.id}>
+                {e.nome}
+              </option>
             ))}
           </select>
         </div>
@@ -151,7 +186,8 @@ export function LinktreeDashboardPage() {
           </div>
         ) : rows.length === 0 ? (
           <div className="p-12 text-center text-muted-foreground">
-            Nenhum colaborador cadastrado ainda. Clique em <strong>Novo LinkTree</strong> para comecar.
+            Nenhum colaborador cadastrado ainda. Clique em{" "}
+            <strong>Novo LinkTree</strong> para comecar.
           </div>
         ) : (
           <div className="overflow-x-auto">
@@ -167,33 +203,61 @@ export function LinktreeDashboardPage() {
               </thead>
               <tbody>
                 {rows.map((c) => (
-                  <tr key={c.id} className="border-b border-border last:border-0 hover:bg-surface-hover/50">
+                  <tr
+                    key={c.id}
+                    className="border-b border-border last:border-0 hover:bg-surface-hover/50"
+                  >
                     <td className="p-4">
                       <div className="flex min-w-0 items-center gap-3">
                         <div className="grid size-10 shrink-0 place-items-center overflow-hidden rounded-full bg-surface-hover">
                           {c.foto_url ? (
-                            <img src={c.foto_url} alt={c.nome} className="size-full object-cover" />
+                            <img
+                              src={c.foto_url}
+                              alt={c.nome}
+                              className="size-full object-cover"
+                            />
                           ) : (
-                            <span className="text-sm font-semibold">{c.nome.charAt(0)}</span>
+                            <span className="text-sm font-semibold">
+                              {c.nome.charAt(0)}
+                            </span>
                           )}
                         </div>
                         <div className="min-w-0">
-                          <div className="truncate font-medium text-text-main">{c.nome}</div>
-                          <div className="truncate text-xs text-muted-foreground md:hidden">{c.cargo}</div>
+                          <div className="truncate font-medium text-text-main">
+                            {c.nome}
+                          </div>
+                          <div className="truncate text-xs text-muted-foreground md:hidden">
+                            {c.cargo}
+                          </div>
                         </div>
                       </div>
                     </td>
-                    <td className="hidden p-4 text-muted-foreground md:table-cell">{c.cargo}</td>
-                    <td className="hidden p-4 text-muted-foreground lg:table-cell">{c.email}</td>
+                    <td className="hidden p-4 text-muted-foreground md:table-cell">
+                      {c.cargo}
+                    </td>
+                    <td className="hidden p-4 text-muted-foreground lg:table-cell">
+                      {c.email}
+                    </td>
                     <td className="p-4">
                       <div className="flex items-center gap-2">
-                        <Switch checked={c.status === "ativo"} onCheckedChange={() => toggleStatus(c)}
-                          disabled={!can("lt_toggle_status")} />
-                        <span className="rounded-full px-2 py-0.5 text-xs font-medium"
+                        <Switch
+                          checked={c.status === "ativo"}
+                          onCheckedChange={() => toggleStatus(c)}
+                          disabled={!can("lt_toggle_status")}
+                        />
+                        <span
+                          className="rounded-full px-2 py-0.5 text-xs font-medium"
                           style={{
-                            background: c.status === "ativo" ? "color-mix(in srgb, var(--color-success) 15%, transparent)" : "color-mix(in srgb, var(--color-warning) 15%, transparent)",
-                            color: c.status === "ativo" ? "var(--color-success)" : "var(--color-warning)",
-                          }}>
+                            background:
+                              c.status === "ativo"
+                                ? "color-mix(in srgb, var(--color-success) 15%, transparent)"
+                                : "color-mix(in srgb, var(--color-warning) 15%, transparent)",
+                            color:
+                              c.status === "ativo"
+                                ? "var(--color-success)"
+                                : "var(--color-warning)",
+                          }}
+                        >
                           {c.status === "ativo" ? "Ativo" : "Inativo"}
                         </span>
                       </div>
@@ -201,34 +265,62 @@ export function LinktreeDashboardPage() {
                     <td className="p-4">
                       <div className="flex items-center justify-end gap-1">
                         {can("lt_ver_link") && (
-                          <Button variant="ghost" size="icon" title="Visualizar LinkTree" asChild>
-                            <a href={buildCardUrl(c.id)} target="_blank" rel="noreferrer">
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            title="Visualizar LinkTree"
+                            asChild
+                          >
+                            <a
+                              href={buildCardUrl(c.id)}
+                              target="_blank"
+                              rel="noreferrer"
+                            >
                               <ExternalLink className="size-4" />
                             </a>
                           </Button>
                         )}
                         {can("lt_editar_colaborador") && (
-                          <Button variant="ghost" size="icon" title="Editar"
-                            onClick={() => { setEditing(c); setModalOpen(true); }}>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            title="Editar"
+                            onClick={() => {
+                              setEditing(c);
+                              setModalOpen(true);
+                            }}
+                          >
                             <Pencil className="size-4" />
                           </Button>
                         )}
                         {can("lt_ver_qr") && (
-                          <Button variant="ghost" size="icon" title="QR Code"
-                            onClick={() => setQrView(c)}>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            title="QR Code"
+                            onClick={() => setQrView(c)}
+                          >
                             <QrCode className="size-4" />
                           </Button>
                         )}
                         {can("lt_baixar_qr") && (
-                          <Button variant="ghost" size="icon" title="Baixar QR"
-                            onClick={() => downloadQrPng(c.id, c.nome)}>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            title="Baixar QR"
+                            onClick={() => downloadQrPng(c.id, c.nome)}
+                          >
                             <Download className="size-4" />
                           </Button>
                         )}
                         {can("lt_excluir_colaborador") && (
-                          <Button variant="ghost" size="icon" title="Excluir"
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            title="Excluir"
                             className="text-error hover:bg-error/10 hover:text-error"
-                            onClick={() => setToDelete(c)}>
+                            onClick={() => setToDelete(c)}
+                          >
                             <Trash2 className="size-4" />
                           </Button>
                         )}
@@ -247,27 +339,40 @@ export function LinktreeDashboardPage() {
         onOpenChange={setModalOpen}
         collaborator={editing}
         onSaved={load}
-        empresaId={isSuper ? (filtroEmpresa || null) : (profile?.empresa_id ?? null)}
+        empresaId={
+          isSuper ? filtroEmpresa || null : (profile?.empresa_id ?? null)
+        }
       />
 
-      <AlertDialog open={!!toDelete} onOpenChange={(o) => !o && setToDelete(null)}>
+      <AlertDialog
+        open={!!toDelete}
+        onOpenChange={(o) => !o && setToDelete(null)}
+      >
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Excluir LinkTree?</AlertDialogTitle>
             <AlertDialogDescription>
-              Esta acao e irreversivel. O LinkTree de <strong>{toDelete?.nome}</strong> sera removido permanentemente.
+              Esta acao e irreversivel. O LinkTree de{" "}
+              <strong>{toDelete?.nome}</strong> sera removido permanentemente.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancelar</AlertDialogCancel>
-            <AlertDialogAction onClick={handleDelete} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+            <AlertDialogAction
+              onClick={handleDelete}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
               Excluir
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
 
-      <LinktreeQrModal open={!!qrView} onOpenChange={(o) => !o && setQrView(null)} collaborator={qrView} />
+      <LinktreeQrModal
+        open={!!qrView}
+        onOpenChange={(o) => !o && setQrView(null)}
+        collaborator={qrView}
+      />
     </div>
   );
 }

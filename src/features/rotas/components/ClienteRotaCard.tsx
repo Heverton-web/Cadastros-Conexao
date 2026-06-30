@@ -20,7 +20,12 @@ import {
   atualizarVisita,
   calcularDistancia,
 } from "../services/trajetos.service";
-import { abrirGoogleMaps, abrirWaze, formatDuracao, formatDistancia } from "../lib/geolocation";
+import {
+  abrirGoogleMaps,
+  abrirWaze,
+  formatDuracao,
+  formatDistancia,
+} from "../lib/geolocation";
 import { ROTA_CLIENTE_STATUS_LABEL, ROTA_CLIENTE_STATUS_COLOR } from "../types";
 import type { RotaCliente, RotaStatus } from "../types";
 import toast from "react-hot-toast";
@@ -32,17 +37,31 @@ type Props = {
   onFinalizarVisita: () => void;
 };
 
-export function ClienteRotaCard({ cliente, rotaStatus, raioPermitido, onFinalizarVisita }: Props) {
+export function ClienteRotaCard({
+  cliente,
+  rotaStatus,
+  raioPermitido,
+  onFinalizarVisita,
+}: Props) {
   const atualizarRota = useAtualizarRota();
-  const { posicaoAtual, dentroRaio, loading: geoLoading, iniciarMonitoramento } = useRotaAtiva(raioPermitido);
+  const {
+    posicaoAtual,
+    dentroRaio,
+    loading: geoLoading,
+    iniciarMonitoramento,
+  } = useRotaAtiva(raioPermitido);
 
   const [timer, setTimer] = useState(0);
   const [visitando, setVisitando] = useState(false);
 
   const clienteData = cliente.cliente;
-  const destino = clienteData?.latitude && clienteData?.longitude
-    ? { lat: Number(clienteData.latitude), lng: Number(clienteData.longitude) }
-    : null;
+  const destino =
+    clienteData?.latitude && clienteData?.longitude
+      ? {
+          lat: Number(clienteData.latitude),
+          lng: Number(clienteData.longitude),
+        }
+      : null;
 
   // Timer para contabilizar tempo de visita
   useEffect(() => {
@@ -98,7 +117,9 @@ export function ClienteRotaCard({ cliente, rotaStatus, raioPermitido, onFinaliza
 
   const handleIniciarVisita = useCallback(async () => {
     if (!dentroRaio) {
-      toast.error("Você precisa estar a menos de 300m do destino para iniciar a visita");
+      toast.error(
+        "Você precisa estar a menos de 300m do destino para iniciar a visita",
+      );
       return;
     }
 
@@ -191,7 +212,8 @@ export function ClienteRotaCard({ cliente, rotaStatus, raioPermitido, onFinaliza
                 size="sm"
                 variant="outline"
                 onClick={() => {
-                  if (posicaoAtual && destino) abrirGoogleMaps(posicaoAtual, destino);
+                  if (posicaoAtual && destino)
+                    abrirGoogleMaps(posicaoAtual, destino);
                 }}
               >
                 <Navigation className="h-4 w-4 mr-1" />
@@ -204,7 +226,9 @@ export function ClienteRotaCard({ cliente, rotaStatus, raioPermitido, onFinaliza
             <div className="flex items-center gap-3">
               <div className="flex items-center gap-2 text-sm">
                 <Timer className="h-4 w-4 text-primary animate-pulse" />
-                <span className="font-mono font-bold">{formatTimer(timer)}</span>
+                <span className="font-mono font-bold">
+                  {formatTimer(timer)}
+                </span>
               </div>
               <Button size="sm" onClick={handleFinalizarVisita}>
                 <CheckCircle2 className="h-4 w-4 mr-1" />

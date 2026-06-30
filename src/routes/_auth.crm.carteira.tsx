@@ -6,7 +6,14 @@ import { useAuth } from "~/lib/auth";
 import { useState } from "react";
 import { Plus, Loader2, UserPlus, User, Building2, Phone } from "lucide-react";
 import { Button } from "~/components/ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from "~/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogFooter,
+} from "~/components/ui/dialog";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { formatBRL, type Temperatura } from "~/features/crm/lib/comercial";
@@ -51,8 +58,8 @@ function Carteira() {
         .order("criado_em", { ascending: false });
 
       const cards: ClienteCard[] = (clientes ?? []).map((c: any) => {
-        const ordered = (c.visitas ?? []).sort(
-          (a: any, b: any) => (a.data_visita < b.data_visita ? 1 : -1),
+        const ordered = (c.visitas ?? []).sort((a: any, b: any) =>
+          a.data_visita < b.data_visita ? 1 : -1,
         );
         const last = ordered[0];
         return {
@@ -95,12 +102,18 @@ function Carteira() {
             return (
               <div key={col.key} className="glass rounded-2xl p-4">
                 <div className="mb-3 flex items-center justify-between">
-                  <h2 className={`text-sm font-bold uppercase ${col.color}`}>{col.label}</h2>
-                  <span className="text-xs text-muted-foreground">{items.length}</span>
+                  <h2 className={`text-sm font-bold uppercase ${col.color}`}>
+                    {col.label}
+                  </h2>
+                  <span className="text-xs text-muted-foreground">
+                    {items.length}
+                  </span>
                 </div>
                 <div className="space-y-2">
                   {items.length === 0 && (
-                    <p className="text-xs text-muted-foreground">Nenhum cliente.</p>
+                    <p className="text-xs text-muted-foreground">
+                      Nenhum cliente.
+                    </p>
                   )}
                   {items.map((c) => (
                     <Link
@@ -111,7 +124,9 @@ function Carteira() {
                     >
                       <p className="font-medium text-sm">{c.nome_doutor}</p>
                       {c.nome_clinica && (
-                        <p className="text-xs text-muted-foreground">{c.nome_clinica}</p>
+                        <p className="text-xs text-muted-foreground">
+                          {c.nome_clinica}
+                        </p>
                       )}
                       <div className="mt-2 flex items-center justify-between text-xs">
                         <span className="text-gold font-semibold">
@@ -119,14 +134,17 @@ function Carteira() {
                         </span>
                         <span className="text-muted-foreground">
                           {c.ultima_data
-                            ? new Date(c.ultima_data).toLocaleDateString("pt-BR")
+                            ? new Date(c.ultima_data).toLocaleDateString(
+                                "pt-BR",
+                              )
                             : "—"}
                         </span>
                       </div>
                       {c.proxima_data && (
                         <p className="mt-1 text-xs text-muted-foreground">
-                          Próx: {new Date(c.proxima_data).toLocaleDateString("pt-BR")} ·{" "}
-                          {c.proxima_acao}
+                          Próx:{" "}
+                          {new Date(c.proxima_data).toLocaleDateString("pt-BR")}{" "}
+                          · {c.proxima_acao}
                         </p>
                       )}
                     </Link>
@@ -146,20 +164,22 @@ function NovoClienteButton() {
   const qc = useQueryClient();
   const [open, setOpen] = useState(false);
   const [busy, setBusy] = useState(false);
-  const [form, setForm] = useState({ nome_doutor: "", nome_clinica: "", telefone_contato: "" });
+  const [form, setForm] = useState({
+    nome_doutor: "",
+    nome_clinica: "",
+    telefone_contato: "",
+  });
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     setBusy(true);
     try {
-      const { error } = await supabase
-        .from("clientes")
-        .insert({
-          nome_doutor: form.nome_doutor,
-          nome_clinica: form.nome_clinica || null,
-          telefone_contato: form.telefone_contato || null,
-          consultor_atual_id: perfil?.id,
-        });
+      const { error } = await supabase.from("clientes").insert({
+        nome_doutor: form.nome_doutor,
+        nome_clinica: form.nome_clinica || null,
+        telefone_contato: form.telefone_contato || null,
+        consultor_atual_id: perfil?.id,
+      });
       if (error) throw error;
       toast.success("Cliente adicionado");
       setForm({ nome_doutor: "", nome_clinica: "", telefone_contato: "" });
@@ -191,30 +211,44 @@ function NovoClienteButton() {
             <Input
               required
               value={form.nome_doutor}
-              onChange={(e) => setForm({ ...form, nome_doutor: e.target.value })}
+              onChange={(e) =>
+                setForm({ ...form, nome_doutor: e.target.value })
+              }
               placeholder="Dr. João Silva"
             />
           </FieldRow>
           <FieldRow icon={Building2} label="Clínica (opcional)">
             <Input
               value={form.nome_clinica}
-              onChange={(e) => setForm({ ...form, nome_clinica: e.target.value })}
+              onChange={(e) =>
+                setForm({ ...form, nome_clinica: e.target.value })
+              }
               placeholder="Clínica Sorriso"
             />
           </FieldRow>
           <FieldRow icon={Phone} label="Telefone">
             <Input
               value={form.telefone_contato}
-              onChange={(e) => setForm({ ...form, telefone_contato: e.target.value })}
+              onChange={(e) =>
+                setForm({ ...form, telefone_contato: e.target.value })
+              }
               placeholder="(11) 99999-9999"
             />
           </FieldRow>
           <DialogFooter>
-            <Button type="button" variant="ghost" onClick={() => setOpen(false)}>
+            <Button
+              type="button"
+              variant="ghost"
+              onClick={() => setOpen(false)}
+            >
               Cancelar
             </Button>
             <Button type="submit" disabled={busy}>
-              {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : "Adicionar cliente"}
+              {busy ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                "Adicionar cliente"
+              )}
             </Button>
           </DialogFooter>
         </form>

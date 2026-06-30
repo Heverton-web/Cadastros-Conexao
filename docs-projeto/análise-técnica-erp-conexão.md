@@ -10,14 +10,14 @@
 
 O **ERP Conexão** é uma aplicação web SPA completa para gestão empresarial, construída com tecnologias modernas e arquitetura modular. O sistema atende múltiplas empresas com temas dinâmicos, permissões granulares e integração com Supabase.
 
-| Aspecto | Detalhes |
-|---------|----------|
+| Aspecto             | Detalhes                                                       |
+| ------------------- | -------------------------------------------------------------- |
 | **Stack Principal** | React 19 + TanStack Router + Vite + Tailwind CSS v4 + Supabase |
-| **Arquitetura** | Modular por features com 7 módulos de negócio |
-| **Capacidades** | 43 permissões, multi-empresas, temas dinâmicos, PWA, webhooks |
-| **Deploy** | Docker + VPS com Traefik (HTTPS) |
-| **Status Atual** | 67 rotas, 53 migrations, testes E2E (Playwright) e stress (k6) |
-| **Domínio** | cadastros.vpsconexao.org |
+| **Arquitetura**     | Modular por features com 7 módulos de negócio                  |
+| **Capacidades**     | 43 permissões, multi-empresas, temas dinâmicos, PWA, webhooks  |
+| **Deploy**          | Docker + VPS com Traefik (HTTPS)                               |
+| **Status Atual**    | 67 rotas, 53 migrations, testes E2E (Playwright) e stress (k6) |
+| **Domínio**         | cadastros.vpsconexao.org                                       |
 
 ---
 
@@ -25,24 +25,24 @@ O **ERP Conexão** é uma aplicação web SPA completa para gestão empresarial,
 
 ### 1.1 Stack Tecnológico
 
-| Categoria | Tecnologia | Versão | Uso |
-|-----------|-----------|--------|-----|
-| **Framework** | React | 19.1.0 | UI Library |
-| **Router** | TanStack Router | 1.114.0 | Gerenciamento de rotas |
-| **State/Server** | TanStack React Query | 5.101.1 | Cache e sincronização de dados |
-| **Build Tool** | Vite | 6.3.0 | Dev server e bundler |
-| **Linguagem** | TypeScript | 5.8.0 | Tipagem estática |
-| **Estilização** | Tailwind CSS v4 | 4.1.0 | Utility-first CSS |
-| **Banco de Dados** | Supabase (PostgreSQL) | supabase-js 2.108.2 | Backend-as-a-Service |
-| **UI Components** | Radix UI | 22 pacotes | Primitivas acessíveis |
-| **Icones** | Lucide React | 0.487.0 | Biblioteca de ícones |
-| **Gráficos** | Recharts | 3.9.0 | Visualização de dados |
-| **Validação** | Zod | 3.24.2 | Schema validation |
-| **Notificações** | react-hot-toast | 2.5.2 | Toast notifications |
-| **PDF** | jsPDF + jspdf-autotable | 4.2.1 / 5.0.8 | Geração de PDF |
-| **QR Code** | qrcode.react | 4.2.0 | Geração de QR Code |
-| **Mapas** | d3-geo | 3.1.1 | Projeções geográficas |
-| **Drag & Drop** | @dnd-kit/core + sortable | 6.3.1 / 10.0.0 | Interface arrastável |
+| Categoria          | Tecnologia               | Versão              | Uso                            |
+| ------------------ | ------------------------ | ------------------- | ------------------------------ |
+| **Framework**      | React                    | 19.1.0              | UI Library                     |
+| **Router**         | TanStack Router          | 1.114.0             | Gerenciamento de rotas         |
+| **State/Server**   | TanStack React Query     | 5.101.1             | Cache e sincronização de dados |
+| **Build Tool**     | Vite                     | 6.3.0               | Dev server e bundler           |
+| **Linguagem**      | TypeScript               | 5.8.0               | Tipagem estática               |
+| **Estilização**    | Tailwind CSS v4          | 4.1.0               | Utility-first CSS              |
+| **Banco de Dados** | Supabase (PostgreSQL)    | supabase-js 2.108.2 | Backend-as-a-Service           |
+| **UI Components**  | Radix UI                 | 22 pacotes          | Primitivas acessíveis          |
+| **Icones**         | Lucide React             | 0.487.0             | Biblioteca de ícones           |
+| **Gráficos**       | Recharts                 | 3.9.0               | Visualização de dados          |
+| **Validação**      | Zod                      | 3.24.2              | Schema validation              |
+| **Notificações**   | react-hot-toast          | 2.5.2               | Toast notifications            |
+| **PDF**            | jsPDF + jspdf-autotable  | 4.2.1 / 5.0.8       | Geração de PDF                 |
+| **QR Code**        | qrcode.react             | 4.2.0               | Geração de QR Code             |
+| **Mapas**          | d3-geo                   | 3.1.1               | Projeções geográficas          |
+| **Drag & Drop**    | @dnd-kit/core + sortable | 6.3.1 / 10.0.0      | Interface arrastável           |
 
 ### 1.2 Estrutura de Diretórios
 
@@ -136,6 +136,7 @@ O projeto implementa um **sistema de registro de módulos** centralizado em `src
 - **`permissions-registry.ts`**: Registro centralizado de todas as permissões
 
 **Módulos registrados** (7 módulos):
+
 1. `empresas-core` - Gestão de empresas
 2. `cadastros-conexão` - Gestão de cadastros PF/PJ
 3. `mapas-interativos` - Mapas de presença comercial
@@ -178,14 +179,14 @@ rootRoute (__root.tsx)
 
 ### 2.1 Convenções de Código
 
-| Convenção | Descrição |
-|-----------|-----------|
-| **Linguagem** | PT-BR para nomes de funções, variáveis e comentários |
-| **Path alias** | `~` mapeia para `./src` |
-| **Barrel exports** | Cada módulo/pasta tem `index.ts` |
-| **Strict TypeScript** | `strict: true` no tsconfig |
-| **Module type** | ESM (`"type": "module"`) |
-| **UI Rules** | NUNCA usar `window.confirm()`, `window.alert()`, `window.prompt()` - usar componentes de modal |
+| Convenção             | Descrição                                                                                      |
+| --------------------- | ---------------------------------------------------------------------------------------------- |
+| **Linguagem**         | PT-BR para nomes de funções, variáveis e comentários                                           |
+| **Path alias**        | `~` mapeia para `./src`                                                                        |
+| **Barrel exports**    | Cada módulo/pasta tem `index.ts`                                                               |
+| **Strict TypeScript** | `strict: true` no tsconfig                                                                     |
+| **Module type**       | ESM (`"type": "module"`)                                                                       |
+| **UI Rules**          | NUNCA usar `window.confirm()`, `window.alert()`, `window.prompt()` - usar componentes de modal |
 
 ### 2.2 Componentes UI (shadcn/ui)
 
@@ -198,34 +199,36 @@ rootRoute (__root.tsx)
 
 ### 2.3 Estilização
 
-| Aspecto | Implementação |
-|---------|---------------|
-| **Framework** | Tailwind CSS v4 com `@theme` customizado no `globals.css` |
-| **Design System** | Dark mode padrão com cores personalizáveis por empresa via CSS variables |
-| **Paleta** | Slate (bg/surface) + Gold (#c9a655) como accent principal |
-| **Fonte** | Outfit (Google Fonts) |
-| **Utility function** | `cn()` (clsx + tailwind-merge) para composição de classes |
-| **Custom utilities** | `btn-hover-destructive`, `btn-hover-edit`, `btn-hover-neutral` |
+| Aspecto              | Implementação                                                            |
+| -------------------- | ------------------------------------------------------------------------ |
+| **Framework**        | Tailwind CSS v4 com `@theme` customizado no `globals.css`                |
+| **Design System**    | Dark mode padrão com cores personalizáveis por empresa via CSS variables |
+| **Paleta**           | Slate (bg/surface) + Gold (#c9a655) como accent principal                |
+| **Fonte**            | Outfit (Google Fonts)                                                    |
+| **Utility function** | `cn()` (clsx + tailwind-merge) para composição de classes                |
+| **Custom utilities** | `btn-hover-destructive`, `btn-hover-edit`, `btn-hover-neutral`           |
 
 ### 2.4 Gerenciamento de Estado
 
-| Camada | Tecnologia | Uso |
-|--------|-----------|-----|
-| **Auth Context** | React Context | user, profile, permissões, módulosAcesso, empresa, módulosAtivos |
-| **Server State** | TanStack React Query | Cache de dados do servidor (staleTime: 60_000) |
-| **Local State** | useState/useEffect | Estado de componentes |
-| **Memoização** | useCallback/useRef | Performance e refs mutáveis |
-| **localStorage** | selectedModule, sidebarCollapsed | Persistência local |
+| Camada           | Tecnologia                       | Uso                                                              |
+| ---------------- | -------------------------------- | ---------------------------------------------------------------- |
+| **Auth Context** | React Context                    | user, profile, permissões, módulosAcesso, empresa, módulosAtivos |
+| **Server State** | TanStack React Query             | Cache de dados do servidor (staleTime: 60_000)                   |
+| **Local State**  | useState/useEffect               | Estado de componentes                                            |
+| **Memoização**   | useCallback/useRef               | Performance e refs mutáveis                                      |
+| **localStorage** | selectedModule, sidebarCollapsed | Persistência local                                               |
 
 ### 2.5 Autenticação e Permissões
 
 **AuthProvider** (`src/core/auth/AuthProvider.tsx`):
+
 - Expõe: user, profile, permissões, módulosAcesso, empresa, módulosAtivos, loading, login, logout, register, resetPassword
 - Fluxo: Login → fetchProfile → carregarEmpresa → carregarPermissões → carregarMódulosAtivos
 - Super Admin: Acesso total a todas as permissões e módulos
 - Re-autenticação: `onAuthStateChange` listener
 
 **Sistema de Permissões** (`src/core/permissions/types.ts`):
+
 - **43 permissões** organizadas em grupos:
   - Escopo de Dados (ver_todos_cadastros)
   - Visualização (ver_relatorios, visualizar_documento)
@@ -246,14 +249,17 @@ rootRoute (__root.tsx)
 ### 2.6 Backend (Supabase)
 
 **Cliente Supabase** (`src/core/supabase/client.ts`):
+
 - Configurado via variáveis de ambiente `VITE_SUPABASE_URL` e `VITE_SUPABASE_ANON_KEY`
 - Criado com `createClient()` do `@supabase/supabase-js`
 
 **Migrations** (53 arquivos SQL):
+
 - Numeradas de `00001` a `00052` mais 3 migrations com timestamps
 - Principais: profiles, tables, admin, rls_blendagem, permissoes, notifications, integracoes, form_schema, multiempresas, branding, credential_scopes, webhooks, permissoes_modulos, mapas, nps, funis, linktree, hub
 
 **Tabelas Principais**:
+
 - `profiles` - Perfis de usuário
 - `permissoes` - Permissões de usuário
 - `empresas` - Empresas
@@ -269,6 +275,7 @@ rootRoute (__root.tsx)
 ### 2.7 Webhooks e Automação
 
 Sistema completo de webhooks em `src/core/services/webhooks.ts`:
+
 - **3 tipos de tasks**: notification, webhook, api_connector
 - **Execução ordenada** por `ordem`
 - **Templates** com variáveis dinâmicas `{{tabela.coluna}}`
@@ -286,14 +293,17 @@ Sistema completo de webhooks em `src/core/services/webhooks.ts`:
 ### 2.9 Testes
 
 **Playwright (E2E)** - 6 testes em `tests/playwright/`:
+
 - Fluxo completo, Dashboard, Credenciais, Consultor, Aprovação, Config admin
 
 **k6 (Stress/Load)** - 10 testes em `tests/k6/`:
+
 - Login, Aprovação de cadastro, Listagem, Stress completo, Dashboard, Polling de notificações, Pré-cadastro, Relatórios, Stress RPC, Webhooks
 
 ### 2.10 Build e Deploy
 
 **Desenvolvimento**:
+
 ```bash
 npm run dev      # Vite dev server
 npm run build    # Build produção
@@ -303,6 +313,7 @@ npm run lint     # ESLint
 ```
 
 **Produção (Docker + VPS)**:
+
 - **Dockerfile**: Multi-stage (Node 20 build → Nginx serve)
 - **docker-compose.yml**: Serviço `app` com Traefik reverse proxy
 - **Domínio**: `cadastros.vpsconexao.org`
@@ -310,6 +321,7 @@ npm run lint     # ESLint
 - **Rede**: `network_conexão` (externa)
 
 **PWA**:
+
 - `manifest.json`: name "Cadastros Conexão", display standalone
 - Service Worker: `sw.js` registrado em `registerSW.ts`
 - Icons: 192x192 e 512x512
@@ -329,6 +341,7 @@ Esta seção detalha como automatizar processos repetitivos no ERP Conexão, foc
 **Objetivo**: Gerar estrutura completa de diretórios e arquivos para um novo módulo.
 
 **Implementação**:
+
 ```yaml
 # .agents/skills/criar-modulo/SKILL.md
 name: criar-modulo
@@ -354,27 +367,28 @@ steps:
 ```
 
 **Template de ModuleDefinition**:
+
 ```typescript
 // src/features/<modulo>/module.ts
-import { ModuleDefinition } from '~/registry/modules'
+import { ModuleDefinition } from "~/registry/modules";
 
 export const moduloDefinition: ModuleDefinition = {
-  key: '<modulo>',
-  nome: '<Nome do Módulo>',
-  descrição: 'Descrição do módulo',
-  icon: 'NomeDoIcon',
-  rotas: ['/<modulo>', '/<modulo>/dashboard'],
-  permissões: ['ver_<modulo>', 'editar_<modulo>', 'excluir_<modulo>'],
-  ambientes: ['cadastro', 'consultor'],
+  key: "<modulo>",
+  nome: "<Nome do Módulo>",
+  descrição: "Descrição do módulo",
+  icon: "NomeDoIcon",
+  rotas: ["/<modulo>", "/<modulo>/dashboard"],
+  permissões: ["ver_<modulo>", "editar_<modulo>", "excluir_<modulo>"],
+  ambientes: ["cadastro", "consultor"],
   abas: [
-    { key: 'dashboard', nome: 'Dashboard', icon: 'LayoutDashboard' },
-    { key: 'lista', nome: 'Lista', icon: 'List' },
+    { key: "dashboard", nome: "Dashboard", icon: "LayoutDashboard" },
+    { key: "lista", nome: "Lista", icon: "List" },
   ],
   capacidades: {
     hasCredentialScopes: false,
     hasLaboratorio: false,
   },
-}
+};
 ```
 
 #### 3.2.2 Workflow: `criar-modulo-completo`
@@ -382,6 +396,7 @@ export const moduloDefinition: ModuleDefinition = {
 **Objetivo**: Sequência automatizada de passos para criar um módulo completo.
 
 **Implementação**:
+
 ```yaml
 # .agents/workflows/criar-modulo-completo.yaml
 name: criar-modulo-completo
@@ -392,14 +407,14 @@ steps:
     args:
       acao: validar
       nome: $nome_modulo
-    
+
   - name: criar-estrutura
     skill: criar-modulo
     args:
       acao: criar-diretorios
       nome: $nome_modulo
     depends_on: validar-nome
-    
+
   - name: criar-tabela
     mcp: supabase_execute_sql
     args:
@@ -413,47 +428,48 @@ steps:
         );
         ALTER TABLE $nome_modulo ENABLE ROW LEVEL SECURITY;
     depends_on: criar-estrutura
-    
+
   - name: criar-migration
     mcp: supabase_apply_migration
     args:
       nome: create_$nome_modulo
       sql: $sql_migration
     depends_on: criar-tabela
-    
+
   - name: registrar-modulo
     skill: criar-modulo
     args:
       acao: registrar
       nome: $nome_modulo
     depends_on: criar-estrutura
-    
+
   - name: criar-permissoes
     skill: adicionar-permissao
     args:
       modulo: $nome_modulo
-      permissoes: ['ver_$nome_modulo', 'editar_$nome_modulo', 'excluir_$nome_modulo']
+      permissoes:
+        ["ver_$nome_modulo", "editar_$nome_modulo", "excluir_$nome_modulo"]
     depends_on: registrar-modulo
-    
+
   - name: criar-rotas
     skill: criar-rota
     args:
       modulo: $nome_modulo
-      rotas: ['/$nome_modulo', '/$nome_modulo/dashboard']
+      rotas: ["/$nome_modulo", "/$nome_modulo/dashboard"]
     depends_on: criar-permissoes
-    
+
   - name: criar-crud
     skill: gerar-crud
     args:
       modulo: $nome_modulo
       tabela: $nome_modulo
     depends_on: criar-rotas
-    
+
   - name: criar-componentes
     skill: criar-componente-modulo
     args:
       modulo: $nome_modulo
-      componentes: ['Lista', 'Formulario', 'Dashboard']
+      componentes: ["Lista", "Formulario", "Dashboard"]
     depends_on: criar-crud
 ```
 
@@ -462,6 +478,7 @@ steps:
 **Objetivo**: Template validado para definição de módulos.
 
 **Implementação**:
+
 ```typescript
 // .agents/specs/module-definition.yaml
 name: ModuleDefinition
@@ -540,6 +557,7 @@ schema:
 **Objetivo**: Gerar service.ts com operações CRUD completas.
 
 **Implementação**:
+
 ```yaml
 # .agents/skills/gerar-crud/SKILL.md
 name: gerar-crud
@@ -561,75 +579,73 @@ steps:
 ```
 
 **Template de Service**:
+
 ```typescript
 // src/features/<modulo>/services/<modulo>.service.ts
-import { supabase } from '~/core/supabase/client'
-import { z } from 'zod'
+import { supabase } from "~/core/supabase/client";
+import { z } from "zod";
 
 const schemaCriar = z.object({
   nome: z.string().min(3).max(100),
   // ... outros campos
-})
+});
 
-const schemaAtualizar = schemaCriar.partial()
+const schemaAtualizar = schemaCriar.partial();
 
 export const moduloService = {
   async listar(filtros?: { busca?: string }, pagina = 1, porPagina = 20) {
     let query = supabase
-      .from('<tabela>')
-      .select('*', { count: 'exact' })
-      .range((pagina - 1) * porPagina, pagina * porPagina - 1)
-    
+      .from("<tabela>")
+      .select("*", { count: "exact" })
+      .range((pagina - 1) * porPagina, pagina * porPagina - 1);
+
     if (filtros?.busca) {
-      query = query.ilike('nome', `%${filtros.busca}%`)
+      query = query.ilike("nome", `%${filtros.busca}%`);
     }
-    
-    const { data, error, count } = await query
-    if (error) throw error
-    return { data, total: count }
+
+    const { data, error, count } = await query;
+    if (error) throw error;
+    return { data, total: count };
   },
 
   async buscarPorId(id: string) {
     const { data, error } = await supabase
-      .from('<tabela>')
-      .select('*')
-      .eq('id', id)
-      .single()
-    if (error) throw error
-    return data
+      .from("<tabela>")
+      .select("*")
+      .eq("id", id)
+      .single();
+    if (error) throw error;
+    return data;
   },
 
   async criar(dados: unknown) {
-    const validados = schemaCriar.parse(dados)
+    const validados = schemaCriar.parse(dados);
     const { data, error } = await supabase
-      .from('<tabela>')
+      .from("<tabela>")
       .insert(validados)
       .select()
-      .single()
-    if (error) throw error
-    return data
+      .single();
+    if (error) throw error;
+    return data;
   },
 
   async atualizar(id: string, dados: unknown) {
-    const validados = schemaAtualizar.parse(dados)
+    const validados = schemaAtualizar.parse(dados);
     const { data, error } = await supabase
-      .from('<tabela>')
+      .from("<tabela>")
       .update(validados)
-      .eq('id', id)
+      .eq("id", id)
       .select()
-      .single()
-    if (error) throw error
-    return data
+      .single();
+    if (error) throw error;
+    return data;
   },
 
   async excluir(id: string) {
-    const { error } = await supabase
-      .from('<tabela>')
-      .delete()
-      .eq('id', id)
-    if (error) throw error
+    const { error } = await supabase.from("<tabela>").delete().eq("id", id);
+    if (error) throw error;
   },
-}
+};
 ```
 
 #### 3.3.2 Hook: `pre-gerar-crud`
@@ -637,6 +653,7 @@ export const moduloService = {
 **Objetivo**: Validar schema antes de gerar CRUD.
 
 **Implementação**:
+
 ```yaml
 # .agents/hooks/pre-gerar-crud.yaml
 name: pre-gerar-crud
@@ -648,17 +665,17 @@ actions:
       args:
         table_name: $tabela
       on_error: abort
-      
+
   - verificar_colunas_minimas:
       required_columns: ['id', 'created_at']
       on_error: warn
-      
+
   - verificar_rls_ativo:
       mcp: supabase_execute_sql
       args:
         sql: |
-          SELECT relrowsecurity 
-          FROM pg_class 
+          SELECT relrowsecurity
+          FROM pg_class
           WHERE relname = '$tabela'
       on_error: warn
 ```
@@ -670,6 +687,7 @@ actions:
 **Objetivo**: Gerar componente seguindo padrão shadcn/ui.
 
 **Implementação**:
+
 ```yaml
 # .agents/skills/criar-componente-modulo/SKILL.md
 name: criar-componente-modulo
@@ -685,6 +703,7 @@ steps:
 ```
 
 **Template de Componente**:
+
 ```typescript
 // src/features/<modulo>/components/<Componente>.tsx
 import * as React from 'react'
@@ -738,30 +757,31 @@ Componente.displayName = 'Componente'
 **Objetivo**: Validar nomenclatura de componentes e arquivos.
 
 **Implementação**:
+
 ```yaml
 # .agents/rules/nomenclature.yaml
 name: nomenclature
 description: Valida nomenclatura de componentes e arquivos
 rules:
   componentes:
-    pattern: '^[A-Z][a-zA-Z]+$'
-    message: 'Componentes devem usar PascalCase'
-    examples: ['ListaClientes', 'FormularioCadastro', 'DashboardPrincipal']
-    
+    pattern: "^[A-Z][a-zA-Z]+$"
+    message: "Componentes devem usar PascalCase"
+    examples: ["ListaClientes", "FormularioCadastro", "DashboardPrincipal"]
+
   arquivos_ts:
     pattern: '^[a-z0-9-]+(\.(component|service|hook|types|test|spec))?\.tsx?$'
-    message: 'Arquivos devem usar kebab-case com sufixo opcional'
-    examples: ['lista-clientes.tsx', 'clientes.service.ts', 'useClientes.ts']
-    
+    message: "Arquivos devem usar kebab-case com sufixo opcional"
+    examples: ["lista-clientes.tsx", "clientes.service.ts", "useClientes.ts"]
+
   diretorios:
-    pattern: '^[a-z0-9-]+$'
-    message: 'Diretórios devem usar kebab-case'
-    examples: ['cadastros', 'mapas-interativos', 'nps']
-    
+    pattern: "^[a-z0-9-]+$"
+    message: "Diretórios devem usar kebab-case"
+    examples: ["cadastros", "mapas-interativos", "nps"]
+
   rotas:
-    pattern: '^/[a-z0-9-]+(/[a-z0-9-]+)*$'
-    message: 'Rotas devem usar kebab-case'
-    examples: ['/cadastros', '/mapas/distribuidores', '/nps/dashboard']
+    pattern: "^/[a-z0-9-]+(/[a-z0-9-]+)*$"
+    message: "Rotas devem usar kebab-case"
+    examples: ["/cadastros", "/mapas/distribuidores", "/nps/dashboard"]
 ```
 
 ### 3.5 Gerenciamento de Permissões
@@ -771,6 +791,7 @@ rules:
 **Objetivo**: Adicionar permissão ao registry centralizado.
 
 **Implementação**:
+
 ```yaml
 # .agents/skills/adicionar-permissao/SKILL.md
 name: adicionar-permissao
@@ -791,25 +812,26 @@ steps:
 **Objetivo**: Validar conflitos de permissão.
 
 **Implementação**:
+
 ```yaml
 # .agents/rules/permission-conflicts.yaml
 name: permission-conflicts
 description: Valida conflitos e dependências de permissões
 rules:
   - nome_unico:
-      message: 'Nome de permissão deve ser único'
+      message: "Nome de permissão deve ser único"
       validation: check_unique_in_registry
-      
+
   - formato_snake_case:
-      pattern: '^[a-z][a-z0-9_]*$'
-      message: 'Permissões devem usar snake_case'
-      
+      pattern: "^[a-z][a-z0-9_]*$"
+      message: "Permissões devem usar snake_case"
+
   - prefixo_modulo:
-      message: 'Permissão deve ter prefixo do módulo'
+      message: "Permissão deve ter prefixo do módulo"
       validation: starts_with_module_key
-      
+
   - conflitos_escopo:
-      message: 'Permissões de escopo não podem conflitar com permissões específicas'
+      message: "Permissões de escopo não podem conflitar com permissões específicas"
       validation: check_scope_conflicts
 ```
 
@@ -820,6 +842,7 @@ rules:
 **Objetivo**: Gerar arquivo de rota com AuthGuard.
 
 **Implementação**:
+
 ```yaml
 # .agents/skills/criar-rota/SKILL.md
 name: criar-rota
@@ -836,18 +859,19 @@ steps:
 ```
 
 **Template de Rota**:
+
 ```typescript
 // src/routes/<modulo>/index.tsx
-import { createFileRoute } from '@tanstack/react-router'
-import { ModuloPage } from '~/features/<modulo>/pages/ModuloPage'
+import { createFileRoute } from "@tanstack/react-router";
+import { ModuloPage } from "~/features/<modulo>/pages/ModuloPage";
 
-export const Route = createFileRoute('/<modulo>/')({
+export const Route = createFileRoute("/<modulo>/")({
   component: ModuloPage,
   beforeLoad: ({ context }) => {
     // Validação de permissão já feita pelo AuthGuard
-    return context
+    return context;
   },
-})
+});
 ```
 
 #### 3.6.2 Hook: `pre-criar-rota`
@@ -855,6 +879,7 @@ export const Route = createFileRoute('/<modulo>/')({
 **Objetivo**: Validar rotas duplicadas.
 
 **Implementação**:
+
 ```yaml
 # .agents/hooks/pre-criar-rota.yaml
 name: pre-criar-rota
@@ -865,11 +890,11 @@ actions:
       glob: 'src/routes/**/*.tsx'
       pattern: $rota_path
       on_error: abort
-      
+
   - verificar_nome_unico:
       message: 'Rota já existe'
       on_error: abort
-      
+
   - verificar_modulo_registrado:
       file: src/registry/modules.ts
       pattern: $modulo_key
@@ -880,13 +905,14 @@ actions:
 
 #### 3.7.1 MCPs (Model Context Protocol Servers)
 
-| MCP | Status | Uso |
-|-----|--------|-----|
-| `supabase-mcp-server` | ✅ Existente | SQL, migrations, schema inspection |
-| `mcp-shadcn` | 🆕 Novo | Buscar e instalar componentes shadcn/ui |
-| `mcp-tanstack` | 🆕 Novo | Gerar rotas TanStack Router |
+| MCP                   | Status       | Uso                                     |
+| --------------------- | ------------ | --------------------------------------- |
+| `supabase-mcp-server` | ✅ Existente | SQL, migrations, schema inspection      |
+| `mcp-shadcn`          | 🆕 Novo      | Buscar e instalar componentes shadcn/ui |
+| `mcp-tanstack`        | 🆕 Novo      | Gerar rotas TanStack Router             |
 
 **MCP `mcp-shadcn` (novo)**:
+
 ```json
 {
   "name": "mcp-shadcn",
@@ -913,6 +939,7 @@ actions:
 ```
 
 **MCP `mcp-tanstack` (novo)**:
+
 ```json
 {
   "name": "mcp-tanstack",
@@ -936,62 +963,62 @@ actions:
 
 #### 3.7.2 Skills
 
-| Skill | Descrição | Trigger |
-|-------|-----------|---------|
-| `criar-modulo` | Estrutura completa de módulo | "criar módulo" |
-| `gerar-crud` | Operações CRUD | "gerar crud" |
-| `criar-componente-modulo` | Componente shadcn/ui | "criar componente" |
-| `adicionar-permissao` | Permissão ao registry | "adicionar permissão" |
-| `criar-rota` | Rota protegida | "criar rota" |
-| `validar-modulo` | Valida integridade do módulo | "validar módulo" |
-| `documentar-modulo` | Gera documentação do módulo | "documentar módulo" |
+| Skill                     | Descrição                    | Trigger               |
+| ------------------------- | ---------------------------- | --------------------- |
+| `criar-modulo`            | Estrutura completa de módulo | "criar módulo"        |
+| `gerar-crud`              | Operações CRUD               | "gerar crud"          |
+| `criar-componente-modulo` | Componente shadcn/ui         | "criar componente"    |
+| `adicionar-permissao`     | Permissão ao registry        | "adicionar permissão" |
+| `criar-rota`              | Rota protegida               | "criar rota"          |
+| `validar-modulo`          | Valida integridade do módulo | "validar módulo"      |
+| `documentar-modulo`       | Gera documentação do módulo  | "documentar módulo"   |
 
 #### 3.7.3 Rules
 
-| Rule | Descrição | Validação |
-|------|-----------|-----------|
-| `modulo-structure` | Estrutura de diretórios | Verifica pastas obrigatórias |
-| `nomenclature` | Nomenclatura de arquivos | Regex patterns |
-| `permission-conflicts` | Conflitos de permissão | Duplicatas e dependências |
-| `route-validation` | Validação de rotas | Paths duplicados |
-| `type-safety` | Segurança de tipos | TypeScript strict |
+| Rule                   | Descrição                | Validação                    |
+| ---------------------- | ------------------------ | ---------------------------- |
+| `modulo-structure`     | Estrutura de diretórios  | Verifica pastas obrigatórias |
+| `nomenclature`         | Nomenclatura de arquivos | Regex patterns               |
+| `permission-conflicts` | Conflitos de permissão   | Duplicatas e dependências    |
+| `route-validation`     | Validação de rotas       | Paths duplicados             |
+| `type-safety`          | Segurança de tipos       | TypeScript strict            |
 
 #### 3.7.4 Workflows
 
-| Workflow | Descrição | Steps |
-|----------|-----------|-------|
+| Workflow                | Descrição                  | Steps   |
+| ----------------------- | -------------------------- | ------- |
 | `criar-modulo-completo` | Módulo completo end-to-end | 8 steps |
-| `gerar-crud-completo` | CRUD com service + hooks | 5 steps |
-| `adicionar-feature` | Feature completa ao módulo | 6 steps |
+| `gerar-crud-completo`   | CRUD com service + hooks   | 5 steps |
+| `adicionar-feature`     | Feature completa ao módulo | 6 steps |
 
 #### 3.7.5 Hooks
 
-| Hook | Trigger | Ação |
-|------|---------|------|
+| Hook               | Trigger               | Ação                    |
+| ------------------ | --------------------- | ----------------------- |
 | `pre-criar-modulo` | Antes de criar módulo | Valida nome e estrutura |
-| `pre-criar-rota` | Antes de criar rota | Verifica duplicatas |
-| `pre-gerar-crud` | Antes de gerar CRUD | Valida schema da tabela |
-| `pos-criar-modulo` | Após criar módulo | Registra no sistema |
-| `pos-criar-rota` | Após criar rota | Atualiza routeTree |
+| `pre-criar-rota`   | Antes de criar rota   | Verifica duplicatas     |
+| `pre-gerar-crud`   | Antes de gerar CRUD   | Valida schema da tabela |
+| `pos-criar-modulo` | Após criar módulo     | Registra no sistema     |
+| `pos-criar-rota`   | Após criar rota       | Atualiza routeTree      |
 
 #### 3.7.6 Plugins
 
-| Plugin | Descrição | Integração |
-|--------|-----------|------------|
-| `shadcn-ui-generator` | Gera componentes shadcn/ui | shadcn/ui CLI |
-| `supabase-schema-validator` | Valida schema Supabase | MCP supabase |
-| `tanstack-route-generator` | Gera rotas TanStack | TanStack Router plugin |
-| `permission-checker` | Valida permissões | Registry de permissões |
+| Plugin                      | Descrição                  | Integração             |
+| --------------------------- | -------------------------- | ---------------------- |
+| `shadcn-ui-generator`       | Gera componentes shadcn/ui | shadcn/ui CLI          |
+| `supabase-schema-validator` | Valida schema Supabase     | MCP supabase           |
+| `tanstack-route-generator`  | Gera rotas TanStack        | TanStack Router plugin |
+| `permission-checker`        | Valida permissões          | Registry de permissões |
 
 #### 3.7.7 Specs
 
-| Spec | Descrição | Arquivo |
-|------|-----------|---------|
-| `ModuleDefinition` | Template de módulo | `.agents/specs/module-definition.yaml` |
-| `RouteTemplate` | Template de rota | `.agents/specs/route-template.yaml` |
-| `CRUDService` | Template de service | `.agents/specs/crud-service.yaml` |
-| `ComponentTemplate` | Template de componente | `.agents/specs/component-template.yaml` |
-| `PermissionTemplate` | Template de permissão | `.agents/specs/permission-template.yaml` |
+| Spec                 | Descrição              | Arquivo                                  |
+| -------------------- | ---------------------- | ---------------------------------------- |
+| `ModuleDefinition`   | Template de módulo     | `.agents/specs/module-definition.yaml`   |
+| `RouteTemplate`      | Template de rota       | `.agents/specs/route-template.yaml`      |
+| `CRUDService`        | Template de service    | `.agents/specs/crud-service.yaml`        |
+| `ComponentTemplate`  | Template de componente | `.agents/specs/component-template.yaml`  |
+| `PermissionTemplate` | Template de permissão  | `.agents/specs/permission-template.yaml` |
 
 ### 3.8 Exemplo de Uso: Criando um Módulo "Relatórios Avançados"
 
@@ -1021,39 +1048,39 @@ actions:
 
 ### 4.1 Curto Prazo (1-3 meses)
 
-| Melhoria | Prioridade | Impacto |
-|----------|------------|---------|
-| Limpar código legado (`src/legacy/`) | Alta | Reduz complexidade |
-| Adicionar testes unitários (Vitest) | Alta | Qualidade de código |
-| Implementar lint de commits (commitlint) | Média | Histórico limpo |
-| Documentar componentes (Storybook) | Média | Onboarding |
+| Melhoria                                 | Prioridade | Impacto             |
+| ---------------------------------------- | ---------- | ------------------- |
+| Limpar código legado (`src/legacy/`)     | Alta       | Reduz complexidade  |
+| Adicionar testes unitários (Vitest)      | Alta       | Qualidade de código |
+| Implementar lint de commits (commitlint) | Média      | Histórico limpo     |
+| Documentar componentes (Storybook)       | Média      | Onboarding          |
 
 ### 4.2 Médio Prazo (3-6 meses)
 
-| Melhoria | Prioridade | Impacto |
-|----------|------------|---------|
-| Centralizar estado com Zustand | Alta | Performance |
-| Implementar monitoramento (Sentry) | Alta | Visibilidade |
-| Otimizar bundle (code splitting) | Média | Performance |
-| Adicionar CI/CD (GitHub Actions) | Média | Automação |
+| Melhoria                           | Prioridade | Impacto      |
+| ---------------------------------- | ---------- | ------------ |
+| Centralizar estado com Zustand     | Alta       | Performance  |
+| Implementar monitoramento (Sentry) | Alta       | Visibilidade |
+| Otimizar bundle (code splitting)   | Média      | Performance  |
+| Adicionar CI/CD (GitHub Actions)   | Média      | Automação    |
 
 ### 4.3 Longo Prazo (6-12 meses)
 
-| Melhoria | Prioridade | Impacto |
-|----------|------------|---------|
-| Migrar para Server Components | Baixa | Arquitetura |
-| Implementar GraphQL | Baixa | Flexibilidade |
-| Adicionar testes de acessibilidade | Média | Inclusão |
-| Internacionalização (i18n) | Baixa | Escalabilidade |
+| Melhoria                           | Prioridade | Impacto        |
+| ---------------------------------- | ---------- | -------------- |
+| Migrar para Server Components      | Baixa      | Arquitetura    |
+| Implementar GraphQL                | Baixa      | Flexibilidade  |
+| Adicionar testes de acessibilidade | Média      | Inclusão       |
+| Internacionalização (i18n)         | Baixa      | Escalabilidade |
 
 ### 4.4 Melhorias Arquiteturais
 
-| Melhoria | Descrição | Benefício |
-|----------|-----------|-----------|
-| Separar backend | Serviço independente para lógica de negócio | Escalabilidade |
-| CQRS | Command Query Responsibility Segregation | Performance |
-| Event Sourcing | Auditoria completa de mudanças | Compliance |
-| Cache distribuído | Redis para cache de sessões | Performance |
+| Melhoria          | Descrição                                   | Benefício      |
+| ----------------- | ------------------------------------------- | -------------- |
+| Separar backend   | Serviço independente para lógica de negócio | Escalabilidade |
+| CQRS              | Command Query Responsibility Segregation    | Performance    |
+| Event Sourcing    | Auditoria completa de mudanças              | Compliance     |
+| Cache distribuído | Redis para cache de sessões                 | Performance    |
 
 ---
 
@@ -1062,6 +1089,7 @@ actions:
 ### A. Comandos Úteis
 
 **Desenvolvimento**:
+
 ```bash
 npm run dev          # Iniciar dev server
 npm run build        # Build de produção
@@ -1071,6 +1099,7 @@ npm run lint         # Lintar código (ESLint)
 ```
 
 **Docker**:
+
 ```bash
 docker build -t cadastros-conexao .          # Build da imagem
 docker-compose up -d                          # Iniciar serviços
@@ -1079,6 +1108,7 @@ docker-compose logs -f app                    # Ver logs
 ```
 
 **Supabase**:
+
 ```bash
 npx supabase migration new <nome>            # Criar migration
 npx supabase db push                          # Aplicar migrations
@@ -1087,6 +1117,7 @@ npx supabase gen types typescript             # Gerar tipos
 ```
 
 **Testes**:
+
 ```bash
 npx playwright test                           # Rodar testes E2E
 npx playwright test --ui                      # Interface visual
@@ -1095,18 +1126,18 @@ k6 run tests/k6/<arquivo>.js                  # Rodar stress test
 
 ### B. Estrutura de Arquivos Chave
 
-| Arquivo | Descrição |
-|---------|-----------|
-| `src/registry/modules.ts` | Definição de todos os módulos |
-| `src/core/auth/AuthProvider.tsx` | Provedor de autenticação |
-| `src/core/permissions/types.ts` | Tipos de permissões |
-| `src/routes/_auth.tsx` | Layout protegido (AuthGuard) |
-| `src/core/layout/AppLayout.tsx` | Layout principal da aplicação |
-| `src/core/services/webhooks.ts` | Sistema de webhooks |
-| `src/styles/globals.css` | Estilos globais e tema |
-| `vite.config.ts` | Configuração do Vite |
-| `tsconfig.json` | Configuração do TypeScript |
-| `docker-compose.yml` | Configuração Docker |
+| Arquivo                          | Descrição                     |
+| -------------------------------- | ----------------------------- |
+| `src/registry/modules.ts`        | Definição de todos os módulos |
+| `src/core/auth/AuthProvider.tsx` | Provedor de autenticação      |
+| `src/core/permissions/types.ts`  | Tipos de permissões           |
+| `src/routes/_auth.tsx`           | Layout protegido (AuthGuard)  |
+| `src/core/layout/AppLayout.tsx`  | Layout principal da aplicação |
+| `src/core/services/webhooks.ts`  | Sistema de webhooks           |
+| `src/styles/globals.css`         | Estilos globais e tema        |
+| `vite.config.ts`                 | Configuração do Vite          |
+| `tsconfig.json`                  | Configuração do TypeScript    |
+| `docker-compose.yml`             | Configuração Docker           |
 
 ### C. Recursos Externos
 
@@ -1120,18 +1151,18 @@ k6 run tests/k6/<arquivo>.js                  # Rodar stress test
 
 ### D. Glossário
 
-| Termo | Definição |
-|-------|-----------|
-| **ModuleDefinition** | Estrutura de dados que define um módulo de negócio |
-| **AuthGuard** | Componente que protege rotas autenticadas |
-| **CVA** | Class Variance Authority - biblioteca para variantes de componentes |
-| **RLS** | Row Level Security - segurança no nível de linha do PostgreSQL |
-| **MCP** | Model Context Protocol - protocolo para comunicação com IA |
-| **shadcn/ui** | Biblioteca de componentes UI baseada em Radix + Tailwind |
-| **TanStack Router** | Biblioteca de roteamento type-safe para React |
-| **Barrel Export** | Arquivo index.ts que re-exporta tudo de um módulo |
-| **Feature Module** | Módulo de negócio encapsulado em src/features/ |
-| **Webhook** | Sistema de notificação automática de eventos |
+| Termo                | Definição                                                           |
+| -------------------- | ------------------------------------------------------------------- |
+| **ModuleDefinition** | Estrutura de dados que define um módulo de negócio                  |
+| **AuthGuard**        | Componente que protege rotas autenticadas                           |
+| **CVA**              | Class Variance Authority - biblioteca para variantes de componentes |
+| **RLS**              | Row Level Security - segurança no nível de linha do PostgreSQL      |
+| **MCP**              | Model Context Protocol - protocolo para comunicação com IA          |
+| **shadcn/ui**        | Biblioteca de componentes UI baseada em Radix + Tailwind            |
+| **TanStack Router**  | Biblioteca de roteamento type-safe para React                       |
+| **Barrel Export**    | Arquivo index.ts que re-exporta tudo de um módulo                   |
+| **Feature Module**   | Módulo de negócio encapsulado em src/features/                      |
+| **Webhook**          | Sistema de notificação automática de eventos                        |
 
 ---
 

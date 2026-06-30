@@ -16,7 +16,11 @@ import {
   reordenarSecoes,
   listarAnalytics,
 } from "../services/empresa";
-import type { EmpresaLinkInput, EmpresaSectionInput, AnalyticsPeriodo } from "../types-empresa";
+import type {
+  EmpresaLinkInput,
+  EmpresaSectionInput,
+  AnalyticsPeriodo,
+} from "../types-empresa";
 
 export function useEmpresaConfig(empresaId?: string | null) {
   const { profile } = useAuth();
@@ -36,7 +40,8 @@ export function useSalvarEmpresaConfig(empresaId?: string | null) {
   return useMutation({
     mutationFn: (config: Parameters<typeof salvarEmpresaConfig>[1]) =>
       salvarEmpresaConfig(eid!, config),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["empresa-linktree-config"] }),
+    onSuccess: () =>
+      qc.invalidateQueries({ queryKey: ["empresa-linktree-config"] }),
   });
 }
 
@@ -65,15 +70,23 @@ export function useCriarSecao(empresaId?: string | null) {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: (input: EmpresaSectionInput) => criarSecao(eid!, input),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["empresa-linktree-secoes"] }),
+    onSuccess: () =>
+      qc.invalidateQueries({ queryKey: ["empresa-linktree-secoes"] }),
   });
 }
 
 export function useAtualizarSecao() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, input }: { id: string; input: Partial<EmpresaSectionInput> }) => atualizarSecao(id, input),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["empresa-linktree-secoes"] }),
+    mutationFn: ({
+      id,
+      input,
+    }: {
+      id: string;
+      input: Partial<EmpresaSectionInput>;
+    }) => atualizarSecao(id, input),
+    onSuccess: () =>
+      qc.invalidateQueries({ queryKey: ["empresa-linktree-secoes"] }),
   });
 }
 
@@ -81,7 +94,8 @@ export function useDeletarSecao() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: (id: string) => deletarSecao(id),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["empresa-linktree-secoes"] }),
+    onSuccess: () =>
+      qc.invalidateQueries({ queryKey: ["empresa-linktree-secoes"] }),
   });
 }
 
@@ -100,17 +114,30 @@ export function useCriarLink(empresaId?: string | null) {
   const eid = empresaId ?? profile?.empresa_id;
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: ({ sectionId, input }: { sectionId: string; input: EmpresaLinkInput }) =>
-      criarLink(eid!, sectionId, input),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["empresa-linktree-links"] }),
+    mutationFn: ({
+      sectionId,
+      input,
+    }: {
+      sectionId: string;
+      input: EmpresaLinkInput;
+    }) => criarLink(eid!, sectionId, input),
+    onSuccess: () =>
+      qc.invalidateQueries({ queryKey: ["empresa-linktree-links"] }),
   });
 }
 
 export function useAtualizarLink() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, input }: { id: string; input: Partial<EmpresaLinkInput> }) => atualizarLink(id, input),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["empresa-linktree-links"] }),
+    mutationFn: ({
+      id,
+      input,
+    }: {
+      id: string;
+      input: Partial<EmpresaLinkInput>;
+    }) => atualizarLink(id, input),
+    onSuccess: () =>
+      qc.invalidateQueries({ queryKey: ["empresa-linktree-links"] }),
   });
 }
 
@@ -118,27 +145,35 @@ export function useDeletarLink() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: (id: string) => deletarLink(id),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["empresa-linktree-links"] }),
+    onSuccess: () =>
+      qc.invalidateQueries({ queryKey: ["empresa-linktree-links"] }),
   });
 }
 
 export function useReordenarLinks() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: (ordens: { id: string; ordem: number }[]) => reordenarLinks(ordens),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["empresa-linktree-links"] }),
+    mutationFn: (ordens: { id: string; ordem: number }[]) =>
+      reordenarLinks(ordens),
+    onSuccess: () =>
+      qc.invalidateQueries({ queryKey: ["empresa-linktree-links"] }),
   });
 }
 
 export function useReordenarSecoes() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: (ordens: { id: string; ordem: number }[]) => reordenarSecoes(ordens),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["empresa-linktree-secoes"] }),
+    mutationFn: (ordens: { id: string; ordem: number }[]) =>
+      reordenarSecoes(ordens),
+    onSuccess: () =>
+      qc.invalidateQueries({ queryKey: ["empresa-linktree-secoes"] }),
   });
 }
 
-export function useAnalytics(periodo: AnalyticsPeriodo, empresaId?: string | null) {
+export function useAnalytics(
+  periodo: AnalyticsPeriodo,
+  empresaId?: string | null,
+) {
   const { profile } = useAuth();
   const eid = empresaId ?? profile?.empresa_id;
   return useQuery({

@@ -1,19 +1,22 @@
-import pg from 'pg';
-import fs from 'fs';
+import pg from "pg";
+import fs from "fs";
 
-const env = fs.readFileSync(new URL('../.env', import.meta.url), 'utf8');
+const env = fs.readFileSync(new URL("../.env", import.meta.url), "utf8");
 const pwMatch = env.match(/SUPABASE_DB_PASSWORD=["']?([^"'\n]+)/);
 const PASSWORD = pwMatch?.[1];
-if (!PASSWORD) { console.error('no password'); process.exit(1); }
+if (!PASSWORD) {
+  console.error("no password");
+  process.exit(1);
+}
 
 const pool = new pg.Pool({
-  connectionString: `postgresql://postgres:${encodeURIComponent(PASSWORD)}@db.cluuqzhizeqvkgvfdisx.supabase.co:5432/postgres`
+  connectionString: `postgresql://postgres:${encodeURIComponent(PASSWORD)}@db.cluuqzhizeqvkgvfdisx.supabase.co:5432/postgres`,
 });
 
 async function run() {
   const client = await pool.connect();
   try {
-    console.log('🔧 Aplicando migration CRM...\n');
+    console.log("🔧 Aplicando migration CRM...\n");
 
     // 1. Enums
     const enums = [
@@ -25,8 +28,14 @@ async function run() {
       `CREATE TYPE public.convite_status AS ENUM ('pendente', 'utilizado', 'expirado')`,
     ];
     for (const sql of enums) {
-      try { await client.query(sql); console.log('✅ ' + sql.match(/public\.(\w+)/)[1]); }
-      catch(e) { if (e.message.includes('already exists')) console.log('⏭️  ' + sql.match(/public\.(\w+)/)[1]); else console.error('❌ ' + e.message); }
+      try {
+        await client.query(sql);
+        console.log("✅ " + sql.match(/public\.(\w+)/)[1]);
+      } catch (e) {
+        if (e.message.includes("already exists"))
+          console.log("⏭️  " + sql.match(/public\.(\w+)/)[1]);
+        else console.error("❌ " + e.message);
+      }
     }
 
     // 2. Table usuarios
@@ -45,8 +54,12 @@ async function run() {
           criado_em TIMESTAMPTZ NOT NULL DEFAULT now()
         )
       `);
-      console.log('✅ tabela usuarios');
-    } catch(e) { if (e.message.includes('already exists')) console.log('⏭️  tabela usuarios'); else console.error('❌ usuarios: ' + e.message); }
+      console.log("✅ tabela usuarios");
+    } catch (e) {
+      if (e.message.includes("already exists"))
+        console.log("⏭️  tabela usuarios");
+      else console.error("❌ usuarios: " + e.message);
+    }
 
     // 3. Table visitas
     try {
@@ -72,8 +85,12 @@ async function run() {
           criado_em TIMESTAMPTZ NOT NULL DEFAULT now()
         )
       `);
-      console.log('✅ tabela visitas');
-    } catch(e) { if (e.message.includes('already exists')) console.log('⏭️  tabela visitas'); else console.error('❌ visitas: ' + e.message); }
+      console.log("✅ tabela visitas");
+    } catch (e) {
+      if (e.message.includes("already exists"))
+        console.log("⏭️  tabela visitas");
+      else console.error("❌ visitas: " + e.message);
+    }
 
     // 4. Table convites_acesso
     try {
@@ -93,8 +110,12 @@ async function run() {
           criado_em TIMESTAMPTZ NOT NULL DEFAULT now()
         )
       `);
-      console.log('✅ tabela convites_acesso');
-    } catch(e) { if (e.message.includes('already exists')) console.log('⏭️  tabela convites_acesso'); else console.error('❌ convites_acesso: ' + e.message); }
+      console.log("✅ tabela convites_acesso");
+    } catch (e) {
+      if (e.message.includes("already exists"))
+        console.log("⏭️  tabela convites_acesso");
+      else console.error("❌ convites_acesso: " + e.message);
+    }
 
     // 5. Table logs_transferencia
     try {
@@ -108,8 +129,12 @@ async function run() {
           data_transferencia TIMESTAMPTZ NOT NULL DEFAULT now()
         )
       `);
-      console.log('✅ tabela logs_transferencia');
-    } catch(e) { if (e.message.includes('already exists')) console.log('⏭️  tabela logs_transferencia'); else console.error('❌ logs_transferencia: ' + e.message); }
+      console.log("✅ tabela logs_transferencia");
+    } catch (e) {
+      if (e.message.includes("already exists"))
+        console.log("⏭️  tabela logs_transferencia");
+      else console.error("❌ logs_transferencia: " + e.message);
+    }
 
     // 6. Table logs_transferencia_consultor
     try {
@@ -123,13 +148,27 @@ async function run() {
           data_transferencia TIMESTAMPTZ NOT NULL DEFAULT now()
         )
       `);
-      console.log('✅ tabela logs_transferencia_consultor');
-    } catch(e) { if (e.message.includes('already exists')) console.log('⏭️  tabela logs_transferencia_consultor'); else console.error('❌ logs_transferencia_consultor: ' + e.message); }
+      console.log("✅ tabela logs_transferencia_consultor");
+    } catch (e) {
+      if (e.message.includes("already exists"))
+        console.log("⏭️  tabela logs_transferencia_consultor");
+      else console.error("❌ logs_transferencia_consultor: " + e.message);
+    }
 
     // 7. RLS
-    for (const t of ['usuarios', 'visitas', 'convites_acesso', 'logs_transferencia', 'logs_transferencia_consultor']) {
-      try { await client.query(`ALTER TABLE public.${t} ENABLE ROW LEVEL SECURITY`); console.log('🔒 RLS ' + t); }
-      catch(e) { /* ignore */ }
+    for (const t of [
+      "usuarios",
+      "visitas",
+      "convites_acesso",
+      "logs_transferencia",
+      "logs_transferencia_consultor",
+    ]) {
+      try {
+        await client.query(`ALTER TABLE public.${t} ENABLE ROW LEVEL SECURITY`);
+        console.log("🔒 RLS " + t);
+      } catch (e) {
+        /* ignore */
+      }
     }
 
     // 8. Indexes
@@ -140,9 +179,13 @@ async function run() {
       `CREATE INDEX IF NOT EXISTS idx_usuarios_gestor ON public.usuarios(gestor_id)`,
     ];
     for (const sql of indexes) {
-      try { await client.query(sql); } catch(e) { /* ignore */ }
+      try {
+        await client.query(sql);
+      } catch (e) {
+        /* ignore */
+      }
     }
-    console.log('✅ indexes');
+    console.log("✅ indexes");
 
     // 9. Functions
     await client.query(`
@@ -151,7 +194,7 @@ async function run() {
         SELECT EXISTS (SELECT 1 FROM public.usuarios WHERE id = _user_id AND role = _role AND ativo = true)
       $$;
     `);
-    console.log('✅ has_role');
+    console.log("✅ has_role");
 
     await client.query(`
       CREATE OR REPLACE FUNCTION public.is_gestor_de(_gestor_id UUID, _consultor_id UUID)
@@ -159,7 +202,7 @@ async function run() {
         SELECT EXISTS (SELECT 1 FROM public.usuarios WHERE id = _consultor_id AND gestor_id = _gestor_id)
       $$;
     `);
-    console.log('✅ is_gestor_de');
+    console.log("✅ is_gestor_de");
 
     // 10. Trigger: auth.users -> usuarios
     try {
@@ -183,8 +226,10 @@ async function run() {
           AFTER INSERT ON auth.users
           FOR EACH ROW EXECUTE FUNCTION public.handle_new_crm_user();
       `);
-      console.log('✅ trigger handle_new_crm_user');
-    } catch(e) { console.log('⏭️  trigger: ' + e.message.slice(0, 80)); }
+      console.log("✅ trigger handle_new_crm_user");
+    } catch (e) {
+      console.log("⏭️  trigger: " + e.message.slice(0, 80));
+    }
 
     // 11. Trigger: log transferencia
     try {
@@ -205,14 +250,19 @@ async function run() {
           BEFORE UPDATE OF consultor_atual_id ON public.clientes
           FOR EACH ROW EXECUTE FUNCTION public.log_transferencia_cliente();
       `);
-      console.log('✅ trigger trg_log_transferencia');
-    } catch(e) { console.log('⏭️  trigger transferencia: ' + e.message.slice(0, 80)); }
+      console.log("✅ trigger trg_log_transferencia");
+    } catch (e) {
+      console.log("⏭️  trigger transferencia: " + e.message.slice(0, 80));
+    }
 
-    console.log('\n🎉 Migration CRM aplicada com sucesso!');
+    console.log("\n🎉 Migration CRM aplicada com sucesso!");
   } finally {
     client.release();
     await pool.end();
   }
 }
 
-run().catch(e => { console.error('❌ ERRO:', e.message); process.exit(1); });
+run().catch((e) => {
+  console.error("❌ ERRO:", e.message);
+  process.exit(1);
+});

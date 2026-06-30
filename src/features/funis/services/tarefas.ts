@@ -4,8 +4,12 @@ import type { FunilTarefa, FunilTarefaInput } from "../types";
 
 const MODULO_KEY = "funis";
 
-export async function criarTarefa(input: FunilTarefaInput): Promise<FunilTarefa> {
-  const { data: { user } } = await supabase.auth.getUser();
+export async function criarTarefa(
+  input: FunilTarefaInput,
+): Promise<FunilTarefa> {
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
   if (!user) throw new Error("Não autenticado");
 
   const { data: maxPos } = await supabase
@@ -37,12 +41,23 @@ export async function criarTarefa(input: FunilTarefaInput): Promise<FunilTarefa>
     .single();
   if (error) throw error;
   const tarefa = data as FunilTarefa;
-  dispararEventoModulo(MODULO_KEY, "tarefa.criada", { tarefa }, null).catch(() => {});
+  dispararEventoModulo(MODULO_KEY, "tarefa.criada", { tarefa }, null).catch(
+    () => {},
+  );
   return tarefa;
 }
 
-export async function atualizarTarefa(id: string, updates: Partial<FunilTarefaInput & { completed_at: string | null; posicao: number }>): Promise<FunilTarefa> {
-  const { data: before } = await supabase.from("funis_tarefas").select("completed_at").eq("id", id).single();
+export async function atualizarTarefa(
+  id: string,
+  updates: Partial<
+    FunilTarefaInput & { completed_at: string | null; posicao: number }
+  >,
+): Promise<FunilTarefa> {
+  const { data: before } = await supabase
+    .from("funis_tarefas")
+    .select("completed_at")
+    .eq("id", id)
+    .single();
   const { data, error } = await supabase
     .from("funis_tarefas")
     .update(updates)
@@ -52,13 +67,26 @@ export async function atualizarTarefa(id: string, updates: Partial<FunilTarefaIn
   if (error) throw error;
   const tarefa = data as FunilTarefa;
   if (!before?.completed_at && tarefa.completed_at) {
-    dispararEventoModulo(MODULO_KEY, "tarefa.concluida", { tarefa }, null).catch(() => {});
+    dispararEventoModulo(
+      MODULO_KEY,
+      "tarefa.concluida",
+      { tarefa },
+      null,
+    ).catch(() => {});
   }
   return tarefa;
 }
 
-export async function moverTarefa(tarefaId: string, novaColunaId: string, novaPosicao: number): Promise<FunilTarefa> {
-  const { data: before } = await supabase.from("funis_tarefas").select("coluna_id").eq("id", tarefaId).single();
+export async function moverTarefa(
+  tarefaId: string,
+  novaColunaId: string,
+  novaPosicao: number,
+): Promise<FunilTarefa> {
+  const { data: before } = await supabase
+    .from("funis_tarefas")
+    .select("coluna_id")
+    .eq("id", tarefaId)
+    .single();
   const { data, error } = await supabase
     .from("funis_tarefas")
     .update({ coluna_id: novaColunaId, posicao: novaPosicao })
@@ -68,24 +96,29 @@ export async function moverTarefa(tarefaId: string, novaColunaId: string, novaPo
   if (error) throw error;
   const tarefa = data as FunilTarefa;
   if (before?.coluna_id !== novaColunaId) {
-    dispararEventoModulo(MODULO_KEY, "tarefa.movida", { tarefa, colunaAnterior: before?.coluna_id }, null).catch(() => {});
+    dispararEventoModulo(
+      MODULO_KEY,
+      "tarefa.movida",
+      { tarefa, colunaAnterior: before?.coluna_id },
+      null,
+    ).catch(() => {});
   }
   return tarefa;
 }
 
-export async function reordenarTarefas(colunaId: string, tarefaIds: string[]): Promise<void> {
+export async function reordenarTarefas(
+  colunaId: string,
+  tarefaIds: string[],
+): Promise<void> {
   const updates = tarefaIds.map((id, idx) =>
-    supabase.from("funis_tarefas").update({ posicao: idx }).eq("id", id)
+    supabase.from("funis_tarefas").update({ posicao: idx }).eq("id", id),
   );
   const results = await Promise.all(updates);
-  const err = results.find(r => r.error);
+  const err = results.find((r) => r.error);
   if (err) throw err.error;
 }
 
 export async function deletarTarefa(id: string): Promise<void> {
-  const { error } = await supabase
-    .from("funis_tarefas")
-    .delete()
-    .eq("id", id);
+  const { error } = await supabase.from("funis_tarefas").delete().eq("id", id);
   if (error) throw error;
 }

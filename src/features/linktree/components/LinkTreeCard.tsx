@@ -1,5 +1,13 @@
-import type { LinktreeColaborador, LinktreeThemeConfig } from "~/features/linktree/types";
-import { decodeTelefone, formatPhoneDisplay, phoneDigits, maskNumberOnly } from "~/features/linktree/types";
+import type {
+  LinktreeColaborador,
+  LinktreeThemeConfig,
+} from "~/features/linktree/types";
+import {
+  decodeTelefone,
+  formatPhoneDisplay,
+  phoneDigits,
+  maskNumberOnly,
+} from "~/features/linktree/types";
 const defaultLogo = "/logos/logo-horizontal-branco.png";
 import {
   MessageCircle,
@@ -81,7 +89,8 @@ export function LinkTreeCard({ collaborator, theme }: Props) {
   const waDigits = phoneDigits(collaborator.whatsapp);
   const waLabel = formatPhoneDisplay(collaborator.whatsapp);
   const tel = decodeTelefone(collaborator.telefone_fixo);
-  const telDigits = tel.kind === "fixo" ? phoneDigits(collaborator.telefone_fixo) : tel.ramal;
+  const telDigits =
+    tel.kind === "fixo" ? phoneDigits(collaborator.telefone_fixo) : tel.ramal;
   const telLabel =
     tel.kind === "ramal"
       ? `Ramal ${maskNumberOnly(tel.ramal) || tel.ramal}`
@@ -90,11 +99,36 @@ export function LinkTreeCard({ collaborator, theme }: Props) {
   const logoSrc = inst.logoUrl || defaultLogo;
   const sc = inst.socialColors;
 
-  const socials: Array<{ key: "instagram" | "linkedin" | "facebook" | "youtube"; Icon: typeof Instagram; href: string; enabled: boolean }> = [
-    { key: "instagram", Icon: Instagram, href: inst.instagram, enabled: inst.instagramEnabled },
-    { key: "linkedin", Icon: Linkedin, href: inst.linkedin, enabled: inst.linkedinEnabled },
-    { key: "facebook", Icon: Facebook, href: inst.facebook, enabled: inst.facebookEnabled },
-    { key: "youtube", Icon: Youtube, href: inst.youtube, enabled: inst.youtubeEnabled },
+  const socials: Array<{
+    key: "instagram" | "linkedin" | "facebook" | "youtube";
+    Icon: typeof Instagram;
+    href: string;
+    enabled: boolean;
+  }> = [
+    {
+      key: "instagram",
+      Icon: Instagram,
+      href: inst.instagram,
+      enabled: inst.instagramEnabled,
+    },
+    {
+      key: "linkedin",
+      Icon: Linkedin,
+      href: inst.linkedin,
+      enabled: inst.linkedinEnabled,
+    },
+    {
+      key: "facebook",
+      Icon: Facebook,
+      href: inst.facebook,
+      enabled: inst.facebookEnabled,
+    },
+    {
+      key: "youtube",
+      Icon: Youtube,
+      href: inst.youtube,
+      enabled: inst.youtubeEnabled,
+    },
   ];
 
   return (
@@ -104,19 +138,21 @@ export function LinkTreeCard({ collaborator, theme }: Props) {
     >
       {theme.background.blobsEnabled && (
         <div className="pointer-events-none absolute inset-0 overflow-hidden">
-          {theme.background.blobs.filter((b) => b.enabled).map((b, i) => (
-            <div
-              key={i}
-              className="absolute rounded-full blur-3xl"
-              style={{
-                width: b.size,
-                height: b.size,
-                background: b.color,
-                opacity: b.opacity,
-                ...POSITION_STYLES[b.position],
-              }}
-            />
-          ))}
+          {theme.background.blobs
+            .filter((b) => b.enabled)
+            .map((b, i) => (
+              <div
+                key={i}
+                className="absolute rounded-full blur-3xl"
+                style={{
+                  width: b.size,
+                  height: b.size,
+                  background: b.color,
+                  opacity: b.opacity,
+                  ...POSITION_STYLES[b.position],
+                }}
+              />
+            ))}
         </div>
       )}
 
@@ -127,22 +163,34 @@ export function LinkTreeCard({ collaborator, theme }: Props) {
             style={{ borderColor: theme.icons.bgColor }}
           >
             {collaborator.foto_url ? (
-              <img src={collaborator.foto_url} alt={collaborator.nome} className="size-full object-cover" />
+              <img
+                src={collaborator.foto_url}
+                alt={collaborator.nome}
+                className="size-full object-cover"
+              />
             ) : (
-              <span className="text-3xl font-bold text-white/80">{collaborator.nome.charAt(0)}</span>
+              <span className="text-3xl font-bold text-white/80">
+                {collaborator.nome.charAt(0)}
+              </span>
             )}
           </div>
         </div>
 
         <h1
           className="mt-5 text-balance text-center text-[1.5rem] font-bold leading-tight"
-          style={{ fontFamily: theme.typography.nome.font, color: theme.typography.nome.color }}
+          style={{
+            fontFamily: theme.typography.nome.font,
+            color: theme.typography.nome.color,
+          }}
         >
           {collaborator.nome}
         </h1>
         <p
           className="mt-1 text-center text-sm"
-          style={{ fontFamily: theme.typography.cargo.font, color: theme.typography.cargo.color }}
+          style={{
+            fontFamily: theme.typography.cargo.font,
+            color: theme.typography.cargo.color,
+          }}
         >
           {collaborator.cargo}
         </p>
@@ -158,11 +206,18 @@ export function LinkTreeCard({ collaborator, theme }: Props) {
             />
           )}
           {collaborator.email && (
-            <CtaButton href={`mailto:${collaborator.email}`} Icon={Mail} label={collaborator.email} theme={theme} />
+            <CtaButton
+              href={`mailto:${collaborator.email}`}
+              Icon={Mail}
+              label={collaborator.email}
+              theme={theme}
+            />
           )}
           {telDigits && (
             <CtaButton
-              href={tel.kind === "ramal" ? `tel:${tel.ramal}` : `tel:${telDigits}`}
+              href={
+                tel.kind === "ramal" ? `tel:${tel.ramal}` : `tel:${telDigits}`
+              }
               Icon={Phone}
               label={telLabel}
               theme={theme}
@@ -170,7 +225,11 @@ export function LinkTreeCard({ collaborator, theme }: Props) {
           )}
           {inst.site && (
             <CtaButton
-              href={/^https?:\/\//i.test(inst.site) ? inst.site : `https://${inst.site}`}
+              href={
+                /^https?:\/\//i.test(inst.site)
+                  ? inst.site
+                  : `https://${inst.site}`
+              }
               Icon={Globe}
               label={inst.site}
               theme={theme}
@@ -190,9 +249,14 @@ export function LinkTreeCard({ collaborator, theme }: Props) {
             {(inst.nomeEmpresaEnabled || inst.enderecoEnabled) && (
               <div
                 className="text-xs leading-tight"
-                style={{ fontFamily: theme.typography.institucional.font, color: theme.typography.institucional.color }}
+                style={{
+                  fontFamily: theme.typography.institucional.font,
+                  color: theme.typography.institucional.color,
+                }}
               >
-                {inst.nomeEmpresaEnabled && <div className="font-semibold">{inst.nomeEmpresa}</div>}
+                {inst.nomeEmpresaEnabled && (
+                  <div className="font-semibold">{inst.nomeEmpresa}</div>
+                )}
                 {inst.enderecoEnabled && <div>{inst.endereco}</div>}
               </div>
             )}
@@ -207,7 +271,10 @@ export function LinkTreeCard({ collaborator, theme }: Props) {
                   rel="noreferrer"
                   aria-label={key}
                   className="grid place-items-center rounded-full bg-white/8 transition active:scale-95"
-                  style={{ width: inst.socialIconSize + 20, height: inst.socialIconSize + 20 }}
+                  style={{
+                    width: inst.socialIconSize + 20,
+                    height: inst.socialIconSize + 20,
+                  }}
                 >
                   <Icon size={inst.socialIconSize} color={sc[key]} />
                 </a>

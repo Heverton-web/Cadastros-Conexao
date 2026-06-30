@@ -68,14 +68,14 @@ export async function toggleCredencial(id: string, ativo: boolean) {
 }
 
 export async function deletarCredencial(id: string) {
-  const { error } = await supabase
-    .from("credenciais")
-    .delete()
-    .eq("id", id);
+  const { error } = await supabase.from("credenciais").delete().eq("id", id);
   if (error) throw error;
 }
 
-export async function atualizarCredencial(id: string, input: Partial<CredencialInput>) {
+export async function atualizarCredencial(
+  id: string,
+  input: Partial<CredencialInput>,
+) {
   const { data, error } = await supabase
     .from("credenciais")
     .update(input)

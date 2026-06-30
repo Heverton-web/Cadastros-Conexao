@@ -6,7 +6,10 @@ interface PermissionBadgeProps {
   label: string;
 }
 
-export function PermissionBadge({ permissionKey, label }: PermissionBadgeProps) {
+export function PermissionBadge({
+  permissionKey,
+  label,
+}: PermissionBadgeProps) {
   const { permissoes } = useAuth();
   const hasPermission = permissoes?.[permissionKey] === true;
 

@@ -58,12 +58,12 @@ Write:
 
 ## Status Orquestrador (caveman `ultra`)
 
-| Contexto | Antes | Depois |
-|----------|-------|--------|
-| Início Fase 2 | "FASE 2: Execute bubble-paginas skill (19 pages)" | "paginas: 19 → dispatch" |
-| Em andamento | "FASE 2: Execute bubble-tabelas skill (26 user_types) — in_progress" | "tabelas: 26 utypes → in_progress" |
-| Concluído | "FASE 2 completed — bubble-option-sets (20 option sets)" | "opt_sets: 20 → done" |
-| Erro | "ERROR: bubble-paginas failed on step 3 — invalid JSON path" | "paginas: FAIL — invalid JSON path" |
+| Contexto      | Antes                                                                | Depois                              |
+| ------------- | -------------------------------------------------------------------- | ----------------------------------- |
+| Início Fase 2 | "FASE 2: Execute bubble-paginas skill (19 pages)"                    | "paginas: 19 → dispatch"            |
+| Em andamento  | "FASE 2: Execute bubble-tabelas skill (26 user_types) — in_progress" | "tabelas: 26 utypes → in_progress"  |
+| Concluído     | "FASE 2 completed — bubble-option-sets (20 option sets)"             | "opt_sets: 20 → done"               |
+| Erro          | "ERROR: bubble-paginas failed on step 3 — invalid JSON path"         | "paginas: FAIL — invalid JSON path" |
 
 ---
 

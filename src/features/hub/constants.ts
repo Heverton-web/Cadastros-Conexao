@@ -14,7 +14,18 @@ export const HUB_MATERIAL_TYPES: { value: HubMaterialType; label: string }[] = [
   { value: "html", label: "HTML" },
 ];
 
-export const HUB_BADGE_ICONS = ["star", "book", "graduation", "rocket", "trophy", "diamond", "crown", "flame", "shield", "stars"] as const;
+export const HUB_BADGE_ICONS = [
+  "star",
+  "book",
+  "graduation",
+  "rocket",
+  "trophy",
+  "diamond",
+  "crown",
+  "flame",
+  "shield",
+  "stars",
+] as const;
 
 export const HUB_TRANSLATION_STATUS_LABELS = {
   draft: "Rascunho",

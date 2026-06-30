@@ -12,11 +12,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from "~/components/ui/select";
-import { DialogHeader, DialogTitle, DialogFooter } from "~/components/ui/dialog";
+import {
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "~/components/ui/dialog";
 import { Loader2 } from "lucide-react";
 import { useEmpresa } from "~/core/empresa/useEmpresa";
 import { listarPerguntas } from "../services/form.service";
-import { atualizarVisita, buscarVisitaPorCliente } from "../services/trajetos.service";
+import {
+  atualizarVisita,
+  buscarVisitaPorCliente,
+} from "../services/trajetos.service";
 import { atualizarStatusClienteRota } from "../services/rotas.service";
 import type { RotasFormPergunta, FormPerguntaTipo } from "../types";
 import toast from "react-hot-toast";
@@ -75,7 +82,8 @@ export function FormularioPosVisita({ rotaClienteId, onDone }: Props) {
         await atualizarVisita(visita.id, {
           data_fim: new Date().toISOString(),
           duracao_minutos: Math.round(
-            (new Date().getTime() - new Date(visita.data_inicio).getTime()) / 60000
+            (new Date().getTime() - new Date(visita.data_inicio).getTime()) /
+              60000,
           ),
           formulario: respostas,
         });
@@ -109,7 +117,9 @@ export function FormularioPosVisita({ rotaClienteId, onDone }: Props) {
         </DialogHeader>
         <div className="py-6 text-center text-muted-foreground">
           <p>Nenhuma pergunta configurada pelo administrador.</p>
-          <p className="text-sm mt-2">A visita será finalizada sem formulário.</p>
+          <p className="text-sm mt-2">
+            A visita será finalizada sem formulário.
+          </p>
         </div>
         <DialogFooter>
           <Button variant="ghost" onClick={onDone}>
@@ -135,7 +145,9 @@ export function FormularioPosVisita({ rotaClienteId, onDone }: Props) {
           <div key={pergunta.id} className="space-y-2">
             <Label>
               {pergunta.titulo}
-              {pergunta.obrigatorio && <span className="text-destructive ml-1">*</span>}
+              {pergunta.obrigatorio && (
+                <span className="text-destructive ml-1">*</span>
+              )}
             </Label>
             <PerguntaInput
               tipo={pergunta.tipo}
@@ -234,7 +246,9 @@ function PerguntaInput({
       return (
         <div className="space-y-2">
           {opcoes.map((opcao) => {
-            const selected = Array.isArray(valor) ? valor.includes(opcao) : false;
+            const selected = Array.isArray(valor)
+              ? valor.includes(opcao)
+              : false;
             return (
               <label
                 key={opcao}

@@ -1,4 +1,15 @@
-import { Building2, Database, Shield, Palette, Image, Webhook, Receipt, Settings, Bot, Paintbrush } from "lucide-react";
+import {
+  Building2,
+  Database,
+  Shield,
+  Palette,
+  Image,
+  Webhook,
+  Receipt,
+  Settings,
+  Bot,
+  Paintbrush,
+} from "lucide-react";
 import { registerModule, registerNavItem } from "~/registry";
 import type { ModuleDefinition } from "~/registry";
 
@@ -29,11 +40,31 @@ export const empresasModule: ModuleDefinition = {
   permissions: [],
   ambientes: [],
   abas: [
-    { key: "empresa-banco", label: "Banco de Dados", descricao: "Acesso às configurações de banco de dados da empresa" },
-    { key: "empresa-dados", label: "Dados da Empresa", descricao: "Acesso ao perfil e informações principais da empresa" },
-    { key: "empresa-permissoes", label: "Permissões", descricao: "Gerenciamento de credenciais e permissões" },
-    { key: "empresa-design", label: "Design", descricao: "Configuração do tema visual (Cores, Fontes)" },
-    { key: "empresa-branding", label: "Branding", descricao: "Configuração de marca (Logo, Favicon)" }
+    {
+      key: "empresa-banco",
+      label: "Banco de Dados",
+      descricao: "Acesso às configurações de banco de dados da empresa",
+    },
+    {
+      key: "empresa-dados",
+      label: "Dados da Empresa",
+      descricao: "Acesso ao perfil e informações principais da empresa",
+    },
+    {
+      key: "empresa-permissoes",
+      label: "Permissões",
+      descricao: "Gerenciamento de credenciais e permissões",
+    },
+    {
+      key: "empresa-design",
+      label: "Design",
+      descricao: "Configuração do tema visual (Cores, Fontes)",
+    },
+    {
+      key: "empresa-branding",
+      label: "Branding",
+      descricao: "Configuração de marca (Logo, Favicon)",
+    },
   ],
   events: [],
   hasDesignConfig: true,

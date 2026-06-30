@@ -13,7 +13,12 @@ export type TipoInput =
   | "documento";
 
 export type TipoPessoa = "PF" | "PJ" | "ambos";
-export type Etapa = "dados" | "endereco_empresa" | "endereco_entrega" | "endereco_cobranca" | "documentos";
+export type Etapa =
+  | "dados"
+  | "endereco_empresa"
+  | "endereco_entrega"
+  | "endereco_cobranca"
+  | "documentos";
 
 export type CampoSchema = {
   id: string;
@@ -34,7 +39,7 @@ export type NovoCampo = Omit<CampoSchema, "id" | "is_custom">;
 export async function carregarSchema(
   tipo_pessoa: "PF" | "PJ",
   etapa: Etapa,
-  empresaId?: string | null
+  empresaId?: string | null,
 ): Promise<CampoSchema[]> {
   let query = supabase
     .from("form_schema")
@@ -58,13 +63,15 @@ export async function carregarSchema(
   return (data as CampoSchema[]) ?? [];
 }
 
-export async function listarTodosCampos(
-  filtros?: { etapa?: Etapa; tipo_pessoa?: TipoPessoa }
-): Promise<CampoSchema[]> {
+export async function listarTodosCampos(filtros?: {
+  etapa?: Etapa;
+  tipo_pessoa?: TipoPessoa;
+}): Promise<CampoSchema[]> {
   let q = supabase.from("form_schema").select("*");
 
   if (filtros?.etapa) q = q.eq("etapa", filtros.etapa);
-  if (filtros?.tipo_pessoa) q = q.in("tipo_pessoa", [filtros.tipo_pessoa, "ambos"]);
+  if (filtros?.tipo_pessoa)
+    q = q.in("tipo_pessoa", [filtros.tipo_pessoa, "ambos"]);
 
   q = q.order("etapa").order("ordem", { ascending: true });
 
@@ -77,7 +84,7 @@ export async function listarTodosCampos(
 }
 
 export async function salvarCampo(
-  campo: Partial<CampoSchema> & { id?: string }
+  campo: Partial<CampoSchema> & { id?: string },
 ): Promise<CampoSchema | null> {
   if (campo.id) {
     const { data, error } = await supabase
@@ -86,7 +93,10 @@ export async function salvarCampo(
       .eq("id", campo.id)
       .select()
       .single();
-    if (error) { console.error("[form-schema] salvarCampo update:", error); return null; }
+    if (error) {
+      console.error("[form-schema] salvarCampo update:", error);
+      return null;
+    }
     return data as CampoSchema;
   } else {
     const { data, error } = await supabase
@@ -94,7 +104,10 @@ export async function salvarCampo(
       .insert({ ...campo, is_custom: true })
       .select()
       .single();
-    if (error) { console.error("[form-schema] salvarCampo insert:", error); return null; }
+    if (error) {
+      console.error("[form-schema] salvarCampo insert:", error);
+      return null;
+    }
     return data as CampoSchema;
   }
 }
@@ -105,26 +118,32 @@ export async function excluirCampo(id: string): Promise<boolean> {
     .delete()
     .eq("id", id)
     .eq("is_custom", true);
-  if (error) { console.error("[form-schema] excluirCampo:", error); return false; }
+  if (error) {
+    console.error("[form-schema] excluirCampo:", error);
+    return false;
+  }
   return true;
 }
 
 export async function reordenarCampos(
-  atualizacoes: { id: string; ordem: number }[]
+  atualizacoes: { id: string; ordem: number }[],
 ): Promise<void> {
   await Promise.all(
     atualizacoes.map(({ id, ordem }) =>
-      supabase.from("form_schema").update({ ordem }).eq("id", id)
-    )
+      supabase.from("form_schema").update({ ordem }).eq("id", id),
+    ),
   );
 }
 
 export async function toggleCampo(
   id: string,
   campo: "visivel" | "obrigatorio",
-  valor: boolean
+  valor: boolean,
 ): Promise<void> {
-  await supabase.from("form_schema").update({ [campo]: valor }).eq("id", id);
+  await supabase
+    .from("form_schema")
+    .update({ [campo]: valor })
+    .eq("id", id);
 }
 
 export async function editarLabel(id: string, label: string): Promise<void> {

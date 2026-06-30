@@ -16,7 +16,11 @@ export function loadImage(src: string): Promise<HTMLImageElement> {
   });
 }
 
-export async function compressImage(file: File, size = 480, quality = 0.82): Promise<string> {
+export async function compressImage(
+  file: File,
+  size = 480,
+  quality = 0.82,
+): Promise<string> {
   const dataUrl = await readAsDataURL(file);
   const img = await loadImage(dataUrl);
   const canvas = document.createElement("canvas");
@@ -31,7 +35,10 @@ export async function compressImage(file: File, size = 480, quality = 0.82): Pro
   return canvas.toDataURL("image/jpeg", quality);
 }
 
-export async function compressImageContain(file: File, maxDim = 512): Promise<string> {
+export async function compressImageContain(
+  file: File,
+  maxDim = 512,
+): Promise<string> {
   const dataUrl = await readAsDataURL(file);
   const img = await loadImage(dataUrl);
   const ratio = Math.min(1, maxDim / Math.max(img.width, img.height));

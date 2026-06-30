@@ -37,7 +37,7 @@ const mock = {
   eq: () => mock,
   single: () => mock,
   then: (resolve) => resolve({ data: [], error: null }),
-}
+};
 ```
 
 ## DIAGRAMA: Fluxo de Testes

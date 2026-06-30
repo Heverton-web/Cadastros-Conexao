@@ -1,7 +1,9 @@
 import { supabase } from "~/core/supabase";
 import type { MetaCampanha, MetaCampanhaInsight } from "../types";
 
-export async function listarCampanhas(empresaId: string): Promise<MetaCampanha[]> {
+export async function listarCampanhas(
+  empresaId: string,
+): Promise<MetaCampanha[]> {
   const { data } = await supabase
     .from("mktg_meta_campanhas")
     .select("*")
@@ -11,7 +13,9 @@ export async function listarCampanhas(empresaId: string): Promise<MetaCampanha[]
   return (data as MetaCampanha[]) ?? [];
 }
 
-export async function buscarInsights(campanhaId: string): Promise<MetaCampanhaInsight | null> {
+export async function buscarInsights(
+  campanhaId: string,
+): Promise<MetaCampanhaInsight | null> {
   const { data } = await supabase
     .from("mktg_meta_insights")
     .select("*")

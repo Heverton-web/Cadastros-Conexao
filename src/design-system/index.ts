@@ -4,7 +4,10 @@ export * from "./tokens";
 // Provider
 export { DesignSystemProvider } from "./provider/DesignSystemProvider";
 export { ModuleDesignProvider } from "./provider/ModuleDesignProvider";
-export { DesignSystemContext, ModuleDesignContext } from "./provider/DesignSystemContext";
+export {
+  DesignSystemContext,
+  ModuleDesignContext,
+} from "./provider/DesignSystemContext";
 
 // Hooks
 export * from "./hooks";

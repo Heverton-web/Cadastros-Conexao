@@ -1,7 +1,9 @@
 import { supabase } from "~/core/supabase";
 import type { NpsWebhookConfig } from "../types";
 
-export async function listarWebhooks(empresaId: string): Promise<NpsWebhookConfig[]> {
+export async function listarWebhooks(
+  empresaId: string,
+): Promise<NpsWebhookConfig[]> {
   const { data, error } = await supabase
     .from("nps_webhook_config")
     .select("*")
@@ -12,7 +14,12 @@ export async function listarWebhooks(empresaId: string): Promise<NpsWebhookConfi
   return (data as NpsWebhookConfig[]) || [];
 }
 
-export async function salvarWebhook(empresaId: string, url: string, active: boolean, existingId?: string): Promise<NpsWebhookConfig> {
+export async function salvarWebhook(
+  empresaId: string,
+  url: string,
+  active: boolean,
+  existingId?: string,
+): Promise<NpsWebhookConfig> {
   if (existingId) {
     const { data, error } = await supabase
       .from("nps_webhook_config")
@@ -44,12 +51,18 @@ export async function excluirWebhook(id: string): Promise<void> {
   if (error) throw error;
 }
 
-export async function dispararWebhook(url: string, payload: Record<string, any>): Promise<void> {
+export async function dispararWebhook(
+  url: string,
+  payload: Record<string, any>,
+): Promise<void> {
   try {
     await fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...payload, created_at: new Date().toISOString() }),
+      body: JSON.stringify({
+        ...payload,
+        created_at: new Date().toISOString(),
+      }),
       mode: "no-cors",
     });
   } catch (err) {

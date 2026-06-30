@@ -1,6 +1,12 @@
 import { ExternalLink, Image as ImageIcon } from "lucide-react";
 
-export function ComprovanteViewer({ url, tipo }: { url: string; tipo: string }) {
+export function ComprovanteViewer({
+  url,
+  tipo,
+}: {
+  url: string;
+  tipo: string;
+}) {
   if (!url) {
     return (
       <div className="flex items-center gap-2 text-text-muted text-sm">
@@ -14,7 +20,12 @@ export function ComprovanteViewer({ url, tipo }: { url: string; tipo: string }) 
 
   if (isImage) {
     return (
-      <a href={url} target="_blank" rel="noopener noreferrer" className="block group">
+      <a
+        href={url}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="block group"
+      >
         <img
           src={url}
           alt="Comprovante"

@@ -1,4 +1,9 @@
-export { type Permissoes, type Ambiente, type ModulosAcesso, type ModuloAcesso } from "./types";
+export {
+  type Permissoes,
+  type Ambiente,
+  type ModulosAcesso,
+  type ModuloAcesso,
+} from "./types";
 export {
   type PermGroup,
   registerCorePermissions,
@@ -21,7 +26,8 @@ import { getPermGroups, getPermLabel, getPermDesc } from "./constants";
 
 export const PERMISSOES_GROUPS = new Proxy([] as any[], {
   get(_, prop) {
-    if (prop === Symbol.iterator) return getPermGroups()[Symbol.iterator].bind(getPermGroups());
+    if (prop === Symbol.iterator)
+      return getPermGroups()[Symbol.iterator].bind(getPermGroups());
     const target = getPermGroups();
     return (target as any)[prop];
   },
@@ -41,7 +47,10 @@ export const PERMISSOES_DESC = new Proxy({} as Record<string, string>, {
 
 export const ALL_PERMISSIONS = new Proxy([] as any[], {
   get(_, prop) {
-    if (prop === Symbol.iterator) return getAllPermissionDefs()[Symbol.iterator].bind(getAllPermissionDefs());
+    if (prop === Symbol.iterator)
+      return getAllPermissionDefs()[Symbol.iterator].bind(
+        getAllPermissionDefs(),
+      );
     const target = getAllPermissionDefs();
     return (target as any)[prop];
   },

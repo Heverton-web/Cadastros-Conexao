@@ -113,11 +113,34 @@ export const darkGoldPreset: DesignTokens = {
   },
 
   components: {
-    button: { paddingX: "1rem", paddingY: "0.5rem", fontSize: "0.875rem", borderRadius: "0.5rem" },
-    input: { paddingX: "0.75rem", paddingY: "0.5rem", fontSize: "0.875rem", borderRadius: "0.5rem" },
-    card: { padding: "1.5rem", borderRadius: "0.75rem", shadow: "0 4px 6px -1px rgba(0,0,0,0.3)" },
-    modal: { backdropBg: "rgba(0,0,0,0.5)", borderRadius: "0.75rem", shadow: "0 20px 25px -5px rgba(0,0,0,0.5)" },
+    button: {
+      paddingX: "1rem",
+      paddingY: "0.5rem",
+      fontSize: "0.875rem",
+      borderRadius: "0.5rem",
+    },
+    input: {
+      paddingX: "0.75rem",
+      paddingY: "0.5rem",
+      fontSize: "0.875rem",
+      borderRadius: "0.5rem",
+    },
+    card: {
+      padding: "1.5rem",
+      borderRadius: "0.75rem",
+      shadow: "0 4px 6px -1px rgba(0,0,0,0.3)",
+    },
+    modal: {
+      backdropBg: "rgba(0,0,0,0.5)",
+      borderRadius: "0.75rem",
+      shadow: "0 20px 25px -5px rgba(0,0,0,0.5)",
+    },
     sidebar: { width: "16rem", collapsedWidth: "3.5rem" },
-    badge: { paddingX: "0.5rem", paddingY: "0.125rem", fontSize: "0.75rem", borderRadius: "9999px" },
+    badge: {
+      paddingX: "0.5rem",
+      paddingY: "0.125rem",
+      fontSize: "0.75rem",
+      borderRadius: "9999px",
+    },
   },
 };

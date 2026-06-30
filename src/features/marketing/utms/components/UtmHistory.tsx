@@ -57,8 +57,12 @@ export function UtmHistory() {
   }, [user?.empresa_id]);
 
   const filtradas = utms.filter((utm) => {
-    const matchSource = filtroSource === "all" || utm.utm_source === filtroSource;
-    const matchBusca = !busca || utm.nome.toLowerCase().includes(busca.toLowerCase()) || utm.url_base.toLowerCase().includes(busca.toLowerCase());
+    const matchSource =
+      filtroSource === "all" || utm.utm_source === filtroSource;
+    const matchBusca =
+      !busca ||
+      utm.nome.toLowerCase().includes(busca.toLowerCase()) ||
+      utm.url_base.toLowerCase().includes(busca.toLowerCase());
     return matchSource && matchBusca;
   });
 
@@ -100,7 +104,10 @@ export function UtmHistory() {
   if (utms.length === 0) {
     return (
       <>
-        <PageHeader title="Histórico de UTMs" description="URLs com parâmetros UTM geradas anteriormente" />
+        <PageHeader
+          title="Histórico de UTMs"
+          description="URLs com parâmetros UTM geradas anteriormente"
+        />
         <EmptyState
           icon={<Link className="w-8 h-8 text-text-muted" />}
           title="Nenhuma UTM salva"
@@ -112,18 +119,26 @@ export function UtmHistory() {
 
   return (
     <div className="space-y-6">
-      <PageHeader title="Histórico de UTMs" description="URLs com parâmetros UTM geradas anteriormente" />
+      <PageHeader
+        title="Histórico de UTMs"
+        description="URLs com parâmetros UTM geradas anteriormente"
+      />
 
       <div className="flex flex-col sm:flex-row gap-3">
         <div className="flex items-center gap-2 flex-1">
           <Filter className="w-4 h-4 text-text-muted shrink-0" />
-          <Select value={filtroSource} onValueChange={(v) => setFiltroSource(v as UtmSource | "all")}>
+          <Select
+            value={filtroSource}
+            onValueChange={(v) => setFiltroSource(v as UtmSource | "all")}
+          >
             <SelectTrigger className="w-40">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
               {UTM_SOURCES.map((s) => (
-                <SelectItem key={s.value} value={s.value}>{s.label}</SelectItem>
+                <SelectItem key={s.value} value={s.value}>
+                  {s.label}
+                </SelectItem>
               ))}
             </SelectContent>
           </Select>
@@ -142,8 +157,12 @@ export function UtmHistory() {
             <CardContent className="p-4">
               <div className="flex items-start justify-between gap-4">
                 <div className="flex-1 min-w-0 space-y-1">
-                  <p className="font-semibold text-text-main truncate">{utm.nome}</p>
-                  <p className="text-xs text-text-muted truncate">{utm.url_base}</p>
+                  <p className="font-semibold text-text-main truncate">
+                    {utm.nome}
+                  </p>
+                  <p className="text-xs text-text-muted truncate">
+                    {utm.url_base}
+                  </p>
                   <div className="flex items-center gap-3 text-xs mt-1">
                     <span className="inline-flex items-center gap-1 bg-surface border border-border rounded-md px-2 py-0.5">
                       source: {utm.utm_source}
@@ -158,7 +177,9 @@ export function UtmHistory() {
                       {new Date(utm.created_at).toLocaleDateString("pt-BR")}
                     </span>
                   </div>
-                  <p className="text-xs font-mono text-text-muted truncate mt-1">{utm.url_final}</p>
+                  <p className="text-xs font-mono text-text-muted truncate mt-1">
+                    {utm.url_final}
+                  </p>
                 </div>
                 <div className="flex items-center gap-1 shrink-0">
                   <Button
@@ -166,7 +187,11 @@ export function UtmHistory() {
                     size="xs"
                     onClick={() => handleCopiar(utm.url_final, utm.id)}
                   >
-                    {copiadoId === utm.id ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+                    {copiadoId === utm.id ? (
+                      <Check className="w-3.5 h-3.5" />
+                    ) : (
+                      <Copy className="w-3.5 h-3.5" />
+                    )}
                   </Button>
                   <button
                     onClick={() => setItemParaDeletar(utm)}
@@ -188,17 +213,24 @@ export function UtmHistory() {
         />
       )}
 
-      <AlertDialog open={!!itemParaDeletar} onOpenChange={(o) => !o && setItemParaDeletar(null)}>
+      <AlertDialog
+        open={!!itemParaDeletar}
+        onOpenChange={(o) => !o && setItemParaDeletar(null)}
+      >
         <AlertDialogContent className="bg-card border-border">
           <AlertDialogHeader>
             <AlertDialogTitle>Excluir UTM?</AlertDialogTitle>
             <AlertDialogDescription>
-              Esta ação não pode ser desfeita. A UTM "{itemParaDeletar?.nome}" será removida permanentemente.
+              Esta ação não pode ser desfeita. A UTM "{itemParaDeletar?.nome}"
+              será removida permanentemente.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancelar</AlertDialogCancel>
-            <AlertDialogAction onClick={handleConfirmDelete} className="bg-destructive">
+            <AlertDialogAction
+              onClick={handleConfirmDelete}
+              className="bg-destructive"
+            >
               Excluir
             </AlertDialogAction>
           </AlertDialogFooter>

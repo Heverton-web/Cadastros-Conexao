@@ -17,7 +17,9 @@ function AdminSuperModulos() {
   if (!profile?.is_super_admin) {
     return (
       <div className="flex items-center justify-center p-8">
-        <p className="text-text-muted text-sm">Acesso restrito ao Super Admin.</p>
+        <p className="text-text-muted text-sm">
+          Acesso restrito ao Super Admin.
+        </p>
       </div>
     );
   }
@@ -27,7 +29,9 @@ function AdminSuperModulos() {
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-lg font-bold text-text-main">Módulos</h1>
-          <p className="text-xs text-text-muted">Módulos registrados no sistema</p>
+          <p className="text-xs text-text-muted">
+            Módulos registrados no sistema
+          </p>
         </div>
       </div>
 
@@ -46,20 +50,31 @@ function AdminSuperModulos() {
                   <Icon size={20} />
                 </div>
                 <div>
-                  <span className="text-sm font-medium text-text-main">{mod.nome}</span>
-                  <span className="text-xs text-text-muted block">{mod.descricao}</span>
+                  <span className="text-sm font-medium text-text-main">
+                    {mod.nome}
+                  </span>
+                  <span className="text-xs text-text-muted block">
+                    {mod.descricao}
+                  </span>
                 </div>
               </div>
               <div className="flex items-center gap-3">
-                <span className="text-xs text-text-muted">{mod.ambientes.length} ambientes · {mod.abas.length} abas</span>
-                <ChevronRight size={16} className="text-text-muted group-hover:text-accent transition-colors" />
+                <span className="text-xs text-text-muted">
+                  {mod.ambientes.length} ambientes · {mod.abas.length} abas
+                </span>
+                <ChevronRight
+                  size={16}
+                  className="text-text-muted group-hover:text-accent transition-colors"
+                />
               </div>
             </Link>
           );
         })}
 
         {modulos.length === 0 && (
-          <p className="text-center text-sm text-text-muted py-8">Nenhum módulo registrado.</p>
+          <p className="text-center text-sm text-text-muted py-8">
+            Nenhum módulo registrado.
+          </p>
         )}
       </div>
     </div>

@@ -1,13 +1,40 @@
 import { createRoute } from "@tanstack/react-router";
 import { authLayout } from "./_auth";
 import { useAuth } from "~/lib/auth";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef } from "react";
 import {
-  Shield, Play, RotateCcw, CheckCircle2, XCircle, Loader2,
-  ChevronDown, ChevronRight, FileText, AlertCircle,
-  Puzzle, Cable,
+  Shield,
+  Play,
+  RotateCcw,
+  CheckCircle2,
+  XCircle,
+  Loader2,
+  ChevronDown,
+  ChevronRight,
+  FileText,
+  AlertCircle,
+  Puzzle,
+  Cable,
+  Component,
+  Accessibility,
+  Network,
+  Pause,
+  Square,
+  Terminal,
+  X,
 } from "lucide-react";
-import { TEST_CATEGORIES, type TestCategory, type TestResult } from "~/lib/test-runner";
+import {
+  TEST_CATEGORIES,
+  type TestCategory,
+  type TestResult,
+} from "~/lib/test-runner";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "~/components/ui/dialog";
 
 export const adminSuperTestesRoute = createRoute({
   getParentRoute: () => authLayout,
@@ -16,8 +43,9 @@ export const adminSuperTestesRoute = createRoute({
 });
 
 type CategoryStatus = {
-  status: "idle" | "running" | "done";
+  status: "idle" | "running" | "paused" | "done";
   result: TestResult | null;
+  rawOutput: string;
 };
 
 function AdminSuperTestes() {
@@ -28,7 +56,9 @@ function AdminSuperTestes() {
       <div className="flex min-h-dvh items-center justify-center bg-background p-8">
         <div className="text-center">
           <Shield size={48} className="mx-auto mb-4 text-muted-foreground" />
-          <h2 className="text-xl font-semibold text-foreground">Acesso restrito</h2>
+          <h2 className="text-xl font-semibold text-foreground">
+            Acesso restrito
+          </h2>
           <p className="text-muted-foreground mt-2">
             Apenas Super Administradores podem acessar esta página.
           </p>
@@ -48,29 +78,52 @@ function TestRunnerPage() {
     Record<string, boolean>
   >({});
   const [globalRunning, setGlobalRunning] = useState(false);
+  const [logsModal, setLogsModal] = useState<{
+    open: boolean;
+    category: TestCategory | null;
+  }>({
+    open: false,
+    category: null,
+  });
+  const abortRef = useRef<AbortController | null>(null);
+  const pausedRef = useRef(false);
 
   const setCatState = useCallback(
     (id: string, state: Partial<CategoryStatus>) => {
       setCategoryStates((prev) => ({
         ...prev,
-        [id]: { ...prev[id], status: prev[id]?.status || "idle", result: prev[id]?.result || null, ...state },
+        [id]: {
+          status: prev[id]?.status || "idle",
+          result: prev[id]?.result || null,
+          rawOutput: prev[id]?.rawOutput || "",
+          ...state,
+        },
       }));
     },
     [],
   );
 
-  async function runCategory(category: TestCategory) {
+  async function runCategory(category: TestCategory, signal?: AbortSignal) {
     setCatState(category.id, { status: "running" });
     try {
       const res = await fetch("/api/testes", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ testFiles: category.testFiles }),
+        signal,
       });
       const raw = await res.json();
       const parsed = parseVitestOutput(raw.output);
-      setCatState(category.id, { status: "done", result: parsed });
+      setCatState(category.id, {
+        status: "done",
+        result: parsed,
+        rawOutput: raw.output,
+      });
     } catch (err: any) {
+      if (err.name === "AbortError") {
+        setCatState(category.id, { status: "paused" });
+        return;
+      }
       setCatState(category.id, {
         status: "done",
         result: {
@@ -81,15 +134,29 @@ function TestRunnerPage() {
           testResults: [],
           output: `Erro: ${err.message}`,
         },
+        rawOutput: `Erro: ${err.message}`,
       });
     }
   }
 
   async function runAll() {
     setGlobalRunning(true);
+    pausedRef.current = false;
+    const controller = new AbortController();
+    abortRef.current = controller;
+
     for (const cat of TEST_CATEGORIES) {
-      await runCategory(cat);
+      if (pausedRef.current) break;
+      await runCategory(cat, controller.signal);
     }
+
+    setGlobalRunning(false);
+    abortRef.current = null;
+  }
+
+  function pauseAll() {
+    pausedRef.current = true;
+    abortRef.current?.abort();
     setGlobalRunning(false);
   }
 
@@ -98,16 +165,35 @@ function TestRunnerPage() {
     setExpandedResults({});
   }
 
+  function openLogs(category: TestCategory) {
+    setLogsModal({ open: true, category });
+  }
+
+  const currentState = logsModal.category
+    ? categoryStates[logsModal.category.id]
+    : null;
+
   return (
     <div className="min-h-dvh bg-background p-6">
-      <PageHeader onRunAll={runAll} onClear={clearResults} globalRunning={globalRunning} />
+      <PageHeader
+        onRunAll={runAll}
+        onPause={pauseAll}
+        onClear={clearResults}
+        globalRunning={globalRunning}
+      />
 
       <div className="mt-6 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {TEST_CATEGORIES.map((cat) => (
           <CategoryCard
             key={cat.id}
             category={cat}
-            state={categoryStates[cat.id] || { status: "idle", result: null }}
+            state={
+              categoryStates[cat.id] || {
+                status: "idle",
+                result: null,
+                rawOutput: "",
+              }
+            }
             onRun={() => runCategory(cat)}
             expanded={!!expandedResults[cat.id]}
             onToggleExpand={() =>
@@ -116,26 +202,39 @@ function TestRunnerPage() {
                 [cat.id]: !prev[cat.id],
               }))
             }
+            onViewLogs={() => openLogs(cat)}
           />
         ))}
       </div>
+
+      <LogsModal
+        open={logsModal.open}
+        onClose={() => setLogsModal({ open: false, category: null })}
+        category={logsModal.category}
+        rawOutput={currentState?.rawOutput || ""}
+        result={currentState?.result || null}
+      />
     </div>
   );
 }
 
 function PageHeader({
   onRunAll,
+  onPause,
   onClear,
   globalRunning,
 }: {
   onRunAll: () => void;
+  onPause: () => void;
   onClear: () => void;
   globalRunning: boolean;
 }) {
   return (
     <div className="flex flex-wrap items-center justify-between gap-4">
       <div>
-        <h1 className="text-2xl font-bold text-foreground">Central de Testes</h1>
+        <h1 className="text-2xl font-bold text-foreground">
+          Central de Testes
+        </h1>
         <p className="text-muted-foreground mt-1 text-sm">
           Testes unitários e de integração do ERP Conexão
         </p>
@@ -148,18 +247,23 @@ function PageHeader({
           <RotateCcw size={16} />
           Limpar
         </button>
-        <button
-          onClick={onRunAll}
-          disabled={globalRunning}
-          className="flex cursor-pointer items-center gap-2 rounded-lg bg-accent px-4 py-2 text-sm font-medium text-accent-foreground transition-colors hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
-        >
-          {globalRunning ? (
-            <Loader2 size={16} className="animate-spin" />
-          ) : (
+        {globalRunning ? (
+          <button
+            onClick={onPause}
+            className="flex cursor-pointer items-center gap-2 rounded-lg border border-yellow-500/50 bg-yellow-500/10 px-4 py-2 text-sm font-medium text-yellow-600 transition-colors hover:bg-yellow-500/20"
+          >
+            <Pause size={16} />
+            Pausar
+          </button>
+        ) : (
+          <button
+            onClick={onRunAll}
+            className="flex cursor-pointer items-center gap-2 rounded-lg bg-accent px-4 py-2 text-sm font-medium text-accent-foreground transition-colors hover:opacity-90"
+          >
             <Play size={16} />
-          )}
-          Executar Todos
-        </button>
+            Executar Todos
+          </button>
+        )}
       </div>
     </div>
   );
@@ -171,12 +275,14 @@ function CategoryCard({
   onRun,
   expanded,
   onToggleExpand,
+  onViewLogs,
 }: {
   category: TestCategory;
   state: CategoryStatus;
   onRun: () => void;
   expanded: boolean;
   onToggleExpand: () => void;
+  onViewLogs: () => void;
 }) {
   const Icon = getIcon(category.icon);
   const result = state.result;
@@ -212,20 +318,38 @@ function CategoryCard({
           ) : (
             <Play size={13} />
           )}
-          {state.status === "running" ? "Executando..." : "Executar"}
+          {state.status === "running"
+            ? "Executando..."
+            : state.status === "paused"
+              ? "Pausado"
+              : "Executar"}
         </button>
 
         {result && (
           <>
             <span className="ml-auto text-xs text-muted-foreground">
-              <span className="font-medium text-green-600">{result.numPassedTests}</span>/
-              {result.numTotalTests} passaram
+              <span className="font-medium text-green-600">
+                {result.numPassedTests}
+              </span>
+              /{result.numTotalTests} passaram
             </span>
+            <button
+              onClick={onViewLogs}
+              className="ml-1 flex cursor-pointer items-center gap-1 text-xs text-muted-foreground hover:text-foreground"
+              title="Ver logs"
+            >
+              <Terminal size={13} />
+              Logs
+            </button>
             <button
               onClick={onToggleExpand}
               className="ml-1 flex cursor-pointer items-center text-xs text-muted-foreground hover:text-foreground"
             >
-              {expanded ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
+              {expanded ? (
+                <ChevronDown size={14} />
+              ) : (
+                <ChevronRight size={14} />
+              )}
               Detalhes
             </button>
           </>
@@ -251,11 +375,7 @@ function CategoryCard({
   );
 }
 
-function FileResult({
-  result,
-}: {
-  result: TestResult["testResults"][0];
-}) {
+function FileResult({ result }: { result: TestResult["testResults"][0] }) {
   const fileName = result.name.split("/").pop() || result.name;
   return (
     <li className="rounded-lg bg-muted/50 p-3">
@@ -300,6 +420,14 @@ function StatusBadge({
       </span>
     );
   }
+  if (state === "paused") {
+    return (
+      <span className="flex items-center gap-1 rounded-full bg-yellow-100 px-2.5 py-0.5 text-xs font-medium text-yellow-700">
+        <Pause size={12} />
+        Pausado
+      </span>
+    );
+  }
   if (state === "done" && result) {
     if (result.success) {
       return (
@@ -319,9 +447,98 @@ function StatusBadge({
   return null;
 }
 
+function LogsModal({
+  open,
+  onClose,
+  category,
+  rawOutput,
+  result,
+}: {
+  open: boolean;
+  onClose: () => void;
+  category: TestCategory | null;
+  rawOutput: string;
+  result: TestResult | null;
+}) {
+  if (!category) return null;
+
+  return (
+    <Dialog open={open} onOpenChange={(o) => !o && onClose()}>
+      <DialogContent className="max-w-4xl max-h-[85vh] flex flex-col bg-card border-border">
+        <DialogHeader>
+          <DialogTitle className="flex items-center gap-2">
+            <Terminal size={18} />
+            Logs — {category.label}
+          </DialogTitle>
+          <DialogDescription>
+            Saída completa dos testes executados
+          </DialogDescription>
+        </DialogHeader>
+
+        {result && (
+          <div className="flex flex-wrap gap-4 text-sm">
+            <div className="flex items-center gap-1.5">
+              <CheckCircle2 size={14} className="text-green-600" />
+              <span className="text-muted-foreground">Passaram:</span>
+              <span className="font-medium text-foreground">
+                {result.numPassedTests}
+              </span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <XCircle size={14} className="text-red-600" />
+              <span className="text-muted-foreground">Falharam:</span>
+              <span className="font-medium text-foreground">
+                {result.numFailedTests}
+              </span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <FileText size={14} className="text-muted-foreground" />
+              <span className="text-muted-foreground">Total:</span>
+              <span className="font-medium text-foreground">
+                {result.numTotalTests}
+              </span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              {result.success ? (
+                <CheckCircle2 size={14} className="text-green-600" />
+              ) : (
+                <XCircle size={14} className="text-red-600" />
+              )}
+              <span className="font-medium text-foreground">
+                {result.success ? "Sucesso" : "Falhou"}
+              </span>
+            </div>
+          </div>
+        )}
+
+        <div className="flex-1 overflow-hidden rounded-lg border border-border bg-muted">
+          <pre className="h-full max-h-[60vh] overflow-auto p-4 text-xs text-foreground font-mono whitespace-pre-wrap break-words">
+            {rawOutput || "Nenhum log disponível. Execute os testes primeiro."}
+          </pre>
+        </div>
+
+        <div className="flex justify-end">
+          <button
+            onClick={onClose}
+            className="flex cursor-pointer items-center gap-2 rounded-lg border border-border bg-card px-4 py-2 text-sm text-muted-foreground transition-colors hover:bg-accent"
+          >
+            <X size={14} />
+            Fechar
+          </button>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
 function getIcon(name: string) {
   const icons: Record<string, React.ComponentType<any>> = {
-    Shield, Puzzle, Cable,
+    Shield,
+    Puzzle,
+    Cable,
+    Component,
+    Accessibility,
+    Network,
   };
   return icons[name] || Shield;
 }
@@ -338,10 +555,11 @@ function parseVitestOutput(raw: string): TestResult {
         name: suite.name,
         status: suite.status === "passed" ? "passed" : "failed",
         duration: suite.duration || 0,
-        failureMessage: suite.assertionResults
-          ?.filter((a: any) => a.status === "failed")
-          .map((a: any) => a.failureMessages?.[0] || a.fullName || a.title)
-          .filter(Boolean) || [],
+        failureMessage:
+          suite.assertionResults
+            ?.filter((a: any) => a.status === "failed")
+            .map((a: any) => a.failureMessages?.[0] || a.fullName || a.title)
+            .filter(Boolean) || [],
       })),
       output: raw,
     };

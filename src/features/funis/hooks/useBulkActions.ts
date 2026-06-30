@@ -26,7 +26,10 @@ export function useBulkActions(funilId: string) {
     setSelectedIds(new Set());
   }, []);
 
-  const isSelected = useCallback((id: string) => selectedIds.has(id), [selectedIds]);
+  const isSelected = useCallback(
+    (id: string) => selectedIds.has(id),
+    [selectedIds],
+  );
 
   const selectedCount = selectedIds.size;
 
@@ -44,7 +47,9 @@ export function useBulkActions(funilId: string) {
   const atribuirEmMassa = useMutation({
     mutationFn: async (userId: string | null) => {
       const ids = Array.from(selectedIds);
-      await Promise.all(ids.map((id) => atualizarTarefa(id, { atribuido_para: userId })));
+      await Promise.all(
+        ids.map((id) => atualizarTarefa(id, { atribuido_para: userId })),
+      );
     },
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["funil", funilId] });
@@ -55,7 +60,9 @@ export function useBulkActions(funilId: string) {
   const prioridadeEmMassa = useMutation({
     mutationFn: async (prioridade: string) => {
       const ids = Array.from(selectedIds);
-      await Promise.all(ids.map((id) => atualizarTarefa(id, { prioridade: prioridade as any })));
+      await Promise.all(
+        ids.map((id) => atualizarTarefa(id, { prioridade: prioridade as any })),
+      );
     },
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["funil", funilId] });

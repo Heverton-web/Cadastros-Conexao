@@ -6,7 +6,11 @@ import { Palette, Save, Loader2, RotateCcw, Eye, EyeOff } from "lucide-react";
 import toast from "react-hot-toast";
 import { useDesignGlobalQuery } from "~/design-system/services/design-system.queries";
 import { saveDesignGlobal } from "~/design-system/services/design-system.service";
-import { resolveTokens, PRESETS, DEFAULT_PRESET } from "~/design-system/tokens/resolver";
+import {
+  resolveTokens,
+  PRESETS,
+  DEFAULT_PRESET,
+} from "~/design-system/tokens/resolver";
 import { tokensToCssVars } from "~/design-system/tokens/css-var-map";
 import type { PresetKey } from "~/design-system/tokens/types";
 import type { DesignTokens } from "~/design-system/tokens/types";
@@ -64,8 +68,14 @@ function GlobalDesignPage() {
   async function handleSave() {
     setSaving(true);
     try {
-      await saveDesignGlobal({ preset_key: presetKey, tokens_override: override, versao });
-      await queryClient.invalidateQueries({ queryKey: ["design-system-global"] });
+      await saveDesignGlobal({
+        preset_key: presetKey,
+        tokens_override: override,
+        versao,
+      });
+      await queryClient.invalidateQueries({
+        queryKey: ["design-system-global"],
+      });
       toast.success("Design System global salvo!");
     } catch (e) {
       toast.error("Erro ao salvar");
@@ -87,7 +97,8 @@ function GlobalDesignPage() {
       const next = { ...prev } as Record<string, unknown>;
       let cur = next;
       for (let i = 0; i < keys.length - 1; i++) {
-        if (!cur[keys[i]] || typeof cur[keys[i]] !== "object") cur[keys[i]] = {};
+        if (!cur[keys[i]] || typeof cur[keys[i]] !== "object")
+          cur[keys[i]] = {};
         cur = cur[keys[i]] as Record<string, unknown>;
       }
       cur[keys[keys.length - 1]] = value;
@@ -123,7 +134,11 @@ function GlobalDesignPage() {
             onClick={() => setPreview((p) => !p)}
             className="flex items-center gap-2 px-3 py-2 rounded-lg border border-[var(--color-border)] text-sm hover:bg-[var(--color-hover-bg)] transition-colors"
           >
-            {preview ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+            {preview ? (
+              <EyeOff className="w-4 h-4" />
+            ) : (
+              <Eye className="w-4 h-4" />
+            )}
             {preview ? "Desativar" : "Ativar"} Preview
           </button>
           <button
@@ -138,7 +153,11 @@ function GlobalDesignPage() {
             disabled={saving}
             className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[var(--color-accent)] text-[var(--color-accent-fg)] text-sm font-medium hover:bg-[var(--color-accent-hover)] transition-colors disabled:opacity-50"
           >
-            {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
+            {saving ? (
+              <Loader2 className="w-4 h-4 animate-spin" />
+            ) : (
+              <Save className="w-4 h-4" />
+            )}
             Publicar
           </button>
         </div>
@@ -180,19 +199,64 @@ function GlobalDesignPage() {
             </h2>
             <div className="space-y-3">
               {[
-                { label: "Accent (Principal)", path: "colors.accent", current: resolved.colors.accent },
-                { label: "Accent Hover", path: "colors.accentHover", current: resolved.colors.accentHover },
-                { label: "Fundo Geral", path: "colors.bg", current: resolved.colors.bg },
-                { label: "Surface", path: "colors.surface", current: resolved.colors.surface },
-                { label: "Texto Principal", path: "colors.textMain", current: resolved.colors.textMain },
-                { label: "Texto Muted", path: "colors.textMuted", current: resolved.colors.textMuted },
-                { label: "Borda", path: "colors.border", current: resolved.colors.border },
-                { label: "Sucesso", path: "colors.success", current: resolved.colors.success },
-                { label: "Erro", path: "colors.error", current: resolved.colors.error },
-                { label: "Aviso", path: "colors.warning", current: resolved.colors.warning },
+                {
+                  label: "Accent (Principal)",
+                  path: "colors.accent",
+                  current: resolved.colors.accent,
+                },
+                {
+                  label: "Accent Hover",
+                  path: "colors.accentHover",
+                  current: resolved.colors.accentHover,
+                },
+                {
+                  label: "Fundo Geral",
+                  path: "colors.bg",
+                  current: resolved.colors.bg,
+                },
+                {
+                  label: "Surface",
+                  path: "colors.surface",
+                  current: resolved.colors.surface,
+                },
+                {
+                  label: "Texto Principal",
+                  path: "colors.textMain",
+                  current: resolved.colors.textMain,
+                },
+                {
+                  label: "Texto Muted",
+                  path: "colors.textMuted",
+                  current: resolved.colors.textMuted,
+                },
+                {
+                  label: "Borda",
+                  path: "colors.border",
+                  current: resolved.colors.border,
+                },
+                {
+                  label: "Sucesso",
+                  path: "colors.success",
+                  current: resolved.colors.success,
+                },
+                {
+                  label: "Erro",
+                  path: "colors.error",
+                  current: resolved.colors.error,
+                },
+                {
+                  label: "Aviso",
+                  path: "colors.warning",
+                  current: resolved.colors.warning,
+                },
               ].map(({ label, path, current }) => (
-                <div key={path} className="flex items-center justify-between gap-3">
-                  <label className="text-sm text-[var(--color-text-secondary)] flex-1">{label}</label>
+                <div
+                  key={path}
+                  className="flex items-center justify-between gap-3"
+                >
+                  <label className="text-sm text-[var(--color-text-secondary)] flex-1">
+                    {label}
+                  </label>
                   <div className="flex items-center gap-2">
                     <input
                       type="color"
@@ -219,11 +283,15 @@ function GlobalDesignPage() {
             </h2>
             <div className="space-y-3">
               <div>
-                <label className="text-sm text-[var(--color-text-secondary)]">Font Family</label>
+                <label className="text-sm text-[var(--color-text-secondary)]">
+                  Font Family
+                </label>
                 <input
                   type="text"
                   value={resolved.typography.fontFamily}
-                  onChange={(e) => updateColor("typography.fontFamily", e.target.value)}
+                  onChange={(e) =>
+                    updateColor("typography.fontFamily", e.target.value)
+                  }
                   className="w-full mt-1 text-xs bg-[var(--color-input-bg)] border border-[var(--color-input-border)] rounded px-2 py-1.5 text-[var(--color-text-main)]"
                 />
               </div>
@@ -237,13 +305,34 @@ function GlobalDesignPage() {
             </h2>
             <div className="space-y-3">
               {[
-                { label: "SM", path: "borders.radiusSm", current: resolved.borders.radiusSm },
-                { label: "MD", path: "borders.radiusMd", current: resolved.borders.radiusMd },
-                { label: "LG", path: "borders.radiusLg", current: resolved.borders.radiusLg },
-                { label: "XL", path: "borders.radiusXl", current: resolved.borders.radiusXl },
+                {
+                  label: "SM",
+                  path: "borders.radiusSm",
+                  current: resolved.borders.radiusSm,
+                },
+                {
+                  label: "MD",
+                  path: "borders.radiusMd",
+                  current: resolved.borders.radiusMd,
+                },
+                {
+                  label: "LG",
+                  path: "borders.radiusLg",
+                  current: resolved.borders.radiusLg,
+                },
+                {
+                  label: "XL",
+                  path: "borders.radiusXl",
+                  current: resolved.borders.radiusXl,
+                },
               ].map(({ label, path, current }) => (
-                <div key={path} className="flex items-center justify-between gap-3">
-                  <label className="text-sm text-[var(--color-text-secondary)]">{label}</label>
+                <div
+                  key={path}
+                  className="flex items-center justify-between gap-3"
+                >
+                  <label className="text-sm text-[var(--color-text-secondary)]">
+                    {label}
+                  </label>
                   <input
                     type="text"
                     value={current}
@@ -269,36 +358,69 @@ function ComponentShowcase({ tokens }: { tokens: DesignTokens }) {
   return (
     <div
       className="rounded-xl border border-[var(--color-border)] overflow-hidden"
-      style={{ background: tokens.colors.bg, color: tokens.colors.textMain, fontFamily: tokens.typography.fontFamily }}
+      style={{
+        background: tokens.colors.bg,
+        color: tokens.colors.textMain,
+        fontFamily: tokens.typography.fontFamily,
+      }}
     >
       <div className="p-4 border-b border-[var(--color-border)] bg-[var(--color-surface)]">
-        <h3 className="text-sm font-semibold text-[var(--color-text-muted)]">Preview de Componentes</h3>
+        <h3 className="text-sm font-semibold text-[var(--color-text-muted)]">
+          Preview de Componentes
+        </h3>
       </div>
       <div className="p-6 space-y-6">
         {/* Buttons */}
         <div>
-          <p className="text-xs text-[var(--color-text-muted)] mb-3 uppercase tracking-wider">Botões</p>
+          <p className="text-xs text-[var(--color-text-muted)] mb-3 uppercase tracking-wider">
+            Botões
+          </p>
           <div className="flex flex-wrap gap-3">
             <button
-              style={{ background: tokens.colors.accent, color: tokens.colors.accentFg, borderRadius: tokens.components.button.borderRadius, padding: `${tokens.components.button.paddingY} ${tokens.components.button.paddingX}`, fontSize: tokens.components.button.fontSize }}
+              style={{
+                background: tokens.colors.accent,
+                color: tokens.colors.accentFg,
+                borderRadius: tokens.components.button.borderRadius,
+                padding: `${tokens.components.button.paddingY} ${tokens.components.button.paddingX}`,
+                fontSize: tokens.components.button.fontSize,
+              }}
               className="font-medium transition-all hover:opacity-90"
             >
               Primário
             </button>
             <button
-              style={{ background: tokens.colors.secondary, color: tokens.colors.secondaryForeground, borderRadius: tokens.components.button.borderRadius, padding: `${tokens.components.button.paddingY} ${tokens.components.button.paddingX}`, fontSize: tokens.components.button.fontSize }}
+              style={{
+                background: tokens.colors.secondary,
+                color: tokens.colors.secondaryForeground,
+                borderRadius: tokens.components.button.borderRadius,
+                padding: `${tokens.components.button.paddingY} ${tokens.components.button.paddingX}`,
+                fontSize: tokens.components.button.fontSize,
+              }}
               className="font-medium transition-all hover:opacity-90"
             >
               Secundário
             </button>
             <button
-              style={{ background: "transparent", color: tokens.colors.accent, border: `1px solid ${tokens.colors.accent}`, borderRadius: tokens.components.button.borderRadius, padding: `${tokens.components.button.paddingY} ${tokens.components.button.paddingX}`, fontSize: tokens.components.button.fontSize }}
+              style={{
+                background: "transparent",
+                color: tokens.colors.accent,
+                border: `1px solid ${tokens.colors.accent}`,
+                borderRadius: tokens.components.button.borderRadius,
+                padding: `${tokens.components.button.paddingY} ${tokens.components.button.paddingX}`,
+                fontSize: tokens.components.button.fontSize,
+              }}
               className="font-medium transition-all hover:opacity-90"
             >
               Outline
             </button>
             <button
-              style={{ background: tokens.colors.error, color: "#ffffff", borderRadius: tokens.components.button.borderRadius, padding: `${tokens.components.button.paddingY} ${tokens.components.button.paddingX}`, fontSize: tokens.components.button.fontSize }}
+              style={{
+                background: tokens.colors.error,
+                color: "#ffffff",
+                borderRadius: tokens.components.button.borderRadius,
+                padding: `${tokens.components.button.paddingY} ${tokens.components.button.paddingX}`,
+                fontSize: tokens.components.button.fontSize,
+              }}
               className="font-medium transition-all hover:opacity-90"
             >
               Destrutivo
@@ -308,17 +430,50 @@ function ComponentShowcase({ tokens }: { tokens: DesignTokens }) {
 
         {/* Card */}
         <div>
-          <p className="text-xs text-[var(--color-text-muted)] mb-3 uppercase tracking-wider">Card</p>
+          <p className="text-xs text-[var(--color-text-muted)] mb-3 uppercase tracking-wider">
+            Card
+          </p>
           <div
-            style={{ background: tokens.colors.card, borderRadius: tokens.components.card.borderRadius, padding: tokens.components.card.padding, border: `1px solid ${tokens.colors.border}`, boxShadow: tokens.components.card.shadow }}
+            style={{
+              background: tokens.colors.card,
+              borderRadius: tokens.components.card.borderRadius,
+              padding: tokens.components.card.padding,
+              border: `1px solid ${tokens.colors.border}`,
+              boxShadow: tokens.components.card.shadow,
+            }}
           >
-            <h4 className="font-semibold mb-1" style={{ color: tokens.colors.textMain }}>Título do Card</h4>
-            <p className="text-sm" style={{ color: tokens.colors.textMuted }}>Descrição de exemplo com o tema atual aplicado em tempo real.</p>
+            <h4
+              className="font-semibold mb-1"
+              style={{ color: tokens.colors.textMain }}
+            >
+              Título do Card
+            </h4>
+            <p className="text-sm" style={{ color: tokens.colors.textMuted }}>
+              Descrição de exemplo com o tema atual aplicado em tempo real.
+            </p>
             <div className="mt-3 flex gap-2">
-              <span style={{ background: tokens.colors.accentMuted, color: tokens.colors.accent, borderRadius: tokens.components.badge.borderRadius, padding: `${tokens.components.badge.paddingY} ${tokens.components.badge.paddingX}`, fontSize: tokens.components.badge.fontSize }} className="font-medium">
+              <span
+                style={{
+                  background: tokens.colors.accentMuted,
+                  color: tokens.colors.accent,
+                  borderRadius: tokens.components.badge.borderRadius,
+                  padding: `${tokens.components.badge.paddingY} ${tokens.components.badge.paddingX}`,
+                  fontSize: tokens.components.badge.fontSize,
+                }}
+                className="font-medium"
+              >
                 Badge
               </span>
-              <span style={{ background: tokens.colors.successBg, color: tokens.colors.success, borderRadius: tokens.components.badge.borderRadius, padding: `${tokens.components.badge.paddingY} ${tokens.components.badge.paddingX}`, fontSize: tokens.components.badge.fontSize }} className="font-medium">
+              <span
+                style={{
+                  background: tokens.colors.successBg,
+                  color: tokens.colors.success,
+                  borderRadius: tokens.components.badge.borderRadius,
+                  padding: `${tokens.components.badge.paddingY} ${tokens.components.badge.paddingX}`,
+                  fontSize: tokens.components.badge.fontSize,
+                }}
+                className="font-medium"
+              >
                 Ativo
               </span>
             </div>
@@ -327,11 +482,20 @@ function ComponentShowcase({ tokens }: { tokens: DesignTokens }) {
 
         {/* Input */}
         <div>
-          <p className="text-xs text-[var(--color-text-muted)] mb-3 uppercase tracking-wider">Inputs</p>
+          <p className="text-xs text-[var(--color-text-muted)] mb-3 uppercase tracking-wider">
+            Inputs
+          </p>
           <div className="space-y-2">
             <input
               placeholder="Campo de texto"
-              style={{ background: tokens.colors.inputBg, borderColor: tokens.colors.inputBorder, borderRadius: tokens.components.input.borderRadius, padding: `${tokens.components.input.paddingY} ${tokens.components.input.paddingX}`, fontSize: tokens.components.input.fontSize, color: tokens.colors.textMain }}
+              style={{
+                background: tokens.colors.inputBg,
+                borderColor: tokens.colors.inputBorder,
+                borderRadius: tokens.components.input.borderRadius,
+                padding: `${tokens.components.input.paddingY} ${tokens.components.input.paddingX}`,
+                fontSize: tokens.components.input.fontSize,
+                color: tokens.colors.textMain,
+              }}
               className="w-full border outline-none focus:border-[var(--color-input-focus)]"
             />
           </div>
@@ -339,7 +503,9 @@ function ComponentShowcase({ tokens }: { tokens: DesignTokens }) {
 
         {/* Paleta de cores */}
         <div>
-          <p className="text-xs text-[var(--color-text-muted)] mb-3 uppercase tracking-wider">Paleta</p>
+          <p className="text-xs text-[var(--color-text-muted)] mb-3 uppercase tracking-wider">
+            Paleta
+          </p>
           <div className="flex flex-wrap gap-2">
             {[
               { label: "bg", color: tokens.colors.bg },
@@ -356,9 +522,17 @@ function ComponentShowcase({ tokens }: { tokens: DesignTokens }) {
               <div key={label} className="flex flex-col items-center gap-1">
                 <div
                   className="w-10 h-10 rounded-lg border"
-                  style={{ background: color, borderColor: tokens.colors.border }}
+                  style={{
+                    background: color,
+                    borderColor: tokens.colors.border,
+                  }}
                 />
-                <span className="text-xs" style={{ color: tokens.colors.textMuted }}>{label}</span>
+                <span
+                  className="text-xs"
+                  style={{ color: tokens.colors.textMuted }}
+                >
+                  {label}
+                </span>
               </div>
             ))}
           </div>
@@ -366,7 +540,9 @@ function ComponentShowcase({ tokens }: { tokens: DesignTokens }) {
 
         {/* Gradiente */}
         <div>
-          <p className="text-xs text-[var(--color-text-muted)] mb-3 uppercase tracking-wider">Gradiente</p>
+          <p className="text-xs text-[var(--color-text-muted)] mb-3 uppercase tracking-wider">
+            Gradiente
+          </p>
           <div
             className="h-12 rounded-lg"
             style={{

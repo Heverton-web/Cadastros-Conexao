@@ -6,17 +6,24 @@ import { useAuth } from "~/core/auth";
 import { supabase } from "~/core/supabase";
 import { buscarTemaConfig, salvarTemaConfig } from "~/features/linktree/index";
 import { LinktreeThemeEditor } from "./LinktreeThemeEditor";
-import { normalizeLinktreeTheme, type LinktreeThemeConfig } from "~/features/linktree/types";
+import {
+  normalizeLinktreeTheme,
+  type LinktreeThemeConfig,
+} from "~/features/linktree/types";
 
 export function LinktreeTemaPage() {
   const { profile, permissoes } = useAuth();
   const navigate = useNavigate();
   const isSuper = profile?.is_super_admin === true;
 
-  const [theme, setTheme] = useState<LinktreeThemeConfig>(normalizeLinktreeTheme(null));
+  const [theme, setTheme] = useState<LinktreeThemeConfig>(
+    normalizeLinktreeTheme(null),
+  );
   const [loading, setLoading] = useState(true);
   const [empresas, setEmpresas] = useState<{ id: string; nome: string }[]>([]);
-  const [filtroEmpresa, setFiltroEmpresa] = useState<string>(profile?.empresa_id ?? "");
+  const [filtroEmpresa, setFiltroEmpresa] = useState<string>(
+    profile?.empresa_id ?? "",
+  );
 
   const can = (key: string) => isSuper || permissoes?.[key] === true;
 
@@ -30,9 +37,13 @@ export function LinktreeTemaPage() {
 
   useEffect(() => {
     if (!isSuper) return;
-    supabase.from("empresas").select("id, nome").order("nome").then(({ data }) => {
-      setEmpresas(data ?? []);
-    });
+    supabase
+      .from("empresas")
+      .select("id, nome")
+      .order("nome")
+      .then(({ data }) => {
+        setEmpresas(data ?? []);
+      });
   }, [isSuper]);
 
   useEffect(() => {
@@ -41,7 +52,9 @@ export function LinktreeTemaPage() {
 
   useEffect(() => {
     setLoading(true);
-    const empresaId = isSuper ? (filtroEmpresa || undefined) : (profile?.empresa_id ?? undefined);
+    const empresaId = isSuper
+      ? filtroEmpresa || undefined
+      : (profile?.empresa_id ?? undefined);
     buscarTemaConfig(empresaId)
       .then(setTheme)
       .catch(() => toast.error("Erro ao carregar tema"))
@@ -49,7 +62,9 @@ export function LinktreeTemaPage() {
   }, [filtroEmpresa, profile, isSuper]);
 
   async function handleSave(t: LinktreeThemeConfig) {
-    const empresaId = isSuper ? (filtroEmpresa || null) : (profile?.empresa_id ?? null);
+    const empresaId = isSuper
+      ? filtroEmpresa || null
+      : (profile?.empresa_id ?? null);
     await salvarTemaConfig(empresaId, t);
     setTheme(t);
   }
@@ -67,7 +82,9 @@ export function LinktreeTemaPage() {
     <div className="space-y-6">
       {isSuper && empresas.length > 0 && (
         <div className="flex items-center gap-3">
-          <label className="text-sm font-medium text-muted-foreground">Tema da empresa:</label>
+          <label className="text-sm font-medium text-muted-foreground">
+            Tema da empresa:
+          </label>
           <select
             value={filtroEmpresa}
             onChange={(e) => setFiltroEmpresa(e.target.value)}
@@ -75,7 +92,9 @@ export function LinktreeTemaPage() {
           >
             <option value="">Global (padrao)</option>
             {empresas.map((e) => (
-              <option key={e.id} value={e.id}>{e.nome}</option>
+              <option key={e.id} value={e.id}>
+                {e.nome}
+              </option>
             ))}
           </select>
         </div>

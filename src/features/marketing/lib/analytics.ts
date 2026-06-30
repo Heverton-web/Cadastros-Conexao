@@ -12,7 +12,10 @@ export type EventoAgregado = {
   por_tipo: Record<string, number>;
 };
 
-export async function buscarEventosAgregados(empresaId: string, dias: number = 30): Promise<EventoAgregado[]> {
+export async function buscarEventosAgregados(
+  empresaId: string,
+  dias: number = 30,
+): Promise<EventoAgregado[]> {
   const dataLimite = new Date();
   dataLimite.setDate(dataLimite.getDate() - dias);
   const { data } = await supabase
@@ -22,7 +25,10 @@ export async function buscarEventosAgregados(empresaId: string, dias: number = 3
     .gte("created_at", dataLimite.toISOString())
     .order("created_at", { ascending: true });
   if (!data) return [];
-  const agrupado: Record<string, { total: number; por_tipo: Record<string, number> }> = {};
+  const agrupado: Record<
+    string,
+    { total: number; por_tipo: Record<string, number> }
+  > = {};
   for (const e of data) {
     const dia = new Date(e.created_at).toISOString().slice(0, 10);
     if (!agrupado[dia]) agrupado[dia] = { total: 0, por_tipo: {} };
@@ -32,14 +38,27 @@ export async function buscarEventosAgregados(empresaId: string, dias: number = 3
   return Object.entries(agrupado).map(([data, vals]) => ({ data, ...vals }));
 }
 
-export async function buscarMetricas(empresaId: string): Promise<AnalyticsMetrica[]> {
+export async function buscarMetricas(
+  empresaId: string,
+): Promise<AnalyticsMetrica[]> {
   const agregados = await buscarEventosAgregados(empresaId, 30);
   const total = agregados.reduce((acc, d) => acc + d.total, 0);
-  const visualizacoes = agregados.reduce((acc, d) => acc + (d.por_tipo?.visualizacao || 0), 0);
-  const cliques = agregados.reduce((acc, d) => acc + (d.por_tipo?.clique || 0), 0);
-  const conversoes = agregados.reduce((acc, d) => acc + (d.por_tipo?.conversao || 0), 0);
-  const taxaClique = visualizacoes > 0 ? Math.round((cliques / visualizacoes) * 100) : 0;
-  const taxaConversao = cliques > 0 ? Math.round((conversoes / cliques) * 100) : 0;
+  const visualizacoes = agregados.reduce(
+    (acc, d) => acc + (d.por_tipo?.visualizacao || 0),
+    0,
+  );
+  const cliques = agregados.reduce(
+    (acc, d) => acc + (d.por_tipo?.clique || 0),
+    0,
+  );
+  const conversoes = agregados.reduce(
+    (acc, d) => acc + (d.por_tipo?.conversao || 0),
+    0,
+  );
+  const taxaClique =
+    visualizacoes > 0 ? Math.round((cliques / visualizacoes) * 100) : 0;
+  const taxaConversao =
+    cliques > 0 ? Math.round((conversoes / cliques) * 100) : 0;
   return [
     { label: "Eventos (30d)", valor: total },
     { label: "Visualizações", valor: visualizacoes },

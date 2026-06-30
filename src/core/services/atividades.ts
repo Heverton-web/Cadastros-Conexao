@@ -15,7 +15,7 @@ export async function logAtividade(
   entidade_tipo: Atividade["entidade_tipo"],
   entidade_id: string,
   acao: string,
-  descricao?: string
+  descricao?: string,
 ) {
   const { data: user } = await supabase.auth.getUser();
   if (!user.user) return;
@@ -32,7 +32,7 @@ export async function logAtividade(
 
 export async function listarAtividades(
   entidade_tipo?: string,
-  entidade_id?: string
+  entidade_id?: string,
 ) {
   let query = supabase
     .from("atividades")

@@ -1,6 +1,11 @@
 import { QRCodeCanvas } from "qrcode.react";
 import { Download, Link2 } from "lucide-react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "~/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "~/components/ui/dialog";
 import { Button } from "~/components/ui/button";
 import { buildEmpresaLinktreeUrl } from "../services/empresa";
 
@@ -14,7 +19,8 @@ export function EmpresaQrModal({ open, onOpenChange, slug }: Props) {
   const url = buildEmpresaLinktreeUrl(slug);
 
   function handleDownload() {
-    const canvas = document.querySelector<HTMLCanvasElement>("#empresa-qr-canvas");
+    const canvas =
+      document.querySelector<HTMLCanvasElement>("#empresa-qr-canvas");
     if (!canvas) return;
     const a = document.createElement("a");
     a.href = canvas.toDataURL("image/png");
@@ -33,7 +39,12 @@ export function EmpresaQrModal({ open, onOpenChange, slug }: Props) {
 
         <div className="flex flex-col items-center gap-4">
           <div className="rounded-xl bg-white p-4">
-            <QRCodeCanvas id="empresa-qr-canvas" value={url} size={200} marginSize={2} />
+            <QRCodeCanvas
+              id="empresa-qr-canvas"
+              value={url}
+              size={200}
+              marginSize={2}
+            />
           </div>
 
           <div className="flex items-center gap-2 text-sm text-muted-foreground">

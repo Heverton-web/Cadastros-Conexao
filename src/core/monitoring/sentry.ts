@@ -1,8 +1,8 @@
-import * as Sentry from '@sentry/react'
+import * as Sentry from "@sentry/react";
 
 export function initSentry() {
-  const dsn = import.meta.env.VITE_SENTRY_DSN
-  if (!dsn) return
+  const dsn = import.meta.env.VITE_SENTRY_DSN;
+  if (!dsn) return;
 
   Sentry.init({
     dsn,
@@ -14,7 +14,7 @@ export function initSentry() {
       Sentry.browserTracingIntegration(),
       Sentry.replayIntegration(),
     ],
-  })
+  });
 }
 
-export { Sentry }
+export { Sentry };

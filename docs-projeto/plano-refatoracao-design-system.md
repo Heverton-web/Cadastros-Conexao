@@ -1,8 +1,9 @@
 # Plano de Refatoração — Design System Ultra-Detalhado
+
 **Branch**: `feat/design-system`  
 **Tecnologia**: Tailwind CSS v4 (irrevogável)  
 **Persistência**: Supabase JSONB (mais leve)  
-**Versão**: semver  
+**Versão**: semver
 
 ---
 
@@ -71,6 +72,7 @@ CREATE TABLE design_system_modulo (
 ```
 
 ### RLS
+
 - Presets: leitura pública, escrita super_admin
 - Global: leitura auth, escrita super_admin
 - Empresa/Módulo: leitura por empresa_id, escrita admin
@@ -83,70 +85,145 @@ CREATE TABLE design_system_modulo (
 
 ```typescript
 interface DesignTokens {
-  meta: { version: string; name: string; };
+  meta: { version: string; name: string };
   colors: {
     // Background
-    bg: string; surface: string; surfaceHover: string; card: string;
+    bg: string;
+    surface: string;
+    surfaceHover: string;
+    card: string;
     // Texto
-    textMain: string; textSecondary: string; textMuted: string; textInverted: string;
+    textMain: string;
+    textSecondary: string;
+    textMuted: string;
+    textInverted: string;
     // Bordas
-    border: string; borderSubtle: string;
+    border: string;
+    borderSubtle: string;
     // Accent
-    accent: string; accentHover: string; accentFg: string; accentMuted: string;
-    gradientStart: string; gradientMid: string; gradientEnd: string;
+    accent: string;
+    accentHover: string;
+    accentFg: string;
+    accentMuted: string;
+    gradientStart: string;
+    gradientMid: string;
+    gradientEnd: string;
     // Feedback
-    success: string; successBg: string; warning: string; warningBg: string;
-    error: string; errorBg: string; info: string; infoBg: string;
+    success: string;
+    successBg: string;
+    warning: string;
+    warningBg: string;
+    error: string;
+    errorBg: string;
+    info: string;
+    infoBg: string;
     // Misc
-    overlay: string; shadow: string; glassTint: string;
-    headerBg: string; scrollbarThumb: string; ring: string;
-    hoverBg: string; hoverBorder: string; hoverShadow: string;
+    overlay: string;
+    shadow: string;
+    glassTint: string;
+    headerBg: string;
+    scrollbarThumb: string;
+    ring: string;
+    hoverBg: string;
+    hoverBorder: string;
+    hoverShadow: string;
     // shadcn aliases
-    primary: string; primaryForeground: string;
-    secondary: string; secondaryForeground: string;
-    muted: string; mutedForeground: string;
-    destructive: string; destructiveForeground: string;
-    popover: string; popoverForeground: string;
-    input: string; inputBg: string; inputBorder: string; inputFocus: string;
+    primary: string;
+    primaryForeground: string;
+    secondary: string;
+    secondaryForeground: string;
+    muted: string;
+    mutedForeground: string;
+    destructive: string;
+    destructiveForeground: string;
+    popover: string;
+    popoverForeground: string;
+    input: string;
+    inputBg: string;
+    inputBorder: string;
+    inputFocus: string;
   };
   typography: {
-    fontFamily: string; fontFamilyMono: string;
-    fontSizeXs: string; fontSizeSm: string; fontSizeMd: string;
-    fontSizeLg: string; fontSizeXl: string; fontSize2xl: string;
-    fontWeightLight: number; fontWeightNormal: number; fontWeightMedium: number;
-    fontWeightSemibold: number; fontWeightBold: number;
-    lineHeightTight: string; lineHeightNormal: string; lineHeightRelaxed: string;
-    letterSpacingTight: string; letterSpacingNormal: string; letterSpacingWide: string;
+    fontFamily: string;
+    fontFamilyMono: string;
+    fontSizeXs: string;
+    fontSizeSm: string;
+    fontSizeMd: string;
+    fontSizeLg: string;
+    fontSizeXl: string;
+    fontSize2xl: string;
+    fontWeightLight: number;
+    fontWeightNormal: number;
+    fontWeightMedium: number;
+    fontWeightSemibold: number;
+    fontWeightBold: number;
+    lineHeightTight: string;
+    lineHeightNormal: string;
+    lineHeightRelaxed: string;
+    letterSpacingTight: string;
+    letterSpacingNormal: string;
+    letterSpacingWide: string;
   };
-  spacing: Record<'xs'|'sm'|'md'|'lg'|'xl'|'2xl'|'3xl'|'4xl', string>;
+  spacing: Record<
+    "xs" | "sm" | "md" | "lg" | "xl" | "2xl" | "3xl" | "4xl",
+    string
+  >;
   borders: {
-    radiusSm: string; radiusMd: string; radiusLg: string;
-    radiusXl: string; radiusFull: string;
+    radiusSm: string;
+    radiusMd: string;
+    radiusLg: string;
+    radiusXl: string;
+    radiusFull: string;
   };
-  shadows: { sm: string; md: string; lg: string; xl: string; glow: string; accentGlow: string; };
+  shadows: {
+    sm: string;
+    md: string;
+    lg: string;
+    xl: string;
+    glow: string;
+    accentGlow: string;
+  };
   animations: {
-    durationFast: string; durationNormal: string; durationSlow: string;
-    easingDefault: string; easingBounce: string;
+    durationFast: string;
+    durationNormal: string;
+    durationSlow: string;
+    easingDefault: string;
+    easingBounce: string;
   };
   components: {
-    button: { paddingX: string; paddingY: string; fontSize: string; borderRadius: string; };
-    input: { paddingX: string; paddingY: string; fontSize: string; borderRadius: string; };
-    card: { padding: string; borderRadius: string; shadow: string; };
-    modal: { backdropBg: string; borderRadius: string; shadow: string; };
-    sidebar: { width: string; collapsedWidth: string; };
-    badge: { paddingX: string; paddingY: string; fontSize: string; borderRadius: string; };
+    button: {
+      paddingX: string;
+      paddingY: string;
+      fontSize: string;
+      borderRadius: string;
+    };
+    input: {
+      paddingX: string;
+      paddingY: string;
+      fontSize: string;
+      borderRadius: string;
+    };
+    card: { padding: string; borderRadius: string; shadow: string };
+    modal: { backdropBg: string; borderRadius: string; shadow: string };
+    sidebar: { width: string; collapsedWidth: string };
+    badge: {
+      paddingX: string;
+      paddingY: string;
+      fontSize: string;
+      borderRadius: string;
+    };
   };
 }
 ```
 
 ### 4 Presets
 
-| Key | Paleta |
-|-----|--------|
-| `dark-gold` | #0f172a + #c9a655 (atual) |
-| `dark-blue` | #0f172a + #3b82f6 |
-| `light-clean` | #fafafa + #6366f1 |
-| `dark-emerald` | #0a0a0a + #10b981 |
+| Key            | Paleta                    |
+| -------------- | ------------------------- |
+| `dark-gold`    | #0f172a + #c9a655 (atual) |
+| `dark-blue`    | #0f172a + #3b82f6         |
+| `light-clean`  | #fafafa + #6366f1         |
+| `dark-emerald` | #0a0a0a + #10b981         |
 
 ---
 
@@ -195,11 +272,11 @@ src/design-system/
 
 ## Fase 4 — Rotas Admin
 
-| Rota | Acesso | Funcionalidade |
-|------|--------|----------------|
-| `/global/design` | Super Admin | Preset + tokens globais + live preview |
-| `/empresa/design` | Admin | Override tokens da empresa |
-| `/<modulo>/design` | Admin | Override tokens do módulo |
+| Rota               | Acesso      | Funcionalidade                         |
+| ------------------ | ----------- | -------------------------------------- |
+| `/global/design`   | Super Admin | Preset + tokens globais + live preview |
+| `/empresa/design`  | Admin       | Override tokens da empresa             |
+| `/<modulo>/design` | Admin       | Override tokens do módulo              |
 
 Módulos com rota de design:
 `nps`, `hub`, `crm`, `linktree`, `mapas`, `funis`, `cadastros`, `dashboard`
@@ -209,12 +286,14 @@ Módulos com rota de design:
 ## Fase 5 — Registry & Permissões
 
 ### `ModuleDefinition` — novos campos
+
 ```typescript
 hasDesignConfig?: boolean;
 designRoute?: string;
 ```
 
 ### Novas permissões
+
 ```
 design_system.global.read / write
 design_system.empresa.read / write
@@ -226,15 +305,17 @@ design_system.modulo.read / write
 ## Fase 6 — Templates & Skills
 
 ### Skills novas
-| Skill | Trigger |
-|-------|---------|
-| `criar-design-modulo` | "criar design do módulo" |
-| `gerar-formulario` | "gerar formulário" |
-| `gerar-modal` | "gerar modal" |
-| `gerar-pagina` | "gerar página" |
-| `aplicar-design-system` | "aplicar design system" |
+
+| Skill                   | Trigger                  |
+| ----------------------- | ------------------------ |
+| `criar-design-modulo`   | "criar design do módulo" |
+| `gerar-formulario`      | "gerar formulário"       |
+| `gerar-modal`           | "gerar modal"            |
+| `gerar-pagina`          | "gerar página"           |
+| `aplicar-design-system` | "aplicar design system"  |
 
 ### CLI Scripts (`package.json`)
+
 ```json
 "generate:module": "tsx scripts/generate.ts module",
 "generate:form": "tsx scripts/generate.ts form",
@@ -250,15 +331,15 @@ design_system.modulo.read / write
 
 Ordem por isolamento:
 
-| Prioridade | Módulo |
-|------------|--------|
-| 1 | `empresas` (Shared Kernel) |
-| 2 | `dashboard` |
-| 3 | `cadastros` |
-| 4 | `crm` |
-| 5 | `nps` (migrar nps.tema → nps/design) |
-| 6 | `hub` |
-| 7-22 | Restantes incrementalmente |
+| Prioridade | Módulo                               |
+| ---------- | ------------------------------------ |
+| 1          | `empresas` (Shared Kernel)           |
+| 2          | `dashboard`                          |
+| 3          | `cadastros`                          |
+| 4          | `crm`                                |
+| 5          | `nps` (migrar nps.tema → nps/design) |
+| 6          | `hub`                                |
+| 7-22       | Restantes incrementalmente           |
 
 ---
 

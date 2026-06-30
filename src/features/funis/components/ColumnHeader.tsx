@@ -59,7 +59,9 @@ export function ColumnHeader({ coluna, funilId }: ColumnHeaderProps) {
           autoFocus
         />
       ) : (
-        <h3 className="text-sm font-semibold text-text-main truncate">{coluna.titulo}</h3>
+        <h3 className="text-sm font-semibold text-text-main truncate">
+          {coluna.titulo}
+        </h3>
       )}
       <div className="relative">
         <button
@@ -70,7 +72,10 @@ export function ColumnHeader({ coluna, funilId }: ColumnHeaderProps) {
         </button>
         {showMenu && (
           <>
-            <div className="fixed inset-0 z-10" onClick={() => setShowMenu(false)} />
+            <div
+              className="fixed inset-0 z-10"
+              onClick={() => setShowMenu(false)}
+            />
             <div className="absolute right-0 top-8 z-20 bg-card border border-border-subtle rounded-lg shadow-lg py-1 min-w-[140px]">
               <button
                 onClick={() => {
@@ -102,12 +107,18 @@ export function ColumnHeader({ coluna, funilId }: ColumnHeaderProps) {
           <AlertDialogHeader>
             <AlertDialogTitle>Excluir coluna?</AlertDialogTitle>
             <AlertDialogDescription>
-              Esta acao e permanente. A coluna e todas as suas tarefas serao removidas.
+              Esta acao e permanente. A coluna e todas as suas tarefas serao
+              removidas.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancelar</AlertDialogCancel>
-            <AlertDialogAction onClick={handleDelete} className="bg-destructive text-destructive-foreground">Excluir</AlertDialogAction>
+            <AlertDialogAction
+              onClick={handleDelete}
+              className="bg-destructive text-destructive-foreground"
+            >
+              Excluir
+            </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>

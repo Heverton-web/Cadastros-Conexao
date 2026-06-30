@@ -1,4 +1,21 @@
-import { Building2, Puzzle, KeyRound, Globe, Database, Cable, FlaskConical, Palette, Image, Shield, Beaker, Bell, Webhook as WebhookIcon, BarChart3, FileText, type LucideIcon } from "lucide-react";
+import {
+  Building2,
+  Puzzle,
+  KeyRound,
+  Globe,
+  Database,
+  Cable,
+  FlaskConical,
+  Palette,
+  Image,
+  Shield,
+  Beaker,
+  Bell,
+  Webhook as WebhookIcon,
+  BarChart3,
+  FileText,
+  type LucideIcon,
+} from "lucide-react";
 import { useAuth } from "~/lib/auth";
 import { getNavItems, getAllModules, getNavItemsByModule } from "~/registry";
 import { useMemo } from "react";
@@ -28,7 +45,10 @@ function filterRegistryItems(
   moduloKey: string,
   isSuper: boolean,
   isCompanyAdmin: boolean,
-  modulosAcesso: Record<string, { acessar?: boolean; paginas?: string[] }> | null | undefined,
+  modulosAcesso:
+    | Record<string, { acessar?: boolean; paginas?: string[] }>
+    | null
+    | undefined,
 ): NavItem[] {
   let registryItems = getNavItemsByModule(moduloKey);
 
@@ -37,7 +57,9 @@ function filterRegistryItems(
       // não filtra empresas-core para admin da empresa
     } else {
       const paginasPermitidas = modulosAcesso?.[moduloKey]?.paginas ?? [];
-      registryItems = registryItems.filter((item) => paginasPermitidas.includes(item.id));
+      registryItems = registryItems.filter((item) =>
+        paginasPermitidas.includes(item.id),
+      );
     }
   }
 
@@ -51,18 +73,31 @@ function filterRegistryItems(
 }
 
 function buildHubSubGroups(items: NavItem[]): NavSubGroup[] {
-  const adminItems = items.filter(i => i.path.startsWith("/hub/admin/"));
-  const gestorItems = items.filter(i => i.path.startsWith("/hub/gestor/"));
-  const consultorItems = items.filter(i => i.path.startsWith("/hub/consultor/"));
-  const distribuidorItems = items.filter(i => i.path.startsWith("/hub/distribuidor/"));
-  const globalItems = items.filter(i => i.path.startsWith("/global/hub") || i.path.startsWith("/empresa/hub") || i.path === "/hub/design");
+  const adminItems = items.filter((i) => i.path.startsWith("/hub/admin/"));
+  const gestorItems = items.filter((i) => i.path.startsWith("/hub/gestor/"));
+  const consultorItems = items.filter((i) =>
+    i.path.startsWith("/hub/consultor/"),
+  );
+  const distribuidorItems = items.filter((i) =>
+    i.path.startsWith("/hub/distribuidor/"),
+  );
+  const globalItems = items.filter(
+    (i) =>
+      i.path.startsWith("/global/hub") ||
+      i.path.startsWith("/empresa/hub") ||
+      i.path === "/hub/design",
+  );
 
   const subGroups: NavSubGroup[] = [];
   if (adminItems.length) subGroups.push({ label: "Admin", items: adminItems });
-  if (gestorItems.length) subGroups.push({ label: "Gestor", items: gestorItems });
-  if (consultorItems.length) subGroups.push({ label: "Consultor", items: consultorItems });
-  if (distribuidorItems.length) subGroups.push({ label: "Distribuidor", items: distribuidorItems });
-  if (globalItems.length) subGroups.push({ label: "Global", items: globalItems });
+  if (gestorItems.length)
+    subGroups.push({ label: "Gestor", items: gestorItems });
+  if (consultorItems.length)
+    subGroups.push({ label: "Consultor", items: consultorItems });
+  if (distribuidorItems.length)
+    subGroups.push({ label: "Distribuidor", items: distribuidorItems });
+  if (globalItems.length)
+    subGroups.push({ label: "Global", items: globalItems });
   return subGroups;
 }
 
@@ -74,33 +109,36 @@ function buildConfigSubGroups(items: NavItem[]): NavSubGroup[] {
     "/empresa/permissoes",
     "/empresa/branding",
     "/empresa/design",
-    "/empresa/acoes"
+    "/empresa/acoes",
   ];
-  const empresaItems = items.filter(i => empresaPaths.includes(i.path));
+  const empresaItems = items.filter((i) => empresaPaths.includes(i.path));
 
   // 2. CONFIGURAÇÃO DE RECURSOS
   const configPaths = [
     "/empresa/despesas-config",
     "/empresa/rotas/config",
-    "/empresa/hub/chatbot"
+    "/empresa/hub/chatbot",
   ];
-  const configItems = items.filter(i => configPaths.includes(i.path));
+  const configItems = items.filter((i) => configPaths.includes(i.path));
 
   // 3. TEMAS DE MÓDULOS
-  const temaPaths = [
-    "/empresa/nps/tema",
-    "/empresa/linktree/tema"
-  ];
-  const temaItems = items.filter(i => temaPaths.includes(i.path));
+  const temaPaths = ["/empresa/nps/tema", "/empresa/linktree/tema"];
+  const temaItems = items.filter((i) => temaPaths.includes(i.path));
 
   // 4. DESIGN SYSTEM
-  const designItems = items.filter(i => i.path.endsWith("/design") && i.path !== "/empresa/design");
+  const designItems = items.filter(
+    (i) => i.path.endsWith("/design") && i.path !== "/empresa/design",
+  );
 
   const subGroups: NavSubGroup[] = [];
-  if (empresaItems.length) subGroups.push({ label: "Empresa", items: empresaItems });
-  if (configItems.length) subGroups.push({ label: "Configurações de Módulos", items: configItems });
-  if (temaItems.length) subGroups.push({ label: "Temas e Aparência", items: temaItems });
-  if (designItems.length) subGroups.push({ label: "Design System", items: designItems });
+  if (empresaItems.length)
+    subGroups.push({ label: "Empresa", items: empresaItems });
+  if (configItems.length)
+    subGroups.push({ label: "Configurações de Módulos", items: configItems });
+  if (temaItems.length)
+    subGroups.push({ label: "Temas e Aparência", items: temaItems });
+  if (designItems.length)
+    subGroups.push({ label: "Design System", items: designItems });
 
   return subGroups;
 }
@@ -119,7 +157,11 @@ function buildAdminSection(): NavModuleSection {
   const ferramentasItems: NavItem[] = [
     { path: "/global/testes", label: "Central de Testes", icon: FileText },
     { path: "/global/demos", label: "Credenciais Demos", icon: FlaskConical },
-    { path: "/global/laboratorio", label: "Laboratório de Testes", icon: Beaker },
+    {
+      path: "/global/laboratorio",
+      label: "Laboratório de Testes",
+      icon: Beaker,
+    },
     { path: "/global/limits", label: "Limites de Credenciais", icon: Shield },
   ];
   const analyticsItems: NavItem[] = [
@@ -132,7 +174,12 @@ function buildAdminSection(): NavModuleSection {
     key: "__admin__",
     label: "Administração",
     icon: Shield,
-    items: [...adminItems, ...infraItems, ...ferramentasItems, ...analyticsItems],
+    items: [
+      ...adminItems,
+      ...infraItems,
+      ...ferramentasItems,
+      ...analyticsItems,
+    ],
     subGroups: [
       { label: "Gestão", items: adminItems },
       { label: "Infraestrutura", items: infraItems },
@@ -148,7 +195,11 @@ export function useNavItems(): NavModuleSection[] {
 
   const modulosAcessiveis = useMemo(() => {
     if (profile?.is_super_admin) {
-      return getAllModules().map((m) => ({ key: m.key, nome: m.nome, icon: m.icon }));
+      return getAllModules().map((m) => ({
+        key: m.key,
+        nome: m.nome,
+        icon: m.icon,
+      }));
     }
     const ativos = modulosAtivos || [];
     const isCompanyAdmin = profile?.role === "admin";
@@ -167,21 +218,22 @@ export function useNavItems(): NavModuleSection[] {
       .map((m) => ({ key: m.key, nome: m.nome, icon: m.icon }));
   }, [profile, modulosAtivos, modulosAcesso]);
 
-const MODULE_ORDER: Record<string, number> = {
-  "__admin__": 0,
-  "empresas-core": 1,
-  "cadastros": 2,
-  "crm": 3,
-  "hub": 4,
-  "nps": 5,
-  "funis": 6,
-  "mapas-interativos": 7,
-  "linktree": 8,
-};
+  const MODULE_ORDER: Record<string, number> = {
+    __admin__: 0,
+    "empresas-core": 1,
+    cadastros: 2,
+    crm: 3,
+    hub: 4,
+    nps: 5,
+    funis: 6,
+    "mapas-interativos": 7,
+    linktree: 8,
+  };
 
   return useMemo(() => {
     const isSuper = profile?.is_super_admin === true;
-    const isCompanyAdmin = !isSuper && profile?.role === "admin" && !!profile?.empresa_id;
+    const isCompanyAdmin =
+      !isSuper && profile?.role === "admin" && !!profile?.empresa_id;
     const sections: NavModuleSection[] = [];
 
     // Administração (super admin only) — primeiro módulo
@@ -190,9 +242,16 @@ const MODULE_ORDER: Record<string, number> = {
     }
 
     // Empresas-core como "Configuração" — segundo módulo
-    const hasEmpresasCore = modulosAcessiveis.some(m => m.key === "empresas-core");
+    const hasEmpresasCore = modulosAcessiveis.some(
+      (m) => m.key === "empresas-core",
+    );
     if (hasEmpresasCore) {
-      const configItems = filterRegistryItems("empresas-core", isSuper, isCompanyAdmin, modulosAcesso);
+      const configItems = filterRegistryItems(
+        "empresas-core",
+        isSuper,
+        isCompanyAdmin,
+        modulosAcesso,
+      );
       if (configItems.length > 0) {
         sections.push({
           key: "empresas-core",
@@ -209,7 +268,12 @@ const MODULE_ORDER: Record<string, number> = {
     for (const mod of modulosAcessiveis) {
       if (mod.key === "empresas-core") continue;
 
-      const items = filterRegistryItems(mod.key, isSuper, isCompanyAdmin, modulosAcesso);
+      const items = filterRegistryItems(
+        mod.key,
+        isSuper,
+        isCompanyAdmin,
+        modulosAcesso,
+      );
       if (items.length === 0) continue;
 
       const section: NavModuleSection = {
@@ -226,11 +290,21 @@ const MODULE_ORDER: Record<string, number> = {
       outros.push(section);
     }
 
-    outros.sort((a, b) => (MODULE_ORDER[a.key] ?? 99) - (MODULE_ORDER[b.key] ?? 99));
+    outros.sort(
+      (a, b) => (MODULE_ORDER[a.key] ?? 99) - (MODULE_ORDER[b.key] ?? 99),
+    );
     sections.push(...outros);
 
     return sections;
-  }, [p, profile?.is_super_admin, profile?.role, profile?.empresa_id, modulosAtivos, modulosAcesso, modulosAcessiveis]);
+  }, [
+    p,
+    profile?.is_super_admin,
+    profile?.role,
+    profile?.empresa_id,
+    modulosAtivos,
+    modulosAcesso,
+    modulosAcessiveis,
+  ]);
 }
 
 export function useModulos() {
@@ -262,5 +336,11 @@ export function useModulos() {
         nome: m.nome,
         icon: m.icon,
       }));
-  }, [profile?.is_super_admin, profile?.role, profile?.empresa_id, modulosAtivos, modulosAcesso]);
+  }, [
+    profile?.is_super_admin,
+    profile?.role,
+    profile?.empresa_id,
+    modulosAtivos,
+    modulosAcesso,
+  ]);
 }

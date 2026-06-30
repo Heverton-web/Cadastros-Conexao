@@ -32,7 +32,9 @@ export function AnalyticsPanel({ empresaId }: Props) {
               key={p.value}
               onClick={() => setPeriodo(p.value)}
               className={`rounded px-2 py-1 text-xs transition ${
-                periodo === p.value ? "bg-primary text-primary-foreground" : "bg-surface-hover text-muted-foreground"
+                periodo === p.value
+                  ? "bg-primary text-primary-foreground"
+                  : "bg-surface-hover text-muted-foreground"
               }`}
             >
               {p.label}
@@ -42,21 +44,29 @@ export function AnalyticsPanel({ empresaId }: Props) {
       </div>
 
       {isLoading ? (
-        <p className="py-8 text-center text-sm text-muted-foreground">Carregando...</p>
+        <p className="py-8 text-center text-sm text-muted-foreground">
+          Carregando...
+        </p>
       ) : analytics.length === 0 ? (
-        <p className="py-8 text-center text-sm text-muted-foreground">Nenhum clique registrado.</p>
+        <p className="py-8 text-center text-sm text-muted-foreground">
+          Nenhum clique registrado.
+        </p>
       ) : (
         <div className="space-y-3">
           {analytics.map((item) => (
             <div key={item.link_id} className="space-y-1">
               <div className="flex items-center justify-between text-sm">
                 <span className="truncate">{item.link_titulo}</span>
-                <span className="font-mono text-xs text-muted-foreground">{item.total_cliques}</span>
+                <span className="font-mono text-xs text-muted-foreground">
+                  {item.total_cliques}
+                </span>
               </div>
               <div className="h-2 w-full overflow-hidden rounded-full bg-surface-hover">
                 <div
                   className="h-full rounded-full bg-primary transition-all"
-                  style={{ width: `${(item.total_cliques / maxCliques) * 100}%` }}
+                  style={{
+                    width: `${(item.total_cliques / maxCliques) * 100}%`,
+                  }}
                 />
               </div>
             </div>

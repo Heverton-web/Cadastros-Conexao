@@ -1,7 +1,9 @@
 import { supabase } from "~/core/supabase";
 import type { DespesaPeriodo, Frequencia } from "../types";
 
-export async function listarPeriodos(empresa_id: string): Promise<DespesaPeriodo[]> {
+export async function listarPeriodos(
+  empresa_id: string,
+): Promise<DespesaPeriodo[]> {
   const { data, error } = await supabase
     .from("despesas_periodos")
     .select("*")
@@ -11,7 +13,9 @@ export async function listarPeriodos(empresa_id: string): Promise<DespesaPeriodo
   return data as DespesaPeriodo[];
 }
 
-export async function listarPeriodosAbertos(empresa_id: string): Promise<DespesaPeriodo[]> {
+export async function listarPeriodosAbertos(
+  empresa_id: string,
+): Promise<DespesaPeriodo[]> {
   const { data, error } = await supabase
     .from("despesas_periodos")
     .select("*")
@@ -32,7 +36,9 @@ export async function buscarPeriodo(id: string): Promise<DespesaPeriodo> {
   return data as DespesaPeriodo;
 }
 
-export async function criarPeriodo(periodo: Partial<DespesaPeriodo>): Promise<DespesaPeriodo> {
+export async function criarPeriodo(
+  periodo: Partial<DespesaPeriodo>,
+): Promise<DespesaPeriodo> {
   const { data, error } = await supabase
     .from("despesas_periodos")
     .insert(periodo)
@@ -42,7 +48,10 @@ export async function criarPeriodo(periodo: Partial<DespesaPeriodo>): Promise<De
   return data as DespesaPeriodo;
 }
 
-export async function atualizarPeriodo(id: string, updates: Partial<DespesaPeriodo>): Promise<DespesaPeriodo> {
+export async function atualizarPeriodo(
+  id: string,
+  updates: Partial<DespesaPeriodo>,
+): Promise<DespesaPeriodo> {
   const { data, error } = await supabase
     .from("despesas_periodos")
     .update(updates)
@@ -80,7 +89,7 @@ function formatarData(year: number, month: number, day: number): string {
 export async function gerarPeriodos(
   empresa_id: string,
   frequencia: Frequencia,
-  meses: string[]
+  meses: string[],
 ): Promise<void> {
   const periodos: Partial<DespesaPeriodo>[] = [];
 
@@ -134,7 +143,10 @@ export async function gerarPeriodos(
   if (periodos.length > 0) {
     const { error } = await supabase
       .from("despesas_periodos")
-      .upsert(periodos, { onConflict: "empresa_id,data_inicio,data_fim", ignoreDuplicates: true });
+      .upsert(periodos, {
+        onConflict: "empresa_id,data_inicio,data_fim",
+        ignoreDuplicates: true,
+      });
     if (error) throw error;
   }
 }

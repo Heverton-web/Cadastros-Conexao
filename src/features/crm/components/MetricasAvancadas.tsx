@@ -79,7 +79,10 @@ export function MetricasAvancadas({ periodo = "mes" }: Props) {
       // Visitas no período
       const { data: visitas, count: totalVisitas } = await supabase
         .from("visitas")
-        .select("id, valor_estimado, gerou_pedido, gerou_orcamento, temperatura_vendedor", { count: "exact" })
+        .select(
+          "id, valor_estimado, gerou_pedido, gerou_orcamento, temperatura_vendedor",
+          { count: "exact" },
+        )
         .eq("consultor_executor_id", userId)
         .gte("data_visita", dataInicio)
         .lte("data_visita", dataFim);
@@ -106,18 +109,27 @@ export function MetricasAvancadas({ periodo = "mes" }: Props) {
         .lt("data_vencimento", new Date().toISOString().slice(0, 10));
 
       // Cálculos de conversão
-      const visitasComPedido = visitas?.filter((v) => v.gerou_pedido).length ?? 0;
-      const visitasComOrcamento = visitas?.filter((v) => v.gerou_orcamento).length ?? 0;
-      const valorTotal = visitas?.reduce((acc, v) => acc + (v.valor_estimado ?? 0), 0) ?? 0;
-      const valorPedidos = visitas
-        ?.filter((v) => v.gerou_pedido)
-        .reduce((acc, v) => acc + (v.valor_estimado ?? 0), 0) ?? 0;
+      const visitasComPedido =
+        visitas?.filter((v) => v.gerou_pedido).length ?? 0;
+      const visitasComOrcamento =
+        visitas?.filter((v) => v.gerou_orcamento).length ?? 0;
+      const valorTotal =
+        visitas?.reduce((acc, v) => acc + (v.valor_estimado ?? 0), 0) ?? 0;
+      const valorPedidos =
+        visitas
+          ?.filter((v) => v.gerou_pedido)
+          .reduce((acc, v) => acc + (v.valor_estimado ?? 0), 0) ?? 0;
 
       // Distribuição por temperatura
       const porTemperatura = {
-        Frio: visitas?.filter((v) => v.temperatura_vendedor === "Frio").length ?? 0,
-        Morno: visitas?.filter((v) => v.temperatura_vendedor === "Morno").length ?? 0,
-        Quente: visitas?.filter((v) => v.temperatura_vendedor === "Quente").length ?? 0,
+        Frio:
+          visitas?.filter((v) => v.temperatura_vendedor === "Frio").length ?? 0,
+        Morno:
+          visitas?.filter((v) => v.temperatura_vendedor === "Morno").length ??
+          0,
+        Quente:
+          visitas?.filter((v) => v.temperatura_vendedor === "Quente").length ??
+          0,
       };
 
       // Visitas por dia (últimos 7 dias)
@@ -126,7 +138,8 @@ export function MetricasAvancadas({ periodo = "mes" }: Props) {
         const data = new Date();
         data.setDate(data.getDate() - i);
         const dataStr = data.toISOString().slice(0, 10);
-        const count = visitas?.filter((v) => v.data_visita === dataStr).length ?? 0;
+        const count =
+          visitas?.filter((v) => v.data_visita === dataStr).length ?? 0;
         visitasPorDia.push({
           data: data.toLocaleDateString("pt-BR", { weekday: "short" }),
           visitas: count,
@@ -142,8 +155,12 @@ export function MetricasAvancadas({ periodo = "mes" }: Props) {
         visitasComOrcamento,
         valorTotal,
         valorPedidos,
-        taxaConversao: totalVisitas ? (visitasComPedido / totalVisitas) * 100 : 0,
-        taxaOrcamento: totalVisitas ? (visitasComOrcamento / totalVisitas) * 100 : 0,
+        taxaConversao: totalVisitas
+          ? (visitasComPedido / totalVisitas) * 100
+          : 0,
+        taxaOrcamento: totalVisitas
+          ? (visitasComOrcamento / totalVisitas) * 100
+          : 0,
         porTemperatura,
         visitasPorDia,
       };
@@ -241,7 +258,7 @@ export function MetricasAvancadas({ periodo = "mes" }: Props) {
               key={kpi.label}
               className={cn(
                 "glass rounded-xl p-4",
-                kpi.alerta && "border-destructive/50"
+                kpi.alerta && "border-destructive/50",
               )}
             >
               <div className="flex items-center justify-between">
@@ -254,7 +271,7 @@ export function MetricasAvancadas({ periodo = "mes" }: Props) {
                       "flex items-center gap-1 text-xs font-medium",
                       kpi.tendencia === "cima"
                         ? "text-green-500"
-                        : "text-destructive"
+                        : "text-destructive",
                     )}
                   >
                     {kpi.tendencia === "cima" ? (
@@ -289,14 +306,20 @@ export function MetricasAvancadas({ periodo = "mes" }: Props) {
                   borderRadius: "8px",
                 }}
               />
-              <Bar dataKey="visitas" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} />
+              <Bar
+                dataKey="visitas"
+                fill="hsl(var(--primary))"
+                radius={[4, 4, 0, 0]}
+              />
             </BarChart>
           </ResponsiveContainer>
         </div>
 
         {/* Distribuição por temperatura */}
         <div className="glass rounded-xl p-6">
-          <h3 className="text-sm font-semibold mb-4">Distribuição por Temperatura</h3>
+          <h3 className="text-sm font-semibold mb-4">
+            Distribuição por Temperatura
+          </h3>
           <div className="flex items-center justify-center">
             <ResponsiveContainer width="100%" height={200}>
               <PieChart>

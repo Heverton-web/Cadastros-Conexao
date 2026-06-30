@@ -1,7 +1,12 @@
-import { useMemo } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card';
-import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from '~/components/ui/tooltip';
-import { HelpCircle, Sparkles } from 'lucide-react';
+import { useMemo } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
+import {
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+  TooltipProvider,
+} from "~/components/ui/tooltip";
+import { HelpCircle, Sparkles } from "lucide-react";
 
 interface Props {
   data: any[];
@@ -12,9 +17,9 @@ const DynamicQuestionsChart = ({ data }: Props) => {
     const map: Record<string, Record<string, number>> = {};
     data.forEach((r) => {
       const dyn = r.dynamic_answers;
-      if (!dyn || typeof dyn !== 'object') return;
+      if (!dyn || typeof dyn !== "object") return;
       Object.entries(dyn).forEach(([q, v]) => {
-        if (typeof v !== 'string' || !v.trim()) return;
+        if (typeof v !== "string" || !v.trim()) return;
         // ignora textos longos (provavelmente livre): mais de 30 caracteres → não conta como categoria
         if (v.length > 40) return;
         map[q] = map[q] || {};
@@ -44,8 +49,14 @@ const DynamicQuestionsChart = ({ data }: Props) => {
               <TooltipTrigger asChild>
                 <HelpCircle className="w-3.5 h-3.5 text-muted-foreground cursor-help opacity-60 hover:opacity-100" />
               </TooltipTrigger>
-              <TooltipContent side="top" className="max-w-[300px] text-xs leading-relaxed">
-                Distribuição das respostas para cada pergunta dinâmica cadastrada. Mostra somente respostas curtas (até 40 caracteres), tratadas como categorias. Respostas longas em texto livre aparecem em "Insights Qualitativos".
+              <TooltipContent
+                side="top"
+                className="max-w-[300px] text-xs leading-relaxed"
+              >
+                Distribuição das respostas para cada pergunta dinâmica
+                cadastrada. Mostra somente respostas curtas (até 40 caracteres),
+                tratadas como categorias. Respostas longas em texto livre
+                aparecem em "Insights Qualitativos".
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
@@ -54,18 +65,27 @@ const DynamicQuestionsChart = ({ data }: Props) => {
       <CardContent className="space-y-6">
         {questions.map(({ question, items, total }) => (
           <div key={question}>
-            <p className="text-sm font-medium text-foreground mb-2">{question} <span className="text-xs text-muted-foreground">({total} respostas)</span></p>
+            <p className="text-sm font-medium text-foreground mb-2">
+              {question}{" "}
+              <span className="text-xs text-muted-foreground">
+                ({total} respostas)
+              </span>
+            </p>
             <div className="space-y-1.5">
               {items.map(([answer, count]) => (
                 <div key={answer} className="flex items-center gap-3">
-                  <span className="text-xs text-foreground w-40 truncate">{answer}</span>
+                  <span className="text-xs text-foreground w-40 truncate">
+                    {answer}
+                  </span>
                   <div className="flex-1 h-4 bg-secondary/50 rounded-md overflow-hidden">
                     <div
                       className="h-full rounded-md bg-primary/40"
                       style={{ width: `${(count / total) * 100}%` }}
                     />
                   </div>
-                  <span className="text-xs text-muted-foreground w-16 text-right">{count} ({Math.round((count / total) * 100)}%)</span>
+                  <span className="text-xs text-muted-foreground w-16 text-right">
+                    {count} ({Math.round((count / total) * 100)}%)
+                  </span>
                 </div>
               ))}
             </div>

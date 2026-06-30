@@ -1,4 +1,12 @@
-import { LayoutDashboard, Users, BarChart3, Link2, Shield, Settings, type LucideIcon } from "lucide-react";
+import {
+  LayoutDashboard,
+  Users,
+  BarChart3,
+  Link2,
+  Shield,
+  Settings,
+  type LucideIcon,
+} from "lucide-react";
 import { useAuth } from "~/core/auth";
 
 export type NavItem = {
@@ -14,12 +22,37 @@ export function useNavItems() {
   const p = permissoes;
 
   const navItems: NavItem[] = [
-    ...(p?.ver_todos_cadastros === true ? [{ path: "/dashboard", label: "Dashboard", icon: LayoutDashboard }] : []),
-    ...(p?.gerar_links === true ? [{ path: "/consultor", label: amb === "consultor" ? "Gerar Links" : "Consultor", icon: Link2 }] : []),
-    ...((p?.ver_todos_cadastros === true || p?.gerar_links === true) ? [{ path: "/clientes", label: "Clientes", icon: Users, matchPaths: ["/consultor/clientes"] }] : []),
-    ...(p?.ver_relatorios === true ? [{ path: "/relatorios", label: "Relatórios", icon: BarChart3 }] : []),
-    ...(p?.gerenciar_credenciais === true ? [{ path: "/credenciais", label: "Credenciais", icon: Shield }] : []),
-    ...(p?.gerenciar_config === true ? [{ path: "/global/acoes", label: "Config", icon: Settings }] : []),
+    ...(p?.ver_todos_cadastros === true
+      ? [{ path: "/dashboard", label: "Dashboard", icon: LayoutDashboard }]
+      : []),
+    ...(p?.gerar_links === true
+      ? [
+          {
+            path: "/consultor",
+            label: amb === "consultor" ? "Gerar Links" : "Consultor",
+            icon: Link2,
+          },
+        ]
+      : []),
+    ...(p?.ver_todos_cadastros === true || p?.gerar_links === true
+      ? [
+          {
+            path: "/clientes",
+            label: "Clientes",
+            icon: Users,
+            matchPaths: ["/consultor/clientes"],
+          },
+        ]
+      : []),
+    ...(p?.ver_relatorios === true
+      ? [{ path: "/relatorios", label: "Relatórios", icon: BarChart3 }]
+      : []),
+    ...(p?.gerenciar_credenciais === true
+      ? [{ path: "/credenciais", label: "Credenciais", icon: Shield }]
+      : []),
+    ...(p?.gerenciar_config === true
+      ? [{ path: "/global/acoes", label: "Config", icon: Settings }]
+      : []),
   ];
 
   return navItems;

@@ -1,7 +1,10 @@
 import { createRoute } from "@tanstack/react-router";
 import { authLayout } from "./_auth";
 import { useAuth } from "~/lib/auth";
-import { useMapasDistributors, useMapasConsultants } from "~/features/mapas/hooks/useMapasData";
+import {
+  useMapasDistributors,
+  useMapasConsultants,
+} from "~/features/mapas/hooks/useMapasData";
 import { Building2, Users2, MapPin } from "lucide-react";
 import { useNavigate } from "@tanstack/react-router";
 
@@ -33,21 +36,37 @@ function MapasInsightsPage() {
   return (
     <div className="mx-auto max-w-6xl space-y-6 p-6">
       <header>
-        <h1 className="text-2xl font-bold tracking-tight">Bem-vindo, {profile?.nome || "—"}</h1>
-        <p className="text-sm text-muted-foreground">Visão geral dos dados de presença comercial.</p>
+        <h1 className="text-2xl font-bold tracking-tight">
+          Bem-vindo, {profile?.nome || "—"}
+        </h1>
+        <p className="text-sm text-muted-foreground">
+          Visão geral dos dados de presença comercial.
+        </p>
       </header>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {(canDist || isSuper) && (
           <>
-            <StatCard icon={Building2} label="Distribuidores" value={distTotal} />
-            <StatCard icon={MapPin} label="Estados com distribuidor" value={distStates} />
+            <StatCard
+              icon={Building2}
+              label="Distribuidores"
+              value={distTotal}
+            />
+            <StatCard
+              icon={MapPin}
+              label="Estados com distribuidor"
+              value={distStates}
+            />
           </>
         )}
         {(canCons || isSuper) && (
           <>
             <StatCard icon={Users2} label="Consultores" value={consTotal} />
-            <StatCard icon={MapPin} label="Estados com consultor" value={consStates} />
+            <StatCard
+              icon={MapPin}
+              label="Estados com consultor"
+              value={consStates}
+            />
           </>
         )}
       </div>
@@ -74,11 +93,21 @@ function MapasInsightsPage() {
   );
 }
 
-function StatCard({ icon: Icon, label, value }: { icon: typeof Building2; label: string; value: number }) {
+function StatCard({
+  icon: Icon,
+  label,
+  value,
+}: {
+  icon: typeof Building2;
+  label: string;
+  value: number;
+}) {
   return (
     <div className="rounded-xl border border-surface bg-card p-4">
       <div className="flex items-center justify-between">
-        <p className="text-xs uppercase tracking-wider text-muted-foreground">{label}</p>
+        <p className="text-xs uppercase tracking-wider text-muted-foreground">
+          {label}
+        </p>
         <Icon className="h-4 w-4 text-accent" />
       </div>
       <p className="mt-2 text-3xl font-bold text-accent">{value}</p>
@@ -86,9 +115,22 @@ function StatCard({ icon: Icon, label, value }: { icon: typeof Building2; label:
   );
 }
 
-function QuickLink({ to, title, desc, navigate }: { to: string; title: string; desc: string; navigate: any }) {
+function QuickLink({
+  to,
+  title,
+  desc,
+  navigate,
+}: {
+  to: string;
+  title: string;
+  desc: string;
+  navigate: any;
+}) {
   return (
-    <button onClick={() => navigate({ to })} className="block w-full text-left rounded-xl border border-surface bg-card p-4 transition-colors hover:bg-surface-hover">
+    <button
+      onClick={() => navigate({ to })}
+      className="block w-full text-left rounded-xl border border-surface bg-card p-4 transition-colors hover:bg-surface-hover"
+    >
       <p className="font-semibold">{title}</p>
       <p className="mt-1 text-sm text-muted-foreground">{desc}</p>
     </button>

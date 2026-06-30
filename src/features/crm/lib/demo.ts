@@ -35,7 +35,8 @@ export const DEMO_ACCOUNTS: Record<
     password: DEMO_PASSWORD,
     title: "Gestor",
     subtitle: "Equipe regional",
-    description: "Acompanha visitas dos consultores, transfere clientes e abre BI da equipe.",
+    description:
+      "Acompanha visitas dos consultores, transfere clientes e abre BI da equipe.",
     flagKey: "demo_gestor_enabled",
   },
   consultor: {
@@ -43,7 +44,8 @@ export const DEMO_ACCOUNTS: Record<
     password: DEMO_PASSWORD,
     title: "Consultor",
     subtitle: "Carteira em campo",
-    description: "Kanban da carteira, histórico de visitas e registro rápido de atendimento.",
+    description:
+      "Kanban da carteira, histórico de visitas e registro rápido de atendimento.",
     flagKey: "demo_consultor_enabled",
   },
 };

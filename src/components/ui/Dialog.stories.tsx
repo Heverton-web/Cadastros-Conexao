@@ -1,14 +1,23 @@
-import type { Meta, StoryObj } from '@storybook/react'
-import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from './dialog'
+import type { Meta, StoryObj } from "@storybook/react";
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+  DialogClose,
+} from "./dialog";
 
 const meta: Meta<typeof Dialog> = {
-  title: 'UI/Dialog',
+  title: "UI/Dialog",
   component: Dialog,
-  tags: ['autodocs'],
-}
+  tags: ["autodocs"],
+};
 
-export default meta
-type Story = StoryObj<typeof Dialog>
+export default meta;
+type Story = StoryObj<typeof Dialog>;
 
 export const Default: Story = {
   render: () => (
@@ -22,11 +31,13 @@ export const Default: Story = {
         <DialogHeader>
           <DialogTitle>Título do Dialog</DialogTitle>
           <DialogDescription>
-            Esta é uma descrição do dialog com informações relevantes para o usuário.
+            Esta é uma descrição do dialog com informações relevantes para o
+            usuário.
           </DialogDescription>
         </DialogHeader>
         <p className="text-sm text-text-main">
-          Conteúdo do dialog pode ser qualquer coisa — formulários, detalhes, confirmações.
+          Conteúdo do dialog pode ser qualquer coisa — formulários, detalhes,
+          confirmações.
         </p>
         <DialogFooter>
           <DialogClose asChild>
@@ -41,4 +52,4 @@ export const Default: Story = {
       </DialogContent>
     </Dialog>
   ),
-}
+};

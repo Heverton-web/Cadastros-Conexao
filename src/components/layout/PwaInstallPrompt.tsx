@@ -10,16 +10,22 @@ const LS_KEY = "pwa-prompt-dismissed";
 
 function isIOS(): boolean {
   if (typeof navigator === "undefined") return false;
-  return /iPad|iPhone|iPod/.test(navigator.userAgent) && !("MSStream" in window);
+  return (
+    /iPad|iPhone|iPod/.test(navigator.userAgent) && !("MSStream" in window)
+  );
 }
 
 function isStandalone(): boolean {
   if (typeof navigator === "undefined") return false;
-  return window.matchMedia("(display-mode: standalone)").matches || (navigator as Navigator & { standalone?: boolean }).standalone === true;
+  return (
+    window.matchMedia("(display-mode: standalone)").matches ||
+    (navigator as Navigator & { standalone?: boolean }).standalone === true
+  );
 }
 
 export function PwaInstallPrompt() {
-  const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
+  const [deferredPrompt, setDeferredPrompt] =
+    useState<BeforeInstallPromptEvent | null>(null);
   const [show, setShow] = useState(false);
   const [iosDevice, setIosDevice] = useState(false);
 
@@ -77,7 +83,9 @@ export function PwaInstallPrompt() {
         </div>
 
         <div className="flex-1 min-w-0">
-          <p className="text-sm font-bold text-text-main">Instalar Cadastros Conexão</p>
+          <p className="text-sm font-bold text-text-main">
+            Instalar Cadastros Conexão
+          </p>
           <p className="text-xs text-text-muted mt-0.5">
             {iosDevice
               ? "Toque em Compartilhar e depois em Adicionar à Tela de Início"
@@ -88,8 +96,12 @@ export function PwaInstallPrompt() {
             <div className="mt-2 flex items-center gap-1.5 rounded-lg bg-bg-dark px-3 py-2">
               <Share2 size={14} className="text-accent shrink-0" />
               <span className="text-xs text-text-muted leading-relaxed">
-                1. Toque em <strong className="text-text-main">Compartilhar</strong>{" "}
-                2. Role até <strong className="text-text-main">Adicionar à Tela de Início</strong>
+                1. Toque em{" "}
+                <strong className="text-text-main">Compartilhar</strong> 2. Role
+                até{" "}
+                <strong className="text-text-main">
+                  Adicionar à Tela de Início
+                </strong>
               </span>
             </div>
           )}
@@ -104,7 +116,10 @@ export function PwaInstallPrompt() {
               Instalar
             </button>
           )}
-          <button onClick={dismiss} className="rounded-lg p-2 text-text-muted hover:text-text-main transition-colors">
+          <button
+            onClick={dismiss}
+            className="rounded-lg p-2 text-text-muted hover:text-text-main transition-colors"
+          >
             <X size={18} />
           </button>
         </div>

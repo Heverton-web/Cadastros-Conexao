@@ -15,7 +15,9 @@ export async function listarAnexos(tarefaId: string): Promise<Attachment[]> {
 }
 
 export async function criarAnexo(input: AttachmentInput): Promise<Attachment> {
-  const { data: { user } } = await supabase.auth.getUser();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
   if (!user) throw new Error("Não autenticado");
 
   const { data, error } = await supabase
@@ -32,11 +34,19 @@ export async function criarAnexo(input: AttachmentInput): Promise<Attachment> {
   if (error) throw error;
   const anexo = data as Attachment;
 
-  dispararEventoModulo(MODULO_KEY, "tarefa.anexo_adicionado", { anexo, tarefa_id: input.tarefa_id }, null).catch(() => {});
+  dispararEventoModulo(
+    MODULO_KEY,
+    "tarefa.anexo_adicionado",
+    { anexo, tarefa_id: input.tarefa_id },
+    null,
+  ).catch(() => {});
   return anexo;
 }
 
-export async function atualizarAnexo(id: string, input: Partial<AttachmentInput>): Promise<Attachment> {
+export async function atualizarAnexo(
+  id: string,
+  input: Partial<AttachmentInput>,
+): Promise<Attachment> {
   const { data, error } = await supabase
     .from("funis_attachments")
     .update(input)

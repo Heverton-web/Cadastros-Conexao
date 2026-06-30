@@ -1,4 +1,5 @@
-export type SurveyQuestionType = 'nps' | 'single_choice' | 'multi_choice' | 'text' | 'matrix';
+export type SurveyQuestionType =
+  "nps" | "single_choice" | "multi_choice" | "text" | "matrix";
 
 export type NpsPergunta = {
   id: string;
@@ -63,12 +64,12 @@ export type NpsRelatorioEnvio = {
   created_at: string;
 };
 
-export type NpsBucket = 'all' | 'detractors' | 'passives' | 'promoters';
+export type NpsBucket = "all" | "detractors" | "passives" | "promoters";
 
 export const MATRIX_COLUMN_MAP: Record<string, string> = {
-  'Facilidade de pedido': 'matrix_facilidade_pedido',
-  'Clareza das condições comerciais': 'matrix_clareza_condicoes',
-  'Prazo de entrega': 'matrix_prazo_entrega',
-  'Disponibilidade de produtos': 'matrix_disponibilidade_produtos',
-  'Comunicação durante o processo': 'matrix_comunicacao',
+  "Facilidade de pedido": "matrix_facilidade_pedido",
+  "Clareza das condições comerciais": "matrix_clareza_condicoes",
+  "Prazo de entrega": "matrix_prazo_entrega",
+  "Disponibilidade de produtos": "matrix_disponibilidade_produtos",
+  "Comunicação durante o processo": "matrix_comunicacao",
 };

@@ -1,8 +1,22 @@
 import React, { useState } from "react";
 import { useNavigate, useParams } from "@tanstack/react-router";
-import { ArrowLeft, Plus, Settings, Share2, Pencil, Trash2 } from "lucide-react";
+import {
+  ArrowLeft,
+  Plus,
+  Settings,
+  Share2,
+  Pencil,
+  Trash2,
+} from "lucide-react";
 import { Button } from "~/components/ui/button";
-import { useFunil, useAtualizarFunil, useDeletarFunil, useCriarColuna, useAtualizarColuna, useDeletarColuna } from "../hooks/useFunisData";
+import {
+  useFunil,
+  useAtualizarFunil,
+  useDeletarFunil,
+  useCriarColuna,
+  useAtualizarColuna,
+  useDeletarColuna,
+} from "../hooks/useFunisData";
 import { KanbanView } from "./KanbanView";
 import { ShareModal } from "./ShareModal";
 import { useAuth } from "~/lib/auth";
@@ -11,15 +25,30 @@ import { toast } from "react-hot-toast";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { Textarea } from "~/components/ui/textarea";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "~/components/ui/dialog";
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "~/components/ui/alert-dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "~/components/ui/dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "~/components/ui/alert-dialog";
 
 export function FunilDetallePage() {
   const { funilId } = useParams({ strict: false }) as { funilId: string };
   const navigate = useNavigate();
   const { data: funil, isLoading } = useFunil(funilId);
   const { profile } = useAuth();
-  
+
   const atualizarFunil = useAtualizarFunil();
   const deletarFunil = useDeletarFunil();
   const criarColuna = useCriarColuna();
@@ -32,14 +61,20 @@ export function FunilDetallePage() {
 
   const [editTitle, setEditTitle] = useState("");
   const [editDescription, setEditDescription] = useState("");
-  const [editColumns, setEditColumns] = useState<{ id?: string; titulo: string; posicao: number }[]>([]);
+  const [editColumns, setEditColumns] = useState<
+    { id?: string; titulo: string; posicao: number }[]
+  >([]);
 
   if (isLoading) {
     return <div className="p-6 text-center text-text-muted">Carregando...</div>;
   }
 
   if (!funil) {
-    return <div className="p-6 text-center text-text-muted">Funil não encontrado</div>;
+    return (
+      <div className="p-6 text-center text-text-muted">
+        Funil não encontrado
+      </div>
+    );
   }
 
   const isOwner = funil.created_by === profile?.id;
@@ -47,7 +82,17 @@ export function FunilDetallePage() {
   const handleOpenEdit = () => {
     setEditTitle(funil.titulo);
     setEditDescription(funil.descricao || "");
-    setEditColumns(funil.colunas ? [...funil.colunas].sort((a: any, b: any) => a.posicao - b.posicao).map((c: any) => ({ id: c.id, titulo: c.titulo, posicao: c.posicao })) : []);
+    setEditColumns(
+      funil.colunas
+        ? [...funil.colunas]
+            .sort((a: any, b: any) => a.posicao - b.posicao)
+            .map((c: any) => ({
+              id: c.id,
+              titulo: c.titulo,
+              posicao: c.posicao,
+            }))
+        : [],
+    );
     setShowEdit(true);
   };
 
@@ -65,9 +110,13 @@ export function FunilDetallePage() {
 
       // Sincronizar colunas
       const originalColIds = funil.colunas?.map((c: any) => c.id) || [];
-      const currentCols = editColumns.map(c => c.id).filter(Boolean) as string[];
-      const removedColIds = originalColIds.filter((id: string) => !currentCols.includes(id));
-      
+      const currentCols = editColumns
+        .map((c) => c.id)
+        .filter(Boolean) as string[];
+      const removedColIds = originalColIds.filter(
+        (id: string) => !currentCols.includes(id),
+      );
+
       for (const id of removedColIds) {
         await deletarColuna.mutateAsync(id);
       }
@@ -79,17 +128,20 @@ export function FunilDetallePage() {
 
         if (col.id) {
           const original = funil.colunas?.find((c: any) => c.id === col.id);
-          if (original && (original.titulo !== activeTitle || original.posicao !== i)) {
+          if (
+            original &&
+            (original.titulo !== activeTitle || original.posicao !== i)
+          ) {
             await atualizarColuna.mutateAsync({
               id: col.id,
-              input: { titulo: activeTitle, posicao: i }
+              input: { titulo: activeTitle, posicao: i },
             });
           }
         } else {
           await criarColuna.mutateAsync({
             funil_id: funil.id,
             titulo: activeTitle,
-            posicao: i
+            posicao: i,
           });
         }
       }
@@ -122,7 +174,9 @@ export function FunilDetallePage() {
             <ArrowLeft className="w-5 h-5" />
           </button>
           <div>
-            <h1 className="text-lg font-semibold text-text-main">{funil.titulo}</h1>
+            <h1 className="text-lg font-semibold text-text-main">
+              {funil.titulo}
+            </h1>
             {funil.descricao && (
               <p className="text-xs text-text-muted">{funil.descricao}</p>
             )}
@@ -169,22 +223,51 @@ export function FunilDetallePage() {
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Excluir funil?</AlertDialogTitle>
-            <AlertDialogDescription>Esta ação é permanente. Todas as colunas e tarefas serão removidas.</AlertDialogDescription>
+            <AlertDialogDescription>
+              Esta ação é permanente. Todas as colunas e tarefas serão
+              removidas.
+            </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancelar</AlertDialogCancel>
-            <AlertDialogAction onClick={handleDelete} className="bg-destructive text-destructive-foreground">Excluir</AlertDialogAction>
+            <AlertDialogAction
+              onClick={handleDelete}
+              className="bg-destructive text-destructive-foreground"
+            >
+              Excluir
+            </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
 
       <Dialog open={showEdit} onOpenChange={setShowEdit}>
         <DialogContent className="border-none">
-          <DialogHeader><DialogTitle className="font-display text-2xl">Editar funil</DialogTitle></DialogHeader>
+          <DialogHeader>
+            <DialogTitle className="font-display text-2xl">
+              Editar funil
+            </DialogTitle>
+          </DialogHeader>
           <form onSubmit={handleUpdate} className="space-y-5">
-            <div className="space-y-2"><Label>Nome</Label><Input required value={editTitle} onChange={(e) => setEditTitle(e.target.value)} placeholder="Ex.: Refatoração do backend" /></div>
-            <div className="space-y-2"><Label>Descrição</Label><Textarea rows={3} value={editDescription} onChange={(e) => setEditDescription(e.target.value)} placeholder="Contexto e objetivo do funil" className="min-h-[96px] resize-y" /></div>
-            
+            <div className="space-y-2">
+              <Label>Nome</Label>
+              <Input
+                required
+                value={editTitle}
+                onChange={(e) => setEditTitle(e.target.value)}
+                placeholder="Ex.: Refatoração do backend"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label>Descrição</Label>
+              <Textarea
+                rows={3}
+                value={editDescription}
+                onChange={(e) => setEditDescription(e.target.value)}
+                placeholder="Contexto e objetivo do funil"
+                className="min-h-[96px] resize-y"
+              />
+            </div>
+
             <div className="space-y-2.5">
               <Label>Etapas (Colunas)</Label>
               <div className="space-y-2 max-h-[160px] overflow-y-auto pr-1">
@@ -195,7 +278,10 @@ export function FunilDetallePage() {
                       value={col.titulo}
                       onChange={(e) => {
                         const newCols = [...editColumns];
-                        newCols[idx] = { ...newCols[idx], titulo: e.target.value };
+                        newCols[idx] = {
+                          ...newCols[idx],
+                          titulo: e.target.value,
+                        };
                         setEditColumns(newCols);
                       }}
                       placeholder={`Etapa ${idx + 1}`}
@@ -207,7 +293,9 @@ export function FunilDetallePage() {
                         variant="ghost-destructive"
                         size="icon"
                         onClick={() => {
-                          const newCols = editColumns.filter((_, i) => i !== idx);
+                          const newCols = editColumns.filter(
+                            (_, i) => i !== idx,
+                          );
                           setEditColumns(newCols);
                         }}
                         className="shrink-0 h-9 w-9"
@@ -222,15 +310,32 @@ export function FunilDetallePage() {
                 type="button"
                 variant="outline"
                 size="sm"
-                onClick={() => setEditColumns([...editColumns, { titulo: "", posicao: editColumns.length }])}
+                onClick={() =>
+                  setEditColumns([
+                    ...editColumns,
+                    { titulo: "", posicao: editColumns.length },
+                  ])
+                }
                 className="w-full border-dashed border-border/60 hover:bg-surface/50 text-xs gap-1.5"
               >
                 <Plus className="h-3.5 w-3.5" /> Adicionar etapa
               </Button>
             </div>
             <DialogFooter>
-              <Button type="button" variant="ghost" onClick={() => setShowEdit(false)}>Cancelar</Button>
-              <Button type="submit" disabled={atualizarFunil.isPending} className="gradient-gold text-[#0f172a] font-semibold">{atualizarFunil.isPending ? "Salvando..." : "Salvar alterações"}</Button>
+              <Button
+                type="button"
+                variant="ghost"
+                onClick={() => setShowEdit(false)}
+              >
+                Cancelar
+              </Button>
+              <Button
+                type="submit"
+                disabled={atualizarFunil.isPending}
+                className="gradient-gold text-[#0f172a] font-semibold"
+              >
+                {atualizarFunil.isPending ? "Salvando..." : "Salvar alterações"}
+              </Button>
             </DialogFooter>
           </form>
         </DialogContent>

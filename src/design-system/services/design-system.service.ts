@@ -50,7 +50,7 @@ export async function saveDesignGlobal(payload: {
       versao: payload.versao ?? "1.0.0",
       updated_at: new Date().toISOString(),
     },
-    { onConflict: "id", ignoreDuplicates: false }
+    { onConflict: "id", ignoreDuplicates: false },
   );
   if (error) throw error;
 }
@@ -58,7 +58,7 @@ export async function saveDesignGlobal(payload: {
 // ── Empresa ──
 
 export async function getDesignEmpresa(
-  empresaId: string
+  empresaId: string,
 ): Promise<DesignSystemEmpresa | null> {
   const { data, error } = await supabase
     .from("design_system_empresa")
@@ -83,7 +83,7 @@ export async function saveDesignEmpresa(payload: {
       versao: payload.versao ?? "1.0.0",
       updated_at: new Date().toISOString(),
     },
-    { onConflict: "empresa_id" }
+    { onConflict: "empresa_id" },
   );
   if (error) throw error;
 }
@@ -92,7 +92,7 @@ export async function saveDesignEmpresa(payload: {
 
 export async function getDesignModulo(
   empresaId: string,
-  moduloKey: string
+  moduloKey: string,
 ): Promise<DesignSystemModulo | null> {
   const { data, error } = await supabase
     .from("design_system_modulo")
@@ -118,7 +118,7 @@ export async function saveDesignModulo(payload: {
       versao: payload.versao ?? "1.0.0",
       updated_at: new Date().toISOString(),
     },
-    { onConflict: "empresa_id,modulo_key" }
+    { onConflict: "empresa_id,modulo_key" },
   );
   if (error) throw error;
 }

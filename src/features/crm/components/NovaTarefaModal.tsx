@@ -160,7 +160,10 @@ export function NovaTarefaModal({
               <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
                 Tipo
               </Label>
-              <Select value={form.tipo} onValueChange={(v) => update("tipo", v)}>
+              <Select
+                value={form.tipo}
+                onValueChange={(v) => update("tipo", v)}
+              >
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
@@ -240,7 +243,11 @@ export function NovaTarefaModal({
             >
               Cancelar
             </Button>
-            <Button type="submit" disabled={busy} className="mt-4 min-w-[140px]">
+            <Button
+              type="submit"
+              disabled={busy}
+              className="mt-4 min-w-[140px]"
+            >
               {busy ? (
                 <Loader2 className="h-4 w-4 animate-spin" />
               ) : (

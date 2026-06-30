@@ -1,5 +1,12 @@
 import { useState } from "react";
-import { Pencil, Trash2, ExternalLink, Star, ToggleLeft, ToggleRight } from "lucide-react";
+import {
+  Pencil,
+  Trash2,
+  ExternalLink,
+  Star,
+  ToggleLeft,
+  ToggleRight,
+} from "lucide-react";
 import { Button } from "~/components/ui/button";
 import {
   AlertDialog,
@@ -11,8 +18,16 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "~/components/ui/alert-dialog";
-import type { EmpresaLinktreeLink, EmpresaLinktreeSection, EmpresaLinkInput } from "../types-empresa";
-import { useDeletarLink, useAtualizarLink, useCriarLink } from "../hooks/useEmpresaLinktree";
+import type {
+  EmpresaLinktreeLink,
+  EmpresaLinktreeSection,
+  EmpresaLinkInput,
+} from "../types-empresa";
+import {
+  useDeletarLink,
+  useAtualizarLink,
+  useCriarLink,
+} from "../hooks/useEmpresaLinktree";
 import { LinkForm } from "./LinkForm";
 import { DynamicIcon } from "./DynamicIcon";
 
@@ -23,7 +38,9 @@ interface Props {
 }
 
 export function LinksList({ sections, links, empresaId }: Props) {
-  const [editingLink, setEditingLink] = useState<EmpresaLinktreeLink | null>(null);
+  const [editingLink, setEditingLink] = useState<EmpresaLinktreeLink | null>(
+    null,
+  );
   const [showCreate, setShowCreate] = useState(false);
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
@@ -40,7 +57,10 @@ export function LinksList({ sections, links, empresaId }: Props) {
 
   async function handleCreate(input: EmpresaLinkInput, sectionId: string) {
     await new Promise<void>((resolve, reject) => {
-      criar.mutate({ sectionId, input }, { onSuccess: () => resolve(), onError: reject });
+      criar.mutate(
+        { sectionId, input },
+        { onSuccess: () => resolve(), onError: reject },
+      );
     });
     setShowCreate(false);
   }
@@ -48,7 +68,10 @@ export function LinksList({ sections, links, empresaId }: Props) {
   async function handleUpdate(input: EmpresaLinkInput) {
     if (!editingLink) return;
     await new Promise<void>((resolve, reject) => {
-      atualizar.mutate({ id: editingLink.id, input }, { onSuccess: () => resolve(), onError: reject });
+      atualizar.mutate(
+        { id: editingLink.id, input },
+        { onSuccess: () => resolve(), onError: reject },
+      );
     });
     setEditingLink(null);
   }
@@ -99,7 +122,9 @@ export function LinksList({ sections, links, empresaId }: Props) {
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <h3 className="font-semibold">Links</h3>
-        <Button size="sm" onClick={() => setShowCreate(true)}>Novo Link</Button>
+        <Button size="sm" onClick={() => setShowCreate(true)}>
+          Novo Link
+        </Button>
       </div>
 
       {sections.map((sec) => {
@@ -108,39 +133,80 @@ export function LinksList({ sections, links, empresaId }: Props) {
 
         return (
           <div key={sec.id} className="space-y-2">
-            <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{sec.titulo}</h4>
+            <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+              {sec.titulo}
+            </h4>
             {secLinks.map((link) => (
               <div
                 key={link.id}
                 className={`flex items-center gap-2 rounded-lg border p-3 ${
-                  link.ativo ? "border-border bg-surface" : "border-border/50 bg-surface/50 opacity-60"
+                  link.ativo
+                    ? "border-border bg-surface"
+                    : "border-border/50 bg-surface/50 opacity-60"
                 }`}
               >
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
-                    {link.icone && <span className="text-sm"><DynamicIcon name={link.icone} size={14} /></span>}
-                    <span className="truncate text-sm font-medium">{link.titulo}</span>
-                    {link.destaque && <Star className="size-3 shrink-0 fill-current text-yellow-500" />}
+                    {link.icone && (
+                      <span className="text-sm">
+                        <DynamicIcon name={link.icone} size={14} />
+                      </span>
+                    )}
+                    <span className="truncate text-sm font-medium">
+                      {link.titulo}
+                    </span>
+                    {link.destaque && (
+                      <Star className="size-3 shrink-0 fill-current text-yellow-500" />
+                    )}
                   </div>
-                  <a href={link.url} target="_blank" rel="noreferrer" className="flex items-center gap-1 text-xs text-muted-foreground hover:underline">
+                  <a
+                    href={link.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="flex items-center gap-1 text-xs text-muted-foreground hover:underline"
+                  >
                     <ExternalLink className="size-3" />
                     <span className="truncate">{link.url}</span>
                   </a>
                 </div>
 
-                <Button size="sm" variant="ghost" onClick={() => toggleDestaque(link)} title="Destaque">
-                  <Star className={`size-4 ${link.destaque ? "fill-yellow-500 text-yellow-500" : ""}`} />
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  onClick={() => toggleDestaque(link)}
+                  title="Destaque"
+                >
+                  <Star
+                    className={`size-4 ${link.destaque ? "fill-yellow-500 text-yellow-500" : ""}`}
+                  />
                 </Button>
 
-                <Button size="sm" variant="ghost" onClick={() => toggleAtivo(link)} title={link.ativo ? "Inativar" : "Ativar"}>
-                  {link.ativo ? <ToggleRight className="size-4 text-green-500" /> : <ToggleLeft className="size-4" />}
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  onClick={() => toggleAtivo(link)}
+                  title={link.ativo ? "Inativar" : "Ativar"}
+                >
+                  {link.ativo ? (
+                    <ToggleRight className="size-4 text-green-500" />
+                  ) : (
+                    <ToggleLeft className="size-4" />
+                  )}
                 </Button>
 
-                <Button size="sm" variant="ghost" onClick={() => setEditingLink(link)}>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  onClick={() => setEditingLink(link)}
+                >
                   <Pencil className="size-4" />
                 </Button>
 
-                <Button size="sm" variant="ghost" onClick={() => setDeletingId(link.id)}>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  onClick={() => setDeletingId(link.id)}
+                >
                   <Trash2 className="size-4 text-error" />
                 </Button>
               </div>
@@ -150,18 +216,30 @@ export function LinksList({ sections, links, empresaId }: Props) {
       })}
 
       {links.length === 0 && (
-        <p className="py-8 text-center text-sm text-muted-foreground">Nenhum link criado ainda.</p>
+        <p className="py-8 text-center text-sm text-muted-foreground">
+          Nenhum link criado ainda.
+        </p>
       )}
 
-      <AlertDialog open={!!deletingId} onOpenChange={(o) => !o && setDeletingId(null)}>
+      <AlertDialog
+        open={!!deletingId}
+        onOpenChange={(o) => !o && setDeletingId(null)}
+      >
         <AlertDialogContent className="bg-card border-border">
           <AlertDialogHeader>
             <AlertDialogTitle>Excluir link?</AlertDialogTitle>
-            <AlertDialogDescription>Esta acao nao pode ser desfeita.</AlertDialogDescription>
+            <AlertDialogDescription>
+              Esta acao nao pode ser desfeita.
+            </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancelar</AlertDialogCancel>
-            <AlertDialogAction onClick={handleDelete} className="bg-destructive">Excluir</AlertDialogAction>
+            <AlertDialogAction
+              onClick={handleDelete}
+              className="bg-destructive"
+            >
+              Excluir
+            </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>

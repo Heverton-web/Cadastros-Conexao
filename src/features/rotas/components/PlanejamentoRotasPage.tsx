@@ -15,17 +15,23 @@ import { Plus, Route, MapPin, Calendar, Filter } from "lucide-react";
 import { useRotas } from "../hooks/useRotas";
 import { useContarClientesBase } from "../hooks/useClientesBase";
 import { NovaRotaModal } from "./NovaRotaModal";
-import { ROTA_STATUS_LABEL, ROTA_STATUS_COLOR, ROTA_TIPO_LABEL } from "../types";
+import {
+  ROTA_STATUS_LABEL,
+  ROTA_STATUS_COLOR,
+  ROTA_TIPO_LABEL,
+} from "../types";
 import type { RotaStatus } from "../types";
 import { formatDate } from "~/lib/utils/format";
 
 export function PlanejamentoRotasPage() {
   const navigate = useNavigate();
-  const [filtroStatus, setFiltroStatus] = useState<RotaStatus | "todas">("todas");
+  const [filtroStatus, setFiltroStatus] = useState<RotaStatus | "todas">(
+    "todas",
+  );
   const [showNovaRota, setShowNovaRota] = useState(false);
 
   const { data: rotas, isLoading } = useRotas(
-    filtroStatus !== "todas" ? { status: filtroStatus } : undefined
+    filtroStatus !== "todas" ? { status: filtroStatus } : undefined,
   );
   const { data: totalClientes } = useContarClientesBase();
 
@@ -77,7 +83,9 @@ export function PlanejamentoRotasPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {rotas?.filter((r) => r.data_rota === new Date().toISOString().slice(0, 10)).length ?? 0}
+              {rotas?.filter(
+                (r) => r.data_rota === new Date().toISOString().slice(0, 10),
+              ).length ?? 0}
             </div>
             <p className="text-xs text-muted-foreground">programadas</p>
           </CardContent>
@@ -122,7 +130,9 @@ export function PlanejamentoRotasPage() {
             <Card
               key={rota.id}
               className="cursor-pointer hover:border-primary/50 transition-colors"
-              onClick={() => navigate({ to: "/rotas/$id", params: { id: rota.id } })}
+              onClick={() =>
+                navigate({ to: "/rotas/$id", params: { id: rota.id } })
+              }
             >
               <CardContent className="p-4">
                 <div className="flex items-start justify-between mb-3">
@@ -152,7 +162,9 @@ export function PlanejamentoRotasPage() {
         <Card>
           <CardContent className="p-12 text-center">
             <Route className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-            <h3 className="text-lg font-medium mb-2">Nenhuma rota encontrada</h3>
+            <h3 className="text-lg font-medium mb-2">
+              Nenhuma rota encontrada
+            </h3>
             <p className="text-muted-foreground mb-4">
               {totalClientes === 0
                 ? "Importe sua base de clientes para começar a planejar rotas"

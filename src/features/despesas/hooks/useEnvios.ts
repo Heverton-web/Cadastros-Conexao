@@ -1,12 +1,21 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "~/lib/auth";
 import {
-  listarEnviosEmpresa, listarEnviosPendentes, listarMeusEnvios, buscarEnvio,
-  criarOuAtualizarEnvio, aprovarEnvio, reprovarEnvio, aprovarEnvioParcial,
+  listarEnviosEmpresa,
+  listarEnviosPendentes,
+  listarMeusEnvios,
+  buscarEnvio,
+  criarOuAtualizarEnvio,
+  aprovarEnvio,
+  reprovarEnvio,
+  aprovarEnvioParcial,
 } from "../services/envios.service";
 import type { EnvioFiltros } from "../types";
 
-export function useEnviosEmpresa(filtros?: EnvioFiltros, overrideEmpresaId?: string) {
+export function useEnviosEmpresa(
+  filtros?: EnvioFiltros,
+  overrideEmpresaId?: string,
+) {
   const { profile } = useAuth();
   const empresa_id = overrideEmpresaId || (profile?.empresa_id ?? "");
 
@@ -55,10 +64,15 @@ export function useCriarOuAtualizarEnvio() {
   const usuario_id = profile?.id ?? "";
 
   return useMutation({
-    mutationFn: (periodo_id: string) => criarOuAtualizarEnvio(empresa_id, usuario_id, periodo_id),
+    mutationFn: (periodo_id: string) =>
+      criarOuAtualizarEnvio(empresa_id, usuario_id, periodo_id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["despesas-envios", empresa_id] });
-      queryClient.invalidateQueries({ queryKey: ["despesas-meus-envios", empresa_id] });
+      queryClient.invalidateQueries({
+        queryKey: ["despesas-envios", empresa_id],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["despesas-meus-envios", empresa_id],
+      });
     },
   });
 }
@@ -72,9 +86,15 @@ export function useAprovarEnvio() {
   return useMutation({
     mutationFn: (id: string) => aprovarEnvio(id, aprovador_id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["despesas-envios", empresa_id] });
-      queryClient.invalidateQueries({ queryKey: ["despesas-envios-pendentes", empresa_id] });
-      queryClient.invalidateQueries({ queryKey: ["despesas-empresa", empresa_id] });
+      queryClient.invalidateQueries({
+        queryKey: ["despesas-envios", empresa_id],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["despesas-envios-pendentes", empresa_id],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["despesas-empresa", empresa_id],
+      });
     },
   });
 }
@@ -86,11 +106,18 @@ export function useReprovarEnvio() {
   const aprovador_id = profile?.id ?? "";
 
   return useMutation({
-    mutationFn: ({ id, comentario }: { id: string; comentario: string }) => reprovarEnvio(id, aprovador_id, comentario),
+    mutationFn: ({ id, comentario }: { id: string; comentario: string }) =>
+      reprovarEnvio(id, aprovador_id, comentario),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["despesas-envios", empresa_id] });
-      queryClient.invalidateQueries({ queryKey: ["despesas-envios-pendentes", empresa_id] });
-      queryClient.invalidateQueries({ queryKey: ["despesas-empresa", empresa_id] });
+      queryClient.invalidateQueries({
+        queryKey: ["despesas-envios", empresa_id],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["despesas-envios-pendentes", empresa_id],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["despesas-empresa", empresa_id],
+      });
     },
   });
 }
@@ -102,12 +129,28 @@ export function useAprovarEnvioParcial() {
   const aprovador_id = profile?.id ?? "";
 
   return useMutation({
-    mutationFn: ({ id, aprovadas, reprovadas, comentario }: { id: string; aprovadas: string[]; reprovadas: string[]; comentario: string }) =>
+    mutationFn: ({
+      id,
+      aprovadas,
+      reprovadas,
+      comentario,
+    }: {
+      id: string;
+      aprovadas: string[];
+      reprovadas: string[];
+      comentario: string;
+    }) =>
       aprovarEnvioParcial(id, aprovador_id, aprovadas, reprovadas, comentario),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["despesas-envios", empresa_id] });
-      queryClient.invalidateQueries({ queryKey: ["despesas-envios-pendentes", empresa_id] });
-      queryClient.invalidateQueries({ queryKey: ["despesas-empresa", empresa_id] });
+      queryClient.invalidateQueries({
+        queryKey: ["despesas-envios", empresa_id],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["despesas-envios-pendentes", empresa_id],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["despesas-empresa", empresa_id],
+      });
     },
   });
 }

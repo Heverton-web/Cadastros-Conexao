@@ -15,7 +15,7 @@
   --state-empty: #0f1724;
   --map-stroke: #1e2d45;
   --map-stroke-selected: #f0d080;
-  --state-glow: drop-shadow(0 0 8px rgba(212,168,67,0.5));
+  --state-glow: drop-shadow(0 0 8px rgba(212, 168, 67, 0.5));
   --grad-exclusive-1: #d4a843;
   --grad-exclusive-2: #b8862e;
   --grad-partial-1: #b8944a;

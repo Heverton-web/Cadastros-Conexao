@@ -4,7 +4,7 @@ import type { RotaClienteBase, ClienteBaseFilters } from "../types";
 export async function listarClientesBase(
   empresaId?: string | null,
   usuarioId?: string | null,
-  filters?: ClienteBaseFilters
+  filters?: ClienteBaseFilters,
 ): Promise<RotaClienteBase[]> {
   let query = supabase
     .from("rotas_clientes_base")
@@ -17,13 +17,20 @@ export async function listarClientesBase(
 
   if (filters?.cidade) query = query.ilike("cidade", `%${filters.cidade}%`);
   if (filters?.estado) query = query.eq("estado", filters.estado);
-  if (filters?.categoria) query = query.ilike("categoria", `%${filters.categoria}%`);
-  if (filters?.ticket_medio_min) query = query.gte("ticket_medio", filters.ticket_medio_min);
-  if (filters?.ticket_medio_max) query = query.lte("ticket_medio", filters.ticket_medio_max);
-  if (filters?.ultima_visita_antes) query = query.lt("ultima_visita", filters.ultima_visita_antes);
-  if (filters?.ultima_visita_apos) query = query.gt("ultima_visita", filters.ultima_visita_apos);
+  if (filters?.categoria)
+    query = query.ilike("categoria", `%${filters.categoria}%`);
+  if (filters?.ticket_medio_min)
+    query = query.gte("ticket_medio", filters.ticket_medio_min);
+  if (filters?.ticket_medio_max)
+    query = query.lte("ticket_medio", filters.ticket_medio_max);
+  if (filters?.ultima_visita_antes)
+    query = query.lt("ultima_visita", filters.ultima_visita_antes);
+  if (filters?.ultima_visita_apos)
+    query = query.gt("ultima_visita", filters.ultima_visita_apos);
   if (filters?.search) {
-    query = query.or(`nome.ilike.%${filters.search}%,cidade.ilike.%${filters.search}%,categoria.ilike.%${filters.search}%`);
+    query = query.or(
+      `nome.ilike.%${filters.search}%,cidade.ilike.%${filters.search}%,categoria.ilike.%${filters.search}%`,
+    );
   }
 
   const { data, error } = await query;
@@ -41,7 +48,9 @@ export async function buscarClienteBase(id: string): Promise<RotaClienteBase> {
   return data as RotaClienteBase;
 }
 
-export async function criarClienteBase(cliente: Omit<RotaClienteBase, "id" | "created_at" | "updated_at">): Promise<RotaClienteBase> {
+export async function criarClienteBase(
+  cliente: Omit<RotaClienteBase, "id" | "created_at" | "updated_at">,
+): Promise<RotaClienteBase> {
   const { data, error } = await supabase
     .from("rotas_clientes_base")
     .insert(cliente)
@@ -51,7 +60,9 @@ export async function criarClienteBase(cliente: Omit<RotaClienteBase, "id" | "cr
   return data as RotaClienteBase;
 }
 
-export async function criarClientesBaseEmLote(clientes: Omit<RotaClienteBase, "id" | "created_at" | "updated_at">[]): Promise<{ inseridos: number; erros: string[] }> {
+export async function criarClientesBaseEmLote(
+  clientes: Omit<RotaClienteBase, "id" | "created_at" | "updated_at">[],
+): Promise<{ inseridos: number; erros: string[] }> {
   const erros: string[] = [];
   let inseridos = 0;
 
@@ -66,14 +77,19 @@ export async function criarClientesBaseEmLote(clientes: Omit<RotaClienteBase, "i
         inseridos++;
       }
     } catch (err) {
-      erros.push(`Erro ao inserir "${cliente.nome}": ${(err as Error).message}`);
+      erros.push(
+        `Erro ao inserir "${cliente.nome}": ${(err as Error).message}`,
+      );
     }
   }
 
   return { inseridos, erros };
 }
 
-export async function atualizarClienteBase(id: string, updates: Partial<RotaClienteBase>): Promise<RotaClienteBase> {
+export async function atualizarClienteBase(
+  id: string,
+  updates: Partial<RotaClienteBase>,
+): Promise<RotaClienteBase> {
   const { data, error } = await supabase
     .from("rotas_clientes_base")
     .update(updates)
@@ -92,7 +108,10 @@ export async function excluirClienteBase(id: string): Promise<void> {
   if (error) throw error;
 }
 
-export async function contarClientesBase(empresaId?: string | null, usuarioId?: string | null): Promise<number> {
+export async function contarClientesBase(
+  empresaId?: string | null,
+  usuarioId?: string | null,
+): Promise<number> {
   let query = supabase
     .from("rotas_clientes_base")
     .select("*", { count: "exact", head: true })

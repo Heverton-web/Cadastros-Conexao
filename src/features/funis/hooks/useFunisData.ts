@@ -19,7 +19,12 @@ import {
   concederPermissao,
   revogarPermissao,
 } from "../services";
-import type { FunilInput, FunilColunaInput, FunilTarefaInput, FunilPermissaoNivel } from "../types";
+import type {
+  FunilInput,
+  FunilColunaInput,
+  FunilTarefaInput,
+  FunilPermissaoNivel,
+} from "../types";
 
 export function useFunis() {
   const { profile } = useAuth();
@@ -52,7 +57,8 @@ export function useAtualizarFunil() {
   const { profile } = useAuth();
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, input }: { id: string; input: Partial<FunilInput> }) => atualizarFunil(id, input),
+    mutationFn: ({ id, input }: { id: string; input: Partial<FunilInput> }) =>
+      atualizarFunil(id, input),
     onSuccess: (_, { id }) => {
       qc.invalidateQueries({ queryKey: ["funis", profile?.empresa_id] });
       qc.invalidateQueries({ queryKey: ["funil", id] });
@@ -65,7 +71,8 @@ export function useDeletarFunil() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: deletarFunil,
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["funis", profile?.empresa_id] }),
+    onSuccess: () =>
+      qc.invalidateQueries({ queryKey: ["funis", profile?.empresa_id] }),
   });
 }
 
@@ -73,15 +80,23 @@ export function useCriarColuna() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: (input: FunilColunaInput) => criarColuna(input),
-    onSuccess: (_, vars) => qc.invalidateQueries({ queryKey: ["funil", vars.funil_id] }),
+    onSuccess: (_, vars) =>
+      qc.invalidateQueries({ queryKey: ["funil", vars.funil_id] }),
   });
 }
 
 export function useAtualizarColuna() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, titulo, input }: { id: string; titulo?: string; input?: Partial<FunilColunaInput> }) =>
-      atualizarColuna(id, input ?? { titulo: titulo! }),
+    mutationFn: ({
+      id,
+      titulo,
+      input,
+    }: {
+      id: string;
+      titulo?: string;
+      input?: Partial<FunilColunaInput>;
+    }) => atualizarColuna(id, input ?? { titulo: titulo! }),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["funil"] }),
   });
 }
@@ -106,15 +121,21 @@ export function useCriarTarefa() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: (input: FunilTarefaInput) => criarTarefa(input),
-    onSuccess: (_, vars) => qc.invalidateQueries({ queryKey: ["funil", vars.funil_id] }),
+    onSuccess: (_, vars) =>
+      qc.invalidateQueries({ queryKey: ["funil", vars.funil_id] }),
   });
 }
 
 export function useAtualizarTarefa() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, updates }: { id: string; updates: Parameters<typeof atualizarTarefa>[1] }) =>
-      atualizarTarefa(id, updates),
+    mutationFn: ({
+      id,
+      updates,
+    }: {
+      id: string;
+      updates: Parameters<typeof atualizarTarefa>[1];
+    }) => atualizarTarefa(id, updates),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["funil"] }),
   });
 }
@@ -122,8 +143,15 @@ export function useAtualizarTarefa() {
 export function useMoverTarefa() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: ({ tarefaId, novaColunaId, novaPosicao }: { tarefaId: string; novaColunaId: string; novaPosicao: number }) =>
-      moverTarefa(tarefaId, novaColunaId, novaPosicao),
+    mutationFn: ({
+      tarefaId,
+      novaColunaId,
+      novaPosicao,
+    }: {
+      tarefaId: string;
+      novaColunaId: string;
+      novaPosicao: number;
+    }) => moverTarefa(tarefaId, novaColunaId, novaPosicao),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["funil"] }),
   });
 }
@@ -131,8 +159,13 @@ export function useMoverTarefa() {
 export function useReordenarTarefas() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: ({ colunaId, tarefaIds }: { colunaId: string; tarefaIds: string[] }) =>
-      reordenarTarefas(colunaId, tarefaIds),
+    mutationFn: ({
+      colunaId,
+      tarefaIds,
+    }: {
+      colunaId: string;
+      tarefaIds: string[];
+    }) => reordenarTarefas(colunaId, tarefaIds),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["funil"] }),
   });
 }
@@ -156,9 +189,17 @@ export function usePermissoesFunil(funilId: string | null) {
 export function useConcederPermissao() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: ({ funilId, userId, nivel }: { funilId: string; userId: string; nivel: FunilPermissaoNivel }) =>
-      concederPermissao(funilId, userId, nivel),
-    onSuccess: (_, vars) => qc.invalidateQueries({ queryKey: ["funis", "permissoes", vars.funilId] }),
+    mutationFn: ({
+      funilId,
+      userId,
+      nivel,
+    }: {
+      funilId: string;
+      userId: string;
+      nivel: FunilPermissaoNivel;
+    }) => concederPermissao(funilId, userId, nivel),
+    onSuccess: (_, vars) =>
+      qc.invalidateQueries({ queryKey: ["funis", "permissoes", vars.funilId] }),
   });
 }
 
@@ -166,6 +207,7 @@ export function useRevogarPermissao() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: revogarPermissao,
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["funis", "permissoes"] }),
+    onSuccess: () =>
+      qc.invalidateQueries({ queryKey: ["funis", "permissoes"] }),
   });
 }

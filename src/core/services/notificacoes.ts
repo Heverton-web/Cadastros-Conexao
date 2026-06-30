@@ -52,9 +52,15 @@ export async function marcarTodasComoLidas(usuarioId: string) {
   if (error) throw error;
 }
 
-export async function listarTemplates(empresaId?: string | null, moduloKey?: string | null) {
-  let query = supabase.from("notificacoes_templates").select("*").order("evento");
-  
+export async function listarTemplates(
+  empresaId?: string | null,
+  moduloKey?: string | null,
+) {
+  let query = supabase
+    .from("notificacoes_templates")
+    .select("*")
+    .order("evento");
+
   if (empresaId) {
     query = query.eq("empresa_id", empresaId);
   }
@@ -67,7 +73,9 @@ export async function listarTemplates(empresaId?: string | null, moduloKey?: str
   return data as NotificacaoTemplate[];
 }
 
-export async function criarTemplate(input: Omit<NotificacaoTemplate, "id" | "created_at" | "updated_at">) {
+export async function criarTemplate(
+  input: Omit<NotificacaoTemplate, "id" | "created_at" | "updated_at">,
+) {
   const { data, error } = await supabase
     .from("notificacoes_templates")
     .insert({
@@ -79,7 +87,7 @@ export async function criarTemplate(input: Omit<NotificacaoTemplate, "id" | "cre
       destinatario_tipo: input.destinatario_tipo || "consultor",
       empresa_id: input.empresa_id,
       modulo_key: input.modulo_key,
-      updated_at: new Date().toISOString()
+      updated_at: new Date().toISOString(),
     })
     .select()
     .single();
@@ -87,14 +95,19 @@ export async function criarTemplate(input: Omit<NotificacaoTemplate, "id" | "cre
   return data as NotificacaoTemplate;
 }
 
-export async function atualizarTemplate(evento: string, titulo: string, corpo: string, ativo: boolean) {
+export async function atualizarTemplate(
+  evento: string,
+  titulo: string,
+  corpo: string,
+  ativo: boolean,
+) {
   const { data, error } = await supabase
     .from("notificacoes_templates")
     .update({
       titulo,
       corpo_template: corpo,
       ativo,
-      updated_at: new Date().toISOString()
+      updated_at: new Date().toISOString(),
     })
     .eq("evento", evento)
     .select()
@@ -103,12 +116,15 @@ export async function atualizarTemplate(evento: string, titulo: string, corpo: s
   return data as NotificacaoTemplate;
 }
 
-export async function atualizarTemplatePorId(id: string, input: Partial<Omit<NotificacaoTemplate, "id">>) {
+export async function atualizarTemplatePorId(
+  id: string,
+  input: Partial<Omit<NotificacaoTemplate, "id">>,
+) {
   const { data, error } = await supabase
     .from("notificacoes_templates")
     .update({
       ...input,
-      updated_at: new Date().toISOString()
+      updated_at: new Date().toISOString(),
     })
     .eq("id", id)
     .select()
@@ -129,7 +145,7 @@ export async function enviarNotificacaoComTemplate(
   evento: string,
   cadastroId: string,
   destinatarioId: string,
-  variaveis: Record<string, string>
+  variaveis: Record<string, string>,
 ) {
   try {
     const { data: temp, error } = await supabase
@@ -145,20 +161,18 @@ export async function enviarNotificacaoComTemplate(
     let mensagemFinal = temp.corpo_template;
 
     for (const [chave, valor] of Object.entries(variaveis)) {
-      const chaveEscapada = chave.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+      const chaveEscapada = chave.replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&");
       const placeholder = new RegExp(`{{${chaveEscapada}}}`, "g");
       tituloFinal = tituloFinal.replace(placeholder, valor || "");
       mensagemFinal = mensagemFinal.replace(placeholder, valor || "");
     }
 
-    const { error: insertError } = await supabase
-      .from("notificacoes")
-      .insert({
-        usuario_id: destinatarioId,
-        titulo: tituloFinal,
-        mensagem: mensagemFinal,
-        dados: { cadastro_id: cadastroId }
-      });
+    const { error: insertError } = await supabase.from("notificacoes").insert({
+      usuario_id: destinatarioId,
+      titulo: tituloFinal,
+      mensagem: mensagemFinal,
+      dados: { cadastro_id: cadastroId },
+    });
 
     if (insertError) throw insertError;
   } catch (e) {
@@ -166,7 +180,10 @@ export async function enviarNotificacaoComTemplate(
   }
 }
 
-export async function dispararNotificacaoIndividual(temp: NotificacaoTemplate, payload: Record<string, any>) {
+export async function dispararNotificacaoIndividual(
+  temp: NotificacaoTemplate,
+  payload: Record<string, any>,
+) {
   try {
     const cadastroId = payload.cadastro_id || payload.id;
     if (!cadastroId) return;
@@ -180,7 +197,11 @@ export async function dispararNotificacaoIndividual(temp: NotificacaoTemplate, p
         .select("created_by")
         .eq("id", cadastroId)
         .maybeSingle();
-      const consultorId = cadastro?.created_by || payload.created_by || payload.destinatario_id || payload.usuario_id;
+      const consultorId =
+        cadastro?.created_by ||
+        payload.created_by ||
+        payload.destinatario_id ||
+        payload.usuario_id;
       if (consultorId) {
         destinatariosIds.push(consultorId);
       }
@@ -190,7 +211,7 @@ export async function dispararNotificacaoIndividual(temp: NotificacaoTemplate, p
         .select("id")
         .or("is_super_admin.eq.true,role.eq.admin");
       if (admins) {
-        destinatariosIds = admins.map(a => a.id);
+        destinatariosIds = admins.map((a) => a.id);
       }
     } else if (tipo === "cadastro") {
       const { data: cadastroUsers } = await supabase
@@ -198,10 +219,13 @@ export async function dispararNotificacaoIndividual(temp: NotificacaoTemplate, p
         .select("id")
         .eq("ambiente", "cadastro");
       if (cadastroUsers && cadastroUsers.length > 0) {
-        destinatariosIds = cadastroUsers.map(u => u.id);
+        destinatariosIds = cadastroUsers.map((u) => u.id);
       } else {
-        const { data: admins } = await supabase.from("profiles").select("id").or("is_super_admin.eq.true,role.eq.admin");
-        if (admins) destinatariosIds = admins.map(a => a.id);
+        const { data: admins } = await supabase
+          .from("profiles")
+          .select("id")
+          .or("is_super_admin.eq.true,role.eq.admin");
+        if (admins) destinatariosIds = admins.map((a) => a.id);
       }
     } else if (tipo === "ti") {
       const { data: tiUsers } = await supabase
@@ -209,15 +233,19 @@ export async function dispararNotificacaoIndividual(temp: NotificacaoTemplate, p
         .select("id")
         .eq("ambiente", "tecnologia");
       if (tiUsers && tiUsers.length > 0) {
-        destinatariosIds = tiUsers.map(u => u.id);
+        destinatariosIds = tiUsers.map((u) => u.id);
       } else {
-        const { data: admins } = await supabase.from("profiles").select("id").or("is_super_admin.eq.true,role.eq.admin");
-        if (admins) destinatariosIds = admins.map(a => a.id);
+        const { data: admins } = await supabase
+          .from("profiles")
+          .select("id")
+          .or("is_super_admin.eq.true,role.eq.admin");
+        if (admins) destinatariosIds = admins.map((a) => a.id);
       }
     }
 
     if (destinatariosIds.length === 0) {
-      const fallbackId = payload.created_by || payload.destinatario_id || payload.usuario_id;
+      const fallbackId =
+        payload.created_by || payload.destinatario_id || payload.usuario_id;
       if (fallbackId) destinatariosIds.push(fallbackId);
     }
 
@@ -232,23 +260,23 @@ export async function dispararNotificacaoIndividual(temp: NotificacaoTemplate, p
 
     const context = {
       ...payload,
-      colaborador: cadastro?.colaborador || payload.colaborador || ""
+      colaborador: cadastro?.colaborador || payload.colaborador || "",
     };
 
     for (const [chave, valor] of Object.entries(context)) {
-      const chaveEscapada = chave.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+      const chaveEscapada = chave.replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&");
       const placeholder = new RegExp(`{{${chaveEscapada}}}`, "g");
       tituloFinal = tituloFinal.replace(placeholder, String(valor || ""));
       mensagemFinal = mensagemFinal.replace(placeholder, String(valor || ""));
     }
 
-    const insertPromises = destinatariosIds.map(destId =>
+    const insertPromises = destinatariosIds.map((destId) =>
       supabase.from("notificacoes").insert({
         usuario_id: destId,
         titulo: tituloFinal,
         mensagem: mensagemFinal,
-        dados: { cadastro_id: cadastroId }
-      })
+        dados: { cadastro_id: cadastroId },
+      }),
     );
     await Promise.all(insertPromises);
   } catch (err) {
@@ -257,14 +285,18 @@ export async function dispararNotificacaoIndividual(temp: NotificacaoTemplate, p
   }
 }
 
-export async function dispararNotificacoesInternas(evento: string, payload: Record<string, any>, empresaId?: string) {
+export async function dispararNotificacoesInternas(
+  evento: string,
+  payload: Record<string, any>,
+  empresaId?: string,
+) {
   try {
     let query = supabase
       .from("notificacoes_templates")
       .select("*")
       .eq("evento", evento)
       .eq("ativo", true);
-      
+
     if (empresaId) {
       query = query.eq("empresa_id", empresaId);
     } else {
@@ -277,7 +309,7 @@ export async function dispararNotificacoesInternas(evento: string, payload: Reco
 
     for (const temp of templates) {
       await dispararNotificacaoIndividual(temp, payload).catch((err) =>
-        console.error("Erro no disparo individual:", err)
+        console.error("Erro no disparo individual:", err),
       );
     }
   } catch (err) {

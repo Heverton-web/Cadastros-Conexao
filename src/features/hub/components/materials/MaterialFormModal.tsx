@@ -1,15 +1,30 @@
 import { useState, useEffect } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "~/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "~/components/ui/dialog";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { Textarea } from "~/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "~/components/ui/select";
 import { Switch } from "~/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import { Upload, Link, Code, Globe } from "lucide-react";
 import { useAuth } from "~/lib/auth";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { fetchHubMaterialAssets, upsertHubMaterialAsset, deleteHubMaterialAsset } from "../../services/materials";
+import {
+  fetchHubMaterialAssets,
+  upsertHubMaterialAsset,
+  deleteHubMaterialAsset,
+} from "../../services/materials";
 import type { HubMaterial, HubLanguage, HubMaterialType } from "../../types";
 
 const TYPES = [
@@ -30,11 +45,19 @@ const ROLES = [
 interface MaterialFormModalProps {
   open: boolean;
   onClose: () => void;
-  onSave: (material: Partial<HubMaterial>, assets: { language: HubLanguage; url: string; subtitle_url?: string }[]) => void;
+  onSave: (
+    material: Partial<HubMaterial>,
+    assets: { language: HubLanguage; url: string; subtitle_url?: string }[],
+  ) => void;
   material?: HubMaterial;
 }
 
-export function MaterialFormModal({ open, onClose, onSave, material }: MaterialFormModalProps) {
+export function MaterialFormModal({
+  open,
+  onClose,
+  onSave,
+  material,
+}: MaterialFormModalProps) {
   const { empresa } = useAuth();
   const queryClient = useQueryClient();
   const isEdit = !!material?.id;
@@ -42,13 +65,23 @@ export function MaterialFormModal({ open, onClose, onSave, material }: MaterialF
   const [type, setType] = useState<HubMaterialType>(material?.type || "pdf");
   const [active, setActive] = useState(material?.active ?? true);
   const [points, setPoints] = useState(material?.points || 10);
-  const [allowedRoles, setAllowedRoles] = useState<string[]>(material?.allowed_roles || ["client"]);
+  const [allowedRoles, setAllowedRoles] = useState<string[]>(
+    material?.allowed_roles || ["client"],
+  );
   const [category, setCategory] = useState(material?.category || "");
   const [tags, setTags] = useState(material?.tags?.join(", ") || "");
 
-  const [titles, setTitles] = useState<Record<HubLanguage, string>>(material?.title || { "pt-br": "", "en-us": "", "es-es": "" });
-  const [urls, setUrls] = useState<Record<HubLanguage, string>>({ "pt-br": "", "en-us": "", "es-es": "" });
-  const [subtitleUrls, setSubtitleUrls] = useState<Record<HubLanguage, string>>({ "pt-br": "", "en-us": "", "es-es": "" });
+  const [titles, setTitles] = useState<Record<HubLanguage, string>>(
+    material?.title || { "pt-br": "", "en-us": "", "es-es": "" },
+  );
+  const [urls, setUrls] = useState<Record<HubLanguage, string>>({
+    "pt-br": "",
+    "en-us": "",
+    "es-es": "",
+  });
+  const [subtitleUrls, setSubtitleUrls] = useState<Record<HubLanguage, string>>(
+    { "pt-br": "", "en-us": "", "es-es": "" },
+  );
 
   const [htmlMode, setHtmlMode] = useState<"url" | "paste" | "upload">("url");
   const [htmlCode, setHtmlCode] = useState("");
@@ -65,18 +98,27 @@ export function MaterialFormModal({ open, onClose, onSave, material }: MaterialF
     if (existingAssets.length > 0) {
       const urlMap: Record<string, string> = {};
       const subMap: Record<string, string> = {};
-      existingAssets.forEach((a) => { urlMap[a.language] = a.url; if (a.subtitle_url) subMap[a.language] = a.subtitle_url; });
+      existingAssets.forEach((a) => {
+        urlMap[a.language] = a.url;
+        if (a.subtitle_url) subMap[a.language] = a.subtitle_url;
+      });
       setUrls(urlMap as Record<HubLanguage, string>);
       setSubtitleUrls(subMap as Record<HubLanguage, string>);
     }
   }, [existingAssets]);
 
   const toggleRole = (role: string) => {
-    setAllowedRoles((prev) => prev.includes(role) ? prev.filter((r) => r !== role) : [...prev, role]);
+    setAllowedRoles((prev) =>
+      prev.includes(role) ? prev.filter((r) => r !== role) : [...prev, role],
+    );
   };
 
   const handleSave = async () => {
-    const assetsToSave: { language: HubLanguage; url: string; subtitle_url?: string }[] = [];
+    const assetsToSave: {
+      language: HubLanguage;
+      url: string;
+      subtitle_url?: string;
+    }[] = [];
 
     if (type === "html" && htmlMode === "paste" && htmlCode) {
       const blob = new Blob([htmlCode], { type: "text/html" });
@@ -87,44 +129,106 @@ export function MaterialFormModal({ open, onClose, onSave, material }: MaterialF
       reader.onload = () => {
         const dataUrl = reader.result as string;
         assetsToSave.push({ language: "pt-br", url: dataUrl });
-        onSave({ ...material, title: titles, type, active, points, allowed_roles: allowedRoles as any, category: category || undefined, tags: tags.split(",").map((t) => t.trim()).filter(Boolean) }, assetsToSave);
+        onSave(
+          {
+            ...material,
+            title: titles,
+            type,
+            active,
+            points,
+            allowed_roles: allowedRoles as any,
+            category: category || undefined,
+            tags: tags
+              .split(",")
+              .map((t) => t.trim())
+              .filter(Boolean),
+          },
+          assetsToSave,
+        );
       };
       reader.readAsDataURL(htmlFile);
       return;
     } else {
       (["pt-br", "en-us", "es-es"] as HubLanguage[]).forEach((lang) => {
-        if (urls[lang]) assetsToSave.push({ language: lang, url: urls[lang], subtitle_url: subtitleUrls[lang] || undefined });
+        if (urls[lang])
+          assetsToSave.push({
+            language: lang,
+            url: urls[lang],
+            subtitle_url: subtitleUrls[lang] || undefined,
+          });
       });
     }
 
-    onSave({ ...material, title: titles, type, active, points, allowed_roles: allowedRoles as any, category: category || undefined, tags: tags.split(",").map((t) => t.trim()).filter(Boolean) }, assetsToSave);
+    onSave(
+      {
+        ...material,
+        title: titles,
+        type,
+        active,
+        points,
+        allowed_roles: allowedRoles as any,
+        category: category || undefined,
+        tags: tags
+          .split(",")
+          .map((t) => t.trim())
+          .filter(Boolean),
+      },
+      assetsToSave,
+    );
   };
 
   return (
     <Dialog open={open} onOpenChange={(o) => !o && onClose()}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>{material ? "Editar Material" : "Novo Material"}</DialogTitle>
+          <DialogTitle>
+            {material ? "Editar Material" : "Novo Material"}
+          </DialogTitle>
         </DialogHeader>
 
         <div className="space-y-5">
           {/* Tipo + Status + XP */}
           <div className="grid grid-cols-3 gap-3">
             <div>
-              <label className="mb-1 block text-xs font-bold uppercase tracking-wider text-text-muted">Tipo *</label>
-              <Select value={type} onValueChange={(v) => setType(v as HubMaterialType)}>
-                <SelectTrigger><SelectValue /></SelectTrigger>
-                <SelectContent>{TYPES.map((t) => <SelectItem key={t.value} value={t.value}>{t.label}</SelectItem>)}</SelectContent>
+              <label className="mb-1 block text-xs font-bold uppercase tracking-wider text-text-muted">
+                Tipo *
+              </label>
+              <Select
+                value={type}
+                onValueChange={(v) => setType(v as HubMaterialType)}
+              >
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {TYPES.map((t) => (
+                    <SelectItem key={t.value} value={t.value}>
+                      {t.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
               </Select>
             </div>
             <div>
-              <label className="mb-1 block text-xs font-bold uppercase tracking-wider text-text-muted">XP *</label>
-              <Input type="number" value={points} onChange={(e) => setPoints(Number(e.target.value))} />
+              <label className="mb-1 block text-xs font-bold uppercase tracking-wider text-text-muted">
+                XP *
+              </label>
+              <Input
+                type="number"
+                value={points}
+                onChange={(e) => setPoints(Number(e.target.value))}
+              />
             </div>
             <div className="flex flex-col items-center justify-end">
-              <label className="mb-1 block text-xs font-bold uppercase tracking-wider text-text-muted">Status</label>
+              <label className="mb-1 block text-xs font-bold uppercase tracking-wider text-text-muted">
+                Status
+              </label>
               <div className="flex items-center gap-2">
-                <span className={`text-xs ${active ? "text-green-500" : "text-text-muted"}`}>{active ? "Ativo" : "Inativo"}</span>
+                <span
+                  className={`text-xs ${active ? "text-green-500" : "text-text-muted"}`}
+                >
+                  {active ? "Ativo" : "Inativo"}
+                </span>
                 <Switch checked={active} onCheckedChange={setActive} />
               </div>
             </div>
@@ -132,11 +236,16 @@ export function MaterialFormModal({ open, onClose, onSave, material }: MaterialF
 
           {/* Público-alvo */}
           <div>
-            <label className="mb-2 block text-xs font-bold uppercase tracking-wider text-text-muted">Público-alvo *</label>
+            <label className="mb-2 block text-xs font-bold uppercase tracking-wider text-text-muted">
+              Público-alvo *
+            </label>
             <div className="flex flex-wrap gap-2">
               {ROLES.map((r) => (
-                <button key={r.value} onClick={() => toggleRole(r.value)}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all border ${allowedRoles.includes(r.value) ? "liquid-glass-gold text-accent" : "border-border text-text-muted bg-surface"}`}>
+                <button
+                  key={r.value}
+                  onClick={() => toggleRole(r.value)}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all border ${allowedRoles.includes(r.value) ? "liquid-glass-gold text-accent" : "border-border text-text-muted bg-surface"}`}
+                >
                   {r.label}
                 </button>
               ))}
@@ -148,7 +257,10 @@ export function MaterialFormModal({ open, onClose, onSave, material }: MaterialF
             <label className="mb-2 block text-xs font-bold uppercase tracking-wider text-text-muted">
               <Globe className="inline mr-1" size={12} /> Conteúdo por Idioma
             </label>
-            <Tabs value={activeLangTab} onValueChange={(v) => setActiveLangTab(v as HubLanguage)}>
+            <Tabs
+              value={activeLangTab}
+              onValueChange={(v) => setActiveLangTab(v as HubLanguage)}
+            >
               <TabsList>
                 <TabsTrigger value="pt-br">🇧🇷 Português</TabsTrigger>
                 <TabsTrigger value="en-us">🇺🇸 English</TabsTrigger>
@@ -158,25 +270,60 @@ export function MaterialFormModal({ open, onClose, onSave, material }: MaterialF
               {(["pt-br", "en-us", "es-es"] as HubLanguage[]).map((lang) => (
                 <TabsContent key={lang} value={lang} className="space-y-3">
                   <div>
-                    <label className="mb-1 block text-xs font-bold text-text-main">Título *</label>
-                    <Input value={titles[lang]} onChange={(e) => setTitles({ ...titles, [lang]: e.target.value })} placeholder={`Título em ${lang === "pt-br" ? "Português" : lang === "en-us" ? "Inglês" : "Espanhol"}`} />
+                    <label className="mb-1 block text-xs font-bold text-text-main">
+                      Título *
+                    </label>
+                    <Input
+                      value={titles[lang]}
+                      onChange={(e) =>
+                        setTitles({ ...titles, [lang]: e.target.value })
+                      }
+                      placeholder={`Título em ${lang === "pt-br" ? "Português" : lang === "en-us" ? "Inglês" : "Espanhol"}`}
+                    />
                   </div>
 
                   {type !== "html" ? (
                     <div>
-                      <label className="mb-1 block text-xs font-bold text-text-main">URL do Material</label>
-                      <Input value={urls[lang]} onChange={(e) => setUrls({ ...urls, [lang]: e.target.value })} placeholder="Link do Google Drive, YouTube, S3..." />
+                      <label className="mb-1 block text-xs font-bold text-text-main">
+                        URL do Material
+                      </label>
+                      <Input
+                        value={urls[lang]}
+                        onChange={(e) =>
+                          setUrls({ ...urls, [lang]: e.target.value })
+                        }
+                        placeholder="Link do Google Drive, YouTube, S3..."
+                      />
                     </div>
                   ) : (
                     <div>
-                      <label className="mb-1 block text-xs font-bold text-text-main">URL do Material</label>
-                      <Input value={urls[lang]} onChange={(e) => setUrls({ ...urls, [lang]: e.target.value })} placeholder="URL do HTML" />
+                      <label className="mb-1 block text-xs font-bold text-text-main">
+                        URL do Material
+                      </label>
+                      <Input
+                        value={urls[lang]}
+                        onChange={(e) =>
+                          setUrls({ ...urls, [lang]: e.target.value })
+                        }
+                        placeholder="URL do HTML"
+                      />
                     </div>
                   )}
 
                   <div>
-                    <label className="mb-1 block text-xs font-bold text-text-main">URL da Legenda (Opcional)</label>
-                    <Input value={subtitleUrls[lang]} onChange={(e) => setSubtitleUrls({ ...subtitleUrls, [lang]: e.target.value })} placeholder="Link da legenda .srt ou .vtt" />
+                    <label className="mb-1 block text-xs font-bold text-text-main">
+                      URL da Legenda (Opcional)
+                    </label>
+                    <Input
+                      value={subtitleUrls[lang]}
+                      onChange={(e) =>
+                        setSubtitleUrls({
+                          ...subtitleUrls,
+                          [lang]: e.target.value,
+                        })
+                      }
+                      placeholder="Link da legenda .srt ou .vtt"
+                    />
                   </div>
                 </TabsContent>
               ))}
@@ -186,24 +333,46 @@ export function MaterialFormModal({ open, onClose, onSave, material }: MaterialF
           {/* Opções HTML */}
           {type === "html" && (
             <div className="p-4 rounded-xl border border-border bg-surface/40 space-y-3">
-              <label className="text-xs font-bold uppercase tracking-wider text-text-muted">Opção HTML</label>
+              <label className="text-xs font-bold uppercase tracking-wider text-text-muted">
+                Opção HTML
+              </label>
               <div className="flex gap-2">
-                <button onClick={() => setHtmlMode("url")} className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all border ${htmlMode === "url" ? "liquid-glass-gold text-accent" : "border-border text-text-muted"}`}>
+                <button
+                  onClick={() => setHtmlMode("url")}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all border ${htmlMode === "url" ? "liquid-glass-gold text-accent" : "border-border text-text-muted"}`}
+                >
                   <Link size={12} /> URL
                 </button>
-                <button onClick={() => setHtmlMode("paste")} className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all border ${htmlMode === "paste" ? "liquid-glass-gold text-accent" : "border-border text-text-muted"}`}>
+                <button
+                  onClick={() => setHtmlMode("paste")}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all border ${htmlMode === "paste" ? "liquid-glass-gold text-accent" : "border-border text-text-muted"}`}
+                >
                   <Code size={12} /> Colar Código
                 </button>
-                <button onClick={() => setHtmlMode("upload")} className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all border ${htmlMode === "upload" ? "liquid-glass-gold text-accent" : "border-border text-text-muted"}`}>
+                <button
+                  onClick={() => setHtmlMode("upload")}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all border ${htmlMode === "upload" ? "liquid-glass-gold text-accent" : "border-border text-text-muted"}`}
+                >
                   <Upload size={12} /> Upload .html
                 </button>
               </div>
               {htmlMode === "paste" && (
-                <Textarea value={htmlCode} onChange={(e) => setHtmlCode(e.target.value)} placeholder="Cole o código HTML aqui..." rows={8} className="font-mono text-xs" />
+                <Textarea
+                  value={htmlCode}
+                  onChange={(e) => setHtmlCode(e.target.value)}
+                  placeholder="Cole o código HTML aqui..."
+                  rows={8}
+                  className="font-mono text-xs"
+                />
               )}
               {htmlMode === "upload" && (
                 <div>
-                  <input type="file" accept=".html" onChange={(e) => setHtmlFile(e.target.files?.[0] || null)} className="text-sm text-text-muted" />
+                  <input
+                    type="file"
+                    accept=".html"
+                    onChange={(e) => setHtmlFile(e.target.files?.[0] || null)}
+                    className="text-sm text-text-muted"
+                  />
                   <p className="text-[10px] mt-1 text-text-muted">Máximo 5MB</p>
                 </div>
               )}
@@ -213,19 +382,35 @@ export function MaterialFormModal({ open, onClose, onSave, material }: MaterialF
           {/* Categoria + Tags */}
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="mb-1 block text-xs font-bold uppercase tracking-wider text-text-muted">Categoria</label>
-              <Input value={category} onChange={(e) => setCategory(e.target.value)} placeholder="Ex: Odontologia" />
+              <label className="mb-1 block text-xs font-bold uppercase tracking-wider text-text-muted">
+                Categoria
+              </label>
+              <Input
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+                placeholder="Ex: Odontologia"
+              />
             </div>
             <div>
-              <label className="mb-1 block text-xs font-bold uppercase tracking-wider text-text-muted">Tags</label>
-              <Input value={tags} onChange={(e) => setTags(e.target.value)} placeholder="tag1, tag2" />
+              <label className="mb-1 block text-xs font-bold uppercase tracking-wider text-text-muted">
+                Tags
+              </label>
+              <Input
+                value={tags}
+                onChange={(e) => setTags(e.target.value)}
+                placeholder="tag1, tag2"
+              />
             </div>
           </div>
 
           {/* Ações */}
           <DialogFooter>
-            <Button variant="ghost" onClick={onClose}>Cancelar</Button>
-            <Button onClick={handleSave}>{material ? "Salvar" : "Criar Material"}</Button>
+            <Button variant="ghost" onClick={onClose}>
+              Cancelar
+            </Button>
+            <Button onClick={handleSave}>
+              {material ? "Salvar" : "Criar Material"}
+            </Button>
           </DialogFooter>
         </div>
       </DialogContent>

@@ -1,5 +1,11 @@
 import { useState } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "~/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "~/components/ui/dialog";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { Button } from "~/components/ui/button";
@@ -34,21 +40,25 @@ export function NovaRotaModal({ open, onOpenChange }: Props) {
     tipo: "diaria" as RotaTipo,
   });
 
-  const [clientesSelecionados, setClientesSelecionados] = useState<string[]>([]);
+  const [clientesSelecionados, setClientesSelecionados] = useState<string[]>(
+    [],
+  );
   const [busca, setBusca] = useState("");
-  const [metodo, setMetodo] = useState<"manual" | "filtros" | "automatico">("manual");
+  const [metodo, setMetodo] = useState<"manual" | "filtros" | "automatico">(
+    "manual",
+  );
 
   const clientesFiltrados = (clientes ?? []).filter(
     (c) =>
       !clientesSelecionados.includes(c.id) &&
       (c.nome.toLowerCase().includes(busca.toLowerCase()) ||
         c.cidade?.toLowerCase().includes(busca.toLowerCase()) ||
-        c.categoria?.toLowerCase().includes(busca.toLowerCase()))
+        c.categoria?.toLowerCase().includes(busca.toLowerCase())),
   );
 
   function toggleCliente(id: string) {
     setClientesSelecionados((prev) =>
-      prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id]
+      prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id],
     );
   }
 
@@ -59,7 +69,10 @@ export function NovaRotaModal({ open, onOpenChange }: Props) {
       .sort((a, b) => {
         if (!a.ultima_visita) return -1;
         if (!b.ultima_visita) return 1;
-        return new Date(a.ultima_visita).getTime() - new Date(b.ultima_visita).getTime();
+        return (
+          new Date(a.ultima_visita).getTime() -
+          new Date(b.ultima_visita).getTime()
+        );
       })
       .slice(0, 8);
 
@@ -105,7 +118,9 @@ export function NovaRotaModal({ open, onOpenChange }: Props) {
               <Input
                 required
                 value={form.titulo}
-                onChange={(e) => setForm((s) => ({ ...s, titulo: e.target.value }))}
+                onChange={(e) =>
+                  setForm((s) => ({ ...s, titulo: e.target.value }))
+                }
                 placeholder="Ex: Rota Centro - Manhã"
               />
             </div>
@@ -115,7 +130,9 @@ export function NovaRotaModal({ open, onOpenChange }: Props) {
                 type="date"
                 required
                 value={form.data_rota}
-                onChange={(e) => setForm((s) => ({ ...s, data_rota: e.target.value }))}
+                onChange={(e) =>
+                  setForm((s) => ({ ...s, data_rota: e.target.value }))
+                }
               />
             </div>
           </div>
@@ -124,7 +141,9 @@ export function NovaRotaModal({ open, onOpenChange }: Props) {
             <Label>Tipo</Label>
             <Select
               value={form.tipo}
-              onValueChange={(v) => setForm((s) => ({ ...s, tipo: v as RotaTipo }))}
+              onValueChange={(v) =>
+                setForm((s) => ({ ...s, tipo: v as RotaTipo }))
+              }
             >
               <SelectTrigger>
                 <SelectValue />
@@ -139,7 +158,9 @@ export function NovaRotaModal({ open, onOpenChange }: Props) {
 
           <div className="space-y-3">
             <div className="flex items-center justify-between">
-              <Label>Clientes ({clientesSelecionados.length} selecionados)</Label>
+              <Label>
+                Clientes ({clientesSelecionados.length} selecionados)
+              </Label>
               <div className="flex gap-2">
                 <Button
                   type="button"
@@ -213,7 +234,11 @@ export function NovaRotaModal({ open, onOpenChange }: Props) {
           </div>
 
           <DialogFooter>
-            <Button type="button" variant="ghost" onClick={() => onOpenChange(false)}>
+            <Button
+              type="button"
+              variant="ghost"
+              onClick={() => onOpenChange(false)}
+            >
               Cancelar
             </Button>
             <Button type="submit" disabled={criarRota.isPending}>

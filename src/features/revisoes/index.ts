@@ -37,7 +37,7 @@ export async function setRevisaoCampo(
   cadastroId: string,
   campo: string,
   status: RevisaoStatus,
-  comentario: string | null
+  comentario: string | null,
 ): Promise<void> {
   const revisoes = await getRevisoes(cadastroId);
   revisoes[campo] = { status, comentario };
@@ -50,7 +50,7 @@ export async function setRevisaoCampo(
 
 export async function setRevisoesMassa(
   cadastroId: string,
-  novasRevisoes: Revisoes
+  novasRevisoes: Revisoes,
 ): Promise<void> {
   const atuais = await getRevisoes(cadastroId);
   const combinadas = { ...atuais, ...novasRevisoes };

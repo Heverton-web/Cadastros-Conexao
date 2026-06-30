@@ -3,7 +3,13 @@ import { Facebook, Link2, Link2Off, Loader2 } from "lucide-react";
 import toast from "react-hot-toast";
 import { useAuth } from "~/lib/auth";
 import { Button } from "~/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "~/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "~/components/ui/card";
 import { verificarConexao, desconectar } from "../services/auth.service";
 
 export function MetaConnect() {
@@ -72,7 +78,8 @@ export function MetaConnect() {
         </div>
         <CardTitle>Conectar com Meta</CardTitle>
         <CardDescription>
-          Vincule sua conta do Meta Business Manager para gerenciar campanhas e posts
+          Vincule sua conta do Meta Business Manager para gerenciar campanhas e
+          posts
         </CardDescription>
       </CardHeader>
       <CardContent className="flex justify-center pb-6">

@@ -2,7 +2,8 @@ import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "~/integrations/supabase/auth-middleware";
 import { z } from "zod";
 
-const N8N_WEBHOOK_URL = "https://flow-webhook.vpsconexao.org/webhook/form_visita";
+const N8N_WEBHOOK_URL =
+  "https://flow-webhook.vpsconexao.org/webhook/form_visita";
 
 const visitaSchema = z.object({
   cliente_id: z.string().uuid(),
@@ -15,7 +16,10 @@ const visitaSchema = z.object({
   valor_estimado: z.number().nullable().optional(),
   interesse_escala: z.number().int().min(1).max(5),
   temperatura_vendedor: z.enum(["Frio", "Morno", "Quente"]),
-  probabilidade_fechamento: z.enum(["Baixa", "Média", "Alta"]).nullable().optional(),
+  probabilidade_fechamento: z
+    .enum(["Baixa", "Média", "Alta"])
+    .nullable()
+    .optional(),
   feedback_cliente: z.string().max(2000).optional().nullable(),
   observacoes_vendedor: z.string().max(2000).optional().nullable(),
   data_proximo_contato: z.string().nullable().optional(),
@@ -88,7 +92,10 @@ export const registrarVisita = createServerFn({ method: "POST" })
         const json = await res.json().catch(() => ({}));
         webhookStatus = { ok: true, mensagem: json?.mensagem };
       } else {
-        webhookStatus = { ok: false, mensagem: `Webhook retornou ${res.status}` };
+        webhookStatus = {
+          ok: false,
+          mensagem: `Webhook retornou ${res.status}`,
+        };
       }
     } catch (err) {
       webhookStatus = { ok: false, mensagem: (err as Error).message };

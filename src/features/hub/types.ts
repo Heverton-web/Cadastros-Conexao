@@ -1,10 +1,17 @@
-export type HubRole = "client" | "distributor" | "consultant" | "manager" | "super_admin";
+export type HubRole =
+  "client" | "distributor" | "consultant" | "manager" | "super_admin";
 export type HubLanguage = "pt-br" | "en-us" | "es-es";
 export type HubMaterialType = "image" | "pdf" | "video" | "audio" | "html";
 export type HubUserStatus = "pending" | "active" | "inactive" | "rejected";
 export type HubTranslationStatus = "draft" | "review" | "published";
 export type HubProgressStatus = "started" | "completed";
-export type HubBadgeTrigger = "material_completed" | "collection_completed" | "points_reached" | "streak_days" | "ranking_position" | "login_count";
+export type HubBadgeTrigger =
+  | "material_completed"
+  | "collection_completed"
+  | "points_reached"
+  | "streak_days"
+  | "ranking_position"
+  | "login_count";
 
 export interface HubUserProfile {
   id: string;
@@ -204,7 +211,13 @@ export const HUB_WEBHOOK_EVENTS: { value: HubWebhookEvent; label: string }[] = [
 
 export type HubAIFunction = "translate" | "image" | "summarize" | "chatbot";
 
-export const HUB_LEVEL_THRESHOLDS = { Iniciante: 0, Bronze: 100, Prata: 300, Ouro: 600, Master: 1000 } as const;
+export const HUB_LEVEL_THRESHOLDS = {
+  Iniciante: 0,
+  Bronze: 100,
+  Prata: 300,
+  Ouro: 600,
+  Master: 1000,
+} as const;
 export type HubUserLevel = keyof typeof HUB_LEVEL_THRESHOLDS;
 
 export function getHubUserLevel(points: number): HubUserLevel {

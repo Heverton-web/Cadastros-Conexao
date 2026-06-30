@@ -1,7 +1,12 @@
 import { createRoute } from "@tanstack/react-router";
 import { authLayout } from "./_auth";
 import { useAuth } from "~/lib/auth";
-import { salvarEmpresaConfig, listarEmpresas, buscarEmpresaConfig, type Empresa } from "~/features/empresas";
+import {
+  salvarEmpresaConfig,
+  listarEmpresas,
+  buscarEmpresaConfig,
+  type Empresa,
+} from "~/features/empresas";
 import { useState, useEffect } from "react";
 import { Palette, Save, Loader2, Building2 } from "lucide-react";
 import toast from "react-hot-toast";
@@ -61,7 +66,10 @@ function AdminTema() {
     setEmpresaNome(emp?.nome ?? "");
     buscarEmpresaConfig(empresaId).then((config) => {
       if (config) {
-        setCores({ ...CORES_PADRAO, ...((config.theme ?? {}) as Record<string, string>) });
+        setCores({
+          ...CORES_PADRAO,
+          ...((config.theme ?? {}) as Record<string, string>),
+        });
       } else {
         setCores(CORES_PADRAO);
       }
@@ -71,7 +79,9 @@ function AdminTema() {
   if (!profile?.is_super_admin) {
     return (
       <div className="flex items-center justify-center p-8">
-        <p className="text-text-muted text-sm">Acesso restrito ao administrador da empresa.</p>
+        <p className="text-text-muted text-sm">
+          Acesso restrito ao administrador da empresa.
+        </p>
       </div>
     );
   }
@@ -93,14 +103,20 @@ function AdminTema() {
   }
 
   if (loadingEmp) {
-    return <div className="flex items-center justify-center p-12"><Loader2 size={24} className="animate-spin text-accent" /></div>;
+    return (
+      <div className="flex items-center justify-center p-12">
+        <Loader2 size={24} className="animate-spin text-accent" />
+      </div>
+    );
   }
 
   return (
     <div className="p-4 max-w-2xl mx-auto">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-lg font-bold text-text-main">Personalizar Tema</h1>
+          <h1 className="text-lg font-bold text-text-main">
+            Personalizar Tema
+          </h1>
           <p className="text-xs text-text-muted">Cores da marca</p>
         </div>
         <button
@@ -108,7 +124,11 @@ function AdminTema() {
           disabled={saving || !empresaId}
           className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-accent text-accent-fg text-sm font-medium hover:bg-accent-hover transition-colors disabled:opacity-50"
         >
-          {saving ? <Loader2 size={14} className="animate-spin" /> : <Save size={14} />}
+          {saving ? (
+            <Loader2 size={14} className="animate-spin" />
+          ) : (
+            <Save size={14} />
+          )}
           Salvar
         </button>
       </div>
@@ -123,7 +143,9 @@ function AdminTema() {
             className="flex-1 px-3 py-1.5 rounded-lg bg-input-bg border border-input-border text-text-main text-sm"
           >
             {empresas.map((emp) => (
-              <option key={emp.id} value={emp.id}>{emp.nome}</option>
+              <option key={emp.id} value={emp.id}>
+                {emp.nome}
+              </option>
             ))}
           </select>
         </div>
@@ -131,13 +153,17 @@ function AdminTema() {
 
       <div className="space-y-4">
         <div className="p-4 rounded-lg bg-card border border-border-subtle">
-          <h2 className="text-sm font-bold text-text-main mb-3">Cores da Marca</h2>
+          <h2 className="text-sm font-bold text-text-main mb-3">
+            Cores da Marca
+          </h2>
           <div className="grid grid-cols-2 gap-3">
             {Object.entries(cores)
               .filter(([key]) => LABELS_CORES[key] !== undefined)
               .map(([key, value]) => (
                 <div key={key}>
-                  <label className="text-xs text-text-muted font-medium block mb-1">{LABELS_CORES[key]}</label>
+                  <label className="text-xs text-text-muted font-medium block mb-1">
+                    {LABELS_CORES[key]}
+                  </label>
                   <div className="flex items-center gap-2">
                     <input
                       type="color"
@@ -162,9 +188,15 @@ function AdminTema() {
           <div className="flex items-center gap-2">
             <Palette size={16} className="text-accent" />
             <div className="flex gap-1">
-              {Object.values(cores).slice(0, 3).map((cor, i) => (
-                <div key={i} className="w-6 h-6 rounded-full border border-border-subtle" style={{ backgroundColor: cor }} />
-              ))}
+              {Object.values(cores)
+                .slice(0, 3)
+                .map((cor, i) => (
+                  <div
+                    key={i}
+                    className="w-6 h-6 rounded-full border border-border-subtle"
+                    style={{ backgroundColor: cor }}
+                  />
+                ))}
             </div>
             <span className="text-xs text-text-muted">
               {empresaNome || "Empresa"}

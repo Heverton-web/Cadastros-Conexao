@@ -86,9 +86,12 @@
 
   /* ── Shadows ── */
   --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.3);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -4px rgba(0, 0, 0, 0.3);
-  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+  --shadow-md:
+    0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.3);
+  --shadow-lg:
+    0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -4px rgba(0, 0, 0, 0.3);
+  --shadow-xl:
+    0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
 
   /* ── Animations ── */
   --animate-fade-in: fade-in 0.3s ease-out;
@@ -99,38 +102,73 @@
 
 /* ── Keyframes ── */
 @keyframes fade-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes slide-up {
-  from { opacity: 0; transform: translateY(12px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
 }
 
 @keyframes glow {
-  from { box-shadow: 0 0 5px var(--color-accent-muted), 0 0 10px var(--color-accent-muted); }
-  to { box-shadow: 0 0 10px var(--color-accent-muted), 0 0 20px var(--color-accent-muted); }
+  from {
+    box-shadow:
+      0 0 5px var(--color-accent-muted),
+      0 0 10px var(--color-accent-muted);
+  }
+  to {
+    box-shadow:
+      0 0 10px var(--color-accent-muted),
+      0 0 20px var(--color-accent-muted);
+  }
 }
 
 @keyframes accordion-up {
-  from { height: var(--radix-accordion-content-height); }
-  to { height: 0; }
+  from {
+    height: var(--radix-accordion-content-height);
+  }
+  to {
+    height: 0;
+  }
 }
 
 @keyframes accordion-down {
-  from { height: 0; }
-  to { height: var(--radix-accordion-content-height); }
+  from {
+    height: 0;
+  }
+  to {
+    height: var(--radix-accordion-content-height);
+  }
 }
 
 @keyframes pulse-subtle {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.7; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
 }
 
 /* ── Mobile-first base ── */
@@ -141,9 +179,17 @@ html {
 
 body {
   background: var(--color-bg);
-  background-image: radial-gradient(ellipse at 50% 0%, rgba(201, 166, 85, 0.03) 0%, transparent 60%);
+  background-image: radial-gradient(
+    ellipse at 50% 0%,
+    rgba(201, 166, 85, 0.03) 0%,
+    transparent 60%
+  );
   color: var(--color-text-main);
-  font-family: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+  font-family:
+    "Plus Jakarta Sans",
+    system-ui,
+    -apple-system,
+    sans-serif;
   min-height: 100dvh;
   padding-top: env(safe-area-inset-top, 0px);
   padding-bottom: env(safe-area-inset-bottom, 0px);
@@ -286,7 +332,7 @@ body.modal-open {
   --state-empty-fg: #3b5998;
   --map-stroke: #1e2d45;
   --map-stroke-selected: #f0d080;
-  --state-glow: drop-shadow(0 0 8px rgba(212,168,67,0.5));
+  --state-glow: drop-shadow(0 0 8px rgba(212, 168, 67, 0.5));
   --grad-exclusive-1: #d4a843;
   --grad-exclusive-2: #b8862e;
   --grad-partial-1: #b8944a;
@@ -341,8 +387,12 @@ select optgroup option {
 }
 
 /* ── Accordion (radix) ── */
-.animate-accordion-up { animation: accordion-up 0.2s ease-out; }
-.animate-accordion-down { animation: accordion-down 0.2s ease-out; }
+.animate-accordion-up {
+  animation: accordion-up 0.2s ease-out;
+}
+.animate-accordion-down {
+  animation: accordion-down 0.2s ease-out;
+}
 
 /* ── Skeleton shimmer ── */
 .skeleton {
@@ -359,7 +409,8 @@ select optgroup option {
 
 @utility btn-hover-destructive {
   color: var(--color-error);
-  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+  transition-property:
+    color, background-color, border-color, text-decoration-color, fill, stroke;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 150ms;
   &:hover {
@@ -370,7 +421,8 @@ select optgroup option {
 
 @utility btn-hover-edit {
   color: #60a5fa;
-  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+  transition-property:
+    color, background-color, border-color, text-decoration-color, fill, stroke;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 150ms;
   &:hover {
@@ -381,7 +433,8 @@ select optgroup option {
 
 @utility btn-hover-neutral {
   color: var(--color-text-muted);
-  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+  transition-property:
+    color, background-color, border-color, text-decoration-color, fill, stroke;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 150ms;
   &:hover {
@@ -400,6 +453,12 @@ select optgroup option {
   border-left-width: 0 !important;
   outline-width: 0 !important;
 }
-.nps-no-borders [class*="border-t-"] { border-top-width: 0 !important; }
-.nps-no-borders [class*="border-b-"] { border-bottom-width: 0 !important; }
-.nps-no-borders [class*="w-px"] { width: 0 !important; }
+.nps-no-borders [class*="border-t-"] {
+  border-top-width: 0 !important;
+}
+.nps-no-borders [class*="border-b-"] {
+  border-bottom-width: 0 !important;
+}
+.nps-no-borders [class*="w-px"] {
+  width: 0 !important;
+}

@@ -19,7 +19,9 @@ function PipelinePage() {
   const { profile } = useAuth();
   const navigate = useNavigate();
   const [pickerOpen, setPickerOpen] = useState(false);
-  const [clienteSelecionado, setClienteSelecionado] = useState<string | null>(null);
+  const [clienteSelecionado, setClienteSelecionado] = useState<string | null>(
+    null,
+  );
   const [buscaAberta, setBuscaAberta] = useState(false);
 
   return (
@@ -41,10 +43,7 @@ function PipelinePage() {
             <Search className="h-4 w-4 mr-2" />
             Buscar
           </Button>
-          <Button
-            size="sm"
-            onClick={() => setPickerOpen(true)}
-          >
+          <Button size="sm" onClick={() => setPickerOpen(true)}>
             <Plus className="h-4 w-4 mr-2" />
             Novo Cliente
           </Button>

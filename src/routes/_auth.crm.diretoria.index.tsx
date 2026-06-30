@@ -24,19 +24,40 @@ function DiretoriaIndex() {
       const { data: consultores } = await supabase
         .from("usuarios")
         .select("id, gestor_id")
-        .in("gestor_id", ids.length ? ids : ["00000000-0000-0000-0000-000000000000"]);
+        .in(
+          "gestor_id",
+          ids.length ? ids : ["00000000-0000-0000-0000-000000000000"],
+        );
       const consultorIds = (consultores ?? []).map((c: any) => c.id);
       const { data: visitas } = await supabase
         .from("visitas")
         .select("consultor_executor_id, valor_estimado, gerou_pedido")
-        .in("consultor_executor_id", consultorIds.length ? consultorIds : ["00000000-0000-0000-0000-000000000000"]);
+        .in(
+          "consultor_executor_id",
+          consultorIds.length
+            ? consultorIds
+            : ["00000000-0000-0000-0000-000000000000"],
+        );
       return (gestores ?? []).map((g: any) => {
-        const meus = (consultores ?? []).filter((c: any) => c.gestor_id === g.id).map((c: any) => c.id);
-        const vs = (visitas ?? []).filter((v: any) => meus.includes(v.consultor_executor_id));
-        const pipeline = vs.reduce((s: number, v: any) => s + (Number(v.valor_estimado) || 0), 0);
+        const meus = (consultores ?? [])
+          .filter((c: any) => c.gestor_id === g.id)
+          .map((c: any) => c.id);
+        const vs = (visitas ?? []).filter((v: any) =>
+          meus.includes(v.consultor_executor_id),
+        );
+        const pipeline = vs.reduce(
+          (s: number, v: any) => s + (Number(v.valor_estimado) || 0),
+          0,
+        );
         const fechados = vs.filter((v: any) => v.gerou_pedido).length;
         const conv = vs.length ? Math.round((fechados / vs.length) * 100) : 0;
-        return { ...g, consultores: meus.length, visitas: vs.length, pipeline, conv };
+        return {
+          ...g,
+          consultores: meus.length,
+          visitas: vs.length,
+          pipeline,
+          conv,
+        };
       });
     },
   });
@@ -46,7 +67,8 @@ function DiretoriaIndex() {
       <header>
         <h1 className="text-2xl font-bold">Diretoria</h1>
         <p className="text-sm text-muted-foreground">
-          Equipes nacionais. Clique em um gestor para abrir o BI agregado e drilldown por consultor.
+          Equipes nacionais. Clique em um gestor para abrir o BI agregado e
+          drilldown por consultor.
         </p>
       </header>
 
@@ -64,27 +86,39 @@ function DiretoriaIndex() {
               </div>
               <div className="min-w-0 flex-1">
                 <p className="font-semibold truncate">{g.nome_completo}</p>
-                <p className="text-xs text-muted-foreground truncate">{g.email_corporativo}</p>
+                <p className="text-xs text-muted-foreground truncate">
+                  {g.email_corporativo}
+                </p>
               </div>
               <ArrowRight className="h-4 w-4 text-muted-foreground transition group-hover:text-gold group-hover:translate-x-0.5" />
             </div>
             <div className="grid grid-cols-3 gap-2 pt-2 border-t border-border text-center">
               <div>
                 <p className="text-lg font-bold">{g.consultores}</p>
-                <p className="text-xs uppercase tracking-wide text-muted-foreground">Consultores</p>
+                <p className="text-xs uppercase tracking-wide text-muted-foreground">
+                  Consultores
+                </p>
               </div>
               <div>
                 <p className="text-lg font-bold">{g.visitas}</p>
-                <p className="text-xs uppercase tracking-wide text-muted-foreground">Visitas</p>
+                <p className="text-xs uppercase tracking-wide text-muted-foreground">
+                  Visitas
+                </p>
               </div>
               <div>
                 <p className="text-lg font-bold text-gold">{g.conv}%</p>
-                <p className="text-xs uppercase tracking-wide text-muted-foreground">Conv.</p>
+                <p className="text-xs uppercase tracking-wide text-muted-foreground">
+                  Conv.
+                </p>
               </div>
             </div>
             <div className="flex items-center justify-between text-xs">
-              <span className="text-muted-foreground inline-flex items-center gap-1"><Users className="h-3 w-3" /> Pipeline</span>
-              <span className="font-bold text-gold">{formatBRL(g.pipeline)}</span>
+              <span className="text-muted-foreground inline-flex items-center gap-1">
+                <Users className="h-3 w-3" /> Pipeline
+              </span>
+              <span className="font-bold text-gold">
+                {formatBRL(g.pipeline)}
+              </span>
             </div>
           </Link>
         ))}

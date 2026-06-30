@@ -1,6 +1,11 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "~/lib/auth";
-import { listarNotificacoes, marcarComoLida, marcarTodasComoLidas, contarNaoLidas } from "../services/notifications";
+import {
+  listarNotificacoes,
+  marcarComoLida,
+  marcarTodasComoLidas,
+  contarNaoLidas,
+} from "../services/notifications";
 
 export function useNotificacoes(limit = 20) {
   const { profile } = useAuth();
@@ -26,7 +31,8 @@ export function useMarcarNotificacaoLida() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (id: string) => marcarComoLida(id),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["funis-notificacoes"] }),
+    onSuccess: () =>
+      queryClient.invalidateQueries({ queryKey: ["funis-notificacoes"] }),
   });
 }
 
@@ -36,6 +42,7 @@ export function useMarcarTodasLidas() {
   const userId = profile?.id ?? "";
   return useMutation({
     mutationFn: () => marcarTodasComoLidas(userId),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["funis-notificacoes"] }),
+    onSuccess: () =>
+      queryClient.invalidateQueries({ queryKey: ["funis-notificacoes"] }),
   });
 }

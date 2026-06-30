@@ -46,14 +46,19 @@ function ClientePage() {
 
   return (
     <div className="space-y-6">
-      <Link to="/crm/carteira" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
+      <Link
+        to="/crm/carteira"
+        className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
+      >
         <ArrowLeft className="h-4 w-4" /> Voltar para a carteira
       </Link>
 
       <header className="glass rounded-2xl p-5">
         <h1 className="text-2xl font-bold">{cliente?.nome_doutor}</h1>
         {cliente?.nome_clinica && (
-          <p className="text-sm text-muted-foreground">{cliente.nome_clinica}</p>
+          <p className="text-sm text-muted-foreground">
+            {cliente.nome_clinica}
+          </p>
         )}
         {cliente?.telefone_contato && (
           <p className="mt-2 inline-flex items-center gap-2 text-sm text-gold">
@@ -96,24 +101,34 @@ function ClientePage() {
                   <TempBadge t={v.temperatura_vendedor} />
                 </header>
                 <div className="mt-2 grid grid-cols-2 gap-2 text-xs">
-                  <span>Atendente: <strong>{v.atendente}</strong></span>
-                  <span>Valor: <strong className="text-gold">{formatBRL(v.valor_estimado)}</strong></span>
+                  <span>
+                    Atendente: <strong>{v.atendente}</strong>
+                  </span>
+                  <span>
+                    Valor:{" "}
+                    <strong className="text-gold">
+                      {formatBRL(v.valor_estimado)}
+                    </strong>
+                  </span>
                   <span>Orçamento: {v.gerou_orcamento ? "Sim" : "Não"}</span>
                   <span>Pedido: {v.gerou_pedido ? "Sim" : "Não"}</span>
                 </div>
                 {v.feedback_cliente && (
                   <p className="mt-2 text-xs">
-                    <span className="text-muted-foreground">Feedback:</span> {v.feedback_cliente}
+                    <span className="text-muted-foreground">Feedback:</span>{" "}
+                    {v.feedback_cliente}
                   </p>
                 )}
                 {v.observacoes_vendedor && (
                   <p className="mt-1 text-xs">
-                    <span className="text-muted-foreground">Obs:</span> {v.observacoes_vendedor}
+                    <span className="text-muted-foreground">Obs:</span>{" "}
+                    {v.observacoes_vendedor}
                   </p>
                 )}
                 {v.data_proximo_contato && (
                   <p className="mt-2 text-xs text-gold">
-                    Próximo contato: {formatDate(v.data_proximo_contato)} · {v.acao_prevista}
+                    Próximo contato: {formatDate(v.data_proximo_contato)} ·{" "}
+                    {v.acao_prevista}
                   </p>
                 )}
               </button>
@@ -139,7 +154,9 @@ function TempBadge({ t }: { t: string }) {
     Quente: "text-[var(--color-quente)] border-[var(--color-quente)]",
   };
   return (
-    <span className={`text-xs uppercase font-bold px-2 py-1 rounded-full border ${map[t] ?? ""}`}>
+    <span
+      className={`text-xs uppercase font-bold px-2 py-1 rounded-full border ${map[t] ?? ""}`}
+    >
       {t}
     </span>
   );

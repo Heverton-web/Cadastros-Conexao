@@ -1,160 +1,361 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Capítulo 1 — Visão Geral | ERP Conexão</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-<style>
-*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-:root {
-  --navy: #0B1E33; --navy-light: #122a45; --gold: #D4AF37;
-  --gold-light: #e8cc6a; --blue: #004892; --white: #FFFFFF;
-  --gray: #8899aa; --card-bg: rgba(255,255,255,0.04);
-  --card-border: rgba(212,175,55,0.15);
-}
-body { font-family: 'Inter', sans-serif; background: var(--navy); color: var(--white); line-height: 1.7; }
-.container { max-width: 900px; margin: 0 auto; padding: 40px 24px 80px; }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Capítulo 1 — Visão Geral | ERP Conexão</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      :root {
+        --navy: #0b1e33;
+        --navy-light: #122a45;
+        --gold: #d4af37;
+        --gold-light: #e8cc6a;
+        --blue: #004892;
+        --white: #ffffff;
+        --gray: #8899aa;
+        --card-bg: rgba(255, 255, 255, 0.04);
+        --card-border: rgba(212, 175, 55, 0.15);
+      }
+      body {
+        font-family: "Inter", sans-serif;
+        background: var(--navy);
+        color: var(--white);
+        line-height: 1.7;
+      }
+      .container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 40px 24px 80px;
+      }
 
-/* Top nav */
-.top-nav {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 16px 24px; border-bottom: 1px solid var(--card-border);
-  background: rgba(11,30,51,0.9); backdrop-filter: blur(8px);
-  position: sticky; top: 0; z-index: 100;
-}
-.top-nav a {
-  color: var(--gray); text-decoration: none; font-size: 0.9rem;
-  display: flex; align-items: center; gap: 6px; transition: color 0.2s;
-}
-.top-nav a:hover { color: var(--gold); }
-.top-nav .logo { font-weight: 700; color: var(--white); }
-.top-nav .logo span { color: var(--gold); }
+      /* Top nav */
+      .top-nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 16px 24px;
+        border-bottom: 1px solid var(--card-border);
+        background: rgba(11, 30, 51, 0.9);
+        backdrop-filter: blur(8px);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+      .top-nav a {
+        color: var(--gray);
+        text-decoration: none;
+        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        transition: color 0.2s;
+      }
+      .top-nav a:hover {
+        color: var(--gold);
+      }
+      .top-nav .logo {
+        font-weight: 700;
+        color: var(--white);
+      }
+      .top-nav .logo span {
+        color: var(--gold);
+      }
 
-h1 { font-size: 2.4rem; font-weight: 800; margin: 48px 0 8px; letter-spacing: -0.02em; }
-h1 + .subtitle { color: var(--gray); font-size: 1.1rem; margin-bottom: 40px; }
+      h1 {
+        font-size: 2.4rem;
+        font-weight: 800;
+        margin: 48px 0 8px;
+        letter-spacing: -0.02em;
+      }
+      h1 + .subtitle {
+        color: var(--gray);
+        font-size: 1.1rem;
+        margin-bottom: 40px;
+      }
 
-h2 { font-size: 1.5rem; font-weight: 700; margin: 48px 0 16px; color: var(--gold); }
-h3 { font-size: 1.15rem; font-weight: 600; margin: 28px 0 12px; }
-p { margin-bottom: 16px; color: #ccd; }
-p strong { color: var(--white); }
+      h2 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin: 48px 0 16px;
+        color: var(--gold);
+      }
+      h3 {
+        font-size: 1.15rem;
+        font-weight: 600;
+        margin: 28px 0 12px;
+      }
+      p {
+        margin-bottom: 16px;
+        color: #ccd;
+      }
+      p strong {
+        color: var(--white);
+      }
 
-.tag {
-  display: inline-block; padding: 3px 12px; border-radius: 12px;
-  font-size: 0.75rem; font-weight: 600;
-}
-.tag.gold { background: rgba(212,175,55,0.15); color: var(--gold); border: 1px solid rgba(212,175,55,0.25); }
-.tag.blue { background: rgba(0,72,146,0.15); color: #6ab0ff; border: 1px solid rgba(0,72,146,0.25); }
+      .tag {
+        display: inline-block;
+        padding: 3px 12px;
+        border-radius: 12px;
+        font-size: 0.75rem;
+        font-weight: 600;
+      }
+      .tag.gold {
+        background: rgba(212, 175, 55, 0.15);
+        color: var(--gold);
+        border: 1px solid rgba(212, 175, 55, 0.25);
+      }
+      .tag.blue {
+        background: rgba(0, 72, 146, 0.15);
+        color: #6ab0ff;
+        border: 1px solid rgba(0, 72, 146, 0.25);
+      }
 
-.info-box {
-  background: rgba(0,72,146,0.08); border: 1px solid rgba(0,72,146,0.2);
-  border-radius: 12px; padding: 20px 24px; margin: 24px 0;
-}
-.info-box strong { color: #6ab0ff; }
+      .info-box {
+        background: rgba(0, 72, 146, 0.08);
+        border: 1px solid rgba(0, 72, 146, 0.2);
+        border-radius: 12px;
+        padding: 20px 24px;
+        margin: 24px 0;
+      }
+      .info-box strong {
+        color: #6ab0ff;
+      }
 
-ul, ol { margin: 12px 0 20px 24px; color: #ccd; }
-li { margin-bottom: 6px; }
-li strong { color: var(--white); }
+      ul,
+      ol {
+        margin: 12px 0 20px 24px;
+        color: #ccd;
+      }
+      li {
+        margin-bottom: 6px;
+      }
+      li strong {
+        color: var(--white);
+      }
 
-hr { border: none; border-top: 1px solid var(--card-border); margin: 40px 0; }
+      hr {
+        border: none;
+        border-top: 1px solid var(--card-border);
+        margin: 40px 0;
+      }
 
-.bottom-nav {
-  display: flex; justify-content: space-between; align-items: center;
-  margin-top: 60px; padding-top: 24px; border-top: 1px solid var(--card-border);
-}
-.bottom-nav a {
-  color: var(--gold); text-decoration: none; font-weight: 600;
-  display: flex; align-items: center; gap: 8px; transition: opacity 0.2s;
-}
-.bottom-nav a:hover { opacity: 0.8; }
-.bottom-nav .prev { color: var(--gray); }
+      .bottom-nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 60px;
+        padding-top: 24px;
+        border-top: 1px solid var(--card-border);
+      }
+      .bottom-nav a {
+        color: var(--gold);
+        text-decoration: none;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: opacity 0.2s;
+      }
+      .bottom-nav a:hover {
+        opacity: 0.8;
+      }
+      .bottom-nav .prev {
+        color: var(--gray);
+      }
 
-.fact-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: 12px; margin: 20px 0; }
-.fact-item {
-  background: var(--card-bg); border: 1px solid var(--card-border);
-  border-radius: 10px; padding: 16px;
-  text-align: center;
-}
-.fact-item .num { font-size: 1.6rem; font-weight: 800; color: var(--gold); }
-.fact-item .label { font-size: 0.8rem; color: var(--gray); margin-top: 4px; }
+      .fact-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 12px;
+        margin: 20px 0;
+      }
+      .fact-item {
+        background: var(--card-bg);
+        border: 1px solid var(--card-border);
+        border-radius: 10px;
+        padding: 16px;
+        text-align: center;
+      }
+      .fact-item .num {
+        font-size: 1.6rem;
+        font-weight: 800;
+        color: var(--gold);
+      }
+      .fact-item .label {
+        font-size: 0.8rem;
+        color: var(--gray);
+        margin-top: 4px;
+      }
 
-@media (max-width: 640px) {
-  h1 { font-size: 1.6rem; }
-  .top-nav .logo { font-size: 0.85rem; }
-}
-</style>
-</head>
-<body>
+      @media (max-width: 640px) {
+        h1 {
+          font-size: 1.6rem;
+        }
+        .top-nav .logo {
+          font-size: 0.85rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="top-nav">
+      <a href="index.html" class="logo">ERP <span>Conexão</span></a>
+      <a href="index.html">&larr; Índice</a>
+    </nav>
 
-<nav class="top-nav">
-  <a href="index.html" class="logo">ERP <span>Conexão</span></a>
-  <a href="index.html">&larr; Índice</a>
-</nav>
+    <div class="container">
+      <h1>Capítulo 1<br />Visão Geral da Aplicação</h1>
+      <p class="subtitle">
+        O que é o ERP Conexão, seus objetivos de negócio e a stack tecnológica
+        que o sustenta.
+      </p>
 
-<div class="container">
+      <h2>O que é o ERP Conexão?</h2>
+      <p>
+        O <strong>ERP Conexão</strong> é uma plataforma SaaS multiempresa
+        desenvolvida para o ecossistema <strong>Conexão Implantes</strong>. A
+        aplicação centraliza a gestão de cadastros de profissionais da saúde
+        (cirurgiões-dentistas, distribuidores e consultores), relacionamento com
+        clientes (CRM), pesquisas de satisfação (NPS), mapas interativos de
+        cobertura, kanban de processos (Funis), links inteligentes (LinkTree) e
+        uma plataforma completa de treinamento e educação (Hub).
+      </p>
 
-<h1>Capítulo 1<br>Visão Geral da Aplicação</h1>
-<p class="subtitle">O que é o ERP Conexão, seus objetivos de negócio e a stack tecnológica que o sustenta.</p>
+      <p>
+        O sistema foi projetado com arquitetura modular e permissionamento
+        granular, permitindo que cada empresa cliente opere de forma isolada
+        dentro da plataforma, com suas próprias regras de negócio, módulos
+        ativos e usuários.
+      </p>
 
-<h2>O que é o ERP Conexão?</h2>
-<p>O <strong>ERP Conexão</strong> é uma plataforma SaaS multiempresa desenvolvida para o ecossistema <strong>Conexão Implantes</strong>. A aplicação centraliza a gestão de cadastros de profissionais da saúde (cirurgiões-dentistas, distribuidores e consultores), relacionamento com clientes (CRM), pesquisas de satisfação (NPS), mapas interativos de cobertura, kanban de processos (Funis), links inteligentes (LinkTree) e uma plataforma completa de treinamento e educação (Hub).</p>
+      <h2>Objetivos de Negócio</h2>
+      <ul>
+        <li>
+          <strong>Centralização</strong> — Unificar a gestão de profissionais,
+          distribuidores e consultores em uma única plataforma
+        </li>
+        <li>
+          <strong>Isolamento Multiempresa</strong> — Cada organização opera com
+          dados e configurações próprias, sem risco de vazamento entre tenants
+        </li>
+        <li>
+          <strong>Automação de Processos</strong> — Fluxos de aprovação de
+          cadastros, documentos e campos com notificações em tempo real
+        </li>
+        <li>
+          <strong>Inteligência de Negócio</strong> — BI e dashboards com
+          métricas de desempenho comercial e satisfação de clientes
+        </li>
+        <li>
+          <strong>Educação Continuada</strong> — Plataforma de treinamento (Hub)
+          com trilhas, materiais e gamificação para distribuidores e consultores
+        </li>
+        <li>
+          <strong>Relacionamento com Cliente</strong> — CRM completo com gestão
+          de carteira, visitas, transferências e diretoria
+        </li>
+      </ul>
 
-<p>O sistema foi projetado com arquitetura modular e permissionamento granular, permitindo que cada empresa cliente opere de forma isolada dentro da plataforma, com suas próprias regras de negócio, módulos ativos e usuários.</p>
+      <h2>Stack Tecnológica</h2>
 
-<h2>Objetivos de Negócio</h2>
-<ul>
-  <li><strong>Centralização</strong> — Unificar a gestão de profissionais, distribuidores e consultores em uma única plataforma</li>
-  <li><strong>Isolamento Multiempresa</strong> — Cada organização opera com dados e configurações próprias, sem risco de vazamento entre tenants</li>
-  <li><strong>Automação de Processos</strong> — Fluxos de aprovação de cadastros, documentos e campos com notificações em tempo real</li>
-  <li><strong>Inteligência de Negócio</strong> — BI e dashboards com métricas de desempenho comercial e satisfação de clientes</li>
-  <li><strong>Educação Continuada</strong> — Plataforma de treinamento (Hub) com trilhas, materiais e gamificação para distribuidores e consultores</li>
-  <li><strong>Relacionamento com Cliente</strong> — CRM completo com gestão de carteira, visitas, transferências e diretoria</li>
-</ul>
+      <div class="info-box">
+        <strong>Frontend</strong> &mdash; TanStack Start (React Router) + Vite +
+        Tailwind CSS v4 &bull; <strong>Backend</strong> &mdash; Supabase
+        (PostgreSQL, Auth, Storage, RLS) &bull;
+        <strong>Linguagem</strong> &mdash; TypeScript (TSX) &bull;
+        <strong>Ícones</strong> &mdash; Lucide React &bull;
+        <strong>Deploy</strong> &mdash; Docker + Docker Swarm na VPS
+      </div>
 
-<h2>Stack Tecnológica</h2>
+      <ul>
+        <li>
+          <strong>TanStack Start / React Router</strong> — Framework de
+          aplicação com roteamento baseado em arquivos, renderização SSR e
+          server functions
+        </li>
+        <li>
+          <strong>Vite</strong> — Build tool com HMR rápido e otimização de
+          produção
+        </li>
+        <li>
+          <strong>Supabase</strong> — Banco PostgreSQL, autenticação (Auth),
+          armazenamento (Storage) e políticas de segurança em linha (RLS)
+        </li>
+        <li>
+          <strong>Tailwind CSS v4</strong> — Estilização utilitária com design
+          system customizado
+        </li>
+        <li><strong>Zustand</strong> — Gerenciamento de estado global</li>
+        <li>
+          <strong>Docker</strong> — Containerização e orquestração com Docker
+          Swarm
+        </li>
+      </ul>
 
-<div class="info-box">
-<strong>Frontend</strong> &mdash; TanStack Start (React Router) + Vite + Tailwind CSS v4 &bull;
-<strong>Backend</strong> &mdash; Supabase (PostgreSQL, Auth, Storage, RLS) &bull;
-<strong>Linguagem</strong> &mdash; TypeScript (TSX) &bull;
-<strong>Ícones</strong> &mdash; Lucide React &bull;
-<strong>Deploy</strong> &mdash; Docker + Docker Swarm na VPS
-</div>
+      <h2>Público-Alvo</h2>
+      <ul>
+        <li>
+          <strong>Empresas</strong> (distribuidoras de implantes) — utilizam o
+          sistema para gerir seus cadastros e operações
+        </li>
+        <li>
+          <strong>Consultores</strong> — profissionais de campo que utilizam o
+          CRM e o Hub
+        </li>
+        <li>
+          <strong>Distribuidores</strong> — parceiros com acesso a mapas e
+          métricas regionais
+        </li>
+        <li>
+          <strong>Gestores e Diretores</strong> — acompanham indicadores via
+          dashboards e BI
+        </li>
+        <li>
+          <strong>Super Administradores</strong> — equipe técnica da Conexão que
+          gerencia toda a plataforma
+        </li>
+      </ul>
 
-<ul>
-  <li><strong>TanStack Start / React Router</strong> — Framework de aplicação com roteamento baseado em arquivos, renderização SSR e server functions</li>
-  <li><strong>Vite</strong> — Build tool com HMR rápido e otimização de produção</li>
-  <li><strong>Supabase</strong> — Banco PostgreSQL, autenticação (Auth), armazenamento (Storage) e políticas de segurança em linha (RLS)</li>
-  <li><strong>Tailwind CSS v4</strong> — Estilização utilitária com design system customizado</li>
-  <li><strong>Zustand</strong> — Gerenciamento de estado global</li>
-  <li><strong>Docker</strong> — Containerização e orquestração com Docker Swarm</li>
-</ul>
+      <h2>Fatos Rápidos</h2>
+      <div class="fact-grid">
+        <div class="fact-item">
+          <div class="num">8</div>
+          <div class="label">Módulos</div>
+        </div>
+        <div class="fact-item">
+          <div class="num">86+</div>
+          <div class="label">Permissões</div>
+        </div>
+        <div class="fact-item">
+          <div class="num">50+</div>
+          <div class="label">Rotas</div>
+        </div>
+        <div class="fact-item">
+          <div class="num">22</div>
+          <div class="label">Features</div>
+        </div>
+        <div class="fact-item">
+          <div class="num">v27</div>
+          <div class="label">Versão Atual</div>
+        </div>
+      </div>
 
-<h2>Público-Alvo</h2>
-<ul>
-  <li><strong>Empresas</strong> (distribuidoras de implantes) — utilizam o sistema para gerir seus cadastros e operações</li>
-  <li><strong>Consultores</strong> — profissionais de campo que utilizam o CRM e o Hub</li>
-  <li><strong>Distribuidores</strong> — parceiros com acesso a mapas e métricas regionais</li>
-  <li><strong>Gestores e Diretores</strong> — acompanham indicadores via dashboards e BI</li>
-  <li><strong>Super Administradores</strong> — equipe técnica da Conexão que gerencia toda a plataforma</li>
-</ul>
-
-<h2>Fatos Rápidos</h2>
-<div class="fact-grid">
-  <div class="fact-item"><div class="num">8</div><div class="label">Módulos</div></div>
-  <div class="fact-item"><div class="num">86+</div><div class="label">Permissões</div></div>
-  <div class="fact-item"><div class="num">50+</div><div class="label">Rotas</div></div>
-  <div class="fact-item"><div class="num">22</div><div class="label">Features</div></div>
-  <div class="fact-item"><div class="num">v27</div><div class="label">Versão Atual</div></div>
-</div>
-
-<div class="bottom-nav">
-  <a href="index.html" class="prev">&larr; Índice</a>
-  <a href="capitulo-2.html">Capítulo 2: Arquitetura & Estrutura &rarr;</a>
-</div>
-
-</div>
-
-</body>
+      <div class="bottom-nav">
+        <a href="index.html" class="prev">&larr; Índice</a>
+        <a href="capitulo-2.html">Capítulo 2: Arquitetura & Estrutura &rarr;</a>
+      </div>
+    </div>
+  </body>
 </html>

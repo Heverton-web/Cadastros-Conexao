@@ -34,13 +34,18 @@ export function DeviceGate({ children }: { children: React.ReactNode }) {
               <MonitorX size={48} className="text-accent" />
             </div>
           </div>
-          <h1 className="mb-2 text-xl font-bold text-text-main">Acesso Restrito ao Desktop</h1>
+          <h1 className="mb-2 text-xl font-bold text-text-main">
+            Acesso Restrito ao Desktop
+          </h1>
           <p className="text-sm text-text-muted">
-            O seu perfil de acesso (<strong>{profile?.ambiente?.toUpperCase()}</strong>) exige operações complexas que foram desenhadas para telas maiores.
+            O seu perfil de acesso (
+            <strong>{profile?.ambiente?.toUpperCase()}</strong>) exige operações
+            complexas que foram desenhadas para telas maiores.
           </p>
           <div className="mt-6 rounded-lg bg-yellow-500/10 p-4 border border-yellow-500/20">
             <p className="text-xs text-yellow-500 font-medium">
-              Por favor, acesse o sistema através de um computador para continuar.
+              Por favor, acesse o sistema através de um computador para
+              continuar.
             </p>
           </div>
           <button

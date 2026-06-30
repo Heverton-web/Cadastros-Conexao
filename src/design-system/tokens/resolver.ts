@@ -22,10 +22,14 @@ function deepMerge<T extends object>(base: T, override: Partial<T>): T {
   for (const key of Object.keys(override) as Array<keyof T>) {
     const val = override[key];
     if (val !== undefined && val !== null) {
-      if (typeof val === "object" && !Array.isArray(val) && typeof base[key] === "object") {
+      if (
+        typeof val === "object" &&
+        !Array.isArray(val) &&
+        typeof base[key] === "object"
+      ) {
         result[key as string] = deepMerge(
           base[key] as object,
-          val as Partial<object>
+          val as Partial<object>,
         );
       } else {
         result[key as string] = val;

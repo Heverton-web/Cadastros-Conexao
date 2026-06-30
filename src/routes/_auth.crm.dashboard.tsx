@@ -42,7 +42,9 @@ function Dashboard() {
   const role = perfil?.role;
   const isSuperAdmin = perfil?.is_super_admin === true;
   const [pickerOpen, setPickerOpen] = useState(false);
-  const [clienteSelecionado, setClienteSelecionado] = useState<string | null>(null);
+  const [clienteSelecionado, setClienteSelecionado] = useState<string | null>(
+    null,
+  );
   const [empresaFiltro, setEmpresaFiltro] = useState<string>("todas");
 
   const { data: empresas } = useQuery({
@@ -65,19 +67,19 @@ function Dashboard() {
     painelEfetivo === "dev"
       ? "Visão global: métricas, usuários e convites de todas as empresas."
       : painelEfetivo === "diretor_comercial"
-      ? "Visão nacional: gestores, consultores e BI agregado."
-      : painelEfetivo === "gestor"
-      ? "Acompanhe a performance da sua equipe e a carteira agregada."
-      : "Sua carteira de clientes e visitas em campo.";
+        ? "Visão nacional: gestores, consultores e BI agregado."
+        : painelEfetivo === "gestor"
+          ? "Acompanhe a performance da sua equipe e a carteira agregada."
+          : "Sua carteira de clientes e visitas em campo.";
 
   const tag =
     painelEfetivo === "dev"
       ? "Painel Super Admin"
       : painelEfetivo === "diretor_comercial"
-      ? "Painel Diretor Comercial"
-      : painelEfetivo === "gestor"
-      ? "Painel Gestor"
-      : "Painel Consultor";
+        ? "Painel Diretor Comercial"
+        : painelEfetivo === "gestor"
+          ? "Painel Gestor"
+          : "Painel Consultor";
 
   return (
     <div className="space-y-6">
@@ -123,7 +125,11 @@ function Dashboard() {
       {painelEfetivo === "consultor" && <ConsultorPanel uid={perfil!.id} />}
       {painelEfetivo === "gestor" && <GestorPanel />}
       {painelEfetivo === "diretor_comercial" && <DiretorPanel />}
-      {painelEfetivo === "dev" && <DevPanel empresaId={empresaFiltro === "todas" ? undefined : empresaFiltro} />}
+      {painelEfetivo === "dev" && (
+        <DevPanel
+          empresaId={empresaFiltro === "todas" ? undefined : empresaFiltro}
+        />
+      )}
 
       {painelEfetivo === "consultor" && perfil && (
         <>
@@ -149,19 +155,26 @@ function Dashboard() {
   );
 }
 
-
 function ConsultorPanel({ uid }: { uid: string }) {
   const { data: stats } = useQuery({
     queryKey: ["dash-consultor", uid],
     queryFn: async () => {
       const today = new Date().toISOString().slice(0, 10);
       const [vis, cli, prox] = await Promise.all([
-        supabase.from("visitas").select("id", { count: "exact", head: true })
-          .eq("data_visita", today).eq("consultor_executor_id", uid),
-        supabase.from("clientes").select("id", { count: "exact", head: true })
+        supabase
+          .from("visitas")
+          .select("id", { count: "exact", head: true })
+          .eq("data_visita", today)
+          .eq("consultor_executor_id", uid),
+        supabase
+          .from("clientes")
+          .select("id", { count: "exact", head: true })
           .eq("consultor_atual_id", uid),
-        supabase.from("visitas")
-          .select("id, data_proximo_contato, acao_prevista, cliente_id, clientes(nome_doutor)")
+        supabase
+          .from("visitas")
+          .select(
+            "id, data_proximo_contato, acao_prevista, cliente_id, clientes(nome_doutor)",
+          )
           .gte("data_proximo_contato", today)
           .eq("consultor_executor_id", uid)
           .order("data_proximo_contato", { ascending: true })
@@ -178,14 +191,30 @@ function ConsultorPanel({ uid }: { uid: string }) {
   return (
     <>
       <section className="grid grid-cols-2 md:grid-cols-3 gap-3">
-        <KpiCard icon={Calendar} label="Visitas hoje" value={stats?.visitasHoje ?? "—"} />
-        <KpiCard icon={Briefcase} label="Meus clientes" value={stats?.totalClientes ?? "—"} />
-        <KpiCard icon={TrendingUp} label="Meta diária" value="3" hint="visitas" />
+        <KpiCard
+          icon={Calendar}
+          label="Visitas hoje"
+          value={stats?.visitasHoje ?? "—"}
+        />
+        <KpiCard
+          icon={Briefcase}
+          label="Meus clientes"
+          value={stats?.totalClientes ?? "—"}
+        />
+        <KpiCard
+          icon={TrendingUp}
+          label="Meta diária"
+          value="3"
+          hint="visitas"
+        />
       </section>
 
-      <QuickAction to="/crm/carteira" icon={Briefcase}
+      <QuickAction
+        to="/crm/carteira"
+        icon={Briefcase}
         title="Abrir minha Carteira"
-        subtitle="Kanban por temperatura, registrar nova visita" />
+        subtitle="Kanban por temperatura, registrar nova visita"
+      />
 
       <section>
         <h2 className="mb-3 text-sm font-semibold text-muted-foreground uppercase tracking-wide">
@@ -193,14 +222,22 @@ function ConsultorPanel({ uid }: { uid: string }) {
         </h2>
         <div className="glass rounded-2xl divide-y divide-border">
           {!stats?.followups?.length && (
-            <p className="p-5 text-sm text-muted-foreground">Nenhum follow-up agendado.</p>
+            <p className="p-5 text-sm text-muted-foreground">
+              Nenhum follow-up agendado.
+            </p>
           )}
           {stats?.followups?.map((f: any) => (
-            <Link key={f.id} to="/crm/cliente/$id" params={{ id: f.cliente_id }}
-              className="flex items-center justify-between p-4 hover:bg-secondary/30 transition">
+            <Link
+              key={f.id}
+              to="/crm/cliente/$id"
+              params={{ id: f.cliente_id }}
+              className="flex items-center justify-between p-4 hover:bg-secondary/30 transition"
+            >
               <div>
                 <p className="font-medium text-sm">{f.clientes?.nome_doutor}</p>
-                <p className="text-xs text-muted-foreground">{f.acao_prevista}</p>
+                <p className="text-xs text-muted-foreground">
+                  {f.acao_prevista}
+                </p>
               </div>
               <span className="text-xs text-gold font-medium">
                 {new Date(f.data_proximo_contato).toLocaleDateString("pt-BR")}
@@ -219,9 +256,15 @@ function GestorPanel() {
     queryFn: async () => {
       const today = new Date().toISOString().slice(0, 10);
       const [vis, cli, consultores] = await Promise.all([
-        supabase.from("visitas").select("id", { count: "exact", head: true }).eq("data_visita", today),
+        supabase
+          .from("visitas")
+          .select("id", { count: "exact", head: true })
+          .eq("data_visita", today),
         supabase.from("clientes").select("id", { count: "exact", head: true }),
-        supabase.from("usuarios").select("id", { count: "exact", head: true }).eq("role", "consultor"),
+        supabase
+          .from("usuarios")
+          .select("id", { count: "exact", head: true })
+          .eq("role", "consultor"),
       ]);
       return {
         visitasHoje: vis.count ?? 0,
@@ -234,15 +277,42 @@ function GestorPanel() {
   return (
     <>
       <section className="grid grid-cols-2 md:grid-cols-3 gap-3">
-        <KpiCard icon={Users} label="Consultores" value={data?.consultores ?? "—"} />
-        <KpiCard icon={Briefcase} label="Carteira total" value={data?.totalClientes ?? "—"} />
-        <KpiCard icon={Calendar} label="Visitas hoje" value={data?.visitasHoje ?? "—"} />
+        <KpiCard
+          icon={Users}
+          label="Consultores"
+          value={data?.consultores ?? "—"}
+        />
+        <KpiCard
+          icon={Briefcase}
+          label="Carteira total"
+          value={data?.totalClientes ?? "—"}
+        />
+        <KpiCard
+          icon={Calendar}
+          label="Visitas hoje"
+          value={data?.visitasHoje ?? "—"}
+        />
       </section>
 
       <div className="grid gap-3 md:grid-cols-3">
-        <QuickAction to="/crm/equipe" icon={Users} title="Equipe" subtitle="Performance por consultor" />
-        <QuickAction to="/crm/transferencia" icon={ArrowLeftRight} title="Transferir clientes" subtitle="Reatribuir carteira" />
-        <QuickAction to="/crm/bi" icon={BarChart3} title="BI da equipe" subtitle="Pipeline e conversão" />
+        <QuickAction
+          to="/crm/equipe"
+          icon={Users}
+          title="Equipe"
+          subtitle="Performance por consultor"
+        />
+        <QuickAction
+          to="/crm/transferencia"
+          icon={ArrowLeftRight}
+          title="Transferir clientes"
+          subtitle="Reatribuir carteira"
+        />
+        <QuickAction
+          to="/crm/bi"
+          icon={BarChart3}
+          title="BI da equipe"
+          subtitle="Pipeline e conversão"
+        />
       </div>
     </>
   );
@@ -254,9 +324,18 @@ function DiretorPanel() {
     queryFn: async () => {
       const today = new Date().toISOString().slice(0, 10);
       const [gestores, consultores, vis, cli] = await Promise.all([
-        supabase.from("usuarios").select("id", { count: "exact", head: true }).eq("role", "gestor"),
-        supabase.from("usuarios").select("id", { count: "exact", head: true }).eq("role", "consultor"),
-        supabase.from("visitas").select("id", { count: "exact", head: true }).eq("data_visita", today),
+        supabase
+          .from("usuarios")
+          .select("id", { count: "exact", head: true })
+          .eq("role", "gestor"),
+        supabase
+          .from("usuarios")
+          .select("id", { count: "exact", head: true })
+          .eq("role", "consultor"),
+        supabase
+          .from("visitas")
+          .select("id", { count: "exact", head: true })
+          .eq("data_visita", today),
         supabase.from("clientes").select("id", { count: "exact", head: true }),
       ]);
       return {
@@ -271,17 +350,53 @@ function DiretorPanel() {
   return (
     <>
       <section className="grid grid-cols-2 md:grid-cols-4 gap-3">
-        <KpiCard icon={Building2} label="Gestores" value={data?.gestores ?? "—"} />
-        <KpiCard icon={Users} label="Consultores" value={data?.consultores ?? "—"} />
-        <KpiCard icon={Calendar} label="Visitas hoje" value={data?.visitasHoje ?? "—"} />
-        <KpiCard icon={Briefcase} label="Carteira" value={data?.carteira ?? "—"} />
+        <KpiCard
+          icon={Building2}
+          label="Gestores"
+          value={data?.gestores ?? "—"}
+        />
+        <KpiCard
+          icon={Users}
+          label="Consultores"
+          value={data?.consultores ?? "—"}
+        />
+        <KpiCard
+          icon={Calendar}
+          label="Visitas hoje"
+          value={data?.visitasHoje ?? "—"}
+        />
+        <KpiCard
+          icon={Briefcase}
+          label="Carteira"
+          value={data?.carteira ?? "—"}
+        />
       </section>
 
       <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-4">
-        <QuickAction to="/crm/diretoria" icon={Building2} title="Diretoria" subtitle="Gestores e equipes" />
-        <QuickAction to="/crm/transferencia/consultores" icon={UserCog} title="Transferir consultor" subtitle="Mover entre gestores" />
-        <QuickAction to="/crm/transferencia" icon={ArrowLeftRight} title="Transferir cliente" subtitle="Realocar carteiras" />
-        <QuickAction to="/crm/bi" icon={BarChart3} title="BI nacional" subtitle="Filtros e funil" />
+        <QuickAction
+          to="/crm/diretoria"
+          icon={Building2}
+          title="Diretoria"
+          subtitle="Gestores e equipes"
+        />
+        <QuickAction
+          to="/crm/transferencia/consultores"
+          icon={UserCog}
+          title="Transferir consultor"
+          subtitle="Mover entre gestores"
+        />
+        <QuickAction
+          to="/crm/transferencia"
+          icon={ArrowLeftRight}
+          title="Transferir cliente"
+          subtitle="Realocar carteiras"
+        />
+        <QuickAction
+          to="/crm/bi"
+          icon={BarChart3}
+          title="BI nacional"
+          subtitle="Filtros e funil"
+        />
       </div>
     </>
   );
@@ -300,20 +415,46 @@ function DevPanel({ empresaId }: { empresaId?: string }) {
           .eq("empresa_id", empresaId);
         userIds = (profiles ?? []).map((p) => p.id);
         if (userIds.length === 0) {
-          return { users: 0, consultores: 0, gestores: 0, clientes: 0, visitasHoje: 0, visitasTotal: 0, convitesPendentes: 0 };
+          return {
+            users: 0,
+            consultores: 0,
+            gestores: 0,
+            clientes: 0,
+            visitasHoje: 0,
+            visitasTotal: 0,
+            convitesPendentes: 0,
+          };
         }
       }
 
       const today = new Date().toISOString().slice(0, 10);
 
       // Build queries
-      let usersQ = supabase.from("usuarios").select("id", { count: "exact", head: true });
-      let consultoresQ = supabase.from("usuarios").select("id", { count: "exact", head: true }).eq("role", "consultor");
-      let gestoresQ = supabase.from("usuarios").select("id", { count: "exact", head: true }).eq("role", "gestor");
-      let clientesQ = supabase.from("clientes").select("id", { count: "exact", head: true });
-      let visitasHojeQ = supabase.from("visitas").select("id", { count: "exact", head: true }).eq("data_visita", today);
-      let visitasTotalQ = supabase.from("visitas").select("id", { count: "exact", head: true });
-      let convitesQ = supabase.from("convites_acesso").select("id", { count: "exact", head: true }).eq("status", "pendente");
+      let usersQ = supabase
+        .from("usuarios")
+        .select("id", { count: "exact", head: true });
+      let consultoresQ = supabase
+        .from("usuarios")
+        .select("id", { count: "exact", head: true })
+        .eq("role", "consultor");
+      let gestoresQ = supabase
+        .from("usuarios")
+        .select("id", { count: "exact", head: true })
+        .eq("role", "gestor");
+      let clientesQ = supabase
+        .from("clientes")
+        .select("id", { count: "exact", head: true });
+      let visitasHojeQ = supabase
+        .from("visitas")
+        .select("id", { count: "exact", head: true })
+        .eq("data_visita", today);
+      let visitasTotalQ = supabase
+        .from("visitas")
+        .select("id", { count: "exact", head: true });
+      let convitesQ = supabase
+        .from("convites_acesso")
+        .select("id", { count: "exact", head: true })
+        .eq("status", "pendente");
 
       if (userIds) {
         const inClause = userIds.join(",");
@@ -325,8 +466,22 @@ function DevPanel({ empresaId }: { empresaId?: string }) {
         visitasTotalQ = visitasTotalQ.in("consultor_executor_id", userIds);
       }
 
-      const [users, consultores, gestores, clientes, visitasHoje, visitasTotal, convites] = await Promise.all([
-        usersQ, consultoresQ, gestoresQ, clientesQ, visitasHojeQ, visitasTotalQ, convitesQ,
+      const [
+        users,
+        consultores,
+        gestores,
+        clientes,
+        visitasHoje,
+        visitasTotal,
+        convites,
+      ] = await Promise.all([
+        usersQ,
+        consultoresQ,
+        gestoresQ,
+        clientesQ,
+        visitasHojeQ,
+        visitasTotalQ,
+        convitesQ,
       ]);
 
       return {
@@ -345,26 +500,57 @@ function DevPanel({ empresaId }: { empresaId?: string }) {
     <>
       <section className="grid grid-cols-2 md:grid-cols-4 gap-3">
         <KpiCard icon={Users} label="Usuários" value={data?.users ?? "—"} />
-        <KpiCard icon={Briefcase} label="Clientes" value={data?.clientes ?? "—"} />
-        <KpiCard icon={Calendar} label="Visitas hoje" value={data?.visitasHoje ?? "—"} />
-        <KpiCard icon={TrendingUp} label="Visitas total" value={data?.visitasTotal ?? "—"} />
+        <KpiCard
+          icon={Briefcase}
+          label="Clientes"
+          value={data?.clientes ?? "—"}
+        />
+        <KpiCard
+          icon={Calendar}
+          label="Visitas hoje"
+          value={data?.visitasHoje ?? "—"}
+        />
+        <KpiCard
+          icon={TrendingUp}
+          label="Visitas total"
+          value={data?.visitasTotal ?? "—"}
+        />
       </section>
 
       <section className="grid grid-cols-2 md:grid-cols-4 gap-3">
-        <KpiCard icon={UserCheck} label="Consultores" value={data?.consultores ?? "—"} />
-        <KpiCard icon={Building2} label="Gestores" value={data?.gestores ?? "—"} />
-        <KpiCard icon={UserPlus} label="Convites pendentes" value={data?.convitesPendentes ?? "—"} />
+        <KpiCard
+          icon={UserCheck}
+          label="Consultores"
+          value={data?.consultores ?? "—"}
+        />
+        <KpiCard
+          icon={Building2}
+          label="Gestores"
+          value={data?.gestores ?? "—"}
+        />
+        <KpiCard
+          icon={UserPlus}
+          label="Convites pendentes"
+          value={data?.convitesPendentes ?? "—"}
+        />
         <KpiCard icon={Settings} label="Demo cards" value="4" hint="papéis" />
       </section>
-
     </>
   );
 }
 
 const UserCheck = Users;
 
-function KpiCard({ icon: Icon, label, value, hint }: {
-  icon: typeof Users; label: string; value: string | number; hint?: string;
+function KpiCard({
+  icon: Icon,
+  label,
+  value,
+  hint,
+}: {
+  icon: typeof Users;
+  label: string;
+  value: string | number;
+  hint?: string;
 }) {
   return (
     <div className="glass rounded-2xl p-4">
@@ -377,12 +563,22 @@ function KpiCard({ icon: Icon, label, value, hint }: {
   );
 }
 
-function QuickAction({ to, icon: Icon, title, subtitle }: {
-  to: string; icon: typeof Users; title: string; subtitle: string;
+function QuickAction({
+  to,
+  icon: Icon,
+  title,
+  subtitle,
+}: {
+  to: string;
+  icon: typeof Users;
+  title: string;
+  subtitle: string;
 }) {
   return (
-    <Link to={to}
-      className="group glass rounded-2xl p-4 flex items-center justify-between hover:border-primary/40 transition">
+    <Link
+      to={to}
+      className="group glass rounded-2xl p-4 flex items-center justify-between hover:border-primary/40 transition"
+    >
       <div className="flex items-center gap-3">
         <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/15 text-gold">
           <Icon className="h-5 w-5" />

@@ -1,6 +1,12 @@
 import { supabase } from "~/core/supabase";
 
-export type MktgEventoTipo = "visualizacao" | "clique" | "scroll" | "conversao" | "form_submit" | "permanencia";
+export type MktgEventoTipo =
+  | "visualizacao"
+  | "clique"
+  | "scroll"
+  | "conversao"
+  | "form_submit"
+  | "permanencia";
 
 export type MktgEvento = {
   empresa_id: string;
@@ -24,7 +30,10 @@ export async function trackEvento(evento: MktgEvento): Promise<void> {
   });
 }
 
-export function useLandingPageTracking(landingPageId: string, empresaId: string) {
+export function useLandingPageTracking(
+  landingPageId: string,
+  empresaId: string,
+) {
   const track = (tipo: MktgEventoTipo, metadata?: Record<string, unknown>) => {
     trackEvento({
       empresa_id: empresaId,

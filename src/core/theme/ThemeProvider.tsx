@@ -47,7 +47,8 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     const theme: Record<string, string> = empresa?.theme ?? DEFAULT_THEME;
 
     for (const [key, cssVar] of Object.entries(THEME_KEYS)) {
-      const value = theme[key] || DEFAULT_THEME[key as keyof typeof DEFAULT_THEME];
+      const value =
+        theme[key] || DEFAULT_THEME[key as keyof typeof DEFAULT_THEME];
       root.style.setProperty(cssVar, value);
     }
   }, [empresa]);

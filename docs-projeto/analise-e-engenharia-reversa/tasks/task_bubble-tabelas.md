@@ -1,16 +1,20 @@
 # Tarefa: bubble-tabelas (Execução Autônoma)
 
 ## Objetivo
+
 Identificar e documentar a estrutura de dados (Data Types / Tabelas) utilizada no aplicativo, inferida a partir do JSON.
 
 ## Execução
+
 Esta tarefa é executada **automaticamente** pelo Tech Lead como parte do pipeline completo. Nenhuma confirmação humana é necessária.
 
 ## Referência
+
 `proj_reversa/references/tasks-engenharia_reversa/plano_engenharia_reversa_tabelas.md`
 `skills/bubble-tabelas/SKILL.md`
 
 ## Escopo
+
 - Tipos de dados customizados (ex: `user`, `custom.cliente`)
 - Campos e tipos de cada tabela
 - Relacionamentos (referências entre tabelas)
@@ -18,9 +22,11 @@ Esta tarefa é executada **automaticamente** pelo Tech Lead como parte do pipeli
 - Cobertura de ~17 Data Types esperados
 
 ## Arquivo Alvo
+
 `gestao-contratos-conexao-tabelas.md`
 
 ## Estrutura Esperada no JSON
+
 ```json
 {
   "data_types": {
@@ -30,7 +36,12 @@ Esta tarefa é executada **automaticamente** pelo Tech Lead como parte do pipeli
       "description": "",
       "deleted": false,
       "fields": [
-        {"name": "A. Quem realizou", "type": "text", "required": false, "deleted": false}
+        {
+          "name": "A. Quem realizou",
+          "type": "text",
+          "required": false,
+          "deleted": false
+        }
       ]
     }
   }
@@ -38,6 +49,7 @@ Esta tarefa é executada **automaticamente** pelo Tech Lead como parte do pipeli
 ```
 
 ## Processamento (Automático)
+
 1. Extrair e limpar JSON (remover `//` e `/* */`)
 2. Validar sintaxe JSON
 3. Localizar bloco `data_types`
@@ -49,6 +61,7 @@ Esta tarefa é executada **automaticamente** pelo Tech Lead como parte do pipeli
 9. Salvar e validar
 
 ## Validações Automáticas
+
 - [ ] Bloco `data_types` existe no JSON? (se não, documento vazio é aceitável)
 - [ ] Total de ~17 data types encontrados?
 - [ ] Cada data type tem `name` e `fields`?
@@ -56,10 +69,11 @@ Esta tarefa é executada **automaticamente** pelo Tech Lead como parte do pipeli
 - [ ] Tipos traduzidos corretamente?
 
 ## Casos Especiais
-| Caso | Ação |
-|------|------|
-| Data Type deletado | Incluir com aviso no Summary |
-| Campo deletado | Não incluir na tabela |
-| Nenhum data type | Documentar "Nenhum encontrado" |
+
+| Caso               | Ação                           |
+| ------------------ | ------------------------------ |
+| Data Type deletado | Incluir com aviso no Summary   |
+| Campo deletado     | Não incluir na tabela          |
+| Nenhum data type   | Documentar "Nenhum encontrado" |
 
 ## Status: Pipeline Autônomo

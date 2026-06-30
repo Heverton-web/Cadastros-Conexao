@@ -1,7 +1,9 @@
 import { supabase } from "~/core/supabase";
 import type { DespesaTipo } from "../types";
 
-export async function listarTiposDespesa(empresa_id: string): Promise<DespesaTipo[]> {
+export async function listarTiposDespesa(
+  empresa_id: string,
+): Promise<DespesaTipo[]> {
   const { data, error } = await supabase
     .from("despesas_tipos")
     .select("*")
@@ -11,7 +13,9 @@ export async function listarTiposDespesa(empresa_id: string): Promise<DespesaTip
   return data as DespesaTipo[];
 }
 
-export async function listarTiposDespesaAtivos(empresa_id: string): Promise<DespesaTipo[]> {
+export async function listarTiposDespesaAtivos(
+  empresa_id: string,
+): Promise<DespesaTipo[]> {
   const { data, error } = await supabase
     .from("despesas_tipos")
     .select("*")
@@ -32,7 +36,9 @@ export async function buscarTipoDespesa(id: string): Promise<DespesaTipo> {
   return data as DespesaTipo;
 }
 
-export async function criarTipoDespesa(tipo: Partial<DespesaTipo>): Promise<DespesaTipo> {
+export async function criarTipoDespesa(
+  tipo: Partial<DespesaTipo>,
+): Promise<DespesaTipo> {
   const { data, error } = await supabase
     .from("despesas_tipos")
     .insert(tipo)
@@ -42,7 +48,10 @@ export async function criarTipoDespesa(tipo: Partial<DespesaTipo>): Promise<Desp
   return data as DespesaTipo;
 }
 
-export async function atualizarTipoDespesa(id: string, updates: Partial<DespesaTipo>): Promise<DespesaTipo> {
+export async function atualizarTipoDespesa(
+  id: string,
+  updates: Partial<DespesaTipo>,
+): Promise<DespesaTipo> {
   const { data, error } = await supabase
     .from("despesas_tipos")
     .update(updates)
@@ -54,9 +63,6 @@ export async function atualizarTipoDespesa(id: string, updates: Partial<DespesaT
 }
 
 export async function excluirTipoDespesa(id: string): Promise<void> {
-  const { error } = await supabase
-    .from("despesas_tipos")
-    .delete()
-    .eq("id", id);
+  const { error } = await supabase.from("despesas_tipos").delete().eq("id", id);
   if (error) throw error;
 }

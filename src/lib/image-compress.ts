@@ -7,7 +7,11 @@ export async function compressImage(file: File): Promise<File> {
   const img = await fileToImage(file);
   const { width, height } = img;
 
-  if (width <= MAX_DIMENSION && height <= MAX_DIMENSION && file.size < 500_000) {
+  if (
+    width <= MAX_DIMENSION &&
+    height <= MAX_DIMENSION &&
+    file.size < 500_000
+  ) {
     return file;
   }
 
@@ -21,7 +25,7 @@ export async function compressImage(file: File): Promise<File> {
 
   const ext = file.type === "image/png" ? "image/jpeg" : file.type;
   const blob = await new Promise<Blob | null>((resolve) =>
-    canvas.toBlob(resolve, ext, QUALITY)
+    canvas.toBlob(resolve, ext, QUALITY),
   );
 
   if (!blob || blob.size >= file.size) return file;
@@ -34,14 +38,21 @@ function fileToImage(file: File): Promise<HTMLImageElement> {
   return new Promise((resolve, reject) => {
     const img = new Image();
     const url = URL.createObjectURL(file);
-    img.onload = () => { URL.revokeObjectURL(url); resolve(img); };
-    img.onerror = () => { URL.revokeObjectURL(url); reject(new Error("Failed to load image")); };
+    img.onload = () => {
+      URL.revokeObjectURL(url);
+      resolve(img);
+    };
+    img.onerror = () => {
+      URL.revokeObjectURL(url);
+      reject(new Error("Failed to load image"));
+    };
     img.src = url;
   });
 }
 
 function calcDimensions(w: number, h: number) {
-  if (w <= MAX_DIMENSION && h <= MAX_DIMENSION) return { newWidth: w, newHeight: h };
+  if (w <= MAX_DIMENSION && h <= MAX_DIMENSION)
+    return { newWidth: w, newHeight: h };
   const ratio = Math.min(MAX_DIMENSION / w, MAX_DIMENSION / h);
   return { newWidth: Math.round(w * ratio), newHeight: Math.round(h * ratio) };
 }

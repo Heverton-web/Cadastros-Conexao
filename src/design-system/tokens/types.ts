@@ -148,4 +148,5 @@ export interface DesignTokens {
   };
 }
 
-export type PresetKey = "dark-gold" | "dark-blue" | "light-clean" | "dark-emerald";
+export type PresetKey =
+  "dark-gold" | "dark-blue" | "light-clean" | "dark-emerald";

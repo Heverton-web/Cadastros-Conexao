@@ -47,7 +47,9 @@ function TransferenciaPage() {
     queryFn: async () => {
       const { data } = await supabase
         .from("logs_transferencia")
-        .select("id, data_transferencia, cliente_id, de_consultor_id, para_consultor_id")
+        .select(
+          "id, data_transferencia, cliente_id, de_consultor_id, para_consultor_id",
+        )
         .order("data_transferencia", { ascending: false })
         .limit(10);
       return data ?? [];
@@ -79,13 +81,24 @@ function TransferenciaPage() {
       <header>
         <h1 className="text-2xl font-bold">Transferência de Carteira</h1>
         <p className="text-sm text-muted-foreground">
-          Realoque clientes entre consultores. Cada transferência é registrada em log.
+          Realoque clientes entre consultores. Cada transferência é registrada
+          em log.
         </p>
       </header>
 
       <div className="grid gap-4 md:grid-cols-2">
-        <Selector label="Consultor origem" value={origem} setValue={setOrigem} consultores={consultores ?? []} />
-        <Selector label="Consultor destino" value={destino} setValue={setDestino} consultores={consultores ?? []} />
+        <Selector
+          label="Consultor origem"
+          value={origem}
+          setValue={setOrigem}
+          consultores={consultores ?? []}
+        />
+        <Selector
+          label="Consultor destino"
+          value={destino}
+          setValue={setDestino}
+          consultores={consultores ?? []}
+        />
       </div>
 
       <section>
@@ -93,18 +106,36 @@ function TransferenciaPage() {
           Clientes do origem
         </h2>
         <div className="glass rounded-2xl divide-y divide-border">
-          {!origem && <p className="p-5 text-sm text-muted-foreground">Selecione um consultor origem.</p>}
+          {!origem && (
+            <p className="p-5 text-sm text-muted-foreground">
+              Selecione um consultor origem.
+            </p>
+          )}
           {origem && !clientesOrigem?.length && (
-            <p className="p-5 text-sm text-muted-foreground">Sem clientes na carteira.</p>
+            <p className="p-5 text-sm text-muted-foreground">
+              Sem clientes na carteira.
+            </p>
           )}
           {clientesOrigem?.map((c: any) => (
             <div key={c.id} className="flex items-center justify-between p-4">
               <div>
                 <p className="font-medium text-sm">{c.nome_doutor}</p>
-                <p className="text-xs text-muted-foreground">{c.nome_clinica ?? "—"}</p>
+                <p className="text-xs text-muted-foreground">
+                  {c.nome_clinica ?? "—"}
+                </p>
               </div>
-              <Button size="sm" disabled={busy || !destino} onClick={() => transferir(c.id)}>
-                {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : (<><ArrowRight className="mr-1 h-4 w-4" /> Transferir</>)}
+              <Button
+                size="sm"
+                disabled={busy || !destino}
+                onClick={() => transferir(c.id)}
+              >
+                {busy ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <>
+                    <ArrowRight className="mr-1 h-4 w-4" /> Transferir
+                  </>
+                )}
               </Button>
             </div>
           ))}
@@ -116,9 +147,16 @@ function TransferenciaPage() {
           Últimas transferências
         </h2>
         <div className="glass rounded-2xl divide-y divide-border">
-          {!logs?.length && <p className="p-5 text-sm text-muted-foreground">Nenhuma transferência registrada.</p>}
+          {!logs?.length && (
+            <p className="p-5 text-sm text-muted-foreground">
+              Nenhuma transferência registrada.
+            </p>
+          )}
           {logs?.map((l: any) => (
-            <div key={l.id} className="flex items-center justify-between p-4 text-sm">
+            <div
+              key={l.id}
+              className="flex items-center justify-between p-4 text-sm"
+            >
               <span className="font-mono text-xs text-muted-foreground">
                 {new Date(l.data_transferencia).toLocaleString("pt-BR")}
               </span>
@@ -132,11 +170,21 @@ function TransferenciaPage() {
 }
 
 function Selector({
-  label, value, setValue, consultores,
-}: { label: string; value: string; setValue: (v: string) => void; consultores: any[] }) {
+  label,
+  value,
+  setValue,
+  consultores,
+}: {
+  label: string;
+  value: string;
+  setValue: (v: string) => void;
+  consultores: any[];
+}) {
   return (
     <label className="glass rounded-2xl p-4 block">
-      <span className="text-xs text-muted-foreground uppercase tracking-wide">{label}</span>
+      <span className="text-xs text-muted-foreground uppercase tracking-wide">
+        {label}
+      </span>
       <select
         value={value}
         onChange={(e) => setValue(e.target.value)}
@@ -144,7 +192,9 @@ function Selector({
       >
         <option value="">— selecione —</option>
         {consultores.map((c: any) => (
-          <option key={c.id} value={c.id}>{c.nome_completo}</option>
+          <option key={c.id} value={c.id}>
+            {c.nome_completo}
+          </option>
         ))}
       </select>
     </label>

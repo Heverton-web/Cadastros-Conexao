@@ -24,7 +24,12 @@ type Props = {
   onSelect: (clienteId: string) => void;
 };
 
-export function ClientePickerModal({ open, onOpenChange, consultorId, onSelect }: Props) {
+export function ClientePickerModal({
+  open,
+  onOpenChange,
+  consultorId,
+  onSelect,
+}: Props) {
   const [q, setQ] = useState("");
 
   const { data, isLoading } = useQuery({
@@ -79,7 +84,9 @@ export function ClientePickerModal({ open, onOpenChange, consultorId, onSelect }
           )}
           {!isLoading && filtered.length === 0 && (
             <p className="py-10 text-center text-sm text-muted-foreground">
-              {q ? "Nenhum cliente encontrado." : "Você ainda não possui clientes."}
+              {q
+                ? "Nenhum cliente encontrado."
+                : "Você ainda não possui clientes."}
             </p>
           )}
           <ul className="space-y-1">

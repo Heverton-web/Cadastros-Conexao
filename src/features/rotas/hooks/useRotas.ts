@@ -16,7 +16,11 @@ import {
 } from "../services/rotas.service";
 import type { RotaFormData, RotaStatus } from "../types";
 
-export function useRotas(filtros?: { status?: RotaStatus; data_inicio?: string; data_fim?: string }) {
+export function useRotas(filtros?: {
+  status?: RotaStatus;
+  data_inicio?: string;
+  data_fim?: string;
+}) {
   const { empresa } = useEmpresa();
   const { user, profile } = useAuth();
 
@@ -24,11 +28,12 @@ export function useRotas(filtros?: { status?: RotaStatus; data_inicio?: string; 
 
   return useQuery({
     queryKey: ["rotas", empresa?.id, user?.id, filtros],
-    queryFn: () => listarRotas(
-      isSuperAdmin ? null : empresa?.id,
-      isSuperAdmin ? null : user?.id,
-      filtros
-    ),
+    queryFn: () =>
+      listarRotas(
+        isSuperAdmin ? null : empresa?.id,
+        isSuperAdmin ? null : user?.id,
+        filtros,
+      ),
     enabled: !!user?.id,
   });
 }
@@ -57,7 +62,8 @@ export function useCriarRota() {
   return useMutation({
     mutationFn: (form: RotaFormData & { empresa_id?: string }) => {
       const empresaId = form.empresa_id || empresa?.id;
-      if (!empresaId) throw new Error("Selecione uma empresa para criar a rota");
+      if (!empresaId)
+        throw new Error("Selecione uma empresa para criar a rota");
       return criarRota(empresaId, user!.id, form);
     },
     onSuccess: () => {
@@ -70,8 +76,13 @@ export function useAtualizarRota() {
   const qc = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ id, updates }: { id: string; updates: Parameters<typeof atualizarRota>[1] }) =>
-      atualizarRota(id, updates),
+    mutationFn: ({
+      id,
+      updates,
+    }: {
+      id: string;
+      updates: Parameters<typeof atualizarRota>[1];
+    }) => atualizarRota(id, updates),
     onSuccess: (_, { id }) => {
       qc.invalidateQueries({ queryKey: ["rotas"] });
       qc.invalidateQueries({ queryKey: ["rota", id] });
@@ -95,8 +106,13 @@ export function useIniciarRota() {
   const qc = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ id, localizacao }: { id: string; localizacao: { lat: number; lng: number } }) =>
-      iniciarRota(id, localizacao),
+    mutationFn: ({
+      id,
+      localizacao,
+    }: {
+      id: string;
+      localizacao: { lat: number; lng: number };
+    }) => iniciarRota(id, localizacao),
     onSuccess: (_, { id }) => {
       qc.invalidateQueries({ queryKey: ["rotas"] });
       qc.invalidateQueries({ queryKey: ["rota", id] });
@@ -116,7 +132,12 @@ export function useFinalizarRota() {
     }: {
       id: string;
       localizacao: { lat: number; lng: number };
-      stats: { total_visitas: number; total_km: number; total_tempo_trajeto_min: number; valor_reembolso: number };
+      stats: {
+        total_visitas: number;
+        total_km: number;
+        total_tempo_trajeto_min: number;
+        valor_reembolso: number;
+      };
     }) => finalizarRota(id, localizacao, stats),
     onSuccess: (_, { id }) => {
       qc.invalidateQueries({ queryKey: ["rotas"] });
@@ -130,8 +151,14 @@ export function useAdicionarClientesNaRota() {
   const qc = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ rotaId, clienteIds }: { rotaId: string; empresaId: string; clienteIds: string[] }) =>
-      adicionarClientesNaRota(rotaId, "", clienteIds),
+    mutationFn: ({
+      rotaId,
+      clienteIds,
+    }: {
+      rotaId: string;
+      empresaId: string;
+      clienteIds: string[];
+    }) => adicionarClientesNaRota(rotaId, "", clienteIds),
     onSuccess: (_, { rotaId }) => {
       qc.invalidateQueries({ queryKey: ["rota-clientes", rotaId] });
     },
@@ -154,8 +181,13 @@ export function useReordenarClientes() {
   const qc = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ rotaId, ordemIds }: { rotaId: string; ordemIds: string[] }) =>
-      reordenarClientes(rotaId, ordemIds),
+    mutationFn: ({
+      rotaId,
+      ordemIds,
+    }: {
+      rotaId: string;
+      ordemIds: string[];
+    }) => reordenarClientes(rotaId, ordemIds),
     onSuccess: (_, { rotaId }) => {
       qc.invalidateQueries({ queryKey: ["rota-clientes", rotaId] });
     },

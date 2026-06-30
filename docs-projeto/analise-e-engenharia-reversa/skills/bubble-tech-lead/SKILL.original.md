@@ -10,6 +10,7 @@ description: >
 ## REGRA FUNDAMENTAL: ZERO INTERRUPÇÕES
 
 Este skill é **completamente autônomo**. Quando iniciado:
+
 - **NÃO** pergunte "deseja prosseguir?"
 - **NÃO** espere confirmação do usuário entre fases
 - **NÃO** pause para revisão manual
@@ -93,6 +94,7 @@ os.makedirs(f'{base_dir}/documentacao_completa', exist_ok=True)
 ```
 
 ### Regras para nome do projeto (em ordem de precedência)
+
 1. Se o JSON tiver `app_name` → usar esse valor
 2. Se o JSON tiver `name` → usar esse valor
 3. Se o usuário passou `@caminho/arquivo.json` → derivar do nome do arquivo
@@ -120,6 +122,7 @@ analise_<nome_projeto>/
 ## 3. FASE 1: Criar Tasks (automático, dentro da pasta)
 
 Para cada domínio presente no JSON, gerar `{base_dir}/tasks/task_<dominio>.md`:
+
 - Arquivo alvo (apontando para `{base_dir}/relatorios/`)
 - Processamento em fases
 - Validações (checklist)
@@ -131,13 +134,13 @@ Só criar tasks para domínios realmente encontrados no JSON.
 
 Executar TODAS as skills cujo domínio existe no JSON, passando `output_dir={base_dir}/relatorios/`:
 
-| Domínio | Skill | Pasta de saída |
-|---------|-------|----------------|
-| Tabelas | `bubble-tabelas` | `{base_dir}/relatorios/tabelas/` |
-| Páginas | `bubble-paginas` | `{base_dir}/relatorios/paginas/` |
-| Workflows | `bubble-workflows-backend` | `{base_dir}/relatorios/workflows/` |
-| Option Sets | `bubble-option-sets` | `{base_dir}/relatorios/option_sets/` |
-| API Connectors | `bubble-api-connectors` | `{base_dir}/relatorios/api_connectors/` |
+| Domínio             | Skill                            | Pasta de saída                                   |
+| ------------------- | -------------------------------- | ------------------------------------------------ |
+| Tabelas             | `bubble-tabelas`                 | `{base_dir}/relatorios/tabelas/`                 |
+| Páginas             | `bubble-paginas`                 | `{base_dir}/relatorios/paginas/`                 |
+| Workflows           | `bubble-workflows-backend`       | `{base_dir}/relatorios/workflows/`               |
+| Option Sets         | `bubble-option-sets`             | `{base_dir}/relatorios/option_sets/`             |
+| API Connectors      | `bubble-api-connectors`          | `{base_dir}/relatorios/api_connectors/`          |
 | Elem. Reutilizáveis | `bubble-elementos-reutilizaveis` | `{base_dir}/relatorios/elementos_reutilizaveis/` |
 
 Cada skill cria sua subpasta automaticamente e salva os artefatos lá.
@@ -145,11 +148,13 @@ Cada skill cria sua subpasta automaticamente e salva os artefatos lá.
 ## 5. FASE 3: Revisão Automática
 
 Validar saída de cada skill contra:
+
 - [ ] Arquivo de saída foi gerado dentro de `{base_dir}/relatorios/`?
 - [ ] Não está vazio (ou tem "Nenhum ... encontrado" explícito)?
 - [ ] Segue o formato Markdown definido?
 
 **Loop de correção automático (máx 3 iterações):**
+
 ```
 para cada skill:
   para iteração in [1, 2, 3]:
@@ -164,15 +169,19 @@ para cada skill:
 ## 6. FASE 4: Compilar e Entregar (dentro da pasta do projeto)
 
 ### 6.1 Copiar relatórios para a raiz da pasta
+
 Os relatórios gerados em `{base_dir}/relatorios/` são copiados/consolidados:
+
 - `{base_dir}/relatorios/paginas/pages_report.md` → `{base_dir}/relatorios/pages_report.md`
 - Manter subpastas com documentos individuais
 
 ### 6.2 Gerar índices na raiz da pasta
+
 - `{base_dir}/INDICE.md` com links para todos os artefatos
 - `{base_dir}/conclusoes_engenharia_reversa.md`
 
 ### 6.3 Informar usuário
+
 ```
 ## ✅ Pipeline Concluído — Engenharia Reversa Bubble
 
@@ -198,24 +207,24 @@ Os relatórios gerados em `{base_dir}/relatorios/` são copiados/consolidados:
 
 ## 7. Modelos de Referência por Domínio
 
-| Domínio | Skill | Plano de Referência |
-|---------|-------|---------------------|
-| Tabelas | `bubble-tabelas` | `proj_reversa/references/tasks-engenharia_reversa/plano_engenharia_reversa_tabelas.md` |
-| Páginas | `bubble-paginas` | `proj_reversa/references/tasks-engenharia_reversa/plano_engenharia_reversa_paginas.md` |
-| Workflows | `bubble-workflows-backend` | `proj_reversa/references/tasks-engenharia_reversa/plano_engenharia_reversa_backend_workflows.md` |
-| Option Sets | `bubble-option-sets` | `proj_reversa/references/tasks-engenharia_reversa/plano_engenharia_reversa_option_sets.md` |
-| API Connectors | `bubble-api-connectors` | `proj_reversa/references/tasks-engenharia_reversa/plano_engenharia_reversa_api_connectors.md` |
-| Elem. Reutilizáveis | `bubble-elementos-reutilizaveis` | `proj_reversa/references/tasks-engenharia_reversa/plano_engenharia_reversa_elementos_reutilizaveis.md` |
-| Documentação Completa | `bubble-prd` | `proj_reversa/references/tasks-engenharia_reversa/plano_engenharia_reversa_documentacao_completa.md` |
+| Domínio               | Skill                            | Plano de Referência                                                                                    |
+| --------------------- | -------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| Tabelas               | `bubble-tabelas`                 | `proj_reversa/references/tasks-engenharia_reversa/plano_engenharia_reversa_tabelas.md`                 |
+| Páginas               | `bubble-paginas`                 | `proj_reversa/references/tasks-engenharia_reversa/plano_engenharia_reversa_paginas.md`                 |
+| Workflows             | `bubble-workflows-backend`       | `proj_reversa/references/tasks-engenharia_reversa/plano_engenharia_reversa_backend_workflows.md`       |
+| Option Sets           | `bubble-option-sets`             | `proj_reversa/references/tasks-engenharia_reversa/plano_engenharia_reversa_option_sets.md`             |
+| API Connectors        | `bubble-api-connectors`          | `proj_reversa/references/tasks-engenharia_reversa/plano_engenharia_reversa_api_connectors.md`          |
+| Elem. Reutilizáveis   | `bubble-elementos-reutilizaveis` | `proj_reversa/references/tasks-engenharia_reversa/plano_engenharia_reversa_elementos_reutilizaveis.md` |
+| Documentação Completa | `bubble-prd`                     | `proj_reversa/references/tasks-engenharia_reversa/plano_engenharia_reversa_documentacao_completa.md`   |
 
 ## 8. Critérios de Revisão Automática
 
-| Critério | Como validar |
-|----------|-------------|
-| Completude | Arquivo de saída existe dentro de `{base_dir}/relatorios/` |
-| Clareza | Linguagem objetiva PT-BR |
-| Consistência | Formato de tabelas, cabeçalhos uniformes |
-| Rastreabilidade | IDs referenciáveis ao JSON original |
+| Critério        | Como validar                                               |
+| --------------- | ---------------------------------------------------------- |
+| Completude      | Arquivo de saída existe dentro de `{base_dir}/relatorios/` |
+| Clareza         | Linguagem objetiva PT-BR                                   |
+| Consistência    | Formato de tabelas, cabeçalhos uniformes                   |
+| Rastreabilidade | IDs referenciáveis ao JSON original                        |
 
 ## 9. Exemplo de Estrutura Gerada
 

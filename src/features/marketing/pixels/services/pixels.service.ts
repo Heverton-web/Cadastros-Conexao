@@ -1,7 +1,9 @@
 import { supabase } from "~/core/supabase";
 import type { MarketingPixel, MarketingPixelInput } from "../types";
 
-export async function listarPixels(empresaId: string): Promise<MarketingPixel[]> {
+export async function listarPixels(
+  empresaId: string,
+): Promise<MarketingPixel[]> {
   const { data } = await supabase
     .from("mktg_pixels")
     .select("*")
@@ -12,7 +14,7 @@ export async function listarPixels(empresaId: string): Promise<MarketingPixel[]>
 }
 
 export async function criarPixel(
-  input: MarketingPixelInput & { empresa_id: string }
+  input: MarketingPixelInput & { empresa_id: string },
 ): Promise<MarketingPixel | null> {
   const { data } = await supabase
     .from("mktg_pixels")
@@ -25,7 +27,7 @@ export async function criarPixel(
 
 export async function atualizarPixel(
   id: string,
-  input: Partial<MarketingPixelInput>
+  input: Partial<MarketingPixelInput>,
 ): Promise<MarketingPixel | null> {
   const { data } = await supabase
     .from("mktg_pixels")
@@ -38,10 +40,7 @@ export async function atualizarPixel(
 }
 
 export async function deletarPixel(id: string): Promise<boolean> {
-  const { error } = await supabase
-    .from("mktg_pixels")
-    .delete()
-    .eq("id", id);
+  const { error } = await supabase.from("mktg_pixels").delete().eq("id", id);
 
   return !error;
 }

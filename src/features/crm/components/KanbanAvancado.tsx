@@ -80,7 +80,7 @@ export function KanbanAvancado({ onNovoCliente, onClienteClick }: Props) {
     useSensor(PointerSensor, {
       activationConstraint: { distance: 8 },
     }),
-    useSensor(KeyboardSensor)
+    useSensor(KeyboardSensor),
   );
 
   // Buscar estágios do pipeline
@@ -107,7 +107,7 @@ export function KanbanAvancado({ onNovoCliente, onClienteClick }: Props) {
         .from("clientes")
         .select(
           `id, nome_doutor, nome_clinica, telefone_contato, estagio_id, criado_em,
-           visitas:visitas(valor_estimado, data_visita, data_proximo_contato)`
+           visitas:visitas(valor_estimado, data_visita, data_proximo_contato)`,
         )
         .eq("consultor_atual_id", profile!.id)
         .order("criado_em", { ascending: false });
@@ -115,7 +115,7 @@ export function KanbanAvancado({ onNovoCliente, onClienteClick }: Props) {
       const cards: ClienteCard[] = (clientesData ?? []).map((c: any) => {
         const visitas = c.visitas ?? [];
         const ultima = visitas.sort((a: any, b: any) =>
-          a.data_visita < b.data_visita ? 1 : -1
+          a.data_visita < b.data_visita ? 1 : -1,
         )[0];
         return {
           id: c.id,
@@ -141,7 +141,7 @@ export function KanbanAvancado({ onNovoCliente, onClienteClick }: Props) {
     return clientes.filter(
       (c) =>
         c.nome_doutor.toLowerCase().includes(termo) ||
-        (c.nome_clinica ?? "").toLowerCase().includes(termo)
+        (c.nome_clinica ?? "").toLowerCase().includes(termo),
     );
   }, [clientes, busca]);
 
@@ -289,10 +289,16 @@ function KanbanColuna({
   total: { count: number; valor: number };
   onClienteClick?: (id: string) => void;
 }) {
-  const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
-    useSortable({
-      id: estagio.id,
-    });
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({
+    id: estagio.id,
+  });
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -305,7 +311,7 @@ function KanbanColuna({
       style={style}
       className={cn(
         "flex flex-col min-w-[300px] w-[300px] bg-muted/50 rounded-xl border",
-        isDragging && "opacity-50"
+        isDragging && "opacity-50",
       )}
     >
       {/* Header da coluna */}
@@ -381,7 +387,7 @@ function KanbanCard({
       style={style}
       className={cn(
         "bg-background rounded-lg border p-3 cursor-pointer hover:border-primary/40 transition",
-        isDragging && "opacity-50 shadow-lg"
+        isDragging && "opacity-50 shadow-lg",
       )}
       onClick={onClick}
     >
@@ -393,7 +399,9 @@ function KanbanCard({
               {...attributes}
               {...listeners}
             />
-            <p className="font-medium text-sm truncate">{cliente.nome_doutor}</p>
+            <p className="font-medium text-sm truncate">
+              {cliente.nome_doutor}
+            </p>
           </div>
           {cliente.nome_clinica && (
             <p className="text-xs text-muted-foreground truncate ml-6">

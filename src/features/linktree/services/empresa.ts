@@ -9,7 +9,9 @@ import type {
   ClickAnalytics,
 } from "../types-empresa";
 
-export async function listarEmpresaConfig(empresaId: string): Promise<EmpresaLinktreeConfig | null> {
+export async function listarEmpresaConfig(
+  empresaId: string,
+): Promise<EmpresaLinktreeConfig | null> {
   const { data, error } = await supabase
     .from("linktree_empresa_config")
     .select("*")
@@ -19,7 +21,9 @@ export async function listarEmpresaConfig(empresaId: string): Promise<EmpresaLin
   return data;
 }
 
-export async function buscarConfigPorSlug(slug: string): Promise<EmpresaLinktreeConfig | null> {
+export async function buscarConfigPorSlug(
+  slug: string,
+): Promise<EmpresaLinktreeConfig | null> {
   const { data, error } = await supabase
     .from("linktree_empresa_config")
     .select("*")
@@ -31,7 +35,9 @@ export async function buscarConfigPorSlug(slug: string): Promise<EmpresaLinktree
 
 export async function salvarEmpresaConfig(
   empresaId: string,
-  config: Partial<Pick<EmpresaLinktreeConfig, "slug" | "bio" | "banner_url" | "theme">>
+  config: Partial<
+    Pick<EmpresaLinktreeConfig, "slug" | "bio" | "banner_url" | "theme">
+  >,
 ): Promise<EmpresaLinktreeConfig> {
   const { data, error } = await supabase
     .from("linktree_empresa_config")
@@ -42,14 +48,22 @@ export async function salvarEmpresaConfig(
   return data;
 }
 
-export async function verificarSlugDisponivel(slug: string, empresaId?: string): Promise<boolean> {
-  let query = supabase.from("linktree_empresa_config").select("empresa_id").eq("slug", slug);
+export async function verificarSlugDisponivel(
+  slug: string,
+  empresaId?: string,
+): Promise<boolean> {
+  let query = supabase
+    .from("linktree_empresa_config")
+    .select("empresa_id")
+    .eq("slug", slug);
   if (empresaId) query = query.neq("empresa_id", empresaId);
   const { data } = await query.maybeSingle();
   return !data;
 }
 
-export async function listarSecoes(empresaId: string): Promise<EmpresaLinktreeSection[]> {
+export async function listarSecoes(
+  empresaId: string,
+): Promise<EmpresaLinktreeSection[]> {
   const { data, error } = await supabase
     .from("linktree_empresa_sections")
     .select("*")
@@ -59,17 +73,27 @@ export async function listarSecoes(empresaId: string): Promise<EmpresaLinktreeSe
   return data ?? [];
 }
 
-export async function criarSecao(empresaId: string, input: EmpresaSectionInput): Promise<EmpresaLinktreeSection> {
+export async function criarSecao(
+  empresaId: string,
+  input: EmpresaSectionInput,
+): Promise<EmpresaLinktreeSection> {
   const { data, error } = await supabase
     .from("linktree_empresa_sections")
-    .insert({ empresa_id: empresaId, titulo: input.titulo, ordem: input.ordem ?? 0 })
+    .insert({
+      empresa_id: empresaId,
+      titulo: input.titulo,
+      ordem: input.ordem ?? 0,
+    })
     .select()
     .single();
   if (error) throw error;
   return data;
 }
 
-export async function atualizarSecao(id: string, input: Partial<EmpresaSectionInput>): Promise<EmpresaLinktreeSection> {
+export async function atualizarSecao(
+  id: string,
+  input: Partial<EmpresaSectionInput>,
+): Promise<EmpresaLinktreeSection> {
   const { data, error } = await supabase
     .from("linktree_empresa_sections")
     .update(input)
@@ -81,11 +105,16 @@ export async function atualizarSecao(id: string, input: Partial<EmpresaSectionIn
 }
 
 export async function deletarSecao(id: string): Promise<void> {
-  const { error } = await supabase.from("linktree_empresa_sections").delete().eq("id", id);
+  const { error } = await supabase
+    .from("linktree_empresa_sections")
+    .delete()
+    .eq("id", id);
   if (error) throw error;
 }
 
-export async function listarLinks(empresaId: string): Promise<EmpresaLinktreeLink[]> {
+export async function listarLinks(
+  empresaId: string,
+): Promise<EmpresaLinktreeLink[]> {
   const { data, error } = await supabase
     .from("linktree_empresa_links")
     .select("*")
@@ -95,7 +124,9 @@ export async function listarLinks(empresaId: string): Promise<EmpresaLinktreeLin
   return data ?? [];
 }
 
-export async function listarLinksPublicos(empresaId: string): Promise<EmpresaLinktreeLink[]> {
+export async function listarLinksPublicos(
+  empresaId: string,
+): Promise<EmpresaLinktreeLink[]> {
   const now = new Date().toISOString();
   const { data, error } = await supabase
     .from("linktree_empresa_links")
@@ -111,7 +142,11 @@ export async function listarLinksPublicos(empresaId: string): Promise<EmpresaLin
   });
 }
 
-export async function criarLink(empresaId: string, sectionId: string, input: EmpresaLinkInput): Promise<EmpresaLinktreeLink> {
+export async function criarLink(
+  empresaId: string,
+  sectionId: string,
+  input: EmpresaLinkInput,
+): Promise<EmpresaLinktreeLink> {
   const { data, error } = await supabase
     .from("linktree_empresa_links")
     .insert({ empresa_id: empresaId, section_id: sectionId, ...input })
@@ -121,7 +156,10 @@ export async function criarLink(empresaId: string, sectionId: string, input: Emp
   return data;
 }
 
-export async function atualizarLink(id: string, input: Partial<EmpresaLinkInput>): Promise<EmpresaLinktreeLink> {
+export async function atualizarLink(
+  id: string,
+  input: Partial<EmpresaLinkInput>,
+): Promise<EmpresaLinktreeLink> {
   const { data, error } = await supabase
     .from("linktree_empresa_links")
     .update(input)
@@ -133,23 +171,41 @@ export async function atualizarLink(id: string, input: Partial<EmpresaLinkInput>
 }
 
 export async function deletarLink(id: string): Promise<void> {
-  const { error } = await supabase.from("linktree_empresa_links").delete().eq("id", id);
+  const { error } = await supabase
+    .from("linktree_empresa_links")
+    .delete()
+    .eq("id", id);
   if (error) throw error;
 }
 
-export async function reordenarLinks(ordens: { id: string; ordem: number }[]): Promise<void> {
+export async function reordenarLinks(
+  ordens: { id: string; ordem: number }[],
+): Promise<void> {
   for (const { id, ordem } of ordens) {
-    await supabase.from("linktree_empresa_links").update({ ordem }).eq("id", id);
+    await supabase
+      .from("linktree_empresa_links")
+      .update({ ordem })
+      .eq("id", id);
   }
 }
 
-export async function reordenarSecoes(ordens: { id: string; ordem: number }[]): Promise<void> {
+export async function reordenarSecoes(
+  ordens: { id: string; ordem: number }[],
+): Promise<void> {
   for (const { id, ordem } of ordens) {
-    await supabase.from("linktree_empresa_sections").update({ ordem }).eq("id", id);
+    await supabase
+      .from("linktree_empresa_sections")
+      .update({ ordem })
+      .eq("id", id);
   }
 }
 
-export async function registrarClique(linkId: string, empresaId: string, ipHash?: string, userAgent?: string): Promise<void> {
+export async function registrarClique(
+  linkId: string,
+  empresaId: string,
+  ipHash?: string,
+  userAgent?: string,
+): Promise<void> {
   await supabase.from("linktree_empresa_clicks").insert({
     link_id: linkId,
     empresa_id: empresaId,
@@ -158,7 +214,10 @@ export async function registrarClique(linkId: string, empresaId: string, ipHash?
   });
 }
 
-export async function listarAnalytics(empresaId: string, periodo: AnalyticsPeriodo): Promise<ClickAnalytics[]> {
+export async function listarAnalytics(
+  empresaId: string,
+  periodo: AnalyticsPeriodo,
+): Promise<ClickAnalytics[]> {
   const dias = periodo === "7d" ? 7 : periodo === "30d" ? 30 : 90;
   const desde = new Date(Date.now() - dias * 86400000).toISOString();
 

@@ -20,7 +20,15 @@ export function useEmpresaSuperAdmin() {
     }
   }, [isSuperAdmin]);
 
-  const empresaId = isSuperAdmin ? empresaSelecionada : (profile?.empresa_id ?? "");
+  const empresaId = isSuperAdmin
+    ? empresaSelecionada
+    : (profile?.empresa_id ?? "");
 
-  return { empresaId, empresas, empresaSelecionada, setEmpresaSelecionada, isSuperAdmin };
+  return {
+    empresaId,
+    empresas,
+    empresaSelecionada,
+    setEmpresaSelecionada,
+    isSuperAdmin,
+  };
 }

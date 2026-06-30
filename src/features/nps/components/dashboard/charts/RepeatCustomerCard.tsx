@@ -1,6 +1,6 @@
-import { useMemo } from 'react';
-import { Users } from 'lucide-react';
-import MetricCard from './MetricCard';
+import { useMemo } from "react";
+import { Users } from "lucide-react";
+import MetricCard from "./MetricCard";
 
 const RepeatCustomerCard = ({ data }: { data: any[] }) => {
   const rate = useMemo(() => {
@@ -17,7 +17,11 @@ const RepeatCustomerCard = ({ data }: { data: any[] }) => {
     const totalClients = Object.keys(counts).length;
     if (!totalClients) return { pct: 0, repeats: 0, totalClients: 0 };
     const repeats = Object.values(counts).filter((c) => c > 1).length;
-    return { pct: Math.round((repeats / totalClients) * 100), repeats, totalClients };
+    return {
+      pct: Math.round((repeats / totalClients) * 100),
+      repeats,
+      totalClients,
+    };
   }, [data]);
 
   return (

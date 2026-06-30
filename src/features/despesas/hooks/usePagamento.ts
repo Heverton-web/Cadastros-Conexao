@@ -1,6 +1,10 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "~/lib/auth";
-import { criarPagamento, marcarComoPago, cancelarPagamento } from "../services/pagamentos.service";
+import {
+  criarPagamento,
+  marcarComoPago,
+  cancelarPagamento,
+} from "../services/pagamentos.service";
 import type { FormaPagamento } from "../types";
 
 export function useCriarPagamento(overrideEmpresaId?: string) {
@@ -9,11 +13,20 @@ export function useCriarPagamento(overrideEmpresaId?: string) {
   const empresa_id = overrideEmpresaId || (profile?.empresa_id ?? "");
 
   return useMutation({
-    mutationFn: (pagamento: { empresa_id: string; envio_id: string; valor: number; forma_pagamento: FormaPagamento; data_pagamento: string }) =>
-      criarPagamento(pagamento),
+    mutationFn: (pagamento: {
+      empresa_id: string;
+      envio_id: string;
+      valor: number;
+      forma_pagamento: FormaPagamento;
+      data_pagamento: string;
+    }) => criarPagamento(pagamento),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["despesas-pagamentos", empresa_id] });
-      queryClient.invalidateQueries({ queryKey: ["despesas-envios", empresa_id] });
+      queryClient.invalidateQueries({
+        queryKey: ["despesas-pagamentos", empresa_id],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["despesas-envios", empresa_id],
+      });
     },
   });
 }
@@ -24,9 +37,12 @@ export function useMarcarComoPago(overrideEmpresaId?: string) {
   const empresa_id = overrideEmpresaId || (profile?.empresa_id ?? "");
 
   return useMutation({
-    mutationFn: ({ id, comprovante }: { id: string; comprovante?: string }) => marcarComoPago(id, comprovante),
+    mutationFn: ({ id, comprovante }: { id: string; comprovante?: string }) =>
+      marcarComoPago(id, comprovante),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["despesas-pagamentos", empresa_id] });
+      queryClient.invalidateQueries({
+        queryKey: ["despesas-pagamentos", empresa_id],
+      });
     },
   });
 }
@@ -39,7 +55,9 @@ export function useCancelarPagamento(overrideEmpresaId?: string) {
   return useMutation({
     mutationFn: (id: string) => cancelarPagamento(id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["despesas-pagamentos", empresa_id] });
+      queryClient.invalidateQueries({
+        queryKey: ["despesas-pagamentos", empresa_id],
+      });
     },
   });
 }

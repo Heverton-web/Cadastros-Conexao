@@ -12,7 +12,9 @@ export async function listarLabels(funilId: string): Promise<Label[]> {
 }
 
 export async function criarLabel(input: LabelInput): Promise<Label> {
-  const { data: { user } } = await supabase.auth.getUser();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
   if (!user) throw new Error("Não autenticado");
 
   const { data: funil } = await supabase
@@ -35,7 +37,10 @@ export async function criarLabel(input: LabelInput): Promise<Label> {
   return data as Label;
 }
 
-export async function atualizarLabel(id: string, input: Partial<LabelInput>): Promise<Label> {
+export async function atualizarLabel(
+  id: string,
+  input: Partial<LabelInput>,
+): Promise<Label> {
   const { data, error } = await supabase
     .from("funis_labels")
     .update(input)
@@ -47,21 +52,24 @@ export async function atualizarLabel(id: string, input: Partial<LabelInput>): Pr
 }
 
 export async function deletarLabel(id: string): Promise<void> {
-  const { error } = await supabase
-    .from("funis_labels")
-    .delete()
-    .eq("id", id);
+  const { error } = await supabase.from("funis_labels").delete().eq("id", id);
   if (error) throw error;
 }
 
-export async function adicionarLabelTarefa(tarefaId: string, labelId: string): Promise<void> {
+export async function adicionarLabelTarefa(
+  tarefaId: string,
+  labelId: string,
+): Promise<void> {
   const { error } = await supabase
     .from("funis_tarefas_labels")
     .insert({ tarefa_id: tarefaId, label_id: labelId });
   if (error) throw error;
 }
 
-export async function removerLabelTarefa(tarefaId: string, labelId: string): Promise<void> {
+export async function removerLabelTarefa(
+  tarefaId: string,
+  labelId: string,
+): Promise<void> {
   const { error } = await supabase
     .from("funis_tarefas_labels")
     .delete()

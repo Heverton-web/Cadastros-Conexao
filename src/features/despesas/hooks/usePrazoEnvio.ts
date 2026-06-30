@@ -11,7 +11,10 @@ interface PrazoEnvio {
   isLoading: boolean;
 }
 
-export function usePrazoEnvio(periodo_id?: string, overrideEmpresaId?: string): PrazoEnvio {
+export function usePrazoEnvio(
+  periodo_id?: string,
+  overrideEmpresaId?: string,
+): PrazoEnvio {
   const { profile } = useAuth();
   const empresa_id = overrideEmpresaId || (profile?.empresa_id ?? "");
 
@@ -45,7 +48,13 @@ export function usePrazoEnvio(periodo_id?: string, overrideEmpresaId?: string): 
   });
 
   if (!periodo_id || !periodo || !config) {
-    return { dentroDoPrazo: true, prazoExpirado: false, deadline: null, diasRestantes: 0, isLoading: configLoading };
+    return {
+      dentroDoPrazo: true,
+      prazoExpirado: false,
+      deadline: null,
+      diasRestantes: 0,
+      isLoading: configLoading,
+    };
   }
 
   const dataFim = new Date(periodo.data_fim + "T23:59:59");

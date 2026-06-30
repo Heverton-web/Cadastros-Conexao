@@ -6,12 +6,51 @@ import { Label } from "~/components/ui/label";
 import { DynamicIcon } from "./DynamicIcon";
 
 const ICON_LIST = [
-  "Globe", "ShoppingCart", "BookOpen", "Music", "Camera", "Heart", "Star", "Zap",
-  "Phone", "Mail", "MessageCircle", "MapPin", "Calendar", "Clock", "Gift", "Award",
-  "Briefcase", "Building", "GraduationCap", "Headphones", "Image", "Film", "Mic",
-  "Podcast", "Radio", "Tv", "Wifi", "Wrench", "Settings", "User", "Users",
-  "Video", "FileText", "Folder", "Archive", "Bookmark", "Tag", "Hash", "AtSign",
-  "Link", "ExternalLink", "Share", "Send", "ArrowRight", "ChevronRight",
+  "Globe",
+  "ShoppingCart",
+  "BookOpen",
+  "Music",
+  "Camera",
+  "Heart",
+  "Star",
+  "Zap",
+  "Phone",
+  "Mail",
+  "MessageCircle",
+  "MapPin",
+  "Calendar",
+  "Clock",
+  "Gift",
+  "Award",
+  "Briefcase",
+  "Building",
+  "GraduationCap",
+  "Headphones",
+  "Image",
+  "Film",
+  "Mic",
+  "Podcast",
+  "Radio",
+  "Tv",
+  "Wifi",
+  "Wrench",
+  "Settings",
+  "User",
+  "Users",
+  "Video",
+  "FileText",
+  "Folder",
+  "Archive",
+  "Bookmark",
+  "Tag",
+  "Hash",
+  "AtSign",
+  "Link",
+  "ExternalLink",
+  "Share",
+  "Send",
+  "ArrowRight",
+  "ChevronRight",
 ];
 
 interface Props {
@@ -23,13 +62,20 @@ export function IconPicker({ value, onChange }: Props) {
   const [search, setSearch] = useState("");
   const [customMode, setCustomMode] = useState(false);
 
-  const filtered = ICON_LIST.filter((i) => i.toLowerCase().includes(search.toLowerCase()));
+  const filtered = ICON_LIST.filter((i) =>
+    i.toLowerCase().includes(search.toLowerCase()),
+  );
 
   return (
     <div className="space-y-2">
       <div className="flex items-center justify-between">
         <Label>Icone</Label>
-        <Button type="button" variant="ghost" size="sm" onClick={() => setCustomMode(!customMode)}>
+        <Button
+          type="button"
+          variant="ghost"
+          size="sm"
+          onClick={() => setCustomMode(!customMode)}
+        >
           <Upload className="size-3" />
           {customMode ? "Escolher icone" : "URL custom"}
         </Button>
@@ -44,7 +90,12 @@ export function IconPicker({ value, onChange }: Props) {
             className="h-8"
           />
           {value && (
-            <Button type="button" variant="ghost" size="sm" onClick={() => onChange("")}>
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              onClick={() => onChange("")}
+            >
               <X className="size-3" />
             </Button>
           )}
@@ -67,7 +118,9 @@ export function IconPicker({ value, onChange }: Props) {
                 type="button"
                 onClick={() => onChange(icon)}
                 className={`rounded p-1.5 text-xs transition ${
-                  value === icon ? "bg-primary text-primary-foreground" : "hover:bg-surface-hover"
+                  value === icon
+                    ? "bg-primary text-primary-foreground"
+                    : "hover:bg-surface-hover"
                 }`}
                 title={icon}
               >
@@ -76,7 +129,9 @@ export function IconPicker({ value, onChange }: Props) {
             ))}
           </div>
           {value && !customMode && (
-            <p className="text-xs text-muted-foreground">Selecionado: {value}</p>
+            <p className="text-xs text-muted-foreground">
+              Selecionado: {value}
+            </p>
           )}
         </>
       )}

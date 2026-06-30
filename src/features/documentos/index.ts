@@ -43,7 +43,7 @@ export const STATUS_DOC_COLOR: Record<DocumentoStatus, string> = {
 export async function uploadDocumento(
   cadastro_id: string,
   tipo: string,
-  file: File
+  file: File,
 ): Promise<Documento> {
   const ext = file.name.split(".").pop();
   const fileName = `${cadastro_id}/${tipo}.${ext}`;
@@ -97,7 +97,10 @@ export async function reprovarDocumento(id: string, motivo: string) {
   return data as Documento;
 }
 
-export async function solicitarCorrecaoDocumento(id: string, comentario: string) {
+export async function solicitarCorrecaoDocumento(
+  id: string,
+  comentario: string,
+) {
   const { data, error } = await supabase
     .from("documentos")
     .update({ status: "em_correcao", comentario_reprovacao: comentario })
@@ -119,11 +122,22 @@ export async function reverterDocumento(id: string) {
   return data as Documento;
 }
 
-export const DOCS_PF_REQUIRED = ["cro_frente", "cro_verso", "cnh_frente", "cnh_verso", "comprovante_endereco"];
+export const DOCS_PF_REQUIRED = [
+  "cro_frente",
+  "cro_verso",
+  "cnh_frente",
+  "cnh_verso",
+  "comprovante_endereco",
+];
 
-export const DOCS_PJ_REQUIRED = [...DOCS_PF_REQUIRED, "contrato_social", "declaracao_prestacao_servico"];
+export const DOCS_PJ_REQUIRED = [
+  ...DOCS_PF_REQUIRED,
+  "contrato_social",
+  "declaracao_prestacao_servico",
+];
 
-export type DocStatus = "inclusa" | "incompleta" | "nao_enviada" | "pendente" | "em_analise";
+export type DocStatus =
+  "inclusa" | "incompleta" | "nao_enviada" | "pendente" | "em_analise";
 
 export const DOC_STATUS_LABEL: Record<DocStatus, string> = {
   inclusa: "Documentação Inclusa",
@@ -141,7 +155,10 @@ export const DOC_STATUS_COLOR: Record<DocStatus, string> = {
   em_analise: "bg-blue-500/15 text-blue-400 border border-blue-500/20",
 };
 
-export function determinarDocStatus(docs: Documento[], tipo_pessoa: string | null): DocStatus {
+export function determinarDocStatus(
+  docs: Documento[],
+  tipo_pessoa: string | null,
+): DocStatus {
   if (docs.length === 0) return "nao_enviada";
 
   if (docs.some((d) => d.status === "em_correcao")) return "pendente";
@@ -157,7 +174,10 @@ export function determinarDocStatus(docs: Documento[], tipo_pessoa: string | nul
   return "inclusa";
 }
 
-export async function getDocumentosStatus(cadastro_id: string, tipo_pessoa: string | null): Promise<DocStatus> {
+export async function getDocumentosStatus(
+  cadastro_id: string,
+  tipo_pessoa: string | null,
+): Promise<DocStatus> {
   const docs = await listarDocumentos(cadastro_id);
   return determinarDocStatus(docs, tipo_pessoa);
 }
@@ -189,7 +209,7 @@ export async function getDocumentosStatusMap(
 export async function setDocumentosMassa(
   ids: string[],
   status: DocumentoStatus,
-  comentario: string | null
+  comentario: string | null,
 ): Promise<void> {
   if (ids.length === 0) return;
   const { error } = await supabase

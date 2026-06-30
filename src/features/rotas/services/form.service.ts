@@ -1,7 +1,9 @@
 import { supabase } from "~/core/supabase";
 import type { RotasFormPergunta, FormPerguntaTipo } from "../types";
 
-export async function listarPerguntas(empresaId: string): Promise<RotasFormPergunta[]> {
+export async function listarPerguntas(
+  empresaId: string,
+): Promise<RotasFormPergunta[]> {
   const { data, error } = await supabase
     .from("rotas_form_perguntas")
     .select("*")
@@ -12,7 +14,9 @@ export async function listarPerguntas(empresaId: string): Promise<RotasFormPergu
   return (data ?? []) as RotasFormPergunta[];
 }
 
-export async function criarPergunta(pergunta: Omit<RotasFormPergunta, "id" | "created_at" | "updated_at">): Promise<RotasFormPergunta> {
+export async function criarPergunta(
+  pergunta: Omit<RotasFormPergunta, "id" | "created_at" | "updated_at">,
+): Promise<RotasFormPergunta> {
   const { data, error } = await supabase
     .from("rotas_form_perguntas")
     .insert(pergunta)
@@ -22,7 +26,10 @@ export async function criarPergunta(pergunta: Omit<RotasFormPergunta, "id" | "cr
   return data as RotasFormPergunta;
 }
 
-export async function atualizarPergunta(id: string, updates: Partial<RotasFormPergunta>): Promise<RotasFormPergunta> {
+export async function atualizarPergunta(
+  id: string,
+  updates: Partial<RotasFormPergunta>,
+): Promise<RotasFormPergunta> {
   const { data, error } = await supabase
     .from("rotas_form_perguntas")
     .update(updates)
@@ -41,15 +48,20 @@ export async function excluirPergunta(id: string): Promise<void> {
   if (error) throw error;
 }
 
-export async function reordenarPerguntas(atualizacoes: { id: string; ordem: number }[]): Promise<void> {
+export async function reordenarPerguntas(
+  atualizacoes: { id: string; ordem: number }[],
+): Promise<void> {
   await Promise.all(
     atualizacoes.map(({ id, ordem }) =>
-      supabase.from("rotas_form_perguntas").update({ ordem }).eq("id", id)
-    )
+      supabase.from("rotas_form_perguntas").update({ ordem }).eq("id", id),
+    ),
   );
 }
 
-export async function togglePergunta(id: string, ativo: boolean): Promise<void> {
+export async function togglePergunta(
+  id: string,
+  ativo: boolean,
+): Promise<void> {
   const { error } = await supabase
     .from("rotas_form_perguntas")
     .update({ ativo })

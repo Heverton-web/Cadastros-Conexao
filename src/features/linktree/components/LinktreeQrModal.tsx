@@ -1,5 +1,10 @@
 import { useRef } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "~/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "~/components/ui/dialog";
 import { Button } from "~/components/ui/button";
 import { Download } from "lucide-react";
 import { QRCodeCanvas } from "qrcode.react";
@@ -52,7 +57,11 @@ export function LinktreeQrModal({ open, onOpenChange, collaborator }: Props) {
               {buildCardUrl(collaborator.id)}
             </p>
           )}
-          <Button variant="outline" onClick={handleDownload} disabled={!collaborator}>
+          <Button
+            variant="outline"
+            onClick={handleDownload}
+            disabled={!collaborator}
+          >
             <Download className="size-4" /> Baixar PNG
           </Button>
         </div>

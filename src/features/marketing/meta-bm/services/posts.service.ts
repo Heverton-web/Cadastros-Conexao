@@ -19,7 +19,9 @@ export async function listarPosts(empresaId: string): Promise<MetaPost[]> {
   return (data as MetaPost[]) ?? [];
 }
 
-export async function criarPost(input: CriarPostInput): Promise<MetaPost | null> {
+export async function criarPost(
+  input: CriarPostInput,
+): Promise<MetaPost | null> {
   const { data } = await supabase
     .from("mktg_meta_posts")
     .insert({
@@ -36,7 +38,10 @@ export async function criarPost(input: CriarPostInput): Promise<MetaPost | null>
   return data as MetaPost | null;
 }
 
-export async function agendarPost(id: string, dataAgendamento: string): Promise<boolean> {
+export async function agendarPost(
+  id: string,
+  dataAgendamento: string,
+): Promise<boolean> {
   const { error } = await supabase
     .from("mktg_meta_posts")
     .update({ status: "agendado", agendado_para: dataAgendamento })
@@ -46,6 +51,9 @@ export async function agendarPost(id: string, dataAgendamento: string): Promise<
 }
 
 export async function deletarPost(id: string): Promise<boolean> {
-  const { error } = await supabase.from("mktg_meta_posts").delete().eq("id", id);
+  const { error } = await supabase
+    .from("mktg_meta_posts")
+    .delete()
+    .eq("id", id);
   return !error;
 }

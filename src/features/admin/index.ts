@@ -70,7 +70,10 @@ export async function createMockCredential(input: MockCredentialInput) {
   return data as MockCredential;
 }
 
-export async function updateMockCredential(id: string, input: Partial<MockCredentialInput>) {
+export async function updateMockCredential(
+  id: string,
+  input: Partial<MockCredentialInput>,
+) {
   const { data, error } = await supabase
     .from("mock_credentials")
     .update({ ...input, updated_at: new Date().toISOString() })

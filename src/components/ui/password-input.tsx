@@ -1,9 +1,15 @@
 import { useState, type InputHTMLAttributes } from "react";
 import { Eye, EyeOff } from "lucide-react";
 
-interface PasswordInputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "type"> {}
+interface PasswordInputProps extends Omit<
+  InputHTMLAttributes<HTMLInputElement>,
+  "type"
+> {}
 
-export function PasswordInput({ className = "", ...props }: PasswordInputProps) {
+export function PasswordInput({
+  className = "",
+  ...props
+}: PasswordInputProps) {
   const [show, setShow] = useState(false);
   return (
     <div className="relative">

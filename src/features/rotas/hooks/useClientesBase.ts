@@ -19,11 +19,12 @@ export function useClientesBase(filters?: ClienteBaseFilters) {
 
   return useQuery({
     queryKey: ["clientes-base", empresa?.id, user?.id, filters],
-    queryFn: () => listarClientesBase(
-      isSuperAdmin ? null : empresa?.id,
-      isSuperAdmin ? null : user?.id,
-      filters
-    ),
+    queryFn: () =>
+      listarClientesBase(
+        isSuperAdmin ? null : empresa?.id,
+        isSuperAdmin ? null : user?.id,
+        filters,
+      ),
     enabled: !!user?.id,
   });
 }
@@ -36,10 +37,11 @@ export function useContarClientesBase() {
 
   return useQuery({
     queryKey: ["clientes-base-count", empresa?.id, user?.id],
-    queryFn: () => contarClientesBase(
-      isSuperAdmin ? null : empresa?.id,
-      isSuperAdmin ? null : user?.id
-    ),
+    queryFn: () =>
+      contarClientesBase(
+        isSuperAdmin ? null : empresa?.id,
+        isSuperAdmin ? null : user?.id,
+      ),
     enabled: !!user?.id,
   });
 }
@@ -51,7 +53,11 @@ export function useCriarClienteBase() {
 
   return useMutation({
     mutationFn: (cliente: Parameters<typeof criarClienteBase>[0]) =>
-      criarClienteBase({ ...cliente, empresa_id: empresa!.id, usuario_id: user!.id }),
+      criarClienteBase({
+        ...cliente,
+        empresa_id: empresa!.id,
+        usuario_id: user!.id,
+      }),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["clientes-base"] });
       qc.invalidateQueries({ queryKey: ["clientes-base-count"] });
@@ -71,7 +77,7 @@ export function useCriarClientesBaseEmLote() {
           ...c,
           empresa_id: c.empresa_id || empresa?.id || "",
           usuario_id: c.usuario_id || user?.id || "",
-        }))
+        })),
       ),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["clientes-base"] });
@@ -84,8 +90,13 @@ export function useAtualizarClienteBase() {
   const qc = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ id, updates }: { id: string; updates: Parameters<typeof atualizarClienteBase>[1] }) =>
-      atualizarClienteBase(id, updates),
+    mutationFn: ({
+      id,
+      updates,
+    }: {
+      id: string;
+      updates: Parameters<typeof atualizarClienteBase>[1];
+    }) => atualizarClienteBase(id, updates),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["clientes-base"] });
     },

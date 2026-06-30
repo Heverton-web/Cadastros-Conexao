@@ -36,12 +36,14 @@ export function getCurrentPosition(): Promise<GeoPosition> {
         enableHighAccuracy: true,
         timeout: 10000,
         maximumAge: 0,
-      }
+      },
     );
   });
 }
 
-export function watchPosition(callback: (position: GeoPosition) => void): () => void {
+export function watchPosition(
+  callback: (position: GeoPosition) => void,
+): () => void {
   if (!navigator.geolocation) {
     return () => {};
   }
@@ -58,13 +60,16 @@ export function watchPosition(callback: (position: GeoPosition) => void): () => 
       enableHighAccuracy: true,
       timeout: 10000,
       maximumAge: 5000,
-    }
+    },
   );
 
   return () => navigator.geolocation.clearWatch(watchId);
 }
 
-export function calcularDistanciaHaversine(p1: GeoPosition, p2: GeoPosition): number {
+export function calcularDistanciaHaversine(
+  p1: GeoPosition,
+  p2: GeoPosition,
+): number {
   const R = 6371; // Raio da Terra em km
   const dLat = ((p2.lat - p1.lat) * Math.PI) / 180;
   const dLng = ((p2.lng - p1.lng) * Math.PI) / 180;
@@ -81,14 +86,17 @@ export function calcularDistanciaHaversine(p1: GeoPosition, p2: GeoPosition): nu
 export function estaDentroRaio(
   posicaoAtual: GeoPosition,
   destino: GeoPosition,
-  raioMetros: number = 300
+  raioMetros: number = 300,
 ): boolean {
   const distanciaKm = calcularDistanciaHaversine(posicaoAtual, destino);
   const distanciaMetros = distanciaKm * 1000;
   return distanciaMetros <= raioMetros;
 }
 
-export function abrirGoogleMaps(origem: GeoPosition, destino: GeoPosition): void {
+export function abrirGoogleMaps(
+  origem: GeoPosition,
+  destino: GeoPosition,
+): void {
   const url = `https://www.google.com/maps/dir/?api=1&origin=${origem.lat},${origem.lng}&destination=${destino.lat},${destino.lng}&travelmode=driving`;
   window.open(url, "_blank");
 }

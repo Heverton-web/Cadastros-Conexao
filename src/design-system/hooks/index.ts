@@ -1,5 +1,8 @@
 import { useContext } from "react";
-import { DesignSystemContext, ModuleDesignContext } from "../provider/DesignSystemContext";
+import {
+  DesignSystemContext,
+  ModuleDesignContext,
+} from "../provider/DesignSystemContext";
 import type { DesignTokens } from "../tokens/types";
 
 /** Hook principal: acessa tokens globais resolvidos */
@@ -13,10 +16,7 @@ export function useModuleDesign() {
 }
 
 /** Hook para acessar um token específico por path */
-export function useDesignToken<T = string>(
-  path: string,
-  fallback?: T
-): T {
+export function useDesignToken<T = string>(path: string, fallback?: T): T {
   const { tokens } = useContext(DesignSystemContext);
   const keys = path.split(".");
   let value: unknown = tokens;

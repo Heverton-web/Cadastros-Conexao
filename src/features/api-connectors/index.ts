@@ -23,10 +23,20 @@ export type ApiConnector = {
   modulo_key?: string | null;
 };
 
-export type ApiConnectorInput = Omit<ApiConnector, "id" | "created_at" | "updated_at">;
+export type ApiConnectorInput = Omit<
+  ApiConnector,
+  "id" | "created_at" | "updated_at"
+>;
 
-export async function listApiConnectors(type?: ApiConnectorType, empresaId?: string | null, moduloKey?: string | null) {
-  let query = supabase.from("api_connectors").select("*").order("name", { ascending: true });
+export async function listApiConnectors(
+  type?: ApiConnectorType,
+  empresaId?: string | null,
+  moduloKey?: string | null,
+) {
+  let query = supabase
+    .from("api_connectors")
+    .select("*")
+    .order("name", { ascending: true });
   if (type) {
     query = query.eq("type", type);
   }
@@ -53,7 +63,10 @@ export async function createApiConnector(input: ApiConnectorInput) {
   return data as ApiConnector;
 }
 
-export async function updateApiConnector(id: string, input: Partial<ApiConnectorInput>) {
+export async function updateApiConnector(
+  id: string,
+  input: Partial<ApiConnectorInput>,
+) {
   const { data, error } = await supabase
     .from("api_connectors")
     .update({ ...input, updated_at: new Date().toISOString() })
@@ -69,7 +82,10 @@ export async function deleteApiConnector(id: string) {
   if (error) throw error;
 }
 
-export async function executeApiConnector(connector_id: string, variables: Record<string, any> = {}) {
+export async function executeApiConnector(
+  connector_id: string,
+  variables: Record<string, any> = {},
+) {
   const startTime = Date.now();
   try {
     const vars: Record<string, string> = {};
@@ -79,10 +95,13 @@ export async function executeApiConnector(connector_id: string, variables: Recor
       }
     }
 
-    const { data, error } = await supabase.rpc("executar_api_connector_server", {
-      p_connector_id: connector_id,
-      p_variables: vars
-    });
+    const { data, error } = await supabase.rpc(
+      "executar_api_connector_server",
+      {
+        p_connector_id: connector_id,
+        p_variables: vars,
+      },
+    );
 
     const duration = Date.now() - startTime;
 
@@ -92,7 +111,7 @@ export async function executeApiConnector(connector_id: string, variables: Recor
         status: 500,
         duration,
         headers: {},
-        data: { error: "Erro na RPC server-side", message: error.message }
+        data: { error: "Erro na RPC server-side", message: error.message },
       };
     }
 
@@ -100,7 +119,7 @@ export async function executeApiConnector(connector_id: string, variables: Recor
       status: (data as any)?.status ?? 200,
       duration,
       headers: {},
-      data
+      data,
     };
   } catch (err: any) {
     const duration = Date.now() - startTime;
@@ -109,11 +128,17 @@ export async function executeApiConnector(connector_id: string, variables: Recor
       status: 500,
       duration,
       headers: {},
-      data: { error: "Falha na chamada da API", message: err.message || String(err) }
+      data: {
+        error: "Falha na chamada da API",
+        message: err.message || String(err),
+      },
     };
   }
 }
 
-registerActionExecutor("api_connector", async (id: string, payload: Record<string, any>) => {
-  return executeApiConnector(id, payload);
-});
+registerActionExecutor(
+  "api_connector",
+  async (id: string, payload: Record<string, any>) => {
+    return executeApiConnector(id, payload);
+  },
+);

@@ -1,7 +1,10 @@
 import { supabase } from "~/core/supabase";
 import type { Notification } from "../types";
 
-export async function listarNotificacoes(userId: string, limit = 20): Promise<Notification[]> {
+export async function listarNotificacoes(
+  userId: string,
+  limit = 20,
+): Promise<Notification[]> {
   const { data, error } = await supabase
     .from("funis_notifications")
     .select("*")
@@ -39,15 +42,19 @@ export async function contarNaoLidas(userId: string): Promise<number> {
   return count ?? 0;
 }
 
-export async function criarNotificacao(userId: string, titulo: string, mensagem?: string, link?: string, empresaId?: string): Promise<void> {
-  const { error } = await supabase
-    .from("funis_notifications")
-    .insert({
-      user_id: userId,
-      titulo,
-      mensagem: mensagem ?? null,
-      link: link ?? null,
-      empresa_id: empresaId ?? null,
-    });
+export async function criarNotificacao(
+  userId: string,
+  titulo: string,
+  mensagem?: string,
+  link?: string,
+  empresaId?: string,
+): Promise<void> {
+  const { error } = await supabase.from("funis_notifications").insert({
+    user_id: userId,
+    titulo,
+    mensagem: mensagem ?? null,
+    link: link ?? null,
+    empresa_id: empresaId ?? null,
+  });
   if (error) throw error;
 }

@@ -1,13 +1,16 @@
-import pg from 'pg';
-import fs from 'fs';
+import pg from "pg";
+import fs from "fs";
 
-const env = fs.readFileSync(new URL('../.env', import.meta.url), 'utf8');
+const env = fs.readFileSync(new URL("../.env", import.meta.url), "utf8");
 const pwMatch = env.match(/SUPABASE_DB_PASSWORD=["']?([^"'\n]+)/);
 const PASSWORD = pwMatch?.[1];
-if (!PASSWORD) { console.error('no password'); process.exit(1); }
+if (!PASSWORD) {
+  console.error("no password");
+  process.exit(1);
+}
 
 const pool = new pg.Pool({
-  connectionString: `postgresql://postgres:${encodeURIComponent(PASSWORD)}@db.cluuqzhizeqvkgvfdisx.supabase.co:5432/postgres`
+  connectionString: `postgresql://postgres:${encodeURIComponent(PASSWORD)}@db.cluuqzhizeqvkgvfdisx.supabase.co:5432/postgres`,
 });
 
 async function run() {
@@ -26,7 +29,7 @@ async function run() {
         RETURN NEW;
       END; $$;
     `);
-    console.log('✅ Function log_transferencia_cliente');
+    console.log("✅ Function log_transferencia_cliente");
 
     // Trigger
     try {
@@ -35,9 +38,9 @@ async function run() {
           BEFORE UPDATE OF consultor_atual_id ON public.clientes
           FOR EACH ROW EXECUTE FUNCTION public.log_transferencia_cliente()
       `);
-      console.log('✅ Trigger trg_log_transferencia');
-    } catch(e) {
-      console.log('⏭️  Trigger: ' + e.message.slice(0, 80));
+      console.log("✅ Trigger trg_log_transferencia");
+    } catch (e) {
+      console.log("⏭️  Trigger: " + e.message.slice(0, 80));
     }
 
     // RLS policies for clientes
@@ -48,8 +51,12 @@ async function run() {
       `CREATE POLICY "Super admin total clientes" ON public.clientes FOR ALL USING (public.has_role(auth.uid(), 'dev')) WITH CHECK (public.has_role(auth.uid(), 'dev'))`,
     ];
     for (const sql of policies) {
-      try { await client.query(sql); console.log('✅ Policy: ' + sql.match(/"([^"]+)"/)[1]); }
-      catch(e) { console.log('⏭️  Policy: ' + e.message.slice(0, 60)); }
+      try {
+        await client.query(sql);
+        console.log("✅ Policy: " + sql.match(/"([^"]+)"/)[1]);
+      } catch (e) {
+        console.log("⏭️  Policy: " + e.message.slice(0, 60));
+      }
     }
 
     // RLS policies for visitas
@@ -62,15 +69,22 @@ async function run() {
       `CREATE POLICY "Super admin total visitas" ON public.visitas FOR ALL USING (public.has_role(auth.uid(), 'dev')) WITH CHECK (public.has_role(auth.uid(), 'dev'))`,
     ];
     for (const sql of visitasPolicies) {
-      try { await client.query(sql); console.log('✅ Policy visitas: ' + sql.match(/"([^"]+)"/)[1]); }
-      catch(e) { console.log('⏭️  Policy visitas: ' + e.message.slice(0, 60)); }
+      try {
+        await client.query(sql);
+        console.log("✅ Policy visitas: " + sql.match(/"([^"]+)"/)[1]);
+      } catch (e) {
+        console.log("⏭️  Policy visitas: " + e.message.slice(0, 60));
+      }
     }
 
-    console.log('\n🎉 Migration CRM completa!');
+    console.log("\n🎉 Migration CRM completa!");
   } finally {
     client.release();
     await pool.end();
   }
 }
 
-run().catch(e => { console.error('❌ ERRO:', e.message); process.exit(1); });
+run().catch((e) => {
+  console.error("❌ ERRO:", e.message);
+  process.exit(1);
+});

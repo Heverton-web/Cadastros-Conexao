@@ -34,7 +34,8 @@ export function HubGlobalEffects() {
       <div
         className="absolute inset-0"
         style={{
-          backgroundImage: "url('https://grainy-gradients.vercel.app/noise.svg')",
+          backgroundImage:
+            "url('https://grainy-gradients.vercel.app/noise.svg')",
           opacity: "var(--env-grain-opacity, 0.20)",
           mixBlendMode: "var(--env-grain-blend, multiply)" as any,
           filter: "contrast(var(--env-grain-contrast, 150))",

@@ -1,5 +1,16 @@
-import { Map, Building2, UserCircle, BarChart3, Globe, Palette } from "lucide-react";
-import { registerModule, registerNavItem, registerPermission } from "~/registry";
+import {
+  Map,
+  Building2,
+  UserCircle,
+  BarChart3,
+  Globe,
+  Palette,
+} from "lucide-react";
+import {
+  registerModule,
+  registerNavItem,
+  registerPermission,
+} from "~/registry";
 import type { ModuleDefinition } from "~/registry";
 import { MAPAS_PERMISSIONS } from "./permissions";
 
@@ -17,27 +28,64 @@ export const mapasModule: ModuleDefinition = {
     "/mapas/gestao/distribuidores",
     "/mapas/gestao/consultores",
   ],
-  permissions: MAPAS_PERMISSIONS.map(p => p.key),
+  permissions: MAPAS_PERMISSIONS.map((p) => p.key),
   ambientes: ["cadastro", "consultor"],
   abas: [
     { key: "geral", label: "Geral" },
     { key: "permissoes", label: "Permissões" },
   ],
   events: [
-    { key: "mapas.distribuidor.criado", label: "Distribuidor Criado", descricao: "Dispara quando um novo distribuidor é adicionado" },
-    { key: "mapas.distribuidor.atualizado", label: "Distribuidor Atualizado", descricao: "Dispara quando um distribuidor é editado" },
-    { key: "mapas.distribuidor.excluido", label: "Distribuidor Excluído", descricao: "Dispara quando um distribuidor é removido" },
-    { key: "mapas.consultor.criado", label: "Consultor Criado", descricao: "Dispara quando um novo consultor é adicionado" },
-    { key: "mapas.consultor.atualizado", label: "Consultor Atualizado", descricao: "Dispara quando um consultor é editado" },
-    { key: "mapas.consultor.excluido", label: "Consultor Excluído", descricao: "Dispara quando um consultor é removido" },
-    { key: "mapas.estado.clicado", label: "Estado Clicado", descricao: "Dispara quando um estado é clicado no mapa" },
-    { key: "mapas.pin.clicado", label: "Pin Clicado", descricao: "Dispara quando um pin é clicado no mapa" },
+    {
+      key: "mapas.distribuidor.criado",
+      label: "Distribuidor Criado",
+      descricao: "Dispara quando um novo distribuidor é adicionado",
+    },
+    {
+      key: "mapas.distribuidor.atualizado",
+      label: "Distribuidor Atualizado",
+      descricao: "Dispara quando um distribuidor é editado",
+    },
+    {
+      key: "mapas.distribuidor.excluido",
+      label: "Distribuidor Excluído",
+      descricao: "Dispara quando um distribuidor é removido",
+    },
+    {
+      key: "mapas.consultor.criado",
+      label: "Consultor Criado",
+      descricao: "Dispara quando um novo consultor é adicionado",
+    },
+    {
+      key: "mapas.consultor.atualizado",
+      label: "Consultor Atualizado",
+      descricao: "Dispara quando um consultor é editado",
+    },
+    {
+      key: "mapas.consultor.excluido",
+      label: "Consultor Excluído",
+      descricao: "Dispara quando um consultor é removido",
+    },
+    {
+      key: "mapas.estado.clicado",
+      label: "Estado Clicado",
+      descricao: "Dispara quando um estado é clicado no mapa",
+    },
+    {
+      key: "mapas.pin.clicado",
+      label: "Pin Clicado",
+      descricao: "Dispara quando um pin é clicado no mapa",
+    },
   ],
   hasDesignConfig: true,
   designRoute: "/empresa/mapas/design",
   setup: () => {
     for (const p of MAPAS_PERMISSIONS) {
-      registerPermission({ key: p.key, label: p.label, description: p.description, group: p.group });
+      registerPermission({
+        key: p.key,
+        label: p.label,
+        description: p.description,
+        group: p.group,
+      });
     }
 
     registerNavItem({
@@ -81,7 +129,5 @@ export const mapasModule: ModuleDefinition = {
       order: 40,
       moduloKey: "mapas-interativos",
     });
-
-
   },
 };

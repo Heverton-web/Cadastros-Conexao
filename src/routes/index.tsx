@@ -7,7 +7,14 @@ import { useState, useEffect } from "react";
 import { supabase } from "~/lib/supabase";
 import { useAuth } from "~/lib/auth";
 import { useEmpresaTheme } from "~/core/theme";
-import { Loader2, Fingerprint, AlertTriangle, X, Mail, ChevronRight } from "lucide-react";
+import {
+  Loader2,
+  Fingerprint,
+  AlertTriangle,
+  X,
+  Mail,
+  ChevronRight,
+} from "lucide-react";
 import toast from "react-hot-toast";
 
 export const loginRoute = createRoute({
@@ -34,7 +41,9 @@ function LoginPage() {
   }, [user, loading]);
 
   async function rotearPosLogin() {
-    const { data: { user: currentUser } } = await supabase.auth.getUser();
+    const {
+      data: { user: currentUser },
+    } = await supabase.auth.getUser();
     if (!currentUser) return;
     const { data: profile } = await supabase
       .from("profiles")
@@ -43,12 +52,16 @@ function LoginPage() {
       .single();
 
     if (!profile) return;
-    if (profile.ativo === false) { setPopup("inativo"); return; }
+    if (profile.ativo === false) {
+      setPopup("inativo");
+      return;
+    }
 
     setRedirected(true);
     const amb = profile.ambiente;
     if (amb === "consultor") navigate({ to: "/consultor" });
-    else if (amb === "tecnologia" || amb === "suporte") navigate({ to: "/credenciais" });
+    else if (amb === "tecnologia" || amb === "suporte")
+      navigate({ to: "/credenciais" });
     else navigate({ to: "/dashboard" });
   }
 
@@ -61,11 +74,17 @@ function LoginPage() {
       await rotearPosLogin();
     } catch (e: any) {
       const rawMsg = e?.message;
-      const msg = typeof rawMsg === 'string' && rawMsg.trim() !== '{}' && rawMsg.trim() !== '' 
-        ? rawMsg 
-        : "Erro ao fazer login. Verifique suas credenciais.";
+      const msg =
+        typeof rawMsg === "string" &&
+        rawMsg.trim() !== "{}" &&
+        rawMsg.trim() !== ""
+          ? rawMsg
+          : "Erro ao fazer login. Verifique suas credenciais.";
 
-      if (msg.includes("Invalid login credentials") || msg.includes("invalid_credentials")) {
+      if (
+        msg.includes("Invalid login credentials") ||
+        msg.includes("invalid_credentials")
+      ) {
         setErrorMsg("Email ou senha inválidos.");
       } else if (msg.includes("Failed to fetch") || msg.includes("fetch")) {
         setErrorMsg("Failed to fetch");
@@ -97,15 +116,25 @@ function LoginPage() {
         {/* Logo */}
         <div className="mx-auto mb-6 flex items-center justify-center">
           {logoIndexUrl ? (
-            <img src={logoIndexUrl} className="h-16 w-auto object-contain" alt="Logo" />
+            <img
+              src={logoIndexUrl}
+              className="h-16 w-auto object-contain"
+              alt="Logo"
+            />
           ) : (
-            <img src="/logos/logo-vertical-branco.png" className="h-16 w-auto object-contain" alt="Logo" />
+            <img
+              src="/logos/logo-vertical-branco.png"
+              className="h-16 w-auto object-contain"
+              alt="Logo"
+            />
           )}
         </div>
 
         {/* Título e Subtítulo */}
         <div className="text-center mb-6 flex flex-col gap-0.5">
-          <h1 className="text-2xl font-bold text-white tracking-wide">Entrar</h1>
+          <h1 className="text-2xl font-bold text-white tracking-wide">
+            Entrar
+          </h1>
           <span className="text-xs font-bold text-[#c9a655] tracking-[0.25em] uppercase">
             {empresaNome || "Conexão"}
           </span>
@@ -119,18 +148,24 @@ function LoginPage() {
           </div>
         )}
 
-        <form onSubmit={(e) => { e.preventDefault(); handleLogin(); }} className="flex flex-col gap-5">
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleLogin();
+          }}
+          className="flex flex-col gap-5"
+        >
           <div>
             <label className="text-xs font-bold text-[#4e6178] uppercase tracking-wider mb-1.5 block">
               Email
             </label>
-            <Input 
-              id="email" 
-              type="email" 
-              placeholder="seu@email.com" 
-              value={email} 
-              onChange={(e) => setEmail(e.target.value)} 
-              autoComplete="email" 
+            <Input
+              id="email"
+              type="email"
+              placeholder="seu@email.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              autoComplete="email"
               className="bg-[#131d30] border-[#1f2f4d] focus:border-[#c9a655]/50 focus:ring-0 text-white rounded-xl placeholder-[#41536b] text-sm h-11 w-full"
             />
           </div>
@@ -139,23 +174,32 @@ function LoginPage() {
             <label className="text-xs font-bold text-[#4e6178] uppercase tracking-wider mb-1.5 block">
               Senha
             </label>
-<PasswordInput id="password" placeholder="••••••••"
-  value={password} onChange={(e) => setPassword(e.target.value)}
-  autoComplete="current-password"
-  className="bg-[#131d30] border-[#1f2f4d] text-white placeholder:text-gray-500 rounded-xl px-4 py-3 w-full outline-none focus:border-[#c9a655] transition-all pr-12" />
+            <PasswordInput
+              id="password"
+              placeholder="••••••••"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              autoComplete="current-password"
+              className="bg-[#131d30] border-[#1f2f4d] text-white placeholder:text-gray-500 rounded-xl px-4 py-3 w-full outline-none focus:border-[#c9a655] transition-all pr-12"
+            />
           </div>
 
-          <button 
-            type="submit" 
-            disabled={submitting} 
+          <button
+            type="submit"
+            disabled={submitting}
             className="mt-2 flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#d9b668] to-[#b39145] hover:from-[#e3c174] hover:to-[#c29f52] py-3 text-sm font-bold text-[#0d1625] transition-all duration-300 shadow-[0_4px_20px_rgba(201,166,85,0.2)] cursor-pointer group"
           >
             {submitting ? (
               <Loader2 size={16} className="animate-spin text-[#0d1625]" />
             ) : (
               <>
-                <span className="flex-1 text-center pl-4">Entrar na Plataforma</span>
-                <ChevronRight size={16} className="text-[#0d1625] transition-transform group-hover:translate-x-0.5" />
+                <span className="flex-1 text-center pl-4">
+                  Entrar na Plataforma
+                </span>
+                <ChevronRight
+                  size={16}
+                  className="text-[#0d1625] transition-transform group-hover:translate-x-0.5"
+                />
               </>
             )}
           </button>
@@ -164,7 +208,9 @@ function LoginPage() {
 
       <div className="absolute bottom-6 flex items-center justify-center gap-2 text-text-muted/20">
         <Fingerprint size={12} />
-        <span className="text-[8px] tracking-[0.2em] uppercase">Conexão Implantes</span>
+        <span className="text-[8px] tracking-[0.2em] uppercase">
+          Conexão Implantes
+        </span>
       </div>
 
       {/* POPUP - INATIVO */}
@@ -174,12 +220,33 @@ function LoginPage() {
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2">
                 <AlertTriangle size={20} className="text-red-400" />
-                <h2 className="text-base font-bold text-text-main">Usuário Inativo</h2>
+                <h2 className="text-base font-bold text-text-main">
+                  Usuário Inativo
+                </h2>
               </div>
-              <button onClick={() => { setPopup(null); navigate({ to: "/" }); }} className="text-text-muted hover:text-text-main"><X size={20} /></button>
+              <button
+                onClick={() => {
+                  setPopup(null);
+                  navigate({ to: "/" });
+                }}
+                className="text-text-muted hover:text-text-main"
+              >
+                <X size={20} />
+              </button>
             </div>
-            <p className="text-sm text-text-muted mb-6">Sua conta está inativa. Entre em contato com o administrador do sistema.</p>
-            <Button fullWidth onClick={() => { supabase.auth.signOut(); setPopup(null); }}>Sair</Button>
+            <p className="text-sm text-text-muted mb-6">
+              Sua conta está inativa. Entre em contato com o administrador do
+              sistema.
+            </p>
+            <Button
+              fullWidth
+              onClick={() => {
+                supabase.auth.signOut();
+                setPopup(null);
+              }}
+            >
+              Sair
+            </Button>
           </div>
         </div>
       )}
@@ -203,35 +270,61 @@ function ResetSenhaPopup({ onClose }: { onClose: () => void }) {
     try {
       await resetPassword(email);
       setSent(true);
-    } catch { } finally { setSubmitting(false); }
+    } catch {
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-6 backdrop-blur-sm">
       <div className="w-full max-w-md rounded-2xl bg-[#0b121f] border border-[#1b2a47] p-6 shadow-xl">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-base font-bold text-text-main">Redefinir Senha</h2>
-          <button onClick={onClose} className="text-text-muted hover:text-text-main"><X size={20} /></button>
+          <h2 className="text-base font-bold text-text-main">
+            Redefinir Senha
+          </h2>
+          <button
+            onClick={onClose}
+            className="text-text-muted hover:text-text-main"
+          >
+            <X size={20} />
+          </button>
         </div>
         {sent ? (
           <>
-            <p className="text-sm text-text-muted mb-6">Email enviado! Verifique sua caixa de entrada e siga as instruções.</p>
-            <Button fullWidth onClick={onClose}>Fechar</Button>
+            <p className="text-sm text-text-muted mb-6">
+              Email enviado! Verifique sua caixa de entrada e siga as
+              instruções.
+            </p>
+            <Button fullWidth onClick={onClose}>
+              Fechar
+            </Button>
           </>
         ) : (
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-            <p className="text-sm text-text-muted">Digite seu email para receber o link de recuperação.</p>
-            <Input 
-              id="reset-email" 
-              label="Email" 
-              type="email" 
-              placeholder="seu@email.com" 
-              value={email} 
-              onChange={(e) => setEmail(e.target.value)} 
+            <p className="text-sm text-text-muted">
+              Digite seu email para receber o link de recuperação.
+            </p>
+            <Input
+              id="reset-email"
+              label="Email"
+              type="email"
+              placeholder="seu@email.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               className="bg-[#131d30] border-[#1f2f4d] focus:border-[#c9a655]/50 focus:ring-0 text-white rounded-xl placeholder-[#41536b] text-sm h-11 w-full"
             />
-            <Button type="submit" fullWidth disabled={submitting} className="cursor-pointer">
-              {submitting ? <Loader2 size={18} className="animate-spin" /> : <Mail size={18} />}
+            <Button
+              type="submit"
+              fullWidth
+              disabled={submitting}
+              className="cursor-pointer"
+            >
+              {submitting ? (
+                <Loader2 size={18} className="animate-spin" />
+              ) : (
+                <Mail size={18} />
+              )}
               Enviar link
             </Button>
           </form>
@@ -240,4 +333,3 @@ function ResetSenhaPopup({ onClose }: { onClose: () => void }) {
     </div>
   );
 }
-

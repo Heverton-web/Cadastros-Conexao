@@ -6,9 +6,10 @@ Esta especificação detalha o funcionamento e a implementação do **Workflow B
 
 ## 1. Funcionamento dos Disparos e Sequenciamento
 
-As ações de um determinado gatilho (evento do sistema) são organizadas e disparadas de forma sequencial na ordem definida pela propriedade `ordem`. 
+As ações de um determinado gatilho (evento do sistema) são organizadas e disparadas de forma sequencial na ordem definida pela propriedade `ordem`.
 
 ### Comportamento da Fila:
+
 - **Execução Sequencial e Assíncrona:** O disparo total do workflow roda em background (assíncrono em relação à interface do usuário para não travar a navegação), mas as etapas individuais dentro dele rodam em ordem sequencial (síncronas entre si).
 - **Tratamento de Erros:** Se um passo falhar (ex: webhook retornar 500 ou timeout), a falha é registrada nos logs (`webhook_logs`), mas a fila **continua** a execução dos passos subsequentes normalmente.
 - **Ações Nativas vs. Customizadas:**
@@ -22,7 +23,9 @@ As ações de um determinado gatilho (evento do sistema) são organizadas e disp
 A propriedade `ordem` é adicionada para controlar a sequência exata de cada ação vinculada a um gatilho.
 
 ### Migrations SQL:
+
 Adicionar a coluna `ordem` (inteiro, padrão `0` ou sequencial) nas tabelas:
+
 - `api_connectors`: `ordem INT DEFAULT 0`
 - `notificacoes_templates`: `ordem INT DEFAULT 0`
 - `webhooks` (legada): `ordem INT DEFAULT 0`

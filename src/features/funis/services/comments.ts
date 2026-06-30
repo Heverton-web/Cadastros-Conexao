@@ -14,8 +14,13 @@ export async function listarComentarios(tarefaId: string): Promise<Comment[]> {
   return (data ?? []) as unknown as Comment[];
 }
 
-export async function criarComentario(tarefaId: string, texto: string): Promise<Comment> {
-  const { data: { user } } = await supabase.auth.getUser();
+export async function criarComentario(
+  tarefaId: string,
+  texto: string,
+): Promise<Comment> {
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
   if (!user) throw new Error("Não autenticado");
 
   const { data, error } = await supabase
@@ -30,11 +35,19 @@ export async function criarComentario(tarefaId: string, texto: string): Promise<
   if (error) throw error;
   const comment = data as unknown as Comment;
 
-  dispararEventoModulo(MODULO_KEY, "tarefa.comentario_adicionado", { comentario: comment, tarefa_id: tarefaId }, null).catch(() => {});
+  dispararEventoModulo(
+    MODULO_KEY,
+    "tarefa.comentario_adicionado",
+    { comentario: comment, tarefa_id: tarefaId },
+    null,
+  ).catch(() => {});
   return comment;
 }
 
-export async function atualizarComentario(id: string, texto: string): Promise<Comment> {
+export async function atualizarComentario(
+  id: string,
+  texto: string,
+): Promise<Comment> {
   const { data, error } = await supabase
     .from("funis_comments")
     .update({ texto })
@@ -46,9 +59,6 @@ export async function atualizarComentario(id: string, texto: string): Promise<Co
 }
 
 export async function deletarComentario(id: string): Promise<void> {
-  const { error } = await supabase
-    .from("funis_comments")
-    .delete()
-    .eq("id", id);
+  const { error } = await supabase.from("funis_comments").delete().eq("id", id);
   if (error) throw error;
 }

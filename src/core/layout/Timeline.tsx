@@ -1,6 +1,16 @@
 import { useEffect, useState } from "react";
 import { listarAtividades, type Atividade } from "~/core/services";
-import { Loader2, Clock, User, Plus, Pencil, ArrowRight, Check, X, FileText } from "lucide-react";
+import {
+  Loader2,
+  Clock,
+  User,
+  Plus,
+  Pencil,
+  ArrowRight,
+  Check,
+  X,
+  FileText,
+} from "lucide-react";
 
 type Props = {
   entidade_tipo: "lead" | "contrato" | "cadastro";
@@ -48,13 +58,16 @@ export function Timeline({ entidade_tipo, entidade_id }: Props) {
             key={a.id}
             className="flex items-start gap-3 border-b border-border-subtle pb-3 last:border-0"
           >
-            <span className="mt-0.5 text-sm">{(() => { const Icon = acaoIcons[a.acao] || FileText; return <Icon size={14} className="text-text-muted" />; })()}</span>
+            <span className="mt-0.5 text-sm">
+              {(() => {
+                const Icon = acaoIcons[a.acao] || FileText;
+                return <Icon size={14} className="text-text-muted" />;
+              })()}
+            </span>
             <div className="flex-1 min-w-0">
               <p className="text-sm text-text-main">{a.descricao || a.acao}</p>
               <div className="mt-0.5 flex items-center gap-2 text-[10px] text-text-muted">
-                <span>
-                  {new Date(a.created_at).toLocaleString("pt-BR")}
-                </span>
+                <span>{new Date(a.created_at).toLocaleString("pt-BR")}</span>
                 {a.profiles?.nome && (
                   <span className="flex items-center gap-1">
                     <User size={10} />

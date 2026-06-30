@@ -1,5 +1,9 @@
 import { useState, useEffect, useCallback } from "react";
-import { getCurrentPosition, watchPosition, estaDentroRaio } from "../lib/geolocation";
+import {
+  getCurrentPosition,
+  watchPosition,
+  estaDentroRaio,
+} from "../lib/geolocation";
 import type { GeoPosition } from "../lib/geolocation";
 
 export function useRotaAtiva(raioPermitido: number = 300) {
@@ -22,7 +26,7 @@ export function useRotaAtiva(raioPermitido: number = 300) {
         setLoading(false);
       }
     },
-    [raioPermitido]
+    [raioPermitido],
   );
 
   const iniciarMonitoramento = useCallback(
@@ -39,7 +43,7 @@ export function useRotaAtiva(raioPermitido: number = 300) {
         stopWatching();
       };
     },
-    [verificarPosicao, raioPermitido]
+    [verificarPosicao, raioPermitido],
   );
 
   return {

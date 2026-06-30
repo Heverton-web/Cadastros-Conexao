@@ -11,7 +11,9 @@ export async function fetchHubChatbotConfig(empresaId: string) {
   return data as HubChatbotConfig | null;
 }
 
-export async function upsertHubChatbotConfig(config: Partial<HubChatbotConfig>) {
+export async function upsertHubChatbotConfig(
+  config: Partial<HubChatbotConfig>,
+) {
   const { data, error } = await supabase
     .from("hub_chatbot_config")
     .upsert(config, { onConflict: "empresa_id" })

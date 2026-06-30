@@ -10,7 +10,12 @@ type SwimlaneGroupProps = {
   defaultCollapsed?: boolean;
 };
 
-export function SwimlaneGroup({ label, tarefas, onTaskClick, defaultCollapsed = false }: SwimlaneGroupProps) {
+export function SwimlaneGroup({
+  label,
+  tarefas,
+  onTaskClick,
+  defaultCollapsed = false,
+}: SwimlaneGroupProps) {
   const [collapsed, setCollapsed] = useState(defaultCollapsed);
 
   if (tarefas.length === 0) return null;
@@ -36,7 +41,11 @@ export function SwimlaneGroup({ label, tarefas, onTaskClick, defaultCollapsed = 
       {!collapsed && (
         <div className="space-y-2 pl-2">
           {tarefas.map((tarefa) => (
-            <TaskCard key={tarefa.id} tarefa={tarefa} onClick={() => onTaskClick(tarefa)} />
+            <TaskCard
+              key={tarefa.id}
+              tarefa={tarefa}
+              onClick={() => onTaskClick(tarefa)}
+            />
           ))}
         </div>
       )}

@@ -3,7 +3,11 @@ import { useNavigate, useLocation } from "@tanstack/react-router";
 import { cn } from "~/lib/utils";
 import { useNavItems } from "./useNavItems";
 
-export function BottomNav({ selectedModuleKey }: { selectedModuleKey?: string }) {
+export function BottomNav({
+  selectedModuleKey,
+}: {
+  selectedModuleKey?: string;
+}) {
   const navigate = useNavigate();
   const location = useLocation();
   const allSections = useNavItems();
@@ -16,12 +20,18 @@ export function BottomNav({ selectedModuleKey }: { selectedModuleKey?: string })
 
   const path = location.pathname;
   const matchScore = (item: { path: string; matchPaths?: string[] }) =>
-    path === item.path ? 3 : (item.matchPaths || []).includes(path) ? 2 : path.startsWith(item.path + "/") ? 1 : 0;
+    path === item.path
+      ? 3
+      : (item.matchPaths || []).includes(path)
+        ? 2
+        : path.startsWith(item.path + "/")
+          ? 1
+          : 0;
   const bestMatch = navItems.reduce<string | null>((best, item) => {
     const score = matchScore(item);
     if (!score) return best;
     if (!best) return item.path;
-    const bestScore = matchScore(navItems.find(i => i.path === best)!);
+    const bestScore = matchScore(navItems.find((i) => i.path === best)!);
     if (score > bestScore) return item.path;
     if (score < bestScore) return best;
     return item.path.length > best.length ? item.path : best;
@@ -29,7 +39,8 @@ export function BottomNav({ selectedModuleKey }: { selectedModuleKey?: string })
 
   const maxItems = 5;
   const visibleItems = navItems.slice(0, maxItems);
-  const overflowItems = navItems.length > maxItems ? navItems.slice(maxItems) : [];
+  const overflowItems =
+    navItems.length > maxItems ? navItems.slice(maxItems) : [];
 
   return (
     <nav
@@ -51,7 +62,7 @@ export function BottomNav({ selectedModuleKey }: { selectedModuleKey?: string })
                 "flex flex-col items-center justify-center min-w-[48px] min-h-[44px] rounded-lg transition-colors duration-150",
                 isActive
                   ? "text-accent"
-                  : "text-text-muted hover:text-text-main"
+                  : "text-text-muted hover:text-text-main",
               )}
             >
               <item.icon size={22} />

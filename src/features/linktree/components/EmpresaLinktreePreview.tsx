@@ -1,5 +1,9 @@
 import { EmpresaLinktreeCard } from "./EmpresaLinktreeCard";
-import type { EmpresaLinktreeLink, EmpresaLinktreeSection, EmpresaLinktreeTheme } from "../types-empresa";
+import type {
+  EmpresaLinktreeLink,
+  EmpresaLinktreeSection,
+  EmpresaLinktreeTheme,
+} from "../types-empresa";
 
 interface Props {
   sections: EmpresaLinktreeSection[];
@@ -10,11 +14,21 @@ interface Props {
   empresaNome?: string;
 }
 
-export function EmpresaLinktreePreview({ sections, links, theme, bio, bannerUrl, empresaNome }: Props) {
+export function EmpresaLinktreePreview({
+  sections,
+  links,
+  theme,
+  bio,
+  bannerUrl,
+  empresaNome,
+}: Props) {
   return (
     <div className="lg:sticky lg:top-20 lg:self-start">
       <div className="overflow-hidden rounded-[2rem] border-[10px] border-surface-hover shadow-2xl">
-        <div className="h-[720px] w-full overflow-y-auto" style={{ maxWidth: 370 }}>
+        <div
+          className="h-[720px] w-full overflow-y-auto"
+          style={{ maxWidth: 370 }}
+        >
           <EmpresaLinktreeCard
             sections={sections}
             links={links}
@@ -25,7 +39,9 @@ export function EmpresaLinktreePreview({ sections, links, theme, bio, bannerUrl,
           />
         </div>
       </div>
-      <p className="mt-2 text-center text-xs text-muted-foreground">Preview em tempo real</p>
+      <p className="mt-2 text-center text-xs text-muted-foreground">
+        Preview em tempo real
+      </p>
     </div>
   );
 }

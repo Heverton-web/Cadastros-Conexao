@@ -11,7 +11,9 @@ export async function listarColunas(funilId: string): Promise<FunilColuna[]> {
   return (data ?? []) as FunilColuna[];
 }
 
-export async function criarColuna(input: FunilColunaInput): Promise<FunilColuna> {
+export async function criarColuna(
+  input: FunilColunaInput,
+): Promise<FunilColuna> {
   const { data, error } = await supabase
     .from("funis_colunas")
     .insert({
@@ -25,7 +27,10 @@ export async function criarColuna(input: FunilColunaInput): Promise<FunilColuna>
   return data as FunilColuna;
 }
 
-export async function atualizarColuna(id: string, input: { titulo?: string; posicao?: number }): Promise<FunilColuna> {
+export async function atualizarColuna(
+  id: string,
+  input: { titulo?: string; posicao?: number },
+): Promise<FunilColuna> {
   const { data, error } = await supabase
     .from("funis_colunas")
     .update(input)
@@ -36,19 +41,21 @@ export async function atualizarColuna(id: string, input: { titulo?: string; posi
   return data as FunilColuna;
 }
 
-export async function reordenarColunas(colunas: { id: string; posicao: number }[]): Promise<void> {
-  const updates = colunas.map(c =>
-    supabase.from("funis_colunas").update({ posicao: c.posicao }).eq("id", c.id)
+export async function reordenarColunas(
+  colunas: { id: string; posicao: number }[],
+): Promise<void> {
+  const updates = colunas.map((c) =>
+    supabase
+      .from("funis_colunas")
+      .update({ posicao: c.posicao })
+      .eq("id", c.id),
   );
   const results = await Promise.all(updates);
-  const err = results.find(r => r.error);
+  const err = results.find((r) => r.error);
   if (err) throw err.error;
 }
 
 export async function deletarColuna(id: string): Promise<void> {
-  const { error } = await supabase
-    .from("funis_colunas")
-    .delete()
-    .eq("id", id);
+  const { error } = await supabase.from("funis_colunas").delete().eq("id", id);
   if (error) throw error;
 }

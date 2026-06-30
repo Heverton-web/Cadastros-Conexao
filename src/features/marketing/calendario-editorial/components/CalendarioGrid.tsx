@@ -6,22 +6,53 @@ import { Skeleton } from "~/components/ui/skeleton";
 import { EmptyState } from "~/components/ui/empty-state";
 import { Badge } from "~/components/ui/badge";
 import {
-  Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter,
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
 } from "~/components/ui/dialog";
 import { Input } from "~/components/ui/input";
 import {
-  Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from "~/components/ui/select";
-import { listarEventos, criarEvento, deletarEvento } from "../services/calendario.service";
-import type { CalendarioEvento, CalendarioEventoTipo, CalendarioEventoStatus } from "../types";
 import {
-  ChevronLeft, ChevronRight, Plus, Calendar, Trash2,
+  listarEventos,
+  criarEvento,
+  deletarEvento,
+} from "../services/calendario.service";
+import type {
+  CalendarioEvento,
+  CalendarioEventoTipo,
+  CalendarioEventoStatus,
+} from "../types";
+import {
+  ChevronLeft,
+  ChevronRight,
+  Plus,
+  Calendar,
+  Trash2,
 } from "lucide-react";
 import { toast } from "react-hot-toast";
 
 const MESES = [
-  "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
-  "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro",
+  "Janeiro",
+  "Fevereiro",
+  "Março",
+  "Abril",
+  "Maio",
+  "Junho",
+  "Julho",
+  "Agosto",
+  "Setembro",
+  "Outubro",
+  "Novembro",
+  "Dezembro",
 ];
 
 const DIAS_SEMANA = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
@@ -56,7 +87,8 @@ export function CalendarioGrid() {
   const [formTitulo, setFormTitulo] = useState("");
   const [formDescricao, setFormDescricao] = useState("");
   const [formTipo, setFormTipo] = useState<CalendarioEventoTipo>("post_blog");
-  const [formStatus, setFormStatus] = useState<CalendarioEventoStatus>("agendado");
+  const [formStatus, setFormStatus] =
+    useState<CalendarioEventoStatus>("agendado");
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
@@ -97,8 +129,13 @@ export function CalendarioGrid() {
   function navegar(delta: number) {
     let novoMes = mesRef + delta;
     let novoAno = anoRef;
-    if (novoMes < 0) { novoMes = 11; novoAno--; }
-    else if (novoMes > 11) { novoMes = 0; novoAno++; }
+    if (novoMes < 0) {
+      novoMes = 11;
+      novoAno--;
+    } else if (novoMes > 11) {
+      novoMes = 0;
+      novoAno++;
+    }
     setMesRef(novoMes);
     setAnoRef(novoAno);
   }
@@ -116,7 +153,14 @@ export function CalendarioGrid() {
     if (!formTitulo.trim() || !empresaId || diaSelecionado === null) return;
     setSaving(true);
     try {
-      const dataInicio = new Date(anoRef, mesRef, diaSelecionado, 12, 0, 0).toISOString();
+      const dataInicio = new Date(
+        anoRef,
+        mesRef,
+        diaSelecionado,
+        12,
+        0,
+        0,
+      ).toISOString();
       await criarEvento({
         empresa_id: empresaId,
         titulo: formTitulo.trim(),
@@ -163,7 +207,10 @@ export function CalendarioGrid() {
     return (
       <div className="p-4 md:p-8">
         <PageHeader title="Calendário Editorial" />
-        <EmptyState title="Empresa não encontrada" description="Selecione uma empresa para continuar." />
+        <EmptyState
+          title="Empresa não encontrada"
+          description="Selecione uma empresa para continuar."
+        />
       </div>
     );
   }
@@ -196,7 +243,10 @@ export function CalendarioGrid() {
 
         <div className="grid grid-cols-7">
           {DIAS_SEMANA.map((d) => (
-            <div key={d} className="p-2 text-center text-xs font-semibold text-text-muted uppercase tracking-wider border-b border-border/30">
+            <div
+              key={d}
+              className="p-2 text-center text-xs font-semibold text-text-muted uppercase tracking-wider border-b border-border/30"
+            >
               {d}
             </div>
           ))}
@@ -204,13 +254,19 @@ export function CalendarioGrid() {
 
         <div className="grid grid-cols-7">
           {Array.from({ length: diasDoMes.primeiroDia }).map((_, i) => (
-            <div key={`empty-${i}`} className="min-h-[100px] border-b border-r border-border/20 bg-surface-hover/30" />
+            <div
+              key={`empty-${i}`}
+              className="min-h-[100px] border-b border-r border-border/20 bg-surface-hover/30"
+            />
           ))}
           {Array.from({ length: diasDoMes.totalDias }).map((_, i) => {
             const dia = i + 1;
             const eventosDia = eventosPorDia.get(dia) ?? [];
             const hoje = new Date();
-            const isHoje = dia === hoje.getDate() && mesRef === hoje.getMonth() && anoRef === hoje.getFullYear();
+            const isHoje =
+              dia === hoje.getDate() &&
+              mesRef === hoje.getMonth() &&
+              anoRef === hoje.getFullYear();
 
             return (
               <div
@@ -219,11 +275,15 @@ export function CalendarioGrid() {
                 className={`min-h-[100px] p-1.5 border-b border-r border-border/20 cursor-pointer transition-colors hover:bg-surface-hover/50 ${isHoje ? "ring-1 ring-accent/40 ring-inset" : ""}`}
               >
                 <div className="flex items-center justify-between mb-1">
-                  <span className={`text-xs font-semibold w-6 h-6 flex items-center justify-center rounded-full ${isHoje ? "bg-accent text-white" : "text-text-main"}`}>
+                  <span
+                    className={`text-xs font-semibold w-6 h-6 flex items-center justify-center rounded-full ${isHoje ? "bg-accent text-white" : "text-text-main"}`}
+                  >
                     {dia}
                   </span>
                   {eventosDia.length > 0 && (
-                    <span className="text-xs text-text-muted">{eventosDia.length}</span>
+                    <span className="text-xs text-text-muted">
+                      {eventosDia.length}
+                    </span>
                   )}
                 </div>
                 <div className="space-y-0.5">
@@ -237,7 +297,9 @@ export function CalendarioGrid() {
                     </div>
                   ))}
                   {eventosDia.length > 3 && (
-                    <p className="text-[10px] text-text-muted pl-1">+{eventosDia.length - 3} mais</p>
+                    <p className="text-[10px] text-text-muted pl-1">
+                      +{eventosDia.length - 3} mais
+                    </p>
                   )}
                 </div>
               </div>
@@ -251,23 +313,39 @@ export function CalendarioGrid() {
           <DialogHeader>
             <DialogTitle>Novo Evento</DialogTitle>
             <DialogDescription>
-              {diaSelecionado !== null && `${MESES[mesRef]}, ${diaSelecionado} de ${anoRef}`}
+              {diaSelecionado !== null &&
+                `${MESES[mesRef]}, ${diaSelecionado} de ${anoRef}`}
             </DialogDescription>
           </DialogHeader>
 
           {eventoDiaSelecionado().length > 0 && (
             <div className="mb-4 space-y-2">
-              <p className="text-xs font-semibold text-text-muted uppercase">Eventos deste dia</p>
+              <p className="text-xs font-semibold text-text-muted uppercase">
+                Eventos deste dia
+              </p>
               {eventoDiaSelecionado().map((ev) => (
-                <div key={ev.id} className="flex items-center justify-between p-2.5 rounded-xl bg-surface-hover/50 border border-border/40">
+                <div
+                  key={ev.id}
+                  className="flex items-center justify-between p-2.5 rounded-xl bg-surface-hover/50 border border-border/40"
+                >
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-2">
-                      <span className={`w-2 h-2 rounded-full shrink-0 ${CORES_TIPO[ev.tipo].split(" ")[0]}`} />
-                      <p className="text-sm font-medium text-text-main truncate">{ev.titulo}</p>
+                      <span
+                        className={`w-2 h-2 rounded-full shrink-0 ${CORES_TIPO[ev.tipo].split(" ")[0]}`}
+                      />
+                      <p className="text-sm font-medium text-text-main truncate">
+                        {ev.titulo}
+                      </p>
                     </div>
-                    <p className="text-xs text-text-muted ml-4">{LABELS_TIPO[ev.tipo]}</p>
+                    <p className="text-xs text-text-muted ml-4">
+                      {LABELS_TIPO[ev.tipo]}
+                    </p>
                   </div>
-                  <Button variant="ghost-destructive" size="xs" onClick={() => handleDeletar(ev.id)}>
+                  <Button
+                    variant="ghost-destructive"
+                    size="xs"
+                    onClick={() => handleDeletar(ev.id)}
+                  >
                     <Trash2 size={14} />
                   </Button>
                 </div>
@@ -277,30 +355,56 @@ export function CalendarioGrid() {
 
           <div className="space-y-4">
             <div>
-              <label className="block text-xs font-semibold text-text-muted mb-1.5">Título</label>
-              <Input value={formTitulo} onChange={(e) => setFormTitulo(e.target.value)} placeholder="Título do evento" />
+              <label className="block text-xs font-semibold text-text-muted mb-1.5">
+                Título
+              </label>
+              <Input
+                value={formTitulo}
+                onChange={(e) => setFormTitulo(e.target.value)}
+                placeholder="Título do evento"
+              />
             </div>
             <div>
-              <label className="block text-xs font-semibold text-text-muted mb-1.5">Descrição</label>
-              <Input value={formDescricao} onChange={(e) => setFormDescricao(e.target.value)} placeholder="Descrição opcional" />
+              <label className="block text-xs font-semibold text-text-muted mb-1.5">
+                Descrição
+              </label>
+              <Input
+                value={formDescricao}
+                onChange={(e) => setFormDescricao(e.target.value)}
+                placeholder="Descrição opcional"
+              />
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-semibold text-text-muted mb-1.5">Tipo</label>
-                <Select value={formTipo} onValueChange={(v) => setFormTipo(v as CalendarioEventoTipo)}>
+                <label className="block text-xs font-semibold text-text-muted mb-1.5">
+                  Tipo
+                </label>
+                <Select
+                  value={formTipo}
+                  onValueChange={(v) => setFormTipo(v as CalendarioEventoTipo)}
+                >
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
                     {Object.entries(LABELS_TIPO).map(([key, label]) => (
-                      <SelectItem key={key} value={key}>{label}</SelectItem>
+                      <SelectItem key={key} value={key}>
+                        {label}
+                      </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
               </div>
               <div>
-                <label className="block text-xs font-semibold text-text-muted mb-1.5">Status</label>
-                <Select value={formStatus} onValueChange={(v) => setFormStatus(v as CalendarioEventoStatus)}>
+                <label className="block text-xs font-semibold text-text-muted mb-1.5">
+                  Status
+                </label>
+                <Select
+                  value={formStatus}
+                  onValueChange={(v) =>
+                    setFormStatus(v as CalendarioEventoStatus)
+                  }
+                >
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
@@ -316,8 +420,14 @@ export function CalendarioGrid() {
           </div>
 
           <DialogFooter>
-            <Button variant="outline" onClick={() => setDialogOpen(false)}>Cancelar</Button>
-            <Button onClick={handleCriar} loading={saving} disabled={!formTitulo.trim()}>
+            <Button variant="outline" onClick={() => setDialogOpen(false)}>
+              Cancelar
+            </Button>
+            <Button
+              onClick={handleCriar}
+              loading={saving}
+              disabled={!formTitulo.trim()}
+            >
               <Calendar size={14} />
               Criar Evento
             </Button>

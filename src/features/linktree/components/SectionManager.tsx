@@ -14,7 +14,11 @@ import {
   AlertDialogTitle,
 } from "~/components/ui/alert-dialog";
 import type { EmpresaLinktreeSection } from "../types-empresa";
-import { useCriarSecao, useAtualizarSecao, useDeletarSecao } from "../hooks/useEmpresaLinktree";
+import {
+  useCriarSecao,
+  useAtualizarSecao,
+  useDeletarSecao,
+} from "../hooks/useEmpresaLinktree";
 
 interface Props {
   sections: EmpresaLinktreeSection[];
@@ -33,16 +37,22 @@ export function SectionManager({ sections, empresaId }: Props) {
 
   function handleCreate() {
     if (!newTitulo.trim()) return;
-    criar.mutate({ titulo: newTitulo.trim(), ordem: sections.length }, {
-      onSuccess: () => setNewTitulo(""),
-    });
+    criar.mutate(
+      { titulo: newTitulo.trim(), ordem: sections.length },
+      {
+        onSuccess: () => setNewTitulo(""),
+      },
+    );
   }
 
   function handleUpdate(id: string) {
     if (!editTitulo.trim()) return;
-    atualizar.mutate({ id, input: { titulo: editTitulo.trim() } }, {
-      onSuccess: () => setEditingId(null),
-    });
+    atualizar.mutate(
+      { id, input: { titulo: editTitulo.trim() } },
+      {
+        onSuccess: () => setEditingId(null),
+      },
+    );
   }
 
   function handleDelete() {
@@ -57,7 +67,10 @@ export function SectionManager({ sections, empresaId }: Props) {
       <Label className="text-base font-semibold">Secoes</Label>
 
       {sections.map((sec) => (
-        <div key={sec.id} className="flex items-center gap-2 rounded-lg border border-border bg-surface p-3">
+        <div
+          key={sec.id}
+          className="flex items-center gap-2 rounded-lg border border-border bg-surface p-3"
+        >
           <GripVertical className="size-4 shrink-0 cursor-grab text-muted-foreground" />
 
           {editingId === sec.id ? (
@@ -69,10 +82,18 @@ export function SectionManager({ sections, empresaId }: Props) {
                 className="h-8"
                 autoFocus
               />
-              <Button size="sm" variant="ghost" onClick={() => handleUpdate(sec.id)}>
+              <Button
+                size="sm"
+                variant="ghost"
+                onClick={() => handleUpdate(sec.id)}
+              >
                 <Check className="size-4" />
               </Button>
-              <Button size="sm" variant="ghost" onClick={() => setEditingId(null)}>
+              <Button
+                size="sm"
+                variant="ghost"
+                onClick={() => setEditingId(null)}
+              >
                 <X className="size-4" />
               </Button>
             </div>
@@ -82,11 +103,18 @@ export function SectionManager({ sections, empresaId }: Props) {
               <Button
                 size="sm"
                 variant="ghost"
-                onClick={() => { setEditingId(sec.id); setEditTitulo(sec.titulo); }}
+                onClick={() => {
+                  setEditingId(sec.id);
+                  setEditTitulo(sec.titulo);
+                }}
               >
                 <Pencil className="size-4" />
               </Button>
-              <Button size="sm" variant="ghost" onClick={() => setDeletingId(sec.id)}>
+              <Button
+                size="sm"
+                variant="ghost"
+                onClick={() => setDeletingId(sec.id)}
+              >
                 <Trash2 className="size-4 text-error" />
               </Button>
             </>
@@ -102,20 +130,34 @@ export function SectionManager({ sections, empresaId }: Props) {
           onKeyDown={(e) => e.key === "Enter" && handleCreate()}
           className="h-9"
         />
-        <Button size="sm" onClick={handleCreate} disabled={!newTitulo.trim() || criar.isPending}>
+        <Button
+          size="sm"
+          onClick={handleCreate}
+          disabled={!newTitulo.trim() || criar.isPending}
+        >
           <Plus className="size-4" />
         </Button>
       </div>
 
-      <AlertDialog open={!!deletingId} onOpenChange={(o) => !o && setDeletingId(null)}>
+      <AlertDialog
+        open={!!deletingId}
+        onOpenChange={(o) => !o && setDeletingId(null)}
+      >
         <AlertDialogContent className="bg-card border-border">
           <AlertDialogHeader>
             <AlertDialogTitle>Excluir secao?</AlertDialogTitle>
-            <AlertDialogDescription>Todos os links desta secao serao excluidos.</AlertDialogDescription>
+            <AlertDialogDescription>
+              Todos os links desta secao serao excluidos.
+            </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancelar</AlertDialogCancel>
-            <AlertDialogAction onClick={handleDelete} className="bg-destructive">Excluir</AlertDialogAction>
+            <AlertDialogAction
+              onClick={handleDelete}
+              className="bg-destructive"
+            >
+              Excluir
+            </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>

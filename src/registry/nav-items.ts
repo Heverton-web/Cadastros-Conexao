@@ -12,8 +12,10 @@ export type NavItemRegistration = {
   noChildMatch?: boolean;
 };
 
-const glob = typeof window !== 'undefined' ? window as any : globalThis as any;
-const items: Map<string, NavItemRegistration> = glob.__nav_items_registry || new Map<string, NavItemRegistration>();
+const glob =
+  typeof window !== "undefined" ? (window as any) : (globalThis as any);
+const items: Map<string, NavItemRegistration> =
+  glob.__nav_items_registry || new Map<string, NavItemRegistration>();
 glob.__nav_items_registry = items;
 
 export function registerNavItem(item: NavItemRegistration): void {
@@ -26,7 +28,7 @@ export function registerNavItem(item: NavItemRegistration): void {
 
 export function getNavItems(
   perms: Record<string, boolean> | null,
-  moduloKey?: string
+  moduloKey?: string,
 ): NavItemRegistration[] {
   return Array.from(items.values())
     .filter((item) => {

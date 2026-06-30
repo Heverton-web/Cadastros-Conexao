@@ -1,13 +1,23 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "~/lib/auth";
 import {
-  listarMinhasDespesas, listarDespesasEmpresa, buscarDespesa, criarDespesa,
-  atualizarDespesa, excluirDespesa, enviarDespesas, aprovarDespesa, reprovarDespesa,
+  listarMinhasDespesas,
+  listarDespesasEmpresa,
+  buscarDespesa,
+  criarDespesa,
+  atualizarDespesa,
+  excluirDespesa,
+  enviarDespesas,
+  aprovarDespesa,
+  reprovarDespesa,
   uploadComprovante,
 } from "../services/despesas.service";
 import type { DespesaFormData, DespesaFiltros, Despesa } from "../types";
 
-export function useMinhasDespesas(filtros?: DespesaFiltros, overrideEmpresaId?: string) {
+export function useMinhasDespesas(
+  filtros?: DespesaFiltros,
+  overrideEmpresaId?: string,
+) {
   const { profile } = useAuth();
   const empresa_id = overrideEmpresaId || (profile?.empresa_id ?? "");
   const usuario_id = profile?.id ?? "";
@@ -19,7 +29,10 @@ export function useMinhasDespesas(filtros?: DespesaFiltros, overrideEmpresaId?: 
   });
 }
 
-export function useDespesasEmpresa(filtros?: DespesaFiltros, overrideEmpresaId?: string) {
+export function useDespesasEmpresa(
+  filtros?: DespesaFiltros,
+  overrideEmpresaId?: string,
+) {
   const { profile } = useAuth();
   const empresa_id = overrideEmpresaId || (profile?.empresa_id ?? "");
 
@@ -45,18 +58,34 @@ export function useCriarDespesa() {
   const usuario_id = profile?.id ?? "";
 
   return useMutation({
-    mutationFn: async ({ despesa, file }: { despesa: DespesaFormData; file?: File }) => {
+    mutationFn: async ({
+      despesa,
+      file,
+    }: {
+      despesa: DespesaFormData;
+      file?: File;
+    }) => {
       let comprovante_url = despesa.comprovante_url;
 
       if (file && despesa.comprovante_tipo === "upload") {
         const tempId = crypto.randomUUID();
-        comprovante_url = await uploadComprovante(empresa_id, usuario_id, tempId, file);
+        comprovante_url = await uploadComprovante(
+          empresa_id,
+          usuario_id,
+          tempId,
+          file,
+        );
       }
 
-      return criarDespesa(empresa_id, usuario_id, { ...despesa, comprovante_url });
+      return criarDespesa(empresa_id, usuario_id, {
+        ...despesa,
+        comprovante_url,
+      });
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["minhas-despesas", empresa_id] });
+      queryClient.invalidateQueries({
+        queryKey: ["minhas-despesas", empresa_id],
+      });
     },
   });
 }
@@ -67,9 +96,12 @@ export function useAtualizarDespesa() {
   const empresa_id = profile?.empresa_id ?? "";
 
   return useMutation({
-    mutationFn: ({ id, updates }: { id: string; updates: Partial<Despesa> }) => atualizarDespesa(id, updates),
+    mutationFn: ({ id, updates }: { id: string; updates: Partial<Despesa> }) =>
+      atualizarDespesa(id, updates),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["minhas-despesas", empresa_id] });
+      queryClient.invalidateQueries({
+        queryKey: ["minhas-despesas", empresa_id],
+      });
     },
   });
 }
@@ -82,7 +114,9 @@ export function useExcluirDespesa() {
   return useMutation({
     mutationFn: (id: string) => excluirDespesa(id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["minhas-despesas", empresa_id] });
+      queryClient.invalidateQueries({
+        queryKey: ["minhas-despesas", empresa_id],
+      });
     },
   });
 }
@@ -96,8 +130,12 @@ export function useEnviarDespesas() {
   return useMutation({
     mutationFn: (periodo_id: string) => enviarDespesas(periodo_id, usuario_id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["minhas-despesas", empresa_id] });
-      queryClient.invalidateQueries({ queryKey: ["despesas-envios", empresa_id] });
+      queryClient.invalidateQueries({
+        queryKey: ["minhas-despesas", empresa_id],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["despesas-envios", empresa_id],
+      });
     },
   });
 }
@@ -110,8 +148,12 @@ export function useAprovarDespesa() {
   return useMutation({
     mutationFn: (id: string) => aprovarDespesa(id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["despesas-empresa", empresa_id] });
-      queryClient.invalidateQueries({ queryKey: ["despesas-envios", empresa_id] });
+      queryClient.invalidateQueries({
+        queryKey: ["despesas-empresa", empresa_id],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["despesas-envios", empresa_id],
+      });
     },
   });
 }
@@ -122,10 +164,15 @@ export function useReprovarDespesa() {
   const empresa_id = profile?.empresa_id ?? "";
 
   return useMutation({
-    mutationFn: ({ id, comentario }: { id: string; comentario: string }) => reprovarDespesa(id, comentario),
+    mutationFn: ({ id, comentario }: { id: string; comentario: string }) =>
+      reprovarDespesa(id, comentario),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["despesas-empresa", empresa_id] });
-      queryClient.invalidateQueries({ queryKey: ["despesas-envios", empresa_id] });
+      queryClient.invalidateQueries({
+        queryKey: ["despesas-empresa", empresa_id],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["despesas-envios", empresa_id],
+      });
     },
   });
 }

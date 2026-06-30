@@ -63,8 +63,16 @@ const prioridadeConfig = {
 const statusConfig = {
   pendente: { label: "Pendente", icon: Circle, color: "text-muted-foreground" },
   em_andamento: { label: "Em andamento", icon: Clock, color: "text-primary" },
-  concluida: { label: "Concluída", icon: CheckCircle2, color: "text-green-500" },
-  cancelada: { label: "Cancelada", icon: AlertCircle, color: "text-destructive" },
+  concluida: {
+    label: "Concluída",
+    icon: CheckCircle2,
+    color: "text-green-500",
+  },
+  cancelada: {
+    label: "Cancelada",
+    icon: AlertCircle,
+    color: "text-destructive",
+  },
 };
 
 export function TarefasList({ clienteId, onNovaTarefa, onTarefaClick }: Props) {
@@ -86,7 +94,7 @@ export function TarefasList({ clienteId, onNovaTarefa, onTarefaClick }: Props) {
           cliente:clientes(id, nome_doutor),
           responsavel:usuarios!tarefas_responsavel_id_fkey(id, nome_completo),
           criador:usuarios!tarefas_criador_id_fkey(id, nome_completo)
-        `
+        `,
         )
         .eq("empresa_id", profile!.empresa_id)
         .order("data_vencimento", { ascending: true, nullsFirst: false })
@@ -223,7 +231,8 @@ export function TarefasList({ clienteId, onNovaTarefa, onTarefaClick }: Props) {
       <div className="space-y-6">
         {Object.entries(statusConfig).map(([status, config]) => {
           const tarefasDoStatus = tarefasPorStatus[status] ?? [];
-          if (tarefasDoStatus.length === 0 && filtroStatus !== "todos") return null;
+          if (tarefasDoStatus.length === 0 && filtroStatus !== "todos")
+            return null;
 
           const Icon = config.icon;
           return (
@@ -277,14 +286,15 @@ function TarefaCard({
     new Date(tarefa.data_vencimento) < new Date() &&
     tarefa.status !== "concluida";
 
-  const prioridade = prioridadeConfig[tarefa.prioridade as keyof typeof prioridadeConfig];
+  const prioridade =
+    prioridadeConfig[tarefa.prioridade as keyof typeof prioridadeConfig];
   const status = statusConfig[tarefa.status as keyof typeof statusConfig];
 
   return (
     <div
       className={cn(
         "bg-background rounded-lg border p-4 cursor-pointer hover:border-primary/40 transition",
-        isVencida && "border-destructive/50"
+        isVencida && "border-destructive/50",
       )}
       onClick={onClick}
     >
@@ -293,7 +303,10 @@ function TarefaCard({
           <div className="flex items-center gap-2 flex-wrap">
             <h4 className="font-medium text-sm">{tarefa.titulo}</h4>
             {prioridade && (
-              <Badge variant="secondary" className={cn("text-xs", prioridade.color)}>
+              <Badge
+                variant="secondary"
+                className={cn("text-xs", prioridade.color)}
+              >
                 {prioridade.label}
               </Badge>
             )}
@@ -319,7 +332,7 @@ function TarefaCard({
               <span
                 className={cn(
                   "flex items-center gap-1",
-                  isVencida && "text-destructive"
+                  isVencida && "text-destructive",
                 )}
               >
                 <Calendar className="h-3 w-3" />
