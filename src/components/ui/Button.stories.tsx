@@ -50,3 +50,24 @@ export const Large: Story = {
     children: 'Large',
   },
 }
+
+export const Secondary: Story = {
+  args: {
+    variant: 'secondary',
+    children: 'Secundário',
+  },
+}
+
+export const Link: Story = {
+  args: {
+    variant: 'link',
+    children: 'Link',
+  },
+}
+
+export const Disabled: Story = {
+  args: {
+    children: 'Desabilitado',
+    disabled: true,
+  },
+}

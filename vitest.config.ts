@@ -15,6 +15,7 @@ export default defineConfig({
     }
   },
   test: {
+    exclude: ['tests/**', 'node_modules/**', '.mimocode/**', 'supabase-mcp-server/**'],
     projects: [{
       extends: true,
       test: {

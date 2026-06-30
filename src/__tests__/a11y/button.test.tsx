@@ -5,8 +5,20 @@ import { axe, toHaveNoViolations } from 'jest-axe'
 expect.extend(toHaveNoViolations)
 
 describe('Button A11y', () => {
-  it('deve ter zero violações', async () => {
-    const { container } = render(<button>Clique</button>)
+  it('deve ter zero violacoes de acessibilidade', async () => {
+    const { container } = render(<button>Clique aqui</button>)
+    const results = await axe(container)
+    expect(results).toHaveNoViolations()
+  })
+
+  it('botao disabled nao deve ter violacoes', async () => {
+    const { container } = render(<button disabled>Desabilitado</button>)
+    const results = await axe(container)
+    expect(results).toHaveNoViolations()
+  })
+
+  it('botao com aria-label deve passar', async () => {
+    const { container } = render(<button aria-label="Fechar">X</button>)
     const results = await axe(container)
     expect(results).toHaveNoViolations()
   })
