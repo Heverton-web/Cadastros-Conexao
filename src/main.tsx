@@ -28,6 +28,7 @@ import {
   leadsModule,
   pixelsModule,
   marketingLinktreeModule,
+  whatsappMarketingModule,
 } from "~/features/marketing";
 import { initSentry } from "~/core/monitoring/sentry";
 import "~/styles/globals.css";
@@ -57,6 +58,7 @@ registerModule(calendarioModule);
 registerModule(leadsModule);
 registerModule(pixelsModule);
 registerModule(marketingLinktreeModule);
+registerModule(whatsappMarketingModule);
 
 const router = createRouter({ routeTree });
 const queryClient = new QueryClient({

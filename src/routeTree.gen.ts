@@ -141,6 +141,7 @@ import { marketingCalendarioRoute } from "./routes/marketing.calendario";
 import { marketingLeadsRoute } from "./routes/marketing.leads";
 import { marketingLeadsDetailRoute } from "./routes/marketing.leads.$id";
 import { marketingPixelsRoute } from "./routes/marketing.pixels";
+import { marketingWhatsappRoute } from "./routes/marketing.whatsapp";
 import { marketingLinktreeRoute } from "./routes/marketing.linktree";
 import { marketingLinktreeDesignRoute } from "./routes/marketing.linktree.design";
 import { marketingLinktreeEditorRoute } from "./routes/marketing.linktree.editor";
@@ -292,6 +293,7 @@ export const routeTree = rootRoute.addChildren([
     marketingLeadsRoute,
     marketingLeadsDetailRoute,
     marketingPixelsRoute,
+    marketingWhatsappRoute,
     marketingLinktreeRoute,
     marketingLinktreeDesignRoute,
     marketingLinktreeEditorRoute,

@@ -26,6 +26,8 @@ type EmpresaModuloLimit = {
   empresa_id: string;
   modulo_key: string;
   max_credenciais: number;
+  max_envios: number;
+  max_criacoes: number;
 };
 
 type Empresa = {
@@ -68,14 +70,26 @@ function GlobalLimitsPage() {
     }
   }
 
-  function getLimit(empresaId: string, moduloKey: string): number {
+  function getLimit(
+    empresaId: string,
+    moduloKey: string,
+    tipo: "acesso" | "envio" | "criacao",
+  ): number {
     const found = limits.find(
       (l) => l.empresa_id === empresaId && l.modulo_key === moduloKey,
     );
-    return found?.max_credenciais ?? 0;
+    if (!found) return 0;
+    if (tipo === "acesso") return found.max_credenciais ?? 0;
+    if (tipo === "envio") return found.max_envios ?? 0;
+    return found.max_criacoes ?? 0;
   }
 
-  function setLimitLocal(empresaId: string, moduloKey: string, value: number) {
+  function setLimitLocal(
+    empresaId: string,
+    moduloKey: string,
+    tipo: "acesso" | "envio" | "criacao",
+    value: number,
+  ) {
     setLimits((prev) => {
       const existing = prev.find(
         (l) => l.empresa_id === empresaId && l.modulo_key === moduloKey,
@@ -83,7 +97,11 @@ function GlobalLimitsPage() {
       if (existing) {
         return prev.map((l) =>
           l.empresa_id === empresaId && l.modulo_key === moduloKey
-            ? { ...l, max_credenciais: value }
+            ? tipo === "acesso"
+              ? { ...l, max_credenciais: value }
+              : tipo === "envio"
+                ? { ...l, max_envios: value }
+                : { ...l, max_criacoes: value }
             : l,
         );
       } else {
@@ -93,7 +111,9 @@ function GlobalLimitsPage() {
             id: "",
             empresa_id: empresaId,
             modulo_key: moduloKey,
-            max_credenciais: value,
+            max_credenciais: tipo === "acesso" ? value : 0,
+            max_envios: tipo === "envio" ? value : 0,
+            max_criacoes: tipo === "criacao" ? value : 0,
           },
         ];
       }
@@ -104,15 +124,23 @@ function GlobalLimitsPage() {
     setSaving(true);
     try {
       const toUpsert = limits
-        .filter((l) => l.max_credenciais > 0)
+        .filter((l) => (l.max_credenciais ?? 0) > 0 || (l.max_envios ?? 0) > 0 || (l.max_criacoes ?? 0) > 0)
         .map((l) => ({
           empresa_id: l.empresa_id,
           modulo_key: l.modulo_key,
-          max_credenciais: l.max_credenciais,
+          max_credenciais: l.max_credenciais || 0,
+          max_envios: l.max_envios || 0,
+          max_criacoes: l.max_criacoes || 0,
         }));
 
       const toDelete = limits
-        .filter((l) => l.max_credenciais === 0 && l.id)
+        .filter(
+          (l) =>
+            (l.max_credenciais ?? 0) === 0 &&
+            (l.max_envios ?? 0) === 0 &&
+            (l.max_criacoes ?? 0) === 0 &&
+            l.id,
+        )
         .map((l) => l.id);
 
       if (toDelete.length > 0) {
@@ -183,10 +211,9 @@ function GlobalLimitsPage() {
           <p className="text-xs text-text-muted leading-relaxed">
             <strong className="text-text-main">Como funciona:</strong> O limite
             define quantas credenciais <em>ativas</em> cada empresa pode ter com
-            acesso a cada módulo. Se o limite for <strong>0</strong>, significa{" "}
-            <strong>ilimitado</strong>. Quando a empresa atingir o limite, o
-            administrador não poderá dar acesso a novas credenciais naquele
-            módulo.
+            acesso a cada módulo (com exceção do módulo de WhatsApp Marketing, onde o limite
+            define a quantidade máxima de envios/mensagens diárias). Se o limite for <strong>0</strong>, significa{" "}
+            <strong>ilimitado</strong>.
           </p>
         </div>
 
@@ -199,7 +226,10 @@ function GlobalLimitsPage() {
             {empresas.map((empresa) => {
               const isOpen = expandedEmpresa === empresa.id;
               const modulosComLimite = modulos.filter(
-                (m) => getLimit(empresa.id, m.key) > 0,
+                (m) =>
+                  getLimit(empresa.id, m.key, "acesso") > 0 ||
+                  getLimit(empresa.id, m.key, "envio") > 0 ||
+                  getLimit(empresa.id, m.key, "criacao") > 0,
               ).length;
               return (
                 <div
@@ -234,25 +264,28 @@ function GlobalLimitsPage() {
 
                   {isOpen && (
                     <div className="px-4 pb-4 pt-2 border-t border-border-subtle/50">
-                      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         {modulos.map((mod) => {
-                          const current = getLimit(empresa.id, mod.key);
+                          const currentAcesso = getLimit(empresa.id, mod.key, "acesso");
+                          const currentEnvio = getLimit(empresa.id, mod.key, "envio");
+                          const currentCriacao = getLimit(empresa.id, mod.key, "criacao");
+                          const hasAnyLimit = currentAcesso > 0 || currentEnvio > 0 || currentCriacao > 0;
                           const Icon = mod.icon;
                           return (
                             <div
                               key={mod.key}
                               className={cn(
-                                "rounded-lg p-3 border transition-colors",
-                                current > 0
+                                "rounded-lg p-4 border transition-colors space-y-3",
+                                hasAnyLimit
                                   ? "bg-accent/5 border-accent/20"
                                   : "bg-input-bg border-border-subtle/50",
                               )}
                             >
-                              <div className="flex items-center gap-2 mb-2">
+                              <div className="flex items-center gap-2 pb-1 border-b border-border/40">
                                 <div
                                   className={cn(
                                     "p-1 rounded",
-                                    current > 0
+                                    hasAnyLimit
                                       ? "bg-accent/10 text-accent"
                                       : "bg-bg-dark text-text-muted",
                                   )}
@@ -263,28 +296,79 @@ function GlobalLimitsPage() {
                                   {mod.nome}
                                 </label>
                               </div>
-                              <div className="flex items-center gap-2">
-                                <input
-                                  type="number"
-                                  min="0"
-                                  value={current}
-                                  onChange={(e) =>
-                                    setLimitLocal(
-                                      empresa.id,
-                                      mod.key,
-                                      Math.max(
-                                        0,
-                                        parseInt(e.target.value) || 0,
-                                      ),
-                                    )
-                                  }
-                                  className="w-full rounded-md border border-input-border bg-input-bg px-3 py-1.5 text-sm text-text-main outline-none focus:border-accent text-center"
-                                />
-                                <span className="text-xs text-text-muted whitespace-nowrap">
-                                  {current === 0
-                                    ? "Ilimitado"
-                                    : `máx ${current}`}
-                                </span>
+
+                              <div className="grid grid-cols-3 gap-2">
+                                {/* Limite de Acesso */}
+                                <div className="space-y-1">
+                                  <label className="text-[10px] text-text-muted font-medium block">Acesso</label>
+                                  <input
+                                    type="number"
+                                    min="0"
+                                    value={currentAcesso}
+                                    onChange={(e) =>
+                                      setLimitLocal(
+                                        empresa.id,
+                                        mod.key,
+                                        "acesso",
+                                        Math.max(0, parseInt(e.target.value) || 0),
+                                      )
+                                    }
+                                    className="w-full rounded-md border border-input-border bg-input-bg px-2 py-1 text-xs text-text-main outline-none focus:border-accent text-center"
+                                  />
+                                  <span className="text-[9px] text-text-muted block text-center truncate">
+                                    {currentAcesso === 0 ? "Ilimitado" : `${currentAcesso} user`}
+                                  </span>
+                                </div>
+
+                                {/* Limite de Envio */}
+                                <div className="space-y-1">
+                                  <label className="text-[10px] text-text-muted font-medium block">Envio</label>
+                                  <input
+                                    type="number"
+                                    min="0"
+                                    value={currentEnvio}
+                                    onChange={(e) =>
+                                      setLimitLocal(
+                                        empresa.id,
+                                        mod.key,
+                                        "envio",
+                                        Math.max(0, parseInt(e.target.value) || 0),
+                                      )
+                                    }
+                                    className="w-full rounded-md border border-input-border bg-input-bg px-2 py-1 text-xs text-text-main outline-none focus:border-accent text-center"
+                                  />
+                                  <span className="text-[9px] text-text-muted block text-center truncate">
+                                    {currentEnvio === 0
+                                      ? "Ilimitado"
+                                      : mod.key === "mktg-whatsapp"
+                                        ? `${currentEnvio}/dia`
+                                        : mod.key === "email-marketing"
+                                          ? `${currentEnvio}/mês`
+                                          : `${currentEnvio} msg`}
+                                  </span>
+                                </div>
+
+                                {/* Limite de Criação */}
+                                <div className="space-y-1">
+                                  <label className="text-[10px] text-text-muted font-medium block">Criação</label>
+                                  <input
+                                    type="number"
+                                    min="0"
+                                    value={currentCriacao}
+                                    onChange={(e) =>
+                                      setLimitLocal(
+                                        empresa.id,
+                                        mod.key,
+                                        "criacao",
+                                        Math.max(0, parseInt(e.target.value) || 0),
+                                      )
+                                    }
+                                    className="w-full rounded-md border border-input-border bg-input-bg px-2 py-1 text-xs text-text-main outline-none focus:border-accent text-center"
+                                  />
+                                  <span className="text-[9px] text-text-muted block text-center truncate">
+                                    {currentCriacao === 0 ? "Ilimitado" : `${currentCriacao} reg`}
+                                  </span>
+                                </div>
                               </div>
                             </div>
                           );

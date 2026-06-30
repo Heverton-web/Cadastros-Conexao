@@ -161,6 +161,7 @@ function buildMarketingSubGroups(items: NavItem[]): NavSubGroup[] {
   // 3. Canais & Campanhas
   const canaisPaths = [
     "/marketing/email",
+    "/marketing/whatsapp",
     "/marketing/criativos",
     "/marketing/calendario",
     "/marketing/utms",

@@ -11,3 +11,4 @@ export { seoModule } from "./seo/module";
 export { calendarioModule } from "./calendario-editorial/module";
 export { leadsModule } from "./leads/module";
 export { pixelsModule } from "./pixels/module";
+export { whatsappMarketingModule } from "./whatsapp/module";
