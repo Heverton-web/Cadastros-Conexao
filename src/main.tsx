@@ -30,6 +30,7 @@ import {
   marketingLinktreeModule,
   whatsappMarketingModule,
 } from "~/features/marketing";
+import { geradorLinksModule } from "~/features/gerador-links/module";
 import { initSentry } from "~/core/monitoring/sentry";
 import "~/styles/globals.css";
 
@@ -59,6 +60,8 @@ registerModule(leadsModule);
 registerModule(pixelsModule);
 registerModule(marketingLinktreeModule);
 registerModule(whatsappMarketingModule);
+
+registerModule(geradorLinksModule);
 
 const router = createRouter({ routeTree });
 const queryClient = new QueryClient({

@@ -147,6 +147,17 @@ import { marketingLinktreeDesignRoute } from "./routes/marketing.linktree.design
 import { marketingLinktreeEditorRoute } from "./routes/marketing.linktree.editor";
 import { marketingLinktreeTemaRoute } from "./routes/marketing.linktree.tema";
 
+import { ferramentasLinksRoute } from "./routes/ferramentas.links";
+import { ferramentasLinksHistoricoRoute } from "./routes/ferramentas.links.historico";
+import { ferramentasLinksTemplatesRoute } from "./routes/ferramentas.links.templates";
+import { ferramentasLinksWhatsappRoute } from "./routes/ferramentas.links.whatsapp";
+import { ferramentasLinksUtmRoute } from "./routes/ferramentas.links.utm";
+import { ferramentasLinksGoogleReviewRoute } from "./routes/ferramentas.links.google-review";
+import { ferramentasLinksMapsRoute } from "./routes/ferramentas.links.maps";
+import { ferramentasLinksWazeRoute } from "./routes/ferramentas.links.waze";
+import { ferramentasLinksQrcodeRoute } from "./routes/ferramentas.links.qrcode";
+import { linkRedirectRoute } from "./routes/r.$linkId";
+
 export const routeTree = rootRoute.addChildren([
   loginRoute,
   preCadastroRoute,
@@ -155,6 +166,7 @@ export const routeTree = rootRoute.addChildren([
   empresaLinktreePublicRoute,
   hubClienteDashboardRoute,
   crmAceitarConviteRoute,
+  linkRedirectRoute,
   authLayout.addChildren([
     dashboardRoute,
     clientesRoute,
@@ -298,5 +310,15 @@ export const routeTree = rootRoute.addChildren([
     marketingLinktreeDesignRoute,
     marketingLinktreeEditorRoute,
     marketingLinktreeTemaRoute,
+
+    ferramentasLinksRoute,
+    ferramentasLinksHistoricoRoute,
+    ferramentasLinksTemplatesRoute,
+    ferramentasLinksWhatsappRoute,
+    ferramentasLinksUtmRoute,
+    ferramentasLinksGoogleReviewRoute,
+    ferramentasLinksMapsRoute,
+    ferramentasLinksWazeRoute,
+    ferramentasLinksQrcodeRoute,
   ]),
 ]);

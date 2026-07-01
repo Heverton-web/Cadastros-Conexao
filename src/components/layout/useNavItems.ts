@@ -289,6 +289,7 @@ export function useNavItems(): NavModuleSection[] {
     funis: 6,
     "mapas-interativos": 7,
     linktree: 8,
+    "gerador-links": 9,
   };
 
   return useMemo(() => {
