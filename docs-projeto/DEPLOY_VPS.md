@@ -109,13 +109,13 @@ curl -I http://localhost
 
 ## Troubleshooting
 
-| Problema | Causa | Solução |
-|---|---|---|
-| `network network_conexao not found` | Rede não existe | `docker network create --driver overlay --attachable network_conexao` |
-| `no suitable host (missing passable admin role)` | Swarm não está ativo | `docker swarm init` |
-| `.env: no such file or directory` | `.env` não está na mesma pasta | Verifique se está em `/opt/cadastros-conexao/.env` |
-| Traefik 404 | DNS não aponta para VPS | Configure `cadastros.vpsconexao.org` → IP da VPS |
-| Imagem não encontrada | Pull falhou | `docker pull hevertonperes/cadastros-conexao:v1` |
+| Problema                                         | Causa                          | Solução                                                               |
+| ------------------------------------------------ | ------------------------------ | --------------------------------------------------------------------- |
+| `network network_conexao not found`              | Rede não existe                | `docker network create --driver overlay --attachable network_conexao` |
+| `no suitable host (missing passable admin role)` | Swarm não está ativo           | `docker swarm init`                                                   |
+| `.env: no such file or directory`                | `.env` não está na mesma pasta | Verifique se está em `/opt/cadastros-conexao/.env`                    |
+| Traefik 404                                      | DNS não aponta para VPS        | Configure `cadastros.vpsconexao.org` → IP da VPS                      |
+| Imagem não encontrada                            | Pull falhou                    | `docker pull hevertonperes/cadastros-conexao:v1`                      |
 
 ---
 
@@ -132,9 +132,6 @@ docker push hevertonperes/cadastros-conexao:v2
 # Editar image: hevertonperes/cadastros-conexao:v1 → v2
 docker stack deploy -c docker-compose.yml cadastros-conexao
 ```
-
-
-
 
 Viewed DEPLOY_VPS.md:79-100
 Viewed DEPLOY_VPS.md:1-135

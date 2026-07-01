@@ -49,9 +49,7 @@ const DialogContent = React.forwardRef<
       )}
       {...props}
     >
-      <div className="p-6 sm:p-8 scrollbar-modal">
-        {children}
-      </div>
+      <div className="p-6 sm:p-8 scrollbar-modal">{children}</div>
       <DialogPrimitive.Close className="absolute right-4 top-5 rounded-lg p-1.5 text-text-muted hover:text-text-main hover:bg-surface-hover transition-all duration-150 cursor-pointer focus:outline-none focus:ring-2 focus:ring-accent/50">
         <X className="h-5 w-5" />
         <span className="sr-only">Fechar</span>
@@ -61,14 +59,29 @@ const DialogContent = React.forwardRef<
 ));
 DialogContent.displayName = DialogPrimitive.Content.displayName;
 
-const DialogHeader = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
-  <div className={cn("flex flex-col gap-1 text-center sm:text-left mb-4", className)} {...props} />
+const DialogHeader = ({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) => (
+  <div
+    className={cn(
+      "flex flex-col gap-1 text-center sm:text-left mb-4",
+      className,
+    )}
+    {...props}
+  />
 );
 DialogHeader.displayName = "DialogHeader";
 
-const DialogFooter = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
+const DialogFooter = ({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) => (
   <div
-    className={cn("flex flex-col-reverse gap-2 sm:flex-row sm:justify-end sm:gap-3 mt-6 pt-4 border-t border-border/50", className)}
+    className={cn(
+      "flex flex-col-reverse gap-2 sm:flex-row sm:justify-end sm:gap-3 mt-6 pt-4 border-t border-border/50",
+      className,
+    )}
     {...props}
   />
 );

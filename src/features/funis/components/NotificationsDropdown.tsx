@@ -2,8 +2,17 @@ import { useState } from "react";
 import { Bell, Check, CheckCheck } from "lucide-react";
 import { Button } from "~/components/ui/button";
 import { Badge } from "~/components/ui/badge";
-import { Popover, PopoverContent, PopoverTrigger } from "~/components/ui/popover";
-import { useNotificacoes, useContarNaoLidas, useMarcarNotificacaoLida, useMarcarTodasLidas } from "../hooks/useNotifications";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "~/components/ui/popover";
+import {
+  useNotificacoes,
+  useContarNaoLidas,
+  useMarcarNotificacaoLida,
+  useMarcarTodasLidas,
+} from "../hooks/useNotifications";
 import { useNavigate } from "@tanstack/react-router";
 
 export function NotificationsDropdown() {
@@ -43,7 +52,12 @@ export function NotificationsDropdown() {
         <div className="flex items-center justify-between px-4 py-3 border-b border-border/30">
           <span className="text-sm font-semibold">Notificações</span>
           {count > 0 && (
-            <Button variant="ghost" size="sm" onClick={() => marcarTodas.mutate()} className="text-xs h-7">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => marcarTodas.mutate()}
+              className="text-xs h-7"
+            >
               <CheckCheck className="h-3 w-3 mr-1" /> Marcar todas
             </Button>
           )}
@@ -52,7 +66,9 @@ export function NotificationsDropdown() {
           {notificacoes.length === 0 ? (
             <div className="text-center py-8">
               <Bell className="h-8 w-8 text-muted-foreground/30 mx-auto mb-2" />
-              <p className="text-xs text-muted-foreground">Nenhuma notificação</p>
+              <p className="text-xs text-muted-foreground">
+                Nenhuma notificação
+              </p>
             </div>
           ) : (
             notificacoes.map((notif) => (
@@ -68,9 +84,13 @@ export function NotificationsDropdown() {
                     <span className="h-2 w-2 rounded-full bg-primary shrink-0 mt-1.5" />
                   )}
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium truncate">{notif.titulo}</p>
+                    <p className="text-sm font-medium truncate">
+                      {notif.titulo}
+                    </p>
                     {notif.mensagem && (
-                      <p className="text-xs text-muted-foreground line-clamp-2 mt-0.5">{notif.mensagem}</p>
+                      <p className="text-xs text-muted-foreground line-clamp-2 mt-0.5">
+                        {notif.mensagem}
+                      </p>
                     )}
                     <p className="text-[10px] text-muted-foreground mt-1">
                       {getTimeAgo(notif.created_at)}

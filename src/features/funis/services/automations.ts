@@ -14,8 +14,13 @@ export async function listarAutomacoes(funilId: string): Promise<Automation[]> {
   return (data ?? []) as Automation[];
 }
 
-export async function criarAutomacao(input: AutomationInput, empresaId?: string | null): Promise<Automation> {
-  const { data: { user } } = await supabase.auth.getUser();
+export async function criarAutomacao(
+  input: AutomationInput,
+  empresaId?: string | null,
+): Promise<Automation> {
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
   if (!user) throw new Error("Não autenticado");
 
   const { data, error } = await supabase
@@ -36,7 +41,10 @@ export async function criarAutomacao(input: AutomationInput, empresaId?: string 
   return data as Automation;
 }
 
-export async function atualizarAutomacao(id: string, input: Partial<AutomationInput>): Promise<Automation> {
+export async function atualizarAutomacao(
+  id: string,
+  input: Partial<AutomationInput>,
+): Promise<Automation> {
   const { data, error } = await supabase
     .from("funis_automations")
     .update(input)
@@ -55,7 +63,10 @@ export async function deletarAutomacao(id: string): Promise<void> {
   if (error) throw error;
 }
 
-export async function toggleAutomacao(id: string, ativo: boolean): Promise<void> {
+export async function toggleAutomacao(
+  id: string,
+  ativo: boolean,
+): Promise<void> {
   const { error } = await supabase
     .from("funis_automations")
     .update({ ativo })
@@ -63,7 +74,10 @@ export async function toggleAutomacao(id: string, ativo: boolean): Promise<void>
   if (error) throw error;
 }
 
-export async function listarAutomacoesPorTrigger(funilId: string, triggerType: string): Promise<Automation[]> {
+export async function listarAutomacoesPorTrigger(
+  funilId: string,
+  triggerType: string,
+): Promise<Automation[]> {
   const { data, error } = await supabase
     .from("funis_automations")
     .select("*")
@@ -74,7 +88,11 @@ export async function listarAutomacoesPorTrigger(funilId: string, triggerType: s
   return (data ?? []) as Automation[];
 }
 
-export async function executarAutomacao(automationId: string, tarefaId: string, dados?: Record<string, unknown>): Promise<void> {
+export async function executarAutomacao(
+  automationId: string,
+  tarefaId: string,
+  dados?: Record<string, unknown>,
+): Promise<void> {
   const { data: automation } = await supabase
     .from("funis_automations")
     .select("*")
@@ -126,18 +144,21 @@ export async function executarAutomacao(automationId: string, tarefaId: string, 
       const userIds = (config.user_ids as string[]) || [];
       const mensagem = (config.mensagem as string) || "Notificação automática";
       for (const userId of userIds) {
-        await supabase
-          .from("funis_notifications")
-          .insert({
-            user_id: userId,
-            titulo: automation.nome,
-            mensagem,
-            link: `/funis/funil/${automation.funil_id}`,
-          });
+        await supabase.from("funis_notifications").insert({
+          user_id: userId,
+          titulo: automation.nome,
+          mensagem,
+          link: `/funis/funil/${automation.funil_id}`,
+        });
       }
       break;
     }
   }
 
-  dispararEventoModulo(MODULO_KEY, "automacao.executada", { automation, tarefa_id: tarefaId, dados }, null).catch(() => {});
+  dispararEventoModulo(
+    MODULO_KEY,
+    "automacao.executada",
+    { automation, tarefa_id: tarefaId, dados },
+    null,
+  ).catch(() => {});
 }

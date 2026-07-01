@@ -7,13 +7,38 @@ import { EmptyState } from "~/components/ui/empty-state";
 import { Badge } from "~/components/ui/badge";
 import { auditarUrl } from "../services/auditoria.service";
 import type { SeoAuditoriaResultado, SeoIssue } from "../types";
-import { Search, AlertTriangle, CheckCircle, XCircle, Info, Globe } from "lucide-react";
+import {
+  Search,
+  AlertTriangle,
+  CheckCircle,
+  XCircle,
+  Info,
+  Globe,
+} from "lucide-react";
 import { toast } from "react-hot-toast";
 
 const severityConfig = {
-  error: { icon: XCircle, color: "text-error", bg: "bg-error/10", border: "border-error/20", label: "Erro" },
-  warning: { icon: AlertTriangle, color: "text-warning", bg: "bg-warning/10", border: "border-warning/20", label: "Aviso" },
-  info: { icon: Info, color: "text-blue-400", bg: "bg-blue-500/10", border: "border-blue-500/20", label: "Info" },
+  erro: {
+    icon: XCircle,
+    color: "text-error",
+    bg: "bg-error/10",
+    border: "border-error/20",
+    label: "Erro",
+  },
+  aviso: {
+    icon: AlertTriangle,
+    color: "text-warning",
+    bg: "bg-warning/10",
+    border: "border-warning/20",
+    label: "Aviso",
+  },
+  info: {
+    icon: Info,
+    color: "text-blue-400",
+    bg: "bg-blue-500/10",
+    border: "border-blue-500/20",
+    label: "Info",
+  },
 };
 
 function calcularScore(issues: SeoIssue[]): number {
@@ -34,7 +59,9 @@ function getScoreColor(score: number): string {
 export function SeoAuditoria() {
   const [url, setUrl] = useState("");
   const [loading, setLoading] = useState(false);
-  const [resultado, setResultado] = useState<SeoAuditoriaResultado | null>(null);
+  const [resultado, setResultado] = useState<SeoAuditoriaResultado | null>(
+    null,
+  );
   const [auditou, setAuditou] = useState(false);
 
   async function handleAuditar() {
@@ -112,10 +139,16 @@ export function SeoAuditoria() {
           <div className="rounded-2xl bg-surface border border-border/60 p-6">
             <div className="flex items-center justify-between mb-4">
               <div>
-                <h2 className="text-lg font-bold text-text-main">Score Geral</h2>
-                <p className="text-sm text-text-muted mt-0.5 truncate max-w-md">{resultado.url}</p>
+                <h2 className="text-lg font-bold text-text-main">
+                  Score Geral
+                </h2>
+                <p className="text-sm text-text-muted mt-0.5 truncate max-w-md">
+                  {resultado.url}
+                </p>
               </div>
-              <div className={`text-5xl font-black ${getScoreColor(calcularScore(resultado.issues))}`}>
+              <div
+                className={`text-5xl font-black ${getScoreColor(calcularScore(resultado.issues))}`}
+              >
                 {calcularScore(resultado.issues)}
               </div>
             </div>
@@ -127,15 +160,21 @@ export function SeoAuditoria() {
             </div>
             <div className="grid grid-cols-3 gap-4 mt-4">
               <div className="text-center">
-                <p className="text-2xl font-bold text-error">{resultado.issues.filter((i) => i.tipo === "error").length}</p>
+                <p className="text-2xl font-bold text-error">
+                  {resultado.issues.filter((i) => i.tipo === "erro").length}
+                </p>
                 <p className="text-xs text-text-muted">Erros</p>
               </div>
               <div className="text-center">
-                <p className="text-2xl font-bold text-warning">{resultado.issues.filter((i) => i.tipo === "warning").length}</p>
+                <p className="text-2xl font-bold text-warning">
+                  {resultado.issues.filter((i) => i.tipo === "aviso").length}
+                </p>
                 <p className="text-xs text-text-muted">Avisos</p>
               </div>
               <div className="text-center">
-                <p className="text-2xl font-bold text-blue-400">{resultado.issues.filter((i) => i.tipo === "info").length}</p>
+                <p className="text-2xl font-bold text-blue-400">
+                  {resultado.issues.filter((i) => i.tipo === "info").length}
+                </p>
                 <p className="text-xs text-text-muted">Info</p>
               </div>
             </div>
@@ -143,16 +182,22 @@ export function SeoAuditoria() {
 
           {resultado.titulo && (
             <div className="rounded-2xl bg-surface border border-border/60 p-5 space-y-3">
-              <h3 className="text-sm font-semibold text-text-main">Dados da Página</h3>
+              <h3 className="text-sm font-semibold text-text-main">
+                Dados da Página
+              </h3>
               <div className="space-y-2 text-sm">
                 <div>
                   <span className="text-text-muted">Title:</span>
-                  <span className="text-text-main ml-2">{resultado.titulo}</span>
+                  <span className="text-text-main ml-2">
+                    {resultado.titulo}
+                  </span>
                 </div>
                 {resultado.meta_description && (
                   <div>
                     <span className="text-text-muted">Meta Description:</span>
-                    <span className="text-text-main ml-2">{resultado.meta_description}</span>
+                    <span className="text-text-main ml-2">
+                      {resultado.meta_description}
+                    </span>
                   </div>
                 )}
                 {resultado.h1 && (
@@ -166,7 +211,9 @@ export function SeoAuditoria() {
           )}
 
           <div className="space-y-3">
-            <h3 className="text-sm font-semibold text-text-main">Issues Encontradas ({resultado.issues.length})</h3>
+            <h3 className="text-sm font-semibold text-text-main">
+              Issues Encontradas ({resultado.issues.length})
+            </h3>
             {resultado.issues.map((issue, i) => {
               const config = severityConfig[issue.tipo];
               const Icon = config.icon;
@@ -176,15 +223,32 @@ export function SeoAuditoria() {
                   className={`rounded-2xl ${config.bg} border ${config.border} p-5 transition-colors`}
                 >
                   <div className="flex items-start gap-3">
-                    <Icon size={20} className={`${config.color} mt-0.5 shrink-0`} />
+                    <Icon
+                      size={20}
+                      className={`${config.color} mt-0.5 shrink-0`}
+                    />
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center gap-2 mb-1">
-                        <Badge variant={issue.tipo === "error" ? "destructive" : issue.tipo === "warning" ? "warning" : "default"}>
+                        <Badge
+                          variant={
+                            issue.tipo === "erro"
+                              ? "destructive"
+                              : issue.tipo === "aviso"
+                                ? "warning"
+                                : "default"
+                          }
+                        >
                           {config.label}
                         </Badge>
                       </div>
-                      <p className="text-sm font-medium text-text-main">{issue.mensagem}</p>
-                      <p className="text-sm text-text-muted mt-1">{issue.recomendacao}</p>
+                      <p className="text-sm font-medium text-text-main">
+                        {issue.mensagem}
+                      </p>
+                      {issue.tag && (
+                        <p className="text-xs text-text-muted mt-1 font-mono">
+                          Elemento: {issue.tag}
+                        </p>
+                      )}
                     </div>
                   </div>
                 </div>

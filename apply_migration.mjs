@@ -1,7 +1,8 @@
-import pg from 'pg';
+import pg from "pg";
 const { Client } = pg;
 
-const connectionString = 'postgresql://postgres:%40%23Khen741963%40%23@db.cluuqzhizeqvkgvfdisx.supabase.co:5432/postgres';
+const connectionString =
+  "postgresql://postgres:%40%23Khen741963%40%23@db.cluuqzhizeqvkgvfdisx.supabase.co:5432/postgres";
 
 const client = new Client({
   connectionString,
@@ -10,7 +11,7 @@ const client = new Client({
 async function run() {
   try {
     await client.connect();
-    console.log('Connected to database.');
+    console.log("Connected to database.");
 
     const sql = `
 -- 1. Create function
@@ -82,9 +83,9 @@ create policy "select_atividades_empresa"
     `;
 
     await client.query(sql);
-    console.log('Migration applied successfully.');
+    console.log("Migration applied successfully.");
   } catch (err) {
-    console.error('Error executing query', err);
+    console.error("Error executing query", err);
   } finally {
     await client.end();
   }

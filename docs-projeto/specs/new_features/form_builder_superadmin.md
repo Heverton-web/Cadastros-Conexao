@@ -44,11 +44,13 @@ CREATE TABLE public.form_schema (
 ## Arquivos Criados / Modificados
 
 ### [NEW] `supabase/migrations/00018_form_schema.sql`
+
 - Cria tabela `form_schema`
 - Aplica RLS (read all, write superadmin)
 - Seed completo com todos os campos padrão PF, PJ, endereço e documentos
 
 ### [NEW] `src/lib/form-schema.ts`
+
 - `carregarSchema(tipo_pessoa, etapa)` — busca campos filtrados (visíveis)
 - `listarTodosCampos()` — todos os campos (para o admin)
 - `salvarCampo(campo)` — upsert via Supabase
@@ -56,6 +58,7 @@ CREATE TABLE public.form_schema (
 - `reordenarCampos(atualizacoes)` — bulk update de `ordem`
 
 ### [NEW] `src/components/admin/FormBuilderTab.tsx`
+
 - Interface de gerenciamento com sub-navegação por seção (Dados PF / Dados PJ / Endereço / Docs PF / Docs PJ)
 - Toggle visual de visibilidade (ícone olho)
 - Toggle visual de obrigatoriedade (asterisco)
@@ -65,28 +68,31 @@ CREATE TABLE public.form_schema (
 - Modal "+ Novo Campo" com seletor de tipo, opções dinâmicas para select/checkbox
 
 ### [MODIFY] `src/routes/admin.config.tsx`
+
 - Novo tab `"formulario"` com ícone `FormInput`
 - Importa e renderiza `<FormBuilderTab />`
 
 ### [MODIFY] `src/routes/pre-cadastro.$token.tsx`
+
 - Substitui JSX hardcoded de campos por renderização dinâmica
 - Consome `carregarSchema()` ao entrar em cada etapa
 - Renderiza o componente correto por `tipo_input`
 - Campos extras custom salvos em `dados_extras JSONB` (nova coluna em `cadastros`)
 
 ### [NEW] `supabase/migrations/00019_dados_extras.sql`
+
 - Adiciona coluna `dados_extras JSONB` na tabela `cadastros`
 
 ---
 
 ## Decisões de Design
 
-| Questão | Decisão |
-|---|---|
-| Reordenação | Botões ↑↓ (sem dependência extra de DnD) |
-| Campos custom no banco | Salvos em `dados_extras JSONB` da tabela `cadastros` |
-| Retroatividade | Campos ocultados apenas param de aparecer para novos acessos; dados já preenchidos são preservados |
-| Campos padrão | Podem ter visibilidade/obrigatoriedade alteradas, mas não podem ser excluídos (apenas `is_custom = false`) |
+| Questão                | Decisão                                                                                                    |
+| ---------------------- | ---------------------------------------------------------------------------------------------------------- |
+| Reordenação            | Botões ↑↓ (sem dependência extra de DnD)                                                                   |
+| Campos custom no banco | Salvos em `dados_extras JSONB` da tabela `cadastros`                                                       |
+| Retroatividade         | Campos ocultados apenas param de aparecer para novos acessos; dados já preenchidos são preservados         |
+| Campos padrão          | Podem ter visibilidade/obrigatoriedade alteradas, mas não podem ser excluídos (apenas `is_custom = false`) |
 
 ---
 

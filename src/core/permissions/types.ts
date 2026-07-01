@@ -8,4 +8,5 @@ export type ModuloAcesso = {
 
 export type ModulosAcesso = Record<string, ModuloAcesso>;
 
-export type Ambiente = "cadastro" | "consultor" | "tecnologia" | "suporte" | "ambos";
+export type Ambiente =
+  "cadastro" | "consultor" | "tecnologia" | "suporte" | "ambos";

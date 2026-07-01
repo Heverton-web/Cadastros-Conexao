@@ -1,11 +1,27 @@
 import { useState } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "~/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "~/components/ui/dialog";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "~/components/ui/select";
 import { toast } from "react-hot-toast";
-import { useAutomacoes, useCriarAutomacao, useAtualizarAutomacao } from "../hooks/useAutomations";
+import {
+  useAutomacoes,
+  useCriarAutomacao,
+  useAtualizarAutomacao,
+} from "../hooks/useAutomations";
 import type { AutomationInput } from "../types";
 
 type AutomationBuilderProps = {
@@ -33,18 +49,31 @@ const actions = [
   { value: "criar_tarefa", label: "Criar tarefa" },
 ];
 
-export function AutomationBuilder({ funilId, editingId, onClose }: AutomationBuilderProps) {
+export function AutomationBuilder({
+  funilId,
+  editingId,
+  onClose,
+}: AutomationBuilderProps) {
   const { data: automacoes = [] } = useAutomacoes(funilId);
   const criarAutomacao = useCriarAutomacao();
   const atualizarAutomacao = useAtualizarAutomacao();
 
-  const existing = editingId ? automacoes.find((a) => a.id === editingId) : null;
+  const existing = editingId
+    ? automacoes.find((a) => a.id === editingId)
+    : null;
 
   const [nome, setNome] = useState(existing?.nome ?? "");
   const [triggerType, setTriggerType] = useState(existing?.trigger_type ?? "");
   const [actionType, setActionType] = useState(existing?.action_type ?? "");
   const [actionConfig, setActionConfig] = useState<Record<string, string>>(
-    existing ? Object.fromEntries(Object.entries(existing.action_config).map(([k, v]) => [k, String(v)])) : {}
+    existing
+      ? Object.fromEntries(
+          Object.entries(existing.action_config).map(([k, v]) => [
+            k,
+            String(v),
+          ]),
+        )
+      : {},
   );
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -78,7 +107,9 @@ export function AutomationBuilder({ funilId, editingId, onClose }: AutomationBui
     <Dialog open onOpenChange={(o) => !o && onClose()}>
       <DialogContent className="max-w-lg">
         <DialogHeader>
-          <DialogTitle>{editingId ? "Editar automação" : "Nova automação"}</DialogTitle>
+          <DialogTitle>
+            {editingId ? "Editar automação" : "Nova automação"}
+          </DialogTitle>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-5">
@@ -100,7 +131,9 @@ export function AutomationBuilder({ funilId, editingId, onClose }: AutomationBui
               </SelectTrigger>
               <SelectContent>
                 {triggers.map((t) => (
-                  <SelectItem key={t.value} value={t.value}>{t.label}</SelectItem>
+                  <SelectItem key={t.value} value={t.value}>
+                    {t.label}
+                  </SelectItem>
                 ))}
               </SelectContent>
             </Select>
@@ -114,7 +147,9 @@ export function AutomationBuilder({ funilId, editingId, onClose }: AutomationBui
               </SelectTrigger>
               <SelectContent>
                 {actions.map((a) => (
-                  <SelectItem key={a.value} value={a.value}>{a.label}</SelectItem>
+                  <SelectItem key={a.value} value={a.value}>
+                    {a.label}
+                  </SelectItem>
                 ))}
               </SelectContent>
             </Select>
@@ -125,7 +160,9 @@ export function AutomationBuilder({ funilId, editingId, onClose }: AutomationBui
               <Label>Mensagem</Label>
               <Input
                 value={actionConfig.mensagem ?? ""}
-                onChange={(e) => setActionConfig({ ...actionConfig, mensagem: e.target.value })}
+                onChange={(e) =>
+                  setActionConfig({ ...actionConfig, mensagem: e.target.value })
+                }
                 placeholder="Mensagem da notificação"
               />
             </div>
@@ -136,7 +173,9 @@ export function AutomationBuilder({ funilId, editingId, onClose }: AutomationBui
               <Label>Título da nova tarefa</Label>
               <Input
                 value={actionConfig.titulo ?? ""}
-                onChange={(e) => setActionConfig({ ...actionConfig, titulo: e.target.value })}
+                onChange={(e) =>
+                  setActionConfig({ ...actionConfig, titulo: e.target.value })
+                }
                 placeholder="Título automático"
               />
             </div>
@@ -145,7 +184,12 @@ export function AutomationBuilder({ funilId, editingId, onClose }: AutomationBui
           {actionType === "alterar_prioridade" && (
             <div className="space-y-2">
               <Label>Nova prioridade</Label>
-              <Select value={actionConfig.prioridade ?? ""} onValueChange={(v) => setActionConfig({ ...actionConfig, prioridade: v })}>
+              <Select
+                value={actionConfig.prioridade ?? ""}
+                onValueChange={(v) =>
+                  setActionConfig({ ...actionConfig, prioridade: v })
+                }
+              >
                 <SelectTrigger>
                   <SelectValue placeholder="Selecione" />
                 </SelectTrigger>
@@ -160,8 +204,13 @@ export function AutomationBuilder({ funilId, editingId, onClose }: AutomationBui
           )}
 
           <DialogFooter>
-            <Button type="button" variant="ghost" onClick={onClose}>Cancelar</Button>
-            <Button type="submit" disabled={!nome.trim() || !triggerType || !actionType}>
+            <Button type="button" variant="ghost" onClick={onClose}>
+              Cancelar
+            </Button>
+            <Button
+              type="submit"
+              disabled={!nome.trim() || !triggerType || !actionType}
+            >
               {editingId ? "Salvar" : "Criar"}
             </Button>
           </DialogFooter>

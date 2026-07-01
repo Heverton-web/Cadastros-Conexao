@@ -7,11 +7,7 @@
  * Regra: imports de ~/features/* NÃO devem importar de ~/features/empresas.
  *        Use sempre ~/shared/empresas para acesso a dados de empresa.
  */
-export type {
-  Empresa,
-  EmpresaConfig,
-  ModuloEmpresa,
-} from "./types";
+export type { Empresa, EmpresaConfig, ModuloEmpresa } from "./types";
 
 export {
   listarEmpresas,

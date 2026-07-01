@@ -2,15 +2,15 @@
 
 ## Stack
 
-| Camada | Tecnologia |
-|--------|------------|
-| Nome do Projeto | **cadastros-conexao** |
-| Framework | TanStack Start (React Router) |
-| Estilo | Tailwind CSS + shadcn/ui |
-| Design System | Conexão Implantes (dark navy + gold accent) |
-| Database/Auth | Supabase |
-| Deploy | `cadastros.vpsconexao.org` (VPS ou Vercel — **a confirmar**) |
-| Abordagem | **Mobile-First** (PWA-ready, touch-first, responsivo progressivo) |
+| Camada          | Tecnologia                                                        |
+| --------------- | ----------------------------------------------------------------- |
+| Nome do Projeto | **cadastros-conexao**                                             |
+| Framework       | TanStack Start (React Router)                                     |
+| Estilo          | Tailwind CSS + shadcn/ui                                          |
+| Design System   | Conexão Implantes (dark navy + gold accent)                       |
+| Database/Auth   | Supabase                                                          |
+| Deploy          | `cadastros.vpsconexao.org` (VPS ou Vercel — **a confirmar**)      |
+| Abordagem       | **Mobile-First** (PWA-ready, touch-first, responsivo progressivo) |
 
 ## Mobile-First — Princípios Norteadores
 
@@ -137,11 +137,11 @@ atividades: id, entidade_tipo (lead|contrato|paciente), entidade_id,
 
 ## Decisões Tomadas
 
-| Decisão | Escolha |
-|---------|---------|
-| Auth | Email + senha (Supabase) |
-| Domínio | `cadastros.vpsconexao.org` |
-| Dados Bubble | Exportáveis — ETL na Fase 4 |
-| Multi-usuário | Sim, com roles Admin/Editor/Viewer |
-| Deploy | **Pendente**: VPS (Docker) vs Vercel |
-| Abordagem | Mobile-First (PWA-ready, touch-first) |
+| Decisão       | Escolha                               |
+| ------------- | ------------------------------------- |
+| Auth          | Email + senha (Supabase)              |
+| Domínio       | `cadastros.vpsconexao.org`            |
+| Dados Bubble  | Exportáveis — ETL na Fase 4           |
+| Multi-usuário | Sim, com roles Admin/Editor/Viewer    |
+| Deploy        | **Pendente**: VPS (Docker) vs Vercel  |
+| Abordagem     | Mobile-First (PWA-ready, touch-first) |

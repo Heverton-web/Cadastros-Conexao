@@ -1,16 +1,16 @@
-import { createClient } from '@supabase/supabase-js';
-import * as fs from 'fs';
-import * as crypto from 'crypto';
+import { createClient } from "@supabase/supabase-js";
+import * as fs from "fs";
+import * as crypto from "crypto";
 
-const envFile = fs.readFileSync('.env', 'utf-8');
+const envFile = fs.readFileSync(".env", "utf-8");
 const env: Record<string, string> = {};
-envFile.split('\n').forEach(line => {
+envFile.split("\n").forEach((line) => {
   const match = line.match(/^([^=]+)=(.*)$/);
   if (match) env[match[1].trim()] = match[2].trim();
 });
 
-const url = env['VITE_SUPABASE_URL'] || '';
-const key = env['VITE_SUPABASE_ANON_KEY'] || '';
+const url = env["VITE_SUPABASE_URL"] || "";
+const key = env["VITE_SUPABASE_ANON_KEY"] || "";
 
 const supabase = createClient(url, key);
 
@@ -26,7 +26,7 @@ const vendors = [
   "Marcos Ribeiro",
   "Patrícia Gomes",
   "Gabriel Ferreira",
-  "Mariana Castro"
+  "Mariana Castro",
 ];
 
 const comments = [
@@ -39,19 +39,25 @@ const comments = [
   "Estou satisfeito com a plataforma.",
   "O produto chegou com defeito e o pós-venda foi devagar.",
   "Sensacional! Melhor ERP que já utilizei.",
-  "Tivemos dificuldades na implantação, mas agora flui bem."
+  "Tivemos dificuldades na implantação, mas agora flui bem.",
 ];
 
 async function seed() {
   console.log("Buscando empresa no banco...");
-  const { data: empresas, error: errEmpresa } = await supabase.from('empresas').select('id').limit(1);
+  const { data: empresas, error: errEmpresa } = await supabase
+    .from("empresas")
+    .select("id")
+    .limit(1);
   if (errEmpresa || !empresas || empresas.length === 0) {
-     console.error("Erro ao buscar empresa (ou nenhuma encontrada):", errEmpresa);
-     process.exit(1);
+    console.error(
+      "Erro ao buscar empresa (ou nenhuma encontrada):",
+      errEmpresa,
+    );
+    process.exit(1);
   }
   const empresaId = empresas[0].id;
   console.log("Iniciando seed de NPS para a empresa:", empresaId);
-  
+
   const records = [];
 
   for (let i = 0; i < 15; i++) {
@@ -86,16 +92,20 @@ async function seed() {
       expansao_produtos: "Nenhum",
       oportunidade: "Preços menores",
       pergunta_final: "O layout",
-      created_at: new Date(Date.now() - Math.floor(Math.random() * 10000000000)).toISOString()
+      created_at: new Date(
+        Date.now() - Math.floor(Math.random() * 10000000000),
+      ).toISOString(),
     });
   }
 
-  const { error } = await supabase.from('nps_respostas').insert(records);
+  const { error } = await supabase.from("nps_respostas").insert(records);
 
   if (error) {
     console.error("Erro ao inserir:", error);
   } else {
-    console.log(`Sucesso! ${records.length} NPS inseridos na tabela nps_respostas.`);
+    console.log(
+      `Sucesso! ${records.length} NPS inseridos na tabela nps_respostas.`,
+    );
   }
 }
 

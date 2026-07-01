@@ -13,7 +13,14 @@ export const authLayout = createRoute({
 });
 
 function AuthGuard() {
-  const { user, profile, permissoes, modulosAtivos, loading, refreshPermissoes } = useAuth();
+  const {
+    user,
+    profile,
+    permissoes,
+    modulosAtivos,
+    loading,
+    refreshPermissoes,
+  } = useAuth();
   const navigate = useNavigate();
   const [modulesReady, setModulesReady] = useState(false);
 

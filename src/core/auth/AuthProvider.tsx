@@ -8,8 +8,12 @@ import toast from "react-hot-toast";
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<any>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
-  const [permissoes, setPermissoes] = useState<Record<string, boolean> | null>(null);
-  const [modulosAcesso, setModulosAcesso] = useState<ModulosAcesso | null>(null);
+  const [permissoes, setPermissoes] = useState<Record<string, boolean> | null>(
+    null,
+  );
+  const [modulosAcesso, setModulosAcesso] = useState<ModulosAcesso | null>(
+    null,
+  );
   const [empresa, setEmpresa] = useState<EmpresaInfo | null>(null);
   const [modulosAtivos, setModulosAtivos] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
@@ -82,7 +86,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       .single();
     if (!error && p) {
       setProfile(p as Profile);
-      
+
       if (p.is_super_admin) {
         const allPerms: Record<string, boolean> = {};
         for (const key of getAllPermissionKeys()) {
@@ -97,7 +101,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           .eq("usuario_id", userId)
           .maybeSingle();
 
-        const flatPerms = { ...(data?.permissoes as Record<string, boolean> || {}) };
+        const flatPerms = {
+          ...((data?.permissoes as Record<string, boolean>) || {}),
+        };
         const modulosAcc = data?.modulos_acesso as ModulosAcesso | null;
 
         if (modulosAcc) {

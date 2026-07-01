@@ -1,4 +1,10 @@
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "~/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "~/components/ui/dialog";
 import { Button } from "~/components/ui/button";
 import { formatBRL, formatDate } from "~/features/crm/lib/comercial";
 import {
@@ -45,9 +51,21 @@ export function VisitaDetalheModal({ visita, open, onOpenChange }: Props) {
   if (!visita) return null;
 
   const tempMeta = {
-    Frio: { icon: Snowflake, color: "text-[oklch(0.78_0.13_245)]", bg: "bg-[oklch(0.6_0.13_245/0.15)] border-[oklch(0.6_0.13_245/0.5)]" },
-    Morno: { icon: Thermometer, color: "text-[oklch(0.86_0.16_75)]", bg: "bg-[oklch(0.78_0.16_75/0.15)] border-[oklch(0.78_0.16_75/0.5)]" },
-    Quente: { icon: Flame, color: "text-[oklch(0.75_0.21_28)]", bg: "bg-[oklch(0.65_0.21_28/0.15)] border-[oklch(0.65_0.21_28/0.5)]" },
+    Frio: {
+      icon: Snowflake,
+      color: "text-[oklch(0.78_0.13_245)]",
+      bg: "bg-[oklch(0.6_0.13_245/0.15)] border-[oklch(0.6_0.13_245/0.5)]",
+    },
+    Morno: {
+      icon: Thermometer,
+      color: "text-[oklch(0.86_0.16_75)]",
+      bg: "bg-[oklch(0.78_0.16_75/0.15)] border-[oklch(0.78_0.16_75/0.5)]",
+    },
+    Quente: {
+      icon: Flame,
+      color: "text-[oklch(0.75_0.21_28)]",
+      bg: "bg-[oklch(0.65_0.21_28/0.15)] border-[oklch(0.65_0.21_28/0.5)]",
+    },
   }[visita.temperatura_vendedor] ?? { icon: Thermometer, color: "", bg: "" };
   const TempIcon = tempMeta.icon;
 
@@ -57,9 +75,16 @@ export function VisitaDetalheModal({ visita, open, onOpenChange }: Props) {
         <DialogHeader>
           <DialogTitle>Visita de {formatDate(visita.data_visita)}</DialogTitle>
           <p className="text-sm text-text-muted">
-            {visita.tipo_visita} · registrada por {visita.executor?.nome_completo ?? "—"}
+            {visita.tipo_visita} · registrada por{" "}
+            {visita.executor?.nome_completo ?? "—"}
           </p>
-          <span className={cn("inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-bold uppercase w-fit", tempMeta.bg, tempMeta.color)}>
+          <span
+            className={cn(
+              "inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-bold uppercase w-fit",
+              tempMeta.bg,
+              tempMeta.color,
+            )}
+          >
             <TempIcon className="h-3.5 w-3.5" />
             {visita.temperatura_vendedor}
           </span>
@@ -72,9 +97,22 @@ export function VisitaDetalheModal({ visita, open, onOpenChange }: Props) {
           </Section>
 
           <Section icon={Handshake} title="Negociação">
-            <Info label="Gerou orçamento" value={visita.gerou_orcamento ? "Sim" : "Não"} />
-            <Info label="Pedido fechado" value={visita.gerou_pedido ? "Sim" : "Não"} />
-            <Info label="Valor estimado" value={<span className="text-primary font-semibold">{formatBRL(visita.valor_estimado)}</span>} />
+            <Info
+              label="Gerou orçamento"
+              value={visita.gerou_orcamento ? "Sim" : "Não"}
+            />
+            <Info
+              label="Pedido fechado"
+              value={visita.gerou_pedido ? "Sim" : "Não"}
+            />
+            <Info
+              label="Valor estimado"
+              value={
+                <span className="text-primary font-semibold">
+                  {formatBRL(visita.valor_estimado)}
+                </span>
+              }
+            />
             <Info
               label="Interesse"
               value={
@@ -84,7 +122,9 @@ export function VisitaDetalheModal({ visita, open, onOpenChange }: Props) {
                       key={n}
                       className={cn(
                         "h-4 w-4",
-                        n <= (visita.interesse_escala ?? 0) ? "fill-primary text-primary" : "text-muted-foreground/30",
+                        n <= (visita.interesse_escala ?? 0)
+                          ? "fill-primary text-primary"
+                          : "text-muted-foreground/30",
                       )}
                     />
                   ))}
@@ -94,22 +134,41 @@ export function VisitaDetalheModal({ visita, open, onOpenChange }: Props) {
           </Section>
 
           <Section icon={Gauge} title="Avaliação">
-            <Info label="Probabilidade de fechamento" value={visita.probabilidade_fechamento ?? "—"} full />
+            <Info
+              label="Probabilidade de fechamento"
+              value={visita.probabilidade_fechamento ?? "—"}
+              full
+            />
             {visita.feedback_cliente && (
-              <Block icon={MessageSquare} label="Feedback do cliente" text={visita.feedback_cliente} />
+              <Block
+                icon={MessageSquare}
+                label="Feedback do cliente"
+                text={visita.feedback_cliente}
+              />
             )}
             {visita.observacoes_vendedor && (
-              <Block icon={StickyNote} label="Observações internas" text={visita.observacoes_vendedor} />
+              <Block
+                icon={StickyNote}
+                label="Observações internas"
+                text={visita.observacoes_vendedor}
+              />
             )}
           </Section>
 
           {(visita.data_proximo_contato || visita.acao_prevista) && (
             <Section icon={ArrowRight} title="Próximos passos" highlight>
               {visita.data_proximo_contato && (
-                <Info label="Data do próximo contato" value={formatDate(visita.data_proximo_contato)} />
+                <Info
+                  label="Data do próximo contato"
+                  value={formatDate(visita.data_proximo_contato)}
+                />
               )}
               {visita.acao_prevista && (
-                <Block icon={ArrowRight} label="Ação prevista" text={visita.acao_prevista} />
+                <Block
+                  icon={ArrowRight}
+                  label="Ação prevista"
+                  text={visita.acao_prevista}
+                />
               )}
             </Section>
           )}
@@ -166,10 +225,20 @@ function Section({
   );
 }
 
-function Info({ label, value, full }: { label: string; value: React.ReactNode; full?: boolean }) {
+function Info({
+  label,
+  value,
+  full,
+}: {
+  label: string;
+  value: React.ReactNode;
+  full?: boolean;
+}) {
   return (
     <div className={full ? "sm:col-span-2 space-y-1" : "space-y-1"}>
-      <p className="text-[11px] font-medium uppercase tracking-wide text-muted-foreground">{label}</p>
+      <p className="text-[11px] font-medium uppercase tracking-wide text-muted-foreground">
+        {label}
+      </p>
       <p className="text-sm font-medium text-foreground">{value}</p>
     </div>
   );

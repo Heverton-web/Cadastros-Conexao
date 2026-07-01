@@ -16,18 +16,18 @@ O usuário solicitou a criação de um novo módulo CRM para o ERP Conexão, sen
 
 A análise via GitHub revelou:
 
-| Aspecto | Detalhe |
-|---------|---------|
-| **Stack** | TanStack Start + React Router + Vite + Supabase |
-| **Linguagem** | TypeScript 92.5%, PLpgSQL 5.4%, CSS 1.8% |
-| **UI** | Radix UI + Tailwind CSS (shadcn/ui) |
-| **Banco** | Supabase (PostgreSQL) |
-| **Autenticação** | Supabase Auth com hook `useAuth` próprio |
-| **Migrations** | 11 arquivos SQL em `supabase/migrations/` |
-| **Rotas** | 17 arquivos (TanStack Router flat file) |
-| **Componentes** | 4 componentes + pasta `ui/` (shadcn) |
-| **Hooks** | `useAuth.tsx`, `use-mobile.tsx` |
-| **Libs** | `comercial.ts`, `visitas.functions.ts`, `demo.ts`, `error-capture.ts`, `utils.ts` |
+| Aspecto          | Detalhe                                                                           |
+| ---------------- | --------------------------------------------------------------------------------- |
+| **Stack**        | TanStack Start + React Router + Vite + Supabase                                   |
+| **Linguagem**    | TypeScript 92.5%, PLpgSQL 5.4%, CSS 1.8%                                          |
+| **UI**           | Radix UI + Tailwind CSS (shadcn/ui)                                               |
+| **Banco**        | Supabase (PostgreSQL)                                                             |
+| **Autenticação** | Supabase Auth com hook `useAuth` próprio                                          |
+| **Migrations**   | 11 arquivos SQL em `supabase/migrations/`                                         |
+| **Rotas**        | 17 arquivos (TanStack Router flat file)                                           |
+| **Componentes**  | 4 componentes + pasta `ui/` (shadcn)                                              |
+| **Hooks**        | `useAuth.tsx`, `use-mobile.tsx`                                                   |
+| **Libs**         | `comercial.ts`, `visitas.functions.ts`, `demo.ts`, `error-capture.ts`, `utils.ts` |
 
 ### 1.3. Descoberta do ERP (repositório destino)
 
@@ -43,17 +43,17 @@ Análise da estrutura de módulos do ERP:
 
 ## 2. Decisões de Arquitetura
 
-| Decisão | Escolha | Justificativa |
-|---------|---------|---------------|
-| **Banco de dados** | Mesmo Supabase do ERP | Confirmado pelo usuário — tabelas do CRM no mesmo DB |
-| **Estratégia de integração** | Módulo no ERP (src/features/crm/) | Confirmado pelo usuário — segue padrão dos 7 módulos existentes |
-| **Componentes UI** | Reusar `ui/` existente do ERP | Mesmo shadcn/ui, evitar duplicidade |
-| **Supabase client** | Reusar client do ERP | Mesmo projeto Supabase, mesma conexão |
-| **useAuth** | Adaptar para usar o `useAuth` do ERP | Auth centralizado, não duplicar contexto |
-| **Rotas** | Prefixar com `crm.*` (flat file) | Integrar no TanStack Router existente sem layout separado |
-| **Migrations SQL** | Copiar para supabase/migrations/ do ERP | Mesmo banco, migrations precisam estar no mesmo lugar |
-| **Supabase types** | Mesclar types do CRM no types.ts geral | Adicionar tabelas novas ao types existente |
-| **Nav items** | Registrar via setup() | Seguir padrão dos outros módulos |
+| Decisão                      | Escolha                                 | Justificativa                                                   |
+| ---------------------------- | --------------------------------------- | --------------------------------------------------------------- |
+| **Banco de dados**           | Mesmo Supabase do ERP                   | Confirmado pelo usuário — tabelas do CRM no mesmo DB            |
+| **Estratégia de integração** | Módulo no ERP (src/features/crm/)       | Confirmado pelo usuário — segue padrão dos 7 módulos existentes |
+| **Componentes UI**           | Reusar `ui/` existente do ERP           | Mesmo shadcn/ui, evitar duplicidade                             |
+| **Supabase client**          | Reusar client do ERP                    | Mesmo projeto Supabase, mesma conexão                           |
+| **useAuth**                  | Adaptar para usar o `useAuth` do ERP    | Auth centralizado, não duplicar contexto                        |
+| **Rotas**                    | Prefixar com `crm.*` (flat file)        | Integrar no TanStack Router existente sem layout separado       |
+| **Migrations SQL**           | Copiar para supabase/migrations/ do ERP | Mesmo banco, migrations precisam estar no mesmo lugar           |
+| **Supabase types**           | Mesclar types do CRM no types.ts geral  | Adicionar tabelas novas ao types existente                      |
+| **Nav items**                | Registrar via setup()                   | Seguir padrão dos outros módulos                                |
 
 ---
 
@@ -62,6 +62,7 @@ Análise da estrutura de módulos do ERP:
 ### Passo 1: Exploração do repositório CRM
 
 Acesso às páginas do GitHub para mapear:
+
 - Estrutura de pastas (`src/components`, `src/routes`, `src/hooks`, `src/lib`, `src/integrations`)
 - `package.json` para identificar dependências
 - `supabase/migrations/` para entender schema do banco
@@ -70,6 +71,7 @@ Acesso às páginas do GitHub para mapear:
 ### Passo 2: Exploração do ERP existente
 
 Leitura profunda via subagent `explore`:
+
 - `src/registry/modules.ts` — tipo `ModuleDefinition` com key, nome, descricao, icon, routes, permissions, events
 - `src/registry/nav-items.ts` — `NavItemRegistration` com id, label, icon, to, permissionCheck, order
 - `src/registry/permissions-registry.ts` — `PermissionDefinition` com key, label, description, group
@@ -81,22 +83,23 @@ Leitura profunda via subagent `explore`:
 
 Verificação de compatibilidade:
 
-| Componente | CRM | ERP | Compatível? |
-|------------|-----|-----|-------------|
-| React | 19 | 19 | ✅ |
-| TanStack Router | v1 | v1 | ✅ |
-| Vite | 7 | 6+ | ✅ |
-| Radix UI | Sim | Sim | ✅ |
-| Tailwind CSS | v4 | v4 | ✅ |
-| Supabase | Sim | Sim | ✅ |
-| shadcn/ui | Sim | Sim | ✅ |
-| zod | Sim | Sim | ✅ |
+| Componente      | CRM | ERP | Compatível? |
+| --------------- | --- | --- | ----------- |
+| React           | 19  | 19  | ✅          |
+| TanStack Router | v1  | v1  | ✅          |
+| Vite            | 7   | 6+  | ✅          |
+| Radix UI        | Sim | Sim | ✅          |
+| Tailwind CSS    | v4  | v4  | ✅          |
+| Supabase        | Sim | Sim | ✅          |
+| shadcn/ui       | Sim | Sim | ✅          |
+| zod             | Sim | Sim | ✅          |
 
 **Conclusão**: Stacks idênticas. Integração direta possível, sem necessidade de adaptações de framework.
 
 ### Passo 4: Verificação de dependências novas
 
 O CRM usa:
+
 - `@hookform/resolvers` + `react-hook-form` — `react-hook-form` já está no ERP, `@hookform/resolvers` precisa ser adicionado
 - `sonner` — já está no ERP
 - `date-fns` — já está no ERP
@@ -109,81 +112,81 @@ O CRM usa:
 
 Análise das 17 rotas do CRM e como ficam no ERP:
 
-| CRM (standalone) | ERP (módulo) | Rota URL |
-|-------------------|--------------|----------|
-| `_auth.tsx` | Reusar `_auth.tsx` existente | Layout compartilhado |
-| `_auth.dashboard.tsx` | `_auth.crm.dashboard.tsx` | `/crm/dashboard` |
-| `_auth.carteira.tsx` | `_auth.crm.carteira.tsx` | `/crm/carteira` |
-| `_auth.cliente.$id.tsx` | `_auth.crm.cliente.$id.tsx` | `/crm/cliente/:id` |
-| `_auth.equipe.tsx` | `_auth.crm.equipe.tsx` | `/crm/equipe` |
-| `_auth.bi.tsx` | `_auth.crm.bi.tsx` | `/crm/bi` |
-| `_auth.transferencia.tsx` | `_auth.crm.transferencia.tsx` | `/crm/transferencia` (layout) |
-| `_auth.transferencia.index.tsx` | `_auth.crm.transferencia.index.tsx` | `/crm/transferencia` |
+| CRM (standalone)                      | ERP (módulo)                              | Rota URL                         |
+| ------------------------------------- | ----------------------------------------- | -------------------------------- |
+| `_auth.tsx`                           | Reusar `_auth.tsx` existente              | Layout compartilhado             |
+| `_auth.dashboard.tsx`                 | `_auth.crm.dashboard.tsx`                 | `/crm/dashboard`                 |
+| `_auth.carteira.tsx`                  | `_auth.crm.carteira.tsx`                  | `/crm/carteira`                  |
+| `_auth.cliente.$id.tsx`               | `_auth.crm.cliente.$id.tsx`               | `/crm/cliente/:id`               |
+| `_auth.equipe.tsx`                    | `_auth.crm.equipe.tsx`                    | `/crm/equipe`                    |
+| `_auth.bi.tsx`                        | `_auth.crm.bi.tsx`                        | `/crm/bi`                        |
+| `_auth.transferencia.tsx`             | `_auth.crm.transferencia.tsx`             | `/crm/transferencia` (layout)    |
+| `_auth.transferencia.index.tsx`       | `_auth.crm.transferencia.index.tsx`       | `/crm/transferencia`             |
 | `_auth.transferencia.consultores.tsx` | `_auth.crm.transferencia.consultores.tsx` | `/crm/transferencia/consultores` |
-| `_auth.diretoria.index.tsx` | `_auth.crm.diretoria.index.tsx` | `/crm/diretoria` |
-| `_auth.diretoria.gestor.$id.tsx` | `_auth.crm.diretoria.gestor.$id.tsx` | `/crm/diretoria/gestor/:id` |
-| `_auth.dev.convites.tsx` | `_auth.crm.dev.convites.tsx` | `/crm/dev/convites` |
-| `_auth.dev.demo.tsx` | `_auth.crm.dev.demo.tsx` | `/crm/dev/demo` |
-| `_auth.dev.usuarios.tsx` | `_auth.crm.dev.usuarios.tsx` | `/crm/dev/usuarios` |
-| `aceitar-convite.$token.tsx` | `crm.aceitar-convite.$token.tsx` | `/crm/aceitar-convite/:token` |
-| `index.tsx` (login) | Não copiar | ERP já tem login próprio |
-| `__root.tsx` | Não copiar | ERP já tem root layout |
+| `_auth.diretoria.index.tsx`           | `_auth.crm.diretoria.index.tsx`           | `/crm/diretoria`                 |
+| `_auth.diretoria.gestor.$id.tsx`      | `_auth.crm.diretoria.gestor.$id.tsx`      | `/crm/diretoria/gestor/:id`      |
+| `_auth.dev.convites.tsx`              | `_auth.crm.dev.convites.tsx`              | `/crm/dev/convites`              |
+| `_auth.dev.demo.tsx`                  | `_auth.crm.dev.demo.tsx`                  | `/crm/dev/demo`                  |
+| `_auth.dev.usuarios.tsx`              | `_auth.crm.dev.usuarios.tsx`              | `/crm/dev/usuarios`              |
+| `aceitar-convite.$token.tsx`          | `crm.aceitar-convite.$token.tsx`          | `/crm/aceitar-convite/:token`    |
+| `index.tsx` (login)                   | Não copiar                                | ERP já tem login próprio         |
+| `__root.tsx`                          | Não copiar                                | ERP já tem root layout           |
 
 ### Passo 6: Mapeamento de componentes
 
-| Componente CRM | Destino no ERP | Ação |
-|----------------|----------------|------|
-| `ClientePickerModal.tsx` | `features/crm/components/` | Copiar |
-| `NovaVisitaModal.tsx` | `features/crm/components/` | Copiar |
-| `VisitaDetalheModal.tsx` | `features/crm/components/` | Copiar |
-| `Logo.tsx` | `features/crm/components/` | Copiar |
-| `ui/*` | Não copiar | Reusar `components/ui/` do ERP |
+| Componente CRM           | Destino no ERP             | Ação                           |
+| ------------------------ | -------------------------- | ------------------------------ |
+| `ClientePickerModal.tsx` | `features/crm/components/` | Copiar                         |
+| `NovaVisitaModal.tsx`    | `features/crm/components/` | Copiar                         |
+| `VisitaDetalheModal.tsx` | `features/crm/components/` | Copiar                         |
+| `Logo.tsx`               | `features/crm/components/` | Copiar                         |
+| `ui/*`                   | Não copiar                 | Reusar `components/ui/` do ERP |
 
 ### Passo 7: Mapeamento de hooks e libs
 
-| Arquivo CRM | Destino no ERP | Ação |
-|-------------|----------------|------|
-| `hooks/useAuth.tsx` | Não copiar | Reusar `hooks/useAuth.tsx` do ERP |
-| `hooks/use-mobile.tsx` | `features/crm/hooks/` | Copiar ou reusar existente |
-| `lib/comercial.ts` | `features/crm/lib/` | Copiar |
-| `lib/visitas.functions.ts` | `features/crm/lib/` | Copiar |
-| `lib/demo.ts` | `features/crm/lib/` | Copiar |
-| `lib/error-capture.ts` | `features/crm/lib/` | Copiar |
-| `lib/error-page.ts` | `features/crm/lib/` | Copiar |
-| `lib/utils.ts` | Não copiar | Reusar `cn()` do ERP |
-| `integrations/supabase/client.ts` | Não copiar | Reusar client do ERP |
-| `integrations/supabase/client.server.ts` | Não copiar | Reusar client server do ERP |
-| `integrations/supabase/auth-middleware.ts` | Não copiar | Reusar do ERP |
-| `integrations/supabase/auth-attacher.ts` | Não copiar | Reusar do ERP |
-| `integrations/supabase/types.ts` | Mesclar | Adicionar tabelas CRM ao types.ts do ERP |
+| Arquivo CRM                                | Destino no ERP        | Ação                                     |
+| ------------------------------------------ | --------------------- | ---------------------------------------- |
+| `hooks/useAuth.tsx`                        | Não copiar            | Reusar `hooks/useAuth.tsx` do ERP        |
+| `hooks/use-mobile.tsx`                     | `features/crm/hooks/` | Copiar ou reusar existente               |
+| `lib/comercial.ts`                         | `features/crm/lib/`   | Copiar                                   |
+| `lib/visitas.functions.ts`                 | `features/crm/lib/`   | Copiar                                   |
+| `lib/demo.ts`                              | `features/crm/lib/`   | Copiar                                   |
+| `lib/error-capture.ts`                     | `features/crm/lib/`   | Copiar                                   |
+| `lib/error-page.ts`                        | `features/crm/lib/`   | Copiar                                   |
+| `lib/utils.ts`                             | Não copiar            | Reusar `cn()` do ERP                     |
+| `integrations/supabase/client.ts`          | Não copiar            | Reusar client do ERP                     |
+| `integrations/supabase/client.server.ts`   | Não copiar            | Reusar client server do ERP              |
+| `integrations/supabase/auth-middleware.ts` | Não copiar            | Reusar do ERP                            |
+| `integrations/supabase/auth-attacher.ts`   | Não copiar            | Reusar do ERP                            |
+| `integrations/supabase/types.ts`           | Mesclar               | Adicionar tabelas CRM ao types.ts do ERP |
 
 ### Passo 8: Definição de permissões
 
 Permissões do módulo CRM (prefixo `crm_`):
 
 ```typescript
-crm_dashboard       // Acessar dashboard CRM
-crm_carteira        // Visualizar carteira de clientes
-crm_cliente_detalhe // Visualizar detalhes do cliente
-crm_equipe          // Visualizar equipe
-crm_bi              // Acessar Business Intelligence
-crm_transferencia   // Gerenciar transferências
-crm_diretoria       // Acessar visão diretoria
-crm_dev_convites    // Gerenciar convites (dev)
-crm_dev_demo        // Acessar modo demo (dev)
-crm_dev_usuarios    // Gerenciar usuários (dev)
+crm_dashboard; // Acessar dashboard CRM
+crm_carteira; // Visualizar carteira de clientes
+crm_cliente_detalhe; // Visualizar detalhes do cliente
+crm_equipe; // Visualizar equipe
+crm_bi; // Acessar Business Intelligence
+crm_transferencia; // Gerenciar transferências
+crm_diretoria; // Acessar visão diretoria
+crm_dev_convites; // Gerenciar convites (dev)
+crm_dev_demo; // Acessar modo demo (dev)
+crm_dev_usuarios; // Gerenciar usuários (dev)
 ```
 
 ### Passo 9: Definição de nav items
 
-| ID | Label | Icon | Rota | Ordem |
-|----|-------|------|------|-------|
-| `crm-dashboard` | Dashboard | LayoutDashboard | `/crm/dashboard` | 50 |
-| `crm-carteira` | Carteira | Users | `/crm/carteira` | 51 |
-| `crm-equipe` | Equipe | UserCheck | `/crm/equipe` | 52 |
-| `crm-bi` | BI | BarChart3 | `/crm/bi` | 53 |
-| `crm-transferencia` | Transferência | ArrowLeftRight | `/crm/transferencia` | 54 |
-| `crm-diretoria` | Diretoria | Crown | `/crm/diretoria` | 55 |
+| ID                  | Label         | Icon            | Rota                 | Ordem |
+| ------------------- | ------------- | --------------- | -------------------- | ----- |
+| `crm-dashboard`     | Dashboard     | LayoutDashboard | `/crm/dashboard`     | 50    |
+| `crm-carteira`      | Carteira      | Users           | `/crm/carteira`      | 51    |
+| `crm-equipe`        | Equipe        | UserCheck       | `/crm/equipe`        | 52    |
+| `crm-bi`            | BI            | BarChart3       | `/crm/bi`            | 53    |
+| `crm-transferencia` | Transferência | ArrowLeftRight  | `/crm/transferencia` | 54    |
+| `crm-diretoria`     | Diretoria     | Crown           | `/crm/diretoria`     | 55    |
 
 ---
 
@@ -255,14 +258,14 @@ Auth carrega → _auth.tsx AuthGuard
 
 ## 6. Riscos e Mitigações
 
-| Risco | Impacto | Mitigação |
-|-------|---------|-----------|
-| **Tabelas já existentes** | Alto | Verificar nomes das tabelas nas migrations antes de aplicar |
-| **Conflito de types** | Médio | Mesclar types cuidadosamente, não sobrescrever |
-| **Auth context diferente** | Alto | Adaptar imports de `useAuth` do CRM para usar o do ERP |
-| **Imports quebrados** | Médio | Substituir todos os `@/` paths para `~/` (padrão ERP) |
-| **Dependência faltando** | Baixo | Instalar `@hookform/resolvers` se necessário |
-| **Supabase RLS policies** | Alto | As migrations incluem RLS — verificar se não conflitam |
+| Risco                      | Impacto | Mitigação                                                   |
+| -------------------------- | ------- | ----------------------------------------------------------- |
+| **Tabelas já existentes**  | Alto    | Verificar nomes das tabelas nas migrations antes de aplicar |
+| **Conflito de types**      | Médio   | Mesclar types cuidadosamente, não sobrescrever              |
+| **Auth context diferente** | Alto    | Adaptar imports de `useAuth` do CRM para usar o do ERP      |
+| **Imports quebrados**      | Médio   | Substituir todos os `@/` paths para `~/` (padrão ERP)       |
+| **Dependência faltando**   | Baixo   | Instalar `@hookform/resolvers` se necessário                |
+| **Supabase RLS policies**  | Alto    | As migrations incluem RLS — verificar se não conflitam      |
 
 ---
 

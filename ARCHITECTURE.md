@@ -67,10 +67,10 @@ import { registerModule } from "~/registry";
 
 ```ts
 // Um módulo importando internals de outro módulo
-import { formatDate } from "~/features/crm/lib/comercial";       // ❌
+import { formatDate } from "~/features/crm/lib/comercial"; // ❌
 import { useEmpresaSuperAdmin } from "~/features/despesas/hooks"; // ❌
 import { ClienteCard } from "~/features/clientes/components/..."; // ❌
-import { useRotas } from "~/features/rotas/hooks/useRotas";       // ❌
+import { useRotas } from "~/features/rotas/hooks/useRotas"; // ❌
 ```
 
 ---
@@ -91,6 +91,7 @@ src/features/meu-modulo/
 ```
 
 ### Regra de ouro para `services/`
+
 Cada service acessa **apenas as tabelas que pertencem ao módulo**.
 Se precisar de dados de empresa, use `~/shared/empresas`.
 Se precisar de dados de outro módulo, **receba via props ou parâmetro** — nunca importe o service do outro módulo.
@@ -125,18 +126,18 @@ export function formatCPF(cpf: string): string { ... }
 
 ## Estado atual de conformidade
 
-| Módulo | Status | Observação |
-|---|---|---|
-| `cadastros` | ✅ Auto-contido | |
-| `crm` | ✅ Auto-contido | `formatBRL/formatDate` re-exportados de `~/lib/utils/format` |
-| `nps` | ✅ Auto-contido | Usa `~/shared/empresas` |
-| `despesas` | ✅ Auto-contido | Usa `~/shared/empresas` |
-| `rotas` | ✅ Auto-contido | Usa `~/lib/utils/format` e `~/components/shared` |
-| `funis` | ✅ Auto-contido | |
-| `hub` | ✅ Auto-contido | |
-| `linktree` | ✅ Auto-contido | |
-| `mapas` | ✅ Auto-contido | |
-| `empresas` | ✅ Infra-UI | Re-exporta de `~/shared/empresas` |
+| Módulo      | Status          | Observação                                                   |
+| ----------- | --------------- | ------------------------------------------------------------ |
+| `cadastros` | ✅ Auto-contido |                                                              |
+| `crm`       | ✅ Auto-contido | `formatBRL/formatDate` re-exportados de `~/lib/utils/format` |
+| `nps`       | ✅ Auto-contido | Usa `~/shared/empresas`                                      |
+| `despesas`  | ✅ Auto-contido | Usa `~/shared/empresas`                                      |
+| `rotas`     | ✅ Auto-contido | Usa `~/lib/utils/format` e `~/components/shared`             |
+| `funis`     | ✅ Auto-contido |                                                              |
+| `hub`       | ✅ Auto-contido |                                                              |
+| `linktree`  | ✅ Auto-contido |                                                              |
+| `mapas`     | ✅ Auto-contido |                                                              |
+| `empresas`  | ✅ Infra-UI     | Re-exporta de `~/shared/empresas`                            |
 
 ---
 
@@ -150,5 +151,6 @@ rg "from \"~/features/[^\"]+\"" src/features --type-add "tsx:*.tsx" --type ts --
 ```
 
 Se retornar resultados, verifique se o import é:
+
 1. Do **próprio módulo** (intra) → OK
 2. De **outro módulo** (inter) → Violação → mover para `shared/` ou `lib/utils/`

@@ -1,12 +1,14 @@
-import { useMemo } from 'react';
-import { MessageSquare } from 'lucide-react';
-import MetricCard from './MetricCard';
-import { extractAllText } from '~/lib/sentiment';
+import { useMemo } from "react";
+import { MessageSquare } from "lucide-react";
+import MetricCard from "./MetricCard";
+import { extractAllText } from "~/lib/sentiment";
 
 const CommentRateCard = ({ data }: { data: any[] }) => {
   const rate = useMemo(() => {
     if (!data.length) return 0;
-    const withText = data.filter((r) => extractAllText(r).trim().length > 0).length;
+    const withText = data.filter(
+      (r) => extractAllText(r).trim().length > 0,
+    ).length;
     return Math.round((withText / data.length) * 100);
   }, [data]);
 

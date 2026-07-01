@@ -124,13 +124,19 @@ export const CSS_VAR_MAP: Record<string, string> = {
 /**
  * Converte um objeto DesignTokens flat para um map de CSS vars
  */
-export function tokensToCssVars(tokens: Partial<DesignTokens>): Record<string, string> {
+export function tokensToCssVars(
+  tokens: Partial<DesignTokens>,
+): Record<string, string> {
   const result: Record<string, string> = {};
 
   function walk(obj: Record<string, unknown>, prefix: string) {
     for (const [key, value] of Object.entries(obj)) {
       const path = prefix ? `${prefix}.${key}` : key;
-      if (value !== null && typeof value === "object" && !Array.isArray(value)) {
+      if (
+        value !== null &&
+        typeof value === "object" &&
+        !Array.isArray(value)
+      ) {
         walk(value as Record<string, unknown>, path);
       } else {
         const cssVar = CSS_VAR_MAP[path];

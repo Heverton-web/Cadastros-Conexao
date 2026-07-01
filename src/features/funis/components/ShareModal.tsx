@@ -2,8 +2,18 @@ import { useState } from "react";
 import { Trash2, UserPlus, Users, Mail, Shield } from "lucide-react";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "~/components/ui/dialog";
-import { usePermissoesFunil, useConcederPermissao, useRevogarPermissao } from "../hooks/useFunisData";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "~/components/ui/dialog";
+import {
+  usePermissoesFunil,
+  useConcederPermissao,
+  useRevogarPermissao,
+} from "../hooks/useFunisData";
 import { buscarUsuarioEmail } from "../services";
 import type { FunilPermissaoNivel } from "../types";
 import { Badge } from "~/components/ui/badge";
@@ -53,14 +63,18 @@ export function ShareModal({ funilId, onClose }: ShareModalProps) {
             <Users className="h-5 w-5 text-muted-foreground" />
             Compartilhar Funil
           </DialogTitle>
-          <p className="text-xs text-text-muted">Convide membros por e-mail para colaborar no seu funil.</p>
+          <p className="text-xs text-text-muted">
+            Convide membros por e-mail para colaborar no seu funil.
+          </p>
         </DialogHeader>
 
         <div className="space-y-5">
           {/* Adicionar Colaborador */}
           <div className="space-y-3">
-            <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground/80">Adicionar Colaborador</label>
-            
+            <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground/80">
+              Adicionar Colaborador
+            </label>
+
             {/* Linha 1: Input de e-mail (w-full) */}
             <div className="relative">
               <Mail className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
@@ -124,34 +138,51 @@ export function ShareModal({ funilId, onClose }: ShareModalProps) {
 
           {/* Lista de Permissões */}
           <div className="space-y-2.5">
-            <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground/80">Colaboradores atuais</label>
+            <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground/80">
+              Colaboradores atuais
+            </label>
             <div className="space-y-2 max-h-[220px] overflow-y-auto pr-1">
               {permissoes && permissoes.length > 0 ? (
                 permissoes.map((p) => {
                   const userName = (p as any).user?.full_name || "Membro";
                   const userEmail = (p as any).user?.email || "";
-                  const initials = userName.split(" ").map((n: string) => n[0]).join("").substring(0, 2).toUpperCase();
-                  
+                  const initials = userName
+                    .split(" ")
+                    .map((n: string) => n[0])
+                    .join("")
+                    .substring(0, 2)
+                    .toUpperCase();
+
                   return (
-                    <div key={p.id} className="flex items-center justify-between p-2.5 rounded-lg border border-border/40 bg-surface/20 hover:bg-surface/30 transition-colors">
+                    <div
+                      key={p.id}
+                      className="flex items-center justify-between p-2.5 rounded-lg border border-border/40 bg-surface/20 hover:bg-surface/30 transition-colors"
+                    >
                       <div className="flex items-center gap-2.5 min-w-0">
                         <div className="h-8 w-8 rounded-full bg-muted flex items-center justify-center text-xs font-medium text-muted-foreground shrink-0">
                           {initials || <Users className="h-4 w-4" />}
                         </div>
                         <div className="min-w-0">
-                          <p className="text-sm font-medium truncate text-foreground">{userName}</p>
-                          <p className="text-xs text-muted-foreground truncate">{userEmail}</p>
+                          <p className="text-sm font-medium truncate text-foreground">
+                            {userName}
+                          </p>
+                          <p className="text-xs text-muted-foreground truncate">
+                            {userEmail}
+                          </p>
                         </div>
                       </div>
                       <div className="flex items-center gap-2 shrink-0">
-                        <Badge variant="secondary" className="gap-1 px-1.5 py-0.5 text-[10px] bg-muted/65 hover:bg-muted/65">
+                        <Badge
+                          variant="secondary"
+                          className="gap-1 px-1.5 py-0.5 text-[10px] bg-muted/65 hover:bg-muted/65"
+                        >
                           <Shield className="h-2.5 w-2.5 text-muted-foreground" />
                           {p.nivel === "edit" ? "Editor" : "Leitor"}
                         </Badge>
-                        <Button 
-                          size="icon" 
-                          variant="ghost-destructive" 
-                          onClick={() => handleRevoke(p.id)} 
+                        <Button
+                          size="icon"
+                          variant="ghost-destructive"
+                          onClick={() => handleRevoke(p.id)}
                           className="h-8 w-8"
                         >
                           <Trash2 className="w-4 h-4" />
@@ -163,7 +194,9 @@ export function ShareModal({ funilId, onClose }: ShareModalProps) {
               ) : (
                 <div className="text-center py-6 border border-dashed border-border/40 rounded-lg bg-surface/5">
                   <Users className="h-8 w-8 text-muted-foreground/50 mx-auto mb-2" />
-                  <p className="text-xs text-muted-foreground">Este funil ainda não é compartilhado.</p>
+                  <p className="text-xs text-muted-foreground">
+                    Este funil ainda não é compartilhado.
+                  </p>
                 </div>
               )}
             </div>

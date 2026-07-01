@@ -64,7 +64,9 @@ export function BuscaGlobal({ aberto, onFechar }: Props) {
           .from("clientes")
           .select("id, nome_doutor, nome_clinica")
           .eq("consultor_atual_id", profile.id)
-          .or(`nome_doutor.ilike.${termoBusca},nome_clinica.ilike.${termoBusca}`)
+          .or(
+            `nome_doutor.ilike.${termoBusca},nome_clinica.ilike.${termoBusca}`,
+          )
           .limit(5);
 
         // Buscar tarefas
@@ -116,7 +118,7 @@ export function BuscaGlobal({ aberto, onFechar }: Props) {
         setCarregando(false);
       }
     },
-    [profile]
+    [profile],
   );
 
   // Debounce da busca
@@ -176,7 +178,9 @@ export function BuscaGlobal({ aberto, onFechar }: Props) {
               placeholder="Buscar clientes, tarefas, visitas..."
               className="border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 text-lg"
             />
-            {carregando && <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />}
+            {carregando && (
+              <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+            )}
             <button
               onClick={onFechar}
               className="p-1 hover:bg-muted rounded-lg transition"
@@ -199,13 +203,13 @@ export function BuscaGlobal({ aberto, onFechar }: Props) {
                       "w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left transition",
                       selecionado
                         ? "bg-primary/10 text-primary"
-                        : "hover:bg-muted"
+                        : "hover:bg-muted",
                     )}
                   >
                     <div
                       className={cn(
                         "p-2 rounded-lg",
-                        selecionado ? "bg-primary/20" : "bg-muted"
+                        selecionado ? "bg-primary/20" : "bg-muted",
                       )}
                     >
                       <Icon className="h-4 w-4" />

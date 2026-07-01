@@ -23,7 +23,18 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "~/components/ui/alert-dialog";
-import { Loader2, Save, Plus, Trash2, GripVertical, Upload, Download, ChevronUp, ChevronDown, Eye } from "lucide-react";
+import {
+  Loader2,
+  Save,
+  Plus,
+  Trash2,
+  GripVertical,
+  Upload,
+  Download,
+  ChevronUp,
+  ChevronDown,
+  Eye,
+} from "lucide-react";
 import { useEmpresaSuperAdmin } from "~/components/shared/useEmpresaSuperAdmin";
 import { EmpresaSuperAdminSelector } from "~/components/shared/EmpresaSuperAdminSelector";
 import { useAuth } from "~/lib/auth";
@@ -45,11 +56,21 @@ import {
 } from "../services/form.service";
 import { useCriarClientesBaseEmLote } from "../hooks/useClientesBase";
 import { FORM_PERGUNTA_TIPO_LABEL } from "../types";
-import type { RotasConfig, RotasFormPergunta, FormPerguntaTipo } from "../types";
+import type {
+  RotasConfig,
+  RotasFormPergunta,
+  FormPerguntaTipo,
+} from "../types";
 import toast from "react-hot-toast";
 
 export function ConfigRotasPage() {
-  const { empresaId, empresas, empresaSelecionada, setEmpresaSelecionada, isSuperAdmin } = useEmpresaSuperAdmin();
+  const {
+    empresaId,
+    empresas,
+    empresaSelecionada,
+    setEmpresaSelecionada,
+    isSuperAdmin,
+  } = useEmpresaSuperAdmin();
   const { user } = useAuth();
   const uploadEmLote = useCriarClientesBaseEmLote();
 
@@ -81,7 +102,9 @@ export function ConfigRotasPage() {
     setPerguntas(atualizadas);
 
     try {
-      await reordenarPerguntas(atualizadas.map(p => ({ id: p.id, ordem: p.ordem })));
+      await reordenarPerguntas(
+        atualizadas.map((p) => ({ id: p.id, ordem: p.ordem })),
+      );
       toast.success("Ordem atualizada!");
     } catch (err) {
       toast.error("Erro ao reordenar: " + (err as Error).message);
@@ -135,7 +158,10 @@ export function ConfigRotasPage() {
       return;
     }
 
-    if (["multipla_escolha", "selecao", "radio"].includes(novaPergunta.tipo) && novaPergunta.opcoes.length === 0) {
+    if (
+      ["multipla_escolha", "selecao", "radio"].includes(novaPergunta.tipo) &&
+      novaPergunta.opcoes.length === 0
+    ) {
       toast.error("Adicione pelo menos uma opção");
       return;
     }
@@ -151,7 +177,12 @@ export function ConfigRotasPage() {
         ativo: true,
       });
       setPerguntas((prev) => [...prev, pergunta]);
-      setNovaPergunta({ titulo: "", tipo: "texto_curto", opcoes: [], obrigatorio: true });
+      setNovaPergunta({
+        titulo: "",
+        tipo: "texto_curto",
+        opcoes: [],
+        obrigatorio: true,
+      });
       toast.success("Pergunta adicionada!");
     } catch (err) {
       toast.error((err as Error).message);
@@ -170,7 +201,8 @@ export function ConfigRotasPage() {
   }
 
   function handleDownloadTemplate() {
-    const csv = "nome,telefone,cidade,estado,bairro,rua,numero,cep,ticket_medio,categoria\n";
+    const csv =
+      "nome,telefone,cidade,estado,bairro,rua,numero,cep,ticket_medio,categoria\n";
     const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
     const link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
@@ -198,32 +230,32 @@ export function ConfigRotasPage() {
     }
 
     const clientes = lines.slice(1).map((line) => {
-        const values = line.split(",").map((v) => v.trim());
-        const row: Record<string, string> = {};
-        headers.forEach((h, i) => (row[h] = values[i] ?? ""));
+      const values = line.split(",").map((v) => v.trim());
+      const row: Record<string, string> = {};
+      headers.forEach((h, i) => (row[h] = values[i] ?? ""));
 
-        return {
-          empresa_id: empresaId,
-          usuario_id: user.id,
-          nome: row.nome,
-          telefone: row.telefone || null,
-          cidade: row.cidade || null,
-          estado: row.estado || null,
-          bairro: row.bairro || null,
-          rua: row.rua || null,
-          numero: row.numero || null,
-          cep: row.cep || null,
-          endereco_completo: null,
-          latitude: null,
-          longitude: null,
-          ticket_medio: row.ticket_medio ? Number(row.ticket_medio) : null,
-          categoria: row.categoria || null,
-          ultima_visita: null,
-          fonte: "csv" as const,
-          fonte_id: null,
-          ativo: true,
-        };
-      });
+      return {
+        empresa_id: empresaId,
+        usuario_id: user.id,
+        nome: row.nome,
+        telefone: row.telefone || null,
+        cidade: row.cidade || null,
+        estado: row.estado || null,
+        bairro: row.bairro || null,
+        rua: row.rua || null,
+        numero: row.numero || null,
+        cep: row.cep || null,
+        endereco_completo: null,
+        latitude: null,
+        longitude: null,
+        ticket_medio: row.ticket_medio ? Number(row.ticket_medio) : null,
+        categoria: row.categoria || null,
+        ultima_visita: null,
+        fonte: "csv" as const,
+        fonte_id: null,
+        ativo: true,
+      };
+    });
 
     try {
       const result = await uploadEmLote.mutateAsync(clientes);
@@ -257,7 +289,11 @@ export function ConfigRotasPage() {
         </div>
         {isSuperAdmin && empresas.length > 0 && (
           <div className="p-4 bg-surface border border-border/30 rounded-xl">
-            <EmpresaSuperAdminSelector empresas={empresas} value={empresaSelecionada} onChange={setEmpresaSelecionada} />
+            <EmpresaSuperAdminSelector
+              empresas={empresas}
+              value={empresaSelecionada}
+              onChange={setEmpresaSelecionada}
+            />
           </div>
         )}
         <div className="p-8 border border-dashed rounded-xl text-center text-muted-foreground">
@@ -277,7 +313,11 @@ export function ConfigRotasPage() {
           </p>
         </div>
         {isSuperAdmin && empresas.length > 0 && (
-          <EmpresaSuperAdminSelector empresas={empresas} value={empresaSelecionada} onChange={setEmpresaSelecionada} />
+          <EmpresaSuperAdminSelector
+            empresas={empresas}
+            value={empresaSelecionada}
+            onChange={setEmpresaSelecionada}
+          />
         )}
       </div>
 
@@ -304,7 +344,15 @@ export function ConfigRotasPage() {
                     value={config?.valor_km_reembolso ?? 0}
                     onChange={(e) =>
                       setConfig((prev) => ({
-                        ...(prev ?? { id: "", empresa_id: "", created_at: "", updated_at: "", valor_km_reembolso: 0, raio_permitido_metros: 300, google_maps_api_key: "" }),
+                        ...(prev ?? {
+                          id: "",
+                          empresa_id: "",
+                          created_at: "",
+                          updated_at: "",
+                          valor_km_reembolso: 0,
+                          raio_permitido_metros: 300,
+                          google_maps_api_key: "",
+                        }),
                         valor_km_reembolso: Number(e.target.value),
                       }))
                     }
@@ -319,7 +367,15 @@ export function ConfigRotasPage() {
                     value={config?.raio_permitido_metros ?? 300}
                     onChange={(e) =>
                       setConfig((prev) => ({
-                        ...(prev ?? { id: "", empresa_id: "", created_at: "", updated_at: "", valor_km_reembolso: 0, raio_permitido_metros: 300, google_maps_api_key: "" }),
+                        ...(prev ?? {
+                          id: "",
+                          empresa_id: "",
+                          created_at: "",
+                          updated_at: "",
+                          valor_km_reembolso: 0,
+                          raio_permitido_metros: 300,
+                          google_maps_api_key: "",
+                        }),
                         raio_permitido_metros: Number(e.target.value),
                       }))
                     }
@@ -337,20 +393,32 @@ export function ConfigRotasPage() {
                     value={config?.google_maps_api_key ?? ""}
                     onChange={(e) =>
                       setConfig((prev) => ({
-                        ...(prev ?? { id: "", empresa_id: "", created_at: "", updated_at: "", valor_km_reembolso: 0, raio_permitido_metros: 300, google_maps_api_key: "" }),
+                        ...(prev ?? {
+                          id: "",
+                          empresa_id: "",
+                          created_at: "",
+                          updated_at: "",
+                          valor_km_reembolso: 0,
+                          raio_permitido_metros: 300,
+                          google_maps_api_key: "",
+                        }),
                         google_maps_api_key: e.target.value,
                       }))
                     }
                   />
                   <p className="text-xs text-muted-foreground">
-                    Chave usada para calcular distâncias entre clientes nas rotas.
-                    Esta chave nunca é exposta ao navegador.
+                    Chave usada para calcular distâncias entre clientes nas
+                    rotas. Esta chave nunca é exposta ao navegador.
                   </p>
                 </div>
               </div>
 
               <Button onClick={handleSaveConfig} disabled={saving}>
-                {saving ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : <Save className="h-4 w-4 mr-2" />}
+                {saving ? (
+                  <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                ) : (
+                  <Save className="h-4 w-4 mr-2" />
+                )}
                 Salvar Configurações
               </Button>
             </CardContent>
@@ -362,7 +430,12 @@ export function ConfigRotasPage() {
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
               <CardTitle>Formulário Pós-Visita</CardTitle>
               {perguntas.length > 0 && (
-                <Button variant="outline" size="sm" onClick={() => setShowPreview(true)} className="gap-1.5">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setShowPreview(true)}
+                  className="gap-1.5"
+                >
                   <Eye className="h-4 w-4" />
                   Visualizar Preview
                 </Button>
@@ -427,7 +500,10 @@ export function ConfigRotasPage() {
                     <Input
                       value={novaPergunta.titulo}
                       onChange={(e) =>
-                        setNovaPergunta((prev) => ({ ...prev, titulo: e.target.value }))
+                        setNovaPergunta((prev) => ({
+                          ...prev,
+                          titulo: e.target.value,
+                        }))
                       }
                       placeholder="Ex: Observações gerais"
                     />
@@ -440,7 +516,11 @@ export function ConfigRotasPage() {
                         setNovaPergunta((prev) => ({
                           ...prev,
                           tipo: v as FormPerguntaTipo,
-                          opcoes: ["multipla_escolha", "selecao", "radio"].includes(v)
+                          opcoes: [
+                            "multipla_escolha",
+                            "selecao",
+                            "radio",
+                          ].includes(v)
                             ? prev.opcoes
                             : [],
                         }))
@@ -450,17 +530,21 @@ export function ConfigRotasPage() {
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        {Object.entries(FORM_PERGUNTA_TIPO_LABEL).map(([key, label]) => (
-                          <SelectItem key={key} value={key}>
-                            {label}
-                          </SelectItem>
-                        ))}
+                        {Object.entries(FORM_PERGUNTA_TIPO_LABEL).map(
+                          ([key, label]) => (
+                            <SelectItem key={key} value={key}>
+                              {label}
+                            </SelectItem>
+                          ),
+                        )}
                       </SelectContent>
                     </Select>
                   </div>
                 </div>
 
-                {["multipla_escolha", "selecao", "radio"].includes(novaPergunta.tipo) && (
+                {["multipla_escolha", "selecao", "radio"].includes(
+                  novaPergunta.tipo,
+                ) && (
                   <div className="space-y-1.5">
                     <Label>Opções (uma por linha)</Label>
                     <Textarea
@@ -468,7 +552,9 @@ export function ConfigRotasPage() {
                       onChange={(e) =>
                         setNovaPergunta((prev) => ({
                           ...prev,
-                          opcoes: e.target.value.split("\n").filter((o) => o.trim()),
+                          opcoes: e.target.value
+                            .split("\n")
+                            .filter((o) => o.trim()),
                         }))
                       }
                       placeholder="Opção 1&#10;Opção 2&#10;Opção 3"
@@ -524,7 +610,8 @@ export function ConfigRotasPage() {
                 </div>
               </div>
               <p className="text-sm text-muted-foreground">
-                O template CSV contém as colunas: nome, telefone, cidade, estado, bairro, rua, numero, cep, ticket_medio, categoria.
+                O template CSV contém as colunas: nome, telefone, cidade,
+                estado, bairro, rua, numero, cep, ticket_medio, categoria.
                 Apenas a coluna "nome" é obrigatória.
               </p>
             </CardContent>
@@ -532,7 +619,10 @@ export function ConfigRotasPage() {
         </TabsContent>
       </Tabs>
 
-      <AlertDialog open={!!showExcluir} onOpenChange={(o) => !o && setShowExcluir(null)}>
+      <AlertDialog
+        open={!!showExcluir}
+        onOpenChange={(o) => !o && setShowExcluir(null)}
+      >
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Excluir pergunta?</AlertDialogTitle>
@@ -558,15 +648,21 @@ export function ConfigRotasPage() {
           <DialogHeader>
             <DialogTitle>Preview do Formulário</DialogTitle>
             <DialogDescription>
-              Veja como o formulário pós-visita será exibido no celular do consultor.
+              Veja como o formulário pós-visita será exibido no celular do
+              consultor.
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-5 py-4 max-h-[60vh] overflow-y-auto pr-2">
             {perguntas.map((pergunta) => (
-              <div key={pergunta.id} className="space-y-2 p-4 border border-border/30 rounded-xl bg-surface/30">
+              <div
+                key={pergunta.id}
+                className="space-y-2 p-4 border border-border/30 rounded-xl bg-surface/30"
+              >
                 <Label className="text-sm font-semibold flex items-center gap-1.5 text-text-main">
                   {pergunta.titulo}
-                  {pergunta.obrigatorio && <span className="text-destructive font-bold">*</span>}
+                  {pergunta.obrigatorio && (
+                    <span className="text-destructive font-bold">*</span>
+                  )}
                 </Label>
                 <div className="text-[10px] text-text-muted font-mono uppercase tracking-wider mb-2">
                   Tipo: {FORM_PERGUNTA_TIPO_LABEL[pergunta.tipo]}
@@ -586,14 +682,39 @@ export function ConfigRotasPage() {
   );
 }
 
-function PreviewInput({ tipo, opcoes }: { tipo: FormPerguntaTipo; opcoes: string[] }) {
+function PreviewInput({
+  tipo,
+  opcoes,
+}: {
+  tipo: FormPerguntaTipo;
+  opcoes: string[];
+}) {
   switch (tipo) {
     case "texto_curto":
-      return <Input disabled placeholder="Resposta curta..." className="bg-surface-hover/20 cursor-not-allowed" />;
+      return (
+        <Input
+          disabled
+          placeholder="Resposta curta..."
+          className="bg-surface-hover/20 cursor-not-allowed"
+        />
+      );
     case "texto_longo":
-      return <Textarea disabled placeholder="Resposta detalhada..." rows={2} className="bg-surface-hover/20 cursor-not-allowed resize-none" />;
+      return (
+        <Textarea
+          disabled
+          placeholder="Resposta detalhada..."
+          rows={2}
+          className="bg-surface-hover/20 cursor-not-allowed resize-none"
+        />
+      );
     case "data":
-      return <Input type="date" disabled className="bg-surface-hover/20 cursor-not-allowed" />;
+      return (
+        <Input
+          type="date"
+          disabled
+          className="bg-surface-hover/20 cursor-not-allowed"
+        />
+      );
     case "selecao":
       return (
         <Select disabled>
@@ -607,7 +728,11 @@ function PreviewInput({ tipo, opcoes }: { tipo: FormPerguntaTipo; opcoes: string
         <div className="space-y-2 pl-1">
           {opcoes.map((op) => (
             <div key={op} className="flex items-center space-x-2.5">
-              <input type="radio" disabled className="h-4 w-4 accent-accent opacity-50 cursor-not-allowed" />
+              <input
+                type="radio"
+                disabled
+                className="h-4 w-4 accent-accent opacity-50 cursor-not-allowed"
+              />
               <span className="text-sm text-text-muted select-none">{op}</span>
             </div>
           ))}
@@ -618,7 +743,11 @@ function PreviewInput({ tipo, opcoes }: { tipo: FormPerguntaTipo; opcoes: string
         <div className="space-y-2 pl-1">
           {opcoes.map((op) => (
             <div key={op} className="flex items-center space-x-2.5">
-              <input type="checkbox" disabled className="h-4 w-4 rounded border-border/50 accent-accent opacity-50 cursor-not-allowed" />
+              <input
+                type="checkbox"
+                disabled
+                className="h-4 w-4 rounded border-border/50 accent-accent opacity-50 cursor-not-allowed"
+              />
               <span className="text-sm text-text-muted select-none">{op}</span>
             </div>
           ))}

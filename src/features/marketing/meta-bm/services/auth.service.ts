@@ -1,12 +1,17 @@
 import { supabase } from "~/core/supabase";
 
-export async function conectarMeta(empresaId: string, code: string): Promise<boolean> {
+export async function conectarMeta(
+  empresaId: string,
+  code: string,
+): Promise<boolean> {
   const { error } = await supabase.from("mktg_meta_contas").insert({
     empresa_id: empresaId,
     meta_user_id: code,
     access_token: code,
     status: "conectado",
-    token_expires_at: new Date(Date.now() + 60 * 24 * 60 * 60 * 1000).toISOString(),
+    token_expires_at: new Date(
+      Date.now() + 60 * 24 * 60 * 60 * 1000,
+    ).toISOString(),
   });
   return !error;
 }

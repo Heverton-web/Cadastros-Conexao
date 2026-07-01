@@ -3,7 +3,12 @@ import type { RotaTrajeto, RotaVisita } from "../types";
 import { calcularDistanciaGoogle } from "./google-maps.service";
 
 // Haversine formula for distance calculation (fallback)
-function haversineDistance(lat1: number, lng1: number, lat2: number, lng2: number): number {
+function haversineDistance(
+  lat1: number,
+  lng1: number,
+  lat2: number,
+  lng2: number,
+): number {
   const R = 6371;
   const dLat = ((lat2 - lat1) * Math.PI) / 180;
   const dLng = ((lng2 - lng1) * Math.PI) / 180;
@@ -35,7 +40,12 @@ export async function calcularDistancia(
     console.warn("[trajetos] Edge Function fallback, usando Haversine:", err);
   }
 
-  const distancia = haversineDistance(origem.lat, origem.lng, destino.lat, destino.lng);
+  const distancia = haversineDistance(
+    origem.lat,
+    origem.lng,
+    destino.lat,
+    destino.lng,
+  );
   const duracaoMinutos = Math.round((distancia / 40) * 60);
 
   return {
@@ -44,7 +54,9 @@ export async function calcularDistancia(
   };
 }
 
-export async function criarTrajeto(trajeto: Omit<RotaTrajeto, "id" | "created_at">): Promise<RotaTrajeto> {
+export async function criarTrajeto(
+  trajeto: Omit<RotaTrajeto, "id" | "created_at">,
+): Promise<RotaTrajeto> {
   const { data, error } = await supabase
     .from("rotas_trajetos")
     .insert(trajeto)
@@ -54,7 +66,10 @@ export async function criarTrajeto(trajeto: Omit<RotaTrajeto, "id" | "created_at
   return data as RotaTrajeto;
 }
 
-export async function atualizarTrajeto(id: string, updates: Partial<RotaTrajeto>): Promise<RotaTrajeto> {
+export async function atualizarTrajeto(
+  id: string,
+  updates: Partial<RotaTrajeto>,
+): Promise<RotaTrajeto> {
   const { data, error } = await supabase
     .from("rotas_trajetos")
     .update(updates)
@@ -65,7 +80,9 @@ export async function atualizarTrajeto(id: string, updates: Partial<RotaTrajeto>
   return data as RotaTrajeto;
 }
 
-export async function buscarTrajetoPorCliente(rotaClienteId: string): Promise<RotaTrajeto | null> {
+export async function buscarTrajetoPorCliente(
+  rotaClienteId: string,
+): Promise<RotaTrajeto | null> {
   const { data, error } = await supabase
     .from("rotas_trajetos")
     .select("*")
@@ -75,7 +92,9 @@ export async function buscarTrajetoPorCliente(rotaClienteId: string): Promise<Ro
   return data as RotaTrajeto | null;
 }
 
-export async function criarVisita(visita: Omit<RotaVisita, "id" | "created_at">): Promise<RotaVisita> {
+export async function criarVisita(
+  visita: Omit<RotaVisita, "id" | "created_at">,
+): Promise<RotaVisita> {
   const { data, error } = await supabase
     .from("rotas_visitas")
     .insert(visita)
@@ -85,7 +104,10 @@ export async function criarVisita(visita: Omit<RotaVisita, "id" | "created_at">)
   return data as RotaVisita;
 }
 
-export async function atualizarVisita(id: string, updates: Partial<RotaVisita>): Promise<RotaVisita> {
+export async function atualizarVisita(
+  id: string,
+  updates: Partial<RotaVisita>,
+): Promise<RotaVisita> {
   const { data, error } = await supabase
     .from("rotas_visitas")
     .update(updates)
@@ -96,7 +118,9 @@ export async function atualizarVisita(id: string, updates: Partial<RotaVisita>):
   return data as RotaVisita;
 }
 
-export async function buscarVisitaPorCliente(rotaClienteId: string): Promise<RotaVisita | null> {
+export async function buscarVisitaPorCliente(
+  rotaClienteId: string,
+): Promise<RotaVisita | null> {
   const { data, error } = await supabase
     .from("rotas_visitas")
     .select("*")
@@ -122,9 +146,18 @@ export async function calcularEstatisticasRota(rotaId: string): Promise<{
     .select("id")
     .eq("rota_id", rotaId);
 
-  const total_km = (trajetos ?? []).reduce((sum, t) => sum + (t.distancia_km ?? 0), 0);
-  const total_tempo_trajeto_min = (trajetos ?? []).reduce((sum, t) => sum + (t.duracao_minutos ?? 0), 0);
-  const valor_reembolso = (trajetos ?? []).reduce((sum, t) => sum + (t.valor_reembolso ?? 0), 0);
+  const total_km = (trajetos ?? []).reduce(
+    (sum, t) => sum + (t.distancia_km ?? 0),
+    0,
+  );
+  const total_tempo_trajeto_min = (trajetos ?? []).reduce(
+    (sum, t) => sum + (t.duracao_minutos ?? 0),
+    0,
+  );
+  const valor_reembolso = (trajetos ?? []).reduce(
+    (sum, t) => sum + (t.valor_reembolso ?? 0),
+    0,
+  );
 
   return {
     total_visitas: visitas?.length ?? 0,

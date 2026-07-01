@@ -16,7 +16,13 @@ const TABS = [
 
 export function ConfigDespesasPage() {
   const [tab, setTab] = useState("tipos");
-  const { empresaId, empresas, empresaSelecionada, setEmpresaSelecionada, isSuperAdmin } = useEmpresaSuperAdmin();
+  const {
+    empresaId,
+    empresas,
+    empresaSelecionada,
+    setEmpresaSelecionada,
+    isSuperAdmin,
+  } = useEmpresaSuperAdmin();
 
   return (
     <div className="space-y-4 md:space-y-6">
@@ -27,7 +33,11 @@ export function ConfigDespesasPage() {
       />
 
       {isSuperAdmin && empresas.length > 0 && (
-        <EmpresaSuperAdminSelector empresas={empresas} value={empresaSelecionada} onChange={setEmpresaSelecionada} />
+        <EmpresaSuperAdminSelector
+          empresas={empresas}
+          value={empresaSelecionada}
+          onChange={setEmpresaSelecionada}
+        />
       )}
 
       <div className="flex gap-1 border-b border-border overflow-x-auto">
@@ -39,7 +49,7 @@ export function ConfigDespesasPage() {
               "flex items-center gap-1.5 px-3 py-2.5 text-sm font-medium transition-colors border-b-2 -mb-px whitespace-nowrap",
               tab === t.key
                 ? "text-accent border-accent"
-                : "text-text-muted border-transparent hover:text-text-main"
+                : "text-text-muted border-transparent hover:text-text-main",
             )}
           >
             <t.icon size={16} />

@@ -2,7 +2,7 @@ import { defineConfig, type Plugin } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import { resolve } from "path";
-import { execSync } from "child_process";
+import { execSync, spawn } from "child_process";
 
 function testRunnerPlugin(): Plugin {
   return {
@@ -17,6 +17,8 @@ function testRunnerPlugin(): Plugin {
 
         res.setHeader("Content-Type", "application/json");
         res.setHeader("Access-Control-Allow-Origin", "*");
+        res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+        res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
         if (req.method === "OPTIONS") {
           res.statusCode = 200;
@@ -29,7 +31,11 @@ function testRunnerPlugin(): Plugin {
         req.on("end", () => {
           try {
             const { testFiles } = JSON.parse(body || "{}");
-            if (!testFiles || !Array.isArray(testFiles) || testFiles.length === 0) {
+            if (
+              !testFiles ||
+              !Array.isArray(testFiles) ||
+              testFiles.length === 0
+            ) {
               res.statusCode = 400;
               res.end(JSON.stringify({ error: "testFiles array required" }));
               return;
@@ -37,14 +43,57 @@ function testRunnerPlugin(): Plugin {
 
             const paths = testFiles.join(" ");
             const cwd = process.cwd();
-            const stdout = execSync(
-              `npx vitest run ${paths} --reporter=json --no-file-parallelism`,
-              { cwd, encoding: "utf-8", timeout: 120000 }
+
+            const child = spawn(
+              "npx",
+              [
+                "vitest",
+                "run",
+                paths,
+                "--reporter=json",
+                "--reporter=verbose",
+                "--no-file-parallelism",
+              ],
+              {
+                cwd,
+                shell: true,
+                env: { ...process.env, FORCE_COLOR: "0" },
+              },
             );
-            res.end(JSON.stringify({ success: true, output: stdout }));
+
+            let stdout = "";
+            let stderr = "";
+
+            child.stdout.on("data", (data: Buffer) => {
+              stdout += data.toString();
+            });
+
+            child.stderr.on("data", (data: Buffer) => {
+              stderr += data.toString();
+            });
+
+            child.on("close", (code) => {
+              const output = stdout || stderr;
+              res.end(
+                JSON.stringify({
+                  success: code === 0,
+                  output,
+                  exitCode: code,
+                }),
+              );
+            });
+
+            child.on("error", (err) => {
+              res.end(
+                JSON.stringify({
+                  success: false,
+                  output: err.message,
+                  exitCode: 1,
+                }),
+              );
+            });
           } catch (err: any) {
-            const output = err.stdout || err.stderr || err.message;
-            res.end(JSON.stringify({ success: false, output }));
+            res.end(JSON.stringify({ success: false, output: err.message }));
           }
         });
       });
@@ -63,10 +112,14 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: {
-          'react-vendor': ['react', 'react-dom'],
-          'tanstack': ['@tanstack/react-router', '@tanstack/react-query'],
-          'radix': ['@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu', '@radix-ui/react-alert-dialog'],
-          'charts': ['recharts'],
+          "react-vendor": ["react", "react-dom"],
+          tanstack: ["@tanstack/react-router", "@tanstack/react-query"],
+          radix: [
+            "@radix-ui/react-dialog",
+            "@radix-ui/react-dropdown-menu",
+            "@radix-ui/react-alert-dialog",
+          ],
+          charts: ["recharts"],
         },
       },
     },

@@ -93,21 +93,37 @@ export const DEFAULT_EMPRESA_THEME: EmpresaLinktreeTheme = {
   },
 };
 
-export const SLUG_RESERVED = ["admin", "dashboard", "api", "auth", "linktree", "e"];
+export const SLUG_RESERVED = [
+  "admin",
+  "dashboard",
+  "api",
+  "auth",
+  "linktree",
+  "e",
+];
 
 export function normalizeEmpresaTheme(input: unknown): EmpresaLinktreeTheme {
   const t = (input ?? {}) as Partial<EmpresaLinktreeTheme>;
   return {
     ...DEFAULT_EMPRESA_THEME,
     ...t,
-    background: { ...DEFAULT_EMPRESA_THEME.background, ...(t.background ?? {}) },
+    background: {
+      ...DEFAULT_EMPRESA_THEME.background,
+      ...(t.background ?? {}),
+    },
     buttons: { ...DEFAULT_EMPRESA_THEME.buttons, ...(t.buttons ?? {}) },
-    typography: { ...DEFAULT_EMPRESA_THEME.typography, ...(t.typography ?? {}) },
+    typography: {
+      ...DEFAULT_EMPRESA_THEME.typography,
+      ...(t.typography ?? {}),
+    },
   };
 }
 
 export function isValidSlug(slug: string): boolean {
-  return /^[a-z0-9]([a-z0-9-]{1,48}[a-z0-9])?$/.test(slug) && !SLUG_RESERVED.includes(slug);
+  return (
+    /^[a-z0-9]([a-z0-9-]{1,48}[a-z0-9])?$/.test(slug) &&
+    !SLUG_RESERVED.includes(slug)
+  );
 }
 
 export type EmpresaLinkInput = {

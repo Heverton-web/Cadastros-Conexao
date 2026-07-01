@@ -1,4 +1,10 @@
-import { createContext, useContext, useState, useCallback, type ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  useCallback,
+  type ReactNode,
+} from "react";
 import type { FunisFilters } from "../types";
 
 const defaultFilters: FunisFilters = {
@@ -46,7 +52,9 @@ export function FunisFiltersProvider({ children }: { children: ReactNode }) {
   ].reduce((a, b) => a + b, 0);
 
   return (
-    <FunisFiltersContext.Provider value={{ filters, setFilters, resetFilters, activeFilterCount }}>
+    <FunisFiltersContext.Provider
+      value={{ filters, setFilters, resetFilters, activeFilterCount }}
+    >
       {children}
     </FunisFiltersContext.Provider>
   );
@@ -54,6 +62,7 @@ export function FunisFiltersProvider({ children }: { children: ReactNode }) {
 
 export function useFunisFilters() {
   const ctx = useContext(FunisFiltersContext);
-  if (!ctx) throw new Error("useFunisFilters must be used within FunisFiltersProvider");
+  if (!ctx)
+    throw new Error("useFunisFilters must be used within FunisFiltersProvider");
   return ctx;
 }

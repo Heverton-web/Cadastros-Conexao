@@ -11,7 +11,9 @@ export async function fetchHubIntegrations(empresaId: string) {
   return data as HubSystemIntegrations | null;
 }
 
-export async function upsertHubIntegrations(integrations: Partial<HubSystemIntegrations>) {
+export async function upsertHubIntegrations(
+  integrations: Partial<HubSystemIntegrations>,
+) {
   const { data, error } = await supabase
     .from("hub_system_integrations")
     .upsert(integrations, { onConflict: "empresa_id" })
@@ -21,7 +23,11 @@ export async function upsertHubIntegrations(integrations: Partial<HubSystemInteg
   return data as HubSystemIntegrations;
 }
 
-export async function toggleHubProvider(empresaId: string, provider: string, active: boolean) {
+export async function toggleHubProvider(
+  empresaId: string,
+  provider: string,
+  active: boolean,
+) {
   const updates: Record<string, unknown> = {};
   updates[`${provider}_active`] = active;
   updates.empresa_id = empresaId;

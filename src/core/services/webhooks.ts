@@ -1,5 +1,8 @@
 import { supabase } from "~/core/supabase";
-import { dispararNotificacaoIndividual, type NotificacaoTemplate } from "~/core/services/notificacoes";
+import {
+  dispararNotificacaoIndividual,
+  type NotificacaoTemplate,
+} from "~/core/services/notificacoes";
 import { getActionExecutor } from "~/registry";
 
 export type Webhook = {
@@ -49,10 +52,11 @@ export type WebhookLog = {
   created_at: string;
 };
 
-export async function listarWebhooks(empresaId?: string | null, moduloKey?: string | null) {
-  let query = supabase
-    .from("webhooks")
-    .select("*");
+export async function listarWebhooks(
+  empresaId?: string | null,
+  moduloKey?: string | null,
+) {
+  let query = supabase.from("webhooks").select("*");
 
   if (empresaId) {
     query = query.eq("empresa_id", empresaId);
@@ -64,8 +68,7 @@ export async function listarWebhooks(empresaId?: string | null, moduloKey?: stri
     query = query.eq("modulo_key", moduloKey);
   }
 
-  const { data, error } = await query
-    .order("created_at", { ascending: false });
+  const { data, error } = await query.order("created_at", { ascending: false });
   if (error) throw error;
   return data as Webhook[];
 }
@@ -80,7 +83,10 @@ export async function criarWebhook(input: WebhookInput) {
   return data as Webhook;
 }
 
-export async function atualizarWebhook(id: string, input: Partial<WebhookInput>) {
+export async function atualizarWebhook(
+  id: string,
+  input: Partial<WebhookInput>,
+) {
   const { data, error } = await supabase
     .from("webhooks")
     .update({ ...input, updated_at: new Date().toISOString() })
@@ -96,10 +102,7 @@ export async function toggleWebhook(id: string, ativo: boolean) {
 }
 
 export async function deletarWebhook(id: string) {
-  const { error } = await supabase
-    .from("webhooks")
-    .delete()
-    .eq("id", id);
+  const { error } = await supabase.from("webhooks").delete().eq("id", id);
   if (error) throw error;
 }
 
@@ -123,17 +126,23 @@ type WorkflowTask = {
   raw: any;
 };
 
-export async function dispararWebhooks(evento: string, payload: Record<string, any>, empresaId?: string | null) {
+export async function dispararWebhooks(
+  evento: string,
+  payload: Record<string, any>,
+  empresaId?: string | null,
+) {
   Promise.resolve().then(async () => {
     try {
       let usuarioInfo = {
         usuario_nome: "Sistema",
         usuario_email: "",
-        usuario_role: "system"
+        usuario_role: "system",
       };
 
       try {
-        const { data: { user } } = await supabase.auth.getUser();
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
         if (user) {
           const { data: profile } = await supabase
             .from("profiles")
@@ -142,9 +151,13 @@ export async function dispararWebhooks(evento: string, payload: Record<string, a
             .maybeSingle();
 
           usuarioInfo = {
-            usuario_nome: profile?.nome || user.user_metadata?.nome || user.email || "Usuário",
+            usuario_nome:
+              profile?.nome ||
+              user.user_metadata?.nome ||
+              user.email ||
+              "Usuário",
             usuario_email: user.email || "",
-            usuario_role: profile?.role || "user"
+            usuario_role: profile?.role || "user",
           };
         }
       } catch (errUser) {
@@ -164,7 +177,7 @@ export async function dispararWebhooks(evento: string, payload: Record<string, a
             cadastroInfo = {
               ...cad,
               lead_nome: cad.colaborador || cad.nome || "",
-              email: cad.email || ""
+              email: cad.email || "",
             };
           }
         } catch (errCad) {
@@ -172,7 +185,11 @@ export async function dispararWebhooks(evento: string, payload: Record<string, a
         }
       }
 
-      let webhooksQuery = supabase.from("webhooks").select("*").eq("evento", evento).eq("ativo", true);
+      let webhooksQuery = supabase
+        .from("webhooks")
+        .select("*")
+        .eq("evento", evento)
+        .eq("ativo", true);
       if (empresaId) {
         webhooksQuery = webhooksQuery.eq("empresa_id", empresaId);
       } else {
@@ -180,9 +197,17 @@ export async function dispararWebhooks(evento: string, payload: Record<string, a
       }
 
       const [notifsRes, webhooksRes, apisRes] = await Promise.all([
-        supabase.from("notificacoes_templates").select("*").eq("evento", evento).eq("ativo", true),
+        supabase
+          .from("notificacoes_templates")
+          .select("*")
+          .eq("evento", evento)
+          .eq("ativo", true),
         webhooksQuery,
-        supabase.from("api_connectors").select("*").eq("evento", evento).eq("is_active", true)
+        supabase
+          .from("api_connectors")
+          .select("*")
+          .eq("evento", evento)
+          .eq("is_active", true),
       ]);
 
       const tasks: WorkflowTask[] = [];
@@ -194,7 +219,7 @@ export async function dispararWebhooks(evento: string, payload: Record<string, a
             type: "notification",
             ordem: n.ordem ?? 0,
             created_at: n.created_at || "",
-            raw: n
+            raw: n,
           });
         });
       }
@@ -206,7 +231,7 @@ export async function dispararWebhooks(evento: string, payload: Record<string, a
             type: "webhook",
             ordem: w.ordem ?? 0,
             created_at: w.created_at || "",
-            raw: w
+            raw: w,
           });
         });
       }
@@ -218,25 +243,34 @@ export async function dispararWebhooks(evento: string, payload: Record<string, a
             type: "api_connector",
             ordem: a.ordem ?? 0,
             created_at: a.created_at || "",
-            raw: a
+            raw: a,
           });
         });
       }
 
-      const textToScan = JSON.stringify(tasks.map(t => t.raw)) + JSON.stringify(payload);
-      const matches = [...textToScan.matchAll(/{{([a-zA-Z0-9_]+)\.([a-zA-Z0-9_]+)}}/g)];
+      const textToScan =
+        JSON.stringify(tasks.map((t) => t.raw)) + JSON.stringify(payload);
+      const matches = [
+        ...textToScan.matchAll(/{{([a-zA-Z0-9_]+)\.([a-zA-Z0-9_]+)}}/g),
+      ];
 
       const tabelasRequisitadas = new Set<string>();
-      matches.forEach(m => tabelasRequisitadas.add(m[1]));
+      matches.forEach((m) => tabelasRequisitadas.add(m[1]));
 
       const dadosTabelas: Record<string, any> = {};
 
       for (const tab of tabelasRequisitadas) {
         try {
           if (tab === "profiles") {
-            const { data: { user } } = await supabase.auth.getUser();
+            const {
+              data: { user },
+            } = await supabase.auth.getUser();
             if (user) {
-              const { data: prof } = await supabase.from("profiles").select("*").eq("id", user.id).maybeSingle();
+              const { data: prof } = await supabase
+                .from("profiles")
+                .select("*")
+                .eq("id", user.id)
+                .maybeSingle();
               if (prof) {
                 Object.entries(prof).forEach(([col, val]) => {
                   dadosTabelas[`profiles.${col}`] = val;
@@ -244,8 +278,13 @@ export async function dispararWebhooks(evento: string, payload: Record<string, a
               }
             }
           } else if (cadastroId) {
-            const campoFiltro = (tab === "cadastros" || tab === "clientes") ? "id" : "cadastro_id";
-            const { data: registro } = await supabase.from(tab).select("*").eq(campoFiltro, cadastroId).maybeSingle();
+            const campoFiltro =
+              tab === "cadastros" || tab === "clientes" ? "id" : "cadastro_id";
+            const { data: registro } = await supabase
+              .from(tab)
+              .select("*")
+              .eq(campoFiltro, cadastroId)
+              .maybeSingle();
             if (registro) {
               Object.entries(registro).forEach(([col, val]) => {
                 dadosTabelas[`${tab}.${col}`] = val;
@@ -253,7 +292,10 @@ export async function dispararWebhooks(evento: string, payload: Record<string, a
             }
           }
         } catch (errTab) {
-          console.error(`Erro ao carregar dados dinâmicos da tabela ${tab}:`, errTab);
+          console.error(
+            `Erro ao carregar dados dinâmicos da tabela ${tab}:`,
+            errTab,
+          );
         }
       }
 
@@ -261,7 +303,7 @@ export async function dispararWebhooks(evento: string, payload: Record<string, a
         ...cadastroInfo,
         ...payload,
         ...usuarioInfo,
-        ...dadosTabelas
+        ...dadosTabelas,
       };
 
       tasks.sort((a, b) => {
@@ -272,7 +314,10 @@ export async function dispararWebhooks(evento: string, payload: Record<string, a
       for (const task of tasks) {
         try {
           if (task.type === "notification") {
-            await dispararNotificacaoIndividual(task.raw as NotificacaoTemplate, payloadCompleto);
+            await dispararNotificacaoIndividual(
+              task.raw as NotificacaoTemplate,
+              payloadCompleto,
+            );
           } else if (task.type === "webhook") {
             const wh = task.raw as Webhook;
             const body = { ...wh.body_template, ...payloadCompleto, evento };
@@ -301,21 +346,29 @@ export async function dispararWebhooks(evento: string, payload: Record<string, a
           } else if (task.type === "api_connector") {
             const conn = task.raw as { id: string; url: string };
             const executor = getActionExecutor("api_connector");
-            const result = executor ? await executor(conn.id, payloadCompleto) : null;
+            const result = executor
+              ? await executor(conn.id, payloadCompleto)
+              : null;
 
             await supabase.from("webhook_logs").insert({
               webhook_id: null,
               evento,
               url: conn.url,
               status_code: result?.status || 200,
-              resposta: typeof result?.data === "object" ? JSON.stringify(result.data).slice(0, 2000) : String(result?.data).slice(0, 2000),
-              sucesso: (result?.status >= 200 && result?.status < 300),
+              resposta:
+                typeof result?.data === "object"
+                  ? JSON.stringify(result.data).slice(0, 2000)
+                  : String(result?.data).slice(0, 2000),
+              sucesso: result?.status >= 200 && result?.status < 300,
               payload_enviado: payloadCompleto,
               empresa_id: empresaId,
             });
           }
         } catch (stepErr: any) {
-          console.error(`Erro ao disparar passo ${task.type} (${task.id}):`, stepErr);
+          console.error(
+            `Erro ao disparar passo ${task.type} (${task.id}):`,
+            stepErr,
+          );
 
           try {
             await supabase.from("webhook_logs").insert({
@@ -323,7 +376,9 @@ export async function dispararWebhooks(evento: string, payload: Record<string, a
               evento,
               url: task.raw?.url || "N/A",
               status_code: null,
-              resposta: `Falha no passo ${task.type}: ` + (stepErr.message?.slice(0, 1900) || "Erro desconhecido"),
+              resposta:
+                `Falha no passo ${task.type}: ` +
+                (stepErr.message?.slice(0, 1900) || "Erro desconhecido"),
               sucesso: false,
               payload_enviado: payload,
               empresa_id: empresaId,
@@ -343,7 +398,7 @@ export async function dispararEventoModulo(
   moduloKey: string,
   eventoKey: string,
   payload: Record<string, any>,
-  empresaId?: string | null
+  empresaId?: string | null,
 ) {
   let query = supabase
     .from("webhooks")
@@ -361,7 +416,10 @@ export async function dispararEventoModulo(
   const { data: webhooks, error } = await query;
 
   if (error) {
-    console.error(`Erro ao buscar webhooks do módulo ${moduloKey}/${eventoKey}:`, error);
+    console.error(
+      `Erro ao buscar webhooks do módulo ${moduloKey}/${eventoKey}:`,
+      error,
+    );
     return;
   }
 
@@ -369,7 +427,12 @@ export async function dispararEventoModulo(
 
   for (const wh of webhooks) {
     try {
-      const body = { ...wh.body_template, ...payload, evento: eventoKey, modulo: moduloKey };
+      const body = {
+        ...wh.body_template,
+        ...payload,
+        evento: eventoKey,
+        modulo: moduloKey,
+      };
       const headers: Record<string, string> = {
         "Content-Type": "application/json",
         ...(wh.headers || {}),

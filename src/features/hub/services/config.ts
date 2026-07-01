@@ -21,12 +21,20 @@ export async function upsertHubConfig(config: Partial<HubSystemConfig>) {
   return data as HubSystemConfig;
 }
 
-export async function updateHubTheme(empresaId: string, themeDark: Record<string, string>, environmentThemes?: Record<string, unknown>) {
+export async function updateHubTheme(
+  empresaId: string,
+  themeDark: Record<string, string>,
+  environmentThemes?: Record<string, unknown>,
+) {
   const { data, error } = await supabase
     .from("hub_system_config")
     .upsert(
-      { empresa_id: empresaId, theme_dark: themeDark, environment_themes: environmentThemes || {} },
-      { onConflict: "empresa_id" }
+      {
+        empresa_id: empresaId,
+        theme_dark: themeDark,
+        environment_themes: environmentThemes || {},
+      },
+      { onConflict: "empresa_id" },
     )
     .select()
     .single();

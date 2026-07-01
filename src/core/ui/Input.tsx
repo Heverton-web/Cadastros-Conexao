@@ -34,7 +34,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
               "min-h-[44px]",
               isPassword && "pr-12",
               error && "border-error focus:border-error focus:ring-error/30",
-              className
+              className,
             )}
             {...props}
           />
@@ -49,12 +49,10 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             </button>
           )}
         </div>
-        {error && (
-          <span className="text-xs text-error">{error}</span>
-        )}
+        {error && <span className="text-xs text-error">{error}</span>}
       </div>
     );
-  }
+  },
 );
 Input.displayName = "Input";
 

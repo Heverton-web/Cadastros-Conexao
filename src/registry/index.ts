@@ -22,12 +22,6 @@ export {
   type ModuleEvent,
 } from "./modules";
 
-export {
-  registerActionExecutor,
-  getActionExecutor,
-} from "./executors";
+export { registerActionExecutor, getActionExecutor } from "./executors";
 
-export {
-  registerPermissionDefaults,
-  getMergedDefaults,
-} from "./defaults";
+export { registerPermissionDefaults, getMergedDefaults } from "./defaults";

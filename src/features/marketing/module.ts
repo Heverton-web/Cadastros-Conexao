@@ -13,6 +13,14 @@ export const marketingModule: ModuleDefinition = {
   abas: [],
   events: [],
   setup: () => {
-    registerNavItem({ id: "marketing", label: "Marketing", icon: Megaphone, to: "/marketing/dashboard", permissionCheck: () => true, order: 30, moduloKey: "marketing", isGroup: true });
+    registerNavItem({
+      id: "marketing",
+      label: "Marketing",
+      icon: Megaphone,
+      to: "/marketing/dashboard",
+      permissionCheck: () => true,
+      order: 30,
+      moduloKey: "marketing",
+    });
   },
 };

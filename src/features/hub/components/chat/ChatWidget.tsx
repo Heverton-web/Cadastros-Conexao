@@ -30,9 +30,15 @@ export function ChatWidget() {
     setLoading(true);
     try {
       const result = await sendHubChatMessage(userMsg, empresa?.id || "");
-      setMessages((prev) => [...prev, { role: "assistant", content: result.reply }]);
+      setMessages((prev) => [
+        ...prev,
+        { role: "assistant", content: result.reply },
+      ]);
     } catch {
-      setMessages((prev) => [...prev, { role: "assistant", content: "Erro ao conectar com o chatbot." }]);
+      setMessages((prev) => [
+        ...prev,
+        { role: "assistant", content: "Erro ao conectar com o chatbot." },
+      ]);
     } finally {
       setLoading(false);
     }
@@ -60,18 +66,27 @@ export function ChatWidget() {
       </div>
       <div ref={scrollRef} className="flex-1 space-y-3 overflow-y-auto p-3">
         {messages.length === 0 && (
-          <p className="py-8 text-center text-sm text-muted-foreground">Como posso ajudar?</p>
+          <p className="py-8 text-center text-sm text-muted-foreground">
+            Como posso ajudar?
+          </p>
         )}
         {messages.map((msg, i) => (
-          <div key={i} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
-            <div className={`max-w-[80%] rounded-lg px-3 py-2 text-sm ${msg.role === "user" ? "bg-primary text-primary-foreground" : "bg-muted"}`}>
+          <div
+            key={i}
+            className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
+          >
+            <div
+              className={`max-w-[80%] rounded-lg px-3 py-2 text-sm ${msg.role === "user" ? "bg-primary text-primary-foreground" : "bg-muted"}`}
+            >
               {msg.content}
             </div>
           </div>
         ))}
         {loading && (
           <div className="flex justify-start">
-            <div className="rounded-lg bg-muted px-3 py-2 text-sm text-muted-foreground">Digitando...</div>
+            <div className="rounded-lg bg-muted px-3 py-2 text-sm text-muted-foreground">
+              Digitando...
+            </div>
           </div>
         )}
       </div>
@@ -84,7 +99,11 @@ export function ChatWidget() {
             placeholder="Digite sua mensagem..."
             disabled={loading}
           />
-          <Button size="icon" onClick={handleSend} disabled={loading || !input.trim()}>
+          <Button
+            size="icon"
+            onClick={handleSend}
+            disabled={loading || !input.trim()}
+          >
             <Send className="h-4 w-4" />
           </Button>
         </div>

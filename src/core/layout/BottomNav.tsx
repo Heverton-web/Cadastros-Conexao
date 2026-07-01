@@ -16,12 +16,20 @@ export function BottomNav() {
         {(() => {
           const path = location.pathname;
           const matchScore = (item: NavItem) =>
-            path === item.path ? 3 : (item.matchPaths || []).includes(path) ? 2 : path.startsWith(item.path + "/") ? 1 : 0;
+            path === item.path
+              ? 3
+              : (item.matchPaths || []).includes(path)
+                ? 2
+                : path.startsWith(item.path + "/")
+                  ? 1
+                  : 0;
           const bestMatch = navItems.reduce<string | null>((best, item) => {
             const score = matchScore(item);
             if (!score) return best;
             if (!best) return item.path;
-            const bestScore = matchScore(navItems.find(i => i.path === best)!);
+            const bestScore = matchScore(
+              navItems.find((i) => i.path === best)!,
+            );
             if (score > bestScore) return item.path;
             if (score < bestScore) return best;
             return item.path.length > best.length ? item.path : best;
@@ -34,7 +42,9 @@ export function BottomNav() {
                 onClick={() => navigate({ to: item.path })}
                 className={cn(
                   "flex min-h-[48px] items-center justify-center px-1 py-1 transition-colors",
-                  isActive ? "text-accent" : "text-text-muted hover:text-text-main"
+                  isActive
+                    ? "text-accent"
+                    : "text-text-muted hover:text-text-main",
                 )}
               >
                 <item.icon size={18} />

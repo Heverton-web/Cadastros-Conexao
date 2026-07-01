@@ -67,7 +67,11 @@ export async function fetchHubUserBadges(userId: string, empresaId: string) {
   return data as (HubUserBadge & { hub_badges: HubBadge })[];
 }
 
-export async function awardHubBadge(userId: string, badgeId: string, empresaId: string) {
+export async function awardHubBadge(
+  userId: string,
+  badgeId: string,
+  empresaId: string,
+) {
   const { data, error } = await supabase
     .from("hub_user_badges")
     .insert({ user_id: userId, badge_id: badgeId, empresa_id: empresaId })

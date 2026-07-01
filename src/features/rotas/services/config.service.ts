@@ -1,7 +1,9 @@
 import { supabase } from "~/core/supabase";
 import type { RotasConfig } from "../types";
 
-export async function getConfig(empresaId: string): Promise<RotasConfig | null> {
+export async function getConfig(
+  empresaId: string,
+): Promise<RotasConfig | null> {
   const { data, error } = await supabase
     .from("rotas_config")
     .select("*")
@@ -11,7 +13,10 @@ export async function getConfig(empresaId: string): Promise<RotasConfig | null> 
   return data as RotasConfig | null;
 }
 
-export async function upsertConfig(empresaId: string, config: Partial<RotasConfig>): Promise<RotasConfig> {
+export async function upsertConfig(
+  empresaId: string,
+  config: Partial<RotasConfig>,
+): Promise<RotasConfig> {
   const { data, error } = await supabase
     .from("rotas_config")
     .upsert({ empresa_id: empresaId, ...config }, { onConflict: "empresa_id" })

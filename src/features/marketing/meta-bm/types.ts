@@ -13,7 +13,8 @@ export type MetaConta = {
   updated_at: string;
 };
 
-export type MetaCampanhaStatus = "ACTIVE" | "PAUSED" | "DELETED" | "ARCHIVED" | "IN_MODERATION";
+export type MetaCampanhaStatus =
+  "ACTIVE" | "PAUSED" | "DELETED" | "ARCHIVED" | "IN_MODERATION";
 
 export type MetaCampanha = {
   id: string;

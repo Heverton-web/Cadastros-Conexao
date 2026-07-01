@@ -25,38 +25,38 @@ A aplicação **Cadastros Conexão** demonstrou excelente performance e estabili
 
 ### Métricas Agregadas
 
-| Métrica | Valor |
-|---|---|
-| Requisições totais | 3.486 |
-| Throughput | **68,8 req/s** |
-| Latência média | **22,5 ms** |
-| Latência p(90) | **26,7 ms** |
-| Latência p(95) | **29,6 ms** |
-| Latência máxima | 460 ms |
-| HTTP 2xx (sucesso) | 92,3% |
-| Dados trafegados | 3,5 MB recebidos / 355 kB enviados |
+| Métrica            | Valor                              |
+| ------------------ | ---------------------------------- |
+| Requisições totais | 3.486                              |
+| Throughput         | **68,8 req/s**                     |
+| Latência média     | **22,5 ms**                        |
+| Latência p(90)     | **26,7 ms**                        |
+| Latência p(95)     | **29,6 ms**                        |
+| Latência máxima    | 460 ms                             |
+| HTTP 2xx (sucesso) | 92,3%                              |
+| Dados trafegados   | 3,5 MB recebidos / 355 kB enviados |
 
 ### Resultados por Endpoint
 
-| Endpoint | Sucesso | Latência Média | Observação |
-|---|---|---|---|
-| Dashboard (6 contagens) | 100%* | ~22 ms | Todas as contagens de status |
-| Lista cadastros | 100%* | ~22 ms | Paginação completa |
-| Clientes view | 100%* | ~22 ms | View com JOIN entre 4 tabelas |
-| Notificações poll | 100%* | ~22 ms | Filtro por usuario_id |
-| RPC `is_admin_or_super` | 100% | ~22 ms | |
-| RPC `verificar_documento_duplicado` | 100% | ~22 ms | |
-| Profiles | 100% | ~22 ms | |
-| Templates notificação | 100% | ~22 ms | |
+| Endpoint                            | Sucesso | Latência Média | Observação                    |
+| ----------------------------------- | ------- | -------------- | ----------------------------- |
+| Dashboard (6 contagens)             | 100%*   | ~22 ms         | Todas as contagens de status  |
+| Lista cadastros                     | 100%*   | ~22 ms         | Paginação completa            |
+| Clientes view                       | 100%*   | ~22 ms         | View com JOIN entre 4 tabelas |
+| Notificações poll                   | 100%*   | ~22 ms         | Filtro por usuario_id         |
+| RPC `is_admin_or_super`             | 100%    | ~22 ms         |                               |
+| RPC `verificar_documento_duplicado` | 100%    | ~22 ms         |                               |
+| Profiles                            | 100%    | ~22 ms         |                               |
+| Templates notificação               | 100%    | ~22 ms         |                               |
 
-*\* Confirmado manualmente após identificar falso negativo em query parametrizada do k6. Teste manual com `Invoke-RestMethod` retornou HTTP 200 para todos os endpoints com ambos os usuários.*
+_\* Confirmado manualmente após identificar falso negativo em query parametrizada do k6. Teste manual com `Invoke-RestMethod` retornou HTTP 200 para todos os endpoints com ambos os usuários._
 
 ### Thresholds
 
-| Threshold | Alvo | Resultado |
-|---|---|---|
-| `http_req_duration` p(95) < 5000ms | 5000ms | **29,6ms ✓** |
-| `app_errors` rate < 5% | 5% | **Falso positivo** (bugs de script) |
+| Threshold                          | Alvo   | Resultado                           |
+| ---------------------------------- | ------ | ----------------------------------- |
+| `http_req_duration` p(95) < 5000ms | 5000ms | **29,6ms ✓**                        |
+| `app_errors` rate < 5%             | 5%     | **Falso positivo** (bugs de script) |
 
 ---
 
@@ -70,14 +70,14 @@ A aplicação **Cadastros Conexão** demonstrou excelente performance e estabili
 
 ### Resultados
 
-| Métrica | Valor |
-|---|---|
-| Requisições | 1.953 |
-| Login bem-sucedidos | **44 / 1.865 (2,36%)** |
-| Profile (pós-login) | 100% sucesso |
-| Permissões (pós-login) | 100% sucesso |
-| Latência login (p95) | 52,8 ms |
-| Latência geral (p95) | 35,5 ms |
+| Métrica                | Valor                  |
+| ---------------------- | ---------------------- |
+| Requisições            | 1.953                  |
+| Login bem-sucedidos    | **44 / 1.865 (2,36%)** |
+| Profile (pós-login)    | 100% sucesso           |
+| Permissões (pós-login) | 100% sucesso           |
+| Latência login (p95)   | 52,8 ms                |
+| Latência geral (p95)   | 35,5 ms                |
 
 ### Análise
 
@@ -98,21 +98,21 @@ A aplicação **Cadastros Conexão** demonstrou excelente performance e estabili
 
 ### Resultados Consolidados
 
-| Teste | Passos | ✅ | ❌ | Status |
-|---|---|---|---|---|
-| **P1** Fluxo Completo (Consultor + Lead) | 3 | 3 | 0 | ✅ |
-| **P2** Aprovação (Cadastro) | 3 | 2 | 1* | ✅ |
-| **P8** Dashboard (Cadastro) | 3 | 3 | 0 | ✅ |
-| **P9** Consultor Dashboard | 3 | 3 | 0 | ✅ |
-| **P5** Credenciais (TI) | 2 | 2 | 0 | ✅ |
-| **P4** Admin Config (Super Admin) | 4 | 3 | 1** | ✅ |
-| **Total** | **18** | **16** | **2** | **89%** |
+| Teste                                    | Passos | ✅     | ❌    | Status  |
+| ---------------------------------------- | ------ | ------ | ----- | ------- |
+| **P1** Fluxo Completo (Consultor + Lead) | 3      | 3      | 0     | ✅      |
+| **P2** Aprovação (Cadastro)              | 3      | 2      | 1*    | ✅      |
+| **P8** Dashboard (Cadastro)              | 3      | 3      | 0     | ✅      |
+| **P9** Consultor Dashboard               | 3      | 3      | 0     | ✅      |
+| **P5** Credenciais (TI)                  | 2      | 2      | 0     | ✅      |
+| **P4** Admin Config (Super Admin)        | 4      | 3      | 1**   | ✅      |
+| **Total**                                | **18** | **16** | **2** | **89%** |
 
 ### Falhas Encontradas
 
-*\* P2: Seletor `text=Cadastros` não encontrou elemento. O dashboard usa "Clientes" como label principal. O seletor precisa ser atualizado no teste.*
+_\* P2: Seletor `text=Cadastros` não encontrou elemento. O dashboard usa "Clientes" como label principal. O seletor precisa ser atualizado no teste._
 
-*\*\* P4: Super admin `hevertoneduardoperes@gmail.com` não redirecionou para `/dashboard` após login. A senha ou fluxo de Super Admin pode ser diferente.*
+_\*\* P4: Super admin `hevertoneduardoperes@gmail.com` não redirecionou para `/dashboard` após login. A senha ou fluxo de Super Admin pode ser diferente._
 
 Ambas são **falhas de script de teste** — o comportamento da aplicação não foi afetado.
 
@@ -130,12 +130,12 @@ Ambas são **falhas de script de teste** — o comportamento da aplicação não
 
 ### Latência de Rede
 
-| Métrica | Valor |
-|---|---|
+| Métrica                 | Valor    |
+| ----------------------- | -------- |
 | Tempo médio de resposta | 20–25 ms |
-| p(90) | 26–29 ms |
-| p(95) | 29–36 ms |
-| Máximo observado | 460 ms |
+| p(90)                   | 26–29 ms |
+| p(95)                   | 29–36 ms |
+| Máximo observado        | 460 ms   |
 
 A latência é excelente para uma aplicação SaaS com backend em Supabase.
 

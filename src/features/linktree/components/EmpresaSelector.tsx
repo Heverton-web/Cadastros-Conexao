@@ -28,7 +28,10 @@ export function EmpresaSelector({ value, onChange }: Props) {
     load();
   }, []);
 
-  if (loading) return <p className="text-sm text-muted-foreground">Carregando empresas...</p>;
+  if (loading)
+    return (
+      <p className="text-sm text-muted-foreground">Carregando empresas...</p>
+    );
 
   return (
     <div className="space-y-1.5">
@@ -40,7 +43,9 @@ export function EmpresaSelector({ value, onChange }: Props) {
       >
         <option value="">Selecione uma empresa</option>
         {empresas.map((emp) => (
-          <option key={emp.id} value={emp.id}>{emp.nome}</option>
+          <option key={emp.id} value={emp.id}>
+            {emp.nome}
+          </option>
         ))}
       </select>
     </div>

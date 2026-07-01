@@ -1,7 +1,8 @@
 # PLANO: Squad de Skills para Engenharia Reversa do Bubble
 
 ## 1. ESTRUTURA DO SQUAD
-- **Tech Lead Skill** (Orquestrador): 
+
+- **Tech Lead Skill** (Orquestrador):
   - Analisa JSON de entrada, define escopos de análise, distribui tarefas
   - Estabelece templates MD e diretrizes de formatação
   - Realiza revisão técnica e aprovação final
@@ -16,6 +17,7 @@
   - `Skill Conectores API`: Documenta endpoints, autenticação, transformações de dados
 
 ## 2. FLUXO DE TRABALHO (CICLO ITERATIVO)
+
 ```
 [Usuário] → Compartilha projeto_bubble.json
           ↓
@@ -42,6 +44,7 @@
 ```
 
 ## 3. PADRÕES E QUALIDADE
+
 - **Templates MD pré-definidos** pelo Tech Lead contendo:
   - Cabeçalho com metadados (domínio, data, versão)
   - Seções obrigatórias (visão geral, detalhes técnicos, limitações observadas)
@@ -60,6 +63,7 @@
   - Máximo de 2 iterações por domínio antes de escalonamento
 
 ## 4. ENTREGAS FINAIS
+
 - `plano_engenharia_reversa_COMPLETA.md` (documento mestre)
 - Documentos por domínio (`*_tabelas.md`, `*_paginas.md`, etc.)
 - `INDICE.md` com links navegáveis para todas seções
@@ -70,6 +74,7 @@
   - Limitações técnicas identificadas do Bubble
 
 ## 5. PRÉ-REQUISITOS PARA EXECUÇÃO
+
 - JSON de entrada deve seguir estrutura padrão do Bubble export
 - Skills especialistas precisam de acesso a:
   - Funções de parsing JSON otimizadas

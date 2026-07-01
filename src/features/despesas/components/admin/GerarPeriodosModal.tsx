@@ -1,7 +1,19 @@
 import { useState, useMemo } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "~/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "~/components/ui/dialog";
 import { Button } from "~/components/ui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "~/components/ui/select";
 import { useGerarPeriodos } from "../../hooks/usePeriodos";
 import { FREQUENCIA_LABEL, type Frequencia } from "../../types";
 import { cn } from "~/lib/utils";
@@ -18,13 +30,23 @@ function gerarOpcoesMeses(): { value: string; label: string }[] {
   for (let i = 0; i < 12; i++) {
     const data = new Date(hoje.getFullYear(), hoje.getMonth() + i, 1);
     const value = `${data.getFullYear()}-${String(data.getMonth() + 1).padStart(2, "0")}`;
-    const label = data.toLocaleDateString("pt-BR", { month: "long", year: "numeric" });
-    meses.push({ value, label: label.charAt(0).toUpperCase() + label.slice(1) });
+    const label = data.toLocaleDateString("pt-BR", {
+      month: "long",
+      year: "numeric",
+    });
+    meses.push({
+      value,
+      label: label.charAt(0).toUpperCase() + label.slice(1),
+    });
   }
   return meses;
 }
 
-export function GerarPeriodosModal({ open, onOpenChange, empresaId }: GerarPeriodosModalProps) {
+export function GerarPeriodosModal({
+  open,
+  onOpenChange,
+  empresaId,
+}: GerarPeriodosModalProps) {
   const gerar = useGerarPeriodos(empresaId);
   const [frequencia, setFrequencia] = useState<Frequencia>("mensal");
   const [meses, setMeses] = useState<string[]>([]);
@@ -33,7 +55,7 @@ export function GerarPeriodosModal({ open, onOpenChange, empresaId }: GerarPerio
 
   function toggleMes(mes: string) {
     setMeses((prev) =>
-      prev.includes(mes) ? prev.filter((m) => m !== mes) : [...prev, mes]
+      prev.includes(mes) ? prev.filter((m) => m !== mes) : [...prev, mes],
     );
   }
 
@@ -61,32 +83,52 @@ export function GerarPeriodosModal({ open, onOpenChange, empresaId }: GerarPerio
 
         <div className="space-y-4">
           <div className="space-y-2">
-            <label className="text-sm font-medium text-text-main">Frequência</label>
-            <Select value={frequencia} onValueChange={(v) => setFrequencia(v as Frequencia)}>
+            <label className="text-sm font-medium text-text-main">
+              Frequência
+            </label>
+            <Select
+              value={frequencia}
+              onValueChange={(v) => setFrequencia(v as Frequencia)}
+            >
               <SelectTrigger>
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                {(Object.entries(FREQUENCIA_LABEL) as [Frequencia, string][]).map(([key, label]) => (
-                  <SelectItem key={key} value={key}>{label}</SelectItem>
+                {(
+                  Object.entries(FREQUENCIA_LABEL) as [Frequencia, string][]
+                ).map(([key, label]) => (
+                  <SelectItem key={key} value={key}>
+                    {label}
+                  </SelectItem>
                 ))}
               </SelectContent>
             </Select>
             <p className="text-xs text-text-muted">
-              {frequencia === "semanal" && "Gera períodos de 1 semana para cada mês selecionado."}
-              {frequencia === "quinzenal" && "Gera 2 períodos (1-15 e 16-fim) para cada mês selecionado."}
-              {frequencia === "mensal" && "Gera 1 período completo para cada mês selecionado."}
+              {frequencia === "semanal" &&
+                "Gera períodos de 1 semana para cada mês selecionado."}
+              {frequencia === "quinzenal" &&
+                "Gera 2 períodos (1-15 e 16-fim) para cada mês selecionado."}
+              {frequencia === "mensal" &&
+                "Gera 1 período completo para cada mês selecionado."}
             </p>
           </div>
 
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <label className="text-sm font-medium text-text-main">Meses</label>
+              <label className="text-sm font-medium text-text-main">
+                Meses
+              </label>
               <div className="flex gap-2">
-                <button onClick={selecionarTodos} className="text-xs text-accent hover:underline">
+                <button
+                  onClick={selecionarTodos}
+                  className="text-xs text-accent hover:underline"
+                >
                   Todos
                 </button>
-                <button onClick={limparSelecao} className="text-xs text-text-muted hover:underline">
+                <button
+                  onClick={limparSelecao}
+                  className="text-xs text-text-muted hover:underline"
+                >
                   Limpar
                 </button>
               </div>
@@ -100,7 +142,7 @@ export function GerarPeriodosModal({ open, onOpenChange, empresaId }: GerarPerio
                     "px-3 py-2 rounded-lg text-sm text-left transition-colors border",
                     meses.includes(mes.value)
                       ? "bg-accent/10 border-accent text-accent"
-                      : "bg-surface border-border text-text-muted hover:border-accent/50"
+                      : "bg-surface border-border text-text-muted hover:border-accent/50",
                   )}
                 >
                   {mes.label}
@@ -109,8 +151,9 @@ export function GerarPeriodosModal({ open, onOpenChange, empresaId }: GerarPerio
             </div>
             {meses.length > 0 && (
               <p className="text-xs text-text-muted">
-                {meses.length} mês(es) selecionado(s) • {" "}
-                {frequencia === "semanal" && `~${meses.length * 4-5} períodos`}
+                {meses.length} mês(es) selecionado(s) •{" "}
+                {frequencia === "semanal" &&
+                  `~${meses.length * 4 - 5} períodos`}
                 {frequencia === "quinzenal" && `${meses.length * 2} períodos`}
                 {frequencia === "mensal" && `${meses.length} períodos`}
               </p>
@@ -119,7 +162,11 @@ export function GerarPeriodosModal({ open, onOpenChange, empresaId }: GerarPerio
         </div>
 
         <DialogFooter>
-          <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => onOpenChange(false)}
+          >
             Cancelar
           </Button>
           <Button

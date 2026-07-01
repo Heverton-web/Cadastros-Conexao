@@ -38,10 +38,7 @@ function TarefasPage() {
             <Search className="h-4 w-4 mr-2" />
             Buscar
           </Button>
-          <Button
-            size="sm"
-            onClick={() => setNovaTarefaAberta(true)}
-          >
+          <Button size="sm" onClick={() => setNovaTarefaAberta(true)}>
             <Plus className="h-4 w-4 mr-2" />
             Nova Tarefa
           </Button>

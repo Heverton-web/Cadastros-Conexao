@@ -1,6 +1,16 @@
 import { useState, useCallback } from "react";
-import { Globe, PanelLeftClose, PanelLeft, ChevronDown, type LucideIcon } from "lucide-react";
-import { useNavItems, type NavModuleSection, type NavSubGroup } from "./useNavItems";
+import {
+  Globe,
+  PanelLeftClose,
+  PanelLeft,
+  ChevronDown,
+  type LucideIcon,
+} from "lucide-react";
+import {
+  useNavItems,
+  type NavModuleSection,
+  type NavSubGroup,
+} from "./useNavItems";
 import { useLocation, useNavigate } from "@tanstack/react-router";
 import { cn } from "~/lib/utils";
 
@@ -27,7 +37,13 @@ function NavItemButton({
   isActive,
   onClick,
 }: {
-  item: { path: string; label: string; icon: LucideIcon; matchPaths?: string[]; noChildMatch?: boolean };
+  item: {
+    path: string;
+    label: string;
+    icon: LucideIcon;
+    matchPaths?: string[];
+    noChildMatch?: boolean;
+  };
   collapsed: boolean;
   isActive: boolean;
   onClick: () => void;
@@ -42,7 +58,7 @@ function NavItemButton({
         collapsed ? "justify-center p-2.5" : "px-3 py-2",
         isActive
           ? "bg-accent/15 text-accent font-semibold"
-          : "text-text-muted hover:text-text-main hover:bg-surface-hover"
+          : "text-text-muted hover:text-text-main hover:bg-surface-hover",
       )}
     >
       {isActive && !collapsed && (
@@ -68,7 +84,7 @@ function SubGroupBlock({
       location.pathname === path ||
       (matchPaths || []).includes(location.pathname) ||
       (!noChildMatch && location.pathname.startsWith(path + "/")),
-    [location.pathname]
+    [location.pathname],
   );
 
   return (
@@ -119,7 +135,7 @@ function ModuleSection({
       location.pathname === path ||
       (matchPaths || []).includes(location.pathname) ||
       (!noChildMatch && location.pathname.startsWith(path + "/")),
-    [location.pathname]
+    [location.pathname],
   );
 
   const handleHeaderClick = () => {
@@ -138,7 +154,7 @@ function ModuleSection({
             "flex items-center justify-center p-2.5 rounded-xl transition-all duration-200",
             isSelected
               ? "bg-accent/15 text-accent"
-              : "text-text-muted hover:text-text-main hover:bg-surface-hover"
+              : "text-text-muted hover:text-text-main hover:bg-surface-hover",
           )}
         >
           <Icon size={18} />
@@ -150,7 +166,11 @@ function ModuleSection({
                 key={item.path}
                 item={item}
                 collapsed
-                isActive={isActive(item.path, item.matchPaths, item.noChildMatch)}
+                isActive={isActive(
+                  item.path,
+                  item.matchPaths,
+                  item.noChildMatch,
+                )}
                 onClick={() => navigate({ to: item.path })}
               />
             ))}
@@ -161,7 +181,12 @@ function ModuleSection({
   }
 
   return (
-    <div className={cn("mb-3 last:mb-0 rounded-xl transition-colors duration-200", isExpanded && "bg-accent/[0.03]")}>
+    <div
+      className={cn(
+        "mb-3 last:mb-0 rounded-xl transition-colors duration-200",
+        isExpanded && "bg-accent/[0.03]",
+      )}
+    >
       {/* Module header */}
       <button
         onClick={handleHeaderClick}
@@ -169,7 +194,7 @@ function ModuleSection({
           "flex items-center gap-3 w-full px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 group",
           isSelected
             ? "bg-accent/15 text-accent shadow-sm shadow-accent/10"
-            : "text-text-muted hover:text-text-main hover:bg-surface-hover"
+            : "text-text-muted hover:text-text-main hover:bg-surface-hover",
         )}
       >
         <Icon size={18} />
@@ -179,7 +204,7 @@ function ModuleSection({
           className={cn(
             "shrink-0 transition-transform duration-200",
             isSelected ? "text-accent/60" : "text-text-muted/40",
-            !isExpanded && "-rotate-90"
+            !isExpanded && "-rotate-90",
           )}
         />
       </button>
@@ -187,26 +212,32 @@ function ModuleSection({
       {/* Nav items */}
       {isExpanded && (
         <div className="flex flex-col gap-0.5 mt-1 pl-2">
-          {hasSubGroups ? (
-            section.subGroups!.map((sub, subIdx) => (
-              <div key={sub.label || subIdx}>
-                <SubGroupBlock subGroup={sub} navigate={navigate} location={location} />
-                {subIdx < section.subGroups!.length - 1 && (
-                  <div className="border-b border-border/20 mx-3 mt-2" />
-                )}
-              </div>
-            ))
-          ) : (
-            section.items.map((item) => (
-              <NavItemButton
-                key={item.path}
-                item={item}
-                collapsed={false}
-                isActive={isActive(item.path, item.matchPaths, item.noChildMatch)}
-                onClick={() => navigate({ to: item.path })}
-              />
-            ))
-          )}
+          {hasSubGroups
+            ? section.subGroups!.map((sub, subIdx) => (
+                <div key={sub.label || subIdx}>
+                  <SubGroupBlock
+                    subGroup={sub}
+                    navigate={navigate}
+                    location={location}
+                  />
+                  {subIdx < section.subGroups!.length - 1 && (
+                    <div className="border-b border-border/20 mx-3 mt-2" />
+                  )}
+                </div>
+              ))
+            : section.items.map((item) => (
+                <NavItemButton
+                  key={item.path}
+                  item={item}
+                  collapsed={false}
+                  isActive={isActive(
+                    item.path,
+                    item.matchPaths,
+                    item.noChildMatch,
+                  )}
+                  onClick={() => navigate({ to: item.path })}
+                />
+              ))}
         </div>
       )}
     </div>
@@ -225,30 +256,30 @@ export function NavSidebar({
   onToggleCollapse: () => void;
 }) {
   const sections = useNavItems();
-  const [collapsedModules, setCollapsedModules] = useState<Record<string, boolean>>(getCollapsedModules);
+  const [collapsedModules, setCollapsedModules] =
+    useState<Record<string, boolean>>(getCollapsedModules);
 
-  const toggleModule = useCallback(
-    (key: string) => {
-      setCollapsedModules((prev) => {
-        const next = { ...prev, [key]: !prev[key] };
-        saveCollapsedModules(next);
-        return next;
-      });
-    },
-    []
-  );
+  const toggleModule = useCallback((key: string) => {
+    setCollapsedModules((prev) => {
+      const next = { ...prev, [key]: !prev[key] };
+      saveCollapsedModules(next);
+      return next;
+    });
+  }, []);
 
   // A module is expanded if it's NOT in collapsedModules (default: expanded)
   const isExpanded = useCallback(
     (key: string) => !collapsedModules[key],
-    [collapsedModules]
+    [collapsedModules],
   );
 
   return (
-    <aside className={cn(
-      "hidden lg:flex flex-col fixed left-0 top-0 bottom-0 border-r border-border/50 bg-card z-30 transition-all duration-300 ease-in-out",
-      collapsed ? "w-[72px]" : "w-64"
-    )}>
+    <aside
+      className={cn(
+        "hidden lg:flex flex-col fixed left-0 top-0 bottom-0 border-r border-border/50 bg-card z-30 transition-all duration-300 ease-in-out",
+        collapsed ? "w-[72px]" : "w-64",
+      )}
+    >
       {/* Logo area */}
       <div className="flex items-center h-[70px] px-4 border-b border-border/50">
         {collapsed ? (
@@ -262,13 +293,20 @@ export function NavSidebar({
             <div className="w-8 h-8 rounded-lg bg-accent/20 flex items-center justify-center shrink-0">
               <span className="text-accent font-bold text-sm">C</span>
             </div>
-            <span className="text-sm font-bold text-text-main truncate">Conexão ERP</span>
+            <span className="text-sm font-bold text-text-main truncate">
+              Conexão ERP
+            </span>
           </div>
         )}
       </div>
 
       {/* Modules + Nav Items */}
-      <div className={cn("flex-1 overflow-y-auto py-4 scrollbar-thin", collapsed ? "px-2" : "px-3")}>
+      <div
+        className={cn(
+          "flex-1 overflow-y-auto py-4 scrollbar-thin",
+          collapsed ? "px-2" : "px-3",
+        )}
+      >
         {sections.map((section) => (
           <ModuleSection
             key={section.key}
@@ -283,17 +321,28 @@ export function NavSidebar({
       </div>
 
       {/* Toggle collapse */}
-      <div className={cn("border-t border-border/30 p-3", collapsed && "flex justify-center")}>
+      <div
+        className={cn(
+          "border-t border-border/30 p-3",
+          collapsed && "flex justify-center",
+        )}
+      >
         <button
           onClick={onToggleCollapse}
           className={cn(
             "flex items-center gap-2 rounded-xl text-xs font-medium text-text-muted hover:text-text-main hover:bg-surface-hover transition-all duration-200",
-            collapsed ? "justify-center p-2.5" : "px-3 py-2.5 w-full"
+            collapsed ? "justify-center p-2.5" : "px-3 py-2.5 w-full",
           )}
           aria-label={collapsed ? "Expandir menu" : "Recolher menu"}
           title={collapsed ? "Expandir menu" : "Recolher menu"}
         >
-          {collapsed ? <PanelLeft size={18} /> : <><PanelLeftClose size={18} /> <span>Recolher</span></>}
+          {collapsed ? (
+            <PanelLeft size={18} />
+          ) : (
+            <>
+              <PanelLeftClose size={18} /> <span>Recolher</span>
+            </>
+          )}
         </button>
       </div>
     </aside>

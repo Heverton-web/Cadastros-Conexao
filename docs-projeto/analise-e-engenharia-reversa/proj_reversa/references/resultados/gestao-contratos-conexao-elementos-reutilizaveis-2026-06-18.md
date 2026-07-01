@@ -1,3 +1,3 @@
 # Elementos Reutilizáveis
 
-*Nenhum elemento reutilizável encontrado.*
+_Nenhum elemento reutilizável encontrado._

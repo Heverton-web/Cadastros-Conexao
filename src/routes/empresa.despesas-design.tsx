@@ -5,5 +5,7 @@ import { ModuloDesignPage } from "~/design-system/components/ModuloDesignPage";
 export const empresaDespesasDesignRoute = createRoute({
   getParentRoute: () => authLayout,
   path: "/empresa/despesas/design",
-  component: () => <ModuloDesignPage moduloKey="despesas" moduloNome="Despesas em Rota" />,
+  component: () => (
+    <ModuloDesignPage moduloKey="despesas" moduloNome="Despesas em Rota" />
+  ),
 });

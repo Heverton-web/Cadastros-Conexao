@@ -20,7 +20,7 @@ async function getWorker() {
 
 export async function lerComprovante(
   file: File,
-  tipos: DespesaTipo[]
+  tipos: DespesaTipo[],
 ): Promise<OcrResultado> {
   const worker = await getWorker();
   const { data } = await worker.recognize(file);
@@ -106,13 +106,16 @@ function extractDescricao(texto: string): string | undefined {
         !/CPF/i.test(l) &&
         !/IE/i.test(l) &&
         !/COO/i.test(l) &&
-        !/CCF/i.test(l)
+        !/CCF/i.test(l),
     );
 
   return lines.length > 0 ? lines[0].substring(0, 80) : undefined;
 }
 
-export function matchTipo(texto: string, tipos: DespesaTipo[]): string | undefined {
+export function matchTipo(
+  texto: string,
+  tipos: DespesaTipo[],
+): string | undefined {
   if (tipos.length === 0) return undefined;
 
   const lower = texto.toLowerCase();
@@ -125,7 +128,10 @@ export function matchTipo(texto: string, tipos: DespesaTipo[]): string | undefin
   let bestId: string | undefined;
 
   for (const { id, words } of typeKeywords) {
-    const score = words.reduce((acc, w) => acc + (lower.includes(w) ? 1 : 0), 0);
+    const score = words.reduce(
+      (acc, w) => acc + (lower.includes(w) ? 1 : 0),
+      0,
+    );
     if (score > bestScore) {
       bestScore = score;
       bestId = id;
@@ -140,38 +146,103 @@ function expandKeywords(nome: string): string[] {
 
   const mapa: Record<string, string[]> = {
     alimentação: [
-      "restaurante", "lanche", "almoço", "jantar", "café", "pizza",
-      "hamburguer", "comida", "refeição", "marmita", "quentinha",
-      "bebida", "água", "refrigerante", "suco", "self-service",
+      "restaurante",
+      "lanche",
+      "almoço",
+      "jantar",
+      "café",
+      "pizza",
+      "hamburguer",
+      "comida",
+      "refeição",
+      "marmita",
+      "quentinha",
+      "bebida",
+      "água",
+      "refrigerante",
+      "suco",
+      "self-service",
     ],
     combustível: [
-      "posto", "gasolina", "combustível", "álcool", "etanol", "diesel",
-      "gnv", "shell", "petrobras", "ipiranga", "raizen", "abastecimento",
+      "posto",
+      "gasolina",
+      "combustível",
+      "álcool",
+      "etanol",
+      "diesel",
+      "gnv",
+      "shell",
+      "petrobras",
+      "ipiranga",
+      "raizen",
+      "abastecimento",
     ],
     hospedagem: [
-      "hotel", "hospedagem", "pousada", "motel", "hostel", "airbnb",
-      "pernoite", "dormir",
+      "hotel",
+      "hospedagem",
+      "pousada",
+      "motel",
+      "hostel",
+      "airbnb",
+      "pernoite",
+      "dormir",
     ],
     transporte: [
-      "uber", "táxi", "taxi", "pedágio", "estacionamento", "passagem",
-      "ônibus", "metro", "locomoção", "deslocamento", "99",
+      "uber",
+      "táxi",
+      "taxi",
+      "pedágio",
+      "estacionamento",
+      "passagem",
+      "ônibus",
+      "metro",
+      "locomoção",
+      "deslocamento",
+      "99",
     ],
     material: [
-      "papelaria", "escritório", "material", "caneta", "papel",
-      "impressão", "cartucho", "toner",
+      "papelaria",
+      "escritório",
+      "material",
+      "caneta",
+      "papel",
+      "impressão",
+      "cartucho",
+      "toner",
     ],
     saúde: [
-      "farmácia", "remédio", "medicamento", "drogasil", "drogão",
-      "pague menos", "saúde", "médico", "consulta", "exame", "hospital",
+      "farmácia",
+      "remédio",
+      "medicamento",
+      "drogasil",
+      "drogão",
+      "pague menos",
+      "saúde",
+      "médico",
+      "consulta",
+      "exame",
+      "hospital",
       "clínica",
     ],
     manutenção: [
-      "mecânico", "borracheiro", "oficina", "conserto", "reparo",
-      "manutenção", "peça",
+      "mecânico",
+      "borracheiro",
+      "oficina",
+      "conserto",
+      "reparo",
+      "manutenção",
+      "peça",
     ],
     comunicação: [
-      "tim", "vivo", "claro", "oi", "recarga", "telefone", "celular",
-      "internet", "telefonia",
+      "tim",
+      "vivo",
+      "claro",
+      "oi",
+      "recarga",
+      "telefone",
+      "celular",
+      "internet",
+      "telefonia",
     ],
   };
 

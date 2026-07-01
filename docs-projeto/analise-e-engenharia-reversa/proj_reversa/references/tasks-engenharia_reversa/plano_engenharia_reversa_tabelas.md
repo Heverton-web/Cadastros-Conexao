@@ -94,9 +94,7 @@ Os Data Types devem estar estruturados no JSON como:
         }
       ]
     },
-    "data_type_id_2": {
-      /* ... */
-    }
+    "data_type_id_2": {/* ... */}
   }
 }
 ```

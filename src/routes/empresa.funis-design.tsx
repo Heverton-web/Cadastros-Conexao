@@ -5,5 +5,7 @@ import { ModuloDesignPage } from "~/design-system/components/ModuloDesignPage";
 export const empresaFunisDesignRoute = createRoute({
   getParentRoute: () => authLayout,
   path: "/empresa/funis/design",
-  component: () => <ModuloDesignPage moduloKey="funis" moduloNome="Funis de Venda" />,
+  component: () => (
+    <ModuloDesignPage moduloKey="funis" moduloNome="Funis de Venda" />
+  ),
 });

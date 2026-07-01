@@ -34,7 +34,11 @@ export function KanbanView({ funil }: KanbanViewProps) {
     setShowTaskModal(true);
   };
 
-  const handleCreateTask = async (data: { titulo: string; descricao?: string; prioridade?: string }) => {
+  const handleCreateTask = async (data: {
+    titulo: string;
+    descricao?: string;
+    prioridade?: string;
+  }) => {
     if (!selectedColunaId) return;
     await criarTarefa.mutateAsync({
       funil_id: funil.id,
@@ -81,9 +85,12 @@ export function KanbanView({ funil }: KanbanViewProps) {
           .sort((a, b) => a.posicao - b.posicao);
 
         return (
-          <div key={coluna.id} className="flex-shrink-0 flex-grow flex-1 min-w-[280px] max-w-[450px] flex flex-col bg-surface/50 rounded-xl border border-border/30 backdrop-blur-sm overflow-hidden">
+          <div
+            key={coluna.id}
+            className="flex-shrink-0 flex-grow flex-1 min-w-[280px] max-w-[450px] flex flex-col bg-surface/50 rounded-xl border border-border/30 backdrop-blur-sm overflow-hidden"
+          >
             <ColumnHeader coluna={coluna} funilId={funil.id} />
-            <div 
+            <div
               className={`flex-1 overflow-y-auto p-2 space-y-2 min-h-[100px] transition-colors ${dragOverCol === coluna.id ? "bg-primary/10 border-2 border-dashed border-primary/50 rounded-lg m-2" : ""}`}
               onDragOver={handleDragOver}
               onDragEnter={(e) => handleDragEnter(e, coluna.id)}
@@ -91,7 +98,11 @@ export function KanbanView({ funil }: KanbanViewProps) {
               onDrop={(e) => handleDrop(e, coluna.id)}
             >
               {colunaTarefas.map((tarefa) => (
-                <TaskCard key={tarefa.id} tarefa={tarefa} onClick={() => handleEditTask(tarefa)} />
+                <TaskCard
+                  key={tarefa.id}
+                  tarefa={tarefa}
+                  onClick={() => handleEditTask(tarefa)}
+                />
               ))}
             </div>
             <div className="p-2 border-t border-border-subtle">

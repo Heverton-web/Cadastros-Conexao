@@ -14,12 +14,12 @@ A boa notícia: a maioria dos módulos (20 de 24) são auto-suficientes. Os prob
 
 ### ❌ Violações Identificadas
 
-| Módulo Dependente | Importa de | O que importa | Arquivo |
-|---|---|---|---|
-| `rotas` | `crm` | `formatDate` | `PlanejamentoRotasPage.tsx`, `DetalheRotaPage.tsx` |
-| `rotas` | `despesas` | `useEmpresaSuperAdmin`, `EmpresaSuperAdminSelector` | `ConfigRotasPage.tsx` |
-| `nps` | `empresas` | `buscarEmpresa`, `buscarEmpresaConfig`, `listarEmpresas` | `NpsPreviewPage.tsx`, `NpsPesquisasPage.tsx` |
-| `despesas` | `empresas` | `listarEmpresas`, `type Empresa` | `useEmpresaSuperAdmin.ts`, `EmpresaSuperAdminSelector.tsx` |
+| Módulo Dependente | Importa de | O que importa                                            | Arquivo                                                    |
+| ----------------- | ---------- | -------------------------------------------------------- | ---------------------------------------------------------- |
+| `rotas`           | `crm`      | `formatDate`                                             | `PlanejamentoRotasPage.tsx`, `DetalheRotaPage.tsx`         |
+| `rotas`           | `despesas` | `useEmpresaSuperAdmin`, `EmpresaSuperAdminSelector`      | `ConfigRotasPage.tsx`                                      |
+| `nps`             | `empresas` | `buscarEmpresa`, `buscarEmpresaConfig`, `listarEmpresas` | `NpsPreviewPage.tsx`, `NpsPesquisasPage.tsx`               |
+| `despesas`        | `empresas` | `listarEmpresas`, `type Empresa`                         | `useEmpresaSuperAdmin.ts`, `EmpresaSuperAdminSelector.tsx` |
 
 ```
 rotas ──────────────── depende de ──> crm (formatDate)
@@ -32,21 +32,22 @@ despesas ──────────── depende de ──> empresas (lista
 
 ## O que está OK ✅
 
-| Módulo | Status |
-|---|---|
-| `funis` | Auto-contido |
-| `hub` | Auto-contido |
-| `linktree` | Auto-contido (usa apenas `~/features/linktree/*`) |
-| `mapas` | Auto-contido |
-| `crm` | Auto-contido (usa `~/features/crm/lib/*` — próprio) |
-| `cadastros`, `clientes`, `documentos`, `admin` | Auto-contidos |
-| `despesas` (componentes/services) | Auto-contido, **exceto** `useEmpresaSuperAdmin` |
+| Módulo                                         | Status                                              |
+| ---------------------------------------------- | --------------------------------------------------- |
+| `funis`                                        | Auto-contido                                        |
+| `hub`                                          | Auto-contido                                        |
+| `linktree`                                     | Auto-contido (usa apenas `~/features/linktree/*`)   |
+| `mapas`                                        | Auto-contido                                        |
+| `crm`                                          | Auto-contido (usa `~/features/crm/lib/*` — próprio) |
+| `cadastros`, `clientes`, `documentos`, `admin` | Auto-contidos                                       |
+| `despesas` (componentes/services)              | Auto-contido, **exceto** `useEmpresaSuperAdmin`     |
 
 ---
 
 ## Plano de Correção
 
 ### Problema 1 — `rotas` importa `formatDate` do `crm`
+
 **Impacto:** baixo · **Esforço:** mínimo
 
 `formatDate` e `formatBRL` são **utilitários genéricos** que não pertencem ao CRM.
@@ -60,14 +61,16 @@ src/lib/
 ```
 
 Arquivos a alterar:
+
 - `rotas/components/PlanejamentoRotasPage.tsx` — trocar import
-- `rotas/components/DetalheRotaPage.tsx` — trocar import  
+- `rotas/components/DetalheRotaPage.tsx` — trocar import
 - `crm/lib/comercial.ts` — re-exportar de `src/lib/utils/format.ts` (retrocompat)
 - Demais arquivos do `crm` que usam `formatBRL`
 
 ---
 
 ### Problema 2 — `rotas` importa `EmpresaSuperAdminSelector` do `despesas`
+
 **Impacto:** médio · **Esforço:** baixo
 
 Este componente é um seletor de empresa para super-admins — claramente **compartilhado**, não pertence ao módulo despesas.
@@ -81,6 +84,7 @@ src/components/
 ```
 
 Arquivos a alterar:
+
 - `despesas/components/shared/EmpresaSuperAdminSelector.tsx` → mover
 - `despesas/hooks/useEmpresaSuperAdmin.ts` → mover
 - `rotas/components/ConfigRotasPage.tsx` → atualizar import
@@ -89,6 +93,7 @@ Arquivos a alterar:
 ---
 
 ### Problema 3 — `nps` e `despesas` importam do módulo `empresas`
+
 **Impacto:** alto · **Esforço:** médio
 
 O módulo `empresas` exporta `listarEmpresas`, `buscarEmpresa`, `buscarEmpresaConfig`, `type Empresa`. Isso é **dado estrutural da plataforma** — correto que exista, mas a arquitetura precisa deixar isso explícito.
@@ -96,6 +101,7 @@ O módulo `empresas` exporta `listarEmpresas`, `buscarEmpresa`, `buscarEmpresaCo
 **Duas opções:**
 
 #### Opção A — `empresas` é um módulo-infraestrutura (recomendada)
+
 Formalizar que `empresas` é um módulo de **dados compartilhados** (não uma feature de negócio), movendo para `src/lib/empresas/` ou `src/shared/empresas/`.
 
 ```
@@ -108,6 +114,7 @@ src/shared/
 Benefício: deixa claro na arquitetura que qualquer módulo pode usar dados de empresa — é infraestrutura, não feature.
 
 #### Opção B — Cada módulo traz seu próprio acesso aos dados de empresa
+
 Cada módulo duplica as queries que precisa (ex: `nps/services/empresa.ts` com `listarEmpresas`).
 
 **Contra:** duplicação de código, manutenção custosa. ❌
@@ -151,4 +158,3 @@ Para garantir que novas violações não apareçam, adicione uma regra de lint:
   ]
 }]
 ```
-

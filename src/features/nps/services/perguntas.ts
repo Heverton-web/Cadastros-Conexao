@@ -1,7 +1,9 @@
 import { supabase } from "~/core/supabase";
 import type { NpsPergunta } from "../types";
 
-export async function listarPerguntas(empresaId: string): Promise<NpsPergunta[]> {
+export async function listarPerguntas(
+  empresaId: string,
+): Promise<NpsPergunta[]> {
   const { data, error } = await supabase
     .from("nps_perguntas")
     .select("*")
@@ -12,7 +14,9 @@ export async function listarPerguntas(empresaId: string): Promise<NpsPergunta[]>
   return (data as NpsPergunta[]) || [];
 }
 
-export async function listarPerguntasAtivas(empresaId: string): Promise<NpsPergunta[]> {
+export async function listarPerguntasAtivas(
+  empresaId: string,
+): Promise<NpsPergunta[]> {
   const { data, error } = await supabase
     .from("nps_perguntas")
     .select("*")
@@ -24,7 +28,13 @@ export async function listarPerguntasAtivas(empresaId: string): Promise<NpsPergu
   return (data as NpsPergunta[]) || [];
 }
 
-export async function criarPergunta(empresaId: string, pergunta: Omit<NpsPergunta, "id" | "empresa_id" | "created_at" | "updated_at">): Promise<NpsPergunta> {
+export async function criarPergunta(
+  empresaId: string,
+  pergunta: Omit<
+    NpsPergunta,
+    "id" | "empresa_id" | "created_at" | "updated_at"
+  >,
+): Promise<NpsPergunta> {
   const { data, error } = await supabase
     .from("nps_perguntas")
     .insert({ ...pergunta, empresa_id: empresaId })
@@ -35,7 +45,10 @@ export async function criarPergunta(empresaId: string, pergunta: Omit<NpsPergunt
   return data as NpsPergunta;
 }
 
-export async function atualizarPergunta(id: string, pergunta: Partial<NpsPergunta>): Promise<NpsPergunta> {
+export async function atualizarPergunta(
+  id: string,
+  pergunta: Partial<NpsPergunta>,
+): Promise<NpsPergunta> {
   const { data, error } = await supabase
     .from("nps_perguntas")
     .update({ ...pergunta, updated_at: new Date().toISOString() })
@@ -48,10 +61,7 @@ export async function atualizarPergunta(id: string, pergunta: Partial<NpsPergunt
 }
 
 export async function excluirPergunta(id: string): Promise<void> {
-  const { error } = await supabase
-    .from("nps_perguntas")
-    .delete()
-    .eq("id", id);
+  const { error } = await supabase.from("nps_perguntas").delete().eq("id", id);
 
   if (error) throw error;
 }

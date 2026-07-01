@@ -1,12 +1,19 @@
 import * as QRCode from "qrcode";
 import { supabase } from "~/core/supabase";
-import type { LinktreeColaborador, LinktreeColaboradorComCredencial, LinktreeColaboradorInput, LinktreeThemeConfig } from "./types";
+import type {
+  LinktreeColaborador,
+  LinktreeColaboradorComCredencial,
+  LinktreeColaboradorInput,
+  LinktreeThemeConfig,
+} from "./types";
 import { normalizeLinktreeTheme } from "./types";
 
 export async function listarColaboradores(empresaId?: string) {
   let query = supabase
     .from("linktree_colaboradores")
-    .select("*, credenciais(id, nome_completo, email_corporativo, whatsapp_corporativo, departamento)")
+    .select(
+      "*, credenciais(id, nome_completo, email_corporativo, whatsapp_corporativo, departamento)",
+    )
     .order("created_at", { ascending: false });
   if (empresaId) query = query.eq("empresa_id", empresaId);
   const { data, error } = await query;
@@ -18,24 +25,34 @@ export async function criarColaborador(input: LinktreeColaboradorInput) {
   const { data, error } = await supabase
     .from("linktree_colaboradores")
     .insert(input)
-    .select("*, credenciais(id, nome_completo, email_corporativo, whatsapp_corporativo, departamento)")
+    .select(
+      "*, credenciais(id, nome_completo, email_corporativo, whatsapp_corporativo, departamento)",
+    )
     .single();
   if (error) throw error;
   return data as LinktreeColaboradorComCredencial;
 }
 
-export async function atualizarColaborador(id: string, input: Partial<LinktreeColaboradorInput>) {
+export async function atualizarColaborador(
+  id: string,
+  input: Partial<LinktreeColaboradorInput>,
+) {
   const { data, error } = await supabase
     .from("linktree_colaboradores")
     .update(input)
     .eq("id", id)
-    .select("*, credenciais(id, nome_completo, email_corporativo, whatsapp_corporativo, departamento)")
+    .select(
+      "*, credenciais(id, nome_completo, email_corporativo, whatsapp_corporativo, departamento)",
+    )
     .single();
   if (error) throw error;
   return data as LinktreeColaboradorComCredencial;
 }
 
-export async function toggleColaboradorStatus(id: string, status: "ativo" | "inativo") {
+export async function toggleColaboradorStatus(
+  id: string,
+  status: "ativo" | "inativo",
+) {
   const { data, error } = await supabase
     .from("linktree_colaboradores")
     .update({ status })
@@ -57,7 +74,9 @@ export async function deletarColaborador(id: string) {
 export async function buscarColaboradorPorId(id: string) {
   const { data, error } = await supabase
     .from("linktree_colaboradores")
-    .select("*, credenciais(id, nome_completo, email_corporativo, whatsapp_corporativo, departamento)")
+    .select(
+      "*, credenciais(id, nome_completo, email_corporativo, whatsapp_corporativo, departamento)",
+    )
     .eq("id", id)
     .maybeSingle();
   if (error) throw error;
@@ -75,11 +94,17 @@ export async function buscarTemaConfig(empresaId?: string) {
   return normalizeLinktreeTheme(data?.config);
 }
 
-export async function salvarTemaConfig(empresaId: string | null, config: LinktreeThemeConfig) {
+export async function salvarTemaConfig(
+  empresaId: string | null,
+  config: LinktreeThemeConfig,
+) {
   const id = empresaId || "global";
   const { error } = await supabase
     .from("linktree_tema_config")
-    .upsert({ id, empresa_id: empresaId, config: config as any }, { onConflict: "id" });
+    .upsert(
+      { id, empresa_id: empresaId, config: config as any },
+      { onConflict: "id" },
+    );
   if (error) throw error;
 }
 

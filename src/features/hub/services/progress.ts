@@ -11,7 +11,9 @@ export async function fetchHubUserProgress(userId: string, empresaId: string) {
   return data as HubUserProgress[];
 }
 
-export async function upsertHubUserProgress(progress: Partial<HubUserProgress>) {
+export async function upsertHubUserProgress(
+  progress: Partial<HubUserProgress>,
+) {
   const { data, error } = await supabase
     .from("hub_user_progress")
     .upsert(progress, { onConflict: "user_id,material_id" })
@@ -21,12 +23,22 @@ export async function upsertHubUserProgress(progress: Partial<HubUserProgress>) 
   return data as HubUserProgress;
 }
 
-export async function completeHubMaterial(userId: string, materialId: string, empresaId: string) {
+export async function completeHubMaterial(
+  userId: string,
+  materialId: string,
+  empresaId: string,
+) {
   const { data, error } = await supabase
     .from("hub_user_progress")
     .upsert(
-      { user_id: userId, material_id: materialId, empresa_id: empresaId, status: "completed", completed_at: new Date().toISOString() },
-      { onConflict: "user_id,material_id" }
+      {
+        user_id: userId,
+        material_id: materialId,
+        empresa_id: empresaId,
+        status: "completed",
+        completed_at: new Date().toISOString(),
+      },
+      { onConflict: "user_id,material_id" },
     )
     .select()
     .single();
@@ -34,7 +46,10 @@ export async function completeHubMaterial(userId: string, materialId: string, em
   return data as HubUserProgress;
 }
 
-export async function fetchHubCollectionProgress(userId: string, empresaId: string) {
+export async function fetchHubCollectionProgress(
+  userId: string,
+  empresaId: string,
+) {
   const { data, error } = await supabase
     .from("hub_collection_progress")
     .select("*")
@@ -44,7 +59,9 @@ export async function fetchHubCollectionProgress(userId: string, empresaId: stri
   return data as HubCollectionProgress[];
 }
 
-export async function upsertHubCollectionProgress(progress: Partial<HubCollectionProgress>) {
+export async function upsertHubCollectionProgress(
+  progress: Partial<HubCollectionProgress>,
+) {
   const { data, error } = await supabase
     .from("hub_collection_progress")
     .upsert(progress, { onConflict: "user_id,collection_id" })
@@ -54,12 +71,22 @@ export async function upsertHubCollectionProgress(progress: Partial<HubCollectio
   return data as HubCollectionProgress;
 }
 
-export async function completeHubCollection(userId: string, collectionId: string, empresaId: string) {
+export async function completeHubCollection(
+  userId: string,
+  collectionId: string,
+  empresaId: string,
+) {
   const { data, error } = await supabase
     .from("hub_collection_progress")
     .upsert(
-      { user_id: userId, collection_id: collectionId, empresa_id: empresaId, status: "completed", completed_at: new Date().toISOString() },
-      { onConflict: "user_id,collection_id" }
+      {
+        user_id: userId,
+        collection_id: collectionId,
+        empresa_id: empresaId,
+        status: "completed",
+        completed_at: new Date().toISOString(),
+      },
+      { onConflict: "user_id,collection_id" },
     )
     .select()
     .single();

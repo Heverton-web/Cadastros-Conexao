@@ -5,6 +5,7 @@
 O projeto **cartao-visitas** (https://github.com/ConexaoImplantes/cartao-visitas) é uma aplicação standalone construída com Lovable/TanStack Start que implementa um sistema de LinkTree corporativo para colaboradores da Conexão Implantes. Ele será integrado ao **ERP Conexão** como um novo módulo seguindo o padrão modular já estabelecido.
 
 ### O que o cartao-visitas faz atualmente:
+
 - **Tabela `collaborators`**: nome, cargo, email, whatsapp, telefone_fixo, foto_url, status (ativo/inativo)
 - **Tabela `theme_config`**: config JSONB global com background, icons, typography, institucional
 - **Página pública `/cartao/:id`**: Renderiza o LinkTreeCard com tema customizado
@@ -16,6 +17,7 @@ O projeto **cartao-visitas** (https://github.com/ConexaoImplantes/cartao-visitas
 ## Fases de Implementação
 
 ### Fase 1: Migration do Banco de Dados
+
 **Arquivo**: `supabase/migrations/00039_linktree_module.sql`
 
 Adaptar as tabelas existentes do cartao-visitas para o padrão multi-empresa do ERP Conexão:
@@ -51,6 +53,7 @@ CREATE TABLE IF NOT EXISTS linktree_tema_config (
 ```
 
 **Princípios**:
+
 - `empresa_id` em ambas as tabelas (multi-empresa)
 - RLS seguindo padrão do ERP (empresa_id + super_admin)
 - Triggers `update_updated_at_column()` (já existe no ERP)
@@ -60,6 +63,7 @@ CREATE TABLE IF NOT EXISTS linktree_tema_config (
 ### Fase 2: Tipos e Constantes
 
 **Arquivo**: `src/features/linktree/types.ts`
+
 - `LinktreeColaborador` (adaptado de `Collaborator`)
 - `LinktreeThemeConfig` (adaptado de `ThemeConfig`)
 - `LinktreePermissionKey` (keys das permissões)
@@ -67,6 +71,7 @@ CREATE TABLE IF NOT EXISTS linktree_tema_config (
 - Funções utilitárias: `maskPhone`, `encodePhone`, `decodePhone`, `encodeTelefone`, `decodeTelefone`
 
 **Arquivo**: `src/features/linktree/permissions.ts`
+
 ```typescript
 export const LINKTREE_PERMISSIONS = [
   { key: "lt_ver_dashboard", label: "Ver dashboard LinkTree", ... },
@@ -82,12 +87,14 @@ export const LINKTREE_PERMISSIONS = [
 ```
 
 **Atualizar**: `src/core/permissions/types.ts`
+
 - Adicionar chaves `lt_*` ao tipo `Permissoes`
 - Atualizar `getPermissoesPadrao()` nos 4 ambientes
 
 ### Fase 3: Definição do Módulo
 
 **Arquivo**: `src/features/linktree/module.ts`
+
 ```typescript
 export const linktreeModule: ModuleDefinition = {
   key: "linktree-conexao",
@@ -95,7 +102,7 @@ export const linktreeModule: ModuleDefinition = {
   descricao: "Cartões digitais e QR Codes dos colaboradores",
   icon: Link2, // ou ExternalLink
   routes: ["/linktree/dashboard", "/linktree/tema"],
-  permissions: LINKTREE_PERMISSIONS.map(p => p.key),
+  permissions: LINKTREE_PERMISSIONS.map((p) => p.key),
   ambientes: ["cadastro", "consultor", "tecnologia"],
   abas: [
     { key: "geral", label: "Geral" },
@@ -104,9 +111,21 @@ export const linktreeModule: ModuleDefinition = {
     { key: "eventos", label: "Eventos" },
   ],
   events: [
-    { key: "colaborador.criado", label: "Colaborador Criado", type: "status_change" },
-    { key: "colaborador.ativado", label: "Colaborador Ativado", type: "status_change" },
-    { key: "colaborador.inativado", label: "Colaborador Inativado", type: "status_change" },
+    {
+      key: "colaborador.criado",
+      label: "Colaborador Criado",
+      type: "status_change",
+    },
+    {
+      key: "colaborador.ativado",
+      label: "Colaborador Ativado",
+      type: "status_change",
+    },
+    {
+      key: "colaborador.inativado",
+      label: "Colaborador Inativado",
+      type: "status_change",
+    },
   ],
   hasCredentialScopes: true,
 };
@@ -115,6 +134,7 @@ export const linktreeModule: ModuleDefinition = {
 ### Fase 4: Serviços (CRUD)
 
 **Arquivo**: `src/features/linktree/index.ts`
+
 - `listarColaboradores(empresaId?)` - SELECT com empresa_id
 - `criarColaborador(input)` - INSERT com empresa_id
 - `atualizarColaborador(id, input)` - UPDATE
@@ -136,11 +156,13 @@ export const linktreeModule: ModuleDefinition = {
 4. **`LinktreeQrModal.tsx`** - Modal de visualização/download de QR Code
 
 **Diretório**: `src/features/linktree/lib/`
+
 - **`qr.ts`** - Funções de QR Code (portado do `lib/qr.ts`)
 - **`types.ts`** - Tipos e utilitários (portado do `lib/types.ts`): `ThemeConfig`, `DEFAULT_THEME`, `normalizeTheme()`, `maskPhone`, `encodePhone`, `decodePhone`, `encodeTelefone`, `decodeTelefone`, `BlobPosition`, `BlobItem`, etc.
 - **`image-utils.ts`** - Compressão de imagens (portado do `lib/image-utils.ts`): `compressImage()` para fotos de perfil, `compressImageContain()` para logos
 
 **NOTA sobre o que NÃO será portado**:
+
 - `lib/permissions.ts` do cartao-visitas (usa `user_permissions` table) → substituído pelo sistema de permissões granular do ERP (`usePermissoes()`)
 - `hooks/use-auth.tsx` → substituído pelo `AuthProvider` do ERP
 - `hooks/use-permissions.tsx` → substituído pelo `usePermissoes()` do ERP
@@ -151,16 +173,19 @@ export const linktreeModule: ModuleDefinition = {
 ### Fase 6: Rotas (Páginas)
 
 **Arquivo**: `src/routes/linktree.dashboard.tsx`
+
 - Portar `cartao.dashboard.tsx` do cartao-visitas
 - Adaptar para usar `supabase` do ERP Conexão (`~/core/supabase`)
 - Adaptar permissões para usar `usePermissoes()` do ERP
 - Filtro por `empresa_id` (multi-empresa)
 
 **Arquivo**: `src/routes/linktree.tema.tsx`
+
 - Portar `cartao.tema.tsx` do cartao-visitas
 - Tema isolado por empresa
 
 **Arquivo**: `src/routes/linktree.$id.tsx` (rota pública)
+
 - Portar `cartao.$id.tsx` do cartao-visitas
 - Acesso via `anon` (RLS público para status=ativo)
 - **NOTA**: Esta rota NÃO está dentro do layout autenticado - é pública
@@ -168,13 +193,16 @@ export const linktreeModule: ModuleDefinition = {
 ### Fase 7: Integração no App
 
 **Arquivo**: `src/main.tsx`
+
 - Importar e registrar `linktreeModule`
 - Adicionar nav items (Dashboard LinkTree, Tema LinkTree)
 
 **Arquivo**: `src/core/permissions/types.ts`
+
 - Adicionar chaves `lt_*` ao tipo `Permissoes`
 
 **Arquivo**: `src/features/cadastros/permissions.ts`
+
 - Adicionar chaves `lt_*` ao `getPermissoesPadrao()` para cada ambiente
 
 ---
@@ -182,30 +210,32 @@ export const linktreeModule: ModuleDefinition = {
 ## Arquivos a Criar/Modificar
 
 ### Novos:
-| Caminho | Descrição |
-|---------|-----------|
-| `supabase/migrations/00039_linktree_module.sql` | Migration: tabelas linktree_colaboradores, linktree_tema_config |
-| `src/features/linktree/module.ts` | Definição do módulo |
-| `src/features/linktree/permissions.ts` | Permissões do módulo |
-| `src/features/linktree/types.ts` | Tipos e utilitários |
-| `src/features/linktree/index.ts` | Serviços CRUD |
-| `src/features/linktree/components/LinkTreeCard.tsx` | Card público |
-| `src/features/linktree/components/LinktreeColaboradorModal.tsx` | Modal CRUD |
-| `src/features/linktree/components/LinktreeThemeEditor.tsx` | Editor de tema |
-| `src/features/linktree/components/LinktreeQrModal.tsx` | Modal QR Code |
-| `src/features/linktree/lib/qr.ts` | Utilitários QR |
-| `src/features/linktree/lib/image-utils.ts` | Compressão de imagens |
-| `src/routes/linktree.dashboard.tsx` | Página dashboard |
-| `src/routes/linktree.tema.tsx` | Página tema |
-| `src/routes/linktree.$id.tsx` | Rota pública do cartão |
+
+| Caminho                                                         | Descrição                                                       |
+| --------------------------------------------------------------- | --------------------------------------------------------------- |
+| `supabase/migrations/00039_linktree_module.sql`                 | Migration: tabelas linktree_colaboradores, linktree_tema_config |
+| `src/features/linktree/module.ts`                               | Definição do módulo                                             |
+| `src/features/linktree/permissions.ts`                          | Permissões do módulo                                            |
+| `src/features/linktree/types.ts`                                | Tipos e utilitários                                             |
+| `src/features/linktree/index.ts`                                | Serviços CRUD                                                   |
+| `src/features/linktree/components/LinkTreeCard.tsx`             | Card público                                                    |
+| `src/features/linktree/components/LinktreeColaboradorModal.tsx` | Modal CRUD                                                      |
+| `src/features/linktree/components/LinktreeThemeEditor.tsx`      | Editor de tema                                                  |
+| `src/features/linktree/components/LinktreeQrModal.tsx`          | Modal QR Code                                                   |
+| `src/features/linktree/lib/qr.ts`                               | Utilitários QR                                                  |
+| `src/features/linktree/lib/image-utils.ts`                      | Compressão de imagens                                           |
+| `src/routes/linktree.dashboard.tsx`                             | Página dashboard                                                |
+| `src/routes/linktree.tema.tsx`                                  | Página tema                                                     |
+| `src/routes/linktree.$id.tsx`                                   | Rota pública do cartão                                          |
 
 ### Modificar:
-| Caminho | Mudança |
-|---------|---------|
-| `package.json` | Adicionar dependência `qrcode` (e `@types/qrcode` em devDeps) |
-| `src/main.tsx` | Importar e registrar linktreeModule |
-| `src/core/permissions/types.ts` | Adicionar chaves lt_* |
-| `src/features/cadastros/permissions.ts` | Adicionar lt_* em getPermissoesPadrao() |
+
+| Caminho                                 | Mudança                                                       |
+| --------------------------------------- | ------------------------------------------------------------- |
+| `package.json`                          | Adicionar dependência `qrcode` (e `@types/qrcode` em devDeps) |
+| `src/main.tsx`                          | Importar e registrar linktreeModule                           |
+| `src/core/permissions/types.ts`         | Adicionar chaves lt_*                                         |
+| `src/features/cadastros/permissions.ts` | Adicionar lt_* em getPermissoesPadrao()                       |
 
 ---
 

@@ -3,26 +3,35 @@ import { Facebook, Link2, Link2Off, Loader2 } from "lucide-react";
 import toast from "react-hot-toast";
 import { useAuth } from "~/lib/auth";
 import { Button } from "~/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "~/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "~/components/ui/card";
 import { verificarConexao, desconectar } from "../services/auth.service";
 
 export function MetaConnect() {
-  const { user } = useAuth();
+  const { profile } = useAuth();
   const [conectado, setConectado] = useState(false);
   const [carregando, setCarregando] = useState(true);
 
   useEffect(() => {
-    if (!user?.empresa_id) return;
-    verificarConexao(user.empresa_id).then((conta) => {
-      setConectado(!!conta);
+    if (!profile?.empresa_id) {
       setCarregando(false);
-    });
-  }, [user?.empresa_id]);
+      return;
+    }
+    verificarConexao(profile.empresa_id)
+      .then((conta) => setConectado(!!conta))
+      .catch(console.error)
+      .finally(() => setCarregando(false));
+  }, [profile?.empresa_id]);
 
   async function handleDesconectar() {
-    if (!user?.empresa_id) return;
+    if (!profile?.empresa_id) return;
     setCarregando(true);
-    const ok = await desconectar(user.empresa_id);
+    const ok = await desconectar(profile.empresa_id);
     if (ok) {
       setConectado(false);
       toast.success("Desconectado do Meta Business Manager");
@@ -72,7 +81,8 @@ export function MetaConnect() {
         </div>
         <CardTitle>Conectar com Meta</CardTitle>
         <CardDescription>
-          Vincule sua conta do Meta Business Manager para gerenciar campanhas e posts
+          Vincule sua conta do Meta Business Manager para gerenciar campanhas e
+          posts
         </CardDescription>
       </CardHeader>
       <CardContent className="flex justify-center pb-6">

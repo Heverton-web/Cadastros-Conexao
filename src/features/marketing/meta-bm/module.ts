@@ -1,5 +1,10 @@
 import { Globe } from "lucide-react";
-import { registerModule, registerNavItem, registerPermission, registerPermissionDefaults } from "~/registry";
+import {
+  registerModule,
+  registerNavItem,
+  registerPermission,
+  registerPermissionDefaults,
+} from "~/registry";
 import type { ModuleDefinition } from "~/registry";
 import { META_BM_PERMISSIONS } from "./permissions";
 
@@ -8,13 +13,29 @@ export const metaBmModule: ModuleDefinition = {
   nome: "Meta Business Manager",
   descricao: "Integração com Facebook/Meta para gestão de campanhas e posts",
   icon: Globe,
-  routes: ["/marketing/meta-bm", "/marketing/meta-bm/campanhas", "/marketing/meta-bm/posts"],
+  routes: [
+    "/marketing/meta-bm",
+    "/marketing/meta-bm/campanhas",
+    "/marketing/meta-bm/posts",
+  ],
   permissions: META_BM_PERMISSIONS.map((p) => p.key),
   ambientes: ["cadastro", "tecnologia"],
   abas: [
-    { key: "geral", label: "Geral", descricao: "Configurações gerais do Meta BM" },
-    { key: "permissoes", label: "Permissões", descricao: "Gerenciar permissões do módulo" },
-    { key: "credenciais", label: "Credenciais", descricao: "Credenciais com escopo no módulo" },
+    {
+      key: "geral",
+      label: "Geral",
+      descricao: "Configurações gerais do Meta BM",
+    },
+    {
+      key: "permissoes",
+      label: "Permissões",
+      descricao: "Gerenciar permissões do módulo",
+    },
+    {
+      key: "credenciais",
+      label: "Credenciais",
+      descricao: "Credenciais com escopo no módulo",
+    },
   ],
   events: [],
   hasCredentialScopes: true,
@@ -61,12 +82,16 @@ export const metaBmModule: ModuleDefinition = {
 
     registerPermissionDefaults("marketing", {
       cadastro: {
-        mktg_meta_conectar: true, mktg_meta_ver_campanhas: true,
-        mktg_meta_criar_posts: true, mktg_meta_ver_insights: true,
+        mktg_meta_conectar: true,
+        mktg_meta_ver_campanhas: true,
+        mktg_meta_criar_posts: true,
+        mktg_meta_ver_insights: true,
       },
       tecnologia: {
-        mktg_meta_conectar: true, mktg_meta_ver_campanhas: true,
-        mktg_meta_criar_posts: true, mktg_meta_ver_insights: true,
+        mktg_meta_conectar: true,
+        mktg_meta_ver_campanhas: true,
+        mktg_meta_criar_posts: true,
+        mktg_meta_ver_insights: true,
       },
     });
   },

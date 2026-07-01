@@ -28,7 +28,11 @@ export function useSalvarConfig() {
   const empresa_id = profile?.empresa_id ?? "";
 
   return useMutation({
-    mutationFn: async (config: { frequencia: string; dia_envio: number; dias_aviso: number }) => {
+    mutationFn: async (config: {
+      frequencia: string;
+      dia_envio: number;
+      dias_aviso: number;
+    }) => {
       const existente = await supabase
         .from("despesas_config")
         .select("id")
@@ -55,7 +59,9 @@ export function useSalvarConfig() {
       return data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["despesa-config", empresa_id] });
+      queryClient.invalidateQueries({
+        queryKey: ["despesa-config", empresa_id],
+      });
     },
   });
 }

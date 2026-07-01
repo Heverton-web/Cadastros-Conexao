@@ -5,14 +5,17 @@
 ## Workflow Automático
 
 ### Passo 1: Branch
+
 - Verificar se está em `main` ou `master`
 - Criar branch `feature/mapa-dark-premium` (se não existir)
 - Alternar para ela
 
 ### Passo 2: Documento de Design
+
 - Salvar `docs-projeto/2026-06-30-mapa-dark-premium-design.md`
 
 ### Passo 3: Tokens CSS
+
 - Editar `src/styles/globals.css`:
   - Atualizar `--state-exclusive` para `#d4a843`
   - Atualizar `--state-nonexclusive` para `#b8944a`
@@ -25,6 +28,7 @@
   - Adicionar classe `.state-glow`
 
 ### Passo 4: BrazilMap.tsx
+
 - Adicionar `<defs>` com gradientes no SVG
 - Implementar tooltip flutuante com Lucide icons
 - Substituir `<circle>` pins por SVG pin shape
@@ -33,23 +37,27 @@
 - Implementar cluster de pins sem lat/lng
 
 ### Passo 5: PublicMapShell.tsx
+
 - Adicionar stats por região no header
 - Substituir legenda por legenda contextual
 - Adicionar filtro por região
 - Aprimorar accordion com borda e barra de densidade
 
 ### Passo 6: StateDetailSheet.tsx
+
 - Adicionar abas (Distribuidores / Consultores)
 - Adicionar campo de busca com filtro
 - Grid de cards com borda esquerda colorida
 - Drawer mode mobile
 
 ### Passo 7: EntityDetailDialog.tsx
+
 - Avatar circular com ícone + cor do pin
 - Grid 2 colunas
 - Botões "Ver no mapa" e "Abrir rota"
 
 ### Passo 8: Verificação
+
 - Rodar `npm run lint`
 - Rodar `npm run format`
 - Se tudo OK: mensagem de sucesso

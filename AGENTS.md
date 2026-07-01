@@ -51,17 +51,20 @@ const [itemParaDeletar, setItemParaDeletar] = useState<ItemType | null>(null);
 ## Regras de Arquitetura
 
 ### Multi-tenant por empresa_id
+
 - Toda tabela criada DEVE ter coluna `empresa_id` (UUID, FK para `empresas.id`)
 - RLS policies devem filtrar por `empresa_id`
 - Super Admin filtra por empresa; Admin vê apenas sua empresa
 
 ### Módulos independentes
+
 - Cada módulo é self-contained em `src/features/<modulo>/`
 - A única camada de conexão entre módulos é o BANCO DE DADOS
 - Excluir um módulo não deve afetar outros
 - Tabelas do módulo devem ser criadas no mesmo banco (multi-tenant)
 
 ### Economia de tokens
+
 - Sempre seguir diretrizes de `AGENTS.md` do projeto
 - Sub-agentes escrevem arquivos direto, retornam só status
 - Relatórios finais NUNCA são comprimidos
@@ -74,15 +77,15 @@ const [itemParaDeletar, setItemParaDeletar] = useState<ItemType | null>(null);
 
 ## Skills Disponíveis
 
-| Skill | Descrição |
-|-------|-----------|
-| `criar-modulo` | Estrutura completa de novo módulo |
-| `criar-rota` | Rota protegida com AuthGuard |
-| `gerar-crud` | Operações CRUD com React Query |
-| `criar-componente-modulo` | Componente React com CVA |
-| `adicionar-permissao` | Permissão no sistema RBAC |
-| `validar-modulo` | Verificar integridade do módulo |
-| `documentar-modulo` | Gerar documentação do módulo |
-| `deploy-vps` | Deploy via Docker + VPS |
+| Skill                          | Descrição                                   |
+| ------------------------------ | ------------------------------------------- |
+| `criar-modulo`                 | Estrutura completa de novo módulo           |
+| `criar-rota`                   | Rota protegida com AuthGuard                |
+| `gerar-crud`                   | Operações CRUD com React Query              |
+| `criar-componente-modulo`      | Componente React com CVA                    |
+| `adicionar-permissao`          | Permissão no sistema RBAC                   |
+| `validar-modulo`               | Verificar integridade do módulo             |
+| `documentar-modulo`            | Gerar documentação do módulo                |
+| `deploy-vps`                   | Deploy via Docker + VPS                     |
 | `planejar-modulo-repo-externo` | Analisar repo externo e planejar integração |
-| `gerenciar-nav-items` | Gerenciar itens de navegação lateral |
+| `gerenciar-nav-items`          | Gerenciar itens de navegação lateral        |

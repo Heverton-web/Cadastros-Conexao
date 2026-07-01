@@ -1,10 +1,15 @@
 import { supabase } from "~/core/supabase";
 import type { DespesaEnvio, EnvioFiltros } from "../types";
 
-export async function listarEnviosEmpresa(empresa_id: string, filtros?: EnvioFiltros): Promise<DespesaEnvio[]> {
+export async function listarEnviosEmpresa(
+  empresa_id: string,
+  filtros?: EnvioFiltros,
+): Promise<DespesaEnvio[]> {
   let query = supabase
     .from("despesas_envios")
-    .select("*, periodo:despesas_periodos(*), usuario:profiles!usuario_id(nome, email), aprovador:profiles!aprovador_id(nome, email)")
+    .select(
+      "*, periodo:despesas_periodos(*), usuario:profiles!usuario_id(nome, email), aprovador:profiles!aprovador_id(nome, email)",
+    )
     .eq("empresa_id", empresa_id)
     .order("created_at", { ascending: false });
 
@@ -17,25 +22,36 @@ export async function listarEnviosEmpresa(empresa_id: string, filtros?: EnvioFil
   return data as DespesaEnvio[];
 }
 
-export async function listarEnviosPendentes(empresa_id: string): Promise<DespesaEnvio[]> {
+export async function listarEnviosPendentes(
+  empresa_id: string,
+): Promise<DespesaEnvio[]> {
   return listarEnviosEmpresa(empresa_id, { status: "pendente" });
 }
 
-export async function listarMeusEnvios(empresa_id: string, usuario_id: string): Promise<DespesaEnvio[]> {
+export async function listarMeusEnvios(
+  empresa_id: string,
+  usuario_id: string,
+): Promise<DespesaEnvio[]> {
   return listarEnviosEmpresa(empresa_id, { usuario_id });
 }
 
 export async function buscarEnvio(id: string): Promise<DespesaEnvio> {
   const { data, error } = await supabase
     .from("despesas_envios")
-    .select("*, periodo:despesas_periodos(*), usuario:profiles!usuario_id(nome, email), aprovador:profiles!aprovador_id(nome, email)")
+    .select(
+      "*, periodo:despesas_periodos(*), usuario:profiles!usuario_id(nome, email), aprovador:profiles!aprovador_id(nome, email)",
+    )
     .eq("id", id)
     .single();
   if (error) throw error;
   return data as DespesaEnvio;
 }
 
-export async function buscarEnvioPorPeriodo(empresa_id: string, usuario_id: string, periodo_id: string): Promise<DespesaEnvio | null> {
+export async function buscarEnvioPorPeriodo(
+  empresa_id: string,
+  usuario_id: string,
+  periodo_id: string,
+): Promise<DespesaEnvio | null> {
   const { data, error } = await supabase
     .from("despesas_envios")
     .select("*, periodo:despesas_periodos(*)")
@@ -47,7 +63,11 @@ export async function buscarEnvioPorPeriodo(empresa_id: string, usuario_id: stri
   return data as DespesaEnvio | null;
 }
 
-export async function criarOuAtualizarEnvio(empresa_id: string, usuario_id: string, periodo_id: string): Promise<DespesaEnvio> {
+export async function criarOuAtualizarEnvio(
+  empresa_id: string,
+  usuario_id: string,
+  periodo_id: string,
+): Promise<DespesaEnvio> {
   let envio = await buscarEnvioPorPeriodo(empresa_id, usuario_id, periodo_id);
 
   if (!envio) {
@@ -70,7 +90,10 @@ export async function criarOuAtualizarEnvio(empresa_id: string, usuario_id: stri
   return envio;
 }
 
-export async function aprovarEnvio(id: string, aprovador_id: string): Promise<DespesaEnvio> {
+export async function aprovarEnvio(
+  id: string,
+  aprovador_id: string,
+): Promise<DespesaEnvio> {
   const { data, error } = await supabase
     .from("despesas_envios")
     .update({
@@ -93,7 +116,11 @@ export async function aprovarEnvio(id: string, aprovador_id: string): Promise<De
   return data as DespesaEnvio;
 }
 
-export async function reprovarEnvio(id: string, aprovador_id: string, comentario: string): Promise<DespesaEnvio> {
+export async function reprovarEnvio(
+  id: string,
+  aprovador_id: string,
+  comentario: string,
+): Promise<DespesaEnvio> {
   const { data, error } = await supabase
     .from("despesas_envios")
     .update({
@@ -117,7 +144,13 @@ export async function reprovarEnvio(id: string, aprovador_id: string, comentario
   return data as DespesaEnvio;
 }
 
-export async function aprovarEnvioParcial(id: string, aprovador_id: string, despesasAprovadas: string[], despesasReprovadas: string[], comentario: string): Promise<DespesaEnvio> {
+export async function aprovarEnvioParcial(
+  id: string,
+  aprovador_id: string,
+  despesasAprovadas: string[],
+  despesasReprovadas: string[],
+  comentario: string,
+): Promise<DespesaEnvio> {
   if (despesasAprovadas.length > 0) {
     await supabase
       .from("despesas")

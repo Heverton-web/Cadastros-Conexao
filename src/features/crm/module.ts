@@ -1,5 +1,20 @@
-import { LayoutDashboard, Users, UserCheck, BarChart3, ArrowLeftRight, Crown, Palette, Kanban, ListTodo } from "lucide-react";
-import { registerModule, registerNavItem, registerPermission, registerPermissionDefaults } from "~/registry";
+import {
+  LayoutDashboard,
+  Users,
+  UserCheck,
+  BarChart3,
+  ArrowLeftRight,
+  Crown,
+  Palette,
+  Kanban,
+  ListTodo,
+} from "lucide-react";
+import {
+  registerModule,
+  registerNavItem,
+  registerPermission,
+  registerPermissionDefaults,
+} from "~/registry";
 import type { ModuleDefinition } from "~/registry";
 import { CRM_PERMISSIONS } from "./permissions";
 
@@ -27,19 +42,47 @@ export const crmModule: ModuleDefinition = {
   ambientes: ["cadastro", "consultor", "tecnologia"],
   abas: [
     { key: "geral", label: "Geral", descricao: "Configurações gerais do CRM" },
-    { key: "permissoes", label: "Permissões", descricao: "Gerenciar permissões do módulo" },
-    { key: "eventos", label: "Eventos", descricao: "Eventos e webhooks do CRM" },
+    {
+      key: "permissoes",
+      label: "Permissões",
+      descricao: "Gerenciar permissões do módulo",
+    },
+    {
+      key: "eventos",
+      label: "Eventos",
+      descricao: "Eventos e webhooks do CRM",
+    },
   ],
   events: [
-    { key: "cliente.criado", label: "Cliente Criado", descricao: "Quando um novo cliente é adicionado", type: "status_change" },
-    { key: "cliente.transferido", label: "Cliente Transferido", descricao: "Quando um cliente é transferido", type: "status_change" },
-    { key: "visita.realizada", label: "Visita Realizada", descricao: "Quando uma visita é registrada", type: "button_action" },
+    {
+      key: "cliente.criado",
+      label: "Cliente Criado",
+      descricao: "Quando um novo cliente é adicionado",
+      type: "status_change",
+    },
+    {
+      key: "cliente.transferido",
+      label: "Cliente Transferido",
+      descricao: "Quando um cliente é transferido",
+      type: "status_change",
+    },
+    {
+      key: "visita.realizada",
+      label: "Visita Realizada",
+      descricao: "Quando uma visita é registrada",
+      type: "button_action",
+    },
   ],
   hasDesignConfig: true,
   designRoute: "/empresa/crm/design",
   setup: () => {
     for (const p of CRM_PERMISSIONS) {
-      registerPermission({ key: p.key, label: p.label, description: p.description, group: p.group });
+      registerPermission({
+        key: p.key,
+        label: p.label,
+        description: p.description,
+        group: p.group,
+      });
     }
 
     registerNavItem({
@@ -133,15 +176,32 @@ export const crmModule: ModuleDefinition = {
     });
 
     const crmAllTrue = {
-      crm_dashboard: true, crm_carteira: true, crm_pipeline: true, crm_tarefas: true,
-      crm_metricas: true, crm_cliente_detalhe: true, crm_equipe: true, crm_bi: true,
-      crm_transferencia: true, crm_diretoria: true,
+      crm_dashboard: true,
+      crm_carteira: true,
+      crm_pipeline: true,
+      crm_tarefas: true,
+      crm_metricas: true,
+      crm_cliente_detalhe: true,
+      crm_equipe: true,
+      crm_bi: true,
+      crm_transferencia: true,
+      crm_diretoria: true,
     };
-    const crmAllFalse = Object.fromEntries(Object.keys(crmAllTrue).map((k) => [k, false]));
+    const crmAllFalse = Object.fromEntries(
+      Object.keys(crmAllTrue).map((k) => [k, false]),
+    );
 
     registerPermissionDefaults("crm", {
       cadastro: crmAllTrue,
-      consultor: { ...crmAllFalse, crm_dashboard: true, crm_carteira: true, crm_pipeline: true, crm_tarefas: true, crm_cliente_detalhe: true, crm_equipe: true },
+      consultor: {
+        ...crmAllFalse,
+        crm_dashboard: true,
+        crm_carteira: true,
+        crm_pipeline: true,
+        crm_tarefas: true,
+        crm_cliente_detalhe: true,
+        crm_equipe: true,
+      },
       tecnologia: crmAllTrue,
       suporte: crmAllFalse,
     });

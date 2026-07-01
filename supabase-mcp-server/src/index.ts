@@ -10,14 +10,19 @@ const { Client } = pg;
 const DB_URL = process.env.SUPABASE_DB_URL;
 if (!DB_URL) {
   console.error("ERROR: SUPABASE_DB_URL environment variable is required");
-  console.error("Format: postgresql://postgres:password@db.project.supabase.co:5432/postgres");
+  console.error(
+    "Format: postgresql://postgres:password@db.project.supabase.co:5432/postgres",
+  );
   process.exit(1);
 }
 
 const CHARACTER_LIMIT = 50000;
 
 async function getClient() {
-  const client = new Client({ connectionString: DB_URL, ssl: { rejectUnauthorized: false } });
+  const client = new Client({
+    connectionString: DB_URL,
+    ssl: { rejectUnauthorized: false },
+  });
   await client.connect();
   return client;
 }
@@ -56,10 +61,22 @@ Examples:
 
 Error Handling:
   - Returns error details if SQL syntax is invalid or permission is denied.`,
-    inputSchema: z.object({
-      sql: z.string().min(1, "SQL query is required").max(100000).describe("SQL statement(s) to execute"),
-      max_rows: z.number().int().min(1).max(1000).default(100).describe("Maximum rows to return"),
-    }).strict(),
+    inputSchema: z
+      .object({
+        sql: z
+          .string()
+          .min(1, "SQL query is required")
+          .max(100000)
+          .describe("SQL statement(s) to execute"),
+        max_rows: z
+          .number()
+          .int()
+          .min(1)
+          .max(1000)
+          .default(100)
+          .describe("Maximum rows to return"),
+      })
+      .strict(),
     annotations: {
       readOnlyHint: false,
       destructiveHint: true,
@@ -84,19 +101,27 @@ Error Handling:
           rows,
         };
         return {
-          content: [{ type: "text", text: truncate(JSON.stringify(output, null, 2)) }],
+          content: [
+            { type: "text", text: truncate(JSON.stringify(output, null, 2)) },
+          ],
         };
       }
 
       return {
-        content: [{
-          type: "text",
-          text: JSON.stringify({
-            affected_rows: result.rowCount ?? 0,
-            command: result.command,
-            success: true,
-          }, null, 2),
-        }],
+        content: [
+          {
+            type: "text",
+            text: JSON.stringify(
+              {
+                affected_rows: result.rowCount ?? 0,
+                command: result.command,
+                success: true,
+              },
+              null,
+              2,
+            ),
+          },
+        ],
       };
     } catch (e: any) {
       await client.end();
@@ -104,7 +129,7 @@ Error Handling:
         content: [{ type: "text", text: `Error: ${e.message || String(e)}` }],
       };
     }
-  }
+  },
 );
 
 server.registerTool(
@@ -120,9 +145,14 @@ Returns:
 
 Examples:
   - Use when: "What tables are in the database?" or "Show me all available tables"`,
-    inputSchema: z.object({
-      schema: z.string().default("public").describe("Schema to list tables from (default: public)"),
-    }).strict(),
+    inputSchema: z
+      .object({
+        schema: z
+          .string()
+          .default("public")
+          .describe("Schema to list tables from (default: public)"),
+      })
+      .strict(),
     annotations: {
       readOnlyHint: true,
       destructiveHint: false,
@@ -133,12 +163,15 @@ Examples:
   async (params) => {
     const client = await getClient();
     try {
-      const result = await client.query(`
+      const result = await client.query(
+        `
         SELECT table_schema, table_name, table_type
         FROM information_schema.tables
         WHERE table_schema = $1
         ORDER BY table_name
-      `, [params.schema]);
+      `,
+        [params.schema],
+      );
       await client.end();
 
       const output = {
@@ -158,7 +191,7 @@ Examples:
         content: [{ type: "text", text: `Error: ${e.message || String(e)}` }],
       };
     }
-  }
+  },
 );
 
 server.registerTool(
@@ -180,10 +213,15 @@ Returns:
 Examples:
   - "Describe the profiles table" → params with table="profiles"
   - "Show schema of cadastros" → params with table="cadastros"`,
-    inputSchema: z.object({
-      table: z.string().min(1).max(200).describe("Table name"),
-      schema: z.string().default("public").describe("Schema name (default: public)"),
-    }).strict(),
+    inputSchema: z
+      .object({
+        table: z.string().min(1).max(200).describe("Table name"),
+        schema: z
+          .string()
+          .default("public")
+          .describe("Schema name (default: public)"),
+      })
+      .strict(),
     annotations: {
       readOnlyHint: true,
       destructiveHint: false,
@@ -195,7 +233,8 @@ Examples:
     const client = await getClient();
     try {
       const [columns, policies] = await Promise.all([
-        client.query(`
+        client.query(
+          `
           SELECT
             c.column_name, c.data_type, c.is_nullable, c.column_default,
             c.character_maximum_length, c.ordinal_position,
@@ -216,13 +255,18 @@ Examples:
             AND tc.constraint_type = 'FOREIGN KEY'
           WHERE c.table_name = $1 AND c.table_schema = $2
           ORDER BY c.ordinal_position
-        `, [params.table, params.schema]),
-        client.query(`
+        `,
+          [params.table, params.schema],
+        ),
+        client.query(
+          `
           SELECT policyname, permissive, roles, cmd, qual, with_check
           FROM pg_policies
           WHERE tablename = $1 AND schemaname = $2
           ORDER BY policyname
-        `, [params.table, params.schema]),
+        `,
+          [params.table, params.schema],
+        ),
       ]);
       await client.end();
 
@@ -234,15 +278,20 @@ Examples:
           nullable: r.is_nullable === "YES",
           default: r.column_default || null,
           constraint: r.constraint_type || null,
-          references: r.foreign_table_name ? `${r.foreign_table_name}(${r.foreign_column_name})` : null,
+          references: r.foreign_table_name
+            ? `${r.foreign_table_name}(${r.foreign_column_name})`
+            : null,
         })),
-        row_level_security: policies.rows.length > 0 ? policies.rows.map((r: any) => ({
-          name: r.policyname,
-          command: r.cmd,
-          roles: r.roles,
-          using: r.qual,
-          with_check: r.with_check,
-        })) : [],
+        row_level_security:
+          policies.rows.length > 0
+            ? policies.rows.map((r: any) => ({
+                name: r.policyname,
+                command: r.cmd,
+                roles: r.roles,
+                using: r.qual,
+                with_check: r.with_check,
+              }))
+            : [],
       };
 
       return {
@@ -254,7 +303,7 @@ Examples:
         content: [{ type: "text", text: `Error: ${e.message || String(e)}` }],
       };
     }
-  }
+  },
 );
 
 server.registerTool(
@@ -278,9 +327,15 @@ Examples:
 
 Error Handling:
   - Returns error if file not found or SQL execution fails.`,
-    inputSchema: z.object({
-      filename: z.string().min(1).max(500).describe("Migration filename (e.g., 00006_admin.sql)"),
-    }).strict(),
+    inputSchema: z
+      .object({
+        filename: z
+          .string()
+          .min(1)
+          .max(500)
+          .describe("Migration filename (e.g., 00006_admin.sql)"),
+      })
+      .strict(),
     annotations: {
       readOnlyHint: false,
       destructiveHint: true,
@@ -309,7 +364,12 @@ Error Handling:
 
     if (!sql) {
       return {
-        content: [{ type: "text", text: `Error: Migration file '${params.filename}' not found in supabase/migrations/ or project root.` }],
+        content: [
+          {
+            type: "text",
+            text: `Error: Migration file '${params.filename}' not found in supabase/migrations/ or project root.`,
+          },
+        ],
       };
     }
 
@@ -318,22 +378,33 @@ Error Handling:
       await client.query(sql);
       await client.end();
       return {
-        content: [{
-          type: "text",
-          text: JSON.stringify({
-            success: true,
-            file: usedPath,
-            message: `Migration '${params.filename}' applied successfully.`,
-          }, null, 2),
-        }],
+        content: [
+          {
+            type: "text",
+            text: JSON.stringify(
+              {
+                success: true,
+                file: usedPath,
+                message: `Migration '${params.filename}' applied successfully.`,
+              },
+              null,
+              2,
+            ),
+          },
+        ],
       };
     } catch (e: any) {
       await client.end();
       return {
-        content: [{ type: "text", text: `Error applying migration '${params.filename}': ${e.message || String(e)}` }],
+        content: [
+          {
+            type: "text",
+            text: `Error applying migration '${params.filename}': ${e.message || String(e)}`,
+          },
+        ],
       };
     }
-  }
+  },
 );
 
 async function run() {

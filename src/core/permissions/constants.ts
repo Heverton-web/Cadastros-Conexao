@@ -1,4 +1,8 @@
-import { registerPermission, getAllPermissionDefs, getMergedDefaults } from "~/registry";
+import {
+  registerPermission,
+  getAllPermissionDefs,
+  getMergedDefaults,
+} from "~/registry";
 import type { PermissionDefinition } from "~/registry";
 import type { Ambiente } from "./types";
 
@@ -6,7 +10,12 @@ export type PermGroup = { label: string; keys: string[] };
 
 export function registerCorePermissions(): void {
   for (const p of getAllPermissionDefs()) {
-    registerPermission({ key: p.key, label: p.label, description: p.description, group: p.group });
+    registerPermission({
+      key: p.key,
+      label: p.label,
+      description: p.description,
+      group: p.group,
+    });
   }
 }
 
@@ -22,7 +31,10 @@ export function getPermGroups(): PermGroup[] {
     existing.push(p.key);
     groupMap.set(p.group, existing);
   }
-  return Array.from(groupMap.entries()).map(([label, keys]) => ({ label, keys }));
+  return Array.from(groupMap.entries()).map(([label, keys]) => ({
+    label,
+    keys,
+  }));
 }
 
 export function getPermLabel(key: string): string {
@@ -35,7 +47,9 @@ export function getPermDesc(key: string): string {
   return defs.find((d) => d.key === key)?.description || "";
 }
 
-export function getPermissoesPadrao(ambiente: Ambiente): Record<string, boolean> {
+export function getPermissoesPadrao(
+  ambiente: Ambiente,
+): Record<string, boolean> {
   const defaults = getMergedDefaults(ambiente);
   if (Object.keys(defaults).length > 0) {
     return defaults;

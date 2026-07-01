@@ -5,7 +5,12 @@ function generateToken(): string {
   return crypto.randomUUID().replace(/-/g, "").slice(0, 32);
 }
 
-export async function createHubInvite(role: string, createdBy: string, empresaId: string, expiresAt?: string) {
+export async function createHubInvite(
+  role: string,
+  createdBy: string,
+  empresaId: string,
+  expiresAt?: string,
+) {
   const { data, error } = await supabase
     .from("hub_invite_tokens")
     .insert({
@@ -46,7 +51,11 @@ export async function validateHubInvite(token: string) {
 export async function useHubInvite(token: string, userId: string) {
   const { data, error } = await supabase
     .from("hub_invite_tokens")
-    .update({ status: "used", used_by: userId, used_at: new Date().toISOString() })
+    .update({
+      status: "used",
+      used_by: userId,
+      used_at: new Date().toISOString(),
+    })
     .eq("token", token)
     .eq("status", "pending")
     .select()
@@ -56,11 +65,18 @@ export async function useHubInvite(token: string, userId: string) {
 }
 
 export async function deleteHubInvite(id: string) {
-  const { error } = await supabase.from("hub_invite_tokens").delete().eq("id", id);
+  const { error } = await supabase
+    .from("hub_invite_tokens")
+    .delete()
+    .eq("id", id);
   if (error) throw error;
 }
 
-export async function updateHubInviteShare(id: string, whatsappMessage: string, shareLink: string) {
+export async function updateHubInviteShare(
+  id: string,
+  whatsappMessage: string,
+  shareLink: string,
+) {
   const { data, error } = await supabase
     .from("hub_invite_tokens")
     .update({ share_whatsapp_message: whatsappMessage, share_link: shareLink })

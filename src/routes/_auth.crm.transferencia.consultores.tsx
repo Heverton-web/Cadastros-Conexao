@@ -50,7 +50,9 @@ function TransferConsultoresPage() {
     queryFn: async () => {
       const { data } = await supabase
         .from("logs_transferencia_consultor")
-        .select("id, data_transferencia, consultor_id, de_gestor_id, para_gestor_id")
+        .select(
+          "id, data_transferencia, consultor_id, de_gestor_id, para_gestor_id",
+        )
         .order("data_transferencia", { ascending: false })
         .limit(10);
       return data ?? [];
@@ -82,13 +84,24 @@ function TransferConsultoresPage() {
       <header>
         <h1 className="text-2xl font-bold">Transferência de Consultores</h1>
         <p className="text-sm text-muted-foreground">
-          Realoque consultores entre gestores. Cada transferência é registrada em log.
+          Realoque consultores entre gestores. Cada transferência é registrada
+          em log.
         </p>
       </header>
 
       <div className="grid gap-4 md:grid-cols-2">
-        <Selector label="Gestor origem" value={origem} setValue={setOrigem} gestores={gestores ?? []} />
-        <Selector label="Gestor destino" value={destino} setValue={setDestino} gestores={gestores ?? []} />
+        <Selector
+          label="Gestor origem"
+          value={origem}
+          setValue={setOrigem}
+          gestores={gestores ?? []}
+        />
+        <Selector
+          label="Gestor destino"
+          value={destino}
+          setValue={setDestino}
+          gestores={gestores ?? []}
+        />
       </div>
 
       <section>
@@ -96,18 +109,36 @@ function TransferConsultoresPage() {
           Consultores do origem
         </h2>
         <div className="glass rounded-2xl divide-y divide-border">
-          {!origem && <p className="p-5 text-sm text-muted-foreground">Selecione um gestor origem.</p>}
+          {!origem && (
+            <p className="p-5 text-sm text-muted-foreground">
+              Selecione um gestor origem.
+            </p>
+          )}
           {origem && !consultoresOrigem?.length && (
-            <p className="p-5 text-sm text-muted-foreground">Sem consultores nesta equipe.</p>
+            <p className="p-5 text-sm text-muted-foreground">
+              Sem consultores nesta equipe.
+            </p>
           )}
           {consultoresOrigem?.map((c: any) => (
             <div key={c.id} className="flex items-center justify-between p-4">
               <div>
                 <p className="font-medium text-sm">{c.nome_completo}</p>
-                <p className="text-xs text-muted-foreground">{c.email_corporativo ?? "—"}</p>
+                <p className="text-xs text-muted-foreground">
+                  {c.email_corporativo ?? "—"}
+                </p>
               </div>
-              <Button size="sm" disabled={busy === c.id || !destino} onClick={() => transferir(c.id)}>
-                {busy === c.id ? <Loader2 className="h-4 w-4 animate-spin" /> : (<><ArrowRight className="mr-1 h-4 w-4" /> Transferir</>)}
+              <Button
+                size="sm"
+                disabled={busy === c.id || !destino}
+                onClick={() => transferir(c.id)}
+              >
+                {busy === c.id ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <>
+                    <ArrowRight className="mr-1 h-4 w-4" /> Transferir
+                  </>
+                )}
               </Button>
             </div>
           ))}
@@ -119,9 +150,16 @@ function TransferConsultoresPage() {
           Últimas transferências
         </h2>
         <div className="glass rounded-2xl divide-y divide-border">
-          {!logs?.length && <p className="p-5 text-sm text-muted-foreground">Nenhuma transferência registrada.</p>}
+          {!logs?.length && (
+            <p className="p-5 text-sm text-muted-foreground">
+              Nenhuma transferência registrada.
+            </p>
+          )}
           {logs?.map((l: any) => (
-            <div key={l.id} className="flex items-center justify-between p-4 text-sm">
+            <div
+              key={l.id}
+              className="flex items-center justify-between p-4 text-sm"
+            >
               <span className="font-mono text-xs text-muted-foreground">
                 {new Date(l.data_transferencia).toLocaleString("pt-BR")}
               </span>
@@ -135,11 +173,21 @@ function TransferConsultoresPage() {
 }
 
 function Selector({
-  label, value, setValue, gestores,
-}: { label: string; value: string; setValue: (v: string) => void; gestores: any[] }) {
+  label,
+  value,
+  setValue,
+  gestores,
+}: {
+  label: string;
+  value: string;
+  setValue: (v: string) => void;
+  gestores: any[];
+}) {
   return (
     <label className="glass rounded-2xl p-4 block">
-      <span className="text-xs text-muted-foreground uppercase tracking-wide">{label}</span>
+      <span className="text-xs text-muted-foreground uppercase tracking-wide">
+        {label}
+      </span>
       <select
         value={value}
         onChange={(e) => setValue(e.target.value)}
@@ -147,7 +195,9 @@ function Selector({
       >
         <option value="">— selecione —</option>
         {gestores.map((g: any) => (
-          <option key={g.id} value={g.id}>{g.nome_completo}</option>
+          <option key={g.id} value={g.id}>
+            {g.nome_completo}
+          </option>
         ))}
       </select>
     </label>

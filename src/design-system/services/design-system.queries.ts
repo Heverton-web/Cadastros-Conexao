@@ -26,7 +26,10 @@ export function useDesignEmpresaQuery(empresaId: string | undefined) {
   });
 }
 
-export function useDesignModuloQuery(empresaId: string | undefined, moduloKey: string) {
+export function useDesignModuloQuery(
+  empresaId: string | undefined,
+  moduloKey: string,
+) {
   return useQuery({
     queryKey: ["design-system-modulo", empresaId, moduloKey],
     queryFn: () => getDesignModulo(empresaId!, moduloKey),
@@ -47,7 +50,9 @@ export function useResolvedTokens(moduloKey?: string): DesignTokens {
   const { data: mod } = useDesignModuloQuery(empresaId, moduloKey ?? "");
 
   return resolveTokens({
-    presetKey: (emp?.preset_key ?? global?.preset_key ?? "dark-gold") as PresetKey,
+    presetKey: (emp?.preset_key ??
+      global?.preset_key ??
+      "dark-gold") as PresetKey,
     globalOverride: global?.tokens_override ?? null,
     empresaOverride: emp?.tokens_override ?? null,
     moduloOverride: moduloKey ? (mod?.tokens_override ?? null) : null,

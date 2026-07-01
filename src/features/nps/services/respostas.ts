@@ -8,7 +8,10 @@ type FiltrosRespostas = {
   npsBucket?: string;
 };
 
-export async function listarRespostas(empresaId: string, filtros?: FiltrosRespostas): Promise<NpsResposta[]> {
+export async function listarRespostas(
+  empresaId: string,
+  filtros?: FiltrosRespostas,
+): Promise<NpsResposta[]> {
   let query = supabase
     .from("nps_respostas")
     .select("*")
@@ -34,7 +37,8 @@ export async function listarRespostas(empresaId: string, filtros?: FiltrosRespos
     results = results.filter((r) => {
       if (r.nps_score === null || r.nps_score === undefined) return false;
       if (filtros.npsBucket === "detractors") return r.nps_score <= 6;
-      if (filtros.npsBucket === "passives") return r.nps_score >= 7 && r.nps_score <= 8;
+      if (filtros.npsBucket === "passives")
+        return r.nps_score >= 7 && r.nps_score <= 8;
       if (filtros.npsBucket === "promoters") return r.nps_score >= 9;
       return true;
     });
@@ -43,7 +47,10 @@ export async function listarRespostas(empresaId: string, filtros?: FiltrosRespos
   return results;
 }
 
-export async function criarResposta(empresaId: string, resposta: Omit<NpsResposta, "id" | "empresa_id" | "created_at">): Promise<NpsResposta> {
+export async function criarResposta(
+  empresaId: string,
+  resposta: Omit<NpsResposta, "id" | "empresa_id" | "created_at">,
+): Promise<NpsResposta> {
   const { data, error } = await supabase
     .from("nps_respostas")
     .insert({ ...resposta, empresa_id: empresaId })
@@ -55,17 +62,23 @@ export async function criarResposta(empresaId: string, resposta: Omit<NpsRespost
 }
 
 export async function excluirRespostas(ids: string[]): Promise<void> {
-  const { error } = await supabase
-    .from("nps_respostas")
-    .delete()
-    .in("id", ids);
+  const { error } = await supabase.from("nps_respostas").delete().in("id", ids);
 
   if (error) throw error;
 }
 
-export function calcularNpsScore(respostas: NpsResposta[]): { score: number; promoters: number; passives: number; detractors: number; total: number } {
-  const scored = respostas.filter((r) => r.nps_score !== null && r.nps_score !== undefined);
-  if (!scored.length) return { score: 0, promoters: 0, passives: 0, detractors: 0, total: 0 };
+export function calcularNpsScore(respostas: NpsResposta[]): {
+  score: number;
+  promoters: number;
+  passives: number;
+  detractors: number;
+  total: number;
+} {
+  const scored = respostas.filter(
+    (r) => r.nps_score !== null && r.nps_score !== undefined,
+  );
+  if (!scored.length)
+    return { score: 0, promoters: 0, passives: 0, detractors: 0, total: 0 };
 
   const promoters = scored.filter((r) => r.nps_score! >= 9).length;
   const detractors = scored.filter((r) => r.nps_score! <= 6).length;
@@ -75,7 +88,9 @@ export function calcularNpsScore(respostas: NpsResposta[]): { score: number; pro
   return { score, promoters, passives, detractors, total: scored.length };
 }
 
-export function distribuicaoNps(respostas: NpsResposta[]): { score: string; count: number }[] {
+export function distribuicaoNps(
+  respostas: NpsResposta[],
+): { score: string; count: number }[] {
   const counts = Array(11).fill(0);
   respostas.forEach((r) => {
     if (r.nps_score !== null && r.nps_score !== undefined) {
@@ -85,26 +100,39 @@ export function distribuicaoNps(respostas: NpsResposta[]): { score: string; coun
   return counts.map((count, score) => ({ score: String(score), count }));
 }
 
-export function mediaMatrix(respostas: NpsResposta[]): { label: string; avg: number }[] {
+export function mediaMatrix(
+  respostas: NpsResposta[],
+): { label: string; avg: number }[] {
   if (!respostas.length) return [];
 
   const items = [
     { key: "matrix_facilidade_pedido" as const, label: "Facilidade de Pedido" },
     { key: "matrix_clareza_condicoes" as const, label: "Clareza Comercial" },
     { key: "matrix_prazo_entrega" as const, label: "Prazo de Entrega" },
-    { key: "matrix_disponibilidade_produtos" as const, label: "Disponibilidade" },
+    {
+      key: "matrix_disponibilidade_produtos" as const,
+      label: "Disponibilidade",
+    },
     { key: "matrix_comunicacao" as const, label: "Comunicação" },
   ];
 
   return items.map(({ key, label }) => {
     const vals = respostas.map((r) => r[key]).filter((v: number) => v > 0);
-    const avg = vals.length ? vals.reduce((a: number, b: number) => a + b, 0) / vals.length : 0;
+    const avg = vals.length
+      ? vals.reduce((a: number, b: number) => a + b, 0) / vals.length
+      : 0;
     return { label, avg: Number(avg.toFixed(1)) };
   });
 }
 
 export function mediaMatrixGeral(respostas: NpsResposta[]): string {
-  const keys = ["matrix_facilidade_pedido", "matrix_clareza_condicoes", "matrix_prazo_entrega", "matrix_disponibilidade_produtos", "matrix_comunicacao"] as const;
+  const keys = [
+    "matrix_facilidade_pedido",
+    "matrix_clareza_condicoes",
+    "matrix_prazo_entrega",
+    "matrix_disponibilidade_produtos",
+    "matrix_comunicacao",
+  ] as const;
   let sum = 0;
   let n = 0;
   respostas.forEach((r) => {
@@ -119,7 +147,9 @@ export function mediaMatrixGeral(respostas: NpsResposta[]): string {
   return n ? (sum / n).toFixed(1) : "—";
 }
 
-export function distribuicaoCsat(respostas: NpsResposta[]): { name: string; value: number }[] {
+export function distribuicaoCsat(
+  respostas: NpsResposta[],
+): { name: string; value: number }[] {
   const counts: Record<string, number> = {};
   respostas.forEach((r) => {
     if (r.csat) counts[r.csat] = (counts[r.csat] || 0) + 1;
@@ -128,12 +158,26 @@ export function distribuicaoCsat(respostas: NpsResposta[]): { name: string; valu
 }
 
 export function contarComentarios(respostas: NpsResposta[]): number {
-  const TEXT_KEYS = ["nps_comment", "melhoria_atendimento", "expansao_produtos", "oportunidade", "pergunta_final"];
+  const TEXT_KEYS = [
+    "nps_comment",
+    "melhoria_atendimento",
+    "expansao_produtos",
+    "oportunidade",
+    "pergunta_final",
+  ];
   return respostas.filter((r) => {
-    if (TEXT_KEYS.some((k) => typeof (r as any)[k] === "string" && (r as any)[k].trim().length > 0)) return true;
+    if (
+      TEXT_KEYS.some(
+        (k) =>
+          typeof (r as any)[k] === "string" && (r as any)[k].trim().length > 0,
+      )
+    )
+      return true;
     const dyn = r.dynamic_answers;
     if (dyn && typeof dyn === "object") {
-      return Object.values(dyn).some((v) => typeof v === "string" && (v as string).trim().length > 0);
+      return Object.values(dyn).some(
+        (v) => typeof v === "string" && (v as string).trim().length > 0,
+      );
     }
     return false;
   }).length;
@@ -146,10 +190,14 @@ export function exportarCSV(respostas: NpsResposta[], filename?: string): void {
   const csv = [
     headers.join(","),
     ...respostas.map((r) =>
-      headers.map((h) => {
-        const val = (r as any)[h];
-        return typeof val === "string" ? `"${val.replace(/"/g, '""')}"` : val ?? "";
-      }).join(",")
+      headers
+        .map((h) => {
+          const val = (r as any)[h];
+          return typeof val === "string"
+            ? `"${val.replace(/"/g, '""')}"`
+            : (val ?? "");
+        })
+        .join(","),
     ),
   ].join("\n");
 
@@ -157,7 +205,8 @@ export function exportarCSV(respostas: NpsResposta[], filename?: string): void {
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;
-  a.download = filename || `respostas_nps_${new Date().toISOString().slice(0, 10)}.csv`;
+  a.download =
+    filename || `respostas_nps_${new Date().toISOString().slice(0, 10)}.csv`;
   a.click();
   URL.revokeObjectURL(url);
 }

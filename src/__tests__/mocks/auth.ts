@@ -1,28 +1,30 @@
-export function createSuperAdminProfile(overrides: Record<string, unknown> = {}) {
+export function createSuperAdminProfile(
+  overrides: Record<string, unknown> = {},
+) {
   return {
-    id: 'sa-user-123',
-    nome: 'Super Admin Teste',
-    email: 'super@admin.com',
-    role: 'super_admin',
-    ambiente: 'cadastro',
+    id: "sa-user-123",
+    nome: "Super Admin Teste",
+    email: "super@admin.com",
+    role: "super_admin",
+    ambiente: "cadastro",
     is_super_admin: true,
-    empresa_id: 'empresa-teste-123',
+    empresa_id: "empresa-teste-123",
     ...overrides,
   };
 }
 
 export function createRegularProfile(
-  role: 'cadastro' | 'consultor' | 'tecnologia' | 'suporte' = 'cadastro',
-  overrides: Record<string, unknown> = {}
+  role: "cadastro" | "consultor" | "tecnologia" | "suporte" = "cadastro",
+  overrides: Record<string, unknown> = {},
 ) {
   return {
-    id: 'regular-user-456',
-    nome: 'Usuário Comum',
+    id: "regular-user-456",
+    nome: "Usuário Comum",
     email: `${role}@teste.com`,
     role,
     ambiente: role,
     is_super_admin: false,
-    empresa_id: 'empresa-teste-123',
+    empresa_id: "empresa-teste-123",
     ...overrides,
   };
 }

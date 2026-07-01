@@ -27,6 +27,7 @@ Squad autônomo de engenharia reversa para projetos **Bubble.io**. Analisa o JSO
 ```
 
 O que faz:
+
 1. Faz o parse do `appBubble.json` (ou `project_bubble.json`)
 2. Detecta automaticamente quais domínios existem no JSON
 3. Cria tarefas (`tasks/task_*.md`) para cada domínio encontrado
@@ -61,15 +62,15 @@ O pipeline pode ser otimizado com 3 mudanças:
 
 Cada skill pode ser invocada separadamente caso queira processar apenas um domínio específico:
 
-| Comando | Skill | O que faz |
-|---------|-------|-----------|
-| `/bubble-tabelas` | `bubble-tabelas` | Analisa Data Types do JSON |
-| `/bubble-paginas` | `bubble-paginas` | Mapeia páginas e elementos visuais |
-| `/bubble-workflows` | `bubble-workflows-backend` | Documenta workflows backend e de página |
-| `/bubble-option-sets` | `bubble-option-sets` | Extrai Option Sets |
-| `/bubble-api-connectors` | `bubble-api-connectors` | Documenta conectores de API |
-| `/bubble-elementos-reutilizaveis` | `bubble-elementos-reutilizaveis` | Identifica componentes reutilizáveis |
-| `/bubble-prd` | `bubble-prd` | Gera o PRD completo consolidando todas as saídas |
+| Comando                           | Skill                            | O que faz                                        |
+| --------------------------------- | -------------------------------- | ------------------------------------------------ |
+| `/bubble-tabelas`                 | `bubble-tabelas`                 | Analisa Data Types do JSON                       |
+| `/bubble-paginas`                 | `bubble-paginas`                 | Mapeia páginas e elementos visuais               |
+| `/bubble-workflows`               | `bubble-workflows-backend`       | Documenta workflows backend e de página          |
+| `/bubble-option-sets`             | `bubble-option-sets`             | Extrai Option Sets                               |
+| `/bubble-api-connectors`          | `bubble-api-connectors`          | Documenta conectores de API                      |
+| `/bubble-elementos-reutilizaveis` | `bubble-elementos-reutilizaveis` | Identifica componentes reutilizáveis             |
+| `/bubble-prd`                     | `bubble-prd`                     | Gera o PRD completo consolidando todas as saídas |
 
 > **Nota:** Ao executar skills individuais, o pipeline não é completo — você precisa garantir que as dependências (JSON, saídas de outras skills) estejam disponíveis.
 
@@ -158,18 +159,19 @@ Usuário                          Squad (automático)
 
 ## Skills do Squad
 
-| # | Skill | Responsabilidade | Plano de Referência |
-|---|-------|-----------------|---------------------|
-| 1 | `bubble-tech-lead` | Orquestrador autônomo do pipeline | `plano_squad_skills_engenharia_reversa.md` |
-| 2 | `bubble-tabelas` | Data Types — campos, tipos, relacionamentos | `plano_engenharia_reversa_tabelas.md` |
-| 3 | `bubble-paginas` | Páginas — layout, elementos, workflows | `plano_engenharia_reversa_paginas.md` |
-| 4 | `bubble-workflows-backend` | Workflows backend e de página | `plano_engenharia_reversa_backend_workflows.md` |
-| 5 | `bubble-option-sets` | Option Sets — valores e uso | `plano_engenharia_reversa_option_sets.md` |
-| 6 | `bubble-api-connectors` | API Connectors — endpoints, auth | `plano_engenharia_reversa_api_connectors.md` |
-| 7 | `bubble-elementos-reutilizaveis` | Elementos reutilizáveis | `plano_engenharia_reversa_elementos_reutilizaveis.md` |
-| 8 | `bubble-prd` | PRD completo (consolidação) | `plano_engenharia_reversa_documentacao_completa.md` |
+| #   | Skill                            | Responsabilidade                            | Plano de Referência                                   |
+| --- | -------------------------------- | ------------------------------------------- | ----------------------------------------------------- |
+| 1   | `bubble-tech-lead`               | Orquestrador autônomo do pipeline           | `plano_squad_skills_engenharia_reversa.md`            |
+| 2   | `bubble-tabelas`                 | Data Types — campos, tipos, relacionamentos | `plano_engenharia_reversa_tabelas.md`                 |
+| 3   | `bubble-paginas`                 | Páginas — layout, elementos, workflows      | `plano_engenharia_reversa_paginas.md`                 |
+| 4   | `bubble-workflows-backend`       | Workflows backend e de página               | `plano_engenharia_reversa_backend_workflows.md`       |
+| 5   | `bubble-option-sets`             | Option Sets — valores e uso                 | `plano_engenharia_reversa_option_sets.md`             |
+| 6   | `bubble-api-connectors`          | API Connectors — endpoints, auth            | `plano_engenharia_reversa_api_connectors.md`          |
+| 7   | `bubble-elementos-reutilizaveis` | Elementos reutilizáveis                     | `plano_engenharia_reversa_elementos_reutilizaveis.md` |
+| 8   | `bubble-prd`                     | PRD completo (consolidação)                 | `plano_engenharia_reversa_documentacao_completa.md`   |
 
 Cada skill está em `skills/<nome>/SKILL.md` e contém:
+
 - **Execução autônoma**: instruções para rodar sem intervenção
 - **Processamento**: fases detalhadas de análise
 - **Validações**: checklist automático de qualidade
@@ -227,20 +229,23 @@ bubble_reverse_engineering/
 Após executar `/bubble-tech-lead`, os seguintes artefatos são gerados automaticamente:
 
 ### Relatórios por Domínio
-| Arquivo | Conteúdo | Gerado se... |
-|---------|----------|-------------|
-| `pages_report.md` | Estrutura de páginas, elementos, workflows | `pages` existir no JSON |
-| `workflows_report.md` | Workflows backend + página | Qualquer workflow existir |
-| `tables_report.md` | Data Types com campos e tipos | `data_types` existir |
-| `option_sets_report.md` | Option Sets com valores | `option_sets` existir |
+
+| Arquivo                 | Conteúdo                                   | Gerado se...              |
+| ----------------------- | ------------------------------------------ | ------------------------- |
+| `pages_report.md`       | Estrutura de páginas, elementos, workflows | `pages` existir no JSON   |
+| `workflows_report.md`   | Workflows backend + página                 | Qualquer workflow existir |
+| `tables_report.md`      | Data Types com campos e tipos              | `data_types` existir      |
+| `option_sets_report.md` | Option Sets com valores                    | `option_sets` existir     |
 
 ### Documentos Consolidados
-| Arquivo | Conteúdo |
-|---------|----------|
-| `INDICE.md` | Índice completo com links para todos os artefatos |
-| `conclusoes_engenharia_reversa.md` | Sumário executivo, achados, próximos passos |
+
+| Arquivo                            | Conteúdo                                          |
+| ---------------------------------- | ------------------------------------------------- |
+| `INDICE.md`                        | Índice completo com links para todos os artefatos |
+| `conclusoes_engenharia_reversa.md` | Sumário executivo, achados, próximos passos       |
 
 ### Estrutura Interna (se gerado)
+
 - `tables/<nome>.md` — Um arquivo por Data Type
 - `pages/<nome>.md` — Um arquivo por página
 - `workflows/<nome>.md` — Um arquivo por workflow
@@ -269,12 +274,13 @@ Invoque o Tech Lead:
 ```
 
 O squad irá:
+
 1. Parsear o JSON automaticamente
 2. Detectar que existem `pages` e `workflows` (mas talvez não `data_types` nem `option_sets`)
 3. Criar tasks apenas para os domínios encontrados
 4. Executar `bubble-paginas` e `bubble-workflows-backend`
 5. Para `bubble-tabelas` e `bubble-option-sets`: gerar "Nenhum X encontrado"
-6 Revisar, compilar, gerar relatórios
+   6 Revisar, compilar, gerar relatórios
 
 ### 3. Resultado
 
@@ -311,22 +317,25 @@ Isso processa apenas as páginas sem executar o pipeline completo.
 ## Personalização
 
 ### Adicionar novo JSON de entrada
+
 Substitua `appBubble.json` pelo novo export do Bubble e reexecute `/bubble-tech-lead`.
 
 ### Modificar plano de uma skill
+
 Edite o `SKILL.md` correspondente em `skills/<nome>/` e o plano de referência em `proj_reversa/references/tasks-engenharia_reversa/`.
 
 ### Desabilitar um domínio
+
 Remova o bloco correspondente do JSON de entrada. A skill detectará a ausência e documentará "Nenhum X encontrado".
 
 ---
 
 ## Referências
 
-| Documento | Localização |
-|-----------|-------------|
-| Planos de engenharia reversa | `proj_reversa/references/tasks-engenharia_reversa/` |
-| Exemplos de resultado esperado | `proj_reversa/references/resultados/` |
-| Definições das skills | `skills/` |
-| Tarefas do squad | `tasks/` |
-| Índice completo | `INDICE.md` |
+| Documento                      | Localização                                         |
+| ------------------------------ | --------------------------------------------------- |
+| Planos de engenharia reversa   | `proj_reversa/references/tasks-engenharia_reversa/` |
+| Exemplos de resultado esperado | `proj_reversa/references/resultados/`               |
+| Definições das skills          | `skills/`                                           |
+| Tarefas do squad               | `tasks/`                                            |
+| Índice completo                | `INDICE.md`                                         |

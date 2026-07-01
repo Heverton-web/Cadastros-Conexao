@@ -24,61 +24,61 @@ Este documento descreve o workflow padrão para integrar qualquer aplicação st
 
 Acesse o repositório GitHub/clonado e mapeie:
 
-| Item | Onde buscar | O que anotar |
-|------|-------------|--------------|
-| **Stack** | `package.json` | Framework, build tool, UI lib, versões |
-| **Banco** | `supabase/migrations/` | Lista de migrations, nomes de tabelas |
-| **Rotas** | `src/routes/` | Lista completa de arquivos de rota |
-| **Componentes** | `src/components/` | Componentes próprios vs `ui/` genéricos |
-| **Hooks** | `src/hooks/` | Hooks customizados |
-| **Libs** | `src/lib/` | Funções de negócio, utils, services |
-| **Integrações** | `src/integrations/` | Client Supabase, types, middleware |
-| **Auth** | `src/hooks/useAuth.tsx` | Como autentica, o que retorna |
+| Item            | Onde buscar             | O que anotar                            |
+| --------------- | ----------------------- | --------------------------------------- |
+| **Stack**       | `package.json`          | Framework, build tool, UI lib, versões  |
+| **Banco**       | `supabase/migrations/`  | Lista de migrations, nomes de tabelas   |
+| **Rotas**       | `src/routes/`           | Lista completa de arquivos de rota      |
+| **Componentes** | `src/components/`       | Componentes próprios vs `ui/` genéricos |
+| **Hooks**       | `src/hooks/`            | Hooks customizados                      |
+| **Libs**        | `src/lib/`              | Funções de negócio, utils, services     |
+| **Integrações** | `src/integrations/`     | Client Supabase, types, middleware      |
+| **Auth**        | `src/hooks/useAuth.tsx` | Como autentica, o que retorna           |
 
 **Preencher tabela:**
 
 ```markdown
-| Aspecto        | Detalhe                          |
-|----------------|----------------------------------|
-| Stack          | [framework] + [build] + [UI]     |
-| Linguagem      | [TS %, JS %, SQL %]              |
-| UI             | [lib UI]                         |
-| Banco          | [Supabase/PostgreSQL/Outro]      |
-| Autenticação   | [Supabase Auth / JWT / Outro]    |
-| Migrations     | [N] arquivos SQL                 |
-| Rotas          | [N] arquivos                     |
-| Componentes    | [N] componentes próprios         |
-| Hooks          | [lista]                          |
-| Libs           | [lista]                          |
+| Aspecto      | Detalhe                       |
+| ------------ | ----------------------------- |
+| Stack        | [framework] + [build] + [UI]  |
+| Linguagem    | [TS %, JS %, SQL %]           |
+| UI           | [lib UI]                      |
+| Banco        | [Supabase/PostgreSQL/Outro]   |
+| Autenticação | [Supabase Auth / JWT / Outro] |
+| Migrations   | [N] arquivos SQL              |
+| Rotas        | [N] arquivos                  |
+| Componentes  | [N] componentes próprios      |
+| Hooks        | [lista]                       |
+| Libs         | [lista]                       |
 ```
 
 ### 1.2. Analisar o ERP destino
 
 Ler os seguintes arquivos do ERP:
 
-| Arquivo | O que extrair |
-|---------|---------------|
-| `src/registry/modules.ts` | Tipo `ModuleDefinition`, funções de registro |
-| `src/registry/nav-items.ts` | Tipo `NavItemRegistration`, `getNavItems()` |
-| `src/registry/permissions-registry.ts` | Tipo `PermissionDefinition` |
-| `src/features/` | Módulos existentes, ordens de nav items usadas |
-| `src/routes/_auth.tsx` | Como `AuthGuard` carrega módulos |
-| `package.json` | Dependências já instaladas |
+| Arquivo                                | O que extrair                                  |
+| -------------------------------------- | ---------------------------------------------- |
+| `src/registry/modules.ts`              | Tipo `ModuleDefinition`, funções de registro   |
+| `src/registry/nav-items.ts`            | Tipo `NavItemRegistration`, `getNavItems()`    |
+| `src/registry/permissions-registry.ts` | Tipo `PermissionDefinition`                    |
+| `src/features/`                        | Módulos existentes, ordens de nav items usadas |
+| `src/routes/_auth.tsx`                 | Como `AuthGuard` carrega módulos               |
+| `package.json`                         | Dependências já instaladas                     |
 
 ### 1.3. Comparar stacks
 
 Criar tabela de compatibilidade:
 
 ```markdown
-| Componente       | Fonte | ERP  | Compatível? |
-|------------------|-------|------|-------------|
-| React            | [ver] | [ver]| [✅/❌]     |
-| Router           | [ver] | [ver]| [✅/❌]     |
-| Vite             | [ver] | [ver]| [✅/❌]     |
-| UI lib           | [ver] | [ver]| [✅/❌]     |
-| Tailwind         | [ver] | [ver]| [✅/❌]     |
-| Supabase         | [ver] | [ver]| [✅/❌]     |
-| zod              | [ver] | [ver]| [✅/❌]     |
+| Componente | Fonte | ERP   | Compatível? |
+| ---------- | ----- | ----- | ----------- |
+| React      | [ver] | [ver] | [✅/❌]     |
+| Router     | [ver] | [ver] | [✅/❌]     |
+| Vite       | [ver] | [ver] | [✅/❌]     |
+| UI lib     | [ver] | [ver] | [✅/❌]     |
+| Tailwind   | [ver] | [ver] | [✅/❌]     |
+| Supabase   | [ver] | [ver] | [✅/❌]     |
+| zod        | [ver] | [ver] | [✅/❌]     |
 ```
 
 **Se houver incompatibilidade** → documentar adaptações necessárias.
@@ -101,16 +101,16 @@ diff <(jq -r '.dependencies | keys[]' fonte/package.json | sort) \
 
 Preencher **antes** de começar a codar:
 
-| Decisão | Opções | Escolha | Justificativa |
-|---------|--------|---------|---------------|
-| **Banco de dados** | Mesmo DB / DB separado | `[escolha]` | `[motivo]` |
-| **Estratégia** | Módulo feature / Subpasta / Clone | `[escolha]` | `[motivo]` |
-| **Componentes UI** | Reusar `ui/` / Copiar | `[escolha]` | `[motivo]` |
-| **Supabase client** | Reusar / Novo client | `[escolha]` | `[motivo]` |
-| **Auth** | Reusar `useAuth` / Adaptar | `[escolha]` | `[motivo]` |
-| **Rotas** | Prefixo `X.*` / Outro padrão | `[escolha]` | `[motivo]` |
-| **Migrations** | Copiar / Já aplicadas | `[escolha]` | `[motivo]` |
-| **Types** | Mesclar / Separar | `[escolha]` | `[motivo]` |
+| Decisão             | Opções                            | Escolha     | Justificativa |
+| ------------------- | --------------------------------- | ----------- | ------------- |
+| **Banco de dados**  | Mesmo DB / DB separado            | `[escolha]` | `[motivo]`    |
+| **Estratégia**      | Módulo feature / Subpasta / Clone | `[escolha]` | `[motivo]`    |
+| **Componentes UI**  | Reusar `ui/` / Copiar             | `[escolha]` | `[motivo]`    |
+| **Supabase client** | Reusar / Novo client              | `[escolha]` | `[motivo]`    |
+| **Auth**            | Reusar `useAuth` / Adaptar        | `[escolha]` | `[motivo]`    |
+| **Rotas**           | Prefixo `X.*` / Outro padrão      | `[escolha]` | `[motivo]`    |
+| **Migrations**      | Copiar / Já aplicadas             | `[escolha]` | `[motivo]`    |
+| **Types**           | Mesclar / Separar                 | `[escolha]` | `[motivo]`    |
 
 ### 2.2. Definir identidade do módulo
 
@@ -129,20 +129,20 @@ Preencher **antes** de começar a codar:
 Listar todas as permissões do módulo:
 
 ```markdown
-| Key                  | Label              | Descrição                        | Grupo          |
-|----------------------|--------------------|----------------------------------|----------------|
-| [prefixo]_dashboard  | Acessar dashboard  | Visualizar painel principal      | [Módulo] - Geral |
-| [prefixo]_acao_1     | [Label]            | [Descrição]                      | [Módulo] - [Grupo] |
-| ...                  | ...                | ...                              | ...            |
+| Key                 | Label             | Descrição                   | Grupo              |
+| ------------------- | ----------------- | --------------------------- | ------------------ |
+| [prefixo]_dashboard | Acessar dashboard | Visualizar painel principal | [Módulo] - Geral   |
+| [prefixo]_acao_1    | [Label]           | [Descrição]                 | [Módulo] - [Grupo] |
+| ...                 | ...               | ...                         | ...                |
 ```
 
 ### 2.4. Mapear nav items
 
 ```markdown
-| ID                  | Label     | Icon            | Rota                  | Ordem | Permissão check         |
-|---------------------|-----------|-----------------|-----------------------|-------|-------------------------|
-| [prefixo]-dashboard | Dashboard | LayoutDashboard | /[prefixo]/dashboard  | [N]   | perms?.[prefixo]_dashboard |
-| ...                 | ...       | ...             | ...                   | ...   | ...                     |
+| ID                  | Label     | Icon            | Rota                 | Ordem | Permissão check            |
+| ------------------- | --------- | --------------- | -------------------- | ----- | -------------------------- |
+| [prefixo]-dashboard | Dashboard | LayoutDashboard | /[prefixo]/dashboard | [N]   | perms?.[prefixo]_dashboard |
+| ...                 | ...       | ...             | ...                  | ...   | ...                        |
 ```
 
 ---
@@ -173,51 +173,51 @@ src/features/[modulo]/
 
 **Regra de nomenclatura TanStack Router flat file:**
 
-| Fonte (standalone) | ERP (módulo) | Regra |
-|---------------------|--------------|-------|
-| `_auth.[rota].tsx` | `_auth.[prefixo].[rota].tsx` | Inserir prefixo após `_auth.` |
-| `[rota].tsx` (pública) | `[prefixo].[rota].tsx` | Inserir prefixo antes da rota |
-| `__root.tsx` | **NÃO COPIAR** | ERP já tem root |
-| `index.tsx` (login) | **NÃO COPIAR** | ERP já tem login |
-| `_auth.tsx` (layout) | **NÃO COPIAR** | ERP já tem AuthGuard |
+| Fonte (standalone)     | ERP (módulo)                 | Regra                         |
+| ---------------------- | ---------------------------- | ----------------------------- |
+| `_auth.[rota].tsx`     | `_auth.[prefixo].[rota].tsx` | Inserir prefixo após `_auth.` |
+| `[rota].tsx` (pública) | `[prefixo].[rota].tsx`       | Inserir prefixo antes da rota |
+| `__root.tsx`           | **NÃO COPIAR**               | ERP já tem root               |
+| `index.tsx` (login)    | **NÃO COPIAR**               | ERP já tem login              |
+| `_auth.tsx` (layout)   | **NÃO COPIAR**               | ERP já tem AuthGuard          |
 
 **Tabela de mapeamento:**
 
 ```markdown
-| Fonte                          | Destino                                | URL resultante              |
-|--------------------------------|----------------------------------------|-----------------------------|
-| `_auth.dashboard.tsx`          | `_auth.[prefixo].dashboard.tsx`        | /[prefixo]/dashboard        |
-| `_auth.secao.tsx`              | `_auth.[prefixo].secao.tsx`            | /[prefixo]/secao            |
-| `_auth.secao.sub.tsx`          | `_auth.[prefixo].secao.sub.tsx`        | /[prefixo]/secao/sub        |
-| `_auth.secao.$id.tsx`          | `_auth.[prefixo].secao.$id.tsx`        | /[prefixo]/secao/:id        |
-| `aceitar-convite.$token.tsx`   | `[prefixo].aceitar-convite.$token.tsx` | /[prefixo]/aceitar-convite/:token |
-| `__root.tsx`                   | **NÃO COPIAR**                         | —                           |
-| `index.tsx` (login)            | **NÃO COPIAR**                         | —                           |
-| `_auth.tsx` (layout)           | **NÃO COPIAR**                         | —                           |
+| Fonte                        | Destino                                | URL resultante                    |
+| ---------------------------- | -------------------------------------- | --------------------------------- |
+| `_auth.dashboard.tsx`        | `_auth.[prefixo].dashboard.tsx`        | /[prefixo]/dashboard              |
+| `_auth.secao.tsx`            | `_auth.[prefixo].secao.tsx`            | /[prefixo]/secao                  |
+| `_auth.secao.sub.tsx`        | `_auth.[prefixo].secao.sub.tsx`        | /[prefixo]/secao/sub              |
+| `_auth.secao.$id.tsx`        | `_auth.[prefixo].secao.$id.tsx`        | /[prefixo]/secao/:id              |
+| `aceitar-convite.$token.tsx` | `[prefixo].aceitar-convite.$token.tsx` | /[prefixo]/aceitar-convite/:token |
+| `__root.tsx`                 | **NÃO COPIAR**                         | —                                 |
+| `index.tsx` (login)          | **NÃO COPIAR**                         | —                                 |
+| `_auth.tsx` (layout)         | **NÃO COPIAR**                         | —                                 |
 ```
 
 ### 3.4. Mapear e copiar componentes
 
 ```markdown
-| Componente fonte      | Destino no ERP                      | Ação          |
-|-----------------------|-------------------------------------|---------------|
-| `[ComponenteA].tsx`   | `features/[modulo]/components/`     | Copiar        |
-| `[ComponenteB].tsx`   | `features/[modulo]/components/`     | Copiar        |
-| `ui/*`                | **NÃO COPIAR**                      | Reusar do ERP |
+| Componente fonte    | Destino no ERP                  | Ação          |
+| ------------------- | ------------------------------- | ------------- |
+| `[ComponenteA].tsx` | `features/[modulo]/components/` | Copiar        |
+| `[ComponenteB].tsx` | `features/[modulo]/components/` | Copiar        |
+| `ui/*`              | **NÃO COPIAR**                  | Reusar do ERP |
 ```
 
 ### 3.5. Mapear e copiar hooks e libs
 
 ```markdown
-| Arquivo fonte                   | Destino no ERP                      | Ação                    |
-|---------------------------------|-------------------------------------|-------------------------|
-| `hooks/useAuth.tsx`             | **NÃO COPIAR**                      | Reusar do ERP           |
-| `hooks/use-[custom].tsx`        | `features/[modulo]/hooks/`          | Copiar                  |
-| `lib/[funcao].ts`               | `features/[modulo]/lib/`            | Copiar                  |
-| `lib/utils.ts`                  | **NÃO COPIAR**                      | Reusar `cn()` do ERP    |
-| `integrations/supabase/client.ts` | **NÃO COPIAR**                    | Reusar do ERP           |
-| `integrations/supabase/types.ts`  | Mesclar no types.ts do ERP        | Adicionar tabelas novas |
-| `integrations/supabase/auth-*.ts` | **NÃO COPIAR**                    | Reusar do ERP           |
+| Arquivo fonte                     | Destino no ERP             | Ação                    |
+| --------------------------------- | -------------------------- | ----------------------- |
+| `hooks/useAuth.tsx`               | **NÃO COPIAR**             | Reusar do ERP           |
+| `hooks/use-[custom].tsx`          | `features/[modulo]/hooks/` | Copiar                  |
+| `lib/[funcao].ts`                 | `features/[modulo]/lib/`   | Copiar                  |
+| `lib/utils.ts`                    | **NÃO COPIAR**             | Reusar `cn()` do ERP    |
+| `integrations/supabase/client.ts` | **NÃO COPIAR**             | Reusar do ERP           |
+| `integrations/supabase/types.ts`  | Mesclar no types.ts do ERP | Adicionar tabelas novas |
+| `integrations/supabase/auth-*.ts` | **NÃO COPIAR**             | Reusar do ERP           |
 ```
 
 ### 3.6. Aplicar migrations SQL
@@ -228,6 +228,7 @@ cp _temp_[modulo]/supabase/migrations/*.sql erp-conexao/supabase/migrations/
 ```
 
 **Antes de aplicar, verificar:**
+
 - [ ] Nomes de tabelas não conflitam com existentes
 - [ ] RLS policies não quebram acesso existente
 - [ ] Foreign keys referenciam tabelas corretas
@@ -236,13 +237,13 @@ cp _temp_[modulo]/supabase/migrations/*.sql erp-conexao/supabase/migrations/
 
 **Substituições globais em todos os arquivos copiados:**
 
-| De | Para | Motivo |
-|----|------|--------|
-| `from "@/components/ui/` | `from "~/components/ui/"` | Padrão ERP usa `~/` |
-| `from "@/hooks/useAuth"` | `from "~/hooks/useAuth"` | Reusar auth do ERP |
+| De                               | Para                             | Motivo               |
+| -------------------------------- | -------------------------------- | -------------------- |
+| `from "@/components/ui/`         | `from "~/components/ui/"`        | Padrão ERP usa `~/`  |
+| `from "@/hooks/useAuth"`         | `from "~/hooks/useAuth"`         | Reusar auth do ERP   |
 | `from "@/integrations/supabase"` | `from "~/integrations/supabase"` | Reusar client do ERP |
-| `from "@/lib/utils"` | `from "~/lib/utils"` | Reusar utils do ERP |
-| `from "@/registry"` | `from "~/registry"` | Padrão ERP |
+| `from "@/lib/utils"`             | `from "~/lib/utils"`             | Reusar utils do ERP  |
+| `from "@/registry"`              | `from "~/registry"`              | Padrão ERP           |
 
 ### 3.8. Instalar dependências novas
 
@@ -385,16 +386,16 @@ rm -rf _temp_[modulo]
 
 ```typescript
 type ModuleDefinition = {
-  key: string;              // Único, ex: "crm-conexao"
-  nome: string;             // Nome de exibição
-  descricao: string;        // Uma frase
-  icon: LucideIcon;         // Ícone do lucide-react
-  routes: string[];         // Todas as rotas do módulo
-  ambientes: string[];      // Ambientes onde aparece
-  abas: ModuleAba[];        // Abas do painel admin
-  permissions: string[];    // Keys de permissão
-  events: ModuleEvent[];    // Eventos do módulo
-  setup?: () => void;       // Função de registro (chamada pelo AuthGuard)
+  key: string; // Único, ex: "crm-conexao"
+  nome: string; // Nome de exibição
+  descricao: string; // Uma frase
+  icon: LucideIcon; // Ícone do lucide-react
+  routes: string[]; // Todas as rotas do módulo
+  ambientes: string[]; // Ambientes onde aparece
+  abas: ModuleAba[]; // Abas do painel admin
+  permissions: string[]; // Keys de permissão
+  events: ModuleEvent[]; // Eventos do módulo
+  setup?: () => void; // Função de registro (chamada pelo AuthGuard)
 };
 ```
 
@@ -402,34 +403,34 @@ type ModuleDefinition = {
 
 ```typescript
 type NavItemRegistration = {
-  id: string;               // Único, ex: "crm-dashboard"
-  label: string;            // Texto na sidebar
-  icon: LucideIcon;         // Ícone
-  to: string;               // Rota TanStack Router
+  id: string; // Único, ex: "crm-dashboard"
+  label: string; // Texto na sidebar
+  icon: LucideIcon; // Ícone
+  to: string; // Rota TanStack Router
   permissionCheck: (perms: Record<string, boolean> | null) => boolean;
-  order: number;            // Ordem na sidebar (consultar faixas existentes)
-  moduloKey?: string;       // Key do módulo pai
-  matchPaths?: string[];    // Paths extras para active state
-  noChildMatch?: boolean;   // Ignorar child paths no match
+  order: number; // Ordem na sidebar (consultar faixas existentes)
+  moduloKey?: string; // Key do módulo pai
+  matchPaths?: string[]; // Paths extras para active state
+  noChildMatch?: boolean; // Ignorar child paths no match
 };
 ```
 
 ### Faixas de ordem na sidebar
 
-| Faixa | Módulo |
-|-------|--------|
-| 1-9 | Cadastros |
-| 10-19 | — |
-| 20-29 | — |
-| 25-30 | Hub Admin |
+| Faixa | Módulo               |
+| ----- | -------------------- |
+| 1-9   | Cadastros            |
+| 10-19 | —                    |
+| 20-29 | —                    |
+| 25-30 | Hub Admin            |
 | 35-47 | Hub Gestor/Consultor |
-| 50-59 | — |
-| 55-56 | Hub Distribuidor |
-| 60-69 | — |
-| 70-79 | — |
-| 80-89 | — |
-| 90-99 | — |
-| 100+ | Disponível |
+| 50-59 | —                    |
+| 55-56 | Hub Distribuidor     |
+| 60-69 | —                    |
+| 70-79 | —                    |
+| 80-89 | —                    |
+| 90-99 | —                    |
+| 100+  | Disponível           |
 
 **Para novo módulo:** Usar faixa não ocupada (consultar `src/features/*/module.ts`).
 
@@ -437,7 +438,11 @@ type NavItemRegistration = {
 
 ```typescript
 // Registry
-import { registerModule, registerNavItem, registerPermission } from "~/registry";
+import {
+  registerModule,
+  registerNavItem,
+  registerPermission,
+} from "~/registry";
 import type { ModuleDefinition } from "~/registry";
 
 // Auth

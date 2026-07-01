@@ -31,7 +31,9 @@ export function ModuleDrawer({
 
   // Estado local para gerenciar o módulo sendo visualizado no drawer, permitindo que a lista
   // de rotas mude ao tocar no módulo sem fechar o drawer de imediato.
-  const [localSelectedKey, setLocalSelectedKey] = useState<string | undefined>(selectedModuleKey);
+  const [localSelectedKey, setLocalSelectedKey] = useState<string | undefined>(
+    selectedModuleKey,
+  );
 
   // Sincroniza o estado local quando o drawer é aberto
   useEffect(() => {
@@ -51,11 +53,19 @@ export function ModuleDrawer({
 
   return (
     <div className="fixed inset-0 z-50">
-      <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={onClose} />
+      <div
+        className="absolute inset-0 bg-black/40 backdrop-blur-sm"
+        onClick={onClose}
+      />
       <div className="absolute right-0 top-0 bottom-0 w-72 max-w-[85vw] bg-card border-l border-border-subtle shadow-2xl flex flex-col animate-in slide-in-from-right duration-200">
         <div className="flex items-center justify-between px-4 py-3 border-b border-border-subtle shrink-0">
-          <span className="text-xs font-bold text-text-muted uppercase tracking-wider">Módulos</span>
-          <button onClick={onClose} className="p-1 rounded-lg text-text-muted hover:text-text-main hover:bg-input-bg transition-colors">
+          <span className="text-xs font-bold text-text-muted uppercase tracking-wider">
+            Módulos
+          </span>
+          <button
+            onClick={onClose}
+            className="p-1 rounded-lg text-text-muted hover:text-text-main hover:bg-input-bg transition-colors"
+          >
             <X size={18} />
           </button>
         </div>
@@ -64,15 +74,22 @@ export function ModuleDrawer({
           <div className="flex flex-col gap-0.5 px-2 py-3 border-b border-border-subtle/50">
             {mostrarGlobal && modulos.length > 0 && (
               <button
-                onClick={() => { setLocalSelectedKey(undefined); onModuleChange(undefined); }}
+                onClick={() => {
+                  setLocalSelectedKey(undefined);
+                  onModuleChange(undefined);
+                }}
                 className={cn(
                   "flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium transition-colors",
-                  localSelectedKey === undefined ? "bg-accent/15 text-accent font-semibold" : "text-text-main hover:bg-input-bg"
+                  localSelectedKey === undefined
+                    ? "bg-accent/15 text-accent font-semibold"
+                    : "text-text-main hover:bg-input-bg",
                 )}
               >
                 <Globe size={16} />
                 Global
-                {localSelectedKey === undefined && <span className="ml-auto text-xs text-accent">Ativo</span>}
+                {localSelectedKey === undefined && (
+                  <span className="ml-auto text-xs text-accent">Ativo</span>
+                )}
               </button>
             )}
             {modulos.map((mod) => {
@@ -81,15 +98,22 @@ export function ModuleDrawer({
               return (
                 <button
                   key={mod.key}
-                  onClick={() => { setLocalSelectedKey(mod.key); onModuleChange(mod.key); }}
+                  onClick={() => {
+                    setLocalSelectedKey(mod.key);
+                    onModuleChange(mod.key);
+                  }}
                   className={cn(
                     "flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium transition-colors",
-                    isSelected ? "bg-accent/15 text-accent font-semibold" : "text-text-main hover:bg-input-bg"
+                    isSelected
+                      ? "bg-accent/15 text-accent font-semibold"
+                      : "text-text-main hover:bg-input-bg",
                   )}
                 >
                   <Icon size={16} />
                   {mod.nome}
-                  {isSelected && <span className="ml-auto text-xs text-accent">Ativo</span>}
+                  {isSelected && (
+                    <span className="ml-auto text-xs text-accent">Ativo</span>
+                  )}
                 </button>
               );
             })}
@@ -103,14 +127,23 @@ export function ModuleDrawer({
                 </p>
                 <div className="flex flex-col gap-0.5">
                   {section.items.map((item) => {
-                    const isActive = location.pathname === item.path || (item.matchPaths || []).includes(location.pathname) || (!item.noChildMatch && location.pathname.startsWith(item.path + "/"));
+                    const isActive =
+                      location.pathname === item.path ||
+                      (item.matchPaths || []).includes(location.pathname) ||
+                      (!item.noChildMatch &&
+                        location.pathname.startsWith(item.path + "/"));
                     return (
                       <button
                         key={item.path}
-                        onClick={() => { navigate({ to: item.path }); onClose(); }}
+                        onClick={() => {
+                          navigate({ to: item.path });
+                          onClose();
+                        }}
                         className={cn(
                           "flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm transition-colors",
-                          isActive ? "bg-accent/15 text-accent font-semibold" : "text-text-muted hover:text-text-main hover:bg-input-bg"
+                          isActive
+                            ? "bg-accent/15 text-accent font-semibold"
+                            : "text-text-muted hover:text-text-main hover:bg-input-bg",
                         )}
                       >
                         <item.icon size={16} />

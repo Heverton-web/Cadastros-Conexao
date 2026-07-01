@@ -7,14 +7,11 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        primary:
-          "bg-gradient-brand text-btn-primary-text",
+        primary: "bg-gradient-brand text-btn-primary-text",
         secondary:
           "bg-surface text-text-main border border-border-subtle hover:bg-surface-hover",
-        ghost:
-          "text-text-muted hover:text-text-main hover:bg-surface-hover",
-        destructive:
-          "bg-error text-white",
+        ghost: "text-text-muted hover:text-text-main hover:bg-surface-hover",
+        destructive: "bg-error text-white",
       },
       size: {
         md: "px-4 py-3 text-sm",
@@ -29,11 +26,12 @@ const buttonVariants = cva(
       variant: "primary",
       size: "md",
     },
-  }
+  },
 );
 
 interface ButtonProps
-  extends ButtonHTMLAttributes<HTMLButtonElement>,
+  extends
+    ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
   fullWidth?: boolean;
 }
@@ -45,7 +43,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       className={cn(buttonVariants({ variant, size, fullWidth }), className)}
       {...props}
     />
-  )
+  ),
 );
 Button.displayName = "Button";
 

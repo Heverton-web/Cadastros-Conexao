@@ -34,8 +34,13 @@ export async function buscarFunil(id: string): Promise<Funil> {
   return funil;
 }
 
-export async function criarFunil(input: FunilInput, empresaId?: string | null): Promise<Funil> {
-  const { data: { user } } = await supabase.auth.getUser();
+export async function criarFunil(
+  input: FunilInput,
+  empresaId?: string | null,
+): Promise<Funil> {
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
   if (!user) throw new Error("Não autenticado");
 
   const { data, error } = await supabase
@@ -51,14 +56,15 @@ export async function criarFunil(input: FunilInput, empresaId?: string | null): 
   if (error) throw error;
   const funil = data as Funil;
 
-  const colunasParaCriar = input.colunas && input.colunas.length > 0
-    ? input.colunas
-    : ["Backlog", "Em andamento", "Revisão", "Concluído"];
+  const colunasParaCriar =
+    input.colunas && input.colunas.length > 0
+      ? input.colunas
+      : ["Backlog", "Em andamento", "Revisão", "Concluído"];
 
   const colunasData = colunasParaCriar.map((titulo, index) => ({
     funil_id: funil.id,
     titulo,
-    posicao: index
+    posicao: index,
   }));
 
   const { error: colunasError } = await supabase
@@ -66,11 +72,19 @@ export async function criarFunil(input: FunilInput, empresaId?: string | null): 
     .insert(colunasData);
   if (colunasError) throw colunasError;
 
-  dispararEventoModulo(MODULO_KEY, "funil.criado", { funil }, funil.empresa_id).catch(() => {});
+  dispararEventoModulo(
+    MODULO_KEY,
+    "funil.criado",
+    { funil },
+    funil.empresa_id,
+  ).catch(() => {});
   return funil;
 }
 
-export async function atualizarFunil(id: string, input: Partial<FunilInput>): Promise<Funil> {
+export async function atualizarFunil(
+  id: string,
+  input: Partial<FunilInput>,
+): Promise<Funil> {
   const { data, error } = await supabase
     .from("funis")
     .update(input)
@@ -79,16 +93,27 @@ export async function atualizarFunil(id: string, input: Partial<FunilInput>): Pr
     .single();
   if (error) throw error;
   const funil = data as Funil;
-  dispararEventoModulo(MODULO_KEY, "funil.atualizado", { funil }, funil.empresa_id).catch(() => {});
+  dispararEventoModulo(
+    MODULO_KEY,
+    "funil.atualizado",
+    { funil },
+    funil.empresa_id,
+  ).catch(() => {});
   return funil;
 }
 
 export async function deletarFunil(id: string): Promise<void> {
-  const { data: before } = await supabase.from("funis").select("empresa_id").eq("id", id).single();
-  const { error } = await supabase
+  const { data: before } = await supabase
     .from("funis")
-    .delete()
-    .eq("id", id);
+    .select("empresa_id")
+    .eq("id", id)
+    .single();
+  const { error } = await supabase.from("funis").delete().eq("id", id);
   if (error) throw error;
-  dispararEventoModulo(MODULO_KEY, "funil.excluido", { funilId: id }, before?.empresa_id).catch(() => {});
+  dispararEventoModulo(
+    MODULO_KEY,
+    "funil.excluido",
+    { funilId: id },
+    before?.empresa_id,
+  ).catch(() => {});
 }

@@ -4,7 +4,9 @@ import type { Template, TemplateInput } from "../types";
 export async function listarTemplates(empresaId?: string): Promise<Template[]> {
   let query = supabase
     .from("funis_templates")
-    .select("*, colunas:funis_template_cols(*), tarefas:funis_template_tasks(*)")
+    .select(
+      "*, colunas:funis_template_cols(*), tarefas:funis_template_tasks(*)",
+    )
     .order("created_at", { ascending: false });
 
   if (empresaId) {
@@ -21,7 +23,9 @@ export async function listarTemplates(empresaId?: string): Promise<Template[]> {
 export async function buscarTemplate(id: string): Promise<Template> {
   const { data, error } = await supabase
     .from("funis_templates")
-    .select("*, colunas:funis_template_cols(*), tarefas:funis_template_tasks(*)")
+    .select(
+      "*, colunas:funis_template_cols(*), tarefas:funis_template_tasks(*)",
+    )
     .eq("id", id)
     .single();
   if (error) throw error;
@@ -35,8 +39,13 @@ export async function buscarTemplate(id: string): Promise<Template> {
   return template;
 }
 
-export async function criarTemplate(input: TemplateInput, empresaId?: string | null): Promise<Template> {
-  const { data: { user } } = await supabase.auth.getUser();
+export async function criarTemplate(
+  input: TemplateInput,
+  empresaId?: string | null,
+): Promise<Template> {
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
   if (!user) throw new Error("Não autenticado");
 
   const { data, error } = await supabase
@@ -83,7 +92,10 @@ export async function criarTemplate(input: TemplateInput, empresaId?: string | n
   return template;
 }
 
-export async function atualizarTemplate(id: string, input: Partial<TemplateInput>): Promise<Template> {
+export async function atualizarTemplate(
+  id: string,
+  input: Partial<TemplateInput>,
+): Promise<Template> {
   const { data, error } = await supabase
     .from("funis_templates")
     .update({
@@ -106,7 +118,10 @@ export async function deletarTemplate(id: string): Promise<void> {
   if (error) throw error;
 }
 
-export async function aplicarTemplate(templateId: string, funilId: string): Promise<void> {
+export async function aplicarTemplate(
+  templateId: string,
+  funilId: string,
+): Promise<void> {
   const template = await buscarTemplate(templateId);
   if (!template) throw new Error("Template não encontrado");
 
@@ -123,7 +138,9 @@ export async function aplicarTemplate(templateId: string, funilId: string): Prom
     if (colunasError) throw colunasError;
 
     if (template.tarefas && template.tarefas.length > 0 && novasColunas) {
-      const { data: { user } } = await supabase.auth.getUser();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
       if (user) {
         const tarefasData = template.tarefas.map((t) => ({
           funil_id: funilId,

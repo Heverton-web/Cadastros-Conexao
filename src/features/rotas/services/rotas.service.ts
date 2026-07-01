@@ -4,7 +4,7 @@ import type { Rota, RotaCliente, RotaFormData, RotaStatus } from "../types";
 export async function listarRotas(
   empresaId?: string | null,
   usuarioId?: string | null,
-  filtros?: { status?: RotaStatus; data_inicio?: string; data_fim?: string }
+  filtros?: { status?: RotaStatus; data_inicio?: string; data_fim?: string },
 ): Promise<Rota[]> {
   let query = supabase
     .from("rotas")
@@ -51,7 +51,11 @@ export async function buscarRotaComClientes(id: string): Promise<Rota> {
   return { ...rota, clientes: (clientes ?? []) as RotaCliente[] } as Rota;
 }
 
-export async function criarRota(empresaId: string, usuarioId: string, form: RotaFormData): Promise<Rota> {
+export async function criarRota(
+  empresaId: string,
+  usuarioId: string,
+  form: RotaFormData,
+): Promise<Rota> {
   const { data: rota, error: rotaError } = await supabase
     .from("rotas")
     .insert({
@@ -84,7 +88,10 @@ export async function criarRota(empresaId: string, usuarioId: string, form: Rota
   return rota as Rota;
 }
 
-export async function atualizarRota(id: string, updates: Partial<Rota>): Promise<Rota> {
+export async function atualizarRota(
+  id: string,
+  updates: Partial<Rota>,
+): Promise<Rota> {
   const { data, error } = await supabase
     .from("rotas")
     .update(updates)
@@ -96,14 +103,14 @@ export async function atualizarRota(id: string, updates: Partial<Rota>): Promise
 }
 
 export async function excluirRota(id: string): Promise<void> {
-  const { error } = await supabase
-    .from("rotas")
-    .delete()
-    .eq("id", id);
+  const { error } = await supabase.from("rotas").delete().eq("id", id);
   if (error) throw error;
 }
 
-export async function iniciarRota(id: string, localizacao: { lat: number; lng: number }): Promise<Rota> {
+export async function iniciarRota(
+  id: string,
+  localizacao: { lat: number; lng: number },
+): Promise<Rota> {
   return atualizarRota(id, {
     status: "em_execucao",
     data_inicio: new Date().toISOString(),
@@ -111,12 +118,16 @@ export async function iniciarRota(id: string, localizacao: { lat: number; lng: n
   });
 }
 
-export async function finalizarRota(id: string, localizacao: { lat: number; lng: number }, stats: {
-  total_visitas: number;
-  total_km: number;
-  total_tempo_trajeto_min: number;
-  valor_reembolso: number;
-}): Promise<Rota> {
+export async function finalizarRota(
+  id: string,
+  localizacao: { lat: number; lng: number },
+  stats: {
+    total_visitas: number;
+    total_km: number;
+    total_tempo_trajeto_min: number;
+    valor_reembolso: number;
+  },
+): Promise<Rota> {
   return atualizarRota(id, {
     status: "realizada",
     data_fim: new Date().toISOString(),
@@ -127,7 +138,7 @@ export async function finalizarRota(id: string, localizacao: { lat: number; lng:
 
 export async function atualizarStatusClienteRota(
   rotaClienteId: string,
-  status: RotaCliente["status"]
+  status: RotaCliente["status"],
 ): Promise<RotaCliente> {
   const { data, error } = await supabase
     .from("rotas_clientes")
@@ -142,7 +153,7 @@ export async function atualizarStatusClienteRota(
 export async function adicionarClientesNaRota(
   rotaId: string,
   empresaId: string,
-  clienteIds: string[]
+  clienteIds: string[],
 ): Promise<void> {
   const { data: existentes } = await supabase
     .from("rotas_clientes")
@@ -161,13 +172,13 @@ export async function adicionarClientesNaRota(
     status: "pendente" as const,
   }));
 
-  const { error } = await supabase
-    .from("rotas_clientes")
-    .insert(insert);
+  const { error } = await supabase.from("rotas_clientes").insert(insert);
   if (error) throw error;
 }
 
-export async function removerClienteDaRota(rotaClienteId: string): Promise<void> {
+export async function removerClienteDaRota(
+  rotaClienteId: string,
+): Promise<void> {
   const { error } = await supabase
     .from("rotas_clientes")
     .delete()
@@ -175,12 +186,15 @@ export async function removerClienteDaRota(rotaClienteId: string): Promise<void>
   if (error) throw error;
 }
 
-export async function reordenarClientes(rotaId: string, ordemIds: string[]): Promise<void> {
+export async function reordenarClientes(
+  rotaId: string,
+  ordemIds: string[],
+): Promise<void> {
   const updates = ordemIds.map((id, index) =>
     supabase
       .from("rotas_clientes")
       .update({ ordem: index + 1 })
-      .eq("id", id)
+      .eq("id", id),
   );
   await Promise.all(updates);
 }

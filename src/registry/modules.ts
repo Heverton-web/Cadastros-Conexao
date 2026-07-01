@@ -28,13 +28,15 @@ export type ModuleDefinition = {
   hasFormulario?: boolean;
   hasCustomActions?: boolean;
   hasApiConnectors?: boolean;
-  hasDesignConfig?: boolean;  // módulo possui rota de design própria
-  designRoute?: string;       // path da rota de design (ex: "/nps/design")
+  hasDesignConfig?: boolean; // módulo possui rota de design própria
+  designRoute?: string; // path da rota de design (ex: "/nps/design")
   setup?: () => void;
 };
 
-const glob = typeof window !== 'undefined' ? window as any : globalThis as any;
-const moduleRegistry: Map<string, ModuleDefinition> = glob.__modules_registry || new Map<string, ModuleDefinition>();
+const glob =
+  typeof window !== "undefined" ? (window as any) : (globalThis as any);
+const moduleRegistry: Map<string, ModuleDefinition> =
+  glob.__modules_registry || new Map<string, ModuleDefinition>();
 glob.__modules_registry = moduleRegistry;
 
 export function registerModule(mod: ModuleDefinition): void {

@@ -1,4 +1,10 @@
-import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  type ReactNode,
+} from "react";
 import { supabase } from "~/core/supabase";
 import { useAuth } from "~/core/auth";
 import type { Empresa, EmpresaConfig } from "./types";
@@ -35,8 +41,16 @@ export function EmpresaProvider({ children }: { children: ReactNode }) {
       setLoading(true);
       try {
         const [empresaRes, configRes] = await Promise.all([
-          supabase.from("empresas").select("*").eq("id", profile!.empresa_id).single(),
-          supabase.from("empresas_config").select("*").eq("empresa_id", profile!.empresa_id).single(),
+          supabase
+            .from("empresas")
+            .select("*")
+            .eq("id", profile!.empresa_id)
+            .single(),
+          supabase
+            .from("empresas_config")
+            .select("*")
+            .eq("empresa_id", profile!.empresa_id)
+            .single(),
         ]);
         if (!cancelled) {
           setEmpresa(empresaRes.data as Empresa | null);
@@ -52,7 +66,9 @@ export function EmpresaProvider({ children }: { children: ReactNode }) {
     }
 
     load();
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, [profile?.empresa_id]);
 
   return (

@@ -49,7 +49,9 @@ export function DetalheRotaPage({ id }: Props) {
   const { data: rota, isLoading } = useRotaComClientes(id);
   const atualizarRota = useAtualizarRota();
 
-  const [showFinalizarVisita, setShowFinalizarVisita] = useState<string | null>(null);
+  const [showFinalizarVisita, setShowFinalizarVisita] = useState<string | null>(
+    null,
+  );
   const [showCancelarRota, setShowCancelarRota] = useState(false);
   const [rotasConfig, setRotasConfig] = useState<RotasConfig | null>(null);
 
@@ -133,7 +135,8 @@ export function DetalheRotaPage({ id }: Props) {
   }
 
   const clientes = rota.clientes ?? [];
-  const todosVisitados = clientes.length > 0 && clientes.every((c) => c.status === "visitado");
+  const todosVisitados =
+    clientes.length > 0 && clientes.every((c) => c.status === "visitado");
   const podeFinalizarRota = rota.status === "em_execucao" && todosVisitados;
 
   return (
@@ -161,19 +164,28 @@ export function DetalheRotaPage({ id }: Props) {
 
         <div className="flex gap-2">
           {rota.status === "planejada" && (
-            <Button onClick={handleIniciarRota} disabled={atualizarRota.isPending}>
+            <Button
+              onClick={handleIniciarRota}
+              disabled={atualizarRota.isPending}
+            >
               <Play className="h-4 w-4 mr-2" />
               Iniciar Rota
             </Button>
           )}
           {podeFinalizarRota && (
-            <Button onClick={handleFinalizarRota} disabled={atualizarRota.isPending}>
+            <Button
+              onClick={handleFinalizarRota}
+              disabled={atualizarRota.isPending}
+            >
               <StopCircle className="h-4 w-4 mr-2" />
               Finalizar Rota
             </Button>
           )}
           {rota.status === "planejada" && (
-            <Button variant="destructive" onClick={() => setShowCancelarRota(true)}>
+            <Button
+              variant="destructive"
+              onClick={() => setShowCancelarRota(true)}
+            >
               <XCircle className="h-4 w-4 mr-2" />
               Cancelar
             </Button>
@@ -234,15 +246,16 @@ export function DetalheRotaPage({ id }: Props) {
           <Card>
             <CardContent className="p-8 text-center">
               <MapPin className="h-8 w-8 mx-auto text-muted-foreground mb-2" />
-              <p className="text-muted-foreground">
-                Nenhum cliente nesta rota
-              </p>
+              <p className="text-muted-foreground">Nenhum cliente nesta rota</p>
             </CardContent>
           </Card>
         )}
       </div>
 
-      <AlertDialog open={!!showFinalizarVisita} onOpenChange={(o) => !o && setShowFinalizarVisita(null)}>
+      <AlertDialog
+        open={!!showFinalizarVisita}
+        onOpenChange={(o) => !o && setShowFinalizarVisita(null)}
+      >
         <AlertDialogContent className="max-w-2xl">
           <FormularioPosVisita
             rotaClienteId={showFinalizarVisita!}
@@ -256,7 +269,8 @@ export function DetalheRotaPage({ id }: Props) {
           <AlertDialogHeader>
             <AlertDialogTitle>Cancelar Rota?</AlertDialogTitle>
             <AlertDialogDescription>
-              Esta ação não pode ser desfeita. A rota será marcada como cancelada.
+              Esta ação não pode ser desfeita. A rota será marcada como
+              cancelada.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

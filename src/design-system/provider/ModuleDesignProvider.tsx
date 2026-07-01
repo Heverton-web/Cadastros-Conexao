@@ -1,6 +1,10 @@
 import { type ReactNode, useEffect, useMemo } from "react";
 import { ModuleDesignContext } from "./DesignSystemContext";
-import { useDesignGlobalQuery, useDesignEmpresaQuery, useDesignModuloQuery } from "../services/design-system.queries";
+import {
+  useDesignGlobalQuery,
+  useDesignEmpresaQuery,
+  useDesignModuloQuery,
+} from "../services/design-system.queries";
 import { resolveTokens } from "../tokens/resolver";
 import { tokensToCssVars } from "../tokens/css-var-map";
 import { useAuth } from "~/lib/auth";
@@ -26,12 +30,14 @@ export function ModuleDesignProvider({ moduloKey, children }: Props) {
   const tokens = useMemo(
     () =>
       resolveTokens({
-        presetKey: (emp?.preset_key ?? global?.preset_key ?? "dark-gold") as PresetKey,
+        presetKey: (emp?.preset_key ??
+          global?.preset_key ??
+          "dark-gold") as PresetKey,
         globalOverride: global?.tokens_override ?? null,
         empresaOverride: emp?.tokens_override ?? null,
         moduloOverride: mod?.tokens_override ?? null,
       }),
-    [global, emp, mod]
+    [global, emp, mod],
   );
 
   // Os overrides de módulo ficam em CSS vars com escopo no container

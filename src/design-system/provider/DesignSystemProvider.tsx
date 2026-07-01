@@ -1,7 +1,10 @@
 import { type ReactNode, useEffect, useMemo } from "react";
 import { useAuth } from "~/lib/auth";
 import { DesignSystemContext } from "./DesignSystemContext";
-import { useDesignGlobalQuery, useDesignEmpresaQuery } from "../services/design-system.queries";
+import {
+  useDesignGlobalQuery,
+  useDesignEmpresaQuery,
+} from "../services/design-system.queries";
 import { resolveTokens } from "../tokens/resolver";
 import { tokensToCssVars } from "../tokens/css-var-map";
 import type { PresetKey } from "../tokens/types";
@@ -23,11 +26,13 @@ export function DesignSystemProvider({ children }: { children: ReactNode }) {
   const tokens = useMemo(
     () =>
       resolveTokens({
-        presetKey: (emp?.preset_key ?? global?.preset_key ?? "dark-gold") as PresetKey,
+        presetKey: (emp?.preset_key ??
+          global?.preset_key ??
+          "dark-gold") as PresetKey,
         globalOverride: global?.tokens_override ?? null,
         empresaOverride: emp?.tokens_override ?? null,
       }),
-    [global, emp]
+    [global, emp],
   );
 
   // Injeta CSS vars no :root
@@ -55,7 +60,9 @@ export function DesignSystemProvider({ children }: { children: ReactNode }) {
     }
   }, [empresa?.favicon_url]);
 
-  const presetKey = (emp?.preset_key ?? global?.preset_key ?? "dark-gold") as PresetKey;
+  const presetKey = (emp?.preset_key ??
+    global?.preset_key ??
+    "dark-gold") as PresetKey;
 
   return (
     <DesignSystemContext.Provider value={{ tokens, presetKey, isLoading }}>

@@ -2,9 +2,19 @@ import { useEffect, useState } from "react";
 import { useParams } from "@tanstack/react-router";
 import { Loader2, AlertCircle } from "lucide-react";
 import { EmpresaLinktreeCard } from "./EmpresaLinktreeCard";
-import { buscarConfigPorSlug, listarSecoes, listarLinksPublicos, registrarClique } from "../services/empresa";
+import {
+  buscarConfigPorSlug,
+  listarSecoes,
+  listarLinksPublicos,
+  registrarClique,
+} from "../services/empresa";
 import { normalizeEmpresaTheme } from "../types-empresa";
-import type { EmpresaLinktreeConfig, EmpresaLinktreeSection, EmpresaLinktreeLink, EmpresaLinktreeTheme } from "../types-empresa";
+import type {
+  EmpresaLinktreeConfig,
+  EmpresaLinktreeSection,
+  EmpresaLinktreeLink,
+  EmpresaLinktreeTheme,
+} from "../types-empresa";
 
 export function PublicEmpresaLinktree() {
   const { slug } = useParams({ from: "/e/$slug" });
@@ -64,7 +74,9 @@ export function PublicEmpresaLinktree() {
       <div className="flex min-h-screen flex-col items-center justify-center gap-4">
         <AlertCircle className="size-12 text-muted-foreground" />
         <h1 className="text-xl font-bold">Pagina nao encontrada</h1>
-        <p className="text-sm text-muted-foreground">O linktree "{slug}" nao existe.</p>
+        <p className="text-sm text-muted-foreground">
+          O linktree "{slug}" nao existe.
+        </p>
       </div>
     );
   }

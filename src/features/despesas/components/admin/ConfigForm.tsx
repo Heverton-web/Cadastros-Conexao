@@ -67,7 +67,8 @@ export function ConfigForm({ empresaId }: { empresaId: string }) {
     setTimeout(() => setSaved(false), 2000);
   }
 
-  if (loading) return <div className="text-text-muted text-sm py-4">Carregando...</div>;
+  if (loading)
+    return <div className="text-text-muted text-sm py-4">Carregando...</div>;
 
   return (
     <div className="space-y-4 max-w-md">
@@ -102,7 +103,8 @@ export function ConfigForm({ empresaId }: { empresaId: string }) {
           onChange={(e) => setDiaEnvio(Number(e.target.value))}
         />
         <p className="text-xs text-text-muted">
-          Exemplo: Se o período termina em 31/jan e o limite é 5 dias, o colaborador pode enviar até 5/fev.
+          Exemplo: Se o período termina em 31/jan e o limite é 5 dias, o
+          colaborador pode enviar até 5/fev.
         </p>
       </div>
 
@@ -117,11 +119,16 @@ export function ConfigForm({ empresaId }: { empresaId: string }) {
           onChange={(e) => setDiasAviso(Number(e.target.value))}
         />
         <p className="text-xs text-text-muted">
-          Quantos dias antes do prazo final o sistema começa a alertar o colaborador.
+          Quantos dias antes do prazo final o sistema começa a alertar o
+          colaborador.
         </p>
       </div>
 
-      <Button onClick={handleSave} disabled={saving || !empresaId} className="gap-1.5">
+      <Button
+        onClick={handleSave}
+        disabled={saving || !empresaId}
+        className="gap-1.5"
+      >
         <Save size={16} />
         {saving ? "Salvando..." : saved ? "Salvo!" : "Salvar configuração"}
       </Button>

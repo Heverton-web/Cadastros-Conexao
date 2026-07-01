@@ -1,4 +1,7 @@
-type ActionExecutor = (id: string, payload: Record<string, any>) => Promise<any>;
+type ActionExecutor = (
+  id: string,
+  payload: Record<string, any>,
+) => Promise<any>;
 
 const executors = new Map<string, ActionExecutor>();
 

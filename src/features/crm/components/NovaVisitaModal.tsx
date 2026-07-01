@@ -1,5 +1,11 @@
 import { useState } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "~/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "~/components/ui/dialog";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { Textarea } from "~/components/ui/textarea";
@@ -62,7 +68,11 @@ export function NovaVisitaModal({ clienteId, open, onOpenChange }: Props) {
   function update<K extends keyof typeof form>(k: K, v: (typeof form)[K]) {
     setForm((s) => {
       const next = { ...s, [k]: v };
-      if (["gerou_pedido", "gerou_orcamento", "interesse_escala"].includes(k as string)) {
+      if (
+        ["gerou_pedido", "gerou_orcamento", "interesse_escala"].includes(
+          k as string,
+        )
+      ) {
         next.temperatura_vendedor = sugerirTemperatura({
           gerou_pedido: next.gerou_pedido,
           gerou_orcamento: next.gerou_orcamento,
@@ -77,7 +87,9 @@ export function NovaVisitaModal({ clienteId, open, onOpenChange }: Props) {
     e.preventDefault();
     setBusy(true);
     try {
-      const { data: { user } } = await supabase.auth.getUser();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
       const { data: visita, error } = await supabase
         .from("visitas")
         .insert({
@@ -88,7 +100,9 @@ export function NovaVisitaModal({ clienteId, open, onOpenChange }: Props) {
           tipo_visita: form.tipo_visita,
           gerou_orcamento: form.gerou_orcamento,
           gerou_pedido: form.gerou_pedido,
-          valor_estimado: form.valor_estimado ? Number(form.valor_estimado) : null,
+          valor_estimado: form.valor_estimado
+            ? Number(form.valor_estimado)
+            : null,
           interesse_escala: Number(form.interesse_escala),
           temperatura_vendedor: form.temperatura_vendedor,
           probabilidade_fechamento: form.probabilidade_fechamento || null,
@@ -192,9 +206,13 @@ export function NovaVisitaModal({ clienteId, open, onOpenChange }: Props) {
             <Field label="Tipo de visita">
               <Select
                 value={form.tipo_visita}
-                onValueChange={(v) => update("tipo_visita", v as typeof form.tipo_visita)}
+                onValueChange={(v) =>
+                  update("tipo_visita", v as typeof form.tipo_visita)
+                }
               >
-                <SelectTrigger><SelectValue /></SelectTrigger>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="Prospecção">Prospecção</SelectItem>
                   <SelectItem value="Relacionamento">Relacionamento</SelectItem>
@@ -216,9 +234,13 @@ export function NovaVisitaModal({ clienteId, open, onOpenChange }: Props) {
             <Field label="Cargo">
               <Select
                 value={form.cargo_atendente}
-                onValueChange={(v) => update("cargo_atendente", v as typeof form.cargo_atendente)}
+                onValueChange={(v) =>
+                  update("cargo_atendente", v as typeof form.cargo_atendente)
+                }
               >
-                <SelectTrigger><SelectValue /></SelectTrigger>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="Secretária">Secretária</SelectItem>
                   <SelectItem value="Dentista">Dentista</SelectItem>
@@ -258,7 +280,10 @@ export function NovaVisitaModal({ clienteId, open, onOpenChange }: Props) {
           </Section>
 
           <Section icon={Gauge} title="Avaliação">
-            <Field label={`Temperatura (sugerido: ${form.temperatura_vendedor})`} full>
+            <Field
+              label={`Temperatura (sugerido: ${form.temperatura_vendedor})`}
+              full
+            >
               <div className="grid grid-cols-3 gap-2">
                 {tempOptions.map((opt) => {
                   const Icon = opt.icon;
@@ -293,7 +318,9 @@ export function NovaVisitaModal({ clienteId, open, onOpenChange }: Props) {
                       onClick={() =>
                         update(
                           "probabilidade_fechamento",
-                          active ? "" : (opt.value as typeof form.probabilidade_fechamento),
+                          active
+                            ? ""
+                            : (opt.value as typeof form.probabilidade_fechamento),
                         )
                       }
                       className={cn(
@@ -346,11 +373,19 @@ export function NovaVisitaModal({ clienteId, open, onOpenChange }: Props) {
           </Section>
 
           <DialogFooter>
-            <Button type="button" variant="ghost" onClick={() => onOpenChange(false)}>
+            <Button
+              type="button"
+              variant="ghost"
+              onClick={() => onOpenChange(false)}
+            >
               Cancelar
             </Button>
             <Button type="submit" disabled={busy}>
-              {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : "Salvar visita"}
+              {busy ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                "Salvar visita"
+              )}
             </Button>
           </DialogFooter>
         </form>
@@ -411,7 +446,9 @@ function Field({
 }) {
   return (
     <div className={`space-y-1.5 ${full ? "sm:col-span-2" : ""}`}>
-      <Label className="text-xs font-medium text-muted-foreground">{label}</Label>
+      <Label className="text-xs font-medium text-muted-foreground">
+        {label}
+      </Label>
       {children}
     </div>
   );
@@ -474,7 +511,9 @@ function StarRating({
           </button>
         ))}
       </div>
-      <span className="text-xs text-muted-foreground">{labels[display - 1]}</span>
+      <span className="text-xs text-muted-foreground">
+        {labels[display - 1]}
+      </span>
     </div>
   );
 }

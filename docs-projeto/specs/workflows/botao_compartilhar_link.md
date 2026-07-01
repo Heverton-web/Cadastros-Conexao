@@ -35,16 +35,16 @@ sequenceDiagram
 
 **Coletados do formulário antes do clique:**
 
-| Campo | Origem | Exemplo |
-|---|---|---|
-| `tipo_acao` | Botões "Solicitar Cadastro" / "Atualizar Cadastro" | `"solicitar_cadastro"` |
-| `receber_por` | Botão WhatsApp / E-mail | `"whatsapp"` |
-| `nome_lead` | Input texto | `"João Silva"` |
-| `email_lead` | Input email (se forma=email) | `"joao@email.com"` |
-| `ddi` | Select país | `"55"` |
-| `ddd` | Input | `"11"` |
-| `whatsapp_num` | Input | `"912345678"` |
-| `expiracao_dias` | Select | `"5"` |
+| Campo            | Origem                                             | Exemplo                |
+| ---------------- | -------------------------------------------------- | ---------------------- |
+| `tipo_acao`      | Botões "Solicitar Cadastro" / "Atualizar Cadastro" | `"solicitar_cadastro"` |
+| `receber_por`    | Botão WhatsApp / E-mail                            | `"whatsapp"`           |
+| `nome_lead`      | Input texto                                        | `"João Silva"`         |
+| `email_lead`     | Input email (se forma=email)                       | `"joao@email.com"`     |
+| `ddi`            | Select país                                        | `"55"`                 |
+| `ddd`            | Input                                              | `"11"`                 |
+| `whatsapp_num`   | Input                                              | `"912345678"`          |
+| `expiracao_dias` | Select                                             | `"5"`                  |
 
 ---
 
@@ -53,25 +53,26 @@ sequenceDiagram
 **Arquivo:** `src/lib/clientes.ts:91-105`
 
 ### Operação
+
 `INSERT` na tabela `public.cadastros` via cliente JS do Supabase.
 
 ### Campos Inseridos
 
-| Campo | Valor |
-|---|---|
-| `id` | Gerado automaticamente (`gen_random_uuid()`) |
-| `token_acesso` | `crypto.randomUUID()` (UUID v4) |
-| `status` | `"link_gerado"` |
-| `data_criacao_link` | `new Date().toISOString()` |
-| `tipo_acao` | `linkForm.tipo_acao` |
-| `forma_compartilhamento` | `linkForm.receber_por` |
-| `lead_nome` | `linkForm.nome_lead` (ou `null`) |
-| `lead_email` | `linkForm.email_lead` (ou `null`) |
-| `lead_whatsapp` | `numeroCompleto` (ou `null`) |
-| `link_expiracao` | `new Date(now + N dias).toISOString()` |
-| `created_by` | `user.id` (contexto de autenticação) |
-| `created_at` | Default `now()` |
-| `updated_at` | Default `now()` |
+| Campo                    | Valor                                        |
+| ------------------------ | -------------------------------------------- |
+| `id`                     | Gerado automaticamente (`gen_random_uuid()`) |
+| `token_acesso`           | `crypto.randomUUID()` (UUID v4)              |
+| `status`                 | `"link_gerado"`                              |
+| `data_criacao_link`      | `new Date().toISOString()`                   |
+| `tipo_acao`              | `linkForm.tipo_acao`                         |
+| `forma_compartilhamento` | `linkForm.receber_por`                       |
+| `lead_nome`              | `linkForm.nome_lead` (ou `null`)             |
+| `lead_email`             | `linkForm.email_lead` (ou `null`)            |
+| `lead_whatsapp`          | `numeroCompleto` (ou `null`)                 |
+| `link_expiracao`         | `new Date(now + N dias).toISOString()`       |
+| `created_by`             | `user.id` (contexto de autenticação)         |
+| `created_at`             | Default `now()`                              |
+| `updated_at`             | Default `now()`                              |
 
 ### Schema da Tabela
 
@@ -111,6 +112,7 @@ create table public.cadastros (
 ```
 
 ### Retorno
+
 Objeto `Cadastro` completo (incluindo `id` e `token_acesso` gerados).
 
 ---
@@ -120,18 +122,19 @@ Objeto `Cadastro` completo (incluindo `id` e `token_acesso` gerados).
 **Arquivo:** `src/lib/atividades.ts:14-31`
 
 ### Operação
+
 `INSERT` na tabela `public.atividades`.
 
 ### Campos Inseridos
 
-| Campo | Valor |
-|---|---|
-| `entidade_tipo` | `"cadastro"` |
-| `entidade_id` | `id` do cadastro recém-criado |
-| `acao` | `"link_gerado"` |
-| `descricao` | Template string: `` `Link gerado para ${linkForm.nome_lead}` `` |
-| `usuario_id` | `user.id` obtido via `supabase.auth.getUser()` |
-| `created_at` | Default `now()` |
+| Campo           | Valor                                                           |
+| --------------- | --------------------------------------------------------------- |
+| `entidade_tipo` | `"cadastro"`                                                    |
+| `entidade_id`   | `id` do cadastro recém-criado                                   |
+| `acao`          | `"link_gerado"`                                                 |
+| `descricao`     | Template string: `` `Link gerado para ${linkForm.nome_lead}` `` |
+| `usuario_id`    | `user.id` obtido via `supabase.auth.getUser()`                  |
+| `created_at`    | Default `now()`                                                 |
 
 ### Schema da Tabela
 
@@ -182,15 +185,17 @@ window.open(
 **Arquivo:** `src/routes/consultor.tsx:52-59`
 
 ### Operação
+
 `SELECT` na tabela `public.cadastros` filtrado por `created_by = user.id`, com join em `profiles`.
 
 ### Query
+
 ```typescript
 supabase
   .from("cadastros")
   .select("*, profiles!created_by(nome)")
   .eq("created_by", user.id)
-  .order("created_at", { ascending: false })
+  .order("created_at", { ascending: false });
 ```
 
 ---
@@ -199,15 +204,15 @@ supabase
 
 **Rota:** `/pre-cadastro/$token` → `src/routes/pre-cadastro.$token.tsx`
 
-| Etapa | Ação | Operação no Banco |
-|---|---|---|
-| **7.1** Cliente acessa URL | `validarToken()` chamado no `useEffect` | RPC `get_cadastro_by_token(token_text text)` → `SELECT` em `cadastros` (security definer, bypass RLS) |
-| **7.2** Verificação de expiração | Compara `link_expiracao < now()` | Lado cliente |
-| **7.3** Cliente preenche dados | Formulário multi-step (tipo → dados → endereço → documentos) | Lado cliente |
-| **7.4** Envio dos dados | `handleSubmit()` → `update_cadastro_from_precadastro()` RPC | `UPDATE cadastros` (status→`dados_enviados`) + `INSERT` / `ON CONFLICT` em `cadastros_pf`/`cadastros_pj`/`cadastros_enderecos` |
-| **7.5** Upload de documentos | `uploadDocumento()` | Storage bucket `documentos` + `INSERT` tabela `documentos` |
-| **7.6** 2FA - Envio do token | `handleEnviarToken()` | `UPDATE cadastros` (token_gerado, status→`em_analise`) |
-| **7.7** 2FA - Validação | `handleValidarToken()` | `SELECT` + `UPDATE cadastros` (status_verificacao_token→true) |
+| Etapa                            | Ação                                                         | Operação no Banco                                                                                                              |
+| -------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------ |
+| **7.1** Cliente acessa URL       | `validarToken()` chamado no `useEffect`                      | RPC `get_cadastro_by_token(token_text text)` → `SELECT` em `cadastros` (security definer, bypass RLS)                          |
+| **7.2** Verificação de expiração | Compara `link_expiracao < now()`                             | Lado cliente                                                                                                                   |
+| **7.3** Cliente preenche dados   | Formulário multi-step (tipo → dados → endereço → documentos) | Lado cliente                                                                                                                   |
+| **7.4** Envio dos dados          | `handleSubmit()` → `update_cadastro_from_precadastro()` RPC  | `UPDATE cadastros` (status→`dados_enviados`) + `INSERT` / `ON CONFLICT` em `cadastros_pf`/`cadastros_pj`/`cadastros_enderecos` |
+| **7.5** Upload de documentos     | `uploadDocumento()`                                          | Storage bucket `documentos` + `INSERT` tabela `documentos`                                                                     |
+| **7.6** 2FA - Envio do token     | `handleEnviarToken()`                                        | `UPDATE cadastros` (token_gerado, status→`em_analise`)                                                                         |
+| **7.7** 2FA - Validação          | `handleValidarToken()`                                       | `SELECT` + `UPDATE cadastros` (status_verificacao_token→true)                                                                  |
 
 ---
 
@@ -241,17 +246,17 @@ create or replace trigger on_auth_user_created
 
 ## Resumo Consolidado
 
-| # | Workflow | Tipo | Tabela / Serviço | Gatilho |
-|---|---|---|---|---|
-| 1 | Criar cadastro | **CREATE** | `cadastros` | Clique no botão |
-| 2 | Logar atividade | **CREATE** | `atividades` | Após criar cadastro |
-| 3 | Construir URL | **Lógica** | N/A | Imediato |
-| 4 | Abrir WhatsApp | **Side Effect** | `wa.me` (nova aba) | Se forma=whatsapp |
-| 5 | Refresh lista | **READ** | `cadastros` | Após criar |
-| 6 | Cliente valida token | **RPC READ** | `get_cadastro_by_token()` | Acesso ao link |
-| 7 | Cliente envia dados | **RPC UPDATE + INSERT** | `cadastros` + `cadastros_pf`/`pj`/`enderecos` | Submissão do form |
-| 8 | Cliente envia docs | **Storage + CREATE** | bucket `documentos` + tabela `documentos` | Upload de arquivo |
-| 9 | 2FA | **UPDATE** | `cadastros` | Solicitação/validação |
+| #   | Workflow             | Tipo                    | Tabela / Serviço                              | Gatilho               |
+| --- | -------------------- | ----------------------- | --------------------------------------------- | --------------------- |
+| 1   | Criar cadastro       | **CREATE**              | `cadastros`                                   | Clique no botão       |
+| 2   | Logar atividade      | **CREATE**              | `atividades`                                  | Após criar cadastro   |
+| 3   | Construir URL        | **Lógica**              | N/A                                           | Imediato              |
+| 4   | Abrir WhatsApp       | **Side Effect**         | `wa.me` (nova aba)                            | Se forma=whatsapp     |
+| 5   | Refresh lista        | **READ**                | `cadastros`                                   | Após criar            |
+| 6   | Cliente valida token | **RPC READ**            | `get_cadastro_by_token()`                     | Acesso ao link        |
+| 7   | Cliente envia dados  | **RPC UPDATE + INSERT** | `cadastros` + `cadastros_pf`/`pj`/`enderecos` | Submissão do form     |
+| 8   | Cliente envia docs   | **Storage + CREATE**    | bucket `documentos` + tabela `documentos`     | Upload de arquivo     |
+| 9   | 2FA                  | **UPDATE**              | `cadastros`                                   | Solicitação/validação |
 
 ---
 

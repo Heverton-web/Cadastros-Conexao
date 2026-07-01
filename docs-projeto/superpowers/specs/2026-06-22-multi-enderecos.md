@@ -50,11 +50,11 @@
 
 ## 5. Impacto
 
-| Área | Mudança |
-|---|---|
-| DB | 1 migration, 1 novo enum |
-| form-schema | 2 novas seções de etapa |
-| pre-cadastro | refator etapa endereco p/ 3 sub-blocos c/ checkbox |
-| RPC `update_cadastro_from_precadastro` | aceitar array de endereços |
-| admin cliente detail | mostrar 3 blocos |
-| view clientes | joins c/ tipo |
+| Área                                   | Mudança                                            |
+| -------------------------------------- | -------------------------------------------------- |
+| DB                                     | 1 migration, 1 novo enum                           |
+| form-schema                            | 2 novas seções de etapa                            |
+| pre-cadastro                           | refator etapa endereco p/ 3 sub-blocos c/ checkbox |
+| RPC `update_cadastro_from_precadastro` | aceitar array de endereços                         |
+| admin cliente detail                   | mostrar 3 blocos                                   |
+| view clientes                          | joins c/ tipo                                      |

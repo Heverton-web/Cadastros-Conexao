@@ -14,7 +14,11 @@ export function useKeyboardShortcuts(handlers: ShortcutHandlers) {
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
       const target = e.target as HTMLElement;
-      const isInput = target.tagName === "INPUT" || target.tagName === "TEXTAREA" || target.tagName === "SELECT" || target.isContentEditable;
+      const isInput =
+        target.tagName === "INPUT" ||
+        target.tagName === "TEXTAREA" ||
+        target.tagName === "SELECT" ||
+        target.isContentEditable;
 
       if (e.key === "Escape") {
         handlers.onEscape?.();
@@ -78,7 +82,7 @@ export function useKeyboardShortcuts(handlers: ShortcutHandlers) {
         }
       }
     },
-    [handlers]
+    [handlers],
   );
 
   useEffect(() => {

@@ -8,29 +8,29 @@
 
 ## Diagnóstico Atual
 
-| Aspecto | Estado Atual | Nota |
-|---------|-------------|------|
-| Paleta | Dark slate + dourado | ✅ Boa, mas precisa de mais contraste |
-| Tipografia | Outfit (system-ui) | ⚠️ Poderia usar Plus Jakarta Sans |
-| Componentes | shadcn/ui + Radix | ✅ Base sólida |
-| Espaçamento | Inconsistente | ⚠️ Precisa de escala padronizada |
-| Cards | Sem bordas visíveis | ⚠️ Faltam bordas sutis |
-| Tabelas | Overflow básico | ⚠️ Precisa de melhor tratamento mobile |
-| Formulários | Labels uppercase | ⚠️ Melhorar hierarquia visual |
-| Animações | Básicas | ⚠️ Adicionar micro-interações |
-| Acessibilidade | Parcial | ⚠️ Focus states e contraste |
+| Aspecto        | Estado Atual         | Nota                                   |
+| -------------- | -------------------- | -------------------------------------- |
+| Paleta         | Dark slate + dourado | ✅ Boa, mas precisa de mais contraste  |
+| Tipografia     | Outfit (system-ui)   | ⚠️ Poderia usar Plus Jakarta Sans      |
+| Componentes    | shadcn/ui + Radix    | ✅ Base sólida                         |
+| Espaçamento    | Inconsistente        | ⚠️ Precisa de escala padronizada       |
+| Cards          | Sem bordas visíveis  | ⚠️ Faltam bordas sutis                 |
+| Tabelas        | Overflow básico      | ⚠️ Precisa de melhor tratamento mobile |
+| Formulários    | Labels uppercase     | ⚠️ Melhorar hierarquia visual          |
+| Animações      | Básicas              | ⚠️ Adicionar micro-interações          |
+| Acessibilidade | Parcial              | ⚠️ Focus states e contraste            |
 
 ---
 
 ## Violações Críticas Encontradas
 
-| Arquivo | Linha | Violação |
-|---------|-------|----------|
-| `clientes.$id.tsx` | 463, 477 | `alert()` nativo — PROIBIDO pelo AGENTS.md |
-| `clientes.tsx` | 169-173 | Botões com `p-1.5` — toque < 44px |
-| `dashboard.tsx` | 89-90 | `text-[9px]` — abaixo do mínimo acessível |
-| `clientes.tsx` | 181 | `text-[10px]` — abaixo do mínimo acessível |
-| `NavSidebar.tsx` | 66 | Módulo ativo usa `text-text-muted` em vez de `text-accent` |
+| Arquivo            | Linha    | Violação                                                   |
+| ------------------ | -------- | ---------------------------------------------------------- |
+| `clientes.$id.tsx` | 463, 477 | `alert()` nativo — PROIBIDO pelo AGENTS.md                 |
+| `clientes.tsx`     | 169-173  | Botões com `p-1.5` — toque < 44px                          |
+| `dashboard.tsx`    | 89-90    | `text-[9px]` — abaixo do mínimo acessível                  |
+| `clientes.tsx`     | 181      | `text-[10px]` — abaixo do mínimo acessível                 |
+| `NavSidebar.tsx`   | 66       | Módulo ativo usa `text-text-muted` em vez de `text-accent` |
 
 ---
 

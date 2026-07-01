@@ -5,5 +5,10 @@ import { HubDashboardPage } from "~/features/hub/pages/HubDashboardPage";
 export const hubGestorDashboardRoute = createRoute({
   getParentRoute: () => authLayout,
   path: "/hub/gestor/dashboard",
-  component: () => <HubDashboardPage roleFilter="manager" conquistasPath="/hub/gestor/conquistas" />,
+  component: () => (
+    <HubDashboardPage
+      roleFilter="manager"
+      conquistasPath="/hub/gestor/conquistas"
+    />
+  ),
 });

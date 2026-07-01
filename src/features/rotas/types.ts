@@ -1,8 +1,16 @@
-export type RotaStatus = "planejada" | "em_execucao" | "realizada" | "nao_realizada" | "cancelada";
+export type RotaStatus =
+  "planejada" | "em_execucao" | "realizada" | "nao_realizada" | "cancelada";
 export type RotaTipo = "diaria" | "semanal" | "mensal";
-export type RotaClienteStatus = "pendente" | "em_trajeto" | "em_visita" | "visitado" | "nao_visitado";
+export type RotaClienteStatus =
+  "pendente" | "em_trajeto" | "em_visita" | "visitado" | "nao_visitado";
 export type FonteCliente = "csv" | "cadastros" | "crm";
-export type FormPerguntaTipo = "texto_curto" | "texto_longo" | "data" | "multipla_escolha" | "selecao" | "radio";
+export type FormPerguntaTipo =
+  | "texto_curto"
+  | "texto_longo"
+  | "data"
+  | "multipla_escolha"
+  | "selecao"
+  | "radio";
 
 export interface RotasConfig {
   id: string;

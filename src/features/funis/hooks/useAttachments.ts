@@ -1,5 +1,10 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { listarAnexos, criarAnexo, atualizarAnexo, deletarAnexo } from "../services";
+import {
+  listarAnexos,
+  criarAnexo,
+  atualizarAnexo,
+  deletarAnexo,
+} from "../services";
 import type { AttachmentInput } from "../types";
 
 export function useAnexos(tarefaId: string | null) {
@@ -25,7 +30,13 @@ export function useCriarAnexo() {
 export function useAtualizarAnexo() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, input }: { id: string; input: Partial<AttachmentInput> }) => atualizarAnexo(id, input),
+    mutationFn: ({
+      id,
+      input,
+    }: {
+      id: string;
+      input: Partial<AttachmentInput>;
+    }) => atualizarAnexo(id, input),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["funis", "anexos"] }),
   });
 }

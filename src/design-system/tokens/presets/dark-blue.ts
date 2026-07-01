@@ -77,13 +77,22 @@ export const darkBluePreset: DesignTokens = {
   },
 
   spacing: {
-    xs: "0.25rem", sm: "0.5rem", md: "1rem", lg: "1.5rem",
-    xl: "2rem", "2xl": "3rem", "3xl": "4rem", "4xl": "6rem",
+    xs: "0.25rem",
+    sm: "0.5rem",
+    md: "1rem",
+    lg: "1.5rem",
+    xl: "2rem",
+    "2xl": "3rem",
+    "3xl": "4rem",
+    "4xl": "6rem",
   },
 
   borders: {
-    radiusSm: "0.375rem", radiusMd: "0.5rem", radiusLg: "0.75rem",
-    radiusXl: "1rem", radiusFull: "9999px",
+    radiusSm: "0.375rem",
+    radiusMd: "0.5rem",
+    radiusLg: "0.75rem",
+    radiusXl: "1rem",
+    radiusFull: "9999px",
   },
 
   shadows: {
@@ -96,17 +105,42 @@ export const darkBluePreset: DesignTokens = {
   },
 
   animations: {
-    durationFast: "150ms", durationNormal: "300ms", durationSlow: "500ms",
+    durationFast: "150ms",
+    durationNormal: "300ms",
+    durationSlow: "500ms",
     easingDefault: "cubic-bezier(0.4, 0, 0.2, 1)",
     easingBounce: "cubic-bezier(0.34, 1.56, 0.64, 1)",
   },
 
   components: {
-    button: { paddingX: "1rem", paddingY: "0.5rem", fontSize: "0.875rem", borderRadius: "0.5rem" },
-    input: { paddingX: "0.75rem", paddingY: "0.5rem", fontSize: "0.875rem", borderRadius: "0.5rem" },
-    card: { padding: "1.5rem", borderRadius: "0.75rem", shadow: "0 4px 6px -1px rgba(0,0,0,0.3)" },
-    modal: { backdropBg: "rgba(0,0,0,0.5)", borderRadius: "0.75rem", shadow: "0 20px 25px -5px rgba(0,0,0,0.5)" },
+    button: {
+      paddingX: "1rem",
+      paddingY: "0.5rem",
+      fontSize: "0.875rem",
+      borderRadius: "0.5rem",
+    },
+    input: {
+      paddingX: "0.75rem",
+      paddingY: "0.5rem",
+      fontSize: "0.875rem",
+      borderRadius: "0.5rem",
+    },
+    card: {
+      padding: "1.5rem",
+      borderRadius: "0.75rem",
+      shadow: "0 4px 6px -1px rgba(0,0,0,0.3)",
+    },
+    modal: {
+      backdropBg: "rgba(0,0,0,0.5)",
+      borderRadius: "0.75rem",
+      shadow: "0 20px 25px -5px rgba(0,0,0,0.5)",
+    },
     sidebar: { width: "16rem", collapsedWidth: "3.5rem" },
-    badge: { paddingX: "0.5rem", paddingY: "0.125rem", fontSize: "0.75rem", borderRadius: "9999px" },
+    badge: {
+      paddingX: "0.5rem",
+      paddingY: "0.125rem",
+      fontSize: "0.75rem",
+      borderRadius: "9999px",
+    },
   },
 };

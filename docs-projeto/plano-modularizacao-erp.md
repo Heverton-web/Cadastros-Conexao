@@ -8,14 +8,14 @@
 
 ### Violações encontradas (acoplamento indevido)
 
-| # | Violação | Arquivo | Impacto |
-|---|----------|---------|---------|
-| V1 | `core` importa de `cadastros` | `src/core/permissions/constants.ts` → `features/cadastros/permissions` | `core` quebra se cadastros for removido |
-| V2 | `core` importa de `api-connectors` | `src/core/services/webhooks.ts` → `features/api-connectors` | `core` quebra se api-connectors for removido |
-| V3 | `nps` importa de `empresas` | `features/nps/theme.ts`, `NpsPreviewPage.tsx`, `nps.survey.tsx`, `nps.tema.tsx`, `NpsPesquisasPage.tsx` | `nps` quebra sem `empresas` |
-| V4 | `linktree` importa tipo de `core/permissions` | `features/linktree/permissions.ts` → `core/permissions/types` | Violacao menor (core é infra) |
-| V5 | `cadastros` importa tipo de `core/permissions` | `features/cadastros/permissions.ts` → `core/permissions/types` | Violacao menor (core é infra) |
-| V6 | Tipo `Permissoes` e monolitico | `src/core/permissions/types.ts` | Hardcoded com TODAS as permissões de TODOS os módulos |
+| #   | Violação                                       | Arquivo                                                                                                 | Impacto                                               |
+| --- | ---------------------------------------------- | ------------------------------------------------------------------------------------------------------- | ----------------------------------------------------- |
+| V1  | `core` importa de `cadastros`                  | `src/core/permissions/constants.ts` → `features/cadastros/permissions`                                  | `core` quebra se cadastros for removido               |
+| V2  | `core` importa de `api-connectors`             | `src/core/services/webhooks.ts` → `features/api-connectors`                                             | `core` quebra se api-connectors for removido          |
+| V3  | `nps` importa de `empresas`                    | `features/nps/theme.ts`, `NpsPreviewPage.tsx`, `nps.survey.tsx`, `nps.tema.tsx`, `NpsPesquisasPage.tsx` | `nps` quebra sem `empresas`                           |
+| V4  | `linktree` importa tipo de `core/permissions`  | `features/linktree/permissions.ts` → `core/permissions/types`                                           | Violacao menor (core é infra)                         |
+| V5  | `cadastros` importa tipo de `core/permissions` | `features/cadastros/permissions.ts` → `core/permissions/types`                                          | Violacao menor (core é infra)                         |
+| V6  | Tipo `Permissoes` e monolitico                 | `src/core/permissions/types.ts`                                                                         | Hardcoded com TODAS as permissões de TODOS os módulos |
 
 ### O que JA esta bem (infraestrutura compartilhada OK)
 
@@ -45,6 +45,7 @@
 - Manter `ModuloAcesso`, `ModulosAcesso`, `Ambiente` como estao
 
 **Antes:**
+
 ```ts
 export type Permissoes = {
   ver_todos_cadastros: boolean;
@@ -54,6 +55,7 @@ export type Permissoes = {
 ```
 
 **Depois:**
+
 ```ts
 // Tipo dinamico — cada modulo registra suas chaves via registerPermission()
 export type Permissoes = Record<string, boolean>;
@@ -88,7 +90,10 @@ export type Permissoes = Record<string, boolean>;
 **Novo arquivo:** `src/registry/executors.ts`
 
 ```ts
-type ActionExecutor = (id: string, payload: Record<string, any>) => Promise<any>;
+type ActionExecutor = (
+  id: string,
+  payload: Record<string, any>,
+) => Promise<any>;
 const executors = new Map<string, ActionExecutor>();
 
 export function registerActionExecutor(type: string, fn: ActionExecutor): void {
@@ -146,6 +151,7 @@ export const EmpresaContext = createContext<{
 ### Passo 3.3: Refatorar componentes NPS
 
 **Arquivos afetados:**
+
 - `src/features/nps/theme.ts` — trocar `import type { EmpresaConfig } from "~/features/empresas"` → `import type { EmpresaConfig } from "~/core/empresa/types"`
 - `src/features/nps/components/dashboard/NpsPreviewPage.tsx` — usar context em vez de import direto
 - `src/routes/nps.survey.tsx` — usar context
@@ -171,6 +177,7 @@ export function useEmpresa() {
 **Decisão:** Remover a camada `src/lib/` e usar imports diretos de `~/features/xxx`.
 
 **Arquivos a remover:**
+
 - `src/lib/admin.ts` → re-exporta de `features/admin`
 - `src/lib/api_connectors.ts` → re-exporta de `features/api-connectors`
 - `src/lib/atividades.ts` → verificar se e re-export ou util real
@@ -184,6 +191,7 @@ export function useEmpresa() {
 - `src/lib/revisoes.ts` → re-exporta de `features/revisoes`
 
 **Manter:** arquivos que sao utilitarios genericos (nao re-export de features):
+
 - `src/lib/auth.tsx` — provavelmente wrapper de auth
 - `src/lib/supabase.ts` — pode ser wrapper
 - `src/lib/supabase-types.ts` — ja e re-export de core
@@ -226,7 +234,10 @@ export function useEmpresa() {
 type PermissionDefaults = Record<string, Record<string, boolean>>; // ambiente → perms
 const defaultsRegistry = new Map<string, PermissionDefaults>();
 
-export function registerPermissionDefaults(moduleKey: string, defaults: PermissionDefaults): void {
+export function registerPermissionDefaults(
+  moduleKey: string,
+  defaults: PermissionDefaults,
+): void {
   defaultsRegistry.set(moduleKey, defaults);
 }
 
@@ -244,6 +255,7 @@ export function getMergedDefaults(ambiente: string): Record<string, boolean> {
 ### Passo 5.2: Cada módulo registra seus defaults
 
 **Exemplo em `features/cadastros/module.ts`:**
+
 ```ts
 import { registerPermissionDefaults } from "~/registry";
 
@@ -266,6 +278,7 @@ registerPermissionDefaults("cadastros-conexao", {
 ### Passo 6.1: Rotas devem importar apenas de sua feature
 
 **Verificacao:** Cada rota em `src/routes/` deve importar apenas de:
+
 - A feature correspondente (ex: `nps.*.tsx` importa de `features/nps/`)
 - `~/components/ui/` (compartilhado)
 - `~/core/` (infraestrutura)
@@ -275,6 +288,7 @@ registerPermissionDefaults("cadastros-conexao", {
 ### Passo 6.2: Revisar rotas que violam o isolamento
 
 **Rotas a revisar:**
+
 - `nps.tema.tsx` — importa de `features/empresas` → resolver com context
 - `nps.survey.tsx` — importa de `features/empresas` → resolver com context
 - `nps.preview.tsx` — OK (importa de `features/nps`)
@@ -288,6 +302,7 @@ registerPermissionDefaults("cadastros-conexao", {
 ### Passo 7.1: Script de validacao de isolamento
 
 Criar script que verifica:
+
 ```bash
 # Nenhuma feature importa de outra feature
 grep -r "from \"~/features/" src/features/ | grep -v "from \"~/features/$(basename $dir)"
@@ -297,6 +312,7 @@ grep -r "from \"~/features/" src/features/ | grep -v "from \"~/features/$(basena
 ### Passo 7.2: Teste de exclusao simulada
 
 Para cada módulo:
+
 1. Comentar o `registerModule(xxxModule)` em `main.tsx`
 2. Comentar as rotas correspondentes em `routeTree.gen.ts`
 3. Verificar se `npm run build` passa sem erros
@@ -311,15 +327,15 @@ Para cada módulo:
 
 ## Ordem de Execucao
 
-| Fase | Descricao | Risco | Esforco |
-|------|-----------|-------|---------|
-| 1 | Desacoplar core/permissions de cadastros | Alto | Medio |
-| 2 | Desacoplar core/webhooks de api-connectors | Medio | Baixo |
-| 3 | Desacoplar nps de empresas | Alto | Medio |
-| 4 | Remover barrel re-exports em lib/ + limpar deps menores | Baixo | Baixo |
-| 5 | Refatorar getPermissoesPadrao | Alto | Medio |
-| 6 | Validar isolamento de rotas | Baixo | Baixo |
-| 7 | Testes e validacao | Baixo | Baixo |
+| Fase | Descricao                                               | Risco | Esforco |
+| ---- | ------------------------------------------------------- | ----- | ------- |
+| 1    | Desacoplar core/permissions de cadastros                | Alto  | Medio   |
+| 2    | Desacoplar core/webhooks de api-connectors              | Medio | Baixo   |
+| 3    | Desacoplar nps de empresas                              | Alto  | Medio   |
+| 4    | Remover barrel re-exports em lib/ + limpar deps menores | Baixo | Baixo   |
+| 5    | Refatorar getPermissoesPadrao                           | Alto  | Medio   |
+| 6    | Validar isolamento de rotas                             | Baixo | Baixo   |
+| 7    | Testes e validacao                                      | Baixo | Baixo   |
 
 **Recomendacao:** Executar na ordem 1 → 2 → 4 → 3 → 5 → 6 → 7
 
@@ -328,63 +344,69 @@ Para cada módulo:
 ## Arquivos Criticos a Modificar
 
 ### Core (infraestrutura)
-| Arquivo | Mudanca |
-|---------|---------|
-| `src/core/permissions/types.ts` | Tornar `Permissoes` = `Record<string, boolean>` |
-| `src/core/permissions/constants.ts` | Remover import de `features/cadastros`, usar registry |
-| `src/core/services/webhooks.ts` | Trocar import direto por `getActionExecutor()` |
-| `src/core/empresa/types.ts` | **Novo** — tipos `Empresa`, `EmpresaConfig` |
-| `src/core/empresa/EmpresaContext.tsx` | **Novo** — context de empresa |
-| `src/core/empresa/useEmpresa.ts` | **Novo** — hook de empresa |
+
+| Arquivo                               | Mudanca                                               |
+| ------------------------------------- | ----------------------------------------------------- |
+| `src/core/permissions/types.ts`       | Tornar `Permissoes` = `Record<string, boolean>`       |
+| `src/core/permissions/constants.ts`   | Remover import de `features/cadastros`, usar registry |
+| `src/core/services/webhooks.ts`       | Trocar import direto por `getActionExecutor()`        |
+| `src/core/empresa/types.ts`           | **Novo** — tipos `Empresa`, `EmpresaConfig`           |
+| `src/core/empresa/EmpresaContext.tsx` | **Novo** — context de empresa                         |
+| `src/core/empresa/useEmpresa.ts`      | **Novo** — hook de empresa                            |
 
 ### Registry (sistema de plugin)
-| Arquivo | Mudanca |
-|---------|---------|
-| `src/registry/executors.ts` | **Novo** — registry de executores de acao |
-| `src/registry/defaults.ts` | **Novo** — registry de defaults de permissoes |
-| `src/registry/index.ts` | Atualizar exports |
+
+| Arquivo                     | Mudanca                                       |
+| --------------------------- | --------------------------------------------- |
+| `src/registry/executors.ts` | **Novo** — registry de executores de acao     |
+| `src/registry/defaults.ts`  | **Novo** — registry de defaults de permissoes |
+| `src/registry/index.ts`     | Atualizar exports                             |
 
 ### Features (modulos)
-| Arquivo | Mudanca |
-|---------|---------|
+
+| Arquivo                                 | Mudanca                                                   |
+| --------------------------------------- | --------------------------------------------------------- |
 | `src/features/cadastros/permissions.ts` | Simplificar, remover defaults hardcoded de outros modulos |
-| `src/features/cadastros/module.ts` | Registrar defaults de permissoes |
-| `src/features/nps/theme.ts` | Trocar import de `empresas` por `core/empresa/types` |
-| `src/features/nps/components/**/*.tsx` | Usar `useEmpresa()` em vez de import direto |
-| `src/features/nps/module.ts` | Registrar defaults de permissoes |
-| `src/features/api-connectors/index.ts` | Registrar executor no registry |
-| `src/features/funis/module.ts` | Registrar defaults de permissoes |
-| `src/features/linktree/module.ts` | Registrar defaults de permissoes |
-| `src/features/hub/module.ts` | Registrar defaults de permissoes |
-| `src/features/crm/module.ts` | Registrar defaults de permissoes |
-| `src/features/linktree/permissions.ts` | Remover `as const`, simplificar tipo |
+| `src/features/cadastros/module.ts`      | Registrar defaults de permissoes                          |
+| `src/features/nps/theme.ts`             | Trocar import de `empresas` por `core/empresa/types`      |
+| `src/features/nps/components/**/*.tsx`  | Usar `useEmpresa()` em vez de import direto               |
+| `src/features/nps/module.ts`            | Registrar defaults de permissoes                          |
+| `src/features/api-connectors/index.ts`  | Registrar executor no registry                            |
+| `src/features/funis/module.ts`          | Registrar defaults de permissoes                          |
+| `src/features/linktree/module.ts`       | Registrar defaults de permissoes                          |
+| `src/features/hub/module.ts`            | Registrar defaults de permissoes                          |
+| `src/features/crm/module.ts`            | Registrar defaults de permissoes                          |
+| `src/features/linktree/permissions.ts`  | Remover `as const`, simplificar tipo                      |
 
 ### Rotas
-| Arquivo | Mudanca |
-|---------|---------|
-| `src/routes/nps.tema.tsx` | Usar context em vez de import de empresas |
-| `src/routes/nps.survey.tsx` | Usar context em vez de import de empresas |
-| `src/routes/nps.*.tsx` | Usar context/props em vez de import direto |
+
+| Arquivo                     | Mudanca                                    |
+| --------------------------- | ------------------------------------------ |
+| `src/routes/nps.tema.tsx`   | Usar context em vez de import de empresas  |
+| `src/routes/nps.survey.tsx` | Usar context em vez de import de empresas  |
+| `src/routes/nps.*.tsx`      | Usar context/props em vez de import direto |
 
 ### Barrel re-exports (remover)
-| Arquivo | Acao |
-|---------|------|
-| `src/lib/admin.ts` | Remover — importadores apontam para `~/features/admin` |
-| `src/lib/api_connectors.ts` | Remover |
-| `src/lib/clientes.ts` | Remover |
-| `src/lib/credenciais.ts` | Remover |
-| `src/lib/demos.ts` | Remover |
-| `src/lib/documentos.ts` | Remover |
-| `src/lib/empresas.ts` | Remover |
-| `src/lib/form-schema.ts` | Remover |
-| `src/lib/integracoes.ts` | Remover |
-| `src/lib/revisoes.ts` | Remover |
+
+| Arquivo                     | Acao                                                   |
+| --------------------------- | ------------------------------------------------------ |
+| `src/lib/admin.ts`          | Remover — importadores apontam para `~/features/admin` |
+| `src/lib/api_connectors.ts` | Remover                                                |
+| `src/lib/clientes.ts`       | Remover                                                |
+| `src/lib/credenciais.ts`    | Remover                                                |
+| `src/lib/demos.ts`          | Remover                                                |
+| `src/lib/documentos.ts`     | Remover                                                |
+| `src/lib/empresas.ts`       | Remover                                                |
+| `src/lib/form-schema.ts`    | Remover                                                |
+| `src/lib/integracoes.ts`    | Remover                                                |
+| `src/lib/revisoes.ts`       | Remover                                                |
 
 ---
 
 ## Resultado Final
 
 Apos a execucao:
+
 - **Excluir qualquer pasta em `src/features/`** nao quebra a compilacao
 - **Remover `registerModule()` de `main.tsx`** nao quebra nada
 - A unica ligacao entre módulos e via **banco de dados** (FK `empresa_id`, views SQL)

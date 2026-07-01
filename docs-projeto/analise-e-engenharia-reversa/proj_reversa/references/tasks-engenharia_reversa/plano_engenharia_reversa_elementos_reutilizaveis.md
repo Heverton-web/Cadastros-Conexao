@@ -45,19 +45,11 @@ Para que existissem elementos reutilizáveis, o JSON deveria conter uma seção 
     "element_id_1": {
       "name": "Nome do Elemento",
       "type": "Tipo do elemento (ex: Group, Custom)",
-      "properties": {
-        /* propriedades visuais */
-      },
-      "elements": [
-        /* elementos filhos */
-      ],
-      "workflows": [
-        /* workflows associados */
-      ]
+      "properties": {/* propriedades visuais */},
+      "elements": [/* elementos filhos */],
+      "workflows": [/* workflows associados */]
     },
-    "element_id_2": {
-      /* ... */
-    }
+    "element_id_2": {/* ... */}
   }
 }
 ```

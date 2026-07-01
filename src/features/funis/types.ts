@@ -1,5 +1,5 @@
-export type FunilPrioridade = 'low' | 'medium' | 'high' | 'urgent';
-export type FunilPermissaoNivel = 'view' | 'edit';
+export type FunilPrioridade = "low" | "medium" | "high" | "urgent";
+export type FunilPermissaoNivel = "view" | "edit";
 
 export type Funil = {
   id: string;
@@ -109,5 +109,10 @@ export type TemplateInput = {
   descricao?: string;
   is_public?: boolean;
   colunas?: string[];
-  tarefas?: { col_idx: number; titulo: string; descricao?: string; prioridade?: string }[];
+  tarefas?: {
+    col_idx: number;
+    titulo: string;
+    descricao?: string;
+    prioridade?: string;
+  }[];
 };

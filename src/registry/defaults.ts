@@ -2,7 +2,10 @@ type PermissionDefaults = Record<string, Record<string, boolean>>;
 
 const defaultsRegistry = new Map<string, PermissionDefaults>();
 
-export function registerPermissionDefaults(moduleKey: string, defaults: PermissionDefaults): void {
+export function registerPermissionDefaults(
+  moduleKey: string,
+  defaults: PermissionDefaults,
+): void {
   defaultsRegistry.set(moduleKey, defaults);
 }
 

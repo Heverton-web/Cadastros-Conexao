@@ -1,5 +1,11 @@
 import { useEffect, useState } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "~/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "~/components/ui/dialog";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { Button } from "~/components/ui/button";
@@ -35,7 +41,13 @@ interface Props {
 
 const EMPTY_PHONE: PhoneParts = { ddi: "55", ddd: "", number: "" };
 
-export function LinktreeColaboradorModal({ open, onOpenChange, collaborator, onSaved, empresaId }: Props) {
+export function LinktreeColaboradorModal({
+  open,
+  onOpenChange,
+  collaborator,
+  onSaved,
+  empresaId,
+}: Props) {
   const { user } = useAuth();
   const editing = !!collaborator;
   const [credenciais, setCredenciais] = useState<CredencialOption[]>([]);
@@ -60,11 +72,19 @@ export function LinktreeColaboradorModal({ open, onOpenChange, collaborator, onS
       setFoto(collaborator.foto_url ?? "");
       if (collaborator.whatsapp) {
         const d = collaborator.whatsapp.replace(/\D/g, "");
-        setWhats({ ddi: d.slice(0, 2) || "55", ddd: d.slice(2, 4), number: d.slice(4) });
+        setWhats({
+          ddi: d.slice(0, 2) || "55",
+          ddd: d.slice(2, 4),
+          number: d.slice(4),
+        });
       }
       const t = decodeTelefone(collaborator.telefone_fixo ?? "");
       setTelKind(t.kind);
-      setTelFixo({ ddi: t.phone.ddi || "55", ddd: t.phone.ddd, number: t.phone.number });
+      setTelFixo({
+        ddi: t.phone.ddi || "55",
+        ddd: t.phone.ddd,
+        number: t.phone.number,
+      });
       setRamal(t.ramal);
     } else {
       setSelectedCredencialId("");
@@ -84,7 +104,12 @@ export function LinktreeColaboradorModal({ open, onOpenChange, collaborator, onS
 
     async function loadCredenciais() {
       // Busca credenciais da empresa
-      let q = supabase.from("credenciais").select("id, nome_completo, email_corporativo, whatsapp_corporativo, departamento").eq("ativo", true);
+      let q = supabase
+        .from("credenciais")
+        .select(
+          "id, nome_completo, email_corporativo, whatsapp_corporativo, departamento",
+        )
+        .eq("ativo", true);
       if (empresaId) q = q.eq("empresa_id", empresaId);
       const { data: allCreds } = await q.order("nome_completo");
 
@@ -96,14 +121,14 @@ export function LinktreeColaboradorModal({ open, onOpenChange, collaborator, onS
 
       const usedIds = new Set((linked ?? []).map((r: any) => r.credencial_id));
       // Permite a credencial do próprio colaborador sendo editado
-      if (collaborator?.credencial_id) usedIds.delete(collaborator.credencial_id);
+      if (collaborator?.credencial_id)
+        usedIds.delete(collaborator.credencial_id);
 
       setCredenciais((allCreds ?? []).filter((c: any) => !usedIds.has(c.id)));
     }
 
     loadCredenciais();
   }, [open, empresaId, collaborator?.credencial_id]);
-
 
   function handleCredencialSelect(credId: string) {
     setSelectedCredencialId(credId);
@@ -113,7 +138,11 @@ export function LinktreeColaboradorModal({ open, onOpenChange, collaborator, onS
       setEmail(c.email_corporativo);
       if (c.whatsapp_corporativo) {
         const d = c.whatsapp_corporativo.replace(/\D/g, "");
-        setWhats({ ddi: d.slice(0, 2) || "55", ddd: d.slice(2, 4), number: d.slice(4) });
+        setWhats({
+          ddi: d.slice(0, 2) || "55",
+          ddd: d.slice(2, 4),
+          number: d.slice(4),
+        });
       }
     }
   }
@@ -134,11 +163,26 @@ export function LinktreeColaboradorModal({ open, onOpenChange, collaborator, onS
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!nome.trim()) { toast.error("Nome obrigatorio"); return; }
-    if (!cargo.trim()) { toast.error("Cargo obrigatorio"); return; }
-    if (!email.trim()) { toast.error("Email obrigatorio"); return; }
-    if (!whats.ddd || !whats.number) { toast.error("Informe DDD e numero do WhatsApp"); return; }
-    if (telKind === "ramal" && !ramal) { toast.error("Informe o ramal"); return; }
+    if (!nome.trim()) {
+      toast.error("Nome obrigatorio");
+      return;
+    }
+    if (!cargo.trim()) {
+      toast.error("Cargo obrigatorio");
+      return;
+    }
+    if (!email.trim()) {
+      toast.error("Email obrigatorio");
+      return;
+    }
+    if (!whats.ddd || !whats.number) {
+      toast.error("Informe DDD e numero do WhatsApp");
+      return;
+    }
+    if (telKind === "ramal" && !ramal) {
+      toast.error("Informe o ramal");
+      return;
+    }
 
     setSaving(true);
     const payload = {
@@ -146,7 +190,8 @@ export function LinktreeColaboradorModal({ open, onOpenChange, collaborator, onS
       cargo: cargo.trim(),
       email: email.trim(),
       whatsapp: encodePhone(whats),
-      telefone_fixo: encodeTelefone({ kind: telKind, phone: telFixo, ramal }) || null,
+      telefone_fixo:
+        encodeTelefone({ kind: telKind, phone: telFixo, ramal }) || null,
       foto_url: foto || null,
       credencial_id: selectedCredencialId || null,
       empresa_id: empresaId,
@@ -154,7 +199,10 @@ export function LinktreeColaboradorModal({ open, onOpenChange, collaborator, onS
     };
 
     const { error } = editing
-      ? await supabase.from("linktree_colaboradores").update(payload).eq("id", collaborator!.id)
+      ? await supabase
+          .from("linktree_colaboradores")
+          .update(payload)
+          .eq("id", collaborator!.id)
       : await supabase.from("linktree_colaboradores").insert(payload);
 
     setSaving(false);
@@ -162,7 +210,9 @@ export function LinktreeColaboradorModal({ open, onOpenChange, collaborator, onS
       toast.error(`Erro: ${error.message}`);
       return;
     }
-    toast.success(editing ? "Colaborador atualizado" : "LinkTree criado com sucesso");
+    toast.success(
+      editing ? "Colaborador atualizado" : "LinkTree criado com sucesso",
+    );
     onSaved();
     onOpenChange(false);
   }
@@ -179,7 +229,9 @@ export function LinktreeColaboradorModal({ open, onOpenChange, collaborator, onS
         <form onSubmit={handleSubmit} className="space-y-4">
           {!editing && (
             <div className="space-y-1.5">
-              <Label className="text-sm font-semibold">Credencial (opcional)</Label>
+              <Label className="text-sm font-semibold">
+                Credencial (opcional)
+              </Label>
               <select
                 value={selectedCredencialId}
                 onChange={(e) => handleCredencialSelect(e.target.value)}
@@ -187,7 +239,9 @@ export function LinktreeColaboradorModal({ open, onOpenChange, collaborator, onS
               >
                 <option value="">Selecionar credencial existente...</option>
                 {credenciais.map((c) => (
-                  <option key={c.id} value={c.id}>{c.nome_completo} — {c.email_corporativo}</option>
+                  <option key={c.id} value={c.id}>
+                    {c.nome_completo} — {c.email_corporativo}
+                  </option>
                 ))}
               </select>
               <p className="text-xs text-muted-foreground">
@@ -199,7 +253,11 @@ export function LinktreeColaboradorModal({ open, onOpenChange, collaborator, onS
           <div className="flex items-center gap-4">
             <div className="grid size-20 shrink-0 place-items-center overflow-hidden rounded-full border-2 border-border bg-surface-hover">
               {foto ? (
-                <img src={foto} alt="Preview" className="size-full object-cover" />
+                <img
+                  src={foto}
+                  alt="Preview"
+                  className="size-full object-cover"
+                />
               ) : (
                 <Upload className="size-6 text-muted-foreground" />
               )}
@@ -212,20 +270,36 @@ export function LinktreeColaboradorModal({ open, onOpenChange, collaborator, onS
                 onChange={handleFile}
                 className="block w-full text-sm text-muted-foreground file:mr-3 file:rounded-md file:border-0 file:bg-surface-hover file:px-3 file:py-2 file:text-sm file:text-text-main file:cursor-pointer"
               />
-              <p className="mt-1 text-xs text-muted-foreground">JPG/PNG ate 8MB</p>
+              <p className="mt-1 text-xs text-muted-foreground">
+                JPG/PNG ate 8MB
+              </p>
             </div>
           </div>
 
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <Field label="Nome completo">
-              <Input value={nome} onChange={(e) => setNome(e.target.value)} required />
+              <Input
+                value={nome}
+                onChange={(e) => setNome(e.target.value)}
+                required
+              />
             </Field>
             <Field label="Cargo">
-              <Input value={cargo} onChange={(e) => setCargo(e.target.value)} required placeholder="Ex: Consultor Comercial" />
+              <Input
+                value={cargo}
+                onChange={(e) => setCargo(e.target.value)}
+                required
+                placeholder="Ex: Consultor Comercial"
+              />
             </Field>
             <div className="sm:col-span-2">
               <Field label="E-mail institucional">
-                <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+                <Input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
               </Field>
             </div>
           </div>
@@ -239,10 +313,16 @@ export function LinktreeColaboradorModal({ open, onOpenChange, collaborator, onS
             <div className="flex flex-wrap items-center justify-between gap-2">
               <Label className="text-sm font-semibold">Telefone</Label>
               <div className="inline-flex rounded-lg bg-surface-hover p-1">
-                <KindBtn active={telKind === "fixo"} onClick={() => setTelKind("fixo")}>
+                <KindBtn
+                  active={telKind === "fixo"}
+                  onClick={() => setTelKind("fixo")}
+                >
                   Telefone fixo
                 </KindBtn>
-                <KindBtn active={telKind === "ramal"} onClick={() => setTelKind("ramal")}>
+                <KindBtn
+                  active={telKind === "ramal"}
+                  onClick={() => setTelKind("ramal")}
+                >
                   Ramal
                 </KindBtn>
               </div>
@@ -255,18 +335,34 @@ export function LinktreeColaboradorModal({ open, onOpenChange, collaborator, onS
                   inputMode="numeric"
                   placeholder="Ex: 1234"
                   value={ramal}
-                  onChange={(e) => setRamal(e.target.value.replace(/\D/g, "").slice(0, 8))}
+                  onChange={(e) =>
+                    setRamal(e.target.value.replace(/\D/g, "").slice(0, 8))
+                  }
                 />
               </Field>
             )}
           </div>
 
           <DialogFooter>
-            <Button type="button" variant="ghost" onClick={() => onOpenChange(false)}>
+            <Button
+              type="button"
+              variant="ghost"
+              onClick={() => onOpenChange(false)}
+            >
               Cancelar
             </Button>
-            <Button type="submit" disabled={saving} className="bg-primary text-primary-foreground hover:bg-primary/90">
-              {saving ? <Loader2 className="size-4 animate-spin" /> : editing ? "Salvar" : "Criar LinkTree"}
+            <Button
+              type="submit"
+              disabled={saving}
+              className="bg-primary text-primary-foreground hover:bg-primary/90"
+            >
+              {saving ? (
+                <Loader2 className="size-4 animate-spin" />
+              ) : editing ? (
+                "Salvar"
+              ) : (
+                "Criar LinkTree"
+              )}
             </Button>
           </DialogFooter>
         </form>
@@ -275,34 +371,77 @@ export function LinktreeColaboradorModal({ open, onOpenChange, collaborator, onS
   );
 }
 
-function PhoneFields({ value, onChange }: { value: PhoneParts; onChange: (v: PhoneParts) => void }) {
-  const set = (k: keyof PhoneParts, max: number) => (e: React.ChangeEvent<HTMLInputElement>) =>
-    onChange({ ...value, [k]: e.target.value.replace(/\D/g, "").slice(0, max) });
+function PhoneFields({
+  value,
+  onChange,
+}: {
+  value: PhoneParts;
+  onChange: (v: PhoneParts) => void;
+}) {
+  const set =
+    (k: keyof PhoneParts, max: number) =>
+    (e: React.ChangeEvent<HTMLInputElement>) =>
+      onChange({
+        ...value,
+        [k]: e.target.value.replace(/\D/g, "").slice(0, max),
+      });
   return (
     <div className="grid grid-cols-[80px_80px_1fr] gap-2">
       <Field label="DDI">
-        <Input inputMode="numeric" placeholder="55" value={value.ddi} onChange={set("ddi", 4)} />
+        <Input
+          inputMode="numeric"
+          placeholder="55"
+          value={value.ddi}
+          onChange={set("ddi", 4)}
+        />
       </Field>
       <Field label="DDD">
-        <Input inputMode="numeric" placeholder="11" value={value.ddd} onChange={set("ddd", 3)} />
+        <Input
+          inputMode="numeric"
+          placeholder="11"
+          value={value.ddd}
+          onChange={set("ddd", 3)}
+        />
       </Field>
       <Field label="Numero">
-        <Input inputMode="numeric" placeholder="999999999" value={value.number} onChange={set("number", 9)} />
+        <Input
+          inputMode="numeric"
+          placeholder="999999999"
+          value={value.number}
+          onChange={set("number", 9)}
+        />
       </Field>
     </div>
   );
 }
 
-function KindBtn({ active, onClick, children }: { active: boolean; onClick: () => void; children: React.ReactNode }) {
+function KindBtn({
+  active,
+  onClick,
+  children,
+}: {
+  active: boolean;
+  onClick: () => void;
+  children: React.ReactNode;
+}) {
   return (
-    <button type="button" onClick={onClick}
-      className={`rounded-md px-3 py-1 text-xs font-medium transition ${active ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-text-main"}`}>
+    <button
+      type="button"
+      onClick={onClick}
+      className={`rounded-md px-3 py-1 text-xs font-medium transition ${active ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-text-main"}`}
+    >
       {children}
     </button>
   );
 }
 
-function Field({ label, children }: { label: string; children: React.ReactNode }) {
+function Field({
+  label,
+  children,
+}: {
+  label: string;
+  children: React.ReactNode;
+}) {
   return (
     <div className="space-y-1.5">
       <Label className="text-xs">{label}</Label>

@@ -1,6 +1,12 @@
 import { supabase } from "~/core/supabase";
 
-export type CadastroStatus = "link_gerado" | "dados_enviados" | "em_analise" | "em_correcao" | "aprovado" | "reprovado";
+export type CadastroStatus =
+  | "link_gerado"
+  | "dados_enviados"
+  | "em_analise"
+  | "em_correcao"
+  | "aprovado"
+  | "reprovado";
 
 export type TipoEndereco = "empresa" | "entrega" | "cobranca";
 
@@ -77,7 +83,7 @@ export async function listarCadastros(filters?: {
   if (filters?.created_by) query = query.eq("created_by", filters.created_by);
   if (filters?.search) {
     query = query.or(
-      `nome_temporario.ilike.%${filters.search}%,lead_nome.ilike.%${filters.search}%`
+      `nome_temporario.ilike.%${filters.search}%,lead_nome.ilike.%${filters.search}%`,
     );
   }
 
@@ -108,15 +114,41 @@ export async function buscarCadastroCompleto(id: string) {
     .single();
   if (error) throw error;
 
-  const { data: pf } = await supabase.from("cadastros_pf").select("*").eq("cadastro_id", id).maybeSingle();
-  const { data: pj } = await supabase.from("cadastros_pj").select("*").eq("cadastro_id", id).maybeSingle();
-  const { data: enderecos } = await supabase.from("cadastros_enderecos").select("*").eq("cadastro_id", id).order("tipo_endereco");
+  const { data: pf } = await supabase
+    .from("cadastros_pf")
+    .select("*")
+    .eq("cadastro_id", id)
+    .maybeSingle();
+  const { data: pj } = await supabase
+    .from("cadastros_pj")
+    .select("*")
+    .eq("cadastro_id", id)
+    .maybeSingle();
+  const { data: enderecos } = await supabase
+    .from("cadastros_enderecos")
+    .select("*")
+    .eq("cadastro_id", id)
+    .order("tipo_endereco");
 
-  const endEmpresa = (enderecos ?? []).find((e: any) => e.tipo_endereco === "empresa");
-  const endEntrega = (enderecos ?? []).find((e: any) => e.tipo_endereco === "entrega");
-  const endCobranca = (enderecos ?? []).find((e: any) => e.tipo_endereco === "cobranca");
+  const endEmpresa = (enderecos ?? []).find(
+    (e: any) => e.tipo_endereco === "empresa",
+  );
+  const endEntrega = (enderecos ?? []).find(
+    (e: any) => e.tipo_endereco === "entrega",
+  );
+  const endCobranca = (enderecos ?? []).find(
+    (e: any) => e.tipo_endereco === "cobranca",
+  );
 
-  return { cadastro: cad, pf, pj, enderecos: enderecos ?? [], endEmpresa, endEntrega, endCobranca };
+  return {
+    cadastro: cad,
+    pf,
+    pj,
+    enderecos: enderecos ?? [],
+    endEmpresa,
+    endEntrega,
+    endCobranca,
+  };
 }
 
 export async function deletarCadastro(id: string) {
@@ -168,9 +200,15 @@ export async function reprovarCadastro(id: string, motivo: string) {
   });
 }
 
-export async function solicitarCorrecao(id: string, comentario: string, camposCorrecao: string[]) {
+export async function solicitarCorrecao(
+  id: string,
+  comentario: string,
+  camposCorrecao: string[],
+) {
   const novoToken = crypto.randomUUID();
-  const linkExpiracao = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
+  const linkExpiracao = new Date(
+    Date.now() + 24 * 60 * 60 * 1000,
+  ).toISOString();
 
   return atualizarCadastro(id, {
     status: "em_correcao",
@@ -189,7 +227,6 @@ export async function solicitarCorrecao(id: string, comentario: string, camposCo
     return res;
   });
 }
-
 
 export const STATUS_LABEL: Record<CadastroStatus, string> = {
   link_gerado: "Link Gerado",

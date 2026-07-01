@@ -40,9 +40,7 @@ export type LinktreeColaboradorInput = {
 };
 
 export type BlobPosition =
-  | "tl" | "tc" | "tr"
-  | "ml" | "mc" | "mr"
-  | "bl" | "bc" | "br";
+  "tl" | "tc" | "tr" | "ml" | "mc" | "mr" | "bl" | "bc" | "br";
 
 export interface BlobItem {
   enabled: boolean;
@@ -131,8 +129,20 @@ export const DEFAULT_LINKTREE_THEME: LinktreeThemeConfig = {
     gradient3Angle: 160,
     blobsEnabled: false,
     blobs: [
-      { enabled: true, color: "#c9a655", position: "tr", size: 320, opacity: 0.35 },
-      { enabled: true, color: "#3b82f6", position: "bl", size: 280, opacity: 0.25 },
+      {
+        enabled: true,
+        color: "#c9a655",
+        position: "tr",
+        size: 320,
+        opacity: 0.35,
+      },
+      {
+        enabled: true,
+        color: "#3b82f6",
+        position: "bl",
+        size: 280,
+        opacity: 0.25,
+      },
     ],
   },
   icons: { pack: "lucide", pathColor: "#0f172a", bgColor: "#c9a655" },
@@ -183,13 +193,28 @@ export function normalizeLinktreeTheme(input: unknown): LinktreeThemeConfig {
   return {
     ...DEFAULT_LINKTREE_THEME,
     ...t,
-    background: { ...DEFAULT_LINKTREE_THEME.background, ...(t.background ?? {}) },
+    background: {
+      ...DEFAULT_LINKTREE_THEME.background,
+      ...(t.background ?? {}),
+    },
     icons: { ...DEFAULT_LINKTREE_THEME.icons, ...(t.icons ?? {}) },
     typography: {
-      nome: { ...DEFAULT_LINKTREE_THEME.typography.nome, ...(t.typography?.nome ?? {}) },
-      cargo: { ...DEFAULT_LINKTREE_THEME.typography.cargo, ...(t.typography?.cargo ?? {}) },
-      contato: { ...DEFAULT_LINKTREE_THEME.typography.contato, ...(t.typography?.contato ?? {}) },
-      institucional: { ...DEFAULT_LINKTREE_THEME.typography.institucional, ...(t.typography?.institucional ?? {}) },
+      nome: {
+        ...DEFAULT_LINKTREE_THEME.typography.nome,
+        ...(t.typography?.nome ?? {}),
+      },
+      cargo: {
+        ...DEFAULT_LINKTREE_THEME.typography.cargo,
+        ...(t.typography?.cargo ?? {}),
+      },
+      contato: {
+        ...DEFAULT_LINKTREE_THEME.typography.contato,
+        ...(t.typography?.contato ?? {}),
+      },
+      institucional: {
+        ...DEFAULT_LINKTREE_THEME.typography.institucional,
+        ...(t.typography?.institucional ?? {}),
+      },
     },
     institucional: {
       ...DEFAULT_LINKTREE_THEME.institucional,
@@ -213,12 +238,17 @@ export function decodePhone(raw: string | null | undefined): PhoneParts {
   if (!raw) return { ddi: "", ddd: "", number: "" };
   if (raw.includes("|")) {
     const [ddi = "", ddd = "", number = ""] = raw.split("|");
-    return { ddi: ddi.replace(/\D/g, ""), ddd: ddd.replace(/\D/g, ""), number: number.replace(/\D/g, "") };
+    return {
+      ddi: ddi.replace(/\D/g, ""),
+      ddd: ddd.replace(/\D/g, ""),
+      number: number.replace(/\D/g, ""),
+    };
   }
   const d = raw.replace(/\D/g, "");
   if (!d) return { ddi: "", ddd: "", number: "" };
   if (d.length >= 10) {
-    const number = d.slice(-9).length === 9 && d.length >= 11 ? d.slice(-9) : d.slice(-8);
+    const number =
+      d.slice(-9).length === 9 && d.length >= 11 ? d.slice(-9) : d.slice(-8);
     const rest = d.slice(0, d.length - number.length);
     const ddd = rest.slice(-2);
     const ddi = rest.slice(0, -2);
@@ -250,16 +280,25 @@ export function phoneDigits(raw: string | null | undefined): string {
 }
 
 export type TelefoneKind = "fixo" | "ramal";
-export interface TelefoneValue { kind: TelefoneKind; phone: PhoneParts; ramal: string }
+export interface TelefoneValue {
+  kind: TelefoneKind;
+  phone: PhoneParts;
+  ramal: string;
+}
 
 export function encodeTelefone(v: TelefoneValue): string {
-  if (v.kind === "ramal") return v.ramal ? `R|${v.ramal.replace(/\D/g, "")}` : "";
+  if (v.kind === "ramal")
+    return v.ramal ? `R|${v.ramal.replace(/\D/g, "")}` : "";
   return encodePhone(v.phone);
 }
 
 export function decodeTelefone(raw: string | null | undefined): TelefoneValue {
   if (raw && raw.startsWith("R|")) {
-    return { kind: "ramal", ramal: raw.slice(2).replace(/\D/g, ""), phone: { ddi: "", ddd: "", number: "" } };
+    return {
+      kind: "ramal",
+      ramal: raw.slice(2).replace(/\D/g, ""),
+      phone: { ddi: "", ddd: "", number: "" },
+    };
   }
   return { kind: "fixo", ramal: "", phone: decodePhone(raw) };
 }

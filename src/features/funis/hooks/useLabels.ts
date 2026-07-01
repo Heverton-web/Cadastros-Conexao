@@ -1,5 +1,13 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { listarLabels, criarLabel, atualizarLabel, deletarLabel, adicionarLabelTarefa, removerLabelTarefa, listarLabelsTarefa } from "../services";
+import {
+  listarLabels,
+  criarLabel,
+  atualizarLabel,
+  deletarLabel,
+  adicionarLabelTarefa,
+  removerLabelTarefa,
+  listarLabelsTarefa,
+} from "../services";
 import type { LabelInput } from "../types";
 
 export function useLabels(funilId: string | null) {
@@ -23,14 +31,16 @@ export function useCriarLabel() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: (input: LabelInput) => criarLabel(input),
-    onSuccess: (_, vars) => qc.invalidateQueries({ queryKey: ["funis", "labels", vars.funil_id] }),
+    onSuccess: (_, vars) =>
+      qc.invalidateQueries({ queryKey: ["funis", "labels", vars.funil_id] }),
   });
 }
 
 export function useAtualizarLabel() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, input }: { id: string; input: Partial<LabelInput> }) => atualizarLabel(id, input),
+    mutationFn: ({ id, input }: { id: string; input: Partial<LabelInput> }) =>
+      atualizarLabel(id, input),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["funis", "labels"] }),
   });
 }
@@ -46,7 +56,13 @@ export function useDeletarLabel() {
 export function useAdicionarLabelTarefa() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: ({ tarefaId, labelId }: { tarefaId: string; labelId: string }) => adicionarLabelTarefa(tarefaId, labelId),
+    mutationFn: ({
+      tarefaId,
+      labelId,
+    }: {
+      tarefaId: string;
+      labelId: string;
+    }) => adicionarLabelTarefa(tarefaId, labelId),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["funis"] }),
   });
 }
@@ -54,7 +70,13 @@ export function useAdicionarLabelTarefa() {
 export function useRemoverLabelTarefa() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: ({ tarefaId, labelId }: { tarefaId: string; labelId: string }) => removerLabelTarefa(tarefaId, labelId),
+    mutationFn: ({
+      tarefaId,
+      labelId,
+    }: {
+      tarefaId: string;
+      labelId: string;
+    }) => removerLabelTarefa(tarefaId, labelId),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["funis"] }),
   });
 }

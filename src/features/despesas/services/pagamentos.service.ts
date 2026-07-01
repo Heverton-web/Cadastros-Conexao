@@ -1,17 +1,23 @@
 import { supabase } from "~/core/supabase";
 import type { DespesaPagamento, FormaPagamento } from "../types";
 
-export async function listarPagamentos(empresa_id: string): Promise<DespesaPagamento[]> {
+export async function listarPagamentos(
+  empresa_id: string,
+): Promise<DespesaPagamento[]> {
   const { data, error } = await supabase
     .from("despesas_pagamentos")
-    .select("*, envio:despesas_envios(*, periodo:despesas_periodos(*), usuario:profiles!usuario_id(nome, email))")
+    .select(
+      "*, envio:despesas_envios(*, periodo:despesas_periodos(*), usuario:profiles!usuario_id(nome, email))",
+    )
     .eq("empresa_id", empresa_id)
     .order("data_pagamento", { ascending: false });
   if (error) throw error;
   return data as DespesaPagamento[];
 }
 
-export async function listarPagamentosPorEnvio(envio_id: string): Promise<DespesaPagamento[]> {
+export async function listarPagamentosPorEnvio(
+  envio_id: string,
+): Promise<DespesaPagamento[]> {
   const { data, error } = await supabase
     .from("despesas_pagamentos")
     .select("*")
@@ -24,7 +30,9 @@ export async function listarPagamentosPorEnvio(envio_id: string): Promise<Despes
 export async function buscarPagamento(id: string): Promise<DespesaPagamento> {
   const { data, error } = await supabase
     .from("despesas_pagamentos")
-    .select("*, envio:despesas_envios(*, periodo:despesas_periodos(*), usuario:profiles!usuario_id(nome, email))")
+    .select(
+      "*, envio:despesas_envios(*, periodo:despesas_periodos(*), usuario:profiles!usuario_id(nome, email))",
+    )
     .eq("id", id)
     .single();
   if (error) throw error;
@@ -47,7 +55,10 @@ export async function criarPagamento(pagamento: {
   return data as DespesaPagamento;
 }
 
-export async function atualizarPagamento(id: string, updates: Partial<DespesaPagamento>): Promise<DespesaPagamento> {
+export async function atualizarPagamento(
+  id: string,
+  updates: Partial<DespesaPagamento>,
+): Promise<DespesaPagamento> {
   const { data, error } = await supabase
     .from("despesas_pagamentos")
     .update(updates)
@@ -58,7 +69,10 @@ export async function atualizarPagamento(id: string, updates: Partial<DespesaPag
   return data as DespesaPagamento;
 }
 
-export async function marcarComoPago(id: string, comprovante?: string): Promise<DespesaPagamento> {
+export async function marcarComoPago(
+  id: string,
+  comprovante?: string,
+): Promise<DespesaPagamento> {
   const updates: Partial<DespesaPagamento> = { status: "pago" };
   if (comprovante) updates.comprovante_pagamento = comprovante;
   return atualizarPagamento(id, updates);

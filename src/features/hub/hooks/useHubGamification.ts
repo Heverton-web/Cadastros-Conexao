@@ -1,6 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "~/lib/auth";
-import { fetchHubLevels, fetchHubRanking, fetchHubUserBadges } from "../services/gamification";
+import {
+  fetchHubLevels,
+  fetchHubRanking,
+  fetchHubUserBadges,
+} from "../services/gamification";
 
 export function useHubLevels() {
   const { empresa } = useAuth();

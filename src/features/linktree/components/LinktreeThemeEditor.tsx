@@ -68,7 +68,10 @@ export function LinktreeThemeEditor({ initialTheme, onSave }: Props) {
     setSaving(false);
   }
 
-  function patch<K extends keyof LinktreeThemeConfig>(key: K, value: LinktreeThemeConfig[K]) {
+  function patch<K extends keyof LinktreeThemeConfig>(
+    key: K,
+    value: LinktreeThemeConfig[K],
+  ) {
     setTheme((p) => ({ ...p, [key]: value }));
   }
 
@@ -76,11 +79,23 @@ export function LinktreeThemeEditor({ initialTheme, onSave }: Props) {
     <div className="space-y-6">
       <header className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-4">
         <div className="min-w-0">
-          <h1 className="text-3xl font-bold text-text-main">Personalizacao Global</h1>
-          <p className="mt-1 text-sm text-muted-foreground">Ajuste cores, fontes e icones — valido para todos os LinkTrees.</p>
+          <h1 className="text-3xl font-bold text-text-main">
+            Personalizacao Global
+          </h1>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Ajuste cores, fontes e icones — valido para todos os LinkTrees.
+          </p>
         </div>
-        <Button onClick={handleSave} disabled={saving} className="shrink-0 bg-primary text-primary-foreground hover:bg-primary/90">
-          {saving ? <Loader2 className="size-4 animate-spin" /> : <Save className="size-4" />}
+        <Button
+          onClick={handleSave}
+          disabled={saving}
+          className="shrink-0 bg-primary text-primary-foreground hover:bg-primary/90"
+        >
+          {saving ? (
+            <Loader2 className="size-4 animate-spin" />
+          ) : (
+            <Save className="size-4" />
+          )}
           Salvar
         </Button>
       </header>
@@ -100,7 +115,12 @@ export function LinktreeThemeEditor({ initialTheme, onSave }: Props) {
                 {BG_MODES.map((m) => (
                   <button
                     key={m.value}
-                    onClick={() => patch("background", { ...theme.background, mode: m.value })}
+                    onClick={() =>
+                      patch("background", {
+                        ...theme.background,
+                        mode: m.value,
+                      })
+                    }
                     className={`rounded-md border px-3 py-2 text-sm transition ${
                       theme.background.mode === m.value
                         ? "border-primary bg-primary/10 text-text-main"
@@ -113,31 +133,92 @@ export function LinktreeThemeEditor({ initialTheme, onSave }: Props) {
               </div>
 
               {theme.background.mode === "solid" && (
-                <ColorRow label="Cor de fundo" value={theme.background.solid}
-                  onChange={(v) => patch("background", { ...theme.background, solid: v })} />
+                <ColorRow
+                  label="Cor de fundo"
+                  value={theme.background.solid}
+                  onChange={(v) =>
+                    patch("background", { ...theme.background, solid: v })
+                  }
+                />
               )}
 
               {theme.background.mode === "gradient2" && (
                 <>
-                  <ColorRow label="Cor 1" value={theme.background.gradientFrom}
-                    onChange={(v) => patch("background", { ...theme.background, gradientFrom: v })} />
-                  <ColorRow label="Cor 2" value={theme.background.gradientTo}
-                    onChange={(v) => patch("background", { ...theme.background, gradientTo: v })} />
-                  <RangeRow label="Angulo" value={theme.background.gradientAngle}
-                    onChange={(v) => patch("background", { ...theme.background, gradientAngle: v })} />
+                  <ColorRow
+                    label="Cor 1"
+                    value={theme.background.gradientFrom}
+                    onChange={(v) =>
+                      patch("background", {
+                        ...theme.background,
+                        gradientFrom: v,
+                      })
+                    }
+                  />
+                  <ColorRow
+                    label="Cor 2"
+                    value={theme.background.gradientTo}
+                    onChange={(v) =>
+                      patch("background", {
+                        ...theme.background,
+                        gradientTo: v,
+                      })
+                    }
+                  />
+                  <RangeRow
+                    label="Angulo"
+                    value={theme.background.gradientAngle}
+                    onChange={(v) =>
+                      patch("background", {
+                        ...theme.background,
+                        gradientAngle: v,
+                      })
+                    }
+                  />
                 </>
               )}
 
               {theme.background.mode === "gradient3" && (
                 <>
-                  <ColorRow label="Cor 1" value={theme.background.gradient3From}
-                    onChange={(v) => patch("background", { ...theme.background, gradient3From: v })} />
-                  <ColorRow label="Cor central" value={theme.background.gradient3Mid}
-                    onChange={(v) => patch("background", { ...theme.background, gradient3Mid: v })} />
-                  <ColorRow label="Cor 3" value={theme.background.gradient3To}
-                    onChange={(v) => patch("background", { ...theme.background, gradient3To: v })} />
-                  <RangeRow label="Angulo" value={theme.background.gradient3Angle}
-                    onChange={(v) => patch("background", { ...theme.background, gradient3Angle: v })} />
+                  <ColorRow
+                    label="Cor 1"
+                    value={theme.background.gradient3From}
+                    onChange={(v) =>
+                      patch("background", {
+                        ...theme.background,
+                        gradient3From: v,
+                      })
+                    }
+                  />
+                  <ColorRow
+                    label="Cor central"
+                    value={theme.background.gradient3Mid}
+                    onChange={(v) =>
+                      patch("background", {
+                        ...theme.background,
+                        gradient3Mid: v,
+                      })
+                    }
+                  />
+                  <ColorRow
+                    label="Cor 3"
+                    value={theme.background.gradient3To}
+                    onChange={(v) =>
+                      patch("background", {
+                        ...theme.background,
+                        gradient3To: v,
+                      })
+                    }
+                  />
+                  <RangeRow
+                    label="Angulo"
+                    value={theme.background.gradient3Angle}
+                    onChange={(v) =>
+                      patch("background", {
+                        ...theme.background,
+                        gradient3Angle: v,
+                      })
+                    }
+                  />
                 </>
               )}
 
@@ -145,11 +226,18 @@ export function LinktreeThemeEditor({ initialTheme, onSave }: Props) {
                 <div className="flex items-center justify-between">
                   <div>
                     <Label className="text-base">Blobs decorativos</Label>
-                    <p className="text-xs text-muted-foreground">Manchas suaves coloridas sobre o fundo.</p>
+                    <p className="text-xs text-muted-foreground">
+                      Manchas suaves coloridas sobre o fundo.
+                    </p>
                   </div>
                   <Switch
                     checked={theme.background.blobsEnabled}
-                    onCheckedChange={(v) => patch("background", { ...theme.background, blobsEnabled: v })}
+                    onCheckedChange={(v) =>
+                      patch("background", {
+                        ...theme.background,
+                        blobsEnabled: v,
+                      })
+                    }
                   />
                 </div>
 
@@ -165,7 +253,9 @@ export function LinktreeThemeEditor({ initialTheme, onSave }: Props) {
                           patch("background", { ...theme.background, blobs });
                         }}
                         onRemove={() => {
-                          const blobs = theme.background.blobs.filter((_, j) => j !== i);
+                          const blobs = theme.background.blobs.filter(
+                            (_, j) => j !== i,
+                          );
                           patch("background", { ...theme.background, blobs });
                         }}
                       />
@@ -175,8 +265,17 @@ export function LinktreeThemeEditor({ initialTheme, onSave }: Props) {
                       variant="outline"
                       size="sm"
                       onClick={() => {
-                        const next: BlobItem = { enabled: true, color: "#c9a655", position: "mc", size: 280, opacity: 0.3 };
-                        patch("background", { ...theme.background, blobs: [...theme.background.blobs, next] });
+                        const next: BlobItem = {
+                          enabled: true,
+                          color: "#c9a655",
+                          position: "mc",
+                          size: 280,
+                          opacity: 0.3,
+                        };
+                        patch("background", {
+                          ...theme.background,
+                          blobs: [...theme.background.blobs, next],
+                        });
                       }}
                     >
                       <Plus className="size-4" /> Adicionar blob
@@ -187,29 +286,62 @@ export function LinktreeThemeEditor({ initialTheme, onSave }: Props) {
             </TabsContent>
 
             <TabsContent value="icons" className="space-y-4 pt-5">
-              <ColorRow label="Cor do icone" value={theme.icons.pathColor}
-                onChange={(v) => patch("icons", { ...theme.icons, pathColor: v })} />
-              <ColorRow label="Cor de fundo do circulo" value={theme.icons.bgColor}
-                onChange={(v) => patch("icons", { ...theme.icons, bgColor: v })} />
+              <ColorRow
+                label="Cor do icone"
+                value={theme.icons.pathColor}
+                onChange={(v) =>
+                  patch("icons", { ...theme.icons, pathColor: v })
+                }
+              />
+              <ColorRow
+                label="Cor de fundo do circulo"
+                value={theme.icons.bgColor}
+                onChange={(v) => patch("icons", { ...theme.icons, bgColor: v })}
+              />
             </TabsContent>
 
             <TabsContent value="typography" className="space-y-4 pt-5">
-              {(["nome", "cargo", "contato", "institucional"] as const).map((k) => (
-                <div key={k} className="grid grid-cols-1 gap-3 rounded-lg border border-border p-3 sm:grid-cols-[1fr_1fr]">
-                  <div className="space-y-1.5">
-                    <Label className="capitalize">{k}</Label>
-                    <select
-                      value={theme.typography[k].font}
-                      onChange={(e) => patch("typography", { ...theme.typography, [k]: { ...theme.typography[k], font: e.target.value } })}
-                      className="h-9 w-full rounded-md border border-border bg-surface-hover px-2 text-sm"
-                    >
-                      {FONT_OPTIONS.map((f) => <option key={f} value={f}>{f}</option>)}
-                    </select>
+              {(["nome", "cargo", "contato", "institucional"] as const).map(
+                (k) => (
+                  <div
+                    key={k}
+                    className="grid grid-cols-1 gap-3 rounded-lg border border-border p-3 sm:grid-cols-[1fr_1fr]"
+                  >
+                    <div className="space-y-1.5">
+                      <Label className="capitalize">{k}</Label>
+                      <select
+                        value={theme.typography[k].font}
+                        onChange={(e) =>
+                          patch("typography", {
+                            ...theme.typography,
+                            [k]: {
+                              ...theme.typography[k],
+                              font: e.target.value,
+                            },
+                          })
+                        }
+                        className="h-9 w-full rounded-md border border-border bg-surface-hover px-2 text-sm"
+                      >
+                        {FONT_OPTIONS.map((f) => (
+                          <option key={f} value={f}>
+                            {f}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <ColorRow
+                      label="Cor"
+                      value={theme.typography[k].color}
+                      onChange={(v) =>
+                        patch("typography", {
+                          ...theme.typography,
+                          [k]: { ...theme.typography[k], color: v },
+                        })
+                      }
+                    />
                   </div>
-                  <ColorRow label="Cor" value={theme.typography[k].color}
-                    onChange={(v) => patch("typography", { ...theme.typography, [k]: { ...theme.typography[k], color: v } })} />
-                </div>
-              ))}
+                ),
+              )}
             </TabsContent>
 
             <TabsContent value="institucional" className="space-y-4 pt-5">
@@ -217,71 +349,153 @@ export function LinktreeThemeEditor({ initialTheme, onSave }: Props) {
                 url={theme.institucional.logoUrl}
                 width={theme.institucional.logoWidth}
                 height={theme.institucional.logoHeight}
-                onChange={(p) => patch("institucional", { ...theme.institucional, ...p })}
+                onChange={(p) =>
+                  patch("institucional", { ...theme.institucional, ...p })
+                }
               />
 
               <div className="space-y-1.5">
                 <div className="flex items-center justify-between">
                   <Label>Nome da empresa</Label>
                   <div className="flex items-center gap-2">
-                    <span className="text-xs text-muted-foreground">Exibir</span>
-                    <Switch checked={theme.institucional.nomeEmpresaEnabled}
-                      onCheckedChange={(v) => patch("institucional", { ...theme.institucional, nomeEmpresaEnabled: v })} />
+                    <span className="text-xs text-muted-foreground">
+                      Exibir
+                    </span>
+                    <Switch
+                      checked={theme.institucional.nomeEmpresaEnabled}
+                      onCheckedChange={(v) =>
+                        patch("institucional", {
+                          ...theme.institucional,
+                          nomeEmpresaEnabled: v,
+                        })
+                      }
+                    />
                   </div>
                 </div>
-                <Input value={theme.institucional.nomeEmpresa}
-                  onChange={(e) => patch("institucional", { ...theme.institucional, nomeEmpresa: e.target.value })} />
+                <Input
+                  value={theme.institucional.nomeEmpresa}
+                  onChange={(e) =>
+                    patch("institucional", {
+                      ...theme.institucional,
+                      nomeEmpresa: e.target.value,
+                    })
+                  }
+                />
               </div>
 
               <div className="space-y-1.5">
                 <div className="flex items-center justify-between">
                   <Label>Endereco</Label>
                   <div className="flex items-center gap-2">
-                    <span className="text-xs text-muted-foreground">Exibir</span>
-                    <Switch checked={theme.institucional.enderecoEnabled}
-                      onCheckedChange={(v) => patch("institucional", { ...theme.institucional, enderecoEnabled: v })} />
+                    <span className="text-xs text-muted-foreground">
+                      Exibir
+                    </span>
+                    <Switch
+                      checked={theme.institucional.enderecoEnabled}
+                      onCheckedChange={(v) =>
+                        patch("institucional", {
+                          ...theme.institucional,
+                          enderecoEnabled: v,
+                        })
+                      }
+                    />
                   </div>
                 </div>
-                <Input value={theme.institucional.endereco}
-                  onChange={(e) => patch("institucional", { ...theme.institucional, endereco: e.target.value })} />
+                <Input
+                  value={theme.institucional.endereco}
+                  onChange={(e) =>
+                    patch("institucional", {
+                      ...theme.institucional,
+                      endereco: e.target.value,
+                    })
+                  }
+                />
               </div>
 
               <div className="space-y-1.5">
                 <Label>Site</Label>
-                <Input value={theme.institucional.site}
-                  onChange={(e) => patch("institucional", { ...theme.institucional, site: e.target.value })} />
+                <Input
+                  value={theme.institucional.site}
+                  onChange={(e) =>
+                    patch("institucional", {
+                      ...theme.institucional,
+                      site: e.target.value,
+                    })
+                  }
+                />
               </div>
 
               <div className="rounded-lg border border-border p-3">
                 <Label className="text-base">Redes sociais</Label>
-                <p className="mb-3 text-xs text-muted-foreground">Ative, defina URL e a cor do icone.</p>
+                <p className="mb-3 text-xs text-muted-foreground">
+                  Ative, defina URL e a cor do icone.
+                </p>
                 <div className="space-y-4">
                   {SOCIAL_KEYS.map((k) => {
                     const enabledKey = `${k}Enabled` as const;
                     return (
-                      <div key={k} className="space-y-2 rounded-md border border-border/60 p-3">
+                      <div
+                        key={k}
+                        className="space-y-2 rounded-md border border-border/60 p-3"
+                      >
                         <div className="grid grid-cols-[auto_1fr] items-center gap-3">
-                          <Switch checked={theme.institucional[enabledKey]}
-                            onCheckedChange={(v) => patch("institucional", { ...theme.institucional, [enabledKey]: v })} />
-                          <span className="text-sm font-medium capitalize text-text-main">{k}</span>
+                          <Switch
+                            checked={theme.institucional[enabledKey]}
+                            onCheckedChange={(v) =>
+                              patch("institucional", {
+                                ...theme.institucional,
+                                [enabledKey]: v,
+                              })
+                            }
+                          />
+                          <span className="text-sm font-medium capitalize text-text-main">
+                            {k}
+                          </span>
                         </div>
-                        <Input value={theme.institucional[k]}
-                          onChange={(e) => patch("institucional", { ...theme.institucional, [k]: e.target.value })}
-                          placeholder={`https://${k}.com/...`} />
-                        <ColorRow label="Cor do icone" value={theme.institucional.socialColors[k]}
-                          onChange={(v) => patch("institucional", {
-                            ...theme.institucional,
-                            socialColors: { ...theme.institucional.socialColors, [k]: v },
-                          })} />
+                        <Input
+                          value={theme.institucional[k]}
+                          onChange={(e) =>
+                            patch("institucional", {
+                              ...theme.institucional,
+                              [k]: e.target.value,
+                            })
+                          }
+                          placeholder={`https://${k}.com/...`}
+                        />
+                        <ColorRow
+                          label="Cor do icone"
+                          value={theme.institucional.socialColors[k]}
+                          onChange={(v) =>
+                            patch("institucional", {
+                              ...theme.institucional,
+                              socialColors: {
+                                ...theme.institucional.socialColors,
+                                [k]: v,
+                              },
+                            })
+                          }
+                        />
                       </div>
                     );
                   })}
                 </div>
                 <div className="mt-4 space-y-1">
-                  <Label className="text-xs">Tamanho dos icones: {theme.institucional.socialIconSize}px</Label>
-                  <input type="range" min={12} max={48} value={theme.institucional.socialIconSize}
-                    onChange={(e) => patch("institucional", { ...theme.institucional, socialIconSize: Number(e.target.value) })}
-                    className="w-full" />
+                  <Label className="text-xs">
+                    Tamanho dos icones: {theme.institucional.socialIconSize}px
+                  </Label>
+                  <input
+                    type="range"
+                    min={12}
+                    max={48}
+                    value={theme.institucional.socialIconSize}
+                    onChange={(e) =>
+                      patch("institucional", {
+                        ...theme.institucional,
+                        socialIconSize: Number(e.target.value),
+                      })
+                    }
+                    className="w-full"
+                  />
                 </div>
               </div>
             </TabsContent>
@@ -290,49 +504,107 @@ export function LinktreeThemeEditor({ initialTheme, onSave }: Props) {
 
         <div className="lg:sticky lg:top-20 lg:self-start">
           <div className="overflow-hidden rounded-[2rem] border-[10px] border-surface-hover shadow-2xl">
-            <div className="h-[720px] w-full overflow-y-auto" style={{ maxWidth: 370 }}>
+            <div
+              className="h-[720px] w-full overflow-y-auto"
+              style={{ maxWidth: 370 }}
+            >
               <LinkTreeCard collaborator={SAMPLE_COLLABORATOR} theme={theme} />
             </div>
           </div>
-          <p className="mt-2 text-center text-xs text-muted-foreground">Preview em tempo real</p>
+          <p className="mt-2 text-center text-xs text-muted-foreground">
+            Preview em tempo real
+          </p>
         </div>
       </div>
     </div>
   );
 }
 
-function ColorRow({ label, value, onChange }: { label: string; value: string; onChange: (v: string) => void }) {
+function ColorRow({
+  label,
+  value,
+  onChange,
+}: {
+  label: string;
+  value: string;
+  onChange: (v: string) => void;
+}) {
   return (
     <div className="space-y-1.5">
       <Label>{label}</Label>
       <div className="flex items-center gap-2">
-        <input type="color" value={value} onChange={(e) => onChange(e.target.value)}
-          className="h-9 w-12 cursor-pointer rounded border border-border bg-transparent" />
-        <Input value={value} onChange={(e) => onChange(e.target.value)} className="font-mono text-xs" />
+        <input
+          type="color"
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          className="h-9 w-12 cursor-pointer rounded border border-border bg-transparent"
+        />
+        <Input
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          className="font-mono text-xs"
+        />
       </div>
     </div>
   );
 }
 
-function RangeRow({ label, value, onChange, min = 0, max = 360 }: { label: string; value: number; onChange: (v: number) => void; min?: number; max?: number }) {
+function RangeRow({
+  label,
+  value,
+  onChange,
+  min = 0,
+  max = 360,
+}: {
+  label: string;
+  value: number;
+  onChange: (v: number) => void;
+  min?: number;
+  max?: number;
+}) {
   return (
     <div className="space-y-1.5">
-      <Label>{label}: {value}°</Label>
-      <input type="range" min={min} max={max} value={value}
-        onChange={(e) => onChange(Number(e.target.value))} className="w-full" />
+      <Label>
+        {label}: {value}°
+      </Label>
+      <input
+        type="range"
+        min={min}
+        max={max}
+        value={value}
+        onChange={(e) => onChange(Number(e.target.value))}
+        className="w-full"
+      />
     </div>
   );
 }
 
-function BlobRow({ blob, onChange, onRemove }: { blob: BlobItem; onChange: (b: BlobItem) => void; onRemove: () => void }) {
+function BlobRow({
+  blob,
+  onChange,
+  onRemove,
+}: {
+  blob: BlobItem;
+  onChange: (b: BlobItem) => void;
+  onRemove: () => void;
+}) {
   return (
     <div className="rounded-md border border-border bg-surface-hover/40 p-3">
       <div className="flex items-center justify-between gap-2">
         <div className="flex items-center gap-2">
-          <Switch checked={blob.enabled} onCheckedChange={(v) => onChange({ ...blob, enabled: v })} />
-          <input type="color" value={blob.color} onChange={(e) => onChange({ ...blob, color: e.target.value })}
-            className="h-7 w-9 cursor-pointer rounded border border-border bg-transparent" />
-          <span className="font-mono text-xs text-muted-foreground">{blob.color}</span>
+          <Switch
+            checked={blob.enabled}
+            onCheckedChange={(v) => onChange({ ...blob, enabled: v })}
+          />
+          <input
+            type="color"
+            value={blob.color}
+            onChange={(e) => onChange({ ...blob, color: e.target.value })}
+            className="h-7 w-9 cursor-pointer rounded border border-border bg-transparent"
+          />
+          <span className="font-mono text-xs text-muted-foreground">
+            {blob.color}
+          </span>
         </div>
         <Button type="button" variant="ghost" size="sm" onClick={onRemove}>
           <Trash2 className="size-4 text-error" />
@@ -340,12 +612,17 @@ function BlobRow({ blob, onChange, onRemove }: { blob: BlobItem; onChange: (b: B
       </div>
       <div className="mt-3 grid grid-cols-3 gap-1.5">
         {BLOB_POSITIONS.map((p) => (
-          <button key={p.value} onClick={() => onChange({ ...blob, position: p.value as BlobPosition })}
+          <button
+            key={p.value}
+            onClick={() =>
+              onChange({ ...blob, position: p.value as BlobPosition })
+            }
             className={`rounded border px-2 py-1.5 text-[11px] transition ${
               blob.position === p.value
                 ? "border-primary bg-primary/10 text-text-main"
                 : "border-border text-muted-foreground hover:text-text-main"
-            }`}>
+            }`}
+          >
             {p.label}
           </button>
         ))}
@@ -353,13 +630,31 @@ function BlobRow({ blob, onChange, onRemove }: { blob: BlobItem; onChange: (b: B
       <div className="mt-3 grid grid-cols-2 gap-3">
         <div className="space-y-1">
           <Label className="text-xs">Tamanho: {blob.size}px</Label>
-          <input type="range" min={80} max={600} value={blob.size}
-            onChange={(e) => onChange({ ...blob, size: Number(e.target.value) })} className="w-full" />
+          <input
+            type="range"
+            min={80}
+            max={600}
+            value={blob.size}
+            onChange={(e) =>
+              onChange({ ...blob, size: Number(e.target.value) })
+            }
+            className="w-full"
+          />
         </div>
         <div className="space-y-1">
-          <Label className="text-xs">Opacidade: {Math.round(blob.opacity * 100)}%</Label>
-          <input type="range" min={5} max={100} value={Math.round(blob.opacity * 100)}
-            onChange={(e) => onChange({ ...blob, opacity: Number(e.target.value) / 100 })} className="w-full" />
+          <Label className="text-xs">
+            Opacidade: {Math.round(blob.opacity * 100)}%
+          </Label>
+          <input
+            type="range"
+            min={5}
+            max={100}
+            value={Math.round(blob.opacity * 100)}
+            onChange={(e) =>
+              onChange({ ...blob, opacity: Number(e.target.value) / 100 })
+            }
+            className="w-full"
+          />
         </div>
       </div>
     </div>
@@ -367,10 +662,19 @@ function BlobRow({ blob, onChange, onRemove }: { blob: BlobItem; onChange: (b: B
 }
 
 function LogoUploader({
-  url, width, height, onChange,
+  url,
+  width,
+  height,
+  onChange,
 }: {
-  url: string; width: number; height: number;
-  onChange: (p: { logoUrl?: string; logoWidth?: number; logoHeight?: number }) => void;
+  url: string;
+  width: number;
+  height: number;
+  onChange: (p: {
+    logoUrl?: string;
+    logoWidth?: number;
+    logoHeight?: number;
+  }) => void;
 }) {
   const fileRef = useRef<HTMLInputElement>(null);
   const [busy, setBusy] = useState(false);
@@ -402,36 +706,76 @@ function LogoUploader({
           style={{ width: Math.max(width, 48), height: Math.max(height, 32) }}
         >
           {url ? (
-            <img src={url} alt="Logo" style={{ width, height, objectFit: "contain" }} />
+            <img
+              src={url}
+              alt="Logo"
+              style={{ width, height, objectFit: "contain" }}
+            />
           ) : (
             <Upload className="size-5 text-muted-foreground" />
           )}
         </div>
         <div className="min-w-0 flex-1 space-y-2">
           <div className="flex gap-2">
-            <Button type="button" size="sm" variant="outline" onClick={() => fileRef.current?.click()} disabled={busy}>
-              {busy ? <Loader2 className="size-4 animate-spin" /> : <Upload className="size-4" />} Enviar logo
+            <Button
+              type="button"
+              size="sm"
+              variant="outline"
+              onClick={() => fileRef.current?.click()}
+              disabled={busy}
+            >
+              {busy ? (
+                <Loader2 className="size-4 animate-spin" />
+              ) : (
+                <Upload className="size-4" />
+              )}{" "}
+              Enviar logo
             </Button>
             {url && (
-              <Button type="button" size="sm" variant="ghost" onClick={() => onChange({ logoUrl: "" })}>
+              <Button
+                type="button"
+                size="sm"
+                variant="ghost"
+                onClick={() => onChange({ logoUrl: "" })}
+              >
                 <Trash2 className="size-4 text-error" /> Remover
               </Button>
             )}
           </div>
-          <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={handleFile} />
-          <p className="text-xs text-muted-foreground">PNG/SVG com fundo transparente ate 4MB</p>
+          <input
+            ref={fileRef}
+            type="file"
+            accept="image/*"
+            className="hidden"
+            onChange={handleFile}
+          />
+          <p className="text-xs text-muted-foreground">
+            PNG/SVG com fundo transparente ate 4MB
+          </p>
         </div>
       </div>
       <div className="mt-3 grid grid-cols-2 gap-3">
         <div className="space-y-1">
           <Label className="text-xs">Largura: {width}px</Label>
-          <input type="range" min={40} max={320} value={width}
-            onChange={(e) => onChange({ logoWidth: Number(e.target.value) })} className="w-full" />
+          <input
+            type="range"
+            min={40}
+            max={320}
+            value={width}
+            onChange={(e) => onChange({ logoWidth: Number(e.target.value) })}
+            className="w-full"
+          />
         </div>
         <div className="space-y-1">
           <Label className="text-xs">Altura: {height}px</Label>
-          <input type="range" min={16} max={160} value={height}
-            onChange={(e) => onChange({ logoHeight: Number(e.target.value) })} className="w-full" />
+          <input
+            type="range"
+            min={16}
+            max={160}
+            value={height}
+            onChange={(e) => onChange({ logoHeight: Number(e.target.value) })}
+            className="w-full"
+          />
         </div>
       </div>
     </div>

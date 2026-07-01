@@ -1,6 +1,6 @@
-import { render, type RenderOptions } from '@testing-library/react';
-import { type ReactElement } from 'react';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { render, type RenderOptions } from "@testing-library/react";
+import { type ReactElement } from "react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 export type AuthOverrides = {
   isSuperAdmin?: boolean;
@@ -20,15 +20,13 @@ function createTestQueryClient() {
 
 export function renderWithProviders(
   ui: ReactElement,
-  options?: Omit<RenderOptions, 'wrapper'> & { auth?: AuthOverrides }
+  options?: Omit<RenderOptions, "wrapper"> & { auth?: AuthOverrides },
 ) {
   const queryClient = createTestQueryClient();
 
   function Wrapper({ children }: { children: React.ReactNode }) {
     return (
-      <QueryClientProvider client={queryClient}>
-        {children}
-      </QueryClientProvider>
+      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
     );
   }
 
