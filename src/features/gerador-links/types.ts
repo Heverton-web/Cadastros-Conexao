@@ -1,4 +1,4 @@
-export type TipoLink = "whatsapp" | "utm" | "google_review" | "google_maps" | "waze";
+export type TipoLink = "whatsapp" | "utm" | "google_review" | "google_maps" | "waze" | "qrcode";
 
 export type TipoTemplate = "whatsapp_msg" | "utm_preset";
 

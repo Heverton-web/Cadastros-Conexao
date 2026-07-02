@@ -6,6 +6,7 @@ import { Button } from "~/components/ui/button";
 import { gerarGoogleReview } from "../../services/geradores.service";
 import { useCriarLink } from "../../hooks/useLinks";
 import { LinkSavedDialog } from "../LinkSavedDialog";
+import { useAuth } from "~/lib/auth";
 
 export function GoogleReviewGenerator() {
   const [placeId, setPlaceId] = useState("");
@@ -14,6 +15,8 @@ export function GoogleReviewGenerator() {
   const [linkSalvoId, setLinkSalvoId] = useState<string | null>(null);
 
   const criarLink = useCriarLink();
+  const { profile, permissoes } = useAuth();
+  const podeSalvar = profile?.is_super_admin === true || permissoes?.lk_salvar === true;
 
   const urlGerada = useMemo(() => {
     if (!placeId) return "";
@@ -80,9 +83,11 @@ export function GoogleReviewGenerator() {
             <Button variant="outline" size="sm" onClick={() => window.open(urlGerada, "_blank")}>
               <ExternalLink className="w-4 h-4" /> Abrir
             </Button>
-            <Button size="sm" onClick={handleSalvar} disabled={salvando}>
-              <Save className="w-4 h-4" /> Salvar
-            </Button>
+            {podeSalvar && (
+              <Button size="sm" onClick={handleSalvar} disabled={salvando}>
+                <Save className="w-4 h-4" /> Salvar
+              </Button>
+            )}
           </div>
         </div>
       )}

@@ -6,6 +6,7 @@ import { Button } from "~/components/ui/button";
 import { gerarUtm } from "../../services/geradores.service";
 import { useCriarLink } from "../../hooks/useLinks";
 import { LinkSavedDialog } from "../LinkSavedDialog";
+import { useAuth } from "~/lib/auth";
 
 export function UtmGenerator() {
   const [url, setUrl] = useState("");
@@ -19,6 +20,8 @@ export function UtmGenerator() {
   const [linkSalvoId, setLinkSalvoId] = useState<string | null>(null);
 
   const criarLink = useCriarLink();
+  const { profile, permissoes } = useAuth();
+  const podeSalvar = profile?.is_super_admin === true || permissoes?.lk_salvar === true;
 
   const urlGerada = useMemo(() => {
     if (!url || !source || !medium || !campaign) return "";
@@ -91,9 +94,11 @@ export function UtmGenerator() {
             <Button variant="outline" size="sm" onClick={() => window.open(urlGerada, "_blank")}>
               <ExternalLink className="w-4 h-4" /> Abrir
             </Button>
-            <Button size="sm" onClick={handleSalvar} disabled={salvando}>
-              <Save className="w-4 h-4" /> Salvar
-            </Button>
+            {podeSalvar && (
+              <Button size="sm" onClick={handleSalvar} disabled={salvando}>
+                <Save className="w-4 h-4" /> Salvar
+              </Button>
+            )}
           </div>
         </div>
       )}

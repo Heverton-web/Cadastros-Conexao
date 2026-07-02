@@ -1,13 +1,23 @@
 import { useState } from "react";
-import { Download } from "lucide-react";
+import { Download, Save } from "lucide-react";
 import toast from "react-hot-toast";
 import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
 import { QRCodeCanvas } from "qrcode.react";
+import { useCriarLink } from "../../hooks/useLinks";
+import { LinkSavedDialog } from "../LinkSavedDialog";
+import { useAuth } from "~/lib/auth";
 
 export function QrCodeGenerator() {
   const [url, setUrl] = useState("");
   const [tamanho, setTamanho] = useState(256);
+  const [salvando, setSalvando] = useState(false);
+  const [linkSalvoId, setLinkSalvoId] = useState<string | null>(null);
+
+  const criarLink = useCriarLink();
+  const { profile, permissoes } = useAuth();
+  const isSuper = profile?.is_super_admin === true;
+  const podeSalvar = isSuper || permissoes?.lk_salvar === true;
 
   function handleDownload() {
     const canvas = document.querySelector("canvas");
@@ -17,6 +27,23 @@ export function QrCodeGenerator() {
     link.href = canvas.toDataURL("image/png");
     link.click();
     toast.success("QR Code baixado!");
+  }
+
+  async function handleSalvar() {
+    if (!url) return;
+    setSalvando(true);
+    try {
+      const saved = await criarLink.mutateAsync({
+        tipo: "qrcode",
+        titulo: `QR Code ${url.slice(0, 30)}`,
+        url_gerada: url,
+        params: { url },
+      });
+      setLinkSalvoId(saved.id);
+    } catch {
+      toast.error("Erro ao salvar");
+    }
+    setSalvando(false);
   }
 
   return (
@@ -50,8 +77,22 @@ export function QrCodeGenerator() {
             <Button variant="outline" size="sm" onClick={handleDownload}>
               <Download className="w-4 h-4" /> Download PNG
             </Button>
+            {podeSalvar && (
+              <Button size="sm" onClick={handleSalvar} disabled={salvando}>
+                <Save className="w-4 h-4" /> Salvar
+              </Button>
+            )}
           </div>
         </div>
+      )}
+
+      {linkSalvoId && (
+        <LinkSavedDialog
+          linkId={linkSalvoId}
+          urlOriginal={url}
+          open={!!linkSalvoId}
+          onOpenChange={(o) => !o && setLinkSalvoId(null)}
+        />
       )}
     </div>
   );

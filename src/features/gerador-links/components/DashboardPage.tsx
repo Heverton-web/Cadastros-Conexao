@@ -30,6 +30,8 @@ import { TIPO_LINK_LABEL } from "../permissions";
 import { Skeleton } from "~/components/ui/skeleton";
 import { Button } from "~/components/ui/button";
 import { downloadCSV } from "../utils/csv";
+import { useEmpresaSuperAdmin } from "~/components/shared/useEmpresaSuperAdmin";
+import { EmpresaSuperAdminSelector } from "~/components/shared/EmpresaSuperAdminSelector";
 
 const CORES = [
   "var(--color-accent)",
@@ -67,6 +69,7 @@ const LABEL_OS: Record<string, string> = {
 
 export function DashboardPage() {
   const [periodo, setPeriodo] = useState("30");
+  const { empresaId, empresas, empresaSelecionada, setEmpresaSelecionada, isSuperAdmin } = useEmpresaSuperAdmin();
 
   const now = new Date();
   const dataFim = now.toISOString().slice(0, 10);
@@ -74,8 +77,8 @@ export function DashboardPage() {
     ? undefined
     : new Date(now.getTime() - Number(periodo) * 86400000).toISOString().slice(0, 10);
 
-  const { data: stats, isLoading } = useDashboardStats(dataInicio, dataFim);
-  const { data: links } = useLinks();
+  const { data: stats, isLoading } = useDashboardStats(dataInicio, dataFim, empresaId);
+  const { data: links } = useLinks(empresaId);
 
   function handleExportCSV() {
     if (!stats?.top_links || stats.top_links.length === 0) {
@@ -168,6 +171,13 @@ export function DashboardPage() {
         description="Acompanhe o desempenho dos links gerados"
       >
         <div className="flex items-center gap-2">
+          {isSuperAdmin && empresas.length > 0 && (
+            <EmpresaSuperAdminSelector
+              empresas={empresas}
+              value={empresaSelecionada}
+              onChange={setEmpresaSelecionada}
+            />
+          )}
           <select
             value={periodo}
             onChange={(e) => setPeriodo(e.target.value)}

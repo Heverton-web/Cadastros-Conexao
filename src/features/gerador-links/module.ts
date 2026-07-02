@@ -139,10 +139,10 @@ export const geradorLinksModule: ModuleDefinition = {
     });
 
     registerPermissionDefaults("gerador-links", {
-      cadastro: { lk_ver: true, lk_gerar: true, lk_salvar: true, lk_excluir: true, lk_gerenciar_templates: true },
-      tecnologia: { lk_ver: true, lk_gerar: true, lk_salvar: true, lk_excluir: true, lk_gerenciar_templates: true },
-      consultor: { lk_ver: true, lk_gerar: true, lk_salvar: false, lk_excluir: false, lk_gerenciar_templates: false },
-      suporte: { lk_ver: false, lk_gerar: false, lk_salvar: false, lk_excluir: false, lk_gerenciar_templates: false },
+      cadastro: { lk_ver: true, lk_gerar: true, lk_salvar: true, lk_editar: true, lk_excluir: true, lk_gerenciar_templates: true },
+      tecnologia: { lk_ver: true, lk_gerar: true, lk_salvar: true, lk_editar: true, lk_excluir: true, lk_gerenciar_templates: true },
+      consultor: { lk_ver: true, lk_gerar: true, lk_salvar: false, lk_editar: false, lk_excluir: false, lk_gerenciar_templates: false },
+      suporte: { lk_ver: false, lk_gerar: false, lk_salvar: false, lk_editar: false, lk_excluir: false, lk_gerenciar_templates: false },
     });
   },
 };

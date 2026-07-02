@@ -8,9 +8,9 @@ import {
 } from "../services/templates.service";
 import type { TipoTemplate } from "../types";
 
-export function useTemplates() {
+export function useTemplates(empresaIdOverride?: string) {
   const { profile } = useAuth();
-  const empresaId = profile?.empresa_id;
+  const empresaId = empresaIdOverride ?? profile?.empresa_id;
 
   return useQuery({
     queryKey: ["gerador-templates", empresaId],
@@ -29,9 +29,10 @@ export function useCriarTemplate() {
       tipo: TipoTemplate;
       nome: string;
       conteudo: Record<string, string>;
+      empresa_id?: string;
     }) =>
       criarTemplate({
-        empresa_id: profile!.empresa_id!,
+        empresa_id: input.empresa_id ?? profile!.empresa_id!,
         ...input,
       }),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["gerador-templates"] }),

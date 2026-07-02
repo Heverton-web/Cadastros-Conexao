@@ -25,6 +25,13 @@ export async function criarLink(input: {
   return data as LinkSalvo;
 }
 
+export async function atualizarLink(
+  id: string,
+  input: { titulo?: string; url_gerada?: string; params?: Record<string, string> },
+): Promise<void> {
+  await supabase.from("gerador_links").update(input).eq("id", id);
+}
+
 export async function deletarLink(id: string): Promise<void> {
   await supabase.from("gerador_links").delete().eq("id", id);
 }

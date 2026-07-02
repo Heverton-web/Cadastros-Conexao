@@ -7,6 +7,7 @@ import { gerarWhatsApp } from "../../services/geradores.service";
 import { useCriarLink } from "../../hooks/useLinks";
 import { useTemplates } from "../../hooks/useTemplates";
 import { LinkSavedDialog } from "../LinkSavedDialog";
+import { useAuth } from "~/lib/auth";
 
 export function WhatsappGenerator() {
   const [telefone, setTelefone] = useState("");
@@ -16,6 +17,8 @@ export function WhatsappGenerator() {
   const [linkSalvoId, setLinkSalvoId] = useState<string | null>(null);
 
   const criarLink = useCriarLink();
+  const { profile, permissoes } = useAuth();
+  const podeSalvar = profile?.is_super_admin === true || permissoes?.lk_salvar === true;
   const { data: templates } = useTemplates();
   const templatesWhats = (templates || []).filter((t) => t.tipo === "whatsapp_msg");
 
@@ -99,9 +102,11 @@ export function WhatsappGenerator() {
             <Button variant="outline" size="sm" onClick={() => window.open(urlGerada, "_blank")}>
               <ExternalLink className="w-4 h-4" /> Abrir
             </Button>
-            <Button size="sm" onClick={handleSalvar} disabled={salvando}>
-              <Save className="w-4 h-4" /> Salvar
-            </Button>
+            {podeSalvar && (
+              <Button size="sm" onClick={handleSalvar} disabled={salvando}>
+                <Save className="w-4 h-4" /> Salvar
+              </Button>
+            )}
           </div>
         </div>
       )}

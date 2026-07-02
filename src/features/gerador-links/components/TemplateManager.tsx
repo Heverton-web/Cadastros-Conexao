@@ -33,6 +33,9 @@ import {
 } from "~/components/ui/select";
 import { useTemplates, useCriarTemplate, useDeletarTemplate } from "../hooks/useTemplates";
 import type { TemplateMensagem } from "../types";
+import { useEmpresaSuperAdmin } from "~/components/shared/useEmpresaSuperAdmin";
+import { EmpresaSuperAdminSelector } from "~/components/shared/EmpresaSuperAdminSelector";
+import { useAuth } from "~/lib/auth";
 
 const TIPO_TEMPLATE_LABEL: Record<string, string> = {
   whatsapp_msg: "Mensagem WhatsApp",
@@ -40,9 +43,12 @@ const TIPO_TEMPLATE_LABEL: Record<string, string> = {
 };
 
 export function TemplateManager() {
-  const { data: templates, isLoading } = useTemplates();
+  const { empresaId, empresas, empresaSelecionada, setEmpresaSelecionada, isSuperAdmin } = useEmpresaSuperAdmin();
+  const { profile, permissoes } = useAuth();
+  const { data: templates, isLoading } = useTemplates(empresaId);
   const criarTemplate = useCriarTemplate();
   const deletarTemplate = useDeletarTemplate();
+  const can = (key: string) => isSuperAdmin || permissoes?.[key] === true;
 
   const [modalOpen, setModalOpen] = useState(false);
   const [tipo, setTipo] = useState<"whatsapp_msg" | "utm_preset">("whatsapp_msg");
@@ -108,9 +114,20 @@ export function TemplateManager() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <PageHeader title="Templates" description="Modelos de mensagem e presets UTM" />
-        <Button size="sm" onClick={() => { resetForm(); setModalOpen(true); }}>
-          <Plus className="w-4 h-4" /> Novo Template
-        </Button>
+        <div className="flex items-center gap-2">
+          {isSuperAdmin && empresas.length > 0 && (
+            <EmpresaSuperAdminSelector
+              empresas={empresas}
+              value={empresaSelecionada}
+              onChange={setEmpresaSelecionada}
+            />
+          )}
+          {can("lk_gerenciar_templates") && (
+            <Button size="sm" onClick={() => { resetForm(); setModalOpen(true); }}>
+              <Plus className="w-4 h-4" /> Novo Template
+            </Button>
+          )}
+        </div>
       </div>
 
       {!templates || templates.length === 0 ? (
@@ -138,12 +155,14 @@ export function TemplateManager() {
                       {new Date(t.created_at).toLocaleDateString("pt-BR")}
                     </p>
                   </div>
-                  <button
-                    onClick={() => setItemParaDeletar(t)}
-                    className="text-text-muted hover:text-error transition-colors p-1 shrink-0"
-                  >
-                    <Trash2 size={14} />
-                  </button>
+                  {can("lk_gerenciar_templates") && (
+                    <button
+                      onClick={() => setItemParaDeletar(t)}
+                      className="text-text-muted hover:text-error transition-colors p-1 shrink-0"
+                    >
+                      <Trash2 size={14} />
+                    </button>
+                  )}
                 </div>
               </CardContent>
             </Card>

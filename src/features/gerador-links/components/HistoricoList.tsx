@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Copy, Check, Trash2, Filter, Loader2, ExternalLink, Download, BarChart3 } from "lucide-react";
+import { Copy, Check, Trash2, Filter, Loader2, ExternalLink, Download, BarChart3, Pencil } from "lucide-react";
 import toast from "react-hot-toast";
 import { PageHeader } from "~/components/ui/page-header";
 import { Card, CardContent } from "~/components/ui/card";
@@ -29,12 +29,16 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogFooter,
 } from "~/components/ui/dialog";
-import { useLinks, useDeletarLink } from "../hooks/useLinks";
+import { useLinks, useDeletarLink, useEditarLink } from "../hooks/useLinks";
 import { getCliquesPorLink, getCliquesCSV } from "../services/tracking.service";
 import { downloadCSV } from "../utils/csv";
 import { QRCodeCanvas } from "qrcode.react";
 import type { LinkSalvo, LinkClique } from "../types";
+import { useEmpresaSuperAdmin } from "~/components/shared/useEmpresaSuperAdmin";
+import { EmpresaSuperAdminSelector } from "~/components/shared/EmpresaSuperAdminSelector";
+import { useAuth } from "~/lib/auth";
 
 const TIPO_LABEL: Record<string, string> = {
   whatsapp: "WhatsApp",
@@ -42,6 +46,7 @@ const TIPO_LABEL: Record<string, string> = {
   google_review: "Google Review",
   google_maps: "Google Maps",
   waze: "Waze",
+  qrcode: "QR Code",
 };
 
 const TIPO_OPTIONS = [
@@ -51,11 +56,15 @@ const TIPO_OPTIONS = [
   { value: "google_review", label: "Google Review" },
   { value: "google_maps", label: "Google Maps" },
   { value: "waze", label: "Waze" },
+  { value: "qrcode", label: "QR Code" },
 ];
 
 export function HistoricoList() {
-  const { data: links, isLoading } = useLinks();
+  const { empresaId, empresas, empresaSelecionada, setEmpresaSelecionada, isSuperAdmin } = useEmpresaSuperAdmin();
+  const { profile, permissoes } = useAuth();
+  const { data: links, isLoading } = useLinks(empresaId);
   const deletarLink = useDeletarLink();
+  const editarLink = useEditarLink();
   const [filtroTipo, setFiltroTipo] = useState("all");
   const [busca, setBusca] = useState("");
   const [itemParaDeletar, setItemParaDeletar] = useState<LinkSalvo | null>(null);
@@ -63,6 +72,10 @@ export function HistoricoList() {
   const [linkCliques, setLinkCliques] = useState<{ link: LinkSalvo; cliques: LinkClique[] } | null>(null);
   const [carregandoCliques, setCarregandoCliques] = useState(false);
   const [cliquesMap, setCliquesMap] = useState<Record<string, number>>({});
+  const [editandoLink, setEditandoLink] = useState<LinkSalvo | null>(null);
+  const [editTitulo, setEditTitulo] = useState("");
+
+  const can = (key: string) => isSuperAdmin || permissoes?.[key] === true;
 
   const filtrados = (links || []).filter((link) => {
     const matchTipo = filtroTipo === "all" || link.tipo === filtroTipo;
@@ -116,6 +129,22 @@ export function HistoricoList() {
     }
   }
 
+  function handleStartEdit(link: LinkSalvo) {
+    setEditandoLink(link);
+    setEditTitulo(link.titulo);
+  }
+
+  async function handleSaveEdit() {
+    if (!editandoLink || !editTitulo.trim()) return;
+    try {
+      await editarLink.mutateAsync({ id: editandoLink.id, titulo: editTitulo.trim() });
+      toast.success("Título atualizado!");
+      setEditandoLink(null);
+    } catch {
+      toast.error("Erro ao atualizar");
+    }
+  }
+
   if (isLoading) {
     return (
       <div className="space-y-4">
@@ -148,6 +177,13 @@ export function HistoricoList() {
       <PageHeader title="Histórico de Links" description="Links gerados e salvos anteriormente" />
 
       <div className="flex flex-col sm:flex-row gap-3">
+        {isSuperAdmin && empresas.length > 0 && (
+          <EmpresaSuperAdminSelector
+            empresas={empresas}
+            value={empresaSelecionada}
+            onChange={setEmpresaSelecionada}
+          />
+        )}
         <Select value={filtroTipo} onValueChange={setFiltroTipo}>
           <SelectTrigger className="w-40">
             <SelectValue />
@@ -202,6 +238,15 @@ export function HistoricoList() {
                     >
                       {copiadoId === link.id ? <Check className="w-4 h-4" /> : <ExternalLink className="w-4 h-4" />}
                     </button>
+                    {can("lk_editar") && (
+                      <button
+                        onClick={() => handleStartEdit(link)}
+                        className="text-text-muted hover:text-accent transition-colors p-1"
+                        title="Editar título"
+                      >
+                        <Pencil size={14} />
+                      </button>
+                    )}
                     <button
                       onClick={() => handleVerCliques(link)}
                       className="text-text-muted hover:text-blue transition-colors p-1"
@@ -216,13 +261,15 @@ export function HistoricoList() {
                     >
                       <Download size={14} />
                     </button>
-                    <button
-                      onClick={() => setItemParaDeletar(link)}
-                      className="text-text-muted hover:text-error transition-colors p-1"
-                      title="Excluir"
-                    >
-                      <Trash2 size={14} />
-                    </button>
+                    {can("lk_excluir") && (
+                      <button
+                        onClick={() => setItemParaDeletar(link)}
+                        className="text-text-muted hover:text-error transition-colors p-1"
+                        title="Excluir"
+                      >
+                        <Trash2 size={14} />
+                      </button>
+                    )}
                   </div>
                 </div>
               </CardContent>
@@ -237,6 +284,33 @@ export function HistoricoList() {
           description="Nenhum link encontrado com os filtros atuais."
         />
       )}
+
+      <Dialog
+        open={!!editandoLink}
+        onOpenChange={(o) => !o && setEditandoLink(null)}
+      >
+        <DialogContent className="bg-card border-border">
+          <DialogHeader>
+            <DialogTitle>Editar link</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4 py-2">
+            <div className="space-y-2">
+              <label className="text-sm font-semibold text-text-main">Título</label>
+              <Input
+                value={editTitulo}
+                onChange={(e) => setEditTitulo(e.target.value)}
+                placeholder="Novo título do link"
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setEditandoLink(null)}>Cancelar</Button>
+            <Button onClick={handleSaveEdit} disabled={!editTitulo.trim() || editarLink.isPending}>
+              Salvar
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
       <AlertDialog
         open={!!itemParaDeletar}
