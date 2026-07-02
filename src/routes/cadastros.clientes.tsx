@@ -252,7 +252,7 @@ function ClientesPage() {
                   </div>
                 </div>
                 {podeExcluir && (
-                  <div className="flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
+                  <div className="flex items-center gap-0.5 md:opacity-0 md:group-hover:opacity-100 transition-opacity shrink-0">
                     <button
                       onClick={(e) => {
                         e.stopPropagation();

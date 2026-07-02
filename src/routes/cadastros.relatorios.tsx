@@ -158,7 +158,7 @@ function RelatoriosPage() {
             <p className="text-xs font-semibold text-accent/80 uppercase tracking-wider">
               Total
             </p>
-            <p className="text-4xl font-bold text-text-main mt-2">
+            <p className="text-3xl sm:text-4xl font-bold text-text-main mt-2">
               {stats.total}
             </p>
             <p className="text-xs text-text-muted mt-2">Cadastros no período</p>
@@ -172,7 +172,7 @@ function RelatoriosPage() {
             <p className="text-xs font-semibold text-yellow-400/80 uppercase tracking-wider">
               Pendentes
             </p>
-            <p className="text-4xl font-bold text-text-main mt-2">
+            <p className="text-3xl sm:text-4xl font-bold text-text-main mt-2">
               {pendentes}
             </p>
             <p className="text-xs text-text-muted mt-2">Aguardando ação</p>
@@ -186,7 +186,7 @@ function RelatoriosPage() {
             <p className="text-xs font-semibold text-green-400/80 uppercase tracking-wider">
               Aprovados
             </p>
-            <p className="text-4xl font-bold text-text-main mt-2">
+            <p className="text-3xl sm:text-4xl font-bold text-text-main mt-2">
               {stats.aprovados}
             </p>
             <p className="text-xs text-text-muted mt-2">Cadastros ativos</p>
@@ -200,7 +200,7 @@ function RelatoriosPage() {
             <p className="text-xs font-semibold text-blue-400/80 uppercase tracking-wider">
               Taxa Aprovação
             </p>
-            <p className="text-4xl font-bold text-text-main mt-2">
+            <p className="text-3xl sm:text-4xl font-bold text-text-main mt-2">
               {taxaAprovacao}%
             </p>
             <div className="mt-2 h-1.5 w-full rounded-full bg-blue-500/10 overflow-hidden">
@@ -215,7 +215,7 @@ function RelatoriosPage() {
 
       {/* Status Breakdown */}
       {!loading && (
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-3">
           {[
             {
               label: "Links",
