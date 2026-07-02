@@ -14,7 +14,7 @@ import {
 
 export const consultorClientesRoute = createRoute({
   getParentRoute: () => authLayout,
-  path: "/consultor/clientes",
+  path: "/cadastros/consultor/clientes",
   component: ConsultorClientes,
 });
 
@@ -60,7 +60,7 @@ function ConsultorClientes() {
     <div className="flex flex-col gap-6 p-4 pb-24">
       <div className="flex items-center gap-3">
         <button
-          onClick={() => navigate({ to: "/consultor" })}
+          onClick={() => navigate({ to: "/cadastros/consultor" })}
           className="text-text-muted hover:text-text-main"
         >
           <ArrowLeft size={20} />
@@ -96,7 +96,7 @@ function ConsultorClientes() {
             <button
               key={c.id}
               onClick={() =>
-                navigate({ to: "/clientes/$id", params: { id: c.id } })
+                navigate({ to: "/cadastros/solicitacoes/$id", params: { id: c.id } })
               }
               className="flex items-center gap-4 rounded-2xl bg-card p-5 shadow-lg transition-all active:scale-[0.98] w-full text-left hover:ring-2 hover:ring-accent/30 hover:-translate-y-1"
             >

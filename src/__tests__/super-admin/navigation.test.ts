@@ -15,16 +15,16 @@ describe("Super Admin - Navigation", () => {
       id: "test-dashboard",
       label: "Dashboard",
       icon: LayoutDashboard,
-      to: "/dashboard",
+      to: "/cadastros/dashboard",
       permissionCheck: (perms) => perms?.ver_todos_cadastros === true,
       order: 1,
       moduloKey: "cadastros",
     });
     registerNavItem({
-      id: "test-clientes",
-      label: "Clientes",
+      id: "test-solicitacoes",
+      label: "Solicitações",
       icon: Users,
-      to: "/clientes",
+      to: "/cadastros/solicitacoes",
       permissionCheck: (perms) =>
         perms?.ver_todos_cadastros === true || perms?.gerar_links === true,
       order: 2,
@@ -32,9 +32,9 @@ describe("Super Admin - Navigation", () => {
     });
     registerNavItem({
       id: "test-relatorios",
-      label: "Relatorios",
+      label: "Relatórios",
       icon: LayoutDashboard,
-      to: "/relatorios",
+      to: "/cadastros/relatorios",
       permissionCheck: (perms) => perms?.ver_relatorios === true,
       order: 3,
       moduloKey: "cadastros",

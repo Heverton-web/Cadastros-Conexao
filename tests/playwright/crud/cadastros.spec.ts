@@ -6,13 +6,13 @@ test.describe("Cadastros CRUD", () => {
     await loginAsSuperAdmin(page);
   });
 
-  test("pagina de clientes carrega", async ({ page }) => {
-    await page.goto("/clientes");
-    await expect(page.locator("text=Clientes").first()).toBeVisible();
+  test("pagina de solicitacoes carrega", async ({ page }) => {
+    await page.goto("/cadastros/solicitacoes");
+    await expect(page.locator("text=Solicitações").first()).toBeVisible();
   });
 
-  test("pagina de clientes retorna 200", async ({ page }) => {
-    const response = await page.goto("/clientes");
+  test("pagina de solicitacoes retorna 200", async ({ page }) => {
+    const response = await page.goto("/cadastros/solicitacoes");
     expect(response?.status()).toBe(200);
   });
 });

@@ -2,12 +2,13 @@ import { rootRoute } from "./routes/__root";
 import { authLayout } from "./routes/_auth";
 import { loginRoute } from "./routes/index";
 import { preCadastroRoute } from "./routes/pre-cadastro.$token";
-import { dashboardRoute } from "./routes/dashboard";
-import { clientesRoute } from "./routes/clientes";
-import { clienteDetailRoute } from "./routes/clientes.$id";
-import { consultorRoute } from "./routes/consultor";
-import { consultorClientesRoute } from "./routes/consultor.clientes";
-import { relatoriosRoute } from "./routes/relatorios";
+import { dashboardRoute } from "./routes/cadastros.dashboard";
+import { clientesRoute } from "./routes/cadastros.solicitacoes";
+import { clienteDetailRoute } from "./routes/cadastros.solicitacoes.$id";
+import { consultorRoute } from "./routes/cadastros.consultor";
+import { consultorClientesRoute } from "./routes/cadastros.consultor.clientes";
+import { cadastrosClientesRoute } from "./routes/cadastros.clientes";
+import { relatoriosRoute } from "./routes/cadastros.relatorios";
 import { credenciaisRoute } from "./routes/credenciais";
 import { adminConfigRoute } from "./routes/global.acoes";
 import { adminSuperEmpresasRoute } from "./routes/global.empresas";
@@ -171,6 +172,7 @@ export const routeTree = rootRoute.addChildren([
     dashboardRoute,
     clientesRoute,
     clienteDetailRoute,
+    cadastrosClientesRoute,
     consultorRoute,
     consultorClientesRoute,
     relatoriosRoute,

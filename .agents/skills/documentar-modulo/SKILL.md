@@ -71,13 +71,21 @@ Ler `registerPermissionDefaults()` em `module.ts`. Montar mapa:
 1. Ler imports em `services/` — identificar tabelas Supabase usadas
 2. Ler imports de outros módulos (se `~/features/outro-modulo/` aparece)
 
-### Passo 7: Gerar documento
+### Passo 7: Extrair schema das tabelas exclusivas
+
+1. Identificar tabelas Supabase exclusivas do módulo (definidas em `supabase/migrations/`)
+2. Buscar a criação original da tabela com `grep -l "create table.*<tabela>" supabase/migrations/*.sql`
+3. Ler a migration de criação e todas as migrations posteriores que adicionam colunas (`ALTER TABLE ... ADD COLUMN`)
+4. Montar o schema SQL consolidado com todas as colunas, tipos, constraints e defaults
+5. Excluir tabelas que não são exclusivas do módulo (ex: `profiles`, `empresas`)
+
+### Passo 8: Gerar documento
 
 Montar Markdown com as seções abaixo e salvar em `docs-projeto/doc-modulos/<modulo>.md`.
 
 Se o diretório `docs-projeto/doc-modulos/` não existir, criá-lo.
 
-### Passo 8: Retornar resumo
+### Passo 9: Retornar resumo
 
 Exibir ao usuário:
 - Caminho do arquivo gerado
@@ -194,7 +202,31 @@ O gestor aprova despesas e acompanha relatórios de desempenho.">
 
 ---
 
-## 10. Notas
+## 10. Schema das Tabelas
+
+> Schema SQL consolidado das tabelas exclusivas do módulo. Colunas adicionadas via migrations estão incluídas.
+
+### `<tabela>`
+
+\```sql
+create table public.<tabela> (
+  id          uuid primary key default gen_random_uuid(),
+  <coluna>    <tipo> <constraints>,
+  ...
+  empresa_id  uuid references public.empresas(id) on delete cascade,
+  created_at  timestamptz default now(),
+  updated_at  timestamptz default now()
+);
+\```
+
+| Coluna | Tipo | Constraints | Descrição |
+|--------|------|-------------|-----------|
+| `id` | `uuid` | PK, default `gen_random_uuid()` | Identificador único |
+| `<coluna>` | `<tipo>` | `<constraints>` | <descrição> |
+
+---
+
+## 11. Notas
 
 - <Qualquer observação relevante sobre o módulo>
 - <Padrões específicos usados>

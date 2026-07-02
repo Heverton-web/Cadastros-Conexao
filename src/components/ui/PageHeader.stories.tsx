@@ -21,8 +21,8 @@ export const WithBreadcrumbs: Story = {
   args: {
     title: "Editar Cliente",
     breadcrumbs: [
-      { label: "Dashboard", href: "/dashboard" },
-      { label: "Clientes", href: "/clientes" },
+      { label: "Dashboard", href: "/cadastros/dashboard" },
+      { label: "Solicitações", href: "/cadastros/solicitacoes" },
       { label: "Editar" },
     ],
   },
@@ -45,7 +45,7 @@ export const Full: Story = {
     title: "Configurações Avançadas",
     description: "Configure parâmetros avançados do sistema.",
     breadcrumbs: [
-      { label: "Dashboard", href: "/dashboard" },
+      { label: "Dashboard", href: "/cadastros/dashboard" },
       { label: "Configurações", href: "/config" },
       { label: "Avançado" },
     ],

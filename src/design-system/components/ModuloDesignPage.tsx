@@ -30,7 +30,7 @@ export function ModuloDesignPage({ moduloKey, moduloNome }: Props) {
   const empresaId = empresa?.id;
 
   if (!profile?.is_super_admin && !empresaId) {
-    void navigate({ to: "/dashboard" });
+    void navigate({ to: "/cadastros/dashboard" });
     return null;
   }
 

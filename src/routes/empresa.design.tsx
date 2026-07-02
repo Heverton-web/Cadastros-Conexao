@@ -39,7 +39,7 @@ function EmpresaDesignPage() {
   const empresaId = empresa?.id;
 
   if (!isSuper && !empresaId) {
-    void navigate({ to: "/dashboard" });
+    void navigate({ to: "/cadastros/dashboard" });
     return null;
   }
 

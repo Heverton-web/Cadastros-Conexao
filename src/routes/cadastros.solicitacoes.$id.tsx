@@ -85,7 +85,7 @@ const LABEL_MAP: Record<string, string> = {
 
 export const clienteDetailRoute = createRoute({
   getParentRoute: () => authLayout,
-  path: "/clientes/$id",
+  path: "/cadastros/solicitacoes/$id",
   component: ClienteDetailPage,
 });
 

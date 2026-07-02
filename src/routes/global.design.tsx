@@ -35,7 +35,7 @@ function GlobalDesignPage() {
   const queryClient = useQueryClient();
 
   if (!profile?.is_super_admin) {
-    void navigate({ to: "/dashboard" });
+    void navigate({ to: "/cadastros/dashboard" });
     return null;
   }
 

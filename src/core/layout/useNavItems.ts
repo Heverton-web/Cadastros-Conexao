@@ -23,12 +23,12 @@ export function useNavItems() {
 
   const navItems: NavItem[] = [
     ...(p?.ver_todos_cadastros === true
-      ? [{ path: "/dashboard", label: "Dashboard", icon: LayoutDashboard }]
+      ? [{ path: "/cadastros/dashboard", label: "Dashboard", icon: LayoutDashboard }]
       : []),
     ...(p?.gerar_links === true
       ? [
           {
-            path: "/consultor",
+            path: "/cadastros/consultor",
             label: amb === "consultor" ? "Gerar Links" : "Consultor",
             icon: Link2,
           },
@@ -37,15 +37,24 @@ export function useNavItems() {
     ...(p?.ver_todos_cadastros === true || p?.gerar_links === true
       ? [
           {
-            path: "/clientes",
+            path: "/cadastros/solicitacoes",
+            label: "Solicitações",
+            icon: Users,
+            matchPaths: ["/cadastros/solicitacoes/$id"],
+          },
+        ]
+      : []),
+    ...(p?.ver_todos_cadastros === true || p?.gerar_links === true
+      ? [
+          {
+            path: "/cadastros/clientes",
             label: "Clientes",
             icon: Users,
-            matchPaths: ["/consultor/clientes"],
           },
         ]
       : []),
     ...(p?.ver_relatorios === true
-      ? [{ path: "/relatorios", label: "Relatórios", icon: BarChart3 }]
+      ? [{ path: "/cadastros/relatorios", label: "Relatórios", icon: BarChart3 }]
       : []),
     ...(p?.gerenciar_credenciais === true
       ? [{ path: "/credenciais", label: "Credenciais", icon: Shield }]

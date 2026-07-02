@@ -24,17 +24,21 @@ import {
   Plus,
   Share2,
   ArrowRight,
-  Copy,
   X,
   Clock,
   CheckCircle,
   XCircle,
   AlertTriangle,
+  Users,
+  TrendingUp,
+  BarChart3,
 } from "lucide-react";
+import { Skeleton } from "~/components/ui/skeleton";
+import { EmptyState } from "~/components/ui/empty-state";
 
 export const consultorRoute = createRoute({
   getParentRoute: () => authLayout,
-  path: "/consultor",
+  path: "/cadastros/consultor",
   component: ConsultorPage,
 });
 
@@ -72,7 +76,8 @@ function ConsultorPage() {
   const [showGerarLink, setShowGerarLink] = useState(false);
   const [linkForm, setLinkForm] = useState({
     tipo_acao: "solicitar_cadastro" as
-      "solicitar_cadastro" | "atualizar_cadastro",
+      | "solicitar_cadastro"
+      | "atualizar_cadastro",
     receber_por: "whatsapp" as "whatsapp" | "email",
     nome_lead: "",
     email_lead: "",
@@ -90,7 +95,6 @@ function ConsultorPage() {
     if (user?.id) carregar();
   }, [user]);
 
-  // Trava scroll do body quando modal está aberto (previne desconfiguração no Samsung)
   useEffect(() => {
     const isModalOpen = showGerarLink || showSuccess;
     if (isModalOpen) {
@@ -217,18 +221,42 @@ function ConsultorPage() {
     }
   }
 
-  return (
-    <div className="flex flex-col gap-6 md:gap-8 p-4 pb-24">
-      <div>
-        <h1 className="text-lg font-bold text-text-main">
-          Dashboard do Consultor
-        </h1>
-        <p className="text-xs text-text-muted">
-          Gerencie seus cadastros e crie novos links para clientes
-        </p>
-      </div>
+  const stats = {
+    total: cadastros.length,
+    link_gerado: cadastros.filter((s) => s.status === "link_gerado").length,
+    dados_enviados: cadastros.filter((s) => s.status === "dados_enviados")
+      .length,
+    em_analise: cadastros.filter((s) => s.status === "em_analise").length,
+    em_correcao: cadastros.filter((s) => s.status === "em_correcao").length,
+    aprovados: cadastros.filter((s) => s.status === "aprovado").length,
+    reprovados: cadastros.filter((s) => s.status === "reprovado").length,
+  };
 
-      <div className="grid grid-cols-2 gap-4 md:gap-6">
+  const taxaAprovacao =
+    stats.total > 0 ? Math.round((stats.aprovados / stats.total) * 100) : 0;
+  const pendentes = stats.em_analise + stats.dados_enviados + stats.em_correcao;
+
+  const lista = filtroStatus
+    ? cadastros.filter(
+        (s) =>
+          s.status === filtroStatus ||
+          (filtroStatus === "em_analise" &&
+            (s.status === "em_analise" || s.status === "dados_enviados")),
+      )
+    : cadastros;
+
+  return (
+    <div className="space-y-8 animate-fade-in">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold text-text-main tracking-tight">
+            Consultor
+          </h1>
+          <p className="text-sm text-text-muted mt-1">
+            Gerencie seus cadastros e crie novos links para clientes
+          </p>
+        </div>
         <button
           onClick={() => {
             setLinkForm((prev) => ({
@@ -237,85 +265,164 @@ function ConsultorPage() {
             }));
             setShowGerarLink(true);
           }}
-          className="flex flex-col items-center justify-center gap-2 rounded-xl bg-accent p-5 text-white shadow-lg transition active:scale-[0.98] min-h-[80px]"
+          className="flex items-center gap-2 rounded-xl bg-accent text-accent-fg px-5 py-2.5 text-sm font-semibold hover:bg-accent-hover transition-all duration-200 min-h-[44px] shadow-lg shadow-accent/20"
         >
-          <Plus size={24} />
-          <span className="text-xs font-bold">Solicitar Cadastro</span>
-        </button>
-        <button
-          onClick={() => {
-            setLinkForm((prev) => ({
-              ...prev,
-              tipo_acao: "atualizar_cadastro",
-            }));
-            setShowGerarLink(true);
-          }}
-          className="flex flex-col items-center justify-center gap-2 rounded-xl border-2 border-accent/50 p-5 text-accent shadow-lg transition active:scale-[0.98] min-h-[80px]"
-        >
-          <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <path d="M21 2v6h-6" />
-            <path d="M3 12a9 9 0 0 1 15-6.7L21 8" />
-            <path d="M3 22v-6h6" />
-            <path d="M21 12a9 9 0 0 1-15 6.7L3 16" />
-          </svg>
-          <span className="text-xs font-bold">Atualizar Cadastro</span>
+          <Plus size={16} />
+          <span>Solicitar Cadastro</span>
         </button>
       </div>
 
-      <div className="grid grid-cols-5 gap-2 md:gap-3">
-        <FiltroCard
-          label="Todos"
-          value={cadastros.length}
-          color="text-accent"
-          ativo={filtroStatus === null}
-          onClick={() => setFiltroStatus(null)}
-        />
-        <FiltroCard
-          label="Links"
-          value={cadastros.filter((s) => s.status === "link_gerado").length}
-          color="text-blue-400"
-          ativo={filtroStatus === "link_gerado"}
-          onClick={() => setFiltroStatus("link_gerado")}
-        />
-        <FiltroCard
-          label="Análise"
-          value={
-            cadastros.filter(
-              (s) => s.status === "em_analise" || s.status === "dados_enviados",
-            ).length
-          }
-          color="text-yellow-400"
-          ativo={filtroStatus === "em_analise"}
-          onClick={() => setFiltroStatus("em_analise")}
-        />
-        <FiltroCard
-          label="Aprovados"
-          value={cadastros.filter((s) => s.status === "aprovado").length}
-          color="text-green-400"
-          ativo={filtroStatus === "aprovado"}
-          onClick={() => setFiltroStatus("aprovado")}
-        />
-        <FiltroCard
-          label="Reprovados"
-          value={cadastros.filter((s) => s.status === "reprovado").length}
-          color="text-red-400"
-          ativo={filtroStatus === "reprovado"}
-          onClick={() => setFiltroStatus("reprovado")}
-        />
-      </div>
+      {/* KPI Cards */}
+      {loading ? (
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <Skeleton key={i} className="h-32 rounded-2xl" />
+          ))}
+        </div>
+      ) : (
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          {/* Total */}
+          <div className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-accent/20 via-accent/10 to-transparent border border-accent/20 p-5 transition-all duration-300 hover:shadow-lg hover:shadow-accent/10 hover:border-accent/40">
+            <div className="absolute top-4 right-4 flex items-center justify-center w-12 h-12 rounded-xl bg-accent/15 text-accent group-hover:scale-110 transition-transform duration-300">
+              <Users size={22} />
+            </div>
+            <p className="text-xs font-semibold text-accent/80 uppercase tracking-wider">
+              Total
+            </p>
+            <p className="text-4xl font-bold text-text-main mt-2">
+              {stats.total}
+            </p>
+            <p className="text-xs text-text-muted mt-2">Solicitações criadas</p>
+          </div>
 
+          {/* Pendentes */}
+          <div className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-yellow-500/20 via-yellow-500/10 to-transparent border border-yellow-500/20 p-5 transition-all duration-300 hover:shadow-lg hover:shadow-yellow-500/10 hover:border-yellow-500/40">
+            <div className="absolute top-4 right-4 flex items-center justify-center w-12 h-12 rounded-xl bg-yellow-500/15 text-yellow-400 group-hover:scale-110 transition-transform duration-300">
+              <Clock size={22} />
+            </div>
+            <p className="text-xs font-semibold text-yellow-400/80 uppercase tracking-wider">
+              Pendentes
+            </p>
+            <p className="text-4xl font-bold text-text-main mt-2">
+              {pendentes}
+            </p>
+            <p className="text-xs text-text-muted mt-2">Aguardando ação</p>
+          </div>
+
+          {/* Aprovados */}
+          <div className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-green-500/20 via-green-500/10 to-transparent border border-green-500/20 p-5 transition-all duration-300 hover:shadow-lg hover:shadow-green-500/10 hover:border-green-500/40">
+            <div className="absolute top-4 right-4 flex items-center justify-center w-12 h-12 rounded-xl bg-green-500/15 text-green-400 group-hover:scale-110 transition-transform duration-300">
+              <CheckCircle size={22} />
+            </div>
+            <p className="text-xs font-semibold text-green-400/80 uppercase tracking-wider">
+              Aprovados
+            </p>
+            <p className="text-4xl font-bold text-text-main mt-2">
+              {stats.aprovados}
+            </p>
+            <p className="text-xs text-text-muted mt-2">Cadastros ativos</p>
+          </div>
+
+          {/* Taxa de Aprovação */}
+          <div className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-blue-500/20 via-blue-500/10 to-transparent border border-blue-500/20 p-5 transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/10 hover:border-blue-500/40">
+            <div className="absolute top-4 right-4 flex items-center justify-center w-12 h-12 rounded-xl bg-blue-500/15 text-blue-400 group-hover:scale-110 transition-transform duration-300">
+              <TrendingUp size={22} />
+            </div>
+            <p className="text-xs font-semibold text-blue-400/80 uppercase tracking-wider">
+              Taxa Aprovação
+            </p>
+            <p className="text-4xl font-bold text-text-main mt-2">
+              {taxaAprovacao}%
+            </p>
+            <div className="mt-2 h-1.5 w-full rounded-full bg-blue-500/10 overflow-hidden">
+              <div
+                className="h-full rounded-full bg-gradient-to-r from-blue-500 to-blue-400 transition-all duration-1000"
+                style={{ width: `${taxaAprovacao}%` }}
+              />
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Status Breakdown */}
+      {!loading && (
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+          {[
+            {
+              label: "Links",
+              value: stats.link_gerado,
+              icon: Link2,
+              color: "text-blue-400",
+              bg: "bg-blue-500/10",
+              border: "border-blue-500/20",
+              filter: "link_gerado",
+            },
+            {
+              label: "Enviados",
+              value: stats.dados_enviados,
+              icon: Clock,
+              color: "text-cyan-400",
+              bg: "bg-cyan-500/10",
+              border: "border-cyan-500/20",
+              filter: "dados_enviados" as CadastroStatus,
+            },
+            {
+              label: "Análise",
+              value: stats.em_analise,
+              icon: AlertTriangle,
+              color: "text-yellow-400",
+              bg: "bg-yellow-500/10",
+              border: "border-yellow-500/20",
+              filter: "em_analise",
+            },
+            {
+              label: "Correção",
+              value: stats.em_correcao,
+              icon: AlertTriangle,
+              color: "text-orange-400",
+              bg: "bg-orange-500/10",
+              border: "border-orange-500/20",
+              filter: "em_correcao",
+            },
+            {
+              label: "Reprovados",
+              value: stats.reprovados,
+              icon: XCircle,
+              color: "text-red-400",
+              bg: "bg-red-500/10",
+              border: "border-red-500/20",
+              filter: "reprovado",
+            },
+          ].map((item) => (
+            <button
+              key={item.label}
+              onClick={() =>
+                setFiltroStatus(filtroStatus === item.filter ? null : item.filter)
+              }
+              className={`flex items-center gap-3 rounded-xl ${item.bg} border ${item.border} p-3 transition-all duration-200 hover:scale-[1.02] ${filtroStatus === item.filter ? "ring-2 ring-accent/50" : ""}`}
+            >
+              <div
+                className={`flex items-center justify-center w-9 h-9 rounded-lg ${item.bg}`}
+              >
+                <item.icon size={16} className={item.color} />
+              </div>
+              <div>
+                <p className={`text-lg font-bold ${item.color}`}>
+                  {item.value}
+                </p>
+                <p className="text-[11px] text-text-muted font-medium">
+                  {item.label}
+                </p>
+              </div>
+            </button>
+          ))}
+        </div>
+      )}
+
+      {/* Minhas Solicitações */}
       <div>
-        <div className="flex items-center justify-between mb-3">
-          <h2 className="text-sm font-bold text-text-main">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-lg font-bold text-text-main">
             {filtroStatus
               ? STATUS_LABEL[filtroStatus as CadastroStatus] || filtroStatus
               : "Minhas Solicitações"}
@@ -323,85 +430,86 @@ function ConsultorPage() {
           {filtroStatus && (
             <button
               onClick={() => setFiltroStatus(null)}
-              className="text-xs text-accent underline"
+              className="text-sm text-accent hover:text-accent-hover transition-colors font-medium"
             >
               Limpar filtro
             </button>
           )}
         </div>
+
         {loading ? (
-          <div className="flex justify-center py-8">
-            <Loader2 size={20} className="animate-spin text-accent" />
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <Skeleton key={i} className="h-24 rounded-xl" />
+            ))}
           </div>
-        ) : cadastros.length === 0 ? (
-          <p className="text-center text-sm text-text-muted py-8">
-            Nenhuma solicitação ainda. Crie seu primeiro link!
-          </p>
+        ) : lista.length === 0 ? (
+          <EmptyState
+            icon={<BarChart3 className="w-10 h-10 text-text-muted/30" />}
+            title={
+              filtroStatus
+                ? "Nenhuma solicitação com este status"
+                : "Nenhuma solicitação ainda"
+            }
+            description={
+              filtroStatus
+                ? "Tente limpar o filtro para ver outras solicitações."
+                : "Crie seu primeiro link de cadastro para começar."
+            }
+          />
         ) : (
-          (() => {
-            const lista = filtroStatus
-              ? cadastros.filter(
-                  (s) =>
-                    s.status === filtroStatus ||
-                    (filtroStatus === "em_analise" &&
-                      (s.status === "em_analise" ||
-                        s.status === "dados_enviados")),
-                )
-              : cadastros;
-            return lista.length === 0 ? (
-              <p className="text-center text-sm text-text-muted py-8">
-                Nenhuma solicitação com este status.
-              </p>
-            ) : (
-              <div className="flex flex-col gap-2">
-                {lista.slice(0, 10).map((s) => (
-                  <button
-                    key={s.id}
-                    onClick={() =>
-                      navigate({ to: "/clientes/$id", params: { id: s.id } })
-                    }
-                    className="flex items-center gap-3 rounded-xl bg-card p-4 shadow-lg transition active:scale-[0.98] w-full text-left hover:ring-1 hover:ring-accent/30"
-                  >
-                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-accent/10">
-                      {s.status === "aprovado" ? (
-                        <CheckCircle size={16} className="text-green-400" />
-                      ) : s.status === "reprovado" ? (
-                        <XCircle size={16} className="text-red-400" />
-                      ) : s.status === "em_correcao" ? (
-                        <AlertTriangle size={16} className="text-orange-400" />
-                      ) : s.status === "em_analise" ||
-                        s.status === "dados_enviados" ? (
-                        <Clock size={16} className="text-yellow-400" />
-                      ) : (
-                        <Link2 size={16} className="text-blue-400" />
-                      )}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-text-main truncate">
-                        {s.lead_nome || "Sem nome"}
-                      </p>
-                      <div className="flex items-center gap-1.5 flex-wrap mt-0.5">
-                        <span
-                          className={`rounded-full px-2 py-0.5 text-xs font-medium ${STATUS_COLOR[s.status]}`}
-                        >
-                          {STATUS_LABEL[s.status]}
-                        </span>
-                        <span
-                          className={`rounded-full px-2 py-0.5 text-xs font-medium ${DOC_STATUS_COLOR[docsStatus[s.id]]}`}
-                        >
-                          {DOC_STATUS_LABEL[docsStatus[s.id]]}
-                        </span>
-                      </div>
-                    </div>
-                    <ArrowRight
-                      size={16}
-                      className="text-text-muted shrink-0"
-                    />
-                  </button>
-                ))}
-              </div>
-            );
-          })()
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+            {lista.slice(0, 30).map((s, i) => (
+              <button
+                key={s.id}
+                onClick={() =>
+                  navigate({
+                    to: "/cadastros/solicitacoes/$id",
+                    params: { id: s.id },
+                  })
+                }
+                className="group flex items-center gap-4 rounded-xl bg-surface border border-border p-4 transition-all duration-200 hover:border-accent/30 hover:shadow-lg hover:shadow-accent/5 hover:-translate-y-0.5 w-full text-left"
+                style={{ animationDelay: `${i * 50}ms` }}
+              >
+                {/* Avatar */}
+                <div className="flex items-center justify-center w-10 h-10 rounded-full bg-accent/10 text-accent font-bold text-sm shrink-0 group-hover:bg-accent/20 transition-colors">
+                  {(s.lead_nome || "S")[0].toUpperCase()}
+                </div>
+
+                {/* Info */}
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-semibold text-text-main truncate group-hover:text-accent transition-colors">
+                    {s.lead_nome || "Sem nome"}
+                  </p>
+                  <div className="flex items-center gap-1.5 mt-0.5 flex-wrap">
+                    <span
+                      className={`rounded-full px-2 py-0.5 text-xs font-medium ${STATUS_COLOR[s.status]}`}
+                    >
+                      {STATUS_LABEL[s.status]}
+                    </span>
+                    <span
+                      className={`rounded-full px-2 py-0.5 text-xs font-medium ${DOC_STATUS_COLOR[docsStatus[s.id]]}`}
+                    >
+                      {DOC_STATUS_LABEL[docsStatus[s.id]]}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Status icon */}
+                <div className="flex shrink-0">
+                  {s.status === "aprovado" ? (
+                    <CheckCircle size={16} className="text-green-400" />
+                  ) : s.status === "reprovado" ? (
+                    <XCircle size={16} className="text-red-400" />
+                  ) : s.status === "em_correcao" ? (
+                    <AlertTriangle size={16} className="text-orange-400" />
+                  ) : (
+                    <Clock size={16} className="text-yellow-400" />
+                  )}
+                </div>
+              </button>
+            ))}
+          </div>
         )}
       </div>
 
@@ -625,34 +733,6 @@ function ConsultorPage() {
         </div>
       )}
     </div>
-  );
-}
-
-function FiltroCard({
-  label,
-  value,
-  color,
-  ativo,
-  onClick,
-}: {
-  label: string;
-  value: number;
-  color: string;
-  ativo: boolean;
-  onClick: () => void;
-}) {
-  return (
-    <button
-      onClick={onClick}
-      className={`flex flex-col items-center gap-0.5 rounded-xl p-2 shadow-lg transition active:scale-[0.98] ${ativo ? "bg-accent/20 ring-2 ring-accent/50" : "bg-card"}`}
-    >
-      <span className={`text-sm sm:text-base font-bold ${color}`}>{value}</span>
-      <span
-        className={`text-xs leading-tight ${ativo ? "text-accent" : "text-text-muted"}`}
-      >
-        {label}
-      </span>
-    </button>
   );
 }
 

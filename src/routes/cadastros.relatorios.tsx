@@ -1,11 +1,12 @@
-import { createRoute } from "@tanstack/react-router";
+import { createRoute, useNavigate } from "@tanstack/react-router";
 import { authLayout } from "./_auth";
 import { useState, useEffect } from "react";
+import { supabase } from "~/lib/supabase";
+import { useAuth } from "~/lib/auth";
 import {
-  listarCadastros,
   STATUS_LABEL,
   STATUS_COLOR,
-  type Cadastro,
+  type CadastroStatus,
 } from "~/features/clientes";
 import {
   getDocumentosStatusMap,
@@ -13,71 +14,89 @@ import {
   DOC_STATUS_COLOR,
   type DocStatus,
 } from "~/features/documentos";
-import { useAuth } from "~/lib/auth";
-import { Link } from "@tanstack/react-router";
 import {
-  Loader2,
   CheckCircle,
   XCircle,
-  Link2,
   Clock,
   AlertTriangle,
-  HelpCircle,
+  Link2,
   Users,
+  TrendingUp,
   ArrowUpRight,
   BarChart3,
-  TrendingUp,
-  UserPlus,
 } from "lucide-react";
-import { TutoriaisPopup } from "~/components/ui/tutoriais-popup";
 import { Skeleton } from "~/components/ui/skeleton";
 import { EmptyState } from "~/components/ui/empty-state";
 import toast from "react-hot-toast";
 
-export const dashboardRoute = createRoute({
+export const relatoriosRoute = createRoute({
   getParentRoute: () => authLayout,
-  path: "/dashboard",
-  component: DashboardPage,
+  path: "/cadastros/relatorios",
+  component: RelatoriosPage,
 });
 
-function DashboardPage() {
-  const { profile } = useAuth();
-  const [data, setData] = useState<
-    (Cadastro & { profiles: { nome: string } | null })[]
-  >([]);
+function RelatoriosPage() {
+  const { user, profile, permissoes } = useAuth();
+  const navigate = useNavigate();
+  const verTodos = permissoes?.ver_todos_cadastros === true;
+  const [periodo, setPeriodo] = useState("30");
+  const [filtroStatus, setFiltroStatus] = useState<CadastroStatus | "">("");
   const [loading, setLoading] = useState(true);
-  const [showTutoriais, setShowTutoriais] = useState(false);
+  const [data, setData] = useState<any[]>([]);
   const [docsStatus, setDocsStatus] = useState<Record<string, DocStatus>>({});
 
   useEffect(() => {
-    listarCadastros()
-      .then(async (res) => {
-        setData(res);
+    carregar();
+  }, [periodo]);
+
+  async function carregar() {
+    setLoading(true);
+    try {
+      const diasAtras = new Date();
+      diasAtras.setDate(diasAtras.getDate() - Number(periodo));
+      let query = supabase
+        .from("cadastros")
+        .select("*")
+        .gte("created_at", diasAtras.toISOString());
+      if (!verTodos && user?.id) {
+        query = query.eq("created_by", user.id);
+      }
+      const { data: cadastros } = await query.order("created_at", {
+        ascending: false,
+      });
+      setData(cadastros || []);
+      const items = cadastros || [];
+      if (items.length > 0) {
         const status = await getDocumentosStatusMap(
-          res.map((c: any) => ({ id: c.id, tipo_pessoa: c.tipo_pessoa })),
+          items.map((c: any) => ({ id: c.id, tipo_pessoa: c.tipo_pessoa })),
         );
         setDocsStatus(status);
-      })
-      .catch(() => {
-        toast.error("Erro ao carregar dados do dashboard");
-      })
-      .finally(() => setLoading(false));
-  }, []);
+      }
+    } catch {
+      toast.error("Erro ao carregar dados");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  const filtered = filtroStatus
+    ? data.filter((c) => c.status === filtroStatus)
+    : data;
 
   const stats = {
-    total: data.length,
-    link_gerado: data.filter((c) => c.status === "link_gerado").length,
-    dados_enviados: data.filter((c) => c.status === "dados_enviados").length,
-    em_analise: data.filter((c) => c.status === "em_analise").length,
-    em_correcao: data.filter((c) => c.status === "em_correcao").length,
-    aprovados: data.filter((c) => c.status === "aprovado").length,
-    reprovados: data.filter((c) => c.status === "reprovado").length,
+    total: filtered.length,
+    link_gerado: filtered.filter((c) => c.status === "link_gerado").length,
+    dados_enviados: filtered.filter((c) => c.status === "dados_enviados")
+      .length,
+    em_analise: filtered.filter((c) => c.status === "em_analise").length,
+    em_correcao: filtered.filter((c) => c.status === "em_correcao").length,
+    aprovados: filtered.filter((c) => c.status === "aprovado").length,
+    reprovados: filtered.filter((c) => c.status === "reprovado").length,
   };
 
   const taxaAprovacao =
     stats.total > 0 ? Math.round((stats.aprovados / stats.total) * 100) : 0;
   const pendentes = stats.em_analise + stats.dados_enviados + stats.em_correcao;
-  const recentes = data.slice(0, 9);
 
   return (
     <div className="space-y-8 animate-fade-in">
@@ -85,33 +104,42 @@ function DashboardPage() {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-text-main tracking-tight">
-            Olá, {profile?.nome?.split(" ")[0] || "Usuário"}
+            Relatórios
           </h1>
           <p className="text-sm text-text-muted mt-1">
-            Aqui está o resumo das suas solicitações de cadastro
+            Filtre e exporte dados do sistema
           </p>
         </div>
-        <div className="flex items-center gap-3">
-          <button
-            onClick={() => setShowTutoriais(true)}
-            className="flex items-center gap-2 rounded-xl bg-surface border border-border px-4 py-2.5 text-sm text-text-muted hover:text-text-main hover:border-accent/30 transition-all duration-200 min-h-[44px]"
-          >
-            <HelpCircle size={16} className="text-accent" />
-            <span>Tutoriais</span>
-          </button>
-          <Link
-            to="/clientes"
-            className="flex items-center gap-2 rounded-xl bg-accent text-accent-fg px-4 py-2.5 text-sm font-semibold hover:bg-accent-hover transition-all duration-200 min-h-[44px] shadow-lg shadow-accent/20"
-          >
-            <UserPlus size={16} />
-            <span>Novo Cliente</span>
-          </Link>
-        </div>
       </div>
-      <TutoriaisPopup
-        open={showTutoriais}
-        onClose={() => setShowTutoriais(false)}
-      />
+
+      {/* Filters */}
+      <div className="flex flex-col sm:flex-row gap-3">
+        <select
+          value={periodo}
+          onChange={(e) => setPeriodo(e.target.value)}
+          className="w-full sm:w-48 h-12 rounded-xl border border-border bg-input-bg px-4 text-sm text-text-main font-medium focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent transition-all duration-200"
+        >
+          <option value="7">Últimos 7 dias</option>
+          <option value="30">Últimos 30 dias</option>
+          <option value="90">Últimos 90 dias</option>
+          <option value="365">Último ano</option>
+        </select>
+        <select
+          value={filtroStatus}
+          onChange={(e) =>
+            setFiltroStatus(e.target.value as CadastroStatus | "")
+          }
+          className="w-full sm:w-48 h-12 rounded-xl border border-border bg-input-bg px-4 text-sm text-text-main font-medium focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent transition-all duration-200"
+        >
+          <option value="">Todos os status</option>
+          <option value="link_gerado">Link Gerado</option>
+          <option value="dados_enviados">Dados Enviados</option>
+          <option value="em_analise">Em Análise</option>
+          <option value="em_correcao">Em Correção</option>
+          <option value="aprovado">Aprovado</option>
+          <option value="reprovado">Reprovado</option>
+        </select>
+      </div>
 
       {/* KPI Cards */}
       {loading ? (
@@ -133,7 +161,7 @@ function DashboardPage() {
             <p className="text-4xl font-bold text-text-main mt-2">
               {stats.total}
             </p>
-            <p className="text-xs text-text-muted mt-2">Clientes cadastrados</p>
+            <p className="text-xs text-text-muted mt-2">Cadastros no período</p>
           </div>
 
           {/* Pendentes */}
@@ -238,8 +266,13 @@ function DashboardPage() {
               border: "border-red-500/20",
             },
           ].map((item) => (
-            <div
+            <button
               key={item.label}
+              onClick={() =>
+                setFiltroStatus(
+                  filtroStatus === "" ? "" : filtroStatus,
+                )
+              }
               className={`flex items-center gap-3 rounded-xl ${item.bg} border ${item.border} p-3 transition-all duration-200 hover:scale-[1.02]`}
             >
               <div
@@ -255,79 +288,87 @@ function DashboardPage() {
                   {item.label}
                 </p>
               </div>
-            </div>
+            </button>
           ))}
         </div>
       )}
 
-      {/* Solicitações Recentes */}
-      <div>
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-bold text-text-main">
-            Solicitações Recentes
-          </h2>
-          <Link
-            to="/clientes"
-            className="flex items-center gap-1 text-sm text-accent hover:text-accent-hover transition-colors font-medium"
-          >
-            Ver todas <ArrowUpRight size={14} />
-          </Link>
-        </div>
-
-        {loading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {Array.from({ length: 6 }).map((_, i) => (
-              <Skeleton key={i} className="h-24 rounded-xl" />
-            ))}
+      {/* Cadastros Recentes */}
+      {!loading && (
+        <div>
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg font-bold text-text-main">
+              Cadastros Recentes
+            </h2>
           </div>
-        ) : recentes.length === 0 ? (
-          <EmptyState
-            icon={<BarChart3 className="w-10 h-10 text-text-muted/30" />}
-            title="Nenhuma solicitação recente"
-            description="Quando novos cadastros forem criados, eles aparecerão aqui."
-          />
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-            {recentes.map((c, i) => (
-              <Link
-                key={c.id}
-                to="/clientes/$id"
-                params={{ id: c.id }}
-                className="group flex items-center gap-4 rounded-xl bg-surface border border-border p-4 transition-all duration-200 hover:border-accent/30 hover:shadow-lg hover:shadow-accent/5 hover:-translate-y-0.5"
-                style={{ animationDelay: `${i * 50}ms` }}
-              >
-                {/* Avatar */}
-                <div className="flex items-center justify-center w-10 h-10 rounded-full bg-accent/10 text-accent font-bold text-sm shrink-0 group-hover:bg-accent/20 transition-colors">
-                  {(c.lead_nome || c.nome_temporario || "S")[0].toUpperCase()}
-                </div>
 
-                {/* Info */}
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-semibold text-text-main truncate group-hover:text-accent transition-colors">
-                    {c.lead_nome || c.nome_temporario || "Sem nome"}
-                  </p>
-                  <div className="flex items-center gap-2 mt-1">
-                    {c.profiles?.nome && (
-                      <span className="text-xs text-text-muted">
-                        Por: {c.profiles.nome}
+          {filtered.length === 0 ? (
+            <EmptyState
+              icon={<BarChart3 className="w-10 h-10 text-text-muted/30" />}
+              title="Nenhum cadastro encontrado"
+              description="Ajuste os filtros ou aguarde novos cadastros."
+            />
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+              {filtered.slice(0, 30).map((c: any, i: number) => (
+                <button
+                  key={c.id}
+                  onClick={() =>
+                    navigate({
+                      to: "/cadastros/solicitacoes/$id",
+                      params: { id: c.id },
+                    })
+                  }
+                  className="group flex items-center gap-4 rounded-xl bg-surface border border-border p-4 transition-all duration-200 hover:border-accent/30 hover:shadow-lg hover:shadow-accent/5 hover:-translate-y-0.5 w-full text-left"
+                  style={{ animationDelay: `${i * 50}ms` }}
+                >
+                  {/* Avatar */}
+                  <div className="flex items-center justify-center w-10 h-10 rounded-full bg-accent/10 text-accent font-bold text-sm shrink-0 group-hover:bg-accent/20 transition-colors">
+                    {(c.lead_nome || c.nome_temporario || "S")[0].toUpperCase()}
+                  </div>
+
+                  {/* Info */}
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-semibold text-text-main truncate group-hover:text-accent transition-colors">
+                      {c.lead_nome || c.nome_temporario || "Sem nome"}
+                    </p>
+                    <div className="flex items-center gap-1.5 mt-0.5 flex-wrap">
+                      <span
+                        className={`rounded-full px-2 py-0.5 text-xs font-medium ${STATUS_COLOR[c.status as CadastroStatus]}`}
+                      >
+                        {STATUS_LABEL[c.status as CadastroStatus]}
                       </span>
+                      <span
+                        className={`rounded-full px-2 py-0.5 text-xs font-medium ${DOC_STATUS_COLOR[docsStatus[c.id]]}`}
+                      >
+                        {DOC_STATUS_LABEL[docsStatus[c.id]]}
+                      </span>
+                      {c.codigo_cliente && (
+                        <span className="text-xs text-text-muted">
+                          #{c.codigo_cliente}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Status icon */}
+                  <div className="flex shrink-0">
+                    {c.status === "aprovado" ? (
+                      <CheckCircle size={16} className="text-green-400" />
+                    ) : c.status === "reprovado" ? (
+                      <XCircle size={16} className="text-red-400" />
+                    ) : c.status === "em_correcao" ? (
+                      <AlertTriangle size={16} className="text-orange-400" />
+                    ) : (
+                      <Clock size={16} className="text-yellow-400" />
                     )}
                   </div>
-                </div>
-
-                {/* Status */}
-                <div className="flex flex-col items-end gap-1 shrink-0">
-                  <span
-                    className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold ${STATUS_COLOR[c.status]}`}
-                  >
-                    {STATUS_LABEL[c.status]}
-                  </span>
-                </div>
-              </Link>
-            ))}
-          </div>
-        )}
-      </div>
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }

@@ -59,10 +59,10 @@ function LoginPage() {
 
     setRedirected(true);
     const amb = profile.ambiente;
-    if (amb === "consultor") navigate({ to: "/consultor" });
+    if (amb === "consultor") navigate({ to: "/cadastros/consultor" });
     else if (amb === "tecnologia" || amb === "suporte")
       navigate({ to: "/credenciais" });
-    else navigate({ to: "/dashboard" });
+    else navigate({ to: "/cadastros/dashboard" });
   }
 
   async function handleLogin() {

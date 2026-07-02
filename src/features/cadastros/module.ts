@@ -22,10 +22,11 @@ export const cadastrosModule: ModuleDefinition = {
   descricao: "Gestao de cadastro de clientes PF/PJ",
   icon: Users,
   routes: [
-    "/dashboard",
-    "/clientes",
-    "/consultor",
-    "/relatorios",
+    "/cadastros/dashboard",
+    "/cadastros/solicitacoes",
+    "/cadastros/clientes",
+    "/cadastros/consultor",
+    "/cadastros/relatorios",
     "/global/acoes",
     "/empresa/tema",
   ],
@@ -124,18 +125,18 @@ export const cadastrosModule: ModuleDefinition = {
       id: "dashboard",
       label: "Dashboard",
       icon: LayoutDashboard,
-      to: "/dashboard",
+      to: "/cadastros/dashboard",
       permissionCheck: (perms) => perms?.ver_todos_cadastros === true,
       order: 1,
       moduloKey: "cadastros",
     });
 
     registerNavItem({
-      id: "clientes",
-      label: "Clientes",
+      id: "solicitacoes",
+      label: "Solicitações",
       icon: Users,
-      to: "/clientes",
-      matchPaths: ["/consultor/clientes"],
+      to: "/cadastros/solicitacoes",
+      matchPaths: ["/cadastros/solicitacoes/$id"],
       permissionCheck: (perms) =>
         perms?.ver_todos_cadastros === true || perms?.gerar_links === true,
       order: 2,
@@ -143,23 +144,34 @@ export const cadastrosModule: ModuleDefinition = {
     });
 
     registerNavItem({
+      id: "clientes",
+      label: "Clientes",
+      icon: Users,
+      to: "/cadastros/clientes",
+      permissionCheck: (perms) =>
+        perms?.ver_todos_cadastros === true || perms?.gerar_links === true,
+      order: 3,
+      moduloKey: "cadastros",
+    });
+
+    registerNavItem({
       id: "consultor",
       label: "Consultor",
       icon: UserCircle,
-      to: "/consultor",
+      to: "/cadastros/consultor",
       permissionCheck: (perms) => perms?.gerar_links === true,
-      order: 3,
+      order: 4,
       moduloKey: "cadastros",
-      noChildMatch: true,
+      matchPaths: ["/cadastros/consultor/clientes"],
     });
 
     registerNavItem({
       id: "relatorios",
-      label: "Relatorios",
+      label: "Relatórios",
       icon: BarChart3,
-      to: "/relatorios",
+      to: "/cadastros/relatorios",
       permissionCheck: (perms) => perms?.ver_relatorios === true,
-      order: 4,
+      order: 5,
       moduloKey: "cadastros",
     });
 
