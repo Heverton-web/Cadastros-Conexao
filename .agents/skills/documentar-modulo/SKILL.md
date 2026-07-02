@@ -81,9 +81,12 @@ Ler `registerPermissionDefaults()` em `module.ts`. Montar mapa:
 
 ### Passo 8: Gerar documento
 
-Montar Markdown com as seções abaixo e salvar em `docs-projeto/doc-modulos/<modulo>.md`.
+1. Montar Markdown com as seções do template de Saída abaixo;
+2. Criar o diretório `docs-projeto/doc-modulos/mod-<nome_modulo>`;
+3. Salvar em `docs-projeto/doc-modulos/mod-<nome_modulo><nome_modulo>.md`.
 
-Se o diretório `docs-projeto/doc-modulos/` não existir, criá-lo.
+Se o diretório `docs-projeto/doc-modulos/mod-<nome_modulo>` existir, sobreescreva o diretório existente.
+Se o arquivo `docs-projeto/doc-modulos/mod-<nome_modulo><nome_modulo>.md` existir, atualize o conteúdo do arquivo existente.
 
 ### Passo 9: Retornar resumo
 
