@@ -1,28 +1,20 @@
 import { useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import {
-  LineChart,
-  Line,
+  AreaChart,
+  Area,
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
+import { COLORS, TOOLTIP_STYLE, GRID_STYLE, AXIS_STYLE } from "./chart-colors";
 
 interface SurveyResponse {
   created_at: string;
   nps_score: number | null;
 }
-
-const TOOLTIP_STYLE = {
-  backgroundColor: "hsl(222,47%,11%)",
-  border: "1px solid hsl(217,33%,25%)",
-  borderRadius: 10,
-  color: "#e1e1e1",
-  padding: "10px 14px",
-  boxShadow: "0 8px 24px rgba(0,0,0,0.4)",
-};
 
 const NPSTrendChart = ({ data }: { data: SurveyResponse[] }) => {
   const trendData = useMemo(() => {
@@ -60,37 +52,40 @@ const NPSTrendChart = ({ data }: { data: SurveyResponse[] }) => {
   if (trendData.length < 2) return null;
 
   return (
-    <Card className="bg-gradient-to-br from-card/90 to-card/60 backdrop-blur border-border/30 shadow-lg">
+    <Card className="bg-surface border border-border rounded-xl">
       <CardHeader>
-        <CardTitle className="text-foreground text-base font-semibold">
+        <CardTitle className="text-text-main text-base font-semibold">
           Evolução do NPS (semanal)
         </CardTitle>
       </CardHeader>
       <CardContent>
         <ResponsiveContainer width="100%" height={220}>
-          <LineChart data={trendData}>
-            <CartesianGrid strokeDasharray="3 3" stroke="hsl(217,33%,20%)" />
-            <XAxis dataKey="week" stroke="hsl(215,20%,55%)" fontSize={12} />
-            <YAxis
-              stroke="hsl(215,20%,55%)"
-              fontSize={12}
-              domain={[-100, 100]}
-            />
+          <AreaChart data={trendData}>
+            <defs>
+              <linearGradient id="npsAreaGradient" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor={COLORS.accent} stopOpacity={0.4} />
+                <stop offset="100%" stopColor={COLORS.accent} stopOpacity={0.05} />
+              </linearGradient>
+            </defs>
+            <CartesianGrid {...GRID_STYLE} strokeDasharray="3 3" />
+            <XAxis dataKey="week" {...AXIS_STYLE} />
+            <YAxis {...AXIS_STYLE} domain={[-100, 100]} />
             <Tooltip
               contentStyle={TOOLTIP_STYLE}
-              itemStyle={{ color: "#e1e1e1" }}
-              labelStyle={{ color: "#e1e1e1" }}
-              formatter={(value: number) => [`${value}`, "NPS"]}
+              itemStyle={{ color: COLORS.textMain }}
+              labelStyle={{ color: COLORS.textMuted, marginBottom: 4 }}
+              formatter={(value: any) => [`${value}`, "NPS"]}
             />
-            <Line
+            <Area
               type="monotone"
               dataKey="nps"
-              stroke="hsl(38,50%,50%)"
+              stroke={COLORS.accent}
               strokeWidth={2.5}
-              dot={{ fill: "hsl(38,50%,50%)", r: 4 }}
-              activeDot={{ r: 6, fill: "hsl(38,60%,60%)" }}
+              fill="url(#npsAreaGradient)"
+              dot={{ fill: COLORS.accent, r: 4, strokeWidth: 2, stroke: COLORS.surface }}
+              activeDot={{ r: 6, fill: COLORS.accent, stroke: COLORS.surface, strokeWidth: 3 }}
             />
-          </LineChart>
+          </AreaChart>
         </ResponsiveContainer>
       </CardContent>
     </Card>

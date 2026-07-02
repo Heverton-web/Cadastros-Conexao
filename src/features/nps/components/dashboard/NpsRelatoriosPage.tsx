@@ -20,6 +20,8 @@ import {
   Calendar,
   X,
 } from "lucide-react";
+import { Skeleton } from "~/components/ui/skeleton";
+import { EmptyState } from "~/components/ui/empty-state";
 import { supabase } from "~/core/supabase";
 import { toast } from "react-hot-toast";
 import { useAuth } from "~/lib/auth";
@@ -83,55 +85,63 @@ export function NpsRelatoriosPage() {
   );
 
   return (
-    <div className="flex flex-col gap-6 p-4 pb-24 lg:p-8 lg:pb-8">
+    <div className="space-y-8 animate-fade-in">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <FileText className="w-6 h-6 text-primary" />
-          <h1 className="text-xl font-bold text-foreground">
-            Relatórios de Envios NPS
-          </h1>
+          <span className="flex items-center justify-center w-10 h-10 rounded-xl bg-accent/10 text-accent shrink-0">
+            <FileText className="w-5 h-5" />
+          </span>
+          <div>
+            <h1 className="text-2xl font-bold text-text-main tracking-tight">
+              Relatórios de Envios NPS
+            </h1>
+            <p className="text-sm text-text-muted mt-1">
+              Histórico de envios e status de processamento
+            </p>
+          </div>
         </div>
         <Button
           variant="ghost"
           size="sm"
           onClick={fetchRelatorios}
           disabled={loading}
+          className="gap-1.5 text-text-muted hover:text-text-main hover:bg-accent/10 transition-colors"
         >
           <RefreshCw
-            className={`w-4 h-4 mr-1.5 ${loading ? "animate-spin" : ""}`}
+            className={`w-4 h-4 transition-colors ${loading ? "animate-spin" : ""}`}
           />{" "}
           Atualizar
         </Button>
       </div>
 
-      <div className="flex flex-wrap items-end gap-3 bg-card/30 p-3 rounded-xl border border-border/50 backdrop-blur-sm">
+      <div className="flex flex-wrap items-end gap-3 bg-surface p-4 rounded-xl border border-border">
         <div className="flex flex-col gap-1.5">
-          <Label className="text-[10px] uppercase tracking-wider text-muted-foreground flex items-center gap-1">
+          <Label className="text-[10px] uppercase tracking-wider text-text-muted font-medium px-1 flex items-center gap-1">
             <Calendar className="w-3 h-3" /> Data Inicial
           </Label>
           <Input
             type="date"
             value={dateFrom}
             onChange={(e) => setDateFrom(e.target.value)}
-            className="w-[140px] h-9 bg-background/50"
+            className="w-full sm:w-[140px] h-10 bg-bg border border-border text-text-main text-sm rounded-xl focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent transition-all duration-200"
           />
         </div>
         <div className="flex flex-col gap-1.5">
-          <Label className="text-[10px] uppercase tracking-wider text-muted-foreground flex items-center gap-1">
+          <Label className="text-[10px] uppercase tracking-wider text-text-muted font-medium px-1 flex items-center gap-1">
             <Calendar className="w-3 h-3" /> Data Final
           </Label>
           <Input
             type="date"
             value={dateTo}
             onChange={(e) => setDateTo(e.target.value)}
-            className="w-[140px] h-9 bg-background/50"
+            className="w-full sm:w-[140px] h-10 bg-bg border border-border text-text-main text-sm rounded-xl focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent transition-all duration-200"
           />
         </div>
         {(dateFrom || dateTo) && (
           <Button
             variant="secondary"
             size="sm"
-            className="h-9"
+            className="h-10 rounded-xl"
             onClick={() => {
               setDateFrom("");
               setDateTo("");
@@ -142,47 +152,39 @@ export function NpsRelatoriosPage() {
         )}
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <Card className="bg-card border-border shadow-sm hover:shadow-md transition-all">
-          <CardContent className="pt-5 pb-4">
-            <div className="flex items-center gap-2 text-muted-foreground text-xs uppercase font-medium tracking-wider mb-2">
-              <FileText className="w-4 h-4 text-primary/70" /> Processados
-            </div>
-            <div className="text-3xl font-bold text-card-foreground">
-              {totals.processado}
-            </div>
-          </CardContent>
-        </Card>
-        <Card className="bg-card border-border shadow-sm hover:shadow-md transition-all">
-          <CardContent className="pt-5 pb-4">
-            <div className="flex items-center gap-2 text-green-500 text-xs uppercase font-medium tracking-wider mb-2">
-              <CheckCircle2 className="w-4 h-4" /> Enviados
-            </div>
-            <div className="text-3xl font-bold text-card-foreground">
-              {totals.sucesso}
-            </div>
-          </CardContent>
-        </Card>
-        <Card className="bg-card border-border shadow-sm hover:shadow-md transition-all">
-          <CardContent className="pt-5 pb-4">
-            <div className="flex items-center gap-2 text-yellow-500 text-xs uppercase font-medium tracking-wider mb-2">
-              <XCircle className="w-4 h-4" /> Sem WhatsApp
-            </div>
-            <div className="text-3xl font-bold text-card-foreground">
-              {totals.semWhats}
-            </div>
-          </CardContent>
-        </Card>
-        <Card className="bg-card border-border shadow-sm hover:shadow-md transition-all">
-          <CardContent className="pt-5 pb-4">
-            <div className="flex items-center gap-2 text-red-500 text-xs uppercase font-medium tracking-wider mb-2">
-              <AlertCircle className="w-4 h-4" /> NPS &lt; 30
-            </div>
-            <div className="text-3xl font-bold text-card-foreground">
-              {totals.menor30}
-            </div>
-          </CardContent>
-        </Card>
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-accent/20 via-accent/10 to-transparent border border-accent/20 p-5 transition-all duration-300 hover:shadow-lg hover:shadow-accent/10 hover:border-accent/40">
+          <div className="flex items-center gap-2 text-accent text-xs uppercase font-medium tracking-wider mb-2">
+            <FileText className="w-4 h-4" /> Processados
+          </div>
+          <div className="text-3xl font-bold text-text-main">
+            {totals.processado}
+          </div>
+        </div>
+        <div className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-green-500/20 via-green-500/10 to-transparent border border-green-500/20 p-5 transition-all duration-300 hover:shadow-lg hover:shadow-green-500/10 hover:border-green-500/40">
+          <div className="flex items-center gap-2 text-green-500 text-xs uppercase font-medium tracking-wider mb-2">
+            <CheckCircle2 className="w-4 h-4" /> Enviados
+          </div>
+          <div className="text-3xl font-bold text-text-main">
+            {totals.sucesso}
+          </div>
+        </div>
+        <div className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-yellow-500/20 via-yellow-500/10 to-transparent border border-yellow-500/20 p-5 transition-all duration-300 hover:shadow-lg hover:shadow-yellow-500/10 hover:border-yellow-500/40">
+          <div className="flex items-center gap-2 text-yellow-500 text-xs uppercase font-medium tracking-wider mb-2">
+            <XCircle className="w-4 h-4" /> Sem WhatsApp
+          </div>
+          <div className="text-3xl font-bold text-text-main">
+            {totals.semWhats}
+          </div>
+        </div>
+        <div className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-red-500/20 via-red-500/10 to-transparent border border-red-500/20 p-5 transition-all duration-300 hover:shadow-lg hover:shadow-red-500/10 hover:border-red-500/40">
+          <div className="flex items-center gap-2 text-red-500 text-xs uppercase font-medium tracking-wider mb-2">
+            <AlertCircle className="w-4 h-4" /> NPS &lt; 30
+          </div>
+          <div className="text-3xl font-bold text-text-main">
+            {totals.menor30}
+          </div>
+        </div>
       </div>
 
       <Card className="bg-card border-border shadow-sm">
@@ -190,7 +192,7 @@ export function NpsRelatoriosPage() {
           <div className="flex-1 space-y-6 p-4 pt-6 md:p-8 overflow-x-auto overflow-y-auto bg-background/50 h-full w-full custom-scrollbar">
             <table className="w-full text-sm">
               <thead className="bg-muted/30">
-                <tr className="border-b border-border text-muted-foreground text-xs uppercase tracking-wider">
+                <tr className="border-b border-border text-text-muted text-xs uppercase tracking-wider">
                   <th className="text-left py-4 px-6 font-semibold">
                     Data Envio
                   </th>
@@ -217,51 +219,39 @@ export function NpsRelatoriosPage() {
               <tbody>
                 {loading ? (
                   <tr>
-                    <td
-                      colSpan={7}
-                      className="text-center py-16 text-muted-foreground"
-                    >
-                      <div className="flex flex-col items-center justify-center gap-3">
-                        <RefreshCw className="w-6 h-6 animate-spin text-primary/50" />
-                        <p>Carregando relatórios...</p>
+                    <td colSpan={7} className="py-8">
+                      <div className="space-y-3 px-6">
+                        {[1, 2, 3, 4, 5].map((i) => (
+                          <Skeleton key={i} className="h-14 rounded-xl" />
+                        ))}
                       </div>
                     </td>
                   </tr>
                 ) : relatorios.length === 0 ? (
                   <tr>
-                    <td
-                      colSpan={7}
-                      className="text-center py-20 text-muted-foreground"
-                    >
-                      <div className="flex flex-col items-center justify-center gap-3 opacity-80">
-                        <div className="w-16 h-16 bg-muted/50 rounded-full flex items-center justify-center border border-border/50">
-                          <FileText className="w-8 h-8 text-muted-foreground/60" />
-                        </div>
-                        <p className="text-base font-medium text-foreground">
-                          Nenhum relatório encontrado
-                        </p>
-                        <p className="text-sm">
-                          Tente ajustar os filtros de data para encontrar mais
-                          resultados.
-                        </p>
-                      </div>
+                    <td colSpan={7}>
+                      <EmptyState
+                        icon={<FileText className="w-10 h-10 text-text-muted/30" />}
+                        title="Nenhum relatório encontrado"
+                        description="Tente ajustar os filtros de data para encontrar mais resultados."
+                      />
                     </td>
                   </tr>
                 ) : (
                   relatorios.map((r) => (
                     <tr
                       key={r.id}
-                      className="border-b border-border/40 hover:bg-muted/20 transition-colors"
+                      className="border-b border-border/40 hover:bg-accent/5 transition-colors"
                     >
-                      <td className="py-4 px-6 font-medium text-foreground">
+                      <td className="py-4 px-6 font-medium text-text-main">
                         <div className="flex items-center gap-2.5">
-                          <div className="p-1.5 bg-primary/10 rounded-md">
-                            <Send className="w-3.5 h-3.5 text-primary" />
+                          <div className="p-1.5 bg-accent/10 rounded-lg">
+                            <Send className="w-3.5 h-3.5 text-accent" />
                           </div>
                           {formatDate(r.data_envio)}
                         </div>
                       </td>
-                      <td className="text-center py-4 px-4 font-medium text-foreground">
+                      <td className="text-center py-4 px-4 font-medium text-text-main">
                         {r.total_processado}
                       </td>
                       <td className="text-center py-4 px-4 text-green-500 font-medium">
@@ -273,14 +263,14 @@ export function NpsRelatoriosPage() {
                       <td className="text-center py-4 px-4 text-red-500">
                         {r.nps_menor_30}
                       </td>
-                      <td className="py-4 px-6 text-muted-foreground text-xs">
+                      <td className="py-4 px-6 text-text-muted text-xs">
                         {formatDateTime(r.created_at)}
                       </td>
                       <td className="text-center py-4 px-4">
                         <Button
                           variant="ghost"
                           size="sm"
-                          className="h-8 w-8 p-0 hover:bg-primary/10 hover:text-primary transition-colors"
+                          className="h-8 w-8 p-0 hover:bg-accent/10 hover:text-accent transition-colors"
                           onClick={() => setSelected(r)}
                         >
                           <Eye className="w-4 h-4" />

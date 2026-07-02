@@ -15,11 +15,12 @@ import {
   Tooltip as RechartsTooltip,
 } from "recharts";
 import { classifySentiment, extractAllText } from "~/lib/sentiment";
+import { COLORS, TOOLTIP_STYLE } from "./chart-colors";
 
-const COLORS: Record<string, string> = {
-  positivo: "hsl(150,60%,42%)",
-  neutro: "hsl(45,80%,50%)",
-  negativo: "hsl(0,70%,50%)",
+const SENTIMENT_COLORS: Record<string, string> = {
+  positivo: COLORS.success,
+  neutro: COLORS.warning,
+  negativo: COLORS.error,
 };
 
 const SentimentAnalysis = ({ data }: { data: any[] }) => {
@@ -43,15 +44,15 @@ const SentimentAnalysis = ({ data }: { data: any[] }) => {
 
   if (!chart.total) {
     return (
-      <Card className="bg-gradient-to-br from-card/90 to-card/60 backdrop-blur border-border/30 shadow-lg">
+      <Card className="bg-surface border border-border rounded-xl">
         <CardHeader>
-          <CardTitle className="text-foreground text-base font-semibold flex items-center gap-2">
-            <Smile className="w-4 h-4 text-primary" /> Sentimento dos
+          <CardTitle className="text-text-main text-base font-semibold flex items-center gap-2">
+            <Smile className="w-4 h-4" style={{ color: COLORS.accent }} /> Sentimento dos
             Comentários
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-sm text-muted-foreground text-center py-8">
+          <p className="text-sm text-center py-8" style={{ color: COLORS.textMuted }}>
             Sem comentários no recorte.
           </p>
         </CardContent>
@@ -60,25 +61,23 @@ const SentimentAnalysis = ({ data }: { data: any[] }) => {
   }
 
   return (
-    <Card className="bg-gradient-to-br from-card/90 to-card/60 backdrop-blur border-border/30 shadow-lg">
+    <Card className="bg-surface border border-border rounded-xl">
       <CardHeader>
-        <CardTitle className="text-foreground text-base font-semibold flex items-center gap-2">
-          <Smile className="w-4 h-4 text-primary" />
+        <CardTitle className="text-text-main text-base font-semibold flex items-center gap-2">
+          <Smile className="w-4 h-4" style={{ color: COLORS.accent }} />
           Sentimento dos Comentários
           <TooltipProvider delayDuration={150}>
             <Tooltip>
               <TooltipTrigger asChild>
-                <HelpCircle className="w-3.5 h-3.5 text-muted-foreground cursor-help opacity-60 hover:opacity-100" />
+                <HelpCircle className="w-3.5 h-3.5 cursor-help opacity-60 hover:opacity-100" style={{ color: COLORS.textMuted }} />
               </TooltipTrigger>
               <TooltipContent
                 side="top"
                 className="max-w-[320px] text-xs leading-relaxed"
+                style={{ backgroundColor: COLORS.surface, borderColor: COLORS.border, color: COLORS.textMain }}
               >
                 Classificação automática (positivo / neutro / negativo) baseada
-                em léxico português. Cada comentário recebe +1 por palavra
-                positiva e -1 por palavra negativa (palavras precedidas por
-                "não/nunca" são invertidas). Análise feita no navegador, sem
-                custo de IA — útil como sinal direcional.
+                em léxico português. Análise feita no navegador, sem custo de IA.
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
@@ -94,28 +93,35 @@ const SentimentAnalysis = ({ data }: { data: any[] }) => {
               innerRadius={55}
               outerRadius={95}
               dataKey="value"
-              label={({ name, percent }) =>
-                `${name} ${(percent * 100).toFixed(0)}%`
+              stroke={COLORS.surface}
+              strokeWidth={2}
+              label={({ name, percent }: any) =>
+                `${name} ${((percent ?? 0) * 100).toFixed(0)}%`
               }
             >
               {chart.items.map((e, i) => (
-                <Cell key={i} fill={COLORS[e.name]} />
+                <Cell key={i} fill={SENTIMENT_COLORS[e.name]} />
               ))}
             </Pie>
             <RechartsTooltip
-              contentStyle={{
-                backgroundColor: "hsl(222,47%,11%)",
-                border: "1px solid hsl(217,33%,25%)",
-                borderRadius: 10,
-                color: "#e1e1e1",
-              }}
-              formatter={(v: number, n: string) => [`${v} comentário(s)`, n]}
+              contentStyle={TOOLTIP_STYLE}
+              formatter={(v: any, n: any) => [`${v} comentário(s)`, n]}
             />
           </PieChart>
         </ResponsiveContainer>
-        <p className="text-xs text-muted-foreground text-center mt-2">
-          {chart.total} comentários analisados
-        </p>
+        {/* Legend */}
+        <div className="flex items-center justify-center gap-4 mt-4">
+          {chart.items.map((item) => (
+            <div key={item.name} className="flex items-center gap-2 text-xs">
+              <div
+                className="w-3 h-3 rounded-full"
+                style={{ backgroundColor: SENTIMENT_COLORS[item.name] }}
+              />
+              <span className="capitalize" style={{ color: COLORS.textMuted }}>{item.name}</span>
+              <span className="font-semibold" style={{ color: COLORS.textMain }}>{item.value}</span>
+            </div>
+          ))}
+        </div>
       </CardContent>
     </Card>
   );

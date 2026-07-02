@@ -386,8 +386,8 @@ export function blobsToColorsString(blobs: NpsBlob[]): string {
 export function getNpsThemeVars(
   config: EmpresaConfig | null,
 ): Record<string, string> {
-  const t = config?.theme ?? {};
-  const survey = (t.nps_survey ?? {}) as Record<string, string>;
+  const t = config?.theme ?? ({} as Record<string, any>);
+  const survey = ((t as any).nps_survey ?? {}) as Record<string, string>;
 
   const s = (key: string, fallbackRootKey?: string) =>
     survey[key] ??

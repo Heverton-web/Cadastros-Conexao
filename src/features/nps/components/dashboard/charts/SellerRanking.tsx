@@ -8,6 +8,7 @@ import {
 } from "~/components/ui/tooltip";
 import { HelpCircle, Trophy, ArrowUpDown } from "lucide-react";
 import { computeSellerMetrics, SellerMetric } from "~/lib/sellerMetrics";
+import { COLORS, npsColor, npsBg } from "./chart-colors";
 
 type SortKey = "nps" | "matrixAvg" | "total";
 
@@ -20,9 +21,6 @@ const SellerRanking = ({ data }: { data: any[] }) => {
 
   if (!sellers.length) return null;
 
-  const npsColor = (s: number) =>
-    s >= 50 ? "text-green-400" : s >= 0 ? "text-yellow-400" : "text-red-400";
-
   const headers: { key: SortKey | null; label: string; align?: string }[] = [
     { key: null, label: "#" },
     { key: null, label: "Vendedor" },
@@ -33,26 +31,22 @@ const SellerRanking = ({ data }: { data: any[] }) => {
   ];
 
   return (
-    <Card className="bg-gradient-to-br from-card/90 to-card/60 backdrop-blur border-border/30 shadow-lg">
+    <Card className="bg-surface border border-border rounded-xl">
       <CardHeader>
-        <CardTitle className="text-foreground text-base font-semibold flex items-center gap-2">
-          <Trophy className="w-4 h-4 text-primary" />
+        <CardTitle className="text-text-main text-base font-semibold flex items-center gap-2">
+          <Trophy className="w-4 h-4" style={{ color: COLORS.accent }} />
           Ranking de Vendedores
           <TooltipProvider delayDuration={150}>
             <Tooltip>
               <TooltipTrigger asChild>
-                <HelpCircle className="w-3.5 h-3.5 text-muted-foreground cursor-help opacity-60 hover:opacity-100" />
+                <HelpCircle className="w-3.5 h-3.5 cursor-help opacity-60 hover:opacity-100" style={{ color: COLORS.textMuted }} />
               </TooltipTrigger>
               <TooltipContent
                 side="top"
                 className="max-w-[320px] text-xs leading-relaxed"
+                style={{ backgroundColor: COLORS.surface, borderColor: COLORS.border, color: COLORS.textMain }}
               >
-                Cada vendedor é agregado a partir do campo{" "}
-                <code>vendor_name</code> nas respostas filtradas. NPS =
-                ((promotores − detratores) ÷ notas válidas) × 100. Média Matriz
-                = média de todos os critérios (Facilidade, Clareza, Prazo,
-                Disponibilidade, Comunicação). Clique nos cabeçalhos para
-                ordenar.
+                Ranking baseado em NPS, média da matriz e total de respostas. Clique nos cabeçalhos para ordenar.
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
@@ -61,25 +55,19 @@ const SellerRanking = ({ data }: { data: any[] }) => {
       <CardContent className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-border/50 text-muted-foreground text-xs">
+            <tr className="border-b text-[10px] uppercase tracking-wider" style={{ borderColor: COLORS.border, color: COLORS.textMuted }}>
               {headers.map((h, i) => (
-                <th
-                  key={i}
-                  className={`py-2 px-2 font-medium ${h.align || "text-left"}`}
-                >
+                <th key={i} className={`py-2 px-2 font-semibold ${h.align || "text-left"}`}>
                   {h.key ? (
                     <button
                       onClick={() => setSort(h.key as SortKey)}
-                      className="inline-flex items-center gap-1 hover:text-foreground transition-colors"
+                      className="inline-flex items-center gap-1 transition-colors"
+                      style={{ color: sort === h.key ? COLORS.accent : undefined }}
                     >
                       {h.label}
-                      <ArrowUpDown
-                        className={`w-3 h-3 ${sort === h.key ? "text-primary" : ""}`}
-                      />
+                      <ArrowUpDown className="w-3 h-3" />
                     </button>
-                  ) : (
-                    h.label
-                  )}
+                  ) : h.label}
                 </th>
               ))}
             </tr>
@@ -90,34 +78,38 @@ const SellerRanking = ({ data }: { data: any[] }) => {
               return (
                 <tr
                   key={s.vendor}
-                  className="border-b border-border/20 text-foreground"
+                  className="border-b transition-colors"
+                  style={{ borderColor: `${COLORS.border}4d` }}
                 >
-                  <td className="py-2 px-2 text-muted-foreground">{i + 1}</td>
-                  <td className="py-2 px-2 font-medium">{s.vendor}</td>
-                  <td className="py-2 px-2 text-right">{s.total}</td>
-                  <td
-                    className={`py-2 px-2 text-right font-bold ${npsColor(s.nps)}`}
-                  >
-                    {s.nps}
+                  <td className="py-3 px-2 font-medium" style={{ color: COLORS.textMuted }}>{i + 1}</td>
+                  <td className="py-3 px-2 font-semibold" style={{ color: COLORS.textMain }}>{s.vendor}</td>
+                  <td className="py-3 px-2 text-right" style={{ color: COLORS.textMuted }}>{s.total}</td>
+                  <td className="py-3 px-2 text-right">
+                    <span
+                      className="inline-flex items-center justify-center px-2 py-0.5 rounded-md text-xs font-bold"
+                      style={{ backgroundColor: npsBg(s.nps), color: npsColor(s.nps) }}
+                    >
+                      {s.nps}
+                    </span>
                   </td>
-                  <td className="py-2 px-2 text-right">
+                  <td className="py-3 px-2 text-right font-medium" style={{ color: COLORS.textMain }}>
                     {s.matrixAvg > 0 ? s.matrixAvg.toFixed(1) : "—"}
                   </td>
-                  <td className="py-2 px-2">
-                    <div className="flex h-2 rounded-full overflow-hidden ml-auto w-32">
+                  <td className="py-3 px-2">
+                    <div className="flex h-2.5 rounded-full overflow-hidden ml-auto w-32" style={{ backgroundColor: `${COLORS.border}4d` }}>
                       <div
-                        className="bg-red-500/70"
-                        style={{ width: `${(s.detractors / totalNps) * 100}%` }}
+                        className="transition-all"
+                        style={{ width: `${(s.detractors / totalNps) * 100}%`, backgroundColor: `${COLORS.error}cc` }}
                         title={`Detratores: ${s.detractors}`}
                       />
                       <div
-                        className="bg-yellow-500/70"
-                        style={{ width: `${(s.passives / totalNps) * 100}%` }}
+                        className="transition-all"
+                        style={{ width: `${(s.passives / totalNps) * 100}%`, backgroundColor: `${COLORS.warning}cc` }}
                         title={`Neutros: ${s.passives}`}
                       />
                       <div
-                        className="bg-green-500/70"
-                        style={{ width: `${(s.promoters / totalNps) * 100}%` }}
+                        className="transition-all"
+                        style={{ width: `${(s.promoters / totalNps) * 100}%`, backgroundColor: `${COLORS.success}cc` }}
                         title={`Promotores: ${s.promoters}`}
                       />
                     </div>
@@ -127,6 +119,21 @@ const SellerRanking = ({ data }: { data: any[] }) => {
             })}
           </tbody>
         </table>
+        {/* Legend */}
+        <div className="flex items-center justify-center gap-4 mt-4 text-[10px]" style={{ color: COLORS.textMuted }}>
+          <div className="flex items-center gap-1.5">
+            <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: `${COLORS.error}cc` }} />
+            <span>Detratores</span>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: `${COLORS.warning}cc` }} />
+            <span>Neutros</span>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: `${COLORS.success}cc` }} />
+            <span>Promotores</span>
+          </div>
+        </div>
       </CardContent>
     </Card>
   );

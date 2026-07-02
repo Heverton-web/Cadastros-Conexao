@@ -17,6 +17,7 @@ import {
   ResponsiveContainer,
   Cell,
 } from "recharts";
+import { COLORS, TOOLTIP_STYLE, GRID_STYLE, AXIS_STYLE } from "./chart-colors";
 
 interface DistributionBarsCardProps {
   data: any[];
@@ -28,8 +29,6 @@ interface DistributionBarsCardProps {
   icon?: LucideIcon;
   layout?: "horizontal" | "vertical";
 }
-
-const DEFAULT_COLOR = "hsl(38,55%,50%)";
 
 const DistributionBarsCard = ({
   data,
@@ -56,36 +55,35 @@ const DistributionBarsCard = ({
 
   if (!chartData.length) {
     return (
-      <Card className="bg-gradient-to-br from-card/90 to-card/60 backdrop-blur border-border/30 shadow-lg">
+      <Card className="bg-surface border border-border rounded-xl">
         <CardHeader>
-          <CardTitle className="text-foreground text-base font-semibold flex items-center gap-2">
-            {Icon && <Icon className="w-4 h-4 text-primary" />}
+          <CardTitle className="text-text-main text-base font-semibold flex items-center gap-2">
+            {Icon && <Icon className="w-4 h-4" style={{ color: COLORS.accent }} />}
             {title}
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-sm text-muted-foreground text-center py-8">
-            Sem dados nesse recorte.
-          </p>
+          <p className="text-sm text-center py-8" style={{ color: COLORS.textMuted }}>Sem dados nesse recorte.</p>
         </CardContent>
       </Card>
     );
   }
 
   return (
-    <Card className="bg-gradient-to-br from-card/90 to-card/60 backdrop-blur border-border/30 shadow-lg">
+    <Card className="bg-surface border border-border rounded-xl">
       <CardHeader>
-        <CardTitle className="text-foreground text-base font-semibold flex items-center gap-2">
-          {Icon && <Icon className="w-4 h-4 text-primary" />}
+        <CardTitle className="text-text-main text-base font-semibold flex items-center gap-2">
+          {Icon && <Icon className="w-4 h-4" style={{ color: COLORS.accent }} />}
           {title}
           <TooltipProvider delayDuration={150}>
             <Tooltip>
               <TooltipTrigger asChild>
-                <HelpCircle className="w-3.5 h-3.5 text-muted-foreground cursor-help opacity-60 hover:opacity-100" />
+                <HelpCircle className="w-3.5 h-3.5 cursor-help opacity-60 hover:opacity-100" style={{ color: COLORS.textMuted }} />
               </TooltipTrigger>
               <TooltipContent
                 side="top"
                 className="max-w-[300px] text-xs leading-relaxed"
+                style={{ backgroundColor: COLORS.surface, borderColor: COLORS.border, color: COLORS.textMain }}
               >
                 {hint}
               </TooltipContent>
@@ -94,69 +92,33 @@ const DistributionBarsCard = ({
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <ResponsiveContainer
-          width="100%"
-          height={Math.max(180, chartData.length * 42)}
-        >
-          <BarChart
-            data={chartData}
-            layout={layout === "vertical" ? "vertical" : "horizontal"}
-          >
-            <CartesianGrid strokeDasharray="3 3" stroke="hsl(217,33%,20%)" />
+        <ResponsiveContainer width="100%" height={Math.max(180, chartData.length * 42)}>
+          <BarChart data={chartData} layout={layout === "vertical" ? "vertical" : "horizontal"}>
+            <CartesianGrid {...GRID_STYLE} strokeDasharray="3 3" />
             {layout === "vertical" ? (
               <>
-                <XAxis
-                  type="number"
-                  stroke="hsl(215,20%,55%)"
-                  fontSize={12}
-                  allowDecimals={false}
-                />
-                <YAxis
-                  type="category"
-                  dataKey="name"
-                  width={140}
-                  stroke="hsl(215,20%,55%)"
-                  fontSize={12}
-                />
+                <XAxis type="number" {...AXIS_STYLE} allowDecimals={false} />
+                <YAxis type="category" dataKey="name" width={140} {...AXIS_STYLE} />
               </>
             ) : (
               <>
-                <XAxis
-                  dataKey="name"
-                  stroke="hsl(215,20%,55%)"
-                  fontSize={11}
-                  interval={0}
-                  angle={-15}
-                  textAnchor="end"
-                  height={60}
-                />
-                <YAxis
-                  stroke="hsl(215,20%,55%)"
-                  fontSize={12}
-                  allowDecimals={false}
-                />
+                <XAxis dataKey="name" {...AXIS_STYLE} fontSize={10} interval={0} angle={-15} textAnchor="end" height={60} />
+                <YAxis {...AXIS_STYLE} allowDecimals={false} />
               </>
             )}
             <RechartsTooltip
-              contentStyle={{
-                backgroundColor: "hsl(222,47%,11%)",
-                border: "1px solid hsl(217,33%,25%)",
-                borderRadius: 10,
-                color: "#e1e1e1",
-              }}
-              itemStyle={{ color: "#e1e1e1" }}
-              labelStyle={{ color: "#e1e1e1" }}
-              formatter={(value: number) => [
-                `${value} resposta(s)`,
-                "Quantidade",
-              ]}
+              contentStyle={TOOLTIP_STYLE}
+              itemStyle={{ color: COLORS.textMain }}
+              labelStyle={{ color: COLORS.textMuted, marginBottom: 4 }}
+              formatter={(value: any) => [`${value} resposta(s)`, "Quantidade"]}
             />
             <Bar
               dataKey="value"
               radius={layout === "vertical" ? [0, 4, 4, 0] : [4, 4, 0, 0]}
+              maxBarSize={28}
             >
               {chartData.map((entry, i) => (
-                <Cell key={i} fill={colorMap?.[entry.name] || DEFAULT_COLOR} />
+                <Cell key={i} fill={colorMap?.[entry.name] || COLORS.accent} />
               ))}
             </Bar>
           </BarChart>

@@ -18,6 +18,7 @@ import {
   Cell,
 } from "recharts";
 import { computeSellerMetrics } from "~/lib/sellerMetrics";
+import { COLORS, TOOLTIP_STYLE, GRID_STYLE, AXIS_STYLE, npsColor } from "./chart-colors";
 
 const SellerComparison = ({ data }: { data: any[] }) => {
   const chartData = useMemo(
@@ -32,30 +33,23 @@ const SellerComparison = ({ data }: { data: any[] }) => {
 
   if (!chartData.length) return null;
 
-  const colorFor = (n: number) =>
-    n >= 50
-      ? "hsl(150,60%,42%)"
-      : n >= 0
-        ? "hsl(45,80%,50%)"
-        : "hsl(0,70%,50%)";
-
   return (
-    <Card className="bg-gradient-to-br from-card/90 to-card/60 backdrop-blur border-border/30 shadow-lg">
+    <Card className="bg-surface border border-border rounded-xl">
       <CardHeader>
-        <CardTitle className="text-foreground text-base font-semibold flex items-center gap-2">
-          <BarChart3 className="w-4 h-4 text-primary" />
+        <CardTitle className="text-text-main text-base font-semibold flex items-center gap-2">
+          <BarChart3 className="w-4 h-4" style={{ color: COLORS.accent }} />
           NPS por Vendedor
           <TooltipProvider delayDuration={150}>
             <Tooltip>
               <TooltipTrigger asChild>
-                <HelpCircle className="w-3.5 h-3.5 text-muted-foreground cursor-help opacity-60 hover:opacity-100" />
+                <HelpCircle className="w-3.5 h-3.5 cursor-help opacity-60 hover:opacity-100" style={{ color: COLORS.textMuted }} />
               </TooltipTrigger>
               <TooltipContent
                 side="top"
                 className="max-w-[300px] text-xs leading-relaxed"
+                style={{ backgroundColor: COLORS.surface, borderColor: COLORS.border, color: COLORS.textMain }}
               >
-                Comparativo direto do NPS de cada vendedor. Cor segue o padrão
-                semântico: verde (≥50), amarelo (0–49), vermelho (&lt;0).
+                Comparativo direto do NPS de cada vendedor. Cor segue o padrão semântico: verde (≥50), amarelo (0–49), vermelho (&lt;0).
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
@@ -67,37 +61,38 @@ const SellerComparison = ({ data }: { data: any[] }) => {
           height={Math.max(220, chartData.length * 36)}
         >
           <BarChart data={chartData} layout="vertical">
-            <CartesianGrid strokeDasharray="3 3" stroke="hsl(217,33%,20%)" />
-            <XAxis
-              type="number"
-              domain={[-100, 100]}
-              stroke="hsl(215,20%,55%)"
-              fontSize={12}
-            />
-            <YAxis
-              type="category"
-              dataKey="name"
-              width={120}
-              stroke="hsl(215,20%,55%)"
-              fontSize={12}
-            />
+            <defs>
+              <linearGradient id="sellerGreen" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stopColor={COLORS.success} stopOpacity={0.5} />
+                <stop offset="100%" stopColor={COLORS.success} stopOpacity={0.9} />
+              </linearGradient>
+              <linearGradient id="sellerYellow" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stopColor={COLORS.warning} stopOpacity={0.5} />
+                <stop offset="100%" stopColor={COLORS.warning} stopOpacity={0.9} />
+              </linearGradient>
+              <linearGradient id="sellerRed" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stopColor={COLORS.error} stopOpacity={0.5} />
+                <stop offset="100%" stopColor={COLORS.error} stopOpacity={0.9} />
+              </linearGradient>
+            </defs>
+            <CartesianGrid {...GRID_STYLE} strokeDasharray="3 3" />
+            <XAxis type="number" domain={[-100, 100]} {...AXIS_STYLE} />
+            <YAxis type="category" dataKey="name" width={120} {...AXIS_STYLE} />
             <RechartsTooltip
-              contentStyle={{
-                backgroundColor: "hsl(222,47%,11%)",
-                border: "1px solid hsl(217,33%,25%)",
-                borderRadius: 10,
-                color: "#e1e1e1",
-              }}
-              itemStyle={{ color: "#e1e1e1" }}
-              labelStyle={{ color: "#e1e1e1" }}
-              formatter={(value: number, name: string, props: any) => [
+              contentStyle={TOOLTIP_STYLE}
+              itemStyle={{ color: COLORS.textMain }}
+              labelStyle={{ color: COLORS.textMuted, marginBottom: 4 }}
+              formatter={(value: any, _name: any, props: any) => [
                 `NPS ${value} (${props.payload.total} respostas)`,
                 "NPS",
               ]}
             />
-            <Bar dataKey="nps" radius={[0, 4, 4, 0]}>
+            <Bar dataKey="nps" radius={[0, 4, 4, 0]} maxBarSize={24}>
               {chartData.map((d, i) => (
-                <Cell key={i} fill={colorFor(d.nps)} />
+                <Cell
+                  key={i}
+                  fill={npsColor(d.nps) === COLORS.success ? "url(#sellerGreen)" : npsColor(d.nps) === COLORS.warning ? "url(#sellerYellow)" : "url(#sellerRed)"}
+                />
               ))}
             </Bar>
           </BarChart>

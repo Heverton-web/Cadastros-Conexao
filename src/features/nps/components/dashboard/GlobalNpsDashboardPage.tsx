@@ -144,18 +144,18 @@ const SUBJECTIVE_OPTIONS: {
 
 // CSAT colors mapped by satisfaction level (best → worst)
 const CSAT_COLORS: Record<string, string> = {
-  "Muito satisfeito": "hsl(150,60%,42%)",
-  Satisfeito: "hsl(140,50%,50%)",
-  Neutro: "hsl(45,80%,50%)",
-  Insatisfeito: "hsl(25,80%,50%)",
-  "Muito insatisfeito": "hsl(0,70%,50%)",
+  "Muito satisfeito": "#22c55e",
+  Satisfeito: "#4ade80",
+  Neutro: "#eab308",
+  Insatisfeito: "#f97316",
+  "Muito insatisfeito": "#ef4444",
 };
 const CSAT_COLOR_FALLBACKS = [
-  "hsl(150,60%,42%)",
-  "hsl(140,50%,50%)",
-  "hsl(45,80%,50%)",
-  "hsl(25,80%,50%)",
-  "hsl(0,70%,50%)",
+  "#22c55e",
+  "#4ade80",
+  "#eab308",
+  "#f97316",
+  "#ef4444",
 ];
 
 const getCsatColor = (name: string, index: number) => {
@@ -166,11 +166,11 @@ const getCsatColor = (name: string, index: number) => {
 };
 
 const MATRIX_COLORS = [
-  "hsl(38,60%,50%)",
-  "hsl(38,50%,45%)",
-  "hsl(38,45%,40%)",
-  "hsl(38,40%,38%)",
-  "hsl(38,35%,35%)",
+  "#c9a655",
+  "#b8963f",
+  "#a88535",
+  "#97742b",
+  "#866321",
 ];
 
 export function GlobalNpsDashboardPage() {
@@ -864,29 +864,29 @@ export function GlobalNpsDashboardPage() {
                     <BarChart data={npsDistribution}>
                       <CartesianGrid
                         strokeDasharray="3 3"
-                        stroke="hsl(217,33%,20%)"
+                        stroke="var(--color-border)" strokeOpacity={0.5}
                       />
                       <XAxis
                         dataKey="score"
-                        stroke="hsl(215,20%,55%)"
+                        stroke="var(--color-text-muted)"
                         fontSize={12}
                       />
                       <YAxis
-                        stroke="hsl(215,20%,55%)"
+                        stroke="var(--color-text-muted)"
                         fontSize={12}
                         allowDecimals={false}
                       />
                       <RechartsTooltip
                         contentStyle={{
-                          backgroundColor: "hsl(222,47%,11%)",
-                          border: "1px solid hsl(217,33%,25%)",
+                          backgroundColor: "var(--color-surface)",
+                          border: "1px solid var(--color-border)",
                           borderRadius: 10,
-                          color: "#e1e1e1",
+                          color: "var(--color-text-main)",
                           padding: "10px 14px",
                           boxShadow: "0 8px 24px rgba(0,0,0,0.4)",
                         }}
-                        itemStyle={{ color: "#e1e1e1" }}
-                        labelStyle={{ color: "#e1e1e1" }}
+                        itemStyle={{ color: "var(--color-text-main)" }}
+                        labelStyle={{ color: "var(--color-text-main)" }}
                         formatter={(value: any) => [
                           `${value} resposta(s)`,
                           "Quantidade",
@@ -898,10 +898,10 @@ export function GlobalNpsDashboardPage() {
                           const score = Number(entry.score);
                           const color =
                             score <= 6
-                              ? "hsl(0,70%,50%)"
+                              ? "#ef4444"
                               : score <= 8
-                                ? "hsl(45,80%,50%)"
-                                : "hsl(150,60%,42%)";
+                                ? "#eab308"
+                                : "#22c55e";
                           return <Cell key={index} fill={color} />;
                         })}
                       </Bar>
@@ -959,7 +959,7 @@ export function GlobalNpsDashboardPage() {
                             <text
                               x={x}
                               y={y}
-                              fill="hsl(210,40%,90%)"
+                              fill="#f8fafc"
                               fontSize={11}
                               textAnchor={x > 200 ? "start" : "end"}
                               dominantBaseline="central"
@@ -969,7 +969,7 @@ export function GlobalNpsDashboardPage() {
                           );
                         }}
                         labelLine={{
-                          stroke: "hsl(215,20%,35%)",
+                          stroke: "#475569",
                           strokeWidth: 1,
                         }}
                       >
@@ -979,15 +979,15 @@ export function GlobalNpsDashboardPage() {
                       </Pie>
                       <RechartsTooltip
                         contentStyle={{
-                          backgroundColor: "hsl(222,47%,11%)",
-                          border: "1px solid hsl(217,33%,25%)",
+                          backgroundColor: "var(--color-surface)",
+                          border: "1px solid var(--color-border)",
                           borderRadius: 10,
-                          color: "#e1e1e1",
+                          color: "var(--color-text-main)",
                           padding: "10px 14px",
                           boxShadow: "0 8px 24px rgba(0,0,0,0.4)",
                         }}
-                        itemStyle={{ color: "#e1e1e1" }}
-                        labelStyle={{ color: "#e1e1e1" }}
+                        itemStyle={{ color: "var(--color-text-main)" }}
+                        labelStyle={{ color: "var(--color-text-main)" }}
                         formatter={(value: any, name: any) => [
                           `${value} resposta(s)`,
                           name,
@@ -1008,35 +1008,35 @@ export function GlobalNpsDashboardPage() {
                     <BarChart data={matrixAvg} layout="vertical">
                       <CartesianGrid
                         strokeDasharray="3 3"
-                        stroke="hsl(217,33%,20%)"
+                        stroke="var(--color-border)" strokeOpacity={0.5}
                       />
                       <XAxis
                         type="number"
                         domain={[0, 5]}
-                        stroke="hsl(215,20%,55%)"
+                        stroke="var(--color-text-muted)"
                         fontSize={12}
                       />
                       <YAxis
                         type="category"
                         dataKey="label"
                         width={130}
-                        stroke="hsl(215,20%,55%)"
+                        stroke="var(--color-text-muted)"
                         fontSize={12}
                       />
                       <RechartsTooltip
                         contentStyle={{
-                          backgroundColor: "hsl(222,47%,10%)",
-                          border: "1px solid hsl(217,33%,20%)",
+                          backgroundColor: "#0f172a",
+                          border: "1px solid var(--color-border)",
                           borderRadius: 8,
-                          color: "#e1e1e1",
+                          color: "var(--color-text-main)",
                         }}
-                        itemStyle={{ color: "#e1e1e1" }}
-                        labelStyle={{ color: "#e1e1e1" }}
+                        itemStyle={{ color: "var(--color-text-main)" }}
+                        labelStyle={{ color: "var(--color-text-main)" }}
                       />
                       <Bar
                         dataKey="avg"
                         radius={[0, 4, 4, 0]}
-                        fill="hsl(210,50%,55%)"
+                        fill="#3b82f6"
                         fillOpacity={0.45}
                       />
                     </BarChart>
@@ -1053,11 +1053,11 @@ export function GlobalNpsDashboardPage() {
                 icon={Briefcase}
                 order={["Excelente", "Bom", "Regular", "Ruim", "Péssimo"]}
                 colorMap={{
-                  Excelente: "hsl(150,60%,42%)",
-                  Bom: "hsl(140,50%,50%)",
-                  Regular: "hsl(45,80%,50%)",
-                  Ruim: "hsl(25,80%,50%)",
-                  Péssimo: "hsl(0,70%,50%)",
+                  Excelente: "#22c55e",
+                  Bom: "#4ade80",
+                  Regular: "#eab308",
+                  Ruim: "#f97316",
+                  Péssimo: "#ef4444",
                 }}
                 hint="Distribuição das respostas para 'Como foi o atendimento comercial?'. Conta cada categoria nas respostas filtradas. Use para identificar quedas em qualidade de atendimento."
               />
@@ -1069,10 +1069,10 @@ export function GlobalNpsDashboardPage() {
                 layout="vertical"
                 order={["Sim totalmente", "Sim", "Mais ou menos", "Não"]}
                 colorMap={{
-                  "Sim totalmente": "hsl(150,60%,42%)",
-                  Sim: "hsl(140,50%,50%)",
-                  "Mais ou menos": "hsl(45,80%,50%)",
-                  Não: "hsl(0,70%,50%)",
+                  "Sim totalmente": "#22c55e",
+                  Sim: "#4ade80",
+                  "Mais ou menos": "#eab308",
+                  Não: "#ef4444",
                 }}
                 hint="Distribuição da pergunta 'O consultor entendeu sua necessidade?'. Indica se o time comercial está captando bem o que o cliente precisa."
               />
@@ -1090,11 +1090,11 @@ export function GlobalNpsDashboardPage() {
                 "Muito difícil",
               ]}
               colorMap={{
-                "Muito fácil": "hsl(150,60%,42%)",
-                Fácil: "hsl(140,50%,50%)",
-                Neutra: "hsl(45,80%,50%)",
-                Difícil: "hsl(25,80%,50%)",
-                "Muito difícil": "hsl(0,70%,50%)",
+                "Muito fácil": "#22c55e",
+                Fácil: "#4ade80",
+                Neutra: "#eab308",
+                Difícil: "#f97316",
+                "Muito difícil": "#ef4444",
               }}
               hint="Distribuição de 'Como foi a experiência de compra?'. Mede a fricção percebida no processo, do pedido à conclusão."
             />
@@ -1225,7 +1225,7 @@ export function GlobalNpsDashboardPage() {
                               <span className="text-foreground truncate font-medium">
                                 {(r as any).client_name ||
                                   (r as any).client_id || (
-                                    <span className="text-muted-foreground italic">
+                                    <span className="text-text-muted italic">
                                       Anônimo
                                     </span>
                                   )}
@@ -1329,17 +1329,17 @@ export function GlobalNpsDashboardPage() {
                                 </AlertDialogTrigger>
                                 <AlertDialogContent className="bg-card border-border">
                                   <AlertDialogHeader>
-                                    <AlertDialogTitle className="text-foreground">
+                                    <AlertDialogTitle className="text-text-main">
                                       Excluir resposta
                                     </AlertDialogTitle>
-                                    <AlertDialogDescription className="text-muted-foreground">
+                                    <AlertDialogDescription className="text-text-muted">
                                       Tem certeza que deseja excluir
                                       permanentemente esta resposta do banco de
                                       dados? Esta ação não pode ser desfeita.
                                     </AlertDialogDescription>
                                   </AlertDialogHeader>
                                   <AlertDialogFooter>
-                                    <AlertDialogCancel className="border-border text-foreground">
+                                    <AlertDialogCancel className="border-border text-text-main rounded-xl">
                                       Cancelar
                                     </AlertDialogCancel>
                                     <AlertDialogAction
@@ -1394,11 +1394,11 @@ export function GlobalNpsDashboardPage() {
           }}
         >
           <DialogContent className="bg-card border-border max-w-2xl max-h-[90vh] w-[95vw] sm:w-full flex flex-col overflow-hidden p-0">
-            <DialogHeader className="px-6 py-4 border-b border-border/50 flex-shrink-0">
-              <DialogTitle className="text-foreground text-lg">
+            <DialogHeader className="shrink-0 border-b border-border/50 mb-0">
+              <DialogTitle className="text-text-main text-lg">
                 Detalhes da Resposta
               </DialogTitle>
-              <DialogDescription className="text-muted-foreground">
+              <DialogDescription className="text-text-muted">
                 {detailResponse &&
                   new Date(detailResponse.created_at).toLocaleDateString(
                     "pt-BR",
@@ -1418,28 +1418,28 @@ export function GlobalNpsDashboardPage() {
               </DialogDescription>
             </DialogHeader>
 
-            <div className="px-6 py-4 overflow-y-auto custom-scrollbar flex-1">
+            <div className="overflow-y-auto custom-scrollbar flex-1">
               {detailResponse && (
                 <div className="space-y-5">
                   {/* Identification */}
                   <div>
-                    <h3 className="text-sm font-semibold text-primary mb-3">
+                    <h3 className="text-sm font-semibold text-accent mb-3">
                       Identificação
                     </h3>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      <div className="bg-secondary/50 rounded-lg p-3 border border-border/30">
-                        <span className="text-xs text-muted-foreground block mb-1">
+                      <div className="bg-surface border border-border rounded-xl p-3">
+                        <span className="text-xs text-text-muted font-medium block mb-1">
                           Nome do Cliente
                         </span>
-                        <span className="text-sm font-medium text-foreground">
+                        <span className="text-sm font-medium text-text-main">
                           {detailResponse.client_name || "—"}
                         </span>
                       </div>
-                      <div className="bg-secondary/50 rounded-lg p-3 border border-border/30">
-                        <span className="text-xs text-muted-foreground block mb-1">
+                      <div className="bg-surface border border-border rounded-xl p-3">
+                        <span className="text-xs text-text-muted font-medium block mb-1">
                           Nome do Vendedor
                         </span>
-                        <span className="text-sm font-medium text-foreground">
+                        <span className="text-sm font-medium text-text-main">
                           {detailResponse.vendor_name || "—"}
                         </span>
                       </div>
@@ -1448,12 +1448,12 @@ export function GlobalNpsDashboardPage() {
 
                   {/* Objective answers */}
                   <div>
-                    <h3 className="text-sm font-semibold text-primary mb-3">
+                    <h3 className="text-sm font-semibold text-accent mb-3">
                       Respostas Objetivas
                     </h3>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      <div className="bg-secondary/50 rounded-lg p-3 border border-border/30">
-                        <span className="text-xs text-muted-foreground block mb-1">
+                      <div className="bg-surface border border-border rounded-xl p-3">
+                        <span className="text-xs text-text-muted font-medium block mb-1">
                           NPS Score
                         </span>
                         <span
@@ -1462,35 +1462,35 @@ export function GlobalNpsDashboardPage() {
                           {detailResponse.nps_score ?? "—"}
                         </span>
                       </div>
-                      <div className="bg-secondary/50 rounded-lg p-3 border border-border/30">
-                        <span className="text-xs text-muted-foreground block mb-1">
+                      <div className="bg-surface border border-border rounded-xl p-3">
+                        <span className="text-xs text-text-muted font-medium block mb-1">
                           Satisfação Geral (CSAT)
                         </span>
-                        <span className="text-sm font-medium text-foreground">
+                        <span className="text-sm font-medium text-text-main">
                           {detailResponse.csat || "—"}
                         </span>
                       </div>
-                      <div className="bg-secondary/50 rounded-lg p-3 border border-border/30">
-                        <span className="text-xs text-muted-foreground block mb-1">
+                      <div className="bg-surface border border-border rounded-xl p-3">
+                        <span className="text-xs text-text-muted font-medium block mb-1">
                           Atendimento Comercial
                         </span>
-                        <span className="text-sm font-medium text-foreground">
+                        <span className="text-sm font-medium text-text-main">
                           {detailResponse.atendimento_comercial || "—"}
                         </span>
                       </div>
-                      <div className="bg-secondary/50 rounded-lg p-3 border border-border/30">
-                        <span className="text-xs text-muted-foreground block mb-1">
+                      <div className="bg-surface border border-border rounded-xl p-3">
+                        <span className="text-xs text-text-muted font-medium block mb-1">
                           Consultor entendeu a necessidade?
                         </span>
-                        <span className="text-sm font-medium text-foreground">
+                        <span className="text-sm font-medium text-text-main">
                           {detailResponse.entendimento_consultor || "—"}
                         </span>
                       </div>
-                      <div className="bg-secondary/50 rounded-lg p-3 border border-border/30">
-                        <span className="text-xs text-muted-foreground block mb-1">
+                      <div className="bg-surface border border-border rounded-xl p-3">
+                        <span className="text-xs text-text-muted font-medium block mb-1">
                           Experiência de Compra
                         </span>
-                        <span className="text-sm font-medium text-foreground">
+                        <span className="text-sm font-medium text-text-main">
                           {detailResponse.experiencia_compra || "—"}
                         </span>
                       </div>
@@ -1499,7 +1499,7 @@ export function GlobalNpsDashboardPage() {
 
                   {/* Matrix ratings */}
                   <div>
-                    <h3 className="text-sm font-semibold text-primary mb-3">
+                    <h3 className="text-sm font-semibold text-accent mb-3">
                       Avaliação por Critério
                     </h3>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -1527,16 +1527,16 @@ export function GlobalNpsDashboardPage() {
                       ].map(({ label, value }) => (
                         <div
                           key={label}
-                          className="bg-secondary/50 rounded-lg p-3 border border-border/30 flex items-center justify-between"
+                          className="bg-surface border border-border rounded-xl p-3 flex items-center justify-between"
                         >
-                          <span className="text-xs text-muted-foreground">
+                          <span className="text-xs text-text-muted">
                             {label}
                           </span>
                           <div className="flex gap-0.5">
                             {[1, 2, 3, 4, 5].map((s) => (
                               <Star
                                 key={s}
-                                className={`w-4 h-4 ${s <= (value || 0) ? "fill-primary text-primary" : "text-muted-foreground/30"}`}
+                                className={`w-4 h-4 ${s <= (value || 0) ? "fill-primary text-primary" : "text-border"}`}
                               />
                             ))}
                           </div>
@@ -1547,7 +1547,7 @@ export function GlobalNpsDashboardPage() {
 
                   {/* Subjective answers */}
                   <div>
-                    <h3 className="text-sm font-semibold text-primary mb-3">
+                    <h3 className="text-sm font-semibold text-accent mb-3">
                       Respostas Subjetivas
                     </h3>
                     <div className="space-y-3">
@@ -1575,14 +1575,14 @@ export function GlobalNpsDashboardPage() {
                       ].map(({ label, value }) => (
                         <div
                           key={label}
-                          className="bg-secondary/50 rounded-lg p-3 border border-border/30"
+                          className="bg-surface border border-border rounded-xl p-3"
                         >
-                          <span className="text-xs text-muted-foreground block mb-1">
+                          <span className="text-xs text-text-muted font-medium block mb-1">
                             {label}
                           </span>
-                          <p className="text-sm text-foreground whitespace-pre-wrap">
+                          <p className="text-sm text-text-main whitespace-pre-wrap">
                             {value || (
-                              <span className="text-muted-foreground italic">
+                              <span className="text-text-muted italic">
                                 Sem resposta
                               </span>
                             )}
@@ -1596,7 +1596,7 @@ export function GlobalNpsDashboardPage() {
                   {detailResponse.dynamic_answers &&
                     Object.keys(detailResponse.dynamic_answers).length > 0 && (
                       <div>
-                        <h3 className="text-sm font-semibold text-primary mb-3">
+                        <h3 className="text-sm font-semibold text-accent mb-3">
                           Perguntas Personalizadas
                         </h3>
                         <div className="space-y-3">
@@ -1619,12 +1619,12 @@ export function GlobalNpsDashboardPage() {
                             .map(([k, v]) => (
                               <div
                                 key={k}
-                                className="bg-secondary/50 rounded-lg p-3 border border-border/30"
+                                className="bg-surface border border-border rounded-xl p-3"
                               >
-                                <span className="text-xs text-muted-foreground block mb-1 font-mono">
+                                <span className="text-xs text-text-muted font-medium block mb-1 font-mono">
                                   {k}
                                 </span>
-                                <p className="text-sm text-foreground whitespace-pre-wrap">
+                                <p className="text-sm text-text-main whitespace-pre-wrap">
                                   {Array.isArray(v)
                                     ? v.join(", ")
                                     : typeof v === "object"
@@ -1648,21 +1648,21 @@ export function GlobalNpsDashboardPage() {
         >
           <AlertDialogContent className="bg-card border-border">
             <AlertDialogHeader>
-              <AlertDialogTitle className="text-foreground">
+              <AlertDialogTitle className="text-text-main">
                 Excluir respostas?
               </AlertDialogTitle>
-              <AlertDialogDescription className="text-muted-foreground">
+              <AlertDialogDescription className="text-text-muted">
                 Tem certeza que deseja excluir {filtered.length} resposta(s)?
                 Esta ação não pode ser desfeita.
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel className="border-border text-foreground">
+              <AlertDialogCancel className="border-border text-text-main rounded-xl">
                 Cancelar
               </AlertDialogCancel>
               <AlertDialogAction
                 onClick={confirmDeleteAll}
-                className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                className="bg-destructive text-destructive-foreground hover:bg-destructive/90 rounded-xl"
               >
                 Excluir
               </AlertDialogAction>

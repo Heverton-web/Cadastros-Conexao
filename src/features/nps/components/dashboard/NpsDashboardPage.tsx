@@ -62,6 +62,10 @@ import {
   UserCheck,
   Trophy,
   Filter,
+  Search,
+  X,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 import { toast } from "react-hot-toast";
 import { useAuth } from "~/lib/auth";
@@ -83,6 +87,7 @@ import DetractorAlerts from "./charts/DetractorAlerts";
 
 import SectionHeader from "./charts/SectionHeader";
 import SectionNav from "./charts/SectionNav";
+import MetricCard from "./charts/MetricCard";
 import CommentRateCard from "./charts/CommentRateCard";
 import RepeatCustomerCard from "./charts/RepeatCustomerCard";
 import CompletionRateCard from "./charts/CompletionRateCard";
@@ -144,19 +149,13 @@ const SUBJECTIVE_OPTIONS: {
 
 // CSAT colors mapped by satisfaction level (best → worst)
 const CSAT_COLORS: Record<string, string> = {
-  "Muito satisfeito": "hsl(150,60%,42%)",
-  Satisfeito: "hsl(140,50%,50%)",
-  Neutro: "hsl(45,80%,50%)",
-  Insatisfeito: "hsl(25,80%,50%)",
-  "Muito insatisfeito": "hsl(0,70%,50%)",
+  "Muito satisfeito": "#22c55e",
+  Satisfeito: "#4ade80",
+  Neutro: "#eab308",
+  Insatisfeito: "#f97316",
+  "Muito insatisfeito": "#ef4444",
 };
-const CSAT_COLOR_FALLBACKS = [
-  "hsl(150,60%,42%)",
-  "hsl(140,50%,50%)",
-  "hsl(45,80%,50%)",
-  "hsl(25,80%,50%)",
-  "hsl(0,70%,50%)",
-];
+const CSAT_COLOR_FALLBACKS = ["#22c55e", "#4ade80", "#eab308", "#f97316", "#ef4444"];
 
 const getCsatColor = (name: string, index: number) => {
   return (
@@ -165,13 +164,7 @@ const getCsatColor = (name: string, index: number) => {
   );
 };
 
-const MATRIX_COLORS = [
-  "hsl(38,60%,50%)",
-  "hsl(38,50%,45%)",
-  "hsl(38,45%,40%)",
-  "hsl(38,40%,38%)",
-  "hsl(38,35%,35%)",
-];
+const MATRIX_COLORS = ["#c9a655", "#b8963f", "#a88535", "#97742b", "#866321"];
 
 export function NpsDashboardPage() {
   const { profile, empresa } = useAuth();
@@ -192,6 +185,17 @@ export function NpsDashboardPage() {
   );
   const [showResponsesTable, setShowResponsesTable] = useState(true);
   const [activeSection, setActiveSection] = useState<string>("todas");
+  const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({
+    "visao-geral": true,
+    "nps": true,
+    "satisfacao": false,
+    "vendedores": false,
+    "insights": false,
+    "respostas": false,
+  });
+  const [searchResponse, setSearchResponse] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const ITEMS_PER_PAGE = 10;
   const isSuperAdmin = profile?.is_super_admin === true;
   const [selectedEmpresa, setSelectedEmpresa] = useState<string>(
     empresa?.id || "",
@@ -459,26 +463,91 @@ export function NpsDashboardPage() {
     return "text-red-400";
   };
 
+  const toggleSection = (section: string) => {
+    setExpandedSections((prev) => ({ ...prev, [section]: !prev[section] }));
+  };
+
+  // Search filter for responses table
+  const searchedResponses = useMemo(() => {
+    if (!searchResponse.trim()) return filtered;
+    const term = searchResponse.toLowerCase();
+    return filtered.filter(
+      (r) =>
+        (r.client_name || "").toLowerCase().includes(term) ||
+        (r.nps_comment || "").toLowerCase().includes(term) ||
+        (r.vendor_name || "").toLowerCase().includes(term) ||
+        (r.melhoria_atendimento || "").toLowerCase().includes(term) ||
+        (r.oportunidade || "").toLowerCase().includes(term),
+    );
+  }, [filtered, searchResponse]);
+
+  // Pagination
+  const totalPages = Math.ceil(searchedResponses.length / ITEMS_PER_PAGE);
+  const paginatedResponses = useMemo(() => {
+    const start = (currentPage - 1) * ITEMS_PER_PAGE;
+    return searchedResponses.slice(start, start + ITEMS_PER_PAGE);
+  }, [searchedResponses, currentPage]);
+
+  // Simulated trends (comparing first half vs second half of data)
+  const trends = useMemo(() => {
+    if (activeData.length < 4) return { responses: 0, nps: 0, avg: 0, comments: 0 };
+    const mid = Math.floor(activeData.length / 2);
+    const firstHalf = activeData.slice(0, mid);
+    const secondHalf = activeData.slice(mid);
+
+    const calcTrend = (a: number, b: number) => {
+      if (a === 0) return b > 0 ? 100 : 0;
+      return Math.round(((b - a) / a) * 100);
+    };
+
+    const halfNps = (data: typeof activeData) => {
+      const scored = data.filter((r) => r.nps_score !== null);
+      if (!scored.length) return 0;
+      const promoters = scored.filter((r) => r.nps_score! >= 9).length;
+      const detractors = scored.filter((r) => r.nps_score! <= 6).length;
+      return Math.round(((promoters - detractors) / scored.length) * 100);
+    };
+
+    return {
+      responses: calcTrend(firstHalf.length, secondHalf.length),
+      nps: calcTrend(halfNps(firstHalf), halfNps(secondHalf)),
+      avg: 0,
+      comments: calcTrend(
+        firstHalf.filter((r) => r.nps_comment).length,
+        secondHalf.filter((r) => r.nps_comment).length,
+      ),
+    };
+  }, [activeData]);
+
   return (
-    <div className="min-h-screen p-4 md:p-8">
-      <div className="max-w-7xl mx-auto space-y-6">
-        {/* Header */}
-        {/* Header */}
-        <div className="mb-2 flex items-start sm:items-center justify-between gap-4">
-          <div>
-            <h1 className="text-2xl font-bold text-white mb-1">NPS</h1>
-            <p className="text-sm text-muted-foreground">
-              Dashboard analítico e visão geral das avaliações
-            </p>
-          </div>
+    <div className="space-y-8 animate-fade-in">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold text-text-main tracking-tight">
+            Olá, {userName?.split(" ")[0] || "Usuário"}
+          </h1>
+          <p className="text-sm text-text-muted mt-1">
+            Dashboard analítico e visão geral das avaliações NPS
+          </p>
+        </div>
+        <div className="flex items-center gap-2">
           <button
             onClick={() => setShowMobileFilters(!showMobileFilters)}
-            className="md:hidden flex items-center gap-2 px-3 py-2 bg-secondary/80 border border-border/50 rounded-lg text-sm text-foreground hover:bg-secondary transition-colors whitespace-nowrap"
+            className="md:hidden flex items-center gap-2 px-3 py-2 bg-bg border border-border rounded-lg text-sm text-text-main hover:bg-surface-hover transition-colors whitespace-nowrap"
           >
-            <Filter className="w-4 h-4" />
+            <Filter className="w-4 h-4 transition-colors" />
             {showMobileFilters ? "Ocultar Filtros" : "Filtros"}
           </button>
+          <button
+            onClick={() => fetchData(activeEmpresaId)}
+            className="flex items-center gap-2 px-4 py-2 rounded-lg bg-accent text-accent-fg text-sm font-medium hover:bg-accent-hover transition-colors"
+          >
+            <RefreshCw className="w-4 h-4 transition-colors" />
+            Atualizar
+          </button>
         </div>
+      </div>
 
         {/* Sticky Filters */}
         <div className="sticky top-0 z-30 -mx-2 px-2 py-2">
@@ -488,33 +557,33 @@ export function NpsDashboardPage() {
             {/* Filtros em Grid responsivo */}
             <div className="grid grid-cols-1 sm:grid-cols-3 md:flex md:flex-wrap items-end justify-between gap-3 md:gap-4">
               <div className="flex flex-col gap-1 w-full md:w-[130px]">
-                <Label className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium px-1">
+                <Label className="text-[10px] uppercase tracking-wider text-text-muted font-medium px-1">
                   De
                 </Label>
                 <Input
                   type="date"
                   value={dateFrom}
                   onChange={(e) => setDateFrom(e.target.value)}
-                  className="h-9 w-full bg-secondary/80 border-border/50 text-foreground text-sm"
+                  className="h-9 w-full bg-bg border border-border text-text-main text-sm"
                 />
               </div>
               <div className="flex flex-col gap-1 w-full md:w-[130px]">
-                <Label className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium px-1">
+                <Label className="text-[10px] uppercase tracking-wider text-text-muted font-medium px-1">
                   Até
                 </Label>
                 <Input
                   type="date"
                   value={dateTo}
                   onChange={(e) => setDateTo(e.target.value)}
-                  className="h-9 w-full bg-secondary/80 border-border/50 text-foreground text-sm"
+                  className="h-9 w-full bg-bg border border-border text-text-main text-sm"
                 />
               </div>
               <div className="flex flex-col gap-1 w-full md:flex-1 md:min-w-[160px]">
-                <Label className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium px-1">
+                <Label className="text-[10px] uppercase tracking-wider text-text-muted font-medium px-1">
                   Vendedor
                 </Label>
                 <Select value={vendorFilter} onValueChange={setVendorFilter}>
-                  <SelectTrigger className="h-9 w-full bg-secondary/80 border-border/50 text-foreground text-sm">
+                  <SelectTrigger className="h-9 w-full bg-bg border border-border text-text-main text-sm">
                     <SelectValue placeholder="Todos" className="truncate" />
                   </SelectTrigger>
                   <SelectContent>
@@ -529,7 +598,7 @@ export function NpsDashboardPage() {
               </div>
               {isSuperAdmin && empresas.length > 0 && (
                 <div className="flex flex-col gap-1 w-full md:flex-1 md:min-w-[160px]">
-                  <Label className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium px-1">
+                  <Label className="text-[10px] uppercase tracking-wider text-text-muted font-medium px-1">
                     Empresa
                   </Label>
                   <Select
@@ -538,7 +607,7 @@ export function NpsDashboardPage() {
                       setSelectedEmpresa(v);
                     }}
                   >
-                    <SelectTrigger className="h-9 w-full bg-secondary/80 border-border/50 text-foreground text-sm">
+                    <SelectTrigger className="h-9 w-full bg-bg border border-border text-text-main text-sm">
                       <SelectValue placeholder="Todas" className="truncate" />
                     </SelectTrigger>
                     <SelectContent>
@@ -553,14 +622,14 @@ export function NpsDashboardPage() {
                 </div>
               )}
               <div className="flex flex-col gap-1 w-full md:flex-1 md:min-w-[150px]">
-                <Label className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium px-1">
+                <Label className="text-[10px] uppercase tracking-wider text-text-muted font-medium px-1">
                   NPS
                 </Label>
                 <Select
                   value={npsBucketFilter}
                   onValueChange={(v) => setNpsBucketFilter(v as NpsBucket)}
                 >
-                  <SelectTrigger className="h-9 w-full bg-secondary/80 border-border/50 text-foreground text-sm">
+                  <SelectTrigger className="h-9 w-full bg-bg border border-border text-text-main text-sm">
                     <SelectValue placeholder="Todas" className="truncate" />
                   </SelectTrigger>
                   <SelectContent>
@@ -572,14 +641,14 @@ export function NpsDashboardPage() {
                 </Select>
               </div>
               <div className="flex flex-col gap-1 w-full md:flex-[1.5] md:min-w-[180px] col-span-2 sm:col-span-1">
-                <Label className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium px-1">
+                <Label className="text-[10px] uppercase tracking-wider text-text-muted font-medium px-1">
                   Pergunta
                 </Label>
                 <Select
                   value={subjectiveFilter}
                   onValueChange={(v) => setSubjectiveFilter(v as SubjectiveKey)}
                 >
-                  <SelectTrigger className="h-9 w-full bg-secondary/80 border-border/50 text-foreground text-sm">
+                  <SelectTrigger className="h-9 w-full bg-bg border border-border text-text-main text-sm">
                     <SelectValue placeholder="Todas" className="truncate" />
                   </SelectTrigger>
                   <SelectContent>
@@ -614,7 +683,7 @@ export function NpsDashboardPage() {
                       npsBucketFilter === "all" &&
                       subjectiveFilter === "all"
                     }
-                    className="h-9 px-3 w-full md:w-auto rounded-md bg-secondary/80 border border-border/50 text-muted-foreground hover:bg-secondary hover:text-foreground transition-colors disabled:opacity-40 disabled:cursor-not-allowed text-sm flex items-center justify-center gap-1.5 whitespace-nowrap"
+                    className="h-9 px-3 w-full md:w-auto rounded-md bg-bg border border-border text-text-muted hover:bg-surface-hover hover:text-text-main transition-colors disabled:opacity-40 disabled:cursor-not-allowed text-sm flex items-center justify-center gap-1.5 whitespace-nowrap"
                   >
                     <RefreshCw className="w-3.5 h-3.5" />
                     Limpar
@@ -626,17 +695,17 @@ export function NpsDashboardPage() {
             {/* Resumo + ações */}
             <div className="flex flex-wrap items-center justify-center gap-2 text-xs">
               {(dateFrom || dateTo) && (
-                <span className="px-2 py-1 rounded-md bg-secondary/60 text-muted-foreground">
+                <span className="px-2 py-1 rounded-md bg-accent/10 text-accent">
                   {dateFrom || "..."} → {dateTo || "hoje"}
                 </span>
               )}
               {vendorFilter !== "all" && (
-                <span className="px-2 py-1 rounded-md bg-secondary/60 text-muted-foreground">
+                <span className="px-2 py-1 rounded-md bg-accent/10 text-accent">
                   Vendedor: {vendorFilter}
                 </span>
               )}
               {npsBucketFilter !== "all" && (
-                <span className="px-2 py-1 rounded-md bg-secondary/60 text-muted-foreground">
+                <span className="px-2 py-1 rounded-md bg-accent/10 text-accent">
                   {npsBucketFilter === "detractors"
                     ? "Detratores"
                     : npsBucketFilter === "passives"
@@ -645,7 +714,7 @@ export function NpsDashboardPage() {
                 </span>
               )}
               {subjectiveFilter !== "all" && (
-                <span className="px-2 py-1 rounded-md bg-secondary/60 text-muted-foreground">
+                <span className="px-2 py-1 rounded-md bg-accent/10 text-accent">
                   {
                     SUBJECTIVE_OPTIONS.find((o) => o.key === subjectiveFilter)
                       ?.label
@@ -658,162 +727,101 @@ export function NpsDashboardPage() {
 
         {/* ============ [1] VISÃO GERAL ============ */}
         <section className="space-y-4">
-          <SectionHeader
-            id="visao-geral"
-            icon={LayoutDashboard}
-            title="Visão Geral"
-            subtitle="Como estamos hoje — números-chave do recorte atual"
-          />
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4">
-            <Card className="bg-card shadow-sm border-border">
-              <CardContent className="pt-4 sm:pt-6 pb-3 sm:pb-5">
-                <div className="flex items-center gap-2 sm:gap-4">
-                  <div className="p-2 sm:p-2.5 rounded-xl bg-primary/10">
-                    <Users className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-1 sm:gap-2">
-                      <p className="text-xl sm:text-3xl font-bold text-foreground tracking-tight">
-                        {activeData.length}
-                      </p>
-                      <TooltipProvider delayDuration={150}>
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <HelpCircle className="w-3.5 h-3.5 text-muted-foreground cursor-help opacity-60 hover:opacity-100" />
-                          </TooltipTrigger>
-                          <TooltipContent
-                            side="top"
-                            className="max-w-[260px] text-xs leading-relaxed"
-                          >
-                            Total de respostas filtradas no período e com os
-                            critérios selecionados.
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
-                    </div>
-                    <p className="text-xs text-muted-foreground font-medium">
-                      Respostas
-                    </p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-            <Card className="bg-card shadow-sm border-border">
-              <CardContent className="pt-4 sm:pt-6 pb-3 sm:pb-5">
-                <div className="flex items-center gap-2 sm:gap-4">
-                  <div
-                    className={`p-2 sm:p-2.5 rounded-xl ${npsStats.score >= 50 ? "bg-green-500/10" : npsStats.score >= 0 ? "bg-yellow-500/10" : "bg-red-500/10"}`}
-                  >
-                    <TrendingUp
-                      className={`w-5 h-5 sm:w-6 sm:h-6 ${getNPSColor(npsStats.score)}`}
-                    />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-1 sm:gap-2">
-                      <p
-                        className={`text-xl sm:text-3xl font-bold tracking-tight ${getNPSColor(npsStats.score)}`}
-                      >
-                        {npsStats.score}
-                      </p>
-                      <TooltipProvider delayDuration={150}>
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <HelpCircle className="w-3.5 h-3.5 text-muted-foreground cursor-help opacity-60 hover:opacity-100" />
-                          </TooltipTrigger>
-                          <TooltipContent
-                            side="top"
-                            className="max-w-[280px] text-xs leading-relaxed"
-                          >
-                            Cálculo: ((Promotores − Detratores) ÷ Total de notas
-                            válidas) × 100.
-                            <br />
-                            Promotores = notas 9–10. Detratores = notas 0–6.
-                            Neutros = 7–8 (não entram no cálculo).
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
-                    </div>
-                    <p className="text-xs text-muted-foreground font-medium">
-                      NPS Score
-                    </p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-            <Card className="bg-card shadow-sm border-border">
-              <CardContent className="pt-4 sm:pt-6 pb-3 sm:pb-5">
-                <div className="flex items-center gap-2 sm:gap-4">
-                  <div className="p-2 sm:p-2.5 rounded-xl bg-primary/10">
-                    <Star className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-1 sm:gap-2">
-                      <p className="text-xl sm:text-3xl font-bold text-foreground tracking-tight">
-                        {overallMatrixAvg}
-                      </p>
-                      <TooltipProvider delayDuration={150}>
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <HelpCircle className="w-3.5 h-3.5 text-muted-foreground cursor-help opacity-60 hover:opacity-100" />
-                          </TooltipTrigger>
-                          <TooltipContent
-                            side="top"
-                            className="max-w-[280px] text-xs leading-relaxed"
-                          >
-                            Média aritmética de todas as avaliações da matriz
-                            (Facilidade, Clareza, Prazo, Disponibilidade,
-                            Comunicação) maiores que 0, dividida pelo total de
-                            avaliações válidas.
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
-                    </div>
-                    <p className="text-xs text-muted-foreground font-medium">
-                      Média Geral
-                    </p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-            <Card
-              className="bg-gradient-to-br from-card/90 to-card/60 backdrop-blur border-border/30 shadow-lg hover:shadow-xl transition-shadow cursor-pointer"
-              onClick={() => setActiveSection("insights")}
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-3">
+              <div className="p-2 rounded-lg bg-accent/10 text-accent">
+                <LayoutDashboard className="w-5 h-5" />
+              </div>
+              <div>
+                <h2 className="text-lg font-bold text-text-main tracking-tight leading-tight">
+                  Visão Geral
+                </h2>
+                <p className="text-xs text-text-muted mt-0.5">
+                  Como estamos hoje — números-chave do recorte atual
+                </p>
+              </div>
+            </div>
+            <button
+              onClick={() => toggleSection("visao-geral")}
+              className="flex items-center gap-1 text-sm text-accent hover:text-accent-hover transition-colors font-medium"
             >
-              <CardContent className="pt-4 sm:pt-6 pb-3 sm:pb-5">
-                <div className="flex items-center gap-2 sm:gap-4">
-                  <div className="p-2 sm:p-2.5 rounded-xl bg-primary/10">
-                    <MessageSquare className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-1 sm:gap-2">
-                      <p className="text-xl sm:text-3xl font-bold text-foreground tracking-tight">
-                        {commentsCount}
-                      </p>
-                      <TooltipProvider delayDuration={150}>
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <HelpCircle className="w-3.5 h-3.5 text-muted-foreground cursor-help opacity-60 hover:opacity-100" />
-                          </TooltipTrigger>
-                          <TooltipContent
-                            side="top"
-                            className="max-w-[280px] text-xs leading-relaxed"
-                          >
-                            Respostas que possuem ao menos um comentário em
-                            qualquer campo de texto livre: NPS, melhoria,
-                            expansão, oportunidade, pergunta final ou perguntas
-                            dinâmicas.
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
-                    </div>
-                    <p className="text-xs text-muted-foreground font-medium">
-                      Com Comentários
-                    </p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+              {expandedSections["visao-geral"] ? "Recolher" : "Expandir"}
+              <ChevronDown
+                className={`w-4 h-4 transition-transform duration-200 ${expandedSections["visao-geral"] ? "rotate-180" : ""}`}
+              />
+            </button>
           </div>
+          {expandedSections["visao-geral"] && (
+            <div className="space-y-4 animate-in fade-in slide-in-from-top-2 duration-200">
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                <MetricCard
+                  icon={Users}
+                  label="Respostas"
+                  value={activeData.length}
+                  hint={`${trends.responses > 0 ? "+" : ""}${trends.responses}% vs. período anterior`}
+                  accent="text-accent"
+                  accentBg="bg-accent/15"
+                  gradientFrom="from-accent/20"
+                  gradientVia="via-accent/10"
+                  borderColor="border-accent/20"
+                  shadowColor="shadow-accent/10"
+                  trend={trends.responses}
+                />
+                <MetricCard
+                  icon={TrendingUp}
+                  label="NPS Score"
+                  value={npsStats.score}
+                  hint={npsStats.score >= 50 ? "Excelente" : npsStats.score >= 0 ? "Neutro" : "Precisa de atenção"}
+                  accent={npsStats.score >= 50 ? "text-green-400" : npsStats.score >= 0 ? "text-yellow-400" : "text-red-400"}
+                  accentBg={npsStats.score >= 50 ? "bg-green-500/15" : npsStats.score >= 0 ? "bg-yellow-500/15" : "bg-red-500/15"}
+                  gradientFrom={npsStats.score >= 50 ? "from-green-500/20" : npsStats.score >= 0 ? "from-yellow-500/20" : "from-red-500/20"}
+                  gradientVia={npsStats.score >= 50 ? "via-green-500/10" : npsStats.score >= 0 ? "via-yellow-500/10" : "via-red-500/10"}
+                  borderColor={npsStats.score >= 50 ? "border-green-500/20" : npsStats.score >= 0 ? "border-yellow-500/20" : "border-red-500/20"}
+                  shadowColor={npsStats.score >= 50 ? "shadow-green-500/10" : npsStats.score >= 0 ? "shadow-yellow-500/10" : "shadow-red-500/10"}
+                  trend={trends.nps}
+                  showProgress
+                  progressValue={npsStats.score + 100}
+                  progressMax={200}
+                  progressGradient={npsStats.score >= 50 ? "from-green-500 to-green-400" : npsStats.score >= 0 ? "from-yellow-500 to-yellow-400" : "from-red-500 to-red-400"}
+                />
+                <MetricCard
+                  icon={Star}
+                  label="Média Matriz"
+                  value={overallMatrixAvg}
+                  hint="Média de todas as dimensões avaliadas"
+                  accent="text-blue-400"
+                  accentBg="bg-blue-500/15"
+                  gradientFrom="from-blue-500/20"
+                  gradientVia="via-blue-500/10"
+                  borderColor="border-blue-500/20"
+                  shadowColor="shadow-blue-500/10"
+                  trend={trends.avg}
+                  showProgress
+                  progressValue={parseFloat(overallMatrixAvg) || 0}
+                  progressMax={5}
+                  progressGradient="from-blue-500 to-blue-400"
+                />
+                <MetricCard
+                  icon={MessageSquare}
+                  label="Com Comentários"
+                  value={commentsCount}
+                  hint={`${activeData.length > 0 ? Math.round((commentsCount / activeData.length) * 100) : 0}% do total de respostas`}
+                  accent="text-purple-400"
+                  accentBg="bg-purple-500/15"
+                  gradientFrom="from-purple-500/20"
+                  gradientVia="via-purple-500/10"
+                  borderColor="border-purple-500/20"
+                  shadowColor="shadow-purple-500/10"
+                  trend={trends.comments}
+                  showProgress
+                  progressValue={commentsCount}
+                  progressMax={activeData.length || 1}
+                  trendLabel={`${activeData.length > 0 ? Math.round((commentsCount / activeData.length) * 100) : 0}% do total`}
+                  progressGradient="from-purple-500 to-purple-400"
+                />
+              </div>
+            </div>
+          )}
           {/* KPIs secundários */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <CommentRateCard data={activeData} />
@@ -827,7 +835,7 @@ export function NpsDashboardPage() {
         </section>
 
         {/* ============ NAVEGAÇÃO DAS SEÇÕES ============ */}
-        <div className="bg-card/40 backdrop-blur-sm rounded-xl p-3 border border-border/30">
+        <div className="bg-surface border border-border rounded-xl p-3">
           <SectionNav
             value={activeSection}
             onChange={setActiveSection}
@@ -846,47 +854,67 @@ export function NpsDashboardPage() {
         {/* ============ [2] NPS ============ */}
         {(activeSection === "nps" || activeSection === "todas") && (
           <section className="space-y-4">
-            <SectionHeader
-              id="nps"
-              icon={TrendingUp}
-              title="NPS"
-              subtitle="Quanto clientes recomendariam — distribuição, tendência e fonte"
-            />
-            <div className="grid md:grid-cols-2 gap-6">
-              <Card className="bg-gradient-to-br from-card/90 to-card/60 backdrop-blur border-border/30 shadow-lg">
-                <CardHeader>
-                  <CardTitle className="text-foreground text-base font-semibold">
-                    Distribuição NPS
-                  </CardTitle>
-                </CardHeader>
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-3">
+                <div className="p-2 rounded-lg bg-accent/10 text-accent">
+                  <TrendingUp className="w-5 h-5" />
+                </div>
+                <div>
+                  <h2 className="text-lg font-bold text-text-main tracking-tight leading-tight">
+                    NPS
+                  </h2>
+                  <p className="text-xs text-text-muted mt-0.5">
+                    Quanto clientes recomendariam — distribuição, tendência e fonte
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => toggleSection("nps")}
+                className="flex items-center gap-1 text-sm text-accent hover:text-accent-hover transition-colors font-medium"
+              >
+                {expandedSections["nps"] ? "Recolher" : "Expandir"}
+                <ChevronDown
+                  className={`w-4 h-4 transition-transform duration-200 ${expandedSections["nps"] ? "rotate-180" : ""}`}
+                />
+              </button>
+            </div>
+            {expandedSections["nps"] && (
+              <div className="space-y-4 animate-in fade-in slide-in-from-top-2 duration-200">
+                <div className="grid md:grid-cols-2 gap-6">
+                  <Card className="bg-surface border border-border rounded-xl">
+                    <CardHeader>
+                      <CardTitle className="text-text-main text-base font-semibold">
+                        Distribuição NPS
+                      </CardTitle>
+                    </CardHeader>
                 <CardContent>
                   <ResponsiveContainer width="100%" height={220}>
                     <BarChart data={npsDistribution}>
                       <CartesianGrid
                         strokeDasharray="3 3"
-                        stroke="hsl(217,33%,20%)"
+                        stroke="var(--color-border)" strokeOpacity={0.5}
                       />
                       <XAxis
                         dataKey="score"
-                        stroke="hsl(215,20%,55%)"
+                        stroke="var(--color-text-muted)"
                         fontSize={12}
                       />
                       <YAxis
-                        stroke="hsl(215,20%,55%)"
+                        stroke="var(--color-text-muted)"
                         fontSize={12}
                         allowDecimals={false}
                       />
                       <RechartsTooltip
                         contentStyle={{
-                          backgroundColor: "hsl(222,47%,11%)",
-                          border: "1px solid hsl(217,33%,25%)",
+                          backgroundColor: "var(--color-surface)",
+                          border: "1px solid var(--color-border)",
                           borderRadius: 10,
-                          color: "#e1e1e1",
+                          color: "var(--color-text-main)",
                           padding: "10px 14px",
                           boxShadow: "0 8px 24px rgba(0,0,0,0.4)",
                         }}
-                        itemStyle={{ color: "#e1e1e1" }}
-                        labelStyle={{ color: "#e1e1e1" }}
+                        itemStyle={{ color: "var(--color-text-main)" }}
+                        labelStyle={{ color: "var(--color-text-main)" }}
                         formatter={(value: any) => [
                           `${value} resposta(s)`,
                           "Quantidade",
@@ -898,10 +926,10 @@ export function NpsDashboardPage() {
                           const score = Number(entry.score);
                           const color =
                             score <= 6
-                              ? "hsl(0,70%,50%)"
+                              ? "#ef4444"
                               : score <= 8
-                                ? "hsl(45,80%,50%)"
-                                : "hsl(150,60%,42%)";
+                                ? "#eab308"
+                                : "#22c55e";
                           return <Cell key={index} fill={color} />;
                         })}
                       </Bar>
@@ -921,25 +949,47 @@ export function NpsDashboardPage() {
               <MonthOverMonthCard data={activeData} />
               <TimeHeatmap data={activeData} />
             </div>
+              </div>
+            )}
           </section>
         )}
 
         {/* ============ [3] SATISFAÇÃO & QUALIDADE ============ */}
         {(activeSection === "satisfacao" || activeSection === "todas") && (
           <section className="space-y-4">
-            <SectionHeader
-              id="satisfacao"
-              icon={Smile}
-              title="Satisfação & Qualidade"
-              subtitle="Onde estamos bem e onde precisamos melhorar"
-            />
-            <div className="grid md:grid-cols-2 gap-6">
-              <Card className="bg-gradient-to-br from-card/90 to-card/60 backdrop-blur border-border/30 shadow-lg">
-                <CardHeader>
-                  <CardTitle className="text-foreground text-base font-semibold">
-                    Satisfação (CSAT)
-                  </CardTitle>
-                </CardHeader>
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-3">
+                <div className="p-2 rounded-lg bg-accent/10 text-accent">
+                  <Smile className="w-5 h-5" />
+                </div>
+                <div>
+                  <h2 className="text-lg font-bold text-text-main tracking-tight leading-tight">
+                    Satisfação & Qualidade
+                  </h2>
+                  <p className="text-xs text-text-muted mt-0.5">
+                    Onde estamos bem e onde precisamos melhorar
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => toggleSection("satisfacao")}
+                className="flex items-center gap-1 text-sm text-accent hover:text-accent-hover transition-colors font-medium"
+              >
+                {expandedSections["satisfacao"] ? "Recolher" : "Expandir"}
+                <ChevronDown
+                  className={`w-4 h-4 transition-transform duration-200 ${expandedSections["satisfacao"] ? "rotate-180" : ""}`}
+                />
+              </button>
+            </div>
+            {expandedSections["satisfacao"] && (
+              <div className="space-y-4 animate-in fade-in slide-in-from-top-2 duration-200">
+                <div className="grid md:grid-cols-2 gap-6">
+                  <Card className="bg-surface border border-border rounded-xl">
+                    <CardHeader>
+                      <CardTitle className="text-text-main text-base font-semibold">
+                        Satisfação (CSAT)
+                      </CardTitle>
+                    </CardHeader>
                 <CardContent>
                   <ResponsiveContainer width="100%" height={300}>
                     <PieChart>
@@ -959,7 +1009,7 @@ export function NpsDashboardPage() {
                             <text
                               x={x}
                               y={y}
-                              fill="hsl(210,40%,90%)"
+                              fill="#f8fafc"
                               fontSize={11}
                               textAnchor={x > 200 ? "start" : "end"}
                               dominantBaseline="central"
@@ -969,7 +1019,7 @@ export function NpsDashboardPage() {
                           );
                         }}
                         labelLine={{
-                          stroke: "hsl(215,20%,35%)",
+                          stroke: "#475569",
                           strokeWidth: 1,
                         }}
                       >
@@ -979,15 +1029,15 @@ export function NpsDashboardPage() {
                       </Pie>
                       <RechartsTooltip
                         contentStyle={{
-                          backgroundColor: "hsl(222,47%,11%)",
-                          border: "1px solid hsl(217,33%,25%)",
+                          backgroundColor: "var(--color-surface)",
+                          border: "1px solid var(--color-border)",
                           borderRadius: 10,
-                          color: "#e1e1e1",
+                          color: "var(--color-text-main)",
                           padding: "10px 14px",
                           boxShadow: "0 8px 24px rgba(0,0,0,0.4)",
                         }}
-                        itemStyle={{ color: "#e1e1e1" }}
-                        labelStyle={{ color: "#e1e1e1" }}
+                        itemStyle={{ color: "var(--color-text-main)" }}
+                        labelStyle={{ color: "var(--color-text-main)" }}
                         formatter={(value: any, name: any) => [
                           `${value} resposta(s)`,
                           name,
@@ -997,9 +1047,9 @@ export function NpsDashboardPage() {
                   </ResponsiveContainer>
                 </CardContent>
               </Card>
-              <Card className="bg-gradient-to-br from-card/90 to-card/60 backdrop-blur border-border/30 shadow-lg">
+              <Card className="bg-surface border border-border rounded-xl">
                 <CardHeader>
-                  <CardTitle className="text-foreground text-base font-semibold">
+                  <CardTitle className="text-text-main text-base font-semibold">
                     Avaliação por Critério (Média)
                   </CardTitle>
                 </CardHeader>
@@ -1008,35 +1058,35 @@ export function NpsDashboardPage() {
                     <BarChart data={matrixAvg} layout="vertical">
                       <CartesianGrid
                         strokeDasharray="3 3"
-                        stroke="hsl(217,33%,20%)"
+                        stroke="var(--color-border)" strokeOpacity={0.5}
                       />
                       <XAxis
                         type="number"
                         domain={[0, 5]}
-                        stroke="hsl(215,20%,55%)"
+                        stroke="var(--color-text-muted)"
                         fontSize={12}
                       />
                       <YAxis
                         type="category"
                         dataKey="label"
                         width={130}
-                        stroke="hsl(215,20%,55%)"
+                        stroke="var(--color-text-muted)"
                         fontSize={12}
                       />
                       <RechartsTooltip
                         contentStyle={{
-                          backgroundColor: "hsl(222,47%,10%)",
-                          border: "1px solid hsl(217,33%,20%)",
+                          backgroundColor: "#0f172a",
+                          border: "1px solid var(--color-border)",
                           borderRadius: 8,
-                          color: "#e1e1e1",
+                          color: "var(--color-text-main)",
                         }}
-                        itemStyle={{ color: "#e1e1e1" }}
-                        labelStyle={{ color: "#e1e1e1" }}
+                        itemStyle={{ color: "var(--color-text-main)" }}
+                        labelStyle={{ color: "var(--color-text-main)" }}
                       />
                       <Bar
                         dataKey="avg"
                         radius={[0, 4, 4, 0]}
-                        fill="hsl(210,50%,55%)"
+                        fill="#3b82f6"
                         fillOpacity={0.45}
                       />
                     </BarChart>
@@ -1053,11 +1103,11 @@ export function NpsDashboardPage() {
                 icon={Briefcase}
                 order={["Excelente", "Bom", "Regular", "Ruim", "Péssimo"]}
                 colorMap={{
-                  Excelente: "hsl(150,60%,42%)",
-                  Bom: "hsl(140,50%,50%)",
-                  Regular: "hsl(45,80%,50%)",
-                  Ruim: "hsl(25,80%,50%)",
-                  Péssimo: "hsl(0,70%,50%)",
+                  Excelente: "#22c55e",
+                  Bom: "#4ade80",
+                  Regular: "#eab308",
+                  Ruim: "#f97316",
+                  Péssimo: "#ef4444",
                 }}
                 hint="Distribuição das respostas para 'Como foi o atendimento comercial?'. Conta cada categoria nas respostas filtradas. Use para identificar quedas em qualidade de atendimento."
               />
@@ -1069,10 +1119,10 @@ export function NpsDashboardPage() {
                 layout="vertical"
                 order={["Sim totalmente", "Sim", "Mais ou menos", "Não"]}
                 colorMap={{
-                  "Sim totalmente": "hsl(150,60%,42%)",
-                  Sim: "hsl(140,50%,50%)",
-                  "Mais ou menos": "hsl(45,80%,50%)",
-                  Não: "hsl(0,70%,50%)",
+                  "Sim totalmente": "#22c55e",
+                  Sim: "#4ade80",
+                  "Mais ou menos": "#eab308",
+                  Não: "#ef4444",
                 }}
                 hint="Distribuição da pergunta 'O consultor entendeu sua necessidade?'. Indica se o time comercial está captando bem o que o cliente precisa."
               />
@@ -1090,15 +1140,17 @@ export function NpsDashboardPage() {
                 "Muito difícil",
               ]}
               colorMap={{
-                "Muito fácil": "hsl(150,60%,42%)",
-                Fácil: "hsl(140,50%,50%)",
-                Neutra: "hsl(45,80%,50%)",
-                Difícil: "hsl(25,80%,50%)",
-                "Muito difícil": "hsl(0,70%,50%)",
+                "Muito fácil": "#22c55e",
+                Fácil: "#4ade80",
+                Neutra: "#eab308",
+                Difícil: "#f97316",
+                "Muito difícil": "#ef4444",
               }}
               hint="Distribuição de 'Como foi a experiência de compra?'. Mede a fricção percebida no processo, do pedido à conclusão."
             />
             <DynamicQuestionsChart data={activeData} />
+            </div>
+            )}
           </section>
         )}
 
@@ -1106,83 +1158,170 @@ export function NpsDashboardPage() {
         {(activeSection === "vendedores" || activeSection === "todas") &&
           hasMultipleVendors && (
             <section className="space-y-4">
-              <SectionHeader
-                id="vendedores"
-                icon={Trophy as any}
-                title="Vendedores"
-                subtitle="Performance comparativa do time comercial"
-              />
-              <SellerRanking data={activeData} />
-              <div className="grid md:grid-cols-2 gap-6">
-                <SellerComparison data={activeData} />
-                <SellerMatrixHeatmap data={activeData} />
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 rounded-lg bg-accent/10 text-accent">
+                    <Trophy className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h2 className="text-lg font-bold text-text-main tracking-tight leading-tight">
+                      Vendedores
+                    </h2>
+                    <p className="text-xs text-text-muted mt-0.5">
+                      Performance comparativa do time comercial
+                    </p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => toggleSection("vendedores")}
+                  className="flex items-center gap-1 text-sm text-accent hover:text-accent-hover transition-colors font-medium"
+                >
+                  {expandedSections["vendedores"] ? "Recolher" : "Expandir"}
+                  <ChevronDown
+                    className={`w-4 h-4 transition-transform duration-200 ${expandedSections["vendedores"] ? "rotate-180" : ""}`}
+                  />
+                </button>
               </div>
+              {expandedSections["vendedores"] && (
+                <div className="space-y-4 animate-in fade-in slide-in-from-top-2 duration-200">
+                  <SellerRanking data={activeData} />
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <SellerComparison data={activeData} />
+                    <SellerMatrixHeatmap data={activeData} />
+                  </div>
+                </div>
+              )}
             </section>
           )}
 
         {/* ============ [4] INSIGHTS QUALITATIVOS ============ */}
         {(activeSection === "insights" || activeSection === "todas") && (
           <section className="space-y-4">
-            <SectionHeader
-              id="insights"
-              icon={Quote}
-              title="Insights Qualitativos"
-              subtitle="O que os clientes estão dizendo e quando estão respondendo"
-            />
-            <div className="grid md:grid-cols-2 gap-6">
-              <SentimentAnalysis data={activeData} />
-              <EmergingThemes data={activeData} />
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-3">
+                <div className="p-2 rounded-lg bg-accent/10 text-accent">
+                  <Quote className="w-5 h-5" />
+                </div>
+                <div>
+                  <h2 className="text-lg font-bold text-text-main tracking-tight leading-tight">
+                    Insights Qualitativos
+                  </h2>
+                  <p className="text-xs text-text-muted mt-0.5">
+                    O que os clientes estão dizendo e quando estão respondendo
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => toggleSection("insights")}
+                className="flex items-center gap-1 text-sm text-accent hover:text-accent-hover transition-colors font-medium"
+              >
+                {expandedSections["insights"] ? "Recolher" : "Expandir"}
+                <ChevronDown
+                  className={`w-4 h-4 transition-transform duration-200 ${expandedSections["insights"] ? "rotate-180" : ""}`}
+                />
+              </button>
             </div>
-            <KeyPhrasesCard data={activeData as any} />
-            <ResponseVolumeChart data={activeData} />
+            {expandedSections["insights"] && (
+              <div className="space-y-4 animate-in fade-in slide-in-from-top-2 duration-200">
+                <div className="grid md:grid-cols-2 gap-6">
+                  <SentimentAnalysis data={activeData} />
+                  <EmergingThemes data={activeData} />
+                </div>
+                <KeyPhrasesCard data={activeData as any} />
+                <ResponseVolumeChart data={activeData} />
+              </div>
+            )}
           </section>
         )}
 
         {/* ============ [5] RESPOSTAS ============ */}
         {(activeSection === "respostas" || activeSection === "todas") && (
           <section className="space-y-4">
-            <SectionHeader
-              id="respostas"
-              icon={ListChecks}
-              title="Respostas Recentes"
-              subtitle="Tabela bruta das últimas respostas do recorte — clique numa linha para abrir o detalhe"
-            />
-            <Card className="bg-gradient-to-br from-card/90 to-card/60 backdrop-blur border-border/30 shadow-lg">
-              <CardHeader className="flex flex-row items-center justify-between space-y-0">
-                <CardTitle className="text-foreground text-base font-semibold">
-                  Lista de respostas ({filtered.length})
-                </CardTitle>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => setShowResponsesTable((v) => !v)}
-                  className="h-8 gap-1.5 text-muted-foreground hover:text-foreground"
-                >
-                  {showResponsesTable ? (
-                    <>
-                      <ChevronUp className="w-4 h-4" />
-                      Ocultar
-                    </>
-                  ) : (
-                    <>
-                      <ChevronDown className="w-4 h-4" />
-                      Exibir
-                    </>
-                  )}
-                </Button>
-              </CardHeader>
-              {showResponsesTable && (
-                <CardContent className="overflow-x-auto">
-                  {/* Mobile card view */}
-                  <div className="md:hidden space-y-2">
-                    {filtered.slice(0, 50).map((r) => (
-                      <div
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-3">
+                <div className="p-2 rounded-lg bg-accent/10 text-accent">
+                  <ListChecks className="w-5 h-5" />
+                </div>
+                <div>
+                  <h2 className="text-lg font-bold text-text-main tracking-tight leading-tight">
+                    Respostas Recentes
+                  </h2>
+                  <p className="text-xs text-text-muted mt-0.5">
+                    Tabela bruta das últimas respostas do recorte — clique numa linha para abrir o detalhe
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => toggleSection("respostas")}
+                className="flex items-center gap-1 text-sm text-accent hover:text-accent-hover transition-colors font-medium"
+              >
+                {expandedSections["respostas"] ? "Recolher" : "Expandir"}
+                <ChevronDown
+                  className={`w-4 h-4 transition-transform duration-200 ${expandedSections["respostas"] ? "rotate-180" : ""}`}
+                />
+              </button>
+            </div>
+            {expandedSections["respostas"] && (
+              <div className="space-y-4 animate-in fade-in slide-in-from-top-2 duration-200">
+                <Card className="bg-surface border border-border rounded-xl">
+                  <CardHeader className="flex flex-row items-center justify-between space-y-0">
+                    <CardTitle className="text-text-main text-base font-semibold">
+                      Lista de respostas ({searchedResponses.length})
+                    </CardTitle>
+                    <div className="flex items-center gap-2">
+                      <div className="relative">
+                        <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted" />
+                        <Input
+                          type="text"
+                          placeholder="Buscar cliente, comentário..."
+                          value={searchResponse}
+                          onChange={(e) => {
+                            setSearchResponse(e.target.value);
+                            setCurrentPage(1);
+                          }}
+                          className="h-8 pl-8 pr-8 w-48 bg-bg border border-border text-text-main text-sm"
+                        />
+                        {searchResponse && (
+                          <button
+                            onClick={() => setSearchResponse("")}
+                            className="absolute right-2 top-1/2 -translate-y-1/2 text-text-muted hover:text-destructive transition-colors rounded-md hover:bg-destructive/10 p-0.5"
+                          >
+                            <X className="w-3.5 h-3.5" />
+                          </button>
+                        )}
+                      </div>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => setShowResponsesTable((v) => !v)}
+                        className="h-8 gap-1.5 text-muted-foreground hover:text-foreground"
+                      >
+                        {showResponsesTable ? (
+                          <>
+                            <ChevronUp className="w-4 h-4" />
+                            Ocultar
+                          </>
+                        ) : (
+                          <>
+                            <ChevronDown className="w-4 h-4" />
+                            Exibir
+                          </>
+                        )}
+                      </Button>
+                    </div>
+                  </CardHeader>
+                  {showResponsesTable && (
+                    <CardContent className="overflow-x-auto">
+                      {/* Mobile card view */}
+                      <div className="md:hidden space-y-2">
+                        {paginatedResponses.map((r) => (
+                          <div
                         key={r.id}
-                        className="bg-secondary/50 rounded-lg p-3 border border-border/30 cursor-pointer active:bg-accent/20"
+                        className="bg-surface border border-border rounded-xl p-3 cursor-pointer active:bg-accent/20"
                         onClick={() => setDetailResponse(r)}
                       >
                         <div className="flex items-center justify-between mb-2">
-                          <span className="text-xs text-muted-foreground">
+                          <span className="text-xs text-text-muted">
                             {new Date(r.created_at).toLocaleDateString("pt-BR")}
                           </span>
                           <span
@@ -1197,9 +1336,9 @@ export function NpsDashboardPage() {
                             {r.nps_score ?? "—"}
                           </span>
                         </div>
-                        <p className="text-sm font-medium text-foreground truncate">
+                        <p className="text-sm font-medium text-text-main truncate">
                           {(r as any).client_name || (r as any).client_id || (
-                            <span className="text-muted-foreground italic">
+                            <span className="text-text-muted italic">
                               Anônimo
                             </span>
                           )}
@@ -1259,10 +1398,10 @@ export function NpsDashboardPage() {
                       </tr>
                     </thead>
                     <tbody>
-                      {filtered.slice(0, 50).map((r) => (
+                      {paginatedResponses.map((r) => (
                         <tr
                           key={r.id}
-                          className="border-b border-border/20 text-foreground hover:bg-accent/20 transition-colors cursor-pointer"
+                          className="border-b border-border/20 text-text-main hover:bg-accent/10 transition-colors cursor-pointer"
                           onClick={(e) => {
                             if ((e.target as HTMLElement).closest("button"))
                               return;
@@ -1277,7 +1416,7 @@ export function NpsDashboardPage() {
                               <span className="text-foreground truncate font-medium">
                                 {(r as any).client_name ||
                                   (r as any).client_id || (
-                                    <span className="text-muted-foreground italic">
+                                    <span className="text-text-muted italic">
                                       Anônimo
                                     </span>
                                   )}
@@ -1373,7 +1512,7 @@ export function NpsDashboardPage() {
                               <AlertDialog>
                                 <AlertDialogTrigger asChild>
                                   <button
-                                    className="text-muted-foreground hover:text-red-400 transition-colors p-1 rounded-md hover:bg-red-500/10"
+                                    className="text-text-muted hover:text-destructive transition-colors p-1.5 rounded-lg hover:bg-destructive/10"
                                     title="Excluir resposta"
                                   >
                                     <Trash2 className="w-4 h-4" />
@@ -1381,17 +1520,17 @@ export function NpsDashboardPage() {
                                 </AlertDialogTrigger>
                                 <AlertDialogContent className="bg-card border-border">
                                   <AlertDialogHeader>
-                                    <AlertDialogTitle className="text-foreground">
+                                    <AlertDialogTitle className="text-text-main">
                                       Excluir resposta
                                     </AlertDialogTitle>
-                                    <AlertDialogDescription className="text-muted-foreground">
+                                    <AlertDialogDescription className="text-text-muted">
                                       Tem certeza que deseja excluir
                                       permanentemente esta resposta do banco de
                                       dados? Esta ação não pode ser desfeita.
                                     </AlertDialogDescription>
                                   </AlertDialogHeader>
                                   <AlertDialogFooter>
-                                    <AlertDialogCancel className="border-border text-foreground">
+                                    <AlertDialogCancel className="border-border text-text-main rounded-xl">
                                       Cancelar
                                     </AlertDialogCancel>
                                     <AlertDialogAction
@@ -1420,7 +1559,7 @@ export function NpsDashboardPage() {
                           )}
                         </tr>
                       ))}
-                      {!filtered.length && (
+                      {!paginatedResponses.length && (
                         <tr>
                           <td
                             colSpan={profile?.is_super_admin ? 9 : 8}
@@ -1432,9 +1571,44 @@ export function NpsDashboardPage() {
                       )}
                     </tbody>
                   </table>
+                  {/* Pagination */}
+                  {searchedResponses.length > ITEMS_PER_PAGE && (
+                    <div className="flex items-center justify-between mt-4 pt-4 border-t border-border/30">
+                      <p className="text-xs text-text-muted">
+                        Mostrando {(currentPage - 1) * ITEMS_PER_PAGE + 1}–
+                        {Math.min(currentPage * ITEMS_PER_PAGE, searchedResponses.length)} de{" "}
+                        {searchedResponses.length}
+                      </p>
+                      <div className="flex items-center gap-2">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                          disabled={currentPage === 1}
+                          className="h-8 px-2"
+                        >
+                          <ChevronLeft className="w-4 h-4" />
+                        </Button>
+                        <span className="text-xs text-text-muted">
+                          {currentPage} / {totalPages}
+                        </span>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                          disabled={currentPage === totalPages}
+                          className="h-8 px-2"
+                        >
+                          <ChevronRight className="w-4 h-4" />
+                        </Button>
+                      </div>
+                    </div>
+                  )}
                 </CardContent>
               )}
             </Card>
+            </div>
+            )}
           </section>
         )}
 
@@ -1446,11 +1620,11 @@ export function NpsDashboardPage() {
           }}
         >
           <DialogContent className="bg-card border-border max-w-2xl max-h-[90vh] w-[95vw] sm:w-full flex flex-col overflow-hidden p-0">
-            <DialogHeader className="px-6 py-4 border-b border-border/50 flex-shrink-0">
-              <DialogTitle className="text-foreground text-lg">
+            <DialogHeader className="shrink-0 border-b border-border/50 mb-0">
+              <DialogTitle className="text-text-main text-lg">
                 Detalhes da Resposta
               </DialogTitle>
-              <DialogDescription className="text-muted-foreground">
+              <DialogDescription className="text-text-muted">
                 {detailResponse &&
                   new Date(detailResponse.created_at).toLocaleDateString(
                     "pt-BR",
@@ -1470,28 +1644,28 @@ export function NpsDashboardPage() {
               </DialogDescription>
             </DialogHeader>
 
-            <div className="px-6 py-4 overflow-y-auto custom-scrollbar flex-1">
+            <div className="overflow-y-auto custom-scrollbar flex-1">
               {detailResponse && (
                 <div className="space-y-5">
                   {/* Identification */}
                   <div>
-                    <h3 className="text-sm font-semibold text-primary mb-3">
+                    <h3 className="text-sm font-semibold text-accent mb-3">
                       Identificação
                     </h3>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      <div className="bg-secondary/50 rounded-lg p-3 border border-border/30">
-                        <span className="text-xs text-muted-foreground block mb-1">
+                      <div className="bg-surface border border-border rounded-xl p-3">
+                        <span className="text-xs text-text-muted font-medium block mb-1">
                           Nome do Cliente
                         </span>
-                        <span className="text-sm font-medium text-foreground">
+                        <span className="text-sm font-medium text-text-main">
                           {detailResponse.client_name || "—"}
                         </span>
                       </div>
-                      <div className="bg-secondary/50 rounded-lg p-3 border border-border/30">
-                        <span className="text-xs text-muted-foreground block mb-1">
+                      <div className="bg-surface border border-border rounded-xl p-3">
+                        <span className="text-xs text-text-muted font-medium block mb-1">
                           Nome do Vendedor
                         </span>
-                        <span className="text-sm font-medium text-foreground">
+                        <span className="text-sm font-medium text-text-main">
                           {detailResponse.vendor_name || "—"}
                         </span>
                       </div>
@@ -1500,12 +1674,12 @@ export function NpsDashboardPage() {
 
                   {/* Objective answers */}
                   <div>
-                    <h3 className="text-sm font-semibold text-primary mb-3">
+                    <h3 className="text-sm font-semibold text-accent mb-3">
                       Respostas Objetivas
                     </h3>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      <div className="bg-secondary/50 rounded-lg p-3 border border-border/30">
-                        <span className="text-xs text-muted-foreground block mb-1">
+                      <div className="bg-surface border border-border rounded-xl p-3">
+                        <span className="text-xs text-text-muted font-medium block mb-1">
                           NPS Score
                         </span>
                         <span
@@ -1514,35 +1688,35 @@ export function NpsDashboardPage() {
                           {detailResponse.nps_score ?? "—"}
                         </span>
                       </div>
-                      <div className="bg-secondary/50 rounded-lg p-3 border border-border/30">
-                        <span className="text-xs text-muted-foreground block mb-1">
+                      <div className="bg-surface border border-border rounded-xl p-3">
+                        <span className="text-xs text-text-muted font-medium block mb-1">
                           Satisfação Geral (CSAT)
                         </span>
-                        <span className="text-sm font-medium text-foreground">
+                        <span className="text-sm font-medium text-text-main">
                           {detailResponse.csat || "—"}
                         </span>
                       </div>
-                      <div className="bg-secondary/50 rounded-lg p-3 border border-border/30">
-                        <span className="text-xs text-muted-foreground block mb-1">
+                      <div className="bg-surface border border-border rounded-xl p-3">
+                        <span className="text-xs text-text-muted font-medium block mb-1">
                           Atendimento Comercial
                         </span>
-                        <span className="text-sm font-medium text-foreground">
+                        <span className="text-sm font-medium text-text-main">
                           {detailResponse.atendimento_comercial || "—"}
                         </span>
                       </div>
-                      <div className="bg-secondary/50 rounded-lg p-3 border border-border/30">
-                        <span className="text-xs text-muted-foreground block mb-1">
+                      <div className="bg-surface border border-border rounded-xl p-3">
+                        <span className="text-xs text-text-muted font-medium block mb-1">
                           Consultor entendeu a necessidade?
                         </span>
-                        <span className="text-sm font-medium text-foreground">
+                        <span className="text-sm font-medium text-text-main">
                           {detailResponse.entendimento_consultor || "—"}
                         </span>
                       </div>
-                      <div className="bg-secondary/50 rounded-lg p-3 border border-border/30">
-                        <span className="text-xs text-muted-foreground block mb-1">
+                      <div className="bg-surface border border-border rounded-xl p-3">
+                        <span className="text-xs text-text-muted font-medium block mb-1">
                           Experiência de Compra
                         </span>
-                        <span className="text-sm font-medium text-foreground">
+                        <span className="text-sm font-medium text-text-main">
                           {detailResponse.experiencia_compra || "—"}
                         </span>
                       </div>
@@ -1551,7 +1725,7 @@ export function NpsDashboardPage() {
 
                   {/* Matrix ratings */}
                   <div>
-                    <h3 className="text-sm font-semibold text-primary mb-3">
+                    <h3 className="text-sm font-semibold text-accent mb-3">
                       Avaliação por Critério
                     </h3>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -1579,16 +1753,16 @@ export function NpsDashboardPage() {
                       ].map(({ label, value }) => (
                         <div
                           key={label}
-                          className="bg-secondary/50 rounded-lg p-3 border border-border/30 flex items-center justify-between"
+                          className="bg-surface border border-border rounded-xl p-3 flex items-center justify-between"
                         >
-                          <span className="text-xs text-muted-foreground">
+                          <span className="text-xs text-text-muted">
                             {label}
                           </span>
                           <div className="flex gap-0.5">
                             {[1, 2, 3, 4, 5].map((s) => (
                               <Star
                                 key={s}
-                                className={`w-4 h-4 ${s <= (value || 0) ? "fill-primary text-primary" : "text-muted-foreground/30"}`}
+                                className={`w-4 h-4 ${s <= (value || 0) ? "fill-primary text-primary" : "text-border"}`}
                               />
                             ))}
                           </div>
@@ -1599,7 +1773,7 @@ export function NpsDashboardPage() {
 
                   {/* Subjective answers */}
                   <div>
-                    <h3 className="text-sm font-semibold text-primary mb-3">
+                    <h3 className="text-sm font-semibold text-accent mb-3">
                       Respostas Subjetivas
                     </h3>
                     <div className="space-y-3">
@@ -1627,14 +1801,14 @@ export function NpsDashboardPage() {
                       ].map(({ label, value }) => (
                         <div
                           key={label}
-                          className="bg-secondary/50 rounded-lg p-3 border border-border/30"
+                          className="bg-surface border border-border rounded-xl p-3"
                         >
-                          <span className="text-xs text-muted-foreground block mb-1">
+                          <span className="text-xs text-text-muted font-medium block mb-1">
                             {label}
                           </span>
-                          <p className="text-sm text-foreground whitespace-pre-wrap">
+                          <p className="text-sm text-text-main whitespace-pre-wrap">
                             {value || (
-                              <span className="text-muted-foreground italic">
+                              <span className="text-text-muted italic">
                                 Sem resposta
                               </span>
                             )}
@@ -1648,7 +1822,7 @@ export function NpsDashboardPage() {
                   {detailResponse.dynamic_answers &&
                     Object.keys(detailResponse.dynamic_answers).length > 0 && (
                       <div>
-                        <h3 className="text-sm font-semibold text-primary mb-3">
+                        <h3 className="text-sm font-semibold text-accent mb-3">
                           Perguntas Personalizadas
                         </h3>
                         <div className="space-y-3">
@@ -1671,12 +1845,12 @@ export function NpsDashboardPage() {
                             .map(([k, v]) => (
                               <div
                                 key={k}
-                                className="bg-secondary/50 rounded-lg p-3 border border-border/30"
+                                className="bg-surface border border-border rounded-xl p-3"
                               >
-                                <span className="text-xs text-muted-foreground block mb-1 font-mono">
+                                <span className="text-xs text-text-muted font-medium block mb-1 font-mono">
                                   {k}
                                 </span>
-                                <p className="text-sm text-foreground whitespace-pre-wrap">
+                                <p className="text-sm text-text-main whitespace-pre-wrap">
                                   {Array.isArray(v)
                                     ? v.join(", ")
                                     : typeof v === "object"
@@ -1700,28 +1874,27 @@ export function NpsDashboardPage() {
         >
           <AlertDialogContent className="bg-card border-border">
             <AlertDialogHeader>
-              <AlertDialogTitle className="text-foreground">
+              <AlertDialogTitle className="text-text-main">
                 Excluir respostas?
               </AlertDialogTitle>
-              <AlertDialogDescription className="text-muted-foreground">
+              <AlertDialogDescription className="text-text-muted">
                 Tem certeza que deseja excluir {filtered.length} resposta(s)?
                 Esta ação não pode ser desfeita.
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel className="border-border text-foreground">
+              <AlertDialogCancel className="border-border text-text-main rounded-xl">
                 Cancelar
               </AlertDialogCancel>
               <AlertDialogAction
                 onClick={confirmDeleteAll}
-                className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                className="bg-destructive text-destructive-foreground hover:bg-destructive/90 rounded-xl"
               >
                 Excluir
               </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
-      </div>
     </div>
   );
 }

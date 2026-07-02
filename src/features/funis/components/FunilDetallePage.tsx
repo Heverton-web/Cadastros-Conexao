@@ -174,11 +174,11 @@ export function FunilDetallePage() {
             <ArrowLeft className="w-5 h-5" />
           </button>
           <div>
-            <h1 className="text-lg font-semibold text-text-main">
+            <h1 className="text-2xl font-bold text-text-main tracking-tight">
               {funil.titulo}
             </h1>
             {funil.descricao && (
-              <p className="text-xs text-text-muted">{funil.descricao}</p>
+              <p className="text-sm text-text-muted mt-1">{funil.descricao}</p>
             )}
           </div>
         </div>
@@ -243,7 +243,7 @@ export function FunilDetallePage() {
       <Dialog open={showEdit} onOpenChange={setShowEdit}>
         <DialogContent className="border-none">
           <DialogHeader>
-            <DialogTitle className="font-display text-2xl">
+            <DialogTitle className="text-2xl font-bold text-text-main tracking-tight">
               Editar funil
             </DialogTitle>
           </DialogHeader>
@@ -332,7 +332,7 @@ export function FunilDetallePage() {
               <Button
                 type="submit"
                 disabled={atualizarFunil.isPending}
-                className="gradient-gold text-[#0f172a] font-semibold"
+                className="flex items-center gap-2 rounded-xl bg-accent text-accent-fg px-5 py-2.5 text-sm font-semibold hover:bg-accent-hover transition-all duration-200 min-h-[44px] shadow-lg shadow-accent/20"
               >
                 {atualizarFunil.isPending ? "Salvando..." : "Salvar alterações"}
               </Button>

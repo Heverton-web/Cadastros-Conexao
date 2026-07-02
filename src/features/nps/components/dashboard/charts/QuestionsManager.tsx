@@ -30,7 +30,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "~/components/ui/select";
-import { toast } from "~/hooks/use-toast";
+import toast from "react-hot-toast";
 import {
   Plus,
   Pencil,
@@ -97,11 +97,7 @@ const QuestionsManager = () => {
       .select("*")
       .order("order_index", { ascending: true });
     if (error) {
-      toast({
-        title: "Erro ao carregar perguntas",
-        description: error.message,
-        variant: "destructive",
-      });
+      toast.error(`Erro ao carregar perguntas: ${error.message}`);
     }
     setQuestions((data as SurveyQuestion[]) || []);
     setLoading(false);
@@ -118,20 +114,11 @@ const QuestionsManager = () => {
       .eq("id", q.id)
       .select();
     if (error) {
-      toast({
-        title: "Erro",
-        description: error.message,
-        variant: "destructive",
-      });
+      toast.error(`Erro: ${error.message}`);
       return;
     }
     if (!data || data.length === 0) {
-      toast({
-        title: "Sem permissão (RLS)",
-        description:
-          "Nada foi alterado. Reaplique o SQL de policies no Supabase e confirme role super_admin.",
-        variant: "destructive",
-      });
+      toast.error("Sem permissão (RLS): Nada foi alterado. Reaplique o SQL de policies no Supabase e confirme role super_admin.");
       return;
     }
     fetchAll();
@@ -155,11 +142,7 @@ const QuestionsManager = () => {
 
   const remove = async (q: SurveyQuestion) => {
     if (q.is_system) {
-      toast({
-        title: "Perguntas do sistema não podem ser excluídas",
-        description: "Use o botão Desativar.",
-        variant: "destructive",
-      });
+      toast.error("Perguntas do sistema não podem ser excluídas. Use o botão Desativar.");
       return;
     }
     setQuestionToDelete(q);
@@ -172,13 +155,9 @@ const QuestionsManager = () => {
       .delete()
       .eq("id", questionToDelete.id);
     if (error)
-      toast({
-        title: "Erro",
-        description: error.message,
-        variant: "destructive",
-      });
+      toast.error(`Erro: ${error.message}`);
     else {
-      toast({ title: "Pergunta excluída" });
+      toast.success("Pergunta excluída");
       fetchAll();
     }
     setQuestionToDelete(null);
@@ -216,10 +195,7 @@ const QuestionsManager = () => {
     if (!editing) return;
     const text = (editing.question_text || "").trim();
     if (!text) {
-      toast({
-        title: "Texto da pergunta é obrigatório",
-        variant: "destructive",
-      });
+      toast.error("Texto da pergunta é obrigatório");
       return;
     }
     const type = editing.type as SurveyQuestion["type"];
@@ -227,7 +203,7 @@ const QuestionsManager = () => {
       type === "single_choice" || type === "multi_choice" || type === "matrix";
     const opts = editing.options || [];
     if (needsOptions && opts.length < 2) {
-      toast({ title: "Adicione ao menos 2 opções", variant: "destructive" });
+      toast.error("Adicione ao menos 2 opções");
       return;
     }
     const payload: any = {
@@ -248,23 +224,14 @@ const QuestionsManager = () => {
         .insert(payload)
         .select();
       if (error) {
-        toast({
-          title: "Erro ao criar",
-          description: error.message,
-          variant: "destructive",
-        });
+        toast.error(`Erro ao criar: ${error.message}`);
         return;
       }
       if (!data || data.length === 0) {
-        toast({
-          title: "Sem permissão (RLS)",
-          description:
-            "Nenhuma linha criada. Aplique o SQL atualizado de policies no Supabase e confirme que seu usuário tem role=super_admin em dashboard_profiles.",
-          variant: "destructive",
-        });
+        toast.error("Sem permissão (RLS): Nenhuma linha criada. Aplique o SQL atualizado de policies no Supabase e confirme que seu usuário tem role=super_admin em dashboard_profiles.");
         return;
       }
-      toast({ title: "Pergunta criada!" });
+      toast.success("Pergunta criada!");
     } else {
       const { data, error } = await supabase
         .from("survey_questions")
@@ -272,23 +239,14 @@ const QuestionsManager = () => {
         .eq("id", editing.id!)
         .select();
       if (error) {
-        toast({
-          title: "Erro ao salvar",
-          description: error.message,
-          variant: "destructive",
-        });
+        toast.error(`Erro ao salvar: ${error.message}`);
         return;
       }
       if (!data || data.length === 0) {
-        toast({
-          title: "Sem permissão (RLS)",
-          description:
-            "A atualização foi silenciosamente bloqueada por RLS. Reaplique o SQL docs/sql/20260615_survey_questions.sql no Supabase e confirme que seu usuário tem role=super_admin.",
-          variant: "destructive",
-        });
+        toast.error("Sem permissão (RLS): A atualização foi silenciosamente bloqueada por RLS. Reaplique o SQL docs/sql/20260615_survey_questions.sql no Supabase e confirme que seu usuário tem role=super_admin.");
         return;
       }
-      toast({ title: "Pergunta atualizada!" });
+      toast.success("Pergunta atualizada!");
     }
     close();
     fetchAll();
@@ -301,10 +259,10 @@ const QuestionsManager = () => {
     editing?.type === "matrix";
 
   return (
-    <Card className="bg-gradient-to-br from-card/90 to-card/60 backdrop-blur border-border/30 shadow-lg">
+    <Card className="bg-surface border border-border rounded-xl">
       <CardHeader className="flex flex-row items-center justify-between">
-        <CardTitle className="text-foreground text-base font-semibold flex items-center gap-2">
-          <ListChecks className="w-5 h-5 text-primary" />
+        <CardTitle className="text-text-main text-base font-semibold flex items-center gap-2">
+          <ListChecks className="w-5 h-5 text-accent" />
           Perguntas da Pesquisa
         </CardTitle>
         <Button onClick={openNew} size="sm" className="btn-gold gap-1.5">
@@ -313,12 +271,12 @@ const QuestionsManager = () => {
       </CardHeader>
       <CardContent className="space-y-2">
         {loading && (
-          <p className="text-sm text-muted-foreground">Carregando…</p>
+          <p className="text-sm text-text-muted">Carregando…</p>
         )}
         {!loading && sorted.length === 0 && (
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-text-muted">
             Nenhuma pergunta cadastrada. Execute o SQL{" "}
-            <code className="text-primary/80">
+            <code className="text-accent/80">
               docs/sql/20260615_survey_questions.sql
             </code>{" "}
             no Supabase para popular as 10 iniciais.
@@ -327,47 +285,47 @@ const QuestionsManager = () => {
         {sorted.map((q, idx) => (
           <div
             key={q.id}
-            className={`flex items-center gap-3 p-3 rounded-lg border ${q.active ? "bg-secondary/40 border-border/40" : "bg-secondary/10 border-border/20 opacity-60"}`}
+            className={`flex items-center gap-3 p-3 rounded-lg border ${q.active ? "bg-border/20 border-border/40" : "bg-border/10 border-border/20 opacity-60"}`}
           >
             <div className="flex flex-col gap-1">
               <button
                 onClick={() => move(q, -1)}
                 disabled={idx === 0}
-                className="text-muted-foreground hover:text-foreground disabled:opacity-30"
+                className="text-text-muted hover:text-text-main disabled:opacity-30"
               >
                 <ArrowUp className="w-4 h-4" />
               </button>
               <button
                 onClick={() => move(q, 1)}
                 disabled={idx === sorted.length - 1}
-                className="text-muted-foreground hover:text-foreground disabled:opacity-30"
+                className="text-text-muted hover:text-text-main disabled:opacity-30"
               >
                 <ArrowDown className="w-4 h-4" />
               </button>
             </div>
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 flex-wrap">
-                <span className="text-xs font-mono text-primary/80">
+                <span className="text-xs font-mono text-accent/80">
                   #{idx + 1}
                 </span>
-                <span className="text-xs px-2 py-0.5 rounded-md bg-primary/10 text-primary">
+                <span className="text-xs px-2 py-0.5 rounded-md bg-accent/10 text-accent">
                   {TYPE_LABELS[q.type]}
                 </span>
                 {q.is_system && (
-                  <span className="text-xs px-2 py-0.5 rounded-md bg-muted text-muted-foreground">
+                  <span className="text-xs px-2 py-0.5 rounded-md bg-muted text-text-muted">
                     sistema
                   </span>
                 )}
                 {!q.required && (
-                  <span className="text-xs px-2 py-0.5 rounded-md bg-muted text-muted-foreground">
+                  <span className="text-xs px-2 py-0.5 rounded-md bg-muted text-text-muted">
                     opcional
                   </span>
                 )}
               </div>
-              <p className="text-sm text-foreground mt-1 truncate">
+              <p className="text-sm text-text-main mt-1 truncate">
                 {q.question_text}
               </p>
-              <p className="text-xs text-muted-foreground font-mono truncate">
+              <p className="text-xs text-text-muted font-mono truncate">
                 key: {q.key}
               </p>
             </div>
@@ -377,7 +335,7 @@ const QuestionsManager = () => {
                   checked={q.active}
                   onCheckedChange={() => toggleActive(q)}
                 />
-                <span className="text-xs text-muted-foreground hidden md:inline">
+                <span className="text-xs text-text-muted hidden md:inline">
                   {q.active ? "Ativa" : "Inativa"}
                 </span>
               </div>
@@ -410,14 +368,14 @@ const QuestionsManager = () => {
       <Dialog open={!!editing} onOpenChange={(o) => !o && close()}>
         <DialogContent className="bg-card border-border max-w-lg w-[calc(100%-2rem)] max-h-[90vh] overflow-y-auto">
           <DialogHeader className="pb-2">
-            <DialogTitle className="text-foreground">
+            <DialogTitle className="text-text-main">
               {isNew ? "Nova pergunta" : "Editar pergunta"}
             </DialogTitle>
           </DialogHeader>
           {editing && (
             <div className="space-y-5 py-2">
               <div>
-                <Label className="text-xs text-muted-foreground">Tipo</Label>
+                <Label className="text-xs text-text-muted">Tipo</Label>
                 <Select
                   value={editing.type}
                   onValueChange={(v) =>
@@ -428,7 +386,7 @@ const QuestionsManager = () => {
                   }
                   disabled={editing.is_system}
                 >
-                  <SelectTrigger className="bg-secondary border-border text-foreground">
+                  <SelectTrigger className="h-11 rounded-xl border border-border bg-input-bg px-4 text-sm text-text-main font-medium focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent transition-all duration-200">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -440,14 +398,14 @@ const QuestionsManager = () => {
                   </SelectContent>
                 </Select>
                 {editing.is_system && (
-                  <p className="text-xs text-muted-foreground mt-1">
+                  <p className="text-xs text-text-muted mt-1">
                     Tipo de perguntas do sistema não pode ser alterado.
                   </p>
                 )}
               </div>
 
               <div>
-                <Label className="text-xs text-muted-foreground">
+                <Label className="text-xs text-text-muted">
                   Texto da pergunta
                 </Label>
                 <Textarea
@@ -455,14 +413,14 @@ const QuestionsManager = () => {
                   onChange={(e) =>
                     setEditing({ ...editing, question_text: e.target.value })
                   }
-                  className="bg-secondary border-border text-foreground"
+                  className="rounded-xl border border-border bg-input-bg px-4 py-3 text-sm text-text-main placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent transition-all duration-200"
                   rows={3}
                 />
               </div>
 
               {isNew && (
                 <div>
-                  <Label className="text-xs text-muted-foreground">
+                  <Label className="text-xs text-text-muted">
                     Identificador (key)
                   </Label>
                   <Input
@@ -474,9 +432,9 @@ const QuestionsManager = () => {
                       slugify(editing.question_text || "") ||
                       "identificador_unico"
                     }
-                    className="bg-secondary border-border text-foreground font-mono text-xs"
+                    className="h-11 rounded-xl border border-border bg-input-bg px-4 text-sm text-text-main font-mono placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent transition-all duration-200"
                   />
-                  <p className="text-xs text-muted-foreground mt-1">
+                  <p className="text-xs text-text-muted mt-1">
                     Gerado automaticamente se vazio. Usado como chave nas
                     respostas.
                   </p>
@@ -485,7 +443,7 @@ const QuestionsManager = () => {
 
               {needsOptions && (
                 <div>
-                  <Label className="text-xs text-muted-foreground">
+                  <Label className="text-xs text-text-muted">
                     {editing.type === "matrix" ? "Itens da matriz" : "Opções"}
                   </Label>
                   <div className="flex gap-2 mb-2">
@@ -499,7 +457,7 @@ const QuestionsManager = () => {
                         }
                       }}
                       placeholder="Digite e pressione Enter"
-                      className="bg-secondary border-border text-foreground"
+                      className="rounded-xl border border-border bg-input-bg px-4 py-3 text-sm text-text-main placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent transition-all duration-200"
                     />
                     <Button
                       type="button"
@@ -515,14 +473,14 @@ const QuestionsManager = () => {
                     {(editing.options || []).map((opt, i) => (
                       <div
                         key={i}
-                        className="flex items-center gap-2 bg-secondary/60 border border-border/40 rounded-md px-3 py-2"
+                        className="group/opt flex items-center gap-2 bg-surface border border-border rounded-lg px-3 py-2.5 transition-all duration-200 hover:border-accent/30"
                       >
-                        <span className="text-sm text-foreground flex-1">
+                        <span className="text-sm text-text-main flex-1">
                           {opt}
                         </span>
                         <button
                           onClick={() => removeOption(i)}
-                          className="text-muted-foreground hover:text-red-400"
+                          className="text-text-muted hover:text-destructive transition-colors rounded-md hover:bg-destructive/10 p-0.5 opacity-0 group-hover/opt:opacity-100"
                         >
                           <X className="w-4 h-4" />
                         </button>
@@ -540,7 +498,7 @@ const QuestionsManager = () => {
                       setEditing({ ...editing, required: v })
                     }
                   />
-                  <Label className="text-sm text-foreground cursor-pointer">
+                  <Label className="text-sm text-text-main cursor-pointer">
                     Obrigatória
                   </Label>
                 </div>
@@ -551,22 +509,22 @@ const QuestionsManager = () => {
                       setEditing({ ...editing, active: v })
                     }
                   />
-                  <Label className="text-sm text-foreground cursor-pointer">
+                  <Label className="text-sm text-text-main cursor-pointer">
                     Ativa
                   </Label>
                 </div>
               </div>
             </div>
           )}
-          <DialogFooter className="pt-4 border-t border-border/30">
+          <DialogFooter className="pt-4 border-t border-surface">
             <Button
               variant="outline"
               onClick={close}
-              className="border-border text-foreground"
+              className="border-border text-text-main rounded-xl"
             >
               Cancelar
             </Button>
-            <Button onClick={save} className="btn-gold">
+            <Button onClick={save} className="btn-gold rounded-xl shadow-md shadow-accent/20">
               Salvar
             </Button>
           </DialogFooter>
@@ -579,21 +537,21 @@ const QuestionsManager = () => {
       >
         <AlertDialogContent className="bg-card border-border">
           <AlertDialogHeader>
-            <AlertDialogTitle2 className="text-foreground">
+            <AlertDialogTitle2 className="text-text-main">
               Excluir pergunta?
             </AlertDialogTitle2>
-            <AlertDialogDescription className="text-muted-foreground">
+            <AlertDialogDescription className="text-text-muted">
               Excluir "{questionToDelete?.question_text}"? Esta ação é
               permanente.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter2>
-            <AlertDialogCancel className="border-border text-foreground">
+            <AlertDialogCancel className="border-border text-text-main rounded-xl">
               Cancelar
             </AlertDialogCancel>
             <AlertDialogAction
               onClick={confirmRemove}
-              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90 rounded-xl"
             >
               Excluir
             </AlertDialogAction>

@@ -9,15 +9,7 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
-
-const TOOLTIP_STYLE = {
-  backgroundColor: "hsl(222,47%,11%)",
-  border: "1px solid hsl(217,33%,25%)",
-  borderRadius: 10,
-  color: "#e1e1e1",
-  padding: "10px 14px",
-  boxShadow: "0 8px 24px rgba(0,0,0,0.4)",
-};
+import { COLORS, TOOLTIP_STYLE, GRID_STYLE, AXIS_STYLE } from "./chart-colors";
 
 const ResponseVolumeChart = ({ data }: { data: { created_at: string }[] }) => {
   const volumeData = useMemo(() => {
@@ -41,40 +33,35 @@ const ResponseVolumeChart = ({ data }: { data: { created_at: string }[] }) => {
   if (volumeData.length < 2) return null;
 
   return (
-    <Card className="bg-gradient-to-br from-card/90 to-card/60 backdrop-blur border-border/30 shadow-lg">
+    <Card className="bg-surface border border-border rounded-xl">
       <CardHeader>
-        <CardTitle className="text-foreground text-base font-semibold">
+        <CardTitle className="text-text-main text-base font-semibold">
           Volume de Respostas (últimos 30 dias)
         </CardTitle>
       </CardHeader>
       <CardContent>
         <ResponsiveContainer width="100%" height={220}>
           <BarChart data={volumeData}>
-            <CartesianGrid strokeDasharray="3 3" stroke="hsl(217,33%,20%)" />
-            <XAxis
-              dataKey="day"
-              stroke="hsl(215,20%,55%)"
-              fontSize={11}
-              angle={-45}
-              textAnchor="end"
-              height={50}
-            />
-            <YAxis
-              stroke="hsl(215,20%,55%)"
-              fontSize={12}
-              allowDecimals={false}
-            />
+            <defs>
+              <linearGradient id="volumeBarGradient" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor={COLORS.accent} stopOpacity={0.9} />
+                <stop offset="100%" stopColor={COLORS.accent} stopOpacity={0.5} />
+              </linearGradient>
+            </defs>
+            <CartesianGrid {...GRID_STYLE} strokeDasharray="3 3" />
+            <XAxis dataKey="day" {...AXIS_STYLE} fontSize={10} angle={-45} textAnchor="end" height={50} />
+            <YAxis {...AXIS_STYLE} allowDecimals={false} />
             <Tooltip
               contentStyle={TOOLTIP_STYLE}
-              itemStyle={{ color: "#e1e1e1" }}
-              labelStyle={{ color: "#e1e1e1" }}
-              formatter={(value: number) => [`${value} resposta(s)`, "Volume"]}
+              itemStyle={{ color: COLORS.textMain }}
+              labelStyle={{ color: COLORS.textMuted, marginBottom: 4 }}
+              formatter={(value: any) => [`${value} resposta(s)`, "Volume"]}
             />
             <Bar
               dataKey="count"
               radius={[4, 4, 0, 0]}
-              fill="hsl(210,50%,55%)"
-              fillOpacity={0.6}
+              fill="url(#volumeBarGradient)"
+              maxBarSize={32}
             />
           </BarChart>
         </ResponsiveContainer>

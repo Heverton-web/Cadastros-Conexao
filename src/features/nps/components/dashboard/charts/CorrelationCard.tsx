@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { TrendingUp, TrendingDown } from "lucide-react";
+import { COLORS } from "./chart-colors";
 
 interface SurveyResponse {
   nps_score: number | null;
@@ -24,9 +25,7 @@ function pearsonCorrelation(x: number[], y: number[]): number {
   if (n < 3) return 0;
   const meanX = x.reduce((a, b) => a + b, 0) / n;
   const meanY = y.reduce((a, b) => a + b, 0) / n;
-  let num = 0,
-    denX = 0,
-    denY = 0;
+  let num = 0, denX = 0, denY = 0;
   for (let i = 0; i < n; i++) {
     const dx = x[i] - meanX;
     const dy = y[i] - meanY;
@@ -42,9 +41,7 @@ const CorrelationCard = ({ data }: { data: SurveyResponse[] }) => {
   const correlations = useMemo(() => {
     const valid = data.filter((r) => r.nps_score !== null);
     if (valid.length < 5) return [];
-
     const npsScores = valid.map((r) => r.nps_score!);
-
     return CRITERIA.map(({ key, label }) => {
       const criteriaScores = valid.map((r) => (r as any)[key] || 0);
       const corr = pearsonCorrelation(npsScores, criteriaScores);
@@ -55,16 +52,15 @@ const CorrelationCard = ({ data }: { data: SurveyResponse[] }) => {
   if (!correlations.length) return null;
 
   return (
-    <Card className="bg-gradient-to-br from-card/90 to-card/60 backdrop-blur border-border/30 shadow-lg">
+    <Card className="bg-surface border border-border rounded-xl">
       <CardHeader>
-        <CardTitle className="text-foreground text-base font-semibold">
+        <CardTitle className="text-text-main text-base font-semibold">
           Impacto no NPS (Correlação)
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <p className="text-xs text-muted-foreground mb-4">
-          Quanto maior o valor, mais esse critério influencia positivamente o
-          NPS.
+        <p className="text-xs mb-4" style={{ color: COLORS.textMuted }}>
+          Quanto maior o valor, mais esse critério influencia positivamente o NPS.
         </p>
         <div className="space-y-3">
           {correlations.map(({ label, correlation }) => {
@@ -72,25 +68,33 @@ const CorrelationCard = ({ data }: { data: SurveyResponse[] }) => {
             const isPositive = correlation >= 0;
             return (
               <div key={label} className="flex items-center gap-3">
-                {isPositive ? (
-                  <TrendingUp className="w-4 h-4 text-green-400 shrink-0" />
-                ) : (
-                  <TrendingDown className="w-4 h-4 text-red-400 shrink-0" />
-                )}
-                <span className="text-sm text-foreground w-36 truncate">
-                  {label}
-                </span>
-                <div className="flex-1 h-5 bg-secondary/50 rounded-md overflow-hidden">
+                <div
+                  className="flex items-center justify-center w-6 h-6 rounded-md"
+                  style={{ backgroundColor: isPositive ? "rgba(34,197,94,0.15)" : "rgba(239,68,68,0.15)" }}
+                >
+                  {isPositive ? (
+                    <TrendingUp className="w-3.5 h-3.5" style={{ color: COLORS.success }} />
+                  ) : (
+                    <TrendingDown className="w-3.5 h-3.5" style={{ color: COLORS.error }} />
+                  )}
+                </div>
+                <span className="text-sm w-36 truncate" style={{ color: COLORS.textMain }}>{label}</span>
+                <div className="flex-1 h-5 rounded-md overflow-hidden" style={{ backgroundColor: "rgba(51,65,85,0.3)" }}>
                   <div
-                    className={`h-full rounded-md transition-all ${isPositive ? "bg-green-500/40" : "bg-red-500/40"}`}
-                    style={{ width: `${absCorr * 100}%` }}
+                    className="h-full rounded-md transition-all"
+                    style={{
+                      width: `${absCorr * 100}%`,
+                      background: isPositive
+                        ? `linear-gradient(90deg, ${COLORS.success}99, ${COLORS.success}66)`
+                        : `linear-gradient(90deg, ${COLORS.error}99, ${COLORS.error}66)`,
+                    }}
                   />
                 </div>
                 <span
-                  className={`text-xs font-mono font-semibold w-12 text-right ${isPositive ? "text-green-400" : "text-red-400"}`}
+                  className="text-xs font-mono font-semibold w-12 text-right"
+                  style={{ color: isPositive ? COLORS.success : COLORS.error }}
                 >
-                  {correlation > 0 ? "+" : ""}
-                  {correlation}
+                  {correlation > 0 ? "+" : ""}{correlation}
                 </span>
               </div>
             );
