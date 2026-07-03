@@ -13,7 +13,11 @@
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "test:safe": "node headroom-filter.js vitest run",
+    "deploy:safe": "node headroom-filter.js python3 deploy_vps.py",
+    "check:types": "tsc --noEmit",
+    "validate:all": "npm run check:types && npm run test:safe"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",
