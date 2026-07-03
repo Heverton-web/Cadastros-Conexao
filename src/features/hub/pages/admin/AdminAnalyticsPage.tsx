@@ -29,7 +29,7 @@ function StatCard({
 }) {
   return (
     <div
-      className="rounded-2xl p-5 border transition-all"
+      className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-accent/20 via-accent/10 to-transparent border border-accent/20 p-5 transition-all duration-300 hover:shadow-lg hover:shadow-accent/10 hover:border-accent/40"
       style={{
         borderColor: "var(--color-border)",
         backgroundColor: colorMix(
@@ -39,9 +39,9 @@ function StatCard({
         ),
       }}
     >
-      <div className="flex items-center gap-3 mb-3">
+        <div className="flex items-center gap-3 mb-3">
         <div
-          className="icon-box-sm"
+          className="icon-box-sm group-hover:bg-accent/20 transition-colors"
           style={{ color, borderColor: color + "30" }}
         >
           <Icon size={14} />
@@ -54,7 +54,7 @@ function StatCard({
         </span>
       </div>
       <p
-        className="text-3xl font-bold"
+        className="text-2xl sm:text-3xl font-bold"
         style={{ color: "var(--color-text-main)" }}
       >
         {value}
@@ -156,7 +156,7 @@ export function AdminAnalyticsPage() {
         ) : (
           <div className="space-y-3">
             {ranking.slice(0, 10).map((u: any, idx: number) => (
-              <div key={u.id} className="flex items-center gap-3">
+              <div key={u.id} className="group flex items-center gap-3">
                 <span
                   className="text-xs font-bold w-6 text-center"
                   style={{ color: "var(--color-text-muted)" }}
@@ -164,7 +164,7 @@ export function AdminAnalyticsPage() {
                   #{idx + 1}
                 </span>
                 <div
-                  className="flex-1 h-6 rounded-full overflow-hidden"
+                  className="flex-1 h-6 rounded-full overflow-hidden bg-surface"
                   style={{
                     backgroundColor: colorMix(
                       "var(--color-surface)",

@@ -5,7 +5,7 @@ description: Intercepta e compacta logs de erro, stack traces e saídas de termi
 
 # Headroom
 
-Sempre que um comando de terminal (como `npm test`, `vitest` ou `docker compose up`) falhar ou retornar mais de 20 linhas de texto:
+Sempre que um comando de terminal (como `npm test`, `vitest` ou `docker compose up`) falhar ou retornar mais de 7 linhas de texto:
 
 1. NÃO envie o log bruto para a janela de chat principal.
 2. Aplique um filtro regex local para remover linhas repetidas de carregamento (ex: de progresso ou instalações bem-sucedidas).

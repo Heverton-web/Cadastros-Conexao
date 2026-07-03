@@ -105,10 +105,12 @@ const [itemParaDeletar, setItemParaDeletar] = useState<ItemType | null>(null);
 ## Eficiência de Tokens
 
 - **Skill-First**: Antes de tarefa complexa, checar `.agents/skills/` ou skills do OpenCode.
-- **Caveman Style**: Respostas ultra-curtas. Comunicação mínima sobre código, código robusto (DRY, Clean Code).
-- **Sem `rewrite_file`**: Usar edição cirúrgica (substituição de linhas específicas).
-- **Lazy Reading**: Ler arquivos só quando o plano de ação estiver definido.
-- **Context Clearing**: Sugerir `/clear` ao finalizar etapas longas.
+- **Caveman**: Utilize o estilo ultra‑condensado (`caveman` skill) – sem markdown decorativo, apenas patches ou linhas alteradas.
+- **Headroom**: Ative o filtro (`headroom-filter.js`) para logs longos; ele remove ruído e mantém apenas as linhas de erro relevantes.
+- **Lean‑Context**: Prefira inspeções de AST/TS (`lean-ctx` skill) ao invés de leitura completa de arquivos.
+- **Pre‑flight Check**: Rode `npm run check:types` e `npm run test:safe` antes de modificações estruturais (`pre-flight-check` skill).
+- **Lazy Reading**: Leia arquivos somente quando necessário.
+- **Context Clearing**: Sugira `/clear` ao finalizar etapas longas.
 
 ---
 
@@ -156,13 +158,29 @@ const [itemParaDeletar, setItemParaDeletar] = useState<ItemType | null>(null);
 
 | Skill                          | Descrição                                   |
 | ------------------------------ | ------------------------------------------- |
-| `criar-modulo`                 | Estrutura completa de novo módulo           |
-| `criar-rota`                   | Rota protegida com AuthGuard                |
+| `criar-modulo`                 | Cria estrutura completa de novo módulo           |
+| `criar-rota`                   | Cria rota protegida no ERP Conexão                |
 | `gerar-crud`                   | Operações CRUD com React Query              |
-| `criar-componente-modulo`      | Componente React com CVA                    |
-| `adicionar-permissao`          | Permissão no sistema RBAC                   |
+| `criar-componente-modulo`      | Cria componente React seguindo padrões shadcn/ui do ERP Conexão                    |
+| `adicionar-permissao`          | Adiciona permissão ao sistema de permissões do ERP Conexão                    |
 | `validar-modulo`               | Verificar integridade do módulo             |
 | `documentar-modulo`            | Gerar documentação do módulo                |
 | `deploy-vps`                   | Deploy via Docker + VPS                     |
-| `planejar-modulo-repo-externo` | Analisar repo externo e planejar integração |
-| `gerenciar-nav-items`          | Gerar/gerenciar itens de navegação lateral  |
+| `planejar-modulo-repo-externo` | Analisar repo externo e planejar integração como módulo independente no ERP Conexão |
+| `gerenciar-nav-items`          | Gerencia nav items (itens de navegação lateral) de módulos do ERP Conexão. Adiciona, renomeia, reordena ou remove nav items mantendo consistência de rotas, permissões e module.ts                    |
+| `design-frontend`              | Embeleza o frontend de uma rota do ERP Conexao aplicando classes de estilo do design system do dashboard. Trigger: /design <rota> — Exemplo: /design /cadastros/solicitacoes |
+| `responsividade`               | Analisa a responsividade de um módulo do ERP Conexão, gera documentação e IMPLEMENTA o plano de correção sem quebrar o funcionamento do módulo ou aplicação. Trigger: /responsividade <nome_modulo> |
+| `criar-design-modulo`          | Cria a estrutura de configuração de Design System para um módulo existente do ERP Conexão — gera rota /modulo/design e registra hasDesignConfig no module.ts. Inclui padrões de UI/UX baseados no módulo cadastros. |
+| `gerar-pagina`                 | Gera página React completa com PageHeader, breadcrumb, layout responsivo mobile-first e tokens do Design System para um módulo do ERP Conexão. Inclui estados de loading, erro e vazio. |
+| `gerar-formulario`             | Gera formulário React completo com React Hook Form + Zod + componentes do Design System (CSS vars / Tailwind v4) para um módulo existente do ERP Conexão. |
+| `gerar-modal`                  | Gera componente Modal/Dialog completo usando shadcn/ui Dialog com variantes (confirmação, formulário, informação) e tokens do Design System para um módulo do ERP Conexão. |
+| `google-maps-platform`         | Collection of skills for architecting and implementing production-ready code using Google Maps Platform APIs and SDKs for any map, place, address, geocoding, routing/ETA, nearby search, 3D / Street View / static map, marker clustering, custom styling, drawing, geofencing, heatmap, or environmental features — across Web, Android, iOS, and Web Services APIs. |
+| `loop`                         | Especifica um loop de agente autônomo para tarefas iterativas com verificação e parada. |
+| `rtk-memory`                   | Memória RTK (Real-Time Knowledge) para agentes - registra lições aprendidas durante execução. |
+| `lean-ctx`                     | Estratégia LEAN-CTX para limitação de contexto - evita grep em diretórios grandes, lê assinaturas primeiro. |
+| `caveman`                      | Modo comunicação ultra-curtas (Caveman Style) - respostas diretas, sem greetings ou explicações desnecessárias. |
+| `pre-flight-check`             | Verificação prévia antes de implementações complexas. |
+| `implementar-mapa-dark-premium`| Implementa mapa dark premium com tokens CSS e componentes para o módulo de presença. |
+| `headroom`                     | Framework para componentes UI reutilizáveis em React com Tailwind CSS. |
+| `modulo-completo`              | Workflow completo: Documentação → Design → Responsividade |
+| `loop-modulo-completo`         | Roda pipeline iterativo de módulo até tudo passar |

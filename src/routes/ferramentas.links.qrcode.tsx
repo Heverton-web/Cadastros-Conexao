@@ -5,7 +5,7 @@ import { QrCodeGenerator } from "~/features/gerador-links/components/sections/Qr
 
 function QrCodePage() {
   return (
-    <div className="flex flex-col gap-6">
+    <div className="space-y-8 animate-fade-in">
       <PageHeader
         title="QR Code"
         description="Gere QR Codes para qualquer URL"

@@ -85,7 +85,7 @@ export function AdminChatbotPage() {
           </div>
           <button
             onClick={() => setEnabled(!enabled)}
-            className={`w-12 h-6 rounded-full transition-colors relative ${enabled ? "" : "opacity-50"}`}
+            className={`w-14 h-8 rounded-full transition-colors relative ${enabled ? "" : "opacity-50"}`}
             style={{
               backgroundColor: enabled
                 ? "var(--color-accent)"
@@ -96,7 +96,7 @@ export function AdminChatbotPage() {
               className="absolute top-1 w-4 h-4 rounded-full transition-transform"
               style={{
                 backgroundColor: "white",
-                left: enabled ? "26px" : "4px",
+                left: enabled ? "30px" : "4px",
               }}
             />
           </button>
@@ -113,11 +113,7 @@ export function AdminChatbotPage() {
             value={webhookUrl}
             onChange={(e) => setWebhookUrl(e.target.value)}
             placeholder="https://seu-n8n.com/webhook/chatbot"
-            style={{
-              backgroundColor: "var(--color-input-bg)",
-              borderColor: "var(--color-input-border)",
-              color: "var(--color-text-main)",
-            }}
+            className="h-11 rounded-xl border border-border bg-input-bg px-4 text-sm text-text-main placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent transition-all duration-200"
           />
           <p className="text-xs" style={{ color: "var(--color-text-muted)" }}>
             URL do webhook n8n para processar mensagens do chatbot.

@@ -40,10 +40,10 @@ export function LinkSavedDialog({ linkId, urlOriginal, open, onOpenChange }: Pro
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="bg-card border-border sm:max-w-lg">
-        <DialogHeader>
-          <DialogTitle>Link salvo com sucesso!</DialogTitle>
-          <DialogDescription>
+      <DialogContent className="fixed left-[50%] top-[50%] z-50 w-[calc(100%-2rem)] max-w-lg translate-x-[-50%] translate-y-[-50%] bg-surface border border-border/50 rounded-2xl shadow-2xl shadow-black/40 p-6 sm:p-8">
+        <DialogHeader className="flex flex-col gap-1 text-center sm:text-left mb-4">
+          <DialogTitle className="text-xl font-bold text-text-main tracking-tight">Link salvo com sucesso!</DialogTitle>
+          <DialogDescription className="text-sm text-text-muted leading-relaxed">
             Use a URL de tracking para monitorar cliques, ou compartilhe a URL original.
           </DialogDescription>
         </DialogHeader>

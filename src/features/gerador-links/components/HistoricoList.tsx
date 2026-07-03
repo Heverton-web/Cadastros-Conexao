@@ -208,22 +208,22 @@ export function HistoricoList() {
         {filtrados.map((link) => {
           const trackingUrl = `${trackingBase}/r/${link.id}`;
           return (
-            <Card key={link.id}>
+            <Card key={link.id} className="group">
               <CardContent className="p-4">
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex-1 min-w-0 space-y-1">
                     <div className="flex items-center gap-2">
-                      <span className="inline-flex items-center rounded-lg px-2 py-0.5 text-xs font-semibold bg-accent/10 text-accent">
+                      <span className="inline-flex items-center rounded-lg px-2.5 py-1 text-xs font-semibold bg-accent/15 text-accent border border-accent/20">
                         {TIPO_LABEL[link.tipo] || link.tipo}
                       </span>
-                      <p className="font-semibold text-text-main truncate">{link.titulo}</p>
+                      <p className="text-sm font-semibold text-text-main truncate">{link.titulo}</p>
                     </div>
                     <p className="text-xs font-mono text-accent break-all">{trackingUrl}</p>
                     <p className="text-[11px] text-text-muted/60">
                       {new Date(link.created_at).toLocaleDateString("pt-BR")}
                     </p>
                   </div>
-                  <div className="flex items-center gap-1 shrink-0">
+                  <div className="flex items-center gap-0.5 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity shrink-0">
                     <button
                       onClick={() => handleCopiar(trackingUrl, `track-${link.id}`)}
                       className="text-text-muted hover:text-accent transition-colors p-1"
@@ -289,9 +289,9 @@ export function HistoricoList() {
         open={!!editandoLink}
         onOpenChange={(o) => !o && setEditandoLink(null)}
       >
-        <DialogContent className="bg-card border-border">
-          <DialogHeader>
-            <DialogTitle>Editar link</DialogTitle>
+        <DialogContent className="fixed left-[50%] top-[50%] z-50 w-[calc(100%-2rem)] max-w-lg translate-x-[-50%] translate-y-[-50%] bg-surface border border-border/50 rounded-2xl shadow-2xl shadow-black/40 p-6 sm:p-8">
+          <DialogHeader className="flex flex-col gap-1 text-center sm:text-left mb-4">
+            <DialogTitle className="text-xl font-bold text-text-main tracking-tight">Editar link</DialogTitle>
           </DialogHeader>
           <div className="space-y-4 py-2">
             <div className="space-y-2">
@@ -303,9 +303,9 @@ export function HistoricoList() {
               />
             </div>
           </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setEditandoLink(null)}>Cancelar</Button>
-            <Button onClick={handleSaveEdit} disabled={!editTitulo.trim() || editarLink.isPending}>
+          <DialogFooter className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end sm:gap-3 mt-6 pt-4 border-t border-border/50">
+            <Button variant="outline" onClick={() => setEditandoLink(null)} className="rounded-xl">Cancelar</Button>
+            <Button onClick={handleSaveEdit} disabled={!editTitulo.trim() || editarLink.isPending} className="rounded-xl shadow-md shadow-accent/20">
               Salvar
             </Button>
           </DialogFooter>
@@ -323,9 +323,9 @@ export function HistoricoList() {
               Esta ação não pode ser desfeita. O link "{itemParaDeletar?.titulo}" será removido permanentemente.
             </AlertDialogDescription>
           </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancelar</AlertDialogCancel>
-            <AlertDialogAction onClick={handleConfirmDelete} className="bg-destructive">
+          <AlertDialogFooter className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end sm:gap-3 mt-6 pt-4 border-t border-border/50">
+            <AlertDialogCancel className="border-border text-text-main rounded-xl">Cancelar</AlertDialogCancel>
+            <AlertDialogAction onClick={handleConfirmDelete} className="bg-destructive hover:bg-destructive/90 text-white border-0 rounded-xl shadow-lg shadow-error/25">
               Excluir
             </AlertDialogAction>
           </AlertDialogFooter>
@@ -336,9 +336,9 @@ export function HistoricoList() {
         open={!!linkCliques}
         onOpenChange={(o) => !o && setLinkCliques(null)}
       >
-        <DialogContent className="bg-card border-border sm:max-w-2xl max-h-[80vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle>Cliques: {linkCliques?.link.titulo}</DialogTitle>
+        <DialogContent className="fixed left-[50%] top-[50%] z-50 w-[calc(100%-2rem)] max-w-2xl translate-x-[-50%] translate-y-[-50%] bg-surface border border-border/50 rounded-2xl shadow-2xl shadow-black/40 p-6 sm:p-8 max-h-[80vh] overflow-y-auto">
+          <DialogHeader className="flex flex-col gap-1 text-center sm:text-left mb-4">
+            <DialogTitle className="text-xl font-bold text-text-main tracking-tight">Cliques: {linkCliques?.link.titulo}</DialogTitle>
           </DialogHeader>
           {carregandoCliques ? (
             <div className="flex items-center justify-center py-8">

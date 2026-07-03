@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import {
   Dialog,
   DialogContent,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
 } from "~/components/ui/dialog";
@@ -179,7 +180,7 @@ export function MaterialFormModal({
 
   return (
     <Dialog open={open} onOpenChange={(o) => !o && onClose()}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto w-[calc(100%-2rem)] sm:w-full bg-card border-border">
         <DialogHeader>
           <DialogTitle>
             {material ? "Editar Material" : "Novo Material"}
@@ -190,7 +191,7 @@ export function MaterialFormModal({
           {/* Tipo + Status + XP */}
           <div className="grid grid-cols-3 gap-3">
             <div>
-              <label className="mb-1 block text-xs font-bold uppercase tracking-wider text-text-muted">
+              <label className="mb-1 block text-xs font-medium text-text-muted">
                 Tipo *
               </label>
               <Select
@@ -210,7 +211,7 @@ export function MaterialFormModal({
               </Select>
             </div>
             <div>
-              <label className="mb-1 block text-xs font-bold uppercase tracking-wider text-text-muted">
+              <label className="mb-1 block text-xs font-medium text-text-muted">
                 XP *
               </label>
               <Input
@@ -220,7 +221,7 @@ export function MaterialFormModal({
               />
             </div>
             <div className="flex flex-col items-center justify-end">
-              <label className="mb-1 block text-xs font-bold uppercase tracking-wider text-text-muted">
+              <label className="mb-1 block text-xs font-medium text-text-muted">
                 Status
               </label>
               <div className="flex items-center gap-2">
@@ -236,7 +237,7 @@ export function MaterialFormModal({
 
           {/* Público-alvo */}
           <div>
-            <label className="mb-2 block text-xs font-bold uppercase tracking-wider text-text-muted">
+            <label className="mb-2 block text-xs font-medium text-text-muted">
               Público-alvo *
             </label>
             <div className="flex flex-wrap gap-2">
@@ -254,7 +255,7 @@ export function MaterialFormModal({
 
           {/* Conteúdo por idioma */}
           <div>
-            <label className="mb-2 block text-xs font-bold uppercase tracking-wider text-text-muted">
+            <label className="mb-2 block text-xs font-medium text-text-muted">
               <Globe className="inline mr-1" size={12} /> Conteúdo por Idioma
             </label>
             <Tabs
@@ -270,9 +271,9 @@ export function MaterialFormModal({
               {(["pt-br", "en-us", "es-es"] as HubLanguage[]).map((lang) => (
                 <TabsContent key={lang} value={lang} className="space-y-3">
                   <div>
-                    <label className="mb-1 block text-xs font-bold text-text-main">
-                      Título *
-                    </label>
+              <label className="mb-1 block text-xs font-medium text-text-muted">
+                       Título *
+                     </label>
                     <Input
                       value={titles[lang]}
                       onChange={(e) =>
@@ -284,7 +285,7 @@ export function MaterialFormModal({
 
                   {type !== "html" ? (
                     <div>
-                      <label className="mb-1 block text-xs font-bold text-text-main">
+                      <label className="mb-1 block text-xs font-medium text-text-muted">
                         URL do Material
                       </label>
                       <Input
@@ -297,7 +298,7 @@ export function MaterialFormModal({
                     </div>
                   ) : (
                     <div>
-                      <label className="mb-1 block text-xs font-bold text-text-main">
+                      <label className="mb-1 block text-xs font-medium text-text-muted">
                         URL do Material
                       </label>
                       <Input
@@ -311,9 +312,9 @@ export function MaterialFormModal({
                   )}
 
                   <div>
-                    <label className="mb-1 block text-xs font-bold text-text-main">
-                      URL da Legenda (Opcional)
-                    </label>
+              <label className="mb-1 block text-xs font-medium text-text-muted">
+                         URL da Legenda (Opcional)
+                       </label>
                     <Input
                       value={subtitleUrls[lang]}
                       onChange={(e) =>
@@ -333,7 +334,7 @@ export function MaterialFormModal({
           {/* Opções HTML */}
           {type === "html" && (
             <div className="p-4 rounded-xl border border-border bg-surface/40 space-y-3">
-              <label className="text-xs font-bold uppercase tracking-wider text-text-muted">
+              <label className="text-xs font-medium text-text-muted">
                 Opção HTML
               </label>
               <div className="flex gap-2">
@@ -382,7 +383,7 @@ export function MaterialFormModal({
           {/* Categoria + Tags */}
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="mb-1 block text-xs font-bold uppercase tracking-wider text-text-muted">
+              <label className="mb-1 block text-xs font-medium text-text-muted">
                 Categoria
               </label>
               <Input
@@ -392,7 +393,7 @@ export function MaterialFormModal({
               />
             </div>
             <div>
-              <label className="mb-1 block text-xs font-bold uppercase tracking-wider text-text-muted">
+              <label className="mb-1 block text-xs font-medium text-text-muted">
                 Tags
               </label>
               <Input
@@ -404,11 +405,11 @@ export function MaterialFormModal({
           </div>
 
           {/* Ações */}
-          <DialogFooter>
-            <Button variant="ghost" onClick={onClose}>
+          <DialogFooter className="pt-4 border-t border-surface">
+            <Button variant="ghost" className="rounded-xl" onClick={onClose}>
               Cancelar
             </Button>
-            <Button onClick={handleSave}>
+            <Button className="rounded-xl shadow-md shadow-accent/20" onClick={handleSave}>
               {material ? "Salvar" : "Criar Material"}
             </Button>
           </DialogFooter>

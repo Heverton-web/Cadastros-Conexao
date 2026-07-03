@@ -5,7 +5,7 @@ import { WazeGenerator } from "~/features/gerador-links/components/sections/Waze
 
 function WazePage() {
   return (
-    <div className="flex flex-col gap-6">
+    <div className="space-y-8 animate-fade-in">
       <PageHeader
         title="Waze"
         description="Gere link de navegação para o Waze com coordenadas"

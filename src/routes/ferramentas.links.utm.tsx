@@ -5,7 +5,7 @@ import { UtmGenerator } from "~/features/gerador-links/components/sections/UtmGe
 
 function UtmPage() {
   return (
-    <div className="flex flex-col gap-6">
+    <div className="space-y-8 animate-fade-in">
       <PageHeader
         title="UTM"
         description="Gere URLs com parâmetros UTM para campanhas de marketing"

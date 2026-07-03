@@ -5,10 +5,10 @@ import { WhatsappGenerator } from "~/features/gerador-links/components/sections/
 
 function WhatsappPage() {
   return (
-    <div className="flex flex-col gap-6">
+    <div className="space-y-8 animate-fade-in">
       <PageHeader
         title="WhatsApp"
-        description="Gere links wa.me paraWhatsApp com mensagem personalizada"
+        description="Gere links wa.me para WhatsApp com mensagem personalizada"
       />
       <WhatsappGenerator />
     </div>

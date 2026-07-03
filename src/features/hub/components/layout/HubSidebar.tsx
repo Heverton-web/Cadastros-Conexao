@@ -72,25 +72,25 @@ export function HubSidebar() {
   });
 
   return (
-    <aside className="hidden w-64 border-r bg-card lg:block">
+    <aside className="hidden w-full sm:w-64 border-r border-border bg-card lg:block">
       <div className="p-4">
-        <h2 className="mb-4 flex items-center gap-2 text-lg font-semibold">
-          <BookOpen className="h-5 w-5 text-primary" />
+        <h2 className="mb-4 flex items-center gap-2 text-lg font-bold text-text-main">
+          <span className="flex items-center justify-center w-8 h-8 rounded-lg bg-accent/10 text-accent shrink-0"><BookOpen className="h-4 w-4" /></span>
           Conexão Hub
         </h2>
 
-        <div className="mb-4 rounded-lg border bg-muted/50 p-3">
+        <div className="mb-4 rounded-xl bg-surface border border-border p-3">
           <div className="mb-1 flex items-center justify-between text-sm">
-            <span className="font-medium">{level}</span>
-            <span className="text-muted-foreground">{userPoints} XP</span>
+            <span className="font-semibold text-text-main">{level}</span>
+            <span className="text-text-muted">{userPoints} XP</span>
           </div>
-          <div className="h-2 overflow-hidden rounded-full bg-muted">
+          <div className="h-2.5 w-full overflow-hidden rounded-full bg-surface">
             <div
-              className="h-full rounded-full bg-primary transition-all"
+              className="h-full rounded-full bg-accent transition-all duration-500"
               style={{ width: `${progress}%` }}
             />
           </div>
-          <p className="mt-1 text-xs text-muted-foreground">
+          <p className="mt-1 text-xs text-text-muted">
             {nextThreshold - userPoints} XP para o próximo nível
           </p>
         </div>
@@ -104,10 +104,10 @@ export function HubSidebar() {
                 key={item.to}
                 to={item.to}
                 className={cn(
-                  "flex items-center gap-3 rounded-md px-3 py-2 text-sm transition-colors",
+                  "flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-all duration-200 min-h-[44px]",
                   isActive
-                    ? "bg-primary/10 text-primary font-medium"
-                    : "text-muted-foreground hover:bg-muted hover:text-foreground",
+                    ? "bg-accent/10 text-accent font-semibold border border-accent/20"
+                    : "text-text-muted hover:bg-surface hover:text-text-main hover:border-border",
                 )}
               >
                 <Icon className="h-4 w-4" />

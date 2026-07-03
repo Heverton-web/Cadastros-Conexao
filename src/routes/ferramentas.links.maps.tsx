@@ -5,7 +5,7 @@ import { GoogleMapsGenerator } from "~/features/gerador-links/components/section
 
 function GoogleMapsPage() {
   return (
-    <div className="flex flex-col gap-6">
+    <div className="space-y-8 animate-fade-in">
       <PageHeader
         title="Google Maps"
         description="Gere link de navegação para o Google Maps com coordenadas"

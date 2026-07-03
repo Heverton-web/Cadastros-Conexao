@@ -62,7 +62,7 @@ export function AdminBadgesPage() {
 
   return (
     <div className="space-y-6 animate-fade-in">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
           <h1
             className="text-2xl sm:text-3xl font-bold tracking-tight"
@@ -84,6 +84,8 @@ export function AdminBadgesPage() {
           {[...Array(6)].map((_, i) => (
             <div
               key={i}
+              role="status"
+              aria-label="Carregando"
               className="h-32 rounded-2xl animate-pulse"
               style={{
                 backgroundColor: colorMix(
@@ -122,7 +124,7 @@ export function AdminBadgesPage() {
             return (
               <div
                 key={b.id}
-                className="flex flex-col items-center gap-3 rounded-2xl border p-5 transition-all"
+                className="group flex flex-col items-center gap-3 rounded-2xl bg-surface border border-border p-5 transition-all duration-200 hover:border-accent/30 hover:shadow-lg hover:shadow-accent/5 hover:-translate-y-0.5"
                 style={{
                   backgroundColor: colorMix(
                     "var(--color-surface)",
@@ -133,7 +135,7 @@ export function AdminBadgesPage() {
                 }}
               >
                 <div
-                  className="icon-box-lg"
+                  className="icon-box-lg group-hover:scale-110 transition-transform duration-300"
                   style={{
                     backgroundColor: b.color + "20",
                     color: b.color,
@@ -163,6 +165,7 @@ export function AdminBadgesPage() {
                 <Button
                   variant="ghost"
                   size="sm"
+                  className="hover:bg-destructive/10 md:opacity-0 md:group-hover:opacity-100 transition-opacity"
                   onClick={() => {
                     if (confirm("Excluir badge?")) remove.mutate(b.id);
                   }}

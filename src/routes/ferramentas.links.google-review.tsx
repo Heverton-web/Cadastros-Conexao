@@ -5,7 +5,7 @@ import { GoogleReviewGenerator } from "~/features/gerador-links/components/secti
 
 function GoogleReviewPage() {
   return (
-    <div className="flex flex-col gap-6">
+    <div className="space-y-8 animate-fade-in">
       <PageHeader
         title="Google Review"
         description="Gere link direto para avaliação no Google com Place ID"

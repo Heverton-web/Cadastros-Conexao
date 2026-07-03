@@ -57,16 +57,16 @@ export function ChatWidget() {
   }
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 flex h-[400px] w-[320px] flex-col rounded-xl border bg-card shadow-xl">
-      <div className="flex items-center justify-between border-b p-3">
-        <h3 className="font-medium">Chat</h3>
+    <div className="fixed bottom-6 right-6 z-50 flex h-[400px] w-[calc(100%-3rem)] sm:w-[320px] flex-col rounded-xl border border-border bg-card shadow-xl">
+      <div className="flex items-center justify-between border-b border-border p-3">
+        <h3 className="font-semibold text-text-main">Chat</h3>
         <Button variant="ghost" size="icon" onClick={() => setOpen(false)}>
           <X className="h-4 w-4" />
         </Button>
       </div>
       <div ref={scrollRef} className="flex-1 space-y-3 overflow-y-auto p-3">
         {messages.length === 0 && (
-          <p className="py-8 text-center text-sm text-muted-foreground">
+          <p className="py-8 text-center text-sm text-text-muted">
             Como posso ajudar?
           </p>
         )}
@@ -76,7 +76,7 @@ export function ChatWidget() {
             className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
           >
             <div
-              className={`max-w-[80%] rounded-lg px-3 py-2 text-sm ${msg.role === "user" ? "bg-primary text-primary-foreground" : "bg-muted"}`}
+              className={`max-w-[80%] rounded-xl px-3 py-2 text-sm ${msg.role === "user" ? "bg-accent text-white" : "bg-surface text-text-main"}`}
             >
               {msg.content}
             </div>
@@ -84,13 +84,13 @@ export function ChatWidget() {
         ))}
         {loading && (
           <div className="flex justify-start">
-            <div className="rounded-lg bg-muted px-3 py-2 text-sm text-muted-foreground">
+            <div className="rounded-xl bg-surface px-3 py-2 text-sm text-text-muted">
               Digitando...
             </div>
           </div>
         )}
       </div>
-      <div className="border-t p-3">
+      <div className="border-t border-border p-3">
         <div className="flex gap-2">
           <Input
             value={input}

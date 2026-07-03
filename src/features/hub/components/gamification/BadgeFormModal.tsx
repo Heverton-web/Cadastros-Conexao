@@ -66,17 +66,17 @@ export function BadgeFormModal({
 
   return (
     <Dialog open={open} onOpenChange={(o) => !o && onClose()}>
-      <DialogContent className="max-w-lg">
+      <DialogContent className="max-w-lg w-[calc(100%-2rem)] sm:w-full bg-card border-border">
         <DialogHeader>
           <DialogTitle>{badge ? "Editar Badge" : "Novo Badge"}</DialogTitle>
         </DialogHeader>
         <div className="space-y-4">
           <div>
-            <label className="mb-1 block text-sm font-medium">Nome *</label>
+            <label className="mb-1 block text-xs font-medium text-text-muted">Nome *</label>
             <Input value={name} onChange={(e) => setName(e.target.value)} />
           </div>
           <div>
-            <label className="mb-1 block text-sm font-medium">Descrição</label>
+            <label className="mb-1 block text-xs font-medium text-text-muted">Descrição</label>
             <Textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
@@ -84,7 +84,7 @@ export function BadgeFormModal({
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="mb-1 block text-sm font-medium">Ícone</label>
+              <label className="mb-1 block text-xs font-medium text-text-muted">Ícone</label>
               <Select value={iconName} onValueChange={setIconName}>
                 <SelectTrigger>
                   <SelectValue />
@@ -99,7 +99,7 @@ export function BadgeFormModal({
               </Select>
             </div>
             <div>
-              <label className="mb-1 block text-sm font-medium">Cor</label>
+              <label className="mb-1 block text-xs font-medium text-text-muted">Cor</label>
               <Input
                 type="color"
                 value={color}
@@ -110,7 +110,7 @@ export function BadgeFormModal({
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="mb-1 block text-sm font-medium">Gatilho</label>
+              <label className="mb-1 block text-xs font-medium text-text-muted">Gatilho</label>
               <Select
                 value={triggerType}
                 onValueChange={(v) => setTriggerType(v as HubBadgeTrigger)}
@@ -128,7 +128,7 @@ export function BadgeFormModal({
               </Select>
             </div>
             <div>
-              <label className="mb-1 block text-sm font-medium">
+              <label className="mb-1 block text-xs font-medium text-text-muted">
                 Valor do Gatilho
               </label>
               <Input
@@ -139,7 +139,7 @@ export function BadgeFormModal({
             </div>
           </div>
           <div>
-            <label className="mb-1 block text-sm font-medium">
+            <label className="mb-1 block text-xs font-medium text-text-muted">
               Recompensa XP
             </label>
             <Input
@@ -148,11 +148,11 @@ export function BadgeFormModal({
               onChange={(e) => setPointsReward(Number(e.target.value))}
             />
           </div>
-          <div className="flex justify-end gap-2">
-            <Button variant="outline" onClick={onClose}>
+          <div className="flex justify-end gap-2 pt-4 border-t border-surface">
+            <Button variant="outline" className="rounded-xl" onClick={onClose}>
               Cancelar
             </Button>
-            <Button onClick={handleSave}>{badge ? "Salvar" : "Criar"}</Button>
+            <Button className="rounded-xl shadow-md shadow-accent/20" onClick={handleSave}>{badge ? "Salvar" : "Criar"}</Button>
           </div>
         </div>
       </DialogContent>

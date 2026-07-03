@@ -39,7 +39,7 @@ export function BadgeDisplay({
   const Icon = iconMap[badge.icon_name] || Star;
   return (
     <div
-      className={`flex ${compact ? "items-center gap-2" : "flex-col items-center gap-2"} rounded-lg border p-3 ${earned ? "" : "opacity-40 grayscale"}`}
+      className={`flex ${compact ? "items-center gap-2" : "flex-col items-center gap-3"} rounded-xl bg-surface border border-border p-4 transition-all duration-200 hover:border-accent/30 ${earned ? "" : "opacity-40 grayscale"}`}
     >
       <div
         className="flex h-10 w-10 items-center justify-center rounded-full"
@@ -49,14 +49,14 @@ export function BadgeDisplay({
       </div>
       {!compact && (
         <>
-          <p className="text-center text-sm font-medium">{badge.name}</p>
+          <p className="text-center text-sm font-semibold text-text-main">{badge.name}</p>
           {badge.description && (
-            <p className="text-center text-xs text-muted-foreground">
+            <p className="text-center text-xs text-text-muted">
               {badge.description}
             </p>
           )}
           {badge.points_reward > 0 && (
-            <p className="text-xs font-medium text-primary">
+            <p className="text-xs font-bold text-accent">
               +{badge.points_reward} XP
             </p>
           )}

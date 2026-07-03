@@ -52,7 +52,7 @@ export function AdminTrilhasPage() {
 
   return (
     <div className="space-y-6 animate-fade-in">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
           <h1
             className="text-2xl sm:text-3xl font-bold tracking-tight"
@@ -74,6 +74,8 @@ export function AdminTrilhasPage() {
           {[...Array(3)].map((_, i) => (
             <div
               key={i}
+              role="status"
+              aria-label="Carregando"
               className="h-16 rounded-xl animate-pulse"
               style={{
                 backgroundColor: colorMix(
@@ -110,7 +112,7 @@ export function AdminTrilhasPage() {
           {collections.map((c) => (
             <div
               key={c.id}
-              className="flex items-center gap-4 rounded-xl p-4 border transition-all"
+              className="group flex items-center gap-4 rounded-xl bg-surface border border-border p-4 transition-all duration-200 hover:border-accent/30 hover:shadow-lg hover:shadow-accent/5 hover:-translate-y-0.5"
               style={{
                 borderColor: "var(--color-border)",
                 backgroundColor: colorMix(
@@ -120,7 +122,7 @@ export function AdminTrilhasPage() {
                 ),
               }}
             >
-              <div className="icon-box-sm">
+              <div className="icon-box-sm group-hover:bg-accent/20 transition-colors">
                 <BookOpen size={14} />
               </div>
               <div className="flex-1 min-w-0">
@@ -149,10 +151,11 @@ export function AdminTrilhasPage() {
                   </span>
                 </div>
               </div>
-              <div className="flex items-center gap-1">
+              <div className="flex items-center gap-0.5 md:opacity-0 md:group-hover:opacity-100 transition-opacity shrink-0">
                 <Button
                   variant="ghost"
                   size="icon"
+                  className="hover:bg-accent/10"
                   onClick={() => setModal({ open: true, edit: c })}
                   title="Editar"
                 >
@@ -161,6 +164,7 @@ export function AdminTrilhasPage() {
                 <Button
                   variant="ghost"
                   size="icon"
+                  className="hover:bg-destructive/10"
                   onClick={() => {
                     if (confirm("Excluir trilha?")) remove.mutate(c.id);
                   }}

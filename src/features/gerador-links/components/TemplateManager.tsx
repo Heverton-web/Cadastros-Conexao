@@ -112,7 +112,7 @@ export function TemplateManager() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <PageHeader title="Templates" description="Modelos de mensagem e presets UTM" />
         <div className="flex items-center gap-2">
           {isSuperAdmin && empresas.length > 0 && (
@@ -136,7 +136,7 @@ export function TemplateManager() {
           description="Crie templates para agilizar a geração de links."
         />
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
           {templates.map((t) => (
             <Card key={t.id}>
               <CardContent className="p-4">
@@ -171,9 +171,9 @@ export function TemplateManager() {
       )}
 
       <Dialog open={modalOpen} onOpenChange={(o) => { if (!o) { setModalOpen(false); resetForm(); } }}>
-        <DialogContent className="bg-card border-border">
-          <DialogHeader>
-            <DialogTitle>Novo Template</DialogTitle>
+        <DialogContent className="fixed left-[50%] top-[50%] z-50 w-[calc(100%-2rem)] max-w-lg translate-x-[-50%] translate-y-[-50%] bg-surface border border-border/50 rounded-2xl shadow-2xl shadow-black/40 p-6 sm:p-8">
+          <DialogHeader className="flex flex-col gap-1 text-center sm:text-left mb-4">
+            <DialogTitle className="text-xl font-bold text-text-main tracking-tight">Novo Template</DialogTitle>
           </DialogHeader>
           <div className="space-y-4 py-2">
             <div className="space-y-2">
@@ -215,9 +215,9 @@ export function TemplateManager() {
               </div>
             )}
           </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setModalOpen(false)}>Cancelar</Button>
-            <Button onClick={handleSalvar} disabled={salvando}>Salvar</Button>
+          <DialogFooter className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end sm:gap-3 mt-6 pt-4 border-t border-border/50">
+            <Button variant="outline" onClick={() => setModalOpen(false)} className="rounded-xl">Cancelar</Button>
+            <Button onClick={handleSalvar} disabled={salvando} className="rounded-xl shadow-md shadow-accent/20">Salvar</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -233,9 +233,9 @@ export function TemplateManager() {
               Esta ação não pode ser desfeita.
             </AlertDialogDescription>
           </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancelar</AlertDialogCancel>
-            <AlertDialogAction onClick={handleConfirmDelete} className="bg-destructive">
+          <AlertDialogFooter className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end sm:gap-3 mt-6 pt-4 border-t border-border/50">
+            <AlertDialogCancel className="border-border text-text-main rounded-xl">Cancelar</AlertDialogCancel>
+            <AlertDialogAction onClick={handleConfirmDelete} className="bg-destructive hover:bg-destructive/90 text-white border-0 rounded-xl shadow-lg shadow-error/25">
               Excluir
             </AlertDialogAction>
           </AlertDialogFooter>

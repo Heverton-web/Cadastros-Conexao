@@ -62,12 +62,12 @@ export function QrCodeGenerator() {
           <div className="rounded-xl bg-white p-4 border border-border inline-block">
             <QRCodeCanvas value={url} size={tamanho} level="M" />
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 flex-wrap justify-center">
             <label className="text-sm text-text-muted">Tamanho:</label>
             <select
               value={tamanho}
               onChange={(e) => setTamanho(Number(e.target.value))}
-              className="rounded-lg bg-surface border border-border px-3 py-1.5 text-sm text-text-main"
+              className="h-11 rounded-xl border border-border bg-input-bg px-4 text-sm text-text-main font-medium focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent transition-all duration-200"
             >
               <option value={128}>128px</option>
               <option value={256}>256px</option>

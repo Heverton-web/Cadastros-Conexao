@@ -45,7 +45,7 @@ export function CollectionFormModal({
 
   return (
     <Dialog open={open} onOpenChange={(o) => !o && onClose()}>
-      <DialogContent className="max-w-lg">
+      <DialogContent className="max-w-lg w-[calc(100%-2rem)] sm:w-full bg-card border-border">
         <DialogHeader>
           <DialogTitle>
             {collection ? "Editar Trilha" : "Nova Trilha"}
@@ -53,7 +53,7 @@ export function CollectionFormModal({
         </DialogHeader>
         <div className="space-y-4">
           <div>
-            <label className="mb-1 block text-sm font-medium">
+            <label className="mb-1 block text-xs font-medium text-text-muted">
               Título (PT-BR) *
             </label>
             <Input
@@ -63,7 +63,7 @@ export function CollectionFormModal({
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="mb-1 block text-sm font-medium">
+              <label className="mb-1 block text-xs font-medium text-text-muted">
                 Título (EN-US)
               </label>
               <Input
@@ -74,7 +74,7 @@ export function CollectionFormModal({
               />
             </div>
             <div>
-              <label className="mb-1 block text-sm font-medium">
+              <label className="mb-1 block text-xs font-medium text-text-muted">
                 Título (ES-ES)
               </label>
               <Input
@@ -86,7 +86,7 @@ export function CollectionFormModal({
             </div>
           </div>
           <div>
-            <label className="mb-1 block text-sm font-medium">
+            <label className="mb-1 block text-xs font-medium text-text-muted">
               Descrição (PT-BR)
             </label>
             <Textarea
@@ -98,7 +98,7 @@ export function CollectionFormModal({
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="mb-1 block text-sm font-medium">
+              <label className="mb-1 block text-xs font-medium text-text-muted">
                 XP da Trilha
               </label>
               <Input
@@ -108,7 +108,7 @@ export function CollectionFormModal({
               />
             </div>
             <div>
-              <label className="mb-1 block text-sm font-medium">
+              <label className="mb-1 block text-xs font-medium text-text-muted">
                 URL da Capa
               </label>
               <Input
@@ -118,11 +118,11 @@ export function CollectionFormModal({
               />
             </div>
           </div>
-          <div className="flex justify-end gap-2">
-            <Button variant="outline" onClick={onClose}>
+          <div className="flex justify-end gap-2 pt-4 border-t border-surface">
+            <Button variant="outline" className="rounded-xl" onClick={onClose}>
               Cancelar
             </Button>
-            <Button onClick={handleSave}>
+            <Button className="rounded-xl shadow-md shadow-accent/20" onClick={handleSave}>
               {collection ? "Salvar" : "Criar"}
             </Button>
           </div>

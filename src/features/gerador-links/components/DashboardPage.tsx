@@ -108,14 +108,14 @@ export function DashboardPage() {
 
   if (isLoading) {
     return (
-      <div className="flex flex-col gap-6">
+      <div className="space-y-8 animate-fade-in">
         <PageHeader title="Dashboard" description="Acompanhe seus links gerados" />
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {Array.from({ length: 4 }).map((_, i) => (
-            <Skeleton key={i} className="h-28 rounded-xl" />
+            <Skeleton key={i} className="h-32 rounded-2xl" />
           ))}
         </div>
-        <Skeleton className="h-80 rounded-xl" />
+        <Skeleton className="h-80 rounded-2xl" />
       </div>
     );
   }
@@ -165,7 +165,7 @@ export function DashboardPage() {
   }));
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="space-y-8 animate-fade-in">
       <PageHeader
         title="Dashboard"
         description="Acompanhe o desempenho dos links gerados"
@@ -177,11 +177,10 @@ export function DashboardPage() {
               value={empresaSelecionada}
               onChange={setEmpresaSelecionada}
             />
-          )}
-          <select
+          )}            <select
             value={periodo}
             onChange={(e) => setPeriodo(e.target.value)}
-            className="rounded-lg bg-surface border border-border px-3 py-1.5 text-sm text-text-main"
+            className="h-11 rounded-xl border border-border bg-input-bg px-4 text-sm text-text-main font-medium focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent transition-all duration-200"
           >
             <option value="7">Últimos 7 dias</option>
             <option value="30">Últimos 30 dias</option>
@@ -204,7 +203,7 @@ export function DashboardPage() {
               <card.icon size={18} className={card.color} />
             </CardHeader>
             <CardContent>
-              <p className="text-2xl font-bold">{card.value}</p>
+              <p className="text-3xl sm:text-4xl font-bold text-text-main mt-2">{card.value}</p>
             </CardContent>
           </Card>
         ))}
@@ -378,21 +377,21 @@ export function DashboardPage() {
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
-                <thead>
-                  <tr className="border-b border-border text-text-muted">
-                    <th className="py-2 pr-4 text-left font-medium">Título</th>
-                    <th className="py-2 pr-4 text-left font-medium">Tipo</th>
-                    <th className="py-2 text-right font-medium">Cliques</th>
+                <thead className="bg-surface-hover/30">
+                  <tr className="border-b border-border">
+                    <th className="h-11 px-4 text-left font-semibold text-text-secondary">Título</th>
+                    <th className="h-11 px-4 text-left font-semibold text-text-secondary">Tipo</th>
+                    <th className="h-11 px-4 text-right font-semibold text-text-secondary">Cliques</th>
                   </tr>
                 </thead>
                 <tbody>
                   {stats?.top_links.map((link) => (
-                    <tr key={link.id} className="border-b border-border-subtle">
-                      <td className="py-2 pr-4">{link.titulo}</td>
-                      <td className="py-2 pr-4 text-text-muted">
+                    <tr key={link.id} className="border-b border-border/50 hover:bg-surface-hover/20 transition-colors">
+                      <td className="px-4 py-3">{link.titulo}</td>
+                      <td className="px-4 py-3 text-text-muted">
                         {TIPO_LINK_LABEL[link.tipo] ?? link.tipo}
                       </td>
-                      <td className="py-2 text-right font-semibold">{link.total_cliques}</td>
+                      <td className="px-4 py-3 text-right font-semibold">{link.total_cliques}</td>
                     </tr>
                   ))}
                 </tbody>

@@ -128,7 +128,7 @@ export function AdminMateriaisPage() {
                 onValueChange={setSelectedEmpresa}
               >
                 <SelectTrigger
-                  className="w-60"
+                  className="w-full sm:w-60"
                   style={{
                     backgroundColor: "var(--color-input-bg)",
                     borderColor: "var(--color-input-border)",
@@ -159,6 +159,8 @@ export function AdminMateriaisPage() {
           {[...Array(5)].map((_, i) => (
             <div
               key={i}
+              role="status"
+              aria-label="Carregando"
               className="h-16 rounded-xl animate-pulse"
               style={{
                 backgroundColor: colorMix(
@@ -190,7 +192,7 @@ export function AdminMateriaisPage() {
           {materials.map((m) => (
             <div
               key={m.id}
-              className="flex items-center gap-4 rounded-xl p-4 border transition-all"
+              className="group flex items-center gap-4 rounded-xl bg-surface border border-border p-4 transition-all duration-200 hover:border-accent/30 hover:shadow-lg hover:shadow-accent/5 hover:-translate-y-0.5"
               style={{
                 borderColor: "var(--color-border)",
                 backgroundColor: colorMix(
@@ -200,7 +202,7 @@ export function AdminMateriaisPage() {
                 ),
               }}
             >
-              <div className="icon-box-sm">
+              <div className="icon-box-sm group-hover:bg-accent/20 transition-colors">
                 {m.active ? <Eye size={14} /> : <EyeOff size={14} />}
               </div>
               <div className="flex-1 min-w-0">
@@ -235,10 +237,11 @@ export function AdminMateriaisPage() {
                   )}
                 </div>
               </div>
-              <div className="flex items-center gap-1">
+              <div className="flex items-center gap-0.5 md:opacity-0 md:group-hover:opacity-100 transition-opacity shrink-0">
                 <Button
                   variant="ghost"
                   size="icon"
+                  className="hover:bg-accent/10"
                   onClick={() => toggleActive.mutate(m)}
                   title={m.active ? "Desativar" : "Ativar"}
                 >
@@ -247,6 +250,7 @@ export function AdminMateriaisPage() {
                 <Button
                   variant="ghost"
                   size="icon"
+                  className="hover:bg-accent/10"
                   onClick={() => setModal({ open: true, edit: m })}
                   title="Editar"
                 >
@@ -255,6 +259,7 @@ export function AdminMateriaisPage() {
                 <Button
                   variant="ghost"
                   size="icon"
+                  className="hover:bg-destructive/10"
                   onClick={() => {
                     if (confirm("Excluir material?")) remove.mutate(m.id);
                   }}
