@@ -1,0 +1,17 @@
+export const {{MODULO_KEY}}Permissions = {
+  ver_{{MODULO_KEY}}: {
+    label: 'Visualizar {{MODULO_NOME}}',
+    description: 'Permite visualizar o módulo {{MODULO_NOME}}',
+    group: '{{MODULO_NOME}}',
+  },
+  editar_{{MODULO_KEY}}: {
+    label: 'Editar {{MODULO_NOME}}',
+    description: 'Permite editar dados do módulo {{MODULO_NOME}}',
+    group: '{{MODULO_NOME}}',
+  },
+  excluir_{{MODULO_KEY}}: {
+    label: 'Excluir {{MODULO_NOME}}',
+    description: 'Permite excluir dados do módulo {{MODULO_NOME}}',
+    group: '{{MODULO_NOME}}',
+  },
+} as const

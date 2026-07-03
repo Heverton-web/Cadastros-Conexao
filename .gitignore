@@ -14,3 +14,9 @@ vps.env
 
 *storybook.log
 storybook-static
+
+# Scripts de desenvolvimento (não usar no deploy)
+scripts/db/
+scripts/fix/
+scripts/exports/
+scripts/deploy/

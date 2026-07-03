@@ -1,0 +1,165 @@
+# VERSÃO MAIS RECENTE
+
+# AGENTS.md - ERP Conexão
+
+## 🛡️ POLÍTICA DE SOBREVIVÊNCIA DE COTA (OBRIGATÓRIO)
+Este repositório opera sob restrição severa de tokens. O descumprimento destas regras resulta em suspensão da cota de 5h.
+
+### 1. Orquestração e Agregação (MCP & Skills)
+- **NÃO liste diretórios recursivamente**: Use a ferramenta MCP de busca semântica ou `grep` específico.
+- **Skill-First**: Antes de qualquer tarefa complexa, verifique se há uma skill em `.agents/skills/`. Se existir, carregue APENAS o `SKILL.md`.
+- **MCP Aggregation**: Para dados do banco, use funções de agregação do servidor MCP Supabase. Proibido ler tabelas inteiras para "entender o esquema".
+
+### 2. Gerenciamento de Contexto Ativo (Atendimento ao Cache)
+- **NÃO ignore o Prompt Caching**: Mantenha as instruções de sistema estáveis. Não peça mudanças de "personalidade" no meio da sessão.
+- **Lazy Loading**: O agente deve ler arquivos apenas quando o plano de ação (Step 4) for aprovado. 
+- **Context Clearing**: Ao finalizar uma etapa (ex: Etapa 6 concluída), o agente deve sugerir ao usuário o comando `/clear` para resetar a janela de tokens.
+
+### 3. Técnicas de Prompting "Lean" (Baixo Consumo)
+- **Estilo Caveman**: Respostas ultra-curtas. Ex: "Código atualizado. Teste passando." em vez de explicações pedagógicas.
+- **ReWOO (Reasoning Without Observation)**: Crie o plano completo de passos *antes* de usar qualquer ferramenta. 
+- **Edição Cirúrgica**: Proibido `rewrite_file`. Use apenas ferramentas de substituição de linhas específicas para evitar reenviar o arquivo todo no output.
+
+### 4. Alternativas de Infraestrutura (Burlar Cota)
+- **Roteamento Headroom**: Priorize `Gemini-1.5-Flash` para 90% das tarefas.
+- **Fallback Externo**: Se o erro "Quota Exceeded" ocorrer, solicite ao usuário a ativação da `External API Key` (Google AI Studio) configurada no ambiente.
+- **Offline First**: Use ferramentas de análise estática locais (via MCP) antes de enviar código para revisão na nuvem.
+
+---
+
+## 🏗️ ARQUITETURA MODULAR (STATUS ATUAL)
+- **Etapa 1-4**: Estrutura de módulos e rotas administrativas OK.
+- **Etapa 5-6**: Migrations de Credenciais e Webhooks aplicadas e validadas.
+- **Arquivos Críticos**: `src/registry/modules.ts`, `src/features/cadastros/permissions.ts`.
+
+## 🛠️ REGRAS GLOBAIS DO PROJETO
+- **Pasta**: `C:\Users\trcnologia\Desktop\bubble_reverse_engineering\erp-conexao`
+- **DB**: Supabase via MCP.
+- **Deploy**: Apenas via comando `/deploy` (Skill: `deploy-vps`).
+- **Idioma**: PT-BR sempre.
+
+## ⚠️ NOTA SOBRE QUALIDADE
+A economia de tokens não justifica código mal escrito. A lógica deve ser robusta (DRY, Clean Code), mas a **comunicação sobre o código** deve ser mínima.
+
+
+
+# VERSÃO ANTERIOR
+
+## 🛡️ Regras de Eficiência e Economia de Cota (MODO SEVERO)
+Este arquivo é o artefato de configuração mestre. O agente deve consultá-lo antes de qualquer ação para reduzir o tempo de execução em até 28% e os tokens de saída em 16%. [1, 2] 
+
+## 🚫 Restrições Negativas (Obrigatórias)
+* NÃO use linguagem natural prolixa: Adote o estilo Caveman. Respostas técnicas, diretas, sem introduções ou conclusões educadas.
+* NÃO processe logs brutos: Use obrigatoriamente a skill lean-ctx para filtrar saídas de terminal antes de qualquer análise. [3] 
+* NÃO envie comandos Bash diretos: Use o proxy RTK para compressão de redundâncias e economia de tokens de entrada. [4] 
+* NÃO utilize modelos "Pro" para tarefas triviais: Use o headroom para priorizar Gemini Flash em buscas, listagens de arquivos e navegação básica.
+* NÃO reescreva arquivos inteiros: Aplique Edição Cirúrgica. Altere apenas as linhas necessárias.
+* NÃO ignore o cache: Verifique se a informação já consta no histórico ou no CLAUDE.md ou GEMINI.md. Use /compact com foco em amostras de código para preservar contexto essencial durante a sumarização. [5] 
+* NÃO exponha todas as ferramentas: Utilize roteamento ou seleção prévia de ferramentas para não desperdiçar tokens com descrições de esquemas desnecessários. [6] 
+
+## ⚙️ Padrões de Operação
+* Planejamento "ReWOO": Antes de codar, descreva o plano de alteração em no máximo 1 parágrafo.
+* Modularização via Skills: Prefira acionar várias skills menores e assertivas em vez de uma única skill extensa e pesada.
+* Sincronia MCP: Utilize o pipeline de dados do MCP Supabase para consultas de esquema em vez de ler arquivos SQL brutos.
+* Limpeza de Contexto: Use /clear ao mudar para uma tarefa não relacionada para evitar o crescimento explosivo da janela de contexto. [5, 7, 8] 
+
+## 🏗️ Arquitetura e Status do Projeto (Etapas Concluídas)
+   1. ModuleDefinition: Expansão de tipos e registro de ambientes/abas em src/registry/modules.ts.
+   2. Refatoração de Cadastros: Migração de permissões para features/cadastros/permissions.ts.
+   3. Admin UI: Implementação de listagem de módulos e rotas dinâmicas configuráveis.
+   4. Persistência: Migrações concluídas para credential_scopes (00026) e module_webhooks (00027).
+   5. Integração Webhooks: Função dispararEventoModulo() ativa em src/core/services/webhooks.ts.
+
+## 🛠️ Global Rules & Dev Environment
+* Localização: C:\Users\trcnologia\Desktop\bubble_reverse_engineering\erp-conexao
+* Build Command: npm run build (execução livre para validação local).
+* Deploy Protocol: Apenas sob comando explícito ("/deploy"). Use obrigatoriamente .agents/skills/deploy-vps/SKILL.md.
+* Banco de Dados: postgresql://... (Supabase). Utilize o supabase-mcp-server para inspeção.
+* Idioma: Todos os outputs e comentários de código devem estar em pt-BR.
+
+## 💡 Important Notes
+* O Super Admin global possui empresa_id = null.
+* O agente deve sempre ler este arquivo e o CLAUDE.md como primeiro passo de qualquer nova sessão. [3] 
+
+
+[1] [https://pt.linkedin.com](https://pt.linkedin.com/pulse/agentsmd-agentes-de-ia-e-o-perigo-das-verdades-absolutas-lemos-clpkf)
+[2] [https://www.binance.com](https://www.binance.com/pt-BR/square/post/297503259199282)
+[3] [https://www.youtube.com](https://www.youtube.com/watch?v=hYeI71D-c_I&t=1)
+[4] [https://www.reddit.com](https://www.reddit.com/r/AI_Agents/comments/1remock/wrote_a_practical_guide_on_reducing_token_usage/?tl=pt-br)
+[5] [https://code.claude.com](https://code.claude.com/docs/pt/costs)
+[6] [https://www.reddit.com](https://www.reddit.com/r/AI_Agents/comments/1sr03h6/best_practices_for_handling_many_tools_in_ai/?tl=pt-br)
+[7] [https://www.youtube.com](https://www.youtube.com/watch?v=el1TEi0XtrQ&t=273)
+[8] [https://manus.im](https://manus.im/pt-br/features/agent-skills)
+
+
+
+
+# VERSÃO ANTIGA
+
+# AGENTS.md - ERP Conexão
+
+# Regras de Eficiência e Economia de Cota Obrigatórias para cada ETAPA
+
+## Restrições Negativas (Obrigatórias)
+- **NÃO use linguagem natural prolixa**: Utilize o estilo "Caveman". Respostas devem ser técnicas, diretas e sem introduções ou conclusões educadas.
+- **NÃO processe logs de terminal brutos**: Sempre utilize a skill `lean-ctx` para filtrar saídas de build e install antes de analisar erros.
+- **NÃO envie comandos Bash diretamente**: Utilize o proxy `RTK` para comprimir redundâncias de saída do terminal.
+- **NÃO utilize modelos "Pro" para tarefas triviais**: O roteamento via `headroom` deve priorizar o Gemini Flash para pesquisas de arquivos e navegação básica.
+- **NÃO reescreva arquivos inteiros**: Proibido editar mais do que as linhas estritamente necessárias para a correção do bug (Edição Cirúrgica).
+- **NÃO ignore o cache**: Evite reenviar informações que já constam no histórico recente ou no `CLAUDE.md` do repositório.
+
+## Padrões de Operação
+- **Plano Antes de Ação**: O agente deve descrever o plano de alteração em no máximo 1 parágrafo antes de executar qualquer ferramenta de escrita.
+- **Verificação de Ferramentas**: Antes de invocar uma ferramenta complexa, verifique se a informação já não foi obtida em passos anteriores.
+
+
+## Regras de Arquitetura Modular (6 Etapas Concluídas)
+
+### Etapa 1: ModuleDefinition expandido
+- `src/registry/modules.ts`: `ModuleDefinition` agora com `ambientes`, `abas` (`ModuleAba[]`), `events` (`ModuleEvent[]`), feature flags (`hasCredentialScopes`, `hasLaboratorio`, `hasFormulario`, `hasCustomActions`, `hasApiConnectors`)
+- Exportados tipos `ModuleAba`, `ModuleEvent`
+
+### Etapa 2: Cadastros refatorado como módulo de referência
+- `src/features/cadastros/permissions.ts`: `ALL_PERMISSIONS`, `PermGroup`, `PERMISSOES_GROUPS`, `PERMISSOES_LABEL`, `PERMISSOES_DESC`, `getPermissoesPadrao`
+- `src/features/cadastros/module.ts`: declara `ambientes`, `abas`, `events`, feature flags
+- `src/core/permissions/constants.ts`: re-exporta de `~/features/cadastros/permissions` (backward compat)
+
+### Etapa 3: Página de listagem de módulos
+- `src/routes/admin.super.modulos.tsx`: lista módulos registrados, navega para configurador
+
+### Etapa 4: Configurador de módulo com abas dinâmicas
+- `src/routes/admin.super.modulos.$key.tsx`: abas Geral, Permissões, Credenciais, Eventos; feature tabs (Lab, Ações, Formulários, APIs) só aparecem se habilitadas no ModuleDefinition
+- Rotas registradas em `routeTree.gen.ts`, nav item em `useNavItems.ts`
+
+### Etapa 5: Escopo de credenciais
+- Migration `00026_credential_scopes.sql`: coluna `escopos jsonb` + policy RLS
+- `src/features/credenciais/index.ts`: `EscopoCredencial` type, `escopos` em `Credencial`/`CredencialInput`
+
+### Etapa 6: Eventos + Webhooks por módulo
+- Migration `00027_module_webhooks.sql`: colunas `modulo_key`, `evento_key`, `evento_custom`
+- `src/core/services/webhooks.ts`: `Webhook`/`WebhookInput` com novos campos; função `dispararEventoModulo()`
+- Re-exportado via `core/services/index.ts` e `lib/webhooks.ts`
+
+## Próximos Passos Sugeridos
+- Implementar tabs de Laboratório, Ações Customizadas, Formulários, APIs (placeholders atuais)
+- Adicionar UI de configuração de credenciais com escopo nas páginas admin.config.tsx e credenciais.tsx
+- Adicionar UI de bind eventos→webhooks no configurador de módulo
+- Criar módulo `visitas` como segundo módulo completo
+
+## Global Rules
+- **Deploy**: commit, build docker, push e service update na VPS só executar quando o usuário disser "deploy", "/deploy" ou "fazer deploy" explicitamente. Usar a skill `deploy-vps` nestes casos.
+- **Build local**: `npm run build` pode ser executado livremente para verificar erros, sem precisar de autorização.
+
+## Important
+- Pasta: `C:\Users\trcnologia\Desktop\bubble_reverse_engineering\erp-conexao`
+- Build: `npm run build` (compila sem erros)
+- DB URL: `postgresql://postgres:%40%23Khen741963%40%23@db.cluuqzhizeqvkgvfdisx.supabase.co:5432/postgres`
+- MCP Supabase: `supabase-mcp-server/dist/index.js`
+- Super admin global (`empresa_id = null`)
+- ALL_PERMISSIONS movido para `features/cadastros/permissions.ts`
+- Skill de deploy: `.agents/skills/deploy-vps/SKILL.md`
+
+## Economia de Tokens - Regras Globais e Projeto
+1. SEMPRE utilize as Skills de economia de Tokens (caveman, rtk, headroom, lean-ctx) com o objetivo de economizar SEVERAMENTE os tokens e estender ao máximo o uso do limites diários de uso estabelecidos pelas IDEs Agênticas do Antigravity, OpenCode, MimoCode. 
+2. Mesmo utilizando as Skills de economia, os outputs (artefatos, chat e outros) devem ser inteligíveis ao usuário.
+3. Os outputs devem estar no idioma pt-BR.

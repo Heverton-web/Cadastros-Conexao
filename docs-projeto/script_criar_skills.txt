@@ -1,0 +1,44 @@
+#!/bin/bash
+
+# Define diretórios padrão para Skills conforme padrões Antigravity e OpenCode
+SKILLS_DIR=".agents/skills"
+PROJECT_ROOT=$(pwd)
+
+echo "🚀 Iniciando configuração de Agentes para: $PROJECT_ROOT"
+
+# 1. Criação da estrutura de pastas
+mkdir -p "$SKILLS_DIR/economy-pack"
+mkdir -p "$SKILLS_DIR/deploy-vps"
+
+# 2. Criação do AGENTS.md Mestre
+cat <<EOF > AGENTS.md
+# AGENTS.md - Configuração Mestre de Eficiência
+
+## 🛡️ Regras de Economia Severa
+- **Linguagem**: Estilo Caveman (técnico, direto, sem introduções).
+- **Processamento**: Use obrigatoriamente 'lean-ctx' para logs e 'RTK' para comandos Bash.
+- **Roteamento**: Priorize Gemini Flash via 'headroom' para navegação.
+- **Edição**: Proibido rewrite_file completo; use apenas edições cirúrgicas.
+
+## 🏗️ Mapa de Contexto (Monorepo/Modular)
+- Para regras de economia, consulte: @$SKILLS_DIR/economy-pack/SKILL.md
+- Para regras de deploy, consulte: @$SKILLS_DIR/deploy-vps/SKILL.md
+
+## 🛠️ Global
+- Idioma: pt-BR
+- Local: $PROJECT_ROOT
+EOF
+
+# 3. Criação de uma Skill de Exemplo (Economy Pack)
+cat <<EOF > "$SKILLS_DIR/economy-pack/SKILL.md"
+---
+name: economy-pack
+description: Instruções para economia agressiva de tokens
+---
+# Skill: Economy Pack
+- Instrua o agente a pausar e aguardar aprovação antes de gerar blocos de código > 50 linhas.
+- Force o uso de resumos técnicos em vez de explicações pedagógicas.
+EOF
+
+echo "✅ Estrutura criada com sucesso!"
+echo "📂 Arquivos gerados: AGENTS.md e diretórios em $SKILLS_DIR"
