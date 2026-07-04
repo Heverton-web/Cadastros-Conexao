@@ -34,6 +34,9 @@ import {
   DialogTitle,
 } from "~/components/ui/dialog";
 import { supabase } from "~/core/supabase";
+import { dispararEventoModulo } from "~/core/services/webhooks";
+
+const MODULO_KEY = "mktg-email";
 
 type CampanhaEmail = {
   id: string;
@@ -118,6 +121,7 @@ export function EmailCampanhasList() {
       if (error) throw error;
       setCampanhas((prev) => [data as CampanhaEmail, ...prev]);
       toast.success("Campanha criada!");
+      dispararEventoModulo(MODULO_KEY, "campanha.criada", { campanha_id: data.id, nome: formNome, empresa_id: profile.empresa_id }, profile.empresa_id).catch(() => {});
       setNovaCampanhaOpen(false);
       setFormNome("");
       setFormAssunto("");

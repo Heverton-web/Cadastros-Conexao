@@ -1,5 +1,9 @@
 import * as QRCode from "qrcode";
 import { supabase } from "~/core/supabase";
+import { dispararEventoModulo } from "~/core/services/webhooks";
+
+const MODULO_KEY = "linktree";
+
 import type {
   LinktreeColaborador,
   LinktreeColaboradorComCredencial,
@@ -46,6 +50,7 @@ export async function atualizarColaborador(
     )
     .single();
   if (error) throw error;
+  dispararEventoModulo(MODULO_KEY, "colaborador.criado", { colaborador_id: data.id, nome: data.nome, empresa_id: data.empresa_id }, data.empresa_id).catch(() => {});
   return data as LinktreeColaboradorComCredencial;
 }
 
@@ -60,6 +65,8 @@ export async function toggleColaboradorStatus(
     .select()
     .single();
   if (error) throw error;
+  const evento = status === "ativo" ? "colaborador.ativado" : "colaborador.inativado";
+  dispararEventoModulo(MODULO_KEY, evento, { colaborador_id: id, nome: data.nome, status, empresa_id: data.empresa_id }, data.empresa_id).catch(() => {});
   return data as LinktreeColaborador;
 }
 

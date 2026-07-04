@@ -15,9 +15,9 @@ Cria estrutura completa de um novo módulo no ERP Conexão.
 ## Steps
 
 ### 1. Validar nome do módulo
-- Verificar formato kebab-case: `^[a-z0-9-]+$`
-- Verificar se já existe em `src/features/`
-- Verificar se já está registrado em `src/registry/modules.ts`
+- Formato kebab-case: `^[a-z0-9-]+$
+- Não existir em `src/features/`
+- Não estar em `src/registry/modules.ts`
 
 ### 2. Criar estrutura de diretórios
 ```
@@ -35,34 +35,55 @@ src/features/<modulo>/
 ```
 
 ### 3. Gerar arquivos base
-- Copiar templates de `.agents/skills/criar-modulo/templates/`
-- Substituir placeholders: `{{MODULO_KEY}}`, `{{MODULO_NOME}}`, `{{MODULO_DESCRICAO}}`, `{{MODULO_ICON}}`
+Copiar templates de `.agents/skills/criar-modulo/templates/` e substituir placeholders:
+
+| Placeholder | Exemplo | Descrição |
+|---|---|---|
+| `{{MODULO_KEY}}` | `meu-modulo` | Nome kebab-case para chave de registro |
+| `{{MODULO_PASCAL}}` | `MeuModulo` | Nome PascalCase para constantes e types |
+| `{{MODULO_CAMEL}}` | `meuModulo` | Nome camelCase para variáveis de export |
+| `{{MODULO_NOME}}` | `Meu Módulo` | Nome display (label) |
+| `{{MODULO_DESCRICAO}}` | `Descrição do módulo` | Texto de descrição |
+| `{{TABELA}}` | `minha_tabela` | Nome da tabela no Supabase |
+
+**Arquivos gerados:**
+- `module.ts` — definição do módulo (já inclui `events[]`, `abas` com "eventos", `setup()` com permissões + nav items + permission defaults)
+- `permissions.ts` — lista de permissões tipadas
+- `types.ts` — interfaces
+- `index.ts` — barrel export
+- `services/service.ts` — CRUD com `dispararEventoModulo()` embutido
 
 ### 4. Registrar módulo
-- Adicionar definição em `src/registry/modules.ts`
-- Chamar `registerModule()` no `main.tsx`
+- Adicionar em `src/registry/modules.ts`
+- Chamar `registerModule(meuModuloModule)` no `main.tsx`
 
-### 5. Adicionar permissões
-- Criar permissões em `src/core/permissions/types.ts`
-- Registrar em `src/registry/permissions-registry.ts`
-- Adicionar em `getPermissoesPadrao()` por ambiente
+### 5. Verificar cobertura de eventos
+- `module.ts` já vem com 3 eventos padrão (`entidade.criada`, `entidade.atualizada`, `entidade.excluida`)
+- A aba `eventos` já está registrada no array `abas`
+- O `service.ts` já dispara eventos nos métodos `criar()`, `atualizar()`, `excluir()`
+- **Personalizar** os nomes dos eventos no module.ts para refletir o domínio real (ex: `lead.capturado` ao invés de `entidade.criada`)
 
 ### 6. Criar rotas
-- Criar arquivo em `src/routes/<modulo>/index.tsx`
-- Usar template de rota protegida
+- Usar template de rota protegida em `src/routes/`
 
 ### 6.5. Criar configuração de Design System (automático)
-- Executar skill `criar-design-modulo` para adicionar rota `/<modulo>/design`
+- Executar skill `criar-design-modulo`
 - Adicionar `hasDesignConfig: true, designRoute: "/<modulo>/design"` ao module.ts
 
-### 7. Commit
+### 7. Validar
+```bash
+npm run build   # deve passar sem erros
+npm run lint    # deve passar
+```
+
+### 8. Commit
 ```bash
 git add src/features/<modulo>/
 git commit -m "feat(<modulo>): criar módulo <modulo>"
 ```
 
-## Validação
-- `npm run build` deve passar
-- `npm run lint` deve passar
-- Módulo deve aparecer no registry
-- Rota `/<modulo>/design` deve ser acessível
+## Lembretes
+- Eventos aparecem **automaticamente** na Central de Ações — não precisa modificar `CentralAcoesTab.tsx`
+- Sempre usar `.catch(() => {})` (fire-and-forget) nos `dispararEventoModulo()`
+- Sempre passar `empresa_id` no payload e como 4º argumento
+- Se o módulo tiver CRUDs adicionais, adicionar `dispararEventoModulo()` nos services correspondentes

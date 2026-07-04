@@ -34,6 +34,9 @@ import {
   SelectValue,
 } from "~/components/ui/select";
 import { supabase } from "~/core/supabase";
+import { dispararEventoModulo } from "~/core/services/webhooks";
+
+const MODULO_KEY = "mktg-pixels";
 
 type Pixel = {
   id: string;
@@ -105,6 +108,7 @@ export function PixelsList() {
       if (error) throw error;
       setPixels((prev) => [data as Pixel, ...prev]);
       toast.success("Pixel adicionado com sucesso!");
+      dispararEventoModulo(MODULO_KEY, "evento.registrado", { pixel_id: data.id, nome: formNome, tipo: formTipo, empresa_id: profile.empresa_id }, profile.empresa_id).catch(() => {});
       setNovoPixelOpen(false);
       setFormNome("");
       setFormPixelId("");
@@ -135,6 +139,7 @@ export function PixelsList() {
       prev.map((p) => (p.id === pixel.id ? { ...p, ativo: novoAtivo } : p))
     );
     toast.success(novoAtivo ? "Pixel ativado" : "Pixel desativado");
+    dispararEventoModulo(MODULO_KEY, "evento.registrado", { pixel_id: pixel.id, nome: pixel.nome, ativo: novoAtivo, empresa_id: pixel.empresa_id }, pixel.empresa_id).catch(() => {});
   }
 
   async function handleCopiar(id: string) {

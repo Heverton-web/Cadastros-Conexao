@@ -1,5 +1,8 @@
 import { supabase } from "~/core/supabase";
+import { dispararEventoModulo } from "~/core/services/webhooks";
 import type { NpsWebhookConfig } from "../types";
+
+const MODULO_KEY = "nps";
 
 export async function listarWebhooks(
   empresaId: string,

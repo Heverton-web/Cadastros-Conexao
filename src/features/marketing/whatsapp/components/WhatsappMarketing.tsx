@@ -9,6 +9,9 @@ import { Input } from "~/components/ui/input";
 import { Textarea } from "~/components/ui/textarea";
 import { Skeleton } from "~/components/ui/skeleton";
 import { supabase } from "~/core/supabase";
+import { dispararEventoModulo } from "~/core/services/webhooks";
+
+const MODULO_KEY = "mktg-whatsapp";
 
 type Lead = {
   id: string;
@@ -184,6 +187,7 @@ export function WhatsappMarketing() {
       if (error) throw error;
 
       toast.success("Campanha de WhatsApp disparada com sucesso!");
+      dispararEventoModulo(MODULO_KEY, "mensagem.enviada", { campanha_id: data.id, nome: nomeCampanha, total_contatos: contatosFinais.length, empresa_id: profile.empresa_id }, profile.empresa_id).catch(() => {});
       setNomeCampanha("");
       setLeadsSelecionados([]);
       setContatosCSV([]);

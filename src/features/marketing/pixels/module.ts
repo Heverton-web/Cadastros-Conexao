@@ -16,8 +16,23 @@ export const pixelsModule: ModuleDefinition = {
   routes: ["/marketing/pixels"],
   permissions: PIXELS_PERMISSIONS.map((p) => p.key),
   ambientes: ["cadastro", "tecnologia"],
-  abas: [],
-  events: [],
+  abas: [
+    { key: "eventos", label: "Eventos", descricao: "Eventos e webhooks do módulo" },
+  ],
+  events: [
+    {
+      key: "evento.registrado",
+      label: "Evento Registrado",
+      descricao: "Quando um evento de pixel é registrado",
+      type: "status_change",
+    },
+    {
+      key: "conversao.registrada",
+      label: "Conversão Registrada",
+      descricao: "Quando uma conversão é registrada pelo pixel",
+      type: "status_change",
+    },
+  ],
   setup: () => {
     for (const p of PIXELS_PERMISSIONS)
       registerPermission({

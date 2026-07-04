@@ -1,6 +1,9 @@
 import { supabase } from "~/core/supabase";
 import { parseUA } from "../utils/userAgent";
 import type { LinkClique, TipoLink } from "../types";
+import { dispararEventoModulo } from "~/core/services/webhooks";
+
+const MODULO_KEY = "gerador-links";
 
 export async function registrarClique(linkId: string) {
   const ua = navigator.userAgent;
@@ -12,6 +15,7 @@ export async function registrarClique(linkId: string) {
     p_ref: ref,
   });
   if (error) throw error;
+  dispararEventoModulo(MODULO_KEY, "link.clicado", { link_id: linkId }, null).catch(() => {});
   return data as { redirect_url: string; tipo_link: string }[];
 }
 

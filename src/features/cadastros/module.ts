@@ -67,6 +67,7 @@ export const cadastrosModule: ModuleDefinition = {
     { key: "apis", label: "APIs", descricao: "Conectores de API" },
   ],
   events: [
+    // ⚠️ NOVOS MÓDULOS: copie este padrão — Central de Ações lê events[] automaticamente
     {
       key: "cadastro.criado",
       label: "Cadastro Criado",
@@ -101,6 +102,73 @@ export const cadastrosModule: ModuleDefinition = {
       key: "link.gerado",
       label: "Link Gerado",
       descricao: "Dispara quando um link de cadastro é gerado",
+      type: "button_action",
+    },
+    // Eventos legados do pipeline (unificados)
+    {
+      key: "link_gerado",
+      label: "Link Gerado (Pipeline)",
+      descricao: "Dispara quando o status do pipeline muda para Link Gerado",
+      type: "status_change",
+    },
+    {
+      key: "dados_enviados",
+      label: "Dados Enviados",
+      descricao: "Dispara quando os dados do pré-cadastro são enviados",
+      type: "status_change",
+    },
+    {
+      key: "em_analise",
+      label: "Em Análise",
+      descricao: "Dispara quando o cadastro entra em análise",
+      type: "status_change",
+    },
+    {
+      key: "em_correcao",
+      label: "Em Correção",
+      descricao: "Dispara quando uma correção é solicitada",
+      type: "status_change",
+    },
+    {
+      key: "aprovado",
+      label: "Aprovado (Pipeline)",
+      descricao: "Dispara quando o cadastro é aprovado no pipeline",
+      type: "status_change",
+    },
+    {
+      key: "reprovado",
+      label: "Reprovado (Pipeline)",
+      descricao: "Dispara quando o cadastro é reprovado no pipeline",
+      type: "status_change",
+    },
+    {
+      key: "botao_compartilhar_link",
+      label: "Compartilhar Link",
+      descricao: "Dispara quando o botão de compartilhar link é clicado",
+      type: "button_action",
+    },
+    {
+      key: "botao_aprovar",
+      label: "Aprovar Cadastro",
+      descricao: "Dispara quando o botão de aprovar é clicado",
+      type: "button_action",
+    },
+    {
+      key: "botao_reprovar",
+      label: "Reprovar Cadastro",
+      descricao: "Dispara quando o botão de reprovar é clicado",
+      type: "button_action",
+    },
+    {
+      key: "botao_corrigir",
+      label: "Solicitar Correção",
+      descricao: "Dispara quando o botão de corrigir é clicado",
+      type: "button_action",
+    },
+    {
+      key: "criacao_credencial",
+      label: "Criação de Credencial",
+      descricao: "Dispara quando uma credencial é criada",
       type: "button_action",
     },
   ],

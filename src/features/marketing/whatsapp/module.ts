@@ -10,8 +10,23 @@ export const whatsappMarketingModule: ModuleDefinition = {
   routes: ["/marketing/whatsapp"],
   permissions: ["mktg_wpp_ver", "mktg_wpp_enviar"],
   ambientes: ["cadastro", "tecnologia"],
-  abas: [],
-  events: [],
+  abas: [
+    { key: "eventos", label: "Eventos", descricao: "Eventos e webhooks do módulo" },
+  ],
+  events: [
+    {
+      key: "mensagem.enviada",
+      label: "Mensagem Enviada",
+      descricao: "Quando uma mensagem é enviada pelo WhatsApp",
+      type: "button_action",
+    },
+    {
+      key: "template.cadastrado",
+      label: "Template Cadastrado",
+      descricao: "Quando um template de mensagem é cadastrado",
+      type: "status_change",
+    },
+  ],
   setup: () => {
     registerNavItem({
       id: "mktg-whatsapp",

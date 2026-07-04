@@ -34,6 +34,9 @@ import {
   DialogTitle,
 } from "~/components/ui/dialog";
 import { supabase } from "~/core/supabase";
+import { dispararEventoModulo } from "~/core/services/webhooks";
+
+const MODULO_KEY = "mktg-landing-pages";
 
 type LandingPage = {
   id: string;
@@ -108,6 +111,7 @@ export function LandingPagesList() {
       if (error) throw error;
       setPages((prev) => [data as LandingPage, ...prev]);
       toast.success("Landing page criada!");
+      dispararEventoModulo(MODULO_KEY, "pagina.criada", { lp_id: data.id, titulo: formTitulo, slug: formSlug, empresa_id: profile.empresa_id }, profile.empresa_id).catch(() => {});
       setNovaPgOpen(false);
       setFormTitulo("");
       setFormSlug("");

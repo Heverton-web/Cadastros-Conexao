@@ -17,8 +17,29 @@ export const landingPagesModule: ModuleDefinition = {
   routes: ["/marketing/landing-pages"],
   permissions: LANDING_PAGES_PERMISSIONS.map((p) => p.key),
   ambientes: ["cadastro", "tecnologia"],
-  abas: [],
-  events: [],
+  abas: [
+    { key: "eventos", label: "Eventos", descricao: "Eventos e webhooks do módulo" },
+  ],
+  events: [
+    {
+      key: "pagina.criada",
+      label: "Página Criada",
+      descricao: "Quando uma landing page é criada",
+      type: "status_change",
+    },
+    {
+      key: "pagina.publicada",
+      label: "Página Publicada",
+      descricao: "Quando uma landing page é publicada",
+      type: "button_action",
+    },
+    {
+      key: "pagina.visitante",
+      label: "Visitante na Página",
+      descricao: "Quando um visitante acessa a landing page",
+      type: "status_change",
+    },
+  ],
   setup: () => {
     for (const p of LANDING_PAGES_PERMISSIONS)
       registerPermission({

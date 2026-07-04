@@ -1,5 +1,8 @@
 import { supabase } from "~/core/supabase";
+import { dispararEventoModulo } from "~/core/services/webhooks";
 import type { Rota, RotaCliente, RotaFormData, RotaStatus } from "../types";
+
+const MODULO_KEY = "rotas";
 
 export async function listarRotas(
   empresaId?: string | null,
@@ -85,6 +88,8 @@ export async function criarRota(
     if (clientesError) throw clientesError;
   }
 
+  dispararEventoModulo(MODULO_KEY, "rota.criada", { rota_id: rota.id, titulo: form.titulo, empresa_id: empresaId }, empresaId).catch(() => {});
+
   return rota as Rota;
 }
 
@@ -111,11 +116,13 @@ export async function iniciarRota(
   id: string,
   localizacao: { lat: number; lng: number },
 ): Promise<Rota> {
-  return atualizarRota(id, {
+  const rota = await atualizarRota(id, {
     status: "em_execucao",
     data_inicio: new Date().toISOString(),
     local_inicio: localizacao,
   });
+  dispararEventoModulo(MODULO_KEY, "rota.iniciada", { rota_id: id, empresa_id: rota.empresa_id }, rota.empresa_id).catch(() => {});
+  return rota;
 }
 
 export async function finalizarRota(
@@ -128,12 +135,14 @@ export async function finalizarRota(
     valor_reembolso: number;
   },
 ): Promise<Rota> {
-  return atualizarRota(id, {
+  const rota = await atualizarRota(id, {
     status: "realizada",
     data_fim: new Date().toISOString(),
     local_fim: localizacao,
     ...stats,
   });
+  dispararEventoModulo(MODULO_KEY, "rota.finalizada", { rota_id: id, total_visitas: stats.total_visitas, total_km: stats.total_km, empresa_id: rota.empresa_id }, rota.empresa_id).catch(() => {});
+  return rota;
 }
 
 export async function atualizarStatusClienteRota(
@@ -147,6 +156,11 @@ export async function atualizarStatusClienteRota(
     .select()
     .single();
   if (error) throw error;
+
+  if (status === "realizada") {
+    dispararEventoModulo(MODULO_KEY, "visita.registrada", { rota_cliente_id: rotaClienteId, empresa_id: data.empresa_id }, data.empresa_id).catch(() => {});
+  }
+
   return data as RotaCliente;
 }
 

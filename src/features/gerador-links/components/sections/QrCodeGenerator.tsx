@@ -7,6 +7,9 @@ import { QRCodeCanvas } from "qrcode.react";
 import { useCriarLink } from "../../hooks/useLinks";
 import { LinkSavedDialog } from "../LinkSavedDialog";
 import { useAuth } from "~/lib/auth";
+import { dispararEventoModulo } from "~/core/services/webhooks";
+
+const MODULO_KEY = "gerador-links";
 
 export function QrCodeGenerator() {
   const [url, setUrl] = useState("");
@@ -40,6 +43,7 @@ export function QrCodeGenerator() {
         params: { url },
       });
       setLinkSalvoId(saved.id);
+      dispararEventoModulo(MODULO_KEY, "link.gerado_qrcode", { link_id: saved.id, url }, profile?.empresa_id).catch(() => {});
     } catch {
       toast.error("Erro ao salvar");
     }

@@ -4,6 +4,29 @@
 
 ---
 
+## ⚠️ REGRA OBRIGATÓRIA: Eventos na Central de Ações
+
+**TODO módulo novo DEVE obrigatoriamente:**
+
+1. **Definir eventos** no `module.ts` (`events: [...]`) com `key`, `label`, `descricao` e `type`
+2. **Adicionar `dispararWebhooks()` ou `dispararEventoModulo()`** nos services/rotas para cada evento
+3. **Ter aba `eventos`** no módulo (`{ key: "eventos", label: "Eventos", descricao: "..." }`)
+4. **Ter um mínimo de 2 eventos** (status_change + button_action) — exceto módulos puramente infraestrutura
+5. **Passar `empresa_id`** no payload de todos os eventos
+
+> **Motivo:** A Central de Ações lê automaticamente de `getModule().events`. Se o evento não estiver no `module.ts`, o admin **não consegue** configurar webhooks/notificações/APIs para ele.
+
+### Checklist de criação de módulo
+
+- [ ] `events: [...]` preenchido no `module.ts`
+- [ ] Cada evento tem `type: "status_change"` ou `"button_action"`
+- [ ] `dispararWebhooks()` ou `dispararEventoModulo()` chamado nos services
+- [ ] Aba `eventos` registrada no módulo
+- [ ] Build passa (`npm run build`)
+- [ ] Verificado que aparece no seletor de módulos da Central de Ações
+
+---
+
 ## 1. Visão Geral
 
 O ERP Conexão foi projetado com **arquitetura modular**, onde cada módulo é self-contained em `src/features/<modulo>/`. A única camada de conexão entre módulos é o **banco de dados** (via `empresa_id` multi-tenant).

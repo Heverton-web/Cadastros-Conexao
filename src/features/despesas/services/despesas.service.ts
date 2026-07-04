@@ -1,5 +1,8 @@
 import { supabase } from "~/core/supabase";
+import { dispararEventoModulo } from "~/core/services/webhooks";
 import type { Despesa, DespesaFormData, DespesaFiltros } from "../types";
+
+const MODULO_KEY = "despesas";
 
 export async function listarMinhasDespesas(
   empresa_id: string,
@@ -73,6 +76,9 @@ export async function criarDespesa(
     .select("*, tipo:despesas_tipos(*), periodo:despesas_periodos(*)")
     .single();
   if (error) throw error;
+
+  dispararEventoModulo(MODULO_KEY, "despesa.criada", { despesa_id: data.id, valor: despesa.valor, empresa_id }, empresa_id).catch(() => {});
+
   return data as Despesa;
 }
 
@@ -106,27 +112,35 @@ export async function enviarDespesas(
     .eq("usuario_id", usuario_id)
     .eq("status", "rascunho");
   if (error) throw error;
+
+  dispararEventoModulo(MODULO_KEY, "despesa.enviada", { periodo_id, usuario_id }, null).catch(() => {});
 }
 
 export async function aprovarDespesa(id: string): Promise<Despesa> {
-  return atualizarDespesa(id, {
+  const despesa = await atualizarDespesa(id, {
     status: "aprovada",
     comentario_reprovacao: "",
   });
+  dispararEventoModulo(MODULO_KEY, "despesa.aprovada", { despesa_id: id, empresa_id: despesa.empresa_id }, despesa.empresa_id).catch(() => {});
+  return despesa;
 }
 
 export async function reprovarDespesa(
   id: string,
   comentario: string,
 ): Promise<Despesa> {
-  return atualizarDespesa(id, {
+  const despesa = await atualizarDespesa(id, {
     status: "reprovada",
     comentario_reprovacao: comentario,
   });
+  dispararEventoModulo(MODULO_KEY, "despesa.reprovada", { despesa_id: id, comentario, empresa_id: despesa.empresa_id }, despesa.empresa_id).catch(() => {});
+  return despesa;
 }
 
 export async function marcarComoPaga(id: string): Promise<Despesa> {
-  return atualizarDespesa(id, { status: "paga" });
+  const despesa = await atualizarDespesa(id, { status: "paga" });
+  dispararEventoModulo(MODULO_KEY, "pagamento.agendado", { despesa_id: id, empresa_id: despesa.empresa_id }, despesa.empresa_id).catch(() => {});
+  return despesa;
 }
 
 export async function uploadComprovante(

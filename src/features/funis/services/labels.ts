@@ -1,5 +1,8 @@
 import { supabase } from "~/core/supabase";
+import { dispararEventoModulo } from "~/core/services/webhooks";
 import type { Label, LabelInput } from "../types";
+
+const MODULO_KEY = "funis";
 
 export async function listarLabels(funilId: string): Promise<Label[]> {
   const { data, error } = await supabase
@@ -64,6 +67,20 @@ export async function adicionarLabelTarefa(
     .from("funis_tarefas_labels")
     .insert({ tarefa_id: tarefaId, label_id: labelId });
   if (error) throw error;
+
+  // Buscar dados da label para incluir no evento
+  const { data: label } = await supabase
+    .from("funis_labels")
+    .select("nome, cor, empresa_id")
+    .eq("id", labelId)
+    .single();
+
+  dispararEventoModulo(
+    MODULO_KEY,
+    "tarefa.label_adicionado",
+    { tarefa_id: tarefaId, label_id: labelId, label_nome: label?.nome, label_cor: label?.cor },
+    label?.empresa_id,
+  ).catch(() => {});
 }
 
 export async function removerLabelTarefa(

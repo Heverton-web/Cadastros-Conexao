@@ -1,5 +1,8 @@
 import { supabase } from "~/core/supabase/client";
+import { dispararEventoModulo } from "~/core/services/webhooks";
 import type { HubGamificationLevel, HubBadge, HubUserBadge } from "../types";
+
+const MODULO_KEY = "hub";
 
 export async function fetchHubLevels(empresaId: string) {
   const { data, error } = await supabase
@@ -78,6 +81,20 @@ export async function awardHubBadge(
     .select()
     .single();
   if (error) throw error;
+
+  const { data: badge } = await supabase
+    .from("hub_badges")
+    .select("nome")
+    .eq("id", badgeId)
+    .single();
+
+  dispararEventoModulo(
+    MODULO_KEY,
+    "badge.conquistado",
+    { badge_id: badgeId, badge_nome: badge?.nome, usuario_id: userId, empresa_id: empresaId },
+    empresaId,
+  ).catch(() => {});
+
   return data as HubUserBadge;
 }
 
@@ -96,7 +113,7 @@ export async function fetchHubRanking(empresaId: string) {
 export async function addHubPoints(userId: string, points: number) {
   const { data: profile, error: fetchError } = await supabase
     .from("profiles")
-    .select("hub_points")
+    .select("hub_points, empresa_id")
     .eq("id", userId)
     .single();
   if (fetchError) throw fetchError;
@@ -109,5 +126,13 @@ export async function addHubPoints(userId: string, points: number) {
     .select("hub_points")
     .single();
   if (error) throw error;
+
+  dispararEventoModulo(
+    MODULO_KEY,
+    "gamification.level_up",
+    { usuario_id: userId, pontos: newPoints, pontos_adicionados: points, empresa_id: profile.empresa_id },
+    profile.empresa_id,
+  ).catch(() => {});
+
   return data.hub_points;
 }

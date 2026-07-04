@@ -1,5 +1,8 @@
 import { supabase } from "~/core/supabase/client";
+import { dispararEventoModulo } from "~/core/services/webhooks";
 import type { HubUserProgress, HubCollectionProgress } from "../types";
+
+const MODULO_KEY = "hub";
 
 export async function fetchHubUserProgress(userId: string, empresaId: string) {
   const { data, error } = await supabase
@@ -43,6 +46,14 @@ export async function completeHubMaterial(
     .select()
     .single();
   if (error) throw error;
+
+  dispararEventoModulo(
+    MODULO_KEY,
+    "material.concluido",
+    { material_id: materialId, usuario_id: userId, empresa_id: empresaId },
+    empresaId,
+  ).catch(() => {});
+
   return data as HubUserProgress;
 }
 
@@ -91,5 +102,13 @@ export async function completeHubCollection(
     .select()
     .single();
   if (error) throw error;
-  return data as HubCollectionProgress;
+
+  dispararEventoModulo(
+    MODULO_KEY,
+    "trilha.concluida",
+    { collection_id: collectionId, usuario_id: userId, empresa_id: empresaId },
+    empresaId,
+  ).catch(() => {});
+
+  return data as HubUserProgress;
 }

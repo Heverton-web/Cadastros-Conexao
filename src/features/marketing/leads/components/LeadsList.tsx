@@ -35,6 +35,9 @@ import {
   DialogTitle,
 } from "~/components/ui/dialog";
 import { supabase } from "~/core/supabase";
+import { dispararEventoModulo } from "~/core/services/webhooks";
+
+const MODULO_KEY = "mktg-leads";
 
 type Lead = {
   id: string;
@@ -121,6 +124,7 @@ export function LeadsList() {
       if (error) throw error;
       setLeads((prev) => [data as Lead, ...prev]);
       toast.success("Lead criado com sucesso!");
+      dispararEventoModulo(MODULO_KEY, "lead.capturado", { lead_id: data.id, nome: formNome, empresa_id: profile.empresa_id }, profile.empresa_id).catch(() => {});
       setNovoLeadOpen(false);
       setFormNome("");
       setFormEmail("");

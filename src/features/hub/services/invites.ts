@@ -1,5 +1,8 @@
 import { supabase } from "~/core/supabase/client";
+import { dispararEventoModulo } from "~/core/services/webhooks";
 import type { HubInviteToken } from "../types";
+
+const MODULO_KEY = "hub";
 
 function generateToken(): string {
   return crypto.randomUUID().replace(/-/g, "").slice(0, 32);
@@ -23,6 +26,14 @@ export async function createHubInvite(
     .select()
     .single();
   if (error) throw error;
+
+  dispararEventoModulo(
+    MODULO_KEY,
+    "convite.gerado",
+    { invite_id: data.id, role, created_by: createdBy, empresa_id: empresaId },
+    empresaId,
+  ).catch(() => {});
+
   return data as HubInviteToken;
 }
 
@@ -61,6 +72,14 @@ export async function useHubInvite(token: string, userId: string) {
     .select()
     .single();
   if (error) throw error;
+
+  dispararEventoModulo(
+    MODULO_KEY,
+    "usuario.registrado",
+    { invite_id: data.id, usuario_id: userId, role: data.role, empresa_id: data.empresa_id },
+    data.empresa_id,
+  ).catch(() => {});
+
   return data as HubInviteToken;
 }
 

@@ -36,8 +36,29 @@ export const geradorLinksModule: ModuleDefinition = {
   ],
   permissions: GERADOR_LINKS_PERMISSIONS.map((p) => p.key),
   ambientes: ["cadastro", "tecnologia"],
-  abas: [],
-  events: [],
+  abas: [
+    { key: "eventos", label: "Eventos", descricao: "Eventos e webhooks do módulo" },
+  ],
+  events: [
+    {
+      key: "link.gerado_whatsapp",
+      label: "Link WhatsApp Gerado",
+      descricao: "Quando um link do WhatsApp é gerado",
+      type: "button_action",
+    },
+    {
+      key: "link.gerado_qrcode",
+      label: "QR Code Gerado",
+      descricao: "Quando um QR Code é gerado",
+      type: "button_action",
+    },
+    {
+      key: "link.clicado",
+      label: "Link Clicado",
+      descricao: "Quando um link gerado é clicado (tracking)",
+      type: "status_change",
+    },
+  ],
   setup: () => {
     for (const p of GERADOR_LINKS_PERMISSIONS)
       registerPermission({

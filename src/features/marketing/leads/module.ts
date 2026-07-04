@@ -16,8 +16,29 @@ export const leadsModule: ModuleDefinition = {
   routes: ["/marketing/leads"],
   permissions: LEADS_PERMISSIONS.map((p) => p.key),
   ambientes: ["cadastro", "tecnologia"],
-  abas: [],
-  events: [],
+  abas: [
+    { key: "eventos", label: "Eventos", descricao: "Eventos e webhooks do módulo" },
+  ],
+  events: [
+    {
+      key: "lead.capturado",
+      label: "Lead Capturado",
+      descricao: "Quando um novo lead é capturado",
+      type: "status_change",
+    },
+    {
+      key: "lead.convertido",
+      label: "Lead Convertido",
+      descricao: "Quando um lead é convertido em cliente",
+      type: "status_change",
+    },
+    {
+      key: "lead.perdido",
+      label: "Lead Perdido",
+      descricao: "Quando um lead é perdido",
+      type: "status_change",
+    },
+  ],
   setup: () => {
     for (const p of LEADS_PERMISSIONS)
       registerPermission({

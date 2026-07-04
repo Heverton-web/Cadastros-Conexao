@@ -1,5 +1,8 @@
 import { supabase } from "~/core/supabase";
+import { dispararEventoModulo } from "~/core/services/webhooks";
 import type { DespesaPeriodo, Frequencia } from "../types";
+
+const MODULO_KEY = "despesas";
 
 export async function listarPeriodos(
   empresa_id: string,
@@ -45,6 +48,9 @@ export async function criarPeriodo(
     .select()
     .single();
   if (error) throw error;
+
+  dispararEventoModulo(MODULO_KEY, "periodo.aberto", { periodo_id: data.id, empresa_id: periodo.empresa_id }, periodo.empresa_id).catch(() => {});
+
   return data as DespesaPeriodo;
 }
 
@@ -63,7 +69,9 @@ export async function atualizarPeriodo(
 }
 
 export async function fecharPeriodo(id: string): Promise<DespesaPeriodo> {
-  return atualizarPeriodo(id, { status: "fechado" });
+  const periodo = await atualizarPeriodo(id, { status: "fechado" });
+  dispararEventoModulo(MODULO_KEY, "periodo.fechando", { periodo_id: id, empresa_id: periodo.empresa_id }, periodo.empresa_id).catch(() => {});
+  return periodo;
 }
 
 export async function reabrirPeriodo(id: string): Promise<DespesaPeriodo> {

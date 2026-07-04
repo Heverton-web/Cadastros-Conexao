@@ -1,4 +1,7 @@
 import { supabase } from "~/core/supabase";
+import { dispararEventoModulo } from "~/core/services/webhooks";
+
+const MODULO_KEY = "funis";
 
 export async function processarRecorrencias() {
   const now = new Date().toISOString();
@@ -78,6 +81,8 @@ export async function verificarTarefasAtrasadas() {
             });
       }
     }
+
+    dispararEventoModulo(MODULO_KEY, "tarefa.atrasada", { tarefa_id: tarefa.id, titulo: tarefa.titulo, funil_id: tarefa.funil_id, data_fim: tarefa.data_fim }, null).catch(() => {});
   }
 }
 

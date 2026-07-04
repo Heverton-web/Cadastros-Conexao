@@ -1,4 +1,5 @@
 import { supabase } from "~/core/supabase";
+import { dispararEventoModulo } from "~/core/services/webhooks";
 import type {
   EmpresaLinktreeConfig,
   EmpresaLinktreeSection,
@@ -8,6 +9,8 @@ import type {
   AnalyticsPeriodo,
   ClickAnalytics,
 } from "../types-empresa";
+
+const MODULO_KEY = "linktree";
 
 export async function listarEmpresaConfig(
   empresaId: string,
@@ -45,6 +48,7 @@ export async function salvarEmpresaConfig(
     .select()
     .single();
   if (error) throw error;
+
   return data;
 }
 

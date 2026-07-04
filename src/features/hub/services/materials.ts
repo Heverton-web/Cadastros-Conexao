@@ -1,5 +1,8 @@
 import { supabase } from "~/core/supabase/client";
+import { dispararEventoModulo } from "~/core/services/webhooks";
 import type { HubMaterial, HubMaterialAsset, HubLanguage } from "../types";
+
+const MODULO_KEY = "hub";
 
 export async function fetchHubMaterials(empresaId?: string) {
   let query = supabase.from("hub_materials").select("*");
@@ -87,6 +90,13 @@ export async function logHubAccess(log: {
 }) {
   const { error } = await supabase.from("hub_access_logs").insert(log);
   if (error) throw error;
+
+  dispararEventoModulo(
+    MODULO_KEY,
+    "material.acessado",
+    { material_id: log.material_id, material_title: log.material_title, usuario_id: log.user_id, empresa_id: log.empresa_id },
+    log.empresa_id,
+  ).catch(() => {});
 }
 
 export async function fetchHubAccessLogs(

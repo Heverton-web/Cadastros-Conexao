@@ -122,3 +122,4 @@ export async function deletarTarefa(id: string): Promise<void> {
   const { error } = await supabase.from("funis_tarefas").delete().eq("id", id);
   if (error) throw error;
 }
+

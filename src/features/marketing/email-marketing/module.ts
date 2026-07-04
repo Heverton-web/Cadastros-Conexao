@@ -16,8 +16,35 @@ export const emailMarketingModule: ModuleDefinition = {
   routes: ["/marketing/email"],
   permissions: EMAIL_MARKETING_PERMISSIONS.map((p) => p.key),
   ambientes: ["cadastro", "tecnologia"],
-  abas: [],
-  events: [],
+  abas: [
+    { key: "eventos", label: "Eventos", descricao: "Eventos e webhooks do módulo" },
+  ],
+  events: [
+    {
+      key: "campanha.criada",
+      label: "Campanha Criada",
+      descricao: "Quando uma campanha de e-mail é criada",
+      type: "status_change",
+    },
+    {
+      key: "email.enviado",
+      label: "E-mail Enviado",
+      descricao: "Quando um e-mail é disparado",
+      type: "button_action",
+    },
+    {
+      key: "email.aberto",
+      label: "E-mail Aberto",
+      descricao: "Quando um e-mail é aberto pelo destinatário",
+      type: "status_change",
+    },
+    {
+      key: "email.clicado",
+      label: "Link Clicado no E-mail",
+      descricao: "Quando um link no e-mail é clicado",
+      type: "status_change",
+    },
+  ],
   hasCredentialScopes: true,
   setup: () => {
     for (const p of EMAIL_MARKETING_PERMISSIONS)

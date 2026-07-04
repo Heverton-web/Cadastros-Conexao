@@ -10,6 +10,7 @@ import {
   registerModule,
   registerNavItem,
   registerPermission,
+  registerPermissionDefaults,
 } from "~/registry";
 import type { ModuleDefinition } from "~/registry";
 import { MAPAS_PERMISSIONS } from "./permissions";
@@ -33,47 +34,56 @@ export const mapasModule: ModuleDefinition = {
   abas: [
     { key: "geral", label: "Geral" },
     { key: "permissoes", label: "Permissões" },
+    { key: "eventos", label: "Eventos", descricao: "Eventos e webhooks do módulo" },
   ],
   events: [
     {
       key: "mapas.distribuidor.criado",
       label: "Distribuidor Criado",
       descricao: "Dispara quando um novo distribuidor é adicionado",
+      type: "status_change",
     },
     {
       key: "mapas.distribuidor.atualizado",
       label: "Distribuidor Atualizado",
       descricao: "Dispara quando um distribuidor é editado",
+      type: "status_change",
     },
     {
       key: "mapas.distribuidor.excluido",
       label: "Distribuidor Excluído",
       descricao: "Dispara quando um distribuidor é removido",
+      type: "status_change",
     },
     {
       key: "mapas.consultor.criado",
       label: "Consultor Criado",
       descricao: "Dispara quando um novo consultor é adicionado",
+      type: "status_change",
     },
     {
       key: "mapas.consultor.atualizado",
       label: "Consultor Atualizado",
       descricao: "Dispara quando um consultor é editado",
+      type: "status_change",
     },
     {
       key: "mapas.consultor.excluido",
       label: "Consultor Excluído",
       descricao: "Dispara quando um consultor é removido",
+      type: "status_change",
     },
     {
       key: "mapas.estado.clicado",
       label: "Estado Clicado",
       descricao: "Dispara quando um estado é clicado no mapa",
+      type: "button_action",
     },
     {
       key: "mapas.pin.clicado",
       label: "Pin Clicado",
       descricao: "Dispara quando um pin é clicado no mapa",
+      type: "button_action",
     },
   ],
   hasDesignConfig: true,
@@ -128,6 +138,33 @@ export const mapasModule: ModuleDefinition = {
       permissionCheck: (perms) => perms?.mapas_ver_insights === true,
       order: 40,
       moduloKey: "mapas-interativos",
+    });
+
+    registerPermissionDefaults("mapas-interativos", {
+      cadastro: {
+        mapas_ver_mapa_publico: true,
+        mapas_gerir_distribuidores: true,
+        mapas_gerir_consultores: true,
+        mapas_ver_insights: true,
+      },
+      consultor: {
+        mapas_ver_mapa_publico: true,
+        mapas_gerir_distribuidores: false,
+        mapas_gerir_consultores: false,
+        mapas_ver_insights: false,
+      },
+      tecnologia: {
+        mapas_ver_mapa_publico: true,
+        mapas_gerir_distribuidores: true,
+        mapas_gerir_consultores: true,
+        mapas_ver_insights: true,
+      },
+      suporte: {
+        mapas_ver_mapa_publico: false,
+        mapas_gerir_distribuidores: false,
+        mapas_gerir_consultores: false,
+        mapas_ver_insights: false,
+      },
     });
   },
 };
