@@ -13,6 +13,22 @@ Embeleza o frontend de uma rota reaplicando classes CSS no design system do dash
 NAO cria novos componentes, NAO adiciona novos elementos, NAO muda a estrutura HTML.
 Apenas substitui classes existentes pelas classes do design system.
 
+## Modelo de Excelência
+
+**TODAS as rotas devem seguir o padrão visual de `/cadastros/dashboard` como referência de excelência.**
+
+**ANTES de qualquer alteração, leia `src/routes/cadastros.dashboard.tsx` e copie seus padrões.**
+
+Padrões obrigatórios do modelo:
+- KPI cards: `bg-gradient-to-br from-{cor}/20 via-{cor}/10 to-transparent` + ícone flutuante `absolute top-4 right-4 w-12 h-12 rounded-xl bg-{cor}/15`
+- Status pills: `flex items-center gap-3 rounded-xl bg-{cor}/10 border border-{cor}/20 p-3`
+- Skeleton: `<Skeleton className="h-32 rounded-2xl" />` em grid `grid-cols-2 lg:grid-cols-4 gap-4`
+- EmptyState: `<EmptyState icon={<Icone />} title="..." description="..." />`
+- Cards recentes: `group flex items-center gap-4 rounded-xl bg-surface border border-border p-4 hover:border-accent/30 hover:shadow-lg hover:shadow-accent/5 hover:-translate-y-0.5`
+- Headers: `flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4`
+- Dialogs: header com gradiente `bg-gradient-to-br from-{cor}/20 via-{cor}/10 to-transparent px-6 pt-6 pb-4 border-b border-border/50`
+- AlertDialogs: header vermelho `bg-gradient-to-br from-red-500/20 via-red-500/10 to-transparent`
+
 ---
 
 ## REgras INegociaveis
@@ -33,38 +49,26 @@ Apenas substitui classes existentes pelas classes do design system.
 
 **O UNICO ALTERADO E O className.** Se algo nao e className, NAO TOCAR.
 
-### 2. MOBILE-FIRST OBRIGATORIO
+### 2. MOBILE-FIRST OBRIGATORIO (INEGOCIÁVEL)
 
-**TODA referencia de tamanho, espacamento e layout DEVE seguir mobile-first.**
+**TUDO É RESPONSIVO. TUDO É MOBILE-FIRST. SEM EXCEÇÃO.**
 
-O design system do ERP Conexao e MOBILE-FIRST. Significa:
+**Regras rígidas:**
+- Grids: `grid-cols-1 sm:grid-cols-2 lg:grid-cols-4`
+- Gaps: `gap-3 sm:gap-4`
+- Padding: `p-3 sm:p-4 lg:p-6`
+- Headers: `flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4`
+- Touch targets: `min-h-[44px]` em TODOS os botões e links
+- Hover effects: `sm:opacity-0 sm:group-hover:opacity-100` (mobile sempre visível)
+- Dialogs: `w-[calc(100%-2rem)]` ou `max-w-lg`
+- Tabelas: `overflow-x-auto` + grid responsivo `grid-cols-1 md:grid-cols-[...]`
+- Títulos: `text-xl sm:text-2xl lg:text-3xl`
 
-- Larguras fixas (`w-64`, `w-[140px]`) DEVEM ter variante mobile: `w-full sm:w-64`, `w-full sm:w-[140px]`
-- Grids DEVEM comecar com 1 coluna e escalar: `grid-cols-1 sm:grid-cols-2 lg:grid-cols-4`
-- Gap e padding DEVEM ser menores no mobile: `gap-3 sm:gap-4`, `p-3 sm:p-4`
-- Font sizes DEVEM ser legiveis em tela pequena: `text-sm` como base, `text-xs` so para labels
-- Icones em acoes hover (`group-hover:opacity-100`) DEVEM ser sempre visiveis no mobile (touch nao tem hover)
-- Min touch target: `min-h-[44px]` para botoes e links clicaveis
-- Headers DEVEM empilhar no mobile: `flex flex-col sm:flex-row`
-- Dialogs DEVEM usar `w-[calc(100%-2rem)]` ou `w-[95vw]` para caber no mobile
-
-**Referencia de breakpoints:**
-- Base (mobile): sem prefixo — ate 640px
+**Breakpoints:**
+- Base: mobile (até 640px)
 - `sm`: 640px+ (tablet retrato)
 - `md`: 768px+ (tablet paisagem)
 - `lg`: 1024px+ (desktop)
-
-**Exemplo de como pensar:**
-```
-NAO: className="w-64"                    (so funciona no desktop)
-SIM: className="w-full sm:w-64"          (mobile primeiro, depois fixo)
-
-NAO: className="grid grid-cols-3 gap-4"  (quebra no mobile)
-SIM: className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4"
-
-NAO: className="opacity-0 group-hover:opacity-100" ( invisivel no mobile)
-SIM: className="sm:opacity-0 sm:group-hover:opacity-100" (sempre visivel no mobile)
-```
 
 ---
 
@@ -74,18 +78,19 @@ SIM: className="sm:opacity-0 sm:group-hover:opacity-100" (sempre visivel no mobi
 /design <rota>
 ```
 
-Exemplo: `/design /cadastros/consultor`
+**IMPORTANTE:** Aplica o design system a TODAS as rotas do módulo, não apenas à informada.
 
-## Fluxo
+Exemplo: `/design /mapas/distribuidores` → atualiza `/mapas/*` + `src/features/mapas/components/*`
 
-1. Ler o arquivo da rota alvo em `src/routes/`
-2. Mapear todos os elementos JSX existentes (headers, cards, botoes, filtros, listas, estados vazios, loading, **modais**)
-3. Substituir as classes CSS existentes pelas classes do design system abaixo
-4. NUNCA adicionar novos elementos HTML/JSX
-5. NUNCA remover elementos existentes
-6. NUNCA alterar logica de negocio (state, effects, handlers, funcoes)
-7. Remover imports de lucide-react que ficarem sem uso
-8. Verificar erros TypeScript
+## Fluxo (economia de tokens)
+
+1. Ler `cadastros.dashboard.tsx` como referência
+2. Listar rotas do módulo: `glob src/routes/<modulo>*`
+3. Listar componentes: `glob src/features/<modulo>/components/*`
+4. Para CADA arquivo: ler → substituir classes → salvar
+5. Verificar mobile-first: TODOS os grids comecam em 1 coluna, TODOS os gaps são menores no mobile
+6. Verificar TypeScript: `npx tsc --noEmit 2>&1 | grep <modulo>`
+7. Verificar build: `npm run build`
 
 ## Mapa de Substituicao de Classes
 
@@ -1153,3 +1158,90 @@ className="animate-slide-up"
 13. Acoes hover em cards DEVEM usar `sm:opacity-0 sm:group-hover:opacity-100` (visivel no mobile, oculto ate hover no desktop)
 14. Tabelas DEVEM ter `overflow-x-auto` para scroll horizontal no mobile
 15. Botoes de acao em massa (aprovar, reprovar, corrigir, revisar) DEVEM seguir o padrao de cores da secao 7
+
+---
+
+## Referência Rápida de Padrões
+
+### KPI Card
+```jsx
+<div className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-{cor}/20 via-{cor}/10 to-transparent border border-{cor}/20 p-5 transition-all duration-300 hover:shadow-lg hover:shadow-{cor}/10 hover:border-{cor}/40">
+  <div className="absolute top-4 right-4 flex items-center justify-center w-12 h-12 rounded-xl bg-{cor}/15 text-{cor} group-hover:scale-110 transition-transform duration-300">
+    <Icone size={22} />
+  </div>
+  <p className="text-xs font-semibold text-{cor}/80 uppercase tracking-wider">{label}</p>
+  <p className="text-3xl sm:text-4xl font-bold text-text-main mt-2">{valor}</p>
+  <p className="text-xs text-text-muted mt-2">{descricao}</p>
+</div>
+```
+
+### Status Pill
+```jsx
+<div className="flex items-center gap-3 rounded-xl bg-{cor}/10 border border-{cor}/20 p-3 transition-all duration-200 hover:scale-[1.02]">
+  <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-{cor}/15">
+    <Icone size={16} className="text-{cor}" />
+  </div>
+  <div>
+    <p className="text-lg font-bold text-{cor}">{valor}</p>
+    <p className="text-[11px] text-text-muted font-medium">{label}</p>
+  </div>
+</div>
+```
+
+### Card de Lista
+```jsx
+<div className="group flex items-center gap-4 rounded-xl bg-surface border border-border p-4 transition-all duration-200 hover:border-accent/30 hover:shadow-lg hover:shadow-accent/5 hover:-translate-y-0.5">
+  <div className="flex items-center justify-center w-10 h-10 rounded-full bg-accent/10 text-accent font-bold text-sm shrink-0 group-hover:bg-accent/20 transition-colors">
+    {avatar}
+  </div>
+  <div className="flex-1 min-w-0">
+    <p className="text-sm font-semibold text-text-main truncate group-hover:text-accent transition-colors">{titulo}</p>
+    <p className="text-xs text-text-muted mt-0.5">{subtitulo}</p>
+  </div>
+  <div className="flex flex-col items-end gap-1 shrink-0">
+    <span className="inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold {status_color}">{status}</span>
+  </div>
+</div>
+```
+
+### Dialog (Header Gradiente)
+```jsx
+<DialogContent className="max-w-lg bg-card border-border/50 rounded-2xl shadow-2xl shadow-black/40 p-0 overflow-hidden">
+  <div className="bg-gradient-to-br from-{cor}/20 via-{cor}/10 to-transparent px-6 pt-6 pb-4 border-b border-border/50">
+    <div className="flex items-center gap-3">
+      <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-{cor}/15 text-{cor}">
+        <Icone className="h-6 w-6" />
+      </div>
+      <div>
+        <DialogTitle className="text-xl font-bold text-text-main tracking-tight">{titulo}</DialogTitle>
+        <p className="text-sm text-text-muted mt-0.5">{subtitulo}</p>
+      </div>
+    </div>
+  </div>
+  {/* Corpo do dialog */}
+</DialogContent>
+```
+
+### AlertDialog (Exclusão)
+```jsx
+<AlertDialogContent className="bg-card border-border/50 rounded-2xl shadow-2xl shadow-black/40 p-0 overflow-hidden max-w-sm">
+  <div className="bg-gradient-to-br from-red-500/20 via-red-500/10 to-transparent px-6 pt-6 pb-4 border-b border-red-500/20">
+    <div className="flex items-center gap-3">
+      <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-red-500/15 text-red-400">
+        <Trash2 className="h-6 w-6" />
+      </div>
+      <div>
+        <AlertDialogTitle className="text-lg font-bold text-text-main">{titulo}</AlertDialogTitle>
+        <AlertDialogDescription className="text-sm text-text-muted mt-0.5">{subtitulo}</AlertDialogDescription>
+      </div>
+    </div>
+  </div>
+  <div className="px-6 py-4">
+    <p className="text-sm text-text-muted">{mensagem}</p>
+  </div>
+  <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end px-6 pb-6 pt-2 border-t border-border">
+    <AlertDialogCancel className="rounded-xl px-6 border-border text-text-main hover:bg-surface-hover">Cancelar</AlertDialogCancel>
+    <AlertDialogAction className="rounded-xl px-6 bg-red-500 hover:bg-red-600 text-white font-semibold shadow-lg shadow-red-500/25 hover:shadow-xl hover:shadow-red-500/30 transition-all duration-200">{acao}</AlertDialogAction>
+  </div>
+</AlertDialogContent>
+```

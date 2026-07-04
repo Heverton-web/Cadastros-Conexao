@@ -3,8 +3,6 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogDescription,
-  DialogFooter,
 } from "~/components/ui/dialog";
 import { Button } from "~/components/ui/button";
 import {
@@ -14,7 +12,6 @@ import {
   Hash,
   Award,
   Navigation,
-  ExternalLink,
 } from "lucide-react";
 import type { Entity } from "../types";
 
@@ -51,139 +48,130 @@ export function EntityDetailDialog({ entity, open, onOpenChange }: Props) {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-sm border-surface bg-card p-6 rounded-2xl">
-        <DialogHeader className="pb-4 border-b border-surface/50">
-          <div className="flex items-center gap-4">
-            {/* Avatar circular com glow da cor do pin */}
-            <div
-              className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full border-2 shadow-lg transition-shadow"
-              style={{
-                backgroundColor: `${pinColor}15`,
-                borderColor: `${pinColor}50`,
-                color: pinColor,
-                boxShadow: `0 0 20px ${pinColor}25, 0 4px 12px rgba(0,0,0,0.3)`,
-              }}
-            >
-              {isDist ? (
-                <Building2 className="h-6 w-6" />
-              ) : (
-                <User className="h-6 w-6" />
-              )}
-            </div>
-            <div className="min-w-0 space-y-1.5">
-              <span
-                className="inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider"
-                style={{ backgroundColor: `${pinColor}15`, color: pinColor }}
-              >
-                {isDist ? "Distribuidor" : "Consultor"}
-              </span>
-              <DialogTitle className="text-base font-bold leading-tight text-foreground truncate">
-                {item.name}
-              </DialogTitle>
-            </div>
+      <DialogContent className="sm:max-w-md bg-card border-border rounded-2xl shadow-2xl shadow-black/40 p-0 overflow-hidden">
+        {/* CABEÇALHO - sem margens, borda a borda */}
+        <div
+          className="px-0 pt-0 pb-5 flex items-center justify-between"
+          style={{
+            background: `linear-gradient(135deg, ${pinColor}25, ${pinColor}10, transparent)`,
+          }}
+        >
+          <DialogTitle className="text-lg font-bold text-text-main pl-6">
+            Detalhes
+          </DialogTitle>
+          <div
+            className="flex h-10 w-10 items-center justify-center rounded-full border-2 mr-6"
+            style={{
+              backgroundColor: `${pinColor}15`,
+              borderColor: `${pinColor}50`,
+              color: pinColor,
+            }}
+          >
+            {isDist ? (
+              <Building2 className="h-5 w-5" />
+            ) : (
+              <User className="h-5 w-5" />
+            )}
           </div>
-        </DialogHeader>
+        </div>
 
-        {/* Grid de informações - 2 colunas */}
-        <div className="grid grid-cols-2 gap-4 py-4">
-          {/* ID / Registro */}
-          {isDist
-            ? item.code && (
-                <div className="space-y-1.5">
-                  <span className="block text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
-                    Código
-                  </span>
-                  <div className="flex items-center gap-2 text-sm text-foreground font-semibold">
-                    <Hash size={14} className="text-accent shrink-0" />
-                    <span>{item.code}</span>
-                  </div>
-                </div>
-              )
-            : item.registration && (
-                <div className="space-y-1.5">
-                  <span className="block text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
-                    Matrícula
-                  </span>
-                  <div className="flex items-center gap-2 text-sm text-foreground font-semibold">
-                    <Hash size={14} className="text-accent shrink-0" />
-                    <span>{item.registration}</span>
-                  </div>
-                </div>
-              )}
+        {/* BODY */}
+        <div className="px-6 py-6 space-y-5">
+          {/* Nome e Tipo */}
+          <div className="flex items-center gap-3">
+            <span
+              className="inline-flex items-center rounded-full px-2.5 py-1 text-[10px] font-bold uppercase"
+              style={{ backgroundColor: `${pinColor}15`, color: pinColor }}
+            >
+              {isDist ? "Distribuidor" : "Consultor"}
+            </span>
+            <p className="text-base font-bold text-text-main">{item.name}</p>
+          </div>
 
-          {/* Categoria (apenas Distribuidores) */}
-          {isDist && (
-            <div className="space-y-1.5">
-              <span className="block text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
-                Categoria
-              </span>
-              <div className="flex items-center gap-2 text-sm text-foreground font-semibold">
-                <Award size={14} className="text-accent shrink-0" />
-                <span className="truncate">
+          {/* Campos de informação */}
+          <div className="space-y-4">
+            {isDist
+              ? item.code && (
+                  <div>
+                    <label className="block text-xs font-semibold text-text-muted mb-1.5">
+                      Código
+                    </label>
+                    <div className="flex items-center gap-2 h-11 px-4 rounded-xl border border-border bg-background text-sm text-text-main font-semibold">
+                      <Hash size={14} className="text-accent shrink-0" />
+                      {item.code}
+                    </div>
+                  </div>
+                )
+              : item.registration && (
+                  <div>
+                    <label className="block text-xs font-semibold text-text-muted mb-1.5">
+                      Matrícula
+                    </label>
+                    <div className="flex items-center gap-2 h-11 px-4 rounded-xl border border-border bg-background text-sm text-text-main font-semibold">
+                      <Hash size={14} className="text-accent shrink-0" />
+                      {item.registration}
+                    </div>
+                  </div>
+                )}
+
+            {isDist ? (
+              <div>
+                <label className="block text-xs font-semibold text-text-muted mb-1.5">
+                  Categoria
+                </label>
+                <div className="flex items-center gap-2 h-11 px-4 rounded-xl border border-border bg-background text-sm text-text-main font-semibold">
+                  <Award size={14} className="text-accent shrink-0" />
                   {item.category === "EXCLUSIVE"
                     ? "Exclusivo"
                     : "Não-exclusivo"}
-                </span>
+                </div>
               </div>
-            </div>
-          )}
+            ) : (
+              (item as any).supervisor && (
+                <div>
+                  <label className="block text-xs font-semibold text-text-muted mb-1.5">
+                    Supervisor
+                  </label>
+                  <div className="flex items-center gap-2 h-11 px-4 rounded-xl border border-border bg-background text-sm text-text-main font-semibold">
+                    <User size={14} className="text-accent shrink-0" />
+                    {(item as any).supervisor}
+                  </div>
+                </div>
+              )
+            )}
 
-          {/* Supervisor (apenas Consultores) */}
-          {!isDist && (item as any).supervisor && (
-            <div className="space-y-1.5">
-              <span className="block text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
-                Supervisor
-              </span>
-              <div className="flex items-center gap-2 text-sm text-foreground font-semibold">
-                <User size={14} className="text-accent shrink-0" />
-                <span className="truncate">{(item as any).supervisor}</span>
-              </div>
-            </div>
-          )}
-
-          {/* Localização - span 2 colunas */}
-          <div className="col-span-2 space-y-1.5">
-            <span className="block text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
-              Localização
-            </span>
-            <div className="flex items-start gap-2 text-sm text-foreground font-semibold">
-              <MapPin size={14} className="text-accent shrink-0 mt-0.5" />
-              <span>
+            <div>
+              <label className="block text-xs font-semibold text-text-muted mb-1.5">
+                Localização
+              </label>
+              <div className="flex items-center gap-2 h-11 px-4 rounded-xl border border-border bg-background text-sm text-text-main font-semibold">
+                <MapPin size={14} className="text-accent shrink-0" />
                 {isDist ? item.city : item.region} — {item.state}
-              </span>
+              </div>
             </div>
           </div>
         </div>
 
-        <DialogFooter className="flex flex-col gap-2 sm:flex-col mt-2">
-          <div className="grid grid-cols-2 gap-2 w-full">
-            <Button
-              type="button"
-              variant="outline"
-              className="w-full flex items-center justify-center gap-1.5 text-xs h-11 border-surface bg-surface/30 hover:bg-surface-hover text-foreground rounded-xl transition-all hover:border-accent/30"
-              onClick={() => onOpenChange(false)}
-            >
-              <MapPin size={13} className="text-accent" />
-              Ver no Mapa
-            </Button>
-            <Button
-              type="button"
-              className="w-full flex items-center justify-center gap-1.5 text-xs h-11 bg-accent hover:bg-accent-hover text-accent-fg font-semibold rounded-xl shadow-md shadow-accent/20 transition-all hover:shadow-lg hover:shadow-accent/30"
-              onClick={handleOpenRoute}
-            >
-              <Navigation size={13} />
-              Abrir Rota
-            </Button>
-          </div>
+        {/* RODAPÉ - Botões de ação */}
+        <div className="px-6 pt-8 pb-6 flex gap-3">
           <Button
             type="button"
-            variant="ghost"
-            className="w-full text-xs text-muted-foreground hover:text-foreground h-9 rounded-xl"
+            variant="outline"
+            className="flex-1 h-11 rounded-xl"
             onClick={() => onOpenChange(false)}
           >
-            Fechar
+            <MapPin size={14} className="mr-1.5 text-accent" />
+            Ver no Mapa
           </Button>
-        </DialogFooter>
+          <Button
+            type="button"
+            className="flex-1 h-11 rounded-xl"
+            onClick={handleOpenRoute}
+          >
+            <Navigation size={14} className="mr-1.5" />
+            Abrir Rota
+          </Button>
+        </div>
       </DialogContent>
     </Dialog>
   );

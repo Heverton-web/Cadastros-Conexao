@@ -10,6 +10,7 @@ import { ScrollArea } from "~/components/ui/scroll-area";
 import { UF_NAMES, type UF } from "../constants/brazil-states";
 import type { Entity } from "../types";
 import { Search, Building2, Users, X, MapPin } from "lucide-react";
+import { EmptyState } from "~/components/ui/empty-state";
 
 interface Props {
   uf: UF | null;
@@ -63,9 +64,9 @@ export function StateDetailSheet({ uf, open, onOpenChange, entities }: Props) {
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
-      <DialogContent className="max-h-[85vh] max-w-md overflow-hidden border-surface bg-card p-0 gap-0 sm:rounded-2xl">
-        <DialogHeader className="border-b border-surface px-5 py-4 pb-3 text-left">
-          <DialogTitle className="flex items-center gap-2.5 text-lg">
+      <DialogContent className="max-h-[85vh] max-w-md overflow-hidden bg-card border-border/50 p-0 gap-0 rounded-2xl shadow-2xl shadow-black/40">
+        <DialogHeader className="border-b border-border px-5 py-4 pb-3 text-left">
+          <DialogTitle className="flex items-center gap-2.5 text-lg font-bold text-text-main">
             <MapPin size={18} className="text-accent" />
             {uf ? `${ufName} (${uf})` : ""}
           </DialogTitle>
@@ -80,7 +81,7 @@ export function StateDetailSheet({ uf, open, onOpenChange, entities }: Props) {
                 className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium transition-all ${
                   tab === "distributors"
                     ? "bg-accent text-accent-fg shadow-md shadow-accent/20"
-                    : "border border-accent/30 text-accent hover:bg-accent/10"
+                    : "border border-border text-text-muted hover:bg-surface-hover"
                 }`}
               >
                 <Building2 size={12} />
@@ -95,7 +96,7 @@ export function StateDetailSheet({ uf, open, onOpenChange, entities }: Props) {
                 className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium transition-all ${
                   tab === "consultants"
                     ? "bg-accent text-accent-fg shadow-md shadow-accent/20"
-                    : "border border-accent/30 text-accent hover:bg-accent/10"
+                    : "border border-border text-text-muted hover:bg-surface-hover"
                 }`}
               >
                 <Users size={12} />
@@ -103,7 +104,7 @@ export function StateDetailSheet({ uf, open, onOpenChange, entities }: Props) {
               </button>
             )}
             {entities.length === 0 && (
-              <span className="flex items-center gap-1.5 rounded-lg border border-accent/30 px-3 py-1.5 text-xs text-accent">
+              <span className="flex items-center gap-1.5 rounded-lg border border-border px-3 py-1.5 text-xs text-text-muted">
                 <MapPin size={12} />
                 Sem registros
               </span>
@@ -115,19 +116,19 @@ export function StateDetailSheet({ uf, open, onOpenChange, entities }: Props) {
             <div className="relative mt-3">
               <Search
                 size={14}
-                className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
+                className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted"
               />
               <input
                 type="text"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Buscar por nome, código ou cidade..."
-                className="w-full rounded-xl border border-surface bg-surface/50 py-2 pl-9 pr-9 text-sm text-foreground placeholder:text-muted-foreground transition-all focus:border-accent/50 focus:bg-surface/70 focus:outline-none focus:ring-1 focus:ring-accent/30"
+                className="w-full h-10 rounded-xl border border-border bg-input-bg py-2 pl-9 pr-9 text-sm text-text-main placeholder:text-text-muted transition-all focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/40"
               />
               {search && (
                 <button
                   onClick={() => setSearch("")}
-                  className="absolute right-2.5 top-1/2 -translate-y-1/2 rounded-full p-0.5 text-muted-foreground hover:text-foreground hover:bg-surface transition-colors"
+                  className="absolute right-2.5 top-1/2 -translate-y-1/2 rounded-full p-0.5 text-text-muted hover:text-text-main hover:bg-surface-hover transition-colors"
                 >
                   <X size={14} />
                 </button>
@@ -138,14 +139,15 @@ export function StateDetailSheet({ uf, open, onOpenChange, entities }: Props) {
 
         <ScrollArea className="max-h-[60vh] px-5 py-3 pt-2">
           {filtered.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-12 text-center">
-              <Search size={28} className="mb-3 text-muted-foreground/30" />
-              <p className="text-sm text-muted-foreground">
-                {search
+            <EmptyState
+              icon={<Search className="w-8 h-8 text-text-muted/30" />}
+              title={search ? "Nenhum resultado" : "Sem presença"}
+              description={
+                search
                   ? "Nenhum resultado encontrado."
-                  : "Sem presença neste estado."}
-              </p>
-            </div>
+                  : "Sem presença neste estado."
+              }
+            />
           ) : (
             <ul className="w-full space-y-2">
               {filtered.map((e) => {
@@ -153,20 +155,18 @@ export function StateDetailSheet({ uf, open, onOpenChange, entities }: Props) {
                   e.kind === "distributor"
                     ? e.item.code?.trim()
                     : e.item.registration?.trim();
-                const pinColor = e.item.pin_color ?? "var(--accent)";
                 return (
                   <li
                     key={`${e.kind}-${e.item.id}`}
-                    className="w-full flex items-start gap-3 rounded-xl border border-surface bg-surface/50 p-3.5 transition-all hover:border-surface-hover hover:bg-surface/70 border-l-2"
-                    style={{ borderLeftColor: pinColor }}
+                    className="group/card w-full flex items-start gap-3 rounded-xl border border-border bg-surface p-3.5 transition-all hover:border-accent/30 hover:shadow-lg hover:shadow-accent/5"
                   >
-                    <div
-                      className="mt-0.5 size-2.5 shrink-0 rounded-full shadow-sm"
-                      style={{
-                        backgroundColor: pinColor,
-                        boxShadow: `0 0 6px ${pinColor}40`,
-                      }}
-                    />
+                    <div className="flex items-center justify-center w-10 h-10 rounded-full bg-accent/10 text-accent font-bold text-sm shrink-0 group-hover/card:bg-accent/20 transition-colors">
+                      {e.kind === "distributor" ? (
+                        <Building2 size={16} />
+                      ) : (
+                        <Users size={16} />
+                      )}
+                    </div>
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center gap-2">
                         <span
@@ -179,24 +179,24 @@ export function StateDetailSheet({ uf, open, onOpenChange, entities }: Props) {
                         >
                           {e.kind === "distributor" ? "Dist" : "Cons"}
                         </span>
-                        <p className="truncate text-sm font-semibold text-foreground">
+                        <p className="truncate text-sm font-semibold text-text-main group-hover/card:text-accent transition-colors">
                           {e.item.name}
                         </p>
                         {badgeText && (
-                          <span className="shrink-0 rounded-md bg-surface px-1.5 py-0.5 text-[10px] text-muted-foreground border border-surface">
+                          <span className="shrink-0 rounded-md bg-border px-1.5 py-0.5 text-[10px] text-text-muted">
                             {badgeText}
                           </span>
                         )}
                       </div>
                       {e.kind === "distributor" ? (
-                        <p className="mt-1 truncate text-xs text-muted-foreground">
+                        <p className="mt-1 truncate text-xs text-text-muted">
                           {e.item.city ?? "—"} ·{" "}
                           {e.item.category === "EXCLUSIVE"
                             ? "Exclusivo"
                             : "Não-exclusivo"}
                         </p>
                       ) : (
-                        <p className="mt-1 truncate text-xs text-muted-foreground">
+                        <p className="mt-1 truncate text-xs text-text-muted">
                           {e.item.region ?? "—"}
                           {e.item.supervisor ? ` · ${e.item.supervisor}` : ""}
                         </p>
