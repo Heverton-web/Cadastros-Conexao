@@ -5,9 +5,9 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
   DialogFooter,
 } from "~/components/ui/dialog";
-import { Button } from "~/components/ui/button";
 import { Badge } from "~/components/ui/badge";
 import { useTemplates } from "../hooks/useTemplates";
 import type { Template } from "../types";
@@ -38,12 +38,20 @@ export function TemplateSelector({
 
   return (
     <Dialog open={open} onOpenChange={(o) => !o && onClose()}>
-      <DialogContent className="max-w-lg">
-        <DialogHeader>
-          <DialogTitle>Criar funil</DialogTitle>
+      <DialogContent className="bg-card max-h-[90dvh] overflow-hidden flex flex-col max-w-lg">
+        <DialogHeader className="bg-gradient-to-br from-accent/20 via-accent/10 to-transparent px-6 pt-6 pb-4 border-b border-border/50">
+          <div className="flex items-center gap-3">
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent/15 text-accent">
+              <Layout className="h-6 w-6" />
+            </div>
+            <div>
+              <DialogTitle>Criar funil</DialogTitle>
+              <DialogDescription>Escolha um template ou comece do zero</DialogDescription>
+            </div>
+          </div>
         </DialogHeader>
 
-        <div className="space-y-4">
+        <div className="px-6 py-6 flex-1 space-y-4">
           <button
             onClick={handleFromScratch}
             className={`w-full p-4 rounded-lg border-2 text-left transition-all ${
@@ -122,13 +130,13 @@ export function TemplateSelector({
           )}
         </div>
 
-        <DialogFooter>
-          <Button variant="ghost" onClick={onClose}>
+        <DialogFooter className="px-6 pb-6 pt-4 border-t border-border/50 gap-3">
+          <button type="button" onClick={onClose} className="flex-1 sm:flex-none rounded-xl border border-border px-6 py-2.5 text-sm text-text-muted font-semibold hover:text-text-main hover:bg-surface-hover transition-all duration-200 min-h-[44px]">
             Cancelar
-          </Button>
-          <Button onClick={handleSelect}>
+          </button>
+          <button type="button" onClick={handleSelect} className="flex-1 sm:flex-none rounded-xl bg-accent px-6 py-2.5 text-sm font-semibold text-accent-fg shadow-md shadow-accent/20 hover:bg-accent-hover disabled:opacity-50 transition-all duration-200 min-h-[44px]">
             {selected ? `Usar "${selected.nome}"` : "Criar do zero"}
-          </Button>
+          </button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

@@ -2,9 +2,9 @@ import { createRoute } from "@tanstack/react-router";
 import { authLayout } from "./_auth";
 import { useAuth } from "~/lib/auth";
 import {
-  salvarEmpresaConfig,
+  salvarEmpresaDesign,
   listarEmpresas,
-  buscarEmpresaConfig,
+  buscarEmpresaDesign,
   type Empresa,
 } from "~/features/empresas";
 import { useState, useEffect } from "react";
@@ -64,7 +64,7 @@ function AdminTema() {
     if (!empresaId) return;
     const emp = empresas.find((e) => e.id === empresaId);
     setEmpresaNome(emp?.nome ?? "");
-    buscarEmpresaConfig(empresaId).then((config) => {
+    buscarEmpresaDesign(empresaId).then((config) => {
       if (config) {
         setCores({
           ...CORES_PADRAO,
@@ -90,7 +90,7 @@ function AdminTema() {
     if (!empresaId) return;
     setSaving(true);
     try {
-      await salvarEmpresaConfig(empresaId, { theme: cores });
+      await salvarEmpresaDesign(empresaId, { theme: cores });
       toast.success(`Tema salvo para ${empresaNome}!`);
     } catch (e: any) {
       toast.error(e.message);

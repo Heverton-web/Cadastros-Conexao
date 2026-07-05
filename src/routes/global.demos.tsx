@@ -182,7 +182,7 @@ function CriarDemoModal({
       if (rpcError) throw rpcError;
 
       const { error: insertErr } = await supabase
-        .from("demo_credentials")
+        .from("credenciais_demo")
         .insert({
           user_id: uid,
           email_demo: email,
@@ -216,18 +216,28 @@ function CriarDemoModal({
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black/60 px-4 py-8 backdrop-blur-sm">
-      <div className="w-full max-w-lg rounded-2xl bg-card border border-border-subtle p-6 shadow-xl mt-4 mb-8">
-        <div className="flex items-center justify-between mb-5">
-          <h2 className="text-base font-bold text-text-main">Nova Demo</h2>
-          <button
-            onClick={onClose}
-            className="text-text-muted hover:text-text-main"
-          >
-            <X size={20} />
-          </button>
+    <div className="fixed inset-0 z-[100] flex items-end justify-center bg-black/60 backdrop-blur-sm sm:items-center">
+      <div className="w-full max-w-md rounded-t-2xl sm:rounded-2xl bg-card border border-border/50 p-0 shadow-2xl shadow-black/40 max-h-[90dvh] overflow-hidden flex flex-col">
+        <div className="bg-gradient-to-br from-accent/20 via-accent/10 to-transparent px-6 pt-6 pb-4 border-b border-border/50">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent/15 text-accent">
+                <FlaskConical className="h-6 w-6" />
+              </div>
+              <div>
+                <h2 className="text-xl font-bold text-text-main tracking-tight">Nova Demo</h2>
+                <p className="text-sm text-text-muted mt-0.5">Criar uma demo com dados fictícios</p>
+              </div>
+            </div>
+            <button
+              onClick={onClose}
+              className="absolute right-4 top-5 rounded-lg p-1.5 text-text-muted hover:text-text-main hover:bg-surface-hover transition-colors"
+            >
+              <X size={18} />
+            </button>
+          </div>
         </div>
-        <form onSubmit={handleCreate} className="flex flex-col gap-4">
+        <form onSubmit={handleCreate} className="px-6 py-6 flex-1 space-y-4">
           <div className="grid grid-cols-2 gap-3">
             <div className="col-span-2">
               <label className="text-xs font-bold text-text-muted uppercase tracking-wider mb-1 block">
@@ -324,20 +334,29 @@ function CriarDemoModal({
             </div>
           </div>
 
-          <button
-            type="submit"
-            disabled={creating}
-            className="mt-2 flex w-full items-center justify-center gap-2 rounded-xl bg-accent text-accent-fg py-3 text-sm font-bold hover:bg-accent-hover transition-all disabled:opacity-50"
-          >
-            {creating ? (
-              <Loader2 size={16} className="animate-spin" />
-            ) : (
-              <>
-                <span>Criar Demo</span>
-                <ChevronRight size={16} />
-              </>
-            )}
-          </button>
+          <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end px-6 pb-6 pt-4 border-t border-border/50">
+            <button
+              type="button"
+              onClick={onClose}
+              className="flex-1 sm:flex-none rounded-xl border border-border px-6 py-2.5 text-sm text-text-muted font-semibold hover:text-text-main hover:bg-surface-hover transition-all duration-200 min-h-[44px]"
+            >
+              Cancelar
+            </button>
+            <button
+              type="submit"
+              disabled={creating}
+              className="flex-1 sm:flex-none rounded-xl bg-accent px-6 py-2.5 text-sm font-semibold text-white shadow-md shadow-accent/20 hover:bg-accent-hover disabled:opacity-50 transition-all duration-200 min-h-[44px] flex items-center justify-center gap-2"
+            >
+              {creating ? (
+                <Loader2 size={16} className="animate-spin" />
+              ) : (
+                <>
+                  <span>Criar Demo</span>
+                  <ChevronRight size={16} />
+                </>
+              )}
+            </button>
+          </div>
         </form>
       </div>
     </div>

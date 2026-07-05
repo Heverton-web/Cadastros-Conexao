@@ -7,6 +7,8 @@ import {
 } from "~/registry";
 import type { ModuleDefinition } from "~/registry";
 import { SEO_PERMISSIONS } from "./permissions";
+import { registrarPlanoDiagnostico } from "~/core/diagnostic";
+import { seoDiagnosticPlan } from "./diagnostic";
 
 export const seoModule: ModuleDefinition = {
   key: "mktg-seo",
@@ -18,7 +20,9 @@ export const seoModule: ModuleDefinition = {
   ambientes: ["cadastro", "tecnologia"],
   abas: [],
   events: [],
+  hasDiagnostico: true,
   setup: () => {
+    registrarPlanoDiagnostico(seoDiagnosticPlan);
     for (const p of SEO_PERMISSIONS)
       registerPermission({
         key: p.key,

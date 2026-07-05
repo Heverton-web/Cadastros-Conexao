@@ -66,12 +66,19 @@ export async function carregarSchema(
 export async function listarTodosCampos(filtros?: {
   etapa?: Etapa;
   tipo_pessoa?: TipoPessoa;
+  empresaId?: string;
 }): Promise<CampoSchema[]> {
   let q = supabase.from("form_schema").select("*");
 
   if (filtros?.etapa) q = q.eq("etapa", filtros.etapa);
   if (filtros?.tipo_pessoa)
     q = q.in("tipo_pessoa", [filtros.tipo_pessoa, "ambos"]);
+
+  if (filtros?.empresaId) {
+    q = q.eq("empresa_id", filtros.empresaId);
+  } else {
+    q = q.is("empresa_id", null);
+  }
 
   q = q.order("etapa").order("ordem", { ascending: true });
 
@@ -85,7 +92,8 @@ export async function listarTodosCampos(filtros?: {
 
 export async function salvarCampo(
   campo: Partial<CampoSchema> & { id?: string },
-): Promise<CampoSchema | null> {
+  empresaId?: string,
+): Promise<{ data: CampoSchema | null; erro?: string }> {
   if (campo.id) {
     const { data, error } = await supabase
       .from("form_schema")
@@ -95,29 +103,27 @@ export async function salvarCampo(
       .single();
     if (error) {
       console.error("[form-schema] salvarCampo update:", error);
-      return null;
+      return { data: null, erro: error.message };
     }
-    return data as CampoSchema;
+    return { data: data as CampoSchema };
   } else {
     const { data, error } = await supabase
       .from("form_schema")
-      .insert({ ...campo, is_custom: true })
+      .insert({ ...campo, empresa_id: empresaId || null, is_custom: true })
       .select()
       .single();
     if (error) {
       console.error("[form-schema] salvarCampo insert:", error);
-      return null;
+      return { data: null, erro: error.message };
     }
-    return data as CampoSchema;
+    return { data: data as CampoSchema };
   }
 }
 
-export async function excluirCampo(id: string): Promise<boolean> {
-  const { error } = await supabase
-    .from("form_schema")
-    .delete()
-    .eq("id", id)
-    .eq("is_custom", true);
+export async function excluirCampo(id: string, isSuper?: boolean): Promise<boolean> {
+  let q = supabase.from("form_schema").delete().eq("id", id);
+  if (!isSuper) q = q.eq("is_custom", true);
+  const { error } = await q;
   if (error) {
     console.error("[form-schema] excluirCampo:", error);
     return false;

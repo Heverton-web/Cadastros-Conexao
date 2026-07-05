@@ -1,5 +1,5 @@
 import { supabase } from "~/core/supabase";
-import type { Empresa, EmpresaConfig, ModuloEmpresa } from "./types";
+import type { Empresa, EmpresaDesign, ModuloEmpresa } from "./types";
 
 export async function listarEmpresas(): Promise<Empresa[]> {
   const { data } = await supabase.from("empresas").select("*").order("nome");
@@ -101,18 +101,21 @@ export async function toggleEmpresa(id: string, ativo: boolean): Promise<void> {
   await atualizarEmpresa(id, { ativo });
 }
 
-export async function buscarEmpresaConfig(
+export async function buscarEmpresaDesign(
   empresaId: string,
-): Promise<EmpresaConfig | null> {
+): Promise<EmpresaDesign | null> {
   const { data } = await supabase
     .from("empresas_config")
     .select("*")
     .eq("empresa_id", empresaId)
     .single();
-  return data as EmpresaConfig | null;
+  return data as EmpresaDesign | null;
 }
 
-export async function salvarEmpresaConfig(
+/** @deprecated Use buscarEmpresaDesign */
+export const buscarEmpresaConfig = buscarEmpresaDesign;
+
+export async function salvarEmpresaDesign(
   empresaId: string,
   input: {
     logo_url?: string;
@@ -130,11 +133,14 @@ export async function salvarEmpresaConfig(
   if (error) throw error;
 }
 
+/** @deprecated Use salvarEmpresaDesign */
+export const salvarEmpresaConfig = salvarEmpresaDesign;
+
 export async function listarModulosEmpresa(
   empresaId: string,
 ): Promise<ModuloEmpresa[]> {
   const { data } = await supabase
-    .from("modulos_empresa")
+    .from("empresa_modulos")
     .select("*")
     .eq("empresa_id", empresaId)
     .order("modulo_key");
@@ -146,7 +152,7 @@ export async function toggleModuloEmpresa(
   ativo: boolean,
 ): Promise<void> {
   const { error } = await supabase
-    .from("modulos_empresa")
+    .from("empresa_modulos")
     .update({ ativo })
     .eq("id", id);
   if (error) throw error;
@@ -158,7 +164,7 @@ export async function upsertModuloEmpresa(
   ativo: boolean,
 ): Promise<void> {
   const { error } = await supabase
-    .from("modulos_empresa")
+    .from("empresa_modulos")
     .upsert(
       { empresa_id: empresaId, modulo_key: moduloKey, ativo },
       { onConflict: "empresa_id,modulo_key" },
@@ -210,6 +216,6 @@ export async function ativarModulosParaEmpresa(
     modulo_key,
     ativo: true,
   }));
-  const { error } = await supabase.from("modulos_empresa").insert(inserts);
+  const { error } = await supabase.from("empresa_modulos").insert(inserts);
   if (error) throw error;
 }

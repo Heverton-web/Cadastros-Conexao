@@ -9,6 +9,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
   DialogFooter,
 } from "~/components/ui/dialog";
 import { Button } from "~/components/ui/button";
@@ -71,11 +72,14 @@ export function EnviarDespesasModal({
   return (
     <>
       <Dialog open={open} onOpenChange={onOpenChange}>
-        <DialogContent className="bg-card border-border max-w-md">
+        <DialogContent className="bg-card max-w-md max-h-[90dvh] overflow-hidden flex flex-col">
           <DialogHeader>
-            <DialogTitle>Enviar Despesas</DialogTitle>
+            <div className="flex items-center gap-3">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent/15 text-accent"><Send className="h-6 w-6" /></div>
+              <div><DialogTitle>Enviar Despesas</DialogTitle><DialogDescription>Envie suas despesas para aprovação.</DialogDescription></div>
+            </div>
           </DialogHeader>
-          <div className="space-y-4">
+          <div className="px-6 py-6 flex-1 space-y-4">
             <div className="space-y-2">
               <label className="text-xs font-semibold text-text-muted uppercase">
                 Período
@@ -195,10 +199,11 @@ export function EnviarDespesasModal({
             )}
 
             <DialogFooter>
-              <Button variant="outline" onClick={() => onOpenChange(false)}>
+              <button type="button" onClick={() => onOpenChange(false)} className="flex-1 sm:flex-none rounded-xl border border-border px-6 py-2.5 text-sm text-text-muted font-semibold hover:text-text-main hover:bg-surface-hover transition-all duration-200 min-h-[44px]">
                 Cancelar
-              </Button>
-              <Button
+              </button>
+              <button
+                type="button"
                 onClick={() => setConfirmOpen(true)}
                 disabled={
                   !periodoId ||
@@ -207,7 +212,7 @@ export function EnviarDespesasModal({
                   criarEnvio.isPending ||
                   prazoExpirado
                 }
-                className="gap-1.5"
+                className="flex-1 sm:flex-none rounded-xl bg-accent px-6 py-2.5 text-sm font-semibold text-accent-fg shadow-md shadow-accent/20 hover:bg-accent-hover disabled:opacity-50 transition-all duration-200 min-h-[44px] gap-1.5"
               >
                 <Send size={16} />
                 {prazoExpirado
@@ -215,24 +220,27 @@ export function EnviarDespesasModal({
                   : enviar.isPending || criarEnvio.isPending
                     ? "Enviando..."
                     : "Enviar"}
-              </Button>
+              </button>
             </DialogFooter>
           </div>
         </DialogContent>
       </Dialog>
 
       <AlertDialog open={confirmOpen} onOpenChange={setConfirmOpen}>
-        <AlertDialogContent className="bg-card border-border">
+        <AlertDialogContent className="bg-card max-h-[90dvh] overflow-hidden flex flex-col">
           <AlertDialogHeader>
-            <AlertDialogTitle>Enviar despesas?</AlertDialogTitle>
-            <AlertDialogDescription>
-              {rascunhos.length} despesa(s) totalizando {formatarMoeda(total)}{" "}
-              serão enviadas para aprovação.
-            </AlertDialogDescription>
+            <div className="flex items-center gap-3">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent/15 text-accent"><Send className="h-6 w-6" /></div>
+              <div><AlertDialogTitle>Enviar despesas?</AlertDialogTitle>
+              <AlertDialogDescription>
+                {rascunhos.length} despesa(s) totalizando {formatarMoeda(total)}{" "}
+                serão enviadas para aprovação.
+              </AlertDialogDescription></div>
+            </div>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancelar</AlertDialogCancel>
-            <AlertDialogAction onClick={handleEnviar}>
+            <AlertDialogCancel className="flex-1 sm:flex-none rounded-xl border border-border px-6 py-2.5 text-sm text-text-muted font-semibold hover:text-text-main hover:bg-surface-hover transition-all duration-200 min-h-[44px]">Cancelar</AlertDialogCancel>
+            <AlertDialogAction onClick={handleEnviar} className="flex-1 sm:flex-none rounded-xl bg-accent px-6 py-2.5 text-sm font-semibold text-accent-fg shadow-md shadow-accent/20 hover:bg-accent-hover disabled:opacity-50 transition-all duration-200 min-h-[44px]">
               Confirmar
             </AlertDialogAction>
           </AlertDialogFooter>

@@ -15,6 +15,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
 } from "~/components/ui/dialog";
 import type { Despesa } from "../../types";
 
@@ -231,10 +232,14 @@ export function MinhasDespesasPage() {
       <EnviarDespesasModal open={modalEnviar} onOpenChange={setModalEnviar} />
 
       <Dialog open={!!detalhe} onOpenChange={(o) => !o && setDetalhe(null)}>
-        <DialogContent className="bg-card border-border max-w-md">
+        <DialogContent className="bg-card max-w-md max-h-[90dvh] overflow-hidden flex flex-col">
           <DialogHeader>
-            <DialogTitle>Detalhes da Despesa</DialogTitle>
+            <div className="flex items-center gap-3">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent/15 text-accent"><Receipt className="h-6 w-6" /></div>
+              <div><DialogTitle>Detalhes da Despesa</DialogTitle><DialogDescription>Visualize os dados da despesa.</DialogDescription></div>
+            </div>
           </DialogHeader>
+          <div className="px-6 py-6 flex-1 space-y-4">
           {detalhe && (
             <div className="space-y-4">
               <div className="grid grid-cols-2 gap-3">
@@ -299,6 +304,7 @@ export function MinhasDespesasPage() {
               </div>
             </div>
           )}
+          </div>
         </DialogContent>
       </Dialog>
     </div>

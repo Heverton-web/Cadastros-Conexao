@@ -3,7 +3,7 @@ import type { HubSystemConfig } from "../types";
 
 export async function fetchHubConfig(empresaId: string) {
   const { data, error } = await supabase
-    .from("hub_system_config")
+    .from("hub_config_sistema")
     .select("*")
     .eq("empresa_id", empresaId)
     .single();
@@ -13,7 +13,7 @@ export async function fetchHubConfig(empresaId: string) {
 
 export async function upsertHubConfig(config: Partial<HubSystemConfig>) {
   const { data, error } = await supabase
-    .from("hub_system_config")
+    .from("hub_config_sistema")
     .upsert(config, { onConflict: "empresa_id" })
     .select()
     .single();
@@ -27,7 +27,7 @@ export async function updateHubTheme(
   environmentThemes?: Record<string, unknown>,
 ) {
   const { data, error } = await supabase
-    .from("hub_system_config")
+    .from("hub_config_sistema")
     .upsert(
       {
         empresa_id: empresaId,

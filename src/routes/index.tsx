@@ -132,7 +132,7 @@ function LoginPage() {
 
         {/* Título e Subtítulo */}
         <div className="text-center mb-6 flex flex-col gap-0.5">
-          <h1 className="text-2xl font-bold text-white tracking-wide">
+          <h1 className="text-2xl font-bold text-accent-fg tracking-wide">
             Entrar
           </h1>
           <span className="text-xs font-bold text-[#c9a655] tracking-[0.25em] uppercase">
@@ -166,7 +166,7 @@ function LoginPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               autoComplete="email"
-              className="bg-[#131d30] border-[#1f2f4d] focus:border-[#c9a655]/50 focus:ring-0 text-white rounded-xl placeholder-[#41536b] text-sm h-11 w-full"
+              className="bg-[#131d30] border-[#1f2f4d] focus:border-[#c9a655]/50 focus:ring-0 text-accent-fg rounded-xl placeholder-[#41536b] text-sm h-11 w-full"
             />
           </div>
 
@@ -180,7 +180,7 @@ function LoginPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               autoComplete="current-password"
-              className="bg-[#131d30] border-[#1f2f4d] text-white placeholder:text-gray-500 rounded-xl px-4 py-3 w-full outline-none focus:border-[#c9a655] transition-all pr-12"
+              className="bg-[#131d30] border-[#1f2f4d] text-accent-fg placeholder:text-gray-500 rounded-xl px-4 py-3 w-full outline-none focus:border-[#c9a655] transition-all pr-12"
             />
           </div>
 
@@ -215,38 +215,49 @@ function LoginPage() {
 
       {/* POPUP - INATIVO */}
       {popup === "inativo" && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-6 backdrop-blur-sm">
-          <div className="w-full max-w-md rounded-2xl bg-[#0b121f] border border-[#1b2a47] p-6 shadow-xl">
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center gap-2">
-                <AlertTriangle size={20} className="text-red-400" />
-                <h2 className="text-base font-bold text-text-main">
-                  Usuário Inativo
-                </h2>
+        <div className="fixed inset-0 z-[100] flex items-end justify-center bg-black/60 backdrop-blur-sm sm:items-center">
+          <div className="w-full max-w-md rounded-t-2xl sm:rounded-2xl bg-card border border-border/50 p-0 shadow-2xl shadow-black/40 max-h-[90dvh] overflow-hidden flex flex-col">
+            <div className="bg-gradient-to-br from-accent/20 via-accent/10 to-transparent px-6 pt-6 pb-4 border-b border-border/50 relative">
+              <div className="flex items-center gap-3">
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent/15 text-accent">
+                  <AlertTriangle size={24} />
+                </div>
+                <div>
+                  <h2 className="text-xl font-bold text-text-main tracking-tight">
+                    Usuário Inativo
+                  </h2>
+                  <p className="text-sm text-text-muted mt-0.5">
+                    Conta inativa
+                  </p>
+                </div>
               </div>
               <button
                 onClick={() => {
                   setPopup(null);
                   navigate({ to: "/" });
                 }}
-                className="text-text-muted hover:text-text-main"
+                className="absolute right-4 top-5 rounded-lg p-1.5 text-text-muted hover:text-text-main hover:bg-surface-hover transition-colors"
               >
                 <X size={20} />
               </button>
             </div>
-            <p className="text-sm text-text-muted mb-6">
-              Sua conta está inativa. Entre em contato com o administrador do
-              sistema.
-            </p>
-            <Button
-              fullWidth
-              onClick={() => {
-                supabase.auth.signOut();
-                setPopup(null);
-              }}
-            >
-              Sair
-            </Button>
+            <div className="px-6 py-6 flex-1 space-y-4">
+              <p className="text-sm text-text-muted">
+                Sua conta está inativa. Entre em contato com o administrador do
+                sistema.
+              </p>
+            </div>
+            <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end px-6 pb-6 pt-4 border-t border-border/50">
+              <button
+                onClick={() => {
+                  supabase.auth.signOut();
+                  setPopup(null);
+                }}
+                className="flex-1 sm:flex-none rounded-xl bg-accent px-6 py-2.5 text-sm font-semibold text-accent-fg shadow-md shadow-accent/20 hover:bg-accent-hover disabled:opacity-50 transition-all duration-200 min-h-[44px]"
+              >
+                Sair
+              </button>
+            </div>
           </div>
         </div>
       )}
@@ -277,56 +288,76 @@ function ResetSenhaPopup({ onClose }: { onClose: () => void }) {
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-6 backdrop-blur-sm">
-      <div className="w-full max-w-md rounded-2xl bg-[#0b121f] border border-[#1b2a47] p-6 shadow-xl">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-base font-bold text-text-main">
-            Redefinir Senha
-          </h2>
+    <div className="fixed inset-0 z-[100] flex items-end justify-center bg-black/60 backdrop-blur-sm sm:items-center">
+      <div className="w-full max-w-md rounded-t-2xl sm:rounded-2xl bg-card border border-border/50 p-0 shadow-2xl shadow-black/40 max-h-[90dvh] overflow-hidden flex flex-col">
+        <div className="bg-gradient-to-br from-accent/20 via-accent/10 to-transparent px-6 pt-6 pb-4 border-b border-border/50 relative">
+          <div className="flex items-center gap-3">
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent/15 text-accent">
+              <Mail size={24} />
+            </div>
+            <div>
+              <h2 className="text-xl font-bold text-text-main tracking-tight">
+                Redefinir Senha
+              </h2>
+              <p className="text-sm text-text-muted mt-0.5">
+                Recuperação de acesso
+              </p>
+            </div>
+          </div>
           <button
             onClick={onClose}
-            className="text-text-muted hover:text-text-main"
+            className="absolute right-4 top-5 rounded-lg p-1.5 text-text-muted hover:text-text-main hover:bg-surface-hover transition-colors"
           >
             <X size={20} />
           </button>
         </div>
         {sent ? (
           <>
-            <p className="text-sm text-text-muted mb-6">
-              Email enviado! Verifique sua caixa de entrada e siga as
-              instruções.
-            </p>
-            <Button fullWidth onClick={onClose}>
-              Fechar
-            </Button>
+            <div className="px-6 py-6 flex-1 space-y-4">
+              <p className="text-sm text-text-muted">
+                Email enviado! Verifique sua caixa de entrada e siga as
+                instruções.
+              </p>
+            </div>
+            <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end px-6 pb-6 pt-4 border-t border-border/50">
+              <button
+                onClick={onClose}
+                className="flex-1 sm:flex-none rounded-xl bg-accent px-6 py-2.5 text-sm font-semibold text-accent-fg shadow-md shadow-accent/20 hover:bg-accent-hover disabled:opacity-50 transition-all duration-200 min-h-[44px]"
+              >
+                Fechar
+              </button>
+            </div>
           </>
         ) : (
-          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-            <p className="text-sm text-text-muted">
-              Digite seu email para receber o link de recuperação.
-            </p>
-            <Input
-              id="reset-email"
-              label="Email"
-              type="email"
-              placeholder="seu@email.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="bg-[#131d30] border-[#1f2f4d] focus:border-[#c9a655]/50 focus:ring-0 text-white rounded-xl placeholder-[#41536b] text-sm h-11 w-full"
-            />
-            <Button
-              type="submit"
-              fullWidth
-              disabled={submitting}
-              className="cursor-pointer"
-            >
-              {submitting ? (
-                <Loader2 size={18} className="animate-spin" />
-              ) : (
-                <Mail size={18} />
-              )}
-              Enviar link
-            </Button>
+          <form onSubmit={handleSubmit}>
+            <div className="px-6 py-6 flex-1 space-y-4">
+              <p className="text-sm text-text-muted">
+                Digite seu email para receber o link de recuperação.
+              </p>
+              <Input
+                id="reset-email"
+                label="Email"
+                type="email"
+                placeholder="seu@email.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="bg-[#131d30] border-[#1f2f4d] focus:border-[#c9a655]/50 focus:ring-0 text-accent-fg rounded-xl placeholder-[#41536b] text-sm h-11 w-full"
+              />
+            </div>
+            <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end px-6 pb-6 pt-4 border-t border-border/50">
+              <button
+                type="submit"
+                disabled={submitting}
+                className="flex-1 sm:flex-none rounded-xl bg-accent px-6 py-2.5 text-sm font-semibold text-accent-fg shadow-md shadow-accent/20 hover:bg-accent-hover disabled:opacity-50 transition-all duration-200 min-h-[44px] cursor-pointer inline-flex items-center justify-center gap-2"
+              >
+                {submitting ? (
+                  <Loader2 size={18} className="animate-spin" />
+                ) : (
+                  <Mail size={18} />
+                )}
+                Enviar link
+              </button>
+            </div>
           </form>
         )}
       </div>

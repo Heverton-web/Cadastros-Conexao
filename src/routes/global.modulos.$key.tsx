@@ -15,6 +15,7 @@ import {
   Link as LinkIcon,
 } from "lucide-react";
 import { useState } from "react";
+import { FormBuilderTab } from "~/components/admin/FormBuilderTab";
 
 export const adminSuperModuloDetailRoute = createRoute({
   getParentRoute: () => authLayout,
@@ -122,7 +123,7 @@ function AdminSuperModuloDetail() {
               onClick={() => setTab(tabKey)}
               className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-medium transition whitespace-nowrap ${
                 tab === tabKey
-                  ? "bg-accent text-white"
+                  ? "bg-accent text-accent-fg"
                   : "bg-card text-text-muted hover:text-text-main border border-border-subtle"
               }`}
             >
@@ -146,12 +147,7 @@ function AdminSuperModuloDetail() {
       {tab === "acoes" && (
         <PlaceholderTab title="Ações" desc="Ações customizadas do módulo." />
       )}
-      {tab === "formularios" && (
-        <PlaceholderTab
-          title="Formulários"
-          desc="Campos e formulários dinâmicos do módulo."
-        />
-      )}
+      {tab === "formularios" && <FormBuilderTab />}
       {tab === "apis" && (
         <PlaceholderTab title="APIs" desc="Conectores de API do módulo." />
       )}

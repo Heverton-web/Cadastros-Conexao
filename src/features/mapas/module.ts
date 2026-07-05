@@ -14,6 +14,8 @@ import {
 } from "~/registry";
 import type { ModuleDefinition } from "~/registry";
 import { MAPAS_PERMISSIONS } from "./permissions";
+import { registrarPlanoDiagnostico } from "~/core/diagnostic";
+import { mapasDiagnosticPlan } from "./diagnostic";
 
 export const mapasModule: ModuleDefinition = {
   key: "mapas-interativos",
@@ -86,9 +88,11 @@ export const mapasModule: ModuleDefinition = {
       type: "button_action",
     },
   ],
+  hasDiagnostico: true,
   hasDesignConfig: true,
   designRoute: "/empresa/mapas/design",
   setup: () => {
+    registrarPlanoDiagnostico(mapasDiagnosticPlan);
     for (const p of MAPAS_PERMISSIONS) {
       registerPermission({
         key: p.key,

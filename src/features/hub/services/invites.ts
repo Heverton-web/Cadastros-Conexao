@@ -15,7 +15,7 @@ export async function createHubInvite(
   expiresAt?: string,
 ) {
   const { data, error } = await supabase
-    .from("hub_invite_tokens")
+    .from("hub_tokens_convite")
     .insert({
       token: generateToken(),
       role,
@@ -39,7 +39,7 @@ export async function createHubInvite(
 
 export async function fetchHubInvites(empresaId: string) {
   const { data, error } = await supabase
-    .from("hub_invite_tokens")
+    .from("hub_tokens_convite")
     .select("*")
     .eq("empresa_id", empresaId)
     .order("created_at", { ascending: false });
@@ -49,7 +49,7 @@ export async function fetchHubInvites(empresaId: string) {
 
 export async function validateHubInvite(token: string) {
   const { data, error } = await supabase
-    .from("hub_invite_tokens")
+    .from("hub_tokens_convite")
     .select("*")
     .eq("token", token)
     .eq("status", "pending")
@@ -61,7 +61,7 @@ export async function validateHubInvite(token: string) {
 
 export async function useHubInvite(token: string, userId: string) {
   const { data, error } = await supabase
-    .from("hub_invite_tokens")
+    .from("hub_tokens_convite")
     .update({
       status: "used",
       used_by: userId,
@@ -85,7 +85,7 @@ export async function useHubInvite(token: string, userId: string) {
 
 export async function deleteHubInvite(id: string) {
   const { error } = await supabase
-    .from("hub_invite_tokens")
+    .from("hub_tokens_convite")
     .delete()
     .eq("id", id);
   if (error) throw error;
@@ -97,7 +97,7 @@ export async function updateHubInviteShare(
   shareLink: string,
 ) {
   const { data, error } = await supabase
-    .from("hub_invite_tokens")
+    .from("hub_tokens_convite")
     .update({ share_whatsapp_message: whatsappMessage, share_link: shareLink })
     .eq("id", id)
     .select()

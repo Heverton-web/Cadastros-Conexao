@@ -352,7 +352,7 @@ export function CentralAcoesTab({ empresaId }: { empresaId?: string } = {}) {
         listarTemplates(empId, modKey),
         listarWebhooks(empId, modKey),
         supabase.rpc("obter_esquema_banco"),
-        supabase.from("integracoes_config").select("*"),
+        supabase.from("config_integracoes").select("*"),
       ]);
 
       if (isSuper && empresas.length === 0) {
@@ -988,7 +988,7 @@ export function CentralAcoesTab({ empresaId }: { empresaId?: string } = {}) {
                     );
                   }
                 }}
-                className="w-full sm:w-auto px-4 py-1.5 bg-accent text-white hover:bg-accent/90 rounded-lg text-xs font-bold transition-colors flex items-center justify-center gap-1.5 self-stretch sm:self-auto sm:mt-4 shrink-0"
+                className="w-full sm:w-auto px-4 py-1.5 bg-accent text-accent-fg hover:bg-accent/90 rounded-lg text-xs font-bold transition-colors flex items-center justify-center gap-1.5 self-stretch sm:self-auto sm:mt-4 shrink-0"
               >
                 <Copy size={12} /> Copiar Variável
               </button>
@@ -1022,7 +1022,7 @@ export function CentralAcoesTab({ empresaId }: { empresaId?: string } = {}) {
         <div className="flex gap-2 w-full xl:w-auto overflow-x-auto scrollbar-hide">
           <button
             onClick={() => setActiveTab("workflows")}
-            className={`flex items-center justify-center gap-1.5 px-4 py-2.5 text-xs font-bold rounded-lg transition-colors shrink-0 flex-1 xl:flex-none ${activeTab === "workflows" ? "bg-accent text-white" : "bg-card text-text-muted hover:text-text-main border border-input-border/50"}`}
+            className={`flex items-center justify-center gap-1.5 px-4 py-2.5 text-xs font-bold rounded-lg transition-colors shrink-0 flex-1 xl:flex-none ${activeTab === "workflows" ? "bg-accent text-accent-fg" : "bg-card text-text-muted hover:text-text-main border border-input-border/50"}`}
           >
             <GitFork size={14} />
             <span className="hidden sm:inline">
@@ -1034,7 +1034,7 @@ export function CentralAcoesTab({ empresaId }: { empresaId?: string } = {}) {
               setActiveTab("logs");
               carregarLogs();
             }}
-            className={`flex items-center justify-center gap-1.5 px-4 py-2.5 text-xs font-bold rounded-lg transition-colors shrink-0 flex-1 xl:flex-none ${activeTab === "logs" ? "bg-accent text-white" : "bg-card text-text-muted hover:text-text-main border border-input-border/50"}`}
+            className={`flex items-center justify-center gap-1.5 px-4 py-2.5 text-xs font-bold rounded-lg transition-colors shrink-0 flex-1 xl:flex-none ${activeTab === "logs" ? "bg-accent text-accent-fg" : "bg-card text-text-muted hover:text-text-main border border-input-border/50"}`}
           >
             <History size={14} />
             <span className="hidden sm:inline">Logs de Execução</span>
@@ -1129,7 +1129,7 @@ export function CentralAcoesTab({ empresaId }: { empresaId?: string } = {}) {
                 <button
                   onClick={handleSalvar}
                   disabled={saving}
-                  className="flex items-center gap-1.5 px-3 py-1.5 bg-accent text-white rounded-lg text-xs font-medium hover:bg-accent/90 disabled:opacity-50"
+                  className="flex items-center gap-1.5 px-3 py-1.5 bg-accent text-accent-fg rounded-lg text-xs font-medium hover:bg-accent/90 disabled:opacity-50"
                 >
                   {saving ? (
                     <Loader2 size={12} className="animate-spin" />
@@ -1919,7 +1919,7 @@ export function CentralAcoesTab({ empresaId }: { empresaId?: string } = {}) {
                       />
                       <button
                         onClick={handleImportarCurl}
-                        className="self-end px-4 py-1.5 bg-accent hover:bg-accent/90 text-white rounded text-xs font-bold transition-all"
+                        className="self-end px-4 py-1.5 bg-accent hover:bg-accent/90 text-accent-fg rounded text-xs font-bold transition-all"
                       >
                         Processar cURL & Preencher Campos
                       </button>
@@ -2603,7 +2603,7 @@ export function CentralAcoesTab({ empresaId }: { empresaId?: string } = {}) {
                   }
                   setConfirmPayloadModal(false);
                 }}
-                className="px-3.5 py-2 bg-accent hover:bg-accent/90 text-white rounded-lg text-xs font-bold transition-all"
+                className="px-3.5 py-2 bg-accent hover:bg-accent/90 text-accent-fg rounded-lg text-xs font-bold transition-all"
               >
                 Confirmar
               </button>

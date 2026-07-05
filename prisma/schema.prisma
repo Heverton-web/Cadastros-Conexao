@@ -367,11 +367,11 @@ model Empresa {
   documentos         EmpresaDocumento[]
   redesSociais       EmpresaRedesSocial?
   design             EmpresaDesign?
-  config             EmpresaConfig?
   departamentos      EmpresaDepartamento[]
   cargos             EmpresaCargo[]
   modulosEmpresa     ModuloEmpresa[]
   moduloLimits       EmpresaModuloLimit[]
+  roleLimits         EmpresaRoleLimit[]
   usuarios           Usuario[]
   colaboradores      Colaborador[]
   parceiros          Parceiro[]
@@ -386,60 +386,6 @@ model Empresa {
   formSchema         FormSchema[]
   apiConnectors      ApiConnector[]
   integracoesConfig  IntegracaoConfig[]
-  npsPerguntas       NpsPergunta[]
-  npsRespostas       NpsResposta[]
-  npsWebhookConfig   NpsWebhookConfig[]
-  npsRelatoriosEnvio NpsRelatorioEnvio[]
-  funis              Funil[]
-  funisTemplates     FunilTemplate[]
-  hubUserRoles       HubUserRole[]
-  hubMaterials       HubMaterial[]
-  hubCollections     HubCollection[]
-  hubUserProgress    HubUserProgress[]
-  hubCollectionProgress HubCollectionProgress[]
-  hubAccessLogs      HubAccessLog[]
-  hubGamificationLevels HubGamificationLevel[]
-  hubBadges          HubBadge[]
-  hubUserBadges      HubUserBadge[]
-  hubInviteTokens    HubInviteToken[]
-  hubSystemConfig    HubSystemConfig?
-  hubSystemIntegrations HubSystemIntegration?
-  hubChatbotConfig   HubChatbotConfig?
-  mapasDistributors  MapasDistributor[]
-  mapasConsultants   MapasConsultant[]
-  rotasConfig        RotasConfig?
-  rotasClientesBase  RotasClienteBase[]
-  rotas              Rota[]
-  rotasFormPerguntas RotasFormPergunta[]
-  despesasTipos      DespesaTipo[]
-  despesasConfig     DespesaConfig?
-  despesasPeriodos   DespesaPeriodo[]
-  despesas           Despesa[]
-  despesasEnvios     DespesaEnvio[]
-  despesasPagamentos DespesaPagamento[]
-  linktreeColaboradores LinktreeColaborador[]
-  linktreeTemaConfig    LinktreeTemaConfig[]
-  linktreeEmpresaConfig LinktreeEmpresaConfig?
-  linktreeEmpresaSections LinktreeEmpresaSection[]
-  linktreeEmpresaLinks  LinktreeEmpresaLink[]
-  linktreeEmpresaClicks LinktreeEmpresaClick[]
-  geradorLinks       GeradorLink[]
-  geradorTemplates   GeradorTemplate[]
-  pipelineEstagios   PipelineEstagio[]
-  crmTarefas         CrmTarefa[]
-  crmTemplates       CrmTemplateMensagem[]
-  crmMetas           CrmMeta[]
-  mktgEventos        MktgEvento[]
-  mktgLandingPages   MktgLandingPage[]
-  mktgMetaContas     MktgMetaConta[]
-  mktgMetaCampanhas  MktgMetaCampanha[]
-  mktgMetaPosts      MktgMetaPost[]
-  mktgUtm            MktgUtm[]
-  mktgCriativos      MktgCriativo[]
-  mktgCampanhasEmail MktgCampanhaEmail[]
-  mktgCalendario     MktgCalendario[]
-  mktgLeads          MktgLead[]
-  mktgPixels         MktgPixel[]
 
   @@map("empresas")
 }
@@ -503,6 +449,8 @@ model EmpresaRedesSocial {
   instagram String?
   youtube   String?
   linkedin  String?
+  facebook  String?
+  tiktok    String?
   site      String?
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -520,6 +468,7 @@ model EmpresaDesign {
   logoIndexUrl String?  @map("logo_index_url")
   logoAppUrl   String?  @map("logo_app_url")
   faviconUrl   String?  @map("favicon_url")
+  dbConfig     Json?    @map("db_config")
   updatedAt    DateTime @updatedAt @map("updated_at")
 
   empresa Empresa @relation(fields: [empresaId], references: [id], onDelete: Cascade)
@@ -831,22 +780,6 @@ model CliRedes {
 // CORE — CONFIGURAÇÕES
 // ============================================================
 
-model EmpresaConfig {
-  id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  empresaId     String   @unique @map("empresa_id") @db.Uuid
-  logoUrl       String?  @map("logo_url")
-  theme         Json     @default("{}")
-  logoIndexUrl  String?  @map("logo_index_url")
-  logoAppUrl    String?  @map("logo_app_url")
-  faviconUrl    String?  @map("favicon_url")
-  dbConfig      Json?    @map("db_config")
-  updatedAt     DateTime @updatedAt @map("updated_at")
-
-  empresa Empresa @relation(fields: [empresaId], references: [id], onDelete: Cascade)
-
-  @@map("empresas_config")
-}
-
 model ModuloEmpresa {
   id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   empresaId String   @map("empresa_id") @db.Uuid
@@ -873,6 +806,20 @@ model EmpresaModuloLimit {
 
   @@unique([empresaId, moduloKey])
   @@map("empresa_modulo_limits")
+}
+
+model EmpresaRoleLimit {
+  id             String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  empresaId      String   @map("empresa_id") @db.Uuid
+  role           UserTipo
+  maxCredenciais Int      @default(999) @map("max_credenciais")
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  empresa Empresa @relation(fields: [empresaId], references: [id], onDelete: Cascade)
+
+  @@unique([empresaId, role])
+  @@map("empresa_role_limits")
 }
 
 model AppConfig {
@@ -1503,8 +1450,8 @@ model HubInviteToken {
   shareWhatsappMessage String?         @map("share_whatsapp_message")
   shareLink            String?         @map("share_link")
 
-  usedby   Usuario? @relation(fields: [usedById], references: [id], onDelete: SetNull)
-  createdby Usuario @relation(fields: [createdById], references: [id], onDelete: Cascade)
+  usedby   Usuario? @relation("HubInviteUsedBy", fields: [usedById], references: [id], onDelete: SetNull)
+  createdby Usuario @relation("HubInviteCreatedBy", fields: [createdById], references: [id], onDelete: Cascade)
   empresa  Empresa? @relation(fields: [empresaId], references: [id], onDelete: Cascade)
 
   @@map("hub_invite_tokens")

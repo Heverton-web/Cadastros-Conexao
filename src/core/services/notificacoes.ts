@@ -57,7 +57,7 @@ export async function listarTemplates(
   moduloKey?: string | null,
 ) {
   let query = supabase
-    .from("notificacoes_templates")
+    .from("notificacoes_modelos")
     .select("*")
     .order("evento");
 
@@ -77,7 +77,7 @@ export async function criarTemplate(
   input: Omit<NotificacaoTemplate, "id" | "created_at" | "updated_at">,
 ) {
   const { data, error } = await supabase
-    .from("notificacoes_templates")
+    .from("notificacoes_modelos")
     .insert({
       evento: input.evento,
       titulo: input.titulo,
@@ -102,7 +102,7 @@ export async function atualizarTemplate(
   ativo: boolean,
 ) {
   const { data, error } = await supabase
-    .from("notificacoes_templates")
+    .from("notificacoes_modelos")
     .update({
       titulo,
       corpo_template: corpo,
@@ -121,7 +121,7 @@ export async function atualizarTemplatePorId(
   input: Partial<Omit<NotificacaoTemplate, "id">>,
 ) {
   const { data, error } = await supabase
-    .from("notificacoes_templates")
+    .from("notificacoes_modelos")
     .update({
       ...input,
       updated_at: new Date().toISOString(),
@@ -135,7 +135,7 @@ export async function atualizarTemplatePorId(
 
 export async function deletarTemplate(id: string) {
   const { error } = await supabase
-    .from("notificacoes_templates")
+    .from("notificacoes_modelos")
     .delete()
     .eq("id", id);
   if (error) throw error;
@@ -149,7 +149,7 @@ export async function enviarNotificacaoComTemplate(
 ) {
   try {
     const { data: temp, error } = await supabase
-      .from("notificacoes_templates")
+      .from("notificacoes_modelos")
       .select("*")
       .eq("evento", evento)
       .eq("ativo", true)
@@ -292,7 +292,7 @@ export async function dispararNotificacoesInternas(
 ) {
   try {
     let query = supabase
-      .from("notificacoes_templates")
+      .from("notificacoes_modelos")
       .select("*")
       .eq("evento", evento)
       .eq("ativo", true);

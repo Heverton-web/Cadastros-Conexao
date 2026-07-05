@@ -219,7 +219,7 @@ export function DemosTab() {
           <button
             onClick={handleCriarLink}
             disabled={criandoLink}
-            className="flex items-center justify-center gap-1 rounded-xl bg-accent px-4 py-2.5 text-sm font-medium text-white disabled:opacity-50"
+            className="flex items-center justify-center gap-1 rounded-xl bg-accent px-4 py-2.5 text-sm font-medium text-accent-fg disabled:opacity-50"
           >
             {criandoLink ? (
               <Loader2 size={16} className="animate-spin" />
@@ -545,7 +545,7 @@ export function DemosTab() {
           <button
             onClick={handleCriarDemo}
             disabled={criandoDemo}
-            className="flex items-center justify-center gap-1 w-full md:w-auto rounded-xl bg-accent px-4 py-2.5 text-sm font-medium text-white disabled:opacity-50 mt-2 md:mt-0"
+            className="flex items-center justify-center gap-1 w-full md:w-auto rounded-xl bg-accent px-4 py-2.5 text-sm font-medium text-accent-fg disabled:opacity-50 mt-2 md:mt-0"
           >
             {criandoDemo ? (
               <Loader2 size={16} className="animate-spin" />

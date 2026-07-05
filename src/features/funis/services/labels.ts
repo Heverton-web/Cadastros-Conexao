@@ -6,7 +6,7 @@ const MODULO_KEY = "funis";
 
 export async function listarLabels(funilId: string): Promise<Label[]> {
   const { data, error } = await supabase
-    .from("funis_labels")
+    .from("funis_etiquetas")
     .select("*")
     .eq("funil_id", funilId)
     .order("nome");
@@ -27,7 +27,7 @@ export async function criarLabel(input: LabelInput): Promise<Label> {
     .single();
 
   const { data, error } = await supabase
-    .from("funis_labels")
+    .from("funis_etiquetas")
     .insert({
       funil_id: input.funil_id,
       nome: input.nome,
@@ -45,7 +45,7 @@ export async function atualizarLabel(
   input: Partial<LabelInput>,
 ): Promise<Label> {
   const { data, error } = await supabase
-    .from("funis_labels")
+    .from("funis_etiquetas")
     .update(input)
     .eq("id", id)
     .select()
@@ -55,7 +55,7 @@ export async function atualizarLabel(
 }
 
 export async function deletarLabel(id: string): Promise<void> {
-  const { error } = await supabase.from("funis_labels").delete().eq("id", id);
+  const { error } = await supabase.from("funis_etiquetas").delete().eq("id", id);
   if (error) throw error;
 }
 
@@ -64,13 +64,13 @@ export async function adicionarLabelTarefa(
   labelId: string,
 ): Promise<void> {
   const { error } = await supabase
-    .from("funis_tarefas_labels")
+    .from("funis_etiquetas_tarefa")
     .insert({ tarefa_id: tarefaId, label_id: labelId });
   if (error) throw error;
 
   // Buscar dados da label para incluir no evento
   const { data: label } = await supabase
-    .from("funis_labels")
+    .from("funis_etiquetas")
     .select("nome, cor, empresa_id")
     .eq("id", labelId)
     .single();
@@ -88,7 +88,7 @@ export async function removerLabelTarefa(
   labelId: string,
 ): Promise<void> {
   const { error } = await supabase
-    .from("funis_tarefas_labels")
+    .from("funis_etiquetas_tarefa")
     .delete()
     .eq("tarefa_id", tarefaId)
     .eq("label_id", labelId);
@@ -97,7 +97,7 @@ export async function removerLabelTarefa(
 
 export async function listarLabelsTarefa(tarefaId: string): Promise<Label[]> {
   const { data, error } = await supabase
-    .from("funis_tarefas_labels")
+    .from("funis_etiquetas_tarefa")
     .select("label:funis_labels(*)")
     .eq("tarefa_id", tarefaId);
   if (error) throw error;

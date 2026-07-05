@@ -9,6 +9,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
   DialogFooter,
 } from "~/components/ui/dialog";
 import { Input } from "~/components/ui/input";
@@ -165,13 +166,19 @@ export function TemplateManager() {
       )}
 
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="border-none">
-          <DialogHeader>
-            <DialogTitle className="font-display text-2xl">
-              Criar template
-            </DialogTitle>
+        <DialogContent className="bg-card max-h-[90dvh] overflow-hidden flex flex-col max-w-lg">
+          <DialogHeader className="bg-gradient-to-br from-accent/20 via-accent/10 to-transparent px-6 pt-6 pb-4 border-b border-border/50">
+            <div className="flex items-center gap-3">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent/15 text-accent">
+                <FileText className="h-6 w-6" />
+              </div>
+              <div>
+                <DialogTitle className="font-display text-2xl">Criar template</DialogTitle>
+                <DialogDescription>Crie um novo template para reutilizar em futuros funis</DialogDescription>
+              </div>
+            </div>
           </DialogHeader>
-          <form onSubmit={handleCreate} className="space-y-5">
+          <form onSubmit={handleCreate} className="px-6 py-6 flex-1 space-y-5">
             <div className="space-y-2">
               <Label>Nome</Label>
               <Input
@@ -233,21 +240,21 @@ export function TemplateManager() {
                 <Plus className="h-3.5 w-3.5" /> Adicionar coluna
               </Button>
             </div>
-            <DialogFooter>
-              <Button
+            <DialogFooter className="px-6 pb-6 pt-4 border-t border-border/50 gap-3">
+              <button
                 type="button"
-                variant="ghost"
                 onClick={() => setOpen(false)}
+                className="flex-1 sm:flex-none rounded-xl border border-border px-6 py-2.5 text-sm text-text-muted font-semibold hover:text-text-main hover:bg-surface-hover transition-all duration-200 min-h-[44px]"
               >
                 Cancelar
-              </Button>
-              <Button
+              </button>
+              <button
                 type="submit"
                 disabled={criarTemplate.isPending}
-                className="gradient-gold text-[#0f172a] font-semibold"
+                className="flex-1 sm:flex-none rounded-xl bg-accent px-6 py-2.5 text-sm font-semibold text-accent-fg shadow-md shadow-accent/20 hover:bg-accent-hover disabled:opacity-50 transition-all duration-200 min-h-[44px]"
               >
                 {criarTemplate.isPending ? "Criando..." : "Criar template"}
-              </Button>
+              </button>
             </DialogFooter>
           </form>
         </DialogContent>
@@ -257,18 +264,25 @@ export function TemplateManager() {
         open={!!showDelete}
         onOpenChange={(o) => !o && setShowDelete(null)}
       >
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Excluir template?</AlertDialogTitle>
-            <AlertDialogDescription>
-              Esta ação não pode ser desfeita.
-            </AlertDialogDescription>
+        <AlertDialogContent className="bg-card max-h-[90dvh] overflow-hidden flex flex-col max-w-lg">
+          <AlertDialogHeader className="bg-gradient-to-br from-accent/20 via-accent/10 to-transparent px-6 pt-6 pb-4 border-b border-border/50">
+            <div className="flex items-center gap-3">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent/15 text-accent">
+                <Trash2 className="h-6 w-6" />
+              </div>
+              <div>
+                <AlertDialogTitle>Excluir template?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  Esta ação não pode ser desfeita.
+                </AlertDialogDescription>
+              </div>
+            </div>
           </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+          <AlertDialogFooter className="px-6 pb-6 pt-4 border-t border-border/50 gap-3">
+            <AlertDialogCancel className="flex-1 sm:flex-none rounded-xl border border-border px-6 py-2.5 text-sm text-text-muted font-semibold hover:text-text-main hover:bg-surface-hover transition-all duration-200 min-h-[44px]">Cancelar</AlertDialogCancel>
             <AlertDialogAction
               onClick={() => showDelete && handleDelete(showDelete)}
-              className="bg-destructive"
+              className="flex-1 sm:flex-none rounded-xl bg-destructive px-6 py-2.5 text-sm font-semibold text-white shadow-md shadow-destructive/20 hover:bg-destructive/90 disabled:opacity-50 transition-all duration-200 min-h-[44px]"
             >
               Excluir
             </AlertDialogAction>

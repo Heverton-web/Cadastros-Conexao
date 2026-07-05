@@ -33,7 +33,7 @@ export type MockCredentialInput = {
 
 export async function getAppConfig() {
   const { data, error } = await supabase
-    .from("app_config")
+    .from("config_app")
     .select("*")
     .order("key");
   if (error) throw error;
@@ -43,7 +43,7 @@ export async function getAppConfig() {
 export async function updateAppConfig(key: string, value: string) {
   const { data: user } = await supabase.auth.getUser();
   const { data, error } = await supabase
-    .from("app_config")
+    .from("config_app")
     .upsert({ key, value, updated_by: user.user?.id || null })
     .select()
     .single();
@@ -53,7 +53,7 @@ export async function updateAppConfig(key: string, value: string) {
 
 export async function listMockCredentials() {
   const { data, error } = await supabase
-    .from("mock_credentials")
+    .from("credenciais_mock")
     .select("*")
     .order("identifier");
   if (error) throw error;
@@ -62,7 +62,7 @@ export async function listMockCredentials() {
 
 export async function createMockCredential(input: MockCredentialInput) {
   const { data, error } = await supabase
-    .from("mock_credentials")
+    .from("credenciais_mock")
     .insert(input)
     .select()
     .single();
@@ -75,7 +75,7 @@ export async function updateMockCredential(
   input: Partial<MockCredentialInput>,
 ) {
   const { data, error } = await supabase
-    .from("mock_credentials")
+    .from("credenciais_mock")
     .update({ ...input, updated_at: new Date().toISOString() })
     .eq("id", id)
     .select()
@@ -90,7 +90,7 @@ export async function toggleMockCredential(id: string, ativo: boolean) {
 
 export async function deleteMockCredential(id: string) {
   const { error } = await supabase
-    .from("mock_credentials")
+    .from("credenciais_mock")
     .delete()
     .eq("id", id);
   if (error) throw error;

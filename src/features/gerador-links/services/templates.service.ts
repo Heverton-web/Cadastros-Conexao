@@ -3,7 +3,7 @@ import type { TemplateMensagem, TipoTemplate } from "../types";
 
 export async function listarTemplates(empresaId: string): Promise<TemplateMensagem[]> {
   const { data } = await supabase
-    .from("gerador_templates")
+    .from("gerador_modelos")
     .select("*")
     .eq("empresa_id", empresaId)
     .order("created_at", { ascending: false });
@@ -17,7 +17,7 @@ export async function criarTemplate(input: {
   conteudo: Record<string, string>;
 }): Promise<TemplateMensagem> {
   const { data } = await supabase
-    .from("gerador_templates")
+    .from("gerador_modelos")
     .insert(input)
     .select()
     .single();
@@ -28,9 +28,9 @@ export async function atualizarTemplate(
   id: string,
   input: { nome?: string; conteudo?: Record<string, string> },
 ): Promise<void> {
-  await supabase.from("gerador_templates").update(input).eq("id", id);
+  await supabase.from("gerador_modelos").update(input).eq("id", id);
 }
 
 export async function deletarTemplate(id: string): Promise<void> {
-  await supabase.from("gerador_templates").delete().eq("id", id);
+  await supabase.from("gerador_modelos").delete().eq("id", id);
 }

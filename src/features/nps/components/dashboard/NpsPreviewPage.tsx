@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import { supabase } from "~/core/supabase";
 import { useAuth } from "~/lib/auth";
 import type { NpsPergunta } from "~/features/nps/types";
-import type { Empresa, EmpresaConfig } from "~/core/empresa";
+import type { Empresa, EmpresaDesign } from "~/core/empresa";
 import {
   buscarEmpresa,
-  buscarEmpresaConfig,
+  buscarEmpresaDesign,
   listarEmpresas,
 } from "~/shared/empresas";
 import { Button } from "~/components/ui/button";
@@ -57,7 +57,7 @@ export default function NpsPreviewPage() {
   const [selectedEmpresaId, setSelectedEmpresaId] = useState<string>("");
   const [questions, setQuestions] = useState<NpsPergunta[]>([]);
   const [empresa, setEmpresa] = useState<Empresa | null>(null);
-  const [empresaConfig, setEmpresaConfig] = useState<EmpresaConfig | null>(
+  const [empresaConfig, setEmpresaConfig] = useState<EmpresaDesign | null>(
     null,
   );
   const [loading, setLoading] = useState(true);
@@ -97,7 +97,7 @@ export default function NpsPreviewPage() {
 
     Promise.all([
       buscarEmpresa(selectedEmpresaId).catch(() => null),
-      buscarEmpresaConfig(selectedEmpresaId).catch(() => null),
+      buscarEmpresaDesign(selectedEmpresaId).catch(() => null),
       supabase
         .from("nps_perguntas")
         .select("*")

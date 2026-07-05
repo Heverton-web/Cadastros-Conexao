@@ -111,7 +111,7 @@ export function PwaInstallPrompt() {
           {!iosDevice && deferredPrompt && (
             <button
               onClick={handleInstall}
-              className="rounded-lg bg-accent px-4 py-2 text-xs font-semibold text-white transition-colors hover:bg-accent/90"
+              className="rounded-lg bg-accent px-4 py-2 text-xs font-semibold text-accent-fg transition-colors hover:bg-accent/90"
             >
               Instalar
             </button>

@@ -110,7 +110,7 @@ function TestRunnerPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ testFiles: category.testFiles }),
-        signal,
+        signal: signal || AbortSignal.timeout(30000),
       });
       const raw = await res.json();
       const parsed = parseVitestOutput(raw.output);
@@ -464,63 +464,67 @@ function LogsModal({
 
   return (
     <Dialog open={open} onOpenChange={(o) => !o && onClose()}>
-      <DialogContent className="max-w-4xl max-h-[85vh] flex flex-col bg-card border-border">
+      <DialogContent className="max-w-4xl">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <Terminal size={18} />
-            Logs — {category.label}
-          </DialogTitle>
-          <DialogDescription>
-            Saída completa dos testes executados
-          </DialogDescription>
-        </DialogHeader>
-
-        {result && (
-          <div className="flex flex-wrap gap-4 text-sm">
-            <div className="flex items-center gap-1.5">
-              <CheckCircle2 size={14} className="text-green-600" />
-              <span className="text-muted-foreground">Passaram:</span>
-              <span className="font-medium text-foreground">
-                {result.numPassedTests}
-              </span>
+          <div className="flex items-center gap-3">
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent/15 text-accent">
+              <Terminal className="h-6 w-6" />
             </div>
-            <div className="flex items-center gap-1.5">
-              <XCircle size={14} className="text-red-600" />
-              <span className="text-muted-foreground">Falharam:</span>
-              <span className="font-medium text-foreground">
-                {result.numFailedTests}
-              </span>
-            </div>
-            <div className="flex items-center gap-1.5">
-              <FileText size={14} className="text-muted-foreground" />
-              <span className="text-muted-foreground">Total:</span>
-              <span className="font-medium text-foreground">
-                {result.numTotalTests}
-              </span>
-            </div>
-            <div className="flex items-center gap-1.5">
-              {result.success ? (
-                <CheckCircle2 size={14} className="text-green-600" />
-              ) : (
-                <XCircle size={14} className="text-red-600" />
-              )}
-              <span className="font-medium text-foreground">
-                {result.success ? "Sucesso" : "Falhou"}
-              </span>
+            <div>
+              <DialogTitle>Logs — {category.label}</DialogTitle>
+              <DialogDescription>Saída completa dos testes executados</DialogDescription>
             </div>
           </div>
-        )}
+        </DialogHeader>
 
-        <div className="flex-1 overflow-hidden rounded-lg border border-border bg-muted">
-          <pre className="h-full max-h-[60vh] overflow-auto p-4 text-xs text-foreground font-mono whitespace-pre-wrap break-words">
-            {rawOutput || "Nenhum log disponível. Execute os testes primeiro."}
-          </pre>
+        <div className="px-6 py-6 flex-1 space-y-4">
+          {result && (
+            <div className="flex flex-wrap gap-4 text-sm">
+              <div className="flex items-center gap-1.5">
+                <CheckCircle2 size={14} className="text-green-600" />
+                <span className="text-muted-foreground">Passaram:</span>
+                <span className="font-medium text-foreground">
+                  {result.numPassedTests}
+                </span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <XCircle size={14} className="text-red-600" />
+                <span className="text-muted-foreground">Falharam:</span>
+                <span className="font-medium text-foreground">
+                  {result.numFailedTests}
+                </span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <FileText size={14} className="text-muted-foreground" />
+                <span className="text-muted-foreground">Total:</span>
+                <span className="font-medium text-foreground">
+                  {result.numTotalTests}
+                </span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                {result.success ? (
+                  <CheckCircle2 size={14} className="text-green-600" />
+                ) : (
+                  <XCircle size={14} className="text-red-600" />
+                )}
+                <span className="font-medium text-foreground">
+                  {result.success ? "Sucesso" : "Falhou"}
+                </span>
+              </div>
+            </div>
+          )}
+
+          <div className="flex-1 overflow-hidden rounded-lg border border-border bg-muted">
+            <pre className="h-full max-h-[60vh] overflow-auto p-4 text-xs text-foreground font-mono whitespace-pre-wrap break-words">
+              {rawOutput || "Nenhum log disponível. Execute os testes primeiro."}
+            </pre>
+          </div>
         </div>
 
-        <div className="flex justify-end">
+        <div className="px-6 pb-6 pt-4 border-t border-border/50 flex justify-end">
           <button
             onClick={onClose}
-            className="flex cursor-pointer items-center gap-2 rounded-lg border border-border bg-card px-4 py-2 text-sm text-muted-foreground transition-colors hover:bg-accent"
+            className="flex-1 sm:flex-none rounded-xl border border-border px-6 py-2.5 text-sm text-text-muted font-semibold hover:text-text-main hover:bg-surface-hover transition-all duration-200 min-h-[44px] cursor-pointer items-center justify-center gap-2"
           >
             <X size={14} />
             Fechar

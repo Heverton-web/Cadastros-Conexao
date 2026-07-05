@@ -14,7 +14,7 @@ export async function verificarEAExecutarTriggers(
   if (!tarefa) return;
 
   const { data: automacoes } = await supabase
-    .from("funis_automations")
+    .from("funis_automacoes")
     .select("*")
     .eq("funil_id", tarefa.funil_id)
     .eq("trigger_type", trigger)
@@ -84,12 +84,12 @@ async function executarAcao(
       break;
     case "adicionar_label":
       await supabase
-        .from("funis_tarefas_labels")
+        .from("funis_etiquetas_tarefa")
         .insert({ tarefa_id: tarefaId, label_id: config.label_id });
       break;
     case "remover_label":
       await supabase
-        .from("funis_tarefas_labels")
+        .from("funis_etiquetas_tarefa")
         .delete()
         .eq("tarefa_id", tarefaId)
         .eq("label_id", config.label_id);
@@ -98,7 +98,7 @@ async function executarAcao(
       const userIds = (config.user_ids as string[]) || [];
       for (const uid of userIds)
         await supabase
-          .from("funis_notifications")
+          .from("funis_notificacoes")
           .insert({
             user_id: uid,
             titulo: automation.nome,

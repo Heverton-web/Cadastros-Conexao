@@ -26,7 +26,7 @@ export type Empresa = {
   updated_at: string;
 };
 
-export type EmpresaConfig = {
+export type EmpresaDesign = {
   empresa_id: string;
   logo_url?: string;
   logo_index_url?: string;
@@ -36,6 +36,9 @@ export type EmpresaConfig = {
   db_config?: Record<string, string>;
   updated_at: string;
 };
+
+/** @deprecated Use EmpresaDesign */
+export type EmpresaConfig = EmpresaDesign;
 
 export type ModuloEmpresa = {
   id: string;

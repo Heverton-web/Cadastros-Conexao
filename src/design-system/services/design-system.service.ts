@@ -31,7 +31,7 @@ export interface DesignSystemModulo {
 
 export async function getDesignGlobal(): Promise<DesignSystemGlobal | null> {
   const { data, error } = await supabase
-    .from("design_system_global")
+    .from("design_sistema_global")
     .select("*")
     .maybeSingle();
   if (error) throw error;
@@ -43,7 +43,7 @@ export async function saveDesignGlobal(payload: {
   tokens_override?: Partial<DesignTokens>;
   versao?: string;
 }): Promise<void> {
-  const { error } = await supabase.from("design_system_global").upsert(
+  const { error } = await supabase.from("design_sistema_global").upsert(
     {
       preset_key: payload.preset_key ?? null,
       tokens_override: payload.tokens_override ?? {},
@@ -61,7 +61,7 @@ export async function getDesignEmpresa(
   empresaId: string,
 ): Promise<DesignSystemEmpresa | null> {
   const { data, error } = await supabase
-    .from("design_system_empresa")
+    .from("empresa_design_system")
     .select("*")
     .eq("empresa_id", empresaId)
     .maybeSingle();
@@ -75,7 +75,7 @@ export async function saveDesignEmpresa(payload: {
   tokens_override?: Partial<DesignTokens>;
   versao?: string;
 }): Promise<void> {
-  const { error } = await supabase.from("design_system_empresa").upsert(
+  const { error } = await supabase.from("empresa_design_system").upsert(
     {
       empresa_id: payload.empresa_id,
       preset_key: payload.preset_key ?? null,
@@ -95,7 +95,7 @@ export async function getDesignModulo(
   moduloKey: string,
 ): Promise<DesignSystemModulo | null> {
   const { data, error } = await supabase
-    .from("design_system_modulo")
+    .from("design_sistema_modulo")
     .select("*")
     .eq("empresa_id", empresaId)
     .eq("modulo_key", moduloKey)
@@ -110,7 +110,7 @@ export async function saveDesignModulo(payload: {
   tokens_override?: Partial<DesignTokens>;
   versao?: string;
 }): Promise<void> {
-  const { error } = await supabase.from("design_system_modulo").upsert(
+  const { error } = await supabase.from("design_sistema_modulo").upsert(
     {
       empresa_id: payload.empresa_id,
       modulo_key: payload.modulo_key,

@@ -30,6 +30,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
   DialogFooter,
 } from "~/components/ui/dialog";
 import {
@@ -220,19 +221,26 @@ export function FunilDetallePage() {
       )}
 
       <AlertDialog open={showDelete} onOpenChange={setShowDelete}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Excluir funil?</AlertDialogTitle>
-            <AlertDialogDescription>
-              Esta ação é permanente. Todas as colunas e tarefas serão
-              removidas.
-            </AlertDialogDescription>
+        <AlertDialogContent className="bg-card max-h-[90dvh] overflow-hidden flex flex-col max-w-lg">
+          <AlertDialogHeader className="bg-gradient-to-br from-accent/20 via-accent/10 to-transparent px-6 pt-6 pb-4 border-b border-border/50">
+            <div className="flex items-center gap-3">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent/15 text-accent">
+                <Trash2 className="h-6 w-6" />
+              </div>
+              <div>
+                <AlertDialogTitle>Excluir funil?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  Esta ação é permanente. Todas as colunas e tarefas serão
+                  removidas.
+                </AlertDialogDescription>
+              </div>
+            </div>
           </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+          <AlertDialogFooter className="px-6 pb-6 pt-4 border-t border-border/50 gap-3">
+            <AlertDialogCancel className="flex-1 sm:flex-none rounded-xl border border-border px-6 py-2.5 text-sm text-text-muted font-semibold hover:text-text-main hover:bg-surface-hover transition-all duration-200 min-h-[44px]">Cancelar</AlertDialogCancel>
             <AlertDialogAction
               onClick={handleDelete}
-              className="bg-destructive text-destructive-foreground"
+              className="flex-1 sm:flex-none rounded-xl bg-destructive px-6 py-2.5 text-sm font-semibold text-white shadow-md shadow-destructive/20 hover:bg-destructive/90 disabled:opacity-50 transition-all duration-200 min-h-[44px]"
             >
               Excluir
             </AlertDialogAction>
@@ -241,13 +249,21 @@ export function FunilDetallePage() {
       </AlertDialog>
 
       <Dialog open={showEdit} onOpenChange={setShowEdit}>
-        <DialogContent className="border-none">
-          <DialogHeader>
-            <DialogTitle className="text-2xl font-bold text-text-main tracking-tight">
-              Editar funil
-            </DialogTitle>
+        <DialogContent className="bg-card max-h-[90dvh] overflow-hidden flex flex-col max-w-lg">
+          <DialogHeader className="bg-gradient-to-br from-accent/20 via-accent/10 to-transparent px-6 pt-6 pb-4 border-b border-border/50">
+            <div className="flex items-center gap-3">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent/15 text-accent">
+                <Pencil className="h-6 w-6" />
+              </div>
+              <div>
+                <DialogTitle className="text-2xl font-bold text-text-main tracking-tight">
+                  Editar funil
+                </DialogTitle>
+                <DialogDescription>Atualize as informações do funil</DialogDescription>
+              </div>
+            </div>
           </DialogHeader>
-          <form onSubmit={handleUpdate} className="space-y-5">
+          <form onSubmit={handleUpdate} className="px-6 py-6 flex-1 space-y-5">
             <div className="space-y-2">
               <Label>Nome</Label>
               <Input
@@ -321,21 +337,21 @@ export function FunilDetallePage() {
                 <Plus className="h-3.5 w-3.5" /> Adicionar etapa
               </Button>
             </div>
-            <DialogFooter>
-              <Button
+            <DialogFooter className="px-6 pb-6 pt-4 border-t border-border/50 gap-3">
+              <button
                 type="button"
-                variant="ghost"
                 onClick={() => setShowEdit(false)}
+                className="flex-1 sm:flex-none rounded-xl border border-border px-6 py-2.5 text-sm text-text-muted font-semibold hover:text-text-main hover:bg-surface-hover transition-all duration-200 min-h-[44px]"
               >
                 Cancelar
-              </Button>
-              <Button
+              </button>
+              <button
                 type="submit"
                 disabled={atualizarFunil.isPending}
-                className="flex items-center gap-2 rounded-xl bg-accent text-accent-fg px-5 py-2.5 text-sm font-semibold hover:bg-accent-hover transition-all duration-200 min-h-[44px] shadow-lg shadow-accent/20"
+                className="flex-1 sm:flex-none rounded-xl bg-accent px-6 py-2.5 text-sm font-semibold text-accent-fg shadow-md shadow-accent/20 hover:bg-accent-hover disabled:opacity-50 transition-all duration-200 min-h-[44px]"
               >
                 {atualizarFunil.isPending ? "Salvando..." : "Salvar alterações"}
-              </Button>
+              </button>
             </DialogFooter>
           </form>
         </DialogContent>

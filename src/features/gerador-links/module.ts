@@ -17,6 +17,8 @@ import {
 } from "~/registry";
 import type { ModuleDefinition } from "~/registry";
 import { GERADOR_LINKS_PERMISSIONS } from "./permissions";
+import { registrarPlanoDiagnostico } from "~/core/diagnostic";
+import { geradorLinksDiagnosticPlan } from "./diagnostic";
 
 export const geradorLinksModule: ModuleDefinition = {
   key: "gerador-links",
@@ -59,7 +61,9 @@ export const geradorLinksModule: ModuleDefinition = {
       type: "status_change",
     },
   ],
+  hasDiagnostico: true,
   setup: () => {
+    registrarPlanoDiagnostico(geradorLinksDiagnosticPlan);
     for (const p of GERADOR_LINKS_PERMISSIONS)
       registerPermission({
         key: p.key,

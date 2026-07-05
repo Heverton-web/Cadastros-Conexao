@@ -7,6 +7,8 @@ import {
 } from "~/registry";
 import type { ModuleDefinition } from "~/registry";
 import { UTMS_PERMISSIONS } from "./permissions";
+import { registrarPlanoDiagnostico } from "~/core/diagnostic";
+import { utmsDiagnosticPlan } from "./diagnostic";
 
 export const utmsModule: ModuleDefinition = {
   key: "mktg-utms",
@@ -18,7 +20,9 @@ export const utmsModule: ModuleDefinition = {
   ambientes: ["cadastro", "tecnologia"],
   abas: [],
   events: [],
+  hasDiagnostico: true,
   setup: () => {
+    registrarPlanoDiagnostico(utmsDiagnosticPlan);
     for (const p of UTMS_PERMISSIONS)
       registerPermission({
         key: p.key,

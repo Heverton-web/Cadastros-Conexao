@@ -27,6 +27,7 @@ import {
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogFooter,
@@ -289,11 +290,19 @@ export function HistoricoList() {
         open={!!editandoLink}
         onOpenChange={(o) => !o && setEditandoLink(null)}
       >
-        <DialogContent className="fixed left-[50%] top-[50%] z-50 w-[calc(100%-2rem)] max-w-lg translate-x-[-50%] translate-y-[-50%] bg-surface border border-border/50 rounded-2xl shadow-2xl shadow-black/40 p-6 sm:p-8">
-          <DialogHeader className="flex flex-col gap-1 text-center sm:text-left mb-4">
-            <DialogTitle className="text-xl font-bold text-text-main tracking-tight">Editar link</DialogTitle>
+        <DialogContent className="max-w-lg">
+          <DialogHeader>
+            <div className="flex items-center gap-3">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent/15 text-accent">
+                <Pencil className="h-6 w-6" />
+              </div>
+              <div>
+                <DialogTitle>Editar link</DialogTitle>
+                <DialogDescription>Altere o título do link salvo.</DialogDescription>
+              </div>
+            </div>
           </DialogHeader>
-          <div className="space-y-4 py-2">
+          <div className="px-6 py-6 flex-1 space-y-4">
             <div className="space-y-2">
               <label className="text-sm font-semibold text-text-main">Título</label>
               <Input
@@ -303,11 +312,11 @@ export function HistoricoList() {
               />
             </div>
           </div>
-          <DialogFooter className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end sm:gap-3 mt-6 pt-4 border-t border-border/50">
-            <Button variant="outline" onClick={() => setEditandoLink(null)} className="rounded-xl">Cancelar</Button>
-            <Button onClick={handleSaveEdit} disabled={!editTitulo.trim() || editarLink.isPending} className="rounded-xl shadow-md shadow-accent/20">
+          <DialogFooter>
+            <button type="button" onClick={() => setEditandoLink(null)} className="flex-1 sm:flex-none rounded-xl border border-border px-6 py-2.5 text-sm text-text-muted font-semibold hover:text-text-main hover:bg-surface-hover transition-all duration-200 min-h-[44px]">Cancelar</button>
+            <button type="button" onClick={handleSaveEdit} disabled={!editTitulo.trim() || editarLink.isPending} className="flex-1 sm:flex-none rounded-xl bg-accent px-6 py-2.5 text-sm font-semibold text-accent-fg shadow-md shadow-accent/20 hover:bg-accent-hover disabled:opacity-50 transition-all duration-200 min-h-[44px]">
               Salvar
-            </Button>
+            </button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -323,9 +332,9 @@ export function HistoricoList() {
               Esta ação não pode ser desfeita. O link "{itemParaDeletar?.titulo}" será removido permanentemente.
             </AlertDialogDescription>
           </AlertDialogHeader>
-          <AlertDialogFooter className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end sm:gap-3 mt-6 pt-4 border-t border-border/50">
-            <AlertDialogCancel className="border-border text-text-main rounded-xl">Cancelar</AlertDialogCancel>
-            <AlertDialogAction onClick={handleConfirmDelete} className="bg-destructive hover:bg-destructive/90 text-white border-0 rounded-xl shadow-lg shadow-error/25">
+          <AlertDialogFooter>
+            <AlertDialogCancel className="flex-1 sm:flex-none rounded-xl border border-border px-6 py-2.5 text-sm text-text-muted font-semibold hover:text-text-main hover:bg-surface-hover transition-all duration-200 min-h-[44px]">Cancelar</AlertDialogCancel>
+            <AlertDialogAction onClick={handleConfirmDelete} className="flex-1 sm:flex-none rounded-xl bg-accent px-6 py-2.5 text-sm font-semibold text-accent-fg shadow-md shadow-accent/20 hover:bg-accent-hover disabled:opacity-50 transition-all duration-200 min-h-[44px]">
               Excluir
             </AlertDialogAction>
           </AlertDialogFooter>
@@ -336,10 +345,19 @@ export function HistoricoList() {
         open={!!linkCliques}
         onOpenChange={(o) => !o && setLinkCliques(null)}
       >
-        <DialogContent className="fixed left-[50%] top-[50%] z-50 w-[calc(100%-2rem)] max-w-2xl translate-x-[-50%] translate-y-[-50%] bg-surface border border-border/50 rounded-2xl shadow-2xl shadow-black/40 p-6 sm:p-8 max-h-[80vh] overflow-y-auto">
-          <DialogHeader className="flex flex-col gap-1 text-center sm:text-left mb-4">
-            <DialogTitle className="text-xl font-bold text-text-main tracking-tight">Cliques: {linkCliques?.link.titulo}</DialogTitle>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <div className="flex items-center gap-3">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent/15 text-accent">
+                <BarChart3 className="h-6 w-6" />
+              </div>
+              <div>
+                <DialogTitle>Cliques: {linkCliques?.link.titulo}</DialogTitle>
+                <DialogDescription>Estatísticas de cliques do link.</DialogDescription>
+              </div>
+            </div>
           </DialogHeader>
+          <div className="px-6 py-6 flex-1 space-y-4">
           {carregandoCliques ? (
             <div className="flex items-center justify-center py-8">
               <Loader2 className="w-6 h-6 animate-spin text-accent" />
@@ -396,6 +414,7 @@ export function HistoricoList() {
               </div>
             </div>
           )}
+          </div>
         </DialogContent>
       </Dialog>
     </div>

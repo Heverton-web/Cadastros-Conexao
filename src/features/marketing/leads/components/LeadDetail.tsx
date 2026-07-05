@@ -246,11 +246,14 @@ export function LeadDetail() {
 
       {/* Modal de Editar Lead */}
       <Dialog open={editarOpen} onOpenChange={setEditarOpen}>
-        <DialogContent className="max-w-md bg-card border-border">
+        <DialogContent className="max-w-md">
           <DialogHeader>
-            <DialogTitle>Editar Lead</DialogTitle>
-            <DialogDescription>Edite as informações básicas do lead.</DialogDescription>
+            <div className="flex items-center gap-3">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent/15 text-accent"><Edit className="h-6 w-6" /></div>
+              <div><DialogTitle>Editar Lead</DialogTitle><DialogDescription>Edite as informações básicas do lead.</DialogDescription></div>
+            </div>
           </DialogHeader>
+          <div className="px-6 py-6 flex-1 space-y-4">
           <form onSubmit={handleEditarLead} className="space-y-4">
             <div className="space-y-1">
               <label className="text-xs text-text-muted font-medium">Nome *</label>
@@ -311,14 +314,15 @@ export function LeadDetail() {
               </div>
             </div>
             <DialogFooter>
-              <Button type="button" variant="ghost" onClick={() => setEditarOpen(false)}>
+              <button type="button" onClick={() => setEditarOpen(false)} className="flex-1 sm:flex-none rounded-xl border border-border px-6 py-2.5 text-sm text-text-muted font-semibold hover:text-text-main hover:bg-surface-hover transition-all duration-200 min-h-[44px]">
                 Cancelar
-              </Button>
-              <Button type="submit" disabled={salvando}>
+              </button>
+              <button type="submit" disabled={salvando} className="flex-1 sm:flex-none rounded-xl bg-accent px-6 py-2.5 text-sm font-semibold text-accent-fg shadow-md shadow-accent/20 hover:bg-accent-hover disabled:opacity-50 transition-all duration-200 min-h-[44px]">
                 {salvando ? "Salvando..." : "Salvar"}
-              </Button>
+              </button>
             </DialogFooter>
           </form>
+          </div>
         </DialogContent>
       </Dialog>
     </div>

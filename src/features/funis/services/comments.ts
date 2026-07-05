@@ -6,7 +6,7 @@ const MODULO_KEY = "funis";
 
 export async function listarComentarios(tarefaId: string): Promise<Comment[]> {
   const { data, error } = await supabase
-    .from("funis_comments")
+    .from("funis_comentarios")
     .select("*, user:profiles!funis_comments_user_id_fkey(full_name, email)")
     .eq("tarefa_id", tarefaId)
     .order("created_at", { ascending: true });
@@ -24,7 +24,7 @@ export async function criarComentario(
   if (!user) throw new Error("Não autenticado");
 
   const { data, error } = await supabase
-    .from("funis_comments")
+    .from("funis_comentarios")
     .insert({
       tarefa_id: tarefaId,
       user_id: user.id,
@@ -49,7 +49,7 @@ export async function atualizarComentario(
   texto: string,
 ): Promise<Comment> {
   const { data, error } = await supabase
-    .from("funis_comments")
+    .from("funis_comentarios")
     .update({ texto })
     .eq("id", id)
     .select("*, user:profiles!funis_comments_user_id_fkey(full_name, email)")
@@ -59,6 +59,6 @@ export async function atualizarComentario(
 }
 
 export async function deletarComentario(id: string): Promise<void> {
-  const { error } = await supabase.from("funis_comments").delete().eq("id", id);
+  const { error } = await supabase.from("funis_comentarios").delete().eq("id", id);
   if (error) throw error;
 }

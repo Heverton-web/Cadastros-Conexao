@@ -4,12 +4,13 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
   DialogFooter,
 } from "~/components/ui/dialog";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { Textarea } from "~/components/ui/textarea";
-import { Button } from "~/components/ui/button";
+
 import {
   Select,
   SelectContent,
@@ -185,14 +186,22 @@ export function NovaVisitaModal({ clienteId, open, onOpenChange }: Props) {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-3xl max-h-[92vh] overflow-y-auto">
+      <DialogContent className="max-w-3xl">
         <DialogHeader>
-          <DialogTitle>Nova visita</DialogTitle>
-          <p className="text-sm text-text-muted">
-            Registre o que aconteceu e defina os próximos passos com o cliente.
-          </p>
+          <div className="flex items-center gap-3">
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent/15 text-accent">
+              <Calendar className="h-6 w-6" />
+            </div>
+            <div>
+              <DialogTitle>Nova visita</DialogTitle>
+              <DialogDescription>
+                Registre o que aconteceu e defina os próximos passos com o cliente.
+              </DialogDescription>
+            </div>
+          </div>
         </DialogHeader>
 
+        <div className="px-6 py-6 flex-1 space-y-4">
         <form onSubmit={handleSubmit} className="space-y-6">
           <Section icon={Calendar} title="Dados da visita">
             <Field label="Data da visita">
@@ -373,22 +382,27 @@ export function NovaVisitaModal({ clienteId, open, onOpenChange }: Props) {
           </Section>
 
           <DialogFooter>
-            <Button
+            <button
               type="button"
-              variant="ghost"
               onClick={() => onOpenChange(false)}
+              className="flex-1 sm:flex-none rounded-xl border border-border px-6 py-2.5 text-sm text-text-muted font-semibold hover:text-text-main hover:bg-surface-hover transition-all duration-200 min-h-[44px]"
             >
               Cancelar
-            </Button>
-            <Button type="submit" disabled={busy}>
+            </button>
+            <button
+              type="submit"
+              disabled={busy}
+              className="flex-1 sm:flex-none rounded-xl bg-accent px-6 py-2.5 text-sm font-semibold text-accent-fg shadow-md shadow-accent/20 hover:bg-accent-hover disabled:opacity-50 transition-all duration-200 min-h-[44px]"
+            >
               {busy ? (
                 <Loader2 className="h-4 w-4 animate-spin" />
               ) : (
                 "Salvar visita"
               )}
-            </Button>
+            </button>
           </DialogFooter>
         </form>
+        </div>
       </DialogContent>
     </Dialog>
   );

@@ -7,6 +7,8 @@ import {
 } from "~/registry";
 import type { ModuleDefinition } from "~/registry";
 import { META_BM_PERMISSIONS } from "./permissions";
+import { registrarPlanoDiagnostico } from "~/core/diagnostic";
+import { metaBmDiagnosticPlan } from "./diagnostic";
 
 export const metaBmModule: ModuleDefinition = {
   key: "mktg-meta-bm",
@@ -38,9 +40,11 @@ export const metaBmModule: ModuleDefinition = {
     },
   ],
   events: [],
+  hasDiagnostico: true,
   hasCredentialScopes: true,
   hasApiConnectors: true,
   setup: () => {
+    registrarPlanoDiagnostico(metaBmDiagnosticPlan);
     for (const p of META_BM_PERMISSIONS) {
       registerPermission({
         key: p.key,

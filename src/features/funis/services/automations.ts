@@ -6,7 +6,7 @@ const MODULO_KEY = "funis";
 
 export async function listarAutomacoes(funilId: string): Promise<Automation[]> {
   const { data, error } = await supabase
-    .from("funis_automations")
+    .from("funis_automacoes")
     .select("*")
     .eq("funil_id", funilId)
     .order("created_at", { ascending: false });
@@ -24,7 +24,7 @@ export async function criarAutomacao(
   if (!user) throw new Error("Não autenticado");
 
   const { data, error } = await supabase
-    .from("funis_automations")
+    .from("funis_automacoes")
     .insert({
       funil_id: input.funil_id,
       nome: input.nome,
@@ -46,7 +46,7 @@ export async function atualizarAutomacao(
   input: Partial<AutomationInput>,
 ): Promise<Automation> {
   const { data, error } = await supabase
-    .from("funis_automations")
+    .from("funis_automacoes")
     .update(input)
     .eq("id", id)
     .select()
@@ -57,7 +57,7 @@ export async function atualizarAutomacao(
 
 export async function deletarAutomacao(id: string): Promise<void> {
   const { error } = await supabase
-    .from("funis_automations")
+    .from("funis_automacoes")
     .delete()
     .eq("id", id);
   if (error) throw error;
@@ -68,7 +68,7 @@ export async function toggleAutomacao(
   ativo: boolean,
 ): Promise<void> {
   const { error } = await supabase
-    .from("funis_automations")
+    .from("funis_automacoes")
     .update({ ativo })
     .eq("id", id);
   if (error) throw error;
@@ -79,7 +79,7 @@ export async function listarAutomacoesPorTrigger(
   triggerType: string,
 ): Promise<Automation[]> {
   const { data, error } = await supabase
-    .from("funis_automations")
+    .from("funis_automacoes")
     .select("*")
     .eq("funil_id", funilId)
     .eq("trigger_type", triggerType)
@@ -94,7 +94,7 @@ export async function executarAutomacao(
   dados?: Record<string, unknown>,
 ): Promise<void> {
   const { data: automation } = await supabase
-    .from("funis_automations")
+    .from("funis_automacoes")
     .select("*")
     .eq("id", automationId)
     .single();
@@ -127,14 +127,14 @@ export async function executarAutomacao(
     }
     case "adicionar_label": {
       await supabase
-        .from("funis_tarefas_labels")
+        .from("funis_etiquetas_tarefa")
         .insert({ tarefa_id: tarefaId, label_id: config.label_id as string })
         .select();
       break;
     }
     case "remover_label": {
       await supabase
-        .from("funis_tarefas_labels")
+        .from("funis_etiquetas_tarefa")
         .delete()
         .eq("tarefa_id", tarefaId)
         .eq("label_id", config.label_id as string);
@@ -144,7 +144,7 @@ export async function executarAutomacao(
       const userIds = (config.user_ids as string[]) || [];
       const mensagem = (config.mensagem as string) || "Notificação automática";
       for (const userId of userIds) {
-        await supabase.from("funis_notifications").insert({
+        await supabase.from("funis_notificacoes").insert({
           user_id: userId,
           titulo: automation.nome,
           mensagem,

@@ -234,7 +234,7 @@ export function NpsDashboardPage() {
     }
     // Get profile name
     const { data: profile } = await supabase
-      .from("dashboard_profiles")
+      .from("dashboard_perfis")
       .select("full_name, role")
       .eq("id", session.user.id)
       .single();

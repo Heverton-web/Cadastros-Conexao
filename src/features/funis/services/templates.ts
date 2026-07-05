@@ -3,7 +3,7 @@ import type { Template, TemplateInput } from "../types";
 
 export async function listarTemplates(empresaId?: string): Promise<Template[]> {
   let query = supabase
-    .from("funis_templates")
+    .from("funis_modelos")
     .select(
       "*, colunas:funis_template_cols(*), tarefas:funis_template_tasks(*)",
     )
@@ -22,7 +22,7 @@ export async function listarTemplates(empresaId?: string): Promise<Template[]> {
 
 export async function buscarTemplate(id: string): Promise<Template> {
   const { data, error } = await supabase
-    .from("funis_templates")
+    .from("funis_modelos")
     .select(
       "*, colunas:funis_template_cols(*), tarefas:funis_template_tasks(*)",
     )
@@ -49,7 +49,7 @@ export async function criarTemplate(
   if (!user) throw new Error("Não autenticado");
 
   const { data, error } = await supabase
-    .from("funis_templates")
+    .from("funis_modelos")
     .insert({
       nome: input.nome,
       descricao: input.descricao ?? null,
@@ -69,7 +69,7 @@ export async function criarTemplate(
       posicao: index,
     }));
     const { error: colunasError } = await supabase
-      .from("funis_template_cols")
+      .from("funis_colunas_modelo")
       .insert(colunasData);
     if (colunasError) throw colunasError;
   }
@@ -84,7 +84,7 @@ export async function criarTemplate(
       posicao: 0,
     }));
     const { error: tarefasError } = await supabase
-      .from("funis_template_tasks")
+      .from("funis_tarefas_modelo")
       .insert(tarefasData);
     if (tarefasError) throw tarefasError;
   }
@@ -97,7 +97,7 @@ export async function atualizarTemplate(
   input: Partial<TemplateInput>,
 ): Promise<Template> {
   const { data, error } = await supabase
-    .from("funis_templates")
+    .from("funis_modelos")
     .update({
       nome: input.nome,
       descricao: input.descricao,
@@ -112,7 +112,7 @@ export async function atualizarTemplate(
 
 export async function deletarTemplate(id: string): Promise<void> {
   const { error } = await supabase
-    .from("funis_templates")
+    .from("funis_modelos")
     .delete()
     .eq("id", id);
   if (error) throw error;

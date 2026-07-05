@@ -59,13 +59,21 @@ export function ClientePickerModal({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-lg">
         <DialogHeader>
-          <DialogTitle>Selecionar cliente</DialogTitle>
-          <DialogDescription>
-            Escolha o cliente para registrar a nova visita.
-          </DialogDescription>
+          <div className="flex items-center gap-3">
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent/15 text-accent">
+              <User className="h-6 w-6" />
+            </div>
+            <div>
+              <DialogTitle>Selecionar cliente</DialogTitle>
+              <DialogDescription>
+                Escolha o cliente para registrar a nova visita.
+              </DialogDescription>
+            </div>
+          </div>
         </DialogHeader>
 
-        <div className="relative">
+        <div className="px-6 py-6 flex-1 space-y-4">
+          <div className="relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input
             autoFocus
@@ -116,6 +124,7 @@ export function ClientePickerModal({
               </li>
             ))}
           </ul>
+        </div>
         </div>
       </DialogContent>
     </Dialog>

@@ -14,6 +14,7 @@ import { Input } from "~/components/ui/input";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogFooter,
@@ -221,27 +222,22 @@ function MapasAdminConsultoresPage() {
       </div>
 
       <Dialog open={!!editing} onOpenChange={(o) => !o && setEditing(null)}>
-        <DialogContent className="max-w-lg bg-card border-border/50 rounded-2xl shadow-2xl shadow-black/40 p-0 overflow-hidden">
-          {/* Header com gradiente */}
-          <div className="bg-gradient-to-br from-accent/20 via-accent/10 to-transparent px-6 pt-6 pb-4 border-b border-border/50">
+        <DialogContent className="max-w-lg">
+          <DialogHeader>
             <div className="flex items-center gap-3">
               <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent/15 text-accent">
                 <Plus className="h-6 w-6" />
               </div>
               <div>
-                <DialogTitle className="text-xl font-bold text-text-main tracking-tight">
-                  {editing?.id ? "Editar Consultor" : "Novo Consultor"}
-                </DialogTitle>
-                <p className="text-sm text-text-muted mt-0.5">
-                  Preencha os dados do consultor
-                </p>
+                <DialogTitle>{editing?.id ? "Editar Consultor" : "Novo Consultor"}</DialogTitle>
+                <DialogDescription>Preencha os dados do consultor</DialogDescription>
               </div>
             </div>
-          </div>
+          </DialogHeader>
 
           {editing && (
             <form
-              className="space-y-5 px-6 pb-6"
+              className="px-6 py-6 flex-1 space-y-4"
               onSubmit={(e) => {
                 e.preventDefault();
                 editing && upsertM.mutate(editing);
@@ -343,23 +339,22 @@ function MapasAdminConsultoresPage() {
               </div>
 
               {/* Footer */}
-              <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end pt-4 border-t border-border">
-                <Button
+              <DialogFooter>
+                <button
                   type="button"
-                  variant="ghost"
                   onClick={() => setEditing(null)}
-                  className="rounded-xl px-6"
+                  className="flex-1 sm:flex-none rounded-xl border border-border px-6 py-2.5 text-sm text-text-muted font-semibold hover:text-text-main hover:bg-surface-hover transition-all duration-200 min-h-[44px]"
                 >
                   Cancelar
-                </Button>
-                <Button
+                </button>
+                <button
                   type="submit"
                   disabled={upsertM.isPending}
-                  className="rounded-xl px-6 bg-accent hover:bg-accent-hover text-accent-fg font-semibold shadow-lg shadow-accent/20 hover:shadow-xl hover:shadow-accent/30 transition-all duration-200"
+                  className="flex-1 sm:flex-none rounded-xl bg-accent px-6 py-2.5 text-sm font-semibold text-accent-fg shadow-md shadow-accent/20 hover:bg-accent-hover disabled:opacity-50 transition-all duration-200 min-h-[44px]"
                 >
                   {upsertM.isPending ? "Salvando…" : "Salvar"}
-                </Button>
-              </div>
+                </button>
+              </DialogFooter>
             </form>
           )}
         </DialogContent>
@@ -369,25 +364,19 @@ function MapasAdminConsultoresPage() {
         open={!!toDelete}
         onOpenChange={(o) => !o && setToDelete(null)}
       >
-        <AlertDialogContent className="bg-card border-border/50 rounded-2xl shadow-2xl shadow-black/40 p-0 overflow-hidden max-w-sm">
-          {/* Header vermelho */}
-          <div className="bg-gradient-to-br from-red-500/20 via-red-500/10 to-transparent px-6 pt-6 pb-4 border-b border-red-500/20">
+        <AlertDialogContent className="max-w-sm">
+          <AlertDialogHeader>
             <div className="flex items-center gap-3">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-red-500/15 text-red-400">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent/15 text-accent">
                 <Trash2 className="h-6 w-6" />
               </div>
               <div>
-                <AlertDialogTitle className="text-lg font-bold text-text-main">
-                  Excluir consultor?
-                </AlertDialogTitle>
-                <AlertDialogDescription className="text-sm text-text-muted mt-0.5">
-                  Esta ação não pode ser desfeita
-                </AlertDialogDescription>
+                <AlertDialogTitle>Excluir consultor?</AlertDialogTitle>
+                <AlertDialogDescription>Esta ação não pode ser desfeita</AlertDialogDescription>
               </div>
             </div>
-          </div>
+          </AlertDialogHeader>
 
-          {/* Corpo */}
           <div className="px-6 py-4">
             <p className="text-sm text-text-muted">
               O consultor{" "}
@@ -398,18 +387,17 @@ function MapasAdminConsultoresPage() {
             </p>
           </div>
 
-          {/* Footer */}
-          <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end px-6 pb-6 pt-2 border-t border-border">
-            <AlertDialogCancel className="rounded-xl px-6 border-border text-text-main hover:bg-surface-hover">
+          <AlertDialogFooter>
+            <AlertDialogCancel className="flex-1 sm:flex-none rounded-xl border border-border px-6 py-2.5 text-sm text-text-muted font-semibold hover:text-text-main hover:bg-surface-hover transition-all duration-200 min-h-[44px]">
               Cancelar
             </AlertDialogCancel>
             <AlertDialogAction
               onClick={() => toDelete && deleteM.mutate(toDelete.id)}
-              className="rounded-xl px-6 bg-red-500 hover:bg-red-600 text-white font-semibold shadow-lg shadow-red-500/25 hover:shadow-xl hover:shadow-red-500/30 transition-all duration-200"
+              className="flex-1 sm:flex-none rounded-xl bg-accent px-6 py-2.5 text-sm font-semibold text-accent-fg shadow-md shadow-accent/20 hover:bg-accent-hover disabled:opacity-50 transition-all duration-200 min-h-[44px]"
             >
               {deleteM.isPending ? "Excluindo…" : "Excluir"}
             </AlertDialogAction>
-          </div>
+          </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
     </div>

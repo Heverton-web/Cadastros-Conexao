@@ -7,6 +7,8 @@ import {
 } from "~/registry";
 import type { ModuleDefinition } from "~/registry";
 import { LANDING_PAGES_PERMISSIONS } from "./permissions";
+import { registrarPlanoDiagnostico } from "~/core/diagnostic";
+import { landingPagesDiagnosticPlan } from "./diagnostic";
 
 export const landingPagesModule: ModuleDefinition = {
   key: "mktg-landing-pages",
@@ -14,6 +16,7 @@ export const landingPagesModule: ModuleDefinition = {
   descricao: "Criacao e gerenciamento de landing pages",
   icon: FileText,
   hasDesignConfig: true,
+  hasDiagnostico: true,
   routes: ["/marketing/landing-pages"],
   permissions: LANDING_PAGES_PERMISSIONS.map((p) => p.key),
   ambientes: ["cadastro", "tecnologia"],
@@ -41,6 +44,7 @@ export const landingPagesModule: ModuleDefinition = {
     },
   ],
   setup: () => {
+    registrarPlanoDiagnostico(landingPagesDiagnosticPlan);
     for (const p of LANDING_PAGES_PERMISSIONS)
       registerPermission({
         key: p.key,

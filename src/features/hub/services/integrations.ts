@@ -3,7 +3,7 @@ import type { HubSystemIntegrations } from "../types";
 
 export async function fetchHubIntegrations(empresaId: string) {
   const { data, error } = await supabase
-    .from("hub_system_integrations")
+    .from("hub_integracoes_sistema")
     .select("*")
     .eq("empresa_id", empresaId)
     .single();
@@ -15,7 +15,7 @@ export async function upsertHubIntegrations(
   integrations: Partial<HubSystemIntegrations>,
 ) {
   const { data, error } = await supabase
-    .from("hub_system_integrations")
+    .from("hub_integracoes_sistema")
     .upsert(integrations, { onConflict: "empresa_id" })
     .select()
     .single();
@@ -32,7 +32,7 @@ export async function toggleHubProvider(
   updates[`${provider}_active`] = active;
   updates.empresa_id = empresaId;
   const { data, error } = await supabase
-    .from("hub_system_integrations")
+    .from("hub_integracoes_sistema")
     .upsert(updates, { onConflict: "empresa_id" })
     .select()
     .single();

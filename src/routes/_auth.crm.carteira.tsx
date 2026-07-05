@@ -9,6 +9,7 @@ import { Button } from "~/components/ui/button";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -199,14 +200,19 @@ function NovoClienteButton() {
           <Plus className="mr-1 h-4 w-4" /> Novo cliente
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-md">
+      <DialogContent>
         <DialogHeader>
-          <DialogTitle>Novo cliente</DialogTitle>
-          <p className="text-xs text-text-muted">
-            Adicione um doutor ou clínica à sua carteira.
-          </p>
+          <div className="flex items-center gap-3">
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent/15 text-accent">
+              <UserPlus className="h-6 w-6" />
+            </div>
+            <div>
+              <DialogTitle>Novo cliente</DialogTitle>
+              <DialogDescription>Adicione um doutor ou clínica à sua carteira.</DialogDescription>
+            </div>
+          </div>
         </DialogHeader>
-        <form onSubmit={submit} className="space-y-5">
+        <form onSubmit={submit} className="px-6 py-6 flex-1 space-y-4">
           <FieldRow icon={User} label="Nome do doutor(a)" required>
             <Input
               required
@@ -236,20 +242,24 @@ function NovoClienteButton() {
             />
           </FieldRow>
           <DialogFooter>
-            <Button
+            <button
               type="button"
-              variant="ghost"
               onClick={() => setOpen(false)}
+              className="flex-1 sm:flex-none rounded-xl border border-border px-6 py-2.5 text-sm text-text-muted font-semibold hover:text-text-main hover:bg-surface-hover transition-all duration-200 min-h-[44px]"
             >
               Cancelar
-            </Button>
-            <Button type="submit" disabled={busy}>
+            </button>
+            <button
+              type="submit"
+              disabled={busy}
+              className="flex-1 sm:flex-none rounded-xl bg-accent px-6 py-2.5 text-sm font-semibold text-accent-fg shadow-md shadow-accent/20 hover:bg-accent-hover disabled:opacity-50 transition-all duration-200 min-h-[44px]"
+            >
               {busy ? (
                 <Loader2 className="h-4 w-4 animate-spin" />
               ) : (
                 "Adicionar cliente"
               )}
-            </Button>
+            </button>
           </DialogFooter>
         </form>
       </DialogContent>

@@ -3,8 +3,10 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
+  DialogFooter,
 } from "~/components/ui/dialog";
-import { Button } from "~/components/ui/button";
+
 import {
   MapPin,
   User,
@@ -48,35 +50,26 @@ export function EntityDetailDialog({ entity, open, onOpenChange }: Props) {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md bg-card border-border rounded-2xl shadow-2xl shadow-black/40 p-0 overflow-hidden">
-        {/* CABEÇALHO - sem margens, borda a borda */}
-        <div
-          className="px-0 pt-0 pb-5 flex items-center justify-between"
-          style={{
-            background: `linear-gradient(135deg, ${pinColor}25, ${pinColor}10, transparent)`,
-          }}
-        >
-          <DialogTitle className="text-lg font-bold text-text-main pl-6">
-            Detalhes
-          </DialogTitle>
-          <div
-            className="flex h-10 w-10 items-center justify-center rounded-full border-2 mr-6"
-            style={{
-              backgroundColor: `${pinColor}15`,
-              borderColor: `${pinColor}50`,
-              color: pinColor,
-            }}
-          >
-            {isDist ? (
-              <Building2 className="h-5 w-5" />
-            ) : (
-              <User className="h-5 w-5" />
-            )}
+      <DialogContent className="sm:max-w-md">
+        <DialogHeader>
+          <div className="flex items-center gap-3">
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent/15 text-accent">
+              {isDist ? (
+                <Building2 className="h-6 w-6" />
+              ) : (
+                <User className="h-6 w-6" />
+              )}
+            </div>
+            <div>
+              <DialogTitle>Detalhes</DialogTitle>
+              <DialogDescription>
+                {isDist ? "Distribuidor" : "Consultor"} — {item.name}
+              </DialogDescription>
+            </div>
           </div>
-        </div>
+        </DialogHeader>
 
-        {/* BODY */}
-        <div className="px-6 py-6 space-y-5">
+        <div className="px-6 py-6 flex-1 space-y-4">
           {/* Nome e Tipo */}
           <div className="flex items-center gap-3">
             <span
@@ -152,26 +145,24 @@ export function EntityDetailDialog({ entity, open, onOpenChange }: Props) {
           </div>
         </div>
 
-        {/* RODAPÉ - Botões de ação */}
-        <div className="px-6 pt-8 pb-6 flex gap-3">
-          <Button
+        <DialogFooter>
+          <button
             type="button"
-            variant="outline"
-            className="flex-1 h-11 rounded-xl"
             onClick={() => onOpenChange(false)}
+            className="flex-1 sm:flex-none rounded-xl border border-border px-6 py-2.5 text-sm text-text-muted font-semibold hover:text-text-main hover:bg-surface-hover transition-all duration-200 min-h-[44px]"
           >
-            <MapPin size={14} className="mr-1.5 text-accent" />
+            <MapPin size={14} className="mr-1.5 text-accent inline" />
             Ver no Mapa
-          </Button>
-          <Button
+          </button>
+          <button
             type="button"
-            className="flex-1 h-11 rounded-xl"
             onClick={handleOpenRoute}
+            className="flex-1 sm:flex-none rounded-xl bg-accent px-6 py-2.5 text-sm font-semibold text-accent-fg shadow-md shadow-accent/20 hover:bg-accent-hover disabled:opacity-50 transition-all duration-200 min-h-[44px]"
           >
-            <Navigation size={14} className="mr-1.5" />
+            <Navigation size={14} className="mr-1.5 inline" />
             Abrir Rota
-          </Button>
-        </div>
+          </button>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );

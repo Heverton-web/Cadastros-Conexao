@@ -7,6 +7,8 @@ import {
 } from "~/registry";
 import type { ModuleDefinition } from "~/registry";
 import { CALENDARIO_PERMISSIONS } from "./permissions";
+import { registrarPlanoDiagnostico } from "~/core/diagnostic";
+import { calendarioDiagnosticPlan } from "./diagnostic";
 
 export const calendarioModule: ModuleDefinition = {
   key: "mktg-calendario",
@@ -18,7 +20,9 @@ export const calendarioModule: ModuleDefinition = {
   ambientes: ["cadastro", "tecnologia"],
   abas: [],
   events: [],
+  hasDiagnostico: true,
   setup: () => {
+    registrarPlanoDiagnostico(calendarioDiagnosticPlan);
     for (const p of CALENDARIO_PERMISSIONS)
       registerPermission({
         key: p.key,

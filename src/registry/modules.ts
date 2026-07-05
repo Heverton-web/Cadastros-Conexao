@@ -29,6 +29,7 @@ export type ModuleDefinition = {
   hasCustomActions?: boolean;
   hasApiConnectors?: boolean;
   hasDesignConfig?: boolean; // módulo possui rota de design própria
+  hasDiagnostico?: boolean; // módulo possui plano de diagnóstico
   designRoute?: string; // path da rota de design (ex: "/nps/design")
   setup?: () => void;
 };
@@ -42,6 +43,7 @@ glob.__modules_registry = moduleRegistry;
 export function registerModule(mod: ModuleDefinition): void {
   if (moduleRegistry.has(mod.key)) return;
   moduleRegistry.set(mod.key, mod);
+  mod.setup?.();
 }
 
 export function getModule(key: string): ModuleDefinition | undefined {

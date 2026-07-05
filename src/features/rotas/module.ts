@@ -14,6 +14,8 @@ import {
 } from "~/registry";
 import type { ModuleDefinition } from "~/registry";
 import { ROTAS_PERMISSIONS } from "./permissions";
+import { registrarPlanoDiagnostico } from "~/core/diagnostic";
+import { rotasDiagnosticPlan } from "./diagnostic";
 
 export const rotasModule: ModuleDefinition = {
   key: "rotas",
@@ -68,7 +70,9 @@ export const rotasModule: ModuleDefinition = {
   ],
   hasDesignConfig: true,
   designRoute: "/empresa/rotas/design",
+  hasDiagnostico: true,
   setup: () => {
+    registrarPlanoDiagnostico(rotasDiagnosticPlan);
     for (const p of ROTAS_PERMISSIONS) {
       registerPermission({
         key: p.key,

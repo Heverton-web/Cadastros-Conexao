@@ -10,7 +10,7 @@ export function useMapasDistributors() {
     queryKey: ["mapas", "distributors", profile?.empresa_id],
     queryFn: async () => {
       const { data } = await supabase
-        .from("mapas_distributors")
+        .from("mapas_distribuidores")
         .select("*")
         .order("name");
       return (data ?? []) as MapasDistributor[];
@@ -25,7 +25,7 @@ export function useMapasConsultants() {
     queryKey: ["mapas", "consultants", profile?.empresa_id],
     queryFn: async () => {
       const { data } = await supabase
-        .from("mapas_consultants")
+        .from("mapas_consultores")
         .select("*")
         .order("name");
       return (data ?? []) as MapasConsultant[];
@@ -41,7 +41,7 @@ export function useUpsertDistributor(onSuccess?: () => void) {
     mutationFn: async (payload: Partial<MapasDistributor>) => {
       if (payload.id) {
         const { data } = await supabase
-          .from("mapas_distributors")
+          .from("mapas_distribuidores")
           .update(payload)
           .eq("id", payload.id)
           .select()
@@ -50,7 +50,7 @@ export function useUpsertDistributor(onSuccess?: () => void) {
         return data as MapasDistributor;
       }
       const { data } = await supabase
-        .from("mapas_distributors")
+        .from("mapas_distribuidores")
         .insert(payload)
         .select()
         .single();
@@ -70,11 +70,11 @@ export function useDeleteDistributor() {
     mutationFn: async (id: string) => {
       // Buscar dados antes de deletar para ter info no evento
       const { data: dist } = await supabase
-        .from("mapas_distributors")
+        .from("mapas_distribuidores")
         .select("name, empresa_id")
         .eq("id", id)
         .single();
-      await supabase.from("mapas_distributors").delete().eq("id", id);
+      await supabase.from("mapas_distribuidores").delete().eq("id", id);
       if (dist) {
         dispararWebhooks("mapas.distribuidor.excluido", { distribuidor_id: id, nome: dist.name, empresa_id: dist.empresa_id }, dist.empresa_id);
       }
@@ -92,7 +92,7 @@ export function useUpsertConsultant(onSuccess?: () => void) {
     mutationFn: async (payload: Partial<MapasConsultant>) => {
       if (payload.id) {
         const { data } = await supabase
-          .from("mapas_consultants")
+          .from("mapas_consultores")
           .update(payload)
           .eq("id", payload.id)
           .select()
@@ -101,7 +101,7 @@ export function useUpsertConsultant(onSuccess?: () => void) {
         return data as MapasConsultant;
       }
       const { data } = await supabase
-        .from("mapas_consultants")
+        .from("mapas_consultores")
         .insert(payload)
         .select()
         .single();
@@ -120,11 +120,11 @@ export function useDeleteConsultant() {
   return useMutation({
     mutationFn: async (id: string) => {
       const { data: cons } = await supabase
-        .from("mapas_consultants")
+        .from("mapas_consultores")
         .select("name, empresa_id")
         .eq("id", id)
         .single();
-      await supabase.from("mapas_consultants").delete().eq("id", id);
+      await supabase.from("mapas_consultores").delete().eq("id", id);
       if (cons) {
         dispararWebhooks("mapas.consultor.excluido", { consultor_id: id, nome: cons.name, empresa_id: cons.empresa_id }, cons.empresa_id);
       }

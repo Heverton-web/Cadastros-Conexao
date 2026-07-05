@@ -1,10 +1,11 @@
 import { QRCodeCanvas } from "qrcode.react";
-import { Download, Link2 } from "lucide-react";
+import { Download, Link2, QrCode } from "lucide-react";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
 } from "~/components/ui/dialog";
 import { Button } from "~/components/ui/button";
 import { buildEmpresaLinktreeUrl } from "../services/empresa";
@@ -32,12 +33,20 @@ export function EmpresaQrModal({ open, onOpenChange, slug }: Props) {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="bg-card border-border">
+      <DialogContent>
         <DialogHeader>
-          <DialogTitle>QR Code do Linktree</DialogTitle>
+          <div className="flex items-center gap-3">
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent/15 text-accent">
+              <QrCode className="h-6 w-6" />
+            </div>
+            <div>
+              <DialogTitle>QR Code do Linktree</DialogTitle>
+              <DialogDescription>Compartilhe o QR Code do linktree da empresa</DialogDescription>
+            </div>
+          </div>
         </DialogHeader>
 
-        <div className="flex flex-col items-center gap-4">
+        <div className="px-6 py-6 flex-1 space-y-4 flex flex-col items-center">
           <div className="rounded-xl bg-white p-4">
             <QRCodeCanvas
               id="empresa-qr-canvas"

@@ -6,7 +6,7 @@ const MODULO_KEY = "funis";
 
 export async function listarAnexos(tarefaId: string): Promise<Attachment[]> {
   const { data, error } = await supabase
-    .from("funis_attachments")
+    .from("funis_anexos")
     .select("*")
     .eq("tarefa_id", tarefaId)
     .order("created_at", { ascending: true });
@@ -21,7 +21,7 @@ export async function criarAnexo(input: AttachmentInput): Promise<Attachment> {
   if (!user) throw new Error("Não autenticado");
 
   const { data, error } = await supabase
-    .from("funis_attachments")
+    .from("funis_anexos")
     .insert({
       tarefa_id: input.tarefa_id,
       url: input.url,
@@ -48,7 +48,7 @@ export async function atualizarAnexo(
   input: Partial<AttachmentInput>,
 ): Promise<Attachment> {
   const { data, error } = await supabase
-    .from("funis_attachments")
+    .from("funis_anexos")
     .update(input)
     .eq("id", id)
     .select()
@@ -59,7 +59,7 @@ export async function atualizarAnexo(
 
 export async function deletarAnexo(id: string): Promise<void> {
   const { error } = await supabase
-    .from("funis_attachments")
+    .from("funis_anexos")
     .delete()
     .eq("id", id);
   if (error) throw error;

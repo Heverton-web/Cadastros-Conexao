@@ -3,7 +3,7 @@ import type { HubCollection, HubCollectionItem } from "../types";
 
 export async function fetchHubCollections(empresaId: string) {
   const { data, error } = await supabase
-    .from("hub_collections")
+    .from("hub_colecoes")
     .select("*, hub_collection_items(count)")
     .eq("empresa_id", empresaId)
     .order("created_at", { ascending: false });
@@ -15,7 +15,7 @@ export async function fetchHubCollections(empresaId: string) {
 
 export async function fetchHubCollectionById(id: string) {
   const { data, error } = await supabase
-    .from("hub_collections")
+    .from("hub_colecoes")
     .select("*")
     .eq("id", id)
     .single();
@@ -25,7 +25,7 @@ export async function fetchHubCollectionById(id: string) {
 
 export async function createHubCollection(collection: Partial<HubCollection>) {
   const { data, error } = await supabase
-    .from("hub_collections")
+    .from("hub_colecoes")
     .insert(collection)
     .select()
     .single();
@@ -38,7 +38,7 @@ export async function updateHubCollection(
   updates: Partial<HubCollection>,
 ) {
   const { data, error } = await supabase
-    .from("hub_collections")
+    .from("hub_colecoes")
     .update(updates)
     .eq("id", id)
     .select()
@@ -49,7 +49,7 @@ export async function updateHubCollection(
 
 export async function deleteHubCollection(id: string) {
   const { error } = await supabase
-    .from("hub_collections")
+    .from("hub_colecoes")
     .delete()
     .eq("id", id);
   if (error) throw error;
@@ -57,7 +57,7 @@ export async function deleteHubCollection(id: string) {
 
 export async function fetchHubCollectionItems(collectionId: string) {
   const { data, error } = await supabase
-    .from("hub_collection_items")
+    .from("hub_itens_colecao")
     .select("*, hub_materials(*)")
     .eq("collection_id", collectionId)
     .order("order_index");
@@ -69,7 +69,7 @@ export async function fetchHubCollectionItems(collectionId: string) {
 
 export async function addHubCollectionItem(item: Partial<HubCollectionItem>) {
   const { data, error } = await supabase
-    .from("hub_collection_items")
+    .from("hub_itens_colecao")
     .insert(item)
     .select()
     .single();
@@ -79,7 +79,7 @@ export async function addHubCollectionItem(item: Partial<HubCollectionItem>) {
 
 export async function removeHubCollectionItem(id: string) {
   const { error } = await supabase
-    .from("hub_collection_items")
+    .from("hub_itens_colecao")
     .delete()
     .eq("id", id);
   if (error) throw error;
@@ -89,7 +89,7 @@ export async function reorderHubCollectionItems(
   items: { id: string; order_index: number }[],
 ) {
   const { error } = await supabase
-    .from("hub_collection_items")
+    .from("hub_itens_colecao")
     .upsert(items, { onConflict: "id" });
   if (error) throw error;
 }

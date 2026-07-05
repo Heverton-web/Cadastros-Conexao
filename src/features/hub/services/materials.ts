@@ -5,7 +5,7 @@ import type { HubMaterial, HubMaterialAsset, HubLanguage } from "../types";
 const MODULO_KEY = "hub";
 
 export async function fetchHubMaterials(empresaId?: string) {
-  let query = supabase.from("hub_materials").select("*");
+  let query = supabase.from("hub_materiais").select("*");
   if (empresaId) query = query.eq("empresa_id", empresaId);
   const { data, error } = await query.order("created_at", { ascending: false });
   if (error) throw error;
@@ -14,7 +14,7 @@ export async function fetchHubMaterials(empresaId?: string) {
 
 export async function fetchHubMaterialById(id: string) {
   const { data, error } = await supabase
-    .from("hub_materials")
+    .from("hub_materiais")
     .select("*")
     .eq("id", id)
     .single();
@@ -24,7 +24,7 @@ export async function fetchHubMaterialById(id: string) {
 
 export async function createHubMaterial(material: Partial<HubMaterial>) {
   const { data, error } = await supabase
-    .from("hub_materials")
+    .from("hub_materiais")
     .insert(material)
     .select()
     .single();
@@ -37,7 +37,7 @@ export async function updateHubMaterial(
   updates: Partial<HubMaterial>,
 ) {
   const { data, error } = await supabase
-    .from("hub_materials")
+    .from("hub_materiais")
     .update(updates)
     .eq("id", id)
     .select()
@@ -47,13 +47,13 @@ export async function updateHubMaterial(
 }
 
 export async function deleteHubMaterial(id: string) {
-  const { error } = await supabase.from("hub_materials").delete().eq("id", id);
+  const { error } = await supabase.from("hub_materiais").delete().eq("id", id);
   if (error) throw error;
 }
 
 export async function fetchHubMaterialAssets(materialId: string) {
   const { data, error } = await supabase
-    .from("hub_material_assets")
+    .from("hub_ativos_material")
     .select("*")
     .eq("material_id", materialId)
     .order("language");
@@ -63,7 +63,7 @@ export async function fetchHubMaterialAssets(materialId: string) {
 
 export async function upsertHubMaterialAsset(asset: Partial<HubMaterialAsset>) {
   const { data, error } = await supabase
-    .from("hub_material_assets")
+    .from("hub_ativos_material")
     .upsert(asset, { onConflict: "id" })
     .select()
     .single();
@@ -73,7 +73,7 @@ export async function upsertHubMaterialAsset(asset: Partial<HubMaterialAsset>) {
 
 export async function deleteHubMaterialAsset(id: string) {
   const { error } = await supabase
-    .from("hub_material_assets")
+    .from("hub_ativos_material")
     .delete()
     .eq("id", id);
   if (error) throw error;
@@ -88,7 +88,7 @@ export async function logHubAccess(log: {
   language: HubLanguage;
   empresa_id?: string;
 }) {
-  const { error } = await supabase.from("hub_access_logs").insert(log);
+  const { error } = await supabase.from("hub_logs_acesso").insert(log);
   if (error) throw error;
 
   dispararEventoModulo(
@@ -104,7 +104,7 @@ export async function fetchHubAccessLogs(
   empresaId: string,
 ) {
   const { data, error } = await supabase
-    .from("hub_access_logs")
+    .from("hub_logs_acesso")
     .select("*")
     .eq("material_id", materialId)
     .eq("empresa_id", empresaId)

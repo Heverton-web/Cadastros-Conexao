@@ -10,6 +10,7 @@ import { EmptyState } from "~/components/ui/empty-state";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogFooter,
@@ -171,11 +172,19 @@ export function TemplateManager() {
       )}
 
       <Dialog open={modalOpen} onOpenChange={(o) => { if (!o) { setModalOpen(false); resetForm(); } }}>
-        <DialogContent className="fixed left-[50%] top-[50%] z-50 w-[calc(100%-2rem)] max-w-lg translate-x-[-50%] translate-y-[-50%] bg-surface border border-border/50 rounded-2xl shadow-2xl shadow-black/40 p-6 sm:p-8">
-          <DialogHeader className="flex flex-col gap-1 text-center sm:text-left mb-4">
-            <DialogTitle className="text-xl font-bold text-text-main tracking-tight">Novo Template</DialogTitle>
+        <DialogContent className="max-w-lg">
+          <DialogHeader>
+            <div className="flex items-center gap-3">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent/15 text-accent">
+                <Plus className="h-6 w-6" />
+              </div>
+              <div>
+                <DialogTitle>Novo Template</DialogTitle>
+                <DialogDescription>Crie um novo template de mensagem ou preset UTM.</DialogDescription>
+              </div>
+            </div>
           </DialogHeader>
-          <div className="space-y-4 py-2">
+          <div className="px-6 py-6 flex-1 space-y-4">
             <div className="space-y-2">
               <label className="text-sm font-semibold text-text-main">Tipo</label>
               <Select value={tipo} onValueChange={(v: any) => setTipo(v)}>
@@ -215,9 +224,9 @@ export function TemplateManager() {
               </div>
             )}
           </div>
-          <DialogFooter className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end sm:gap-3 mt-6 pt-4 border-t border-border/50">
-            <Button variant="outline" onClick={() => setModalOpen(false)} className="rounded-xl">Cancelar</Button>
-            <Button onClick={handleSalvar} disabled={salvando} className="rounded-xl shadow-md shadow-accent/20">Salvar</Button>
+          <DialogFooter>
+            <button type="button" onClick={() => setModalOpen(false)} className="flex-1 sm:flex-none rounded-xl border border-border px-6 py-2.5 text-sm text-text-muted font-semibold hover:text-text-main hover:bg-surface-hover transition-all duration-200 min-h-[44px]">Cancelar</button>
+            <button type="button" onClick={handleSalvar} disabled={salvando} className="flex-1 sm:flex-none rounded-xl bg-accent px-6 py-2.5 text-sm font-semibold text-accent-fg shadow-md shadow-accent/20 hover:bg-accent-hover disabled:opacity-50 transition-all duration-200 min-h-[44px]">Salvar</button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -233,9 +242,9 @@ export function TemplateManager() {
               Esta ação não pode ser desfeita.
             </AlertDialogDescription>
           </AlertDialogHeader>
-          <AlertDialogFooter className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end sm:gap-3 mt-6 pt-4 border-t border-border/50">
-            <AlertDialogCancel className="border-border text-text-main rounded-xl">Cancelar</AlertDialogCancel>
-            <AlertDialogAction onClick={handleConfirmDelete} className="bg-destructive hover:bg-destructive/90 text-white border-0 rounded-xl shadow-lg shadow-error/25">
+          <AlertDialogFooter>
+            <AlertDialogCancel className="flex-1 sm:flex-none rounded-xl border border-border px-6 py-2.5 text-sm text-text-muted font-semibold hover:text-text-main hover:bg-surface-hover transition-all duration-200 min-h-[44px]">Cancelar</AlertDialogCancel>
+            <AlertDialogAction onClick={handleConfirmDelete} className="flex-1 sm:flex-none rounded-xl bg-accent px-6 py-2.5 text-sm font-semibold text-accent-fg shadow-md shadow-accent/20 hover:bg-accent-hover disabled:opacity-50 transition-all duration-200 min-h-[44px]">
               Excluir
             </AlertDialogAction>
           </AlertDialogFooter>

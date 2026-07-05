@@ -313,11 +313,14 @@ export function LeadsList() {
 
       {/* Modal de Novo Lead */}
       <Dialog open={novoLeadOpen} onOpenChange={setNovoLeadOpen}>
-        <DialogContent className="max-w-md bg-card border-border">
+        <DialogContent className="max-w-md">
           <DialogHeader>
-            <DialogTitle>Novo Lead</DialogTitle>
-            <DialogDescription>Cadastre as informações básicas do novo lead.</DialogDescription>
+            <div className="flex items-center gap-3">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent/15 text-accent"><Users className="h-6 w-6" /></div>
+              <div><DialogTitle>Novo Lead</DialogTitle><DialogDescription>Cadastre as informações básicas do novo lead.</DialogDescription></div>
+            </div>
           </DialogHeader>
+          <div className="px-6 py-6 flex-1 space-y-4">
           <form onSubmit={handleCriarLead} className="space-y-4">
             <div className="space-y-1">
               <label className="text-xs text-text-muted font-medium">Nome *</label>
@@ -369,28 +372,29 @@ export function LeadsList() {
               </div>
             </div>
             <DialogFooter>
-              <Button type="button" variant="ghost" onClick={() => setNovoLeadOpen(false)}>
+              <button type="button" onClick={() => setNovoLeadOpen(false)} className="flex-1 sm:flex-none rounded-xl border border-border px-6 py-2.5 text-sm text-text-muted font-semibold hover:text-text-main hover:bg-surface-hover transition-all duration-200 min-h-[44px]">
                 Cancelar
-              </Button>
-              <Button type="submit" disabled={salvando}>
+              </button>
+              <button type="submit" disabled={salvando} className="flex-1 sm:flex-none rounded-xl bg-accent px-6 py-2.5 text-sm font-semibold text-accent-fg shadow-md shadow-accent/20 hover:bg-accent-hover disabled:opacity-50 transition-all duration-200 min-h-[44px]">
                 {salvando ? "Salvando..." : "Salvar"}
-              </Button>
+              </button>
             </DialogFooter>
           </form>
+          </div>
         </DialogContent>
       </Dialog>
 
       <AlertDialog open={!!paraExcluir} onOpenChange={(o) => !o && setParaExcluir(null)}>
-        <AlertDialogContent className="bg-card border-border">
+        <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Excluir Lead?</AlertDialogTitle>
-            <AlertDialogDescription>
-              O lead "{paraExcluir?.nome}" será removido permanentemente.
-            </AlertDialogDescription>
+            <div className="flex items-center gap-3">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-destructive/15 text-destructive"><Trash2 className="h-6 w-6" /></div>
+              <div><AlertDialogTitle>Excluir Lead?</AlertDialogTitle><AlertDialogDescription>O lead "{paraExcluir?.nome}" será removido permanentemente.</AlertDialogDescription></div>
+            </div>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancelar</AlertDialogCancel>
-            <AlertDialogAction onClick={handleExcluir} className="bg-destructive">
+            <AlertDialogCancel className="flex-1 sm:flex-none rounded-xl border border-border px-6 py-2.5 text-sm text-text-muted font-semibold hover:text-text-main hover:bg-surface-hover transition-all duration-200 min-h-[44px]">Cancelar</AlertDialogCancel>
+            <AlertDialogAction onClick={handleExcluir} className="flex-1 sm:flex-none rounded-xl bg-destructive px-6 py-2.5 text-sm font-semibold text-white shadow-md shadow-destructive/20 hover:bg-destructive/90 disabled:opacity-50 transition-all duration-200 min-h-[44px]">
               Excluir
             </AlertDialogAction>
           </AlertDialogFooter>

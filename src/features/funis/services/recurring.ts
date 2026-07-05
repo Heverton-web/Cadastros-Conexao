@@ -5,7 +5,7 @@ export async function listarRecorrencias(
   funilId: string,
 ): Promise<Recurring[]> {
   const { data, error } = await supabase
-    .from("funis_recurring")
+    .from("funis_recorrentes")
     .select("*, tarefa:funis_tarefas(*)")
     .eq("tarefa.funil_id", funilId)
     .order("proxima_exec", { ascending: true });
@@ -17,7 +17,7 @@ export async function listarRecorrenciasTarefa(
   tarefaId: string,
 ): Promise<Recurring[]> {
   const { data, error } = await supabase
-    .from("funis_recurring")
+    .from("funis_recorrentes")
     .select("*")
     .eq("tarefa_id", tarefaId);
   if (error) throw error;
@@ -30,7 +30,7 @@ export async function criarRecorrencia(
   const proximaExec = calcularProximaExec(input.frequencia, input.config);
 
   const { data, error } = await supabase
-    .from("funis_recurring")
+    .from("funis_recorrentes")
     .insert({
       tarefa_id: input.tarefa_id,
       frequencia: input.frequencia,
@@ -58,7 +58,7 @@ export async function atualizarRecorrencia(
   }
 
   const { data, error } = await supabase
-    .from("funis_recurring")
+    .from("funis_recorrentes")
     .update(updates)
     .eq("id", id)
     .select()
@@ -69,7 +69,7 @@ export async function atualizarRecorrencia(
 
 export async function deletarRecorrencia(id: string): Promise<void> {
   const { error } = await supabase
-    .from("funis_recurring")
+    .from("funis_recorrentes")
     .delete()
     .eq("id", id);
   if (error) throw error;
@@ -80,7 +80,7 @@ export async function toggleRecorrencia(
   ativo: boolean,
 ): Promise<void> {
   const { error } = await supabase
-    .from("funis_recurring")
+    .from("funis_recorrentes")
     .update({ ativo })
     .eq("id", id);
   if (error) throw error;

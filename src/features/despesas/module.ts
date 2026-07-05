@@ -14,6 +14,8 @@ import {
 } from "~/registry";
 import type { ModuleDefinition } from "~/registry";
 import { DESPESAS_PERMISSIONS } from "./permissions";
+import { registrarPlanoDiagnostico } from "~/core/diagnostic";
+import { despesasDiagnosticPlan } from "./diagnostic";
 
 export const despesasModule: ModuleDefinition = {
   key: "despesas",
@@ -94,10 +96,12 @@ export const despesasModule: ModuleDefinition = {
       type: "status_change",
     },
   ],
+  hasDiagnostico: true,
   hasCredentialScopes: true,
   hasDesignConfig: true,
   designRoute: "/empresa/despesas/design",
   setup: () => {
+    registrarPlanoDiagnostico(despesasDiagnosticPlan);
     for (const p of DESPESAS_PERMISSIONS) {
       registerPermission({
         key: p.key,

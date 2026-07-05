@@ -54,7 +54,7 @@ function GlobalLimitsPage() {
     try {
       const [empresasRes, limitsRes] = await Promise.all([
         supabase.from("empresas").select("id, nome").order("nome"),
-        supabase.from("empresa_modulo_limits").select("*"),
+        supabase.from("empresa_limites_modulo").select("*"),
       ]);
 
       if (empresasRes.data) setEmpresas(empresasRes.data);
@@ -145,14 +145,14 @@ function GlobalLimitsPage() {
 
       if (toDelete.length > 0) {
         await supabase
-          .from("empresa_modulo_limits")
+          .from("empresa_limites_modulo")
           .delete()
           .in("id", toDelete);
       }
 
       if (toUpsert.length > 0) {
         const { error } = await supabase
-          .from("empresa_modulo_limits")
+          .from("empresa_limites_modulo")
           .upsert(toUpsert, {
             onConflict: "empresa_id,modulo_key",
             ignoreDuplicates: false,

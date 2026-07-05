@@ -64,15 +64,25 @@ export function StateDetailSheet({ uf, open, onOpenChange, entities }: Props) {
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
-      <DialogContent className="max-h-[85vh] max-w-md overflow-hidden bg-card border-border/50 p-0 gap-0 rounded-2xl shadow-2xl shadow-black/40">
-        <DialogHeader className="border-b border-border px-5 py-4 pb-3 text-left">
-          <DialogTitle className="flex items-center gap-2.5 text-lg font-bold text-text-main">
-            <MapPin size={18} className="text-accent" />
-            {uf ? `${ufName} (${uf})` : ""}
-          </DialogTitle>
+      <DialogContent className="max-w-md">
+        <DialogHeader>
+          <div className="flex items-center gap-3">
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent/15 text-accent">
+              <MapPin className="h-6 w-6" />
+            </div>
+            <div>
+              <DialogTitle>{uf ? `${ufName} (${uf})` : ""}</DialogTitle>
+              <DialogDescription>
+                {distCount > 0 && `${distCount} distribuidor(es)`}
+                {distCount > 0 && consCount > 0 && " · "}
+                {consCount > 0 && `${consCount} consultor(es)`}
+                {entities.length === 0 && "Sem registros"}
+              </DialogDescription>
+            </div>
+          </div>
 
           {/* Abas com badges */}
-          <DialogDescription className="mt-3 flex flex-wrap gap-2 text-xs">
+          <div className="flex flex-wrap gap-2 text-xs mt-2">
             {distCount > 0 && (
               <button
                 onClick={() =>
@@ -103,13 +113,7 @@ export function StateDetailSheet({ uf, open, onOpenChange, entities }: Props) {
                 {consCount} consultor(es)
               </button>
             )}
-            {entities.length === 0 && (
-              <span className="flex items-center gap-1.5 rounded-lg border border-border px-3 py-1.5 text-xs text-text-muted">
-                <MapPin size={12} />
-                Sem registros
-              </span>
-            )}
-          </DialogDescription>
+          </div>
 
           {/* Campo de busca */}
           {entities.length > 0 && (
@@ -137,7 +141,8 @@ export function StateDetailSheet({ uf, open, onOpenChange, entities }: Props) {
           )}
         </DialogHeader>
 
-        <ScrollArea className="max-h-[60vh] px-5 py-3 pt-2">
+        <div className="px-6 py-6 flex-1 space-y-4">
+        <ScrollArea className="max-h-[60vh]">
           {filtered.length === 0 ? (
             <EmptyState
               icon={<Search className="w-8 h-8 text-text-muted/30" />}
@@ -208,6 +213,7 @@ export function StateDetailSheet({ uf, open, onOpenChange, entities }: Props) {
             </ul>
           )}
         </ScrollArea>
+        </div>
       </DialogContent>
     </Dialog>
   );

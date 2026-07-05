@@ -2,14 +2,15 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { FileText } from "lucide-react";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
   DialogFooter,
 } from "~/components/ui/dialog";
-import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import {
@@ -70,12 +71,16 @@ export function TipoDespesaForm({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="bg-card border-border">
+      <DialogContent className="bg-card max-h-[90dvh] overflow-hidden flex flex-col">
         <DialogHeader>
-          <DialogTitle>
-            {editando ? "Editar Tipo de Despesa" : "Novo Tipo de Despesa"}
-          </DialogTitle>
+          <div className="flex items-center gap-3">
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent/15 text-accent"><FileText className="h-6 w-6" /></div>
+            <div><DialogTitle>
+              {editando ? "Editar Tipo de Despesa" : "Novo Tipo de Despesa"}
+            </DialogTitle><DialogDescription>Configure o tipo de despesa.</DialogDescription></div>
+          </div>
         </DialogHeader>
+        <div className="px-6 py-6 flex-1 space-y-4">
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="nome">Nome</Label>
@@ -105,23 +110,25 @@ export function TipoDespesaForm({
             )}
           </div>
           <DialogFooter>
-            <Button
+            <button
               type="button"
-              variant="outline"
               onClick={() => onOpenChange(false)}
+              className="flex-1 sm:flex-none rounded-xl border border-border px-6 py-2.5 text-sm text-text-muted font-semibold hover:text-text-main hover:bg-surface-hover transition-all duration-200 min-h-[44px]"
             >
               Cancelar
-            </Button>
-            <Button
+            </button>
+            <button
               type="submit"
               disabled={criar.isPending || atualizar.isPending}
+              className="flex-1 sm:flex-none rounded-xl bg-accent px-6 py-2.5 text-sm font-semibold text-accent-fg shadow-md shadow-accent/20 hover:bg-accent-hover disabled:opacity-50 transition-all duration-200 min-h-[44px]"
             >
               {criar.isPending || atualizar.isPending
                 ? "Salvando..."
                 : "Salvar"}
-            </Button>
+            </button>
           </DialogFooter>
         </form>
+        </div>
       </DialogContent>
     </Dialog>
   );

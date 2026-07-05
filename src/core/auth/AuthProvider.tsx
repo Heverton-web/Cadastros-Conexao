@@ -44,7 +44,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     });
 
     const { data: modulos } = await supabase
-      .from("modulos_empresa")
+      .from("empresa_modulos")
       .select("modulo_key, ativo")
       .eq("empresa_id", empresaId)
       .eq("ativo", true);

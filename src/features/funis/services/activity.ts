@@ -5,7 +5,7 @@ export async function listarAtividades(
   opts: { tarefaId?: string; funilId?: string; limit?: number } = {},
 ): Promise<Activity[]> {
   let query = supabase
-    .from("funis_activity_log")
+    .from("funis_log_atividades")
     .select(
       "*, user:profiles!funis_activity_log_user_id_fkey(full_name, email)",
     )
@@ -35,7 +35,7 @@ export async function registrarAtividade(opts: {
   } = await supabase.auth.getUser();
   if (!user) throw new Error("Não autenticado");
 
-  const { error } = await supabase.from("funis_activity_log").insert({
+  const { error } = await supabase.from("funis_log_atividades").insert({
     tarefa_id: opts.tarefaId ?? null,
     funil_id: opts.funilId ?? null,
     user_id: user.id,

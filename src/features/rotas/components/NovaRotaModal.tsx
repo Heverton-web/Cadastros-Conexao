@@ -105,13 +105,20 @@ export function NovaRotaModal({ open, onOpenChange }: Props) {
   }
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle>Nova Rota</DialogTitle>
-        </DialogHeader>
+      <Dialog open={open} onOpenChange={onOpenChange}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <div className="flex items-center gap-3">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent/15 text-accent">
+                <Plus className="h-6 w-6" />
+              </div>
+              <div>
+                <DialogTitle>Nova Rota</DialogTitle>
+              </div>
+            </div>
+          </DialogHeader>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="px-6 py-6 flex-1 space-y-4">
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-1.5">
               <Label>Título</Label>
@@ -234,19 +241,19 @@ export function NovaRotaModal({ open, onOpenChange }: Props) {
           </div>
 
           <DialogFooter>
-            <Button
+            <button
               type="button"
-              variant="ghost"
               onClick={() => onOpenChange(false)}
+              className="flex-1 sm:flex-none rounded-xl border border-border px-6 py-2.5 text-sm text-text-muted font-semibold hover:text-text-main hover:bg-surface-hover transition-all duration-200 min-h-[44px]"
             >
               Cancelar
-            </Button>
-            <Button type="submit" disabled={criarRota.isPending}>
+            </button>
+            <button type="submit" disabled={criarRota.isPending} className="flex-1 sm:flex-none rounded-xl bg-accent px-6 py-2.5 text-sm font-semibold text-accent-fg shadow-md shadow-accent/20 hover:bg-accent-hover disabled:opacity-50 transition-all duration-200 min-h-[44px]">
               {criarRota.isPending ? (
                 <Loader2 className="h-4 w-4 animate-spin mr-2" />
               ) : null}
               Criar Rota
-            </Button>
+            </button>
           </DialogFooter>
         </form>
       </DialogContent>

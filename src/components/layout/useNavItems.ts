@@ -14,6 +14,8 @@ import {
   Webhook as WebhookIcon,
   BarChart3,
   FileText,
+  Bug,
+  BrainCircuit,
   type LucideIcon,
 } from "lucide-react";
 import { useAuth } from "~/lib/auth";
@@ -118,6 +120,7 @@ function buildConfigSubGroups(items: NavItem[]): NavSubGroup[] {
     "/empresa/despesas-config",
     "/empresa/rotas/config",
     "/empresa/hub/chatbot",
+    "/empresa/cadastros/formulario",
   ];
   const configItems = items.filter((i) => configPaths.includes(i.path));
 
@@ -217,12 +220,14 @@ function buildAdminSection(): NavModuleSection {
   ];
   const ferramentasItems: NavItem[] = [
     { path: "/global/testes", label: "Central de Testes", icon: FileText },
+    { path: "/global/diagnostico", label: "Diagnóstico", icon: Bug },
     { path: "/global/demos", label: "Credenciais Demos", icon: FlaskConical },
     {
       path: "/global/laboratorio",
       label: "Laboratório de Testes",
       icon: Beaker,
     },
+    { path: "/global/modelos-ia", label: "Modelos de IA", icon: BrainCircuit },
     { path: "/global/limits", label: "Limites de Credenciais", icon: Shield },
   ];
   const analyticsItems: NavItem[] = [

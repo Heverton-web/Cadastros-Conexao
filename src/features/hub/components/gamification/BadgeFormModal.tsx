@@ -1,11 +1,12 @@
 import { useState } from "react";
+import { Award } from "lucide-react";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from "~/components/ui/dialog";
-import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { Textarea } from "~/components/ui/textarea";
 import {
@@ -66,11 +67,19 @@ export function BadgeFormModal({
 
   return (
     <Dialog open={open} onOpenChange={(o) => !o && onClose()}>
-      <DialogContent className="max-w-lg w-[calc(100%-2rem)] sm:w-full bg-card border-border">
+      <DialogContent className="max-w-lg">
         <DialogHeader>
-          <DialogTitle>{badge ? "Editar Badge" : "Novo Badge"}</DialogTitle>
+          <div className="flex items-center gap-3">
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent/15 text-accent">
+              <Award className="h-6 w-6" />
+            </div>
+            <div>
+              <DialogTitle>{badge ? "Editar Badge" : "Novo Badge"}</DialogTitle>
+              <DialogDescription>Configure as regras e aparência do badge.</DialogDescription>
+            </div>
+          </div>
         </DialogHeader>
-        <div className="space-y-4">
+        <div className="px-6 py-6 flex-1 space-y-4">
           <div>
             <label className="mb-1 block text-xs font-medium text-text-muted">Nome *</label>
             <Input value={name} onChange={(e) => setName(e.target.value)} />
@@ -149,10 +158,10 @@ export function BadgeFormModal({
             />
           </div>
           <div className="flex justify-end gap-2 pt-4 border-t border-surface">
-            <Button variant="outline" className="rounded-xl" onClick={onClose}>
+            <button type="button" onClick={onClose} className="flex-1 sm:flex-none rounded-xl border border-border px-6 py-2.5 text-sm text-text-muted font-semibold hover:text-text-main hover:bg-surface-hover transition-all duration-200 min-h-[44px]">
               Cancelar
-            </Button>
-            <Button className="rounded-xl shadow-md shadow-accent/20" onClick={handleSave}>{badge ? "Salvar" : "Criar"}</Button>
+            </button>
+            <button type="button" onClick={handleSave} className="flex-1 sm:flex-none rounded-xl bg-accent px-6 py-2.5 text-sm font-semibold text-accent-fg shadow-md shadow-accent/20 hover:bg-accent-hover disabled:opacity-50 transition-all duration-200 min-h-[44px]">{badge ? "Salvar" : "Criar"}</button>
           </div>
         </div>
       </DialogContent>

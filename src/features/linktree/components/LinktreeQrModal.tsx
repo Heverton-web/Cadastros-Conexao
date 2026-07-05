@@ -4,9 +4,10 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
 } from "~/components/ui/dialog";
 import { Button } from "~/components/ui/button";
-import { Download } from "lucide-react";
+import { Download, QrCode } from "lucide-react";
 import { QRCodeCanvas } from "qrcode.react";
 import { buildCardUrl } from "~/features/linktree/index";
 import type { LinktreeColaborador } from "~/features/linktree/types";
@@ -36,9 +37,17 @@ export function LinktreeQrModal({ open, onOpenChange, collaborator }: Props) {
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>QR Code — {collaborator?.nome}</DialogTitle>
+          <div className="flex items-center gap-3">
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent/15 text-accent">
+              <QrCode className="h-6 w-6" />
+            </div>
+            <div>
+              <DialogTitle>QR Code — {collaborator?.nome}</DialogTitle>
+              <DialogDescription>Compartilhe este QR Code do colaborador</DialogDescription>
+            </div>
+          </div>
         </DialogHeader>
-        <div className="flex flex-col items-center gap-4 py-2">
+        <div className="px-6 py-6 flex-1 space-y-4 flex flex-col items-center">
           {collaborator && (
             <div className="rounded-lg bg-white p-3">
               <QRCodeCanvas

@@ -443,7 +443,7 @@ function AdminSuperPermissoes() {
 
           <button
             onClick={() => setCriandoNovaCredencial(true)}
-            className="flex items-center gap-1.5 px-4 py-1.5 rounded-lg bg-accent text-white text-sm font-medium hover:bg-accent-hover transition-colors ml-auto shadow-sm"
+            className="flex items-center gap-1.5 px-4 py-1.5 rounded-lg bg-accent text-accent-fg text-sm font-medium hover:bg-accent-hover transition-colors ml-auto shadow-sm"
           >
             <Plus size={16} /> Novo
           </button>
@@ -932,23 +932,30 @@ function NovaCredencialModal({
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4 sm:px-6 py-4 overflow-y-auto">
-      <div className="w-full max-w-2xl rounded-2xl bg-card p-4 sm:p-6 shadow-xl max-h-[90vh] overflow-y-auto custom-scrollbar">
-        <div className="flex items-center justify-between mb-4 sticky top-0 bg-card z-10 pb-2 border-b border-border-subtle">
-          <h2 className="text-base font-bold text-text-main flex items-center gap-2">
-            <Plus size={18} className="text-accent" /> Nova Credencial com
-            Permissões
-          </h2>
+    <div className="fixed inset-0 z-[100] flex items-end justify-center bg-black/60 backdrop-blur-sm sm:items-center">
+      <div className="w-full max-w-2xl rounded-t-2xl sm:rounded-2xl bg-card border border-border/50 p-0 shadow-2xl shadow-black/40 max-h-[90dvh] overflow-hidden flex flex-col">
+        <div className="bg-gradient-to-br from-accent/20 via-accent/10 to-transparent px-6 pt-6 pb-4 border-b border-border/50 relative">
+          <div className="flex items-center gap-3">
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent/15 text-accent">
+              <Plus size={22} />
+            </div>
+            <div>
+              <h2 className="text-xl font-bold text-text-main tracking-tight">
+                Nova Credencial com Permissões
+              </h2>
+            </div>
+          </div>
           <button
             onClick={onClose}
-            className="text-text-muted hover:text-text-main"
+            className="absolute right-4 top-5 rounded-lg p-1.5 text-text-muted hover:text-text-main hover:bg-surface-hover transition-colors"
           >
             <X size={20} />
           </button>
         </div>
 
+        <div className="px-6 py-6 flex-1 space-y-4">
         {/* Dados Básicos */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <input
             placeholder="Nome Completo"
             className="w-full rounded-lg border border-input-border bg-input-bg px-4 py-3 text-sm text-text-main outline-none focus:border-accent min-h-[44px]"
@@ -1190,11 +1197,12 @@ function NovaCredencialModal({
             })}
           </div>
         </div>
+        </div>
 
-        <div className="flex gap-3 sticky bottom-0 bg-card pt-4 border-t border-border-subtle mt-6">
+        <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end px-6 pb-6 pt-4 border-t border-border/50">
           <button
             onClick={onClose}
-            className="flex-1 rounded-xl border border-input-border py-3 text-sm font-medium text-text-muted hover:text-text-main transition-colors"
+            className="flex-1 sm:flex-none rounded-xl border border-border px-6 py-2.5 text-sm text-text-muted font-semibold hover:text-text-main hover:bg-surface-hover transition-all duration-200 min-h-[44px]"
           >
             Cancelar
           </button>
@@ -1203,7 +1211,7 @@ function NovaCredencialModal({
             disabled={
               !form.nome_completo || !form.email_corporativo || salvando
             }
-            className="flex-1 rounded-xl bg-accent py-3 text-sm font-medium text-white disabled:opacity-50 flex items-center justify-center gap-2"
+            className="flex-1 sm:flex-none rounded-xl bg-accent px-6 py-2.5 text-sm font-semibold text-accent-fg shadow-md shadow-accent/20 hover:bg-accent-hover disabled:opacity-50 transition-all duration-200 min-h-[44px] flex items-center justify-center gap-2"
           >
             {salvando ? (
               <Loader2 size={16} className="animate-spin" />
@@ -1244,19 +1252,27 @@ function EditCredencialModal({
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4 sm:px-6 py-4 overflow-y-auto">
-      <div className="w-full max-w-md rounded-2xl bg-card p-4 sm:p-6 shadow-xl max-h-[90vh] overflow-y-auto custom-scrollbar">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-base font-bold text-text-main">
-            Editar Credencial
-          </h2>
+    <div className="fixed inset-0 z-[100] flex items-end justify-center bg-black/60 backdrop-blur-sm sm:items-center">
+      <div className="w-full max-w-md rounded-t-2xl sm:rounded-2xl bg-card border border-border/50 p-0 shadow-2xl shadow-black/40 max-h-[90dvh] overflow-hidden flex flex-col">
+        <div className="bg-gradient-to-br from-accent/20 via-accent/10 to-transparent px-6 pt-6 pb-4 border-b border-border/50 relative">
+          <div className="flex items-center gap-3">
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent/15 text-accent">
+              <Pencil size={22} />
+            </div>
+            <div>
+              <h2 className="text-xl font-bold text-text-main tracking-tight">
+                Editar Credencial
+              </h2>
+            </div>
+          </div>
           <button
             onClick={onClose}
-            className="text-text-muted hover:text-text-main"
+            className="absolute right-4 top-5 rounded-lg p-1.5 text-text-muted hover:text-text-main hover:bg-surface-hover transition-colors"
           >
             <X size={20} />
           </button>
         </div>
+        <div className="px-6 py-6 flex-1 space-y-4">
         <input
           placeholder="Nome Completo"
           className="mb-3 w-full rounded-lg border border-input-border bg-input-bg px-4 py-3 text-sm text-text-main outline-none focus:border-accent min-h-[44px]"
@@ -1307,17 +1323,19 @@ function EditCredencialModal({
             setForm((prev) => ({ ...prev, nova_senha: e.target.value }))
           }
         />
-        <div className="flex gap-3">
+        </div>
+
+        <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end px-6 pb-6 pt-4 border-t border-border/50">
           <button
             onClick={onClose}
-            className="flex-1 rounded-xl border border-input-border py-3 text-sm font-medium text-text-muted"
+            className="flex-1 sm:flex-none rounded-xl border border-border px-6 py-2.5 text-sm text-text-muted font-semibold hover:text-text-main hover:bg-surface-hover transition-all duration-200 min-h-[44px]"
           >
             Cancelar
           </button>
           <button
             onClick={handleSave}
             disabled={!form.nome_completo || salvando}
-            className="flex-1 rounded-xl bg-accent py-3 text-sm font-medium text-white disabled:opacity-50 flex items-center justify-center"
+            className="flex-1 sm:flex-none rounded-xl bg-accent px-6 py-2.5 text-sm font-semibold text-accent-fg shadow-md shadow-accent/20 hover:bg-accent-hover disabled:opacity-50 transition-all duration-200 min-h-[44px] flex items-center justify-center"
           >
             {salvando ? (
               <Loader2 size={16} className="animate-spin" />

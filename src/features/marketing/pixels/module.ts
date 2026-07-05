@@ -7,6 +7,8 @@ import {
 } from "~/registry";
 import type { ModuleDefinition } from "~/registry";
 import { PIXELS_PERMISSIONS } from "./permissions";
+import { registrarPlanoDiagnostico } from "~/core/diagnostic";
+import { pixelsDiagnosticPlan } from "./diagnostic";
 
 export const pixelsModule: ModuleDefinition = {
   key: "mktg-pixels",
@@ -33,7 +35,9 @@ export const pixelsModule: ModuleDefinition = {
       type: "status_change",
     },
   ],
+  hasDiagnostico: true,
   setup: () => {
+    registrarPlanoDiagnostico(pixelsDiagnosticPlan);
     for (const p of PIXELS_PERMISSIONS)
       registerPermission({
         key: p.key,

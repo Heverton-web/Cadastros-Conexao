@@ -20,9 +20,9 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
   DialogFooter,
 } from "~/components/ui/dialog";
-import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 
@@ -120,11 +120,15 @@ export function NovaDespesaModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="bg-card border-border max-w-lg max-h-[85vh] overflow-y-auto">
+      <DialogContent className="bg-card max-w-lg max-h-[90dvh] overflow-hidden flex flex-col">
         <DialogHeader>
-          <DialogTitle>Nova Despesa</DialogTitle>
+          <div className="flex items-center gap-3">
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent/15 text-accent"><Upload className="h-6 w-6" /></div>
+            <div><DialogTitle>Nova Despesa</DialogTitle><DialogDescription>Preencha os dados da nova despesa.</DialogDescription></div>
+          </div>
         </DialogHeader>
 
+        <div className="px-6 py-6 flex-1 space-y-4">
         {loadingPeriodo ? (
           <div className="text-text-muted text-sm py-4">
             Carregando período...
@@ -286,20 +290,22 @@ export function NovaDespesaModal({
               )}
             </div>
 
-            <DialogFooter>
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => onOpenChange(false)}
-              >
-                Cancelar
-              </Button>
-              <Button type="submit" disabled={criar.isPending}>
-                {criar.isPending ? "Salvando..." : "Salvar"}
-              </Button>
-            </DialogFooter>
           </form>
         )}
+        </div>
+
+        <DialogFooter>
+          <button
+            type="button"
+            onClick={() => onOpenChange(false)}
+            className="flex-1 sm:flex-none rounded-xl border border-border px-6 py-2.5 text-sm text-text-muted font-semibold hover:text-text-main hover:bg-surface-hover transition-all duration-200 min-h-[44px]"
+          >
+            Cancelar
+          </button>
+          <button type="submit" disabled={criar.isPending} className="flex-1 sm:flex-none rounded-xl bg-accent px-6 py-2.5 text-sm font-semibold text-accent-fg shadow-md shadow-accent/20 hover:bg-accent-hover disabled:opacity-50 transition-all duration-200 min-h-[44px]">
+            {criar.isPending ? "Salvando..." : "Salvar"}
+          </button>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );

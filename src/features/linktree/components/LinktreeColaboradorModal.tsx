@@ -4,12 +4,12 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
   DialogFooter,
 } from "~/components/ui/dialog";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
-import { Button } from "~/components/ui/button";
-import { Loader2, Upload } from "lucide-react";
+import { Loader2, Upload, UserPlus, Pencil } from "lucide-react";
 import toast from "react-hot-toast";
 import { supabase } from "~/core/supabase";
 import { useAuth } from "~/core/auth";
@@ -219,13 +219,24 @@ export function LinktreeColaboradorModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-h-[90vh] max-w-lg overflow-y-auto">
+      <DialogContent className="max-w-lg">
         <DialogHeader>
-          <DialogTitle className="text-xl font-semibold">
-            {editing ? "Editar LinkTree" : "Novo LinkTree"}
-          </DialogTitle>
+          <div className="flex items-center gap-3">
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent/15 text-accent">
+              {editing ? <Pencil className="h-6 w-6" /> : <UserPlus className="h-6 w-6" />}
+            </div>
+            <div>
+              <DialogTitle>
+                {editing ? "Editar LinkTree" : "Novo LinkTree"}
+              </DialogTitle>
+              <DialogDescription>
+                {editing ? "Atualize os dados do colaborador" : "Preencha os dados para criar um novo LinkTree"}
+              </DialogDescription>
+            </div>
+          </div>
         </DialogHeader>
 
+        <div className="px-6 py-6 flex-1 space-y-4">
         <form onSubmit={handleSubmit} className="space-y-4">
           {!editing && (
             <div className="space-y-1.5">
@@ -344,17 +355,17 @@ export function LinktreeColaboradorModal({
           </div>
 
           <DialogFooter>
-            <Button
+            <button
               type="button"
-              variant="ghost"
               onClick={() => onOpenChange(false)}
+              className="flex-1 sm:flex-none rounded-xl border border-border px-6 py-2.5 text-sm text-text-muted font-semibold hover:text-text-main hover:bg-surface-hover transition-all duration-200 min-h-[44px]"
             >
               Cancelar
-            </Button>
-            <Button
+            </button>
+            <button
               type="submit"
               disabled={saving}
-              className="bg-primary text-primary-foreground hover:bg-primary/90"
+              className="flex-1 sm:flex-none rounded-xl bg-accent px-6 py-2.5 text-sm font-semibold text-accent-fg shadow-md shadow-accent/20 hover:bg-accent-hover disabled:opacity-50 transition-all duration-200 min-h-[44px]"
             >
               {saving ? (
                 <Loader2 className="size-4 animate-spin" />
@@ -363,55 +374,12 @@ export function LinktreeColaboradorModal({
               ) : (
                 "Criar LinkTree"
               )}
-            </Button>
+            </button>
           </DialogFooter>
         </form>
+        </div>
       </DialogContent>
     </Dialog>
-  );
-}
-
-function PhoneFields({
-  value,
-  onChange,
-}: {
-  value: PhoneParts;
-  onChange: (v: PhoneParts) => void;
-}) {
-  const set =
-    (k: keyof PhoneParts, max: number) =>
-    (e: React.ChangeEvent<HTMLInputElement>) =>
-      onChange({
-        ...value,
-        [k]: e.target.value.replace(/\D/g, "").slice(0, max),
-      });
-  return (
-    <div className="grid grid-cols-[80px_80px_1fr] gap-2">
-      <Field label="DDI">
-        <Input
-          inputMode="numeric"
-          placeholder="55"
-          value={value.ddi}
-          onChange={set("ddi", 4)}
-        />
-      </Field>
-      <Field label="DDD">
-        <Input
-          inputMode="numeric"
-          placeholder="11"
-          value={value.ddd}
-          onChange={set("ddd", 3)}
-        />
-      </Field>
-      <Field label="Numero">
-        <Input
-          inputMode="numeric"
-          placeholder="999999999"
-          value={value.number}
-          onChange={set("number", 9)}
-        />
-      </Field>
-    </div>
   );
 }
 

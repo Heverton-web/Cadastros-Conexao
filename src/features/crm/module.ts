@@ -17,6 +17,8 @@ import {
 } from "~/registry";
 import type { ModuleDefinition } from "~/registry";
 import { CRM_PERMISSIONS } from "./permissions";
+import { registrarPlanoDiagnostico } from "~/core/diagnostic";
+import { crmDiagnosticPlan } from "./diagnostic";
 
 export const crmModule: ModuleDefinition = {
   key: "crm",
@@ -73,9 +75,11 @@ export const crmModule: ModuleDefinition = {
       type: "button_action",
     },
   ],
+  hasDiagnostico: true,
   hasDesignConfig: true,
   designRoute: "/empresa/crm/design",
   setup: () => {
+    registrarPlanoDiagnostico(crmDiagnosticPlan);
     for (const p of CRM_PERMISSIONS) {
       registerPermission({
         key: p.key,

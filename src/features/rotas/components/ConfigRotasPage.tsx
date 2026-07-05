@@ -631,10 +631,10 @@ export function ConfigRotasPage() {
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+            <AlertDialogCancel className="flex-1 sm:flex-none rounded-xl border border-border px-6 py-2.5 text-sm text-text-muted font-semibold hover:text-text-main hover:bg-surface-hover transition-all duration-200 min-h-[44px]">Cancelar</AlertDialogCancel>
             <AlertDialogAction
               onClick={() => showExcluir && handleExcluirPergunta(showExcluir)}
-              className="bg-destructive text-destructive-foreground"
+              className="flex-1 sm:flex-none rounded-xl bg-accent px-6 py-2.5 text-sm font-semibold text-accent-fg shadow-md shadow-accent/20 hover:bg-accent-hover disabled:opacity-50 transition-all duration-200 min-h-[44px]"
             >
               Excluir
             </AlertDialogAction>
@@ -652,7 +652,7 @@ export function ConfigRotasPage() {
               consultor.
             </DialogDescription>
           </DialogHeader>
-          <div className="space-y-5 py-4 max-h-[60vh] overflow-y-auto pr-2">
+          <div className="px-6 py-6 flex-1 space-y-4">
             {perguntas.map((pergunta) => (
               <div
                 key={pergunta.id}
@@ -672,7 +672,7 @@ export function ConfigRotasPage() {
             ))}
           </div>
           <DialogFooter>
-            <Button onClick={() => setShowPreview(false)}>
+            <Button onClick={() => setShowPreview(false)} className="flex-1 sm:flex-none rounded-xl bg-accent px-6 py-2.5 text-sm font-semibold text-accent-fg shadow-md shadow-accent/20 hover:bg-accent-hover disabled:opacity-50 transition-all duration-200 min-h-[44px]">
               Fechar Preview
             </Button>
           </DialogFooter>

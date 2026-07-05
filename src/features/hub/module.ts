@@ -20,6 +20,8 @@ import {
 } from "~/registry";
 import type { ModuleDefinition } from "~/registry";
 import { HUB_PERMISSIONS } from "./permissions";
+import { registrarPlanoDiagnostico } from "~/core/diagnostic";
+import { hubDiagnosticPlan } from "./diagnostic";
 
 export const hubModule: ModuleDefinition = {
   key: "hub",
@@ -122,10 +124,12 @@ export const hubModule: ModuleDefinition = {
       type: "status_change",
     },
   ],
+  hasDiagnostico: true,
   hasCredentialScopes: true,
   hasDesignConfig: true,
   designRoute: "/empresa/hub/design",
   setup: () => {
+    registrarPlanoDiagnostico(hubDiagnosticPlan);
     for (const p of HUB_PERMISSIONS) {
       registerPermission({
         key: p.key,

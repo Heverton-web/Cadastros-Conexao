@@ -7,11 +7,11 @@ import {
 } from "react";
 import { supabase } from "~/core/supabase";
 import { useAuth } from "~/core/auth";
-import type { Empresa, EmpresaConfig } from "./types";
+import type { Empresa, EmpresaDesign } from "./types";
 
 type EmpresaContextValue = {
   empresa: Empresa | null;
-  config: EmpresaConfig | null;
+  config: EmpresaDesign | null;
   loading: boolean;
 };
 
@@ -24,7 +24,7 @@ const EmpresaContext = createContext<EmpresaContextValue>({
 export function EmpresaProvider({ children }: { children: ReactNode }) {
   const { profile } = useAuth();
   const [empresa, setEmpresa] = useState<Empresa | null>(null);
-  const [config, setConfig] = useState<EmpresaConfig | null>(null);
+  const [config, setConfig] = useState<EmpresaDesign | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -54,7 +54,7 @@ export function EmpresaProvider({ children }: { children: ReactNode }) {
         ]);
         if (!cancelled) {
           setEmpresa(empresaRes.data as Empresa | null);
-          setConfig(configRes.data as EmpresaConfig | null);
+          setConfig(configRes.data as EmpresaDesign | null);
         }
       } catch (err) {
         console.error("Erro ao carregar EmpresaContext:", err);

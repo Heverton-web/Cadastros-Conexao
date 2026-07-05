@@ -188,21 +188,25 @@ export function TaskModal({
 
   return (
     <Dialog open={open} onOpenChange={(o) => !o && onClose()}>
-      <DialogContent className="max-w-2xl max-h-[92vh] overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle>
-            {task
-              ? "Editar tarefa"
-              : parentTaskId
-                ? "Nova microtarefa"
-                : "Nova tarefa"}
-          </DialogTitle>
-          <p className="text-sm text-text-muted">
-            Preencha as informações da tarefa abaixo.
-          </p>
+      <DialogContent className="bg-card max-h-[90dvh] overflow-hidden flex flex-col max-w-2xl">
+        <DialogHeader className="bg-gradient-to-br from-accent/20 via-accent/10 to-transparent px-6 pt-6 pb-4 border-b border-border/50">
+          <div className="flex items-center gap-3">
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent/15 text-accent">
+              <CheckCircle2 className="h-6 w-6" />
+            </div>
+            <div>
+              <DialogTitle>
+                {task
+                  ? "Editar tarefa"
+                  : parentTaskId
+                    ? "Nova microtarefa"
+                    : "Nova tarefa"}
+              </DialogTitle>
+            </div>
+          </div>
         </DialogHeader>
 
-        <form onSubmit={submit} className="space-y-6">
+        <form onSubmit={submit} className="px-6 py-6 flex-1 space-y-6">
           {/* Status e Conclusão (Mais discreto) */}
           <div className="flex items-center justify-between gap-4 py-2 border-b border-border/20">
             <label className="flex items-center gap-3 cursor-pointer text-sm font-medium">
@@ -546,7 +550,7 @@ export function TaskModal({
             )}
           </div>
 
-          <DialogFooter>
+          <DialogFooter className="px-6 pb-6 pt-4 border-t border-border/50 gap-3">
             {task && canEdit && (
               <Button
                 type="button"
@@ -558,13 +562,13 @@ export function TaskModal({
                 Excluir
               </Button>
             )}
-            <Button type="button" variant="ghost" onClick={onClose}>
+            <button type="button" onClick={onClose} className="flex-1 sm:flex-none rounded-xl border border-border px-6 py-2.5 text-sm text-text-muted font-semibold hover:text-text-main hover:bg-surface-hover transition-all duration-200 min-h-[44px]">
               Cancelar
-            </Button>
+            </button>
             {canEdit && (
-              <Button type="submit" disabled={saveIsPending}>
+              <button type="submit" disabled={saveIsPending} className="flex-1 sm:flex-none rounded-xl bg-accent px-6 py-2.5 text-sm font-semibold text-accent-fg shadow-md shadow-accent/20 hover:bg-accent-hover disabled:opacity-50 transition-all duration-200 min-h-[44px]">
                 {saveIsPending ? "Salvando..." : "Salvar"}
-              </Button>
+              </button>
             )}
           </DialogFooter>
         </form>

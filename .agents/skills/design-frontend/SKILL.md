@@ -26,10 +26,24 @@ Padrões obrigatórios do modelo:
 - EmptyState: `<EmptyState icon={<Icone />} title="..." description="..." />`
 - Cards recentes: `group flex items-center gap-4 rounded-xl bg-surface border border-border p-4 hover:border-accent/30 hover:shadow-lg hover:shadow-accent/5 hover:-translate-y-0.5`
 - Headers: `flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4`
-- Dialogs: header com gradiente `bg-gradient-to-br from-{cor}/20 via-{cor}/10 to-transparent px-6 pt-6 pb-4 border-b border-border/50`
+- Dialogs: header com gradiente `bg-gradient-to-br from-{cor}/20 via-{cor}/10 to-transparent px-6 pt-6 pb-6 border-b border-border/50`
 - AlertDialogs: header vermelho `bg-gradient-to-br from-red-500/20 via-red-500/10 to-transparent`
 
+### 🟡 REGRA OBRIGATÓRIA: Botões com fundo dourado
+
+**TODO botão com `bg-accent` ou `bg-primary` (fundo dourado) DEVE usar `text-accent-fg` (que resolve para `#3D2B00`).**
+**NUNCA usar `text-white` em botão dourado — o contraste é insuficiente.**
+
+```css
+/* Correto */
+className="bg-accent text-accent-fg ..."
+
+/* ERRADO — contraste falho */
+className="bg-accent text-white ..."
+```
+
 ---
+
 
 ## REgras INegociaveis
 
@@ -579,148 +593,164 @@ ANTES: className="inline-flex items-center gap-2 h-9 rounded-full px-4 text-xs f
 DEPOIS: className="flex items-center gap-3 rounded-xl bg-{cor}/10 border border-{cor}/20 p-3 transition-all duration-200 hover:scale-[1.02]"
 ```
 
-### 10. Modais (Dialog / AlertDialog)
+### 10. Modais (Dialog / AlertDialog) — PADRÃO ÚNICO OBRIGATÓRIO
 
-Modais DEVEM seguir o design system para manter consistencia visual com a pagina.
-NAO alterar a estrutura HTML dos modais — apenas substituir classes CSS.
+**TODO MODAL da aplicação DEVE seguir EXATAMENTE este template. Sem exceção.**
 
-#### DialogContent
+#### Template Base — Modal Padrão (qualquer modal de formulário/informação)
 
-```
-ANTES: className="bg-surface border-border"
-DEPOIS: className="fixed left-[50%] top-[50%] z-50 w-[calc(100%-2rem)] max-w-lg translate-x-[-50%] translate-y-[-50%] bg-surface border border-border/50 rounded-2xl shadow-2xl shadow-black/40 p-6 sm:p-8"
-```
+```jsx
+<div className="fixed inset-0 z-[100] flex items-end justify-center bg-black/60 backdrop-blur-sm sm:items-center">
+  <div className="w-full max-w-md rounded-t-2xl sm:rounded-2xl bg-card border border-border/50 p-0 shadow-2xl shadow-black/40 max-h-[90dvh] overflow-hidden flex flex-col">
 
-Se ja usa `bg-card border-border`, manter. O padrao do componente base e `bg-surface` — sempre sobrescrever para `bg-card`.
+    {/* ═══ HEADER COM GRADIENTE ═══ */}
+    <div className="bg-gradient-to-br from-accent/20 via-accent/10 to-transparent px-6 pt-6 pb-6 border-b border-border/50">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent/15 text-accent">
+            <Icone className="h-6 w-6" />
+          </div>
+          <div>
+            <h2 className="text-xl font-bold text-text-main tracking-tight">{titulo}</h2>
+            <p className="text-sm text-text-muted mt-0.5">{subtitulo}</p>
+          </div>
+        </div>
+        <button className="absolute right-4 top-5 rounded-lg p-1.5 text-text-muted hover:text-text-main hover:bg-surface-hover transition-colors">
+          <X size={18} />
+        </button>
+      </div>
+    </div>
 
-#### DialogHeader / Titulo / Descricao
+    {/* ═══ BODY ═══ */}
+    <div className="px-6 py-6 flex-1 space-y-4">
+      {/* campos do formulário aqui */}
+    </div>
 
-```
-DialogHeader:     className="flex flex-col gap-1 text-center sm:text-left mb-4"
-DialogTitle:       className="text-xl font-bold text-text-main tracking-tight"
-DialogDescription: className="text-sm text-text-muted leading-relaxed"
-```
+    {/* ═══ FOOTER ═══ */}
+    <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end px-6 pb-8 pt-6 border-t border-border/50">
+      <button className="flex-1 sm:flex-none rounded-xl border border-border px-6 py-2.5 text-sm text-text-muted font-semibold hover:text-text-main hover:bg-surface-hover transition-all duration-200 min-h-[44px]">
+        Cancelar
+      </button>
+      <button className="flex-1 sm:flex-none rounded-xl bg-accent px-6 py-2.5 text-sm font-semibold text-accent-fg shadow-md shadow-accent/20 hover:bg-accent-hover disabled:opacity-50 transition-all duration-200 min-h-[44px]">
+        {acao}
+      </button>
+    </div>
 
-#### DialogFooter
-
-```
-ANTES: className="pt-4 border-t border-border/30"
-DEPOIS: className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end sm:gap-3 mt-6 pt-4 border-t border-border/50"
-```
-
-Botoes no footer:
-```
-Cancelar: variant="secondary" className="rounded-xl"
-Salvar:   className="rounded-xl shadow-md shadow-accent/20"
-```
-
-#### Botao de fechar (X)
-
-```
-DEPOIS: className="absolute right-4 top-5 rounded-lg p-1.5 text-text-muted hover:text-text-main hover:bg-surface-hover"
-```
-
-#### AlertDialogContent
-
-```
-ANTES: className="bg-card border-border"
-DEPOIS: manter (ja e o padrao)
-```
-
-Variante de exclusao (barra vermelha no topo):
-```
-DEPOIS: antes do content, div className="h-1 w-full bg-gradient-to-r from-error via-error to-error rounded-t-2xl"
+  </div>
+</div>
 ```
 
-#### AlertDialogTitle / Descricao
+#### Header — Variantes de Cor
 
-```
-AlertDialogTitle:       className="text-text-main"
-AlertDialogDescription: className="text-text-muted"
-```
+| Contexto | Gradiente | Ícone bg | Ícone text |
+|----------|-----------|----------|------------|
+| Padrão (accent) | `from-accent/20 via-accent/10 to-transparent` | `bg-accent/15` | `text-accent` |
+| Sucesso | `from-green-500/20 via-green-500/10 to-transparent` | `bg-green-500/15` | `text-green-400` |
+| Aviso | `from-yellow-500/20 via-yellow-500/10 to-transparent` | `bg-yellow-500/15` | `text-yellow-400` |
+| Info | `from-blue-500/20 via-blue-500/10 to-transparent` | `bg-blue-500/15` | `text-blue-400` |
+| Perigo (exclusão) | `from-red-500/20 via-red-500/10 to-transparent` | `bg-red-500/15` | `text-red-400` |
 
-#### AlertDialogFooter — Botoes
+#### Template — AlertDialog (Exclusão/Confirmação Destrutiva)
 
-```
-AlertDialogCancel: className="border-border text-text-main rounded-xl"
-AlertDialogAction: className="bg-destructive hover:bg-destructive/90 text-white border-0 rounded-xl shadow-lg shadow-error/25"
-```
+```jsx
+<div className="fixed inset-0 z-[100] flex items-end justify-center bg-black/60 backdrop-blur-sm sm:items-center">
+  <div className="w-full max-w-sm rounded-t-2xl sm:rounded-2xl bg-card border border-border/50 p-0 shadow-2xl shadow-black/40 max-h-[90dvh] overflow-hidden flex flex-col">
 
-#### Labels dentro de modais
+    {/* Header vermelho */}
+    <div className="bg-gradient-to-br from-red-500/20 via-red-500/10 to-transparent px-6 pt-6 pb-6 border-b border-red-500/20">
+      <div className="flex items-center gap-3">
+        <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-red-500/15 text-red-400">
+          <Trash2 className="h-6 w-6" />
+        </div>
+        <div>
+          <h2 className="text-lg font-bold text-text-main tracking-tight">{titulo}</h2>
+          <p className="text-sm text-text-muted mt-0.5">{subtitulo}</p>
+        </div>
+      </div>
+    </div>
 
-```
-ANTES: className="text-xs text-muted-foreground"
-DEPOIS: className="text-xs text-text-muted font-medium"
-```
+    {/* Body */}
+    <div className="px-6 py-4">
+      <p className="text-sm text-text-muted">{mensagem}</p>
+    </div>
 
-#### Inputs dentro de modais
+    {/* Footer */}
+    <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end px-6 pb-8 pt-6 border-t border-border">
+      <button className="flex-1 sm:flex-none rounded-xl border border-border px-6 py-2.5 text-sm text-text-muted font-semibold hover:text-text-main hover:bg-surface-hover transition-all duration-200 min-h-[44px]">
+        Cancelar
+      </button>
+      <button className="flex-1 sm:flex-none rounded-xl bg-red-500 px-6 py-2.5 text-sm font-semibold text-white shadow-lg shadow-red-500/25 hover:bg-red-600 hover:shadow-xl hover:shadow-red-500/30 transition-all duration-200 min-h-[44px]">
+        {acao}
+      </button>
+    </div>
 
-```
-ANTES: className="bg-secondary border-border text-text-main"
-DEPOIS: className="h-11 rounded-xl border border-border bg-input-bg px-4 text-sm text-text-main placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent transition-all duration-200"
-```
-
-#### Textarea dentro de modais
-
-```
-ANTES: className="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
-DEPOIS: className="flex w-full rounded-xl border border-border bg-input-bg px-4 py-3 text-sm text-text-main placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent transition-all duration-200"
-```
-
-#### SelectTrigger dentro de modais
-
-```
-ANTES: className="bg-secondary border-border text-text-main"
-DEPOIS: className="h-11 rounded-xl border border-border bg-input-bg px-4 text-sm text-text-main font-medium focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent transition-all duration-200"
-```
-
-#### Cards de informacao dentro de modais (detalhes, grids)
-
-```
-ANTES: className="bg-secondary/50 rounded-lg p-3 border border-border/30"
-DEPOIS: className="bg-surface border border-border rounded-xl p-3"
-```
-
-Labels nos cards:
-```
-ANTES: className="text-xs text-muted-foreground block mb-1"
-DEPOIS: className="text-xs text-text-muted font-medium block mb-1"
+  </div>
+</div>
 ```
 
-Valores nos cards:
+#### Regras dos Botões no Footer
+
+| Botão | className |
+|-------|-----------|
+| Cancelar | `flex-1 sm:flex-none rounded-xl border border-border px-6 py-2.5 text-sm text-text-muted font-semibold hover:text-text-main hover:bg-surface-hover transition-all duration-200 min-h-[44px]` |
+| Confirmar (primário) | `flex-1 sm:flex-none rounded-xl bg-accent px-6 py-2.5 text-sm font-semibold text-accent-fg shadow-md shadow-accent/20 hover:bg-accent-hover disabled:opacity-50 transition-all duration-200 min-h-[44px]` |
+| Excluir (destrutivo) | `flex-1 sm:flex-none rounded-xl bg-red-500 px-6 py-2.5 text-sm font-semibold text-white shadow-lg shadow-red-500/25 hover:bg-red-500/90 transition-all duration-200 min-h-[44px]` |
+
+#### Elementos Dentro do Body
+
+**Label de campo:**
 ```
-ANTES: className="text-sm font-medium text-foreground"
-DEPOIS: className="text-sm font-medium text-text-main"
+className="mb-1.5 text-xs font-medium text-text-muted"
 ```
 
-#### Secoes dentro de modais (h3 de agrupamento)
-
+**Input:**
 ```
-ANTES: className="text-sm font-semibold text-primary mb-3"
-DEPOIS: className="text-sm font-semibold text-accent mb-3"
+className="w-full h-11 rounded-xl border border-border bg-input-bg px-4 text-sm text-text-main font-medium placeholder:text-text-muted/60 outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent transition-all duration-200"
 ```
 
-#### Itens de lista/opcoes dentro de modais
-
+**Select:**
 ```
-ANTES: className="flex items-center gap-2 bg-secondary/60 border border-border/40 rounded-md px-3 py-2"
-DEPOIS: className="group/opt flex items-center gap-2 bg-surface border border-border rounded-lg px-3 py-2.5 transition-all duration-200 hover:border-accent/30"
+className="w-full appearance-none h-11 rounded-xl border border-border bg-input-bg px-4 text-sm text-text-main font-medium outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent transition-all duration-200 pr-8"
 ```
 
-Botao X de remover:
+**Textarea:**
 ```
-ANTES: className="text-muted-foreground hover:text-red-400"
-DEPOIS: className="text-text-muted hover:text-destructive transition-colors rounded-md hover:bg-destructive/10 p-0.5 opacity-0 group-hover/opt:opacity-100"
+className="w-full min-h-[80px] rounded-xl border border-border bg-input-bg px-4 py-3 text-sm text-text-main font-medium placeholder:text-text-muted/60 outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent transition-all duration-200 resize-none"
 ```
 
-#### Botoes de acao contextual dentro de modais
+**Botão toggle (pill ativo/inativo):**
+```
+Ativo:   className="flex-1 rounded-xl py-2.5 text-xs font-semibold transition-all duration-200 min-h-[44px] bg-accent text-accent-fg shadow-md shadow-accent/20"
+Inativo: className="flex-1 rounded-xl py-2.5 text-xs font-semibold transition-all duration-200 min-h-[44px] bg-surface border border-border text-text-muted hover:border-accent/30 hover:text-text-main"
+```
 
-| Acao | className |
-|------|-----------|
-| Revisar | `rounded-lg px-2 py-1 text-xs font-medium text-accent hover:bg-accent/10 border border-accent/20` |
-| Aprovar | `text-green-400 hover:bg-green-500/10` |
-| Reprovar | `text-red-400 hover:bg-red-500/10` |
-| Corrigir | `text-orange-400 hover:bg-orange-500/10` |
+**Grid de pills (etapas, opções):**
+```
+className="grid grid-cols-3 sm:grid-cols-5 gap-2"
+```
+
+**Checkbox customizado:**
+```
+className="h-4 w-4 rounded border-2 flex items-center justify-center transition-all duration-200 border-border"
+className="h-4 w-4 rounded border-2 flex items-center justify-center transition-all duration-200 border-accent bg-accent"  (checado)
+```
+
+**Cards de informação dentro do modal:**
+```
+className="bg-surface border border-border rounded-xl p-3"
+Label: className="text-xs text-text-muted font-medium block mb-1"
+Valor: className="text-sm font-medium text-text-main"
+```
+
+**Botão X de remover item:**
+```
+className="text-text-muted hover:text-destructive transition-colors rounded-md hover:bg-destructive/10 p-1"
+```
+
+**Link de ação dentro do body:**
+```
+className="text-xs text-accent hover:underline text-left"
+```
 
 ### 11. Skeleton Loading
 
@@ -825,7 +855,7 @@ DEPOIS: className="flex md:hidden gap-1 rounded-xl bg-card p-1"
 
 Item ativo:
 ```
-DEPOIS: className="bg-accent text-white"
+DEPOIS: className="bg-accent text-accent-fg"
 ```
 
 Item inativo:
@@ -841,7 +871,7 @@ DEPOIS: className="flex gap-1 rounded-lg bg-bg-dark p-1 mb-4"
 
 Ativo:
 ```
-DEPOIS: className="rounded-md py-1.5 text-xs font-medium bg-accent text-white"
+DEPOIS: className="rounded-md py-1.5 text-xs font-medium bg-accent text-accent-fg"
 ```
 
 ### 15. Form Layouts
@@ -1204,44 +1234,59 @@ className="animate-slide-up"
 </div>
 ```
 
-### Dialog (Header Gradiente)
+### Dialog (Header Gradiente) — PADRÃO ÚNICO
 ```jsx
-<DialogContent className="max-w-lg bg-card border-border/50 rounded-2xl shadow-2xl shadow-black/40 p-0 overflow-hidden">
-  <div className="bg-gradient-to-br from-{cor}/20 via-{cor}/10 to-transparent px-6 pt-6 pb-4 border-b border-border/50">
-    <div className="flex items-center gap-3">
-      <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-{cor}/15 text-{cor}">
-        <Icone className="h-6 w-6" />
-      </div>
-      <div>
-        <DialogTitle className="text-xl font-bold text-text-main tracking-tight">{titulo}</DialogTitle>
-        <p className="text-sm text-text-muted mt-0.5">{subtitulo}</p>
+<div className="fixed inset-0 z-[100] flex items-end justify-center bg-black/60 backdrop-blur-sm sm:items-center">
+  <div className="w-full max-w-md rounded-t-2xl sm:rounded-2xl bg-card border border-border/50 p-0 shadow-2xl shadow-black/40 max-h-[90dvh] overflow-hidden flex flex-col">
+    <div className="bg-gradient-to-br from-accent/20 via-accent/10 to-transparent px-6 pt-6 pb-6 border-b border-border/50">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent/15 text-accent">
+            <Icone className="h-6 w-6" />
+          </div>
+          <div>
+            <h2 className="text-xl font-bold text-text-main tracking-tight">{titulo}</h2>
+            <p className="text-sm text-text-muted mt-0.5">{subtitulo}</p>
+          </div>
+        </div>
+        <button className="absolute right-4 top-5 rounded-lg p-1.5 text-text-muted hover:text-text-main hover:bg-surface-hover transition-colors">
+          <X size={18} />
+        </button>
       </div>
     </div>
+    <div className="px-6 py-6 flex-1 space-y-4">
+      {/* corpo do modal */}
+    </div>
+    <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end px-6 pb-8 pt-6 border-t border-border/50">
+      <button className="flex-1 sm:flex-none rounded-xl border border-border px-6 py-2.5 text-sm text-text-muted font-semibold hover:text-text-main hover:bg-surface-hover transition-all duration-200 min-h-[44px]">Cancelar</button>
+      <button className="flex-1 sm:flex-none rounded-xl bg-accent px-6 py-2.5 text-sm font-semibold text-accent-fg shadow-md shadow-accent/20 hover:bg-accent-hover disabled:opacity-50 transition-all duration-200 min-h-[44px]">{acao}</button>
+    </div>
   </div>
-  {/* Corpo do dialog */}
-</DialogContent>
+</div>
 ```
 
-### AlertDialog (Exclusão)
+### AlertDialog (Exclusão) — PADRÃO ÚNICO
 ```jsx
-<AlertDialogContent className="bg-card border-border/50 rounded-2xl shadow-2xl shadow-black/40 p-0 overflow-hidden max-w-sm">
-  <div className="bg-gradient-to-br from-red-500/20 via-red-500/10 to-transparent px-6 pt-6 pb-4 border-b border-red-500/20">
-    <div className="flex items-center gap-3">
-      <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-red-500/15 text-red-400">
-        <Trash2 className="h-6 w-6" />
-      </div>
-      <div>
-        <AlertDialogTitle className="text-lg font-bold text-text-main">{titulo}</AlertDialogTitle>
-        <AlertDialogDescription className="text-sm text-text-muted mt-0.5">{subtitulo}</AlertDialogDescription>
+<div className="fixed inset-0 z-[100] flex items-end justify-center bg-black/60 backdrop-blur-sm sm:items-center">
+  <div className="w-full max-w-sm rounded-t-2xl sm:rounded-2xl bg-card border border-border/50 p-0 shadow-2xl shadow-black/40 max-h-[90dvh] overflow-hidden flex flex-col">
+    <div className="bg-gradient-to-br from-red-500/20 via-red-500/10 to-transparent px-6 pt-6 pb-6 border-b border-red-500/20">
+      <div className="flex items-center gap-3">
+        <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-red-500/15 text-red-400">
+          <Trash2 className="h-6 w-6" />
+        </div>
+        <div>
+          <h2 className="text-lg font-bold text-text-main tracking-tight">{titulo}</h2>
+          <p className="text-sm text-text-muted mt-0.5">{subtitulo}</p>
+        </div>
       </div>
     </div>
+    <div className="px-6 py-4">
+      <p className="text-sm text-text-muted">{mensagem}</p>
+    </div>
+    <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end px-6 pb-8 pt-6 border-t border-border">
+      <button className="flex-1 sm:flex-none rounded-xl border border-border px-6 py-2.5 text-sm text-text-muted font-semibold hover:text-text-main hover:bg-surface-hover transition-all duration-200 min-h-[44px]">Cancelar</button>
+      <button className="flex-1 sm:flex-none rounded-xl bg-red-500 px-6 py-2.5 text-sm font-semibold text-white shadow-lg shadow-red-500/25 hover:bg-red-600 hover:shadow-xl hover:shadow-red-500/30 transition-all duration-200 min-h-[44px]">{acao}</button>
+    </div>
   </div>
-  <div className="px-6 py-4">
-    <p className="text-sm text-text-muted">{mensagem}</p>
-  </div>
-  <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end px-6 pb-6 pt-2 border-t border-border">
-    <AlertDialogCancel className="rounded-xl px-6 border-border text-text-main hover:bg-surface-hover">Cancelar</AlertDialogCancel>
-    <AlertDialogAction className="rounded-xl px-6 bg-red-500 hover:bg-red-600 text-white font-semibold shadow-lg shadow-red-500/25 hover:shadow-xl hover:shadow-red-500/30 transition-all duration-200">{acao}</AlertDialogAction>
-  </div>
-</AlertDialogContent>
+</div>
 ```

@@ -101,7 +101,7 @@ export async function excluirLinkTeste(id: string) {
 
 export async function listarDemoCredentials() {
   const { data, error } = await supabase
-    .from("demo_credentials")
+    .from("credenciais_demo")
     .select("*")
     .order("created_at", { ascending: false });
   if (error) throw error;
@@ -125,7 +125,7 @@ export async function criarDemoCredential(
   if (rpcError) throw rpcError;
 
   const { data, error } = await supabase
-    .from("demo_credentials")
+    .from("credenciais_demo")
     .insert({
       user_id: uid,
       email_demo: email,

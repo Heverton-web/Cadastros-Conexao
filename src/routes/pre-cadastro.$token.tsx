@@ -532,10 +532,10 @@ function PreCadastroPage() {
           setTempoRestante(restante);
           if (c.tipo_pessoa) {
             setForm((prev) => ({ ...prev, tipo: c.tipo_pessoa }));
-            setStep("dados");
-          } else {
-            setStep("tipo");
           }
+          // Sempre mostra passo tipo (pré-selecionado se já conhecido)
+          // para que o lead confirme PF/PJ
+          setStep("tipo");
         }
       }
     } catch (e) {
@@ -858,7 +858,7 @@ function PreCadastroPage() {
         </div>
       )}
 
-      <div className="flex items-center gap-3 border-b border-border-subtle bg-card px-4 py-3">
+      <div className="flex items-center gap-3 border-b border-border bg-card px-4 py-3">
         <div className="flex gap-1">
           {steps.map((s, i) => (
             <div
@@ -881,7 +881,7 @@ function PreCadastroPage() {
 
         {/* 2FA Solicitar PIN */}
         {step === "2fa_solicitar" && (
-          <div className="rounded-2xl bg-card p-6 shadow-xl flex flex-col gap-4 border border-border-subtle">
+          <div className="rounded-2xl bg-card p-6 shadow-xl flex flex-col gap-4 border border-border">
             <div className="flex flex-col items-center gap-2 mb-2">
               <Lock size={36} className="text-accent" />
               <h2 className="text-base font-bold text-text-main">
@@ -899,14 +899,14 @@ function PreCadastroPage() {
               <button
                 type="button"
                 onClick={() => setCanal2FA("whatsapp")}
-                className={`flex-1 rounded-lg py-2.5 text-xs font-semibold transition ${canal2FA === "whatsapp" ? "bg-accent text-white" : "bg-input-bg text-text-muted"}`}
+                className={`flex-1 rounded-lg py-2.5 text-xs font-semibold transition ${canal2FA === "whatsapp" ? "bg-accent text-accent-fg" : "bg-input-bg text-text-muted"}`}
               >
                 WhatsApp
               </button>
               <button
                 type="button"
                 onClick={() => setCanal2FA("email")}
-                className={`flex-1 rounded-lg py-2.5 text-xs font-semibold transition ${canal2FA === "email" ? "bg-accent text-white" : "bg-input-bg text-text-muted"}`}
+                className={`flex-1 rounded-lg py-2.5 text-xs font-semibold transition ${canal2FA === "email" ? "bg-accent text-accent-fg" : "bg-input-bg text-text-muted"}`}
               >
                 E-mail
               </button>
@@ -928,7 +928,7 @@ function PreCadastroPage() {
                   <select
                     value={contatoDdi}
                     onChange={(e) => setContatoDdi(e.target.value)}
-                    className="min-w-0 flex-[1.5] rounded-lg border border-input-border bg-input-bg px-2.5 py-3 text-xs text-text-main outline-none focus:border-accent min-h-[44px]"
+                    className="min-w-0 flex-[1.5] rounded-xl border border-border bg-input-bg px-2.5 py-3 text-xs text-text-main shadow-sm outline-none hover:border-accent/30 focus:border-accent focus:ring-2 focus:ring-accent/20 transition-all duration-200 min-h-[44px]"
                   >
                     {PAISES.map((p) => (
                       <option key={p.ddi} value={p.ddi}>
@@ -944,7 +944,7 @@ function PreCadastroPage() {
                       )
                     }
                     placeholder="DDD"
-                    className="w-[60px] text-center rounded-lg border border-input-border bg-input-bg px-2 py-3 text-sm text-text-main outline-none focus:border-accent min-h-[44px]"
+                    className="w-[60px] text-center rounded-xl border border-border bg-input-bg px-2 py-3 text-sm text-text-main shadow-sm outline-none hover:border-accent/30 focus:border-accent focus:ring-2 focus:ring-accent/20 transition-all duration-200 min-h-[44px]"
                   />
                   <input
                     value={contatoPhone}
@@ -954,7 +954,7 @@ function PreCadastroPage() {
                       )
                     }
                     placeholder="Número"
-                    className="flex-[3] rounded-lg border border-input-border bg-input-bg px-3 py-3 text-sm text-text-main outline-none focus:border-accent min-h-[44px]"
+                    className="flex-[3] rounded-xl border border-border bg-input-bg px-3 py-3 text-sm text-text-main shadow-sm outline-none hover:border-accent/30 focus:border-accent focus:ring-2 focus:ring-accent/20 transition-all duration-200 min-h-[44px]"
                   />
                 </div>
               </div>
@@ -966,7 +966,7 @@ function PreCadastroPage() {
             <button
               onClick={handleEnviarPIN}
               disabled={pinSubmitting}
-              className="w-full rounded-xl bg-accent py-3.5 text-sm font-semibold text-white mt-2 flex items-center justify-center gap-2"
+              className="w-full rounded-xl bg-accent py-3.5 text-sm font-semibold text-accent-fg mt-2 flex items-center justify-center gap-2"
             >
               {pinSubmitting ? (
                 <Loader2 size={16} className="animate-spin" />
@@ -980,7 +980,7 @@ function PreCadastroPage() {
 
         {/* 2FA Validar PIN */}
         {step === "2fa_validar" && (
-          <div className="rounded-2xl bg-card p-6 shadow-xl flex flex-col gap-4 border border-border-subtle">
+          <div className="rounded-2xl bg-card p-6 shadow-xl flex flex-col gap-4 border border-border">
             <div className="flex flex-col items-center gap-2 mb-2">
               <KeyRound size={36} className="text-accent" />
               <h2 className="text-base font-bold text-text-main">
@@ -1017,7 +1017,7 @@ function PreCadastroPage() {
               type="text"
               maxLength={6}
               disabled={tempo2FA === 0}
-              className="w-full rounded-lg border border-input-border bg-input-bg px-4 py-3 text-center text-lg font-mono tracking-widest text-text-main outline-none focus:border-accent min-h-[44px] disabled:opacity-50"
+              className="w-full rounded-xl border border-border bg-input-bg px-4 py-3 text-center text-lg font-mono tracking-widest text-text-main font-medium shadow-sm outline-none hover:border-accent/30 focus:border-accent focus:ring-2 focus:ring-accent/20 min-h-[44px] disabled:opacity-50 transition-all duration-200"
             />
 
             {pinErro && (
@@ -1029,7 +1029,7 @@ function PreCadastroPage() {
             <div className="flex gap-2.5 mt-2">
               <button
                 onClick={() => setStep("2fa_solicitar")}
-                className="flex-1 rounded-xl border border-input-border py-3 text-xs font-semibold text-text-muted"
+                className="flex-1 rounded-xl bg-surface border border-border py-3 text-xs font-semibold text-text-muted hover:text-text-main hover:border-accent/30 transition-all duration-200 min-h-[44px]"
               >
                 Voltar
               </button>
@@ -1038,7 +1038,7 @@ function PreCadastroPage() {
                 disabled={
                   pinSubmitting || pinInput.length < 6 || tempo2FA === 0
                 }
-                className="flex-1 rounded-xl bg-accent py-3 text-xs font-semibold text-white flex items-center justify-center gap-1.5 disabled:opacity-50"
+                className="flex-1 rounded-xl bg-accent py-3 text-xs font-semibold text-accent-fg inline-flex items-center justify-center gap-1.5 hover:brightness-110 transition-all duration-200 min-h-[44px] disabled:opacity-50"
               >
                 {pinSubmitting ? (
                   <Loader2 size={14} className="animate-spin" />
@@ -1058,14 +1058,14 @@ function PreCadastroPage() {
             </p>
             <button
               onClick={() => setForm((prev) => ({ ...prev, tipo: "PF" }))}
-              className={`rounded-xl border-2 p-6 text-center transition ${form.tipo === "PF" ? "border-accent bg-accent/10" : "border-border-subtle bg-card"}`}
+              className={`rounded-xl border-2 p-6 text-center transition ${form.tipo === "PF" ? "border-accent bg-accent/10" : "border-border bg-card"}`}
             >
               <span className="text-2xl font-bold text-accent">PF</span>
               <p className="text-xs text-text-muted mt-1">Pessoa Física</p>
             </button>
             <button
               onClick={() => setForm((prev) => ({ ...prev, tipo: "PJ" }))}
-              className={`rounded-xl border-2 p-6 text-center transition ${form.tipo === "PJ" ? "border-accent bg-accent/10" : "border-border-subtle bg-card"}`}
+              className={`rounded-xl border-2 p-6 text-center transition ${form.tipo === "PJ" ? "border-accent bg-accent/10" : "border-border bg-card"}`}
             >
               <span className="text-2xl font-bold text-accent">PJ</span>
               <p className="text-xs text-text-muted mt-1">Pessoa Jurídica</p>
@@ -1073,7 +1073,7 @@ function PreCadastroPage() {
             <button
               disabled={!form.tipo}
               onClick={() => setStep("dados")}
-              className="mt-4 rounded-xl bg-accent py-3 text-sm font-medium text-white disabled:opacity-50"
+              className="mt-4 rounded-xl bg-accent py-2.5 px-5 text-sm font-semibold text-accent-fg inline-flex items-center justify-center gap-2 hover:brightness-110 transition-all duration-200 min-h-[44px] disabled:opacity-50"
             >
               Continuar
             </button>
@@ -1182,7 +1182,7 @@ function PreCadastroPage() {
                       value={val}
                       onChange={(e) => onChange(e.target.value)}
                       rows={3}
-                      className={`w-full rounded-lg border ${motivoCorrecao ? "border-orange-500 bg-orange-500/5 focus:border-orange-400" : "border-input-border bg-input-bg focus:border-accent"} px-4 py-3 text-sm text-text-main outline-none resize-none transition`}
+                      className={`w-full rounded-xl border ${motivoCorrecao ? "border-orange-500 bg-orange-500/5 focus:border-orange-400 ring-1 ring-orange-500/20" : "border-border bg-input-bg hover:border-accent/30 focus:border-accent focus:ring-2 focus:ring-accent/20"} px-4 py-2.5 text-sm text-text-main font-medium shadow-sm outline-none resize-none transition-all duration-200`}
                     />
                     {motivoCorrecao && (
                       <span className="text-orange-400 text-xs mt-1 block font-semibold flex items-center gap-1 animate-pulse">
@@ -1201,7 +1201,7 @@ function PreCadastroPage() {
                     <select
                       value={val}
                       onChange={(e) => onChange(e.target.value)}
-                      className={`w-full rounded-lg border ${motivoCorrecao ? "border-orange-500 bg-orange-500/5 focus:border-orange-400" : "border-input-border bg-input-bg focus:border-accent"} px-4 py-3 text-sm text-text-main outline-none transition`}
+                      className={`w-full rounded-xl border ${motivoCorrecao ? "border-orange-500 bg-orange-500/5 focus:border-orange-400 ring-1 ring-orange-500/20" : "border-border bg-input-bg hover:border-accent/30 focus:border-accent focus:ring-2 focus:ring-accent/20"} px-4 py-2.5 text-sm text-text-main font-medium shadow-sm outline-none transition-all duration-200`}
                     >
                       <option value="">Selecione…</option>
                       {(c.opcoes ?? []).map((op: string) => (
@@ -1249,14 +1249,14 @@ function PreCadastroPage() {
                           className={`flex items-center gap-2 rounded-lg border px-3 py-2.5 text-xs transition ${
                             selecionados.includes(op)
                               ? "border-accent bg-accent/10 text-accent"
-                              : "border-input-border bg-input-bg text-text-muted"
+                              : "border-border bg-input-bg text-text-muted"
                           }`}
                         >
                           <div
                             className={`h-4 w-4 rounded border-2 flex-shrink-0 flex items-center justify-center ${
                               selecionados.includes(op)
                                 ? "border-accent bg-accent"
-                                : "border-input-border"
+                                : "border-border"
                             }`}
                           >
                             {selecionados.includes(op) && (
@@ -1305,13 +1305,13 @@ function PreCadastroPage() {
                 <div className="flex gap-3 mt-4">
                   <button
                     onClick={() => setStep("tipo")}
-                    className="flex-1 rounded-xl border border-input-border py-3 text-sm text-text-muted"
+                    className="flex-1 rounded-xl bg-surface border border-border py-2.5 px-5 text-sm font-semibold text-text-muted hover:text-text-main hover:border-accent/30 transition-all duration-200 min-h-[44px]"
                   >
                     Voltar
                   </button>
                   <button
                     onClick={handleAvancarDados}
-                    className="flex-1 rounded-xl bg-accent py-3 text-sm font-medium text-white"
+                    className="flex-1 rounded-xl bg-accent py-2.5 px-5 text-sm font-semibold text-accent-fg inline-flex items-center justify-center gap-2 hover:brightness-110 transition-all duration-200 min-h-[44px]"
                   >
                     Próximo
                   </button>
@@ -1406,7 +1406,7 @@ function PreCadastroPage() {
                     </div>
                     <button
                       onClick={() => handleBuscarCEP(tipo)}
-                      className="mt-6 rounded-lg bg-accent px-4 py-3 text-xs font-medium text-white min-h-[44px]"
+                      className="mt-6 rounded-lg bg-accent px-4 py-3 text-xs font-medium text-accent-fg min-h-[44px]"
                     >
                       Buscar
                     </button>
@@ -1432,7 +1432,7 @@ function PreCadastroPage() {
                 ) : (
                   <>
                     {/* Bloco Empresa */}
-                    <div className="flex flex-col gap-3 border-b border-border-subtle pb-4">
+                    <div className="flex flex-col gap-3 border-b border-border pb-4">
                       <h3 className="text-sm font-bold text-accent">
                         Endereço da Empresa
                       </h3>
@@ -1442,7 +1442,7 @@ function PreCadastroPage() {
                     </div>
 
                     {/* Bloco Entrega */}
-                    <div className="flex flex-col gap-3 border-b border-border-subtle pb-4">
+                    <div className="flex flex-col gap-3 border-b border-border pb-4">
                       <label className="flex items-center gap-2 text-xs font-semibold text-text-main cursor-pointer select-none">
                         <input
                           type="checkbox"
@@ -1468,7 +1468,7 @@ function PreCadastroPage() {
                               }));
                             }
                           }}
-                          className="rounded border-input-border text-accent focus:ring-accent"
+                          className="rounded border-border text-accent focus:ring-accent"
                         />
                         <span>Usar mesmo endereço para entrega</span>
                       </label>
@@ -1511,7 +1511,7 @@ function PreCadastroPage() {
                               }));
                             }
                           }}
-                          className="rounded border-input-border text-accent focus:ring-accent"
+                          className="rounded border-border text-accent focus:ring-accent"
                         />
                         <span>Usar mesmo endereço para cobrança</span>
                       </label>
@@ -1531,13 +1531,13 @@ function PreCadastroPage() {
                 <div className="flex gap-3 mt-4">
                   <button
                     onClick={() => setStep("dados")}
-                    className="flex-1 rounded-xl border border-input-border py-3 text-sm text-text-muted"
+                    className="flex-1 rounded-xl bg-surface border border-border py-2.5 px-5 text-sm font-semibold text-text-muted hover:text-text-main hover:border-accent/30 transition-all duration-200 min-h-[44px]"
                   >
                     Voltar
                   </button>
                   <button
                     onClick={() => setStep("documentos")}
-                    className="flex-1 rounded-xl bg-accent py-3 text-sm font-medium text-white"
+                    className="flex-1 rounded-xl bg-accent py-2.5 px-5 text-sm font-semibold text-accent-fg inline-flex items-center justify-center gap-2 hover:brightness-110 transition-all duration-200 min-h-[44px]"
                   >
                     Próximo
                   </button>
@@ -1580,14 +1580,14 @@ function PreCadastroPage() {
             <div className="flex gap-3 mt-4">
               <button
                 onClick={() => setStep("endereco")}
-                className="flex-1 rounded-xl border border-input-border py-3 text-sm text-text-muted"
+                className="flex-1 rounded-xl bg-surface border border-border py-2.5 px-5 text-sm font-semibold text-text-muted hover:text-text-main hover:border-accent/30 transition-all duration-200 min-h-[44px]"
               >
                 Voltar
               </button>
               <button
                 onClick={handleSubmit}
                 disabled={submitting}
-                className="flex-1 rounded-xl bg-accent py-3 text-sm font-medium text-white disabled:opacity-50"
+                className="flex-1 rounded-xl bg-accent py-2.5 px-5 text-sm font-semibold text-accent-fg inline-flex items-center justify-center gap-2 hover:brightness-110 transition-all duration-200 min-h-[44px] disabled:opacity-50"
               >
                 {submitting ? (
                   <Loader2 size={16} className="animate-spin mx-auto" />
@@ -1602,33 +1602,46 @@ function PreCadastroPage() {
 
       {/* Modal de CPF/CNPJ Duplicado */}
       {modalDuplicado && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 px-4 backdrop-blur-sm">
-          <div className="w-full max-w-sm rounded-2xl bg-card border border-red-500/30 p-6 shadow-2xl flex flex-col items-center gap-4">
-            <div className="flex h-14 w-14 items-center justify-center rounded-full bg-red-500/10">
-              <XCircle size={32} className="text-red-500" />
+        <div className="fixed inset-0 z-[100] flex items-end justify-center bg-black/60 backdrop-blur-sm sm:items-center">
+          <div className="w-full max-w-md rounded-t-2xl sm:rounded-2xl bg-card border border-red-500/20 p-0 shadow-2xl shadow-black/40 max-h-[90dvh] overflow-hidden flex flex-col">
+            <div className="bg-gradient-to-br from-red-500/20 via-red-500/10 to-transparent px-6 pt-6 pb-4 border-b border-red-500/20 relative">
+              <div className="flex items-center gap-3">
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-red-500/15 text-red-400">
+                  <XCircle size={24} />
+                </div>
+                <div>
+                  <h2 className="text-xl font-bold text-text-main tracking-tight">
+                    {modalDuplicado.tipo} já cadastrado
+                  </h2>
+                  <p className="text-sm text-text-muted mt-0.5">
+                    Duplicidade detectada
+                  </p>
+                </div>
+              </div>
             </div>
-            <h2 className="text-base font-bold text-text-main text-center">
-              {modalDuplicado.tipo} já cadastrado
-            </h2>
-            <p className="text-xs text-text-muted text-center leading-relaxed">
-              Este{" "}
-              <strong className="text-text-main">{modalDuplicado.tipo}</strong>{" "}
-              já possui uma solicitação de cadastro em andamento em nosso
-              sistema.
-              <br />
-              <br />
-              Por favor, entre em contato com o seu{" "}
-              <strong className="text-accent">
-                consultor responsável
-              </strong>{" "}
-              para mais informações.
-            </p>
-            <button
-              onClick={() => setModalDuplicado(null)}
-              className="w-full rounded-xl bg-accent py-3 text-sm font-semibold text-white"
-            >
-              Entendido
-            </button>
+            <div className="px-6 py-6 flex-1 space-y-4">
+              <p className="text-sm text-text-muted leading-relaxed">
+                Este{" "}
+                <strong className="text-text-main">{modalDuplicado.tipo}</strong>{" "}
+                já possui uma solicitação de cadastro em andamento em nosso
+                sistema.
+                <br />
+                <br />
+                Por favor, entre em contato com o seu{" "}
+                <strong className="text-accent">
+                  consultor responsável
+                </strong>{" "}
+                para mais informações.
+              </p>
+            </div>
+            <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end px-6 pb-6 pt-4 border-t border-red-500/20">
+              <button
+                onClick={() => setModalDuplicado(null)}
+                className="flex-1 sm:flex-none rounded-xl bg-red-500 px-6 py-2.5 text-sm font-semibold text-white shadow-md shadow-red-500/20 hover:bg-red-600 disabled:opacity-50 transition-all duration-200 min-h-[44px]"
+              >
+                Entendido
+              </button>
+            </div>
           </div>
         </div>
       )}
@@ -1659,7 +1672,7 @@ function Campo({
         onChange={(e) => onChange(e.target.value)}
         type={type || "text"}
         placeholder={placeholder}
-        className={`w-full rounded-lg border ${motivoCorrecao ? "border-orange-500 bg-orange-500/5 focus:border-orange-400" : "border-input-border bg-input-bg focus:border-accent"} px-4 py-3 text-sm text-text-main outline-none min-h-[44px] placeholder:text-text-muted/40 transition`}
+        className={`w-full rounded-xl border ${motivoCorrecao ? "border-orange-500 bg-orange-500/5 focus:border-orange-400 ring-1 ring-orange-500/20" : "border-border bg-input-bg hover:border-accent/30 focus:border-accent focus:ring-2 focus:ring-accent/20"} px-4 py-2.5 text-sm text-text-main font-medium shadow-sm outline-none min-h-[44px] placeholder:text-text-muted/60 transition-all duration-200`}
       />
       {motivoCorrecao && (
         <span className="text-orange-400 text-xs mt-1 block font-semibold flex items-center gap-1 animate-pulse">
@@ -1704,7 +1717,7 @@ function CampoMascarado({
         type="tel"
         inputMode="numeric"
         placeholder={placeholder}
-        className={`w-full rounded-lg border ${motivoCorrecao ? "border-orange-500 bg-orange-500/5 focus:border-orange-400" : "border-input-border bg-input-bg focus:border-accent"} px-4 py-3 text-sm text-text-main outline-none min-h-[44px] placeholder:text-text-muted/40 font-mono tracking-wide transition`}
+        className={`w-full rounded-xl border ${motivoCorrecao ? "border-orange-500 bg-orange-500/5 focus:border-orange-400 ring-1 ring-orange-500/20" : "border-border bg-input-bg hover:border-accent/30 focus:border-accent focus:ring-2 focus:ring-accent/20"} px-4 py-2.5 text-sm text-text-main font-medium shadow-sm outline-none min-h-[44px] placeholder:text-text-muted/60 font-mono tracking-wide transition-all duration-200`}
       />
       {motivoCorrecao && (
         <span className="text-orange-400 text-xs mt-1 block font-semibold flex items-center gap-1 animate-pulse">
@@ -1779,7 +1792,7 @@ function DocUpload({
             ? "border-green-500/30 bg-green-500/5 cursor-not-allowed"
             : needsCorrection
               ? "border-orange-500 bg-orange-500/5 hover:border-orange-400 cursor-pointer"
-              : "border-input-border bg-input-bg hover:border-accent/50 cursor-pointer"
+              : "border-border bg-input-bg hover:border-accent/50 cursor-pointer"
         }`}
       >
         <Upload

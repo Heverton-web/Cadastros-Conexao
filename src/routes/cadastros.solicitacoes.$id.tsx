@@ -51,6 +51,7 @@ import {
   MessageCircle,
   RotateCcw,
   Eye,
+  Shield,
 } from "lucide-react";
 import toast from "react-hot-toast";
 import { enviarNotificacaoComTemplate } from "~/core/services";
@@ -764,7 +765,7 @@ function ClienteDetailPage() {
           <button
             key={t}
             onClick={() => setTab(t)}
-            className={`flex-1 rounded-lg py-2 text-xs font-medium transition ${tab === t ? "bg-accent text-white" : "text-text-muted hover:text-text-main"}`}
+            className={`flex-1 rounded-lg py-2 text-xs font-medium transition ${tab === t ? "bg-accent text-accent-fg" : "text-text-muted hover:text-text-main"}`}
           >
             {t === "dados"
               ? "Dados"
@@ -1018,7 +1019,7 @@ function ClienteDetailPage() {
               <button
                 key={t}
                 onClick={() => setEndAddressType(t)}
-                className={`flex-1 rounded-md py-1.5 text-xs font-medium transition ${endAddressType === t ? "bg-accent text-white" : "text-text-muted hover:text-text-main"}`}
+                className={`flex-1 rounded-md py-1.5 text-xs font-medium transition ${endAddressType === t ? "bg-accent text-accent-fg" : "text-text-muted hover:text-text-main"}`}
               >
                 {t === "clinica"
                   ? "Clínica"
@@ -1549,49 +1550,68 @@ function FieldActionModal({
   const [comentario, setComentario] = useState("");
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-6">
-      <div className="w-full max-w-sm rounded-2xl bg-card p-6 shadow-xl">
-        <h2 className="text-base font-bold text-text-main mb-2">
-          {action.tipo === "ok"
-            ? "Aprovar"
-            : action.tipo === "reprovado"
-              ? "Reprovar"
-              : "Solicitar Correção"}{" "}
-          — {action.label}
-        </h2>
-        <p className="text-xs text-text-muted mb-4">
-          {action.tipo === "ok"
-            ? "Confirma a aprovação deste campo?"
-            : action.tipo === "reprovado"
-              ? "Descreva o motivo da reprovação:"
-              : "Descreva o que precisa ser corrigido:"}
-        </p>
-        {action.tipo !== "ok" && (
-          <textarea
-            value={comentario}
-            onChange={(e) => setComentario(e.target.value)}
-            rows={3}
-            placeholder="Motivo..."
-            autoFocus
-            className="mb-4 w-full rounded-lg border border-input-border bg-input-bg px-4 py-3 text-sm text-text-main outline-none focus:border-accent resize-none min-h-[80px]"
-          />
-        )}
-        <div className="flex gap-3">
+    <div className="fixed inset-0 z-[100] flex items-end justify-center bg-black/60 backdrop-blur-sm sm:items-center">
+      <div className="w-full max-w-md rounded-t-2xl sm:rounded-2xl bg-card border border-border/50 p-0 shadow-2xl shadow-black/40 max-h-[90dvh] overflow-hidden flex flex-col">
+        <div className="bg-gradient-to-br from-accent/20 via-accent/10 to-transparent px-6 pt-6 pb-4 border-b border-border/50">
+          <div className="flex items-start justify-between">
+            <div className="flex items-center gap-3">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent/15 text-accent">
+                <Shield size={22} />
+              </div>
+              <div>
+                <h2 className="text-xl font-bold text-text-main tracking-tight">
+                  {action.tipo === "ok"
+                    ? "Aprovar"
+                    : action.tipo === "reprovado"
+                      ? "Reprovar"
+                      : "Solicitar Correção"}{" "}
+                  — {action.label}
+                </h2>
+                <p className="text-sm text-text-muted mt-0.5">
+                  {action.tipo === "ok"
+                    ? "Confirma a aprovação deste campo?"
+                    : action.tipo === "reprovado"
+                      ? "Descreva o motivo da reprovação:"
+                      : "Descreva o que precisa ser corrigido:"}
+                </p>
+              </div>
+            </div>
+            <button
+              onClick={onClose}
+              className="absolute right-4 top-5 rounded-lg p-1.5 text-text-muted hover:text-text-main hover:bg-surface-hover transition-colors"
+            >
+              <X size={20} />
+            </button>
+          </div>
+        </div>
+        <div className="px-6 py-6 flex-1 space-y-4">
+          {action.tipo !== "ok" && (
+            <textarea
+              value={comentario}
+              onChange={(e) => setComentario(e.target.value)}
+              rows={3}
+              placeholder="Motivo..."
+              autoFocus
+              className="w-full rounded-lg border border-input-border bg-input-bg px-4 py-3 text-sm text-text-main outline-none focus:border-accent resize-none min-h-[80px]"
+            />
+          )}
+        </div>
+        <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end px-6 pb-6 pt-4 border-t border-border/50">
           <button
             onClick={onClose}
-            className="flex-1 rounded-xl border border-input-border py-3 text-sm font-medium text-text-muted max-h-[45px]"
+            className="flex-1 sm:flex-none rounded-xl border border-border px-6 py-2.5 text-sm text-text-muted font-semibold hover:text-text-main hover:bg-surface-hover transition-all duration-200 min-h-[44px]"
           >
             Cancelar
           </button>
           <button
             onClick={() => onConfirm(comentario)}
             disabled={action.tipo !== "ok" && !comentario.trim()}
-            className={`flex-1 rounded-xl py-3 text-sm font-medium text-white disabled:opacity-50 max-h-[45px] ${
+            className={`flex-1 sm:flex-none rounded-xl px-6 py-2.5 text-sm font-semibold text-white shadow-md disabled:opacity-50 transition-all duration-200 min-h-[44px] ${
               action.tipo === "ok"
-                ? "bg-green-700/80"
+                ? "bg-green-700/80 shadow-green-700/20"
                 : action.tipo === "reprovado"
-                  ? "bg-red-700/80"
-                  : "bg-orange-600/80"
+                  ? "bg-red-700/80 shadow-red-700/20"
+                  : "bg-orange-600/80 shadow-orange-600/20"
             }`}
           >
             {action.tipo === "ok"
@@ -1618,23 +1638,34 @@ function Modal({
   children: React.ReactNode;
 }) {
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-6">
-      <div className="w-full max-w-md rounded-2xl bg-card p-6 shadow-xl">
-        <div className="flex items-center justify-between mb-1">
-          <h2 className="text-base font-bold text-text-main">{titulo}</h2>
-          {onClose && (
-            <button
-              onClick={onClose}
-              className="text-text-muted hover:text-text-main"
-            >
-              <X size={20} />
-            </button>
-          )}
+    <div className="fixed inset-0 z-[100] flex items-end justify-center bg-black/60 backdrop-blur-sm sm:items-center">
+      <div className="w-full max-w-md rounded-t-2xl sm:rounded-2xl bg-card border border-border/50 p-0 shadow-2xl shadow-black/40 max-h-[90dvh] overflow-hidden flex flex-col">
+        <div className="bg-gradient-to-br from-accent/20 via-accent/10 to-transparent px-6 pt-6 pb-4 border-b border-border/50">
+          <div className="flex items-start justify-between">
+            <div className="flex items-center gap-3">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent/15 text-accent">
+                <FileText size={22} />
+              </div>
+              <div>
+                <h2 className="text-xl font-bold text-text-main tracking-tight">{titulo}</h2>
+                {descricao && (
+                  <p className="text-sm text-text-muted mt-0.5">{descricao}</p>
+                )}
+              </div>
+            </div>
+            {onClose && (
+              <button
+                onClick={onClose}
+                className="absolute right-4 top-5 rounded-lg p-1.5 text-text-muted hover:text-text-main hover:bg-surface-hover transition-colors"
+              >
+                <X size={20} />
+              </button>
+            )}
+          </div>
         </div>
-        {descricao && (
-          <p className="mb-3 text-xs text-text-muted">{descricao}</p>
-        )}
-        {children}
+        <div className="px-6 py-6 flex-1 space-y-4">
+          {children}
+        </div>
       </div>
     </div>
   );

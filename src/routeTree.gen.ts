@@ -23,7 +23,9 @@ import { adminSuperBancoRoute } from "./routes/global.banco";
 import { adminSuperIntegracoesRoute } from "./routes/global.integracoes";
 import { adminSuperDemosRoute } from "./routes/global.demos";
 import { adminLaboratorioRoute } from "./routes/global.laboratorio";
+import { globalModelosIaRoute } from "./routes/global.modelos-ia";
 import { adminSuperTestesRoute } from "./routes/global.testes";
+import { adminSuperDiagnosticoRoute } from "./routes/global.diagnostico";
 import { globalLimitsRoute } from "./routes/global.limits";
 import { adminEmpresaConfigBancoRoute } from "./routes/empresa.banco";
 import { adminEmpresaConfigBrandingRoute } from "./routes/empresa.branding";
@@ -84,6 +86,7 @@ import { empresaMapasDesignRoute } from "./routes/empresa.mapas-design";
 import { empresaFunisDesignRoute } from "./routes/empresa.funis-design";
 import { empresaCrmDesignRoute } from "./routes/empresa.crm-design";
 import { empresaCadastrosDesignRoute } from "./routes/empresa.cadastros-design";
+import { empresaCadastrosFormularioRoute } from "./routes/empresa.cadastros.formulario";
 import { empresaDespesasDesignRoute } from "./routes/empresa.despesas-design";
 import { empresaRotasDesignRoute } from "./routes/empresa.rotas-design";
 import { empresaNpsTemaRoute } from "./routes/empresa.nps-tema";
@@ -114,6 +117,7 @@ import { crmDesignRoute } from "./routes/crm.design";
 import { mapasDesignRoute } from "./routes/mapas.design";
 import { funisDesignRoute } from "./routes/funis.design";
 import { cadastrosDesignRoute } from "./routes/cadastros.design";
+import { previsualizacaoRoute } from "./routes/cadastros.previsualizacao";
 
 import { despesasRoute } from "./routes/despesas";
 import { despesasAprovacaoRoute } from "./routes/despesas.aprovacao";
@@ -190,7 +194,9 @@ export const routeTree = rootRoute.addChildren([
     adminSuperIntegracoesRoute,
     adminSuperDemosRoute,
     adminSuperTestesRoute,
+    adminSuperDiagnosticoRoute,
     adminLaboratorioRoute,
+    globalModelosIaRoute,
     globalLimitsRoute,
     adminEmpresaConfigBancoRoute,
     adminEmpresaConfigBrandingRoute,
@@ -204,6 +210,7 @@ export const routeTree = rootRoute.addChildren([
     linktreeDesignRoute,
     funisDesignRoute,
     cadastrosDesignRoute,
+    previsualizacaoRoute,
     despesasDesignRoute,
 
     rotasRoute,
@@ -286,6 +293,7 @@ export const routeTree = rootRoute.addChildren([
     empresaFunisDesignRoute,
     empresaCrmDesignRoute,
     empresaCadastrosDesignRoute,
+    empresaCadastrosFormularioRoute,
     empresaDespesasDesignRoute,
     empresaRotasDesignRoute,
     empresaNpsTemaRoute,

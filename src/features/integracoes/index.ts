@@ -20,7 +20,7 @@ export type EnderecoCEP = {
 
 export async function listarIntegracoes(): Promise<IntegracaoConfig[]> {
   const { data, error } = await supabase
-    .from("integracoes_config")
+    .from("config_integracoes")
     .select("*")
     .order("chave");
   if (error) throw error;
@@ -33,7 +33,7 @@ export async function salvarIntegracao(
   config: any,
 ): Promise<void> {
   const { error } = await supabase
-    .from("integracoes_config")
+    .from("config_integracoes")
     .update({
       ativo,
       config,

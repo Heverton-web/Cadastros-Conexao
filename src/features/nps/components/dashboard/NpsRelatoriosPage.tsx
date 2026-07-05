@@ -286,13 +286,21 @@ export function NpsRelatoriosPage() {
       </Card>
 
       <Dialog open={!!selected} onOpenChange={(o) => !o && setSelected(null)}>
-        <DialogContent className="max-w-5xl max-h-[90vh] overflow-hidden flex flex-col">
+        <DialogContent className="max-w-5xl">
           <DialogHeader>
-            <DialogTitle>
-              Relatório de {selected && formatDate(selected.data_envio)}
-            </DialogTitle>
+            <div className="flex items-center gap-3">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent/15 text-accent">
+                <FileText className="h-6 w-6" />
+              </div>
+              <div>
+                <DialogTitle>
+                  Relatório de {selected && formatDate(selected.data_envio)}
+                </DialogTitle>
+              </div>
+            </div>
           </DialogHeader>
-          <div className="flex-1 overflow-auto rounded-md border border-border bg-white">
+          <div className="px-6 py-6 flex-1 space-y-4">
+            <div className="flex-1 overflow-auto rounded-md border border-border bg-white">
             {selected?.html_relatorio ? (
               <iframe
                 title="Relatório HTML"
@@ -316,6 +324,7 @@ export function NpsRelatoriosPage() {
               </pre>
             </details>
           )}
+          </div>
         </DialogContent>
       </Dialog>
     </div>

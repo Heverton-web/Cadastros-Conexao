@@ -3,9 +3,10 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
   DialogFooter,
 } from "~/components/ui/dialog";
-import { Button } from "~/components/ui/button";
+
 import { formatBRL, formatDate } from "~/features/crm/lib/comercial";
 import {
   Calendar,
@@ -71,13 +72,20 @@ export function VisitaDetalheModal({ visita, open, onOpenChange }: Props) {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl max-h-[92vh] overflow-y-auto">
+      <DialogContent className="max-w-2xl">
         <DialogHeader>
-          <DialogTitle>Visita de {formatDate(visita.data_visita)}</DialogTitle>
-          <p className="text-sm text-text-muted">
-            {visita.tipo_visita} · registrada por{" "}
-            {visita.executor?.nome_completo ?? "—"}
-          </p>
+          <div className="flex items-center gap-3">
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent/15 text-accent">
+              <Calendar className="h-6 w-6" />
+            </div>
+            <div>
+              <DialogTitle>Visita de {formatDate(visita.data_visita)}</DialogTitle>
+              <DialogDescription>
+                {visita.tipo_visita} · registrada por{" "}
+                {visita.executor?.nome_completo ?? "—"}
+              </DialogDescription>
+            </div>
+          </div>
           <span
             className={cn(
               "inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-bold uppercase w-fit",
@@ -90,6 +98,7 @@ export function VisitaDetalheModal({ visita, open, onOpenChange }: Props) {
           </span>
         </DialogHeader>
 
+        <div className="px-6 py-6 flex-1 space-y-4">
         <div className="space-y-5">
           <Section icon={User} title="Pessoa atendida">
             <Info label="Nome" value={visita.atendente} />
@@ -175,10 +184,15 @@ export function VisitaDetalheModal({ visita, open, onOpenChange }: Props) {
         </div>
 
         <DialogFooter>
-          <Button variant="ghost" onClick={() => onOpenChange(false)}>
+          <button
+            type="button"
+            onClick={() => onOpenChange(false)}
+            className="flex-1 sm:flex-none rounded-xl border border-border px-6 py-2.5 text-sm text-text-muted font-semibold hover:text-text-main hover:bg-surface-hover transition-all duration-200 min-h-[44px]"
+          >
             Fechar
-          </Button>
+          </button>
         </DialogFooter>
+        </div>
       </DialogContent>
     </Dialog>
   );

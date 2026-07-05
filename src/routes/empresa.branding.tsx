@@ -2,13 +2,13 @@ import { createRoute, useNavigate } from "@tanstack/react-router";
 import { authLayout } from "./_auth";
 import { useAuth } from "~/lib/auth";
 import {
-  buscarEmpresaConfig,
-  salvarEmpresaConfig,
+  buscarEmpresaDesign,
+  salvarEmpresaDesign,
   uploadEmpresaLogo,
   deletarEmpresaLogo,
   listarEmpresas,
   type Empresa,
-  type EmpresaConfig,
+  type EmpresaDesign,
 } from "~/features/empresas";
 import { useState, useEffect } from "react";
 import {
@@ -36,7 +36,7 @@ function AdminEmpresaConfigBranding() {
 
   const [empresas, setEmpresas] = useState<Empresa[]>([]);
   const [empresaId, setEmpresaId] = useState(minhaEmpresaId || "");
-  const [config, setConfig] = useState<EmpresaConfig | null>(null);
+  const [config, setConfig] = useState<EmpresaDesign | null>(null);
   const [loading, setLoading] = useState(true);
 
   const [logoIndex, setLogoIndex] = useState("");
@@ -68,7 +68,7 @@ function AdminEmpresaConfigBranding() {
 
   async function loadConfig(eid: string) {
     setLoading(true);
-    const cfg = await buscarEmpresaConfig(eid);
+    const cfg = await buscarEmpresaDesign(eid);
     setConfig(cfg);
     setLogoIndex(cfg?.logo_index_url || "");
     setLogoApp(cfg?.logo_app_url || "");
@@ -90,7 +90,7 @@ function AdminEmpresaConfigBranding() {
         if (tipo === "logo_index") setLogoIndex(url);
         else if (tipo === "logo_app") setLogoApp(url);
         else setFavicon(url);
-        await salvarEmpresaConfig(empresaId, {
+        await salvarEmpresaDesign(empresaId, {
           logo_index_url: tipo === "logo_index" ? url : logoIndex || undefined,
           logo_app_url: tipo === "logo_app" ? url : logoApp || undefined,
           favicon_url: tipo === "favicon" ? url : favicon || undefined,
@@ -108,7 +108,7 @@ function AdminEmpresaConfigBranding() {
   async function handleSave() {
     setSaving(true);
     try {
-      await salvarEmpresaConfig(empresaId, {
+      await salvarEmpresaDesign(empresaId, {
         logo_index_url: logoIndex || undefined,
         logo_app_url: logoApp || undefined,
         favicon_url: favicon || undefined,
@@ -162,7 +162,7 @@ function AdminEmpresaConfigBranding() {
               <button
                 onClick={() => handleUpload(tipo)}
                 disabled={uploading === tipo}
-                className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-accent text-white text-xs font-medium hover:bg-accent-hover disabled:opacity-50"
+                className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-accent text-accent-fg text-xs font-medium hover:bg-accent-hover disabled:opacity-50"
               >
                 {uploading === tipo ? (
                   <Loader2 size={12} className="animate-spin" />
@@ -251,7 +251,7 @@ function AdminEmpresaConfigBranding() {
             <button
               onClick={handleSave}
               disabled={saving}
-              className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-accent text-white text-sm font-medium hover:bg-accent-hover disabled:opacity-50"
+              className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-accent text-accent-fg text-sm font-medium hover:bg-accent-hover disabled:opacity-50"
             >
               {saving ? (
                 <Loader2 size={14} className="animate-spin" />

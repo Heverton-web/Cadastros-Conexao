@@ -34,7 +34,7 @@ export async function listApiConnectors(
   moduloKey?: string | null,
 ) {
   let query = supabase
-    .from("api_connectors")
+    .from("conectores_api")
     .select("*")
     .order("name", { ascending: true });
   if (type) {
@@ -55,7 +55,7 @@ export async function listApiConnectors(
 
 export async function createApiConnector(input: ApiConnectorInput) {
   const { data, error } = await supabase
-    .from("api_connectors")
+    .from("conectores_api")
     .insert(input)
     .select()
     .single();
@@ -68,7 +68,7 @@ export async function updateApiConnector(
   input: Partial<ApiConnectorInput>,
 ) {
   const { data, error } = await supabase
-    .from("api_connectors")
+    .from("conectores_api")
     .update({ ...input, updated_at: new Date().toISOString() })
     .eq("id", id)
     .select()
@@ -78,7 +78,7 @@ export async function updateApiConnector(
 }
 
 export async function deleteApiConnector(id: string) {
-  const { error } = await supabase.from("api_connectors").delete().eq("id", id);
+  const { error } = await supabase.from("conectores_api").delete().eq("id", id);
   if (error) throw error;
 }
 

@@ -7,6 +7,8 @@ import {
 } from "~/registry";
 import type { ModuleDefinition } from "~/registry";
 import { LINKTREE_PERMISSIONS } from "./permissions";
+import { registrarPlanoDiagnostico } from "~/core/diagnostic";
+import { linktreeDiagnosticPlan } from "./diagnostic";
 
 export const linktreeModule: ModuleDefinition = {
   key: "linktree",
@@ -62,10 +64,12 @@ export const linktreeModule: ModuleDefinition = {
       type: "status_change",
     },
   ],
+  hasDiagnostico: true,
   hasCredentialScopes: true,
   hasDesignConfig: true,
   designRoute: "/empresa/linktree/design",
   setup: () => {
+    registrarPlanoDiagnostico(linktreeDiagnosticPlan);
     for (const p of LINKTREE_PERMISSIONS) {
       registerPermission({
         key: p.key,

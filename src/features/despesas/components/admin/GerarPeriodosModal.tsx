@@ -4,9 +4,9 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
   DialogFooter,
 } from "~/components/ui/dialog";
-import { Button } from "~/components/ui/button";
 import {
   Select,
   SelectContent,
@@ -17,6 +17,7 @@ import {
 import { useGerarPeriodos } from "../../hooks/usePeriodos";
 import { FREQUENCIA_LABEL, type Frequencia } from "../../types";
 import { cn } from "~/lib/utils";
+import { FileText } from "lucide-react";
 
 interface GerarPeriodosModalProps {
   open: boolean;
@@ -76,12 +77,15 @@ export function GerarPeriodosModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="bg-card border-border max-w-md">
+      <DialogContent className="bg-card max-w-md max-h-[90dvh] overflow-hidden flex flex-col">
         <DialogHeader>
-          <DialogTitle>Gerar Períodos</DialogTitle>
+          <div className="flex items-center gap-3">
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent/15 text-accent"><FileText className="h-6 w-6" /></div>
+            <div><DialogTitle>Gerar Períodos</DialogTitle><DialogDescription>Gere períodos de despesas automaticamente.</DialogDescription></div>
+          </div>
         </DialogHeader>
 
-        <div className="space-y-4">
+        <div className="px-6 py-6 flex-1 space-y-4">
           <div className="space-y-2">
             <label className="text-sm font-medium text-text-main">
               Frequência
@@ -162,19 +166,21 @@ export function GerarPeriodosModal({
         </div>
 
         <DialogFooter>
-          <Button
+          <button
             type="button"
-            variant="outline"
             onClick={() => onOpenChange(false)}
+            className="flex-1 sm:flex-none rounded-xl border border-border px-6 py-2.5 text-sm text-text-muted font-semibold hover:text-text-main hover:bg-surface-hover transition-all duration-200 min-h-[44px]"
           >
             Cancelar
-          </Button>
-          <Button
+          </button>
+          <button
+            type="button"
             onClick={handleGerar}
             disabled={meses.length === 0 || gerar.isPending}
+            className="flex-1 sm:flex-none rounded-xl bg-accent px-6 py-2.5 text-sm font-semibold text-accent-fg shadow-md shadow-accent/20 hover:bg-accent-hover disabled:opacity-50 transition-all duration-200 min-h-[44px]"
           >
             {gerar.isPending ? "Gerando..." : "Gerar Períodos"}
-          </Button>
+          </button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

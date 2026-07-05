@@ -3,7 +3,7 @@ import type { HubChatbotConfig } from "../types";
 
 export async function fetchHubChatbotConfig(empresaId: string) {
   const { data, error } = await supabase
-    .from("hub_chatbot_config")
+    .from("hub_config_chatbot")
     .select("*")
     .eq("empresa_id", empresaId)
     .single();
@@ -15,7 +15,7 @@ export async function upsertHubChatbotConfig(
   config: Partial<HubChatbotConfig>,
 ) {
   const { data, error } = await supabase
-    .from("hub_chatbot_config")
+    .from("hub_config_chatbot")
     .upsert(config, { onConflict: "empresa_id" })
     .select()
     .single();

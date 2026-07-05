@@ -7,6 +7,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
   DialogFooter,
 } from "~/components/ui/dialog";
 import {
@@ -57,18 +58,20 @@ export function ShareModal({ funilId, onClose }: ShareModalProps) {
 
   return (
     <Dialog open={true} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="max-w-md">
-        <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <Users className="h-5 w-5 text-muted-foreground" />
-            Compartilhar Funil
-          </DialogTitle>
-          <p className="text-xs text-text-muted">
-            Convide membros por e-mail para colaborar no seu funil.
-          </p>
+      <DialogContent className="bg-card max-h-[90dvh] overflow-hidden flex flex-col max-w-md">
+        <DialogHeader className="bg-gradient-to-br from-accent/20 via-accent/10 to-transparent px-6 pt-6 pb-4 border-b border-border/50">
+          <div className="flex items-center gap-3">
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent/15 text-accent">
+              <Users className="h-6 w-6" />
+            </div>
+            <div>
+              <DialogTitle>Compartilhar Funil</DialogTitle>
+              <DialogDescription>Convide membros por e-mail para colaborar no seu funil.</DialogDescription>
+            </div>
+          </div>
         </DialogHeader>
 
-        <div className="space-y-5">
+        <div className="px-6 py-6 flex-1 space-y-5">
           {/* Adicionar Colaborador */}
           <div className="space-y-3">
             <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground/80">
@@ -203,10 +206,10 @@ export function ShareModal({ funilId, onClose }: ShareModalProps) {
           </div>
         </div>
 
-        <DialogFooter>
-          <Button onClick={onClose} variant="ghost">
+        <DialogFooter className="px-6 pb-6 pt-4 border-t border-border/50 gap-3">
+          <button type="button" onClick={onClose} className="flex-1 sm:flex-none rounded-xl border border-border px-6 py-2.5 text-sm text-text-muted font-semibold hover:text-text-main hover:bg-surface-hover transition-all duration-200 min-h-[44px]">
             Fechar
-          </Button>
+          </button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

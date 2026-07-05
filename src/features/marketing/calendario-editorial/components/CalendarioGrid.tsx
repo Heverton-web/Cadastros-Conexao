@@ -317,12 +317,12 @@ export function CalendarioGrid() {
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent className="sm:max-w-lg">
           <DialogHeader>
-            <DialogTitle>Novo Evento</DialogTitle>
-            <DialogDescription>
-              {diaSelecionado !== null &&
-                `${MESES[mesRef]}, ${diaSelecionado} de ${anoRef}`}
-            </DialogDescription>
+            <div className="flex items-center gap-3">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent/15 text-accent"><Calendar className="h-6 w-6" /></div>
+              <div><DialogTitle>Novo Evento</DialogTitle><DialogDescription>{diaSelecionado !== null && `${MESES[mesRef]}, ${diaSelecionado} de ${anoRef}`}</DialogDescription></div>
+            </div>
           </DialogHeader>
+          <div className="px-6 py-6 flex-1 space-y-4">
 
           {eventoDiaSelecionado().length > 0 && (
             <div className="mb-4 space-y-2">
@@ -426,18 +426,20 @@ export function CalendarioGrid() {
           </div>
 
           <DialogFooter>
-            <Button variant="outline" onClick={() => setDialogOpen(false)}>
+            <button type="button" onClick={() => setDialogOpen(false)} className="flex-1 sm:flex-none rounded-xl border border-border px-6 py-2.5 text-sm text-text-muted font-semibold hover:text-text-main hover:bg-surface-hover transition-all duration-200 min-h-[44px]">
               Cancelar
-            </Button>
-            <Button
+            </button>
+            <button
+              type="button"
               onClick={handleCriar}
-              loading={saving}
-              disabled={!formTitulo.trim()}
+              disabled={saving || !formTitulo.trim()}
+              className="flex-1 sm:flex-none rounded-xl bg-accent px-6 py-2.5 text-sm font-semibold text-accent-fg shadow-md shadow-accent/20 hover:bg-accent-hover disabled:opacity-50 transition-all duration-200 min-h-[44px]"
             >
               <Calendar size={14} />
               Criar Evento
-            </Button>
+            </button>
           </DialogFooter>
+          </div>
         </DialogContent>
       </Dialog>
     </div>

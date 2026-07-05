@@ -24,6 +24,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
   DialogFooter,
 } from "~/components/ui/dialog";
 import {
@@ -185,12 +186,16 @@ export function AprovacaoDespesasPage() {
         open={!!envioSelecionado}
         onOpenChange={(o) => !o && setEnvioSelecionado(null)}
       >
-        <DialogContent className="bg-card border-border max-w-2xl max-h-[85vh] overflow-y-auto">
+        <DialogContent className="bg-card max-w-2xl max-h-[90dvh] overflow-hidden flex flex-col">
           <DialogHeader>
-            <DialogTitle>
-              Analisar — {envioSelecionado ? nomeUsuario(envioSelecionado) : ""}
-            </DialogTitle>
+            <div className="flex items-center gap-3">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent/15 text-accent"><FileText className="h-6 w-6" /></div>
+              <div><DialogTitle>
+                Analisar — {envioSelecionado ? nomeUsuario(envioSelecionado) : ""}
+              </DialogTitle><DialogDescription>Analise as despesas enviadas pelo colaborador.</DialogDescription></div>
+            </div>
           </DialogHeader>
+          <div className="px-6 py-6 flex-1 space-y-4">
           {envioSelecionado && (
             <div className="space-y-4">
               <div className="flex items-center justify-between p-3 rounded-lg bg-surface-hover/30">
@@ -238,11 +243,11 @@ export function AprovacaoDespesasPage() {
                 ))}
               </div>
 
-              <DialogFooter className="flex-col sm:flex-row gap-2">
+              <DialogFooter>
                 <Button
                   variant="outline"
                   onClick={() => setEnvioSelecionado(null)}
-                  className="w-full sm:w-auto"
+                  className="flex-1 sm:flex-none rounded-xl border border-border px-6 py-2.5 text-sm text-text-muted font-semibold hover:text-text-main hover:bg-surface-hover transition-all duration-200 min-h-[44px]"
                 >
                   Fechar
                 </Button>
@@ -252,14 +257,14 @@ export function AprovacaoDespesasPage() {
                     setReprovarEnvio(envioSelecionado);
                     setEnvioSelecionado(null);
                   }}
-                  className="gap-1 w-full sm:w-auto"
+                  className="flex-1 sm:flex-none rounded-xl gap-1"
                 >
                   <XCircle size={16} /> Reprovar
                 </Button>
                 <Button
                   onClick={handleAprovar}
                   disabled={aprovar.isPending}
-                  className="gap-1 w-full sm:w-auto"
+                  className="flex-1 sm:flex-none rounded-xl bg-accent px-6 py-2.5 text-sm font-semibold text-accent-fg shadow-md shadow-accent/20 hover:bg-accent-hover disabled:opacity-50 transition-all duration-200 min-h-[44px] gap-1"
                 >
                   <CheckCircle size={16} />{" "}
                   {aprovar.isPending ? "Aprovando..." : "Aprovar"}
@@ -267,6 +272,7 @@ export function AprovacaoDespesasPage() {
               </DialogFooter>
             </div>
           )}
+          </div>
         </DialogContent>
       </Dialog>
 
@@ -275,14 +281,17 @@ export function AprovacaoDespesasPage() {
         open={!!reprovarEnvio}
         onOpenChange={(o) => !o && setReprovarEnvio(null)}
       >
-        <AlertDialogContent className="bg-card border-border">
+        <AlertDialogContent className="bg-card max-h-[90dvh] overflow-hidden flex flex-col">
           <AlertDialogHeader>
-            <AlertDialogTitle>Reprovar envio?</AlertDialogTitle>
-            <AlertDialogDescription>
-              Informe o motivo da reprovação. O colaborador será notificado.
-            </AlertDialogDescription>
+            <div className="flex items-center gap-3">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent/15 text-accent"><XCircle className="h-6 w-6" /></div>
+              <div><AlertDialogTitle>Reprovar envio?</AlertDialogTitle>
+              <AlertDialogDescription>
+                Informe o motivo da reprovação. O colaborador será notificado.
+              </AlertDialogDescription></div>
+            </div>
           </AlertDialogHeader>
-          <div className="py-2">
+          <div className="px-6 py-6 flex-1 space-y-4">
             <Label htmlFor="motivo">Motivo da reprovação *</Label>
             <Input
               id="motivo"
@@ -293,11 +302,11 @@ export function AprovacaoDespesasPage() {
             />
           </div>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+            <AlertDialogCancel className="flex-1 sm:flex-none rounded-xl border border-border px-6 py-2.5 text-sm text-text-muted font-semibold hover:text-text-main hover:bg-surface-hover transition-all duration-200 min-h-[44px]">Cancelar</AlertDialogCancel>
             <AlertDialogAction
               onClick={handleReprovar}
               disabled={!motivoReprovacao.trim() || reprovar.isPending}
-              className="bg-destructive"
+              className="flex-1 sm:flex-none rounded-xl bg-destructive px-6 py-2.5 text-sm font-semibold text-white shadow-md shadow-accent/20 hover:bg-destructive/90 disabled:opacity-50 transition-all duration-200 min-h-[44px]"
             >
               {reprovar.isPending ? "Reprovando..." : "Reprovar"}
             </AlertDialogAction>
@@ -310,10 +319,14 @@ export function AprovacaoDespesasPage() {
         open={!!pagamentoEnvio}
         onOpenChange={(o) => !o && setPagamentoEnvio(null)}
       >
-        <DialogContent className="bg-card border-border">
+        <DialogContent className="bg-card max-h-[90dvh] overflow-hidden flex flex-col">
           <DialogHeader>
-            <DialogTitle>Definir Pagamento</DialogTitle>
+            <div className="flex items-center gap-3">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent/15 text-accent"><CheckCircle className="h-6 w-6" /></div>
+              <div><DialogTitle>Definir Pagamento</DialogTitle><DialogDescription>Configure o pagamento da despesa aprovada.</DialogDescription></div>
+            </div>
           </DialogHeader>
+          <div className="px-6 py-6 flex-1 space-y-4">
           {pagamentoEnvio && (
             <div className="space-y-4">
               <p className="text-sm text-text-muted">
@@ -346,18 +359,21 @@ export function AprovacaoDespesasPage() {
                 <Button
                   variant="outline"
                   onClick={() => setPagamentoEnvio(null)}
+                  className="flex-1 sm:flex-none rounded-xl border border-border px-6 py-2.5 text-sm text-text-muted font-semibold hover:text-text-main hover:bg-surface-hover transition-all duration-200 min-h-[44px]"
                 >
                   Pular
                 </Button>
                 <Button
                   onClick={handleDefinirPagamento}
                   disabled={!dataPagamento || criarPagamento.isPending}
+                  className="flex-1 sm:flex-none rounded-xl bg-accent px-6 py-2.5 text-sm font-semibold text-accent-fg shadow-md shadow-accent/20 hover:bg-accent-hover disabled:opacity-50 transition-all duration-200 min-h-[44px]"
                 >
                   {criarPagamento.isPending ? "Salvando..." : "Confirmar"}
                 </Button>
               </DialogFooter>
             </div>
           )}
+          </div>
         </DialogContent>
       </Dialog>
     </div>

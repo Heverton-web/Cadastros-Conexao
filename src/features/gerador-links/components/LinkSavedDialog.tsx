@@ -40,15 +40,22 @@ export function LinkSavedDialog({ linkId, urlOriginal, open, onOpenChange }: Pro
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="fixed left-[50%] top-[50%] z-50 w-[calc(100%-2rem)] max-w-lg translate-x-[-50%] translate-y-[-50%] bg-surface border border-border/50 rounded-2xl shadow-2xl shadow-black/40 p-6 sm:p-8">
-        <DialogHeader className="flex flex-col gap-1 text-center sm:text-left mb-4">
-          <DialogTitle className="text-xl font-bold text-text-main tracking-tight">Link salvo com sucesso!</DialogTitle>
-          <DialogDescription className="text-sm text-text-muted leading-relaxed">
-            Use a URL de tracking para monitorar cliques, ou compartilhe a URL original.
-          </DialogDescription>
+      <DialogContent className="max-w-lg">
+        <DialogHeader>
+          <div className="flex items-center gap-3">
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent/15 text-accent">
+              <QrIcon className="h-6 w-6" />
+            </div>
+            <div>
+              <DialogTitle>Link salvo com sucesso!</DialogTitle>
+              <DialogDescription>
+                Use a URL de tracking para monitorar cliques, ou compartilhe a URL original.
+              </DialogDescription>
+            </div>
+          </div>
         </DialogHeader>
 
-        <div className="space-y-4">
+        <div className="px-6 py-6 flex-1 space-y-4">
           <div className="space-y-2">
             <p className="text-xs font-semibold text-text-muted uppercase tracking-wider">
               URL de Tracking

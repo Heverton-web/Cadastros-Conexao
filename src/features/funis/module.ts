@@ -13,6 +13,8 @@ import {
 } from "~/registry";
 import type { ModuleDefinition } from "~/registry";
 import { FUNIS_PERMISSIONS } from "./permissions";
+import { registrarPlanoDiagnostico } from "~/core/diagnostic";
+import { funisDiagnosticPlan } from "./diagnostic";
 
 export const funisModule: ModuleDefinition = {
   key: "funis",
@@ -123,10 +125,12 @@ export const funisModule: ModuleDefinition = {
       type: "button_action",
     },
   ],
+  hasDiagnostico: true,
   hasCredentialScopes: true,
   hasDesignConfig: true,
   designRoute: "/empresa/funis/design",
   setup: () => {
+    registrarPlanoDiagnostico(funisDiagnosticPlan);
     for (const p of FUNIS_PERMISSIONS) {
       registerPermission({
         key: p.key,

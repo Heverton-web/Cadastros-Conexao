@@ -735,7 +735,7 @@ function BIPage() {
         open={!!openVisita}
         onOpenChange={(o) => !o && setOpenVisita(null)}
       >
-        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="max-w-3xl">
           {openVisita &&
             (() => {
               const temp = openVisita.temperatura_vendedor as
@@ -771,18 +771,18 @@ function BIPage() {
               return (
                 <>
                   <DialogHeader>
-                    <div className="flex items-start gap-4">
+                    <div className="flex items-center gap-3">
                       <div
-                        className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl ${tempCfg.bg} ring-1 ${tempCfg.ring} backdrop-blur-sm`}
+                        className={`flex h-12 w-12 items-center justify-center rounded-xl ${tempCfg.bg} text-accent`}
                       >
-                        <TempIcon className={`h-7 w-7 ${tempCfg.text}`} />
+                        <TempIcon className={`h-6 w-6 ${tempCfg.text}`} />
                       </div>
-                      <div className="min-w-0 flex-1">
+                      <div>
                         <DialogTitle>
                           {openVisita.cliente?.nome_clinica ??
                             "Detalhes da visita"}
                         </DialogTitle>
-                        <DialogDescription className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
+                        <DialogDescription className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
                           {openVisita.cliente?.nome_doutor && (
                             <span className="inline-flex items-center gap-1.5">
                               <Stethoscope className="h-3.5 w-3.5" />
@@ -837,7 +837,8 @@ function BIPage() {
                     </div>
                   </DialogHeader>
 
-                  <div className="space-y-6">
+                  <div className="px-6 py-6 flex-1 space-y-4">
+                    <div className="space-y-6">
                     {/* Highlight stats */}
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                       <StatCard
@@ -1019,6 +1020,7 @@ function BIPage() {
                       Registrado em{" "}
                       {new Date(openVisita.criado_em).toLocaleString("pt-BR")}
                     </div>
+                  </div>
                   </div>
                 </>
               );

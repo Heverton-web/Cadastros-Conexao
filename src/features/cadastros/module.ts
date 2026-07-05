@@ -6,6 +6,7 @@ import {
   Settings,
   Globe,
   Palette,
+  Eye,
 } from "lucide-react";
 import {
   registerModule,
@@ -15,6 +16,8 @@ import {
 } from "~/registry";
 import type { ModuleDefinition } from "~/registry";
 import { ALL_PERMISSIONS } from "./permissions";
+import { registrarPlanoDiagnostico } from "~/core/diagnostic";
+import { cadastrosDiagnosticPlan } from "./diagnostic";
 
 export const cadastrosModule: ModuleDefinition = {
   key: "cadastros",
@@ -27,6 +30,7 @@ export const cadastrosModule: ModuleDefinition = {
     "/cadastros/clientes",
     "/cadastros/consultor",
     "/cadastros/relatorios",
+    "/cadastros/previsualizacao",
     "/global/acoes",
     "/empresa/tema",
   ],
@@ -177,9 +181,11 @@ export const cadastrosModule: ModuleDefinition = {
   hasFormulario: false,
   hasCustomActions: false,
   hasApiConnectors: false,
+  hasDiagnostico: true,
   hasDesignConfig: true,
   designRoute: "/empresa/cadastros/design",
   setup: () => {
+    registrarPlanoDiagnostico(cadastrosDiagnosticPlan);
     for (const p of ALL_PERMISSIONS) {
       registerPermission({
         key: p.key,
@@ -240,6 +246,16 @@ export const cadastrosModule: ModuleDefinition = {
       to: "/cadastros/relatorios",
       permissionCheck: (perms) => perms?.ver_relatorios === true,
       order: 5,
+      moduloKey: "cadastros",
+    });
+
+    registerNavItem({
+      id: "previsualizacao",
+      label: "Pré-visualização",
+      icon: Eye,
+      to: "/cadastros/previsualizacao",
+      permissionCheck: (perms) => perms?.ver_todos_cadastros === true,
+      order: 6,
       moduloKey: "cadastros",
     });
 

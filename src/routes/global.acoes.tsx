@@ -23,6 +23,7 @@ import {
   Save,
   Plus,
   X,
+  Pencil,
   ToggleLeft,
   ToggleRight,
   Trash2,
@@ -191,7 +192,7 @@ function SupabaseTab() {
             <button
               onClick={() => salvar(cfg.key)}
               disabled={saving === cfg.key}
-              className="flex items-center gap-1 rounded-lg bg-accent px-4 py-2 text-sm font-medium text-white disabled:opacity-50 min-h-[44px]"
+              className="flex items-center gap-1 rounded-lg bg-accent px-4 py-2 text-sm font-medium text-accent-fg disabled:opacity-50 min-h-[44px]"
             >
               {saving === cfg.key ? (
                 <Loader2 size={14} className="animate-spin" />
@@ -515,7 +516,7 @@ function CredenciaisTab() {
         </p>
         <button
           onClick={abrirNova}
-          className="flex items-center gap-1 rounded-lg bg-accent px-3 py-2 text-xs font-medium text-white"
+          className="flex items-center gap-1 rounded-lg bg-accent px-3 py-2 text-xs font-medium text-accent-fg"
         >
           <Plus size={14} /> Nova
         </button>
@@ -687,19 +688,27 @@ function CredenciaisTab() {
       )}
 
       {showForm && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-6">
-          <div className="w-full max-w-md rounded-2xl bg-card p-6 shadow-xl max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-base font-bold text-text-main">
-                {editId ? "Editar Credencial" : "Nova Credencial"}
-              </h2>
+        <div className="fixed inset-0 z-[100] flex items-end justify-center bg-black/60 backdrop-blur-sm sm:items-center">
+          <div className="w-full max-w-md rounded-t-2xl sm:rounded-2xl bg-card border border-border/50 p-0 shadow-2xl shadow-black/40 max-h-[90dvh] overflow-hidden flex flex-col">
+            <div className="bg-gradient-to-br from-accent/20 via-accent/10 to-transparent px-6 pt-6 pb-4 border-b border-border/50 relative">
+              <div className="flex items-center gap-3">
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent/15 text-accent">
+                  {editId ? <Pencil size={22} /> : <Plus size={22} />}
+                </div>
+                <div>
+                  <h2 className="text-xl font-bold text-text-main tracking-tight">
+                    {editId ? "Editar Credencial" : "Nova Credencial"}
+                  </h2>
+                </div>
+              </div>
               <button
                 onClick={() => setShowForm(false)}
-                className="text-text-muted hover:text-text-main"
+                className="absolute right-4 top-5 rounded-lg p-1.5 text-text-muted hover:text-text-main hover:bg-surface-hover transition-colors"
               >
                 <X size={20} />
               </button>
             </div>
+            <div className="px-6 py-6 flex-1 space-y-4">
             <input
               value={form.nome_completo}
               onChange={(e) =>
@@ -745,10 +754,12 @@ function CredenciaisTab() {
                 </option>
               ))}
             </select>
-            <div className="flex gap-3">
+            </div>
+
+            <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end px-6 pb-6 pt-4 border-t border-border/50">
               <button
                 onClick={() => setShowForm(false)}
-                className="flex-1 rounded-xl border border-input-border py-3 text-sm font-medium text-text-muted"
+                className="flex-1 sm:flex-none rounded-xl border border-border px-6 py-2.5 text-sm text-text-muted font-semibold hover:text-text-main hover:bg-surface-hover transition-all duration-200 min-h-[44px]"
               >
                 Cancelar
               </button>
@@ -757,7 +768,7 @@ function CredenciaisTab() {
                 disabled={
                   !form.nome_completo || !form.email_corporativo || submitting
                 }
-                className="flex-1 rounded-xl bg-accent py-3 text-sm font-medium text-white disabled:opacity-50"
+                className="flex-1 sm:flex-none rounded-xl bg-accent px-6 py-2.5 text-sm font-semibold text-accent-fg shadow-md shadow-accent/20 hover:bg-accent-hover disabled:opacity-50 transition-all duration-200 min-h-[44px]"
               >
                 {submitting ? (
                   <Loader2 size={16} className="animate-spin mx-auto" />
@@ -772,26 +783,34 @@ function CredenciaisTab() {
 
       {/* Modal Integrado de Permissões */}
       {permCredencial && (
-        <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black/60 px-4 py-8">
-          <div className="w-full max-w-md rounded-2xl bg-card p-6 shadow-xl mt-8 mb-8 animate-in fade-in zoom-in-95 duration-150">
-            <div className="flex items-center justify-between mb-1">
-              <h2 className="text-base font-bold text-text-main truncate">
-                {permCredencial.nome_completo}
-              </h2>
+        <div className="fixed inset-0 z-[100] flex items-end justify-center bg-black/60 backdrop-blur-sm sm:items-center">
+          <div className="w-full max-w-md rounded-t-2xl sm:rounded-2xl bg-card border border-border/50 p-0 shadow-2xl shadow-black/40 max-h-[90dvh] overflow-hidden flex flex-col">
+            <div className="bg-gradient-to-br from-accent/20 via-accent/10 to-transparent px-6 pt-6 pb-4 border-b border-border/50 relative">
+              <div className="flex items-center gap-3">
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent/15 text-accent">
+                  <ShieldCheck size={22} />
+                </div>
+                <div>
+                  <h2 className="text-xl font-bold text-text-main tracking-tight truncate">
+                    {permCredencial.nome_completo}
+                  </h2>
+                  <p className="text-sm text-text-muted mt-0.5">
+                    {permCredencial.email_corporativo}
+                  </p>
+                </div>
+              </div>
               <button
                 onClick={() => {
                   setPermCredencial(null);
                   setEditPerms(null);
                 }}
-                className="text-text-muted hover:text-text-main shrink-0 ml-2"
+                className="absolute right-4 top-5 rounded-lg p-1.5 text-text-muted hover:text-text-main hover:bg-surface-hover transition-colors"
               >
                 <X size={20} />
               </button>
             </div>
-            <p className="text-xs text-text-muted mb-1">
-              {permCredencial.email_corporativo}
-            </p>
 
+            <div className="px-6 py-6 flex-1 space-y-4">
             {loadingPerms ? (
               <div className="flex justify-center py-12">
                 <Loader2 size={24} className="animate-spin text-accent" />
@@ -861,7 +880,7 @@ function CredenciaisTab() {
                             >
                               <button
                                 onClick={() => togglePerm(key)}
-                                className={`shrink-0 rounded-lg p-1.5 transition ${isChecked ? "bg-accent text-white" : "bg-bg-dark text-text-muted group-hover:text-text-main"}`}
+                                className={`shrink-0 rounded-lg p-1.5 transition ${isChecked ? "bg-accent text-accent-fg" : "bg-bg-dark text-text-muted group-hover:text-text-main"}`}
                               >
                                 {isChecked ? (
                                   <ShieldCheck size={16} />
@@ -886,32 +905,33 @@ function CredenciaisTab() {
                     </div>
                   ))}
                 </div>
-
-                <div className="flex gap-3 mt-4">
-                  <button
-                    onClick={() => {
-                      setPermCredencial(null);
-                      setEditPerms(null);
-                    }}
-                    className="flex-1 rounded-xl border border-input-border py-3 text-sm font-medium text-text-muted"
-                  >
-                    Cancelar
-                  </button>
-                  <button
-                    onClick={salvarPermissoes}
-                    disabled={savingPerms}
-                    className="flex items-center justify-center gap-1 flex-1 rounded-xl bg-accent py-3 text-sm font-medium text-white disabled:opacity-50"
-                  >
-                    {savingPerms ? (
-                      <Loader2 size={16} className="animate-spin" />
-                    ) : (
-                      <Save size={16} />
-                    )}{" "}
-                    Salvar
-                  </button>
-                </div>
               </>
             )}
+            </div>
+
+            <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end px-6 pb-6 pt-4 border-t border-border/50">
+              <button
+                onClick={() => {
+                  setPermCredencial(null);
+                  setEditPerms(null);
+                }}
+                className="flex-1 sm:flex-none rounded-xl border border-border px-6 py-2.5 text-sm text-text-muted font-semibold hover:text-text-main hover:bg-surface-hover transition-all duration-200 min-h-[44px]"
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={salvarPermissoes}
+                disabled={savingPerms}
+                className="flex items-center justify-center gap-1 flex-1 sm:flex-none rounded-xl bg-accent px-6 py-2.5 text-sm font-semibold text-accent-fg shadow-md shadow-accent/20 hover:bg-accent-hover disabled:opacity-50 transition-all duration-200 min-h-[44px]"
+              >
+                {savingPerms ? (
+                  <Loader2 size={16} className="animate-spin" />
+                ) : (
+                  <Save size={16} />
+                )}{" "}
+                Salvar
+              </button>
+            </div>
           </div>
         </div>
       )}
@@ -1395,7 +1415,7 @@ function IntegracoesTab() {
                   <button
                     onClick={() => handleSalvar(item)}
                     disabled={isSaving}
-                    className="flex items-center justify-center gap-1 rounded-xl bg-accent hover:bg-accent/80 text-white px-4 py-1.5 text-xs font-semibold disabled:opacity-50 transition-all shadow-md"
+                    className="flex items-center justify-center gap-1 rounded-xl bg-accent hover:bg-accent/80 text-accent-fg px-4 py-1.5 text-xs font-semibold disabled:opacity-50 transition-all shadow-md"
                   >
                     {isSaving ? (
                       <Loader2 size={13} className="animate-spin" />

@@ -7,11 +7,13 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
+  DialogFooter,
 } from "~/components/ui/dialog";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { Textarea } from "~/components/ui/textarea";
-import { Button } from "~/components/ui/button";
+
 import {
   Select,
   SelectContent,
@@ -110,26 +112,23 @@ export function NovaTarefaModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="bg-popover border-border max-w-lg p-0 overflow-hidden">
-        <DialogHeader className="border-b border-border px-6 py-5">
+      <DialogContent className="max-w-lg">
+        <DialogHeader>
           <div className="flex items-center gap-3">
-            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/15 text-primary">
-              <FileText className="h-5 w-5" />
-            </span>
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent/15 text-accent">
+              <FileText className="h-6 w-6" />
+            </div>
             <div>
-              <DialogTitle className="text-xl font-semibold tracking-tight">
-                Nova Tarefa
-              </DialogTitle>
-              {clienteNome && (
-                <p className="text-xs text-muted-foreground mt-0.5">
-                  Para: {clienteNome}
-                </p>
-              )}
+              <DialogTitle>Nova Tarefa</DialogTitle>
+              <DialogDescription>
+                {clienteNome ? `Para: ${clienteNome}` : "Crie uma nova tarefa para acompanhamento."}
+              </DialogDescription>
             </div>
           </div>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit} className="space-y-5 px-6 py-6">
+        <div className="px-6 py-6 flex-1 space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-5">
           <div className="space-y-2">
             <Label className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground uppercase tracking-wide">
               <FileText className="h-3.5 w-3.5" />
@@ -234,28 +233,28 @@ export function NovaTarefaModal({
             </div>
           </div>
 
-          <div className="flex justify-end gap-2 pt-2 border-t border-border -mx-6 px-6 pb-0 -mb-0">
-            <Button
+          <DialogFooter>
+            <button
               type="button"
-              variant="ghost"
               onClick={() => onOpenChange(false)}
-              className="mt-4"
+              className="flex-1 sm:flex-none rounded-xl border border-border px-6 py-2.5 text-sm text-text-muted font-semibold hover:text-text-main hover:bg-surface-hover transition-all duration-200 min-h-[44px]"
             >
               Cancelar
-            </Button>
-            <Button
+            </button>
+            <button
               type="submit"
               disabled={busy}
-              className="mt-4 min-w-[140px]"
+              className="flex-1 sm:flex-none rounded-xl bg-accent px-6 py-2.5 text-sm font-semibold text-accent-fg shadow-md shadow-accent/20 hover:bg-accent-hover disabled:opacity-50 transition-all duration-200 min-h-[44px]"
             >
               {busy ? (
                 <Loader2 className="h-4 w-4 animate-spin" />
               ) : (
                 "Criar Tarefa"
               )}
-            </Button>
-          </div>
+            </button>
+          </DialogFooter>
         </form>
+        </div>
       </DialogContent>
     </Dialog>
   );

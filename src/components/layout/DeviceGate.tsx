@@ -50,7 +50,7 @@ export function DeviceGate({ children }: { children: React.ReactNode }) {
           </div>
           <button
             onClick={logout}
-            className="mt-6 flex w-full items-center justify-center gap-2 rounded-lg bg-accent px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-accent/90"
+            className="mt-6 flex w-full items-center justify-center gap-2 rounded-lg bg-accent px-4 py-2.5 text-sm font-semibold text-accent-fg transition-colors hover:bg-accent/90"
           >
             <LogOut size={16} />
             Sair da conta

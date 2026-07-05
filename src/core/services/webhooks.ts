@@ -108,7 +108,7 @@ export async function deletarWebhook(id: string) {
 
 export async function listarWebhookLogs(webhookId?: string) {
   let query = supabase
-    .from("webhook_logs")
+    .from("logs_webhook")
     .select("*")
     .order("created_at", { ascending: false })
     .limit(100);
@@ -198,13 +198,13 @@ export async function dispararWebhooks(
 
       const [notifsRes, webhooksRes, apisRes] = await Promise.all([
         supabase
-          .from("notificacoes_templates")
+          .from("notificacoes_modelos")
           .select("*")
           .eq("evento", evento)
           .eq("ativo", true),
         webhooksQuery,
         supabase
-          .from("api_connectors")
+          .from("conectores_api")
           .select("*")
           .eq("evento", evento)
           .eq("is_active", true),
@@ -333,7 +333,7 @@ export async function dispararWebhooks(
             });
             const text = await res.text();
 
-            await supabase.from("webhook_logs").insert({
+            await supabase.from("logs_webhook").insert({
               webhook_id: wh.id,
               evento,
               url: wh.url,
@@ -350,7 +350,7 @@ export async function dispararWebhooks(
               ? await executor(conn.id, payloadCompleto)
               : null;
 
-            await supabase.from("webhook_logs").insert({
+            await supabase.from("logs_webhook").insert({
               webhook_id: null,
               evento,
               url: conn.url,
@@ -371,7 +371,7 @@ export async function dispararWebhooks(
           );
 
           try {
-            await supabase.from("webhook_logs").insert({
+            await supabase.from("logs_webhook").insert({
               webhook_id: task.type === "webhook" ? task.id : null,
               evento,
               url: task.raw?.url || "N/A",
@@ -445,7 +445,7 @@ export async function dispararEventoModulo(
       });
       const text = await res.text();
 
-      await supabase.from("webhook_logs").insert({
+      await supabase.from("logs_webhook").insert({
         webhook_id: wh.id,
         evento: eventoKey,
         url: wh.url,
@@ -457,7 +457,7 @@ export async function dispararEventoModulo(
       });
     } catch (err: any) {
       console.error(`Erro no webhook de módulo ${wh.id}:`, err);
-      await supabase.from("webhook_logs").insert({
+      await supabase.from("logs_webhook").insert({
         webhook_id: wh.id,
         evento: eventoKey,
         url: wh.url,

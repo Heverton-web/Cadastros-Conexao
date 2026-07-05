@@ -191,7 +191,7 @@ function AdminEmpresa() {
             className={cn(
               "flex items-center gap-1.5 p-2 rounded-lg text-xs font-medium transition whitespace-nowrap",
               tab === key
-                ? "bg-accent text-white"
+                ? "bg-accent text-accent-fg"
                 : "text-text-muted hover:text-text-main hover:bg-bg-dark",
             )}
           >
@@ -804,7 +804,7 @@ function CredenciaisTab({ empresaId }: { empresaId: string }) {
                               className={cn(
                                 "shrink-0 rounded-lg p-1.5 transition",
                                 editPerms[key]
-                                  ? "bg-accent text-white"
+                                  ? "bg-accent text-accent-fg"
                                   : "bg-bg-dark text-text-muted group-hover:text-text-main",
                               )}
                             >

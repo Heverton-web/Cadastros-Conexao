@@ -3,11 +3,11 @@ import { authLayout } from "./_auth";
 import { useAuth } from "~/lib/auth";
 import {
   buscarEmpresa,
-  buscarEmpresaConfig,
-  salvarEmpresaConfig,
+  buscarEmpresaDesign,
+  salvarEmpresaDesign,
   listarEmpresas,
   type Empresa,
-  type EmpresaConfig,
+  type EmpresaDesign,
 } from "~/features/empresas";
 import { useState, useEffect } from "react";
 import {
@@ -65,7 +65,7 @@ function AdminEmpresaConfigBanco() {
 
   const [empresas, setEmpresas] = useState<Empresa[]>([]);
   const [empresaId, setEmpresaId] = useState(minhaEmpresaId || "");
-  const [config, setConfig] = useState<EmpresaConfig | null>(null);
+  const [config, setConfig] = useState<EmpresaDesign | null>(null);
   const [loading, setLoading] = useState(true);
 
   const [dbConfig, setDbConfig] = useState({
@@ -101,7 +101,7 @@ function AdminEmpresaConfigBanco() {
 
   async function loadConfig(eid: string) {
     setLoading(true);
-    const cfg = await buscarEmpresaConfig(eid);
+    const cfg = await buscarEmpresaDesign(eid);
     setConfig(cfg);
     const c = cfg?.db_config || {};
     setDbConfig({
@@ -149,7 +149,7 @@ CREATE TABLE IF NOT EXISTS sync_logs (
     if (!empresaId) return;
     setSaving(true);
     try {
-      await salvarEmpresaConfig(empresaId, { db_config: dbConfig as any });
+      await salvarEmpresaDesign(empresaId, { db_config: dbConfig as any });
       toast.success("Config salva!");
     } catch (e: any) {
       toast.error(e.message);
@@ -252,7 +252,7 @@ CREATE TABLE IF NOT EXISTS sync_logs (
               <button
                 onClick={handleSave}
                 disabled={saving}
-                className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-accent text-white text-sm font-medium hover:bg-accent-hover disabled:opacity-50"
+                className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-accent text-accent-fg text-sm font-medium hover:bg-accent-hover disabled:opacity-50"
               >
                 {saving ? (
                   <Loader2 size={14} className="animate-spin" />

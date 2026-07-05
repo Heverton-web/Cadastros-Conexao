@@ -6,7 +6,7 @@ const MODULO_KEY = "funis";
 export async function processarRecorrencias() {
   const now = new Date().toISOString();
   const { data: recorrencias } = await supabase
-    .from("funis_recurring")
+    .from("funis_recorrentes")
     .select("*, tarefa:funis_tarefas(*)")
     .eq("ativo", true)
     .lte("proxima_exec", now);
@@ -36,7 +36,7 @@ export async function processarRecorrencias() {
         rec.config as Record<string, unknown>,
       );
       await supabase
-        .from("funis_recurring")
+        .from("funis_recorrentes")
         .update({ proxima_exec: proxima })
         .eq("id", rec.id);
     }
@@ -55,7 +55,7 @@ export async function verificarTarefasAtrasadas() {
 
   for (const tarefa of tarefas) {
     const { data: automacoes } = await supabase
-      .from("funis_automations")
+      .from("funis_automacoes")
       .select("*")
       .eq("funil_id", tarefa.funil_id)
       .eq("trigger_type", "tarefa_atrasada")
@@ -72,7 +72,7 @@ export async function verificarTarefasAtrasadas() {
         ];
         for (const uid of userIds)
           await supabase
-            .from("funis_notifications")
+            .from("funis_notificacoes")
             .insert({
               user_id: uid,
               titulo: "Tarefa atrasada",

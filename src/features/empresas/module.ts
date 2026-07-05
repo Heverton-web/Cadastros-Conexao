@@ -9,9 +9,12 @@ import {
   Settings,
   Bot,
   Paintbrush,
+  FormInput,
 } from "lucide-react";
 import { registerModule, registerNavItem } from "~/registry";
 import type { ModuleDefinition } from "~/registry";
+import { registrarPlanoDiagnostico } from "~/core/diagnostic";
+import { empresasDiagnosticPlan } from "./diagnostic";
 
 export const empresasModule: ModuleDefinition = {
   key: "empresas-core",
@@ -34,6 +37,7 @@ export const empresasModule: ModuleDefinition = {
     "/empresa/funis/design",
     "/empresa/crm/design",
     "/empresa/cadastros/design",
+    "/empresa/cadastros/formulario",
     "/empresa/despesas/design",
     "/empresa/rotas/design",
   ],
@@ -65,11 +69,19 @@ export const empresasModule: ModuleDefinition = {
       label: "Branding",
       descricao: "Configuração de marca (Logo, Favicon)",
     },
+    {
+      key: "formularios",
+      label: "Formulários",
+      descricao: "Configuração de campos do formulário de lead",
+    },
   ],
   events: [],
+  hasDiagnostico: true,
   hasDesignConfig: true,
+  hasFormulario: true,
   designRoute: "/empresa/design",
   setup: () => {
+    registrarPlanoDiagnostico(empresasDiagnosticPlan);
     registerNavItem({
       id: "empresa-banco",
       label: "Banco de Dados",
@@ -268,6 +280,16 @@ export const empresasModule: ModuleDefinition = {
       to: "/empresa/rotas/design",
       permissionCheck: () => true,
       order: 92,
+      moduloKey: "empresas-core",
+    });
+
+    registerNavItem({
+      id: "empresa-cadastros-formulario",
+      label: "Cadastros Form",
+      icon: FormInput,
+      to: "/empresa/cadastros/formulario",
+      permissionCheck: () => true,
+      order: 93,
       moduloKey: "empresas-core",
     });
   },

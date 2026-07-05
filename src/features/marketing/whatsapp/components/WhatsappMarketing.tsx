@@ -67,7 +67,7 @@ export function WhatsappMarketing() {
 
       const [leadsRes, limitRes, campanhasHojeRes, todasCampanhasRes] = await Promise.all([
         supabase.from("mktg_leads").select("id, nome, telefone, email").eq("empresa_id", profile!.empresa_id),
-        supabase.from("empresa_modulo_limits").select("max_envios").eq("empresa_id", profile!.empresa_id).eq("modulo_key", "mktg-whatsapp").maybeSingle(),
+        supabase.from("empresa_limites_modulo").select("max_envios").eq("empresa_id", profile!.empresa_id).eq("modulo_key", "mktg-whatsapp").maybeSingle(),
         supabase.from("mktg_whatsapp_campanhas").select("total_contatos").eq("empresa_id", profile!.empresa_id).gte("created_at", hoje.toISOString()),
         supabase.from("mktg_whatsapp_campanhas").select("*").eq("empresa_id", profile!.empresa_id).order("created_at", { ascending: false }).limit(5),
       ]);

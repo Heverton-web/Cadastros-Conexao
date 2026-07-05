@@ -516,34 +516,43 @@ function ConsultorPage() {
       {/* Gerar Link Modal */}
       {showGerarLink && !linkGerado && (
         <div
-          className="fixed inset-0 z-50 overflow-y-auto bg-black/60"
+          className="fixed inset-0 z-[100] flex items-end justify-center bg-black/60 backdrop-blur-sm sm:items-center"
           onClick={() => {
             setShowGerarLink(false);
             setLinkGerado(null);
           }}
         >
-          <div className="flex min-h-full items-center justify-center px-4 py-6">
-            <div
-              className="w-full max-w-md rounded-2xl bg-card p-6 shadow-xl"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div className="flex items-center justify-between mb-1">
-                <h2 className="text-base font-bold text-text-main">
-                  Gerar Link de Cadastro
-                </h2>
+          <div
+            className="w-full max-w-md rounded-t-2xl sm:rounded-2xl bg-card border border-border/50 p-0 shadow-2xl shadow-black/40 max-h-[90dvh] overflow-hidden flex flex-col"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="bg-gradient-to-br from-accent/20 via-accent/10 to-transparent px-6 pt-6 pb-4 border-b border-border/50">
+              <div className="flex items-start justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent/15 text-accent">
+                    <Link2 size={22} />
+                  </div>
+                  <div>
+                    <h2 className="text-xl font-bold text-text-main tracking-tight">
+                      Gerar Link de Cadastro
+                    </h2>
+                    <p className="text-sm text-text-muted mt-0.5">
+                      Crie um novo link de cadastro para enviar ao cliente.
+                    </p>
+                  </div>
+                </div>
                 <button
                   onClick={() => {
                     setShowGerarLink(false);
                     setLinkGerado(null);
                   }}
-                  className="text-text-muted hover:text-text-main"
+                  className="absolute right-4 top-5 rounded-lg p-1.5 text-text-muted hover:text-text-main hover:bg-surface-hover transition-colors"
                 >
                   <X size={20} />
                 </button>
               </div>
-              <p className="mb-4 text-xs text-text-muted">
-                Crie um novo link de cadastro para enviar ao cliente.
-              </p>
+            </div>
+            <div className="px-6 py-6 flex-1 space-y-4">
               <p className="mb-1 text-xs font-medium text-text-muted">
                 Indique a forma que o Lead receberá o link:
               </p>
@@ -555,7 +564,7 @@ function ConsultorPage() {
                       receber_por: "whatsapp",
                     }))
                   }
-                  className={`flex-1 rounded-lg py-2 text-xs font-medium transition ${linkForm.receber_por === "whatsapp" ? "bg-accent text-white" : "bg-input-bg text-text-muted"}`}
+                  className={`flex-1 rounded-lg py-2 text-xs font-medium transition ${linkForm.receber_por === "whatsapp" ? "bg-accent text-accent-fg" : "bg-input-bg text-text-muted"}`}
                 >
                   WhatsApp
                 </button>
@@ -563,7 +572,7 @@ function ConsultorPage() {
                   onClick={() =>
                     setLinkForm((prev) => ({ ...prev, receber_por: "email" }))
                   }
-                  className={`flex-1 rounded-lg py-2 text-xs font-medium transition ${linkForm.receber_por === "email" ? "bg-accent text-white" : "bg-input-bg text-text-muted"}`}
+                  className={`flex-1 rounded-lg py-2 text-xs font-medium transition ${linkForm.receber_por === "email" ? "bg-accent text-accent-fg" : "bg-input-bg text-text-muted"}`}
                 >
                   E-mail
                 </button>
@@ -671,10 +680,12 @@ function ConsultorPage() {
                   O WhatsApp será aberto em uma nova guia.
                 </p>
               )}
+            </div>
+            <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end px-6 pb-6 pt-4 border-t border-border/50">
               <button
                 onClick={gerarLink}
                 disabled={submitting || !linkForm.nome_lead}
-                className="flex w-full items-center justify-center gap-2 rounded-xl bg-accent py-3 text-sm font-medium text-white disabled:opacity-50"
+                className="flex-1 sm:flex-none rounded-xl bg-accent px-6 py-2.5 text-sm font-semibold text-accent-fg shadow-md shadow-accent/20 hover:bg-accent-hover disabled:opacity-50 transition-all duration-200 min-h-[44px] flex items-center justify-center gap-2"
               >
                 {submitting ? (
                   <Loader2 size={16} className="animate-spin" />
@@ -690,44 +701,38 @@ function ConsultorPage() {
 
       {showSuccess && (
         <div
-          className="fixed inset-0 z-50 overflow-y-auto bg-black/60"
+          className="fixed inset-0 z-[100] flex items-end justify-center bg-black/60 backdrop-blur-sm sm:items-center"
           onClick={() => {
             setShowSuccess(false);
             setLinkGerado(null);
           }}
         >
-          <div className="flex min-h-full items-center justify-center px-4 py-6">
-            <div
-              className="relative w-full max-w-xs rounded-2xl bg-card p-8 shadow-xl text-center"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <button
-                onClick={() => {
-                  setShowSuccess(false);
-                  setLinkGerado(null);
-                }}
-                className="absolute right-4 top-4 text-text-muted hover:text-text-main"
-              >
-                <X size={20} />
-              </button>
-              <div className="mb-3 flex justify-center">
-                <svg
-                  width="48"
-                  height="48"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="#22c55e"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
+          <div
+            className="w-full max-w-md rounded-t-2xl sm:rounded-2xl bg-card border border-border/50 p-0 shadow-2xl shadow-black/40 max-h-[90dvh] overflow-hidden flex flex-col"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="bg-gradient-to-br from-accent/20 via-accent/10 to-transparent px-6 pt-6 pb-4 border-b border-border/50">
+              <div className="flex items-start justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent/15 text-accent">
+                    <CheckCircle size={22} className="text-green-400" />
+                  </div>
+                  <div>
+                    <h2 className="text-xl font-bold text-text-main tracking-tight">
+                      Link Gerado com Sucesso!
+                    </h2>
+                  </div>
+                </div>
+                <button
+                  onClick={() => {
+                    setShowSuccess(false);
+                    setLinkGerado(null);
+                  }}
+                  className="absolute right-4 top-5 rounded-lg p-1.5 text-text-muted hover:text-text-main hover:bg-surface-hover transition-colors"
                 >
-                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-                  <polyline points="22 4 12 14.01 9 11.01" />
-                </svg>
+                  <X size={20} />
+                </button>
               </div>
-              <h2 className="text-lg font-bold text-green-400">
-                Link Gerado com Sucesso!
-              </h2>
             </div>
           </div>
         </div>

@@ -7,6 +7,8 @@ import {
 } from "~/registry";
 import type { ModuleDefinition } from "~/registry";
 import { NPS_PERMISSIONS } from "./permissions";
+import { registrarPlanoDiagnostico } from "~/core/diagnostic";
+import { npsDiagnosticPlan } from "./diagnostic";
 
 export const npsModule: ModuleDefinition = {
   key: "nps",
@@ -61,10 +63,12 @@ export const npsModule: ModuleDefinition = {
       type: "button_action",
     },
   ],
+  hasDiagnostico: true,
   hasCredentialScopes: true,
   hasDesignConfig: true,
   designRoute: "/empresa/nps/design",
   setup: () => {
+    registrarPlanoDiagnostico(npsDiagnosticPlan);
     for (const p of NPS_PERMISSIONS) {
       registerPermission({
         key: p.key,

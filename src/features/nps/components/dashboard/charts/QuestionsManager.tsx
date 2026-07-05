@@ -11,6 +11,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
   DialogFooter,
 } from "~/components/ui/dialog";
 import {
@@ -93,7 +94,7 @@ const QuestionsManager = () => {
   const fetchAll = async () => {
     setLoading(true);
     const { data, error } = await supabase
-      .from("survey_questions")
+      .from("nps_perguntas_pesquisa")
       .select("*")
       .order("order_index", { ascending: true });
     if (error) {
@@ -109,7 +110,7 @@ const QuestionsManager = () => {
 
   const toggleActive = async (q: SurveyQuestion) => {
     const { data, error } = await supabase
-      .from("survey_questions")
+      .from("nps_perguntas_pesquisa")
       .update({ active: !q.active, updated_at: new Date().toISOString() })
       .eq("id", q.id)
       .select();
@@ -130,11 +131,11 @@ const QuestionsManager = () => {
     const swap = sorted[idx + dir];
     if (!swap) return;
     await supabase
-      .from("survey_questions")
+      .from("nps_perguntas_pesquisa")
       .update({ order_index: swap.order_index })
       .eq("id", q.id);
     await supabase
-      .from("survey_questions")
+      .from("nps_perguntas_pesquisa")
       .update({ order_index: q.order_index })
       .eq("id", swap.id);
     fetchAll();
@@ -151,7 +152,7 @@ const QuestionsManager = () => {
   const confirmRemove = async () => {
     if (!questionToDelete) return;
     const { error } = await supabase
-      .from("survey_questions")
+      .from("nps_perguntas_pesquisa")
       .delete()
       .eq("id", questionToDelete.id);
     if (error)
@@ -220,7 +221,7 @@ const QuestionsManager = () => {
       payload.key = base;
       payload.is_system = false;
       const { data, error } = await supabase
-        .from("survey_questions")
+        .from("nps_perguntas_pesquisa")
         .insert(payload)
         .select();
       if (error) {
@@ -234,7 +235,7 @@ const QuestionsManager = () => {
       toast.success("Pergunta criada!");
     } else {
       const { data, error } = await supabase
-        .from("survey_questions")
+        .from("nps_perguntas_pesquisa")
         .update(payload)
         .eq("id", editing.id!)
         .select();
@@ -366,14 +367,21 @@ const QuestionsManager = () => {
       </CardContent>
 
       <Dialog open={!!editing} onOpenChange={(o) => !o && close()}>
-        <DialogContent className="bg-card border-border max-w-lg w-[calc(100%-2rem)] max-h-[90vh] overflow-y-auto">
-          <DialogHeader className="pb-2">
-            <DialogTitle className="text-text-main">
-              {isNew ? "Nova pergunta" : "Editar pergunta"}
-            </DialogTitle>
+        <DialogContent className="max-w-lg w-[calc(100%-2rem)]">
+          <DialogHeader>
+            <div className="flex items-center gap-3">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent/15 text-accent">
+                <ListChecks className="h-6 w-6" />
+              </div>
+              <div>
+                <DialogTitle>
+                  {isNew ? "Nova pergunta" : "Editar pergunta"}
+                </DialogTitle>
+              </div>
+            </div>
           </DialogHeader>
           {editing && (
-            <div className="space-y-5 py-2">
+            <div className="px-6 py-6 flex-1 space-y-4">
               <div>
                 <Label className="text-xs text-text-muted">Tipo</Label>
                 <Select
@@ -516,17 +524,17 @@ const QuestionsManager = () => {
               </div>
             </div>
           )}
-          <DialogFooter className="pt-4 border-t border-surface">
-            <Button
-              variant="outline"
+          <DialogFooter>
+            <button
+              type="button"
               onClick={close}
-              className="border-border text-text-main rounded-xl"
+              className="flex-1 sm:flex-none rounded-xl border border-border px-6 py-2.5 text-sm text-text-muted font-semibold hover:text-text-main hover:bg-surface-hover transition-all duration-200 min-h-[44px]"
             >
               Cancelar
-            </Button>
-            <Button onClick={save} className="btn-gold rounded-xl shadow-md shadow-accent/20">
+            </button>
+            <button type="button" onClick={save} className="flex-1 sm:flex-none rounded-xl bg-accent px-6 py-2.5 text-sm font-semibold text-accent-fg shadow-md shadow-accent/20 hover:bg-accent-hover disabled:opacity-50 transition-all duration-200 min-h-[44px]">
               Salvar
-            </Button>
+            </button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -535,23 +543,23 @@ const QuestionsManager = () => {
         open={!!questionToDelete}
         onOpenChange={(o) => !o && setQuestionToDelete(null)}
       >
-        <AlertDialogContent className="bg-card border-border">
+        <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle2 className="text-text-main">
+            <AlertDialogTitle2>
               Excluir pergunta?
             </AlertDialogTitle2>
-            <AlertDialogDescription className="text-text-muted">
+            <AlertDialogDescription>
               Excluir "{questionToDelete?.question_text}"? Esta ação é
               permanente.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter2>
-            <AlertDialogCancel className="border-border text-text-main rounded-xl">
+            <AlertDialogCancel className="flex-1 sm:flex-none rounded-xl border border-border px-6 py-2.5 text-sm text-text-muted font-semibold hover:text-text-main hover:bg-surface-hover transition-all duration-200 min-h-[44px]">
               Cancelar
             </AlertDialogCancel>
             <AlertDialogAction
               onClick={confirmRemove}
-              className="bg-destructive text-destructive-foreground hover:bg-destructive/90 rounded-xl"
+              className="flex-1 sm:flex-none rounded-xl bg-accent px-6 py-2.5 text-sm font-semibold text-accent-fg shadow-md shadow-accent/20 hover:bg-accent-hover disabled:opacity-50 transition-all duration-200 min-h-[44px]"
             >
               Excluir
             </AlertDialogAction>

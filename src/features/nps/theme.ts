@@ -1,4 +1,4 @@
-import type { EmpresaConfig } from "~/core/empresa";
+import type { EmpresaDesign } from "~/core/empresa";
 
 function hexToRgba(hex: string, alpha: number): string {
   const r = parseInt(hex.slice(1, 3), 16);
@@ -213,20 +213,20 @@ export const SURVEY_COLOR_GROUPS: NpsColorGroup[] = [
 ];
 
 /** Reads no_borders flag from empresa config */
-export function getNpsNoBorders(config: EmpresaConfig | null): boolean {
+export function getNpsNoBorders(config: EmpresaDesign | null): boolean {
   const survey = (config?.theme?.nps_survey ?? {}) as Record<string, string>;
   return survey.no_borders === "true";
 }
 
 /** Returns whether the company name should appear in the survey header */
-export function getNpsShowCompanyName(config: EmpresaConfig | null): boolean {
+export function getNpsShowCompanyName(config: EmpresaDesign | null): boolean {
   const survey = (config?.theme?.nps_survey ?? {}) as Record<string, string>;
   return survey.show_company_name !== "false";
 }
 
 /** Returns the header alignment (left/center/right) from empresa config */
 export function getNpsHeaderAlign(
-  config: EmpresaConfig | null,
+  config: EmpresaDesign | null,
 ): "left" | "center" | "right" {
   const survey = (config?.theme?.nps_survey ?? {}) as Record<string, string>;
   const align = survey.header_align ?? "center";
@@ -235,7 +235,7 @@ export function getNpsHeaderAlign(
 }
 
 /** Returns the logo height in pixels from empresa config */
-export function getNpsLogoHeight(config: EmpresaConfig | null): number {
+export function getNpsLogoHeight(config: EmpresaDesign | null): number {
   const survey = (config?.theme?.nps_survey ?? {}) as Record<string, string>;
   return parseInt(survey.logo_height ?? "32") || 32;
 }
@@ -291,7 +291,7 @@ function blobPositionToCoords(pos: BlobPosition): React.CSSProperties {
 }
 
 /** Parse blobs from config string */
-export function getNpsBlobs(config: EmpresaConfig | null): NpsBlob[] {
+export function getNpsBlobs(config: EmpresaDesign | null): NpsBlob[] {
   const survey = (config?.theme?.nps_survey ?? {}) as Record<string, string>;
   if (survey.bg_blobs_enabled !== "true") return [];
   try {
@@ -302,14 +302,14 @@ export function getNpsBlobs(config: EmpresaConfig | null): NpsBlob[] {
 }
 
 /** Check if blobs are enabled */
-export function getNpsBlobsEnabled(config: EmpresaConfig | null): boolean {
+export function getNpsBlobsEnabled(config: EmpresaDesign | null): boolean {
   const survey = (config?.theme?.nps_survey ?? {}) as Record<string, string>;
   return survey.bg_blobs_enabled === "true";
 }
 
 /** Get background type: solid, gradient-2, gradient-3 */
 export function getNpsBgType(
-  config: EmpresaConfig | null,
+  config: EmpresaDesign | null,
 ): "solid" | "gradient-2" | "gradient-3" {
   const survey = (config?.theme?.nps_survey ?? {}) as Record<string, string>;
   const t = survey.bg_type;
@@ -319,7 +319,7 @@ export function getNpsBgType(
 
 /** Get computed background CSS string for the survey */
 export function getNpsBackgroundStyle(
-  config: EmpresaConfig | null,
+  config: EmpresaDesign | null,
 ): React.CSSProperties {
   const survey = (config?.theme?.nps_survey ?? {}) as Record<string, string>;
   const bgType = getNpsBgType(config);
@@ -384,7 +384,7 @@ export function blobsToColorsString(blobs: NpsBlob[]): string {
 
 /** Returns CSS vars for NPS survey pages — old keys (backward compat) + expanded survey keys */
 export function getNpsThemeVars(
-  config: EmpresaConfig | null,
+  config: EmpresaDesign | null,
 ): Record<string, string> {
   const t = config?.theme ?? ({} as Record<string, any>);
   const survey = ((t as any).nps_survey ?? {}) as Record<string, string>;
