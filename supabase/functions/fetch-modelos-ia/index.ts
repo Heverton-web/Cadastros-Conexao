@@ -33,53 +33,33 @@ function parseNum(v: unknown): number | null {
 }
 
 function extractModels(html: string): ModeloRaw[] {
-  const marker = '"rows":';
+  const marker = '\\"rows\\":';
   const idx = html.indexOf(marker);
   if (idx === -1) return [];
 
-  let start = idx + marker.length;
-  while (start < html.length && html[start] === "\\") start++;
-  if (html[start] === '"') start++;
-
-  while (start < html.length && html[start] === "\\") start++;
-
-  let depth = 0;
-  let inStr = false;
-  let esc = false;
-  let end = start;
-  let arrStart = -1;
-
-  for (let i = start; i < html.length; i++) {
-    const ch = html[i];
-    if (esc) { esc = false; continue; }
-    if (ch === "\\" && inStr) { esc = true; continue; }
-    if (ch === '"') { inStr = !inStr; continue; }
-    if (inStr) continue;
-    if (ch === "[") { depth++; if (arrStart === -1) arrStart = i; }
-    else if (ch === "]") { depth--; if (depth === 0 && arrStart !== -1) { end = i + 1; break; } }
-  }
-
+  const arrStart = html.indexOf("[", idx);
   if (arrStart === -1) return [];
 
-  let jsonStr = html.substring(arrStart, end);
+  let depth = 0;
+  let end = arrStart;
+  for (let i = arrStart; i < html.length; i++) {
+    if (html[i] === "[") depth++;
+    else if (html[i] === "]") {
+      depth--;
+      if (depth === 0) { end = i + 1; break; }
+    }
+  }
 
-  jsonStr = jsonStr
-    .replace(/\\(["\\/bfnrt])/g, "$1")
-    .replace(/\\u[0-9a-fA-F]{4}/g, "");
+  let raw = html.substring(arrStart, end);
+  raw = raw.replace(/\\\\\\"/g, "PLACEHOLDER_QUOTE");
+  raw = raw.replace(/\\"/g, '"');
+  raw = raw.replace(/PLACEHOLDER_QUOTE/g, '\\"');
 
   try {
-    const arr = JSON.parse(jsonStr);
+    const arr = JSON.parse(raw);
     return Array.isArray(arr) ? arr : [];
   } catch {
-    const cleaned = jsonStr
-      .replace(/\\\"/g, '"')
-      .replace(/\\\\/g, "\\");
-    try {
-      const arr = JSON.parse(cleaned);
-      return Array.isArray(arr) ? arr : [];
-    } catch {
-      return [];
-    }
+    return [];
   }
 }
 
