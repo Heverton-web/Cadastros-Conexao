@@ -31,19 +31,18 @@ create index if not exists idx_modelos_ia_versoes_created_at on public.modelos_i
 alter table public.modelos_ia enable row level security;
 alter table public.modelos_ia_versoes enable row level security;
 
--- Super admin pode ler tudo
 create policy "Super admin pode ler modelos_ia_versoes"
   on public.modelos_ia_versoes for select
-  using (coalesce(current_setting('request.jwt.claims', true)::json->>'is_super_admin', 'false')::boolean);
+  using (exists (select 1 from public.profiles where id = auth.uid() and is_super_admin = true));
 
 create policy "Super admin pode inserir modelos_ia_versoes"
   on public.modelos_ia_versoes for insert
-  with check (coalesce(current_setting('request.jwt.claims', true)::json->>'is_super_admin', 'false')::boolean);
+  with check (exists (select 1 from public.profiles where id = auth.uid() and is_super_admin = true));
 
 create policy "Super admin pode ler modelos_ia"
   on public.modelos_ia for select
-  using (coalesce(current_setting('request.jwt.claims', true)::json->>'is_super_admin', 'false')::boolean);
+  using (exists (select 1 from public.profiles where id = auth.uid() and is_super_admin = true));
 
 create policy "Super admin pode inserir modelos_ia"
   on public.modelos_ia for insert
-  with check (coalesce(current_setting('request.jwt.claims', true)::json->>'is_super_admin', 'false')::boolean);
+  with check (exists (select 1 from public.profiles where id = auth.uid() and is_super_admin = true));

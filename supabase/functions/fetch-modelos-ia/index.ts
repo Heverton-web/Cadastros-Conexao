@@ -82,6 +82,15 @@ function transformModel(m: ModeloRaw): ModeloOutput | null {
 }
 
 serve(async (req: Request) => {
+  const corsHeaders = {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+  };
+
+  if (req.method === "OPTIONS") {
+    return new Response("ok", { headers: corsHeaders });
+  }
+
   const authHeader = req.headers.get("Authorization") ?? "";
   const supabaseUrl = Deno.env.get("SUPABASE_URL") ?? "";
   const supabaseAnonKey = Deno.env.get("SUPABASE_ANON_KEY") ?? "";
@@ -92,17 +101,23 @@ serve(async (req: Request) => {
 
   const { data: { user }, error: authError } = await supabase.auth.getUser();
   if (authError || !user) {
-    return new Response("Unauthorized", { status: 401 });
+    return new Response(
+      JSON.stringify({ error: "Unauthorized", detail: authError?.message }),
+      { status: 401, headers: { "Content-Type": "application/json", ...corsHeaders } },
+    );
   }
 
-  const { data: profile } = await supabase
+  const { data: profile, error: profileError } = await supabase
     .from("profiles")
     .select("is_super_admin")
     .eq("id", user.id)
     .single();
 
-  if (!profile?.is_super_admin) {
-    return new Response("Forbidden", { status: 403 });
+  if (profileError || !profile?.is_super_admin) {
+    return new Response(
+      JSON.stringify({ error: "Forbidden", detail: profileError?.message }),
+      { status: 403, headers: { "Content-Type": "application/json", ...corsHeaders } },
+    );
   }
 
   try {
@@ -114,7 +129,7 @@ serve(async (req: Request) => {
     });
 
     if (!res.ok) {
-      throw new Error(`Failed to fetch: ${res.status}`);
+      throw new Error(`Failed to fetch designarena: ${res.status}`);
     }
 
     const html = await res.text();
@@ -122,12 +137,12 @@ serve(async (req: Request) => {
     const models = raw.map(transformModel).filter(Boolean) as ModeloOutput[];
 
     return new Response(JSON.stringify({ total: models.length, models }), {
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", ...corsHeaders },
     });
   } catch (err) {
     return new Response(
       JSON.stringify({ error: (err as Error).message }),
-      { status: 500, headers: { "Content-Type": "application/json" } },
+      { status: 500, headers: { "Content-Type": "application/json", ...corsHeaders } },
     );
   }
 });
