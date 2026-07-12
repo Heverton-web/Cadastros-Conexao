@@ -31,12 +31,14 @@ import {
   whatsappMarketingModule,
 } from "~/features/marketing";
 import { geradorLinksModule } from "~/features/gerador-links/module";
+import { catalogoModule } from "~/features/catalogo/module";
 import { initSentry } from "~/core/monitoring/sentry";
 import "~/styles/globals.css";
 
 initSentry();
 
 registerModule(empresasModule);
+registerModule(catalogoModule);
 registerModule(cadastrosModule);
 registerModule(mapasModule);
 registerModule(npsModule);

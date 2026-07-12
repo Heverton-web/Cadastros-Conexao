@@ -163,6 +163,7 @@ dispararEventoModulo(MODULO_KEY, "entidade.criada", { entidade_id: id, empresa_i
 ### 📝 SCRATCHPAD RTK (Agente: Registre aprendizados aqui durante execução)
 
 - **Learnt**: Laboratório de Testes (global.laboratorio.tsx): requer migration 00054 para RPCs de token real. Fallback automático para UUID local se RPC indisponível. Página reescrita com 3 abas (Gerador, Teste de Fluxo, Histórico). Central de Testes (global.testes.tsx): fetch com AbortSignal.timeout(30000) adicionado.
+- **Regra Obrigatória**: SEMPRE rodar `npm run build` após QUALQUER alteração de código para validar ausência de erros. Nunca assumir que edição está correta sem verificar build.
 
 ---
 

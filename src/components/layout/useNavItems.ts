@@ -287,14 +287,15 @@ export function useNavItems(): NavModuleSection[] {
   const MODULE_ORDER: Record<string, number> = {
     __admin__: 0,
     "empresas-core": 1,
-    cadastros: 2,
-    crm: 3,
-    hub: 4,
-    nps: 5,
-    funis: 6,
-    "mapas-interativos": 7,
-    linktree: 8,
-    "gerador-links": 9,
+    catalogo: 2,
+    cadastros: 3,
+    crm: 4,
+    hub: 5,
+    nps: 6,
+    funis: 7,
+    "mapas-interativos": 8,
+    linktree: 9,
+    "gerador-links": 10,
   };
 
   return useMemo(() => {

@@ -163,6 +163,24 @@ import { ferramentasLinksWazeRoute } from "./routes/ferramentas.links.waze";
 import { ferramentasLinksQrcodeRoute } from "./routes/ferramentas.links.qrcode";
 import { linkRedirectRoute } from "./routes/r.$linkId";
 
+import { catalogoIndexRoute } from "./routes/catalogo.index";
+import { catalogoImplantesRoute } from "./routes/catalogo.implantes";
+import { catalogoComponentesRoute } from "./routes/catalogo.componentes";
+import { catalogoKitsRoute } from "./routes/catalogo.kits";
+import { catalogoPromocionaisRoute } from "./routes/catalogo.promocionais";
+import { catalogoProdutoRoute } from "./routes/catalogo.produto.$tipo.$sku";
+import { catalogoCarrinhoRoute } from "./routes/catalogo.carrinho";
+import { catalogoCheckoutRoute } from "./routes/catalogo.checkout";
+import { catalogoAdminProdutosRoute } from "./routes/catalogo.admin.produtos";
+import { catalogoAdminCadastrosRoute } from "./routes/catalogo.admin.cadastros";
+import { catalogoAdminCuponsRoute } from "./routes/catalogo.admin.cupons";
+import { catalogoAdminFreteRoute } from "./routes/catalogo.admin.frete";
+import { catalogoAdminPromocionaisRoute } from "./routes/catalogo.admin.promocionais";
+import { catalogoAdminDashboardRoute } from "./routes/catalogo.admin.dashboard";
+import { catalogoAdminCoresRoute } from "./routes/catalogo.admin.cores";
+import { catalogoAdminSocialRoute } from "./routes/catalogo.admin.social";
+import { catalogoAdminConfiguracoesRoute } from "./routes/catalogo.admin.configuracoes";
+
 export const routeTree = rootRoute.addChildren([
   loginRoute,
   preCadastroRoute,
@@ -172,6 +190,13 @@ export const routeTree = rootRoute.addChildren([
   hubClienteDashboardRoute,
   crmAceitarConviteRoute,
   linkRedirectRoute,
+  // Catálogo — rotas públicas (sem login)
+  catalogoIndexRoute,
+  catalogoImplantesRoute,
+  catalogoComponentesRoute,
+  catalogoKitsRoute,
+  catalogoPromocionaisRoute,
+  catalogoProdutoRoute,
   authLayout.addChildren([
     dashboardRoute,
     clientesRoute,
@@ -330,5 +355,15 @@ export const routeTree = rootRoute.addChildren([
     ferramentasLinksMapsRoute,
     ferramentasLinksWazeRoute,
     ferramentasLinksQrcodeRoute,
+
+    catalogoAdminProdutosRoute,
+    catalogoAdminCadastrosRoute,
+    catalogoAdminCuponsRoute,
+    catalogoAdminFreteRoute,
+    catalogoAdminPromocionaisRoute,
+    catalogoAdminDashboardRoute,
+    catalogoAdminCoresRoute,
+    catalogoAdminSocialRoute,
+    catalogoAdminConfiguracoesRoute,
   ]),
 ]);
