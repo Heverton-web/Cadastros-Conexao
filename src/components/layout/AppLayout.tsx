@@ -17,15 +17,11 @@ import {
   type Notificacao,
 } from "~/core/services";
 import { useEmpresaTheme } from "~/core/theme";
-import { usePageTitle } from "~/hooks/usePageTitle";
-import { useFavicon } from "~/hooks/useFavicon";
 
 const LS_KEY = "selectedModule";
 const LS_SIDEBAR = "sidebarCollapsed";
 
 export function AppLayout() {
-  usePageTitle();
-  useFavicon();
   const navigate = useNavigate();
   const location = useLocation();
   const isFunilPage = location.pathname.startsWith("/funis/funil/");

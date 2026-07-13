@@ -26,7 +26,12 @@ export const loginRoute = createRoute({
 function LoginPage() {
   const navigate = useNavigate();
   const { login, user, loading } = useAuth();
-  const { logoIndexUrl, empresaNome } = useEmpresaTheme();
+  const { logoIndexUrl, empresaNome, theme } = useEmpresaTheme();
+  const accentColor = theme?.accent || "#c9a655";
+  const accentHover = theme?.accent_hover || "#d4b366";
+  const gradStart = theme?.gradient_start || accentColor;
+  const gradMid = theme?.gradient_mid || "#e8d48b";
+  const gradEnd = theme?.gradient_end || "#a8873a";
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -111,7 +116,7 @@ function LoginPage() {
 
       <div className="relative z-10 w-full max-w-[390px] rounded-[2rem] bg-[#0b121f]/90 p-8 md:p-10 shadow-[0_20px_50px_rgba(0,0,0,0.6)] backdrop-blur-md">
         {/* Linha dourada brilhante superior */}
-        <div className="absolute top-0 inset-x-0 h-[1.5px] bg-gradient-to-r from-transparent via-[#c9a655] to-transparent rounded-t-[2rem] opacity-80" />
+        <div className="absolute top-0 inset-x-0 h-[1.5px] rounded-t-[2rem] opacity-80" style={{ background: `linear-gradient(to right, transparent, ${accentColor}, transparent)` }} />
 
         {/* Logo */}
         <div className="mx-auto mb-6 flex items-center justify-center">
@@ -132,10 +137,10 @@ function LoginPage() {
 
         {/* Título e Subtítulo */}
         <div className="text-center mb-6 flex flex-col gap-0.5">
-          <h1 className="text-2xl font-bold text-accent-fg tracking-wide">
+          <h1 className="text-2xl font-bold text-white tracking-wide">
             Entrar
           </h1>
-          <span className="text-xs font-bold text-[#c9a655] tracking-[0.25em] uppercase">
+          <span className="text-xs font-bold tracking-[0.25em] uppercase" style={{ color: accentColor }}>
             {empresaNome || "Odonto"}
           </span>
         </div>
@@ -156,7 +161,7 @@ function LoginPage() {
           className="flex flex-col gap-5"
         >
           <div>
-            <label className="text-xs font-bold text-[#4e6178] uppercase tracking-wider mb-1.5 block">
+            <label className="text-xs font-bold text-[#8899aa] uppercase tracking-wider mb-1.5 block">
               Email
             </label>
             <Input
@@ -166,12 +171,13 @@ function LoginPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               autoComplete="email"
-              className="bg-[#131d30] border-[#1f2f4d] focus:border-[#c9a655]/50 focus:ring-0 text-accent-fg rounded-xl placeholder-[#41536b] text-sm h-11 w-full"
+              className="bg-[#131d30] border-[#1f2f4d] focus:ring-0 text-white rounded-xl placeholder-[#41536b] text-sm h-11 w-full"
+              style={{ borderColor: undefined, '--tw-ring-color': accentColor + '80' } as React.CSSProperties}
             />
           </div>
 
           <div>
-            <label className="text-xs font-bold text-[#4e6178] uppercase tracking-wider mb-1.5 block">
+            <label className="text-xs font-bold text-[#8899aa] uppercase tracking-wider mb-1.5 block">
               Senha
             </label>
             <PasswordInput
@@ -180,14 +186,19 @@ function LoginPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               autoComplete="current-password"
-              className="bg-[#131d30] border-[#1f2f4d] text-white placeholder:text-gray-500 rounded-xl px-4 py-3 w-full outline-none focus:border-[#c9a655] transition-all pr-12"
+              className="bg-[#131d30] border-[#1f2f4d] text-white placeholder:text-gray-500 rounded-xl px-4 py-3 w-full outline-none transition-all pr-12"
+              style={{ '--tw-ring-color': accentColor + '80' } as React.CSSProperties}
             />
           </div>
 
           <button
             type="submit"
             disabled={submitting}
-            className="mt-2 flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#d9b668] to-[#b39145] hover:from-[#e3c174] hover:to-[#c29f52] py-3 text-sm font-bold text-[#0d1625] transition-all duration-300 shadow-[0_4px_20px_rgba(201,166,85,0.2)] cursor-pointer group"
+            className="mt-2 flex w-full items-center justify-center gap-2 rounded-xl py-3 text-sm font-bold text-[#0d1625] transition-all duration-300 cursor-pointer group"
+            style={{
+              background: `linear-gradient(to right, ${gradStart}, ${gradMid}, ${gradEnd})`,
+              boxShadow: `0 4px 20px ${accentColor}33`,
+            }}
           >
             {submitting ? (
               <Loader2 size={16} className="animate-spin text-[#0d1625]" />
@@ -341,7 +352,7 @@ function ResetSenhaPopup({ onClose }: { onClose: () => void }) {
                 placeholder="seu@email.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="bg-[#131d30] border-[#1f2f4d] focus:border-[#c9a655]/50 focus:ring-0 text-accent-fg rounded-xl placeholder-[#41536b] text-sm h-11 w-full"
+                className="bg-[#131d30] border-[#1f2f4d] focus:ring-0 text-white rounded-xl placeholder-[#41536b] text-sm h-11 w-full"
               />
             </div>
             <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end px-6 pb-6 pt-4 border-t border-border/50">

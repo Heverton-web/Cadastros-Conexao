@@ -2,6 +2,8 @@ import { createRootRoute, Outlet } from "@tanstack/react-router";
 import { Toaster } from "react-hot-toast";
 import { registerSW } from "~/pwa/registerSW";
 import { DesignSystemProvider } from "~/design-system";
+import { usePageTitle } from "~/hooks/usePageTitle";
+import { useFavicon } from "~/hooks/useFavicon";
 
 registerSW();
 
@@ -10,6 +12,9 @@ export const rootRoute = createRootRoute({
 });
 
 function RootLayout() {
+  usePageTitle();
+  useFavicon();
+
   return (
     <DesignSystemProvider>
       <Outlet />

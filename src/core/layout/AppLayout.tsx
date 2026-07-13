@@ -13,12 +13,7 @@ import {
   marcarTodasComoLidas,
   type Notificacao,
 } from "~/core/services";
-import { usePageTitle } from "~/hooks/usePageTitle";
-import { useFavicon } from "~/hooks/useFavicon";
-
 export function AppLayout() {
-  usePageTitle();
-  useFavicon();
   const navigate = useNavigate();
   const location = useLocation();
   const { profile, logout } = useAuth();
