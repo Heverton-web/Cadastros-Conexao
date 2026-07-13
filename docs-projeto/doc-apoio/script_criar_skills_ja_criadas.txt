@@ -1,0 +1,49 @@
+#!/bin/bash
+
+# Define onde suas skills já estão guardadas
+# O Antigravity e OpenCode buscam nestes padrões por padrão
+SKILLS_DIR=".agents/skills"
+AGENTS_FILE="AGENTS.md"
+
+echo "🔍 Mapeando habilidades existentes em: $SKILLS_DIR"
+
+# 1. Cabeçalho do AGENTS.md com as Regras de Eficiência
+cat <<EOF > $AGENTS_FILE
+# AGENTS.md - Configuração Mestre de Eficiência
+
+## 🛡️ Regras de Economia Severa
+- **Linguagem**: Estilo Caveman (técnico, direto, sem introduções).
+- **Processamento**: Use 'lean-ctx' para logs e 'RTK' para comandos Bash.
+- **Roteamento**: Priorize Gemini Flash via 'headroom' para navegação.
+- **Lazy Loading**: NÃO leia o conteúdo de uma skill até que ela seja necessária para a tarefa atual.
+
+## 🧠 Catálogo de Skills Ativas (Descobertas Localmente)
+EOF
+
+# 2. Descoberta Automática de Skills
+# O script entra em cada pasta, pega o nome e a descrição do SKILL.md
+if [ -d "$SKILLS_DIR" ]; then
+    for skill_path in "$SKILLS_DIR"/*; do
+        if [ -d "$skill_path" ] && [ -f "$skill_path/SKILLmd" ]; then
+            # Extrai metadados do YAML frontmatter (nome e descrição)
+            SKILL_NAME=$(grep "name:" "$skill_path/SKILL.md" | head -1 | cut -d':' -f2 | xargs)
+            SKILL_DESC=$(grep "description:" "$skill_path/SKILL.md" | head -1 | cut -d':' -f2 | xargs)
+            
+            # Adiciona ao AGENTS.md como referência de carregamento sob demanda
+            echo "- **$SKILL_NAME**: $SKILL_DESC (@$skill_path/SKILL.md)" >> $AGENTS_FILE
+        fi
+    done
+else
+    echo "⚠️ Diretório de skills não encontrado!"
+fi
+
+# 3. Finalização com contexto global
+cat <<EOF >> $AGENTS_FILE
+
+## 🛠️ Regras Globais
+- Idioma: pt-BR
+- Local: $(pwd)
+- Verificação: Antes de cada ação, valide se uma das skills acima cobre a necessidade.
+EOF
+
+echo "✅ AGENTS.md atualizado com suas $(ls $SKILLS_DIR | wc -l) skills mapeadas!"

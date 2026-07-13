@@ -1,0 +1,149 @@
+import type { DiagnosticPlan } from "~/core/diagnostic";
+import { supabase } from "~/core/supabase";
+
+export const crmDiagnosticPlan: DiagnosticPlan = {
+  key: "crm",
+  nome: "CRM",
+  dadosTeste: () => ({
+    cliente: { nome: "[DIAG] Cliente CRM", telefone: "11988888888", tipo_pessoa: "PF", status: "ativo" },
+    consultor: { nome: "[DIAG] Consultor CRM", email: "cons_diag@teste.com" },
+  }),
+
+  crud: {
+    create: async (ctx) => {
+      ctx.log("info", "criando cliente CRM...");
+      const dados = ctx.dadosTeste() as any;
+      const { data, error } = await supabase.from("clientes").insert({
+        empresa_id: ctx.empresaId, nome_doutor: dados.cliente.nome,
+        telefone: dados.cliente.telefone, tipo_pessoa: dados.cliente.tipo_pessoa,
+        status: "ativo",
+      }).select().single();
+      if (error) throw error;
+      ctx.log("success", `cliente CRM criado: id=${data.id}, nome="${data.nome_doutor}"`);
+      ctx.salvarId("clienteId", data.id);
+    },
+    read: async (ctx) => {
+      ctx.log("info", "listando clientes CRM...");
+      const { data, error } = await supabase.from("clientes").select("id, nome_doutor, status, cidade, ultima_visita").eq("empresa_id", ctx.empresaId).limit(10);
+      if (error) throw error;
+      ctx.log("success", `${data?.length ?? 0} clientes encontrados`);
+      const ativos = data?.filter(c => c.status === "ativo").length ?? 0;
+      ctx.log("info", `clientes ativos: ${ativos}`);
+    },
+    update: async (ctx) => {
+      const id = ctx.recuperarId("clienteId");
+      if (!id) throw new Error("Execute 'Criar' primeiro");
+      ctx.log("info", `atualizando cliente id=${id}...`);
+      const { data, error } = await supabase.from("clientes").update({ nome_doutor: "[DIAG] CRM Atualizado" }).eq("id", id).select().single();
+      if (error) throw error;
+      ctx.log("success", `cliente atualizado: "${data.nome_doutor}"`);
+    },
+    delete: async (ctx) => {
+      const id = ctx.recuperarId("clienteId");
+      if (!id) throw new Error("Execute 'Criar' primeiro");
+      ctx.log("info", `excluindo cliente id=${id}...`);
+      const { error } = await supabase.from("clientes").delete().eq("id", id);
+      if (error) throw error;
+      ctx.log("success", `cliente ${id} excluído`);
+    },
+  },
+
+  acoes: [
+    {
+      key: "visita_completa",
+      label: "Registro de Visita",
+      descricao: "Cria cliente → registra visita → verifica carteira → limpa",
+      steps: async (ctx) => {
+        ctx.log("info", "1) Criando cliente CRM...");
+        const dados = ctx.dadosTeste() as any;
+        const { data: c, error: e1 } = await supabase.from("clientes").insert({
+          empresa_id: ctx.empresaId, nome_doutor: dados.cliente.nome,
+          telefone: dados.cliente.telefone, tipo_pessoa: dados.cliente.tipo_pessoa,
+          status: "ativo",
+        }).select().single();
+        if (e1) throw e1;
+        ctx.log("success", `cliente: id=${c.id}`);
+        ctx.salvarId("clienteId", c.id);
+
+        ctx.log("info", "2) Simulando visita (atualizando ultima_visita)...");
+        const agora = new Date().toISOString();
+        await supabase.from("clientes").update({ ultima_visita: agora, status: "ativo" }).eq("id", c.id);
+        const { data: c2 } = await supabase.from("clientes").select("ultima_visita, status").eq("id", c.id).single();
+        ctx.log("success", `visita registrada: ultima_visita=${c2?.ultima_visita?.slice(0, 10)}, status=${c2?.status}`);
+
+        ctx.log("info", "3) Verificando carteira de clientes...");
+        const { data: carteira } = await supabase.from("clientes").select("id, nome_doutor, status, ultima_visita").eq("empresa_id", ctx.empresaId).limit(10);
+        ctx.log("success", `carteira: ${carteira?.length ?? 0} clientes`);
+        const comVisita = carteira?.filter(c => c.ultima_visita).length ?? 0;
+        ctx.log("info", `clientes com visita registrada: ${comVisita}`);
+      },
+      cleanup: async (ctx) => {
+        const id = ctx.recuperarId("clienteId");
+        if (id) { await supabase.from("clientes").delete().eq("id", id); }
+      },
+    },
+    {
+      key: "carteira_filtros",
+      label: "Consulta Carteira com Filtros",
+      descricao: "Clientes ativos/inativos e estatísticas da carteira",
+      steps: async (ctx) => {
+        ctx.log("info", "Criando 2 clientes de teste para carteira...");
+        const dados = ctx.dadosTeste() as any;
+        for (let i = 0; i < 2; i++) {
+          const { data: c } = await supabase.from("clientes").insert({
+            empresa_id: ctx.empresaId,
+            nome_doutor: `[DIAG] Carteira ${i}`,
+            telefone: `119${String(11111111 + i).slice(0, 8)}`,
+            tipo_pessoa: "PF",
+            status: i === 0 ? "ativo" : "inativo",
+          }).select().single();
+          if (c) ctx.salvarId(`carteiraCliente${i}`, c.id);
+        }
+
+        ctx.log("info", "Filtrando ativos...");
+        const { data: ativos } = await supabase.from("clientes").select("id, nome_doutor, status").eq("empresa_id", ctx.empresaId).eq("status", "ativo").limit(5);
+        ctx.log("success", `${ativos?.length ?? 0} clientes ativos`);
+
+        ctx.log("info", "Filtrando inativos...");
+        const { data: inativos } = await supabase.from("clientes").select("id, nome_doutor, status").eq("empresa_id", ctx.empresaId).eq("status", "inativo").limit(5);
+        ctx.log("success", `${inativos?.length ?? 0} clientes inativos`);
+
+        ctx.log("info", "Total geral...");
+        const { count } = await supabase.from("clientes").select("*", { count: "exact", head: true }).eq("empresa_id", ctx.empresaId);
+        ctx.log("success", `total clientes empresa: ${count ?? "N/A"}`);
+      },
+      cleanup: async (ctx) => {
+        for (let i = 0; i < 2; i++) {
+          const id = ctx.recuperarId(`carteiraCliente${i}`);
+          if (id) await supabase.from("clientes").delete().eq("id", id);
+        }
+      },
+    },
+    {
+      key: "ciclo_crm",
+      label: "Ciclo Básico CRM",
+      descricao: "Cria cliente → consulta carteira → limpa",
+      steps: async (ctx) => {
+        ctx.log("info", "1) Criando cliente...");
+        const dados = ctx.dadosTeste() as any;
+        const { data: c, error: e1 } = await supabase.from("clientes").insert({
+          empresa_id: ctx.empresaId, nome_doutor: dados.cliente.nome,
+          telefone: dados.cliente.telefone, tipo_pessoa: dados.cliente.tipo_pessoa,
+          status: "ativo",
+        }).select().single();
+        if (e1) throw e1;
+        ctx.log("success", `cliente: id=${c.id}`);
+        ctx.salvarId("clienteId", c.id);
+
+        ctx.log("info", "2) Verificando carteira...");
+        const { data: carteira, error: e2 } = await supabase.from("clientes").select("id, nome_doutor, status, ultima_visita").eq("empresa_id", ctx.empresaId).limit(5);
+        if (e2) throw e2;
+        ctx.log("success", `carteira: ${carteira?.length ?? 0} clientes`);
+      },
+      cleanup: async (ctx) => {
+        const id = ctx.recuperarId("clienteId");
+        if (id) { await supabase.from("clientes").delete().eq("id", id); }
+      },
+    },
+  ],
+};

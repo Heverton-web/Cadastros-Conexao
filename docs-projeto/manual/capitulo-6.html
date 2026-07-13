@@ -1,0 +1,463 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Capítulo 6 — Super Admin | ERP Conexão</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      :root {
+        --navy: #0b1e33;
+        --navy-light: #122a45;
+        --gold: #d4af37;
+        --gold-light: #e8cc6a;
+        --blue: #004892;
+        --white: #ffffff;
+        --gray: #8899aa;
+        --card-bg: rgba(255, 255, 255, 0.04);
+        --card-border: rgba(212, 175, 55, 0.15);
+        --admin-accent: #e85050;
+      }
+      body {
+        font-family: "Inter", sans-serif;
+        background: var(--navy);
+        color: var(--white);
+        line-height: 1.7;
+      }
+      .container {
+        max-width: 960px;
+        margin: 0 auto;
+        padding: 40px 24px 80px;
+      }
+      .top-nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 16px 24px;
+        border-bottom: 1px solid var(--card-border);
+        background: rgba(11, 30, 51, 0.9);
+        backdrop-filter: blur(8px);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+      .top-nav a {
+        color: var(--gray);
+        text-decoration: none;
+        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        transition: color 0.2s;
+      }
+      .top-nav a:hover {
+        color: var(--gold);
+      }
+      .top-nav .logo {
+        font-weight: 700;
+        color: var(--white);
+      }
+      .top-nav .logo span {
+        color: var(--gold);
+      }
+
+      .intro-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: rgba(232, 80, 80, 0.1);
+        border: 1px solid rgba(232, 80, 80, 0.25);
+        padding: 10px 18px;
+        border-radius: 10px;
+        margin-bottom: 24px;
+        color: var(--admin-accent);
+        font-weight: 600;
+        font-size: 0.85rem;
+      }
+
+      h1 {
+        font-size: 2.4rem;
+        font-weight: 800;
+        margin: 48px 0 8px;
+        letter-spacing: -0.02em;
+      }
+      h1 + .subtitle {
+        color: var(--gray);
+        font-size: 1.1rem;
+        margin-bottom: 40px;
+      }
+      h2 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin: 48px 0 16px;
+        color: var(--gold);
+        padding-bottom: 8px;
+        border-bottom: 1px solid var(--card-border);
+      }
+      h3 {
+        font-size: 1.15rem;
+        font-weight: 600;
+        margin: 28px 0 12px;
+      }
+      p {
+        margin-bottom: 16px;
+        color: #ccd;
+      }
+      p strong {
+        color: var(--white);
+      }
+      ul,
+      ol {
+        margin: 12px 0 20px 24px;
+        color: #ccd;
+      }
+      li {
+        margin-bottom: 6px;
+      }
+      li strong {
+        color: var(--white);
+      }
+
+      .admin-card {
+        background: linear-gradient(
+          135deg,
+          rgba(232, 80, 80, 0.04),
+          rgba(212, 175, 55, 0.04)
+        );
+        border: 1px solid rgba(232, 80, 80, 0.15);
+        border-radius: 14px;
+        padding: 28px;
+        margin: 28px 0;
+      }
+      .admin-card h3 {
+        margin-top: 0;
+        font-size: 1.2rem;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .admin-card .meta {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin: 8px 0 16px;
+      }
+      .admin-card .tag {
+        display: inline-block;
+        padding: 3px 10px;
+        border-radius: 10px;
+        font-size: 0.75rem;
+        font-weight: 600;
+      }
+      .admin-card .tag.red {
+        background: rgba(232, 80, 80, 0.12);
+        color: var(--admin-accent);
+        border: 1px solid rgba(232, 80, 80, 0.2);
+      }
+      .admin-card .route-list {
+        margin: 12px 0 0;
+        list-style: none;
+        margin-left: 0;
+      }
+      .admin-card .route-list li {
+        font-family: "Courier New", monospace;
+        font-size: 0.82rem;
+        color: var(--gold-light);
+        margin-bottom: 4px;
+        padding: 4px 8px;
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 4px;
+        display: inline-block;
+        margin-right: 6px;
+      }
+      .admin-card .route-list li .desc {
+        font-family: "Inter", sans-serif;
+        color: var(--gray);
+        font-size: 0.78rem;
+      }
+
+      .info-box {
+        background: rgba(0, 72, 146, 0.08);
+        border: 1px solid rgba(0, 72, 146, 0.2);
+        border-radius: 12px;
+        padding: 20px 24px;
+        margin: 24px 0;
+      }
+      .info-box strong {
+        color: #6ab0ff;
+      }
+      .warn-box {
+        background: rgba(232, 80, 80, 0.06);
+        border: 1px solid rgba(232, 80, 80, 0.2);
+        border-radius: 12px;
+        padding: 20px 24px;
+        margin: 24px 0;
+      }
+      .warn-box strong {
+        color: var(--admin-accent);
+      }
+
+      hr {
+        border: none;
+        border-top: 1px solid var(--card-border);
+        margin: 40px 0;
+      }
+      .bottom-nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 60px;
+        padding-top: 24px;
+        border-top: 1px solid var(--card-border);
+      }
+      .bottom-nav a {
+        color: var(--gold);
+        text-decoration: none;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: opacity 0.2s;
+      }
+      .bottom-nav a:hover {
+        opacity: 0.8;
+      }
+      .bottom-nav .prev {
+        color: var(--gray);
+      }
+
+      @media (max-width: 640px) {
+        h1 {
+          font-size: 1.6rem;
+        }
+        .admin-card {
+          padding: 20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="top-nav">
+      <a href="index.html" class="logo">ERP <span>Conexão</span></a>
+      <a href="index.html">&larr; Índice</a>
+    </nav>
+    <div class="container">
+      <h1>Capítulo 6<br />Módulos Exclusivos do Super Admin</h1>
+      <p class="subtitle">
+        Painéis e ferramentas de administração global da plataforma ERP Conexão.
+      </p>
+
+      <div class="intro-badge">
+        &#9888; Acesso restrito a usuários com perfil
+        <strong>is_super_admin = true</strong>
+      </div>
+
+      <p>
+        O Super Admin é o perfil de mais alta autoridade no sistema. Usuários
+        com esta flag recebem automaticamente
+        <strong>todas as permissões</strong> do sistema e têm acesso a uma seção
+        exclusiva de administração global, com 12 itens de navegação no menu
+        "Administração".
+      </p>
+
+      <div class="warn-box">
+        <strong>Atenção:</strong> A seção de Administração só aparece no menu de
+        usuários Super Admin. Usuários comuns nunca veem estas rotas ou
+        funcionalidades.
+      </div>
+
+      <h2>Painéis de Administração Global</h2>
+
+      <div class="admin-card">
+        <h3>&#9881; Módulos ERP</h3>
+        <p>
+          Gerencia todos os módulos da plataforma: ativar/desativar módulos
+          globalmente, configurar parâmetros de cada módulo e visualizar o
+          status de cada um.
+        </p>
+        <div class="meta"><span class="tag red">Super Admin Only</span></div>
+        <ul class="route-list">
+          <li>/global/modulos <span class="desc">— Lista de módulos</span></li>
+          <li>
+            /global/modulos/$key <span class="desc">— Detalhe do módulo</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="admin-card">
+        <h3>&#9783; Empresas ERP</h3>
+        <p>
+          Gerencia as empresas cadastradas na plataforma: criar, editar,
+          ativar/desativar empresas, configurar módulos ativos por empresa e
+          visualizar detalhes de cada tenant.
+        </p>
+        <div class="meta"><span class="tag red">Super Admin Only</span></div>
+        <ul class="route-list">
+          <li>
+            /global/empresas <span class="desc">— Lista de empresas</span>
+          </li>
+          <li>
+            /global/empresas/$id <span class="desc">— Detalhe da empresa</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="admin-card">
+        <h3>&#9788; Dashboard NPS Global</h3>
+        <p>
+          Visão consolidada de todas as pesquisas NPS de todas as empresas.
+          Permite comparar métricas de satisfação entre tenants.
+        </p>
+        <div class="meta"><span class="tag red">Super Admin Only</span></div>
+        <ul class="route-list">
+          <li>/global/nps <span class="desc">— Dashboard NPS global</span></li>
+        </ul>
+      </div>
+
+      <div class="admin-card">
+        <h3>&#9775; Dashboard Hub Global</h3>
+        <p>
+          Visão consolidada da plataforma de treinamento Hub em todas as
+          empresas. Métricas de uso, materiais, trilhas e engajamento.
+        </p>
+        <div class="meta"><span class="tag red">Super Admin Only</span></div>
+        <ul class="route-list">
+          <li>/global/hub <span class="desc">— Dashboard Hub global</span></li>
+        </ul>
+      </div>
+
+      <div class="admin-card">
+        <h3>&#9883; Permissões</h3>
+        <p>
+          Gerencia o sistema de permissões global: visualiza todas as permissões
+          registradas, seus grupos e descrições. Permite auditoria do sistema de
+          permissões.
+        </p>
+        <div class="meta"><span class="tag red">Super Admin Only</span></div>
+        <ul class="route-list">
+          <li>
+            /global/permissoes <span class="desc">— Central de permissões</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="admin-card">
+        <h3>&#9888; Central de Ações</h3>
+        <p>
+          Monitora e gerencia ações automáticas e webhooks do sistema. Visualiza
+          histórico de execuções, filas e logs de ações.
+        </p>
+        <div class="meta"><span class="tag red">Super Admin Only</span></div>
+        <ul class="route-list">
+          <li>/global/acoes <span class="desc">— Central de ações</span></li>
+        </ul>
+      </div>
+
+      <div class="admin-card">
+        <h3>&#9776; Banco de Dados</h3>
+        <p>
+          Ferramenta de visualização e gestão do banco de dados Supabase.
+          Permite consultar tabelas, visualizar schemas e monitorar o banco.
+        </p>
+        <div class="meta"><span class="tag red">Super Admin Only</span></div>
+        <ul class="route-list">
+          <li>/global/banco <span class="desc">— Banco de dados</span></li>
+        </ul>
+      </div>
+
+      <div class="admin-card">
+        <h3>&#9741; Integrações Nativas</h3>
+        <p>
+          Gerencia integrações com sistemas externos: PayTrack, webhooks, API
+          connectors e outras integrações nativas da plataforma.
+        </p>
+        <div class="meta"><span class="tag red">Super Admin Only</span></div>
+        <ul class="route-list">
+          <li>
+            /global/integracoes <span class="desc">— Integrações nativas</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="admin-card">
+        <h3>&#9889; Credenciais Demo</h3>
+        <p>
+          Gerencia credenciais de demonstração do sistema. Permite criar, editar
+          e remover contas demo para apresentações e testes.
+        </p>
+        <div class="meta"><span class="tag red">Super Admin Only</span></div>
+        <ul class="route-list">
+          <li>/global/demos <span class="desc">— Credenciais demo</span></li>
+        </ul>
+      </div>
+
+      <div class="admin-card">
+        <h3>&#9774; Laboratório de Testes</h3>
+        <p>
+          Ambiente isolado para testes de funcionalidades, experimentos e
+          validações antes de liberar para produção.
+        </p>
+        <div class="meta"><span class="tag red">Super Admin Only</span></div>
+        <ul class="route-list">
+          <li>/global/laboratorio <span class="desc">— Laboratório</span></li>
+        </ul>
+      </div>
+
+      <div class="admin-card">
+        <h3>&#9762; Limites de Credenciais</h3>
+        <p>
+          Gerencia limites de credenciais de acesso ao sistema por empresa ou
+          usuário. Controla quotas e restrições de acesso.
+        </p>
+        <div class="meta"><span class="tag red">Super Admin Only</span></div>
+        <ul class="route-list">
+          <li>
+            /global/limits <span class="desc">— Limites de credenciais</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="admin-card">
+        <h3>&#127912; Temas Hub</h3>
+        <p>
+          Configura temas visuais da plataforma Hub para todas as empresas.
+          Gerencia paletas, layouts e personalização da plataforma de
+          treinamento.
+        </p>
+        <div class="meta"><span class="tag red">Super Admin Only</span></div>
+        <ul class="route-list">
+          <li>/empresa/hub/tema <span class="desc">— Temas Hub</span></li>
+        </ul>
+      </div>
+
+      <h2>Resumo do Acesso Super Admin</h2>
+
+      <div class="info-box">
+        <strong>Total de rotas exclusivas:</strong> 14 rotas administrativas em
+        12 categorias<br />
+        <strong>Permissões:</strong> Todas as 86+ permissões do sistema
+        concedidas automaticamente<br />
+        <strong>Visibilidade:</strong> Seção "Administração" no menu lateral,
+        visível apenas para Super Admin<br />
+        <strong>Gerência:</strong> Empresas, módulos, permissões, ações, banco,
+        integrações, demos, laboratório e limites
+      </div>
+
+      <div class="bottom-nav">
+        <a href="capitulo-5.html" class="prev">&larr; Capítulo 5</a>
+        <a href="index.html">Voltar ao Índice &rarr;</a>
+      </div>
+    </div>
+  </body>
+</html>
