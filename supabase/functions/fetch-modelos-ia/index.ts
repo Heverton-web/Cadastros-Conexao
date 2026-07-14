@@ -92,7 +92,8 @@ function normName(s: string): string {
 // ---------- DesignArena scraping ----------
 
 function extractArenaModels(html: string): ArenaModel[] {
-  const marker = '"rows":';
+  // DesignArena embute os dados via Next.js __next_f com aspas escapadas: \"rows\":[...]
+  const marker = '\\"rows\\":';
   const idx = html.indexOf(marker);
   if (idx === -1) return [];
 
