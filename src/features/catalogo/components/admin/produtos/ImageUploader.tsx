@@ -1,5 +1,5 @@
 import { useState, useRef, useCallback } from "react"
-import { Upload, Link2, HardDrive, X, GripVertical, ImagePlus } from "lucide-react"
+import { Upload, Link2, HardDrive, X, GripVertical, ImagePlus, Loader2, Check } from "lucide-react"
 import toast from "react-hot-toast"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs"
 import {
@@ -9,7 +9,6 @@ import {
   removerImagem,
   reordenarImagens,
   validarArquivoImagem,
-  extrairUrlGoogleDrive,
 } from "~/features/catalogo/services/imagens.service"
 import type { CatalogoImagemProduto, ProdutoTipoImagem } from "~/features/catalogo/types"
 
@@ -19,6 +18,11 @@ interface ImageUploaderProps {
   produtoSku: string
   imagensExistentes?: CatalogoImagemProduto[]
   onImagensChange: (imagens: CatalogoImagemProduto[]) => void
+}
+
+interface PendingPreview {
+  file: File
+  previewUrl: string
 }
 
 export function ImageUploader({
@@ -33,6 +37,8 @@ export function ImageUploader({
   const [urlInput, setUrlInput] = useState("")
   const [gdriveInput, setGdriveInput] = useState("")
   const [dragOver, setDragOver] = useState(false)
+  const [pendingPreviews, setPendingPreviews] = useState<PendingPreview[]>([])
+  const [uploadSuccess, setUploadSuccess] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const imagens = imagensExistentes
@@ -42,38 +48,61 @@ export function ImageUploader({
     onImagensChange(lista)
   }
 
+  function criarPreviews(files: FileList) {
+    const novosPreviews: PendingPreview[] = []
+    for (const file of Array.from(files)) {
+      const validacao = validarArquivoImagem(file)
+      if (!validacao.valido) {
+        toast.error(validacao.erro!, {
+          style: { background: "var(--color-surface)", color: "#fff", border: "1px solid rgba(239,68,68,0.3)" },
+        })
+        continue
+      }
+      const previewUrl = URL.createObjectURL(file)
+      novosPreviews.push({ file, previewUrl })
+    }
+    setPendingPreviews(novosPreviews)
+    return novosPreviews
+  }
+
   const handleFileSelect = useCallback(async (files: FileList | null) => {
     if (!files || files.length === 0) return
+
+    const previews = criarPreviews(files)
+    if (previews.length === 0) return
 
     setUploading(true)
     let hasCompressed = false
     try {
-      for (const file of Array.from(files)) {
-        const validacao = validarArquivoImagem(file)
-        if (!validacao.valido) {
-          toast.error(validacao.erro!, {
-            style: { background: "var(--color-surface)", color: "#fff", border: "1px solid rgba(239,68,68,0.3)" },
-          })
-          continue
-        }
-        if (file.size > 5 * 1024 * 1024) {
+      for (const preview of previews) {
+        if (preview.file.size > 5 * 1024 * 1024) {
           setCompressing(true)
           hasCompressed = true
         }
-        await uploadEAdicionarImagem(empresaId, produtoTipo, produtoSku, file)
+        await uploadEAdicionarImagem(empresaId, produtoTipo, produtoSku, preview.file)
         setCompressing(false)
       }
+
+      // Limpar previews e mostrar sucesso
+      setPendingPreviews([])
+      setUploadSuccess(true)
+      setTimeout(() => setUploadSuccess(false), 2000)
+
       await recarregarImagens()
+
       if (hasCompressed) {
-        toast.success("Imagem comprimida e enviada!", {
+        toast.success("Imagem comprimida e enviada com sucesso!", {
           style: { background: "var(--color-surface)", color: "#fff", border: "1px solid rgba(34,197,94,0.3)" },
+          duration: 3000,
         })
       } else {
-        toast.success("Imagem(ns) adicionada(s)!", {
+        toast.success("Imagem enviada com sucesso!", {
           style: { background: "var(--color-surface)", color: "#fff", border: "1px solid rgba(34,197,94,0.3)" },
+          duration: 3000,
         })
       }
     } catch (err: any) {
+      setPendingPreviews([])
       toast.error(err.message || "Erro ao fazer upload", {
         style: { background: "var(--color-surface)", color: "#fff", border: "1px solid rgba(239,68,68,0.3)" },
       })
@@ -88,6 +117,15 @@ export function ImageUploader({
     e.preventDefault()
     setDragOver(false)
     handleFileSelect(e.dataTransfer.files)
+  }
+
+  function handleDragOver(e: React.DragEvent) {
+    e.preventDefault()
+    setDragOver(true)
+  }
+
+  function handleDragLeave() {
+    setDragOver(false)
   }
 
   async function handleAdicionarUrl() {
@@ -107,6 +145,8 @@ export function ImageUploader({
     try {
       await adicionarImagemUrl(empresaId, produtoTipo, produtoSku, url, "url")
       setUrlInput("")
+      setUploadSuccess(true)
+      setTimeout(() => setUploadSuccess(false), 2000)
       await recarregarImagens()
       toast.success("Imagem adicionada via URL!", {
         style: { background: "var(--color-surface)", color: "#fff", border: "1px solid rgba(34,197,94,0.3)" },
@@ -135,6 +175,8 @@ export function ImageUploader({
     try {
       await adicionarImagemUrl(empresaId, produtoTipo, produtoSku, url, "gdrive")
       setGdriveInput("")
+      setUploadSuccess(true)
+      setTimeout(() => setUploadSuccess(false), 2000)
       await recarregarImagens()
       toast.success("Imagem adicionada do Google Drive!", {
         style: { background: "var(--color-surface)", color: "#fff", border: "1px solid rgba(34,197,94,0.3)" },
@@ -196,7 +238,49 @@ export function ImageUploader({
         </div>
       )}
 
-      {/* Galeria de imagens */}
+      {/* Preview de imagens pendentes (antes de enviar) */}
+      {pendingPreviews.length > 0 && (
+        <div className="space-y-2">
+          <p className="text-xs text-[#c9a655] font-bold">Preview - Imagens selecionadas:</p>
+          <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
+            {pendingPreviews.map((preview, idx) => (
+              <div
+                key={idx}
+                className="relative aspect-square rounded-xl overflow-hidden border-2 border-dashed border-[#c9a655]/50 bg-[var(--color-surface)]"
+              >
+                <img
+                  src={preview.previewUrl}
+                  alt={`Preview ${idx + 1}`}
+                  className="w-full h-full object-cover"
+                />
+                {uploading && (
+                  <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
+                    {compressing ? (
+                      <Loader2 className="w-6 h-6 text-[#c9a655] animate-spin" />
+                    ) : (
+                      <div className="text-center">
+                        <Loader2 className="w-5 h-5 text-white animate-spin mx-auto" />
+                        <p className="text-[9px] text-white mt-1">Enviando...</p>
+                      </div>
+                    )}
+                  </div>
+                )}
+                <button
+                  onClick={() => {
+                    URL.revokeObjectURL(preview.previewUrl)
+                    setPendingPreviews((prev) => prev.filter((_, i) => i !== idx))
+                  }}
+                  className="absolute top-1 right-1 w-5 h-5 rounded-full bg-red-500 flex items-center justify-center text-white hover:bg-red-600"
+                >
+                  <X className="w-3 h-3" />
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Galeria de imagens salvas */}
       {imagens.length > 0 && (
         <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
           {imagens
@@ -204,16 +288,29 @@ export function ImageUploader({
             .map((img, idx) => (
             <div
               key={img.id}
-              className="group relative aspect-square rounded-xl overflow-hidden border border-white/10 bg-[var(--color-surface)]"
+              className={`group relative aspect-square rounded-xl overflow-hidden border bg-[var(--color-surface)] transition-all ${
+                uploadSuccess && idx === imagens.length - 1
+                  ? "border-green-500 ring-2 ring-green-500/30"
+                  : "border-white/10"
+              }`}
             >
               <img
                 src={img.url_imagem}
                 alt={`Imagem ${idx + 1}`}
                 className="w-full h-full object-cover"
                 onError={(e) => {
-                  (e.target as HTMLImageElement).src = ""
+                  (e.target as HTMLImageElement).style.display = "none"
                 }}
               />
+
+              {/* Indicador de sucesso no último upload */}
+              {uploadSuccess && idx === imagens.length - 1 && (
+                <div className="absolute inset-0 bg-green-500/20 flex items-center justify-center pointer-events-none">
+                  <div className="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center">
+                    <Check className="w-5 h-5 text-white" />
+                  </div>
+                </div>
+              )}
 
               {/* Overlay de ações */}
               <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-1">
@@ -255,6 +352,15 @@ export function ImageUploader({
         </div>
       )}
 
+      {/* Mensagem quando não tem imagens */}
+      {imagens.length === 0 && pendingPreviews.length === 0 && !semSku && (
+        <div className="p-4 rounded-xl bg-[var(--color-surface)] border border-white/5 text-center">
+          <ImagePlus className="w-8 h-8 text-gray-500 mx-auto mb-2" />
+          <p className="text-sm text-gray-400">Nenhuma imagem adicionada</p>
+          <p className="text-xs text-gray-500 mt-1">Use as abas abaixo para adicionar imagens</p>
+        </div>
+      )}
+
       {/* Abas de adição */}
       <Tabs defaultValue="upload" className="w-full">
         <TabsList className="w-full bg-[var(--color-surface)] border border-white/5">
@@ -272,19 +378,19 @@ export function ImageUploader({
         {/* Upload */}
         <TabsContent value="upload">
           <div
-            onDragOver={(e) => { e.preventDefault(); setDragOver(true) }}
-            onDragLeave={() => setDragOver(false)}
+            onDragOver={handleDragOver}
+            onDragLeave={handleDragLeave}
             onDrop={handleDrop}
-            onClick={() => !semSku && fileInputRef.current?.click()}
+            onClick={() => !semSku && !uploading && fileInputRef.current?.click()}
             className={`
               relative flex flex-col items-center justify-center gap-2 p-6 rounded-xl border-2 border-dashed transition-all
               ${semSku
                 ? "opacity-50 cursor-not-allowed border-white/5 bg-[var(--color-surface)]/30"
                 : dragOver
-                  ? "cursor-pointer border-[#c9a655] bg-[#c9a655]/5"
-                  : "cursor-pointer border-white/10 hover:border-white/20 bg-[var(--color-surface)]/50"
+                  ? "cursor-pointer border-[#c9a655] bg-[#c9a655]/10 scale-[1.02]"
+                  : "cursor-pointer border-white/10 hover:border-[#c9a655]/50 hover:bg-[var(--color-surface)]/50"
               }
-              ${uploading ? "opacity-50 pointer-events-none" : ""}
+              ${uploading ? "opacity-70 pointer-events-none" : ""}
             `}
           >
             <input
@@ -295,10 +401,20 @@ export function ImageUploader({
               onChange={(e) => handleFileSelect(e.target.files)}
               className="hidden"
             />
-            <ImagePlus className={`w-8 h-8 ${dragOver ? "text-[#c9a655]" : "text-gray-500"}`} />
+            {uploading ? (
+              <Loader2 className="w-8 h-8 text-[#c9a655] animate-spin" />
+            ) : (
+              <ImagePlus className={`w-8 h-8 ${dragOver ? "text-[#c9a655]" : "text-gray-500"}`} />
+            )}
             <div className="text-center">
               <p className="text-sm font-bold text-white">
-                {compressing ? "Comprimindo imagem..." : uploading ? "Enviando..." : "Arraste ou clique para enviar"}
+                {compressing
+                  ? "Comprimindo imagem..."
+                  : uploading
+                    ? "Enviando..."
+                    : dragOver
+                      ? "Solte para enviar"
+                      : "Arraste ou clique para enviar"}
               </p>
               <p className="text-[10px] text-gray-400 mt-1">
                 JPG, PNG, WebP ou GIF — imagens maiores que 5MB são comprimidas automaticamente
@@ -322,8 +438,9 @@ export function ImageUploader({
             <button
               onClick={handleAdicionarUrl}
               disabled={uploading || semSku || !urlInput.trim()}
-              className="px-4 py-2.5 rounded-xl bg-[#c9a655] text-[#0f172a] text-sm font-bold hover:scale-105 transition-transform disabled:opacity-50 disabled:hover:scale-100"
+              className="px-4 py-2.5 rounded-xl bg-[#c9a655] text-[#0f172a] text-sm font-bold hover:scale-105 transition-transform disabled:opacity-50 disabled:hover:scale-100 flex items-center gap-2"
             >
+              {uploading ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
               {uploading ? "..." : "Adicionar"}
             </button>
           </div>
@@ -344,8 +461,9 @@ export function ImageUploader({
             <button
               onClick={handleAdicionarGDrive}
               disabled={uploading || semSku || !gdriveInput.trim()}
-              className="w-full px-4 py-2.5 rounded-xl bg-[#c9a655] text-[#0f172a] text-sm font-bold hover:scale-105 transition-transform disabled:opacity-50 disabled:hover:scale-100"
+              className="w-full px-4 py-2.5 rounded-xl bg-[#c9a655] text-[#0f172a] text-sm font-bold hover:scale-105 transition-transform disabled:opacity-50 disabled:hover:scale-100 flex items-center justify-center gap-2"
             >
+              {uploading ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
               {uploading ? "Enviando..." : "Adicionar do Google Drive"}
             </button>
           </div>
