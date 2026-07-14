@@ -8,9 +8,10 @@ interface Props {
   nome: string;
   corIdentificacao: string;
   tipo: string;
+  imageUrl?: string;
 }
 
-export function ProductCard({ sku, nome, corIdentificacao, tipo }: Props) {
+export function ProductCard({ sku, nome, corIdentificacao, tipo, imageUrl }: Props) {
   const cor = corIdentificacao || '#c9a655';
 
   return (
@@ -24,12 +25,7 @@ export function ProductCard({ sku, nome, corIdentificacao, tipo }: Props) {
       />
 
       <div className="flex items-center gap-4 relative z-10">
-        <div
-          className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 transition-colors"
-          style={{ backgroundColor: `${cor}12` }}
-        >
-          <div className="w-3 h-3 rounded-full transition-all" style={{ backgroundColor: cor, boxShadow: `0 0 6px ${cor}40` }} />
-        </div>
+        <ProductThumb tipo={tipo} cor={cor} imageUrl={imageUrl} size="sm" />
 
         <div className="flex-1 min-w-0">
           <div className="flex items-center mb-1">

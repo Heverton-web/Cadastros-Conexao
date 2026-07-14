@@ -99,14 +99,17 @@ function SheetContent({ sku, tipo }: { sku: string; tipo: string }) {
 
   const preco = tipo === "promocional" ? data.preco : mockPreco(tipo as any, sku)
 
+  // Pegar primeira imagem do produto (se houver)
+  const imagemPrincipal = data?.imagens?.[0]?.url_imagem
+
   return (
     <div className="p-6 md:p-8 flex flex-col h-full bg-[#0f172a]">
-      
+
       <div className="flex flex-col md:flex-row gap-6 mb-6">
-        <div 
-          className="w-32 h-32 shrink-0 rounded-2xl bg-[var(--color-surface)] border border-white/5 flex items-center justify-center"
+        <div
+          className="w-32 h-32 shrink-0 rounded-2xl bg-[var(--color-surface)] border border-white/5 flex items-center justify-center overflow-hidden"
         >
-          <ProductThumb tipo={tipo} cor={cor} size="lg" />
+          <ProductThumb tipo={tipo} cor={cor} imageUrl={imagemPrincipal} size="lg" />
         </div>
         
         <div className="flex-1 min-w-0">

@@ -17,10 +17,12 @@ import {
 import { salvarSequenciaProtetica } from "~/features/catalogo/services/sequencia-protetica.service"
 import { salvarProtocoloFresagem } from "~/features/catalogo/services/implantes.service"
 import { adicionarBOMItem } from "~/features/catalogo/services/kits.service"
+import { listarImagens } from "~/features/catalogo/services/imagens.service"
 import { ImplanteForm } from "./forms/ImplanteForm"
 import { AbutmentForm } from "./forms/AbutmentForm"
 import { KitForm } from "./forms/KitForm"
-import type { CatalogoImplante } from "~/features/catalogo/types"
+import { ImageUploader } from "./ImageUploader"
+import type { CatalogoImplante, CatalogoImagemProduto, ProdutoTipoImagem } from "~/features/catalogo/types"
 
 type ProdutoTipo = "implante" | "abutment" | "kit"
 interface SeqEtapa { etapa_nome: string; acessorio_sku: string }
@@ -88,6 +90,7 @@ export function ProdutoFormModal({
   const [seqAnalógica, setSeqAnalógica] = useState<SeqEtapa[]>([])
   const [seqDigital, setSeqDigital] = useState<SeqEtapa[]>([])
   const [kitBom, setKitBom] = useState<BomItem[]>([])
+  const [imagens, setImagens] = useState<CatalogoImagemProduto[]>([])
 
   function resetForms() {
     setImplante({ categoria_id: "", conexao_id: "", familia_id: "", linha_id: "", sku: "", diametro_mm: 0, comprimento_mm: 0, torque_insercao: 0, rosca_interna: "", regiao_apical: "", regiao_cervical: "", material: "", superficie: "", tratamento: "", chave_sku: "", preco: 0 })
@@ -98,6 +101,7 @@ export function ProdutoFormModal({
     setSeqAnalógica([])
     setSeqDigital([])
     setKitBom([])
+    setImagens([])
   }
 
   useEffect(() => {
@@ -110,6 +114,18 @@ export function ProdutoFormModal({
       }
     }
   }, [open, editingItem])
+
+  // Carregar imagens ao editar
+  useEffect(() => {
+    if (!open || !editingItem) {
+      setImagens([])
+      return
+    }
+    const tipoItem = editingItem.tipo as ProdutoTipoImagem
+    listarImagens(empresaId, tipoItem, editingItem.sku)
+      .then(setImagens)
+      .catch(() => setImagens([]))
+  }, [open, editingItem, empresaId])
 
   useEffect(() => {
     if (!open || !editingItem) return
@@ -429,6 +445,17 @@ export function ProdutoFormModal({
               addBomItem={addBomItem}
               removeBomItem={removeBomItem}
               updateBomItem={updateBomItem}
+            />
+          )}
+
+          {/* Imagens do produto — só exibe quando tem SKU (criado ou editando) */}
+          {(editingItem || implante.sku || abutment.sku || kit.sku) && (
+            <ImageUploader
+              empresaId={empresaId}
+              produtoTipo={tipo}
+              produtoSku={editingItem?.sku || implante.sku || abutment.sku || kit.sku}
+              imagensExistentes={imagens}
+              onImagensChange={setImagens}
             />
           )}
         </div>

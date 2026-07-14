@@ -9,8 +9,7 @@ export async function listarImplantesAtivos(empresaId: string): Promise<Catalogo
     .from("catalogo_implantes")
     .select(`
       *,
-      linha:catalogo_linhas!inner(*, familia:catalogo_familias(*, conexao:catalogo_conexoes(*, categoria:catalogo_categorias(*)))),
-      imagens:catalogo_imagens_implante(*)
+      linha:catalogo_linhas!inner(*, familia:catalogo_familias(*, conexao:catalogo_conexoes(*, categoria:catalogo_categorias(*))))
     `)
     .eq("empresa_id", empresaId)
     .eq("ativo", true)
@@ -25,8 +24,7 @@ export async function listarTodosImplantes(empresaId: string): Promise<CatalogoI
     .from("catalogo_implantes")
     .select(`
       *,
-      linha:catalogo_linhas(*, familia:catalogo_familias(*, conexao:catalogo_conexoes(*))),
-      imagens:catalogo_imagens_implante(*)
+      linha:catalogo_linhas(*, familia:catalogo_familias(*, conexao:catalogo_conexoes(*)))
     `)
     .eq("empresa_id", empresaId)
     .order("sku")
@@ -40,7 +38,6 @@ export async function getImplanteDetalhe(empresaId: string, sku: string): Promis
     .select(`
       *,
       linha:catalogo_linhas(*, familia:catalogo_familias(*, conexao:catalogo_conexoes(*, categoria:catalogo_categorias(*)))),
-      imagens:catalogo_imagens_implante(*),
       protocolos:catalogo_protocolo_fresagem(*, fresa:catalogo_fresas(*))
     `)
     .eq("empresa_id", empresaId)
@@ -53,7 +50,7 @@ export async function getImplanteDetalhe(empresaId: string, sku: string): Promis
 export async function listarImplantesPorLinha(empresaId: string, linhaId: string): Promise<CatalogoImplante[]> {
   const { data, error } = await supabase
     .from("catalogo_implantes")
-    .select("*, imagens:catalogo_imagens_implante(*)")
+    .select("*")
     .eq("empresa_id", empresaId)
     .eq("linha_id", linhaId)
     .eq("ativo", true)

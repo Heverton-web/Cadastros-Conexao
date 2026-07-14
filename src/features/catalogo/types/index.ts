@@ -76,14 +76,22 @@ export interface CatalogoImplante {
   protocolos?: CatalogoProtocoloFresagem[]
 }
 
-export interface CatalogoImagemImplante {
+export type ProdutoTipoImagem = "implante" | "abutment" | "kit"
+export type FonteImagem = "upload" | "url" | "gdrive"
+
+export interface CatalogoImagemProduto {
   id: string
   empresa_id: string
-  implante_sku: string
+  produto_tipo: ProdutoTipoImagem
+  produto_sku: string
   url_imagem: string
+  fonte: FonteImagem
   ordem_exibicao: number
   created_at: string
 }
+
+/** @deprecated Use CatalogoImagemProduto */
+export type CatalogoImagemImplante = CatalogoImagemProduto
 
 export interface CatalogoFresa {
   sku: string
@@ -145,6 +153,7 @@ export interface CatalogoAbutment {
   familia?: CatalogoFamilia
   tipo_reabilitacao?: CatalogoTipoReabilitacao
   tipo_abutment?: CatalogoTipoAbutment
+  imagens?: CatalogoImagemProduto[]
 }
 
 export interface CatalogoSequenciaProtetica {
@@ -281,6 +290,7 @@ export interface CatalogoKit {
   categoria?: CatalogoCategoriaKit
   familias?: CatalogoKitFamilia[]
   composicao?: CatalogoKitComposicao[]
+  imagens?: CatalogoImagemProduto[]
 }
 
 export interface CatalogoKitFamilia {
