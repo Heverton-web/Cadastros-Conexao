@@ -10,6 +10,7 @@ import {
   Bot,
   Paintbrush,
   FormInput,
+  HelpCircle,
 } from "lucide-react";
 import { registerModule, registerNavItem } from "~/registry";
 import type { ModuleDefinition } from "~/registry";
@@ -40,6 +41,9 @@ export const empresasModule: ModuleDefinition = {
     "/empresa/cadastros/formulario",
     "/empresa/despesas/design",
     "/empresa/rotas/design",
+    "/empresa/onboarding",
+    "/empresa/agentes",
+    "/global/agentes",
   ],
   permissions: [],
   ambientes: [],
@@ -290,6 +294,26 @@ export const empresasModule: ModuleDefinition = {
       to: "/empresa/cadastros/formulario",
       permissionCheck: () => true,
       order: 93,
+      moduloKey: "empresas-core",
+    });
+
+    registerNavItem({
+      id: "empresa-onboarding",
+      label: "Onboarding",
+      icon: HelpCircle,
+      to: "/empresa/onboarding",
+      permissionCheck: () => true,
+      order: 94,
+      moduloKey: "empresas-core",
+    });
+
+    registerNavItem({
+      id: "empresa-agentes",
+      label: "Agentes IA",
+      icon: Bot,
+      to: "/empresa/agentes",
+      permissionCheck: () => true,
+      order: 95,
       moduloKey: "empresas-core",
     });
   },

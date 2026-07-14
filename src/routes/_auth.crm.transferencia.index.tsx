@@ -2,10 +2,12 @@ import { createRoute } from "@tanstack/react-router";
 import { crmTransferenciaRoute } from "./_auth.crm.transferencia";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "~/core/supabase";
+import { useAuth } from "~/lib/auth";
 import { useState } from "react";
 import { Button } from "~/components/ui/button";
 import { ArrowRight, Loader2 } from "lucide-react";
 import toast from "react-hot-toast";
+import { dispararEventoModulo } from "~/core/services/webhooks";
 
 export const crmTransferenciaIndexRoute = createRoute({
   getParentRoute: () => crmTransferenciaRoute,
@@ -14,6 +16,7 @@ export const crmTransferenciaIndexRoute = createRoute({
 });
 
 function TransferenciaPage() {
+  const { profile } = useAuth();
   const qc = useQueryClient();
   const [origem, setOrigem] = useState<string>("");
   const [destino, setDestino] = useState<string>("");
@@ -25,7 +28,8 @@ function TransferenciaPage() {
       const { data } = await supabase
         .from("usuarios")
         .select("id, nome_completo")
-        .eq("role", "consultor");
+        .eq("role", "consultor")
+        .eq("empresa_id", profile?.empresa_id);
       return data ?? [];
     },
   });
@@ -37,7 +41,8 @@ function TransferenciaPage() {
       const { data } = await supabase
         .from("clientes")
         .select("id, nome_doutor, nome_clinica")
-        .eq("consultor_atual_id", origem);
+        .eq("consultor_atual_id", origem)
+        .eq("empresa_id", profile?.empresa_id);
       return data ?? [];
     },
   });
@@ -50,6 +55,7 @@ function TransferenciaPage() {
         .select(
           "id, data_transferencia, cliente_id, de_consultor_id, para_consultor_id",
         )
+        .eq("empresa_id", profile?.empresa_id)
         .order("data_transferencia", { ascending: false })
         .limit(10);
       return data ?? [];
@@ -74,6 +80,7 @@ function TransferenciaPage() {
     toast.success("Cliente transferido");
     qc.invalidateQueries({ queryKey: ["clientes-origem", origem] });
     qc.invalidateQueries({ queryKey: ["logs-transfer"] });
+    dispararEventoModulo("crm", "cliente.transferido", { cliente_id: clienteId, empresa_id: profile?.empresa_id }, profile?.empresa_id).catch(() => {});
   }
 
   return (

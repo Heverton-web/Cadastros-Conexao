@@ -3,7 +3,7 @@ import { Save } from "lucide-react";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
-import { supabase } from "~/core/supabase";
+import { buscarConfig, criarOuAtualizarConfig } from "../../services/config.service";
 import type { Frequencia } from "../../types";
 
 const FREQUENCIA_LABEL: Record<string, string> = {
@@ -23,12 +23,8 @@ export function ConfigForm({ empresaId }: { empresaId: string }) {
   useEffect(() => {
     if (!empresaId) return;
     setLoading(true);
-    supabase
-      .from("despesas_config")
-      .select("*")
-      .eq("empresa_id", empresaId)
-      .maybeSingle()
-      .then(({ data }) => {
+    buscarConfig(empresaId)
+      .then((data) => {
         if (data) {
           setFrequencia(data.frequencia as Frequencia);
           setDiaEnvio(data.dia_envio ?? 5);
@@ -43,24 +39,11 @@ export function ConfigForm({ empresaId }: { empresaId: string }) {
     setSaving(true);
     setSaved(false);
 
-    const existente = await supabase
-      .from("despesas_config")
-      .select("id")
-      .eq("empresa_id", empresaId)
-      .maybeSingle();
-
-    const payload = { frequencia, dia_envio: diaEnvio, dias_aviso: diasAviso };
-
-    if (existente.data) {
-      await supabase
-        .from("despesas_config")
-        .update(payload)
-        .eq("empresa_id", empresaId);
-    } else {
-      await supabase
-        .from("despesas_config")
-        .insert({ empresa_id: empresaId, ...payload });
-    }
+    await criarOuAtualizarConfig(empresaId, {
+      frequencia,
+      dia_envio: diaEnvio,
+      dias_aviso: diasAviso,
+    });
 
     setSaving(false);
     setSaved(true);

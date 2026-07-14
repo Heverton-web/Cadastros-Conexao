@@ -62,7 +62,14 @@ export async function atualizarTipoDespesa(
   return data as DespesaTipo;
 }
 
-export async function excluirTipoDespesa(id: string): Promise<void> {
-  const { error } = await supabase.from("despesas_tipos").delete().eq("id", id);
+export async function excluirTipoDespesa(
+  id: string,
+  empresaId: string,
+): Promise<void> {
+  const { error } = await supabase
+    .from("despesas_tipos")
+    .delete()
+    .eq("id", id)
+    .eq("empresa_id", empresaId);
   if (error) throw error;
 }

@@ -1,21 +1,38 @@
-import { createRoute, Link, useNavigate, useSearch } from "@tanstack/react-router"
+import { createRoute, Link, useNavigate, useParams, useSearch } from "@tanstack/react-router"
 import { rootRoute } from "./__root"
 import { StoreLayout } from "~/features/catalogo/components/StoreLayout"
 import { DrillDown } from "~/features/catalogo/components/DrillDown"
 import { ProductCard } from "~/features/catalogo/components/ProductCard"
 import { useConexoes, useFamilias, useLinhas, useImplantesPorLinha, useImplantesAtivos } from "~/features/catalogo/hooks/useCatalogo"
-import { useState, useEffect, useMemo } from "react"
+import { useMemo } from "react"
 import { ArrowLeft, PackageOpen } from "lucide-react"
 import { cn } from "~/lib/utils"
 
+// Etapa 1: /catalogo/implantes — Escolher Conexão
 export const catalogoImplantesRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/catalogo/implantes",
-  validateSearch: (s: Record<string, unknown>) => ({
-    conexao: (s.conexao as string) || null,
-    familia: (s.familia as string) || null,
-    linha: (s.linha as string) || null,
-  }),
+  component: CatalogoImplantesPage,
+})
+
+// Etapa 2: /catalogo/implantes/$conexaoId — Escolher Família
+export const catalogoImplantesConexaoRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/catalogo/implantes/$conexaoId",
+  component: CatalogoImplantesPage,
+})
+
+// Etapa 3: /catalogo/implantes/$conexaoId/$familiaId — Escolher Linha
+export const catalogoImplantesFamiliaRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/catalogo/implantes/$conexaoId/$familiaId",
+  component: CatalogoImplantesPage,
+})
+
+// Etapa 4: /catalogo/implantes/$conexaoId/$familiaId/$linhaId — Lista de Implantes
+export const catalogoImplantesLinhaRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/catalogo/implantes/$conexaoId/$familiaId/$linhaId",
   component: CatalogoImplantesPage,
 })
 
@@ -24,10 +41,12 @@ function CatalogoImplantesPage() {
   const { data: todasFamilias } = useFamilias()
   const { data: todasLinhas } = useLinhas()
   const navigate = useNavigate()
-  const search = useSearch({ from: catalogoImplantesRoute.id })
-  const [conexaoId, setConexaoId] = useState<string | null>(search.conexao)
-  const [familiaId, setFamiliaId] = useState<string | null>(search.familia)
-  const [linhaId, setLinhaId] = useState<string | null>(search.linha)
+  const params = useParams({ strict: false }) as Record<string, string | undefined>
+  const conexaoId = params.conexaoId ?? null
+  const familiaId = params.familiaId ?? null
+  const linhaId = params.linhaId ?? null
+  const search = useSearch({ strict: false }) as Record<string, string | undefined>
+  const empresa = search.empresa
 
   const countFamiliasByConexao = useMemo(() => {
     const m: Record<string, number> = {}
@@ -46,12 +65,26 @@ function CatalogoImplantesPage() {
   }, [todasLinhas])
 
   // Etapa 4: Lista de implantes
-  if (linhaId) return <StoreLayout><ImplantList linhaId={linhaId} conexaoId={conexaoId!} familiaId={familiaId!} onBack={() => setLinhaId(null)} /></StoreLayout>
+  if (linhaId) return (
+    <StoreLayout>
+      <ImplantList
+        linhaId={linhaId}
+        conexaoId={conexaoId!}
+        familiaId={familiaId!}
+        empresa={empresa}
+        onBack={() => navigate({ to: '/catalogo/implantes/$conexaoId/$familiaId', params: { conexaoId: conexaoId!, familiaId: familiaId! }, search: { empresa } })}
+      />
+    </StoreLayout>
+  )
 
   // Etapa 3: Escolher Linha
   if (familiaId) return (
     <StoreLayout>
-      <LinhasList familiaId={familiaId} onSelect={setLinhaId} onBack={() => setFamiliaId(null)} />
+      <LinhasList
+        familiaId={familiaId}
+        onSelect={(id) => navigate({ to: '/catalogo/implantes/$conexaoId/$familiaId/$linhaId', params: { conexaoId: conexaoId!, familiaId, linhaId: id }, search: { empresa } })}
+        onBack={() => navigate({ to: '/catalogo/implantes/$conexaoId', params: { conexaoId: conexaoId! }, search: { empresa } })}
+      />
     </StoreLayout>
   )
 
@@ -59,7 +92,12 @@ function CatalogoImplantesPage() {
   if (conexaoId) return (
     <StoreLayout>
       <div className="max-w-5xl mx-auto px-6 py-8">
-        <FamiliasList conexaoId={conexaoId} onSelect={setFamiliaId} onBack={() => setConexaoId(null)} countLinhasByFamilia={countLinhasByFamilia} />
+        <FamiliasList
+          conexaoId={conexaoId}
+          onSelect={(id) => navigate({ to: '/catalogo/implantes/$conexaoId/$familiaId', params: { conexaoId, familiaId: id }, search: { empresa } })}
+          onBack={() => navigate({ to: '/catalogo/implantes', search: { empresa } })}
+          countLinhasByFamilia={countLinhasByFamilia}
+        />
       </div>
     </StoreLayout>
   )
@@ -79,8 +117,8 @@ function CatalogoImplantesPage() {
             sublabel: c.sigla ?? undefined,
             count: countFamiliasByConexao[c.id] ?? 0,
           }))}
-          onSelect={setConexaoId}
-          onBack={() => navigate({ to: '/catalogo' })}
+          onSelect={(id) => navigate({ to: '/catalogo/implantes/$conexaoId', params: { conexaoId: id }, search: { empresa } })}
+          onBack={() => navigate({ to: '/catalogo', search: { empresa } })}
           isLoading={loadingConexoes}
         />
       </div>
@@ -208,7 +246,7 @@ function LinhasList({ familiaId, onSelect, onBack }: { familiaId: string; onSele
                 <div className="w-3 h-3 rounded-full transition-all" style={{ backgroundColor: corFamilia, boxShadow: `0 0 6px ${corFamilia}40` }} />
               </div>
               <div className="flex-1 min-w-0">
-                <h3 className="font-bold text-white text-sm truncate group-hover:text-[var(--card-color,var(--color-accent))] transition-colors">{l.nome}</h3>
+                <h3 className="font-bold text-white text-sm truncate transition-colors">{l.nome}</h3>
                 <div className="flex items-center gap-2 mt-2">
                   <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-widest ${
                     l.ativo
@@ -232,7 +270,7 @@ function LinhasList({ familiaId, onSelect, onBack }: { familiaId: string; onSele
   )
 }
 
-function ImplantList({ linhaId, conexaoId, familiaId, onBack }: { linhaId: string; conexaoId: string; familiaId: string; onBack: () => void }) {
+function ImplantList({ linhaId, conexaoId, familiaId, empresa, onBack }: { linhaId: string; conexaoId: string; familiaId: string; empresa?: string; onBack: () => void }) {
   const { data: implantes, isLoading } = useImplantesPorLinha(linhaId)
   const { data: familias } = useFamilias()
   const familia = (familias ?? []).find((f) => f.id === familiaId)
@@ -282,7 +320,7 @@ function ImplantList({ linhaId, conexaoId, familiaId, onBack }: { linhaId: strin
           <Link
             to="/catalogo/produto/$tipo/$sku"
             params={{ tipo: 'implante', sku: impl.sku }}
-            search={{ conexao: conexaoId, familia: familiaId, linha: linhaId }}
+            search={{ conexao: conexaoId, familia: familiaId, linha: linhaId, empresa }}
             className="no-underline"
             key={impl.sku}
           >

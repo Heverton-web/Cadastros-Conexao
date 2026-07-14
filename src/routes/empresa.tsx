@@ -61,6 +61,16 @@ import {
 import toast from "react-hot-toast";
 import { cn } from "~/lib/utils";
 import { PasswordInput } from "~/components/ui/password-input";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "~/components/ui/alert-dialog";
 import { RequirePermission } from "~/components/guards";
 
 type Tab = "dados" | "credenciais" | "database" | "design" | "branding";
@@ -444,6 +454,7 @@ function CredenciaisTab({ empresaId }: { empresaId: string }) {
   });
   const [submitting, setSubmitting] = useState(false);
 
+  const [credencialParaDeletar, setCredencialParaDeletar] = useState<Credencial | null>(null);
   const [permCredencial, setPermCredencial] = useState<Credencial | null>(null);
   const [editPerms, setEditPerms] = useState<Permissoes | null>(null);
   const [loadingPerms, setLoadingPerms] = useState(false);
@@ -515,10 +526,12 @@ function CredenciaisTab({ empresaId }: { empresaId: string }) {
     }
   }
 
-  async function handleDelete(id: string) {
+  async function handleConfirmDeleteCredencial() {
+    if (!credencialParaDeletar) return;
     try {
-      await deletarCredencial(id);
+      await deletarCredencial(credencialParaDeletar.id);
       toast.success("Removida");
+      setCredencialParaDeletar(null);
       carregar();
     } catch {
       toast.error("Erro");
@@ -655,7 +668,7 @@ function CredenciaisTab({ empresaId }: { empresaId: string }) {
               {c.ativo ? <ToggleRight size={24} /> : <ToggleLeft size={24} />}
             </button>
             <button
-              onClick={() => handleDelete(c.id)}
+              onClick={() => setCredencialParaDeletar(c)}
               className="text-text-muted hover:text-red-400"
             >
               <Trash2 size={16} />
@@ -741,6 +754,23 @@ function CredenciaisTab({ empresaId }: { empresaId: string }) {
           </div>
         </div>
       )}
+
+      <AlertDialog open={!!credencialParaDeletar} onOpenChange={(o) => !o && setCredencialParaDeletar(null)}>
+        <AlertDialogContent className="bg-card border-border">
+          <AlertDialogHeader>
+            <AlertDialogTitle>Excluir credencial?</AlertDialogTitle>
+            <AlertDialogDescription>
+              A credencial de "{credencialParaDeletar?.nome_completo}" será removida permanentemente.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+            <AlertDialogAction onClick={handleConfirmDeleteCredencial} className="bg-destructive">
+              Excluir
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
 
       {permCredencial && (
         <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black/60 px-4 py-8">

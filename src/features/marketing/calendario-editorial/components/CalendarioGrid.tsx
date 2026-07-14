@@ -6,6 +6,16 @@ import { Skeleton } from "~/components/ui/skeleton";
 import { EmptyState } from "~/components/ui/empty-state";
 import { Badge } from "~/components/ui/badge";
 import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "~/components/ui/alert-dialog";
+import {
   Dialog,
   DialogContent,
   DialogHeader,
@@ -24,6 +34,7 @@ import {
 import {
   listarEventos,
   criarEvento,
+  atualizarEvento,
   deletarEvento,
 } from "../services/calendario.service";
 import type {
@@ -37,6 +48,7 @@ import {
   Plus,
   Calendar,
   Trash2,
+  Pencil,
 } from "lucide-react";
 import { toast } from "react-hot-toast";
 
@@ -89,7 +101,9 @@ export function CalendarioGrid() {
   const [formTipo, setFormTipo] = useState<CalendarioEventoTipo>("post_blog");
   const [formStatus, setFormStatus] =
     useState<CalendarioEventoStatus>("agendado");
+  const [itemParaDeletar, setItemParaDeletar] = useState<CalendarioEvento | null>(null);
   const [saving, setSaving] = useState(false);
+  const [editingEvento, setEditingEvento] = useState<CalendarioEvento | null>(null);
 
   useEffect(() => {
     if (!empresaId) {
@@ -145,10 +159,22 @@ export function CalendarioGrid() {
 
   function abrirDialog(dia: number) {
     setDiaSelecionado(dia);
+    setEditingEvento(null);
     setFormTitulo("");
     setFormDescricao("");
     setFormTipo("post_blog");
     setFormStatus("agendado");
+    setDialogOpen(true);
+  }
+
+  function abrirEditar(ev: CalendarioEvento) {
+    const d = new Date(ev.data);
+    setDiaSelecionado(d.getDate());
+    setEditingEvento(ev);
+    setFormTitulo(ev.titulo);
+    setFormDescricao(ev.descricao ?? "");
+    setFormTipo(ev.tipo);
+    setFormStatus(ev.status);
     setDialogOpen(true);
   }
 
@@ -185,10 +211,33 @@ export function CalendarioGrid() {
     }
   }
 
-  async function handleDeletar(id: string) {
+  async function handleEditar() {
+    if (!editingEvento || !formTitulo.trim()) return;
+    setSaving(true);
     try {
-      await deletarEvento(id);
+      await atualizarEvento(editingEvento.id, {
+        titulo: formTitulo.trim(),
+        descricao: formDescricao.trim() || null,
+        tipo: formTipo,
+        status: formStatus,
+      });
+      toast.success("Evento atualizado");
+      setDialogOpen(false);
+      setEditingEvento(null);
+      carregarEventos();
+    } catch {
+      toast.error("Erro ao atualizar evento");
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  async function handleConfirmDelete() {
+    if (!itemParaDeletar) return;
+    try {
+      await deletarEvento(itemParaDeletar.id);
       toast.success("Evento excluído");
+      setItemParaDeletar(null);
       carregarEventos();
     } catch {
       toast.error("Erro ao excluir evento");
@@ -319,7 +368,7 @@ export function CalendarioGrid() {
           <DialogHeader>
             <div className="flex items-center gap-3">
               <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent/15 text-accent"><Calendar className="h-6 w-6" /></div>
-              <div><DialogTitle>Novo Evento</DialogTitle><DialogDescription>{diaSelecionado !== null && `${MESES[mesRef]}, ${diaSelecionado} de ${anoRef}`}</DialogDescription></div>
+              <div><DialogTitle>{editingEvento ? "Editar Evento" : "Novo Evento"}</DialogTitle><DialogDescription>{diaSelecionado !== null && `${MESES[mesRef]}, ${diaSelecionado} de ${anoRef}`}</DialogDescription></div>
             </div>
           </DialogHeader>
           <div className="px-6 py-6 flex-1 space-y-4">
@@ -347,13 +396,22 @@ export function CalendarioGrid() {
                       {LABELS_TIPO[ev.tipo]}
                     </p>
                   </div>
-                  <Button
-                    variant="ghost-destructive"
-                    size="xs"
-                    onClick={() => handleDeletar(ev.id)}
-                  >
-                    <Trash2 size={14} />
-                  </Button>
+                  <div className="flex items-center gap-1 shrink-0">
+                    <Button
+                      variant="ghost"
+                      size="xs"
+                      onClick={() => abrirEditar(ev)}
+                    >
+                      <Pencil size={13} />
+                    </Button>
+                    <Button
+                      variant="ghost-destructive"
+                      size="xs"
+                      onClick={() => setItemParaDeletar(ev)}
+                    >
+                      <Trash2 size={14} />
+                    </Button>
+                  </div>
                 </div>
               ))}
             </div>
@@ -431,17 +489,34 @@ export function CalendarioGrid() {
             </button>
             <button
               type="button"
-              onClick={handleCriar}
+              onClick={editingEvento ? handleEditar : handleCriar}
               disabled={saving || !formTitulo.trim()}
               className="flex-1 sm:flex-none rounded-xl bg-accent px-6 py-2.5 text-sm font-semibold text-accent-fg shadow-md shadow-accent/20 hover:bg-accent-hover disabled:opacity-50 transition-all duration-200 min-h-[44px]"
             >
               <Calendar size={14} />
-              Criar Evento
+              {editingEvento ? "Salvar Alterações" : "Criar Evento"}
             </button>
           </DialogFooter>
           </div>
         </DialogContent>
       </Dialog>
+
+      <AlertDialog open={!!itemParaDeletar} onOpenChange={(o) => !o && setItemParaDeletar(null)}>
+        <AlertDialogContent className="bg-card border-border">
+          <AlertDialogHeader>
+            <AlertDialogTitle>Excluir evento?</AlertDialogTitle>
+            <AlertDialogDescription>
+              O evento "{itemParaDeletar?.titulo}" será removido permanentemente.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+            <AlertDialogAction onClick={handleConfirmDelete} className="bg-destructive">
+              Excluir
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

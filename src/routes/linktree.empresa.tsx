@@ -1,6 +1,6 @@
 import { createRoute } from "@tanstack/react-router";
 import { authLayout } from "./_auth";
-import { EmpresaLinktreeDashboard } from "~/features/linktree/components/EmpresaLinktreeDashboard";
+import { EmpresaLinktreePage } from "~/features/linktree/components/EmpresaLinktreePage";
 import { RequirePermission } from "~/components/guards";
 
 export const empresaLinktreeDashboardRoute = createRoute({
@@ -8,7 +8,7 @@ export const empresaLinktreeDashboardRoute = createRoute({
   path: "/linktree/empresa",
   component: () => (
     <RequirePermission modulo="linktree" permissions={["lt_empresa_ver"]}>
-      <EmpresaLinktreeDashboard />
+      <EmpresaLinktreePage />
     </RequirePermission>
   ),
 });

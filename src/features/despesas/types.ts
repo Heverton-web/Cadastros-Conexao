@@ -97,6 +97,7 @@ export interface DespesaFormData {
   descricao: string;
   comprovante_url: string;
   comprovante_tipo: ComprovanteTipo;
+  periodo_id?: string;
 }
 
 export interface DespesaFiltros {

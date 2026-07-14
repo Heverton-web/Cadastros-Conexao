@@ -65,6 +65,8 @@ export async function togglePergunta(
   const { error } = await supabase
     .from("rotas_form_perguntas")
     .update({ ativo })
-    .eq("id", id);
+    .eq("id", id)
+    .select()
+    .single();
   if (error) throw error;
 }

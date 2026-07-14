@@ -2,6 +2,16 @@ import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "~/lib/auth";
 import { Button } from "~/components/ui/button";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "~/components/ui/alert-dialog";
 import { Plus, Edit, Trash2, BookOpen, Star } from "lucide-react";
 import {
   fetchHubCollections,
@@ -19,6 +29,7 @@ function colorMix(c1: string, w: number, c2: string) {
 export function AdminTrilhasPage() {
   const { empresa } = useAuth();
   const queryClient = useQueryClient();
+  const [trilhaParaDeletar, setTrilhaParaDeletar] = useState<HubCollection | null>(null);
   const [modal, setModal] = useState<{ open: boolean; edit?: HubCollection }>({
     open: false,
   });
@@ -165,9 +176,7 @@ export function AdminTrilhasPage() {
                   variant="ghost"
                   size="icon"
                   className="hover:bg-destructive/10"
-                  onClick={() => {
-                    if (confirm("Excluir trilha?")) remove.mutate(c.id);
-                  }}
+                  onClick={() => setTrilhaParaDeletar(c)}
                   title="Excluir"
                 >
                   <Trash2 size={14} className="text-destructive" />
@@ -177,6 +186,32 @@ export function AdminTrilhasPage() {
           ))}
         </div>
       )}
+
+      <AlertDialog
+        open={!!trilhaParaDeletar}
+        onOpenChange={(o) => !o && setTrilhaParaDeletar(null)}
+      >
+        <AlertDialogContent className="bg-card border-border">
+          <AlertDialogHeader>
+            <AlertDialogTitle>Excluir trilha?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Esta ação não pode ser desfeita.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() => {
+                if (trilhaParaDeletar) remove.mutate(trilhaParaDeletar.id);
+                setTrilhaParaDeletar(null);
+              }}
+              className="bg-destructive"
+            >
+              Excluir
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
 
       <CollectionFormModal
         open={modal.open}

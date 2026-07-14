@@ -26,6 +26,7 @@ export {
   dispararWebhook,
   testarWebhook,
 } from "./webhooks";
+export { listarRelatorios } from "./relatorios";
 export { classificarSentimento, extrairTextoTudo } from "./sentiment";
 export {
   calcularMetricasVendedor,

@@ -34,6 +34,21 @@ export async function criarEvento(
   return data as CalendarioEvento | null;
 }
 
+export async function atualizarEvento(
+  id: string,
+  updates: Partial<Omit<CalendarioEvento, "id" | "created_at" | "updated_at">>
+): Promise<CalendarioEvento | null> {
+  const { data, error } = await supabase
+    .from("mktg_calendario")
+    .update(updates)
+    .eq("id", id)
+    .select()
+    .single();
+  if (error) throw error;
+  return data as CalendarioEvento | null;
+}
+
 export async function deletarEvento(id: string): Promise<void> {
-  await supabase.from("mktg_calendario").delete().eq("id", id);
+  const { error } = await supabase.from("mktg_calendario").delete().eq("id", id);
+  if (error) throw error;
 }

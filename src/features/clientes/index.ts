@@ -61,9 +61,9 @@ export type CadastroInput = {
   link_expiracao?: string | null;
 };
 
-export async function listarCadastros(filters?: {
+export async function listarCadastros(empresaId: string, filters?: {
   status?: CadastroStatus;
-  tipo_acao?: string;
+  tipo_acao?: CadastroInput["tipo_acao"];
   created_by?: string;
   search?: string;
 }) {
@@ -76,6 +76,7 @@ export async function listarCadastros(filters?: {
   let query = supabase
     .from("cadastros")
     .select("*, profiles!created_by(nome)")
+    .eq("empresa_id", empresaId)
     .order("created_at", { ascending: false });
 
   if (filters?.status) query = query.eq("status", filters.status);
@@ -156,12 +157,13 @@ export async function deletarCadastro(id: string) {
   if (error) throw error;
 }
 
-export async function criarCadastro(input: CadastroInput) {
+export async function criarCadastro(empresaId: string, input: CadastroInput) {
   const token = crypto.randomUUID();
   const { data, error } = await supabase
     .from("cadastros")
     .insert({
       ...input,
+      empresa_id: empresaId,
       token_acesso: token,
       status: "link_gerado",
       data_criacao_link: new Date().toISOString(),
@@ -175,7 +177,7 @@ export async function criarCadastro(input: CadastroInput) {
 export async function atualizarCadastro(id: string, input: Partial<Cadastro>) {
   const { data, error } = await supabase
     .from("cadastros")
-    .update({ ...input, updated_at: new Date().toISOString() })
+    .update(input)
     .eq("id", id)
     .select()
     .single();
@@ -200,6 +202,16 @@ export async function reprovarCadastro(id: string, motivo: string) {
   });
 }
 
+type CadastroCorrecaoInput = {
+  status: "em_correcao";
+  comentario_reprovacao: string;
+  token_acesso: string;
+  link_expiracao: string;
+  inicio_preenchimento: null;
+  status_verificacao_token: boolean;
+  dados_extras: null;
+};
+
 export async function solicitarCorrecao(
   id: string,
   comentario: string,
@@ -210,7 +222,7 @@ export async function solicitarCorrecao(
     Date.now() + 24 * 60 * 60 * 1000,
   ).toISOString();
 
-  return atualizarCadastro(id, {
+  const correcaoInput: CadastroCorrecaoInput = {
     status: "em_correcao",
     comentario_reprovacao: comentario,
     token_acesso: novoToken,
@@ -218,14 +230,9 @@ export async function solicitarCorrecao(
     inicio_preenchimento: null,
     status_verificacao_token: true,
     dados_extras: null,
-  } as any).then(async (res) => {
-    const { error } = await supabase
-      .from("cadastros")
-      .update({ campos_correcao: camposCorrecao })
-      .eq("id", id);
-    if (error) console.error("Erro ao salvar campos_correcao:", error);
-    return res;
-  });
+  };
+
+  return atualizarCadastro(id, { ...correcaoInput, campos_correcao: camposCorrecao });
 }
 
 export const STATUS_LABEL: Record<CadastroStatus, string> = {

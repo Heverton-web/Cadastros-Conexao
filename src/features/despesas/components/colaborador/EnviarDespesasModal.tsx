@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { Send, CheckCircle, AlertTriangle } from "lucide-react";
-import { useMinhasDespesas, useEnviarDespesas } from "../../hooks/useDespesas";
+import { useMinhasDespesas } from "../../hooks/useDespesas";
 import { usePeriodosAbertos } from "../../hooks/usePeriodos";
-import { useCriarOuAtualizarEnvio } from "../../hooks/useEnvios";
 import { usePrazoEnvio } from "../../hooks/usePrazoEnvio";
+import { criarOuAtualizarEnvio } from "../../services/envios.service";
+import { enviarDespesas } from "../../services/despesas.service";
+import { useAuth } from "~/lib/auth";
 import {
   Dialog,
   DialogContent,
@@ -44,12 +46,14 @@ export function EnviarDespesasModal({
 }) {
   const [periodoId, setPeriodoId] = useState("");
   const [confirmOpen, setConfirmOpen] = useState(false);
+  const [sending, setSending] = useState(false);
+  const { profile } = useAuth();
+  const empresa_id = profile?.empresa_id ?? "";
+  const usuario_id = profile?.id ?? "";
   const { data: periodos } = usePeriodosAbertos();
   const { data: despesas, isLoading } = useMinhasDespesas({
     periodo_id: periodoId || undefined,
   });
-  const enviar = useEnviarDespesas();
-  const criarEnvio = useCriarOuAtualizarEnvio();
 
   const rascunhos = despesas?.filter((d) => d.status === "rascunho") ?? [];
   const total = rascunhos.reduce((acc, d) => acc + d.valor, 0);
@@ -61,12 +65,17 @@ export function EnviarDespesasModal({
   } = usePrazoEnvio(periodoId);
 
   async function handleEnviar() {
-    if (!periodoId) return;
-    await criarEnvio.mutateAsync(periodoId);
-    await enviar.mutateAsync(periodoId);
-    setConfirmOpen(false);
-    setPeriodoId("");
-    onOpenChange(false);
+    if (!periodoId || !empresa_id || !usuario_id) return;
+    setSending(true);
+    try {
+      await criarOuAtualizarEnvio(empresa_id, usuario_id, periodoId);
+      await enviarDespesas(periodoId, usuario_id);
+      setConfirmOpen(false);
+      setPeriodoId("");
+      onOpenChange(false);
+    } finally {
+      setSending(false);
+    }
   }
 
   return (
@@ -208,8 +217,7 @@ export function EnviarDespesasModal({
                 disabled={
                   !periodoId ||
                   rascunhos.length === 0 ||
-                  enviar.isPending ||
-                  criarEnvio.isPending ||
+                  sending ||
                   prazoExpirado
                 }
                 className="flex-1 sm:flex-none rounded-xl bg-accent px-6 py-2.5 text-sm font-semibold text-accent-fg shadow-md shadow-accent/20 hover:bg-accent-hover disabled:opacity-50 transition-all duration-200 min-h-[44px] gap-1.5"
@@ -217,7 +225,7 @@ export function EnviarDespesasModal({
                 <Send size={16} />
                 {prazoExpirado
                   ? "Prazo expirado"
-                  : enviar.isPending || criarEnvio.isPending
+                  : sending
                     ? "Enviando..."
                     : "Enviar"}
               </button>

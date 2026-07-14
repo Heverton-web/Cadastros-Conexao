@@ -88,7 +88,8 @@ export function PublicEmpresaLinktree() {
       theme={theme}
       bio={config.bio}
       bannerUrl={config.banner_url}
-      empresaNome={undefined}
+      avatarUrl={config.avatar_url}
+      empresaNome={theme.institucional.nomeEmpresa || undefined}
       onLinkClick={handleLinkClick}
     />
   );

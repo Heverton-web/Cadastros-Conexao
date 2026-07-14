@@ -5,7 +5,7 @@ export type CampanhaEmail = {
   assunto: string;
   remetente: string;
   conteudo_html: string | null;
-  status: "rascunho" | "agendado" | "enviado" | "pausado";
+  status: "rascunho" | "agendada" | "enviando" | "enviada" | "pausada" | "cancelada";
   agendado_para: string | null;
   enviado_em: string | null;
   total_enviados: number;

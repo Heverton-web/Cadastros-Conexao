@@ -17,7 +17,7 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { supabase } from "~/lib/supabase";
+import { supabase } from "~/core/supabase";
 import { useAuth } from "~/lib/auth";
 import { formatBRL } from "~/features/crm/lib/comercial";
 import { cn } from "~/lib/utils";
@@ -42,6 +42,7 @@ import {
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
 import { Link } from "@tanstack/react-router";
+import toast from "react-hot-toast";
 
 type Estagio = {
   id: string;
@@ -110,6 +111,7 @@ export function KanbanAvancado({ onNovoCliente, onClienteClick }: Props) {
            visitas:visitas(valor_estimado, data_visita, data_proximo_contato)`,
         )
         .eq("consultor_atual_id", profile!.id)
+        .eq("empresa_id", profile!.empresa_id)
         .order("criado_em", { ascending: false });
 
       const cards: ClienteCard[] = (clientesData ?? []).map((c: any) => {
@@ -210,11 +212,11 @@ export function KanbanAvancado({ onNovoCliente, onClienteClick }: Props) {
 
       if (error) throw error;
 
-      // Invalidar queries para atualizar dados
+      toast.success("Estágio atualizado");
       qc.invalidateQueries({ queryKey: ["kanban-clientes"] });
       qc.invalidateQueries({ queryKey: ["carteira"] });
     } catch (err) {
-      console.error("Erro ao atualizar estágio:", err);
+      toast.error("Erro ao atualizar estágio");
     }
   }
 

@@ -16,6 +16,9 @@ import {
   FileText,
   Bug,
   BrainCircuit,
+  Wrench,
+  HelpCircle,
+  Bot,
   type LucideIcon,
 } from "lucide-react";
 import { useAuth } from "~/lib/auth";
@@ -28,6 +31,7 @@ export type NavItem = {
   icon: LucideIcon;
   matchPaths?: string[];
   noChildMatch?: boolean;
+  external?: boolean;
 };
 
 export type NavSubGroup = {
@@ -71,6 +75,7 @@ function filterRegistryItems(
     icon: ri.icon,
     ...(ri.matchPaths ? { matchPaths: ri.matchPaths } : {}),
     ...(ri.noChildMatch ? { noChildMatch: ri.noChildMatch } : {}),
+    ...(ri.external ? { external: true } : {}),
   }));
 }
 
@@ -121,6 +126,9 @@ function buildConfigSubGroups(items: NavItem[]): NavSubGroup[] {
     "/empresa/rotas/config",
     "/empresa/hub/chatbot",
     "/empresa/cadastros/formulario",
+    "/empresa/onboarding",
+    "/empresa/agentes",
+    "/empresa/manutencao",
   ];
   const configItems = items.filter((i) => configPaths.includes(i.path));
 
@@ -182,10 +190,8 @@ function buildMarketingSubGroups(items: NavItem[]): NavSubGroup[] {
 
   // 5. LinkTree
   const linktreePaths = [
-    "/marketing/linktree",
     "/linktree/dashboard",
     "/linktree/empresa",
-    "/linktree/empresa/editor",
     "/linktree/tema",
   ];
   const linktreeItems = items.filter(
@@ -228,7 +234,10 @@ function buildAdminSection(): NavModuleSection {
       icon: Beaker,
     },
     { path: "/global/modelos-ia", label: "Modelos de IA", icon: BrainCircuit },
+    { path: "/global/agentes", label: "Agentes IA", icon: Bot },
     { path: "/global/limits", label: "Limites de Credenciais", icon: Shield },
+    { path: "/global/manutencao", label: "Manutenção", icon: Wrench },
+    { path: "/empresa/onboarding", label: "Onboarding", icon: HelpCircle },
   ];
   const analyticsItems: NavItem[] = [
     { path: "/global/nps", label: "Dashboard NPS", icon: BarChart3 },
@@ -320,6 +329,17 @@ export function useNavItems(): NavModuleSection[] {
         isCompanyAdmin,
         modulosAcesso,
       );
+
+      // Manutenção: nav item controlado por role (não registrado no module.ts)
+      const canAccessManutencao = isSuper || isCompanyAdmin;
+      if (canAccessManutencao) {
+        configItems.push({
+          path: "/empresa/manutencao",
+          label: "Manutenção",
+          icon: Wrench,
+        });
+      }
+
       if (configItems.length > 0) {
         sections.push({
           key: "empresas-core",

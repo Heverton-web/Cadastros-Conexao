@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { supabase } from "~/lib/supabase";
+import { supabase } from "~/core/supabase";
 import { useAuth } from "~/lib/auth";
 import {
   Dialog,
@@ -84,7 +84,7 @@ export function NovaTarefaModal({
         tipo: form.tipo,
         prioridade: form.prioridade,
         data_vencimento: form.data_vencimento || null,
-      });
+      }).select().single();
 
       if (error) throw error;
 

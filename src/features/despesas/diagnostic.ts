@@ -52,9 +52,9 @@ export const despesasDiagnosticPlan: DiagnosticPlan = {
         const id = ctx.recuperarId(k);
         if (!id) continue;
         ctx.log("info", `excluindo ${k}=${id}...`);
-        if (k === "despesaId") await despesasService.excluirDespesa(id).catch(() => {});
-        if (k === "periodoId") await periodosService.excluirPeriodo(id).catch(() => {});
-        if (k === "tipoId") await tiposService.excluirTipoDespesa(id).catch(() => {});
+        if (k === "despesaId") await despesasService.excluirDespesa(id, ctx.empresaId).catch(() => {});
+        if (k === "periodoId") await periodosService.excluirPeriodo(id, ctx.empresaId).catch(() => {});
+        if (k === "tipoId") await tiposService.excluirTipoDespesa(id, ctx.empresaId).catch(() => {});
         ctx.log("success", `${k} excluído`);
       }
     },
@@ -91,9 +91,9 @@ export const despesasDiagnosticPlan: DiagnosticPlan = {
         ctx.log("success", `despesa aprovada: status=${aprovada.status}`);
       },
       cleanup: async (ctx) => {
-        const did = ctx.recuperarId("despesaId"); if (did) { await despesasService.excluirDespesa(did).catch(() => {}); }
-        const pid = ctx.recuperarId("periodoId"); if (pid) { await periodosService.excluirPeriodo(pid).catch(() => {}); }
-        const tid = ctx.recuperarId("tipoId"); if (tid) { await tiposService.excluirTipoDespesa(tid).catch(() => {}); }
+        const did = ctx.recuperarId("despesaId"); if (did) { await despesasService.excluirDespesa(did, ctx.empresaId).catch(() => {}); }
+        const pid = ctx.recuperarId("periodoId"); if (pid) { await periodosService.excluirPeriodo(pid, ctx.empresaId).catch(() => {}); }
+        const tid = ctx.recuperarId("tipoId"); if (tid) { await tiposService.excluirTipoDespesa(tid, ctx.empresaId).catch(() => {}); }
       },
     },
     {
@@ -130,9 +130,9 @@ export const despesasDiagnosticPlan: DiagnosticPlan = {
       },
       cleanup: async (ctx) => {
         const paid = ctx.recuperarId("pagamentoId"); if (paid) { await pagamentosService.cancelarPagamento(paid).catch(() => {}); }
-        const did = ctx.recuperarId("despesaId"); if (did) { await despesasService.excluirDespesa(did).catch(() => {}); }
-        const pid = ctx.recuperarId("periodoId"); if (pid) { await periodosService.excluirPeriodo(pid).catch(() => {}); }
-        const tid = ctx.recuperarId("tipoId"); if (tid) { await tiposService.excluirTipoDespesa(tid).catch(() => {}); }
+        const did = ctx.recuperarId("despesaId"); if (did) { await despesasService.excluirDespesa(did, ctx.empresaId).catch(() => {}); }
+        const pid = ctx.recuperarId("periodoId"); if (pid) { await periodosService.excluirPeriodo(pid, ctx.empresaId).catch(() => {}); }
+        const tid = ctx.recuperarId("tipoId"); if (tid) { await tiposService.excluirTipoDespesa(tid, ctx.empresaId).catch(() => {}); }
       },
     },
   ],

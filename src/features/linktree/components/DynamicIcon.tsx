@@ -99,10 +99,11 @@ interface Props {
   name: string;
   className?: string;
   size?: number;
+  color?: string;
 }
 
-export function DynamicIcon({ name, className, size }: Props) {
+export function DynamicIcon({ name, className, size, color }: Props) {
   const Icon = ICON_MAP[name];
   if (!Icon) return <span className={className}>{name.slice(0, 2)}</span>;
-  return <Icon className={className} size={size} />;
+  return <Icon className={className} size={size} color={color} />;
 }

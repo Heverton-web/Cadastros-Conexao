@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
 import {
   Plus,
   ExternalLink,
@@ -12,7 +13,6 @@ import {
 import toast from "react-hot-toast";
 import { Button } from "~/components/ui/button";
 import { Switch } from "~/components/ui/switch";
-import { Input } from "~/components/ui/input";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -26,11 +26,14 @@ import {
 import { useAuth } from "~/core/auth";
 import { supabase } from "~/core/supabase";
 import {
-  toggleColaboradorStatus,
-  deletarColaborador,
   buildCardUrl,
   downloadQrPng,
 } from "~/features/linktree/index";
+import {
+  useColaboradores,
+  useToggleColaborador,
+  useDeletarColaborador,
+} from "~/features/linktree/hooks/useLinktreeColaboradores";
 import { LinktreeColaboradorModal } from "./LinktreeColaboradorModal";
 import { LinktreeQrModal } from "./LinktreeQrModal";
 import type { LinktreeColaboradorComCredencial } from "~/features/linktree/types";
@@ -40,9 +43,6 @@ export function LinktreeDashboardPage() {
   const navigate = useNavigate();
   const isSuper = profile?.is_super_admin === true;
 
-  const [rows, setRows] = useState<LinktreeColaboradorComCredencial[] | null>(
-    null,
-  );
   const [modalOpen, setModalOpen] = useState(false);
   const [editing, setEditing] =
     useState<LinktreeColaboradorComCredencial | null>(null);
@@ -52,10 +52,31 @@ export function LinktreeDashboardPage() {
     null,
   );
 
-  const [empresas, setEmpresas] = useState<{ id: string; nome: string }[]>([]);
   const [filtroEmpresa, setFiltroEmpresa] = useState<string>(
     profile?.empresa_id ?? "",
   );
+
+  const { data: empresas = [] } = useQuery({
+    queryKey: ["empresas-list"],
+    queryFn: async () => {
+      const { data } = await supabase
+        .from("empresas")
+        .select("id, nome")
+        .order("nome");
+      return data ?? [];
+    },
+    enabled: !!isSuper,
+  });
+
+  const queryEmpresa = isSuper ? (filtroEmpresa || undefined) : undefined;
+  const {
+    data: rows = null,
+    isLoading,
+    refetch,
+  } = useColaboradores(queryEmpresa);
+
+  const toggleMutation = useToggleColaborador();
+  const deleteMutation = useDeletarColaborador();
 
   const can = (key: string) => isSuper || permissoes?.[key] === true;
 
@@ -67,72 +88,22 @@ export function LinktreeDashboardPage() {
     }
   }, [permissoes, isSuper, navigate]);
 
-  useEffect(() => {
-    if (!isSuper) return;
-    supabase
-      .from("empresas")
-      .select("id, nome")
-      .order("nome")
-      .then(({ data }) => {
-        setEmpresas(data ?? []);
-      });
-  }, [isSuper]);
-
-  useEffect(() => {
-    if (!isSuper) setFiltroEmpresa(profile?.empresa_id ?? "");
-  }, [isSuper, profile]);
-
-  async function load() {
-    try {
-      let q = supabase
-        .from("linktree_colaboradores")
-        .select(
-          "*, credenciais(id, nome_completo, email_corporativo, whatsapp_corporativo, departamento)",
-        )
-        .order("created_at", { ascending: false });
-
-      if (isSuper && filtroEmpresa) {
-        q = q.eq("empresa_id", filtroEmpresa);
-      } else if (!isSuper && profile?.empresa_id) {
-        q = q.eq("empresa_id", profile.empresa_id);
-      }
-
-      const { data, error } = await q;
-      if (error) throw error;
-      setRows(data as LinktreeColaboradorComCredencial[]);
-    } catch (e: any) {
-      toast.error(`Erro ao carregar: ${e.message}`);
-    }
-  }
-
-  useEffect(() => {
-    if (profile) load();
-  }, [profile, filtroEmpresa]);
-
-  async function toggleStatus(c: LinktreeColaboradorComCredencial) {
+  function handleToggle(c: LinktreeColaboradorComCredencial) {
     const next = c.status === "ativo" ? "inativo" : "ativo";
-    try {
-      await toggleColaboradorStatus(c.id, next);
-      setRows(
-        (prev) =>
-          prev?.map((r) => (r.id === c.id ? { ...r, status: next } : r)) ??
-          null,
-      );
-    } catch {
-      toast.error("Falha ao atualizar status");
-    }
+    toggleMutation.mutate({ id: c.id, status: next });
   }
 
-  async function handleDelete() {
+  function handleDelete() {
     if (!toDelete) return;
-    try {
-      await deletarColaborador(toDelete.id);
-      toast.success("Colaborador excluido");
-      setToDelete(null);
-      load();
-    } catch (e: any) {
-      toast.error(`Falha ao excluir: ${e.message}`);
-    }
+    deleteMutation.mutate(toDelete.id, {
+      onSuccess: () => {
+        toast.success("Colaborador excluido");
+        setToDelete(null);
+      },
+      onError: (e: any) => {
+        toast.error(`Falha ao excluir: ${e.message}`);
+      },
+    });
   }
 
   return (
@@ -159,18 +130,20 @@ export function LinktreeDashboardPage() {
         )}
       </header>
 
-      {isSuper && (
+        {isSuper && (
         <div className="flex items-center gap-3">
           <label className="text-sm font-medium text-muted-foreground">
             Filtrar por empresa:
           </label>
           <select
             value={filtroEmpresa}
-            onChange={(e) => setFiltroEmpresa(e.target.value)}
+            onChange={(e) => {
+              setFiltroEmpresa(e.target.value);
+            }}
             className="h-9 w-full max-w-xs rounded-md border border-border/70 bg-surface/60 px-3 text-sm"
           >
             <option value="">Todas as empresas</option>
-            {empresas.map((e) => (
+            {empresas.map((e: any) => (
               <option key={e.id} value={e.id}>
                 {e.nome}
               </option>
@@ -180,11 +153,11 @@ export function LinktreeDashboardPage() {
       )}
 
       <div className="overflow-hidden rounded-xl border border-border bg-surface">
-        {rows === null ? (
+        {isLoading ? (
           <div className="flex items-center justify-center p-12 text-muted-foreground">
             <Loader2 className="mr-2 size-4 animate-spin" /> Carregando...
           </div>
-        ) : rows.length === 0 ? (
+        ) : !rows || rows.length === 0 ? (
           <div className="p-12 text-center text-muted-foreground">
             Nenhum colaborador cadastrado ainda. Clique em{" "}
             <strong>Novo LinkTree</strong> para comecar.
@@ -242,7 +215,7 @@ export function LinktreeDashboardPage() {
                       <div className="flex items-center gap-2">
                         <Switch
                           checked={c.status === "ativo"}
-                          onCheckedChange={() => toggleStatus(c)}
+                          onCheckedChange={() => handleToggle(c)}
                           disabled={!can("lt_toggle_status")}
                         />
                         <span
@@ -338,7 +311,7 @@ export function LinktreeDashboardPage() {
         open={modalOpen}
         onOpenChange={setModalOpen}
         collaborator={editing}
-        onSaved={load}
+        onSaved={() => refetch()}
         empresaId={
           isSuper ? filtroEmpresa || null : (profile?.empresa_id ?? null)
         }

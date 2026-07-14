@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
-import { supabase } from "~/core/supabase";
 import { useAuth } from "~/lib/auth";
-import type { DespesaPeriodo } from "../types";
+import { buscarPeriodo } from "../services/periodos.service";
+import { buscarConfig } from "../services/config.service";
 
 interface PrazoEnvio {
   dentroDoPrazo: boolean;
@@ -22,28 +22,14 @@ export function usePrazoEnvio(
     queryKey: ["despesa-periodo", periodo_id],
     queryFn: async () => {
       if (!periodo_id) return null;
-      const { data, error } = await supabase
-        .from("despesas_periodos")
-        .select("*")
-        .eq("id", periodo_id)
-        .single();
-      if (error) throw error;
-      return data as DespesaPeriodo;
+      return buscarPeriodo(periodo_id);
     },
     enabled: !!periodo_id,
   });
 
   const { data: config, isLoading: configLoading } = useQuery({
     queryKey: ["despesa-config", empresa_id],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("despesas_config")
-        .select("*")
-        .eq("empresa_id", empresa_id)
-        .maybeSingle();
-      if (error) throw error;
-      return data as { dia_envio: number } | null;
-    },
+    queryFn: () => buscarConfig(empresa_id),
     enabled: !!empresa_id,
   });
 

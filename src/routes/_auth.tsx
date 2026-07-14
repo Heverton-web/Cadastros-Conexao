@@ -1,6 +1,8 @@
 import { createRoute, useNavigate } from "@tanstack/react-router";
 import { rootRoute } from "./__root";
 import { AppLayout } from "~/components/layout/AppLayout";
+import { OnboardingOverlay } from "~/core/onboarding/OnboardingOverlay";
+import { WidgetAuthContext } from "~/features/agentes/components/AgenteWidget";
 import { Loader2 } from "lucide-react";
 import { useAuth } from "~/lib/auth";
 import { getModule, getAllModules } from "~/registry";
@@ -16,6 +18,7 @@ function AuthGuard() {
   const {
     user,
     profile,
+    empresa,
     permissoes,
     modulosAtivos,
     loading,
@@ -59,5 +62,10 @@ function AuthGuard() {
     );
   }
 
-  return <AppLayout />;
+  return (
+    <WidgetAuthContext.Provider value={{ empresaId: empresa?.id ?? null }}>
+      <AppLayout />
+      <OnboardingOverlay />
+    </WidgetAuthContext.Provider>
+  );
 }

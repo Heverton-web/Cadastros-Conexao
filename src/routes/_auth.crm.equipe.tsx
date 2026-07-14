@@ -40,6 +40,7 @@ function EquipePage() {
       const { data: clientes } = await supabase
         .from("clientes")
         .select("id, consultor_atual_id")
+        .eq("empresa_id", perfil?.empresa_id)
         .in(
           "consultor_atual_id",
           ids.length ? ids : ["00000000-0000-0000-0000-000000000000"],
@@ -49,6 +50,7 @@ function EquipePage() {
         .select(
           "id, consultor_executor_id, valor_estimado, gerou_pedido, temperatura_vendedor",
         )
+        .eq("empresa_id", perfil?.empresa_id)
         .in(
           "consultor_executor_id",
           ids.length ? ids : ["00000000-0000-0000-0000-000000000000"],

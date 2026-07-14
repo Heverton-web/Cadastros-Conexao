@@ -38,13 +38,21 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "~/components/ui/alert-dialog";
-import { supabase } from "~/core/supabase";
 import { toast } from "react-hot-toast";
 import type { NpsPergunta, SurveyQuestionType } from "../../types";
 import { useAuth } from "~/lib/auth";
 import { Badge } from "~/components/ui/badge";
 import { listarEmpresas } from "~/shared/empresas";
 import type { Empresa } from "~/core/empresa";
+import {
+  usePerguntas,
+  useCriarPergunta,
+  useAtualizarPergunta,
+  useExcluirPergunta,
+  useTogglePerguntaAtiva,
+} from "../../hooks";
+import { reordenar } from "../../services/perguntas";
+import { migrarPerguntasEmpresa } from "../../services/migrations";
 
 const TYPE_LABELS: Record<SurveyQuestionType, string> = {
   nps: "NPS (0-10)",
@@ -96,10 +104,15 @@ function Toggle({
 
 export function NpsPesquisasPage() {
   const { profile } = useAuth();
-  const [questions, setQuestions] = useState<NpsPergunta[]>([]);
   const [empresas, setEmpresas] = useState<Empresa[]>([]);
   const [selectedEmpresaId, setSelectedEmpresaId] = useState<string>("");
-  const [loading, setLoading] = useState(true);
+
+  const { data: questions = [], isLoading: loading } =
+    usePerguntas(selectedEmpresaId);
+  const criarPerguntaMut = useCriarPergunta();
+  const atualizarPerguntaMut = useAtualizarPergunta();
+  const excluirPerguntaMut = useExcluirPergunta();
+  const toggleAtivaMut = useTogglePerguntaAtiva();
   const [editing, setEditing] = useState<Partial<NpsPergunta> | null>(null);
   const [isNew, setIsNew] = useState(false);
   const [optionInput, setOptionInput] = useState("");
@@ -141,46 +154,19 @@ export function NpsPesquisasPage() {
     loadConfig();
   }, []);
 
-  const fetchAll = async (empId: string) => {
-    if (!empId) return;
-    setLoading(true);
-
-    // MIGRATION TEMPORÁRIA: "atribua a pesquisa atual a empresa conexão"
-    // Puxa as que estão nulas
-    const { data: nulas } = await supabase
-      .from("nps_perguntas")
-      .select("id")
-      .is("empresa_id", null);
-    if (nulas && nulas.length > 0) {
-      await supabase
-        .from("nps_perguntas")
-        .update({ empresa_id: empId })
-        .is("empresa_id", null);
-    }
-
-    const { data, error } = await supabase
-      .from("nps_perguntas")
-      .select("*")
-      .eq("empresa_id", empId)
-      .order("order_index", { ascending: true });
-    if (error) toast.error("Erro ao carregar perguntas");
-    setQuestions((data as NpsPergunta[]) || []);
-    setLoading(false);
-  };
-
   useEffect(() => {
     if (selectedEmpresaId) {
-      fetchAll(selectedEmpresaId);
+      migrarPerguntasEmpresa(selectedEmpresaId);
     }
   }, [selectedEmpresaId]);
 
-  const toggleActive = async (q: NpsPergunta) => {
-    const { error } = await supabase
-      .from("nps_perguntas")
-      .update({ active: !q.active, updated_at: new Date().toISOString() })
-      .eq("id", q.id);
-    if (error) toast.error("Erro ao alterar status");
-    else fetchAll(selectedEmpresaId);
+  const toggleActive = (q: NpsPergunta) => {
+    toggleAtivaMut.mutate(
+      { id: q.id, active: !q.active },
+      {
+        onError: () => toast.error("Erro ao alterar status"),
+      },
+    );
   };
 
   const move = async (q: NpsPergunta, dir: -1 | 1) => {
@@ -188,15 +174,12 @@ export function NpsPesquisasPage() {
     const idx = sorted.findIndex((x) => x.id === q.id);
     const swap = sorted[idx + dir];
     if (!swap) return;
-    await supabase
-      .from("nps_perguntas")
-      .update({ order_index: swap.order_index })
-      .eq("id", q.id);
-    await supabase
-      .from("nps_perguntas")
-      .update({ order_index: q.order_index })
-      .eq("id", swap.id);
-    fetchAll(selectedEmpresaId);
+    try {
+      await reordenar(q.id, swap.order_index);
+      await reordenar(swap.id, q.order_index);
+    } catch {
+      toast.error("Erro ao reordenar");
+    }
   };
 
   const remove = (q: NpsPergunta) => {
@@ -207,18 +190,16 @@ export function NpsPesquisasPage() {
     setDeletingQuestion(q);
   };
 
-  const confirmDelete = async () => {
+  const confirmDelete = () => {
     if (!deletingQuestion) return;
-    const { error } = await supabase
-      .from("nps_perguntas")
-      .delete()
-      .eq("id", deletingQuestion.id);
-    if (error) toast.error("Erro ao excluir");
-    else {
-      toast.success("Pergunta excluída");
-      fetchAll(selectedEmpresaId);
-    }
-    setDeletingQuestion(null);
+    excluirPerguntaMut.mutate(
+      { id: deletingQuestion.id, empresaId: selectedEmpresaId },
+      {
+        onSuccess: () => toast.success("Pergunta excluída"),
+        onError: () => toast.error("Erro ao excluir"),
+        onSettled: () => setDeletingQuestion(null),
+      },
+    );
   };
 
   const openNew = () => {
@@ -282,32 +263,34 @@ export function NpsPesquisasPage() {
       required: !!editing.required,
       active: !!editing.active,
       order_index: editing.order_index ?? 0,
-      updated_at: new Date().toISOString(),
-      empresa_id: selectedEmpresaId,
     };
 
     if (isNew) {
       payload.key = editing.key || slugify(text) || `q_${Date.now()}`;
       payload.is_system = false;
-      const { error } = await supabase.from("nps_perguntas").insert(payload);
-      if (error) {
-        toast.error("Erro ao criar");
-        return;
-      }
-      toast.success("Pergunta criada!");
+      criarPerguntaMut.mutate(
+        { empresaId: selectedEmpresaId, pergunta: payload },
+        {
+          onSuccess: () => {
+            toast.success("Pergunta criada!");
+            close();
+          },
+          onError: () => toast.error("Erro ao criar"),
+        },
+      );
     } else {
-      const { error } = await supabase
-        .from("nps_perguntas")
-        .update(payload)
-        .eq("id", editing.id!);
-      if (error) {
-        toast.error("Erro ao salvar");
-        return;
-      }
-      toast.success("Pergunta atualizada!");
+      const { id, ...updateData } = payload;
+      atualizarPerguntaMut.mutate(
+        { id: editing.id!, pergunta: updateData },
+        {
+          onSuccess: () => {
+            toast.success("Pergunta atualizada!");
+            close();
+          },
+          onError: () => toast.error("Erro ao salvar"),
+        },
+      );
     }
-    close();
-    fetchAll(selectedEmpresaId);
   };
 
   const sorted = [...questions].sort((a, b) => a.order_index - b.order_index);

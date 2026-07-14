@@ -14,6 +14,7 @@ import toast from "react-hot-toast";
 import { supabase } from "~/core/supabase";
 import { useAuth } from "~/core/auth";
 import { compressImage } from "~/features/linktree/lib/image-utils";
+import { criarColaborador, atualizarColaborador } from "~/features/linktree/index";
 import type { LinktreeColaborador } from "~/features/linktree/types";
 import {
   decodeTelefone,
@@ -198,18 +199,19 @@ export function LinktreeColaboradorModal({
       created_by: user?.id,
     };
 
-    const { error } = editing
-      ? await supabase
-          .from("linktree_colaboradores")
-          .update(payload)
-          .eq("id", collaborator!.id)
-      : await supabase.from("linktree_colaboradores").insert(payload);
-
-    setSaving(false);
-    if (error) {
-      toast.error(`Erro: ${error.message}`);
+    try {
+      if (editing) {
+        await atualizarColaborador(collaborator!.id, payload);
+      } else {
+        await criarColaborador(payload as any);
+      }
+    } catch (e: any) {
+      setSaving(false);
+      toast.error(`Erro: ${e.message}`);
       return;
     }
+
+    setSaving(false);
     toast.success(
       editing ? "Colaborador atualizado" : "LinkTree criado com sucesso",
     );
@@ -380,6 +382,49 @@ export function LinktreeColaboradorModal({
         </div>
       </DialogContent>
     </Dialog>
+  );
+}
+
+function PhoneFields({
+  value,
+  onChange,
+}: {
+  value: PhoneParts;
+  onChange: (v: PhoneParts) => void;
+}) {
+  return (
+    <div className="flex items-center gap-2">
+      <Input
+        className="w-16"
+        placeholder="DDI"
+        inputMode="numeric"
+        value={value.ddi}
+        onChange={(e) =>
+          onChange({ ...value, ddi: e.target.value.replace(/\D/g, "").slice(0, 3) })
+        }
+      />
+      <Input
+        className="w-16"
+        placeholder="DDD"
+        inputMode="numeric"
+        value={value.ddd}
+        onChange={(e) =>
+          onChange({ ...value, ddd: e.target.value.replace(/\D/g, "").slice(0, 2) })
+        }
+      />
+      <Input
+        className="flex-1"
+        placeholder="Numero"
+        inputMode="numeric"
+        value={value.number}
+        onChange={(e) =>
+          onChange({
+            ...value,
+            number: e.target.value.replace(/\D/g, "").slice(0, 11),
+          })
+        }
+      />
+    </div>
   );
 }
 

@@ -84,7 +84,7 @@ export function useAprovarEnvio() {
   const aprovador_id = profile?.id ?? "";
 
   return useMutation({
-    mutationFn: (id: string) => aprovarEnvio(id, aprovador_id),
+    mutationFn: (id: string) => aprovarEnvio(id, aprovador_id, empresa_id),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["despesas-envios", empresa_id],
@@ -107,7 +107,7 @@ export function useReprovarEnvio() {
 
   return useMutation({
     mutationFn: ({ id, comentario }: { id: string; comentario: string }) =>
-      reprovarEnvio(id, aprovador_id, comentario),
+      reprovarEnvio(id, aprovador_id, comentario, empresa_id),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["despesas-envios", empresa_id],
@@ -140,7 +140,7 @@ export function useAprovarEnvioParcial() {
       reprovadas: string[];
       comentario: string;
     }) =>
-      aprovarEnvioParcial(id, aprovador_id, aprovadas, reprovadas, comentario),
+      aprovarEnvioParcial(id, aprovador_id, aprovadas, reprovadas, comentario, empresa_id),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["despesas-envios", empresa_id],

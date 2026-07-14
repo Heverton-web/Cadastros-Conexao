@@ -1,5 +1,5 @@
 import {
-  Package, LayoutDashboard, Tag, Truck, Percent, ShoppingBag, Layers, Share2, Settings, Eye, Palette,
+  Package, LayoutDashboard, Tag, Truck, Percent, ShoppingBag, Layers, Settings, Eye, Palette,
   Users, UserPlus, FileText, ShoppingCart, ClipboardList, AlertCircle,
 } from "lucide-react"
 import {
@@ -26,7 +26,6 @@ export const catalogoModule: ModuleDefinition = {
     "/catalogo/admin/frete",
     "/catalogo/admin/promocionais",
     "/catalogo/admin/dashboard",
-    "/catalogo/admin/social",
     "/catalogo/admin/configuracoes",
     "/catalogo/admin/design",
     // Novas rotas admin
@@ -76,7 +75,7 @@ export const catalogoModule: ModuleDefinition = {
     { key: "solicitacao_acesso.aprovada", label: "Solicitação Aprovada", descricao: "Quando uma solicitação de acesso é aprovada", type: "button_action" },
     { key: "solicitacao_acesso.rejeitada", label: "Solicitação Rejeitada", descricao: "Quando uma solicitação de acesso é rejeitada", type: "button_action" },
   ],
-  hasDesignConfig: false,
+  hasDesignConfig: true,
   setup: () => {
     for (const p of CATALOGO_PERMISSIONS) {
       registerPermission({
@@ -97,6 +96,7 @@ export const catalogoModule: ModuleDefinition = {
       order: 95,
       moduloKey: "catalogo",
       noChildMatch: true,
+      external: true,
     })
     registerNavItem({
       id: "catalogo-admin-dashboard",
@@ -150,15 +150,6 @@ export const catalogoModule: ModuleDefinition = {
       to: "/catalogo/admin/promocionais",
       permissionCheck: (perms) => perms?.catalogo_gerenciar_promocionais === true,
       order: 104,
-      moduloKey: "catalogo",
-    })
-    registerNavItem({
-      id: "catalogo-admin-social",
-      label: "Redes Sociais",
-      icon: Share2,
-      to: "/catalogo/admin/social",
-      permissionCheck: (perms) => perms?.catalogo_gerenciar_promocionais === true,
-      order: 105,
       moduloKey: "catalogo",
     })
     registerNavItem({

@@ -2,12 +2,14 @@
 import { RequirePermission } from "~/components/guards";import { createRoute } from "@tanstack/react-router"
 import { authLayout } from "./_auth"
 import { EmpresaCrudGuard } from "~/features/catalogo/components/EmpresaCrudGuard"
-import { usePromocionais, useCriarPromocional, useRemoverPromocional } from "~/features/catalogo/hooks/useCatalogo"
+import { useAuth } from "~/core/auth/useAuth"
+import { usePromocionais, useCriarPromocional, useAtualizarPromocional, useRemoverPromocional } from "~/features/catalogo/hooks/useCatalogo"
 import { useState } from "react"
-import { Tag, Trash2, Plus } from "lucide-react"
+import { Tag, Trash2, Plus, Pencil } from "lucide-react"
 import { formatBRL } from "~/features/catalogo/services/carrinho.service"
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "~/components/ui/alert-dialog"
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "~/components/ui/dialog"
+import type { CatalogoPromocional } from "~/features/catalogo/types"
 
 export const catalogoAdminPromocionaisRoute = createRoute({
   getParentRoute: () => authLayout,
@@ -22,21 +24,42 @@ export const catalogoAdminPromocionaisRoute = createRoute({
 })
 
 function AdminPromocionaisPage() {
+  const { profile } = useAuth()
+  const isSuperAdmin = profile?.is_super_admin === true
   const { data: promos } = usePromocionais()
   const criarMut = useCriarPromocional()
+  const atualizarMut = useAtualizarPromocional()
   const removerMut = useRemoverPromocional()
   const [formOpen, setFormOpen] = useState(false)
+  const [editingItem, setEditingItem] = useState<CatalogoPromocional | null>(null)
   const [itemParaDeletar, setItemParaDeletar] = useState<string | null>(null)
   const [form, setForm] = useState({ nome: "", descricao: "", preco: 0, expira_em: "" })
 
-  function handleCriar() {
-    criarMut.mutate({
-      nome: form.nome,
-      descricao: form.descricao || undefined,
-      preco: form.preco,
-      expira_em: form.expira_em || undefined,
-    })
+  function openNew() {
+    setEditingItem(null)
+    setForm({ nome: "", descricao: "", preco: 0, expira_em: "" })
+    setFormOpen(true)
+  }
+
+  function openEdit(item: CatalogoPromocional) {
+    setEditingItem(item)
+    setForm({ nome: item.nome, descricao: item.descricao ?? "", preco: item.preco, expira_em: item.expira_em ?? "" })
+    setFormOpen(true)
+  }
+
+  function handleSave() {
+    if (editingItem) {
+      atualizarMut.mutate({ id: editingItem.id, input: form })
+    } else {
+      criarMut.mutate({
+        nome: form.nome,
+        descricao: form.descricao || undefined,
+        preco: form.preco,
+        expira_em: form.expira_em || undefined,
+      })
+    }
     setFormOpen(false)
+    setEditingItem(null)
     setForm({ nome: "", descricao: "", preco: 0, expira_em: "" })
   }
 
@@ -48,15 +71,15 @@ function AdminPromocionaisPage() {
           <p className="text-sm mt-1" style={{ color: "var(--color-text-muted, #94a3b8)" }}>Crie pacotes (kits) com preços especiais e prazo de expiração.</p>
         </div>
         
-        <Dialog open={formOpen} onOpenChange={setFormOpen}>
+        <Dialog open={formOpen} onOpenChange={(o) => { if (!o) { setEditingItem(null); setForm({ nome: "", descricao: "", preco: 0, expira_em: "" }) } setFormOpen(o) }}>
           <DialogTrigger asChild>
-            <button className="flex items-center gap-2 px-6 py-3 rounded-xl font-black text-sm transition-transform hover:scale-105" style={{ background: "linear-gradient(135deg, #c9a655, #e8d48b)", color: "#0f172a" }}>
+            <button onClick={openNew} className="flex items-center gap-2 px-6 py-3 rounded-xl font-black text-sm transition-transform hover:scale-105" style={{ background: "linear-gradient(135deg, #c9a655, #e8d48b)", color: "#0f172a" }}>
               <Plus className="h-4 w-4" /> NOVO PACOTE
             </button>
           </DialogTrigger>
           <DialogContent className="bg-[#0f172a] border-[var(--color-border-subtle)] text-white flex flex-col max-h-[85vh] overflow-hidden">
             <DialogHeader className="shrink-0">
-              <DialogTitle>Criar Pacote Promocional</DialogTitle>
+              <DialogTitle>{editingItem ? "Editar Pacote Promocional" : "Criar Pacote Promocional"}</DialogTitle>
               <DialogDescription className="text-gray-400">Monte seu pacote de produtos com preço especial.</DialogDescription>
             </DialogHeader>
             <div className="px-6 py-4 space-y-4 overflow-y-auto flex-1 min-h-0">
@@ -80,7 +103,7 @@ function AdminPromocionaisPage() {
               </div>
             </div>
             <DialogFooter className="shrink-0">
-              <button onClick={handleCriar} className="w-full px-6 py-3 rounded-xl text-[#0f172a] font-black" style={{ background: "linear-gradient(135deg, #c9a655, #e8d48b)" }}>Cadastrar Pacote</button>
+              <button onClick={handleSave} className="w-full px-6 py-3 rounded-xl text-[#0f172a] font-black" style={{ background: "linear-gradient(135deg, #c9a655, #e8d48b)" }}>{editingItem ? "Salvar" : "Cadastrar Pacote"}</button>
             </DialogFooter>
           </DialogContent>
         </Dialog>
@@ -101,7 +124,10 @@ function AdminPromocionaisPage() {
                   </span>
                 </div>
               </div>
-              <button onClick={() => setItemParaDeletar(p.id)} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-red-500/20 text-[var(--color-text-muted)] hover:text-red-400 transition-colors"><Trash2 className="h-4 w-4" /></button>
+              <div className="flex items-center gap-1">
+                <button onClick={() => openEdit(p)} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-[#c9a655]/20 text-[var(--color-text-muted)] hover:text-[#c9a655] transition-colors"><Pencil className="h-4 w-4" /></button>
+                <button onClick={() => setItemParaDeletar(p.id)} disabled={!isSuperAdmin} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-red-500/20 text-[var(--color-text-muted)] hover:text-red-400 transition-colors disabled:opacity-30 disabled:cursor-not-allowed" title={isSuperAdmin ? "Excluir" : "Apenas super admin pode excluir"}><Trash2 className="h-4 w-4" /></button>
+              </div>
             </div>
             
             <div className="pt-3 border-t border-white/5 flex items-end justify-between">
@@ -123,7 +149,7 @@ function AdminPromocionaisPage() {
 
       <AlertDialog open={!!itemParaDeletar} onOpenChange={(o) => !o && setItemParaDeletar(null)}>
         <AlertDialogContent className="bg-card border-border">
-          <AlertDialogHeader><AlertDialogTitle>Excluir pacote promocional?</AlertDialogTitle><AlertDialogDescription>Esta ação não pode ser desfeita.</AlertDialogDescription></AlertDialogHeader>
+          <AlertDialogHeader><AlertDialogTitle>Excluir pacote promocional?</AlertDialogTitle><AlertDialogDescription>Esta ação não pode ser feita.</AlertDialogDescription></AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancelar</AlertDialogCancel>
             <AlertDialogAction onClick={() => { if (itemParaDeletar) removerMut.mutate(itemParaDeletar); setItemParaDeletar(null) }} className="bg-destructive">Excluir</AlertDialogAction>

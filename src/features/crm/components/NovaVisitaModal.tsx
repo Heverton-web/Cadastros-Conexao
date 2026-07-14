@@ -186,8 +186,8 @@ export function NovaVisitaModal({ clienteId, open, onOpenChange }: Props) {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-3xl">
-        <DialogHeader>
+      <DialogContent className="max-w-3xl flex flex-col max-h-[85vh] overflow-hidden">
+        <DialogHeader className="shrink-0">
           <div className="flex items-center gap-3">
             <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent/15 text-accent">
               <Calendar className="h-6 w-6" />
@@ -201,7 +201,7 @@ export function NovaVisitaModal({ clienteId, open, onOpenChange }: Props) {
           </div>
         </DialogHeader>
 
-        <div className="px-6 py-6 flex-1 space-y-4">
+        <div className="px-6 py-6 flex-1 min-h-0 overflow-y-auto space-y-4">
         <form onSubmit={handleSubmit} className="space-y-6">
           <Section icon={Calendar} title="Dados da visita">
             <Field label="Data da visita">
@@ -381,7 +381,7 @@ export function NovaVisitaModal({ clienteId, open, onOpenChange }: Props) {
             </Field>
           </Section>
 
-          <DialogFooter>
+          <DialogFooter className="shrink-0">
             <button
               type="button"
               onClick={() => onOpenChange(false)}

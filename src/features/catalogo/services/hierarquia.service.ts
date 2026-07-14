@@ -36,6 +36,11 @@ export async function atualizarCategoria(id: string, nome: string): Promise<Cata
   return data as CatalogoCategoria
 }
 
+export async function toggleCategoriaAtivo(id: string, ativo: boolean): Promise<void> {
+  const { error } = await supabase.from(TABLE).update({ ativo }).eq("id", id)
+  if (error) throw error
+}
+
 export async function removerCategoria(id: string): Promise<void> {
   const { error } = await supabase.from(TABLE).delete().eq("id", id)
   if (error) throw error
@@ -62,6 +67,11 @@ export async function criarConexao(empresaId: string, input: { categoria_id: str
     .single()
   if (error) throw error
   return data as CatalogoConexao
+}
+
+export async function toggleConexaoAtivo(id: string, ativo: boolean): Promise<void> {
+  const { error } = await supabase.from("catalogo_conexoes").update({ ativo }).eq("id", id)
+  if (error) throw error
 }
 
 export async function removerConexao(id: string): Promise<void> {
@@ -101,6 +111,11 @@ export async function atualizarFamilia(id: string, input: Partial<{ nome: string
     .single()
   if (error) throw error
   return data as CatalogoFamilia
+}
+
+export async function toggleFamiliaAtivo(id: string, ativo: boolean): Promise<void> {
+  const { error } = await supabase.from("catalogo_familias").update({ ativo }).eq("id", id)
+  if (error) throw error
 }
 
 export async function removerFamilia(id: string): Promise<void> {

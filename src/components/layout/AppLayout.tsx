@@ -9,6 +9,8 @@ import { getAllModules } from "~/registry";
 import { cn } from "~/lib/utils";
 import { DeviceGate } from "./DeviceGate";
 import { PwaInstallPrompt } from "./PwaInstallPrompt";
+import { MaintenanceGate } from "./MaintenanceGate";
+import { ManutencaoProvider } from "~/features/manutencao/ManutencaoContext";
 import { useState, useEffect, useMemo } from "react";
 import {
   listarNotificacoes,
@@ -138,7 +140,8 @@ export function AppLayout() {
 
   return (
     <DeviceGate>
-      <div className="min-h-dvh bg-bg-dark">
+      <ManutencaoProvider>
+        <div className="min-h-dvh bg-bg-dark">
         {/* Header */}
         <header className="sticky top-0 z-40 border-b border-border/50 bg-header-bg/80 backdrop-blur-xl">
           <div className="flex items-center justify-between px-4 lg:px-6 h-[70px] max-w-[1600px] mx-auto w-full">
@@ -339,20 +342,23 @@ export function AppLayout() {
             sidebarCollapsed ? "lg:ml-[72px]" : "lg:ml-64",
           )}
         >
-          <main
-            className={cn(
-              "w-full",
-              isFunilPage
-                ? "h-full max-w-none p-0 m-0 flex flex-col"
-                : "mx-auto max-w-[1600px] p-4 md:p-6 lg:p-8",
-            )}
-          >
-            <Outlet />
-          </main>
+            <main
+              className={cn(
+                "w-full",
+                isFunilPage
+                  ? "h-full max-w-none p-0 m-0 flex flex-col"
+                  : "mx-auto max-w-[1600px] p-4 md:p-6 lg:p-8",
+              )}
+            >
+              <MaintenanceGate>
+                <Outlet />
+              </MaintenanceGate>
+            </main>
         </div>
 
         <BottomNav selectedModuleKey={activeModuleKey} />
-      </div>
+        </div>
+      </ManutencaoProvider>
       <PwaInstallPrompt />
     </DeviceGate>
   );

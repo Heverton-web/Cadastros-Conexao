@@ -94,7 +94,7 @@ function ClientesPage() {
       };
       if (permissoes?.ver_todos_cadastros !== true)
         filters.created_by = profile.id;
-      const res = await listarCadastros(filters);
+      const res = await listarCadastros(profile!.empresa_id!, filters);
       setData(res);
     } catch (e) {
       console.error(e);
@@ -263,16 +263,18 @@ function ClientesPage() {
                     >
                       <Pencil size={14} />
                     </button>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setDeleteConfirm(c.id);
-                      }}
-                      className="p-2 rounded-lg text-error hover:bg-error/10 transition-colors"
-                      title="Excluir"
-                    >
-                      <Trash2 size={14} />
-                    </button>
+                    {profile?.is_super_admin && (
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setDeleteConfirm(c.id);
+                        }}
+                        className="p-2 rounded-lg text-error hover:bg-error/10 transition-colors"
+                        title="Excluir"
+                      >
+                        <Trash2 size={14} />
+                      </button>
+                    )}
                   </div>
                 )}
               </div>

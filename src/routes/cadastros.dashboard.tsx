@@ -45,7 +45,8 @@ function DashboardPage() {
   const [docsStatus, setDocsStatus] = useState<Record<string, DocStatus>>({});
 
   useEffect(() => {
-    listarCadastros()
+    if (!profile) return;
+    listarCadastros(profile.empresa_id!)
       .then(async (res) => {
         setData(res);
         const status = await getDocumentosStatusMap(
@@ -57,7 +58,7 @@ function DashboardPage() {
         toast.error("Erro ao carregar dados do dashboard");
       })
       .finally(() => setLoading(false));
-  }, []);
+  }, [profile]);
 
   const stats = {
     total: data.length,

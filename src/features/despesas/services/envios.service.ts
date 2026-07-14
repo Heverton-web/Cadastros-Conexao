@@ -93,6 +93,7 @@ export async function criarOuAtualizarEnvio(
 export async function aprovarEnvio(
   id: string,
   aprovador_id: string,
+  empresa_id: string,
 ): Promise<DespesaEnvio> {
   const { data, error } = await supabase
     .from("despesas_envios")
@@ -111,6 +112,7 @@ export async function aprovarEnvio(
     .update({ status: "aprovada" })
     .eq("periodo_id", data.periodo_id)
     .eq("usuario_id", data.usuario_id)
+    .eq("empresa_id", empresa_id)
     .eq("status", "pendente");
 
   return data as DespesaEnvio;
@@ -120,6 +122,7 @@ export async function reprovarEnvio(
   id: string,
   aprovador_id: string,
   comentario: string,
+  empresa_id: string,
 ): Promise<DespesaEnvio> {
   const { data, error } = await supabase
     .from("despesas_envios")
@@ -139,6 +142,7 @@ export async function reprovarEnvio(
     .update({ status: "reprovada", comentario_reprovacao: comentario })
     .eq("periodo_id", data.periodo_id)
     .eq("usuario_id", data.usuario_id)
+    .eq("empresa_id", empresa_id)
     .eq("status", "pendente");
 
   return data as DespesaEnvio;
@@ -150,19 +154,22 @@ export async function aprovarEnvioParcial(
   despesasAprovadas: string[],
   despesasReprovadas: string[],
   comentario: string,
+  empresa_id: string,
 ): Promise<DespesaEnvio> {
   if (despesasAprovadas.length > 0) {
     await supabase
       .from("despesas")
       .update({ status: "aprovada" })
-      .in("id", despesasAprovadas);
+      .in("id", despesasAprovadas)
+      .eq("empresa_id", empresa_id);
   }
 
   if (despesasReprovadas.length > 0) {
     await supabase
       .from("despesas")
       .update({ status: "reprovada", comentario_reprovacao: comentario })
-      .in("id", despesasReprovadas);
+      .in("id", despesasReprovadas)
+      .eq("empresa_id", empresa_id);
   }
 
   const { data, error } = await supabase

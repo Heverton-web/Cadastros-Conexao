@@ -7,7 +7,7 @@ export type MktgLead = {
   origem: string | null;
   fonte: string | null;
   score: number;
-  status: "novo" | "qualificado" | "convertido" | "perdido";
+  status: "novo" | "contato" | "qualificado" | "proposta" | "convertido" | "perdido";
   tags: string[];
   created_at: string;
 };

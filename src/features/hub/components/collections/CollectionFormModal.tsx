@@ -46,8 +46,8 @@ export function CollectionFormModal({
 
   return (
     <Dialog open={open} onOpenChange={(o) => !o && onClose()}>
-      <DialogContent className="max-w-lg">
-        <DialogHeader>
+      <DialogContent className="max-w-lg flex flex-col max-h-[85vh] overflow-hidden">
+        <DialogHeader className="shrink-0">
           <div className="flex items-center gap-3">
             <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent/15 text-accent">
               <Plus className="h-6 w-6" />
@@ -60,7 +60,7 @@ export function CollectionFormModal({
             </div>
           </div>
         </DialogHeader>
-        <div className="px-6 py-6 flex-1 space-y-4">
+        <div className="px-6 py-6 flex-1 min-h-0 overflow-y-auto space-y-4">
           <div>
             <label className="mb-1 block text-xs font-medium text-text-muted">
               Título (PT-BR) *
@@ -127,7 +127,7 @@ export function CollectionFormModal({
               />
             </div>
           </div>
-          <div className="flex justify-end gap-2 pt-4 border-t border-surface">
+          <div className="flex justify-end gap-2 pt-4 border-t border-surface shrink-0">
             <button type="button" onClick={onClose} className="flex-1 sm:flex-none rounded-xl border border-border px-6 py-2.5 text-sm text-text-muted font-semibold hover:text-text-main hover:bg-surface-hover transition-all duration-200 min-h-[44px]">
               Cancelar
             </button>

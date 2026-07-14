@@ -7,7 +7,7 @@ export const marketingWhatsappRoute = createRoute({
   getParentRoute: () => authLayout,
   path: "/marketing/whatsapp",
   component: () => (
-    <RequirePermission modulo="marketing" permissions={["mktg_email_ver"]}>
+    <RequirePermission modulo="marketing" permissions={["mktg_wpp_ver"]}>
       <WhatsappMarketing />
     </RequirePermission>
   ),

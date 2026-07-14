@@ -112,7 +112,7 @@ export function useExcluirDespesa() {
   const empresa_id = profile?.empresa_id ?? "";
 
   return useMutation({
-    mutationFn: (id: string) => excluirDespesa(id),
+    mutationFn: (id: string) => excluirDespesa(id, empresa_id),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["minhas-despesas", empresa_id],

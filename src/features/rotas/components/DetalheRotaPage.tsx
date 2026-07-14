@@ -3,6 +3,8 @@ import { useNavigate } from "@tanstack/react-router";
 import { Button } from "~/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { Badge } from "~/components/ui/badge";
+import { Input } from "~/components/ui/input";
+import { Label } from "~/components/ui/label";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -14,6 +16,20 @@ import {
   AlertDialogTitle,
 } from "~/components/ui/alert-dialog";
 import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter as DialogFooterComponent,
+} from "~/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "~/components/ui/select";
+import {
   ArrowLeft,
   Play,
   StopCircle,
@@ -24,6 +40,7 @@ import {
   CheckCircle2,
   XCircle,
   Timer,
+  Pencil,
 } from "lucide-react";
 import { useRotaComClientes } from "../hooks/useRotas";
 import { useAtualizarRota } from "../hooks/useRotas";
@@ -36,7 +53,7 @@ import {
   ROTA_STATUS_COLOR,
   ROTA_TIPO_LABEL,
 } from "../types";
-import type { RotaCliente, RotasConfig } from "../types";
+import type { RotaCliente, RotasConfig, RotaTipo } from "../types";
 import { formatDate } from "~/lib/utils/format";
 import toast from "react-hot-toast";
 
@@ -53,6 +70,8 @@ export function DetalheRotaPage({ id }: Props) {
     null,
   );
   const [showCancelarRota, setShowCancelarRota] = useState(false);
+  const [showEditarRota, setShowEditarRota] = useState(false);
+  const [editForm, setEditForm] = useState({ titulo: "", data_rota: "", tipo: "diaria" as RotaTipo });
   const [rotasConfig, setRotasConfig] = useState<RotasConfig | null>(null);
 
   useEffect(() => {
@@ -113,6 +132,32 @@ export function DetalheRotaPage({ id }: Props) {
     }
   }, [id, atualizarRota, navigate]);
 
+  const handleOpenEditar = useCallback(() => {
+    setEditForm({
+      titulo: rota?.titulo ?? "",
+      data_rota: rota?.data_rota?.slice(0, 10) ?? "",
+      tipo: (rota?.tipo as RotaTipo) ?? "diaria",
+    });
+    setShowEditarRota(true);
+  }, [rota]);
+
+  const handleSalvarEdicao = useCallback(async () => {
+    try {
+      await atualizarRota.mutateAsync({
+        id,
+        updates: {
+          titulo: editForm.titulo,
+          data_rota: editForm.data_rota,
+          tipo: editForm.tipo,
+        },
+      });
+      toast.success("Rota atualizada!");
+      setShowEditarRota(false);
+    } catch (err) {
+      toast.error((err as Error).message);
+    }
+  }, [id, editForm, atualizarRota]);
+
   if (isLoading) {
     return (
       <div className="space-y-4">
@@ -164,13 +209,19 @@ export function DetalheRotaPage({ id }: Props) {
 
         <div className="flex gap-2">
           {rota.status === "planejada" && (
-            <Button
-              onClick={handleIniciarRota}
-              disabled={atualizarRota.isPending}
-            >
-              <Play className="h-4 w-4 mr-2" />
-              Iniciar Rota
-            </Button>
+            <>
+              <Button variant="outline" onClick={handleOpenEditar}>
+                <Pencil className="h-4 w-4 mr-2" />
+                Editar
+              </Button>
+              <Button
+                onClick={handleIniciarRota}
+                disabled={atualizarRota.isPending}
+              >
+                <Play className="h-4 w-4 mr-2" />
+                Iniciar Rota
+              </Button>
+            </>
           )}
           {podeFinalizarRota && (
             <Button
@@ -284,6 +335,48 @@ export function DetalheRotaPage({ id }: Props) {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      <Dialog open={showEditarRota} onOpenChange={setShowEditarRota}>
+        <DialogContent className="max-w-lg flex flex-col max-h-[85vh] overflow-hidden">
+          <DialogHeader className="shrink-0">
+            <DialogTitle>Editar Rota</DialogTitle>
+          </DialogHeader>
+          <div className="px-6 py-4 flex-1 min-h-0 overflow-y-auto space-y-4">
+            <div>
+              <Label>Título</Label>
+              <Input
+                value={editForm.titulo}
+                onChange={(e) => setEditForm({ ...editForm, titulo: e.target.value })}
+              />
+            </div>
+            <div>
+              <Label>Data</Label>
+              <Input
+                type="date"
+                value={editForm.data_rota}
+                onChange={(e) => setEditForm({ ...editForm, data_rota: e.target.value })}
+              />
+            </div>
+            <div>
+              <Label>Tipo</Label>
+              <Select value={editForm.tipo} onValueChange={(v) => setEditForm({ ...editForm, tipo: v as RotaTipo })}>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {Object.entries(ROTA_TIPO_LABEL).map(([key, label]) => (
+                    <SelectItem key={key} value={key}>{label}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+          <DialogFooterComponent className="shrink-0">
+            <Button variant="outline" onClick={() => setShowEditarRota(false)}>Cancelar</Button>
+            <Button onClick={handleSalvarEdicao} disabled={atualizarRota.isPending}>Salvar</Button>
+          </DialogFooterComponent>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

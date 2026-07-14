@@ -69,6 +69,7 @@ import {
 } from "lucide-react";
 import { toast } from "react-hot-toast";
 import { useAuth } from "~/lib/auth";
+import { listarRespostas, excluirRespostas } from "../../services/respostas";
 
 const TooltipProvider = ({ children }: any) => <>{children}</>;
 const Tooltip = ({ children }: any) => <>{children}</>;
@@ -246,12 +247,12 @@ export function NpsDashboardPage() {
 
   const fetchData = async (empresaFilter?: string) => {
     setLoading(true);
-    let query = supabase.from("nps_respostas").select("*");
-    if (empresaFilter) {
-      query = query.eq("empresa_id", empresaFilter);
+    try {
+      const data = await listarRespostas(empresaFilter || "");
+      setResponses(data || []);
+    } catch {
+      setResponses([]);
     }
-    const { data } = await query.order("created_at", { ascending: false });
-    setResponses(data || []);
     setLoading(false);
   };
 
@@ -271,14 +272,10 @@ export function NpsDashboardPage() {
     setDeleting(true);
     try {
       const ids = filtered.map((r) => r.id);
-      const { error } = await supabase
-        .from("nps_respostas")
-        .delete()
-        .in("id", ids);
-      if (error) throw error;
+      await excluirRespostas(ids);
       toast.success(`${ids.length} resposta(s) excluída(s) com sucesso!`);
       fetchData(activeEmpresaId);
-    } catch (err: any) {
+    } catch {
       toast.success("Erro ao excluir respostas");
     } finally {
       setDeleting(false);
@@ -1536,17 +1533,14 @@ export function NpsDashboardPage() {
                                     <AlertDialogAction
                                       className="bg-red-600 hover:bg-red-700 text-white"
                                       onClick={async () => {
-                                        const { error } = await supabase
-                                          .from("nps_respostas")
-                                          .delete()
-                                          .eq("id", r.id);
-                                        if (error) {
-                                          toast.success("Erro ao excluir");
-                                        } else {
+                                        try {
+                                          await excluirRespostas([r.id]);
                                           toast.success(
                                             "Resposta excluída com sucesso!",
                                           );
                                           fetchData();
+                                        } catch {
+                                          toast.success("Erro ao excluir");
                                         }
                                       }}
                                     >

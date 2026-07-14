@@ -4,6 +4,16 @@ import { useAuth } from "~/lib/auth";
 import { supabase } from "~/core/supabase/client";
 import { Button } from "~/components/ui/button";
 import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "~/components/ui/alert-dialog";
+import {
   Select,
   SelectContent,
   SelectItem,
@@ -31,6 +41,7 @@ export function AdminMateriaisPage() {
   const [modal, setModal] = useState<{ open: boolean; edit?: HubMaterial }>({
     open: false,
   });
+  const [materialParaDeletar, setMaterialParaDeletar] = useState<HubMaterial | null>(null);
   const [selectedEmpresa, setSelectedEmpresa] = useState<string>(
     empresa?.id || "",
   );
@@ -260,9 +271,7 @@ export function AdminMateriaisPage() {
                   variant="ghost"
                   size="icon"
                   className="hover:bg-destructive/10"
-                  onClick={() => {
-                    if (confirm("Excluir material?")) remove.mutate(m.id);
-                  }}
+                  onClick={() => setMaterialParaDeletar(m)}
                   title="Excluir"
                 >
                   <Trash2 size={14} className="text-destructive" />
@@ -272,6 +281,32 @@ export function AdminMateriaisPage() {
           ))}
         </div>
       )}
+
+      <AlertDialog
+        open={!!materialParaDeletar}
+        onOpenChange={(o) => !o && setMaterialParaDeletar(null)}
+      >
+        <AlertDialogContent className="bg-card border-border">
+          <AlertDialogHeader>
+            <AlertDialogTitle>Excluir material?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Esta ação não pode ser desfeita.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() => {
+                if (materialParaDeletar) remove.mutate(materialParaDeletar.id);
+                setMaterialParaDeletar(null);
+              }}
+              className="bg-destructive"
+            >
+              Excluir
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
 
       <MaterialFormModal
         open={modal.open}

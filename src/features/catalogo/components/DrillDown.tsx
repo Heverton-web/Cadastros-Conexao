@@ -110,11 +110,11 @@ export function DrillDown({ title, subtitle, step, totalSteps, options, onSelect
 
                 {/* Texto */}
                 <div className="flex-1 min-w-0">
-                  <h3 className="font-bold text-white text-sm truncate group-hover:text-[var(--card-color)] transition-colors">
+                  <h3 className="font-bold text-white text-sm truncate group-hover:text-white transition-colors">
                     {opt.label}
                   </h3>
                   {opt.sublabel && (
-                    <p className="text-xs mt-0.5 text-[var(--color-text-muted)] truncate group-hover:text-[var(--card-color)]/60 transition-colors">
+                    <p className="text-xs mt-0.5 text-[var(--color-text-muted)] truncate group-hover:text-white/60 transition-colors">
                       {opt.sublabel}
                     </p>
                   )}
@@ -134,7 +134,7 @@ export function DrillDown({ title, subtitle, step, totalSteps, options, onSelect
                       {opt.count}
                     </span>
                   )}
-                  <ChevronRight className="h-4 w-4 text-[var(--color-text-muted)] group-hover:text-[var(--card-color)] transition-colors" />
+                  <ChevronRight className="h-4 w-4 text-[var(--color-text-muted)] group-hover:text-white transition-colors" />
                 </div>
               </div>
             </button>

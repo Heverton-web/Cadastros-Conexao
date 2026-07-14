@@ -2,10 +2,12 @@ import { createRoute } from "@tanstack/react-router";
 import { crmTransferenciaRoute } from "./_auth.crm.transferencia";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "~/core/supabase";
+import { useAuth } from "~/lib/auth";
 import { useState } from "react";
 import { Button } from "~/components/ui/button";
 import { ArrowRight, Loader2 } from "lucide-react";
 import toast from "react-hot-toast";
+import { dispararEventoModulo } from "~/core/services/webhooks";
 
 export const crmTransferenciaConsultoresRoute = createRoute({
   getParentRoute: () => crmTransferenciaRoute,
@@ -14,6 +16,7 @@ export const crmTransferenciaConsultoresRoute = createRoute({
 });
 
 function TransferConsultoresPage() {
+  const { profile } = useAuth();
   const qc = useQueryClient();
   const [origem, setOrigem] = useState<string>("");
   const [destino, setDestino] = useState<string>("");
@@ -26,6 +29,7 @@ function TransferConsultoresPage() {
         .from("usuarios")
         .select("id, nome_completo")
         .eq("role", "gestor")
+        .eq("empresa_id", profile?.empresa_id)
         .order("nome_completo");
       return data ?? [];
     },
@@ -40,6 +44,7 @@ function TransferConsultoresPage() {
         .select("id, nome_completo, email_corporativo")
         .eq("role", "consultor")
         .eq("gestor_id", origem)
+        .eq("empresa_id", profile?.empresa_id)
         .order("nome_completo");
       return data ?? [];
     },
@@ -53,6 +58,7 @@ function TransferConsultoresPage() {
         .select(
           "id, data_transferencia, consultor_id, de_gestor_id, para_gestor_id",
         )
+        .eq("empresa_id", profile?.empresa_id)
         .order("data_transferencia", { ascending: false })
         .limit(10);
       return data ?? [];
@@ -77,6 +83,7 @@ function TransferConsultoresPage() {
     toast.success("Consultor transferido");
     qc.invalidateQueries({ queryKey: ["transf-consultores-origem", origem] });
     qc.invalidateQueries({ queryKey: ["logs-transfer-consultor"] });
+    dispararEventoModulo("crm", "consultor.transferido", { consultor_id: consultorId, empresa_id: profile?.empresa_id }, profile?.empresa_id).catch(() => {});
   }
 
   return (

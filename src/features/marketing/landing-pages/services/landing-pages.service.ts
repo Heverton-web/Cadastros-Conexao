@@ -38,12 +38,19 @@ export async function criarLandingPage(
 export async function atualizarLandingPage(
   id: string,
   updates: Partial<LandingPage>,
-): Promise<void> {
-  await supabase.from("mktg_landing_pages").update(updates).eq("id", id);
+): Promise<LandingPage | null> {
+  const { data } = await supabase
+    .from("mktg_landing_pages")
+    .update(updates)
+    .eq("id", id)
+    .select()
+    .single();
+  return data as LandingPage | null;
 }
 
 export async function deletarLandingPage(id: string): Promise<void> {
-  await supabase.from("mktg_landing_pages").delete().eq("id", id);
+  const { error } = await supabase.from("mktg_landing_pages").delete().eq("id", id);
+  if (error) throw error;
 }
 
 export async function salvarVersao(

@@ -1,16 +1,28 @@
 import { useSyncExternalStore } from "react"
 import type { CartItem, ProductSheetTipo } from "../types"
 
-const STORAGE_KEY = "conexao_cart_v1"
+const STORAGE_PREFIX = "conexao_cart_v1"
 
+let scopeEmpresaId: string | null = null
+let scopeUserId: string | null = null
 let items: CartItem[] = []
 let listeners: Array<() => void> = []
+
+function scopeKey(empresaId: string | null, userId: string | null): string {
+  const e = empresaId ?? "anon"
+  const u = userId ?? "anon"
+  return `${STORAGE_PREFIX}_${e}_${u}`
+}
+
+function storageKey(): string {
+  return scopeKey(scopeEmpresaId, scopeUserId)
+}
 
 function loadFromStorage(): void {
   if (typeof window === "undefined") return
   try {
-    const raw = localStorage.getItem(STORAGE_KEY)
-    if (raw) items = JSON.parse(raw)
+    const raw = localStorage.getItem(storageKey())
+    items = raw ? JSON.parse(raw) : []
   } catch {
     items = []
   }
@@ -19,7 +31,11 @@ function loadFromStorage(): void {
 function persist(): void {
   if (typeof window === "undefined") return
   items = [...items]
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(items))
+  try {
+    localStorage.setItem(storageKey(), JSON.stringify(items))
+  } catch {
+    // ignora falhas de escrita (quota/modo privado)
+  }
   listeners.forEach((l) => l())
 }
 
@@ -32,7 +48,29 @@ function getSnapshot(): CartItem[] {
   return items
 }
 
-loadFromStorage()
+/**
+ * Define o escopo do carrinho (empresa + usuário) e carrega o carrinho
+ * persistido para esse escopo. Isso garante isolamento multi-tenant:
+ * cada empresa e cada usuário logado possuem seu próprio carrinho,
+ * impedindo vazamento de itens entre empresas/usuários.
+ */
+export function setCarrinhoScope(empresaId: string | null, userId: string | null): void {
+  if (scopeEmpresaId === empresaId && scopeUserId === userId) return
+
+  // Persiste o carrinho atual no escopo antigo antes de trocar
+  if (typeof window !== "undefined") {
+    try {
+      localStorage.setItem(scopeKey(scopeEmpresaId, scopeUserId), JSON.stringify(items))
+    } catch {
+      // ignora
+    }
+  }
+
+  scopeEmpresaId = empresaId
+  scopeUserId = userId
+  loadFromStorage()
+  listeners.forEach((l) => l())
+}
 
 export function useCarrinho(): CartItem[] {
   return useSyncExternalStore(subscribe, getSnapshot)

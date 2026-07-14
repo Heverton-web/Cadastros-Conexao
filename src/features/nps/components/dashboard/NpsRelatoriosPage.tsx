@@ -22,10 +22,10 @@ import {
 } from "lucide-react";
 import { Skeleton } from "~/components/ui/skeleton";
 import { EmptyState } from "~/components/ui/empty-state";
-import { supabase } from "~/core/supabase";
 import { toast } from "react-hot-toast";
 import { useAuth } from "~/lib/auth";
 import type { NpsRelatorioEnvio } from "../../types";
+import { listarRelatorios } from "../../services";
 
 export function NpsRelatoriosPage() {
   const { profile } = useAuth();
@@ -55,18 +55,12 @@ export function NpsRelatoriosPage() {
 
   const fetchRelatorios = async () => {
     setLoading(true);
-    let query = supabase
-      .from("nps_relatorios_envio")
-      .select("*")
-      .order("data_envio", { ascending: false })
-      .order("created_at", { ascending: false });
-
-    if (dateFrom) query = query.gte("data_envio", dateFrom);
-    if (dateTo) query = query.lte("data_envio", dateTo);
-
-    const { data, error } = await query;
-    if (error) toast.error("Erro ao carregar");
-    else setRelatorios((data as NpsRelatorioEnvio[]) || []);
+    try {
+      const data = await listarRelatorios(dateFrom, dateTo);
+      setRelatorios(data);
+    } catch {
+      toast.error("Erro ao carregar");
+    }
     setLoading(false);
   };
 

@@ -1,4 +1,4 @@
-import { Link2, Palette, Paintbrush, Link, BarChart3 } from "lucide-react";
+import { Link2, Palette, Paintbrush, Link } from "lucide-react";
 import {
   registerModule,
   registerNavItem,
@@ -18,7 +18,6 @@ export const linktreeModule: ModuleDefinition = {
   routes: [
     "/linktree/dashboard",
     "/linktree/empresa",
-    "/linktree/empresa/editor",
   ],
   permissions: LINKTREE_PERMISSIONS.map((p) => p.key),
   ambientes: ["cadastro", "consultor", "tecnologia"],
@@ -86,7 +85,7 @@ export const linktreeModule: ModuleDefinition = {
       to: "/linktree/dashboard",
       permissionCheck: (perms) => perms?.lt_ver_dashboard === true,
       order: 120,
-      moduloKey: "marketing",
+      moduloKey: "linktree",
     });
 
     registerNavItem({
@@ -96,18 +95,7 @@ export const linktreeModule: ModuleDefinition = {
       to: "/linktree/empresa",
       permissionCheck: (perms) => perms?.lt_empresa_ver === true,
       order: 121,
-      moduloKey: "marketing",
-      noChildMatch: true,
-    });
-
-    registerNavItem({
-      id: "linktree-empresa-editor",
-      label: "LinkTree Editor",
-      icon: BarChart3,
-      to: "/linktree/empresa/editor",
-      permissionCheck: (perms) => perms?.lt_empresa_editar === true,
-      order: 122,
-      moduloKey: "marketing",
+      moduloKey: "linktree",
       noChildMatch: true,
     });
 

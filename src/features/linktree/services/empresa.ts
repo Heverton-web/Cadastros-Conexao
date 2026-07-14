@@ -39,7 +39,7 @@ export async function buscarConfigPorSlug(
 export async function salvarEmpresaConfig(
   empresaId: string,
   config: Partial<
-    Pick<EmpresaLinktreeConfig, "slug" | "bio" | "banner_url" | "theme">
+    Pick<EmpresaLinktreeConfig, "slug" | "bio" | "banner_url" | "avatar_url" | "theme">
   >,
 ): Promise<EmpresaLinktreeConfig> {
   const { data, error } = await supabase
@@ -86,6 +86,7 @@ export async function criarSecao(
     .insert({
       empresa_id: empresaId,
       titulo: input.titulo,
+      imagem_url: input.imagem_url ?? null,
       ordem: input.ordem ?? 0,
     })
     .select()

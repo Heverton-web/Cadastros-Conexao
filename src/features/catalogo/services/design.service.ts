@@ -35,13 +35,21 @@ export interface CatalogoDesignFooter {
   bgColor: string
   textColor: string
   borderColor: string
+  iconColor: string
+  iconBgColor: string
+  iconBorderColor: string
   socialLinks: {
     instagram: string
     facebook: string
+    twitter: string
     linkedin: string
     whatsapp: string
     youtube: string
     tiktok: string
+    site: string
+    email: string
+    telefone: string
+    endereco: string
   }
 }
 
@@ -396,13 +404,21 @@ export const DEFAULT_CATALOGO_CONFIG: CatalogoDesignConfig = {
     bgColor: "#0f172a",
     textColor: "#94a3b8",
     borderColor: "#1e293b",
+    iconColor: "#94a3b8",
+    iconBgColor: "transparent",
+    iconBorderColor: "transparent",
     socialLinks: {
       instagram: "",
       facebook: "",
+      twitter: "",
       linkedin: "",
       whatsapp: "",
       youtube: "",
       tiktok: "",
+      site: "",
+      email: "",
+      telefone: "",
+      endereco: "",
     },
   },
 }

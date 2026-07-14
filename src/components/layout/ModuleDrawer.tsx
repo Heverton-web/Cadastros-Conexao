@@ -1,9 +1,10 @@
 import { useState, useEffect, useMemo } from "react";
-import { X, Globe, type LucideIcon } from "lucide-react";
+import { X, Globe, Wrench, type LucideIcon } from "lucide-react";
 import { useNavItems, useModulos } from "./useNavItems";
 import { useLocation, useNavigate } from "@tanstack/react-router";
 import { cn } from "~/lib/utils";
 import { useAuth } from "~/lib/auth";
+import { useManutencao } from "~/features/manutencao/ManutencaoContext";
 
 type ModuleInfo = {
   key: string;
@@ -28,6 +29,7 @@ export function ModuleDrawer({
   const allSections = useNavItems();
   const location = useLocation();
   const navigate = useNavigate();
+  const { modulosEmManutencao, rotasEmManutencao } = useManutencao();
 
   // Estado local para gerenciar o módulo sendo visualizado no drawer, permitindo que a lista
   // de rotas mude ao tocar no módulo sem fechar o drawer de imediato.
@@ -108,13 +110,20 @@ export function ModuleDrawer({
                       ? "bg-accent/15 text-accent font-semibold"
                       : "text-text-main hover:bg-input-bg",
                   )}
-                >
-                  <Icon size={16} />
-                  {mod.nome}
-                  {isSelected && (
-                    <span className="ml-auto text-xs text-accent">Ativo</span>
-                  )}
-                </button>
+                  >
+                    <Icon size={16} />
+                    {mod.nome}
+                    {modulosEmManutencao.has(mod.key) && (
+                      <Wrench
+                        size={13}
+                        className="text-amber-400"
+                        aria-label="Em manutenção"
+                      />
+                    )}
+                    {isSelected && (
+                      <span className="ml-auto text-xs text-accent">Ativo</span>
+                    )}
+                  </button>
               );
             })}
           </div>
@@ -132,6 +141,20 @@ export function ModuleDrawer({
                       (item.matchPaths || []).includes(location.pathname) ||
                       (!item.noChildMatch &&
                         location.pathname.startsWith(item.path + "/"));
+                    if (item.external) {
+                      return (
+                        <a
+                          key={item.path}
+                          href={item.path}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-text-muted hover:text-text-main hover:bg-input-bg transition-colors"
+                        >
+                          <item.icon size={16} />
+                          {item.label}
+                        </a>
+                      );
+                    }
                     return (
                       <button
                         key={item.path}
@@ -145,10 +168,17 @@ export function ModuleDrawer({
                             ? "bg-accent/15 text-accent font-semibold"
                             : "text-text-muted hover:text-text-main hover:bg-input-bg",
                         )}
-                      >
-                        <item.icon size={16} />
-                        {item.label}
-                      </button>
+                        >
+                          <item.icon size={16} />
+                          {item.label}
+                          {rotasEmManutencao.has(item.path) && (
+                            <Wrench
+                              size={13}
+                              className="text-amber-400"
+                              aria-label="Em manutenção"
+                            />
+                          )}
+                        </button>
                     );
                   })}
                 </div>

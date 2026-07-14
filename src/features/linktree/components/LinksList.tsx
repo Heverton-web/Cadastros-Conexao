@@ -4,8 +4,10 @@ import {
   Trash2,
   ExternalLink,
   Star,
+  Pin,
   ToggleLeft,
   ToggleRight,
+  Image,
 } from "lucide-react";
 import { Button } from "~/components/ui/button";
 import {
@@ -36,6 +38,12 @@ interface Props {
   links: EmpresaLinktreeLink[];
   empresaId?: string | null;
 }
+
+const TIPO_LABELS = {
+  link: "Link",
+  image: "Imagem",
+  inline_image: "Banner",
+};
 
 export function LinksList({ sections, links, empresaId }: Props) {
   const [editingLink, setEditingLink] = useState<EmpresaLinktreeLink | null>(
@@ -85,8 +93,8 @@ export function LinksList({ sections, links, empresaId }: Props) {
     atualizar.mutate({ id: link.id, input: { ativo: !link.ativo } });
   }
 
-  function toggleDestaque(link: EmpresaLinktreeLink) {
-    atualizar.mutate({ id: link.id, input: { destaque: !link.destaque } });
+  function togglePinned(link: EmpresaLinktreeLink) {
+    atualizar.mutate({ id: link.id, input: { pinned: !link.pinned } });
   }
 
   if (showCreate) {
@@ -118,6 +126,8 @@ export function LinksList({ sections, links, empresaId }: Props) {
     );
   }
 
+  const pinnedLinks = links.filter((l) => l.pinned);
+
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
@@ -127,8 +137,19 @@ export function LinksList({ sections, links, empresaId }: Props) {
         </Button>
       </div>
 
+      {pinnedLinks.length > 0 && (
+        <div className="space-y-2">
+          <h4 className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+            <Pin className="size-3" /> Pinned
+          </h4>
+          {pinnedLinks.map((link) => renderLinkRow(link))}
+        </div>
+      )}
+
       {sections.map((sec) => {
-        const secLinks = linksBySection.get(sec.id) ?? [];
+        const secLinks = (linksBySection.get(sec.id) ?? []).filter(
+          (l) => !l.pinned,
+        );
         if (secLinks.length === 0) return null;
 
         return (
@@ -136,81 +157,7 @@ export function LinksList({ sections, links, empresaId }: Props) {
             <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
               {sec.titulo}
             </h4>
-            {secLinks.map((link) => (
-              <div
-                key={link.id}
-                className={`flex items-center gap-2 rounded-lg border p-3 ${
-                  link.ativo
-                    ? "border-border bg-surface"
-                    : "border-border/50 bg-surface/50 opacity-60"
-                }`}
-              >
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2">
-                    {link.icone && (
-                      <span className="text-sm">
-                        <DynamicIcon name={link.icone} size={14} />
-                      </span>
-                    )}
-                    <span className="truncate text-sm font-medium">
-                      {link.titulo}
-                    </span>
-                    {link.destaque && (
-                      <Star className="size-3 shrink-0 fill-current text-yellow-500" />
-                    )}
-                  </div>
-                  <a
-                    href={link.url}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="flex items-center gap-1 text-xs text-muted-foreground hover:underline"
-                  >
-                    <ExternalLink className="size-3" />
-                    <span className="truncate">{link.url}</span>
-                  </a>
-                </div>
-
-                <Button
-                  size="sm"
-                  variant="ghost"
-                  onClick={() => toggleDestaque(link)}
-                  title="Destaque"
-                >
-                  <Star
-                    className={`size-4 ${link.destaque ? "fill-yellow-500 text-yellow-500" : ""}`}
-                  />
-                </Button>
-
-                <Button
-                  size="sm"
-                  variant="ghost"
-                  onClick={() => toggleAtivo(link)}
-                  title={link.ativo ? "Inativar" : "Ativar"}
-                >
-                  {link.ativo ? (
-                    <ToggleRight className="size-4 text-green-500" />
-                  ) : (
-                    <ToggleLeft className="size-4" />
-                  )}
-                </Button>
-
-                <Button
-                  size="sm"
-                  variant="ghost"
-                  onClick={() => setEditingLink(link)}
-                >
-                  <Pencil className="size-4" />
-                </Button>
-
-                <Button
-                  size="sm"
-                  variant="ghost"
-                  onClick={() => setDeletingId(link.id)}
-                >
-                  <Trash2 className="size-4 text-error" />
-                </Button>
-              </div>
-            ))}
+            {secLinks.map((link) => renderLinkRow(link))}
           </div>
         );
       })}
@@ -245,4 +192,100 @@ export function LinksList({ sections, links, empresaId }: Props) {
       </AlertDialog>
     </div>
   );
+
+  function renderLinkRow(link: EmpresaLinktreeLink) {
+    return (
+      <div
+        key={link.id}
+        className={`flex items-center gap-2 rounded-lg border p-3 ${
+          link.ativo
+            ? "border-border bg-surface"
+            : "border-border/50 bg-surface/50 opacity-60"
+        }`}
+      >
+        {link.imagem_url && (link.tipo === "image" || link.tipo === "inline_image") ? (
+          <div className="size-10 shrink-0 overflow-hidden rounded-lg">
+            <img
+              src={link.imagem_url}
+              alt=""
+              className="size-full object-cover"
+            />
+          </div>
+        ) : link.icone ? (
+          <span className="text-sm">
+            <DynamicIcon name={link.icone} size={14} />
+          </span>
+        ) : null}
+
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-2">
+            <span className="truncate text-sm font-medium">{link.titulo}</span>
+            {link.pinned && (
+              <Pin className="size-3 shrink-0 text-accent" />
+            )}
+            {link.destaque && (
+              <Star className="size-3 shrink-0 fill-current text-yellow-500" />
+            )}
+            <span className="rounded bg-surface-hover px-1.5 py-0.5 text-[10px] text-muted-foreground">
+              {TIPO_LABELS[link.tipo]}
+            </span>
+          </div>
+          {link.descricao && (
+            <p className="truncate text-xs text-muted-foreground">
+              {link.descricao}
+            </p>
+          )}
+          <a
+            href={link.url}
+            target="_blank"
+            rel="noreferrer"
+            className="flex items-center gap-1 text-xs text-muted-foreground hover:underline"
+          >
+            <ExternalLink className="size-3" />
+            <span className="truncate">{link.url}</span>
+          </a>
+        </div>
+
+        <Button
+          size="sm"
+          variant="ghost"
+          onClick={() => togglePinned(link)}
+          title={link.pinned ? "Desafixar" : "Fixar no topo"}
+        >
+          <Pin
+            className={`size-4 ${link.pinned ? "fill-accent text-accent" : ""}`}
+          />
+        </Button>
+
+        <Button
+          size="sm"
+          variant="ghost"
+          onClick={() => toggleAtivo(link)}
+          title={link.ativo ? "Inativar" : "Ativar"}
+        >
+          {link.ativo ? (
+            <ToggleRight className="size-4 text-green-500" />
+          ) : (
+            <ToggleLeft className="size-4" />
+          )}
+        </Button>
+
+        <Button
+          size="sm"
+          variant="ghost"
+          onClick={() => setEditingLink(link)}
+        >
+          <Pencil className="size-4" />
+        </Button>
+
+        <Button
+          size="sm"
+          variant="ghost"
+          onClick={() => setDeletingId(link.id)}
+        >
+          <Trash2 className="size-4 text-error" />
+        </Button>
+      </div>
+    );
+  }
 }

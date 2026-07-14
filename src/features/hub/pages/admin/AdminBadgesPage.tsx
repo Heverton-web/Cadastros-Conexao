@@ -3,6 +3,16 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "~/lib/auth";
 import { Button } from "~/components/ui/button";
 import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "~/components/ui/alert-dialog";
+import {
   Plus,
   Edit,
   Trash2,
@@ -20,6 +30,7 @@ import {
 import {
   fetchHubBadges,
   createHubBadge,
+  updateHubBadge,
   deleteHubBadge,
 } from "../../services/gamification";
 import { BadgeFormModal } from "../../components/gamification/BadgeFormModal";
@@ -44,6 +55,7 @@ const iconMap: Record<string, React.ComponentType<{ size?: number }>> = {
 export function AdminBadgesPage() {
   const { empresa } = useAuth();
   const queryClient = useQueryClient();
+  const [badgeParaDeletar, setBadgeParaDeletar] = useState<HubBadge | null>(null);
   const [modal, setModal] = useState<{ open: boolean; edit?: HubBadge }>({
     open: false,
   });
@@ -166,9 +178,7 @@ export function AdminBadgesPage() {
                   variant="ghost"
                   size="sm"
                   className="hover:bg-destructive/10 md:opacity-0 md:group-hover:opacity-100 transition-opacity"
-                  onClick={() => {
-                    if (confirm("Excluir badge?")) remove.mutate(b.id);
-                  }}
+                  onClick={() => setBadgeParaDeletar(b)}
                 >
                   <Trash2 size={12} className="mr-1" /> Excluir
                 </Button>
@@ -178,15 +188,45 @@ export function AdminBadgesPage() {
         </div>
       )}
 
+      <AlertDialog
+        open={!!badgeParaDeletar}
+        onOpenChange={(o) => !o && setBadgeParaDeletar(null)}
+      >
+        <AlertDialogContent className="bg-card border-border">
+          <AlertDialogHeader>
+            <AlertDialogTitle>Excluir badge?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Esta ação não pode ser desfeita.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() => {
+                if (badgeParaDeletar) remove.mutate(badgeParaDeletar.id);
+                setBadgeParaDeletar(null);
+              }}
+              className="bg-destructive"
+            >
+              Excluir
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
       <BadgeFormModal
         open={modal.open}
         onClose={() => setModal({ open: false })}
-        onSave={(b) =>
-          createHubBadge({ ...b, empresa_id: empresa!.id }).then(() => {
+        onSave={(b) => {
+          const p = { ...b, empresa_id: empresa!.id };
+          const fn = modal.edit
+            ? updateHubBadge(modal.edit.id, p)
+            : createHubBadge(p);
+          return fn.then(() => {
             queryClient.invalidateQueries({ queryKey: ["hub-badges"] });
             setModal({ open: false });
-          })
-        }
+          });
+        }}
         badge={modal.edit}
       />
     </div>

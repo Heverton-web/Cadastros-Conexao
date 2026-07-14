@@ -62,7 +62,6 @@ import { linktreeDashboardRoute } from "./routes/linktree.dashboard";
 import { linktreeTemaRoute } from "./routes/linktree.tema";
 import { linktreeDesignRoute } from "./routes/linktree.design";
 import { empresaLinktreeDashboardRoute } from "./routes/linktree.empresa";
-import { empresaLinktreeEditorRoute } from "./routes/linktree.empresa.editor";
 import { empresaLinktreePublicRoute } from "./routes/e.$slug";
 
 import { globalHubRoute } from "./routes/global.hub";
@@ -92,6 +91,9 @@ import { empresaRotasDesignRoute } from "./routes/empresa.rotas-design";
 import { empresaNpsTemaRoute } from "./routes/empresa.nps-tema";
 import { empresaLinktreeTemaRoute } from "./routes/empresa.linktree-tema";
 import { empresaHubChatbotRoute } from "./routes/empresa.hub-chatbot";
+import { globalManutencaoRoute } from "./routes/global.manutencao";
+import { empresaManutencaoRoute } from "./routes/empresa.manutencao";
+import { empresaOnboardingRoute } from "./routes/empresa.onboarding";
 import { crmPipelineRoute } from "./routes/_auth.crm.pipeline";
 import { crmTarefasRoute } from "./routes/_auth.crm.tarefas";
 import { crmMetricasRoute } from "./routes/_auth.crm.metricas";
@@ -126,6 +128,9 @@ import { despesasRelatoriosRoute } from "./routes/despesas.relatorios";
 import { despesasDesignRoute } from "./routes/despesas.design";
 import { empresaDespesasConfigRoute } from "./routes/empresa.despesas-config";
 
+import { empresaAgentesRoute } from "./routes/empresa.agentes";
+import { globalAgentesRoute } from "./routes/global.agentes";
+
 import { rotasRoute } from "./routes/rotas";
 import { rotaDetailRoute } from "./routes/rotas.$id";
 import { rotasConfigRoute } from "./routes/rotas.config";
@@ -147,10 +152,6 @@ import { marketingLeadsRoute } from "./routes/marketing.leads";
 import { marketingLeadsDetailRoute } from "./routes/marketing.leads.$id";
 import { marketingPixelsRoute } from "./routes/marketing.pixels";
 import { marketingWhatsappRoute } from "./routes/marketing.whatsapp";
-import { marketingLinktreeRoute } from "./routes/marketing.linktree";
-import { marketingLinktreeDesignRoute } from "./routes/marketing.linktree.design";
-import { marketingLinktreeEditorRoute } from "./routes/marketing.linktree.editor";
-import { marketingLinktreeTemaRoute } from "./routes/marketing.linktree.tema";
 
 import { ferramentasLinksRoute } from "./routes/ferramentas.links";
 import { ferramentasLinksHistoricoRoute } from "./routes/ferramentas.links.historico";
@@ -164,8 +165,8 @@ import { ferramentasLinksQrcodeRoute } from "./routes/ferramentas.links.qrcode";
 import { linkRedirectRoute } from "./routes/r.$linkId";
 
 import { catalogoIndexRoute } from "./routes/catalogo.index";
-import { catalogoImplantesRoute } from "./routes/catalogo.implantes";
-import { catalogoComponentesRoute } from "./routes/catalogo.componentes";
+import { catalogoImplantesRoute, catalogoImplantesConexaoRoute, catalogoImplantesFamiliaRoute, catalogoImplantesLinhaRoute } from "./routes/catalogo.implantes";
+import { catalogoComponentesRoute, catalogoComponentesTipoReabRoute, catalogoComponentesFamiliaRoute, catalogoComponentesTipoAbutmentRoute } from "./routes/catalogo.componentes";
 import { catalogoKitsRoute } from "./routes/catalogo.kits";
 import { catalogoPromocionaisRoute } from "./routes/catalogo.promocionais";
 import { catalogoProdutoRoute } from "./routes/catalogo.produto.$tipo.$sku";
@@ -178,7 +179,6 @@ import { catalogoAdminFreteRoute } from "./routes/catalogo.admin.frete";
 import { catalogoAdminPromocionaisRoute } from "./routes/catalogo.admin.promocionais";
 import { catalogoAdminDashboardRoute } from "./routes/catalogo.admin.dashboard";
 import { catalogoAdminCoresRoute } from "./routes/catalogo.admin.cores";
-import { catalogoAdminSocialRoute } from "./routes/catalogo.admin.social";
 import { catalogoAdminConfiguracoesRoute } from "./routes/catalogo.admin.configuracoes";
 import { catalogoAdminDesignRoute } from "./routes/catalogo.admin.design";
 import { catalogoAdminClientesRoute } from "./routes/catalogo.admin.clientes";
@@ -207,7 +207,13 @@ export const routeTree = rootRoute.addChildren([
   catalogoIndexRoute,
   catalogoEmpresaSlugRoute,
   catalogoImplantesRoute,
+  catalogoImplantesConexaoRoute,
+  catalogoImplantesFamiliaRoute,
+  catalogoImplantesLinhaRoute,
   catalogoComponentesRoute,
+  catalogoComponentesTipoReabRoute,
+  catalogoComponentesFamiliaRoute,
+  catalogoComponentesTipoAbutmentRoute,
   catalogoKitsRoute,
   catalogoPromocionaisRoute,
   catalogoProdutoRoute,
@@ -233,6 +239,9 @@ export const routeTree = rootRoute.addChildren([
     adminPermissoesRoute,
     adminSuperModulosRoute,
     adminSuperModuloDetailRoute,
+    globalManutencaoRoute,
+    empresaManutencaoRoute,
+    empresaOnboardingRoute,
     adminTemaRoute,
     adminEmpresaRoute,
     adminSuperBancoRoute,
@@ -243,6 +252,7 @@ export const routeTree = rootRoute.addChildren([
     adminLaboratorioRoute,
     globalModelosIaRoute,
     globalLimitsRoute,
+    globalAgentesRoute,
     adminEmpresaConfigBancoRoute,
     adminEmpresaConfigBrandingRoute,
     adminEmpresaConfigAcoesRoute,
@@ -295,7 +305,6 @@ export const routeTree = rootRoute.addChildren([
     linktreeDashboardRoute,
     linktreeTemaRoute,
     empresaLinktreeDashboardRoute,
-    empresaLinktreeEditorRoute,
 
     globalHubRoute,
     empresaHubTemaRoute,
@@ -344,6 +353,7 @@ export const routeTree = rootRoute.addChildren([
     empresaNpsTemaRoute,
     empresaLinktreeTemaRoute,
     empresaHubChatbotRoute,
+    empresaAgentesRoute,
 
     marketingDashboardRoute,
     marketingLandingPagesRoute,
@@ -361,10 +371,6 @@ export const routeTree = rootRoute.addChildren([
     marketingLeadsDetailRoute,
     marketingPixelsRoute,
     marketingWhatsappRoute,
-    marketingLinktreeRoute,
-    marketingLinktreeDesignRoute,
-    marketingLinktreeEditorRoute,
-    marketingLinktreeTemaRoute,
 
     ferramentasLinksRoute,
     ferramentasLinksHistoricoRoute,
@@ -383,7 +389,6 @@ export const routeTree = rootRoute.addChildren([
     catalogoAdminPromocionaisRoute,
     catalogoAdminDashboardRoute,
     catalogoAdminCoresRoute,
-    catalogoAdminSocialRoute,
     catalogoAdminConfiguracoesRoute,
     catalogoAdminDesignRoute,
     catalogoAdminClientesRoute,

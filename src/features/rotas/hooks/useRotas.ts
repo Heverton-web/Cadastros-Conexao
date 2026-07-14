@@ -149,6 +149,7 @@ export function useFinalizarRota() {
 
 export function useAdicionarClientesNaRota() {
   const qc = useQueryClient();
+  const { empresa } = useEmpresa();
 
   return useMutation({
     mutationFn: ({
@@ -156,9 +157,8 @@ export function useAdicionarClientesNaRota() {
       clienteIds,
     }: {
       rotaId: string;
-      empresaId: string;
       clienteIds: string[];
-    }) => adicionarClientesNaRota(rotaId, "", clienteIds),
+    }) => adicionarClientesNaRota(rotaId, empresa?.id ?? "", clienteIds),
     onSuccess: (_, { rotaId }) => {
       qc.invalidateQueries({ queryKey: ["rota-clientes", rotaId] });
     },
@@ -170,7 +170,7 @@ export function useRemoverClienteDaRota() {
 
   return useMutation({
     mutationFn: removerClienteDaRota,
-    onSuccess: () => {
+    onSuccess: (_data, rotaClienteId) => {
       qc.invalidateQueries({ queryKey: ["rotas"] });
       qc.invalidateQueries({ queryKey: ["rota-clientes"] });
     },

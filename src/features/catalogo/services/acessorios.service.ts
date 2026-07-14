@@ -25,6 +25,11 @@ export async function criarCategoriaAcessorio(empresaId: string, nome: string): 
   return data as CatalogoCategoriaAcessorio
 }
 
+export async function toggleCategoriaAcessorioAtivo(id: string, ativo: boolean): Promise<void> {
+  const { error } = await supabase.from("catalogo_categorias_acessorio").update({ ativo }).eq("id", id)
+  if (error) throw error
+}
+
 export async function removerCategoriaAcessorio(id: string): Promise<void> {
   const { error } = await supabase.from("catalogo_categorias_acessorio").delete().eq("id", id)
   if (error) throw error
@@ -71,6 +76,11 @@ export async function criarAcessorio(empresaId: string, input: {
   return data as CatalogoAcessorio
 }
 
+export async function toggleAcessorioAtivo(empresaId: string, sku: string, ativo: boolean): Promise<void> {
+  const { error } = await supabase.from("catalogo_acessorios").update({ ativo }).eq("empresa_id", empresaId).eq("sku", sku)
+  if (error) throw error
+}
+
 export async function removerAcessorio(empresaId: string, sku: string): Promise<void> {
   const { error } = await supabase.from("catalogo_acessorios").delete().eq("empresa_id", empresaId).eq("sku", sku)
   if (error) throw error
@@ -95,6 +105,11 @@ export async function criarChaveFerramental(empresaId: string, input: { sku: str
     .single()
   if (error) throw error
   return data as CatalogoChaveFerramental
+}
+
+export async function toggleChaveFerramentalAtivo(empresaId: string, sku: string, ativo: boolean): Promise<void> {
+  const { error } = await supabase.from("catalogo_chaves_ferramental").update({ ativo }).eq("empresa_id", empresaId).eq("sku", sku)
+  if (error) throw error
 }
 
 export async function removerChaveFerramental(empresaId: string, sku: string): Promise<void> {
@@ -173,6 +188,11 @@ export async function criarInstrumental(empresaId: string, input: { sku: string;
     .single()
   if (error) throw error
   return data as CatalogoInstrumentalGeral
+}
+
+export async function toggleCategoriaInstrumentalAtivo(id: string, ativo: boolean): Promise<void> {
+  const { error } = await supabase.from("catalogo_categorias_instrumental").update({ ativo }).eq("id", id)
+  if (error) throw error
 }
 
 export async function removerInstrumental(empresaId: string, sku: string): Promise<void> {

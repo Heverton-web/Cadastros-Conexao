@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Users, Plus, Search, Trash2, Eye, TrendingUp, Phone, Mail } from "lucide-react";
 import toast from "react-hot-toast";
 import { useAuth } from "~/lib/auth";
@@ -34,25 +34,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "~/components/ui/dialog";
-import { supabase } from "~/core/supabase";
-import { dispararEventoModulo } from "~/core/services/webhooks";
-
-const MODULO_KEY = "mktg-leads";
-
-type Lead = {
-  id: string;
-  empresa_id: string;
-  nome: string;
-  email: string | null;
-  telefone: string | null;
-  origem: string | null;
-  fonte: string | null;
-  score: number;
-  status: string;
-  tags: string[] | null;
-  created_at: string;
-  updated_at: string;
-};
+import { useLeads, useCriarLead, useExcluirLead } from "../hooks/useLeads";
 
 const STATUS_LABELS: Record<string, string> = {
   novo: "Novo",
@@ -72,83 +54,48 @@ const STATUS_COLORS: Record<string, string> = {
   perdido: "bg-red-500/10 text-red-400 border-red-500/20",
 };
 
-async function listarLeads(empresaId: string): Promise<Lead[]> {
-  const { data } = await supabase
-    .from("mktg_leads")
-    .select("*")
-    .eq("empresa_id", empresaId)
-    .order("created_at", { ascending: false });
-  return (data as Lead[]) || [];
-}
-
-async function deletarLead(id: string): Promise<void> {
-  await supabase.from("mktg_leads").delete().eq("id", id);
-}
-
 export function LeadsList() {
   const { profile } = useAuth();
   const navigate = useNavigate();
-  const [leads, setLeads] = useState<Lead[]>([]);
-  const [carregando, setCarregando] = useState(true);
+  const empresaId = profile?.empresa_id ?? "";
+  const { data: leads = [], isLoading } = useLeads(empresaId);
+  const criarLead = useCriarLead(empresaId);
+  const excluirLead = useExcluirLead(empresaId);
+
   const [busca, setBusca] = useState("");
   const [filtroStatus, setFiltroStatus] = useState("all");
-  const [paraExcluir, setParaExcluir] = useState<Lead | null>(null);
+  const [paraExcluir, setParaExcluir] = useState<{ id: string; nome: string } | null>(null);
 
-  // Form states para criação
   const [novoLeadOpen, setNovoLeadOpen] = useState(false);
   const [formNome, setFormNome] = useState("");
   const [formEmail, setFormEmail] = useState("");
   const [formTelefone, setFormTelefone] = useState("");
   const [formOrigem, setFormOrigem] = useState("");
   const [formStatus, setFormStatus] = useState("novo");
-  const [salvando, setSalvando] = useState(false);
 
   async function handleCriarLead(e: React.FormEvent) {
     e.preventDefault();
-    if (!profile?.empresa_id || !formNome.trim()) return;
-    setSalvando(true);
+    if (!empresaId || !formNome.trim()) return;
     try {
-      const { data, error } = await supabase
-        .from("mktg_leads")
-        .insert({
-          empresa_id: profile.empresa_id,
-          nome: formNome.trim(),
-          email: formEmail.trim() || null,
-          telefone: formTelefone.trim() || null,
-          origem: formOrigem.trim() || null,
-          status: formStatus,
-          score: 10,
-        })
-        .select()
-        .single();
-      if (error) throw error;
-      setLeads((prev) => [data as Lead, ...prev]);
+      await criarLead.mutateAsync({
+        empresa_id: empresaId,
+        nome: formNome.trim(),
+        email: formEmail.trim() || null,
+        telefone: formTelefone.trim() || null,
+        origem: formOrigem.trim() || null,
+        status: formStatus,
+      });
       toast.success("Lead criado com sucesso!");
-      dispararEventoModulo(MODULO_KEY, "lead.capturado", { lead_id: data.id, nome: formNome, empresa_id: profile.empresa_id }, profile.empresa_id).catch(() => {});
       setNovoLeadOpen(false);
       setFormNome("");
       setFormEmail("");
       setFormTelefone("");
       setFormOrigem("");
       setFormStatus("novo");
-    } catch (err) {
-      console.error(err);
+    } catch {
       toast.error("Erro ao criar lead");
-    } finally {
-      setSalvando(false);
     }
   }
-
-  useEffect(() => {
-    if (!profile?.empresa_id) {
-      setCarregando(false);
-      return;
-    }
-    listarLeads(profile.empresa_id)
-      .then(setLeads)
-      .catch(() => toast.error("Erro ao carregar leads"))
-      .finally(() => setCarregando(false));
-  }, [profile?.empresa_id]);
 
   const filtrados = leads.filter((l) => {
     const matchStatus = filtroStatus === "all" || l.status === filtroStatus;
@@ -161,9 +108,12 @@ export function LeadsList() {
 
   async function handleExcluir() {
     if (!paraExcluir) return;
-    await deletarLead(paraExcluir.id);
-    setLeads((prev) => prev.filter((l) => l.id !== paraExcluir.id));
-    toast.success("Lead excluído");
+    try {
+      await excluirLead.mutateAsync(paraExcluir.id);
+      toast.success("Lead excluído");
+    } catch {
+      toast.error("Erro ao excluir lead");
+    }
     setParaExcluir(null);
   }
 
@@ -174,7 +124,7 @@ export function LeadsList() {
     convertidos: leads.filter((l) => l.status === "convertido").length,
   };
 
-  if (carregando) {
+  if (isLoading) {
     return (
       <div className="p-6 space-y-4">
         <Skeleton className="h-8 w-48" />
@@ -203,7 +153,6 @@ export function LeadsList() {
         </Button>
       </div>
 
-      {/* Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {[
           { label: "Total", valor: stats.total, icon: Users, color: "text-accent" },
@@ -221,7 +170,6 @@ export function LeadsList() {
         ))}
       </div>
 
-      {/* Filtros */}
       <div className="flex flex-col sm:flex-row gap-3">
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted" />
@@ -245,7 +193,6 @@ export function LeadsList() {
         </Select>
       </div>
 
-      {/* Lista */}
       {leads.length === 0 ? (
         <EmptyState
           icon={<Users className="w-8 h-8 text-text-muted" />}
@@ -311,7 +258,6 @@ export function LeadsList() {
         </div>
       )}
 
-      {/* Modal de Novo Lead */}
       <Dialog open={novoLeadOpen} onOpenChange={setNovoLeadOpen}>
         <DialogContent className="max-w-md">
           <DialogHeader>
@@ -375,8 +321,8 @@ export function LeadsList() {
               <button type="button" onClick={() => setNovoLeadOpen(false)} className="flex-1 sm:flex-none rounded-xl border border-border px-6 py-2.5 text-sm text-text-muted font-semibold hover:text-text-main hover:bg-surface-hover transition-all duration-200 min-h-[44px]">
                 Cancelar
               </button>
-              <button type="submit" disabled={salvando} className="flex-1 sm:flex-none rounded-xl bg-accent px-6 py-2.5 text-sm font-semibold text-accent-fg shadow-md shadow-accent/20 hover:bg-accent-hover disabled:opacity-50 transition-all duration-200 min-h-[44px]">
-                {salvando ? "Salvando..." : "Salvar"}
+              <button type="submit" disabled={criarLead.isPending} className="flex-1 sm:flex-none rounded-xl bg-accent px-6 py-2.5 text-sm font-semibold text-accent-fg shadow-md shadow-accent/20 hover:bg-accent-hover disabled:opacity-50 transition-all duration-200 min-h-[44px]">
+                {criarLead.isPending ? "Salvando..." : "Salvar"}
               </button>
             </DialogFooter>
           </form>

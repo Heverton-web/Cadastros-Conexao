@@ -119,7 +119,7 @@ export function useExcluirPeriodo(overrideEmpresaId?: string) {
   const empresa_id = overrideEmpresaId || profile?.empresa_id || "";
 
   return useMutation({
-    mutationFn: (id: string) => excluirPeriodo(id),
+    mutationFn: (id: string) => excluirPeriodo(id, empresa_id),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["despesas-periodos", empresa_id],

@@ -41,7 +41,7 @@ export function ProductCard({ sku, nome, corIdentificacao, tipo }: Props) {
 
         {/* Nome + SKU */}
         <div className="flex-1 min-w-0 mb-4">
-          <h3 className="text-base font-bold text-white leading-tight mb-2 group-hover:text-[var(--card-color,var(--color-accent))] transition-colors line-clamp-2">
+          <h3 className="text-base font-bold text-white leading-tight mb-2 transition-colors line-clamp-2">
             {nome}
           </h3>
           <p className="text-[11px] font-mono text-[var(--color-text-muted)] tracking-widest truncate">
@@ -54,7 +54,7 @@ export function ProductCard({ sku, nome, corIdentificacao, tipo }: Props) {
           <span className="text-[11px] font-bold uppercase tracking-widest text-[var(--color-text-muted)] group-hover:text-white transition-colors">
             Ver Ficha Técnica
           </span>
-          <ArrowRight className="w-3.5 h-3.5 text-[var(--color-text-muted)] group-hover:text-[var(--card-color,var(--color-accent))] group-hover:translate-x-1 transition-all" />
+          <ArrowRight className="w-3.5 h-3.5 text-[var(--color-text-muted)] group-hover:text-white group-hover:translate-x-1 transition-all" />
         </div>
       </div>
     </div>

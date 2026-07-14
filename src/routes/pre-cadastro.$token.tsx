@@ -20,6 +20,7 @@ import {
   XCircle,
 } from "lucide-react";
 import { BannerCorrecao } from "~/components/BannerCorrecao";
+import { PreCadastroComOnboarding } from "~/features/precadastro/PreCadastroComOnboarding";
 
 // ─── Funções de Máscara ──────────────────────────────────────────────────────
 function limpar(v: string) {
@@ -86,7 +87,11 @@ function aplicarMascara(valor: string, mascara: TipoMascara): string {
 export const preCadastroRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/pre-cadastro/$token",
-  component: PreCadastroPage,
+  component: () => (
+    <PreCadastroComOnboarding>
+      <PreCadastroPage />
+    </PreCadastroComOnboarding>
+  ),
 });
 
 type Step =

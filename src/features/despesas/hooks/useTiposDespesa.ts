@@ -80,7 +80,7 @@ export function useExcluirTipoDespesa(overrideEmpresaId?: string) {
   const empresa_id = overrideEmpresaId || profile?.empresa_id || "";
 
   return useMutation({
-    mutationFn: (id: string) => excluirTipoDespesa(id),
+    mutationFn: (id: string) => excluirTipoDespesa(id, empresa_id),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["despesas-tipos", empresa_id],

@@ -11,6 +11,7 @@ interface Props {
   theme: EmpresaLinktreeTheme;
   bio?: string | null;
   bannerUrl?: string | null;
+  avatarUrl?: string | null;
   empresaNome?: string;
 }
 
@@ -20,6 +21,7 @@ export function EmpresaLinktreePreview({
   theme,
   bio,
   bannerUrl,
+  avatarUrl,
   empresaNome,
 }: Props) {
   return (
@@ -35,6 +37,7 @@ export function EmpresaLinktreePreview({
             theme={theme}
             bio={bio}
             bannerUrl={bannerUrl}
+            avatarUrl={avatarUrl}
             empresaNome={empresaNome}
           />
         </div>

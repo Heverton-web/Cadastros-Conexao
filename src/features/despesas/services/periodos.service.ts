@@ -39,6 +39,22 @@ export async function buscarPeriodo(id: string): Promise<DespesaPeriodo> {
   return data as DespesaPeriodo;
 }
 
+export async function buscarPeriodoAtual(
+  empresa_id: string,
+): Promise<DespesaPeriodo | null> {
+  const hoje = new Date().toISOString().split("T")[0];
+  const { data, error } = await supabase
+    .from("despesas_periodos")
+    .select("*")
+    .eq("empresa_id", empresa_id)
+    .eq("status", "aberto")
+    .lte("data_inicio", hoje)
+    .gte("data_fim", hoje)
+    .maybeSingle();
+  if (error) throw error;
+  return data as DespesaPeriodo | null;
+}
+
 export async function criarPeriodo(
   periodo: Partial<DespesaPeriodo>,
 ): Promise<DespesaPeriodo> {
@@ -75,14 +91,28 @@ export async function fecharPeriodo(id: string): Promise<DespesaPeriodo> {
 }
 
 export async function reabrirPeriodo(id: string): Promise<DespesaPeriodo> {
-  return atualizarPeriodo(id, { status: "aberto" });
+  const periodo = await atualizarPeriodo(id, { status: "aberto" });
+  dispararEventoModulo(MODULO_KEY, "periodo.reaberto", { periodo_id: id, empresa_id: periodo.empresa_id }, periodo.empresa_id).catch(() => {});
+  return periodo;
 }
 
-export async function excluirPeriodo(id: string): Promise<void> {
+export async function excluirPeriodo(
+  id: string,
+  empresaId: string,
+): Promise<void> {
+  const { count } = await supabase
+    .from("despesas")
+    .select("id", { count: "exact", head: true })
+    .eq("periodo_id", id)
+    .eq("empresa_id", empresaId);
+  if (count && count > 0) {
+    throw new Error("Não é possível excluir o período: existem despesas vinculadas a ele.");
+  }
   const { error } = await supabase
     .from("despesas_periodos")
     .delete()
-    .eq("id", id);
+    .eq("id", id)
+    .eq("empresa_id", empresaId);
   if (error) throw error;
 }
 

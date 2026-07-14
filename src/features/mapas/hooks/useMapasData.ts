@@ -1,18 +1,18 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "~/core/supabase";
 import { useAuth } from "~/lib/auth";
-import { dispararWebhooks } from "~/core/services/webhooks";
+import { dispararEventoModulo } from "~/core/services/webhooks";
 import type { MapasDistributor, MapasConsultant } from "../types";
 
 export function useMapasDistributors() {
   const { profile } = useAuth();
+  const empresaId = profile?.empresa_id;
   return useQuery({
-    queryKey: ["mapas", "distributors", profile?.empresa_id],
+    queryKey: ["mapas", "distributors", empresaId],
     queryFn: async () => {
-      const { data } = await supabase
-        .from("mapas_distribuidores")
-        .select("*")
-        .order("name");
+      let q = supabase.from("mapas_distribuidores").select("*");
+      if (empresaId) q = q.eq("empresa_id", empresaId);
+      const { data } = await q.order("name");
       return (data ?? []) as MapasDistributor[];
     },
     staleTime: 60_000,
@@ -21,13 +21,13 @@ export function useMapasDistributors() {
 
 export function useMapasConsultants() {
   const { profile } = useAuth();
+  const empresaId = profile?.empresa_id;
   return useQuery({
-    queryKey: ["mapas", "consultants", profile?.empresa_id],
+    queryKey: ["mapas", "consultants", empresaId],
     queryFn: async () => {
-      const { data } = await supabase
-        .from("mapas_consultores")
-        .select("*")
-        .order("name");
+      let q = supabase.from("mapas_consultores").select("*");
+      if (empresaId) q = q.eq("empresa_id", empresaId);
+      const { data } = await q.order("name");
       return (data ?? []) as MapasConsultant[];
     },
     staleTime: 60_000,
@@ -46,7 +46,7 @@ export function useUpsertDistributor(onSuccess?: () => void) {
           .eq("id", payload.id)
           .select()
           .single();
-        dispararWebhooks("mapas.distribuidor.atualizado", { distribuidor_id: data.id, nome: data.name, empresa_id: data.empresa_id }, data.empresa_id);
+        dispararEventoModulo("mapas", "distribuidor.atualizado", { distribuidor_id: data.id, nome: data.name, empresa_id: data.empresa_id }, data.empresa_id).catch(() => {});
         return data as MapasDistributor;
       }
       const { data } = await supabase
@@ -54,7 +54,7 @@ export function useUpsertDistributor(onSuccess?: () => void) {
         .insert(payload)
         .select()
         .single();
-      dispararWebhooks("mapas.distribuidor.criado", { distribuidor_id: data.id, nome: data.name, empresa_id: data.empresa_id }, data.empresa_id);
+      dispararEventoModulo("mapas", "distribuidor.criado", { distribuidor_id: data.id, nome: data.name, empresa_id: data.empresa_id }, data.empresa_id).catch(() => {});
       return data as MapasDistributor;
     },
     onSuccess: () => {
@@ -76,7 +76,7 @@ export function useDeleteDistributor() {
         .single();
       await supabase.from("mapas_distribuidores").delete().eq("id", id);
       if (dist) {
-        dispararWebhooks("mapas.distribuidor.excluido", { distribuidor_id: id, nome: dist.name, empresa_id: dist.empresa_id }, dist.empresa_id);
+        dispararEventoModulo("mapas", "distribuidor.excluido", { distribuidor_id: id, nome: dist.name, empresa_id: dist.empresa_id }, dist.empresa_id).catch(() => {});
       }
     },
     onSuccess: () => {
@@ -97,7 +97,7 @@ export function useUpsertConsultant(onSuccess?: () => void) {
           .eq("id", payload.id)
           .select()
           .single();
-        dispararWebhooks("mapas.consultor.atualizado", { consultor_id: data.id, nome: data.name, empresa_id: data.empresa_id }, data.empresa_id);
+        dispararEventoModulo("mapas", "consultor.atualizado", { consultor_id: data.id, nome: data.name, empresa_id: data.empresa_id }, data.empresa_id).catch(() => {});
         return data as MapasConsultant;
       }
       const { data } = await supabase
@@ -105,7 +105,7 @@ export function useUpsertConsultant(onSuccess?: () => void) {
         .insert(payload)
         .select()
         .single();
-      dispararWebhooks("mapas.consultor.criado", { consultor_id: data.id, nome: data.name, empresa_id: data.empresa_id }, data.empresa_id);
+      dispararEventoModulo("mapas", "consultor.criado", { consultor_id: data.id, nome: data.name, empresa_id: data.empresa_id }, data.empresa_id).catch(() => {});
       return data as MapasConsultant;
     },
     onSuccess: () => {
@@ -126,7 +126,7 @@ export function useDeleteConsultant() {
         .single();
       await supabase.from("mapas_consultores").delete().eq("id", id);
       if (cons) {
-        dispararWebhooks("mapas.consultor.excluido", { consultor_id: id, nome: cons.name, empresa_id: cons.empresa_id }, cons.empresa_id);
+        dispararEventoModulo("mapas", "consultor.excluido", { consultor_id: id, nome: cons.name, empresa_id: cons.empresa_id }, cons.empresa_id).catch(() => {});
       }
     },
     onSuccess: () => {

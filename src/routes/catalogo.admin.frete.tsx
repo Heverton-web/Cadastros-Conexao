@@ -2,12 +2,14 @@
 import { RequirePermission } from "~/components/guards";import { createRoute } from "@tanstack/react-router"
 import { authLayout } from "./_auth"
 import { EmpresaCrudGuard } from "~/features/catalogo/components/EmpresaCrudGuard"
-import { useFretes, useCriarFrete, useRemoverFrete } from "~/features/catalogo/hooks/useCatalogo"
+import { useAuth } from "~/core/auth/useAuth"
+import { useFretes, useCriarFrete, useAtualizarFrete, useRemoverFrete } from "~/features/catalogo/hooks/useCatalogo"
 import { useState } from "react"
-import { Truck, Trash2, Plus } from "lucide-react"
+import { Truck, Trash2, Plus, Pencil } from "lucide-react"
 import { formatBRL } from "~/features/catalogo/services/carrinho.service"
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "~/components/ui/alert-dialog"
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "~/components/ui/dialog"
+import type { CatalogoFrete } from "~/features/catalogo/types"
 
 export const catalogoAdminFreteRoute = createRoute({
   getParentRoute: () => authLayout,
@@ -22,16 +24,37 @@ export const catalogoAdminFreteRoute = createRoute({
 })
 
 function AdminFretePage() {
+  const { profile } = useAuth()
+  const isSuperAdmin = profile?.is_super_admin === true
   const { data: fretes } = useFretes()
   const criarMut = useCriarFrete()
+  const atualizarMut = useAtualizarFrete()
   const removerMut = useRemoverFrete()
   const [formOpen, setFormOpen] = useState(false)
+  const [editingItem, setEditingItem] = useState<CatalogoFrete | null>(null)
   const [itemParaDeletar, setItemParaDeletar] = useState<string | null>(null)
   const [form, setForm] = useState({ cep_inicio: "", cep_fim: "", valor: 0, prazo_dias: 7 })
 
-  function handleCriar() {
-    criarMut.mutate(form)
+  function openNew() {
+    setEditingItem(null)
+    setForm({ cep_inicio: "", cep_fim: "", valor: 0, prazo_dias: 7 })
+    setFormOpen(true)
+  }
+
+  function openEdit(item: CatalogoFrete) {
+    setEditingItem(item)
+    setForm({ cep_inicio: item.cep_inicio, cep_fim: item.cep_fim, valor: item.valor, prazo_dias: item.prazo_dias })
+    setFormOpen(true)
+  }
+
+  function handleSave() {
+    if (editingItem) {
+      atualizarMut.mutate({ id: editingItem.id, input: form })
+    } else {
+      criarMut.mutate(form)
+    }
     setFormOpen(false)
+    setEditingItem(null)
     setForm({ cep_inicio: "", cep_fim: "", valor: 0, prazo_dias: 7 })
   }
 
@@ -43,15 +66,15 @@ function AdminFretePage() {
           <p className="text-sm mt-1" style={{ color: "var(--color-text-muted, #94a3b8)" }}>Configure faixas de CEP e valores de entrega.</p>
         </div>
         
-        <Dialog open={formOpen} onOpenChange={setFormOpen}>
+        <Dialog open={formOpen} onOpenChange={(o) => { if (!o) { setEditingItem(null); setForm({ cep_inicio: "", cep_fim: "", valor: 0, prazo_dias: 7 }) } setFormOpen(o) }}>
           <DialogTrigger asChild>
-            <button className="flex items-center gap-2 px-6 py-3 rounded-xl font-black text-sm transition-transform hover:scale-105" style={{ background: "linear-gradient(135deg, #c9a655, #e8d48b)", color: "#0f172a" }}>
+            <button onClick={openNew} className="flex items-center gap-2 px-6 py-3 rounded-xl font-black text-sm transition-transform hover:scale-105" style={{ background: "linear-gradient(135deg, #c9a655, #e8d48b)", color: "#0f172a" }}>
               <Plus className="h-4 w-4" /> NOVA REGRA
             </button>
           </DialogTrigger>
           <DialogContent className="bg-[#0f172a] border-[var(--color-border-subtle)] text-white flex flex-col max-h-[85vh] overflow-hidden">
             <DialogHeader className="shrink-0">
-              <DialogTitle>Cadastrar Regra de Frete</DialogTitle>
+              <DialogTitle>{editingItem ? "Editar Regra de Frete" : "Cadastrar Regra de Frete"}</DialogTitle>
               <DialogDescription className="text-gray-400">Defina o CEP inicial, final e o valor.</DialogDescription>
             </DialogHeader>
             <div className="px-6 py-4 space-y-4 overflow-y-auto flex-1 min-h-0">
@@ -77,7 +100,7 @@ function AdminFretePage() {
               </div>
             </div>
             <DialogFooter className="shrink-0">
-              <button onClick={handleCriar} className="w-full px-6 py-3 rounded-xl text-[#0f172a] font-black" style={{ background: "linear-gradient(135deg, #c9a655, #e8d48b)" }}>Salvar Regra</button>
+              <button onClick={handleSave} className="w-full px-6 py-3 rounded-xl text-[#0f172a] font-black" style={{ background: "linear-gradient(135deg, #c9a655, #e8d48b)" }}>{editingItem ? "Salvar" : "Salvar Regra"}</button>
             </DialogFooter>
           </DialogContent>
         </Dialog>
@@ -99,7 +122,10 @@ function AdminFretePage() {
               </div>
             </div>
             
-            <button onClick={() => setItemParaDeletar(f.id)} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-red-500/20 text-[var(--color-text-muted)] hover:text-red-400 transition-colors"><Trash2 className="h-4 w-4" /></button>
+            <div className="flex items-center gap-1">
+              <button onClick={() => openEdit(f)} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-[#c9a655]/20 text-[var(--color-text-muted)] hover:text-[#c9a655] transition-colors"><Pencil className="h-4 w-4" /></button>
+              <button onClick={() => setItemParaDeletar(f.id)} disabled={!isSuperAdmin} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-red-500/20 text-[var(--color-text-muted)] hover:text-red-400 transition-colors disabled:opacity-30 disabled:cursor-not-allowed" title={isSuperAdmin ? "Excluir" : "Apenas super admin pode excluir"}><Trash2 className="h-4 w-4" /></button>
+            </div>
           </div>
         ))}
         {fretes?.length === 0 && <p className="col-span-full text-[var(--color-text-muted)] text-center py-8 font-mono tracking-widest text-sm uppercase">Nenhuma regra cadastrada</p>}

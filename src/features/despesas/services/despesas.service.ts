@@ -65,12 +65,14 @@ export async function criarDespesa(
   usuario_id: string,
   despesa: DespesaFormData,
 ): Promise<Despesa> {
+  const { periodo_id, ...rest } = despesa;
   const { data, error } = await supabase
     .from("despesas")
     .insert({
       empresa_id,
       usuario_id,
-      ...despesa,
+      periodo_id,
+      ...rest,
       status: "rascunho",
     })
     .select("*, tipo:despesas_tipos(*), periodo:despesas_periodos(*)")
@@ -96,8 +98,15 @@ export async function atualizarDespesa(
   return data as Despesa;
 }
 
-export async function excluirDespesa(id: string): Promise<void> {
-  const { error } = await supabase.from("despesas").delete().eq("id", id);
+export async function excluirDespesa(
+  id: string,
+  empresaId: string,
+): Promise<void> {
+  const { error } = await supabase
+    .from("despesas")
+    .delete()
+    .eq("id", id)
+    .eq("empresa_id", empresaId);
   if (error) throw error;
 }
 

@@ -27,11 +27,12 @@ import {
   calendarioModule,
   leadsModule,
   pixelsModule,
-  marketingLinktreeModule,
   whatsappMarketingModule,
 } from "~/features/marketing";
 import { geradorLinksModule } from "~/features/gerador-links/module";
 import { catalogoModule } from "~/features/catalogo/module";
+import { manutencaoModule } from "~/features/manutencao/module";
+import { agentesModule } from "~/features/agentes/module";
 import { initSentry } from "~/core/monitoring/sentry";
 import "~/styles/globals.css";
 
@@ -60,10 +61,12 @@ registerModule(seoModule);
 registerModule(calendarioModule);
 registerModule(leadsModule);
 registerModule(pixelsModule);
-registerModule(marketingLinktreeModule);
 registerModule(whatsappMarketingModule);
 
 registerModule(geradorLinksModule);
+
+registerModule(manutencaoModule);
+registerModule(agentesModule);
 
 const router = createRouter({ routeTree });
 const queryClient = new QueryClient({

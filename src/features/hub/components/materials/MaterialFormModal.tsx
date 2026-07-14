@@ -180,8 +180,8 @@ export function MaterialFormModal({
 
   return (
     <Dialog open={open} onOpenChange={(o) => !o && onClose()}>
-      <DialogContent className="max-w-2xl">
-        <DialogHeader>
+      <DialogContent className="max-w-2xl flex flex-col max-h-[85vh] overflow-hidden">
+        <DialogHeader className="shrink-0">
           <div className="flex items-center gap-3">
             <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent/15 text-accent">
               <Upload className="h-6 w-6" />
@@ -195,7 +195,7 @@ export function MaterialFormModal({
           </div>
         </DialogHeader>
 
-        <div className="px-6 py-6 flex-1 space-y-4">
+        <div className="px-6 py-6 flex-1 min-h-0 overflow-y-auto space-y-4">
           {/* Tipo + Status + XP */}
           <div className="grid grid-cols-3 gap-3">
             <div>
@@ -413,7 +413,7 @@ export function MaterialFormModal({
           </div>
 
           {/* Ações */}
-          <DialogFooter>
+          <DialogFooter className="shrink-0">
             <button type="button" onClick={onClose} className="flex-1 sm:flex-none rounded-xl border border-border px-6 py-2.5 text-sm text-text-muted font-semibold hover:text-text-main hover:bg-surface-hover transition-all duration-200 min-h-[44px]">
               Cancelar
             </button>

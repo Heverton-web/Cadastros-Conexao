@@ -1,20 +1,37 @@
-import { createRoute, Link, useNavigate, useSearch } from "@tanstack/react-router"
+import { createRoute, Link, useNavigate, useParams, useSearch } from "@tanstack/react-router"
 import { rootRoute } from "./__root"
 import { StoreLayout } from "~/features/catalogo/components/StoreLayout"
 import { DrillDown } from "~/features/catalogo/components/DrillDown"
 import { ProductCard } from "~/features/catalogo/components/ProductCard"
 import { useTiposReabilitacao, useFamilias, useTiposAbutment, useAbutments } from "~/features/catalogo/hooks/useCatalogo"
-import { useState, useMemo } from "react"
+import { useMemo } from "react"
 import { ArrowLeft, PackageOpen } from "lucide-react"
 
+// Etapa 1: /catalogo/componentes — Escolher Tipo Reabilitação
 export const catalogoComponentesRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/catalogo/componentes",
-  validateSearch: (s: Record<string, unknown>) => ({
-    tipoReab: (s.tipoReab as string) || null,
-    familia: (s.familia as string) || null,
-    tipoAbutment: (s.tipoAbutment as string) || null,
-  }),
+  component: CatalogoComponentesPage,
+})
+
+// Etapa 2: /catalogo/componentes/$tipoReabId — Escolher Família
+export const catalogoComponentesTipoReabRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/catalogo/componentes/$tipoReabId",
+  component: CatalogoComponentesPage,
+})
+
+// Etapa 3: /catalogo/componentes/$tipoReabId/$familiaId — Escolher Tipo Abutment
+export const catalogoComponentesFamiliaRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/catalogo/componentes/$tipoReabId/$familiaId",
+  component: CatalogoComponentesPage,
+})
+
+// Etapa 4: /catalogo/componentes/$tipoReabId/$familiaId/$tipoAbutmentId — Lista de Abutments
+export const catalogoComponentesTipoAbutmentRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/catalogo/componentes/$tipoReabId/$familiaId/$tipoAbutmentId",
   component: CatalogoComponentesPage,
 })
 
@@ -22,10 +39,12 @@ function CatalogoComponentesPage() {
   const { data: tiposReab, isLoading: loadingReab } = useTiposReabilitacao()
   const { data: todosAbutments } = useAbutments()
   const navigate = useNavigate()
-  const search = useSearch({ from: catalogoComponentesRoute.id })
-  const [tipoReabId, setTipoReabId] = useState<string | null>(search.tipoReab)
-  const [familiaId, setFamiliaId] = useState<string | null>(search.familia)
-  const [tipoAbutmentId, setTipoAbutmentId] = useState<string | null>(search.tipoAbutment)
+  const params = useParams({ strict: false }) as Record<string, string | undefined>
+  const tipoReabId = params.tipoReabId ?? null
+  const familiaId = params.familiaId ?? null
+  const tipoAbutmentId = params.tipoAbutmentId ?? null
+  const search = useSearch({ strict: false }) as Record<string, string | undefined>
+  const empresa = search.empresa
 
   const countByTipoReab = useMemo(() => {
     const m: Record<string, number> = {}
@@ -52,17 +71,29 @@ function CatalogoComponentesPage() {
   }, [todosAbutments])
 
   // Etapa 4: Lista de abutments
-  if (familiaId && tipoAbutmentId) return (
+  if (tipoReabId && familiaId && tipoAbutmentId) return (
     <StoreLayout>
-      <AbutmentList familiaId={familiaId} tipoAbutmentId={tipoAbutmentId} onBack={() => setTipoAbutmentId(null)} />
+      <AbutmentList
+        familiaId={familiaId}
+        tipoAbutmentId={tipoAbutmentId}
+        tipoReabId={tipoReabId}
+        empresa={empresa}
+        onBack={() => navigate({ to: '/catalogo/componentes/$tipoReabId/$familiaId', params: { tipoReabId, familiaId }, search: { empresa } })}
+      />
     </StoreLayout>
   )
 
   // Etapa 3: Escolher Tipo Abutment
-  if (familiaId) return (
+  if (tipoReabId && familiaId) return (
     <StoreLayout>
       <div className="max-w-5xl mx-auto px-6 py-8">
-        <TiposAbutmentList familiaId={familiaId} onSelect={setTipoAbutmentId} onBack={() => setFamiliaId(null)} countByTipoAbutment={countByTipoAbutment} />
+        <TiposAbutmentList
+          familiaId={familiaId}
+          tipoReabId={tipoReabId}
+          onSelect={(id) => navigate({ to: '/catalogo/componentes/$tipoReabId/$familiaId/$tipoAbutmentId', params: { tipoReabId, familiaId, tipoAbutmentId: id }, search: { empresa } })}
+          onBack={() => navigate({ to: '/catalogo/componentes/$tipoReabId', params: { tipoReabId }, search: { empresa } })}
+          countByTipoAbutment={countByTipoAbutment}
+        />
       </div>
     </StoreLayout>
   )
@@ -71,7 +102,12 @@ function CatalogoComponentesPage() {
   if (tipoReabId) return (
     <StoreLayout>
       <div className="max-w-5xl mx-auto px-6 py-8">
-        <FamiliasForReabList tipoReabId={tipoReabId} onSelect={setFamiliaId} onBack={() => setTipoReabId(null)} countByFamilia={countByFamilia} />
+        <FamiliasForReabList
+          tipoReabId={tipoReabId}
+          onSelect={(id) => navigate({ to: '/catalogo/componentes/$tipoReabId/$familiaId', params: { tipoReabId, familiaId: id }, search: { empresa } })}
+          onBack={() => navigate({ to: '/catalogo/componentes', search: { empresa } })}
+          countByFamilia={countByFamilia}
+        />
       </div>
     </StoreLayout>
   )
@@ -90,8 +126,8 @@ function CatalogoComponentesPage() {
             label: t.nome,
             count: countByTipoReab[t.id] ?? 0,
           }))}
-          onSelect={setTipoReabId}
-          onBack={() => navigate({ to: '/catalogo' })}
+          onSelect={(id) => navigate({ to: '/catalogo/componentes/$tipoReabId', params: { tipoReabId: id }, search: { empresa } })}
+          onBack={() => navigate({ to: '/catalogo', search: { empresa } })}
           isLoading={loadingReab}
         />
       </div>
@@ -122,7 +158,7 @@ function FamiliasForReabList({ tipoReabId, onSelect, onBack, countByFamilia }: {
   )
 }
 
-function TiposAbutmentList({ familiaId, onSelect, onBack, countByTipoAbutment }: { familiaId: string; onSelect: (id: string) => void; onBack: () => void; countByTipoAbutment: Record<string, number> }) {
+function TiposAbutmentList({ familiaId, tipoReabId, onSelect, onBack, countByTipoAbutment }: { familiaId: string; tipoReabId: string; onSelect: (id: string) => void; onBack: () => void; countByTipoAbutment: Record<string, number> }) {
   const { data: tipos, isLoading } = useTiposAbutment()
   const { data: familias } = useFamilias()
   const familia = (familias ?? []).find((f) => f.id === familiaId)
@@ -148,7 +184,7 @@ function TiposAbutmentList({ familiaId, onSelect, onBack, countByTipoAbutment }:
   )
 }
 
-function AbutmentList({ familiaId, tipoAbutmentId, onBack }: { familiaId: string; tipoAbutmentId: string; onBack: () => void }) {
+function AbutmentList({ familiaId, tipoAbutmentId, tipoReabId, empresa, onBack }: { familiaId: string; tipoAbutmentId: string; tipoReabId: string; empresa?: string; onBack: () => void }) {
   const { data: abutments, isLoading } = useAbutments(familiaId)
   const filtered = (abutments ?? []).filter((a) => a.tipo_abutment_id === tipoAbutmentId)
 
@@ -193,7 +229,7 @@ function AbutmentList({ familiaId, tipoAbutmentId, onBack }: { familiaId: string
       ) : (
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {filtered.map((a) => (
-          <Link to="/catalogo/produto/$tipo/$sku" params={{ tipo: 'abutment', sku: a.sku }} search={{ familia: familiaId, tipoAbutment: tipoAbutmentId }} className="no-underline" key={a.sku}>
+          <Link to="/catalogo/produto/$tipo/$sku" params={{ tipo: 'abutment', sku: a.sku }} search={{ familia: familiaId, tipoAbutment: tipoAbutmentId, empresa }} className="no-underline" key={a.sku}>
             <ProductCard
               tipo="abutment"
               sku={a.sku}

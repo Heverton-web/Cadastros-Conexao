@@ -74,6 +74,18 @@ export const crmModule: ModuleDefinition = {
       descricao: "Quando uma visita é registrada",
       type: "button_action",
     },
+    {
+      key: "tarefa.excluida",
+      label: "Tarefa Excluída",
+      descricao: "Quando uma tarefa é excluída",
+      type: "button_action",
+    },
+    {
+      key: "consultor.transferido",
+      label: "Consultor Transferido",
+      descricao: "Quando um consultor é transferido entre gestores",
+      type: "status_change",
+    },
   ],
   hasDiagnostico: true,
   hasDesignConfig: true,

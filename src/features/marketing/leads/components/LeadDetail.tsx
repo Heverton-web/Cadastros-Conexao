@@ -8,7 +8,6 @@ import { Card, CardContent } from "~/components/ui/card";
 import { Button } from "~/components/ui/button";
 import { Skeleton } from "~/components/ui/skeleton";
 import { EmptyState } from "~/components/ui/empty-state";
-import { supabase } from "~/core/supabase";
 
 import {
   Dialog,
@@ -26,21 +25,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "~/components/ui/select";
-
-type Lead = {
-  id: string;
-  empresa_id: string;
-  nome: string;
-  email: string | null;
-  telefone: string | null;
-  origem: string | null;
-  fonte: string | null;
-  score: number;
-  status: string;
-  tags: string[] | null;
-  created_at: string;
-  updated_at: string;
-};
+import { useAuth } from "~/lib/auth";
+import { useLead, useAtualizarLead } from "../hooks/useLeads";
 
 const STATUS_LABELS: Record<string, string> = {
   novo: "Novo",
@@ -60,22 +46,14 @@ const STATUS_COLORS: Record<string, string> = {
   perdido: "bg-red-500/10 text-red-400 border-red-500/20",
 };
 
-async function buscarLead(id: string): Promise<Lead | null> {
-  const { data } = await supabase
-    .from("mktg_leads")
-    .select("*")
-    .eq("id", id)
-    .single();
-  return (data as Lead) || null;
-}
-
 export function LeadDetail() {
   const { id } = useParams({ from: "/auth/marketing/leads/$id" });
+  const { profile } = useAuth();
   const navigate = useNavigate();
-  const [lead, setLead] = useState<Lead | null>(null);
-  const [carregando, setCarregando] = useState(true);
+  const empresaId = profile?.empresa_id ?? "";
+  const { data: lead, isLoading } = useLead(id, empresaId);
+  const atualizarLead = useAtualizarLead(empresaId);
 
-  // Edit states
   const [editarOpen, setEditarOpen] = useState(false);
   const [formNome, setFormNome] = useState("");
   const [formEmail, setFormEmail] = useState("");
@@ -83,56 +61,41 @@ export function LeadDetail() {
   const [formOrigem, setFormOrigem] = useState("");
   const [formStatus, setFormStatus] = useState("novo");
   const [formScore, setFormScore] = useState(10);
-  const [salvando, setSalvando] = useState(false);
 
   useEffect(() => {
-    buscarLead(id)
-      .then((data) => {
-        setLead(data);
-        if (data) {
-          setFormNome(data.nome);
-          setFormEmail(data.email || "");
-          setFormTelefone(data.telefone || "");
-          setFormOrigem(data.origem || "");
-          setFormStatus(data.status);
-          setFormScore(data.score);
-        }
-      })
-      .catch(() => toast.error("Erro ao carregar lead"))
-      .finally(() => setCarregando(false));
-  }, [id]);
+    if (lead) {
+      setFormNome(lead.nome);
+      setFormEmail(lead.email || "");
+      setFormTelefone(lead.telefone || "");
+      setFormOrigem(lead.origem || "");
+      setFormStatus(lead.status);
+      setFormScore(lead.score);
+    }
+  }, [lead]);
 
   async function handleEditarLead(e: React.FormEvent) {
     e.preventDefault();
     if (!formNome.trim()) return;
-    setSalvando(true);
     try {
-      const { data, error } = await supabase
-        .from("mktg_leads")
-        .update({
+      await atualizarLead.mutateAsync({
+        id,
+        updates: {
           nome: formNome.trim(),
           email: formEmail.trim() || null,
           telefone: formTelefone.trim() || null,
           origem: formOrigem.trim() || null,
           status: formStatus,
           score: formScore,
-        })
-        .eq("id", id)
-        .select()
-        .single();
-      if (error) throw error;
-      setLead(data as Lead);
+        },
+      });
       toast.success("Lead atualizado!");
       setEditarOpen(false);
-    } catch (err) {
-      console.error(err);
+    } catch {
       toast.error("Erro ao atualizar lead");
-    } finally {
-      setSalvando(false);
     }
   }
 
-  if (carregando) {
+  if (isLoading) {
     return (
       <div className="p-6 space-y-4">
         <Skeleton className="h-8 w-48" />
@@ -164,7 +127,6 @@ export function LeadDetail() {
       />
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {/* Status e Score */}
         <Card className="md:col-span-1">
           <CardContent className="p-4 space-y-4">
             <div>
@@ -195,7 +157,6 @@ export function LeadDetail() {
           </CardContent>
         </Card>
 
-        {/* Contato */}
         <Card className="md:col-span-2">
           <CardContent className="p-4 space-y-4">
             <div className="flex items-center justify-between">
@@ -244,7 +205,6 @@ export function LeadDetail() {
         </Card>
       </div>
 
-      {/* Modal de Editar Lead */}
       <Dialog open={editarOpen} onOpenChange={setEditarOpen}>
         <DialogContent className="max-w-md">
           <DialogHeader>
@@ -317,8 +277,8 @@ export function LeadDetail() {
               <button type="button" onClick={() => setEditarOpen(false)} className="flex-1 sm:flex-none rounded-xl border border-border px-6 py-2.5 text-sm text-text-muted font-semibold hover:text-text-main hover:bg-surface-hover transition-all duration-200 min-h-[44px]">
                 Cancelar
               </button>
-              <button type="submit" disabled={salvando} className="flex-1 sm:flex-none rounded-xl bg-accent px-6 py-2.5 text-sm font-semibold text-accent-fg shadow-md shadow-accent/20 hover:bg-accent-hover disabled:opacity-50 transition-all duration-200 min-h-[44px]">
-                {salvando ? "Salvando..." : "Salvar"}
+              <button type="submit" disabled={atualizarLead.isPending} className="flex-1 sm:flex-none rounded-xl bg-accent px-6 py-2.5 text-sm font-semibold text-accent-fg shadow-md shadow-accent/20 hover:bg-accent-hover disabled:opacity-50 transition-all duration-200 min-h-[44px]">
+                {atualizarLead.isPending ? "Salvando..." : "Salvar"}
               </button>
             </DialogFooter>
           </form>

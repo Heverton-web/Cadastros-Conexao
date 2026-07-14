@@ -10,6 +10,7 @@ export type NavItemRegistration = {
   moduloKey?: string;
   matchPaths?: string[];
   noChildMatch?: boolean;
+  external?: boolean;
 };
 
 const glob =

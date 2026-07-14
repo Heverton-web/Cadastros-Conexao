@@ -6,11 +6,12 @@ import {
   toggleEmpresa,
   deletarEmpresa,
   criarEmpresa,
+  upsertModuloEmpresa,
+  criarUsuarioEmpresa,
   type Empresa,
 } from "~/features/empresas";
 import { criarCredencial } from "~/features/credenciais";
 import { getAllModules } from "~/registry";
-import { supabase } from "~/core/supabase";
 import { useState, useEffect, useCallback } from "react";
 import {
   Plus,
@@ -36,6 +37,16 @@ import {
 import toast from "react-hot-toast";
 import { cn } from "~/lib/utils";
 import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "~/components/ui/alert-dialog";
+import {
   SectionCard,
   Grid,
   Field,
@@ -60,6 +71,7 @@ function AdminSuperEmpresas() {
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [creating, setCreating] = useState(false);
+  const [empresaParaDeletar, setEmpresaParaDeletar] = useState<Empresa | null>(null);
 
   useEffect(() => {
     if (profile?.is_super_admin) carregar();
@@ -92,16 +104,12 @@ function AdminSuperEmpresas() {
     }
   }
 
-  async function handleDelete(id: string, nome: string) {
-    if (
-      !confirm(
-        `Tem certeza que deseja deletar "${nome}"?\n\nTodos os dados vinculados serao perdidos permanentemente!`,
-      )
-    )
-      return;
+  async function handleDelete() {
+    if (!empresaParaDeletar) return;
     try {
-      await deletarEmpresa(id);
+      await deletarEmpresa(empresaParaDeletar.id);
       toast.success("Empresa deletada");
+      setEmpresaParaDeletar(null);
       await carregar();
     } catch (e: any) {
       toast.error(e.message);
@@ -173,7 +181,7 @@ function AdminSuperEmpresas() {
                 <Power size={14} />
               </button>
               <button
-                onClick={() => handleDelete(emp.id, emp.nome)}
+                onClick={() => setEmpresaParaDeletar(emp)}
                 className="p-1.5 rounded-lg text-text-muted hover:text-red-400 hover:bg-surface-hover transition-colors"
                 title="Deletar"
               >
@@ -199,6 +207,23 @@ function AdminSuperEmpresas() {
           }}
         />
       )}
+
+      <AlertDialog open={!!empresaParaDeletar} onOpenChange={(o) => !o && setEmpresaParaDeletar(null)}>
+        <AlertDialogContent className="bg-card border-border">
+          <AlertDialogHeader>
+            <AlertDialogTitle>Excluir empresa?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Todos os dados vinculados a "{empresaParaDeletar?.nome}" serão perdidos permanentemente.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+            <AlertDialogAction onClick={handleDelete} className="bg-destructive">
+              Excluir
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
@@ -332,17 +357,10 @@ function CriarEmpresaModal({
       });
 
       // Ativar módulos selecionados
-      for (const [modKey, ativo] of Object.entries(modulosAtivos)) {
-        if (ativo) {
-          const { error } = await supabase
-            .from("empresa_modulos")
-            .upsert(
-              { empresa_id: empresa.id, modulo_key: modKey, ativo: true },
-              { onConflict: "empresa_id,modulo_key" },
-            );
-          if (error) console.error(`Erro ao ativar módulo ${modKey}:`, error);
-        }
-      }
+      const modulosParaAtivar = Object.entries(modulosAtivos)
+        .filter(([, ativo]) => ativo)
+        .map(([modKey]) => upsertModuloEmpresa(empresa.id, modKey, true));
+      await Promise.allSettled(modulosParaAtivar);
 
       // Criar credencial admin
       if (form.admin_nome && form.admin_email) {
@@ -357,36 +375,17 @@ function CriarEmpresaModal({
           console.error("Erro ao criar credencial:", credErr);
         }
 
-        // Criar auth user via RPC (sem confirmacao de email)
+        // Criar auth user via service
         if (form.admin_senha) {
           try {
-            const { data: userId, error: rpcErr } = await supabase.rpc(
-              "admin_criar_usuario",
-              {
-                p_email: form.admin_email,
-                p_senha: form.admin_senha,
-                p_nome: form.admin_nome,
-                p_empresa_id: empresa.id,
-                p_is_super_admin: false,
-              },
-            );
-            if (rpcErr) {
-              toast.error(
-                "Admin criado, mas erro ao criar usuário auth: " +
-                  rpcErr.message,
-              );
-            } else if (userId) {
-              const { error: updateErr } = await supabase
-                .from("profiles")
-                .update({
-                  role: form.admin_role,
-                  nome: form.admin_nome,
-                  celular: form.admin_celular || null,
-                })
-                .eq("id", userId);
-              if (updateErr)
-                console.error("Erro ao atualizar role do admin:", updateErr);
-            }
+            await criarUsuarioEmpresa({
+              nome: form.admin_nome,
+              email: form.admin_email,
+              senha: form.admin_senha,
+              empresa_id: empresa.id,
+              role: form.admin_role,
+              celular: form.admin_celular || undefined,
+            });
           } catch (authErr: any) {
             toast.error("Erro ao criar usuário auth: " + authErr.message);
           }

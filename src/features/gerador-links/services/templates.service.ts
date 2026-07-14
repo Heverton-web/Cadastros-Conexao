@@ -27,8 +27,9 @@ export async function criarTemplate(input: {
 export async function atualizarTemplate(
   id: string,
   input: { nome?: string; conteudo?: Record<string, string> },
-): Promise<void> {
-  await supabase.from("gerador_modelos").update(input).eq("id", id);
+): Promise<TemplateMensagem> {
+  const { data } = await supabase.from("gerador_modelos").update(input).eq("id", id).select().single();
+  return data as TemplateMensagem;
 }
 
 export async function deletarTemplate(id: string): Promise<void> {

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Target, Search, Calendar, DollarSign, TrendingUp } from "lucide-react";
 import toast from "react-hot-toast";
 import { useAuth } from "~/lib/auth";
@@ -7,21 +7,7 @@ import { Card, CardContent } from "~/components/ui/card";
 import { Input } from "~/components/ui/input";
 import { Skeleton } from "~/components/ui/skeleton";
 import { EmptyState } from "~/components/ui/empty-state";
-import { supabase } from "~/core/supabase";
-
-type MetaCampanha = {
-  id: string;
-  empresa_id: string;
-  meta_campanha_id: string | null;
-  nome: string;
-  status: string;
-  orcamento_diario: number | null;
-  orcamento_total: number | null;
-  plataforma: string | null;
-  data_inicio: string | null;
-  data_fim: string | null;
-  created_at: string;
-};
+import { useMetaCampanhas } from "../hooks/useMetaBm";
 
 const STATUS_COLORS: Record<string, string> = {
   ativa: "bg-green-500/10 text-green-400 border-green-500/20",
@@ -30,37 +16,17 @@ const STATUS_COLORS: Record<string, string> = {
   rascunho: "bg-blue-500/10 text-blue-400 border-blue-500/20",
 };
 
-async function listarCampanhas(empresaId: string): Promise<MetaCampanha[]> {
-  const { data } = await supabase
-    .from("mktg_meta_campanhas")
-    .select("*")
-    .eq("empresa_id", empresaId)
-    .order("created_at", { ascending: false });
-  return (data as MetaCampanha[]) || [];
-}
-
 export function MetaCampanhasList() {
   const { profile } = useAuth();
-  const [campanhas, setCampanhas] = useState<MetaCampanha[]>([]);
-  const [carregando, setCarregando] = useState(true);
+  const empresaId = profile?.empresa_id ?? "";
+  const { data: campanhas = [], isLoading } = useMetaCampanhas(empresaId);
   const [busca, setBusca] = useState("");
-
-  useEffect(() => {
-    if (!profile?.empresa_id) {
-      setCarregando(false);
-      return;
-    }
-    listarCampanhas(profile.empresa_id)
-      .then(setCampanhas)
-      .catch(() => toast.error("Erro ao carregar campanhas"))
-      .finally(() => setCarregando(false));
-  }, [profile?.empresa_id]);
 
   const filtradas = campanhas.filter(
     (c) => !busca || c.nome.toLowerCase().includes(busca.toLowerCase())
   );
 
-  if (carregando) {
+  if (isLoading) {
     return (
       <div className="p-6 space-y-4">
         <Skeleton className="h-8 w-48" />

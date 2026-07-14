@@ -1,4 +1,4 @@
-import { createRoute, Link } from "@tanstack/react-router"
+import { createRoute, Link, useSearch } from "@tanstack/react-router"
 import { rootRoute } from "./__root"
 import { StoreLayout } from "~/features/catalogo/components/StoreLayout"
 import { useKitsAtivos } from "~/features/catalogo/hooks/useCatalogo"
@@ -13,13 +13,15 @@ export const catalogoKitsRoute = createRoute({
 
 function CatalogoKitsPage() {
   const { data: kits, isLoading } = useKitsAtivos()
+  const search = useSearch({ strict: false }) as Record<string, string | undefined>
+  const empresa = search.empresa
 
   return (
     <StoreLayout>
       <div className="max-w-6xl mx-auto px-6 py-12 space-y-10">
         {/* Header */}
         <div className="flex items-center gap-6">
-          <Link to="/catalogo" className="group flex items-center justify-center w-12 h-12 rounded-full border border-[var(--color-border-subtle)] hover:bg-[var(--color-surface)] hover:border-[var(--color-accent)] transition-all">
+          <Link to="/catalogo" search={{ empresa }} className="group flex items-center justify-center w-12 h-12 rounded-full border border-[var(--color-border-subtle)] hover:bg-[var(--color-surface)] hover:border-[var(--color-accent)] transition-all">
             <ArrowLeft className="h-5 w-5 text-[var(--color-text-muted)] group-hover:text-[var(--color-accent)] transition-colors" />
           </Link>
           <div>
@@ -47,6 +49,7 @@ function CatalogoKitsPage() {
                 key={kit.sku}
                 to="/catalogo/produto/$tipo/$sku"
                 params={{ tipo: "kit", sku: kit.sku }}
+                search={{ empresa }}
                 className="group rounded-2xl border border-[var(--color-border-subtle)] bg-[var(--color-surface)]/50 overflow-hidden transition-all duration-300 hover:border-[var(--color-accent)]/40 hover:shadow-[0_8px_30px_rgba(201,166,85,0.08)]"
               >
                 <div className="p-6 flex flex-col justify-between min-h-[220px]">

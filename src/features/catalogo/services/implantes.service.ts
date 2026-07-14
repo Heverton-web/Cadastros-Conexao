@@ -71,6 +71,7 @@ export async function criarImplante(empresaId: string, input: {
   regiao_apical?: string
   regiao_cervical?: string
   torque_insercao?: number
+  preco?: number
   detalhes_extras?: Record<string, unknown>
 }): Promise<CatalogoImplante> {
   const { data, error } = await supabase
@@ -91,6 +92,7 @@ export async function atualizarImplante(empresaId: string, sku: string, input: P
   regiao_apical: string
   regiao_cervical: string
   torque_insercao: number
+  preco: number
   detalhes_extras: Record<string, unknown>
   ativo: boolean
 }>): Promise<CatalogoImplante> {
@@ -125,20 +127,6 @@ export async function removerImplante(empresaId: string, sku: string): Promise<v
   dispararEventoModulo(MODULO_KEY, "produto.removido", { sku, tipo: "implante", empresa_id: empresaId }, empresaId).catch(() => {})
 }
 
-// Protocolo de Fresagem
-const MOCK_FRESAGEM_HARD: CatalogoProtocoloFresagem[] = [
-  { id: "mock-h1", empresa_id: "", implante_sku: "", fresa_sku: "934400", tipo_osso: "Hard (I-II)", ordem_uso: 1, created_at: "", fresa: { id: "f1", empresa_id: "", sku: "934400", nome: "Fresa Lança 2.0", diametro_mm: 2, preco: 171, created_at: "" } },
-  { id: "mock-h2", empresa_id: "", implante_sku: "", fresa_sku: "934401", tipo_osso: "Hard (I-II)", ordem_uso: 2, created_at: "", fresa: { id: "f2", empresa_id: "", sku: "934401", nome: "Fresa Piloto 2.0", diametro_mm: 2, preco: 173, created_at: "" } },
-  { id: "mock-h3", empresa_id: "", implante_sku: "", fresa_sku: "934403", tipo_osso: "Hard (I-II)", ordem_uso: 3, created_at: "", fresa: { id: "f3", empresa_id: "", sku: "934403", nome: "Fresa Master 2.4", diametro_mm: 2.4, preco: 177, created_at: "" } },
-  { id: "mock-h4", empresa_id: "", implante_sku: "", fresa_sku: "934410", tipo_osso: "Hard (I-II)", ordem_uso: 4, created_at: "", fresa: { id: "f4", empresa_id: "", sku: "934410", nome: "Stop Drill 3.5", diametro_mm: 3.5, preco: 154, created_at: "" } },
-]
-
-const MOCK_FRESAGEM_SOFT: CatalogoProtocoloFresagem[] = [
-  { id: "mock-s1", empresa_id: "", implante_sku: "", fresa_sku: "934400", tipo_osso: "Soft (III-IV)", ordem_uso: 1, created_at: "", fresa: { id: "f1", empresa_id: "", sku: "934400", nome: "Fresa Lança 2.0", diametro_mm: 2, preco: 171, created_at: "" } },
-  { id: "mock-s2", empresa_id: "", implante_sku: "", fresa_sku: "934402", tipo_osso: "Soft (III-IV)", ordem_uso: 2, created_at: "", fresa: { id: "f5", empresa_id: "", sku: "934402", nome: "Fresa Twist 2.8", diametro_mm: 2.8, preco: 168, created_at: "" } },
-  { id: "mock-s3", empresa_id: "", implante_sku: "", fresa_sku: "934404", tipo_osso: "Soft (III-IV)", ordem_uso: 3, created_at: "", fresa: { id: "f6", empresa_id: "", sku: "934404", nome: "Fresa Cortical 4.0", diametro_mm: 4, preco: 189, created_at: "" } },
-]
-
 export async function getProtocoloFresagem(empresaId: string, implanteSku: string): Promise<CatalogoProtocoloFresagem[]> {
   const { data, error } = await supabase
     .from("catalogo_protocolo_fresagem")
@@ -148,12 +136,6 @@ export async function getProtocoloFresagem(empresaId: string, implanteSku: strin
     .order("ordem_uso")
   if (error) throw error
   const result = data as CatalogoProtocoloFresagem[]
-  if (result.length === 0) {
-    return [
-      ...MOCK_FRESAGEM_HARD.map((p) => ({ ...p, empresa_id: empresaId, implante_sku: implanteSku })),
-      ...MOCK_FRESAGEM_SOFT.map((p) => ({ ...p, empresa_id: empresaId, implante_sku: implanteSku })),
-    ]
-  }
   return result
 }
 
@@ -184,6 +166,11 @@ export async function criarFresa(empresaId: string, input: { sku: string; nome: 
     .single()
   if (error) throw error
   return data as CatalogoFresa
+}
+
+export async function toggleFresaAtivo(empresaId: string, sku: string, ativo: boolean): Promise<void> {
+  const { error } = await supabase.from("catalogo_fresas").update({ ativo }).eq("empresa_id", empresaId).eq("sku", sku)
+  if (error) throw error
 }
 
 export async function removerFresa(empresaId: string, sku: string): Promise<void> {

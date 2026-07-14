@@ -1,12 +1,13 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { supabase } from "~/lib/supabase";
+import { supabase } from "~/core/supabase";
 import { useAuth } from "~/lib/auth";
 import { cn } from "~/lib/utils";
 import { Search, User, FileText, Calendar, X, Loader2 } from "lucide-react";
 import { Input } from "~/components/ui/input";
 import { Badge } from "~/components/ui/badge";
+import toast from "react-hot-toast";
 
 type ResultadoBusca = {
   tipo: "cliente" | "tarefa" | "visita";
@@ -113,7 +114,7 @@ export function BuscaGlobal({ aberto, onFechar }: Props) {
 
         setResultados(resultados);
       } catch (err) {
-        console.error("Erro na busca:", err);
+        toast.error("Erro ao buscar resultados");
       } finally {
         setCarregando(false);
       }

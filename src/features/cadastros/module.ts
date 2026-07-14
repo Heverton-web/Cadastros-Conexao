@@ -178,7 +178,7 @@ export const cadastrosModule: ModuleDefinition = {
   ],
   hasCredentialScopes: false,
   hasLaboratorio: false,
-  hasFormulario: false,
+  hasFormulario: true,
   hasCustomActions: false,
   hasApiConnectors: false,
   hasDiagnostico: true,

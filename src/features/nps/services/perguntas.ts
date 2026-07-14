@@ -1,5 +1,8 @@
 import { supabase } from "~/core/supabase";
+import { dispararEventoModulo } from "~/core/services/webhooks";
 import type { NpsPergunta } from "../types";
+
+const MODULO_KEY = "nps";
 
 export async function listarPerguntas(
   empresaId: string,
@@ -42,6 +45,14 @@ export async function criarPergunta(
     .single();
 
   if (error) throw error;
+
+  dispararEventoModulo(
+    MODULO_KEY,
+    "nps.pergunta_criada",
+    { pergunta_id: data.id, empresa_id: empresaId },
+    empresaId,
+  ).catch(() => {});
+
   return data as NpsPergunta;
 }
 

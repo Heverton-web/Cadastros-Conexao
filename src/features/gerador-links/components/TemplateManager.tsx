@@ -32,7 +32,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "~/components/ui/select";
-import { useTemplates, useCriarTemplate, useDeletarTemplate } from "../hooks/useTemplates";
+import { useTemplates, useCriarTemplate, useAtualizarTemplate, useDeletarTemplate } from "../hooks/useTemplates";
 import type { TemplateMensagem } from "../types";
 import { useEmpresaSuperAdmin } from "~/components/shared/useEmpresaSuperAdmin";
 import { EmpresaSuperAdminSelector } from "~/components/shared/EmpresaSuperAdminSelector";
@@ -48,6 +48,7 @@ export function TemplateManager() {
   const { profile, permissoes } = useAuth();
   const { data: templates, isLoading } = useTemplates(empresaId);
   const criarTemplate = useCriarTemplate();
+  const atualizarTemplate = useAtualizarTemplate();
   const deletarTemplate = useDeletarTemplate();
   const can = (key: string) => isSuperAdmin || permissoes?.[key] === true;
 
@@ -59,12 +60,29 @@ export function TemplateManager() {
   const [campoExtra, setCampoExtra] = useState("");
   const [itemParaDeletar, setItemParaDeletar] = useState<TemplateMensagem | null>(null);
   const [salvando, setSalvando] = useState(false);
+  const [editando, setEditando] = useState<TemplateMensagem | null>(null);
 
   function resetForm() {
     setNome("");
     setTelefone("");
     setMensagem("");
     setCampoExtra("");
+  }
+
+  function openCreate() {
+    resetForm();
+    setEditando(null);
+    setModalOpen(true);
+  }
+
+  function openEdit(t: TemplateMensagem) {
+    setTipo(t.tipo as "whatsapp_msg" | "utm_preset");
+    setNome(t.nome);
+    setTelefone((t.conteudo as any)?.telefone ?? "");
+    setMensagem((t.conteudo as any)?.mensagem ?? "");
+    setCampoExtra((t.conteudo as any)?.campoExtra ?? "");
+    setEditando(t);
+    setModalOpen(true);
   }
 
   async function handleSalvar() {
@@ -74,11 +92,19 @@ export function TemplateManager() {
     }
     setSalvando(true);
     try {
-      await criarTemplate.mutateAsync({
-        tipo,
-        nome,
-        conteudo: tipo === "whatsapp_msg" ? { telefone, mensagem } : { campoExtra },
-      });
+      if (editando) {
+        await atualizarTemplate.mutateAsync({
+          id: editando.id,
+          nome,
+          conteudo: tipo === "whatsapp_msg" ? { telefone, mensagem } : { campoExtra },
+        });
+      } else {
+        await criarTemplate.mutateAsync({
+          tipo,
+          nome,
+          conteudo: tipo === "whatsapp_msg" ? { telefone, mensagem } : { campoExtra },
+        });
+      }
       toast.success("Template salvo!");
       setModalOpen(false);
       resetForm();
@@ -124,7 +150,7 @@ export function TemplateManager() {
             />
           )}
           {can("lk_gerenciar_templates") && (
-            <Button size="sm" onClick={() => { resetForm(); setModalOpen(true); }}>
+            <Button size="sm" onClick={openCreate}>
               <Plus className="w-4 h-4" /> Novo Template
             </Button>
           )}
@@ -157,12 +183,20 @@ export function TemplateManager() {
                     </p>
                   </div>
                   {can("lk_gerenciar_templates") && (
-                    <button
-                      onClick={() => setItemParaDeletar(t)}
-                      className="text-text-muted hover:text-error transition-colors p-1 shrink-0"
-                    >
-                      <Trash2 size={14} />
-                    </button>
+                    <div className="flex items-center gap-1">
+                      <button
+                        onClick={() => openEdit(t)}
+                        className="text-text-muted hover:text-accent transition-colors p-1 shrink-0"
+                      >
+                        <Pencil size={14} />
+                      </button>
+                      <button
+                        onClick={() => setItemParaDeletar(t)}
+                        className="text-text-muted hover:text-error transition-colors p-1 shrink-0"
+                      >
+                        <Trash2 size={14} />
+                      </button>
+                    </div>
                   )}
                 </div>
               </CardContent>
@@ -171,16 +205,16 @@ export function TemplateManager() {
         </div>
       )}
 
-      <Dialog open={modalOpen} onOpenChange={(o) => { if (!o) { setModalOpen(false); resetForm(); } }}>
+      <Dialog open={modalOpen} onOpenChange={(o) => { if (!o) { setModalOpen(false); resetForm(); setEditando(null); } }}>
         <DialogContent className="max-w-lg">
           <DialogHeader>
             <div className="flex items-center gap-3">
               <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent/15 text-accent">
-                <Plus className="h-6 w-6" />
+                {editando ? <Pencil className="h-6 w-6" /> : <Plus className="h-6 w-6" />}
               </div>
               <div>
-                <DialogTitle>Novo Template</DialogTitle>
-                <DialogDescription>Crie um novo template de mensagem ou preset UTM.</DialogDescription>
+                <DialogTitle>{editando ? "Editar Template" : "Novo Template"}</DialogTitle>
+                <DialogDescription>{editando ? "Atualize os dados do template." : "Crie um novo template de mensagem ou preset UTM."}</DialogDescription>
               </div>
             </div>
           </DialogHeader>

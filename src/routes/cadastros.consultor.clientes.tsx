@@ -2,7 +2,7 @@ import { createRoute, useNavigate } from "@tanstack/react-router";
 import { authLayout } from "./_auth";
 import { useState, useEffect } from "react";
 import { useAuth } from "~/lib/auth";
-import { supabase } from "~/lib/supabase";
+import { listarCadastros } from "~/features/clientes";
 import {
   Loader2,
   ArrowLeft,
@@ -19,7 +19,7 @@ export const consultorClientesRoute = createRoute({
 });
 
 function ConsultorClientes() {
-  const { user } = useAuth();
+  const { user, profile } = useAuth();
   const navigate = useNavigate();
   const [clientes, setClientes] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -33,12 +33,11 @@ function ConsultorClientes() {
     if (!user?.id) return;
     setLoading(true);
     try {
-      const { data } = await supabase
-        .from("clientes")
-        .select("*")
-        .eq("created_by", user.id)
-        .eq("status", "aprovado")
-        .order("created_at", { ascending: false });
+      if (!profile?.empresa_id) return;
+      const data = await listarCadastros(profile.empresa_id, {
+        status: "aprovado",
+        created_by: user.id,
+      });
       setClientes(data || []);
     } catch (e) {
       console.error(e);

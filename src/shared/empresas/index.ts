@@ -26,4 +26,5 @@ export {
   uploadEmpresaLogo,
   deletarEmpresaLogo,
   ativarModulosParaEmpresa,
+  criarUsuarioEmpresa,
 } from "./service";

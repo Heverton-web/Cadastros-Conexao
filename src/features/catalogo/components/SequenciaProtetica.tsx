@@ -1,16 +1,19 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import toast from "react-hot-toast"
 import { Eye, ShoppingCart, Check, Plus } from "lucide-react"
 import { addToCart } from "~/features/catalogo/services/carrinho.service"
 import { playCoinSound } from "~/features/catalogo/services/audio.service"
 import { ProductThumb } from "./ProductThumb"
 import { openImageViewer } from "~/features/catalogo/services/ui.service"
+import { listarSequenciaProtetica } from "~/features/catalogo/services/sequencia-protetica.service"
+import { useCatalogoEmpresaId } from "~/features/catalogo/hooks/useCatalogoEmpresa"
 
 interface SequenciaProteticaProps {
   familiaId: string
   tipoAbutmentId: string
   familiaNome: string
   tipoAbutmentNome: string
+  abutmentSku?: string
 }
 
 interface WorkflowItem {
@@ -24,32 +27,47 @@ interface WorkflowItem {
   }[]
 }
 
-const MOCK_DATA: WorkflowItem[] = [
-  {
-    id: "wf-analogico",
-    nome: "Analógico Gesso",
-    etapas: [
-      { ordem: 1, etapaNome: "Cicatrização", acessorioSku: "124220", acessorioNome: "Healing Cap NP 4.5x4.0" },
-      { ordem: 2, etapaNome: "Transferência", acessorioSku: "820011", acessorioNome: "Transfer NP Fechado" },
-      { ordem: 4, etapaNome: "Parafusamento", acessorioSku: "710055", acessorioNome: "Parafuso Protético NP" },
-    ],
-  },
-  {
-    id: "wf-digital",
-    nome: "Scan Digital inLego",
-    etapas: [
-      { ordem: 1, etapaNome: "Cicatrização", acessorioSku: "124215", acessorioNome: "Healing Cap NP 4.5x2.5" },
-      { ordem: 2, etapaNome: "Transferência", acessorioSku: "957310", acessorioNome: "Scan Body inLego NP" },
-      { ordem: 4, etapaNome: "Parafusamento", acessorioSku: "710055", acessorioNome: "Parafuso Protético NP" },
-    ],
-  },
-]
+function groupEtapas(etapas: { tipo_workflow: string; etapa_ordem: number; etapa_nome: string; acessorio_sku: string; acessorio?: { nome: string } | null }[]): WorkflowItem[] {
+  const groups: Record<string, WorkflowItem> = {}
+  for (const e of etapas) {
+    if (!groups[e.tipo_workflow]) {
+      groups[e.tipo_workflow] = {
+        id: `wf-${e.tipo_workflow}`,
+        nome: e.tipo_workflow === "analógico" ? "Analógico Gesso" : "Scan Digital",
+        etapas: [],
+      }
+    }
+    groups[e.tipo_workflow].etapas.push({
+      ordem: e.etapa_ordem,
+      etapaNome: e.etapa_nome,
+      acessorioSku: e.acessorio_sku,
+      acessorioNome: e.acessorio?.nome ?? e.acessorio_sku,
+    })
+  }
+  for (const key of Object.keys(groups)) {
+    groups[key].etapas.sort((a, b) => a.ordem - b.ordem)
+  }
+  return Object.values(groups)
+}
 
-export function SequenciaProtetica({ familiaId, tipoAbutmentId, familiaNome, tipoAbutmentNome }: SequenciaProteticaProps) {
+export function SequenciaProtetica({ familiaId, tipoAbutmentId, familiaNome, tipoAbutmentNome, abutmentSku }: SequenciaProteticaProps) {
+  const empresaId = useCatalogoEmpresaId()
   const [selectedWorkflow, setSelectedWorkflow] = useState<string | null>(null)
   const [addedSkus, setAddedSkus] = useState<Set<string>>(new Set())
+  const [workflows, setWorkflows] = useState<WorkflowItem[]>([])
+  const [loading, setLoading] = useState(false)
 
-  const workflows = MOCK_DATA
+  useEffect(() => {
+    if (!abutmentSku || !empresaId) return
+    setLoading(true)
+    listarSequenciaProtetica(empresaId, abutmentSku)
+      .then((data) => {
+        const grouped = groupEtapas(data)
+        setWorkflows(grouped)
+      })
+      .catch(() => {})
+      .finally(() => setLoading(false))
+  }, [abutmentSku, empresaId])
 
   const handleAdd = (sku: string, nome: string) => {
     addToCart({ sku, nome, tipo: "acessorio", cor: "#c9a655", preco: 0 })
@@ -75,6 +93,18 @@ export function SequenciaProtetica({ familiaId, tipoAbutmentId, familiaNome, tip
     }, 2000)
   }
 
+  if (loading) {
+    return (
+      <div className="space-y-6">
+        <div className="space-y-2">
+          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-accent)]">{tipoAbutmentNome}</p>
+          <h3 className="text-lg font-bold text-white">Sequência Protética</h3>
+          <p className="text-sm text-[var(--color-text-muted)]">Carregando...</p>
+        </div>
+      </div>
+    )
+  }
+
   if (selectedWorkflow) {
     const workflow = workflows.find((w) => w.id === selectedWorkflow)
 
@@ -97,6 +127,11 @@ export function SequenciaProtetica({ familiaId, tipoAbutmentId, familiaNome, tip
 
         <div className="h-px bg-[var(--color-border-subtle)]" />
 
+        {(workflow?.etapas.length ?? 0) === 0 ? (
+          <div className="text-center py-12 rounded-xl bg-[var(--color-surface)]/30 border border-[var(--color-border-subtle)]">
+            <p className="text-sm font-bold text-[var(--color-text-muted)]">Nenhuma etapa cadastrada para este workflow</p>
+          </div>
+        ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
           {workflow?.etapas.map((etapa) => {
             const isAdded = addedSkus.has(etapa.acessorioSku)
@@ -105,7 +140,6 @@ export function SequenciaProtetica({ familiaId, tipoAbutmentId, familiaNome, tip
                 key={etapa.acessorioSku}
                 className="flex flex-col rounded-xl border border-[var(--color-border-subtle)] bg-[var(--color-surface)]/80 overflow-hidden"
               >
-                {/* Header: imagem + nome + código */}
                 <div className="flex items-center gap-3 p-3 pb-2">
                   <ProductThumb tipo="acessorio" size="sm" cor="#c9a655" />
                   <div className="flex-1 min-w-0">
@@ -121,7 +155,6 @@ export function SequenciaProtetica({ familiaId, tipoAbutmentId, familiaNome, tip
                   </div>
                 </div>
 
-                {/* Botões */}
                 <div className="flex items-center gap-2 p-3 pt-2 mt-auto border-t border-[var(--color-border-subtle)]">
                   <button
                     onClick={() => openImageViewer("", etapa.acessorioNome)}
@@ -145,6 +178,7 @@ export function SequenciaProtetica({ familiaId, tipoAbutmentId, familiaNome, tip
             )
           })}
         </div>
+        )}
       </div>
     )
   }
@@ -156,6 +190,12 @@ export function SequenciaProtetica({ familiaId, tipoAbutmentId, familiaNome, tip
         <div className="h-px bg-[var(--color-border-subtle)]" />
       </div>
 
+      {workflows.length === 0 ? (
+        <div className="text-center py-12 rounded-xl bg-[var(--color-surface)]/30 border border-[var(--color-border-subtle)]">
+          <p className="text-sm font-bold text-[var(--color-text-muted)]">Nenhuma sequência protética cadastrada</p>
+          <p className="text-xs text-[var(--color-text-muted)]/60 mt-1">Adicione uma sequência analógica ou digital na edição do componente.</p>
+        </div>
+      ) : (
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {workflows.map((workflow) => (
           <button
@@ -180,6 +220,7 @@ export function SequenciaProtetica({ familiaId, tipoAbutmentId, familiaNome, tip
           </button>
         ))}
       </div>
+      )}
     </div>
   )
 }

@@ -2,16 +2,18 @@ import { supabase } from "~/core/supabase";
 import type { Empresa, EmpresaDesign, ModuloEmpresa } from "./types";
 
 export async function listarEmpresas(): Promise<Empresa[]> {
-  const { data } = await supabase.from("empresas").select("*").order("nome");
+  const { data, error } = await supabase.from("empresas").select("*").order("nome");
+  if (error) throw error;
   return (data ?? []) as Empresa[];
 }
 
 export async function buscarEmpresa(id: string): Promise<Empresa | null> {
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from("empresas")
     .select("*")
     .eq("id", id)
     .single();
+  if (error) throw error;
   return data as Empresa | null;
 }
 
@@ -57,7 +59,7 @@ export async function criarEmpresa(input: {
     theme: theme || {},
     updated_at: new Date().toISOString(),
   });
-  if (configError) console.error("Erro ao criar config:", configError);
+  if (configError) throw new Error(`Erro ao criar config da empresa: ${configError.message}`);
   return empresa;
 }
 
@@ -84,15 +86,23 @@ export async function atualizarEmpresa(
     site: string;
     ativo: boolean;
   }>,
-): Promise<void> {
-  const { error } = await supabase
+): Promise<Empresa> {
+  const { data, error } = await supabase
     .from("empresas")
     .update({ ...input, updated_at: new Date().toISOString() })
-    .eq("id", id);
+    .eq("id", id)
+    .select()
+    .single();
   if (error) throw error;
+  return data as Empresa;
 }
 
 export async function deletarEmpresa(id: string): Promise<void> {
+  const tables = ["empresas_config", "empresa_modulos", "credenciais", "profiles"];
+  for (const table of tables) {
+    const { error } = await supabase.from(table).delete().eq("empresa_id", id);
+    if (error) console.error(`Erro ao deletar ${table}:`, error);
+  }
   const { error } = await supabase.from("empresas").delete().eq("id", id);
   if (error) throw error;
 }
@@ -104,11 +114,12 @@ export async function toggleEmpresa(id: string, ativo: boolean): Promise<void> {
 export async function buscarEmpresaDesign(
   empresaId: string,
 ): Promise<EmpresaDesign | null> {
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from("empresas_config")
     .select("*")
     .eq("empresa_id", empresaId)
     .single();
+  if (error) throw error;
   return data as EmpresaDesign | null;
 }
 
@@ -139,11 +150,12 @@ export const salvarEmpresaConfig = salvarEmpresaDesign;
 export async function listarModulosEmpresa(
   empresaId: string,
 ): Promise<ModuloEmpresa[]> {
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from("empresa_modulos")
     .select("*")
     .eq("empresa_id", empresaId)
     .order("modulo_key");
+  if (error) throw error;
   return (data ?? []) as ModuloEmpresa[];
 }
 
@@ -205,6 +217,35 @@ export async function deletarEmpresaLogo(
       .from("logos")
       .remove([`logos/${empresaId}/${match.name}`]);
   }
+}
+
+export async function criarUsuarioEmpresa(input: {
+  nome: string;
+  email: string;
+  senha: string;
+  empresa_id: string;
+  role: string;
+  celular?: string;
+}): Promise<string | null> {
+  const { data: userId, error: rpcErr } = await supabase.rpc(
+    "admin_criar_usuario",
+    {
+      p_email: input.email,
+      p_senha: input.senha,
+      p_nome: input.nome,
+      p_empresa_id: input.empresa_id,
+      p_is_super_admin: false,
+    },
+  );
+  if (rpcErr) throw rpcErr;
+  if (userId) {
+    const { error: updateErr } = await supabase
+      .from("profiles")
+      .update({ role: input.role, nome: input.nome, celular: input.celular || null })
+      .eq("id", userId);
+    if (updateErr) throw updateErr;
+  }
+  return userId as string | null;
 }
 
 export async function ativarModulosParaEmpresa(

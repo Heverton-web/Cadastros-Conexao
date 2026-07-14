@@ -71,9 +71,15 @@ export function useCatalogoEmpresaId(): string {
     resolveBySlug()
   }, [slug, searchEmpresaId])
 
-  // Prioridade: search param > slug > auth ERP > default
+  // Só retorna fallback se resolução por slug já completou
   if (searchEmpresaId) return searchEmpresaId
-  if (slugEmpresaId) return slugEmpresaId
-  if (profile?.empresa_id) return profile.empresa_id
-  return DEFAULT_EMPRESA_ID
+  if (resolved && slugEmpresaId) return slugEmpresaId
+  if (resolved && profile?.empresa_id) return profile.empresa_id
+  if (resolved) {
+    if (typeof window !== "undefined") {
+      console.warn(`[Catalogo] Fallback para empresa_id padrao ${DEFAULT_EMPRESA_ID}. Nenhum contexto de empresa foi resolvido.`)
+    }
+    return DEFAULT_EMPRESA_ID
+  }
+  return ""
 }

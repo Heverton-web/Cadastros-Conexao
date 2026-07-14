@@ -33,23 +33,11 @@ import {
   DialogHeader,
   DialogTitle,
 } from "~/components/ui/dialog";
-import { supabase } from "~/core/supabase";
 import { dispararEventoModulo } from "~/core/services/webhooks";
+import * as lpService from "../services/landing-pages.service";
+import type { LandingPage } from "../types";
 
 const MODULO_KEY = "mktg-landing-pages";
-
-type LandingPage = {
-  id: string;
-  empresa_id: string;
-  titulo: string;
-  slug: string;
-  status: string;
-  template: string | null;
-  versao_atual: number;
-  publicado_em: string | null;
-  created_at: string;
-  updated_at: string;
-};
 
 const STATUS_LABELS: Record<string, string> = {
   rascunho: "Rascunho",
@@ -63,19 +51,6 @@ const STATUS_COLORS: Record<string, string> = {
   arquivada: "bg-surface text-text-muted border-border",
 };
 
-async function listarLandingPages(empresaId: string): Promise<LandingPage[]> {
-  const { data } = await supabase
-    .from("mktg_landing_pages")
-    .select("*")
-    .eq("empresa_id", empresaId)
-    .order("created_at", { ascending: false });
-  return (data as LandingPage[]) || [];
-}
-
-async function deletarLandingPage(id: string): Promise<void> {
-  await supabase.from("mktg_landing_pages").delete().eq("id", id);
-}
-
 export function LandingPagesList() {
   const { profile } = useAuth();
   const [pages, setPages] = useState<LandingPage[]>([]);
@@ -84,56 +59,48 @@ export function LandingPagesList() {
   const [filtroStatus, setFiltroStatus] = useState("all");
   const [paraExcluir, setParaExcluir] = useState<LandingPage | null>(null);
 
-  // Form states
   const [novaPgOpen, setNovaPgOpen] = useState(false);
   const [formTitulo, setFormTitulo] = useState("");
   const [formSlug, setFormSlug] = useState("");
   const [formTemplate, setFormTemplate] = useState("padrao");
   const [salvando, setSalvando] = useState(false);
 
-  async function handleCriarLP(e: React.FormEvent) {
-    e.preventDefault();
-    if (!profile?.empresa_id || !formTitulo.trim() || !formSlug.trim()) return;
-    setSalvando(true);
-    try {
-      const { data, error } = await supabase
-        .from("mktg_landing_pages")
-        .insert({
-          empresa_id: profile.empresa_id,
-          titulo: formTitulo.trim(),
-          slug: formSlug.trim().toLowerCase().replace(/[^a-z0-9_-]/g, "-"),
-          template: formTemplate,
-          status: "rascunho",
-          versao_atual: 1,
-        })
-        .select()
-        .single();
-      if (error) throw error;
-      setPages((prev) => [data as LandingPage, ...prev]);
-      toast.success("Landing page criada!");
-      dispararEventoModulo(MODULO_KEY, "pagina.criada", { lp_id: data.id, titulo: formTitulo, slug: formSlug, empresa_id: profile.empresa_id }, profile.empresa_id).catch(() => {});
-      setNovaPgOpen(false);
-      setFormTitulo("");
-      setFormSlug("");
-      setFormTemplate("padrao");
-    } catch (err) {
-      console.error(err);
-      toast.error("Erro ao criar landing page");
-    } finally {
-      setSalvando(false);
-    }
-  }
-
   useEffect(() => {
     if (!profile?.empresa_id) {
       setCarregando(false);
       return;
     }
-    listarLandingPages(profile.empresa_id)
+    lpService.listarLandingPages(profile.empresa_id)
       .then(setPages)
       .catch(() => toast.error("Erro ao carregar landing pages"))
       .finally(() => setCarregando(false));
   }, [profile?.empresa_id]);
+
+  async function handleCriarLP(e: React.FormEvent) {
+    e.preventDefault();
+    if (!profile?.empresa_id || !formTitulo.trim() || !formSlug.trim()) return;
+    setSalvando(true);
+    try {
+      const data = await lpService.criarLandingPage(
+        profile.empresa_id,
+        formTitulo.trim(),
+        formTemplate
+      );
+      if (data) {
+        setPages((prev) => [data, ...prev]);
+        toast.success("Landing page criada!");
+        dispararEventoModulo(MODULO_KEY, "pagina.criada", { lp_id: data.id, titulo: formTitulo, slug: formSlug, empresa_id: profile.empresa_id }, profile.empresa_id).catch(() => {});
+      }
+      setNovaPgOpen(false);
+      setFormTitulo("");
+      setFormSlug("");
+      setFormTemplate("padrao");
+    } catch {
+      toast.error("Erro ao criar landing page");
+    } finally {
+      setSalvando(false);
+    }
+  }
 
   const filtradas = pages.filter((p) => {
     const matchStatus = filtroStatus === "all" || p.status === filtroStatus;
@@ -146,7 +113,7 @@ export function LandingPagesList() {
 
   async function handleExcluir() {
     if (!paraExcluir) return;
-    await deletarLandingPage(paraExcluir.id);
+    await lpService.deletarLandingPage(paraExcluir.id);
     setPages((prev) => prev.filter((p) => p.id !== paraExcluir.id));
     toast.success("Landing page excluída");
     setParaExcluir(null);
@@ -251,7 +218,6 @@ export function LandingPagesList() {
         </div>
       )}
 
-      {/* Modal Nova Landing Page */}
       <Dialog open={novaPgOpen} onOpenChange={setNovaPgOpen}>
         <DialogContent className="max-w-md">
           <DialogHeader>
@@ -269,7 +235,6 @@ export function LandingPagesList() {
                 value={formTitulo}
                 onChange={(e) => {
                   setFormTitulo(e.target.value);
-                  // Auto-gerar slug em kebab-case
                   setFormSlug(e.target.value.toLowerCase().replace(/[^a-z0-9\s-]/g, "").replace(/\s+/g, "-"));
                 }}
                 placeholder="Ex: Black Friday 2026"

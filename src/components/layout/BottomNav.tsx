@@ -52,6 +52,20 @@ export function BottomNav({
       <div className="mx-auto flex max-w-lg items-stretch justify-around px-1 pt-1.5 pb-1">
         {visibleItems.map((item) => {
           const isActive = bestMatch === item.path;
+          if (item.external) {
+            return (
+              <a
+                key={item.path}
+                href={item.path}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={item.label}
+                className="flex flex-col items-center justify-center min-w-[48px] min-h-[44px] rounded-lg text-text-muted hover:text-text-main transition-colors duration-150"
+              >
+                <item.icon size={22} />
+              </a>
+            );
+          }
           return (
             <button
               key={item.path}

@@ -4,6 +4,7 @@ import {
   PanelLeftClose,
   PanelLeft,
   ChevronDown,
+  Wrench,
   type LucideIcon,
 } from "lucide-react";
 import {
@@ -15,6 +16,7 @@ import { useLocation, useNavigate } from "@tanstack/react-router";
 import { cn } from "~/lib/utils";
 
 import { useAuth } from "~/lib/auth";
+import { useManutencao } from "~/features/manutencao/ManutencaoContext";
 
 const COLLAPSED_MODULES_KEY = "sidebar_collapsed_modules";
 
@@ -35,6 +37,7 @@ function NavItemButton({
   item,
   collapsed,
   isActive,
+  manutencao,
   onClick,
 }: {
   item: {
@@ -43,11 +46,33 @@ function NavItemButton({
     icon: LucideIcon;
     matchPaths?: string[];
     noChildMatch?: boolean;
+    external?: boolean;
   };
   collapsed: boolean;
   isActive: boolean;
+  manutencao?: boolean;
   onClick: () => void;
 }) {
+  if (item.external) {
+    return (
+      <a
+        href={item.path}
+        target="_blank"
+        rel="noopener noreferrer"
+        title={collapsed ? item.label : undefined}
+        aria-label={item.label}
+        className={cn(
+          "flex items-center gap-3 rounded-xl text-sm transition-all duration-200 relative group",
+          collapsed ? "justify-center p-2.5" : "px-3 py-2",
+          "text-text-muted hover:text-text-main hover:bg-surface-hover",
+        )}
+      >
+        <item.icon size={18} />
+        {!collapsed && <span className="truncate">{item.label}</span>}
+      </a>
+    );
+  }
+
   return (
     <button
       onClick={onClick}
@@ -66,6 +91,13 @@ function NavItemButton({
       )}
       <item.icon size={18} className={cn(isActive && "text-accent")} />
       {!collapsed && <span className="truncate">{item.label}</span>}
+      {manutencao && (
+        <Wrench
+          size={12}
+          className="ml-auto shrink-0 text-amber-400"
+          aria-label="Em manutenção"
+        />
+      )}
     </button>
   );
 }
@@ -79,6 +111,7 @@ function SubGroupBlock({
   navigate: (opts: { to: string }) => void;
   location: { pathname: string };
 }) {
+  const { rotasEmManutencao } = useManutencao();
   const isActive = useCallback(
     (path: string, matchPaths?: string[], noChildMatch?: boolean) =>
       location.pathname === path ||
@@ -101,6 +134,7 @@ function SubGroupBlock({
             item={item}
             collapsed={false}
             isActive={isActive(item.path, item.matchPaths, item.noChildMatch)}
+            manutencao={rotasEmManutencao.has(item.path)}
             onClick={() => navigate({ to: item.path })}
           />
         ))}
@@ -126,9 +160,11 @@ function ModuleSection({
 }) {
   const location = useLocation();
   const navigate = useNavigate();
+  const { modulosEmManutencao, rotasEmManutencao } = useManutencao();
   const Icon = section.icon;
   const isSelected = selectedModuleKey === section.key;
   const hasSubGroups = section.subGroups && section.subGroups.length > 0;
+  const moduloEmManutencao = modulosEmManutencao.has(section.key);
 
   const isActive = useCallback(
     (path: string, matchPaths?: string[], noChildMatch?: boolean) =>
@@ -151,13 +187,20 @@ function ModuleSection({
           title={section.label}
           aria-label={section.label}
           className={cn(
-            "flex items-center justify-center p-2.5 rounded-xl transition-all duration-200",
+            "relative flex items-center justify-center p-2.5 rounded-xl transition-all duration-200",
             isSelected
               ? "bg-accent/15 text-accent"
               : "text-text-muted hover:text-text-main hover:bg-surface-hover",
           )}
         >
           <Icon size={18} />
+          {moduloEmManutencao && (
+            <Wrench
+              size={11}
+              className="absolute -right-0.5 -top-0.5 text-amber-400"
+              aria-label="Em manutenção"
+            />
+          )}
         </button>
         {isExpanded && isSelected && (
           <div className="flex flex-col items-center gap-0.5 mt-1">
@@ -171,6 +214,7 @@ function ModuleSection({
                   item.matchPaths,
                   item.noChildMatch,
                 )}
+                manutencao={rotasEmManutencao.has(item.path)}
                 onClick={() => navigate({ to: item.path })}
               />
             ))}
@@ -199,6 +243,9 @@ function ModuleSection({
       >
         <Icon size={18} />
         <span className="flex-1 text-left truncate">{section.label}</span>
+        {moduloEmManutencao && (
+          <Wrench size={14} className="text-amber-400" aria-label="Em manutenção" />
+        )}
         <ChevronDown
           size={14}
           className={cn(
@@ -235,6 +282,7 @@ function ModuleSection({
                     item.matchPaths,
                     item.noChildMatch,
                   )}
+                  manutencao={rotasEmManutencao.has(item.path)}
                   onClick={() => navigate({ to: item.path })}
                 />
               ))}

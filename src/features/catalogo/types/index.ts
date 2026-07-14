@@ -15,6 +15,7 @@ export interface CatalogoCategoria {
   empresa_id: string
   nome: string
   locked: boolean
+  ativo: boolean
   created_at: string
   updated_at: string
 }
@@ -25,6 +26,8 @@ export interface CatalogoConexao {
   categoria_id: string
   nome: string
   sigla: string | null
+  locked: boolean
+  ativo: boolean
   created_at: string
   updated_at: string
   categoria?: CatalogoCategoria
@@ -36,6 +39,7 @@ export interface CatalogoFamilia {
   conexao_id: string
   nome: string
   cor_identificacao: string
+  ativo: boolean
   created_at: string
   updated_at: string
   conexao?: CatalogoConexao
@@ -63,6 +67,7 @@ export interface CatalogoImplante {
   regiao_cervical: string | null
   torque_insercao: number | null
   detalhes_extras: Record<string, unknown>
+  preco: number
   ativo: boolean
   created_at: string
   updated_at: string
@@ -86,6 +91,8 @@ export interface CatalogoFresa {
   nome: string
   diametro_mm: number | null
   venda_avulsa: boolean
+  ativo: boolean
+  preco: number
   created_at: string
   updated_at: string
 }
@@ -105,6 +112,7 @@ export interface CatalogoTipoReabilitacao {
   id: string
   empresa_id: string
   nome: string
+  ativo: boolean
   created_at: string
   updated_at: string
 }
@@ -114,6 +122,7 @@ export interface CatalogoTipoAbutment {
   empresa_id: string
   nome: string
   sigla: string | null
+  ativo: boolean
   created_at: string
   updated_at: string
 }
@@ -129,6 +138,8 @@ export interface CatalogoAbutment {
   altura_transmucoso: number | null
   altura_corpo: number | null
   torque_ncm: number | null
+  preco: number
+  ativo: boolean
   created_at: string
   updated_at: string
   familia?: CatalogoFamilia
@@ -152,6 +163,7 @@ export interface CatalogoCategoriaAcessorio {
   id: string
   empresa_id: string
   nome: string
+  ativo: boolean
   created_at: string
   updated_at: string
 }
@@ -164,6 +176,8 @@ export interface CatalogoAcessorio {
   diametro_mm: number | null
   altura_mm: number | null
   caracteristicas: Record<string, unknown>
+  ativo: boolean
+  preco: number
   created_at: string
   updated_at: string
   categoria?: CatalogoCategoriaAcessorio
@@ -174,6 +188,8 @@ export interface CatalogoChaveFerramental {
   empresa_id: string
   nome: string
   tipo_ferramenta: TipoFerramenta
+  ativo: boolean
+  preco: number
   created_at: string
   updated_at: string
 }
@@ -191,6 +207,7 @@ export interface CatalogoCategoriaInstrumental {
   id: string
   empresa_id: string
   nome: string
+  ativo: boolean
   created_at: string
   updated_at: string
 }
@@ -200,6 +217,7 @@ export interface CatalogoInstrumentalGeral {
   empresa_id: string
   categoria_id: string
   nome: string
+  preco: number
   created_at: string
   updated_at: string
   categoria?: CatalogoCategoriaInstrumental
@@ -209,6 +227,7 @@ export interface CatalogoWorkflow {
   id: string
   empresa_id: string
   nome: string
+  ativo: boolean
   created_at: string
   updated_at: string
 }
@@ -218,6 +237,7 @@ export interface CatalogoEtapaWorkflow {
   empresa_id: string
   ordem: number
   nome: string
+  ativo: boolean
   created_at: string
   updated_at: string
 }
@@ -243,6 +263,7 @@ export interface CatalogoCategoriaKit {
   id: string
   empresa_id: string
   nome: string
+  ativo: boolean
   created_at: string
   updated_at: string
 }
@@ -254,6 +275,7 @@ export interface CatalogoKit {
   nome: string
   descricao: string | null
   ativo: boolean
+  preco: number
   created_at: string
   updated_at: string
   categoria?: CatalogoCategoriaKit

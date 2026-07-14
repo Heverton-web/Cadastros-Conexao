@@ -8,7 +8,7 @@ export const catalogoAdminOrcamentosRoute = createRoute({
   getParentRoute: () => authLayout,
   path: "/catalogo/admin/orcamentos",
   component: () => (
-    <RequirePermission modulo="catalogo" permissions={["catalogo_dashboard"]}>
+    <RequirePermission modulo="catalogo" permissions={["catalogo_gerenciar_orcamentos"]}>
       <EmpresaCrudGuard>
         <OrcamentosAdmin />
       </EmpresaCrudGuard>

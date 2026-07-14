@@ -113,7 +113,7 @@ function ConsultorPage() {
     if (!user?.id) return;
     setLoading(true);
     try {
-      const res = await listarCadastros({ created_by: user.id });
+      const res = await listarCadastros(profile!.empresa_id!, { created_by: user.id });
       setCadastros(res);
       const status = await getDocumentosStatusMap(
         res.map((c) => ({ id: c.id, tipo_pessoa: c.tipo_pessoa })),
@@ -136,7 +136,7 @@ function ConsultorPage() {
       expiracao.setDate(
         expiracao.getDate() + parseInt(linkForm.expiracao_dias),
       );
-      const s = await criarCadastro({
+      const s = await criarCadastro(profile!.empresa_id!, {
         tipo_acao: linkForm.tipo_acao,
         forma_compartilhamento: linkForm.receber_por,
         lead_nome: linkForm.nome_lead || null,

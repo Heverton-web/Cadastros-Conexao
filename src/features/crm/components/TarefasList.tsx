@@ -1,7 +1,8 @@
 import { useState, useMemo } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { supabase } from "~/lib/supabase";
+import { supabase } from "~/core/supabase";
 import { useAuth } from "~/lib/auth";
+import { dispararEventoModulo } from "~/core/services/webhooks";
 import { cn } from "~/lib/utils";
 import {
   CheckCircle2,
@@ -31,6 +32,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from "~/components/ui/select";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "~/components/ui/alert-dialog";
+import toast from "react-hot-toast";
 
 type Tarefa = {
   id: string;
@@ -81,6 +93,7 @@ export function TarefasList({ clienteId, onNovaTarefa, onTarefaClick }: Props) {
   const [busca, setBusca] = useState("");
   const [filtroStatus, setFiltroStatus] = useState<string>("todos");
   const [filtroPrioridade, setFiltroPrioridade] = useState<string>("todos");
+  const [itemParaDeletar, setItemParaDeletar] = useState<string | null>(null);
 
   const { data: tarefas, isLoading } = useQuery({
     queryKey: ["tarefas", profile?.id, clienteId],
@@ -154,21 +167,25 @@ export function TarefasList({ clienteId, onNovaTarefa, onTarefaClick }: Props) {
       if (error) throw error;
       qc.invalidateQueries({ queryKey: ["tarefas"] });
     } catch (err) {
-      console.error("Erro ao atualizar tarefa:", err);
+      toast.error("Erro ao atualizar tarefa");
     }
   }
 
-  async function deletarTarefa(tarefaId: string) {
+  async function handleConfirmDelete() {
+    if (!itemParaDeletar) return;
     try {
       const { error } = await supabase
         .from("tarefas")
         .delete()
-        .eq("id", tarefaId);
+        .eq("id", itemParaDeletar);
 
       if (error) throw error;
       qc.invalidateQueries({ queryKey: ["tarefas"] });
+      dispararEventoModulo("crm", "tarefa.excluida", { tarefa_id: itemParaDeletar, empresa_id: profile?.empresa_id }, profile?.empresa_id).catch(() => {});
     } catch (err) {
-      console.error("Erro ao deletar tarefa:", err);
+      toast.error("Erro ao deletar tarefa");
+    } finally {
+      setItemParaDeletar(null);
     }
   }
 
@@ -252,7 +269,7 @@ export function TarefasList({ clienteId, onNovaTarefa, onTarefaClick }: Props) {
                     onStatusChange={(novoStatus) =>
                       atualizarStatus(tarefa.id, novoStatus)
                     }
-                    onDelete={() => deletarTarefa(tarefa.id)}
+                    onDelete={() => setItemParaDeletar(tarefa.id)}
                     onClick={() => onTarefaClick?.(tarefa)}
                   />
                 ))}
@@ -266,6 +283,23 @@ export function TarefasList({ clienteId, onNovaTarefa, onTarefaClick }: Props) {
           );
         })}
       </div>
+
+      <AlertDialog open={!!itemParaDeletar} onOpenChange={(o) => !o && setItemParaDeletar(null)}>
+        <AlertDialogContent className="bg-card border-border">
+          <AlertDialogHeader>
+            <AlertDialogTitle>Excluir tarefa?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Esta ação não pode ser desfeita.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+            <AlertDialogAction onClick={handleConfirmDelete} className="bg-destructive">
+              Excluir
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

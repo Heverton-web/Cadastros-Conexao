@@ -8,7 +8,7 @@ export const catalogoAdminPedidosRoute = createRoute({
   getParentRoute: () => authLayout,
   path: "/catalogo/admin/pedidos",
   component: () => (
-    <RequirePermission modulo="catalogo" permissions={["catalogo_dashboard"]}>
+    <RequirePermission modulo="catalogo" permissions={["catalogo_gerenciar_pedidos"]}>
       <EmpresaCrudGuard>
         <PedidosAdmin />
       </EmpresaCrudGuard>

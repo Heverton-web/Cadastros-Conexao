@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -33,6 +33,7 @@ const schema = z.object({
   descricao: z.string().optional(),
   comprovante_tipo: z.enum(["upload", "link"]),
   comprovante_url: z.string().optional(),
+  periodo_id: z.string().min(1, "Período é obrigatório"),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -76,6 +77,12 @@ export function NovaDespesaModal({
     }
   }
 
+  useEffect(() => {
+    if (periodoAtual?.id) {
+      setValue("periodo_id", periodoAtual.id);
+    }
+  }, [periodoAtual, setValue]);
+
   const {
     register,
     handleSubmit,
@@ -88,6 +95,7 @@ export function NovaDespesaModal({
       comprovante_tipo: "upload",
       comprovante_url: "",
       descricao: "",
+      periodo_id: "",
     },
   });
 
@@ -152,6 +160,7 @@ export function NovaDespesaModal({
                 {formatarData(periodoAtual.data_inicio)} —{" "}
                 {formatarData(periodoAtual.data_fim)}
               </p>
+              <input type="hidden" {...register("periodo_id")} />
             </div>
 
             <div className="space-y-2">

@@ -3,7 +3,7 @@ export type MarketingPixel = {
   empresa_id: string;
   nome: string;
   pixel_id: string;
-  tipo: "meta" | "google" | "tiktok" | "custom";
+  tipo: "meta" | "google_analytics" | "gtm" | "tiktok" | "linkedin" | "outros";
   ativo: boolean;
   config: Record<string, unknown>;
   created_at: string;

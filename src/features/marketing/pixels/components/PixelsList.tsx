@@ -33,21 +33,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "~/components/ui/select";
-import { supabase } from "~/core/supabase";
 import { dispararEventoModulo } from "~/core/services/webhooks";
+import * as pixelsService from "../services/pixels.service";
+import type { MarketingPixel } from "../types";
 
 const MODULO_KEY = "mktg-pixels";
-
-type Pixel = {
-  id: string;
-  empresa_id: string;
-  nome: string;
-  pixel_id: string;
-  tipo: string;
-  ativo: boolean;
-  config: Record<string, unknown> | null;
-  created_at: string;
-};
 
 const TIPO_INFO: Record<string, { label: string; color: string; bg: string }> = {
   meta: { label: "Meta Pixel", color: "text-blue-400", bg: "bg-blue-500/10" },
@@ -58,83 +48,61 @@ const TIPO_INFO: Record<string, { label: string; color: string; bg: string }> = 
   outros: { label: "Outros", color: "text-text-muted", bg: "bg-surface" },
 };
 
-async function listarPixels(empresaId: string): Promise<Pixel[]> {
-  const { data } = await supabase
-    .from("mktg_pixels")
-    .select("*")
-    .eq("empresa_id", empresaId)
-    .order("created_at", { ascending: false });
-  return (data as Pixel[]) || [];
-}
-
-async function togglePixel(id: string, ativo: boolean): Promise<void> {
-  await supabase.from("mktg_pixels").update({ ativo }).eq("id", id);
-}
-
-async function deletarPixel(id: string): Promise<void> {
-  await supabase.from("mktg_pixels").delete().eq("id", id);
-}
-
 export function PixelsList() {
   const { profile } = useAuth();
-  const [pixels, setPixels] = useState<Pixel[]>([]);
+  const [pixels, setPixels] = useState<MarketingPixel[]>([]);
   const [carregando, setCarregando] = useState(true);
-  const [paraExcluir, setParaExcluir] = useState<Pixel | null>(null);
+  const [paraExcluir, setParaExcluir] = useState<MarketingPixel | null>(null);
   const [copiado, setCopiado] = useState<string | null>(null);
 
-  // Form states
   const [novoPixelOpen, setNovoPixelOpen] = useState(false);
   const [formNome, setFormNome] = useState("");
   const [formPixelId, setFormPixelId] = useState("");
   const [formTipo, setFormTipo] = useState("meta");
   const [salvando, setSalvando] = useState(false);
 
+  useEffect(() => {
+    if (!profile?.empresa_id) {
+      setCarregando(false);
+      return;
+    }
+    pixelsService.listarPixels(profile.empresa_id)
+      .then(setPixels)
+      .catch(() => toast.error("Erro ao carregar pixels"))
+      .finally(() => setCarregando(false));
+  }, [profile?.empresa_id]);
+
   async function handleCriarPixel(e: React.FormEvent) {
     e.preventDefault();
     if (!profile?.empresa_id || !formNome.trim() || !formPixelId.trim()) return;
     setSalvando(true);
     try {
-      const { data, error } = await supabase
-        .from("mktg_pixels")
-        .insert({
-          empresa_id: profile.empresa_id,
-          nome: formNome.trim(),
-          pixel_id: formPixelId.trim(),
-          tipo: formTipo,
-          ativo: true,
-        })
-        .select()
-        .single();
-      if (error) throw error;
-      setPixels((prev) => [data as Pixel, ...prev]);
-      toast.success("Pixel adicionado com sucesso!");
-      dispararEventoModulo(MODULO_KEY, "evento.registrado", { pixel_id: data.id, nome: formNome, tipo: formTipo, empresa_id: profile.empresa_id }, profile.empresa_id).catch(() => {});
+      const data = await pixelsService.criarPixel({
+        empresa_id: profile.empresa_id,
+        nome: formNome.trim(),
+        pixel_id: formPixelId.trim(),
+        tipo: formTipo as MarketingPixel["tipo"],
+        ativo: true,
+      });
+      if (data) {
+        setPixels((prev) => [data, ...prev]);
+        toast.success("Pixel adicionado com sucesso!");
+        dispararEventoModulo(MODULO_KEY, "evento.registrado", { pixel_id: data.id, nome: formNome, tipo: formTipo, empresa_id: profile.empresa_id }, profile.empresa_id).catch(() => {});
+      }
       setNovoPixelOpen(false);
       setFormNome("");
       setFormPixelId("");
       setFormTipo("meta");
-    } catch (err) {
-      console.error(err);
+    } catch {
       toast.error("Erro ao adicionar pixel");
     } finally {
       setSalvando(false);
     }
   }
 
-  useEffect(() => {
-    if (!profile?.empresa_id) {
-      setCarregando(false);
-      return;
-    }
-    listarPixels(profile.empresa_id)
-      .then(setPixels)
-      .catch(() => toast.error("Erro ao carregar pixels"))
-      .finally(() => setCarregando(false));
-  }, [profile?.empresa_id]);
-
-  async function handleToggle(pixel: Pixel) {
+  async function handleToggle(pixel: MarketingPixel) {
     const novoAtivo = !pixel.ativo;
-    await togglePixel(pixel.id, novoAtivo);
+    await pixelsService.atualizarPixel(pixel.id, { ativo: novoAtivo });
     setPixels((prev) =>
       prev.map((p) => (p.id === pixel.id ? { ...p, ativo: novoAtivo } : p))
     );
@@ -151,7 +119,7 @@ export function PixelsList() {
 
   async function handleExcluir() {
     if (!paraExcluir) return;
-    await deletarPixel(paraExcluir.id);
+    await pixelsService.deletarPixel(paraExcluir.id);
     setPixels((prev) => prev.filter((p) => p.id !== paraExcluir.id));
     toast.success("Pixel excluído");
     setParaExcluir(null);
@@ -249,7 +217,6 @@ export function PixelsList() {
         </div>
       )}
 
-      {/* Modal Novo Pixel */}
       <Dialog open={novoPixelOpen} onOpenChange={setNovoPixelOpen}>
         <DialogContent className="max-w-md">
           <DialogHeader>

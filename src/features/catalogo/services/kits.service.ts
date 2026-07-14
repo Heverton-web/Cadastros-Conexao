@@ -42,6 +42,11 @@ export async function criarCategoriaKit(empresaId: string, nome: string): Promis
   return data as CatalogoCategoriaKit
 }
 
+export async function toggleCategoriaKitAtivo(id: string, ativo: boolean): Promise<void> {
+  const { error } = await supabase.from("catalogo_categorias_kit").update({ ativo }).eq("id", id)
+  if (error) throw error
+}
+
 // Kits
 export async function listarKitsAtivos(empresaId: string): Promise<CatalogoKit[]> {
   const { data, error } = await supabase
@@ -77,20 +82,7 @@ export async function getKitDetalhe(empresaId: string, sku: string): Promise<Cat
     .eq("sku", sku)
     .single()
   if (error) throw error
-  const kit = data as CatalogoKit
-
-  // Se não tem composição, adicionar mock data
-  if (!kit.composicao || kit.composicao.length === 0) {
-    kit.composicao = [
-      { id: "mock-1", kit_sku: sku, fresa_sku: "934400", quantidade: 2, fresa: { sku: "934400", nome: "Fresa Lança 2.0", diametro_mm: 2 } } as any,
-      { id: "mock-2", kit_sku: sku, fresa_sku: "934401", quantidade: 2, fresa: { sku: "934401", nome: "Fresa Piloto 2.0", diametro_mm: 2 } } as any,
-      { id: "mock-3", kit_sku: sku, fresa_sku: "934403", quantidade: 1, fresa: { sku: "934403", nome: "Fresa Master 2.4", diametro_mm: 2.4 } } as any,
-      { id: "mock-4", kit_sku: sku, fresa_sku: "934410", quantidade: 1, fresa: { sku: "934410", nome: "Stop Drill 3.5", diametro_mm: 3.5 } } as any,
-      { id: "mock-5", kit_sku: sku, implante_sku: "impl-gmf-4x10", quantidade: 5, implante: { sku: "impl-gmf-4x10", diametro_mm: 4, comprimento_mm: 10 } } as any,
-    ]
-  }
-
-  return kit
+  return data as CatalogoKit
 }
 
 export async function criarKit(empresaId: string, input: {
@@ -98,6 +90,7 @@ export async function criarKit(empresaId: string, input: {
   categoria_id: string
   nome: string
   descricao?: string
+  preco?: number
   familia_ids?: string[]
 }): Promise<CatalogoKit> {
   const { familia_ids, ...kitData } = input
@@ -121,6 +114,7 @@ export async function atualizarKit(empresaId: string, sku: string, input: Partia
   nome: string
   descricao: string
   categoria_id: string
+  preco: number
   ativo: boolean
 }>): Promise<CatalogoKit> {
   const { data, error } = await supabase

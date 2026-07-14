@@ -123,12 +123,8 @@ describe("Despesas Services", () => {
   describe("excluirDespesa", () => {
     it("exclui sem retorno", async () => {
       const { supabase } = await import("~/core/supabase");
-      supabase.from.mockReturnValue(
-        mockQueryBuilder({
-          eq: vi.fn().mockResolvedValue({ data: null, error: null }),
-        }),
-      );
-      await expect(excluirDespesa("1")).resolves.toBeUndefined();
+      supabase.from.mockReturnValue(mockQueryBuilder());
+      await expect(excluirDespesa("1", "emp-1")).resolves.toBeUndefined();
     });
   });
 });

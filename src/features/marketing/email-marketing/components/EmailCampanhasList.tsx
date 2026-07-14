@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Mail, Plus, Search, Trash2, BarChart3, Send, Clock } from "lucide-react";
 import toast from "react-hot-toast";
 import { useAuth } from "~/lib/auth";
@@ -33,25 +33,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "~/components/ui/dialog";
-import { supabase } from "~/core/supabase";
-import { dispararEventoModulo } from "~/core/services/webhooks";
-
-const MODULO_KEY = "mktg-email";
-
-type CampanhaEmail = {
-  id: string;
-  empresa_id: string;
-  nome: string;
-  assunto: string;
-  remetente: string;
-  status: string;
-  agendado_para: string | null;
-  enviado_em: string | null;
-  total_enviados: number;
-  total_abertos: number;
-  total_cliques: number;
-  created_at: string;
-};
+import { useCampanhas, useCriarCampanha, useExcluirCampanha } from "../hooks/useEmailMarketing";
 
 const STATUS_LABELS: Record<string, string> = {
   rascunho: "Rascunho",
@@ -71,79 +53,41 @@ const STATUS_COLORS: Record<string, string> = {
   cancelada: "bg-red-500/10 text-red-400 border-red-500/20",
 };
 
-async function listarCampanhas(empresaId: string): Promise<CampanhaEmail[]> {
-  const { data } = await supabase
-    .from("mktg_campanhas_email")
-    .select("*")
-    .eq("empresa_id", empresaId)
-    .order("created_at", { ascending: false });
-  return (data as CampanhaEmail[]) || [];
-}
-
-async function deletarCampanha(id: string): Promise<void> {
-  await supabase.from("mktg_campanhas_email").delete().eq("id", id);
-}
-
 export function EmailCampanhasList() {
   const { profile } = useAuth();
-  const [campanhas, setCampanhas] = useState<CampanhaEmail[]>([]);
-  const [carregando, setCarregando] = useState(true);
+  const empresaId = profile?.empresa_id ?? "";
+  const { data: campanhas = [], isLoading } = useCampanhas(empresaId);
+  const criarCampanha = useCriarCampanha(empresaId);
+  const excluirCampanha = useExcluirCampanha(empresaId);
+
   const [busca, setBusca] = useState("");
   const [filtroStatus, setFiltroStatus] = useState("all");
-  const [paraExcluir, setParaExcluir] = useState<CampanhaEmail | null>(null);
+  const [paraExcluir, setParaExcluir] = useState<{ id: string; nome: string } | null>(null);
 
-  // Form states
   const [novaCampanhaOpen, setNovaCampanhaOpen] = useState(false);
   const [formNome, setFormNome] = useState("");
   const [formAssunto, setFormAssunto] = useState("");
   const [formRemetente, setFormRemetente] = useState("");
-  const [salvando, setSalvando] = useState(false);
 
   async function handleCriarCampanha(e: React.FormEvent) {
     e.preventDefault();
-    if (!profile?.empresa_id || !formNome.trim() || !formAssunto.trim()) return;
-    setSalvando(true);
+    if (!empresaId || !formNome.trim() || !formAssunto.trim()) return;
     try {
-      const { data, error } = await supabase
-        .from("mktg_campanhas_email")
-        .insert({
-          empresa_id: profile.empresa_id,
-          nome: formNome.trim(),
-          assunto: formAssunto.trim(),
-          remetente: formRemetente.trim() || "contato@empresa.com.br",
-          status: "rascunho",
-          total_enviados: 0,
-          total_abertos: 0,
-          total_cliques: 0,
-        })
-        .select()
-        .single();
-      if (error) throw error;
-      setCampanhas((prev) => [data as CampanhaEmail, ...prev]);
+      await criarCampanha.mutateAsync({
+        empresa_id: empresaId,
+        nome: formNome.trim(),
+        assunto: formAssunto.trim(),
+        remetente: formRemetente.trim() || "contato@empresa.com.br",
+      });
       toast.success("Campanha criada!");
-      dispararEventoModulo(MODULO_KEY, "campanha.criada", { campanha_id: data.id, nome: formNome, empresa_id: profile.empresa_id }, profile.empresa_id).catch(() => {});
       setNovaCampanhaOpen(false);
       setFormNome("");
       setFormAssunto("");
       setFormRemetente("");
-    } catch (err) {
-      console.error(err);
+    } catch {
       toast.error("Erro ao criar campanha");
-    } finally {
-      setSalvando(false);
     }
   }
-
-  useEffect(() => {
-    if (!profile?.empresa_id) {
-      setCarregando(false);
-      return;
-    }
-    listarCampanhas(profile.empresa_id)
-      .then(setCampanhas)
-      .catch(() => toast.error("Erro ao carregar campanhas"))
-      .finally(() => setCarregando(false));
-  }, [profile?.empresa_id]);
 
   const filtradas = campanhas.filter((c) => {
     const matchStatus = filtroStatus === "all" || c.status === filtroStatus;
@@ -156,9 +100,12 @@ export function EmailCampanhasList() {
 
   async function handleExcluir() {
     if (!paraExcluir) return;
-    await deletarCampanha(paraExcluir.id);
-    setCampanhas((prev) => prev.filter((c) => c.id !== paraExcluir.id));
-    toast.success("Campanha excluída");
+    try {
+      await excluirCampanha.mutateAsync(paraExcluir.id);
+      toast.success("Campanha excluída");
+    } catch {
+      toast.error("Erro ao excluir campanha");
+    }
     setParaExcluir(null);
   }
 
@@ -173,7 +120,7 @@ export function EmailCampanhasList() {
     ? Math.round((stats.totalAbertos / stats.totalEnviados) * 100)
     : 0;
 
-  if (carregando) {
+  if (isLoading) {
     return (
       <div className="p-6 space-y-4">
         <Skeleton className="h-8 w-48" />
@@ -202,7 +149,6 @@ export function EmailCampanhasList() {
         </Button>
       </div>
 
-      {/* Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {[
           { label: "Total", valor: stats.total, icon: Mail },
@@ -220,7 +166,6 @@ export function EmailCampanhasList() {
         ))}
       </div>
 
-      {/* Filtros */}
       <div className="flex flex-col sm:flex-row gap-3">
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted" />
@@ -244,7 +189,6 @@ export function EmailCampanhasList() {
         </Select>
       </div>
 
-      {/* Lista */}
       {campanhas.length === 0 ? (
         <EmptyState
           icon={<Mail className="w-8 h-8 text-text-muted" />}
@@ -302,7 +246,6 @@ export function EmailCampanhasList() {
         </div>
       )}
 
-      {/* Modal Nova Campanha */}
       <Dialog open={novaCampanhaOpen} onOpenChange={setNovaCampanhaOpen}>
         <DialogContent className="max-w-md">
           <DialogHeader>
@@ -344,8 +287,8 @@ export function EmailCampanhasList() {
               <button type="button" onClick={() => setNovaCampanhaOpen(false)} className="flex-1 sm:flex-none rounded-xl border border-border px-6 py-2.5 text-sm text-text-muted font-semibold hover:text-text-main hover:bg-surface-hover transition-all duration-200 min-h-[44px]">
                 Cancelar
               </button>
-              <button type="submit" disabled={salvando} className="flex-1 sm:flex-none rounded-xl bg-accent px-6 py-2.5 text-sm font-semibold text-accent-fg shadow-md shadow-accent/20 hover:bg-accent-hover disabled:opacity-50 transition-all duration-200 min-h-[44px]">
-                {salvando ? "Criando..." : "Criar Campanha"}
+              <button type="submit" disabled={criarCampanha.isPending} className="flex-1 sm:flex-none rounded-xl bg-accent px-6 py-2.5 text-sm font-semibold text-accent-fg shadow-md shadow-accent/20 hover:bg-accent-hover disabled:opacity-50 transition-all duration-200 min-h-[44px]">
+                {criarCampanha.isPending ? "Criando..." : "Criar Campanha"}
               </button>
             </DialogFooter>
           </form>

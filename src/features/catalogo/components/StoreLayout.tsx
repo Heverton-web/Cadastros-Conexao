@@ -3,7 +3,8 @@ import { Search, ShoppingBag, Menu, Home, ArrowLeft } from 'lucide-react';
 import { Link, useNavigate } from '@tanstack/react-router';
 import '../styles/theme.css';
 import { toggleCartDrawer } from '../services/ui.service';
-import { useCarrinho, cartTotais } from '../services/carrinho.service';
+import { useCarrinho, cartTotais, setCarrinhoScope } from '../services/carrinho.service';
+import { useAuth } from '~/lib/auth';
 import { CartDrawer } from './CartDrawer';
 import { ImageViewer } from './ImageViewer';
 import { ProductSheet } from './ProductSheet';
@@ -14,6 +15,7 @@ interface StoreLayoutProps {
   children: React.ReactNode;
   empresaId?: string | null;
   fullHeight?: boolean;
+  zoom?: number;
 }
 
 /**
@@ -44,7 +46,7 @@ function applyDesignToRoot(config: ReturnType<typeof mergeWithDefaults>) {
   }
 }
 
-export function StoreLayout({ children, empresaId: empresaIdProp, fullHeight }: StoreLayoutProps) {
+export function StoreLayout({ children, empresaId: empresaIdProp, fullHeight, zoom }: StoreLayoutProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [isBackVisible, setIsBackVisible] = useState(false);
   const [logoUrl, setLogoUrl] = useState('');
@@ -52,6 +54,12 @@ export function StoreLayout({ children, empresaId: empresaIdProp, fullHeight }: 
   const navigate = useNavigate();
   const cart = useCarrinho();
   const { qtd } = cartTotais(cart);
+  const { profile } = useAuth();
+
+  // Isola o carrinho por empresa + usuário logado (multi-tenant).
+  useEffect(() => {
+    setCarrinhoScope(resolvedEmpresaId, profile?.id ?? null);
+  }, [resolvedEmpresaId, profile?.id]);
 
   // Resolve empresaId: se prop foi passada, usa; senão, busca do auth
   useEffect(() => {
@@ -138,7 +146,9 @@ export function StoreLayout({ children, empresaId: empresaIdProp, fullHeight }: 
   }, []);
 
   return (
-    <div className={`catalogo-theme flex flex-col relative ${fullHeight ? 'h-dvh' : 'min-h-screen'}`}>
+    <div
+      className={`catalogo-theme flex flex-col relative ${fullHeight ? 'h-dvh' : 'min-h-screen'}`}
+    >
       <header className="sticky top-0 z-40 bg-[#0f172a]/80 backdrop-blur-2xl h-20 px-6 lg:px-16 flex items-center justify-between shadow-2xl shadow-[var(--color-accent-muted)]">
         <div className="flex items-center gap-4">
           {isBackVisible && (
@@ -169,9 +179,9 @@ export function StoreLayout({ children, empresaId: empresaIdProp, fullHeight }: 
           />
         </div>
         <div className="flex items-center gap-4 lg:gap-6">
-          <div className="group p-3 rounded-full bg-[var(--color-surface)] border border-[var(--color-border-subtle)] hover:border-[var(--color-accent)] hover:bg-[var(--color-surface-hover)] transition-all">
+          <Link to="/catalogo" search={{ empresa: resolvedEmpresaId || undefined }} className="group p-3 rounded-full bg-[var(--color-surface)] border border-[var(--color-border-subtle)] hover:border-[var(--color-accent)] hover:bg-[var(--color-surface-hover)] transition-all">
             <Home className="w-5 h-5 text-white group-hover:text-[var(--color-accent)] transition-colors" />
-          </div>
+          </Link>
           <button
             onClick={() => toggleCartDrawer(true)}
             className="group p-3 rounded-full bg-[var(--color-surface)] border border-[var(--color-border-subtle)] hover:border-[var(--color-accent)] hover:bg-[var(--color-surface-hover)] transition-all relative"
@@ -189,7 +199,12 @@ export function StoreLayout({ children, empresaId: empresaIdProp, fullHeight }: 
         </div>
       </header>
 
-      <main className="flex-1 flex flex-col overflow-hidden">{children}</main>
+      <main
+        className="flex-1 flex flex-col overflow-hidden"
+        style={zoom ? { zoom: `${zoom}` } : undefined}
+      >
+        {children}
+      </main>
 
       {/* Global Modals */}
       <CartDrawer />

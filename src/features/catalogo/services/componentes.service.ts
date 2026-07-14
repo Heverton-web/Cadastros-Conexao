@@ -25,6 +25,11 @@ export async function criarTipoReabilitacao(empresaId: string, nome: string): Pr
   return data as CatalogoTipoReabilitacao
 }
 
+export async function toggleTipoReabilitacaoAtivo(id: string, ativo: boolean): Promise<void> {
+  const { error } = await supabase.from("catalogo_tipos_reabilitacao").update({ ativo }).eq("id", id)
+  if (error) throw error
+}
+
 export async function removerTipoReabilitacao(id: string): Promise<void> {
   const { error } = await supabase.from("catalogo_tipos_reabilitacao").delete().eq("id", id)
   if (error) throw error
@@ -49,6 +54,11 @@ export async function criarTipoAbutment(empresaId: string, nome: string, sigla?:
     .single()
   if (error) throw error
   return data as CatalogoTipoAbutment
+}
+
+export async function toggleTipoAbutmentAtivo(id: string, ativo: boolean): Promise<void> {
+  const { error } = await supabase.from("catalogo_tipos_abutment").update({ ativo }).eq("id", id)
+  if (error) throw error
 }
 
 export async function removerTipoAbutment(id: string): Promise<void> {
@@ -90,6 +100,7 @@ export async function criarAbutment(empresaId: string, input: {
   altura_transmucoso?: number
   altura_corpo?: number
   torque_ncm?: number
+  preco?: number
 }): Promise<CatalogoAbutment> {
   const { data, error } = await supabase
     .from("catalogo_abutments")
@@ -101,6 +112,15 @@ export async function criarAbutment(empresaId: string, input: {
   return data as CatalogoAbutment
 }
 
+export async function toggleAbutmentAtivo(empresaId: string, sku: string, ativo: boolean): Promise<void> {
+  const { error } = await supabase
+    .from("catalogo_abutments")
+    .update({ ativo })
+    .eq("empresa_id", empresaId)
+    .eq("sku", sku)
+  if (error) throw error
+}
+
 export async function atualizarAbutment(empresaId: string, sku: string, input: Partial<{
   familia_id: string
   tipo_reabilitacao_id: string
@@ -110,6 +130,8 @@ export async function atualizarAbutment(empresaId: string, sku: string, input: P
   altura_transmucoso: number
   altura_corpo: number
   torque_ncm: number
+  preco: number
+  ativo: boolean
 }>): Promise<CatalogoAbutment> {
   const { data, error } = await supabase
     .from("catalogo_abutments")

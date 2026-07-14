@@ -43,6 +43,7 @@ function CheckoutPage() {
   }
 
   function handleFinalizar() {
+    if (!profile) return
     setProtocolo(`CX-${Math.random().toString(36).substring(2, 8).toUpperCase()}`)
     clearCart()
   }
@@ -87,6 +88,15 @@ function CheckoutPage() {
         </Link>
         
         <h1 className="text-4xl font-black mb-12 uppercase tracking-tighter text-white">Checkout</h1>
+
+        {!profile && (
+          <div className="rounded-2xl border border-red-400/40 bg-red-400/10 px-6 py-5 mb-12 flex items-center gap-3">
+            <ShieldCheck className="w-6 h-6 text-red-400 shrink-0" />
+            <p className="text-sm font-semibold text-white">
+              É necessário estar <span className="text-red-400">logado</span> para finalizar a compra. Cada usuário possui seu próprio carrinho de produtos.
+            </p>
+          </div>
+        )}
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
           
@@ -198,7 +208,7 @@ function CheckoutPage() {
 
               <button
                 onClick={handleFinalizar}
-                disabled={items.length === 0}
+                disabled={items.length === 0 || !profile}
                 className="w-full flex items-center justify-center gap-3 py-4 rounded-xl font-black text-sm uppercase tracking-widest transition-all hover:scale-105 hover:shadow-[0_0_30px_rgba(201,166,85,0.3)] disabled:opacity-50 disabled:hover:scale-100 disabled:cursor-not-allowed"
                 style={{ background: "linear-gradient(135deg, #c9a655, #e8d48b)", color: "#0f172a" }}
               >
