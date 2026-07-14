@@ -59,7 +59,7 @@ export function KitForm({
           {errors.sku && <p className="text-xs text-red-400">{errors.sku.message}</p>}
         </div>
         <div className="space-y-2">
-          <label className={labelCls}>Categoria Kit</label>
+          <label className={labelCls}>Categoria Kit <span className="text-red-400">*</span></label>
           <select {...register("categoria_id")} value={data.categoria_id} onChange={(e) => onChange({ ...data, categoria_id: e.target.value })} className={selectCls}>
             <option value="">Selecione...</option>
             {catsKit?.map((c) => <option key={c.id} value={c.id}>{c.nome}</option>)}

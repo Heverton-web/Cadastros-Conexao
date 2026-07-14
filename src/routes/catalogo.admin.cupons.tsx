@@ -48,6 +48,9 @@ function AdminCuponsPage() {
   }
 
   function handleSave() {
+    if (!form.codigo.trim()) return
+    const duplicado = cupons?.some((c) => c.codigo.toUpperCase() === form.codigo.toUpperCase() && c.id !== editingItem?.id)
+    if (duplicado) return
     if (editingItem) {
       atualizarMut.mutate({ id: editingItem.id, input: form })
     } else {

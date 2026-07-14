@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { supabase } from "~/core/supabase"
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "~/components/ui/dialog"
 import { Switch } from "~/components/ui/switch"
+import toast from "react-hot-toast"
 import type { FieldConfig } from "~/features/catalogo/types/cadastros"
 
 function buildSchema(fields: FieldConfig[]) {
@@ -87,6 +88,7 @@ export function CadastroFormDialog({
 
     if (error) {
       console.error("Erro ao salvar:", error)
+      toast.error(error.message || "Erro ao salvar registro")
       return
     }
     onSuccess()

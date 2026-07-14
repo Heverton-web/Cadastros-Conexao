@@ -48,6 +48,13 @@ function AdminFretePage() {
   }
 
   function handleSave() {
+    const cepRegex = /^\d{5}-?\d{3}$/
+    if (!cepRegex.test(form.cep_inicio)) {
+      return
+    }
+    if (!cepRegex.test(form.cep_fim)) {
+      return
+    }
     if (editingItem) {
       atualizarMut.mutate({ id: editingItem.id, input: form })
     } else {

@@ -9,7 +9,7 @@ import toast from "react-hot-toast"
 import { useCategorias, useConexoes, useToggleCategoriaAtivo, useToggleConexaoAtivo } from "~/features/catalogo/hooks/useCatalogo"
 import { useCatalogoEmpresaId } from "~/features/catalogo/hooks/useCatalogoEmpresa"
 import { useAuth } from "~/lib/auth"
-import { supabase } from "~/lib/supabase"
+import { supabase } from "~/core/supabase"
 import { useQueryClient } from "@tanstack/react-query"
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "~/components/ui/dialog"
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "~/components/ui/alert-dialog"
@@ -289,6 +289,14 @@ function CategoriasConexoesSection() {
   }
 
   async function handleSave() {
+    if (!formNome.trim()) {
+      toast.error("Nome é obrigatório")
+      return
+    }
+    if (formType === "conexao" && !formCategoriaId) {
+      toast.error("Categoria é obrigatória para conexão")
+      return
+    }
     setSaving(true)
     try {
       if (formType === "categoria") {
@@ -316,8 +324,8 @@ function CategoriasConexoesSection() {
       setFormNome("")
       setFormSigla("")
       setFormCategoriaId("")
-    } catch (err) {
-      console.error("Erro ao salvar:", err)
+    } catch (err: any) {
+      toast.error(err?.message || "Erro ao salvar registro")
     } finally {
       setSaving(false)
     }

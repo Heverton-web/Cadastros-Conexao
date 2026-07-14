@@ -149,6 +149,7 @@ export function ClientesAdmin() {
 
   async function handleSave() {
     if (!form.nome.trim() || !form.email.trim()) return
+    if (!editing && (!form.senha || form.senha.length < 6)) return
     if (editing) {
       await atualizarCliente(editing.id, form)
     } else {

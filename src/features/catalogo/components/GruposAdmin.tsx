@@ -487,7 +487,7 @@ export function GruposAdmin() {
                     </Badge>
                   </TableCell>
                   <TableCell className="text-gray-300">
-                    {g.preco_tipo === "percentual" ? `${g.desconto_percentual}%` : `R$ ${g.desconto_percentual}`}
+                    {g.preco_tipo === "percentual" ? `${g.desconto_percentual}%` : formatBRL(g.desconto_percentual)}
                   </TableCell>
                   <TableCell>
                     <Badge variant={g.ativo ? "default" : "secondary"} className={g.ativo ? "bg-green-500/20 text-green-400 border border-green-500/20" : "bg-red-500/20 text-red-400 border border-red-500/20"}>
