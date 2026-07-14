@@ -128,7 +128,7 @@ export function SequenciaProtetica({ familiaId, tipoAbutmentId, familiaNome, tip
         <div className="h-px bg-[var(--color-border-subtle)]" />
 
         {(workflow?.etapas.length ?? 0) === 0 ? (
-          <div className="text-center py-12 rounded-xl bg-[var(--color-surface)]/30 border border-[var(--color-border-subtle)]">
+          <div className="text-center px-6 py-12 rounded-xl bg-[var(--color-surface)]/30 border border-[var(--color-border-subtle)]">
             <p className="text-sm font-bold text-[var(--color-text-muted)]">Nenhuma etapa cadastrada para este workflow</p>
           </div>
         ) : (
@@ -191,7 +191,7 @@ export function SequenciaProtetica({ familiaId, tipoAbutmentId, familiaNome, tip
       </div>
 
       {workflows.length === 0 ? (
-        <div className="text-center py-12 rounded-xl bg-[var(--color-surface)]/30 border border-[var(--color-border-subtle)]">
+        <div className="text-center px-6 py-12 rounded-xl bg-[var(--color-surface)]/30 border border-[var(--color-border-subtle)]">
           <p className="text-sm font-bold text-[var(--color-text-muted)]">Nenhuma sequência protética cadastrada</p>
           <p className="text-xs text-[var(--color-text-muted)]/60 mt-1">Adicione uma sequência analógica ou digital na edição do componente.</p>
         </div>

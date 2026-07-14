@@ -31,6 +31,17 @@ type Modelo = {
   output_cost: number | null;
   context_window: number | null;
   max_output: number | null;
+  reasoning: boolean | null;
+  tool_call: boolean | null;
+  structured_output: boolean | null;
+  temperature: boolean | null;
+  open_weights: boolean | null;
+  knowledge: string | null;
+  release_date: string | null;
+  last_updated: string | null;
+  modalities_input: string | null;
+  modalities_output: string | null;
+  providers_count: number | null;
   created_at: string;
 };
 
@@ -130,6 +141,17 @@ function Page() {
         output_cost: m.output_cost,
         context_window: m.context_window,
         max_output: m.max_output,
+        reasoning: m.reasoning,
+        tool_call: m.tool_call,
+        structured_output: m.structured_output,
+        temperature: m.temperature,
+        open_weights: m.open_weights,
+        knowledge: m.knowledge,
+        release_date: m.release_date,
+        last_updated: m.last_updated,
+        modalities_input: m.modalities_input,
+        modalities_output: m.modalities_output,
+        providers_count: m.providers_count,
       }));
 
       const { error: errInsert } = await supabase
@@ -229,6 +251,11 @@ function Page() {
                     <th className="text-right p-3 text-xs font-semibold text-text-muted uppercase tracking-wider">Output $</th>
                     <th className="text-right p-3 text-xs font-semibold text-text-muted uppercase tracking-wider">Contexto</th>
                     <th className="text-right p-3 text-xs font-semibold text-text-muted uppercase tracking-wider">Max Output</th>
+                    <th className="text-center p-3 text-xs font-semibold text-text-muted uppercase tracking-wider">Reasoning</th>
+                    <th className="text-center p-3 text-xs font-semibold text-text-muted uppercase tracking-wider">Tool</th>
+                    <th className="text-center p-3 text-xs font-semibold text-text-muted uppercase tracking-wider">Open</th>
+                    <th className="text-left p-3 text-xs font-semibold text-text-muted uppercase tracking-wider">Release</th>
+                    <th className="text-right p-3 text-xs font-semibold text-text-muted uppercase tracking-wider">Providers</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border/50">
@@ -256,6 +283,21 @@ function Page() {
                       </td>
                       <td className="p-3 text-right text-text-muted font-mono text-xs">
                         {m.max_output != null ? formatTokens(m.max_output) : "-"}
+                      </td>
+                      <td className="p-3 text-center text-text-muted">
+                        {m.reasoning ? "✓" : m.reasoning === false ? "✗" : "-"}
+                      </td>
+                      <td className="p-3 text-center text-text-muted">
+                        {m.tool_call ? "✓" : m.tool_call === false ? "✗" : "-"}
+                      </td>
+                      <td className="p-3 text-center text-text-muted">
+                        {m.open_weights ? "✓" : m.open_weights === false ? "✗" : "-"}
+                      </td>
+                      <td className="p-3 text-text-muted text-xs">
+                        {m.release_date || "-"}
+                      </td>
+                      <td className="p-3 text-right text-text-muted font-mono text-xs">
+                        {m.providers_count != null ? m.providers_count : "-"}
                       </td>
                     </tr>
                   ))}

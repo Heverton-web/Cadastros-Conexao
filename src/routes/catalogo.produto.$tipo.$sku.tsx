@@ -137,7 +137,7 @@ function AddButton({ tipo, sku, nome, cor, precoDB, compact }: { tipo: ProductSh
 
 function SpecCard({ label, value }: { label: string; value: string }) {
   return (
-    <div className="p-4 rounded-xl bg-[var(--color-surface)]/60 border border-[var(--color-border-subtle)] border-l-2 border-l-[var(--color-accent)] shadow-sm transition-all duration-300 hover:border-l-[var(--color-accent)]/80 hover:shadow-md hover:shadow-[var(--color-accent)]/5">
+    <div className="p-4 rounded-xl bg-[var(--color-surface)]/60 border border-[var(--color-border-subtle)] shadow-sm transition-all duration-300 hover:shadow-md">
       <span className="block text-[10px] font-bold uppercase tracking-[0.15em] mb-1.5 text-[var(--color-text-muted)]">{label}</span>
       <span className="block text-lg font-bold text-white">{value}</span>
     </div>
