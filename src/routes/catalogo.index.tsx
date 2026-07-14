@@ -3,7 +3,7 @@ import { rootRoute } from "./__root"
 import { StoreLayout } from "~/features/catalogo/components/StoreLayout"
 import { useState, useEffect } from "react"
 import { supabase } from "~/lib/supabase"
-import { Loader2, Building2, Crosshair, ShieldCheck, Box, Tag, Package, Layers, ShoppingBag, Percent, Star, Heart, Diamond, Circle, Zap, Target, Award, Gem, Hexagon, Pentagon, Triangle, Square, type LucideIcon } from "lucide-react"
+import { Loader2, Building2, Crosshair, ShieldCheck, Box, Tag, Package, Layers, ShoppingBag, Percent, Star, Heart, Diamond, Circle, Zap, Target, Award, Gem, Hexagon, Pentagon, Triangle, Square, Store, type LucideIcon } from "lucide-react"
 import { listarEmpresas, type Empresa } from "~/shared/empresas"
 import { getCatalogoDesign, mergeWithDefaults, type CatalogoDesignConfig } from "~/features/catalogo/services/design.service"
 import { WatermarkShape } from "~/features/catalogo/components/WatermarkShape"
@@ -113,8 +113,11 @@ function CatalogoIndexPage() {
     return (
       <StoreLayout empresaId={null}>
         <div className="flex flex-col items-center justify-center min-h-[60vh] text-center px-6">
-          <h1 className="text-4xl font-black text-white mb-4">Acesse sua loja</h1>
-          <p className="text-[var(--color-text-muted)]">Faça login para acessar o catálogo da sua empresa.</p>
+          <div className="w-16 h-16 rounded-3xl bg-[var(--color-surface)] flex items-center justify-center mb-6 shadow-xl border border-[var(--color-border-subtle)]">
+            <Store className="text-[var(--color-accent)]" size={32} />
+          </div>
+          <h1 className="text-3xl font-black text-white mb-3">Bem-vindo ao Catálogo</h1>
+          <p className="text-[var(--color-text-muted)] max-w-sm">Utilize o link exclusivo fornecido pela sua empresa para acessar a linha completa de produtos.</p>
         </div>
       </StoreLayout>
     )
@@ -152,13 +155,15 @@ function CatalogoStoreContent({ empresaId }: { empresaId: string }) {
   const gridColsClass = visibleCount <= 1
     ? "grid-cols-1 max-w-xs mx-auto"
     : visibleCount === 2
-      ? "grid-cols-2 max-w-2xl mx-auto"
+      ? "grid-cols-2 max-w-md mx-auto"
       : visibleCount === 3
-        ? "grid-cols-3 max-w-5xl mx-auto"
-        : "grid-cols-2 lg:grid-cols-4"
+        ? "grid-cols-2 sm:grid-cols-3 max-w-3xl mx-auto"
+        : "grid-cols-2 lg:grid-cols-4 max-w-5xl mx-auto"
 
   return (
-    <StoreLayout empresaId={empresaId} fullHeight zoom={0.85}>
+    <StoreLayout empresaId={empresaId}>
+      {/* Wrapper flex-1 para empurrar footer ao fundo */}
+      <div className="flex-1 flex flex-col">
       {/* Hero */}
       {visibility.showHeroSection && (
         <div className="relative shrink-0">
@@ -168,7 +173,7 @@ function CatalogoStoreContent({ empresaId }: { empresaId: string }) {
               style={{ backgroundColor: effects.blobColor, opacity: effects.blobOpacity, filter: `blur(${effects.blobBlur}px)` }}
             />
           )}
-          <div className="px-5 sm:px-6 lg:px-16 pt-8 pb-4 sm:pt-12 sm:pb-6 lg:pt-16 lg:pb-8 max-w-7xl mx-auto relative z-10 flex flex-col items-center text-center">
+          <div className="px-5 sm:px-6 lg:px-16 pt-5 pb-2 sm:pt-10 sm:pb-4 lg:pt-14 lg:pb-8 max-w-7xl mx-auto relative z-10 flex flex-col items-center text-center">
             <div className="inline-flex items-center gap-2 px-3 py-1 sm:px-4 sm:py-1.5 rounded-full border border-[var(--color-accent-muted)] bg-[var(--color-surface)]/50 backdrop-blur-md mb-3 sm:mb-4 lg:mb-4">
               <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[var(--color-accent)] animate-pulse" />
               <span className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-[var(--color-accent)]">
@@ -187,8 +192,8 @@ function CatalogoStoreContent({ empresaId }: { empresaId: string }) {
 
       {/* Cards */}
       {visibility.showCategoryCards && visibleCount > 0 && (
-        <div className="flex-1 px-4 sm:px-6 lg:px-16 pt-2 pb-4 max-w-7xl mx-auto w-full flex flex-col justify-center">
-          <div className={`grid ${gridColsClass} gap-3 sm:gap-4 lg:gap-6 auto-rows-fr relative z-20 w-full`}>
+        <div className="px-4 sm:px-6 lg:px-16 pt-3 pb-6 sm:pt-5 sm:pb-10 max-w-7xl mx-auto w-full flex-1">
+          <div className={`grid ${gridColsClass} gap-3 sm:gap-5 lg:gap-8 auto-rows-fr w-full`}>
             {visibleCards.map((key) => {
               const card = cards[key]
               const Icon = ICON_MAP[card!.icon]
@@ -197,7 +202,7 @@ function CatalogoStoreContent({ empresaId }: { empresaId: string }) {
                   key={key}
                   to={`/catalogo/${key}` as any}
                   search={{ empresa: empresaId } as any}
-                  className="card-catalogo group relative rounded-2xl sm:rounded-3xl backdrop-blur-xl transition-all overflow-hidden flex flex-col items-center justify-end p-3 sm:p-5 lg:p-8 no-underline shadow-2xl hover:-translate-y-2"
+                  className="card-catalogo group relative rounded-2xl sm:rounded-3xl backdrop-blur-xl transition-all duration-300 overflow-hidden flex flex-col items-center justify-start pt-6 sm:pt-8 lg:pt-10 pb-6 sm:pb-8 px-4 sm:px-6 lg:px-8 no-underline shadow-xl hover:-translate-y-1 sm:hover:-translate-y-2 aspect-square"
                   style={{
                     backgroundColor: card!.cardBg || "var(--color-surface)",
                     border: "0.7px solid var(--color-border-subtle)",
@@ -208,19 +213,19 @@ function CatalogoStoreContent({ empresaId }: { empresaId: string }) {
                     <WatermarkShape
                       shape={cards.watermarkShape || "diamond"}
                       color={card!.watermarkColor || card!.iconColor}
-                      className="-bottom-4 -right-4 sm:bottom-auto sm:top-1/2 sm:right-4 sm:-translate-y-1/2 lg:right-6 w-20 h-20 sm:w-28 sm:h-28 lg:w-36 lg:h-36"
+                      className="bottom-0 right-0 w-16 h-16 sm:w-24 sm:h-24 lg:w-36 lg:h-36"
                     />
                   )}
                   <div
-                    className="w-10 h-10 sm:w-14 sm:h-14 lg:w-20 lg:h-20 rounded-xl sm:rounded-2xl bg-[var(--color-input-bg)] border border-[var(--color-border-subtle)] flex items-center justify-center mb-2 sm:mb-4 lg:mb-6 relative z-10 group-hover:border-[var(--color-accent)] transition-colors shadow-xl"
+                    className="w-12 h-12 sm:w-14 sm:h-14 lg:w-20 lg:h-20 rounded-xl sm:rounded-2xl bg-[var(--color-input-bg)] border border-[var(--color-border-subtle)] flex items-center justify-center mb-3 sm:mb-4 lg:mb-6 relative z-10 group-hover:border-[var(--color-accent)] transition-colors shadow-xl"
                     style={{ color: card!.iconColor }}
                   >
-                    {Icon && <Icon size={20} className="sm:hidden" />}
-                    {Icon && <Icon size={28} className="hidden sm:block lg:hidden" />}
+                    {Icon && <Icon size={22} className="sm:hidden" />}
+                    {Icon && <Icon size={26} className="hidden sm:block lg:hidden" />}
                     {Icon && <Icon size={32} className="hidden lg:block" />}
                   </div>
-                  <h3 className="text-sm sm:text-lg lg:text-3xl font-bold mb-0.5 sm:mb-1.5 lg:mb-3 relative z-10 text-center leading-tight" style={{ color: card!.titleColor }}>{card!.title}</h3>
-                  <p className="text-[9px] sm:text-xs lg:text-sm relative z-10 group-hover:opacity-80 transition-colors text-center leading-snug hidden sm:block" style={{ color: card!.descColor }}>{card!.description}</p>
+                  <h3 className="text-sm sm:text-lg lg:text-2xl font-bold relative z-10 text-center leading-tight" style={{ color: card!.titleColor }}>{card!.title}</h3>
+                  <p className="text-[9px] sm:text-xs lg:text-sm mt-1 sm:mt-2 relative z-10 group-hover:opacity-80 transition-colors text-center leading-snug hidden sm:block" style={{ color: card!.descColor }}>{card!.description}</p>
                 </Link>
               )
             })}
@@ -316,6 +321,7 @@ function CatalogoStoreContent({ empresaId }: { empresaId: string }) {
           </div>
         </div>
       )}
+    </div>{/* end flex-1 wrapper */}
     </StoreLayout>
   )
 }

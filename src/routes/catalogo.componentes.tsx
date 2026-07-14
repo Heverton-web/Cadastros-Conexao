@@ -44,7 +44,7 @@ function CatalogoComponentesPage() {
   const familiaId = params.familiaId ?? null
   const tipoAbutmentId = params.tipoAbutmentId ?? null
   const search = useSearch({ strict: false }) as Record<string, string | undefined>
-  const empresa = search.empresa
+  const empresa = search.empresa ?? null
 
   const countByTipoReab = useMemo(() => {
     const m: Record<string, number> = {}
@@ -86,7 +86,7 @@ function CatalogoComponentesPage() {
   // Etapa 3: Escolher Tipo Abutment
   if (tipoReabId && familiaId) return (
     <StoreLayout>
-      <div className="max-w-5xl mx-auto px-6 py-8">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
         <TiposAbutmentList
           familiaId={familiaId}
           tipoReabId={tipoReabId}
@@ -101,7 +101,7 @@ function CatalogoComponentesPage() {
   // Etapa 2: Escolher Família
   if (tipoReabId) return (
     <StoreLayout>
-      <div className="max-w-5xl mx-auto px-6 py-8">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
         <FamiliasForReabList
           tipoReabId={tipoReabId}
           onSelect={(id) => navigate({ to: '/catalogo/componentes/$tipoReabId/$familiaId', params: { tipoReabId, familiaId: id }, search: { empresa } })}
@@ -115,7 +115,7 @@ function CatalogoComponentesPage() {
   // Etapa 1: Escolher Tipo Reabilitação
   return (
     <StoreLayout>
-      <div className="max-w-5xl mx-auto px-6 py-8">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
         <DrillDown
           title="Componentes"
           subtitle="unitária, múltipla ou híbrida"
@@ -199,24 +199,24 @@ function AbutmentList({ familiaId, tipoAbutmentId, tipoReabId, empresa, onBack }
   }
 
   return (
-    <div className="max-w-5xl mx-auto px-6 py-8 space-y-12">
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 sm:space-y-12 w-full">
       {/* Header Premium */}
-      <div className="flex items-center gap-6 mb-16">
+      <div className="flex items-start sm:items-center gap-4 sm:gap-6 mb-8 sm:mb-12">
         <button 
           onClick={onBack}
-          className="group flex items-center justify-center w-12 h-12 rounded-full border border-[var(--color-border-subtle)] hover:bg-[var(--color-surface)] hover:border-[var(--color-accent)] transition-all"
+          className="group shrink-0 flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-full border border-[var(--color-border-subtle)] hover:bg-[var(--color-surface)] hover:border-[var(--color-accent)] transition-all mt-1 sm:mt-0"
         >
-          <ArrowLeft className="h-5 w-5 text-[var(--color-text-muted)] group-hover:text-[var(--color-accent)] transition-colors" />
+          <ArrowLeft className="h-4 w-4 sm:h-5 sm:w-5 text-[var(--color-text-muted)] group-hover:text-[var(--color-accent)] transition-colors" />
         </button>
         <div>
           <div className="inline-flex items-center gap-2 mb-3">
             <div className="flex gap-1">
-              <div className="w-8 h-1.5 rounded-full bg-[var(--color-accent)]" />
+              <div className="w-8 h-1.5 rounded-full bg-[var(--color-accent)] transition-all duration-500" />
             </div>
             <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-accent)] ml-2">Etapa 4 de 4</span>
           </div>
-          <h1 className="text-4xl md:text-5xl font-black leading-tight text-white tracking-tighter">Selecione o Abutment</h1>
-          <p className="text-lg mt-2 text-[var(--color-text-muted)]">{filtered.length} componentes encontrados.</p>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-black leading-tight text-white tracking-tighter text-balance">Selecione o Abutment</h1>
+          <p className="text-sm sm:text-lg mt-1 sm:mt-2 text-[var(--color-text-muted)] text-balance">{filtered.length} componente(s) encontrado(s).</p>
         </div>
       </div>
 

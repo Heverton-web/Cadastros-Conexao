@@ -14,19 +14,19 @@ export const catalogoKitsRoute = createRoute({
 function CatalogoKitsPage() {
   const { data: kits, isLoading } = useKitsAtivos()
   const search = useSearch({ strict: false }) as Record<string, string | undefined>
-  const empresa = search.empresa
+  const empresa = search.empresa ?? null
 
   return (
     <StoreLayout>
-      <div className="max-w-6xl mx-auto px-6 py-12 space-y-10">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 sm:space-y-12 w-full">
         {/* Header */}
-        <div className="flex items-center gap-6">
-          <Link to="/catalogo" search={{ empresa }} className="group flex items-center justify-center w-12 h-12 rounded-full border border-[var(--color-border-subtle)] hover:bg-[var(--color-surface)] hover:border-[var(--color-accent)] transition-all">
-            <ArrowLeft className="h-5 w-5 text-[var(--color-text-muted)] group-hover:text-[var(--color-accent)] transition-colors" />
+        <div className="flex items-start sm:items-center gap-4 sm:gap-6 mb-8 sm:mb-12">
+          <Link to="/catalogo" search={{ empresa }} className="group shrink-0 flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-full border border-[var(--color-border-subtle)] hover:bg-[var(--color-surface)] hover:border-[var(--color-accent)] transition-all mt-1 sm:mt-0">
+            <ArrowLeft className="h-4 w-4 sm:h-5 sm:w-5 text-[var(--color-text-muted)] group-hover:text-[var(--color-accent)] transition-colors" />
           </Link>
           <div>
-            <h1 className="text-4xl md:text-5xl font-black leading-tight text-white tracking-tighter">Kits & Maletas</h1>
-            <p className="text-lg mt-2 text-[var(--color-text-muted)]">Cada kit lista peças de reposição avulsas.</p>
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-black leading-tight text-white tracking-tighter text-balance">Kits & Maletas</h1>
+            <p className="text-sm sm:text-lg mt-1 sm:mt-2 text-[var(--color-text-muted)] text-balance">Cada kit lista peças de reposição avulsas.</p>
           </div>
         </div>
 

@@ -40,13 +40,9 @@ function ProdutoPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
         <button
           onClick={backTo}
-          className="group flex items-center gap-3 text-xs font-bold tracking-widest uppercase transition-colors mb-8 sm:mb-12 w-fit"
-          style={{ color: "var(--color-text-muted)" }}
+          className="group shrink-0 flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-full border border-[var(--color-border-subtle)] hover:bg-[var(--color-surface)] hover:border-[var(--color-accent)] transition-all mb-6 sm:mb-8"
         >
-          <div className="w-8 h-8 rounded-full border border-[var(--color-border-subtle)] flex items-center justify-center group-hover:bg-[var(--color-surface)] group-hover:border-[var(--color-accent)] group-hover:text-[var(--color-accent)] transition-all">
-            <ArrowLeft className="h-4 w-4" />
-          </div>
-          <span className="group-hover:text-white transition-colors">Voltar</span>
+          <ArrowLeft className="h-4 w-4 sm:h-5 sm:w-5 text-[var(--color-text-muted)] group-hover:text-[var(--color-accent)] transition-colors" />
         </button>
 
         {tipo === "implante" && <ImplanteDetail sku={sku} />}
@@ -85,7 +81,7 @@ function ProductHeader({ cor, badge, nome, sku }: { cor: string; badge?: string;
           <span className="text-[10px] font-black uppercase tracking-[0.2em]">{badge}</span>
         </div>
       )}
-      <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black leading-[0.95] text-white tracking-tighter">{nome}</h1>
+      <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black leading-[0.95] text-white tracking-tighter text-balance">{nome}</h1>
       <p className="font-mono text-sm text-[var(--color-text-muted)]">SKU: <span className="text-white/80">{sku}</span></p>
     </div>
   )
@@ -203,7 +199,7 @@ function ImplanteDetail({ sku }: { sku: string }) {
         <div className="lg:sticky lg:top-28 space-y-6">
           <ProductImage cor={cor} nome={nome} onClick={() => openImageViewer("", nome)} />
           <div className="hidden lg:block">
-            <AddButton tipo="implante" sku={impl.sku} nome={nome} cor={cor} precoDB={(impl as Record<string, unknown>).preco as number | null} />
+            <AddButton tipo="implante" sku={impl.sku} nome={nome} cor={cor} precoDB={(impl as unknown as Record<string, unknown>).preco as number | null} />
           </div>
         </div>
       </div>
@@ -213,7 +209,7 @@ function ImplanteDetail({ sku }: { sku: string }) {
         <ProductHeader cor={cor} badge={impl.linha?.familia?.nome} nome={nome} sku={impl.sku} />
 
         <div className="lg:hidden">
-          <AddButton tipo="implante" sku={impl.sku} nome={nome} cor={cor} precoDB={(impl as Record<string, unknown>).preco as number | null} />
+          <AddButton tipo="implante" sku={impl.sku} nome={nome} cor={cor} precoDB={(impl as unknown as Record<string, unknown>).preco as number | null} />
         </div>
 
         {/* Tabs */}
@@ -276,7 +272,7 @@ function AbutmentDetail({ sku }: { sku: string }) {
         <div className="lg:sticky lg:top-28 space-y-6">
           <ProductImage cor={cor} nome={nome} onClick={() => openImageViewer("", nome)} />
           <div className="hidden lg:block">
-            <AddButton tipo="abutment" sku={ab.sku} nome={nome} cor={cor} precoDB={(ab as Record<string, unknown>).preco as number | null} />
+            <AddButton tipo="abutment" sku={ab.sku} nome={nome} cor={cor} precoDB={(ab as unknown as Record<string, unknown>).preco as number | null} />
           </div>
         </div>
       </div>
@@ -285,7 +281,7 @@ function AbutmentDetail({ sku }: { sku: string }) {
         <ProductHeader cor={cor} badge={ab.familia?.nome} nome={nome} sku={ab.sku} />
 
         <div className="lg:hidden">
-          <AddButton tipo="abutment" sku={ab.sku} nome={nome} cor={cor} precoDB={(ab as Record<string, unknown>).preco as number | null} />
+          <AddButton tipo="abutment" sku={ab.sku} nome={nome} cor={cor} precoDB={(ab as unknown as Record<string, unknown>).preco as number | null} />
         </div>
 
         <SectionTabs tabs={tabs} active={activeTab} onChange={setActiveTab} />
@@ -333,22 +329,25 @@ function KitDetail({ sku }: { sku: string }) {
     { key: "composicao", label: "Composição", count: bomItems.length },
   ]
 
+  const cor = "#c9a655"
+  const nome = kit.nome
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
       <div className="lg:col-span-4 xl:col-span-5">
         <div className="lg:sticky lg:top-28 space-y-6">
-          <ProductImage cor="#c9a655" nome={kit.nome} onClick={() => openImageViewer("", kit.nome)} />
+          <ProductImage cor={cor} nome={nome} onClick={() => openImageViewer("", nome)} />
           <div className="hidden lg:block">
-            <AddButton tipo="kit" sku={kit.sku} nome={kit.nome} cor="#c9a655" precoDB={(kit as Record<string, unknown>).preco as number | null} />
+            <AddButton tipo="kit" sku={kit.sku} nome={nome} cor={cor} precoDB={(kit as unknown as Record<string, unknown>).preco as number | null} />
           </div>
         </div>
       </div>
 
       <div className="lg:col-span-8 xl:col-span-7 space-y-8">
-        <ProductHeader cor="#c9a655" badge="Kit" nome={kit.nome} sku={kit.sku} />
+        <ProductHeader cor={cor} badge="Kit" nome={nome} sku={kit.sku} />
 
         <div className="lg:hidden">
-          <AddButton tipo="kit" sku={kit.sku} nome={kit.nome} cor="#c9a655" precoDB={(kit as Record<string, unknown>).preco as number | null} />
+          <AddButton tipo="kit" sku={kit.sku} nome={nome} cor={cor} precoDB={(kit as unknown as Record<string, unknown>).preco as number | null} />
         </div>
 
         {tabs.length > 0 && (

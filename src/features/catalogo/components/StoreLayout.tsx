@@ -147,24 +147,24 @@ export function StoreLayout({ children, empresaId: empresaIdProp, fullHeight, zo
 
   return (
     <div
-      className={`catalogo-theme flex flex-col relative ${fullHeight ? 'h-dvh' : 'min-h-screen'}`}
+      className={`catalogo-theme flex flex-col relative bg-[var(--color-bg)] ${fullHeight ? 'h-dvh' : 'min-h-dvh'}`}
     >
-      <header className="sticky top-0 z-40 bg-[#0f172a]/80 backdrop-blur-2xl h-20 px-6 lg:px-16 flex items-center justify-between shadow-2xl shadow-[var(--color-accent-muted)]">
-        <div className="flex items-center gap-4">
+      <header className="sticky top-0 z-40 bg-[#0f172a]/80 backdrop-blur-2xl h-16 lg:h-20 px-3 sm:px-6 lg:px-16 flex items-center justify-between shadow-2xl shadow-[var(--color-accent-muted)]">
+        <div className="flex items-center gap-2 sm:gap-4 shrink-0">
           {isBackVisible && (
             <button
               onClick={() => navigate({ to: '/catalogo/admin/dashboard' })}
-              className="p-2 rounded-full bg-[var(--color-surface)] border border-[var(--color-border-subtle)] hover:border-[var(--color-accent)] hover:bg-[var(--color-surface-hover)] transition-all"
+              className="p-2 lg:p-2.5 rounded-full bg-[var(--color-surface)] border border-[var(--color-border-subtle)] hover:border-[var(--color-accent)] hover:bg-[var(--color-surface-hover)] transition-all"
               title="Voltar ao ERP"
             >
-              <ArrowLeft className="w-5 h-5 text-white" />
+              <ArrowLeft className="w-4 h-4 lg:w-5 lg:h-5 text-white" />
             </button>
           )}
-          <div className="flex items-center hover:scale-105 transition-transform">
+          <div className="flex items-center hover:scale-105 transition-transform min-w-0">
             {logoUrl ? (
-              <img src={logoUrl} alt="Logo" className="h-7 object-contain" />
+              <img src={logoUrl} alt="Logo" className="h-6 sm:h-8 lg:h-10 object-contain" />
             ) : (
-              <img src="/logos/logo-horizontal-branco.png" alt="ERP Odonto" className="h-7 object-contain" />
+              <img src="/logos/logo-horizontal-branco.png" alt="ERP Odonto" className="h-6 sm:h-8 lg:h-10 object-contain" />
             )}
           </div>
         </div>
@@ -178,29 +178,29 @@ export function StoreLayout({ children, empresaId: empresaIdProp, fullHeight, zo
             className="w-full h-11 pl-12 pr-4 rounded-full bg-[var(--color-surface)]/50 border border-[var(--color-input-border)] text-sm focus:border-[var(--color-accent)] focus:bg-[var(--color-input-bg)] focus:shadow-[0_0_15px_rgba(201,166,85,0.15)] focus:outline-none transition-all text-white placeholder-[var(--color-text-muted)]"
           />
         </div>
-        <div className="flex items-center gap-4 lg:gap-6">
-          <Link to="/catalogo" search={{ empresa: resolvedEmpresaId || undefined }} className="group p-3 rounded-full bg-[var(--color-surface)] border border-[var(--color-border-subtle)] hover:border-[var(--color-accent)] hover:bg-[var(--color-surface-hover)] transition-all">
-            <Home className="w-5 h-5 text-white group-hover:text-[var(--color-accent)] transition-colors" />
+        <div className="flex items-center gap-2 sm:gap-4 lg:gap-6 shrink-0">
+          <Link to="/catalogo" search={{ empresa: resolvedEmpresaId ?? null }} className="group p-2 sm:p-3 rounded-full bg-[var(--color-surface)] border border-[var(--color-border-subtle)] hover:border-[var(--color-accent)] hover:bg-[var(--color-surface-hover)] transition-all">
+            <Home className="w-4 h-4 sm:w-5 sm:h-5 text-white group-hover:text-[var(--color-accent)] transition-colors" />
           </Link>
           <button
             onClick={() => toggleCartDrawer(true)}
-            className="group p-3 rounded-full bg-[var(--color-surface)] border border-[var(--color-border-subtle)] hover:border-[var(--color-accent)] hover:bg-[var(--color-surface-hover)] transition-all relative"
+            className="group p-2 sm:p-3 rounded-full bg-[var(--color-surface)] border border-[var(--color-border-subtle)] hover:border-[var(--color-accent)] hover:bg-[var(--color-surface-hover)] transition-all relative"
           >
-            <ShoppingBag className="w-5 h-5 text-white group-hover:text-[var(--color-accent)] transition-colors" />
+            <ShoppingBag className="w-4 h-4 sm:w-5 sm:h-5 text-white group-hover:text-[var(--color-accent)] transition-colors" />
             {qtd > 0 && (
-              <span className="absolute -top-1 -right-1 w-5 h-5 bg-gradient-gold rounded-full text-[10px] font-bold text-[#0f172a] flex items-center justify-center shadow-[0_0_10px_rgba(201,166,85,0.5)] animate-pulse">
+              <span className="absolute -top-1 -right-1 w-4 h-4 sm:w-5 sm:h-5 bg-gradient-gold rounded-full text-[9px] sm:text-[10px] font-bold text-[#0f172a] flex items-center justify-center shadow-[0_0_10px_rgba(201,166,85,0.5)] animate-pulse">
                 {qtd}
               </span>
             )}
           </button>
-          <button className="md:hidden p-2 text-white hover:text-[var(--color-accent)]">
-            <Menu className="w-6 h-6" />
+          <button className="md:hidden p-1.5 sm:p-2 text-white hover:text-[var(--color-accent)] ml-[-4px]">
+            <Menu className="w-5 h-5 sm:w-6 sm:h-6" />
           </button>
         </div>
       </header>
 
       <main
-        className="flex-1 flex flex-col overflow-hidden"
+        className="flex-1 flex flex-col overflow-y-auto overflow-x-hidden"
         style={zoom ? { zoom: `${zoom}` } : undefined}
       >
         {children}
