@@ -168,10 +168,19 @@ export function ImageUploader({
   }
 
   const labelCls = "text-xs font-bold uppercase tracking-widest text-gray-400"
+  const semSku = !produtoSku || produtoSku.trim() === ""
 
   return (
     <div className="space-y-3">
       <label className={labelCls}>Imagens do Produto</label>
+
+      {/* Aviso quando não tem SKU */}
+      {semSku && (
+        <div className="p-4 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400 text-sm">
+          <p className="font-bold">Informe o SKU primeiro</p>
+          <p className="text-xs text-amber-400/70 mt-1">O SKU é necessário para salvar as imagens. Preencha o campo SKU acima.</p>
+        </div>
+      )}
 
       {/* Galeria de imagens */}
       {imagens.length > 0 && (
@@ -252,12 +261,14 @@ export function ImageUploader({
             onDragOver={(e) => { e.preventDefault(); setDragOver(true) }}
             onDragLeave={() => setDragOver(false)}
             onDrop={handleDrop}
-            onClick={() => fileInputRef.current?.click()}
+            onClick={() => !semSku && fileInputRef.current?.click()}
             className={`
-              relative flex flex-col items-center justify-center gap-2 p-6 rounded-xl border-2 border-dashed cursor-pointer transition-all
-              ${dragOver
-                ? "border-[#c9a655] bg-[#c9a655]/5"
-                : "border-white/10 hover:border-white/20 bg-[var(--color-surface)]/50"
+              relative flex flex-col items-center justify-center gap-2 p-6 rounded-xl border-2 border-dashed transition-all
+              ${semSku
+                ? "opacity-50 cursor-not-allowed border-white/5 bg-[var(--color-surface)]/30"
+                : dragOver
+                  ? "cursor-pointer border-[#c9a655] bg-[#c9a655]/5"
+                  : "cursor-pointer border-white/10 hover:border-white/20 bg-[var(--color-surface)]/50"
               }
               ${uploading ? "opacity-50 pointer-events-none" : ""}
             `}
@@ -290,13 +301,13 @@ export function ImageUploader({
               value={urlInput}
               onChange={(e) => setUrlInput(e.target.value)}
               placeholder="https://s3.amazonaws.com/sua-bucket/imagem.jpg"
-              disabled={uploading}
+              disabled={uploading || semSku}
               className="flex-1 px-3 py-2.5 rounded-xl bg-[var(--color-surface)] border border-white/10 text-sm text-white placeholder:text-gray-500 focus:outline-none focus:border-[#c9a655]/50 disabled:opacity-50"
               onKeyDown={(e) => e.key === "Enter" && handleAdicionarUrl()}
             />
             <button
               onClick={handleAdicionarUrl}
-              disabled={uploading || !urlInput.trim()}
+              disabled={uploading || semSku || !urlInput.trim()}
               className="px-4 py-2.5 rounded-xl bg-[#c9a655] text-[#0f172a] text-sm font-bold hover:scale-105 transition-transform disabled:opacity-50 disabled:hover:scale-100"
             >
               {uploading ? "..." : "Adicionar"}
@@ -312,13 +323,13 @@ export function ImageUploader({
               value={gdriveInput}
               onChange={(e) => setGdriveInput(e.target.value)}
               placeholder="https://drive.google.com/file/d/SEU_ID/view?usp=sharing"
-              disabled={uploading}
+              disabled={uploading || semSku}
               className="w-full px-3 py-2.5 rounded-xl bg-[var(--color-surface)] border border-white/10 text-sm text-white placeholder:text-gray-500 focus:outline-none focus:border-[#c9a655]/50 disabled:opacity-50"
               onKeyDown={(e) => e.key === "Enter" && handleAdicionarGDrive()}
             />
             <button
               onClick={handleAdicionarGDrive}
-              disabled={uploading || !gdriveInput.trim()}
+              disabled={uploading || semSku || !gdriveInput.trim()}
               className="w-full px-4 py-2.5 rounded-xl bg-[#c9a655] text-[#0f172a] text-sm font-bold hover:scale-105 transition-transform disabled:opacity-50 disabled:hover:scale-100"
             >
               {uploading ? "Enviando..." : "Adicionar do Google Drive"}

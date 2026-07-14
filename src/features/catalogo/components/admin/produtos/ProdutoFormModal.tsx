@@ -448,16 +448,14 @@ export function ProdutoFormModal({
             />
           )}
 
-          {/* Imagens do produto — só exibe quando tem SKU (criado ou editando) */}
-          {(editingItem || implante.sku || abutment.sku || kit.sku) && (
-            <ImageUploader
-              empresaId={empresaId}
-              produtoTipo={tipo}
-              produtoSku={editingItem?.sku || implante.sku || abutment.sku || kit.sku}
-              imagensExistentes={imagens}
-              onImagensChange={setImagens}
-            />
-          )}
+          {/* Imagens do produto */}
+          <ImageUploader
+            empresaId={empresaId}
+            produtoTipo={tipo}
+            produtoSku={editingItem?.sku || implante.sku || abutment.sku || kit.sku}
+            imagensExistentes={imagens}
+            onImagensChange={setImagens}
+          />
         </div>
 
         <DialogFooter className="shrink-0">

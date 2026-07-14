@@ -233,6 +233,15 @@ export const minhaRota = createRoute({
 - **Manter lições aprendidas**: Se descobrir regra de sistema, comportamento de infraestrutura (e.g., quirks do Supabase MCP) ou bug repetível, registrar IMEDIATAMENTE no scratchpad abaixo.
 - **Consultar scratchpad**: Antes de qualquer plano de execução, revisar learnings prévios.
 
+### 🪙 GASTOS POR SESSÃO (OBRIGATÓRIO)
+
+**No início de CADA nova sessão, carregar a skill `calcular-gastos-sessao`.**
+
+- Resolver `model` e `session_id` uma vez no início da sessão
+- Appendar `.agents/session-cost.jsonl` ao final de cada ação com tokens e custo
+- Usar custom tool `gastos-sessao` para consultar gastos via `node scripts/gastos-sessao.mjs`
+- Exibir `[💰 Ação: R$ X | Sessão: R$ Y]` no final das ações quando apropriado
+
 ---
 
 ### 📝 SCRATCHPAD RTK (Agente: Registre aprendizados aqui durante execução)

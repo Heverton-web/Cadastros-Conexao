@@ -18,8 +18,22 @@ Só executar quando o usuário disser "deploy" ou "/deploy" explicitamente.
 ## Pré-requisitos
 
 - `vps.env` no raiz do projeto
-- `.env` no raiz com `VITE_SUPABASE_URL` e `VITE_SUPABASE_ANON_KEY`
+- `.env` no raiz com:
+  - `VITE_SUPABASE_URL` e `VITE_SUPABASE_ANON_KEY` (frontend)
+  - `SUPABASE_ACCESS_TOKEN` (deploy de Edge Functions via CLI)
+  - `SUPABASE_DB_PASSWORD` (aplicar migrations via `pg`)
+- **Supabase CLI** instalado: `npm install -g supabase`
+- **Node + `pg`** disponíveis (usado para aplicar migrations via `SUPABASE_DB_URL`)
 - Build local passando: `npm run build`
+
+### Project ref
+
+Extrair do `VITE_SUPABASE_URL`:
+```
+URL=https://<PROJECT_REF>.supabase.co  →  PROJECT_REF=<PROJECT_REF>
+DB_URL=postgresql://postgres:<SUPABASE_DB_PASSWORD>@db.<PROJECT_REF>.supabase.co:5432/postgres
+```
+> A senha do `DB_URL` deve ser `encodeURIComponent`-ada (pode conter `@`, `#`, `%`).
 
 ## Workflow
 
@@ -48,6 +62,50 @@ Se falhar, NÃO prosseguir com deploy.
 ```bash
 git add -A && git commit -m "<mensagem>" && git push origin main
 ```
+
+### Step 3.5: Aplicar Migration (se houver SQL novo)
+
+As migrations ficam em `supabase/migrations/`. Aplicar via `pg` (não há `supabase db push`
+configurado neste projeto). Script padrão (salvar em `/tmp/apply_migration.js`):
+
+```javascript
+const fs = require("fs");
+const path = require("path");
+const pg = require("C:/.../supabase-mcp-server/node_modules/pg"); // ajustar caminho
+
+const env = {};
+for (const line of fs.readFileSync("C:/.../.env", "utf8").split("\n")) {
+  const m = line.match(/^([A-Z0-9_]+)=(.*)$/); if (m) env[m[1]] = m[2].trim().replace(/^["']|["']$/g, "");
+}
+const ref = env.VITE_SUPABASE_URL.replace("https://", "").split(".")[0];
+const DB_URL = `postgresql://postgres:${encodeURIComponent(env.SUPABASE_DB_PASSWORD)}@db.${ref}.supabase.co:5432/postgres`;
+const sql = fs.readFileSync(path.join("C:/.../supabase/migrations", "<ARQUIVO>.sql"), "utf8");
+
+(async () => {
+  const c = new pg.Client({ connectionString: DB_URL, ssl: { rejectUnauthorized: false } });
+  await c.connect();
+  await c.query(sql);
+  console.log("Migration aplicada.");
+  await c.end();
+})();
+```
+
+### Step 3.6: Deploy de Edge Function (Supabase)
+
+Para alterações em `supabase/functions/<NOME>/index.ts`:
+
+```bash
+# 1. Login com token do .env (SUPABASE_ACCESS_TOKEN)
+TOKEN=$(grep SUPABASE_ACCESS_TOKEN .env | head -1 | sed 's/.*=//' | tr -d '"' | tr -d "'")
+supabase login --token "$TOKEN"
+
+# 2. Deploy da função (lê supabase/functions/<NOME>)
+supabase functions deploy <NOME> --project-ref <PROJECT_REF>
+```
+
+> O CLI faz upload direto (não precisa de Docker rodando localmente).
+> Não requer `git push` — o deploy usa os arquivos locais.
+> Após o deploy, testar a função (ex: `supabase functions invoke <NOME>`).
 
 ### Step 4: Ler credenciais
 
@@ -194,6 +252,9 @@ Ou em caso de falha:
 - **Timeout:** ~5min total (docker build é o mais lento)
 - **Rollback:** automático se health check falhar
 - **Backup:** sempre salvar imagem anterior antes de atualizar
+- **Edge Functions** são independentes do Docker: deploy via `supabase functions deploy` (Step 3.6)
+- **Migrations** aplicadas via `pg` + `SUPABASE_DB_URL` (Step 3.5), não via CLI `db push`
+- **Dois alvos de deploy:** (1) Frontend = Docker VPS; (2) Backend/Supabase = Edge Functions + migrations
 
 ## Regras Obrigatórias
 
@@ -202,6 +263,8 @@ Ou em caso de falha:
 3. **Health check** — sempre verificar pós-deploy
 4. **Rollback** — automático se falhar
 5. **Notificação** — sempre informar resultado
+6. **Edge Function** — se houve mudança em `supabase/functions/`, rodar Step 3.6
+7. **Migration** — se houve SQL novo em `supabase/migrations/`, rodar Step 3.5 antes do deploy
 
 ## Economia de Tokens
 
