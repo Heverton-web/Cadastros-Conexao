@@ -1,5 +1,6 @@
 import { supabase } from "~/core/supabase"
 import type { CatalogoImagemProduto, ProdutoTipoImagem, FonteImagem } from "../types"
+import { compressImage } from "../lib/compressImage"
 
 const BUCKET = "catalogo-imagens"
 const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5MB
@@ -37,14 +38,11 @@ export function extrairUrlGoogleDrive(url: string): string {
 
 /**
  * Valida se o arquivo atende aos requisitos de upload.
+ * Arquivos > 5MB serão comprimidos automaticamente.
  */
 export function validarArquivoImagem(file: File): { valido: boolean; erro?: string } {
   if (!ALLOWED_TYPES.includes(file.type)) {
     return { valido: false, erro: `Tipo de arquivo não aceito. Use: JPG, PNG, WebP ou GIF.` }
-  }
-  if (file.size > MAX_FILE_SIZE) {
-    const mb = (file.size / (1024 * 1024)).toFixed(1)
-    return { valido: false, erro: `Arquivo muito grande (${mb}MB). Tamanho máximo: 5MB.` }
   }
   return { valido: true }
 }
@@ -190,6 +188,7 @@ export async function reordenarImagens(
 
 /**
  * Upload + inserção automática (combina upload com inserção no banco).
+ * Comprime automaticamente imagens > 5MB.
  */
 export async function uploadEAdicionarImagem(
   empresaId: string,
@@ -197,7 +196,8 @@ export async function uploadEAdicionarImagem(
   sku: string,
   file: File,
 ): Promise<CatalogoImagemProduto> {
-  const { url, path } = await uploadImagem(empresaId, tipo, sku, file)
+  const arquivoFinal = await compressImage(file)
+  const { url, path } = await uploadImagem(empresaId, tipo, sku, arquivoFinal)
 
   // Buscar última ordem
   const { data: ultima } = await supabase

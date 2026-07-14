@@ -29,6 +29,7 @@ export function ImageUploader({
   onImagensChange,
 }: ImageUploaderProps) {
   const [uploading, setUploading] = useState(false)
+  const [compressing, setCompressing] = useState(false)
   const [urlInput, setUrlInput] = useState("")
   const [gdriveInput, setGdriveInput] = useState("")
   const [dragOver, setDragOver] = useState(false)
@@ -45,6 +46,7 @@ export function ImageUploader({
     if (!files || files.length === 0) return
 
     setUploading(true)
+    let hasCompressed = false
     try {
       for (const file of Array.from(files)) {
         const validacao = validarArquivoImagem(file)
@@ -54,18 +56,30 @@ export function ImageUploader({
           })
           continue
         }
+        if (file.size > 5 * 1024 * 1024) {
+          setCompressing(true)
+          hasCompressed = true
+        }
         await uploadEAdicionarImagem(empresaId, produtoTipo, produtoSku, file)
+        setCompressing(false)
       }
       await recarregarImagens()
-      toast.success("Imagem(ns) adicionada(s)!", {
-        style: { background: "var(--color-surface)", color: "#fff", border: "1px solid rgba(34,197,94,0.3)" },
-      })
+      if (hasCompressed) {
+        toast.success("Imagem comprimida e enviada!", {
+          style: { background: "var(--color-surface)", color: "#fff", border: "1px solid rgba(34,197,94,0.3)" },
+        })
+      } else {
+        toast.success("Imagem(ns) adicionada(s)!", {
+          style: { background: "var(--color-surface)", color: "#fff", border: "1px solid rgba(34,197,94,0.3)" },
+        })
+      }
     } catch (err: any) {
       toast.error(err.message || "Erro ao fazer upload", {
         style: { background: "var(--color-surface)", color: "#fff", border: "1px solid rgba(239,68,68,0.3)" },
       })
     } finally {
       setUploading(false)
+      setCompressing(false)
       if (fileInputRef.current) fileInputRef.current.value = ""
     }
   }, [empresaId, produtoTipo, produtoSku])
@@ -284,10 +298,10 @@ export function ImageUploader({
             <ImagePlus className={`w-8 h-8 ${dragOver ? "text-[#c9a655]" : "text-gray-500"}`} />
             <div className="text-center">
               <p className="text-sm font-bold text-white">
-                {uploading ? "Enviando..." : "Arraste ou clique para enviar"}
+                {compressing ? "Comprimindo imagem..." : uploading ? "Enviando..." : "Arraste ou clique para enviar"}
               </p>
               <p className="text-[10px] text-gray-400 mt-1">
-                JPG, PNG, WebP ou GIF — máximo 5MB
+                JPG, PNG, WebP ou GIF — imagens maiores que 5MB são comprimidas automaticamente
               </p>
             </div>
           </div>
