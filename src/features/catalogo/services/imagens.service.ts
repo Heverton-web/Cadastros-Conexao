@@ -142,6 +142,36 @@ export async function listarImagens(
 }
 
 /**
+ * Lista imagens de múltiplos produtos de uma vez (batch).
+ * Retorna um Map<sku, imagens[]>.
+ */
+export async function listarImagensBatch(
+  empresaId: string,
+  tipo: ProdutoTipoImagem,
+  skus: string[],
+): Promise<Map<string, CatalogoImagemProduto[]>> {
+  if (skus.length === 0) return new Map()
+
+  const { data, error } = await supabase
+    .from("catalogo_imagens_produto")
+    .select("*")
+    .eq("empresa_id", empresaId)
+    .eq("produto_tipo", tipo)
+    .in("produto_sku", skus)
+    .order("ordem_exibicao")
+
+  if (error) throw error
+
+  const map = new Map<string, CatalogoImagemProduto[]>()
+  for (const img of (data || []) as CatalogoImagemProduto[]) {
+    const existing = map.get(img.produto_sku) || []
+    existing.push(img)
+    map.set(img.produto_sku, existing)
+  }
+  return map
+}
+
+/**
  * Remove uma imagem. Se foi upload, também remove do Storage.
  */
 export async function removerImagem(

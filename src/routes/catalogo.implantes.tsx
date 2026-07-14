@@ -4,9 +4,12 @@ import { StoreLayout } from "~/features/catalogo/components/StoreLayout"
 import { DrillDown } from "~/features/catalogo/components/DrillDown"
 import { ProductCard } from "~/features/catalogo/components/ProductCard"
 import { useConexoes, useFamilias, useLinhas, useImplantesPorLinha, useImplantesAtivos } from "~/features/catalogo/hooks/useCatalogo"
-import { useMemo } from "react"
+import { useCatalogoEmpresaId } from "~/features/catalogo/hooks/useCatalogoEmpresa"
+import { listarImagensBatch } from "~/features/catalogo/services/imagens.service"
+import { useMemo, useEffect, useState } from "react"
 import { ArrowLeft, PackageOpen } from "lucide-react"
 import { cn } from "~/lib/utils"
+import type { CatalogoImagemProduto } from "~/features/catalogo/types"
 
 // Etapa 1: /catalogo/implantes — Escolher Conexão
 export const catalogoImplantesRoute = createRoute({
@@ -194,6 +197,15 @@ function ImplantList({ linhaId, conexaoId, familiaId, empresa, onBack }: { linha
   const { data: familias } = useFamilias()
   const familia = (familias ?? []).find((f) => f.id === familiaId)
   const corFamilia = familia?.cor_identificacao ?? "#c9a655"
+  const empresaId = useCatalogoEmpresaId()
+  const [imagensMap, setImagensMap] = useState<Map<string, CatalogoImagemProduto[]>>(new Map())
+
+  // Buscar imagens dos implantes
+  useEffect(() => {
+    if (!implantes || implantes.length === 0) return
+    const skus = implantes.map((i) => i.sku)
+    listarImagensBatch(empresaId, "implante", skus).then(setImagensMap).catch(() => {})
+  }, [implantes, empresaId])
 
   if (isLoading) {
     return (
@@ -256,6 +268,7 @@ function ImplantList({ linhaId, conexaoId, familiaId, empresa, onBack }: { linha
                 sku={impl.sku}
                 nome={`${impl.diametro_mm}×${impl.comprimento_mm} mm`}
                 corIdentificacao={impl.linha?.familia?.cor_identificacao || corFamilia}
+                imageUrl={imagensMap.get(impl.sku)?.[0]?.url_imagem}
               />
             </Link>
           ))}

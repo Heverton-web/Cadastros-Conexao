@@ -4,8 +4,11 @@ import { StoreLayout } from "~/features/catalogo/components/StoreLayout"
 import { DrillDown } from "~/features/catalogo/components/DrillDown"
 import { ProductCard } from "~/features/catalogo/components/ProductCard"
 import { useTiposReabilitacao, useFamilias, useTiposAbutment, useAbutments } from "~/features/catalogo/hooks/useCatalogo"
-import { useMemo } from "react"
+import { useCatalogoEmpresaId } from "~/features/catalogo/hooks/useCatalogoEmpresa"
+import { listarImagensBatch } from "~/features/catalogo/services/imagens.service"
+import { useMemo, useEffect, useState } from "react"
 import { ArrowLeft, PackageOpen } from "lucide-react"
+import type { CatalogoImagemProduto } from "~/features/catalogo/types"
 
 // Etapa 1: /catalogo/componentes — Escolher Tipo Reabilitação
 export const catalogoComponentesRoute = createRoute({
@@ -187,6 +190,15 @@ function TiposAbutmentList({ familiaId, tipoReabId, onSelect, onBack, countByTip
 function AbutmentList({ familiaId, tipoAbutmentId, tipoReabId, empresa, onBack }: { familiaId: string; tipoAbutmentId: string; tipoReabId: string; empresa?: string; onBack: () => void }) {
   const { data: abutments, isLoading } = useAbutments(familiaId)
   const filtered = (abutments ?? []).filter((a) => a.tipo_abutment_id === tipoAbutmentId)
+  const empresaId = useCatalogoEmpresaId()
+  const [imagensMap, setImagensMap] = useState<Map<string, CatalogoImagemProduto[]>>(new Map())
+
+  // Buscar imagens dos abutments
+  useEffect(() => {
+    if (filtered.length === 0) return
+    const skus = filtered.map((a) => a.sku)
+    listarImagensBatch(empresaId, "abutment", skus).then(setImagensMap).catch(() => {})
+  }, [filtered, empresaId])
 
   if (isLoading) {
     return (
@@ -235,6 +247,7 @@ function AbutmentList({ familiaId, tipoAbutmentId, tipoReabId, empresa, onBack }
               sku={a.sku}
               nome={`${a.tipo_abutment?.nome ?? ""} ${a.familia?.nome ?? ""}`}
               corIdentificacao={a.familia?.cor_identificacao || ''}
+              imageUrl={imagensMap.get(a.sku)?.[0]?.url_imagem}
             />
           </Link>
         ))}

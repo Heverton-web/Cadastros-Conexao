@@ -298,8 +298,17 @@ export function ImageUploader({
                 src={img.url_imagem}
                 alt={`Imagem ${idx + 1}`}
                 className="w-full h-full object-cover"
+                crossOrigin="anonymous"
                 onError={(e) => {
-                  (e.target as HTMLImageElement).style.display = "none"
+                  const el = e.target as HTMLImageElement
+                  el.style.display = "none"
+                  const parent = el.parentElement
+                  if (parent && !parent.querySelector(".img-error-placeholder")) {
+                    const placeholder = document.createElement("div")
+                    placeholder.className = "img-error-placeholder absolute inset-0 flex items-center justify-center bg-[var(--color-surface)]"
+                    placeholder.innerHTML = '<span class="text-[10px] text-gray-500">Erro ao carregar</span>'
+                    parent.appendChild(placeholder)
+                  }
                 }}
               />
 
