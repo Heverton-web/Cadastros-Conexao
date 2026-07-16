@@ -958,7 +958,7 @@ function NovaCredencialModal({
           </button>
         </div>
 
-        <div className="px-6 py-6 flex-1 space-y-4">
+        <div className="px-6 py-6 flex-1 min-h-0 overflow-y-auto space-y-4">
         {/* Dados Básicos */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <input

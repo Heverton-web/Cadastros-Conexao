@@ -8,13 +8,15 @@ import * as workflows from "../services/workflows.service"
 import * as kits from "../services/kits.service"
 import * as cupons from "../services/cupons.service"
 import * as frete from "../services/frete.service"
+import * as parafusosRetensao from "../services/parafusos-retensao.service"
+import * as cicatrizadores from "../services/cicatrizadores.service"
 import * as promocionais from "../services/promocionais.service"
 import * as clientesService from "../services/clientes.service"
 import * as gruposService from "../services/grupos.service"
 import * as pedidosService from "../services/pedidos.service"
 import * as orcamentosService from "../services/orcamentos.service"
 import toast from "react-hot-toast"
-import type { CatalogoImplante, CatalogoKit, CatalogoAbutment, CatalogoCategoria, CatalogoConexao, CatalogoLinha, CatalogoFamilia, CatalogoFresa, CatalogoTipoReabilitacao, CatalogoTipoAbutment, CatalogoCategoriaAcessorio, CatalogoAcessorio, CatalogoChaveFerramental, CatalogoCategoriaInstrumental, CatalogoCategoriaKit, CatalogoWorkflow, CatalogoEtapaWorkflow } from "../types"
+import type { CatalogoImplante, CatalogoKit, CatalogoAbutment, CatalogoCategoria, CatalogoConexao, CatalogoLinha, CatalogoFamilia, CatalogoFresa, CatalogoTipoReabilitacao, CatalogoTipoAbutment, CatalogoCategoriaAcessorio, CatalogoAcessorio, CatalogoChaveFerramental, CatalogoCategoriaInstrumental, CatalogoInstrumentalGeral, CatalogoCategoriaKit, CatalogoWorkflow, CatalogoEtapaWorkflow, CatalogoParafusoRetencao, CatalogoCicatrizador } from "../types"
 
 function useEmpresaId(): string {
   return useCatalogoEmpresaId()
@@ -479,6 +481,29 @@ export function useInstrumentais(categoriaId?: string) {
   return useQuery({ queryKey: ["catalogo", "instrumentais", empresaId, categoriaId], queryFn: () => acessorios.listarInstrumentais(empresaId, categoriaId), enabled: !!empresaId })
 }
 
+export function useToggleInstrumentalAtivo() {
+  const empresaId = useEmpresaId()
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: ({ sku, ativo }: { sku: string; ativo: boolean }) => acessorios.toggleInstrumentalAtivo(empresaId, sku, ativo),
+    onMutate: async ({ sku, ativo }) => {
+      await qc.cancelQueries({ queryKey: ["catalogo", "instrumentais", empresaId] })
+      const prev = qc.getQueryData<CatalogoInstrumentalGeral[]>(["catalogo", "instrumentais", empresaId])
+      qc.setQueryData<CatalogoInstrumentalGeral[]>(["catalogo", "instrumentais", empresaId], (old) =>
+        old?.map((i) => (i.sku === sku ? { ...i, ativo } : i)) ?? []
+      )
+      return { prev }
+    },
+    onError: (err, _vars, ctx) => {
+      if (ctx?.prev) qc.setQueryData(["catalogo", "instrumentais", empresaId], ctx.prev)
+      toast.error("Erro ao alterar instrumental: " + (err as Error).message)
+    },
+    onSettled: () => {
+      qc.invalidateQueries({ queryKey: ["catalogo", "instrumentais"] })
+    },
+  })
+}
+
 // --- Kits ---
 export function useToggleCategoriaKitAtivo() {
   const empresaId = useEmpresaId()
@@ -854,6 +879,104 @@ export function useConverterOrcamentoPedido() {
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["catalogo", "orcamentos", empresaId] })
       qc.invalidateQueries({ queryKey: ["catalogo", "pedidos", empresaId] })
+    },
+  })
+}
+
+// --- Parafusos de Retenção ---
+export function useParafusosRetensao() {
+  const empresaId = useEmpresaId()
+  return useQuery({ queryKey: ["catalogo", "parafusos-retensao", empresaId], queryFn: () => parafusosRetensao.listarParafusosRetensao(empresaId), enabled: !!empresaId })
+}
+
+export function useCriarParafusoRetencao() {
+  const empresaId = useEmpresaId()
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: (input: Parameters<typeof parafusosRetensao.criarParafusoRetencao>[1]) =>
+      parafusosRetensao.criarParafusoRetencao(empresaId, input),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "parafusos-retensao", empresaId] }),
+  })
+}
+
+export function useAtualizarParafusoRetencao() {
+  const empresaId = useEmpresaId()
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: ({ sku, input }: { sku: string; input: Parameters<typeof parafusosRetensao.atualizarParafusoRetencao>[2] }) =>
+      parafusosRetensao.atualizarParafusoRetencao(empresaId, sku, input),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "parafusos-retensao", empresaId] }),
+  })
+}
+
+export function useToggleParafusoRetencaoAtivo() {
+  const empresaId = useEmpresaId()
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: ({ sku, ativo }: { sku: string; ativo: boolean }) => parafusosRetensao.toggleParafusoRetencaoAtivo(empresaId, sku, ativo),
+    onMutate: async ({ sku, ativo }) => {
+      await qc.cancelQueries({ queryKey: ["catalogo", "parafusos-retensao", empresaId] })
+      const prev = qc.getQueryData<CatalogoParafusoRetencao[]>(["catalogo", "parafusos-retensao", empresaId])
+      qc.setQueryData<CatalogoParafusoRetencao[]>(["catalogo", "parafusos-retensao", empresaId], (old) =>
+        old?.map((p) => (p.sku === sku ? { ...p, ativo } : p)) ?? []
+      )
+      return { prev }
+    },
+    onError: (err, _vars, ctx) => {
+      if (ctx?.prev) qc.setQueryData(["catalogo", "parafusos-retensao", empresaId], ctx.prev)
+      toast.error("Erro ao alterar parafuso de retenção: " + (err as Error).message)
+    },
+    onSettled: () => {
+      qc.invalidateQueries({ queryKey: ["catalogo", "parafusos-retensao"] })
+    },
+  })
+}
+
+// --- Cicatrizadores ---
+export function useCicatrizadores() {
+  const empresaId = useEmpresaId()
+  return useQuery({ queryKey: ["catalogo", "cicatrizadores", empresaId], queryFn: () => cicatrizadores.listarCicatrizadores(empresaId), enabled: !!empresaId })
+}
+
+export function useCriarCicatrizador() {
+  const empresaId = useEmpresaId()
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: (input: Parameters<typeof cicatrizadores.criarCicatrizador>[1]) =>
+      cicatrizadores.criarCicatrizador(empresaId, input),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "cicatrizadores", empresaId] }),
+  })
+}
+
+export function useAtualizarCicatrizador() {
+  const empresaId = useEmpresaId()
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: ({ sku, input }: { sku: string; input: Parameters<typeof cicatrizadores.atualizarCicatrizador>[2] }) =>
+      cicatrizadores.atualizarCicatrizador(empresaId, sku, input),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "cicatrizadores", empresaId] }),
+  })
+}
+
+export function useToggleCicatrizadorAtivo() {
+  const empresaId = useEmpresaId()
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: ({ sku, ativo }: { sku: string; ativo: boolean }) => cicatrizadores.toggleCicatrizadorAtivo(empresaId, sku, ativo),
+    onMutate: async ({ sku, ativo }) => {
+      await qc.cancelQueries({ queryKey: ["catalogo", "cicatrizadores", empresaId] })
+      const prev = qc.getQueryData<CatalogoCicatrizador[]>(["catalogo", "cicatrizadores", empresaId])
+      qc.setQueryData<CatalogoCicatrizador[]>(["catalogo", "cicatrizadores", empresaId], (old) =>
+        old?.map((c) => (c.sku === sku ? { ...c, ativo } : c)) ?? []
+      )
+      return { prev }
+    },
+    onError: (err, _vars, ctx) => {
+      if (ctx?.prev) qc.setQueryData(["catalogo", "cicatrizadores", empresaId], ctx.prev)
+      toast.error("Erro ao alterar cicatrizador: " + (err as Error).message)
+    },
+    onSettled: () => {
+      qc.invalidateQueries({ queryKey: ["catalogo", "cicatrizadores"] })
     },
   })
 }

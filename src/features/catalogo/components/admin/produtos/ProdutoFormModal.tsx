@@ -12,6 +12,9 @@ import {
   useCategorias, useConexoes, useFamilias, useLinhas,
   useFresas, useCategoriasKit, useChavesFerramental,
   useAcessorios, useInstrumentais, useTiposReabilitacao, useTiposAbutment,
+  useEtapas,
+  useParafusosRetensao, useCriarParafusoRetencao, useAtualizarParafusoRetencao,
+  useCicatrizadores, useCriarCicatrizador, useAtualizarCicatrizador,
   useImplanteDetalhe, useAbutmentDetalhe, useKitDetalhe,
 } from "~/features/catalogo/hooks/useCatalogo"
 import { salvarSequenciaProtetica } from "~/features/catalogo/services/sequencia-protetica.service"
@@ -21,12 +24,14 @@ import { listarImagens } from "~/features/catalogo/services/imagens.service"
 import { ImplanteForm } from "./forms/ImplanteForm"
 import { AbutmentForm } from "./forms/AbutmentForm"
 import { KitForm } from "./forms/KitForm"
+import { ParafusoRetencaoForm } from "./forms/ParafusoRetencaoForm"
+import { CicatrizadorForm } from "./forms/CicatrizadorForm"
 import { ImageUploader } from "./ImageUploader"
 import type { CatalogoImplante, CatalogoImagemProduto, ProdutoTipoImagem } from "~/features/catalogo/types"
 
-type ProdutoTipo = "implante" | "abutment" | "kit"
+type ProdutoTipo = "implante" | "abutment" | "kit" | "parafuso_retensao" | "cicatrizador"
 interface SeqEtapa { etapa_nome: string; acessorio_sku: string }
-interface BomItem { tipo: "fresa" | "chave" | "acessorio" | "instrumental" | "implante"; sku: string; quantidade: number }
+interface BomItem { tipo: "fresa" | "chave" | "acessorio" | "instrumental" | "implante" | "parafuso_retensao" | "cicatrizador"; sku: string; quantidade: number }
 
 export function ProdutoFormModal({
   open, onOpenChange, editingItem, implantes,
@@ -56,6 +61,7 @@ export function ProdutoFormModal({
   const { data: instrumentais } = useInstrumentais()
   const { data: tiposReab } = useTiposReabilitacao()
   const { data: tiposAbutment } = useTiposAbutment()
+  const { data: etapas } = useEtapas()
 
   const { data: implDetalhe } = useImplanteDetalhe(editingItem?.tipo === "implante" ? editingItem.sku : "")
   const { data: abDetalhe } = useAbutmentDetalhe(editingItem?.tipo === "abutment" ? editingItem.sku : "")
@@ -422,6 +428,7 @@ export function ProdutoFormModal({
               tiposReab={tiposReab}
               tiposAbutment={tiposAbutment}
               acessorios={acessorios}
+              etapas={etapas}
               seqAnalógica={seqAnalógica}
               seqDigital={seqDigital}
               addSeqEtapa={addSeqEtapa}

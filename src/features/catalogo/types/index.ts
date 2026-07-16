@@ -300,7 +300,7 @@ export interface CatalogoKitFamilia {
   familia?: CatalogoFamilia
 }
 
-export type BOMItemTipo = "fresa" | "chave" | "acessorio" | "instrumental" | "implante"
+export type BOMItemTipo = "fresa" | "chave" | "acessorio" | "instrumental" | "implante" | "parafuso_retensao" | "cicatrizador"
 
 export interface CatalogoKitComposicao {
   id: string
@@ -370,6 +370,38 @@ export interface CatalogoPromocionalItem {
   sku: string
   tipo: string
   created_at: string
+}
+
+export interface CatalogoParafusoRetencao {
+  sku: string
+  empresa_id: string
+  nome: string
+  torque_ncm: number | null
+  vinculo_tipo: "abutment" | "componente"
+  vinculo_sku: string
+  chave_sku: string | null
+  preco: number
+  ativo: boolean
+  created_at: string
+  updated_at: string
+  chave?: CatalogoChaveFerramental
+}
+
+export interface CatalogoCicatrizador {
+  sku: string
+  empresa_id: string
+  nome: string
+  altura_transmucoso: number | null
+  diametro_plataforma: string | null
+  torque_ncm: number | null
+  familia_id: string | null
+  chave_sku: string | null
+  preco: number
+  ativo: boolean
+  created_at: string
+  updated_at: string
+  familia?: CatalogoFamilia
+  chave?: CatalogoChaveFerramental
 }
 
 export interface ProductSheetResult {

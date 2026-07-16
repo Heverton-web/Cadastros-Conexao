@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { Trash2 } from "lucide-react"
-import type { CatalogoFamilia, CatalogoTipoReabilitacao, CatalogoTipoAbutment, CatalogoAcessorio } from "~/features/catalogo/types"
+import type { CatalogoFamilia, CatalogoTipoReabilitacao, CatalogoTipoAbutment, CatalogoAcessorio, CatalogoEtapaWorkflow } from "~/features/catalogo/types"
 
 const abutmentSchema = z.object({
   familia_id: z.string().min(1, "Família é obrigatória"),
@@ -28,6 +28,7 @@ interface Props {
   tiposReab: CatalogoTipoReabilitacao[] | undefined
   tiposAbutment: CatalogoTipoAbutment[] | undefined
   acessorios: CatalogoAcessorio[] | undefined
+  etapas: CatalogoEtapaWorkflow[] | undefined
   seqAnalógica: SeqEtapa[]
   seqDigital: SeqEtapa[]
   addSeqEtapa: (tipo: "analógico" | "digital") => void
@@ -37,7 +38,7 @@ interface Props {
 
 export function AbutmentForm({
   data, onChange, familias, tiposReab, tiposAbutment,
-  acessorios, seqAnalógica, seqDigital,
+  acessorios, etapas, seqAnalógica, seqDigital,
   addSeqEtapa, removeSeqEtapa, updateSeqEtapa,
 }: Props) {
   const { register, formState: { errors } } = useForm<AbutmentFormData>({
@@ -123,7 +124,10 @@ export function AbutmentForm({
         {seqAnalógica.map((e, i) => (
           <div key={i} className="flex items-center gap-3 bg-[var(--color-background)] rounded-lg p-3 border border-white/5">
             <span className="w-7 h-7 flex items-center justify-center rounded-lg bg-[#c9a655]/10 text-[#c9a655] text-xs font-black shrink-0">{i + 1}</span>
-            <input type="text" value={e.etapa_nome} onChange={(e2) => updateSeqEtapa("analógico", i, "etapa_nome", e2.target.value)} className={inputCls + " flex-1"} placeholder="Nome da etapa (ex: Cicatrização)" />
+            <select value={e.etapa_nome} onChange={(e2) => updateSeqEtapa("analógico", i, "etapa_nome", e2.target.value)} className={selectCls + " flex-1"}>
+              <option value="">Selecione a etapa...</option>
+              {etapas?.map((et) => <option key={et.id} value={et.nome}>{et.nome}</option>)}
+            </select>
             <select value={e.acessorio_sku} onChange={(e2) => updateSeqEtapa("analógico", i, "acessorio_sku", e2.target.value)} className={selectCls + " flex-1"}>
               <option value="">Selecione o acessório...</option>
               {acessorios?.map((a) => <option key={a.sku} value={a.sku}>{a.nome}</option>)}
@@ -142,7 +146,10 @@ export function AbutmentForm({
         {seqDigital.map((e, i) => (
           <div key={i} className="flex items-center gap-3 bg-[var(--color-background)] rounded-lg p-3 border border-white/5">
             <span className="w-7 h-7 flex items-center justify-center rounded-lg bg-[#c9a655]/10 text-[#c9a655] text-xs font-black shrink-0">{i + 1}</span>
-            <input type="text" value={e.etapa_nome} onChange={(e2) => updateSeqEtapa("digital", i, "etapa_nome", e2.target.value)} className={inputCls + " flex-1"} placeholder="Nome da etapa (ex: Cicatrização)" />
+            <select value={e.etapa_nome} onChange={(e2) => updateSeqEtapa("digital", i, "etapa_nome", e2.target.value)} className={selectCls + " flex-1"}>
+              <option value="">Selecione a etapa...</option>
+              {etapas?.map((et) => <option key={et.id} value={et.nome}>{et.nome}</option>)}
+            </select>
             <select value={e.acessorio_sku} onChange={(e2) => updateSeqEtapa("digital", i, "acessorio_sku", e2.target.value)} className={selectCls + " flex-1"}>
               <option value="">Selecione o acessório...</option>
               {acessorios?.map((a) => <option key={a.sku} value={a.sku}>{a.nome}</option>)}

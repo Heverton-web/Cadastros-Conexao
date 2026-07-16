@@ -195,6 +195,11 @@ export async function toggleCategoriaInstrumentalAtivo(id: string, ativo: boolea
   if (error) throw error
 }
 
+export async function toggleInstrumentalAtivo(empresaId: string, sku: string, ativo: boolean): Promise<void> {
+  const { error } = await supabase.from("catalogo_instrumentais_gerais").update({ ativo }).eq("empresa_id", empresaId).eq("sku", sku)
+  if (error) throw error
+}
+
 export async function removerInstrumental(empresaId: string, sku: string): Promise<void> {
   const { error } = await supabase.from("catalogo_instrumentais_gerais").delete().eq("empresa_id", empresaId).eq("sku", sku)
   if (error) throw error
