@@ -123,6 +123,7 @@ function buildConfigSubGroups(items: NavItem[]): NavSubGroup[] {
   // 2. CONFIGURAÇÃO DE RECURSOS
   const configPaths = [
     "/empresa/despesas-config",
+    "/empresa/clientes-import",
     "/empresa/rotas/config",
     "/empresa/hub/chatbot",
     "/empresa/cadastros/formulario",

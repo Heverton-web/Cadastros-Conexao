@@ -1,11 +1,11 @@
 {
   "$schema": "https://opencode.ai/config.json",
   "instructions": ["AGENTS.md"],
-  "custom_tools": [
-    {
-      "name": "gastos-sessao",
-      "description": "Exibe gastos acumulados da sessão atual (lê .agents/session-cost.jsonl). Uso: gastos-sessao [session_id]",
-      "command": "node scripts/gastos-sessao.mjs"
+  "plugin": [".opencode/plugins/session-cost-tracker.js"],
+  "command": {
+    "gastos": {
+      "template": "node scripts/gastos-sessao.mjs",
+      "description": "Exibe gastos acumulados da sessão atual (lê .agents/session-cost.jsonl)"
     }
-  ]
+  }
 }

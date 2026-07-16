@@ -11,6 +11,7 @@ import {
   Paintbrush,
   FormInput,
   HelpCircle,
+  Upload,
 } from "lucide-react";
 import { registerModule, registerNavItem } from "~/registry";
 import type { ModuleDefinition } from "~/registry";
@@ -27,6 +28,7 @@ export const empresasModule: ModuleDefinition = {
     "/empresa",
     "/empresa/design",
     "/empresa/despesas-config",
+    "/empresa/clientes-import",
     "/empresa/rotas/config",
     "/empresa/nps/tema",
     "/empresa/nps/design",
@@ -154,6 +156,16 @@ export const empresasModule: ModuleDefinition = {
       to: "/empresa/despesas-config",
       permissionCheck: () => true,
       order: 70,
+      moduloKey: "empresas-core",
+    });
+
+    registerNavItem({
+      id: "empresa-clientes-import",
+      label: "Importar Clientes",
+      icon: Upload,
+      to: "/empresa/clientes-import",
+      permissionCheck: () => true,
+      order: 75,
       moduloKey: "empresas-core",
     });
 

@@ -180,6 +180,7 @@ function NovoClienteButton() {
         nome_clinica: form.nome_clinica || null,
         telefone_contato: form.telefone_contato || null,
         consultor_atual_id: perfil?.id,
+        empresa_id: perfil?.empresa_id,
       }).select().single();
       if (error) throw error;
       toast.success("Cliente adicionado");

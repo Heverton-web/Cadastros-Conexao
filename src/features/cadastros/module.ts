@@ -7,6 +7,7 @@ import {
   Globe,
   Palette,
   Eye,
+  Upload,
 } from "lucide-react";
 import {
   registerModule,
@@ -71,7 +72,6 @@ export const cadastrosModule: ModuleDefinition = {
     { key: "apis", label: "APIs", descricao: "Conectores de API" },
   ],
   events: [
-    // ⚠️ NOVOS MÓDULOS: copie este padrão — Central de Ações lê events[] automaticamente
     {
       key: "cadastro.criado",
       label: "Cadastro Criado",
@@ -108,7 +108,6 @@ export const cadastrosModule: ModuleDefinition = {
       descricao: "Dispara quando um link de cadastro é gerado",
       type: "button_action",
     },
-    // Eventos legados do pipeline (unificados)
     {
       key: "link_gerado",
       label: "Link Gerado (Pipeline)",
@@ -287,6 +286,7 @@ export const cadastrosModule: ModuleDefinition = {
         aprovar_documento: false,
         reprovar_documento: false,
         solicitar_correcao_documento: false,
+ 
         aprovar_campo: false,
         reprovar_campo: false,
         solicitar_correcao_campo: false,

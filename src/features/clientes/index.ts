@@ -27,6 +27,7 @@ export type Endereco = {
 
 export type Cadastro = {
   id: string;
+  empresa_id: string | null;
   codigo_cliente: string | null;
   tipo_pessoa: "PF" | "PJ" | null;
   status: CadastroStatus;
@@ -186,12 +187,36 @@ export async function atualizarCadastro(id: string, input: Partial<Cadastro>) {
 }
 
 export async function aprovarCadastro(id: string, codigo_cliente: string) {
-  return atualizarCadastro(id, {
+  const cadastro = await atualizarCadastro(id, {
     status: "aprovado",
     codigo_cliente,
     data_finalizacao: new Date().toISOString(),
     revisado: true,
   });
+
+  if (cadastro.empresa_id) {
+    const { error } = await supabase.from("clientes").insert({
+      empresa_id: cadastro.empresa_id,
+      cadastro_id: cadastro.id,
+      codigo_cliente: cadastro.codigo_cliente,
+      tipo_pessoa: cadastro.tipo_pessoa,
+      nome_doutor: cadastro.lead_nome || cadastro.nome_temporario || "Sem nome",
+      nome_clinica: null,
+      telefone_contato: cadastro.lead_whatsapp,
+      lead_email: cadastro.lead_email,
+      lead_whatsapp: cadastro.lead_whatsapp,
+      observacoes: cadastro.observacoes,
+      colaborador: cadastro.colaborador,
+      status: "ativo",
+      fonte: "cadastros",
+    });
+
+    if (error) {
+      console.error("Erro ao criar cliente automaticamente:", error);
+    }
+  }
+
+  return cadastro;
 }
 
 export async function reprovarCadastro(id: string, motivo: string) {

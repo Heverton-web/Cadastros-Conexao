@@ -135,6 +135,7 @@ import { rotasRoute } from "./routes/rotas";
 import { rotaDetailRoute } from "./routes/rotas.$id";
 import { rotasConfigRoute } from "./routes/rotas.config";
 import { empresaRotasConfigRoute } from "./routes/empresa.rotas-config";
+import { empresaClientesImportRoute } from "./routes/empresa.clientes-import";
 
 import { marketingDashboardRoute } from "./routes/marketing.dashboard";
 import { marketingLandingPagesRoute } from "./routes/marketing.landing-pages";
@@ -279,6 +280,8 @@ export const routeTree = rootRoute.addChildren([
     despesasMeusRelatoriosRoute,
     despesasRelatoriosRoute,
     empresaDespesasConfigRoute,
+
+    empresaClientesImportRoute,
 
     mapasRoute,
     mapasDistribuidoresRoute,
