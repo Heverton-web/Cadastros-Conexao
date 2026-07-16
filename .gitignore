@@ -12,6 +12,11 @@ vps.env
 .agents/skills/lean-ctx/
 .agents/skills/rtk/
 
+# Session cost tracking (gerado automaticamente)
+.agents/session-cost.jsonl
+.agents/.session-state.json
+.agents/.mm-session-state.json
+
 *storybook.log
 storybook-static
 
@@ -44,3 +49,8 @@ dist/
 # Sistema
 .DS_Store
 Thumbs.db
+# Scripts de teste temporários
+test-*.py
+
+# OpenCode local
+.opencode/
