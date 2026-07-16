@@ -58,6 +58,7 @@
     "clsx": "^2.1.1",
     "core-js": "^3.49.0",
     "d3-geo": "^3.1.1",
+    "date-fns": "^4.4.0",
     "i18next": "^26.3.3",
     "i18next-browser-languagedetector": "^8.2.1",
     "jspdf": "^4.2.1",

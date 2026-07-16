@@ -7,6 +7,9 @@ import {
   Share2,
   Pencil,
   Trash2,
+  LayoutGrid,
+  GanttChart,
+  CalendarDays,
 } from "lucide-react";
 import { Button } from "~/components/ui/button";
 import {
@@ -18,9 +21,12 @@ import {
   useDeletarColuna,
 } from "../hooks/useFunisData";
 import { KanbanView } from "./KanbanView";
+import { TimelineView } from "./TimelineView";
+import { CalendarView } from "./CalendarView";
 import { ShareModal } from "./ShareModal";
 import { useAuth } from "~/lib/auth";
 import { toast } from "react-hot-toast";
+import { cn } from "~/lib/utils";
 
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
@@ -59,6 +65,7 @@ export function FunilDetallePage() {
   const [showShare, setShowShare] = useState(false);
   const [showDelete, setShowDelete] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
+  const [viewMode, setViewMode] = useState<"kanban" | "timeline" | "calendar">("kanban");
 
   const [editTitle, setEditTitle] = useState("");
   const [editDescription, setEditDescription] = useState("");
@@ -184,6 +191,44 @@ export function FunilDetallePage() {
           </div>
         </div>
         <div className="flex items-center gap-1.5">
+          <div className="flex items-center bg-surface-hover/50 rounded-lg p-0.5 mr-2">
+            <button
+              onClick={() => setViewMode("kanban")}
+              className={cn(
+                "p-1.5 rounded-md transition-colors",
+                viewMode === "kanban"
+                  ? "bg-accent/15 text-accent"
+                  : "text-text-muted hover:text-text-main"
+              )}
+              title="Kanban"
+            >
+              <LayoutGrid className="w-4 h-4" />
+            </button>
+            <button
+              onClick={() => setViewMode("timeline")}
+              className={cn(
+                "p-1.5 rounded-md transition-colors",
+                viewMode === "timeline"
+                  ? "bg-accent/15 text-accent"
+                  : "text-text-muted hover:text-text-main"
+              )}
+              title="Timeline"
+            >
+              <GanttChart className="w-4 h-4" />
+            </button>
+            <button
+              onClick={() => setViewMode("calendar")}
+              className={cn(
+                "p-1.5 rounded-md transition-colors",
+                viewMode === "calendar"
+                  ? "bg-accent/15 text-accent"
+                  : "text-text-muted hover:text-text-main"
+              )}
+              title="Calendário"
+            >
+              <CalendarDays className="w-4 h-4" />
+            </button>
+          </div>
           <button
             onClick={() => setShowShare(true)}
             className="btn-hover-neutral p-2 rounded-lg"
@@ -213,7 +258,9 @@ export function FunilDetallePage() {
       </div>
 
       <div className="flex-1 overflow-hidden">
-        <KanbanView funil={funil} />
+        {viewMode === "kanban" && <KanbanView funil={funil} />}
+        {viewMode === "timeline" && <TimelineView funil={funil} />}
+        {viewMode === "calendar" && <CalendarView funil={funil} />}
       </div>
 
       {showShare && (
