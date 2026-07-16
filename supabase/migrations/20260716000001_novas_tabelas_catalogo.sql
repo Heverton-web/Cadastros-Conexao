@@ -39,26 +39,26 @@ ALTER TABLE catalogo_parafusos_retensao ENABLE ROW LEVEL SECURITY;
 
 CREATE POLICY "_parafusos_select" ON catalogo_parafusos_retensao
   FOR SELECT USING (
-    empresa_id = (SELECT auth.uid())
-    OR is_super_admin()
+    empresa_id = auth.uid()::uuid
+    OR EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND is_super_admin = true)
   );
 
 CREATE POLICY "_parafusos_insert" ON catalogo_parafusos_retensao
   FOR INSERT WITH CHECK (
-    empresa_id = (SELECT auth.uid())
-    OR is_super_admin()
+    empresa_id = auth.uid()::uuid
+    OR EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND is_super_admin = true)
   );
 
 CREATE POLICY "_parafusos_update" ON catalogo_parafusos_retensao
   FOR UPDATE USING (
-    empresa_id = (SELECT auth.uid())
-    OR is_super_admin()
+    empresa_id = auth.uid()::uuid
+    OR EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND is_super_admin = true)
   );
 
 CREATE POLICY "parafusos_delete" ON catalogo_parafusos_retensao
   FOR DELETE USING (
-    empresa_id = (SELECT auth.uid())
-    OR is_super_admin()
+    empresa_id = auth.uid()::uuid
+    OR EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND is_super_admin = true)
   );
 
 -- RLS para Cicatrizadores
@@ -66,26 +66,26 @@ ALTER TABLE catalogo_cicatrizadores ENABLE ROW LEVEL SECURITY;
 
 CREATE POLICY "cicatrizadores_select" ON catalogo_cicatrizadores
   FOR SELECT USING (
-    empresa_id = (SELECT auth.uid())
-    OR is_super_admin()
+    empresa_id = auth.uid()::uuid
+    OR EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND is_super_admin = true)
   );
 
 CREATE POLICY "cicatrizadores_insert" ON catalogo_cicatrizadores
   FOR INSERT WITH CHECK (
-    empresa_id = (SELECT auth.uid())
-    OR is_super_admin()
+    empresa_id = auth.uid()::uuid
+    OR EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND is_super_admin = true)
   );
 
 CREATE POLICY "cicatrizadores_update" ON catalogo_cicatrizadores
   FOR UPDATE USING (
-    empresa_id = (SELECT auth.uid())
-    OR is_super_admin()
+    empresa_id = auth.uid()::uuid
+    OR EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND is_super_admin = true)
   );
 
 CREATE POLICY "cicatrizadores_delete" ON catalogo_cicatrizadores
   FOR DELETE USING (
-    empresa_id = (SELECT auth.uid())
-    OR is_super_admin()
+    empresa_id = auth.uid()::uuid
+    OR EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND is_super_admin = true)
   );
 
 -- Índices
