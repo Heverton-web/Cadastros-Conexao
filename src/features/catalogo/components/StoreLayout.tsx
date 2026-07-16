@@ -115,6 +115,26 @@ export function StoreLayout({ children, empresaId: empresaIdProp, fullHeight, zo
         // Aplica no :root para prioridade máxima
         applyDesignToRoot(config);
 
+        // Favicon: tenta catalogo_design_config, senão fallback para empresas_config
+        let faviconSrc = config.images.faviconUrl;
+        if (!faviconSrc) {
+          const { data: empConfig } = await supabase
+            .from("empresas_config")
+            .select("favicon_url")
+            .eq("empresa_id", resolvedEmpresaId!)
+            .single();
+          faviconSrc = empConfig?.favicon_url || "";
+        }
+        if (faviconSrc) {
+          let link = document.querySelector<HTMLLinkElement>("link[rel='icon']");
+          if (!link) {
+            link = document.createElement("link");
+            link.rel = "icon";
+            document.head.appendChild(link);
+          }
+          link.href = faviconSrc;
+        }
+
         // Logo
         if (config.images.logoUrl) {
           setLogoUrl(config.images.logoUrl);
@@ -130,7 +150,7 @@ export function StoreLayout({ children, empresaId: empresaIdProp, fullHeight, zo
     return () => { cancelled = true; };
   }, [resolvedEmpresaId]);
 
-  // Cleanup: remove CSS vars customizadas ao desmontar
+  // Cleanup: remove CSS vars customizadas e restaura favicon ao desmontar
   useEffect(() => {
     return () => {
       const root = document.documentElement;
@@ -142,6 +162,12 @@ export function StoreLayout({ children, empresaId: empresaIdProp, fullHeight, zo
         '--color-accent-muted',
       ];
       vars.forEach(v => root.style.removeProperty(v));
+
+      // Restaura favicon genérico
+      const link = document.querySelector<HTMLLinkElement>("link[rel='icon']");
+      if (link) {
+        link.href = "/favicon-generic.svg";
+      }
     };
   }, []);
 
