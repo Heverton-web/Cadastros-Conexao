@@ -1,4 +1,4 @@
-import { useAuth } from "~/lib/auth";
+import { useAuth } from "~/core/auth";
 
 export function useEmpresaTheme() {
   const { empresa } = useAuth();

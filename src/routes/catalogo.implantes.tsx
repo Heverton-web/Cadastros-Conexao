@@ -43,6 +43,7 @@ function CatalogoImplantesPage() {
   const { data: conexoes, isLoading: loadingConexoes } = useConexoes()
   const { data: todasFamilias } = useFamilias()
   const { data: todasLinhas } = useLinhas()
+  const { data: todosImplantes } = useImplantesAtivos()
   const navigate = useNavigate()
   const params = useParams({ strict: false }) as Record<string, string | undefined>
   const conexaoId = params.conexaoId ?? null
@@ -52,21 +53,36 @@ function CatalogoImplantesPage() {
   const empresaProp = search.empresa ?? undefined
   const empresaNav = search.empresa ?? null
 
-  const countFamiliasByConexao = useMemo(() => {
+  // Contagem de implantes por linha
+  const countByLinha = useMemo(() => {
     const m: Record<string, number> = {}
-    for (const f of todasFamilias ?? []) {
-      if (f.conexao_id) m[f.conexao_id] = (m[f.conexao_id] ?? 0) + 1
+    for (const i of todosImplantes ?? []) {
+      if (i.linha_id) m[i.linha_id] = (m[i.linha_id] ?? 0) + 1
     }
     return m
-  }, [todasFamilias])
+  }, [todosImplantes])
 
+  // Contagem de linhas por família (que têm implantes)
   const countLinhasByFamilia = useMemo(() => {
     const m: Record<string, number> = {}
     for (const l of todasLinhas ?? []) {
-      if (l.familia_id) m[l.familia_id] = (m[l.familia_id] ?? 0) + 1
+      if (l.familia_id && (countByLinha[l.id] ?? 0) > 0) {
+        m[l.familia_id] = (m[l.familia_id] ?? 0) + 1
+      }
     }
     return m
-  }, [todasLinhas])
+  }, [todasLinhas, countByLinha])
+
+  // Contagem de famílias por conexão (que têm linhas com implantes)
+  const countFamiliasByConexao = useMemo(() => {
+    const m: Record<string, number> = {}
+    for (const f of todasFamilias ?? []) {
+      if (f.conexao_id && (countLinhasByFamilia[f.id] ?? 0) > 0) {
+        m[f.conexao_id] = (m[f.conexao_id] ?? 0) + 1
+      }
+    }
+    return m
+  }, [todasFamilias, countLinhasByFamilia])
 
   // Etapa 4: Lista de implantes
   if (linhaId) return (
@@ -119,12 +135,14 @@ function CatalogoImplantesPage() {
           subtitle="tipo de conexão do implante (Cone Morse, HE…)"
           step={1}
           totalSteps={4}
-          options={(conexoes ?? []).map((c) => ({
-            id: c.id,
-            label: c.nome,
-            sublabel: c.sigla ?? undefined,
-            count: countFamiliasByConexao[c.id] ?? 0,
-          }))}
+          options={(conexoes ?? [])
+            .filter((c) => (countFamiliasByConexao[c.id] ?? 0) > 0)
+            .map((c) => ({
+              id: c.id,
+              label: c.nome,
+              sublabel: c.sigla ?? undefined,
+              count: countFamiliasByConexao[c.id] ?? 0,
+            }))}
           onSelect={(id) => navigate({ to: '/catalogo/implantes/$conexaoId', params: { conexaoId: id }, search: { empresa: empresaNav } })}
           onBack={() => navigate({ to: '/catalogo', search: { empresa: empresaNav } })}
           isLoading={loadingConexoes}
@@ -137,19 +155,23 @@ function CatalogoImplantesPage() {
 function FamiliasList({ conexaoId, onSelect, onBack, countLinhasByFamilia }: { conexaoId: string; onSelect: (id: string) => void; onBack: () => void; countLinhasByFamilia: Record<string, number> }) {
   const { data: familias, isLoading } = useFamilias(conexaoId)
 
+  const options = (familias ?? [])
+    .filter((f) => (countLinhasByFamilia[f.id] ?? 0) > 0)
+    .map((f) => ({
+      id: f.id,
+      label: f.nome,
+      sublabel: f.conexao?.nome,
+      color: f.cor_identificacao,
+      count: countLinhasByFamilia[f.id] ?? 0,
+    }))
+
   return (
     <DrillDown
       title="Famílias"
       subtitle="família anatômica do implante"
       step={2}
       totalSteps={4}
-      options={(familias ?? []).map((f) => ({
-        id: f.id,
-        label: f.nome,
-        sublabel: f.conexao?.nome,
-        color: f.cor_identificacao,
-        count: countLinhasByFamilia[f.id] ?? 0,
-      }))}
+      options={options}
       onSelect={onSelect}
       onBack={onBack}
       isLoading={isLoading}
@@ -171,20 +193,24 @@ function LinhasList({ familiaId, onSelect, onBack }: { familiaId: string; onSele
     return m
   }, [implantesAtivos])
 
+  const options = (linhas ?? [])
+    .filter((l) => (countByLinha[l.id] ?? 0) > 0)
+    .map((l) => ({
+      id: l.id,
+      label: l.nome,
+      sublabel: familia?.nome,
+      count: countByLinha[l.id] ?? 0,
+      color: corFamilia,
+      disabled: !l.ativo,
+    }))
+
   return (
     <DrillDown
       title="Linhas"
       subtitle="linha/marca do implante"
       step={3}
       totalSteps={4}
-      options={(linhas ?? []).map((l) => ({
-        id: l.id,
-        label: l.nome,
-        sublabel: familia?.nome,
-        count: countByLinha[l.id] ?? 0,
-        color: corFamilia,
-        disabled: !l.ativo,
-      }))}
+      options={options}
       onSelect={onSelect}
       onBack={onBack}
       isLoading={isLoading}

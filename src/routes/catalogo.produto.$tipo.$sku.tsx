@@ -29,7 +29,7 @@ function ProdutoPage() {
 
   const backTo = () => {
     if (tipo === 'implante') return navigate({ to: '/catalogo/implantes/$conexaoId/$familiaId/$linhaId', params: { conexaoId: search.conexao!, familiaId: search.familia!, linhaId: search.linha! }, search: { empresa } })
-    if (tipo === 'abutment') return navigate({ to: '/catalogo/componentes/$tipoReabId/$familiaId/$tipoAbutmentId', params: { tipoReabId: search.tipoReab!, familiaId: search.familia!, tipoAbutmentId: search.tipoAbutment! }, search: { empresa } })
+    if (tipo === 'abutment') return navigate({ to: '/catalogo/componentes/$familiaId/$tipoReabId/$tipoAbutmentId', params: { familiaId: search.familia!, tipoReabId: search.tipoReab!, tipoAbutmentId: search.tipoAbutment! }, search: { empresa } })
     if (tipo === 'kit') return navigate({ to: '/catalogo/kits', search: { empresa } })
     if (tipo === 'promocional') return navigate({ to: '/catalogo/promocionais', search: { empresa } })
     navigate({ to: '/catalogo', search: { empresa } })

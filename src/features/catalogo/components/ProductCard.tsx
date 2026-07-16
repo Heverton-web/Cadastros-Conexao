@@ -9,15 +9,20 @@ interface Props {
   corIdentificacao: string;
   tipo: string;
   imageUrl?: string;
+  onClick?: () => void;
 }
 
-export function ProductCard({ sku, nome, corIdentificacao, tipo, imageUrl }: Props) {
+export function ProductCard({ sku, nome, corIdentificacao, tipo, imageUrl, onClick }: Props) {
   const cor = corIdentificacao || '#c9a655';
 
   return (
     <div
       className="group relative h-full rounded-2xl bg-[var(--color-surface)]/50 backdrop-blur-md border border-[var(--color-border-subtle)] hover:border-[var(--card-color,var(--color-accent))]/40 transition-all duration-300 overflow-hidden p-5 min-h-[88px]"
       style={{ "--card-color": cor, borderWidth: "0.5px" } as React.CSSProperties}
+      onClick={onClick}
+      role={onClick ? "button" : undefined}
+      tabIndex={onClick ? 0 : undefined}
+      onKeyDown={onClick ? (e) => { if (e.key === 'Enter' || e.key === ' ') onClick() } : undefined}
     >
       <div
         className="absolute inset-0 pointer-events-none"

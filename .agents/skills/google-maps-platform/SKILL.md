@@ -1,7 +1,6 @@
 ---
 name: google-maps-platform
-description: >- Integracao com Google Maps Platform — mapas, geocoding, rotas e places
-
+description: Integracao com Google Maps Platform — mapas, geocoding, rotas e places
 license: Apache-2.0
 metadata:
   version: 1.0.0

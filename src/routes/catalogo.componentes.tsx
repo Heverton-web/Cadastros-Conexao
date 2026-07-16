@@ -1,62 +1,55 @@
-import { createRoute, Link, useNavigate, useParams, useSearch } from "@tanstack/react-router"
+import { createRoute, useNavigate, useParams, useSearch } from "@tanstack/react-router"
 import { rootRoute } from "./__root"
 import { StoreLayout } from "~/features/catalogo/components/StoreLayout"
 import { DrillDown } from "~/features/catalogo/components/DrillDown"
 import { ProductCard } from "~/features/catalogo/components/ProductCard"
-import { useTiposReabilitacao, useFamilias, useTiposAbutment, useAbutments } from "~/features/catalogo/hooks/useCatalogo"
+import { useFamilias, useTiposReabilitacao, useTiposAbutment, useAbutments } from "~/features/catalogo/hooks/useCatalogo"
 import { useCatalogoEmpresaId } from "~/features/catalogo/hooks/useCatalogoEmpresa"
 import { listarImagensBatch } from "~/features/catalogo/services/imagens.service"
 import { useMemo, useEffect, useState } from "react"
 import { ArrowLeft, PackageOpen } from "lucide-react"
 import type { CatalogoImagemProduto } from "~/features/catalogo/types"
 
-// Etapa 1: /catalogo/componentes — Escolher Tipo Reabilitação
+// Etapa 1: /catalogo/componentes — Escolher Família
 export const catalogoComponentesRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/catalogo/componentes",
   component: CatalogoComponentesPage,
 })
 
-// Etapa 2: /catalogo/componentes/$tipoReabId — Escolher Família
-export const catalogoComponentesTipoReabRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: "/catalogo/componentes/$tipoReabId",
-  component: CatalogoComponentesPage,
-})
-
-// Etapa 3: /catalogo/componentes/$tipoReabId/$familiaId — Escolher Tipo Abutment
+// Etapa 2: /catalogo/componentes/$familiaId — Escolher Tipo Reabilitação
 export const catalogoComponentesFamiliaRoute = createRoute({
   getParentRoute: () => rootRoute,
-  path: "/catalogo/componentes/$tipoReabId/$familiaId",
+  path: "/catalogo/componentes/$familiaId",
   component: CatalogoComponentesPage,
 })
 
-// Etapa 4: /catalogo/componentes/$tipoReabId/$familiaId/$tipoAbutmentId — Lista de Abutments
+// Etapa 3: /catalogo/componentes/$familiaId/$tipoReabId — Escolher Tipo Abutment
+export const catalogoComponentesTipoReabRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/catalogo/componentes/$familiaId/$tipoReabId",
+  component: CatalogoComponentesPage,
+})
+
+// Etapa 4: /catalogo/componentes/$familiaId/$tipoReabId/$tipoAbutmentId — Lista de Abutments
 export const catalogoComponentesTipoAbutmentRoute = createRoute({
   getParentRoute: () => rootRoute,
-  path: "/catalogo/componentes/$tipoReabId/$familiaId/$tipoAbutmentId",
+  path: "/catalogo/componentes/$familiaId/$tipoReabId/$tipoAbutmentId",
   component: CatalogoComponentesPage,
 })
 
 function CatalogoComponentesPage() {
-  const { data: tiposReab, isLoading: loadingReab } = useTiposReabilitacao()
+  const { data: familias, isLoading: loadingFamilias } = useFamilias()
   const { data: todosAbutments } = useAbutments()
   const navigate = useNavigate()
   const params = useParams({ strict: false }) as Record<string, string | undefined>
-  const tipoReabId = params.tipoReabId ?? null
   const familiaId = params.familiaId ?? null
+  const tipoReabId = params.tipoReabId ?? null
   const tipoAbutmentId = params.tipoAbutmentId ?? null
   const search = useSearch({ strict: false }) as Record<string, string | undefined>
   const empresa = search.empresa ?? null
 
-  const countByTipoReab = useMemo(() => {
-    const m: Record<string, number> = {}
-    for (const a of todosAbutments ?? []) {
-      if (a.tipo_reabilitacao_id) m[a.tipo_reabilitacao_id] = (m[a.tipo_reabilitacao_id] ?? 0) + 1
-    }
-    return m
-  }, [todosAbutments])
-
+  // Contagem por família
   const countByFamilia = useMemo(() => {
     const m: Record<string, number> = {}
     for (const a of todosAbutments ?? []) {
@@ -65,95 +58,119 @@ function CatalogoComponentesPage() {
     return m
   }, [todosAbutments])
 
+  // Contagem por tipo de reabilitação (filtrada por família selecionada)
+  const countByTipoReab = useMemo(() => {
+    const m: Record<string, number> = {}
+    for (const a of todosAbutments ?? []) {
+      if (a.tipo_reabilitacao_id && (!familiaId || a.familia_id === familiaId)) {
+        m[a.tipo_reabilitacao_id] = (m[a.tipo_reabilitacao_id] ?? 0) + 1
+      }
+    }
+    return m
+  }, [todosAbutments, familiaId])
+
+  // Contagem por tipo de abutment (filtrada por família e tipo de reabilitação)
   const countByTipoAbutment = useMemo(() => {
     const m: Record<string, number> = {}
     for (const a of todosAbutments ?? []) {
-      if (a.tipo_abutment_id) m[a.tipo_abutment_id] = (m[a.tipo_abutment_id] ?? 0) + 1
+      if (a.tipo_abutment_id && (!familiaId || a.familia_id === familiaId) && (!tipoReabId || a.tipo_reabilitacao_id === tipoReabId)) {
+        m[a.tipo_abutment_id] = (m[a.tipo_abutment_id] ?? 0) + 1
+      }
     }
     return m
-  }, [todosAbutments])
+  }, [todosAbutments, familiaId, tipoReabId])
 
   // Etapa 4: Lista de abutments
-  if (tipoReabId && familiaId && tipoAbutmentId) return (
+  if (familiaId && tipoReabId && tipoAbutmentId) return (
     <StoreLayout>
       <AbutmentList
         familiaId={familiaId}
         tipoAbutmentId={tipoAbutmentId}
         tipoReabId={tipoReabId}
         empresa={empresa}
-        onBack={() => navigate({ to: '/catalogo/componentes/$tipoReabId/$familiaId', params: { tipoReabId, familiaId }, search: { empresa } })}
+        onBack={() => navigate({ to: '/catalogo/componentes/$familiaId/$tipoReabId', params: { familiaId, tipoReabId }, search: { empresa } })}
       />
     </StoreLayout>
   )
 
   // Etapa 3: Escolher Tipo Abutment
-  if (tipoReabId && familiaId) return (
+  if (familiaId && tipoReabId) return (
     <StoreLayout>
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
         <TiposAbutmentList
           familiaId={familiaId}
           tipoReabId={tipoReabId}
-          onSelect={(id) => navigate({ to: '/catalogo/componentes/$tipoReabId/$familiaId/$tipoAbutmentId', params: { tipoReabId, familiaId, tipoAbutmentId: id }, search: { empresa } })}
-          onBack={() => navigate({ to: '/catalogo/componentes/$tipoReabId', params: { tipoReabId }, search: { empresa } })}
+          onSelect={(id) => navigate({ to: '/catalogo/componentes/$familiaId/$tipoReabId/$tipoAbutmentId', params: { familiaId, tipoReabId, tipoAbutmentId: id }, search: { empresa } })}
+          onBack={() => navigate({ to: '/catalogo/componentes/$familiaId', params: { familiaId }, search: { empresa } })}
           countByTipoAbutment={countByTipoAbutment}
         />
       </div>
     </StoreLayout>
   )
 
-  // Etapa 2: Escolher Família
-  if (tipoReabId) return (
+  // Etapa 2: Escolher Tipo Reabilitação
+  if (familiaId) return (
     <StoreLayout>
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
-        <FamiliasForReabList
-          tipoReabId={tipoReabId}
-          onSelect={(id) => navigate({ to: '/catalogo/componentes/$tipoReabId/$familiaId', params: { tipoReabId, familiaId: id }, search: { empresa } })}
+        <TiposReabList
+          familiaId={familiaId}
+          onSelect={(id) => navigate({ to: '/catalogo/componentes/$familiaId/$tipoReabId', params: { familiaId, tipoReabId: id }, search: { empresa } })}
           onBack={() => navigate({ to: '/catalogo/componentes', search: { empresa } })}
-          countByFamilia={countByFamilia}
+          countByTipoReab={countByTipoReab}
         />
       </div>
     </StoreLayout>
   )
 
-  // Etapa 1: Escolher Tipo Reabilitação
+  // Etapa 1: Escolher Família
   return (
     <StoreLayout>
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
         <DrillDown
           title="Componentes"
-          subtitle="unitária, múltipla ou híbrida"
+          subtitle="família anatômica"
           step={1}
           totalSteps={4}
-          options={(tiposReab ?? []).map((t) => ({
-            id: t.id,
-            label: t.nome,
-            count: countByTipoReab[t.id] ?? 0,
-          }))}
-          onSelect={(id) => navigate({ to: '/catalogo/componentes/$tipoReabId', params: { tipoReabId: id }, search: { empresa } })}
+          options={(familias ?? [])
+            .filter((f) => (countByFamilia[f.id] ?? 0) > 0)
+            .map((f) => ({
+              id: f.id,
+              label: f.nome,
+              sublabel: f.conexao?.nome,
+              color: f.cor_identificacao,
+              count: countByFamilia[f.id] ?? 0,
+            }))}
+          onSelect={(id) => navigate({ to: '/catalogo/componentes/$familiaId', params: { familiaId: id }, search: { empresa } })}
           onBack={() => navigate({ to: '/catalogo', search: { empresa } })}
-          isLoading={loadingReab}
+          isLoading={loadingFamilias}
         />
       </div>
     </StoreLayout>
   )
 }
 
-function FamiliasForReabList({ tipoReabId, onSelect, onBack, countByFamilia }: { tipoReabId: string; onSelect: (id: string) => void; onBack: () => void; countByFamilia: Record<string, number> }) {
-  const { data: familias, isLoading } = useFamilias()
+function TiposReabList({ familiaId, onSelect, onBack, countByTipoReab }: { familiaId: string; onSelect: (id: string) => void; onBack: () => void; countByTipoReab: Record<string, number> }) {
+  const { data: tiposReab, isLoading } = useTiposReabilitacao()
+  const { data: familias } = useFamilias()
+  const familia = (familias ?? []).find((f) => f.id === familiaId)
+  const corFamilia = familia?.cor_identificacao
+
+  const options = (tiposReab ?? [])
+    .filter((t) => (countByTipoReab[t.id] ?? 0) > 0)
+    .map((t) => ({
+      id: t.id,
+      label: t.nome,
+      color: corFamilia,
+      count: countByTipoReab[t.id] ?? 0,
+    }))
 
   return (
     <DrillDown
-      title="Famílias"
-      subtitle="família anatômica"
+      title="Reabilitação"
+      subtitle="unitária, múltipla ou híbrida"
       step={2}
       totalSteps={4}
-      options={(familias ?? []).map((f) => ({
-        id: f.id,
-        label: f.nome,
-        sublabel: f.conexao?.nome,
-        color: f.cor_identificacao,
-        count: countByFamilia[f.id] ?? 0,
-      }))}
+      options={options}
       onSelect={onSelect}
       onBack={onBack}
       isLoading={isLoading}
@@ -167,19 +184,23 @@ function TiposAbutmentList({ familiaId, tipoReabId, onSelect, onBack, countByTip
   const familia = (familias ?? []).find((f) => f.id === familiaId)
   const corFamilia = familia?.cor_identificacao
 
+  const options = (tipos ?? [])
+    .filter((t) => (countByTipoAbutment[t.id] ?? 0) > 0)
+    .map((t) => ({
+      id: t.id,
+      label: t.nome,
+      sublabel: t.sigla ?? undefined,
+      color: corFamilia,
+      count: countByTipoAbutment[t.id] ?? 0,
+    }))
+
   return (
     <DrillDown
       title="Tipos de Abutment"
       subtitle="modelo/família do pilar"
       step={3}
       totalSteps={4}
-      options={(tipos ?? []).map((t) => ({
-        id: t.id,
-        label: t.nome,
-        sublabel: t.sigla ?? undefined,
-        color: corFamilia,
-        count: countByTipoAbutment[t.id] ?? 0,
-      }))}
+      options={options}
       onSelect={onSelect}
       onBack={onBack}
       isLoading={isLoading}
@@ -189,9 +210,10 @@ function TiposAbutmentList({ familiaId, tipoReabId, onSelect, onBack, countByTip
 
 function AbutmentList({ familiaId, tipoAbutmentId, tipoReabId, empresa, onBack }: { familiaId: string; tipoAbutmentId: string; tipoReabId: string; empresa?: string; onBack: () => void }) {
   const { data: abutments, isLoading } = useAbutments(familiaId)
-  const filtered = (abutments ?? []).filter((a) => a.tipo_abutment_id === tipoAbutmentId)
+  const filtered = (abutments ?? []).filter((a) => a.tipo_abutment_id === tipoAbutmentId && a.tipo_reabilitacao_id === tipoReabId)
   const empresaId = useCatalogoEmpresaId()
   const [imagensMap, setImagensMap] = useState<Map<string, CatalogoImagemProduto[]>>(new Map())
+  const navigate = useNavigate()
 
   // Buscar imagens dos abutments
   useEffect(() => {
@@ -214,7 +236,7 @@ function AbutmentList({ familiaId, tipoAbutmentId, tipoReabId, empresa, onBack }
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 sm:space-y-12 w-full">
       {/* Header Premium */}
       <div className="flex items-start sm:items-center gap-4 sm:gap-6 mb-8 sm:mb-12">
-        <button 
+        <button
           onClick={onBack}
           className="group shrink-0 flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-full border border-[var(--color-border-subtle)] hover:bg-[var(--color-surface)] hover:border-[var(--color-accent)] transition-all mt-1 sm:mt-0"
         >
@@ -241,15 +263,15 @@ function AbutmentList({ familiaId, tipoAbutmentId, tipoReabId, empresa, onBack }
       ) : (
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {filtered.map((a) => (
-          <Link to="/catalogo/produto/$tipo/$sku" params={{ tipo: 'abutment', sku: a.sku }} search={{ familia: familiaId, tipoAbutment: tipoAbutmentId, empresa }} className="no-underline" key={a.sku}>
-            <ProductCard
-              tipo="abutment"
-              sku={a.sku}
-              nome={`${a.tipo_abutment?.nome ?? ""} ${a.familia?.nome ?? ""}`}
-              corIdentificacao={a.familia?.cor_identificacao || ''}
-              imageUrl={imagensMap.get(a.sku)?.[0]?.url_imagem}
-            />
-          </Link>
+          <ProductCard
+            key={a.sku}
+            tipo="abutment"
+            sku={a.sku}
+            nome={`${a.tipo_abutment?.nome ?? ""} ${a.familia?.nome ?? ""}`}
+            corIdentificacao={a.familia?.cor_identificacao || ''}
+            imageUrl={imagensMap.get(a.sku)?.[0]?.url_imagem}
+            onClick={() => navigate({ to: '/catalogo/produto/$tipo/$sku', params: { tipo: 'abutment', sku: a.sku }, search: { familia: familiaId, tipoAbutment: tipoAbutmentId, tipoReab: tipoReabId, empresa } })}
+          />
         ))}
       </div>
       )}
