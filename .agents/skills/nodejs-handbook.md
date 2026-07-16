@@ -1,0 +1,78 @@
+---
+name: nodejs-handbook
+description: >-
+  Passos operacionais extraidos — desenvolvimento web, full-stack, JavaScript, TypeScript, React, Node.js (EN).
+---
+
+# Nodejs Handbook — Passos Operacionais
+
+Conteudo extraido do livro 'Nodejs Handbook'. Contem passos, tecnicas e principios baseados na obra original.
+
+## 1. Conceitos Fundamentais
+- I find this approach gives a well-rounded overview.
+- This book does not try to cover everything  under the sun related to Node.
+- If you think some specific topic should be included, tell me.
+- You can reach me on Twitter @flaviocopes.
+- I hope the contents of this book will help you achieve what you want: learn the basics  Node.js.
+- This book is written by Flavio.
+- I publish web development tutorials every day on my website  flaviocopes.com.
+- The Node.js Handbook  5   Introduction to Node  This post is a getting started guide to Node.js, the server-side JavaScript   runtime environment.
+- Node.js is built on top of the Google Chrome V8   JavaScript engine, and it's mainly used to create web servers - but it's not   limited to that  Overview  The best features of Node.js  Fast  Simple  JavaScript  V8  Asynchronous platform  A huge number of libraries  An example Node.js application  Node.js frameworks and tools  Overview  Node.js is a runtime environment for JavaScript that runs on the server.
+- Node.js is open source, cross-platform, and since its introduction in 2009, it got hugely popular  and now plays a significant role in the web development scene.
+
+
+  - restrictions in place, but it's really great to prototype. It looks fun (and this is a plus), and it's
+
+  - If the file is big, the operation will take quite a bit of time. Here is the same thing written using
+
+  - in the shell, but it's better to put it in your shell configuration file (e.g. .bash_profile with the
+
+  - The first exposes the object it points to. The latter exposes the properties of the object it points
+
+  - If there is no error, the object is null . If there is an error, it contains some description of the
+
+  - At this point, the caller function waits for it to either return the promise in a resolved state, or
+## 2. Principios e Tecnicas
+- If GitHub stars are one  popularity indication factor, having 46000+ stars means being very popular.
+- Introduction to Node  6   Node.js is built on top of the Google Chrome V8 JavaScript engine, and it's mainly used to  create web servers - but it's not limited to that.
+- The best features of Node.js  Fast  One of the main selling points of Node.js is speed.
+- JavaScript code running on Node.js  (depending on the benchmark) can be twice as fast than compiled languages like C or Java,  and orders of magnitude faster than interpreted languages like Python or Ruby, because of its  non-blocking paradigm.
+- JavaScript  Node.js runs JavaScript code.
+- This means that millions of frontend developers that already  use JavaScript in the browser are able to run the server-side code and frontend-side code  using the same programming language without the need to learn a completely different tool.
+- The paradigms are all the same, and in Node.js the new ECMAScript standards can be used  first, as you don't have to wait for all your users to update their browsers - you decide which  ECMAScript version to use by changing the Node.js version.
+- V8  Introduction to Node  7   Running on the Google V8 JavaScript engine, which is Open Source, Node.js is able to  leverage the work of thousands of engineers that made (and will continue to make) the  Chrome JavaScript runtime blazing fast.
+- Asynchronous platform  In traditional programming languages (C, Java, Python, PHP) all instructions are blocking by  default unless you explicitly "opt in" to perform asynchronous operations.
+- If you perform a  network request to read some JSON, the execution of that particular thread is blocked until the  response is ready.
+
+
+  - An HTTP server will not just transfer HTML files, but typically it will also serve other files: CSS,
+
+  - For example, in the traditional way, when you tell the program to read a file, the file is read into
+
+  - Instead of waiting until the file is fully read, we start streaming it to the HTTP client as soon as
+
+  - to import the functionality exposed in the library.js file that resides in the current file folder.
+## 3. Aplicacoes Praticas
+- JavaScript allows to create asynchronous and non-blocking code in a very simple way,  by using a single thread, callback functions and event-driven programming.
+- Every time  an expensive operation occurs, we pass a callback function that will be called once we can  continue with the processing.
+- We're not waiting for that to finish before going on with the rest  of the program.
+- Such mechanism derives from the browser.
+- We can't wait until something loads from an AJAX  request before being able to intercept click events on the page.
+- It all must happen in real  time to provide a good experience to the user.
+- If you've created an onclick handler for a web page you've already used asynchronous  programming techniques with event listeners.
+- This allows Node.js to handle thousands of concurrent connections with a single server  without introducing the burden of managing threads concurrency, which would be a major  source of bugs.
+- Node provides non-blocking I/O primitives, and generally, libraries in Node.js are written using  non-blocking paradigms, making a blocking behavior an exception rather than the normal.
+- Introduction to Node  8   When Node.js needs to perform an I/O operation, like reading from the network, access a  database or the filesystem, instead of blocking the thread Node.js will simply resume the  operations when the response comes back, instead of wasting CPU cycles waiting.
+
+## 4. Topicos Avancados
+- A huge number of libraries  npm with its simple structure helped the ecosystem of node.js proliferate and now the npm  registry hosts almost 500.000 open source packages you can freely use.
+- An example Node.js application  The most common example Hello World of Node.js is a web server:  const http = require('http')  const hostname = '127.0.0.1'  const port = 3000  const server = http.createServer((req, res) => {  res.statusCode = 200  res.setHeader('Content-Type', 'text/plain')  res.end('Hello World\n')  })  server.listen(port, hostname, () => {  console.log(`Server running at http://${hostname}:${port}/`)  })  To run this snippet, save it as a server.js file and run node server.js in your terminal.
+- This code first includes the Node.js http module.
+- Node.js has an amazing standard library, including a first-class support for networking.
+- The createServer() method of http creates a new HTTP server and returns it.
+- The server is set to listen on the specified port and hostname.
+- When the server is ready, the  callback function is called, in this case informing us that the server is running.
+- Whenever a new request is received, the request event is called, providing two objects: a  request (an http.IncomingMessage object) and a response (an http.ServerResponse object).
+- Those 2 objects are essential to handle the HTTP call.
+- The first provides the request details.
+

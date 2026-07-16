@@ -1,0 +1,44 @@
+---
+name: jpa-eficaz-as-melhores-praticas-de-persistencia-de-dado
+description: >-
+  Passos operacionais extraidos do livro 'JPA eficaz as melhores práticas de persistência de dados em java' (PT) — JPA/Java.
+---
+# Conteudo Extraido
+Fonte: EPUB - [PT] EPUB JPA eficaz_ as melhores práticas de persistência de dados em java - Desconhecido.txt
+
+
+## Conceitos Fundamentais
+- page_002 Sumário Sobre o autor Agradecimentos Sobre o livro 1.
+- Como escolher uma implementação e as configurações da JPA 3.
+- Aprenda os detalhes dos mapeamentos de entidades 4.
+- Entenda e mapeie corretamente os relacionamentos 5.
+- Aprenda os truques da JPQL e domine as consultas da JPA 6.
+- Alternativas às consultas: Named Queries e Queries nativas 7.
+
+## Principios e Tecnicas
+- Foi revisor de um livro específico sobre Primefaces, e criador de posts em seu blog com aplicações completas utilizando JSF.
+- Escreveu dois posts sobre JPA com diversas dicas que já passaram de 55 mil visualizações, e que também foi o ponto de partida deste livro.
+- Pós-graduado em MIT Engenharia de Software — desenvolvimento em Java pela Infnet RJ.
+- Atualmente, atua como professor para o curso de pós-graduação, ensinando o conteúdo de Java Web (JSP, Servlet, JSF e Struts) e tópicos avançados, como EJB, Spring e WebServices. page_004 Agradecimentos Agradeço a Deus pela sabedoria, força de vontade
+- Dedico este livro àquela que é o maior presente que Deus poderia me dar, minha esposa Daiane.
+- Seu sorriso único, seu olhar que encanta e sua voz que traz alegria ao meu coração.
+
+## Aplicacoes Praticas
+- Dedico também o livro à minha família, que está lá no interior de Minas Gerais, juntamente com minha linda sobrinha Louanne e sua irmã e minha afilhada Fernanda.
+- Segue um agradecimento sem medidas aqui ao Rodrigo Sasaki ( http://cv.rodrigosasaki.com ), que me ajudou no decorrer deste livro com revisões em textos e códigos.
+- Ter um profissional de alto calibre como ele ajudando na produção de um livro é de incomensurável alegria.
+- E, por último, mas não menos importante, dedico este livro à minha querida irmã Louise, que sempre briga comigo. [= page_005 Sobre o livro A JPA é um framework que vem ganhando mais espaço no mercado a cada dia que se passa.
+- Veremos neste livro diversos conceitos e dicas de utilizações de diversos recursos que a JPA oferece.
+- Este livro é ideal para quem já entende o conceito do framework e já sabe fazer um "hello world" .
+
+## Topicos Avancados
+- Você pode discutir sobre este livro no Fórum da Casa do Código: http://forum.casadocodigo.com.br/ .
+- Caso você deseje submeter alguma errata ou sugestão, acesse http://erratas.casadocodigo.com.br . page_006 Capítulo 1 Introdução Diversas vezes, ao trabalhar com JDBC, nos deparamos com rotinas chatas e entediantes ao escrever comandos SQL.
+- Como fazer diversos whiles para popular um objeto, erro de sintaxes ao escrever um insert , e até mesmo problemas de relacionamento de chaves ao fazer um delete .
+- Note como é verboso, e como necessita de diversas ações para realizar apenas a consulta que volta, ou um, ou nenhum resultado.
+- Caso fosse uma lista, teríamos de ter o cuidado de criar uma lista e populá-la.
+- Imagine também se cada usuário tivesse um log de atividades.
+
+## Secao 5
+- Para evitar toda essa verbosidade do JDBC, surgiu a JPA, uma ferramenta muito poderosa que pode aumentar consideravelmente o tempo de desenvolvimento da equipe, além de facilitar muito a implementação do código que manipula o banco de dados.
+- Quando corretamente aplicado, a JPA se torna uma ferramenta que ajuda em todas as funções de um CRUD ( Create , Read , Update e Delete ), além de contribuir com diversas otimizações de performance e consistência de dados. É nesse exato momento que po

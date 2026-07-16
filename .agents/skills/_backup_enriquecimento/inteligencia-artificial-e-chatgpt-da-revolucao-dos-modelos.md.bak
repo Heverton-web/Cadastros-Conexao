@@ -1,0 +1,44 @@
+---
+name: inteligencia-artificial-e-chatgpt-da-revolucao-dos-mode
+description: >-
+  Passos operacionais extraidos do livro 'Inteligência artificial e ChatGPT da revolução dos modelos de IA generativa à engenharia de prompt' (PT) — Data Science/Tecnologia.
+---
+# Conteudo Extraido
+Fonte: EPUB - [PT] EPUB Inteligência artificial e ChatGPT_ da revolução dos modelos de IA generativa à engenharia de prompt - Desconhecido.txt
+
+
+## Conceitos Fundamentais
+- page_002 Sumário ISBN Sobre o autor Agradecimentos Prefácio Sobre o livro 1.
+- Limitações e considerações éticas sobre a Inteligência Artificial 8. (Extra) Programando sistemas em Python com a API do GPT page_003 ISBN Impresso: 978-85-5519-359-0 Digital: 978-85-5519-358-3 Caso você deseje submeter alguma errata ou sugestão, ace
+- Sua formação compreende Engenharia da Computação pela UNICAMP e, mais recentemente, a Pós Tech de Data Analysis &amp; Machine Learning pela FIAP.
+- Atuou por anos na área de desenvolvimento de software, tendo passado por empresas como Griaule Biometrics e UOL PagSeguro.
+- Sua paixão pelo estudo de línguas estrangeiras o levou a mudar-se para a Alemanha e, posteriormente, para a Espanha, onde vive em Barcelona, mas considera-se um cidadão do mundo, já tendo visitado ou morado em cerca de 40 países.
+- Atualmente, pode se comunicar em 14 idiomas em diferentes níveis, sendo eles o português, inglês, italiano, espanhol, russo, polonês, francês, alemão, grego, turco, croata, romeno, hebraico e holandês.
+
+## Principios e Tecnicas
+- Foi palestrante no Polyglot Gathering de 2023 com o tema " ChatGPT, AI, and the Future of Language Learning " (traduzindo, "ChatGPT, IA e o Futuro do Aprendizado de Idiomas"). page_005 Agradecimentos Primeiramente, aos meus pais, Izabel e Leônidas, p
+- Ao meu avô José, que foi um segundo pai e é, provavelmente, a pessoa mais bondosa que já conheci nesta vida. À minha madrinha Maria, uma segunda mãe e sempre fonte de carinho e diversão. À minha irmã Giuliana, pelo companheirismo e orgulho que me dá 
+- A Jomar Silva, que escreveu o prefácio deste livro e tem sido uma inspiração há mais anos do que eu posso contar.
+- Na parte técnica, agradeço a Sthefanie Monica Premebida, Cientista de Dados Sênior; a Filipe Lauar, Engenheiro de Machine Learning e criador do podcast "Vida com IA"; e a Guilherme Silveira, Chief Education Officer .
+- A Paulo Silveira, cuja visão e confiança desde 2013 tornaram possível a escrita deste livro em 2023.
+- Já fazia mais de uma década que eu tinha me formado em engenharia e, por algum instinto masoquista, decidi começar pela matemática, para desenferrujar os neurônios.
+
+## Aplicacoes Praticas
+- Eu não conseguia sequer entender os termos usados nos artigos que lia, e muito menos formular buscas que me ajudassem a entender (este é, aliás, um dos motivos de ser tão fã e usuário do ChatGPT hoje em dia, porque muitas vezes, aprender a formular p
+- Alguns meses depois, a necessidade apertou ainda mais, e me vi realmente obrigado a me dedicar ao tema, mas dessa vez, decidi ir pelo outro caminho, provavelmente mais demorado, mas com maiores chances de dar certo...
+- Consegui encontrar alguns cursos bem introdutórios sobre o assunto, mas ainda assim, eu precisei fazer um trabalho inicial de pesquisa para poder entender quais eram as áreas da IA, qual a aplicabilidade de cada uma delas aos problemas que eu precisa
+- Tudo de que eu precisava neste início era que alguém me ajudasse a entender o panorama mais amplo de IA, entender os principais fundamentos, termos, conceitos, tecnologias envolvidas e áreas de aplicação, para, finalmente, com a imagem toda em mente,
+- Levei algumas boas semanas para conseguir ter esta ideia geral, ainda que muito equivocada, depois de ler muita coisa (e quase desistir novamente).
+- Este guia que eu tanto procurava está neste momento em suas mãos. 🙂 Com linguagem extremamente acessível, exemplos do mundo real e analogias extremamente didáticas, o Fabrício Carraro nos guia por este mundo de tecnologia que é a Inteligência Artific
+
+## Topicos Avancados
+- Quando falo sobre a importância de processamento acelerado, paralelizado e distribuído, gosto sempre de lembrar que o modelo GPT-3.5 (por trás da primeira versão do ChatGPT ) foi treinado por uma legião de 10.000 GPUs .
+- Constantemente me perguntam em eventos e palestras: "Por onde devo começar a estudar IA?".
+- Sempre recomendo um overview da tecnologia e suas aplicações, que é exatamente o que este livro entrega e, depois disso, que se concentre na área que mais lhe atrai ou que mais se aplica ao problema que quer ou precisa resolver.
+- Uma segunda recomendação é que crie um projeto real para poder aplicar a tecnologia.
+- "Estudar por estudar" não nos permite absorver tanto conhecimento como quando colocamos a mão na massa.
+- Portanto, crie um projeto para o mundo real, aplique o que está aprendendo para construí-lo, e você verá que, no final do processo, além de ter aprendido bastante, já vai ter o seu primeiro projeto desenvolvido e aplicado a um problema real do seu di
+
+## Secao 5
+- O conhecimento contraria a matemática, porque o multiplicamos a cada vez que dividimos.
+- Espero que esta leitura seja tão prazerosa para você como foi para mim, e que, ao final dela, esteja motivado a continuar seus estudos e tenha encontrado a área que mais lhe atrai.

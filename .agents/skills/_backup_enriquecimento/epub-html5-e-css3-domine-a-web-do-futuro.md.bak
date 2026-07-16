@@ -1,0 +1,57 @@
+---
+name: epub-html5-e-css3-domine-a-web-do-futuro
+description: >-
+  Passos operacionais extraidos — desenvolvimento web, full-stack, JavaScript, TypeScript, React, Node.js (PT).
+---
+
+# Epub Html5 E Css3 Domine A Web Do Futuro — Passos Operacionais
+
+Conteudo extraido do livro 'Epub Html5 E Css3 Domine A Web Do Futuro'. Contem passos, tecnicas e principios baseados na obra original.
+
+## 1. Conceitos Fundamentais
+- I am the combined effort of everybody I've ever known."    \--Chuck Palahniuk, Invisible Monsters (1999)  Durante a criação deste livro, recebi ajuda de várias pessoas, e sou extremamente grato a elas pela sua participação nos meses em que trabalhei nele:  Ao Adriano Almeida e ao Paulo Silveira pela oportunidade única de escrever este livro, e a ajuda de todos da Casa do Código e da Caelum.
+- À minha família e à minha namorada, pela paciência e ajuda durante estes meses, por todas as noites e finais de semana dedicados a este projeto.
+- A incrível equipe da Plataformatec, que é muito boa no que faz.
+- Por todos os projetos, apresentações, cafés e chopps compartilhados até então - que muitos outros venham no futuro!
+- A todos os meus colegas e amigos de projetos e empresas passadas - devo muito a todos pelo conhecimento compartilhado ao longo dos anos, que sem dúvida foi muito importante para eu chegar até aqui.
+- E a você, leitor, que está prestes a ler o meu livro.
+- Muito obrigado por dedicar o seu tempo e a sua atenção a ele.
+- Espero contribuir para que você crie ótimos projetos e faça a sua parte para criar uma web melhor.   ##  Capítulo 1:  O desenvolvimento web hoje   Talvez eu seja um otimista, mas acredito que nos encontramos em uma época revolucionária para o desenvolvimento web.
+- A internet se proliferou pelo mundo graças aos avanços de banda larga e os diversos dispositivos capazes de navegar pela rede - celulares, tablets, televisões e videogames.
+- Diversas empresas do mundo digital impulsionam a evolução das tecnologias que usamos para criar uma web melhor.
+
+## 2. Principios e Tecnicas
+- Profissionais em empresas como Google, Microsoft, Apple e Facebook trabalham exclusivamente em melhorias para os navegadores mais utilizados, além de participarem da definição de novos padrões e disseminarem bastante conhecimento junto à comunidade de desenvolvedores.
+- E tudo vai continuar a se expandir.
+- Novas empresas, novos padrões, novos dispositivos.
+- A indústria da internet está em contínuo crescimento e precisamos de bastante ajuda para dar prosseguimento a esse trabalho.
+- E é muito fácil garantir o seu espaço neste universo que se move como um trem bala.
+- Basta participar.  ###  1.1  Por que você deve aprender HTML e CSS   Caso você seja um designer sem muita experiência com desenvolvimento, ou um programador mais acostumado a trabalhar com linhas de comando e compiladores do que navegadores, deixe-me explicar um pouco a importância de se aprender HTML e CSS.
+- Se você estiver trabalhando ou pretende trabalhar com tecnologia, acredito que boa parte - ou tudo - dos seus projetos será utilizada através de um navegador.
+- Seja um sistema interno de um banco, uma rede social, um grande portal de notícias ou sites para campanhas de publicidade, o meio comum hoje em dia é a web, e é bastante interessante ter uma ótima base de conhecimento sobre desenvolvimento _front-end_ (um dos termos usados para se referenciar à interface de uma aplicação) para contribuir para o sucesso dos projetos de que você estiver participando.
+- Por isso, recomendo muito que você aprenda sobre o que faz a web funcionar.
+- Além de livros como este, existem diversos cursos e sites para você aprender mais a respeito ou outras tecnologias relacionadas.
+
+## 3. Aplicacoes Praticas
+- Imagine cuidar de um parque de servidores sem ter bons conhecimentos de sistemas operacionais e de topologia de redes, ou trabalhar em propaganda impressa sem entender sobre as cores ou o papel usado.       ###  1.2  O estado dos navegadores   Todo o HTML e o CSS que escrevemos ganha vida dentro dos navegadores utilizados por quem acessa nossas páginas e sites, por isso é bastante importante ter um bom entendimento de como eles funcionam e, principalmente, dos buracos no meio do caminho.
+- Desde os tempos do Mosaic (que eventualmente se tornou o Netscape) e das primeiras versões do Internet Explorer em 1995 sempre enfrentamos uma guerra de incompatibilidade entre os navegadores e a necessidade de padrões para garantir a interoperabilidade da web entre clientes diferentes.
+- Enquanto essa briga pode custar alguns cabelos nossos, ela também impulsiona a evolução das tecnologias que fazem os navegadores funcionar.
+- O Google Chrome mudou a perspectiva sobre o processo de atualização contínua, garantindo que a maioria de seus usuários possua a última versão do navegador, e o Firefox começou a adotar um processo similar.
+- E o componente de debug e inspeção do Firefox, o Firebug, definiu o modelo básico para que os outros navegadores implementassem ferramentas similares.
+- Atualmente, o Google Chrome costuma ser o campeão dos testes de compatibilidade com as últimas especificações, sempre seguido de perto das últimas versões do Firefox, Safari e Opera.
+- Boa parte das inclusões do HTML5 e CSS3 já estão disponíveis nesses navegadores por completo ou através de prefixos proprietários.
+- O Internet Explorer, que sempre foi uma pedra no sapato dos desenvolvedores, evoluiu bastante desde a versão 10 e promete acompanhar a concorrência.
+- Os perigos moram nos casos em que precisamos ir além das últimas versões e trabalhar com mais antigas, como versões do Firefox anteriores a 8 e os famigerados Internet Explorer 6 e 7.
+- A diferença entre os navegadores e a performance do JavaScript em comparação com as suas últimas versões é assombrosa, mas em alguns casos a audiência desejada se mantém presa a esses navegadores, por complicações para se atualizar o navegador ou até o sistema operacional - As últimas versões do Internet Explorer não são compatíveis com o Windows XP por exemplo, o que atrapalha a atualização em alguns ambientes corporativos.
+
+## 4. Topicos Avancados
+- Por isso, é importante definir as fronteiras dos navegadores com que você pretende trabalhar, e se aproveitar das técnicas adequeadas ou das soluções existentes para problemas relacionados a eles.       ###  1.3  A complicação dos prefixos proprietários   Para quem está acompanhando a crista da onda, diversas propriedades e funcionalidades novas não se encontram completamente definidas e implementadas nos navegadores.
+- Mas isso não nos impede de utilizar versões "experimentais" delas.
+- Para isso, cada navegador costuma expor essas novidades com prefixos específicos para diferenciar da implementação final.
+- Já estamos desfrutando e testando essas propriedades enquanto elas são definidas e refinadas.
+- O objetivo é, eventualmente, não precisar mais das versões prefixadas e se utilizar apenas a versão canônica das propriedades.
+- Mas nem todos param para acompanhar o progresso desses itens.
+- Propriedades como `border-radius` e `box-shadow` não precisam mais de prefixos para os principais navegadores de desktops há muito tempo, e em 2013 outras propriedades como `animation` e `transition` tiveram suas implementações finalizadas nos principais navegadores do mercado.
+- Para isso, precisa-se levar em consideração dois itens: mantenha-se atualizado sobre o suporte dos navegadores para novas funcionalidades - minha referência favorita é o <http://caniuse.com/>, que possui a relação de navegadores com suporte completo, parcial ou inexistente, e que costumo visitar de tempos em tempos, principalmente ao começar novos projetos, para me atualizar sobre esse assunto.
+- Outro ponto importante é que você deve mitigar ou automatizar o ruído e o retrabalho gerado pelo uso de prefixos, seja com soluções como pré-processadores ou ferramentas em JavaScript, e focar o seu trabalho no que é tido como padrão, pois em algum momento os prefixos não serão mais necessários.
+- Para isso vamos trabalhar com os padrões definidos e eventualmente citando os prefixos quando necessários.       ###  1.4  A longa e sinuosa estrada deste livro   Neste livro, passaremos por diversas receitas e técnicas para você utilizar em seus projetos, e vamos ler e escrever **muito** código - muito mesmo.

@@ -1,0 +1,1211 @@
+[Page 2]
+The AI Engineer’s Guide to
+Surviving the EU AI Act
+Navigating the EU Regulatory
+Requirements
+Larysa Visengeriyeva
+
+[Page 3]
+The AI Engineer’s Guide to Surviving the EU AI Act
+by Larysa Visengeriyeva
+Copyright © 2025 Larysa Visengeriyeva. All rights
+reserved.
+Published by O’Reilly Media, Inc., 1005 Gravenstein
+Highway North, Sebastopol, CA 95472.
+O’Reilly books may be purchased for educational, business,
+or sales promotional use. Online editions are also available
+for most titles (http://oreilly.com). For more information,
+contact our corporate/institutional sales department: 800-
+998-9938 or corporate@oreilly.com.
+Acquisitions Editor: Nicole Butterfield
+Development Editor: Sara Hunter
+Production Editor: Kristen Brown
+Copyeditor: Rachel Head
+Proofreader: Kim Cofer
+Indexer: Krsta Technology Solutions
+Cover Designer: Susan Brown
+Cover Illustrator: Monica Kaamsvaag
+Interior Designer: David Futato
+Interior Illustrator: Kate Dullea
+July 2025: First Edition
+
+[Page 4]
+Revision History for the First Edition
+2025-06-27: First Release
+See http://oreilly.com/catalog/errata.csp?
+isbn=9781098172497 for release details.
+The O’Reilly logo is a registered trademark of O’Reilly
+Media, Inc. The AI Engineer’s Guide to Surviving the EU AI
+Act, the cover image, and related trade dress are
+trademarks of O’Reilly Media, Inc.
+The views expressed in this work are those of the author
+and do not represent the publisher’s views. While the
+publisher and the author have used good faith efforts to
+ensure that the information and instructions contained in
+this work are accurate, the publisher and the author
+disclaim all responsibility for errors or omissions, including
+without limitation responsibility for damages resulting from
+the use of or reliance on this work. Use of the information
+and instructions contained in this work is at your own risk.
+If any code samples or other technology this work contains
+or describes is subject to open source licenses or the
+intellectual property rights of others, it is your
+responsibility to ensure that your use thereof complies with
+such licenses and/or rights.
+978-1-098-17249-7
+[LSI]
+
+[Page 5]
+Preface
+The European Union’s Artificial Intelligence Act, which
+came into full effect in August 2024, represents a
+watershed moment in the global regulation of artificial
+intelligence. As the first comprehensive legal framework
+for AI, its stated purpose is clear: to foster innovation and
+development within the EU while effectively mitigating the
+potential risks posed by AI systems. This ambitious
+regulation establishes a uniform legal framework governing
+the development, placement on the market, putting into
+service, and use of AI systems across the EU.
+Navigating the complexities of the EU AI Act might, at first
+glance, seem like a task exclusively for legal teams and
+policy experts. The Act is indeed complex, featuring 113
+articles that address highly technical issues, complemented
+by 13 annexes that detail implementation specifics and 180
+recitals (introductory statements providing context and
+guidance for interpretation). However, as the practical
+requirements of the EU AI Act reveal, achieving and
+maintaining compliance with the Act is fundamentally an
+engineering problem. This is the core message of this book.
+Operationalizing EU AI Act compliance goes far beyond
+legal interpretation. It requires establishing roles,
+processes, structures, and AI engineering practices. Post-
+market compliance, for instance, directly necessitates the
+implementation of machine learning operations (MLOps)
+practices such as monitoring and alerting. Successfully
+achieving EU AI Act compliance is linked to understanding
+the design, development, and maintenance of AI systems.
+
+[Page 6]
+Compliance is not a legal stamp applied at the end of the
+development lifecycle, but a continuous process that must
+be engineered into the core of AI systems from the
+beginning. The Act’s foundation on the concept of
+“trustworthy AI” mandates that systems be lawful, ethical,
+and robust throughout their entire lifecycle. This
+necessitates embedding ethical and compliance aspects
+directly into the AI system development process.
+This book serves as your guide to tackling EU AI Act
+compliance as the engineering challenge it is. We’ll explore
+various practical methodologies and frameworks essential
+for this task, including:
+AI engineering
+Defined as the application of software engineering
+principles to the end-to-end lifecycle of AI systems—
+including design, development, deployment, and
+maintenance.
+CRISP-ML(Q)
+This structured machine learning development process
+provides a blueprint for designing, developing, and
+maintaining AI systems with compliance in mind. Its
+emphasis on quality assurance and continuous risk
+management throughout the AI lifecycle is directly aligned
+with the EU AI Act’s risk-based approach. CRISP-ML(Q)
+requires documentation of the entire development process,
+including risk management measures, which is crucial for
+meeting the Act’s technical documentation and transparency
+obligations.
+MLOps Stack Canvas
+
+[Page 7]
+The MLOps Stack Canvas is a comprehensive and practical
+framework designed to guide organizations in architecting
+and managing their machine learning operations
+infrastructure. The canvas is structured around three core
+domains: Data and Code Management, Model Management,
+and Metadata Management. It provides a holistic view of the
+components necessary for successful ML deployment. By
+aligning with the CRISP-ML(Q) process model, the canvas
+ensures that each phase of the ML lifecycle is addressed,
+from data sourcing and versioning to model deployment and
+monitoring. It emphasizes critical aspects such as
+reproducibility, reliability, and efficiency, helping teams to
+plan infrastructure costs, select appropriate tools, and
+establish robust workflows. Serving as both a strategic and
+an operational tool, the MLOps Stack Canvas facilitates
+clearer communication among stakeholders for all ML and
+AI initiatives across the organization.
+SMACTR (Scoping, Mapping, Artifact Collection, Testing,
+and Reflection)
+Introduced as an internal audit framework to guide the
+practical implementation of ethical AI development
+throughout its lifecycle, SMACTR promotes a proactive and
+preventive approach for AI development. Embedding audit
+processes into the design and development phases allows
+engineers to anticipate and address potential risks before
+deployment, aligning perfectly with the Act’s emphasis on
+risk mitigation. SMACTR’s focus on generating detailed
+documentation at each stage is also essential for meeting the
+Act’s technical documentation requirements for high-risk AI
+systems.
+The synergy between CRISP-ML(Q) and AI engineering
+offers a powerful framework for addressing EU AI Act
+
+[Page 8]
+compliance. Furthermore, the integration of SMACTR with
+the CRISP-ML(Q) methodology provides a robust and
+auditable process for responsibly developing AI systems.
+This combination allows for proactively engineering
+compliance into the ML lifecycle, from data collection
+through monitoring, rather than treating it as an
+afterthought.
+The book also explores how these engineering principles
+apply across the Act’s risk classifications—prohibited, high
+risk, limited risk, and low risk. While high-risk systems face
+the most stringent requirements, Article 50 introduces
+transparency obligations that apply to all AI systems
+designed to interact directly with humans, regardless of
+their risk level. These obligations, such as informing users
+of AI interaction and marking synthetic content, demand
+practical engineering solutions for proactive compliance.
+Aligning AI engineering practices with SMACTR and
+CRISP-ML(Q) provides a structured and automated
+approach to managing the AI system lifecycle for
+transparency.
+This book also addresses the particular challenges posed by
+general-purpose AI (GPAI) and generative AI (GenAI), late
+but significant additions to the Act. The concept of
+generative AI operations (GenAIOps) is introduced as an
+extension of traditional MLOps principles to handle the
+unique complexities of GPAI and generative AI applications.
+Applying AI engineering principles to implement
+transparency obligations for GPAI and integrating CRISP-
+ML(Q), SMACTR, and GenAIOps are crucial for navigating
+this evolving landscape.
+
+[Page 9]
+Who Should Read This Book
+This book is intended for AI engineers, MLOps
+practitioners, data scientists, AI product managers, and
+anyone involved in the hands-on development and
+deployment of AI systems. It demonstrates how, through
+the application of robust methodologies, disciplined
+documentation, and continuous integration of ethical
+considerations, AI teams can build systems that are not
+only technically innovative but also demonstrably
+compliant, trustworthy, and aligned with societal
+expectations. I have tried to make this book as actionable
+as possible by introducing a comprehensive framework and
+practical checklists for aligning AI engineering practices
+with the EU AI Act articles throughout the CRISP-ML(Q)
+lifecycle.
+As ImageNet creator Fei-Fei Li, known as the Godmother of
+AI, noted recently: “Now more than ever, AI needs a
+governance framework.” This book provides the practical
+engineering foundation for implementing such a
+framework, enabling practitioners to build trustworthy AI
+systems that meet the stringent requirements of the EU AI
+Act through empirical validation, risk-aware development,
+and collaborative practices. The law sets the requirements,
+but it is the engineering that delivers compliance.
+Navigating This Book
+This book has been designed as a reference for you, a guide
+to practicing proactive EU AI Act compliance through AI
+engineering and integrating it into the AI lifecycle, from
+data collection through monitoring. Each chapter is fairly
+self-contained, with appropriate references to other
+chapters identified. The chapters are organized as follows:
+
+[Page 10]
+Chapter 1, “Understanding the AI Regulations”,
+provides a foundational understanding of the EU AI
+Act and the need for trustworthy AI systems. It
+outlines seven essential requirements for building
+such systems: human agency and oversight;
+technical robustness and safety; privacy and data
+governance; transparency; diversity, non-
+discrimination, and fairness; societal and
+environmental well-being; and accountability. This
+chapter describes the structure of the Act, including
+definitions, key players, risk classifications, and the
+implementation timeline, and provides an overview
+of this significant regulatory framework.
+Chapter 2, “AI Engineering: A Proactive Compliance
+Catalyst”, explains how combining CRISP-ML(Q)
+with AI engineering helps organizations meet the
+compliance requirements of the EU AI Act. CRISP-
+ML(Q) guides the AI lifecycle through distinct
+phases, such as data preparation and model
+evaluation, while MLOps principles including
+automation, versioning, testing, and monitoring
+provide the operational backbone for ensuring AI
+systems are reliable, reproducible, and continuously
+compliant. In this chapter, you will also learn about
+the MLOps Stack Canvas as a framework for
+defining the necessary technical infrastructure,
+covering data, code, and model management, to
+support proactive compliance engineering.
+Chapter 3, “Data and AI Governance and AI
+Engineering”, explains the critical roles of data
+governance and AI governance within the context of
+the EU AI Act. In this chapter, you will learn about
+how these governance concepts can be practically
+
+[Page 11]
+integrated into the AI system development lifecycle
+to ensure trustworthy and compliant AI.
+Chapter 4, “AI System Assessment and Tailoring AI
+Engineering for Different Risk Levels”, focuses on
+the crucial initial steps for organizations to achieve
+compliance with the EU AI Act. You will learn about
+creating an inventory of your existing AI systems
+and how to classify their risk level to determine the
+applicable obligations. The chapter also explains the
+different roles organizations can take (provider or
+deployer), which further tailors compliance
+requirements.
+Chapter 5, “AI Engineering for High-Risk AI
+Systems”, offers a comprehensive guide to
+implementing the EU AI Act’s requirements for high-
+risk AI systems through AI engineering practices. It
+breaks down key articles of the Act (Articles 9–15),
+focusing on topics like risk management, data
+governance, documentation, recordkeeping,
+transparency, human oversight, accuracy,
+robustness, and security. You will learn how to map
+the Act’s legal requirements to specific quality
+attributes and how to integrate them into the CRISP-
+ML(Q) lifecycle. This chapter shows why
+documentation and metadata management are
+crucial for demonstrating compliance and ensuring
+the trustworthiness of high-risk AI systems.
+Chapter 6, “AI Engineering for Limited-Risk AI
+Systems”, focuses on how to develop AI systems that
+meet the EU AI Act’s transparency obligations,
+which differ from the stricter conformity
+assessments required for high-risk systems. Here,
+you will learn about integrating the SMACTR
+
+[Page 12]
+framework with the CRISP-ML(Q) lifecycle. This
+chapter also highlights the emerging role of AI
+governance platforms and various technical tools in
+facilitating compliance and responsible AI
+deployment.
+Chapter 7, “Toward Trustworthy General-Purpose AI
+and Generative AI”, explains how the Act aims to
+balance AI innovation with risk mitigation,
+introducing concepts like GPAI and systemic risk. It
+outlines the specific transparency obligations for
+generative AI systems, such as informing users of AI
+interactions and marking synthetic content, and
+details the regulations for GPAI models, including
+documentation and risk management requirements
+for providers and deployers. You will also learn
+about GenAIOps, a framework for operationalizing
+the transparency and compliance aspects of GenAI
+development and deployment by integrating them
+with established methodologies like CRISP-ML(Q)
+and the SMACTR framework.
+Conventions Used in This Book
+TIP
+This element signifies a tip or suggestion.
+NOTE
+This element signifies a general note.
+
+[Page 13]
+WARNING
+This element indicates a warning or caution.
+O’Reilly Online Learning
+NOTE
+For more than 40 years, O’Reilly Media has provided technology and
+business training, knowledge, and insight to help companies succeed.
+Our unique network of experts and innovators share their
+knowledge and expertise through books, articles, and our
+online learning platform. O’Reilly’s online learning platform
+gives you on-demand access to live training courses, in-
+depth learning paths, interactive coding environments, and
+a vast collection of text and video from O’Reilly and 200+
+other publishers. For more information, visit
+https://oreilly.com.
+How to Contact Us
+Please address comments and questions concerning this
+book to the publisher:
+O’Reilly Media, Inc.
+1005 Gravenstein Highway North
+Sebastopol, CA 95472
+800-889-8969 (in the United States or Canada)
+
+[Page 14]
+707-827-7019 (international or local)
+707-829-0104 (fax)
+support@oreilly.com
+https://oreilly.com/about/contact.html
+We have a web page for this book, where we list errata,
+examples, and any additional information. You can access
+this page at https://oreil.ly/AI-engineer-EU-AI-Act.
+For news and information about our books and courses,
+visit https://oreilly.com.
+Find us on LinkedIn: https://linkedin.com/company/oreilly-
+media.
+Watch us on YouTube: https://youtube.com/oreillymedia.
+Acknowledgments
+Bringing this book to life has been a truly fulfilling
+experience. I’ve had so much support from so many people
+throughout the process of writing the book—thank you so
+much to everyone who helped make it a reality!
+I would like to give an especially big thank you to the
+book’s technical reviewers: Una Galyeva, Katharine Jarmul,
+Janna Lipenkova, Anil Sood, and Debmalya Biswas. Their
+time and effort in reading through the initial draft and
+providing comments, suggestions, and corrections were
+invaluable, and they made significant contributions to
+improving the book’s overall quality.
+Everyone at O’Reilly has been fantastic to work with
+throughout the book’s lifecycle, starting with Nicole
+
+[Page 15]
+Butterfield, who immediately saw the potential of the core
+message that EU AI Act compliance is fundamentally an
+engineering challenge. Sara Hunter worked intensively
+with me to shape and edit the book, and when I was ready
+to move to the production process, Kristen Brown was just
+amazing. A big thank you to the entire O’Reilly team,
+including copyeditor Rachel Head, proofreader Kim Cofer,
+indexer Ben Hurst, illustrator Kate Dullea, and the cover
+design team of Monica Kaamsvaag and Susan Brown. You
+are all heroes!
+
+[Page 16]
+Chapter 1. Understanding
+the AI Regulations
+As people, organizations, and the public sector increasingly
+rely on AI to drive decision making, the technology must be
+trustworthy. The EU AI Act aims to provide a legal
+framework for developing, deploying, and using AI
+technologies within the European Union, emphasizing
+safety, transparency, and ethical considerations. It is a
+regulatory framework for artificial intelligence that
+includes specific requirements for AI systems of different
+risk categories within the EU. This book is focused on
+understanding and implementing the regulatory
+requirements set by the European Union’s legislation on
+artificial intelligence. Please note that the guidance it
+provides is not intended as a substitute for obtaining
+professional legal advice.
+This chapter begins by outlining the motivation behind the
+EU AI Act, emphasizing the idea of “trustworthy AI,” and
+identifying the essential requirements for ensuring AI is
+trustworthy. It then describes the structure of the EU AI
+Act, including its definitions, key stakeholders, risk
+classifications (prohibited, high risk, limited risk, and
+minimal risk), and the implementation timeline. Finally, it
+briefly compares the EU AI Act with other international
+regulations and standards related to AI.
+
+[Page 17]
+WARNING
+The author is not a lawyer, and this book does not provide legal
+advice. The intersection of law and artificial intelligence is a complex
+subject that requires expertise beyond the scope of AI, data science,
+and machine learning. Legal considerations surrounding AI systems
+can be complex and far-reaching. If you have any legal concerns
+related to the AI systems you are working on, seek professional legal
+advice from qualified experts in the field.
+The Motivation for the EU AI Act:
+Trustworthy AI
+As AI becomes increasingly intertwined with our daily lives,
+one of the challenges we face is learning to navigate the
+uncertainty that comes with it. This uncertainty is inherent
+to AI. AI models’ predictive accuracy has long been
+considered a core evaluation criterion when building an AI
+system. However, with the widespread use of AI in critical
+areas such as human resources, transportation, finance,
+medicine, and security, there is a growing need for these
+systems to be trustworthy—and traditional predictive
+accuracy alone is not sufficient to build trustworthy AI
+applications.
+To better understand trustworthy AI, let’s start with its
+definition. Trustworthy AI is an umbrella term that refers to
+artificial intelligence systems that are designed and
+developed with principles such as fairness, privacy, and
+non-discrimination in mind, and with robust mechanisms to
+ensure reliability, security, and resilience. Within the AI
+community, this term is used interchangeably with
+responsible AI, ethical AI, reliable AI, and values-driven AI.
+Trustworthy AI systems must be adaptable to diverse and
+changing environments and robust against various types of
+
+[Page 18]
+disruptions, including cyber threats, data variability, and
+operational changes. They should operate transparently
+and be held accountable, with continuous monitoring and
+evaluation to respect human rights, including privacy and
+freedom from discrimination, and to ensure adherence to
+democratic values.
+Trustworthy AI is a complex term that incorporates a long
+list of concepts and principles, which are visualized in
+Figure 1-1. These concepts lay the foundation for
+understanding the EU AI Act.
+Trustworthiness in AI is grounded in the three pillars of
+lawfulness, ethics, and robustness. First, AI systems should
+be lawful, meaning they must comply with all relevant
+regulations to ensure a fair market, promote economic
+benefits, and protect citizens’ rights. Second, they must be
+built on ethical principles and values, incorporating input
+from all stakeholders and establishing appropriate
+feedback mechanisms. Finally, they must be robust,
+accounting for potential risks and ensuring safety at every
+stage of development and deployment.
+
+[Page 20]
+Figure 1-1. The foundation and seven requirements of trustworthy AI
+Standing on these three pillars are seven key requirements
+that AI systems must implement to be deemed trustworthy:
+1. Human agency and oversight
+2. Technical robustness and safety
+3. Privacy and data governance
+4. Transparency
+5. Diversity, non-discrimination, and fairness
+6. Societal and environmental well-being
+7. Accountability
+These come directly from the requirements outlined in the
+Ethics Guidelines for Trustworthy AI developed by the
+European Commission’s High-Level Expert Group on AI (AI
+HLEG). In the following sections, I provide an explanation
+of each.
+Human Agency and Oversight
+Human agency and oversight are crucial in developing and
+operating AI systems. Human agency refers to the ability of
+individuals to make informed decisions and maintain
+control. AI systems should support this by providing
+transparency, interpretability, and mechanisms for control
+and intervention that enable humans to understand and
+influence the system’s decisions and actions.
+Human oversight involves establishing governance
+processes and mechanisms that allow for human
+monitoring, evaluation, and intervention in the operation of
+AI systems. This includes ensuring transparency and
+
+[Page 21]
+interpretability of the systems’ decision-making processes
+based on the results produced by the AI models.
+Additionally, AI systems should provide human control
+mechanisms (e.g., the ability to override, adjust, or shut
+down the system when necessary). As depicted in Figure 1-
+2, I distinguish between four different modes of human
+oversight:
+Human-in-command
+This mode represents the highest level of human control,
+where humans maintain ultimate authority and
+responsibility over the AI system. Humans must explicitly
+authorize any AI system action. They are at the core of
+decision-making processes and always make the final
+decisions. In this mode, humans oversee the AI system’s
+overall activity and can decide when and how to use the
+system in specific situations. For example, the “AI cockpit”
+concept demonstrates the human-in-command approach by
+providing a central user interface that enables operators to
+monitor AI systems’ effects on different user groups,
+evaluate results against technical and ethical criteria, and
+exercise the authority to disable the systems when
+necessary.
+Human-in-the-loop
+AI systems require human interaction at critical points in
+the decision-making process to add a layer of human
+experience and contextual understanding that AI currently
+lacks. Often, this involvement entails guiding the direction of
+decisions based on AI-generated predictions. The level of
+intervention and control might depend on the risk level of
+the system. Medical AI applications, for example, will
+typically require more intensive human intervention and
+control than less critical AI applications.
+
+[Page 22]
+Human-on-the-loop
+The human plays an observer role, monitoring the actions of
+the AI system and intervening if necessary.
+Human-out-of-the-loop
+The AI system operates independently, without human
+intervention or real-time supervision. This scenario is
+possible when decisions based on the system’s predictions
+can be programmatically implemented. Often, this mode is
+applied in trading applications that require data processing
+at speed, where human oversight is not realistic.
+
+[Page 23]
+Figure 1-2. The different levels of human oversight in AI
+The modes described here are each suitable for different AI
+use cases. Regardless of the one you use, proper
+implementation of the human agency and oversight
+requirement is crucial for designing and developing ethical
+AI systems that benefit from the strengths of AI while
+mitigating potential risks.
+Technical Robustness and Safety
+To be trustworthy, AI systems need to be accurate, reliable,
+and able to repeat their results. They should also have a
+
+[Page 24]
+“backup plan” if something goes wrong. In computer
+science, robustness means a system can keep working
+correctly even when there are mistakes, unusual inputs, or
+unexpected situations. For AI, robustness means that a
+machine learning (ML) model can keep making good,
+reliable predictions despite facing different conditions,
+tricky inputs, or changes in the type of data it sees.
+In simpler terms, a robust ML model can still give you the
+correct answers even if the information it receives is
+somewhat noisy, messy, or comes from a different source
+than the model was originally trained on. If these
+differences cause its performance to drop suddenly, then
+it’s not considered robust anymore. Achieving robustness is
+essential for building trust in AI—especially in areas like
+self-driving cars, cybersecurity systems, and healthcare,
+where a single mistake can have serious consequences.
+There are three core layers to an AI system: the data it’s
+trained on, the algorithm it uses, and the software that puts
+them to use. Correspondingly, there are three levels of
+robustness:
+Data robustness requires training the system on a
+wide variety of data types and scenarios. This allows
+the model to “learn” to handle different situations
+and ensures it is less likely to fail when confronted
+with new or unexpected conditions. For example, a
+self-driving car’s AI should be trained on data from
+different weather conditions to handle rain, snow,
+and fog. In cybersecurity, an intrusion detection
+system should learn from many different types of
+network traffic and attack methods, so it can catch
+new threats as they emerge.
+
+[Page 25]
+Algorithmic robustness focuses on defending against
+attacks that try to trick the AI model itself. Some
+attacks occur at the moment of decision making by
+slightly altering the input to confuse the model.
+Others are executed during the training phase by
+introducing “poisoned” data that causes the model
+to make incorrect predictions later. A robust
+algorithm should be able to handle noisy or altered
+inputs, changes in data types, and even deliberately
+manipulated inputs designed to fool it. For example,
+a robust language model can deal with misspellings,
+slang, or strange grammar without losing accuracy.
+System-level robustness looks at the bigger picture
+—the entire lifecycle of the AI product, from how
+data is collected to how the model is built, tested,
+and finally used in the real world. By examining
+every step, we can spot risks before they lead to
+serious problems. This holistic approach ensures the
+entire AI pipeline, and its interaction with other
+systems, remains steady and secure.
+In research, we often differentiate two types of robustness:
+Non-adversarial robustness
+Can the model handle everyday challenges, like noisy inputs
+or slight changes in the environment, without losing
+accuracy?
+Adversarial robustness
+Can the model resist “tricks” that attackers use intentionally
+to confuse it, such as subtly modified inputs designed to
+produce the wrong answer?
+
+[Page 26]
+To measure how robust an AI model is, practitioners and
+researchers look at a variety of measurements:
+Accuracy
+How many predictions the model gets right.
+Error rate
+How many incorrect predictions the model makes.
+Sensitivity (recall)
+The model’s ability to correctly identify items that have a
+given condition (true positives). For example, if we are
+implementing a binary classifier, of all the cases that should
+be labeled “positive,” how many are correctly identified?
+Specificity
+The model’s ability to correctly identify items that do not
+have a given condition (true negatives). For example, of all
+the cases that should be labeled “negative,” how many are
+correctly rejected?
+Robustness curves
+Graphs that show how the model’s performance changes
+when we introduce challenges, like more noise, missing
+information, or unusual inputs.
+All of these measurements can help us understand the
+model’s strengths and weaknesses. However, the best way
+to measure robustness typically depends on the specific
+problem and requirements of the AI system.
+
+[Page 27]
+Privacy and Data Governance
+The second requirement of trustworthy AI systems is that
+they must ensure full respect for privacy and personal data
+protection, in line with Articles 7 and 8 of the Charter of
+Fundamental Rights of the European Union.
+Many AI systems, such as recommender systems and
+systems that provide personalized predictions, require
+some amount of personally identifiable information (PII).
+Handling of PII is a subject to regulations within the EU
+and the US, under the General Data Protection Regulation
+(GDPR) and the California Consumer Privacy Act (CCPA).
+By examining how an AI system collects, stores, processes,
+and shares personal or sensitive data, privacy impact
+assessments (PIAs) help organizations spot areas where
+privacy might be at risk and guide them in modifying the
+system, implementing safeguards, and complying with
+relevant privacy laws and regulations. PIAs should ideally
+be conducted early in the design process, to proactively
+identify, assess, and mitigate potential privacy risks. This is
+an example of privacy by design, an engineering philosophy
+that involves embedding privacy protections into every
+phase of an AI system’s lifecycle—from data collection and
+preprocessing to model training, deployment, and
+maintenance. This ensures that privacy isn’t just treated as
+a legal afterthought or a check-the-box compliance step at
+the end of the development process, but as a fundamental
+design principle that helps organizations maintain user
+trust and meet regulatory requirements.
+Privacy by design incorporates privacy considerations into
+the foundational components of AI systems. For AI
+engineers, this might involve using techniques such as
+minimal data collection, deidentification, and
+
+[Page 28]
+anonymization (encryption, differential privacy, other
+methods to protect sensitive information before it even
+reaches the model); adapting model architecture choices
+(for example, using federated learning); and continuous
+evaluation and monitoring. The related concept of data
+governance ensures that privacy principles are consistently
+applied, maintained, and improved within a structured
+organizational framework.
+Data governance is a data management function that
+guarantees the availability, usability, integrity, and security
+of the data collected and used in an organization. Its key
+elements are visualized in Figure 1-3.
+
+[Page 29]
+Figure 1-3. Key elements of data governance (adapted from Data Governance:
+The Definitive Guide by Evren Eryurek et al. [O’Reilly])
+Data governance has become increasingly important as
+data volumes have grown, organizations have become more
+data-driven, and access to data has expanded. The ultimate
+goal of data governance is to enhance the trustworthiness
+of data, which is fundamental to trustworthy AI. There are
+three key aspects to this: discoverability, security, and
+accountability.
+
+[Page 30]
+Discoverability refers to the availability of the dataset’s
+metadata, data provenance (lineage), and glossary of
+domain entities. It’s essential for ensuring users and AI
+systems can easily access the data they need. Data
+governance establishes procedures that guarantee that the
+right data is accessed by the appropriate people in the
+organization and determine what data AI systems can
+access. Data quality is a related concept that is crucial in
+building trust in data: data should be correct, complete,
+timely, and integral.
+In the context of AI engineering, data security means
+protecting the data used to train, validate, and run models
+from unauthorized access, theft, tampering, or loss.
+Together with privacy, data security is an essential aspect
+of protecting data and ensuring adherence to regulations
+such as the GDPR  (or CCPA).
+The third aspect of data governance, accountability,
+involves ensuring that everyone involved with an AI system,
+from data suppliers to model developers and operators,
+knows their role, can explain their choices, and can be held
+responsible for the system working ethically, legally, and
+safely.
+AI development should respect the fundamental right to
+privacy at all points of the AI application lifecycle, including
+data collection, processing, and storage and model design,
+development, and deployment. Privacy issues can arise in
+various aspects of AI systems, such as when social media
+platforms using AI to analyze user behaviors and
+preferences inadvertently expose sensitive information
+through targeted advertising or data breaches, or when AI
+is used to enhance the capabilities of surveillance systems,
+leading to potential overreach in monitoring activities. This
+can result in a loss of anonymity and freedom, as every
+
+[Page 31]
+action can be watched and recorded. For example,
+governmental structures using facial recognition
+technologies in public spaces can track individuals without
+their consent, potentially leading to misuse of power and
+privacy violations.
+AI systems can also amplify biases present in their training
+data. When these biases affect how data is collected,
+processed, or used, they can disproportionately impact the
+privacy of certain groups. For instance, AI-driven credit
+scoring models might use biased data that discriminates
+against certain racial or gender groups, raising concerns
+about fairness and privacy in relation to financial data.
+Example metrics and mechanisms to define and track
+privacy and data governance include:
+Data encryption levels
+These determine the degree of data protection during
+transmission and at rest.
+Access controls
+These are policies and tools that manage who can access or
+alter data.
+Data retention and deletion policies
+These ensure compliance with data minimization principles
+and regulations.
+Transparency
+Data, AI models, and software systems that include AI
+components must be transparent and provide traceability.
+Regardless of the industry or use case, transparency is the
+
+[Page 32]
+most commonly cited ethical principle in existing AI
+guidelines.
+Transparency in AI systems refers to the ability to
+understand how an AI system works internally and makes
+decisions. It provides comprehensible explanations about
+the AI system’s components, algorithms, decision-making
+process, and overall functioning to stakeholders such as
+users, developers, and regulators. Key dimensions of AI
+transparency include:
+Explainability
+The ability to clearly articulate in human-understandable
+terms how and why an AI system, encompassing its data
+sources, model components, and decision-making processes,
+arrived at a specific output or decision for a given case. This
+is important for building trust and accountability. As
+depicted in Figure 1-4, explainable AI (XAI) models might not
+be the models with the highest accuracy, so depending on
+the use case requirements, engineers might select an
+explainable but less accurate AI algorithm. Techniques for
+XAI are used at every stage of the AI lifecycle, including
+analyzing data for model development, incorporating
+interpretability into the system architecture, and producing
+post-hoc explanations of system behavior.1
+
+[Page 33]
+Figure 1-4. Balancing explainability and accuracy is a common challenge in AI
+systems
+Data transparency
+Openness about the training data used to build an AI model,
+including its sources, characteristics, and potential biases or
+limitations.
+Algorithmic transparency
+Visibility into the AI algorithms and how they process input
+data to generate outputs or decisions. This includes
+
+[Page 34]
+understanding the features, weights, and logic the model
+uses.
+Governance transparency
+Documenting key decisions made during an AI system’s
+development process, establishing clear protocols and
+responsibilities, and ensuring organizational oversight. This
+aspect is particularly relevant to compliance with the EU AI
+Act.
+Communication transparency
+Sharing information about the AI system’s purpose,
+capabilities, and limitations with relevant stakeholders in a
+timely, clear, and accessible manner.
+AI transparency aims to open the “black box” representing
+the internal operations of AI systems, which are often
+complex and opaque. This enables humans to understand
+the inner workings of the systems and audit them for errors
+or biases, fostering trust in their use.
+Examples of metrics to define and track transparency in AI
+systems include the following:
+Explainability index
+How easily the system’s decisions can be explained to users.
+This depends on the availability of explanations throughout
+the system’s lifecycle, the types of explanations provided
+(e.g., feature importance, counterfactual examples, visual
+aids), and the scope of those explanations (whether they
+address global model behavior or local, individual
+predictions).
+Documentation completeness
+
+[Page 35]
+Availability and clarity of documentation on the AI system’s
+purpose, functionality, limitations, model training details,
+and feature engineering process.
+Algorithmic auditability
+Ease of auditing AI algorithms for compliance and
+performance.
+Diversity, Non-Discrimination, and Fairness
+Discussion about bias and fairness in machine learning has
+become a hot topic over the past decade. Because data
+collected in an unequal manner and processed by non-
+diverse teams could potentially cause harm, incorporating
+diversity and inclusion throughout the entire AI system
+lifecycle is a clear requirement for trustworthy AI. This
+includes accessibility, a user-centric approach that
+guarantees that the usability of the AI system takes
+everyone into account—especially people with disabilities.
+Inclusive engineering is defined as “the process of ensuring
+that engineering products and services are accessible and
+inclusive of all users, and are as free as possible from
+discrimination and bias, throughout their lifecycle.” This
+approach is crucial in the development of AI systems,
+extending beyond just technical engineering to encompass
+broader social considerations.
+Potential biases should be identified and addressed at
+every stage of AI system development. It is vital to establish
+a well-defined strategy or set of procedures to mitigate bias
+and promote fairness, both in the collection and use of
+input data and in the algorithm design. In this book, I focus
+on the CRISP-ML(Q) development process model to specify
+a fair and effective AI system development strategy. This
+
+[Page 36]
+model requires establishing processes for testing and
+monitoring for potential biases and detecting non-
+representativeness in data across all phases of
+development.
+Evaluating the complete end-to-end AI development
+workflow for fairness is important for building successful AI
+systems. Improving diversity and representativeness in AI
+systems is a step toward compliance with the EU AI Act
+and providing value for all users of those systems.
+Establishing a robust mechanism for flagging issues related
+to bias, discrimination, or poor performance—such as
+through bias detection tools, categorized reporting
+systems, and clear reporting guidance for affected
+individuals—helps developers and end users become aware
+of and address these issues.
+An often underestimated and less technical aspect of an
+organization’s data culture is educational and awareness
+initiatives for bias and fairness in AI. These initiatives are
+intended to help AI product managers, designers, and
+engineers become more aware of the possible bias they can
+inject while designing and developing AI systems.
+The EU AI Act ensures that every entity along the AI
+system’s value chain, from producer to deployer, is
+responsible for providing users with a fair and ethical
+experience. Several metrics are used to evaluate fairness in
+AI systems, and technical approaches for fairness
+improvement and bias mitigation can be applied before
+modeling (preprocessing), at the point of modeling (in-
+processing), or after modeling (post-processing), as
+illustrated in Figure 1-5.
+
+[Page 37]
+Figure 1-5. Various metrics and approaches can be implemented at different
+stages of the modeling process to ensure equitable outcomes and reduce bias
+(source: https://oreil.ly/CGjLK)
+Table 1-1 lists some metrics that are commonly used to
+evaluate fairness and non-discrimination. These metrics
+quantify potential biases or disparities in the AI model’s
+predictions across different demographic groups.
+
+[Page 38]
+Table 1-1. Preprocessing, in-processing, and post-
+processing fairness metrics
+Metric category/name
+Definition
+Preprocessing
+Statistical/demographic
+parity
+Ensures equal probability of
+being classified with positive
+labels across groups
+Disparate impact
+Measures the ratio of positive
+classification rates between
+unprivileged and privileged
+groups
+Individual fairness
+Ensures similar individuals
+receive similar treatment
+In-processing
+Equal opportunity
+Ensures equal true positive
+rates across different groups
+Equalized odds
+Requires equal true positive
+and false positive rates
+across protected groups
+Overall accuracy equality
+Compares relative accuracy
+rates between different
+groups
+
+[Page 39]
+Metric category/name
+Definition
+Treatment equality
+Considers the ratio of false
+negatives to false positives
+Post-processing
+Test fairness/calibration
+Ensures equal probability of
+a positive outcome given a
+particular score across
+groups
+Well calibration
+Requires predicted
+probabilities to match actual
+probabilities across groups
+Balance for
+positive/negative class
+Ensures equal expected
+scores for positive and
+negative classes across
+groups
+Generalized entropy
+index
+Measures individual-level
+fairness impacts of
+classification outcomes
+Societal and Environmental Well-Being
+AI can have positive or negative impacts depending on how
+it is used. The EU AI Act addresses the societal and
+environmental implications of trustworthy AI.
+AI technology has proven negative impacts on the
+environment. The primary environmental concerns
+associated with AI include energy consumption, carbon
+
+[Page 40]
+footprint, e-waste, and indirect environmental impacts. AI
+and machine learning models, especially large ones,
+require significant computational power (as visualized in
+Figure 1-6). The data centers housing these processors
+thus require vast amounts of energy to run and to cool,
+which means large-scale AI systems have a significant
+carbon footprint. To mitigate this concern, efforts are being
+made to power data centers with renewable energy
+sources. The production of AI hardware also requires
+precious metals and rare earth elements, which can be
+environmentally damaging (in terms of extraction, resource
+depletion, and recycling challenges). Additionally,
+hardware quickly becomes obsolete, contributing to
+electronic waste.
+
+[Page 42]
+Figure 1-6. The amount of computing resources used to train deep learning
+models increased 300,000-fold between 2012 and 2018 (source:
+https://oreil.ly/WJOOw)
+Depending on its applications, AI can have indirect effects
+on the environment as well. For instance, AI-driven
+automation can lead to increased production capacities and
+potentially increased resource consumption. Conversely, AI
+can optimize systems to be more energy-efficient, reduce
+waste, or enhance resource management, thereby
+potentially having a positive impact.
+As well as model accuracy, the proposed “Green AI”
+approach considers efficiency, measured as the number of
+floating-point operations (flops) required to generate a
+result, as a key evaluation criterion. Financial operations
+(FinOps), a cloud financial management practice that helps
+organizations efficiently manage their cloud spending, can
+also be leveraged to address the environmental and
+financial impacts of AI.
+With regard to the societal aspect, AI is changing the way
+we work in three key ways: by automating tasks, reshaping
+work processes, and affecting required job skills. Job
+displacement is an important concern, as AI has the
+potential to automate many roles—especially those that
+involve repetitive tasks. At the same time, AI technology
+has the potential to create new job roles that demand
+advanced technological and analytical skills, such as
+machine learning engineers, data scientists, and AI ethics
+specialists. Additionally, AI can drive the development of
+innovative products and services, opening up new career
+opportunities in emerging sectors like AI-driven digital
+assistants and smart devices.
+A related concern is that the rise of AI is leading to
+increased job polarization, with demand for high-skilled
+
+[Page 43]
+workers growing and low-skilled positions facing
+obsolescence. This worsens income inequality and creates
+challenges for those without access to education and
+training. As a result, AI in the workplace can lead to
+increased stress, anxiety, and job insecurity due to the fear
+of job loss and uncertainty about the future.
+AI systems also have the potential to negatively impact
+society at large through misinformation. AI—particularly
+generative AI—can produce misinformation and
+disinformation at scale. This can harm democracy by
+contributing to misinformation in elections, spreading
+propaganda, and influencing voter behavior. Tools like
+ChatGPT, pi.ai, and perplexity.ai can easily create realistic
+but false content, which can be used to spread
+misinformation. AI-generated “deepfakes” (convincing but
+fake videos and images) can be used to manipulate public
+opinion, and AI-driven content personalization can create
+“information bubbles” where individuals are exposed only
+to information that reinforces their existing beliefs, leading
+to increased polarization and social fragmentation.
+The use of AI for surveillance is also an area of concern
+with regard to societal well-being and privacy. Research
+has shown that at least 75 countries actively utilize AI
+technologies for surveillance (see Figure 1-6). This can lead
+to unauthorized data collection, privacy violations and
+unauthorized access to sensitive data, and potential misuse
+of personal information. In addition, use of AI in law
+enforcement, such as for predictive policing, can result in
+biased outcomes and discrimination against certain
+demographic groups.
+
+[Page 44]
+Figure 1-7. AI surveillance technology is being adopted by a larger number of
+countries and at a faster pace than experts typically believe (source:
+https://oreil.ly/9_iB7)
+Addressing these challenges requires robust ethical
+guidelines, transparent regulatory frameworks, and
+ongoing public dialogue to ensure that AI is developed and
+deployed to support democratic values and societal well-
+being.
+
+[Page 45]
+Accountability
+AI systems must be developed and operated responsibly. AI
+accountability involves establishing mechanisms for
+holding the developers and users of AI systems responsible
+for the impacts of those systems throughout the entire
+development cycle.
+Accountability implies that information about the system’s
+purpose, design, data, and processes is available to internal
+and external auditors. As an example, we can refer to
+Google’s Responsible Generative AI Toolkit, which covers
+risk and mitigation techniques to address safety, privacy,
+fairness, and accountability (see Figure 1-8). This includes
+maintaining detailed documentation and records of the AI
+development process, decision making, and outcomes to
+enable traceability. Logging and recordkeeping are
+essential for accountability. Additionally, accountability
+requires that an AI system can explain or justify its
+decisions. Finally, accountability ensures that there are
+mechanisms and processes for redress in place to minimize
+or correct negative impacts or unfair outcomes caused by
+AI systems. AI systems should provide appropriate
+opportunities for feedback, relevant explanations, and
+defined procedures for escalating concerns.
+
+[Page 46]
+Figure 1-8. Google’s Responsible Generative AI Toolkit takes a holistic
+approach to accountability (source: https://oreil.ly/maEI5)
+In the context of trustworthy AI, key mechanisms that
+should be implemented to create accountability include:
+Clear responsibility guidelines and processes
+Establish guidelines and clear responsibilities for various
+stakeholders involved in the AI system lifecycle, including
+developers, deployers, and users.
+
+[Page 47]
+Transparency and explainability
+Maintain detailed documentation of the AI development
+process, training data, algorithms used, and decision-making
+criteria to enable traceability. Ensure that AI systems are
+transparent about their capabilities, limitations, and
+decision-making processes. Provide clear explanations for
+decisions made based on the AI predictions.
+Human oversight and intervention
+Implement human checks and oversight, especially for high-
+stakes AI decisions, with the ability to override the AI when
+needed.
+Auditing and evaluation
+Conduct regular internal and third-party audits to identify
+and eliminate biases, ensuring compliance with regulations
+and ethical standards. By systematically auditing their AI
+systems using the CRISP-ML(Q) process model, organizations
+can assess the systems’ quality, reliability, and
+trustworthiness. The audit depth and focus areas can be
+tailored based on the risk and criticality of the use case.
+Redress and complaint mechanisms
+Establish user-friendly channels for submitting complaints,
+feedback, or requests for explanations about AI decisions.
+Provide clear processes for affected individuals to challenge
+decisions and seek remedy.
+Trustworthy AI is the foundational concept behind the
+legislation of the EU AI Act. You should now have a general
+understanding of the seven key requirements of
+
+[Page 48]
+trustworthy AI systems. Next, we’ll take a look at how the
+Act itself is structured.
+The EU AI Act in a Nutshell
+The EU AI Act  focuses  on promoting human-centered and
+trustworthy artificial intelligence. Its primary objective is to
+foster innovation while ensuring a high level of protection
+for health, safety, and fundamental rights as outlined in the
+Charter—including democracy, the rule of law, and
+environmental protection—and mitigating the potential
+harmful effects of AI systems in use in the European Union.
+To fully understand the EU AI Act, it is essential to grasp
+its scope, who it applies to, and the timeline for compliance
+with the AI system requirements. This section provides a
+high-level overview of the EU AI Act. I’ll explain the
+detailed requirements for different risk categories later in
+the book.
+Per the General Provisions, the Act establishes:
+1. “Harmonized rules for the placing on the market,
+the putting into service, and the use of AI systems in
+the Union;
+2. Prohibitions of certain AI practices;
+3. Specific requirements for high-risk AI systems and
+obligations for operators of such systems;
+4. Harmonized transparency rules for certain AI
+systems;
+5. Harmonized rules for the placing on the market of
+general-purpose AI models;
+
+[Page 49]
+6. Rules on market monitoring, market surveillance,
+governance and enforcement;
+7. Measures to support innovation, with a particular
+focus on [small and medium-sized enterprises],
+including startups.”
+It is structured into the following main sections:
+Chapters
+The Act is divided into 13 chapters covering different
+aspects, such as general provisions, prohibited AI practices,
+requirements for high-risk AI systems, governance, etc.
+Articles
+Each chapter contains one or more articles laying out the
+specific rules and obligations. The articles are numbered
+sequentially throughout the Act and may be grouped into
+sections within each chapter. For example, Article 6 under
+Section 1 of Chapter III covers the “Classification Rules for
+High-Risk AI Systems.”
+Annexes
+The Act has 13 annexes that provide supplementary
+information such as lists, definitions, and procedures. You
+can navigate to a specific Annex by its number or title, e.g.,
+“Annex III” or “High-Risk AI Systems Referred to in Article
+6(2).”
+Recitals
+The recitals are numbered paragraphs that explain the
+rationale and context behind the Act’s provisions. They can
+help readers interpret the articles but are not binding.
+
+[Page 50]
+Definitions
+Chapter I, Article 3 of the EU AI Act provides a set of
+definitions for terms used in the legislation. Perhaps most
+importantly for the purposes of this book, it defines an AI
+system as:
+A machine-based system that is designed to operate with
+varying levels of autonomy and that may exhibit
+adaptiveness after deployment, and that, for explicit or
+implicit objectives, infers, from the input it receives, how
+to generate outputs such as predictions, content,
+recommendations, or decisions that can influence
+physical or virtual environments.
+Note, however, that given the rapid pace and
+unpredictability of technological and AI development, this
+definition is not entirely static, and a dynamic regulatory
+tool has been integrated into the Act to allow it to adapt
+over time.
+The definition covers a wide range of AI techniques and
+approaches, including:
+Machine learning methods (such as supervised,
+unsupervised, and semi-supervised machine
+learning)
+Deep learning methods
+Reinforcement learning
+Logic- and knowledge-based methods (such as logic
+programming, expert systems, inference and
+deductive engines, reasoning engines)
+Statistical approaches
+Bayesian methods

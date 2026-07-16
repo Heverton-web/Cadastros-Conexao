@@ -1,0 +1,57 @@
+---
+name: epub-progressive-web-apps-construa-aplica-es-progr
+description: >-
+  Passos operacionais extraidos — desenvolvimento web, full-stack, JavaScript, TypeScript, React, Node.js (PT).
+---
+
+# Epub Progressive Web Apps Construa Aplicacoes — Passos Operacionais
+
+Conteudo extraido do livro 'Epub Progressive Web Apps Construa Aplicacoes'. Contem passos, tecnicas e principios baseados na obra original.
+
+## 1. Conceitos Fundamentais
+- Aplicações progressivas](index.html)   * [2\.
+- Fundamentos sobre frameworks e ferramentas](02-fundamentando.html)   * [3\.
+- Configurando o ambiente de desenvolvimento](03-configurando.html)   * [4\.
+- Primeiros passos do desenvolvimento](04-novo-usuario.html)   * [5\.
+- Componentes com estado e fluxo de eventos](05-novo-cap-5.html)   * [6\.
+- Componentes complexos e domínio da aplicação](06-novo-usuario.html)   * [7\.
+- Codificando os requisitos progressivos](07-requisitos-pwa.html)   * [8\.
+- Publicando a aplicação em produção](08-nginx-lighthouse.html)   * [9\.
+- Referências bibliográficas](99-referencias.html)     Capítulo 1  # Aplicações progressivas  PWA é um acrônimo para _Progressive Web Apps_ , ou Aplicações Web Progressivas.
+- A palavra _progressiva_ vem da ideia de _Progressive Enhancement_ , ou melhoria progressiva.
+
+## 2. Principios e Tecnicas
+- Neste contexto, a ideia por trás da palavra _progressiva_ é condicionar uma aplicação a atender o maior número de pessoas possível, sob todos os aspectos.
+- Não é um estudo direcionado aos tipos de dispositivos, navegadores, versões das linguagens HTML, CSS ou JavaScript.
+- Trata-se da criação de uma experiência cujos usuários terão acesso contínuo sem nenhum tipo de restrição tecnológica.
+- Podemos colocar da seguinte forma: desenvolver com melhoria progressiva é um paradigma em que a aplicação deverá estar disponível para todos, sejam usuários de microcomputadores ou smartphones, com browsers atualizados ou obsoletos, com conexão à internet ou não.
+- Uma aplicação progressiva deve estar disponível até mesmo quando o usuário estiver offline.
+- Pode parecer um absurdo, mas a ideia de construir progressivamente traz novos desafios ao desenvolvimento.
+- Não podemos simplesmente ter um site _mobile-first_ com design moderno.
+- Ele precisa funcionar em qualquer dispositivo, sem conexão, para todo tipo de usuário, e continuar melhorando progressivamente até o infinito e além!  > **O que é mobile-first?** >  > O termo mobile-first é um conceito de desenvolvimento de software no qual o foco são os dispositivos mobile.
+- Ou seja, ao se elaborar um site, cria-se toda a organização das páginas e a exibição dos dados com foco nos usuários de dispositivos mobile, mas sem se esquecer dos usuários de microcomputador.
+- Como veremos em breve, atualmente existem muitos frameworks CSS para este tipo de desenvolvimento.
+
+## 3. Aplicacoes Praticas
+- Tudo isso parece confuso no início, mas na verdade é bem simples.
+- No próximo tópico, vamos levantar quais requisitos uma aplicação precisa respeitar para ser considerada uma verdadeira PWA.  ## 1.1 Requisitos de uma aplicação progressiva  Faremos aqui um apanhado geral de todas as características que uma aplicação progressiva precisa atender.
+- Existe uma ferramenta chamada Lighthouse que é capaz de gerar um relatório completo das características de uma aplicação.
+- Por enquanto, vamos entender cada item deste relatório com uma breve descrição de como atacá-lo.
+- A programação envolvida na resolução dos itens será aprimorada nos próximos capítulos.  > **Lighthouse** >  > Organizado e mantido pela equipe de desenvolvimento do Google, o Lighthouse é uma ferramenta de código aberto que permite qualificar aplicações web em relação aos requisitos de melhoria progressiva. >  > Figura 1.1: Lighthouse >  > Seu principal objetivo é gerar um relatório avaliando requisitos de performance, acessibilidade e o quão progressiva é uma aplicação.
+- Mais adiante veremos como utilizá-la (extensão do Google Chrome) para medir a qualidade da aplicação construída neste livro.
+- Veremos agora, em tópicos, quais são os requisitos de uma aplicação progressiva.  ### Deve registrar um Service Worker  _Service Worker_ é uma especificação W3C que permite executar um trecho de código JavaScript continuamente no nível do navegador.
+- Por meio dele (não exclusivamente), é possível implementar recursos offline e organizar o cache dos arquivos estáticos da página web.
+- Um dos itens do relatório do Lighthouse é exatamente este: uso do Service Worker.
+- Entretanto, podemos centrar-nos na ideia de que nossa aplicação deve funcionar offline, de preferência com os recursos oferecidos pelo Service Worker.
+
+## 4. Topicos Avancados
+- No futuro, veremos as minúcias do uso e da implementação do Service Worker em detalhes.  ### Resposta com status 200 mesmo estando offline  Uma página web funciona sobre o protocolo HTTP, que, por sua vez, trabalha com vários status de retorno às solicitações dos browsers.
+- O retorno de código 200 significa sucesso na solicitação.
+- Uma aplicação progressiva deve simular tal status mesmo estando offline.
+- Guardando os dados localmente.
+- Isso pode ser realizado via _Local Storage_ (dados), _Application Cache_ (arquivos), _IndexedDB_ (dados), e o próprio Service Worker, que, além de nos ajudar com as respostas status 200, orquestra o cache dos arquivos.
+- Mais uma vez, não se preocupe, veremos as vantagens e desvantagens de cada um em detalhes.  ### Deve exibir conteúdo quando o JavaScript estiver desabilitado  Permita-me contar uma rápida história: a muito tempo atrás (2008), trabalhei em um site de inscrições para um processo seletivo.
+- Nele, a principal informação do usuário era o CPF.
+- Na página, havia um código JavaScript que acrescentava pontos no CPF.
+- Por uma falha no desenvolvimento, essa regra não estava replicada no back-end (PHP).
+- Tudo corria bem até que um dos usuários, após ter se cadastrado com seu CPF devidamente pontuado, desabilitou o JavaScript e fez um segundo cadastro do mesmo CPF sem os pontos.

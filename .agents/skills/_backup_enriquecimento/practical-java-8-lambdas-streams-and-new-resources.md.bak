@@ -1,0 +1,57 @@
+---
+name: practical-java-8-lambdas-streams-and-new-resources
+description: >-
+  Passos operacionais extraidos do livro 'Practical java 8 lambdas streams and new resources' (PT) — Java.
+---
+
+# Practical Java 8 Lambdas Streams And New Resources — Passos Operacionais
+
+Conteudo extraido do livro 'Practical Java 8 Lambdas Streams And New Resources'. Contem passos, tecnicas e principios baseados na obra original.
+
+## 1. Conceitos Fundamentais
+- Capítulo 2 Sumário Capítulo 1: Java 8 1.1 Hold your horses! 1.2 Access the code and talk to us!
+- Capítulo 2: Hello Lambda! 2.1 The old way and the new way of doing loops 2.2 Let Lambda in!
+- Capítulo 3: Functional Interfaces 3.1 Another Example: listeners 3.2 Your very own functional interface 3.3 The @FunctionalInterface annotation 3.4 Digging deeper: the first details Capítulo 4: Default Methods 4.1 The forEach method in the Iterable interface 4.2 The Consumer interface doesn’t have only one method! 4.3 Another new method in Collection: removelf 4.4 Multiple Inheritance?
+- Capítulo 4 Capítulo 1 : Java 8 It has been almost 20 years since the first version of Java was launched in 1996.
+- With the arrival of Java 5 in 2004, the programming language underwent significant changes -- especially with Generics, Enums, and Annotations.
+- With its 2014 incarnation, Java 8, the same scenario occurs.
+- We now face new possibilities with the introduction of Lambda and Method References, in addition to other small changes.
+- The Collections API, which includes the same main interfaces since 1998, went through a significant upgrade with the introduction of Streams and default methods.
+- In this book, you will have the chance to practice Java 8 extensively.
+- It’s time to start programming, but first you will need to download and install the Java platform: http://www.oracle.com/technetwork/java/javase/downloads/ You can access the Java 8 API documentation here: http://docs.oracle.com/javase/8/docs/api/ Eclipse supports Java 8 since the Luna (4.4) version.
+
+## 2. Principios e Tecnicas
+- You will need the following update for Kepler (4.3): https://wiki.eclipse.org/JDT/Eclipse_Java_8_Support_For_Kepler Eclipse still has some minor bugs when it comes to performing more complicated inferences, but Netbeans and IntelliJ have updated their Java 8 versions.
+- To practice the syntax, you can choose to complete the tests and examples from the book with a simple text editor. 1.1 Hold your horses!
+- If you expect something on the scale of Scala, Clojure, or C#, be prepared for disappointment.
+- Java’s legacy and relatively young age, besides its lack of value types and reification of Generics, preclude the use of certain strategies.
+- The Java Development Team takes great care to keep the syntax simple, as to avoid obscure features that would only bring little gain.
+- (In our view, this makes perfect sense.) On the other hand, it is amazing what has been achieved with the release of Java 8.
+- You might be pleasantly surprised by some of the codes and approaches used.
+- The focus is not breaking the compatibility of legacy Java code, while being the least intrusive with regards to the older APIs.
+- Its new feature, the Streams , will play a crucial role in this elegant upgrade.
+- In order to better break down Java 8’s specifications into smaller tasks, the JEPs (JDK Enhancement Proposals) have been created -- the inspiration came from the Python community’s PEPs.
+
+## 3. Aplicacoes Praticas
+- You can find those in a list of proposals here: http://openjdk.java.net/jeps/0 As you can see, there are many new features in JDK8.
+- Unfortunately, not all of these features had enough time to ripen.
+- Among the JEPs, the Value Objects were left out: http://openjdk.java.net/jeps/169 That was also the case for the use of literals when working with Collections: http://openjdk.java.net/jeps/186 Among other ideas left out, there were several improvements to the already built-in Garbage Collectors, as well as the possible reification of Generics.
+- In any case, the absolute majority of the JEPs made it to the final version and were released.
+- Throughout the book, we will see the major changes made to the language and the new APIs. 1.2 Access the code and talk to us!
+- The source code for each chapter can be found here: https://github.com/codeslashers/java8 We recommend that you alone write all the codes presented in this book so as to practice the API and syntax.
+- We also advise you to perform different tests from those suggested.
+- Here is a forum where you will be able to discuss with us or send us your suggestions or comments: https://groups.google.com/forum/#!forum/codeslashers-java8  Capítulo 5 Capítulo 2 : Hello Lambda!
+- Instead of starting the course with theory, you should first get a feel of how Java 8 will change your way of programming. 2.1 The old way and the new way of doing loops It is important that you follow the book and recreate the code presented.
+- This way, the syntax will become more natural and familiar to you.
+
+## 4. Topicos Avancados
+- Open your favorite text editor.
+- Let’s create an entity and run examples based on it.
+- This way, if you are in a simple text editor, you can create your tests in a public class within the same file.
+- Let’s handle a few users with their different names and scores and print each one of them out.
+- We will do this the usual way, the way we already know, without using any of Java 8’s new features. 1 public class Chapter2 { 2 3 public static void main ( String ... args ) { 4 5 User user1 = new User ( "Paulo Silveira" , 150 ); 6 User user2 = new User ( "Rodrigo Turini" , 120 ); 7 User user3 = new User ( "Guilherme Silveira" , 190 ); 8 9 List &lt; User &gt; users = Arrays . asList ( user1 , user2 , user3 ); 10 11 for ( User user : users ) { 12 System . out . println ( user . getName ()); 13 } 14 } 15 } We omit two imports from java.util.List and java.util.Arrays .
+- They won’t be mentioned in this book, but we will warn you whenever new Java 8 packages come up.
+- Arrays.asList is a simple way of creating a fixed List .
+- But you could have created a new ArrayList and added each user to it.
+- The for we are making is pretty simple.
+- Since Java 5, we can navigate through any array or collection (actually, in any kind of object that implements the java.lang.Iterable interface).

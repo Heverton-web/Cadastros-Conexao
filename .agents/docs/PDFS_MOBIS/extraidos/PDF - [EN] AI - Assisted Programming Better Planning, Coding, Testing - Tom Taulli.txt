@@ -1,0 +1,1641 @@
+[Page 2]
+PROGRAMMING LANGUAGES
+AI-Assisted Programming
+linkedin.com/company/oreilly-media
+youtube.com/oreillymedia 
+Get practical advice on how to leverage AI development 
+tools for all stages of code creation, including requirements, 
+planning, design, coding, debugging, and testing. With this 
+book, beginners and experienced developers alike will learn 
+how to use a wide range of tools, from general-purpose LLMs 
+(ChatGPT, Gemini, and Claude) to code-specific systems 
+(GitHub Copilot, Tabnine, Cursor, and Amazon CodeWhisperer). 
+You’ll also learn about more specialized generative AI tools 
+for tasks such as text-to-image creation.
+Author Tom Taulli provides a methodology for modular 
+programming that aligns effectively with the way prompts 
+create AI-generated code. This guide also describes the best 
+ways of using general-purpose LLMs to learn a programming 
+language, explain code, or convert code from one language 
+to another.
+This book examines:
+•	 The core capabilities of AI-based development tools
+•	 Pros, cons, and use cases of popular systems, including 
+GitHub Copilot
+•	 Ways to use ChatGPT, Gemini, Claude, and other generic 
+LLMs for coding
+•	 Using AI development tools for the software development 
+lifecycle, including requirements, planning, coding, 
+debugging, and testing
+•	 Prompt engineering for development 
+•	 Using AI-assisted programming for tedious tasks like 
+creating regular expressions
+•	 How to use AI-based low-code and no-code tools
+Tom Taulli is an author, advisor, 
+and investor who’s penned numerous 
+books, including Artificial Intelligence 
+Basics. He also contributes to 
+publications such as AIBusiness.com, 
+Inc.com, Barrons.com, eSecurity 
+Planet, and Kiplingers.com, and 
+has developed educational courses 
+for O’Reilly and Pluralsight, focusing 
+on areas such as generative AI, 
+databases, and Python.
+9
+7 8 1 0 9 8 1 6 4 5 6 0
+6 9 9 9 9
+US $69.99	   CAN $87.99
+ISBN:   978-1-098-16456-0
+“When we added 
+vector search to 
+Cassandra in six weeks, 
+Copilot and ChatGPT 
+were key to meeting 
+our deadline, but most 
+developers have yet 
+to take advantage 
+of AI tools like these. 
+Tom’s book is a great 
+way to get started and 
+will save you hours of 
+trial and error.”
+—Jonathan Ellis
+ Cofounder and CTO of DataStax
+
+[Page 3]
+Praise for AI-Assisted Programming
+When we added vector search to Cassandra in six weeks, Copilot and ChatGPT were key
+to meeting our deadline, but most developers have yet to take advantage of AI tools like
+these. Tom’s book is a great way to get started and will save you hours of trial and error.
+—Jonathan Ellis, cofounder and CTO of DataStax
+AI-Assisted Programming is an excellent resource that showcases Tom’s expertise and
+equips readers for the current evolution of software development, empowering
+everyone to code.
+—Justin Dorfman, Open Source Community Manager
+at Sourcegraph
+AI is rapidly changing how developers build software. From code editors to terminal and
+more, AI assistance is becoming pervasive. AI-Assisted Programming should be the first
+read for any developer trying to get the most from AI in their daily workflows.
+—Zach Lloyd, CEO and cofounder of Warp
+Tom Taulli’s book is a well-structured journey into how AI tools like ChatGPT can change
+the game for developers—both early in their careers and for seasoned experts. It shares
+applicable insights on the ups and downs of AI-powered coding, much like my own
+journey from marketing and business to shipping features in production for our app.
+Great for programmers looking to leverage AI as part of their toolbox.
+—Titus Capilnean, cofounder at Private Market Labs
+AI has changed the game for development. Every programmer will need to know how to
+work with tools like GitHub Copilot. Tom’s book shows how.
+—Muddu Sudhakar, CEO and cofounder of Aisera
+
+[Page 5]
+Tom Taulli
+AI-Assisted Programming
+Better Planning, Coding, Testing,
+and Deployment
+Boston
+Farnham
+Sebastopol
+Tokyo
+Beijing
+Boston
+Farnham
+Sebastopol
+Tokyo
+Beijing
+
+[Page 6]
+978-1-098-16456-0
+[LSI]
+AI-Assisted Programming
+by Tom Taulli
+Copyright © 2024 Tom Taulli. All rights reserved.
+Printed in the United States of America.
+Published by O’Reilly Media, Inc., 1005 Gravenstein Highway North, Sebastopol, CA 95472.
+O’Reilly books may be purchased for educational, business, or sales promotional use. Online editions are
+also available for most titles (https://oreilly.com). For more information, contact our corporate/institu‐
+tional sales department: 800-998-9938 or corporate@oreilly.com.
+Acquisitions Editor: Brian Guerin
+Development Editor: Shira Evans
+Production Editor: Kristen Brown
+Copyeditor: Paula L. Fleming
+Proofreader: Emily Wydeven
+Indexer: Potomac Indexing, LLC
+Interior Designer: David Futato
+Cover Designer: Karen Montgomery
+Illustrator: Kate Dullea
+April 2024:
+ First Edition
+Revision History for the First Edition
+2024-04-10: First Release
+See https://oreilly.com/catalog/errata.csp?isbn=9781098164560 for release details.
+The O’Reilly logo is a registered trademark of O’Reilly Media, Inc. AI-Assisted Programming, the cover
+image, and related trade dress are trademarks of O’Reilly Media, Inc.
+The views expressed in this work are those of the author and do not represent the publisher’s views. While
+the publisher and the author have used good faith efforts to ensure that the information and instructions
+contained in this work are accurate, the publisher and the author disclaim all responsibility for errors or
+omissions, including without limitation responsibility for damages resulting from the use of or reliance
+on this work. Use of the information and instructions contained in this work is at your own risk. If any
+code samples or other technology this work contains or describes is subject to open source licenses or the
+intellectual property rights of others, it is your responsibility to ensure that your use thereof complies
+with such licenses and/or rights.
+
+[Page 7]
+Table of Contents
+Foreword. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  xi
+Preface. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  xiii
+1. New World for Developers. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  1
+Evolution and Revolution                                                                                                 2
+Generative AI                                                                                                                      5
+The Benefits                                                                                                                        6
+Minimizing Search                                                                                                         6
+Your Advisor                                                                                                                   8
+IDE Integration                                                                                                               9
+Reflecting Your Codebase                                                                                           10
+Code Integrity                                                                                                               11
+AI-Powered Documentation Generator                                                                   11
+Modernization                                                                                                              12
+Drawbacks                                                                                                                         15
+Hallucinations                                                                                                               15
+Intellectual Property                                                                                                    15
+Privacy                                                                                                                           16
+Security                                                                                                                          17
+Training Data                                                                                                                17
+Bias                                                                                                                                 18
+A New Way for Developers                                                                                            18
+Career                                                                                                                             19
+10x Developer?                                                                                                             19
+Skills of the Developer                                                                                                 20
+Conclusion                                                                                                                        20
+v
+
+[Page 8]
+2. How AI Coding Technology Works. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  21
+Key Features                                                                                                                      21
+Code Suggestions and Context-Aware Completions
+Versus Smart Code Completion                                                                                 22
+Compilers Versus AI-Assisted Programming Tools                                                   23
+Levels of Capability                                                                                                          24
+Generative AI and Large Language Models (LLMs)                                                   26
+Evolution                                                                                                                       26
+The Transformer Model                                                                                              27
+OpenAI Playground                                                                                                     30
+Evaluating LLMs                                                                                                              35
+Types of LLMs                                                                                                                  38
+Evaluation of AI-Assisted Programming Tools                                                           40
+Conclusion                                                                                                                        41
+3. Prompt Engineering. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  43
+Art and Science                                                                                                                44
+Challenges                                                                                                                         44
+The Prompt                                                                                                                       45
+Context                                                                                                                              46
+Instructions                                                                                                                       46
+Summarization                                                                                                             47
+Text Classification                                                                                                        48
+Recommendation                                                                                                         48
+Translation                                                                                                                     49
+Input of Content                                                                                                               50
+Format                                                                                                                               50
+Best Practices                                                                                                                    51
+Be Specific                                                                                                                     51
+Acronyms and Technical Terms                                                                                 52
+Zero- and Few-Shot Learning                                                                                    53
+Leading Words                                                                                                              54
+Chain of Thought (CoT) Prompting                                                                         54
+Leading Questions                                                                                                        55
+Ask for Examples and Analogies                                                                                55
+Reducing Hallucinations                                                                                                 56
+Security and Privacy                                                                                                        57
+Autonomous AI Agents                                                                                                  58
+Conclusion                                                                                                                        60
+4. GitHub Copilot. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  61
+GitHub Copilot                                                                                                                61
+vi 
+| 
+Table of Contents
+
+[Page 9]
+Pricing and Versions                                                                                                    62
+Use Case: Programming Hardware                                                                           63
+Use Case: Shopify                                                                                                         64
+Use Case: Accenture                                                                                                     65
+Security                                                                                                                          65
+Getting Started                                                                                                                 66
+Codespaces and Visual Studio Code                                                                         67
+Suggestions                                                                                                                    69
+Comments                                                                                                                     72
+Chat                                                                                                                                72
+Inline Chat                                                                                                                     77
+Open Tabs                                                                                                                      79
+Command-Line Interface                                                                                            80
+Copilot Partner Program                                                                                                81
+Conclusion                                                                                                                        82
+5. Other AI-Assisted Programming Tools. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  83
+Amazon’s CodeWhisperer                                                                                              83
+Google’s Duet AI for Developers                                                                                   85
+Tabnine                                                                                                                              87
+Replit                                                                                                                                  88
+CodeGPT                                                                                                                           91
+Cody                                                                                                                                   91
+CodeWP                                                                                                                            93
+Warp                                                                                                                                   94
+Bito AI                                                                                                                               96
+Cursor                                                                                                                                97
+Code Llama                                                                                                                       98
+Other Open Source Models                                                                                            99
+StableCode                                                                                                                     99
+AlphaCode                                                                                                                  100
+PolyCoder                                                                                                                    100
+CodeT5                                                                                                                        101
+Enterprise Software Companies                                                                               101
+Conclusion                                                                                                                      102
+6. ChatGPT and Other General-Purpose LLMs. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  103
+ChatGPT                                                                                                                         103
+GPT-4                                                                                                                              104
+Navigating ChatGPT                                                                                                     105
+Mobile App                                                                                                                  108
+Custom Instructions                                                                                                  109
+Table of Contents 
+| 
+vii
+
+[Page 10]
+Browse with Bing                                                                                                           109
+Tedious Tasks                                                                                                                  113
+Regular Expressions                                                                                                   114
+Starter Code                                                                                                                115
+GitHub README                                                                                                      115
+Cross-Browser Compatibility                                                                                      116
+Bash Commands                                                                                                            117
+GitHub Actions                                                                                                              117
+Plugins                                                                                                                             118
+The Codecademy Plugin                                                                                           119
+The AskYourDatabase Plugin                                                                                   120
+Recombinant AI Plugin                                                                                             121
+GPTs                                                                                                                                 121
+Gemini                                                                                                                             123
+Applications                                                                                                                125
+Gemini for Coding                                                                                                     126
+Claude                                                                                                                              128
+Conclusion                                                                                                                      130
+7. Ideas, Planning, and Requirements. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  131
+Brainstorming                                                                                                                131
+Market Research                                                                                                            133
+Market Trends                                                                                                            135
+Total Addressable Market                                                                                         136
+Competition                                                                                                                    137
+Requirements                                                                                                                  139
+Product Requirements Document                                                                           140
+Software Requirements Specification                                                                      141
+Interviews                                                                                                                    142
+Whiteboarding                                                                                                           143
+Tone                                                                                                                              144
+Approaches to Project Planning                                                                                  145
+Test-Driven Development (TDD)                                                                           147
+Planning Web Design                                                                                                149
+Conclusion                                                                                                                      152
+8. Coding. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  153
+Reality Check                                                                                                                  153
+Judgment Calls                                                                                                               155
+Learning                                                                                                                          156
+Comments                                                                                                                       157
+Modular Programming                                                                                                 158
+viii 
+| 
+Table of Contents
+
+[Page 11]
+Starting a Project                                                                                                            159
+Autofill                                                                                                                             160
+Refactoring                                                                                                                      162
+Ninja Code                                                                                                                  162
+Extract Method                                                                                                           163
+Decomposing Conditionals                                                                                      164
+Renaming                                                                                                                    164
+Dead Code                                                                                                                   165
+Functions                                                                                                                         166
+Object-Oriented Programing                                                                                       167
+Frameworks and Libraries                                                                                            168
+Data                                                                                                                                  169
+Frontend Development                                                                                                 171
+CSS                                                                                                                               172
+Creating Graphics                                                                                                      172
+AI Tools                                                                                                                       173
+APIs                                                                                                                                  176
+Conclusion                                                                                                                      177
+9. Debugging, Testing, and Deployment. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  179
+Debugging                                                                                                                       179
+Documentation                                                                                                              180
+Code Review                                                                                                                   182
+Unit Tests                                                                                                                     183
+Pull Requests                                                                                                               186
+Deployment                                                                                                                    187
+User Feedback                                                                                                             189
+The Launch                                                                                                                 190
+Conclusion                                                                                                                      191
+10. Takeaways. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  193
+The Learning Curve Is Steep                                                                                        193
+There Are Major Benefits                                                                                             194
+But There Are Drawbacks                                                                                            194
+Prompt Engineering Is an Art and Science                                                                195
+Beyond Programming                                                                                                   195
+AI Won’t Take Your Job                                                                                                 196
+Conclusion                                                                                                                      196
+Index. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  197
+Table of Contents 
+| 
+ix
+
+[Page 13]
+Foreword
+When I graduated from UCLA in the early 1990s, I thought I would be a professor.
+But when IBM hired me, I quickly fell in love with the technology industry. There
+was no turning back. I would go on to work at other companies like VMware, Pivotal,
+EMC, and SGI.
+Then I founded several startups. My latest is Aisera, which builds generative AI solu‐
+tions for enterprises. Our platform helps with customer service, employee experience,
+enterprise search, IT service desk, and AIOps.
+Throughout my career, I’ve seen many innovations, such as the emergence of the
+internet, cloud computing, mobile devices, and deep learning. Yet there was one area
+of technology that saw little progress: software development.
+As a founder, this was certainly a big frustration. There would often be certain things
+we wanted to do but could not because of the bottlenecks with our engineering teams.
+But with AI-assisted programming, the game has changed in a big way. It has made
+Aisera more agile and nimble. It’s been a force multiplier that has helped propel our
+growth.
+Now, when I consider hiring a developer, I want to know how they leverage AI. How
+are they using this powerful technology to handle tedious processes and code faster?
+Bottom line: I believe that understanding AI-assisted programming tools is a critical
+skillset. According to Microsoft CEO Satya Nadella, they are “becoming standard
+issue for any developer…”
+But understanding AI-assisted programming requires a different approach. It’s not
+like typical development. You need to understand how to use generative AI systems.
+This is where Tom’s book comes in. He has written a playbook for any developer who
+wants to become proficient with AI-assisted programming. He’s covered the key top‐
+ics and has provided many useful examples. He also has done this in a fun manner,
+making the topic approachable.
+xi
+
+[Page 14]
+No doubt, it’s an exciting time to be a developer. There are many opportunities for
+career growth. And one of the best moves you can make is learning AI-assisted
+programming.
+— Muddu Sudhakar
+CEO and cofounder of Aisera
+xii 
+| 
+Foreword
+
+[Page 15]
+Preface
+I started coding back in the early ’80s. My first rig was an Atari 400—not exactly a
+powerhouse with its membrane keyboard, just 8K of RAM, and programs that loaded
+from cassettes. I learned the BASIC language and created simple games and utility
+apps.
+I was totally into it.
+Naturally, over time I upgraded to beefier machines. Along the way, I got my hands
+dirty with languages like Pascal, C, and C++. But the IDEs didn’t change much,
+except for syntax highlighting and debugging features.
+Everything changed dramatically with the arrival of GitHub Copilot and ChatGPT.
+Trying out these tools felt like the moment I first held an iPhone—absolutely
+game-changing.
+In natural language, I asked ChatGPT to write code. Or in VS Code, I would type a
+fragment of a function, and GitHub Copilot would generate a code block. Often it
+was like hitting the bull’s-eye. Oh, and then I used ChatGPT to turn images into code.
+Yet the real power was that these tools could handle many of the tedious tasks for
+developers. Who’s into wrestling with regex statements or piecing together bash com‐
+mands or GitHub actions? Not me, for sure. But these AI programming tools? They
+eat that stuff for breakfast.
+Turns out, these AI tools are handy for more than just coding. I began using
+ChatGPT for brainstorming app ideas, drafting requirements, and even knocking out
+unit tests.
+It didn’t take long for me to be convinced that AI-assisted programming would be
+one of those must-have skills for programmers.
+So yes, I saw a big need to write this book. I put together an outline and pitched it to
+O’Reilly. The folks there instantly saw the potential.
+xiii
+
+[Page 16]
+Writing the book has been lots of fun, and I’ve learned a lot. I’ve also interviewed
+many smart developers who have provided me with great ideas and tips.
+But AI-assisted programming is quickly evolving. This is why this book has a com‐
+panion GitHub repository. Here, I’ll make updates to the book and include other
+important developments in this exciting field.
+So thank you for picking up this book. I hope you find it not only informative but
+also a valuable guide in your journey.
+What’s Covered
+Here’s a brief look at each chapter:
+• Chapter 1, “New World for Developers”: This chapter kicks off with a look into
+how generative AI is changing the game for coders. It talks about how these AI
+tools are helping developers think more about the big picture and less about the
+nitty-gritty of coding. The chapter also takes a stroll through the history of pro‐
+gramming languages. There are also details about the advanced AI technologies
+like GPT-4.
+• Chapter 2, “How AI Coding Technology Works”: The chapter starts off by
+explaining generative AI and why transformer models and large language models
+are big deals in the programming world. To top it off, there’s a walkthrough of
+OpenAI’s Playground, showing how you can play around with these AI models
+and tweak them to suit your coding needs.
+• Chapter 3, “Prompt Engineering”: The information here is critical to using AI-
+assisted programming tools. This chapter is packed with practical tips, like deal‐
+ing with wordy or confusing prompts and deterring AI from making stuff up.
+Plus, it breaks down the key parts of a prompt and shows you how to use them
+effectively.
+• Chapter 4, “GitHub Copilot”: This chapter is a walkthrough of this powerful tool.
+There’s a look at the core features like creating code with comments, Chat, and
+using an AI-powered command-line interface. There is also coverage of custom‐
+izing the system for proprietary codebases.
+• Chapter 5, “Other AI-Assisted Programming Tools”: This chapter details the
+other top AI-assisted programming tools like Amazon CodeWhisperer, Google’s
+Duet AI, and Replit to name just a few.
+• Chapter 6, “ChatGPT and Other General-Purpose LLMs”: This covers how to use
+these tools for tasks like handling regular expressions, starter code, and GitHub
+Actions.
+xiv 
+| 
+Preface
+
+[Page 17]
+• Chapter 7, “Ideas, Planning, and Requirements”: The focus here is on using chat‐
+bots to kick off software projects. This involves topics like brainstorming, market
+research, requirements documents, and test-driven development.
+• Chapter 8, “Coding”: This chapter goes through common scenarios for develop‐
+ment, whether working with APIs, using modular programming, or refactoring.
+There’s also a look at handling functions and object-oriented programming.
+• Chapter 9, “Debugging, Testing, and Deployment”: This chapter is about the less
+glamorous parts of development. It covers topics like fixing bugs, using AI-
+assisted programming tools for code reviews, making unit tests, and describing
+pull requests.
+• Chapter 10, “Takeaways”: This is a wrap-up of the book, emphasizing the main
+points.
+How This Book Is Different
+Software developers thrive on certainty. When you give a program certain input, you
+always get the same output. For ages, this pure deterministic logic was the heart and
+soul of software.
+But when you use AI-assisted programming tools, things get a bit topsy-turvy. Get‐
+ting results is like rolling dice since everything works on probabilities. When you
+prompt an AI tool to whip up some code, and even use the same prompt over multi‐
+ple tries, you might get different results each time. Sure, it’s a bit of a head-scratcher at
+first, but once you get the hang of it, it’s totally worth it. That’s why there is a chapter
+on prompt engineering that will help with this new approach to programming.
+Who Should Read This Book
+This book is for any developer, whether you’re just starting out or you’ve been in the
+game for many years.
+Conventions Used in This Book
+The following typographical conventions are used in this book:
+Italic
+Indicates new terms, URLs, email addresses, filenames, and file extensions.
+Constant width
+Used for program listings, as well as within paragraphs to refer to program ele‐
+ments such as variable or function names, databases, data types, environment
+variables, statements, and keywords.
+Preface 
+| 
+xv
+
+[Page 18]
+Constant width bold
+Shows commands or other text that should be typed literally by the user.
+Constant width italic
+Shows text that should be replaced with user-supplied values or by values deter‐
+mined by context.
+This element signifies a general note.
+Using Code Examples
+Supplemental material (code examples, exercises, etc.) is available for download at
+https://github.com/ttaulli/AI-Assisted-Programming-Book.
+If you have a technical question or a problem using the code examples, please send
+email to support@oreilly.com.
+This book is here to help you get your job done. In general, if example code is offered
+with this book, you may use it in your programs and documentation. You do not
+need to contact us for permission unless you’re reproducing a significant portion of
+the code. For example, writing a program that uses several chunks of code from this
+book does not require permission. Selling or distributing examples from O’Reilly
+books does require permission. Answering a question by citing this book and quoting
+example code does not require permission. Incorporating a significant amount of
+example code from this book into your product’s documentation does require
+permission.
+We appreciate, but generally do not require, attribution. An attribution usually
+includes the title, author, publisher, and ISBN. For example: “AI-Assisted Program‐
+ming by Tom Taulli (O’Reilly). Copyright 2024 Tom Taulli, 978-1-098-16456-0.”
+If you feel your use of code examples falls outside fair use or the permission given
+above, feel free to contact us at permissions@oreilly.com.
+O’Reilly Online Learning
+For more than 40 years, O’Reilly Media has provided technol‐
+ogy and business training, knowledge, and insight to help
+companies succeed.
+xvi 
+| 
+Preface
+
+[Page 19]
+Our unique network of experts and innovators share their knowledge and expertise
+through books, articles, and our online learning platform. O’Reilly’s online learning
+platform gives you on-demand access to live training courses, in-depth learning
+paths, interactive coding environments, and a vast collection of text and video from
+O’Reilly and 200+ other publishers. For more information, visit https://oreilly.com.
+How to Contact Us
+Please address comments and questions concerning this book to the publisher:
+O’Reilly Media, Inc.
+1005 Gravenstein Highway North
+Sebastopol, CA 95472
+800-889-8969 (in the United States or Canada)
+707-827-7019 (international or local)
+707-829-0104 (fax)
+support@oreilly.com
+https://www.oreilly.com/about/contact.html
+We have a web page for this book, where we list errata, examples, and any additional
+information. You can access this page at https://oreil.ly/AI-assisted-programming.
+For news and information about our books and courses, visit https://oreilly.com.
+Find us on LinkedIn: https://linkedin.com/company/oreilly-media
+Watch us on YouTube: https://youtube.com/oreillymedia
+Acknowledgments
+I want to thank the folks at O’Reilly who believed in this book and worked hard to
+make it a reality: Nicole Butterfield, Shira Evans, and Brian Guerin. I also had the
+benefit of outstanding tech reviewers. They include Roja Boina, Abraham Borg, Sarah
+Kim, Ebubechukwu (Nnenna) Oguaju-Dike, and Gaurav Deshmukh.
+Preface 
+| 
+xvii
+
+[Page 21]
+CHAPTER 1
+New World for Developers
+While juggling dense neural network architectures and pixel-wrangling computer
+vision at Stanford from 2011 to 2016, Andrej Karpathy also moonlighted at Google.
+Over there, he tinkered around and whipped up a feature-learning system for You‐
+Tube videos. Then he decided to become a founding member of OpenAI and later the
+senior director of AI at Tesla, where he led a team to create the Autopilot system.
+It’s safe to say he’s one the world’s top coders. He is also a skilled wordsmith with a
+massive Twitter—or X—following of nearly 800,000 followers. When ChatGPT cata‐
+pulted onto the scene, he tweeted:
+The hottest new programming language is English.
+He wasn’t kidding. This wasn’t just a poetic ode to coding but a nod to a future where
+typing out natural language prompts could conjure up computer code in seemingly
+any language. It’s like having a bilingual genie in your computer, ready to transcribe
+your English wishes into code commands.
+Then there came a tweet that echoed the sentiments of many developers:
+Copilot has dramatically accelerated my coding, it’s hard to imagine going back to
+“manual coding”. Still learning to use it but it already writes ~80% of my code, ~80%
+accuracy. I don’t even really code, I prompt. & edit.
+Karpathy was tipping his hat to Microsoft’s GitHub Copilot, a fresh brew of AI-
+assisted programming. But it wouldn’t be long until many other tools sprouted up.
+The pace of innovation was breathtaking.
+Now, for all the coders out there, the landscape might look like a dense jungle. What’s
+this brave new world of AI tools? Where do they dazzle, and where do they fizzle?
+And how do you wade through all this to become a savvy AI-assisted programmer?
+1
+
+[Page 22]
+Well, this book will be your guide to help answer these questions—and many more.
+The spotlight will be on harnessing these tools to code not just faster but smarter, and
+with a sprinkle of fun. So, let’s roll up our sleeves and jump into this AI-assisted pro‐
+gramming journey.
+Evolution and Revolution
+A key theme of the evolution of programming languages is abstraction. This is a fancy
+way of describing how systems get easier for developers to use. When the tedious
+details are handled in the background, developers can focus on what matters most.
+This has been a driving force of innovation, allowing for breakthroughs like the inter‐
+net, cloud computing, mobile, and AI.
+Figure 1-1 highlights the evolution of abstraction over the decades.
+Figure 1-1. The abstraction of programming languages and tools has evolved over the
+decades
+2 
+| 
+Chapter 1: New World for Developers
+
+[Page 23]
+Let’s go into more detail, starting from the 1940s:
+Machine language to assembly language
+At the dawn of the computer age, programmers had to wrestle with 0s and 1s to
+bend machines to their will. But then, assembly language came onto the scene.
+It offered alphanumeric instructions, which made coding easier and less
+error-prone.
+High-level languages
+The 1950s brought us Fortran and COBOL, languages that let programmers code
+using somewhat plain English like DISPLAY, READ, WRITE, and IF/THEN/
+ELSE. A compiler would convert these into the 0s and 1s that a computer could
+understand. At the same time, people without a technical background could gen‐
+erally read the code well enough to understand the workflow. The emergence of
+high-level languages would be a huge catalyst for the computer revolution.
+Procedural programming
+Languages like C and Pascal introduced procedural programming, essentially
+packing complex tasks into neat little boxes called functions. This abstraction
+allowed for reusability and maintainability, and it made managing colossal soft‐
+ware projects less of a Herculean task.
+Object-oriented programming (OOP)
+Some of the stars of this type of computer language include C++ and Java.
+Object-oriented programming brought a whole new level of abstraction, allowing
+programmers to model real-world entities using classes and objects, encapsulat‐
+ing both data and behavior. This promoted modularity and allowed for more
+intuitive problem solving.
+Scripting languages and web development
+Python, Ruby, and JavaScript abstract many of the lower-level tasks associated
+with programming. They offer extensive libraries and built-in data structures,
+simplifying common programming tasks and reducing the amount of code
+needed to accomplish them.
+Machine learning and AI
+With the rise of AI and machine learning, specialized libraries and frameworks
+like TensorFlow and PyTorch have abstracted away many intricate mathematical
+details of programming. This has enabled developers to focus on model architec‐
+ture and training processes.
+Evolution and Revolution 
+| 
+3
+
+[Page 24]
+AI-assisted programming
+Of course, the latest entrant to this abstraction narrative is AI-assisted program‐
+ming, á la GPT-4 and other massive large language models (LLMs). These are
+like your backstage crew, ready to pitch in with code generation at your
+command.
+Let’s look at a simple example. For this, we’ll use ChatGPT, which has a robust ability
+to gin up code. We will use a prompt to ask what we want the system to do. Suppose
+we give it the following prompt:
+Prompt: In Python, write a program that checks if a given integer is even or odd and
+print the result.
+Figure 1-2 shows the response from ChatGPT.
+Figure 1-2. When asked to create code, ChatGPT’s response will include not only a list‐
+ing but an explanation
+4 
+| 
+Chapter 1: New World for Developers
+
+[Page 25]
+We get the code listing, which even comes with helpful comments. Then there is also
+an explanation of how the program works. You can press the Copy code button at the
+top right to include the code in your IDE and run it.
+Generative AI
+Before we go deeper into how AI-assisted programming tools work, let’s get an over‐
+view of generative AI. This is the foundation of these systems.
+Generative AI is a branch of artificial intelligence (AI), which allows for the creation
+of new and unique content. Figure 1-3 provides a visual of how the different parts
+relate to each other.
+Figure 1-3. There are different types of AI, and they can be represented as nested subsets,
+with generative AI and finally large language models at the center
+AI is the big umbrella: it includes all systems that can pull off tasks with the flair of
+human intelligence. Tucked within AI is machine learning (ML). Instead of marching
+to the beat of explicit instructions, ML systems come up with insights based on heaps
+of data. ML is generally based on complex algorithms, which allow for making pre‐
+dictions or decisions without hardcoding.
+Take a step deeper, and you get deep learning (DL), a tighter slice of ML that rolls
+with neural networks stacked with hidden layers—hence the deep tag. These stacked
+models have shown standout results in areas like image and speech recognition.
+Within the corridors of deep learning, you’ll find generative AI (or GenAI). GenAI
+models create new data that reflects their training data.
+In the innermost circle sits LLMs, such as GPT-4, Gemini, Claude, and LLaMA 2.
+These powerful models—often called “foundation models”—churn out human-esque
+text based on cutting-edge algorithms and training on huge amounts of data.
+Generative AI 
+| 
+5
+
+[Page 26]
+But generative AI is more than just LLMs. GenAI also has multimodal capabilities,
+meaning the ability to create images, audio, and video.
+In the next chapter, we’ll dive deeper into how generative AI works. But next, let’s
+now take a look at the pros and cons of AI-assisted programming tools.
+The Benefits
+AI-assisted programming tools are crafted to enhance developers’ abilities, enabling
+them to zero in on advanced problem solving and innovations instead of being
+ensnared in monotonous tasks or complex code details. This is why GitHub’s use of
+the word copilot is spot on. It’s about having that reliable buddy in the cockpit, navi‐
+gating through the intricate and often tedious aspects of coding, allowing you to focus
+on what matters.
+In the upcoming sections, we’ll spotlight the benefits and practical applications of
+these powerful systems.
+Minimizing Search
+Developers often find themselves playing digital detectives, hunting down pesky bugs
+or wrapping their heads around cryptic codes. When they bump into a snag, their
+first instinct is to hit up Google or pay a visit to Stack Overflow. A quick search, a
+snippet of code, and voilá, they’re back to their IDE (integrated development
+environment).
+But sometimes this can turn into an ordeal. The discussion on Stack Overflow may
+wind up being a dead end. You search some more—but nothing seems to be on point.
+However, there’s one discussion that somewhat helps, and you do further research on
+some related topics. You even search YouTube for a video. After chewing on the prob‐
+lem for more than 30 minutes, you finally solve it.
+Yes, all developers have experienced this. Interestingly enough, the 2022 Developer
+Survey from Stack Overflow, which included responses from more than 70,000 devel‐
+opers, highlights this frustration. It found that 62% of the respondents spent more
+than 30 minutes a day searching for answers, and 25% spent over an hour a day.
+According to the survey, “For a team of 50 developers, the amount of time spent
+searching for answers/solutions adds up to between 333–651 hours of time lost per
+week across the entire team.”
+Now, what if there was a way to slice through this thicket of time-consuming searches
+and get to the solution pronto? Enter AI-assisted programming, our knight in shining
+algorithm. Research from Microsoft supports this: it shows that more than 90% of
+developers who used GitHub Copilot managed to race through their tasks at a faster
+clip.
+6 
+| 
+Chapter 1: New World for Developers
+
+[Page 27]
+Microsoft even put this to the test in a coder showdown. The company recruited 95
+professional developers and split them into two groups. The task was to write an
+HTTP server in JavaScript. Those who used GitHub Copilot completed the job 55%
+faster than those who did not.
+And it’s not just Microsoft singing praises. McKinsey & Company also conducted a
+research study. More than 40 developers from across the United States and Asia par‐
+ticipated, with varying degrees of experience and backgrounds. Over several weeks,
+they completed three common software tasks: code generation, refactoring, and doc‐
+umentation.
+The results? When it came to documentation for keeping the code neat and tidy, AI-
+assisted tools were the standouts, cutting the time spent by half, and AI tools per‐
+formed nearly the same on drafting new code and refactoring.
+However, for complex tasks, the AI tools didn’t hit the high notes. The time trimmed
+was shy of 10%.
+Interestingly, the research also showed that reducing the time spent did not negatively
+impact the overall quality of the code, as reflected in, for example, bugs, readability,
+and maintainability. In fact, the AI-assisted programming tools provided marginal
+improvements. But this often was due to the fact that developers iterated with the
+tools.
+The McKinsey study provides the following takeaways:
+Easing routine chores
+The tools are great at tackling mundane tasks like autofilling code functions, aid‐
+ing in real-time code completion, and autodocumenting code. By handling these
+tasks, they free up developers to dive into complex business issues and speedily
+deploy software features.
+Producing smoother code drafts
+Staring at a blank canvas can be daunting, but with generative AI tools, develop‐
+ers can nudge the creative process along by fetching code suggestions with a sim‐
+ple prompt, right within their IDE or separately. Many developers found these
+AI-based suggestions invaluable, as they helped the humans overcome the “blank
+screen problem” and get into the coding “zone” with a quicker pace.
+Accelerating tweaks to existing code
+With effective prompts, developers can adapt and improve existing code more
+swiftly. For instance, they can snag code from online libraries, pop it into a
+prompt, and then make iterative requests for AI-finessed adjustments based on
+specified criteria.
+The Benefits 
+| 
+7
+
+[Page 28]
+Enhancing developers’ prep for new challenges
+The technology acts like a fast-track introductory course and helps developers
+get acquainted with unfamiliar coding environments or languages. When tack‐
+ling something new, these tools step in like a seasoned buddy, shedding light on
+fresh concepts, dissecting various code bases, and dishing out comprehensive
+guides on framework usage.
+Harnessing multiple tools
+The research indicates that bringing multiple tools into play is more effective.
+Picture this: a developer swings one tool for prompts or chats, and another tool
+jumps in as part of the codebase, dishing out autocomplete options and sugges‐
+tions. Developers found the first tool to be a whiz at fielding queries during code
+refactoring, thanks to its conversational finesse. On the flip side, the second tool
+showed effectiveness in conjuring up new code that was integrated smoothly with
+the development environment. When these AI tools teamed up for a task, devel‐
+opers saw a time efficiency surge of 1.5 to 2.5 times.
+Your Advisor
+With ChatGPT, you can ask for advice on many types of development activities.
+Here’s a prompt:
+Prompt: Please provide detailed tips and best practices for minimizing search time and
+enhancing productivity when programming. Include strategies related to code organi‐
+zation, documentation, tools, and mindset.
+Figure 1-4 shows the response.
+ChatGPT provides three main areas to consider. It recommends using a modular
+design, maintaining consistent naming, and organizing files logically. It also advises
+prioritizing clear documentation with comments, docstrings, and READMEs.
+ChatGPT then goes on to mention using the search functions of an IDE, using tools
+like Git, and bookmarking key resources.
+8 
+| 
+Chapter 1: New World for Developers
+
+[Page 29]
+Figure 1-4. You can get useful advice on programming tasks from ChatGPT
+IDE Integration
+Seamless integration with the IDE is crucial for AI-assisted programming. It keeps
+the momentum of the development process going strong, without the heavy lifting of
+mastering a new platform. This means less time scrambling up the learning curve and
+more time coding and—let’s not forget—less switching between different platforms
+or tools means less friction and makes for a smoother coding journey.
+Then there is the advantage of real-time feedback. As developers knit together or
+tweak code, integrated tools are right there to spotlight errors, offer up corrections, or
+suggest a better way to get things done. This instantaneous back-and-forth of writing,
+feedback, and tweaking is like having a friendly coach by your side. You’ll be guided
+toward cleaner, more efficient code without the hassle of manual reviews or external
+checks.
+The Benefits 
+| 
+9
+
+[Page 30]
+AI-assisted systems can also amp up an IDE by tuning into the broader coding narra‐
+tive. The AI gets the gist of variable types, method signatures, and even the project’s
+structural blueprint to churn out relevant code suggestions. It’s not just about spitting
+out code, though.
+Table 1-1 introduces some of the top AI-assisted programming tools and the IDEs
+they support.
+Table 1-1. IDEs supported by popular AI-assisted programming tools
+AI-assisted
+programming tool
+IDEs
+GitHub Copilot
+Visual Studio Code, Visual Studio, Vim, Neovim, JetBrains suite, Azure Data Studio 1
+Tabnine
+Visual Studio Code, WebStorm, PyCharm, Eclipse, IntelliJ Platform, PhpStorm, CLion, Neovim,
+JupyterLab, Rider, DataGrip, AppCode, Visual Studio 2022, Android Studio, GoLand, RubyMine,
+Emacs, Vim, Sublime Text, Atom.AI, Jupyter Notebook 2
+CodiumAI
+Visual Studio Code, JetBrains (IntelliJ, WebStorm, CLion, PyCharm)
+Amazon
+CodeWhisperer
+Visual Studio Code, IntelliJ IDEA, AWS Cloud9, AWS Lambda console, JupyterLab, Amazon
+SageMaker Studio, JetBrains (IntelliJ, PyCharm, CLion, GoLand, WebStorm, Rider, PhpStorm,
+RubyMine, DataGrip)
+A research study from Microsoft showed that 88% of users of Git‐
+Hub Copilot felt less frustrated and more focused. A key reason
+was that staying within the IDE meant spending less time search‐
+ing. This allowed for the developer to remain in the “flow state.”
+Reflecting Your Codebase
+Certain AI-assisted programming tools are tailored to mesh well with specific devel‐
+opment environments. Developers have the leeway to fine-tune them, allowing the
+tool to understand a project’s internal libraries, APIs, best practices, and architectural
+blueprints. This ensures that the suggestions thrown your way not only are techni‐
+cally solid but also dovetail with your project’s unique needs.
+This customization helps to align the generated code suggestions with your organiza‐
+tion’s established coding standards, quality markers, and security protocols. The focus
+on fostering high-quality code means that teams can avoid stumbling into deprecated
+or undesirable code snippets.
+Moreover, this tailored approach is a big benefit for newcomers to a development
+team. Traditionally, getting them acclimated to a new codebase requires a hefty time
+investment as they may need months of exploring code, reviewing documentation,
+and learning the ropes of coding protocols. However, an AI-assisted programming
+tool can significantly shave time off this learning curve.
+10 
+| 
+Chapter 1: New World for Developers
+
+[Page 31]
+Code Integrity
+Code integrity is a hallmark of sound software development. It highlights the sturdi‐
+ness and trustworthiness of the source code in executing its intended function. Think
+of it as a lens through which the completeness, accuracy, consistency, and fortification
+of the code are examined. A hiccup in code integrity lays out a welcome mat for bugs
+and potential security blind spots, which, in turn, could usher in system crashes and
+data breaches.
+The various factors that engender code integrity include its precision, thoroughness,
+uniformity, and security provisions as well as the ease with which it can be main‐
+tained. Developers can ramp up code integrity through a medley of approaches like
+unit and integration testing, peer code reviews, static code analysis, and stringent
+security assessments.
+It’s worth noting that a growing roster of AI-assisted programming tools are rolling
+out features aimed at bolstering code integrity. They delve into the finer points of the
+code, paving the way for the generation of pertinent and sharp unit tests and edge
+cases.
+Some of these tools come with “fix-it” recommendation features. These are vetted in
+advance to ensure they don’t lead to new problems before they land in front of devel‐
+opers. Then developers can review and assimilate these suggestions right within their
+IDE.
+An added perk of these tools is their ability to swiftly analyze pull requests and spin
+up succinct summaries of code alterations. They also have a knack for automating the
+chore of generating release notes, which comes in handy for documenting the evolu‐
+tion in software versions.
+AI-Powered Documentation Generator
+Documentation is the unsung hero in the software development process. It helps to
+ensure that the codebase remains legible, maintainable, and scalable, especially as
+teams morph and projects bloat in complexity. But let’s face it, creating and refreshing
+this documentation often feels like a trek through a bureaucratic bog—it can be a
+time-guzzler and, occasionally, gets shoved to the backburner.
+Now, cue the entrance of AI-assisted programming tools. These digital scribes can
+whip up extensive documentation in a fraction of the time—and with a hefty dose of
+quality and clarity to boot. This is done by leveraging the power of LLMs, which are
+particularly strong at dealing with language.
+The Benefits 
+| 
+11
+
+[Page 32]
+Modernization
+Marc Andreessen’s 2011 bold statement in the Wall Street Journal, “Software Is Eating
+the World”, has aged like a fine wine. Andreessen, known for his knack for spotting
+tech trends from miles away and his stellar track record as a successful entrepreneur
+and venture capitalist, pointed out a ripe moment in tech history.
+He underlined how the infrastructure had come of age and primed global industries
+for a metamorphosis. The rise of cloud platforms like Amazon Web Services and the
+widespread growth of broadband internet were game changers. They had knocked
+down the traditional hurdles of server costs and network know-how. This had cleared
+the stage for disruptors like Uber, Netflix, and a slew of social media platforms to
+rewrite the rulebook of their respective industries.
+When we fast forward from Andreessen’s insightful piece, we see that the innovation
+express has only picked up steam. However, it has also brought along a threat of dis‐
+ruption, especially for large corporations. Many of these behemoths are anchored to
+legacy systems that are not only pricey but also a gamble to modernize. Their hier‐
+archical setup can interpose speed bumps in decision making, and their expansive
+scale adds layers of complexity to embracing change. Plus, their workforce might not
+always be on the same page with the latest tech innovations.
+Enter IBM, eyeing this scenario as a goldmine of opportunity and channeling its hefty
+resources to craft AI-assisted programming tools for its customers. In October 2023,
+it unveiled the watsonx Code Assistant for Z. This system can translate COBOL to
+Java on mainframe systems, with the code output elegantly object oriented.
+IBM’s Watsonx.ai model understands 115 coding languages based on 1.5 trillion
+tokens. The model has about 20 billion parameters. This is one of the largest AI sys‐
+tems for code development.
+The fact is that there are hundreds of billions of lines of COBOL. But migrating this
+language to modern ones is no easy feat. It’s common for the COBOL to be decades
+old and have little or no documentation. If the conversion is not handled properly,
+the consequences could be severe. Keep in mind that much of the world’s credit card
+processing is handled with mainframes. The same goes for Uncle Sam’s system for
+handling school loans.
+Unfortunately, there are many examples of failed migration projects. Consider the
+California Department of Motor Vehicles, which, despite pouring $208 million into
+the effort, had to pull the plug within a few years. Ouch.
+Given the high stakes, mainframe developers generally earn higher salaries. But com‐
+panies still are challenged in recruiting talent. Younger developers are trained on
+modern languages and perceive mainframe development as a dead end. In the mean‐
+time, a growing number of seasoned mainframe developers are retiring.
+12 
+| 
+Chapter 1: New World for Developers
+
+[Page 33]
+IBM realized that AI is essential to solve this massive problem. It’s true that code
+transpilers or translators have been around for decades. In fact, they have often been
+used for mainframe projects. However, what they have mostly been doing is taking
+COBOL’s spaghetti code, giving it a quick translation, and, well, you have Java spa‐
+ghetti code. It’s a modest facelift with barely a hint of improvement or innovation.
+The Java code still needs a good amount of elbow grease, explaining why many
+projects stumbled or flat-out face-planted.
+But by using generative AI, IBM says that it has been able to improve the results of a
+project by as much as tenfold.
+Other companies are exploring this modernization opportunity. Thomas Dohmke,
+who is the CEO of GitHub, posted: “COBOL still running on main frames is a much
+bigger societal problem than we think.” In an interview with Fortune, he noted that he
+had heard more about COBOL in 2023 than during the past three decades. He also
+said that companies have been asking how to use GitHub Copilot for their migration
+projects.
+Keep in mind that ChatGPT is also proficient with legacy programming languages.
+Table 1-2 shows which languages it supports.
+Table 1-2. Common legacy programming languages
+Language
+Description
+Development era
+COBOL
+Developed for business data processing
+Late 1950s to early 1960s
+Fortran
+Designed for scientific and engineering calculations
+1950s
+Pascal
+Developed to encourage good software engineering practices
+Late 1960s to early 1970s
+BASIC
+Created as an easy-to-learn language for students and beginners
+Mid-1960s
+ALGOL
+Influenced subsequent languages like Pascal, C, and Java
+Late 1950s to early 1960s
+Assembly
+language
+Corresponds to the architecture of the CPU it’s designed for, dating back to
+early programmable computers
+Early computing era
+PL/I
+Used for scientific, engineering, business, and system programming
+Early 1960s
+To see how AI-assisted programming can help with legacy languages, let’s suppose
+you need to work on the following code snippet:
+MODULE ComplexModule
+  IMPLICIT NONE
+  TYPE :: ComplexType
+     REAL :: real, imag
+  CONTAINS
+     OPERATOR(+) (a, b) RESULT(c)
+       TYPE(ComplexType), INTENT(IN) :: a, b
+       TYPE(ComplexType) :: c
+       c%real = a%real + b%real
+       c%imag = a%imag + b%imag
+     END OPERATOR
+The Benefits 
+| 
+13
+
+[Page 34]
+END TYPE ComplexType
+END MODULE ComplexModule
+You do not know what language it is or how it works. The syntax does not lend itself
+to an intuitive understanding of the workflow.
+Now let’s say you go to ChatGPT and enter the following:
+Prompt: What language is this written in? What does this code snippet do? Also,
+explain how it works.
+Figure 1-5 shows part of the response.
+Figure 1-5. ChatGPT responds to a request to interpret legacy code
+ChatGPT accurately identifies this as Fortran code. It also explains that the code
+defines a module named ComplexModule, which contains a derived type ComplexType
+for representing complex numbers, along with an overloaded addition operator + for
+adding two complex numbers together. Then there is a step-by-step explanation of
+the code.
+14 
+| 
+Chapter 1: New World for Developers
+
+[Page 35]
+Drawbacks
+Now let’s take a look at the not-so-rosy aspects of AI-assisted programming tools.
+Like any fledgling technology—hey, even the first iPhone was a bit clunky—AI comes
+with its share of hiccups, issues, and hurdles. The path of innovation is littered with
+room for polish and fine-tuning.
+Let’s take a look at some of the drawbacks.
+Hallucinations
+For LLMs, hallucinations are instances in which the model outputs data that appears
+accurate but is factually incorrect or not grounded in the input data on which the
+model was trained. This can pose a significant challenge for software development.
+Hallucinations can lead to inaccurate code suggestions, generate misleading docu‐
+mentation, and create erroneous testing scenarios. Additionally, they can render
+debugging inefficient, mislead beginners, and potentially erode trust in AI tools.
+On a positive note, there has been notable progress in reducing the occurrence of hal‐
+lucinations. A substantial amount of academic research has been dedicated to this
+issue, and AI companies have been employing effective strategies like reinforcement
+learning from human feedback (RLHF) to mitigate this problem.
+However, given the intrinsic complexity of LLMs and the enormous amount of data
+they are based on, completely eradicating hallucinations appears to be a tall order—if
+not impossible.
+Another aspect to consider is that certain programming languages exhibit higher
+accuracy rates when AI-assisted tools are used. Languages such as Python, JavaScript,
+TypeScript, and Go tend to have better performance in this regard. This is attributed
+to these languages being well represented in public repositories and thus providing a
+richer dataset for the AI to learn from. The better trained AI, in turn, offers more
+accurate and robust suggestions.
+Intellectual Property
+Matthew Butterick boasts a diverse background, embodying roles as a programmer,
+designer, and lawyer, with a particular penchant for typography. His journey has seen
+him authoring books on typography, designing fonts, and crafting programs aimed at
+document editing and layout. However, his encounter with GitHub Copilot in June
+2022 didn’t spark joy. Rather, it spurred him to pen a blog post titled “This Copilot Is
+Stupid and Wants to Kill Me”.
+His discontent didn’t end with blogging. It quickly escalated to launching a class
+action lawsuit against Microsoft, GitHub, and OpenAI. The bone of contention was
+Drawbacks 
+| 
+15
+
+[Page 36]
+an alleged breach of GitHub’s terms of service and privacy policies, with a potential
+extension to copyright infringement charges.
+This legal tangle underscores a broader gray area concerning intellectual property
+rights with respect to code engineered from AI-assisted programming tools. Given
+that the output is a cocktail of countless lines of preexisting code, the question of
+ownership is a big question mark.
+One argument is based on the idea of “fair use.” However, this legal doctrine is murky
+and does not extend a clear pathway for AI-generated content. To resolve this matter,
+there will likely need to be federal legislation or a Supreme Court ruling.
+In the meantime, Microsoft has maneuvered to build a legal firewall for GitHub
+Copilot customers. It has pledged to defend users against legal claims, granted certain
+prerequisites are satisfied.
+Adding another layer of the legal quagmire is the intersection of AI-assisted pro‐
+gramming and open source software methods. Copyleft licenses, like the General
+Public License (GPL) versions 2 and 3, require that any derivative work use the origi‐
+nal code’s license terms. This helps to promote a stream of innovation. Yet, it could
+spell trouble for developers, because it could potentially strip them of the rights to
+shield their application’s intellectual property—or even require that they make their
+entire codebase open source.
+Privacy
+The use of AI-assisted programming tools, often housed in the cloud, begs many data
+privacy and confidentiality questions. How is the data safeguarded within the com‐
+pany? Is there a chance it might be used as training data?
+The clarity of the answers might vary from one vendor to another. Thus, some devel‐
+opers may opt to steer clear of AI-assisted programming tools altogether.
+This has been the approach of Anthony Scodary, the cofounder and cohead of engi‐
+neering at Gridspace. This enterprise, with roots tracing back to Stanford University,
+develops voice bots adept at navigating complex phone conversations. Their techno‐
+logical foundation rests on speech recognition, speech synthesis, LLMs, and dialog
+systems.
+Rather than hitching a ride on existing AI-assisted programming platforms, Grid‐
+space chose the road less traveled. It engineered its own AI-assisted programming
+platform, which is based on Docker services within a Kubernetes cluster. Deployed as
+an IDE plugin, this bespoke system is fine-tuned for its own codebase. “This has
+allowed us to avoid sending our IP and data to other companies,” he said. “It has also
+meant that we have a model that is smaller, more efficient, and specialized to our
+style.”
+16 
+| 
+Chapter 1: New World for Developers
+
+[Page 37]
+This is not to imply that this is the best approach. Each organization has its own
+views and preferred methods. But when it comes to evaluating AI-assisted program‐
+ming, it’s important to understand the privacy implications.
+Security
+In a research paper entitled “Security Weaknesses of Copilot Generated Code in Git‐
+Hub”, authors Yujia Fu et al. highlighted the security issues with GitHub Copilot.
+They scrutinized 435 AI-generated code snippets from projects on GitHub, and
+35.8% had Common Weakness Enumeration (CWE) instances.
+These weren’t limited to just one programming language. They were multilingual
+missteps spanning 42 different CWE categories. Three of these categories were the
+usual suspects—OS Command Injection, Use of Insufficiently Random Values, and
+Improper Check or Handling of Exceptional Conditions. But here’s the kicker: 11 of
+these CWEs had the dubious honor of making it to the 2022 CWE Top 25 list.
+This is not to imply that AI-assisted programming tools are a huge security risk. Far
+from it. The fact is that vendors are continuing to work on ways to improve the
+guardrails. However, as with any code, a solid dose of security mindfulness is the
+name of the game.
+Training Data
+The training data for LLMs of AI-assisted programming tools may have notable gaps,
+which can affect the performance and usefulness of these tools in real-world scenar‐
+ios. Let’s break down some of these:
+Representation gaps
+If certain areas of a programming language or library are not well represented—
+or are nowhere to be seen—in open source projects, the AI may lack enough
+knowledge about them, leading to less accurate suggestions. The quality of the
+AI’s output depends heavily on the quality and scope of the training data.
+Quality inconsistency
+To borrow a movie analogy, the open source code in an LLM is a bit like a box of
+chocolates—you never know what you’re gonna get. Some projects are the crème
+de la crème, while others are...let’s say, the burnt toast of the code world. This
+mishmash can lead to our AI-assisted programming being inconsistent in the
+quality of suggestions it throws your way.
+Knowledge cutoff date
+LLMs have a cutoff date on their training, so in a way they are like a snapshot in
+time. This poses challenges when there are new releases, updates, or deprecations
+in programming languages or libraries.
+Drawbacks 
+| 
+17
+
+[Page 38]
+Generalization gap
+The generalization gap, the difference between the AI’s performance on the train‐
+ing data and unseen data, can also pose challenges. Of course, the closer the per‐
+formance of the two, the better. This is the conclusion of a research paper by Rie
+Johnson and Tong Zhang entitled “Inconsistency, Instability, and Generalization
+Gap of Deep Neural Network Training”.
+Contextual understanding
+AI can give you suggestions based on what it has seen before. But if it hasn’t seen
+a scenario quite like yours, it might miss the mark. This is why it’s important not
+to make assumptions when creating prompts.
+Bias
+Developers often don’t have a solid grasp of AI ethics, likely because this topic isn’t
+usually part of computer science courses or intensive bootcamp programs. This gap
+in understanding can lead to algorithms unintentionally applying biases and the
+potential misuse of data.
+This issue carries over to AI-assisted programming tools as well. They can uninten‐
+tionally perpetuate the biases present in the data they were trained on. For example, if
+asked to create a list of names, they might mainly suggest English names due to the
+heavy presence of English-centric datasets in their training datasets. This bias can
+sometimes lead to harmful or inappropriate outputs. There was an instance where,
+when given the prompt “def race(x):”, the AI filled in a limited and fixed set of race
+categories. In another troubling case, when tasked with writing code comments for
+the prompt “Islam,” the AI was found to access words like terrorist and violent more
+frequently than when other religious groups were mentioned.
+A New Way for Developers
+The McKinsey study suggests that the dawn of AI-assisted programming tools is
+likely to change how we approach software development. According to the authors,
+success might hinge on good training, emphasizing best practices and diving into
+hands-on exercises on things like prompt engineering, coding standards, and quality.
+It’s also smart to shine a light on the risks associated with generative AI.
+For newbie developers, especially those with less than a year of experience under their
+belts, it’s a good idea to dive into extra coursework that covers the basic principles of
+programming to ramp up productivity.
+As developers fold these tools into their daily routine, it’s vital to keep the skill-
+building momentum going with some guidance from the seasoned pros on the team
+and engagement in community activities. This could mean hanging out in dedicated
+online forums or having regular team huddles to share practical examples. Such
+18 
+| 
+Chapter 1: New World for Developers
+
+[Page 39]
+actions can foster a culture of continuous learning, spread the word on best practices
+across the board, and help spot issues early on.
+With the uptick in developer productivity, managers might want to stir the pot a bit
+when it comes to roles, zeroing in on tasks that pack more value. Upskilling will be on
+the menu, too, to fill in any existing gaps.
+Sure, these pointers aren’t gospel. The realm of AI-assisted programming is still
+pretty fresh and is changing at a brisk pace. Above all, being ready to roll with the
+punches is key.
+Career
+While there’s no hard proof that using AI-assisted programming will boost your
+career outlook, a handful of signs suggest that this expertise might become a hot
+ticket in the job market:
+Job listings
+The job boards on sites like Indeed are starting to buzz with more listings seeking
+candidates with experience in AI-assisted programming tools. The call is out for
+all ranks, from junior developers to the senior hotshots.
+Productivity boosts
+AI-assisted programming tools are turning heads because they’re improving pro‐
+ductivity without sacrificing quality. For a developer, this could be a way to move
+up the ranks in an organization.
+Thumbs-ups from developers
+The chatter among developers is that AI-assisted programming tools are catching
+on. For example, GitHub Copilot is boasting a strong rating of 4.5 out of 5 stars
+on G2.com, an independent software review site.
+10x Developer?
+The 10x developer has the power of 10 programmers. They’re the Usain Bolt of cod‐
+ing, zipping through problems and churning out solutions before you can say “bug
+fix.”
+So you might be thinking: Could I become a 10x developer with the help of AI-
+assisted programming tools? Well, sorry to say, but probably not. While these tech‐
+nologies can make a significant difference, improvements are usually not in orders of
+magnitude.
+Besides, the concept of a 10x developer can stir up stereotypes and biases, making the
+tech scene feel like an exclusive club. Not to mention, the pressure to be this super
+A New Way for Developers 
+| 
+19
+
+[Page 40]
+coder could lead you straight into the arms of burnout. So while being a 10x devel‐
+oper might sound great, remember it’s probably closer to a fantasy.
+Skills of the Developer
+According to the McKinsey study, the effectiveness of AI-assisted development tools
+often depends on the expertise of the developer. Here are some of the considerations:
+Fixing errors
+Even though generative AI can be your trusty sidekick, it can goof up too. It falls
+upon the developer’s shoulders to spot and fix these blunders. Some developers
+have found themselves playing a loop of corrections with the AI to get to a sweet
+spot of accuracy, while others have had to spoon-feed the tool to get it to debug
+accurately. This can certainly be time-consuming. But a veteran developer will
+know how to avoid going down the rabbit holes.
+Getting the office vibes
+AI-assisted programming tools are fairly solid when it comes to coding but might
+miss the beat when dealing with the unique flavor of individual projects or com‐
+pany quirks. Again, this is where veteran developers are key. They’ll know how to
+guide these tools to get the results that best align with organizational goals, per‐
+formance targets, and security.
+Tackling the tough stuff
+Assisted AI-programming tools are great with tasks like polishing code, but toss
+in some complex challenges like blending different coding frameworks, and the
+AI might just trip over itself. In these moments, it’s the experienced developers
+who have to roll up their sleeves.
+Conclusion
+AI-assisted programming tools are certainly the shiny toys in the software creation
+sandbox. As this technology keeps marching forward, these systems will crank up
+efficiency, handle boring tasks, and let developers dive into the areas that are most
+important, like high-level problem solving.
+But there are downsides—tangled intellectual property issues, maze of open source
+software licensing, potential for bias, and security risks to name a few.
+For the most part, these tools are your virtual assistants, not a replacement for your
+knowledge, skill, and experience. At the same time, while they might not be superher‐
+oes, they’re shaping up to be powerful additions to the developer’s toolkit.
+20 
+| 
+Chapter 1: New World for Developers
+
+[Page 41]
+CHAPTER 2
+How AI Coding Technology Works
+In this chapter, we’ll crack open the hood of AI-assisted programming tools and take
+a peek at what makes them tick. We’ll briefly wade through the history, take a whirl
+with transformer models and LLMs, and demo the OpenAI Playground. Then we’ll
+get some advice on how to evaluate LLMs.
+Grasping what this powerful technology can and can’t do will pave the way for
+smarter use of AI-assisted programming tools for real-world software projects.
+Key Features
+The market has been buzzing about AI-assisted programming tools such as GitHub
+Copilot, Tabnine, CodiumAI, and Amazon CodeWhisperer. The makers of each
+product attempt to flaunt their own set of bells and whistles. But there’s a good chunk
+of capabilities these tools share. Table 2-1 summarizes some of the main features.
+Table 2-1. Common functions of AI-assisted programming tools
+Feature
+Description
+Code suggestions
+Provides code suggestions based on comments and file context; recommends individual
+lines or whole functions.
+Context-aware completions
+Offers context-aware code completions based on all or a part of the code base, as well as
+suggestions to aid in coding.
+Test generation
+Analyzes code to generate meaningful tests, map code behaviors, and surface edge cases
+to ensure software reliability before shipping.
+User–IDE interaction
+Automatically activates and provides guidance as users type code in the IDE; users can
+interact with the code through chat.
+Code analysis
+Analyzes code snippets, docstrings, and comments to provide reliable code predictions and
+tag suspicious code.
+Bug detection and fixing
+Identifies potential bugs in code and suggests ways to fix them.
+21
+
+[Page 42]
+Feature
+Description
+Code autodocumentation
+Automatically adds docstrings and enhances code documentation.
+Routine task automation
+Helps with code creation for routine or time-consuming tasks, unfamiliar APIs or SDKs, and
+other common coding scenarios like file operations and image processing.
+API and SDK usage optimization
+Aids in making correct and effective use of APIs and SDKs.
+Open source discovery and
+attribution
+Facilitates discovery and attribution of open source code and libraries.
+The list in Table 2-1 isn’t the be-all and end-all; innovation has been moving at a
+rapid clip. Clearly, these systems can give developers a big leg up, in large part by pro‐
+viding code suggestions and context-aware completions. We’ll take a closer look at
+these in the next section.
+Code Suggestions and Context-Aware Completions
+Versus Smart Code Completion
+The magic of smart code completion, also known as autocompletion or Microsoft’s
+term IntelliSense, is something many IDEs bring to the table. They lend developers a
+hand by suggesting, filling in, and spotlighting bits of code as the humans hammer
+away at the keyboard. This technology has actually been around since the late 1950s
+with the inception of spellcheckers.
+The breakthrough came in the mid-1990s. Microsoft’s Microsoft Visual Basic 5.0 pro‐
+vided real-time suggestions and completions, with an emphasis on basic syntax and
+function signatures. This greatly improved productivity and reduced errors.
+So you might be wondering: How does something like IntelliSense stack up against
+AI-assisted programming tools? After all, IntelliSense has a smattering of AI and
+machine learning under its belt.
+Yet, there’s an important distinction to be made. AI-assisted tools are powered by
+generative AI. They serve up not just code but a buffet of documentation, planning
+documents, and helpful guides among other things. Thanks to generative AI, these
+tools get the knack of churning out, tweaking, and understanding human-like text
+based on the given context, making them champs at translation, summarization, text
+analytics, topic modeling, and answering queries. Engaging with these tools can
+sometimes be like having a casual chat with your code. With an LLM at their core,
+they can catch the drift of the context and intent from your input.
+22 
+| 
+Chapter 2: How AI Coding Technology Works
+
+[Page 43]
+Compilers Versus AI-Assisted Programming Tools
+To get a better understanding of AI-assisted programming tools, it helps to under‐
+stand what compilers do. Here are the main steps that a compiler performs:
+Lexical analysis (tokenization)
+The compiler acts like a language teacher, breaking your code into tokens.
+Syntax analysis
+Here, the compiler checks how your tokens are grouped. It makes sure your cod‐
+ing has the right structure, not just the right commands.
+Semantic analysis (error checks)
+The compiler ensures that your code makes sense in the context of the program‐
+ming language. It’s not just about correct syntax. It’s about correct meaning, too.
+Intermediate code generation
+This is where your code starts its transformation journey. The compiler translates
+your high-level code into an intermediate form. It’s not quite machine language
+yet, but it’s getting there.
+Code optimization
+In this step, the compiler is like a personal trainer for your code, making it leaner
+and more efficient. It tweaks the intermediate code to run faster and take up less
+space.
+Code generation
+This is the final transformation. The compiler converts the optimized intermedi‐
+ate code into machine code or assembly language that your CPU can understand.
+Linking and loading:
+Sometimes considered a part of the compilation process, linking involves com‐
+bining various pieces of code and libraries into a single executable program.
+Loading is the process of placing the program into memory for execution.
+As for AI-assisted programming tools like Copilot, they’re a different beast. They
+don’t really “get” programming languages like compilers do. This is fine. The com‐
+piler does this. Instead, they use AI to guess and suggest bits of code based on tons of
+code that’s already out there. Since the tools are playing the odds, the suggestions can
+vary a lot. The compiler will then take this code and make it so the machine can run
+the program.
+Sometimes, AI tools might miss something simple like a bracket, which a human
+coder or a compiler would spot in a heartbeat. That’s because the LLMs are based on
+predicting patterns, not a compiler engine. If something’s not common in the
+training, they might not catch it. Also, these tools might get fancy and suggest
+Compilers Versus AI-Assisted Programming Tools 
+| 
+23
+
+[Page 44]
+complex code based on the situation. Yes, AI-assisted programming tools can get car‐
+ried away.
+When it comes to spotting errors, AI-assisted programming tools are generally effec‐
+tive but still do not quite match up to a compiler’s ninja-like error-checking skills. Yet
+the tools are still powerful. For example, they can help catch pesky syntax errors—
+missing semicolons, typos in function names, mismatched brackets—and swiftly sug‐
+gest the right fix. They also shine in steering you clear of common coding pitfalls.
+Whether it’s reminding you to properly close a file after opening it or suggesting
+more efficient ways to loop through an array, this tool has your back. And when it
+comes to logical errors, AI-assisted programming tools can be surprisingly insightful.
+They may not solve every complex problem, but they can often propose alternative
+approaches or solutions you might not have considered, nudging your problem-
+solving journey in the right direction.
+This all means that while AI tools are helpful for making coding smoother, they’re not
+a replacement for the thorough checks a compiler does or the keen eye of a human
+coder.
+These drawbacks really underline how crucial it is to blend the smarts of AI-assisted
+tools with the thoroughness of compiler checks and a human touch. After all, you
+want to make sure your code is not just good but spot-on accurate and correct.
+Levels of Capability
+In October 2023, Quinn Slack, the CEO and cofounder of Sourcegraph, shared an
+insightful blog post. He dived into the world of AI-assisted programming tools like
+Copilot and came up with an interesting way to think about them, which he called
+“levels of code AI.” His step-by-step framework makes it easier for everyone to get
+what these AI tools can do and check if the boastful claims by the companies selling
+them actually hold water. Figure 2-1 shows the levels of code.
+The first three levels focus on human-led coding, where the developer is the main
+player. Starting off, Level 0 is where there is no AI assistance, which is old-school
+coding. Developers do everything by hand with no AI in sight. It’s the baseline that
+sets the stage for AI to step in later on.
+Then there’s Level 1, code completion. This is where AI starts to chip in and helps to
+whip up single lines or chunks of code based on what’s going on around it. At this
+stage, the developer is still in the driver’s seat, directing the overall program and using
+AI as a shortcut for typical coding tasks.
+24 
+| 
+Chapter 2: How AI Coding Technology Works
+
+[Page 45]
+Figure 2-1. Programming systems have different levels of AI capability
+Level 2, code creation, ramps up the AI. Here, it gets more hands-on and crafts longer
+code sections. The AI can, for example, design APIs and even fix existing code. Of
+course, it’s all happening with a human keeping an eye on things. This level needs the
+AI to get the codebase and the context around it so it can come up with code that’s
+not just correct but also fits in nicely.
+Starting with Level 3, supervised automation, we see a shift toward AI taking the lead
+in coding. In this stage, the AI tackles several tasks to meet broader goals set by
+humans, and it doesn’t need a check-in at every turn. Working at this level is like dele‐
+gating work to a junior developer. The AI at this level is savvy enough to sort out
+bugs, toss in new features, and mesh systems together, reaching out to its human
+counterpart for any clarifications along the way.
+At Level 4, full automation, the AI really steps up its game. Here, it handles complex
+tasks all on its own, without needing humans to give the final thumbs-up on the code.
+Imagine the trust you’d have in a top-notch engineer if you were a CEO or product
+manager. This is the kind of relationship this level aims for. The AI isn’t just reacting.
+It’s proactively keeping an eye on the code, spotting and sorting out issues as they
+come up.
+Finally, there’s Level 5, AI-led full autonomy. This level is a whole different ball game,
+where AI isn’t just following human instructions but setting its own objectives. It’s
+about AI working off a core reward function. Think of it as playing its own game in a
+world where it faces off against other agents. Sure, this level sounds a bit like sci-fi,
+Levels of Capability 
+| 
+25
+
+[Page 46]
+but given how fast things are moving, it’s not too wild to think we might see this level
+become a reality in our lifetimes.
+Right now, tools like Copilot are hovering around Level 3, give or take. Pinning down
+the exact level can be tricky, but Quinn Slack’s framework does a pretty solid job of
+making sense of the technology and its key interactions. And one thing’s for sure: the
+technology isn’t slowing down—it’s moving forward really fast.
+Generative AI and Large Language Models (LLMs)
+Using AI-assisted programming tools doesn’t require you to be a whiz at the nitty-
+gritty of generative AI technology. However, having a bird’s-eye view of the technol‐
+ogy can be quite handy. You’ll be able to evaluate the responses, capabilities, and
+limitations of these tools in a sharper way.
+Transparency isn’t just a buzzword here. For a new technology to really catch on, hav‐
+ing a clear picture of what’s under the hood is crucial. Adoption is all about trust. In
+the coding world, reliability and accountability aren’t just fancy extras—they’re the
+bread and butter.
+As we venture into the upcoming sections, we’ll skim the surface of generative AI and
+LLMs to give you a clearer picture.
+Evolution
+The story of generative AI has its roots stretching back several decades, with one of
+its earliest examples being ELIZA, the pioneering chatbot brought to life by Massa‐
+chusetts Institute of Technology professor Joseph Weizenbaum in the mid-60s.
+ELIZA was crafted to mimic chats with a psychotherapist (you can still find it online).
+Sure, it was basic, running on a rule-based algorithm and mostly parroting back user
+input.
+Yet many folks found ELIZA more pleasant to chat with than a real therapist, and
+some were even fooled into thinking they were communicating with a human. This
+curious occurrence, dubbed the “ELIZA effect,” showcased how easily people can
+imagine human-like understanding on the part of a computer program.
+However, the journey of generative AI wasn’t exactly a sprint. The tech gears at its
+core were quite basic, and progress was more of a slow crawl. But come the 2010s, the
+scene hit a turning point. The technology world was now boasting hefty compute
+power, flashy hardware systems like GPUs (graphics processing units), a treasure
+trove of data, and the fine-tuning of sophisticated models like deep learning. And just
+like that, generative AI was back in the fast lane. As it developed, different methods
+emerged:
+26 
+| 
+Chapter 2: How AI Coding Technology Works
+
+[Page 47]
+Variational autoencoders (VAEs)
+This technology made its debut in 2013, thanks to Diederik P. Kingma and Max
+Welling and their paper “Auto-Encoding Variational Bayes”. Their VAE model
+consists of lower-dimensional latent space from more complex, higher-
+dimensional data, all without supervision. It also includes an encoder–decoder
+structure. When we say higher-dimensional data, we’re talking about data with
+many features, each being a dimension—think of a 28 × 28 pixel image in a 784-
+dimension space. The lower-dimensional latent space is like a compact version of
+this data, holding onto the crucial information while shedding the extra dimen‐
+sions. This is important because it lightens the computational load, fights off the
+curse of dimensionality, and makes the data easier to visualize and interpret. This
+leap from a higher- to a lower-dimensional space is called dimensionality reduc‐
+tion, and it simplifies the data to its bare essentials. Unlike their cousins, the tra‐
+ditional autoencoders, that spit out a single value for each latent attribute, the
+encoder in a VAE gives you a probability distribution. The decoder then picks
+samples from this distribution to rebuild the data. This neat trick of offering a
+range of data in the latent space rather than a single value opens the door to cre‐
+ate new data or images.
+Generative adversarial networks (GANs)
+Introduced by Ian Goodfellow and his colleagues in 2014, generative adversarial
+networks are a class of AI algorithms used in unsupervised machine learning. At
+the heart of GANs are two neural networks, dubbed the generator and the dis‐
+criminator, that go head-to-head in a game-like showdown. The generator churns
+out new data nuggets, while the discriminator plays the judge, distinguishing the
+real from the fake data. With each round, the generator ups its game, crafting
+data that’s eerily similar to real instances. This clever setup has swung open doors
+to new possibilities, leading to AI that creates realistic images, voice recordings,
+and a whole lot more.
+These types of generative AI would be important building blocks for the transformer
+model, a real breakthrough that has made the power of LLMs a reality.
+The Transformer Model
+Before transformers made a splash, the go-to method for natural language processing
+(NLP) was the recurrent neural network (RNN). RNNs were crafted to tackle sequen‐
+tial or time-series data. They would keep tabs on a hidden state to remember bits
+from previous steps in a sequence—a handy feature for things like language model‐
+ing, speech recognition, and sentiment analysis. The RNNs take it step-by-step, pro‐
+cessing one piece of the sequence at a time, updating their hidden state based on the
+current input and what’s been processed before—hence the term recurrent. But they
+hit a snag when faced with long sequences, getting tripped up by the vanishing or
+Generative AI and Large Language Models (LLMs) 
+| 
+27
+
+[Page 48]
+exploding gradient problem. This made it hard for them to keep track of long-term
+relationships in the data.
+Enter the transformer, flipping the script entirely. Instead of taking the step-by-step
+approach of RNNs, transformers breeze through data in parallel and tap into atten‐
+tion mechanisms to keep tabs on relationships between different bits in the input
+sequence, no matter where they’re placed. This switch in the architectural blueprint
+lets transformers handle both short and long sequences with ease. It also sidesteps the
+gradient woes. Plus, their parallel processing capabilities mesh nicely with sophistica‐
+ted chip architectures like graphics processing units (GPUs) or tensor processing
+units (TPUs).
+Ashish Vaswani and his fellow researchers at Google created the transformer and
+published the core architecture in the pathbreaking paper “Attention Is All You Need”
+in 2017. Figure 2-2 illustrates the main parts of the model.
+The transformer model is like a brilliant linguist, adept at unraveling the intricacies of
+language. Its magic unfolds in two primary stages: encoding and decoding. Each is
+composed of its own set of layers. During the encoding stage, the model reads and
+comprehends the input text similar to how a linguist would understand a sentence in
+a foreign language. Then in the decoding stage, the model generates a new piece of
+text or translation based on the understanding acquired in the encoding stage, much
+like a linguist translating that sentence into your native language.
+At the heart of the transformer is a mechanism called attention, which allows it to
+assess the relevance of each word in a sentence to the other words. It assigns an atten‐
+tion score to each. For example, take the sentence “The cat sat on the mat.” When the
+model focuses on the word sat, the words cat and mat might receive higher attention
+scores due to their direct relationship to the action of sitting.
+One notable feature of this model is the self-attention mechanism. This allows it to
+look at an entire sentence, understand the relationships between words, and retain
+these relationships over long stretches of text. This grants the transformer a form of
+long-term memory by enabling it to focus on all the words or tokens (whole words or
+parts of a word) that have appeared so far, thereby understanding the broader
+context.
+However, despite these capabilities, the transformer initially lacks the ability to recog‐
+nize the order of words in a sentence, which is crucial for understanding the mean‐
+ing. Here, positional encoding steps in. It acts like a GPS to provide the model with the
+information about the position of each word within the sentence and aids in making
+sense of clauses like “The cat chases the mouse” versus “The mouse chases the cat.”
+28 
+| 
+Chapter 2: How AI Coding Technology Works
+
+[Page 49]
+Figure 2-2. The architecture of the transformer model is at the heart of LLMs
+Adding to the sophistication, the transformer employs a multi-head attention mecha‐
+nism. Envision the model having multiple pairs of eyes, each pair examining the sen‐
+tence from a unique angle and focusing on different aspects or relationships between
+the words. For instance, one pair might focus on understanding actions, another on
+identifying characters, and yet another on recognizing locations. This multi-view
+approach enables the transformer to grasp a richer understanding of the text.
+Furthermore, each stage of the transformer encompasses layers of a feedforward neu‐
+ral network, a straightforward network that aids in processing relationships between
+words. This further enhances the understanding and generation of text.
+Generative AI and Large Language Models (LLMs) 
+| 
+29
+
+[Page 50]
+A transformer is in the form of a pretrained model. It has already been trained on an
+enormous amount of data and is ready for use or further fine-tuning. Once pre‐
+trained, the model can be accessed as an API, allowing for its immediate use in vari‐
+ous language-processing tasks. Companies or individuals can rapidly integrate this
+model into their systems, such as AI-assisted programming applications. Moreover,
+the pretrained LLM can be further honed to excel in specialized domains, such as
+medical or legal text analysis, by fine-tuning it on domain-specific data. This elimi‐
+nates the need for developing a complex language model from the ground up, saving
+a substantial amount of time, effort, and resources. The pretrained model, with its
+foundational language understanding, acts as a springboard for the development of
+generative AI applications.
+Building and operating an LLM is costly. During early 2023, Git‐
+Hub Copilot was losing an average of more than $20 a month per
+user, according to the Wall Street Journal. In some cases, some
+users were losing the company $80 per month. However, as the
+infrastructure is scaled for generative AI in the coming years, per-
+user costs should decrease.
+The two main types of transformer systems are generative pretrained transformer
+(GPT) and bidirectional encoder representations from transformers (BERT). GPT is a
+tool from OpenAI that is ideal for creating text, summarizing information, and trans‐
+lating languages. It is based on an autoregressive LLM architecture. This means that it
+crafts text by carefully considering each word based on what it’s already output, much
+like a storyteller building a narrative one word at a time. Its skills come from being
+trained on a colossal amount of text data. GPT uses the decoder for generating
+content.
+BERT, on the other hand, uses an autoencoding approach. This design enables it to
+deeply understand the context of words in a sentence, making it adept at deciphering
+the nuances and meanings of language. Google developed BERT in 2018 as an open
+source project. Since then, many variations and enhancements to the core model have
+emerged.
+As for AI-assisted programming applications, the main type of transformer model is
+GPT. It has been shown to predict and autocomplete code efficiently, based on the
+context provided by the programmer.
+OpenAI Playground
+The OpenAI Playground is a generative AI sandbox that provides access to various
+models developed by OpenAI. It allows for model customization via an intuitive
+graphical interface.
+30 
+| 
+Chapter 2: How AI Coding Technology Works

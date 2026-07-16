@@ -1,0 +1,78 @@
+---
+name: using-docker-2015-prg
+description: >-
+  Passos operacionais extraidos do livro 'Using Docker 2015 {PRG}' (EN) — praticas e procedimentos para DevOps, infraestrutura e containers.
+---
+
+# Using Docker 2015 — Passos Operacionais
+
+Conteudo extraido do livro 'Using Docker 2015'. Contem passos, tecnicas e principios baseados na obra original.
+
+## 1. Conceitos Fundamentais
+- Printed in the United States of America.
+- Published by O’Reilly Media, Inc., 1005 Gravenstein Highway North, Sebastopol, CA 95472.
+- O’Reilly books may be purchased for educational, business, or sales promotional use.
+- Online editions are   also available for most titles (http://safaribooksonline.com).
+- For more information, contact our corporate/   institutional sales department: 800-998-9938 or corporate@oreilly.com.
+- Editor: Brian Anderson   Production Editor: Melanie Yarbrough   Copyeditor: Christina Edwards   Proofreader: Amanda Kersey  Indexer: WordCo Indexing Services   Interior Designer: David Futato   Cover Designer: Randy Comer   Illustrator: Rebecca Demarest  December 2015:   First Edition  Revision History for the First Edition   2015-12-07: First Release  See http://oreilly.com/catalog/errata.csp?isbn=9781491915769 for release details.
+- The O’Reilly logo is a registered trademark of O’Reilly Media, Inc.
+- Using Docker, the cover image, and   related trade dress are trademarks of O’Reilly Media, Inc.
+- While the publisher and the author have used good faith efforts to ensure that the information and   instructions contained in this work are accurate, the publisher and the author disclaim all responsibility   for errors or omissions, including without limitation responsibility for damages resulting from the use of   or reliance on this work.
+- Use of the information and instructions contained in this work is at your own   risk.
+
+
+  - Preface. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . xi
+
+  - Index. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 327
+
+  - 3\. First Steps. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 19
+
+  - 2\. Installation. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 13
+
+  - 7\. Image Distribution. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 99
+
+  - 4\. Docker Fundamentals. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 35
+## 2. Principios e Tecnicas
+- If any code samples or other technology this work contains or describes is subject to open source   licenses or the intellectual property rights of others, it is your responsibility to ensure that your use   thereof complies with such licenses and/or rights.
+- To those who try, whether they fail or succeed.
+- Table of Contents  Preface. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . xi  Part I.
+- The What and Why of Containers. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3   Containers Versus VMs 4   Docker and Containers 6   Docker: A History 8   Plugins and Plumbing 10   64-Bit Linux 10  2\.
+- Installation. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 13   Installing Docker on Linux 13   Run SELinux in Permissive Mode 14   Running Without sudo 15   Installing Docker on Mac OS or Windows 15   A Quick Check 17  3\.
+- First Steps. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 19   Running Your First Image 19   The Basic Commands 20   Building Images from Dockerfiles 24   Working with Registries 27   Private Repositories 29   Using the Redis Official Image 30   Conclusion 33  v   4\.
+- The Software Lifecycle with Docker  5\.
+- Using Docker in Development. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 71   Say “Hello World!” 71   Automating with Compose 81   The Compose Workflow 83   Conclusion 84  6\.
+- Creating a Simple Web App. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 85   Creating a Basic Web Page 86   Taking Advantage of Existing Images 88   Add Some Caching 93   Microservices 96   Conclusion 97  vi    |    Table of Contents   7\.
+- Image Distribution. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 99   Image and Repository Naming 99   The Docker Hub 100   Automated Builds 102   Private Distribution 104   Running Your Own Registry 104   Commerical Registries 111   Reducing Image Size 111   Image Provenance 113   Conclusion 114  8\.
+
+
+  - 9\. Deploying Containers. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 137
+
+  - 10\. Logging and Monitoring. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 173
+
+  - 6\. Creating a Simple Web App. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 85
+
+  - 5\. Using Docker in Development. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 71
+## 3. Aplicacoes Praticas
+- Continuous Integration and Testing with Docker. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 115   Adding Unit Tests to Identidock 116   Creating a Jenkins Container 121   Triggering Builds 128   Pushing the Image 129   Responsible Tagging 129   Staging and Production 131   Image Sprawl 131   Using Docker to Provision Jenkins Slaves 132   Backing Up Jenkins 132   Hosted CI Solutions 133   Testing and Microservices 133   Testing in Production 135   Conclusion 135  9\.
+- Logging and Monitoring. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 173   Logging 174   The Default Docker Logging 174   Aggregating Logs 176   Logging with ELK 176   Docker Logging with syslog 187   Grabbing Logs from File 193   Monitoring and Alerting 194   Monitoring with Docker Tools 194   cAdvisor 196   Cluster Solutions 197   Commercial Monitoring and Logging Solutions 201   Conclusion 201  Part III.
+- Networking and Service Discovery. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 205   Ambassadors 206   Service Discovery 210   etcd 210   SkyDNS 215   Consul 219   Registration 223   Other Solutions 225   Networking Options 226   Bridge 226   Host 227   Container 228   None 228   New Docker Networking 228   Network Types and Plugins 230  viii    |    Table of Contents   Networking Solutions 230   Overlay 231   Weave 233   Flannel 237   Project Calico 242   Conclusion 246  12\.
+- Orchestration, Clustering, and Management. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 249   Clustering and Orchestration Tools 250   Swarm 251   Fleet 257   Kubernetes 263   Mesos and Marathon 271   Container Management Platforms 282   Rancher 282   Clocker 283   Tutum 285   Conclusion 286  13\.
+- Written down by itself, this sounds dry and boring.
+- But the process improvements   made possible by containers are anything but; used correctly, containers can be game-   changing.
+- So persuasive is the lure of the architectures and workflows made possible   by containers that it feels like every major IT company has gone in a year from never   having heard of Docker or containers to actively investigating and using them.
+- The rise of Docker has been astonishing.
+- I don’t remember any technology that has   had such a fast and profound effect on the IT industry.
+- This book is my attempt to   help you understand why containers are so important, what you stand to gain from   adopting containerization and, most importantly, how to go about it.
+
+## 4. Topicos Avancados
+- Who Should Read This Book  This book tries to take a holistic approach to Docker, explaining the reasons for using   Docker and showing how to use it and how to integrate it into a software-   development workflow.
+- The book covers the entire software lifecycle, from develop‐   ment through to production and maintenance.
+- I have tried to avoid assuming too much of the reader beyond a basic knowledge of   Linux and software development in general.
+- The intended readership is primarily   software developers, operations engineers, and system administrators (particularly   those keen to develop a DevOps approach), but technically informed managers and   enthusiasts should also be able to get something out of this book.
+- Why I Wrote This Book  I was in the fortunate position to learn about and use Docker while it was still in the   early stages of its meteoric rise.
+- When the opportunity to write this book appeared, I   leapt at it with both hands.
+- If my scribblings can help some of you to understand and  xi   make the most of the containerization movement, I will have achieved more than I   have in years of developing software.
+- I truly hope that you enjoy reading this book and that it helps you on the path to   using Docker in your organization.
+- Navigating This Book  This book is organized roughly as follows:  • Part I starts by explaining what containers are and why you should be interested   in them, before going into a tutorial chapter showing the basics of Docker.
+- It ends   with a large chapter explaining the fundamental concepts and technology in   Docker, including an overview of the various Docker commands.  • Part II explains how to use Docker in a software-development lifecycle.
+

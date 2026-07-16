@@ -1,0 +1,59 @@
+---
+name: python-powered-excel
+description: >-
+  Passos operacionais extraidos do livro 'Python Powered Excel' (PT) — Python Powered Excel.
+---
+
+# Python Powered Excel — Passos Operacionais
+
+## 1. Conceitos Fundamentais
+
+- Python-Powered Excel Acknowledgement I want to express my deepest gratitude to my family, friends, and mentors for their unwavering support throughout the writing of this book, especially my husband Gaurav and daughter Navisha, for their utmost patience, understanding, and cooperation, across all phases of developing this manuscript.
+- I cannot forgo expressing my heartfelt thanks to my reverend parents and in-laws for their blessing, with a special thanks to my mother Mrs.
+- Sushila for her encouragement, cooperation, moral support and care in various ways.
+- I am also grateful to BPB Publications for their guidance and expertise in bringing this book to fruition.
+- It was a long journey of revising this book, with valuable participation and collaboration of reviewers, technical experts, and editors.
+- I would also like to acknowledge the valuable contributions of all my learners and clients over the years.
+- Thank you for challenging me, motivating me, and helping me grow as an educator.
+- Some of the use cases stem from scenarios contributed by clients during training.
+- Finally, I would like to thank all the readers who have taken an interest in my book and for their support in making it a reality.
+- Python-Powered Excel About the Author Dr Nisha Arora is a seasoned trainer, speaker, and data professional known for her ability to simplify complex technical concepts.
+
+## 2. Principios e Tecnicas
+
+- With deep expertise in data science, applied statistics, and mathematics, she brings clarity and structure to topics that often overwhelm learners.
+- Her practical experience extends across analytical tool including Python, R, Excel, Power Query, Solver, Data Analysis Toolpak, MegaStat, and Real Statistics, etc. enabling her to bridge the gap between traditional spreadsheet analysis and modern programming-driven workflows.
+- She works to empower professionals with analytics, data science, and data storytelling, along with Excel automation.
+- She has authored courses on platforms including Udemy and TutorialsPoint and contributed actively on Stack Exchange, ResearchGate, Quora, LinkedIn, and YouTube.
+- Her content has reached more that over 2.3 million users globally.
+- She has also contributed as a technical reviewer for titles published by BPB Publications.
+- Python-Powered Excel About the Reviewers &#x2756;&#x2002; Abhishake Gupta is a senior python engineer with extensive experience building scalable backend systems and data-intensive applications, now focused on quantitative development and algorithmic trading.
+- He has deep expertise in Python and its web frameworks viz.
+- Flask, FastAPI, combined with strong proficiency in data and quantitative libraries such as Pandas, NumPy, SciPy, and Scikit-learn, enabling him to design and implement robust, production-grade trading and analytics workflows.
+- He has engineered full-stack platforms, architected high-volume e-commerce backends, and integrated complex third-party REST APIs for payments, logistics, and loyalty systems, consistently improving performance and reducing technical debt.
+
+## 3. Aplicacoes Praticas
+
+- Abhishake has also built a Python-based algorithmic trading framework around Interactive Brokers API &amp; ICICI Direct APIs, covering historical data ingestion, strategy backtesting, and live signal generation, reflecting his passion for financial markets and systematic trading.
+- Comfortable working with Docker, AWS, and modern CI/CD pipelines, he emphasizes clean architecture, observability, and reliability using tools such as Datadog, ELK Stack, Splunk, and Zabbix.
+- He is driven by a strong curiosity for markets and technology, continuously sharpening his skills through hands-on projects and dedicated trading-related certifications. &#x2756;&#x2002; Dr.
+- Joshi is an accomplished educator with demonstrated ability to teach, motivate, and direct students while maintaining high interest and achievement.
+- Offering sterling experience of 20+ years, of which 18+ years have been in the field of academics.
+- (Management), MCA, MBA with specialization in HR.
+- Presently, designated as an associate professor (Faculty of commerce and business management) at Amrapali University, Haldwani, Uttarakhand. &#x2756;&#x2002; Sagar Nangare is a versatile software engineer and data science enthusiast with a strong foundation in Python, web development, and DevOps practices.
+- He is currently focused on building intelligent, scalable applications, particularly in the domain of governance, risk, and compliance ( GRC ), where he integrates AI and machine learning to enhance automation and decision-making.
+- His work involves developing end-to-end systems using modern technologies such as React, Node.js, Django, and MongoDB, along with implementing secure features like RBAC and multi-factor authentication.
+- He is also actively expanding his expertise in machine learning, deep learning, and natural language processing, exploring advanced concepts like transfer learning and generative AI.
+
+## 4. Topicos Avancados
+
+- Alongside his technical development, he is preparing for system design challenges and high-level technical interviews, with a focus on backend engineering and scalable architectures.
+- Sagar follows a structured, hands-on learning approach, building real-world projects such as LMS platforms and AI-driven resume analyzers.
+- He is passionate about continuous learning, automation, and creating impactful solutions that solve complex business problems using data and intelligent systems.
+- Python-Powered Excel C HAPTER 1 Python for Excel Users Introduction In this chapter, we will discuss the need for automation in Excel workflows and explain why Python is a powerful tool for enhancing productivity.
+- We will explore Python’s advantages over traditional Excel methods (VBA, Power Query) and set the foundation for the rest of the book.
+- Also, Python analysts are often expected to deliver results within Excel; they will learn about dedicated tools to achieve this directly in Python.
+- In this chapter, you will also run a ready-made Python project to see what Python-powered Excel automation can do, without writing or understanding any code.
+- This will give you a preview of what you will learn later.
+- We will guide readers on how to approach the book, whether you are new to Python or already have some experience with it.
+- Structure This chapter covers the following topics: Excel users, analysts, and their workflow Excel’s limitations and the need for automation Benefits of learning Python for Excel Python and Excel versions used in this book Delivering value from this book Roadmap for different readers Excel users, analysts, and their workflow During training and consulting work, we meet many Excel or Python professionals who share their struggles.

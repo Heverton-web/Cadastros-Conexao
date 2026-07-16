@@ -1,0 +1,56 @@
+---
+name: ai-assisted-programming
+description: Passos operacionais para usar IA generativa (ChatGPT, Copilot, Gemini, Claude) no ciclo de desenvolvimento de software — prompting, configuração, planejamento, codificação, refatoração, debugging, testes e deploy.
+---
+
+# Ai Assisted Programming — Passos Operacionais
+
+Conteudo extraido do livro 'Ai Assisted Programming'. Contem passos, tecnicas e principios baseados na obra original.
+
+## 1. Conceitos Fundamentais
+- [Page 2] PROGRAMMING LANGUAGES AI-Assisted Programming linkedin.com/company/oreilly-media youtube.com/oreillymedia  Get practical advice on how to leverage AI development  tools for all stages of code creation, including requirements,  planning, design, coding, debugging, and testing.
+- With this  book, beginners and experienced developers alike will learn  how to use a wide range of tools, from general-purpose LLMs  (ChatGPT, Gemini, and Claude) to code-specific systems  (GitHub Copilot, Tabnine, Cursor, and Amazon CodeWhisperer).
+- You’ll also learn about more specialized generative AI tools  for tasks such as text-to-image creation.
+- Author Tom Taulli provides a methodology for modular  programming that aligns effectively with the way prompts  create AI-generated code.
+- This guide also describes the best  ways of using general-purpose LLMs to learn a programming  language, explain code, or convert code from one language  to another.
+- He also contributes to  publications such as AIBusiness.com,  Inc.com, Barrons.com, eSecurity  Planet, and Kiplingers.com, and  has developed educational courses  for O’Reilly and Pluralsight, focusing  on areas such as generative AI,  databases, and Python. 9 7 8 1 0 9 8 1 6 4 5 6 0 6 9 9 9 9 US $69.99	   CAN $87.99 ISBN:   978-1-098-16456-0 “When we added  vector search to  Cassandra in six weeks,  Copilot and ChatGPT  were key to meeting  our deadline, but most  developers have yet  to take advantage  of AI tools like these.
+- Tom’s book is a great  way to get started and  will save you hours of  trial and error.” —Jonathan Ellis  Cofounder and CTO of DataStax  [Page 3] Praise for AI-Assisted Programming When we added vector search to Cassandra in six weeks, Copilot and ChatGPT were key to meeting our deadline, but most developers have yet to take advantage of AI tools like these.
+- Tom’s book is a great way to get started and will save you hours of trial and error. —Jonathan Ellis, cofounder and CTO of DataStax AI-Assisted Programming is an excellent resource that showcases Tom’s expertise and equips readers for the current evolution of software development, empowering everyone to code. —Justin Dorfman, Open Source Community Manager at Sourcegraph AI is rapidly changing how developers build software.
+- From code editors to terminal and more, AI assistance is becoming pervasive.
+- AI-Assisted Programming should be the first read for any developer trying to get the most from AI in their daily workflows. —Zach Lloyd, CEO and cofounder of Warp Tom Taulli’s book is a well-structured journey into how AI tools like ChatGPT can change the game for developers—both early in their careers and for seasoned experts.
+
+## 2. Principios e Tecnicas
+- It shares applicable insights on the ups and downs of AI-powered coding, much like my own journey from marketing and business to shipping features in production for our app.
+- Great for programmers looking to leverage AI as part of their toolbox. —Titus Capilnean, cofounder at Private Market Labs AI has changed the game for development.
+- Every programmer will need to know how to work with tools like GitHub Copilot.
+- Tom’s book shows how. —Muddu Sudhakar, CEO and cofounder of Aisera  [Page 5] Tom Taulli AI-Assisted Programming Better Planning, Coding, Testing, and Deployment Boston Farnham Sebastopol Tokyo Beijing Boston Farnham Sebastopol Tokyo Beijing  [Page 6] 978-1-098-16456-0 [LSI] AI-Assisted Programming by Tom Taulli Copyright © 2024 Tom Taulli.
+- Printed in the United States of America.
+- Published by O’Reilly Media, Inc., 1005 Gravenstein Highway North, Sebastopol, CA 95472.
+- O’Reilly books may be purchased for educational, business, or sales promotional use.
+- Online editions are also available for most titles (https://oreilly.com).
+- For more information, contact our corporate/institu‐ tional sales department: 800-998-9938 or corporate@oreilly.com.
+- Acquisitions Editor: Brian Guerin Development Editor: Shira Evans Production Editor: Kristen Brown Copyeditor: Paula L.
+
+## 3. Aplicacoes Praticas
+- Fleming Proofreader: Emily Wydeven Indexer: Potomac Indexing, LLC Interior Designer: David Futato Cover Designer: Karen Montgomery Illustrator: Kate Dullea April 2024:  First Edition Revision History for the First Edition 2024-04-10: First Release See https://oreilly.com/catalog/errata.csp?isbn=9781098164560 for release details.
+- The O’Reilly logo is a registered trademark of O’Reilly Media, Inc.
+- AI-Assisted Programming, the cover image, and related trade dress are trademarks of O’Reilly Media, Inc.
+- The views expressed in this work are those of the author and do not represent the publisher’s views.
+- While the publisher and the author have used good faith efforts to ensure that the information and instructions contained in this work are accurate, the publisher and the author disclaim all responsibility for errors or omissions, including without limitation responsibility for damages resulting from the use of or reliance on this work.
+- Use of the information and instructions contained in this work is at your own risk.
+- If any code samples or other technology this work contains or describes is subject to open source licenses or the intellectual property rights of others, it is your responsibility to ensure that your use thereof complies with such licenses and/or rights.  [Page 7] Table of Contents Foreword. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  xi Preface. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  xiii 1.
+- But when IBM hired me, I quickly fell in love with the technology industry.
+- I would go on to work at other companies like VMware, Pivotal, EMC, and SGI.
+- Then I founded several startups.
+
+## 4. Topicos Avancados
+- My latest is Aisera, which builds generative AI solu‐ tions for enterprises.
+- Our platform helps with customer service, employee experience, enterprise search, IT service desk, and AIOps.
+- Throughout my career, I’ve seen many innovations, such as the emergence of the internet, cloud computing, mobile devices, and deep learning.
+- Yet there was one area of technology that saw little progress: software development.
+- As a founder, this was certainly a big frustration.
+- There would often be certain things we wanted to do but could not because of the bottlenecks with our engineering teams.
+- But with AI-assisted programming, the game has changed in a big way.
+- It has made Aisera more agile and nimble.
+- It’s been a force multiplier that has helped propel our growth.
+- Now, when I consider hiring a developer, I want to know how they leverage AI.

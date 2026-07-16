@@ -1,0 +1,78 @@
+---
+name: marketing-de-conteudo-casa-do-codigo
+description: >-
+  Passos operacionais extraidos do livro 'Marketing de conteudo - Casa do Codigo' (PT) — Marketing Digital.
+---
+
+# Marketing De Conteudo Casa Do Codigo — Passos Operacionais
+
+Conteudo extraido do livro 'Marketing De Conteudo Casa Do Codigo'. Contem passos, tecnicas e principios baseados na obra original.
+
+## 1. Conceitos Fundamentais
+- [Page 2] Caso você deseje submeter alguma errata ou sugestão, aces­ se http://erratas.casadocodigo.com.br.
+- ISBN Impresso e PDF: 978-85-94188-36-6 EPUB: 978-85-94188-37-3 MOBI: 978-85-94188-38-0  [Page 3] 5 Sobre o autor Comecei minha carreira na área de  tecnologia no ano de 2005, quando  concluí o curso técnico em infor­ mática.
+- Desde então, atuei como  freelancer e em diversas empresas  desenvolvendo os mais variados ti­ pos de softwares, aplicações web e  aplicativos para celular.
+- Sempre gostei muito de ler, escrever e ensinar tudo o que eu  aprendia, e a forma que encontrei para fazer isso foi escrevendo  artigos e tutoriais sobre tecnologia, que foram publicados em por­ tais como iMasters (http://www.imasters.com.br), Oficina da Net  (http://www.oficina da Net) e Digitalks (http://www.digitalks.com. br), já somando mais de 500 publicações.
+- Além dos artigos e tutoriais, publiquei dois livros técnicos  – CodeIgniter: Produtividade na criação de aplicações web em  PHP (http://www.livrocodeigniter.com.br/) e Amazon AWS:  Descomplicando a computação na nuvem –, pela editora Casa do  Código, e dois e-books gratuitos – PHP 7 (https://leanpub.com/ php7-mudancasenovidades) e 7 Dicas para um texto persuasivo  (http://ebooks.jonathanlamim.com.br/7-dicas-para-um-texto- persuasivo).
+- Também ministrei diversas palestras em eventos  [Page 4] 6 regionais (Dev-ES CONF), nacionais e internacionais (Campus  Party e PHP Conference).
+- Durante os últimos 12 anos em que estive envolvido com tecno­ logia, pude me aprimorar e descobrir outra paixão: compartilhar.
+- Compartilhar conhecimento, experiências, sonhos e, acima de tudo,  ajudar as pessoas a realizarem seus sonhos, conquistarem uma vida  melhor e terem o futuro que tanto almejam.
+- Fazer tudo ao mesmo tempo é difícil e acabamos por não alcan­ çar o nível de excelência desejado, então decidi abandonar a área de  tecnologia após 12 anos.
+- Foi uma tarefa difícil, pois é algo que gos­ to muito, mas uma voz falou mais alto dentro de mim, ou melhor,  começou a gritar.
+
+
+  - res, sites institucionais e muitos outros. O primeiro site de buscas foi
+
+  - egípcio era caro e escasso, foi necessário buscar outras alternativas,
+
+  - e já terá condições de visualizar bem o seu público-alvo. Mas se tiver
+
+  - necessário) dentro da primeira parte, ou seja, na criação de conteúdo.
+
+  - tecnologia após 12 anos. Foi uma tarefa difícil, pois é algo que gos­
+
+  - antes colocado na pedra passou a ser registrado nele; a escrita então
+## 2. Principios e Tecnicas
+- Essa voz me incentivava a migrar para outra área, na qual pu­ desse me dedicar a ajudar as pessoas usando minha experiência,  meus conhecimentos e minha história para motivá-las.
+- Assim,  poderia mostrar que todos somos capazes de construir uma vida  de realizações, basta acreditarmos em nós mesmos e mantermos o  pensamento positivo.
+- Hoje, sou coach e atuo como palestrante motivacional, cum­ prindo a missão de compartilhar conhecimento e transformar a  vida das pessoas.
+- Se quiser conhecer mais da minha história, meu  dia a dia e ficar por dentro do que estou preparando, siga-me nas  redes sociais.  [Page 5] 7 Facebook: http://www.facebook.com/JonathanLamimAntunes Instagram: http://www.instagram.com/jonathanlamim Site: http://www.jonathanlamim.com.br  [Page 6] 8 Introdução Em um mundo no qual tudo é informação, saber entregá-la no  melhor formato ao seu público é uma das chaves do sucesso para  uma estratégia de marketing de conteúdo.
+- Lembro-me da época da escola, quando precisava ir à biblioteca  para realizar pesquisas em livros e enciclopédias a fim de produzir  o conteúdo dos trabalhos escolares.
+- Hoje, com alguns cliques, os estudantes encontram uma enor­ me variedade de conteúdo para produzir seus trabalhos.
+- E então  pergunto: De onde vem esse conteúdo?
+- É aí que entra o marketing de conteúdo, para responder a essas  e outras perguntas.
+- Através dele, as marcas podem, além de conhecer melhor o seu  público, entregar exatamente o que ele quer consumir, tanto no que  diz respeito ao conteúdo como ao produto.
+- Neste livro, compartilho um pouco dos meus conhecimentos  sobre marketing de conteúdo para que você possa realizar um tra­ balho de qualidade e que gere resultados, seja como um consultor  freelancer, atuando dentro de alguma empresa de marketing, ou no  setor de marketing de empresas de outros ramos.  [Page 7] 9 O conteúdo que você encontrará nos capítulos a seguir está di­ vidido em três partes: Parte I: mercado, consumidor, planejamento e estratégia  (capítulos 1 a 4); Parte II: conteúdo e mensuração de resultados (capítulos  5 a 9); Parte III: dicas e bibliografia (capítulos 10 a 13).
+
+
+  - ção, e surgiu então o IRC (Internet Relay Chat) – criado pelo finlan­
+
+  - e-mail e até compartilhá-los em redes sociais. Há uma versão gratuita
+
+  - e dentre elas, com certeza, está o seu público-alvo. Procure por gru­
+
+  - do conteúdo, o planejamento está ligado às questões qualitativas, por
+## 3. Aplicacoes Praticas
+- Ao chegar ao final deste livro, você terá adquirido conhecimen­ tos que o colocarão em um novo nível do marketing de conteúdo.
+- Mas a jornada não termina aqui, a continuidade dos estudos para se  manter atualizado é o que o tornará um profissional de qualidade e  cada dia mais requisitado pelo mercado.
+- Boa leitura e bons estudos!  [Page 8] 10 sumário Parte 1: Mercado, consumidor, planejamento e estratégia 15 1.
+- O conteúdo e o consumidor 16 Os primórdios do conteúdo 17 John Deere e o marketing de conteúdo 22 O guia de restaurantes que vendia pneus 23 A experiência chamada conteúdo 24 O novo perfil do consumidor 27 Conclusão 28 2.
+- Você sabe quem é o seu consumidor? 30 Pesquisa de Personas: conhecendo o seu público 31 Ferramentas para a Pesquisa de Personas 35 Construindo as personas 37 Exemplo de cruzamento de informações 41 Conclusão 43 3.
+- Estratégia e planejamento 45 A estratégia de conteúdo 45 O planejamento 47 Auditoria de conteúdo 50 Inventário de conteúdo e calendário editorial 53 Conclusão 55  [Page 9] 11 4.
+- Conteúdo, o rei 57 Os 3 Cs do conteúdo 57 O público quer ajuda e não autopromoção 60 A melhor ferramenta para vender mais 61 O funil de conversão 65 As 4 etapas do funil de conversão 67 Tipos de conteúdo 71 Os canais de conteúdo 77 Dando sentido ao conteúdo dentro do funil de conversão 89 Conclusão 93 Parte 2: Conteúdo e mensuração de resultados 95 5.
+- Os impactos do conteúdo na vida do consumidor 96 O que é o conteúdo na vida do consumidor? 97 Quais são os impactos positivos do conteúdo na vida do  consumidor? 97 Quais os impactos negativos do conteúdo na vida do  consumidor 100 Conclusão 104 6.
+- Criação de conteúdo 106 O que e para quem falar 107 Conteúdo específico para cada etapa do ciclo de compra 109  [Page 10] 12 Imagem também é conteúdo 112 Conteúdo humanizado 114 Conteúdo noticioso 115 Conteúdo evergreen 117 Reaproveitamento de conteúdo 118 Otimização de conteúdo para ferramentas de busca (SEO) 120 Como planejar a criação de conteúdo com base na persona121 Conclusão 125 7.
+- Mensuração de resultados 127 O que é a mensuração de resultados 127 O que são os KPIs 128 Pirâmide de KPIs 128 Fórmulas para calcular KPIs 132 A diferença entre KPI e métrica 139 5 dicas para uma mensuração de resultados mais efetiva 140 Conclusão 145 8.
+
+## 4. Topicos Avancados
+- Construindo um plano de conteúdo 146 O processo de marketing de conteúdo 146 O plano de conteúdo 152 Conclusão 153 9.
+- Fatores de ranqueamento  do Google 154 Sinais sociais 154 Domínio 157  [Page 11] 13 Interação do usuário 160 Page-level 164 Site-level 167 Backlink 169 Spam 172 Conclusão 174 Parte 3: Dicas 177 10.
+- Dicas para um processo de  escrita mais fluido   178 Conclusão 183 11.
+- Dicas de webwriting 184 Não se esqueça dos princípios do webwriting 184 Atenção aos elementos do texto 187 Não ignore o site e, muito menos, as redes sociais 190 Lembre-se do mobile 191 Seja humilde, curioso e flexível 193 Pense no conteúdo 194 Conclusão 194 12.
+- As regras do marketing mudaram, e a chave para  vencer é usar essa mudança a seu favor.”  – Brian Halligan e Dharmesh Shah  [Page 14] 16 capítulo 1 O conteúdo e o consumidor “Você vende muito mais quando para de empurrar a venda.
+- Esteja preparado para lidar com clientes que sabem comprar.”  – David Meerman Scott Você sabia que o Google recebe mais de 100 bilhões de bus­ cas por mês (TAN, 2015)?
+- E que 81% dos compradores realizam pesquisas online an­ tes de efetuar suas compras (MORRISON, 2014)?
+- Se o Google recebe 100 bilhões de buscas por mês, é porque as  pessoas estão ávidas por informação e conteúdo.
+- Considerando os  81% de compradores que primeiro pesquisam sobre o produto ou  serviço a ser adquirido, podemos chegar à seguinte conclusão: o  consumidor que antes comprava por indicação e preço agora compra  por conhecimento.
+- A mentalidade do consumidor mudou, como também o modo  como ele decide pelas compras.
+

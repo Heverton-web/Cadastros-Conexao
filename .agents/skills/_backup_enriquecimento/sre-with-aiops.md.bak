@@ -1,0 +1,57 @@
+---
+name: sre-with-aiops
+description: >-
+  Passos operacionais extraidos do livro 'SRE with AIOps - (All Tables popped out from frame after conversion) (Sunny Behl, Giridhar Kanikarapu) (z-library.sk, 1lib.sk, z-lib.sk)' (EN) — praticas e procedimentos para DevOps, infraestrutura e containers.
+---
+
+# Sre With Aiops — Passos Operacionais
+
+Conteudo extraido do livro 'Sre With Aiops'. Contem passos, tecnicas e principios baseados na obra original.
+
+## 1. Conceitos Fundamentais
+- Behind every chapter lies a constellation of mentors, colleagues, friends, and family whose contributions, visible and invisible, have made this work possible.
+- I am deeply grateful to each of them.
+- First and foremost, I want to express my heartfelt gratitude to my family members, whose unwavering belief in the value of knowledge and hard work has been the foundation of everything I have achieved.
+- Their encouragement throughout this journey and throughout my life is a gift I can never fully repay.
+- I owe an enormous debt of gratitude to my co-author, Giridhar Kanikarapu, whose sharp intellect, collaborative spirit, and deep technical expertise elevated this book beyond what I could have produced alone.
+- Working with him has been both a privilege and a pleasure.
+- My profound thanks go to my colleagues and teams at a leading global financial institution, whose real-world challenges and collective brilliance inspired many of the frameworks and insights in this book.
+- The problems we solved together under pressure, at scale, and often in the dark of incident bridges, are the raw material from which these chapters are built.
+- Special mention to the AIOps and production management technology teams, who have been the true proving ground for the ideas presented here.
+- I am grateful to the broader SRE and AIOps community, the practitioners, researchers, open-source contributors, and authors whose work I have studied, referenced, and been inspired by over the years.
+
+## 2. Principios e Tecnicas
+- Giants like Google's SRE team, whose foundational thinking shaped an entire discipline, and the innovators are continuously pushing the boundaries of intelligent automation.
+- I would sincerely like to thank the team at BPB Publications for their professionalism, guidance, and patience throughout the publishing process.
+- Their commitment to technical excellence and their support in shaping this manuscript into its final form have been invaluable.
+- Finally, to every reader who picks up this book, thank you for investing your time in these ideas.
+- My greatest hope is that the frameworks and insights shared here help you build systems that are not merely reliable but truly intelligent.   # About the Authors    * Sunny Behl is the director and head of AIOps and digital production management at a major global financial institution, serving over 200 million customer accounts across more than 160 countries.
+- With more than 20 years of experience transforming large-scale IT organizations, Sunny brings rare depth across AIOps, cloud-native platforms, site reliability engineering, DevOps, and agile methodologies.
+- He is the holder of five US patents granted by the United States Patent and Trademark Office (USPTO), three for automated AIOps platform management and two for microservices anomaly detection.
+- These patents reflect Sunny's commitment to translating engineering insight into intellectual innovation.
+- A Splunk certified power user and SRE-certified professional via the DevOps institute, Sunny also holds a bachelor of engineering in electronics and communication and a post graduate program in artificial intelligence and machine learning.
+- He is based in Irving, Texas, where he plays a pivotal role in Citigroup's technology and business enablement strategy.    * Giridhar Kanikarapu is a distinguished technology leader at a global financial institution with over 13 years of experience driving digital transformation across industries, including travel management, healthcare, and retail banking.
+
+## 3. Aplicacoes Praticas
+- He holds a master's degree in computer science and brings deep expertise in cloud computing, artificial intelligence, and modern software engineering practices.
+- In this role, Giridhar leads strategic technology modernization initiatives with a strong focus on site reliability engineering, AIOps, resilient production support, and scalable cloud-native architectures.
+- He is known for delivering forward-looking solutions that leverage AI and cloud technologies to improve system reliability, accelerate innovation, and boost organizational agility.
+- With a cross-industry perspective, he bridges legacy banking systems with next-generation digital capabilities, enabling enterprises to thrive in a rapidly evolving technology landscape.      # About the Reviewers  ❖ Sangharsh Agarwal is a passionate site reliability and DevOps engineer with extensive professional experience in designing, building, and operating large-scale cloud-native platforms.
+- He specializes in site reliability engineering (SRE), DevOps automation, cloud infrastructure, CI/CD pipelines, observability, and platform engineering.
+- Sangharsh has deep expertise in modern cloud technologies, including Kubernetes, Docker, infrastructure as code, and automated delivery pipelines.
+- He began his career as a software developer working with C++ and Python developer and later transitioned into DevOps and SRE, focusing on building reliable, scalable, and secure systems for modern SaaS platforms.
+- Sangharsh actively contributes to the evolution of reliability engineering practices and is an advocate for integrating DevOps, SRE, security, and compliance into a unified operational framework for next-generation cloud platforms.
+- He frequently writes and shares insights with the engineering community on topics such as SRE practices, automation, observability, and AI-driven operations.
+- He is currently working as a senior site reliability engineer at Adobe, where he focuses on building scalable cloud infrastructure, modern CI/CD systems, and reliability platforms for large-scale SaaS products.   ❖ Parag Bhardwaj is a senior product manager and principal architect specializing in multi-cloud governance, FinOps, and AI-driven enterprise systems.
+
+## 4. Topicos Avancados
+- With more than two decades of experience spanning cloud architecture, automation, cost optimization, and large-scale operational transformation, he is recognized for bringing clarity, structure, and measurable impact to complex technical environments.
+- An MBA in adaptive leadership and a B.Tech in information technology form the foundation of his multidisciplinary expertise.
+- Parag is an IEEE Senior Member, a published author, and a trusted technical reviewer known for blending hands-on engineering depth with strategic product leadership.
+- He is the author of two industry-focused books: Azure FinOps Essentials: A Practical Guide to Cloud Cost Management and Optimization, and FinOps for Snowflake: A Practical Guide to Financial Governance and Optimization   Parag’s professional work spans cloud governance modernization, cost-optimization frameworks, automation-driven reliability, and cross-functional adoption of governance as a service.
+- He is known for elevating product quality through rigorous QA leadership and enabling teams through empathetic, structured communication.
+- Beyond his enterprise leadership roles, Parag is actively building his insurance venture and is deeply committed to mentoring, teaching advanced technical concepts, and supporting family and group logistics across borders.
+- His interests include AI systems, linear algebra, data modeling, financial planning, and simplifying complex regulatory landscapes for real-world decision-making.
+- His career reflects a consistent theme: transforming complexity into clarity, empowering teams, and architecting systems that scale with purpose.   # CHAPTER 1SRE Principles Driving Modern Operations  ## Introduction  This chapter examines the key concepts behind site reliability engineering (SRE) and its impact on today’s technology operations.
+- In the past decade, technology has moved from stable, separate systems to complex, cloud-based setups.
+- These changes mean updates happen more often, and there is a higher risk of things going wrong.

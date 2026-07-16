@@ -1,0 +1,56 @@
+---
+name: ai-systems-performance-engineering
+description: Otimização full-stack de sistemas de IA — GPU, CUDA, PyTorch, inferência, caching, scaling
+---
+
+# Ai Systems Performance Engineering — Passos Operacionais
+
+Conteudo extraido do livro 'Ai Systems Performance Engineering'. Contem passos, tecnicas e principios baseados na obra original.
+
+## 1. Conceitos Fundamentais
+- [Page 2] 9 7 9 8 3 4 1 6 2 7 7 8 9 5 9 9 9 9 US $99.99	  CAN $124.99 DATA ISBN:   979-8-341-62778-9 Elevate your AI system performance capabilities with this definitive guide to maximizing efficiency  across every layer of your AI infrastructure.
+- In today’s era of ever-growing generative models, AI Systems  Performance Engineering provides engineers, researchers, and developers with a hands-on set of  actionable optimization strategies.
+- Learn to co-optimize hardware, software, and algorithms to build  resilient, scalable, and cost-effective AI systems that excel in both training and inference.
+- Authored by  Chris Fregly, a performance-focused engineering and product leader, this resource transforms complex  AI systems into streamlined, high-impact AI solutions.
+- Inside, you’ll discover step-by-step methodologies for fine-tuning GPU CUDA kernels, PyTorch-based  algorithms, and multinode training and inference systems.
+- You’ll also master the art of scaling GPU  clusters for high performance, distributed model training jobs, and inference servers.
+- He coauthored Data  Science on AWS and Generative AI  on AWS, created an O’Reilly course  on optimizing AI performance with  NVIDIA GPUs, and founded the global  AI Performance Engineering meetup.
+- AI Systems Performance Engineering “AI systems are layered and fast‑moving.
+- Chris breaks the complexity down  into a reference that will set the standard for years.” Chris Lattner, CEO at Modular “CUDA kernels, distributed training, compilers, disaggregated inference— f inally in one place.
+- An encyclopedia of ML systems.” Mark Saroufim, PyTorch engineer at Meta and founder of GPU Mode Community “Squeezing the most performance out of your AI system is what separates  the good from the great.
+
+## 2. Principios e Tecnicas
+- This is the missing manual.” Sebastian Raschka, ML/AI researcher and thought leader  [Page 3] Praise for AI Systems Performance Engineering AI systems are moving incredibly fast through intense research and development, and are filled with multiple layers of complexity.
+- Chris breaks down this complexity and explains it in a way we can all benefit from, providing a singular reference that will set a standard for years to come. —Chris Lattner, CEO at Modular Understanding how LLMs work is just the beginning.
+- Getting the most out of them through model and hardware optimization is what separates good practitioners from great ones.
+- Chris’s book is the missing reference manual that shows you how. —Sebastian Raschka, PhD, ML/AI researcher and author of bestselling book Build a Large Language Model from Scratch (Manning, 2024) The breadth here is insane—CUDA kernels, distributed training, PyTorch compiler internals, disaggregated inference, all in one place.
+- Chris pulled together stuff that’s usually scattered across a million blog posts and papers.
+- This is an excellent encyclopedia of ML systems. —Mark Saroufim, PyTorch engineer at Meta and founder of GPU MODE Community Taming AI systems at scale is one of the immense challenges of our time.
+- Chris Fregly has written the definitive field guide for this new frontier.
+- He masterfully connects the dots from the silicon all the way up to the application, providing the full-stack wisdom that every AI engineer needs to turn raw compute into efficient, high-performance models. —Harsh Banwait, director of product at Coreweave  [Page 4] This book is an exceptional resource for anyone looking to immerse themselves in modern ML systems engineering.
+- Its focus on the details of state-of-the-art projects like vLLM and llm-d demonstrates a deep understanding of inference optimization techniques and the transformative power of open source software. —Michael Goin, vLLM maintainer and principal engineer at Red Hat This book is a definitive guide for AI engineers who refuse to settle for default performance.
+- Whether you’re tuning CUDA kernels, scaling LLM inference, or orchestrating AI agents across GPUs, this book gives you the surgical tools and system-level clarity to efficiently run modern AI workloads.
+
+## 3. Aplicacoes Praticas
+- Read it, use it and you will redefine how you build, scale, and think about modern AI systems.
+- AI Systems Performance Engineering is a master key to unlocking AI performance. —Arpitha Srinivas, AI systems performance engineer at the world’s leading manufacturer of high-performance and high-efficiency AI servers AI Systems Performance Engineering brilliantly connects GPU hardware architecture with modern AI workload optimization, combining rigorous low-level tuning with high-level system design.
+- Spanning GPU memory bandwidth optimization, KV cache management, batching strategies, and multi-GPU inference, the book delivers insights forged in real- world production.
+- Chris brings clarity to complex topics like Nsight profiling, transformer attention tuning, and distributed scaling, making it a must-read for performance engineers bridging hardware, systems, and AI. —Amer Ather, cloud and ML performance engineer at Netflix The most comprehensive and up-to-date guide on building modern-day AI systems.
+- A must-read for every AI/ML developer and practitioner. —Chaim Rand, AI/ML algorithm engineer This is the go-to reference for anything AI-performance related.
+- Chris’s latest book is packed full of content that helps me in my day-to-day activities of optimizing and tuning AI workloads.
+- He covers all of today’s AI systems performance issues—and provides solutions that are invaluable to every company trying to put AI into production. —Antje Barth, member of technical staff at Amazon AGI There is no other book in this field that even comes close to AI Systems Performance Engineering.
+- Each chapter demonstrates deep expertise and could easily be a standalone book.
+- The content feels so fresh and evergreen, and very easy to digest. —Suman Debnath, ML systems engineer at Anyscale  [Page 5] A tour-de-force that is essential reading for performance engineers who are working with the latest AI-based applications. —Adrian Cockcroft, OrionX.net (former head of cloud infrastructure at Netflix and VP of engineering at AWS) This is the book I was waiting for.
+- It ties together the scattered, vast, and fast-moving world of AI systems performance engineering into one clear, modern resource. —Madison Kanna, AI engineer at Baseten As AI becomes the foundation of modern computing, understanding accelerator architectures and their ecosystems is no longer optional—it’s a strategic imperative.
+
+## 4. Topicos Avancados
+- Chris distills extraordinary technical depth into a clear and accessible narrative.
+- For anyone engineering or leading at hyperscale, this book is the essential starting point. —Omer Zaki, VP of AI infrastructure at Oracle Today’s AI is a system problem where one has to co-optimize the software for the  hardware fabric to achieve peak performance.
+- Chris peels back the curtain to showcase  the different levels of the AI software and hardware stack that modern AI workloads   run on. —Abdul Dakkak, head of GenAI at Modular  [Page 7] Chris Fregly AI Systems Performance Engineering Optimizing Model Training and Inference Workloads with GPUs, CUDA, and PyTorch  [Page 8] 979-8-341-62778-9 [LSI] AI Systems Performance Engineering by Chris Fregly Copyright © 2026 Flux Capacitor, LLC.
+- Published by O’Reilly Media, Inc., 141 Stony Circle, Suite 195, Santa Rosa, CA 95401.
+- O’Reilly books may be purchased for educational, business, or sales promotional use.
+- Online editions are also available for most titles (https://oreilly.com).
+- For more information, contact our corporate/institu‐ tional sales department: 800-998-9938 or corporate@oreilly.com.
+- Acquisitions Editor: Nicole Butterfield Development Editor: Angela Rufino Production Editor: Kristen Brown Copyeditor: nSight, Inc.
+- Proofreader: Piper Content Partners Indexer: Sue Klefstad Cover Designer: Susan Brown Cover Illustrator: José Marzan Jr.
+- Interior Designer: David Futato Interior Illustrator: Kate Dullea November 2025:  First Edition Revision History for the First Edition 2025-11-11: First Release See http://oreilly.com/catalog/errata.csp?isbn=9798341627789 for release details.

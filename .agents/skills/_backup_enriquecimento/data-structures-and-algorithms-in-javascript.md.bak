@@ -1,0 +1,57 @@
+---
+name: data-structures-and-algorithms-in-javascript-feder
+description: >-
+  Passos operacionais extraidos — desenvolvimento web, full-stack, JavaScript, TypeScript, React, Node.js (EN).
+---
+
+# Data Structures And Algorithms In Javascript — Passos Operacionais
+
+Conteudo extraido do livro 'Data Structures And Algorithms In Javascript'. Contem passos, tecnicas e principios baseados na obra original.
+
+## 1. Conceitos Fundamentais
+- Sorting](xhtml/chapter6.xhtml)         1. [The Sorting Problem](xhtml/chapter6.xhtml#h1-25)            1. [Internal vs.
+- Don't worry if the text is unreadable; the structure is the important part, not the labels.
+- Kereki is a subject matter expert at Globant, where he gets to use a variety of development frameworks, programming tools, and operating systems.
+- He has taught several computer science courses at Universidad de la Republica; Universidad ORT, Uruguay; and Universidad de la Empresa.
+- He specializes in efficiency and optimization, with a particular focus on algorithm and data structure design and usage.
+- He's also the author of several books: _Mastering JavaScript Functional Programming,_ 3rd edition (Packt, 2023), _Modern JavaScript Web Development Cookbook_ (Packt, 2018), and _Essential GWT_ (Pearson, 2010), as well as multiple articles for _Linux Journal_ , _Linux Magazine_ , _IBM DeveloperWorks_ , the _OpenReplay_ and _Globant_ blogs, and others.  ## About the Technical Reviewer  Dr.
+- Daniel Zingaro is an award-winning associate professor of mathematical and computational sciences at the University of Toronto, Mississauga.
+- He is well known for his uniquely interactive approach to teaching and internationally recognized for his expertise in active learning.
+- He is also the author of _Learn to Code by Solving Problems_ and _Algorithmic Thinking_ (both from No Starch Press).   # ACKNOWLEDGMENTS  Getting a book from the idea stage to an actual printed tome is a group effort, and several people were involved therein.
+- First of all, I would like to thank Jill Franklin, managing and development editor, for starting me on this project and providing support and help throughout the process.
+
+## 2. Principios e Tecnicas
+- Special thanks are due to three people: Daniel Zingaro, the technical reviewer who had to deal with way too many data structures and algorithms; Lisa McCoy, who had to copyedit all my descriptions and explanations; and Scout Festa, who proofread everything in the book--if any errors or issues are left, they are entirely my fault, not this trio's!
+- Finally, many thanks must also go out to the rest of the No Starch Press team, without whom the book wouldn't exist: Bill Pollock, publisher; Sabrina Plomitallo-Gonzalez, production manager; and Rachel Monaghan, production editor.   # ANSWER KEY  ## Chapter 2  **2.1 Pure or Impure?**  From a purely formal point of view, this function is impure since it uses something that wasn't provided as an argument.
+- Given that PI is a constant, you could possibly stretch things a bit and accept it; after all, nobody will be able to modify PI because of the const definition.
+- If the original function throws an exception, catch it and output a proper message.
+- Upon entry ❷, log the function's name and the arguments it was called with.
+- Then try to call the original function ❸, and if there's no problem, log the returned value ❹ and return it back to the caller ❺.
+- (See _<https://nodejs.org/api/perf_hooks.html>_ and _<https://developer.mozilla.org/en-US/docs/Web/API/Performance>_ for more information.) The addTiming() function ❷ will get a function as a parameter and return a new function.
+- You'll use an auxiliary function ❸ to output the timing data.
+- Before calling the original function ❹, store the start time; if the call succeeds ❺ with no problem, just output the original time and the current one ❻, returning the original returned value ❼.
+- If any errors occur, output a different message ❽ and throw the same exception again ❾ so the timed function will behave exactly as the original one.  **2.4 Parsing Problem**  The problem is that .map() passes three arguments to your mapping function: the current element of the array, its index, and the whole array.
+
+## 3. Aplicacoes Praticas
+- (See _<https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map>_ for more on this.) On the other hand, parseInt() receives two parameters: the value to parse and an optional radix (10 is the default value if nothing is passed).
+- In this case, parseInt() is getting passed three arguments: it ignores the third extra one, but it uses the array index as the radix.
+- For instance,"8" is parsed as a base 3 number, producing an error, since base 3 uses only digits 0, 1, and 2, and "32" is parsed as a base 5 number, which is equivalent to 17.  **2.5 Deny Everything**  A one-liner is enough:               const negate = (fn) => (...args) => !fn(...args);  **2.6 Every, Some ...
+- None?**  Just an example as a tip to get you started: if you want to check whether nobody in a group was an adult, you could equivalently check whether everybody wasn't an adult, so people.none(isAdult) could be tested as people.every(negate(isAdult)) using the previous answer.  **2.7 No Some, No Every**  A hint for some(): use findIndex() to see whether any element satisfies the predicate; if it doesn't return -1, it means that at least one element fulfills your condition.
+- For every(), you want to see whether findIndex() cannot find any element that satisfies negate(your predicate), in the same manner as in the previous question; if none is found, it means that every element fulfills your condition.  **2.8 What Does It Do?**  Writing Boolean(someValue) checks whether the given argument is "truthy" or "falsy," returning true or false accordingly.
+- In this case, "James Bond" and 7 are truthy values and 0 is falsy, so the result is [true, false, false, true].
+- To find a value in the bag ❸, use JavaScript's own .includes() method.
+- You'll keep the array in order, so implementing greatest ❹ is simply a matter of checking whether the bag is empty (in which case, it returns undefined, or else it returns the array's last element).
+- To add a value to the bag ❺, push the value into the array and then sort the updated array.
+- Finally, to see whether a value can be removed ❻, use JavaScript's .find()method, and if the value is in the array, use .splice() to remove it.  **3.3 Extra Operations**  Many possibilities exist, but keep in mind that you'd ask for these operations only if you actually required them for a specific problem.
+
+## 4. Topicos Avancados
+- The following table provides a few, although this list could be extended.
+- Operation | Signature | Description   ---|---|---   Count all | bag -> integer | Given a bag, return how many values it contains.
+- Count value | bag × value -> integer | Given a bag and a value, return how many times it's in the bag.
+- Add many | bag × value × integer -> bag | Given a new value and a count, add so many copies of the value to the bag.
+- Remove all | bag × value -> bag | Given a bag and a value, remove all the value's instances from the bag.
+- Find next | bag × value -> value | undefined | Given a bag and value, find the closest higher value to the value in the bag.      **3.4 Wrong Operations**  If you want to return special values, you can do so as with the greatest() operation, where you returned undefined for an empty bag.
+- If you throw an exception, you can also specify it as a new return value (exception), albeit one that's received in a different way (try/catch), and that would work as well.  **3.5 Ready, Set ...**  We'll consider this in Chapter 13, so please skip ahead!  ## Chapter 4  **4.1 How Fast Did You Say?**  That cannot be; for large enough _n_ , _f_(_n_) becomes negative.  **4.2 Weird Bound?**  Yes, _n_ = _O_(_n_ 2) and (more properly, since we prefer tighter bounds) also _o_(_n_ 2), because _n_ 2 grows faster.
+- The lower bound orders, big and small omega, don't apply.  **4.3 Of Big** **_O_****s and Omegas**  In that case (and only in that case), _f_(_n_) = Θ(_g_(_n_)).  **4.4 Transitivity?**  If _f_(_n_) = _O_(_g_(_n_)) and _g_(_n_) = _O_(_h_(_n_)), then _f_(_n_) = _O_(_h_(_n_)).
+- We can prove this mathematically, but intuitively, the first equality means that _f_ and _g_ grow proportionally, and the second means that _g_ and _h_ also grow proportionally, and that means that _f_ and _h_ also grow proportionally.
+- If you consider any other order, transitivity still applies; for example, _f_(_n_) = Ω(_g_(_n_)) and _g_(_n_) = Ω(_h_(_n_)) implies _f_(_n_) = Ω(_h_(_n_)).  **4.5 A Bit of Reflexion**  We can also say _f_(_n_) = _O_(_f_(_n_)) and _f(n)_ = Ω(_f_(_n_)), but not for small omega or small _o_.  **4.6 Going at It Backward**  If _f(n)_ = _O_(_g_(_n_)), then _g_(_n_) = Ω(_f_(_n_)), and if _f_(_n_) = _o_(_g_(_n_)), then _g_(_n_) = ω(_f_(_n_)).

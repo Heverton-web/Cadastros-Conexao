@@ -1,0 +1,236 @@
+{
+  "total": 46,
+  "extracted_ok": 46,
+  "books": [
+    {
+      "filename": "EPUB - [EN] AI - Native Software Delivery - Nick Durkin, Eric Minick, Chinmay Gaikwad.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [EN] AI - Native Software Delivery - Nick Durkin, Eric Minick, Chinmay Gaikwad.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [EN] AI - Native Software Delivery - Nick Durkin, Eric Minick, Chinmay Gaikwad.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] Caixa de Ferramentas DevOps - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [PT] Caixa de Ferramentas DevOps - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [PT] Caixa de Ferramentas DevOps - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [EN] Containers com Docker - Do desenvolvimento a producao - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [EN] Containers com Docker - Do desenvolvimento a producao - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [EN] Containers com Docker - Do desenvolvimento a producao - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [EN] Cracking Containers with Docker and Kubernetes - Nisarg Vasavada, Dhwani Sametriya.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [EN] Cracking Containers with Docker and Kubernetes - Nisarg Vasavada, Dhwani Sametriya.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [EN] Cracking Containers with Docker and Kubernetes - Nisarg Vasavada, Dhwani Sametriya.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] Descomplicando o Docker 2a Edição - Jeferson Fernando Noronha Vitalino & Marcus André Nunes.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [PT] Descomplicando o Docker 2a Edição - Jeferson Fernando Noronha Vitalino & Marcus André Nunes.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [PT] Descomplicando o Docker 2a Edição - Jeferson Fernando Noronha Vitalino & Marcus André Nunes.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] DEVOPS Dev Ops na pratica entrega de sof - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [PT] DEVOPS Dev Ops na pratica entrega de sof - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [PT] DEVOPS Dev Ops na pratica entrega de sof - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] Docker - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [PT] Docker - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [PT] Docker - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] Docker Basics A Visual Guide to Containerization and - David Ocean, Valeria Celis, Atlas Skylark & Ben Bloomfield.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [PT] Docker Basics A Visual Guide to Containerization and - David Ocean, Valeria Celis, Atlas Skylark & Ben Bloomfield.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [PT] Docker Basics A Visual Guide to Containerization and - David Ocean, Valeria Celis, Atlas Skylark & Ben Bloomfield.meta.json"
+    },
+    {
+      "filename": "EPUB - [EN] Docker Basics_ A Visual Guide to Containerization and Deploymencean, David & Celis, Valeria & Skylark, Atlas & Bloomfield, Ben - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [EN] Docker Basics_ A Visual Guide to Containerization and Deploymencean, David & Celis, Valeria & Skylark, Atlas & Bloomfield, Ben - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [EN] Docker Basics_ A Visual Guide to Containerization and Deploymencean, David & Celis, Valeria & Skylark, Atlas & Bloomfield, Ben - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [EN] Docker Deep Dive (for Raymond Rhine) - Nigel Poulton.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [EN] Docker Deep Dive (for Raymond Rhine) - Nigel Poulton.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [EN] Docker Deep Dive (for Raymond Rhine) - Nigel Poulton.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] Docker Deep Dive Zero to Docker in a single book - Nigel Poulton.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [PT] Docker Deep Dive Zero to Docker in a single book - Nigel Poulton.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [PT] Docker Deep Dive Zero to Docker in a single book - Nigel Poulton.meta.json"
+    },
+    {
+      "filename": "EPUB - [EN] Docker Demystified - Saibal Ghosh.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [EN] Docker Demystified - Saibal Ghosh.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [EN] Docker Demystified - Saibal Ghosh.meta.json"
+    },
+    {
+      "filename": "EPUB - [EN] Docker in Action, Second Edition - Jeff Nickoloff, Stephen Kuenzli.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [EN] Docker in Action, Second Edition - Jeff Nickoloff, Stephen Kuenzli.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [EN] Docker in Action, Second Edition - Jeff Nickoloff, Stephen Kuenzli.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] Docker para Desenvolvedores - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [PT] Docker para Desenvolvedores - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [PT] Docker para Desenvolvedores - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] Docker para Desenvolvedores - Rafael Gomes.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [PT] Docker para Desenvolvedores - Rafael Gomes.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [PT] Docker para Desenvolvedores - Rafael Gomes.meta.json"
+    },
+    {
+      "filename": "EPUB - [EN] Docker Up and Running - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [EN] Docker Up and Running - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [EN] Docker Up and Running - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] EPUB Amazon AWS_ descomplicando a computação na nuvem - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [PT] EPUB Amazon AWS_ descomplicando a computação na nuvem - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [PT] EPUB Amazon AWS_ descomplicando a computação na nuvem - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] EPUB Azure_ coloque suas plataformas e serviços no cloud - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [PT] EPUB Azure_ coloque suas plataformas e serviços no cloud - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [PT] EPUB Azure_ coloque suas plataformas e serviços no cloud - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] EPUB_Caixa_de_ferramentas_devops - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [PT] EPUB_Caixa_de_ferramentas_devops - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [PT] EPUB_Caixa_de_ferramentas_devops - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] EPUB_Certificação_linux__guia_prático_para_a_prova_LPIC - 1_101.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [PT] EPUB_Certificação_linux__guia_prático_para_a_prova_LPIC - 1_101.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [PT] EPUB_Certificação_linux__guia_prático_para_a_prova_LPIC - 1_101.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] EPUB_Containers_com_Docker - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [PT] EPUB_Containers_com_Docker - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [PT] EPUB_Containers_com_Docker - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] EPUB_Descomplicando_Docker_v1 - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [PT] EPUB_Descomplicando_Docker_v1 - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [PT] EPUB_Descomplicando_Docker_v1 - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] EPUB_Descomplicando_Docker_v2 - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [PT] EPUB_Descomplicando_Docker_v2 - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [PT] EPUB_Descomplicando_Docker_v2 - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] EPUB_Devops_na_prática - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [PT] EPUB_Devops_na_prática - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [PT] EPUB_Devops_na_prática - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] EPUB Google app engine_ construindo serviços na nuvem - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [PT] EPUB Google app engine_ construindo serviços na nuvem - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [PT] EPUB Google app engine_ construindo serviços na nuvem - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] EPUB_Jornada_Kubernetes__Da_teoria_à_prática_com_GitOps_e_casos_reais - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [PT] EPUB_Jornada_Kubernetes__Da_teoria_à_prática_com_GitOps_e_casos_reais - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [PT] EPUB_Jornada_Kubernetes__Da_teoria_à_prática_com_GitOps_e_casos_reais - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] EPUB_Kubernetes - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [PT] EPUB_Kubernetes - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [PT] EPUB_Kubernetes - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [EN] GenAI on Google Cloud (for . .) - Ayo Adedeji, Lavi Nigam, Sarita A. Joshi & Stephanie Gervasi.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [EN] GenAI on Google Cloud (for . .) - Ayo Adedeji, Lavi Nigam, Sarita A. Joshi & Stephanie Gervasi.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [EN] GenAI on Google Cloud (for . .) - Ayo Adedeji, Lavi Nigam, Sarita A. Joshi & Stephanie Gervasi.meta.json"
+    },
+    {
+      "filename": "EPUB - [EN] Generative AI on Kubernetes - Roland Huß, Daniele Zonca.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [EN] Generative AI on Kubernetes - Roland Huß, Daniele Zonca.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [EN] Generative AI on Kubernetes - Roland Huß, Daniele Zonca.meta.json"
+    },
+    {
+      "filename": "EPUB - [EN] Hands - on DevOps with Linux Build and Deploy DevOps - Alisson Machado de Menezes.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [EN] Hands - on DevOps with Linux Build and Deploy DevOps - Alisson Machado de Menezes.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [EN] Hands - on DevOps with Linux Build and Deploy DevOps - Alisson Machado de Menezes.meta.json"
+    },
+    {
+      "filename": "EPUB - [EN] Implementing DevSecOps with Docker and Kubernetes An Experiential Guide to Operate in the DevOps Environment for Securing and Monitoring Container Applications (English Edition) - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [EN] Implementing DevSecOps with Docker and Kubernetes An Experiential Guide to Operate in the DevOps Environment for Securing and Monitoring Container Applications (English Edition) - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [EN] Implementing DevSecOps with Docker and Kubernetes An Experiential Guide to Operate in the DevOps Environment for Securing and Monitoring Container Applications (English Edition) - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [EN] INFRASTRUCTURE AUTOMATION WITH TERRAFORM automate and - Patil, Ankita;Soni, Mitesh;; Mitesh Soni.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [EN] INFRASTRUCTURE AUTOMATION WITH TERRAFORM automate and - Patil, Ankita;Soni, Mitesh;; Mitesh Soni.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [EN] INFRASTRUCTURE AUTOMATION WITH TERRAFORM automate and - Patil, Ankita;Soni, Mitesh;; Mitesh Soni.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] Jenkins - Automatize tudo sem complicações - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [PT] Jenkins - Automatize tudo sem complicações - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [PT] Jenkins - Automatize tudo sem complicações - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [EN] Kubernetes Up and Running - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [EN] Kubernetes Up and Running - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [EN] Kubernetes Up and Running - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] Learn Docker in a Month of Lunches, Second Edition - Elton Stoneman.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [PT] Learn Docker in a Month of Lunches, Second Edition - Elton Stoneman.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [PT] Learn Docker in a Month of Lunches, Second Edition - Elton Stoneman.meta.json"
+    },
+    {
+      "filename": "EPUB - [EN] Manual De DevOps - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [EN] Manual De DevOps - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [EN] Manual De DevOps - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] Manual de Devops_ Como Obter Agilidade, Confiabilidade e - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [PT] Manual de Devops_ Como Obter Agilidade, Confiabilidade e - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [PT] Manual de Devops_ Como Obter Agilidade, Confiabilidade e - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [EN] Mastering Docker - Second Edition - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [EN] Mastering Docker - Second Edition - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [EN] Mastering Docker - Second Edition - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [EN] Modern System Administration - Jennifer Davis.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [EN] Modern System Administration - Jennifer Davis.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [EN] Modern System Administration - Jennifer Davis.meta.json"
+    },
+    {
+      "filename": "EPUB - [EN] SRE with AIOps - (All Tables popped out from frame after conversion) (Sunny Behl, Giridhar Kanikarapu) (z-library.sk, 1lib.sk, z-lib.sk).epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [EN] SRE with AIOps - (All Tables popped out from frame after conversion) (Sunny Behl, Giridhar Kanikarapu) (z-library.sk, 1lib.sk, z-lib.sk).txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [EN] SRE with AIOps - (All Tables popped out from frame after conversion) (Sunny Behl, Giridhar Kanikarapu) (z-library.sk, 1lib.sk, z-lib.sk).meta.json"
+    },
+    {
+      "filename": "EPUB - [EN] Strategic DevOps - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [EN] Strategic DevOps - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [EN] Strategic DevOps - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [EN] The Comprehensive DevOps Interview Guide - Pradeep Shankar Chintale (1).epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [EN] The Comprehensive DevOps Interview Guide - Pradeep Shankar Chintale (1).txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [EN] The Comprehensive DevOps Interview Guide - Pradeep Shankar Chintale (1).meta.json"
+    },
+    {
+      "filename": "EPUB - [EN] The Ultimate Docker Container Book, 4th Edition (Early - Dr_ Gabriel N_ Schenker.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [EN] The Ultimate Docker Container Book, 4th Edition (Early - Dr_ Gabriel N_ Schenker.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [EN] The Ultimate Docker Container Book, 4th Edition (Early - Dr_ Gabriel N_ Schenker.meta.json"
+    },
+    {
+      "filename": "EPUB - [EN] The Ultimate Docker Container Book, 4th Edition (Early - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [EN] The Ultimate Docker Container Book, 4th Edition (Early - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [EN] The Ultimate Docker Container Book, 4th Edition (Early - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] Usando Docker - www.it-ebooks.info (1).epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [PT] Usando Docker - www.it-ebooks.info (1).txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [PT] Usando Docker - www.it-ebooks.info (1).meta.json"
+    },
+    {
+      "filename": "EPUB - [EN] Using Docker 2015 {PRG} - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [EN] Using Docker 2015 {PRG} - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\DEVOPS\\extraidos\\EPUB - [EN] Using Docker 2015 {PRG} - Desconhecido.meta.json"
+    }
+  ]
+}

@@ -1,0 +1,4191 @@
+## EPUB Descomplicando Docker v1
+
+  1. [Capítulo 1](src/pages/page_001.html)
+  2. [Capítulo 2](src/pages/page_002.html)
+  3. [Capítulo 3](src/pages/page_003.html)
+  4. [Capítulo 4](src/pages/page_004.html)
+  5. [Capítulo 5](src/pages/page_005.html)
+  6. [Capítulo 6](src/pages/page_006.html)
+  7. [Capítulo 7](src/pages/page_007.html)
+  8. [Capítulo 8](src/pages/page_008.html)
+  9. [Capítulo 9](src/pages/page_009.html)
+  10. [Capítulo 10](src/pages/page_010.html)
+  11. [Capítulo 11](src/pages/page_011.html)
+  12. [Capítulo 12](src/pages/page_012.html)
+  13. [Capítulo 13](src/pages/page_013.html)
+  14. [Capítulo 14](src/pages/page_014.html)
+  15. [Capítulo 15](src/pages/page_015.html)
+  16. [Capítulo 16](src/pages/page_016.html)
+  17. [Capítulo 17](src/pages/page_017.html)
+  18. [Capítulo 18](src/pages/page_018.html)
+  19. [Capítulo 19](src/pages/page_019.html)
+  20. [Capítulo 20](src/pages/page_020.html)
+  21. [Capítulo 21](src/pages/page_021.html)
+  22. [Capítulo 22](src/pages/page_022.html)
+  23. [Capítulo 23](src/pages/page_023.html)
+  24. [Capítulo 24](src/pages/page_024.html)
+  25. [Capítulo 25](src/pages/page_025.html)
+  26. [Capítulo 26](src/pages/page_026.html)
+  27. [Capítulo 27](src/pages/page_027.html)
+  28. [Capítulo 28](src/pages/page_028.html)
+  29. [Capítulo 29](src/pages/page_029.html)
+  30. [Capítulo 30](src/pages/page_030.html)
+  31. [Capítulo 31](src/pages/page_031.html)
+  32. [Capítulo 32](src/pages/page_032.html)
+  33. [Capítulo 33](src/pages/page_033.html)
+  34. [Capítulo 34](src/pages/page_034.html)
+  35. [Capítulo 35](src/pages/page_035.html)
+  36. [Capítulo 36](src/pages/page_036.html)
+  37. [Capítulo 37](src/pages/page_037.html)
+  38. [Capítulo 38](src/pages/page_038.html)
+  39. [Capítulo 39](src/pages/page_039.html)
+  40. [Capítulo 40](src/pages/page_040.html)
+  41. [Capítulo 41](src/pages/page_041.html)
+  42. [Capítulo 42](src/pages/page_042.html)
+  43. [Capítulo 43](src/pages/page_043.html)
+  44. [Capítulo 44](src/pages/page_044.html)
+  45. [Capítulo 45](src/pages/page_045.html)
+  46. [Capítulo 46](src/pages/page_046.html)
+  47. [Capítulo 47](src/pages/page_047.html)
+  48. [Capítulo 48](src/pages/page_048.html)
+  49. [Capítulo 49](src/pages/page_049.html)
+  50. [Capítulo 50](src/pages/page_050.html)
+  51. [Capítulo 51](src/pages/page_051.html)
+  52. [Capítulo 52](src/pages/page_052.html)
+  53. [Capítulo 53](src/pages/page_053.html)
+  54. [Capítulo 54](src/pages/page_054.html)
+  55. [Capítulo 55](src/pages/page_055.html)
+  56. [Capítulo 56](src/pages/page_056.html)
+  57. [Capítulo 57](src/pages/page_057.html)
+  58. [Capítulo 58](src/pages/page_058.html)
+  59. [Capítulo 59](src/pages/page_059.html)
+  60. [Capítulo 60](src/pages/page_060.html)
+  61. [Capítulo 61](src/pages/page_061.html)
+  62. [Capítulo 62](src/pages/page_062.html)
+  63. [Capítulo 63](src/pages/page_063.html)
+  64. [Capítulo 64](src/pages/page_064.html)
+  65. [Capítulo 65](src/pages/page_065.html)
+  66. [Capítulo 66](src/pages/page_066.html)
+  67. [Capítulo 67](src/pages/page_067.html)
+  68. [Capítulo 68](src/pages/page_068.html)
+  69. [Capítulo 69](src/pages/page_069.html)
+  70. [Capítulo 70](src/pages/page_070.html)
+  71. [Capítulo 71](src/pages/page_071.html)
+  72. [Capítulo 72](src/pages/page_072.html)
+  73. [Capítulo 73](src/pages/page_073.html)
+  74. [Capítulo 74](src/pages/page_074.html)
+  75. [Capítulo 75](src/pages/page_075.html)
+  76. [Capítulo 76](src/pages/page_076.html)
+  77. [Capítulo 77](src/pages/page_077.html)
+  78. [Capítulo 78](src/pages/page_078.html)
+  79. [Capítulo 79](src/pages/page_079.html)
+
+
+
+
+# 
+
+
+
+
+
+# 
+
+
+# 
+
+Copyright© 2016 por Brasport Livros e Multimídia Ltda. 
+
+Todos os direitos reservados. Nenhuma parte deste livro poderá ser reproduzida, sob qualquer meio, especialmente em fotocópia (xerox), sem a permissão, por escrito, da Editora. 
+
+Para uma melhor visualização deste e-book sugerimos que mantenha seu software constantemente atualizado. 
+
+Editor: Sergio Martins de Oliveira 
+
+Diretora Editorial: Rosa Maria Oliveira de Queiroz 
+
+Gerente de Produção Editorial: Marina dos Anjos Martins de Oliveira 
+
+Copidesque: Camila Britto da Silva 
+
+Editoração Eletrônica: SBNigri Artes e Textos Ltda. 
+
+Capa: Use Design 
+
+Produçao de e-pub: SBNigri Artes e Textos Ltda. 
+
+Técnica e muita atenção foram empregadas na produção deste livro. Porém, erros de digitação e/ou impressão podem ocorrer. Qualquer dúvida, inclusive de conceito, solicitamos enviar mensagem para brasport@brasport.com.br, para que nossa equipe, juntamente com o autor, possa esclarecer. A Brasport e o(s) autor(es) não assumem qualquer responsabilidade por eventuais danos ou perdas a pessoas ou bens, originados do uso deste livro. 
+
+ISBN Digital: 978-85-7452-800-7 
+
+**BRASPORT Livros e Multimídia Ltda.**
+
+Rua Pardal Mallet, 23 – Tijuca 
+
+20270-280 Rio de Janeiro-RJ 
+
+Tels. Fax: (21) 2568.1415/2568.1507 
+
+**e-mails:**
+
+marketing@brasport.com.br 
+
+vendas@brasport.com.br 
+
+editorial@brasport.com.br 
+
+**site: www.brasport.com.br**
+
+**Filial**
+
+Av. Paulista, 807 – conj. 915 
+
+01311-100 – São Paulo-SP 
+
+
+#  Agradecimentos 
+
+Jeferson Fernando 
+
+Ao meu companheiro de longas jornadas de trampo, Marcus André, pessoa fundamental para o desenvolvimento deste livro. Além de ser um superamigo, me orgulha muito acompanhar seu crescimento profissional e pessoal! _Ieiiiii_ ! 
+
+Aos alunos que acumulei e com quem fiz amizades ao longo desses 12 anos ministrando treinamentos pelo Brasil, especialmente aos alunos do treinamento _Descomplicando o Docker_ da LINUXtips! :D 
+
+A todos os amigos que fiz por onde passei, especialmente o Juliano “ncode” Martinez, João “orelhinhas” Gabriel, Jean Feltrin, Guilherme “Lero” Schroeder, Rodolfo “enetepe” Ponteado, Guilherme Almeida, Luiz Salvador Jr, Jhonatan Araujo, Francisco “chico” Freire, Adinan Paiva, Adilson Nunes, Pedro Vara, Eduardo Lipolis, Fábio “santa” Santiago, Giordano Fechio, Rafael Benvenuti, João Borges, Daniel Lima, Mateus Prado e Leo Martins. 
+
+Com muito carinho, gostaria de agradecer a duas pessoas que foram muito importantes para mim nesses últimos anos, principalmente em relação a minha carreira: Eduardo Scarpellini e Leonardo Lorieri, muito obrigado! Como sempre digo, vocês mudaram a minha vida! <3 
+
+Meu chefes: 
+
+Rogerio Lelis, que sempre me ajudou e me apoiou em tudo que precisei! André Brandão, que, além de ser o melhor gerente que já tive, é o meu _coach_ e me ajudou a quebrar alguma barreiras bem importantes em minha vida. Rodrigo Campos, que tenho como espelho pela sensacional habilidade em palestrar com maestria. 
+
+Quero agradecer muito aos meus irmãos Magno Junior e Camila Vitalino, sempre ao meu lado e me apoiando em tudo. Amo vocês! 
+
+O agradecimento mais especial é para as mulheres da minha vida: 
+
+Minha esposa e fiel companheira Aletheia, que sempre está ao meu lado em todos os momentos, tristes ou felizes, fáceis ou difíceis, e que sempre acreditou em mim. Eu te amo! 
+
+Minhas princesas e as coisas mais lindas, Maria Fernanda e Maria Eduarda, que são meu tudo, meu ar, minha vida! Amo vocês, princesas! 
+
+E finalmente minha rainha, minha mãe, Cidinha Tavares, que passou por diversas dificuldades para conseguir educar o homem que hoje sou! Te amo! 
+
+
+Marcus André 
+
+Eu agradeço, primeiramente, ao Jeferson Vitalino (quem?) pela ideia, oportunidade e parceria neste livro. Gostaria, também, de continuar agradecendo a ele pelo tempo, pela dedicação e, acima de tudo, por acreditar em mim. Esses últimos anos têm sido, sem dúvida, os melhores da minha carreira profissional e você tem uma bela parcela de culpa nisso. 
+
+Queria também agradecer a todas as pessoas que contribuíram direta ou indiretamente para a minha formação como profissional de TI: colegas de trabalho, professores da faculdade, chefes, ex-clientes, pessoas que me agregaram muito valor e às quais eu serei eternamente grato. 
+
+Um agradecimento especial aos meus amigos/irmãos: Mário Anderson, Márcio Ângelo, Bruno Henrique e Manuela Guedes. Meus amigos Jucianio Werllen, Rondineli Gomes, Renan Vicente e amigos de outras áreas: Jémina Diógenes, Juliana Mesquita, Ana Clara Rezende e Rodrigo Peixe. 
+
+À minha família: meu pai, José Monte, e minha mãe, dona Evani, muito obrigado por tudo e parabéns, seu projeto de homem feliz deu certo. :) 
+
+À minha mais nova família, Elisângela Oliveira. Agradeço imensamente pela compreensão nesses últimos meses, pelo carinho, pela emoção, pelo cuidado. Muito obrigado por me mostrar a complexidade nas coisas simples e o universo que existe entre o **0** e o **1** . Eu te amo. 
+
+
+#  Prefácio 
+
+If you are a developer, you probably have heard about Docker by now: Docker is the ideal platform to run applications in containers. Fine, but what are those containers? Containers are a lightweight virtualization technique providing us with lots of possibilities: thanks to them, we can ship applications faster; we can easily implement CI/CD (continuous integration and continuous delivery); we can set up development environments faster than ever; we can ensure parity between those development environments and our production servers; and much more. If you write code, if you deploy code, if you operate code, then I promise that containers are going to make your life easier. 
+
+But containers have been around for _decades_ , and Docker was only released in 2013. So what’s the big deal? Why is everybody so excited about Docker, if the technology behind it is more than ten years old? 
+
+Because the main innovation of Docker is not the technology. The main innovation of Docker is to make this technology available to every developer and sysadmin, very easily, without having to spend years of practice to become an expert, and without requiring to develop tons of custom tools. 
+
+I will share a secret with you: the really important thing is not Docker and containers. What is really important is to improve the quality of our software, reduce our development and deployment costs, release better, more reliable code, faster. It turns out that Docker is an insanely efficient way to achieve those goals. That’s why it is so popular. 
+
+This book will teach you all you need to know to get started with Docker, and use it to build, ship, and run your applications. It will be your guide in the world of containers, and on the path to ship code better than you ever did before. 
+
+**Jérôme Petazzoni**
+
+Docker Tinkerer Extraordinaire 
+
+
+#  Sobre o Livro 
+
+A proposta deste livro é ajudá-lo a construir ambientes utilizando _containers_ com a ferramenta que está revolucionando as empresas de tecnologia ao redor do mundo: vamos aprender e brincar bastante com o sensacional Docker! 
+
+De maneira leve e totalmente prática, vamos aprender desde o que é o Docker até a criação de um _cluster_ Docker com diversos _containers_ em execução! Sempre de forma prática, vamos abordar temas importantes para que consiga administrar ambientes que utilizam ou pretendem utilizar o Docker. 
+
+Inclusive, vamos aprender a montar _dockerfiles_ personalizados para construção de imagens de _containers_ , além de conhecer como melhor administrá-las. 
+
+Também veremos na prática como utilizar o Docker Machine para criação de _hosts_ Docker, seja local ou na nuvem. Vamos criar um _cluster_ utilizando o Swarm e aprender como escalar o nosso ambiente através do Compose. 
+
+
+#  Sobre os Autores 
+
+Jeferson Fernando 
+
+Profissional com mais de 14 anos de experiência em administração de servidores Unix/Linux em ambientes críticos de grandes empresas como Motorola, TIVIT, Votorantim, Alog, Locaweb e Walmart.com. Possuindo mais de 12 anos de experiência como instrutor em grandes centros de treinamento, passou por Impacta Tecnologia, Utah Linux Center, Green, 4Linux e foi instrutor oficial da Red Hat. Já ministrou treinamentos como consultor em empresas como Petrobras, Vale, Ministério do Exército, Polícia Militar do Estado de SP e HP. Possui diversas certificações, como LPI, RHCE, RHCI, ITIL, Solaris, entre outras. É um grande entusiasta do software livre e especialista na administração de ambientes críticos com cultura DevOps. Possui ainda um canal no YouTube chamado LinuxTips, onde aborda temas interessantes para todos os níveis de administradores de sistemas Linux. 
+
+Marcus André 
+
+Profissional com oito anos de experiência em administração de redes e sistemas em pequenas/médias/grandes empresas, tendo trabalhado em diversas plataformas e ambiente homogêneo (*nix, Windows). 
+
+Focado em FOSS ( _Free and Open Source Software_ ), atualmente integra o time de _Systems Administrators_ responsável pelo acompanhamento e pela administração da infraestrutura de múltiplos _e-commerces_ do grupo Walmart na América Latina. Evangelista da linguagem Python – apesar de não se considerar programador – e apaixonado por toda a cultura DevOps. 
+
+
+#  Sumário 
+
+Introdução 
+
+1\. O que é container? 
+
+1.1. Então vamos lá, o que é um container? 
+
+1.2. E quando começou que eu não vi? 
+
+2\. O que é o Docker? 
+
+2.1. Onde entra o Docker nessa história? 
+
+2.2. E esse negócio de camadas? 
+
+2.2.1. Copy-On-Write (COW) e Docker 
+
+2.3. Storage drivers 
+
+2.3.1. AUFS (Another Union File System) 
+
+2.3.2. Device Mapper 
+
+2.4. Docker Internals 
+
+2.5. Namespaces 
+
+2.5.1. PID namespace 
+
+2.5.2. Net namespace 
+
+2.5.3. IPC namespace 
+
+2.5.4. Mnt namespace 
+
+2.5.5. UTS namespace 
+
+2.5.6. User namespace 
+
+2.6. Cgroups 
+
+2.7. Netfilter 
+
+2.8. Para quem ele é bom? 
+
+3\. Instalando o Docker 
+
+3.1. Quero instalar, vamos lá? 
+
+3.1.1. Dica importante 
+
+3.2. Windows, MacOS, etc. 
+
+4\. Executando e administrando containers Docker 
+
+4.1. Então vamos brincar com esse tal de container! 
+
+4.2. Legal, quero mais! 
+
+4.2.1. Modo interativo 
+
+4.2.2. Daemonizando o container 
+
+4.3. Entendi, agora vamos praticar um pouco? 
+
+4.4. Tá, agora quero sair... 
+
+4.5. Posso voltar ao container? 
+
+4.6. Continuando com a brincadeira... 
+
+4.7. Subindo e baixando containers… 
+
+4.8. Visualizando o consumo de recursos pelo container 
+
+4.9. Cansei de brincar de container, quero removê-lo! 
+
+5\. Configurando CPU e memória para os meus containers 
+
+5.1. Especificando a quantidade de memória 
+
+5.2. Especificando a quantidade de CPU 
+
+5.3. Eu consigo alterar CPU e memória dos meus containers em execução? 
+
+6\. Meu primeiro e tosco dockerfile... 
+
+6.1. Outras opções 
+
+
+7\. Entendendo volumes 
+
+7.1. Introdução a volumes no Docker 
+
+7.2. Localizando volumes 
+
+7.3. Criando e montando um data-only container 
+
+7.4. Sempre é bom ter um backup 
+
+8\. Criando e gerenciando imagens 
+
+8.1. Agora eu quero criar minha imagem, posso? 
+
+8.2. Vamos começar do começo então, dockerfile! 
+
+8.3. Vamos customizar uma imagem base agora? 
+
+9\. Compartilhando as imagens 
+
+9.1. O que é o Docker Hub? 
+
+9.2. Vamos criar uma conta? 
+
+9.3. Agora vamos compartilhar essas imagens na interwebs! 
+
+9.4. Não confio na internet; posso criar o meu registry local? 
+
+10\. Gerenciando a rede dos containers 
+
+10.1. Consigo fazer com que a porta do container responda na porta do host? 
+
+10.2. E como ele faz isso? Mágica? 
+
+11\. Controlando o daemon do Docker 
+
+11.1. O Docker sempre utiliza 172.16.X.X ou posso configurar outro intervalo de IP? 
+
+11.2. Opções de sockets 
+
+11.2.1. Unix Domain Socket 
+
+11.2.2. TCP 
+
+11.3. Opções de storage 
+
+11.4. Opções diversas 
+
+12\. Utilizando Docker Machine, Docker Swarm e Docker Compose 
+
+12.1. Ouvi dizer que minha vida ficaria melhor com o Docker Machine! 
+
+12.1.1. Vamos instalar? 
+
+12.1.2. Vamos iniciar nosso primeiro projeto? 
+
+12.2. Agora vamos brincar com o Docker Swarm? 
+
+12.2.1. Criando o nosso cluster! 
+
+12.2.2. Docker Swarm Discovery 
+
+12.2.3. Mas para que isso serve? 
+
+12.3. E o tal do Docker Compose? 
+
+12.3.1. Compose File 
+
+12.3.2. Instalando o Docker Compose 
+
+12.3.3. Parâmetros do Compose File 
+
+12.3.4. Vamos fazer o nosso projeto? 
+
+12.4. E já acabou? :( 
+
+
+#  Introdução 
+
+Se você é um desenvolvedor que sempre sonhou em poder reproduzir o ambiente de produção em sua máquina ou a aplicação que você desenhou e desenvolveu poder rodar em produção facilmente, com o mesmo “binário” que foi utilizado nos momentos de testes... 
+
+...Imagine conseguir instalar e testar diversas aplicações rapidamente e ainda simular um ambiente completo, bem mais leve e inteligente do que as máquinas virtuais em questão de minutos. 
+
+Se você é um administrador de sistemas que sempre sonhou em não precisar mais preparar os servidores para suportar milhares de aplicações diferentes, feitas em linguagens diferentes, com bibliotecas diferentes, com versões diferentes (ufa!)… 
+
+...Imagine economizar milhões de horas em instalações de novos servidores, atualizações de aplicações, _deploys_ , acionamentos na madrugada por conta de serviços que “falharam” e não poderiam ser executados em outros servidores por incompatibilidades diversas. 
+
+Se você precisa escalar seu ambiente em questão de minutos para suportar uma demanda que o pegou de surpresa após uma campanha do departamento de marketing de sua empresa... 
+
+Se você é um gestor e está preocupado com a fatura do _datacenter_ no final do mês por conta da quantidade de recursos necessários para seu ambiente funcionar.... 
+
+E mesmo quando você possui todos os recursos computacionais para suportar a demanda, se você percebe que na maioria das vezes os seus recursos estão ociosos e sua equipe está com dificuldades para equalizá-los... 
+
+...Então este livro e o Docker foram feitos para você! Boa leitura e divirta-se! 
+
+
+#  1\. O que é  container  ? 
+
+##  1.1. Então vamos lá, o que é um  container  **?**
+
+_Container_ é, em português claro, o agrupamento de uma aplicação junto com suas dependências, que compartilham o _kernel_ do sistema operacional do _host_ , ou seja, da máquina (seja ela virtual ou física) onde está rodando. Deu para entender? 
+
+_Containers_ são bem similares às máquinas virtuais, porém mais leves e mais integrados ao sistema operacional da máquina _host_ , uma vez que, como já dissemos, compartilha o seu _kernel_ , o que proporciona melhor desempenho por conta do gerenciamento único dos recursos. 
+
+Na maioria dos casos, a imagem de um _container_ é bastante enxuta, havendo somente o necessário para o funcionamento da aplicação, que, quando em execução, possui um pequeno _overhead_ se comparada à mesma aplicação rodando nativamente no sistema operacional, grande parte disso por conta do compartilhamento dos recursos com a máquina _host_ . 
+
+Quando estamos utilizando máquinas virtuais, nós emulamos um novo sistema operacional e todo o seu hardware utilizando mais recursos da máquina _host_ , o que não ocorre quando utilizamos _containers_ , pois os recursos são compartilhados. O ganho óbvio disso é a capacidade de rodar mais _containers_ em um único _host_ , se comparado com a quantidade que se conseguiria com máquinas virtuais. 
+
+A seguir, na figura, podemos notar as diferenças de quando temos aplicações sendo executadas nativamente, máquinas virtuais e por fim em _containers_ . Repare que não é necessário emular um novo sistema operacional quando estamos utilizando _container_ , diferentemente das máquinas virtuais. 
+
+Outro ponto interessante na utilização de _containers_ é a portabilidade. Não importa em qual ambiente você criou o seu _container_ , ele irá rodar em qualquer outro que possua, no nosso caso, o Docker instalado, seja ele no Linux, MacOS ou Windows. Você não precisa se preocupar com suas dependências, está tudo dentro do _container_ . :D 
+
+O desenvolvedor consegue, em sua própria máquina, criar a sua aplicação em _container_ e depois executá-la em um servidor em produção sem nenhum problema de dependência ou algo do tipo – nem mesmo o bom e velho “engraçado, na minha máquina funciona” escapa, hein! 
+
+
+Lembre-se: o propósito da máquina virtual é emular um novo sistema operacional dentro do sistema operacional do _host_ . Já o propósito do _container_ é emular somente as aplicações e suas dependências e torná-las portáteis. 
+
+##  1.2. E quando começou que eu não vi? 
+
+Apesar de o termo ter se tornado _hype_ nos últimos anos, durante décadas já utilizávamos _containers_ em sistemas Unix através do comando _chroot_ – sim, bem mais simplório, é verdade, pois era apenas uma forma de isolar o _filesystem_ , mas já era o começo! 
+
+Em seguida vieram os _jails_ do FreeBSD, que, além do isolamento do _file­system_ , permitiam também o isolamento de processos, seguidos de perto pela Sun, que desenvolveu o _Solaris_ _Zones_ , mais uma solução baseada em _containers_ , porém somente para sistemas Solaris. 
+
+O grande passo rumo ao cenário que temos hoje foi a criação, pela Parallels do Virtuozzo, de um painel que permitia o fácil gerenciamento de _containers_ e a disponibilização do _core_ do Virtuozzo como _open source_ com o nome de OpenVZ. 
+
+O OpenVZ foi uma ferramenta que ganhou bastante destaque no gerenciamento de _containers_ e ajudou e muito na popularização do VPS ( _Virtual Private Server_ ) e, consequentemente, na criação de centenas de empresas de _hosting_ espalhadas pelo mundo. O principal ponto negativo do OpenVZ era a necessidade de aplicar um _patch_ no _kernel_ Linux. 
+
+Logo após surgir o OpenVZ, o Google iniciou o desenvolvimento do CGroups para o _kernel_ do Linux e iniciou a utilização de _containers_ em seus _datacenters_ . 
+
+Em 2008 iniciou o projeto LXC, que trazia consigo o CGroups, _name­spaces_ e _chroot_ para prover uma completa e estável solução para a criação e o gerenciamento de _containers_ . 
+
+Porém, foi no ano de 2013 que os _containers_ conquistaram o _main­stream_ , saíram do _underground_ através da utilização massiva pelas empresas de internet e gigantes de tecnologia e invadiram os principais eventos de tecnologia ao redor do mundo, com palestras sobre o sucesso na utilização de _containers_ e com o melhor aproveitamento dos recursos físicos como CPU e memória, maior agilidade no _deployment_ de novas aplicações, _start/stop_ de _containers_ em fração de segundos e tudo isso com uma facilidade que impressiona. Amigo, estamos falando do simplesmente sensacional **Docker** . 
+
+
+#  2\.  O que é o Docker? 
+
+##  2.1. Onde entra o Docker nessa história? 
+
+Tudo começou em 2008, quando Solomon Hykes fundou a dotCloud, empresa especializada em PaaS com um grande diferencial: o seu _Platform-as-a-Service_ não era atrelado a nenhuma linguagem de programação específica, como era o caso, por exemplo, da Heroku, que suportava somente aplicações desenvolvidas em Ruby. 
+
+A grande virada na história da dotCloud ocorreu em março de 2013, quando decidiram tornar _open source_ o _core_ de sua plataforma – assim nascia o Docker! 
+
+As primeiras versões do Docker nada mais eram do que um _wrapper_ do LXC integrado ao _Union Filesystem_ , mas o seu crescimento foi fantástico e muito rápido, tanto que em seis meses seu _GitHub_ já possuía mais de seis mil _stars_ e mais de 170 pessoas contribuindo para o projeto ao redor do mundo. 
+
+Com isso, a dotCloud passou a se chamar Docker e a versão 1.0 foi lançada apenas 15 meses após sua versão 0.1. A versão 1.0 do Docker trouxe muito mais estabilidade e foi considerada “production ready”, além de trazer o Docker Hub, um repositório público para _containers_ . 
+
+Por ser um projeto _open source_ , qualquer pessoa pode visualizar o código e contribuir com melhorias para o Docker. Isso traz maior transparência e faz com que correções de _bugs_ e melhorias aconteçam bem mais rápido do que seria em um software proprietário com uma equipe bem menor e poucos cenários de testes. 
+
+Quando o Docker 1.0 foi lançado e anunciado que estava pronto para produção, empresas como Spotify já o utilizavam em grande escala; logo AWS e Google começaram a oferecer suporte a Docker em suas nuvens. Outra gigante a se movimentar foi a Red Hat, que se tornou uma das principais parceiras do Docker, inclusive o incorporando-o ao _OpenShift_ . 
+
+Atualmente, o Docker é oficialmente suportado apenas em máquinas Linux 64 _bits_ . Isso significa que seus _containers_ também terão que ser um Linux 64 _bits_ , pois lembre que o _container_ utiliza o mesmo _kernel_ da máquina host. ;) 
+
+No final de 2014, a Microsoft anunciou que futuras versões do Windows Server suportarão o Docker, uma mudança significativa no seu modelo de negócio. 
+
+
+Suporte a outras plataformas como Solaris e BSD deverão acontecer em breve. 
+
+##  2.2. E esse negócio de camadas? 
+
+###  2.2.1.  Copy-On-Write  (COW) e Docker 
+
+Antes de entender as camadas propriamente ditas, precisamos entender como um dos principais requisitos para essa coisa acontecer, o _Copy-On-Write_ (ou COW para os íntimos), funciona. Nas palavras do próprio Jérome Petazzoni: 
+
+_It’s a little bit like having a book. You can make notes in that book if you want, but each time you approach the pen to the page, suddenly someone shows up and takes the page and makes a xerox copy and hand it back to you, that’s exactly how copy on write works._
+
+Em tradução livre, seria como se você tivesse um livro e que fosse permitido fazer anotações nele caso quisesse, porém, cada vez que você estivesse prestes a tocar a página com a caneta, de repente alguém aparecesse, tirasse uma xerox dessa página e entregasse a cópia para você. É exatamente assim que o _Copy-On-Write_ funciona. 
+
+Basicamente, significa que um novo recurso, seja ele um bloco no disco ou uma área em memória, só é alocado quando for modificado. 
+
+Tá, mas o que isso tudo tem a ver com o Docker? Bom, como você sabe, o Docker usa um esquema de camadas, ou _layers_ , e para montar essas camadas são usadas técnicas de _Copy-On-Write_ . Um _container_ é basicamente uma pilha de camadas compostas por N camadas _read-only_ e uma, a superior, _read-write_ . 
+
+##  2.3.  Storage drivers 
+
+_Storage drivers_ são _filesystems_ que o _daemon_ do Docker vai usar para gerenciar os _containers_ e as imagens. O Docker aceita nativamente alguns _storage drivers_ . A seguir, vamos falar brevemente sobre os principais. 
+
+###  2.3.1. AUFS (  Another Union File System  ) 
+
+O primeiro _filesystem_ disponível para o Docker foi o AUFS, um dos mais antigos _Copy-On-Write_ _filesystems_ , e inicialmente teve que passar por algumas modificações a fim de melhorar a estabilidade. 
+
+A ideia do AUFS é ter múltiplos diretórios (camadas) juntos em uma pilha única. 
+
+Quando você tenta ler um arquivo, a busca é iniciada pela camada superior, até achar o arquivo ou concluir que ele não existe. Para escrever em um arquivo, este precisa primeiro ser copiado para a camada superior ( _writable_ ) – e, sim, você adivinhou: escrever em arquivos grandes pode causar certa degradação da performance. 
+
+
+Já que estamos falando de coisa chata, outra coisa que pode degradar a sua performance usando AUFS é o fato de que ele procura cada diretório de um _path_ em cada camada do _filesystem_ toda vez que você tentar executar um comando. Por exemplo, se você tem um _path_ com cinco diretórios, serão realizadas 25 buscas ( _stat() system call_ ). Isso pode ser bem complicado em aplicações que fazem _load_ dinâmico, como os _apps_ Python que importam os .py da vida. 
+
+Uma outra particularidade é quando algum arquivo é deletado. Quando isso acontece é criado um _whiteout_ para esse arquivo. Em outras palavras, ele é renomeado para “.wh.arquivo”. 
+
+###  2.3.2.  Device  Mapper 
+
+_Device Mapper_ é um _kernel-based framework_ da Red Hat usado para algumas abstrações, como, por exemplo, o mapeamento de “blocos físicos” em “blocos lógicos”, permitindo técnicas como LVM e RAID. No contexto do Docker, porém, ele se resume ao “thin provisioning target”, ou ao _storage driver_ “devicemapper”. Assim que essa coisa de Docker começou a andar, o pessoal da Red Hat (e toda a galera que usava alguma _distro_ relacionada com Red Hat) teve bastante interesse, só que havia um problema: eles não queriam usar AUFS. Para resolver isso, eles reuniram uma equipe de engenheiros muito habilidosos que adicionaram suporte ao _Device Mapper_ no Docker. 
+
+Em se tratando de Docker, o _Device Mapper_ e o AUFS são bem similares: a grande diferença entre eles é que, no _Device Mapper_ , quando você precisa escrever no arquivo, a cópia é feita em nível de blocos, não de _filesystem_ , e com isso você ganha uma granularidade bem maior. Em teoria, o problema que você tinha quando escrevia um arquivo grande desaparece. Dito isso, você pode pensar que a performance no _Device Mapper_ é melhor do que a do AUFS, só que existe um problema bem chato nele: por padrão, ele escreve em _loopback_ ( _sparse files_ ), deixando as operações relativamente mais lentas. 
+
+Além de AUFS e _Device Mapper_ , você também pode usar BRTFS e OverlayFS como _storage driver_ . Por serem tecnologias relativamente jovens, aprecie com moderação. 
+
+
+##  2.4. Docker Internals 
+
+O Docker utiliza algumas _features_ básicas do _kernel_ Linux para seu funcionamento. A seguir temos um diagrama onde é possível visualizar os módulos e _features_ do _kernel_ de que o Docker faz uso: 
+
+##  2.5.  Namespaces 
+
+_Namespaces_ foram adicionados no _kernel_ Linux na versão 2.6.24 e são eles que permitem o isolamento de processos quando estamos utilizando o Docker. São os responsáveis por fazer com que cada _container_ possua seu próprio _environment_ , ou seja, cada _container_ terá a sua árvore de processos, pontos de montagens, etc., fazendo com que um _container_ não interfira na execução de outro. Vamos saber um pouco mais sobre alguns _namespaces_ utilizados pelo Docker. 
+
+###  2.5.1. PID  namespace 
+
+O PID _namespace_ permite que cada _container_ tenha seus próprios identificadores de processos. Isso faz com que o _container_ possua um PID para um processo em execução – e quando você procurar por esse processo na máquina _host_ o encontrará; porém, com outra identificação, ou seja, com outro PID. 
+
+A seguir temos o processo “testando.sh” sendo executado no _container_ . Perceba o PID desse processo na árvore de processos dele: 
+
+root@c774fa1d6083:/# bash testando.sh &
+
+[1] 7 
+
+root@c774fa1d6083:/# ps -ef 
+
+UID PID PPID C STIME TTY TIME CMD 
+
+root 1 0 0 18:06 ?  |  00:00:00 /bin/bash   
+---|---  
+root  7  1 0 18:07 ?  |  00:00:00 bash testando.sh   
+root 8 7 0 18:07 ?  |  00:00:00 sleep 60   
+root 9 1 0 18:07 ?  |  00:00:00 ps -ef   
+  
+root@c774fa1d6083:/# 
+
+Agora, perceba o PID do mesmo processo exibido agora através do _host_ : 
+
+root@linuxtips:~# ps -ef | grep testando.sh 
+
+root  2958  2593 0 18:12 pts/2 00:00:00 bash testando.sh 
+
+root 2969 2533 0 18:12 pts/0 00:00:00 grep --color=auto   
+testando.sh 
+
+root@linuxtips:~# 
+
+Diferentes né? Porém, são o mesmo processo. :) 
+
+###  2.5.2.  Net  namespace 
+
+O _net namespace_ permite que cada _container_ possua sua interface de rede e portas. Para que seja possível a comunicação entre os _containers_ , é necessário criar dois _net namespaces_ diferentes, um responsável pela interface do _container_ (normalmente utilizamos o mesmo nome das interfaces convencionais do Linux, por exemplo, a eth0) e outro responsável por uma interface do _host_ , normalmente chamada de veth* (veth + um identificador aleatório). Essas duas interfaces estão _linkadas_ através da _bridge_ Docker0 no _host_ , que permite a comunicação entre os _containers_ através de roteamento de pacotes. 
+
+
+Conforme falamos, veja as interfaces. 
+
+Interfaces do _host_ : 
+
+root@linuxtips:~# ip addr 
+
+1:  lo  : <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default 
+
+link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00 
+
+inet 127.0.0.1/8 scope host lo 
+
+valid_lft forever preferred_lft forever 
+
+inet6 ::1/128 scope host 
+
+valid_lft forever preferred_lft forever 
+
+2:  eth1  : <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc   
+pfifo_fast state UP group default qlen 1000 
+
+link/ether 00:1c:42:c7:bd:d8 brd ff:ff:ff:ff:ff:ff 
+
+inet 10.211.55.35/24 brd 10.211.55.255 scope global eth1 
+
+valid_lft forever preferred_lft forever 
+
+inet6 fdb2:2c26:f4e4:0:21c:42ff:fec7:bdd8/64 scope global dynamic 
+
+valid_lft 2591419sec preferred_lft 604219sec 
+
+inet6 fe80::21c:42ff:fec7:bdd8/64 scope link 
+
+valid_lft forever preferred_lft forever 
+
+3:  docker0  : <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default 
+
+link/ether 02:42:c7:c1:37:14 brd ff:ff:ff:ff:ff:ff 
+
+inet 172.17.0.1/16 scope global docker0 
+
+valid_lft forever preferred_lft forever 
+
+inet6 fe80::42:c7ff:fec1:3714/64 scope link 
+
+valid_lft forever preferred_lft forever 
+
+5:  vetha2e1681  : <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue master docker0 state UP group default 
+
+link/ether 52:99:bc:ab:62:5e brd ff:ff:ff:ff:ff:ff 
+
+inet6 fe80::5099:bcff:feab:625e/64 scope link 
+
+valid_lft forever preferred_lft forever 
+
+root@linuxtips:~# 
+
+Interfaces do _container_ : 
+
+root@6ec75484a5df:/# ip addr 
+
+1:  lo  : <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default 
+
+link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00 
+
+inet 127.0.0.1/8 scope host lo 
+
+valid_lft forever preferred_lft forever 
+
+inet6 ::1/128 scope host 
+
+valid_lft forever preferred_lft forever 
+
+6:  eth0  : <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default 
+
+link/ether 02:42:ac:11:00:03 brd ff:ff:ff:ff:ff:ff 
+
+inet 172.17.0.3/16 scope global eth0 
+
+valid_lft forever preferred_lft forever 
+
+inet6 fe80::42:acff:fe11:3/64 scope link 
+
+valid_lft forever preferred_lft forever 
+
+root@6ec75484a5df:/# 
+
+Conseguiu visualizar as interfaces Docker0 e veth* do _host_ ? E a eth0 do _container_ ? Sim? _Otémooo_ ! :D 
+
+
+###  2.5.3.  IPC  namespace 
+
+É evolução do _chroot_ . Com o _mnt namespace_ cada _container_ pode ser dono de seu ponto de montagem, bem como de seu sistema de arquivos raiz. Ele garante que um processo rodando em um sistema de arquivos montado pelo _mnt namespace_ não consiga acessar outro sistema de arquivos montado por outro _mnt namespace_ . 
+
+###  2.5.4.  Mnt  namespace 
+
+Ele provê um SystemV IPC isolado, além de uma fila de mensagens POSIX própria. 
+
+###  2.5.5. UTS  namespace 
+
+Responsável por prover o isolamento de _hostname_ , nome de domínio, versão do SO, etc. 
+
+###  2.5.6.  User  namespace 
+
+O mais recente _namespace_ adicionado no _kernel_ Linux, disponível desde a versão 3.8. É o responsável por manter o mapa de identificação de usuários em cada _container_ . 
+
+##  2.6.  Cgroups 
+
+É o _cgroups_ o responsável por permitir a limitação da utilização de recursos do _host_ pelos _containers_ . 
+
+Com o _cgroups_ você consegue gerenciar a utilização de CPU, memória, dispositivos, I/O, etc. 
+
+##  2.7.  Netfilter 
+
+A ferramenta _iptables_ faz parte de um módulo chamado _netfilter_ . Para que os _containers_ consigam se comunicar, o Docker constrói diversas regras de roteamento através do _iptables_ ; inclusive utiliza o NAT, que veremos mais adiante no livro. 
+
+root@linuxtips:~# iptables -t nat -L 
+
+Chain PREROUTING (policy ACCEPT) 
+
+target  |  prot opt source  |  destination   
+---|---|---  
+DOCKER  |  all -- anywhere  |  anywhere   
+ADDRTYPE match dst-type LOCAL  |   
+  
+Chain INPUT (policy ACCEPT) 
+
+target  |  prot opt source  |  destination   
+---|---|---  
+  
+Chain OUTPUT (policy ACCEPT) 
+
+target  |  prot opt source  |  destination   
+---|---|---  
+DOCKER  |  all -- anywhere  |  !127.0.0.0/8   
+ADDRTYPE match dst-type LOCAL  |   
+  
+Chain POSTROUTING (policy ACCEPT) 
+
+target  |  prot opt source  |  destination   
+---|---|---  
+MASQUERADE  |  all -- 172.17.0.0/16  |  anywhere   
+  
+Chain DOCKER (2 references) 
+
+target  |  prot opt source  |  destination   
+---|---|---  
+RETURN  |  all -- anywhere  |  anywhere   
+root@linuxtips:~#  |   
+  
+##  2.8. Para quem ele é bom? 
+
+O Docker é muito bom para os desenvolvedores, pois com ele você tem liberdade para escolher a sua linguagem de programação, seu banco de dados e sua distribuição predileta. Já para os _sysadmins_ é melhor ainda, pois, além da liberdade de escolher a distribuição, não precisamos preparar o servidor com todas as dependências da aplicação. Também não precisamos nos preocupar se a máquina é física ou virtual, pois o Docker suporta ambos. 
+
+
+A empresa como um todo ganha com a utilização do Docker, pois dá maior agilidade no processo de desenvolvimento de aplicações, encurtando o processo de transição entre os ambientes de DEV, QA e PROD, pois é utilizado o mesmo _container_ . Traz menos custos com hardware por conta do melhor gerenciamento e aproveitamento dos recursos, além do _overhead_ , que é bem menor se comparado com outras soluções, como a virtualização. 
+
+Com Docker fica muito mais viável a criação de _microservices_ (microsserviços, a ideia de uma grande aplicação ser quebrada em várias pequenas partes e estas executarem tarefas específicas), um assunto que tem ganhado cada vez mais espaço no mundo da tecnologia e que vamos abordar com mais detalhes no final deste livro. 
+
+Ainda temos diversos outros motivos para utilizar _containers_ e que vamos descobrindo conforme evoluímos com a utilização do Docker. :D 
+
+
+#  3\.  Instalando o Docker 
+
+##  3.1. Quero instalar, vamos lá? 
+
+Bom, dado que você já sabe o que é um _container_ e o que é o tal do Docker, chegou a hora de pôr a mão na massa. Vamos instalar o Docker pela primeira vez! 
+
+O _daemon_ do Docker roda nativo em distribuições Linux, e por isso a instalação em sistemas operacionais que não sejam Linux consiste basicamente em subir uma VM e rodar o _daemon_ de lá. O cliente, no entanto, pode ser instalado nos principais sistemas operacionais disponíveis atual­mente. 
+
+Para realizar a instalação do Docker em máquinas Linux é bastante simples. Precisamos somente observar alguns pontos: 
+
+O Docker não suporta processadores 32 _bits_ . 
+
+O Docker é suportado somente ( _stable_ ) na versão do _kernel_ 3.8 ou superior. 
+
+O _kernel_ deve ter suporte aos sistemas de arquivos utilizados pelo Docker, como o AUFS, _D_ _evice Mapper_ , OverlayFS, etc. 
+
+O _kernel_ deverá ter suporte a _cgroups_ e _namespaces_ , o que normalmente já vem por _default_ habilitado na maioria das _distros_ . 
+
+Você também pode acessar a URL: https://docs.docker.com/engine/security/security/. 
+
+Lá é possível aprender a instalar o Docker em diversas distribuições Linux, nos principais _clouds_ e também no MacOS e no Windows. 
+
+Neste livro vamos utilizar a distribuição Debian Linux 8, porém o processo de instalação não muda quase nada para outras distribuições. Chega de conversa, vamos lá! 
+
+Primeiro, vamos verificar a versão do _kernel_ para saber se ele é compatível com o Docker: 
+
+# uname -r 
+
+Agora, a instalação do Docker é bastante simples. Você pode optar por instalá-lo utilizando os pacotes disponíveis para sua _distro_ – por exemplo, o _apt-get_ ou _yum._
+
+Nós preferimos fazer a instalação através da execução do _curl_ a seguir, que irá baixar um _script_ de instalação e já o executará: 
+
+# curl -fsSL https://get.docker.com/ | sh 
+
+Assim ele sempre buscará a versão mais recente do Docker. :) 
+
+Agora adicione a chave _pgp_ para conseguir baixar o pacote do repositório do Docker. 
+
+Caso você esteja utilizando o Debian e queira realizar a instalação através dos pacotes disponíveis no repositório, faça: 
+
+
+#apt-key adv --keyserver \ hkp://pgp.mit.edu:80 --recv-keys \ 58118E89F3A912897C070ADBF76221572C52609D 
+
+Agora vamos criar/editar o arquivo “/etc/apt/sources.list.d/docker.list” e adicionar o endereço do repositório correspondente à versão do seu Debian. No nosso caso estamos utilizando a versão Debian 8, também conhecida como Jessie. 
+
+# vim /etc/apt/sources.list.d/docker.list 
+
+# Debian Jessie   
+deb https://apt.dockerproject.org/repo debian-jessie main 
+
+Após adicionar a linha anterior, é necessário atualizar a lista de repositórios executando: 
+
+# apt-get update 
+
+Após finalizar a atualização da lista de repositórios disponíveis, já podemos fazer a instalação do Docker. O nome do pacote é “docker-engine”. :) 
+
+# apt-get install docker-engine 
+
+Vamos verificar se o Docker está em execução. Digite na linha de comando o seguinte: 
+
+#/etc/init.d/docker status 
+
+Ou: 
+
+# service docker status 
+
+docker stop/waiting 
+
+Com isso, podemos verificar se o processo está em execução. Como podemos notar, o _daemon_ do Docker não está em execução, portanto vamos iniciá-lo. 
+
+# service docker start 
+
+docker start/running, process 4303 
+
+# service docker status 
+
+docker start/running, process 4303 
+
+Perfeito! Agora já temos o Docker instalado e pronto para começar a brincar com os _containers_ . \o/ 
+
+###  3.1.1. Dica importante 
+
+Por padrão, o _daemon_ do Docker faz _bind_ em um _socket_ Unix, e não em uma porta TCP. _Sockets_ Unix, por sua vez, são de propriedade e de uso exclusivo do usuário _root_ (por isso o Docker sempre é iniciado como _root_ ), mas também podem ser acessados através do _sudo_ por outros usuários. 
+
+Para evitar que você tenha que ficar usando _sudo_ ao rodar comandos do Docker, crie um grupo chamado _docker_ e adicione o seu usuário a ele. Pare o serviço e inicie-o novamente. 
+
+Infelizmente, nem tudo são flores. Esse procedimento faz com que o usuário tenha **os mesmos privilégios do usuário** root  em operações relacionadas ao Docker. Mais informações no link: https://docs.docker.com/engine/security/security/. 
+
+Para criar um grupo no Linux e adicionar um usuário não tem segredo, basta rodar: 
+
+
+$ sudo usermod -aG docker user 
+
+Dica de um milhão de dólares: **user** = **seu** **usuário** . :D 
+
+##  3.2. Windows, MacOS, etc. 
+
+Bem, se você não usa Linux hoje (considere essa possibilidade!), a única forma de usar o Docker no seu ambiente de testes/desenvolvimento é instalar uma máquina virtual com Linux e nela instalar um Docker. Para facilitar esse processo foi criado o **Docker Toolbox** , que pode ser baixado em https://www.docker.com/toolbox. Uma vez instalado, você terá disponível: 
+
+Oracle VirtualBox. 
+
+Docker Engine. 
+
+Docker Machine. 
+
+Kitematic, um GUI para o Docker. 
+
+Um _shell_ personalizado para trabalhar em um ambiente Docker. 
+
+A instalação é bem simples, basicamente o velho _next_ , _install_ , _finish_ . 
+
+Lembrando que no Windows ele roda da versão 7 em diante e no MacOS a partir da versão 10.8, a _Mountain Lion_ . 
+
+
+#  4\. Executando e administrando  containers  Docker 
+
+##  4.1. Então vamos brincar com esse tal de  container  ! 
+
+Como todos sabemos, o Docker utiliza a linha de comando para que você possa interagir com ele – basicamente você utiliza o comando “docker”. 
+
+Bom, agora que já iniciamos o Docker, vamos rodar nosso primeiro _container_ . 
+
+Como é de costume quando alguém está aprendendo uma nova linguagem de programação, é bem comum fazer como o primeiro código um  hello world  **!**
+
+Apesar de o Docker não ser uma linguagem de programação, vamos utilizar esse costume com o nosso primeiro exemplo de um _container_ em execução. 
+
+O Docker possui uma imagem personalizada de _hello-world_ e serve para que você possa testar a sua instalação e validar se tudo funciona conforme o esperado. :D 
+
+Para que possamos executar um _container_ , utilizamos o parâmetro “run” do comando “docker”: 
+
+root@linuxtips:~# docker run hello-world 
+
+Unable to find image ‘hello-world:latest’ locally 
+
+latest: Pulling from library/hello-world 
+
+03f4658f8b78: Pull complete 
+
+a3ed95caeb02: Pull complete 
+
+Digest: sha256:8be990ef2aeb16dbcb9271ddfe2610fa6658d13f6dfb8bc72074cc1ca36966a7 
+
+Status: Downloaded newer image for hello-world:latest 
+
+Hello from Docker. 
+
+This message shows that your installation appears to be working correctly. 
+
+To generate this message, Docker took the following steps: 
+
+1\. The Docker client contacted the Docker daemon. 
+
+2\. The Docker daemon pulled the “hello-world” image from the Docker Hub. 
+
+3\. The Docker daemon created a new container from that   
+image which runs the executable that produces the output you are currently reading. 
+
+4\. The Docker daemon streamed that output to the Docker client, which sent it to your terminal. 
+
+To try something more ambitious, you can run an Ubuntu container with: 
+
+$ docker run -it ubuntu bash 
+
+Share images, automate workflows, and more with a free Docker Hub account: 
+
+https://hub.docker.com 
+
+For more examples and ideas, visit: 
+
+https://docs.docker.com/userguide/ 
+
+root@linuxtips:~# 
+
+No exemplo anterior, estamos executando um _container_ utilizando a imagem personalizada do _hello-world_ . 
+
+
+Apesar de ser uma tarefa simples, quando você executou o comando “docker run hello-world” foram necessárias quatro etapas para sua conclusão, vamos ver quais: 
+
+1\. O comando “docker” se comunica com o _daemon_ do Docker informando a ação desejada. 
+
+2\. O _daemon_ do Docker verifica se a imagem “hello-world” encontra-se em seu _host_ ; caso ainda não, o Docker faz o _download_ da imagem diretamente do Docker Hub. 
+
+3\. O _daemon_ do Docker cria um novo _container_ utilizando a imagem que você acabou de baixar. 
+
+4\. O _daemon_ do Docker envia a saída para o comando “docker”, que imprime a mensagem em seu terminal. 
+
+Viu? É simples como voar! :) 
+
+Muito bem, agora que nós já temos uma imagem em nosso _host_ , como eu faço para visualizá-la? 
+
+Muito simples, basta digitar o seguinte comando: 
+
+root@linuxtips:~# docker images 
+
+REPOSITORY  |  TAG  |  IMAGE ID  |  CREATED  |  SIZE   
+---|---|---|---|---  
+hello-world latest 690ed74de00f  |  5 months  |  960 B   
+---|---|---  
+  
+root@linuxtips:~# 
+
+Como você pode notar no código, a saída traz cinco colunas: 
+
+**REPOSITORY** – O nome da imagem. 
+
+**TAG** – A versão da imagem. 
+
+**IMAGE ID** – Identificação da imagem. 
+
+**CREATED** – Quando ela foi criada. 
+
+**SIZE** – Tamanho da imagem. 
+
+Quando executamos o comando “docker run hello-world”, ele criou o _container_ , imprimiu a mensagem na tela e depois o _container_ foi finalizado automaticamente, ou seja, ele executou sua tarefa, que era exibir a mensagem, e depois foi finalizado. 
+
+Para ter certeza de que ele realmente foi finalizado, digite: 
+
+root@linuxtips:~# docker ps 
+
+CONTAINER ID IMAGE COMMAND CREATED STATUS PORT NAMES 
+
+root@linuxtips:~# 
+
+Com o “docker ps”, você consegue visualizar todos os _containers_ em execução e ainda obter os detalhes sobre eles. A saída do “docker ps” é dividida em sete colunas; vamos conhecer o que elas nos dizem: 
+
+**CONTAINER ID** – Identificação única do _container._
+
+**IMAGE** – A imagem que foi utilizada para a execução do _container._
+
+**COMMAND** – O comando em execução. 
+
+**CREATED** – Quando ele foi criado. 
+
+**STATUS** – O seu status atual. 
+
+**PORTS** – A porta do _container_ e do _host_ que esse _container_ utiliza. 
+
+
+**NAMES** – O nome do _container._
+
+Uma opção interessante do “docker ps” é o parâmetro “-a”. 
+
+root@linuxtips:~# docker ps -a 
+
+CONTAINER ID  |  IMAGE  |  COMMAND  |  CREATED  |  STATUS   
+---|---|---|---|---  
+  
+PORTS NAMES 
+
+6e45cf509282  |  hello-world  |  “/hello”  |  4seconds  |  Exited(0)   
+---|---|---|---|---  
+  
+tracted_ardinghelli 
+
+root@linuxtips:~# 
+
+Com a opção “-a” você consegue visualizar não somente os _containers_ em execução, como também _containers_ que estão parados ou que foram finalizados. 
+
+##  4.2. Legal, quero mais! 
+
+Agora que vimos como criar um simples _container_ , bem como visualizar as imagens e _containers_ que estão em nosso _host_ , vamos criar um novo, porém conhecendo três parâmetros que irão trazer maior flexibilidade no uso e na administração de nossos _containers_ . Estou falando dos parâmetros “-t”, “-i” e “-d”. 
+
+**-t** – Disponibiliza um TTY (console) para o nosso _container_ . 
+
+**-i** – Mantém o STDIN aberto mesmo que você não esteja conectado no _container._
+
+**-d** – Faz com que o _container_ rode como um _daemon_ , ou seja, sem a interatividade que os outros dois parâmetros nos fornecem. 
+
+Com isso temos dois modos de execução de nossos _containers_ : modo interativo ou _daemonizando_ o _container_ . 
+
+###  4.2.1. Modo interativo 
+
+Na maior parte das vezes você vai subir um _container_ a partir de uma imagem que já está pronta, toda ajustadinha. Porém, há alguns casos em que você precisa interagir com o seu _container_ – isso pode acontecer, por exemplo, na hora de montar a sua imagem personalizada. 
+
+Nesse caso, usar o modo interativo é a melhor opção. Para isso, basta passar os parâmetros “-ti” ao comando “docker run”. 
+
+root@linuxtips:~# docker run -ti ubuntu /bin/bash 
+
+[root@4116917387a6 /]# 
+
+###  4.2.2.  Daemonizando  **o** container 
+
+Utilizando o parâmetro “-d” do comando “docker run”, é possível _daemonizar_ o _container_ , fazendo com que o _container_ seja executado como um processo _daemon_ . 
+
+Isso é ideal quando nós já possuímos um _container_ que não iremos acessar (via _shell_ ) para realizar ajustes. Imagine uma imagem já com a sua aplicação e tudo que precisa configurado; você irá subir o _container_ e somente irá consumir o serviço entregue por sua aplicação. Se for uma aplicação _web_ , basta acessar no _browser_ passando o IP e a porta onde o serviço é disponibilizado no _container_ . Sensacional, não? 
+
+
+root@linuxtips:~# docker run -d minha_imagem_pronta 
+
+49f9014740042fc9d0543d7edb6ecbd711def79d6fef7bb5de5988ad7082d6cf 
+
+Ou seja, se você quer subir um _container_ para ser utilizado como uma máquina Linux convencional com _shell_ e que necessita de alguma configuração ou ajuste, utilize o modo interativo, ou seja, os parâmetros “-ti”. 
+
+Agora, se você já tem o _container_ configurado, com sua aplicação e todas as dependências sanadas, não tem a necessidade de usar o modo interativo – nesse caso utilizamos o parâmetro “-d”, ou seja, o _container_ _daemonizado_ . Vamos acessar somente os serviços que ele provê, simples assim. :D 
+
+##  4.3. Entendi, agora vamos praticar um pouco? 
+
+Perfeito. Vamos iniciar um novo _container_ utilizando dois desses novos parâmetros que aprendemos. 
+
+Para o nosso exemplo, vamos subir um _container_ do Centos 7: 
+
+root@linuxtips:~# docker run -ti centos:7 
+
+Unable to find image ‘centos:7’ locally 
+
+7: Pulling from library/centos 
+
+a3ed95caeb02: Pull complete 
+
+196355c4b639: Pull complete 
+
+Digest: sha256:3cdc0670fe9130ab3741b126cfac6d7720492dd2c1c8ae033dcd77d32855bab2 
+
+Status: Downloaded newer image for centos:7 
+
+[root@3c975fb7fbb5 /]# 
+
+Como a imagem não existia em nosso _host_ , ele fez o _download_ do Docker Hub. Caso ela já estivesse lá, seria utilizada. 
+
+Perceba que mudou o seu _prompt_ (variável $PS1), pois agora você já está dentro do _container_ . Para provar que estamos dentro do nosso _container_ Centos, execute o seguinte comando: 
+
+[root@3c975fb7fbb5 /]# cat /etc/redhat-release 
+
+CentOS Linux release 7.2.1511 (Core) 
+
+[root@3c975fb7fbb5 /]# 
+
+O arquivo “/etc/redhat-release” indica qual a versão do Centos que estamos utilizando, ou seja, estamos realmente em nosso _container_ Centos 7. :D 
+
+##  4.4. Tá, agora quero sair... 
+
+Um detalhe importante é que você não pode utilizar o comando “exit” para sair do console, pois dessa forma você automaticamente dá _stop_ no _container_ . Caso queira sair de um _container_ e mantê-lo em execução é necessário sair com o seguinte atalho do teclado: 
+
+**mantenha o botão Ctrl pressionado + p + q**
+
+Assim, você sairá do _container_ e ele continuará em execução. Para confirmar se o _container_ continua em execução, faça: 
+
+
+root@linuxtips:~# docker ps 
+
+CONTAINER  |  ID IMAGE  |  COMMAND  |  CREATED  |  STATUS   
+---|---|---|---|---  
+PORTS  |  NAMES   
+---|---  
+3c975fb7fbb5 centos:7 “/bin/bash”  |  2minutes  |  Up 2 minutes   
+---|---|---  
+  
+angry_wescoff 
+
+root@linuxtips:~# 
+
+##  4.5. Posso voltar ao  container  ? 
+
+Deixamos o nosso _container_ em execução e agora queremos acessá-lo novamente. Como podemos fazer? 
+
+Simples! Basta digitar o seguinte comando: 
+
+root@linuxtips:~# docker attach <CONTAINER ID>
+
+O parâmetro “attach” do comando “docker” possibilita nos conectarmos a um _container_ em execução. Para isso, basta passar como parâmetro o “CONTAINER ID”, que você consegue através da saída do “docker ps”, conforme mostramos no exemplo anterior. 
+
+##  4.6. Continuando com a brincadeira... 
+
+Existe a possibilidade de criar um _container,_ porém não executá-lo imediatamente. Quando fazemos o uso do parâmetro “create” do comando “docker”, ele apenas cria o _container_ , não o inicializando, conforme notamos no exemplo a seguir: 
+
+root@linuxtips:~# docker create ubuntu 
+
+Unable to find image ‘ubuntu:latest’ locally 
+
+latest: Pulling from library/ubuntu 
+
+5a132a7e7af1: Pull complete 
+
+fd2731e4c50c: Pull complete 
+
+28a2f68d1120: Pull complete 
+
+a3ed95caeb02: Pull complete 
+
+Digest:   
+sha256:4e85ebe01d056b43955250bbac22bdb8734271122e3c78d21e55ee235fc6802d 
+
+Status: Downloaded newer image for ubuntu:latest 
+
+3e63e65db85a6e36950959dc6bdc00279e2208a335580c478e01723819de9467 
+
+root@linuxtips:~# 
+
+Perceba que quando você digita “docker ps” ele não traz o _container_ recém-criado, afinal a saída do “docker ps” somente traz os _containers_ em execução. Para visualizar o _container_ recém-criado foi necessário utilizar o parâmetro “-a”. 
+
+root@linuxtips:~# docker ps -a 
+
+CONTAINER  ID  |  IMAGE  |  COMMAND  |  CREATED  |  STATUS   
+---|---|---|---|---  
+PORTS  |  NAMES   
+---|---  
+3e63e65db85a  |  ubuntu  |  “/bin/bash”  |  18 seconds ago  |  Created   
+---|---|---|---|---  
+  
+elo_visves 
+
+root@linuxtips:~# 
+
+Para que o nosso _container_ recém-criado seja executado, basta utilizar o “docker run”, conforme segue: 
+
+root@linuxtips:~# docker run -ti ubuntu 
+
+root@b422f04df14c:/# 
+
+
+Verificando se estamos realmente utilizando o _container_ do Ubuntu: 
+
+root@b422f04df14c:/# cat /etc/debian_version 
+
+jessie/sid 
+
+root@b422f04df14c:/# 
+
+Lembrando que para sair do _container_ e mantê-lo em execução é necessário utilizar o atalho: **Ctrl + p + q** . 
+
+##  4.7. Subindo e baixando  containers  … 
+
+Caso eu queira parar um _container_ em execução, basta utilizar o parâmetro “stop” seguido do “CONTAINER ID”: 
+
+# docker stop [CONTAINER ID] 
+
+Verificando se o _container_ continua em execução: 
+
+# docker ps 
+
+De novo... para visualizar os _containers_ que não estão em execução é necessário utilizar o parâmetro “-a”. 
+
+Para colocar novamente em execução um _container_ que está parado, é necessário utilizar o parâmetro “start” do comando “docker” seguido do “CONTAINER ID”: 
+
+# docker start [CONTAINER ID] 
+
+Da mesma forma como podemos utilizar o _stop/start_ para desligar/iniciar um _container_ , podemos também fazer o uso do “restart”, como notamos a seguir: 
+
+# docker restart [CONTAINER ID] 
+
+Para pausar um _container_ , execute: 
+
+# docker pause [CONTAINER ID] 
+
+E verifique o status do _container_ : 
+
+root@linuxtips:~# docker ps 
+
+CONTAINER ID  |  IMAGE  |  COMMAND  |  CREATED  |  STATUS   
+---|---|---|---|---  
+PORTS  |  NAMES   
+---|---  
+b34f4987bdce  |  ubuntu  |  “/bin/bash”  |  12 seconds ago  |  Up   
+---|---|---|---|---  
+  
+11seconds(  Paused  ) drunk_turi 
+
+root@linuxtips:~# 
+
+Para “despausar” o _container_ : 
+
+# docker unpause [CONTAINER ID] 
+
+##  4.8. Visualizando o consumo de recursos pelo  container 
+
+Caso você queira visualizar informações referentes ao consumo de recursos pelo _container_ , também é bastante simples: basta utilizar o parâmetro “stats” para verificar o consumo de CPU, memória e rede pelo _container_ . 
+
+# docker stats [CONTAINER ID] 
+
+CONTAINER  |  CPU%  |  MEM USAGE / LIMIT  |  MEM %  |  NET I/O   
+---|---|---|---|---  
+  
+BLOCK I/O 
+
+b34f4987bdce  |  0.00%  |  503.8 kB / 2.094 GB  |  0.02%  |  648 B /   
+---|---|---|---|---  
+  
+648 B 0 B / 0 B 
+
+Agora, se você quer visualizar quais processos estão em execução em determinado _container_ , utilize o parâmetro “top”. Com ele você consegue informações sobre os processos em execução, como, por exemplo, UID e o PID do processo. 
+
+
+# docker top [CONTAINER ID] 
+
+UID  |  PID  |  PPID  |  C  |  STIME  |  TTY  |  TIME  |  CMD   
+---|---|---|---|---|---|---|---  
+root  |  10656  |  4303  |  0  |  20:24  |  pts/3  |  00:00:00  |  /bin/bash   
+  
+Para verificar os _logs_ de um determinado _container_ , utilize o parâmetro “logs”, simples assim. :D 
+
+# docker logs [CONTAINER ID] 
+
+Lembre-se: ele exibe o STDOUT, a saída padrão. Ou seja, normalmente você irá visualizar o histórico de mensagens que aparecerem em primeiro plano durante a execução do _container_ . 
+
+##  4.9. Cansei de brincar de  container  , quero removê-lo! 
+
+Bem, remover um _container_ é mais simples ainda do que sua criação. Quando removemos um _container_ , a imagem que foi utilizada para a sua criação permanece no _host_ ; somente o _container_ é apagado. 
+
+root@linuxtips:~# docker rm b34f4987bdce 
+
+Failed to remove container (b34f4987bdce): Error response from daemon: Conflict, You cannot remove a running container. Stop the container before attempting removal or use -f 
+
+root@linuxtips:~# 
+
+Perceba que, quando você tentou remover o _container_ , ele retornou um erro dizendo que falhou em remover, pois o _container_ estava em execução. Ele inclusive recomenda que você pare o _container_ antes de removê-lo ou então utilize a opção “-f”, forçando assim sua remoção. 
+
+root@linuxtips:~# docker rm -f b34f4987bdce 
+
+b34f4987bdce 
+
+root@linuxtips:~# 
+
+Para confirmar a remoção do _container_ , utilize o comando “docker ps”. 
+
+
+#  5\. Configurando CPU e memória para os meus  containers 
+
+Vamos imaginar que você precise subir quatro _containers_ para um projeto novo. Esses _containers_ possuem as seguintes características: 
+
+Dois _web servers._
+
+Dois DB MySQL. 
+
+Evidentemente, por se tratar de serviços diferentes, na maioria dos casos possuem características de consumo de recursos, como CPU e memória, diferentes um do outro. 
+
+_Web server_ – Dois CPUs | 512 MB de memória 
+
+DB MySQL – Quatro CPUs | 2 GB de memória 
+
+E agora, como fazemos? :( 
+
+Por padrão, quando você executa um _container_ sem especificar a quantidade de recursos que ele irá utilizar, ele sobe sem um controle, podendo inclusive impactar o _host_ onde está sendo executado. 
+
+Portanto, é muito importante limitar a utilização de recursos de seus _containers_ , visando um melhor aproveitamento de seus recursos computacionais, como veremos agora. :) 
+
+##  5.1. Especificando a quantidade de memória 
+
+Primeiro, vamos executar um _container_ para realizarmos o nosso exemplo. 
+
+root@linuxtips:~# docker run -ti --name teste debian 
+
+Agora vamos visualizar a quantidade de memória que está configurada para esse _container_ . Uma forma fácil é utilizar a saída do comando “docker inspect”: 
+
+root@linuxtips:~# docker inspect teste | grep -i mem 
+
+“CpusetMems”: “”, 
+
+“KernelMemory”: 0, 
+
+“Memory”: 0, 
+
+“MemoryReservation”: 0, 
+
+“MemorySwap”: 0, 
+
+“MemorySwappiness”: -1, 
+
+Como percebemos, os valores correspondentes à memória estão zerados, ou seja, sem nenhum limite estabelecido. 
+
+Vamos agora subir um novo _container_ , porém passando os valores para que utilize 512 MB de memória: 
+
+root@linuxtips:~# docker run -ti -m 512M --name   
+novo_container debian 
+
+Utilizamos o parâmetro “-m” para especificar a quantidade de memória que desejamos disponibilizar ao _container_ . Vamos utilizar o “docker inspect” novamente para verificar se a nossa configuração funcionou: 
+
+root@linuxtips:~# docker inspect novo_container | grep -i mem 
+
+“CpusetMems”: “”, 
+
+“KernelMemory”: 0, 
+
+“Memory”: 536870912, 
+
+“MemoryReservation”: 0, 
+
+“MemorySwap”: -1, 
+
+“MemorySwappiness”: -1, 
+
+Muito bom, parece que deu certo! 
+
+
+Observe o campo “Memory”, onde temos o valor que passamos no momento em que criamos o _container_ . Vale ressaltar que o valor exibido é em _bytes_ . 
+
+Quando você utiliza o parâmetro “-m” ou “--memory”, você está passando o máximo de memória que o _container_ utilizará do _host_ . 
+
+##  5.2. Especificando a quantidade de CPU 
+
+Para que possamos configurar a utilização de CPU do _host_ pelo _container_ , precisamos antes entender como funciona a divisão do consumo entre os _containers_ . 
+
+Por padrão, todos os _containers_ podem consumir os recursos de CPU de forma idêntica, na mesma proporção. Porém, quando você utiliza o parâmetro “--cpu-shares” você consegue redefinir essa proporção. O valor padrão do “--cpu-shares” é 1024, ou seja, todos os _containers_ , quando não especificado, iniciam com esse valor. 
+
+Para que entenda melhor, imagine que você possui três _containers_ , sendo que o _container_ “A” possui um “cpu-share” de 1024, enquanto os _containers_ “B” e “C” possuem um “cpu-share” de 512. Isso significa que o _container_ “A” poderá utilizar 50% dos CPUs do _host_ e os _containers_ “B” e “C”, apenas 25% cada, entendeu? Fácil, né!? 
+
+Vamos criar esses _containers_ utilizando o parâmetro “--cpu-shares”: 
+
+root@linuxtips:~# docker run -ti --cpu-shares 1024 --name teste1 debian 
+
+root@linuxtips:~# docker run -ti --cpu-shares 512 --name teste2 debian 
+
+root@linuxtips:~# docker run -ti --cpu-shares 512 --name teste3 debian 
+
+Para verificar, vamos utilizar o comando “docker inspect”: 
+
+root@linuxtips:~# docker inspect teste1 | grep -i cpu 
+
+“CpuShares”: 1024, 
+
+“CpuPeriod”: 0, 
+
+“CpuQuota”: 0, 
+
+“CpusetCpus”: “”, 
+
+“CpusetMems”: “”, 
+
+root@linuxtips:~# docker inspect teste2 | grep -i cpu 
+
+“CpuShares”: 512, 
+
+“CpuPeriod”: 0, 
+
+“CpuQuota”: 0, 
+
+“CpusetCpus”: “”, 
+
+“CpusetMems”: “”, 
+
+root@linuxtips:~# docker inspect teste3 | grep -i cpu 
+
+“CpuShares”: 512, 
+
+“CpuPeriod”: 0, 
+
+“CpuQuota”: 0, 
+
+“CpusetCpus”: “”, 
+
+“CpusetMems”: “”, 
+
+O campo “CpuShares” traz a informação que configuramos. :) 
+
+Simples, fácil e rápido! 
+
+##  5.3. Eu consigo alterar CPU e memória dos meus  containers  em execução? 
+
+Sim! \o/ 
+
+Com o lançamento da versão 1.10 do Docker, temos o comando “docker update”, que permite alterar as configurações referentes a CPU, memória e IO com o _container_ em execução de forma muito simples! Isso é fantástico! 
+
+
+Como exemplo, vamos subir um _container_ e em seguida vamos alterar as informações referentes a memória e CPU: 
+
+root@linuxtips:~# docker run -ti --cpu-shares 1024 -m 512m --name teste1 debian 
+
+root@linuxtips:~# docker inspect teste1 | grep -i cpu 
+
+“CpuShares”: 1024, 
+
+“CpuPeriod”: 0, 
+
+“CpuQuota”: 0, 
+
+“CpusetCpus”: “”, 
+
+“CpusetMems”: “”, 
+
+root@linuxtips:~# docker inspect teste1 | grep -i mem 
+
+“CpusetMems”: “”, 
+
+“KernelMemory”: 0, 
+
+“Memory”: 536870912, 
+
+“MemoryReservation”: 0, 
+
+“MemorySwap”: -1, 
+
+“MemorySwappiness”: -1, 
+
+Agora, vamos alterar os valores de limite de CPU e memória: 
+
+root@linuxtips:~# docker update -m 256m --cpu-shares 512 teste1 
+
+teste1 
+
+root@linuxtips:~# docker inspect teste1 | grep -i cpu 
+
+“CpuShares”: 512, 
+
+“CpuPeriod”: 0, 
+
+“CpuQuota”: 0, 
+
+“CpusetCpus”: “”, 
+
+“CpusetMems”: “”, 
+
+root@linuxtips:~# docker inspect teste1 | grep -i mem 
+
+“CpusetMems”: “”, 
+
+“KernelMemory”: 0, 
+
+“Memory”: 268435456, 
+
+“MemoryReservation”: 0, 
+
+“MemorySwap”: -1, 
+
+“MemorySwappiness”: -1, 
+
+Funcionou? SIMMM! 
+
+Assim, com os _containers_ em execução, mudamos as informações referentes a memória e CPU! 
+
+Existem outros parâmetros do “docker update”. Para verificar a lista completa, digite “docker update --help”. 
+
+
+#  6\. Meu primeiro e tosco  dockerfile  ... 
+
+Tudo que nós fizemos até agora foi escrever na linha de comando, o que é OK para aprender. Porém, principalmente nos dias de hoje, não dá para viver mais sem automatizar as coisas – se você, assim como nós, adora automatizar tudo que for possível, vai gostar bastante desse assunto. 
+
+O _dockerfile_ nada mais é do que um arquivo onde você determina todos os detalhes do seu _container_ , como, por exemplo, a imagem que você vai utilizar, aplicativos que necessitam ser instalados, comandos a serem executados, os volumes que serão montados, etc., etc., etc.! 
+
+É um _makefile_ para criação de _containers_ , e nele você passa todas as instruções para a criação do seu _container_ . 
+
+Vamos ver como isso funciona na prática? 
+
+Primeira coisa: vamos criar um diretório onde deixaremos o nosso arquivo _dockerfile_ , somente para ficar organizado. :D 
+
+Depois basta criar o _dockerfile_ conforme exemplo a seguir: 
+
+# mkdir /root/primeiro_dockerfile 
+
+# cd /root/primeiro_dockerfile 
+
+# vim Dockerfile 
+
+Vamos adicionar as instruções que queremos para essa imagem de _container_ que iremos criar: 
+
+FROM debian 
+
+RUN /bin/echo “HELLO DOCKER” 
+
+Apenas isso por enquanto. Salve e saia do _vim_ . 
+
+Agora vamos rodar o comando “docker build” para fazer a criação dessa imagem de _container_ utilizando o _dockerfile_ criado. 
+
+root@linuxtips:~/primeiro_dockerfile# docker build . 
+
+Sending build context to Docker daemon 2.048 kB 
+
+Step 1 : FROM debian 
+
+latest: Pulling from library/debian 
+
+fdd5d7827f33: Pull complete 
+
+a3ed95caeb02: Pull complete 
+
+Digest: sha256:e7d38b3517548a1c71e41bffe9c8ae6d6d29546ce46bf62159837aad072c90aa 
+
+Status: Downloaded newer image for debian:latest 
+
+\---> f50f9524513f 
+
+Step 2 : RUN /bin/echo “HELLO DOCKER” 
+
+\---> Running in df60a0644bed 
+
+HELLO DOCKER 
+
+\---> fd3af97a8940 
+
+Removing intermediate container df60a0644bed 
+
+Successfully built fd3af97a8940 
+
+root@linuxtips:~/primeiro_dockerfile# 
+
+Veja que usamos o diretório corrente, representado pelo caractere “.”, para indicar o _path_ do meu arquivo _dockerfile_ , mas você não precisa necessariamente estar no mesmo diretório, basta passar o _path_ do diretório onde o arquivo se encontra. 
+
+
+**Lembre apenas que é o** path  **do diretório e não do arquivo.**
+
+É importante ressaltar que não passamos nem o nome nem a versão da imagem. Vamos aprender como fazê-lo mais adiante. 
+
+##  6.1. Outras opções 
+
+Vamos agora aprender um pouco mais sobre as opções que podemos utilizar quando estamos criando um _dockerfile_ : 
+
+**ADD** – Copia novos arquivos, diretórios, arquivos TAR ou arquivos remotos e os adiciona ao _filesystem_ do _container_ . 
+
+**CMD** – Executa um comando. Diferentemente do RUN, que executa o comando no momento em que está _buildando_ a imagem, o CMD o executa no início da execução do _container_ . 
+
+**LABEL** – Adiciona metadados à imagem, como versão, descrição e fabricante. 
+
+**COPY** – Copia novos arquivos e diretórios e os adiciona ao _filesystem_ do _container_ . 
+
+**ENTRYPOINT** – Permite configurar um _container_ para rodar um executável e quando esse executável for finalizado o _container_ também será. 
+
+**ENV** – Informa variáveis de ambiente ao _container_ . 
+
+**EXPOSE** – Informa em qual porta o _container_ estará ouvindo. 
+
+**FROM** – Indica qual imagem será utilizada como base. Ela precisa ser a primeira linha do _dockerfile_ . 
+
+**MAINTAINER** – Autor da imagem. 
+
+**RUN** – Executa qualquer comando em uma nova camada no topo da imagem e _commita_ as alterações. Essas alterações você poderá utilizar nas próximas instruções de seu _dockerfile_ . 
+
+**USER** – Determina qual o usuário que será utilizado na imagem. Por _default_ , é o _root_ . 
+
+**VOLUME** – Permite a criação de um ponto de montagem no _container_ . 
+
+**WORKDIR** – Responsável por mudar do diretório / (raiz) para o especificado nele. 
+
+
+#  7\.  Entendendo volumes 
+
+##  7.1. Introdução a volumes no Docker 
+
+Bom, volumes nada mais são que diretórios (ou arquivos) que _bypassam_ o _filesystem_ do _container_ . Decepcionei você? Que bom, sinal de que é bem simples e você não vai ter problemas para entender. :) 
+
+Volumes são especialmente designados para serem persistentes, inclusive independentemente do _container_ onde eles são montados. 
+
+Existem algumas particularidades entre os volumes e _containers_ que valem a pena ser mencionadas: 
+
+O volume é inicializado quando o _container_ é criado. 
+
+Caso ocorra de já haver dados no diretório em que você está montando como volume, ou seja, se o diretório já existe e está “populado” na imagem base, aqueles dados serão copiados para o volume. 
+
+Um volume pode ser reusado e compartilhado entre _containers_ . 
+
+Alterações em um volume são feitas diretamente no volume. 
+
+Alterações em um volume não irão com a imagem quando você fizer uma cópia ou _snapshot_ de um _container_ . 
+
+Volumes continuam a existir mesmo se você deletar o _container_ . 
+
+Dito isso, chega de papo. Vamos aprender a adicionar um volume em um _container_ . 
+
+root@linuxtips:~# docker run -ti -v /volume ubuntu /bin/bash 
+
+root@7db02e999bf2:/# df -h 
+
+Filesystem  |  Size  |  Used Avail Use% Mounted on   
+---|---|---  
+none  |  13G  |  6.8G  |  5.3G  |  57% /   
+tmpfs  |  999M  |  0  |  999M  |  0% /dev   
+tmpfs  |  999M  |  0  |  999M  |  0%   
+  
+/sys/fs/cgroup 
+
+/dev/mapper/ubuntu--vg-root  |  13G  |  6.8G  |  5.3G  |  57% /volume   
+---|---|---|---|---  
+shm  |  64M  |  0  |  64M  |  0% /dev/shm   
+  
+root@7db02e999bf2:/# ls 
+
+bin  |  boot  |  dev  |  etc  |  home  |  lib  |  lib64  |  media  |  mnt  |  opt  |  proc   
+---|---|---|---|---|---|---|---|---|---|---  
+root  |  run  |  sbin  |  srv  |  sys  |  tmp  |  usr  |  var  |  volume   
+---|---|---|---|---|---|---|---|---  
+  
+root@7db02e999bf2:/# 
+
+No exemplo anterior, conhecemos um novo parâmetro do comando “docker run”, o “-v”. 
+
+O parâmetro “-v” é o responsável por indicar o volume, que em nosso exemplo é o “/volume”. Perceba que, quando passamos o parâmetro “-v /volume”, o Docker montou esse diretório no _container_ , porém sem nenhum conteúdo. 
+
+Podemos também montar um volume no _container_ _linkando-o_ com um diretório do _host_ . Para exemplificar, vamos compartilhar o diretório   
+“/root/primeiro_container”, que utilizamos para guardar o nosso primeiro _dockerfile_ , e montá-lo no _container_ em um volume chamado “/volume” da seguinte forma: 
+
+
+# docker run -ti -v /root/primeiro_dockerfile:/volume ubuntu 
+
+root@3d372a410ea2:/# df -h 
+
+Filesystem  |  Size  |  Used Avail Use% Mounted on   
+---|---|---  
+none  |  13G  |  6.8G  |  5.3G  |  57% /   
+tmpfs  |  999M  |  0  |  999M  |  0% /dev   
+tmpfs  |  999M  |  0  |  999M  |  0%   
+  
+/sys/fs/cgroup 
+
+/dev/mapper/ubuntu--vg-root  |  13G  |  6.8G  |  5.3G  |  57% /volume   
+---|---|---|---|---  
+shm  |  64M  |  0  |  64M  |  0% /dev/shm   
+  
+root@3d372a410ea2:/# 
+
+Perceba que modificamos um pouco a forma de utilizar o “-v”; agora estamos passando da seguinte maneira: 
+
+-v /root/primeiro_dockerfile:/volume 
+
+-v diretorio_do_host:diretorio_do_  container 
+
+Com isso, estamos montando o diretório “/root/primeiro_dockerfile” do _host_ dentro do _container_ com o nome de “/volume”. 
+
+No _container_ : 
+
+root@3d372a410ea2:/# ls /volume/ 
+
+Dockerfile 
+
+root@3d372a410ea2:/# 
+
+No _host_ : 
+
+root@linuxtips:~# ls /root/primeiro_dockerfile/ 
+
+Dockerfile 
+
+root@linuxtips:~# 
+
+Caso eu queira deixar o volume no _container_ apenas como _read-only,_ é possível. Basta passar o parâmetro “:ro” após o nome do volume: 
+
+# docker run -ti -v /root/primeiro_dockerfile:/volume:ro ubuntu 
+
+root@8d7863b1d9af:/# df -h 
+
+Filesystem  |  Size  |  Used Avail Use% Mounted on   
+---|---|---  
+none  |  13G  |  6.8G  |  5.3G  |  57% /   
+tmpfs  |  999M  |  0  |  999M  |  0% /dev   
+tmpfs  |  999M  |  0  |  999M  |  0%   
+  
+/sys/fs/cgroup 
+
+/dev/mapper/ubuntu--vg-root  |  13G  |  6.8G  |  5.3G  |  57% /volume   
+---|---|---|---|---  
+shm  |  64M  |  0  |  64M  |  0% /dev/shm   
+  
+root@8d7863b1d9af:/# cd /volume/ 
+
+root@8d7863b1d9af:/volume# ls 
+
+Dockerfile 
+
+root@8d7863b1d9af:/volume# mkdir teste 
+
+mkdir: cannot create directory ‘teste’: Read-only file system 
+
+root@8d7863b1d9af:/volume# 
+
+Assim como é possível montar um diretório como volume, também é possível montar um arquivo: 
+
+# docker run -ti -v   
+/root/primeiro_dockerfile/Dockerfile:/Dockerfile ubuntu 
+
+root@df0e3e58280a:/# df -h 
+
+Filesystem  |  Size  |  Used Avail Use% Mounted on   
+---|---|---  
+none  |  13G  |  6.8G  |  5.3G  |  57% /   
+tmpfs  |  999M  |  0  |  999M  |  0% /dev   
+tmpfs  |  999M  |  0  |  999M  |  0%   
+  
+/sys/fs/cgroup 
+
+/dev/mapper/ubuntu--vg-root  |  13G  |  6.8G  |  5.3G  |  57%   
+---|---|---|---|---
+
+
+/Dockerfile   
+  
+shm  |  64M  |  0  |  64M  |  0% /dev/shm   
+---|---|---|---|---  
+  
+root@df0e3e58280a:/# cat Dockerfile 
+
+FROM debian 
+
+RUN /bin/echo “HELLO DOCKER” 
+
+root@df0e3e58280a:/# 
+
+Isso faz com que o arquivo “/root/primeiro_dockerfile/Dockerfile” seja montado em “/Dockerfile” no _container_ . 
+
+Simples como voar, não? 
+
+##  7.2. Localizando volumes 
+
+Caso você queira obter a localização do seu volume, é simples. Mas para isso você precisa conhecer um novo comando do Docker, o “docker inspect”. Nós até já demos uma pincelada com ele, mas não vimos a fundo. Vamos ver? 
+
+Com o “docker inspect” você consegue obter detalhes do seu _container_ , como imagem base, pontos de montagem, configurações de rede, etc. 
+
+A saída do comando “docker inspect” é bastante extensa, por isso por enquanto vamos nos concentrar somente nas informações que ele traz em relação aos volumes. 
+
+# docker inspect -f {{.Mounts}} [CONTAINER ID] 
+
+[{ /root/primeiro_dockerfile /volume ro false rprivate}] 
+
+Como podemos notar, ele nos mostra o volume que está ativo no _container_ , no caso o “/root/primeiro_dockerfile” do _host_ montado no “/volume” do _container_ como _read-only,_ fácil assim! 
+
+O “{{.Mounts}}” é utilizado no Docker 1.8; no Docker 1.7 você utilizaria o   
+“{{.Volumes}}”.  Caso você esteja usando Mac ou Windows, o Docker Machine monta o seu “/Users” (Mac) ou o seu “C:\Users” (Windows); portanto, esses diretórios serão montados normalmente no _container_ . Qualquer coisa fora deles são diretórios do próprio Docker Machine.   
+---  
+  
+##  7.3. Criando e montando um  data-only  container 
+
+Uma opção bastante interessante em relação aos volumes diz respeito ao _data-only container_ , cuja única função é prover volumes para outros _containers_ . Lembra do NFS _server_ e do Samba? Ambos centralizavam diretórios com a finalidade de compartilhar entre outros servidores. Pois bem, o _data-only container_ tem a mesma finalidade. 
+
+Um dos grandes baratos do Docker é a portabilidade. Um _container_ criado no seu _laptop_ deve ser portátil a ponto de rodar em qualquer outro ambiente que utilize o Docker, em todos os cantos do universo! 
+
+
+Sendo assim, o que acontece se eu criar um ambiente em Docker que diz para os _containers_ montarem um diretório do _host_ local? Depende. Depende de como está esse tal _host_ local. Perguntas como “o diretório existe?” “as permissões estão ajustadas?”, entre outras mais, definirão o sucesso na execução dos _containers_ , o que foge completamente do escopo do Docker, que tem como principal característica a portabilidade. Se você possui um _cluster_ com dez _hosts_ , não é interessante usar diretório local, pois um _host_ é diferente do outro. 
+
+Vamos ver como funciona isso na prática! :) 
+
+Para o nosso exemplo, primeiro vamos criar um _container_ chamado “dbdados”, com um volume chamado “/data”, que guardará os dados do nosso banco PostgreSQL. 
+
+# docker create -v /data --name dbdados centos 
+
+Com isso, apenas criamos o _container_ e especificamos um volume para ele, mas ainda não o iniciamos. 
+
+Sabemos que no _container_ o volume se encontra montado em “/data”. Porém, qual a localização desse volume no _host_ ? 
+
+Lembra do “docker inspect”? Vamos utilizá-lo novamente: 
+
+root@linuxtips:~# docker inspect -f {{.Mounts}} dbdados 
+
+[{46255137fe3f6d5f593e9ba9aaaf570b2f8b5c870f587c2fb34f29b79f9 7c30c   
+/var/lib/docker/volumes/46255137fe3f6d5f593e9ba9aaaf570b2f8b5c870f587c2fb34f29b79f97c30c/_data /data local true }] 
+
+Perceba que agora utilizamos o nome do _container_ em vez do “CONTAINER ID”. Totalmente possível e muito mais intuitivo. 
+
+Quando executamos o “docker inspect”, ele nos retornou o caminho do nosso volume. Vamos ver se existe algum conteúdo dentro dele: 
+
+root@linuxtips:~# ls \ /var/lib/docker/volumes/46255137fe3f6d5f593e9ba9aaaf570b2f8b5c870f \ 587c2fb34f29b79f97c30c/_data 
+
+Como vimos, o diretório ainda não possui conteúdo. 
+
+Agora vamos criar os _containers_ que rodarão o PostgreSQL utilizando o volume “/data” do _container_ “dbdados” para guardar os dados. 
+
+Para que possamos fazer o exemplo, precisamos conhecer mais dois parâmetros superimportantes: 
+
+**\--volumes-from** – É utilizado quando queremos montar um volume disponibilizado por outro _container_ . 
+
+
+**-e** – É utilizado para informar variáveis de ambiente para o _container_ . No exemplo, estamos passando as variáveis de ambiente do PostgreSQL. 
+
+Pronto, agora estamos preparados! Vamos criar os _containers_ com o PostgreSQL: 
+
+# docker run -d -p 5432:5432 --name pgsql1 --volumes-from dbdados \ 
+
+-e POSTGRESQL_USER=docker -e POSTGRESQL_PASS=docker \ 
+
+-e POSTGRESQL_DB=docker kamui/postgresql 
+
+# docker run -d -p 5433:5432 --name pgsql2 --volumes-from dbdados \ 
+
+-e POSTGRESQL_USER=docker -e POSTGRESQL_PASS=docker \ 
+
+-e POSTGRESQL_DB=docker kamui/postgresql 
+
+Para verificar os dois _containers_ com o PostgreSQL em execução, utilize o “docker ps”. 
+
+Pronto, agora temos os dois _containers_ com PostgreSQL em execução! Será que já temos algum dado no volume “/data” do _container_ “dbdados”? 
+
+Vamos verificar novamente no _host_ se o volume agora possui algum dado: 
+
+root@linuxtips:~# ls   
+/var/lib/docker/volumes/46255137fe3f6d5f593e9ba9aaaf570b2f8b5c870f587c2fb34f29b79f97c30c/_data 
+
+base  |  pg_clog  |  pg_ident.conf  |  pg_notify  |  pg_snapshots   
+---|---|---|---|---  
+pg_stat_tmp  |  pg_tblspc  |  PG_VERSION  |  postgresql.conf   
+---|---|---|---  
+postmaster.pid  |  server.key global  |  pg_hba.conf  |  pg_multixact   
+---|---|---|---  
+pg_serial  |  pg_stat  |  pg_subtrans  |  pg_twophase  |  pg_xlog   
+---|---|---|---|---  
+postmaster.opts  |  server.crt   
+---|---  
+  
+root@linuxtips:~# 
+
+Sensacional! Como vimos, os dois _containers_ do PostgreSQL estão escrevendo seus dados no volume “/data” do _container_ “dbdados”. Chega a ser lacrimejante! :D 
+
+##  7.4. Sempre é bom ter um  backup 
+
+Outra coisa bem bacana é a possibilidade de fazer _backups_ dos seus _containers_ de dados de forma muito simples e rápida. 
+
+Digamos que você queira fazer o _backup_ do diretório “/data” do _container_ “dbdados” que nós criamos há pouco; como faríamos? 
+
+root@linuxtips:~# cd backup/ 
+
+root@linuxtips:~/backup# docker run -ti --volumes-from dbdados -v $(pwd):/backup debian tar cvf /backup/backup.tar /data 
+
+Quando executamos o comando anterior, foi criado um novo _container_ montando o(s) volume(s) do _container_ “dbdados” (que no caso é o “/data”, lembra?). Além disso, será montado o diretório corrente do _host_ no volume “/backup” do _container_ , e em seguida será executado o comando do _tar_ para empacotar o diretório “/data” dentro do diretório “/backup”. 
+
+
+root@linuxtips:~/backup# ls 
+
+backup.tar 
+
+root@linuxtips:~/backup# 
+
+
+#  8\.  Criando e gerenciando imagens 
+
+##  8.1. Agora eu quero criar minha imagem, posso? 
+
+Claro que pode! 
+
+E mais, vamos aprender de duas formas simples e intuitivas. 
+
+Uma das coisas mais interessantes do Docker é a possibilidade de usar imagens criadas por outras pessoas ao redor do mundo através de algum _registry_ como o Docker Hub. Isso agiliza muito a sua vida, ainda mais quando você precisa apenas testar uma determinada tecnologia. O POC ( _Proof of Concept_ – em português, prova de conceito) se torna muito mais ágil, fazendo com que você consiga testar diversas ferramentas no mesmo tempo em que levaria para testar somente uma sem o Docker. 
+
+Entretanto, em determinados momentos precisamos criar a nossa própria imagem do zero, ou então modificar uma imagem criada por terceiros e salvar essas alterações em uma nova imagem. 
+
+Agora vamos ver os dois casos: como montar uma distribuição praticamente do zero utilizando somente instruções através do _dockerfile_ e outra realizando modificações em uma imagem já existente e salvando em uma imagem nova. 
+
+##  8.2. Vamos começar do começo então,  dockerfile  ! 
+
+Vamos montar a nossa primeira imagem utilizando como roteiro de criação um _dockerfile_ . Você verá o quanto é simples a criação de um _dockerfile_ bem completo e prático. :) 
+
+Para começar, vamos criar um diretório chamado “/root/Dockerfiles”. 
+
+# mkdir /root/Dockerfiles 
+
+Agora começaremos a criação do nosso _dockerfile_ , nosso mapa de criação da imagem. Para que possamos organizá-lo melhor, vamos criar um diretório chamado “apache”, onde guardaremos esse nosso primeiro exemplo: 
+
+# cd /root/Dockerfiles/ 
+
+# mkdir apache 
+
+Por enquanto, vamos apenas criar um arquivo chamado “Dockerfile” e adicionar o conteúdo conforme exemplo a seguir: 
+
+# cd apache 
+
+# vim Dockerfile 
+
+FROM debian 
+
+RUN apt-get update && apt-get install -y apache2 && apt-get clean 
+
+ENV APACHE_LOCK_DIR=”/var/lock” 
+
+ENV APACHE_PID_FILE=”/var/run/apache2.pid” 
+
+ENV APACHE_RUN_USER=”www-data” 
+
+ENV APACHE_RUN_GROUP=”www-data” 
+
+ENV APACHE_LOG_DIR=”/var/log/apache2” 
+
+LABEL description=”Webserver” 
+
+
+VOLUME /var/www/html/ 
+
+EXPOSE 80 
+
+Após a criação do arquivo, vamos _buildar_ (construir a nossa imagem) da seguinte forma: 
+
+# docker build . 
+
+Lembre-se: você deverá estar no diretório onde está o seu _dockerfile_ . 
+
+Todos os passos que definimos em nosso _dockerfile_ serão realizados, como a instalação dos pacotes solicitados e todas as demais tarefas. 
+
+Successfully built 53de2cee9e71 
+
+Muito bem! Como podemos notar na última linha da saída do “docker build”, a imagem foi criada com sucesso! :D 
+
+Vamos executar o “docker images” para ver se está tudo certo com a nossa primeira imagem! 
+
+root@linuxtips:~/Dockerfile/apache# docker images 
+
+REPOSITORY  |  TAG  |  IMAGE ID  |  CREATED  |  SIZE   
+---|---|---|---|---  
+<none> |  <none> |  53de2cee9e71  |  2 minutes ago  |  193.4 MB   
+  
+A nossa imagem foi criada! Porém, temos um problema. 
+
+A imagem foi criada e está totalmente funcional, mas, quando a _buildamos_ , não passamos o parâmetro “-t”, que é o responsável por adicionar uma _tag_ (“nome:versão”) à imagem. 
+
+Vamos executar novamente o _build_ , porém passando o parâmetro ‘-t’, conforme o exemplo a seguir: 
+
+# docker build -t linuxtips/apache:1.0 . 
+
+Agora vamos ver se realmente a imagem foi criada, adicionando um nome e uma versão a ela: 
+
+root@linuxtips:~/Dockerfile/apache# docker images 
+
+REPOSITORY  |  TAG  |  IMAGE ID  |  CREATED   
+---|---|---|---  
+  
+SIZE 
+
+linuxtips/apache  |  1.0  |  53de2cee9e71  |  5 minutes ago   
+---|---|---|---  
+  
+193.4 MB 
+
+Maravilha! Funcionou conforme esperávamos! 
+
+Vamos executar um _container_ utilizando nossa imagem como base: 
+
+# docker run -ti linuxtips/apache:1.0 
+
+Agora já estamos no _container_ . Vamos verificar se o Apache2 está em execução. Se ainda não estiver, vamos iniciá-lo e verificar se a porta 80 está “LISTEN”. 
+
+root@70dd36fe2d3b:/# ps -ef 
+
+UID  |  PID  |  PPID  |  C  |  STIME TTY  |  TIME CMD   
+---|---|---|---|---|---  
+root  |  1  |  0  |  1  |  21:33 ?  |  00:00:00 /bin/bash   
+root  |  6  |  1  |  0  |  21:33 ?  |  00:00:00 ps -ef   
+  
+root@70dd36fe2d3b:/# /etc/init.d/apache2 start 
+
+[....] Starting web server: apache2AH00558: apache2: Could not reliably determine the server’s fully qualified domain name, using 172.17.0.4. Set the ‘ServerName’ directive   
+globally to suppress this message 
+
+
+. ok 
+
+root@70dd36fe2d3b:/# ps -ef 
+
+UID  |  PID  |  PPID  |  C  |  STIME TTY  |  TIME CMD   
+---|---|---|---|---|---  
+root  |  1  |  0  |  0  |  21:33 ?  |  00:00:00 /bin/bash   
+root  |  30  |  1  |  0  |  21:33 ?  |  00:00:00   
+/usr/sbin/apache2 -k start   
+www-data  |  33  |  30  |  0  |  21:33 ?  |  00:00:00   
+/usr/sbin/apache2 -k start   
+www-data  |  34  |  30  |  0  |  21:33 ?  |  00:00:00   
+/usr/sbin/apache2 -k start   
+root  |  109  |  1  |  0  |  21:33 ?  |  00:00:00 ps -ef   
+  
+root@70dd36fe2d3b:/# ss -atn 
+
+State  |  Recv-Q Send-Q  |  Local Address:Port  |  Peer   
+---|---|---|---  
+  
+Address:Port 
+
+LISTEN  |  0  |  128  |  :::80  |  :::*   
+---|---|---|---|---  
+  
+root@70dd36fe2d3b:/# ip addr show eth0 
+
+50: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default 
+
+link/ether 02:42:ac:11:00:04 brd ff:ff:ff:ff:ff:ff 
+
+inet  172.17.0.4  /16 scope global eth0 
+
+valid_lft forever preferred_lft forever 
+
+inet6 fe80::42:acff:fe11:4/64 scope link 
+
+valid_lft forever preferred_lft forever 
+
+root@70dd36fe2d3b:/# 
+
+No código anterior é possível observar o IP do _container_ na saída do “ip addr”. Vamos testar a comunicação com o _container_ a partir do _host_ . 
+
+No _host_ , digite: 
+
+# curl <IP DO CONTAINER>
+
+O “curl” retornou a página de boas-vindas do Apache2, ou seja, tudo está funcionando muito bem e o Apache2, respondendo conforme esperado! 
+
+##  8.3. Vamos customizar uma imagem base agora? 
+
+Vamos agora criar uma nova imagem, porém sem utilizar o _dockerfile_ . Vamos executar um _container_ com uma imagem base, realizar as modificações que desejarmos e depois salvar esse _container_ como uma nova imagem! 
+
+Simples, rápido e fácil! 
+
+Bem, primeiro precisamos criar um _container_ . 
+
+root@linuxtips:~# docker run -ti debian:8 /bin/bash 
+
+root@0b7e6f606aae:/# 
+
+Agora vamos fazer as alterações que desejamos. Vamos fazer o mesmo que fizemos quando montamos nossa primeira imagem com o _dockerfile_ , ou seja, fazer a instalação do Apache2. :D 
+
+root@0b7e6f606aae:/# apt-get update && apt-get install -y apache2 && apt-get clean 
+
+Agora que já instalamos o Apache2, vamos sair do _container_ para que possamos _commitar_ a nossa imagem com base nesse _container_ em execução: 
+
+
+Lembre-se de que para sair do _container_ e deixá-lo ainda em execução é necessário pressionar **Ctrl + p + q** . ;) 
+
+# docker commit -m “meu container” CONTAINER ID 
+
+# docker images 
+
+REPOSITORY TAG  |  IMAGE ID  |  CREATED  |  SIZE   
+---|---|---|---  
+<none> <none> |  fd131aedd43a  |  4 seconds ago  |  193.4 MB   
+  
+Repare que nossa imagem ficou com o “<none>” em seu nome e “TAG”. Para que possamos ajustar e dar um nome e uma versão à nossa imagem, vamos usar o comando “docker tag”, conforme mostramos a seguir: 
+
+# docker tag IMAGEID linuxtips/apache_2:1.0 
+
+REPOSITORY  |  TAG  |  IMAGE ID  |  CREATED  |  SIZE   
+---|---|---|---|---  
+linuxtips/apache_2  |  1.0  |  fd131aedd43a  |  2 minutes ago  |  193.4 MB   
+  
+Agora sim!!! Temos a nossa imagem criada e nome e versão especificados. 
+
+Vamos iniciar um _container_ utilizando a imagem que acabamos de criar: 
+
+# docker run -ti linuxtips/apache_2:1.0 /bin/bash 
+
+Vamos subir o Apache2 e testar a comunicação do _container_ : 
+
+root@57094ec894ce:/# ps -ef 
+
+UID  |  PID  |  PPID  |  C STIME TTY  |  TIME CMD   
+---|---|---|---|---  
+root  |  1  |  0  |  0 21:48 ?  |  00:00:00 /bin/bash   
+root  |  6  |  1  |  0 21:48 ?  |  00:00:00 ps -ef   
+  
+root@57094ec894ce:/# /etc/init.d/apache2 start 
+
+[....] Starting web server: apache2AH00558: apache2: Could not reliably determine the server’s fully qualified domain name, using 172.17.0.6. Set the ‘ServerName’ directive   
+globally to suppress this message 
+
+. ok 
+
+root@70dd36fe2d3b:/# ps -ef 
+
+UID  |  PID  |  PPID  |  C STIME TTY  |  TIME CMD   
+---|---|---|---|---  
+root  |  1  |  0  |  0 21:43 ?  |  00:00:00 /bin/bash   
+root  |  30  |  1  |  0 21:44 ?  |  00:00:00   
+/usr/sbin/apache2 -k start   
+www-data  |  33  |  30  |  0 21:44 ?  |  00:00:00   
+/usr/sbin/apache2 -k start   
+www-data  |  34  |  30  |  0 21:44 ?  |  00:00:00   
+/usr/sbin/apache2 -k  start   
+root  |  111  |  1  |  0 21:44 ?  |  00:00:00 ps -ef   
+  
+root@70dd36fe2d3b:/# ss -atn 
+
+State  |  Recv-Q Send-Q  |  Local Address:Port  |  Peer   
+---|---|---|---  
+  
+Address:Port 
+
+LISTEN  |  0  |  128  |  :::80  |  :::*   
+---|---|---|---|---  
+  
+root@57094ec894ce:/# ip addr show eth0 
+
+54: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default 
+
+
+link/ether 02:42:ac:11:00:06 brd ff:ff:ff:ff:ff:ff 
+
+inet  172.17.0.6  /16 scope global eth0 
+
+valid_lft forever preferred_lft forever 
+
+inet6 fe80::42:acff:fe11:6/64 scope link 
+
+valid_lft forever preferred_lft forever 
+
+Boaaa! Agora já temos o Apache2 em execução. Vamos sair do _container_ e testar a comunicação com o Apache2 a partir do _host_ : 
+
+# curl <Container IP>
+
+Ele retornará a página de boas-vindas do Apache2! Tudo funcionando conforme esperado! 
+
+
+#  **9.** Compartilhando as imagens 
+
+Bem, já aprendemos como criar uma imagem, seja via _dockerfile_ ou através da modificação de uma imagem base, e conhecemos alguns comandos interessantes, como o “docker build” e o “docker commit”. 
+
+Agora vamos aprender a compartilhar essas imagens, seja em um _registry_ local ou então no _registry_ do próprio Docker Hub. 
+
+##  9.1. O que é o Docker Hub? 
+
+Docker Hub é um repositório público e privado de imagens que disponibiliza diversos recursos, como, por exemplo, sistema de autenticação, _build_ automático de imagens, gerenciamento de usuários e departamentos de sua organização, entre outras funcionalidades. 
+
+Pessoas e empresas se juntam, criam seus _containers_ seguindo as melhores práticas, testam tudo direitinho e depois disponibilizam lá pra você usar sem ter nenhum trabalho. Isso é uma mão na roda gigantesca, uma vez que você não vai ter que perder tempo instalando coisas e às vezes até indo aprender como configurar tal serviço. Basta ir no Docker Hub e procurar; provavelmente alguém já criou um _container_ que você pode usar pelo menos de base! 
+
+Provavelmente você não vai querer baixar da internet, mesmo que do _registry_ do próprio Docker (sério), e subir no seu ambiente de produção algo que você não tem certeza de como funciona, o que é, etc. 
+
+Para resolver esse problema o Docker disponibiliza algumas funcionalidades, como o comando “docker inspect”, que já vimos antes, quando falávamos de volumes, lembra? Naquele momento usamos a _flag_ “-f” e especificamos um campo de pesquisa, pois o intuito era mostrar somente a parte que estava sendo discutida naquele capítulo. Mas o “docker inspect” vai muito além disso; sem passar o “-f” ele vai retornar todas as informações contidas naquela imagem, desde a imagem base que foi utilizada até pontos de montagem, configurações, enfim, muita coisa. Teste aí: 
+
+root@linuxtips:~# docker inspect debian 
+
+[ 
+
+{ 
+
+“Id”:   
+“sha256:f50f9524513f5356d952965dc97c7e831b02bb6ea0619da9bfc1997e4b9781b7”, 
+
+“RepoTags”: [ 
+
+“debian:8”, 
+
+“debian:latest” 
+
+], 
+
+“RepoDigests”: [], 
+
+
+“Parent”: “”, 
+
+“Comment”: “”, 
+
+“Created”: “2016-03-01T18:51:14.143360029Z”, 
+
+“Container”:   
+“557177343b434b6797c19805d49c37728a4445d2610a6647c27055fbe4ec 3451”, 
+
+“ContainerConfig”: { 
+
+“Hostname”: “e5c68db50333”, 
+
+“Domainname”: “”, 
+
+“User”: “”, 
+
+“AttachStdin”: false, 
+
+“AttachStdout”: false, 
+
+“AttachStderr”: false, 
+
+“Tty”: false, 
+
+“OpenStdin”: false, 
+
+“StdinOnce”: false, 
+
+“Env”: null, 
+
+“Cmd”: [ 
+
+“/bin/sh”, 
+
+“-c”, 
+
+“#(nop) CMD [\”/bin/bash\”]” 
+
+], 
+
+“Image”:   
+“d8bd0657b25f17eef81a3d52b53da5bda4de0cf5cca3dcafec277634ae4b 38fb”, 
+
+“Volumes”: null, 
+
+“WorkingDir”: “”, 
+
+“Entrypoint”: null, 
+
+“OnBuild”: null, 
+
+“Labels”: {} 
+
+}, 
+
+“DockerVersion”: “1.9.1”, 
+
+“Author”: “”, 
+
+“Config”: { 
+
+“Hostname”: “e5c68db50333”, 
+
+“Domainname”: “”, 
+
+“User”: “”, 
+
+“AttachStdin”: false, 
+
+“AttachStdout”: false, 
+
+“AttachStderr”: false, 
+
+“Tty”: false, 
+
+“OpenStdin”: false, 
+
+“StdinOnce”: false, 
+
+“Env”: null, 
+
+“Cmd”: [ 
+
+“/bin/bash” 
+
+], 
+
+“Image”:   
+“d8bd0657b25f17eef81a3d52b53da5bda4de0cf5cca3dcafec277634ae4b 38fb”, 
+
+“Volumes”: null, 
+
+“WorkingDir”: “”, 
+
+“Entrypoint”: null, 
+
+“OnBuild”: null, 
+
+“Labels”: {} 
+
+}, 
+
+“Architecture”: “amd64”, 
+
+“Os”: “linux”, 
+
+“Size”: 125110803, 
+
+“VirtualSize”: 125110803, 
+
+“GraphDriver”: { 
+
+“Name”: “aufs”, 
+
+“Data”: null 
+
+} 
+
+} 
+
+] 
+
+root@linuxtips:~# 
+
+Às vezes será disponibilizado junto com a imagem o seu respectivo _dockerfile_ e aí fica bem mais fácil: basta ler esse arquivo para saber exatamente como ela foi criada. :) 
+
+Um comando bastante interessante, que nos faz entender como uma imagem é dividida em camadas (e, principalmente, o que foi feito em cada camada), é o “docker history”. 
+
+root@linuxtips:~# docker history linuxtips/apache:1.0 
+
+IMAGE  |  CREATED  |  CREATED BY   
+---|---|---  
+  
+SIZE COMMENT 
+
+4862def18dfd  |  36 minutes ago  |  /bin/sh -c #(nop) EXPOSE   
+---|---|---  
+80/tcp 0 B  |  |   
+06210ac863da  |  36 minutes ago  |  /bin/sh -c #(nop) VOLUME   
+[/var/www/html/] 0 B   
+fed9b6bc7ad9  |  36 minutes ago  |  /bin/sh -c #(nop) LABEL   
+description=Webserver 0 B   
+68f6e8de3df3  |  36 minutes ago  |  /bin/sh -c #(nop) ENV   
+APACHE_LOG_DIR=/var/log 0 B   
+1a129e753d1e  |  36 minutes ago  |  /bin/sh -c #(nop) ENV   
+APACHE_RUN_GROUP=www-da 0 B   
+f0f9d7be7c70  |  36 minutes ago  |  /bin/sh -c #(nop) ENV   
+APACHE_RUN_USER=www-dat 0 B   
+3dafea4a403a  |  36 minutes ago  |  /bin/sh -c #(nop) ENV   
+APACHE_PID_FILE=/var/ru 0 B   
+f31eb176ecc8  |  36 minutes ago  |  /bin/sh -c #(nop) ENV   
+APACHE_LOCK_DIR=/var/lo 0 B   
+0bbefd91da05  |  36 minutesago  |  /bin/sh -c apt-get update &&  
+apt-get install 68.29 MB   
+f50f9524513f  |  12 days ago  |  /bin/sh -c #(nop) CMD   
+[“/bin/bash”]  |  0 B  |   
+<missing> |  12 days ago  |  /bin/sh -c #(nop) ADD   
+file:b5393172fb513d 125.1 MB 
+
+
+root@linuxtips:~#   
+  
+Perceba que as primeiras linhas da saída do comando anterior são referentes às informações que pedimos para adicionar à imagem no _dockerfile_ . As demais camadas são originais da imagem que pegamos do Docker Hub através da instrução “FROM”. 
+
+Existe também um site chamado “ImageLayers”: ele faz exatamente a mesma coisa que o “docker history”, mas você não precisa baixar a imagem – e, bom, é _web_ . O ImageLayers pode ser acessado em:  https://imagelayers.io/  . 
+
+O Docker Hub, como já falamos, tem muitos componentes, dentre eles o responsável pelo repositório de imagens: o _registry_ . 
+
+É possível utilizar um _registry_ local em vez de um na nuvem, como o Docker Hub ou outros _registries_ que são facilmente encontrados na internet. Falaremos disso com detalhes mais à frente. :P 
+
+Para que você possa utilizar o Docker Hub para gerenciar as suas imagens, é necessário criar uma conta. Existem duas formas de fazer isso: através da URL http://hub.docker.com/account/signup ou então através da linha de comando utilizando o “docker login”. 
+
+##  9.2. Vamos criar uma conta? 
+
+Vamos criar uma conta no Docker Hub, porém não iremos fazer através do navegador; vamos criar via linha de comando, pois acreditamos ser esta a maneira mais eficiente e fácil de realizar essa tarefa. 
+
+Para que consiga realizar a criação da sua conta, é necessário utilizar o comando “docker login”. Ele também é utilizado para autenticar no Docker Hub após a criação da conta. 
+
+Vamos criar uma conta como exemplo: 
+
+root@linuxtips:~# docker login 
+
+Username: linuxtips 
+
+Password: 
+
+Email: linuxtipsbr@gmail.com 
+
+WARNING: login credentials saved in /root/.docker/config.json 
+
+Account created. Please use the confirmation link we sent to your e-mail to activate it. 
+
+root@linuxtips:~# 
+
+Após inserir usuário, senha e e-mail, é enviada uma mensagem de confirmação para o endereço que você informou. 
+
+A partir da confirmação do seu e-mail, já é possível se autenticar e começar a fazer uso do Docker Hub. 
+
+root@linuxtips:~# docker login 
+
+Username: linuxtips 
+
+Password: 
+
+Email: linuxtipsbr@gmail.com 
+
+
+WARNING: login credentials saved in /root/.docker/config.json 
+
+Login Succeeded 
+
+root@linuxtips:~# 
+
+Você consegue criar repositórios públicos à vontade, porém na conta _free_ você somente tem direito a um repositório privado. Caso precise de mais do que um repositório privado, é necessário o _upgrade_ da sua conta e o pagamento de uma mensalidade. :) 
+
+Caso você queira especificar outro _registry_ em vez do Docker Hub, basta passar o endereço como parâmetro, como segue: 
+
+# docker login registry.seilaqual.com 
+
+##  9.3. Agora vamos compartilhar essas imagens na  interwebs  ! 
+
+Uma vez que já criamos a nossa conta no Docker Hub, podemos começar a utilizá-la! 
+
+Como exemplo, vamos utilizar a imagem que montamos com o _dockerfile_ no capítulo anterior chamada “linuxtips/apache”. Quando realizarmos o _upload_ dessa imagem para o Docker Hub, o repositório terá o mesmo nome da imagem, ou seja, “linuxtips/apache”. 
+
+Uma coisa muito importante! A sua imagem deverá ter o seguinte padrão, para que você consiga fazer o _upload_ para o Docker Hub: 
+
+seuusuario/nomedaimagem:versão 
+
+Assim, sabemos que “linuxtips/apache:1.0” significa: 
+
+linuxtips  –  Usuário do Docker Hub. 
+
+apache  –  Nome da imagem. 
+
+1.0  –  Versão. 
+
+Agora vamos utilizar o comando “docker push”, responsável por fazer o _upload_ da imagem da sua máquina local para o _registry_ do Docker Hub, como mostrado no exemplo a seguir: 
+
+root@linuxtips:~# docker push linuxtips/apache:1.0 
+
+The push refers to a repository [docker.io/linuxtips/apache] 
+
+b3a691489ee1: Pushed 
+
+5f70bf18a086: Layer already exists 
+
+917c0fc99b35: Pushed 
+
+1.0: digest:   
+sha256:c8626093b19a686fd260dbe0c12db79a97ddfb6a6d8e4c4f44634f66991d93d0 size: 6861 
+
+root@linuxtips:~# 
+
+Acessando a URL https://hub.docker.com/ você conseguirá visualizar o repositório que acabou de criar, conforme a imagem a seguir: 
+
+Por padrão, ele cria o repositório como público. ;) 
+
+Caso você queira visualizar o seu novo repositório pela linha de comando, basta utilizar o comando “docker search” seguido de seu usuário do Docker Hub: 
+
+root@linuxtips:~# docker search <seu_usuario>
+
+
+NAME  |  DESCRIPTION  |  STARS  |  OFFICIAL   
+---|---|---|---  
+AUTOMATED  |  |  |   
+linuxtips/apache  |  |  0  |   
+  
+Já que possuímos a imagem no _registry_ do Docker Hub, vamos testá-la fazendo o _pull_ da imagem e em seguida vamos executando-a para saber se realmente tudo isso funciona de forma simples e fácil assim. :) 
+
+Primeiro vamos parar os _containers_ que utilizam a imagem “linuxtips/apache”: 
+
+# docker ps | grep seu_usuario/sua_imagem 
+
+# docker stop CONTAINERID 
+
+Não é possível remover uma imagem se algum _container_ estiver em execução utilizando-a como imagem base. Por isso é necessário parar os _containers_ conforme fizemos antes. 
+
+Para que você possa remover uma imagem é necessário utilizar o comando “docker rmi”, responsável por remover imagens do disco local. 
+
+É importante mencionar que, caso possua _containers_ parados que utilizam essa imagem como base, é necessário forçar a remoção da imagem utilizando o parâmetro “-f”: 
+
+# docker rmi -f linuxtips/apache:1.0 
+
+Untagged: linuxtips/apache:1.0 
+
+Pronto! Removemos a imagem! 
+
+Agora vamos realizar o _pull_ da imagem diretamente do _registry_ do Docker Hub para que tenhamos a imagem novamente em nosso disco local e assim possamos subir um _container_ utilizando-a. 
+
+root@linuxtips:~# docker pull linuxtips/apache:1.0 
+
+1.0: Pulling from linuxtips/apache 
+
+fdd5d7827f33: Already exists 
+
+a3ed95caeb02: Already exists 
+
+11b590220174: Already exists 
+
+Digest:   
+sha256:c8626093b19a686fd260dbe0c12db79a97ddfb6a6d8e4c4f44634f66991d93d0 
+
+Status: Downloaded newer image for linuxtips/apache:1.0 
+
+root@linuxtips:~# 
+
+Podemos novamente visualizá-la através do comando “docker images”. 
+
+root@linuxtips:~# docker images 
+
+REPOSITORY  |  TAG  |  IMAGE ID  |  CREATED   
+---|---|---|---  
+SIZE   
+linuxtips/apache  |  1.0  |  4862def18dfd  |  About an hour ago   
+193.4 MB   
+  
+root@linuxtips:~# 
+
+Para criar o _container_ utilizando nossa imagem: 
+
+root@linuxtips:~# docker run -ti linuxtips/apache:1.0   
+/bin/bash 
+
+Simples como voar, não? 
+
+##  9.4. Não confio na internet; posso criar o meu  registry  local? 
+
+Como algumas empresas não gostam de manter seus dados na nuvem em serviços de terceiros, existe a possibilidade de você configurar um _registry_ local. Assim, você não precisa utilizar o _registry_ do Docker Hub, por exemplo. Isso permite a você compartilhar suas imagens com outras pessoas de sua empresa, funcionando como repositório de imagens Docker. Sensacional! 
+
+
+A URL do projeto fica em https://github.com/docker/distribution. O Docker Distribution é um _registry_ que serve para guardar e compartilhar suas imagens. Ele substitui o Docker Registry, que se tornou obsoleto. 
+
+Para que possamos ter o Docker Distribution de forma simples e totalmente funcional, guardando e distribuindo nossas imagens Docker localmente, basta rodá-lo como um _container_ ! :D 
+
+root@linuxtips:~# docker run -d -p 5000:5000 --restart=always --name registry registry:2 
+
+Unable to find image ‘registry:2’ locally 
+
+2: Pulling from library/registry 
+
+fdd5d7827f33: Already exists 
+
+a3ed95caeb02: Pull complete 
+
+a79b4a92697e: Pull complete 
+
+6cbb75c7cc30: Pull complete 
+
+4831699594bc: Pull complete 
+
+Digest: sha256:20f5d95004b71fe14dbe7468eff33f18ee7fa52502423c5d107d4fb0abb05c1d 
+
+Status: Downloaded newer image for registry:2 
+
+4f8efc8a71531656dc74e99dea74da203645c0f342b0706bc74200ae0a50cb20 
+
+root@linuxtips:~# 
+
+Com o comando anterior, criamos um _container_ chamado “registry” que utiliza a imagem “registry:2” como base e usamos a opção “--restart=always”. Caso ocorra qualquer problema com o _container_ ou com o Docker, ele será iniciado automaticamente. Passamos também que a porta de comunicação com o _container_ será a 5000, que também utilizará a porta 5000 do _host_ com o mesmo propósito. Vamos ver sobre o parâmetro “-p” em breve, no capítulo relacionado a redes. ;) 
+
+Você pode verificar o _container_ do _registry_ em execução, bem como sua imagem: 
+
+# docker ps 
+
+# docker images 
+
+Muito bom, nosso _registry_ já está em execução! Agora vamos testá-lo tentando realizar um _push_ da nossa imagem para ele. 
+
+Primeiramente, teremos que adicionar uma nova _tag_ em nossa imagem mencionando o endereço do novo _registry_ em vez do nome do usuário que utilizávamos quando queríamos fazer o _push_ para o Docker Hub. Para isso, vamos utilizar novamente o comando “docker tag”: 
+
+# docker tag IMAGEID localhost:5000/apache 
+
+# docker images 
+
+Agora basta fazer o _push_ para o nosso _registry_ local da seguinte forma: 
+
+root@linuxtips:~# docker push localhost:5000/apache 
+
+
+The push refers to a repository [localhost:5000/apache] 
+
+b3a691489ee1: Pushed 
+
+5f70bf18a086: Pushed 
+
+917c0fc99b35: Pushed 
+
+latest: digest: sha256:0e69b8d5cea67fcfedb5d7128a9fd77270461aa5852e6fe9b465565ec8e4e12f size: 925 
+
+root@linuxtips:~# 
+
+Pronto! Agora nós possuímos um _registry_ local! 
+
+Fizemos um _registry_ totalmente funcional, porém simples. Caso queira utilizar recursos como controle de usuários, certificados, outras opções de _storage_ , etc., visite a URL: https://github.com/docker/distribution/blob/master/docs/deploying.md. 
+
+
+#  10\. Gerenciando a rede dos  containers 
+
+Quando o Docker é executado, ele cria uma _bridge_ virtual chamada “docker0”, para que possa gerenciar a comunicação interna entre o _container_ e o _host_ e também entre os _containers_ . 
+
+Vamos conhecer alguns parâmetros do comando “docker run” que irão nos ajudar com a rede onde os _containers_ irão se comunicar. 
+
+**\--dns** – Indica o servidor DNS. 
+
+**\--hostname** – Indica um _hostname._
+
+**\--link** – Cria um _link_ entre os _containers_ , sem a necessidade de se saber o IP um do outro. 
+
+**\--net** – Permite configurar o modo de rede que você usará com o _container_ . Temos quatro opções, mas a mais conhecida e utilizada é a “--net=host”, que permite que o _container_ utilize a rede do _host_ para se comunicar e não crie um _stack_ de rede para o _container_ . 
+
+**\--expose** – Expõe a porta do _container_ apenas. 
+
+**\--publish** – Expõe a porta do _container_ e do _host_ . 
+
+**\--default-gateway** – Determina a rota padrão. 
+
+**\--mac-address** – Determina um MAC _address_ . 
+
+Quando o _container_ é iniciado, a rede passa por algumas etapas até a sua inicialização completa: 
+
+1\. Cria-se um par de interfaces virtuais. 
+
+2\. Cria-se uma interface com nome único, como “veth1234”, e em seguida _linka-se_ com a _bridge_ do Docker, a “docker0”. 
+
+3\. Com isso, é disponibilizada a interface “eth0” dentro do _container_ , em um _network namespace_ único. 
+
+4\. Configura-se o MAC _address_ da interface virtual do _container._
+
+5\. Aloca-se um IP na “eth0” do _container_ . Esse IP tem que pertencer ao _range_ da _bridge_ “docker0” _._
+
+Com isso, o _container_ já possui uma interface de rede e já está apto a se comunicar com outros _containers_ ou com o _host_ . :D 
+
+##  10.1. Consigo fazer com que a porta do  container  responda na porta do  host  ? 
+
+Sim, isso é possível e bastante utilizado. 
+
+Vamos conhecer um pouco mais sobre isso em um exemplo utilizando aquela nossa imagem “linuxtips/apache”. 
+
+Primeira coisa que temos que saber é a porta onde o Apache2 se comunica. Isso é fácil, né? Se estiver com as configurações padrões de porta de um _web server_ , o Apache2 do _container_ estará respondendo na porta 80/TCP, correto? 
+
+
+Agora vamos fazer com que a porta 8080 do nosso _host_ responda pela porta 80 do nosso _container_ , ou seja, sempre que alguém bater na porta 8080 do nosso _host_ , a requisição será encaminhada para a porta 80 do _container_ . Simples, né? 
+
+Para conseguir fazer esse encaminhamento, precisamos utilizar o parâmetro “-p” do comando “docker run”, conforme faremos no exemplo a seguir: 
+
+root@linuxtips:~# # docker run -ti -p 8080:80   
+linuxtips/apache:1.0 /bin/bash 
+
+root@4a0645de6d94:/# ps -ef 
+
+UID  |  PID  |  PPID  |  C STIME TTY  |  TIME CMD   
+---|---|---|---|---  
+root  |  1  |  0  |  1 18:18 ?  |  00:00:00 /bin/bash   
+root  |  6  |  1  |  0 18:18 ?  |  00:00:00 ps -ef   
+  
+root@4a0645de6d94:/# /etc/init.d/apache2 start 
+
+[....] Starting web server: apache2AH00558: apache2: Could not reliably determine the server’s fully qualified domain name, using 172.17.0.3. Set the ‘ServerName’ directive   
+globally to suppress this message 
+
+. ok 
+
+root@4a0645de6d94:/# ps -ef 
+
+UID  |  PID  |  PPID  |  C STIME TTY  |  TIME CMD   
+---|---|---|---|---  
+root  |  1  |  0  |  0 18:18 ?  |  00:00:00 /bin/bash   
+root  |  30  |  1  |  0 18:19 ?  |  00:00:00   
+/usr/sbin/apache2 -k start   
+www-data  |  33  |  30  |  0 18:19 ?  |  00:00:00   
+/usr/sbin/apache2 -k start   
+www-data  |  34  |  30  |  0 18:19 ?  |  00:00:00   
+/usr/sbin/apache2 -k start   
+root  |  109  |  1  |  0 18:19 ?  |  00:00:00 ps -ef   
+  
+root@4a0645de6d94:/# ip addr 
+
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default 
+
+link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00 
+
+inet 127.0.0.1/8 scope host lo 
+
+valid_lft forever preferred_lft forever 
+
+inet6 ::1/128 scope host 
+
+valid_lft forever preferred_lft forever 
+
+74: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default 
+
+link/ether 02:42:ac:11:00:03 brd ff:ff:ff:ff:ff:ff 
+
+inet  172.17.0.3/16  scope global eth0 
+
+valid_lft forever preferred_lft forever 
+
+inet6 fe80::42:acff:fe11:3/64 scope link 
+
+valid_lft forever preferred_lft forever 
+
+root@4a0645de6d94:/# 
+
+Repare que passamos o parâmetro “-p” da seguinte forma: 
+
+**-p 8080:80** – Onde “8080” é a porta do _host_ e “80”, a do _container_ . 
+
+
+Com isso, estamos dizendo que toda requisição que chegar na porta 8080 do meu _host_ deverá ser encaminhada para a porta 80 do _container._
+
+Já no _container_ , subimos o Apache2 e verificamos o IP do _container_ , correto? 
+
+Agora vamos sair do _container_ com o atalho “Ctrl + p + q”. :) 
+
+A partir do _host_ , vamos realizar um “curl” com destino ao IP do _container_ na porta 80, depois com destino à porta 8080 do _host_ e em seguida analisar as saídas: 
+
+root@linuxtips:~# curl <IPCONTAINER>:80 
+
+Se tudo ocorreu bem até aqui, você verá o código da página de boas-vindas do Apache2. 
+
+O mesmo ocorre quando executamos o “curl” novamente, porém batendo no IP do _host_ . Veja: 
+
+root@linuxtips:~# curl <IPHOST>:8080 
+
+Muito fácil, chega a ser lacrimejante! \o/ 
+
+##  10.2. E como ele faz isso? Mágica? 
+
+Não, não é mágica! Na verdade, o comando apenas utiliza um módulo bastante antigo do _kernel_ do Linux chamado _netfilter_ , que disponibiliza a ferramenta _iptables_ , que todos nós já cansamos de usar. 
+
+Vamos dar uma olhada nas regras de _iptables_ referentes a esse nosso _container_ . Primeiro a tabela _filter_ : 
+
+root@linuxtips:~# iptables -L -n 
+
+Chain INPUT (policy ACCEPT) 
+
+target  |  prot opt source  |  destination   
+---|---|---  
+  
+Chain FORWARD (policy ACCEPT) 
+
+target  |  prot opt source  |  destination   
+---|---|---  
+DOCKER-ISOLATION all -- 0.0.0.0/0  |  0.0.0.0/0   
+---|---  
+DOCKER  |  all --  |  0.0.0.0/0  |  0.0.0.0/0   
+---|---|---|---  
+ACCEPT  |  all --  |  0.0.0.0/0  |  0.0.0.0/0   
+ctstate RELATED,ESTABLISHED   
+ACCEPT  |  all --  |  0.0.0.0/0  |  0.0.0.0/0   
+ACCEPT  |  all --  |  0.0.0.0/0  |  0.0.0.0/0   
+  
+Chain OUTPUT (policy ACCEPT) 
+
+target  |  prot opt source  |  destination   
+---|---|---  
+  
+Chain DOCKER (1 references) 
+
+target  |  prot opt source  |  destination   
+---|---|---  
+ACCEPT  |  tcp --  |  0.0.0.0/0  |  172.17.0.2   
+tcp dpt:5000   
+ACCEPT  |  tcp --  |  0.0.0.0/0  |  172.17.0.3   
+tcp dpt:80   
+  
+Chain DOCKER-ISOLATION (1 references) 
+
+target  |  prot opt source  |  destination   
+---|---|---  
+RETURN  |  all --  |  0.0.0.0/0  |  0.0.0.0/0   
+  
+root@linuxtips:~# 
+
+Agora a tabela NAT: 
+
+root@linuxtips:~# iptables -L -n -t nat 
+
+
+Chain PREROUTING (policy ACCEPT) 
+
+target  |  prot opt source  |  destination   
+---|---|---  
+DOCKER  |  all --  |  0.0.0.0/0  |  0.0.0.0/0   
+  
+ADDRTYPE match dst-type LOCAL 
+
+Chain INPUT (policy ACCEPT) 
+
+target  |  prot opt source  |  destination   
+---|---|---  
+  
+Chain OUTPUT (policy ACCEPT) 
+
+target  |  prot opt source  |  destination   
+---|---|---  
+DOCKER  |  all --  |  0.0.0.0/0  |  !127.0.0.0/8   
+  
+ADDRTYPE match dst-type LOCAL 
+
+Chain POSTROUTING (policy ACCEPT) 
+
+target  |  prot opt source  |  destination   
+---|---|---  
+MASQUERADE  |  all --  |  172.17.0.0/16  |  0.0.0.0/0   
+MASQUERADE  |  tcp --  |  172.17.0.2  |  172.17.0.2   
+tcp dpt:5000   
+MASQUERADE  |  tcp --  |  172.17.0.3  |  172.17.0.3   
+tcp dpt:80   
+  
+Chain DOCKER (2 references) 
+
+target  |  prot opt source  |  destination   
+---|---|---  
+RETURN  |  all --  |  0.0.0.0/0  |  0.0.0.0/0   
+DNAT  |  tcp --  |  0.0.0.0/0  |  0.0.0.0/0   
+tcp dpt:5000 to:172.17.0.2:5000   
+DNAT  |  tcp --  |  0.0.0.0/0  |  0.0.0.0/0   
+tcp dpt:8080 to:172.17.0.3:80   
+  
+root@linuxtips:~# 
+
+Como podemos notar, temos regras de NAT configuradas que permitem o DNAT da porta 8080 do _host_ para a 80 do _container._ Veja a seguir: 
+
+MASQUERADE  |  tcp --  |  172.17.0.3  |  172.17.0.3   
+---|---|---|---  
+tcp dpt:80   
+DNAT  |  tcp --  |  0.0.0.0/0  |  0.0.0.0/0   
+tcp dpt:8080 to:172.17.0.3:80   
+  
+Tudo isso feito “automagicamente” pelo Docker, sem a necessidade de precisar configurar diversas regras de _iptables_ . <3 
+
+
+#  11\. Controlando o  daemon  do Docker 
+
+Antes de tudo, vamos tentar entender o que é um _daemon_ . Sabemos que, em sistemas operacionais _multitask_ , isto é, em um sistema operacional capaz de executar mais de uma tarefa por vez ( _not really_ ), um _daemon_ é um software que roda de forma independente em _background_ . Ele executa certas ações predefinidas em resposta a certos eventos. Pois bem, o _daemon_ do Docker é exatamente isso: uma espécie de processo-pai que controla tudo, _containers_ , imagens, etc., etc., etc. 
+
+Até o Docker 1.7 as configurações referentes especificamente ao _daemon_ se confundiam bastante com configurações globais – isso porque quando você digitava lá o “docker -help” um monte de coisas retornava, e você não sabia o que era o quê. A partir da versão 1.8 foi introduzido um novo comando, o “docker daemon”, que resolve de vez esse problema e trata especificamente de configurações referentes, obviamente, ao _daemon_ do Docker. 
+
+##  11.1. O Docker sempre utiliza 172.16.X.X ou posso configurar outro intervalo de IP? 
+
+Sim, você pode configurar outro _range_ para serem utilizados pela _bridge_ “docker0” e também pelas interfaces dos _containers_ . 
+
+Para que você consiga configurar um _range_ diferente para utilização do Docker é necessário iniciá-lo com o parâmetro “--bip”. 
+
+# docker daemon --bip 192.168.0.1/24 
+
+Assim, você estará informando ao Docker que deseja utilizar o IP “192.168.0.1” para sua _bridge_ “docker0” e, consequentemente, para a _subnet_ dos _containers_ . 
+
+Você também poderá utilizar o parâmetro “--fixed-cidr” para restringir o _range_ que o Docker irá utilizar para a _bridge_ “docker0” e para a _subnet_ dos _containers_ . 
+
+# docker daemon --fixed-cidr 192.168.0.0/24 
+
+##  11.2. Opções de  sockets 
+
+_Sockets_ são _end-points_ onde duas ou mais aplicações ou processos se comunicam em um ambiente, geralmente um “IP:porta” ou um arquivo, como no caso do _Unix_ _Domain Sockets_ . 
+
+Atualmente o Docker consegue trabalhar com três tipos de _sockets_ , Unix, TCP e FD, e por _default_ ele usa _unix sockets_ . Você deve ter notado que, ao _startar_ seu Docker, foi criado um arquivo em “/var/run/docker.sock”. Para fazer alterações nele você vai precisar ou de permissão de _root_ ou de que o usuário que está executando as ações esteja no grupo “docker”, como dissemos no começo deste livro, lembra? 
+
+
+Por mais prático que isso seja, existem algumas limitações, como, por exemplo, o _daemon_ só poder ser acessado localmente. Para resolver isso usamos geralmente o TCP. Nesse modelo nós definimos um IP, que pode ser tanto “qualquer um” (0.0.0.0 e uma porta) como um IP específico e uma porta. 
+
+Nos sistemas baseados em _systemd_ você ainda pode se beneficiar do _systemd socket activation_ , uma tecnologia que visa economia de recursos. Consiste basicamente em ativar um _socket_ somente enquanto uma conexão nova chega e desativar quando não está sendo mais usado. 
+
+Além disso tudo, dependendo do seu ambiente, você também pode fazer o Docker escutar em diferentes tipos de _sockets_ , o que é conseguido através do parâmetro “-H” do comando “docker daemon”. 
+
+Exemplos: 
+
+###  11.2.1.  Unix Domain  Socket 
+
+root@linuxtips:~# docker daemon -H   
+unix:///var/run/docker.sock 
+
+INFO[0000] [graphdriver] using prior storage driver “aufs” 
+
+INFO[0000] Graph migration to content-addressability took 0.00 seconds 
+
+INFO[0000] Firewalld running: false 
+
+INFO[0000] Default bridge (docker0) is assigned with an IP address 172.17.0.0/16. Daemon option --bip can be used to set a preferred IP address 
+
+WARN[0000] Your kernel does not support swap memory limit. 
+
+INFO[0000] Loading containers: start. 
+
+.......................... 
+
+INFO[0000] Loading containers: done. 
+
+INFO[0000] Daemon has completed initialization 
+
+INFO[0000] Docker daemon   
+commit=c3959b1 execdriver=native-0.2 graphdriver=aufs   
+version=1.10.2 
+
+INFO[0000] API listen on /var/run/docker.sock 
+
+###  11.2.2. TCP 
+
+root@linuxtips:~# docker daemon -H tcp://0.0.0.0:2375 
+
+WARN[0000] /!\ DON’T BIND ON ANY IP ADDRESS WITHOUT setting -tlsverify IF YOU DON’T KNOW WHAT YOU’RE DOING /!\ 
+
+INFO[0000] [graphdriver] using prior storage driver “aufs” 
+
+INFO[0000] Graph migration to content-addressability took 0.01 seconds 
+
+INFO[0000] Firewalld running: false 
+
+INFO[0000] Default bridge (docker0) is assigned with an IP address 172.17.0.0/16. Daemon option --bip can be used to set a preferred IP address 
+
+WARN[0000] Your kernel does not support swap memory limit. 
+
+
+INFO[0000] Loading containers: start. 
+
+.......................... 
+
+INFO[0000] Loading containers: done. 
+
+INFO[0000] Daemon has completed initialization 
+
+INFO[0000] Docker daemon   
+commit=c3959b1 execdriver=native-0.2 graphdriver=aufs   
+version=1.10.2 
+
+INFO[0000] API listen on [::]:2375 
+
+##  11.3. Opções de  storage 
+
+Como falamos anteriormente, o Docker suporta alguns _storage drivers_ , todos baseados no esquema de _layers_ . Essas opções são passadas para o _daemon_ pelo parâmetro “--storage-opt”, onde itens relacionados ao _Device Mapper_ recebem o prefixo “dm” e “zfs” para (adivinha?) o ZFS. A seguir vamos demonstrar algumas opções mais comuns: 
+
+**dm.thipooldev** – Com esta opção você consegue especificar o _device_ que será usado pelo _Device Mapper_ para desenvolver o _thin-pool_ que ele usa para criar os _snapshots_ usados por _containers_ e imagens. 
+
+Exemplo: 
+
+root@linuxtips:~# docker daemon --storage-opt dm.thinpooldev=/dev/mapper/thin-pool 
+
+INFO[0000] [graphdriver] using prior storage driver “aufs” 
+
+INFO[0000] Graph migration to content-addressability took 0.00 seconds 
+
+INFO[0000] Firewalld running: false 
+
+INFO[0000] Default bridge (docker0) is assigned with an IP address 172.17.0.0/16. Daemon option --bip can be used to set a preferred IP address 
+
+WARN[0000] Your kernel does not support swap memory limit. 
+
+INFO[0000] Loading containers: start. 
+
+................................ 
+
+INFO[0000] Loading containers: done. 
+
+INFO[0000] Daemon has completed initialization 
+
+INFO[0000] Docker daemon   
+commit=c3959b1 execdriver=native-0.2 graphdriver=aufs   
+version=1.10.2 
+
+INFO[0000] API listen on /var/run/docker.sock 
+
+**dm.basesize** – Este parâmetro define o tamanho máximo do _container_ . O chato disso é que você precisa deletar tudo dentro de “/var/lib/docker” (o que implica em matar todos os _containers_ e imagens) e _restartar_ o serviço do Docker. 
+
+root@linuxtips:~# docker daemon --storage-opt dm.basesize=10G 
+
+INFO[0000] [graphdriver] using prior storage driver “aufs” 
+
+INFO[0000] Graph migration to content-addressability took 0.00 seconds 
+
+INFO[0000] Firewalld running: false 
+
+
+INFO[0000] Default bridge (docker0) is assigned with an IP address 172.17.0.0/16. Daemon option --bip can be used to set a preferred IP address 
+
+WARN[0000] Your kernel does not support swap memory limit. 
+
+INFO[0000] Loading containers: start. 
+
+.......................... 
+
+INFO[0000] Loading containers: done. 
+
+INFO[0000] Daemon has completed initialization 
+
+INFO[0000] Docker daemon   
+commit=c3959b1 execdriver=native-0.2 graphdriver=aufs   
+version=1.10.2 
+
+INFO[0000] API listen on /var/run/docker.sock 
+
+**dm.fs** – Especifica o _filesystem_ do _container_ . As opções suportadas são: **EXT4** e **XFS** . 
+
+##  11.4. Opções diversas 
+
+**\--default-ulimit** – Passando isso para o _daemon_ , todos os _containers_ serão _startados_ com esse valor para o “ulimit”. Esta opção é sobrescrita pelo parâmetro “--ulimit” do comando “docker run”, que geralmente vai dar uma visão mais específica. 
+
+**\--icc** – “icc” vem de _inter_ _container_ _comunication_ . Por padrão, ele vem marcado como _true_ ; caso você não queira esse tipo de comunicação, você pode marcar no _daemon_ como _false_ . 
+
+**\--log-level** – É possível alterar também a forma como o Docker trabalha com _log_ ; em algumas situações (geralmente _troubleshoot_ ) você pode precisar de um _log_ mais “verboso”, por exemplo. 
+
+
+#  12\.  Utilizando Docker Machine, Docker Swarm e Docker Compose 
+
+Chegamos no momento em que vamos começar a brincar de maestro! 
+
+Agora vamos começar a utilizar os _containers_ em maior volume. Vamos aprender como fazer para controlar um grande número de _containers_ de forma simples e utilizando somente as ferramentas que o Docker nos disponibiliza. 
+
+A seguir trataremos de três componentes muito importantes do ecossistema do Docker: o Docker Machine, o Docker Swarm e o Docker Compose! 
+
+##  12.1. Ouvi dizer que minha vida ficaria melhor com o Docker Machine! 
+
+Certamente! 
+
+Com o Docker Machine você consegue, com apenas um comando, iniciar o seu projeto com Docker! 
+
+Antes do Docker Machine, caso quiséssemos montar um Docker Host, era necessário fazer a instalação do sistema operacional, instalar e configurar o Docker e outras ferramentas que se fazem necessárias. 
+
+Perderíamos um tempo valoroso com esses passos, sendo que já poderíamos estar trabalhando efetivamente com o Docker e seus _containers_ . 
+
+Porém, tudo mudou com o Docker Machine! Com ele você consegue criar o seu Docker Host com apenas um comando. O Docker Machine consegue trabalhar com os principais _hypervisors_ de VMs, como o VMware, Hyper-V e Oracle VirtualBox, e também com os principais provedores de infraestrutura, como AWS, Google Compute Engine, DigitalOcean, Rackspace, Azure, etc. 
+
+Aqui tem a lista completa de todos os _drivers_ que o Docker Machine suporta: https://docs.docker.com/machine/drivers/. 
+
+Quando você utiliza o Docker Machine para instalar um Docker Host na AWS, por exemplo, ele disponibilizará uma máquina com Linux e com o Docker e suas dependências já instaladas. 
+
+###  12.1.1. Vamos instalar? 
+
+A instalação do Docker Machine é bastante simples. Vale lembrar que é possível instalar o Docker Machine no Linux, MacOS ou Windows. 
+
+Para fazer a instalação do Docker Machine no Linux, faça: 
+
+# wget  https://github.com/docker/machine/releases/download/v0.6.0/docker-machine-linux-x86_64 
+
+# mv docker-machine-linux-x86_64 /usr/local/bin/docker-machine 
+
+# chmod +x /usr/local/bin/docker-machine 
+
+
+Para verificar se ele foi instalado e qual a sua versão, faça: 
+
+root@linuxtips:~# docker-machine --version 
+
+docker-machine version 0.6.0, build e27fb87 
+
+root@linuxtips:~# 
+
+Pronto. Como tudo que é feito pelo Docker, é simples de instalar e fácil de operar. :) 
+
+###  12.1.2. Vamos iniciar nosso primeiro projeto? 
+
+Agora que já temos o Docker Machine instalado em nossa máquina, já conseguiremos fazer a instalação do Docker Host de forma bastante simples – lembrando que mesmo que tivéssemos feito a instalação do Docker Machine no Windows, conseguiríamos tranquilamente comandar a instalação do Docker Hosts na AWS em máquinas Linux. Tenha em mente que a máquina onde você instalou o Docker Machine é o maestro que determina a criação de novos Docker Hosts, seja em VMs ou em alguma nuvem como a AWS. 
+
+Em nosso primeiro projeto, vamos fazer com que o Docker Machine faça a instalação do Docker Host utilizando o VirtualBox. 
+
+Como iremos utilizar o VirtualBox, é evidente que precisamos ter instalado o VirtualBox em nossa máquina para que tudo funcione. ;) 
+
+Portanto: 
+
+root@linuxtips:~# apt-get install virtualbox 
+
+Para fazer a instalação de um novo Docker Host, utilizamos o comando “docker-machine create”. Para escolher onde iremos criar o Docker Host, utilizamos o parâmetro “--driver”, conforme segue: 
+
+root@linuxtips:~# docker-machine create --driver virtualbox linuxtips 
+
+Running pre-create checks... 
+
+Creating machine... 
+
+Waiting for machine to be running, this may take a few   
+minutes... 
+
+Machine is running, waiting for SSH to be available... 
+
+Detecting operating system of created instance... 
+
+Provisioning created instance... 
+
+Copying certs to the local machine directory... 
+
+Copying certs to the remote machine... 
+
+Setting Docker configuration on the remote daemon... 
+
+To see how to connect Docker to this machine, run:   
+docker-machine env linuxtips 
+
+root@linuxtips:~# 
+
+Onde: 
+
+**docker-machine create** – Cria um novo Docker Host. 
+
+**\--driver virtualbox** – Irá criá-lo utilizando o VirtualBox. 
+
+**linuxtips** – Nome da VM que será criada. 
+
+Para visualizar o _host_ que acabou de criar, basta digitar o seguinte comando: 
+
+
+root@linuxtips:~# docker-machine ls 
+
+NAME  |  ACTIVE  |  DRIVER  |  STATE  |  URL  |  SWARM   
+---|---|---|---|---|---  
+linuxtips  |  –  |  virtualbox  |  Running  |  |   
+  
+tcp://192.168.99.100:2376 
+
+Como podemos notar, o nosso _host_ está sendo executado perfeitamente! Repare que temos uma coluna chamada URL, correto? Nela temos a URL para que possamos nos comunicar com o nosso novo _host_ . 
+
+Outra forma de visualizar informações sobre o _host_ , mais especificamente sobre as variáveis de ambiente dele, é digitar: 
+
+root@linuxtips:~# docker-machine env linuxtips 
+
+export DOCKER_TLS_VERIFY=”1” 
+
+export DOCKER_HOST=”tcp://192.168.99.100:2376” 
+
+export DOCKER_CERT_PATH=”/Users/jvitali/.docker/machine/   
+machines/linuxtips” 
+
+export DOCKER_MACHINE_NAME=”linuxtips” 
+
+# Run this command to configure your shell: 
+
+# eval “$(docker-machine env linuxtips)” 
+
+root@linuxtips:~# 
+
+Serão mostradas todas as variáveis de ambiente do _host_ , como URL, certificado e nome. 
+
+Para que você possa acessar o ambiente desse _host_ que acabamos de criar, faça: 
+
+root@linuxtips:~# eval “$(docker-machine env linuxtips)” 
+
+O comando “eval” serve para definir variáveis de ambiente através da saída de um comando, ou seja, as variáveis que visualizamos na saída do “docker-machine env linuxtips”. 
+
+Agora que já estamos no ambiente do _host_ que criamos, vamos visualizar os _containers_ em execução: 
+
+root@linuxtips:~# docker ps 
+
+Claro que ainda não temos nenhum _container_ em execução; vamos iniciar o nosso primeiro agora: 
+
+root@linuxtips:~# docker run busybox echo “LINUXTIPS, VAIIII” 
+
+Unable to find image ‘busybox:latest’ locally 
+
+latest: Pulling from library/busybox 
+
+385e281300cc: Pull complete 
+
+a3ed95caeb02: Pull complete 
+
+Digest: sha256:4a887a2326ec9e0fa90cce7b4764b0e627b5d6afcb81a3f73c85dc29cea00048 
+
+Status: Downloaded newer image for busybox:latest 
+
+LINUXTIPS, VAIIII 
+
+root@linuxtips:~# 
+
+Como podemos observar, o _container_ foi executado e imprimiu a mensagem “ **LINUXTIPS, VAIIII** ”, conforme solicitamos. 
+
+Lembre-se de que o _container_ foi executado em nosso Docker Host, que criamos através do Docker Machine. 
+
+Para verificar o IP do _host_ que criamos, faça: 
+
+
+root@linuxtips:~# docker-machine ip linuxtips 
+
+192.168.99.100 
+
+root@linuxtips:~# 
+
+Para que possamos acessar o nosso _host_ , utilizamos o parâmetro “ssh” passando o nome do _host_ que queremos acessar: 
+
+root@linuxtips:~# docker-machine ssh linuxtips 
+
+Para saber mais detalhes sobre o _host_ , podemos utilizar o parâmetro “inspect”: 
+
+root@linuxtips:~# docker-machine inspect linuxtips 
+
+{ 
+
+“ConfigVersion”: 3, 
+
+“Driver”: { 
+
+“VBoxManager”: {}, 
+
+“IPAddress”: “192.168.99.100”, 
+
+“SSHUser”: “docker”, 
+
+“SSHPort”: 54031, 
+
+“MachineName”: “linuxtips”, 
+
+“SwarmMaster”: false, 
+
+“SwarmHost”: “tcp://0.0.0.0:3376”, 
+
+“SwarmDiscovery”: “”, 
+
+“StorePath”: “/Users/jvitali/.docker/machine”, 
+
+“CPU”: 1, 
+
+“Memory”: 1024, 
+
+“DiskSize”: 20000, 
+
+“Boot2DockerURL”: “”, 
+
+“Boot2DockerImportVM”: “”, 
+
+“HostOnlyCIDR”: “192.168.99.1/24”, 
+
+“HostOnlyNicType”: “82540EM”, 
+
+“HostOnlyPromiscMode”: “deny”, 
+
+“NoShare”: false 
+
+}, 
+
+“DriverName”: “virtualbox”, 
+
+“HostOptions”: { 
+
+“Driver”: “”, 
+
+“Memory”: 0, 
+
+“Disk”: 0, 
+
+“EngineOptions”: { 
+
+“ArbitraryFlags”: [], 
+
+“Dns”: null, 
+
+“GraphDir”: “”, 
+
+“Env”: [], 
+
+“Ipv6”: false, 
+
+“InsecureRegistry”: [], 
+
+“Labels”: [], 
+
+“LogLevel”: “”, 
+
+“StorageDriver”: “”, 
+
+“SelinuxEnabled”: false, 
+
+“TlsVerify”: true, 
+
+“RegistryMirror”: [], 
+
+“InstallURL”: “https://get.docker.com” 
+
+}, 
+
+“SwarmOptions”: { 
+
+“IsSwarm”: false, 
+
+“Address”: “”, 
+
+“Discovery”: “”, 
+
+“Master”: false, 
+
+“Host”: “tcp://0.0.0.0:3376”, 
+
+“Image”: “swarm:latest”, 
+
+“Strategy”: “spread”, 
+
+“Heartbeat”: 0, 
+
+“Overcommit”: 0, 
+
+“ArbitraryFlags”: [] 
+
+}, 
+
+“AuthOptions”: { 
+
+“CertDir”:   
+“/Users/jvitali/.docker/machine/certs”, 
+
+“CaCertPath”:   
+“/Users/jvitali/.docker/machine/certs/ca.pem”, 
+
+“CaPrivateKeyPath”:   
+“/Users/jvitali/.docker/machine/certs/ca-key.pem”, 
+
+“CaCertRemotePath”: “”, 
+
+“ServerCertPath”:   
+“/Users/jvitali/.docker/machine/machines/linuxtips/server.pem”, 
+
+“ServerKeyPath”:   
+“/Users/jvitali/.docker/machine/machines/linuxtips/server-key.pem”, 
+
+“ClientKeyPath”:   
+“/Users/jvitali/.docker/machine/certs/key.pem”, 
+
+“ServerCertRemotePath”: “”, 
+
+“ServerKeyRemotePath”: “”, 
+
+“ClientCertPath”:   
+“/Users/jvitali/.docker/machine/certs/cert.pem”, 
+
+“StorePath”:   
+“/Users/jvitali/.docker/machine/machines/linuxtips” 
+
+
+} 
+
+}, 
+
+“Name”: “linuxtips”, 
+
+“RawDriver”: 
+
+“eyJWQm94TWFuYWdlciI6e30sIklQQWRkcmVzcyI6IjE5Mi4xNjguOTkuMTAw IiwiU1NIVXNlciI6ImRvY2tlciIsIlNTSFBvcnQiOjU0MDMxLCJNYWNoaW5lTmFtZSI6ImxpbnV4dGlwcyIsIlN3YXJtTWFzdGVyIjpmYWxzZSwiU3dhcm1Ib3N0IjoidGNwOi8vMC4wLjAuMDozMzc2IiwiU3dhcm1EaXNjb3ZlcnkiOiIiLCJTdG9yZVBhdGgiOiIvVXNlcnMvanZpdGFsaS8uZG9ja2VyL21hY2hpbmUiLCJDUFUiOjEsIk1lbW9yeSI6MTAyNCwiRGlza1NpemUiOjIwMDAwLCJCb290MkRvY2tlclVSTCI6IiIsIkJvb3QyRG9ja2VySW1wb3J0Vk0iOiIiLCJIb3N0T25seUNJRFIiOiIxOTIuMTY4Ljk5LjEvMjQiLCJIb3N0T25seU5pY1R5cGUiOiI4MjU0MEVNIiwiSG9zdE9ubHlQcm9taXNjTW9kZSI6ImRlbnkiLCJOb1NoYXJlIjpmYWxzZX0=” 
+
+} 
+
+Para parar o _host_ que criamos: 
+
+root@linuxtips:~# docker-machine stop linuxtips 
+
+Para que você consiga visualizar o status do seu _host_ Docker, digite: 
+
+root@linuxtips:~# docker-machine ls 
+
+Para iniciá-lo novamente: 
+
+root@linuxtips:~# docker-machine start linuxtips 
+
+Para removê-lo definitivamente: 
+
+root@linuxtips:~# docker-machine rm linuxtips 
+
+Successfully removed linuxtips 
+
+##  12.2. Agora vamos brincar com o Docker Swarm? 
+
+Bom, agora temos uma ferramenta muito interessante e que nos permite construir _clusters_ de _containers_ de forma nativa e com extrema facilidade, como já é de costume com os produtos criados pelo time do Docker. ;) 
+
+Com o Docker Swarm você consegue construir _clusters_ de _containers_ com características importantes como balanceador de cargas e _failover_ . 
+
+Para criar um _cluster_ com o Docker Swarm, basta indicar quais os _hosts_ que ele irá supervisionar e o restante é com ele. 
+
+Por exemplo, quando você for criar um novo _container_ , ele irá criá-lo no _host_ que possuir a menor carga, ou seja, cuidará do balanceamento de carga e garantirá sempre que o _container_ será criado no _host_ mais disponível no momento. 
+
+A estrutura de _cluster_ do Docker Swarm é bastante simples e se resume a um _manager_ e diversos _workers_ . O _manager_ é o responsável por orquestrar os _containers_ e distribuí-los entre os _hosts workers_ . Os _workers_ são os que carregam o piano, que hospedam os _containers_ . 
+
+###  12.2.1. Criando o nosso  cluster  ! 
+
+Para criar o nosso _cluster_ , vamos rodar o Docker Swarm através de um _container_ com a imagem oficial dele do Docker Hub. 
+
+
+Primeiro passo: vamos criar o nosso _cluster_ e gerar o _token_ que será utilizado como chave para adicionar novos _workers_ ao _cluster_ . 
+
+root@linuxtips:~# docker run swarm create 
+
+Unable to find image ‘swarm:latest’ locally 
+
+Pulling repository docker.io/library/swarm 
+
+fd056ae2da24: Pull complete 
+
+6b020a24be13: Pull complete 
+
+4ae5ea69ee59: Pull complete 
+
+da44cf7b75e2: Pull complete 
+
+26846c542e9d: Pull complete 
+
+dc1bc88e29ba: Pull complete 
+
+9e2fe1a1bcde: Pull complete 
+
+e4ec6045d936: Pull complete 
+
+Status: Downloaded newer image for swarm:latest 
+
+b30923039ade73fbdc5beff6b7a65166 
+
+No código anterior, executamos um _container_ com a imagem do “swarm” e pedimos para executar o comando _“_ create”, responsável por criar o _cluster_ e gerar o _token_ que pode ser visto na última linha da saída. 
+
+Como dito anteriormente, precisamos ter um _manager_ no _cluster_ , que será o responsável por orquestrar o nosso _cluster_ . Vamos criá-lo: 
+
+root@linuxtips:~# docker-machine create -d virtualbox --swarm --swarm-master --swarm-discovery token://TOKEN_GERADO swarm-   
+master 
+
+Running pre-create checks... 
+
+Creating machine... 
+
+Waiting for machine to be running, this may take a few   
+minutes... 
+
+Machine is running, waiting for SSH to be available... 
+
+Detecting operating system of created instance... 
+
+Provisioning created instance... 
+
+Copying certs to the local machine directory... 
+
+Copying certs to the remote machine... 
+
+Setting Docker configuration on the remote daemon... 
+
+Configuring swarm… 
+
+To see how to connect Docker to this machine, run: docker-   
+machine env swarm-master 
+
+Temos alguns parâmetros destinados ao Docker Swarm, veja: 
+
+**\--swarm** – Indica que criaremos um _host_ Docker com o perfil “swarm”. 
+
+**\--swarm-master** – Indica que será o nosso _swarm master_ . 
+
+**\--swarm-discovery** – O “service discovery” que usaremos. 
+
+**token://TOKEN_GERADO** – Usaremos o _token_ gerado anteriormente, lembra? 
+
+Com isso criamos o nosso _manager_ do _cluster_ . Lembrando que estamos utilizando o VirtualBox para a criação dos _hosts_ , porém você pode utilizar outro _hypervisor_ ou ainda alguma nuvem como na AWS, por exemplo. 
+
+
+Agora vamos criar os _swarm_ _nodes_ , os _workers_ do nosso _cluster_ : 
+
+root@linuxtips:~# docker-machine create -d virtualbox --swarm --swarm-discovery token://TOKEN_GERADO swarm-node01 
+
+Running pre-create checks... 
+
+Creating machine... 
+
+Waiting for machine to be running, this may take a few   
+minutes... 
+
+Machine is running, waiting for SSH to be available... 
+
+Detecting operating system of created instance... 
+
+Provisioning created instance... 
+
+Copying certs to the local machine directory... 
+
+Copying certs to the remote machine... 
+
+Setting Docker configuration on the remote daemon... 
+
+Configuring swarm... 
+
+To see how to connect Docker to this machine, run: docker-   
+machine env swarm-node01 
+
+root@linuxtips:~# 
+
+root@linuxtips:~# docker-machine create -d virtualbox --swarm --swarm-discovery token://TOKEN_GERADO swarm-node02 
+
+Running pre-create checks... 
+
+Creating machine... 
+
+Waiting for machine to be running, this may take a few   
+minutes... 
+
+Machine is running, waiting for SSH to be available... 
+
+Detecting operating system of created instance... 
+
+Provisioning created instance... 
+
+Copying certs to the local machine directory... 
+
+Copying certs to the remote machine... 
+
+Setting Docker configuration on the remote daemon... 
+
+Configuring swarm... 
+
+To see how to connect Docker to this machine, run: docker-   
+machine env swarm-node02 
+
+root@linuxtips:~# 
+
+Para visualizar os _hosts docker_ criados, digite: 
+
+root@linuxtips:~# docker-machine ls 
+
+NAME  |  ACTIVE  |  DRIVER  |  STATE  |  URL  |  SWARM   
+---|---|---|---|---|---  
+swarm-master * virtualbox  |  Running   
+tcp://192.168.99.100:2376 swarm-master(master)   
+swarm-node01 – virtualbox  |  Running   
+tcp://192.168.99.101:2376 swarm-master   
+swarm-node02 – virtualbox  |  Running   
+tcp://192.168.99.102:2376 swarm-master   
+  
+Na coluna “SWARM” temos o nome de quem é o _node master_ de cada um dos _hosts docker_ ; em nosso caso é o “swarm-master” _._
+
+Com isso já temos os três _hosts docker_ criados, onde um será o _manager_ e os demais, _workers_ . 
+
+Agora, para que tenhamos maiores detalhes de nosso _cluster_ , vamos apontar o nosso comando “docker” para trazer informações do _host_ “swarm-master”, que é o nosso _manager_ do _cluster_ . 
+
+
+root@linuxtips:~# eval $(docker-machine env --swarm swarm-   
+master) 
+
+Repare que passamos agora a opção “--swarm”, fundamental para que possamos administrar nosso _cluster swarm_ através do _master_ . 
+
+Agora já “estamos” no _manager_ do _cluster_ do Docker Swarm. Para verificar as informações referentes ao _cluster_ , faça: 
+
+root@linuxtips:~# docker info 
+
+Containers: 4 
+
+Images: 3 
+
+Storage Driver: 
+
+Role: primary 
+
+Strategy: spread 
+
+Filters: health, port, dependency, affinity, constraint 
+
+Nodes: 3 
+
+swarm-master: 192.168.99.100:2376 
+
+Status: Healthy 
+
+Containers: 2 
+
+Reserved CPUs: 0 / 1 
+
+Reserved Memory: 0 B / 1.021 GiB 
+
+Labels: executiondriver=native-0.2, kernelversion=4.1.19-   
+boot2docker, operatingsystem=Boot2Docker 1.10.3 (TCL 6.4.1);   
+master : 625117e – Thu Mar 10 22:09:02 UTC 2016, provider=virtualbox, storagedriver=aufs 
+
+Error: (none) 
+
+UpdatedAt: 2016-03-20T22:26:01Z 
+
+swarm-node01: 192.168.99.101:2376 
+
+Status: Healthy 
+
+Containers: 1 
+
+Reserved CPUs: 0 / 1 
+
+Reserved Memory: 0 B / 1.021 GiB 
+
+Labels: executiondriver=native-0.2, kernelversion=4.1.19-   
+boot2docker, operatingsystem=Boot2Docker 1.10.3 (TCL 6.4.1);   
+master : 625117e – Thu Mar 10 22:09:02 UTC 2016, provider=virtualbox, storagedriver=aufs 
+
+Error: (none) 
+
+UpdatedAt: 2016-03-20T22:25:40Z 
+
+swarm-node02: 192.168.99.102:2376 
+
+Status: Healthy 
+
+Containers: 1 
+
+Reserved CPUs: 0 / 1 
+
+Reserved Memory: 0 B / 1.021 GiB 
+
+Labels: executiondriver=native-0.2, kernelversion=4.1.19-   
+boot2docker, operatingsystem=Boot2Docker 1.10.3 (TCL 6.4.1);   
+master : 625117e – Thu Mar 10 22:09:02 UTC 2016, provider=virtualbox, storagedriver=aufs 
+
+Error: (none) 
+
+UpdatedAt: 2016-03-20T22:26:03Z 
+
+Execution Driver: 
+
+Kernel Version: 4.1.19-boot2docker 
+
+Operating System: linux 
+
+CPUs: 3 
+
+Total Memory: 3.064 GiB 
+
+Name: a73da4b5e2ed 
+
+ID: 
+
+Http Proxy: 
+
+Https Proxy: 
+
+No Proxy: 
+
+Como podemos ver, ele nos traz informações sobre a quantidade de _hosts_ que compõem o nosso _cluster_ , quantos _containers_ estão em execução, informações sobre memória, CPU, versões, etc. 
+
+A porta utilizada para a comunicação entre os _hosts_ e o Docker Swarm é a **2376** . 
+
+
+A partir de agora, quando criarmos _containers_ , ele irá distribuí-los entre os _hosts_ que fazem parte do _cluster_ . 
+
+Essa distribuição se baseia na estratégia com a qual você configurou o seu Docker Swarm. Temos hoje disponíveis três estratégias: 
+
+**Spread** – Espalha os _containers_ entre os _hosts_ (com base em CPU, RAM e número de _containers_ ). 
+
+**Binpack** – Concentra mais os _containers_ entre os _hosts_ (com base em CPU, RAM e número de _containers_ ). 
+
+**Random** – Estratégia randômica. :) 
+
+Caso queira alterar a _strategy default,_ faça: 
+
+root@linuxtips:~# docker run -d swarm manage --strategy “binpack” token://TOKEN_DO_CLUSTER 
+
+Apenas lembrando que os _containers_ criados anteriormente não sofrerão mudança alguma. Continuarão a usar a estratégia que estava definida quando o _container_ foi criado. ;) 
+
+###  12.2.2. Docker Swarm Discovery 
+
+Falaremos agora sobre uma das peças fundamentais para a implementação de um Swarm em produção. Vamos falar de _Service Discovey_ apenas no contexto do Docker Swarm. :) 
+
+Já vamos começar desmistificando algo: _Service Discovery_ não tem ligação direta com Docker em si; é uma ideia totalmente apartada e usada em outras coisas, porém cai como uma luva para o projeto, principalmente para a parte de Swarm. 
+
+Sendo bem simplista, _Service Discovery_ é basicamente o que o nome diz: um modo de fazer a descoberta de “vizinhos” em uma rede. Para isso ele une e gerencia aplicações conhecidas como DHCP e DNS e disponibiliza essas informações via API. 
+
+Quando falamos de _Service Discovery_ , geralmente estamos falando de duas coisas: _Service Registration_ , o processo que vai de fato guardar informações sobre os _hosts_ , e o _Service Discovery_ em si, que é o processo pelo qual vai ser possível os clientes resgatarem as informações armazenadas. 
+
+###  12.2.3. Mas para que isso serve? 
+
+Imagine que você tem um cenário assim: sua aplicação precisa consultar uma API _backend_ para disponibilizar informações para o usuário, porém quem responde por essa API na verdade é um grupo de _containers_ (ou máquinas) que recebem IP e _hostname_ dinamicamente. Como a sua aplicação sabe para onde mandar o _request_ ? Bom, há duas formas de resolver isso: _client_ e _server sides_ . 
+
+
+_Client side_ seria assim: sua aplicação faz uma _query_ direto no _Service Discovery Backend_ que você está usando, e este informa quais máquinas estão disponíveis. Aí basta mandar o _request_ direto para a máquina. 
+
+Já _server side_ seria mais ou menos assim: sua aplicação faz o _request_ para um _loadbalance_ , e este faz uma _query_ no seu _service registry_ (outro nome para a mesma coisa), que, por sua vez, manda o IP para o _balancer_ e este manda a conexão para um dos servidores. 
+
+Docker suporta múltiplos _Service Discovery Backends_ ; vamos falar um pouco de cada um. No contexto do Docker Swarm, a implementação é bem simples, e todos são implementados da mesma forma. 
+
+####  12.2.3.1. ETCD 
+
+ETCD é um simples e poderoso _storage_ de chave e valor _open source_ , distribuído e escrito em GO, que inicialmente fazia (e ainda faz) parte do projeto CoreOS. Ele gerencia toda a parte de configurações e torna a criação de _clusters_ bem mais simples. Ele disponibiliza uma API HTTP que você deve usar para consultar e/ou armazenar informações. 
+
+####  12.2.3.2. Consul 
+
+De todos os _storage_ chave-valor disponíveis, talvez o Consul seja o mais completo. Com ele você não precisa de nenhum outro software de terceiros para ter um _Service Discovery_ implementado com funcionalidades de _healthchecks_ , ACLS, etc. 
+
+####  12.2.3.3. Zookeeper 
+
+Lembra que começamos esse tópico falando que _service discoveries_ em geral eram usados inclusive em outros lugares/projetos _off_ -Docker? O Zookeeper é a maior prova disso: está aí desde 2008, inicialmente desenvolvido pelo pessoal do Apache Hadoop para ajudar a manter a consistência entre as suas várias partes. 
+
+Estando no mercado há tanto tempo, as maiores vantagens que o Zookeeper tem em relação aos outros são maturidade, robustez e riqueza de _features_ . Mas... nem tudo são flores. O Zookeeper é bem complexo, às vezes trabalhoso de ser implementado e/ou de dar manutenção, sem contar que parte dele é escrito em Java, então... 
+
+####  12.2.3.4. Usando um arquivo estático ou uma lista de nodes 
+
+Usar um _storage_ chave-valor é sempre muito bom e indicado, principalmente para produção, porém não é pré-requisito. Você pode simplesmente usar um arquivo estático para manter esses dados. O lado ruim é ser estático, ou seja, se entrar mais um _node_ , você vai precisar alterar o arquivo, visto que um dos pré-requisitos pra usar um arquivo como _Service Discovery_ é ter o arquivo em todas as máquinas do _cluster._ Você vai precisar logar uma a uma e alterá-lo (a não ser que você seja diferentão e use aí um NFS da vida pra compartilhar esse arquivo). 
+
+
+####  12.2.3.5. Docker Hub Service Discovery 
+
+Lembra que antes disso tudo a nossa vida era bem mais simples e só tínhamos que especificar esse “token://numeros_aleatorios”? 
+
+Esse _token_ é gerado pelo _Service Discovery_ que fica hospedado no próprio Docker Hub, ou seja, quando você rodou um “swarm create” ele foi até o Docker Hub e criou aquele _hash_ , e é com ele que a gente consegue criar e manter o _cluster_ . Aí na sua infraestrutura provavelmente você vai ter _firewalls_ liberando os tráfegos de entrada e saída, mas isso não será nenhuma novidade se você estiver utilizando o Docker Hub para gerenciar as suas imagens. :) 
+
+##  12.3. E o tal do Docker Compose? 
+
+Esta é a ultima peça do ecossistema do Docker. 
+
+Com ele você consegue subir aplicações _multicontainers_ com apenas um comando. Você cria arquivos, como um _dockerfile_ , porém com a diferença de que você pode passar informações sobre todo o seu ambiente e não somente sobre um _container_ . Como assim? 
+
+###  12.3.1.  Compose  File 
+
+Com o Docker Compose, você consegue, em um único arquivo, indicar as instruções para a criação de diversos _containers_ , tudo o que a aplicação precisar. Com isso você não cria somente um _dockerfile_ para criar uma imagem, e, sim, você monta um arquivo YAML com tudo o que a sua aplicação precisa, mesmo que seja em vários _containers_ , para criar seu ambiente. 
+
+Por exemplo, o arquivo a seguir passa as instruções para criação de um _container_ com uma aplicação Python e o outro _container_ com o PostgreSQL. 
+
+db: 
+
+image: postgres 
+
+web: 
+
+build: . 
+
+command: python manage.py runserver 0.0.0.0:8000 
+
+volumes: 
+
+– .:/code 
+
+ports: 
+
+– 8000:8000 
+
+links: 
+
+– db 
+
+Com isso, criaremos os dois _containers_ executando apenas um comando, o “docker-compose up”. 
+
+Antes de qualquer coisa, vamos instalar o Docker Compose. Mais uma vez, como tudo no Docker, este é um processo bastante simples. 
+
+###  12.3.2. Instalando o Docker Compose 
+
+# wget https://github.com/docker/compose/releases/download/1.6.2/docker-compose-Linux-x86_64 
+
+# mv docker-compose-Linux-x86_64 /usr/local/bin/docker-   
+compose 
+
+# chmod +x /usr/local/bin/docker-compose 
+
+
+Verificando se o Docker Compose foi instalado e sua versão: 
+
+root@linuxtips:~# docker-compose --version 
+
+docker-compose version 1.6.2, build 4d72027 
+
+Boa! Compose instalado! 
+
+###  12.3.3. Parâmetros do  Compose File 
+
+A seguir listamos algumas opções interessantes que podem ser utilizadas nos arquivos do Docker Compose: 
+
+**build** – Indica o caminho do seu _dockerfile._
+
+**command** – Executa um comando. 
+
+**container_name** – Nome para _container._
+
+**dns** – Indica o DNS _server._
+
+**dns_search** – Especifica um _search domain._
+
+**dockerfile** – Especifica um _dockerfile_ alternativo. 
+
+**env_file** – Especifica um arquivo com variáveis de ambiente. 
+
+**environment** – Adiciona variáveis de ambiente. 
+
+**expose** – Expõe a porta do _container._
+
+**external_links** – _Linka_ _containers_ que não estão especificados no Docker Compose atual. 
+
+**extra_hosts** – Adiciona uma entrada no “/etc/hosts” do _container._
+
+**image** – Indica uma imagem. 
+
+**labels** – Adiciona metadados ao _container._
+
+**links** – _Linka_ _containers_ dentro do mesmo Docker Compose. 
+
+**log_driver** – Indica o formato do _log_ a ser gerado, por exemplo, _syslog_ , _json-file_ , etc. 
+
+**log_opt** – Indica para onde mandar os _logs_ . Pode ser local ou em um _syslog_ remoto. 
+
+**net** – Modo de uso da rede. 
+
+**ports** – Expõe as portas do _container_ e do _host_ . 
+
+**volumes, volume_driver** – Monta volumes no _container._
+
+**volumes_from** – Monta volumes através de outro _container._
+
+###  12.3.4. Vamos fazer o nosso projeto? 
+
+Com o Docker Compose já instalado, vamos fazer o nosso primeiro exemplo. Subiremos um Django utilizando o PostgreSQL como DB. Lembrando que, mesmo com o YAML do Compose, ainda se faz necessária a criação do _dockerfile_ com as instruções de criação das imagens envolvidas. 
+
+Vamos ao exemplo. 
+
+Primeiro o nosso YAML do Compose: 
+
+**docker-compose.yml**
+
+root@linuxtips:~#  vim docker-compose.yml 
+
+db: 
+
+image: postgres 
+
+web: 
+
+build: . 
+
+command: python manage.py runserver 0.0.0.0:8000 
+
+volumes: 
+
+– .:/code 
+
+ports: 
+
+– 8000:8000 
+
+links: 
+
+– db 
+
+Agora o _dockerfile_ da nossa imagem: 
+
+Dockerfile 
+
+root@linuxtips:~#  vim Dockerfile 
+
+FROM python:2.7 
+
+ENV PYTHONUNBUFFERED 1 
+
+RUN mkdir /code 
+
+WORKDIR /code 
+
+ADD requirements.txt /code/ 
+
+
+RUN pip install -r requirements.txt 
+
+ADD . /code/ 
+
+O que é necessário para a instalação via _pip_ quando o _container_ já estiver subindo: 
+
+**requirements.txt**
+
+root@linuxtips:~#  vim requirements.txt 
+
+Django 
+
+psycopg2 
+
+Agora vamos criar o nosso primeiro projeto no Django. Nesse primeiro momento vamos apenas utilizar a seção “web” do nosso “docker-compose.yml”: 
+
+root@linuxtips:~# docker-compose run web django-admin.py 
+
+startproject composeexample . 
+
+Pulling db (postgres:latest)... 
+
+latest: Pulling from library/postgres 
+
+fdd5d7827f33: Already exists 
+
+a3ed95caeb02: Pull complete 
+
+beb59dc2ad34: Pull complete 
+
+f42a5322ef13: Pull complete 
+
+f6719ae287c6: Pull complete 
+
+0dc08677d778: Pull complete 
+
+5f3b03c1dd66: Pull complete 
+
+4d4c6707d860: Pull complete 
+
+11f8efebbb9b: Pull complete 
+
+edefda034373: Pull complete 
+
+5fe4bba523f0: Pull complete 
+
+a2d55eea3342: Pull complete 
+
+Digest:   
+sha256:bf1d7cbeb86b76f4c0991061515ebb13c6b57a9588a92f795eaebaede1c3657b 
+
+Status: Downloaded newer image for postgres:latest 
+
+Creating root_db_1 
+
+Building web 
+
+Step 1 : FROM python:2.7 
+
+2.7: Pulling from library/python 
+
+fdd5d7827f33: Already exists 
+
+a3ed95caeb02: Pull complete 
+
+0f35d0fe50cc: Pull complete 
+
+627b6479c8f7: Pull complete 
+
+67c44324f4e3: Pull complete 
+
+9ee7e6ec2a05: Pull complete 
+
+8772e8de82cd: Pull complete 
+
+3fcada98271d: Pull complete 
+
+Digest:   
+sha256:a123fb4fc7203fa58d7afa25afc638954709c4e9887efde28b4cf314deb81d80 
+
+Status: Downloaded newer image for python:2.7 
+
+\---> 2ff23583c11e 
+
+Step 2 : ENV PYTHONUNBUFFERED 1 
+
+\---> Running in 39cf98db3246 
+
+\---> 44932b199d4a 
+
+Removing intermediate container 39cf98db3246 
+
+Step 3 : RUN mkdir /code 
+
+\---> Running in f8d0ba5b6860 
+
+\---> 13ea996b14c4 
+
+Removing intermediate container f8d0ba5b6860 
+
+Step 4 : WORKDIR /code 
+
+\---> Running in f1eef5ff5c93 
+
+\---> 3fe37473e100 
+
+Removing intermediate container f1eef5ff5c93 
+
+Step 5 : ADD requirements.txt /code/ 
+
+\---> 4117207f329c 
+
+Removing intermediate container a6b677c4c7a1 
+
+Step 6 : RUN pip install -r requirements.txt 
+
+\---> Running in f290f8fa010d 
+
+Collecting Django (from -r requirements.txt (line 1)) 
+
+Downloading Django-1.9.4-py2.py3-none-any.whl (6.6MB) 
+
+
+Collecting psycopg2 (from -r requirements.txt (line 2)) 
+
+Downloading psycopg2-2.6.1.tar.gz (371kB) 
+
+Building wheels for collected packages: psycopg2 
+
+Running setup.py bdist_wheel for psycopg2: started 
+
+Running setup.py bdist_wheel for psycopg2: finished with   
+status ‘done’ 
+
+Stored in directory:   
+/root/.cache/pip/wheels/e2/9a/5e/7b620848bbc7cfb9084aafea077be11618c2b5067bd532f329 
+
+Successfully built psycopg2 
+
+Installing collected packages: Django, psycopg2 
+
+Successfully installed Django-1.9.4 psycopg2-2.6.1 
+
+\---> 7cf44b49e188 
+
+Removing intermediate container f290f8fa010d 
+
+Step 7 : ADD . /code/ 
+
+\---> 579234c814e7 
+
+Removing intermediate container 2559c0443084 
+
+Successfully built 579234c814e7 
+
+root@linuxtips:~# 
+
+Agora já temos o projeto Django chamado “composeexample”, criado no mesmo diretório em que estávamos, conforme notamos a seguir: 
+
+root@linuxtips:~# ls 
+
+composeexample docker-compose.yml Dockerfile manage.py   
+requirements.txt 
+
+Agora vamos ajustar apenas a configuração para conexão ao banco no arquivo “settings.py” que está dentro do diretório “composeexample”. 
+
+Vamos alterar somente a seção “DATABASES”: 
+
+root@linuxtips:~#  cd composeexample 
+
+root@linuxtips:~#  vim settings.py 
+
+DATABASES = { 
+
+‘default’: { 
+
+‘ENGINE’: ‘django.db.backends.postgresql_psycopg2’, 
+
+‘NAME’: ‘postgres’, 
+
+‘USER’: ‘postgres’, 
+
+‘HOST’: ‘db’, 
+
+‘POSRT’: 5432, 
+
+} 
+
+} 
+
+Agora que já ajustamos as informações referentes ao nosso banco, já podemos subir o nosso Compose. ;) 
+
+Para isso, basta fazer, no diretório onde se encontra o arquivo “docker-compose.yml”: 
+
+root@linuxtips:~# docker-compose up 
+
+Starting livro_db_1 
+
+Starting livro_web_1 
+
+Attaching to livro_db_1, livro_web_1 
+
+db_1 | LOG: database system was shut down at 2016-03-20 23:09:33 UTC 
+
+db_1 | LOG: MultiXact member wraparound protections are now enabled 
+
+db_1 | LOG: database system is ready to accept connections 
+
+db_1 | LOG: autovacuum launcher started 
+
+web_1 | Performing system checks... 
+
+web_1 | 
+
+web_1 | System check identified no issues (0 silenced). 
+
+web_1 | 
+
+web_1 | You have unapplied migrations; your app may not work properly until they are applied. 
+
+
+web_1 | Run ‘python manage.py migrate’ to apply them. 
+
+web_1 | March 20, 2016 – 23:09:36 
+
+web_1 | Django version 1.9.4, using settings   
+‘composeexample.settings’ 
+
+web_1 | Starting development server at http://0.0.0.0:8000/ 
+
+web_1 | Quit the server with CONTROL-C. 
+
+Quando você utilizar o comando “docker-compose up”, ele iniciará o projeto subindo os _containers_ que estão descritos no arquivo “docker-compose.yml”, conforme desejamos. :D 
+
+Você consegue visualizar os _logs_ durante a subida do projeto do Docker Compose, porém, caso queira que o projeto suba em segundo plano, como um _daemon_ , basta utilizar o parâmetro “-d”, conforme segue: 
+
+root@linuxtips:~# docker-compose up -d 
+
+Starting livro_db_1 
+
+Starting livro_web_1 
+
+Perfeito! Como podemos ver na saída do comando, nosso _web server_ está em pé e respondendo na porta 8000! 
+
+Para validar, vamos executar um “curl” batendo na porta 8000 do nosso _host_ : 
+
+root@linuxtips:~# curl localhost:8000 
+
+<!DOCTYPE html>
+
+<html lang=”en”><head>
+
+<meta http-equiv=”content-type” content=”text/html; charset=utf-8”>
+
+<meta name=”robots” content=”NONE,NOARCHIVE”><title>Welcome to Django</title>
+
+<style type=”text/css”>
+
+html * { padding:0; margin:0; } 
+
+body * { padding:10px 20px; } 
+
+body * * { padding:0; } 
+
+body { font:small sans-serif; } 
+
+body>div { border-bottom:1px solid #ddd; } 
+
+h1 { font-weight:normal; } 
+
+h2 { margin-bottom:.8em; } 
+
+h2 span { font-size:80%; color:#666; font-weight:normal; } 
+
+h3 { margin:1em 0 .5em 0; } 
+
+h4 { margin:0 0 .5em 0; font-weight: normal; } 
+
+table { border:1px solid #ccc; border-collapse: collapse; width:100%; background:white; } 
+
+tbody td, tbody th { vertical-align:top; padding:2px 3px; } 
+
+thead th { 
+
+padding:1px 6px 1px 3px; background:#fefefe; text-   
+align:left; 
+
+font-weight:normal; font-size:11px; border:1px solid #ddd; 
+
+} 
+
+tbody th { width:12em; text-align:right; color:#666;   
+padding-right:.5em; } 
+
+#summary { background: #e0ebff; } 
+
+#summary h2 { font-weight: normal; color: #666; } 
+
+#explanation { background:#eee; } 
+
+#instructions { background:#f6f6f6; } 
+
+#summary table { border:none; background:transparent; } 
+
+
+</style>
+
+</head>
+
+<body>
+
+<div id=”summary”>
+
+<h1>It worked!</h1>
+
+<h2> Congratulations on your first Django-powered page  .</h2>
+
+</div>
+
+<div id=”instructions”>
+
+<p>
+
+Of course, you haven’t actually done any work yet. Next, start   
+your first app by running <code>python manage.py startapp   
+[app_label]</code>. 
+
+</p>
+
+</div>
+
+<div id=”explanation”>
+
+<p>
+
+You’re seeing this message because you have <code>DEBUG = True</code> in your Django settings file and you haven’t   
+configured any URLs. Get to work! 
+
+</p>
+
+</div>
+
+</body></html>
+
+Aeeeeee!!! \o/ 
+
+Congratulations on your first Django-powered page  **!!!**
+
+Com o comando “docker-compose ps” você consegue visualizar nosso projeto: 
+
+root@linuxtips:~# docker-compose ps 
+
+Name  |  Command  |  State   
+---|---|---  
+  
+Ports 
+
+\----------------------------------------------------------------------------- 
+
+livro_db_1  |  /docker-entrypoint.sh postgres  |  Up   
+---|---|---  
+5432/tcp   
+livro_web_1  |  python manage.py runserver ...  |  Up   
+0.0.0.0:8000->8000/tcp   
+  
+Aumentar o número de _containers_ DB é bastante simples: basta utilizar o comando “docker-compose scale” conforme segue: 
+
+root@linuxtips:~# docker-compose ps 
+
+Name  |  Command  |  State   
+---|---|---  
+  
+Ports 
+
+\----------------------------------------------------------------------------- 
+
+livro_db_1  |  /docker-entrypoint.sh postgres  |  Up  |  5432/tcp   
+---|---|---|---  
+livro_db_2  |  /docker-entrypoint.sh postgres  |  Up  |  5432/tcp   
+livro_web_1  |  python manage.py runserver ...  |  Up  |   
+0.0.0.0:8000->8000/tcp  |   
+  
+Fácil, não? :D 
+
+Caso queira parar todos os _containers_ desse _compose_ , basta fazer conforme segue: 
+
+root@linuxtips:~# docker-compose stop 
+
+Stopping livro_db_2 ... done 
+
+Stopping livro_web_1 ... done 
+
+Stopping livro_db_1 ... done 
+
+Caso queira iniciar novamente o _compose_ dos _containers_ : 
+
+root@linuxtips:~# docker-compose start 
+
+Starting livro_db_2 
+
+Starting livro_db_1 
+
+Starting livro_web_1 
+
+Caso queria verificar os _logs_ : 
+
+root@linuxtips:~# docker-compose logs 
+
+##  12.4. E já acabou? :( 
+
+Esperamos que você tenha curtido viajar conosco durante o seu aprendizado sobre _containers_ e principalmente sobre o ecossistema do Docker, que é sensacional! 
+
+
+Não pare de aprender mais sobre Docker! Continue acompanhando o Canal LinuxTips no  http://youtube.com/linuxtips  e fique ligado no site do Docker, pois sempre tem novidades e ótima documentação! 
+
+Junte-se a nós no  http://facebook.com/linuxtipsbr  para que possa acompanhar e tirar dúvidas que possam ter surgido durante seus estudos! 
+
+#VAIIII 

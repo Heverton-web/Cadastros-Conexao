@@ -1,0 +1,57 @@
+---
+name: onsumindo-a-api-do-zabbix-com-python
+description: >-
+  Passos operacionais extraidos do livro 'onsumindo a API do Zabbix com Python' (PT) — Python.
+---
+
+# Onsumindo A Api Do Zabbix Com Python — Passos Operacionais
+
+Conteudo extraido do livro 'Onsumindo A Api Do Zabbix Com Python'. Contem passos, tecnicas e principios baseados na obra original.
+
+## 1. Conceitos Fundamentais
+- Capítulo 4 Copyright© 2016 por Brasport Livros e Multimídia Ltda.
+- Nenhuma parte deste livro poderá ser reproduzida, sob qualquer meio, especialmente em fotocópia (xerox), sem a permissão, por escrito, da Editora.
+- Para uma melhor visualização deste e-book sugerimos que mantenha seu software constantemente atualizado.
+- Editor: Sergio Martins de Oliveira Diretora Editorial: Rosa Maria Oliveira de Queiroz Gerente de Produção Editorial: Marina dos Anjos Martins de Oliveira Editoração Eletrônica: SBNigri Artes e Textos Ltda.
+- Capa: Trama Criações Produçao de e-pub: SBNigri Artes e Textos Ltda.
+- Técnica e muita atenção foram empregadas na produção deste livro.
+- Porém, erros de digitação e/ou impressão podem ocorrer.
+- Qualquer dúvida, inclusive de conceito, solicitamos enviar mensagem para brasport@brasport.com.br, para que nossa equipe, juntamente com o autor, possa esclarecer.
+- A Brasport e o(s) autor(es) não assumem qualquer responsabilidade por eventuais danos ou perdas a pessoas ou bens, originados do uso deste livro.
+- ISBN Digital: 978-85-7452-781-9 BRASPORT Livros e Multimídia Ltda.
+
+## 2. Principios e Tecnicas
+- Rua Pardal Mallet, 23 – Tijuca 20270-280 Rio de Janeiro-RJ Tels.
+- Fax: (21) 2568.1415/2568.1507 e-mails: marketing@brasport.com.br vendas@brasport.com.br editorial@brasport.com.br site: www.brasport.com.br Filial Av.
+- Paulista, 807 – conj. 915 01311-100 – São Paulo-SP  Capítulo 5 Agradecimentos Agradeço principalmente a Deus, por me dar forças para que eu conseguisse ter calma e paciência para concluir este projeto.
+- Foram longas noites dedicadas a este trabalho.
+- A minha esposa Carla, por toda a sua dedicação e carinho que tem pela nossa família.
+- Agradeço de coração por sempre me incentivar nos meus estudos e por compreender minha ausência em certos momentos.
+- Agradeço também à equipe de desenvolvimento do Zabbix, não apenas por manter esta excelente ferramenta em constante atualização, mas também por mantê-la bem documentada, sobretudo a parte da API.
+- Agradeço também ao editor da Brasport, Sergio Martins, e à gerente de produção editorial, Marina, por acreditarem no meu trabalho e terem me dado mais uma oportunidade de publicar outro livro.
+- Capítulo 6 O todo é maior do que a simples soma das suas partes.
+- (Aristóteles)  Capítulo 7 Apresentação A API do Zabbix permite recuperar e modificar configurações do ambiente de monitoramento, além de fornecer acesso a dados históricos.
+
+## 3. Aplicacoes Praticas
+- Ela pode ser utilizada tanto por profissionais de infraestrutura como por desenvolvedores.
+- Para profissionais de infraestrutura que já dominam a ferramenta, o uso da API se faz necessário para automatizar tarefas rotineiras, com o propósito de acelerar a execução dessas tarefas e diminuir as probabilidades de configurações incorretas.
+- Já o uso da API para desenvolvedores se dá pela necessidade de gerar novas aplicações e emitir relatórios personalizados para a área gerencial, devido ao fato de a ferramenta não disponibilizar isso por meio da sua interface web .
+- Sabemos que, em muitos casos, o departamento de TI é visto como burocrático e sempre trabalhando na parte operacional.
+- Em vez de ficar apenas na resolução de problemas e na implementação de novas tecnologias, esse departamento pode disponibilizar dados sobre o negócio através do monitoramento do ambiente, para que a área gerencial possa consumir esses dados com os relatórios e tomar decisões através das informações obtidas.
+- Isso vai transformar o departamento de TI em uma plataforma de negócios, pois irá assumir um papel estratégico e, ao mesmo tempo, será visto como um departamento que agrega valor ao negócio, e não apenas como um que opera a tecnologia.
+- Capítulo 8 Esta obra apresentará a API do Zabbix e tentará passar aos leitores como utilizar os métodos disponibilizados pela API para gerar seus próprios relatórios e integrar o Zabbix com outras ferramentas.
+- Serão demonstrados exemplos práticos de como utilizar os métodos e como formatar a saída das requisições para serem usadas em relatórios.
+- O objetivo principal da API do Zabbix não é desenvolver dashboards , e sim entregar informações requisitadas através da utilização dos métodos.
+- Para fazer dashboards você terá que possuir habilidades de desenvolvimento web , passando as informações consumidas pela API para exibir nesses sistemas.
+
+## 4. Topicos Avancados
+- Portanto, não desanime se você chegou até aqui achando que ao utilizar a API do Zabbix você iria desenvolver um dashboard .
+- Ela permite que você estenda e potencialize o uso dos serviços disponibilizados pela ferramenta.
+- Resolvi escrever este livro após ter lançado o curso “Programação com a API do Zabbix”, que teve uma grande repercussão na comunidade.
+- Por conta disso, vi que não eram poucas as pessoas com interesse em aprender a API do Zabbix, haja vista que não temos documentação sobre o assunto na língua portuguesa.
+- Espero que os leitores tirem proveito das informações aqui apresentadas e consigam explorar ao máximo os recursos fornecidos pela API do Zabbix e desenvolvam seus próprios produtos, sejam eles relatórios ou integrações.
+- Capítulo 9 Sobre o Livro Este livro está dividido em 11 capítulos: Visão Geral: neste capítulo serão apresentadas informações básicas sobre a API do Zabbix, sua estrutura e funções fornecidas, além de uma rápida passagem sobre JSON.
+- Bibliotecas: neste capítulo veremos como preparar o ambiente para o desenvolvimento dos nossos códigos e com qual biblioteca da API do Zabbix trabalharemos.
+- Primeiros Passos: neste capítulo teremos o nosso primeiro contato com uma requisição à API do Zabbix.
+- Referências e Notações: este capítulo apresentará os tipos de dados que são suportados pela API do Zabbix.
+- Classes e Métodos da API: neste capítulo veremos alguns métodos disponíveis na API do Zabbix.

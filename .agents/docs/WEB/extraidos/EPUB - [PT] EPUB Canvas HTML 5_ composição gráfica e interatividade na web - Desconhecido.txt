@@ -1,0 +1,4596 @@
+## Canvas HTML 5_ composição gráfica e interatividade na web
+
+  1. [page_001](src/pages/page_001.html)
+  2. [page_002](src/pages/page_002.html)
+  3. [page_003](src/pages/page_003.html)
+  4. [page_004](src/pages/page_004.html)
+  5. [page_005](src/pages/page_005.html)
+  6. [page_006](src/pages/page_006.html)
+  7. [page_007](src/pages/page_007.html)
+  8. [page_008](src/pages/page_008.html)
+  9. [page_009](src/pages/page_009.html)
+  10. [page_010](src/pages/page_010.html)
+  11. [page_011](src/pages/page_011.html)
+  12. [page_012](src/pages/page_012.html)
+  13. [page_013](src/pages/page_013.html)
+  14. [page_014](src/pages/page_014.html)
+  15. [page_015](src/pages/page_015.html)
+  16. [page_016](src/pages/page_016.html)
+  17. [page_017](src/pages/page_017.html)
+  18. [page_018](src/pages/page_018.html)
+  19. [page_019](src/pages/page_019.html)
+  20. [page_020](src/pages/page_020.html)
+  21. [page_021](src/pages/page_021.html)
+  22. [page_022](src/pages/page_022.html)
+  23. [page_023](src/pages/page_023.html)
+  24. [page_024](src/pages/page_024.html)
+  25. [page_025](src/pages/page_025.html)
+  26. [page_026](src/pages/page_026.html)
+  27. [page_027](src/pages/page_027.html)
+  28. [page_028](src/pages/page_028.html)
+  29. [page_029](src/pages/page_029.html)
+  30. [page_030](src/pages/page_030.html)
+  31. [page_031](src/pages/page_031.html)
+  32. [page_032](src/pages/page_032.html)
+  33. [page_033](src/pages/page_033.html)
+  34. [page_034](src/pages/page_034.html)
+  35. [page_035](src/pages/page_035.html)
+  36. [page_036](src/pages/page_036.html)
+  37. [page_037](src/pages/page_037.html)
+  38. [page_038](src/pages/page_038.html)
+  39. [page_039](src/pages/page_039.html)
+  40. [page_040](src/pages/page_040.html)
+  41. [page_041](src/pages/page_041.html)
+  42. [page_042](src/pages/page_042.html)
+  43. [page_043](src/pages/page_043.html)
+  44. [page_044](src/pages/page_044.html)
+  45. [page_045](src/pages/page_045.html)
+  46. [page_046](src/pages/page_046.html)
+  47. [page_047](src/pages/page_047.html)
+  48. [page_048](src/pages/page_048.html)
+  49. [page_049](src/pages/page_049.html)
+  50. [page_050](src/pages/page_050.html)
+  51. [page_051](src/pages/page_051.html)
+  52. [page_052](src/pages/page_052.html)
+  53. [page_053](src/pages/page_053.html)
+  54. [page_054](src/pages/page_054.html)
+  55. [page_055](src/pages/page_055.html)
+  56. [page_056](src/pages/page_056.html)
+  57. [page_057](src/pages/page_057.html)
+  58. [page_058](src/pages/page_058.html)
+  59. [page_059](src/pages/page_059.html)
+  60. [page_060](src/pages/page_060.html)
+  61. [page_061](src/pages/page_061.html)
+  62. [page_062](src/pages/page_062.html)
+  63. [page_063](src/pages/page_063.html)
+  64. [page_064](src/pages/page_064.html)
+  65. [page_065](src/pages/page_065.html)
+  66. [page_066](src/pages/page_066.html)
+  67. [page_067](src/pages/page_067.html)
+  68. [page_068](src/pages/page_068.html)
+  69. [page_069](src/pages/page_069.html)
+  70. [page_070](src/pages/page_070.html)
+  71. [page_071](src/pages/page_071.html)
+  72. [page_072](src/pages/page_072.html)
+
+
+
+
+# 
+
+
+
+
+
+
+
+
+# 
+
+Copyright© 2013 por Brasport Livros e Multimídia Ltda. 
+
+Todos os direitos reservados. Nenhuma parte deste livro poderá ser reproduzida, sob qualquer meio, especialmente em fotocópia (xerox), sem a permissão, por escrito, da Editora. 
+
+Para uma melhor visualização deste e-book sugerimos que mantenha seu software constantemente atualizado. 
+
+Editor: Sergio Martins de Oliveira 
+
+Diretora Editorial: Rosa Maria Oliveira de Queiroz 
+
+Assistente de Produção: Marina dos Anjos Martins de Oliveira 
+
+Revisão de Texto: Maria Helena A. M. Oliveira 
+
+Eletrônica: SBNigri Artes e Textos Ltda. 
+
+Capa: Trama Criações 
+
+Produçao de e-pub: SBNigri Artes e Textos Ltda. 
+
+Técnica e muita atenção foram empregadas na produção deste livro. Porém, erros de digitação e/ou impressão podem ocorrer. Qualquer dúvida, inclusive de conceito, solicitamos enviar mensagem para brasport@brasport.com.br, para que nossa equipe, juntamente com o autor, possa esclarecer. A Brasport e o(s) autor(es) não assumem qualquer responsabilidade por eventuais danos ou perdas a pessoas ou bens, originados do uso deste livro. 
+
+ISBN Digital: 978-85-7452-700-0 
+
+**BRASPORT Livros e Multimídia Ltda.**
+
+Rua Pardal Mallet, 23 – Tijuca 
+
+20270-280 Rio de Janeiro-RJ 
+
+Tels. Fax: (21) 2568.1415/2568.1507 
+
+**e-mails:**
+
+marketing@brasport.com.br 
+
+vendas@brasport.com.br 
+
+editorial@brasport.com.br 
+
+**site: www.brasport.com.br**
+
+**Filial**
+
+Av. Paulista, 807 – conj. 915 
+
+01311-100 – São Paulo-SP 
+
+Tel. Fax (11): 3287.1752 
+
+e-mail: filialsp@brasport.com.br 
+
+
+# 
+
+_Este livro é dedicado a todos que possuem a sede do conhecimento, àqueles que têm coragem para enfrentar suas próprias dificuldades e aos que fazem dos desafios os degraus para alcançar seus objetivos._
+
+
+# 
+
+Agradecimentos 
+
+Agradeço a Deus por me prover de coragem, saúde e discernimento. Agradeço a minha esposa e meus filhos, por me apoiarem incondicionalmente. Ao meu editor Sergio Martins de Oliveira e ao amigo Paulo Madson, dono de uma simplicidade sem igual, que me incentivou a escrever este e muitos outros livros. 
+
+
+# 
+
+Sobre o Livro 
+
+Este livro se destina àqueles que pretendem adquirir conhecimentos a respeito dos recursos de composição gráfica do objeto CANVAS, sobre a manipulação de pixels em contexto 2D gerando desenhos e formas vetoriais e sobre interatividade e controle para exibição e design de interação em páginas web. 
+
+A fim de alcançar tais resultados, o leitor é orientado a conhecer detalhadamente os conceitos e objetivos do objeto CANVAS em conjunto com a linguagem de programação JavaScript. O livro atende aos leitores que possuam conhecimentos na linguagem HTML e tenham noções de JavaScript, bem como um conceito razoável em lógica de programação. 
+
+
+# 
+
+Sobre o autor 
+
+**PALESTRANTE**
+
+Roque Fernando possui larga experiência com palestras, tendo atendido a plateias com até quinhentos participantes. 
+
+Conheça mais sobre as palestras do autor ( **Tendências do mercado na era digital** e **Hora de mudar – pense, conquiste, realize** ) em seu site: 
+
+www.roquefernando.com.br. 
+
+**GESTOR EMPRESARIAL**
+
+Elemento9, fundada em 2009, é uma empresa que desenvolve soluções em sistemas _online_ e HTML5 para as mais diversas finalidades. Como arquiteto da informação, o autor coordena projetos que envolvem desde _hotsite­_ , portais e comércio eletrônico, incluindo aplicativos para tablets e jogos educativos. 
+
+E9 Mídia, fundada em 2011, é uma empresa do ramo de _Digital Signage_ e TV Corporativa. Com olhar no futuro, Roque Fernando idealizou o software de distribuição em Mídia Indoor E9Play, que atualmente é utilizado em faculdades, comércios, prefeituras e eventos. 
+
+**CONSULTOR EM TI – ARQUITETO DA INFORMAÇÃO**
+
+Do leque das empresas para as quais Roque Fernando prestou consultoria especializada constam o Mackenzie, Telefônica, Pearson Education, CTI – Centro Tecnológico Aéreo Espacial, Anglo Vestibulares, Editora Abril, Certisign, Editora Globo, WMaccan, Impacta Tecnologia, entre outros. Sua consultoria é baseada na análise crítica da usabilidade em aplicativos _online_ , sites e sistemas de informação com foco na arquitetura da informação e gerência de projetos digitais para web com foco em HTML5. 
+
+
+# 
+
+Apresentação 
+
+Durante uma década desenvolvi aplicações envolvendo _bitmaps_ e gráficos vetoriais para web utilizando o Adobe Flash. Escrevi livros e material didático para sala de aula. Palestrei sobre o ganho em trabalhar esses elementos dentro do ambiente Flash, postei em blogs, em sites de conteúdo, gravei videoaulas. 
+
+E então surgiu um novo conceito chamado HTML5 que, a princípio, me fez resistente à ideia de que o cenário estava prestes a mudar radicalmente com relação a desenvolvimento para web. Com o tempo, ficou nítida a importância do HTML5 e dos inúmeros recursos dessa tecnologia. 
+
+A quantidade de recursos, possibilidades e novos conceitos envolvidos no desenvolvimento de aplicativos e conteúdo web nos leva a perceber que os sites já existentes, sem exceção, já ficaram ultrapassados. Estamos numa nova era do desenvolvimento para internet, a era HTML5, da web semântica. 
+
+Se você tem um histórico parecido com o meu, saiba que o HTML5 possui ferramentas suficientes para produzir quaisquer resultados que o Flash produza e que não há motivos para manter animações, sistemas ou quaisquer conteúdos na web em formato Flash. 
+
+Este livro descreve com detalhes os conceitos e métodos programáticos que produzem objetos geométricos, composições gráficas com uso de imagens e vídeos, mesclas, transparências, controles de vídeo, animações e interatividade dentro do objeto CANVAS. 
+
+É importante que o leitor tenha ciência de que trabalhar com CANVAS requer programar em JavaScript, o que, por sua vez, requer lógica de programação. A _tag_ <canvas> é apenas a marcação HTML que representa literalmente sua conotação semântica: tela, lona, pano de fundo. Portanto, a marca <canvas> define a existência de uma tela destinada a receber os elementos de sua composição gráfica e seus respectivos comportamentos. 
+
+Desenvolver em CANVAS remete a ter poder visual, poder em questão de processar diversas imagens em alta resolução numa única página em conjunto com vídeos e objetos vetoriais formatados em pixel. 
+
+
+É ter poder para criar design de interação, controles de mouse e de toque, animações e sofisticação visual. 
+
+**Sobre as convenções utilizadas no livro:**
+
+**Códigos**
+
+Para exemplificar os códigos utilizados em HTML, CSS e JavaScript os blocos de texto estão em itálico. 
+
+**HTML**
+
+_ <body> _
+
+_ <div> _
+
+_ <header id=”topo”> _
+
+_ <h1>OBJETO CANVAS HTML5</h1> _
+
+_ </header> _
+
+**JavaScript**
+
+_var nome=”Paulo”;_
+
+_var profissao=”Programador”;_
+
+_var linguagem=”PHP”;_
+
+_function contato (){_
+
+_console.log(nome) ;//Paulo_
+
+_}_
+
+**CSS**
+
+_section article canvas#cv1,section article canvas#cv2 {_
+
+_border:solid 1px #000;_
+
+_}_
+
+**Destacar uma sentença no código**
+
+Alteração ou inclusão de sentenças nos códigos descritos em exemplos anteriores utiliza o estilo negrito. Por exemplo, ao adicionar uma definição de tamanho de texto: 
+
+_section article canvas#cv1,section article canvas#cv2 {  
+border:solid 1px #000; _ font-size:14px; 
+
+_}_
+
+Elementos, atributos e objetos de linguagem usam fonte mono espacejada, por exemplo: 
+
+O atributo  required  dispara a obrigatoriedade de preenchimento para campos de texto de um formulário. 
+
+**Comentários sobre o código**
+
+Quando necessário, o livro exibirá um comentário sobre o código do assunto em questão. As notas importantes realçam uma informação a respeito do tópico abordado. 
+
+**//Comentando o código JavaScript** O método Math.random()*n retorna um número decimal aleatório.   
+---  
+**/*Comentando o código CSS*/** Pode-se simplificar a sintaxe da propriedade border do CSS obtendo resultados simultâneos escritos numa única linha (border:solid 1px #ccc)   
+---  
+** <!-- Comentando o código HTML --> ** O elemento de marcação <input> possui encerramento interno opcional.   
+---  
+**Nota importante:** descrições e comentários sobre dicas ou informações relevantes sobre o tópico abordado.   
+---  
+  
+**Pré-requisitos para testar seus exercícios**
+
+**Atenção no código.** Evite erros – caso esteja transcrevendo os códigos do livro, verifique atentamente se a sua versão está exatamente igual aos exercícios apresentados. 
+
+
+**Navegadores.** O objeto CANVAS pode apresentar incompatibilidade em navegadores antigos. Os exercícios descritos neste livro foram testados no navegador Chrome em sua versão mais atual. Para informações sobre compatibilidade utilize sites como www.3cschools.com. 
+
+**Verificação dos** logs  **e dos erros.** Teste o resultado dos seus arquivos HTML em um browser (preferencialmente o Chrome). Pressione F12 caso queira verificar os _logs_ de erro ou valores de objetos e variáveis exibidos por intermédio do painel existente na barra inferior do navegador, acionado com o botão **Console** . 
+
+**CANVAS ,** <canvas> **e canvas**
+
+Quando o livro menciona o elemento de marcação do HTML ( _tag_ ) o formato escolhido para escrita foi  <canvas> .  Quando a referência passa a ser direcionada ao objeto controlado via JavaScript, a escrita muda para **CANVAS­** . Ao referenciar o conceito sobre o tema, que é utilizado largamente em programas como Photoshop e Fireworks, menciona-se apenas **canvas** . 
+
+
+#  Sumário 
+
+1\. CANVAS 
+
+1.1. Primeiros passos 
+
+1.2. O elemento de marcação <canvas>
+
+1.3. Criando um arquivo com padrão HTML5 
+
+1.4. O objeto CANVAS 
+
+1.4.1. Elemento <canvas> inserido no documento HTML 
+
+1.4.2. O atributo id para o elemento <canvas>
+
+1.5. Suporte aos navegadores 
+
+1.5.1. Exemplo 
+
+1.6. Contexto 2D 
+
+1.6.1. getContext() 
+
+1.6.1.1. Exemplo 
+
+1.6.2. Vinculando um arquivo JavaScript ao documento HTML 
+
+1.6.2.1. Exemplo 
+
+1.6.3. CanvasRenderingContext2D 
+
+2\. CANVAS e JavaScript 
+
+2.1. Boas práticas 
+
+2.1.1. Não faça omissão das chaves 
+
+2.1.2. Coloque as chamadas de script no encerramento da tag </body>
+
+2.1.3. Utilize arrays 
+
+2.1.4. Reduza a quantidade de variáveis globais 
+
+2.1.5. Comente seu código 
+
+2.2. Funções parametrizadas 
+
+2.2.1. Exemplo de função utilizando dois parâmetros 
+
+2.3. Bibliotecas JavaScript 
+
+2.3.1. Paper 
+
+2.3.2. Processing 
+
+2.3.3. jCanvaScript 
+
+2.3.4. oCanvas 
+
+2.3.5. Raphael 
+
+2.4. Ferramentas e recursos online 
+
+2.4.1. Online Sprite Box Tool 
+
+2.4.2. Online Font Testing Tool 
+
+2.4.3. Online Pattern Generator Tool 
+
+2.4.4. Online XRay Tool 
+
+3\. Desenhando sobre o CANVAS 
+
+3.1. Contexto 2D 
+
+3.1.1. Verificando o suporte ao contexto do CANVAS via script 
+
+3.2. Formas geométricas 
+
+3.2.1. Criar formas retangulares 
+
+3.2.2. Limpar formas retangulares 
+
+3.2.3. Criar contornos retangulares 
+
+4\. Preenchimentos sólidos e gradientes 
+
+4.1. Opções para atribuição de cor 
+
+4.2. Atribuindo um estilo de cor sólida 
+
+4.2.1. Atribuindo um estilo de cor para um contorno 
+
+4.3. Global Alpha 
+
+4.4. Atribuindo cores gradientes 
+
+4.4.1. Radial gradiente 
+
+4.4.2. Linear gradiente 
+
+4.5. Um exemplo com retângulos sorteando posições e cores 
+
+4.6. Linhas e curvas 
+
+4.6.1. Linha de grade 
+
+4.6.2. Contornos 
+
+4.6.3. Desenhando linhas 
+
+4.6.3.1. Linhas com espessuras de 5, 10 e 25 pixels 
+
+4.6.3.2. Propriedades sobre o acabamento das linhas 
+
+4.6.3.3. Propriedades de acabamento dos segmentos conectados 
+
+4.7. Arcos e círculos 
+
+4.7.1. Círculo básico 
+
+4.7.2. Círculo básico com preenchimento 
+
+4.7.3. Combinando círculos 
+
+4.7.4. Semicírculos 
+
+4.8. Formas em curvas Bézier 
+
+4.8.1. Curvas quadráticas 
+
+
+4.8.1.1. Criando formas utilizando curvas quadráticas 
+
+4.8.2. Curvas cúbicas 
+
+4.8.2.1. Criando formas utilizando curvas Bézier 
+
+4.9. Desenhando linhas da grade 
+
+5\. Adicionando texto ao CANVAS 
+
+5.1. Texto básico 
+
+5.2. Contorno de texto 
+
+5.3. Contornos e preenchimentos simultaneamente 
+
+5.4. Aplicando sombra ao texto 
+
+5.5. Alinhamento do texto 
+
+5.5.1. Alinhamento ao centro 
+
+5.5.2. Alinhamento à direita 
+
+5.6. Medindo a largura do texto 
+
+5.7. Usando imagens como textura para o texto 
+
+5.8. Método toDataURL() 
+
+6\. Exibindo e manipulando imagens 
+
+6.1. Usando imagens externas 
+
+6.2. Controlando a escala de proporção das imagens 
+
+6.3. Enquadrando imagens em papel de parede 
+
+6.4. Imagens e textos simultaneamente 
+
+6.5. Recorte de imagens 
+
+6.6. Exibindo imagens com DataURL e Ajax 
+
+7\. Composição 
+
+7.1. Modos de composição 
+
+7.2. Salvando e restaurando o status do contexto 
+
+7.3. Criando um clipe 
+
+7.3.1. Comandos save() e restore() 
+
+8\. Matrizes de transformação 
+
+8.1. Os métodos setTransform() e transform() 
+
+8.2. Translação e rotação 
+
+8.2.1. Translação 
+
+8.2.2. Rotação 
+
+8.3. Escala 
+
+9\. Vídeo em CANVAS 
+
+9.1. Adicionando vídeo ao CANVAS 
+
+9.2. Enquadrando módulos em um único vídeo 
+
+9.3. Exibindo vídeos em áreas de recorte 
+
+9.4. Criando amostras de vídeo (screenshots) 
+
+10\. Animação 
+
+10.1. Usando imagens em movimento 
+
+10.2. Usando formas em movimento 
+
+10.3. Criando gráficos estatísticos 
+
+11\. Adicionando interatividade 
+
+11.1. Capturando coordenadas de tela 
+
+11.2. Controles de mouse (arrastar e soltar) 
+
+11.3. Controlando animação com cliques 
+
+11.4. Detectando colisões – Um jogo básico em CANVAS 
+
+Considerações finais: otimizando o canvas 
+
+
+# 
+
+Introdução 
+
+O conceito canvas foi inicialmente introduzido pela Apple em 2004 para rodar internamente no próprio Mac OS X WebKit, fornecendo gráficos para o navegador Safari. Atualmente, foi padronizado pelo grupo WHATWG ( _Web Hypertext Application Technology Working Group_ ) como proposta de especificidade para novas tecnologias na web. 
+
+Diferentemente dos gráficos apresentados em Flash, o objeto CANVAS dispensa plug-ins de interpretação ou ferramentas externas. O resultado da composição gráfica gerada no contexto do CANVAS é feita diretamente no navegador. 
+
+O objeto CANVAS não é um formato de arquivo fechado e salvo em disco. De outra maneira ele é inserido por uma _tag_ num documento HTML e seu contexto é controlado por JavaScript. 
+
+Quando nos referimos ao objeto CANVAS, estamos falando em pixels. Isso abrange todos os objetos contidos dentro dele; até os textos e objetos de desenho tornam-se pixels em _bitmap_ . Para melhor compreensão das suas características, vou fazer uma analogia com o programa Adobe Photoshop. 
+
+Ao abrir um novo arquivo nesse programa, imediatamente nos é entregue um objeto canvas vazio com determinada largura e altura, que nada tem a ver com HTML5 – este canvas proprietário do programa Photoshop permite manipular texto sobre ele, desenhar e empilhar imagens, além de contar com filtros como sombras e gradientes, porém o resultado final será sempre um arquivo de imagem. 
+
+As características do CANVAS são muito semelhantes às do Photoshop; a diferença está no formato de saída. No Photoshop, ao dar saída no formato de imagem JPG, por exemplo, achatamos as camadas que definem cada elemento contido no canvas, o que resulta num único arquivo de imagem. No caso do objeto CANVAS, sua exibição é feita diretamente num navegador de internet, por intermédio de um elemento de marcação de mesmo nome chamado  <canvas> . 
+
+
+Adicionar uma _tag_ <canvas> a um documento HTML5 exibirá apenas um retângulo de cor sólida, com largura e altura definidas como atributo da _tag_ . Para compor e empilhar imagens, adicionar texto, efeitos, vídeos e animações sobre ele, utiliza-se a linguagem JavaScript. 
+
+Quanto mais experientes ficamos na programação JavaScript, quanto mais aprimoramos nossa lógica, mais recursos visuais, interatividade e sofisticação ficam ao nosso alcance, o que se converte em funcionalidade e inovação para nosso projeto web. Pense nisso para aprimorar seus trabalhos visuais com essa tecnologia. 
+
+O CANVAS é indicado para projetos multimídia, jogos, composição gráfica e efeitos visuais sofisticados. As versões modernas dos navegadores utilizam recursos de aceleração gráfica (GPU – _Graphics Process Unit_ ) para interpretar e renderizar o CANVAS. Essa prática acelera o processamento dos gráficos via GPU, diminuindo o processo da CPU do usuário. Este livro descreve métodos e propriedades do JavaScript que viabilizam criar e manipular objetos dentro da API 2D do CANVAS. 
+
+A interpretação imediata ou renderização dos gráficos complexos, contidos numa página HTML por intermédio de um navegador de internet utilizando CANVAS, requer uma atenção especial no intuito de criar melhoria no desempenho, reforçando os recursos da GPU. Tais informações serão obtidas em alguns capítulos deste livro. 
+
+
+O uso de amostragem gráfica utilizando CANVAS é resultante de uma releitura no desenvolvimento web, onde é perceptível a obrigatoriedade de uma nova roupagem para os sites contemporâneos. Os menus clássicos de navegação e múltiplas páginas são substituídos por _single-pages_ e navegação vertical com efeitos de sobreposição e deslocamento atribuídos sobre a rolagem da página. Unidos a essas novas estratégias entram os objetos gráficos inseridos a partir do objeto CANVAS. O uso dessa tecnologia remete a um nível de alta criatividade, onde designers e diretores de arte encontram um ambiente ideal para criação de experiências visuais ricas para internet. 
+
+
+#  1\. CANVAS 
+
+##  1.1. Primeiros passos 
+
+Os estudos sobre o objeto CANVAS contidos neste livro são resultantes das tecnologias HTML, CSS e JavaScript. A título de organização, sugiro que destine uma pasta para o seu trabalho e dentro dela crie outras pastas para conter imagens e arquivos de formato .html, .css e .js. 
+
+Se você é um iniciante, procure um editor de texto que lhe agrade (notepad, notepad++, sublime). 
+
+Certifique-se de que todos os arquivos estejam salvos antes de testar os resultados (.html, .css e .js). 
+
+Quando a leitura ficar cansativa, pare um pouco, dê uma volta, faça algo diferente. É importante perceber a necessidade de pausa no aprendizado. 
+
+##  1.2. O elemento de marcação  <canvas>
+
+<canvas> é um elemento de marcação da linguagem HTML. O padrão atual para desenvolvimento de interfaces web usa convenções do HTML5, que seguem as definições e recomendações do W3C. A estrutura semântica de um documento HTML5 é dividida em seções representadas pelo elemento  <section> . Contidos nas seções ficam um ou mais artigos representados por elementos  <article> . Assim como o corpo do documento HTML  <body>,  cada  <article> conta com elementos de marcação para cabeçalhos  <header> e rodapés  <footer> . 
+
+##  1.3. Criando um arquivo com padrão HTML5 
+
+Salve um arquivo em HTML na sua pasta de trabalho. 
+
+_ <!DOCTYPE html> _
+
+_ <html> _
+
+_ <head> _
+
+_ <title>Canvas HTML5</title> _
+
+_ <meta charset=”utf-8”> _
+
+_ </head> _
+
+_ <body> _
+
+_ <div> _
+
+_ <header id=”topo”> _
+
+_ <h1>API Gráfica para exibição na WEB</h1> _
+
+_ </header> _
+
+_ <nav id=”menu”> _
+
+_ <!-- Adicione seus links aqui --> _
+
+_ </nav> _
+
+_ <section id=”conteudo”> _
+
+_ <header> _
+
+_ <h2>Exemplos</h2></header> _
+
+_ <article> _
+
+_ <!-- Adicione seus exemplos dentro dos artigos --> _
+
+_ </article> _
+
+_ <footer> </footer> _
+
+_ </section> _
+
+_ <aside></aside> _
+
+_ <footer></footer> _
+
+_ </div> _
+
+_ </body> _
+
+_ </html> _
+
+##  1.4. O objeto CANVAS 
+
+O objeto CANVAS tem como princípio fornecer desenhos e gráficos de alto desempenho interpretados via JavaScript, a serem exibidos em navegadores web. A princípio tenha ciência de que não basta apenas inserir o elemento de marcação  <canvas> para obter esses resultados. 
+
+
+O elemento de marcação  <canvas> não possui a capacidade de criar objetos gráficos visuais, ele apenas disponibiliza o contexto 2D. Os elementos visuais do CANVAS são exibidos por intermédio de programação. 
+
+O JavaScript é a linguagem de programação com suporte sobre o contexto 2D do CANVAS, com métodos disponíveis para criação de gráficos, textos, amostras de imagens e vídeos, gerando um padrão gráfico de modo imediatamente interpretado e de alta performance. 
+
+###  1.4.1. Elemento  <canvas> inserido no documento HTML 
+
+_ <article><canvas width=”300” height=”250”></canvas></article> _
+
+**Nota importante:** para maior controle da escala de dimensão do objeto CANVAS utilize a largura e altura diretamente no elemento de marcação por intermédio dos atributos  width  (largura) e  height  (altura) em vez da formatação via CSS.   
+---  
+  
+###  1.4.2. O atributo  id  para o elemento  <canvas>
+
+O atributo  id  possibilitará acessar e manipular o CANVAS via JavaScript por intermédio do DOM ( _Document Object Model_ ). 
+
+_ <article><canvas width=”300” height=”250” _ id=”cv1”  _ ></canvas></article> _
+
+Uma seção em CSS no cabeçalho de documento HTML definirá o estilo visual do CANVAS identificado como _cv1_ , inicialmente inserindo a borda de um pixel. 
+
+_ <head><title>Canvas HTML5</title> _
+
+_ <meta charset=”utf-8”> _
+
+<style>
+
+section article canvas#cv1 { 
+
+border:solid 1px #000; 
+
+_}_
+
+</style> _ </head> _
+
+**Nota importante:** este livro faz uso do CSS na seção  <head> do documento HTML para facilitar a leitura do código e a abstração dos exercícios propostos. Quando você desenvolver conteúdo profissional, dê preferência ao CSS vinculado com arquivos externos.   
+---  
+  
+**Figura 1. Aparência do CANVAS com borda aplicada em CSS.**
+
+Ao inserir o elemento de marcação  <canvas> no código HTML, caso não se especifique sua largura ou altura, o valor padrão será de 300px por 150px, respectivamente. Apesar de alocar o espaço padrão ou definido nos atributos  width  e  height  , o elemento  <canvas> exibe um contexto sem bordas coloridas e de fundo transparente. 
+
+
+Recorremos, então, a um estilo de borda sólida via CSS, onde o recorte da borda representa os limites do contexto 2D para a composição dos desenhos, textos, imagens e vídeos descritos em JavaScript. Qualquer conteúdo que exceder esses limites será ocultado do campo de visão do usuário. 
+
+##  1.5. Suporte aos navegadores 
+
+O objeto CANVAS fornece alto nível de compatibilidade para a maioria dos navegadores web, com exceção das versões 6, 7 e 8 do navegador Internet Explorer e a versão 2.0 do Android Browser. Para esses casos utilize uma alternativa que substitua o conteúdo produzido em CANVAS conforme o exemplo a seguir. 
+
+###  1.5.1. Exemplo 
+
+_ <canvas width=”300” height=”250” id=”cv1”> _
+
+<img src=”imagem.jpg” />
+
+_ </canvas> _
+
+**Nota importante:** o conteúdo disposto dentro do elemento de marcação  <canvas></canvas> será exibido apenas quando o navegador de uso não tiver suporte ao CANVAS. Os navegadores compatíveis ignoram o conteúdo inserido entre a marcação, exibindo o contexto do CANVAS normalmente.   
+---  
+  
+##  1.6. Contexto 2D 
+
+###  1.6.1. getContext() 
+
+Como dito anteriormente, as formas geométricas, linhas, curvas, textos e imagens exibidos no CANVAS são criados por intermédio de uma API 2D que fornece métodos e propriedades suscetíveis a comandos programáticos. O primeiro método a se conhecer será o  getContext()  . Esse método gera referência ao contexto 2D de um CANVAS, o que permite adicionar conteúdo à sua superfície. 
+
+contexto.getContext(“2d”) 
+
+####  1.6.1.1. Exemplo 
+
+_//referência ao contexto 2D do objeto CANVAS_
+
+_document.getElementById(“cv1”).getContext(“2d”);_
+
+###  1.6.2. Vinculando um arquivo JavaScript ao documento HTML 
+
+1.Crie um arquivo com a extensão .js para os códigos em JavaScript e salve-o na pasta de trabalho. 
+
+2.No arquivo HTML faça a chamada de vinculação a esse arquivo no final do código, logo acima do encerramento do elemento de marcação­  </body> . 
+
+<script src=”canvas01.js” type=”text/javascript”></script>
+
+_ </body> _
+
+_ </html> _
+
+
+**Nota importante:** a boa prática indica vincular o arquivo HTML com _scripts_ externos. Para que o documento HTML seja completamente carregado anteriormente ao JavaScript, coloque o código de vinculação antes do encerramento da seção  </body>.   
+---  
+  
+console.log() 
+
+O objeto  console  é pertencente à linguagem JavaScript. A função  log()  desse objeto retorna o valor de variáveis e objetos referenciados em seus parênteses. Esse método é comumente utilizado por programadores para verificação de erros ou disparo de mensagens para avaliação do desempenho dos eventos que ocorrem numa página web. 
+
+####  1.6.2.1. Exemplo 
+
+**HTML**
+
+_ <canvas id=”cv1”></canvas> _
+
+**JavaScript**
+
+_var cv1=document.getElementById(“cv1”);_
+
+console.log(cv1) 
+
+O resultado do console será:  <canvas width=”300” height=”250” id=”cv1”>
+
+###  1.6.3. CanvasRenderingContext2D 
+
+A classe  CanvasRenderingContext2D  refere-se ao contexto linear 2D das coordenadas cartesianas da superfície do CANVAS originado no canto superior esquerdo (0,0). O método  getContext()  retorna um objeto  CanvasRenderingContext2D  que fica permanentemente associado a um elemento  <canvas> . Adicione o código a seguir ao arquivo JavaScript. 
+
+**JavaScript**
+
+_//referência ao objeto CANVAS_
+
+_var cv1=document.getElementById(“cv1”);_
+
+//referência ao contexto 2D do CANVAS 
+
+var ctx1=cv1.getContext(“2d”); 
+
+_console.log(ctx1);_
+
+Teste o arquivo HTML no navegador web. Pressione o atalho F12 para abrir o menu de rodapé e clique no item chamado **Console** . Observe a lista de propriedades pertencentes ao contexto 2D do objeto CANVAS. 
+
+**Figura 2. A lista de propriedades da classe** CanvasRenderingContext2D. 
+
+
+#  2\. CANVAS e JavaScript 
+
+##  2.1. Boas práticas 
+
+Para você que está iniciando os conhecimentos sobre a linguagem JavaScript, é importante considerar algumas regras que servem como referência aos bons costumes da programação. Aqui vamos listar cinco boas práticas ao se programar em JavaScript. 
+
+###  2.1.1. Não faça omissão das chaves 
+
+Prática frequente não sugerida: 
+
+_if(variavel)x=0;_
+
+Boa prática: 
+
+_if(variavel){_
+
+_x=0;_
+
+_}_
+
+###  2.1.2. Coloque as chamadas de  script  no encerramento da  tag  </body>
+
+O objetivo principal é fazer com que a página carregue rapidamente para o usuário. Essa prática reduz a quantidade de tempo que o usuário aguarda para a exibição da página. 
+
+_… <footer></footer> _
+
+_ </div> _
+
+<script src=”arquivo.js” type=”text/javascript”></script>
+
+_ </body> _
+
+_ </html> _
+
+###  2.1.3. Utilize  arrays 
+
+Para múltiplos valores, utilize os _arrays_ , pois são objetos de fácil manipulação e acessíveis por índices numéricos que iniciam em zero. 
+
+_var arrayCidades = [“São Paulo”,”Brasília”,”Rio de Janeiro”];_
+
+###  2.1.4. Reduza a quantidade de variáveis globais 
+
+Aplique uma redução na quantidade de variáveis globais. Essa prática reflete consequentemente na redução dos erros e das incompatibilidades na integração com outras bibliotecas ou aplicações. 
+
+Prática frequente não sugerida: 
+
+_var nome=”Paulo”;_
+
+_var profissao=”Programador”;_
+
+_var linguagem=”PHP”;_
+
+_function contato (){_
+
+_console.log(nome) ;//Paulo_
+
+_}_
+
+Boa prática: 
+
+_var contato={_
+
+_nome:”Paulo”,_
+
+_profissao:”Programador”,_
+
+_linguagem:”PHP”,_
+
+_cadastro:function(){...}_
+
+_}_
+
+_console.log(contato.nome) //Paulo_
+
+###  2.1.5. Comente seu código 
+
+Essa é uma das melhores práticas que se estende a qualquer linguagem de programação. Comentar o código garante que meses mais tarde possamos lembrar rapidamente do que foi elaborado e da lógica instituída, além de permitir que terceiros consigam dar continuidade a projetos feitos por você. 
+
+_/Comentário em linha única/_
+
+_/*Comentário para_
+
+_múltiplas linhas*/_
+
+##  2.2. Funções parametrizadas 
+
+
+Parâmetros, comumente chamados de argumentos, são variáveis que podem ser passadas para uma sub-rotina definida num método ou função, que por sua vez utiliza os valores atribuídos a esses parâmetros para executar uma ou mais linhas de comando. 
+
+###  2.2.1. Exemplo de função utilizando dois parâmetros 
+
+_var resultado;_
+
+_var a;_
+
+_var b;_
+
+_function calculo (a,b){_
+
+_return a * b;_
+
+_}_
+
+_a=5;_
+
+_b=2;_
+
+_//EXEMPLO 1_
+
+_resultado=calculo(a,b);_
+
+_console.log(resultado);//10_
+
+_//EXEMPLO 2_
+
+_resultado=calculo(3,9);_
+
+_console.log(resultado);//27_
+
+_function displayDiv (div,valor){_
+
+_document.getElementById(div).style.display=valor;_
+
+_}_
+
+_//EXEMPLO 3_
+
+_displayDiv(“div1”,”block”);//exibe o elemento html com id=”div1”_
+
+_displayDiv(“div2”,”none”);//oculta o elemento html com id=”div2”_
+
+
+**//Comentando o código JavaScript**  
+---  
+A função  calculo  fornece dois parâmetros denominados  a  e  b  . Tenha em conta que parâmetros suportam quaisquer nomes desde que não iniciem com números nem hifens. É uma boa prática utilizar nomes que sejam referências ao objetivo do parâmetro – como exemplo, imagine uma função que utiliza parâmetros destinados a receber valores de posições horizontais e verticais para um objeto. Nesse caso, os parâmetros podem receber nomes como  posX  e  posY  , boas referências que remetem à lembrança de que estamos lidando com posicionamento.   
+Na função  calculo  , a sub-rotina  return a * b  ; demanda o retorno do resultado da multiplicação entre  a  e  b  .   
+_//EXEMPLO 1_ , as variáveis globais  a  e  b  recebem valores numéricos 5 e 2, respectivamente. Quando a função é chamada substituindo os parâmetros pelas variáveis globais obtemos o resultado 10.   
+_//EXEMPLO 2,_ chama-se a função substituindo os valores de  a  e  b  explicitamente, onde 9 e 3 resultam em 27.   
+_//EXEMPLO 3,_ a função  displayDiv  possui dois parâmetros denominados _div_ e _valor_ que representam o  id  do elemento  <div> e o valor da propriedade  display,  respectivamente. Ao chamar a função, os valores atribuídos aos parâmetros permitirão definir o valor de  display  : (  none  ou  block  ) ao elemento  <div> que contém o  id  referenciado.   
+  
+##  2.3. Bibliotecas JavaScript 
+
+
+Falar em bibliotecas de códigos em JavaScript nos remete a recursividade. Esse termo representa a maneira de resolver um problema, dividindo-o em problemas menores, porém do mesmo princípio. Dentro dessa perspectiva­, é muito atraente pensar na possibilidade de termos em mãos diversos métodos que reduzem as tarefas de mesma natureza a tarefas menores (subtarefas). Como exemplo, imagine ter que reescrever uma sentença longa toda vez que precisar desenhar um círculo, utilizando de sete a oito linhas para concluir a tarefa. No mundo do “copiar e colar” pode-se duplicar essas linhas e alterar as propriedades, o que parece, grosso modo, ser uma ótima solução. Mas o resultado disso seria uma quantidade desnecessária e absurda de linhas de programação. 
+
+A recursividade permite criar **métodos** que agem como base de replicação, onde os recursos básicos para criação de uma tarefa estão incluídos dentro dos métodos e basta invocá-los alterando parâmetros para recriar uma nova tarefa sem a necessidade de reescrever tudo novamente. 
+
+Numa analogia, se o Criador precisasse “reescrever” toda a cadeia genética para cada novo ser humano que estivesse preste a ser concebido neste planeta, a população mundial seria incrivelmente menor. Ao invés disso, cada novo ser recebe uma herança genética com todos os “métodos biológicos” prontos e parametrizados, necessários para uma réplica perfeita. 
+
+Pense nisso quando programar seus códigos: sempre existe uma maneira de reduzir as linhas, gerando funções e métodos reutilizáveis. 
+
+A seguir, algumas bibliotecas disponíveis na web para _download_ , destinadas à criação de elementos gráficos em CANVAS. 
+
+###  2.3.1. Paper 
+
+Biblioteca _open source_ com base em JavaScript que viabiliza produzir vetores gráficos destinados ao CANVAS em HTML5. Desenhar gráficos complexos como curvas de Bézier torna-se bem simples com Paper.js. 
+
+**Figura 3. http://paperjs.org/.**
+
+###  2.3.2. Processing 
+
+
+Esta biblioteca trabalha com padrões web, oferecendo recursos visuais para criação de gráficos, arte digital, animações interativas, videogames, interatividade para objetos educacionais, entre outros. 
+
+**Figura 4. http://processingjs.org/.**
+
+###  2.3.3. jCanvaScript 
+
+Fornece métodos para manipular o conteúdo do CANVAS. A documentação do jCanvasScript indica que os _scripts_ são compatíveis com qualquer plataforma, incluindo iPhone, iPad e Android, desde que exista suporte a CANVAS e JavaScript. 
+
+**Figura 5. http://jcscript.com/.**
+
+###  2.3.4. oCanvas 
+
+O objetivo principal desta biblioteca JavaScript é tornar fácil desenvolver em CANVAS HTML5 utilizando um conceito de objetos no lugar de pixels, o que melhora a abstração dos iniciantes. 
+
+**Figura 6. http://ocanvas.org/.**
+
+###  2.3.5. Raphael 
+
+Utiliza os padrões W3C mesclando as tecnologias SVG e VML como base para criar gráficos. Todos os objetos são gerados mediante as definições DOM ( _Document Object Model_ ). Os scripts suportam eventos de interação do usuário. O objetivo é fornecer arte digital fácil de criar interfaces _cross-browser_ . 
+
+**Figura 7. http://raphaeljs.com/.**
+
+##  2.4. Ferramentas e recursos  online 
+
+###  2.4.1. Online Sprite Box Tool 
+
+Ferramenta que permite a criação rápida e _online_ de um recorte da imagem­ por intermédio de classes em CSS e IDs baseados na propriedade  background-position  combinando JQuery, CSS3 e HTML5. 
+
+**Figura 8. http://www.spritebox.net/.**
+
+###  2.4.2. Online Font Testing Tool 
+
+Descubra qual é a melhor fonte para o seu projeto web com esse teste _online_ . Basta arrastar uma fonte no formato .ttf do seu computador para a página de teste e instantaneamente o HTML5 e o CSS  @font-face  fazem a mudança de aparência dos blocos de texto. 
+
+**Figura 9. http://fontdragr.com/.**
+
+###  2.4.3. Online Pattern Generator Tool 
+
+Ferramenta _online_ destinada a designers de interface que pretendem criar páginas ou seções de cabeçalho com _backgrounds_ . A ferramenta utiliza-se do objeto CANVAS para fornecer texturas fáceis de criar em segundos. 
+
+**Figura 10. http://patternizer.com/nms4.**
+
+
+###  2.4.4. Online XRay Tool 
+
+Veja rapidamente os detalhes de quaisquer páginas que estejam abertas em seu navegador de internet. Basta arrastar o botão XRAY para o endereço da aba. O XRAY gera visualmente as informações sobre propriedades CSS do elemento em seleção. 
+
+**Figura 11. http://westciv.com/xray/.**
+
+
+#  3\. Desenhando sobre   
+o CANVAS 
+
+Para se desenhar sobre um **contexto** utiliza-se do método  getContext()  contido na API 2D do objeto CANVAS. Este método permite adicionar texto, imagens, vídeos, formas geométricas, linhas e curvas em formatos de cor sólida e gradiente a um contexto, que por sua vez é projetado visualmente na página do navegador por intermédio do elemento de marcação HTML  <canvas> . Cada objeto CANVAS possui seu próprio contexto, individual e de livre manipulação, referenciado por um atributo  id  do elemento de marcação ao qual pertence. 
+
+O contexto 2D do objeto CANVAS é interpretado e convertido em _bitmaps_ que permitem a definição de áreas interativas e controle a partir do teclado. 
+
+**Figura 12. Os diversos elementos exibidos no contexto do CANVAS.**
+
+**Nota importante:** ao criar um elemento de marcação  <canvas> , caso não sejam especificadas suas dimensões de largura e altura, o navegador aplicará o padrão de 300 pixels de largura por 150 pixels de altura.   
+---  
+  
+##  3.1. Contexto 2D 
+
+O método  getContext()  possui dois modos de renderização: 
+
+“2d” para elementos em plano bidimensional. 
+
+“webgl” para elementos em 3D. 
+
+Apesar da amostragem de alguns exemplos sobre o modo contexto **WEBGL­** , o foco desta publicação é o uso do modo contexto 2D. Durante o período de escrita deste livro o modo **WEBGL** apresentava compatibilidade apenas nos seguintes navegadores: 
+
+Internet Explorer 11 
+
+Chrome 18+ 
+
+Opera 16+ 
+
+BlackBerry 10 
+
+Opera Mobile 16 
+
+Desenhar sobre o contexto do CANVAS representa manipular coordenadas nos eixos X (horizontal) e Y (vertical), cujo ponto de origem é localizado no canto superior esquerdo. Quanto maior o valor em X, mais à direita ficará a posição definida horizontalmente. Quanto maior o valor em Y, mais para baixo ficará a posição definida verticalmente. 
+
+**Figura 13. A orientação do eixo X/Y do objeto CANVAS.**
+
+###  3.1.1. Verificando o suporte ao contexto do CANVAS via  script 
+
+
+Como mencionado anteriormente, todo conteúdo inserido entre os elementos de marcação  <canvas></canvas> será exibido desde que o navegador de uso não possua compatibilidade com o CANVAS. 
+
+Opcionalmente, essa verificação pode ser feita em JavaScript, a fim de testar o suporte dos navegadores em relação ao método  getContext().  Adicione o código a seguir ao documento JavaScript. 
+
+**JavaScript**
+
+_//referência ao objeto CANVAS_
+
+_var cv1=document.getElementById(“cv1”);_
+
+_//verifica o suporte ao contexto do CANVAS_
+
+if (cv1.getContext){ 
+
+_//referência ao contexto 2D do CANVAS_
+
+_var ctx1=cv1.getContext(“2d”);_
+
+_console.log(ctx1);_
+
+}else{ 
+
+// crie uma alternativa para os navegadores que não apresentam suporte 
+
+alert(“Navegador sem suporte a CANVAS”); 
+
+} 
+
+**//Comentando o código JavaScript**  
+---  
+Observe que a declaração da variável  ctx1  foi movida para a condicional  if  . Isso não gera nenhuma mudança visual, mas habilita o navegador a informar, caso sua versão não seja compatível com CANVAS.   
+  
+##  3.2. Formas geométricas 
+
+O contexto do CANVAS suporta a exibição de gráficos em formato de pixels­. Por intermédio de métodos existentes na API 2D é possível criar retângulos, círculos, linhas e curvas. 
+
+###  3.2.1. Criar formas retangulares 
+
+Para desenhar uma forma retangular utilize o método  fillRect().  Neste método são configurados os parâmetros para as coordenadas x e y de posição e as dimensões de largura e altura da forma. O preenchimento padrão da forma será preto. 
+
+**Nota importante:** os códigos de construção para os elementos contidos no contexto do CANVAS são inseridos dentro da condicional  if  , onde a verificação compreende a parte em que o navegador é compatível com o CANVAS.   
+---  
+  
+fillRect (posição em x,posição em y,largura,altura) 
+
+**JavaScript**
+
+_if (cv1.getContext){_
+
+_//referência ao contexto 2D do CANVAS_
+
+_var ctx1=cv1.getContext(“2d”);_
+
+//desenha o primeiro retângulo 
+
+ctx1.fillRect (10,10,130,150); 
+
+//desenha o segundo retângulo 
+
+ctx1.fillRect (150,10,130,150); 
+
+_console.log(ctx1);_
+
+_}else{ ..._
+
+
+**Figura 14. Dois retângulos criados com o método** fillRect(). 
+
+###  3.2.2. Limpar formas retangulares 
+
+Limpar uma área retangular predefinida com o método  clearRect()  representa torná-la totalmente transparente. Neste método são configurados os parâmetros para as coordenadas x e y de posição e as dimensões de largura e altura da área. 
+
+clearRect (posição em x,posição em y,largura,altura) 
+
+**JavaScript**
+
+_if (cv1.getContext){_
+
+_//referência ao contexto 2D do CANVAS_
+
+_var ctx1=cv1.getContext(“2d”);_
+
+_//desenha o primeiro retângulo_
+
+_ctx1.fillRect (10,10,130,150);_
+
+_//desenha o segundo retângulo_
+
+_ctx1.fillRect (150,10,130,150);_
+
+//limpa a área retangular definida 
+
+ctx1.clearRect(45,45,60,60); 
+
+_console.log(ctx1);_
+
+_}else{ ..._
+
+**Figura 15. Área retangular definida pelo método** clearRect(). 
+
+**Nota importante:** o método  clearRect()  é frequentemente utilizado para otimizar os processos de redesenho, limpando áreas predefinidas no código. Essa prática evita o acúmulo de objetos sobrepostos no contexto 2D, principalmente no caso de animações e jogos.   
+---  
+  
+###  3.2.3. Criar contornos retangulares 
+
+Para desenhar um contorno retangular utilize o método  strokeRect().  Neste método são configurados os parâmetros para as coordenadas x e y de posição e as dimensões de largura e altura do contorno. 
+
+strokeRect(posição em x,posição em y,largura,altura) 
+
+**JavaScript**
+
+_if (cv1.getContext){_
+
+_//referência ao contexto 2D do CANVAS_
+
+_var ctx1=cv1.getContext(“2d”);_
+
+_//desenha o primeiro retângulo_
+
+_ctx1.fillRect (10,10,130,150);_
+
+_//desenha o segundo retângulo_
+
+_ctx1.fillRect (150,10,130,150);_
+
+_//limpa a área retangular definida_
+
+_ctx1.clearRect(45,45,60,60);_
+
+//desenha o contorno de um retângulo 
+
+ctx1.strokeRect(10,180,200,50); 
+
+_console.log(ctx1);_
+
+_}else{ ..._
+
+**Figura 16. Retângulo criado com o método** strokeRect(). 
+
+
+#  4\. Preenchimentos sólidos e gradientes 
+
+Formas retangulares e circulares, linhas, curvas e conexões em segmentos que geram outras formas podem receber preenchimentos e contornos de cor sólida por intermédio das propriedades  fillStyle  e  strokeStyle  . Para preenchimentos gradientes utilizam-se os métodos  createRadialGradient()  e  createLinearGradient()  . 
+
+Cada um desses métodos recebe uma composição de cores atribuída em  addColorStop()  _._ Os valores atribuídos para preenchimentos seguem as especificações CSS3, podendo ser escritos de várias maneiras com resultados semelhantes. 
+
+##  4.1. Opções para atribuição de cor 
+
+Neste exemplo todos os resultados refletem o mesmo tom de cor azul: 
+
+**RGB:** rgb (0,0,255) 
+
+**RGB com transparência (opacidade):** rgba (0,0,255,0.5) 
+
+**Hexadecimal:** #0000ff 
+
+**Nome da cor:** blue 
+
+##  4.2. Atribuindo um estilo de cor sólida 
+
+A propriedade  fillStyle  define o estilo de preenchimento de retângulos, círculos, linhas ou curvas. É possível gerar preenchimentos sólidos, gradientes e com transparência. Como exemplo, colocar dois retângulos sobrepostos, mantendo o segundo retângulo distante do primeiro em 40 pixels à esquerda (x) e abaixo (y) comprovará visualmente a opacidade reduzida da cor. 
+
+fillStyle=cor; 
+
+**JavaScript**
+
+_if (cv1.getContext){_
+
+_//referência ao contexto 2D do CANVAS_
+
+_var ctx1=cv1.getContext(“2d”);_
+
+//preenchimento em RGB 
+
+ctx1.fillStyle = “rgb(80,80,0)”; 
+
+_//desenha o primeiro retângulo_
+
+_ctx1.fillRect (10,10,130,150);_
+
+//preenchimento em RGB com transparência 
+
+ctx1.fillStyle = “rgba(0,0,200,0.5)”; 
+
+_//desenha o segundo retângulo_
+
+_ctx1.fillRect (50,50,130,150);_
+
+_//limpa a área retangular definida_
+
+_ctx1.clearRect(45,45,60,60);_
+
+_//desenha o contorno de um retângulo_
+
+_ctx1.strokeRect(10,180,200,50);_
+
+_console.log(ctx1);_
+
+_}else{ ..._
+
+
+**Nota importante:** ao configurar um estilo de preenchimento por intermédio da propriedade _fillStyle,_ todos os objetos definidos no código que estejam nas linhas abaixo deste (como numa pilha) passam a receber esse preenchimento como padrão. Para obter objetos de cores diferentes, redefina o estilo na linha acima da escrita do método de cada desenho.   
+---  
+  
+**Figura 17. Aplicação de preenchimento sólido e com transparência com a  
+propriedade ** fillStyle. 
+
+###  4.2.1. Atribuindo um estilo de cor para um contorno 
+
+A propriedade  strokeStyle  é semelhante a  fillStyle  – a diferença é que esta define o estilo de cor de um contorno. 
+
+strokeStyle=cor; 
+
+**JavaScript**
+
+_if (cv1.getContext){_
+
+_//referência ao contexto 2D do CANVAS_
+
+_var ctx1=cv1.getContext(“2d”);_
+
+_//preenchimento em RGB_
+
+_ctx1.fillStyle = “rgb(80,80,0)”;_
+
+_//desenha o primeiro retângulo_
+
+_ctx1.fillRect (10,10,130,150);_
+
+_//preenchimento em RGB com transparência_
+
+_ctx1.fillStyle = “rgba(0,0,200,0.5)”;_
+
+_//desenha o segundo retângulo_
+
+_ctx1.fillRect (50,50,130,150);_
+
+_//limpa a área retangular definida_
+
+_ctx1.clearRect(45,45,60,60);_
+
+//estilo de cor para o contorno 
+
+ctx1.strokeStyle=”#ff0000”; 
+
+_//desenha o contorno de um retângulo_
+
+_ctx1.strokeRect(10,180,200,50);_
+
+_console.log(ctx1);_
+
+_}else{ ..._
+
+##  4.3. Global Alpha 
+
+A propriedade  globalAlpha  permite aplicar transparência a uma quantidade de objetos em pilha. 
+
+globalAlpha=número; 
+
+**JavaScript**
+
+_... //desenha o primeiro retângulo_
+
+_ctx1.fillRect (10,10,130,150);_
+
+_//preenchimento em RGB com transparência_
+
+_ctx1.fillStyle = “rgba(0,0,200,0.5)”;_
+
+//A partir deste ponto todos os objetos serão transparentes 
+
+ctx1.globalAlpha=0.3;  _//desenha o segundo retângulo_
+
+_ctx1.fillRect (50,50,130,150);_
+
+_//limpa a área retangular definida_
+
+_ctx1.clearRect(45,45,60,60);_
+
+_//estilo de cor para o contorno_
+
+_ctx1.strokeStyle=”#ff0000”;_
+
+_//desenha o contorno de um retângulo_
+
+_ctx1.strokeRect(10,180,200,50);_
+
+_console.log(ctx1);_
+
+_}else{ ..._
+
+**Figura 18. O segundo retângulo e o contorno recebem a propriedade** globalAlpha. 
+
+##  4.4. Atribuindo cores gradientes 
+
+###  4.4.1. Radial gradiente 
+
+
+O método  createRadialGradient()  cria um objeto circular de cor gradiente que pode ser utilizado em retângulos, círculos, linhas ou textos por intermédio das propriedades  strokeStyle  e  fillStyle  . 
+
+O método  addColorStop()  especifica a quantidade e a posição das cores dentro do objeto circular de cor gradiente. 
+
+createRadialGradient(início da posição x, início da posição y, início do raio, final da posição x, final da posição y, final do raio) 
+
+**JavaScript**
+
+_//RADIAL GRADIENT_
+
+_var radialGr = ctx1.createRadialGradient(45,45,20,52,50,30);_
+
+_radialGr.addColorStop(0, ‘#A7D30C’);_
+
+_radialGr.addColorStop(0.9, ‘#019F62’);_
+
+_radialGr.addColorStop(1, ‘rgba(1,159,98,0)’);_
+
+_var radialGr1 = ctx1.createRadialGradient(105,105,20,112,120,50);_
+
+_radialGr1.addColorStop(0, ‘#FF5F98’);_
+
+_radialGr1.addColorStop(0.75, ‘#FF0188’);_
+
+_radialGr1.addColorStop(1, ‘rgba(255,1,136,0)’);_
+
+_var radialGr2 = ctx1.createRadialGradient(95,65,15,102,60,40);_
+
+_radialGr2.addColorStop(0, ‘#FFFFFF’);_
+
+_radialGr2.addColorStop(0.8, ‘#008000’);_
+
+_radialGr2.addColorStop(1, ‘rgba(0,101,255,0)’);_
+
+_var radialGr3 = ctx1.createRadialGradient(125,150,90,125,150,130);_
+
+_radialGr3.addColorStop(0, ‘#F8F291’);_
+
+_radialGr3.addColorStop(0.8, ‘#E45700’);_
+
+_radialGr3.addColorStop(1, ‘rgba(28,99,0,0)’);_
+
+_// retângulos que recebem os círculos gradientes_
+
+_ctx1.fillStyle = radialGr3;_
+
+_ctx1.fillRect(0,20,280,250);_
+
+_ctx1.fillStyle = radialGr2;_
+
+_ctx1.fillRect(0,20,280,250);_
+
+_ctx1.fillStyle = radialGr1;_
+
+_ctx1.fillRect(0,20,280,250);_
+
+_ctx1.fillStyle = radialGr;_
+
+_ctx1.fillRect(0,20,280,250);_
+
+**Figura 19. Preenchimento radial gradiente.**
+
+###  4.4.2. Linear gradiente 
+
+O método  createLinearGradient()  cria um objeto retangular de cor gradiente que pode ser utilizado em retângulos, círculos, linhas ou textos por intermédio das propriedades  strokeStyle  e  fillStyle  . 
+
+createLinearGradient(início da posição em x, início da posição em y, final do posição em x, final da posição em y) 
+
+**JavaScript**
+
+_//LINEAR GRADIENT_
+
+_var linearGrad = ctx1.createLinearGradient(0,100,150,100);_
+
+_linearGrad.addColorStop(0, ‘#333399’);_
+
+
+_linearGrad.addColorStop(0.5, ‘#fff’);_
+
+_linearGrad.addColorStop(0.5, ‘#ff0000’);_
+
+_linearGrad.addColorStop(1, ‘#fff’);_
+
+_// aplicando o gradiente_
+
+_ctx1.fillStyle = linearGrad;_
+
+_ctx1.fillRect(10,10,130,130);_
+
+_console.log(ctx1);_
+
+**Figura 20. Preenchimento linear gradiente.**
+
+##  4.5. Um exemplo com retângulos sorteando posições e cores 
+
+1.Altere o CSS no cabeçalho do documento para atribuir um estilo de borda para um novo elemento  <canvas>. 
+
+**CSS**
+
+_ <style> _
+
+_section article canvas#cv1,_ section article canvas#cv2  _{_
+
+_border:solid 1px #000;_
+
+_}_
+
+_ </style> _
+
+2.Adicione um novo elemento de marcação  <canvas> no corpo da página. 
+
+**HTML**
+
+_ <section id=”conteudo”> _
+
+_ <header> _
+
+_ <h2>Exemplos</h2></header> _
+
+_ <article> _
+
+_ <!-- Adicione seus exemplos dentro dos artigos --> _
+
+_ <canvas width=”300” height=”250” id=”cv1”></canvas> _
+
+<hr />
+
+<canvas width=”300” height=”250” id=”cv2”></canvas>
+
+_ </article> _
+
+_ <footer> </footer> _
+
+_ </section> _
+
+3.No arquivo JavaScript, adicione o bloco de código em destaque para montar a função denominada  retangulos()  . O código produz uma quantidade de retângulos mediante a quantidade de vetores do Array  cores  . Observe que, no final deste código, fora das chaves da condicional de verificação, foi adicionada a chamada  retangulos()  , que executa a função. Outro comando necessário está na declaração das variáveis  cv2  e  ctx2  , que representam o CANVAS e seu contexto 2D, respectivamente. 
+
+**JavaScript**
+
+_//Exemplo de retângulos sorteados em posições e cores_
+
+_var cv2=document.getElementById(“cv2”);_
+
+_//array cores_
+
+_var cores=[“0,0,255”,”0,255,0”,”255,192,203”,”190,190,190”,”255,0,0”,_
+
+_“165,42,42”,”0,255,255”,”255,165,0”];_
+
+_if (cv1.getContext){_
+
+_//referência ao contexto 2D do CANVAS_
+
+_var ctx1=cv1.getContext(“2d”);_
+
+_var ctx2=cv2.getContext(“2d”);_
+
+_//Chamada da função_
+
+_retangulos();_
+
+_}_
+
+_function retangulos (){_
+
+_//estrutura de repetição dependente do array cores_
+
+_for(var i=0;i <cores.length;i++){ _
+
+_//sorteio das posições horizontais e verticais_
+
+_var posX = Math.random()* 200;_
+
+_var posY = Math.random()* 180;_
+
+_//aplica a cor da vez recuperada do array cores_
+
+_ctx2.fillStyle=”rgba(“ + cores[i]+”,0.6)”;_
+
+
+_// desenha o retângulo utilizando as posições sorteadas_
+
+_ctx2.fillRect(posX,posY,100,80);_
+
+_//aplica o estilo de contorno preto_
+
+_ctx2.strokeStyle=”black”;_
+
+_//desenha o contorno sobre o retangulo_
+
+_ctx2.strokeRect(posX,posY,100,80);_
+
+_//Espessura da linha mediante o número da variável de incremento i._
+
+_ctx2.lineWidth=i+2;_
+
+_}_
+
+_}_
+
+4.Salve todos os arquivos e teste o resultado no navegador. Pressione F5 para atualizar a página e gerar os sorteios. 
+
+**Figura 21. Exemplo de retângulos sorteados em cores e posições**
+
+##  4.6. Linhas e curvas 
+
+O contexto do CANVAS suporta a criação de elementos visuais que simulam o desenhar de uma caneta. O traço em questão suporta preenchimento, contorno e a finalização de linhas e curvas por intermédio dos comandos  beginPath(), closePath(), stroke()  e  fill()  _._
+
+Os métodos  moveTo(), lineTo(), quadraticCurveTo()  e  bezierCurveTo()  são utilizados para desenhar as formas geradas pelas linhas e curvas. O resultado de um traço pode ser apenas uma linha ou parte de um segmento, conectado com outra linha ou curva. 
+
+Quando as conexões em segmentos se fecham por encontrar o início de sua respectiva primeira linha ou curva, temos uma forma preparada para receber preenchimentos e contornos. 
+
+###  4.6.1. Linha de grade 
+
+A linha de grade representa uma visão imaginária das linhas verticais e horizontais que permeiam a superfície do CANVAS com origem no canto superior esquerdo dos eixos x e y. 
+
+A linha de grade funciona da mesma maneira que ocorre com os programas de edição de imagem ou ilustração. A linha de grade possibilita ter visão sobre a posição e o espaço dos elementos visuais dentro do contexto 2D. Nos próximos exemplos você aprenderá a criar uma linha de grade, a fim de utilizá-la como referência em seus trabalhos. 
+
+###  4.6.2. Contornos 
+
+Quando se desenha uma linha ou um contorno sobre o contexto do CANVAS, esta se dispõe no centro horizontal ou vertical da linha de grade. Isso quer dizer que um contorno de três pixels conectado a um retângulo avançará um pixel e meio para dentro do corpo do retângulo. 
+
+
+**Figura 22. A aparência de um contorno com espessura de três pixels, onde metade dele avança sobre o corpo do seu respectivo retângulo.**
+
+###  4.6.3. Desenhando linhas 
+
+Criar uma nova linha requer iniciar com  beginPath()  . A orientação relacionada à posição e ao segmento da linha é feita com os métodos  moveTo()  e  lineTo()  _._ Para definir se o novo elemento terá um preenchimento ou um contorno temos os comandos  fill()  e  stroke()  , respectivamente. O encerramento da nova linha pode ocorrer com  closePath()  ou se na sequência do código existir um novo comando  beginPath()  . O valor da propriedade  lineWidth  definirá a espessura da linha. 
+
+beginPath();  **–** Inicia uma nova linha. 
+
+moveTo(início da linha em x, início da linha em y); –  Determina a posição inicial da nova linha criada com  beginPath(). 
+
+lineTo(final da linha em x, final da linha em y); –  Marca a posição final da linha seguinte. 
+
+lineWidth=numero;  **–** Espessura da linha (). 
+
+closePath(); –  Encerra a nova linha. 
+
+####  4.6.3.1. Linhas com espessuras de 5, 10 e 25 pixels 
+
+No exemplo a seguir não foi especificada a cor para a linha. O método  stroke()  atribui o contorno e aplica a cor padrão em preto.  closePath()  aparece na última linha de código como opção para o encerramento da linha. 
+
+**JavaScript**
+
+_//1ª LINHA_
+
+_ctx1.beginPath();_
+
+_ctx1.lineWidth = 5;_
+
+_ctx1.moveTo(195,30);_
+
+_ctx1.lineTo(195,160);_
+
+_ctx1.stroke();_
+
+_//2ª LINHA_
+
+_ctx1.beginPath();_
+
+_ctx1.lineWidth = 10;_
+
+_ctx1.moveTo(225,30);_
+
+_ctx1.lineTo(225,160);_
+
+_ctx1.stroke();_
+
+_//3ª LINHA_
+
+_ctx1.beginPath();_
+
+_ctx1.lineWidth = 25;_
+
+_ctx1.moveTo(265,30);_
+
+_ctx1.lineTo(265,160);_
+
+_ctx1.stroke();_
+
+_ctx1.closePath();_
+
+**Figura 23. Linhas com espessuras de 5, 10 e 25 pixels.**
+
+####  4.6.3.2. Propriedades sobre o acabamento das linhas 
+
+As propriedades a seguir estabelecem regras para o acabamento das linhas desenhadas sobre o CANVAS com os métodos  moveTo()  _,_ lineTo(),quadraticCurveTo()  e  bezierCurveTo()  _._
+
+lineWidth=numero; 
+
+
+Como visto anteriormente,  lineWidth  representa a espessura da linha. Seu valor deve ser atribuído sempre com números positivos. O valor padrão é 1 pixel. O resultado é a área de desenho que se estende metade para cada lado da linha horizontal ou vertical de grade. 
+
+**Figura 24. Uma linha desenhada no CANVAS procede como uma parte de um contorno com sua espessura ocupando o centro da linha da grade.**
+
+lineCap=butt/round/square; 
+
+Define como cada final de linha será desenhado. A opção  butt  finaliza as linhas com um quadrado interno. Ao se escolher  round  , a linha é finalizada com acabamento arredondado. A opção  square  adiciona um quadrado que avança metade de sua largura ou altura nas extremidades da linha. 
+
+**Exemplo de acabamento de linha com estilo** round 
+
+**JavaScript**
+
+_//2ªLINHA_
+
+_ctx1.beginPath();_
+
+_ctx1.lineWidth = 10;_
+
+_ctx1.moveTo(225,30);_
+
+_ctx1.lineTo(225,160);_
+
+ctx1.lineCap=”round”; 
+
+_ctx1.stroke();_
+
+**Figura 25. Os três tipos de acabamento de linha:** butt  **,** square  **e** round. 
+
+####  4.6.3.3. Propriedades de acabamento dos segmentos conectados 
+
+As propriedades a seguir estabelecem regras para o acabamento dos cantos de segmentos conectados e desenhados sobre o CANVAS com os métodos  moveTo(), lineTo(), quadraticCurveTo()  e  bezierCurveTo(). 
+
+**Figura 26. Esquema que demonstra a diferença entre um segmento  
+conectado e a finalização­ de linha. **
+
+lineJoin=round/bevel/miter 
+
+lineJoin  define o acabamento da conexão de dois segmentos em linhas, arcos ou curvas. A opção  round  arredonda o canto da forma conectada, e o raio desse canto arredondado será igual à largura da linha. A opção  bevel  apresenta uma área triangular na conexão, separando os cantos e  miter  estende as bordas externas até um ponto único. 
+
+**Nota importante:** você pode utilizar as propriedades  lineCap  e  lineJoin  simultaneamente; afinal, todo conjunto de segmentos conectados possui linhas finalizadas que necessitam de acabamento.   
+---  
+  
+**JavaScript**
+
+_//primeiro segmento de linha_
+
+_ctx1.beginPath();_
+
+_ctx1.strokeStyle=”red”;_
+
+_ctx1.moveTo(19,79);_
+
+_ctx1.lineTo(99,131);_
+
+
+_ctx1.lineTo(56,81);_
+
+_ctx1.lineTo(99,21);_
+
+_ctx1.lineTo(19,79);_
+
+_ctx1.lineWidth=6;_
+
+_ctx1.lineJoin=”bevel”;_
+
+_ctx1.stroke();_
+
+_//segundo segmento de linha_
+
+_ctx1.strokeStyle=”red”;_
+
+_ctx1.beginPath();_
+
+_ctx1.moveTo(89,79);_
+
+_ctx1.lineTo(169,131);_
+
+_ctx1.lineTo(126,81);_
+
+_ctx1.lineTo(169,21);_
+
+_ctx1.lineTo(89,79);_
+
+_ctx1.lineWidth=6;_
+
+_ctx1.lineJoin=“round”;_
+
+_ctx1.stroke();_
+
+_//terceiro segmento de linha_
+
+_ctx1.strokeStyle=”red”;_
+
+_ctx1.beginPath();_
+
+_ctx1.moveTo(159,79);_
+
+_ctx1.lineTo(239,131);_
+
+_ctx1.lineTo(196,81);_
+
+_ctx1.lineTo(239,21);_
+
+_ctx1.lineTo(159,79);_
+
+_ctx1.lineWidth=6;_
+
+_ctx1.lineCap=”round”;_
+
+_ctx1.lineJoin=”miter”;_
+
+_ctx1.stroke();_
+
+_ctx1.closePath();_
+
+**Figura 27. Os diferentes acabamentos em segmentos de linha conectados.**
+
+**Figura 28. Resultado da aplicação de** lineCap=”round”  **e** lineJoin=”miter”. 
+
+miterLimit=numero; 
+
+Afeta as bordas externas produzidas pela propriedade  lineJoin=miter  , definindo o raio da extensão do ponto cônico da metade da largura da linha. O valor padrão é dez. Quando o limite do valor de  miterLimit  se estende, o ponto de conexão é convertido para a opção  bevel  . 
+
+##  4.7. Arcos e círculos 
+
+O método  arc()  define a criação de um arco sobre o contexto do CANVAS. Arcos são definidos por um ponto central, um raio, um ângulo inicial, um ângulo final e a direção do desenho (sentido horário/anti-horário). 
+
+Um arco representa uma parte da circunferência de um círculo. Esse círculo é definido por x, y, raio e suas respectivas propriedades de acabamento  lineWidth, strokeStyle  e  lineCap. 
+
+A função matemática  Math.PI  define o valor do ângulo final que determina o tamanho da circunferência do círculo, resultando em objetos semiabertos ou fechados. A circunferência do círculo é descrita pelos parâmetros  startAngle/endAngle  definidos por radianos resultantes da razão entre o comprimento do arco e seu raio. Portanto, duas vezes  Math.PI  resulta num círculo fechado em 360 graus. 
+
+
+O último parâmetro do método  arc()  é o  antiClockwise,  que define a direção do caminho do arco entre o final dos pontos. Esse argumento tem o padrão  false  , o que mantém o arco no sentido horário. 
+
+arc (posição em x, posição em y, raio, ângulo inicial, ângulo final, anti-horário); 
+
+**Figura 29. O arco do círculo imaginário em sentido horário.**
+
+###  4.7.1. Círculo básico 
+
+A formação de um círculo básico apenas de contorno utiliza  strokeStyle, beginPath(), arc()  e  lineWidth  . 
+
+**JavaScript**
+
+_ctx1.strokeStyle=”black”;_
+
+_ctx1.beginPath();_
+
+_ctx1.arc(75,75,50,0,Math.PI*2,true);_
+
+_ctx1.lineWidth=5;_
+
+_ctx1.stroke();_
+
+**Figura 30. Círculo básico de contorno.**
+
+###  4.7.2. Círculo básico com preenchimento 
+
+**JavaScript**
+
+_ctx1.lineWidth=6;_
+
+_ctx1.beginPath();_
+
+_ctx1.arc(95,75,50,0,Math.PI*2,true);_
+
+_ctx1.stroke();_
+
+_ctx1.fillStyle=”brown”;_
+
+_ctx1.fill();_
+
+**Figura 31. Círculo básico com preenchimento.**
+
+###  4.7.3. Combinando círculos 
+
+Não há limites para criação de objetos dentro do contexto 2D do CANVAS. Nesse exemplo foram criados sete círculos de diferentes tamanhos e posições. 
+
+**JavaScript**
+
+_//CÍRCULOS COMBINADOS_
+
+_//primeiro círculo_
+
+_ctx1.lineWidth=2;_
+
+_ctx1.strokeStyle=”blue”;_
+
+_ctx1.beginPath();_
+
+_ctx1.arc(225,75,50,0,Math.PI*2,true);_
+
+_ctx1.stroke();_
+
+_ctx1.fillStyle=”brown”;_
+
+_ctx1.fill();_
+
+_//segundo círculo_
+
+_ctx1.strokeStyle=”blue”;_
+
+_ctx1.beginPath();_
+
+_ctx1.arc(225,75,43,0,Math.PI*2,true);_
+
+_ctx1.stroke();_
+
+_ctx1.fillStyle=”yellow”;_
+
+_ctx1.fill();_
+
+_//terceiro círculo_
+
+_ctx1.strokeStyle=”red”;_
+
+_ctx1.beginPath();_
+
+_ctx1.arc(225,75,35,0,Math.PI*2,true);_
+
+_ctx1.stroke();_
+
+_ctx1.fillStyle=”blue”;_
+
+_ctx1.fill();_
+
+_//define a cor verde de contorno para todos os círculos pequenos_
+
+_ctx1.strokeStyle=”green”;_
+
+_//círculo um pequeno_
+
+_ctx1.beginPath();_
+
+_ctx1.arc(225,25,8,0,Math.PI*2,true);_
+
+_ctx1.stroke();_
+
+_ctx1.fillStyle=”orange”;_
+
+_ctx1.fill();_
+
+_//círculo dois pequeno_
+
+_ctx1.beginPath();_
+
+_ctx1.arc(223,125,8,0,Math.PI*2,true);_
+
+_ctx1.stroke();_
+
+_ctx1.fillStyle=”orange”;_
+
+_ctx1.fill();_
+
+_//círculo três pequeno_
+
+_ctx1.beginPath();_
+
+_ctx1.arc(176,75,8,0,Math.PI*2,true);_
+
+_ctx1.stroke();_
+
+_ctx1.fillStyle=”orange”;_
+
+_ctx1.fill();_
+
+_//círculo quatro pequeno_
+
+_ctx1.beginPath();_
+
+
+_ctx1.arc(275,75,8,0,Math.PI*2,true);_
+
+_ctx1.stroke();_
+
+_ctx1.fillStyle=”orange”;_
+
+_ctx1.fill();_
+
+**Figura 32. Diversos círculos combinados em cores e tamanhos diferentes.**
+
+###  4.7.4. Semicírculos 
+
+Alternando o valor do ângulo final e o sentido horário/anti-horário obtemos amostras de semicírculos. 
+
+**JavaScript**
+
+_//SEMICÍRCULOS_
+
+_ctx1.beginPath();_
+
+_ctx1.lineWidth=5;_
+
+_ctx1.arc(50, 40, 20, 0, Math.PI+ (Math.PI)/2, false);_
+
+_ctx1.stroke();_
+
+_ctx1.beginPath();_
+
+_ctx1.arc(50, 90, 20, 0, Math.PI, false);_
+
+_ctx1.stroke();_
+
+_ctx1.beginPath();_
+
+_ctx1.arc(50, 160, 20, 0, Math.PI+(Math.PI*3)/2, true);_
+
+_ctx1.stroke();_
+
+_ctx1.beginPath();_
+
+_ctx1.arc(50, 230, 20, 0, Math.PI+(Math.PI*4)/2, true);_
+
+_ctx1.stroke();_
+
+**Figura 33. Amostras de semicírculos alternando o valor de** Math.PI. 
+
+##  4.8. Formas em curvas Bézier 
+
+Curvas em Bézier estão disponíveis em ambos os tipos, cúbico e quadrático, para possibilitar a criação de desenhos complexos no CANVAS. A diferença entre esses tipos resume-se nos pontos de controle. A curva quadrática tem apenas um ponto de controle definido nas coordenadas x e y do destino, enquanto a curva cúbica possui dois pontos de controle. 
+
+###  4.8.1. Curvas quadráticas 
+
+quadraticCurveTo(cp1x, cp1y, x, y) 
+
+Desenha uma curva quadrática a partir dos pontos de destino especificados em x e y em referência aos seus respectivos pontos de origem em x e y. 
+
+Exemplificando os parâmetros de  quadraticCurveTo(): 
+
+cp1x  = ponto de origem em x 
+
+cp1y  = ponto de origem em y 
+
+x  = ponto de destino em x 
+
+y  = ponto de destino em y 
+
+**Figura 34. Esquema de controle de direção da curva quadrática.**
+
+####  4.8.1.1. Criando formas utilizando curvas quadráticas 
+
+**JavaScript**
+
+_//SEGMENTOS COM QUADRATIC CURVE_
+
+_ctx1.beginPath();_
+
+_ctx1.moveTo(285,155);_
+
+_ctx1.quadraticCurveTo(285,20,155,75);_
+
+_ctx1.quadraticCurveTo(15,5,25,95);_
+
+_ctx1.quadraticCurveTo(45,210,195,155);_
+
+_ctx1.quadraticCurveTo(285,200,285,155);_
+
+_ctx1.fillStyle=”rgba(120,120,255,0.5)”;_
+
+_ctx1.fill();_
+
+_ctx1.beginPath();_
+
+_ctx1.moveTo(285,155);_
+
+_ctx1.quadraticCurveTo(285,0,155,75);_
+
+_ctx1.quadraticCurveTo(15,-40,25,95);_
+
+_ctx1.quadraticCurveTo(45,290,195,155);_
+
+
+_ctx1.quadraticCurveTo(285,240,285,155);_
+
+_ctx1.fillStyle=”rgba(80,80,255,0.1)”;_
+
+_ctx1.fill();_
+
+**Figura 35. Formas geradas com** quadraticCurveTo(). 
+
+###  4.8.2. Curvas cúbicas 
+
+bezierCurveTo(cp1x, cp1y, cp2x, cp2y, x, y) 
+
+Desenha uma curva cúbica de Bézier a partir do ponto de destino especificado em x e y em referência aos pontos de origem (cp1x, cp1y) e (cp2x, cp2y). 
+
+Exemplificando os parâmetros de  bezierCurveTo(): 
+
+cp1x  = primeiro ponto de origem em x 
+
+cp1y  = primeiro ponto de origem em y 
+
+cp2x  = segundo ponto de origem em x 
+
+cp2y  = segundo ponto de origem em y 
+
+x  = ponto de destino em x 
+
+y  = ponto de destino em y 
+
+**Figura 36. Esquema de controle de direção da curva Bézier.**
+
+**Nota importante:** os parâmetros x e y, em ambos os métodos, são coordenadas do ponto final de referência para criação de curvas. Diferentemente de programas como Photoshop e Illustrator, onde os desenhos feitos por intermédio de uma caneta são reproduzidos em tempo real incluindo a visão e o controle das suas alças de Bézier, os desenhos criados por curvas quadráticas ou de Bézier em CANVAS requerem tempo e paciência do desenvolvedor, caso sejam desenvolvidos especificamente a partir do código JavaScript.   
+---  
+  
+####  4.8.2.1. Criando formas utilizando curvas Bézier 
+
+**JavaScript**
+
+_//1 ª FORMA_
+
+_ctx1.beginPath();_
+
+_ctx1.moveTo(75,140);_
+
+_ctx1.bezierCurveTo(75,137,70,125,50,125);_
+
+_ctx1.bezierCurveTo(20,125,20,162.5,40,162.5);_
+
+_ctx1.bezierCurveTo(20,180,40,202,75,170);_
+
+_ctx1.bezierCurveTo(110,202,130,180,110,162.5);_
+
+_ctx1.bezierCurveTo(130,162.5,130,125,100,125);_
+
+_ctx1.bezierCurveTo(85,125,75,137,75,140);_
+
+_ctx1.fill();_
+
+_//2ª FORMA_
+
+_ctx1.beginPath();_
+
+_ctx1.moveTo(175,140);_
+
+_ctx1.bezierCurveTo(175,137,170,125,150,125);_
+
+_ctx1.bezierCurveTo(120,125,120,162.5,140,162.5);_
+
+_ctx1.bezierCurveTo(120,180,140,202,175,170);_
+
+_ctx1.bezierCurveTo(210,202,230,180,210,162.5);_
+
+_ctx1.bezierCurveTo(230,162.5,230,125,200,125);_
+
+_ctx1.bezierCurveTo(185,125,175,137,175,140);_
+
+_ctx1.fill();_
+
+_//GLOBO OCULAR ESQUERDO_
+
+_ctx1.beginPath();_
+
+_ctx1.arc(205,143,10,0,Math.PI*2,true);_
+
+_ctx1.fillStyle=”yellow”;_
+
+_ctx1.fill();_
+
+
+_//GLOBO OCULAR DIREITO_
+
+_ctx1.beginPath();_
+
+_ctx1.arc(147,143,10,0,Math.PI*2,true);_
+
+_ctx1.fillStyle=”yellow”;_
+
+_ctx1.fill();_
+
+_//OLHO ESQUERDO_
+
+_ctx1.beginPath();_
+
+_ctx1.arc(210,143,2,0,Math.PI*2,true);_
+
+_ctx1.fillStyle=”black”;_
+
+_ctx1.fill();_
+
+_//OLHO ESQUERDO_
+
+_ctx1.beginPath();_
+
+_ctx1.arc(152,143,2,0,Math.PI*2,true);_
+
+_ctx1.fillStyle=”black”;_
+
+_ctx1.fill();_
+
+**Figura 37. Formas geradas com** bezierCurveTo(). 
+
+##  4.9. Desenhando linhas da grade 
+
+Conforme descrito anteriormente, este tópico aborda como exibir as linhas de grade imaginárias do CANVAS para obter melhor performance em seus desenhos e formas. 
+
+**JavaScript**
+
+_var i;_
+
+_var altura=300;_
+
+_var largura=300;_
+
+_var grade=25;_
+
+_for (i=0; i < altura; i += grade) { _
+
+_ctx1.lineWidth=(1.0+((i%10)==0));_
+
+_ctx1.moveTo(0,i);_
+
+_ctx1.lineTo(largura,i);_
+
+_ctx1.stroke();_
+
+_}_
+
+_for (i=0; i < largura; i += grade) { _
+
+_ctx1.lineWidth=(1.0+((i%10)==0));_
+
+_ctx1.moveTo(i,0);_
+
+_ctx1.lineTo(i,altura);_
+
+_ctx1.stroke();_
+
+_}_
+
+**Figura 38. Exibição das linhas de grade.**
+
+
+#  5\. Adicionando texto ao   
+CANVAS 
+
+O CANVAS suporta a exibição de texto em HTML com uso de caracteres em Unicode, para os casos de cedilhas e acentuação, por exemplo. O texto pode ser formatado em CSS, apesar da formatação do texto em CANVAS possuir suporte limitado. Dessa maneira, nem todas as propriedades existentes no CSS poderão ser utilizadas. Descarte a possibilidade de uso de  float, margin  e  padding  para o texto em CANVAS. 
+
+As propriedades habilitadas para uso são  font-style, font-face, font-weight, font-family. 
+
+font style (normal | italic | oblique | inherit) 
+
+font weight (normal | bold | bolder | lighter | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | inherit | auto) 
+
+font-size (pixels | pontos | paicas | porcentagem) 
+
+font family (família da fonte) 
+
+text align (start | end | left | right | center) 
+
+text baseline (top | hanging | middle | alphabetic | ideographic | bottom) 
+
+##  5.1. Texto básico 
+
+**JavaScript**
+
+_ctx1font=”bold 25pt Arial Black”;_
+
+_ctx1.textAlign=”left”;_
+
+_ctx1.fillText(“Canvas HTML5”,10, 220);_
+
+**Figura 39. Texto básico formatado em CSS.**
+
+##  5.2. Contorno de texto 
+
+**JavaScript**
+
+_ctx1.font=”bold 25pt Arial Black”;_
+
+_ctx1.textAlign=”left”;_
+
+_ctx1.strokeText(“Canvas HTML5”,10, 220);_
+
+ctx1.strokeStyle=”#000000”; 
+
+**Figura 40. Texto usando contornos.**
+
+##  5.3. Contornos e preenchimentos simultaneamente 
+
+**JavaScript**
+
+ctx1.fillStyle=”#cccccc”; 
+
+_ctx1.font=”bold 25pt Arial Black”;_
+
+_ctx1.textAlign=”left”;_
+
+_ctx1.fillText(“Canvas HTML5”,10, 220);_
+
+ctx1.strokeText(“Canvas HTML5”,8, 214); 
+
+_ctx1.strokeStyle=”#000000”;_
+
+**Figura 41. Texto sobreposto ao contorno.**
+
+##  5.4. Aplicando sombra ao texto 
+
+**JavaScript**
+
+_var text = “HTML5!”;_
+
+_ctx1.font = ‘italic bold 48px Verdana’;_
+
+_ctx1.shadowOffsetX = 4;_
+
+_ctx1.shadowOffsetY = 4;_
+
+_ctx1.shadowBlur = 4;_
+
+_ctx1.shadowColor = “#333399”;_
+
+_ctx1.strokeStyle=”#ff0000”;_
+
+_ctx1.fillStyle=”orange”;_
+
+_ctx1.fillText(text,0, 100);_
+
+**Figura 42. Texto com aplicação de sombra.**
+
+##  5.5. Alinhamento do texto 
+
+textAlign=”left”  – Posição horizontal do texto = 0 
+
+textAlign=”center”  – Posição horizontal do texto = largura do canvas/2 
+
+
+textAlign=”right”  – Posição horizontal do texto = largura do canvas 
+
+###  5.5.1. Alinhamento ao centro 
+
+**JavaScript**
+
+_var text = “HTML5!”;_
+
+_ctx1.textAlign=”_ center  _”;_
+
+_ctx1.font = ‘italic bold 48px Verdana’;_
+
+_ctx1.shadowOffsetX = 4;_
+
+_ctx1.shadowOffsetY = 4;_
+
+_ctx1.shadowBlur = 4;_
+
+_ctx1.shadowColor = “#333399”;_
+
+_ctx1.strokeStyle=”#ff0000”;_
+
+_ctx1.fillStyle=”orange”;_
+
+_ctx1.fillText(text,_ cv1.width/2  _, 100);_
+
+**Figura 43. Alinhamento de texto ao centro.**
+
+###  5.5.2. Alinhamento à direita 
+
+**JavaScript**
+
+_var text = “HTML5!”;_
+
+_ctx1.textAlign=”_ right  _”;_
+
+_ctx1.font = ‘italic bold 48px Verdana’;_
+
+_ctx1.shadowOffsetX = 4;_
+
+_ctx1.shadowOffsetY = 4;_
+
+_ctx1.shadowBlur = 4;_
+
+_ctx1.shadowColor = “#333399”;_
+
+_ctx1.strokeStyle=”#ff0000”;_
+
+_ctx1.fillStyle=”orange”;_
+
+_ctx1.fillText(text,_ cv1.width  _, 100);_
+
+**Figura 44. Texto alinhado à direita.**
+
+##  5.6. Medindo a largura do texto 
+
+Agindo como uma espécie de régua, este método permite acesso à quantidade de espaço em pixels de largura ocupado pelo texto em relação ao CANVAS. 
+
+O método  measureText()  retorna a largura em pixels a partir da propriedade  width  do objeto específico de texto produzido por  fillText() 
+
+measureText() 
+
+**JavaScript**
+
+_ctx1.textAlign=”center”;_
+
+_ctx1.font = ‘italic bold 68px Verdana’;_
+
+_var text = “HTML5!”;_
+
+_var metrics = ctx1.measureText(text);_
+
+_var largText = metrics.width;_
+
+_ctx1.shadowOffsetX = 4;_
+
+_ctx1.shadowOffsetY = 4;_
+
+_ctx1.shadowBlur = 4;_
+
+_ctx1.shadowColor = “#333399”;_
+
+_ctx1.strokeStyle=”#ff0000”;_
+
+_ctx1.strokeText(text,cv1.width/2, 140);_
+
+_ctx1.fillStyle=”orange”;_
+
+_ctx1.fillText(text,cv1.width/2, 140);_
+
+_ctx1.fillStyle=”blue”;_
+
+_ctx1.font = ‘italic bold 28px Verdana’;_
+
+_ctx1.fillText( largText+ “ pixels “,cv1.width/2, 180);_
+
+_ctx1.strokeText( largText+ “ pixels “,cv1.width/2, 180);_
+
+**Figura 45. Exibição da quantidade de largura em pixels do texto.**
+
+##  5.7. Usando imagens como textura para o texto 
+
+
+O texto em CANVAS pode ser preenchido por um plano de fundo originado a partir de uma imagem. Este efeito do tipo “papel de parede” pode ou não se refletir integralmente sobre o texto. As opções para o argumento de repetição incluem  repeat, repeat-x, repeat-y, no-repeat  . O padrão do estilo de plano de fundo é  repeat  . 
+
+createPattern(imagem do plano de fundo, repetição) 
+
+**JavaScript**
+
+_ctx1.lineWidth=2;_
+
+_var patternn1 = new Image();_
+
+_patternn1.src = “fig.png”;_
+
+_patternn1.onload = function(){_
+
+_var ptn = ctx1.createPattern(patternn1,’repeat’);_
+
+_ctx1.fillStyle = ptn;_
+
+_ctx1.font=”bold 50pt Arial Black”;_
+
+_ctx1.textAlign=”left”;_
+
+_ctx1.fillText(“HTML5!”,10, 220);_
+
+_ctx1.strokeText(“HTML5!”,8, 220);_
+
+_ctx1.strokeStyle=”#000000”;_
+
+_ctx1.fill();_
+
+_return;_
+
+_}_
+
+**Figura 46. Texto usando imagem como textura por intermédio de** createPattern(). 
+
+##  5.8. Método toDataURL() 
+
+Base64 é um protocolo de codificação que representa um dado de seis _bits_ utilizando um conjunto de 64 caracteres. Esse protocolo é comumente usado para transmitir dados binários. Uma imagem exibida por intermédio do CANVAS pode ser convertida para um base64, tornando-se texto puro interpretável num navegador de internet. Isso torna mais rápido o carregamento do arquivo, pois o navegador não precisa consultar o servidor em busca do arquivo da imagem. 
+
+A técnica requer atenção, pois o uso em excesso dessa tecnologia pode causar lentidão no carregamento de uma página web, visto que os dados binários não ficam em cache, obrigando o navegador a fazer uma releitura a cada vez que a página é solicitada. 
+
+A conversão das imagens contidas no contexto do CANVAS para um leitura binária de base64 é feita por intermédio do método  toDataURL(). 
+
+toDataURL() 
+
+**Exemplo da conversão para base64**
+
+**HTML**
+
+_ <output id=”out”></output> _
+
+_ <hr /> _
+
+_ <a href=”javascript:window.open(document.getElementById(‘cv1’).toDataURL(), ‘new_window’, ‘width=310,height=30,left=300,top=300’)”>Clique aqui para abrir a imagem em formato binário</a> _
+
+**JavaScript**
+
+_ctx1.font = ‘26pt Arial’;_
+
+_ctx1.fillText(‘HTML5 Base64’, 10, 40);_
+
+
+_url = cv1.toDataURL();_
+
+_document.getElementById(“out”).innerHTML = url;_
+
+**Figura 47. A barra de endereços do navegador exibe a codificação em base64.**
+
+**Figura 48. Apesar da aparência de texto, o resultado é uma imagem que pode ser baixada com o botão direito do mouse.**
+
+
+#  6\. Exibindo e manipulando imagens 
+
+O objeto CANVAS pode usar imagens externas em diversos formatos, como JPG, PNG e GIF. A importação das imagens para o contexto do CANVAS ocorre por intermédio de um elemento de marcação  <img>. 
+
+Entre as possíveis utilizações de imagens em CANVAS temos: 
+
+Composição gráfica composta de uma ou mais imagens externas. 
+
+Composição gráfica originada de um CANVAS e utilizada como imagem para novas composições. 
+
+Imagens externas ou composições de um CANVAS utilizadas como _background_ . 
+
+Amostras com recortes de uma origem específica. 
+
+Possibilidade de incorporar uma imagem em base64. 
+
+Uma vez que a referência de endereço de origem da imagem esteja correta, o método  drawImage()  redesenhará a imagem sobre o contexto do CANVAS. 
+
+##  6.1. Usando imagens externas 
+
+drawImage(image, x, y) 
+
+**JavaScript**
+
+_var img = new Image();_
+
+_img.onload = function(){_
+
+_ctx1.drawImage(img,0,0);_
+
+_};_
+
+_img.src = “img/image3.jpg“;_
+
+**Figura 49. Redesenhando a imagem no contexto do CANVAS.**
+
+##  6.2. Controlando a escala de proporção das imagens 
+
+O método  drawImage()  possui argumentos de posicionamento (x e y) e argumentos de escala (  width  e  height  ) para controlar a escala da imagem dentro do CANVAS. Acrescente os argumentos de altura e largura. 
+
+drawImage(imagem, posição em x, posição em y, largura, altura) 
+
+**JavaScript**
+
+_var img = new Image();_
+
+_img.onload = function(){_
+
+ctx1.drawImage(img,30,30,120,120); 
+
+_};_
+
+_img.src = “img/image3.jpg“;_
+
+**Figura 50. Controle de escala e posicionamento da imagem em CANVAS.**
+
+##  6.3. Enquadrando imagens em papel de parede 
+
+Com o recurso de _looping_ obtido por intermédio de um encadeamento de duas estruturas em  for(){}  , obtemos diversas amostras da imagem escalonadas em diferentes posições. O primeiro _looping_ cria as linhas e o segundo _looping_ encadeado cria as colunas e as amostras de imagem em dimensões de 100 pixels de largura por 80 pixels de altura. 
+
+**JavaScript**
+
+_var img = new Image();_
+
+img.onload = function(){ 
+
+_for (var i=0;i <5;i++){ _
+
+_for (var j=0;j <4;j++){ _
+
+_ctx1.drawImage(img,j*100,i*48,100,80);_
+
+_}_
+
+_}_
+
+_}_
+
+
+_img.src = “img/image3.jpg”;_
+
+**Figura 51. Enquadramento da imagem em papel de parede.**
+
+##  6.4. Imagens e textos simultaneamente 
+
+O contexto 2D do CANVAS suporta a exibição de uma ou mais imagens simultaneamente com desenhos e textos. 
+
+**JavaScript**
+
+_var img = new Image();_
+
+_img.onload = function(){_
+
+_for (var i=0;i <5;i++){ _
+
+_for (var j=0;j <4;j++){ _
+
+_ctx1.drawImage(img,j*100,i*48,100,80);_
+
+_}_
+
+_}_
+
+_ctx1.font = ‘italic 45pt Arial Black’;_
+
+_ctx1.textAlign=”center”;_
+
+_var text = “CANVAS”;_
+
+_ctx1.fillStyle=”rgba(20,20,120,0.7)”;_
+
+_ctx1.fillText(text, 140, 170);_
+
+_ctx1.lineWidth=3;_
+
+_ctx1.strokeText(text, 140, 170);_
+
+_}_
+
+_img.src = “img/image3.jpg“;_
+
+**Figura 52. Texto e imagem exibidos simultaneamente.**
+
+##  6.5. Recorte de imagens 
+
+O método  drawImage()  contém uma terceira variação que envolve a possibilidade de gerar amostras em formato de recortes retangulares de uma imagem. A terceira e última variação do método  drawImage()  tem oito parâmetros que permitem recortar amostras de uma imagem original e redesenhá-las no CANVAS. 
+
+drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight) 
+
+image  = URL da imagem original 
+
+sx  = posição em x da origem do recorte 
+
+sy  = posição em y da origem do recorte 
+
+sWidth  = largura do recorte 
+
+sHeight  = altura do recorte 
+
+dx  = posição em x da amostra no CANVAS 
+
+dy  = posição em y da amostra no CANVAS 
+
+dWidth  = largura da amostra no CANVAS 
+
+dHeight  = altura da amostra no CANVAS 
+
+O método desenha um retângulo da amostra de imagem a partir do canto superior esquerdo em  (sx, sy)  , definindo a largura e a altura do recorte a ser desenhado no CANVAS  (sWidth e sHeight)  . 
+
+A posição da amostra é configurada em  (dx, dy)  e escalonada para o tamanho especificado em  (dWidth, dHeight)  . Os primeiros quatro parâmetros definem a posição e o tamanho do recorte. Os últimos quatro definem o retângulo que desenhará a amostra no CANVAS. 
+
+Gerar recortes pode ser poderoso quando se quer fazer composições gráficas, agrupando diversos elementos visuais numa única imagem. 
+
+**Figura 53. Esquema de recorte da origem e o destino da amostra.**
+
+**JavaScript**
+
+
+_var img = new Image();_
+
+_img.onload = function(){_
+
+_ctx1.drawImage(img,_
+
+_223, 121, 104, 124, 5, 50, 87, 104);_
+
+__
+
+_ctx1.drawImage(img,_
+
+_13, 121, 104, 124, 105, 50, 87, 104);_
+
+__
+
+_ctx1.drawImage(img,_
+
+_133, 121, 104, 124, 205, 50, 87, 104);_
+
+_}_
+
+_img.src = “img/image3.jpg“;_
+
+**Figura 54. Diferentes amostras de uma mesma imagem original.**
+
+**Nota importante:** se você tentar desenhar a imagem antes de finalizar o carregamento, ela não será exibida. A solução é usar o evento  load  . Se você usar imagens externas estará optando por uma boa prática, porém se há necessidade de carregar uma grande quantidade de imagens, talvez seja interessante a utilização de imagens em base64.   
+---  
+  
+##  6.6. Exibindo imagens com DataURL e Ajax 
+
+Carregar imagens a partir de caracteres em base64 requer a utilização da tecnologia Ajax. O carregamento assíncrono de um arquivo texto otimiza o processo de interpretação da imagem por intermédio do navegador de internet. 
+
+O primeiro passo para carregar uma ou mais imagens com  DataURL  é ter o arquivo texto pronto com a descrição da imagem em base64. Anteriormente, no capítulo sobre texto em CANVAS, foi abordada a conversão do texto para uma imagem no formato base64 utilizando o método  toDataURL()  . Para obter um arquivo externo de imagem em  DataURL  basta copiar os caracteres exibidos na barra de endereços do navegador e gravar num arquivo TXT. 
+
+**JavaScript**
+
+_//GET DataURL_
+
+_function carregaImg(dataURL) {_
+
+_var imgObj = new Image();_
+
+_imgObj.onload = function() {_
+
+_ctx1.drawImage(this, 0, 0);_
+
+_};_
+
+_imgObj.src = dataURL;_
+
+_}_
+
+_//AJAX//////_
+
+_var ajax = new XMLHttpRequest();_
+
+_ajax.open(‘GET’, ‘http://localhost/Canvas/dataURL.txt’, true);_
+
+_ajax.onreadystatechange = function() {_
+
+_//Verifica se o documento está pronto para ser lido_
+
+_if(ajax.readyState == 4) {_
+
+_//Verifica se o arquivo tem permissão de leitura_
+
+_if(ajax.status == 200) {_
+
+_carregaImg(ajax.responseText);_
+
+_}_
+
+_}_
+
+_};_
+
+_ajax.send(null);_
+
+
+**Nota importante:** observe a Figura 55 a seguir. No endereço do navegador consta o caminho  http://localhost  . Para testar o exemplo em Ajax e proceder com o carregamento externo em  DataURL  é necessário estar em ambiente servidor. Para obter a conversão do CANVAS em caracteres base64, use o método  toDataURL().   
+---  
+  
+**Figura 55. A forma criada anteriormente convertida em imagem a partir de caracteres de texto em base64.**
+
+
+#  7\. Composição 
+
+Um efeito de composição ocorre quando utilizamos a propriedade  globalCompositeOperation  sobre o contexto do CANVAS. A propriedade define a operação entre um conteúdo já existente no contexto e uma nova forma a ser desenhada que representará a sobreposição desses elementos. 
+
+São doze tipos de composição disponíveis, incluindo  source-atop, source-in, source-out, source-over, destination-atop, destination-in, destination-out, destination-over, lighter, xor,  e  copy  . Quando não há definição do efeito de composição sobre os elementos, o padrão será  source-over  . 
+
+O contexto do CANVAS suporta apenas uma composição a cada ciclo de exibição. Caso exista a necessidade de múltiplas composições, crie um  <canvas> oculto para gerar as composições e depois copie esses resultados para outro  <canvas> , que ficará visível. 
+
+globalCompositeOperation = tipo 
+
+A configuração do tipo de composição pode ser aplicada quando novas formas são desenhadas sobre formas já existentes. O valor da composição é uma  string  que identifica uma das doze operações. 
+
+Considerando um elemento desenhado sobre o contexto do CANVAS, quando desenhamos uma segunda forma sobre esta primeira, ocorre a sobreposição de cor e opacidade. Efeitos de composição permitem que se altere a maneira como a forma sobreposta se apresenta em relação à existente. 
+
+##  7.1. Modos de composição 
+
+A seguir, a lista dos modos de exibição com suas respectivas características: 
+
+source-over  –  Utilizado como modo padrão da propriedade  globalCompositeOperation  . Desenha a nova forma sobre a imagem já existente. 
+
+source-atop  –  Desenha a nova forma acima da imagem já existente. Apenas a porção sobreposta é exibida. 
+
+source-in  –  Desenha a nova forma dentro da imagem já existente. Somente a porção da nova forma que estiver dentro da imagem já existente é exibida. O restante fica em transparência. 
+
+
+source-out  –  Desenha a nova forma fora dos limites da imagem já existente. Somente a porção que estiver fora desses limites é exibida. O restante fica em transparência. 
+
+destination-over  –  Desenha a imagem já existente acima da nova forma. 
+
+destination-atop  –  Desenha a imagem já existente acima da nova forma. A porção da imagem já existente que estiver fora dos limites da nova forma não será exibida. 
+
+destination-in  –  Desenha a imagem já existente dentro da nova forma. Apenas a sobreposição é exibida. O restante fica em transparência. 
+
+destination-out  –  Desenha a imagem já existente fora da nova forma. A porção da imagem já existente que está fora dos limites da nova forma é exibida. O restante fica em transparência. 
+
+lighter  –  Exibe a nova forma e a imagem já existente integralmente. A sobreposição exibe a soma das cores. 
+
+copy  –  Somente a nova forma é desenhada. A imagem já existente é ignorada. 
+
+xor  –  Tanto a imagem já existente quanto a nova forma ficam transparentes em sua sobreposição, onde os limites externos são exibidos normalmente. 
+
+darker  –  A cor da área de sobreposição é determinada pela subtração de seus valores. O restante é exibido normalmente. 
+
+**Figura 56. Os 12 tipos da propriedade** globalCompositeOperation. 
+
+**HTML**
+
+_ <div id=”comp”> _
+
+_ <label id=”lab0”><canvas id=”tut0”></canvas> </label> _
+
+_ <label id=”lab1”><canvas id=”tut1”></canvas> </label> _
+
+_ <label id=”lab2”><canvas id=”tut2”></canvas></label> _
+
+_ <label id=”lab3”><canvas id=”tut3”></canvas></label> _
+
+_ <label id=”lab4”><canvas id=”tut4”></canvas></label> _
+
+_ <label id=”lab5”> <canvas id=”tut5”></canvas></label> _
+
+_ <label id=”lab6”><canvas id=”tut6”></canvas></label> _
+
+_ <label id=”lab7”> <canvas id=”tut7”></canvas></label> _
+
+_ <label id=”lab8”><canvas id=”tut8”></canvas></label> _
+
+_ <label id=”lab9”> <canvas id=”tut9”></canvas></label> _
+
+_ <label id=”lab10”> <canvas id=”tut10”></canvas></label> _
+
+_ <label id=”lab11”><canvas id=”tut11”></canvas></label> _
+
+_ </div> _
+
+**CSS**
+
+_label{_
+
+_float:left;_
+
+_width:180px;_
+
+_text-align:right;_
+
+_margin-right:180px;_
+
+_margin-bottom:15px;_
+
+_height:150px;_
+
+_}_
+
+_#comp{_
+
+
+_float:left;_
+
+_width:1350px;_
+
+_padding-bottom:50px;_
+
+_}_
+
+**JavaScript**
+
+_var tipoComposicao = [_
+
+_‘source-over’,’source-in’,’source-out’,’source-atop’,_
+
+_‘destination-over’,’destination-in’,’destination-out’,’destination-atop’,_
+
+_‘lighter’,’darker’,’copy’,’xor’];_
+
+__
+
+_function criarComp(){_
+
+_for (i=0;i <tipoComposicao.length;i++){ _
+
+__
+
+_var label = document.createTextNode(tipoComposicao[i]);_
+
+_document.getElementById(‘lab’+i).appendChild(label);_
+
+_var ctx = document.getElementById(‘tut’+i).getContext(‘2d’);_
+
+_ctx.beginPath();_
+
+_ctx.moveTo(285,155);_
+
+_ctx.quadraticCurveTo(285,20,155,75);_
+
+_ctx.quadraticCurveTo(15,5,25,95);_
+
+_ctx.quadraticCurveTo(45,210,195,155);_
+
+_ctx.quadraticCurveTo(285,200,285,155);_
+
+_ctx.fillStyle=”rgba(120,120,255,0.5)”;_
+
+_ctx.fill();_
+
+_ctx.beginPath();_
+
+_ctx.moveTo(285,155);_
+
+_ctx.quadraticCurveTo(285,0,155,75);_
+
+_ctx.quadraticCurveTo(15,-40,25,95);_
+
+_ctx.quadraticCurveTo(45,290,195,155);_
+
+_ctx.quadraticCurveTo(285,240,285,155);_
+
+_ctx.fillStyle=”rgba(80,80,255,0.1)”;_
+
+_ctx.fill();ctx.beginPath();_
+
+_ctx.moveTo(285,155);_
+
+_ctx.quadraticCurveTo(285,20,155,75);_
+
+_ctx.quadraticCurveTo(15,5,25,95);_
+
+_ctx.quadraticCurveTo(45,210,195,155);_
+
+_ctx.quadraticCurveTo(285,200,285,155);_
+
+_ctx.fillStyle=”rgba(120,120,255,0.5)”;_
+
+_ctx.fill();_
+
+_ctx.beginPath();_
+
+_ctx.moveTo(285,155);_
+
+_ctx.quadraticCurveTo(285,0,155,75);_
+
+_ctx.quadraticCurveTo(15,-40,25,95);_
+
+_ctx.quadraticCurveTo(45,290,195,155);_
+
+_ctx.quadraticCurveTo(285,240,285,155);_
+
+_ctx.fillStyle=”rgba(80,80,255,0.1)”;_
+
+_ctx.fill();_
+
+_//propriedade de composição_
+
+_ctx.globalCompositeOperation = tipoComposicao[i];_
+
+_//desenhando o círculo_
+
+_ctx.fillStyle = “#f30”;_
+
+_ctx.beginPath();_
+
+_ctx.arc(165,75,35,0,Math.PI*2,true);_
+
+_ctx.fill();_
+
+_} }_
+
+_criarComp();_
+
+##  7.2. Salvando e restaurando o  status  do contexto 
+
+
+Os tópicos a seguir abordam alterações no contexto relacionadas a recortes e transformações. Ao aplicar tais efeitos nas formas geradas sobre o CANVAS, estamos alterando o contexto 2D. Torna-se essencial o controle do _status_ padrão desse contexto, para que um efeito não se espelhe por todos os outros elementos existentes. O método  save()  possibilita armazenar as características atuais do contexto que podem ser restauradas com o método  restore(). 
+
+save()  – Salva o _status_ atual do contexto. 
+
+restore()  – Recupera o mais recente _status_ salvo. 
+
+A cada vez que o método  save()  é executado, o _status_ atual do contexto é salvo num esquema de pilha. Em ordem de chamada, o método  restore()  recupera o respectivo _status_ armazenado nesse esquema. Não há uma quantidade limite de chamadas desses métodos. 
+
+O _status_ de um contexto compreende as seguintes propriedades ou atributos: 
+
+Transformações: 
+
+translate() 
+
+rotate() 
+
+scale() 
+
+Estilos de preenchimento, contorno, sombra e composição: 
+
+strokeStyle 
+
+fillStyle 
+
+globalAlpha 
+
+lineWidth 
+
+lineCap 
+
+lineJoin 
+
+limiteMitre 
+
+shadowOffsetX 
+
+shadowOffsetY 
+
+shadowBlur 
+
+shadowColor 
+
+globalCompositeOperation 
+
+A área definida como recorte por intermédio do método  clip()  . 
+
+##  7.3. Criando um clipe 
+
+**Região de recorte**
+
+Definir uma região de clipe no contexto do CANVAS por intermédio do método  clip()  refere-se a exibir elementos dentro de um recorte predefinido. 
+
+Se você desenhar uma nova forma e em seguida utilizar o método  clip()  , esta será a área de recorte definida, incluindo sua cor de preenchimento. 
+
+Para que outros elementos desenhados posteriormente no mesmo contexto do CANVAS não fiquem associados a esse recorte, antes de criá-lo aplica-se o método  save().  Esse método armazena o padrão do contexto atual, que pode ser recuperado por intermédio do método  restore(). 
+
+**JavaScript**
+
+_//1 ª FORMA_
+
+_ctx1.beginPath();_
+
+_ctx1.moveTo(75,140);_
+
+_ctx1.bezierCurveTo(75,137,70,125,50,125);_
+
+_ctx1.bezierCurveTo(20,125,20,162.5,40,162.5);_
+
+_ctx1.bezierCurveTo(20,180,40,202,75,170);_
+
+
+_ctx1.bezierCurveTo(110,202,130,180,110,162.5);_
+
+_ctx1.bezierCurveTo(130,162.5,130,125,100,125);_
+
+_ctx1.bezierCurveTo(85,125,75,137,75,140);_
+
+_ctx1.fill();_
+
+_//Círculo destinado como área de recorte_
+
+_ctx1.fillStyle = “#f30”;_
+
+_ctx1.beginPath();_
+
+_ctx1.arc(175,155,45,0,Math.PI*2,true);_
+
+_ctx1.fill();_
+
+_//define o círculo como área de recorte_
+
+_ctx1.clip();_
+
+_//2ª FORMA_
+
+_ctx1.fillStyle = “#339”;_
+
+_ctx1.beginPath();_
+
+_ctx1.moveTo(175,140);_
+
+_ctx1.bezierCurveTo(175,137,170,125,150,125);_
+
+_ctx1.bezierCurveTo(120,125,120,162.5,140,162.5);_
+
+_ctx1.bezierCurveTo(120,180,140,202,175,170);_
+
+_ctx1.bezierCurveTo(210,202,230,180,210,162.5);_
+
+_ctx1.bezierCurveTo(230,162.5,230,125,200,125);_
+
+_ctx1.bezierCurveTo(185,125,175,137,175,140);_
+
+_ctx1.fill();_
+
+_//ctx1.clip();_
+
+_//GLOBO OCULAR ESQUERDO_
+
+_ctx1.beginPath();_
+
+_ctx1.arc(205,143,10,0,Math.PI*2,true);_
+
+_ctx1.fillStyle=”yellow”;_
+
+_ctx1.fill();_
+
+_//GLOBO OCULAR DIREITO_
+
+_ctx1.beginPath();_
+
+_ctx1.arc(147,143,10,0,Math.PI*2,true);_
+
+_ctx1.fillStyle=”yellow”;_
+
+_ctx1.fill();_
+
+_//OLHO ESQUERDO_
+
+_ctx1.beginPath();_
+
+_ctx1.arc(210,143,2,0,Math.PI*2,true);_
+
+_ctx1.fillStyle=”black”;_
+
+_ctx1.fill();_
+
+_//OLHO ESQUERDO_
+
+_ctx1.beginPath();_
+
+_ctx1.arc(152,143,2,0,Math.PI*2,true);_
+
+_ctx1.fillStyle=”black”;_
+
+_ctx1.fill();_
+
+**Figura 57. Resultado com diferentes posições do círculo definido como área de recorte.**
+
+###  7.3.1. Comandos save() e restore() 
+
+No exemplo a seguir criou-se um retângulo sobre a forma que recebeu o efeito de clipe. Por padrão, essa forma será associada à área de recorte existente. Para definir se este retângulo deve ou não fazer parte da área de recorte, temos o recurso de salvar o _status_ do CANVAS e depois restaurá-lo. Caso seja executado o método de restauração, as configurações iniciais do CANVAS serão restauradas e o efeito de clipe será ignorado. 
+
+**JavaScript**
+
+_//1ª FORMA_
+
+_ctx1.beginPath();_
+
+_ctx1.moveTo(75,140);_
+
+_ctx1.bezierCurveTo(75,137,70,125,50,125);_
+
+_ctx1.bezierCurveTo(20,125,20,162.5,40,162.5);_
+
+_ctx1.bezierCurveTo(20,180,40,202,75,170);_
+
+_ctx1.bezierCurveTo(110,202,130,180,110,162.5);_
+
+_ctx1.bezierCurveTo(130,162.5,130,125,100,125);_
+
+_ctx1.bezierCurveTo(85,125,75,137,75,140);_
+
+
+_ctx1.fill();_
+
+_//armazena os atributos atuais do contexto_
+
+_ctx1.save();_
+
+_//círculo destinado como área de recorte_
+
+_ctx1.fillStyle = “#f30”;_
+
+_ctx1.beginPath();_
+
+_ctx1.arc(175,155,45,0,Math.PI*2,true);_
+
+_ctx1.fill();_
+
+_//define o círculo como área de recorte_
+
+_ctx1.clip();_
+
+_//2ª FORMA_
+
+_ctx1.fillStyle = “#339”;_
+
+_ctx1.beginPath();_
+
+_ctx1.moveTo(175,140);_
+
+_ctx1.bezierCurveTo(175,137,170,125,150,125);_
+
+_ctx1.bezierCurveTo(120,125,120,162.5,140,162.5);_
+
+_ctx1.bezierCurveTo(120,180,140,202,175,170);_
+
+_ctx1.bezierCurveTo(210,202,230,180,210,162.5);_
+
+_ctx1.bezierCurveTo(230,162.5,230,125,200,125);_
+
+_ctx1.bezierCurveTo(185,125,175,137,175,140);_
+
+_ctx1.fill();_
+
+_//ctx1.clip();_
+
+_//GLOBO OCULAR ESQUERDO_
+
+_ctx1.beginPath();_
+
+_ctx1.arc(205,143,10,0,Math.PI*2,true);_
+
+_ctx1.fillStyle=”yellow”;_
+
+_ctx1.fill();_
+
+_//GLOBO OCULAR DIREITO_
+
+_ctx1.beginPath();_
+
+_ctx1.arc(147,143,10,0,Math.PI*2,true);_
+
+_ctx1.fillStyle=”yellow”;_
+
+_ctx1.fill();_
+
+_//OLHO ESQUERDO_
+
+_ctx1.beginPath();_
+
+_ctx1.arc(210,143,2,0,Math.PI*2,true);_
+
+_ctx1.fillStyle=”black”;_
+
+_ctx1.fill();_
+
+_//OLHO ESQUERDO_
+
+_ctx1.beginPath();_
+
+_ctx1.arc(152,143,2,0,Math.PI*2,true);_
+
+_ctx1.fillStyle=”black”;_
+
+_ctx1.fill();_
+
+_//recupera os atributos salvos do contexto. Utilizar este método desabilitará o //recorte para o próximo elemento do contexto_
+
+_ctx1.restore();_
+
+_//Retângulo_
+
+_ctx1.fillStyle = “green”;_
+
+_//desenha o segundo retângulo_
+
+_ctx1.fillRect (130, 160, 90, 30);_
+
+**Figura 58. Comparação de uso dos métodos** save()  **e** restore(). 
+
+
+#  8\. Matrizes de transformação 
+
+O CANVAS nos fornece métodos que possibilitam modificar diretamente a matriz de transformação. Por intermédio dos métodos  transform()  e  setTransform()  , que utilizam cálculos em matrizes, pode-se alterar o contexto do CANVAS. O uso desse método acarreta alterações de escala e translação, que permitem inclinar o contexto. 
+
+##  8.1. Os métodos setTransform() e transform() 
+
+setTransform(scaleX, skewX, skewY, scaleY, translateX, translateY) -  Apaga a transformação atual da matriz e aplica a nova transformação. 
+
+transform(scaleX, skewX, skewY, scaleY, translateX, translateY)  – Adiciona a transformação a qualquer outra existente. 
+
+scaleX  = Acrescenta ou reduz a quantidade de pixels para a escala de largura. 
+
+skewX  = Altera o eixo do ângulo em x para cima ou para baixo. 
+
+skewY  = Altera o eixo do ângulo em y para a esquerda ou para a direita. 
+
+scaleY  = Acrescenta ou reduz a quantidade de pixels para a escala de altura. 
+
+translateX  = Movimenta as coordenadas da posição horizontal, em referência ao canto superior esquerdo do CANVAS. 
+
+translateY  = Movimenta as coordenadas da posição vertical em referência ao canto superior esquerdo do CANVAS. 
+
+Existem diferenças entre os métodos  transform()  e  setTransform()  . Enquanto o  transform()  adiciona a nova transformação àquelas já existentes, o  setTransform()  altera o contexto atual modificando as transformações existentes. 
+
+**JavaScript**
+
+_ctx1.fillStyle=”#333399”;_
+
+_ctx1.fillRect(20,20,250,100)_
+
+_ctx1.transform(1,0.5,-0.5,1,100,30);_
+
+_ctx1.fillStyle=”#008000”;_
+
+_ctx1.fillRect(0,0,250,100);_
+
+_ctx1.transform(1,0.5,-0.5,1,130,10);_
+
+_ctx1.fillStyle=”#99ccff”;_
+
+_ctx1.fillRect(0,0,250,100);_
+
+**Figura 59. Aplicação do método** transform(). 
+
+##  8.2. Translação e rotação 
+
+###  8.2.1. Translação 
+
+O método  translate()  é utilizado para mover o elemento até um ponto específico da linha de grade horizontalmente em x ou verticalmente em y. 
+
+translate (x, y) 
+
+
+**Nota importante:** lembre-se de que é uma boa prática salvar o _status_ do contexto antes de proceder com quaisquer transformações por intermédio do método  save()  . Será muito mais simples chamar o método  restore()  do que criar uma inteligência reversa para retornar ao _status_ original do contexto. O uso de  save/restore  em _loops_ são de extrema importância para que não se percam partes das formas criadas no processo de repetição.   
+---  
+  
+**JavaScript**
+
+_ctx.fillStyle=’#FF3399’;_
+
+_ctx.fillRect(0,0,100,100);_
+
+_//translação_
+
+_ctx.translate(100,100);_
+
+_//nova posição após a translação_
+
+_ctx.fillRect(0,0,100,100);_
+
+**Figura 60. O segundo retângulo com a posição alterada por intermédio do método  
+** translate()  **.**
+
+###  8.2.2. Rotação 
+
+O método  rotate()  possibilita girar os elementos do contexto. 
+
+rotate(ângulo) 
+
+A rotação ocorre no sentido horário em torno da origem do contexto do CANVAS. A medida do ângulo é feita em radianos. O ponto de origem da rotação é o canto superior esquerdo do contexto. Para alterar o ponto de origem é preciso utilizar o método  translate()  para mover o contexto. 
+
+Os cálculos das coordenadas em x e y são desenhados em círculos utilizando cálculos de seno e cosseno. 
+
+_x = r * Math.cos(a)_
+
+_y = r * Math.sin(a)_
+
+A vantagem do método  rotate()  é este cálculo em x e y já estar embutido dentro dele. 
+
+**JavaScript**
+
+_ctx1.fillStyle=’#FF3399’;_
+
+_ctx1.beginPath();_
+
+_ctx1.arc(152,143,50,0,Math.PI*2,true);_
+
+_ctx1.fill();_
+
+_//rotação_
+
+_ctx1.rotate(Math.PI/18);_
+
+_ctx1.fillStyle=’#008000’;_
+
+_ctx1.beginPath();_
+
+_ctx1.arc(152,143,50,0,Math.PI*2,true);_
+
+_ctx1.fill();_
+
+_//rotação_
+
+_ctx1.rotate(Math.PI/9);_
+
+_ctx1.fillStyle=’#333399’;_
+
+_ctx1.beginPath();_
+
+_ctx1.arc(152,143,50,0,Math.PI*2,true);_
+
+_ctx1.fill();_
+
+_//rotação_
+
+_ctx1.rotate(Math.PI/10);_
+
+_ctx1.fillStyle=’#ff0000’;_
+
+_ctx1.beginPath();_
+
+_ctx1.arc(152,143,50,0,Math.PI*2,true);_
+
+_ctx1.fill();_
+
+**Figura 61. Formas circulares com aplicação do método** rotate(). 
+
+##  8.3. Escala 
+
+O método  scale()  define a proporção de tamanho em largura e altura do contexto. 
+
+scale(escala em x, escala em y) 
+
+**Figura 62. Escala e proporção dos retângulos aplicando** scale(). 
+
+
+#  9\. Vídeo em CANVAS 
+
+Ao combinar os recursos do elemento  video  e do objeto CANVAS, temos a capacidade de manipular vídeo em tempo real, incluir efeitos especiais e compor um visual sofisticado mesclando um ou mais vídeos em conjunto com textos, formas e imagens. 
+
+O vídeo, em primeiro lugar, tem que ser inserido por intermédio do elemento de marcação  <video> no documento HTML. O elemento de marcação  <video> pode estar contido em outro elemento de marcação  <div> ou  <article> . O vídeo original fica com visibilidade inativa com o uso de CSS da propriedade  display,  com valor  none  sendo apresentado apenas dentro do CANVAS. 
+
+O elemento de marcação  <video> possui atributos como  autoplay  , que permite ao vídeo rodar automaticamente dentro do CANVAS. Caso seja necessário, pode-se manter o vídeo sem o início automático e gerar algum elemento em CANVAS que dispare a sua exibição. 
+
+Conforme a recomendação W3C, devido aos diversos tipos de navegador web torna-se necessário deixar à disposição três formatos de vídeo para garantir que ele seja exibido em qualquer plataforma: MP4, OGG e WEBM. O livro não abordará detalhes e elementos como atributos e funcionalidades relacionadas ao elemento de marcação  <video> e o controle desse objeto via JavaScript; o foco, no entanto, aponta para o uso do vídeo renderizado dentro do CANVAS. 
+
+##  9.1. Adicionando vídeo ao CANVAS 
+
+Adicionar um vídeo ao contexto do CANVAS requer a utilização do método  drawImage()  , já utilizado anteriormente para desenhar imagens. Antes disso, deve-se testar o vídeo por intermédio do arquivo HTML, para que tenhamos a certeza de que ele não está com problemas na exibição feita em um navegador web. 
+
+**HTML**
+
+_ <canvas width=”400” height=”250” id=”cv1”></canvas> _
+
+_ <hr /> _
+
+_ <video autoplay width=”600” style=”display:none;”> _
+
+_ <source src=”video.mp4” type=’video/mp4; codecs=”avc1.42E01E, mp4a.40.2”’ > _
+
+_ <source src=”video.webm”type=’video/webm; codecs=”vp8, vorbis”’ > _
+
+_ <source src=”video.ogg” type=’video/ogg; codecs=”theora, vorbis”’> _
+
+_ </video> _
+
+**JavaScript**
+
+
+_////DESENHANDO O VÍDEO NO CANVAS_
+
+_window.onload = function() {_
+
+_initCanvas();_
+
+_}_
+
+_var context;_
+
+_function initCanvas() {_
+
+_video = document.getElementsByTagName(“video”)[0];_
+
+_canvas = document.getElementById(“cv1”);_
+
+_context = canvas.getContext(“2d”);_
+
+_video.addEventListener(“timeupdate”, paintFrame, false);_
+
+_}_
+
+_function paintFrame() {_
+
+_context.drawImage(video, 0, 0, 400, 250);_
+
+_}_
+
+**Figura 63. Vídeo desenhado em CANVAS com o método** drawImage(). 
+
+##  9.2. Enquadrando módulos em um único vídeo 
+
+Uma vez desenhado dentro do CANVAS, o vídeo pode ser manipulado de diversas maneiras. Muitas dessas maneiras contam com a criatividade do programador. Nesse exemplo o vídeo será distribuído em quadros que juntos exibem uma única imagem. O efeito é semelhante a um _videowall_ muito comum em eventos, feiras e praças de alimentação em shopping centers. 
+
+**HTML**
+
+_ <canvas width=”550” height=”320” id=”cv1” name=”cv1” style=”background-color:#000”></canvas> _
+
+_ <video autoplay width=”300” id=”video” style=”display:none”> _
+
+_ <source src=”video.mp4” type=’video/mp4; codecs=”avc1.42E01E, mp4a.40.2”’ > _
+
+_ <source src=”video.webm”type=’video/webm; codecs=”vp8, vorbis”’ > _
+
+_ <source src=”video.ogg” type=’video/ogg; codecs=”theora, vorbis”’> _
+
+_ </video> _
+
+**JavaScript**
+
+_////DESENHANDO O VÍDEO NO CANVAS_
+
+_window.onload = function() {_
+
+_initCanvas();_
+
+_}_
+
+_var context;_
+
+_function initCanvas() {_
+
+_video = document.getElementsByTagName(“video”)[0];_
+
+_canvas = document.getElementById(“cv1”);_
+
+_context = canvas.getContext(“2d”);_
+
+_video.addEventListener(“timeupdate”, paintFrame3, false);_
+
+_}_
+
+_function paintFrame3() {_
+
+_in_w = 1280; in_h = 720;_
+
+_w = 550; h = 300;_
+
+_// enquadramento 5x5_
+
+_quadros = 5;_
+
+_distancia = 5;_
+
+_context.fillStyle=”#008000”;_
+
+_for (x = 0; x < quadros; x++) { _
+
+_for (y = 0; y < quadros; y++) { _
+
+_context.drawImage(video, x*in_w/quadros, y*in_h/quadros, in_w/quadros, in_h/quadros, x*(w/quadros+distancia), y*(h/quadros+distancia), w/quadros, h/quadros);_
+
+_}_
+
+_} context.fill();_
+
+_if (video.paused || video.ended) {_
+
+_return;_
+
+_}_
+
+_setTimeout(function () {_
+
+_paintFrame3();_
+
+_}, 0);_
+
+_}_
+
+**Figura 64. Enquadramento no estilo** videowall. 
+
+
+##  9.3. Exibindo vídeos em áreas de recorte 
+
+Formas podem ser configuradas como área de recorte para exibição de imagens ou outras novas formas. O mesmo ocorre para os vídeos. Definida a área de recorte para um efeito do clipe, associamos o vídeo a ser exibido dentro dessa área. 
+
+context.clip() 
+
+**JavaScript**
+
+_window.onload = function() {_
+
+_initCanvas2();_
+
+_}_
+
+_function initCanvas2() {_
+
+_video = document.getElementsByTagName(“video”)[0];_
+
+_canvas = document.getElementById(“cv1”);_
+
+_context = canvas.getContext(“2d”);_
+
+_context.beginPath();_
+
+_ctx.beginPath();_
+
+_ctx.moveTo(285,155);_
+
+_ctx.quadraticCurveTo(285,20,155,75);_
+
+_ctx.quadraticCurveTo(15,5,25,95);_
+
+_ctx.quadraticCurveTo(45,210,195,155);_
+
+_ctx.quadraticCurveTo(285,200,285,155);_
+
+_ctx.fillStyle=”rgba(120,120,255,0.5)”;_
+
+_ctx.fill();_
+
+_ctx.beginPath();_
+
+_ctx.moveTo(285,155);_
+
+_ctx.quadraticCurveTo(285,0,155,75);_
+
+_ctx.quadraticCurveTo(15,-40,25,95);_
+
+_ctx.quadraticCurveTo(45,290,195,155);_
+
+_ctx.quadraticCurveTo(285,240,285,155);_
+
+_ctx.fillStyle=”rgba(80,80,255,0.1)”;_
+
+_ctx.fill();_
+
+_ctx.beginPath();_
+
+_ctx.moveTo(285,155);_
+
+_ctx.quadraticCurveTo(285,20,155,75);_
+
+_ctx.quadraticCurveTo(15,5,25,95);_
+
+_ctx.quadraticCurveTo(45,210,195,155);_
+
+_ctx.quadraticCurveTo(285,200,285,155);_
+
+_ctx.fillStyle=”rgba(120,120,255,0.5)”;_
+
+_ctx.fill();_
+
+_ctx.beginPath();_
+
+_ctx.moveTo(285,155);_
+
+_ctx.quadraticCurveTo(285,0,155,75);_
+
+_ctx.quadraticCurveTo(15,-40,25,95);_
+
+_ctx.quadraticCurveTo(45,290,195,155);_
+
+_ctx.quadraticCurveTo(285,240,285,155);_
+
+_ctx.fillStyle=”rgba(80,80,255,0.1)”;_
+
+_ctx.fill();_
+
+_context.clip();_
+
+_video.addEventListener(“timeupdate”, drawFrame, false);_
+
+_if (video.readyState >= video.HAVE_METADATA) { _
+
+_startPlay();_
+
+_} else {_
+
+_video.addEventListener(“loadedmetadata”, startPlay, false);_
+
+_}_
+
+_}_
+
+_function startPlay() {_
+
+_video.play();_
+
+_}_
+
+_function drawFrame() {_
+
+_context.drawImage(video, 0, 0, 380, 250);_
+
+_if (video.paused || video.ended) {_
+
+_return;_
+
+_}_
+
+_setTimeout(function () {_
+
+_drawFrame();_
+
+_}, 0);_
+
+_}_
+
+**Figura 65. Vídeo exibido por intermédio de uma área de recorte.**
+
+##  9.4. Criando amostras de vídeo (  screenshots  ) 
+
+
+Em diversos projetos web existem recursos que capturam a amostra de um vídeo e a convertem para imagem. Nesse exemplo, por intermédio de um botão em HTML, a função  snap()  é chamada criando um retângulo para desenhar a imagem do vídeo existente. Para verificar qual parte do vídeo nos interessa fotografar, bem como se a amostra certa está sendo capturada, retire o estilo _display_ que mantém o vídeo oculto. 
+
+**HTML**
+
+_ <div id=”controleVideo”> _
+
+_ <video autoplay width=”300” id=”video”> _
+
+_ <source src=”video.mp4” type=’video/mp4; codecs=”avc1.42E01E, mp4a.40.2”’ > _
+
+_ <source src=”video.webm”type=’video/webm; codecs=”vp8, vorbis”’ > _
+
+_ <source src=”video.ogg” type=’video/ogg; codecs=”theora, vorbis”’> _
+
+_ </video> _
+
+_ <button id=”snap” style=”margin-top:10px”>Criar _
+
+_Amostra </button></div> _
+
+_ <canvas width=”550” height=”320” id=”cv1” name=”cv1” _
+
+_style=”background-color:none” ></canvas> _
+
+**JavaScript**
+
+_var video = document.querySelector(‘video’);_
+
+_var canvas = document.querySelector(‘canvas’);_
+
+_var context = canvas.getContext(‘2d’);_
+
+_var largura, altura, raio;_
+
+_function initVideo3 (){_
+
+_// ‘loadedmetadata’ para ler as dimensões do vídeo_
+
+_video.addEventListener(‘loadedmetadata’, function() {_
+
+_// raio de largura do vídeo_
+
+_raio = video.videoWidth / video.videoHeight;_
+
+_// recupera a largura do vídeo_
+
+_largura = video.videoWidth;_
+
+_// altura proporcional em referência à largura e ao raio_
+
+_altura = parseInt(largura / raio, 10);_
+
+_// Configuração da largura e altura do CANVAS_
+
+_canvas.width = largura/2;_
+
+_canvas.height = altura/2;_
+
+_}, false);_
+
+_// SNAP_
+
+_function snap() {_
+
+_// Retângulo que receberá a nova amostra_
+
+_context.fillRect(0, 0, largura, altura);_
+
+_// Grava a imagem no CANVAS_
+
+_context.drawImage(video, 0, 0, 600, 400);_
+
+_}_
+
+_document.getElementById(‘snap’).addEventListener(‘click’,snap);_
+
+_}_
+
+__
+
+_initVideo3();_
+
+**Figura 66. Capturando uma amostra de imagem do vídeo com um evento de clique.**
+
+
+#  10\. Animação 
+
+Os métodos de repetição em JavaScript  setInterval(function, delay)  e  setTimeout(function, delay)  possibilitam formar as animações. 
+
+O método  window.requestAnimationFrame()  é atualmente recomendado para criar esquemas de animação. As animações compreendem movimentar linhas, imagens, textos e formas. Para controlar o fluxo das animações temos recursos diversos, como o carregar de uma página, o clique do mouse, o arrastar do mouse, o movimento do mouse sobre a tela, a rolagem, entre outros. Com JavaScript temos total alcance das informações globais do CANVAS, suas coordenadas de tela e seus objetos criados no contexto 2D. 
+
+##  10.1. Usando imagens em movimento 
+
+O efeito a seguir exibe uma imagem em movimento contínuo em plano de fundo do CANVAS. Ao recriar esse efeito utilizando outras imagens, considere as proporções feitas em nosso exemplo. O controle dessa animação é feito com o evento  onload  , que aguarda o carregamento da imagem para proceder com o restante do _script_ . 
+
+**JavaScript**
+
+_var img = new Image();_
+
+_// Direção e velocidade_
+
+_img.src = “img/image2.jpg”;_
+
+_var largura = 400;_
+
+_var altura = 400;_
+
+_var velocidade = 30; //quanto menor mais rápido_
+
+_var escala = 1.05;_
+
+_var y = -4.5; //limite vertical_
+
+_//Variáveis de verificação_
+
+_var dx = 0.75;_
+
+_var larguraImg;_
+
+_var alturaImg;_
+
+_var x = 0;_
+
+_var clearX;_
+
+_var clearY;_
+
+_var ctx;_
+
+_img.onload = function() {_
+
+_larguraImg = img.width*escala;_
+
+_alturaImg = img.height*escala;_
+
+_// imagem mais larga que o canvas_
+
+_if (larguraImg > largura) { x = largura-larguraImg; } _
+
+_if (larguraImg > largura) { clearX = larguraImg; } _
+
+_else { clearX = largura; }_
+
+_if (alturaImg > altura) { clearY = alturaImg; } //imagem mais larga que o canvas _
+
+_else { clearY = altura; }_
+
+_//CANVAS_
+
+_ctx = document.getElementById(‘cv1’).getContext(‘2d’);_
+
+_//Animação_
+
+_return setInterval(criaBgAnim, velocidade);_
+
+_}_
+
+_function criaBgAnim() {_
+
+_//Limpa o retângulo do canvas_
+
+_ctx.clearRect(0,0,clearX,clearY);_
+
+_//Caso a imagem seja menor/igual à largura do canvas_
+
+_if (larguraImg <= largura) { _
+
+_//limpa o valor de x e inicia novamente_
+
+
+_if (x > (largura)) { x = 0; } _
+
+_//desenha a imagem_
+
+_if (x > (largura-larguraImg)) { ctx.drawImage(img,x-largura+1,y,larguraImg,alturaImg); } _
+
+_}_
+
+_//Caso a imagem seja maior de que a largura do canvas_
+
+_else {_
+
+_//limpa o valor de x e inicia novamente_
+
+_if (x > (largura)) { x = largura-larguraImg; } _
+
+_//desenha a imagem_
+
+_if (x > (largura-larguraImg)) { ctx.drawImage(img,x-larguraImg+1,y,larguraImg,alturaImg); } _
+
+_}_
+
+_//desenha a imagem_
+
+_ctx.drawImage(img,x,y,larguraImg,alturaImg);_
+
+_//movimento referente à distância_
+
+_x += dx;_
+
+_}_
+
+**Figura 67. Imagem em movimento do tipo “cenário móvel”.**
+
+##  10.2. Usando formas em movimento 
+
+window.requestAnimationFrame() 
+
+O método  window.requestAnimationFrame()  comunica ao navegador web que uma tarefa de animação está prestes a ser executada e portanto precisa de uma atualização antes de sua releitura. Esse método possui um argumento  callback  que dispara as chamadas antes da releitura. 
+
+A taxa média de retorno do método  window.requestAnimationFrame()  é de 60 vezes por segundo. A sugestão é que essa taxa coincida com a taxa de atualização de vídeo utilizada na maioria dos navegadores web como recomendação do W3C. 
+
+O método de retorno de chamada é passado num único argumento, um  DOMHighResTimeStamp  , recuperando o tempo em milissegundos, o que é comumente chamado de  timestamp  , do inglês “marcador de tempo”, ou seja, o momento atual. O valor de  timestamp  é um número decimal composto em milésimos de segundos. 
+
+**HTML**
+
+_ <div id=”out”></div> _
+
+**JavaScript**
+
+_window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;_
+
+_var inicio = null;_
+
+_var tempo = (new Date()).getTime();_
+
+_var info = document.getElementById(“out”);_
+
+_function formas(newX) {_
+
+_//2ª FORMA_
+
+_ctx2.beginPath();_
+
+_ctx2.moveTo(a1x1+newX,140);_
+
+_ctx2.bezierCurveTo(a1x1+newX,137,a1x2+newX,125,a1x3+newX,125);_
+
+_ctx2.bezierCurveTo(a2x1+newX,125,a2x2+newX,162.5,a2x3+newX,162.5);_
+
+_ctx2.bezierCurveTo(a3x1+newX,180,a3x2+newX,202,a3x3+newX,170);_
+
+
+_ctx2.bezierCurveTo(a4x1+newX,202,a4x2+newX,180,a4x3+newX,162.5);_
+
+_ctx2.bezierCurveTo(a5x1+newX,162.5,a5x2+newX,125,a5x3+newX,125);_
+
+_ctx2.bezierCurveTo(a6x1+newX,125,a6x2+newX,137,a6x3+newX,140);_
+
+_ctx2.fill();_
+
+_//GLOBO OCULAR ESQUERDO_
+
+_ctx2.beginPath();_
+
+_ctx2.arc(globo1x+newX,143,10,0,Math.PI*2,true);_
+
+_ctx2.fillStyle=”yellow”;_
+
+_ctx2.fill();_
+
+_//GLOBO OCULAR DIREITO_
+
+_ctx2.beginPath();_
+
+_ctx2.arc(globo2x+newX,143,10,0,Math.PI*2,true);_
+
+_ctx2.fillStyle=”yellow”;_
+
+_ctx2.fill();_
+
+_//OLHO ESQUERDO_
+
+_ctx2.beginPath();_
+
+_ctx2.arc(olho1x+(newX/1.10),143,2,0,Math.PI*2,true);_
+
+_ctx2.fillStyle=”black”;_
+
+_ctx2.fill();_
+
+_//OLHO ESQUERDO_
+
+_ctx2.beginPath();_
+
+_ctx2.arc(olho2x+newX/1.10,143,2,0,Math.PI*2,true);_
+
+_ctx2.fillStyle=”black”;_
+
+_ctx2.fill();_
+
+_}_
+
+_function frames (tempo) {_
+
+_var progresso;_
+
+_if (inicio === null) inicio = tempo;_
+
+_progresso = tempo - inicio;_
+
+_if (flag){newX++;_
+
+_ctx2.clearRect(0, 0, cv2.width, cv2.height);_
+
+_formas(newX);_
+
+_info.innerHTML= “Largura do canvas: “ + cv2.width + “ - newX: “ + (a4x2+newX);_
+
+_};_
+
+_//controle sem cliques_
+
+_if ((a4x2+newX) >= cv2.width){flag=false;} _
+
+_if (flag){_
+
+_progresso = tempo - inicio;_
+
+_requestAnimationFrame(frames);_
+
+_}else {inicio=null; }_
+
+_}_
+
+_if (flag){ flag=false;}else{_
+
+_flag=true;requestAnimationFrame(frames);}_
+
+_formas(newX);_
+
+**//Comentando o código JavaScript**  
+---  
+Nosso “marcador de tempo” é a variável  tempo,  a qual representa o  timestamp  recebendo o valor do método  Date.getTime()  processado com retorno em milissegundos. A variável  newX  controla o incremento dos valores relacionados à posição horizontal da forma desenhada por intermédio de  bezierCurve().  A variável  flag  controla a execução da animação mediante o valor de x referente a uma das extremidades da forma que tende a colidir com a parede do lado direito do CANVAS. Caso isso aconteça,  flag  receberá o valor  false  e a animação será interrompida.   
+  
+**Figura 68. Forma em** quadraticCurve()  **animada com** requestAnimationFrame(). 
+
+##  10.3. Criando gráficos estatísticos 
+
+
+Criar gráficos estatísticos em CANVAS pode ser mais fácil do que se imagina. O exemplo a seguir é bem simples, mas leva à criação de ideias sobre números dinâmicos vindos de uma base de dados ou de um arquivo XML. Outro ponto a se pensar é que essas barras podem ser animadas e até preenchidas com gradientes. Para esse exemplo, o _array_ indices  fornece os valores de altura para cada barra. 
+
+**JavaScript**
+
+_var indices = [24,12,90,251,145,205];_
+
+_for (var i=0;i <indices.length;i++){ _
+
+_ctx1.fillStyle=”red”;_
+
+_altura = Number(indices[i]*-1);_
+
+_ctx1.fillRect(10 + i*55,300,50,altura);_
+
+_ctx1.fillStyle=”#000000”;_
+
+_ctx1.fillText(indices[i],20+(i*55),(indices[i]-290)*-1);_
+
+_}_
+
+**Figura 69. Gráfico criado com retângulos em CANVAS.**
+
+
+#  11\. Adicionando   
+interatividade 
+
+##  11.1. Capturando coordenadas de tela 
+
+Uma das primeiras atividades para entender como os jogos são processados é a captura das coordenadas de tela dos eixos x e y. 
+
+GetBoundingClientRect()  é um método que fornece as coordenadas de topo, direita, base e esquerda de um elemento. Isso possibilita rastrear as coordenadas do CANVAS, tendo retorno sobre o local exato onde um determinado elemento do contexto está. Nesse caso a variável  area  representa  GetBoundingClientRect()  e fornece coordenadas x e y por intermédio das propriedades  left  e  top  . 
+
+O evento de mouse  mouseMove  controla a funcionalidade, sendo associado ao CANVAS com o método  addEventListener. 
+
+**JavaScript**
+
+_function coordenadas(canvas, mensagem) {_
+
+_context.clearRect(0, 0, canvas.width, canvas.height);_
+
+_context.font = ‘18pt Calibri’;_
+
+_context.fillStyle = ‘black’;_
+
+_context.fillText(mensagem, 10, 25);_
+
+_}_
+
+_function coordMouse(canvas, evt) {_
+
+_var area = canvas.getBoundingClientRect();_
+
+_return {_
+
+_x: evt.clientX - area.left,_
+
+_y: evt.clientY - area.top_
+
+_};_
+
+_}_
+
+_var canvas = document.getElementById(‘cv1’);_
+
+_var context = canvas.getContext(‘2d’);_
+
+_canvas.addEventListener(‘mousemove’, function(evt) {_
+
+_var posAtual = coordMouse(canvas, evt);_
+
+_var mensagem = ‘Posição X: ‘ + parseInt(posAtual.x) + ‘ - Posição Y :’ + parseInt(posAtual.y);_
+
+_coordenadas(canvas, mensagem);_
+
+_}, false);_
+
+**Figura 70. Captura de coordenadas em X e Y do CANVAS.**
+
+##  11.2. Controles de mouse (arrastar e soltar) 
+
+_Drag and drop_ ou “arrastar e soltar” é uma prática constante feita pelos usuários na web. O objeto CANVAS suporta simular esse efeito de interatividade. Na abstração desse exemplo, são criados diversos círculos de mesma cor no contexto do CANVAS. 
+
+Apenas um deles se diferencia em cor, e ele está configurado para ser arrastável. As coordenadas de tela foram capturadas mediante  event.pageX  e  event.pageY  . 
+
+
+Observe que é possível monitorar os valores de largura e altura internas (  offsetWidth  e  offsetHeigth  ) e externas (  canvas.width  e  canvas.height  ) passados textualmente para a variável  status,  que representa o elemento de marcação  <div> de  id=out  contida no documento HTML. Os eventos  mousedown  e  mouseup  controlam o arraste­. 
+
+**JavaScript**
+
+_var canvas;_
+
+_var ctx;_
+
+_var status;_
+
+_var mouseDown = false;_
+
+_// canvas largura/altura_
+
+_var cw = 0;_
+
+_var ch = 0;_
+
+_// Arraste_
+
+_var pw = 30;_
+
+_var ph = 30;_
+
+_var pw2 = 0;_
+
+_var ph2 = 0;_
+
+_// Posição do arraste_
+
+_var px = 50;_
+
+_var py = 100;_
+
+_// posição do cursor_
+
+_var cx = 10;_
+
+_var cy = 10;_
+
+_// escala_
+
+_var sx = 1.0;_
+
+_var sy = 1.0;_
+
+_function inicio()_
+
+_{_
+
+_canvas = document.getElementById(“cv1”);_
+
+_ctx = canvas.getContext(“2d”);_
+
+_status = document.getElementById(“out”);_
+
+_cw = canvas.width;_
+
+_ch = canvas.height;_
+
+_// escala em referencia a proporção atual_
+
+_sx = cw / canvas.offsetWidth;_
+
+_sy = ch / canvas.offsetHeight;_
+
+_// redimensiona o objeto de arraste_
+
+_pw = pw * sx;_
+
+_ph = ph * sy;_
+
+_pw2 = pw/2;_
+
+_ph2 = ph/2;_
+
+_// reposiciona o objeto de arraste_
+
+_px = px * sx;_
+
+_py = py * sy;_
+
+_status.innerHTML = “Canvas [ Largura: “ + canvas.width + “, Altura: “ + canvas.height_
+
+_\+ “ ] Canvas OffSet [ Largura: “ + canvas.offsetWidth + “, Altura: “ + canvas.offsetHeight + “] | <br /> Escala: “ + sx + “ X “ + sy + “ | <br />Objeto de arraste: “ + pw + “ X “ + ph; _
+
+_canvas.onmouseup = soltar;_
+
+_canvas.onmousedown = pressionar;_
+
+_canvas.onmousemove = mover;_
+
+_return setInterval(redesenhar, 10); // limpa o canvas e redesenha o objeto de arraste_
+
+_}_
+
+_function redesenhar()_
+
+_{_
+
+_// limpa o canvas_
+
+_ctx.clearRect(0, 0, cw, ch);_
+
+_desenhar(px, py, pw, ph, “rgba(189,89,130,0.4)”);_
+
+_}_
+
+_function desenhar(x, y, w, h, cor)_
+
+_{_
+
+_var posXY = [_
+
+_[20,250],[145,60] ,[135,230] ,[80,20], [320,250],[345,60] ,[215,130] ,[380,270],[410,189],[480,8]_
+
+_];_
+
+_for(var j=0;j <10;j++){ _
+
+_ctx.fillStyle = “rgba(205,205,205,0.8)”;_
+
+_ctx.beginPath();_
+
+_ctx.arc(posXY[j][0],posXY[j][1],w,0,Math.PI*2,true);_
+
+_ctx.fill();_
+
+_}_
+
+_ctx.fillStyle = cor;_
+
+_ctx.beginPath();_
+
+_ctx.arc(x,y,w,0,Math.PI*2,true);_
+
+_ctx.strokeStyle=”#000000”;_
+
+_ctx.stroke();_
+
+_ctx.lineWidth=4;_
+
+
+_ctx.fill();_
+
+_}_
+
+_function mover(e)_
+
+_{_
+
+_if ( cursorSobre(e.pageX, e.pageY) )_
+
+_{_
+
+_document.body.style.cursor = ‘pointer’;_
+
+_}_
+
+_else_
+
+_{_
+
+_document.body.style.cursor = ‘default’;_
+
+_}_
+
+_if (mouseDown)_
+
+_{_
+
+_px = (e.pageX - canvas.offsetLeft)*sx - cx*sx;_
+
+_py = (e.pageY - canvas.offsetTop)*sy - cy*sy;_
+
+_status.innerHTML = “Mouse em arraste [ Canvas: “ + cx + “, “ + cy + “ | Elemento de arraste: “ + px + “, “ + py + “]”;_
+
+_}_
+
+_}_
+
+_function soltar()_
+
+_{_
+
+_mouseDown = false;_
+
+_}_
+
+_function pressionar(e)_
+
+_{_
+
+_if ( cursorSobre(e.pageX, e.pageY) )_
+
+_{_
+
+_cx = (e.pageX - canvas.offsetLeft)*sx - px;_
+
+_cy = (e.pageY - canvas.offsetTop)*sy - py;_
+
+_mouseDown = true;_
+
+_}_
+
+_}_
+
+_function cursorSobre(x, y)_
+
+_{_
+
+_status.innerHTML = “Cursor sobre: “ + x + “, “ + y + “ , Canvas: “_
+
+_\+ (x - canvas.offsetLeft) + “, “ + (y - canvas.offsetTop) + “, Objeto de arraste: “_
+
+_\+ px + “, “ + py;_
+
+_return (x - canvas.offsetLeft) * sx > px && (x - canvas.offsetLeft) * sx < px + pw _
+
+_ && (y - canvas.offsetTop) * sy > py && (y - canvas.offsetTop) * sy < py + ph; _
+
+_}_
+
+_inicio();_
+
+**Figura 71. Coordenadas do CANVAS, do objeto de arraste e largura do CANVAS quando a página é carregada.**
+
+**Figura 72. Coordenadas obtidas enquanto o cursor está parado sobre o objeto de arraste.**
+
+**Figura 73. Coordenadas enquanto o objeto é arrastado pelo mouse.**
+
+##  11.3. Controlando animação com cliques 
+
+Esse exemplo é semelhante ao anterior, de animação com formas. A diferença está na intervenção do clique que controla a pausa e a execução das animações. Quando o objeto chega ao extremo direito da tela, a animação é reiniciada, onde a variável  newX  recebe o valor zero. Observe que até os olhos se movimentam mais lentamente que o restante das formas. Esse efeito é resultante de um cálculo. Na linha com a sintaxe dê atenção à parte em destaque: 
+
+ctx2.arc(  olho1x+(newX/1.10)  ,143,2,0,Math.PI*2,true); 
+
+Esse cálculo (posição x do elemento somada a um fator da nova posição) criou um atraso para as duas formas que se parecem com os olhos da figura, o que nos dá a impressão de que a figura está olhando para o lado enquanto se movimenta. 
+
+**JavaScript**
+
+
+_window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;_
+
+_var inicio = null;_
+
+_var tempo = (new Date()).getTime();_
+
+_var info = document.getElementById(“out”);_
+
+_function formas(newX) {_
+
+_//2ª FORMA_
+
+_ctx2.beginPath();_
+
+_ctx2.moveTo(a1x1+newX,140);_
+
+_ctx2.bezierCurveTo(a1x1+newX,137,a1x2+newX,125,a1x3+newX,125);_
+
+_ctx2.bezierCurveTo(a2x1+newX,125,a2x2+newX,162.5,a2x3+newX,162.5);_
+
+_ctx2.bezierCurveTo(a3x1+newX,180,a3x2+newX,202,a3x3+newX,170);_
+
+_ctx2.bezierCurveTo(a4x1+newX,202,a4x2+newX,180,a4x3+newX,162.5);_
+
+_ctx2.bezierCurveTo(a5x1+newX,162.5,a5x2+newX,125,a5x3+newX,125);_
+
+_ctx2.bezierCurveTo(a6x1+newX,125,a6x2+newX,137,a6x3+newX,140);_
+
+_ctx2.fill();_
+
+_//GLOBO OCULAR ESQUERDO_
+
+_ctx2.beginPath();_
+
+_ctx2.arc(globo1x+newX,143,10,0,Math.PI*2,true);_
+
+_ctx2.fillStyle=”yellow”;_
+
+_ctx2.fill();_
+
+_//GLOBO OCULAR DIREITO_
+
+_ctx2.beginPath();_
+
+_ctx2.arc(globo2x+newX,143,10,0,Math.PI*2,true);_
+
+_ctx2.fillStyle=”yellow”;_
+
+_ctx2.fill();_
+
+_//OLHO ESQUERDO_
+
+_ctx2.beginPath();_
+
+_ctx2.arc(olho1x+(newX/1.10),143,2,0,Math.PI*2,true);_
+
+_ctx2.fillStyle=”black”;_
+
+_ctx2.fill();_
+
+_//OLHO DIREITO_
+
+_ctx2.beginPath();_
+
+_ctx2.arc(olho2x+newX/1.10,143,2,0,Math.PI*2,true);_
+
+_ctx2.fillStyle=”black”;_
+
+_ctx2.fill();_
+
+_}_
+
+_function frames (tempo) {_
+
+_var progresso;_
+
+_if (inicio === null) inicio = tempo;_
+
+_progresso = tempo - inicio;_
+
+_if (flag){newX++;_
+
+_ctx2.clearRect(0, 0, cv2.width, cv2.height);_
+
+_formas(newX);_
+
+_info.innerHTML= “Largura do canvas: “ + cv2.width + “ - newX: “ + (a4x2+newX);_
+
+_};_
+
+_//controle com cliques_
+
+_if ((a4x2+newX) >= cv2.width){flag=false;newX=0;} _
+
+_if (flag){_
+
+_progresso = tempo - inicio;_
+
+_requestAnimationFrame(frames);_
+
+_}else {inicio=null; }_
+
+_}_
+
+_document.getElementById(‘cv2’).addEventListener(‘click’, function() {_
+
+_if (flag){ flag=false;}else{_
+
+_flag=true;requestAnimationFrame(frames);}_
+
+_});_
+
+_formas(newX);_
+
+**Figura 74. Controlando a animação com um clique de mouse.**
+
+##  11.4. Detectando colisões – Um jogo básico em CANVAS 
+
+
+Finalizando nossa abordagem sobre o objeto CANVAS, o último exemplo demonstra como detectar colisões entre duas imagens, sorteando a posição da imagem alvo, a fim de ganhar pontos. 
+
+A ideia do jogo é verificar se a posição dos objetos tem sobreposição. Caso positivo, a imagem do alvo será reposicionada em formato de sorteio por intermédio de  Math.random()  . 
+
+Esquerda, acima, direita, abaixo são representados pelas teclas 37, 38, 39 e 40, respectivamente verificados por  keyCode  . O evento  keyup  controla o movimento da imagem do caçador. Na sobreposição de área das duas imagens a variável  pontuacao  ganha mais em seu valor atual. 
+
+**HTML**
+
+_ <canvas width=”300” height=”250” id=”canvas”></canvas> _
+
+**JavaScript**
+
+_function jogoColisao(){_
+
+_// CANVAS_
+
+_var canvas = document.createElement(“canvas”);_
+
+_var ctx = canvas.getContext(“2d”);_
+
+_canvas.width = 512;_
+
+_canvas.height = 480;_
+
+_document.body.appendChild(canvas);_
+
+_// Background_
+
+_var bgPronto = false;_
+
+_var bgImagem = new Image();_
+
+_bgImagem.onload = function () {_
+
+_bgPronto = true;_
+
+_};_
+
+_bgImagem.src = “images/bg-game.png”;_
+
+_// Caçador_
+
+_var cacadorPronto = false;_
+
+_var cacadorImg = new Image();_
+
+_cacadorImg.onload = function () {_
+
+_cacadorPronto = true;_
+
+_};_
+
+_cacadorImg.src = “images/cacador.png”;_
+
+_// Alvo_
+
+_var alvoPronto = false;_
+
+_var alvoImg = new Image();_
+
+_alvoImg.onload = function () {_
+
+_alvoPronto = true;_
+
+_};_
+
+_alvoImg.src = “images/alvo.png”;_
+
+_// Elementos do jogo_
+
+_var cacador = {_
+
+_velocidade: 256 // movimento em pixels por segundos_
+
+_};_
+
+_var alvo = {};_
+
+_var pontuacao = 0;_
+
+_// controle das teclas_
+
+_var keysDown = {};_
+
+_addEventListener(“keydown”, function (e) {_
+
+_keysDown[e.keyCode] = true;_
+
+_}, false);_
+
+_addEventListener(“keyup”, function (e) {_
+
+_delete keysDown[e.keyCode];_
+
+_}, false);_
+
+_// Reinicia o jogo quando o caçador pega o alvo_
+
+_var zerar = function () {_
+
+_cacador.x = canvas.width / 2;_
+
+_cacador.y = canvas.height / 2;_
+
+_//Sorteia a posição do alvo em algum lugar da tela_
+
+_alvo.x = 32 + (Math.random() * (canvas.width - 64));_
+
+_alvo.y = 32 + (Math.random() * (canvas.height - 64));_
+
+_};_
+
+_// Atualiza os elementos do jogo_
+
+_var atualiza = function (altera) {_
+
+
+_if (38 in keysDown) { // Seta para cima_
+
+_cacador.y -= cacador.velocidade * altera;_
+
+_}_
+
+_if (40 in keysDown) { // Seta para baixo_
+
+_cacador.y += cacador.velocidade * altera;_
+
+_}_
+
+_if (37 in keysDown) { // Seta esquerda_
+
+_cacador.x -= cacador.velocidade * altera;_
+
+_}_
+
+_if (39 in keysDown) { // Seta direita_
+
+_cacador.x += cacador.velocidade * altera;_
+
+_}_
+
+_// Verifica a colisão_
+
+_if (cacador.x <= (alvo.x + 32) _
+
+_ && alvo.x <= (cacador.x + 32) _
+
+_ && cacador.y <= (alvo.y + 32) _
+
+_ && alvo.y <= (cacador.y + 32) _
+
+_) {_
+
+_++pontuacao;_
+
+_zerar();_
+
+_}_
+
+_};_
+
+_// Desenhando tudo_
+
+_var desenhar = function () {_
+
+_if (bgPronto) {_
+
+_ctx.drawImage(bgImagem, 0, 0);_
+
+_}_
+
+_if (cacadorPronto) {_
+
+_ctx.drawImage(cacadorImg, cacador.x, cacador.y);_
+
+_}_
+
+_if (alvoPronto) {_
+
+_ctx.drawImage(alvoImg, alvo.x, alvo.y);_
+
+_}_
+
+_// Pontuação_
+
+_ctx.fillStyle = “rgb(250, 250, 250)”;_
+
+_ctx.font = “24px Helvetica”;_
+
+_ctx.textAlign = “left”;_
+
+_ctx.textBaseline = “top”;_
+
+_var score = “”;_
+
+_if (pontuacao <2){score= “ ponto”}else{score=” pontos”;} _
+
+_ctx.fillText(pontuacao + score, 50, 60);_
+
+_};_
+
+_// Mantendo o jogo em loop_
+
+_var inicio = function () {_
+
+_var agora = Date.now();_
+
+_var delta = agora - ajuste;_
+
+_atualiza(delta / 1000);_
+
+_desenhar();_
+
+_ajuste = agora;_
+
+_};_
+
+_// Reiniciando_
+
+_zerar();_
+
+_var ajuste = Date.now();_
+
+_setInterval(inicio, 1); // Repetindo a função a cada milisegundo_
+
+_}_
+
+_jogoColisao();_
+
+**Figura 75. Controle de objetos com teclas e detecção de sobreposição entre as formas.**
+
+
+#  Considerações finais:   
+otimizando o canvas 
+
+O elemento  <canvas> torna-se, cada dia mais, um padrão de uso na interpretação de gráficos para web, sendo utilizado largamente em estruturas de jogos complexos e web sites em HTML5. Porém, os dispositivos que o interpretam, como navegadores e smartphones, ainda são limitados. Nessa perspectiva, precisamos otimizar o processo de interpretação dos elementos renderizados sobre o contexto 2D do CANVAS para garantir entrega e velocidade nos trabalhos oferecidos. Seguem algumas sugestões úteis para melhorar a performance dos seus projetos em CANVAS. 
+
+Pré-carregar objetos e imagens externas. 
+
+Evitar o uso de linhas segmentadas. 
+
+Minimizar a quantidade de pontos ao criar novas formas. 
+
+Evitar o uso de coordenadas com números decimais. 
+
+Atenção nas transformações atribuídas ao CANVAS. 
+
+Uso de múltiplos CANVAS para cenas complexas. 
+
+Evitar o uso da propriedade  shadowBlur  sempre que possível. 
+
+Usar animações com  window  .  requestAnimationFrame()  . 

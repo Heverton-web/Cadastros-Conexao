@@ -1,0 +1,57 @@
+---
+name: docker-in-action-second-edition-jeff-nickoloff-ste
+description: >-
+  Passos operacionais extraidos do livro 'Docker in Action, Second Edition - Jeff Nickoloff, Stephen Kuenzli' (EN) — praticas e procedimentos para DevOps, infraestrutura e containers.
+---
+
+# Docker In Action — Passos Operacionais
+
+Conteudo extraido do livro 'Docker In Action'. Contem passos, tecnicas e principios baseados na obra original.
+
+## 1. Conceitos Fundamentais
+- The publisher offers discounts on this book when ordered in quantity.
+- For more information, please contact                       Special Sales Department            Manning Publications Co.            20 Baldwin Road            PO Box 761            Shelter Island, NY 11964            Email:  _orders@manning.com_  ©2019 by Manning Publications Co.
+- No part of this publication may be reproduced, stored in a retrieval system, or transmitted, in any form or by means electronic, mechanical, photocopying, or otherwise, without prior written permission of the publisher.
+- Many of the designations used by manufacturers and sellers to distinguish their products are claimed as trademarks.
+- Where those designations appear in the book, and Manning Publications was aware of a trademark claim, the designations have been printed in initial caps or all caps.
+- Recognizing the importance of preserving what has been written, it is Manning’s policy to have the books we publish printed on acid-free paper, and we exert our best efforts to that end.
+- Welcome to Docker](kindle_split_012.xhtml#ch01)   >  >  > [1\.
+- Process isolation and environment-independent computing](kindle_split_013.xhtml#part01)   >  > >> [Chapter 2.
+- Running software in containers](kindle_split_014.xhtml#ch02)   >  >>  >> [Chapter 3.
+- Software installation simplified](kindle_split_015.xhtml#ch03)   >  >>  >> [Chapter 4.
+
+## 2. Principios e Tecnicas
+- Working with storage and volumes](kindle_split_016.xhtml#ch04)   >  >>  >> [Chapter 5.
+- Single-host networking](kindle_split_017.xhtml#ch05)   >  >>  >> [Chapter 6.
+- Limiting risk with resource controls](kindle_split_018.xhtml#ch06)   >  >  > [2\.
+- Packaging software for distribution](kindle_split_019.xhtml#part02)   >  > >> [Chapter 7.
+- Packaging software in images](kindle_split_020.xhtml#ch07)   >  >>  >> [Chapter 8.
+- Building images automatically with Dockerfiles](kindle_split_021.xhtml#ch08)   >  >>  >> [Chapter 9.
+- Public and private software distribution](kindle_split_022.xhtml#ch09)   >  >>  >> [Chapter 10.
+- Image pipelines](kindle_split_023.xhtml#ch10)   >  >  > [3\.
+- Higher-level abstractions and orchestration](kindle_split_024.xhtml#part03)   >  > >> [Chapter 11.
+- Services with Docker and Compose](kindle_split_025.xhtml#ch11)   >  >>  >> [Chapter 12.
+
+## 3. Aplicacoes Praticas
+- First-class configuration abstractions](kindle_split_026.xhtml#ch12)   >  >>  >> [Chapter 13.
+- Welcome to Docker](kindle_split_012.xhtml#ch01)   >  > >> [1.1.
+- What is Docker?](kindle_split_012.xhtml#ch01lev1sec1)   >  >> >>> [1.1.1. “Hello, World”](kindle_split_012.xhtml#ch01lev2sec1)   >  >>>  >>> [1.1.2.
+- Containers](kindle_split_012.xhtml#ch01lev2sec2)   >  >>>  >>> [1.1.3.
+- Containers are not virtualization](kindle_split_012.xhtml#ch01lev2sec3)   >  >>>  >>> [1.1.4.
+- Running software in containers for isolation](kindle_split_012.xhtml#ch01lev2sec4)   >  >>>  >>> [1.1.5.
+- Shipping containers](kindle_split_012.xhtml#ch01lev2sec5)   >  >>  >> [1.2.
+- What problems does Docker solve?](kindle_split_012.xhtml#ch01lev1sec2)   >  >> >>> [1.2.1.
+- Getting organized](kindle_split_012.xhtml#ch01lev2sec6)   >  >>>  >>> [1.2.2.
+- Improving portability](kindle_split_012.xhtml#ch01lev2sec7)   >  >>>  >>> [1.2.3.
+
+## 4. Topicos Avancados
+- Protecting your computer](kindle_split_012.xhtml#ch01lev2sec8)   >  >>  >> [1.3.
+- Why is Docker important?](kindle_split_012.xhtml#ch01lev1sec3)   >  >>  >> [1.4.
+- Where and when to use Docker](kindle_split_012.xhtml#ch01lev1sec4)   >  >>  >> [1.5.
+- Docker in the larger ecosystem](kindle_split_012.xhtml#ch01lev1sec5)   >  >>  >> [1.6.
+- Getting help with the Docker command line](kindle_split_012.xhtml#ch01lev1sec6)   >  >>  >> [Summary](kindle_split_012.xhtml#ch01lev1sec7)   >  >  > [1\.
+- Process isolation and environment-independent computing](kindle_split_013.xhtml#part01)   >  > >> [Chapter 2.
+- Running software in containers](kindle_split_014.xhtml#ch02)   >  >> >>> [2.1.
+- Controlling containers: Building a website monitor](kindle_split_014.xhtml#ch02lev1sec1)   >  >>> >>>> [2.1.1.
+- Creating and starting a new container](kindle_split_014.xhtml#ch02lev2sec1)   >  >>>>  >>>> [2.1.2.
+- Running interactive containers](kindle_split_014.xhtml#ch02lev2sec2)   >  >>>>  >>>> [2.1.3.

@@ -1,0 +1,57 @@
+---
+name: fundamentals-of-software-engineering
+description: >-
+  Passos operacionais extraidos do livro 'Fundamentals of Software Engineering' (EN) — Engenharia de Software.
+---
+
+# Fundamentals Of Software Engineering — Passos Operacionais
+
+Conteudo extraido do livro 'Fundamentals Of Software Engineering'. Contem passos, tecnicas e principios baseados na obra original.
+
+## 1. Conceitos Fundamentais
+- Página 1 Nathaniel Schutta &amp; Dan Vega From Coder to Engineer Fundamentals of Software Engineering  Página 2 9 7 8 1 0 9 8 1 4 3 2 3 7 5 6 5 9 9 ISBN: 978-1-098-14323-7 US $65.99 CAN $82.99 SOFTWARE DEVELOPMENT What do you need to know to be a successful software engineer?
+- Undergraduate curricula and bootcamps may teach the fundamentals of algorithms and writing code, but they rarely cover topics vital to your career advancement.
+- With this practical book, you’ll learn the skills you need to succeed and thrive.
+- Their decades of experience shine through these pages as they tactfully distill the many dos and don’ts for professional developers.” Dr.
+- Venkat Subramaniam, award-winning author and founder of Agile Developer, Inc. “Shockingly, no book exists which provides a holistic overview of what software engineering really entails in the modern world...until now.
+- Filling a void that in hindsight seems huge, this book provides an outstanding overview of the many facets of software engineering, told from a practitioner’s standpoint.” Neal Ford, Distinguished Engineer at Thoughtworks Nathaniel T.
+- Schutta is a cloud-focused architect at Thoughtworks.
+- He coauthored Presentation Patterns, wrote Thinking Architecturally and Responsible Microservices, and teaches at the University of Minnesota.
+- He’s also a seasoned speaker who regularly presents at worldwide conferences.
+- Dan Vega, a Spring developer advocate at Broadcom and a Java Champion, has over 20 years of software development experience.
+
+## 2. Principios e Tecnicas
+- A passionate problem-solver, he actively shares knowledge as a blogger, YouTuber, course creator, and speaker, inspiring fellow developers through continuous learning.
+- Página 3 Praise for Fundamentals of Software Engineering Nate and Dan have distilled years of experience into amazing insights for both experienced and new developers! —Chris Kramer, principal AI engineer, Thoughtworks There has never been a more important time for a book like this.
+- As early talent navigates the disruption of AI in the job market and the strain remote work places on traditional apprenticeships, this book offers the wisdom and guidance needed to grow, adapt, and succeed. —Christopher M.
+- Judd, president of Judd Solutions In this book, Dan and Nate teach quickly the essentials that years of formal education often fail to touch on.
+- Their decades of experience shine through these pages, as they distil tactfully many dos and don’ts for professional developers. —Dr.
+- Venkat Subramaniam, award-winning author and founder, Agile Developer, Inc.
+- Shockingly, no book exists which provides a holistic overview of what software engineering really entails in the modern world...until now.
+- Filling a void that in hindsight seems huge, this book provides an outstanding overview of the many facets of software engineering, told from a practitioner’s standpoint.
+- Like other books in the Foundations series, this one is an invaluable guide for both new engineers and experienced ones to backfill parts of the ecosystem they haven’t touched (or didn’t know about).
+- Highly recommended. —Neal Ford, distinguished engineer at Thoughtworks  Página 4 Every professional faces the uncertainty of “unknown unknowns.” How does one even prepare when they don’t know what to expect?
+
+## 3. Aplicacoes Praticas
+- How does one traverse unfamiliar terrain without having so much as a map?
+- The journey toward software engineering, the deliberate act of moving away from being a “programmer” to an “engineer” has, for a long time, presented a similar conundrum.
+- You are challenged with a tsunami of buzzwords, left navigating the choppy waters of an ever-changing landscape, and are confronted with the rising tide of AI’s influence in the workplace.
+- It can be a daunting and overwhelming journey, both for newcomers and seasoned veterans alike.
+- Fear not, because Nate and Dan have crafted the map that you’ve been looking for.
+- This book lays out the fundamentals needed to transform your mindset into that of an engineer.
+- This book isn’t about technologies—it’s about the skills that will equip you to not just survive, but thrive in today’s tempestuous enterprise. —Raju Gandhi, software craftsman, technophile, and teacher; author of Head First Software Architecture, Head First Git, and JavaScript Next  Página 5 Nathaniel Schutta and Dan Vega Fundamentals of Software Engineering From Coder to Engineer  Página 6 978-1-098-14323-7 [LSI] Fundamentals of Software Engineering by Nathaniel Schutta and Dan Vega Copyright © 2026 Code Monkey LLC and Nathaniel Schutta.
+- Published by O’Reilly Media, Inc., 141 Stony Circle, Suite 195, Santa Rosa, CA 95401.
+- O’Reilly books may be purchased for educational, business, or sales promotional use.
+- Online editions are also available for most titles (http://oreilly.com).
+
+## 4. Topicos Avancados
+- For more information, contact our corporate/institutional sales department: 800-998-9938 or corporate@oreilly.com.
+- Acquisitions Editor: Louise Corrigan Development Editor: Rita Fernando Production Editor: Aleeya Rahman Copyeditor: Charles Roumeliotis Proofreader: Sharon Wilkey Indexer: Krsta Technology Solutions Cover Designer: Susan Thompson Cover Illustrator: José Marzan Jr.
+- Interior Designer: David Futato Interior Illustrator: Kate Dullea November 2025: First Edition Revision History for the First Edition 2025-10-30: First Release See http://oreilly.com/catalog/errata.csp?isbn=9781098143237 for release details.
+- The O’Reilly logo is a registered trademark of O’Reilly Media, Inc.
+- Fundamentals of Software Engineering, the cover image, and related trade dress are trademarks of O’Reilly Media, Inc.
+- The views expressed in this work are those of the authors and do not represent the publisher’s views.
+- While the publisher and the authors have used good faith efforts to ensure that the information and instructions contained in this work are accurate, the publisher and the authors disclaim all responsibility for errors or omissions, including without limitation responsibility for damages resulting from the use of or reliance on this work.
+- Use of the information and instructions contained in this work is at your own risk.
+- If any code samples or other technology this work contains or describes is subject to open source licenses or the intellectual property rights of others, it is your responsibility to ensure that your use thereof complies with such licenses and/or rights.
+- Página 7 For Jen, Isabella, and Juliana, my heart, my world, my everything. —Dan For Christine and Everett, your love and support mean everything to me. —Nate  Página 9 Table of Contents Preface. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . xv 1.

@@ -1,0 +1,78 @@
+---
+name: arquitetura-limpa
+description: >-
+  Passos operacionais do livro 'Arquitetura Limpa' (Robert C. Martin) — principios SOLID, boundaries, design de componentes e casos de uso.
+---
+
+# Arquitetura Limpa — Passos Operacionais
+
+Conteudo extraido do livro 'Arquitetura Limpa'. Contem passos, tecnicas e principios baseados na obra original.
+
+## 1. Conceitos Fundamentais
+- Em alguns   casos, e dependendo da plataforma, o suporte poderá ser  obtido com o fabricante do equipamento e/ou loja de  comércio de ebooks.
+- Arquitetura Limpa - O guia do artesão para estrutura e design de   software Copyright © 2020 da Starlin Alta Editora e Consultoria Eireli.
+- ISBN:   978-85-508-1600-5   Translated from original Clean Architecture: A Craftsman's Guide to Software   Structure and Design.
+- Copyright © 2018 Pearson Education, Inc.
+- This translation is published and sold by permission of Pearson   Education, Inc, the owner of all rights to publish and sell the same.
+- PORTUGUESE   language edition published by Starlin Alta Editora e Consultoria Eireli, Copyright   © 2019 by Starlin Alta Editora e Consultoria Eireli.
+- Todos os direitos estão reservados e protegidos por Lei.
+- Nenhuma parte deste   livro, sem autorização prévia por escrito da editora, poderá ser reproduzida ou   transmitida.
+- A violação dos Direitos Autorais é crime estabelecido na Lei nº   9.610/98 e com punição de acordo com o artigo 184 do Código Penal.
+- A editora não se responsabiliza pelo conteúdo da obra, formulada   exclusivamente pelo(s) autor(es).
+
+
+  - Rua Viúva Cláudio, 291 — Bairro Industrial do Jacaré CEP: 20.970-031 — Rio de Janeiro (RJ) Tels.: (21)
+
+  - language edition published by Starlin Alta Editora e Consultoria Eireli, Copyright
+
+  - Revisão Técnica Josivan Pereira de Souza Mestre em Computação Aplicada pela UTFPR
+
+  - Education, Inc, the owner of all rights to publish and sell the same. PORTUGUESE
+
+  - livro, sem autorização prévia por escrito da editora, poderá ser reproduzida ou
+
+  - Acesse o site www.altabooks.com.br e procure pelo título do livro desejado para
+## 2. Principios e Tecnicas
+- Marcas Registradas: Todos os termos mencionados e reconhecidos como   Marca Registrada e/ou Comercial são de responsabilidade de seus proprietários.
+- A editora informa não estar associada a nenhum produto e/ou fornecedor   apresentado no livro.
+- Impresso no Brasil — 2019 — Edição revisada conforme o Acordo Ortográﬁco da   Língua Portuguesa de 2009.
+- Publique seu livro com a Alta Books.
+- Para mais informações envie um e-   mail para autoria@altabooks.com.br Obra disponível para venda   corporativa e/ou personalizada.
+- Para mais informações, fale com   projetos@altabooks.com.br Erratas e arquivos de apoio: No site da   editora relatamos, com a devida correção, qualquer erro encontrado em nossos   livros, bem como disponibilizamos arquivos de apoio se aplicáveis à obra em   questão.
+- Acesse o site www.altabooks.com.br e procure pelo título do livro desejado para   ter acesso às erratas, aos arquivos de apoio e/ou a outros conteúdos aplicáveis   à obra.
+- Suporte Técnico: A obra é comercializada na forma em que está, sem direito a   suporte técnico ou orientação pessoal/exclusiva ao leitor.
+- A editora não se responsabiliza pela manutenção, atualização e idioma dos sites   referidos pelos autores nesta obra.
+- SUMARIO  Prefácio   Apresentação   Agradecimentos   Sobre o Autor  I.
+
+
+  - ter acesso às erratas, aos arquivos de apoio e/ou a outros conteúdos aplicáveis
+
+  - A editora não se responsabiliza pela manutenção, atualização e idioma dos sites
+
+  - Marca Registrada e/ou Comercial são de responsabilidade de seus proprietários.
+
+  - www.altabooks.com.br — altabooks@altabooks.com.br www.facebook.com/altabooks —
+## 3. Aplicacoes Praticas
+- O que são Design e Arquitetura?
+- Estudo de Caso   Conclusão  2\.
+- Um Conto de Dois Valores  Comportamento   Arquitetura   O Valor Maior   Matriz de Eisenhower   Lute pela Arquitetura  II.
+- Começando com os Tijolos: Paradigmas da Programação  3\.
+- Panorama do Paradigma  Programação Estruturada   Programação Orientada a Objetos   Programação Funcional   Para Reﬂetir   Conclusão  4\.
+- Programação Estruturada  Prova   Uma Proclamação Prejudicial   Decomposição Funcional   Nenhuma Prova Formal   A Ciência Chega para o Resgate   Testes   Conclusão  5\.
+- Programação Orientada a Objetos  Encapsulamento?
+- Programação Funcional  Quadrados de Inteiros   Imutabilidade e Arquitetura   Segregação de Mutabilidade   Event Sourcing   Conclusão  III.
+- SRP: O Princípio da Responsabilidade Única  Sintoma 1: Duplicação Acidental   Sintoma 2: Fusões   Soluções   Conclusão  8\.
+- OCP: O Princípio Aberto/Fechado  Um Experimento Mental   Controle Direcional   Ocultando Informações   Conclusão  9\.
+
+## 4. Topicos Avancados
+- LSP: O Princípio de Substituição de Liskov  Guiando o Uso da Herança   O Problema Quadrado/Retângulo   LSP e a Arquitetura   Exemplo de Violação do LSP   Conclusão  10\.
+- ISP: O Princípio da Segregação de Interface  ISP e a Linguagem   ISP e a Arquitetura   Conclusão  11\.
+- DIP: O Princípio da Inversão de Dependência  Abstrações Estáveis   Fábricas (Factories)   Componentes Concretos   Conclusão  IV.
+- Princípios dos Componentes  12\.
+- Componentes   Uma Breve História dos Componentes   Relocalização   Ligadores   Conclusão  13\.
+- Coesão de Componentes  O Princípio da Equivalência do Reúso/Release   O Princípio do Fechamento Comum (The Common Closure Princple)   O Princípio do Reúso Comum (The Common Reuse Principle)   O Diagrama de Tensão para Coesão de Componentes   Conclusão  14\.
+- Acoplamento de Componentes  O Princípio das Dependências Acíclicas   Design de Cima para Baixo (Top-Down Design)   O Princípio de Dependências Estáveis   O Princípio de Abstrações Estáveis   Conclusão  V.
+- Desenvolvimento   Implantação (Deployment)   Operação   Manutenção   Mantendo as Opções Abertas   Independência de Dispositivo   Propaganda por Correspondência   Endereçamento Físico   Conclusão  16\.
+- Independência  Casos de Uso   Operação   Desenvolvimento   Implantação   Deixando as Opções Abertas   Desacoplando Camadas   Desacoplando os Casos de Uso   Modo de Desacoplamento   Desenvolvimento Independente   Implantação Independente   Duplicação   Modos de Desacoplamento (Novamente)   Conclusão   17\.
+- Fronteiras: Estabelecendo Limites  Algumas Histórias Tristes   FitNesse   Quais Limites Você Deve Estabelecer e Quando?
+

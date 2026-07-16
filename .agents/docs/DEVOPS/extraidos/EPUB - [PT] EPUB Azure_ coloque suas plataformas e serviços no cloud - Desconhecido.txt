@@ -1,0 +1,3394 @@
+## Azure_ coloque suas plataformas e serviços no cloud
+
+  1. [page_001](src/pages/page_001.html)
+  2. [page_002](src/pages/page_002.html)
+  3. [page_003](src/pages/page_003.html)
+  4. [page_004](src/pages/page_004.html)
+  5. [page_005](src/pages/page_005.html)
+  6. [page_006](src/pages/page_006.html)
+  7. [page_007](src/pages/page_007.html)
+  8. [page_008](src/pages/page_008.html)
+  9. [page_009](src/pages/page_009.html)
+  10. [page_010](src/pages/page_010.html)
+  11. [page_011](src/pages/page_011.html)
+  12. [page_012](src/pages/page_012.html)
+  13. [page_013](src/pages/page_013.html)
+  14. [page_014](src/pages/page_014.html)
+  15. [page_015](src/pages/page_015.html)
+  16. [page_016](src/pages/page_016.html)
+  17. [page_017](src/pages/page_017.html)
+  18. [page_018](src/pages/page_018.html)
+  19. [page_019](src/pages/page_019.html)
+
+
+
+
+
+
+
+## Sumário
+
+  * [Agradecimentos](index_split_001.html#calibre_toc_1)
+  * [Sobre o autor](index_split_002.html#calibre_toc_2)
+  * [Prefácio](index_split_003.html#calibre_toc_3)
+  * [Capítulo 1: Visão geral da computação em nuvem](index_split_004.html#calibre_toc_4)
+    * [1.1 Mas afinal, o que é computação em nuvem?](index_split_004.html#calibre_toc_17)
+    * [1.2 Tipos de nuvem](index_split_004.html#calibre_toc_18)
+    * [1.3 O que significa IaaS, PaaS e SaaS?](index_split_004.html#calibre_toc_19)
+    * [1.4 Quando usar computação em nuvem?](index_split_004.html#calibre_toc_20)
+    * [1.5 Concluindo](index_split_004.html#calibre_toc_21)
+  * [Capítulo 2: Conhecendo o Microsoft Azure](index_split_005.html#calibre_toc_5)
+    * [2.1 O nascimento do Azure](index_split_005.html#calibre_toc_22)
+    * [2.2 Computação](index_split_005.html#calibre_toc_23)
+    * [2.3 Armazenamento](index_split_005.html#calibre_toc_24)
+    * [2.4 Serviços integrados](index_split_005.html#calibre_toc_25)
+    * [2.5 Diferenciais do Azure](index_split_005.html#calibre_toc_26)
+    * [2.6 Quem utiliza o Azure?](index_split_005.html#calibre_toc_27)
+    * [2.7 De Windows Azure para Microsoft Azure](index_split_005.html#calibre_toc_28)
+    * [2.8 Concluindo](index_split_005.html#calibre_toc_29)
+  * [Capítulo 3: Setup softwares e assinatura](index_split_006.html#calibre_toc_6)
+    * [3.1 Pré-requisitos](index_split_006.html#calibre_toc_30)
+    * [3.2 Portal Azure](index_split_006.html#calibre_toc_31)
+  * [Capítulo 4: Hospedando no Azure WebApp](index_split_007.html#calibre_toc_7)
+    * [4.1 Primeiro WebApp no Azure](index_split_007.html#calibre_toc_32)
+    * [4.2 Publicando com Visual Studio e o perfil de publicação](index_split_007.html#calibre_toc_33)
+    * [4.3 Seu WebApp virou um sucesso? Escale os servidores!](index_split_007.html#calibre_toc_34)
+    * [4.4 Escalando verticalmente](index_split_007.html#calibre_toc_35)
+    * [4.5 Escalando horizontalmente](index_split_007.html#calibre_toc_36)
+    * [4.6 Integração com versionadores de código](index_split_007.html#calibre_toc_37)
+    * [4.7 Slot de implantação](index_split_007.html#calibre_toc_38)
+    * [4.8 Monitoramento](index_split_007.html#calibre_toc_39)
+    * [4.9 WebApps da galeria](index_split_007.html#calibre_toc_40)
+    * [4.10 Suporte a SSL e configuração de domínios](index_split_007.html#calibre_toc_41)
+    * [4.11 Concluindo](index_split_007.html#calibre_toc_42)
+  * [Capítulo 5: Rotinas em background com Azure WebJobs](index_split_008.html#calibre_toc_8)
+    * [5.1 Cenários de utilização](index_split_008.html#calibre_toc_43)
+    * [5.2 Criando um WebJob com Visual Studio](index_split_008.html#calibre_toc_44)
+    * [5.3 Concluindo](index_split_008.html#calibre_toc_45)
+  * [Capítulo 6: Cache como serviço usando Azure Redis Cache](index_split_009.html#calibre_toc_9)
+    * [6.1 Introdução ao Redis](index_split_009.html#calibre_toc_46)
+    * [6.2 Utilizando o Azure Redis Cache](index_split_009.html#calibre_toc_47)
+    * [6.3 Concluindo](index_split_009.html#calibre_toc_48)
+  * [Capítulo 7: Conhecendo o Azure Tables](index_split_010.html#calibre_toc_10)
+    * [7.1 Criando uma conta de armazenamento](index_split_010.html#calibre_toc_49)
+    * [7.2 Armazenando dados em Azure Tables](index_split_010.html#calibre_toc_50)
+    * [7.3 Concluindo](index_split_010.html#calibre_toc_51)
+  * [Capítulo 8: Azure Search: a inteligência dos sites de busca na sua aplicação](index_split_011.html#calibre_toc_11)
+    * [8.1 Busca como serviço (Search as a Service)](index_split_011.html#calibre_toc_52)
+    * [8.2 Provisionando o Azure Search](index_split_011.html#calibre_toc_53)
+    * [8.3 Definindo a estrutura dos documentos](index_split_011.html#calibre_toc_54)
+    * [8.4 Indexando documentos no Azure Search](index_split_011.html#calibre_toc_55)
+    * [8.5 Pesquisando documentos no Azure Search](index_split_011.html#calibre_toc_56)
+    * [8.6 Concluindo](index_split_011.html#calibre_toc_57)
+  * [Capítulo 9: Persistindo documentos com o Microsoft Azure DocumentDB](index_split_012.html#calibre_toc_12)
+    * [9.1 Persistência de dados não relacionais – #NoSQL](index_split_012.html#calibre_toc_58)
+    * [9.2 Azure DocumentDB, o nascimento](index_split_012.html#calibre_toc_59)
+    * [9.3 Primeiros testes com DocumentDB](index_split_012.html#calibre_toc_60)
+    * [9.4 Consultando documentos no DocumentDB](index_split_012.html#calibre_toc_61)
+    * [9.5 Criando stored procedures, triggers e funções definidas por usuários](index_split_012.html#calibre_toc_62)
+    * [9.6 Concluindo](index_split_012.html#calibre_toc_63)
+  * [Capítulo 10: Dados relacionais com SQL Sever](index_split_013.html#calibre_toc_13)
+    * [10.1 SQL Database – Database como serviço](index_split_013.html#calibre_toc_64)
+    * [10.2 SQL Server – Infraestrutura como serviço](index_split_013.html#calibre_toc_65)
+    * [10.3 Concluindo](index_split_013.html#calibre_toc_66)
+  * [Capítulo 11: Um pouco mais sobre máquinas virtuais](index_split_014.html#calibre_toc_14)
+    * [11.1 Criando uma máquina virtual com Ubuntu](index_split_014.html#calibre_toc_67)
+    * [11.2 Conectando data centers, serviços e máquinas com redes virtuais](index_split_014.html#calibre_toc_68)
+    * [11.3 Concluindo](index_split_014.html#calibre_toc_69)
+  * [Capítulo 12: Considerações finais](index_split_015.html#calibre_toc_15)
+  * [Bibliografia](index_split_016.html#calibre_toc_16)
+
+
+
+
+Visite o site da Editora Casa do Código e conheça os livros com preços promocionais - [www.casadocodigo.com.br](http://www.casadocodigo.com.br). 
+
+
+## Agradecimentos
+
+Existem muitas pessoas que me ajudaram ao longo destes mais de dez anos na área de tecnologia da informação. Seria inevitável tentar lembrar de todos, e de qual foi a sua colaboração para o meu desenvolvimento como profissional, sem me esquecer de citar alguém. Sendo assim, vou me limitar a agradecer a minha família, até mesmo para não deixar esta seção extensa.
+
+Mãe Cássia Rita e Pai José Wilson, que sempre me deram o exemplo de que o trabalho é o meio pelo qual o homem busca suprir suas necessidades, alcançar seus objetivos e se realizar. Nunca mediram esforços para me pagar treinamentos na área de tecnologia e estudos em boas escolas.
+
+Irmão Victor Custódio, o grande responsável por eu querer trabalhar na área de tecnologia da informação. Sempre fiquei fascinado com a maneira como ele aprendeu Basic, HTML e muitas outras tecnologias e conceitos, de forma autodidata e em uma época na qual não havia muita informação disponível em português (muito menos sites de busca eficientes).
+
+Avó Maria, meu grande obrigado por todo o amor e o carinho.
+
+Noiva Natália, minha melhor amiga e companheira, obrigado pela paciência nos momentos em que estive ausente escrevendo este livro (mesmo estando ao seu lado), ministrando treinamentos, participando de eventos adquirindo e compartilhando conhecimento.
+
+
+## Sobre o autor
+
+Decidi muito cedo o que eu gostaria de fazer pelo resto de minha vida. Graças a isso, comecei a me preparar antes do que muita gente, o que permitiu que eu fosse contratado ainda adolescente, aos 15 anos de idade. 
+
+Tive a felicidade de trabalhar na mesma escola onde fiz meu ensino médio técnico. Nessa instituição, durante o horário comercial, funcionava uma divisão de uma das maiores consultorias em tecnologia da informação daquela época. Por obra do destino, consegui ser contratado por essa consultoria aos 16 anos e, desde então, continuo programando na plataforma .NET, embora eu também conheça outras linguagens de programação.
+
+Meu primeiro contato com o Windows Azure foi no ano de 2011, quando realizei um treinamento sobre o tema com o MVP de C#, Giovanni Bassi. Naquela época, a plataforma estava engatinhando, mas já se mostrava muito promissora. Desde então, dedico uma boa parcela do meu tempo com estudos relacionados a ela. 
+
+Compartilho meus aprendizados no meu blog (<http://thiagocustodio.azurewebsites.net>), palestrando em grandes eventos nacionais, além de responder a perguntas nos principais fóruns nacionais e internacionais.
+
+Posso ser encontrado também pelo Twitter, em <http://twitter.com/thdotnet>.
+
+
+## Prefácio
+
+Eu, Giovanni Bassi, tive meu primeiro contato com Azure em 2009. Ele era um conjunto de poucos serviços que não faziam muita coisa. Enquanto plataforma de nuvem, deixava muito a desejar quando comparado aos concorrentes, tanto no tipo de serviços oferecidos (era recém-lançado) quanto na qualidade e flexibilidade. 
+
+No entanto, duas qualidades não faltavam: visão e ambição. Lembro-me claramente que a visão da Microsoft sobre o novo serviço era muito clara: ser a melhor plataforma de nuvem do mercado. Lembro de que, ao palestrar sobre Azure naquela época e observar os poucos serviços ofertados, todos notavam que o caminho para alcançar a visão era distante, e o projeto codinome "Red Dog" ainda teria que comer muito arroz com feijão para chegar lá.
+
+Seis anos depois, encontramos uma realidade bastante diferente daquela do começo. Hoje, o Azure é sem dúvida uma plataforma muito completa, oferecendo de IaaS (_Infrastructure as a Service_) a SaaS (_Software as a Service_), passando por tudo que existe no meio, sendo referência em tudo que faz, e indo além.
+
+Você pode hospedar desde um simples blog feito com WordPress até um complexo ERP baseado em Linux e Windows, com um back-end extremamente complexo. A escala é realmente infinita, e qualquer serviço parece pequeno diante da magnitude dos _data centers_ disponibilizados a todos nós. Não é à toa que o Azure é considerado um dos líderes no segmento, sendo já hoje a melhor opção para diversos cenários, e disputando de forma competitiva em todas as outras em que atua.
+
+No entanto, para mim, o maior apelo não é esse. Entregar uma ampla gama de serviços é o mínimo que um _player_ de _cloud_ moderno tem a obrigação de oferecer. Ter tornado toda a plataforma fácil de usar e intuitiva foi muito bem-vindo, mas também não é o mais importante.
+
+São duas as funcionalidades que considero que trazem o maior diferencial. A primeira é que Azure não é só uma plataforma de nuvem, mas parte de um ecossistema infinitamente maior construído pela Microsoft. Esse ecossistema inclui produtos como Windows e Office, mas vai além com serviços como o Office 365, e a total integração com o ambiente que já temos rodando com Windows Server e Active Directory, como também toda a suíte de gestão que os acompanham e que não há um segundo colocado nem mesmo próximo. 
+
+Gerenciar Azure é tão fácil quanto gerenciar os servidores que você já tem dentro da sua empresa, só que com um potencial infinitamente maior. Podemos rodar .NET, Java, NodeJS, C++, Ruby, Python, PHP, Go, entre diversas outras linguagens e plataformas no Azure, com Linux e Windows, e com todo suporte ao ALM que precisamos para construir a aplicação, e todo o suporte à operação depois que ela entrar no ar. Você vai de uma ponta a outra sem sair da plataforma.
+
+O segundo ponto que me ganhou no Azure é o fato de que a Microsoft não quer te trancar em seu data center. Você pode, a qualquer momento, pegar os serviços, levar para dentro do seu próprio data center, e não usar mais os serviços da nuvem pública. Eles chegam ao ponto de oferecer ferramentas para auxiliar nesse processo, tornando essa ida ou volta à nuvem pública (ou privada) muito fácil, e fica melhor a cada dia. 
+
+A Microsoft permite que você tenha a sua própria nuvem privada, com os mesmos serviços que estão no Azure. Isso sem contar o investimento em padronização, facilitando ainda mais processo, e a possibilidade de rodar contêineres com Docker, inclusive no Windows, algo que estamos agora começando a ver.
+
+Sou desenvolvedor e arquiteto de software. Hoje, não consigo mais imaginar o que seria escrever uma aplicação sem ter planejado o software no Visual Studio Online, utilizando Scrum, com amplo suporte, e depois controlar todo o desenvolvimento, instalando uma nova versão em um ambiente no Azure a cada _check-in_ do código, em um excelente suporte a DevOps. 
+
+Ao colocar a aplicação em produção usando IaaS ou PaaS, sei se ela continua saudável com o apoio do _Application Insights_ , e da integração com _System Center_. Em momentos de pico, é fácil provisionar novas máquinas ou contêineres para dar conta da demanda. Tudo isso integrado à minha rede e ao meu domínio, com _single sign on_ e segurança.
+
+Deixar de usar o Azure significaria voltar à idade da pedra do desenvolvimento de software e da operação.
+
+Fiquei feliz quando o Thiago me disse que estava escrevendo o livro que você está prestes a ler. Sei da sua paixão pela tecnologia, que ele detalhou nestas páginas. Desde que o conheço, temos animadas conversas sobre o Azure. Tenho certeza de que você vai confirmar que, depois de começar a usar o Azure, não terá mais motivos para usar outro serviço. 
+
+Com este livro, você vai entender mais a fundo por que a nuvem e a elasticidade são importantes e, logo no começo, vai conseguir criar uma aplicação com Visual Studio que roda no Azure. Ao longo do livro, você aprenderá alguns dos diversos serviços disponíveis e, quando terminar, você terá entendido e se aprofundado nas principais características da plataforma. 
+
+Boa leitura e bem-vindo a este mundo novo!
+
+**Por Giovanni Bassi**
+    
+    
+     1 
+    
+
+#### A quem se destina este livro?
+
+Este livro é destinado principalmente aos desenvolvedores familiarizados com a plataforma .NET e aos que querem aprender a utilizar a plataforma de computação em nuvem Microsoft Azure. Não se preocupe caso você ainda não tenha muita experiência, isso se adquire com prática e, com algum tempo de estudo, você já conseguirá publicar seus aplicativos web no Azure e usufruir dos serviços integrados que ele oferece.
+
+Os códigos foram escritos em C# utilizando a versão 2.5 do SDK. Programadores Java, PHP, Node.js, Python e Ruby poderão usufruir destes exemplos, dado que todas essas linguagens possuem SDK para Azure, disponível gratuitamente para download em <http://bit.ly/AzureSDKs>.  
+  
+---  
+  
+Caso você possua alguma dúvida durante a leitura, ou queira discutir algum dos assuntos tratados, entre no Google Groups do livro, em <http://bit.ly/ListaDiscussaoLivroAzureCDC>. Você será muito bem-vindo!
+
+Lembre-se também de que todos os exemplos do livro encontram-se em <https://github.com/thdotnet/ExemplosLivroAzure>.  
+  
+---
+
+
+##  Capítulo 1:  Visão geral da computação em nuvem   
+  
+Nos últimos anos, a consultoria de pesquisas sobre tecnologias, a Gartner, aponta a computação em nuvem como uma das principais tendências estratégicas na área de tecnologia de informação. A consultoria define como tendência estratégica aquela com potencial de causar impacto significativo em uma corporação em um período de até três anos.
+
+###  1.1  Mas afinal, o que é computação em nuvem? 
+
+Você com certeza já é cliente de serviços em nuvem: seu e-mail pessoal, serviços de armazenamento de arquivos, como OneDrive ou Dropbox, redes sociais, entre muitos outros. 
+
+Computação em nuvem (ou _cloud computing_) diz respeito à entrega sob demanda de recursos de TI e aplicativos pela internet, seguindo o princípio da computação em grade (_grid computing_). Em outras palavras, você passa a acessar dados e softwares diretamente na internet em vez de tê-los instalados e armazenados no seu próprio computador. A palavra "nuvem" é apenas uma analogia para internet.  
+  
+---  
+  
+**Computação em grade**
+
+"É um modelo computacional capaz de alcançar uma alta taxa de processamento dividindo as tarefas entre diversas máquinas, podendo ser em rede local ou rede de longa distância, que formam uma máquina virtual."   
+\--Fonte: Wikipédia
+
+<http://bit.ly/ComputacaoEmGrade>  
+  
+---  
+  
+  
+
+
+###  1.2  Tipos de nuvem 
+
+Basicamente, existem dois tipos de nuvem: a pública e a privada.
+
+#### Nuvem pública
+
+É um data center acessível via internet em um domínio público. Algumas plataformas de nuvem pública permitem uma integração com a rede da sua empresa por meio de federação e redes virtuais privadas. Uma importante característica de nuvens públicas é que não há um custo mínimo ou mensal. Você paga apenas pelo que você usou, e apenas pelo período de utilização.
+
+#### Nuvem privada
+
+É uma infraestrutura de _cloud_ que roda no data center da sua empresa. Você pode construir seu próprio Azure utilizando tecnologias Microsoft, como o Windows Server 2012 e Azure Pack.
+
+  
+
+
+###  1.3  O que significa IaaS, PaaS e SaaS? 
+
+É comum ouvirmos termos IaaS, PaaS e SaaS quando o assunto é computação em nuvem. Vamos ver o que cada sigla significa:
+
+#### IaaS – Infraestrutura como Serviço (_Infrastructure as a Service_)
+
+_Fig. 1.1: Comparativo – Infraestrutura como serviço vs. Hospedar no próprio data center (on-premises)_
+
+  
+  
+
+
+IaaS abstrai o hardware e a infraestrutura de virtualização. Neste modelo, o cliente “aluga” a infraestrutura fornecida por um fornecedor, e hospeda sua aplicação sobre ela. Poucos fornecedores oferecem um sistema operacional (SO), logo, o cliente é responsável por instalar e manter o SO.
+
+#### PaaS – Plataforma como Serviço (_Platform as a Service_)
+
+_Fig. 1.2: Comparativo – Plataforma como serviço vs. Hospedar no próprio data center (on-premises)_
+
+  
+  
+
+
+PaaS fornece hardware, sistemas operacionais e _runtime_ para a execução dos aplicativos nos data centers do fornecedor. Neste modelo, o cliente paga por uma plataforma em que ele publica seus aplicativos sem se preocupar com a configuração da infraestrutura.
+
+#### SaaS – Software como Serviço, ou software sob demanda (_Software as a Service_)
+
+_Fig. 1.3: Comparativo – Software como serviço vs. Hospedar no próprio data center (on-premises)_
+
+  
+  
+
+
+SaaS oferece uma aplicação de ponta a ponta. Neste modelo, o cliente paga por aplicativos que são entregues por meio de um modelo de prestação de serviço. Os aplicativos estão hospedados na nuvem, e o cliente acessa através da internet.
+
+Em resumo:
+
+_Fig. 1.4: Hospede, construa, consuma_
+
+  
+  
+  
+
+
+###  1.4  Quando usar computação em nuvem? 
+
+Existem alguns cenários que são ideais para computação em nuvem, isto é, ao analisarmos casos de sucesso de migração ou construção de novas aplicações para a nuvem, os seguintes padrões foram identificados:
+
+#### Rápido crescimento
+
+Tipicamente representado por uma startup que começa operando com o mínimo necessário, e vai escalando a infraestrutura conforme a demanda.
+
+_Fig. 1.5: Padrão – Rápido crescimento_
+
+  
+  
+
+
+#### Crescimento esperado
+
+Cenário ideal para aplicativos que vão demandar uma maior quantidade de servidores por um determinado período de tempo. Pensando em _e-commerce_ , pode ser aquela época festiva ou de promoções, como a _black friday_ , por exemplo. A nuvem é ideal neste cenário, pois você pode contratar mais servidores apenas para este período e, logo após a sua utilização, voltar para a quantia inicial.
+
+_Fig. 1.6: Padrão – Crescimento esperado_
+
+  
+  
+
+
+#### Crescimento inesperado
+
+Suponha que você lançou uma aplicação _beta_ e divulgou apenas para seus amigos. Ao monitorar os acessos em tempo real, você identificou que muito mais gente está acessando a sua aplicação, e aquele dimensionamento inicial de servidor já não é o suficiente. Este "sucesso" pode acontecer por N motivos. Imagine que acidentalmente o link da sua aplicação chegou até alguma celebridade, e esta fez uma divulgação da sua aplicação em uma rede social. 
+
+Com o sucesso meteórico, sua aplicação pode cair facilmente no limbo se uma grande quantidade de usuários tentar acessá-la e receber uma tela de erro, ou uma mensagem para aguardar em uma "fila". Para evitar a "queima" da aplicação/marca, ela deve estar preparada para crescer rapidamente (escalar).
+
+_Fig. 1.7: Padrão – Crescimento inesperado_
+
+  
+  
+
+
+#### Ligar e desligar
+
+Este cenário é similar ao **crescimento esperado** , no entanto, para curtos períodos de tempo. Um relatório que demora horas para gerar um gráfico poderia ter a mesma resposta e em muito menos tempo "ligando" mais servidores até o término do processamento, e desligando-os logo em seguida.
+
+_Fig. 1.8: Padrão – Ligar e desligar_
+
+  
+  
+  
+
+
+###  1.5  Concluindo 
+
+Neste capítulo, vimos alguns termos comuns quando o assunto é computação em nuvem. No capítulo seguinte, vamos conhecer um pouco mais sobre a plataforma de computação em nuvem da Microsoft, o Microsoft Azure.
+
+  
+
+
+
+##  Capítulo 2:  Conhecendo o Microsoft Azure 
+
+###  2.1  O nascimento do Azure 
+
+Era o ano de 2008, durante o evento _Professional Developers Conference_ (PDC) realizado no Los Angeles Convention Center, quando a Microsoft anunciou o então chamado _Windows Azure_ , sua mais nova aposta e plataforma para computação em nuvem. Ray Ozzie, arquiteto chefe de software da Microsoft, discursava no keynote: 
+
+"É uma transformação do nosso software e uma transformação da nossa estratégia."   
+\--Ray Ozzie
+
+Embora muito embrionário naquele momento, já era possível ver que a Microsoft estava investindo muito neste segmento, e que a plataforma seria uma peça chave na mudança de estratégia da empresa. 
+
+Caso você queira assistir ao Keynote completo do PDC 2008, ele encontra-se disponível gratuitamente em <http://bit.ly/KeynotePDC2008>.
+
+#### Mas, afinal, o que é a plataforma Azure?
+
+Eis a definição da própria Microsoft, retirada dos slides do Scott Guthrie na conferência AzureConf de 2013:
+
+"Uma coleção crescente de serviços integrados, computação, armazenamento, dados, rede e aplicativos, que ajudam você a avançar mais rápido, realizar mais e economizar dinheiro."   
+\--Scott Guthrie
+
+Para assistir ao keynote do AzureConf de 2013, acesse <http://bit.ly/Azureconf2013Keynote>.
+
+Na sequência, veja alguns exemplos práticos desta definição para entender melhor.
+
+  
+
+
+###  2.2  Computação 
+
+Anualmente e em diversas cidades do mundo, é realizado o Global Windows Azure Bootcamp, um evento gratuito que tem a finalidade de difundir e ensinar como utilizar o Azure. No evento de 2014, o poder computacional do Azure foi usado para ajudar na pesquisa da doença diabetes. 
+
+Durante uma das atividades, os participantes do evento, além de aprenderem como utilizar máquinas virtuais, estavam compartilhando o poder de processamento dessas máquinas com o instituto _Pacific Northwest National Lab_ (PNNL), que desenvolve tecnologias para análise avançada de carboidratos a nível molecular, usando espectrometria de massa.
+
+**Observação:** esse é um exemplo de processamento distribuído utilizando computação em grade.
+
+  
+
+
+###  2.3  Armazenamento 
+
+Existem diversas opções para armazenamento de dados no Microsoft Azure: Blob Storage, Table Services, SQL Database e DocumentDB. Na comunidade de desenvolvimento de software, há um movimento crescente que acredita em persistência poliglota, isto é, usar o melhor mecanismo de armazenamento para determinado cenário.
+
+Caso você queira construir uma rede social de imagens, você poderia utilizar o serviço de Blob Storage para armazenar os arquivos dos usuários. Já se você precisar de armazenamento não relacional baseado em chave/valor, você pode recorrer ao Azure Table Services.
+
+Você precisa apenas das features básicas do SQL Server? Você pode utilizar o SQL Database, que é uma versão customizada do SQL Server, na qual a parte administrativa do banco (particionamento, escalabilidade e backup) ficam sob responsabilidade da própria Microsoft.
+
+O DocumentDB é uma nova opção de banco de dados baseado em documentos, mas que possui suporte a ferramentas conhecidas e consolidadas do mundo de banco dados relacional, como _triggers_ , _stored procedures_ e a própria linguagem SQL.
+
+Já palestrei sobre Azure DocumentDB e sobre esse movimento de persistência poliglota, na edição de 2014 do evento Azure Summit Brasil. Você pode conferir essa palestra em <http://bit.ly/PalestraAzureSummit>.
+
+**Observação:** vamos explorar cada uma destas opções nos capítulos a seguir.
+
+  
+
+
+###  2.4  Serviços integrados 
+
+Existem diversos serviços integrados à plataforma Azure. Estes visam resolver um problema em específico, e facilitar a vida do desenvolvedor e/ou melhorar a experiência do usuário final.
+
+  * **Azure Search:** já pensou em integrar a inteligência dos sites de busca no seu site, mas sem a complexidade de usar frameworks, nem manter uma infraestrutura para isso? Esta é a proposta do Azure Search, um serviço de busca como serviço (_Search as a Service_), que evita o aborrecimento de lidar com corrompimento de índice, disponibilidade do serviço, dimensionamento, entre outras complexidades.
+  * **Traffic Manager:** serviço que efetua cópias do seu aplicativo entre os data centers do Azure, e distribui o tráfego ao mais próximo do usuário, garantindo menor tempo de resposta.
+
+  
+
+
+###  2.5  Diferenciais do Azure 
+
+A plataforma Microsoft Azure foi desenhada para suportar sistemas operacionais da família Windows ou Linux. Se você já trabalha com algum software de virtualização na sua empresa, você pode efetuar o upload do disco virtual para o Azure, e a Microsoft se encarrega do provisionamento da máquina, energia, internet, cabeamento, firewall etc. Em outras palavras, você passa a utilizar a infraestrutura do Azure como serviço.  
+  
+---  
+  
+**Sem trava!**
+
+Você pode a qualquer momento efetuar o download desse disco virtual e hospedar novamente na infraestrutura da sua empresa, ou até mesmo ir para outro fornecedor de nuvem pública.  
+  
+---  
+  
+Não é necessário o uso de linguagens da plataforma .NET, você pode criar soluções e usufruir dos serviços disponíveis no Azure programando em diversas linguagens (Java, Node.js, Php, Ruby, Python). O SDK para Azure de cada uma destas linguagens está disponível para uso no GitHub. Você inclusive pode colaborar com o desenvolvimento e melhoria destes SDKs para a sua linguagem favorita.
+
+Quer ver como o SDK funciona? Acesse diretamente a conta do Azure no GitHub: <https://github.com/Azure>.
+
+  
+
+
+###  2.6  Quem utiliza o Azure? 
+
+A Microsoft é cliente do Azure. Diversos serviços como Xbox Live, Outlook, Hotmail, Office 365, Msn e muitos outros são hospedados no Azure. Além da Microsoft, 57% das 500 maiores empresas, segundo a Fortune, também utilizam o Azure. 
+
+São tantos clientes que, atualmente, existem 19 data centers espalhados pelo globo, sendo que um deles se encontra na região sudeste do Brasil.
+
+_Fig. 2.1: Data centers do Azure disponíveis até o momento_
+
+  
+  
+
+
+Veja alguns números:
+
+_Fig. 2.2: Números do Azure divulgados no evento Build 2015_
+
+  
+  
+
+
+Convido você a ler alguns cases de sucesso utilizando Azure, visitando a seguinte URL: <http://azure.microsoft.com/en-us/case-studies/>.
+
+  
+
+
+###  2.7  De Windows Azure para Microsoft Azure 
+
+No dia 03 de março de 2014, a Microsoft decidiu trocar o nome de "Windows Azure" para "Microsoft Azure". Esse ato está relacionado com a mudança de estratégia da empresa: de não ser vista como uma empresa de produtos, mas como uma empresa fornecedora de dispositivos e serviços integrados. Além disso, a mudança de nome teve uma outra importância: fortalecer a imagem de nuvem pública do Azure desvinculando ao produto Windows.
+
+  
+
+
+###  2.8  Concluindo 
+
+Neste capítulo, aprendemos um pouco sobre a plataforma Microsoft Azure e seus principais diferenciais em relação aos outros fornecedores. No capítulo seguinte, vamos instalar o Visual Studio Community e o SDK para o Azure.
+
+  
+
+
+
+##  Capítulo 3:  Setup softwares e assinatura 
+
+Antes de iniciarmos com os desenvolvimentos, vamos instalar a IDE Visual Studio Community e o SDK para o Azure.
+
+###  3.1  Pré-requisitos 
+
+Nos próximos capítulos, vamos começar a usar de fato o Microsoft Azure. Os pré-requisitos para usufruir dos exemplos que serão dados são:
+
+  * Assinatura do Azure;
+  * Visual Studio;
+  * Azure SDK 2.5.
+
+  
+---  
+  
+**R$ 560 em créditos**
+
+Crie sua assinatura no Microsoft Azure em <http://bit.ly/TrialMSAzure>.
+
+Esse link lhe dá R$ 560,00 em créditos para você testar e avaliar o Azure por 30 dias.  
+  
+---  
+  
+Caso você não possua o Visual Studio, faça o download gratuito do Microsoft Visual Studio Community Edition em <http://bit.ly/VsCommunityEdition>. 
+
+Após abrir a página, basta clicar sobre o link `Download`, e seguir o assistente de instalação.
+
+Para download do SDK do Azure, acesse <http://bit.ly/AzureSDKs>.
+
+  
+
+
+###  3.2  Portal Azure 
+
+No evento Build de 2014, a Microsoft anunciou uma nova versão do portal para a administração dos serviços contratados no Azure e um melhor acompanhamento dos gastos. Determinados serviços só podem ser contratados nesta nova versão, enquanto alguns outros só podem ser na versão antiga. 
+
+Sempre ao iniciarmos um novo capítulo, informarei qual versão do portal deverá ser utilizada. Para isto, armazene as URLs a seguir, pois elas serão usadas constantemente.
+
+  * Portal Ibiza (Anunciado no Build 2014) – <http://portal.azure.com>
+
+_Fig. 3.1: Portal Ibiza_
+
+  
+  
+
+  * Portal de Gerenciamento do Azure
+
+_Fig. 3.1: Portal de gerenciamento do Azure_
+
+  
+  
+
+
+  
+
+
+
+##  Capítulo 4:  Hospedando no Azure WebApp 
+
+###  4.1  Primeiro WebApp no Azure 
+
+Um dos possíveis modelos de execução no Microsoft Azure são os WebApps, ou aplicativos web. Os WebApps permitem a criação de aplicativos altamente escaláveis. 
+
+Para criar o seu primeiro WebApp, autentique-se no Portal de Gerenciamento do Azure, por meio da URL: <http://manage.windowsazure.com>.
+
+Localize e clique no menu `Novo` no canto inferior à esquerda e, em seguida, selecione a opção: `Compute` (Computação) -> `Web App` (Aplicativo Web) -> `Quick Create` (Criação Rápida).
+
+Para prosseguir com a criação, informe o prefixo da URL para o seu aplicativo:
+
+_Fig. 4.1: Criação de novo WebApp_
+
+  
+  
+  
+---  
+  
+**Sobre os prefixos das URLs**
+
+Os prefixos precisam ser únicos e possuir de 2 a 60 caracteres, sendo aceitos apenas letras, números e hifens.  
+  
+---  
+  
+Além da URL para o aplicativo, também é possível criar um plano de serviço de aplicativo e escolher em qual assinatura e data center o WebApp vai ficar (caso você possua mais de uma assinatura no Azure vinculada ao seu usuário).
+
+Por fim, basta clicar em `Criar aplicativo Web` e, em poucos segundos, seu aplicativo web estará disponível para acesso.
+
+_Fig. 4.2: Novo WebApp criado_
+
+  
+  
+  
+
+
+###  4.2  Publicando com Visual Studio e o perfil de publicação 
+
+Nesta seção, vamos ver o modo de publicação utilizando o arquivo `XML` chamado de **Perfil de publicação**. Assim que seu WebApp é criado, o Azure cria automaticamente esse arquivo com as informações necessárias para publicação, como credenciais (usuário/senha) e o endereço do WebApp. 
+
+Basta importar esse arquivo no Visual Studio, e ele se encarrega de copiar os arquivos para o servidor. Para baixar o arquivo do **Perfil de Publicação** , basta selecionar a opção `Aplicativos Web` no menu lateral à esquerda, depois clicar no nome do seu WebApp (primeira coluna).
+
+_Fig. 4.3: Seleção do WebApp no portal de gerenciamento do Azure_
+
+  
+  
+
+
+Na tela seguinte, localize e clique sobre o link `Baixar o perfil de publicação`, como mostra a figura a seguir:
+
+_Fig. 4.4: Link para download do perfil de publicação_
+
+  
+  
+
+
+Será realizado o download do XML no diretório padrão de downloads utilizado pelo seu navegador. Neste arquivo estão configuradas as publicações via FTP/Webdeploy ao WebApp que acabamos de criar. Sendo assim, basta importar esse arquivo no Visual Studio.
+
+_Fig. 4.5: Conteúdo do XML do perfil de publicação_
+
+  
+  
+
+
+Para demonstrar a publicação, vamos criar uma nova aplicação WEB no Visual Studio.
+
+_Fig. 4.6: Novo projeto no Visual Studio_
+
+  
+  
+
+
+Em seguida, selecione a opção `MVC` e clique em `OK`.
+
+_Fig. 4.7: Seleção do tipo do novo projeto_
+
+  
+  
+
+
+Logo após isso, o Visual Studio criará o projeto. Vamos alterar o código da `View Index` da pasta `Home`.
+
+_Fig. 4.8: Caminho onde se encontra a View Index do controller Home_
+
+  
+  
+
+
+Substitua o código da `View` pelo trecho a seguir:
+    
+    
+    1 @{
+    2   ViewBag.Title = "Home Page";
+    3 }
+    4 <div>
+    5   Publicando um webapp utilizando o perfil de publicação.
+    6 </div>
+    7 <div>
+    8   Data da publicação: @DateTime.UtcNow.AddHours(-3);
+    9 </div>
+    
+
+Após esta alteração, basta clicar com o botão da direita sob o nome do projeto no menu `Solution Explorer`, e selecionar a opção `Publish`:
+
+_Fig. 4.9: Publicando pelo Visual Studio_
+
+  
+  
+
+
+Na tela seguinte, selecione a opção `Import`:
+
+_Fig. 4.10: Seleção do tipo de publicação_
+
+  
+  
+
+
+Então, localize o diretório padrão de download do seu navegador e pressione `Ok`:
+
+_Fig. 4.11: Caminho no qual se encontra o arquivo baixado anteriormente_
+
+  
+  
+
+
+Repare que, na figura a seguir, as informações para a publicação já estão preenchidas nos campos. Basta selecionar o botão `Publish` e aguardar a publicação.
+
+_Fig. 4.12: Configurações setadas automaticamente_
+
+  
+  
+
+
+O próprio Visual Studio abre o WebApp para que você possa conferir o resultado ao término da operação:
+
+_Fig. 4.13: Fim da publicação – WebApp publicada_
+
+  
+  
+  
+
+
+###  4.3  Seu WebApp virou um sucesso? Escale os servidores! 
+
+Além da facilidade para publicar WebApps no Azure, umas das principais vantagens é a habilidade para escala. Ou seja, você pode aumentar a capacidade de processamento (vertical) e/ou adicionar mais servidores (horizontal) para atender as requisições de acesso, sem ter de se preocupar com complexidades de infraestrutura.
+
+  * **Escalabilidade vertical** :Significa adicionar recursos em um servidor. Exemplo: adicionar mais memória, mais disco, mais CPU.
+  * **Escalabilidade horizontal** :Significa adicionar mais servidores para atender à demanda. A distribuição da carga é balanceada entre os servidores.
+
+  
+
+
+###  4.4  Escalando verticalmente 
+
+#### Modo de hospedagem gratuito
+
+Ao publicar um WebApp no Azure, por padrão ele está sob o modo de hospedagem gratuito. Neste modo, o seu aplicativo compartilha os recursos de um servidor com aplicativos de outros clientes. 
+
+Para garantir que os recursos sejam compartilhados de maneira uniforme entre os WebApps, alguns limites são estabelecidos. No modo gratuito, 165MB de saída são permitidos por dia. Essa limitação está atrelada à sua assinatura, sendo assim, se você possui mais de um WebApp no modo gratuito, essa quantia é distribuída entre eles.  
+  
+---  
+  
+**Importante**
+
+Ao atingir a quota (limite), **TODOS** os WebApps daquela assinatura são paralisados. Você pode acompanhar a utilização dos recursos pelo painel de administração do Azure, na seção `Monitoramento`. 
+
+As quotas são automaticamente renovadas diariamente. Se seu WebApp parou, considere migrar para outro modo de hospedagem, ou aguarde até a próxima renovação de quotas no dia seguinte.  
+  
+---  
+  
+_Fig. 4.14: Listagem das quotas nos modos de hospedagem_
+
+  
+  
+
+
+#### Modo de hospedagem compartilhado
+
+O modo de hospedagem compartilhado é bem similar ao modo gratuito, no entanto, não existem limitações em relação ao tráfego de saída. Os primeiros 5GB de dados de saída são gratuitos e, ao exceder essa quantia, os dados são cobrados no modelo "pague conforme o uso".
+
+#### Modo standard
+
+WebApps neste modo rodam em sua própria máquina virtual. Graças a isto, eles conseguem obter uma performance melhor e sem limitações. Nesse modo, também é possível escolher o tamanho das máquinas virtuais:
+
+  * Pequena (1 core e 1.75GB de memória);
+  * Média (2 cores, 3.5GB de memória);
+  * Grande (4 cores, 7GB de memória).
+
+  
+---  
+  
+**Importante**
+
+Se você possui mais de um aplicativo nesse modo, eles vão ficar sob a mesma máquina virtual, logo, os recursos computacionais (CPU, memória e disco) serão compartilhados entre os aplicativos.  
+  
+---  
+  
+Para maiores informações sobre as quotas, consulte <http://bit.ly/QuotasAzureFree>.
+
+  
+
+
+###  4.5  Escalando horizontalmente 
+
+#### Modo de hospedagem compartilhado
+
+No modo de hospedagem compartilhado, você pode escalar para até 6 instâncias, isto é, existirão 6 cópias do seu WebApp que receberão os acessos dos usuários. 
+
+#### Modo standard
+
+No modo de hospedagem _standard_ , você pode escalar para até 10 instâncias. Além disso, é possível escolher se todos os WebApps neste modo receberão essa escala, ou se apenas o WebApp selecionado. 
+
+Um recurso muito interessante do modo standard é o _Auto Scaling_ , no qual você pode configurar para adicionar mais instâncias em horários predeterminados, ou quando um determinado nível de processamento (CPU) for atingido.
+
+_Fig. 4.15: Escalando o WebApp pelo portal do Azure_
+
+  
+  
+
+
+No exemplo anterior, configurei nosso WebApp para começar com duas instâncias e aumentar de uma em uma até o limite de sete, sempre que o nível de CPU atingir 60%.
+
+  
+
+
+###  4.6  Integração com versionadores de código 
+
+Existem diversas maneiras para habilitar a publicação automática em Azure WebApps. Você pode usar TFS, Git Local, Dropbox e muitos outros meios. Após promover uma nova versão de código ao versionador, é possível configurar para que ele publique automaticamente em um Azure WebApps.
+
+Eu poderia escrever sobre esses meios aqui neste livro, no entanto, acredito que para deixar bem detalhado, seriam necessárias muitas páginas e diversos screenshots. Meu amigo Ricardo Serradas (ALM Ranger) já criou uma série de vídeos relacionados a esse tema. Sendo assim, vou deixar os links para esses vídeos para irmos para o próximo assunto:
+
+  * **Publicando no Azure com Visual Studio Online** – <http://bit.ly/PublicandoNoAzureVSO>Neste vídeo, você aprenderá como configurar a publicação contínua no Azure WebApp utilizando o versionador Visual Studio Online, uma versão online do Team Foundation Service. A cada novo _check-in_ , uma versão é publicada no Azure WebApp.
+  * **Continuous Deployment no Azure com Dropbox** – <http://bit.ly/PublicandoNoAzureDropbox>Neste vídeo, você vai aprender como configurar a publicação contínua utilizando um pacote no Dropbox.
+  * **Continuous Deployment no Azure com GitHub** – <http://bit.ly/PublicandoNoAzureGitHub>Neste vídeo, você aprenderá como configurar a publicação contínua a partir do GitHub. Você entra com suas credenciais do GitHub, escolhe o repositório, e o Azure monitora alterações nesse repositório, além de efetuar a publicação no WebApp.
+  * **Continuous Deployment no Azure com Git Local** – <http://bit.ly/PublicandoNoAzureGitLocal>Neste vídeo, você aprenderá como configurar a publicação contínua a partir de um repositório local no próprio WebApp. A cada novo _push_ para o repositório, uma nova versão será publicada.
+  * **Continuous Deployment no Azure com Bitbucket** – <http://bit.ly/PublicandoNoAzureBitBucket>Neste vídeo, você aprenderá como configurar a publicação contínua usando o Bitbucket.
+
+  
+
+
+###  4.7  Slot de implantação 
+
+Um excelente recurso que foi adicionado aos Azure WebApps são os slots de implantação. Um slot de implantação é uma cópia de seu WebApp que pode ser usada para validar determinado comportamento antes de se publicar de fato no ambiente de produção. 
+
+Por exemplo, você pode criar slots para homologação, QA, Dev e validar uma alteração em tempo real, sem afetar o que está em produção. A grande vantagem é que, se algo der errado, os usuários do site não serão afetados. 
+
+A princípio, esse recurso só estava disponível em Web Roles, mas após inúmeros feedbacks dos clientes do Azure, o time da Microsoft o adicionou aos WebAps também.  
+  
+---  
+  
+**Observação**
+
+Este recurso só está disponível no portal Ibiza (<http://portal.azure.com>). Para maiores informações, consulte <http://bit.ly/SlotImplantacaoAzure>.
+
+O recurso de slots de implantação é uma oferta do modo standard, você pode utilizá-lo ou não. No entanto, não é adicionado nenhum custo extra, caso você use todos os slots disponíveis.  
+  
+---  
+  
+  
+
+
+###  4.8  Monitoramento 
+
+No portal de administração do Azure, é possível coletar algumas informações do seu WebApp, como, por exemplo, erros que aconteceram no lado do servidor, tráfego de dados de entrada/saída, tempo de processamento, entre outros.
+
+_Fig. 4.16: Painel de monitoramento_
+
+  
+  
+
+
+O gráfico responde em tempo real, sendo assim, você pode habilitar/desabilitar métricas para que o gráfico exiba exatamente os eventos que são de seu interesse.
+
+_Fig. 4.17: Métricas utilizadas_
+
+  
+  
+
+
+Além das métricas que são exibidas por padrão nesta seção, você pode adicionar/remover métricas. Veja na figura a seguir:
+
+_Fig. 4.18: Adicionando ou removendo métricas ao painel_
+
+  
+  
+
+
+Você também pode configurar para ser notificado via e-mail quando determinado evento ocorrer. Para isso, basta criar uma regra de alerta:
+
+_Fig. 4.19: Adicionando uma nova regra de alerta_
+
+  
+  
+
+
+_Fig. 4.20: Definindo o nome da regra de alerta_
+
+  
+  
+
+
+_Fig. 4.21: Definindo as condições para a notificação_
+
+  
+  
+  
+
+
+###  4.9  WebApps da galeria 
+
+A galeria disponibiliza uma vasta gama de aplicações web populares desenvolvidos pela Microsoft, empresas terceirizadas, e iniciativas de software de código aberto. Dentre essas aplicações, existem gerenciadores de conteúdo, e-commerces, blogs, fóruns, wikis etc. Para usufruir, basta criar um novo aplicativo, mas, desta vez, selecionando a opção `Da Galeria`.
+
+_Fig. 4.22: Criando um WebApp da galeria_
+
+  
+  
+
+
+Na tela seguinte, basta selecionar a opção desejada e seguir o assistente para a criação.
+
+_Fig. 4.23: Escolha do tipo de WebApp_
+
+  
+  
+
+
+_Fig. 4.24: Definindo o nome do WebApp_
+
+  
+  
+  
+---  
+  
+**Recursos adicionais**
+
+Um blog utilizando WordPress necessita de um banco de dados MySQL para persistir as informações. No Azure, o MySQL é mantido por uma empresa chamada ClearDB. Consulte os planos e veja se atenderá a sua necessidade. Caso contrário, instale um MySQL em uma máquina virtual e configure a string de conexão do WordPress para esse novo banco.  
+  
+---  
+  
+Vale lembrar de que você pode criar até 10 WebApps no modo gratuito. Fique atento apenas às limitações de processamento/dados de saída (quotas), e se o aplicativo utiliza recursos adicionais (MySQL, por exemplo).
+
+  
+
+
+###  4.10  Suporte a SSL e configuração de domínios 
+
+  * Suporte a SSL são oferecidos no modo de hospedagem _básico_ ou _standard_. Caso você precise desse recurso, confira no próprio site do portal um minitutorial ensinando passo a passo (<http://bit.ly/ConfigurarSSLAzure>).
+  * Suporte a domínios customizados são oferecidos no modo de hospedagem _compartilhado_ , _básico_ ou _standard_. Caso você precise desse recurso, existe no próprio site do portal um minitutorial (<http://bit.ly/DominioCustomizadoAzure>).
+
+  
+
+
+###  4.11  Concluindo 
+
+Azure WebApps são ideais para aplicativos ou web sites simples, ou seja, que não dependem de componentes de terceiros que precisam ser registrados ou instalados. Programadores de .NET, PHP, Node.js, Java (veja o box a seguir) e Python podem usufruir desse modelo de execução e rapidamente publicar WebApps que podem ser escalados com apenas alguns cliques.  
+  
+---  
+  
+**WebApp em Java**
+
+Recentemente, a Microsoft possibilitou a publicação de aplicações web feitas em Java. Antes de publicar seu WebApp, você pode escolher entre dois servidores de aplicação: Jetty ou Apache Tomcat. 
+
+Para maiores informações sobre a utilização de Azure Web Sites com Java, visite <http://bit.ly/AzureWebSiteComJava>.  
+  
+---  
+  
+---  
+  
+**Preciso registrar uma DLL no Global Assembly Cache, e agora?**
+
+Se você precisa utilizar algum componente de terceiro na sua aplicação, recomendo que você use outros modelos de execução como Web Roles (_Cloud Services_) ou Máquinas Virtuais, justamente pelo fato de oferecerem um maior controle para o desenvolvedor.  
+  
+---  
+  
+  
+
+
+
+##  Capítulo 5:  Rotinas em background com Azure WebJobs 
+
+Se você já estudou um pouco sobre sistemas operacionais, já deve ter visto sobre processos que são executados em segundo plano (_background_) e os que são executados em primeiro plano (_foreground_). Basicamente, a diferença entre os dois é que os processos executados em primeiro plano exigem interação direta do usuário.
+
+Quando se tem acesso ao servidor, é simples criar um programa que será executado em segundo plano. Entretanto, no caso do Azure, onde não temos acesso direto aos servidores que se encontram nos data centers da Microsoft, o que devemos fazer, quando surge a necessidade de processamento em background? 
+
+Um dos possíveis meios para solucionar este problema é a utilização de Azure WebJobs, que são arquivos em script ou executáveis que dão a habilidade de processamento sem a necessidade de uma tela para interação. Os WebJobs são hospedados e executados sob o mesmo contexto dos WebApps, sendo assim, é possível acessar as mesmas configurações e sistema de arquivos. Sem contar que não há custo adicional, dado que eles compartilham os mesmos recursos computacionais (CPU, memória RAM e disco). Você pode configurar para que o seu WebJob execute de algumas maneiras:
+
+  * **Modo agendado:** Neste modo, você configura quando e com que frequência o serviço será executado, o Azure Scheduler se encarrega de executá-lo na data especificada.
+  * **Modo contínuo:** Aqui, o processamento é contínuo. Imagine um trecho de código dentro de uma estrutura de repetição:
+        
+        1 while(true) 
+        2 {
+        3   //processar
+        4 }
+        
+
+  * **Modo sob demanda:** Neste modo, você cria um WebJob que será acionado manualmente, isto é, após a criação, você inicia o processamento diretamente via portal. Ele é ideal para demandas que não possuem uma recorrência definida. Sempre que necessário, basta disparar sua execução.
+
+
+
+###  5.1  Cenários de utilização 
+
+Alguns cenários nos quais o Azure WebJobs pode ser usado:
+
+  * Envio de e-mails;
+  * Consumo de mensagens em uma fila;
+  * Processamento de imagens (conversão de formatos e geração de _thumbnails_);
+  * Tarefas rotineiras como expurgo de logs, informação muito antiga armazenada em algum serviço do Azure ou até mesmo logs do IIS.
+
+
+
+O bacana é que não necessariamente eles precisam ser construídos com .NET. Os seguintes tipos também são aceitos, basta efetuar o upload do arquivo no portal do Azure:
+
+  * `.cmd` / `.bat`
+  * `.sh` (feitos em bash)
+  * `.php` (construídos com a linguagem PHP)
+  * `.py` (contruídos com Python)
+  * `.js`
+
+  
+
+
+###  5.2  Criando um WebJob com Visual Studio 
+
+Para exemplificar este recurso do Azure, vamos um criar um novo projeto do tipo `Console Application`. Esse projeto fará uma requisição HTTP a um feed RSS de um blog, e enviará um e-mail contendo o post mais recente.
+
+_Fig. 5.1: Novo projeto no Visual Studio_
+
+  
+  
+
+
+Com o projeto criado, precisamos adicionar uma referência a System.Net. Para isto, basta clicar com o botão da direita sobre a opção `References` e, em seguida, `Add Reference`.
+
+_Fig. 5.2: Adicionando uma nova referência ao projeto_
+
+  
+  
+
+
+Sob o menu à esquerda `Assemblies`, procure por `System.Net`. Selecione o checkbox, e clique em `OK`.
+
+_Fig. 5.3: Lista de assemblies disponíveis_
+
+  
+  
+
+
+Agora podemos fazer uso das classes que estão sob o namespace `System.Net`. No arquivo `program.cs`, adicione os seguintes `using`s:
+    
+    
+    1 using System.Net;
+    2 using System.Net.Mail;
+    
+
+Em seguida, vamos adicionar uma classe chamada `Post` para facilitar o entendimento. Esta possui apenas três propriedades: título, data de publicação e conteúdo:
+    
+    
+    1 public class Post
+    2 {
+    3   public string Titulo { get; set; }
+    4 
+    5   public DateTime DataPublicacao { get; set; }
+    6 
+    7   public string Conteudo { get; set; }
+    8 }
+    
+
+O processamento está dividido em três etapas:
+
+  1. Envio da requisição HTTP;
+  2. Parse do XML do feed;
+  3. Envio do e-mail.
+
+
+
+Para a primeira etapa, vamos adicionar o método que faz o envio da requisição HTTP ao feed RSS. Vou usar meu próprio blog como exemplo, mas sinta-se à vontade para utilizar outro blog como exemplo. Este código apenas dispara a requisição e retorna uma string com o conteúdo da resposta. Para retornar o conteúdo da resposta como string, precisamos importar mais um namespace:
+    
+    
+    1 using System.IO;
+    
+
+Após essa importação, podemos utilizar a classe `StreamReader` para obter uma string com o retorno da requisição HTTP.
+    
+    
+     1 private static string RequestRssFeed()
+     2 {
+     3   var xmlRss = string.Empty;
+     4   var url = "http://thiagocustodio.azurewebsites.net/feed/";
+     5   var request = WebRequest.Create(url);
+     6   request.Method = "GET";
+     7 
+     8   var response = request.GetResponse();
+     9 
+    10   using (var stream = response.GetResponseStream())
+    11   {
+    12     using (var sr = new StreamReader(stream))
+    13     {
+    14       xmlRss = sr.ReadToEnd();
+    15     }
+    16   }
+    17   return xmlRss;
+    18 }
+    
+
+Para efetuar o parse do `XML`, vamos adicionar um novo `using`, mas desta ver ao namespace `using System.Xml.Linq`
+    
+    
+    1 using System.Xml.Linq;
+    
+
+O método que faz o parse do `XML` recebe a string com o conteúdo da resposta da requisição como parâmetro. Em seguida, é feito o parse do `XML` e a navegação até o elemento `item`, que contém os posts. Por último, instanciamos a classe `Post`, setando as propriedades com os valores lidos do `XML`:
+    
+    
+     1 private static Post ParseXml(string xmlRss)
+     2 {
+     3   var xml = XElement.Parse(xmlRss);
+     4   var ultimoPost = xml.Elements().First().Element("item");
+     5 
+     6   var post = new Post
+     7   {
+     8     Titulo = ultimoPost.Element("title").Value,
+     9     DataPublicacao = DateTime.Parse(
+    10               ultimoPost.Element("pubDate").Value
+    11             ),
+    12     Conteudo = ultimoPost.Element("description").Value
+    13   };
+    14   return post;
+    15 }
+    
+
+Em seguida, disparamos um e-mail enviando as informações coletadas em relação à última publicação no blog:
+    
+    
+     1 private static void EnviarEmail(Post post)
+     2 {
+     3   var titulo = 
+     4       string.Concat(post.DataPublicacao, ":", post.Titulo);
+     5   var email = new MailMessage("livroazure@gmail.com", 
+     6                 "emaildestino@gmail.com", 
+     7                 titulo, 
+     8                 post.Conteudo);
+     9 
+    10   using (SmtpClient smtp = 
+    11             new SmtpClient("smtp.gmail.com", 587))
+    12   {
+    13     smtp.Credentials = 
+    14         new NetworkCredential("livroazure@gmail.com",
+    15                      livrocasacodigo");
+    16       
+    17     smtp.EnableSsl = true;
+    18     smtp.Send(email);
+    19   }
+    20 }
+      
+  
+---  
+  
+**Observação:** a caixa de e-mail `emaildestino@gmail.com` foi usada apenas como exemplo. Altere para a sua caixa de e-mail a fim de validar o funcionamento do WebJob.  
+  
+---  
+  
+Agora basta adicionar as chamadas aos métodos que acabamos de criar ao método `Main`, e compilar o projeto (`Ctrl` \+ `Shift` \+ `B`, ou `Menu Build` -> `Build Solution`). 
+
+Eis o código completo do WebJob:
+    
+    
+      1 using System;
+      2 using System.Net;
+      3 using System.Collections.Generic;
+      4 using System.Linq;
+      5 using System.Text;
+      6 using System.Threading.Tasks;
+      7 using System.Xml.Linq;
+      8 using System.Net.Mail;
+      9 using System.IO;
+     10 
+     11 namespace ExemploWebJob
+     12 {
+     13   class Post
+     14   {
+     15     public string Titulo { get; set; }
+     16 
+     17     public DateTime DataPublicacao { get; set; }
+     18 
+     19     public string Conteudo { get; set; }
+     20   }
+     21   
+     22   class Program
+     23   {
+     24     static void Main(string[] args)
+     25     {
+     26       var xmlRss = RequestRssFeed();
+     27 
+     28       var post = ParseXml(xmlRss);
+     29 
+     30       EnviarEmail(post);
+     31     }
+     32 
+     33     private static string RequestRssFeed()
+     34     {
+     35       var xmlRss = string.Empty;
+     36       var url = 
+     37           http://thiagocustodio.azurewebsites.net/feed/";
+     38       var request = WebRequest.Create(url);
+     39       request.Method = "GET";
+     40 
+     41       var response = request.GetResponse();
+     42 
+     43       using (var stream = response.GetResponseStream())
+     44       {
+     45         using (var sr = new StreamReader(stream))
+     46         {
+     47           xmlRss = sr.ReadToEnd();
+     48         }
+     49       }
+     50       return xmlRss;
+     51     }
+     52 
+     53     private static Post ParseXml(string xmlRss)
+     54     {
+     55       var xml = XElement.Parse(xmlRss);
+     56       var ultimoPost = 
+     57           xml.Elements().First().Element("item");
+     58 
+     59       var post = new Post
+     60       {
+     61         Titulo = ultimoPost.Element("title").Value,
+     62         DataPublicacao =
+     63           DateTime
+     64           .Parse(ultimoPost.Element("pubDate")
+     65           .Value),
+     66         Conteudo = 
+     67           ultimoPost.Element("description").Value
+     68       };
+     69       return post;
+     70     }
+     71 
+     72     private static void EnviarEmail(Post post)
+     73     {
+     74       var titulo = string.Concat(
+     75                     post.DataPublicacao, 
+     76                     ":", 
+     77                     post.Titulo
+     78             );
+     79             
+     80       var email = new MailMessage("livroazure@gmail.com", 
+     81                     "emaildestino@gmail.com",
+     82                     titulo, 
+     83                     post.Conteudo);
+     84 
+     85       using (SmtpClient smtp = new SmtpClient
+     86           (
+     87             "smtp.gmail.com", 
+     88             587
+     89           )
+     90         )
+     91       {
+     92         smtp.Credentials = 
+     93           new NetworkCredential
+     94           (  
+     95             "livroazure@gmail.com", 
+     96             "livrocasacodigo"
+     97           );
+     98         smtp.EnableSsl = true;
+     99         smtp.Send(email);
+    100       }
+    101     }
+    102   }
+    103 }
+    
+
+Com o código concluído, precisamos apenas fazer o upload dos arquivos de saída do nosso projeto no portal de gerenciamento do Azure, e configurar a frequência com que este WebJob vai executar. Você pode fazer isso de um muito jeito simples, clicando com o botão da direita sob o nome do projeto e, em seguida, selecionando a opção `Open Folder in File Explorer`:
+
+_Fig. 5.4: Abrindo o diretório da solução_
+
+  
+  
+
+
+Dê um duplo clique sob a pasta `bin` e, depois, clique com o botão da direita sob a pasta `Debug`. Selecione a opção de menu `Enviar Para` e, em seguida, na `Pasta Compactada`, um arquivo `Debug.zip` deverá ser criado em alguns poucos segundos.  
+  
+---  
+  
+**Modo de compilação**
+
+O modo de compilação debug foi usado apenas como fins educativos. O ideal seria usar o modo _release_ , pois o compilador gera uma versão otimizada.  
+  
+---  
+  
+No portal de gerenciamento do Azure, localize o seu WebApp e, depois, clique sob o nome:
+
+_Fig. 5.5: Selecionando o WebApp_
+
+  
+  
+
+
+Selecione o menu `Trabalhos Web`:
+
+_Fig. 5.6: Selecionando o menu Trabalhos Web (Web Job)_
+
+  
+  
+
+
+Logo após, clique em `Adicionar um Trabalho`. Informe o nome, o diretório onde se encontra o arquivo `zip` que criamos anteriormente e o modo que o WebJob será executado (agendado, contínuo ou sob demanda). Para esse exemplo, vou usar o modo agendado:
+
+_Fig. 5.7: Seleção do arquivo zip criado anteriormente_
+
+  
+  
+
+
+Selecione a seta para avançar para o passo seguinte, onde vamos configurar se o serviço vai ser executado apenas uma vez, ou de maneira recorrente:
+
+_Fig. 5.8: Configuração da recorrência do WebJob_
+
+  
+  
+
+
+Após alguns segundos, o serviço será executado e você receberá um e-mail com o conteúdo do último post:
+
+_Fig. 5.9: Recebimento do e-mail_
+
+  
+  
+  
+
+
+###  5.3  Concluindo 
+
+Neste capítulo, aprendemos como utilizar os Azure WebJobs para executar processamento em background no modelo Plataforma como Serviço, bem como alguns exemplos de cenários para a sua utilização. A seguir vamos conhecer o Azure Redis Cache.
+
+  
+
+
+
+##  Capítulo 6:  Cache como serviço usando Azure Redis Cache 
+
+Já tive a oportunidade de trabalhar em um dos dez maiores portais web do Brasil. Posso assegurá-lo de que, se não existissem soluções de cache, seria muito difícil manter o site no ar e, muito provavelmente, o site não seria um dos dez maiores portais do Brasil pelo simples fato de que usuários odeiam esperar pelo carregamento das páginas. 
+
+Neste capítulo, vamos aprender como usufruir do Azure Redis Cache para otimização de páginas e armazenamento de objetos em memória, evitando consultas repetidas no banco de dados.
+
+###  6.1  Introdução ao Redis 
+
+Redis é um _NoSQL_ baseado em chave/valor que armazena informações em memória, mas também permite que estas informações sejam persistidas em disco. Algumas pessoas consideram o Redis como uma ferramenta de _cache++_ , pois, além de possibilitar armazenamento no formato chave/valor, ele também suporta estrutura de dados de maneira nativa. 
+
+Você pode trabalhar com listas (_Lists_), listas ordenadas (_Ordered Lists_), conjuntos (_Sets_), filas (_Queue_), publicação/assinatura (_Publish/Subscribe_) e transações. Se necessário, você pode combinar todos esses recursos, por exemplo: quando alguém alterar um valor em uma lista, todos os clientes interessados receberão notificação em relação a essa alteração. 
+
+Esses e outros cenários já foram abordados no excelente livro do Rodrigo Lazoti _Armazenando dados com Redis_ , também publicado pela editora Casa do Código. Para maiores informações a respeito desse livro, acesse <http://www.casadocodigo.com.br/products/livro-redis>.
+
+  
+
+
+###  6.2  Utilizando o Azure Redis Cache 
+
+O Azure Redis Cache é uma plataforma de Cache como Serviço (_Cache as a Service_), mantido e gerenciado pela Microsoft nos data centers do Azure. Você só tem o trabalho de plugar sua aplicação ao Azure Redis Cache, e utilizá-lo. Todo o provisionamento, gerenciamento da infraestrutura, disponibilidade e escalabilidade ficam por conta da Microsoft. 
+
+#### Provisionando o Azure Redis Cache
+
+Esse serviço está disponível apenas na nova versão do portal (Ibiza). Efetue o login por meio da URL: <http://portal.azure.com>.
+
+Em seguida, selecione a opção `Novo -> Dados + Armazenamento -> Redis Cache`.
+
+_Fig. 6.1: Criação do redis Cache no portal Ibiza_
+
+  
+  
+
+
+Precisamos selecionar um `Grupo de Recursos` ou criar um novo. Um grupo de recursos nada mais é do que um agrupador.
+
+_Fig. 6.2: Seleção do grupo de recursos_
+
+  
+  
+
+
+O intuito ao usar o Redis é melhorar a performance da aplicação. Sendo assim, faz sentido manter o serviço de cache próximo à aplicação para evitarmos problemas de latência:
+
+_Fig. 6.3: Seleção do data center_
+
+  
+  
+
+
+Por último, basta clicar no botão `Criar` e aguardar o término do provisionamento.
+
+#### Persistindo cache de páginas no Azure Redis Cache
+
+Armazenar cache de páginas no Azure Redis Cache é uma tarefa extremamente simples e que vai causar um enorme impacto na performance do seu website. Precisamos apenas adicionar um _Nuget package_ ao projeto Web, e configurar o `web.config` com as chaves de acesso e URL do serviço que criamos no passo anterior. 
+
+Aproveitando o projeto web criado no capítulo sobre WebApp, clique com o botão da direita sob o nome do projeto e, em seguida, selecione a opção `Manage Nuget Packages`:
+
+_Fig. 6.4: Seleção da opção Manage Nuget Packages_
+
+  
+  
+
+
+Depois, procure na seção `Online` pelo pacote `RedisOutputCacheProvider` e, em seguida, em `Install`:
+
+_Fig. 6.5: Pesquisa pelo nuget RedisOutputCacheProvider_
+
+  
+  
+
+
+Após aceitar os termos de uso, o pacote será adicionado ao nosso projeto, e uma nova seção (`caching`) será adicionada ao arquivo `Web.config`. Precisamos apenas informar os atributos `host` e `accessKey`. Essas informações podem ser obtidas diretamente no portal de administração do Azure (Ibiza), basta clicar sobre o ícone `Keys`:
+
+_Fig. 6.6: Obtendo as chaves de acesso_
+
+  
+  
+
+
+Para concluir a configuração, basta adicionar os valores coletados aos atributos no `Web.config`:
+    
+    
+     1 <configuration>
+     2   <!-- manter as demais configurações já existentes -->
+     3   <system.web>
+     4     <authentication mode="None" />
+     5     <compilation debug="true" targetFramework="4.5.1" />
+     6     <httpRuntime targetFramework="4.5.1" />
+     7     <caching>
+     8       <outputCache defaultProvider="MyRedisOutputCache">
+     9         <providers>
+    10           <add name="MyRedisOutputCache" 
+    11       type="Microsoft.Web.Redis.RedisOutputCacheProvider" 
+    12       host="livro-azure.redis.cache.windows.net" 
+    13       accessKey=
+    14         "0kQz8ynHQ485oatqTszCormQbUANo48Rbb+ar88kbNg=" 
+    15       ssl="true" />
+    16         </providers>
+    17       </outputCache>
+    18     </caching>
+    19   </system.web>
+    20 </configuration>
+    
+
+Para demonstrar o funcionamento, vamos adicionar o atributo `OutputCache` à `Action Index` do arquivo `HomeController.cs`, localizado na pasta `Controllers` da solução. Em seguida, vamos setar a duração do cache para 2 minutos e rodar a aplicação.
+    
+    
+    1 public class HomeController : Controller
+    2 {
+    3   [OutputCache(Duration=120)]
+    4   public ActionResult Index()
+    5   {
+    6     return View();
+    7   }
+    8 }
+    
+
+_Fig. 6.7: Exibição da data/hora_
+
+  
+  
+
+
+Repare que, ao atualizar a página, a data/hora não é alterada, pois essa versão está armazenada no Redis Cache por 120 segundos. Após este prazo, uma nova versão da página é armazenada no Cache, e servirá as próximas requisições pelos próximos 120 segundos. 
+
+Esse simples recurso vai consumir menos processamento do servidor e, consequentemente, permitirá que mais requisições sejam atendidas, além de um menor tempo de espera pelo carregamento da página.
+
+#### Armazenando objetos no Azure Redis Cache
+
+Para armazenar objetos no Azure Redis Cache, vamos utilizar um outro Nuget package chamado `StackExchange.Redis` (desenvolvido e utilizado no Fórum StackOverflow):
+
+_Fig. 6.8: Adicionando o pacote StackExchange.Redis_
+
+  
+  
+  
+---  
+  
+**Clientes para o Redis**
+
+Existem diversos clientes para Redis e para diversas linguagens. Confira a lista completa diretamente em <http://redis.io/clients>.  
+  
+---  
+  
+Neste exemplo, vamos imaginar que exista algum cálculo intensivo na nossa aplicação, e o resultado desse cálculo deverá ser apresentado ao usuário final. Apenas para exemplificar, alterei novamente a `View Index` do arquivo `HomeController.cs`, incluindo um laço utilizando a estrutura de repetição `for`. Dentro do laço, adicionei um `Thread.Sleep` de dois segundos:
+    
+    
+     1 public ActionResult Index()
+     2 {
+     3   ViewBag.Inicio = DateTime.Now;
+     4 
+     5   var soma = 0;
+     6   for (int i = 0; i < 10; i++ )
+     7   {
+     8     soma += i;
+     9     System.Threading.Thread.Sleep(2000);
+    10   }
+    11   ViewBag.Soma = soma;
+    12   ViewBag.Fim = DateTime.Now;
+    13 
+    14   return View();
+    15 }
+    
+
+Em seguida, alterei a `View Index` para exibir estas informações:
+    
+    
+     1 @{
+     2     ViewBag.Title = "Home Page";
+     3 }
+     4 <div>
+     5     Publicando um website utilizando o perfil de publicação.
+     6 </div>
+     7 <div>
+     8     Data da publicação: @DateTime.UtcNow.AddHours(-3);
+     9 </div>
+    10 <br />
+    11 <br />
+    12 <div>
+    13     <div>
+    14         Processamento Iniciado em: @ViewBag.Inicio
+    15     </div>
+    16     <div>
+    17         Concluído em: @ViewBag.Fim
+    18     </div>
+    19 </div>
+    
+
+Ao executar a aplicação, repare na quantidade de segundos entre o início e o fim (20 segundos) desse cálculo:
+
+_Fig. 6.9: Exibição da data/hora sem a utilização do cache_
+
+  
+  
+
+
+Embora esse exemplo seja meio absurdo, existem diversos cenários no nosso dia a dia em que podemos poupar o servidor de executar sempre as mesmas tarefas desnecessariamente. Por exemplo, não há necessidade de ir até o banco de dados para obter informações que sofrem pouca ou nenhuma alteração a cada requisição. Podemos otimizar o processo, utilizando cache de objetos. Para isso, basta usarmos as classes disponíveis no pacote instalado anteriormente, e adicionar o item ao cache (caso não exista):
+
+Primeiro, vamos importar o namespace `StackExchange.Redis`:
+    
+    
+    1 using StackExchange.Redis;
+    
+
+Em seguida, vamos estabelecer uma conexão com o Azure Redis Cache. Para isso, basta chamar o método `Connect` da classe `ConnectionMultiplexer`, passando a string de conexão com o cache:
+    
+    
+     1 var sEndpoint = "livro-azure.redis.cache.windows.net";
+     2 var sHabilitarSSL = "ssl=true";
+     3 //mesmo valor do accessKey no web.config
+     4 var senha = "0kQz8ynHQ485oatqTszCormQbUANo48Rbb+ar88kbNg=";
+     5 
+     6 var connString = string.Concat
+     7         (
+     8           sEndpoint, 
+     9           "," , 
+    10           sHabilitarSSL , 
+    11           "," , 
+    12           senha
+    13         );
+    14 var connection = ConnectionMultiplexer.Connect(connString);
+    
+
+Em seguida, chamamos o método `GetDatabase` para obter uma instância do objeto `DataBase`, e manipular o cache:
+    
+    
+    1 var db = connection.GetDatabase();
+    
+
+Então usamos os métodos `StringGet` para recuperar valores, e `StringSet` para armazenar valores no Redis Cache. Caso você queira armazenar um objeto, basta serializá-lo como JSON. O código da `Action` ficou assim:
+    
+    
+     1 public ActionResult Index()
+     2 {
+     3   ViewBag.Inicio = DateTime.Now;
+     4 
+     5   var sEndpoint = "livro-azure.redis.cache.windows.net";
+     6   var sHabilitarSSL = "ssl=true";
+     7   var senha = "0kQz8ynHQ485oatqTszCormQbUANo48Rbb+ar88kbNg=";
+     8 
+     9   var connString = string.Concat
+    10       (
+    11         sEndpoint, 
+    12         ",", 
+    13         sHabilitarSSL, 
+    14         ",", 
+    15         senha
+    16       );
+    17   var connection = ConnectionMultiplexer.Connect(connString);
+    18 
+    19   var db = connection.GetDatabase();
+    20 
+    21   var resultado = db.StringGet("resultadoCalculo");
+    22   var soma = "";
+    23 
+    24   if(string.IsNullOrEmpty(resultado))
+    25   {
+    26     for (int i = 0; i < 10; i++)
+    27     {
+    28       soma += i;
+    29       System.Threading.Thread.Sleep(2000);
+    30     }
+    31 
+    32     db.StringSet("resultadoCalculo", soma);
+    33   }
+    34   else
+    35   {
+    36     soma = resultado;
+    37   }
+    38   
+    39   connection.Close();
+    40   
+    41   ViewBag.Soma = soma;
+    42   ViewBag.Fim = DateTime.Now;
+    43 
+    44   return View();
+    45 }
+    
+
+Repare como o tempo de resposta final sofreu uma redução bem significativa:
+
+_Fig. 6.10: Exibição da data/hora com a utilização do cache_
+
+  
+  
+
+
+Em cenários de extrema concorrência, economizar alguns segundos, ou até mesmo milissegundos, faz **toda** a diferença.
+
+  
+
+
+###  6.3  Concluindo 
+
+O Azure Redis Cache é um serviço integrado do Azure que disponibiliza um cache como serviço. Existem diversos cenários em que o Redis pode melhorar a performance da sua aplicação. Utilizando como serviço no Azure, as complicações de provisionamento, gerenciamento da infraestrutura, disponibilidade e escalabilidade são delegadas para a Microsoft.
+
+  
+
+
+
+##  Capítulo 7:  Conhecendo o Azure Tables 
+
+Azure Tables é um outro tipo de NoSQL baseado em chave/valor disponível no Azure, e que faz parte do serviço de armazenamento Azure Storage. Apesar de o nome sugerir uma relação com bancos de dados relacionais, não há qualquer relação entre estes dois mecanismos de armazenamento. Ou seja, ele não oferece as mesmas funções disponíveis em um SQL Server (por exemplo), como relacionamento com outras tabelas (_joins_) ou _stored procedures_. 
+
+O Azure Tables é indicado para aplicativos que precisam armazenar grandes quantidades de dados não relacionais. A estrutura do serviço de armazenamento do Azure é retratado da seguinte maneira:
+
+_Fig. 7.11: Estrutura do serviço de armazenamento_
+
+  
+  
+
+
+###  7.1  Criando uma conta de armazenamento 
+
+Para usar o Azure Tables, precisamos criar uma conta de armazenamento no portal de gerenciamento do Azure. A função da conta de armazenamento é atuar como um contêiner para os serviços disponíveis no Azure Storage (_Queues_ , _Tables_ , _Blobs_).
+
+Acesse o portal de gerenciamento do Azure, e selecione a opção: `NOVO -> SERVIÇO DE DADOS -> ARMAZENAMENTO -> CRIAÇÃO RÁPIDA`.
+
+_Fig. 7.1: Criação de uma nova conta de armazenamento_
+
+  
+  
+
+
+Informe o nome da conta de armazenamento, o local/grupo de afinidade e a assinatura, e selecione a opção `CRIAR CONTA DE ARMAZENAMENTO`.
+
+_Fig. 7.2: Informando o nome da conta de armazenamento_
+
+  
+  
+
+
+Você pode criar até 20 contas de armazenamento por assinatura. Este é o valor padrão, mas é possível aumentá-lo para 50, entrando em contato diretamente com o suporte do Azure. Em cada conta de armazenamento, é possível armazenar até 200TB de informações. Não há limitações em relação ao número de objetos por conta de armazenamento, desde que não ultrapassem os 200TB disponíveis. 
+
+Após o provisionamento dessa conta de armazenamento, precisamos acessar as chaves de acesso para criar os objetos via programação. Para isso, basta selecionar no menu da esquerda o ícone referente a `ARMAZENAMENTO` e, em seguida, clicar sob o nome da conta de armazenamento criada no passo anterior:
+
+_Fig. 7.3: Menu de acesso rápido às contas de armazenamento_
+
+  
+  
+
+
+Na tela seguinte, clique sobre o ícone `GERENCIAR CHAVES DE ACESSO` para exibi-las. Copie e cole para um bloco de notas essas chaves.
+
+_Fig. 7.4: Exibir chaves de acesso_
+
+  
+  
+
+
+_Fig. 7.5: Exibição do nome da conta, chave primária e secundária_
+
+  
+  
+  
+
+
+###  7.2  Armazenando dados em Azure Tables 
+
+#### Composição da Chave
+
+Estruturas de dados baseadas em chave/valor possuem um identificador único (chave) para recuperar e armazenar determinado valor. No Azure Tables, esse identificador único é composto por duas chaves: _Partition Key_ e _Row Key_ (definidas a seguir). A combinação dessas chaves compõe um índice clusterizado (chave primária).  
+  
+---  
+  
+**Observação**
+
+O tamanho dessas chaves não pode ultrapassar 1KB.  
+  
+---  
+  
+#### Composição do valor
+
+O Azure Tables armazena tabelas, que, por sua vez, são coleções de entidades. Entidades são um conjunto de propriedades, que, por sua vez, são estruturas de dados baseado em chave/valor. Você pode criar até 252 propriedades por entidade, e cada entidade pode ter até 1MB.
+
+_Fig. 7.6: Relação conta de armazenamento, tabela, entidade_
+
+  
+  
+
+
+Cada entidade precisa definir três propriedades de sistema:
+
+  * **Partition Key:** armazena um valor em string que identifica a partição a que a entidade pertence;
+  * **Row Key:** armazena um valor em string e identificam entidades dentro de cada partição;
+  * **Timestamp:** essa propriedade é uma data mantida pelo serviço e informa a última vez em que a entidade foi alterada.
+
+
+
+Antes de iniciarmos a codificação, precisamos adicionar o pacote `WindowsAzure.Storage` via Nuget:
+
+_Fig. 7.7: Instalando o Nuget WindowsAzure.Storage_
+
+  
+  
+
+
+Em seguida, precisamos aceitar os termos:
+
+_Fig. 7.8: Aceitando os termos de uso do pacote_
+
+  
+  
+
+
+Para demonstrar o funcionamento, vamos criar uma nova classe chamada `LogAcesso`, que vai armazenar a data e hora de acesso, o nome do usuário (se autenticado), o endereço IP e qual página estava sendo acessada.
+    
+    
+     1 using System;
+     2 
+     3 namespace Exemplo.Publicacao.PublishProfile.Models
+     4 {
+     5     public class LogAcesso
+     6     {    
+     7         public string Usuario { get; set; }
+     8 
+     9         public string EnderecoIP { get; set; }
+    10     }
+    11 }
+    
+
+Para persistir essa classe em uma Azure Table, precisamos adicionar as três propriedades de sistema: Partition Key, Row Key e Timestamp. Estas já estão definidas na interface `ITableEntity`, basta adicionarmos o namespace `Microsoft.WindowsAzure.Storage.Table` e informar que a classe `LogAcesso` herda de uma classe que implemente esta interface. Também vamos aproveitar e informar no construtor da classe os valores para as chaves `PartitionKey` e `RowKey`:
+    
+    
+     1 using System;
+     2 using System.Collections.Generic;
+     3 using System.Linq;
+     4 using System.Net;
+     5 using System.Web;
+     6 using Microsoft.WindowsAzure.Storage.Table;
+     7 
+     8 namespace Exemplo.Publicacao.PublishProfile.Models
+     9 {
+    10     public class LogAcesso : TableEntity
+    11     {
+    12       public LogAcesso()
+    13         {
+    14 
+    15         }
+    16     
+    17         public LogAcesso(DateTime dataAcesso, string url)
+    18         {
+    19             this.PartitionKey = 
+    20               dataAcesso.ToString("ddMMyyyyhhmmss");
+    21             this.RowKey = url;
+    22         }
+    23 
+    24         public string Usuario { get; set; }
+    25 
+    26         public string EnderecoIP { get; set; }
+    27     }
+    28 }
+    
+
+Repare que informamos a data de acesso como `PartitionKey` e a URL como `RowKey`.  
+  
+---  
+  
+**Escolha da Partition Key e Row Key**
+
+Uma boa dica para definir quais serão essas propriedades é pensar em quais maneiras você gostaria de efetuar buscas nas suas tabelas. Neste exemplo, posso efetuar buscas pela data e hora de acesso e a URL que estava sendo acessada.
+
+É possível efetuar buscas por outras propriedades, no entanto, não será beneficiada pelo uso do índice clusterizado, o que ocasionará em uma performance ruim dado que será feito _fullscan_ na tabela.  
+  
+---  
+  
+Definida a classe, agora vamos criar um `ActionFilter` para logar essas informações. Em primeiro lugar, vamos adicionar uma nova classe chamada `LogAcessoFilters`. Eu criei uma nova pasta chamada `Filters` e adicionei essa classe a ela.
+
+_Fig. 7.9: Organização do filtro dentro da solução_
+
+  
+  
+
+
+Em seguida, vamos adicionar o namespace `System.Web.Mvc` a essa classe e informar que a classe `LogAcessoFilters` herda de `ActionFilterAttribute`:
+    
+    
+     1 using System;
+     2 using System.Collections.Generic;
+     3 using System.Linq;
+     4 using System.Web;
+     5 using System.Web.Mvc;
+     6 
+     7 namespace Exemplo.Publicacao.PublishProfile.Filters
+     8 {
+     9     public class LogAcessoFilters : ActionFilterAttribute
+    10     {
+    11     }
+    12 }
+    
+
+Precisamos agora definir em qual momento o log será gravado: antes ou após a execução da `Action`. Para este exemplo, vamos gravar as informações antes que essa classe `Action` seja executada. Basta sobrescrevermos o método `OnActionExecuting` definido na classe `ActionFilterAttribute`:
+    
+    
+    1 public class LogAcessoFilters : ActionFilterAttribute
+    2 {
+    3   public override void 
+    4     OnActionExecuting(ActionExecutingContext filterContext)
+    5   {
+    6     base.OnActionExecuting(filterContext);
+    7   }
+    8 }
+    
+
+Feito isto, basta instanciarmos a classe `LogAcesso`, informando os valores:
+    
+    
+     1 public override void 
+     2   OnActionExecuting(ActionExecutingContext filterContext)
+     3 {
+     4   var context = filterContext.RequestContext.HttpContext;
+     5   var request = context.Request;
+     6   
+     7   var url = request.Url.LocalPath;
+     8   //substitui o caracter '/' por '-'
+     9     url = System.Text.RegularExpressions
+    10            .Regex.Replace(url, @"[\ /?#]", "-");
+    11   
+    12   var usuario = "";
+    13   var dataLog = DateTime.Now;
+    14   var enderecoIP = request.UserHostAddress;
+    15 
+    16   if (context.User.Identity.IsAuthenticated)
+    17     usuario = context.User.Identity.Name;
+    18   else
+    19     usuario = "";
+    20 
+    21   var logAcesso = new LogAcesso(dataLog, url)
+    22   {
+    23     Usuario = usuario,
+    24     EnderecoIP = enderecoIP
+    25   };
+    26 
+    27   base.OnActionExecuting(filterContext);
+    28 }
+    
+
+Em seguida, vamos criar um novo método para persistir o log de acesso. Esse método recebe a instância criada anteriormente como parâmetro de entrada:
+    
+    
+    1 private static void GravarLog(LogAcesso logAcesso)
+    2 {
+    3 
+    4 }
+    
+
+Precisamos usar nossa conta de armazenamento para ter acesso ao serviço Azure Tables. Vamos utilizar a chave de acesso obtida anteriormente e criar a string de conexão para a conta de armazenamento. A string de conexão será dividida em 3 partes:
+
+  1. Definição do protocolo http/https;
+  2. Definição do nome da conta de armazenamento;
+  3. Definição da chave de acesso (primária ou secundária).
+
+
+    
+    
+    1 var protocolo = "DefaultEndpointsProtocol=http";
+    2 var conta = "AccountName=livroazure";
+    3 
+    4 var accessKey = 
+    5     "AccountKey=onbwUNOcknqZYDaQzFc8Eata9C+UTE7wqRItJ7Ge2G8D/";
+    6 accessKey += "FK3RbbTzgAoLUOxG6CcQVoQDc+1+BPf7s6n8KIq+A==";
+    7 
+    8 var sConexao = 
+    9     string.Concat(protocolo, ";", conta, ";", accessKey);
+    
+
+Após montarmos a string de conexão, precisamos importar o namespace `Microsoft.WindowsAzure.Storage` para ter acesso à nossa conta de armazenamento:
+    
+    
+    1 using Microsoft.WindowsAzure.Storage;
+    
+
+Sob esse namespace, existe a classe `CloudStorageAccount` que será utilizada para acessar a conta de armazenamento. Precisamos invocar o método `Parse` dessa classe, passando a string de conexão como parâmetro e, depois, obter uma instância para o cliente que vai manipular as tabelas do Azure Tables:
+    
+    
+    1 var cloudStorageAccount = CloudStorageAccount.Parse(sConexao);
+    2 var cloudTableClient = 
+    3     cloudStorageAccount.CreateCloudTableClient();
+    
+
+Antes de adicionarmos itens na nossa tabela, precisamos garantir que ela exista. Podemos obter uma referência à tabela e, caso ela não exista, disparar uma operação para criá-la:
+    
+    
+    1 //Criar uma nova tabela, caso não exista
+    2 var table = cloudTableClient.GetTableReference("logacesso");
+    3 table.CreateIfNotExists();
+      
+  
+---  
+  
+**Performance**
+
+Validar se a tabela existe ou não, a cada momento que o filter é executado, vai afetar a performance da aplicação. O ideal seria criar os objetos necessários uma única vez, e pular essa checagem nas demais execuções. Para o nosso exemplo, podemos seguir dessa maneira.  
+  
+---  
+  
+Precisamos agora informar qual será o tipo de operação que vamos realizar: `Insert`, `Insert` ou `Replace`, `Replace`, `Merge`, `Delete`, `Retrieve`. Essas operações estão definidas no enumerador `TableOperation`, sendo assim, basta informar qual será a operação desejada. 
+
+Para o nosso exemplo, sempre vamos adicionar um novo item utilizando a opção `Insert`:
+    
+    
+    1 //Comando para inserir
+    2 TableOperation insertOperation = 
+    3           TableOperation.Insert(logAcesso);
+    4 
+    5 //executando o comando de insert na nossa tabela
+    6 table.Execute(insertOperation);
+    
+
+Por último, basta efetuar a chamada ao método `GravarLog` no método `OnActionExecuting`:
+    
+    
+    1 public override void 
+    2   OnActionExecuting(ActionExecutingContext filterContext)
+    3 {
+    4   //...código criado anteriormente
+    5   GravarLog(logAcesso);
+    6   base.OnActionExecuting(filterContext);
+    7 }
+    
+
+Concluímos o desenvolvimento do `Filter` que será executado antes de cada `Action`. Basta agora adicioná-lo às `Action`s em que queremos esse tipo de rastreabilidade:
+
+_Fig. 7.10: Utilização do Action Filter no Controller_
+
+  
+  
+
+
+Por último, adicionar este filter no `Global.asax.cs`:
+    
+    
+     1 using Exemplo.Publicacao.PublishProfile.Filters;
+     2 using System;
+     3 using System.Collections.Generic;
+     4 using System.Linq;
+     5 using System.Web;
+     6 using System.Web.Mvc;
+     7 using System.Web.Optimization;
+     8 using System.Web.Routing;
+     9 
+    10 namespace Exemplo.Publicacao.PublishProfile
+    11 {
+    12     public class MvcApplication : System.Web.HttpApplication
+    13     {
+    14         protected void Application_Start()
+    15         {
+    16             GlobalFilters.Filters.Add(new LogAcessoFilters());
+    17 
+    18             AreaRegistration.RegisterAllAreas();
+    19             FilterConfig.RegisterGlobalFilters(
+    20               GlobalFilters.Filters);
+    21             RouteConfig.RegisterRoutes(RouteTable.Routes);
+    22             BundleConfig.RegisterBundles(BundleTable.Bundles);
+    23         }
+    24     }
+    25 }
+    
+
+Ao executarmos e navegarmos pela aplicação, logs de acesso serão armazenados no Azure Tables. Para consultá-los, você pode usar uma ferramenta externa, como o Azure Storage Explorer (<http://bit.ly/AzureStorageExplorer>); utilizar a operação `TableOperation.Retrieve` em vez de `TableOperation.Insert`; ou criar uma consulta via Linq:
+    
+    
+     1 TableQuery<LogAcesso> query = 
+     2   new TableQuery<LogAcesso>()
+     3   .Where
+     4   (
+     5     TableQuery.GenerateFilterCondition
+     6     (
+     7       "PartitionKey", 
+     8       QueryComparisons.GreaterThan , 
+     9       DateTime.Now.ToString("ddMMyyyyhhmm")
+    10     )
+    11   );
+    12 IEnumerable<LogAcesso> logs = table.ExecuteQuery(query);
+    
+
+  
+
+
+###  7.3  Concluindo 
+
+Neste capítulo, aprendemos como usar os Azure Tables para persistir informações não relacionais. Toda informação armazenada no Azure Storage (seja `Table`s, `Queue`s ou `Blob`s) são feitas 3 cópias no mesmo data center e, automaticamente, georreplicado para outro data center no mesmo continente. 
+
+Essa ação visa garantir a disponibilidade, tolerância a falhas, desastres naturais, ou qualquer outro problema que possa afetar o data center. Considere essa opção sempre que você precisar armazenar um grande volume de dados não relacionais de maneira performática e com baixo custo.
+
+  
+
+
+
+##  Capítulo 8:  Azure Search: a inteligência dos sites de busca na sua aplicação 
+
+Você sabia que, ao introduzir o recurso "Você quis dizer ...?", o Google duplicou a quantidade de buscas realizadas diariamente? A correção ortográfica é apenas um dos recursos que compõem a árvore de decisão da engine de busca até a exibição dos resultados. Além deste, recursos como sugestões de resultados por equivalência, busca com facetas, highlight de termos, busca por geolocalização e muitos outros são utilizados por sites de busca e e-commerce. 
+
+De certa forma, já estamos acostumados a realizar pesquisas dessas maneiras, e não admitimos sites que apresentem menos recursos ou resultados que não correspondam aos critérios especificados. Neste capítulo, vamos aprender como utilizar o serviço Azure Search, uma engine de busca disponível como serviço no Azure.
+
+###  8.1  Busca como serviço (Search as a Service) 
+
+Implementar e manter uma engine de busca não são uma tarefa fácil. Ou, pelo menos, manter essa engine funcionando com milhões (ou até mesmo bilhões) de registros é uma atividade extremamente complexa. A proposta do Azure Search é entregar uma plataforma completa de busca como serviço (_Search as a Service_). Desta maneira, as complexidades para manter, escalar e até mesmo entregar os resultados da busca ficam por conta da Microsoft. Você só tem o trabalho de:
+
+  1. Criar um índice;
+  2. Definir os campos do índice;
+  3. Enviar os documentos que você quer indexar (modelo push);
+  4. Efetuar buscas.
+
+
+
+#### Legal, mas onde posso usar o Azure Search?
+
+Existem diversas aplicações onde o Azure Search pode lhe ajudar. Outro possível cenário são aplicações que fazem análise sobre conteúdos que são produzidos em mídias sociais. 
+
+Imagine determinada marca ou produto que você precise analisar a opinião dos clientes. Realizar uma busca utilizando o recurso _fulltext search_ , pode não apresentar resultados em um tempo de resposta aceitável.
+
+Imagine agora um aplicativo para dispositivos móveis que use as coordenadas onde o usuário se encontra, e apresente apenas resultados em um raio de até X quilômetros de distância.
+
+Estes são apenas alguns exemplos do que é possível construir utilizando o Azure Search. Você foca no negócio e delega as complexidades para o Azure.
+
+  
+
+
+###  8.2  Provisionando o Azure Search 
+
+O primeiro passo é acessar a nova versão do portal (Ibiza). Efetue o login em <http://portal.azure.com>.
+
+Em seguida, selecione a opção `Novo -> Dados + Armazenamento -> Pesquisar`:
+
+_Fig. 8.1: Provisionando o Azure Search no portal Ibiza_
+
+  
+  
+
+
+Assim como diversos outros serviços do Azure, será disponibilizado um _endpoint_ (URL) para que você consuma esse serviço de busca. Informe o prefixo da URL e selecione a opção `Gratuito` na seção `CAMADA DE PREÇOS`.
+
+_Fig. 8.2: Informando o nome do serviço de busca_
+
+  
+  
+  
+---  
+  
+**Camada de preços**
+
+O modo gratuito suporta 10.000 documentos, 3 índices e a máquina é compartilhada com outros clientes. Para os exemplos deste livro, podemos prosseguir com este modo. No entanto, se você precisa utilizar em produção, migre para o modo _standard_ (padrão), que suporta até 15 milhões de documentos e 50 índices em uma máquina dedicada e com suporte para aumentar o número de instâncias (máquinas).  
+  
+---  
+  
+Depois, crie um novo grupo de recursos para armazenar esse serviço:
+
+_Fig. 8.3: Criando um novo grupo de recursos_
+
+  
+  
+
+
+Selecione a assinatura e o data center, e clique no botão `Criar`. Após a conclusão do provisionamento, copie e cole a URL e as chaves de acesso para um bloco de notas, para prosseguirmos com os exemplos.  
+  
+---  
+  
+**Opções de data centers**
+
+**Observação:** no momento em que escrevo este capítulo, o Azure Search ainda não está disponível no data center do Brasil. Selecione o data center mais próximo para evitar problemas de latência.  
+  
+---  
+  
+_Fig. 8.4: Obtendo as chaves de acesso_
+
+  
+  
+
+
+_Fig. 8.5: Obtendo o endpoint_
+
+  
+  
+  
+
+
+###  8.3  Definindo a estrutura dos documentos 
+
+Antes de indexarmos os documentos (conteúdo), precisamos definir suas estruturas. Para isso, precisamos criar um índice no portal de gerenciamento do Azure. Clique sobre a opção `Adicionar índice` e, em seguida, informe o nome do índice e clique sobre o botão `OK`:
+
+_Fig. 8.6: Adicionando um novo índice_
+
+  
+  
+
+
+_Fig. 8.7: Informando o nome do novo índice_
+
+  
+  
+
+
+Depois, clique sobre o nome do índice informado no passo anterior para definir a estrutura dos documentos e, em seguida, clique sobre a opção `Adicionar campos`:
+
+_Fig. 8.8: Nenhum documento indexado_
+
+  
+  
+
+
+_Fig. 8.9: Adicionando os campos_
+
+  
+  
+
+
+A estrutura para esse exemplo ficou definida da seguinte maneira:
+
+_Fig. 8.10: Definição da estrutura do documento_
+
+  
+  
+
+
+Agora, precisamos enviar documentos que respeitem esse índice ao serviço Azure Search. Para facilitar o exemplo, vou recorrer à ferramenta Fiddler para enviar as requisições HTTP ao serviço.  
+  
+---  
+  
+**Download Fiddler**
+
+Faça o download gratuitamente do Fiddler em <http://bit.ly/FiddlerDownload>.  
+  
+---  
+  
+  
+
+
+###  8.4  Indexando documentos no Azure Search 
+
+Agora que já criamos o índice com a definição dos campos, precisamos enviar um `POST` ao serviço com documentos que respeitem a estrutura definida. Vamos utilizar a URL do serviço disponibilizada no portal do Azure, seguida do nome do índice criado na seção anterior, e a operação e versão da API REST:
+
+Decompondo a URL do Azure Search, temos as seguintes partes:
+
+  1. **Prefixo da URL do serviço:** <https://livro-azure.search.windows.net/>
+  2. **Nome do índice:** indexes/produto-index/
+  3. **Operação:** docs/index?api-version=2015-02-28-preview
+
+
+
+A URL completa ficou assim: <https://livro-azure.search.windows.net/indexes/produto-index/docs/index?api-version=2015-02-28-preview>.
+
+Em seguida, precisamos informar os cabeçalhos `api-key`, com uma das chaves de acesso do serviço (primária ou secundária), e `Content-Type`, informando `application/json`. Por fim, basta colar o JSON no corpo da requisição:
+    
+    
+     1 {
+     2 "value": 
+     3 [
+     4   {
+     5     "id": "1",
+     6     "nome": "televisão led 42",
+     7     "descricao": "Smart Tv Led 3d Full Hd 42 polegadas",
+     8     "fabricante": "TH",
+     9     "tags": "smart tv, tv led, 42, wi-fi",
+    10     "preco": 1900.00
+    11   },
+    12   {
+    13     "id": "2",
+    14     "nome": "notebook",
+    15     "descricao": "Notebook SSD 256GB 8GB RAM 13 polegadas",
+    16     "fabricante": "HELL",
+    17     "tags": "notebook, ssd",
+    18     "preco": 3900.00
+    19   },
+    20   {
+    21     "id": "3",
+    22     "nome": "mouse",
+    23     "descricao": "Mouse ambidestro ergonômico Sensor Duplo 
+    24             4G 8200 dpi",
+    25     "fabricante": "TH",
+    26     "tags": "mouse, games",
+    27     "preco": 900.00
+    28   }
+    29 ]
+    30 }
+    
+
+_Fig. 8.11: Utilizando o fiddler para compor a requisição HTTP_
+
+  
+  
+
+
+Após o envio da requisição, confira no portal se os documentos foram indexados corretamente:
+
+_Fig. 8.12: Documentos indexados_
+
+  
+  
+  
+
+
+###  8.5  Pesquisando documentos no Azure Search 
+
+Como visto anteriormente, para indexar documentos, o serviço Azure Search expõe uma REST API. Através dela, vamos efetuar as nossas buscas.
+
+#### Buscando documentos
+
+O primeiro parâmetro de busca que vamos utilizar é o `search`, onde vamos especificar um termo e o serviço procurará em cada um dos campos que foram marcados como "Pesquisável" na criação do índice. 
+
+A sintaxe da URL de pesquisa é: `https://`**`[sn]`**`.search.windows.net/indexes/`**`[in]`**`/docs?`**`[qp]`**.
+
+Onde: **[sn]** é o prefixo da URL do seu serviço de busca; **[in]** é o nome do índice criado na seção anterior; e **[qp]** são os parâmetros de busca.
+
+Seguindo essa definição, minha URL de pesquisa ficou assim:
+    
+    
+    1 https://livro-azure.search.windows.net
+    2   /indexes
+    3   /produto-index
+    4   /docs?search=th&api-version=2015-02-28-preview
+    
+
+**Observação:** a URL foi quebrada em várias linhas para facilitar o entendimento.  
+  
+---  
+  
+**Versão da API**
+
+No momento em que escrevo este capítulo, a versão da API mais recente é a 2015-02-28 (ainda em preview). É possível que uma nova versão já esteja disponível no momento em que você lê este capítulo. Confira a documentação no site do Azure.  
+  
+---  
+  
+_Fig. 8.13: Versão da API na URL_
+
+  
+  
+
+
+Após disparar essa requisição via Fiddler, o serviço retornou a seguinte resposta:
+
+_Fig. 8.14: JSON de resposta_
+
+  
+  
+
+
+_Fig. 8.15: Tempo de resposta da requisição HTTP_
+
+  
+  
+
+
+Repare que o tempo total entre o disparo da requisição e a resposta foi de apenas 187 milissegundos. 
+
+#### Efetuando busca em apenas um campo
+
+No exemplo anterior, o termo especificado foi pesquisado em cada um dos campos que foram marcados como "Pesquisável". Pode ser que você queira realizar a pesquisa em apenas um campo; para isso, basta informar o parâmetro `searchFields`, informando o nome do campo que deve conter o termo:
+    
+    
+    1 GET /indexes
+    2   /produto-index //nome do índice
+    3   /docs?search=hd //termo a ser pesquisado
+    4   &searchFields=descricao //campo que deve conter o termo
+    5   &api-version=2015-02-28-preview //versão da API REST
+    
+
+_Fig. 8.16: JSON de resposta à consulta_
+
+  
+  
+
+
+Você também pode destacar o trecho no qual o termo pesquisado aparece; para isso, basta informar o parâmetro de pesquisa `highligh` e o valor do campo em questão:
+    
+    
+    1 GET /indexes
+    2   /produto-index  //nome do índice
+    3   /docs?search=hd  //termo a ser pesquisado
+    4   &searchFields=descricao //campo que deve conter o termo
+    5   &highlight=descricao //destacar o termo no campo desricacao
+    6   &api-version=2015-02-28-preview //versão da API REST
+    
+
+_Fig. 8.17: JSON de resposta à consulta_
+
+  
+  
+
+
+Eventualmente, os documentos podem possuir diversos campos, ou o resultado da pesquisa pode retornar diversos documentos. O que fazer para filtrar e manipular os documentos de resposta?
+
+#### Utilizando OData
+
+O OData é um protocolo aberto criado pela Microsoft que tem como objetivo definir as melhores práticas para construir e consumir APIs REST. A API do Azure Search já está preparada para suportar OData, sendo assim, para selecionar apenas alguns campos do documento, vamos utilizar o parâmetro `$select`, passando a lista de campos desejada:
+    
+    
+    1 GET /indexes
+    2   /produto-index/   //nome do índice
+    3   /docs?search=hd //termo a ser pesquisado
+    4   &searchFields=descricao  //campo que deve conter o termo
+    5   &$select=id,nome,preco //lista de campos desejados
+    6   &api-version=2015-02-28-preview //versão da API REST
+    
+
+_Fig. 8.18: JSON de resposta à consulta_
+
+  
+  
+
+
+No exemplo anterior, selecionamos apenas os campos `id`, `nome` e `preco`. Para filtrar a quantidade de documentos da resposta, podemos usar o parâmetro `$top`:
+    
+    
+    1 GET /indexes
+    2   /produto-index //nome do índice
+    3   /docs?search=* 
+    4   &$top=1 //apenas o primeiro registro
+    5   &api-version=2015-02-28-preview //versão da API REST
+    
+
+Você também pode retornar a resposta de maneira ordenada, basta usar o parâmetro `$orderby`:
+    
+    
+    1 GET /indexes
+    2   /produto-index //nome do índice
+    3   /docs?search=* 
+    4   &$orderby=preco //ordena pelo preco
+    5   &api-version=2015-02-28-preview //versão da API REST
+    
+
+Para ordenar de maneira decrescente, basta adicionar a palavra `desc` após o nome do campo de ordenação:
+    
+    
+    1 GET /indexes
+    2   /produto-index //nome do índice
+    3   /docs?search=* //todos os documentos
+    4   &$orderby=preco%20desc //ordena pelo preco. _ adiciona 
+    5                //espaço
+    6   &api-version=2015-02-28-preview //versão da API REST
+    
+
+_Fig. 8.19: JSON de resposta à consulta_
+
+  
+  
+  
+---  
+  
+**OData**
+
+Para maiores informações sobre OData, confira o site <http://www.odata.org>.  
+  
+---  
+  
+#### Busca com facetas
+
+Você se lembra de quando criamos a definição dos campos do índice, e selecionamos a opção `COM FACETA` para alguns campos? Este recurso permite a navegação _drill-down_ pelos resultados de busca. Vamos supor que, ao pesquisar por determinado termo, você queira retornar os produtos de mesmo fabricante:
+    
+    
+    1 GET 
+    2   /indexes
+    3   /produto-index //nome do índice
+    4   /docs?search=* //todos os documentos
+    5   &facet=fabricante //busca com faceta sobre o campo fabricante
+    6   &api-version=2015-02-28-preview //versão da API
+    
+
+Como resposta, o serviço retornou:
+
+_Fig. 8.20: JSON de resposta à consulta_
+
+  
+  
+
+
+É possível montar um menu mostrando ao usuário que, para o fabricante `'TH'`, existem dois produtos e, para o fabricante `'HELL'`, existe um. 
+
+Adicionando este recurso, você enriquecerá a experiência do usuário sem prejudicar a performance do seu banco de dados com queries complexas para produzir esse mesmo resultado. Ao clicar sobre o link do fabricante `'TH'`, você só tem de filtrar o resultado especificando que apenas os documentos daquele fabricante devem ser retornados:
+    
+    
+    1 /indexes/
+    2 /produto-index //nome do índice
+    3 /docs?search=* //todos os documentos
+    4 &facet=fabricante //busca com faceta sobre o campo fabricante
+    5 &$filter=fabricante eq 'TH' //filtrando apenas do fabricante TH
+    6 &api-version=2015-02-28-preview //versão da API
+    
+
+  
+
+
+###  8.6  Concluindo 
+
+Neste capítulo, vimos como utilizar o serviço integrado Azure Search, que fornece uma rica experiência de busca para sites, aplicativos móveis ou qualquer outro tipo de aplicação que você esteja desenvolvendo. 
+
+Para maiores informações sobre as possibilidades de consulta ao Azure Search e a utilização de OData, confira a documentação oficial da Microsoft em <http://bit.ly/AzureSearchDoc>.
+
+  
+
+
+
+##  Capítulo 9:  Persistindo documentos com o Microsoft Azure DocumentDB 
+
+Nos capítulos anteriores, estudamos Azure Tables e Azure Redis Cache, e dois NoSQLs baseados em chave/valor. Neste capítulo, vamos estudar um outro tipo de banco de dados não relacional: baseados em documentos.
+
+###  9.1  Persistência de dados não relacionais – #NoSQL 
+
+Nos últimos anos, vimos um movimento crescer inspirado pela publicação de _whitepapers_ e pelo lançamento do DynamoDB e BigTable (NoSQLs da Amazon e do Google, respectivamente). Estes dois grandes players viram a necessidade de criar um novo mecanismo para armazenarem seus dados, pois mantê-los em um banco de dados relacional já não era mais uma opção viável. 
+
+Com a publicação desses novos mecanismos para persistência, alguns desenvolvedores resolveram se reunir para discutir outras maneiras de persistência não relacional. Este encontro acabou ganhando a hashtag _#NoSQL_ , e passou a ser o termo de referência quando o assunto é persistência não relacional. 
+
+Até o momento, os NoSQLs podem ser classificados em quatro categorias: chave/valor, documentos, família de colunas e grafos. Apesar de resolverem problemas diferentes, existem algumas características comuns entre estes tipos de NoSQL:
+
+  * **Agnóstico a modelos:** um modelo (esquema) de banco de dados é a descrição de todos os possíveis dados e estrutura de dados em um banco de dados relacional. Em um NoSQL, um modelo não é necessário, o que lhe dá liberdade para armazenar documentos (informações), sem a necessidade de a ferramenta conhecer a estrutura deste documento. Também resolve a questão de _impedance mismatch_ , que é ter objetos representados na memória de uma forma e estes mesmos dados armazenados de outra maneira em disco. Isto é, dados divididos entre diversas tabelas em um banco de dados relacional.
+  * **Não relacional:** relacionamentos em um banco de dados estabelecem conexões entre tabelas. Por exemplo, uma tabela de pedidos pode estar relacionada a outra, com os itens desses pedidos. Em um NoSQL, esses dados são armazenados como um agregado (ver significado no box a seguir), um único registro com todos os dados relacionados – pedido, itens, endereço de entrega etc.
+  * **Capacidade para rodar em cluster:** um banco de dados relacional foi projetado para executar em uma única máquina. Muitas vezes, é mais econômico executar grandes volumes de dados/cargas de dados em clusters (grupos) de máquinas pequenas e baratas, favorecendo cenários de big data.
+
+
+
+**Observação:** banco de dados relacionais podem rodar em cluster, no entanto, garantir transações ACID (acrônimo de _Atomicidade, Consistência, Isolamento e Durabilidade_ , propriedades de transações em banco de dados) é extremamente custoso do ponto de vista de manutenção, escalabilidade e performance.  
+  
+---  
+  
+**Agregado**
+
+Agregado é um padrão catalogado em _Domain-Driven Design_. Um agregado é um conjunto de objetos relacionados que passam a ser tratados como uma unidade única. Para maiores informações, consulte <http://bit.ly/AggregateDDD>.  
+  
+---  
+  
+#### JSON
+
+NoSQLs baseados em documentos geralmente utilizam a notação JSON (_Javascript Object Notation_) para a representação de dados. JSON é uma maneira de armazenar informações de uma forma organizada e de fácil acesso. Por exemplo:
+    
+    
+    1 { 
+    2   "Alunos" : 
+    3   [ 
+    4         { "nome": "João", "notas": [ 8, 9, 7 ]  },
+    5         { "nome": "Maria", "notas": [ 8, 10, 7 ] },
+    6         { "nome": "Pedro", "notas": [ 10, 10, 9 ] } 
+    7     ]
+    8 }
+    
+
+Nesse JSON, temos um array de `Alunos` com 3 posições (`João`, `Maria` e `Pedro`), e cada aluno, possui 3 `notas`. 
+
+Se tentássemos representar essa mesma estrutura usando XML ou qualquer outro formato, muito provavelmente usaríamos muito mais texto para obter o mesmo resultado. Consequentemente, precisaríamos de mais dados para armazenar essa estrutura, ou seja, seria necessário mais espaço em disco para armazenar a mesma informação.
+
+  
+
+
+###  9.2  Azure DocumentDB, o nascimento 
+
+Embora já existissem diversas opções de bancos de dados não relacional baseados em documentos, a Microsoft enxergou a possibilidade de aproximar o mundo relacional do não relacional. Além de oferecer o DocumentDB como serviço gerenciado no Azure, ela adicionou recursos consagrados dos bancos de dados relacionais, como suporte a stored procedures, funções definidas por usuários, gatilhos (_triggers_), consultas ricas usando SQL e processamento transacional. 
+
+O Azure DocumentDB foi criado do zero para atender (inicialmente) as demandas internas da Microsoft utilizando tecnologias desenvolvidas pelo centro de pesquisa Microsoft Research. Tais tecnologias já estão disponíveis em outros produtos, como os recursos em memória introduzidas no SQL Server 2014, por exemplo (Hekaton). 
+
+Algumas verticais do portal MSN.com, OneNote do Office 365 e outros serviços utilizam o DocumentDB como mecanismo de persistência. Outro grande diferencial desse serviço é a baixa latência e a otimização de gravação dos dados em discos SSDs.
+
+#### Iniciando com o DocumentDB
+
+Como primeiro passo, precisamos logar na nova versão do portal (Ibiza) por meio da URL: <http://portal.azure.com>.
+
+Em seguida, selecione a opção `Novo -> Data + Storage + Azure DocumentDB`.
+
+_Fig. 9.1: Provisionando o DocumentDB no portal Ibiza_
+
+  
+  
+
+
+Informe o nome da conta do DocumentDB, e selecione a assinatura e o data center. Por fim, clique em `Criar`:
+
+_Fig. 9.2: Informando o nome do serviço DocumentDB_
+
+  
+  
+  
+---  
+  
+**Observação**
+
+O provisionamento desse serviço leva aproximadamente 10 minutos. O time do Azure já está trabalhando para reduzir esse tempo.  
+  
+---  
+  
+Após a criação da nossa conta no serviço DocumentDB, podemos criar _Databases_ , usuários e permissões de usuário, coleções de documentos, stored procedures, triggers, user defined functions e anexos.
+
+_Fig. 9.3: Estrutura DocumentDB_
+
+  
+  
+
+
+Para seguir com o nosso exemplo, precisamos criar um database. Basta clicar sob o botão `Adicionar Banco de Dados` e informar um nome para ele. Em seguida, clique sobre o botão `OK`:
+
+_Fig. 9.4: Informando o nome do banco de dados_
+
+  
+  
+
+
+Após o provisionamento desse database, precisamos acessar as chaves de acesso para criar coleções, documentos, stored procedures e os demais objetos via programação. Selecione no menu da esquerda o ícone referente a `CHAVES`:
+
+_Fig. 9.5: Chaves de acesso_
+
+  
+  
+  
+
+
+###  9.3  Primeiros testes com DocumentDB 
+
+Vamos criar um novo projeto no Visual Studio para armazenarmos documentos no DocumentDB que acabamos de criar:
+
+_Fig. 9.6: Criando um novo projeto no Visual Studio_
+
+  
+  
+
+
+Antes de iniciarmos a codificação, precisamos adicionar o pacote `Microsoft.Azure.DocumentDB` via Nuget:
+
+_Fig. 9.7: Adicionando o pacote DocumentDB_
+
+  
+  
+
+
+Após a instalação, importe os namespaces abaixo da classe `Program.cs`:
+    
+    
+    1 using Microsoft.Azure.Documents;
+    2 using Microsoft.Azure.Documents.Client;
+    3 using Microsoft.Azure.Documents.Linq;
+    
+
+Em seguida, crie duas variáveis do tipo `string` para armazenar a URL do DocumentDB criado, e a chave primária e secundária para acesso:
+    
+    
+    1 class Program
+    2 {
+    3   static string _endpoint = 
+    4       "https://livroazure.documents.azure.com:443/";
+    5   
+    6   // utilize sua chave primária aqui    
+    7   static string _primaryKey = ""; 
+    8 }
+    
+
+Precisamos agora definir de que maneira será realizado o acesso ao serviço definindo o protocolo (via tcp ou https) e o modo da conexão (direto ou gateway).
+    
+    
+     1 static void Main(string[] args)
+     2 {
+     3   var connectionPolicy = new ConnectionPolicy
+     4   {};
+     5 
+     6     ConnectionMode = ConnectionMode.Gateway,
+     7     ConnectionProtocol = Protocol.Https
+     8     
+     9   //continuação a seguir
+    10 }
+    
+
+**Observação:** caso você esteja acessando o DocumentDB diretamente do Azure (de um Azure WebApp, por exemplo), use `ConnectionMode.Direct`.
+
+Na sequência, vamos adicionar duas classes para representar nossos documentos no DocumentDB: `Evento` e `Participante`:
+    
+    
+     1 using Microsoft.Azure.Documents;
+     2 using System;
+     3 using System.Collections.Generic;
+     4 
+     5 public class Evento : Resource
+     6 {
+     7   public Evento()
+     8   {
+     9     Participantes = new List<Participante>();
+    10   }
+    11 
+    12   public string Nome { get; set; }
+    13 
+    14   public DateTime? DataEvento { get; set; }
+    15 
+    16   public List<Participante> Participantes { get; set; }
+    17 }
+    
+    
+    
+     1 using System;
+     2 
+     3 namespace Exemplo.DocumentDB
+     4 {
+     5     public class Participante
+     6     {
+     7         public string Nome { get; set; }
+     8 
+     9         public string Email { get; set; }
+    10     }
+    11 }
+    
+
+Definida a `connectionPolicy` e com as classes de `Participante` e `Evento` criadas, precisamos instanciar o `DocumentClient` para manipular o nosso DocumentDB:
+    
+    
+    1 using ( var client = new DocumentClient(
+    2       new Uri(_endpoint), 
+    3       _primaryKey, 
+    4       connectionPolicy)
+    5      )
+    6 {
+    7   //continuação a seguir
+    8 }
+    
+
+Através do objeto `DocumentClient`, criaremos um `Database`, ou obteremos referência a um `Database` criado previamente:
+    
+    
+     1 private static async Task<Database> 
+     2   CriarDatabase(DocumentClient client, string dbID)
+     3 {
+     4   var databases = client.CreateDatabaseQuery()
+     5       .Where(db => db.Id == dbID).ToArray();
+     6 
+     7   if (databases.Any())
+     8   {
+     9     return databases.First();
+    10   }
+    11 
+    12   return await client.CreateDatabaseAsync(
+    13                 new Database { Id = dbID});
+    14 }
+    
+
+Como criamos o `Database` diretamente via portal do Azure, o `client` retornará uma referência a esse database. Para criar uma coleção de documentos, precisamos apenas invocar o método `CreateDocumentCollectionQuery` do objeto `DocumentClient`, informando o `ID` da Coleção e passando a referência ao `Database` que estamos usando (propriedade `SelfLink`):
+    
+    
+     1 private static async Task<DocumentCollection> 
+     2     CriarColecao(
+     3             DocumentClient client, 
+     4             Database database, 
+     5             string colID
+     6           )
+     7 {
+     8   var collections = 
+     9       client
+    10         .CreateDocumentCollectionQuery(database.SelfLink)
+    11         .Where(col => col.Id == colID).ToArray();
+    12 
+    13   if (collections.Any())
+    14   {
+    15     return collections.First();
+    16   }
+    17 
+    18   return await client.
+    19       CreateDocumentCollectionAsync
+    20           (database.SelfLink, 
+    21             new DocumentCollection 
+    22             { 
+    23               Id = colID 
+    24             }
+    25           );
+    26 }
+    
+
+Com o database e a coleção criados, precisamos apenas criar um novo `Evento` e armazená-lo, utilizando o método `CreateDocumentAsync`:
+    
+    
+     1 var evento = new Evento
+     2 {
+     3   Nome = "Azure Summit Brasil 2015",
+     4   Participantes = new List<Participante>
+     5   {
+     6     new Participante
+     7     {
+     8       Nome = "Thiago Custódio",
+     9       Email = "thiago.custodio@hotmail.com"
+    10     }
+    11   }
+    12 };
+    13 
+    14 var result = CriarDocumento(client, col, evento).Result;
+    
+
+O método `CriarDocumento` recebe o `DocumentClient`, o `DocumentCollection` e o `evento` como parâmetros:
+    
+    
+    1 private static async Task<bool> CriarDocumento
+    2    (DocumentClient client, DocumentCollection col, Evento evento)
+    3 {
+    4   await client.CreateDocumentAsync(col.SelfLink, evento);
+    5   return true;
+    6 }
+    
+
+  
+
+
+###  9.4  Consultando documentos no DocumentDB 
+
+Como dito anteriormente, a Microsoft oferece suporte à linguagem T-SQL para realizar consultas em documentos:
+    
+    
+     1 private static void 
+     2 ConsultaComSQL(DocumentClient client, DocumentCollection col)
+     3 {
+     4   var resultado = client.CreateDocumentQuery
+     5   (
+     6     col.SelfLink, 
+     7       "SELECT E.Nome, E.Participantes " +
+     8       "FROM root E WHERE "+
+     9       "E.Nome = 'Azure Summit Brasil 2015' "
+    10   );
+    11 
+    12   foreach (var ev in resultado)
+    13   {
+    14     Console.WriteLine("O evento possui {0} participante(s).",
+    15         ev.Participantes.Count);
+    16   }
+    17 }
+    
+
+No próprio portal, há uma funcionalidade para efetuar consultas utilizando SQL:
+
+_Fig. 9.8: Gerenciador de consultas no portal Ibiza_
+
+  
+  
+
+
+_Fig. 9.9: Exemplo de consulta diretamente pelo gerenciador_
+
+  
+  
+  
+---  
+  
+**sandbox**
+
+Você pode treinar consultas SQL com joins, projeções e filtros usando `DocumentDB` diretamente pela URL: <http://bit.ly/SandboxDocumentDB>.  
+  
+---  
+  
+O mesmo resultado da consulta anterior pode ser obtido ao usarmos LINQ:
+    
+    
+     1 private static void ConsultaComLinq
+     2   (
+     3     DocumentClient client, 
+     4     DocumentCollection col
+     5   )
+     6 {
+     7   var eventos = 
+     8       from evt in client.CreateDocumentQuery<Evento>(
+     9                   col.SelfLink)
+    10       where evt.Nome == "Azure Summit Brasil 2015"
+    11       select new { evt.Nome, evt.Participantes };
+    12 
+    13   foreach (var ev in eventos)
+    14   {
+    15     Console.WriteLine("O evento possui {0} participante(s).",
+    16         ev.Participantes.Count);
+    17   }
+    18 }
+    
+
+Particularmente, prefiro o uso de LINQ, pois evita que erros de digitação sejam pegos durante a execução da aplicação.
+
+#### Método Main completo
+
+Definidos os métodos auxiliares, basta organizar as chamadas no método `Main`:
+    
+    
+     1 static void Main(string[] args)
+     2 {
+     3   var connectionPolicy = new ConnectionPolicy
+     4   {
+     5     ConnectionMode = ConnectionMode.Gateway,
+     6     ConnectionProtocol = Protocol.Https
+     7   };
+     8 
+     9   using(
+    10       var client = new DocumentClient(
+    11       new Uri(_endpoint), 
+    12       _primaryKey, 
+    13       connectionPolicy)
+    14     )
+    15   {
+    16     var db = CriarDatabase(client, "eventos").Result;
+    17 
+    18     var col = CriarColecao(client, db, "azure").Result;
+    19     
+    20     var evento = new Evento{
+    21       Nome = "Azure Summit Brasil 2015",
+    22       Participantes = new List<Participante>
+    23       {
+    24         new Participante{
+    25           Nome = "Thiago Custódio",
+    26           Email = "thiago.custodio@hotmail.com"
+    27         }
+    28       }
+    29     };
+    30 
+    31     var result = CriarDocumento(client, col, evento).Result;
+    32 
+    33     ConsultaComLinq(client, col);
+    34 
+    35     ConsultaComSQL(client, col);
+    36   }
+    37 }
+    
+
+  
+
+
+###  9.5  Criando stored procedures, triggers e funções definidas por usuários 
+
+O DocumentDB, além de suportar a linguagem SQL, utiliza a linguagem JavaScript como sua T-SQL. Isto é, triggers, UDFs (_User Defined Functions_) e stored procedures são escritas com JavaScript.
+
+#### Criando uma stored procedure com JavaScript
+
+Vamos adicionar uma nova pasta à solução chamada `JS`. Nessa pasta, vamos adicionar dois arquivos JavaScript: `normalizarNomeEvento.js` e `validaInscricao.js`.
+
+_Fig. 9.10: Exibição do Solution Explorer_
+
+  
+  
+
+
+**Observação:** a fim de evitar problemas relacionados ao caminho desses arquivos, vamos alterar o `Build Action` deles e setar a propriedade `Copy to Output Directory`:
+
+_Fig. 9.11: Alterando a propriedade Build Action e Copy to Output Directory dos arquivos estáticos_
+
+  
+  
+
+
+Feitos os devidos ajustes, precisamos apenas definir a lógica da stored procedure. Para demonstrar o funcionamento, adicionei ao arquivo `validaInscricao.js` uma lógica para validar se a inscrição ao evento foi realizada com sucesso:
+    
+    
+     1 //código da procedure
+     2 function validaEvento(nomeEvento, nomeParticipante)
+     3 {
+     4     var context = getContext();
+     5     var collection = context.getCollection();
+     6 
+     7     var query = "SELECT E.Nome FROM root E " +
+     8                 "join p in E.Participantes " +
+     9                 "where E.Nome  = '" + nomeEvento + "' " +
+    10                 "AND p.Nome = '" + nomeParticipante + "' ";
+    11 
+    12     collection.queryDocuments(collection.getSelfLink(),
+    13        query, {},
+    14        function (err, resposta, responseOptions)
+    15        {
+    16            if (err) throw new Error("Error" + err.message);
+    17 
+    18            if (resposta.length == 0) 
+    19                throw "Inscrição não realizada";
+    20 
+    21            context.getResponse().setBody("OK");
+    22        }
+    23     );
+    24 }
+    
+
+Repare que a stored procedure espera dois parâmetros de entrada: o nome do evento e o nome do participante.
+
+Em seguida, precisamos "anexar" a stored procedure à coleção:
+    
+    
+     1 private static async Task<ResourceResponse<StoredProcedure>> 
+     2     CriarStoredProcedure(DocumentClient client, 
+     3     DocumentCollection col)
+     4 {
+     5   return await 
+     6     client.CreateStoredProcedureAsync
+     7     (
+     8       col.SelfLink, 
+     9       new StoredProcedure
+    10       {
+    11         Id = "validaInscricao",
+    12         Body = File.ReadAllText(@"JS\validaInscricao.js")
+    13       }
+    14     );
+    15 }
+    
+
+Por último, basta efetuar uma chamada à stored procedure, passando os valores para os parâmetros de entrada:
+    
+    
+     1 private static async Task<StoredProcedureResponse<dynamic>> 
+     2     ExecutarStoredProcedure(DocumentClient client, 
+     3     ResourceResponse<StoredProcedure> proc)
+     4 {
+     5   return await 
+     6     client.
+     7       ExecuteStoredProcedureAsync<dynamic>(
+     8                   proc.Resource.SelfLink, 
+     9       "Azure Summit Brasil 2015",  //nomeEvento
+    10       "Thiago Custódio");  //nomeParticipante
+    11 }
+    
+
+#### Criando uma trigger com JavaScript
+
+O procedimento para criar uma trigger é parecido com o de criação de stored procedure. O primeiro passo é definir o conteúdo do arquivo `normalizarNomeEvento.js`:
+    
+    
+    1 function normalizarNomeEvento() 
+    2 {
+    3     var item = getContext().getRequest().getBody();
+    4     item.Nome = item.Nome.toUpperCase();
+    5     getContext().getRequest().setBody(item);
+    6 }
+    
+
+A lógica anterior apenas transforma para caixa alta (`Uppercase`) o nome do evento. Definida a lógica da trigger, precisamos "anexar" a trigger à coleção:
+    
+    
+     1 private static async Task<ResourceResponse<Trigger>> 
+     2   CriarTrigger(DocumentClient client, DocumentCollection col)
+     3 {
+     4   return await client.CreateTriggerAsync(col.SelfLink, 
+     5   new Trigger
+     6   {
+     7     TriggerType = TriggerType.Pre,
+     8     Id = "normalizarNomeEvento.js",
+     9     Body = File.ReadAllText(@"JS\normalizarNomeEvento.js"),
+    10     TriggerOperation = TriggerOperation.All
+    11   });
+    12 }
+    
+
+Nesse trecho, definimos os parâmetros `TriggerOperation`, com o qual informamos que a trigger poderá ser executada para operações de `Insert`, `Update`, `Delete` ou `Replace`; e `TriggerType`, com o qual definimos que a lógica será executada antes das operações (`Insert`, `Update`, `Delete` e `Replace`).
+
+Ao contrário dos bancos de dados relacionais, a trigger não será executada automaticamente; precisamos informar qual trigger será executada durante cada uma destas operações. Sendo assim, vamos definir um novo método para criar documentos, mas que execute essa trigger:
+    
+    
+     1 private static async Task<bool> CriarDocumentoComTrigger
+     2   (
+     3     DocumentClient client, 
+     4     DocumentCollection col, 
+     5     Evento evento
+     6   )
+     7 {
+     8   await client.CreateDocumentAsync
+     9   (
+    10     col.SelfLink, 
+    11     evento, 
+    12     new RequestOptions 
+    13     {
+    14       PreTriggerInclude = new List<string> 
+    15       { 
+    16         "normalizarNomeEvento.js" 
+    17       },
+    18     }
+    19   );
+    20   return true;
+    21 }
+    
+
+Para testar, basta adicionar um novo evento e passá-lo como parâmetro para esse método que acabamos de criar:
+    
+    
+     1 var eventoAzureConf = new Evento
+     2 {
+     3   Nome = "azure conf 2015",
+     4   Participantes = new List<Participante>
+     5   {
+     6     new Participante{
+     7       Nome = "Thiago Custódio",
+     8       Email = "thiago.custodio@hotmail.com"
+     9     }
+    10   }
+    11 };
+    12 
+    13 var result = CriarDocumentoComTrigger(client, col, 
+    14                     eventoAzureConf).Result;
+    
+
+Você pode acessar amostras de códigos e a documentação do serviço diretamente pelo portal:
+
+_Fig. 9.12: Links de exemplo e documentação diretamente pelo portal_
+
+  
+  
+  
+
+
+###  9.6  Concluindo 
+
+Neste capítulo, aprendemos como usar o DocumentDB. Considere utilizá-lo se você precisa de um _NoSQL as a Service_ baseado em documentos para algum aplicativo que será hospedado no Azure.  
+  
+---  
+  
+**Mais sobre a origem do NoSQL**
+
+Existe uma palestra muito bacana do Martin Fowler, na qual ele apresenta mais sobre o nascimento deste movimento e a origem do nome NoSQL. Confira em <http://bit.ly/MartinFowlerNoSQL>.  
+  
+---  
+  
+Para maiores informações sobre o DocumentDB e exemplos de seu uso com .NET, confira a página e a documentação oficial do produto nos links:
+
+  * Página do produto: <http://aka.ms/documentdb>.
+  * Documentação: <http://aka.ms/documentdbdocs>.
+  * Exemplos em .NET: <http://aka.ms/documentdbsamples>.
+
+
+
+Caso você precise importar dados para o seu DocumentDB, utilize o projeto DocumentDB Import, que possui suporte a diversas fontes de dados como MongoDB, SQL Server, e arquivos `JSON` e `csv`. Saiba mais no Projeto DocumentDB Import (<http://bit.ly/DocumentDBImport>).
+
+  
+
+
+
+##  Capítulo 10:  Dados relacionais com SQL Sever 
+
+Vimos nos capítulos anteriores que o Azure oferece diversos serviços para armazenamento de dados não relacionais. Isso não quer dizer que não é possível trabalhar com banco de dados relacional, ou que eles deixarão de existir. Neste capítulo, vamos estudar como trabalhar com dados relacionais.
+
+No Azure é possível trabalhar com SQL Server de duas maneiras: **IaaS** (Infraestrutura como Serviço), em que você é o responsável pelo banco de dados e pela máquina virtual; e **DaaS** (Database como Serviço), em que você apenas cria tabelas e manipula os dados, sendo que a administração, disponibilidade e escalabilidade ficam por conta da Microsoft.
+
+###  10.1  SQL Database – Database como serviço 
+
+SQL Database é um banco de dados fornecido pela Microsoft baseado no SQL Sever, ou melhor dizendo, um SQL Server customizado. Ele é ideal se você não deseja lidar com as questões relacionadas à infraestrutura; você simplesmente cria um banco diretamente pelo portal, obtém a string de conexão e o utiliza.
+
+Internamente, esse SQL Database trabalha com o protocolo _Tabular Data Stream_ (TDS), que é o mesmo usado pelo SQL Server, sendo assim, você pode usá-lo da mesma forma. No entanto, você não terá acesso aos recursos de administração (backup, mirror etc.), dado que essa parte fica à cargo da Microsoft (lembrando de que esse modo é um banco de dados como serviço).
+
+E como ficam as questões de manutenção, disponibilidade e escalabilidade?
+
+Dado que esse modo é um banco de dados como serviço, você não tem de se preocupar com a aplicação de _patches_ de segurança, ou atualização de software e hardware. Um SQL Database sempre mantém duas cópias do seu banco de dados automaticamente para garantir a disponibilidade, e um acordo de nível de serviço (SLA) de 99.9%. 
+
+Caso você identifique que o banco de dados é o gargalo na sua aplicação, você pode escalar horizontalmente, isto é, adicionando mais servidores para atender à demanda e evitando gargalos no sistema.  
+  
+---  
+  
+**Pago conforme o uso**
+
+Vale lembrar de que haverá um aumento no custo, dado que, no modelo de computação em nuvem, você paga pelo que você utilizou e apenas durante o tempo de utilização.  
+  
+---  
+  
+#### Outras diferenças em relação ao SQL Server
+
+Embora exista a compatibilidade entre SQL Server e SQL Database, o SQL Database não suporta tipos da .NET CLR, nem queries distribuídas, além dos recursos de administração citados anteriormente. 
+
+#### Criando um SQL Database
+
+Autentique-se no Portal de Gerenciamento do Azure, em <http://manage.windowsazure.com>.
+
+Localize e clique no menu `Novo` no canto inferior à esquerda e, em seguida, selecione a opção: `Data Services` (Serviço de dados) -> `SQL Database` (Banco de dados SQL) -> `Quick Create` (Criação Rápida).
+
+_Fig. 10.1: Criando um novo SQL Database_
+
+  
+  
+
+
+Depois, informe o nome do banco de dados. Por meio desse nome, será criado um _endpoint_ para que você possa conectar ao banco de dados.
+
+Selecione a assinatura (caso você possua mais de uma) e, em seguida, selecione a opção `Novo servidor do banco de dados SQL`.
+
+Selecione o data center, e informe um usuário e senha que será usado para estabelecer a conexão com o seu banco de dados:
+
+_Fig. 10.2: Dados para a criação do SQL Database_
+
+  
+  
+
+
+Por último, basta clicar na opção `CRIAR BANCO DE DADOS SQL`. Em poucos segundos, será disponibilizado um banco de dados para que você possa utilizar. Repare que, no menu lateral à esquerda, há uma opção para rápido acesso aos SQL Database:
+
+_Fig. 10.3: Menu de acesso rápido aos SQL Databases_
+
+  
+  
+
+
+Para acessá-lo, é preciso configurar o firewall para liberar acesso ao seu endereço IP. Apenas para testes, vamos liberar uma larga faixa de IP, para que não ocorra nenhum problema em relação às regras de firewall. Localize a seção `SERVIDORES`:
+
+_Fig. 10.4: Menu de acesso aos servidores SQL Database_
+
+  
+  
+
+
+Depois, clique sobre o nome do servidor:
+
+_Fig. 10.5: Seleção do servidor de banco de dados_
+
+  
+  
+
+
+Na tela à seguir, clique sobre a opção `CONFIGURAR`:
+
+_Fig. 10.6: Configurando regras ao firewall do servidor_
+
+  
+  
+
+
+Nessa tela, o próprio Azure já informa o seu endereço de IP para configurar o acesso ao SQL Database. No momento em que escrevo este capítulo, meu endereço de IP é o 191.188.47.94, como mostra a figura. 
+
+Clicando sobre o botão `ADICIONAR A TODOS OS ENDEREÇOS IP PERMITIDOS`, uma nova linha é adicionada representando a regra que será adicionada ao firewall:
+
+_Fig. 10.7: Regra configurada no firewall do servidor_
+
+  
+  
+
+
+Basta clicar sobre o botão `SALVAR` na barra inferior da tela para que essa regra de firewall seja configurada.
+
+_Fig. 10.8: Salvando as regras adicionadas_
+
+  
+  
+
+
+Vale lembrar de que os endereços IPs mudam constantemente, sendo assim, você precisará adicionar o seu endereço de IP a lista de endereços permitidos repetidamente. Uma outra opção é liberar um _range_ de IP, por exemplo: 0.0.0.0 até 255.255.255.255; no entanto, não é uma boa prática de segurança.
+
+Por último, precisamos obter a string de conexão para efetuar o acesso ao SQL Database. Ela pode ser obtida na seção `Painel`:
+
+_Fig. 10.9: Selecionando o SQL Database_
+
+  
+  
+
+
+_Fig. 10.10: Acessando o menu Painel do SQL Database selecionado_
+
+  
+  
+
+
+No menu lateral à direita, localize e clique sobre a opção `Mostrar Cadeias de Conexão`:
+
+_Fig. 10.11: Exibição das strings de conexão_
+
+  
+  
+
+
+O Azure exibirá um _pop-up_ com string de conexões para .NET, PHP, Java ou ODBC (_Open Database Connectivity_). Use a string que melhor se adequa às suas necessidades. 
+
+Para criar as tabelas, basta se conectar ao SQL Database usando a string de conexão via SQL Management Studio, ou usando algum OR/M como o Entity Framework.  
+  
+---  
+  
+**Acesso diretamente pelo Azure**
+
+Essa regra de firewall é necessária apenas se a origem do acesso for externa aos data centers do Azure. Se o acesso partir de um Azure WebApp, por exemplo, não será necessário configurar endereços de IP para acessar o SQL Database.  
+  
+---  
+  
+  
+
+
+###  10.2  SQL Server – Infraestrutura como serviço 
+
+Utilizando o SQL Server no modo IaaS, você pode criar uma máquina virtual do zero e instalar o SQL Server com a sua licença, ou utilizar um template disponível na galeria de imagens de máquinas virtuais, que já disponibiliza um SQL Server instalado. 
+
+A vantagem de usar um template da galeria com SQL Server é que o custo da licença já está embutido no valor a ser pago pelo tempo de utilização da máquina virtual.
+
+#### Criando uma máquina virtual com um template da galeria de imagens
+
+Autentique-se no Portal de Gerenciamento do Azure, em <http://manage.windowsazure.com>.
+
+Localize e clique no menu `Novo` no canto inferior à esquerda e, em seguida, selecione a opção: `Compute` (Computação) -> `Virtual Machine` (Máquina Virtual) -> `From Gallery` (Da Galeria).
+
+_Fig. 10.12: Criando uma nova máquina virtual da galeria_
+
+  
+  
+
+
+Repare que há um menu lateral à esquerda e existem diversos templates disponíveis, com diversos produtos previamente instalados e configurados. Já existe um template com Visual Studio 2015, outro com diversas versões do SQL Server 2014, Biztalk Server, entre outros. 
+
+Repare também que não são apenas produtos Microsoft, existem templates com o banco de dados Oracle instalado e diversas distribuições do sistema operacional Linux. Isso comprova que a plataforma é aberta e você não fica preso a tecnologias e produtos Microsoft.
+
+_Fig. 10.13: Seleção do template da máquina virtual_
+
+  
+  
+
+
+Selecione no menu a opção `SQL Server` e, depois, a versão de sua preferência. Então, clique na seta para avançar. Para demonstrar a criação, vou selecionar a versão `SQL Server 2012 SP2 Enterprise`.
+
+_Fig. 10.14: Escolha do template da máquina virtual_
+
+  
+  
+
+
+Após selecionar a versão do SQL Server, precisamos informar o nome da máquina virtual, o tamanho na instância (CPU e memória), um nome de usuário e uma senha para nos autenticarmos nessa máquina virtual:
+
+_Fig. 10.15: Informando o nome da máquina virtual, tamanho da instância, usuário e senha para autenticação_
+
+  
+  
+
+
+Na tela à seguir, podemos informar diversas configurações para a máquina virtual. A primeira configuração é informar um serviço de nuvem existente, ou criar um novo.
+
+**Observação:** um serviço de nuvem é um "agrupador".
+
+Vou manter o nome do serviço de nuvem com o mesmo nome da máquina virtual.
+
+Em seguida, podemos escolher qual assinatura (_subscription_) será usada para criar essa máquina virtual. No meu caso, tenho várias assinaturas disponíveis, pois pertencem a clientes, benefício MVP e assinatura MSDN.
+
+Na próxima configuração, devemos escolher em qual data center a máquina virtual será criada. Selecione a opção `Sul do Brasil`, pois representa o data center disponível na região de São Paulo.
+
+Em seguida, podemos usar uma conta de armazenamento já criada, ou solicitar que uma nova seja criada neste momento. A conta de armazenamento servirá para armazenar o disco da máquina virtual.
+
+Por fim, existe a possibilidade de criar um novo conjunto de disponibilidade, ou utilizar algum que já exista. Um conjunto de disponibilidade serve para indicar para o Azure não alocar as máquinas no mesmo servidor físico, evitando, assim, que uma possível falha de hardware afete todo o ambiente.
+
+_Fig. 10.16: Configuração do serviço de nuvem_
+
+  
+  
+
+
+Logo na sequência, existe uma seção para configurar os pontos de extremidade (_endpoints_). Eles servem para liberar acesso a determinadas portas. Vamos liberar acesso à porta `80`, que permite acesso à internet, e à `1433`, utilizada pelo SQL Server.
+
+_Fig. 10.17: Configurando endpoints à máquina virtual_
+
+  
+  
+
+
+Na última parte do assistente para criação de máquina virtual, existem diversas extensões que podem ser instaladas na máquina que permitem uma agilidade na sua configuração, utilizando frameworks (como Puppet e Chef, por exemplo). 
+
+Deixe apenas selecionada a opção `Instalar o Agente de VM` e clique em avançar para que a sua máquina virtual com SQL Server seja provisionada. Ao término do provisionamento, basta clicar sob a opção `Painel`, depois em `CONECTAR` no menu inferior para efetuar o download do arquivo `.rdp`. 
+
+Abra o arquivo `.rdp`, e informe o usuário e a senha para se autenticar na máquina virtual.
+
+_Fig. 10.18: Instalando agentes na máquina virtual_
+
+  
+  
+  
+---  
+  
+**Usando Puppet no Azure**
+
+Gravei um vídeo em que demonstro o uso do Puppet para configurar uma máquina virtual no Azure, que se encontra disponível em <http://bit.ly/PuppetNoAzure>.  
+  
+---  
+  
+  
+
+
+###  10.3  Concluindo 
+
+Grandes pensadores da nossa área acreditam que, nesta década e nas próximas, trabalharemos com um modelo de persistência poliglota, isto é, identificar qual é o melhor meio para armazenar a informação, em determinada área do sistema. Por exemplo:
+
+_Fig. 10.19: Exemplo de persistência poliglota_
+
+  
+  
+  
+---  
+  
+**Persistência poliglota**
+
+Para maiores informações sobre persistência poliglota e sobre os outros tipos de NoSQL, recomendo a leitura do livro _NoSQL destilado_ , de Martin Fowler.  
+  
+---  
+  
+Ao longo deste livro, vimos diversos meios para armazenamento de dados. Recomendo que você se aprofunde em persistência poliglota e saiba reconhecer o melhor meio de persistência para o seu cenário em específico, seja usando NoSQL, banco de dados relacional SQL Server ou SQL Database.
+
+  
+
+
+
+##  Capítulo 11:  Um pouco mais sobre máquinas virtuais 
+
+No capítulo sobre Azure WebApps, vimos que é possível publicar uma aplicação web facilmente e de diversas maneiras para o Azure. Mas talvez você precise de um pouco mais de liberdade em relação ao ambiente, por exemplo, sua aplicação utiliza algum componente de terceiros para renderizar gráficos, ou realizar conversão de arquivos de um formato para outro. 
+
+Para que o componente funcione corretamente, às vezes é necessário registrar `DLL`s no Global Assembly Cache (GAC), ou criar registros no Windows. Esse tipo de liberdade não é possível utilizando o modo WebApps.
+
+No entanto, com o uso de máquinas virtuais, você passa a usar o Azure como infraestrutura (IaaS) e tem total liberdade para escolher desde o sistema operacional até a maneira como os dados serão armazenados. Em outras palavras, você utiliza apenas servidores físicos, cabeamento, internet e firewall do Azure. Todo o resto fica por sua conta, ou seja, escolher e manter o sistema operacional, adicionar discos extras à máquina virtual, instalar o _runtime_ , publicar e configurar a aplicação etc.
+
+No capítulo anterior, vimos como criar uma máquina virtual à partir de um template da galeria que já possui o SQL Server instalado e com uma licença do software aplicada. Neste capítulo, veremos como criar uma máquina virtual com o sistema operacional Ubuntu (distribuição do Linux).
+
+###  11.1  Criando uma máquina virtual com Ubuntu 
+
+Autentique-se no Portal de Gerenciamento do Azure, em <http://manage.windowsazure.com>.
+
+Localize e clique no menu `Novo` no canto inferior à esquerda e, em seguida, selecione a opção `Compute` (Computação) -> `Virtual Machine` (Máquina Virtual) -> `From Gallery` (Da Galeria).
+
+Selecione no menu à esquerda a seção `Ubuntu` e, depois, a opção `Ubuntu 12.04 LTS`:
+
+_Fig. 11.1: Seleção do template da máquina virtual_
+
+  
+  
+
+
+Na tela seguinte, informe o nome da máquina virtual e selecione o tamanho da instância. Para se autenticar, você pode usar uma chave SSH, ou usar o padrão usuário e senha, desmarcando o checkbox `Carregar Uma Chave Ssh Compatível Para Autenticação` e marcando o checkbox `Fornecer Uma Senha`:
+
+_Fig. 11.2: Informando o nome de usuário e senha para autenticação_
+
+  
+  
+
+
+Em seguida, podemos escolher se essa máquina virtual ficará em um _cloud service_ já existente, ou se vamos criar um novo. Selecione a assinatura, o data center e a opção para gerar uma nova conta de armazenamento. Configure também um novo _endpoint_ para a porta `80`:
+
+_Fig. 11.3: Criando o serviço de nuvem_
+
+  
+  
+
+
+Por fim, podemos escolher algumas extensões para facilitar a administração e a configuração dessa máquina virtual. Mantenha a opção `Instalar o Agente de VM` selecionada, e clique no botão para iniciar o provisionamento dessa máquina virtual:
+
+_Fig. 11.4: Instalando agente de máquina virtual_
+
+  
+  
+
+
+Para se conectar a uma máquina virtual Linux, você precisará de um cliente SSH. Costumo utilizar o Putty por ser gratuito e pela facilidade. Faça o download em www.putty.org.
+
+_Fig. 11.5: Menu painel da máquina virtual criada_
+
+  
+  
+
+
+Após a criação da máquina virtual, selecione a opção `Painel` e localize, no menu à direita, o `NOME DNS`, ele será utilizado para a conexão via Putty.
+
+_Fig. 11.6: Visualizando informações da máquina virtual criada_
+
+  
+  
+
+
+Digite, ou copie e cole, o `NOME DNS` no campo `Host Name` (ou `IP address`) do Putty:
+
+_Fig. 11.7: Conectando via Putty_
+
+  
+  
+
+
+Em seguida, basta clicar na opção `Open` para iniciar o acesso remoto à máquina virtual com Ubuntu Server que acabamos de criar. Será exibida uma mensagem de segurança informando que não há um registro da chave de acesso. Basta clicar sobre a opção `Yes`:
+
+_Fig. 11.8: Alerta de segurança do cliente SSH Putty_
+
+  
+  
+
+
+Logo após, será exibido o prompt de comando do Linux, solicitando pelo usuário e senha para acesso. Utilize o usuário e senha informados durante a criação da máquina virtual:
+
+_Fig. 11.9: Terminal do Linux_
+
+  
+  
+
+
+_Fig. 11.10: Usuário autenticado com sucesso_
+
+  
+  
+  
+
+
+###  11.2  Conectando data centers, serviços e máquinas com redes virtuais 
+
+Você pode usar redes virtuais no Microsoft Azure para:
+
+  1. Conectar serviços e websites criados no Azure utilizando uma rede; desta maneira, a comunicação entre eles será feita ao usar essa rede.
+  2. Estender seu data center para o Azure criando uma VPN _site-to-site_. Desta maneira, serviços hospedados na nuvem pública da Microsoft (Azure) poderão acessar servidores e serviços que rodam no seu data center através de uma rede segura (nuvem híbrida).
+  3. Conectar um único computador a uma rede no Microsoft Azure utilizando uma VPN _point-to-site_.
+
+
+
+Em alguns cenários, será necessário conhecer o endereço IP de determinada máquina virtual, como por exemplo um servidor controlador de domínio. Colocando esse servidor em uma rede virtual, você pode reservar um único endereço IP para essa máquina, mesmo que ela reinicie.
+
+#### Criando uma rede virtual no Azure
+
+Autentique-se no Portal de Gerenciamento do Azure, em <http://manage.windowsazure.com>.
+
+Localize e clique no menu `Novo` no canto inferior à esquerda e, em seguida, selecione a opção `Network Services` (Serviços De Rede) -> `Virtual Network` (Rede Virtual) -> `Custom Create` (Criação Personalizada).
+
+Informe o nome da rede virtual, e selecione o data center e a assinatura:
+
+_Fig. 11.11: Criando uma nova rede virtual_
+
+  
+  
+
+
+Na tela seguinte, você pode configurar os servidores DNS para essa rede, e criar uma VPN site-to-site ou point-to-site. Clique em avançar e, depois, você pode escolher quantos endereços IPs estarão nessa rede virtual. Selecione a opção `/24` que permite até 256 endereços IP. Por fim, selecione a opção para criar a rede virtual.
+
+_Fig. 11.12: Escolha do range de IPs da rede virtual_
+
+  
+  
+
+
+Depois de criada a rede virtual, você poderá informar que determinada máquina virtual fará parte dessa rede durante a sua criação:
+
+_Fig. 11.13: Adicionando uma máquina virtual à rede virtual criada_
+
+  
+  
+
+
+Pode acontecer de você precisar adicionar uma máquina virtual já existente a uma rede virtual do Azure. Até o momento em que escrevo este livro, existem duas opções para realizar essa tarefa:
+
+  1. Acionar o suporte do Azure;
+  2. Excluir a máquina virtual (mantendo os discos). Em seguida, recrie a máquina virtual, mas a partir do disco já existente. Para maiores informações, consulte <http://bit.ly/AdicionarVMVirtualNetwork>.
+
+
+
+As duas opções são viáveis, tudo vai depender do nível de permissão que você possui na assinatura do Azure. Existem casos em que o cliente vai lhe conceder acesso à assinatura dele e, provavelmente, você não terá permissões para realizar a segunda opção. Sendo assim, recorra ao suporte do Azure que tem um excelente tempo de resposta.
+
+  
+
+
+###  11.3  Concluindo 
+
+Neste breve capítulo, vimos como criar e conectar a uma máquina virtual com o sistema operacional Linux, distribuição Ubuntu Server. Também aprendemos como criar uma rede virtual para conectar serviços e websites e/ou para estabelecer uma conexão segura com o seu data center (VPN).
+
+  
+
+
+
+##  Capítulo 12:  Considerações finais 
+
+A plataforma Microsoft Azure não é uma aposta, mas sim uma realidade. Basta ver a quantidade de data centers que já estão em operação ao redor do globo. A quantia é superior à soma dos dois principais concorrentes.
+
+Neste livro, meu intuito foi demonstrar algumas das features disponíveis na plataforma. Existem diversos outros assuntos que gostaria de escrever aqui, como integração utilizando Azure Service Bus, consumo de WebApis com Azure App Service, entre muitos outros. No entanto, seriam necessárias muitas outras páginas e, dada a velocidade com que novas features são adicionadas à plataforma, eu correria um sério risco de ter um capítulo desatualizado antes mesmo da publicação deste livro. 
+
+Como dito anteriormente, o Azure evolui em uma velocidade que é difícil acompanhar. Caso ocorra alguma mudança em relação aos conteúdos aqui abordados, escreverei as atualizações para a publicação de uma versão deste livro.
+
+Espero que este livro seja o pontapé inicial para que você utilize a plataforma de nuvem da Microsoft e que ele lhe ajude de alguma maneira. Mesmo que você não use o Azure em produção, você pode utilizá-lo como ambiente para desenvolvimento e testes.
+
+Se você sentiu falta de algum assunto ou ficou com dúvidas sobre algo abordado no livro, entre em contato comigo via Twitter (@thdotnet) ou e-mail (thiago.custodio@hotmail.com). 
+
+Você também pode tirar suas dúvidas pela lista de discussão do livro, em <http://bit.ly/ListaDiscussaoLivroAzureCDC>.
+
+
+## Bibliografia
+
+  1. Haishi Bai, Zen of Cloud - Learning Cloud Computing by Examples on Microsoft Azure , (2014) 
+  2. Microsoft, Channel 9 
+  3. Thiago Custodio, Thiago Custodio on Azure 
+  4. Microsoft, Documentação oficial Azure 
+  5. Microsoft, Blog oficial Time DocumentDB 
+  6. Scott Hanselman, Blog Scott Hanselman 
+  7. Scott Guthrie, Blog Scott Guthrie 
+  8. Microsoft, Blog Azure 
+
+

@@ -1,0 +1,1124 @@
+[Page 2]
+Caso você deseje submeter alguma errata ou sugestão, aces­
+se http://erratas.casadocodigo.com.br.
+ISBN
+Impresso e PDF: 978-85-94188-36-6
+EPUB: 978-85-94188-37-3
+MOBI: 978-85-94188-38-0
+
+[Page 3]
+5
+Sobre o autor
+Comecei minha carreira na área de 
+tecnologia no ano de 2005, quando 
+concluí o curso técnico em infor­
+mática. Desde então, atuei como 
+freelancer e em diversas empresas 
+desenvolvendo os mais variados ti­
+pos de softwares, aplicações web e 
+aplicativos para celular.
+Sempre gostei muito de ler, escrever e ensinar tudo o que eu 
+aprendia, e a forma que encontrei para fazer isso foi escrevendo 
+artigos e tutoriais sobre tecnologia, que foram publicados em por­
+tais como iMasters (http://www.imasters.com.br), Oficina da Net 
+(http://www.oficina da Net) e Digitalks (http://www.digitalks.com.
+br), já somando mais de 500 publicações.
+Além dos artigos e tutoriais, publiquei dois livros técnicos 
+– CodeIgniter: Produtividade na criação de aplicações web em 
+PHP (http://www.livrocodeigniter.com.br/) e Amazon AWS: 
+Descomplicando a computação na nuvem –, pela editora Casa do 
+Código, e dois e-books gratuitos – PHP 7 (https://leanpub.com/
+php7-mudancasenovidades) e 7 Dicas para um texto persuasivo 
+(http://ebooks.jonathanlamim.com.br/7-dicas-para-um-texto-
+persuasivo). Também ministrei diversas palestras em eventos
+
+[Page 4]
+6
+regionais (Dev-ES CONF), nacionais e internacionais (Campus 
+Party e PHP Conference).
+Durante os últimos 12 anos em que estive envolvido com tecno­
+logia, pude me aprimorar e descobrir outra paixão: compartilhar. 
+Compartilhar conhecimento, experiências, sonhos e, acima de tudo, 
+ajudar as pessoas a realizarem seus sonhos, conquistarem uma vida 
+melhor e terem o futuro que tanto almejam.
+Fazer tudo ao mesmo tempo é difícil e acabamos por não alcan­
+çar o nível de excelência desejado, então decidi abandonar a área de 
+tecnologia após 12 anos. Foi uma tarefa difícil, pois é algo que gos­
+to muito, mas uma voz falou mais alto dentro de mim, ou melhor, 
+começou a gritar.
+Essa voz me incentivava a migrar para outra área, na qual pu­
+desse me dedicar a ajudar as pessoas usando minha experiência, 
+meus conhecimentos e minha história para motivá-las. Assim, 
+poderia mostrar que todos somos capazes de construir uma vida 
+de realizações, basta acreditarmos em nós mesmos e mantermos o 
+pensamento positivo.
+Hoje, sou coach e atuo como palestrante motivacional, cum­
+prindo a missão de compartilhar conhecimento e transformar a 
+vida das pessoas. Se quiser conhecer mais da minha história, meu 
+dia a dia e ficar por dentro do que estou preparando, siga-me nas 
+redes sociais.
+
+[Page 5]
+7
+Facebook: http://www.facebook.com/JonathanLamimAntunes
+Instagram: http://www.instagram.com/jonathanlamim
+Site: http://www.jonathanlamim.com.br
+
+[Page 6]
+8
+Introdução
+Em um mundo no qual tudo é informação, saber entregá-la no 
+melhor formato ao seu público é uma das chaves do sucesso para 
+uma estratégia de marketing de conteúdo.
+Lembro-me da época da escola, quando precisava ir à biblioteca 
+para realizar pesquisas em livros e enciclopédias a fim de produzir 
+o conteúdo dos trabalhos escolares.
+Hoje, com alguns cliques, os estudantes encontram uma enor­
+me variedade de conteúdo para produzir seus trabalhos. E então 
+pergunto:
+De onde vem esse conteúdo? Quem o produz? Por que ele 
+é produzido?
+É aí que entra o marketing de conteúdo, para responder a essas 
+e outras perguntas.
+Através dele, as marcas podem, além de conhecer melhor o seu 
+público, entregar exatamente o que ele quer consumir, tanto no que 
+diz respeito ao conteúdo como ao produto.
+Neste livro, compartilho um pouco dos meus conhecimentos 
+sobre marketing de conteúdo para que você possa realizar um tra­
+balho de qualidade e que gere resultados, seja como um consultor 
+freelancer, atuando dentro de alguma empresa de marketing, ou no 
+setor de marketing de empresas de outros ramos.
+
+[Page 7]
+9
+O conteúdo que você encontrará nos capítulos a seguir está di­
+vidido em três partes:
+Parte I: mercado, consumidor, planejamento e estratégia 
+(capítulos 1 a 4);
+Parte II: conteúdo e mensuração de resultados (capítulos 
+5 a 9);
+Parte III: dicas e bibliografia (capítulos 10 a 13).
+Ao chegar ao final deste livro, você terá adquirido conhecimen­
+tos que o colocarão em um novo nível do marketing de conteúdo. 
+Mas a jornada não termina aqui, a continuidade dos estudos para se 
+manter atualizado é o que o tornará um profissional de qualidade e 
+cada dia mais requisitado pelo mercado.
+Boa leitura e bons estudos!
+
+[Page 8]
+10
+sumário
+Parte 1:
+Mercado, consumidor, planejamento e estratégia
+15
+1. O conteúdo e o consumidor
+16
+Os primórdios do conteúdo
+17
+John Deere e o marketing de conteúdo
+22
+O guia de restaurantes que vendia pneus
+23
+A experiência chamada conteúdo
+24
+O novo perfil do consumidor
+27
+Conclusão
+28
+2. Você sabe quem é o seu consumidor?
+30
+Pesquisa de Personas: conhecendo o seu público
+31
+Ferramentas para a Pesquisa de Personas
+35
+Construindo as personas
+37
+Exemplo de cruzamento de informações
+41
+Conclusão
+43
+3. Estratégia e planejamento
+45
+A estratégia de conteúdo
+45
+O planejamento
+47
+Auditoria de conteúdo
+50
+Inventário de conteúdo e calendário editorial
+53
+Conclusão
+55
+
+[Page 9]
+11
+4. Conteúdo, o rei
+57
+Os 3 Cs do conteúdo
+57
+O público quer ajuda e não autopromoção
+60
+A melhor ferramenta para vender mais
+61
+O funil de conversão
+65
+As 4 etapas do funil de conversão
+67
+Tipos de conteúdo
+71
+Os canais de conteúdo
+77
+Dando sentido ao conteúdo dentro do funil de conversão
+89
+Conclusão
+93
+Parte 2:
+Conteúdo e mensuração de resultados
+95
+5. Os impactos do conteúdo na vida do consumidor
+96
+O que é o conteúdo na vida do consumidor?
+97
+Quais são os impactos positivos do conteúdo na vida do 
+consumidor?
+97
+Quais os impactos negativos do conteúdo na vida do 
+consumidor
+100
+Conclusão
+104
+6. Criação de conteúdo
+106
+O que e para quem falar
+107
+Conteúdo específico para cada etapa do ciclo de compra
+109
+
+[Page 10]
+12
+Imagem também é conteúdo
+112
+Conteúdo humanizado
+114
+Conteúdo noticioso
+115
+Conteúdo evergreen
+117
+Reaproveitamento de conteúdo
+118
+Otimização de conteúdo para ferramentas de busca (SEO) 120
+Como planejar a criação de conteúdo com base na persona121
+Conclusão
+125
+7. Mensuração de resultados
+127
+O que é a mensuração de resultados
+127
+O que são os KPIs
+128
+Pirâmide de KPIs
+128
+Fórmulas para calcular KPIs
+132
+A diferença entre KPI e métrica
+139
+5 dicas para uma mensuração de resultados mais efetiva
+140
+Conclusão
+145
+8. Construindo um plano de conteúdo
+146
+O processo de marketing de conteúdo
+146
+O plano de conteúdo
+152
+Conclusão
+153
+9. Fatores de ranqueamento  do Google
+154
+Sinais sociais
+154
+Domínio
+157
+
+[Page 11]
+13
+Interação do usuário
+160
+Page-level
+164
+Site-level
+167
+Backlink
+169
+Spam
+172
+Conclusão
+174
+Parte 3:
+Dicas
+177
+10. Dicas para um processo de  escrita mais fluido  
+178
+Conclusão
+183
+11. Dicas de webwriting
+184
+Não se esqueça dos princípios do webwriting
+184
+Atenção aos elementos do texto
+187
+Não ignore o site e, muito menos, as redes sociais
+190
+Lembre-se do mobile
+191
+Seja humilde, curioso e flexível
+193
+Pense no conteúdo
+194
+Conclusão
+194
+12. Dicas para um texto persuasivo
+196
+Escreva sobre algo em que acredite
+197
+Pense nos desejos e nas necessidades do leitor
+198
+Honestidade e coerência sempre
+199
+Comunique-se de forma dinâmica e interativa
+200
+Informações importantes no início do texto
+202
+
+[Page 12]
+14
+Torne o texto “escaneável”
+205
+Seja você mesmo
+206
+O título é a porta de entrada para o seu texto
+207
+Conclusão
+209
+Referências bibliográficas
+211
+Versão: 21.7.8
+
+[Page 13]
+parte 1
+Mercado, consumidor, 
+planejamento e 
+estratégia
+“Atualmente, para se conectar com compradores, você precisa 
+parar de empurrar sua mensagem e começar a atrair seus 
+clientes. As regras do marketing mudaram, e a chave para 
+vencer é usar essa mudança a seu favor.” 
+– Brian Halligan e Dharmesh Shah
+
+[Page 14]
+16
+capítulo 1
+O conteúdo e o consumidor
+“Você vende muito mais quando para de empurrar a venda. 
+Esteja preparado para lidar com clientes que sabem comprar.” 
+– David Meerman Scott
+Você sabia que o Google recebe mais de 100 bilhões de bus­
+cas por mês (TAN, 2015)? 
+E que 81% dos compradores realizam pesquisas online an­
+tes de efetuar suas compras (MORRISON, 2014)?
+Se o Google recebe 100 bilhões de buscas por mês, é porque as 
+pessoas estão ávidas por informação e conteúdo. Considerando os 
+81% de compradores que primeiro pesquisam sobre o produto ou 
+serviço a ser adquirido, podemos chegar à seguinte conclusão: o 
+consumidor que antes comprava por indicação e preço agora compra 
+por conhecimento.
+A mentalidade do consumidor mudou, como também o modo 
+como ele decide pelas compras. A tecnologia está mudando a cada 
+segundo e, se você quer se manter vivo no mercado, é preciso apa­
+recer, mostrar o diferencial do seu serviço ou produto, e tornar-se 
+encontrável na grande rede.
+
+[Page 15]
+17
+Os primórdios do conteúdo
+O marketing de conteúdo não nasceu com a internet, muito 
+menos com a chegada do Google ou do Facebook. Ele existe desde 
+os primórdios, quando as cavernas eram pintadas com mensagens 
+ilustradas contando os feitos do homem pré-histórico.
+Enquanto não havia papel, as paredes de pedra das cavernas 
+(4.200 a.C.) eram o local em que as histórias eram contadas e o 
+conteúdo compartilhado. Ele passava de geração para geração con­
+tando a história do povo.
+Depois veio o papiro (por volta de 3.500 a.C.), e o conteúdo 
+antes colocado na pedra passou a ser registrado nele; a escrita então 
+começou a ser inserida junto das ilustrações. Mas como o papiro 
+egípcio era caro e escasso, foi necessário buscar outras alternativas, 
+como tecidos e couro, assim o registro escrito ganhou um novo as­
+pecto: o volume.
+É possível considerar o livro como o primeiro produto gráfico 
+fabricado, porém, somente na Idade Média a atividade de produ­
+ção de livros tornou-se um pouco mais organizada. Os escritórios 
+medievais utilizados para a reprodução dos textos podem ser con­
+siderados o início da atividade gráfica em série. O trabalho era re­
+alizado por monges que reproduziam os textos manualmente e, ao 
+longo de quase toda a Idade Média, esse processo de produção de 
+livros era artesanal.
+
+[Page 16]
+18
+Como era a produção de um livro na Idade Média
+Os textos do livro eram redigidos sobre cadernos de pergami­
+nho com 4 páginas, em letras manuscritas com penas, e as pági­
+nas eram ornadas e continham iluminuras que as adornavam.
+Livro produzido na Idade Média
+Quando todos os cadernos de um livro fossem redigidos, 
+iniciava-se o processo de junção deles, no qual eram costu­
+rados uns aos outros pela sua dobra, com fios de nervos de 
+carneiro. As folhas de pergaminho eram sensíveis o bastante 
+para se deformarem e, para que isso não ocorresse, os mon­
+ges amarravam o miolo entre tábuas de madeira, mantendo o 
+pergaminho sob pressão.
+
+[Page 17]
+19
+Após algum tempo usando esse processo, as tábuas começa­
+ram a ser unidas por um dos lados com uma tira de couro, 
+onde o miolo do livro era costurado. Para fechar o livro, usa­
+vam fivelas presas por pontas de couro. As capas – o revesti­
+mento que pressionava o pergaminho – eram feitas de ma­
+deira e, com o passar do tempo, foram sendo revestidas de 
+metais nobres e pedras preciosas.
+Bíblia de Roslin (1262 d.C)
+Com o passar do tempo, por conta do surgimento das univer­
+sidades, de mais pessoas alfabetizadas e pela demanda por livros 
+crescer, outras técnicas começaram a ser utilizadas para a sua pro­
+dução, como a xilogravura.
+Mas a demanda continuou crescendo e as técnicas artesanais não
+
+[Page 18]
+20
+estavam dando conta de atendê-la; foi assim que, quase 5 mil anos 
+depois do papiro (em 1.445 d.C.), Johannes Gutenberg criou a prensa 
+e imprimiu a Bíblia Sagrada. Com a popularização da escrita e a pos­
+sibilidade de imprimir várias cópias na prensa, o conteúdo começou 
+a ser colocado em folhas e foi ganhando ainda mais forma e força.
+Bíblia de Gutenberg
+Ao longo dos séculos XV e XVI, a indústria gráfica teve uma 
+expansão muito rápida, e existem registros de que em 1560 d.C. 
+existiu uma tipografia em solo americano, na Cidade do México. 
+Aqui no Brasil, a indústria gráfica era proibida, e esse quadro só 
+mudou quando a corte portuguesa chegou, acontecendo a fundação 
+da Impressão Régia, a primeira editora brasileira.
+Pouca coisa mudou ao longo dos séculos XVII e XVIII, foram 
+apenas algumas melhorias nos equipamentos, mas com a mesma 
+maneira de trabalhar. A mudança mais expressiva foi a divisão de 
+tarefas entre impressores e encadernadores.
+No ano de 1760, Alois Senefelder inventou a litografia, desen­
+
+[Page 19]
+21
+volvendo então o segundo grande processo de impressão. Utilizan­
+do matrizes de pedra e imagens desenhadas, fez com que a litogra­
+fia ganhasse espaço, pois ela proporcionava melhor qualidade à 
+imagem impressa.
+Litografia
+A indústria gráfica que conhecemos hoje formou-se no sécu­
+lo XIX, em que ocorreram inovações tecnológicas importantes e 
+novidades gráficas como a fotografia. Também, jornais e revistas 
+chegaram ao mercado.
+Repare que, com toda essa evolução, as histórias nunca deixa­
+ram de ser contadas e passaram de geração para geração. A evolu­
+ção tornou o conteúdo melhor e possibilitou que ele chegasse a um 
+número maior de pessoas.
+
+[Page 20]
+22
+John Deere e o marketing de conteúdo
+No ano de 1895, a fabricante mundial de tratores, John Deere, 
+percebeu que se entregasse aos seus consumidores informações que 
+lhes proporcionassem mais produtividade, aumento nas vendas e 
+consequentemente maior renda e possibilidade de ampliar o ne­
+gócio, ela venderia mais tratores e outras máquinas a seus clientes.
+Foi a partir desse pensamento que a John Deere desenvolveu 
+uma revista exclusiva, com o melhor conteúdo que podiam pro­
+duzir. Como resultado, obtiveram o crescimento das vendas e do 
+número de clientes.
+Analisando a síntese desse caso da John Deere, podemos ob­
+servar que alguns pontos importantes foram considerados antes de 
+produzir a revista:
+A empresa conhecia o público;
+Tinha um objetivo/meta em mente;
+Sabia as necessidades dos consumidores;
+Possuía o conhecimento necessário para produzir o con­
+teúdo ideal.
+Esse é o exemplo de uso do marketing de conteúdo mais pró­
+ximo do que utilizamos atualmente. E não foi só a John Deere que 
+utilizou o conteúdo para alavancar seu negócio, temos vários ou­
+tros casos ao longo dos anos provando que o conteúdo certo para o 
+público certo traz resultados.
+
+[Page 21]
+23
+O guia de restaurantes 
+que vendia pneus
+Para que um produto seja consumido, é preciso que haja al­
+gum tipo de gatilho. Por exemplo, para comprar alimento, você 
+precisa ter vontade de comer e, para andar de carro, necessita que 
+ele tenha pneus.
+A empresa de alimentos só vende se você tem fome, e a de pneus 
+só vende se você tiver um carro e usá-lo bastante. E com esse pen­
+samento, a fabricante francesa de pneus chamada Michelin criou o 
+famoso Guia Michelin.
+Entendendo que, para vender mais pneus, precisavam fazer 
+com que as pessoas utilizassem seus carros, a Michelin aproveitou 
+a oportunidade de ter vários pontos turísticos e restaurantes atra­
+entes em diversas cidades francesas e juntou essas informações em 
+um guia de 400 páginas, que foi disponibilizado ao público.
+Com esse guia em mãos, as pessoas começaram a sair mais para 
+passear e ir a restaurantes. Como consequência, havia o gasto dos 
+pneus e a Michelin aumentava o seu volume de vendas.
+Moral da história: o conteúdo do Guia Michelin fez com que 
+as vendas aumentassem e os clientes continuassem a comprar com 
+frequência. A Michelin entregou muito mais do que conteúdo; ela 
+entregou valor e qualidade de vida e, em troca, recebeu mais clien­
+tes, que trouxeram mais receita.
+
+[Page 22]
+24
+A experiência chamada conteúdo
+Os anos se passaram e, com a chegada e a popularização da in­
+ternet, o conteúdo ganhou ainda mais importância. Ele se tornou a 
+peça-chave da comunicação entre empresas, prestadores de serviço 
+e consumidores.
+Antes, para encontrar uma informação sobre algum serviço, as 
+pessoas recorriam às páginas amarelas da lista telefônica, ou aos 
+classificados dos jornais, buscando por empresas próximas. Só era 
+possível encontrar informações de contato, mas nenhum tipo de 
+referência, serviços prestados, muito menos avaliações de clientes.
+Anúncio nas páginas amarelas
+Hoje, o cenário é outro. A primeira coisa que se faz quando sur­
+ge a necessidade de contratar uma empresa ou prestador de serviço, 
+ou comprar algum produto, é acessar a internet – na maioria das 
+vezes, pelo celular – e pesquisar.
+
+[Page 23]
+25
+Mas não era assim que funcionava antes da criação da internet. 
+As pessoas precisavam se comunicar diretamente para conseguir 
+essas informações e várias outras.
+A evolução da comunicação com a chegada da internet
+A criação da internet no final da década de 60 trouxe várias mu­
+danças na forma como as pessoas se comunicavam. Durante uma 
+década, a comunicação usando a internet era bem restrita, pois ain­
+da não tínhamos computadores pessoais. Mesmo assim, criaram o 
+e-mail (1971), os emoticons (1979) e até o vírus (1971).
+Os computadores pessoais chegaram na década de 80, com o 
+lançamento do PC da IBM em 1981, e desde então não pararam de 
+evoluir. No fim dessa década, foi a vez de revolucionar a comunica­
+ção, e surgiu então o IRC (Internet Relay Chat) – criado pelo finlan­
+dês Jarkko Oikarinen – que era utilizado para transmitir notícias 
+durante a Guerra do Golfo, mas que acabou ganhando o mundo e 
+conectando as pessoas.
+Note que, nesse momento, a comunicação já estava bem mais 
+evoluída. A forma como o conteúdo era compartilhado entre as 
+pessoas ganhava uma nova ferramenta e não se demorava tanto 
+para obter informações. Porém, ainda havia a dependência de uma 
+pessoa na outra ponta para fornecer a informação.
+No fim da década de 80 e início da década de 90, a WWW 
+(World Wide Web) foi criada por Tim Berners-Lee, permitindo que 
+fossem feitas páginas com conteúdo para serem acessadas via inter­
+
+[Page 24]
+26
+net. De qualquer lugar do mundo, você poderia acessar um conte­
+údo disponível na rede.
+Daí por diante, começaram a surgir portais de notícia, buscado­
+res, sites institucionais e muitos outros. O primeiro site de buscas foi 
+o Aliweb, criado por Martijn Koster em 1993. Ele permitia que usu­
+ários enviassem suas próprias páginas para serem indexadas. Depois, 
+vieram outros como Excite, Galaxy, até a criação do Yahoo em 1994.
+Em 1995, foi lançado o AltaVista, o primeiro site de busca que 
+permitia pesquisa com linguagem natural. Já em 1997, surgia o 
+Google, que revolucionou de vez as buscas e várias outras áreas 
+décadas depois, como a publicação de vídeos com o YouTube.
+Toda essa evolução tecnológica possibilitou a criação de redes 
+sociais para que as pessoas interagissem e trocassem informações. 
+Assim, o conteúdo que antes estava apenas na cabeça das pessoas, 
+ou em folhas de papel, passou a estar disponível 100% do tempo, 
+para todos e em qualquer lugar do mundo.
+Uma empresa que, na década de 70, dependia de um bom 
+marketing boca a boca para tornar seus produtos conhecidos, hoje, 
+precisa de poucos cliques e uma pitada de criatividade para que ele 
+viralize na internet e ganhe o mundo. A internet teve grande im­
+pacto na difusão do conteúdo e continuará tendo, afinal, todo dia 
+surge uma forma diferente para compartilhá-lo.
+Os resultados, que antes eram restritos a informações de conta­
+to das empresas, hoje são os mais variados possíveis. Encontramos 
+desde informações de contato até notícias, artigos e tutoriais rela­
+cionados ao termo de busca utilizado.
+O conteúdo, que antes era limitado a alguns poucos caracte­
+
+[Page 25]
+27
+res, hoje não tem limites. Imagens, textos, vídeos e áudios são 
+usados das mais diversas formas, visando a alcançar o máximo 
+possível do público.
+Toda essa evolução transformou o conteúdo; fez com que ele 
+passasse de um simples modo de transmissão da informação para 
+uma experiência. Hoje, as pessoas querem mais do que conteúdo; 
+querem uma experiência diferente ao buscar e interagir com o con­
+teúdo encontrado nas buscas e compartilhado nas redes sociais.
+O novo perfil do consumidor
+Seis em cada 10 espectadores usam o smartphone ou o ta­
+blet ao mesmo tempo em que assistem TV. E, desses, sete em 
+cada 10 prestam mais atenção no mobile (DUARTE, 2016).
+Essa estatística apresentada pelo Google mostra o quanto as 
+pessoas estão mais interessadas em procurar por conteúdo do que 
+ter o conteúdo empurrado goela abaixo. As propagandas de TV já 
+recebem menos atenção do que recebiam antes da popularização da 
+internet e do mobile. 
+Enquanto estão no smartphone, as pessoas estão procurando 
+conteúdo e, se escutam alguma coisa na televisão, vão logo pesqui­
+sar no Google sobre aquilo, para ver o que está sendo comentando 
+nas redes sociais. O consumidor de hoje quer dialogar com a marca 
+ou com o prestador de serviço. Ele deseja construir uma relação de
+
+[Page 26]
+28
+amor, como namoro, noivado e casamento.
+Não adianta mais gastar rios de dinheiro para veicular um co­
+mercial de um produto ou serviço, se não houver a possibilidade de 
+diálogo com o consumidor. Sabemos que um bom relacionamento 
+se constrói por meio de conversa, muita conversa. Com o consumi­
+dor, essa conversa se dá pelo conteúdo, oferecendo o que ele quer 
+saber, sem forçá-lo a nada e deixando que a relação se aqueça de 
+modo natural.
+Conforme o relacionamento aquece, o conteúdo muda e o con­
+sumidor se torna mais permissivo. Isso é sinal de que está chegan­
+do a hora do casamento, ou melhor, da venda. Após o casamento, 
+é preciso manter a relação aquecida para que ela seja duradoura. 
+Entra em campo um novo jeito de produzir o conteúdo, com outra 
+linguagem e outro objetivo.
+O conteúdo é a base para as relações comerciais, sejam elas físicas 
+ou virtuais. Conhecer o público e produzir conteúdo relevante para 
+ele são os caminhos para uma relação duradoura e de muito amor.
+Conclusão
+O conteúdo é a chave para abrir as portas das relações comer­
+ciais. Sem ele, você não tem como ser encontrado pelos consumi­
+dores e, muito menos, como encontrá-los. Desde os primórdios, o 
+conteúdo já era utilizado para transmitir informações – e isso não 
+mudou, apenas melhorou.
+
+[Page 27]
+29
+O que foi visto neste capítulo será detalhado nos próximos, nos 
+quais você verá desde como trabalhar o perfil do seu consumidor 
+até como construir as estratégias de marketing de conteúdo para 
+alcançá-lo.
+
+[Page 28]
+30
+capítulo 2
+Você sabe quem é 
+o seu consumidor?
+“Fazer marketing tradicional e publicidade é como dizer ao 
+mundo que você é uma estrela. Fazer marketing de conteúdo é 
+mostrar por que você é uma estrela.” – Robert Rose
+Matt Hanses, escritor e fundador da Uplift Marketing, afirma 
+que em uma sociedade que tenta vender de tudo o tempo todo, a 
+última coisa que alguém quer ler é um texto sobre vendas. Se marke­
+ting de conteúdo é definido pelo CMI (Content Marketing Institute) 
+como “uma técnica que cria e distribui conteúdo de valor, rele­
+vante e consistente, para atrair e engajar uma audiência clara­
+mente definida, com o objetivo de encaminhar o cliente a tomar 
+alguma ação que gere lucro”, faz todo o sentido dizer que, antes de 
+conquistar um cliente, é preciso ganhar um fã (REZ, 2016).
+Content Marketing Institute
+É a principal organização global de educação e treinamento
+
+[Page 29]
+31
+em marketing de conteúdo, ensinando marcas a atrair e reter 
+clientes por meio de uma narrativa convincente e multica­
+nal. São os criadores e organizadores do evento CMIs Con­
+tent Marketing World, que acontece todo mês de setembro 
+em Cleveland (Ohio, EUA).
+Eles também publicam a revista Chief Content Officer, com 
+periodicidade bimestral, e fornecem consultoria estratégica 
+e pesquisa de marketing de conteúdo para grandes marcas e 
+empresas.
+Para ganhar um fã, primeiro você precisa se apresentar, dizer o 
+motivo pelo qual o seu produto ou serviço é importante para ele, 
+e transmitir segurança e valor. Para se apresentar, é preciso saber 
+onde o público está e quem ele é. Você aprenderá como encontrá-lo 
+e documentá-lo neste capítulo.
+Pesquisa de Personas: 
+conhecendo o seu público
+Antes de começar a produzir qualquer tipo de conteúdo, é ne­
+cessário saber para quem ele será produzido. Não adianta pro­
+duzir conteúdos de excelência, com um apelo visual que o torne 
+impossível de ser ignorado, se ele não tiver sido projeto de acordo 
+com o público.
+
+[Page 30]
+32
+Para conhecer o público, é preciso que, antes de mais nada, você 
+saiba exatamente qual é o posicionamento do seu negócio, seja este 
+um produto ou um serviço. A partir daí, você parte para a jornada 
+de conhecimento do seu público.
+Nesse momento, você começa a trabalhar com a Pesquisa de 
+Personas, que vai possibilitar o levantamento e a obtenção de in­
+formações mais detalhadas sobre o seu público.
+Persona = público-alvo
+A Pesquisa de Personas consiste na segmentação e organização 
+das informações sobre o seu público. Na pesquisa, você obterá in­
+formações das seguintes áreas: Pessoal, Educação, Profissional, Fi­
+nanças, Sentimentos e motivações e Percepção do negócio.
+Pessoal: aqui você entenderá as características fundamen­
+tais do consumidor.
+Educação: em vez de se preocupar com o grau de escolari­
+dade, você entenderá as relações do consumidor com a sua 
+educação.
+Profissional: não basta apenas conhecer a profissão, é pre­
+ciso saber qual foi o primeiro emprego, como ele chegou à 
+posição profissional na qual se encontra hoje e o nível de 
+satisfação com o emprego atual.
+
+[Page 31]
+33
+Finanças: nada de saber o salário dele, mas sim a relação 
+dele com o dinheiro que ganha, ou seja, entender como ele 
+gasta, o tipo de produto que compra e o quanto investe.
+Sentimentos e motivações: aqui você analisará a parte psi­
+cológica e comportamental do consumidor.
+Percepção do negócio: nesse momento, você fará um ma­
+peamento da relação que o consumidor tem com sua mar­
+ca, produto ou serviço, buscando entender seus hábitos de 
+consumo.
+O processo de Pesquisa de Personas não é tão simples, mas tem 
+uma capacidade incrível de mudar a sua percepção sobre o produto 
+ou serviço que vai ofertar.
+Se quer uma Pesquisa de Persona ainda mais eficiente, utilize os 
+seus próprios contatos. Pegue o contato dos consumidores que so­
+licitaram orçamento, mas não fecharam, ligue para eles e converse 
+um pouco sobre o motivo de não terem fechado, o que precisavam 
+para fechar. Levante as informações apresentadas diretamente com 
+o seu consumidor.
+O que perguntar na pesquisa
+Para quem não tem experiência em marketing de conteúdo, é 
+complicado definir quais perguntas são mais relevantes e que tra­
+
+[Page 32]
+34
+rão respostas consistentes para a análise.
+A seguir, vou compartilhar com você algumas perguntas que 
+podem ser usadas na entrevista ou nos questionários enviados por 
+e-mail ou redes sociais.
+Pessoal: nome, endereço, idade, sexo, estado civil etc.
+Educação: nível de escolaridade, escolas nas quais estudou, 
+o que mais gosta ou gostava de estudar etc.
+Profissional: últimos empregos, função desempenhada ne­
+les, o que mais agradava, o que menos agradava, conheci­
+mentos que ele precisa para desempenhar a função etc.
+Finanças: média salarial, média de gastos mensais com pro­
+dutos relacionados ao seu negócio, se faz algum tipo de in­
+vestimento etc.
+Sentimentos e motivações: quais são os desafios, como os 
+supera, o que ajudaria a superá-los etc.
+Percepção do negócio: como o seu negócio poderia ajudá-lo 
+no dia a dia, o que ele acha do seu segmento de mercado etc.
+Esses são apenas alguns exemplos do que você pode perguntar, 
+mas o conjunto de perguntas que vai compor a pesquisa dependerá 
+do seu segmento de mercado, seu posicionamento e seus objetivos.
+
+[Page 33]
+35
+Dica
+Ao construir o formulário ou uma landing page para realizar 
+a pesquisa, pense na experiência do usuário. Crie algo que 
+seja atrativo visualmente e que não o canse muito rápido, fa­
+zendo com que ele desista de preencher a pesquisa.
+Ferramentas para a 
+Pesquisa de Personas
+Contratar uma empresa para realizar a pesquisa pode estar fora 
+da sua realidade no momento, então vou compartilhar com você al­
+gumas ferramentas que podem ser de grande utilidade nessa etapa. 
+Elas vão auxiliar no processo de pesquisa, mas o importante mesmo 
+é você aplicá-la para um grupo de pessoas que tenha a ver com o 
+perfil do seu negócio.
+SurveyMonkey 
+Nessa plataforma, você pode criar questionários, enviá-los por 
+e-mail e até compartilhá-los em redes sociais. Há uma versão gratuita 
+(bem limitada) e outra paga (que custa a partir de R$ 84,00/mês).
+
+[Page 34]
+36
+Google Forms 
+Um sistema de criação de formulário desenvolvido pelo Goo­
+gle, no qual você pode customizar o seu layout e enviar via e-mail 
+ou compartilhar o link nas redes sociais. Se você pensa em iniciar a 
+pesquisa com uma enquete rápida, ele é o ideal.
+Google Keyword Planner 
+Recurso gratuito do Google AdWords, muito utilizado pelos 
+especialistas, que ajuda a encontrar as palavras mais buscadas por 
+um determinado grupo. É uma ferramenta de grande utilidade na 
+fase inicial da pesquisa, servindo de apoio a ferramentas como o 
+SurveyMonkey e o Google Forms.
+Redes sociais
+As redes sociais possuem um volume muito grande de pessoas 
+e dentre elas, com certeza, está o seu público-alvo. Procure por gru­
+pos que tenham a ver com o perfil do seu negócio e interaja com os 
+participantes deles. Veja o que estão falando, comente as publica­
+ções e solicite que preencham sua pesquisa.
+
+[Page 35]
+37
+Construindo as personas
+Toda a sua estratégia de marketing de conteúdo será feita para o 
+público, logo, as personas precisam estar em mente 100% do tempo. 
+A persona nada mais é do que uma representação do seu cliente 
+ideal, com suas características, desejos, problemas e demandas.
+Jamais crie personas a partir de palpites ou achismo. Utilize os 
+resultados da Pesquisa de Personas, cruze-os com as informações do 
+Google Analytics sobre o acesso ao site do seu produto ou serviço e, 
+sempre que possível, com dados de conversas diretas com os clientes.
+Se sua Pesquisa de Personas retornou poucas informações ou se 
+o seu negócio é recente, não se preocupe. Crie duas ou três personas 
+e já terá condições de visualizar bem o seu público-alvo. Mas se tiver 
+um bom volume de informações, crie cinco personas diferentes.
+Após definir a quantidade de personas, defina as suas caracte­
+rísticas básicas. De modo geral, você deve definir: nome, ocupação, 
+idade, gênero, localização, renda familiar, educação e hobbies.
+Ao cruzar os dados da pesquisa, você será capaz de compreen­
+der as necessidades e demandas das suas personas, que são infor­
+mações fundamentais para saber quais soluções podem ser ofere­
+cidas a cada uma delas. Se você não for capaz de compreender as 
+necessidades e demandas do seu público-alvo, vai ser bem compli­
+cado gerar conteúdo que atraia e engaje.
+Não se esqueça de que um negócio não vende produtos ou 
+serviços, vende solução para problemas.
+
+[Page 36]
+38
+O documento que descreve suas personas deve ser algo pareci­
+do com a imagem a seguir:
+Persona Template
+Sugestão
+Não existe um modelo específico ou um padrão para constru­
+ção de formulário de pesquisa para construção de personas. 
+Então, quando for construir o seu formulário, dê uma olhada 
+nas informações que o Google Analytics disponibiliza. Cons­
+trua-o com perguntas que lhe permitam cruzar os dados de 
+campo com os dados de acesso ao site e às redes sociais.
+
+[Page 37]
+39
+Quanto mais detalhes da persona você conseguir documentar, 
+mais fácil será o planejamento, a definição de estratégia e a sua 
+execução.
+Usando o Google Analytics como apoio na construção 
+de personas
+Assim como você pode realizar 
+entrevistas com seus clientes, tal­
+vez até em redes sociais, o mesmo 
+questionário pode ser preenchi­
+do com informações extraídas do 
+Google Analytics. Veja a seguir 
+como você pode obter as mais va­
+riadas informações no painel do 
+Google Analytics.
+Ao acessar o Google Analytics 
+e selecionar a conta sobre a qual 
+deseja obter as informações, você 
+terá um menu ao lado esquerdo 
+semelhante ao da imagem a seguir. 
+Nele, você encontrará todas as in­
+formações de que precisa, agrupa­
+das por tipo.
+Menu do Google Analytics
+
+[Page 38]
+40
+Navegando por esses menus, você terá:
+Interesses;
+Informações demográficas;
+Localização;
+Comportamento;
+Tecnologia;
+Origem do acesso;
+Páginas acessadas;
+Fluxo de navegação.
+Essas e outras informações fornecidas são muito úteis, não só 
+durante o processo de construção das personas, mas durante todo 
+o planejamento estratégico e a execução das campanhas de marke­
+ting de conteúdo. Uma análise cuidadosa desses dados pode fazer 
+grande diferença nos resultados do seu negócio.
+Sugestão
+Preencha alguns formulários da Pesquisa de Persona usan­
+do as informações do Google Analytics, assim o processo de 
+cruzamento das informações fica mais fácil, pois você poderá 
+analisar um único formato de dados.
+
+[Page 39]
+41
+Cruzando os dados das pesquisas
+O volume de informações fornecidas pelo Google Analytics é 
+muito grande, logo, você terá a possibilidade de analisar os resul­
+tados da sua pesquisa de campo com o que acontece diretamente 
+no site do seu negócio. Não existe uma regra específica para o cru­
+zamento dos dados, mas quanto mais organizados eles estiverem, 
+mais fácil será para você analisar e encontrar o seu público-alvo.
+Minha sugestão é que você crie uma planilha para lançar os re­
+sultados da pesquisa de campo e os resultados do Google Analytics. 
+Assim, poderá gerar gráficos que facilitarão a análise dos dados e a 
+definição do público-alvo e perfis das personas. Através dos gráfi­
+cos, você conseguirá visualizar de forma clara as maiores ocorrên­
+cias e dominâncias dos perfis pesquisados, e construir o perfil o 
+mais próximo possível dos objetivos do seu negócio.
+Não se precipite na criação das personas; analise bem os dados 
+e, se necessário, faça novas pesquisas para levantar informações 
+que você ainda sente necessidade de analisar. Personas criadas com 
+dados concretos e reais proporcionam melhores resultados no pro­
+cesso de planejamento estratégico e na produção de conteúdo.
+Exemplo de cruzamento de informações
+No seu formulário de pesquisa, se o usuário precisar responder 
+há quanto tempo ele tem acesso à internet, ou quanto tempo passa
+
+[Page 40]
+42
+acessando-a e buscando por produtos ou serviços semelhantes ao 
+seu, como também quais dispositivos ele utiliza, você pode cruzar 
+esses dados (tempo de uso, dispositivos) com os seguintes do 
+Google Analytics:
+Duração média da sessão do usuário;
+Dispositivos;
+Dados geográficos (local e idioma);
+Comportamento.
+A partir do cruzamento de informações, você poderá construir 
+os gráficos e organizar a massa de dados de um modo que consiga 
+analisar de maneira mais eficiente, extraindo as informações para 
+criação das personas. Não existe certo ou errado, existe o cruza­
+mento de dados ideal para o que você está buscando nessa massa.
+Se você quer ver apenas o percentual de pessoas em relação a 
+quanto tempo elas possuem acesso à internet, uma boa sugestão de 
+gráfico é o de pizza:
+Gráfico de pizza
+
+[Page 41]
+43
+Agora, se você quer comparar mais de um conjunto de dados, 
+uma boa opção é o gráfico de barras. Veja na figura a seguir um grá­
+fico que junta informações do percentual de pessoas que acessam 
+determinados sites às do local de onde o acessam.
+Gráfico de barras
+Conclusão
+A persona é a melhor forma de você identificar as característi­
+cas e informações do seu público, e organizar de modo que qual­
+quer pessoa consiga compreender o que ele deseja, quais são seus 
+problemas, o que buscam de solução e, principalmente, o que espe­
+ram do seu negócio. Se você não conhecer bem o seu público, não 
+terá sucesso com o conteúdo produzido.
+Mantenha suas personas sempre em mente e visíveis. Sempre 
+que for produzir conteúdo, dê uma olhada nas personas e veja para 
+qual delas ele será destinado.
+
+[Page 42]
+44
+Em um próximo capítulo, você verá como organizar as personas 
+dentro do funil de vendas, e produzir o conteúdo certo tanto para a 
+persona quanto para a etapa do funil.
+
+[Page 43]
+45
+capítulo 3
+Estratégia e planejamento
+“É importante ter metas, mas também é fundamental planejar 
+cuidadosamente cada passo para atingi-las.” – Bernardinho
+Estratégia e planejamento são cruciais para que os objetivos pos­
+sam ser atingidos e, no marketing de conteúdo, essas duas etapas fa­
+zem toda a diferença. Enquanto a estratégia está ligada à qualidade 
+do conteúdo, o planejamento está ligado às questões qualitativas, por 
+exemplo, frequência de publicação.
+Podemos então dizer que a estratégia é o próprio marketing de 
+conteúdo, pois ela abrange como o objetivo será atingido. Já o pla­
+nejamento é o que torna a estratégia possível, o quando.
+A estratégia de conteúdo
+Segundo Kristina Halvorson (2010), estratégia de conteúdo é: 
+“um plano de ação bem construído, articulado e possível de ser exe­
+cutado”.
+
+[Page 44]
+46
+Uma estratégia de conteúdo vai muito além de saber o quê (con­
+teúdo), como (tipo de conteúdo) e onde publicar (canal). Isto é ape­
+nas o início do processo. Para definirmos uma estratégia de conteú­
+do, podemos dividi-la em três partes: criação, entrega e gestão.
+Criação: momento no qual se define o conteúdo, o formato, 
+o canal de publicação e, acima de tudo, o porquê de produ­
+zir esse conteúdo.
+Entrega: nessa etapa, são feitas as revisões, edições e publi­
+cações. É o momento de construir o calendário editorial.
+Gestão: fase de grande importância na estratégia e planeja­
+mento. É o momento de monitorar o conteúdo publicado, 
+analisar os números de acesso, o download, o nível de intera­
+ção do usuário, enfim, cuidar para que o conteúdo se mante­
+nha sempre em posição de visualização para o usuário.
+Muito além de toda a teoria, uma boa estratégia de conteúdo é 
+aquela capaz de encontrar o conteúdo, o usuário e o momento certo 
+para a entrega. Seu objetivo deve ser atingir os objetivos e metas do 
+negócio. De nada adianta produzir uma diversidade de conteúdo de 
+alta qualidade se ela não trouxer os resultados certos.
+Para realizar as tarefas das três partes da estratégia, é preciso 
+ter uma equipe sólida e capaz de realizar cada etapa do processo de 
+produção de conteúdo.
+
+[Page 45]
+47
+Esse time precisa ser capaz de:
+Gerenciar a estratégia;
+Mensurar os resultados;
+Fazer o controle de qualidade do conteúdo;
+Produzir conteúdo dos mais variados tipos e formatos;
+Promover o conteúdo.
+Para compor essa equipe, você precisará de um:
+Gerente;
+Produtor de conteúdo;
+Designer;
+Social media.
+Com um time bem construído e alinhado, você poderá desen­
+volver as mais variadas estratégias de conteúdo, para então passar 
+para a fase de planejamento, em que definirá quando o conteúdo 
+será entregue.
+O planejamento
+Fazer o planejamento de conteúdo não é um processo compli­
+cado. Ele exige dedicação, pesquisa e conhecimento sobre o seu ne­
+gócio, o que inclui produtos, serviços, público e objetivos.
+
+[Page 46]
+48
+A melhor forma de montar o planejamento é usando uma linha 
+de raciocínio e pensamento que lhe permita analisar tudo o que 
+envolve a estratégia de conteúdo. É o planejamento que colocará a 
+estratégia em prática.
+Um planejamento sem estratégia não trará nenhum resultado, 
+pois não adianta saber quando as ações serão realizadas se não sou­
+ber como devem ser realizadas. Ou seja, o planejamento deve ser 
+feito após a definição inicial da estratégia.
+É preciso lembrar a todo momento que tanto a estratégia 
+quanto o planejamento são mutáveis. Eles podem sofrer altera­
+ções ao longo do processo para se adaptarem e produzirem me­
+lhores resultados.
+Veja a seguir uma linha de raciocínio básica, em uma ordem 
+que permite o pensamento e a análise contínua da sua estratégia 
+para a construção do planejamento.
+1. Objetivo – O planejamento começa com a definição dos 
+objetivos, pois saber aonde se quer chegar é a base para de­
+finir o público e o conteúdo que deve ser produzido.
+2. Produto – Sabendo dos objetivos, é preciso conhecer 
+exatamente quais produtos ou serviços serão utilizados para 
+atingi-los.
+3. Desejo dos clientes – Para saber o desejo dos clientes, 
+é necessário conhecer o seu público, e vimos como fazer
+
+[Page 47]
+49
+isso no capítulo anterior. Quando você pesquisa sobre ele, 
+é muito comum ter como informação importante o que ele 
+espera do seu negócio e quais são as suas necessidades.
+4. Mensagem – Sabendo dos objetivos, os produtos/servi­
+ços e o desejo dos clientes, é hora então de se concentrar no 
+momento em que os seus objetivos se cruzarão com as ne­
+cessidades do seu público. É hora de construir a mensagem, 
+contar histórias que aproximem o seu negócio do público, 
+gerem empatia e interação.
+5. Visibilidade – Somente construir as mensagens não bas­
+ta, é preciso que elas se tornem visíveis ao seu público. Você 
+vai educá-lo e mostrar o que ele precisa. Então, busque os 
+canais onde ele está mais presente e os formatos de conteú­
+do que ele aprecia. Não saia entregando conteúdo que leva à 
+compra antes de entregar conteúdo que aproxime cada vez 
+mais o público do seu negócio.
+6. Execução – Uma vez definidos os objetivos, os formatos 
+de conteúdo, os canais de publicação e as ferramentas para 
+tal tarefa, é hora de executar. 
+7. Mensuração – Após iniciar a execução, começa a etapa 
+de mensuração dos resultados. Essa mensuração (abordada 
+com mais detalhes nos próximos capítulos) lhe permitirá 
+enxergar como está o alcance do seu conteúdo em relação
+
+[Page 48]
+50
+aos seus objetivos e metas. Ela será sua aliada o tempo in­
+teiro, mostrando o que precisa ser melhorado.
+O planejamento está diretamente ligado à estratégia, e ambos 
+devem ser atualizados sempre, com base na mensuração dos re­
+sultados. Se os resultados são positivos, é sinal de que você pode 
+melhorar ainda mais sua estratégia e planejamento; mas se forem 
+negativos, então você precisa analisar ambos e aplicar correções 
+para que sejam executadas e mensuradas.
+Auditoria de conteúdo
+Auditoria de conteúdo é o processo de análise de todo o conteúdo 
+que já foi produzido, garantindo que ele esteja de acordo com a es­
+tratégia e o planejamento traçados. Esse processo deve acontecer (se 
+necessário) dentro da primeira parte, ou seja, na criação de conteúdo. 
+Ela não é uma etapa separada dentro do processo, e pode ser 
+vista como uma ferramenta para auxiliar na organização de con­
+teúdo já existente, de modo que seja possível encontrar conteúdos 
+evergreen e noticiosos (veremos mais sobre isso no capítulo Criação 
+de conteúdo), para que sejam atualizados ou até mesmo removidos.
+Pode ser que você já tenha um blog, com diversos posts que 
+foram escritos sem o mínimo de planejamento. São frutos de ideias 
+aleatórias ou de necessidades do seu negócio que você julgou serem 
+úteis para o seu público. Esse conteúdo é válido, mas saber para
+
+[Page 49]
+51
+quem, onde e quando foram publicados é muito importante, e essa 
+é a função da auditoria de conteúdo.
+Google e Facebook, por exemplo, priorizam os conteúdos com 
+qualidade em vez de conteúdos longos. Você pode ter um texto de 
+500 palavras que oferece muito mais qualidade do que um texto de 
+1.500 palavras.
+Por esses motivos, a auditoria torna-se essencial, e você pode 
+realizá-la de duas formas: quantitativa e qualitativamente.
+Auditoria quantitativa
+Essa auditoria nada mais é do que uma lista de todo o conteúdo 
+produzido até o momento. Use esse tipo de auditoria para saber 
+exatamente o conteúdo que foi publicado e que está associado ao 
+seu negócio.
+Para fazer a análise do conteúdo, você pode verificar pontos 
+como a organização, onde está publicado, o tipo de resultado que 
+ele gerou, quem produziu, entre outros. Após essa análise, você terá 
+uma visão de todo o seu conteúdo, o que permitirá corrigir essa 
+visão alinhando com os objetivos e metas da sua estratégia.
+Auditoria qualitativa
+A auditoria qualitativa é um complemento à quantitativa. Ela é 
+capaz de auxiliar na mensuração do quanto o seu conteúdo é útil
+
+[Page 50]
+52
+para o público.
+Nessa análise, você não vai procurar por números, mas pelo 
+contexto e pela mensagem do seu conteúdo. Você poderá identifi­
+car o tom de voz usado, a mensagem que ele transmite, o seu grau 
+de utilidade, entre outros.
+Ao realizar uma auditoria de conteúdo, você estará dando mais 
+um passo rumo à realização dos objetivos.
+Conhecer o conteúdo produzido não só pela mensagem que pas­
+sa, mas pelos números que gera, é de suma importância para a evolu­
+ção da estratégia, do planejamento e, principalmente, do seu negócio.
+Caso você queira uma análise mais profunda, pode buscar algu­
+ma empresa que faça uma auditoria especializada.
+Auditoria especializada
+A auditoria especializada consiste na aplicação das auditorias 
+quantitativas e qualitativas além de análise de SEO, metadados e 
+outros pontos relevantes dentro do conteúdo.
+O uso dessa auditoria é muito comum quando há um volume 
+muito grande de conteúdo produzido, e este não pode ser descar­
+tado. Então, aplica-se uma auditoria especializada para obter uma 
+análise mais profunda e realizar as atualizações necessárias para 
+que ele se encaixe dentro da nova estratégia.
+Implementar uma cultura de auditoria pode se tornar uma ex­
+celente prática para construir uma estratégia de conteúdo, com óti­
+mos resultados em médio e longo prazo.

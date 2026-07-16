@@ -1,0 +1,59 @@
+---
+name: trilhas-python
+description: >-
+  Passos operacionais extraidos do livro 'Trilhas Python' (PT) — Trilhas Python.
+---
+
+# Trilhas Python — Passos Operacionais
+
+## 1. Conceitos Fundamentais
+
+- Capítulo 4 Agradecimentos Quero agradecer à minha esposa Regla e à minha filha Victória, pelo apoio e carinho, pois, sem isso, não teria sido possível escrever este livro.
+- Também quero agradecer profundamente à equipe da Casa do Código, em especial à Vivian Matsui, que acompanhou de perto o desenvolvimento do livro, e ao Adriano Almeida.
+- Deixo aqui meus agradecimentos aos colegas Volney Casas e Charles Tenório, que auxiliaram na revisão técnica do livro.
+- Pereira é mestre e doutor em Astrofísica, pelo Instituto Nacional de Pesquisas Espaciais (INPE).
+- Possui graduação em Física pela Universidade Federal de São João Del-Rei.
+- Também realizou pós-doutorado em Astrofísica, pelo INPE, e em Astronomia Observacional/Computacional, pela Universidade de São Paulo (USP).
+- Ele atua principalmente nos seguintes temas de pesquisa: cosmologia, ondas gravitacionais, astrofísica computacional, processamento de imagens e inteligência artificial.
+- Atualmente, é professor do curso de Ciência da Computação da Faculdade Anhanguera, e Tutor no curso de física na Universidade Virtual de São Paulo (UNIVESP).
+- Capítulo 6 Sobre o livro Com o avanço das tecnologias Mobile e Web, juntamente com o crescimento do movimento de criação de empresas digitais emergentes, as chamadas startups, a necessidade de desenvolver protótipos de programas que sejam consistentes e que demandem um ciclo mais curto de desenvolvimento acabou por abrir um grande espaço para as linguagens de programação interpretadas de altíssimo nível, tal como a linguagem Python.
+- O uso da programação Python se estende desde a criação de programas scripts, para o gerenciamento e automação de tarefas de sistemas operacionais, passando pelo desenvolvimento de aplicações Web e por ferramentas de Inteligência Artificial e Visão Computacional.
+
+## 2. Principios e Tecnicas
+
+- Logo, conhecer os fundamentos da linguagem Python será essencial para quem quiser trabalhar com um desses tópicos.
+- Neste livro, passaremos por tópicos de programação em Python que vão do básico ao avançado.
+- O material está dividido em três partes que reforçam o aspecto multiparadigma da linguagem.
+- Na primeira, são apresentados os elementos básicos de Python, como estrutura de dados, funções e decoradores e Programação Estruturada.
+- Na segunda parte, é dada ênfase à Programação Orientada a Objetos, apresentando de forma prática quais as motivações para usar tal paradigma.
+- Além disso, são abordados tópicos mais avançados da linguagem, como compreensões e geradores, que são fundamentais para a Programação Funcional em Python.
+- Na terceira parte, veremos como aplicar o conhecimento de programação Python para o desenvolvimento Web.
+- Para isso, usamos o framework Web chamado Flask, juntamente com uma Camada De Abstração de Banco de Dados ou Database Abstraction Layer (PyDAL), para a integração da aplicação com banco de dados.
+- Como o desenvolvimento Web acaba necessitando do auxílio da linguagem JavaScript, para facilitar o acompanhamento do desenvolvimento do projeto da terceira parte do livro, um anexo de introdução ao JavaScript foi adicionado.
+- A didática escolhida neste livro para apresentar a linguagem Python se dá por meio da solução de problemas.
+
+## 3. Aplicacoes Praticas
+
+- Para isso, usaremos conceitos de desenvolvimento de jogos para poder tornar o conteúdo mais dinâmico.
+- Na primeira parte do livro, desenvolveremos um Jogo da Velha, usando apenas Programação Estruturada.
+- Em seguida, veremos como rescrever esse jogo, aplicando os conceitos de Programação Orientada a Objetos.
+- Na terceira parte, é desenvolvido um aplicativo Web para streaming de áudio, com sistema de login e player de áudio usando JavaScript, HTML5 e CSS.
+- Pré-requisitos e público-alvo Este livro foi escrito para aqueles que estão iniciando sua jornada como programador e querem conhecer mais profundamente a linguagem Python.
+- Procurou-se fazer uma abordagem que começa com os fundamentos da linguagem e o uso da Programação Estruturada, passando por outros paradigmas de programação.
+- Assim, uma base sobre algoritmos e algum conhecimento prévio sobre Python ajudará bastante na compreensão do conteúdo do livro.
+- Como o livro possui uma abordagem prática, apresentando conceitos fundamentais, seguidos de projetos práticos, a leitura pode ser produtiva tanto para os iniciantes em programação quanto para os já iniciados na linguagem, que procuram aprimorar os seus conhecimentos.
+- Os exemplos do livro foram desenvolvidos em Python 3.6, com compatibilidade para a versão 2.7.
+- Capítulo 7 Python Na primeira parte do livro, vamos iniciar nossa jornada no universo da programação com a linguagem Python.
+
+## 4. Topicos Avancados
+
+- Capítulo 1 Introdução Antes de começar, precisamos pensar no que nos leva a escolher uma linguagem em vez de outra.
+- Por que escolher Python no lugar de C++ ou Java?
+- Quais motivos levam à criação dos mais diversos tipos de linguagens de programação?
+- Para tentar encontrar respostas a essas questões, primeiro precisamos entender que as linguagens de programação possuem níveis e que cada uma acaba sendo construída tendo em mente filosofias particulares.
+- Python é uma linguagem interpretada, logo, precisamos da máquina virtual para executar nossos programas, disponível em https://www.python.org/downloads/ .
+- Diferente da linguagem Java, que também, roda em uma máquina virtual (Java Virtual Machine), Python é dinamicamente tipada.
+- Isso significa que não é preciso ficar definindo os tipos da variável.
+- Além disso, o controle de bloco é por indentação.
+- Aqui vale abrir uma pequena observação acerca da classificação do nível de uma linguagem, que pode ser feita de acordo com sua proximidade com a linguagem humana.
+- Quanto mais próxima ela for da linguagem de máquinas, mais baixo será o seu nível.

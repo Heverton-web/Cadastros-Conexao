@@ -1,0 +1,72 @@
+---
+name: head-first-javascript-programming-a-learner-s-guid
+description: >-
+  Passos operacionais extraidos — desenvolvimento web, full-stack, JavaScript, TypeScript, React, Node.js (EN).
+---
+
+# Head First JavaScript Programming  A Learner's Guide to — Passos Operacionais
+
+Skill baseada no livro "Head First JavaScript Programming  A Learner's Guide to" (EN). Contem passos praticos e sequencias operacionais.
+
+Use quando o usuario pedir orientacao pratica sobre: desenvolvimento web, full-stack, JavaScript, TypeScript, React, Node.js.
+
+---
+
+## 1. ## ...a simplified Battleship
+
+
+## 2. ## Representing the ships
+
+
+## 3. ## Getting user input
+
+
+## 4. ## Displaying the results
+
+
+## 5. ## Sample game interaction
+
+
+## 6. ## **Variables (and constants)**
+
+
+## 7. ## **(that means pass-by-copy)**
+
+
+## 8. ## Know the difference or risk humiliation
+
+
+## 9. ## **Any block can act as the scope of a variable**
+
+
+## 10. ## How to create an array
+
+
+## 11. ## Cubicle Conversation
+
+
+## 12. ## Initializing a primitive variable
+
+## Conceitos Fundamentais
+
+- I would like to thank first and foremost my coauthors, Mark and Raju, both of whom were a delight to work with and made this book possible. Mark is as always a fantastic collaborative juggernaut with a good sense of humor, both vital when writing is not our day job. I’d also like to thank our editor **Sarah,** who has an outsized role in this book series, for helping keep us in check. Thanks also to my extended families, both genetic and chosen, for their support and respite. That includes our weekly neighborhood cocktail club that moved to the parking lot during the pandemic and stayed there; it’s great to catch up with what is happening nearby. And finally and primarily, I’d like to thank my wonderful wife **Candy** , who endures many long hours with me away from her and our cats, working on stuff like what you hold in your hand.
+- This time, we’d like you to do some trade-off analysis on your own. We chose messaging as the communication protocol between our trading service and its consumers. Messaging is asynchronous. Choosing between asynchronous and synchronous forms of communication comes with its own set of trade-offs! We’ve given you two whiteboards, one for each form of communication, and we’ve listed a bunch of “-ilities.” We’d like you to consider how each architectural characteristic would work in both contexts. Is this characteristic a pro or a con (or neither) in synchronous communications? What about in asynchronous communications? Place each “-ility” in the appropriate column. _Hint: Not all of them apply to this decision._ We put the first pro on the whiteboard for you. When you’re done, you can see our answers at the end of the chapter.
+- It’s hard for me to express how much of a privilege it has been to work on this project, and to be able to work with Mark and Neal—two of the smartest and most wonderful human beings, who not only were kind enough to consider me as a coauthor, but who since have spent countless hours teaching me the nuances of software architecture. Someday I hope I can repay that debt. For now, they have my deepest appreciation. A shoutout to so many friends, colleagues, unwitting mentors and teachers, and fellow speakers who’ve been a source of inspiration for me—**you all know you who are**. And finally, to my wife **Michelle**. We had baby **Delphine** while I was working on this project, and Michelle has certainly taken on more than her share as I spent many an hour working on this book. Thank you. I love you both.
+- **What if your architecture could do lots of things at the same time?** As businesses grow and become more successful, they need to be able to handle more and more users, without slowing down or crashing systems. In this chapter, you’ll learn how to design high-performance systems that can scale as a business grows. Get ready for _event-driven architecture_ , a highly popular distributed architectural style. It’s very fast, highly scalable, and easy to extend—but it’s also quite complex. You’ll be learning about lots of new concepts in this chapter, including things like events, messages, and asynchronous communication, so you can create an architecture that can do many things at once. Fasten your seatbelt, and let’s go on an asynchronous adventure through event-driven architecture.
+- There’s only one way to learn how to _really_ understand software architecture: **apply it every day.** You are going to be doing software architecture a lot in this book, and like with any other skill, the only way to get good at it is to practice. We’re going to give you a lot of practice: every chapter has exercises that pose problems for you to solve. Don’t just skip over them—a lot of the learning happens when you solve the exercises. We included a solution to each exercise—don’t be afraid to **peek at the solution** if you get stuck! (It’s easy to get snagged on something small.) But try to solve the problem before you look at the solution. And definitely get it working before you move on to the next part of the book.
+
+## Princípios e Técnicas
+
+- **A:** Great observation, and we’re glad you saw the similarities. Event storming is a workshop-based approach that is part of _domain-driven design_ (DDD). With this approach, you analyze the business domain to identify domain events. While both approaches have the final goal of identifying actions performed within the system, event storming takes identifying components much further than the actor/action approach does. You could say that the actor/action approach identifies the _domain event_ and _actor_ elements of event storming, but doesn’t continue with other elements such as _command_ , _aggregate_ , and _view_. You can learn more about event storming at _<https://en.wikipedia.org/wiki/Event_storming>_.
+- Customers often come to architects with _solutions_ rather than requirements. For example, back in the 1970s, the US Air Force commissioned a fighter jet and included a requirement that it be capable of achieving speeds up to Mach 2.5. The designers tried, but the technology of the time just wasn’t sufficient to meet the requirement. They went back to the Air Force and asked: “Why does it need to go Mach 2.5?” The answer was, “Well, these things are expensive, so we want it to be able to flee a fight if necessary.” With that knowledge in mind, they went back and designed the F-16 fighter jet. It had a maximum speed of Mach 2.1, but it was the most maneuverable and fastest-accelerating jet ever created.
+- Our first and foremost acknowledgment goes, along with our utmost thanks, to our brilliant editor **Sarah Grey**. Writing a book like _Head First Software Architecture_ presented a number of unique challenges for us, and Sarah was there to guide us the entire time. She helped keep us on track when we deviated from the Head First style of writing (which was quite often) and made constant suggestions about every page’s layout (really, we mean _every_ page). Sarah took on the role of crossword expert and helped us out quite a bit with the _Make It Stick_ poetry. We frequently referred to Sarah as our “fourth author,” and in reality, she deserves much of the credit for the outcome of this book.
+- The faster way is to do **_anything that increases brain activity_** , especially different _types_ of brain activity. The things on the previous page are a big part of the solution, and they’re all things that have been proven to help your brain work in your favor. For example, studies show that putting words _within_ the pictures they describe (as opposed to somewhere else on the page, like a caption or in the body text) causes your brain to try to make sense of how the words and picture relate, and this causes more neurons to fire. More neurons firing = more chances for your brain to _get_ that this is something worth paying attention to, and possibly recording.
+- **What does your architecture need to support?** Architectural characteristics (the capabilities of an architecture) are the fundamental building blocks of any system. Without them, you cannot make architectural decisions, select an architectural style, or in many cases even create a logical architecture. In this chapter you’ll learn how to define some of the more common characteristics (like scalability, reliability, and testability), how they influence a software architecture, how they help you make architectural decisions, and how to identify which ones are important for your particular situation. Ready to add some capabilities to your software architecture?
+
+## Aplicações Práticas
+
+- Mark is an experienced hands-on software architect and the founder of [DeveloperToArchitect.com](http://DeveloperToArchitect.com), a free website devoted to helping developers in their journeys to becoming software architects. He has been in the software industry since 1983 and has significant experience and expertise in application, integration, and enterprise architecture. Mark has authored numerous technical books and videos, including _Fundamentals of Software Architecture and Software Architecture: The Hard Parts_ (O’Reilly), co-authored with Neal Ford. Mark also does training and has spoken at hundreds of conferences and user groups around the world.
+- Most teams still call them _nonfunctional requirements_ , which is misleading because architectural characteristics are indeed functional—they just don’t concern the domain. Calling them nonfunctional downplays their importance. Other teams call them _system quality attributes,_ which implies an activity that happens at the end of the project rather than the beginning. Another common name is _cross-cutting requirements,_ which is the one we dislike the least—but it contains the word _requirement_ , which entangles it with domain behaviors, which come from requirements, as opposed to _capabilities_ , which are defined by architectural characteristics.
+- You’re probably most familiar with communication styles such as REST or HTTP, particularly when you need to call an API or another service. These are forms of **_synchronous communication_**. With synchronous (or “sync”) communication, when a service sends information, it must sit and wait for a response from the receiving service before doing anything else (even if it’s just acknowledging receipt of the information). This slows systems down and makes them less scalable. It’s like calling a friend—you have to wait for your phone to make a connection to your friend’s phone, let it ring, and wait for your friend to answer before you can talk.
+- **There’s a lot more to be said about software architecture.** We promise, you’re done with this book. But reading this book is just the first step in your journey to thinking architecturally, and we couldn’t in good conscience let you go without a little more preparation. So, we’ve gathered a few additional juicy bits into this appendix. Each of the topics that follow deserves as much attention as the other topics we’ve covered. However, our goal here is just to give you a high-level idea of what they’re all about. And yes, this really _is_ the end of the book. Except for the index, of course—it’s a real page-turner!
+- Neal Ford is director, software architect, and meme wrangler at ThoughtWorks, a global IT consultancy with a focus on end-to-end software development and delivery. He is also the designer and developer of many applications, articles, and video presentations and the author and/or editor of an increasingly large number of books, spanning a variety of subjects and technologies. His professional focus is designing and building large-scale enterprise applications. He is also an internationally acclaimed speaker who has spoken at more than 300 developer conferences worldwide and has delivered more than 2,000 presentations.

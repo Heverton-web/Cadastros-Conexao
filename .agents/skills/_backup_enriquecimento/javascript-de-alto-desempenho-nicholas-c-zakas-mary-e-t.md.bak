@@ -1,0 +1,33 @@
+---
+name: javascript-de-alto-desempenho-nicholas-c-zakas-mary-e-t
+description: >-
+  Passos operacionais extraidos do livro 'JavaScript de Alto Desempenho - Nicholas C Zakas; Mary E Treseler' (PT) — JavaScript Performance.
+---
+
+# Javascript De Alto Desempenho Nicholas C Zakas Mary E T — Passos Operacionais
+
+Skill baseada no livro 'Javascript De Alto Desempenho Nicholas C Zakas Mary E T'. Contem passos, tecnicas e principios extraidos diretamente da obra original.
+
+## 1. Conceitos Fundamentais
+
+- Essa� ementa çã�R�G�B��)���e�`za�8smo�rabalh��a�un�Santeri��sem�s��a��curs��.�in�pque��ve���yrativa�ك����o�Yser�1pouc��ais�At�b�;op�Ӄ3�8,�la����pres������acto� br��pilh�pe�hamadas�(������algoritmos�6�X�p�P�쀀 é�penas�����@�� �es�ispon íve� ��evit��err�Ѓ estou�0�X��.
+- Memo�h� ��a���!�ϑ��ςϑ��S�9� ��exces�q���V� �@�Xr� écnic� ��otim��r�@d��m�Hh��Qu����n�8�>seu� ódig�0i�@�)��r,�3r ápi�(el�xe�p����tad��D���jss��acioc ínio,�amb ém�az��nt� � � ��h��peti�B� ef�X�E�H�ـ8�0ef�@�s��vez���������P��perd í���*�ЀJ� ��.Љ���veni�р�ǉH��,�ʏ� (�ttion)� uma�as �� �abordagens�ispon íveis.�la�tua�alendo-se�o�rmazenamento�m�ach��e� álculos�r évi�Iara�so�uturo,��ue��orn��m�P écnica�special��e útil��algoritm�precursivos.
+- Qua� �8n çõe�gas� ão�hamad�pv ári�Aez�8dura�y��x����`�Hc ódig�� é�omum��haja�uita��pl����� ��.��,�� fac��� () ,�ntroduzid����rior�C� “R�r�� ”���� ótim� xempl�"�H� � pod��ser�Xpet�Ї�������.�onsidere�xsegu����:��blockquo��� � � ="left">�_�Zvar�x6 =�B��6);��/� �w�w� �w�w�w�w�u5�w�p5�w�w�w�w�w�w�w�w�w�24�w�p4�w�w�p�'� �/�'� Es� � �P�� .Ց�����tod�`� �}s�e ����cess ários� ão�fetuad�xna�rimeira�inha,�s�u�(seguinte�(��t êm�e��r�enhuma�ecur��,� á�ue�alor��armazen�Jem�ache é�"ser��retor� .
+
+## 2. Principios e Tecnicas
+
+- (�Xi���ɁR�o�9�ս��Ge)��pois� �� �ue�enhuma�orrespond ência�iver�ido�ncontrada é�a�egex�eclarar á�m�racasso�eral.
+- Uma�ez�ue�olicita ções�TTP� ão�m�os�argal�Hde� sempenho�ais�xtrem��no�jax,� du�`� ��seu� úmero�ecess ário�em� gran�0impacto�Xbre�?o�eral�a� ág��.�sso é��ialmente�prdadei�@qu���i��capaz���0con�0ter 100�����2agen����a ún���G��XHR�ultipa�P.��x��z���0tes� ad�oc �؇f�u���e��nav��or��modern���A�8tr�ȍr� a� éc��8�@4��10���ٌ�r ápi������� ������individu��.�xecu��oc ê�esmo���8��vis�؋ � http://techfoolery.�X/mxhr/��.
+- Combin� arquiv��JavaS� �}a���!���o������Segu�ya��pe�xce��al�er�2�ȉ�Yahoo!,� imei���`ossivel�Ae핹im��Ze��z�cac� r�wseu�1site,��pecia�Lno�*d�ؐ8p�� à��vi��� �(s�su�X��, é� redu� http://www.cnn.com/ ),�or�xemplo,�tiliza�s�ibliote�yPrototype��cript.aculo.us.�ua�ront��g� xibe�m�otal�� 12�s��terno�H�ais��20�loc���h�C�mb�Pdo��Uma�i����otim�� ção�eria��agrupamento��cial,���",����c ódig��m�� únic��rquivo�ava�ۅ-���xnuind��rast� Ae��n úmer���olicit�� ��(HTTP ss á� �lrend����da� ágina.
+
+## 3. Aplicacoes Praticas
+
+- (�0http://�ww.y��.��/�I)�a�He�@ ç���y��� ��exi�x��n úmero 90%��n��� o� � �(�y� e 83� �ytes�� �� �erem�aixados�o�ue� an�Xsua�i�0liza ção é�eita�om�ache�azio.��empo�e�da��ol�@(gasto�ntre��om�X��m�Ja� ágina��solic����Hispar�@�pv�� onload )�@ria��2,4�egu� s�ara 0,9�� ( http://yuiblog.�`/�I/2007/01/04/performance-research-�ht-2/ ).�in�X�9o�Xzena����seja�ais�ti�1� ��imagens,�le�o��e��v��r�s�Fto�)� � pon��es�st ático� inclu�H� quiv�XJavaScript.
+- (cujo��m�r���ȁ���yui.y�Aap�0�ȏa:�9����lh� �Wde� o� �ۑ"�H/��c�p/h� ing��,�8qu�ȕ��ǈ�jQu��,�oj� Prototyp���k.aculo.u��MooTool�@��,℀�sin� out����pst��i�q��� ���Ȕc�hGoog� �'�'�&ajax.g�J�7�7�7�7�1co�Ё�� ��/�alibs�����ד���� �D�"i�ѹ ��curs�h�Ǹ����?�������Q�k�O�H(de��y��)�����q�w����u� à�Ap� arquiv��� �xu� � s��m����,��s���ЀY��cu�ߢ s érie�e �� �comandos�hell�esses�osts,�specialmente�u�Q�e�tiliza�ma�DN�a�istribui ção䂐nov�0arqui�H.
+- Hڧ 0 ��Ҿ e��r@�I �'�Xg� � $g u��� �%�n��&�&����u��g �KW�#X$g�3�$��^�ҍ!��] �� �Eh!��)$��>�f1�[TP o����|;�]j���Q��9.` TG!PYpI# #�\�� ��o�j�`Y�U -� �O6BM� �&(2;`c 9�h� &��װ�gg%��hVW���5��Ϛ]��ɻi]�� �0]�7U3����b�'��j� ��� ��.
+
+## 4. Topicos Avancados
+
+- "ZE s}w'� �q�'ҷ���Ώ ww��Di=ޝ1��f�� �O �h F�Q� [���K[;8b2���p ���5 �>���p��(@.
+- FH� �� ��\ Ӯmln4�-කH���=�S�V/t�b��Z ��i�� �/ ���-��=M uc]� �ڐ���+��w �}k G�| ��5;X��ֶ��'�>�wg��W�����XJn"�V�!�d"�2 �9��~ ֵ�� ��z�Q��!
+- N��^�bfH��>8 L� �O i!# }�"p;� ������ �f�v� �k]~���w ��� G �� e1�2� S��ks�����d�����z�GpZ��)X~蜐 ��'��+��GҢ�y#�� I�YYm� � b u�"�0$��D svb���(ue;�0��| ��PϨވ&�Y Wim �B1�v # ��ں&�ݑP�)E���`})� O"�� ��PH�P f�s"�v���m���x���� �� k ][S �m � �h�$ �F���| �gmu�$S�١� � sB�j ,8 �p�w�@ ��I���)Zde ;p[��V*5*� �S�� �ߕ :�n� �[� �-�P ��M���~T�� �oʀ9� J �j�Gq �M��ZG1�m��� s ~9�� �� �7�v3eHo=� ӯE� ��z)� �� g_1I*� T�� ��=#H���V�� � Z|��&Frų�@ {�/ �u #:W�og5� ��9Jl??$� �c�ՍG  [...

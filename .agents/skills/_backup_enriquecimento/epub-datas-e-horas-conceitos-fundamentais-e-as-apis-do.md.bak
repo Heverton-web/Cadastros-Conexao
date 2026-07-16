@@ -1,0 +1,57 @@
+---
+name: epub-datas-e-horas-conceitos-fundamentais-e-as-apis-do
+description: >-
+  Passos operacionais extraidos do livro 'EPUB Datas e horas conceitos fundamentais e as APIs do Java' (PT) — Java.
+---
+
+# Epub Datas E Horas Conceitos Fundamentais E As Apis Do — Passos Operacionais
+
+Conteudo extraido do livro 'Epub Datas E Horas Conceitos Fundamentais E As Apis Do'. Contem passos, tecnicas e principios baseados na obra original.
+
+## 1. Conceitos Fundamentais
+- page_002 Sumário ISBN Agradecimentos Sobre o autor Prefácio Pré-requisitos e convenções Conceitos fundamentais de data e hora 1 Que dia é hoje?
+- Que horas são? 2 Fusos horários e os timezones 3 Nomenclatura dos timezones e formatos de data 4 O Unix Epoch e os timestamps 5 Durações e a bizarra aritmética de datas 6 E vamos ao código?
+- A Stephen Colebourne, por ter criado duas das minhas APIs de data favoritas.
+- E a Arthur David Olson, pois sem ele estaríamos literalmente perdidos no tempo.  page_005 Sobre o autor Hugo Kotsubo é Bacharel em Ciência da Computação pela USP e desenvolvedor Java desde 2000, com foco em aplicações web.
+- Possui certificação SCJP e atualmente trabalha com Java no front-end e às vezes no back-end.
+- Também flerta com outras linguagens (Python, Ruby, Shell Script, Scala) e é fascinado pela complexidade - nem sempre aparente - que envolve datas e horas.
+- Já escreveu muito código para lidar com datas, e entre um bug e outro, aprendeu bastante a respeito disso.
+- Código que só falha no horário de verão, ou que depende do fuso horário configurado no servidor, entre outras situações estranhas que só as datas e horas nos proporcionam, são ao mesmo tempo fontes de inspiração e raiva, de motivação para entender mais e indignação por serem tão desnecessariamente complicadas.  page_006 Prefácio Toda aplicação precisa, em algum momento, lidar com datas.
+- Seja com os casos mais simples, como uma data de nascimento no cadastro de usuários, até os mais complexos, como um rastreamento completo de todos os eventos ocorridos com determinado produto, desde a sua confecção até a venda, com data e hora exatas em que cada etapa ocorreu, além de geração de relatórios das vendas do último mês, e assim por diante.
+- Inicialmente, pensamos ser algo simples, afinal, datas e horas são coisas tão banais no cotidiano que nem nos damos conta da complexidade escondida por trás destes conceitos.
+
+## 2. Principios e Tecnicas
+- Ao tratar algo complexo com uma abordagem simplista, corremos o risco de não pensar em todos os erros que podem acontecer.
+- Simplesmente porque nem sequer imaginamos que eles possam ocorrer.
+- Um exemplo: imagine uma rede varejista que tem sua matriz em São Paulo, mas possui um e—commerce que entrega em todo o Brasil.
+- Suponha que um gerente pediu um relatório de todas as compras feitas no site, em janeiro de 2018, em todo o país.
+- Uma das compras foi feita por um cliente que estava em Manaus, no dia 31 de janeiro de 2018, às 23:00 (horário local).
+- Porém, esta compra não aparece no relatório.
+- Depois de muita investigação, descobre-se que a aplicação que extraiu o relatório está convertendo todas as datas para o fuso horário de São Paulo.
+- E 31 de janeiro de 2018, às 23:00 em Manaus é equivalente a 1º de fevereiro de 2018, às 01:00 em São Paulo (lembre-se de que São Paulo estava em horário de verão neste dia, daí a diferença de 2 horas).
+- Por isso, aquela compra não está aparecendo no relatório de janeiro.
+- Muitas vezes nem é culpa de quem desenvolve - ao menos não diretamente - pois, dependendo da API utilizada, essas conversões acontecem internamente, "por debaixo dos panos", sem que o desenvolvedor sequer perceba.
+
+## 3. Aplicacoes Praticas
+- E podemos até debater quem é o real culpado: quem desenvolve, por não conhecer os detalhes intrínsecos que envolvem a programação com datas, ou os criadores da API utilizada, por não terem feito algo mais fácil de usar e entender?
+- Mas o fato é que no fim das contas o problema deve ser corrigido.
+- Claro que há uma decisão de negócio envolvida (considerar o horário do cliente ou o horário de São Paulo?), mas, uma vez tomada esta decisão, o desenvolvedor deve saber como alterar seu código para que siga a regra desejada.
+- Para saber exatamente o que fazer, é essencial ter um conhecimento maior sobre todos os conceitos e detalhes envolvendo datas e horas.
+- Sem saber como funcionam os fusos horários e demais conceitos, e como sua linguagem ou framework trabalha com eles, não é possível escrever um código confiável.
+- Como eu sei que estou considerando este ou aquele fuso horário?
+- Como meu código vai se comportar no exato momento em que ocorre a mudança para o horário de verão?
+- Como eu sei que estou usando a data correta?
+- Este livro tratará estas e muitas outras questões envolvendo datas.
+- A primeira parte explicará todos os conceitos importantes do ponto de vista de quem desenvolve o software.
+
+## 4. Topicos Avancados
+- Portanto, serão desconsiderados conceitos como relatividade e outros não diretamente relacionados à manipulação de datas em aplicações.
+- Ao mesmo tempo, essa parte terá algo a oferecer a todos que trabalham com desenvolvimento, já que não foca em nenhuma tecnologia ou linguagem específica.
+- No restante do livro cobriremos as APIs da linguagem Java, começando com java.util.Date e java.util.Calendar , e por fim a API java.time , introduzida no Java 8, e que é muito superior à API antiga, em vários aspectos que serão explicados ao longo do livro.
+- Muitos argumentam que, por existir uma nova API, não é mais necessário aprender Date e Calendar .
+- Apesar de concordar que as aplicações devam usar o java.time sempre que possível, ainda há muito código legado e bibliotecas antigas — porém muito utilizadas — que dependem de Date e Calendar , e é importante saber como elas funcionam para que a migração seja feita da forma correta.
+- Por serem limitadas e cheias de problemas, há muito código que usa estas classes de maneiras não convencionais – justamente para tentar contornar suas limitações, ou até mesmo por desconhecimento – ou que não se comportam de maneira muito intuitiva, por isso nem sempre é trivial migrar para a nova API.
+- E se você não programa em Java, ainda assim poderá aproveitar um pouco da segunda e terceira partes do livro.
+- Apesar de terem muito código, estes capítulos também aprofundarão alguns conceitos e discutirão casos de uso e situações práticas que não aparecem na primeira parte.  page_007 Pré-requisitos e convenções A primeira parte deste livro é conceitual e não depende de nenhuma tecnologia específica, portanto não há nenhum conhecimento técnico prévio como pré-requisito.
+- Para o restante, é necessário o mínimo de familiaridade com Java, para que os códigos possam ser entendidos.
+- Assume-se que você saiba pelo menos o básico da linguagem.

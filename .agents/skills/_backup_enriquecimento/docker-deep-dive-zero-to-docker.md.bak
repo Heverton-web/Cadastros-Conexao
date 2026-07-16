@@ -1,0 +1,57 @@
+---
+name: docker-deep-dive-zero-to-docker-in-a-single-book-n
+description: >-
+  Passos operacionais extraidos do livro 'Docker Deep Dive Zero to Docker in a single book - Nigel Poulton' (PT) — praticas e procedimentos para DevOps, infraestrutura e containers.
+---
+
+# Docker Deep Dive Zero To Docker — Passos Operacionais
+
+Conteudo extraido do livro 'Docker Deep Dive Zero To Docker'. Contem passos, tecnicas e principios baseados na obra original.
+
+## 1. Conceitos Fundamentais
+- He's the author of best-selling books on Docker and Kubernetes, and is the author of **[AI Explained: Facts, Fiction, and Future](https://www.amazon.com/dp/B0DHHK2R85)** , an exciting read into the impacts of AI on society and the future of humanity. .
+- Nigel is a Docker Captain and has held senior technology roles at large and small enterprises.
+- In his free time, he listens to audiobooks and coaches youth football (soccer).
+- He wishes he lived in the future and could understand the mysteries of life and the universe.
+- He’s passionate about learning, cars, and football.
+- He lives in England with his fabulous wife and three children.  • LinkedIn: [ Nigel Poulton](https://linkedin.com/in/nigelpoulton)  • Web: [ nigelpoulton.com](https://nigelpoulton.com)  • BlueSky: [@nigelpoulton](https://bsky.app/profile/nigelpoulton.bsky.social)  • X: [@nigelpoulton](https://twitter.com/nigelpoulton)  • Email: ddd@nigelpoulton.com   # About this edition  This edition was published in January 2025 and is up to date with the latest industry trends and the latest enhancements to Docker.
+- Major changes include:   \- Added AI content — new AI chatbot app that uses Ollama and LLMs  \- Updates to BuildKit, buildx, and Docker Build Cloud  \- Updates to include the GA version of the **docker init** command  \- Updates to Docker Debug content  \- Updates to Wasm content       Enjoy the book and get ready to master containers!
+- (c) 2025 Nigel Poulton                       ## 0: About the book  This **2025 edition** gets you up to speed with Docker and containers fast.
+- No prior experience required.  #### Why should I read this book or care about Docker?
+- Docker has already changed how we build, share, and run applications, and it’s poised to play a major role with emerging technologies such as Wasm and AI.
+
+## 2. Principios e Tecnicas
+- So, if you want the best jobs working with the best technologies, you need a strong Docker skillset.
+- It will even give you a head start learning and working with Kubernetes.  #### How I’ve organized the book  I’ve divided the book into two main sections:    1.
+- The technical stuff    **The big picture stuff** gets you up to speed with the basics, such as _what Docker is, why we use containers,_ and fundamental jargon such as _cloud-native, microservices,_ and _orchestration._  **The technical stuff** section covers everything you need to know about _images, containers, multi-container microservices apps,_ and the increasingly important topic of _orchestration_.
+- As a result, I’m committed to updating the book every year.
+- If that sounds excessive, welcome to the new normal.
+- The book is available in hardback, paperback, and e-book on all good book publishing platforms.  #### Kindle updates  Unfortunately, Kindle readers cannot get updates — even if you delete the book and buy it again, you’ll get the older version you originally purchased.
+- I have no control over this and was devastated when this change happened.  #### Feedback  If you like the book and it helps your career, share the love by recommending it to a friend and leaving a review on Amazon or Goodreads.
+- If you spot a typo or want to make a recommendation, email me at **ddd@nigelpoulton.com** and I’ll do my best to respond.
+- Let’s get rocking with Docker!   # Part 1: The big picture stuff   ## 1: Containers from 30,000 feet  Containers have taken over the world!
+- In this chapter, you’ll learn why we have containers, what they do for us, and where we can use them.  ### The bad old days  Applications are the powerhouse of every modern business.
+
+## 3. Aplicacoes Praticas
+- When applications break, businesses break.
+- Most applications run on servers, and in the past, we were limited to running one application per server.
+- As a result, the story went something like this:  Every time a business needed a new application, it had to buy a new server.
+- Unfortunately, we weren’t very good at modeling the performance requirements of new applications, and we had to guess.
+- This resulted in businesses buying bigger, faster, and more expensive servers than necessary.
+- After all, nobody wanted underpowered servers incapable of handling the app, resulting in unhappy customers and lost revenue.
+- As a result, we ended up with racks and racks of overpowered servers operating as low as 5-10% of their potential capacity.
+- This was a tragic waste of company capital and environmental resources.  ### Hello VMware!
+- Amid all this, VMware, Inc. gave the world a gift — the _virtual machine (VM)_ — a technology that allowed us to run multiple business applications on a single server safely.
+- Businesses could run new apps on the spare capacity of existing servers, spawning a golden age of maximizing the value of existing assets.  ### VMwarts  But, and there’s always a _but!_ As great as VMs are, they’re far from perfect.
+
+## 4. Topicos Avancados
+- For example, every VM needs its own dedicated operating system (OS).
+- Unfortunately, this has several drawbacks, including:    * Every OS consumes CPU, RAM, and other resources we’d rather use on applications   * Every VM and OS needs patching   * Every VM and OS needs monitoring    VMs are also slow to boot and not very portable.  ### Hello Containers!
+- While most of us were reaping the benefits of VMs, web scalers like Google had already moved on from VMs and were using containers.
+- A feature of the container model is that every container shares the OS of the host it’s running on.
+- This means a single host can run more containers than VMs.
+- For example, a host that can run 10 VMs might be able to run 50 containers, making containers far more efficient than VMs.
+- Containers are also faster and more portable than VMs.  ### Linux containers  Modern containers started in the Linux world and are the product of incredible work from many people over many years.
+- For example, Google contributed many container-related technologies to the Linux kernel.
+- It’s thanks to many contributions like these that we have containers today.
+- Some of the major technologies underpinning modern containers include _kernel namespaces, control groups (cgroups),_ and _capabilities._  However, despite all this great work, containers were incredibly complicated, and it wasn’t until Docker came along that they became accessible to the masses.  > **Note:** I know that many container-like technologies pre-date Docker and modern containers.

@@ -1,0 +1,57 @@
+---
+name: sql-crash-course-thomas-liddle
+description: >-
+  Passos operacionais extraidos do livro 'SQL Crash Course - Thomas Liddle' (EN) — Banco de Dados.
+---
+
+# Sql Crash Course Thomas Liddle — Passos Operacionais
+
+Conteudo extraido do livro 'Sql Crash Course Thomas Liddle'. Contem passos, tecnicas e principios baseados na obra original.
+
+## 1. Conceitos Fundamentais
+- SQL Crash Course .koboSpan { -webkit-text-combine: inherit; } C HAPTER 9 SQL Performance Optimization Introduction In this chapter, you will focus on SQL performance optimization techniques that enhance query efficiency and improve overall database performance.
+- You will begin by understanding query execution plans, a critical tool for analyzing how your queries interact with the database.
+- You will then explore indexing strategies to speed up data retrieval, optimize joins for complex table relationships, and refine subqueries for better resource management.
+- Additionally, you will learn to identify and avoid common performance pitfalls that can slow down your queries.
+- By mastering these techniques, you will gain the skills to write efficient SQL queries that handle large datasets with precision and speed.
+- Structure This chapter covers the following topics: Understanding execution plans Indexing strategies Optimizing joins Optimizing subqueries Avoiding common pitfalls Objectives By the end of this chapter, you will be equipped with the knowledge and skills to optimize SQL queries for maximum performance and efficiency.
+- You will understand how to interpret query execution plans to identify bottlenecks and make informed improvements.
+- You will learn effective indexing strategies to enhance data retrieval speed and optimize joins, thereby streamlining complex table relationships.
+- Additionally, you will refine your use of subqueries, minimizing resource consumption and improving query execution times.
+- Ultimately, you will be able to identify and avoid common performance pitfalls, ensuring that your SQL queries execute efficiently, even when working with large datasets.
+
+## 2. Principios e Tecnicas
+- These optimization techniques will enable you to manage database performance with confidence and precision.
+- Understanding execution plans A query execution plan is a detailed breakdown of how a database management system ( DBMS ) processes a SQL query.
+- It reveals the database engine's steps for retrieving or manipulating data and provides valuable insight into the query's efficiency.
+- Understanding query execution plans is essential for optimizing SQL performance, as it helps identify potential bottlenecks and inefficiencies in query processing.
+- Accessing query execution plans In most relational databases, including the Sakila sample database, you can generate an execution plan using commands specific to the database system.
+- For example, in SQLite, you use the EXPLAIN keyword to obtain an execution plan for a query.
+- Consider the following query to retrieve rental data from the Sakila database: EXPLAIN SELECT rental_id, customer_id, rental_date FROM rental WHERE rental_date &gt; '2005-05-25'; The output of this command provides information about how the database processes the query, including details about table access methods, indexes used, and the estimated number of rows scanned.
+- Understanding these details is the first step toward identifying areas for improvement.
+- Key elements of an execution plan An execution plan typically consists of several essential components that describe how the query is executed.
+- Let us look at them in detail: Table access methods : This indicates how the database retrieves rows from a table.
+
+## 3. Aplicacoes Praticas
+- Common methods include full table scans, index scans, and range scans.
+- For example, in the Sakila database, if the rental_date column in the rental table is indexed, the preceding query above may use an index range scan to optimize performance.
+- Join methods : For queries involving multiple tables, the execution plan outlines the join method used, such as nested loop joins, hash joins, or merge joins.
+- For instance, consider a query that retrieves rental and customer information: EXPLAIN SELECT r.rental_id, c.first_name, c.last_name FROM rental r JOIN customer c ON r.customer_id = c.customer_id WHERE r.rental_date &gt; '2005-05-25'; The execution plan for this query will specify how the database joins the rental and customer tables, including the order of the joins and whether indexes are used.
+- Filter conditions : This shows the conditions applied to filter rows, such as WHERE clauses or join conditions.
+- Understanding how these conditions are evaluated helps ensure that only necessary rows are processed.
+- Cost estimates : M any databases provide an estimated cost for each query step, reflecting the expected resource usage.
+- High-cost steps indicate areas where optimization is needed.
+- Analyzing common performance issues Execution plans can help identify several common performance issues.
+- One frequent problem is using a full table scan, which occurs when the database reads every row in a table to find matching results.
+
+## 4. Topicos Avancados
+- This is often inefficient for large tables, as seen in the following query: SELECT rental_id, customer_id FROM rental WHERE rental_date = '2005-05-25'; If the rental_date column lacks an index, the database must scan the entire rental table to locate matching rows.
+- Adding an index on rental_date can significantly reduce the number of rows scanned, as shown in an updated execution plan.
+- Another area for improvement is efficient joins, where the database uses a suboptimal method to combine tables.
+- For example, a nested loop may perform poorly if the join condition does not use indexed columns.
+- By examining the join order and method in the execution plan, you can determine whether adding indexes or restructuring the query will improve performance.
+- Using indexes to improve execution plans Indexes play a critical role in optimizing query performance, and their impact is often reflected in the execution plan.
+- When an index is available for a query condition, the database can use an index scan instead of a full table scan, reducing the number of rows processed.
+- For instance, adding an index on the rental_date column in the rental table improves the performance of queries filtering by date: CREATE INDEX idx_rental_date ON rental (rental_date); After adding this index, running the EXPLAIN command on queries with conditions on rental_date will show an index range scan in the execution plan, indicating that the database is leveraging the index for faster row retrieval.
+- Interpreting key metrics in the plan When analyzing an execution plan, focus on specific metrics that indicate query performance.
+- The rows column, for example, shows the estimated number of rows the database expects to process at each step.

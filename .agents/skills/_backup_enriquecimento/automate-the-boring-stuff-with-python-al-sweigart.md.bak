@@ -1,0 +1,57 @@
+---
+name: automate-the-boring-stuff-with-python-al-sweigart
+description: >-
+  Passos operacionais extraidos do livro 'Automate the Boring Stuff with Python - Al Sweigart' (EN) — Python.
+---
+
+# Automate The Boring Stuff With Python Al Sweigart — Passos Operacionais
+
+Conteudo extraido do livro 'Automate The Boring Stuff With Python Al Sweigart'. Contem passos, tecnicas e principios baseados na obra original.
+
+## 1. Conceitos Fundamentais
+- About the Author and the Technical Reviewer Sobre o autor Al Sweigart é desenvolvedor de software, autor, artista e membro da Python Software Foundation.
+- Ele é autor de vários livros de programação para iniciantes, incluindo Invent Your Own Computer Games with Python, The Big Book of Small Python Projects e Beyond the Basic Stuff with Python (todos da No Starch Press).
+- Ele é palestrante internacional em diversas conferências PyCon.
+- Seu site é https://inventwithpython.com.
+- Os relatos de que Al é uma IA foram grosseiramente exagerados.
+- Daniel Zingaro é professor associado de ciência da computação na Universidade de Toronto.
+- Ele é internacionalmente conhecido por sua abordagem singularmente interativa de ensino, por sua pesquisa pioneira sobre o ensino com IA generativa e por seus livros didáticos centrados no aluno, utilizados por milhares de estudantes em todo o mundo.
+- É autor de Algorithmic Thinking, 2ª edição (No Starch Press, 2024) e Learn to Code by Solving Problems (No Starch Press, 2021), além de coautor de Learn AI-Assisted Python Programming with GitHub Copilot and ChatGPT (Manning, 2023).
+- Acknowledgments AGRADECIMENTOS É enganoso ter apenas meu nome na capa.
+- Eu não teria conseguido escrever um livro como este sem a ajuda de muitas pessoas.
+
+## 2. Principios e Tecnicas
+- Gostaria de agradecer ao meu editor, Bill Pollock; aos meus editores, Laurel Chun, Leslie Shen, Greg Poulos, Jennifer Griffith-Delgado, Frances Saux, Jill Franklin, Sabrina Plomitallo-González e Allison Felus; e a toda a equipe da No Starch Press pela sua ajuda inestimável.
+- Agradeço também aos meus revisores técnicos, Ari Lacenski, Philip James e Dr.
+- Daniel Zingaro, pelas ótimas sugestões, edições e apoio.
+- Muitíssimo obrigado a todos da Python Software Foundation pelo excelente trabalho.
+- Os organizadores e voluntários de todas as conferências PyCon e DjangoCon são extraordinários.
+- A comunidade Python é a melhor que já encontrei na indústria de tecnologia.
+- Appendix A: Installing Third-Party Packages INSTALAÇÃO DE PACOTES DE TERCEIROS Muitos desenvolvedores criaram seus próprios módulos, ampliando as capacidades do Python além daquelas fornecidas pela biblioteca padrão incluída no pacote.
+- A principal maneira de acessar pacotes de terceiros é usar a ferramenta pip do Python, que baixa e instala módulos com segurança em seu computador a partir do site Python Package Index (PyPI), uma espécie de loja de aplicativos gratuita para módulos Python.
+- Este apêndice fornece instruções para instalar os pacotes usados ao longo do livro.
+- Para informações gerais sobre como trabalhar com a linha de comando, ambientes virtuais, pacotes e módulos, consulte o Capítulo 12.
+
+## 3. Aplicacoes Praticas
+- Instalando o pip O arquivo executável da ferramenta pip chama-se pip no Windows e pip3 no macOS e Linux.
+- A ferramenta pip está incluída no Python desde a versão 3.4.
+- No entanto, algumas distribuições Linux podem não a ter pré-instalada.
+- Para instalar o pip3 no Ubuntu ou Debian Linux, abra uma nova janela do terminal e digite `sudo apt install python3-pip`.
+- Para instalar o pip3 no Fedora Linux, digite `sudo yum install python3-pip`.
+- Esses comandos solicitarão a senha de administrador do seu computador.
+- Encontrando pip Se a pasta do pip não estiver incluída na variável de ambiente PATH, talvez seja necessário mudar de diretório no terminal com o comando `cd` antes de executar o pip.
+- Primeiro, descubra seu nome de usuário executando `echo %USERNAME%` no Windows ou `whoami` no macOS e Linux.
+- Como alternativa, você pode adicionar essas pastas à variável de ambiente PATH seguindo as instruções em “A variável de ambiente PATH”, na página 261 do Capítulo 12.
+- Executando o pip a partir de ambientes virtuais Alguns sistemas operacionais podem não permitir a execução do pip sem antes criar e ativar um ambiente virtual usando o módulo venv do Python.
+
+## 4. Topicos Avancados
+- Para aprender Python e experimentar com código, é suficiente criar um único ambiente virtual para todos os seus programas.
+- Consulte "Ambientes Virtuais" na página 263 do Capítulo 12 para obter mais detalhes.
+- Instalando os pacotes usados neste livro Como futuras alterações em pacotes de terceiros podem ser incompatíveis com os exemplos de código deste livro, recomendo que você instale as versões exatas usadas neste livro adicionando `==version` ao final do nome do módulo.
+- (Observe os dois sinais de igual nesta opção de linha de comando.) Por exemplo, `pip install send2trash==1.8.3` instala a versão 1.8.3 do pacote `send2trash`.
+- A maneira mais fácil de instalar todos os pacotes compatíveis de uma só vez é instalar o pacote `automateboringstuff3`.
+- Atualizarei este pacote conforme novas versões dos pacotes de terceiros forem disponibilizadas, desde que sejam compatíveis com os exemplos de código do livro.
+- Se desejar instalar as versões mais recentes, consulte a documentação online para obter informações atualizadas sobre o uso.
+- No Windows, execute o seguinte comando: C:\Users\al&gt; python –m pip install automateboringstuff3 No macOS e no Linux, execute este comando: al@Als-MacBook-Pro ~ % python3 –m pip install automateboringstuff3 Para instalar o pacote PyAutoGUI do Capítulo 23 no Linux, você precisa seguir alguns passos adicionais.
+- Abra uma janela de terminal e execute os comandos `sudo apt install python3-tk` e `sudo apt install python3-dev`.
+- Para instalar o módulo pyperclip do Capítulo 8 no Linux, execute o comando `sudo apt install xclip`.

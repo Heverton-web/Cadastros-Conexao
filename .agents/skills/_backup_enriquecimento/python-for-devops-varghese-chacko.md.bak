@@ -1,0 +1,57 @@
+---
+name: python-for-devops-varghese-chacko
+description: >-
+  Passos operacionais extraidos do livro 'Python for DevOps - Varghese Chacko' (EN) — Python.
+---
+
+# Python For Devops Varghese Chacko — Passos Operacionais
+
+Conteudo extraido do livro 'Python For Devops Varghese Chacko'. Contem passos, tecnicas e principios baseados na obra original.
+
+## 1. Conceitos Fundamentais
+- Python for DevOps Acknowledgement It is hard to put into words just how grateful I am, but here goes.
+- First, a huge thanks to The Almighty, I have had my fair share of challenges, and I couldn’t have made it through without that guiding force.
+- Next up, a huge shout-out to my family.
+- They have been cheering me on since day one, even when my own confidence was at rock bottom.
+- Their patience, understanding, and downright unwavering belief in me made all the difference.
+- I also want to express my deepest appreciation to Rev.
+- Abraham Mulamootil, Founding Director of MACFAST, Tiruvalla, Kerala.
+- His visionary leadership reminded me that dreaming big is not just okay, it is essential to dream big.
+- Ignatius Kunjumon from CUSAT, Kochi, thank you for teaching me how to explore technology’s endless ocean without getting lost in the waves.
+- A warm, heartfelt thanks go to Priya Mary Philip, Director at Atemon.com.
+
+## 2. Principios e Tecnicas
+- She offered the kind of insight and direction that made me see possibilities I would never even consider, and I am incredibly grateful to Jothish Kumar T, CEO of Geesesquads.com, whose unwavering belief in me felt like a gust of wind propelling me forward when I was running out of steam.
+- I cannot forget the leadership team at Nuvento.com, CEO Suraj Arukil, CTO Jojith R, COO Mohanakannan, and CDO Ramesh Iyengar for stepping in with just the right mix of support and motivation.
+- I am also thankful to Nitesh Gawade, Director of the Life Purpose Coach Community, who nudged me toward discovering what truly sparks my passion.
+- I am also grateful to the President of CyberSurfers.com Christopher J.
+- Dopler, and CTO Paul Preston, The CEO of Hubspire.com Thomas Abraham, who mentored me in early years of my career.
+- I am grateful to all my teachers, mentors, colleagues, friends, and relatives for this achievement as they have played their own role in moulding me and helping me to reach this point.
+- I thank BPB Publications enough for their support throughout this publishing journey.
+- It was never a straightforward process, but they made it so much smoother, and I truly appreciate that.
+- A big thank you also goes to the reviewers, technical experts, and editors, your insights and feedback were invaluable in shaping this book, and I am grateful for all the efforts you put in.
+- Your keen eyes and thoughtful suggestions played a big role in shaping this book into something I can truly stand behind.
+
+## 3. Aplicacoes Praticas
+- I appreciate every single one of you.
+- Python for DevOps About the Author Varghese Chacko, an experienced technology leader, has a proven track record of leading transformational and innovative solutions across industries.
+- In his current role as director of technology at Nuvento Inc, he spearheads the transformation of customer accounts from proof-of-concept experiments to long-term strategic partnerships, overseeing many development teams and the complete life cycle of the software delivery process.
+- Varghese also has previous experience serving as a key executive at well-respected organizations, including Atemon, Nuventure, Hubspire, and CyberSurfers, where he has continuously pushed for innovative technology solutions while fostering business growth.
+- Varghese is a current DBA candidate in emerging technologies, with a focus on the study of generative AI, at Golden Gate University, San Francisco, California, USA.
+- Academically, he is currently dedicated to leveraging artificial intelligence ( AI ), retrieval-augmented generation ( RAG ), and generative AI ( GenAI ) to disrupt businesses and software development.
+- Always looking to adopt the latest development tools and practices, Varghese regularly explores solutions on using AI with automation, DevOps, and other software delivery pipelines.
+- He was also on the Board of Studies of the Sahrdaya College of Engineering and Technology (Autonomous), Thrissur, Kerala as industry representative, helping to shape the academic syllabus structured around industry needs, alongside his corporate commitments.
+- He draws on both this learning and his professional experience in his LinkedIn newsletter, also JotLore, where he tracks new trends and ideas in information technology.
+- He holds an MCA degree from Mahatma Gandhi University and a BSc in Physics from the University of Kerala, which has laid the groundwork for a strong career.
+
+## 4. Topicos Avancados
+- Expert in AI, GenAI, Python, DevOps, Linux administration, and Agile practices, Varghese strives to remain the thought leader in software development, automation, and emerging technologies.
+- He is a technology enthusiast, who blogs on the side, mentors young professionals, and keeps his nose to the ground on the path of innovation.
+- Python for DevOps About the Reviewers Martin Yanev is a highly accomplished software engineer with a wealth of expertise spanning diverse industries, including aerospace and medical technologies.
+- With an illustrious career of over eight years, Martin has carved a niche for himself in developing and seamlessly integrating cutting-edge software solutions for critical domains such as air traffic control and chromatography systems.
+- Martin is renowned as an esteemed instructor and a computer science professor at Fitchburg State University.
+- His instructional prowess shines through as he imparts knowledge and guidance, leveraging his extensive proficiency in frameworks such as Flask, Django, Pytest, and TensorFlow.
+- Possessing a deep understanding of the complete spectrum of OpenAI APIs, Martin exhibits mastery in constructing, training, and fine-tuning AI systems.
+- Martin's commitment to excellence is exemplified by his dual master's degrees in aerospace systems and software engineering.
+- With his exceptional track record and multifaceted skill set, Martin continues to propel innovation and drive transformative advancements in the field of software engineering.
+- Stenal P Jolly is a seasoned senior cloud architect/senior software engineer at Google, where he drives innovation through robust cloud-based solutions and digital transformation initiatives.

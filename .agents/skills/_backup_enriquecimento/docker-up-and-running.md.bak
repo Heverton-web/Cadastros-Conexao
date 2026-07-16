@@ -1,0 +1,57 @@
+---
+name: docker-up-and-running
+description: >-
+  Passos operacionais extraidos do livro 'Docker Up and Running' (EN) — praticas e procedimentos para DevOps, infraestrutura e containers.
+---
+
+# Docker Up And Running — Passos Operacionais
+
+Conteudo extraido do livro 'Docker Up And Running'. Contem passos, tecnicas e principios baseados na obra original.
+
+## 1. Conceitos Fundamentais
+- Introduction  Docker was first introduced to the world—with no pre-announcement and little fanfare—by Solomon Hykes, founder and CEO of a company then called dotCloud, in a five-minute [lightning talk](https://youtu.be/wW9CAH9nSLs) at the [Python Developers Conference](https://us.pycon.org) in Santa Clara, California, on March 15, 2013.
+- At the time of this announcement, only about 40 people outside of dotCloud had been given the opportunity to play with Docker.
+- Within a few weeks of this announcement, there was a surprising amount of press.
+- The source code was quickly released on [GitHub](https://github.com/moby/moby) as a public and fully open source project.
+- Over the next few months, more and more people in the industry started hearing about Docker and how it was going to revolutionize the way software was built, delivered, and run.
+- And within a year, almost no one in the industry was unaware of Docker, but many were still unsure what it was exactly, and why people were so excited about it.
+- Docker is a tool that promises to easily encapsulate the process of creating a distributable artifact for any application, deploying it at scale into any environment, and streamlining the workflow and responsiveness of Agile software organizations.  # The Promise of Docker  Initially, many people who were unfamiliar with Docker viewed it as some sort of virtualization platform, but in reality, it was the first widely accessible tool to build on top of a much newer technology called _containerization_.
+- Docker and Linux containers have had a significant impact on a wide range of industry segments that include tools and technologies like Vagrant, KVM, OpenStack, Mesos, Capistrano, Ansible, Chef, Puppet, and so on.
+- There is something very telling about the list of products that have had their market share directly impacted by Docker, and maybe you’ve spotted it already.
+- Looking over this list, most engineers would recognize that these tools span a lot of different use cases, yet all of these workflows have been forever changed by Docker.
+
+## 2. Principios e Tecnicas
+- This is largely because Docker has significantly altered everyone’s expectations of how a continuous integration and continuous delivery (CI/CD) workflow should function.
+- Instead of each step involving a time-consuming process managed by specialists, most people expect a DevOps pipeline to be fully automated and flow from one step to the next without any human intervention.
+- The technologies in that list are also generally acclaimed for their ability to improve productivity, and that’s exactly what has given Docker so much buzz.
+- Docker sits right in the middle of some of the most enabling technologies of the last decade and can bring significant improvements to almost every step of the pipeline.
+- If you were to do a feature-by-feature comparison of Docker and the reigning champion in any of these individual areas (e.g., configuration management), Docker would very likely look like a middling competitor.
+- It’s stronger in some areas than others, but what Docker brings to the table is a feature set that crosses a broad range of workflow challenges.
+- By combining the ease of application testing and deployment tools like Vagrant and Capistrano with the ease of administrating virtualization systems, and then providing interfaces that make workflow automation and orchestration easy to implement, Docker provides a very enabling feature set.
+- Lots of new technologies come and go, and a dose of skepticism about the newest rage is always healthy.
+- When Docker was a new technology, it would have been easy to dismiss Docker as just another technology that solves a few very specific problems for developers or operations teams.
+- If you look at Docker as a pseudovirtualization or deployment technology alone, it might not seem very compelling.
+
+## 3. Aplicacoes Praticas
+- But Docker is much more than it seems on the surface.
+- It is hard and often expensive to get communication and processes right between teams of people, even in smaller organizations.
+- Yet we live in a world where communicating detailed information between teams is increasingly required to be successful.
+- Discovering and implementing a tool that reduces the complexity of that communication while aiding in the production of more robust software is a big win.
+- And that’s exactly why Docker merits a deeper look.
+- It’s no panacea, and the way that you implement Docker within your organization requires some critical thought, but Docker and Linux containers provide a good approach to solving some real-world organizational problems and helping enable companies to ship better software faster.
+- Delivering a well-designed Linux container workflow can lead to happier technical teams and real savings for the organization’s bottom line.
+- So where are companies feeling the most pain?
+- Shipping software at the speed expected in today’s world is hard to do well, and as companies grow from one or two developers to many teams of developers, the burden of communication around shipping new releases becomes much heavier and harder to manage.
+- Developers have to understand a lot of complexity about the environment they will be shipping software into, and production operations teams need to increasingly understand the internals of the software they ship.
+
+## 4. Topicos Avancados
+- These are all generally good skills to work on because they lead to a better understanding of the environment as a whole and therefore encourage the designing of robust software, but these same skills are very difficult to scale effectively as an organization’s growth accelerates.
+- The details of each company’s environment often require a lot of communication that doesn’t directly build value for the teams involved.
+- For example, requiring developers to ask an operations team for release 1.2.1 of a particular library slows them down and provides no direct business value to the company.
+- If developers could simply upgrade the version of the library they use, write their code, test with the new version, and ship it, the delivery time would be measurably shortened, and fewer risks would be involved in deploying the change.
+- If operations engineers could upgrade software on the host system without having to coordinate with multiple teams of application developers, they could move faster.
+- Docker helps to build a layer of isolation in software that reduces the burden of communication in the world of humans.
+- Beyond helping with communication issues, Docker is opinionated about software architecture in a way that encourages more robustly crafted applications.
+- Its architectural philosophy centers on atomic or throwaway containers.
+- During deployment, the whole running environment of the old application is thrown away with it.
+- Nothing in the environment of the application will live longer than the application itself, and that’s a simple idea with big repercussions.

@@ -1,0 +1,57 @@
+---
+name: applied-ai-for-enterprise-java-development-alex-soto-bu
+description: >-
+  Passos operacionais extraidos do livro 'Applied AI for Enterprise Java Development - Alex Soto Bueno Markus Eisele Natale Vinto' (EN) — Java.
+---
+
+# Applied Ai For Enterprise Java Development Alex Soto Bu — Passos Operacionais
+
+Conteudo extraido do livro 'Applied Ai For Enterprise Java Development Alex Soto Bu'. Contem passos, tecnicas e principios baseados na obra original.
+
+## 1. Conceitos Fundamentais
+- The Enterprise AI Conundrum Capítulo 1.
+- O Enigma da IA Empresarial A inteligência artificial tornou-se rapidamente uma parte essencial dos sistemas empresariais modernos.
+- Testemunhamos como ela está remodelando setores e transformando a maneira como as empresas operam, incluindo a forma como os desenvolvedores trabalham com código.
+- No entanto, compreender o panorama da IA e suas diversas classificações pode ser complexo, especialmente ao tentar identificar como ela se encaixa no ecossistema Java empresarial e em aplicações existentes.
+- Neste capítulo, nosso objetivo é fornecer uma base sólida, apresentando os principais conceitos, metodologias e terminologias que são cruciais para a criação de aplicações com IA integrada.
+- Embora o foco deste capítulo seja preparar o terreno, ele não se limita a definições abstratas ou siglas.
+- As próximas seções abordarão os seguintes tópicos: Uma perspectiva técnica que abrange desde a concepção até a IA generativa.
+- Embora os modelos de linguagem de grande escala (LLMs) estejam recebendo a maior parte da atenção atualmente, o campo da IA tem uma história muito mais longa.
+- Compreender como a IA se desenvolveu ao longo do tempo é importante para decidir como utilizá-la em seus projetos.
+- A IA não se resume às últimas tendências; trata-se de reconhecer quais tecnologias são confiáveis e prontas para aplicações no mundo real.
+
+## 2. Principios e Tecnicas
+- Ao aprender sobre a história da IA e como diferentes abordagens evoluíram, você poderá separar o que é hype do que é realmente útil no seu trabalho diário.
+- Isso o ajudará a tomar decisões mais inteligentes na hora de escolher soluções de IA para os projetos da sua empresa.
+- Modelos de código aberto e dados de treinamento A inteligência artificial (IA) só é tão boa quanto os dados que utiliza para aprender.
+- Dados relevantes, de alta qualidade e bem organizados são cruciais para a construção de sistemas de IA que produzam resultados precisos e confiáveis.
+- Nesta seção, você aprenderá por que usar modelos e dados de código aberto é uma grande vantagem para seus projetos de IA.
+- A comunidade de código aberto compartilha ferramentas e recursos que ajudam todos, inclusive pequenas empresas, a acessar os avanços mais recentes em IA.
+- Considerações éticas e de sustentabilidade À medida que a IA se torna mais comum nos negócios, é importante considerar os impactos éticos e ambientais do uso dessas tecnologias.
+- Construir sistemas de IA que respeitem a privacidade, evitem vieses e sejam transparentes na tomada de decisões está se tornando cada vez mais importante.
+- Além disso, o treinamento de modelos complexos exige poder computacional significativo, o que gera impacto ambiental.
+- Apresentaremos alguns dos principais princípios éticos que você deve ter em mente ao construir sistemas de IA, juntamente com a importância de projetar IA de forma ecologicamente correta.
+
+## 3. Aplicacoes Praticas
+- O ciclo de vida dos LLMs e maneiras de influenciar seu comportamento.
+- Se você já usou chatbots de IA ou outras ferramentas que respondem às suas perguntas, você interagiu com Modelos de Aprendizagem Baseados em Aprendizagem (LLMs).
+- Mas esses modelos não funcionam por mágica; eles seguem um ciclo de vida, do treinamento ao ajuste fino para tarefas específicas.
+- Nesta seção, explicaremos como os LLMs são criados e como você pode influenciar seu comportamento.
+- Você aprenderá o básico sobre ajuste de prompts, engenharia de prompts e ajuste de alinhamento, que são maneiras de direcionar as respostas de um modelo.
+- Ao entender como esses modelos funcionam, você poderá selecionar a técnica certa para seus projetos.
+- DevOps versus MLOps À medida que a IA se torna parte do desenvolvimento de software do dia a dia, é importante entender como as práticas tradicionais de DevOps interagem com as operações de aprendizado de máquina (MLOps).
+- O DevOps concentra-se no desenvolvimento e implantação eficientes de software, enquanto o MLOps aplica princípios semelhantes ao desenvolvimento e implantação de modelos de IA.
+- Essas duas áreas estão cada vez mais conectadas, e as equipes de desenvolvimento precisam entender como elas se complementam.
+- Vamos descrever brevemente as principais semelhanças e diferenças entre DevOps e MLOps e mostrar como ambas são necessárias e interconectadas para entregar com sucesso aplicativos baseados em IA.
+
+## 4. Topicos Avancados
+- Termos fundamentais A Inteligência Artificial (IA) vem com muitos termos técnicos e abreviações, e é fácil se perder em meio a tanto jargão.
+- Ao longo deste livro, apresentamos termos importantes de IA em uma linguagem simples e clara.
+- De LLMs a MLOps, explicaremos tudo de uma forma fácil de entender e relevante para seus projetos.
+- Compreender esses termos básicos ajudará você a se comunicar com especialistas em IA e a aplicar esses conceitos em seus próprios projetos de desenvolvimento Java.
+- Ao final deste capítulo, você terá uma compreensão mais clara do cenário da IA e de seus princípios fundamentais.
+- Vamos começar aprendendo alguns conceitos básicos e preparando o terreno para sua jornada no desenvolvimento de IA em nível empresarial.
+- O panorama da IA: uma perspectiva técnica até a Geração IA.
+- A IA generativa utiliza redes neurais e algoritmos de aprendizagem profunda para identificar padrões em dados existentes, gerando conteúdo original como resultado.
+- Ao analisar grandes volumes de dados, os algoritmos de IA generativa sintetizam conhecimento para criar textos, imagens, áudios, vídeos e outras formas de saída inéditas.
+- A história da IA abrange décadas, marcada por progresso, alguns contratempos e avanços periódicos.

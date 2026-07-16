@@ -1,0 +1,57 @@
+---
+name: kubernetes-up-and-running
+description: >-
+  Passos operacionais extraidos do livro 'Kubernetes Up and Running' (EN) — praticas e procedimentos para DevOps, infraestrutura e containers.
+---
+
+# Kubernetes Up And Running — Passos Operacionais
+
+Conteudo extraido do livro 'Kubernetes Up And Running'. Contem passos, tecnicas e principios baseados na obra original.
+
+## 1. Conceitos Fundamentais
+- Building Your Own Kubernetes Cluster  While Kubernetes is often experienced through the virtual world of public cloud computing, where the closest you get to your cluster is a web browser or a terminal, it can be a very rewarding experience to physically build a Kubernetes cluster on bare metal.
+- Likewise, nothing compares to physically pulling the power or network on a node and watching how Kubernetes reacts to heal your application to convince you of its utility.
+- Building your own cluster might seem like both a challenging and an expensive effort, but fortunately it is neither.
+- The ability to purchase low-cost, system-on-chip computer boards, as well as a great deal of work by the community to make Kubernetes easier to install, means that it is possible to build a small Kubernetes cluster in a few hours.
+- In the following instructions, we focus on building a cluster of Raspberry Pi machines, but with slight adaptations, the same instructions could be made to work with a variety of different single-board machines or any other computers you may have around.  # Parts List  The first thing you need to do is assemble the pieces for your cluster.
+- In all the examples here, we assume a four-node cluster.
+- You could build a cluster of three nodes, or even a cluster of a hundred nodes if you wanted to, but four is a pretty good number.
+- To start, you’ll need to purchase (or scrounge) the various pieces needed to build the cluster.
+- Here is the shopping list, with some approximate prices as of the time of writing:    1.
+- Four Raspberry Pi 4 machines with at least 2 GB of memory—$180    2.
+
+## 2. Principios e Tecnicas
+- Four SDHC memory cards, at least 8 GB (buy high-quality ones!)—$30–50    3.
+- Four 12-inch Cat. 6 Ethernet cables—$10    4.
+- Four 12-inch USB-A to USB-C cables—$10    5.
+- One 5-port 10/100 fast Ethernet switch—$10    6.
+- One 5-port USB charger—$25    7.
+- One Raspberry Pi stackable case capable of holding four Pis—$40 (or build your own)    8.
+- One USB-to-barrel plug for powering the Ethernet switch (optional)—$5     The total for the cluster comes to about $300, which you can drop down to $200 by building a three-node cluster and skipping the case and the USB power cable for the switch (though the case and the cable really clean up the whole cluster).
+- One other note on memory cards: do not scrimp here.
+- Low-end memory cards behave unpredictably and make your cluster really unstable.
+- If you want to save some money, buy a smaller, high-quality card.
+
+## 3. Aplicacoes Praticas
+- High-quality 8 GB cards can be had for around $7 each online.
+- Once you have your parts, you’re ready to move on to building the cluster.  ###### Note  These instructions also assume that you have a device capable of flashing an SDHC card.
+- If you do not, you will need to purchase a USB memory card reader/writer.  # Flashing Images  The default Ubuntu 20.04 image supports Raspberry Pi 4 and also is a common operating system used by many Kubernetes clusters.
+- The easiest way to install that is using the Raspberry Pi Imager provided by the [Raspberry Pi project](https://oreil.ly/4s8Wa):    * [macOS](https://oreil.ly/g7Lzw)    * [Windows](https://oreil.ly/Y7CD3)    * [Linux](https://oreil.ly/u4YvC)     Use the imager to write the Ubuntu 20.04 image onto each of your memory cards.
+- Ubuntu may not be the default image choice in the imager, but you can select it as an option.  # First Boot  The first thing to do is to boot just your API server node.
+- Assemble your cluster, and decide which is going to be the API server node.
+- Insert the memory card, plug the board into an HDMI output, and plug a keyboard into the USB port.
+- Next, attach the power to boot the board.
+- Log in at the prompt using the username **`ubuntu`** and the password **`ubuntu`**.  ###### Warning  The very first thing you should do with your Raspberry Pi (or any new device) is to change the default password.
+- The default password for every type of install everywhere is well known by people who will misbehave given a default login to a system.
+
+## 4. Topicos Avancados
+- This makes the internet less safe for everyone.
+- Please change your default passwords!
+- Repeat these steps for each of the nodes in your cluster.  ## Setting Up Networking  The next step is to set up networking on the API server.
+- Setting up networking for a Kubernetes cluster can be complicated.
+- In the following example, we are setting up a network where a single machine is attached to the internet using wireless networking; this machine is also connected to a cluster network over wired Ethernet and provides a DHCP (Dynamic Host Configuration Protocol) server to provide a network address to the remaining nodes in the cluster.
+- An illustration of this network is shown here:  ######   Decide which of your boards will host the API server and `etcd`.
+- It’s often easiest to remember which one this is by making it the top or bottom node in your stack, but some sort of label also works.
+- To do this, edit the file _/etc/netplan/50-cloud-init.yaml_.
+- If this file doesn’t exist, you can create it.
+- You should then run `sudo netplan apply` to pick up these new changes.

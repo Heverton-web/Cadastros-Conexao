@@ -1,0 +1,57 @@
+---
+name: powershell-automation-and-scripting-ahmed-uzejnovic
+description: >-
+  Passos operacionais extraidos do livro 'PowerShell Automation and Scripting - Ahmed Uzejnovic' (EN) — Automação.
+---
+
+# Powershell Automation And Scripting Ahmed Uzejnovic — Passos Operacionais
+
+Conteudo extraido do livro 'Powershell Automation And Scripting Ahmed Uzejnovic'. Contem passos, tecnicas e principios baseados na obra original.
+
+## 1. Conceitos Fundamentais
+- PowerShell Automation and Scripting Acknowledgements Ahmed Uzejnovic: I would like to thank my family for their patience, support, and understanding during the writing of this book.
+- In particular, I want to thank my wife, Ena, for her constant encouragement and motivation, and for always believing in this project, even during the long evenings and demanding phases.
+- Her support made it possible to turn this idea into reality.
+- I would also like to thank BPB Publications for their guidance and professionalism throughout the publishing process.
+- The reviews, feedback, and revisions significantly improved the quality and clarity of this book.
+- Finally, I am grateful to my colleagues and everyone who has been working with us for many years in IT and infrastructure.
+- The shared experiences and discussions have shaped much of the knowledge presented here.
+- To all readers who are passionate about PowerShell and automation, thank you for your interest and curiosity.
+- Continuous learning and sharing knowledge are what make this journey truly meaningful.
+- Michael Seidl: I would like to thank my family, Jasmine, Leon, and Louis, for giving me the time to do what I love and spread my learning to the community by doing community sessions, videos, and writing this book.
+
+## 2. Principios e Tecnicas
+- To all the ones reading, have fun and automate everything.
+- PowerShell Automation and Scripting About the Authors Ahmed Uzejnovic is an IT automation and infrastructure specialist with more than 10 years of experience in the IT industry, including several years in consultancy.
+- Based in Salzburg, Austria, he works with complex IT and infrastructure environments and turns them into simple, stable, and scalable automation solutions.
+- His main areas of expertise include PowerShell scripting, IT infrastructure automation, Azure Automation, Microsoft Graph API, and Active Directory management.
+- He is passionate about sharing knowledge and helping others use automation to reduce manual work, save time, and lower costs.
+- Ahmed regularly speaks at industry events, where he enjoys exchanging ideas with other professionals and discussing new trends in automation, scripting, and infrastructure management.
+- Outside of work, Ahmed enjoys ultra cycling and working with electronics.
+- He believes that good automation follows the same principles as good engineering, which includes a clear structure, reliable components, and solutions that last.
+- This book reflects his goal of helping IT professionals gain confidence with PowerShell and enjoy automation in their daily work.
+- Michael Seidl is an Austrian IT process automation expert, consultant, and community speaker.
+
+## 3. Aplicacoes Praticas
+- Working in IT since 2000, he focuses on turning recurring operational work into reliable, repeatable automation.
+- In 2015, he founded au2mator, a self-service portal that helps organizations delegate and scale Microsoft automation by triggering workflows from PowerShell, Azure Automation, and System Center Orchestrator.
+- Michael has been recognized as a Microsoft MVP (cloud and datacenter) for over a decade and is known for practical, no-fluff guidance on automation, service management, and the Microsoft ecosystem—including PowerShell and Microsoft Graph API.
+- He shares what works in the real-world through conference sessions, published scripts and examples, and his long-running blog (founded in 2011).
+- He also hosts a podcast, delivering short, high-impact episodes on productivity, execution, and staying effective in modern IT.
+- PowerShell Automation and Scripting About the Reviewers Oscar Cano Garcia is an experienced leader in application packaging with expertise in Azure Intune, SCCM, MECM, and PowerShell automation.
+- He is certified in Microsoft Azure AI Fundamentals, focusing on AI solutions and driving innovation.
+- Oscar is passionate about leveraging automation to enhance efficiency and streamline workflows, with a strong dedication to implementing cutting-edge AI technologies.
+- Vasil Nikolov is an IT network and security engineer who focuses on secure automation and integrations for large-scale SaaS platforms.
+- Using PowerShell as his primary tool, he has built scalable, production-ready solutions at Wayfair across Google Workspace and Microsoft 365—from lifecycle automation and mailbox operations to data-driven reporting and guardrails that reduce risky manual changes and strengthen governance.
+
+## 4. Topicos Avancados
+- He has implemented integrations that connect custom identity data sources with systems like Slack and Google Workspace, improving access consistency and lifecycle management.
+- Vasil enjoys working at the API layer and applies modern authentication patterns such as OAuth 2.0, JWT, service accounts, and token-based access to build secure, reliable connections between platforms.
+- Currently, he is expanding his focus into data, using PowerShell with Google Cloud to build data warehouses and run analytics that surface signals to help leadership make better decisions.
+- Across projects, he emphasizes observability through structured logging, alerting, and clear documentation.
+- Outside of work, he enjoys challenging strategy games such as Dota 2 , Diablo , and StarCraft .
+- Venkata Naga Shivajee Khande is a seasoned DevOps engineer with 7 years of experience in big tech environments.
+- He specializes in building scalable, secure, and highly automated cloud platforms.
+- AWS and EKS certified, he brings deep expertise in Kubernetes, CI/CD pipelines, infrastructure as code, and end-to-end automation.
+- His current focus is on MLOps—enabling reliable model deployment, monitoring, and lifecycle management, and bridging the gap between machine learning and production-grade infrastructure.
+- Known for driving operational excellence, he designs systems that are resilient, efficient, and built to scale.

@@ -1,0 +1,57 @@
+---
+name: eloquent-javascript-marijn-haverbeke
+description: >-
+  Passos operacionais extraidos — desenvolvimento web, full-stack, JavaScript, TypeScript, React, Node.js (EN).
+---
+
+# Eloquent Javascript — Passos Operacionais
+
+Conteudo extraido do livro 'Eloquent Javascript'. Contem passos, tecnicas e principios baseados na obra original.
+
+## 1. Conceitos Fundamentais
+- We believe we are making it in our own image...
+- But the computer is not really like us.
+- It is a projection of a very slim part of ourselves: that portion devoted to logic, order, rule, and clarity. >  > Ellen Ullman, Close to the Machine: Technophilia and its Discontents  This is a book about instructing computers.
+- Computers are about as common as screwdrivers today, but they are quite a bit more complex, and making them do what you want them to do isn’t always easy.
+- If the task you have for your computer is a common, well-understood one, such as showing you your email or acting like a calculator, you can open the appropriate application and get to work.
+- But for unique or open-ended tasks, there often is no appropriate application.
+- That is where programming may come in. _Programming_ is the act of constructing a _program_ —a set of precise instructions telling a computer what to do.
+- Because computers are dumb, pedantic beasts, programming is fundamentally tedious and frustrating.
+- Fortunately, if you can get over that fact—and maybe even enjoy the rigor of thinking in terms that dumb machines can deal with—programming can be rewarding.
+- It allows you to do things in seconds that would take _forever_ by hand.
+
+## 2. Principios e Tecnicas
+- It is a way to make your computer tool do things that it couldn’t do before.
+- On top of that, it makes for a wonderful game of puzzle solving and abstract thinking.
+- Most programming is done with programming languages.
+- A _programming language_ is an artificially constructed language used to instruct computers.
+- It is interesting that the most effective way we’ve found to communicate with a computer borrows so heavily from the way we communicate with each other.
+- Like human languages, computer languages allow words and phrases to be combined in new ways, making it possible to express ever new concepts.
+- At one point, language-based interfaces, such as the BASIC and DOS prompts of the 1980s and 1990s, were the main method of interacting with computers.
+- For routine computer use, these have largely been replaced with visual interfaces, which are easier to learn but offer less freedom.
+- But if you know where to look, the languages are still there.
+- One of them, _JavaScript_ , is built into every modern web browser—and is thus available on almost every device.
+
+## 3. Aplicacoes Praticas
+- This book will try to make you familiar enough with this language to do useful and amusing things with it.  ## On programming  Besides explaining JavaScript, I will introduce the basic principles of programming.
+- Programming, it turns out, is hard.
+- The fundamental rules are simple and clear, but programs built on top of these rules tend to become complex enough to introduce their own rules and complexity.
+- You’re building your own maze, in a way, and you can easily get lost in it.
+- There will be times when reading this book feels terribly frustrating.
+- If you are new to programming, there will be a lot of new material to digest.
+- Much of this material will then be _combined_ in ways that require you to make additional connections.
+- It is up to you to make the necessary effort.
+- When you are struggling to follow the book, do not jump to any conclusions about your own capabilities.
+- You are fine—you just need to keep at it.
+
+## 4. Topicos Avancados
+- Take a break, reread some material, and make sure you read and understand the example programs and exercises.
+- Learning is hard work, but everything you learn is yours and will make further learning easier.  > When action grows unprofitable, gather information; when information grows unprofitable, sleep. >  > Ursula K.
+- Le Guin, The Left Hand of Darkness  A program is many things.
+- It is a piece of text typed by a programmer, it is the directing force that makes the computer do what it does, it is data in the computer’s memory, and at the same time it controls the actions performed on this memory.
+- Analogies that try to compare programs to familiar objects tend to fall short.
+- A superficially fitting one is to compare a program to a machine—lots of separate parts tend to be involved, and to make the whole thing tick, we have to consider the ways in which these parts interconnect and contribute to the operation of the whole.
+- A computer is a physical machine that acts as a host for these immaterial machines.
+- Computers themselves can do only stupidly straightforward things.
+- The reason they are so useful is that they do these things at an incredibly high speed.
+- A program can ingeniously combine an enormous number of these simple actions to do very complicated things.

@@ -1,0 +1,436 @@
+{
+  "total": 86,
+  "extracted": 86,
+  "books": [
+    {
+      "filename": "EPUB - [PT] A Web Mobile - Programe para um Mundo de Muitos Dispositivos - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] A Web Mobile - Programe para um Mundo de Muitos Dispositivos - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] A Web Mobile - Programe para um Mundo de Muitos Dispositivos - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] Aplicativos web real time com Node - js - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] Aplicativos web real time com Node - js - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] Aplicativos web real time com Node - js - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] Boas Praticas NodeJS - Umbler - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] Boas Praticas NodeJS - Umbler - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] Boas Praticas NodeJS - Umbler - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [EN] Building Production - ready Web Apps with Node.js - Gireesh Punathil.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [EN] Building Production - ready Web Apps with Node.js - Gireesh Punathil.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [EN] Building Production - ready Web Apps with Node.js - Gireesh Punathil.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] Construindo APIs REST com Node.js - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] Construindo APIs REST com Node.js - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] Construindo APIs REST com Node.js - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] Construindo APIs Test\u00e1veis com NodeJS - Waldemar Neto - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] Construindo APIs Test\u00e1veis com NodeJS - Waldemar Neto - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] Construindo APIs Test\u00e1veis com NodeJS - Waldemar Neto - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [EN] Creating NPM Package Your React JavaScript Guide to Create, Test, and Publish NPM Libraries (CodeSweetly  Sofela, Oluwatobi) (z - library.sk, 1lib.sk, z-lib.sk).epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [EN] Creating NPM Package Your React JavaScript Guide to Create, Test, and Publish NPM Libraries (CodeSweetly  Sofela, Oluwatobi) (z - library.sk, 1lib.sk, z-lib.sk).txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [EN] Creating NPM Package Your React JavaScript Guide to Create, Test, and Publish NPM Libraries (CodeSweetly  Sofela, Oluwatobi) (z - library.sk, 1lib.sk, z-lib.sk).meta.json"
+    },
+    {
+      "filename": "EPUB - [EN] Data Structures and Algorithms in JavaScript - Federico Kereki.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [EN] Data Structures and Algorithms in JavaScript - Federico Kereki.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [EN] Data Structures and Algorithms in JavaScript - Federico Kereki.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] Dominando JavaScript Com Jquery Casa do Codigo - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] Dominando JavaScript Com Jquery Casa do Codigo - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] Dominando JavaScript Com Jquery Casa do Codigo - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [EN] Efficient Node.js - Samer Buna.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [EN] Efficient Node.js - Samer Buna.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [EN] Efficient Node.js - Samer Buna.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] Elixir do zero a concorrencia - Casa do Codigo.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] Elixir do zero a concorrencia - Casa do Codigo.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] Elixir do zero a concorrencia - Casa do Codigo.meta.json"
+    },
+    {
+      "filename": "EPUB - [EN] Eloquent JavaScript - Marijn Haverbeke.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [EN] Eloquent JavaScript - Marijn Haverbeke.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [EN] Eloquent JavaScript - Marijn Haverbeke.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] EPUB A web mobile_ programe para um mundo de muitos dispositivos - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] EPUB A web mobile_ programe para um mundo de muitos dispositivos - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] EPUB A web mobile_ programe para um mundo de muitos dispositivos - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] EPUB Angular 11 e firebase_ construindo uma aplica\u00e7\u00e3o integrada com a plataforma do Google - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] EPUB Angular 11 e firebase_ construindo uma aplica\u00e7\u00e3o integrada com a plataforma do Google - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] EPUB Angular 11 e firebase_ construindo uma aplica\u00e7\u00e3o integrada com a plataforma do Google - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] EPUB Aplica\u00e7\u00f5es Java para a web com JSF e JPA - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] EPUB Aplica\u00e7\u00f5es Java para a web com JSF e JPA - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] EPUB Aplica\u00e7\u00f5es Java para a web com JSF e JPA - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] EPUB Aprenda JavaScript com dashboards_ seus primeiros passos na programa\u00e7\u00e3o com grandes resultados - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] EPUB Aprenda JavaScript com dashboards_ seus primeiros passos na programa\u00e7\u00e3o com grandes resultados - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] EPUB Aprenda JavaScript com dashboards_ seus primeiros passos na programa\u00e7\u00e3o com grandes resultados - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] EPUB Asp.net mvc5_ crie aplica\u00e7\u00f5es web na plataforma microsoft - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] EPUB Asp.net mvc5_ crie aplica\u00e7\u00f5es web na plataforma microsoft - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] EPUB Asp.net mvc5_ crie aplica\u00e7\u00f5es web na plataforma microsoft - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] EPUB_Cangaceiro_JavaScript__uma_aventura_no_sert\u00e3o_da_programa\u00e7\u00e3o - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] EPUB_Cangaceiro_JavaScript__uma_aventura_no_sert\u00e3o_da_programa\u00e7\u00e3o - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] EPUB_Cangaceiro_JavaScript__uma_aventura_no_sert\u00e3o_da_programa\u00e7\u00e3o - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] EPUB Canivete su\u00ed\u00e7o do desenvolvedor Node - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] EPUB Canivete su\u00ed\u00e7o do desenvolvedor Node - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] EPUB Canivete su\u00ed\u00e7o do desenvolvedor Node - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] EPUB Canvas HTML 5_ composi\u00e7\u00e3o gr\u00e1fica e interatividade na web - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] EPUB Canvas HTML 5_ composi\u00e7\u00e3o gr\u00e1fica e interatividade na web - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] EPUB Canvas HTML 5_ composi\u00e7\u00e3o gr\u00e1fica e interatividade na web - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [EN] EPUB Colet\u00e2nea front-end - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [EN] EPUB Colet\u00e2nea front-end - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [EN] EPUB Colet\u00e2nea front-end - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] EPUB Construindo APIs REST com Node.js - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] EPUB Construindo APIs REST com Node.js - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] EPUB Construindo APIs REST com Node.js - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] EPUB_Construindo_APIs_REST_com_Nodejs - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] EPUB_Construindo_APIs_REST_com_Nodejs - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] EPUB_Construindo_APIs_REST_com_Nodejs - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] EPUB CSS eficiente_ t\u00e9cnicas e ferramentas que fazem a diferen\u00e7a nos seus estilos - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] EPUB CSS eficiente_ t\u00e9cnicas e ferramentas que fazem a diferen\u00e7a nos seus estilos - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] EPUB CSS eficiente_ t\u00e9cnicas e ferramentas que fazem a diferen\u00e7a nos seus estilos - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] EPUB Desenvolva jogos com HTML5 Canvas e JavaScript - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] EPUB Desenvolva jogos com HTML5 Canvas e JavaScript - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] EPUB Desenvolva jogos com HTML5 Canvas e JavaScript - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] EPUB Desenvolvimento web com ASP.NET MVC - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] EPUB Desenvolvimento web com ASP.NET MVC - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] EPUB Desenvolvimento web com ASP.NET MVC - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] EPUB Desenvolvimento web com PHP e MySQL - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] EPUB Desenvolvimento web com PHP e MySQL - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] EPUB Desenvolvimento web com PHP e MySQL - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] EPUB_Django_de_A_a_Z - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] EPUB_Django_de_A_a_Z - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] EPUB_Django_de_A_a_Z - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] EPUB_Dominando_javascript_com_jquery_Pl\u00ednio_Baldu\u00edno_autor - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] EPUB_Dominando_javascript_com_jquery_Pl\u00ednio_Baldu\u00edno_autor - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] EPUB_Dominando_javascript_com_jquery_Pl\u00ednio_Baldu\u00edno_autor - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] EPUB_ECMAScript_6__entre_de_cabe\u00e7a_no_futuro_do_JavaScript_Diego_Martins_de_Pinho_autor - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] EPUB_ECMAScript_6__entre_de_cabe\u00e7a_no_futuro_do_JavaScript_Diego_Martins_de_Pinho_autor - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] EPUB_ECMAScript_6__entre_de_cabe\u00e7a_no_futuro_do_JavaScript_Diego_Martins_de_Pinho_autor - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] EPUB Estruturas de dados_ domine as pr\u00e1ticas essenciais em C, Java, C#, Python e JavaScript - Desconhecido_1.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] EPUB Estruturas de dados_ domine as pr\u00e1ticas essenciais em C, Java, C#, Python e JavaScript - Desconhecido_1.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] EPUB Estruturas de dados_ domine as pr\u00e1ticas essenciais em C, Java, C#, Python e JavaScript - Desconhecido_1.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] EPUB_Flask_de_A_a_Z - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] EPUB_Flask_de_A_a_Z - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] EPUB_Flask_de_A_a_Z - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] EPUB Front-end com Vue.js_ da teoria \u00e0 pr\u00e1tica sem complica\u00e7\u00f5es - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] EPUB Front-end com Vue.js_ da teoria \u00e0 pr\u00e1tica sem complica\u00e7\u00f5es - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] EPUB Front-end com Vue.js_ da teoria \u00e0 pr\u00e1tica sem complica\u00e7\u00f5es - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] EPUB Guia front-end_ o caminho das pedras para ser um dev front-end - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] EPUB Guia front-end_ o caminho das pedras para ser um dev front-end - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] EPUB Guia front-end_ o caminho das pedras para ser um dev front-end - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] EPUB Guia pr\u00e1tico de TypeScript_ melhore suas aplica\u00e7\u00f5es JavaScript - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] EPUB Guia pr\u00e1tico de TypeScript_ melhore suas aplica\u00e7\u00f5es JavaScript - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] EPUB Guia pr\u00e1tico de TypeScript_ melhore suas aplica\u00e7\u00f5es JavaScript - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] EPUB_Html_5__embarque_imediato - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] EPUB_Html_5__embarque_imediato - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] EPUB_Html_5__embarque_imediato - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] EPUB HTML5 e CSS3_ domine a web do futuro - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] EPUB HTML5 e CSS3_ domine a web do futuro - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] EPUB HTML5 e CSS3_ domine a web do futuro - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] EPUB JavaScript assertivo_ testes e qualidade de c\u00f3digo em todas as camadas da aplica\u00e7\u00e3o - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] EPUB JavaScript assertivo_ testes e qualidade de c\u00f3digo em todas as camadas da aplica\u00e7\u00e3o - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] EPUB JavaScript assertivo_ testes e qualidade de c\u00f3digo em todas as camadas da aplica\u00e7\u00e3o - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] EPUB JSF eficaz_ as melhores pr\u00e1ticas para o desenvolvedor web java - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] EPUB JSF eficaz_ as melhores pr\u00e1ticas para o desenvolvedor web java - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] EPUB JSF eficaz_ as melhores pr\u00e1ticas para o desenvolvedor web java - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] EPUB Meteor_ criando aplica\u00e7\u00f5es web real-time com JavaScript - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] EPUB Meteor_ criando aplica\u00e7\u00f5es web real-time com JavaScript - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] EPUB Meteor_ criando aplica\u00e7\u00f5es web real-time com JavaScript - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] EPUB_O_retorno_do_cangaceiro_JavaScript__de_padr\u00f5es_a_uma_abordagem_funcional - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] EPUB_O_retorno_do_cangaceiro_JavaScript__de_padr\u00f5es_a_uma_abordagem_funcional - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] EPUB_O_retorno_do_cangaceiro_JavaScript__de_padr\u00f5es_a_uma_abordagem_funcional - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] EPUB PHP e Laravel_ crie aplica\u00e7\u00f5es web como um verdadeiro artes\u00e3o - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] EPUB PHP e Laravel_ crie aplica\u00e7\u00f5es web como um verdadeiro artes\u00e3o - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] EPUB PHP e Laravel_ crie aplica\u00e7\u00f5es web como um verdadeiro artes\u00e3o - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [EN] EPUB Play framework_ java para web sem servlets e com divers\u00e3o - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [EN] EPUB Play framework_ java para web sem servlets e com divers\u00e3o - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [EN] EPUB Play framework_ java para web sem servlets e com divers\u00e3o - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] EPUB PostgreSQL_ banco de dados para aplica\u00e7\u00f5es web modernas - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] EPUB PostgreSQL_ banco de dados para aplica\u00e7\u00f5es web modernas - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] EPUB PostgreSQL_ banco de dados para aplica\u00e7\u00f5es web modernas - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] EPUB Primeiros passos com node.js Jo\u00e3o Rubens - autor.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] EPUB Primeiros passos com node.js Jo\u00e3o Rubens - autor.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] EPUB Primeiros passos com node.js Jo\u00e3o Rubens - autor.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] EPUB_Primeiros_passos_com_nodejs_Jo\u00e3o_Rubens_autor - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] EPUB_Primeiros_passos_com_nodejs_Jo\u00e3o_Rubens_autor - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] EPUB_Primeiros_passos_com_nodejs_Jo\u00e3o_Rubens_autor - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] EPUB Progressive web apps_ construa aplica\u00e7\u00f5es progressivas com react - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] EPUB Progressive web apps_ construa aplica\u00e7\u00f5es progressivas com react - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] EPUB Progressive web apps_ construa aplica\u00e7\u00f5es progressivas com react - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] EPUB React Native_ desenvolvimento de aplicativos mobile com React - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] EPUB React Native_ desenvolvimento de aplicativos mobile com React - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] EPUB React Native_ desenvolvimento de aplicativos mobile com React - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] EPUB Sass_ aprendendo pr\u00e9-processadores CSS - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] EPUB Sass_ aprendendo pr\u00e9-processadores CSS - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] EPUB Sass_ aprendendo pr\u00e9-processadores CSS - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] EPUB Seguran\u00e7a_ em aplica\u00e7\u00f5es web - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] EPUB Seguran\u00e7a_ em aplica\u00e7\u00f5es web - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] EPUB Seguran\u00e7a_ em aplica\u00e7\u00f5es web - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] EPUB VRaptor_ desenvolvimento \u00e1gil para web com java - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] EPUB VRaptor_ desenvolvimento \u00e1gil para web com java - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] EPUB VRaptor_ desenvolvimento \u00e1gil para web com java - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] EPUB Vue.js_ construa aplica\u00e7\u00f5es incr\u00edveis - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] EPUB Vue.js_ construa aplica\u00e7\u00f5es incr\u00edveis - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] EPUB Vue.js_ construa aplica\u00e7\u00f5es incr\u00edveis - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] EPUB Web design responsivo_ p\u00e1ginas adapt\u00e1veis para todos os dispositivos - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] EPUB Web design responsivo_ p\u00e1ginas adapt\u00e1veis para todos os dispositivos - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] EPUB Web design responsivo_ p\u00e1ginas adapt\u00e1veis para todos os dispositivos - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] EPUB Yesod e Haskell_ aplica\u00e7\u00f5es web com programa\u00e7\u00e3o funcional pura - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] EPUB Yesod e Haskell_ aplica\u00e7\u00f5es web com programa\u00e7\u00e3o funcional pura - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] EPUB Yesod e Haskell_ aplica\u00e7\u00f5es web com programa\u00e7\u00e3o funcional pura - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] EPUBAPrenda_JavaScript_com_dashboards__seus_primeiros_passos_na_programa\u00e7\u00e3o_com_grandes_resultados - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] EPUBAPrenda_JavaScript_com_dashboards__seus_primeiros_passos_na_programa\u00e7\u00e3o_com_grandes_resultados - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] EPUBAPrenda_JavaScript_com_dashboards__seus_primeiros_passos_na_programa\u00e7\u00e3o_com_grandes_resultados - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] Estruturas de dados e algoritmos com JavaScript - Groner, Loiane.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] Estruturas de dados e algoritmos com JavaScript - Groner, Loiane.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] Estruturas de dados e algoritmos com JavaScript - Groner, Loiane.meta.json"
+    },
+    {
+      "filename": "EPUB - [EN] Full - Stack React, TypeScript, and Node - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [EN] Full - Stack React, TypeScript, and Node - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [EN] Full - Stack React, TypeScript, and Node - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [EN] Full - Stack React, TypeScript, and Node - David Choi.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [EN] Full - Stack React, TypeScript, and Node - David Choi.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [EN] Full - Stack React, TypeScript, and Node - David Choi.meta.json"
+    },
+    {
+      "filename": "EPUB - [EN] Full Stack Web Development - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [EN] Full Stack Web Development - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [EN] Full Stack Web Development - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [EN] Full Stack Web Development with React, Angular, Node.js, and DevOps - Rupesh Kumar Tipu & Pankaj Agarwal.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [EN] Full Stack Web Development with React, Angular, Node.js, and DevOps - Rupesh Kumar Tipu & Pankaj Agarwal.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [EN] Full Stack Web Development with React, Angular, Node.js, and DevOps - Rupesh Kumar Tipu & Pankaj Agarwal.meta.json"
+    },
+    {
+      "filename": "EPUB - [EN] Full - Stack Web Development with TypeScript 5 - Mykyta Chernenko.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [EN] Full - Stack Web Development with TypeScript 5 - Mykyta Chernenko.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [EN] Full - Stack Web Development with TypeScript 5 - Mykyta Chernenko.meta.json"
+    },
+    {
+      "filename": "EPUB - [EN] Head First JavaScript Programming_ A Learner's Guide to - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [EN] Head First JavaScript Programming_ A Learner's Guide to - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [EN] Head First JavaScript Programming_ A Learner's Guide to - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] HTML e CSS_ projete e construa sites - Jon Duckett.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] HTML e CSS_ projete e construa sites - Jon Duckett.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] HTML e CSS_ projete e construa sites - Jon Duckett.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] iOS Programe para iPhone e iPad - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] iOS Programe para iPhone e iPad - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] iOS Programe para iPhone e iPad - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [EN] JavaScript and JQuery Interactive Front - End Web Development (Jon Duckett) (z-library.sk, 1lib.sk, z-lib.sk).epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [EN] JavaScript and JQuery Interactive Front - End Web Development (Jon Duckett) (z-library.sk, 1lib.sk, z-lib.sk).txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [EN] JavaScript and JQuery Interactive Front - End Web Development (Jon Duckett) (z-library.sk, 1lib.sk, z-lib.sk).meta.json"
+    },
+    {
+      "filename": "EPUB - [EN] JavaScript for Modern Web Development (Alok Ranjan, Abhilasha Sinha etc.) (z - library.sk, 1lib.sk, z-lib.sk).epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [EN] JavaScript for Modern Web Development (Alok Ranjan, Abhilasha Sinha etc.) (z - library.sk, 1lib.sk, z-lib.sk).txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [EN] JavaScript for Modern Web Development (Alok Ranjan, Abhilasha Sinha etc.) (z - library.sk, 1lib.sk, z-lib.sk).meta.json"
+    },
+    {
+      "filename": "EPUB - [EN] JavaScript Mastery Advanced Techniques for Dynamic Web Development Unlock the Secrets of Modern JavaScript Programming, DOM\u2026 (ADJEI, ALBERT TETTEH) (z - library.sk, 1lib.sk, z-lib.sk).epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [EN] JavaScript Mastery Advanced Techniques for Dynamic Web Development Unlock the Secrets of Modern JavaScript Programming, DOM\u2026 (ADJEI, ALBERT TETTEH) (z - library.sk, 1lib.sk, z-lib.sk).txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [EN] JavaScript Mastery Advanced Techniques for Dynamic Web Development Unlock the Secrets of Modern JavaScript Programming, DOM\u2026 (ADJEI, ALBERT TETTEH) (z - library.sk, 1lib.sk, z-lib.sk).meta.json"
+    },
+    {
+      "filename": "EPUB - [EN] JavaScript - Philip Ackermann.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [EN] JavaScript - Philip Ackermann.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [EN] JavaScript - Philip Ackermann.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] L\u00f3gica de Programa\u00e7\u00e3o e Algoritmos com JavaScript 2a. edi\u00e7\u00e3o - Ed\u00e9cio Fernando Iepsen.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] L\u00f3gica de Programa\u00e7\u00e3o e Algoritmos com JavaScript 2a. edi\u00e7\u00e3o - Ed\u00e9cio Fernando Iepsen.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] L\u00f3gica de Programa\u00e7\u00e3o e Algoritmos com JavaScript 2a. edi\u00e7\u00e3o - Ed\u00e9cio Fernando Iepsen.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] Logica de Programa\u00e7\u00e3o e Algoritmos em JavaScript - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] Logica de Programa\u00e7\u00e3o e Algoritmos em JavaScript - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] Logica de Programa\u00e7\u00e3o e Algoritmos em JavaScript - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [EN] Mastering MEAN Stack - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [EN] Mastering MEAN Stack - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [EN] Mastering MEAN Stack - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] Meteor - Criando aplica\u00e7\u00f5es web real-time com JavaScript - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] Meteor - Criando aplica\u00e7\u00f5es web real-time com JavaScript - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] Meteor - Criando aplica\u00e7\u00f5es web real-time com JavaScript - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [EN] Modern Web Design in 30 Days - Laurence Lars Svekis.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [EN] Modern Web Design in 30 Days - Laurence Lars Svekis.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [EN] Modern Web Design in 30 Days - Laurence Lars Svekis.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] Node.js Aplica\u00e7\u00f5es Web Real - time com Node.js - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] Node.js Aplica\u00e7\u00f5es Web Real - time com Node.js - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] Node.js Aplica\u00e7\u00f5es Web Real - time com Node.js - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] NodeJS Complete Resume - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] NodeJS Complete Resume - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] NodeJS Complete Resume - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [EN] NodeJS HandBook - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [EN] NodeJS HandBook - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [EN] NodeJS HandBook - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] NodeJS para Iniciantes - Umbler - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] NodeJS para Iniciantes - Umbler - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] NodeJS para Iniciantes - Umbler - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] Primeiros passos com Node.js (Casa do Codigo - Jo\u00e3o Rubens) - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] Primeiros passos com Node.js (Casa do Codigo - Jo\u00e3o Rubens) - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] Primeiros passos com Node.js (Casa do Codigo - Jo\u00e3o Rubens) - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [EN] React JS. A Beginners Guide to Building Interactive Web Apps 2024 (Ellington A.) (z - library.sk, 1lib.sk, z-lib.sk).epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [EN] React JS. A Beginners Guide to Building Interactive Web Apps 2024 (Ellington A.) (z - library.sk, 1lib.sk, z-lib.sk).txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [EN] React JS. A Beginners Guide to Building Interactive Web Apps 2024 (Ellington A.) (z - library.sk, 1lib.sk, z-lib.sk).meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] Swift Programe para iPhone e iPad - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] Swift Programe para iPhone e iPad - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] Swift Programe para iPhone e iPad - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [EN] Udemy Guide NodeJS AndrewMead Version3 - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [EN] Udemy Guide NodeJS AndrewMead Version3 - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [EN] Udemy Guide NodeJS AndrewMead Version3 - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [EN] Web API Cookbook Level Up Your JavaScript Applications (Joe Attardi) (z - library.sk, 1lib.sk, z-lib.sk).epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [EN] Web API Cookbook Level Up Your JavaScript Applications (Joe Attardi) (z - library.sk, 1lib.sk, z-lib.sk).txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [EN] Web API Cookbook Level Up Your JavaScript Applications (Joe Attardi) (z - library.sk, 1lib.sk, z-lib.sk).meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] Web APIs em NodeJS Luiz Tools - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] Web APIs em NodeJS Luiz Tools - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] Web APIs em NodeJS Luiz Tools - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] Web Design Responsivo - Paginas Adapt\u00e1veis para Todos od Dispositivos - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] Web Design Responsivo - Paginas Adapt\u00e1veis para Todos od Dispositivos - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] Web Design Responsivo - Paginas Adapt\u00e1veis para Todos od Dispositivos - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [EN] Web Development with HTML, CSS, and JavaScript - Kevin Wilson_.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [EN] Web Development with HTML, CSS, and JavaScript - Kevin Wilson_.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [EN] Web Development with HTML, CSS, and JavaScript - Kevin Wilson_.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] WebApp com NodeJS e MongoDB - Umbler - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] WebApp com NodeJS e MongoDB - Umbler - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\WEB\\extraidos\\EPUB - [PT] WebApp com NodeJS e MongoDB - Umbler - Desconhecido.meta.json"
+    }
+  ]
+}

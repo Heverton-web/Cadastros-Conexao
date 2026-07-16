@@ -1,0 +1,57 @@
+---
+name: genai-on-google-cloud-ayo-adedeji-lavi-nigam-sarit
+description: >-
+  Passos operacionais extraidos do livro 'GenAI on Google Cloud (for . .) - Ayo Adedeji, Lavi Nigam, Sarita A. Joshi & Stephanie Gervasi' (EN) — praticas e procedimentos para DevOps, infraestrutura e containers.
+---
+
+# Genai On Google Cloud — Passos Operacionais
+
+Conteudo extraido do livro 'Genai On Google Cloud'. Contem passos, tecnicas e principios baseados na obra original.
+
+## 1. Conceitos Fundamentais
+- Leitura complementar para líderes.
+- Os seguintes recursos podem orientar as equipes da fase de maturidade Tática para a fase de maturidade Estratégica em Visão e Liderança:    * Google Cloud. 2026. “Tendências de Agentes de IA 2026” (relatório), https://oreil.ly/dMBgP    * Harvard Business Impact Perspectives. 2025. “Sucesso na Era Digital: Por que a Liderança com IA em Primeiro Lugar é Essencial” (relatório), https://oreil.ly/JGny9    * Iansiti, Marco e Lakhani, Karim R. 2020.
+- O Desafio do Desenvolvimento de Aplicações de IA Generativa  Prezado leitor, estamos entusiasmados em tê-lo conosco nesta jornada de aprendizado.
+- O objetivo deste primeiro capítulo é apresentar a você as complexidades únicas da construção e implantação de aplicações baseadas em grandes modelos de linguagem (LLMs).
+- Esperamos que este capítulo o prepare para discussões subsequentes mais aprofundadas sobre operações de LLM (LLMOps) e operações de agentes (AgentOps) — na verdade, extensões das operações de aprendizado de máquina (MLOps), que incluem o trabalho nos bastidores e o conjunto de melhores práticas para gerenciar todo o ciclo de vida de sistemas de IA e agentes, desde a construção e teste até a implantação e manutenção responsável desses poderosos sistemas em produção.  # Visão geral dos LLMs, agentes de IA generativos e aplicações potenciais em tarefas empresariais.
+- Vamos começar definindo algumas características-chave dos LLMs e sua aplicação em tarefas generativas, como geração de conteúdo, sumarização, recomendação, resolução de problemas e descoberta.
+- Simplificando, um LLM é:  Grande       Os modelos de aprendizado de máquina (LLMs) são treinados em conjuntos de dados enormes, frequentemente contendo bilhões ou até trilhões de palavras.
+- Muitos LLMs "leram" uma parte significativa da internet e muitos, muitos livros.
+- O corpus de muitos dos LLMs que você pode usar como consumidor foi treinado no equivalente a várias grandes bibliotecas.
+- No caso do treinamento de modelos multimodais, isso inclui bibliotecas de texto, imagens, vídeos e áudio.
+
+## 2. Principios e Tecnicas
+- Linguagem       O foco principal dos mestrados em linguagem (LLMs) é a compreensão e a geração da linguagem humana.
+- Modelo       Os Modelos de Aprendizagem de Linguagem (LLMs) utilizam técnicas estatísticas complexas para aprender padrões e relações em dados textuais.
+- Essencialmente, um LLM é um tipo de rede neural, especificamente um modelo de aprendizagem profunda, com múltiplas camadas de nós interconectados.
+- A arquitetura mais comum para esses modelos é a rede Transformer.
+- Antes que o Transformer possa processar qualquer texto, a entrada bruta é convertida em um formato numérico por meio da vetorização, onde cada palavra ou token é mapeado para um vetor de alta dimensionalidade.
+- Esses vetores são a linguagem nativa do modelo, representando o significado semântico do texto; palavras com significados semelhantes são mapeadas para vetores numericamente próximos.
+- As redes Transformer se destacam por utilizar mecanismos como a "atenção", que permite ao modelo ponderar e combinar dinamicamente esses vetores de entrada, compreendendo assim o contexto e as relações entre todas as palavras em uma sequência.
+- Essa interpretação profunda e vetorizada permite que o modelo indexe e recupere informações relevantes com base no significado, e não apenas em palavras-chave.
+- Em modelos de linguagem, um token se refere à unidade básica de texto que o modelo processa.
+- Os tokens são tipicamente fragmentos de palavras, palavras completas ou caracteres, dependendo do modelo.
+
+## 3. Aplicacoes Praticas
+- Por exemplo, a frase "Vamos à loja" pode ser dividida em tokens como ["Vamos", "vamos", "ir", "à", "loja"].
+- Um trilhão de tokens seria aproximadamente equivalente a vários bilhões de páginas de texto.
+- O artigo de 2017, "Attention Is All You Need", publicado nos Anais da 31ª Conferência Internacional sobre Sistemas de Processamento de Informação Neural por pesquisadores do Google, é fundamental para o desenvolvimento e o sucesso dos modernos Modelos de Aprendizagem por Linha (LLMs).
+- Este artigo introduziu uma nova arquitetura de rede neural chamada Transformer.
+- É importante ressaltar que essa arquitetura se distanciou das redes neurais recorrentes (RNNs), anteriormente dominantes em tarefas de sequência para sequência, como a tradução automática.
+- A principal inovação do Transformer reside em sua forte dependência do mecanismo de atenção.
+- Em vez de processar sequências passo a passo, como fazem as RNNs, o mecanismo de atenção permite que o modelo acesse diretamente e pondere a importância de todas as partes da sequência de entrada ao processar cada posição.
+- A arquitetura Transformer descrita no artigo de 2017 tornou-se a base de praticamente todos os LLMs de última geração.
+- Assim, um LLM (Modelo de Linguagem de Aprendizagem) é um tipo de modelo de IA treinado com uma enorme quantidade de dados textuais.
+- Esse treinamento permite que um LLM compreenda, resuma, gere e preveja novos textos.
+
+## 4. Topicos Avancados
+- Embora tradicionalmente focados em texto, os LLMs mais avançados são frequentemente treinados com conjuntos de dados multimodais, permitindo-lhes processar e gerar conteúdo em vários formatos, como imagens, vídeos e áudio, além de texto.
+- Podemos usar linguagem natural para nos comunicarmos com os LLMs.
+- O "prompt" (instrução) é o ato de usar instruções em linguagem natural para comunicar uma tarefa, solicitação ou contexto específico a um LLM, guiando-o na geração da saída desejada.  # As Origens dos Mestrados em Direito  É difícil precisar o momento exato e a pessoa que usou pela primeira vez o termo preciso "modelo de linguagem de grande porte"; ele surgiu à medida que esses modelos cresceram em tamanho e capacidade.
+- Os conceitos e tecnologias subjacentes foram desenvolvidos por inúmeros pesquisadores ao longo de décadas nos campos do processamento de linguagem natural (PLN) e aprendizado de máquina.
+- A abreviação "LLM" ganhou força à medida que a escala desses modelos se tornou uma característica definidora, mas os LLMs entraram no debate público relativamente recentemente, por volta do final de 2022 e ao longo de 2023.
+- Vários fatores-chave contribuíram para isso:  A ascensão do ChatGPT       O lançamento do ChatGPT da OpenAI em novembro de 2022 foi um divisor de águas.
+- Sua interface amigável e a notável capacidade de gerar textos semelhantes aos humanos, responder perguntas, escrever diferentes tipos de conteúdo criativo e até mesmo programar cativaram a imaginação do público como nenhuma outra tecnologia de IA generativa (GenAI) anterior.
+- As pessoas podiam interagir diretamente com um poderoso assistente virtual e experimentar suas capacidades em primeira mão.
+- Maior acessibilidade       O ChatGPT tornou a tecnologia LLM acessível ao público em geral.
+- Anteriormente, interagir com modelos GenAI tão avançados frequentemente exigia conhecimento técnico ou se limitava a ambientes de pesquisa.

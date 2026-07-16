@@ -1,0 +1,60 @@
+---
+name: python
+description: >-
+  Passos operacionais extraidos do livro 'Python' (PT) — Python.
+---
+
+# Python — Passos Operacionais
+
+## 1. Conceitos Fundamentais
+
+- Além destes, a todos os meus colegas de profissão e faculdade que me ajudaram a me tornar o profissional de sucesso que sou hoje._  _Agradecimento especial a Maikol Rodrigues, meu professor (de Estrutura de Dados!) nos tempos da faculdade e, hoje, colega de trabalho.
+- Muitas foram as conversas e dicas durante a escrita deste livro.
+- Um agradecimento especial ao Hugo Benício, também colega de trabalho e que sempre foi solícito quando surgiam dificuldades com as linguagens C e Python.
+- Obrigado pelo apoio e o incentivo de vocês na escrita de mais um livro.
+- Grande abraço!_   # Sobre o autor  Olá, pessoal!
+- Adoro desenvolvimento e trabalho com isso desde 2003.
+- Desde os estágios no tempo de faculdade até hoje, já trabalhei em empresas de vários ramos e tipos: software house, empresas públicas, no ramo da saúde, indústrias, entre outros.
+- Também já prestei algumas consultorias focadas no desenvolvimento.
+- Sou graduado e mestre em Engenharia de Software pela Universidade de Fortaleza.
+- Já embarquei no mundo acadêmico e por dez anos fui professor de algumas faculdades, ministrando cadeiras de Programação Orientada a Objetos I e II; Engenharia de Software; Projeto e Arquitetura de Software; Linguagens Formais e Autômatos; Compiladores e Estruturas de Dados.
+
+## 2. Principios e Tecnicas
+
+- Adoro lecionar e parto do princípio de que a melhor forma de aprender é ensinar.
+- Profissionalmente, sou programador Java e possuo conhecimento nos frameworks deste universo: Spring, Hibernate, JSF, Struts etc.
+- Também já fui desenvolvedor C# e possuo conhecimentos em Python e Angular.
+- Resumindo, sou um entusiasta do desenvolvimento de software.
+- Atualmente, sou funcionário público, trabalhando no Serpro, empresa de tecnologia do Governo Federal do Brasil.
+- Dedico-me a escrever livros, artigos para o LinkedIn e a produzir cursos para a Udemy.
+- Além disso, também ministro cursos e palestras para instituições.
+- Caso queira saber um pouco mais sobre mim, acesse o meu perfil no LinkedIn: <https://www.linkedin.com/in/thiago-leite-e-carvalho-1b337b127/>.   # Prefácio  As estruturas de dados são fundamentais para qualquer pessoa desenvolvedora, pois são a base para a construção de algoritmos eficientes e sistemas computacionais robustos.
+- Elas permitem a programadores e programadoras armazenarem e manipularem dados de forma organizada e otimizada, o que resulta em programas mais rápidos e eficientes.
+- Além disso, as estruturas de dados são essenciais para a solução de problemas complexos em diversas áreas, como na inteligência artificial, onde pode ser usada em _Machine Learning_ ; no processamento de imagens, para a detecção de padrões; na análise de dados, para avaliações quantitativas e analíticas; na Engenharia de Software, para a construção de soluções que visam à automatização de atividades e processos, entre diversas outras.
+
+## 3. Aplicacoes Praticas
+
+- Ou seja, qualquer que seja o curso (Engenharia da Computação, Análise e Desenvolvimento de Sistemas ou Ciência da Computação), as Estruturas de Dados são uma teoria essencial para a formação de profissionais.
+- Portanto, um entendimento eficaz das estruturas de dados é crucial para que os profissionais da área de computação desenvolvam habilidades sólidas e estejam preparados para enfrentar os desafios cada vez mais complexos na área da Tecnologia da Informação.
+- Conheço o Thiago desde 2001 e venho acompanhando o seu caminhar desde a época da universidade, quando ele foi meu aluno nas disciplinas de Estruturas de Dados e Pesquisa Operacional.
+- Atualmente somos colegas de trabalho: em 2012, comecei a trabalhar na mesma empresa que ele.
+- Thiago sempre se destacou no desenvolvimento na linguagem C e em Java com Orientação a Objetos e, por isso, já foi convidado a ministrar em empresas e universidades diversos cursos, como Java, Hibernate, Spring, entre outros.
+- Também já trabalhou com a plataforma .Net por 4 anos.
+- Com o início da carreira de professor universitário, juntamente com os anos de experiência em desenvolvimento, ele percebeu a dificuldade de seus alunos e alunas – e até mesmo de profissionais com experiência em programação – de realmente compreenderem e aplicarem os conceitos práticos de Estruturas de Dados.
+- Essas pessoas cometiam falhas na escolha das estruturas de dados mais adequadas e eficientes para a resolução de problemas específicos.
+- Ele também percebeu que existia uma lacuna de textos didáticos, focados em explicar detalhadamente as estruturas de dados clássicas e também em abordá-las nas principais linguagens que o mercado utiliza.
+- Por tudo isso, ele resolveu escrever este livro.
+
+## 4. Topicos Avancados
+
+- Thiago teve o cuidado de selecionar as principais e mais utilizadas estruturas de dados e apresentar, de forma clara e objetiva, os principais conceitos de cada uma delas.
+- Além de vários exemplos (códigos) explicados de forma minuciosa, são apresentadas também implementações em várias linguagens de programação.
+- A linguagem C é a mais utilizada no decorrer do livro, mas também são exploradas as linguagens Java, C#, Python e JavaScript.
+- A organização dos conceitos de forma fluida e gradativa facilita o aprendizado e desmistifica a complexidade atribuída a esse assunto.
+- Um grande diferencial deste livro é que ele aborda as estruturas de dados (ED) de forma simples, concisa e com exemplos do nosso dia a dia, mostrando que elas são mais naturais do que imaginamos.
+- O livro inicia com conceitos básicos e inerentes a Estruturas de Dados e Computação, passando pelas EDs mais básicas e seguindo até as mais avançadas.
+- Nessa trilha, sempre são fornecidos textos e códigos comentados com o intuito de facilitar a absorção do conteúdo.
+- Para finalizar, vários exercícios são apresentados para complementar o aprendizado e todos eles estão resolvidos e disponíveis para leitores e leitoras.
+- Tenho certeza de que, ao terminar a leitura deste livro, você será uma pessoa desenvolvedora diferenciada e mais preparada para usar as estruturas de dados da melhor forma possível.
+- Embarque com Thiago nesta desafiadora e engrandecedora caminhada de como organizar os dados e ter melhor desempenho nos seus algoritmos.
+

@@ -1,0 +1,503 @@
+=== arquitetura-limpa === (15266 linhas totais, conteudo comeca na linha 492)
+=== Primeiras 3312 linhas significativas extraidas
+
+obtido com o fabricante do equipamento e/ou loja de
+Arquitetura Limpa - O guia do artesão para estrutura e design de
+software Copyright © 2020 da Starlin Alta Editora e Consultoria Eireli. ISBN:
+Translated from original Clean Architecture: A Craftsman's Guide to Software
+Structure and Design. Copyright © 2018 Pearson Education, Inc. ISBN 978-0-
+134-49416-6. This translation is published and sold by permission of Pearson
+Education, Inc, the owner of all rights to publish and sell the same. PORTUGUESE
+language edition published by Starlin Alta Editora e Consultoria Eireli, Copyright
+© 2019 by Starlin Alta Editora e Consultoria Eireli.
+Todos os direitos estão reservados e protegidos por Lei. Nenhuma parte deste
+livro, sem autorização prévia por escrito da editora, poderá ser reproduzida ou
+transmitida. A violação dos Direitos Autorais é crime estabelecido na Lei nº
+9.610/98 e com punição de acordo com o artigo 184 do Código Penal.
+A editora não se responsabiliza pelo conteúdo da obra, formulada
+Marcas Registradas: Todos os termos mencionados e reconhecidos como
+Marca Registrada e/ou Comercial são de responsabilidade de seus proprietários.
+A editora informa não estar associada a nenhum produto e/ou fornecedor
+Impresso no Brasil — 2019 — Edição revisada conforme o Acordo Ortográﬁco da
+Publique seu livro com a Alta Books. Para mais informações envie um e-
+mail para autoria@altabooks.com.br Obra disponível para venda
+corporativa e/ou personalizada. Para mais informações, fale com
+projetos@altabooks.com.br Erratas e arquivos de apoio: No site da
+editora relatamos, com a devida correção, qualquer erro encontrado em nossos
+livros, bem como disponibilizamos arquivos de apoio se aplicáveis à obra em
+Acesse o site www.altabooks.com.br e procure pelo título do livro desejado para
+ter acesso às erratas, aos arquivos de apoio e/ou a outros conteúdos aplicáveis
+Suporte Técnico: A obra é comercializada na forma em que está, sem direito a
+suporte técnico ou orientação pessoal/exclusiva ao leitor.
+A editora não se responsabiliza pela manutenção, atualização e idioma dos sites
+Marketing Editorial marketing@altabooks.com.br
+Revisão Técnica Josivan Pereira de Souza Mestre em Computação Aplicada pela UTFPR
+Adaptação para formato e-Book Joyce Matos
+Rua Viúva Cláudio, 291 — Bairro Industrial do Jacaré CEP: 20.970-031 — Rio de Janeiro (RJ) Tels.: (21)
+www.altabooks.com.br — altabooks@altabooks.com.br www.facebook.com/altabooks —
+Este livro é dedicado à minha amada esposa, meus
+quatro ﬁlhos espetaculares e suas famílias, incluindo
+meu kit completo com cinco netos — a grande dádiva da
+II. Começando com os Tijolos: Paradigmas da Programação
+7\. SRP: O Princípio da Responsabilidade Única
+9\. LSP: O Princípio de Substituição de Liskov
+10\. ISP: O Princípio da Segregação de Interface
+11\. DIP: O Princípio da Inversão de Dependência
+O Princípio da Equivalência do Reúso/Release
+O Princípio do Fechamento Comum (The Common Closure Princple)
+O Princípio do Reúso Comum (The Common Reuse Principle)
+O Diagrama de Tensão para Coesão de Componentes
+Design de Cima para Baixo (Top-Down Design)
+Quais Limites Você Deve Estabelecer e Quando?
+Frameworks São Ferramentas, Não Modos de Vida
+Por que os Sistemas de Bancos de Dados são tão Predominantes?
+O Diabo está nos Detalhes de Implementação
+Do que estamos falando quando falamos de arquitetura?
+Como qualquer metáfora, descrever software por meio
+das lentes da arquitetura pode esconder tanto quanto
+pode revelar. Pode prometer mais do que entregar e
+O apelo óbvio da arquitetura é a estrutura, que domina
+os paradigmas e discussões sobre o desenvolvimento de
+software — componentes, classes, funções, módulos,
+camadas e serviços, micro ou macro. No entanto, muitas
+vezes, é difícil conﬁrmar ou compreender a estrutura
+bruta de vários sistemas de software — esquemas
+corporativos ao estilo soviético em vias de se tornarem
+legado, improváveis torres de equilíbrio se estendendo
+em direção à nuvem, camadas arqueológicas enterradas
+em um slide que parece uma imensa bola de lama. Pelo
+jeito, a estrutura de um software não parece tão intuitiva
+Prédios têm uma estrutura física óbvia, em pedra ou
+concreto, com arcos altos ou largos, grande ou pequena,
+magníﬁca ou mundana. Essas estruturas têm pouca
+escolha além de respeitar os limites impostos pela
+gravidade e pelos seus materiais. Por outro lado —
+exceto no sentido de seriedade — o software tem pouco
+tempo para a gravidade. E do que o software é feito?
+Diferente dos prédios, que podem ser feitos de tijolos,
+concreto, madeira, aço e vidro, o software é feito de
+software. Grandes construções de software são
+compostas de componentes de software menores, que,
+por sua vez, são formados por componentes ainda
+menores de software, e assim por diante. É um código
+Na arquitetura de software, por natureza, o software é
+recursivo, fractal e esboçado e desenvolvido em código.
+Os detalhes são essenciais. Também ocorre o
+entrelaçamento de níveis de detalhes na arquitetura de
+prédios, mas não faz sentido falar de escala física em
+software. O software tem estrutura — muitas estruturas
+e muitos tipos delas — e essa variedade supera o
+conjunto de estruturas físicas encontradas nos prédios.
+Você pode até argumentar de forma muito convincente
+que, na arquitetura de software, há mais atividade e
+foco no design do que na construção civil — neste
+sentido, não é insensato considerar a arquitetura de
+software mais arquitetural do que a arquitetura de
+Mas a escala física é algo que os humanos entendem e
+buscam no mundo. Embora atraentes e visualmente
+óbvias, caixas em um diagrama de PowerPoint não são
+arquitetura de sistemas de software. Sem dúvida, elas
+representam uma visão particular de uma arquitetura,
+mas confundir essas caixas com a imagem maior — com
+a arquitetura — é perder a imagem maior e a
+arquitetura: a arquitetura de software não se parece
+com nada. Uma visualização especíﬁca é uma escolha,
+não uma determinação. É uma escolha baseada em um
+conjunto maior de escolhas: o que incluir; o que excluir;
+o que enfatizar utilizando forma ou cor; o que retirar do
+destaque por meio da uniformização ou omissão. Não há
+nada natural ou intrínseco que diferencie uma visão da
+Talvez não seja muito útil falar sobre física e escala física
+em arquitetura de software, mas certas restrições físicas
+merecem a nossa consideração e atenção. A velocidade
+do processador e a largura de banda da rede podem
+fornecer um veredito duro sobre a performance de um
+sistema. A memória e o armazenamento podem limitar
+as ambições de qualquer base de código. O software
+pode ser feito do mesmo material que os sonhos, mas
+Nisto é que consiste a monstruosidade no amor, senhora, em ser inﬁnita a
+vontade e restrita a execução; em serem limitados os desejos e o ato
+Nós e nossas empresas e economias vivemos no mundo
+físico. Isso nos dá uma outra perspectiva pela qual
+podemos entender a arquitetura do software e falar e
+raciocinar em termos de forças menos físicas e
+A arquitetura representa as decisões signiﬁcativas de design que moldam
+um sistema, onde a signiﬁcância é medida pelo custo da mudança.
+Tempo, dinheiro e esforço nos dão um sentido de escala
+para classiﬁcar o grande e o pequeno e distinguir as
+coisas arquiteturais do resto. Essa medida também nos
+diz como podemos determinar se uma arquitetura é boa
+ou não: uma arquitetura não deve apenas atender às
+demandas dos usuários, desenvolvedores e proprietários
+corresponder a essas expectativas ao longo do tempo.
+Se você acha que uma arquitetura boa é cara, experimente uma
+Os tipos de mudanças que ocorrem normalmente
+durante o desenvolvimento de um sistema não precisam
+ser caros, complexos ou abordados em projetos
+especíﬁcos gerenciados, fora do ﬂuxo de trabalho diário
+Esse ponto está ligado a um problema de importância
+considerável para a física: a viagem no tempo. Como
+podemos saber as consequências dessas mudanças
+típicas para que possamos adaptar as principais
+decisões que tomamos a respeito delas? Como podemos
+reduzir o esforço e o custo de desenvolvimento no futuro
+sem recorrer a bolas de cristal ou máquinas do tempo?
+A arquitetura é o conjunto de decisões que você queria ter tomado logo
+no início de um projeto, mas, como todo mundo, não teve a imaginação
+Se entender o passado é muito difícil e nossa
+compreensão do presente, no máximo, incerta, prever o
+É aqui que a estrada se bifurca em vários caminhos.
+Na estrada mais escura, surge a ideia de que uma
+arquitetura forte e estável se faz com autoridade e
+rigidez. Se for cara, a mudança é eliminada e suas
+causas são ignoradas ou atiradas em um fosso
+burocrático. A atuação do arquiteto é irrestrita e
+totalitária, e a arquitetura se transforma em uma
+distopia para os desenvolvedores e uma fonte de
+Um cheiro forte de generalidade especulativa vem de
+outro caminho. Essa é uma rota cheia de adivinhação
+codiﬁcada, incontáveis parâmetros, tumbas de código
+morto e mais complexidade acidental do que você
+poderia resolver com um orçamento de manutenção.
+O caminho que nos interessa mais é o mais limpo. Nele,
+reconhecemos a suavidade do software e queremos
+preservá-lo como a principal propriedade do sistema.
+incompleto, mas também sabemos que, como seres
+humanos, operar com conhecimento incompleto é o que
+fazemos de melhor. Nesse caminho, priorizamos os
+nossos pontos fortes em vez das deﬁciências. Criamos e
+descobrimos coisas. Fazemos perguntas e conduzimos
+compreendê-la mais como uma jornada do que como um
+destino, mais como um processo contínuo de
+investigação do que como um artefato congelado.
+A arquitetura é uma hipótese que precisa ser comprovada por
+Andar por este caminho requer cuidado e atenção,
+consideração e observação, prática e princípio. Em um
+primeiro momento, isso pode parecer lento, mas tudo
+O título deste livro é Arquitetura Limpa. Trata-se de um
+nome audacioso. Alguns até diriam arrogante. Então, por
+que decidi escrever este livro e escolher esse título?
+Escrevi minha primeira linha de código em 1964, aos 12
+anos. Há mais de meio século mexo com programação.
+Nesse meio-tempo, aprendi algumas coisas sobre como
+estruturar sistemas de software — informações que, na
+minha opinião, outras pessoas acharão valiosas.
+Aprendi tudo isso construindo muitos sistemas, grandes
+e pequenos. Construí pequenos sistemas embarcados e
+grandes sistemas de processamento de lotes. Sistemas
+em tempo real e sistemas web. Aplicações de console,
+aplicações GUI, aplicações de controle de processo,
+jogos, sistemas de contabilidade, de telecomunicação,
+ferramentas de design, aplicações de desenho e muitos,
+Desenvolvi aplicações single-threaded, aplicações
+multithreaded, aplicações com poucos processos
+pesados, aplicações com muitos processos leves,
+aplicações multiprocessadoras, aplicações de base de
+dados, aplicações matemáticas, aplicações de geometria
+Criei muitas aplicações. Construí muitos sistemas. E a
+dedicação com que trabalhei em todos esses projetos
+As regras da arquitetura são sempre as mesmas!
+Isso é surpreendente porque os sistemas que criei eram
+radicalmente diferentes entre si. Então, por que
+sistemas tão diferentes compartilham regras similares
+de arquitetura? Cheguei à conclusão de que as regras da
+arquitetura de software são independentes de todas as
+Isso se torna ainda mais surpreendente quando você
+considera as mudanças ocorridas no hardware ao longo
+desse meio século. Comecei a programar em máquinas
+do tamanho de geladeiras que tinham tempos de ciclo
+de meio megahertz, 4K de memória central, 32K de
+memória de disco e uma interface de teletipo de 10
+caracteres por segundo. Agora, estou fazendo uma
+excursão de ônibus pela África do Sul enquanto escrevo
+este prefácio, em um MacBook com um processador
+Intel i7 de quatro núcleos, rodando a 2.8 gigahertz cada.
+O MacBook tem 16 gigabytes de RAM, um terabyte de
+SSD e um display de retina, com resolução máxima de
+2880X1800 pixels, que exibe vídeos em deﬁnição
+computacional é inacreditável. Qualquer análise
+razoável mostrará que este MacBook é pelo menos 1022
+vezes mais potente do que aqueles computadores
+antigos em que comecei a programar, meio século atrás.
+Vinte e duas ordens de magnitude é um número muito
+grande. É o número de angströms da Terra até Alpha
+Centauri. É o número de elétron das moedas que estão
+no seu bolso ou bolsa. Além disso tudo, esse número —
+por alto — expressa o aumento do poder computacional
+registrado ao longo da minha vida até agora.
+E qual foi o efeito desse grande salto no poder
+computacional sobre os softwares que eu escrevo? Com
+certeza, eles ﬁcaram maiores. Eu costumava pensar que
+tinha um programa grande quando escrevia 2.000
+linhas. Aﬁnal, era uma caixa cheia de cartões que
+pesava 4,5kg. Hoje em dia, um programa não é
+realmente grande a menos que ultrapasse 100.000
+O software também ﬁcou muito mais eﬁciente. Podemos
+fazer coisas com que mal sonhávamos nos anos 1960.
+Os ﬁlmes Colossus 1980, Revolta na Lua e 2001: Uma
+Odisseia no Espaço tentaram imaginar como seria o
+futuro, mas passaram bem longe ao preverem máquinas
+enormes que adquiriam senciência. Em vez disso, o que
+temos hoje são máquinas inﬁnitamente pequenas, mas
+Outra característica do software atual em comparação
+com o anterior: ele continua sendo feito com os mesmos
+elementos. É formado por declarações if, declarações de
+Ah, você pode discordar e dizer que agora temos
+linguagens muito melhores e paradigmas superiores.
+Aﬁnal de contas, programamos em Java, C# e Ruby e
+usamos o design orientado a objetos. Isso é verdade,
+mas, ainda assim, o código continua a ser apenas uma
+reunião de sequências, seleções e iterações, como nos
+Quando observa bem de perto a prática de programar
+computadores, você percebe que muito pouco mudou
+em 50 anos. As linguagens ﬁcaram um pouco melhores
+e as ferramentas, fantasticamente melhores. Mas os
+blocos de construção básicos de um programa de
+Se eu levasse uma programadora1 de 1966 para 2016,
+colocasse ela em frente ao meu MacBook executando o
+IntelliJ e a apresentasse ao Java, talvez ela precisasse de
+24 horas para se recuperar do choque. Mas, logo em
+seguida, ela poderia escrever o código. Java não é tão
+Por outro lado, se eu levasse você de volta para 1966 e
+ensinasse a escrever e editar código PDP-8 perfurando
+uma ﬁta de papel em um teletipo de 10 caracteres por
+segundo, talvez você precisasse de 24 horas para se
+recuperar da decepção. Mas, logo em seguida, poderia
+escrever o código, que não mudou tanto assim.
+Eis o segredo: essa imutabilidade do código é a razão
+pela qual as regras da arquitetura de software são tão
+consistentes entre os diversos tipos de sistemas. As
+regras da arquitetura de software são princípios para
+ordenar e montar os blocos de construção de
+programas. E já que esses blocos de construção são
+universais e não mudaram, as regras para ordená-los
+Os programadores mais novos podem pensar que isso é
+loucura. Podem insistir que, atualmente, tudo é novo e
+diferente e que as regras do passado estão no passado.
+Se pensam assim, estão redondamente enganados. As
+regras não mudaram. Apesar das novas linguagens,
+frameworks e paradigmas, as regras continuam as
+mesmas de quando Alan Turing escreveu seu primeiro
+Mas uma coisa mudou: como não conhecíamos as regras
+naquela época, acabávamos infringindo essas normas
+várias vezes. Agora, com meio século de experiência nas
+E são dessas regras — atemporais e imutáveis — que
+1\. E ela provavelmente seria uma mulher já que, naquela época, as
+mulheres eram uma grande fração dos programadores.
+Martin Fowler Alistair Cockburn James O. Coplien Tim
+Conrad Richard Lloyd Ken Finder Kris Iyer (CK) Mike
+Carew Jerry Fitzpatrick Jim Newkirk Ed Thelen
+E muitos outros, numerosos demais para citar.
+Na revisão ﬁnal deste livro, eu lia o capítulo Arquitetura
+Gritante quando o sorriso de olhos brilhantes e a risada
+melódica de Jim Weirich ecoaram em minha mente. Boa
+Robert C. Martin (Uncle Bob) atua como programador
+desde 1970. Cofundador da cleancoders.com, que
+desenvolvedores de software, também fundou a Uncle
+Bob Consulting LLC, que presta serviços de consultoria
+de software, treinamento e desenvolvimento de
+capacidades para as principais corporações do mundo.
+Ocupou o cargo de artesão-mestre na 8th Light, Inc.,
+uma ﬁrma de consultoria de software sediada em
+Chicago. Já publicou dúzias de artigos em vários
+periódicos do setor e faz palestras regularmente em
+conferências internacionais e feiras. Também atuou três
+anos como editor-chefe da C++ Report e foi o primeiro
+Martin escreveu e editou muitos livros, como O
+Codiﬁcador Limpo, Código Limpo, UML for Java
+Programmers, Agile Software Development, Extreme
+Programming in Practice, More C++ Gems, Pattern
+Languages of Program Design 3 e Designing Object
+Oriented C++ Applications Using the Booch Method (os
+dois primeiros traduzidos e publicados pela Alta Books).
+Ninguém precisa de muitas habilidades e conhecimentos
+para fazer um programa funcionar. Alunos do ensino
+médio fazem isso o tempo todo. Jovens universitários
+iniciam negócios bilionários com esboços de algumas
+linhas em PHP ou Ruby. Entrincheirados em cubículos no
+mundo inteiro, hordas de programadores juniores
+requerimentos, armazenados em imensos sistemas de
+acompanhamento de defeitos, para fazer os seus
+sistemas "funcionarem" utilizando somente a pura e
+bruta força de vontade. O código que eles produzem
+pode não ser bonito, mas funciona. Funciona porque
+fazer algo funcionar — uma vez — não é tão difícil.
+Fazer direito é outra questão. Criar software de maneira
+correta é difícil. Requer conhecimentos e habilidades
+que a maioria dos jovens programadores ainda não
+adquiriu. Requer um grau de raciocínio e insight que a
+maioria dos programadores não se empenha em
+desenvolver. Requer um nível de disciplina e dedicação
+que a maioria dos programadores nunca sonhou que
+precisaria. Principalmente, requer paixão pela
+programação e o desejo de se tornar um proﬁssional.
+Quando você acerta o software, algo mágico acontece:
+você não precisa de hordas de programadores para
+mantê-lo funcionando. Você não precisa de uma torrente
+de documentos de requerimentos e imensos sistemas de
+acompanhamento de defeitos. Você não precisa de
+fazendas globais de cubículos nem de programação 24
+Quando o software é feito da maneira certa, ele exige só
+uma fração dos recursos humanos para ser criado e
+mantido. As mudanças são simples e rápidas. Os poucos
+defeitos surgem distantes uns dos outros. O esforço é
+minimizado enquanto a funcionalidade e a ﬂexibilidade
+Sim, essa visão parece um pouco utópica. Mas eu estive
+lá e vi acontecer. Já trabalhei em projetos onde o design
+e a arquitetura do sistema facilitavam a sua escrita e
+manutenção. Já participei de projetos que exigiram uma
+fração dos recursos humanos previstos. Já atuei em
+sistemas que apresentaram taxas de defeitos
+extremamente baixas. Já observei o efeito extraordinário
+que uma boa arquitetura de software pode ter sobre um
+sistema, um projeto e uma equipe. Já estive na terra
+Mas não acredite em mim. Examine a sua própria
+experiência. Você já vivenciou o oposto disso tudo? Já
+trabalhou em sistemas tão interconectados e
+intrincadamente acoplados que qualquer mudança, por
+mais trivial que seja, levava semanas e envolvia grandes
+riscos? Já experimentou a impedância de um código
+ruim e um péssimo design? O design de algum dos
+sistemas em que você trabalhou já provocou um efeito
+negativo arrasador sobre a moral da equipe, a conﬁança
+dos clientes e a paciência dos gerentes? Você já viu
+equipes, departamentos e até empresas serem
+prejudicados pela péssima estrutura de um software? Já
+Eu já estive — e até certo ponto, a maioria de nós
+também. É muito mais comum enfrentar incríveis
+diﬁculdades com o design dos softwares do que curtir a
+oportunidade de trabalhar com um bom design.
+Tem havido muita confusão entre os termos design e
+arquitetura ao longo dos anos. O que é design? O que é
+arquitetura? Quais são as diferenças entre os dois?
+Um dos objetivos deste livro é acabar com essa
+confusão e deﬁnir, de uma vez por todas, o que são
+design e arquitetura. Para começar, aﬁrmo que não há
+diferença entre os dois termos. Nenhuma diferença.
+Em geral, a palavra "arquitetura" é usada no contexto de
+algo em um nível mais alto e que independe dos
+detalhes dos níveis mais baixos, enquanto "design"
+parece muitas vezes sugerir as estruturas e decisões de
+nível mais baixo. Porém, esses usos perdem o sentido
+quando observamos arquitetos de verdade em ação.
+Considere o arquiteto que projetou minha casa nova. A
+casa tem uma arquitetura? É claro que tem. E o que é
+essa arquitetura? Bem, é a forma da casa, a aparência
+externa, as elevações e o layout dos espaços e salas.
+Mas, quando analiso as plantas produzidas pelo
+arquiteto, noto um número imenso de detalhes de baixo
+nível. Vejo onde cada tomada, interruptor de luz e
+lâmpada será colocado. Vejo quais interruptores
+controlam quais lâmpadas. Vejo onde o forno será
+instalado e o tamanho e o local do aquecedor de água e
+da bomba. Vejo descrições detalhadas de como as
+paredes, tetos e fundações serão construídas.
+Resumindo, vejo os pequenos detalhes que servem de
+base para as decisões de alto nível. Também vejo como
+esses detalhes de baixo nível e as decisões de alto nível
+fazem parte do design da casa como um todo.
+Ocorre o mesmo com o design de software. Os detalhes
+de baixo nível e a estrutura de alto nível são partes do
+mesmo todo. Juntos, formam um tecido contínuo que
+deﬁne e molda o sistema. Você não pode ter um sem o
+outro e, de fato, nenhuma linha os separa claramente.
+Há simplesmente uma linha constante de decisões que
+se estende dos níveis mais altos para os mais baixos.
+Qual é o objetivo dessas decisões? O objetivo do bom
+design de software? Esse objetivo não é nada menos do
+O objetivo da arquitetura de software é minimizar os recursos humanos
+necessários para construir e manter um determinado sistema.
+A medida da qualidade do design corresponde à medida
+do esforço necessário para satisfazer as demandas do
+cliente. Se o esforço for baixo e se mantiver assim ao
+longo da vida do sistema, o design é bom. Se o esforço
+aumentar a cada novo release ou nova versão, o design
+Como exemplo, considere o seguinte estudo de caso. Ele
+inclui dados reais de uma empresa real que deseja se
+Primeiro, vamos observar o crescimento da equipe de
+engenharia. Estou certo que você concordará que essa
+tendência é muito encorajadora. O crescimento, como o
+apresentado na Figura 1.1, deve ser um indicativo de
+Figura 1.1 Crescimento da equipe de engenharia
+Reprodução autorizada de uma apresentação de slides de Jason Gorman
+Agora, vamos analisar a produtividade da empresa ao
+longo do mesmo período, medida simplesmente por
+Figura 1.2 Produtividade ao longo do mesmo período
+Claramente há algo errado aqui. Embora cada release
+seja operado por um número cada vez maior de
+desenvolvedores, o crescimento do código parece estar
+Mas aqui está o gráﬁco realmente assustador: a Figura
+1.3 mostra como o custo por linha de código mudou com
+Essas tendências não são sustentáveis. Seja qual for a
+lucratividade registrada pela empresa no momento,
+essas curvas drenarão catastroﬁcamente o lucro do
+modelo de negócios e causarão a estagnação da
+empresa, que poderá até sofrer um colapso total.
+O que causou essa mudança notável na produtividade?
+Por que o custo de produção do código aumentou 40
+Figura 1.3 Custo por linha de código em função do tempo
+Você está olhando para a marca registrada de uma
+bagunça. Quando sistemas são desenvolvidos às
+pressas, quando o número total de programadores se
+torna o único gerador de resultados, e quando houver
+pouca ou nenhuma preocupação com a limpeza do
+código e a estrutura do design, você pode ter certeza
+que irá seguir esta curva até o seu terrível ﬁnal.
+A Figura 1.4 mostra como esta curva é vista pelos
+desenvolvedores. Eles começaram com quase 100% de
+produtividade, mas, a cada release, sua produtividade
+caiu. No quarto release, ﬁcou claro que a produtividade
+estava em queda livre, tendendo a se estabilizar em
+desenvolvedores, porque todos estão trabalhando duro.
+E ainda assim, apesar de todos os atos de heroísmo,
+horas extras e dedicação, eles simplesmente não
+conseguem fazer quase nada. Todos os esforços foram
+desviados da criação de recursos e agora são
+consumidos pela gestão da bagunça. Nesse ponto, o
+trabalho mudou para transferir a bagunça de um lugar
+para outro, para o próximo e para o lugar seguinte até
+que possam adicionar mais um recursozinho
+Mas, se você acha que isso é ruim, imagine como essa
+imagem chega aos executivos! Considere a Figura 1.5,
+que descreve a folha de pagamentos mensal do
+Figura 1.5 Folha de pagamento mensal do desenvolvimento por release
+Quando o release 1 foi entregue, a folha de pagamento
+mensal estava orçada em algumas centenas de milhares
+de dólares. O segundo release custou algumas centenas
+de milhares de dólares a mais. No oitavo release, a folha
+de pagamento mensal era de US$20 milhões e tendia a
+Esse gráﬁco por si só já é assustador. Claramente algo
+alarmante está acontecendo. Espera-se que a receita
+esteja excedendo os custos e, portanto, justiﬁcando a
+despesa. Mas não importa como você olhe para esta
+Agora, compare a curva da Figura 1.5 com as linhas de
+código escritas por release da Figura 1.2. Aquelas
+centenas de milhares de dólares mensais no início
+trouxeram muita funcionalidade — mas os US$20
+milhões ﬁnais não geraram quase nada! Qualquer CFO
+olharia para esses dois gráﬁcos e saberia que é
+necessário tomar uma ação imediata para evitar um
+Mas que ação pode ser tomada? O que deu errado? O
+que causou esse declínio incrível na produtividade? O
+que os executivos podem fazer além de bater os pés e
+Há quase 2600 anos, Esopo contou a história da
+Tartaruga e da Lebre. A moral dessa história foi
+explicada muitas vezes e de diversas formas diferentes:
+“Devagar e sempre, e você vence a corrida.”
+“A corrida não é para os velozes, nem a batalha
+“Quanto mais pressa, menor a velocidade.”
+A própria história ilustra a tolice de ter conﬁança
+demais. A Lebre, tão conﬁante em sua velocidade
+intrínseca, não leva a corrida a sério e tira um cochilo,
+enquanto a Tartaruga cruza a linha de chegada.
+Os desenvolvedores modernos estão em uma corrida
+similar e demonstram um excesso de conﬁança
+parecido. Ah, eles não dormem — longe disso. A maioria
+dos desenvolvedores modernos trabalha demais. Mas
+uma parte de seu cérebro dorme sim — a parte que sabe
+que um código bom, limpo e bem projetado é
+Esses desenvolvedores acreditam em uma mentira bem
+conhecida: "Podemos limpar tudo depois, mas, primeiro,
+temos que colocá-lo no mercado!" Evidentemente, as
+coisas nunca são limpas mais tarde porque a pressão do
+mercado nunca diminui. A preocupação de lançar o

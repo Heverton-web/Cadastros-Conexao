@@ -1,0 +1,57 @@
+---
+name: low-code-development-with-servicenow-nicola-attico
+description: >-
+  Passos operacionais extraidos do livro 'Low - Code Development with ServiceNow - Nicola Attico' (EN) — Low-Code.
+---
+
+# Low Code Development With Servicenow Nicola Attico — Passos Operacionais
+
+Conteudo extraido do livro 'Low Code Development With Servicenow Nicola Attico'. Contem passos, tecnicas e principios baseados na obra original.
+
+## 1. Conceitos Fundamentais
+- Low-Code Development with ServiceNow Acknowledgement I would like to thank everyone who contributed to the completion of this book.
+- Your input, ideas, and encouragement have been essential throughout this journey, and I am truly grateful for your support.
+- To my family, a special thank you for your patience and support.
+- Writing a book takes a lot of time and focus, often during weekends and holidays.
+- To all my colleagues at ServiceNow, thank you for the collaboration and inspiration.
+- The list would be far too long to name everyone, but you know who you are.
+- A big heartfelt thank you to the ServiceNow community for your enthusiasm and for sharing your wisdom.
+- Your passion and dedication allows us to dream big about what can be built and achieved through the Now Platform today and in the future.
+- Finally, I am grateful to the team at BPB for their guidance and assistance.
+- Your help made this process smoother, and your expertise has been invaluable in bringing this book to life.
+
+## 2. Principios e Tecnicas
+- Low-Code Development with ServiceNow About the Author Nicola Attico has been working with ServiceNow for over ten years, engaging with the Now Platform since its “Aspen” release, and is a veteran in cloud computing and enterprise software.
+- He has served in multiple roles—software engineering, solution consulting, partner, and product management—focusing on building low-code applications that integrate cutting-edge technologies.
+- He guided numerous customers and partners in optimizing their use of the Now Platform and remains an active contributor to the ServiceNow community, creating content and sharing best practices.
+- Nicola earned an M.Sc. in Physics from the University of Pisa, graduated from the Scuola Normale Superiore, and holds professional certificates from Oxford’s Saïd Business School and Cambridge University’s Institute for Sustainable Leadership.
+- Low-Code Development with ServiceNow About the Reviewer Passionate about technology innovation, transformational leadership, and guiding the next generation of talent, Pravin Pandey is a globally recognized Solution Architect Leader, mentor, and thought leader with extensive professional experience and advanced certifications.
+- Currently working in the high-end luxury retail sector, Pravin specializes in managing architecture design globally, ensuring operational excellence and the seamless integration of cutting-edge technologies tailored to the unique demands of the industry.
+- An active member of IEEE and ACM, Pravin is also a mentor who shares his expertise to inspire and develop future leaders in datacenter transformation, modernization, and data analytics.
+- His mentorship reflects his commitment to fostering innovation and helping individuals excel in their professional journeys.
+- Pravin’s work in multi-cloud environments spans industries such as finance, retail, healthcare, technology, and manufacturing, where he has delivered tailored solutions resulting in significant cost savings, enhanced scalability, and optimized performance.
+- He specializes in modernizing legacy systems, integrating AI-driven insights, and enabling data-driven decision-making, empowering organizations to achieve sustained growth and operational agility.
+
+## 3. Aplicacoes Praticas
+- Known for his ability to merge technical expertise with business strategy, Pravin is a trusted advisor in managing complex systems and delivering future-ready architecture designs.
+- His role as a mentor, coupled with his global impact, solidifies his reputation as a leader who not only drives transformational IT solutions but also inspires others to innovate, grow, and succeed in their careers.
+- Low-Code Development with ServiceNow C HAPTER 1 ServiceNow Low-code Development Introduction This chapter lays the foundation for understanding and developing low-code applications within the Now Platform.
+- It serves a dual purpose: firstly, to provide a conceptual overview that elucidates the inherent design of the Now Platform as a facilitator of streamlined workflow development, and secondly, as a practical guide that outlines the steps to access a Personal Developer Instance ( PDI ) and embark on creating your first low-code application.
+- This chapter also aims to acquaint readers with the philosophy of ServiceNow low-code development, emphasizing its significance in modern enterprise environments and its role in democratizing application development through intuitive design and powerful tools.
+- Structure The chapter covers the following topics: • Understanding low-code • ServiceNow architecture • Scoped applications • Low-code and no-code • Personal Developer Instance • User interface • Travel Safety application hands on • ServiceNow resources Objectives By the end of this chapter, readers will be introduced to the ServiceNow low-code approach, including its high-level architecture and scripting language.
+- They will learn how to access PDIs, available upon registration on the ServiceNow Developer site, navigate the user interface, and lay the foundation for building their first low-code application.
+- Understanding low-code ServiceNow, founded in 2004 by Fred Luddy, is a renowned enterprise cloud platform known for its diverse portfolio of business applications.
+- These applications span various domains like IT, employee, customer, operations, and creator workflows, catering to a rapidly growing and enthusiastic user community.
+- While many recognize ServiceNow for the widespread use of standard product suites across numerous organizations, its core has not been designed as a specialized solution for a single domain.
+
+## 4. Topicos Avancados
+- Instead, ServiceNow was conceived as a versatile platform, known as the Now Platform, that enables the development of applications through a low-code approach.
+- Fred Luddy , captured this idea when he stated, My vision was to build a cloud-based platform that would enable regular people to route work effectively through the enterprise .
+- This statement underpins the mission of the Now Platform, which aims to democratize application development by making it more accessible, faster, and cost-effective using cloud technology.
+- Although Luddy’s quote does not explicitly mention low-code, it highlights the essence of empowering regular people to manage work more effectively.
+- This is where the low-code methodology becomes crucial.
+- Low-code development involves using configurable objects as building blocks that can be assembled to create functional applications, much like Lego.
+- Throughout this book, we will explore these building blocks in detail, discussing how they can be combined to form cohesive applications.
+- The Now Platform’s capability to route work effectively through the enterprise underscores another vital feature: its proficiency in managing workflows.
+- In the context of ServiceNow, workflow extends beyond its technical meaning of automating business processes.
+- It represents a broader concept that encapsulates the essence of automation and collaboration within organizations.

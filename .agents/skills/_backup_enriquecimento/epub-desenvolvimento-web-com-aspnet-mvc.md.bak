@@ -1,0 +1,72 @@
+---
+name: epub-desenvolvimento-web-com-asp-net-mvc
+description: >-
+  Passos operacionais extraidos — desenvolvimento web, full-stack, JavaScript, TypeScript, React, Node.js (PT).
+---
+
+# EPUB Desenvolvimento web com ASP.NET MVC — Passos Operacionais
+
+Skill baseada no livro "EPUB Desenvolvimento web com ASP.NET MVC" (PT). Contem passos praticos e sequencias operacionais.
+
+Use quando o usuario pedir orientacao pratica sobre: desenvolvimento web, full-stack, JavaScript, TypeScript, React, Node.js.
+
+---
+
+## 1. ## Desenvolvimento web com ASP.NET MVC
+
+
+## 2. ## Sumário
+
+
+## 3. ## Agradecimentos
+
+
+## 4. ## Sobre os autores
+
+
+## 5. ## Prefácio
+
+
+## 6. ##  Capítulo 1:  Sua primeira aplicação
+
+
+## 7. ##  Capítulo 2:  Entendendo a estrutura de uma aplicação ASP.NET MVC
+
+
+## 8. ##  Capítulo 3:  Projetando a aplicação Cadê meu médico?
+
+
+## 9. ##  Capítulo 4:  Models: desenhando os modelos da nossa aplicação
+
+
+## 10. ##  Capítulo 5:  Controllers: adicionando comportamento à nossa aplicação
+
+
+## 11. ##  Capítulo 6:  Views: interagindo com o usuário
+
+
+## 12. ##  Capítulo 7:  Segurança: criando sua área administrativa
+
+## Conceitos Fundamentais
+
+- O próximo passo é testarmos a imagem que foi gerada criando um container, e dizer que
+- applications that cannot run in “the cloud” for various reasons; but the majority of
+- torna possível a inicialização (ou a parada) de serviços e coleta de informações
+- of Docker. We had no idea that we were about to start the container revolution.
+- physical machines. In 2004, Xen had a lot of limitations: it ran only on Linux,
+
+## Princípios e Técnicas
+
+- instalação do MySQL, a fim de evitar telas interativas que são exibidas durante
+- entre o nosso host local e o novo container, de forma que tudo o que for criado
+- containers e verificar se estão utilizando os novos endereços IP que definimos:
+- Até agora, todos os containers que criamos estão utilizando o total de recursos
+- O rootfs (ou root file system) inclui a estrutura típica de diretórios ( /dev,
+
+## Aplicações Práticas
+
+- do container sem precisar abrir os arquivos de log, pois todo o log está sendo
+- e inserir algum texto. Entretanto, antes note o retorno de um request feito ao
+- carga para inicializar os serviços. Isso garante a distribuição das tarefas no
+- What is this so-called container revolution? Is it really a revolution, or is
+- down. In our repositories, we have “infrastructure as code” files, describing

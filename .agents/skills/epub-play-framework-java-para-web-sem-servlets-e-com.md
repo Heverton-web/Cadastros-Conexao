@@ -1,0 +1,78 @@
+---
+name: epub-play-framework-java-para-web-sem-servlets-e-c
+description: >-
+  Passos operacionais extraidos — desenvolvimento web, full-stack, JavaScript, TypeScript, React, Node.js (EN).
+---
+
+# Epub Play Framework Java Para Web Sem Servlets E Com — Passos Operacionais
+
+Conteudo extraido do livro 'Epub Play Framework Java Para Web Sem Servlets E Com'. Contem passos, tecnicas e principios baseados na obra original.
+
+## 1. Conceitos Fundamentais
+- E segue o jogo!   ## Sobre o autor  Formado pela UNESP em BCC, foi instrutor oficial da Sun Microsystems e da Oracle Education.
+- Atualmente contribui para alguns projetos open source, como KDE, Jenkins entre outros.   ## Prefácio  O melhor presente que se dá é aquele que você gostaria de ganhar.
+- O seu foco é o divertido desenvolvimento no qual a interface HTTP é algo simples, flexível e poderoso, sendo uma alternativa limpa para as opções Enterprise Java infladas.
+- Ele foca na produtividade do desenvolvedor para as arquiteturas RESTful, e sua vantagem em relação às linguagens e frameworks não Java, como Rails e PHP, é que ele usufriu de todo o poder da Java Virtual Machine (JVM).       ###  1.2  O que não é o Play   O Play não é um framework padrão Java EE, como Spring, Struts ou VRaptor – ele usa uma arquitetura extremamente simples.
+- Uma aplicação JSF roda sobre a API de Servlet, que por sua vez roda em um container Java EE, que fica dentro de um HTTP Server.
+- Perceba que todo desenvolvedor é obrigado a trabalhar com essas quatro camadas.
+- Já com o Play, temos apenas duas: o próprio Play framework e o seu HTTP server embutido (Netty).
+- Confira a visão geral do Play na figura 1.1  _Fig. 1.1: Play framework stack_             ###  1.3  Instalação do Play   Como pré-requisito, o Play espera que sua máquina tenha instalado uma versão recente do JDK ( <http://www.oracle.com/technetwork/java/javase/>), e tenha configurado em seu ambiente a variável JAVA_HOME apontando para essa instalação ( Exemplo: C:\JDK ou /opt/jdk ).
+- A instalação do Play é bem simples e feita em apenas dois passos.
+- O primeiro deles é fazer o download do site <http://www.playframework.org>.
+
+
+  - Não seria um absurdo se todo mês fosse cobrada uma taxa fixa de trezentos reais de energia elétrica, independente do uso ? Entretanto, quando se paga por um serviço de hospedagem, é exatamente o que acontece, pois o site fica no ar, independente do uso dos recursos por uma quantia mensal fixa. Para mudar esse cenário, surgiu o conceito de cloud computing (computação em nuvem), segundo o qual os serviços são pagos pelo uso, proporcionando inúmeras vantagens: toda a parte de infraestrutura (rede, armazenamento de arquivos, banco de dados, segurança) é de responsabilidade da prestadora de serviços, e o crescimento do uso de serviços é pago proporcionalmente, o que, em termos de custo, é uma excelente opção.
+
+  - Esse aviso significa que o site que estamos visitando não é garantido por uma unidade certificadora, como por exemplo a empresa Verisign. Para adiquirir um certificado digital, é preciso pagar para essas empresas, que funcionam semelhantes a cartórios virtuais, elas asseguram que o site que está sendo acessado é realmente da empresa que ele representa. Quando um certificado é assinado localmente (como no nosso caso), o site funciona, apenas exibindo um aviso. No caso do Google Chrome, o https aparece riscado em vermelho, como mostra a figura 8.2.
+
+  - No capítulo [4](index_split_007.html#publicando) publicamos uma aplicação básica (<http://play-capitulo4.herokuapp.com/>), e usaremos agora uma URL diferente para refletir a aplicação completa (<http://top100filmescult.herokuapp.com/>). Depois de cadastrados os dados iniciais, devemos informar um e-mail de contato e o domínio no qual a aplicação funcionará. Será necessário cadastrar um domínio diferente, por exemplo <seu-usuario-no-Heroku>-top100filmescult.herokuapp.com, semelhante à figura 7.2.
+
+  - Existe outra diferença interessante : as aplicações criadas até o Play 2.2 necessitam de uma instalação do Play para funcionar, já as aplicações criadas com o Activador (Play 2.3+) são "auto-suficientes", não tem dependência externa... é possível rodar a mesma aplicação em outra máquina apenas copiando o diretório e mais nada, isso é algo positivo que aumenta a flexibilidade, principalmente quando se trabalha com diferentes ambientes ( desenvolvimento, homologação e produção).
+
+  - O Play é um framework que redefine o desenvolvimento web em Java. O seu foco é o divertido desenvolvimento no qual a interface HTTP é algo simples, flexível e poderoso, sendo uma alternativa limpa para as opções Enterprise Java infladas. Ele foca na produtividade do desenvolvedor para as arquiteturas RESTful, e sua vantagem em relação às linguagens e frameworks não Java, como Rails e PHP, é que ele usufriu de todo o poder da Java Virtual Machine (JVM).
+
+  - Para cada restart do servidor do Play, o seu banco de dados será limpo novamente. No início do desenvolvimento de um cadastro, isso não é um problema, mas chega um momento em que o sistema necessita de um cadastro mínimo já no banco de dados para funcionar de maneira adequada. Criar um cadastro de filmes em que é preciso cadastrar os diretores toda vez é inviável. Por esse motivo precisamos ter essas informações pré-cadastradas em um repositório.
+## 2. Principios e Tecnicas
+- Depois disso, faça o ajuste conforme o seu sistema operacional.  #### Instalação no Windows  Descompacte o pacote na raiz e renomeie o diretório compactado para `play`.
+- Exemplo: o arquivo `typesafe-activator-1.2.10-minimal.zip` criará o diretório `C:\activator-1.2.10-minimal\`.
+- Mas se o nome do framework é Play, por que o arquivo se chama Activator ?
+- Adicione no arquivo `$HOME/.bashrc` ou em `$HOME/.bash_profile` o comando: `export PATH=$PATH:$HOME/play/`.  #### Instalação em Mac OSX  Descompacte o pacote na raiz, por exemplo: `/home/fb/activator-1.2.10-minimal/`, e crie um link simbólico para esse diretório chamado `play`, como:               1 ln -s /home/fb/activator-1.2.10-minimal/  /home/fb/play       Adicione no arquivo `/etc/paths` o diretório `$HOME/play/`.
+- Em uma eventual atualização, descompacte a nova versão e atualize o link simbólico para o novo diretório.
+- Se preferir usar o Homebrew, apenas rode o comando `brew install play`.  #### Testando sua instalação  Depois de configurado, abra o console do seu sistema operacional e digite `activator help`.
+- O resultado esperado está na figura 1.3.  _Fig. 1.3: Instalação do Play com sucesso no Windows_          Pronto!
+- O core do Play 2 é feito em Scala, mas ele é perfeito para Java, pois podemos trabalhar com ele sem aprender uma nova linguagem e ambos usam a nossa querida JVM.       ###  1.9  Próximos passos   Certifique-se de que aprendeu:    * visão geral do Play Framework;   * como instalar o Play;   * comandos básicos do Activator;   * como criar sua primeira aplicação em Java e Scala.
+- Agora que já molhamos os pés, nos próximos capítulos vamos aprender a nadar criando o primeiro CRUD.        ##  Capítulo 2:  Navegando com estilo   A aplicação do Play possui uma estrutura simples que facilita muito o desenvolvimento de aplicações.
+- Nesse capítulo, veremos como deixar sua aplicação com uma interface mais profissional e como controlar a navegação entre as telas usando os templates.
+
+
+  - Escolhendo a opção _Hobby Dev_ e associada à aplicação recém-criada, teremos uma aplicação gratuita com o banco de dados PostgreSQL disponível com suporte a 20 conexões simultâneas e tabelas com no máximo 10.000 linhas (figura 4.4). O Heroku trabalha preferencialmente com PostgreSQL, mas oferece também outras opções como MySQL, MongoDB, Neo4J; é preciso consultar no site os planos existentes, mas a maioria deles oferece um gratuito de teste.
+
+  - As redes sociais são essenciais para a divulgação do site e seus serviços. Vamos integrar o nosso site ao Facebook de duas maneiras, primeiramente utilizando a API nativa disponibilizada para os desenvolvedores, e depois utilizando um plugin do Play para conectar a várias redes sociais: Twitter, GitHub, Google, LinkedIn, Foursquare, Instagram, VK (rede social russa semelhante ao Facebook) e XING (rede social semelhante ao LinkedIn).
+
+  - Devemos preencher as informações da aplicação, como mostra a figura 7.1. As informações são simples: o primeiro campo é o nome do aplicativo, o segundo é o namespace (se desejar ter uma URL <http://apps.facebook.com/namespace>), e finalmente, o terceiro é para classificar sua categoria. No exemplo usamos a categoria de `Diversão`, mas se fosse um aplicativo de tênis, para exemplificar, a categoria adequada seria `Esporte` .
+
+  - Felizmente, utilizando o plugin Secure Social (<http://securesocial.ws>) conseguiremos com poucos ajustes fazer essa integração no nosso site de filmes. O Secure Social é um módulo de autenticação do Play Framework que suporta os protocolos mais usados do mercado: OAuth, OAuth2, OpenID, usuário/senha e proporciona algumas informações dos usuários autenticados, como nome, sobrenome, nome completo e e-mail.
+## 3. Aplicacoes Praticas
+- Abra o seu Eclipse no workspace em que criou o projeto e selecione a opção `Import` conforme indicado na figura:  _Fig. 2.1: Importando o projeto com Eclipse_          Em seguida, escolha a opção `Existing Projects into workspace`.
+- Veja a imagem:  _Fig. 2.2: Escolha a opção de projetos existentes_          Depois de indicar o diretório do seu workspace, escolha o projeto filmes e selecione `Finish` para concluir a importação:  _Fig. 2.3: Finalize a importação do projeto_           ---      **para os usuários do Intellij IDEA**  Para preparar o seu projeto para essa IDE, use o comando `idea` dentro do console do Play.      ---      Pronto, tudo está dentro do Eclipse, ficou mais fácil de trabalhar!
+- Agora que importamos o projeto, temos diversos arquivos organizados no nosso Eclipse.
+- Precisamos entender para que serve cada um deles.  _Fig. 2.4: Arquivos do projeto filmes_             ###  2.2  Navegação   Qual link chama qual método?
+- Em aplicações Java EE esse mapeamento pode ser feito de diversas maneiras e em diferentes lugares, o que torna complicado o controle de alterações de um sistema.
+- Felizmente, no Play tudo isso é concentrado em um único arquivo, que armazena o mapeamento de todas as rotas que uma aplicação suporta.
+- O arquivo de rotas, `conf/routes`, é divido em três partes definidas nessa ordem:    1. método HTTP – GET ou POST;   2.
+- URI da aplicação;   3. classe que será chamada ao acessar a URI com o método HTTP.
+- Por padrão, a página raiz vem com a configuração conforme a figura:  _Fig. 2.5: Arquivo de rotas_          Vamos entender melhor o funcionamento desse arquivo criando uma página de informações sobre o sistema.
+- Escrevemos um método que tratará as informações na classe existente `Application`, que já contém o método `index` responsável pela página inicial.               1 public static Result sobre() {     2   return ok("Sobre");     3 }       Todo método de um controller do Play deve seguir três regras simples:    1. deve ser public;   2. deve ser static;   3. deve retornar um objeto do tipo Result (ou de uma subclasse dele).
+
+## 4. Topicos Avancados
+- Para isso, vamos aproveitar o excelente trabalho de Mark Otto e Jacob Thornton e usar o conjunto de templates chamado Bootstrap.
+- Começaremos fazendo o download do arquivo zipado em <https://github.com/twbs/bootstrap/archive/v3.0.0.zip> e descompactando-o em um diretório temporário (Exemplo: `C:\TEMP\`).
+- Em seguida, copiamos o conteúdo do diretório `dist` (`C:\TEMP\bootstrap-3.0.0\dist\`) para o diretório `public` da nossa aplicação `filmes`.
+- Vamos criar um template para a nossa página `Sobre` criando um arquivo dentro de `app.views` chamado `sobre.scala.html`, com o seguinte conteúdo:               1 @(sistema: String)(versaoDoPlay : String)       Aqui temos uma característica bem interessante do Play: conseguimos definir parâmetros para o nosso template – nesse caso, dois do tipo `String`.
+- Logo após gravar o controller, sem precisar fazer restart algum, faça apenas um reload na página e o resultado será o seguinte:  _Fig. 2.8: Página simples com estilos_          Agora está melhor, não?       ###  2.4  Organizando as páginas   Vamos continuar colocando um menu e reorganizando as páginas.
+- A página inicial será alterada, mas vamos antes analisar a que vem por padrão.               1 @(message: String)     2      3 @main("Welcome to Play") {     4      5     @play20.welcome(message, style = "Java")     6      7 }       Além de essa página ter um parâmetro do tipo `String`, ela também chama outro template (o `main`) passando dois parâmetros: o primeiro deles do tipo `String` e o segundo (entre chaves) do tipo HTML.
+- Vamos adicionar uma linha chamando os estilos logo após a tag `title`:               1 <title>@title</title>     2 <link href="@routes.Assets.at("bootstrap/css/     3                                bootstrap.min.css")"      4       rel="stylesheet"      5       media="screen">       Fazendo um novo reload na página inicial temos como resultado com os estilos aplicados como na figura:  _Fig. 2.10: Nova página principal com estilos_          Para completar, vamos adicionar a rota da antiga página inicial para o link "Sobre o Play".
+- Agora que já temos uma aplicação navegável, nos próximos capítulos vamos criar o primeiro CRUD acessando banco de dados.        ##  Capítulo 3:  Persistindo seus dados   Praticamente todos os principais sites do mercado usam banco de dados para manipular suas informações, e no nosso sistema não será diferente.
+- Nesse capítulo veremos com detalhes a facilidade de persistência de dados com Play através do cadastro de diretores de um filme, descrevendo desde a classe de domínio (Model), passando pelo Controller e terminando na página JSP (View).
+- O gerenciador objeto relacional do Play é chamado de **ebean** , que usa o padrão JPA.
+

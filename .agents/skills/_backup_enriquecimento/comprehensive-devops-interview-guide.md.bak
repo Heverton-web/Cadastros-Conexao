@@ -1,0 +1,57 @@
+---
+name: the-comprehensive-devops-interview-guide-pradeep-s
+description: >-
+  Passos operacionais extraidos do livro 'The Comprehensive DevOps Interview Guide - Pradeep Shankar Chintale (1)' (EN) — praticas e procedimentos para DevOps, infraestrutura e containers.
+---
+
+# Comprehensive Devops Interview Guide — Passos Operacionais
+
+Conteudo extraido do livro 'Comprehensive Devops Interview Guide'. Contem passos, tecnicas e principios baseados na obra original.
+
+## 1. Conceitos Fundamentais
+- He has held senior technical leadership roles at SEI Investments, Microsoft, and Comcast, where he architected mission-critical fintech and enterprise platforms supporting millions of users and major U.S. financial institutions.
+- His expertise spans Kubernetes, cloud-native DevOps, AI/ML-driven automation, infrastructure-as-code, and high-availability architectures across private and public cloud environments.
+- Pradeep holds multiple global patents in AI-powered cybersecurity, including a Germany-registered utility model cited internationally and licensed to U.S. companies.
+- He serves as a judge and technical reviewer for the Globee Awards, AIVA, IEEE, and Springer conferences, having reviewed more than 200 research papers and chaired numerous sessions.
+- An accomplished author, his book DevOps Design Pattern has been featured at international book fairs and accepted by leading universities worldwide.
+- He also serves on multiple advisory boards and mentors global startups in cloud, DevOps, AI, and cybersecurity innovation.    * Ankur Harendrasinh Mahida is a distinguished site reliability engineer (SRE) at Barclays in Whippany, New Jersey, USA, with extensive experience in building resilient, scalable, and secure platforms for mission-critical applications in highly regulated environments.
+- He specializes in observability, automation, and performance engineering, leveraging a deep understanding of cloud operations and modern DevOps practices to bridge development and operations teams.
+- Throughout his career, Ankur has designed and implemented cloud-native and data-platform solutions that enhance system reliability, availability, and efficiency.
+- He has led initiatives to develop advanced monitoring and alerting frameworks, improve end-to-end observability for complex application and data ecosystems, and architect automation-driven solutions that reduce incidents and operational effort.
+- His technical expertise spans CI/CD automation, configuration management, disaster recovery, and performance optimization, working with technologies such as Kubernetes, Docker, Prometheus, Grafana, ELK Stack, Python, shell scripting, Terraform, enterprise Java, and relational databases.
+
+## 2. Principios e Tecnicas
+- An active researcher and prolific author, he has published extensively on reinforcement learning, edge computing, financial crime detection, observability, AI/ML in incident management, cloud security, and DevOps/SRE practices.
+- His contributions have earned him multiple international honors, including finalist in the Rising Star category of the European Search Awards 2024, Golden Award winner as Leader of the Year in the IT Eagle Awards 2024, and recipient of the Global Recognition Award 2024, along with service as a judge and reviewer for various global awards, conferences, journals, and book projects.
+- Ankur holds a master of computer science from the New York Institute of Technology, New York, USA; a master of engineering in electronics and telecommunication (E & TC) with specialization in VLSI and embedded systems from the Maharashtra Institute of Technology, Pune, India; and a bachelor of engineering from Babaria Institute of Technology, Vadodara, India.
+- He is a senior member of IEEE, a fellow member of the British Computer Society (BCS), a full member of Sigma Xi, and an ACM Professional Member.    * Gopi Desaboyina is a lead cloud architect at SEI Investments, bringing nearly two decades of expertise in cloud platforms, Kubernetes, and enterprise FinTech infrastructure.
+- He specializes in designing secure, scalable multi-cloud architectures across Azure, Oracle Cloud, AWS, and GCP.
+- Gopi is a recognized SME in Azure networking, hybrid connectivity, ExpressRoute, VPN, Azure Firewall, and large hub-and-spoke architectures.
+- He has deep hands-on expertise in Oracle Cloud networking, including DRG-v2, FastConnect, transit routing, private DNS, and security-zoned architectures.
+- As a Kubernetes platform leader, he has architected and operated production-grade clusters on AKS and OKE, focusing on container networking, GitOps, cluster governance, and secure workload operations.
+- Driven by automation, Gopi builds end-to-end Terraform, Ansible, Python, and DevOps pipelines, enabling infrastructure-as-code and firewall-as-code across the enterprise.
+- He has strong domain knowledge in distributed systems, high-performance data transfers, cloud governance, identity integration, and cross-cloud networking.
+
+## 3. Aplicacoes Praticas
+- His GCP experience includes Shared VPC, service perimeters, Cloud DNS, and enterprise connectivity patterns.
+- Gopi’s work has significantly strengthened SEI’s national-interest financial platforms, and he was selected to participate in the DHS-led Cyber Storm IX cybersecurity exercise.
+- He continues to drive innovation in cloud automation, secure networking, and platform engineering while mentoring teams and shaping SEI’s cloud-native future.      # About the Reviewers    * Vaibhav Tupe is a distinguished Engineering Leader specializing in cybersecurity, cloud, and AI-ready data center infrastructure.
+- With over 13 years of experience, he currently serves as a Technology Leader at Equinix USA, where he drives high-performance cloud interconnection, enabling private, secure hybrid and multicloud connectivity to accelerate digital transformation and AI adoption.
+- As a trusted advisor to startups, Vaibhav provides insightful guidance on cybersecurity, cloud innovations, and emerging technologies, shaping scalable and secure enterprise solutions.
+- A senior IEEE member, he has published research papers and organized IEEE conferences, contributing to advancements in AI, cloud, security, and digital infrastructure.
+- He is recognized for his thought leadership, mentoring high-performing teams, and driving transformative initiatives that improve efficiency and customer success.
+- Beyond his professional contributions, Vaibhav is deeply committed to AI and technology literacy in rural areas.
+- He actively develops digital curricula for rural colleges, organizes career mentorship programs, and speaks at technology conferences to promote inclusive innovation.
+- His expertise at the intersection of cloud, security, and next-generation digital infrastructure drives his passion for building resilient, future-ready systems that advance global innovation.    * Shibra Amin is a seasoned DevOps and platform engineering practitioner with extensive experience across cloud-native architecture, infrastructure design, security posture improvement, deployment automation, and operational governance.
+
+## 4. Topicos Avancados
+- Her work spans building scalable platforms, strengthening system reliability, improving delivery consistency, and shaping engineering standards that elevate both velocity and stability.
+- She specializes in architecting secure, resilient cloud environments and enjoys helping teams modernize their delivery workflows, adopt cloud-native practices, and build systems that are predictable, observable, and easy to operate.
+- She is currently working at SentiLink as a site reliability engineer and contributes to platform reliability, cloud architecture, and deployment strategy across the organization.      # CHAPTER 1Introduction to DevOps  ## Introduction  DevOps is an approach to software application development that focuses on collaboration, automation, and ongoing delivery to improve the software development life cycle.
+- It merges development (Dev) and operations (Ops) business, segregating more rooms and transferring cross-functional support throughout the whole development life cycle.
+- DevOps goals are to reintroduce the pace, quality, and character of software program delivery into the improvement work process with the help of automation tools and procedures.
+- The following figure illustrates the DevOps lifecycle:  Figure 1.1: DevOps  (Source: <https://www.solarwinds.com/blog/what-is-devops>)  The DevOps software development life cycle (SDLC) includes the stages of creating, implementing, and monitoring software programs.
+- In no way, shape, or form like conventional software development paradigms that often involve sequential processes of development, testing, and trial phases, DevOps introduces a more cyclic and symbiotic approach to managing software release.
+- The SDLC is made up of planning, coding, testing, deployment, and maintenance phases, with CI/CD pipelines used to enhance the most famous method of managing testing and deployment.  ## Structure  The chapter covers the following topics:    * Core principles of DevOps   * DevOps culture   * Automation in DevOps   * Continuous integration and continuous delivery   * DevOps measurement and metrics   * Implementing a DevOps culture    ## Objectives  The purpose of this chapter is to acquaint the readers with the essence of DevOps and to indicate its importance in the contemporary software world.
+- We will learn about its fundamental principles, cultural values, and primary targets to gain a platform-based overview that explains how it connects the dots between operations and development.
+- At the end, you will understand what DevOps is and what benefits it can bring.  ## Core principles of DevOps  By understanding the characteristics of the association of DevOps, there are many drivers that help in achieving its goal.

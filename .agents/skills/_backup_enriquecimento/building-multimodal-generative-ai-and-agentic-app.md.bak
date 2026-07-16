@@ -1,0 +1,57 @@
+---
+name: building-multimodal-generative-ai-and-agentic-applicati
+description: >-
+  Passos operacionais extraidos do livro 'Building Multimodal Generative AI and Agentic Applications - Kar, Indrajit;' (EN) — Generative AI.
+---
+
+# Building Multimodal Generative Ai And Agentic App — Passos Operacionais
+
+Conteudo extraido do livro 'Building Multimodal Generative Ai And Agentic App'. Contem passos, tecnicas e principios baseados na obra original.
+
+## 1. Conceitos Fundamentais
+- Building Multimodal Generative AI and Agentic Applications Acknowledgement I extend my deepest appreciation to my family, parents, wife, in-laws, and children, whose steadfast encouragement and belief in me have been the cornerstone of this journey.
+- Heartfelt thanks to BPB Publications for their patience and trust, allowing the book’s multi-part publication to thoroughly cover the dynamic field of AI.
+- I am also grateful to my companies for fostering growth and providing opportunities to develop GenAI and agentic applications, which informed the insights shared here.
+- To everyone who supported me, seen and unseen, your guidance and encouragement have profoundly shaped this journey, for which I am eternally thankful.
+- Building Multimodal Generative AI and Agentic Applications About the Author Indrajit Kar is a distinguished AI thought leader, author of 5 AI/ML books, innovator, and author with over 22 years of experience driving transformative AI-led products and platforms across industries.
+- Throughout his career, he has led numerous high-impact teams responsible for developing end-to-end solutions in AI, ML, GenAI, and data science - guiding projects from conceptualization and design to deployment and scaling.
+- In his current role as head of AI, Indrajit spearheads large-scale initiatives that deliver measurable business impact across a diverse portfolio of global clients.
+- His work is rooted in deep technical expertise across GenAI, large language model ( LLM ) architectures, MLOps, natural language processing, and computer vision.
+- He has played a key role in integrating LLMs and autonomous AI agents into real-world applications spanning sectors such as e-commerce, healthcare, life sciences, telecommunications, and manufacturing.
+- Indrajit is also a strategic advisor and collaborator to C-level executives, helping enterprises unlock business value through advanced AI product and platform transformations.
+
+## 2. Principios e Tecnicas
+- His leadership consistently bridges the gap between cutting-edge research and enterprise-scale implementation, accelerating AI adoption across organizations.
+- A recognized voice in the AI community, Indrajit has authored two books, including one dedicated to GenAI and its industry applications.
+- He has also contributed extensively to AI research, with 27+ published papers, 21 patents filed, and multiple accolades, including eight Best Paper Awards from reputed conferences and institutions.
+- His work often explores the intersections of innovation, scalability, and responsible AI.
+- With a legacy of leading R&amp;D programs and having managed AI services and productization efforts for Fortune 500 companies, Indrajit continues to shape the future of intelligent systems.
+- His passion for innovation, combined with a vision for ethical and scalable AI, drives his mission to empower businesses and communities through transformative technology.
+- Building Multimodal Generative AI and Agentic Applications About the Reviewers Dhanveer Singh is a technology leader at Capital One USA with over 19 years of experience in software engineering, cloud architecture, and large-scale system modernization across financial services, insurance, and retail.
+- He specializes in AWS, microservices, containerization, DevOps, big data, and AI/ML, delivering secure, high-performing platforms that process billions of transactions and serve millions worldwide.
+- An advocate of cloud-native architectures and automation, Dhanveer has led transformative initiatives in cloud cost optimization, resilience engineering, and cybersecurity automation, driving measurable efficiency and advancing enterprise digital transformation.
+- He has also filed multiple patents in areas of data integration, transformation, data security, and cloud automation, underscoring his focus on innovation.
+
+## 3. Aplicacoes Praticas
+- Beyond his technical leadership, he contributes as a reviewer and TPC member for international journals and conferences, serves as a judge for global IT and cybersecurity awards, and mentors through STEM and CodeDay programs.
+- Dhanveer is a Fellow of IETE and IAENG, and an active IEEE and ACM member.
+- Harvendra Singh is a distinguished technology leader specializing in cloud engineering, architecture, automation, and AI-powered solutions.
+- He designs and implements scalable, secure systems utilizing Azure, .NET, C#, Python, GCP, Kubernetes, Databricks, and other cutting-edge technologies.
+- With expertise in cloud-native applications, microservices, event-driven architectures, and distributed systems, Harvendra drives innovation in cloud and AI ecosystems, delivering high-impact solutions that drive business value and sustainable growth.
+- Manish Jain is the vice president and head of AI architecture at Firstsource Solutions, where he leads enterprise-wide AI transformation for Fortune 100 organizations.
+- With more than 20 years of technology leadership, including over a decade driving advanced AI innovation, he has earned recognition as an architect of transformative solutions that deliver quantifiable business impact.
+- In addition to corporate responsibilities, his acts as a technical consultant for Deeplearning.ai and mentors at Analytics Vidhya.
+- He also serves as a manuscript reviewer for prominent AI publishers such as Manning and Packt, positioning him at the crossroads of research and practical enterprise applications.
+- Manish is unique blend of deep technical expertise and proven executive leadership enables him to guide organizations through the strategic and operational aspects of AI transformation.
+
+## 4. Topicos Avancados
+- His commitment to advancing the AI community is evident in his advisory and mentoring roles, as well as his involvement in peer-reviewed publishing.
+- These experiences make a compelling authority on the imperatives of AI transformation and the practical challenges of scaling AI across complex enterprise environments, consistently linking innovation with measurable outcomes.
+- Building Multimodal Generative AI and Agentic Applications C HAPTER 1 Introducing New Age Generative AI Introduction This chapter sets the stage for mastering new age generative AI ( GenAI ) systems by introducing essential concepts and foundational technologies.
+- We begin by exploring the difference between retrieval systems and generation systems, followed by an in-depth look at vector databases, search algorithms, embedding techniques, indexing, and reranking, all critical for building intelligent, efficient AI solutions.
+- Key reliability mechanisms, such as reflection and guardrails, are discussed to ensure outputs remain robust and aligned with user intent.
+- We then dive into advanced prompting methods like chain of thought ( CoT ) to guide AI models through structured reasoning processes.
+- Moving into agentic AI, the chapter covers agents, tools, reasoning, planning, and action execution, expanding into the design of multi-agent systems capable of complex, collaborative tasks.
+- A comparative overview of large language models ( LLMs ), large vision models ( LVMs ), and emerging large action models ( LAMs ) is provided, along with practical insights into local model deployment and graphics processing unit ( GPU ) infrastructure planning.
+- Further, we introduce speech technologies, including automated speech recognition ( ASR ) and generation, and explain the critical role of memory management in agent-based architectures.
+- Finally, we present industry standards like Model Context Protocol ( MCP ) and differentiate the evolving responsibilities of a GenAI developer vs. a GenAI engineer, preparing readers for advanced system design.

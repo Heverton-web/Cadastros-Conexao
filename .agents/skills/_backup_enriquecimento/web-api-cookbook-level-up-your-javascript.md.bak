@@ -1,0 +1,57 @@
+---
+name: web-api-cookbook-level-up-your-javascript-applicat
+description: >-
+  Passos operacionais extraidos — desenvolvimento web, full-stack, JavaScript, TypeScript, React, Node.js (EN).
+---
+
+# Web Api Cookbook Level Up Your Javascript — Passos Operacionais
+
+Conteudo extraido do livro 'Web Api Cookbook Level Up Your Javascript'. Contem passos, tecnicas e principios baseados na obra original.
+
+## 1. Conceitos Fundamentais
+- Asynchronous APIs  # Introduction  A lot of the APIs covered in this book are _asynchronous_.
+- When you call one of these functions or methods, you might not get the result back right away.
+- Different APIs have different mechanisms to get the result back to you when it’s ready.  ## Callback Functions  The most basic asynchronous pattern is a _callback function_.
+- This is a function that you pass to an asynchronous API.
+- When the work is complete, it calls your callback with the result.
+- Callbacks can be used on their own or as part of other asynchronous patterns.  ## Events  Many browser APIs are _event_ based.
+- An event is something that happens asynchronously.
+- Some examples of events are:    * A button was clicked.    * The mouse was moved.    * A network request was completed.    * An error occurred.
+- An event has a name, such as `click` or `mouseover`, and an object with data about the event that occurred.
+- This might include information such as what element was clicked or an HTTP status code.
+
+## 2. Principios e Tecnicas
+- When you listen for an event, you provide a callback function that receives the event object as an argument.
+- Objects that emit events implement the `EventTarget` interface, which provides the `addEventListener` and `removeEventListener` methods.
+- To listen for an event on an element or other object, you can call `addEventListener` on it, passing the name of the event and a handler function.
+- The callback is called every time the event is triggered until it is removed.
+- A listener can be removed manually by calling `removeEventListener`, or in many cases listeners are automatically removed by the browser when objects are destroyed or removed from the DOM.  ## Promises  Many newer APIs use `Promise`s.
+- A `Promise` is an object, returned from a function, that is a placeholder for the eventual result of the asynchronous action.
+- Instead of listening for an event, you call `then` on a `Promise` object.
+- You pass a callback function to `then` that is eventually called with the result as its argument.
+- To handle errors, you pass another callback function to the `Promise`’s `catch` method.
+- A `Promise` is _fulfilled_ when the operation completes successfully, and it is _rejected_ when there’s an error.
+
+## 3. Aplicacoes Praticas
+- The fulfilled value is passed as an argument to the `then` callback, or the rejected value is passed as an argument to the `catch` callback.
+- There are a few key differences between events and `Promise`s:    * Event handlers are fired multiple times, whereas a `then` callback is executed only once.
+- You can think of a `Promise` as a one-time operation.    * If you call `then` on a `Promise`, you’ll always get the result (if there is one).
+- This is different from events where, if an event occurs before you add a listener, the event is lost.    * `Promise`s have a built-in error-handling mechanism.
+- With events, you typically need to listen for an error event to handle error conditions.     # Working with Promises  ## Problem  You want to call an API that uses `Promise`s and retrieve the result.  ## Solution  Call `then` on the `Promise` object to handle the result in a callback function.
+- To handle potential errors, add a call to `catch`.
+- Imagine you have a function `getUsers` that makes a network request to load a list of users.
+- This function returns a `Promise` that eventually resolves to the user list (see Example 1-1).  ##### Example 1-1.
+- Using a `Promise`-based API               getUsers()        .then(          // This function is called when the user list has been loaded.          userList => {            console.log('User List:');            userList.forEach(user => {              console.log(user.name);            });          }        ).catch(error => {          console.error('Failed to load the user list:', error);        });  ## Discussion  The `Promise` returned from `getUsers` is an object with a `then` method.
+- When the user list is loaded, the callback passed to `then` is executed with the user list as its argument.
+
+## 4. Topicos Avancados
+- This `Promise` also has a `catch` method for handling errors.
+- If an error occurs while loading the user list, the callback passed to `catch` is called with the error object.
+- Only one of these callbacks is called, depending on the outcome.  # Always Handle Errors  It’s important to always handle the error case of a `Promise`.
+- If you don’t, and a `Promise` is rejected, the browser throws an exception for the unhandled rejection and could crash your app.
+- To prevent an unhandled rejection from taking down your app, add a listener to the `window` object for the `unhandledrejection` event.
+- If any `Promise` is rejected and you don’t handle it with a `catch`, this event fires.
+- Here you can take action such as logging the error.  # Loading an Image with a Fallback  ## Problem  You want to load an image to display on the page.
+- If there’s an error loading the image, you want to use a known good image URL as a fallback.  ## Solution  Create an `Image` element programmatically, and listen for its `load` and `error` events.
+- If the `error` event triggers, replace it with the fallback image.
+- Once either the requested image or the placeholder image loads, add it to the DOM when desired.

@@ -1,0 +1,56 @@
+---
+name: ai-native-software-delivery
+description: Pipeline CI/CD com IA, deployment automatizado, GitOps, IaC, engenharia do caos, feature flags, experimentação e plataforma como produto
+---
+
+# Ai Native Software Delivery — Passos Operacionais
+
+Conteudo extraido do livro 'Ai Native Software Delivery'. Contem passos, tecnicas e principios baseados na obra original.
+
+## 1. Conceitos Fundamentais
+- The Road to AI-Native DevOps  Most software development teams can tell war stories about deployments gone wrong.
+- These are the stories that put us on paths to modernize our delivery practices.
+- Here’s one: After weeks or months of feature work, extensive refactoring, and a long testing and stabilization phase, a team is ready to deploy.
+- Developers, operations team members, a coterie of managers, and maybe a number of executives gather in a “war room.” Up to this point, there has been minimal collaboration between development and operations.
+- However, now these two groups are working together as a single team.
+- They start ticking through a long checklist or playbook of manual steps.
+- However, even exhaustive checklists do not guarantee a problem-free deployment.
+- Given the number of changes in the release, the deployment is likely complex and risky.
+- As we will see in the following chapters, dependency management is challenging and “dependency hell” can be very real.
+- So, the team might find that a key dependency was missing from the production environment.
+
+## 2. Principios e Tecnicas
+- The team might discover that an incompatible library version was installed, or that a critical setting was misconfigured, or that a migration step fails or is forgotten, or that changes have caused requests to a partner service to fail.
+- Any number of missteps could take an already complex deployment off track.
+- Tensions would rise, firefighting would ensue, and the hours would stretch on.
+- The team would hope to wrap up deployment and any subsequent manual smoke testing within the deployment window.
+- If the deployment failed irreparably and could not be salvaged, the team would hope that a rollback to the previous version would not result in unexpected difficulties, extending downtime and complexity.
+- When the deployment is finally complete, the exhausted team retreats.
+- Often the team would be expected to be vigilant as traffic resumed for the span of a “critical care period.” A stabilization period of a few days or weeks might follow in which the development team might pause all feature work to focus on hotfixes or patches.
+- As this story illustrates, heavy-lift, high-stakes deployments were draining for both the development and operations teams.
+- These big-production deployments, followed by cycles of stabilization work, distracted teams from continuing to build features that added business value.
+- In contrast, modern software delivery streamlines and accelerates the entire process of getting software from the developer’s computer to the end user.
+
+## 3. Aplicacoes Praticas
+- Deployments are frequent, low drama, low risk, and highly automated.
+- But we’re entering a new era—one that goes beyond automation.
+- The next frontier is AI-native software delivery.
+- AI-native delivery weaves AI into every layer of the software delivery lifecycle, enabling intelligent agents to make decisions, optimize workflows, and adapt in real time.
+- These agents—ranging from Code and DevOps to Security and Test—collaborate autonomously, enforce compliance, self-heal infrastructure, and continuously optimize software delivery pipelines using reinforcement learning.
+- This shift marks a move from reactive to proactive governance, from siloed tools to unified ecosystems, and from static automation to dynamic autonomy.
+- As AI generates code, orchestrates pipelines, and reduces manual toil, development velocity accelerates.
+- Systems become more resilient and secure, with AI preemptively identifying issues and autonomously resolving them.
+- At the same time, cloud costs shrink through intelligent optimization, and collaboration scales as AI-powered agents handle cross-team coordination and decision-making at machine speed.
+- In this chapter, we will describe how software delivery has evolved over the past 25 years.
+
+## 4. Topicos Avancados
+- We will define DevOps and describe how DevOps practices enable modern software delivery.
+- We will look at numerous challenges to the current state of DevOps.
+- Lastly, this chapter will provide an overview of how modern software delivery, DevOps practices, and an AI-native approach can evolve to meet these challenges.  # Development + Operations = DevOps  The term “DevOps”' is often attributed to Patrick Debois, who in 2009 combined the words “development” and “operations”' to name a conference he organized to explore breaking down the traditional walls between development and operations teams to deliver software faster.
+- Two main factors created these walls:  Poor communication and collaboration       Developers commonly focused on writing code and features, then essentially threw the finished product over a metaphorical wall to the Ops team.
+- Ops then bore the responsibility of deploying, maintaining, and troubleshooting the code in production.
+- Conflicting priorities       Development teams prioritized rapid development and the quick release of new features, while Ops teams focused on system stability, security, and preventing downtime.
+- Despite their different priorities, these teams are inherently interconnected and interdependent.
+- No matter how impressive your code or infrastructure is, it has no real value until it’s deployed and running in production to serve your business objectives.
+- This goal mismatch, sometimes referred to as “the core chronic conflict,” could lead to friction and finger-pointing when issues arise.
+- In response, DevOps principles encourage communication at every stage.

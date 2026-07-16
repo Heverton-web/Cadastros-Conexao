@@ -1,0 +1,44 @@
+---
+name: epub-protractor-licoes-sobre-testes-end-to-end-automati
+description: >-
+  Passos operacionais extraidos do livro 'EPUB Protractor lições sobre testes end-to-end automatizados' (PT) — Testes.
+---
+# Conteudo Extraido
+Fonte: EPUB - [PT] EPUB Protractor_ lições sobre testes end-to-end automatizados - Desconhecido.txt
+
+
+## Conceitos Fundamentais
+- page_002 Sumário ISBN Agradecimentos Prefácio ## Por Stefan Teixeira Sobre o autor Sobre o livro 1.
+- Indo além page_003 ISBN Impresso e PDF: 978-85-5519-228-9 EPUB: 978-85-5519-229-6 MOBI: 978-85-5519-230-2 Você pode discutir sobre este livro no Fórum da Casa do Código: http://forum.casadocodigo.com.br/ .
+- Caso você deseje submeter alguma errata ou sugestão, acesse http://erratas.casadocodigo.com.br .
+- O uso do logo oficial do Protractor na arte da capa deste livro foi autorizado pelo time do Protractor e Angular, sob a licença CC 4.0 (Creative Commons). page_004 Agradecimentos Dedico este livro aos meus pais e minha esposa, que sempre me apoiaram 
+- Agradeço a todos os colegas que me acompanharam na carreira de desenvolvimento de software e que fizeram parte de meus aprendizados como profissional focado em qualidade de software.
+- Agradeço ao Dionatan Moura pelo apoio e incentivo em escrever este livro, além das diversas dicas que me ajudaram a fazer isso acontecer.
+
+## Principios e Tecnicas
+- Agradeço a editora Casa do Código, por me oportunizar lançar este livro com eles.
+- Agradeço também a você, leitor, por se interessar em aprender sobre testes end-to-end automatizados com o framework Protractor. page_005 Prefácio Por Carmen Popoviciu O teste é uma parte importante do desenvolvimento de software.
+- Ele é nossa principal ferramenta, como desenvolvedores, para garantir que as aplicações que estamos construindo são livres de erros e funcionam conforme o esperado.
+- Eu gosto de acreditar que a arte de escrever bons testes se encontra em um bom entendimento do que o teste realmente é, em compreender os seus conceitos básicos e paradigmas e, finalmente, em aplicar essas e outras melhores práticas com sabedoria.
+- Assim como com a escrita de código, testes levam tempo e esforço para serem feitos da maneira certa. É preciso leitura e prática para entender completamente o que testar e onde, para entender os diferentes tipos de testes, ou qual usar e quando, para
+- Mas uma vez que você aprende, o conhecimento está lá para ficar, e nada é tão bom quanto isso.
+
+## Aplicacoes Praticas
+- A ferramenta foi desenvolvida pelo time principal do framework AngularJS e está aí desde seus primórdios.
+- Apesar disso, por um longo tempo literaturas relacionadas ao Protractor e outros recursos eram escassos, e não tão bem representadas como aquelas relacionados a testes de unidade, por exemplo.
+- Até hoje eu ainda vejo alguns rostos confusos quando se fala de testes E2E e Protractor.
+- Esta foi uma das principais razões pelas quais Andres Dominguez e eu resolvemos escrever o guia de estilos do Protractor, um conjunto de regras e boas práticas, que mais tarde se tornaram o Styleguide oficial deste framework.
+- Nosso objetivo era compartilhar nossa experiência com o uso do Protractor em projetos de grande dimensão, e fornecer um conjunto de diretrizes para ajudar outros desenvolvedores a começar facilmente a escrever testes E2E eficientes para suas aplicaçõ
+- Este livro é uma excelente continuação do Styleguide do Protractor, não apenas porque reforça as melhores práticas descritas lá, mas porque leva um passo adiante e examina em profundidade o fluxo de trabalho com o Protractor como um todo, e aborda di
+
+## Topicos Avancados
+- Carmen Popoviciu @CarmenPopoviciu Desenvolvedora front-end page_006 ## Por Stefan Teixeira Tive o primeiro contato com testes automatizados em 2011.
+- Desde então, isso mudou a minha carreira. É algo fascinante poder usar skills de desenvolvimento e testes, reduzir o trabalho repetitivo e oferecer feedback mais rápido para a equipe.
+- Hoje, com o crescimento da popularidade da cultura DevOps e com a busca pela entrega contínua, a automação de testes é algo indispensável. É impossível termos um processo de deploy automatizado confiável sem uma boa estratégia de testes automatizados
+- Quando falamos de aplicações web, torna-se essencial termos testes automatizados que simulam usuários interagindo com a aplicação.
+- Estes geralmente são chamados de testes de UI, ou testes end-to-end, e são o foco deste livro.
+- No último GitHub Octoverse, é possível ver o JavaScript prevalecendo como linguagem mais usada no mundo open source .
+
+## Secao 5
+- O Protractor, criado pela própria equipe do AngularJS, se mostra como um dos frameworks mais completos para testes e2e em JavaScript, pela simples curva de aprendizado e várias facilidades que oferece.
+- Além disso, o Protractor também pode ser usado perfeitamente em aplicações que não usam AngularJS, o que favorece ainda mais o seu uso.

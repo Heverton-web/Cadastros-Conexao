@@ -1,0 +1,57 @@
+---
+name: usando-docker
+description: >-
+  Passos operacionais extraidos do livro 'Usando Docker - www.it-ebooks.info (1)' (PT) — praticas e procedimentos para DevOps, infraestrutura e containers.
+---
+
+# Usando Docker — Passos Operacionais
+
+Conteudo extraido do livro 'Usando Docker'. Contem passos, tecnicas e principios baseados na obra original.
+
+## 1. Conceitos Fundamentais
+- Usando Docker  DESENVOLVENDO E IMPLANTANDO SOFTWARE COM CONTÊINERES  Adrian Mouat  Usando o Docker  Adrian Mouat  Boston  Usando o Docker  Por Adrian Mouat  Direitos autorais © 2016 Adrian Mouat.
+- Impresso nos Estados Unidos da América.
+- Publicado por O’Reilly Media, Inc., 1005 Gravenstein Highway North, Sebastopol, CA 95472.
+- Os livros da O’Reilly podem ser adquiridos para uso educacional, comercial ou promocional de vendas.
+- As edições online estão disponíveis.
+- Também disponível para a maioria dos títulos (http://safaribooksonline.com).
+- Para mais informações, entre em contato com nosso departamento de vendas corporativas/institucionais: 800-998-9938 ou corporate@oreilly.com.
+- Editor: Brian Anderson Indexador: WordCo Indexing Services Editora de Produção: Melanie Yarbrough Designer de Interiores: David Futato Revisora de Texto: Christina Edwards Designer da Capa: Randy Comer Revisora Final: Amanda Kersey Ilustradora: Rebecca Demarest  Dezembro de 2015: Primeira Edição  Histórico de revisões da primeira edição  07/12/2015: Primeiro lançamento  Consulte http://oreilly.com/catalog/errata.csp?isbn=9781491915769 para obter detalhes sobre a versão.
+- O logotipo da O’Reilly é uma marca registrada da O’Reilly Media, Inc.
+- O uso do Docker, a imagem da capa e a identidade visual relacionada são marcas comerciais da O’Reilly Media, Inc.
+
+## 2. Principios e Tecnicas
+- Embora a editora e o autor tenham se empenhado de boa-fé para garantir a precisão das informações e instruções contidas nesta obra, eles se eximem de toda responsabilidade por erros ou omissões, incluindo, sem limitação, a responsabilidade por danos resultantes do uso ou da confiança depositada nesta obra.
+- O uso das informações e instruções contidas nesta obra é de sua inteira responsabilidade.
+- Caso algum exemplo de código ou outra tecnologia contida ou descrita nesta obra esteja sujeita a licenças de código aberto ou direitos de propriedade intelectual de terceiros, é sua responsabilidade garantir que seu uso esteja em conformidade com tais licenças e/ou direitos.  978-1-491-91576-9  [LSI]  Àqueles que tentam, independentemente de falharem ou terem sucesso.   ## Índice  Prefácio. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . xi  Parte I.
+- Antecedentes e conceitos básicos  1\.
+- O que são e por que usar recipientes. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3  Contêineres versus VMs 4  Docker e Contêineres 6  Docker: Uma História 8  Tomadas e Encanamento 10  Linux 10 de 64 bits  2\.
+- Instalação. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 13  Instalando o Docker no Linux 13  Executar SELinux no modo permissivo 14  Executando sem sudo 15  Instalando o Docker no Mac OS ou Windows 15  Uma verificação rápida 17  3\.
+- Primeiros Passos. ...19  Executando sua primeira imagem 19  Os 20 comandos básicos  Criando imagens a partir de Dockerfiles 24  Trabalhando com Registros 27  Repositórios Privados 29  Usando a Imagem Oficial do Redis 30  Conclusão 33  v  4\.
+- O Ciclo de Vida do Software com Docker  5\.
+- Utilizando o Docker no Desenvolvimento. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 71  Diga “Olá, mundo!” 71  Automatizando com o Compose 81  O Fluxo de Trabalho de Composição 83  Conclusão 84  6\.
+- Criando um aplicativo web simples. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 85  Criando uma página web básica 86  Aproveitando imagens existentes 88  Adicionar algum cache 93  Microsserviços 96  Conclusão 97  vi | Índice  7\.
+
+## 3. Aplicacoes Praticas
+- Distribuição de Imagens. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 99  Nomeação de imagens e repositórios 99  O Docker Hub 100  Construções automatizadas 102  Distribuição Privada 104  Gerenciando seu próprio registro 104  Registros Comerciais 111  Reduzindo o tamanho da imagem 111  Proveniência da imagem 113  Conclusão 114  8\.
+- Integração e Teste Contínuos com Docker. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 115  Adicionando testes unitários ao Identidock 116  Criando um contêiner Jenkins 121  Acionando Construções 128  Impulsionando a Imagem 129  Etiquetagem Responsável 129  Encenação e Produção 131  Propagação de imagens 131  Utilizando o Docker para provisionar slaves do Jenkins 132  Fazendo backup de Jenkins 132  Soluções de CI hospedadas 133  Testes e Microsserviços 133  Testes em Produção 135  Conclusão 135  9\.
+- Registro e Monitoramento. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 173  Registro 174  O registro padrão do Docker 174  Agregação de Logs 176  Exploração florestal com ELK 176  Registro de logs do Docker com syslog 187  Obtendo registros do arquivo 193  Monitoramento e Alerta 194  Monitoramento com Docker Tools 194  cAdvisor 196  Soluções em Cluster 197  Soluções Comerciais de Monitoramento e Registro 201  Conclusão 201  Parte III.
+- Redes e Descoberta de Serviços. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 205  Embaixadores 206  Descoberta de serviços 210  etcd 210  SkyDNS 215  Cônsul 219  Matrícula 223  Outras Soluções 225  Opções de rede 226  Ponte 226  Anfitrião 227  Contêiner 228  Nenhum 228  Nova Rede Docker 228  Tipos de rede e plugins 230  viii | Índice  Soluções de Rede 230  Sobreposição 231  Tecido 233  Flanela 237  Projeto Calico 242  Conclusão 246  12\.
+- Orquestração, Agrupamento e Gerenciamento. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 249  Ferramentas de Clusterização e Orquestração 250  Enxame 251  Frota 257  Kubernetes 263  Mesos e Maratona 271  Plataformas de gerenciamento de contêineres 282  Fazendeiro 282  Cronômetro 283  Atitude 285  Conclusão 286  13\.
+- Escrito isoladamente, isso soa árido e entediante.
+- Mas as melhorias de processo possibilitadas pelos contêineres são tudo menos isso; usados corretamente, os contêineres podem revolucionar o mercado.
+- Tão persuasivo é o fascínio das arquiteturas e fluxos de trabalho viabilizados pelos contêineres que parece que todas as grandes empresas de TI passaram, em um ano, de nunca terem ouvido falar de Docker ou contêineres a investigá-los e utilizá-los ativamente.
+- A ascensão do Docker tem sido surpreendente.
+- Não me lembro de nenhuma tecnologia que tenha tido um impacto tão rápido e profundo na indústria de TI.
+
+## 4. Topicos Avancados
+- Este livro é minha tentativa de ajudá-lo a entender por que os contêineres são tão importantes, o que você pode ganhar ao adotá-los e, mais importante, como fazê-lo.
+- Este livro busca uma abordagem holística para o Docker, explicando as razões para utilizá-lo e mostrando como usá-lo e integrá-lo a um fluxo de trabalho de desenvolvimento de software.
+- O livro abrange todo o ciclo de vida do software, do desenvolvimento à produção e manutenção.
+- Procurei evitar pressupor que o leitor possua conhecimentos além do básico de Linux e desenvolvimento de software em geral.
+- O público-alvo principal são desenvolvedores de software, engenheiros de operações e administradores de sistemas (especialmente aqueles interessados em desenvolver uma abordagem DevOps), mas gerentes e entusiastas com conhecimento técnico também poderão se beneficiar deste livro.
+- Por que escrevi este livro  Tive a sorte de aprender e usar o Docker enquanto ele ainda estava nos estágios iniciais de sua ascensão meteórica.
+- Quando surgiu a oportunidade de escrever este livro, agarrei-a com unhas e dentes.
+- Se meus escritos puderem ajudar alguns de vocês a entender e  ### Ao aproveitar ao máximo o movimento de conteinerização, terei conquistado mais do que em anos desenvolvendo software.
+- Espero sinceramente que você goste da leitura deste livro e que ele o ajude no caminho para usar o Docker em sua organização.
+- Navegando por este livro  Este livro está organizado, em linhas gerais, da seguinte forma:  • A Parte I começa explicando o que são contêineres e por que você deveria se interessar por eles.  neles, antes de entrar em um capítulo tutorial mostrando os conceitos básicos do Docker.

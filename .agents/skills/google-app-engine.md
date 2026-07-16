@@ -1,0 +1,78 @@
+---
+name: google-app-engine
+description: >-
+  Passos operacionais do livro 'Google App Engine' (Casa do Codigo) — construcao de servicos na nuvem, escalabilidade e Datastore.
+---
+
+# Google App Engine — Passos Operacionais
+
+Conteudo extraido do livro 'Google App Engine'. Contem passos, tecnicas e principios baseados na obra original.
+
+## 1. Conceitos Fundamentais
+- É interessante que o leitor possua familiaridade com Java e   programação orientada a objetos, bem como com a IDE Eclipse,   para poder aproveitar com mais intensidade o material apresentado,   e se aventurar nos exercícios propostos.
+- Porém, o livro aborda todos   os conteúdos de forma didática, construindo os exemplos desde o   início e detalhando os conceitos a partir de um nível que possa ser   compreendido por programadores com qualquer nível de   experiência.
+- Paulo César Siécola é Mestre em Ciência da Computação pelo   Instituto de Matemática e Estatística da Universidade de São Paulo   (2011).
+- Possui graduação em Engenharia Elétrica pelo Instituto   Nacional de Telecomunicações - INATEL (2005).
+- Atualmente, é Especialista em Sistemas Sênior no Inatel   Competence Center e Professor em cursos de Pós-Graduação no   INATEL.
+- Tem experiência em desenvolvimento de software em C,   Java e C#, atuando principalmente nos seguintes temas:   desenvolvimento Web, sistemas embarcados, análise de protocolos   de redes de computadores e desenvolvimento de aplicações para   GNU/Linux embarcado.
+- Gostaria de agradecer ao Adriano Almeida, pela oportunidade   de publicar um livro na Casa do Código, e também agradecer a   Vivian Matsui, pelo empenho e dedicação nas revisões didáticas.
+- Agradeço aos meus professores e mestres, pois, sem eles, não   poderia compartilhar o conhecimento.
+- Sobre o autor  Agradecimentos   Agradeço meus pais, que são a fonte da minha motivação para o   trabalho.
+- Obrigado meu Deus, pelos dons que de Ti recebi.
+
+
+  - Figura 10.1: Arquitetura do GCM. Fonte: https://developers.google.com/cloud-messaging/gcm
+
+  - as estatísticas, gráficos de requisições, trace e logs gerados e exibidos
+
+  - lógica para verificar se a requisição foi feita pelo usuário que é dono
+
+  - para que possam ser localizados. Veja a figura a seguir que ilustra tal
+
+  - para acessá-lo. Isso redirecionará a requisição para o servlet que foi
+
+  - verificadas e se ele possui autorização através de seu papel, o objeto
+## 2. Principios e Tecnicas
+- Espero estar   utilizando-os com sabedoria e equilíbrio.
+- Todas as   aplicações ficam hospedadas sob o domínio appspot.com, e podem   ser acessadas por todo o mundo ou apenas por pessoas/aplicações   autorizadas.
+- As aplicações podem ser desenvolvidas em Java, Python, PHP e   Go, com um ambiente de runtime específico para cada linguagem.
+- O estilo de cobrança do Google App Engine é o pay as you go,   ou seja, você só paga pelo tanto que a aplicação usar de recursos da   plataforma.
+- Porém, é possível iniciar o desenvolvimento sem pagar   nada, com limites razoáveis de banda, armazenamento e número de   acessos por mês.
+- Esses limites são suficientes para provas de   conceitos, estudos e até mesmo aplicações de pequeno porte.
+- Durante este livro, será utilizada a linguagem de programação   Java para o desenvolvimento de aplicações de exemplo, que serão   hospedadas no Google App Engine.
+- Por isso, o foco das descrições a   partir desse ponto será exclusivo para essa linguagem.
+- O QUE É GOOGLE APP   ENGINE  1.1 SANDBOX  1 O QUE É GOOGLE APP ENGINE    1   Você utilizará muito esse console de administração das   aplicações que forem publicadas no Google App Engine.
+- Agora que você já sabe um pouco sobre o que o Google App   Engine, como plataforma, pode oferecer, você poderá preparar seu   ambiente de desenvolvimento seguindo as instruções do próximo   capítulo.  1.6 CONCLUSÃO  6    1.6 CONCLUSÃO   execute os passos a seguir:  1\.
+
+
+  - gerado por duas razões: para que não haja acessos de escrita e leitura
+
+  - visualizá-las no console do GAE, realizando filtros das mais diversas
+
+  - entidade, com as credenciais de acesso fixas. Se esse código executar
+
+  - atualizar o valor do registro do usuário no GCM e a data que isso foi
+## 3. Aplicacoes Praticas
+- Configure o local do workspace que você desejar:  Figura 2.1: Configurando o local do workspace  2\.
+- Clique em OK e aguarde até que o Eclipse carregue   totalmente;  3\.
+- Acesse o menu Window -> Preference para abrir a janela   de configurações do Eclipse;  4\.
+- Nessa janela, acesse a opção Java -> Installed JREs ;  5\.
+- Adicione um novo JRE, clicando no botão Add .
+- Selecione o   local onde você instalou o JDK 7;  6\.
+- Selecione a opção jdk1.7.0_80 como a opção padrão.
+- Isso   fará com que as novas aplicações sejam criadas utilizando essa   JRE;  2.3 INSTALANDO E CONFIGURANDO O ECLIPSE    9   Figura 2.2: Configurando a JRE padrão  7\.
+- Para instalar o Google Plugin for Eclipse, execute os passos a   seguir, dentro do Eclipse:  1\.
+- Acesse o menu Help -> Install New Software ;  2\.
+
+## 4. Topicos Avancados
+- Na janela que abrir, clique no botão Add para adicionar o   repositório de ferramentas do Google para o Eclipse 4.4;  3\.
+- Adicione    o    endereço  https://dl.google.com/eclipse/plugin/4.4 no campo  2.4 INSTALANDO O GOOGLE PLUGIN FOR   ECLIPSE  10    2.4 INSTALANDO O GOOGLE PLUGIN FOR ECLIPSE   Location no pop-up que se abrir, e clique em OK ;  Figura 2.3: Configurando o repositório do Google Plugin   for Eclipse  4\.
+- Aguarde até que o Eclipse carregue as opções de ferramentas   para a instalação;  5\.
+- Depois de o Eclipse carregar as opções de instalação do   repositório do Google, selecione as seguintes opções, pelo   menos:  Google App Engine Maven Integration   Google Plugin for Eclipse 4.4  Google App Engine Java SDK 1.9.30  A tela de instalação do Eclipse deverá ficar como a figura   a seguir:  2.4 INSTALANDO O GOOGLE PLUGIN FOR ECLIPSE    11   Figura 2.4: Opções de instalação no Eclipse  6\.
+- Aceite todos os termos das licenças, e depois cliquem em  Finish para dar início ao processo de download e   instalação;  8\.
+- Depois que tudo for baixado e instalado, o Eclipse pedirá para   ser reiniciado;  9\.
+- Depois de reiniciar o Eclipse, acesse o menu Window ->  Preference e veja que há uma nova opção com o nome de  Google ;  12    2.4 INSTALANDO O GOOGLE PLUGIN FOR ECLIPSE   10\.
+- Expanda a opção Google e clique no item App Engine .
+- Veja que o App Engine SDK já está instalado e configurado   corretamente:  Figura 2.5: Google App Engine instalado  11\.
+- Nessa mesma tela, vá à opção Java -> Compiler e   configure o item Compiler compliance level para 1.7;  12\.
+

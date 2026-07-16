@@ -1,0 +1,3879 @@
+## PDF - [PT] NodeJS Complete Resume - Desconhecido
+
+  1. [Página 1](page_001.html)
+  2. [Página 2](page_002.html)
+  3. [Página 3](page_003.html)
+  4. [Página 4](page_004.html)
+  5. [Página 5](page_005.html)
+  6. [Página 6](page_006.html)
+  7. [Página 7](page_007.html)
+  8. [Página 8](page_008.html)
+  9. [Página 9](page_009.html)
+  10. [Página 10](page_010.html)
+  11. [Página 11](page_011.html)
+  12. [Página 12](page_012.html)
+  13. [Página 13](page_013.html)
+  14. [Página 14](page_014.html)
+  15. [Página 15](page_015.html)
+  16. [Página 16](page_016.html)
+  17. [Página 17](page_017.html)
+  18. [Página 18](page_018.html)
+  19. [Página 19](page_019.html)
+  20. [Página 20](page_020.html)
+  21. [Página 21](page_021.html)
+  22. [Página 22](page_022.html)
+  23. [Página 23](page_023.html)
+  24. [Página 24](page_024.html)
+  25. [Página 25](page_025.html)
+  26. [Página 26](page_026.html)
+  27. [Página 27](page_027.html)
+  28. [Página 28](page_028.html)
+  29. [Página 29](page_029.html)
+  30. [Página 30](page_030.html)
+  31. [Página 31](page_031.html)
+  32. [Página 32](page_032.html)
+  33. [Página 33](page_033.html)
+  34. [Página 34](page_034.html)
+  35. [Página 35](page_035.html)
+  36. [Página 36](page_036.html)
+  37. [Página 37](page_037.html)
+  38. [Página 38](page_038.html)
+  39. [Página 39](page_039.html)
+  40. [Página 40](page_040.html)
+  41. [Página 41](page_041.html)
+  42. [Página 42](page_042.html)
+  43. [Página 43](page_043.html)
+  44. [Página 44](page_044.html)
+  45. [Página 45](page_045.html)
+  46. [Página 46](page_046.html)
+  47. [Página 47](page_047.html)
+  48. [Página 48](page_048.html)
+  49. [Página 49](page_049.html)
+  50. [Página 50](page_050.html)
+  51. [Página 51](page_051.html)
+  52. [Página 52](page_052.html)
+  53. [Página 53](page_053.html)
+  54. [Página 54](page_054.html)
+  55. [Página 55](page_055.html)
+  56. [Página 56](page_056.html)
+  57. [Página 57](page_057.html)
+  58. [Página 58](page_058.html)
+  59. [Página 59](page_059.html)
+  60. [Página 60](page_060.html)
+  61. [Página 61](page_061.html)
+  62. [Página 62](page_062.html)
+  63. [Página 63](page_063.html)
+  64. [Página 64](page_064.html)
+  65. [Página 65](page_065.html)
+  66. [Página 66](page_066.html)
+  67. [Página 67](page_067.html)
+  68. [Página 68](page_068.html)
+  69. [Página 69](page_069.html)
+  70. [Página 70](page_070.html)
+  71. [Página 71](page_071.html)
+  72. [Página 72](page_072.html)
+  73. [Página 73](page_073.html)
+  74. [Página 74](page_074.html)
+  75. [Página 75](page_075.html)
+  76. [Página 76](page_076.html)
+  77. [Página 77](page_077.html)
+  78. [Página 78](page_078.html)
+  79. [Página 79](page_079.html)
+  80. [Página 80](page_080.html)
+  81. [Página 81](page_081.html)
+  82. [Página 82](page_082.html)
+  83. [Página 83](page_083.html)
+  84. [Página 84](page_084.html)
+  85. [Página 85](page_085.html)
+  86. [Página 86](page_086.html)
+  87. [Página 87](page_087.html)
+  88. [Página 88](page_088.html)
+  89. [Página 89](page_089.html)
+  90. [Página 90](page_090.html)
+  91. [Página 91](page_091.html)
+  92. [Página 92](page_092.html)
+  93. [Página 93](page_093.html)
+  94. [Página 94](page_094.html)
+  95. [Página 95](page_095.html)
+  96. [Página 96](page_096.html)
+  97. [Página 97](page_097.html)
+  98. [Página 98](page_098.html)
+  99. [Página 99](page_099.html)
+  100. [Página 100](page_100.html)
+  101. [Página 101](page_101.html)
+  102. [Página 102](page_102.html)
+  103. [Página 103](page_103.html)
+  104. [Página 104](page_104.html)
+  105. [Página 105](page_105.html)
+  106. [Página 106](page_106.html)
+  107. [Página 107](page_107.html)
+  108. [Página 108](page_108.html)
+  109. [Página 109](page_109.html)
+  110. [Página 110](page_110.html)
+  111. [Página 111](page_111.html)
+  112. [Página 112](page_112.html)
+  113. [Página 113](page_113.html)
+  114. [Página 114](page_114.html)
+  115. [Página 115](page_115.html)
+  116. [Página 116](page_116.html)
+  117. [Página 117](page_117.html)
+  118. [Página 118](page_118.html)
+  119. [Página 119](page_119.html)
+  120. [Página 120](page_120.html)
+  121. [Página 121](page_121.html)
+  122. [Página 122](page_122.html)
+  123. [Página 123](page_123.html)
+  124. [Página 124](page_124.html)
+  125. [Página 125](page_125.html)
+  126. [Página 126](page_126.html)
+  127. [Página 127](page_127.html)
+  128. [Página 128](page_128.html)
+  129. [Página 129](page_129.html)
+  130. [Página 130](page_130.html)
+  131. [Página 131](page_131.html)
+  132. [Página 132](page_132.html)
+  133. [Página 133](page_133.html)
+  134. [Página 134](page_134.html)
+  135. [Página 135](page_135.html)
+  136. [Página 136](page_136.html)
+  137. [Página 137](page_137.html)
+  138. [Página 138](page_138.html)
+  139. [Página 139](page_139.html)
+  140. [Página 140](page_140.html)
+  141. [Página 141](page_141.html)
+  142. [Página 142](page_142.html)
+  143. [Página 143](page_143.html)
+  144. [Página 144](page_144.html)
+  145. [Página 145](page_145.html)
+  146. [Página 146](page_146.html)
+  147. [Página 147](page_147.html)
+  148. [Página 148](page_148.html)
+  149. [Página 149](page_149.html)
+  150. [Página 150](page_150.html)
+  151. [Página 151](page_151.html)
+  152. [Página 152](page_152.html)
+  153. [Página 153](page_153.html)
+  154. [Página 154](page_154.html)
+  155. [Página 155](page_155.html)
+  156. [Página 156](page_156.html)
+  157. [Página 157](page_157.html)
+  158. [Página 158](page_158.html)
+  159. [Página 159](page_159.html)
+  160. [Página 160](page_160.html)
+  161. [Página 161](page_161.html)
+  162. [Página 162](page_162.html)
+  163. [Página 163](page_163.html)
+  164. [Página 164](page_164.html)
+  165. [Página 165](page_165.html)
+  166. [Página 166](page_166.html)
+  167. [Página 167](page_167.html)
+  168. [Página 168](page_168.html)
+  169. [Página 169](page_169.html)
+  170. [Página 170](page_170.html)
+  171. [Página 171](page_171.html)
+  172. [Página 172](page_172.html)
+  173. [Página 173](page_173.html)
+  174. [Página 174](page_174.html)
+  175. [Página 175](page_175.html)
+  176. [Página 176](page_176.html)
+  177. [Página 177](page_177.html)
+  178. [Página 178](page_178.html)
+  179. [Página 179](page_179.html)
+  180. [Página 180](page_180.html)
+  181. [Página 181](page_181.html)
+  182. [Página 182](page_182.html)
+  183. [Página 183](page_183.html)
+  184. [Página 184](page_184.html)
+
+
+
+
+Getting Started
+
+What‘s Inside this Course?
+
+
+What is Node.js?
+
+A JavaScript Runtime
+
+“JavaScript on the Server”
+
+
+What Does That Mean?
+
+C++  
+Machine Code
+
+Written in  
+Compiles to
+
+uses
+
+Compiles JavaScript
+
+Adds JS Features
+
+
+JavaScript on the Server
+
+Client (Browser)
+
+Server
+
+Database
+
+Authentication
+
+Input Validation
+
+Your Business Logic  
+Request  
+Response  
+“HTML Page”
+
+https://my-page.com
+
+Can‘t access  
+server-side Code
+
+
+Side note: You’re not limited to the Server!
+
+Node.js is a JavaScript Runtime
+
+You can use it for more than just
+
+Server-side Code
+
+Utility Scripts, Build Tools, …
+
+
+Node.js‘ Role (in Web Development)
+
+Create Server & Listen to Incoming Requests
+
+Handle Requests, Validate Input, Connect to Database
+
+Business Logic
+
+Run Server
+
+Return Responses (Rendered HTML, JSON, …)
+
+Responses
+
+
+Alternatives
+
+And More (Ruby, ASP.NET, …)
+
+Ultimately, you can build the same web apps with all of them
+
+Choose your preferred syntax, community, ecosystem
+
+
+Course Outline
+
+Getting Started
+
+JavaScript
+
+Refresher
+
+Node.js Basics
+
+Efficient   
+Development
+
+Using Express.js
+
+Templating
+
+Engines
+
+Model-View-
+
+Controller
+
+Advanced   
+Routes & Models
+
+Node + SQL
+
+(MySQL)
+
+Using Sequelize
+
+Node + NoSQL
+
+(MongoDB)
+
+Using Mongoose
+
+Sessions &
+
+Cookies
+
+Authentication
+
+Sending E-Mails
+
+Authentication
+
+Deep Dive
+
+User Input   
+Validation
+
+Error Handling
+
+File Uploads &
+
+Downloads
+
+Pagination
+
+Async Requests
+
+Handling   
+Payments
+
+REST API Basics
+
+Advanced REST
+
+API Features
+
+Using async-
+
+await
+
+Websockets &
+
+Socket.io
+
+GraphQL
+
+Deployment
+
+Beyond Web
+
+Servers
+
+Roundup & Next
+
+Steps
+
+Optional!
+
+
+How To Get The Most Out Of The Course
+
+Watch the Videos
+
+Code Along & Do the
+
+Exercises
+
+At your Speed!   
+Pause & Rewind!
+
+Use the Course Resources  
+Attached Code & Links
+
+Ask in Q&A
+
+Help others in Q&A  
+Great Learnings
+
+Guaranteed!
+
+Skip [Optional]
+
+Lectures!
+
+
+The REPL
+
+R
+
+E
+
+P
+
+L
+
+ead
+
+val
+
+rint
+
+oop
+
+Read User Input
+
+Evaluate User Input
+
+Print Output (Result)
+
+Wait for new Input
+
+
+Running Node.js Code
+
+Execute Files  
+Use the REPL
+
+Used for real apps  
+Great playground!
+
+Predictable sequence of
+
+steps  
+Execute code as you write it
+
+
+JavaScript Basics
+
+A Quick Refresher
+
+
+Skip This Module!
+
+Already know JavaScript?
+
+Skip this Module!
+
+
+JavaScript Summary
+
+Weakly Typed Language  
+Object-Oriented
+
+Language  
+Versatile Language
+
+Runs in browser & directly
+
+on a PC/ server  
+No explicit type
+
+assignment
+
+Data types can be   
+switched dynamically
+
+Data can be organized in
+
+logical objects
+
+Primitive and reference
+
+types
+
+Can perform a broad
+
+variety of tasks
+
+
+let & const
+
+var
+
+let  
+const
+
+variable values  
+constant values
+
+
+Arrow Functions
+
+function myFnc() {
+
+…  
+}
+
+const myFnc = () => {
+
+…  
+}
+
+No more issues with the this keyword!
+
+
+Classes
+
+class Person {
+
+name = 'Max'  
+call = () => {…}  
+}
+
+class Person extends Master
+
+const myPerson = new Person()
+
+myPerson.call()  
+console.log(myPerson.name)
+
+Property
+
+Method
+
+Usage
+
+(constructor functions anyone?)
+
+Inheritance
+
+(prototypes anyone?)
+
+
+Classes, Properties & Methods
+
+Properties are like “variables   
+attached to classes/ objects”
+
+Methods are like “functions   
+attached to classes/ objects”
+
+constructor () {
+
+this.myProperty = ' value'  
+}
+
+ES6
+
+myProperty = ' value'
+
+ES7
+
+myMethod () { … }
+
+ES6
+
+myMethod = () => { … }
+
+ES7
+
+
+Spread & Rest Operators
+
+…
+
+Used to split up array elements OR object properties
+
+Used to merge a list of function arguments into an array
+
+Spread
+
+Rest
+
+const newArray = [...oldArray, 1, 2]  
+const newObject = { …oldObject, newProp: 5 }
+
+function sortArgs(…args) {
+
+return args.sort()  
+}
+
+
+Destructuring
+
+Easily extract array elements or object properties and
+
+store them in variables
+
+Array Destructuring
+
+[a, b] = ['Hello', 'Max‘]  
+console.log(a) // Hello
+
+console.log(b) // Max
+
+Object Destructuring
+
+{name} = {name: 'Max', age: 28}
+
+console.log(name) // Max  
+console.log(age) // undefined
+
+
+Node.js Basics
+
+The Essential Knowledge You Need
+
+
+What’s In This Module?
+
+How Does The Web Work (Refresher)?
+
+Creating a Node.js Server
+
+Using Node Core Modules
+
+Working with Requests & Responses
+
+(Basics)
+
+Asynchronous Code & The Event Loop
+
+
+How the Web Works
+
+User / Client
+
+(Browser)
+
+http://my-page.com
+
+Domain Lookup
+
+Server  
+(at 10.212.212.12)
+
+<Your Code>  
+Node.js, PHP, ASP.NET, …
+
+Request  
+Response (e.g. HTML
+
+page)
+
+Database
+
+enters
+
+
+HTTP, HTTPS
+
+Hyper Text Transfer Protocol
+
+Hyper Text Transfer Protocol Secure
+
+A Protocol for Transferring Data which is understood by Browser and Server
+
+HTTP + Data Encryption (during Transmission)
+
+
+Core Modules
+
+fs
+
+path
+
+http
+
+https
+
+os
+
+Launch a server, send requests
+
+Launch a SSL server
+
+Work with the file system
+
+Handle paths elegantly
+
+Get OS information
+
+
+Node.js Program Lifecycle
+
+Start Script
+
+Parse Code, Register   
+Variables & Functions
+
+process.exit
+
+Event Loop
+
+Keeps on running as
+
+long as there are
+
+event listeners
+
+registered
+
+node app.js
+
+The Node Application
+
+
+Streams & Buffers
+
+Example: Incoming Request
+
+Request   
+Body Part 1
+
+Request   
+Body Part 2
+
+Request   
+Body Part 3
+
+Request   
+Body Part 4
+
+Fully   
+Parsed  
+Stream
+
+Idea: Start working
+
+on the Data early
+
+Your Code
+
+How do you   
+work with   
+flow data?
+
+Buffer
+
+Work with   
+chunks of data!
+
+
+Single Thread, Event Loop & Blocking Code
+
+<Your Code>
+
+Single   
+JavaScript
+
+Thread
+
+Incoming Requests
+
+Event Loop
+
+Handle Event Callbacks
+
+Worker Pool
+
+Do the Heavy Lifting
+
+Different   
+Thread(s)!
+
+“fs”
+
+Start
+
+Send to
+
+Trigger Callback
+
+
+The Event Loop
+
+Timers
+
+Poll  
+Check
+
+Close Callbacks
+
+process.exit  
+refs == 0
+
+Execute setTimeout,   
+setInterval Callbacks
+
+Pending Callbacks
+
+Execute I/O-related   
+Callbacks that were deferred
+
+Retrieve new I/O events,
+
+execute their callbacks  
+Execute setImmediate()
+
+callbacks
+
+I/O?
+
+Input & Output
+
+Disk & Network   
+Operations (~Blocking
+
+Operations)
+
+Or defer execution
+
+Execute all ‘close’ event
+
+callbacks
+
+Jump to Timer Execution
+
+
+Asynchronous Code
+
+Synchronous Code  
+Asynchronous Code
+
+Callbacks  
+Promises  
+async / await
+
+<Code>
+
+<Code>
+
+<Code>
+
+<Code>
+
+<Long-Taking Code>
+
+<Code>
+
+JavaScript & Node.js is
+
+non-blocking
+
+
+Node’s Module System
+
+module.exports = …
+
+exports is an alias for module.exports
+
+But exports = { ... } won’t work! Because
+
+you then re-assign the alias!
+
+exports.something = …
+
+
+Module Summary
+
+How the Web Works  
+Node.js & Core Modules
+
+The Node Module System
+
+Program Lifecycle & Event Loop
+
+Asynchronous Code  
+Requests & Responses
+
+Client => Request => Server => Response => Client  
+•  
+Node.js ships with multiple core   
+modules (http, fs, path, …)  
+•  
+Core modules can be imported into   
+any file to be used there  
+•  
+Import via require(‘module’)
+
+•  
+Import via require(‘./path-  
+to-file’) for custom files or   
+require(‘module’) for core   
+& third-party modules  
+•  
+Export via   
+module.exports or just   
+exports (for multiple   
+exports
+
+•  
+Node.js runs non-blocking JS code and uses an event-  
+driven code (”Event Loop”) for running your logic  
+•  
+A Node program exits as soon as there is no more   
+work to do  
+•  
+Note: The createServer() event never finishes by   
+default
+
+•  
+JS code is non-blocking  
+•  
+Use callbacks and events   
+=> Order changes!
+
+•  
+Parse request data in chunks   
+(Streams & Buffers)  
+•  
+Avoid “double responses”
+
+
+Assignment
+
+Spin up a Node.js-driven Server (on port 3000)  
+1
+
+Handle two Routes: “/” and “/users”  
+§  
+Return some greeting text on “/”  
+§  
+Return a list of dummy users (e.g. <ul><li>User 1</li></ul>)  
+2
+
+Add a form with a “username” <input> to the “/” page and submit a   
+POST request to “/create-user” upon a button click  
+3
+
+Add the “/create-user” route and parse the incoming data (i.e. the   
+username) and simply log it to the console  
+4
+
+
+Debugging & Easier Development
+
+Fixing Errors, Developing Efficiently
+
+
+Types of Errors
+
+Syntax Errors  
+Logical Errors  
+Runtime Errors
+
+
+Module Summary
+
+npm  
+3rd Party Packages
+
+Types of Errors
+
+Debugging
+
+•  
+npm stands for “Node Package   
+Manager” and it allows you to   
+manage your Node project and its   
+dependencies  
+•  
+You can initialize a project with npm  
+init  
+•  
+npm scripts can be defined in the   
+package.json to give you “shortcuts”   
+to common tasks/ commands
+
+•  
+Node projects typically don’t just use core modules   
+and custom code but also third-party packages  
+•  
+You install them via npm  
+•  
+You can differentiate between production   
+dependencies (--save), development dependencies   
+(--save-dev) and global dependencies (-g)
+
+•  
+Syntax, runtime and logical errors can break your app  
+•  
+Syntax and runtime errors throw (helpful) error   
+messages (with line numbers!)  
+•  
+Logical errors can be fixed with testing and the help   
+of the debugger
+
+•  
+Use the VS Code Node debugger to   
+step into your code and go through   
+it step by step  
+•  
+Analyze variable values at runtime  
+•  
+Look into (and manipulate)   
+variables at runtime  
+•  
+Set breakpoints cleverly (i.e. respect   
+the async/ event-driven nature)
+
+
+Express.js
+
+Don’t re-invent the Wheel!
+
+
+What’s In This Module?
+
+What is Express.js?
+
+Using Middleware
+
+Working with Requests & Responses
+
+(Elegantly!)
+
+Routing
+
+Returning HTML Pages (Files)
+
+
+npm & Packages
+
+Local Project
+
+<Your Code>
+
+Dependencies (3rd Party)
+
+npm Repository
+
+Core Node Packages  
+express
+
+body-parser
+
+…
+
+Installed & Managed via npm
+
+
+What and Why?
+
+Server Logic is Complex!
+
+You want to focus on your Business Logic, not
+
+on the nitty-gritty Details!
+
+Use a Framework for the Heavy Lifting!
+
+Framework: Helper functions,   
+tools & rules that help you build
+
+your application!
+
+
+What Does Express.js Help You With?
+
+Parsing Requests &   
+Sending Responses  
+Routing  
+Managing Data
+
+Extract Data
+
+Render HTML Pages
+
+Return Data / HTML
+
+Responses
+
+Execute different Code for
+
+different Requests
+
+Filter / Validate incoming
+
+Requests
+
+Manage Data across
+
+Requests (Sessions)
+
+Work with Files
+
+Work with Databases
+
+
+It‘s all about Middleware
+
+Request
+
+Response
+
+Middleware
+
+Middleware
+
+(req, res, next) => { … }
+
+(req, res, next) => { … }
+
+next()
+
+res.send()
+
+
+Assignment
+
+Create a npm project and install Express.js (Nodemon if you want)  
+1
+
+Create an Express.js app which funnels the requests through 2   
+middleware functions that log something to the console and return one   
+response.  
+2
+
+Handle requests to “/” and ”/users” such that each request only has one   
+handler/ middleware that does something with it (e.g. send dummy   
+response).  
+3
+
+
+Routing
+
+/products  
+/users
+
+Node.js Server at your-address.com
+
+Should execute different Code!
+
+Express.js Router
+
+Codeblock 1  
+Codeblock 2
+
+Incoming Request
+
+
+Request & Response Data
+
+GET Requests  
+POST* Requests
+
+JSON
+
+XML
+
+Binary Data (File)
+
+\- NO DATA -
+
+URL Information & Headers  
+URL Information & Headers
+
+Request
+
+Body
+
+Requests  
+Responses
+
+JSON
+
+HTML
+
+Binary Data
+
+…
+
+
+Alternatives to Express.js
+
+Vanilla Node.js
+
+Adonis.js
+
+Koa
+
+Sails.js
+
+…
+
+
+Assignment
+
+Create a npm project and install Express.js (Nodemon if you want)  
+1
+
+Create an Express.js app which serves two HTML files (of your choice/   
+with your content) for ”/” and “/users”.  
+2
+
+Add some static (.js or .css) files to your project that should be required   
+by at least one of your HTML files.  
+3
+
+
+Module Summary
+
+What is Express.js?  
+Routing
+
+Middleware, next() and res()
+
+Serve Files
+
+•  
+Express.js is Node.js framework – a   
+package that adds a bunch of utility   
+functions and tools and a clear set of   
+rules on how the app should be built   
+(middleware!)  
+•  
+It’s highly extensible and other   
+packages can be plugged into it   
+(middleware!)
+
+•  
+You can filter requests by path and method  
+•  
+If you filter by method, paths are matched exactly,   
+otherwise, the first segment of a URL is matched  
+•  
+You can use the express.Router to split your routes   
+across files elegantely
+
+•  
+Express.js relies heavily on middleware functions –  
+you can easily add them by calling use()  
+•  
+Middleware functions handle a request and should   
+call next() to forward the request to the next function   
+in line or send a response
+
+•  
+You’re not limited to serving dummy   
+text as a response  
+•  
+You can sendFile()s to your users –  
+e.g. HTML files  
+•  
+If a request is directly made for a file   
+(e.g. a .css file is requested), you can   
+enable static serving for such files   
+via express.static()
+
+
+Dynamic Content & Templates
+
+Rendering more than Static HTML
+
+
+What’s In This Module?
+
+Managing Data (without a Database)
+
+Render Dynamic Content in our Views
+
+Understanding Templating Engines
+
+
+Templating Engines
+
+HTMLish Template
+
+Node/ Express Content  
+Templating Engine
+
+Replaces Placeholders / Snippets
+
+with HTML Content
+
+HTML File
+
+
+Available Templating Engines
+
+EJS  
+Pug (Jade)  
+Handlebars
+
+<p><%= name %></p>  
+p #{name}  
+<p>{{ name }}</p>
+
+Use normal HTML and plain   
+JavaScript in your templates
+
+Use minimal HTML and   
+custom template language
+
+Use normal HTML and   
+custom template language
+
+
+Assignment
+
+Create a npm project and install Express.js (Nodemon if you want)  
+1
+
+Add two routes:  
+§  
+”/” => Holds a <form> that allows users to input their name  
+§  
+“/users” => Outputs an <ul> with the user names (or some error text)  
+2
+
+
+Model View Controller (MVC)
+
+Structuring your Code
+
+
+What’s MVC?
+
+Separation of Concerns
+
+Models  
+Views  
+Controllers
+
+Routes
+
+Represent your data in your
+
+code
+
+Work with your data (e.g.
+
+save, fetch)
+
+What the users sees
+
+Decoupled from your
+
+application code
+
+Connecting your Models
+
+and your Views
+
+Contains the “in-between”
+
+logic
+
+Split across   
+Middleware Functions
+
+
+Module Summary
+
+Model
+
+View
+
+Controller
+
+•  
+Responsible for representing your   
+data  
+•  
+Responsible for managing your data   
+(saving, fetching, …)  
+•  
+Doesn’t matter if you manage data   
+in memory, files, databases  
+•  
+Contains data-related logic
+
+•  
+What the user sees  
+•  
+Shouldn’t contain too much logic   
+(Handlebars!)
+
+•  
+Connects Model and View  
+•  
+Should only make sure that the two can   
+communicate (in both directions)
+
+
+Dynamic Routes & Advanced Models
+
+Passing and Using Dynamic Data
+
+
+What’s In This Module?
+
+Passing Route Params
+
+Using Query Params
+
+Enhance our Models
+
+
+Module Summary
+
+Dynamic Routing  
+More on Models
+
+•  
+You can pass dynamic path   
+segments by adding a “:” to the   
+Express router path  
+•  
+The name you add after “:” is the   
+name by which you can extract the   
+data on req.params  
+•  
+Optional (query) parameters can   
+also be passed   
+(?param=value&b=2) and extracted   
+(req.query.myParam)
+
+•  
+A Cart model was added – it holds static   
+methods only  
+•  
+You can interact between models (e.g. delete   
+cart item if a product is deleted)  
+•  
+Working with files for data storage is   
+suboptimal for bigger amounts of data
+
+
+Using Promises & Improving Async Code
+
+Escaping Callback Hell
+
+
+What’s In This Module?
+
+What is Callback Hell?
+
+Promises to the Rescue!
+
+Writing Good Async Code
+
+
+Callback Hell
+
+fs.readFile('path', (err, fileContent) => {
+
+fs.writeFile('path', 'new content', (err) => {
+
+…  
+})   
+});
+
+Deeply nested callbacks can be hard to read, understand & maintain!
+
+
+Module Summary
+
+Dynamic Routing  
+More on Models
+
+•  
+You can pass dynamic path   
+segments by adding a “:” to the   
+Express router path  
+•  
+The name you add after “:” is the   
+name by which you can extract the   
+data on req.params  
+•  
+Optional (query) parameters can   
+also be passed   
+(?param=value&b=2) and extracted   
+(req.query.myParam)
+
+•  
+A Cart model was added – it holds static   
+methods only  
+•  
+You can interact between models (e.g. delete   
+cart item if a product is deleted)  
+•  
+Working with files for data storage is   
+suboptimal for bigger amounts of data
+
+
+Storing Data in Databases
+
+Storing Application Data Correctly
+
+
+What’s In This Module?
+
+Different Kinds of Databases (SQL vs
+
+NoSQL)
+
+Using SQL in a Node.js App
+
+
+SQL vs NoSQL
+
+Goal: Store Data and Make it Easily Accessible
+
+Use a Database!
+
+SQL Databases
+
+Quicker Access   
+than with a File
+
+NoSQL Databases
+
+e.g. MySQL  
+e.g. MongoDB
+
+
+What‘s SQL?
+
+Users
+
+id  
+email  
+name
+
+1  
+max@test.com  
+Maximilian Schwarzmüller
+
+2  
+manu@test.com  
+Manuel Lorenz
+
+3  
+…  
+…
+
+Products
+
+id  
+title  
+price
+
+1  
+Chair  
+120.99
+
+2  
+Book  
+10.99
+
+3  
+…  
+…
+
+description
+
+A comfy chair
+
+Exciting book!
+
+…
+
+Orders
+
+id  
+product_id
+
+1  
+1
+
+2  
+1
+
+3  
+2
+
+user_id
+
+2
+
+1
+
+2
+
+
+Core SQL Database Characteristics
+
+Data Schema
+
+id  
+name  
+age
+
+All Data (in a Table)
+
+has to fit!
+
+Data Relations
+
+One-to-One
+
+One-to-Many
+
+Many-to-Many
+
+Tables are
+
+connected
+
+
+SQL Queries
+
+SELECT * FROM users WHERE age > 28
+
+SQL Keywords / Syntax  
+Parameters / Data
+
+
+NoSQL
+
+Shop
+
+Users  
+Orders
+
+{ name: 'Max', age: 29 }
+
+{ name: 'Manu' }
+
+{ … }
+
+{ … }
+
+Database
+
+Collections
+
+Documents
+
+Schemaless!
+
+
+What‘s NoSQL?
+
+Orders
+
+{ id: 'ddjfa31', user: { id: 1, email: 'max@test.com' }, product: { id: 2, price: 10.99 } }
+
+{ id: 'lddao1', user: { id: 2, email: 'manu@test.com' }, product: { id: 1, price: 120.99 } }
+
+{ id: 'nbax12', product: { id: 2, price: 10.99 } }
+
+{ … }
+
+Users  
+Products
+
+{ id: 1, name: 'Max', email: 'max@test.com' }
+
+{ id: 2, name: ‘Manu', email: ‘manu@test.com' }
+
+{ … }
+
+{ id: 1, title: 'Chair', price: 120.99 }
+
+{ id: 2, name: 'Book', price: 10.99 }
+
+{ … }
+
+Duplicate Data
+
+
+NoSQL Characteristics
+
+NO Data Schema
+
+NO Data Relations
+
+{ name, id, age }
+
+{ id, age }
+
+You CAN relate documents
+
+but you don‘t have to (and   
+you shouldn‘t do it too much
+
+or your queries become
+
+slow)
+
+No Structure
+
+required!
+
+No / Few  
+Connections
+
+
+Horizontal vs Vertical Scaling
+
+Horizontal Scaling  
+Vertical Scaling
+
+Add More Servers (and merge Data
+
+into one Database)  
+Improve Server Capacity / Hardware
+
+
+SQL vs NoSQL
+
+SQL  
+NoSQL
+
+Data uses Schemas
+
+Relations!
+
+Data is distributed across multiple
+
+tables
+
+Horizontal scaling is difficult /   
+impossible; Vertical scaling is possible
+
+Limitations for lots of (thousands) read
+
+& write queries per second
+
+Schema-less
+
+No (or very few) Relations
+
+Data is typically merged / nested in a
+
+few collections
+
+Both horizontal and vertical scaling is
+
+possible
+
+Great performance for mass read &
+
+write requests
+
+
+Associations
+
+Product  
+User
+
+Order
+
+Cart  
+Belongs to Many
+
+Belongs to Many
+
+Has One
+
+Has Many
+
+Has Many
+
+Has Many
+
+
+Sequelize
+
+Focus on Node.js, not on SQL
+
+
+What is Sequelize?
+
+An Object-Relational Mapping Library
+
+User
+
+•  
+name  
+•  
+age  
+•  
+email  
+•  
+password
+
+users
+
+id  
+name  
+age  
+password
+
+1  
+'Max'  
+28  
+'dsdg312'  
+Mapped
+
+INSERT INTO users VALUES (1, 'Max', 28, 'dsdg312')
+
+const user = User.create({ name: 'Max', age: 28, password: 'dsdg312' })
+
+
+Core Concepts
+
+Models  
+e.g. User, Product
+
+Instances  
+const user = User.build()
+
+Queries  
+User.findAll()
+
+Associations  
+User.hasMany(Product)
+
+
+Module Summary
+
+SQL  
+Sequelize
+
+•  
+SQL uses strict data schemas and   
+relations  
+•  
+You can connect your Node.js app   
+via packages like mysql2  
+•  
+Writing SQL queries is not directly   
+related to Node.js and something   
+you have to learn in addition to   
+Node.js
+
+•  
+Instead of writing SQL queries manually, you   
+can use packages (ORMs) like Sequelize to   
+focus on the Node.js code and work with   
+native JS objects  
+•  
+Sequelize allows you define models and   
+interact with the database through them  
+•  
+You can also easily set up relations   
+(“Associations”) and interact with your   
+related models through them
+
+
+NoSQL Databases / MongoDB
+
+Storing Data in a Different Kind of Database
+
+
+What’s In This Module?
+
+What is MongoDB?
+
+Using the MongoDB Driver in Node.js Apps
+
+
+What?
+
+Humongous
+
+Because it can store lots and lots of data
+
+
+How it works
+
+Shop
+
+Users  
+Orders
+
+{ name: 'Max', age: 29 }
+
+{ name: 'Manu' }
+
+{ … }
+
+{ … }
+
+Database
+
+Collections
+
+Documents
+
+Schemaless!
+
+
+JSON (BSON) Data Format
+
+{
+
+"name": "Max",  
+"age": 29,  
+"address":
+
+{
+
+"city": "Munich"  
+},  
+"hobbies": [
+
+{ "name": "Cooking" },  
+{ "name": "Sports" }  
+]  
+}
+
+
+What‘s NoSQL?
+
+Orders
+
+{ id: 'ddjfa31', user: { id: 1, email: 'max@test.com' }, product: { id: 2, price: 10.99 } }
+
+{ id: 'lddao1', user: { id: 2, email: 'manu@test.com' }, product: { id: 1, price: 120.99 } }
+
+{ id: 'nbax12', product: { id: 2, price: 10.99 } }
+
+{ … }
+
+Users  
+Products
+
+{ id: 1, name: 'Max', email: 'max@test.com' }
+
+{ id: 2, name: ‘Manu', email: ‘manu@test.com' }
+
+{ … }
+
+{ id: 1, title: 'Chair', price: 120.99 }
+
+{ id: 2, name: 'Book', price: 10.99 }
+
+{ … }
+
+Duplicate Data
+
+
+Relations - Options
+
+Nested / Embedded Documents  
+References
+
+{
+
+userName: 'max',  
+age: 29,  
+address: {
+
+street: 'Second Street',  
+city: 'New York'  
+}  
+}
+
+{
+
+userName: 'max’,  
+favBooks: [{…}, {…}]  
+}
+
+{
+
+userName: 'max',  
+favBooks: ['id1', 'id2']  
+}
+
+Customers
+
+{
+
+_id: 'id1',  
+name: 'Lord of the Rings 1'  
+}
+
+Lots of data duplication!  
+Customers
+
+Customers
+
+Books
+
+
+NoSQL Characteristics
+
+NO Data Schema
+
+Fewer Data Relations
+
+{ name, id, age }
+
+{ id, age }
+
+You CAN relate documents
+
+but you don‘t have to (and   
+you shouldn‘t do it too much
+
+or your queries become
+
+slow)
+
+No Structure
+
+required!
+
+
+SQL vs NoSQL
+
+SQL  
+NoSQL
+
+Data uses Schemas
+
+Relations!
+
+Data is distributed across multiple
+
+tables
+
+Horizontal scaling is difficult /   
+impossible; Vertical scaling is possible
+
+Limitations for lots of (thousands) read
+
+& write queries per second
+
+Schema-less
+
+No (or very few) Relations
+
+Data is typically merged / nested in a
+
+few collections
+
+Both horizontal and vertical scaling is
+
+possible
+
+Great performance for mass (simple)
+
+read & write requests
+
+
+Horizontal vs Vertical Scaling
+
+Horizontal Scaling  
+Vertical Scaling
+
+Add More Servers (and merge Data
+
+into one Database)  
+Improve Server Capacity / Hardware
+
+
+Module Summary
+
+NoSQL / MongoDB  
+Working with MongoDB
+
+•  
+Alternative to SQL databases  
+•  
+No strict schemas, fewer relations  
+•  
+You can of course use schemas and   
+reference-based relations but you   
+got more flexibility  
+•  
+Often, relations are also created by   
+embedding other documents/ data
+
+•  
+Use the official MongoDB Driver  
+•  
+Commands like insertOne(), find(),   
+updateOne() and deleteOne() make CRUD-  
+operations very simple  
+•  
+Check the official docs to learn about all   
+available operations + configurations/   
+operators  
+•  
+All operations are promise-based, hence you   
+can easily chain them for more complex   
+flows
+
+
+Mongoose
+
+A MongoDB ORM
+
+
+What’s In This Module?
+
+What is Mongoose?
+
+Using Mongoose in Node.js Apps
+
+
+What is Mongoose?
+
+A Object-Document Mapping Library
+
+User
+
+•  
+name  
+•  
+age  
+•  
+email  
+•  
+password
+
+users
+
+id  
+name  
+age  
+password
+
+1  
+'Max'  
+28  
+'dsdg312'  
+Mapped
+
+db.collection('users').insertOne({name: 'Max', age: 28, password:
+
+'dsdg312' })
+
+const user = User.create({ name: 'Max', age: 28, password: 'dsdg312' })
+
+
+Core Concepts
+
+Schemas & Models  
+e.g. User, Product
+
+Instances  
+const user = new User()
+
+Queries  
+User.find()
+
+
+Module Summary
+
+Mongoose  
+Sequelize
+
+•  
+SQL uses strict data schemas and   
+relations  
+•  
+You can connect your Node.js app   
+via packages like mysql2  
+•  
+Writing SQL queries is not directly   
+related to Node.js and something   
+you have to learn in addition to   
+Node.js
+
+•  
+Instead of writing SQL queries manually, you   
+can use packages (ORMs) like Sequelize to   
+focus on the Node.js code and work with   
+native JS objects  
+•  
+Sequelize allows you define models and   
+interact with the database through them  
+•  
+You can also easily set up relations   
+(“Associations”) and interact with your   
+related models through them
+
+
+Sessions & Cookies
+
+Persisting Data across Requests
+
+
+What’s In This Module?
+
+What are Cookies?
+
+What are Sessions?
+
+Using Session & Cookies?
+
+
+What’s a Cookie?
+
+User
+
+Server (Node App)
+
+Frontend (Views)  
+Cookie
+
+Set via Response   
+Header
+
+Request  
+Include Cookies
+
+Cookies are stored
+
+on the client-side!
+
+
+What’s a Session?
+
+User
+
+Server (Node App)
+
+Frontend (Views)  
+Cookie
+
+Request
+
+Sessions are stored
+
+on the server-side!
+
+Session
+
+Database  
+Session Storage
+
+Associated with user/   
+client via cookie
+
+
+When to use What
+
+Cookies  
+Session
+
+Stored on client
+
+(Ad) Tracking
+
+Authentication Session
+
+Management
+
+Stored on server
+
+Authentication Status Management
+
+(across Requests)
+
+General Cross-Request Data
+
+Management
+
+
+Module Summary
+
+Cookies  
+Sessions
+
+•  
+Great for storing data on the client   
+(browser)  
+•  
+Do NOT store sensitive data here! It   
+can be viewed + manipulated  
+•  
+Cookies can be configured to expire   
+when the browser is closed (=>   
+“Session Cookie”) or when a certain   
+age/ expiry date is reached   
+(“Permanent Cookie”)  
+•  
+Works well together with Sessions…
+
+•  
+Stored on the server, NOT on the client  
+•  
+Great for storing sensitive data that should   
+survive across requests  
+•  
+You can store ANYTHING in sessions  
+•  
+Often used for storing user data/   
+authentication status  
+•  
+Identified via Cookie (don’t mistake this with   
+the term “Session Cookie)  
+•  
+You can use different storages for saving   
+your sessions on the server
+
+
+User Authentication
+
+Restricting Access
+
+
+What’s In This Module?
+
+What exactly is “Authentication”?
+
+Storing & Using Credentials
+
+Protecting Routes
+
+
+What is “Authentication”?
+
+User
+
+Server
+
+Database
+
+View all Products  
+Create & Manage
+
+Products  
+Place Orders
+
+Open to anyone!  
+Only available to logged-in users
+
+Authentication
+
+
+How is Authentication Implemented?
+
+User
+
+Server
+
+Database
+
+Session
+
+Cookie
+
+Stores info that User is
+
+Authenticated
+
+Stores Session ID
+
+Login Request  
+200  
+Request restricted   
+Resource
+
+
+CSRF Attacks
+
+Cross-Site Request Forgery
+
+User
+
+Server (Node App)
+
+Database
+
+Session
+
+Cookie  
+Fake Site  
+Frontend (Views)
+
+Intended Request
+
+(e.g. send money
+
+to B)
+
+Intended Request
+
+(e.g. send money
+
+to C)
+
+e.g. via Link
+
+in Mail
+
+
+Module Summary
+
+Authentication  
+Security & UX
+
+•  
+Authentication means that not every   
+visitor of the page can view and interact   
+with everything  
+•  
+Authentication has to happen on the   
+server-side and builds up on sessions  
+•  
+You can protect routes by checking the   
+(session-controlled) login status right   
+before you access a controller action
+
+•  
+Passwords should be stored in a hashed   
+form  
+•  
+CSRF attacks are a real issue and you should   
+therefore include CSRF protection in ANY   
+application you build!  
+•  
+For a better user experience, you can flash   
+data/ messages into the session which you   
+then can display in your views
+
+
+Sending Mails
+
+Communicating with the Outside World
+
+
+How Does Sending Mails Work?
+
+Node Server  
+User
+
+<Your Code>  
+Third-Party Service
+
+Mail Server
+
+
+Advanced Authentication & Authorization
+
+Beyond Signup & Login
+
+
+What’s In This Module?
+
+Resetting Passwords
+
+Authorization
+
+
+Module Summary
+
+Password Resetting  
+Authorization
+
+•  
+Password resetting has to be   
+implemented in a way that prevents users   
+from resetting random user accounts  
+•  
+Reset tokens have to be random,   
+unguessable and unique
+
+•  
+Authorization is an important part of pretty   
+much every app  
+•  
+Not every authenticated user should be able   
+to do everything  
+•  
+Instead, you want to lock down access by   
+restricting the permissions of your users
+
+
+Forms, User Input & Validation
+
+Getting that Precious User Input
+
+
+What’s In This Module?
+
+Why Validate?
+
+How to Validate
+
+
+Why Validate?
+
+User
+
+<form>
+
+Database / File
+
+<Your Node Code> (Model)
+
+Validation  
+Controller / Middleware
+
+Reject Input
+
+
+How to Validate
+
+User Input (Form Input)
+
+Validate on Client-Side
+
+Validate on Server-
+
+Side
+
+Server (Node App)
+
+Database  
+Built-in Validation
+
+Error Message + Keep
+
+old Input
+
+Validation Fails
+
+Validation Fails
+
+Optional
+
+Required
+
+Optional
+
+
+Error Handling
+
+Fail Gracefully
+
+
+What’s In This Module?
+
+Different Types of Errors
+
+Handling Errors
+
+
+How Bad Are Errors?
+
+Errors are not necessarily the end of your app!
+
+You just need to handle them correctly!
+
+
+Different Types of Errors
+
+Technical/ Network Errors  
+“Expected” Errors  
+Bugs/ Logical Errors
+
+e.g. MongoDB server is down
+
+Show error page to user
+
+e.g. File can’t be read,   
+database operation fails
+
+Inform user, possibly retry
+
+e.g. User object used when it
+
+doesn’t exist
+
+Fix during development!
+
+
+Working with Errors
+
+Error is thrown  
+No error is thrown
+
+Synchronous Code:
+
+try-catch
+
+Asynchronous Code:
+
+then()-catch()
+
+Directly handle error  
+Use Express error
+
+handling function
+
+Validate values
+
+Error Page (e.g. 500 page)  
+Intended Page/ Response
+
+with error information  
+Redirect
+
+Throw error  
+Directly handle
+
+”error”
+
+
+Errors & Http Response Codes
+
+2xx (Success)  
+200
+
+201
+
+4xx (Client-side error)
+
+3xx (Redirect)  
+301
+
+401
+
+403
+
+404
+
+422
+
+5xx (Server-side error)  
+500
+
+Operation succeeded
+
+Success, resource
+
+created
+
+Moved permanently
+
+Not authenticated
+
+Not authorized
+
+Not found
+
+Invalid input
+
+Server-side error
+
+
+Module Summary
+
+Types of Errors & Handling Errors  
+Errors & Status Code
+
+•  
+You can differentiate between different   
+types of errors – technical errors (which   
+are thrown) and ”expected errors” (e.g.   
+invalid user input)  
+•  
+Error handling can be done with custom   
+if-checks, try-catch, then()-catch() etc  
+•  
+You can use the Express error handling   
+middleware to handle all unhandled errors
+
+•  
+When returning responses, it can make   
+sense to also set an appropriate Http status   
+code – this lets the browser know what went   
+wrong  
+•  
+You got success (2xx), redirect (3xx), client-  
+side errors (4xx) and server-side errors (5xx)   
+codes to choose from  
+•  
+Setting status codes does NOT mean that   
+the response is incomplete or the app   
+crashed!
+
+
+File Uploads & Downloads
+
+Handling Files Correctly
+
+
+What’s In This Module?
+
+Uploading Files
+
+Downloading Files
+
+
+Asynchronous JavaScript Requests
+
+Behind-The-Scenes Work
+
+
+What are Asynchronous Requests?
+
+Client (Browser)
+
+Server (Node App)
+
+Data (JSON)  
+Data (JSON)
+
+Response  
+Request
+
+HTML
+
+Page
+
+
+Adding Payments
+
+Creating a Real Shop
+
+
+Payment Process
+
+Collect Payment Method
+
+Verify Payment Method
+
+Charge Payment Method
+
+Manage Payments
+
+Process Order in App
+
+Complex Tasks,   
+typically   
+outsourced
+
+
+How Stripe Works
+
+Client (Browser)
+
+Server (Node App)
+
+Stripe Servers (3rd Party)
+
+Collect Credit Card
+
+Data
+
+Token
+
+Create Payment Data
+
+
+REST APIs
+
+Decoupling Frontend and Backend
+
+
+What’s In This Module?
+
+What are “REST APIs”?
+
+Why use/ build REST APIs?
+
+Core REST Concepts & Principles
+
+First REST API!
+
+
+What & Why?
+
+Mobile Apps
+
+(e.g. Twitter)
+
+Not every Frontend (UI) requires HTML Pages!
+
+Single Page Web Apps
+
+(e.g. Udemy Course Player)
+
+Service APIs
+
+(e.g. Google Maps API)
+
+Frontend (UI) is decoupled from the Backend (Server)
+
+
+A Different Kind of Response is Needed
+
+Representational State Transfer
+
+Transfer Data instead of User Interfaces
+
+Important: Only the response (and the request   
+data) changes, NOT the general server-side logic!
+
+
+REST API Big Picture
+
+Client
+
+Server
+
+Mobile App  
+SPA  
+Any App
+
+App Backend API  
+Service API
+
+Data  
+ONLY the
+
+Data, not
+
+the UI!
+
+
+Data Formats
+
+HTML  
+Plain Text  
+XML  
+JSON
+
+<p>Node.js</p>  
+Node.js  
+<name>Node.js</name>  
+{"title": "Node.js"}
+
+Data + Structure
+
+Contains User
+
+Interface
+
+Unnecessarily   
+difficult to parse if
+
+you just need the
+
+data
+
+Data
+
+No UI Assumptions
+
+Unnecessarily   
+difficult to parse, no
+
+clear data structure
+
+Data
+
+No UI Assumptions
+
+Machine-readable
+
+but relatively   
+verbose; XML-parser
+
+needed
+
+Data
+
+No UI Assumptions
+
+Machine-readable
+
+and concise; Can   
+easily be converted
+
+to JavaScript
+
+
+Routing
+
+Client  
+Server
+
+Server-side
+
+Logic,   
+Database   
+Access etc.
+
+?
+
+POST /post
+
+GET /posts
+
+GET /posts/:postId
+
+API Endpoints
+
+
+Http Methods (Http Verbs)
+
+More than just GET & POST
+
+GET
+
+Get a Resource from the
+
+Server
+
+POST
+
+Post a Resource to the
+
+Server (i.e. create or
+
+append Resource)
+
+PUT
+
+Put a Resource onto the
+
+Server (i.e. create or   
+overwrite a Resource)
+
+PATCH
+
+Update parts of an   
+existing Resource on the
+
+Server
+
+DELETE
+
+Delete a Resource on the
+
+Server
+
+OPTIONS
+
+Determine whether follow-
+
+up Request is allowed
+
+(sent automatically)
+
+
+REST Principles
+
+Uniform Interface
+
+Cacheable  
+Client-Server  
+Layered System  
+Code on Demand
+
+Stateless Interactions
+
+Clearly defined API endpoints   
+with clearly defined request +
+
+response data structure
+
+Server and client don’t store   
+any connection history, every   
+request is handled seperately
+
+Servers may set   
+caching headers to
+
+allow the client to
+
+cache responses
+
+Server and client are
+
+separated, client is   
+not concerned with
+
+persistent data
+
+storage
+
+Server may forward
+
+requests to other
+
+APIs
+
+Executable code may
+
+be transferred from
+
+server to client
+
+
+CORS?
+
+Cross-Origin Resource Sharing
+
+Client  
+Server
+
+localhost:3000  
+localhost:3000
+
+Client  
+Server
+
+localhost:4000  
+localhost:3000  
+CORS Error
+
+
+Module Summary
+
+REST Concepts & Ideas  
+Requests & Responses
+
+•  
+REST APIs are all about data, no UI logic   
+is exchanged  
+•  
+REST APIs are normal Node servers which   
+expose different endpoints (Http method +   
+path) for clients to send requests to  
+•  
+JSON is the common data format that is   
+used both for requests and responses  
+•  
+REST APIs are decoupled from the clients   
+that use them
+
+•  
+Attach data in JSON format and let the other   
+end know by setting the “Content-Type”   
+header  
+•  
+CORS errors occur when using an API that   
+does not set CORS headers
+
+
+Advanced REST API Topics
+
+Complete Project, Authentication & More
+
+
+What’s In This Module?
+
+Planning a REST API
+
+CRUD Operations & Endpoints
+
+Validation
+
+Image Upload
+
+Authentication
+
+
+REST & The Rest of the Course
+
+Node + Express App Setup
+
+Routing / Endpoints
+
+Handling Requests & Responses
+
+Request Validation
+
+Database Communication
+
+Files, Uploads, Downloads
+
+Sessions & Cookies
+
+Authentication
+
+No changes
+
+No real changes, more Http
+
+methods
+
+Parse + Send JSON Data, no Views
+
+No changes
+
+No changes
+
+No changes (only on client-side)
+
+No Session & Cookie Usage
+
+Different Authentication Approach
+
+
+How Authentication Works
+
+Client
+
+Server
+
+Send Auth Data  
+Session?
+
+Stored Token is sent to   
+authorize subsequent   
+request
+
+Token
+
+RESTful API is stateless!
+
+Storage
+
+Stores
+
+Token
+
+
+What’s that Token?
+
+JSON Data
+
+Signature
+
+JSON Web Token (JWT)
+
+(Typically) NOT
+
+Encrypted!
+
+Can be verified by
+
+server (via secret
+
+key)
+
+
+Module Summary
+
+From “Classic” to REST API  
+Authentication
+
+•  
+Most of the server-side code does not   
+change, only request + response data is   
+affected  
+•  
+More Http methods are available  
+•  
+The REST API server does not care about   
+the client, requests are handled in   
+isolation => No sessions
+
+•  
+Due to no sessions being used,   
+authentication works differently  
+•  
+Each request needs to be able to send some   
+data that proves that the request is   
+authenticated  
+•  
+JSON Web Tokens (“JWT”) are a common   
+way of storing authentication information on   
+the client and proving authentication status  
+•  
+JWTs are signed by the server and can only   
+be validated by the server
+
+
+async/await
+
+Working with Async Code more Elegantly
+
+
+What?
+
+Asynchronous Requests in a Synchronous Way*
+
+*Only by the way it looks, NOT by the way it behaves
+
+
+Real-Time Web Services with WebSockets
+
+Pushing Data from Server to Client
+
+
+What’s In This Module?
+
+Why Realtime?
+
+How to Add Realtime Communication to a
+
+Node App
+
+
+How It Currently Works
+
+Client
+
+Server
+
+Request  
+Response  
+1  
+2
+
+What if something
+
+changes on the   
+server and we want
+
+to inform a client?
+
+
+WebSockets instead of Http
+
+Client
+
+Server
+
+Request  
+Response  
+1  
+2
+
+Http  
+WebSockets
+
+Established via Http
+
+Client
+
+Server
+
+Push Data
+
+You can use both together in one and the same Node app!
+
+
+GraphQL
+
+REST on Steroids
+
+
+What’s In This Module?
+
+What is GraphQL?
+
+GraphQL vs REST
+
+How to use GraphQL
+
+
+What is GraphQL?
+
+REST API
+
+Stateless, client-independent API for exchanging data
+
+GraphQL API
+
+Stateless, client-independent API for exchanging data with higher query flexibility
+
+
+REST API Limitations
+
+GET /post  
+Fetch Post
+
+{
+
+id: '1',  
+title: 'First Post',   
+content: ' … ',  
+creator: { … }  
+}
+
+What if we only need the title and id?
+
+Solution 1
+
+Create a new REST API   
+Endpoint (e.g. GET /post-slim)
+
+Solution 2
+
+Use Query Parameters (e.g.
+
+GET /post?data=slim)
+
+Solution 3
+
+Use GraphQL!
+
+Problem: Lots and lots of   
+Endpoints & lots of Updating
+
+Problem: API becomes hard
+
+to understand  
+Problem: None
+
+
+How does GraphQL Work?
+
+Client  
+Server
+
+Server-side
+
+Logic,   
+Database   
+Access etc.
+
+?
+
+POST /graphql
+
+One Single Endpoint
+
+POST Request   
+contains Query   
+Expression (to define
+
+the Data that should
+
+be returned)
+
+
+A GraphQL Query
+
+{
+
+query {
+
+user {
+
+name  
+age  
+}  
+}  
+}
+
+Operation type
+
+Operation “endpoint”
+
+Requested fields
+
+Other types:  
+mutation  
+subscription
+
+
+Operation Types
+
+Query
+
+Mutation
+
+Subscription
+
+Retrieve Data (“GET”)
+
+Manipulate Data (“POST”, “PUT”, “PATCH”, “DELETE”)
+
+Set up realtime connection via Websockets
+
+
+GraphQL Big Picture
+
+Client  
+POST   
+/graphql
+
+Type   
+Definition
+
+Query   
+Defintions
+
+Server
+
+Mutation   
+Defintions
+
+Subscription
+
+Defintions
+
+Resolvers
+
+(contain
+
+your   
+server-side
+
+logic)
+
+Like Controllers
+
+Like Routes
+
+Like Routes
+
+Like Routes
+
+
+It’s a normal Node (+ Express) Server!
+
+ONE Single Endpoint (typically /graphql)
+
+Uses POST because Request Body defines Data
+
+Structure of retrieved Data
+
+Server-side Resolver analyses Request Body, Fetches
+
+and Prepares and Returns Data
+
+How does GraphQL Work?
+
+POST for Getting
+
+Data? Yep!
+
+
+Module Summary
+
+GraphQL Core Concepts  
+GraphQL vs REST
+
+•  
+Stateless, client-independent API  
+•  
+Higher flexibility than REST APIs offer due   
+to custom query language that is exposed   
+to the client  
+•  
+Queries (GET), Mutation (POST, PUT,   
+PATCH, DELETE) and Subscriptions can   
+be used to exchange and manage data  
+•  
+ALL GraphQL requests are directed to   
+ONE endpoint (POST /graphql)  
+•  
+The server parses the incoming query   
+expression (typically done by third-party   
+packages) and calls the appropriate   
+resolvers  
+•  
+GraphQL is NOT limited to React.js  
+applications!
+
+•  
+REST APIs are great for static data   
+requirements (e.g. file upload, scenarios   
+where you need the same data all the time)  
+•  
+GraphQL gives you higher flexibility by   
+exposing a full query language to the client  
+•  
+Both REST and GraphQL APIs can be   
+implemented with ANY framework and   
+actually even with ANY server-side language
+
+
+Deploying Node.js Applications
+
+From Development to Production
+
+
+What’s In This Module?
+
+Preparing for Deployment
+
+Deployment Steps & Config
+
+Security
+
+
+Which Kind of Application?
+
+Server-side Rendered Views  
+APIs
+
+REST  
+GraphQL  
+Vanilla HTML  
+Templating   
+Engine (e.g. EJS)
+
+Node Server
+
+Node Framework (e.g. Express)
+
+Same Hosting Requirements
+
+Your Logic
+
+
+Preparing the Code for Production
+
+Reduce Error Output Details
+
+Use Environment Variables
+
+Set Secure Response Headers
+
+Use Production API Keys
+
+Configure Logging
+
+Use SSL/TLS
+
+Often handled by the
+
+Hosting Provider
+
+Avoid hard-coded   
+values in your code
+
+Don’t use that testing
+
+Stripe API
+
+Don’t send sensitive
+
+info to your users
+
+Implement best
+
+practices
+
+Stay up to date about
+
+what’s happening
+
+Encrypt data in
+
+transit
+
+Add Asset Compression  
+Reduce Response
+
+Size
+
+
+Using SSL/TLS
+
+Client  
+Server  
+Data
+
+Attacker
+
+Eavesdropping
+
+SSL/TLS Encryption
+
+Private Key
+
+SSL Certificate  
+Public Key
+
+Binds Key to Identity
+
+Public Key  
+Decrypt
+
+
+Configuring the Server (in a Secure Way)
+
+Secure & Scalable Server Configuration is Hard!
+
+Install & Update required
+
+Software  
+Lock Server Down  
+Protect & Manage Server
+
+Network
+
+Way More!
+
+Use Manage Service unless you know what you’re doing!
+
+
+Using a Hosting Provider
+
+<Your Code>
+
+Virtual Server /   
+Managed Space
+
+Managed
+
+Servers  
+Your Users
+
+SSL  
+Compression
+
+Logging
+
+Load Balancing
+
+Private Network  
+No external Access
+
+Gateway,   
+public Server
+
+
+Version Control (Git)
+
+Save & Manage Your Source Code
+
+Commits  
+Branches  
+Remote Repositories
+
+“Snapshots” of your code
+
+Easily switch between
+
+commits
+
+Create commit after   
+bugfixes, new features, …
+
+Different “versions” of your
+
+code
+
+e.g. master (production),   
+development, new-feature
+
+Separate development of   
+new features and bugfixing
+
+Store code + commits +
+
+branches in the cloud
+
+Protect against loss of local
+
+data
+
+Deploy code automatically
+
+
+Heroku Deployment Process
+
+1
+
+2
+
+Prepare project (including compression)
+
+Prepare git master branch for deployment
+
+3  
+Use Heroku CLI to connect Heroku with app
+
+4  
+Push code to Heroku
+
+5  
+Enable SSL + Logging (Paid)
+
+
+Storing Files
+
+Static Code Files  
+User-Uploaded Files
+
+Images  
+Videos  
+…  
+HTML  
+JavaScript  
+CSS
+
+Stored with Other Source Code
+
+No Persistent Storage Required (re-added
+
+with every Restart/ Re-Deployment)
+
+Persistent Storage Required, NOT re-added
+
+with Restarts/ Re-Deployments
+
+Not included in Source Code Package
+
+e.g. AWS S3 with s3-proxy
+
+
+Bonus: Deploying Frontend Web Apps (SPAs)
+
+<Source Code>
+
+Build Process
+
+HTML + JS + CSS Files
+
+No Node.js Server/ Host is
+
+Required!
+
+Use a Static File Host (e.g. AWS
+
+S3)
+
+
+Caching
+
+Serving Files & Data as Fast as Possible
+
+
+Different Types of Caching
+
+Database  
+Server-side  
+Client-side
+
+Depends on database
+
+engine, often built-in
+
+Cache   
+rendered   
+templates
+
+Cache   
+database
+
+data
+
+Built-in!  
+Custom   
+solution
+
+Default   
+browser
+
+cache
+
+Service
+
+worker
+
+cache
+
+Built-in!  
+Custom   
+solution
+
+Controlled via Headers
+
+
+npm & Node as a Build Tool
+
+Beyond Node Web Servers
+
+
+Two for the Price of One
+
+Node.js  
+npm
+
+Execute Code  
+Manage Packages
+
+Run Scripts  
+Interact with Files
+
+
+Understanding npm
+
+npm CLI
+
+Package
+
+Some Node Project
+
+Node Package Manager
+
+Isolated Functionality
+
+(in Node code)
+
+e.g. generate random
+
+number
+
+npm Repository
+
+Package A
+
+Package B
+
+…
+
+npm install
+
+Share (internally   
+or externally)
+
+
+Remember: Node can execute any .js File!
+
+Node.js
+
+Spin up a Web Server  
+Read & Write Files
+
+Parse (read) file
+
+Manipulate content
+
+Output new file
+
+
+What is a “Build Tool”? And Why?
+
+Unoptimized but   
+manageable Code  
+Optimized Code  
+Next-gen Features
+
+Primarily important in frontend
+
+development!
+
+const copy = (arr) =>   
+{
+
+return [...arr];  
+}
+
+var a = function(b)   
+{return b.slice()}
+
+const copy = (arr) =>   
+{
+
+return [...arr];  
+}
+
+
+Global npm Packages
+
+Now global packages make sense!
+
+
+Roundup & Next Steps
+
+How to Continue?
+
+
+Next Steps
+
+Practice!
+
+Explore APIs & Serverless
+
+Apps
+
+Dive into Frontend
+
+Development

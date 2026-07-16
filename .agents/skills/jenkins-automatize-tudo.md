@@ -1,0 +1,78 @@
+---
+name: jenkins-automatize-tudo-sem-complica-es
+description: >-
+  Passos operacionais extraidos do livro 'Jenkins - Automatize tudo sem complicações' (PT) — praticas e procedimentos para DevOps, infraestrutura e containers.
+---
+
+# Jenkins Automatize Tudo — Passos Operacionais
+
+Conteudo extraido do livro 'Jenkins Automatize Tudo'. Contem passos, tecnicas e principios baseados na obra original.
+
+## 1. Conceitos Fundamentais
+- Agradeço a minha família, a Deus e meus colegas de trabalho   por tudo.
+- AGRADECIMENTOS   Uma imagem fala mais que mil palavras...
+- Veja quem eu sou na   figura:  QUEM É FERNANDO BOAGLIO?
+- Para que fazer na mão se é possível automatizar?
+- Fazer builds e deploys manuais leva um precioso tempo e,   quando tudo fica automatizado com o Jenkins, parece inacreditável   o tempo que era gasto fazendo essas tarefas.
+- E você se questiona   como não tinha automatizado isso antes.
+- Este livro foi feito para desenvolvedores ou operadores de   sistemas que desejam otimizar as suas tarefas do dia a dia e   automatizar o máximo possível.
+- Para rapidamente entender os conceitos mais importantes e   disponibilizar o seu ambiente de integração contínua, não será   preciso ler todos os capítulos, apenas os cinco primeiros.
+- Os capítulos restantes complementam com estratégias de   orquestração, conceito de slaves, deploys, customizações e a   utilização dos plugins mais importantes.
+- Entenda como funciona internamente o Jenkins e sua API, e   aprenda a construir plugins para estender as funcionalidades dessa   incrível ferramenta de integração contínua.
+
+
+  - tarefa criativa (o código), e o Jenkins faz as tarefas repetitivas (testes,
+
+  - teste é mais complexo, ele faz o login no sistema e valida a existência
+
+  - atualização. Para realizar essas tarefas, será necessária a instalação
+
+  - Selenium para, além de fazer o teste, gerar screenshots e escolher via
+
+  - para eu me esquecer de fazer alguma tarefa, ou tentar fazer várias ao
+
+  - construção (build) e testes de virtualmente qualquer tipo de projeto.
+## 2. Principios e Tecnicas
+- PREFÁCIO  Público-alvo  Quickstart – não perca tempo  Melhorando – explorando as possiblidades  Hacking – crie o seu plugin do Jenkins  Código-fonte   O    código-fonte    deste    livro    está    disponível    em   https://github.com/boaglio/jenkins-casadocodigo,    onde    foram   criadas tags para cada um dos capítulos.
+- A minha vida era mais tranquila quando eu cuidava de dois   sistemas, pois facilmente eu sabia como eles estavam em todos os   ambientes.
+- Quando esse número aumentou muito, não demorou   para eu me esquecer de fazer alguma tarefa, ou tentar fazer várias ao   mesmo tempo e dar tudo errado no final.
+- Já tive experiência em automatizar algumas coisas com outras   soluções, mas a customização era tão penosa que o "fazer na mão"   era mais rápido e eficaz.
+- Isso tudo até conhecer o Jenkins.
+- Finalmente, uma ferramenta apareceu para ajudar o meu dia a dia, e   não ser mais uma da lista de ferramentas que eu xingava por serem   pagas e, mesmo assim, cheias de problemas.
+- Claro que todo software não é perfeito, afinal, ele é feito pelo ser   humano, que comete erros.
+- Entretanto, o que é excelente no Jenkins   é a sua comunidade superativa, além de ele ser também de código   aberto.
+- Hoje, com o Jenkins, eu consigo fazer muitas coisas ao mesmo   tempo e o que antes era manual e demorava horas, hoje, é apenas   uma consulta geral no painel que leva poucos segundos, apenas para   conferir se alguma coisa não funcionou.
+- O meu trabalho ficou bem   mais produtivo.
+
+
+  - Flyway roda os scripts e atualiza para a versão atual (no nosso caso,
+
+  - para testar nossa aplicação com o IE, agora só falta ligar tudo isso:
+
+  - trata de um plugin definindo, e que o pai desse projeto é o pacote de
+
+  - Claro que todo software não é perfeito, afinal, ele é feito pelo ser
+## 3. Aplicacoes Praticas
+- Espero que o Jenkins ajude sua vida a melhorar   também.
+- Luca Bastos  Bruno acabou de casar e gosta do que faz.
+- Ele trabalha com TI   em uma pequena empresa de câmbio e não tem muitos sistemas   para cuidar, mas os poucos que tem são essenciais para o negócio da   empresa.
+- No dia a dia, Bruno tem uma vida corrida e tem suas dúvidas se   é tão produtivo assim.
+- A sua empresa tem uma aplicação de   controle de câmbio feita em Java, chamada ::Minhas Moedas::.
+- Para fazer a alteração mais simples possível, por exemplo,   mudar um texto na tela de "Bom dia" para "Olá", Bruno tem muito   trabalho para fazer essa mudança chegar lá no ambiente de   produção.
+- Alterar o seu código e commitar a mudança no seu sistema de   controle de versão (SVN, Git etc.);   2\.
+- Gerar um pacote de sua aplicação web;   3\.
+- Gerar um arquivo .zip de backup dos fontes;   4\.
+- Atualizar o banco de dados de homologação;   5\.
+
+## 4. Topicos Avancados
+- Fazer o deploy do pacote no ambiente de homologação;   6\.
+- Fazer os testes manualmente para validar a alteração em   homologação;   7\.
+- Atualizar o banco de dados de produção;   8\.
+- Fazer o deploy do pacote no ambiente de produção;  INTRODUÇÃO  2    1 INTRODUÇÃO   9\.
+- Fazer os testes manualmente para validar a alteração em   produção;   10\.
+- Enviar um e-mail para o seu chefe avisando que está tudo   pronto.
+- Quando Bruno avalia suas realizações, percebe que ficou mais   tempo fazendo operações manuais do que implementando   melhorias no sistema ::Minhas Moedas::.
+- Provavelmente sim, muitas tarefas como as do Bruno   consomem o tempo do nosso dia a dia.
+- Uma solução para esse   problema é automatizar a maior parte delas, assim podemos focar   no que realmente interessa.
+- No mercado, existem algumas soluções consolidadas.
+

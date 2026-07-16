@@ -1,0 +1,59 @@
+---
+name: jornada-python
+description: >-
+  Passos operacionais extraidos do livro 'Jornada Python' (PT) — Jornada Python.
+---
+
+# Jornada Python — Passos Operacionais
+
+## 1. Conceitos Fundamentais
+
+- Capítulo 2 André Guilhon Juliana Guamá Antonio Muniz Karine Cordeiro Cláudio Gomes Rodrigo Isensee Eduardo Gaspar Tatiana Escovedo Jornada Python Uma jornada imersiva na aplicabilidade de uma das mais poderosas linguagens de programação do mundo Rio de Janeiro 2022  Capítulo 3 Copyright© 2022 por Brasport Livros e Multimídia Ltda.
+- Nenhuma parte deste livro poderá ser reproduzida, sob qualquer meio, especialmente em fotocópia (xerox), sem a permissão, por escrito, da Editora.
+- Editor: Sergio Martins de Oliveira Gerente de Produção Editorial: Marina dos Anjos Martins de Oliveira Editoração Eletrônica: Abreu’s System Capa: Trama Criações Técnica e muita atenção foram empregadas na produção deste livro.
+- Porém, erros de digitação e/ou impressão podem ocorrer.
+- Qualquer dúvida, inclusive de conceito, solicitamos enviar mensagem para editorial@brasport.com.br , para que nossa equipe, juntamente com o autor, possa esclarecer.
+- A Brasport e o(s) autor(es) não assumem qualquer responsabilidade por eventuais danos ou perdas a pessoas ou bens, originados do uso deste livro.
+- Rua Washington Luís, 9, sobreloja – Centro 20230-900 Rio de Janeiro-RJ Tels.
+- Fax: (21)2568.1415/3497.2162 e-mails: marketing@brasport.com.br vendas@brasport.com.br editorial@brasport.com.br www.brasport.com.br  Capítulo 4 Jornada Colaborativa Experiências colaborativas que transformam vidas!
+- Conectamos pessoas apaixonadas por tecnologia e agilidade, criamos livros colaborativos de alta qualidade e transformamos vidas compartilhando experiências e doando a receita para instituições carentes!
+- Juntos somos mais inteligentes e já concretizamos várias iniciativas colaborativas (2019 e 2020): 1.
+
+## 2. Principios e Tecnicas
+
+- Lançamento de oito livros com +400 coautores 2.
+- JornadaSummits com +3.500 participantes em 13 sábados 3.
+- JornadaCast com +50 episódios ao vivo 4.
+- Jornada Learning com +500 participantes em 6 trilhas 5.
+- Jornada Globo Day com 1.380 participantes ao vivo (3.453 inscritos) 6.
+- Doação de R$ 137 mil para 12 instituições carentes 7.
+- Impactamos +20 mil vidas (conteúdos + alimentação) Tudo começou com um sonho de compartilhar conhecimento através do livro “Jornada DevOps”, que foi escrito por 33 pessoas com experiências complementares.
+- A união do time com outras comunidades em várias cidades mobilizou a disseminação de novas experiências.
+- O experimento dos cinco Summits de lançamento dos três primeiros livros em 2019 uniu mais de 50 empresas e comunidades, permitindo ingressos com valor simbólico e direito a livro para 1.277 pessoas, além da doação de R$ 25 mil para quatro instituições carentes.
+- O primeiro semestre de 2020 reforçou nosso trabalho colaborativo com 50 voluntários trabalhando intensamente na Jornada contra a crise , que arrecadou R$ 100 mil para 10 instituições com 13 sábados para mais de 3.500 participantes on-line que receberam 160 palestras de alta qualidade com 25 presidentes, 50 executivos e 80 experts em agilidade, tecnologia, inovação e transformação digital.
+
+## 3. Aplicacoes Praticas
+
+- A Jornada Learning iniciou no segundo semestre de 2020 com o objetivo de capacitar pessoas do mercado, captar recursos para lançar os novos livros da Jornada e ceder vaga gratuita para quem está em busca de recolocação com direito a livro, workshop , mentoria e camisa da Jornada.
+- Graças ao apoio de várias organizações, disponibilizamos mais de 400 vagas gratuitas para colaborar na recolocação de pessoas que investem em sua qualificação.
+- Nosso DNA é unir pessoas e tecnologia, aproveitando nossos participantes com perfil multidisciplinar: desenvolvedores, QA, sysadmin , arquitetos, product owners , gerentes de produtos, agile coach , scrum master , analistas de negócio, empreendedores, gerentes de projetos, psicólogas, executivos, UX, CX, equipes de RH, recrutadores, analistas de marketing, engenheiros, etc.
+- Juntos somos mais inteligentes e podemos transformar mais vidas, criar amizades e fazer a diferença nas organizações e sociedade!
+- Durante um dos intervalos entre as palestras incríveis que organizamos em parceria com a comunidade Agile Joinville, tive um papo superanimado com o Rodrigo Isensee e lembro como se fosse hoje da sua grande paixão por desenvolvimento de software e Python.
+- Fiquei tão empolgado com essa conversa que decidi mobilizar outras pessoas incríveis para iniciar mais um livro colaborativo.
+- Como o time organizador tem um importante papel na escrita colaborativa, o próximo passo foi escolher pessoas dedicadas e comprometidas com a curadoria para garantir a qualidade de todo o conteúdo.
+- Um dos grandes desafios das atividades que realizamos na Jornada Colaborativa é priorizar uma parte do nosso tempo para a escrita dos livros, e o líder do time organizador desempenha importante papel mobilizando os coautores e orquestrando todas as ações necessárias para o sucesso no resultado final.
+- A escolha do André Guilhon como líder do time foi bem natural, pois já o conhecia desde a época em que eu lecionava em alguns cursos, mas fiquei seu fã quando assumiu responsabilidades na Jornada Summit e participou do livro “Jornada Ágil e Digital”.
+- Somando ao Rodrigo e André, já conhecia a Karine Cordeiro desde o primeiro livro “Jornada DevOps” e a Tatiana desde o segundo livro, “Jornada Ágil e Digital”.
+
+## 4. Topicos Avancados
+
+- Uma característica muito interessante na Jornada Colaborativa é que um amigo tem total autonomia para indicar pessoas de sua confiança, e fiquei muito feliz quando isso ocorreu no livro Python, com a chegada do Eduardo, da Juliana e do Cláudio ao nosso time organizador.
+- A busca pelos coautores foi realizada considerando pessoas que admiramos, vivência na aplicação prática e repertórios complementares, trazendo diversidade de pontos de vista e diferentes níveis de experiência para construir um conteúdo com grande riqueza para nossos leitores.
+- Considerando que as empresas dependem cada vez mais de software para sobreviver e prosperar no mercado, temos muito orgulho do resultado incrível que essa galera construiu e temos a convicção de que cada leitor será beneficiado em sua carreira com a aplicação deste suprassumo para desenvolvedores comprometidos em entregar soluções para seus clientes e sociedade.
+- Antonio Muniz Fundador da Jornada Colaborativa  Capítulo 7 1.
+- Introdução Eduardo Bizarria Gaspar Karine Cordeiro Rodrigo Isensee O que é, pra que serve e onde usar “Idealizado por loucos de uma comunidade de malucos”.
+- Essa seria a melhor definição para este livro.
+- Ele foi criado com o objetivo de atender aos vários perfis de utilizadores da linguagem, desde iniciantes até usuários avançados, apresentando as diversas facetas desta linguagem amplamente utilizada desde o desenvolvimento web até a ciência de dados, de maneira objetiva, mas sem perder os nuances de cada tipo de aplicação.
+- Por ser uma linguagem de fácil assimilação, sintaxe simples e muito próxima da lin­guagem natural, Python é seguramente a melhor linguagem para programadores iniciantes ou provindos de outras áreas.
+- Você seguramente irá cruzar com alguns juristas e jornalistas que tenham usado essa linguagem no desenvolvimento de aplicações para suas áreas.
+- Devido à reduzida curva de aprendizado, Python é uma excelente escolha quando estamos falando do ambiente acadêmico, com forte presença na comunidade estatística, amplamente utilizada na introdução à programação e fortemente aplicada por pessoas que almejam transição de carreira ou estão em busca de novas habilidades.

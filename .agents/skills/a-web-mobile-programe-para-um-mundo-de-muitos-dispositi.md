@@ -1,0 +1,78 @@
+---
+name: a-web-mobile-programe-para-um-mundo-de-muitos-dispositi
+description: >-
+  Passos operacionais extraidos do livro 'A web mobile programe para um mundo de muitos dispositivos' (PT) — Mobile, Desenvolvimento Web.
+---
+
+# A Web Mobile Programe Para Um Mundo De Muitos Dispositi — Passos Operacionais
+
+Conteudo extraido do livro 'A Web Mobile Programe Para Um Mundo De Muitos Dispositi'. Contem passos, tecnicas e principios baseados na obra original.
+
+## 1. Conceitos Fundamentais
+- Daí   pra CSS e JavaScript foi um pulo.
+- Em seguida, me aventurei em SSI e PHP, incluindo   bancos de dados.
+- Em 2003, iniciei meu curso de Ciência da Computação na USP e   nadei em águas mais profundas desde então — Java, C, Python.
+- Cresci bastante em   programação backend.
+- Mas eu sempre fui apaixonado por front-end.
+- Com o renascimento da Web através do HTML5 nos últimos anos, voltei a focar   na minha paixão.
+- Leio muito, estudo muito, escrevo   muito e programo muito — desde que envolva bastante HTML, CSS e JavaScript.
+- E, de algum tempo pra cá, resolvi focar em mobile.
+- Meu primeiro site mobile eu   escrevi há quase uma década usando WML pra redes WAP (se você é novo, talvez   precise da Wikipedia pra entender a frase anterior).
+- Imagine minha animação então   nessa nova era dos smartphones e o que significam para a Web.
+
+
+  - na tela. Claro que o ideal, pensando em flexibilidade total, seria não ter essa restrição
+
+  - entre pixels lógicos e pixels físicos. Essa razão é o device pixel ratio, acessível em JS
+
+  - já suporta o recurso nativamente. O ideal seria otimizar isso e só baixar o polyfill caso
+
+  - otimizar nossas interfaces para facilitar a interação. Isso envolve os aspectos que citei
+
+  - das as referências são clicáveis; para os leitores do impresso, coloquei os links de to-
+
+  - distinguir os pixels individualmente. Por isso, a tela de 326dpi do iPhone retina é bas-
+## 2. Principios e Tecnicas
+- Acredito muito na   Web única como plataforma democrática e universal.
+- Já trabalhei em algumas empresas, programando em várias linguagens (já até  i   Casa do Código  ganhei dinheiro com opensource).
+- Desde 2004, trabalho na Caelum como instrutor   e desenvolvedor.
+- Foi onde minha carreira decolou e onde mais aprendi, e aprendo   todo dia.
+- É onde pretendo passar ainda muitos e muitos anos.
+- Ensinar e escrever são uma paixão desde o colégio — lembro a decepção da mi-   nha professora de português quando ela descobriu que eu seguiria carreira em exatas.
+- Dar aulas, escrever artigos, blogar e palestrar são minha maneira de misturar essas   habilidades.
+- Esse livro é ponto alto em toda essa trajetória.
+- Espero que seja divertido pra você   ler tanto quanto foi, para mim, escrever.
+- Obrigado por acreditar nele e comprá-lo.
+
+
+  - nova, gestos novos, pra cada site que visito. O melhor é a interface familiar e simples.
+
+  - próximo tópico do livro (3) vai se aprofundar nas diferenças práticas e técnicas dessas
+
+  - ressa tanto para ele se está acessando um site totalmente reescrito para mobile ou se é
+
+  - pode criar favoritos e atalhos para páginas específicas, pode clicar em links e navegar
+## 3. Aplicacoes Praticas
+- Você pode me encontrar também escrevendo por aí na Web:  • Meu blog pessoal onde escrevo bastante sobre Web, mobile, front-end em ge-   ral: http://sergiolopes.org  • O blog da Caelum, onde sempre publico artigos sobre front-end: http://blog.   caelum.com.br  • Meu Twitter e meu Facebook onde posto muitos links pra coisas baca-   nas de front-end e mobile: https://twitter.com/sergio_caelum e https://www.   facebook.com/sergio.caelum  • E também participo de vários fóruns, grupos e listas de discussão de Web,   onde a gente pode se encontrar.
+- Meu favorito é o novo GUJ: http://www.guj.   com.br/perguntas  E, se nos toparmos um dia em algum evento, não deixe de me chamar pra bater-   mos um papo.   — Sérgio Lopes, 2013  ii   Casa do Código   Sumário  Sumário  1   A Web Mobile   1  Estratégia mobile   5  2   Os caminhos de uma estratégia mobile   7  3   App ou Web?
+- Quer dizer, é um título bacana e   fui eu mesmo que dei.
+- Ele só conta uma parte da história   do livro.
+- Fato é que não existe uma Web mobile.
+- Existe a Web, que a gente acessa tanto   do computador quanto do celular ou do tablet.
+- É o mesmo HTML, CSS e JavaScript   que rodam nos navegadores independente do dispositivo.
+- Eles têm diferenças entre   si, claro, mas a maior parte é a mesma coisa.
+- Vários tópicos do livro não são específicos de dispositivos móveis.
+- Media queries,   por exemplo, um assunto que você talvez já tenho visto sempre ligado a sites mobile;   aqui no livro, quando chegarmos nelas, vamos ver até como afetam a acessibilidade   no Desktop.
+
+## 4. Topicos Avancados
+- Ou ainda quando falarmos de touch screens: não dá pra chamar isso de   mobile, já que computadores com touch são cada vez mais comuns hoje.
+- Pensei em dar o título pro livro de “A Web moderna”, ou algo assim.
+- Mas seria   muito genérico, afinal o tema central aqui acaba sendo mobile mesmo.
+- O livro é sobre como programar a Web atual, com tecnologias novas, pensando   Casa do Código  nos dispositivos de hoje e de amanhã.
+- E muitas das transformações recentes da Web   foram causadas pelas revoluções e novidades dos dispositivos móveis.
+- Então, não é   que o título do livro está incorreto, mas, talvez, incompleto.
+- Deveria ser algo como   “A Web moderna e como ela foi afetada pelos dispositivos móveis”.
+- Acabei resumindo   para “A Web Mobile”.
+- O mercado mobile  Decidi que não ia começar o livro citando estatísticas de como o mercado mobile   cresceu muito nos últimos anos e como ele vai estourar nos próximos.
+- Nem mostrar   a evolução do 3G ou 4G no Brasil ou falar de quanto de participação no mercado   cada plataforma móvel tem.
+

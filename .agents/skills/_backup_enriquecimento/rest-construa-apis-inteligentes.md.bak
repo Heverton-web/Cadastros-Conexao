@@ -1,0 +1,57 @@
+---
+name: rest-construa-apis-inteligentes
+description: >-
+  Passos operacionais do livro 'Rest — Construa APIs Inteligentes' — design RESTful, HTTP e autenticacao.
+---
+
+# Rest Construa Apis Inteligentes — Passos Operacionais
+
+Conteudo extraido do livro 'Rest Construa Apis Inteligentes'. Contem passos, tecnicas e principios baseados na obra original.
+
+## 1. Conceitos Fundamentais
+- Seguindo a filosofia de uma startup, você quer pro-   duzir um site para seu produto, uma loja de cervejas finas pela internet.
+- Assim, você   quer fazer um sistema que seja rápido de produzir e, ao mesmo tempo, seja eficiente   e fácil de reutilizar em vários ambientes diferentes (você está considerando uma ver-   são mobile para o sistema).
+- Assim, você explora diversas possibilidades.  1.1   HTML tradicional versus REST  Você decide avaliar, antes de tudo, sistemas tradicionais web, baseados em formulá-   rios HTML.
+- Fica claro para você que fazer um sistema tradicional, baseado em formulários   HTML, está fora de questão.
+- Isso porque esse tipo de formulário é claramente oti-   1.2.
+- Web services   Casa do Código  mizado para trabalhar com sistemas baseados na web, mas você não tem certeza em   relação ao quanto ele será flexível para trabalhar com outros tipos de front-end.
+- Por   exemplo, considere uma tela para cadastro dos clientes do site:  <html>   <body>   <form action="/cadastrar" method="post">   <input type="text" name="nome" />   <input type="text" name="dataNascimento" />   <input type="submit" value="Cadastrar" />   </form>   </body>   </html>  Este código (com um pouco mais de tratamento) deve te atender bem.
+- No en-   tanto, após submeter o formulário, o servidor deve te trazer uma página HTML -   o que, obviamente, não é desejável num cenário com vários front-ends, como um   aplicativo para Android ou iOS.
+- Sua próxima possibilidade é, portanto, avaliar outros tipos de sistemas.  1.2   Web services  O próximo cenário que vem à sua mente é o de uso de web services tradicionais, ou   seja, baseados em SOAP (Simple Object Access Protocol).
+- A princípio, te parece uma   boa idéia, já que é o mecanismo de tráfego de informações é via XML e, portanto, é   possível interagir com serviços desse tipo a partir de código javascript (ou seja, pos-   sibilitando a interação tanto a partir de um browser quanto a partir de código puro).
+
+## 2. Principios e Tecnicas
+- Porém, estudando mais você percebe que interagir com este tipo de web service não é   tão simples quanto você gostaria.
+- Por exemplo, para listar os clientes do seu sistema,   é necessário enviar o seguinte XML para o servidor:  <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">   <soap:Body>   <listarClientes xmlns="http://brejaonline.com.br/administracao/1.0/service"   </soap:Body>   </soap:Envelope>  Ao que você receberá como resposta:  <soap:Envelope xmlns:domain="http://brejaonline.com.br/administracao/1.0/domain"  xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">  2   Casa do Código   Capítulo 1.
+- A complexidade (e verbosidade) do protocolo fica especial-   mente evidente quando você pensa no caso da comunicação feita com plataformas   móveis, onde a comunicação pela rede deve ser a mais sucinta possível.  1.3   REST  Você estuda mais a respeito de web services quando você lê sobre serviços REST.
+- Ao   estudar sobre o assunto, te parece uma técnica simples.
+- Por exemplo, para realizar   a listagem de clientes do seu sistema, você pode utilizar o navegador (seja este o   Chrome, Firefox, Internet Explorer ou qualquer outro) para abrir a URL   http://localhost:8080/cervejaria/clientes .
+- Ao fazer isso, você pode obter o seguinte re-   sultado:  <clientes>   <cliente id="1">   <nome>Alexandre</nome>   <dataNascimento>2012-12-01</dataNascimento>   </cliente>   <cliente id="2">   <nome>Paulo</nome>   <dataNascimento>2012-11-01</dataNascimento>   </cliente>   </clientes>  3   1.3.
+- REST   Casa do Código  Mas, afinal, como fazer seu código interagir com esta listagem?
+- Os princípios básicos de REST  REST significa REpresentational State Transfer (ou   Transferência de   Estado Representativo, em tradução livre), e é um estilo de desenvolvimento   de web services que teve origem na tese de doutorado de Roy Fielding.
+- Este, por   sua vez, é co-autor de um dos protocolos mais utilizados no mundo, o HTTP (   HyperText Transfer Protocol).
+- Assim, é notável que o protocolo REST é gui-   ado (dentre outros preceitos) pelo que seriam as boas práticas de uso de HTTP:  • Uso adequado dos métodos HTTP;  • Uso adequado de URL’s;  • Uso de códigos de status padronizados para representação de sucessos ou fa-   lhas;  • Uso adequado de cabeçalhos HTTP;  • Interligações entre vários recursos diferentes.
+
+## 3. Aplicacoes Praticas
+- O propósito deste livro é, portanto, exemplificar o que são estas práticas e guiar   você, leitor, através das mesmas e fornecer os insumos de como construir seus pró-   prios serviços, de maneira que estes sejam sempre tão escaláveis, reutilizáveis e ma-   nuteníveis quanto possível.
+- As fundações de REST  O “marco zero” de REST é o recurso.
+- Em REST, tudo é definido em termos de   recursos, sendo estes os conjuntos de dados que são trafegados pelo protocolo.
+- Os   recursos são representados por URI’s.
+- Note que, na web, URI’s e URL’s são essencial-   mente a mesma coisa - razão pela qual vou usar os dois termos neste livro de forma   intercalada.  4   Casa do Código   Capítulo 1.
+- Qual a diferença entre uma URL e uma URI?
+- URL   significa   Universal Resource Locator   e   URI,   Universal Resource Identifier.
+- Uma URI, como diz o   próprio nome, pode ser utilizada para identificar qualquer coisa - dar   um caminho para um determinado conteúdo, dar nome a este, etc.
+- Já   uma URL pode ser utilizada apenas para fornecer caminhos - sendo   que uma URL é, portanto, uma forma de uma URI.
+- É mais natural que   URI’s que não sejam URL’s sejam utilizadas em outros contextos, como   fornecimento de namespaces XML.
+
+## 4. Topicos Avancados
+- Tomando como exemplo o caso da listagem de clientes, é possível decompôr a   URL utilizada para localização da listagem em várias partes:  http://localhost:8080/cervejaria/clientes  • http:// - Indica o protocolo que está sendo utilizado (no caso, HTTP);  • localhost:8080 - Indica o servidor de rede que está sendo utilizado e a porta   (quando a porta não é especificada, assume-se que é a padrão - no caso do   protocolo HTTP, 80);  • cervejaria - Indica o contexto da aplicação, ou seja, a raiz pela qual a aplicação   está sendo fornecida para o cliente.
+- Vou me referir a esta, daqui em diante,   como contexto da aplicação ou apenas contexto;  • clientes - É o endereço, de fato, do recurso - no caso, a listagem de clientes.
+- Vou me referir a este, daqui em diante, como endereço do recurso.
+- O protocolo  O protocolo, em realidade, não é uma restrição em REST - em teoria.
+- Na prá-   tica, o HTTP é o único protocolo 100% compatível conhecido.
+- Vale destacar que o   HTTPS ( HyperText Transfer Protocol over Secure Sockets Layer)   não é uma variação do HTTP, mas apenas a adição de uma camada extra - o que   mantém o HTTPS na mesma categoria que o HTTP, assim como qualquer outro   protocolo que seja utilizado sobre o HTTP, como SPDY.
+- As possíveis causas para esta “preferência” podem ser apontadas: o autor do   HTTP também é o autor de REST e, além disso, o protocolo HTTP é um dos mais  5   1.4.
+- Desenvolvendo um protótipo de web service REST   Casa do Código  utilizados no mundo (sendo que a web, de maneira geral, é fornecida por este pro-   tocolo).
+- Estes fatos promoveriam uma aceitação grande e rápida absorção de REST   pela comunidade de desenvolvedores.
+- A URL  A URL escolhida deve ser única por recurso.

@@ -1,0 +1,1087 @@
+[Page 3]
+Impresso e PDF: 978-85-94188-18-2
+EPUB: 978-85-94188-19-9
+MOBI: 978-85-94188-20-5
+Você pode discutir sobre este livro no Fórum da Casa do
+Código: http://forum.casadocodigo.com.br/.
+Caso você deseje submeter alguma errata ou sugestão, acesse
+http://erratas.casadocodigo.com.br.
+ISBN
+
+[Page 4]
+Agradeço ao meu pai e à minha mãe, que aguentaram anos e
+anos de perguntas, e sempre me instigaram a perguntar mais.
+Gostaria de um dia ter a paciência que eles tiveram com minha
+educação.
+Gostaria de agradecer ao Alex Felipe, que fez a transposição
+original do curso da Alura de Machine Learning neste livro.
+AGRADECIMENTOS
+
+[Page 5]
+Meu nome é Guilherme de Azevedo Silveira, e aprendi a
+programar aos 9 anos. Meu irmão foi meu professor particular, me
+instigando a criar pequenos jogos em Basic. Trabalho com
+desenvolvimento de software desde meu primeiro estágio, em
+1996.
+Cresci como profissional utilizando a linguagem Java, apesar
+de minha jornada ter me levado às mais diversas linguagens, desde
+C, passando por R, Swift etc.
+Por gostar de ensinar computação desde criança, acabei por
+fundar a Caelum junto ao Paulo Silveira, em 2004. Escrevo livros
+para a Casa do Código, e hoje sou head de educação do Grupo
+Caelum, atuando principalmente na Alura e Alura Start.
+Meu primeiro contato com métodos de análise foi através de
+aulas que fiz na matemática aplicada do IME-USP. Como todo fiel
+da matemática e análise, perdi dinheiro na bolsa e errei a previsão
+de jogos de futebol. Por outro lado, a maturidade no ensino me
+trouxe a oportunidade de analisar por mais de 14 anos os dados de
+nossos cursos e alunos, tentando encontrar maneiras diferentes de
+ajudá-los.
+Bennett Bullock é um profissional com 14 anos de experiência
+no campo de aprendizagem de máquina e NLP. Ele tem
+SOBRE O AUTOR
+Guilherme Silveira
+Bennett Bullock
+
+[Page 6]
+desenvolvido tecnologias de classificação de texto, de pesquisa (na
+qual obteve uma patente), e de análise financeira para vários
+clientes no governo americano e na comunidade financeira. Ele é
+mestre em linguística árabe pela Universidade de Georgetown, e
+em bioengenharia pelo MIT.
+
+[Page 7]
+Em 1993, eu tinha doze anos quando meu pai dizia que um
+computador ajudaria muito se fosse capaz de aprender e ensinar,
+como um adulto faz. Neste livro, abordaremos o aprendizado de
+máquina, machine learning.
+Existe uma ilusão de que matemática é teórica e há uma aura
+mágica ao redor de quem a estuda, como se fosse algo meramente
+nato. Como qualquer bom jogador de futebol, estudei e pratiquei
+dia e noite, fazendo chuva ou sol.
+Mas não precisava tanto para chegar a pequenas conclusões
+matemáticas. Quando um apartamento de 2 dormitórios tem um
+preço médio de R$ 2.000 reais, e um de 3 dormitórios custa R$
+3.000 reais, não é necessário um doutorado para aprender que o
+preço do apartamento é R$ 1.000 reais vezes o número de
+dormitórios.
+Claro que, no mundo real, o preço de um apartamento é
+afetado por diversas outras variáveis; influenciam no preço desde o
+tamanho em metros quadrados, o número de banheiros, a
+localização geográfica, até as condições de manutenção de um
+edifício. Quanto cada uma influencia? Aí precisamos de contas
+mais complexas para aprender suas influências.
+No fim, são contas. Contagens como soma, multiplicação e
+potência formam a base da estatística e matemática computacional,
+que está por trás dos processos complexos capazes de modelar o
+INTRODUÇÃO
+O caminho com machine learning
+
+[Page 8]
+que acontece no mundo real. Esses processos aprendem com os
+dados que existem aí fora, mostrando para nós uma simplificação
+que nos permite adivinhar o preço justo de novos apartamentos.
+Neste livro, usaremos diversos exemplos de aprendizado de
+máquina. Veremos, como seres humanos, como distinguimos
+porcos 
+e 
+cães, 
+e 
+treinaremos 
+um 
+modelo 
+matemático
+computacional em Python para distinguir um do outro.
+Aplicando 
+esse 
+conhecimento 
+básico, 
+veremos 
+como
+categorizar outras informações importantes do mundo real de
+negócios. Sabendo qual o comportamento de usuários do meu site
+e quais compraram meu produto, serei capaz de adivinhar
+antecipadamente quais abandonarão o site sem comprar nada?
+Veremos como trabalhar com variáveis numéricas e
+categóricas, como testar e validar nossos algoritmos e decisões.
+Trabalharemos com textos longos, aprendendo a transformá-los
+em vetores que conseguimos trabalhar, além de passar por todo
+um processo de padronização e limpeza do texto antes de sua
+normalização.
+Acima de tudo, veremos os cuidados que temos de tomar ao
+tentar encontrar modelos. Não queremos viciar nossas decisões e
+acreditar encontrar relações que não existem — algo que é muito
+fácil de errar.
+Este livro foca em mostrar algoritmos e processos que
+podemos usar para responder perguntas do dia a dia baseadas em
+dados. Quanto mais dados, melhor.
+O curioso em você
+
+[Page 9]
+Não estamos preocupados aqui com buzz words, como data
+scientist ou big data. Nosso foco é conhecer alguns algoritmos,
+entender como eles podem funcionar por trás, que tipo de
+perguntas podemos fazer aos dados e como cuidar para que essas
+perguntas não nos entreguem uma mentira.
+Depois do livro, sinta-se à vontade para explorar bibliotecas em
+outras linguagens (como R), variações de análises de dados (data
+analysis) como séries temporais, classificações de longos textos ou
+sentimentos etc. Para alguém curioso(a), não existem limites para
+as perguntas. Ao término do livro, você terá algumas ferramentas
+novas para respondê-las.
+A experiência de ensino também me colocou em contato com
+pessoas da área que me lembraram de que a inteligência artificial e
+o machine learning são ferramentas para responder perguntas.
+Saber quais e quantas perguntas fazer e como interpretar as
+respostas são habilidades importantíssimas.
+Na prática, raramente um desenvolvedor implementa esses
+algoritmos a partir das contas matemáticas envolvidas neles. Mas
+veremos como funciona a base de um dos algoritmos, para
+entender que machine learning não é mágica, mas sim uma grande
+sacada. Assim como o fogo, a roda ou a caneta quatro cores, não
+existe 
+mágica 
+impossível 
+de 
+entender. 
+Se 
+estudarmos,
+aprenderemos a usar; e se desejarmos, aprenderemos como tudo
+funciona por trás dos panos.
+Matemática ou programação?
+Público-alvo e pré-requisitos
+
+[Page 10]
+Este livro é para quem já conhece programação e gostaria de
+entender e ser introduzido ao mundo de machine learning. Apesar
+de usarmos Python 3 no livro, quem vem de qualquer outra
+linguagem de programação não deve ter dificuldades em entender
+o código escrito aqui. Tentei ser o mais delicado possível ao
+introduzir conceitos e funções, mesmo quando eles são da própria
+API da linguagem.
+Para quem está começando com programação e não conhece
+Python, será um pouco mais puxado. Dê uma folheada e veja se a
+maneira como a linguagem é mostrada o deixa confortável em seus
+estudos.
+Confira qual a versão do Python instalada em sua máquina
+com  python --version . Lembre-se de instalar a versão 3 e
+utilizar o comando  python3  e  pip3 , como no livro.
+Professores que ensinam machine learning através de
+programação ou matemática poderão utilizar este livro como
+apoio para mostrar aplicações práticas e realistas desses algoritmos.
+Para acompanhar este livro, usaremos diversos arquivos. Você
+pode baixar os arquivos de dados e todo o código do livro em:
+https://github.com/guilhermesilveira/machine-
+learning/archive/master.zip
+O GitHub com todos os arquivos também pode ser acessado
+em:
+https://github.com/guilhermesilveira/machine-learning
+Os arquivos
+
+[Page 11]
+1
+39
+40
+40
+49
+50
+57
+61
+71
+80
+84
+108
+133
+135
+143
+147
+151
+Sumário
+1 Classificando e-mails, animais e muito mais
+1.1 Resumindo
+2 Importando, classificando e validando um modelo
+2.1 E no mundo real, como classificar dados da web?
+2.2 Importando, classificando e validando um modelo
+2.3 Importando os dados
+2.4 Analisando os valores adicionados
+2.5 Melhorando a leitura do código
+2.6 Acertando demasiadamente?
+2.7 Resumindo
+3 Classificação de variáveis categóricas
+3.1 Instalando o Pandas
+3.2 Resumindo
+4 O problema do sucesso e o algoritmo burro
+4.1 Implementando o algoritmo base
+4.2 Calculando a quantidade de zeros e uns com o data frame
+4.3 Lidando com sim e não
+Sumário
+Casa do Código
+
+[Page 12]
+161
+166
+172
+190
+193
+204
+232
+236
+238
+272
+274
+284
+294
+310
+311
+319
+320
+367
+369
+404
+404
+405
+4.4 Utilizando collections do Python
+4.5 Resumindo
+5 Naive bayes e maximum a posteriori por trás dos panos
+5.1 Resumindo
+6 Testando diferentes modelos e validando o vencedor
+6.1 Algoritmo AdaBoost
+6.2 Resumindo
+7 Novos conceitos de classificação
+7.1 Classificando um elemento com três categorias
+7.2 Resumindo
+8 Utilizando o k-fold
+8.1 Implementando o k-fold
+8.2 Implementando o novo fit_and_predict
+8.3 Resumindo
+9 Criando um dicionário
+9.1 Resumindo
+10 Classificando os textos e ganhando produtividade na
+empresa
+10.1 Resumindo
+11 Quebrando na pontuação adequada
+12 Conclusão
+12.1 O caminho
+12.2 Como continuar os estudos
+Casa do Código
+Sumário
+
+[Page 13]
+Sumário
+Casa do Código
+
+[Page 14]
+CAPÍTULO 1
+Neste capítulo, vamos falar de diversos problemas que
+podemos resolver com machine learning, inteligência artificial,
+aprendizagem de máquina, isto é, com algumas dessas palavras
+bonitas que estão ligadas de alguma maneira com soluções para
+resolver problemas um pouco mais difíceis no nosso dia a dia.
+Nosso propósito não é mostrar o formalismo, e por isso
+mesmo não nos apegaremos a definições muito formais. O
+objetivo é instigar a sua curiosidade de utilizar algoritmos para a
+solução de diversos tipos de problemas. Ao terminar este livro,
+você terá a liberdade de escolher seu caminho, e aí sim o
+formalismo será de extrema importância.
+Vamos dar uma olhada em que tipos de problemas podemos
+resolver, principalmente no começo deste livro?
+Recebi e-mails hoje de manhã, vários. Não sei dizer quantos e-
+mails você recebe, mas eu recebo diversos. Você provavelmente
+também recebe muitos e nem percebe, mas por que você não
+percebe? Repare em todos esses e-mails que eu recebi:
+CLASSIFICANDO E-MAILS,
+ANIMAIS E MUITO MAIS
+1 CLASSIFICANDO E-MAILS, ANIMAIS E MUITO MAIS 
+1
+
+[Page 15]
+Figura 1.1: Meus e-mails
+Tem e-mail que parece que não fui eu que pedi para receber,
+por exemplo, "Se Compran Cheques?". E-mail em espanhol? Eu
+nem sei falar espanhol. The Best Design Hotels in Paris? E-mail
+sobre Paris? Realmente, estou aprendendo francês e por isso
+assinei um site ou outro, então tudo bem. Mas e Casas Bahia? Não
+assinei e-mails da Casas Bahia, e ela mandou sem eu pedir.
+Repare que tem um monte de e-mails aqui que parece ser
+spam. A quantidade de spam que vai de um lado para o outro na
+internet hoje em dia é absurda e, de alguma maneira, alguém
+precisa classificá-los e dizer: "Este e-mail aqui é spam"!
+É preciso que alguém na internet faça isso, porque se esse
+alguém for eu, e eu tiver de olhar os 1.000 e-mails que recebo para
+dizer que, desses 1.000 e-mails, 990 são spam, a minha vida acaba!
+E eu não quero que a minha vida acabe, e você também não!
+Queremos viver alegremente com tempo para outras coisas, e
+não passar o dia inteiro classificando: "É spam. Não é spam. É
+spam. Não é spam...". Queremos que alguém faça isso por nós: "Por
+favor, diga para mim se isso aí é spam ou se não é spam". E esse
+alguém pode ser uma pessoa!
+2 
+1 CLASSIFICANDO E-MAILS, ANIMAIS E MUITO MAIS
+
+[Page 16]
+Eu posso contratar uma pessoa para dizer: "Olha, isso aqui é
+spam", "Esse aqui não é spam". Nós a pagamos para ela fazer isso o
+dia inteiro. Parece trabalhoso e complicado, porém podemos até
+ter soluções desse gênero para fazer uma classificação, faz sentido.
+Outra maneira é eu falar para um programa fazer isso para
+mim: "Programa, por favor, classifique esse meu e-mail, se ele é
+spam ou se ele não é spam". Mas um programa (um computador)
+sabe o que é um spam? Nós sabemos o que é spam, aquele e-mail
+indesejado que eu não pedi para receber e alguém me enviou. Esse
+é o significado da palavra spam. Porém, o computador não faz a
+mínima ideia do que significa essa palavra. Então, do que
+precisamos?
+Precisamos, de alguma maneira, dizer para o computador o
+que é spam e o que não é spam. Mas ele nem conhece a palavra
+spam, então como podemos fazer isso? Como é mesmo a
+linguagem que o computador conhece? Ele entende apenas 0 ou 1,
+0, 1, 2, 3, 4, 5... Binários, numéricos etc.
+Se ele só entende esses números, então pedirei para o
+computador que ele me diga que, se for spam, é 1. Se não for spam,
+ele me diz 0, e pronto! Já resolvi o problema da palavra spam, ela já
+não existe mais para o computador, pois consigo falar para ele: "E
+aí, é 0 ou é 1?". Já é bem melhor, certo?
+Já simplifiquei a situação para o computador me entender, pois
+se eu tentasse explicar para ele o que significa spam, ficaria maluco;
+mas se explicar o que é 0 ou 1, ele já sabe! Só preciso falar: "Olhe
+esse e-mail 'Facturas Impagas', ele é 1 ou é 0?". Isto é, eu preciso
+agora passar por cada um desses e-mails, olhar e falar: "Todas
+'impagas' (spam) é 1"; eu preciso ensinar o computador, treiná-lo!
+1 CLASSIFICANDO E-MAILS, ANIMAIS E MUITO MAIS 
+3
+
+[Page 18]
+Enfim, existe um monte de e-mail aqui que é spam e um monte
+que não é. Batendo o olho, já sei dizer, e eu consigo treinar o
+computador, treinar um programa, para dizer: se é spam, 1; se não
+é spam, 0. Mas como que eu o treino?
+Eu dou um conjunto de e-mails que não é spam e um conjunto
+que é, e falo para ele: "Está aí, aprenda!". Aí ele aprende da mesma
+forma como aprendemos. E o que vai acontecer? Quando chegar
+um e-mail novo, o que ele faz? Ele vai olhar esse e-mail e falar: "É
+spam". Vai olhar outro e-mail e falar: "Não é spam". E é assim que
+funciona um programa de classificação, ele classifica entre 0 ou 1.
+Ele responde qualquer pergunta do gênero que vai classificar
+alguma coisa entre 0 e 1. Mas o que quer dizer 0? O que quer dizer
+1? No meu caso, quer dizer se é spam ou não. Poderia querer dizer
+outra coisa? Com certeza!
+Podemos usar a classificação entre 0 e 1 para diversas coisas e,
+como falei, já aqui veremos a classificação de 0 e 1, e também como
+poderemos utilizar isso em diversas situações. Primeiro, foi esse
+caso do e-mail: reduzimos o problema para classificar entre 1 ou 0,
+e ensinamos essa classificação ao programa.
+Classificamos elementos entre spam e não spam, entre 1 ou 0,
+independente do que signifique 1 ou 0. Vamos ver outros
+exemplos do dia a dia em que usamos a classificação? Vou dar um
+exemplo do nosso cotidiano para que possamos entender e
+visualizar como nós, seres humanos, fazemos a classificação.
+Como eu implemento um algoritmo se eu não entendo nem
+como eu faço uma coisa? "Quero implementar um algoritmo de
+soma". Ok, como fazemos a soma? "Quero implementar um
+algoritmo de multiplicação". Certo, como eu faço a multiplicação?
+1 CLASSIFICANDO E-MAILS, ANIMAIS E MUITO MAIS 
+5
+
+[Page 19]
+Agora, quero implementar um algoritmo que diz se é spam ou não
+é spam, ou se um cliente vai comprar ou não, se um funcionário
+vai se demitir ou não, então preciso saber como eu faço isso! Isto é,
+como eu, Guilherme, classifico isso.
+Vamos pegar um exemplo do cotidiano: eu estou andando na
+rua, olho para alguma coisa, vejo e classifico-a, e então implemento
+um algoritmo similar a essa classificação. Na prática, é isso mesmo
+que fazemos. Vamos lá?
+Queremos classificar entre 1 ou 0. No meu dia a dia, quando eu
+era criança, ia à fazenda do meu tio no interior de Minas, que tinha
+diversos animais, e às vezes eu encontrava um animal como este:
+Figura 1.3: Qual animal é esse?
+Qual animal é esse? Bom, você acabou de classificar; eu
+classifico esse animal como um porco. Por quê? Olha a perna dele,
+é perna de porco, uma perninha curtinha. O que mais? Ele é meio
+gordinho, porquinho é gordinho. Ele faz "oinc, oinc", então, para
+mim, ele é um porco.
+6 
+1 CLASSIFICANDO E-MAILS, ANIMAIS E MUITO MAIS
+
+[Page 22]
+Figura 1.6: Primeiro animal
+Ele tem perna curta? Sim, então 1. Ele é gordinho e faz oinc,
+então ele é um porquinho. Assim, essa linha fica  [1,1,1,1] .
+Vejamos o próximo animal:
+Figura 1.7: Segundo animal
+1 CLASSIFICANDO E-MAILS, ANIMAIS E MUITO MAIS 
+9
+
+[Page 23]
+Esse outro porquinho também tem perna curta, mas ele não é
+gordinho, ele é um porquinho mais magrinho. Logo, coloco 0. Ele
+fazia oinc? Sim, ele fazia oinc e ele era um porquinho, então 1.
+Nossa linha fica  [1,0,1,1] . Vamos verificar o próximo:
+Figura 1.8: Terceiro animal
+Esse outro porquinho tem a perna curta, e ele é gordinho. Só
+que tem um porém: ele nasceu com um negócio na garganta, por
+isso ele não faz oinc e nem barulho, então vou marcar com 0. Mas,
+quando eu olhava para ele, eu falava: "você é um porquinho".
+Marcaremos, portanto, como porquinho. A linha fica  [1,1,0,1] .
+Vamos dar uma olhada em como está a nossa tabela atualmente:
+10 
+1 CLASSIFICANDO E-MAILS, ANIMAIS E MUITO MAIS
+
+[Page 24]
+Para cada elemento da tabela, estou pegando as características,
+ou seja, se ele tem perna curta, se é gordinho ou se faz oinc, e
+dizendo apenas se sim ou não usando 1 e 0, e no final qual é o tipo
+de animal, se é porco (1) ou cachorro (0). Ainda faltam mais três
+animais para analisarmos, vamos lá!
+Figura 1.10: Quarto animal
+Esse aqui tem perna curta? Esse cachorro não tem perna curta,
+então 0. Ele também não é gordinho e não faz oinc. Adivinha? Um
+cachorrinho, sim, porque eu olhava para ele e pensava isso. Então,
+a nossa linha fica  [0,0,0,0] . Agora o próximo animal:
+1 CLASSIFICANDO E-MAILS, ANIMAIS E MUITO MAIS 
+11
+
+[Page 25]
+Figura 1.11: Quinto animal
+Já esse outro era divertido, pois era um Yorkshire pequenino e
+tinha a perna curta, só que também era gordinho. O mais
+engraçado é que, quando ele ia fazer auau (ou seja, latir), ele fazia
+oinc oinc! Então, eu vou marcar que ele fazia oinc oinc.
+Só que repare que ele era um cachorro. Apesar de ele ter as três
+características parecidas com um porco, eu olhava para ele e falava:
+"Opa! Esse aqui é um cachorro". Então, a linha ficará com esses
+valores  [1,1,1,0] . Vamos para o último:
+12 
+1 CLASSIFICANDO E-MAILS, ANIMAIS E MUITO MAIS
+
+[Page 26]
+Figura 1.12: Sexto animal
+Esse aqui não tem perna curta, também não é gordinho e não
+faz oinc oinc. Ele é um cachorrinho mesmo. Então marcamos
+assim:  [0,0,0,0] .
+O que eu estou fazendo? Estou pegando todos os dados dos
+meus elementos, isto é, desses meus animais, e montando uma
+tabela. Veja como ela ficou:
+1 CLASSIFICANDO E-MAILS, ANIMAIS E MUITO MAIS 
+13
+
+[Page 29]
+programa toma uma decisão baseada em toda a experiência
+anterior que tivemos e em toda experiência anterior que o
+programa teve. Com todo o treino que já foi feito, ele vai olhar as
+características desse animal e vai tomar a decisão se ele é um porco
+ou um cachorro.
+Isto é, esse animal especificamente tem perna curta? Sim (1).
+Esse animal é gordinho? Sim (1). Ele faz oinc? Ele não faz oinc (0),
+já que isso aqui é uma imagem, e não um animal de verdade.
+Então, a pergunta se resume a quê? Dadas essas características,
+por favor, Guilherme e programa, me digam se o resultado é 0 ou
+1. Isso significa que eu treinei você com diversas características e
+classificações e, se eu der uma linha de característica, quero que
+você me diga se o animal é 0 ou 1, ou seja, quero que você preveja e
+classifique para mim.
+E é assim que vão funcionar os programas de classificação: nós
+treinamos por meio de características e classificações. Após treinar,
+pedimos para ele classificar coisas que nós desconhecemos, como,
+por exemplo, chegou um e-mail novo: "E aí, esse e-mail é um spam
+ou não é?", ou chegou um animal novo: "E aí, eu vou vender esse
+animal como porco ou como cachorro?".
+Resumindo, os algoritmos serão baseados em características e
+as usaremos entre 0 e 1. É claro que veremos outros tipos depois,
+mas por enquanto, para classificar se ele é ou não um animal que
+esperamos, é exatamente isso que faremos com os algoritmos.
+Vamos para o código. O que queremos aqui é implementar um
+sistema de classificação que consiga classificar alguma coisa entre 0
+e 1, -1 e 1, 1 e 2, A e B — entre duas categorias diferentes. Eu tenho
+16 
+1 CLASSIFICANDO E-MAILS, ANIMAIS E MUITO MAIS
+
+[Page 30]
+duas categorias (porco e cachorro), e quero classificá-las. Para isso,
+usaremos Python e uma biblioteca a ser instalada com o pip, o
+instalador simples de pacotes.
+O  pip3  já vem instalado com o Python 3, portanto, podemos
+instalar as bibliotecas do Python de nosso interesse para trabalhar
+com as informações científicas que queremos, como o machine
+learning e a classificação. A biblioteca que usaremos é o  scikit-
+learn . Vamos pedir para o pip instalá-la para nós.
+Aproveitaremos para instalar também duas dependências que o
+scikit  usará internamente:
+> pip3 install scikit-learn numpy scipy
+Caso você esteja usando Linux, será necessário utilizar o
+ sudo .
+Além da biblioteca do Python  scikit-learn , nós temos
+acesso 
+à 
+documentação 
+(http://scikit-
+learn.org/stable/documentation.html) para consultarmos tudo o
+que ela disponibiliza para nós.
+Agora, o que queremos fazer, a princípio, é a classificação entre
+diversos porcos e cachorros, e depois faremos do nosso mundo
+web. Vamos abrir um editor de texto para escrevermos o nosso
+código Python. Utilize um de sua preferência.
+Primeiro, vamos criar um arquivo chamado  classificao.py 
+e salvá-lo. Lembre-se de salvar o arquivo dentro de um diretório de
+fácil acesso ao terminal. Nesse arquivo, vamos definir todos os
+1 CLASSIFICANDO E-MAILS, ANIMAIS E MUITO MAIS 
+17
+
+[Page 31]
+porcos e cachorros que já conhecemos, por exemplo, nós
+queremos representar o nosso primeiro porquinho, então
+escrevemos:
+porco1
+E o que era esse porquinho? Ele era um array de 3 valores, você
+lembra? Quais são os valores? 0 ou 1, ou seja, se ele tem ou não
+uma característica. Mas, e quais são as três características que eu,
+Guilherme, decidi usar agora?
+1. Se ele é gordinho.
+2. Se ele tem perninha curta.
+3. Se ele faz auau.
+Então, vamos lá. Ele é gordinho? Sim:
+porco1 = [1]
+Ele tem perninha curta? Sim:
+porco1 = [1, 1]
+Esse porquinho faz auau? Não:
+porco1 = [1, 1, 0]
+Perceba que eu mudei, agora estou modelando o meu sistema
+de uma maneira diferente. Estamos dizendo que:
+[1, 1, 0] -> [tem perna curta, é gordinho, não faz *auau*]
+Agora eu vou colocar o meu segundo porco. Ele também é
+gordinho, tem perna curta e não faz auau:
+porco1 = [1, 1, 0]
+porco2 = [1, 1, 0]
+18 
+1 CLASSIFICANDO E-MAILS, ANIMAIS E MUITO MAIS
+
+[Page 32]
+Por fim, vou representar o meu terceiro porquinho que
+também é gordinho, tem perna curta e também não faz auau:
+porco1 = [1, 1, 0]
+porco2 = [1, 1, 0]
+porco3 = [1, 1, 0]
+Cadastrei os três porquinhos, agora eu preciso cadastrar três
+cachorros que eu já conheço. O primeiro cachorro é gordinho, tem
+perninha curta e faz auau:
+porco1 = [1, 1, 0]
+porco2 = [1, 1, 0]
+porco3 = [1, 1, 0]
+cachorro1 = [1, 1, 1]
+Os outros dois não são gordinhos, têm perninhas curtas e
+fazem auau:
+porco1 = [1, 1, 0]
+porco2 = [1, 1, 0]
+porco3 = [1, 1, 0]
+cachorro1 = [1, 1, 1]
+cachorro2 = [0, 1, 1]
+cachorro3 = [0, 1, 1]
+Esses são os seis elementos que eu, Guilherme, conheço.
+Vamos comentar a que cada uma dessas posições se refere, você
+lembra?
+# [é gordinho?, tem perninha curta?, faz auau?]
+porco1 = [1, 1, 0]
+porco2 = [1, 1, 0]
+porco3 = [1, 1, 0]
+cachorro1 = [1, 1, 1]
+cachorro2 = [0, 1, 1]
+cachorro3 = [0, 1, 1]
+Dentre esses seis elementos, já sabemos que, do primeiro ao
+terceiro, são porquinhos e que, do quarto até o sexto, são
+1 CLASSIFICANDO E-MAILS, ANIMAIS E MUITO MAIS 
+19
+
+[Page 33]
+cachorros. A grande sacada é dizer o que já sabemos que eles são,
+ou seja, dizer se eles são 1 ou 0; se são 1 ou -1; se é cachorro ou
+porco. Precisamos de todos esses elementos, e chamaremos todos
+eles de  dados :
+# [é gordinho?, tem perninha curta?, faz auau?]
+porco1 = [1, 1, 0]
+porco2 = [1, 1, 0]
+porco3 = [1, 1, 0]
+cachorro1 = [1, 1, 1]
+cachorro2 = [0, 1, 1]
+cachorro3 = [0, 1, 1]
+dados = [porco1, porco2, porco3, 
+cachorro1, cachorro2, cachorro3]
+Agora que temos os nossos dados agrupados em um array,
+precisamos fazer alguma marcação para indicar o que cada um
+desses elementos é. Usaremos uma variável chamada  marcacoes 
+para indicar o que cada um representa:
+marcacoes
+Sabemos que, do primeiro ao terceiro, são porcos, logo
+marcarei com 1.
+marcacoes = [1, 1, 1]
+E para marcar como cachorro, eu vou querer marcar com um
+outro número. Eu posso marcar com 0, -1, 10.000, com o que eu
+quiser. Para dar ênfase na distinção dos 2 elementos, ou seja, dizer
+que um é oposto do outro, eu usarei 1 positivo (1) para porco e 1
+negativo (-1) para cachorro:
+porco1 = [1, 1, 0]
+porco2 = [1, 1, 0]
+porco3 = [1, 1, 0]
+cachorro4 = [1, 1, 1]
+cachorro5 = [0, 1, 1]
+20 
+1 CLASSIFICANDO E-MAILS, ANIMAIS E MUITO MAIS
+
+[Page 34]
+cachorro6 = [0, 1, 1]
+dados = [porco1, porco2, porco3, cachorro4, cachorro5, cachorro6]
+marcacoes = [1, 1, 1, -1, -1, -1]
+Marcamos todos os nossos elementos, porém, nós temos agora
+um elemento misterioso: um animal que é gordinho, tem perninha
+curta e faz auau.
+misterioso = [1, 1, 1]
+E agora? Esse colega é um porco ou um cachorro? Esse é o
+nosso elemento misterioso. O que nós queremos saber é: "Será que
+ele é um cachorro ou um porco?". Então, queremos treinar um
+algoritmo de classificação baseado nesses dados para que ele me
+diga se é um cachorro ou é um porco. Vamos lá?
+No Python, a mais famosa biblioteca que faz esse trabalho é o
+sklearn . Claro que existem outras e outras linguagens, mas o
+foco neste livro será o Python e o  sklearn .
+Essa biblioteca faz o treinamento baseado no algoritmo que se
+chama bayesiano, chamado  naive_bayes . A partir dela, vamos
+importar o algoritmo  MultinomialNB , NB de naive bayes:
+from sklearn.naive_bayes import MultinomialNB
+O  Multinomial  é o algoritmo que usaremos para treinar o
+nosso modelo que diz se os nossos elementos são cachorros ou
+porcos. Para treinar esse modelo, nós precisamos dos nossos dados
+e nossas marcações. E como fazemos para criar um modelo? Basta
+apenas fazer uma chamada para o  MultinomialNB :
+porco1 = [1, 1, 0]
+porco2 = [1, 1, 0]
+porco3 = [1, 1, 0]
+1 CLASSIFICANDO E-MAILS, ANIMAIS E MUITO MAIS 
+21
+
+[Page 35]
+cachorro4 = [1, 1, 1]
+cachorro5 = [0, 1, 1]
+cachorro6 = [0, 1, 1]
+dados = [porco1, porco2, porco3, cachorro4, cachorro5, cachorro6]
+marcacoes = [1, 1, 1, -1, -1, -1]
+misterioso = [1, 1, 1]
+from sklearn.naive_bayes import MultinomialNB
+modelo = MultinomialNB()
+Criamos um modelo! Vamos tentar rodar o nosso código?
+Salve o arquivo, abra o terminal, vá até o diretório onde salvou o
+arquivo e execute:
+> python3 classificacao.py
+>
+Não aconteceu nada? Claro que não! Apenas criamos o
+modelo, nem o mandamos treinar. Como nós, seres humanos,
+treinamos? Olhamos para um elemento e classificamos como
+porquinho, olhamos para outro elemento e classificamos como
+cachorrinho; isto é, baseado nos dados e nas marcações, nós
+treinamos o modelo do nosso cérebro, e precisamos fazer a mesma
+coisa para o nosso modelo:
+modelo = MultinomialNB()
+modelo.treinar(dados, marcacoes)
+Porém, não existe o método  treinar , então como faremos
+isso? Observe que o nosso modelo precisa se adequar aos nossos
+dados  e  marcacoes , ou seja, os dados do  porco1  ao  porco3 
+são 1; os dados do  cachorro4  ao  cachorro6  são -1. É dessa
+maneira que precisamos adequar o nosso modelo, e para isso
+usaremos o método adequar — no inglês, o método  fit :
+22 
+1 CLASSIFICANDO E-MAILS, ANIMAIS E MUITO MAIS
+
+[Page 36]
+modelo.fit(dados, marcacoes)
+Nesse momento do código, estamos dizendo: "Por favor,
+adeque-se a essas informações". Vamos testar?
+> python3 classificacao.py
+>
+Não aconteceu nada, já que nós apenas treinamos! E o que
+precisamos é pedir para que o modelo preveja quem é o elemento
+misterioso, utilizando o método  predict :
+modelo.predict(misterioso)
+Esse método vai devolver se é um cachorro ou um porco, então
+precisamos imprimir o valor com o método  print :
+# [é gordinho?, tem perninha curta?, faz auau?]
+porco1 = [1, 1, 0]
+porco2 = [1, 1, 0]
+porco3 = [1, 1, 0]
+cachorro4 = [1, 1, 1]
+cachorro5 = [0, 1, 1]
+cachorro6 = [0, 1, 1]
+dados = [porco1, porco2, porco3, cachorro4, cachorro5, cachorro6]
+marcacoes = [1, 1, 1, -1, -1, -1]
+misterioso = [1, 1, 1]
+from sklearn.naive_bayes import MultinomialNB
+modelo = MultinomialNB()
+modelo.fit(dados, marcacoes)
+print(modelo.predict(misterioso))
+Testando novamente o nosso algoritmo:
+> python3 classificacao.py
+> /usr/local/lib/python3.6/dist-packages/sklearn/utils/validation
+.py:386: DeprecationWarning: Passing 1d arrays as data is depreca
+1 CLASSIFICANDO E-MAILS, ANIMAIS E MUITO MAIS 
+23
+
+[Page 37]
+ted in 0.17 and willraise ValueError in 0.19. Reshape your data e
+ither using X.reshape(-1, 1) if your data has a single feature or
+X.reshape(1, -1) if it contains a single sample.
+ DeprecationWarning)
+[-1]
+Ele devolveu um warning, porém ele imprimiu o resultado que
+foi um array e, dentro desse array, devolveu -1. Logo mais,
+veremos como resolver esse warning. Mas e o que significa o -1
+para ele? Significa um cachorro! Como será que ele deduziu que
+era um cachorro? Se nós olharmos a nossa experiência passada:
+# [é gordinho?, tem perninha curta?, faz auau?]
+porco1 = [1, 1, 0]
+porco2 = [1, 1, 0]
+porco3 = [1, 1, 0]
+cachorro4 = [1, 1, 1]
+cachorro5 = [0, 1, 1]
+cachorro6 = [0, 1, 1]
+dados = [porco1, porco2, porco3, cachorro4, cachorro5, cachorro6]
+marcacoes = [1, 1, 1, -1, -1, -1]
+# restante do código
+Todos que faziam auau eram cachorros. Com base nesses
+dados, fazendo uma análise pelo nosso cérebro, provavelmente
+faríamos a mesma classificação. Não sabemos o que aconteceu por
+trás dos panos, só sabemos que, quando rodamos, ele nos
+informou que o elemento misterioso é um cachorro.
+Repare que nós passamos vários dados para o nosso programa,
+o treinamos e pedimos para ele verificar um único caso, que foi o
+elemento misterioso. Mas será que nós queremos prever apenas
+um caso? Não, queremos prever muitos outros! Então precisamos
+de outros elementos misteriosos para que o programa classifique
+para nós. Por exemplo, temos o  misterioso2  que é gordinho,
+24 
+1 CLASSIFICANDO E-MAILS, ANIMAIS E MUITO MAIS
+
+[Page 38]
+não tem perninha curta e não faz auau:
+misterioso1 = [1, 1, 1]
+misterioso2 = [1, 0, 0]
+Agora, em vez de prever o  misterioso1 , pediremos para que
+ele preveja o  misterioso2 :
+print(modelo.predict(misterioso2))
+Se rodarmos novamente:
+> python3 classificacao.py
+> /usr/local/lib/python3.6/dist-packages/sklearn/utils/validation
+.py:386: DeprecationWarning: Passing 1d arrays as data is depreca
+ted in 0.17 and willraise ValueError in 0.19. Reshape your data e
+ither using X.reshape(-1, 1) if your data has a single feature or
+X.reshape(1, -1) if it contains a single sample.
+ DeprecationWarning)
+[1]
+Na interpretação dele, a maior chance que ele dá é de que esse
+misterioso2  seja um porquinho. Se observarmos o
+misterioso2 , vemos que ele é gordinho, não tem perna longa e
+não faz auau, logo também chutaria que é um porquinho! Porém
+nós não prevemos todos de uma vez só! Para isso, precisamos
+adicionar todos os misteriosos dentro de um array e atribuir a uma
+variável que vamos chamar de  teste :
+misterioso1 = [1, 1, 1]
+misterioso2 = [1, 0, 0]
+teste = [misterioso1, misterioso2]
+E então, passamos apenas o  teste  no  predict :
+print(modelo.predict(teste))
+O parâmetro do método  predict  recebe um array com vários
+1 CLASSIFICANDO E-MAILS, ANIMAIS E MUITO MAIS 
+25
+
+[Page 41]
+Mas vamos deixar -1 e 1, justamente para dar essa ênfase de
+um ser o oposto do outro no momento em que eu tenho duas
+categorias!
+Vimos um algoritmo que, dado vários números para ele,
+devolve um único número. Parece uma coisa de nerd, porém,
+perceba que é genial poder dizer se um animal é um ou outro, se
+um e-mail é spam ou não, se uma pessoa vai se comportar de uma
+maneira ou de outra, tudo de acordo com o que aconteceu no
+passado. Ou seja, de acordo com experiências anteriores, nós
+podemos classificar grupos para podermos tomar decisões.
+Isso não significa que tomaremos decisões negativas ou ruins,
+pois podemos tomar decisões positivas, por exemplo, poder dizer
+se um vídeo que está subindo para o YouTube é um vídeo legal —
+isto é, sem violência ou sem qualquer conteúdo que não pode ser
+exibido. Provavelmente, eu não terei pessoas assistindo todos os
+vídeos existentes no YouTube, eu preciso de fato de um programa
+que consiga verificar se o vídeo contém um conteúdo permitido ou
+não, para depois ter um filtro por um ser humano. Isso significa
+que o primeiro filtro precisa ser por uma máquina, para que ela
+consiga verificar todas as regras que precisam ser aplicadas para
+um vídeo novo que será publicado.
+Um outro exemplo é uma música que está sendo colocada em
+uma plataforma. Preciso verificar se ela é pirata ou não. Nós
+precisamos verificar se o usuário está praticando pirataria, e se ele
+tem os direitos para baixar o conteúdo ou não. Tudo isso significa
+que precisamos classificar baseado nas características que temos e,
+para cada caso, usaremos características diferentes.
+Mas também existe uma coisa muito importante que é comum
+28 
+1 CLASSIFICANDO E-MAILS, ANIMAIS E MUITO MAIS
+
+[Page 42]
+em todos esses algoritmos que utilizamos, como também é comum
+para nós: nem sempre temos certeza da nossa classificação.
+Vejamos um exemplo. Vamos supor que eu peguei todos os vídeos
+do YouTube, e agora vou tentar classificar todos eles verificando se
+aparece um gatinho nele ou não.
+Esse algoritmo classifica todos os vídeos que contêm um
+gatinho. E aí, precisamos parar e pensar que todo algoritmo
+contém uma margem de erro, logo, é necessário nos atentarmos a
+toda margem de erro que o nosso algoritmo pode apresentar.
+Por exemplo, ele pode classificar alguma coisa como gatinho,
+porém não era um gatinho; ou então, classificar um gatinho como
+não gatinho. Existem diversos tipos de erros que podem acontecer
+em um algoritmo de classificação, e precisamos ficar atentos aos
+erros para que possamos controlá-los. É necessário sabermos a
+nossa taxa de erro, e compreender qual é a que vamos aceitar no
+nosso algoritmo.
+Nós vamos nos atentar a essa margem de erro e aprender como
+calcular para poder dizer se esse erro está sendo bom, ou se nós
+estamos melhorando a nossa margem atual. Podemos concluir que
+todos os nossos algoritmos apresentarão erros, porém, o nosso
+papel é, a partir deles, verificar se são aceitáveis ou não.
+Por exemplo, é aceitável que a minha foto seja classificada
+como gatinho? Não existe uma regra fixa para sabermos se isso é
+aceitável ou não, pois, dependendo do ponto de vista, pode ser que
+sim ou pode ser que não. Ou seja, depende muito do contexto para
+podermos dizer se o nosso erro é aceitável ou não; se eu preciso de
+uma margem de erro menor, ou se está dentro do padrão que
+esperamos.
+1 CLASSIFICANDO E-MAILS, ANIMAIS E MUITO MAIS 
+29
+
+[Page 43]
+Vimos lá no começo do capítulo que tínhamos três porcos e
+três cachorros, cada um com suas variáveis, ou seja, suas
+características que os definiam. Por fim, as representamos como
+nossos elementos:
+porco1 = [1, 1, 0]
+porco2 = [1, 1, 0]
+porco3 = [1, 1, 0]
+cachorro4 = [1, 1, 1]
+cachorro5 = [0, 1, 1]
+cachorro6 = [0, 1, 1]
+E nós tínhamos agrupados todos esses elementos em um array
+para representar os nossos dados:
+dados = [porco1, porco2, porco3, cachorro4, cachorro5, cachorro6]
+E também fizemos as marcações para indicar quais desses
+elementos eram porcos ou cachorros, marcando com 1 para porco
+e -1 para cachorro:
+marcacoes = [1, 1, 1, -1, -1, -1]
+Então, treinamos o nosso algoritmo:
+modelo = MultinomialNB()
+modelo.fit(dados, marcacoes)
+E por fim, testamos dois elementos misteriosos:
+misterioso1 = [1, 1, 1]
+misterioso2 = [1, 0, 0]
+teste = [misterioso1, misterioso2]
+print(modelo.predict(teste))
+Mas existe um detalhe no processo que fizemos, pois não
+adianta rodarmos o nosso algoritmo e não fazermos ideia de quão
+30 
+1 CLASSIFICANDO E-MAILS, ANIMAIS E MUITO MAIS
+
+[Page 44]
+bom ele é. Quando treinamos o nosso cérebro, chegamos a ver 300,
+ou mais, porcos e cachorros na nossa vida, porém nós não temos
+certeza de que estamos bons o suficiente para distinguir entre um
+cachorro e um porco, ou então spam e não *spam, ou pessoas que
+vão me pagar e que não vão me pagar.
+E como podemos ter certeza se estamos bons ou não para fazer
+essas distinções? Precisamos testar! Sim, testar no mundo real, com
+algum valor que desconhecemos, e ver se vamos funcionar
+conforme o esperado para verificar quão bons estamos sendo com
+esse algoritmo. E como podemos testar? Podemos criar um cenário
+de teste simulando os nossos elementos reais (porcos ou
+cachorros) por elementos misteriosos:
+# [é gordinho?, tem perninha curta?, faz auau?]
+misterioso1 = [1, 1, 1]
+misterioso2 = [1, 0, 0]
+misterioso3 = [0, 0, 1]
+teste = [misterioso1, misterioso2, misterioso3]
+Agora que temos o nosso cenário de teste, podemos informar
+os resultados esperados para cada um desses elementos
+misteriosos, ou seja, as marcações de teste:
+marcacoes_teste
+Agora, precisamos classificar cada elemento misterioso e
+indicar nas nossas marcações de teste. Sabemos que o
+misterioso1  é um cachorro (-1), o  misterioso2  é um porco
+(1) e o  misterioso3  é um cachorro (-1):
+marcacoes_teste = [-1, 1, -1]
+Por fim, para ficar mais claro, vamos atribuir o retorno do
+método  predict() , que é o nosso resultado, para uma variável
+1 CLASSIFICANDO E-MAILS, ANIMAIS E MUITO MAIS 
+31
+
+[Page 45]
+chamada  resultado :
+resultado = modelo.predict(teste)
+print(resultado)
+Repare no nosso código:
+porco1 = [1, 1, 0]
+porco2 = [1, 1, 0]
+porco3 = [1, 1, 0]
+cachorro4 = [1, 1, 1]
+cachorro5 = [0, 1, 1]
+cachorro6 = [0, 1, 1]
+dados = [porco1, porco2, porco3, cachorro4, cachorro5, cachorro6]
+marcacoes = [1, 1, 1, -1, -1, -1]
+from sklearn.naive_bayes import MultinomialNB
+modelo = MultinomialNB()
+modelo.fit(dados, marcacoes)
+misterioso1 = [1, 1, 1]
+misterioso2 = [1, 0, 0]
+misterioso3 = [0, 0, 1]
+teste = [misterioso1, misterioso2, misterioso3]
+marcacoes_teste = [-1, 1, -1]
+resultado = modelo.predict(teste)
+print(resultado)
+Será que agora ele vai prever conforme as nossas marcações de
+teste? Ou seja, falar que os elementos misteriosos são: cachorro,
+porco e cachorro? Vamos testar.
+> python3 classificacao.py 
+> [-1  1 -1]
+Será que o nosso código se saiu bem? Vamos verificar os
+32 
+1 CLASSIFICANDO E-MAILS, ANIMAIS E MUITO MAIS
+
+[Page 47]
+Resumindo, para todas as possibilidades que fizemos, nos casos
+em que os valores forem iguais, o resultado será 0. Ou seja, quando
+resultar em 0, saberemos que o algoritmo acertou. Vamos testar o
+nosso código?
+> python3 classificacao.py 
+> [0 0 0]
+O resultado foi tudo 0, então acertou 100% novamente! Mas o
+ideal seria que o nosso algoritmo mostrasse o percentual em vez de
+só a diferença entre o  resultado  e a  marcacoes_teste . Então
+vamos fazer com que a diferença dessas duas variáveis seja
+retornada para uma variável chamada  diferencas :
+diferencas = resultado - marcacoes_teste
+Mas como faremos para verificar os acertos? Sabemos que
+qualquer valor igual a 0 é um acerto, isto é, qualquer valor da
+variável  diferencas  que seja 0. Isso significa que, para cada
+diferença dentro da variável  diferencas :
+for d in diferencas
+Se o valor for igual a 0:
+for d in diferencas if d == 0
+Ele retornará:
+acertos = for d in diferencas if d == 0
+Porém, nós precisamos passar isso para um array, então
+fazemos:
+acertos = [d for d in diferencas if d == 0]
+Se imprimirmos os acertos:
+34 
+1 CLASSIFICANDO E-MAILS, ANIMAIS E MUITO MAIS
+
+[Page 48]
+acertos = [d for d in diferencas if d == 0]
+print(acertos)
+O resultado será:
+> python3 classificacao.py 
+> [0, 0, 0]
+Observe que foi impresso um array com todos os 0 contidos no
+array  diferencas , todos os valores. Porém, não queremos os
+valores, precisamos saber a quantidade de elementos que existem
+nesse array. Como fazemos para retornar a quantidade de
+elementos existente de um array? Utilizamos a função  len() , que
+retorna o tamanho do array:
+len(acertos)
+E esse será o nosso total de acertos, então vamos representar
+por uma variável chamada  total_de_acertos :
+total_de_acertos = len(acertos)
+Agora vamos imprimir o  total_de_acertos :
+total_de_acertos = len(acertos)
+print(total_de_acertos)
+Se rodarmos novamente:
+> python3 classificacao.py 
+> [0, 0, 0]
+> 3
+Porém, para verificarmos a porcentagem, nós precisamos
+também do total de elementos que foram testados. Podemos
+extrair esse valor a partir do nosso array  teste , que contém
+todos os elementos que foram testados:
+teste = [misterioso1, misterioso2, misterioso3]
+1 CLASSIFICANDO E-MAILS, ANIMAIS E MUITO MAIS 
+35
+
+[Page 49]
+marcacoes_teste = [-1, 1, -1]
+resultado = modelo.predict(teste)
+diferencas = resultado - marcacoes_teste
+print(diferencas)
+acertos = [d for d in diferencas if d == 0]
+total_de_acertos = len(acertos)
+print(total_de_acertos)
+total_de_elementos = len(teste)
+print(total_de_elementos)
+Testando o nosso código:
+> [0 0 0]
+> 3
+> 3
+Agora que temos tanto o total de acertos quanto o total de
+elementos, 
+precisamos 
+apenas 
+fazer 
+a 
+divisão 
+de
+total_de_acertos  por  total_de_elementos  para extrairmos
+a nossa taxa de acerto:
+total_de_acerto / total_de_elementos
+Então, 
+atribuímos 
+para 
+uma 
+variável 
+chamada
+taxa_de_acerto  e a imprimimos:
+taxa_de_acerto = total_de_acerto / total_de_elementos
+print(taxa_de_acerto)
+Verificando o resultado:
+> python3 classificacao.py 
+> [0 0 0]
+36 
+1 CLASSIFICANDO E-MAILS, ANIMAIS E MUITO MAIS
+
+[Page 50]
+> 3
+> 3
+> 1
+Vamos melhorar a nossa impressão e retirar todas as
+impressões. 
+Primeiro, 
+imprimimos 
+o 
+nosso 
+resultado,
+print(resultado) ; depois a diferença entre o resultado e as
+marcações de teste,  print(diferenca) ; e por fim, faremos a
+impressão da taxa de acerto,  print(taxa_de_acerto) .
+Entretanto, multiplicaremos por 100.0:  taxa_de_acerto =
+100.0 * total_de_acertos / total_de_elementos , para que
+seja apresentado como percentual. Vejamos o resultado do nosso
+código final:
+porco1 = [1, 1, 0]
+porco2 = [1, 1, 0]
+porco3 = [1, 1, 0]
+cachorro4 = [1, 1, 1]
+cachorro5 = [0, 1, 1]
+cachorro6 = [0, 1, 1]
+dados = [porco1, porco2, porco3, cachorro4, cachorro5, cachorro6]
+marcacoes = [1, 1, 1, -1, -1, -1]
+from sklearn.naive_bayes import MultinomialNB
+modelo = MultinomialNB()
+modelo.fit(dados, marcacoes)
+misterioso1 = [1, 1, 1]
+misterioso2 = [1, 0, 0]
+misterioso3 = [0, 0, 1]
+teste = [misterioso1, misterioso2, misterioso3]
+marcacoes_teste = [-1, 1, -1]
+resultado = modelo.predict(teste)
+1 CLASSIFICANDO E-MAILS, ANIMAIS E MUITO MAIS 
+37

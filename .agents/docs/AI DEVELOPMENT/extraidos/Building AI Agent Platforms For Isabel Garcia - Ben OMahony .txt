@@ -1,0 +1,1057 @@
+<!-- OEBPS/ch01.html -->
+# Capítulo 1. Aplicações de IA e seu ciclo de vida
+
+# Nota para leitores da versão antecipada
+
+Com os ebooks de Acesso Antecipado, você obtém os livros em sua forma inicial — o conteúdo bruto e não editado dos autores enquanto escrevem — para que possa aproveitar essas tecnologias muito antes do lançamento oficial desses títulos.
+
+Este será o primeiro capítulo do livro final. Observe que o repositório do GitHub será ativado posteriormente.
+
+Se você deseja participar ativamente da revisão e dos comentários sobre esta versão preliminar, entre em contato com o editor pelo endereço arufino@oreilly.com.
+
+> “A questão de saber se as máquinas podem pensar (...) é tão relevante quanto a questão de saber se os submarinos podem nadar.” Edsger Dijkstra
+
+O lançamento do ChatGPT em novembro de 2022 mudou fundamentalmente a indústria de software. Ele não apenas catalisou o uso de aplicações de Inteligência Artificial Generativa (GenAI) e assistentes de codificação baseados em IA para o desenvolvimento de software, como também acelerou drasticamente o desenvolvimento de "aplicações de IA".
+
+Embora o desenvolvimento de software com modelos de aprendizado de máquina não seja novidade, a ampla disponibilidade do ChatGPT representou um passo revolucionário. Ele possibilitou a criação de aplicações inimagináveis para muitos desenvolvedores há poucos anos e reduziu significativamente as barreiras de entrada, tornando o desenvolvimento de aplicações de IA mais acessível do que nunca.
+
+Isso desencadeou uma verdadeira corrida do ouro, com startups e grandes corporações disputando a criação de novos aplicativos. O ritmo da inovação é impressionante, com um novo Modelo de Linguagem Ampla (LLM, na sigla em inglês), framework, biblioteca ou prática de desenvolvimento sendo anunciado quase semanalmente.
+
+Embora possa parecer que você está em território desconhecido, muitas das melhores práticas da engenharia de software tradicional ainda são relevantes. Muita gente está reinventando a roda desnecessariamente.
+
+Uma plataforma eficaz para aplicações de IA elimina o hype, permitindo que sua organização não apenas crie aplicações de IA rapidamente, mas também com alta qualidade. Para entender as funcionalidades essenciais de tal plataforma, vamos primeiro analisar o que são aplicações de IA e identificar os desafios específicos durante seu desenvolvimento.
+
+Este capítulo começa definindo aplicações de IA, casos de uso em que são aplicadas e padrões de arquitetura típicos que seguem. Em seguida, compara o ciclo de vida da aplicação com o de uma aplicação de software tradicional. Explica como a disciplina de Engenharia de IA pode ser vista como a continuação dos princípios de DevOps. Finalmente, destaca as principais semelhanças e diferenças em relação ao software e descreve como os desafios específicos da Engenharia de IA são melhor abordados, contrastando-os com antipadrões comuns.
+
+# O que é uma aplicação de IA?
+
+Em sua essência, uma aplicação de IA é qualquer aplicativo de software que fornece funcionalidades baseadas em modelos de inteligência artificial. Isso significa que o desenvolvimento de aplicações de IA é uma atividade multifuncional, que exige a colaboração de desenvolvedores, cientistas de dados e especialistas da área.
+
+O termo IA (Inteligência Artificial) abrange uma ampla gama de tecnologias, desde sistemas simples baseados em regras até redes neurais complexas. Embora academicamente incorreto, com as inovações recentes e o domínio da IA Generativa no campo do aprendizado de máquina, o termo é frequentemente usado como sinônimo de IA Generativa. Este livro também seguirá essa convenção. Sempre que aplicações de IA forem mencionadas neste livro, elas se referirão a aplicações construídas com modelos generativos.
+
+Modelos generativos são um tipo específico de modelo de Aprendizado de Máquina (ML) capaz de gerar novo conteúdo, seja texto, imagens, áudio ou vídeo. Aplicações de IA agregam valor ao explorar essas capacidades generativas na implementação de suas funcionalidades. Essas aplicações diferem significativamente daquelas que se integram a modelos de aprendizado de máquina mais tradicionais, como algoritmos de detecção de fraudes ou sistemas de recomendação. Isso se deve principalmente à variedade de entradas e saídas potenciais. Os exemplos anteriores produziriam um resultado Verdadeiro ou Falso e, talvez, uma pontuação de confiança, enquanto um modelo generativo poderia gerar qualquer texto imaginável. Isso acarreta desafios diferentes e, portanto, exige estratégias específicas para lidar com eles.
+
+É importante esclarecer também que não estamos nos referindo a aplicativos que foram simplesmente construídos com a ajuda de assistentes de codificação com IA. No entanto, esses assistentes de codificação são, na verdade, aplicativos de IA em si 1.
+
+Uma aplicação de IA utiliza fundamentalmente as capacidades da IA generativa para fornecer funcionalidades voltadas para o usuário, podendo variar desde um simples script ou chatbot até geradores de imagens e sistemas assistentes complexos. É importante ressaltar que o processo que utiliza a IA generativa não precisa necessariamente ser exposto ao usuário final para que uma aplicação seja considerada uma aplicação de IA (embora talvez não seja aconselhável anunciá-la como tal, a menos que a IA seja relativamente óbvia).
+
+## Modelos Fundamentais
+
+No contexto das aplicações de IA discutidas neste livro, um termo mais amplamente utilizado para modelos generativos é frequentemente "modelos de fundação". É importante notar que, embora muitos modelos generativos de grande porte sejam modelos de fundação, este último termo é mais abrangente, englobando qualquer modelo grande e pré-treinado, projetado para adaptação a uma ampla gama de tarefas.
+
+Diferentemente dos modelos tradicionais de aprendizado de máquina, que são treinados e otimizados para uma única tarefa específica, os modelos fundamentais são modelos de propósito geral. Isso significa que eles podem ser aplicados a uma ampla variedade de contextos sem a necessidade de serem retreinados, o que os torna o bloco de construção "fundamental" para aplicações de IA.
+
+Embora os Modelos de Linguagem de Grande Porte (LLMs, na sigla em inglês) sejam o exemplo mais conhecido, os modelos fundamentais não se limitam apenas a texto. Eles podem ser multimodais, ou seja, podem compreender e gerar conteúdo em diferentes tipos de dados, como texto, imagens, áudio e vídeo.
+
+## Modelos de linguagem de grande porte
+
+Como os Modelos de Aprendizagem Baseada em Linguagem (LLMs) são o exemplo mais proeminente de modelos de base, esta seção os analisa mais detalhadamente. Eles se concentram exclusivamente em texto, sendo, portanto, mais fáceis de compreender do que os modelos multimodais mais complexos. Ao mesmo tempo, outros modelos multimodais funcionam de maneira semelhante.
+
+É justo admitir que "mais fácil" é um termo relativo aqui. Dado que os modelos de IA estão na vanguarda da pesquisa moderna em aprendizado de máquina, este livro não fornecerá uma explicação aprofundada de como os LLMs funcionam.
+
+No entanto, como elas formam os alicerces fundamentais das aplicações de IA, é importante obter uma compreensão básica de seus mecanismos essenciais. Isso ajudará a desenvolver uma compreensão intuitiva de suas características, que definem os desafios específicos que precisam ser abordados durante o desenvolvimento de aplicações de IA.
+
+Em sua essência, um LLM é um mecanismo probabilístico de preenchimento de texto. Ele recebe um texto de entrada (instrução) e prevê o preenchimento do texto fornecido usando uma abordagem probabilística.
+
+###### Aviso
+
+A maioria das APIs (Interfaces de Programação de Aplicativos) de IA são cobradas por token, por isso é fundamental entender como elas funcionam!
+
+Provavelmente basta saber que palavras ≠ tokens e, na verdade, o número de tokens costuma ser muito maior.
+
+Para uma análise aprofundada do tema e para ver como isso funciona na prática, assista ao vídeo de Andrej Karpathy no YouTube: Let's build the GPT Tokenizer.
+
+Em vez de usar palavras, os LLMs operam com tokens.
+
+A forma original de codificar texto era usar um vocabulário fixo de caracteres. No entanto, isso acabou sendo muito ineficiente, exigindo uma previsão completa para cada caractere. Isso levou à codificação do texto em um vocabulário fixo de tokens, como ilustrado na Figura 1-1. Essa unidade básica de um LLM pode ser uma string de qualquer comprimento, mas geralmente é um caractere, uma palavra ou parte de uma palavra. Esses tokens ajudam a decompor as palavras em partes mais significativas, por exemplo, "cozinhar" em "cozinhar" e "ndo", com ambas as partes representando um determinado significado.
+
+A codificação consiste em associar esses tokens de texto a um identificador único; um algoritmo comumente usado para isso é a Codificação de Pares de Bytes (BPE). No BPE, um modelo de codificação é treinado em um grande conjunto de textos e aprende a associar tokens da maneira mais eficiente. Isso permite que o modelo de lógica latente (LLM) preveja o próximo token na sequência com mais eficiência e também permite que o modelo seja mais compacto.
+
+###### Figura 1-1. Exemplo de tokenização usando o Tiktokenizer
+
+Atualmente, a maioria dos LLMs segue internamente a arquitetura Transformer introduzida em "Attention Is All You Need" (Vaswani et al., 2017). Essa arquitetura introduz um mecanismo de atenção que permite que um LLM considere não apenas a última palavra, mas basicamente toda a entrada para a saída prevista.
+
+Os LLMs implementam diferentes estratégias de decodificação para selecionar o próximo token. Muitas das estratégias comumente aplicadas não são puramente determinísticas. Frequentemente, há um elemento aleatório que ajuda a decidir a continuação da saída. Isso torna o processo não determinístico, ou seja, o modelo nem sempre produz a mesma saída para um determinado estímulo.
+
+Embora intuitivamente isso possa parecer desnecessariamente complexo, na verdade é essencial para tornar os Modelos de Aprendizagem Baseados em Lógica (LLMs) poderosos e adaptáveis. Por exemplo, você pode tentar novamente se não estiver satisfeito com o resultado. Provavelmente algo que todos já fizeram ao usar a interface do usuário do ChatGPT ou aplicativos semelhantes.
+
+Mais importante ainda é que isso torna os mestrados em Direito "criativos". Isso significa que um mestrado em Direito gera resultados que soam inovadores ou surpreendentes, o que é muito valioso.
+
+Para uma compreensão intuitiva desse conceito, considere a seguinte entrada: "A refeição estava absolutamente…". Uma continuação altamente provável seria algo como "…deliciosa", mas, ao não escolher a continuação mais provável, o modelo poderia responder com "…uma sinfonia de sabores onde o manjericão tocava violoncelo".
+
+Essa criatividade tem um lado negativo. Pode levar a mais inconsistências (um modelo fornece respostas contraditórias) e alucinações (um modelo fornece respostas sem fundamento em fatos). Portanto, o desenvolvimento de aplicações de IA envolve, em grande parte, o gerenciamento e o controle desses efeitos colaterais negativos. E, com isso, é essencial que uma plataforma de agentes de IA forneça as ferramentas adequadas para lidar com esses desafios.
+
+Embora o LLM ser apenas um mecanismo de autocompletar possa parecer simples, a geração de texto é, na verdade, uma capacidade extremamente poderosa. Essa capacidade já possibilita muitos outros casos de uso, como tradução, sumarização ou geração de código. Isso porque essas tarefas podem ser reformuladas como um desafio de autocompletar. Por exemplo, a pergunta "Em Python, um programa 'Olá, mundo' se parece com…" pode ser completada com a saída `print('Olá, mundo')`, o que, na prática, gera código.
+
+# Casos de uso de aplicações de IA
+
+Embora o ritmo de desenvolvimento de modelos continue a aumentar, juntamente com suas capacidades, o número de casos de uso para aplicações de IA está crescendo, mas ficando para trás. Muitas empresas investiram pesado em IA sem o foco profundo necessário nos casos de uso para impulsionar a adoção. Portanto, mudar o foco para a identificação e priorização de casos de uso que impulsionem a adoção é um imperativo estratégico vital.
+
+## Codificação
+
+Um dos casos de uso inovadores do GenAI é a assistência à codificação. A codificação possui diversos elementos que a tornam um excelente caso de uso para IA. Primeiramente, trata-se de um processo muito caro, porém valioso; isso significa que quaisquer melhorias terão um impacto significativo nos resultados financeiros da organização. Em segundo lugar, existem muitas maneiras de validar a baixa qualidade dos resultados da IA, desde verificações funcionais básicas (como se o código executa ou compila) até uma infinidade de ferramentas e métricas avançadas de qualidade de código. Por fim, há um humano motivado envolvido para garantir a qualidade do resultado e fornecer feedback sobre o trabalho da IA, seja direta ou indiretamente.
+
+###### Observação
+
+Esses são os critérios essenciais que impulsionam a adoção da GenAI: valor agregado, qualidade fácil de validar e um humano motivado envolvido no processo.
+
+O melhor exemplo desse caso de uso é o preenchimento automático com inteligência artificial.
+
+Essa ferramenta se tornou incrivelmente popular entre os desenvolvedores, permitindo que escrevam código mais rapidamente. Sempre que a geração de um trecho de código não for satisfatória, o desenvolvedor pode simplesmente continuar digitando e a IA continuará gerando um novo trecho. Assim que um trecho aceitável for gerado, o desenvolvedor pode aceitá-lo com uma simples tecla Tab ou '<C-y>'. Essa aceitação do trecho de código gerado é um excelente sinal de que a IA está produzindo um resultado de alta qualidade.
+
+Indo além do preenchimento automático, muitas startups criaram Ambientes de Desenvolvimento Integrado (IDEs) com inteligência artificial. A propriedade de toda a aplicação IDE permite muito mais personalização e controle sobre a criação de plugins para IDEs existentes. Na prática, isso resultou em diversas ramificações do Visual Studio Code, com a criação de várias empresas extremamente valiosas.
+
+Ainda em busca de maior eficiência, a próxima categoria criada foi a de Agentes de Codificação Autônomos (Vibe Coding). A ideia era que você nem precisasse ver o código; bastava descrever a tarefa e a IA faria o resto. Essa abordagem apresenta vantagens reais e certamente continuará a evoluir. De modo geral, é excelente construir provas de conceito (POCs) e desenvolver ideias dessa forma. No entanto, esses agentes contrariam completamente a ideia de pequenas alterações focadas no código, exigindo, portanto, um enorme esforço para garantir a qualidade em produção. Ironicamente, parece que as boas práticas de qualidade e documentação, discutidas há décadas, são também os fatores que preveem o sucesso desses agentes. Talvez finalmente seja possível dedicar tempo da equipe de engenharia para corrigir esses problemas? De qualquer forma, essa é uma área para acompanhar de perto no futuro.
+
+Os capítulos posteriores fornecem detalhes muito mais específicos sobre as particularidades desses Agentes e como eles podem ser usados para construir e manter a plataforma.
+
+## Produção de imagem e vídeo
+
+A geração de conteúdo foi um dos primeiros casos de uso para aplicações de IA generativa de imagem/vídeo. Embora essas aplicações frequentemente tenham enfrentado dificuldades para manter a consistência do contexto em vídeos longos, esse problema está sendo solucionado pelos laboratórios de ponta. Grande parte do conteúdo consumido online atualmente foi, pelo menos em parte, gerado por IA.
+
+A moderação de conteúdo é o complemento perfeito para a geração de conteúdo. Ser capaz de detectar e remover conteúdo inadequado é um desafio fundamental para a geração de conteúdo. Usar IA generativa para moderar conteúdo é uma nova ferramenta interessante.
+
+A criação de clipes é um pouco mais simples do que a geração de conteúdo completo. Com o crescimento do TikTok e de outras plataformas de vídeos curtos, o conteúdo de formato curto está em ascensão. Reutilizar conteúdo existente é uma estratégia fundamental para criadores de conteúdo. Facilitar esse processo de forma rápida e prática é claramente um mercado lucrativo, e a qualidade pode ser facilmente avaliada com base no gosto do criador de conteúdo ou simplesmente nas visualizações que o conteúdo recebe.
+
+## Escrita
+
+A escrita é um campo gigantesco com uma ampla gama de nichos e subáreas. É claro que os mestrados em Direito (LLMs) são aplicáveis aqui, dada a sua ênfase em texto e linguagem. No entanto, devido à dimensão do campo, não existe um padrão universal de qualidade na escrita. Cada área tem seus próprios desafios e requisitos específicos, e os diferentes estilos de conteúdo para essas áreas terão suas próprias preferências e peculiaridades.
+
+Um dos primeiros casos de uso para aplicações de IA foi a sumarização. Condensar grandes quantidades de texto em um resumo mais curto é muito útil e pode economizar muito tempo e esforço. Como antes, há um humano motivado envolvido no processo que pode verificar os fatos para garantir a precisão do resumo. Houve uma enorme proliferação de ferramentas de sumarização nos últimos anos, e o campo continua crescendo.
+
+A redação técnica está intimamente relacionada à programação, onde existem muitas regras rígidas que podem ser aplicadas para garantir a qualidade. Isso pode variar desde o uso de um guia de estilo específico, até o uso de um vocabulário específico, passando pelo fato de que o conteúdo deve ser estruturado de uma determinada maneira. Quando se adicionam leis e regulamentações, o cenário se torna muito complexo, mas é possível obter feedback sobre o qual certamente é possível.
+
+A escrita criativa é um campo muito mais amplo e definido. Ainda assim, existem estruturas narrativas que podem ser aplicadas a ela. Certamente há alguns casos de uso, mas provavelmente não se aplicam ao público-alvo deste livro.
+
+## Transcrição e Tradução
+
+Considerando o componente linguístico dos LLMs (Aprendizados de Máquina de Linguagem), é fácil perceber como eles podem ser usados para transcrever e traduzir áudio e vídeo. Essa já era uma área de pesquisa em aprendizado de máquina, e, portanto, existem muitos conjuntos de dados e ferramentas excelentes disponíveis para auxiliar nesse processo.
+
+Quase todos os aplicativos de videoconferência incluem algum tipo de ferramenta de resumo de reuniões. Aliás, hoje em dia, em 2026, é raro ver alguém fazendo anotações em reuniões em empresas de tecnologia. Isso representou um enorme aumento de produtividade para muitas pessoas.
+
+A tradução é outra área em que os modelos de linguagem natural (LLMs) tiveram um grande impacto. A complexidade da tradução torna as traduções perfeitas um desafio, se é que existem. No entanto, os LLMs tornaram a tradução automática muito mais fácil e acessível a um número muito maior de pessoas. Ainda assim, os usuários seriam melhor atendidos utilizando modelos de tradução específicos e, idealmente, incorporando a validação de um falante nativo para garantir a qualidade.
+
+## Educação
+
+O GenAI é excelente para aprendizado usando métodos socráticos. Você pode fazer perguntas e obter respostas do modelo. A possibilidade de fazer perguntas adicionais e aprofundar o assunto permite uma experiência de aprendizado altamente personalizável. Além disso, não há risco algum de constrangimento por fazer perguntas consideradas "bobas". Isso levou ao desenvolvimento de tutores de IA em diversas áreas.
+
+Há muita pesquisa sobre o uso da Inteligência Artificial Geral (IAG) na educação. Sem um especialista para orientar o processo de aprendizagem, é muito fácil se perder em detalhes irrelevantes. No entanto, combinada com muitos outros métodos de aprendizagem, essa pode ser uma ferramenta muito poderosa.
+
+## Agregação de informações
+
+O recurso de bate-papo com documentos foi um dos primeiros casos de uso do GenAI. A capacidade de fazer upload de vários documentos e interagir com eles é uma funcionalidade muito poderosa. Além disso, foi relativamente fácil criar provas de conceito (POCs) simples para essa funcionalidade. Atualmente, ela chegou ao espaço de busca corporativa, com todos os desafios inerentes a essa área.
+
+A pesquisa profunda parece ser um caso de uso promissor para a Inteligência Artificial Geral (GenAI). Os computadores conseguem ler e escrever significativamente mais rápido do que os humanos. Isso permite a agregação de enormes quantidades de dados não estruturados para responder a perguntas de pesquisa. Essa capacidade tem se mostrado incrivelmente útil e valiosa na prática.
+
+## Organização de dados
+
+A estruturação de dados não estruturados é uma área em que as aplicações de IA se destacam. Há inúmeros exemplos, incluindo um agente capaz de extrair dados de contratos internos para a equipe jurídica, o que reduziria drasticamente o esforço manual.
+
+Utilizar uma aplicação de IA para compreender verdadeiramente o domínio de negócios e criar uma ontologia dos dados é uma capacidade muito poderosa. Usar essa ontologia como uma camada semântica para os dados da organização pode desbloquear uma análise muito mais detalhada. O desenvolvimento dessa capacidade ainda está relativamente em fase inicial, mas certamente é algo que merece ser explorado mais a fundo.
+
+## Automação de fluxo de trabalho
+
+É aqui que muitas empresas têm concentrado seus esforços, na esperança de automatizar seus fluxos de trabalho e colher os ganhos de eficiência. Assim como na Automação Robótica de Processos (RPA), a pior coisa a automatizar é algo que nunca deveria ter existido. As empresas devem começar mapeando processos e fluxos de valor e, em seguida, construir os fluxos de trabalho que impulsionarão esse valor. Ir direto para a automação completa costuma ser um erro, mas envolver a empresa na construção conjunta de ferramentas e fluxos de trabalho é uma ótima maneira de começar.
+
+A automatização do suporte ao cliente foi um dos primeiros casos de uso da GenAI. Apesar de ser um processo muito caro e valioso, não era fácil validar resultados de IA de baixa qualidade. O suporte ao cliente é um processo muito complexo e geralmente já recebeu muita atenção em termos de otimização e automação, portanto, não há muitas oportunidades fáceis de aproveitar. Os agentes de IA podem ser muito eficazes em grande parte do suporte ao cliente, mas muitos dos casos de sucesso emblemáticos já foram desmentidos.
+
+Haverá muitos outros casos de uso como esses no futuro e, com a vantagem da experiência adquirida com IA, eles têm uma probabilidade de sucesso muito maior.
+
+# Padrões comuns de aplicação de IA
+
+Após termos discutido os modelos fundamentais, os blocos de construção básicos das aplicações de IA, vejamos como eles são integrados às aplicações por meio de padrões comuns.
+
+## Interfaces de bate-papo LLM
+
+Os LLMs são mecanismos de autocompletar texto; você fornece um trecho de texto e eles o completam. Para humanos, essa não é uma interação muito intuitiva. Um usuário humano teria que formular uma pergunta como "Qual é a sua comida favorita?" no início de um texto, como "Minha comida favorita é…".
+
+O avanço inicial na acessibilidade do usuário, que também contribuiu para a popularidade inicial do ChatGPT, foi abstrair essa funcionalidade por trás de uma interface de bate-papo familiar (Figura 1-2). Essa camada adicional de abstração permite uma experiência mais natural e conversacional, convertendo a solicitação do usuário em um formato que o LLM possa interpretar.
+
+###### Figura 1-2. Interface do usuário do ChatGPT
+
+Em sua forma mais simples, seria algo como o seguinte:
+    
+    
+    System Message: You are a helpful assistant
+    User: What do you recommend I have to eat?
+    Assistant: ...
+
+Ao preencher este campo de texto, o assistente de linguagem fornece a resposta automaticamente. Atualmente, em muitos casos, isso não precisa mais ser feito manualmente. A maioria dos principais fornecedores de assistentes de linguagem (por exemplo, OpenAI, Anthropic e Google) oferece um endpoint de chat dedicado que, em segundo plano, formata as mensagens individuais em um histórico de bate-papo estruturado.
+
+Em vez de simplesmente concatenar o texto, essas APIs usam tokens especiais baseados em funções para sinalizar a origem de cada trecho de texto — seja do sistema, do usuário ou do assistente. Durante o processo de ajuste fino de instruções 6, o LLM aprende sobre esses tokens especiais e, portanto, a probabilidade de o LLM aderir ao formato esperado aumenta.
+
+Em vez de apenas enviar a mensagem mais recente do usuário para o LLM, é prática comum enviar todo o histórico da conversa para o endpoint. Essa técnica permite que o LLM tenha conhecimento da conversa e se lembre dos tópicos de conversa em andamento. Naturalmente, existe um limite. Há uma quantidade máxima de texto (tokens) que um LLM pode processar, chamada de limite da janela de contexto. Assim que o histórico da conversa excede esse limite, as mensagens antigas precisam ser descartadas ou a conversa precisa ser resumida.
+
+Como existem muitos fornecedores de LLM ou soluções de código aberto que oferecem essas interfaces de chat prontas para uso, geralmente há pouco valor em construir um aplicativo de IA dedicado que apenas encapsule as interações básicas do LLM com uma interface de chat. No entanto, as interfaces de chat ainda são um padrão importante, pois se tornaram um padrão de interação comum também usado em aplicativos de IA mais complexos.
+
+## Aplicações de Geração Aumentada de Recuperação
+
+Os modelos de aprendizado de máquina (LLMs) são limitados ao conhecimento que adquiriram durante o treinamento. Esse conhecimento geral geralmente não contém o conhecimento necessário para um domínio ou problema específico em que a aplicação de IA está operando. Considere que você deseja criar um aplicativo que possa interagir com um sistema interno; nesse caso, a documentação desse sistema normalmente contém conhecimento específico do domínio, que provavelmente não estava incluído nos dados de treinamento do LLM.
+
+A Geração Aumentada por Recuperação (RAG, na sigla em inglês) é uma técnica que aproveita a obtenção de conhecimento específico em tempo de execução e o fornece como entrada adicional para o Modelo de Aprendizagem de Linguagem (LLM, na sigla em inglês). Ao fornecer esse conhecimento adicional, a RAG é uma técnica comum para reduzir alucinações e superar os limites de treinamento. Ela foi introduzida pela primeira vez por Meta no artigo de 2020 intitulado "Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks" (Geração Aumentada por Recuperação para Tarefas de PNL com Uso Intensivo de Conhecimento).
+
+Como o nome indica, o RAG funciona em três etapas (Figura 1-3). A primeira etapa de recuperação recebe a entrada do usuário e recupera informações adicionais. Em seguida, a entrada inicial do usuário é aumentada com as informações recuperadas, que são então inseridas em um LLM que gera a resposta final considerando as informações adicionais fornecidas.
+
+###### Figura 1-3. Padrão de arquitetura de Geração Aumentada de Recuperação (RAG)
+
+A fonte de informação dentro do RAG é frequentemente referida como a base de conhecimento. Em sua forma mais simples, a base de conhecimento é apenas um banco de dados. No entanto, como o RAG pode ser combinado com todas as técnicas possíveis de recuperação de informação, ele é um padrão extremamente poderoso que existe em muitas variações.
+
+Na prática, é mais comumente usado com bancos de dados vetoriais, que o Capítulo 5 aborda com mais detalhes. Isso ocorre porque há uma sinergia interessante entre o funcionamento dos modelos de base e dos bancos de dados vetoriais. Ambos transformam texto em tokens (usando os chamados modelos de incorporação), que podem então ser armazenados como vetores.
+
+Armazenar esses vetores em um banco de dados permite consultar vetores semelhantes. Diferentemente de uma busca por palavras-chave, essa busca não se baseia em correspondências exatas de strings. Em vez disso, devido às características dos tokens, permite encontrar entradas semanticamente similares. Por exemplo, uma busca por "carro" pode retornar também entradas que contenham "automóvel" ou "veículo".
+
+Atualmente, existem muitas soluções prontas para uso (ou de baixo código) que criam internamente aplicações RAG com interfaces altamente abstratas. Soluções como o Knowledge da OpenAI ou as bases de conhecimento do AWS Bedrock permitem o carregamento de informações adicionais, por exemplo, em formato PDF, e abstraem a complexidade de armazenar e recuperar os dados.
+
+Essas soluções prontas para uso provam ser valiosas para chatbots simples de perguntas e respostas. No entanto, quando os dados do domínio vão além de simples dados tabulares e exigem uma compreensão e modelagem de dados mais complexas, essas soluções rapidamente atingem seus limites. Além disso, o RAG é um padrão fundamental que é usado em variações em aplicações de IA mais complexas. Essas variações geralmente recebem nomes próprios, como RAG Agente, RAG Multimodal, RAG Adaptativo ou RAG Especulativo, para citar apenas alguns.
+
+## Agentes de IA
+
+Atualmente, os agentes de IA são vistos como a fronteira mais promissora no desenvolvimento de aplicações de IA. Embora alguns entusiastas da IA possam exagerar seu potencial imediato para substituir completamente o trabalho humano, eles são, de fato, uma tecnologia poderosa. Permitem automatizar tarefas complexas e de final aberto que antes eram difíceis de automatizar com eficiência.
+
+O conceito fundamental de um agente de IA, conforme estabelecido por Stuart Russell e Peter Norvig em Inteligência Artificial: Uma Abordagem Moderna (Prentice Hall, 1995), é definido como qualquer coisa que perceba seu ambiente e aja sobre ele por meio de atuadores.
+
+Do ponto de vista da engenharia de software, isso pode ser reformulado para significar que um agente de IA é uma aplicação capaz de tomar decisões de forma autônoma. É importante destacar que suas decisões não se baseiam em uma condição simples e definida. Em vez disso, o agente interpreta informações complexas, muitas vezes não estruturadas, geralmente com o auxílio de um LLM (Linguagem de Aprendizado de Máquina). Em outras palavras, um agente pode definir seu próprio fluxo de controle em tempo de execução, analisando suas entradas (ambiente) e decidindo autonomamente quais funções específicas ou ferramentas externas (atuadores) invocar para atingir um determinado objetivo.
+
+Um agente muito simples, projetado para processar e-mails recebidos, poderia ter a seguinte aparência:
+
+##### Exemplo 1-1. Um agente de IA simples para processamento de e-mails
+    
+    
+    def process(email):
+        prompt = f"""
+        Consider this email:
+        {email}
+        should it be ‘marked as spam‘, ‘marked as important‘
+          or left alone?"
+        """
+        response = send_to_llm(prompt)
+    
+        if "marked as spam" in response.lower():
+            mark_as_spam(email)
+        elif "marked as important" in response.lower():
+            mark_as_important(email)
+
+É verdade que este exemplo básico não exigiria estritamente um mestrado em Direito (LLM).
+
+Isso poderia ser facilmente implementado usando um modelo tradicional de classificação de aprendizado de máquina ou até mesmo com base em uma simples filtragem de palavras-chave. No entanto, ilustra muito bem a mecânica interna da autonomia do agente.
+
+Os agentes de IA tornam-se especialmente poderosos quando a tarefa envolve fluxos de controle complexos. Isso inclui, por exemplo, tarefas que exigem a conclusão de múltiplas ações sequenciais ou processos iterativos (loops) que requerem a análise dos resultados intermediários antes de decidir o próximo passo. O uso de LLMs para a tomada dessas decisões torna-se particularmente valioso quando não é tecnicamente (ou economicamente) viável implementar o fluxo de controle dinâmico necessário com abordagens de software tradicionais e fixas.
+
+As ações específicas que um agente pode invocar são amplamente chamadas de ferramentas. Elas representam funções de software (parametrizadas) que um agente pode chamar autonomamente. Por exemplo, no Exemplo 1-1, as ferramentas disponíveis para o agente eram `mark_as_spam` e `mark_as_important`. Dada a importância das ferramentas em aplicações modernas de IA, a maioria dos provedores de LLM incorporou a definição e a chamada nativas de ferramentas diretamente em suas APIs. Além disso, isso geralmente envolve representá-las com tokens específicos ou saída estruturada durante o pós-treinamento, o que, na prática, eliminou a necessidade de correspondência de strings propensa a erros (como no exemplo simples).
+
+Além disso, a necessidade de escrever lógica personalizada para conectar o LLM com funções de software (ferramentas) diminuiu significativamente. Atualmente, existem muitas bibliotecas e frameworks de software disponíveis publicamente que gerenciam essa lógica de integração. Eles oferecem abstrações amigáveis para definir ferramentas e automatizar completamente o processo de chamada de ferramentas. Embora muitos fornecedores de LLM ofereçam frameworks específicos (por exemplo, o SDK de Agentes da OpenAI ou o SDK de Agentes do Google), um número crescente de soluções poderosas de código aberto e independentes de fornecedores também está disponível, incluindo LangGraph, Pydantic AI e CrewAI.
+
+Para demonstrar como a necessidade de código de integração manual é eliminada, nosso Exemplo 1-1 anterior poderia ser reescrito usando Pydantic AI da seguinte forma:
+
+##### Exemplo 1-2. Um agente de IA simples para processamento de e-mails com Pydantic AI.
+    
+    
+    from pydantic_ai import Agent, RunContext
+    
+    email_agent = Agent(
+        'openai:gpt-4o',
+        system_prompt=(
+            'Analyse the email and mark it spam or important if it makes sense'
+        ),
+    )
+    
+    @email_agent.tool
+    def mark_as_important():
+        # ...
+    
+    @email_agent.tool
+    def mark_as_spam():
+        # ...
+    
+    email_agent.run(email)
+
+## Agentes de IA baseados em grafos
+
+Em sua forma bruta, os agentes de IA determinam autonomamente o fluxo de controle e quais ferramentas invocar. Embora esse padrão abra muitas novas e poderosas oportunidades, ele também introduz desvantagens significativas.
+
+Dada a natureza inerentemente instável dos Modelos de Aprendizagem Baseados em Lógica (LLMs), os agentes nem sempre escolhem o caminho mais eficiente ou promissor para atingir seu objetivo. Isso é particularmente verdadeiro à medida que a complexidade da tarefa aumenta. Consequentemente, definir uma estrutura específica de alto nível dentro da qual o agente possa operar tem se mostrado extremamente valioso.
+
+Assim, uma abordagem estruturada leva a uma execução significativamente mais confiável e resiliente, ganhando rapidamente força em todo o setor. O método estabelecido para alcançar isso é a definição de um fluxo gráfico. Esse fluxo gráfico definido é essencialmente uma máquina de estados onde a autonomia do agente é intencionalmente limitada para decidir apenas sobre as transições de estado dentro da estrutura gráfica predefinida.
+
+Um bom exemplo disso é o modo de Pesquisa Profunda, popularizado pela Perplexity e agora oferecido por muitos outros provedores. Executar uma tarefa de pesquisa como essa, usando um agente bruto e não estruturado, acarreta o risco de o agente realizar pesquisas insuficientes ou ficar preso em um ciclo de pesquisa infinito antes de gerar o relatório final.
+
+Conforme descrito na Figura 1-4, ao definir um fluxo gráfico, é possível garantir que o agente complete sistematicamente as etapas-chave necessárias. Dentro dessa estrutura, o agente ainda possui certo grau de autonomia e pode, por exemplo, decidir sobre as consultas de busca ou avaliar se os resultados foram satisfatórios.
+
+###### Figura 1-4. Exemplo de um Agente de Pesquisa Profunda
+
+## Fluxos de trabalho de IA orquestrados
+
+Um fluxo de trabalho é um conjunto de etapas executadas em uma ordem específica. Embora algumas etapas, ou mesmo todas elas, possam ter um loop de correção agético, isso normalmente não seria categorizado como um agente.
+
+Isso não significa que não sejam valiosos; na verdade, o oposto é verdadeiro. Esses fluxos de trabalho são valiosos simplesmente porque são a maneira mais confiável de executar um conjunto de etapas.
+
+Os fluxos de trabalho e os fluxos de controle baseados em grafos são muito semelhantes. A única diferença é que o fluxo de controle é gerenciado por um mecanismo de fluxo de trabalho externo, em vez de ser gerenciado pelo código do agente. Isso oferece diversas vantagens importantes em relação aos fluxos de controle baseados em grafos, pois esses mecanismos de fluxo de trabalho externos já possuem muitos dos recursos necessários para executar esses fluxos de trabalho de forma confiável e em grande escala. Recursos como checkpointing, tratamento de erros, execução paralela, novas tentativas, monitoramento e muitos outros já vêm prontos para uso.
+
+Um excelente exemplo disso seria um fluxo de trabalho de extração de dados não estruturados usando um LLM para extrair dados de documentos internos. Isso poderia ser facilmente executado em ferramentas como o Airflow ou o Argo Workflows, de forma simples e segura.
+
+## Arquiteturas de IA compostas
+
+Embora esses padrões possam parecer bastante simples, eles ainda são elementos fundamentais para a maioria das aplicações de IA. Na prática, porém, esses padrões não são distintos. Muitas vezes, mesmo as aplicações de IA mais complexas ainda são uma combinação desses elementos fundamentais. Por exemplo, é muito comum ter um agente baseado em grafos que implementa o padrão RAG em um de seus estágios e, adicionalmente, fornece uma interface de bate-papo para interação com o usuário.
+
+Outra variação consiste em ter múltiplos agentes colaborando para resolver uma tarefa complexa. Nessas aplicações multiagentes, a tarefa complexa é composta por subtarefas menores, processadas por agentes individuais otimizados. Para orquestrar múltiplos agentes, existem diversas estratégias e protocolos padronizados, que serão explorados em detalhes no Capítulo 8.
+
+# Ciclo de vida de desenvolvimento de aplicações de IA
+
+Após examinarmos os padrões básicos de aplicação de IA, o próximo tópico é o ciclo de vida de desenvolvimento de uma aplicação de IA.
+
+Como a Engenharia de IA se concentra principalmente na integração e utilização de modelos básicos existentes, a necessidade de treinar modelos personalizados se limita a casos específicos. Consequentemente, a sobreposição da Engenharia de IA com a Engenharia de Software tradicional é muito maior do que com a disciplina central de Aprendizado de Máquina.
+
+Embora existam três ou quatro diferenças principais, a grande maioria do esforço ainda se concentra na engenharia de software. Isso também fica evidente ao analisarmos o ciclo de vida de desenvolvimento de aplicações descrito na Figura 1-5. De forma geral, o ciclo segue as mesmas fases do desenvolvimento de software tradicional, idealmente executado de forma incremental. Com poucas exceções, atividades semelhantes são realizadas em cada fase, as quais serão exploradas a seguir.
+
+###### Figura 1-5. O Ciclo de Vida do Desenvolvimento de Aplicações de IA
+
+## Descoberta e Planejamento
+
+A fase de Descoberta e Planejamento inicia o ciclo. Como esperado, é aqui que o propósito e o valor comercial da aplicação de IA são definidos. De forma semelhante ao desenvolvimento de software tradicional, os requisitos multifuncionais também devem ser coletados. Dada a natureza não determinística e frequentemente imprevisível dos sistemas de IA, é crucial alinhar desde o início aspectos como conformidade, metas de precisão exigidas e necessidades de segurança. É importante lembrar que o ciclo de vida do desenvolvimento é fundamentalmente iterativo, o que significa que a primeira versão do Produto Mínimo Viável (MVP) da aplicação não exige que todos os detalhes sejam finalizados desde o início.
+
+## Design e Desenvolvimento
+
+Após o planejamento, vem a fase de projeto e desenvolvimento. Assim como na engenharia de software tradicional, esta fase começa com a definição da arquitetura e do design de uma aplicação. Para aplicações de IA, isso inclui a definição das interfaces para usuários e outros sistemas, e a decomposição da solução em componentes gerenciáveis. No caso de agentes de IA, isso inclui a definição das ferramentas e bases de conhecimento necessárias (fontes RAG).
+
+Além disso, é necessário fazer escolhas tecnológicas críticas, como a linguagem de programação, a seleção de frameworks (de agentes), mas também os fornecedores de LLM, incluindo os próprios LLMs a serem utilizados. Além da escrita de código, o trabalho de desenvolvimento em si também inclui a engenharia de prompts, que descreve o processo iterativo e experimental de criação de prompts eficazes para obter as respostas desejadas dos LLMs.
+
+## Testando
+
+A próxima fase, Testes, é sem dúvida a mais diferente do software tradicional. Os testes de software podem ser aprovados ou reprovados. Trabalhar com aplicações de IA é fundamentalmente diferente. A natureza aberta e não determinística da saída torna a avaliação sistemática muito mais desafiadora, caracterizando-a como um dos problemas mais difíceis na Engenharia de IA.
+
+As técnicas sistemáticas utilizadas para medir o desempenho, a qualidade e o comportamento do componente de IA são conhecidas coletivamente como Avaliação (ou Evals), que o Capítulo 5 explora em detalhes. Em vez de uma simples classificação de aprovado/reprovado, a avaliação normalmente retorna múltiplas pontuações de confiança em diferentes dimensões (por exemplo, precisão, coerência, aderência às diretrizes de segurança).
+
+Devido à natureza opaca e à complexidade dos Modelos de Aprendizagem Baseados em Aprendizagem (LLMs), a relação entre uma alteração na implementação, como modificar um prompt ou alterar o modelo, e as pontuações de avaliação resultantes muitas vezes não é óbvia. Consequentemente, alcançar melhores pontuações requer um ciclo de experimentação (indicado na Figura 1-5) no qual os desenvolvedores testam sistematicamente diversas soluções potenciais e refinam iterativamente sua abordagem com base nos resultados da avaliação.
+
+## Implantação
+
+A fase de Implantação é novamente muito semelhante às práticas de software estabelecidas, com diferenças mínimas específicas para IA. Por exemplo, uma aplicação de IA pode ser arquitetada e tratada como um microsserviço independente. Essa estrutura autocontida permite que ela seja implantada e escalada de forma independente. À medida que a aplicação de IA amadurece e se aproxima da produção, métodos avançados de implantação, como escalonamento automático (horizontal) ou versões canary, devem ser considerados.
+
+## Operações e Monitoramento
+
+Após a implantação e execução bem-sucedidas da aplicação em produção, a fase de Operações e Monitoramento torna-se crucial. O monitoramento inicial começa com métricas operacionais herdadas da engenharia de software tradicional, como verificações de integridade, latência ou consumo de recursos (por exemplo, memória). Uma métrica técnica fundamental específica para IA é o consumo de tokens nas APIs LLM, que geralmente representa o maior custo variável de operação de uma aplicação de IA.
+
+Embora essas métricas forneçam informações sobre a saúde técnica, são necessárias informações sobre a funcionalidade do negócio. Independentemente da abrangência da avaliação anterior (offline), não há garantia de que ela cubra o comportamento real em produção. Portanto, é crucial avaliar continuamente o aplicativo em execução em produção (frequentemente chamada de avaliação online). Dependendo dos dados de referência disponíveis, isso pode medir dimensões semelhantes, como precisão, resultados de negócios ou satisfação do usuário.
+
+Essas informações permitem que a equipe de desenvolvimento aprimore o aplicativo de forma iterativa ou detecte e mitigue a deriva (degradação de desempenho ao longo do tempo).
+
+Para aumentar a explicabilidade e a auditabilidade de aplicações de IA que frequentemente são consideradas "caixa-preta", uma prática recomendada é registrar todo o histórico de interações internas (por exemplo, solicitações de entrada, respostas do modelo e chamadas de ferramentas). Isso é gerenciado de forma mais eficaz por meio de um sistema de rastreamento dedicado, que será explorado com mais detalhes no Capítulo 5.
+
+# Conectando a Engenharia de IA ao DevOps
+
+Todo esse ciclo de vida, da descoberta à operação, espelha a engenharia de software tradicional, mas introduz novas complexidades específicas da IA em cada etapa. Para gerenciar essa nova realidade de forma eficaz e em escala, o setor naturalmente adaptou os princípios comprovados do DevOps, levando à disciplina emergente de Engenharia de IA.
+
+A ascensão do DevOps no final dos anos 2000 mudou fundamentalmente a forma como as empresas organizam o desenvolvimento de software atualmente. Ao preencher a lacuna entre as atividades de "desenvolvimento" e "operações", o DevOps proporcionou aos desenvolvedores insights diretos e em tempo real sobre os ambientes de produção e, consequentemente, total controle sobre o ciclo de vida do aplicativo de software.
+
+Por meio de práticas como métodos ágeis, equipes multifuncionais e Integração Contínua/Entrega Contínua (CI/CD), o DevOps capacita as equipes a entregar software de forma autônoma em ciclos de iteração curtos e rápidos. Essa abordagem iterativa não apenas acelera o desenvolvimento, mas também permite que as equipes se adaptem rapidamente com base no feedback da produção em tempo real e nas necessidades do negócio. Pesquisas mostram que um alto nível de maturidade em DevOps está diretamente relacionado à resiliência da empresa e à sua capacidade de navegar em um ambiente em constante mudança.
+
+Os princípios de DevOps foram adotados pela comunidade de aprendizado de máquina sob o termo MLOps. Essa abordagem estende as práticas essenciais de DevOps ao ciclo de vida (tradicional) do aprendizado de máquina. Isso inclui práticas fundamentais relacionadas ao versionamento e modelagem de dados, treinamento e disponibilização repetíveis de modelos e medição contínua do desempenho dos modelos.
+
+Agora, analisando o desenvolvimento de aplicações de IA, essas práticas ainda fazem sentido? Sem dúvida, sim. Embora existam alguns aspectos específicos da IA a serem considerados, essas práticas podem ser mais importantes do que nunca. Os desafios no desenvolvimento de software que o DevOps aborda se refletem no desenvolvimento de aplicações de IA. Aliás, muitos são ainda mais acentuados.
+
+Todos já presenciaram as disrupções causadas pela ampla disponibilidade de LLMs (Modelos de Aprendizado de Máquina) e a rapidez com que novas tendências surgem. Embora nem todas as tendências devam ser seguidas cegamente, muitas das mudanças no ecossistema de IA generativa podem impactar fundamentalmente o desenvolvimento de IA. Por exemplo, pode acontecer de uma nova geração de um LLM ser lançada, sendo, por exemplo, mais barata ou com menor latência – mais adequada para o caso de uso de uma equipe de desenvolvimento de IA. Nessa situação, a equipe de desenvolvimento de IA deve tomar a decisão de usar esse novo modelo de forma independente, sem a necessidade de uma longa coordenação em toda a empresa. De modo geral, em um ambiente altamente dinâmico como o ecossistema de IA, é essencial que as equipes sejam capazes de reagir autonomamente a novos desenvolvimentos e adaptar seus aplicativos de acordo.
+
+Além disso, a natureza não determinística das aplicações de IA dificulta a previsão completa do comportamento de uma aplicação em produção e, consequentemente, do valor comercial real que ela gera. Como resultado, as equipes de desenvolvimento precisam obter o máximo de insights de produção possível para que possam reagir e integrar esse feedback em sua aplicação de IA.
+
+No atual campo dinâmico da IA, os termos são frequentemente um tanto imprecisos e usados de forma inconsistente. Embora não esteja diretamente na tradição do DevOps, o termo que melhor descreve a disciplina de desenvolvimento de uma aplicação de IA ao longo de todo o seu ciclo de vida é Engenharia de IA. Um conceito que ganhou significativa consolidação e força com a publicação do livro seminal de Chip Huyens, de mesmo nome.
+
+Enquanto o MLOps se concentra fortemente no treinamento e na operacionalização de modelos preditivos, a Engenharia de IA expande esse escopo para focar na construção de aplicações de IA, frequentemente aproveitando modelos fundamentais, como descrito na seção anterior. Embora exista o termo operacional mais específico GenAIOps, ele ainda não obteve o mesmo reconhecimento amplo, tornando Engenharia de IA o termo abrangente mais adequado.
+
+Seguindo a filosofia DevOps, a melhor prática é designar uma equipe autônoma responsável por todo o ciclo de vida de uma aplicação de IA. No entanto, gerenciar essa complexidade é um desafio significativo, visto que a Engenharia de IA exige expertise em engenharia de dados, modelagem de IA, engenharia de software e práticas DevOps. Criar um fluxo de trabalho ideal que funcione para a ampla variedade de usuários e casos de uso é um desafio complexo. É por isso que configurações padrão sensatas e uma plataforma centralizada são tão importantes. Isso permite que os usuários se concentrem na proposta de valor principal de sua aplicação, enquanto a plataforma cuida do restante.
+
+# Aplicações de IA vs. Microsserviços
+
+Considerando seus padrões de arquitetura básica e seu ciclo de vida, os aplicativos de IA não são tão diferentes do software tradicional. Para evidenciar melhor essas semelhanças e diferenças, é necessário comparar os aplicativos de IA (deixando os fluxos de trabalho de lado) com microsserviços, conforme mostrado na Figura 1-6.
+
+###### Figura 1-6. Aplicações de IA vs. Microsserviços
+
+## Semelhanças
+
+Microsserviços são unidades implantáveis independentemente que modelam uma capacidade de negócio específica. E, nesse aspecto, as aplicações de IA não são diferentes.
+
+Tanto os microsserviços quanto as aplicações de IA têm tamanho gerenciável. Quando implementados de forma stateless (sem estado), podem ser facilmente conteinerizados e implantados de forma independente.
+
+Além disso, os microsserviços normalmente expõem uma interface de API definida (por exemplo, RESTful) e consomem outros serviços por meio de APIs. As aplicações de IA não são diferentes. Mesmo seus componentes básicos, os modelos fundamentais, são normalmente acessados por meio de interfaces de API definidas.
+
+Um desafio bem conhecido dos microsserviços é a possibilidade de propagação de erros pelo sistema. Isso geralmente é resolvido com disjuntores, novas tentativas e estratégias de fallback. Aplicações de IA enfrentam o mesmo desafio, mas como a qualidade de suas respostas pode variar significativamente, esse desafio é ainda mais acentuado e precisa ser abordado de forma semelhante.
+
+## Características específicas da IA
+
+Embora não sejam estritamente incompatíveis com a definição de microsserviços, as aplicações de IA possuem algumas características únicas que as diferenciam dos microsserviços típicos. Em primeiro lugar, como são inerentemente não determinísticas e probabilísticas, produzem resultados não confiáveis. Uma característica que todo engenheiro de software normalmente evitaria a todo custo.
+
+Do ponto de vista empresarial, essa característica fundamental já representa um desafio por si só. Como se avalia o valor comercial de uma aplicação quando a precisão varia? Quais são as implicações de segurança de uma aplicação que pode gerar alucinações? Além disso, como esses aspectos podem ser previstos antecipadamente ao avaliar a viabilidade comercial de uma aplicação de IA?
+
+Além disso, de uma perspectiva técnica, essa falta de confiabilidade acarreta problemas consequentes. Como discutido anteriormente, as aplicações de IA são difíceis de testar e precisam ser avaliadas. Considerando que os agentes de IA decidem autonomamente sobre seu fluxo de controle, isso torna ainda mais difícil prever, depurar e explicar seu comportamento. Comportamentos indefinidos podem levar não apenas a respostas incorretas, mas também a riscos de segurança, violações de conformidade ou aumento de custos.
+
+Há também a questão da gestão da complexa caixa-preta que é um LLM (Modelo de Aprendizado de Liderança). A alta frequência de lançamento de novos LLMs dificulta o acompanhamento das mudanças e a garantia de que a aplicação não seja afetada. Ajustar uma aplicação de IA para um modelo específico não garante que ela terá um bom desempenho em um modelo diferente. Modelos diferentes não podem ser tratados como simples substitutos diretos devido às variações de desempenho, custo e assinaturas de API. Você também pode ajustar o modelo para uma tarefa específica, mas poderá perder suas capacidades genéricas.
+
+Além disso, as aplicações de IA normalmente apresentam características de desempenho diferentes dos microsserviços. Em particular, a latência das chamadas LLM é significativamente maior do que a das chamadas de API típicas.
+
+# Desafios específicos da IA
+
+Após identificarmos os desafios únicos da Engenharia de IA, delinearemos estratégias consolidadas para abordá-los. Essas estratégias são cruciais do ponto de vista da plataforma, pois esta deve fornecer as ferramentas e os serviços necessários para viabilizá-las. Consequentemente, exploraremos essas estratégias e a oferta de plataforma necessária com mais detalhes em capítulos posteriores deste livro.
+
+## Dificuldade em articular o valor do negócio
+
+Prever o desempenho e a precisão final de uma nova aplicação de IA antecipadamente é inerentemente desafiador. Essa incerteza técnica dificulta articular e quantificar o valor comercial final e o retorno sobre o investimento (ROI) antes do início do ciclo de desenvolvimento.
+
+Para superar essa incerteza fundamental, é essencial validar a hipótese central do negócio o mais cedo possível no ciclo de desenvolvimento. Novamente, práticas consolidadas da engenharia de software podem ser aproveitadas. Utilizando técnicas como prototipagem rápida e construção de MVPs (Produtos Mínimos Viáveis), versões iniciais da aplicação podem ser lançadas para usuários reais logo no início. Nessa fase inicial, o foco deve ser exclusivamente na coleta de feedback de usuários reais para validar a hipótese central. É essencial formular hipóteses claras sobre o valor de negócio esperado e definir critérios de sucesso mensuráveis, como, por exemplo, a economia de tempo em um processo acelerado por IA.
+
+Nesta fase inicial, não há necessidade de otimizar prematuramente os custos (por exemplo, usando modelos básicos mais baratos) ou a precisão máxima. Ao restringir o primeiro lançamento a um público pequeno (possivelmente interno), o impacto de qualquer comportamento indesejado pode ser minimizado.
+
+## Precisão imperfeita
+
+A falta de confiabilidade inerente às aplicações de IA continua sendo o principal desafio. Embora existam estratégias técnicas para mitigar esse problema, é essencial aceitar que as aplicações de IA nunca serão perfeitas. Portanto, essa questão precisa ser abordada de forma holística, envolvendo também as partes interessadas do negócio. Dependendo do caso de uso, por exemplo, isso pode significar aceitar o risco (financeiro) de possíveis erros ou incluir etapas de revisão humana (humano no circuito) na jornada do usuário. Considerando um agente que auxilia no planejamento de viagens, provavelmente é uma boa ideia pedir ao usuário que confirme o plano final antes de efetuar qualquer reserva.
+
+É claro que isso não significa que as estratégias técnicas para melhorar a precisão devam ser negligenciadas. Para garantir que as aplicações de IA estejam alinhadas com o comportamento pretendido e não forneçam conteúdo prejudicial, é essencial implementar mecanismos de salvaguarda. Mecanismos de salvaguarda descrevem políticas e verificações automatizadas que restringem o comportamento da aplicação de IA a limites aceitáveis. Essas verificações podem consistir em verificações de software tradicionais, mas também em chamadas adicionais de LLM (Learning Learning Machine) que verificam a saída em relação a diretrizes definidas.
+
+Para melhorar a precisão da aplicação de IA, o primeiro passo típico é a engenharia de prompts. Essa técnica descreve a experimentação com diferentes formulações de prompts para obter melhores resultados do LLM.
+
+Quando é necessário conhecimento em um domínio específico ou informações recentes, o RAG, apresentado anteriormente, é uma técnica consolidada que fornece as informações necessárias ao LLM em tempo de execução.
+
+Por fim, para aplicações que executam tarefas altamente específicas, o ajuste fino de um modelo de lógica latente (LLM) com base em dados específicos do domínio pode ser uma estratégia adicional. No entanto, como isso requer conhecimento especializado e recursos consideráveis, deve ser considerado apenas quando outras estratégias forem insuficientes.
+
+## Desafios nos Testes
+
+Aplicar todas as estratégias para melhorar a precisão faz sentido se o seu impacto puder ser medido de forma confiável. Como mencionado anteriormente, a natureza aberta dos resultados torna os testes de software tradicionais inadequados. Em vez disso, a aplicação precisa ser avaliada sistematicamente.
+
+Isso requer a definição de um conjunto de dados de avaliação com exemplos de entradas e respostas esperadas. Durante a avaliação, a saída real da aplicação é comparada com as respostas esperadas usando métricas definidas, que precisam estar alinhadas aos objetivos de negócio.
+
+Uma prática recomendada fundamental é o Desenvolvimento Orientado à Avaliação (EDD), que descreve a definição prévia dos critérios de avaliação e sua utilização para guiar o processo de desenvolvimento. Isso garante que cada alteração feita na aplicação seja avaliada diretamente com base em seu impacto nas métricas definidas, evitando um desenvolvimento sem objetivo e demorado que, no final, não aprimora a aplicação.
+
+## Explicabilidade e auditabilidade
+
+Embora as avaliações sejam essenciais, elas sozinhas não são suficientes para fornecer informações sobre o comportamento da aplicação de IA em produção. As entradas reais do sistema podem diferir significativamente do conjunto de dados de avaliação e, consequentemente, é essencial monitorar e coletar informações sobre o comportamento real em produção.
+
+Além do registro de logs, a melhor prática estabelecida para atingir esse objetivo é implementar um sistema de rastreamento dedicado, que registre todas as interações internas do aplicativo de IA (por exemplo, solicitações de entrada, respostas do modelo e chamadas de ferramentas). Isso auxilia na depuração de problemas, na compreensão do comportamento real do usuário e no armazenamento de informações necessárias para fins de conformidade e auditoria.
+
+## Ecossistema em rápida evolução
+
+Como a Engenharia de IA é uma disciplina jovem, o ecossistema ainda está evoluindo rapidamente. Novos LLMs (Lideranças em Aprendizagem), frameworks e melhores práticas estão surgindo constantemente, e as escolhas tecnológicas feitas hoje podem não fazer sentido daqui a alguns meses.
+
+Portanto, para equipes que desenvolvem aplicações de IA, é essencial abraçar a mudança. Um design de aplicação modular que permita a troca fácil de componentes (por exemplo, provedores de LLM) é uma prática recomendada fundamental. Além disso, a autonomia da equipe, conforme discutido na seção “Conectando a Engenharia de IA ao DevOps”, é crucial, pois permite que as equipes reajam rapidamente a novos desenvolvimentos sem a necessidade de longas coordenações.
+
+# Antipadrões no Ciclo de Vida de Desenvolvimento de Aplicações
+
+Como acontece com qualquer nova tecnologia, há muita propaganda e equívocos. Na prática, os padrões e estratégias apresentados são frequentemente aplicados de forma incorreta. Para reforçar a compreensão deles, esta seção os contrasta com antipadrões comumente observados.
+
+## IA pela IA
+
+Pessoas que têm o primeiro contato com os poderosos recursos das LLMs (Long-Level Modeling) frequentemente caem na armadilha de usá-las para tudo. Na prática, instruções condicionais são usadas com frequência onde declarações condicionais seriam suficientes. Às vezes, as LLMs são usadas para expandir acrônimos quando a expansão de texto forneceria a precisão perfeita.
+
+Como regra geral, se você puder escrever um software determinístico para resolver o problema, faça-o. Isso evita todos os desafios das aplicações de IA e, frequentemente, resulta em software melhor, mais seguro e mais barato.
+
+> É tentador, se a única ferramenta que você tem é um martelo, tratar tudo como se fosse um prego. - Abraham Maslow
+
+## Reimplementando a orquestração em aplicações
+
+Orquestrar um conjunto determinístico de tarefas é um problema resolvido. Existem muitos casos em que as equipes tentam reimplementar a orquestração dentro das aplicações ou, pior ainda, dentro de um agente não determinístico.
+
+Se você precisa orquestrar múltiplas tarefas seguindo uma ordem fixa, considere primeiro os mecanismos de orquestração de fluxos de trabalho ou pipelines existentes, pois eles oferecem diversas funcionalidades que você precisará mais cedo ou mais tarde, sem necessidade de configuração adicional. Em outras palavras, se o fluxo de controle for estritamente determinístico e seguir uma ordem fixa, você deve priorizar o padrão "Fluxos de Trabalho de IA Orquestrados". No entanto, para cenários que exigem tomada de decisão guiada e orientada por LLM (Learning Learning Machine) dentro de um fluxo estruturado, os "Agentes de IA Baseados em Grafos" são a escolha apropriada.
+
+## O Agente de Deus
+
+Muitos entusiastas da IA sonham em construir um agente único e infalível que possa resolver qualquer problema que lhe seja apresentado. Este é um conceito sedutor, e talvez funcione em algum momento no futuro. No entanto, por enquanto (em 2026), essa abordagem geralmente produz resultados insatisfatórios. Qualquer domínio suficientemente valioso para o desenvolvimento de uma aplicação provavelmente será complexo demais para que um agente único e infalível consiga escolher a ação mais correta.
+
+Por exemplo, um único aplicativo encarregado de gerenciar todas as funções da empresa, desde RH até logística, teria dificuldades para escolher as ações corretas de forma eficiente.
+
+Por ora, uma abordagem muito mais eficaz é usar uma combinação de aplicativos, ferramentas e técnicas para construir subsistemas especializados menores. Dessa forma, os casos de erro inevitáveis podem ser controlados com muito mais eficácia.
+
+> Um aplicativo para governar a todos, um aplicativo para encontrá-los, um aplicativo para trazê-los a todos, e na escuridão aprisioná-los. J.R.R. Tolkien
+
+## Aplicativos que deveriam ser apenas uma ferramenta.
+
+No outro extremo do espectro, os agentes de IA são frequentemente construídos para cada pequena tarefa. Muitas vezes, é muito mais eficiente construir uma ferramenta simples que execute uma única função com excelência e que possa ser utilizada por agentes de nível superior. Se essa ferramenta precisar ser compartilhada dentro de uma organização, então construí-la como um servidor do Protocolo de Contexto de Modelo (MCP) faz muito sentido, o que será explorado mais detalhadamente no Capítulo 8.
+
+> Pare de tentar fazer o "fetch" acontecer! Regina George
+
+## Desenvolvimento orientado pela tecnologia (e não pela resolução de problemas)
+
+Assim como a noite segue o dia, a cada nova tendência tecnológica, as pessoas tentarão integrá-la a todas as aplicações. Por exemplo, sistemas multiagentes ou agentes baseados em grafos são padrões muito poderosos e interessantes, mas só são valiosos para casos de uso específicos. Implementar um sistema desse tipo não é um fim em si mesmo e acarreta complexidade e custos adicionais significativos.
+
+Embora a exploração de novas tecnologias seja incentivada, tenha sempre em mente o objetivo final. Explore-as primeiro em pequenos experimentos isolados antes de integrá-las em grandes aplicações reais. Esse antipadrão é especialmente perigoso quando essas aplicações se tornam parte de planos estratégicos maiores e as pessoas só questionam seu valor meses ou até anos depois.
+
+Foque no valor real.
+
+## A mentalidade de priorizar exclusivamente os chatbots
+
+Embora os chatbots sejam uma interface muito popular para sistemas de aprendizagem de aprendizagem (LLMs), eles não são a única opção. Na verdade, quanto mais complexos os aplicativos se tornam, menor a probabilidade de uma interface de chatbot ser a melhor maneira de interagir com eles.
+
+Em vez disso, num futuro próximo, a maioria das interações com IA ocorrerá nos bastidores. Isso exige uma integração profunda nas jornadas de usuário existentes, com ideias inovadoras para a experiência do usuário.
+
+## Desenvolvimento sem rumo e sem avaliações
+
+Um dos principais problemas no desenvolvimento de IA é a necessidade de ter uma opinião extremamente precisa sobre qualidade, alinhada aos objetivos de negócio. Frequentemente, existe um vasto leque de possibilidades de entradas e saídas, e nem sempre é claro se estamos realmente melhorando algo. Quando tudo está em constante mudança, é muito fácil se deixar levar pela correnteza, sem direção definida, apenas seguindo a intuição. Isso claramente não é o ideal, portanto, comece a implementar avaliações o mais cedo possível. O ideal é começar pensando no resultado final e adotar o Desenvolvimento Orientado a Avaliação (EDD), o que significa definir os critérios de avaliação antecipadamente, antes mesmo de escrever qualquer código.
+
+## Paralisia por análise decorrente de desafios de avaliação
+
+No extremo oposto, está o atraso no lançamento do seu aplicativo por ainda não ser possível avaliá-lo perfeitamente. Avaliar aplicativos de IA é reconhecidamente difícil, especialmente no início. Buscar a perfeição traz um grande risco de desperdício de recursos e dinheiro. Nenhuma abordagem de avaliação pode garantir que seu aplicativo trará valor real para o negócio.
+
+Imagine uma equipe que desenvolve uma ferramenta interna de sumarização. Eles podem definir um conjunto de dados de avaliação centrado em métricas de qualidade de resumo, como coerência e relevância. No entanto, após o lançamento inicial, descobrem que seus usuários, na verdade, desejavam resumos mais longos.
+
+Certifique-se de que uma avaliação incompleta não o paralise e busque lançar a versão o mais rápido possível. Faça isso de forma segura, seja disponibilizando-a para um pequeno grupo de usuários ou oferecendo-a como um complemento opcional. Assim que coletar o primeiro feedback dos usuários, você poderá usá-lo para aprimorar sua avaliação e consolidar sua base para futuras iterações.
+
+# Conclusão
+
+Neste capítulo, foi apresentada uma visão geral abrangente das aplicações de IA e seu ciclo de desenvolvimento. Ao construir uma plataforma de aplicações de IA, esse conhecimento ajuda a determinar as funcionalidades mais críticas que a plataforma deve oferecer.
+
+O primeiro tema aparente deste capítulo é a significativa sobreposição com o desenvolvimento de software tradicional. Para as equipes de plataforma, isso é uma boa notícia, pois significa que não há necessidade de reinventar a roda ao buscar suporte para atividades de Engenharia de IA. Em vez disso, elas podem aproveitar estrategicamente os recursos e ferramentas já disponíveis em plataformas de desenvolvimento internas (PDIs) existentes.
+
+Naturalmente, existem alguns aspectos cruciais específicos da IA que precisam ser considerados. Os padrões de aplicação ajudam a entender como as aplicações de IA são tipicamente estruturadas e quais blocos de construção são comumente usados e, portanto, precisam ser fornecidos pela plataforma. Isso inclui, por exemplo, a integração de APIs LLM, a habilitação de recursos RAG e o fornecimento de ferramentas de orquestração de fluxo de trabalho ou de agentes.
+
+O ciclo de vida da aplicação deixa claro que a Engenharia de IA exige muito mais do que simplesmente integrar Modelos de Aprendizagem Baseados em Aprendizagem (LLMs) às aplicações. E é aqui que o verdadeiro valor de uma plataforma de IA dedicada se torna evidente, pois ela deve dar suporte aos desenvolvedores de IA em todos os desafios que enfrentam durante todo o ciclo de vida da aplicação, sem restringir sua autonomia. Para uma plataforma, isso significa que as ferramentas e os serviços necessários (por exemplo, para executar e acompanhar avaliações ou para operar aplicações de IA) devem ser fornecidos para que os desenvolvedores possam escolher os mais adequados às suas necessidades específicas.
+
+Além disso, precisamos levar em consideração que a Engenharia de IA é uma disciplina relativamente recente. Muitas empresas terão apenas um número limitado de especialistas capazes de lidar com a ampla abrangência dessa área. Se uma plataforma for vista como aceleradora, ela pode contribuir para o aprimoramento das habilidades de uma organização e garantir o compartilhamento de conhecimento em Engenharia de IA. Isso pode ser alcançado, por exemplo, fornecendo configurações padrão adequadas (como recomendações de tecnologias) e blocos de construção pré-configurados, o que reduz significativamente a barreira de entrada para equipes que se aventuram no desenvolvimento de aplicações de IA.
+
+O próximo capítulo apresentará o conceito de plataformas e sua proposta de valor. Em seguida, os capítulos subsequentes explorarão com mais detalhes as capacidades necessárias da plataforma para suportar e acelerar a criação eficaz de aplicações de IA em grande escala.
+
+E, naturalmente, esses assistentes de codificação podem ser usados para escrever aplicativos de IA. Já está se sentindo tonto? Este tópico é explorado com mais detalhes no Capítulo 12.
+
+2 Um dos autores, aliás
+
+3 Andrej Karpathy apresentando o termo Codificação de Vibração no X
+
+Kent Beck no podcast The Pragmatic Engineer
+
+Nenhum modelo de linguagem foi prejudicado (ou usado) na geração do texto deste livro. No entanto, a IA foi consultada durante o controle de qualidade para que tivéssemos uma boa impressão do nosso editor.
+
+O ajuste fino de instruções é um processo especializado de pós-treinamento no qual um modelo de linguagem latente (LLM) pré-treinado é ainda mais treinado para seguir instruções humanas e gerar respostas correspondentes. Isso é alcançado fornecendo conjuntos de dados com instruções e respostas relacionadas.
+
+Uma medida fundamental para essa maturidade é o conjunto de métricas de Pesquisa e Avaliação de DevOps (DORA). Nicole Forsgren, Jez Humble e Gene Kim analisaram estatisticamente, em um artigo publicado na revista Accelerate, como essas métricas são um indicador importante do desempenho organizacional.
+
+8 Engenharia de IA por Chip Huyen, O’Reilly Media, 2023, https://www.oreilly.com/library/view/ai-engineering/9781098166298/
+
+É verdade que não é estritamente necessário que uma aplicação de IA seja uma unidade implantável separadamente. No entanto, é recomendável encapsulá-la bem do restante da aplicação maior, embora isso também possa ser alcançado seguindo abordagens diferentes, como um módulo.
+
+
+<!-- OEBPS/ch02.html -->
+# Capítulo 2. O que é uma plataforma?
+
+# Nota para leitores da versão antecipada
+
+Com os ebooks de Acesso Antecipado, você obtém os livros em sua forma inicial — o conteúdo bruto e não editado dos autores enquanto escrevem — para que possa aproveitar essas tecnologias muito antes do lançamento oficial desses títulos.
+
+Este será o segundo capítulo do livro final. Observe que o repositório do GitHub será ativado posteriormente.
+
+Se você deseja participar ativamente da revisão e dos comentários sobre esta versão preliminar, entre em contato com o editor pelo endereço arufino@oreilly.com.
+
+> “Aprimorar o trabalho diário é ainda mais importante do que realizá-lo.” Gene Kim, Projeto Fênix
+
+O capítulo anterior mostrou que o princípio DevOps "Você constrói, você executa" é fundamental para aplicações de IA. Isso significa que as equipes precisam assumir muitas responsabilidades, o que resulta em uma maior carga cognitiva — o esforço mental total necessário para construir e executar uma aplicação. Sem gerenciamento adequado, essa carga cognitiva retarda a entrega de valor.
+
+Esse problema não é exclusivo do campo relativamente jovem da Engenharia de IA e já vem sendo reconhecido há algum tempo na comunidade de engenharia de software. Para lidar com esse desafio, o termo Engenharia de Plataforma foi cunhado para descrever a ideia de fornecer serviços e ferramentas centralizados, reduzindo, em última análise, a carga cognitiva das equipes de desenvolvimento.
+
+Essa ideia não é nova e provavelmente remonta aos primórdios da TI. Mas com a ascensão da computação em nuvem, das práticas de DevOps e da necessidade de entrega de software mais rápida, a engenharia de plataformas ganhou força nos últimos anos e se tornou uma disciplina reconhecida, com suas próprias melhores práticas e padrões. Um conceito fundamental é tratar a plataforma como um produto, o que enfatiza a necessidade de que as plataformas sejam projetadas, construídas e mantidas com o mesmo cuidado e atenção que qualquer outro produto.
+
+Plataformas, como DevOps, também são um padrão organizacional. O livro "Team Topologies" é frequentemente considerado uma referência fundamental para organizar e dividir equipes de forma eficiente em organizações modernas. Ele formaliza o desafio da carga cognitiva para as equipes e seu impacto na entrega. O livro descreve como uma Equipe de Plataforma dedicada trabalha para reduzir a carga cognitiva das Equipes Alinhadas ao Fluxo (aquelas focadas em entregar valor ao cliente) fornecendo serviços internos, possibilitando assim uma entrega de software mais rápida e segura.
+
+Você pode se perguntar, com a vasta oferta de provedores de nuvem, por que ainda haveria necessidade de plataformas internas? Conforme descrito em Engenharia de Plataformas Eficaz (Effective Platform Engineering), a nuvem fornece blocos de construção de baixo nível e de propósito geral, em vez de uma solução pronta para uso. A Engenharia de Plataformas visa preencher a lacuna com os serviços que a organização precisa para uma entrega eficiente. Isso também se aplica a aplicações de IA. Embora existam padrões geralmente aplicáveis, apresentados ao longo deste livro, a construção de uma plataforma eficaz depende muito do contexto da sua organização.
+
+Este capítulo fornece uma compreensão fundamental das plataformas e de como as plataformas de Engenharia de IA se encaixam no ecossistema de plataformas mais amplo dentro de uma organização. Ele descreve os principais fatores de sucesso para construir e manter plataformas eficazes, bem como os antipadrões comuns a serem evitados.
+
+# Definição da Plataforma
+
+Vamos começar definindo o que é uma plataforma. Evan Bottcher, uma das principais vozes da arquitetura de software moderna, conhecido por definir a plataforma digital como um produto interno atraente, explica assim:
+
+> Uma plataforma digital é uma base de APIs de autoatendimento, ferramentas, serviços, conhecimento e suporte, organizados como um produto interno atraente. Equipes de desenvolvimento autônomas podem usar a plataforma para entregar funcionalidades do produto em um ritmo mais acelerado, com menos necessidade de coordenação.
+
+Esta definição destaca vários aspectos importantes de uma plataforma. Em primeiro lugar, uma plataforma é mais do que apenas infraestrutura – é uma base que permite às equipes entregar valor de forma autônoma com o mínimo de sobrecarga de coordenação. Ela combina capacidades técnicas com conhecimento, suporte e padrões organizacionais. Levando ao extremo, a forma mais simples de uma plataforma é um conjunto bem documentado de práticas sensatas. Na realidade, a maioria das plataformas inclui uma combinação de serviços, ferramentas e APIs (Interfaces de Programação de Aplicativos).
+
+O próximo aspecto fundamental é o autosserviço. Isso inclui acesso fácil às funcionalidades da plataforma, bem como a capacidade de provisionar, configurar e gerenciar recursos sem a necessidade de passar por uma equipe central ou um processo de aprovação. Por um lado, isso é importante para os usuários da plataforma — as equipes alinhadas ao fluxo de trabalho. Elas precisam ser capazes de agir com rapidez e tomar decisões de forma autônoma, sem serem bloqueadas pelas prioridades e pelo roadmap da equipe da plataforma (o chamado "acoplamento do backlog"). Por outro lado, isso é importante para a própria equipe da plataforma. Para serem eficazes, precisam se concentrar na criação e na manutenção das funcionalidades da plataforma, em vez de serem prejudicadas por solicitações e aprovações de equipes individuais.
+
+Além disso, uma plataforma deve ser tratada como um produto interno atraente. As plataformas têm sucesso quando são tratadas como produtos que precisam conquistar a adoção por meio do valor, e não por imposição. Isso exige que a equipe da plataforma se concentre em entender as necessidades de seus usuários — identificando os recursos que oferecem mais valor e aprimorando continuamente a plataforma com base no feedback. Embora isso pareça simples, requer mudanças organizacionais que vão além da tecnologia e incluem a redistribuição de responsabilidades operacionais.
+
+Por fim, a definição conclui destacando o objetivo central de uma plataforma: acelerar o desenvolvimento e a entrega de aplicações, garantindo verdadeira autonomia à equipe.
+
+# Antipadrões de plataforma
+
+Antes de analisarmos o que caracteriza uma boa plataforma, vamos examinar alguns dos antipadrões comuns que frequentemente encontramos por aí. Isso ajudará você a entender os desafios de construir uma plataforma e como superá-los. Você pode reconhecer alguns desses padrões em suas próprias experiências.
+
+## A Gaiola Dourada
+
+A "gaiola dourada" surge quando o caminho ideal para construir na plataforma não permite qualquer desvio das capacidades essenciais da mesma. Isso acontece quando as plataformas impõem um caminho ideal rígido, sem permitir os desvios necessários, impedindo, na prática, que as equipes de fluxo de valor inovem ou resolvam problemas de maneiras não previstas pela plataforma.
+
+## Impor mandatos em vez de conquistar a adesão.
+
+Infelizmente, isso acontece com muita frequência. Se você precisa impor uma funcionalidade em vez de conquistar a adoção, provavelmente está ignorando algumas necessidades essenciais dos usuários. Às vezes, as imposições podem ser usadas para reduzir a carga cognitiva da plataforma, mas frequentemente mascaram decisões ruins de produto. Investigue as necessidades dos usuários e veja se há alguma lacuna na plataforma que possa ser preenchida. As plataformas raramente recebem feedback suficiente dos usuários para determinar facilmente o que precisa ser melhorado. Quando você receber esse feedback, precisa ouvi-lo e fazer mudanças.
+
+## Autoatendimento com aprovação
+
+Os usuários devem ser capazes de atender à grande maioria de suas necessidades por conta própria. Isso significa que não deve haver necessidade de aprovações ou processos de aprovação. Cada aprovação atrasa a capacidade das equipes alinhadas ao fluxo de trabalho de entregar valor.
+
+## Autoatendimento obscuro
+
+Outro antipadrão para o autoatendimento ocorre quando ele é tão complexo, mal documentado ou pouco intuitivo que os usuários têm dificuldade em encontrar ou usar os recursos de autoatendimento de forma eficaz. Isso também pode acontecer quando os fluxos de trabalho subjacentes são muito demorados ou instáveis. Nesses casos, os recursos de autoatendimento não são eficazes e os usuários precisam usar a plataforma como uma caixa preta.
+
+## Acoplamento de pendências
+
+Acoplamento de tarefas é um antipadrão comum no desenvolvimento de software, não apenas no contexto de plataformas. As plataformas devem buscar reduzir o acoplamento entre as tarefas. A maneira mais clara de fazer isso é garantir que as equipes alinhadas ao fluxo de trabalho não sejam limitadas pelas tarefas da plataforma.
+
+## Um ambiente de execução especial separado para aplicações de IA
+
+Considerando que as aplicações de IA se comportam como serviços que chamam um Modelo de Linguagem Amplo (LLM), por que é necessário um ambiente de execução separado para elas? Este é mais um exemplo de reinventar a roda para aplicações. Não há uma razão convincente para isso, mas existem desvantagens. Em primeiro lugar, construir e manter um ambiente de execução para aplicações exige um trabalho considerável. Mais importante ainda, isso força os desenvolvedores a aprenderem um novo conjunto de configurações padrão sensatas, nenhuma das quais contribui para uma entrega mais rápida. No pior cenário, se você usar todas as mesmas configurações padrão sensatas, terá duplicado completamente o ambiente de execução existente, então seria melhor tê-lo usado desde o início!
+
+## Foco excessivo na gestão imediata
+
+Muitas organizações focam no compartilhamento de lembretes em toda a organização.
+
+Na prática, porém, os prompts têm reutilização limitada. Os modelos mais recentes são muito mais robustos a perturbações nos prompts (ou seja, pequenas alterações na redação), reduzindo a necessidade de prompts altamente otimizados. Além disso, eles são apenas texto e adaptados a um caso de uso muito específico e, talvez, até mesmo a um LLM específico. Os prompts podem deixar de funcionar efetivamente com uma nova versão do LLM ou com um provedor diferente.
+
+Na realidade, pouquíssimas pessoas usarão seus prompts perfeitos. Portanto, construir uma infraestrutura complexa para editá-los, compartilhá-los e controlá-los por versão é considerado um antipadrão.
+
+Em vez disso, mantenha os prompts nos sistemas de controle de versão próximos ao código que os chama. Sinta-se à vontade para transformá-los em variáveis e colocá-los em arquivos separados, o que pode permitir que você faça todos os testes A/B necessários.
+
+Isso significa que pessoas sem conhecimento técnico não podem editá-los, mas se a barreira técnica for editar um arquivo de texto na interface do usuário (UI) do GitHub, as organizações poderão capacitar seus funcionários com relativa facilidade. Isso pode simplificar drasticamente o que você precisa construir e manter como plataforma. Também ajudará as equipes na depuração e na resolução de problemas.
+
+Uma exceção a isso é fornecer dicas úteis aos usuários para que eles possam começar. Fazer isso com um servidor de Protocolo de Contexto de Modelo (MCP) é relativamente simples.
+
+## Delegar a complexidade aos usuários
+
+Infelizmente, esse é um antipadrão comum. Fundamentalmente, a coisa mais valiosa que uma plataforma pode fazer é reduzir a carga cognitiva das equipes alinhadas ao fluxo de trabalho. Se a equipe da plataforma não for capaz de fazer isso, então não é uma plataforma.
+
+Em grandes empresas, essa complexidade pode vir de diversas fontes. A tentação de delegar tarefas complexas ao usuário por serem complexas demais para a equipe da plataforma é muito forte.
+
+## Utilizar uma plataforma para ocultar problemas organizacionais
+
+Outro antipadrão comum é encobrir os problemas reais da organização. Um bom exemplo seria a governança de dados que bloqueia metadados sobre produtos de dados. Isso significa que a descoberta e o acesso a produtos de dados não são possíveis sem as permissões adequadas. Você poderia ter uma solução que permitisse aos usuários da sua plataforma descobrir produtos de dados com suas permissões elevadas, mas isso claramente subverte a governança de dados.
+
+O verdadeiro problema é que a governança de dados não está adequada à sua finalidade. Em vez de transferir essa responsabilidade para os usuários da sua plataforma, concentre-se em defender configurações padrão mais sensatas que beneficiem toda a organização, e não apenas a equipe de Governança de Dados.
+
+## Reimplementando ferramentas e estruturas existentes
+
+A reimplementação tem muito a ver com priorização; sim, provavelmente seria possível aprimorar as ferramentas e estruturas existentes, mas não é a coisa certa a se fazer.
+
+O primeiro passo deve ser identificar o problema real que as ferramentas e estruturas existentes tentam resolver. Você também deve usar as ferramentas e estruturas disponíveis.
+
+Considere reimplementar ferramentas e estruturas existentes apenas se encontrar uma lacuna significativa na oferta atual. Se for possível aprimorar a oferta atual, faça isso.
+
+# Fatores de sucesso para uma plataforma
+
+> Esses são os meus princípios, e se você não gosta deles… bem, eu tenho outros. Groucho Marx
+
+Conforme descrito na seção anterior, construir uma plataforma eficaz exige uma mentalidade de produto. Construir um produto é difícil, e existem muitos livros e recursos disponíveis sobre o assunto, portanto, este capítulo não pode fornecer uma visão geral exaustiva das estratégias.
+
+No entanto, existem alguns fatores de sucesso específicos que são particularmente importantes para as plataformas, os quais são descritos nas seções seguintes.
+
+## Adoção de um modelo de financiamento baseado em produtos
+
+Se a organização não estiver disposta ou não puder investir em uma equipe de produto para uma plataforma, infelizmente a plataforma estará fadada ao fracasso desde o início. Um dos fatos mais conhecidos sobre tecnologia é que é difícil prever como ela irá evoluir. Sem uma equipe de produto, a plataforma ficará presa em um estado obsoleto e não conseguirá crescer.
+
+Uma das melhores maneiras de mudar essa mentalidade é destacar alguns dos benefícios de uma plataforma para a liderança.
+
+## Identificação das principais capacidades da plataforma
+
+Ao definir as capacidades da plataforma, a chave é otimizar a eficiência global em vez da otimização local de equipes ou funções individuais. Uma maneira diferente de pensar sobre isso é o conhecido princípio de Pareto (regra 80/20). Adaptado livremente para plataformas, isso significa que, ao focar nos 20% das capacidades necessárias que são usadas por 80% das equipes, as plataformas podem fornecer valor significativo, minimizando a complexidade e os custos de manutenção.
+
+Como identificar esses 20%? Primeiro, é necessário compreender profundamente as necessidades das equipes alinhadas ao fluxo de trabalho. No entanto, as equipes muitas vezes não conseguem articular requisitos claros de antemão. Isso geralmente ocorre devido ao Problema XY. As equipes se fixam em uma solução que já conceberam, o que as impede de dar um passo atrás e articular seus verdadeiros problemas subjacentes. A relativa juventude da área de Engenharia de IA, com a falta de muitas práticas recomendadas amplamente estabelecidas, contribui ainda mais para esse desafio, já que as equipes podem ainda não saber o que é um bom resultado. Portanto, implementar o que elas pedem representa o risco de remediar os sintomas em vez de abordar as necessidades subjacentes. Além disso, pode levar a atender apenas os requisitos das equipes mais vocais, em vez de encontrar soluções que funcionem para 80% das equipes. Para lidar com isso, é essencial ser empático: mergulhar em seus fluxos de trabalho e pontos problemáticos para identificar os verdadeiros desafios subjacentes.
+
+Em segundo lugar, desenvolver uma compreensão dos padrões e abordagens comuns em toda a área de Engenharia de IA é fundamental. Isso não só ajuda a entender e validar os requisitos apresentados pelos usuários, como também, e crucialmente, permite que a plataforma implemente configurações padrão sensatas e eficientes em toda a organização. Este livro foi concebido para guiá-lo nesse processo. [Link a ser adicionado] descreve os componentes básicos comuns para plataformas de IA, e os capítulos subsequentes aprofundam-se em funcionalidades específicas.
+
+Em terceiro lugar, a plataforma deve suportar uma variedade de casos de uso. Desde protótipos simples de chatbots até sistemas multiagentes complexos e de alta disponibilidade. Além disso, as equipes terão diferentes níveis de experiência, desde novatos em IA que interagem com um LLM pela primeira vez até especialistas em IA que já otimizaram LLMs. Um bom ponto de partida para equilibrar esses interesses é o conceito de "Projetar para usuários extremos" do Design Thinking.
+
+Conforme ilustrado na Figura 2-1, a ideia é reunir os requisitos da plataforma não para a maioria dos casos de uso e usuários comuns, mas sim focar nos extremos: os casos de uso mais simples e os mais complexos — e, equivalentemente, os usuários iniciantes e os especialistas. A ideia é que, ao atender às necessidades desses grupos, a plataforma também se adapte aos usuários intermediários e permita um caminho de crescimento à medida que os casos de uso e a expertise dos usuários evoluem ao longo do tempo.
+
+###### Figura 2-1. Projetando para usuários extremos
+
+Por fim, como em qualquer outro produto de software, é importante começar pequeno e iterar com base no feedback. Identifique as funcionalidades mais críticas, construa uma plataforma mínima viável e, em seguida, colete feedback dos seus usuários e use-o para aprimorar a plataforma.
+
+Com o tempo, isso expandirá as capacidades da plataforma a ponto de você ter um extenso catálogo de serviços, ferramentas e documentação.
+
+## Integrando capacidades de forma eficaz
+
+Identificar e fornecer as funcionalidades necessárias não basta. Uma plataforma desse tipo rapidamente se transforma em uma coleção fragmentada de guias, ferramentas e serviços. Em última análise, isso obriga as equipes a perder tempo integrando manualmente os componentes.
+
+Portanto, para que uma plataforma seja verdadeiramente eficaz, ela deve ir além e otimizar os recursos para interoperabilidade e composibilidade genuínas. Isso garante que as equipes possam combinar componentes facilmente, sem incorrer em sobrecarga significativa de integração. Isso envolve padrões fundamentais em toda a plataforma. Por exemplo, todos os serviços fornecidos devem seguir mecanismos consistentes de autenticação e autorização e registrar dados em um backend de observabilidade unificado. Mas isso também exige garantir que os componentes sejam composíveis em tempo de execução e possam acessar uns aos outros facilmente. Por exemplo, o ambiente de execução do agente da plataforma deve permitir o acesso transparente ao serviço de banco de dados de vetores da plataforma. Isso pode ser alcançado por meio de mecanismos como a injeção automática de detalhes de conexão e o fornecimento de permissões padrão pré-configuradas.
+
+Ter componentes de plataforma prontamente disponíveis para uma integração eficaz é chamado de princípio mise-en-place, visualizado na Figura 2-2.
+
+###### Figura 2-2. Configuração básica
+
+Este princípio foi emprestado do mundo culinário. Originou-se na culinária francesa e se traduz como "tudo em seu devido lugar". Descreve chefs preparando e organizando todos os seus ingredientes e utensílios antes de começar a cozinhar. Isso inclui cortar legumes, medir temperos e organizar os utensílios. Seguindo essa metáfora, é isso que uma plataforma deve buscar. Todos os componentes não devem apenas estar disponíveis, mas também organizados e dispostos de forma a tornar o desenvolvimento de aplicações eficiente. Nem todo prato precisa de todos os ingredientes, mas tê-los prontos e disponíveis torna o processo de preparo muito mais ágil e eficiente. O mesmo se aplica às plataformas de IA. Nem todas as equipes precisarão de todas as funcionalidades, mas uma oferta que abranja todo o ciclo de vida e as necessidades de diferentes tipos de aplicações permitirá que as equipes escolham o que precisam em seu contexto atual, sempre com a opção de expandir e desenvolver outras funcionalidades ao longo do tempo.
+
+## Evitando a dependência tecnológica
+
+Conforme descrito no capítulo anterior, um desafio adicional reside na natureza altamente dinâmica e em rápida evolução do ecossistema de Engenharia de IA. Uma ferramenta ou framework popular hoje pode se tornar completamente obsoleto em poucos meses. Isso representa um desafio crucial para as plataformas de IA, pois, assim que os usuários passam a depender de uma ferramenta ou framework específico, torna-se muito difícil alterá-lo ou removê-lo sem comprometer os aplicativos existentes.
+
+Embora isso provavelmente não possa ser completamente evitado, existem algumas estratégias para mitigar esse risco. Evite a dependência de fornecedores aproveitando padrões abertos como o OpenTelemetry para observabilidade (mais sobre isso no Capítulo 7) ou usando o MCP para fornecer ferramentas de agente (consulte o Capítulo 10).
+
+Uma estratégia adicional é o princípio da porta de duas vias de Jeff Bezos, fundador da Amazon. Este princípio distingue entre decisões irreversíveis (portas de uma via) e decisões reversíveis (portas de duas vias). Isso significa que, sempre que possível, as decisões reversíveis devem ser preferidas e tomadas rapidamente. Quaisquer falhas decorrentes de decisões rápidas e reversíveis representam valiosas oportunidades de aprendizado no processo de inovação.
+
+Embora um certo grau de abstração claramente ajude a desacoplar a plataforma de ferramentas ou frameworks específicos, essa abordagem deve ser seguida com cautela. O risco é que essa abstração se torne — o que Gregor Hohpe, um influente autor e estrategista empresarial conhecido por seu livro "Platform Strategy", chama de "Envoltório Sombrio" — uma abstração que não consegue ocultar completamente a complexidade subjacente e não acompanha a evolução das ferramentas ou serviços subjacentes. Abstrações mantidas internamente provavelmente nunca serão tão bem mantidas, documentadas ou ricas em recursos quanto as ferramentas ou frameworks subjacentes. Para evitar que a plataforma se torne um gargalo para inovações, recomenda-se focar em fornecer configurações padrão sensatas e facilidade de integração com ferramentas e frameworks populares, em vez de tentar abstraí-los completamente.
+
+Por exemplo, algumas plataformas tentam abstrair provedores de LLM específicos por trás de uma interface comum por motivos de governança centralizada. Mas, na prática, isso rapidamente se tornou uma abstração falha, já que cada provedor possui suas próprias características únicas. Considerando que a maioria das bibliotecas e frameworks de agentes (de código aberto) relacionados a LLM já oferece abstrações para múltiplos provedores de LLM, isso apenas adicionou complexidade desnecessária para os usuários, pois a abstração interna não era diretamente compatível.
+
+###### Dica
+
+Além das capacidades reais da plataforma, o fator mais crucial que contribui para o seu sucesso é a experiência do desenvolvedor (DevEx).
+
+DevEx descreve a experiência geral e a satisfação dos desenvolvedores ao longo de todo o ciclo de vida da aplicação, quando interagem com a plataforma. Imagine que você tem a plataforma mais poderosa, com todos os recursos que você poderia desejar, mas ninguém a utiliza porque é difícil de usar, mal documentada ou simplesmente não confiável. Isso tornaria a plataforma inútil e um desperdício de investimento. Portanto, é essencial focar não apenas nos recursos, mas também garantir uma ótima experiência do desenvolvedor (DevEx).
+
+## Documentação completa
+
+Começando pelo aspecto mais óbvio do DevEx, as funcionalidades e o uso da plataforma devem ser bem documentados. E, sem dúvida, isso é mais fácil dizer do que fazer. A plataforma geralmente é desenvolvida por engenheiros, e a documentação muitas vezes é vista como uma tarefa secundária. Além disso, como mencionado no capítulo anterior, a Engenharia de IA é uma disciplina recente, com muitos engenheiros sendo novatos na área. Isso significa que a documentação precisa ser direcionada a um público diversificado, com diferentes níveis de conhecimento.
+
+Uma abordagem para lidar com esses desafios e permitir que os usuários naveguem de acordo com suas necessidades é estruturar a documentação seguindo o framework Diátaxis. Este framework defende a organização da documentação em quatro tipos diferentes: tutoriais, guias práticos, referências e explicações. Os tutoriais são guias passo a passo para iniciantes começarem a usar a plataforma. Em contrapartida, os guias práticos descrevem para usuários já experientes como realizar determinadas tarefas. As referências fornecem informações detalhadas e abrangentes sobre os recursos da plataforma e incluem definições de API e opções de configuração. Elas não devem ser lidas linearmente, mas sim usadas como um mapa para buscar informações específicas. Por fim, as explicações fornecem os conceitos e princípios subjacentes à plataforma.
+
+Para uma plataforma de IA, um tutorial poderia abordar a criação e a implementação de um agente de IA simples. Um guia prático explicaria como configurar a integração de um banco de dados vetorial. A referência da API do kit de desenvolvimento de software (SDK) da plataforma estaria na documentação de referência. Por fim, uma explicação poderia abordar a arquitetura e os princípios de design da plataforma, ou o motivo da escolha de determinada tecnologia (por exemplo, por que um banco de dados vetorial foi definido como padrão na plataforma).
+
+Além de estruturar a documentação de forma eficaz, é importante garantir que ela esteja atualizada e seja facilmente acessível. Uma prática consagrada é a Documentação como Código (Docs as Code). Essa abordagem mantém a documentação próxima ao código e a gerencia com as mesmas ferramentas e processos utilizados para o próprio código. Isso incentiva os desenvolvedores a atualizarem a documentação como parte de seu fluxo de trabalho regular, garantindo que ela permaneça atualizada e precisa. Uma extensão dessa ideia é gerar a documentação diretamente a partir do código (por exemplo, a partir de docstrings do Python para SDKs de software) ou gerar exemplos de código a partir de testes. Isso garante que a documentação esteja sempre sincronizada com a implementação real.
+
+Principalmente quando a plataforma é desenvolvida por várias equipes ou quando existem várias plataformas (integradas) na organização, é importante garantir que a documentação esteja hospedada em um portal central e seja facilmente pesquisável. Isso não só ajuda os usuários a encontrarem as informações de que precisam rapidamente, como também estabelece uma base sólida para o uso de ferramentas baseadas em IA, tornando a documentação ainda mais acessível, o que será abordado no Capítulo 12.
+
+## Design de API intuitivo
+
+Um design de API intuitivo é ainda melhor do que uma boa documentação. Se as APIs forem projetadas seguindo convenções claras, os usuários geralmente conseguem descobrir como usá-las sem precisar ler a documentação.
+
+Para plataformas, essa não é uma tarefa fácil, pois elas geralmente não expõem uma única API, mas sim várias em diferentes tecnologias. Isso pode incluir SDKs, interfaces de linha de comando (CLIs), arquivos de configuração, APIs REST e muito mais. Antes de tudo, é importante seguir as convenções de cada tecnologia. Por exemplo, os SDKs devem seguir as convenções da linguagem de programação em que foram escritos (por exemplo, nomes de funções `snake_case` para Python) e as CLIs devem seguir padrões comuns para ferramentas de linha de comando (por exemplo, um comando `--help`). Além disso, existem algumas boas práticas gerais, como validação de entrada e mensagens de erro claras, que naturalmente devem ser aplicadas a todas as APIs.
+
+A chave para um bom design de API, no entanto, é pensar a partir da perspectiva do usuário. A maioria dos usuários deseja realizar tarefas específicas, e as APIs devem ser projetadas para tornar essas tarefas o mais fáceis e intuitivas possível. A maioria dos usuários não precisa entender todos os detalhes de implementação da plataforma — eles só querem concluir sua tarefa. E é isso que as boas APIs fazem: elas ocultam a complexidade interna e fornecem uma interface bem abstraída para os usuários interagirem. Uma maneira eficaz de alcançar isso é identificar as jornadas de usuário mais comuns e otimizar as APIs para essas jornadas. Isso inclui fornecer valores padrão sensatos para reduzir o número de parâmetros necessários, porque não há nada mais frustrante do que ter que fornecer uma dúzia de parâmetros que você ainda não entende completamente só para começar.
+
+Por exemplo, se a plataforma permite a implantação de um agente por meio de um SDK, é útil habilitá-la com uma configuração de recursos padrão (por exemplo, memória), equilibrando custos e fornecendo recursos suficientes.
+
+## Autonomia da Equipe e Ferramentas Afiadas
+
+Embora otimizar as APIs para a jornada de usuário mais comum seja importante, existe o risco de criar uma espécie de gaiola dourada que impeça as equipes de inovar ou resolver problemas de maneiras que a plataforma não previu.
+
+Isso acontece principalmente quando as plataformas não têm uma visão completa da diversidade de seus casos de uso e tentam impor muitas convenções prescritivas ou diretrizes rígidas. A realidade complexa é que diferentes equipes têm necessidades distintas e podem divergir da configuração padrão da plataforma em diferentes áreas. Na prática, esse costuma ser o maior obstáculo à adoção da plataforma. As equipes se sentem limitadas pela oferta da plataforma e, em vez de se beneficiarem, sentem-se prejudicadas por lutarem contra suas limitações, o que seria exatamente o oposto do objetivo da plataforma de permitir a autonomia da equipe e acelerar a entrega.
+
+Em termos de design de API, Carson Gross, o criador do htmx, defende um design de API em camadas com "saídas de emergência" que permitem aos usuários acessar a camada de abstração imediatamente inferior. Isso permite que os usuários comecem com as abstrações de alto nível para casos de uso comuns, mas também oferece aos usuários especialistas a flexibilidade de usar ferramentas avançadas e se desviar quando necessário.
+
+Aplicadas às plataformas, essas alternativas devem permitir que as equipes substituam as configurações padrão sensatas fornecidas pela API, mas vão além. Devem também permitir que as equipes se desviem da seleção de ferramentas e serviços da plataforma.
+
+Um exemplo seria uma plataforma executada em um provedor de nuvem, que integra um subconjunto de serviços nativamente à plataforma (por exemplo, provisionando permissões e configurações padrão). Uma alternativa seria permitir que os usuários acessassem outros serviços da plataforma de nuvem subjacente, provisionando-os e definindo as permissões por conta própria.
+
+Fazendo referência ao princípio de mise-en-place discutido anteriormente, isso significa que uma plataforma não deve impedir que as equipes tragam seus próprios ingredientes e ferramentas. Naturalmente, as equipes precisam então preparar (configurar, integrar, operar) esses ingredientes por conta própria, mas elas são capazes de fazê-lo e podem criar algo que não foi previsto pela plataforma.
+
+Ou, como Gregor Hohpe resume:
+
+> Se seus usuários não criaram algo que o surpreendeu, você provavelmente não criou uma plataforma15.
+
+Além disso, essa abertura facilita a navegação no ecossistema de IA em rápida evolução. É improvável que uma equipe de plataforma consiga acompanhar todas as ferramentas e estruturas mais recentes, mas se a plataforma for aberta e até mesmo incentivar a experimentação, as equipes individuais poderão testar novas ferramentas e fornecer feedback à plataforma. Esse feedback é crucial para identificar quais tendências estão ganhando força e devem ser integradas nativamente à plataforma.
+
+Naturalmente, como frequentemente acontece na engenharia de software, isso envolve uma troca. Esta seção não deve ser interpretada como uma defesa da criação de uma plataforma que tente ser tudo para todos. Restringir as capacidades da plataforma e fornecer configurações padrão sensatas — o que sempre será uma decisão subjetiva — é a ideia central para reduzir a complexidade. Mecanismos de escape são uma maneira elegante de permitir desvios sem sobrecarregar a própria plataforma. Mas equipes que precisam usar esses mecanismos de escape constantemente — ou que estão trabalhando apenas com seus próprios recursos — provavelmente se beneficiarão mais ao não usar a plataforma e utilizar outras ferramentas diretamente.
+
+## Modelos e Caminho Dourado
+
+Embora a seleção de ingredientes — as funcionalidades da plataforma — já seja o primeiro passo para reduzir a complexidade, ainda pode representar uma oferta avassaladora para as equipes. As ferramentas e os serviços oferecidos costumam ser complexos e podem não ser necessários em todos os casos de uso.
+
+Para reduzir ainda mais a barreira de entrada, é útil orientar as equipes a fazerem uma seleção sensata para começar e a usá-las de forma eficaz. Além da documentação, uma abordagem comum é fornecer modelos de projeto e implementações de referência para padrões comuns.
+
+Em particular, os modelos devem formar esqueletos funcionais (implementações mínimas e completas) para padrões de aplicação comuns e devem ser projetados para permitir que as equipes comecem a trabalhar rapidamente com o mínimo de configuração. Devem abranger as etapas relevantes do ciclo de vida da aplicação — do desenvolvimento à avaliação, implantação e monitoramento. Esses modelos são frequentemente referidos como o caminho de ouro (ou estrada pavimentada), pois definem uma maneira padronizada e bem definida para as equipes criarem suas aplicações na plataforma. Além de demonstrar os recursos da plataforma, eles também podem incluir opções de tecnologia recomendadas no nível de implementação. Normalmente, incluem uma estrutura de projeto padrão com gerenciadores de pacotes, frameworks de linting e teste, fluxos de trabalho de CI/CD e muito mais. No contexto de aplicações de IA, é uma boa ideia incluir também um framework de agentes, uma conexão com o provedor LLM da plataforma, bem como configurações padrão adequadas para gerenciamento, avaliação e monitoramento ágeis.
+
+Além de agilizar o início das atividades das equipes, esses modelos também são uma ferramenta fundamental para a prototipagem e experimentação rápidas, o que, conforme discutido no Capítulo 1, é crucial no contexto das aplicações de IA.
+
+É importante ressaltar que, conforme descrito na seção anterior, as recomendações tecnológicas não devem ser impostas, mas sim incentivadas. Saber que as escolhas tecnológicas são apoiadas pela equipe da plataforma e utilizadas por outras equipes dá aos times a confiança de que não estão sozinhos ao enfrentar desafios e pode ser motivação suficiente para seguir o caminho ideal. Além disso, os modelos também são uma ótima oportunidade para integrar diretamente regras de macroarquitetura de toda a organização (por exemplo, padrões de registro de logs, mecanismos de autenticação e autorização e abordagens de monitoramento) e requisitos de conformidade (por exemplo, varredura de segurança, verificação de licenças), ajudando, em última análise, as equipes a aderir aos padrões organizacionais sem precisar se preocupar com eles.
+
+Isso já demonstra que esses modelos não são triviais e abrangem muitas decisões. Portanto, é importante não sobrecarregá-los e mantê-los focados em iniciar os casos de uso mais comuns. Eles não devem ser uma demonstração abrangente de todos os recursos da plataforma. Recursos mais avançados (no contexto de IA, provavelmente recursos de ajuste fino e orquestração multiagente) devem ser abordados em modelos separados, implementações de referência dedicadas ou guias práticos.
+
+Para entender a lógica por trás da escolha desse caminho, pode-se usar outra metáfora culinária: Omakase (visualizada na Figura 2-3).
+
+Um conceito originário da culinária japonesa que se traduz como "deixo ao seu critério" (ou, de forma mais livre, "escolha do chef"). Imagine que você está em um restaurante japonês e, como não está familiarizado com a culinária, ainda não sabe o que é bom. Então, você deixa a cargo do chef preparar uma refeição para você. O chef seleciona os melhores ingredientes do dia e prepara um prato com base em sua experiência.
+
+###### Figura 2-3. Princípio do Omakase
+
+Com a tecnologia, muitas vezes não é tão diferente. O ecossistema é enorme e está em constante evolução. Para os novatos, é difícil saber o que é bom. Assim como no cenário de um restaurante, você pode deixar a cargo da equipe da plataforma — os chefs — a seleção dos melhores ingredientes e a combinação deles em uma refeição deliciosa.
+
+Esse princípio, por exemplo, serviu de base para o Ruby on Rails.
+
+Naturalmente, com o tempo, as equipes ganharão mais experiência e desenvolverão seu próprio gosto por ingredientes talvez mais sofisticados, algo que os chefs não incluíram na refeição inicial. É aqui que o princípio do mise-en-place, discutido anteriormente, se torna valioso. Elas podem simplesmente escolher e ampliar seu uso com base nos outros ingredientes, já preparados pelos chefs.
+
+## Experiência do desenvolvedor: alegria
+
+Por fim, no contexto da Experiência do Desenvolvedor (DevEx), o aspecto da satisfação não deve ser negligenciado. Pesquisas indicam claramente que desenvolvedores felizes são mais produtivos e têm maior probabilidade de permanecer na empresa.
+
+Até agora, as seções se concentraram em acelerar a entrega das equipes alinhadas ao fluxo de trabalho, eliminando atritos. Poucas coisas são mais frustrantes do que ser atrasado por ferramentas e processos. No entanto, eliminar a dor não é o mesmo que adicionar alegria.
+
+Isso reflete uma verdade fundamental do desenvolvimento de software, que inclusive é contemplada como o primeiro ponto do Manifesto Ágil: Indivíduos e interações acima de processos e ferramentas.
+
+Esse foco no indivíduo é fundamental. Aspectos que contribuem para a satisfação do desenvolvedor incluem o desejo de trabalhar com ferramentas modernas, ter ciclos de feedback rápidos e até mesmo momentos de pura descontração.
+
+Ciclos de feedback rápidos são essenciais para a produtividade do desenvolvedor e, de certa forma, representam a máxima eficácia na eliminação de atritos. Isso começa com ambientes de desenvolvimento local ágeis, permitindo que os desenvolvedores iterem rapidamente em seu código, e continua com pipelines de implantação velozes e feedback oportuno de sistemas de monitoramento e alerta dos ambientes de produção reais.
+
+O desejo por ferramentas modernas também é fonte de alegria. Isso engloba a profunda satisfação de usar uma ferramenta que parece mágica, como o `k9s`19, que simplifica operações complexas do Kubernetes, ou o `thefuck`20, que corrige um erro de digitação intuitivamente. Essas ferramentas são prazerosas porque são cuidadosamente elaboradas para criar um estado de fluxo.
+
+Finalmente, há a alegria do puro deleite. Não se trata de produtividade, mas de reforço positivo. Por exemplo, usar uma biblioteca como TerminalTextEffects21 para fazer com que uma mensagem de implantação bem-sucedida seja animada na tela. Não é necessário, mas transforma uma simples atualização de status em um momento de celebração (Figura 2-4).
+
+###### Figura 2-4. Como os autores sentem prazer a cada nova edição de livro!
+
+É por isso que a Alegria do Desenvolvedor é um padrão mais elevado do que uma boa Experiência do Desenvolvedor. A Alegria do Desenvolvedor é a adição ativa de satisfação, fantasia e empoderamento. É a diferença entre uma ferramenta meramente utilizável e uma ferramenta que é amada. É o sinal definitivo de que os indivíduos e suas interações foram verdadeiramente priorizados em relação aos meros processos e ferramentas.
+
+## Requisitos multifuncionais
+
+Para que uma plataforma seja valiosa para equipes alinhadas a fluxos de trabalho, ela deve atender aos requisitos multifuncionais dessas equipes. Sem entrar em muitos detalhes, os aspectos típicos a serem considerados são o desempenho, a confiabilidade e a disponibilidade dos serviços da plataforma. Mas também os requisitos de segurança e conformidade. Naturalmente, todos os dados armazenados pela plataforma devem ser tratados com segurança e em conformidade com as políticas organizacionais (por exemplo, privacidade de dados). Novamente, a mentalidade de plataforma como produto é crucial aqui. A equipe da plataforma é responsável por executar os serviços da plataforma em produção. Isso inclui monitoramento, alertas, gerenciamento de incidentes e análises pós-incidente na plataforma.
+
+As equipes de plataforma devem definir, mensurar e comunicar os Acordos de Nível de Serviço (SLAs) e as características de desempenho de seus serviços. Isso ajuda a alinhar as expectativas e é essencial para que as equipes, alinhadas ao fluxo de trabalho, tomem decisões informadas ao desenvolver seus aplicativos na plataforma. Naturalmente, como em qualquer outro produto, esses SLAs e características de desempenho devem ser otimizados com base nas necessidades dos usuários para garantir que a plataforma ofereça um produto atraente.
+
+Um desafio específico para as plataformas é o chamado problema do vizinho barulhento. Como várias equipes compartilham os mesmos serviços da plataforma, é possível que uma equipe consuma uma quantidade desproporcional de recursos, impactando negativamente o desempenho e a confiabilidade das outras equipes. É responsabilidade da equipe da plataforma monitorar e mitigar esses problemas, por exemplo, implementando limites de taxa, cotas de recursos ou mecanismos de priorização.
+
+## Simplificando a conformidade
+
+Ter uma plataforma onde todos os aplicativos são executados pode dar aos tomadores de decisão a falsa impressão de que a plataforma serve como ferramenta para garantir a conformidade em toda a organização. No entanto, isso pode rapidamente contrariar o objetivo principal da plataforma, que é agilizar a entrega. Se uma plataforma começar a controlar o acesso e permitir a implantação apenas de aplicativos em conformidade, ela rapidamente se tornará um gargalo. Na realidade, a conformidade costuma ser um tema complexo, e nem todos os requisitos se aplicam a todos os aplicativos. É improvável que a equipe da plataforma tenha o contexto e o conhecimento necessários para tomar essas decisões para aplicativos individuais. Em especial, um modelo de autoatendimento que exige que a equipe da plataforma revise e aprove cada aplicativo antes da implantação deixa de ser um verdadeiro autoatendimento e rapidamente levará à frustração. Muitas equipes não perceberão a diferença entre uma plataforma e a aplicação centralizada de conformidade e, por fim, culparão a plataforma pela lentidão, o que, em última análise, dificulta a adoção.
+
+Naturalmente, isso não significa que a conformidade não seja um aspecto importante para as plataformas. Mas ela precisa ser abordada de forma mais inteligente. Em primeiro lugar, existe um modelo de responsabilidade compartilhada entre a equipe da plataforma e as equipes alinhadas ao fluxo de trabalho, semelhante ao que ocorre com provedores de nuvem pública e seus clientes. Como discutido na seção anterior, a equipe da plataforma é responsável por garantir que a própria plataforma esteja em conformidade com as políticas organizacionais. A plataforma precisa documentar e comunicar quais requisitos de conformidade são cobertos por ela. As equipes alinhadas ao fluxo de trabalho são responsáveis por garantir que seus aplicativos, construídos sobre a plataforma, estejam em conformidade e que utilizem a plataforma de forma compatível. Elas são as especialistas em seus aplicativos e possuem o contexto necessário (por exemplo, requisitos de classificação de dados) para tomar essas decisões, sendo, em última instância, responsáveis pela conformidade de ponta a ponta de seus aplicativos. Devem existir processos e auditorias independentes que garantam a conformidade dos aplicativos.
+
+Isso inclui, naturalmente, as vias de escape discutidas anteriormente — se as equipes integrarem ferramentas ou serviços externos à oferta da plataforma, precisam garantir que estes também estejam em conformidade. Permitir vias de escape às vezes deixa as equipes da plataforma desconfortáveis, pois parece que estão abrindo mão do controle, mas, na realidade, é a única maneira de garantir a autonomia da equipe. Portanto, as equipes da plataforma devem evitar usar a conformidade como desculpa para não permitir desvios.
+
+Além de definir esse modelo de responsabilidade compartilhada, a plataforma pode fazer mais para ajudar as equipes a estarem em conformidade. O objetivo é facilitar a conformidade para as equipes. Nenhuma equipe reclamará se cumprir os requisitos de conformidade automaticamente. Isso significa que a plataforma deve fornecer configurações padrão sensatas e em conformidade imediata, tanto para os serviços da plataforma quanto para os modelos fornecidos. Por exemplo, a plataforma poderia fornecer configurações padrão de registro e observabilidade que atendam aos requisitos de privacidade de dados e facilitem o cumprimento dos requisitos de auditoria.
+
+## Promovendo a capacitação e a comunidade
+
+Por fim, além dos aspectos técnicos da plataforma, é crucial investir também nos aspectos organizacionais.
+
+Para equipes alinhadas a fluxos de trabalho específicos, é difícil acompanhar a rápida evolução do ecossistema de IA e os recursos da plataforma. A Team Topologies sugere a criação de uma Equipe de Habilitação dedicada para preencher essa lacuna. Essa equipe não é diretamente responsável pela construção ou manutenção da plataforma, mas se concentra em ajudar as equipes alinhadas a fluxos de trabalho a usá-la de forma eficaz e aprimorar suas habilidades em práticas de Engenharia de IA. Bons exemplos dessas atividades são sessões de treinamento, workshops e, principalmente, sessões de programação em pares para um envolvimento real nos fluxos de trabalho da equipe alinhada a fluxos de trabalho. As equipes de habilitação também costumam contribuir para a documentação, os modelos e as implementações de referência da plataforma.
+
+Além disso, é prática comum formar Comunidades de Prática (CoP). Estas são voltadas para indivíduos interessados e devem criar o ambiente adequado para o compartilhamento informal de conhecimento e aprendizado entre as equipes. As comunidades podem ser apoiadas pela plataforma ou pela equipe de suporte por meio da organização de encontros regulares, manutenção de fóruns de discussão e compartilhamento de boas práticas e casos de sucesso.
+
+Você saberá que está no caminho certo quando vir pessoas contribuindo com a plataforma. Isso geralmente é chamado de código aberto interno e é uma ótima maneira de incentivar a colaboração e o compartilhamento de conhecimento. Este é o ápice do sucesso da plataforma. Os usuários não apenas se beneficiam da plataforma, como também reconhecem tanto o seu valor que contribuem com ela para o benefício de todos. Sempre que presenciar isso, certifique-se de interagir rapidamente e incentivar o colaborador. Essas são ótimas oportunidades para elogiar a organização e agradecer a contribuição do colaborador.
+
+# Os benefícios adicionais de uma plataforma de sucesso
+
+Conforme demonstrado na definição discutida anteriormente, o principal objetivo de uma plataforma é acelerar o desenvolvimento e a entrega de aplicações. Essa é, sem dúvida, a principal proposta de valor de uma plataforma e, por si só, justifica o investimento na construção e manutenção de uma plataforma para organizações de porte considerável.
+
+No entanto, existem vantagens e valores adicionais que uma plataforma pode ajudar a alcançar, os quais serão descritos nas seções seguintes.
+
+## Redução dos custos operacionais
+
+Reduzir a carga cognitiva não se limita ao desenvolvimento e à entrega de aplicativos. Esse princípio também pode ser estendido ao lado operacional dos aplicativos.
+
+A plataforma contribui para a redução da sobrecarga operacional de duas maneiras. Primeiro, o fornecimento de ferramentas e serviços (como registro, rastreamento e alertas) facilita a operação dos aplicativos pelas equipes. Segundo, a operação centralizada de serviços (como ferramentas de orquestração e provedores de LLM) pela equipe da plataforma pode reduzir ainda mais a carga operacional sobre as equipes individuais. Um pré-requisito para isso é que os SLOs e o desempenho desses serviços centrais atendam às necessidades das equipes, conforme discutido anteriormente.
+
+## Impulsionando a Inovação
+
+Conforme descrito no Capítulo 1, no contexto de aplicações de IA, a experimentação e a prototipagem rápida são cruciais para explorar potenciais oportunidades de negócios. As plataformas podem desempenhar um papel fundamental ao viabilizar e acelerar essas atividades, fornecendo acesso fácil e configurações padrão adequadas para a prototipagem rápida (por exemplo, por meio dos modelos descritos anteriormente). Esses experimentos iniciais provavelmente têm menos requisitos não funcionais (por exemplo, capacidade de carga, disponibilidade), o que deve ser refletido nos modelos fornecidos. Esses experimentos não devem ser prejudicados por configurações e ajustes complexos que não são necessários nos estágios iniciais. No entanto, ter esses experimentos iniciais já na plataforma é uma grande vantagem, pois eles podem evoluir para aplicações mais maduras, incorporando gradualmente mais recursos da plataforma.
+
+## Capacitação e aprimoramento organizacional
+
+A Engenharia de IA é uma área empolgante e estrategicamente importante para muitas organizações. É muito comum que as organizações queiram capacitar e aprimorar as habilidades de suas equipes de engenharia. As plataformas podem contribuir para esse objetivo de diversas maneiras.
+
+Ao integrar-se a plataformas já existentes (consulte a seção “Ecossistema de Plataformas Existentes”), a plataforma de IA pode expor os recursos de IA a um público mais amplo de engenheiros e permitir uma transição tranquila quando as equipes desejarem integrar recursos de IA em seus aplicativos. Além disso, ao fornecer facilidades de acesso, configurações padrão adequadas e boa documentação, a plataforma pode reduzir as barreiras para engenheiros iniciantes na área de IA e demonstrar boas práticas. Oferecer ferramentas e serviços necessários para práticas mais avançadas (por exemplo, Sistema de Gerenciamento de Avaliação) simplifica a adoção dessas práticas pelas equipes.
+
+Por fim, ao contar com equipes de capacitação e construir uma comunidade em torno da plataforma, a equipe da plataforma pode facilitar o compartilhamento de conhecimento e o aprendizado entre as equipes da organização.
+
+## Impulsionando os padrões de governança e segurança
+
+Ao longo do ciclo de vida das aplicações de IA, a governança e a segurança são aspectos cruciais que as equipes alinhadas ao fluxo de trabalho precisam abordar, frequentemente definidos por políticas e padrões organizacionais centrais.
+
+Assim como em outros aspectos, isso leva a uma alta carga cognitiva. Consequentemente, muitas equipes adiam a implementação desses requisitos até o último momento, quando são impostos pelo processo de qualidade. As plataformas podem ajudar, fornecendo serviços em conformidade, configurações padrão adequadas e modelos que integram diretamente ferramentas relevantes para a conformidade. No entanto, como discutido na seção de fatores de sucesso “Simplificando a Conformidade”, é essencial evitar a criação de gargalos ao impor a conformidade como pré-requisito para o uso da plataforma. Seguindo o modelo DevOps, você constrói, você executa, as equipes conhecem o contexto de seus aplicativos e, portanto, são responsáveis por cumprir as regras da organização.
+
+###### Figura 2-5. XKCD: Algoritmo de Contratação por IA - https://xkcd.com/2237
+
+# Ecossistema de plataforma existente
+
+Como demonstrado no capítulo anterior, a Engenharia de IA apresenta uma sobreposição significativa com as práticas tradicionais de engenharia de software. Portanto, não é surpreendente que muitas das plataformas existentes na organização provavelmente já ofereçam funcionalidades relevantes para aplicações de IA. Para evitar a criação de plataformas paralelas e potencialmente concorrentes, é crucial avaliar o ecossistema de plataformas existente e identificar quais funcionalidades podem ser reutilizadas ou ampliadas para aplicações de IA. As seções a seguir descrevem os tipos de plataforma mais comuns e suas principais funcionalidades, além de discutir como as plataformas de IA podem se beneficiar e se integrar a esse ecossistema já existente.
+
+## Plataforma de Desenvolvimento Interno
+
+A plataforma mais comum em uma organização é a Plataforma de Desenvolvimento Interno (IDP). Ela é voltada para Engenheiros de Software e permite que eles criem e executem aplicativos de software (para simplificar, pense em microsserviços).
+
+As Plataformas de Desenvolvimento Individual (PDI) tendem a ser as maiores e mais bem financiadas plataformas da organização e, portanto, o exemplo mais característico de uma plataforma. É nisso que a maioria das pessoas pensa quando pensa em plataformas. Se a PDI for madura e bem projetada, ela implementa muitos dos fatores de sucesso universais descritos anteriormente, embora direcionada a um público diferente.
+
+Frequentemente, são construídas sobre provedores de nuvem e fornecem um ambiente de execução para aplicações (por exemplo, clusters Kubernetes), bem como sistemas de CI/CD, configurações de registro e monitoramento, mecanismos de autenticação e autorização, e muito mais. Considerando as semelhanças entre aplicações de IA e software tradicional, essas capacidades podem formar uma base potencial para uma Plataforma de IA.
+
+Embora suas configurações padrão e modelos sensatos não sejam necessariamente adaptados a aplicações de IA, antes de construir funcionalidades semelhantes do zero, provavelmente é melhor avaliar o IDP existente e, potencialmente, estendê-lo e definir novas configurações padrão sensatas para aplicações de IA.
+
+## Plataformas de dados
+
+As plataformas de dados são o segundo tipo de plataforma mais comum nas organizações. Elas geralmente surgem do objetivo da organização de se tornar mais orientada a dados e extrair insights de seus ativos de dados. Essas plataformas são voltadas para analistas, engenheiros e cientistas de dados. Normalmente, elas oferecem recursos para gerenciar e processar grandes volumes de dados. Isso geralmente inclui orquestradores para pipelines de ingestão de dados, soluções de armazenamento de dados e frameworks de processamento de dados (por exemplo, ferramentas ETL/ELT, mecanismos de processamento de big data), mas também ferramentas para governança de dados, qualidade de dados e segurança de dados.
+
+Considerando que a organização de dados e a automação de fluxos de trabalho são casos de uso comuns da IA, fica claro que essas capacidades podem ser benéficas para determinadas aplicações de IA.
+
+## Plataformas de malha de dados
+
+Após a onda inicial de plataformas de dados, os grandes data lakes tornaram-se monolíticos e difíceis de gerenciar. Frequentemente, esses data lakes se transformavam em pântanos de dados, com baixa qualidade e pouca confiabilidade nos dados. Para enfrentar esses desafios, muitas organizações começaram a adotar o paradigma de malha de dados, que descentraliza o gerenciamento de dados e defende a manutenção de vários produtos de dados menores em vez de um armazenamento central.
+
+As plataformas Data Mesh são frequentemente uma extensão das plataformas de dados e fornecem recursos para gerenciar esses produtos de dados de forma descentralizada, por exemplo, por meio de registros de produtos de dados, catálogos de dados e ferramentas de descoberta de dados.
+
+Aqui também, é evidente que essas capacidades podem ser benéficas para aplicações de IA, visto que estas podem ser tanto consumidoras quanto produtoras de dados.
+
+## Plataformas MLOps
+
+Enquanto as Plataformas de Dados se concentram na gestão de dados, as Plataformas de MLOps são voltadas para cientistas de dados e engenheiros de aprendizado de máquina. Elas são projetadas para suportar todo o ciclo de vida (tradicional) de MLOps, desde a preparação de dados, passando pelo treinamento e avaliação de modelos, até a implantação dos mesmos, tudo otimizado para escalabilidade. Dependendo da maturidade da plataforma, isso inclui recursos para treinamento distribuído, armazenamento de recursos, rastreamento de experimentos, registros de modelos, além de soluções de monitoramento para detecção de desvios de dados e modelos.
+
+Dado que os LLMs e outros modelos de IA são fundamentais para as aplicações de IA, essas capacidades também podem ser altamente relevantes para essas aplicações.
+
+## Comparação com plataformas de baixo código/sem código
+
+Existem muitas plataformas de IA de baixo código/sem código disponíveis, e certamente outras surgirão. Muitas delas são voltadas para casos de uso específicos e não são plataformas de propósito geral. No entanto, a principal diferença entre essas plataformas e as discutidas até agora é que elas são quase explicitamente "gaiolas douradas". Elas oferecem apenas um conjunto limitado de recursos e não permitem a personalização completa disponível com código. Embora isso possa ser muito útil para organizações sem experiência em programação, não substitui a personalização disponível em plataformas de propósito geral.
+
+Considerando a eficácia da IA em auxiliar na programação, nunca houve um momento melhor para que um número maior de pessoas utilize código em seu trabalho. Vale a pena ter em mente que você pode ter cada vez mais pessoas usando código para resolver seus problemas e garantir que a plataforma seja intuitiva para usuários inexperientes. Ter um processo de integração o mais simples possível é fundamental para garantir que a plataforma seja acessível a todos. Isso pode incluir, literalmente, ensinar os funcionários a programar. Você se surpreenderá com quantas pessoas estão dispostas a aprender a programar e com a rapidez com que podem adquirir as habilidades necessárias para serem produtivas.
+
+# Integrando plataformas de agentes ao ecossistema existente
+
+Antes de nos aprofundarmos nas capacidades específicas de uma Plataforma de Agentes de IA no próximo capítulo, já é evidente que muitas das plataformas existentes podem oferecer funcionalidades relevantes também para aplicações de IA. Naturalmente, dentro de uma organização, essas plataformas não são silos isolados, mas sim um ecossistema integrado.
+
+Considerando que as aplicações de IA não funcionam isoladamente, mas frequentemente integradas a outras aplicações e serviços, faz sentido, da perspectiva do usuário, utilizar as mesmas ferramentas sempre que possível. Um exemplo disso é uma solução centralizada de registro de logs; as equipes provavelmente preferem ter todos os seus logs em um único local, em vez de um sistema separado para aplicações de IA.
+
+Além disso, auxilia equipes que desejam integrar recursos de IA em seus aplicativos existentes (por exemplo, um endpoint de agente em um microsserviço). Elas não precisam aprender uma plataforma completamente nova, podendo utilizar a solução com a qual já estão familiarizadas e ampliá-la com os recursos fornecidos pela plataforma de IA.
+
+Outro benefício de aproveitar as capacidades já existentes é que elas já foram testadas e comprovadas em campo. Com muitos aplicativos, produtos de dados e modelos de aprendizado de máquina em produção, é muito provável que atendam aos requisitos de desempenho e disponibilidade.
+
+Considerando tudo isso, reconstruir funcionalidades existentes é uma tarefa gigantesca e deve ser evitada sempre que possível. Muitas vezes, é mais eficaz construir sobre plataformas existentes, agrupando e ampliando suas capacidades, otimizadas para aplicações e agentes de IA (ver Figura 2-6).
+
+###### Figura 2-6. Plataforma de Agente de IA integrada ao ecossistema de plataformas existente
+
+No entanto, as plataformas existentes também têm suas limitações e deficiências. Elas cresceram ao longo do tempo e frequentemente incluem dívida técnica, o que dificulta a adoção e atrasa a entrega. Considerando os fatores de sucesso descritos anteriormente, atender a todos eles está longe de ser trivial. Portanto, é crucial priorizar as capacidades exclusivas das aplicações e agentes de IA e validá-las em relação às existentes. As aplicações de IA podem ter uma nova relevância estratégica para a organização, e as capacidades existentes podem não ser suficientes para atender às novas necessidades. Nesse caso, uma estratégia para substituir gradualmente as capacidades da plataforma existente pode ser necessária.
+
+# Conclusão
+
+O mais difícil na construção de uma plataforma é resistir à tentação de criar tudo de uma vez. A tentação de criar a solução perfeita e abrangente é forte, especialmente diante da amplitude de recursos que as aplicações de IA podem exigir. Mas as plataformas que prosperam são aquelas que começam pequenas, conquistam a adoção genuína por meio do valor agregado e crescem organicamente com base nas necessidades reais dos usuários.
+
+Lembre-se de que os primeiros usuários da sua plataforma devem surpreendê-lo. Se isso não acontecer, provavelmente você criou algo muito restritivo. O objetivo não é prever todos os casos de uso possíveis, mas sim fornecer recursos e flexibilidade suficientes para que as equipes consigam resolver problemas que você não previu. Isso significa aceitar que algumas equipes trarão seus próprios recursos, usarão soluções alternativas e, ocasionalmente, farão as coisas de maneiras que o deixarão desconfortável. Isso não é uma falha da plataforma, mas sim uma prova da autonomia da equipe.
+
+O cenário da Engenharia de IA continuará a evoluir rapidamente. Ferramentas essenciais hoje podem se tornar obsoletas em seis meses, o que é aproximadamente o mesmo prazo dos frameworks JavaScript, porém com muito mais hype e investimento de capital de risco. Não deixe que isso o paralise por análise excessiva ou o leve a construir abstrações complexas. Em vez disso, concentre-se em fornecer pontos de acesso claros para ferramentas bem escolhidas, sabendo que você precisará se adaptar à medida que o ecossistema amadurece. As equipes de plataforma que prosperam são aquelas que abraçam essa incerteza e constroem com decisões reversíveis em mente.
+
+Por fim, se você estiver construindo uma plataforma de IA em uma organização que já possui provedores de identidade (IDPs), plataformas de dados ou recursos de MLOps, seu primeiro instinto deve ser expandir em vez de substituir. O valor de um ecossistema unificado, onde as equipes usam ferramentas consistentes em todos os seus aplicativos, supera em muito o apelo de uma construção do zero. Sim, essas plataformas existentes acumularam dívidas e limitações. Sim, elas têm aquele serviço do qual todos reclamam, mas ninguém tem tempo para consertar (você provavelmente tem sorte se for apenas um serviço). Sim, provavelmente existe algum arquivo de configuração de 2019 que ninguém entende, mas todos têm medo de mexer. Construa sobre essas bases mesmo assim. Sua plataforma de IA se beneficiará de anos de aprendizado organizacional, confiabilidade comprovada e, mais importante, usuários existentes que já confiam no ecossistema da plataforma como um todo. Construa sobre essas bases e sua plataforma de IA se beneficiará de anos de aprendizado anteriores.
+
+O próximo capítulo aborda as capacidades técnicas específicas que tornam uma Plataforma de Agentes de IA eficaz para a criação de aplicações de IA, partindo dessas considerações organizacionais e de produto.
+
+Topologias de Equipe: Organizando Equipes de Negócios e Tecnologia para um Fluxo Rápido. https://www.teamtopologies.com/book
+
+Engenharia de Plataformas Eficaz. https://www.manning.com/books/effective-platform-engineering
+
+Evan Bottcher, “Do que eu falo quando falo de plataformas”, MartinFowler.com, 2018, https://martinfowler.com/articles/talk-about-platforms.html
+
+O que é uma Plataforma de Desenvolvimento Interno (IDP)? https://internaldeveloperplatform.org/what-is-an-internal-developer-platform/
+
+5 Aplicando a gestão de produtos a plataformas internas - Thoughtworks. https://www.thoughtworks.com/radar/techniques/applying-product-management-to-internal-platforms
+
+Problema XY. https://xyproblem.info/
+
+Engenharia de Plataformas: Inovação por meio da Harmonização, de Gregor Hohpe. https://architectelevator.com/book/platformstrategy
+
+8 Wikipédia: Usuários Extremos. https://en.wikipedia.org/wiki/Extreme_users
+
+9 Inventar e Vagar, Jeff Bezos, Walter Isaacson, Harvard Business Review Press. https://store.hbr.org/product/invent-and-wander-the-collected-writings-of-jeff-bezos-with-an-introduction-by-walter-isaacson/10466?
+
+Engenharia de Plataformas: Inovação por meio da Harmonização, de Gregor Hohpe. https://architectelevator.com/book/platformstrategy
+
+11 O Framework Diataxis. https://diataxis.fr/
+
+Eric Holscher, Write the Docs, Docs as Code. https://www.writethedocs.org/guide/docs-as-code/
+
+13 Documentos como testes. https://www.docsastests.com/
+
+Design da API 14 por Carson Gross na Big Sky Dev Con 2025. https://www.youtube.com/watch?v=dTstnhS3moc
+
+Engenharia de Plataformas: Inovação por meio da Harmonização, de Gregor Hohpe. https://architectelevator.com/book/platformstrategy
+
+Ruby on Rails - Doctrine, https://rubyonrails.org/doctrine#omakase
+
+McKinsey: Por que sua organização de TI deve priorizar a experiência do desenvolvedor. https://www.mckinsey.com/capabilities/tech-and-ai/our-insights/tech-forward/why-your-it-organization-should-prioritize-developer-experience
+
+Manifesto Ágil: https://agilemanifesto.org/
+
+19 K9s. https://k9scli.io/
+
+20 Github The Fuck. https://github.com/nvbn/thefuck
+
+21 TerminalTextEffects. https://chrisbuilds.github.io/terminaltexteffects/
+
+Modelo de Responsabilidade Compartilhada da AWS. https://aws.amazon.com/compliance/shared-responsibility-model/
+
+Topologias de Equipe: Organizando Equipes de Negócios e Tecnologia para um Fluxo Rápido. https://www.teamtopologies.com/book
+
+Componentes principais de uma Plataforma de Desenvolvimento Interno (IDP). https://internaldeveloperplatform.org/core-components/
+
+25 Princípios de Data Mesh e Arquitetura Lógica por Zhamak Dehghani. https://martinfowler.com/articles/data-mesh-principles.html
+
+
+<!-- OEBPS/colophon01.html -->
+# Sobre os autores
+
+Ben O’Mahony é Engenheiro Principal de IA na Thoughtworks. Ele é um líder de IA/Engenharia orientado a resultados, com um histórico comprovado na construção de equipes de alto desempenho e no lançamento em larga escala de produtos e plataformas de IA, ML e dados essenciais para os negócios. Possui vasta experiência em todo o ciclo de vida de Engenharia e Dados, da pesquisa à implantação em produção. Ben é especialista em definir estratégias técnicas, impulsionar a execução e colaborar com diversas áreas para gerar impacto mensurável. Recentemente, Ben tem se dedicado intensamente à construção de plataformas, modelos e agentes de IA generativa.
+
+Fabian Nonnenmacher é Engenheiro Líder na Thoughtworks, trazendo uma perspectiva única para a Engenharia de IA. Iniciando sua carreira como desenvolvedor de software backend, ele também assumiu o cargo de Analista de Negócios de Produto, o que lhe proporcionou um conjunto de habilidades diferenciado, combinando arquitetura de software robusta com uma visão apurada de negócios e produtos. Esse foco duplo foi fundamental em seu trabalho recente, onde liderou a entrega bem-sucedida de uma plataforma MLOps. Este projeto não apenas capacitou as equipes a lançarem projetos, mas também gerou valor comercial tangível. Uma parte essencial desse esforço envolveu a preparação da plataforma para liberar todo o potencial da IA Generativa.
+
+
+<!-- OEBPS/copyright-page01.html -->
+# Construindo Plataformas de Agentes de IA
+
+Por Ben O’Mahony e Fabian Nonnenmacher
+
+Direitos autorais © 2027 Ben O’Mahony e Fabian Nonnemacher. Todos os direitos reservados.
+
+Publicado por O’Reilly Media, Inc., 141 Stony Circle, Suite 195, Santa Rosa, CA 95401.
+
+Os livros da O’Reilly podem ser adquiridos para uso educacional, comercial ou promocional de vendas. Edições online também estão disponíveis para a maioria dos títulos (https://oreilly.com). Para mais informações, entre em contato com nosso departamento de vendas corporativas/institucionais: 800-998-9938 ou corporate@oreilly.com.
+
+  * Editora de Aquisições: Louise Corrigan
+  * Editora de Desenvolvimento: Melissa Potter
+  * Editor de Produção: Christopher Faucher
+  * Designer da capa: Karen Montgomery
+  * Designer de Interiores: David Futato
+
+
+  * Abril de 2027: Primeira Edição
+
+
+
+# Histórico de revisões da versão antecipada
+
+  * 15/01/2026: Primeiro lançamento
+
+
+
+Consulte https://oreilly.com/catalog/errata.csp?isbn=9798341666382 para obter detalhes sobre a versão.
+
+O logotipo da O’Reilly é uma marca registrada da O’Reilly Media, Inc. Building AI Agent Platforms, a imagem da capa e a apresentação comercial relacionada são marcas comerciais da O’Reilly Media, Inc.
+
+As opiniões expressas nesta obra são dos autores e não representam as opiniões da editora. Embora a editora e os autores tenham se empenhado de boa-fé para garantir a precisão das informações e instruções contidas nesta obra, eles se eximem de toda responsabilidade por erros ou omissões, incluindo, sem limitação, a responsabilidade por danos resultantes do uso ou da confiança nesta obra. O uso das informações e instruções contidas nesta obra é de sua inteira responsabilidade. Caso algum exemplo de código ou outra tecnologia contida ou descrita nesta obra esteja sujeita a licenças de código aberto ou direitos de propriedade intelectual de terceiros, é sua responsabilidade garantir que seu uso esteja em conformidade com tais licenças e/ou direitos.
+
+979-8-341-66634-4
+
+[LSI]
+
+
+<!-- OEBPS/cover.html -->
+
+
+
+<!-- OEBPS/preface01.html -->
+# Sumário resumido (ainda não finalizado)
+
+Capítulo 1: Aplicações de IA e seu ciclo de vida (disponível)
+
+Capítulo 2: O que é uma plataforma? (disponível)
+
+Capítulo 3: Blocos de Construção da Plataforma de Agentes de IA (indisponível)
+
+Capítulo 4: Acessando Modelos Generativos (indisponível)
+
+Capítulo 5: Ambientes de Execução de Agentes (disponível)
+
+Capítulo 6: Observabilidade e Rastreamento (disponível)
+
+Capítulo 7: Gestão e Avaliações Rápidas (indisponível)
+
+Capítulo 8: Persistência (indisponível)
+
+Capítulo 9: Acesso ao conhecimento empresarial (indisponível)
+
+Capítulo 10: SRE, Segurança e Diretrizes (disponível)
+
+Capítulo 11: Modelos e Implementações de Referência (disponível)
+
+Capítulo 12: Ferramentas e Padrões Multiagentes (indisponível)
+
+Capítulo 13: Mercado de Agentes e Ferramentas (indisponível)
+
+Capítulo 14: Ajuste fino e treinamento do modelo (indisponível)
+
+Capítulo 15: Plataformas de Agentes Low-Code e No-Code (disponível)
+
+Capítulo 16: Agentes para ajudar a construir a plataforma (disponível)
+
+Capítulo 17: Agentes para dar suporte aos usuários que utilizam a plataforma (indisponível)
+
+Capítulo 18: Estratégias de Evolução da Plataforma - Mantendo-se à Frente da Curva da IA (indisponível)
+
+
+<!-- OEBPS/titlepage01.html -->
+# Construindo Plataformas de Agentes de IA
+
+Ferramentas e táticas para expandir aplicações de IA em toda a empresa
+
+Com os ebooks de Acesso Antecipado, você obtém os livros em sua forma inicial — o conteúdo bruto e não editado do autor enquanto ele escreve — para que você possa aproveitar essas tecnologias muito antes do lançamento oficial desses títulos.
+
+Ben O’Mahony e Fabian Nonnenmacher

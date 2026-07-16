@@ -1,0 +1,59 @@
+---
+name: better-python-code
+description: >-
+  Passos operacionais extraidos do livro 'Better Python Code' (PT) — Better Python Code.
+---
+
+# Better Python Code — Passos Operacionais
+
+## 1. Conceitos Fundamentais
+
+- Capítulo 2 Better Python Code Um guia para aspirantes a especialistas David Mertz Primeira edição 2025 Créditos e direitos autorais Better Python Code : Um guia para aspirantes a especialistas , David Mertz , 1ª E dição.
+- Authorized translation from the English language edition, entitled Better Python Code: A Guide for Aspiring Experts , 1st Edition, ISBN 978-0-13-832094-2, by David Mertz, published by Pearson Education, Inc., publishing as Addison-Wesley Professional, Copyright © 2024 by Pearson Education, Inc.
+- No part of this book may be reproduced or transmitted in any form or by any means, electronic or mechanical, including photocopying, recording or by any information storage retrieval system, without permission from Pearson Education, Inc.
+- Electronic Portuguese language edition published by Pearson Education do Brasil Ltda., Copyright © 2025 by Pearson Education do Brasil Ltda.
+- We may use artificial intelligence (AI) in our products and services, including to support the creation of content.
+- We claim copyright to the fullest extent permissible by law.
+- While Pearson has a process to validate the resulting content, generative AI may still produce information that is not always accurate.
+- Tradução autorizada da edição em inglês, intitulada Better Python Code: A Guide for Aspiring Experts , 1ª Edição, ISBN 978-0-13-832094-2, por David Mertz, publicada pela Pearson Education, Inc. como Addison-Wesley Professional, Copyright © 2024 por Pearson Education, Inc.
+- Nenhuma parte deste livro pode ser reproduzida ou transmitida de qualquer forma ou por qualquer meio, eletrônico ou mecânico, incluindo fotocópia, gravação ou por qualquer sistema de armazenamento e recuperação de informações, sem permissão da Pearson Education, Inc.
+- Edição eletrônica em português publicada pela Pearson Education do Brasil Ltda., Copyright © 2025 por Pearson Education do Brasil Ltda. É possível que utilizemos inteligência artificial (IA) em nossos produtos e serviços, inclusive para apoiar a criação de conteúdo.
+
+## 2. Principios e Tecnicas
+
+- Reivindicamos os direitos autorais na máxima extensão permitida pela lei.
+- Embora a Pearson tenha um processo para validar o conteúdo resultante, a IA generativa ainda pode produzir informações que nem sempre são precisas.
+- Esta edição em português é a única autorizada Primeira edição, 2025 ISBN 978-85-430-4041-7 (ePub) ISBN 978-85-430-4042-4 (eText) Este título NÃO inclui códigos de acesso a qualquer recurso online.
+- MyLab , Peachpit ou qualquer outra ferramenta digital são vendidas separadamente.
+- Para mais informações, consulte seu Assessor de Serviços de Aprendizagem ou escreva para universidades.atendimento@pearson.com.
+- Linux ® é uma marca registrada de Linus Torvalds nos EUA e em outros países. macOS ® é uma marca registrada da Apple Inc .
+- Microsoft Windows é uma marca registrada do grupo de empresas Microsoft .
+- Muitas das designações usadas por fabricantes e vendedores para distinguir seus produtos são reivindicadas como marcas registradas.
+- Tais designações foram escritas em letras maiúsculas, sempre que aparecem neste livro e sempre que a editora estava ciente de uma reivindicação de marca registrada.
+- O autor e a editora foram cuidadosos na preparação deste livro, mas não oferecem nenhuma garantia expressa ou implícita de qualquer tipo e não assumem nenhuma responsabilidade por erros ou omissões.
+
+## 3. Aplicacoes Praticas
+
+- Não assumimos qualquer responsabilidade por danos incidentais ou consequenciais relacionados ou decorrentes do uso das informações ou dos programas aqui contidos.
+- Nota sobre links para páginas web externas: Este livro inclui links para sites cuja gestão, manutenção e controle são responsabilidade única e exclusiva de terceiros alheios à Pearson Education (“Pearson”).
+- Os links ou outras referências a sites são incluídos com finalidade estritamente informativa e são fornecidos no estado em que se encontram no momento da publicação, sem garantias, expressas ou implícitas, sobre as informações que se fornecem neles.
+- Os links não implicam o aval da Pearson a tais sites, páginas web, funcionalidades e seus respectivos conteúdos ou qualquer associação com seus administradores.
+- Em consequência, a Pearson não assume responsabilidade alguma pelos danos que possam derivar de hipotéticas infrações dos direitos de propriedade intelectual e/ou industrial que possam conter tais sites web nem pelas perdas, delitos ou os danos e prejuízos derivados, direta ou indiretamente, do uso de tais sites web e de sua informação.
+- Ao acessar esses links externos dos sites web, o usuário estará sob a proteção de dados e políticas de privacidade ou práticas e outros conteúdos de tais sites web e não da Pearson.
+- Pearson Education do Brasil Imagem da capa: StudioLondon / Shutterstock Elogios a Better Python Code “Você não estará apenas aspirando a ser um especialista depois de praticar o Better Python Code, você será um deles!
+- Aprenda com David Mertz, que, nos últimos 20 anos, vem ajudando a desenvolver especialistas por meio de seus escritos e treinamentos” – Iqbal Abdullah, ex-presidente da PyCon Asia Pacific e ex-membro da diretoria da PyCon Japan “Em Better Python Code: Um guia para aspirantes a especialistas, David Mertz oferece capítulos curtos de sabedoria pythônica nesta edição obrigatória à coleção de qualquer programador sério de Python.
+- Este livro ajuda a preencher a lacuna entre o usuário iniciante e o avançado de Python.
+- Mas mesmo o programador de Python mais experiente pode melhorar seu jogo com a visão de Mertz sobre os prós e contras dessa programação.” – Katrina Riehl, presidente da NumFOCUS “O que separa os programadores comuns dos especialistas em Python? É mais do que apenas conhecer as melhores práticas – é entender os benefícios e as armadilhas dos muitos aspectos de Python, e saber quando e por que escolher uma abordagem em vez de outra.
+
+## 4. Topicos Avancados
+
+- O último livro de David fornece alguns problemas importantes, mas comuns, que as pessoas geralmente só aprendem depois de passar anos fazendo e consertando.
+- Acho que este livro proporcionará uma maneira muito mais rápida de reunir essas informações importantes e ajudará muitas pessoas em todo o mundo a se tornarem melhores.” – Kushal Das, desenvolvedor do núcleo do CPython e diretor da Python Software Foundation “Este livro é para todos: desde os iniciantes, que querem evitar bugs difíceis de encontrar, até os especialistas que querem escrever códigos mais eficientes.
+- David Mertz compilou um grande conjunto de expressões idiomáticas úteis que tornarão sua vida de programador mais fácil e seus usuários mais felizes.” – Marc-André Lemburg, ex-presidente da EuroPython e ex-diretor da Python Software Foundation Este livro é dedicado à minha mãe, Gayle Mertz, que sempre valorizou ideias e a crítica incansável da realidade existente.
+- Por mais que eu tenha começado com grandes expectativas, tenho o prazer de dizer que elas não foram apenas atendidas, mas superadas: o livro é uma leitura envolvente, oferece muitos insights para que qualquer pessoa em nível intermediário ou avançado possa aprimorar suas habilidades de programação em Python , e inclui um compartilhamento abundante de experiências preciosas na prática e no ensino da linguagem; é fácil de ler e tem um estilo de conversação.
+- Apesar de tudo isso, David consegue manter o livro curto e conciso o suficiente para ser absorvido de forma rápida e completa.
+- A maior parte do conteúdo do livro reflete e ensina de forma eficaz o que equivale a um consenso entre os especialistas em Python sobre as melhores práticas e os erros a serem evitados.
+- Em alguns casos em que as opiniões bem explicadas do autor sobre determinadas questões de estilo diferem das de outros especialistas, David aponta esses casos com cuidado e clareza para que os leitores possam pesar os prós e os contras e tomar suas próprias decisões.
+- A maior parte do livro trata de questões relacionadas ao Python em níveis intermediários de experiência e habilidade.
+- Isso inclui muitos casos em que programadores familiarizados com diferentes linguagens podem adotar um estilo inferior em Python , simplesmente porque ele parece ser uma "tradução" direta de um estilo apropriado para as linguagens que eles conhecem bem.
+- Um excelente exemplo do último problema é escrever APIs que expõem métodos getter e setter : Em Python , a obtenção e a configuração diretas do atributo (geralmente habilitadas por meio do decorador property ) devem tomar o lugar deles.

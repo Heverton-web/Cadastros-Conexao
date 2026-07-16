@@ -1,0 +1,78 @@
+---
+name: manual-de-devops
+description: >-
+  Passos operacionais extraidos do livro 'Manual De DevOps' (EN) — praticas e procedimentos para DevOps, infraestrutura e containers.
+---
+
+# Manual De Devops — Passos Operacionais
+
+Conteudo extraido do livro 'Manual De Devops'. Contem passos, tecnicas e principios baseados na obra original.
+
+## 1. Conceitos Fundamentais
+- Em alguns casos, e dependendo da plataforma, o suporte poderá ser   obtido com o fabricante do equipamento e/ou loja de comércio de ebooks.
+- Biografia dos Autores  Gene Kim é diretor técnico vencedor de vários prêmios, pesquisador e autor   dos livros O Projeto Fênix: Um Romance Sobre TI, DevOps e Sobre Ajudar o   Seu Negócio a Vencer e The Visible Ops Handbook.
+- É fundador da IT   Revolution e organiza as conferências DevOps Enterprise Summit.
+- Jez Humble é coautor do livro Entrega Contínua, vencedor do Jolt Award, e   do revolucionário Lean Enterprise.
+- Seu foco é ajudar as organizações a   distribuir software de valor e alta qualidade, de forma frequente e confiável,   por meio da implementação de práticas de engenharia eficazes.
+- Patrick Debois é consultor de TI independente que está reduzindo a distância   entre projetos e operações usando técnicas ágeis em desenvolvimento,   gerenciamento de projetos e administração de sistemas.
+- John Willis trabalhou no setor de gerenciamento de TI por mais de 35 anos.
+- É autor de seis IBM Redbooks e foi o fundador e arquiteto-chefe da Chain   Bridge Systems.
+- Atualmente é divulgador na Docker, Inc.
+- Manual de DevOps — Como Obter Agilidade, Confiabilidade e   Segurança em Organizações Tecnológicas  Copyright © 2018 da Starlin Alta Editora e Consultoria Eireli.
+
+
+  - §§ Há uma categoria ampla de técnicas arquitetônicas e de teste para tratar dos problemas de testes que
+
+  - diz estar usando práticas do tipo ágeis, mas, na realidade, todos os testes e correções de defeitos são
+
+  - ‡ Há várias bibliotecas de registro de aplicativo que facilitam que os desenvolvedores criem telemetria
+
+  - coisa certa. A pesquisa com usuários é tão barata e fácil em relação ao esforço e ao custo de construir
+
+  - ‡ Estratégias para gerenciar esses riscos incluem fornecer treinamento e gerenciamento de funcionários,
+
+  - § Os líderes são responsáveis pelo projeto e operação de processos em um nível mais alto de agregação,
+## 2. Principios e Tecnicas
+- ISBN: 978-8-   550-81619-7  Translated from original Deep Work.
+- Copyright © 2016 by Gene Kim, Jez   Humble, Patrick Debois, and John Willis.
+- This   translation is published and sold by permission of IT Revolution Press, LLC.,   the owner of all rights to publish and sell the same.
+- PORTUGUESE language   edition published by Starlin Alta Editora e Consultoria Eireli, Copyright ©   2018 by Starlin Alta Editora e Consultoria Eireli.
+- Todos os direitos estão reservados e protegidos por Lei.
+- Nenhuma parte deste   livro, sem autorização prévia por escrito da editora, poderá ser reproduzida   ou transmitida.
+- A violação dos Direitos Autorais é crime estabelecido na Lei   nº 9.610/98 e com punição de acordo com o artigo 184 do Código Penal.
+- A editora não se responsabiliza pelo conteúdo da obra, formulada   exclusivamente pelo(s) autor(es).
+- Marcas Registradas: Todos os termos mencionados e reconhecidos como   Marca Registrada e/ou Comercial são de responsabilidade de seus   proprietários.
+- A editora informa não estar associada a nenhum produto e/ou   fornecedor apresentado no livro.
+
+
+  - especificar a equipe que principalmente desenvolve, testa e torna o código seguro, para que valor seja
+
+  - † Nesse contexto, ambiente é definido como tudo o que está na pilha de aplicações, exceto a aplicação,
+
+  - “alterações padrão devem ser identificadas no início, ao se construir o processo de gestão da mudança,
+
+  - ‡ Existia um conflito crônico básico similar na manufatura: a necessidade de garantir simultaneamente
+## 3. Aplicacoes Praticas
+- Impresso no Brasil — 2018 - Edição revisada conforme o Acordo   Ortográfico da Língua Portuguesa de 2009.
+- Publique seu livro com a Alta Books.
+- Para mais informações envie um e-   mail para autoria@altabooks.com.br  Obra disponível para venda corporativa e/ou personalizada.
+- Acesse o site www.altabooks.com.br e procure pelo título do livro desejado   para ter acesso às erratas, aos arquivos de apoio e/ou a outros conteúdos   aplicáveis à obra.
+- Suporte Técnico: A obra é comercializada na forma em que está, sem direito   a suporte técnico ou orientação pessoal/exclusiva ao leitor.
+- Sumário  Apresentação  Prefácio  Uma Introdução ao Manual de DevOps  PARTE I — As Três Maneiras  1\.
+- Filosofia Ágil, Entrega Contínua e as Três Maneiras  2\.
+- A Primeira Maneira: Os Princípios do Fluxo  3\.
+- A Segunda Maneira: Os Princípios do Feedback  4\.
+- A Terceira Maneira: Os Princípios doAprendizado Contínuo e  Experimentação  PARTE II Onde Começar  5\.
+
+## 4. Topicos Avancados
+- Selecionando com Qual Fluxo de Valor Começar  6\.
+- Entendendo o Trabalho em Nosso Fluxo de Valor, Tornando-o  Visível e Expandindo-o Pela Organização  7\.
+- Como Projetar Nossa Organização e Arquitetura com aLei de  Conway em Mente  8\.
+- Como Obter Ótimos Resultados Integrando Operações no  Trabalho Diário do Desenvolvimento  PARTE III A Primeira Maneira — As Práticas Técnicas do   Fluxo  9\.
+- Criar as Bases do Nosso Pipeline de Implementação  10\.
+- Possibilitar Testes Automatizados Rápidos e Confiáveis  11\.
+- Permitir e Praticar Integração Contínua  12\.
+- Automatizar e Permitir Releases de Baixo Risco  13\.
+- Arquitetar paraReleases de Baixo Risco   PARTE IV A Segunda Maneira — As Práticas Técnicas de   Feedback  14\.
+- Criar Telemetria para Ver e Resolver Problemas  15\.
+

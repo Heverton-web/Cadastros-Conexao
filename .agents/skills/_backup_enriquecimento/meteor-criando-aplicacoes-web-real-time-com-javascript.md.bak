@@ -1,0 +1,72 @@
+---
+name: epub-meteor-criando-aplica-es-web-real-time-com-ja
+description: >-
+  Passos operacionais extraidos — desenvolvimento web, full-stack, JavaScript, TypeScript, React, Node.js (PT).
+---
+
+# EPUB Meteor  criando aplicações web real-time com JavaScript — Passos Operacionais
+
+Skill baseada no livro "EPUB Meteor  criando aplicações web real-time com JavaScript" (PT). Contem passos praticos e sequencias operacionais.
+
+Use quando o usuario pedir orientacao pratica sobre: desenvolvimento web, full-stack, JavaScript, TypeScript, React, Node.js.
+
+---
+
+## 1. ## Meteor_ criando aplicações web real-time com JavaScript
+
+
+## 2. ## Sumário
+
+
+## 3. ## Agradecimentos
+
+
+## 4. ## Sobre o autor
+
+
+## 5. ## Prefácio
+
+
+## 6. ##  Capítulo 1:  Introdução
+
+
+## 7. ##  Capítulo 2:  Configurando o ambiente de desenvolvimento
+
+
+## 8. ##  Capítulo 3:  Criando uma rede social real-time
+
+
+## 9. ##  Capítulo 4:  Implementando uma timeline de posts
+
+
+## 10. ##  Capítulo 5:  Signin e Signup de usuários
+
+
+## 11. ##  Capítulo 6:  Perfil do usuário
+
+
+## 12. ##  Capítulo 7:  Tela de perfil público do usuário
+
+## Conceitos Fundamentais
+
+- assistir ou enviar vídeos, ver ou publicar fotos, ouvir músicas e assim por diante. Isso
+- prática ele é um loop infinito que a cada iteração verifica em sua fila de eventos se um
+- tir o usuário criar, listar, atualizar e excluir contatos. Esse é o conjunto clássico de
+- ray contendo os elementos a partir de um range inicial e final da lista. O range utiliza
+- de sistemas. Existem diversos tipos de testes: teste unitário, teste funcional, teste de
+
+## Princípios e Técnicas
+
+- requisições em nosso servidor. Testar requisições sobre as rotas é muito útil, pois per-
+- requisição real, pelo qual testamos as rotas. Este tipo de teste aqui está automatizado,
+- Suas aplicações serão single-thread, ou seja, cada aplicação terá instância de um único
+- zar os módulos http, url e fs (file system), que tal reorganizar a nossa aplicação para
+- flexível e liberal. Apesar de utilizar o seu scaffold de geração inicial, temos a total
+
+## Aplicações Práticas
+
+- acessar a rota de edição do contato) e Excluir (botão que vai excluir o contato atual).
+- forma totalmente abstraída para o desenvolvedor. Seu site oficial é: (http://socket.io)
+- logado dentro do nosso chat. Para finalizar essa tarefa, faremos alguns refactors. Pri-
+- quina. Para instalá-lo recomendo que acesse seu site oficial: (http://nginx.org) . Tam-
+- guração fará o Nginx servir os arquivos estáticos ao invés do Express, e para finalizar

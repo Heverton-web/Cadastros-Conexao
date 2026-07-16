@@ -1,0 +1,57 @@
+---
+name: programando-em-google
+description: >-
+  Passos operacionais extraidos do livro 'Programando em Google' (PT) — Programando, Google.
+---
+
+# Programando Em Google — Passos Operacionais
+
+Conteudo extraido do livro 'Programando Em Google'. Contem passos, tecnicas e principios baseados na obra original.
+
+## 1. Conceitos Fundamentais
+- Página 2 © Casa do Código Todos os direitos reservados e protegidos pela Lei nº9.610, de 10/02/1998.
+- Nenhuma parte deste livro poderá ser reproduzida, nem transmitida, sem autorização prévia por escrito da editora, sejam quais forem os meios: fotográficos, eletrônicos, mecânicos, gravação ou quaisquer outros.
+- É uma linguagem que favorece a criação de programas paralelos, leves, rápidos, simples de entender, de dis- tribuir (um simples binário compilado estaticamente) e de manter.
+- Honestamente, porém, minhas primeiras impressões gerais sobre a lin- guagem não foram das melhores.
+- A ausência de funcionalidades encontradas em outras linguagens mais sofisticadas me incomodava.
+- Algumas bem po- lêmicas e controversas, como a de tipos genéricos e o tratamento de erros simples sem exceções.
+- Não é incomum ter que escrever uma ou outra linha de código a mais em Go do que seria necessário em outra linguagem.
+- Não é uma linguagem otimizada para programas curtos, mas sim para programas escaláveis.
+- No início, o modo com que Go lida com concorrência e paralelismo foi o que despertou meu interesse na linguagem.
+- Channels e goroutines são primiti- vas extremamente poderosas que continuam influenciando bastante a forma com que escrevo programas concorrentes, inclusive em outras linguagens.
+
+## 2. Principios e Tecnicas
+- E eu tenho certeza de que vão influenciar a forma com que você escreve pro- gramas também.
+- O resto não parecia ter nada de especial quando comparado com outras linguagens.
+- Mas, com o tempo, fui aprendendo a apreciar a simplicidade de Go.
+- Demorou um pouco até me cair a ficha de que a ausência de funcionali- dades que trariam complexidade foi (e continua sendo) uma decisão explícita de seus principais mantenedores.
+- Isso faz com que Go seja uma linguagem relativamente fácil de aprender e geralmente existe apenas uma (ou poucas) forma(s) clara(s) de se resolver os problemas e escrever código em Go, a mai- iii E-book gerado especialmente para cpturbo.org  Página 8 Casa do Código oria delas usando apenas o que já está disponível na biblioteca padrão.
+- Quando me dá vontade de reclamar de que Go não tem essa ou aquela funcionalidade, lembro-me o quão simples é ler e entender programas escri- tos em Go.
+- Lembro-me também de quanta discussão desnecessária se evita no dia a dia com outros programadores sobre como código deveria ser es- crito.
+- Uma vez que se entende e aceita a mentalidade por trás da linguagem, times conseguem focar em escrever código que resolve problemas de verdade de forma simples de manter, em vez de gastar tempo discutindo preferências pessoais e de estilo de código.
+- Go, na minha opinião, representa um ótimo balanço entre pragmatismo e funcionalidades.
+- É uma escolha perfeita para programas que precisam so- breviver por muito tempo, na mão de muitas pessoas e times diferentes.
+
+## 3. Aplicacoes Praticas
+- Já tive o prazer de trabalhar diretamente com o Caio, que é um excelente programador e faz realmente um bom trabalho em apresentar a linguagem.
+- Bom proveito e feliz programação!
+- Fabio Kung iv E-book gerado especialmente para cpturbo.org  Página 9 Casa do Código Agradecimentos À minha esposa Gabriela, pela paciência e todo o apoio.
+- Ao Francisco Capuano, pelo exemplo e inspiração.
+- À minha avô Arlinda e ao meu tio Washington, por permitirem que eu pudesse estudar e me apaixonar pela minha profissão.
+- A toda a minha família por acreditar e confiar em mim, sempre.
+- Escrever um programa, por menor que ele seja, exige altas doses de concentração, paciência e atenção aos detalhes.
+- Por vezes os problemas parecem não ter solução.
+- E nada disso parece ter mudado muito com o passar do tempo: novas linguagens de pro- gramação e novas ferramentas são criadas todos os dias por programadores ao redor do mundo, enquanto o número de desafios não diminui.
+- Ao contrário, numa época em que processadores com múltiplos núcleos (multi-core processors) estão presentes até mesmo em dispositivos móveis, programadores e administradores de sistemas sofrem para tentar usar ao má- ximo os recursos da máquina sem que haja impacto para seus usuários – ta- refa que se torna mais difícil conforme o número de usuários cresce.
+
+## 4. Topicos Avancados
+- Não existe nenhuma linguagem de programação capaz de resolver todos estes problemas de forma fácil.
+- No entanto, a linguagem Go surgiu num am- biente onde tais problemas são ainda mais extremos: o Google.
+- E-book gerado especialmente para cpturbo.org  Página 16 1.1.
+- Casa do Código Apesar de bastante inspirada na linguagem C, Go possui características de mais alto nível, como abstrações para algumas estruturas de dados, coleta de lixo (garbage collection) e duck typing, além de trazer uma abordagem mo- derna e elegante para a criação de aplicações concorrentes.
+- Go também inclui uma extensa biblioteca padrão com ferramentas para comunicação em redes, servidores HTTP, expressões regulares, leitura e escrita de arquivos e muito mais.
+- O objetivo deste livro é apresentar ao leitor os recursos da linguagem Go e importantes partes da biblioteca padrão, sempre trazendo exemplos relevan- tes que demonstram o uso de cada recurso.
+- Resolver os problemas citados anteriormente é um desafio enorme, mas Go veio para tornar esta tarefa um pouco mais prazerosa. 1.1 Por que Go?
+- Go nasceu como um projeto interno no Google, iniciado em 2007 por Rob Pike, Ken Thompson e Robert Griesemer, e posteriormente lançado como um projeto de código aberto em novembro de 2009.
+- Pike e Thompson já haviam trabalhado juntos no Bell Labs, o berço do Unix e do Plan 9 – o sistema operacional que deu origem às ferramentas de compilação usadas como base do desenvolvimento da linguagem Go.
+- No artigo (em inglês) “Go at Google: Language Design in the Service of Software Engineering” (http://talks.golang.org/2012/splash.article) , Rob Pike atribui os longos períodos de compilação e a dificuldade em escalar o desen- volvimento de grandes aplicações como sendo os principais motivadores para a criação da nova linguagem.

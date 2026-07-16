@@ -1,0 +1,44 @@
+---
+name: epub-refatorando-com-padroes-de-projeto-um-guia-em-ruby
+description: >-
+  Passos operacionais extraidos do livro 'EPUB Refatorando com padrões de projeto um guia em Ruby' (PT) — Ruby, Padrões de Projeto.
+---
+# Conteudo Extraido
+Fonte: EPUB - [PT] EPUB Refatorando com padrões de projeto_ um guia em Ruby - Desconhecido.txt
+
+
+## Conceitos Fundamentais
+- Entre meados de 1940 (com o computador de Alan Turing) e a década de 2010, são meros 70 anos de história.
+- A maioria da população ainda viveu boa parte de sua vida sem a influência de um computador no seu dia a dia.
+- Ainda não temos um conhecimento aprofundado e difundido do que dá certo e do que não dá.
+- Padrões de projeto são uma tentativa de estabelecer uma coletânea destes conhecimentos.
+- Eles são apresentados em um formato que segue resumidamente a seguinte estrutura: Nome; Objetivo; Motivação (o problema); Contexto; Solução; Exemplo.
+- Idealmente, essas coletâneas se tornarão um recurso para programadores identificarem o problema com o qual estão lidando, e aplicarem uma solução que é conhecida e "garantida".
+
+## Principios e Tecnicas
+- Este livro apresenta exemplos práticos em Ruby para seguir essa jornada de forma responsável.
+- Marcos Brizeno apresenta claramente todos os passos para refatorar o código sem causar problemas para os testes automatizados (e, portanto, em seu programa), e chegar a uma implementação de um padrão de projeto conhecido.
+- Ao passar por 9 padrões documentados no primeiro livro sobre padrões de projeto (Design Patterns) em computação, Marcos não se contenta em explicar a refatoração, nem o padrão.
+- Ele nos guia pelos passos que toma e os motivos pelos quais seria perigoso seguir outro caminho.
+- O livro é bem fluido, e lê-lo de ponta a ponta não é um problema.
+- Recomendo que, ao final de cada capítulo, você pause a leitura e tente refazer o código daquele capítulo sozinho.
+
+## Aplicacoes Praticas
+- Se conseguir atingir os mesmos resultados que ele sem quebrar os testes, estará dando um belo passo em direção à excelência técnica.
+- Caso a leitura de ponta a ponta não seja seu estilo, não se preocupe.
+- Sinta-se à vontade para pular de padrão a padrão, na ordem que lhe convir, desde que pare para tentar seguir os passos você mesmo.
+- Independente do quanto você já conhece de Ruby, de refatoração ou de padrões de projeto, este livro lhe guiará por uma jornada consciente no uso conjunto dessas técnicas em uma linguagem que incorpora vários aspectos de linguagens modernas, como Orie
+- Mesmo que você não use Ruby no dia a dia, o exercício de refatoração será de muito valor e poderá ser aplicado no seu cotidiano. ─ Hugo Corbucci Sobre o autor Marcos Brizeno é Cientista da Computação pela Universidade Estadual do Ceará e Consultor na
+- Apaixonado por Engenharia de Software, em especial Metodologias Ágeis, gosta dos desafios de desenvolver software e se apaixonou à primeira vista por Ruby.
+
+## Topicos Avancados
+- Agradecimentos Gostaria de agradecer à minha esposa Ingrid, pela paciência que precisou ter enquanto passava meu tempo escrevendo, e à nossa gata Maggie, que nos ajudou a manter a motivação.
+- Também gostaria de agradecer aos meus pais, Marcos e Lúcia, que desde cedo incentivaram meu interesse em ler e escrever junto ao meu irmão Brunno.
+- Consegui realizar este objetivo graças ao esforço e dedicação da minha família. page_006 Capítulo 1 : O que você quer aprender?
+- Geralmente, os autores começam explicando o que será encontrado dentro dos seus livros.
+- Entretanto, antes disso, quero lhe sugerir uma inversão desse pensamento: o que você quer aprender com este livro?
+- O objetivo de responder essas perguntas é dar mais clareza sobre o que é mais importante para você neste momento, aproveitando melhor as partes que mais lhe interessam.
+
+## Secao 5
+- Quadrados e retângulos para explicar herança e um carro que tem quatro rodas para explicar composição são exemplos simples e bastante usados para explicar conceitos básicos, mas que ficam bem distante da realidade do dia a dia de um desenvolvedor.
+- A ideia do livro não é ser uma referência para padrões de projeto, mas sim apresentar com exemplos práticos e próximos da realidade como eles podem melhorar sua vida.

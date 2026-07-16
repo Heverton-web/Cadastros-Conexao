@@ -1,0 +1,1440 @@
+[Page 1]
+Licenciado para - heverton eduardo peres - 32214079807 - Protegido por Eduzz.com
+
+[Page 2]
+Os meus sobrinhos-netos Theo e Helena. Titio ama vocês!
+Copyright © 2026
+Licenciado para - heverton eduardo peres - 32214079807 - Protegido por Eduzz.com
+
+[Page 3]
+ENGENHARIA DE SOFTWARE COM AGENTES INTELIGENTES
+2
+Licenciado para - heverton eduardo peres - 32214079807 - Protegido por Eduzz.com
+
+[Page 4]
+Sumário
+1
+A Morte do Vibe Coding
+4
+1.1
+O que é vibe coding e por que ele é insuficiente
+6
+1.2
+O que é engenharia de software
+7
+1.3
+A proposta do livro: IA + processo = software de verdade
+10
+2
+O que é software afinal?
+12
+2.1
+O software em crise?
+15
+2.2
+A nova crise: software feito com IA sem processo
+19
+2.3
+A crise é do software ou dos desenvolvedores?
+21
+2.4
+Como se constrói um software
+24
+2.5
+Os modelos de processo
+26
+2.6
+A revolução ágil
+32
+2.7
+Os mitos que nos perseguem
+36
+3
+Git: o Ctrl+Z que a IA não te dá
+39
+3.1
+Por que git é obrigatório quando se usa IA
+42
+3.2
+Instalação e configuração do git + GitHub
+44
+3.3
+Os comandos essenciais
+46
+3.4
+Branches: trabalhando com IA sem medo de errar
+48
+3.5
+Projeto prático: criando e versionando um projeto com Claude Code
+51
+4
+Criando de olho na Manutenção
+54
+4.1
+O peso invisível da manutenção
+55
+4.2
+As categorias de manutenção (SWEBOK)
+58
+4.3
+POO: o alicerce da manutenção
+60
+4.4
+Singleton e Factory Method
+67
+4.5
+Strategy e Observer
+70
+4.6
+Repository: separando negócio do banco
+73
+4.7
+Desenvolvimento em camadas
+75
+4.8
+Quando o software não foi pensado para manutenção
+77
+4.9
+IA e manutenção: o novo risco
+78
+3
+Licenciado para - heverton eduardo peres - 32214079807 - Protegido por Eduzz.com
+
+[Page 5]
+ENGENHARIA DE SOFTWARE COM AGENTES INTELIGENTES
+CAPÍTULO 1
+A Morte do Vibe Coding
+“Sandeco, você ficou louco? Que título é esse?” Eu sei. Parece radical. Mas antes de
+fechar o livro, me dá uma chance de explicar. Quando eu digo que o Vibe Coding precisa
+morrer, não estou dizendo que programar com IA é ruim. Pelo contrário. Estou dizendo que a
+forma como a maioria das pessoas programa com IA hoje é insustentável; e que, para a gente
+de fato evoluir no desenvolvimento de software com inteligência artificial, essa fase precisa
+ficar para trás. No lugar dela, precisa nascer algo com fundamento. Algo que este livro vai
+chamar de AI Engineering.
+Tudo começou em fevereiro de 2025, quando Andrej Karpathy, ex-diretor de IA da Tesla e
+um dos fundadores da OpenAI, ou seja, alguém com currículo suficiente para ser levado a
+sério, publicou uma reflexão sobre seu próprio modo de programar com LLMs. Ele descreveu
+uma prática que chamou de vibe coding: você larga o controle, entra em ’flow’, aceita o que a
+IA sugere sem questionar, e vai construindo por impulso e intuição. O nome pegou na hora. A
+prática já existia há meses. Karpathy só colocou palavras no que milhares de desenvolvedores
+já faziam; e alguns até postavam no LinkedIn com muito orgulho.
+A ascensão do vibe coding não é um acidente nem uma conspiração. É o resultado
+direto da democratização das ferramentas de IA generativa. Quando o Claude Code, o Cursor,
+o GitHub Copilot e similares chegaram ao mercado acessível, qualquer pessoa com uma
+ideia e uma conexão com a internet passou a conseguir gerar código. Designers codando.
+Empreendedores construindo MVPs em um final de semana. Estudantes entregando projetos
+que antes levariam um semestre. A produtividade explodiu. E com ela, também explodiu
+a ilusão de que velocidade sozinha é suficiente; ilusão que, convenhamos, já era antiga no
+mundo do software, mas agora ganhou turbina.
+O problema do vibe coding não está na IA: a IA não tem culpa de nada, ela só faz o que
+mandamos. O problema está na ausência de processo. Quando você constrói software por
+acumulação de prompts, sem definir o que o sistema precisa fazer, sem pensar em quem vai
+usá-lo, sem planejar como vai evoluir, você não está desenvolvendo software, está construindo
+às cegas.
+CAPÍTULO 1. A MORTE DO VIBE CODING
+4
+Licenciado para - heverton eduardo peres - 32214079807 - Protegido por Eduzz.com
+
+[Page 6]
+ENGENHARIA DE SOFTWARE COM AGENTES INTELIGENTES
+Figura 1.1: O contraste entre vibe coding e engenharia de software: velocidade sem
+processo versus construção sustentável com método.
+A história do software está lotada de sistemas que ’funcionavam’ muito bem até o momento
+em que pararam de funcionar de formas memoráveis. O foguete Ariane 5 explodiu 37 segundos
+após o lançamento em 1996 por causa de um overflow de inteiro, código copiado do Ariane 4
+sem revisar se ainda fazia sentido no novo contexto. Trezentos e setenta milhões de dólares
+viraram confete no céu da Guiana Francesa. O sistema HealthCare.gov, o maior portal de
+saúde dos EUA, colapsou no lançamento em 2013 por uma combinação de planejamento
+insuficiente de capacidade, erros de software, funcionalidades incompletas e práticas frágeis
+de validação antes da entrada em produção. Nenhum desses projetos falhou por falta de
+código. Falharam por falta de processo. O vibe coding em escala industrial é a versão
+moderna do mesmo problema, com menos foguete e mais startup.
+Este livro parte de uma premissa simples: engenharia de software e agente inteligente
+não são opostos; são parceiros. A IA é uma ferramenta extraordinária quando usada dentro
+de um processo estruturado. Ela acelera a escrita de código, automatiza tarefas repetitivas,
+sugere soluções e ajuda a explorar alternativas com uma paciência que nenhum colega
+humano teria. Mas quem define o que construir, para quem, com quais restrições e com qual
+qualidade, isso continua sendo responsabilidade do engenheiro. A IA não vai perguntar se
+você pensou nos casos extremos. Você precisa perguntar por ela.
+Este capítulo estabelece o ponto de partida: entender o que é o vibe coding, por que ele
+é insuficiente para software que precisa durar, e o que a engenharia de software oferece
+como alternativa. Nos capítulos seguintes, você vai aprender a usar agentes inteligentes com
+método, não como substitutos do pensamento, mas como amplificadores dele. A morte do
+vibe coding não é o fim da IA no desenvolvimento. É o começo do uso inteligente dela. E
+talvez o fim de algumas noites traumáticas de produção às três da manhã.
+CAPÍTULO 1. A MORTE DO VIBE CODING
+5
+Licenciado para - heverton eduardo peres - 32214079807 - Protegido por Eduzz.com
+
+[Page 7]
+ENGENHARIA DE SOFTWARE COM AGENTES INTELIGENTES
+1.1
+O QUE É VIBE CODING E POR QUE ELE É INSUFICIENTE
+Imagine a cena: são duas da manhã, um desenvolvedor abre o Claude Code ou o Cursor,
+digita ’cria um sistema de login com autenticação por e-mail e senha’ e, em questão de
+segundos, recebe um bloco de código razoavelmente funcional. Ele cola, roda, funciona. Cola
+mais um pouco, roda de novo, funciona de novo. Em 48 horas, tem um ’produto’. Em 72
+horas, já postou no LinkedIn: ’Construí um SaaS completo em um fim de semana com IA!
+#buildinpublic #solofounder #vibecoding’. Cento e oitenta curtidas. Dezessete comentários de
+’incrível demais!’. Esse é o vibe coding em ação; e, por enquanto, tudo parece ótimo.
+O termo foi cunhado por Andrej Karpathy em fevereiro de 2025 para descrever essa nova
+forma de programar: você esquece que existe código, entra em ’flow’, aceita tudo que a
+IA sugere e vai em frente. Sem ler, sem revisar, sem entender. É como surfar numa onda
+que você não sabe de onde veio, mas enquanto está em cima, a sensação é fantástica. O
+problema, obviamente, aparece quando a onda quebra e você percebe que estava surfando
+em cima de código que valida senha com if password == password.
+O vibe coding opera sobre uma premissa implícita muito conveniente: que código que
+funciona é código correto. Essa premissa é falsa. Sempre foi. Mas quando você tem uma IA
+gerando centenas de linhas por minuto, a ilusão de progresso se torna tão rápida que fica
+difícil perceber quando você saiu da estrada. Um sistema que ’funciona’ em ambiente local,
+com um único usuário, sem dados reais, sem carga e com o banco de dados rodando no seu
+notebook não é um sistema pronto para produção; é um protótipo bem vestido que vai entrar
+em colapso na primeira sexta-feira à noite com dez usuários simultâneos.
+O vibe coding não é culpa de um desenvolvedor específico; é um problema sistêmico
+que acontece quando ferramentas de alta produtividade chegam às mãos de pessoas sem
+nenhuma estrutura de processo. É mais ou menos o que acontece quando você dá um bisturi
+de última geração para alguém que nunca estudou medicina. O instrumento é excelente. O
+resultado, nem tanto.
+O maior sintoma do vibe coding é a ausência de requisitos. Quando você não sabe
+o que o sistema precisa fazer de verdade, quem vai usar, em que condições, com quais
+restrições, em qual escala, qualquer código que ’pareça’ fazer algo já satisfaz. A IA vai
+preencher os buracos com suposições razoáveis, você vai aceitar porque está no flow, e seis
+meses depois vai descobrir que essas suposições eram tudo menos razoáveis no contexto
+real do negócio.
+Considere um cenário perfeitamente plausível: uma startup gerou, por meio de prompts
+sucessivos ao ChatGPT, um sistema de gestão financeira para pequenas empresas. Em
+três semanas, o produto estava ’pronto’. Seis meses depois, descobriram que o cálculo
+CAPÍTULO 1. A MORTE DO VIBE CODING
+6
+Licenciado para - heverton eduardo peres - 32214079807 - Protegido por Eduzz.com
+
+[Page 8]
+ENGENHARIA DE SOFTWARE COM AGENTES INTELIGENTES
+de impostos aplicava uma alíquota fixa, ignorando alegremente o regime tributário de cada
+empresa. Nenhum teste cobria isso porque nenhum requisito tinha documentado isso. E
+nenhum requisito tinha documentado isso porque ninguém tinha sentado para perguntar: ’o
+que, de fato, esse sistema precisa calcular?’ O custo de corrigir? Três vezes o custo de
+construir. A Receita Federal não aceita ’mas a IA gerou assim’ como justificativa.
+A outra face do problema é a manutenção. Código gerado sem estrutura é código que
+ninguém, nem a própria IA que o gerou, consegue manter com segurança. Quando um sistema
+cresce por acumulação de prompts, sem arquitetura, sem separação de responsabilidades,
+sem padrões, ele se transforma numa caixa preta que responde de forma imprevisível a
+qualquer mudança. Mexe aqui, quebra ali. Conserta ali, quebra acolá. Esse fenômeno tem
+nome: débito técnico. E no vibe coding, ele se acumula com a eficiência de uma dívida no
+cartão de crédito com juros de 12% ao mês.
+Vale dizer, antes que alguém fique na defensiva: o vibe coding tem seu lugar. Para
+explorar uma ideia rapidamente, validar uma hipótese, construir um protótipo descartável ou
+aprender uma tecnologia nova, ele é genuinamente poderoso. O erro não está em usar IA
+para gerar código; está em confundir o protótipo com o produto, o rascunho com a entrega, o
+esboço com a planta baixa. Usar martelo para apertar parafuso não é culpa do martelo.
+O que falta no vibe coding, portanto, é exatamente o que a engenharia de software
+oferece: processo. Um conjunto de práticas, técnicas e ferramentas que transformam a
+criação de software numa atividade controlada, previsível e sustentável. Não porque processo
+é burocracia corporativa inventada para torturar desenvolvedores; é porque software que
+importa vive por anos, é mantido por equipes inteiras e carrega responsabilidades reais sobre
+dados reais de pessoas reais. E para isso, vibe, infelizmente, não é suficiente.
+1.2
+O QUE É ENGENHARIA DE SOFTWARE
+Em 1968, a OTAN reuniu um grupo de cientistas em Garmisch, na Alemanha, para
+discutir um problema que já tinha nome: a ’crise do software’. Sistemas atrasando, estourando
+orçamento, entregando menos do que prometiam ou falhando em produção de formas criativas.
+O mais divertido é que isso foi em 1968, sem IA, sem internet, sem GitHub. Os desenvolvedores
+da época conseguiam criar caos de altíssimo nível mesmo sem nenhuma ferramenta moderna
+para ajudar. Talento puro. Daquela conferência nasceu o termo engenharia de software ;
+e com ele, a ideia radical de que construir software é uma atividade de engenharia, não de
+inspiração divina.
+A definição clássica do IEEE diz que engenharia de software é ’a aplicação de uma
+abordagem sistemática, disciplinada e quantificável ao desenvolvimento, operação e ma-
+CAPÍTULO 1. A MORTE DO VIBE CODING
+7
+Licenciado para - heverton eduardo peres - 32214079807 - Protegido por Eduzz.com
+
+[Page 9]
+ENGENHARIA DE SOFTWARE COM AGENTES INTELIGENTES
+Figura 1.2: Evolução do custo de mudança ao longo do tempo. O vibe coding acumula
+débito técnico de forma exponencial: cada nova feature fica mais cara do que a anterior. O
+desenvolvimento com processo estruturado mantém o custo previsível e linear. Após o ponto
+de inversão, cada mudança no projeto sem processo custa mais do que custaria num projeto
+com engenharia desde o início.
+nutenção de software’. Cada palavra importa, então preste atenção: sistemática significa
+que existe um método. Disciplinada significa que o método é seguido, não só quando dá
+vontade. Quantificável significa que é possível medir, acompanhar e melhorar. E o trecho
+’desenvolvimento, operação e manutenção’ deixa claro que o ciclo não termina na entrega;
+ele continua enquanto o software estiver vivo, que costuma ser muito mais tempo do que o
+time original esperava.
+Perceba que engenharia de software não é sinônimo de ’escrever código bonito’. Um
+CAPÍTULO 1. A MORTE DO VIBE CODING
+8
+Licenciado para - heverton eduardo peres - 32214079807 - Protegido por Eduzz.com
+
+[Page 10]
+ENGENHARIA DE SOFTWARE COM AGENTES INTELIGENTES
+excelente programador que nunca levantou requisitos, nunca documentou uma decisão de
+arquitetura e nunca escreveu um teste automatizado está praticando artesanato de software,
+que pode ser admirável, mas não é engenharia. O código pode ser elegante como um poema.
+Mas se não foi construído dentro de um processo, ninguém além do próprio autor consegue
+evoluí-lo com segurança. E o autor, seis meses depois e três projetos mais tarde, também não
+lembra mais o que estava pensando.
+O corpo de conhecimento da área está organizado no SWEBOK, Software Engineering
+Body of Knowledge, um documento mantido pelo IEEE que mapeia as competências essenciais
+do engenheiro de software. Em versões recentes, ele organiza a disciplina em múltiplas
+áreas de conhecimento, como requisitos, design, construção, testes, manutenção, gestão
+de configuração, gestão de projetos, processo, modelos e métodos, qualidade e práticas
+profissionais. Repare que ’escrever código’ aparece na área de construção, que é apenas
+uma delas. O código é importante, mas representa uma fatia menor do que a maioria dos
+iniciantes imagina quando pensa em fazer software de verdade.
+Os modelos de processo são as formas concretas de organizar essas atividades no
+tempo. O modelo cascata organiza tudo em fases sequenciais: requisitos, design, construção,
+testes, entrega: simples, previsível e com a flexibilidade de um bloco de concreto. O modelo
+espiral adiciona iterações e gestão de risco. O RAD prioriza protótipos rápidos para validação.
+Os métodos ágeis, Scrum, XP, Kanban, organizam o trabalho em ciclos curtos com entrega
+contínua de valor e reuniões diárias que muita gente ama odiar. Cada modelo tem seu contexto
+ideal. Nenhum é bala de prata. Mas todos compartilham uma característica essencial: existe
+um processo, e ele é seguido de forma consciente.
+A manutenção merece atenção especial porque é sistematicamente subestimada por
+quem está começando.
+Estudos clássicos de manutenção de software frequentemente
+estimam que a maior parte do custo do ciclo de vida ocorre após a entrega inicial, em
+correções, adaptações e evoluções. Traduzindo: a maior parte do trabalho de um engenheiro
+de software não é construir sistemas novos, é manter sistemas existentes que outra pessoa,
+ou você mesmo, em outro estado de espírito, construiu. Quando esse sistema foi construído
+sem método, a manutenção se torna cara, lenta, perigosa e emocionalmente desgastante.
+Quando foi construído com processo, ela é apenas trabalho normal.
+O que a engenharia de software oferece, no fundo, é previsibilidade; e previsibilidade
+tem valor imenso em contextos onde falhar custa caro. A capacidade de dizer com alguma
+confiança: ’esse sistema faz o que precisa fazer, pode ser evoluído por uma equipe, resiste
+a falhas dentro de limites conhecidos e pode ser mantido por anos sem ninguém entrar em
+desespero’. Não é glamouroso. Não rende post viral no LinkedIn às duas da manhã. Mas é
+exatamente o que diferencia software que dura de software que vira uma história de terror
+contada em retrospectivas de sprint.
+CAPÍTULO 1. A MORTE DO VIBE CODING
+9
+Licenciado para - heverton eduardo peres - 32214079807 - Protegido por Eduzz.com
+
+[Page 11]
+ENGENHARIA DE SOFTWARE COM AGENTES INTELIGENTES
+1.3
+A PROPOSTA DO LIVRO: IA + PROCESSO = SOFTWARE DE VERDADE
+Se você chegou até aqui, o diagnóstico está claro. O vibe coding é sedutor, rápido e
+insuficiente. A engenharia de software é robusta, comprovada e, sejamos honestos, às vezes
+percebida como burocrática demais para o ritmo que o mercado exige hoje. É como se alguém
+te oferecesse dois carros: um Fórmula 1 sem freio e um tanque de guerra sem acelerador.
+A pergunta que este livro responde é: e se não precisarmos escolher? E se for possível ter
+velocidade e controle ao mesmo tempo?
+A resposta é sim; e a chave está nos agente inteligentes. Um agente inteligente no
+contexto de desenvolvimento de software não é apenas um autocomplete glorificado nem um
+estagiário digital que nunca dorme. É um componente autônomo que percebe o ambiente,
+toma decisões e executa ações para atingir objetivos. Quando esse agente opera dentro de
+um processo de engenharia bem definido, ele amplifica cada etapa: levanta requisitos com
+mais rapidez, gera código com padrões consistentes, escreve testes, sugere refatoração e
+documenta decisões. Ele não substitui o engenheiro; ele multiplica a capacidade do engenheiro.
+A diferença é importante.
+Ferramentas recentes de desenvolvimento agentic, como Claude Code e Google Antigra-
+vity, apontam para uma nova geração de ambientes de desenvolvimento com IA integrada de
+verdade. Não são apenas editores com sugestão de código; são ambientes onde agentes
+podem executar tarefas complexas, operar em worktrees isoladas, gerenciar branches, rodar
+testes e interagir com o sistema de arquivos de forma estruturada. Frameworks como o BMAD
+e o Speckit organizam o trabalho desses agentes em fluxos de desenvolvimento que respeitam
+as etapas clássicas da engenharia, dos requisitos ao deploy, sem abrir mão da agilidade
+que as ferramentas modernas permitem.
+O conceito de Agent Harness é central nessa proposta. Um harness é um conjunto de
+configurações, skills e hooks que define como os agentes operam num projeto específico.
+É a camada que transforma um agente genérico num colaborador especializado no seu
+domínio, nas suas convenções e no seu processo. Pense como a diferença entre contratar um
+freelancer que nunca ouviu falar da sua empresa e ter um desenvolvedor sênior que conhece
+cada detalhe do sistema. Ao longo deste livro, você vai construir harnesses para diferentes
+contextos e aprender a orquestrar múltiplos agentes trabalhando em paralelo sem perder o
+controle, nem o juízo.
+Este livro está organizado em torno das grandes etapas da engenharia de software, com
+agentes inteligentes como protagonistas de cada uma delas. Começamos aqui, no capítulo
+1, com o diagnóstico e a proposta. Nos capítulos seguintes, percorremos o ciclo completo:
+modelagem de requisitos com agentes, design com design patterns aplicados em Python,
+CAPÍTULO 1. A MORTE DO VIBE CODING
+10
+Licenciado para - heverton eduardo peres - 32214079807 - Protegido por Eduzz.com
+
+[Page 12]
+ENGENHARIA DE SOFTWARE COM AGENTES INTELIGENTES
+construção orientada por TDD e SDD, refatoração assistida por IA, e estratégias de deploy
+em ambientes modernos de nuvem. Cada capítulo combina teoria sólida com prática real:
+código que você pode executar, adaptar e colocar em produção sem precisar rezar antes de
+cada deploy.
+A proposta deste livro não é que você pare de usar IA; isso seria absurdo e contrapro-
+ducente. É que você pare de usar IA sem método. É que você faça a transição do vibe
+coding para o AI Engineering: o desenvolvimento de software onde agentes inteligentes
+operam dentro de um processo de engenharia estruturado, com requisitos claros, arquitetura
+definida, testes automatizados e entrega controlada. Não é menos IA; é mais engenharia. O
+desenvolvedor que domina essa combinação não está competindo com quem faz vibe coding;
+está numa categoria diferente. Enquanto o vibe coder está reconstruindo pela terceira vez
+um sistema que nunca foi especificado direito e respondendo tickets de bug às onze da noite,
+o AI Engineer já entregou, testou, documentou e está evoluindo a próxima versão. Essa é a
+diferença entre velocidade e sustentabilidade. E esse é o profissional que este livro vai ajudar
+você a se tornar.
+CAPÍTULO 1. A MORTE DO VIBE CODING
+11
+Licenciado para - heverton eduardo peres - 32214079807 - Protegido por Eduzz.com
+
+[Page 13]
+ENGENHARIA DE SOFTWARE COM AGENTES INTELIGENTES
+CAPÍTULO 2
+O que é software afinal?
+Imagine que você pediu uma pizza. Não chegou pizza, chegou farinha, molho de tomate,
+queijo e pepperoni numa caixa separada. Tecnicamente, são todos os ingredientes certos.
+Mas não é pizza. Agora pense no código-fonte de um sistema: são linhas de instrução,
+variáveis, funções, classes. Tecnicamente, são os ingredientes certos. Mas também não é
+software, ainda. Software é o conjunto completo: o código que roda, a lógica que resolve um
+problema real, a interface que alguém consegue usar, os dados que persistem, as falhas que
+são tratadas, a documentação que permite a qualquer pessoa entender e manter o sistema e
+o processo de evolução que garante que tudo isso ainda funcione daqui a três anos. Só a
+massa não faz pizza. Só o código não faz software.
+Essa distinção parece simples, mas tem consequências enormes.
+Como vimos no
+capítulo anterior, o vibe coding falha não por falta de código, mas porque produz código
+sem o restante do conjunto. Sem requisitos definidos, sem estrutura de manutenção, sem
+testes que garantam que o comportamento esperado permanece o esperado. É a diferença
+entre ter ingredientes e ter um prato. E da mesma forma que um chef profissional não mistura
+CAPÍTULO 2. O QUE É SOFTWARE AFINAL?
+12
+Licenciado para - heverton eduardo peres - 32214079807 - Protegido por Eduzz.com
+
+[Page 14]
+ENGENHARIA DE SOFTWARE COM AGENTES INTELIGENTES
+ingredientes aleatoriamente esperando que ’saia algo bom’, um engenheiro não empilha
+código esperando que ’funcione em produção’.
+A confusão começa na própria definição. A definição técnica clássica, ’instruções que,
+quando executadas, produzem a função ou características desejadas’, é correta, incompleta e,
+convenhamos, pouco útil para quem precisa tomar decisões reais de projeto. Porque ignora
+que software existe num contexto, atende pessoas, opera dentro de organizações, enfrenta
+limitações de infraestrutura e evolui ao longo do tempo. Um sistema que resolve o problema
+errado com perfeição técnica não é bom software, é engenharia de precisão aplicada na
+direção errada. Isso acontece com uma frequência que deveria assustar mais do que assusta.
+Figura 2.1: Software como artefato multidimensional: mais do que código, um sistema de
+software é produto, processo, serviço e compromisso com o tempo. Cada dimensão impõe
+restrições e responsabilidades distintas ao engenheiro.
+O software também carrega algo que o hardware não tem: invisibilidade. Um prédio mal
+construído mostra as rachaduras. Um carro com defeito faz barulho. Software mal construído
+parece idêntico ao bem construído, até o momento em que não parece mais. Esse é um
+dos seus atributos mais traiçoeiros. O débito técnico acumulado durante meses de vibe
+coding não aparece à primeira vista no código; aparece na décima-quinta vez que o time
+tenta adicionar uma feature simples e descobre que o sistema inteiro resiste como se tivesse
+opiniões próprias sobre o que não quer fazer. E nesse momento, a pizza virou uma bagunça
+de ingredientes que ninguém sabe como reorganizar.
+Compreender o que é software também significa entender que a crise que o acompanha
+desde o início não foi resolvida, apenas mudou de forma. Nos anos 70, o problema era custo
+e prazo. Nos anos 90, era complexidade crescente. Nos anos 2000, eram sistemas legados
+intratáveis herdados de gerações anteriores de decisões mal tomadas. Na década de 2020, é
+a ilusão de que a IA resolve o problema fundamental sem que o engenheiro precise entendê-lo.
+Cada geração de ferramentas resolve parte da equação e abre novos vetores de falha. Saber
+CAPÍTULO 2. O QUE É SOFTWARE AFINAL?
+13
+Licenciado para - heverton eduardo peres - 32214079807 - Protegido por Eduzz.com
+
+[Page 15]
+ENGENHARIA DE SOFTWARE COM AGENTES INTELIGENTES
+onde estamos nessa linha do tempo é indispensável para saber o que fazer, e o que não fazer
+mais.
+Figura 2.2: A crise do software nunca foi resolvida, apenas mudou de forma. Cada década
+trouxe novas ferramentas que resolveram parte da equação e abriram novos vetores de falha.
+O desenvolvimento de software também é uma das áreas com maior concentração de
+crenças não verificadas tratadas como dogmas. ’Mais pessoas resolvem atrasos’, ’o cliente
+sabe o que quer’, ’documentação é perda de tempo’, ’ágil significa sem planejamento’. Esses
+mitos sobrevivem geração após geração porque são convenientes, simplificam decisões
+difíceis e só cobram seu preço muito depois do momento em que foram adotados. Desmontá-
+los com dados e argumentos não é exercício acadêmico; é defesa profissional.
+Este capítulo responde à pergunta do título com a seriedade que ela merece. Começa
+CAPÍTULO 2. O QUE É SOFTWARE AFINAL?
+14
+Licenciado para - heverton eduardo peres - 32214079807 - Protegido por Eduzz.com
+
+[Page 16]
+ENGENHARIA DE SOFTWARE COM AGENTES INTELIGENTES
+revisitando a crise do software, não como curiosidade histórica, mas como diagnóstico atual,
+e analisa como o vibe coding criou uma nova dimensão dessa crise. Em seguida, examina
+como software é realmente construído: os modelos de processo que a engenharia consolidou
+ao longo de décadas, a revolução ágil que redefiniu o ritmo do desenvolvimento, e os mitos
+que persistem apesar de tudo. Ao final, você não vai apenas saber dizer o que é software.
+Vai entender por que essa definição importa cada vez que você decide como, quando e com
+quem construir.
+2.1
+O SOFTWARE EM CRISE?
+Quem estudou engenharia civil sabe que nenhum pedreiro sério levanta uma parede
+antes de ter em mãos a planta baixa, o projeto hidráulico e o projeto elétrico da edificação.
+Não é burocracia, é necessidade técnica: a posição de uma tubulação determina onde você
+pode ou não abrir um vão, a passagem de eletrodutos define o que vai dentro da laje, e a
+estrutura de cargas decide se aquela parede que o cliente quer remover pode ser removida
+ou vai derrubar o andar de cima junto. Mudar essas decisões depois que os tijolos já estão
+assentados não é difícil, é extraordinariamente caro, e às vezes impossível sem demolir o que
+foi feito. O software funciona exatamente da mesma forma. Sair escrevendo código sem ter os
+requisitos levantados, a arquitetura definida e as integrações mapeadas é o equivalente a
+assentar tijolos sem planta baixa: a obra avança, parece produtiva, e só revela os problemas
+quando já há muita coisa difícil de desfazer. A diferença é que na construção civil o erro
+aparece na vistoria. No software, aparece em produção, às três da manhã, na sexta-feira
+antes de um feriado.
+Se você perguntar a qualquer gerente de projeto de software se já entregou algo fora do
+prazo, acima do orçamento ou com menos funcionalidades do que o prometido, a resposta vai
+CAPÍTULO 2. O QUE É SOFTWARE AFINAL?
+15
+Licenciado para - heverton eduardo peres - 32214079807 - Protegido por Eduzz.com
+
+[Page 17]
+ENGENHARIA DE SOFTWARE COM AGENTES INTELIGENTES
+vir acompanhada de um sorriso maroto. Não porque é engraçado, mas porque é tão comum
+que virou quase um ritual de passagem. O atraso não é exceção, é o padrão. E o mais curioso
+é que isso não é novidade de agora: esse padrão tem nome, tem data de nascimento e resistiu
+a seis décadas de ferramentas supostamente capazes de resolvê-lo de uma vez por todas.
+Em outubro de 1968, a OTAN reuniu em Garmisch, na Alemanha, um grupo de cientistas
+e engenheiros para discutir um problema que já acumulava vítimas: sistemas de software
+atrasando, estourando orçamento, entregando muito menos do que prometiam ou falhando de
+formas criativas em produção. Daquela conferência surgiu o termo crise do software. Era a
+primeira vez que a comunidade técnica reconhecia formalmente que construir software era um
+problema sério, sistemático e que não se resolvia apenas com programadores mais talentosos
+ou computadores mais rápidos. Precisava de método. Precisava de engenharia de software.
+Figura 2.3: A conferência da OTAN em Garmisch, Alemanha, 1968: o momento em que
+a comunidade técnica reconheceu formalmente que construir software exigia método, não
+apenas talento individual.
+O que caracterizava a crise de 1968 é o mesmo que caracteriza projetos problemáticos
+hoje: estimativas irreais aceitas sem questionamento, requisitos coletados de forma super-
+ficial, ausência de testes sistemáticos, e a crença de que ’vai dar certo no final’. O foguete
+Ariane 5 explodiu 37 segundos após o lançamento em 1996 porque um bloco de código foi
+reaproveitado do Ariane 4 sem verificar se ainda fazia sentido no novo contexto. O Therac-25,
+um equipamento de radioterapia computadorizado, administrou doses letais de radiação em
+pacientes entre 1985 e 1987 porque os intertravamentos de hardware do modelo anterior
+foram substituídos por verificações de software que nunca foram validadas adequadamente
+para as condições reais de operação. O portal HealthCare.gov colapsou no lançamento em
+2013 diante de uma fração da carga esperada, depois de anos de desenvolvimento sem testes
+de integração. Em 2015, no Rio de Janeiro, o aplicativo Waze direcionou o casal Regina e
+Francisco Murmura para uma rua homônima dentro da favela do Caramujo, em Niterói, em
+vez da avenida turística que haviam solicitado. Cerca de vinte homens armados abriram fogo
+CAPÍTULO 2. O QUE É SOFTWARE AFINAL?
+16
+Licenciado para - heverton eduardo peres - 32214079807 - Protegido por Eduzz.com
+
+[Page 18]
+ENGENHARIA DE SOFTWARE COM AGENTES INTELIGENTES
+contra o carro; Regina, de 70 anos, foi atingida nas costas e morreu no hospital. O algoritmo
+de roteamento não diferenciava contexto urbano de zona de risco; o requisito de segurança
+do usuário simplesmente não existia na especificação do sistema. Nenhum desses projetos
+falhou por falta de código. Falharam por falta de processo.
+Figura 2.4: Quatro décadas de falhas causadas por ausência de processo: a explosão do
+Ariane 5 (1996), as doses letais do Therac-25 (1985-1987), o colapso do HealthCare.gov no
+lançamento (2013) e a morte de Regina Murmura após o Waze direcioná-la para uma favela
+no Rio de Janeiro (2015).
+Mas falhas técnicas são apenas uma face da crise. A outra é mais sutil e mais comum: a
+distorção no entendimento do requisito entre quem pede e quem constrói.
+Perceba o padrão: em todos esses casos, o software ’funcionava’ em algum ambiente
+controlado antes de ir a público. O Therac-25 passava nos testes do fabricante. O Ariane
+5 processava os dados corretamente dentro dos limites projetados para o Ariane 4.
+O
+HealthCare.gov respondia bem com poucos usuários simultâneos. O problema não era o
+código em si, era a ausência de um processo que garantisse que o código funcionaria nas
+condições reais de uso. Software que só funciona no ambiente do desenvolvedor é um
+protótipo bem disfarçado, não um produto.
+A crise do software, portanto, nunca foi encerrada. Ela foi transformada. O CHAOS Report,
+série de estudos do Standish Group em circulação desde a década de 1990, acompanha
+o desempenho de projetos de software. Em uma edição de 2020, 31% dos projetos foram
+CAPÍTULO 2. O QUE É SOFTWARE AFINAL?
+17
+Licenciado para - heverton eduardo peres - 32214079807 - Protegido por Eduzz.com
+
+[Page 19]
+ENGENHARIA DE SOFTWARE COM AGENTES INTELIGENTES
+classificados como bem-sucedidos1, ou seja, entregues no prazo, dentro do orçamento e com
+o escopo completo. Outros 50% foram classificados como ’desafiados’: entregues, mas com
+atrasos, custos extras ou funcionalidades reduzidas. E 19% foram simplesmente cancelados
+antes de chegar ao fim. Esses números são notavelmente parecidos com os de 1994. Três
+décadas de avanço tecnológico e a taxa de sucesso quase não se moveu.
+Figura 2.5: Chaos Report 2020 (Standish Group): apenas 31% dos projetos de software foram
+considerados bem-sucedidos, enquanto 50% foram entregues com restrições e 19% foram
+cancelados antes de chegar ao fim.
+O que mudou foi a escala e a velocidade. Nos anos 70, um projeto de software mal
+conduzido atrasava meses e custava mais do que o previsto. Hoje, um sistema crítico mal
+construído pode vazar os dados de milhões de usuários antes do café da manhã, derrubar uma
+infraestrutura inteira com um deploy mal testado ou acumular débito técnico tão rapidamente
+que em seis meses ninguém mais consegue adicionar uma feature sem quebrar três outras. A
+crise não acabou: ela ganhou velocidade de processamento.
+Entender a crise do software não é exercício de nostalgia técnica. É entender por que o
+processo existe e por que cada etapa que ignoramos tem um custo real associado, mesmo
+que esse custo apareça muito depois da decisão de ignorá-la. O desenvolvedor que conhece
+essa história não repete os mesmos erros por ingenuidade. E o engenheiro que opera agentes
+inteligentes dentro de um processo estruturado está, fundamentalmente, respondendo à
+mesma pergunta que os cientistas de Garmisch tentavam responder em 1968: como construir
+software que funciona de verdade, no prazo, com qualidade, e que ainda pode ser mantido
+depois que o entusiasmo do lançamento passar.
+1 Standish Group. CHAOS Report 2020. O critério de sucesso considera entrega no prazo, dentro do orçamento e
+com escopo completo conforme definido no início do projeto.
+CAPÍTULO 2. O QUE É SOFTWARE AFINAL?
+18
+Licenciado para - heverton eduardo peres - 32214079807 - Protegido por Eduzz.com
+
+[Page 20]
+ENGENHARIA DE SOFTWARE COM AGENTES INTELIGENTES
+Figura 2.6: A clássica falha de comunicação em projetos de software: cada envolvido entende
+o requisito de forma diferente, e o resultado final raramente corresponde ao que o cliente
+precisava de verdade.
+2.2
+A NOVA CRISE: SOFTWARE FEITO COM IA SEM PROCESSO
+Em 1968, a crise do software tinha cara conhecida: equipes pequenas, estimativas
+otimistas e sistemas que cresciam mais rápido do que a capacidade de entendê-los. Era uma
+crise de escala e método, e a resposta foi construir método. Cinquenta e seis anos depois,
+chegamos a um momento em que qualquer pessoa com um navegador aberto pode pedir a
+um agente inteligente que escreva um sistema de autenticação completo em trinta segundos.
+E muita gente acha que isso resolve o problema. Na verdade, só troca a crise de camisa.
+O vibe coding não é um fenômeno de programadores preguiçosos ou incompetentes. É
+uma resposta natural a uma ferramenta genuinamente poderosa. Quando você vê um agente
+inteligente gerar em minutos o que levaria dias para escrever, a reação instintiva é: por que
+não usar isso para tudo, o tempo todo, sem parar para pensar? E aí está o problema. O agente
+escreve código rápido. Ele não conhece o seu contexto, não entende as regras de negócio não
+ditas, não sabe que aquela tabela do banco de dados tem uma coluna com comportamento
+herdado de uma decisão tomada em 2017 que ninguém documentou. Ele escreve o que você
+pediu. E você, muitas vezes, nem sabe exatamente o que precisava pedir.
+Pense numa situação que se tornou comum em times de desenvolvimento: um desenvol-
+vedor junior pede ao agente inteligente que implemente um endpoint de upload de arquivos.
+O agente entrega o código em segundos, ele roda localmente, o teste manual passa, o commit
+vai para produção. Três semanas depois, alguém descobre que o endpoint aceita qualquer tipo
+de arquivo sem validação, que não há limite de tamanho, que os arquivos são armazenados
+com o nome original enviado pelo cliente e que, com a combinação certa de caracteres, é
+CAPÍTULO 2. O QUE É SOFTWARE AFINAL?
+19
+Licenciado para - heverton eduardo peres - 32214079807 - Protegido por Eduzz.com
+
+[Page 21]
+ENGENHARIA DE SOFTWARE COM AGENTES INTELIGENTES
+possível sobrescrever arquivos do servidor. Nenhuma linha desse código foi escrita com má
+intenção. Toda linha foi gerada de forma eficiente por uma ferramenta que fez exatamente o
+que foi pedida. O problema estava no que não foi pedido: segurança, validação, requisitos de
+controle de acesso. Isso não é responsabilidade do agente. É responsabilidade do processo
+que não existia.
+Figura 2.7: A nova face da crise do software: a velocidade de geração de código com IA
+cria uma ilusão de progresso enquanto o débito técnico e as vulnerabilidades se acumulam
+silenciosamente abaixo da superfície.
+O que torna essa nova crise mais perigosa do que a de 1968 é exatamente a velocidade.
+Um projeto conduzido sem processo nos anos 70 levava meses para acumular o débito
+técnico suficiente para se tornar intratável. Com agentes inteligentes gerando código na
+velocidade da digitação, esse mesmo nível de entropia pode ser atingido em dias. Sistemas
+que crescem mais rápido do que a capacidade da equipe de entendê-los não são novidade,
+mas nunca tinham crescido tão rápido. E código que ninguém entende completamente é
+código que ninguém consegue manter com segurança.
+A ilusão de produtividade é a parte mais sedutora do vibe coding. O time entrega
+features na velocidade da luz nas primeiras semanas. O cliente fica impressionado. O gerente
+comemora. E então, na oitava semana, alguém precisa corrigir um bug simples de validação
+de formulário, e descobre que aquele componente está acoplado a outros quatro módulos de
+formas que ninguém mapeou, que não há testes cobrindo o comportamento esperado e que
+qualquer mudança tem uma chance não desprezível de quebrar algo em produção. O que
+parecia agilidade era na verdade crédito tomado no futuro, com juros compostos.
+Nesse ponto, é importante reconhecer uma distinção fundamental: o problema não é
+usar agentes inteligentes para escrever código. O problema é usar agentes inteligentes
+para substituir o processo. Um agente dentro de um processo estruturado, com requisitos
+definidos, com testes automatizados e com revisão humana consciente, é uma ferramenta
+CAPÍTULO 2. O QUE É SOFTWARE AFINAL?
+20
+Licenciado para - heverton eduardo peres - 32214079807 - Protegido por Eduzz.com
+
+[Page 22]
+ENGENHARIA DE SOFTWARE COM AGENTES INTELIGENTES
+de produtividade genuína. Um agente operado sem nenhuma dessas salvaguardas é uma
+ferramenta de aceleração de débito técnico. A diferença entre os dois cenários não está na
+ferramenta: está em quem a usa e com que método.
+A nova crise do software é, portanto, uma variante da crise original com um ingrediente
+extra: a velocidade com que podemos cometer erros aumentou drasticamente, enquanto
+nossa capacidade de detectá-los e corrigi-los antes que cheguem a produção permaneceu
+praticamente a mesma. O antídoto continua sendo o mesmo que os cientistas de Garmisch
+propuseram em 1968: método, estrutura, processo. O que muda é a urgência. E a próxima
+seção vai direto ao ponto: a crise não é do software nem da IA. A crise é dos desenvolvedores
+que escolhem não usar o que a engenharia de software já consolidou.
+2.3
+A CRISE É DO SOFTWARE OU DOS DESENVOLVEDORES?
+Há um argumento que aparece com frequência toda vez que alguém levanta o dedo para
+apontar a falha de um projeto: ’software é diferente’. A ideia é que o desenvolvimento
+de software é intrinsecamente caótico, que os requisitos mudam o tempo todo, que a
+complexidade é imprevisível por natureza, e que portanto as taxas de fracasso documentadas
+pelo Chaos Report são quase uma lei natural, e não uma falha de conduta. É um argumento
+elegante. E é, em grande medida, uma forma muito conveniente de não se responsabilizar por
+nada.
+Pense na engenharia aeronáutica. Um avião comercial moderno tem entre quatro e seis
+milhões de componentes. A cabine de controle de um Boeing 787 executa código que soma
+mais de oito milhões de linhas. O sistema de gerenciamento de voo coordena dezenas de
+subsistemas em tempo real, em condições atmosféricas imprevisíveis, com vidas humanas
+a bordo. Se alguma área tem direito a invocar ’é complexo demais para ter processo’, seria
+essa. E ainda assim, a taxa de acidentes fatais na aviação comercial é de menos de 0,2 por
+milhão de voos. Não porque aviões são simples. Porque a indústria aeronáutica nunca aceitou
+’é difícil’ como justificativa para não ter método.
+A medicina cirúrgica também serve de referência. Uma sala de cirurgia cardíaca envolve
+um cirurgião, um anestesista, instrumentadores, perfusionistas, monitores vitais, protocolos
+de esterilização e checklists obrigatórios que precisam ser verbalmente confirmados antes,
+durante e depois do procedimento. Pular o checklist não é ’ser ágil’. É negligência médica,
+com as consequências legais e profissionais que isso acarreta. O médico que diz ’não tinha
+tempo para o protocolo’ não é elogiado pela velocidade: é afastado.
+No software, a mesma lógica devia se aplicar, mas não se aplica. Um desenvolvedor que
+entrega um sistema sem testes automatizados, sem requisitos documentados e sem plano
+CAPÍTULO 2. O QUE É SOFTWARE AFINAL?
+21
+Licenciado para - heverton eduardo peres - 32214079807 - Protegido por Eduzz.com
+
+[Page 23]
+ENGENHARIA DE SOFTWARE COM AGENTES INTELIGENTES
+Figura 2.8: A responsabilidade profissional em perspectiva comparada: na aviação e na
+medicina, o processo é inegociável. Na engenharia de software, ele ainda é tratado como
+opcional, e a diferença aparece nas estatísticas de falha.
+de manutenção raramente responde profissionalmente por isso. Na melhor das hipóteses, o
+projeto é cancelado e a equipe vai para o próximo. Na pior, o sistema vai para produção, quebra
+de formas criativas e o custo recai sobre o cliente e os usuários, nunca sobre quem escolheu
+não seguir o processo. Essa ausência de consequências profissionais é um dos motores
+mais poderosos da crise, e é um ingrediente que o debate técnico raramente menciona.
+O que os dados mostram, quando alguém para para olhá-los, é que o processo funciona.
+O NASA Software Engineering Laboratory acompanhou por duas décadas projetos de software
+internos e documentou que equipes que seguiam práticas formais de inspeção de código
+e testes sistemáticos entregavam software com taxas de defeito entre três e dez vezes
+CAPÍTULO 2. O QUE É SOFTWARE AFINAL?
+22
+Licenciado para - heverton eduardo peres - 32214079807 - Protegido por Eduzz.com
+
+[Page 24]
+ENGENHARIA DE SOFTWARE COM AGENTES INTELIGENTES
+menores do que equipes que não seguiam2. O próprio Standish Group, ao decompor o Chaos
+Report, identifica que os projetos bem-sucedidos compartilham características consistentes:
+escopo gerenciado, comunicação clara entre cliente e equipe, e práticas estruturadas de
+desenvolvimento. Não é mistério, não é genialidade. É o processo funcionando como deveria.
+A pressão organizacional é real, e seria desonesto ignorá-la. Gerentes cobram prazo.
+Clientes pedem tudo para ontem. O sprint é curto. O backlog é infinito. Existe uma distância
+enorme entre o mundo ideal dos livros de engenharia de software e o mundo real de uma
+equipe de quatro pessoas tentando entregar um MVP em seis semanas. Ninguém nega
+isso. Mas existe uma diferença importante entre ’as condições não eram ideais’ e ’não havia
+escolha’. Na maioria dos casos, havia escolha: escrever pelo menos testes para os fluxos
+críticos, documentar minimamente os requisitos antes de escrever a primeira linha, reservar
+um dia por sprint para refatoração. Não o processo completo, mas o mínimo responsável. E
+o mínimo responsável muitas vezes não acontece, não porque era impossível, mas porque
+não foi priorizado.
+Há também a ilusão do tempo. ’Não temos tempo para processo’ é talvez o argumento
+mais autodestrutivo da área. Estudos clássicos de engenharia de software argumentam que
+detectar defeitos cedo reduz drasticamente o custo de correção em relação à descoberta em
+produção3. O custo de corrigir um bug antes de escrever o código é a conversa que esclarece
+o requisito. O custo de corrigir o mesmo bug em produção, seis meses depois, é uma semana
+de trabalho, uma incidência no cliente e eventualmente um item no Chaos Report de 2026.
+Quem diz que não tem tempo para processo está, na prática, reservando muito mais tempo
+para consertar o que o processo teria evitado.
+A crise do software não é uma fatalidade. Não é a natureza do código impondo sua
+resistência. É o conjunto de decisões individuais e culturais de uma profissão que, por
+décadas, normalizou a falha como destino inevitável. O que muda quando um desenvolvedor
+conhece a história da crise de 1968, entende os dados do Chaos Report e aplica o mínimo
+de processo disponível não é o software: é a escolha. E escolhas mudam resultados. Com
+ou sem agente inteligente. Com ou sem IA. Com qualquer pilha tecnológica que o mercado
+inventar nos próximos dez anos.
+Software, portanto, não é apenas código executável. É código, requisitos, arquitetura,
+testes, operação e manutenção organizados por um processo que permita ao sistema
+continuar útil quando o entusiasmo inicial já passou. É essa estrutura que separa um protótipo
+de um produto, uma experiência de um sistema que funciona a longo prazo.
+Estabelecida essa perspectiva, a questão prática que se impõe é: se o processo funciona,
+como ele é estruturado na prática? Não na teoria dos livros, não nos slides de uma certificação,
+2 NASA Software Engineering Laboratory. Manager’s Handbook for Software Development. NASA/SEL-84-101,
+1990.
+3 Cf. Barry Boehm. Software Engineering Economics. Prentice Hall, 1981; e Michael Fagan. Design and Code
+Inspections. IBM Systems Journal, 1976.
+CAPÍTULO 2. O QUE É SOFTWARE AFINAL?
+23
+Licenciado para - heverton eduardo peres - 32214079807 - Protegido por Eduzz.com
+
+[Page 25]
+ENGENHARIA DE SOFTWARE COM AGENTES INTELIGENTES
+mas no dia a dia de quem constrói software de verdade. A próxima seção responde exatamente
+a isso.
+2.4
+COMO SE CONSTRÓI UM SOFTWARE
+Existe uma pergunta que todo iniciante faz e que todo desenvolvedor experiente responde
+de forma diferente: ’mas afinal, por onde eu começo?’ A pergunta parece ingênua. Não é.
+Ela expõe um problema real: a construção de software não tem um ponto de partida único,
+universal e incontestável. O que existe são atividades que precisam acontecer, em alguma
+ordem, com algum nível de formalidade, para que o resultado final seja algo que funciona
+e pode ser mantido. Entender essas atividades, o que cada uma produz e como elas se
+encadeiam é o que separa quem constrói software de quem empilha código.
+A primeira atividade é o levantamento de requisitos. Antes de escrever uma linha sequer,
+é preciso entender o problema que o software vai resolver. Não o problema que o cliente
+descreveu na primeira reunião, que raramente é o problema real. O problema real. Isso exige
+conversas, perguntas incômodas, prototipação rápida de ideias e, sobretudo, a disposição de
+ouvir ’não é bem isso’ e voltar ao início sem drama. Um requisito mal levantado não gera um
+bug: gera um sistema inteiro construído na direção errada. E sistemas na direção errada não
+se corrigem com refatoração. Se corrigem com descarte e reconstrução, que é a versão cara
+e humilhante do mesmo problema.
+Com os requisitos minimamente estabelecidos, entra a fase de projeto, ou design de
+software. Aqui se decide a arquitetura: como os componentes vão se organizar, quais
+responsabilidades cada módulo vai ter, como os dados vão fluir, quais integrações externas
+existem e onde estão os pontos de maior risco técnico. Design não é criar um diagrama bonito
+para mostrar ao cliente. É tomar decisões estruturais que vão determinar o custo de qualquer
+mudança futura. Uma decisão de arquitetura ruim tomada nessa fase não custa nada agora,
+mas pode custar semanas de trabalho quando o sistema precisar crescer ou mudar de direção.
+A implementação é a fase que todo mundo imagina quando pensa em ’desenvolver
+software’: escrever código. E é aqui que o papel dos agentes inteligentes fica mais visível na
+prática atual. Um agente pode gerar estruturas de classes, implementar endpoints, sugerir
+padrões, escrever testes unitários e até revisar código em busca de inconsistências. Mas
+perceba: tudo isso só funciona bem quando as fases anteriores foram feitas. O agente
+implementa o que foi projetado. Se o projeto estava errado, o agente vai implementar o erro
+com eficiência impecável. Velocidade na direção errada não é produtividade, é aceleração do
+problema.
+Os testes não são uma fase que vem depois da implementação. Essa é uma das confusões
+mais custosas da área. Testes são uma atividade que começa junto com os requisitos e
+CAPÍTULO 2. O QUE É SOFTWARE AFINAL?
+24
+Licenciado para - heverton eduardo peres - 32214079807 - Protegido por Eduzz.com
+
+[Page 26]
+ENGENHARIA DE SOFTWARE COM AGENTES INTELIGENTES
+Figura 2.9: As atividades fundamentais da construção de software: de requisitos ao deploy,
+cada fase produz um artefato que alimenta a próxima, e a manutenção fecha o ciclo ao gerar
+novos requisitos.
+termina depois do deploy. Os critérios de aceitação são, na prática, testes escritos antes do
+código. Os testes unitários acompanham cada módulo implementado. Os testes de integração
+verificam se os módulos conversam entre si como deveriam. Os testes de carga verificam se
+o sistema aguenta a realidade. Tratar teste como etapa final e opcional é o equivalente a só
+verificar se os freios do carro funcionam depois de sair a 150 km/h na estrada. Tecnicamente
+ainda é um teste. Praticamente, é um risco.
+O deploy, ou implantação, é o momento em que o software deixa o ambiente controlado
+e enfrenta a realidade de produção: usuários reais, cargas imprevisíveis, integrações com
+sistemas que se comportam de formas que nenhum teste de laboratório consegue simular
+CAPÍTULO 2. O QUE É SOFTWARE AFINAL?
+25
+Licenciado para - heverton eduardo peres - 32214079807 - Protegido por Eduzz.com
+
+[Page 27]
+ENGENHARIA DE SOFTWARE COM AGENTES INTELIGENTES
+completamente. Um deploy bem feito é incremental, monitorado e reversível. É uma estratégia,
+não um evento. E quando algo quebra em produção, que vai acontecer, a capacidade de
+reverter rapidamente é o que separa um incidente controlado de uma crise de madrugada.
+A fase que mais frequentemente é ignorada nos cursos e mais frequentemente paga a
+conta no mundo real é a manutenção. Estudos históricos indicam que entre 60% e 80% do
+custo total de um sistema de software ao longo da sua vida útil é gasto em manutenção4:
+correção de bugs, adaptação a novos ambientes, adição de funcionalidades, refatoração de
+código que envelheceu mal. Um sistema não termina no deploy do lançamento. Ele começa
+ali. E cada decisão tomada nas fases anteriores, cada atalho, cada débito técnico ignorado,
+vai cobrar seu preço durante a manutenção, com juros que crescem na mesma velocidade
+em que o sistema cresce e o time original vai embora.
+O que une todas essas atividades é exatamente o que o capítulo vem construindo desde o
+início: processo. Não qualquer processo, não o processo mais pesado nem o mais leve, mas
+algum processo estruturado que garanta que cada atividade aconteça com intencionalidade,
+produza artefatos verificáveis e alimente a próxima etapa com informação confiável. Como
+esse processo é organizado na prática, quais modelos a engenharia de software consolidou
+ao longo de décadas e quais deles fazem sentido no contexto atual de desenvolvimento com
+agentes inteligentes, é o que a próxima seção vai detalhar.
+2.5
+OS MODELOS DE PROCESSO
+Se a seção anterior descreveu as atividades da construção de software, esta responde à
+pergunta seguinte: em que ordem essas atividades acontecem, quem decide essa ordem e
+como o time sabe se está progredindo ou apenas se movimentando? A resposta é o modelo
+de processo. Um modelo de processo é, essencialmente, uma receita estruturada para
+organizar as atividades de desenvolvimento ao longo do tempo. E, como toda receita, existem
+variações, cada uma com seus contextos ideais, suas vantagens e seus pontos cegos.
+Cascata
+O modelo mais antigo e mais conhecido é o cascata, formalizado por Winston Royce
+em 1970. A ideia é simples e sedutora: as fases acontecem em sequência linear, uma após
+a outra, como uma cascata de água. Levantamento de requisitos, depois design, depois
+implementação, depois testes, depois deploy, depois manutenção. Cada fase só começa
+quando a anterior termina e produz sua documentação formal. O modelo tem uma lógica
+4 Barry Boehm. Software Engineering Economics. Prentice Hall, 1981.
+CAPÍTULO 2. O QUE É SOFTWARE AFINAL?
+26
+Licenciado para - heverton eduardo peres - 32214079807 - Protegido por Eduzz.com
+
+[Page 28]
+ENGENHARIA DE SOFTWARE COM AGENTES INTELIGENTES
+impecável no papel. O problema é que projetos reais não seguem lógica de papel. Requisitos
+mudam no meio do desenvolvimento. O cliente só sabe o que não quer depois de ver o que foi
+entregue. E quando a fase de testes descobre que o design estava errado, a cascata exige
+voltar dois degraus, com todo o custo que isso implica. Royce, o próprio criador do modelo,
+escreveu no mesmo artigo que o cascata puro era arriscado e que iterações eram necessárias.
+O mercado ignorou essa parte por décadas.
+Espiral
+O modelo espiral, proposto por Barry Boehm em 1988, nasceu exatamente dessa limitação.
+Em vez de fases lineares, o desenvolvimento acontece em ciclos progressivos, cada um com
+quatro quadrantes: identificação de objetivos, análise de riscos, desenvolvimento e avaliação.
+A cada volta da espiral, o sistema ganha mais profundidade e os riscos são reduzidos de
+forma explícita. É um modelo sofisticado, especialmente útil para projetos grandes e de alto
+risco, onde ignorar incertezas técnicas pode custar fortunas. A desvantagem é a complexidade
+de gestão: executar a espiral corretamente exige experiência, disciplina e uma organização
+disposta a investir tempo em análise de riscos antes de escrever código. Em equipes pequenas
+ou com prazo apertado, essa sofisticação pode ser um peso maior do que o problema que
+resolve.
+Prototipação
+O modelo de prototipação parte de uma premissa diferente: se o cliente não sabe ao
+certo o que quer, construa algo rápido para ele ver e reagir. Um protótipo não é o produto final;
+é uma ferramenta de elicitação de requisitos. O time constrói uma versão simplificada do
+sistema, o cliente usa, critica, pede mudanças, e o protótipo é refinado até que os requisitos
+fiquem claros o suficiente para o desenvolvimento real começar. O risco clássico desse modelo
+é o protótipo que nunca vira produto: o cliente aprova o protótipo, o time o coloca em produção
+sem o processo de construção formal, e o que era para ser um rascunho vira a fundação do
+sistema. Isso tem nome na área: vibe coding de 1985.
+RAD
+O RAD, ou Desenvolvimento Rápido de Aplicações, surgiu nos anos 90 como resposta à
+lentidão dos modelos formais. A proposta é reduzir o tempo de desenvolvimento por meio de
+componentes reutilizáveis, ferramentas de geração de código e ciclos curtos de entrega. Em
+projetos onde o escopo é relativamente claro e a velocidade é crítica, o RAD entrega resultados
+CAPÍTULO 2. O QUE É SOFTWARE AFINAL?
+27
+Licenciado para - heverton eduardo peres - 32214079807 - Protegido por Eduzz.com
+
+[Page 29]
+ENGENHARIA DE SOFTWARE COM AGENTES INTELIGENTES
+Figura 2.10: Comparativo dos principais modelos de processo: cascata, espiral, prototipação
+e RAD organizam as mesmas atividades fundamentais em ritmos e estruturas distintos, cada
+um respondendo a um perfil diferente de projeto.
+impressionantes. Onde o escopo é ambíguo ou a arquitetura é complexa, a velocidade do
+RAD pode gerar um sistema difícil de evoluir, porque as decisões de atalho que aceleraram o
+desenvolvimento inicial viram obstáculos na manutenção. Soa familiar.
+Iterativo Incremental
+O modelo iterativo incremental combina o melhor de dois mundos: a estrutura sequencial
+do cascata com a flexibilidade de entregas parciais. Em vez de percorrer todas as fases uma
+CAPÍTULO 2. O QUE É SOFTWARE AFINAL?
+28
+Licenciado para - heverton eduardo peres - 32214079807 - Protegido por Eduzz.com
+
+[Page 30]
+ENGENHARIA DE SOFTWARE COM AGENTES INTELIGENTES
+unica vez e entregar o sistema completo no final, o projeto e dividido em incrementos. Cada
+incremento passa pelo ciclo completo de requisitos, projeto, implementacao, teste, implantacao
+e manutencao, mas entrega apenas uma parte funcional do sistema.
+O primeiro incremento geralmente cobre as funcionalidades essenciais, o nucleo sem o
+qual o sistema nao faz sentido. O segundo incremento adiciona funcionalidades complementa-
+res, refinando o que ja existe e expandindo o escopo. O terceiro, quarto e enesimo incremento
+repetem o padrao ate que o sistema esteja completo. A cada entrega, o usuario real interage
+com algo funcional e fornece feedback que alimenta o proximo ciclo.
+A vantagem e evidente: o cliente nao precisa esperar meses para ver algo rodando. Se
+os requisitos mudaram entre o primeiro e o segundo incremento, o impacto e localizado,
+porque cada incremento e relativamente pequeno e autocontido. O risco tambem diminui,
+porque problemas de arquitetura ou de integracao aparecem cedo, quando ainda ha tempo e
+orcamento para corrigi-los.
+Desenvolvimento Baseado em Componentes
+O desenvolvimento baseado em componentes parte de uma premissa pragmatica: nem
+tudo precisa ser construido do zero. Se um componente ja existe, foi testado e funciona bem,
+por que reescreve-lo? O modelo combina a estrutura iterativa do modelo espiral com um fluxo
+sistematico de reuso. A cada iteracao, o time identifica quais componentes sao necessarios,
+busca na biblioteca os que ja estao disponiveis, extrai os reutilizaveis e constroi apenas os
+que nao existem. Os componentes novos, apos construidos e testados, sao adicionados a
+biblioteca para reuso futuro.
+Esse modelo e particularmente poderoso em organizacoes que desenvolvem multiplos
+sistemas com sobreposicao de funcionalidades. Bibliotecas de componentes bem mantidas
+reduzem drasticamente o tempo de desenvolvimento e aumentam a confiabilidade, porque
+cada componente reutilizado ja passou por ciclos de teste em projetos anteriores. Na pratica,
+frameworks modernos, pacotes npm, bibliotecas Python e ate skills de agentes inteligentes
+seguem exatamente essa logica: voce nao reescreve o que ja funciona, voce compoe.
+O que todos esses modelos têm em comum é a tentativa de estruturar a incerteza inerente
+ao desenvolvimento de software. Nenhum deles é errado em absoluto. Cada um é mais
+adequado para um contexto específico: o tamanho da equipe, a clareza dos requisitos, o
+nível de risco do projeto, o perfil do cliente e o prazo disponível influenciam diretamente qual
+modelo faz sentido adotar. Um engenheiro que conhece apenas um modelo vai tentar aplicá-lo
+em todo projeto que aparecer, independentemente de adequação, como quem tem um martelo
+e enxerga tudo como prego. Um engenheiro que conhece o espectro de opções escolhe com
+critério.
+CAPÍTULO 2. O QUE É SOFTWARE AFINAL?
+29
+Licenciado para - heverton eduardo peres - 32214079807 - Protegido por Eduzz.com
+
+[Page 31]
+ENGENHARIA DE SOFTWARE COM AGENTES INTELIGENTES
+Figura 2.11: O modelo iterativo incremental entrega o sistema em partes funcionais. Cada
+incremento repete o ciclo completo de desenvolvimento, refinando e expandindo o que ja foi
+entregue.
+É importante notar que nenhum desses modelos surgiu na era dos agentes inteligentes.
+Foram concebidos para equipes humanas, com velocidade humana de produção e erros
+humanos de comunicação. O que muda quando um agente inteligente entra no processo
+não é a necessidade das fases; é a velocidade com que cada fase pode ser executada.
+Requisitos que levavam dias para documentar podem ser estruturados em horas com apoio
+de um agente. Código que levava semanas para ser escrito pode ser gerado em dias. Testes
+que ninguém tinha tempo de escrever podem ser produzidos automaticamente. Mas o modelo
+de processo continua sendo o contêiner que garante que tudo isso acontece na ordem certa,
+com critérios de qualidade verificáveis. A ferramenta ficou mais rápida. A necessidade de
+CAPÍTULO 2. O QUE É SOFTWARE AFINAL?
+30
+Licenciado para - heverton eduardo peres - 32214079807 - Protegido por Eduzz.com
+
+[Page 32]
+ENGENHARIA DE SOFTWARE COM AGENTES INTELIGENTES
+Figura 2.12: O desenvolvimento baseado em componentes combina o modelo espiral com
+reuso sistematico. Componentes disponiveis sao extraidos da biblioteca; os faltantes sao
+construidos e adicionados para reuso futuro.
+método não diminuiu. Aumentou.
+Esses modelos clássicos, porém, partilham de uma característica que os tornou insufi-
+cientes para boa parte dos projetos modernos: são rígidos na relação com o tempo e com
+a mudança. Foi exatamente essa rigidez que motivou, no início dos anos 2000, uma das
+transformações mais significativas da história da engenharia de software. Como essa trans-
+formação aconteceu, o que ela mudou de fato e o que ela não mudou, apesar do que muita
+gente acredita, é o que a próxima seção vai examinar.
+CAPÍTULO 2. O QUE É SOFTWARE AFINAL?
+31
+Licenciado para - heverton eduardo peres - 32214079807 - Protegido por Eduzz.com
+
+[Page 33]
+ENGENHARIA DE SOFTWARE COM AGENTES INTELIGENTES
+2.6
+A REVOLUÇÃO ÁGIL
+Em fevereiro de 2001, dezessete desenvolvedores se reuniram em Snowbird, Utah, num
+resort de ski que provavelmente não esperava entrar para a história da tecnologia. O resultado
+daquele encontro foi o Manifesto Ágil, um documento de quatro valores e doze princípios que
+redefiniu como boa parte do mundo pensa sobre desenvolvimento de software. A proposta
+central era direta: valorizar indivíduos e interações mais do que processos e ferramentas,
+software funcionando mais do que documentação abrangente, colaboração com o cliente
+mais do que negociação de contratos e responder a mudanças mais do que seguir um plano.
+Era uma reação explícita ao peso burocrático dos modelos clássicos, especialmente ao
+cascata aplicado de forma rígida em contextos onde a realidade mudava mais rápido do que
+o cronograma conseguia absorver.
+É fundamental entender o que o Manifesto Ágil disse e o que ele não disse. Ele não
+disse que processo é ruim. Disse que processos excessivamente pesados, que impedem
+a adaptação, são ruins. Não disse que documentação é dispensável. Disse que software
+funcionando é mais valioso do que pilhas de documentação que ninguém lê. Não disse que
+planejamento é perda de tempo. Disse que a capacidade de responder a mudanças é mais
+valiosa do que seguir um plano cegamente. A distinção importa porque o mercado leu o
+manifesto de forma seletiva durante anos, ficando com a parte conveniente, ’menos processo’,
+e ignorando a parte difícil, ’mais disciplina técnica, mais colaboração, mais responsabilidade
+com o produto’.
+Scrum
+O Scrum foi o framework que mais popularizou a agilidade na prática. A estrutura é
+simples: o trabalho é dividido em ciclos curtos chamados sprint, tipicamente de duas a quatro
+semanas. Cada sprint começa com um planejamento, onde o time seleciona itens do backlog
+de produto que serão desenvolvidos. Ao longo do sprint, reuniões diárias breves mantêm
+o time sincronizado. Ao final, uma revisão mostra o que foi construído e uma retrospectiva
+identifica o que pode melhorar. O ciclo se repete. O cliente vê resultado funcionando a cada
+poucas semanas, não após meses de desenvolvimento silencioso. E o time aprende com cada
+iteração, ajustando o rumo antes que os erros se acumulem.
+CAPÍTULO 2. O QUE É SOFTWARE AFINAL?
+32
+Licenciado para - heverton eduardo peres - 32214079807 - Protegido por Eduzz.com
+
+[Page 34]
+ENGENHARIA DE SOFTWARE COM AGENTES INTELIGENTES
+Figura 2.13: O ciclo Scrum em prática: sprints curtos com entregas verificáveis substituem o
+longo silêncio dos modelos sequenciais e permitem que o cliente corrija a rota antes que o
+desvio seja irreversível.
+XP (Extreme Programming)
+O XP, ou Extreme Programming, foi além do Scrum em termos de práticas técnicas.
+Enquanto o Scrum define o ritmo e as cerimônias, o XP define como o código deve ser escrito.
+Programação em par, onde dois desenvolvedores trabalham juntos no mesmo código em
+tempo real. TDD, onde os testes são escritos antes da implementação. Integração contínua,
+onde o código é integrado e verificado várias vezes ao dia. Refatoração constante, mantendo
+o design limpo conforme o sistema cresce. São práticas que exigem disciplina, e é exatamente
+por isso que muitas equipes que dizem adotar XP adotam o nome, mas não as práticas. O XP
+CAPÍTULO 2. O QUE É SOFTWARE AFINAL?
+33
+Licenciado para - heverton eduardo peres - 32214079807 - Protegido por Eduzz.com
+
+[Page 35]
+ENGENHARIA DE SOFTWARE COM AGENTES INTELIGENTES
+sem TDD é só programação. O Scrum sem retrospectiva é só reunião com nome diferente.
+Figura 2.14: As práticas técnicas do XP: programação em par, TDD, integração contínua
+e refatoração constante formam o núcleo disciplinar que transforma código em software
+sustentável.
+Kanban
+O Kanban, adaptado do sistema de produção da Toyota, traz uma perspectiva diferente:
+em vez de ciclos fixos, o foco é no fluxo contínuo de trabalho. As tarefas passam por colunas
+que representam estados do processo, e o princípio central é limitar o trabalho em andamento.
+Menos itens em paralelo significa mais foco, menos troca de contexto e entrega mais rápida de
+CAPÍTULO 2. O QUE É SOFTWARE AFINAL?
+34
+Licenciado para - heverton eduardo peres - 32214079807 - Protegido por Eduzz.com
+
+[Page 36]
+ENGENHARIA DE SOFTWARE COM AGENTES INTELIGENTES
+cada item individual. O Kanban é especialmente útil para equipes de manutenção e suporte,
+onde o trabalho chega de forma imprevisível e ciclos fixos não fazem sentido.
+Figura 2.15: O fluxo Kanban: tarefas avançam por colunas de estado com limites de trabalho
+em andamento, priorizando foco e entrega contínua em vez de ciclos fixos.
+O que a revolução ágil realmente entregou foi a legitimação da iteração como método. A
+ideia de que é melhor entregar algo pequeno e correto do que algo grande e errado. Que a
+mudança de requisitos não é uma falha do cliente, é uma característica do problema. Que o
+feedback rápido é mais valioso do que o plano perfeito. Essas ideias parecem óbvias hoje,
+mas representaram uma ruptura real com a cultura de projetos de software da época. E no
+contexto dos agentes inteligentes, elas ganham nova dimensão: um agente dentro de um
+ciclo ágil pode gerar código a cada sprint, receber feedback do time na revisão e ajustar o
+comportamento na próxima iteração. A agilidade não foi projetada para agentes. Mas funciona
+CAPÍTULO 2. O QUE É SOFTWARE AFINAL?
+35
+Licenciado para - heverton eduardo peres - 32214079807 - Protegido por Eduzz.com
+
+[Page 37]
+ENGENHARIA DE SOFTWARE COM AGENTES INTELIGENTES
+extraordinariamente bem com eles.
+O que a revolução ágil não resolveu foi a tentação de usar a flexibilidade como desculpa
+para a falta de rigor. ’Somos ágeis’ virou, em muitos times, sinônimo de ’não planejamos direito
+e chamamos isso de adaptabilidade’. Essa confusão gerou uma geração de projetos que
+usam o vocabulário do manifesto sem a substância técnica que o sustenta. E foi exatamente
+nesse espaço que alguns dos mitos mais duradouros da área se consolidaram, resistindo às
+evidências com uma tenacidade que só o preconceito conveniente consegue manter.
+2.7
+OS MITOS QUE NOS PERSEGUEM
+Todo campo do conhecimento humano tem seus mitos. A medicina teve a teoria dos
+humores. A física teve o éter luminífero. A engenharia de software tem uma coleção própria,
+igualmente resistente às evidências e igualmente capaz de sobreviver durante décadas porque
+é conveniente para quem a repete. A diferença é que os mitos do software não custam
+apenas reputação acadêmica: custam projetos cancelados, sistemas em produção com
+comportamento imprevisível e equipes esgotadas repetindo os mesmos erros com vocabulário
+diferente.
+O primeiro e mais antigo é a Lei de Brooks aplicada ao contrário. Fred Brooks publicou
+em 1975, em ’O Mítico Homem-Mês’, a observação de que adicionar pessoas a um projeto
+atrasado o atrasa ainda mais. A lógica é simples: novos membros precisam de tempo
+para entender o contexto, os membros existentes precisam de tempo para ensiná-los, e a
+comunicação fica exponencialmente mais complexa conforme o time cresce. Cinquenta anos
+depois, a resposta mais comum quando um projeto atrasa ainda é ’vamos contratar mais dois
+desenvolvedores’. Brooks está rodando no túmulo. O mito sobrevive porque admitir que o
+atraso veio de requisitos mal levantados ou de processo ausente é mais difícil do que abrir
+uma vaga no LinkedIn.
+O segundo mito é que o cliente sabe o que quer. Não sabe. E isso não é crítica ao
+cliente: é uma característica do problema. O cliente sabe qual dor quer resolver. Raramente
+sabe como um sistema de software deve resolver essa dor. A elicitação de requisitos existe
+exatamente para navegar essa distância, usando técnicas como entrevistas estruturadas,
+prototipação, análise de fluxo de trabalho e validação incremental. Quando o time assume que
+o cliente sabe o que quer e pula essa etapa, o resultado é um sistema que resolve o problema
+que o cliente descreveu na primeira reunião, que raramente é o problema real que ele enfrenta
+todo dia. A figura do balanço de árvore, onde cada envolvido imagina algo diferente e o
+resultado não serve para ninguém, não é piada antiga do setor. É o diagrama de falha mais
+comum em projetos sem levantamento de requisitos adequado.
+CAPÍTULO 2. O QUE É SOFTWARE AFINAL?
+36
+Licenciado para - heverton eduardo peres - 32214079807 - Protegido por Eduzz.com
+
+[Page 38]
+ENGENHARIA DE SOFTWARE COM AGENTES INTELIGENTES
+Figura 2.16: Os mitos mais persistentes da engenharia de software: cada um sobrevive por
+ser conveniente no curto prazo, e cada um cobra seu preço no momento mais inoportuno
+possível.
+O terceiro mito é que documentação é perda de tempo. Esse ganhou força com a
+leitura superficial do Manifesto Ágil e nunca mais largou. A versão real do argumento é que
+documentação excessiva, desatualizada e que ninguém lê é perda de tempo. A documentação
+que registra decisões de arquitetura, que explica por que uma escolha foi feita da forma que
+foi, que descreve o comportamento esperado de uma interface, essa documentação tem valor
+mensurável no momento em que alguém novo entra no projeto, no momento em que um bug
+aparece em produção às três da manhã e no momento em que o sistema precisa ser estendido
+dois anos depois que o time original já não está mais. A manutenção de um sistema sem
+documentação é arqueologia com prazo.
+CAPÍTULO 2. O QUE É SOFTWARE AFINAL?
+37
+Licenciado para - heverton eduardo peres - 32214079807 - Protegido por Eduzz.com
+
+[Page 39]
+ENGENHARIA DE SOFTWARE COM AGENTES INTELIGENTES
+O quarto mito é que ágil significa sem planejamento. Já foi parcialmente desmontado na
+seção anterior, mas merece repetição porque continua sendo o argumento mais usado para
+justificar backlogs caóticos e sprints sem critérios de aceitação. Ágil não significa sem plano;
+significa plano adaptável. A diferença é que o plano ágil é revisado a cada iteração com base
+em evidências reais de progresso, não mantido como documento sagrado até que a realidade
+o destrua publicamente no dia da entrega. Um backlog bem refinado, com histórias de usuário
+claras e critérios de aceitação verificáveis, é tão planejado quanto qualquer especificação
+formal, só que atualizado com mais frequência e com mais proximidade da realidade.
+O quinto mito, e o mais relevante para este livro, é que agentes inteligentes eliminam
+a necessidade de processo. Esse é o mito de 2024, a versão contemporânea de todos
+os anteriores. A lógica é a mesma: a nova ferramenta é tão poderosa que os problemas
+antigos não se aplicam mais. Foi o que se disse sobre as linguagens de quarta geração nos
+anos 80, sobre as ferramentas CASE nos anos 90, sobre os frameworks de baixo código nos
+anos 2000. Em todos os casos, a ferramenta era genuinamente útil. Em todos os casos, a
+ausência de processo continuou gerando os mesmos tipos de falha, só com nomes diferentes
+e velocidades maiores. Um agente inteligente sem requisitos claros vai implementar a coisa
+errada com velocidade impressionante. Um agente inteligente sem testes vai deixar bugs
+chegarem a produção com uma eficiência que nenhum desenvolvedor humano conseguiria
+sozinho. O agente amplifica o que já existe. Se o que existe é método, amplifica qualidade. Se
+o que existe é caos, amplifica caos.
+O que une todos esses mitos é a mesma estrutura: cada um oferece uma saída con-
+veniente de uma responsabilidade difícil. Não preciso levantar requisitos direito porque o
+cliente vai me dizer o que quer. Não preciso documentar porque somos ágeis. Não preciso de
+processo porque tenho IA. A engenharia de software que funciona não é a que encontrou a
+ferramenta certa para eliminar a dificuldade. É a que aceitou que a dificuldade é inerente ao
+problema e construiu método para navegá-la com consistência. Com ou sem agente. Com
+qualquer framework que o mercado inventar nos próximos anos. A dificuldade não some. O
+que muda é a preparação de quem enfrenta.
+CAPÍTULO 2. O QUE É SOFTWARE AFINAL?
+38
+Licenciado para - heverton eduardo peres - 32214079807 - Protegido por Eduzz.com
+
+[Page 40]
+ENGENHARIA DE SOFTWARE COM AGENTES INTELIGENTES
+CAPÍTULO 3
+Git: o Ctrl+Z que a IA não te dá
+Figura 3.1: O Git como rede de segurança para o desenvolvimento com agente inteligentes:
+cada commit é um ponto de restauração que transforma erros em experimentos reversíveis.
+Existe um momento que todo desenvolvedor que usa agente inteligentes vai enfrentar
+mais cedo ou mais tarde. O agente fez uma refatoração grande. O código parou de funcionar,
+mas o agente garantiu que estava certo. Você aceitou. Rodou. Deu erro. Pediu para o agente
+corrigir. O agente corrigiu e quebrou outra coisa. Você pediu para corrigir de novo. Depois
+de dez interações, o código está numa condição que nenhum dos dois sabe exatamente
+como chegou lá, e a pergunta natural que surge é: como volto para o estado em que tudo
+funcionava? Se não houver um sistema de controle de versão, a resposta é simples e brutal:
+não volta.
+Esse cenário não é hipotético. É o relato mais comum de desenvolvedores que começaram
+a usar agente inteligentes sem estabelecer primeiro uma infraestrutura mínima de segurança
+para o código. A velocidade que a IA oferece é real, genuína e impressionante. O problema é
+que velocidade sem reversibilidade é uma combinação perigosa. Um carro sem freios também
+é rápido. A questão é o que acontece quando você precisa parar ou mudar de direção.
+CAPÍTULO 3. GIT: O CTRL+Z QUE A IA NÃO TE DÁ
+39
+Licenciado para - heverton eduardo peres - 32214079807 - Protegido por Eduzz.com
+
+[Page 41]
+ENGENHARIA DE SOFTWARE COM AGENTES INTELIGENTES
+O Git é o freio. Mais do que isso: é o sistema completo que permite acelerar com confiança
+porque você sabe que pode voltar, que pode testar em paralelo sem arriscar o que já funciona,
+que pode colaborar com outras pessoas sem sobrescrever o trabalho de ninguém e que
+pode entender, meses depois, por que uma decisão foi tomada. O Git não é uma ferramenta
+avançada para times grandes. É infraestrutura básica para qualquer pessoa que escreve
+código que importa, seja ela um time de cem engenheiros ou um desenvolvedor solo usando
+Claude Code num projeto pessoal.
+Figura 3.2: Sem Git, o agente inteligente refatora, erra e entra em loop infinito sem nenhuma
+forma de voltar ao estado que funcionava. Não há histórico, rollback, branches nem segurança.
+O que torna o Git especialmente crítico no contexto de agente inteligentes é uma
+assimetria fundamental: o agente não tem memória do que o código era antes. Ele opera sobre
+o estado atual do arquivo, sem nenhum senso de histórico, de intenção ou de consequências
+CAPÍTULO 3. GIT: O CTRL+Z QUE A IA NÃO TE DÁ
+40
+Licenciado para - heverton eduardo peres - 32214079807 - Protegido por Eduzz.com
+
+[Page 42]
+ENGENHARIA DE SOFTWARE COM AGENTES INTELIGENTES
+Figura 3.3: Com Git, cada commit é um ponto de restauração recuperável em segundos. A
+branch isola experimentos, o histórico preserva cada estado e o git revert desfaz qualquer
+erro.
+de mudanças anteriores. Para o agente, o arquivo é sempre o que está na tela agora. Para o
+desenvolvedor que precisa entender o que aconteceu e reverter uma decisão ruim, o histórico
+de commits é literalmente o único registro do que existia antes. Sem Git, esse registro não
+existe. Com Git, cada estado relevante do código está preservado, nomeado e recuperável em
+segundos.
+A boa notícia é que o Git, apesar de ter reputação de ferramenta complexa entre iniciantes,
+tem um conjunto central de comandos que cobre 90% das situações do dia a dia. Não é
+necessário dominar cada opção de cada comando para usar o Git de forma efetiva. O que é
+necessário é entender o modelo mental por trás da ferramenta: o que é um commit, o que
+CAPÍTULO 3. GIT: O CTRL+Z QUE A IA NÃO TE DÁ
+41
+Licenciado para - heverton eduardo peres - 32214079807 - Protegido por Eduzz.com
+
+[Page 43]
+ENGENHARIA DE SOFTWARE COM AGENTES INTELIGENTES
+é uma branch, o que é um repositório remoto e por que cada um desses conceitos existe.
+Com esse modelo mental estabelecido, os comandos fazem sentido intuitivamente, em vez de
+serem sequências de palavras para decorar.
+Este capítulo constrói esse modelo do zero e aplica cada conceito diretamente ao contexto
+de desenvolvimento com agente inteligentes. Começa pelo argumento de por que o Git é
+obrigatório, não opcional, quando se usa IA para gerar código. Em seguida, cobre instalação,
+configuração e os comandos essenciais com exemplos reais. Depois, explora o uso de
+branches como mecanismo de experimentação segura. E fecha com um projeto prático
+integrando Git, Claude Code e Google Antigravity num fluxo de desenvolvimento real. Ao
+terminar este capítulo, o Git vai deixar de ser uma ferramenta que você usa porque todo mundo
+usa, e vai se tornar uma ferramenta que você entende por que não consegue trabalhar sem.
+3.1
+POR QUE GIT É OBRIGATÓRIO QUANDO SE USA IA
+Pense no que acontece quando você pede a um agente inteligente que implemente uma
+nova funcionalidade num sistema existente. O agente lê o código, entende o contexto dentro
+da janela de contexto disponível, propõe uma solução e escreve. Na maioria das vezes, o
+resultado é impressionante. Mas ’na maioria das vezes’ deixa espaço para o resto. O agente
+pode ter interpretado o requisito de forma ligeiramente diferente do que você imaginava. Pode
+ter feito uma escolha de implementação que funciona agora, mas cria débito técnico. Pode
+ter modificado uma função que era usada em cinco lugares diferentes sem perceber que três
+deles tinham comportamentos especiais. Sem Git, descobrir qualquer uma dessas coisas
+significa gastar tempo comparando o que você lembra que era com o que agora está na tela.
+O Git resolve isso de uma forma elegante e simples: antes de pedir ao agente que faça
+qualquer mudança significativa, você faz um commit do estado atual. Esse commit é um
+instantâneo completo de tudo que estava funcionando naquele momento. Se a mudança
+do agente trouxer problema, você reverte para esse instantâneo com um único comando e
+o código volta exatamente ao estado anterior, sem perda, sem reconstrução manual, sem
+depender da memória de ninguém. O agente pode tentar de novo com uma instrução diferente,
+ou você pode seguir outro caminho. O ponto de retorno está garantido.
+Existe um segundo motivo pelo qual o Git é obrigatório no contexto de IA: o agente
+inteligente não tem acesso ao histórico do projeto, só ao estado atual dos arquivos. Isso
+significa que toda a inteligência sobre ’por que esse código está assim’ está nos commits,
+nas mensagens que os acompanham e no histórico de mudanças. Um time que usa Git
+corretamente constrói, ao longo do tempo, uma documentação viva do raciocínio por trás das
+decisões. Quando um agente precisar entender por que uma função tem aquele comporta-
+mento específico, a mensagem do commit que introduziu essa função é a resposta mais
+CAPÍTULO 3. GIT: O CTRL+Z QUE A IA NÃO TE DÁ
+42
+Licenciado para - heverton eduardo peres - 32214079807 - Protegido por Eduzz.com
+
+[Page 44]
+ENGENHARIA DE SOFTWARE COM AGENTES INTELIGENTES
+Figura 3.4: O fluxo seguro com agente inteligente: commit antes de cada intervenção
+significativa do agente cria pontos de restauração que transformam qualquer erro em reversível
+e qualquer experimento em seguro.
+direta e confiável disponível. Repositórios sem histórico significativo são repositórios onde o
+agente vai tomar decisões sem contexto, com os riscos que isso implica.
+O terceiro motivo é a colaboração. Se você trabalha com outras pessoas, ou se você
+mesmo vai trabalhar nesse código daqui a seis meses, o Git é o único mecanismo confiável
+para que múltiplas linhas de desenvolvimento coexistam sem se destruírem mutuamente.
+Quando um agente inteligente está trabalhando numa funcionalidade nova numa branch
+isolada, enquanto você corrige um bug crítico em produção numa outra branch, as duas linhas
+de trabalho não interferem. Esse isolamento não é luxo de time grande. É o que permite
+que dois esforços simultâneos, um humano e um do agente, avancem em paralelo sem criar
+CAPÍTULO 3. GIT: O CTRL+Z QUE A IA NÃO TE DÁ
+43
+Licenciado para - heverton eduardo peres - 32214079807 - Protegido por Eduzz.com
+
+[Page 45]
+ENGENHARIA DE SOFTWARE COM AGENTES INTELIGENTES
+conflitos irrecuperáveis.
+Finalmente, o Git é a ferramenta que transforma experimentos de risco em experimentos
+seguros. Com agente inteligentes, a tentação de testar abordagens diferentes é constante: e
+se eu pedir para o agente refatorar essa parte usando um padrão diferente? E se eu tentar uma
+arquitetura alternativa? Sem Git, cada experimento modifica o código original e potencialmente
+destrói o que funcionava. Com Git, você cria uma branch, experimenta o quanto quiser,
+e se o experimento não funcionar, descarta a branch e volta ao principal sem nenhuma
+consequência. O Git não torna o desenvolvimento mais lento. Torna o desenvolvedor mais
+corajoso. E coragem com segurança é a combinação que permite usar agente inteligentes
+no seu potencial máximo.
+Antes de começar qualquer fluxo prático, existe uma regra operacional simples que separa
+o desenvolvimento seguro do caótico: nunca peça ao agente uma mudança grande sem criar
+antes um ponto de restauração. Essa disciplina transforma completamente a relação entre
+você e a IA. O erro deixa de ser catástrofe e passa a ser experimento recuperável. Você não
+precisa de confiança cega no agente. Precisa de um sistema que torne qualquer decisão
+reversível em segundos.
+O workflow é direto: faça um commit, peça ao agente uma mudança, rode o resultado,
+avalie. Se funcionou, ótimo. Se quebrou algo inesperado, um simples git restore ou git
+revert volta ao estado anterior sem nenhuma perda. Nem você precisa lembrar o que estava
+lá. O Git guarda. E essa memória, combinada com a capacidade do agente de gerar código
+rapidamente, cria um ambiente onde velocidade não significa risco. Significa potencial.
+3.2
+INSTALAÇÃO E CONFIGURAÇÃO DO GIT + GITHUB
+Antes de qualquer comando, o Git precisa estar instalado na sua máquina e configurado
+com sua identidade. Essa configuração é feita uma única vez e vale para todos os projetos.
+Vamos do zero, sem pressupor que nada está instalado.
+No Windows, a forma mais direta é baixar o instalador oficial em git-scm.com. Durante a
+instalação, aceite as opções padrão. Ao finalizar, você terá duas formas de usar o Git:
+• Git Bash: terminal estilo Linux que vem junto com a instalação do Git. Todos os
+comandos deste capítulo funcionam nele sem adaptação. É a opção mais simples para
+quem está começando.
+• PowerShell ou Windows Terminal: os comandos do Git (git init, git add, git
+commit, etc.) funcionam normalmente. A diferença está nos comandos do sistema
+operacional, como criar pastas e arquivos. Quando houver diferença, este capítulo
+mostra os dois formatos.
+CAPÍTULO 3. GIT: O CTRL+Z QUE A IA NÃO TE DÁ
+44
+Licenciado para - heverton eduardo peres - 32214079807 - Protegido por Eduzz.com
+
+[Page 46]
+ENGENHARIA DE SOFTWARE COM AGENTES INTELIGENTES
+No macOS, o Git já vem instalado ou pode ser obtido com o Homebrew:
+brew install git
+No Linux (Ubuntu e derivados):
+sudo apt update && sudo apt install git -y
+Verifique a instalação com:
+git --version
+Se aparecer algo como git version 2.x.x, está pronto. Agora configure sua iden-
+tidade. O Git usa essas informações para assinar cada commit com o nome de quem o
+fez:
+git config --global user.name "Seu Nome"
+git config --global user.email "seu@email.com"
+A flag --global aplica essa configuração para todos os repositórios da sua máquina. Se
+quiser uma configuração diferente por projeto, use o mesmo comando sem a flag dentro da
+pasta do projeto. Defina também o nome padrão da branch principal, que hoje a convenção
+estabelece como main:
+git config --global init.defaultBranch main
+Para trabalhar com o GitHub, você vai precisar de uma conta em github.com. Crie uma se
+ainda não tiver. Em seguida, instale o gh, a interface de linha de comando oficial do GitHub,
+que simplifica muito a criação de repositórios e autenticação:
+No Windows (com winget):
+winget install GitHub.cli
+No macOS:
+brew install gh
+No Linux:
+sudo apt install gh -y
+CAPÍTULO 3. GIT: O CTRL+Z QUE A IA NÃO TE DÁ
+45
+Licenciado para - heverton eduardo peres - 32214079807 - Protegido por Eduzz.com
+
+[Page 47]
+ENGENHARIA DE SOFTWARE COM AGENTES INTELIGENTES
+Com o gh instalado, autentique-se no GitHub:
+gh auth login
+Siga as instruções interativas: escolha GitHub.com, protocolo HTTPS e autentique pelo
+navegador quando solicitado. Após isso, sua máquina está configurada para criar e interagir
+com repositórios remotos sem precisar digitar senha a cada operação. Configuração feita uma
+vez, funciona para sempre.
+3.3
+OS COMANDOS ESSENCIAIS
+O Git tem dezenas de comandos e centenas de opções. A boa notícia é que o dia a dia de
+desenvolvimento usa um subconjunto pequeno e estável. Domine esses e você vai conseguir
+trabalhar com confiança em qualquer projeto.
+O primeiro passo em qualquer projeto novo é inicializar o repositório Git ou clonar um
+existente. Para projetos novos, dentro da pasta do projeto:
+git init
+Para trazer um repositório existente do GitHub para a sua máquina:
+git clone https://github.com/usuario/repositorio.git
+O comando git status é o seu ponto de partida antes de qualquer outra operação. Ele
+mostra quais arquivos foram modificados, quais estão preparados para commit e qual é o
+estado geral do repositório:
+git status
+Quando você modifica arquivos e quer registrar essas mudanças, o fluxo é sempre em dois
+passos: primeiro você prepara os arquivos com git add, depois registra com git commit.
+Adicionar um arquivo específico:
+git add nome_do_arquivo.py
+Adicionar todos os arquivos modificados de uma vez:
+git add .
+CAPÍTULO 3. GIT: O CTRL+Z QUE A IA NÃO TE DÁ
+46
+Licenciado para - heverton eduardo peres - 32214079807 - Protegido por Eduzz.com
+
+[Page 48]
+ENGENHARIA DE SOFTWARE COM AGENTES INTELIGENTES
+Depois de preparar os arquivos, registre o commit com uma mensagem que descreva
+o que foi feito. Mensagens claras são investimento no futuro do projeto; são elas que vão
+explicar ao agente, a você e à equipe o que mudou e por quê:
+git commit -m "feat: adiciona endpoint de autenticacao com JWT"
+Para enviar os commits locais para o repositório remoto no GitHub, use git push. Na
+primeira vez, especifique a branch de destino:
+git push -u origin main
+Nas próximas vezes, basta:
+git push
+Para trazer mudanças do repositório remoto para a sua máquina local, o comando é
+git pull. Use sempre antes de começar uma sessão de trabalho, especialmente se outras
+pessoas ou agentes trabalharam no mesmo repositório:
+git pull
+Para ver o histórico de commits do projeto, com datas, autores e mensagens:
+git log --oneline
+A flag --oneline comprime cada commit em uma linha, tornando o histórico mais legível.
+Para ver as diferenças entre o que está nos seus arquivos e o último commit registrado:
+git diff
+E o comando que você vai usar quando o agente fizer algo que não deveria e você quiser
+descartar as mudanças não commitadas de um arquivo, voltando ao último estado registrado:
+git restore nome_do_arquivo.py
+Para descartar todas as mudanças não commitadas de uma vez, com cuidado porque
+não tem desfazer:
+git restore .
+Se quiser inspecionar o código num commit antigo sem mover sua branch principal, use:
+CAPÍTULO 3. GIT: O CTRL+Z QUE A IA NÃO TE DÁ
+47
+Licenciado para - heverton eduardo peres - 32214079807 - Protegido por Eduzz.com
+
+[Page 49]
+ENGENHARIA DE SOFTWARE COM AGENTES INTELIGENTES
+git switch --detach a3f9c21
+Isso coloca o repositório no estado daquele commit sem alterar seu histórico. Se a
+intenção for desfazer um commit que já foi publicado, use git revert:
+git revert a3f9c21
+Esse comando cria um novo commit que desfaz as mudanças do anterior, preservando o
+histórico. Se a intenção for restaurar um arquivo específico para como ele era, use:
+git restore --source=a3f9c21 nome_do_arquivo.py
+Esses comandos cobrem o fluxo central. Com eles, você consegue iniciar projetos,
+registrar progresso, sincronizar com o remoto e reverter erros. Tudo o mais que o Git oferece
+são variações e extensões desse núcleo.
+3.4
+BRANCHES: TRABALHANDO COM IA SEM MEDO DE ERRAR
+Uma branch é, em termos simples, uma linha de desenvolvimento paralela e isolada. Ela
+parte de um ponto do histórico do projeto e segue em frente sem afetar as outras linhas até
+que você decida integrá-la ou descartá-la. Para quem usa agente inteligentes, as branches
+são talvez o conceito mais importante do Git, porque transformam qualquer experimento num
+risco controlado.
+O fluxo básico é criar uma branch antes de iniciar qualquer mudança significativa, especi-
+almente quando você vai instruir o agente a fazer algo de maior impacto:
+git checkout -b feat/nova-funcionalidade
+Esse comando cria a branch e já muda para ela. Tudo que for feito a partir daqui, seja
+por você ou pelo agente, ficará isolado nessa branch. Para ver quais branches existem e em
+qual você está:
+git branch
+Para trocar para uma branch existente:
+git checkout main
+CAPÍTULO 3. GIT: O CTRL+Z QUE A IA NÃO TE DÁ
+48
+Licenciado para - heverton eduardo peres - 32214079807 - Protegido por Eduzz.com
+
+[Page 50]
+ENGENHARIA DE SOFTWARE COM AGENTES INTELIGENTES
+Figura 3.5: O ciclo central do Git: modificar, preparar com git add, registrar com git commit
+e sincronizar com git push e git pull. Cada passo tem um papel definido e não pode ser
+pulado sem consequência.
+Quando o trabalho na branch estiver pronto e testado, você integra as mudanças de volta
+à branch principal com git merge. Primeiro volte para a main, depois execute o merge:
+git checkout main
+git merge feat/nova-funcionalidade
+Se a branch não for mais necessária após o merge:
+git branch -d feat/nova-funcionalidade
+CAPÍTULO 3. GIT: O CTRL+Z QUE A IA NÃO TE DÁ
+49
+Licenciado para - heverton eduardo peres - 32214079807 - Protegido por Eduzz.com

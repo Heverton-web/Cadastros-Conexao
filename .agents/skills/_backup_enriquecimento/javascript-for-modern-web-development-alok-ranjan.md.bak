@@ -1,0 +1,60 @@
+---
+name: javascript-for-modern-web-development-alok-ranjan-
+description: >-
+  Passos operacionais extraidos — desenvolvimento web, full-stack, JavaScript, TypeScript, React, Node.js (EN).
+---
+
+# JavaScript for Modern Web Development (Alok Ranjan, Abhilasha Sinha etc.) (z - library.sk, 1lib.sk, z-lib.sk) — Passos Operacionais
+
+Skill baseada no livro "JavaScript for Modern Web Development (Alok Ranjan, Abhilasha Sinha etc.) (z - library.sk, 1lib.sk, z-lib.sk)" (EN). Contem passos praticos e sequencias operacionais.
+
+Use quando o usuario pedir orientacao pratica sobre: desenvolvimento web, full-stack, JavaScript, TypeScript, React, Node.js.
+
+---
+
+## Procedimentos
+
+1. **Adding element using push:** Changes the array by adding elements to the end of the array and returns the length of the final array:
+1. **Adding or removing element using splice():** Changes the array by specifying the start position and number of elements to be replaced/removed and the new list used for replacing:
+1. **Adding/joining arrays using concat:** The `concat()` method is used to join two or more arrays into a single array. It does not change the arrays being concatenated but returns a new array:
+1. **An application launch screen:** In a real application, where we use third-party APIs, this will be close to the login screen. Here, it is used just to show navigation between the two screens.
+1. **Callback/Message Queue** is a queue into which the callback, associated with asynchronous calls, are pushed into, after the completion of the associated asynchronous operation. The callback gets picked for execution by the event loop and pushed for execution when the call stack is empty.
+1. **Creating a new array using elements from existing array using slice:** Creates a new aray using the start and end position specified. The original array is not impacted with this:
+1. **Event Loop** is the part which is always running and checking the Call Stack to see if there are any frames to be executed, which it picks for execution. If the call stack is empty, it next checks in the Callback queue to see if any callback is waiting to be executed. if available, it picks the callback from the message queue and pushes into the Call Stack for execution.
+1. **Link up data with UI components:**
+1. **Multi-line comments:** These are enclosed within /* and*/. Any code within these will not be executed, and this is used to add comments spanning across multiple lines:
+1. **Plan your UI Components:**
+1. **Removing first element using shift:** Changes the array by removing the last element and returns the element removed:
+1. **Removing last element using pop:** Changes the array by removing the last element and returns the element removed:
+1. **Single line comments:** These are preceded by // and contain the comment in one line. Any executable line of code can also be commented so that it is skipped using // and converting it into commented code.
+1. **The two parameters are optional and can be selectively handled:**
+1. **Traditional looping methods:**
+1. **Using filter method:** The filter method calls the function for each element, checks for a specific condition for each element and returns an array of the elements which satisfy the condition.
+1. **Using reduce method:** Another useful array method which also calls the function for each element of the array but returns an accumulated response where each result is passed on to the next element and finally returns a single response value.
+1. **Using the map method:** The map method calls the function for each element and returns an array of the elements modified by the function.
+1. **then() accepts two callbacks:**
+1. A new Object method which will take a list of key-value pairs of data and convert it into a single object:
+
+## Conceitos Fundamentais
+
+- •••••"•••••••••••••••••••••o•••-•• .. "'''"-''''"''''"''''''''"'''''''"'''''''''' '''''' ·•••••••••"'''''""*'''''''''''''''''''''''''''''''''''''''''''''' .. ''''''''''''''''''''''''''''"' ' ''''' ' ' ' '''' '' ' ''''''''''''"'''''''''''''''''''''''''''_.,_,,_.,,,,, ,,.,,,,,,,.,,.,,,,,,,,,
+- ................................................................................................................. -........................................................................................................................................................................ .
+- ...........................................................................................................................................................................................................................................................................................
+- ................................................................................................................................... ..................................................................................................................... ·······························
+- ...................................................................... .................................................................................................................................................................
+
+## Princípios e Técnicas
+
+- ............................................................................ ~?P..:.~.~-~-1?.~~i-~.?-~.~.!.!~~.~=--~~.:~a..~.1.:~'. .. ~~~.: .. ~.:.!.~.?~ .. ~~t.~.~~.~.?.~.~L ............................................. .
+- OoOOoOOOOOOOOOOOOOOoO OOo-+o oooo+o .. + .. ooo·• ·ooo o+ooooOoo00000000>00000+0000000000000000000000000000000-0000-0000 .. 00000HOOOO+O>Ooo·Ooo ooooooooooo 00000000000000 ............................
+- . . . ... ······-······ ........... ... ....................................... .. ... . ................................................................................... .
+- ............................. . ..................... . ......... . .........................................................................................
+- ....... ....... ........... .... .... ....... .... ... . .... ... .... .... ... . .... ....... .... .... .... ••ljij; .................................... .
+
+## Aplicações Práticas
+
+- ...................................................................................................................................................
+- r••••••bo •o• k •e-ci•~•••••2• 5 •~•••0•000•••••••••••••••••••••• U •• ••••••••••••• ••••••••••••••••••••••••••••ooooooooooooo•o • • >•• ••••••1
+- No part of this publication may be reproduced, stored in a retrieval system or transmitted in any form or by any means, electronic, mechanical.
+- referred to in this work as a citation and/or a potential source of further information does not mean that the author or the publisher endorses
+- r······r:o·0·n;·5··~ · ····4"Q ·~··················· · ···················· ············· ····················································1

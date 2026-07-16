@@ -1,0 +1,78 @@
+---
+name: epub-vraptor-desenvolvimento-gil-para-web-com-java
+description: >-
+  Passos operacionais extraidos — desenvolvimento web, full-stack, JavaScript, TypeScript, React, Node.js (PT).
+---
+
+# Epub Vraptor Desenvolvimento Agil Para Web Com Java — Passos Operacionais
+
+Conteudo extraido do livro 'Epub Vraptor Desenvolvimento Agil Para Web Com Java'. Contem passos, tecnicas e principios baseados na obra original.
+
+## 1. Conceitos Fundamentais
+- Capítulo 2 Sumário Capítulo 1: Introdução 1.1 Um pouco de história 1.2 Aonde você vai chegar com esse livro?
+- Capítulo 4 Capítulo 1 : Introdução 1.1 Um pouco de história Há muito tempo, desenvolver uma aplicação web em Java era uma tarefa muito trabalhosa.
+- Por um lado, tínhamos os Servlets e JSP, nos quais todo o tratamento das requisições era manual e cada projeto ou empresa acabava criando seu próprio framework — "O" framework — para trabalhar de uma forma mais agradável.
+- Por outro lado, tínhamos vários frameworks que se propunham a resolver os problemas da dificuldade de se trabalhar com os Servlets, mas que lhe obrigavam a escrever toneladas de XML, arquivos .properties e a estender classes ou implementar interfaces para poder agradar a esse framework.
+- Nesse cenário surgiu a ideia de um framework mais simples, que facilitasse o desenvolvimento web sem tornar o projeto refém das suas classes e interfaces.
+- Surgia o VRaptor, criado pelos irmãos Paulo Silveira e Guilherme Silveira, em 2004 na Universidade de São Paulo.
+- Em 2006 foi lançada a primeira versão estável: o VRaptor 2, com a ajuda do Fabio Kung, do Nico Steppat e de vários outros desenvolvedores, absorvendo várias ideias e boas práticas que vieram do Ruby on Rails.
+- Em 2009, o VRaptor foi totalmente reformulado para a versão 3, levando em conta a experiência obtida com os erros e acertos da versão anterior e de muitos outros frameworks da época.
+- Essa versão leva ao extremo os conceitos de Convenção sobre configuração e Injeção de dependências, em que todos os comportamentos normais podem ser mudados facilmente usando anotações ou sobrescrevendo um dos componentes internos — bastando, para tanto, implementar uma classe com a interface desse componente.
+- Além disso, possibilita criar de uma maneira fácil não apenas aplicações web que rodam no browser , mas também serviços web que seguem as ideias de serviços RESTful, facilitando a comunicação entre sistemas e a implementação de AJAX no browser.
+
+
+  - Não seria um absurdo se todo mês fosse cobrada uma taxa fixa de trezentos reais de energia elétrica, independente do uso ? Entretanto, quando se paga por um serviço de hospedagem, é exatamente o que acontece, pois o site fica no ar, independente do uso dos recursos por uma quantia mensal fixa. Para mudar esse cenário, surgiu o conceito de cloud computing (computação em nuvem), segundo o qual os serviços são pagos pelo uso, proporcionando inúmeras vantagens: toda a parte de infraestrutura (rede, armazenamento de arquivos, banco de dados, segurança) é de responsabilidade da prestadora de serviços, e o crescimento do uso de serviços é pago proporcionalmente, o que, em termos de custo, é uma excelente opção.
+
+  - Esse aviso significa que o site que estamos visitando não é garantido por uma unidade certificadora, como por exemplo a empresa Verisign. Para adiquirir um certificado digital, é preciso pagar para essas empresas, que funcionam semelhantes a cartórios virtuais, elas asseguram que o site que está sendo acessado é realmente da empresa que ele representa. Quando um certificado é assinado localmente (como no nosso caso), o site funciona, apenas exibindo um aviso. No caso do Google Chrome, o https aparece riscado em vermelho, como mostra a figura 8.2.
+
+  - No capítulo [4](index_split_007.html#publicando) publicamos uma aplicação básica (<http://play-capitulo4.herokuapp.com/>), e usaremos agora uma URL diferente para refletir a aplicação completa (<http://top100filmescult.herokuapp.com/>). Depois de cadastrados os dados iniciais, devemos informar um e-mail de contato e o domínio no qual a aplicação funcionará. Será necessário cadastrar um domínio diferente, por exemplo <seu-usuario-no-Heroku>-top100filmescult.herokuapp.com, semelhante à figura 7.2.
+
+  - Existe outra diferença interessante : as aplicações criadas até o Play 2.2 necessitam de uma instalação do Play para funcionar, já as aplicações criadas com o Activador (Play 2.3+) são "auto-suficientes", não tem dependência externa... é possível rodar a mesma aplicação em outra máquina apenas copiando o diretório e mais nada, isso é algo positivo que aumenta a flexibilidade, principalmente quando se trabalha com diferentes ambientes ( desenvolvimento, homologação e produção).
+
+  - O Play é um framework que redefine o desenvolvimento web em Java. O seu foco é o divertido desenvolvimento no qual a interface HTTP é algo simples, flexível e poderoso, sendo uma alternativa limpa para as opções Enterprise Java infladas. Ele foca na produtividade do desenvolvedor para as arquiteturas RESTful, e sua vantagem em relação às linguagens e frameworks não Java, como Rails e PHP, é que ele usufriu de todo o poder da Java Virtual Machine (JVM).
+
+  - Para cada restart do servidor do Play, o seu banco de dados será limpo novamente. No início do desenvolvimento de um cadastro, isso não é um problema, mas chega um momento em que o sistema necessita de um cadastro mínimo já no banco de dados para funcionar de maneira adequada. Criar um cadastro de filmes em que é preciso cadastrar os diretores toda vez é inviável. Por esse motivo precisamos ter essas informações pré-cadastradas em um repositório.
+## 2. Principios e Tecnicas
+- Em meados de 2013, motivados pelo grande poder e facilidade de uso do Java EE 7, o VRaptor foi novamente reformulado, desta vez totalmente baseado em CDI, a especificação de injeção de dependências.
+- Com isso, além de todas as vantagens que já existiam no VRaptor 3, temos a possibilidade de usar os recursos nativos do servidor de aplicação, totalmente integrado com os componentes da aplicação.
+- E, como o CDI possui um modo standalone , ainda é possível rodar a aplicação em um servidor web, como o Jetty ou o Tomcat, nesse caso precisando adicionar manualmente outros recursos do Java EE, como a JPA.
+- A versão 4 final está disponível desde março de 2014. 1.2 Aonde você vai chegar com esse livro?
+- O objetivo desse livro é mostrar muito além do uso básico do VRaptor e suas convenções.
+- Mais importante do que aprender essas convenções é entender a arquitetura interna do VRaptor e como criar suas próprias convenções, adaptando o VRaptor para as necessidades específicas do seu projeto.
+- Saber como as coisas funcionam internamente é metade do caminho andado para que você tenha um domínio sobre o framework e se sinta confortável para fazer o que quiser com ele.
+- Durante os mais de quatro anos do VRaptor 3 e agora no começo do VRaptor 4, tenho respondido as mais variadas dúvidas sobre o seu uso no GUJ ( http://www.guj.com.br ), o que nos ajudou muito a modelar as novas funcionalidades e descobrir bugs .
+- Mas, muito mais do que isso, mostrou-nos todo o poder da extensibilidade: mesmo os problemas mais complexos e necessidades mais específicas dos projetos conseguiram ser resolvidos sobrescrevendo o comportamento do VRaptor usando os meios normais da sua API ou sobrescrevendo um de seus componentes.
+- Neste livro, você vai ver o uso básico e esperado, junto com o que considero boas práticas e uso produtivo das ferramentas que esse framework proporciona.
+
+
+  - Escolhendo a opção _Hobby Dev_ e associada à aplicação recém-criada, teremos uma aplicação gratuita com o banco de dados PostgreSQL disponível com suporte a 20 conexões simultâneas e tabelas com no máximo 10.000 linhas (figura 4.4). O Heroku trabalha preferencialmente com PostgreSQL, mas oferece também outras opções como MySQL, MongoDB, Neo4J; é preciso consultar no site os planos existentes, mas a maioria deles oferece um gratuito de teste.
+
+  - As redes sociais são essenciais para a divulgação do site e seus serviços. Vamos integrar o nosso site ao Facebook de duas maneiras, primeiramente utilizando a API nativa disponibilizada para os desenvolvedores, e depois utilizando um plugin do Play para conectar a várias redes sociais: Twitter, GitHub, Google, LinkedIn, Foursquare, Instagram, VK (rede social russa semelhante ao Facebook) e XING (rede social semelhante ao LinkedIn).
+
+  - Devemos preencher as informações da aplicação, como mostra a figura 7.1. As informações são simples: o primeiro campo é o nome do aplicativo, o segundo é o namespace (se desejar ter uma URL <http://apps.facebook.com/namespace>), e finalmente, o terceiro é para classificar sua categoria. No exemplo usamos a categoria de `Diversão`, mas se fosse um aplicativo de tênis, para exemplificar, a categoria adequada seria `Esporte` .
+
+  - Felizmente, utilizando o plugin Secure Social (<http://securesocial.ws>) conseguiremos com poucos ajustes fazer essa integração no nosso site de filmes. O Secure Social é um módulo de autenticação do Play Framework que suporta os protocolos mais usados do mercado: OAuth, OAuth2, OpenID, usuário/senha e proporciona algumas informações dos usuários autenticados, como nome, sobrenome, nome completo e e-mail.
+## 3. Aplicacoes Praticas
+- Mas também vamos compartilhar vários casos do uso não esperados e aprender como também é fácil implementá-los.
+- Portanto, esse livro é pra quem quer entender como funciona o VRaptor e como aproveitar todo o seu poder e sua extensibilidade para tornar o desenvolvimento de aplicações o mais fácil e produtivo quanto possível.
+- Capítulo 5 Capítulo 2 : O começo de um projeto com VRaptor Um grande problema no desenvolvimento de um projeto é justamente como (e quando) começá-lo.
+- É preciso definir muito bem qual é o problema a ser resolvido, qual é o perfil do usuário do sistema, como será a usabilidade, onde será instalado, e muitos outros detalhes que devem influenciar nas escolhas que você deve fazer.
+- Hoje em dia, temos muitas ferramentas — bibliotecas, frameworks, linguagens de programação, servidores etc. — à nossa disposição, o que torna muito difícil definir o que usar.
+- Muitas destas ferramentas são boas e adequadas para resolver o seu problema.
+- Entretanto, mais importante do que saber quando usar uma ferramenta é saber quando não usá-la, ou quando ela vai atrapalhar mais do que ajudar. 2.1 Vantagens e desvantagens O VRaptor é um framework feito para desenvolver aplicações web e também muito bom para desenvolver APIs HTTP/REST para comunicação entre sistemas.
+- É um framework MVC que dá um suporte muito bom à parte do Modelo — as classes que contêm a lógica de negócio da sua aplicação.
+- Com ele, é muito fácil aplicar as melhores práticas de orientação a objetos, já que ele não impõe restrições ao design das suas classes, além de facilitar a prática de inversão de controle por injeção de dependências.
+- É também um dos frameworks mais extensíveis que existe em Java.
+
+## 4. Topicos Avancados
+- Por ser construído em cima do CDI, a especificação de injeção de dependências do Java EE, todos os comportamentos são implementados por componentes com interfaces específicas, que podem facilmente ser sobrescritos com anotações do CDI.
+- Se for feito o deploy em um servidor de aplicação, como o Glassfish ou o Wildfly , todos os serviços do Java EE podem ser integrados às classes da aplicação, sem nenhuma configuração adicional.
+- Além disso, é um framework que nos deixa totalmente livre para escolher sua camada de Visualização.
+- O que também significa que não nos ajudará muito para desenvolver o HTML das páginas, diferente de alguns outros frameworks como, por exemplo, o JSF.
+- Você pode usar JSP, Velocity, Freemarker para gerar os templates, mas os componentes visuais precisam ser feitos manualmente, ou usando alguma biblioteca externa como o jQuery UI, Angular.JS, Bootstrap ou ExtJS.
+- Cada vez mais, essas bibliotecas se tornam mais simples de serem usadas, então até mesmo com pouco conhecimento de Javascript, HTML e CSS, é possível criar uma interface rica e interessante. 2.2 O projeto — Loja de livros Nas próximas páginas, desenvolveremos uma loja de livros online que terá duas partes: a administrativa, na qual serão gerenciados todos os livros, quantidade em estoque etc.; e a parte de vendas, em que serão mostrados todos os livros para que o usuário possa escolhê-los e comprá-los.
+- Essas duas partes serão feitas em projetos separados, que trocarão dados sempre que necessário.
+- A parte administrativa guardará todos os dados referentes aos livros, num banco de dados.
+- A parte de vendas não terá acesso a esse banco de dados, apenas consultará os dados do livro usando a API da parte administrativa.
+- A ideia desse projeto é ser simples o suficiente para que consigamos começar a desenvolvê-lo sem muito contexto inicial, mas ao mesmo tempo tratando de diversos aspectos reais do desenvolvimento de aplicações web, como cadastros, uploads de imagens, integração entre sistemas, comunicação com o banco de dados, transações, segurança, entre outros. 2.3 Pré-requisitos O VRaptor 4 tem como pré-requisitos principais a JDK 7 e o CDI 1.1, ou superiores.
+

@@ -1,0 +1,4025 @@
+## JSF eficaz_ as melhores práticas para o desenvolvedor web java
+
+  1. [page_001](src/pages/page_001.html)
+  2. [page_002](src/pages/page_002.html)
+  3. [page_003](src/pages/page_003.html)
+  4. [page_004](src/pages/page_004.html)
+  5. [page_005](src/pages/page_005.html)
+  6. [page_006](src/pages/page_006.html)
+  7. [page_007](src/pages/page_007.html)
+  8. [page_008](src/pages/page_008.html)
+  9. [page_009](src/pages/page_009.html)
+  10. [page_010](src/pages/page_010.html)
+  11. [page_011](src/pages/page_011.html)
+  12. [page_012](src/pages/page_012.html)
+  13. [page_013](src/pages/page_013.html)
+  14. [page_014](src/pages/page_014.html)
+  15. [page_015](src/pages/page_015.html)
+  16. [page_016](src/pages/page_016.html)
+  17. [page_017](src/pages/page_017.html)
+  18. [page_018](src/pages/page_018.html)
+  19. [page_019](src/pages/page_019.html)
+  20. [page_020](src/pages/page_020.html)
+  21. [page_021](src/pages/page_021.html)
+  22. [page_022](src/pages/page_022.html)
+  23. [page_023](src/pages/page_023.html)
+  24. [page_024](src/pages/page_024.html)
+  25. [page_025](src/pages/page_025.html)
+  26. [page_026](src/pages/page_026.html)
+  27. [page_027](src/pages/page_027.html)
+  28. [page_028](src/pages/page_028.html)
+  29. [page_029](src/pages/page_029.html)
+  30. [page_030](src/pages/page_030.html)
+  31. [page_031](src/pages/page_031.html)
+  32. [page_032](src/pages/page_032.html)
+  33. [page_033](src/pages/page_033.html)
+  34. [page_034](src/pages/page_034.html)
+  35. [page_035](src/pages/page_035.html)
+  36. [page_036](src/pages/page_036.html)
+  37. [page_037](src/pages/page_037.html)
+  38. [page_038](src/pages/page_038.html)
+  39. [page_039](src/pages/page_039.html)
+  40. [page_040](src/pages/page_040.html)
+  41. [page_041](src/pages/page_041.html)
+  42. [page_042](src/pages/page_042.html)
+  43. [page_043](src/pages/page_043.html)
+  44. [page_044](src/pages/page_044.html)
+  45. [page_045](src/pages/page_045.html)
+  46. [page_046](src/pages/page_046.html)
+  47. [page_047](src/pages/page_047.html)
+  48. [page_048](src/pages/page_048.html)
+
+
+
+
+
+
+
+## Sumário
+
+  * [Sobre o Autor](index_split_001.html#calibre_toc_1)
+  * [Agradecimentos](index_split_002.html#calibre_toc_2)
+  * [Sobre o Livro](index_split_003.html#calibre_toc_3)
+  * [Capítulo 1: Escolhas que afetam o desenvolvimento da aplicação](index_split_004.html#calibre_toc_4)
+    * [1.1 Suspeite se a aplicação está usando bem o JSF](index_split_004.html#calibre_toc_46)
+    * [1.2 Devo seguir todas as dicas ao pé da letra?](index_split_004.html#calibre_toc_47)
+  * [Parte 1 - Use os escopos corretamente](index_split_005.html#calibre_toc_5)
+  * [Capítulo 2: @RequestScoped para escopos curtos](index_split_006.html#calibre_toc_6)
+  * [Capítulo 3: Mantenha o bean na sessão com @SessionScoped](index_split_007.html#calibre_toc_7)
+  * [Capítulo 4: Entenda o novo @ViewScoped](index_split_008.html#calibre_toc_8)
+  * [Capítulo 5: Crie escopos longos e customizáveis com @ConversationScoped](index_split_009.html#calibre_toc_9)
+  * [Capítulo 6: A praticidade do escopo @Dependent](index_split_010.html#calibre_toc_10)
+  * [Capítulo 7: Guarde dados para toda a aplicação com o @ApplicationScoped](index_split_011.html#calibre_toc_11)
+  * [Capítulo 8: Quando usar o @NoneScoped?](index_split_012.html#calibre_toc_12)
+  * [Capítulo 9: Exibindo Objetos e Mensagens após Redirect e o FlashScoped](index_split_013.html#calibre_toc_13)
+  * [Parte 2 - Cuidados com seus Managed Beans](index_split_014.html#calibre_toc_14)
+  * [Capítulo 10: Colocando lógica de rendered no MB](index_split_015.html#calibre_toc_15)
+  * [Capítulo 11: Inicializando Objetos](index_split_016.html#calibre_toc_16)
+  * [Capítulo 12: Injetando ManagedBeans](index_split_017.html#calibre_toc_17)
+  * [Capítulo 13: Target Unreachable: Enfrente a NullPointerException do JSF](index_split_018.html#calibre_toc_18)
+  * [Capítulo 14: Cuidado com o "Value is not valid"](index_split_019.html#calibre_toc_19)
+  * [Parte 3 - Front-ends JSF](index_split_020.html#calibre_toc_20)
+  * [Capítulo 15: Utilizar JSP ou xhtml?](index_split_021.html#calibre_toc_21)
+  * [Capítulo 16: Utilizando imagens/css/javascript de modos simples](index_split_022.html#calibre_toc_22)
+  * [Capítulo 17: Boa utilização do Facelets](index_split_023.html#calibre_toc_23)
+  * [Capítulo 18: Enviar valores para o ManagedBean](index_split_024.html#calibre_toc_24)
+    * [18.1 Envie valor como parâmetro pelo f:setPropertyActionListener](index_split_024.html#calibre_toc_48)
+    * [18.2 Envie valor como parâmetro](index_split_024.html#calibre_toc_49)
+    * [18.3 Envie valor por Binding](index_split_024.html#calibre_toc_50)
+  * [Capítulo 19: Temas dinâmicos](index_split_025.html#calibre_toc_25)
+  * [Capítulo 20: O que eu uso? Action ou ActionListener?](index_split_026.html#calibre_toc_26)
+    * [20.1 Redirecione o usuário com action](index_split_026.html#calibre_toc_51)
+    * [20.2 Trate eventos com actionListener](index_split_026.html#calibre_toc_52)
+  * [Parte 4 - Aproveite as bibliotecas de componentes](index_split_027.html#calibre_toc_27)
+  * [Capítulo 21: Primefaces](index_split_028.html#calibre_toc_28)
+    * [21.1 DataTable com seleção com um click](index_split_028.html#calibre_toc_53)
+    * [21.2 Drag and Drop](index_split_028.html#calibre_toc_54)
+    * [21.3 Notificador](index_split_028.html#calibre_toc_55)
+    * [21.4 Auto Complete](index_split_028.html#calibre_toc_56)
+    * [21.5 Poll](index_split_028.html#calibre_toc_57)
+    * [21.6 Considerações finais](index_split_028.html#calibre_toc_58)
+  * [Capítulo 22: Temas Dinâmicos com Primefaces](index_split_029.html#calibre_toc_29)
+  * [Capítulo 23: Componentes do Primefaces não Aparecem](index_split_030.html#calibre_toc_30)
+  * [Capítulo 24: Richfaces](index_split_031.html#calibre_toc_31)
+    * [24.1 DataTable com Colunas Congeladas](index_split_031.html#calibre_toc_59)
+    * [24.2 Tool Tip](index_split_031.html#calibre_toc_60)
+    * [24.3 Log](index_split_031.html#calibre_toc_61)
+    * [24.4 Panel Menu](index_split_031.html#calibre_toc_62)
+    * [24.5 Repeat](index_split_031.html#calibre_toc_63)
+    * [24.6 Considerações Finais](index_split_031.html#calibre_toc_64)
+  * [Capítulo 25: Icefaces](index_split_032.html#calibre_toc_32)
+    * [25.1 Menu](index_split_032.html#calibre_toc_65)
+    * [25.2 Dialog](index_split_032.html#calibre_toc_66)
+    * [25.3 RichText](index_split_032.html#calibre_toc_67)
+    * [25.4 Data](index_split_032.html#calibre_toc_68)
+    * [25.5 Considerações Finais](index_split_032.html#calibre_toc_69)
+  * [Capítulo 26: Evite misturar as Implementações/Bibliotecas de Componentes](index_split_033.html#calibre_toc_33)
+  * [Capítulo 27: Não faça paginação no lado do servidor](index_split_034.html#calibre_toc_34)
+  * [Parte 5 - Funcionalidades ricas com JSF, segurança e otimização do JSF](index_split_035.html#calibre_toc_35)
+  * [Capítulo 28: Facilitando o uso do Ajax](index_split_036.html#calibre_toc_36)
+    * [28.1 Sempre indique que a requisição está acontecendo](index_split_036.html#calibre_toc_70)
+    * [28.2 Dê mensagens de feedback para o usuário](index_split_036.html#calibre_toc_71)
+    * [28.3 Previna-se das várias ações do usuário em requisições assíncronas](index_split_036.html#calibre_toc_72)
+    * [28.4 Cuidado ao usar ManagedBeans RequestScoped com Ajax](index_split_036.html#calibre_toc_73)
+  * [Capítulo 29: Internacionalização e Localização da sua aplicação](index_split_037.html#calibre_toc_37)
+    * [29.1 Permita que o usuário mude o idioma](index_split_037.html#calibre_toc_74)
+  * [Capítulo 30: Utilizando recursos dentro de um Converter](index_split_038.html#calibre_toc_38)
+    * [30.1 Acesse um ManagedBean programaticamente através de Expression Language](index_split_038.html#calibre_toc_75)
+  * [Capítulo 31: CDI com JSF](index_split_039.html#calibre_toc_39)
+  * [Capítulo 32: Evite o "Cross Site Scripting" em seu sistema](index_split_040.html#calibre_toc_40)
+  * [Capítulo 33: Otimizando a navegação e performance](index_split_041.html#calibre_toc_41)
+  * [Parte 6 - Debug e inspeção de aplicações](index_split_042.html#calibre_toc_42)
+  * [Capítulo 34: Limpeza de comentários e debug](index_split_043.html#calibre_toc_43)
+    * [34.1 Esconda os comentários da página](index_split_043.html#calibre_toc_76)
+    * [34.2 Debug dos componentes](index_split_043.html#calibre_toc_77)
+  * [Capítulo 35: Organize funcionalidades por ambiente do projeto](index_split_044.html#calibre_toc_44)
+  * [Capítulo 36: Refresh automático dos Arquivos](index_split_045.html#calibre_toc_45)
+
+
+
+
+Visite o site da Editora Casa do Código e conheça os livros com preços promocionais - [www.casadocodigo.com.br](http://www.casadocodigo.com.br). 
+
+
+## Sobre o Autor
+
+Hébert Coelho de Oliveira trabalha há mais de 10 anos com desenvolvimento de softwares. Possui as certificações SCJP, SCWCD, OCBCD, OCJPAD.
+
+Criador do blog <http://uaiHebert.com> visualizado por 170 países totalizando mais de 500 mil visualizações em seus 2 anos e meio de vida, é ainda autor do framework EasyCriteria (<http://easycriteria.uaihebert.com>) que ajuda na utilização da Criteria do JPA, sendo testado com Hibernate, OpenJPA e EclipseLink e com 100% de cobertura nos testes.
+
+Foi revisor de um livro específico sobre Primefaces e criador de posts em seu blog com aplicações completas utilizando JSF. Escreveu um post sobre JSF com diversas dicas que alcançou mais de 3 mil visualizações no primeiro dia, um post com 18 páginas, que foi a ideia original desse livro.
+
+Pós Graduado em MIT Engenharia de Software - desenvolvimento em Java. Atualmente atua como professor para o curso de Pós Graduação, ensinando o conteúdo de Java Web (JSP, Servlet, JSF e Struts) e tópicos avançados, como EJB, Spring e WebServices.
+
+
+## Agradecimentos
+
+Primeiramente agradeço a Deus por me capacitar para escrever o livro. 
+
+Agradeço à minha esposa por toda sua paciência durante o processo de escrita desse livro, e por sempre me animar nos momentos mais difíceis. 
+
+Aos meus pais que sempre me apoiaram. Sou feliz também pelas minhas sobrinhas que, mesmo pequenas (Louanne e Fernanda), participaram no processo do livro - afinal estiveram durante uma semana em meus braços enquanto eu escrevia o livro. Não posso esquecer da minha irmã que sempre briga comigo. =D
+
+Finalmente, agradeço ao pessoal da Casa do Código por me darem essa oportunidade e apoio durante todo o processo.
+
+
+## Sobre o Livro
+
+O JSF é uma tecnologia muito útil e prática de ser aplicada, mas que diversas vezes é mal utilizada. Muitas vezes por falta de conhecimento de quem estrutura a aplicação, o projeto acaba ficando lento e de difícil manutenção.
+
+Este livro tem por objetivo dar dicas e explicar conceitos que são necessários para que uma boa aplicação utilizando JSF seja criada. Às vezes o mínimo detalhe que vai desde como chamar um método ou passar um valor para um ManagedBean ou até mesmo utilizar um converter pode levar a horas perdidas de pesquisas na internet e testes na aplicação.
+
+Esse livro demonstrará boas práticas, dicas e a correta utilização do JSF em diversos aspectos e diferentes situações.
+
+
+##  Capítulo 1:  Escolhas que afetam o desenvolvimento da aplicação 
+
+Você já sentiu um desânimo por ter que alterar uma funcionalidade? Ou ter que procurar por aquele bug que está aparecendo há meses? Muitas vezes esse desânimo pode acontecer por decisões erradas durante a criação da aplicação. A pior parte é saber que ao alterar um trecho do código, podemos ter efeitos colaterais indesejados em outros locais.
+
+É possível encontrar diversos problemas técnicos ou até mesmo conceituais por escolhas erradas ao iniciar o desenvolvimento de uma nova aplicação. É necessário estruturá-la com conhecimento das ferramentas utilizadas; uma aplicação que tem frameworks mal utilizados será refém deles para sempre.
+
+###  1.1  Suspeite se a aplicação está usando bem o JSF 
+
+Certa vez me foi dada a trivial tarefa de mudar uma aba de lugar. A tarefa era apenas pegar uma aba que estava entre outras e exibi-la primeiro.
+
+_Fig. 1.1: Exibir primeiro a aba Pessoa_
+
+  
+  
+
+
+A figura 1.1 mostra como era o layout e como, teoricamente, seria simples passar a aba `Pessoa` para ser exibida antes da aba `Carro`.
+
+O que seria uma tarefa de 15 minutos se transformou em uma caça às bruxas de 3 dias. Ao alterar as abas de posição, diversos erros começaram a acontecer. O primeiro erro que apareceu foi o cruel `NullPointerException`. Como um desenvolvedor poderia imaginar que, ao alterar uma aba de lugar, esse erro iria aparecer?
+
+O principal problema dessa aplicação eram os escopos dos ManagedBeans. Todos eram `SessionScoped` e dependiam de informações em comum. Ao entrar na primeira aba (`Carro`), diversos dados eram armazenados na sessão e utilizados em outras abas diretamente no ManagedBean que cuidava da aba Carro. Ao trocar as abas de lugar, diversas informações não foram preenchidas nesse ManagedBean e quando o ManagedBean da aba Pessoa fosse acessar essas informações, a `NullPointerException` aparecia.
+
+Infelizmente esse era um dos problemas da aplicação; outro era que ao carregar a tela todas as informações de todas as outras abas eram carregadas. Era muita informação em memória, e erros começavam a acontecer sem explicação.
+
+Às vezes a escolha é feita pelos desenvolvedores, outras vezes por algum desenvolvedor que fala: "assim sempre funcionou e vamos continuar desse modo". É preciso entender o framework com o qual estamos trabalhando, para só então apresentar argumentos e melhores técnicas na criação da aplicação.
+
+  
+
+
+###  1.2  Devo seguir todas as dicas ao pé da letra? 
+
+Não. Você deve manter seu espírito crítico. O livro vai abrir sua mente para que você evite cair em armadilhas já tradicionais, mas há sim situações em que você acaba subvertendo o framework.
+
+  
+
+
+
+# Parte 1 - Use os escopos corretamente
+
+O JSF é um framework que tem um comportamento "_component-based_ ". Ele tem por característica principal o fato de que a página irá buscar a informação no ManagedBean.
+
+Cada ManagedBean tem um tipo de escopo ideal para cada situação. É fácil encontrar apologias ao uso indiscriminado do `SessionScoped`, assim como a defesa acirrada de que o ideal para todos os casos é o `RequestScoped`. Vamos analisar cada caso e ver qual a melhor solução para cada abordagem.
+
+Antes é importante salientar os dois modos de se declarar um ManagedBean. É possível utilizar um ManagedBean por CDI que utiliza o pacote `javax.inject` ou por ManagedBean encontrado no pacote `javax.faces.bean`. Existe diferença entre cada contexto que for utilizado e ambos com vantagens e desvantagens. Portanto, é importante conhecer os escopos para conseguir usá-los corretamente.
+
+
+##  Capítulo 2:  @RequestScoped para escopos curtos 
+
+O escopo `RequestScoped` funciona como um simples HTTP request. O ManagedBean não manterá seu estado entre as chamadas do usuário.
+
+_Fig. 2.1: RequestScoped ManagedBean tratando requisição_
+
+  
+  
+
+
+A imagem 2.1 mostra como o JSF irá tratar a requisição ao se utilizar um ManagedBean RequestScoped:
+
+  1. O usuário iniciará uma requisição;
+  2. O ManagedBean processará as informações necessárias;
+  3. As informações do ManagedBean ficam disponíveis para o processamento da tela;
+  4. Caso algum valor tenha sido armazenado no ManagedBean, essas informações serão descartadas;
+
+
+
+A cada requisição, uma nova instância do ManagedBean será criada e usada, dessa maneira, não há o compartilhamento das informações do ManagedBean entre as requisições.
+    
+    
+     1 import javax.faces.bean.*;
+     2 
+     3 @ManagedBean
+     4 @RequestScoped
+     5 public class RequestScopedMB {
+     6   private int numeroDeAcessos;
+     7 
+     8   public int getNumeroDeAcessos() {
+     9     return ++numeroDeAcessos;
+    10   }
+    11 
+    12   public void setNumeroDeAcessos(int numeroDeAcessos) {
+    13     this.numeroDeAcessos = numeroDeAcessos;
+    14   }
+    15 }
+    
+
+Ao analisarmos o código da classe `RequestScopedMB` é possível ver que, mesmo a classe tendo o atributo privado `numeroDeAcessos`, o seu valor será sempre igual a cada chamada. Note que no método `getNumeroDeAcessos`, o valor do `numeroDeAcessos` é alterado. Não importa quantas vezes a página seja apresentada ao usuário, o valor retornado será sempre um.  
+  
+---  
+  
+**Boa prática**
+
+Os ManagedBeans por padrão são `@RequestScoped` e com isso, a anotação pode ser omitida na declaração dos beans. Considere como boa prática sempre deixar seu ManagedBean anotado com `@RequestScoped`, pois com ela fica claro para quem lê o código qual é o escopo do ManagedBean, mesmo para um desenvolvedor que acaba de entrar no projeto e ainda não conhece o JSF.  
+  
+---  
+  
+O melhor uso de um ManagedBean no escopo de _request_ é em telas que não necessitam de chamada AJAX, ou em de algum objeto salvo na memória.
+
+Considere uma situação na qual não é necessário nenhuma informação adicional de um objeto em memória. Basta enviar os dados presentes do formulário que um objeto será criado e estará pronto para ser persistido no banco de dados.
+
+_Fig. 2.2: Utilizando o RequestScoped de um bom modo_
+
+  
+  
+
+
+A figura 2.2 mostra um exemplo de quando poderíamos utilizar um ManagedBean `@RequestScoped`. Note que a figura 2.2 trata de uma tela de inclusão de dados, e não necessário nenhum dado já processado anteriormente.
+
+Um ManagedBean do tipo RequestScoped é considerado ThreadSafe, ou seja, ele não terá problemas relacionados a vários usuários acessando o mesmo MB ao mesmo tempo. É uma boa utilização na geração de relatório, pois não haveriam duas pessoas usando a mesma instância do ManagedBean e o relatório teria como ter inconsistência de dados. Outra boa utilização seria ao enviar dados para uma outra tela; essa outra poderia exibir todos os dados do objeto presente no request.
+
+
+##  Capítulo 3:  Mantenha o bean na sessão com @SessionScoped 
+
+Os ManagedBeans `@SessionScoped` têm o mesmo comportamento da sessão web (HttpSession). Todo atributo de um ManagedBean SessionScoped terá seu valor mantido até o fim da sessão do usuário.
+
+_Fig. 3.1: SessionScoped ManagedBean tratando requisição_
+
+  
+  
+
+
+A imagem 3.1 mostra como o JSF irá tratar a requisição ao se utilizar um ManagedBean SessionScoped:
+
+  1. O usuário iniciará uma requisição;
+  2. O ManagedBean processará as informações necessárias;
+  3. As informações do ManagedBean ficam disponíveis para o processamento da tela;
+  4. Toda informação que foi atribuída ao ManagedBean será mantida enquanto durar a sessão do usuário no servidor.
+
+
+
+Todo valor que for alterado em um ManagedBean SessionScoped será mantido, e todos os valores desse bean serão mantidos na memória.
+    
+    
+     1 import javax.faces.bean.*;
+     2 
+     3 @ManagedBean
+     4 @SessionScoped
+     5 public class SessionScopedMB {
+     6   private int numeroDeAcessos;
+     7 
+     8   public int getNumeroDeAcessos() {
+     9     return ++numeroDeAcessos;
+    10   }
+    11 
+    12   public void setNumeroDeAcessos(int numeroDeAcessos) {
+    13     this.numeroDeAcessos = numeroDeAcessos;
+    14   }
+    15   
+    16   public boolean isAdministrador(){
+    17     return usuario.getPerfil().equals(Perfil.ADMINISTRADOR);
+    18   }
+    19 
+    20 }
+    
+
+No código da classe `SessionScopedMB` o valor de `numeroDeAcessos` será alterado a cada requisição do usuário, e um novo valor será exibido para ele a cada exibição da página. 
+
+O tipo SessionScoped está disponível tanto para ManagedBean do pacote `javax.faces.bean` como para os ManagedBeans que utilizam CDI.
+
+A melhor utilização para um ManagedBean SessionScoped é para armazenar dados relativos ao usuário. Esses dados devem servir para facilitar o acesso às informações do usuário ou até mesmo trabalhar "regras de view", ou seja, regras que definirão o que um usuário pode visualizar ou acessar, entre outras funcionalidades.
+    
+    
+     1 // imports omitidos
+     2 @ManagedBean
+     3 @SessionScoped
+     4 public class UsuarioLoginMB {
+     5 
+     6   private Usuario usuario;
+     7   private String localeUsuario = "pt_BR";
+     8 
+     9   public void logout() throws ServletException, IOException {
+    10     HttpSession session = // busca a session
+    11 
+    12     session.invalidate();
+    13 
+    14     // efetua redirect
+    15   }
+    16 
+    17   
+    18   public boolean isAdministrador(){
+    19     return usuario.getPerfil().equals(Perfil.ADMINISTRADOR);
+    20   }
+    21 
+    22   // gets e sets omitidos
+    23 }
+    
+
+No código da classe `UsuarioMB`, é possível ver qual seria uma boa utilização para uma ManagedBean SessionScoped. Métodos e atributos poderiam ser adicionados/removidos para facilitar o acesso aos dados do usuário, por exemplo, um método para verificar os papéis do usuário no próprio ManagedBean para diminuir o caminho da EL. Ao invés de: `${usuarioMB.usuario.administrador}` bastaria fazer `${usuarioMB.administrador}` e no próprio ManagedBean seria feito todo o tratamento dos dados. 
+
+**O problema do SessionScoped é que ele é muito fácil de usar**. Se um desenvolvedor precisar enviar valor de uma tela para outra, o modo mais fácil de fazer seria salvar esse valor em um ManagedBean do tipo SessionScoped; mas ao mesmo tempo que ele é o mais fácil é também o mais perigoso. 
+
+É preciso ter em mente que sempre que um valor é atribuído a um SessionScoped, ele permanecerá na memória. Se o servidor tiver mil usuários ativos e cada instância de `UsuarioMB` tiver pelo menos uma lista de carros que contenham 1000 itens... Bom, aí é possível perceber como o uso da memória do servidor começaria a aumentar.
+
+Quando o SessionScoped é muito utilizado, podemos ter ManagedBeans que utilizam informações de outros ManagedBeans, sendo que todos esses valores estão salvos na sessão. Imagine os ManagedBeans `CarroMB`, `PessoaMB` e `CasaMB`. Caso `PessoaMB` remova o carro do `CarroMB` e a `CasaMB` esteja precisando desse valor, já é possível sentir o cheiro de `NullPointerException`...
+
+O SessionScoped é um escopo muito útil, mas pode causar diversos problemas e dor de cabeça se mal utilizado. 
+
+É necessário bastante cuidado ao usá-lo, ainda mais em telas de listagens e cadastro. Caso o usuário abra o navegador na tela de `BairrosMB`, e depois acabe abrindo uma aba nova no mesmo navegador apontando para a tela da `BairrosMB`. A alteração realizada em uma aba, pode interferir no funcionamento da outra.
+
+_Fig. 3.2: Aba 1_
+
+  
+  
+
+
+_Fig. 3.3: Aba 2_
+
+  
+  
+
+
+É possível perceber que nas imagens 3.2 e 3.3 que se o usuário confirmar a alteração da Aba 2 e depois confirmar a alteração da Aba 1, alguma informação será perdida.
+
+**O SessionScoped é muito útil, mas se mal utilizado pode causar sérios problemas à aplicação**.
+
+
+##  Capítulo 4:  Entenda o novo @ViewScoped 
+
+O ManagedBean ViewScoped é um tipo de escopo que se encontra entre o SessionScoped e o RequestScoped. Ele tem a característica de existir na memória enquanto o usuário permanecer na página exibida. Veja as imagens 4.1 e 4.2 para entender melhor o funcionamento desse escopo.
+
+_Fig. 4.1: ViewScoped com DataTable_
+
+  
+  
+
+
+_Fig. 4.2: ViewScoped com DataTable_
+
+  
+  
+
+
+Se o usuário abrir uma tela com um _dataTable_ , o ManagedBean com os dados permanecerá vivo e pronto para exibir as informações a qualquer chamada realizada. Uma vez que o usuário mude de página, o ManagedBean será descartado pelo servidor.
+
+_Fig. 4.3: ViewScoped ManagedBean tratando requisição_
+
+  
+  
+
+
+A imagem 4.3 mostra como o JSF irá tratar a requisição ao se utilizar um ManagedBean ViewScoped:
+
+  1. O usuário iniciará uma requisição;
+  2. O ManagedBean processará as informações necessárias;
+  3. As informações do ManagedBean ficam disponíveis para o processamento da tela;
+  4. O ManagedBean manterá os dados caso o usuário permaneça na página ou navegará para outra página e os dados em memória serão descartados.
+
+
+    
+    
+     1 @ManagedBean
+     2 @ViewScoped
+     3 public class ViewScopedMB implements Serializable {
+     4   private int numeroDeAcessos;
+     5 
+     6   public int getNumeroDeAcessos() {
+     7     return ++numeroDeAcessos;
+     8   }
+     9 
+    10   public void setNumeroDeAcessos(int numeroDeAcessos) {
+    11     this.numeroDeAcessos = numeroDeAcessos;
+    12   }
+    13 
+    14   public String somar() {
+    15     numeroDeAcessos++;
+    16 
+    17     return null;
+    18   }
+    19 }
+    
+
+No exemplo da classe `ViewScopedMB`, o valor do `numeroDeAcessos` permanecerá na memória enquanto o usuário permanecer na página. Note que o método `somar` retorna `null`, isso faz com que a ação redirecione para a própria página e como o bean é ViewScoped, manterá na memória os seus valores. 
+
+É preciso ter em mente que os dados permanecerão "vivos" no ManagedBean quando os métodos executados retornarem `null` ou sejam `void`, dessa forma, indicando que devam permanecer na mesma tela. Qualquer navegação para outra página, ou até mesmo um método retornando o endereço da página atual causará a perda dos dados do ManagedBean.
+
+Um bom uso para um ManagedBean do tipo ViewScoped é em uma página com diversas chamadas Ajax. Imagine um `h:dataTable` sendo exibido e diversos _dialogs_ para exibir informações de registros relacionados ao `dataTable`. Desse modo as informações estariam na memória e não haveria a necessidade de voltar ao banco de dados a cada chamada.
+
+Atente-se a um problema que pode ocorrer com relação a acesso de diversos usuários ao banco de dados. Veja novamente a imagem 4.1 e note uma coisa: o valor que está sendo exibido está armazenado em memória. Imagine que um usuário altere os dados do Player 35 no banco de dados. Nesse caso, se um outro usuário estivesse com essa tela aberta a mais tempo, ele não veria essa alteração.
+
+No caso de uma tela com edição o problema seria maior ainda. Veja as imagens 4.4 e 4.5 para entender como o problema pode se agravar.
+
+_Fig. 4.4: Edição com ViewScoped_
+
+  
+  
+
+
+_Fig. 4.5: Edição com ViewScoped_
+
+  
+  
+
+
+Imagine que o usuário Astrogildo abriu a tela de edição 4.4 e foi ao banheiro. Enquanto isso a usuária Antonieta, por meio do seu PC, entrou no mesmo registro, alterou e persistiu a alteração no banco de dados 4.5. O que aconteceria, ao retornar do banheiro, se Astrogildo apertasse o botão _Alterar_? Toda a alteração realizada pela Antonieta seria perdida.
+
+Para evitar o problema de dados fora de sincronia com o banco de dados, uma rotina de atualização poderia ser executada. A cada 1 minuto uma verificação poderia ser realizada, ou talvez antes de exibir cada registro. Uma outra abordagem seria adotar algum mecanismo ou _Framework_ para tomar conta dessa falta de sincronia. O JPA conta com a opção de verificar se o objeto foi alterado por outra pessoa, desse modo, quando Astrogildo apertasse o botão _Alterar_ uma mensagem de erro seria exibida.
+
+
+##  Capítulo 5:  Crie escopos longos e customizáveis com @ConversationScoped 
+
+O ManagedBean do tipo `ConversationScoped` tem um funcionamento parecido com o `ViewScoped`. A característica principal do `ConversationScoped` é que o controle da existência do ManagedBean é feito manualmente.
+
+_Fig. 5.1: ConversationScoped ManagedBean tratando requisição_
+
+  
+  
+
+
+A imagem 5.1 mostra como o JSF tratará a requisição ao se utilizar um ManagedBean `ConversationScoped`:
+
+  1. O usuário inicia uma requisição;
+  2. O ManagedBean processará as informações necessárias;
+  3. As informações do ManagedBean ficam disponíveis para o processamento da tela;
+  4. Enquanto o ManagedBean não for finalizado, os dados serão mantidos;
+  5. Uma vez que o comando para finalizar o ManagedBean for executado, seus dados serão eliminados da memória.
+
+
+
+O `ConversationScoped` tem seu tempo de vida definido programaticamente, ele funciona basicamente como uma transação de banco de dados. Para iniciar seu ciclo de vida é necessário um comando de início, da mesma forma que para encerrar o escopo é necessário um comando que identifique o fim.
+
+Para um ManagedBean do tipo `ConversationScoped` funcionar corretamente ele deve seguir algumas normas:
+
+  * Como só pode ser utilizado com CDI, o arquivo `beans.xml` deve existir dentro da pasta `WEB-INF`;
+  * Utilizar a anotação `javax.enterprise.context.ConversationScoped` na classe;
+  * Injetar um objeto do tipo `javax.enterprise.context.Conversation`;
+  * Chamar os métodos `conversation.begin()` e `conversation.end()` para iniciar e finalizar o escopo do ManagedBean.
+
+
+    
+    
+     1 // imports omitidos
+     2 @Named
+     3 @ConversationScoped
+     4 public class ConversationScopedMB implements Serializable {
+     5   @Inject
+     6   private Conversation conversation;
+     7   
+     8   private int numeroDeAcessos;
+     9 
+    10   public String iniciar(){
+    11     conversation.begin();
+    12     return null;
+    13   }
+    14   
+    15   public boolean isTransient(){
+    16     return conversation.isTransient();
+    17   }
+    18   
+    19   public String somar(){
+    20     if(!conversation.isTransient()){
+    21       numeroDeAcessos++;
+    22     }
+    23     
+    24     return null;
+    25   }
+    26   
+    27   public String finalizar(){
+    28     conversation.end();
+    29     return 
+    30     "/paginas/parte2/
+    31         conversationScoped.xhtml?faces-redirect=true";
+    32   }
+    33   
+    34   public String navegar(){
+    35     if(conversation.isTransient()){
+    36       return null;
+    37     }
+    38     
+    39     return 
+    40     "/paginas/parte2/
+    41         conversationScoped2.xhtml?faces-redirect=true";
+    42   }
+    43   
+    44   public int getNumeroDeAcessos() {
+    45     return ++numeroDeAcessos;
+    46   }
+    47 
+    48   public void setNumeroDeAcessos(int numeroDeAcessos) {
+    49     this.numeroDeAcessos = numeroDeAcessos;
+    50   }
+    51 }
+    
+
+No código da classe `ConversationScopedMB` tem um método para abrir e finalizar a conversação do ManagedBean, nesse caso `iniciar` e `finalizar`, respectivamente. **É necessário sempre se lembrar do escopo** , ou então recursos poderão ficar alocados na memória desnecessariamente.
+
+Na classe `ConversationScopedMB`, é possível ver que realizamos uma navegação e mantivemos o escopo vivo. A navegação deve começar de dentro do ManagedBean, por exemplo, através do método `navegar`, porque assim os dados permanecerão na memória. 
+
+O ManagedBean do tipo `ConversationScoped` tem apenas dois estados, `transient` e `long running`. O estado será `transient` antes do início e após o fim da conversação. 
+
+O `ConversationScoped` é ideal para ser utilizado em uma tela na qual existe um `h:dataTable` com muitas chamadas `ajax` e os dados devem ser mantidos até uma determinada invocação. Outra vantagem em utilizar o `ConversationScoped` é manter um objeto vivo entre diversas telas: a navegação entre telas não eliminará objetos da memória, diferentemente do ViewScoped.
+
+O `ConversationScoped` só pode ser utilizado com CDI. Não existe essa opção para os ManagedBeans do pacote `javax.faces.bean`. Caso a sessão do usuário termine, o ManagedBean do tipo `ConversationScoped` será eliminado da sessão.
+
+
+##  Capítulo 6:  A praticidade do escopo @Dependent 
+
+O escopo `Dependent` tem como característica não ter um comportamento próprio, mas sim herdar o comportamento de outro ManagedBean em que for injetado.
+    
+    
+     1 //Imports omitidos
+     2 @Named
+     3 @Dependent
+     4 public class DependentScopedMB implements Serializable {
+     5   private int numeroDeAcessos;
+     6 
+     7   public int getNumeroDeAcessos() {
+     8     return ++numeroDeAcessos;
+     9   }
+    10 
+    11   public void setNumeroDeAcessos(int numeroDeAcessos) {
+    12     this.numeroDeAcessos = numeroDeAcessos;
+    13   }
+    14 }
+    
+
+Esse é o escopo padrão ao se usar JSF com CDI. Não é necessário utilizar a anotação `@Dependent` na classe.
+
+Quando o `@Dependent` é utilizado diretamente em uma página, cada EL resultará na criação de um ManagedBean novo. Caso uma página contenha `#{dependentScopedMB.total} #{dependentScopedMB.total}` será impresso 1 1. Em geral o escopo `Dependent` é injetado dentro de outros ManagedBeans, desse modo ele herdará o escopo da classe principal. Se o `DependentScopedMB` fosse injetado no `SessionScopedMB`, seu escopo também seria de sessão.
+    
+    
+     1 // imports omitidos
+     2 public class MeuMB{
+     3     @Inject
+     4     private DependentScopedMB dependent;
+     5     
+     6     public void encaminharRequisicao(){
+     7     int tempoSessao = 
+     8       dependent.buscarConfiguracao("tempoSessao");
+     9   }
+    10   
+    11   // outros metodos omitidos
+    12 }
+      
+  
+---  
+  
+**Boa prática**
+
+Considero como boa prática sempre deixar anotado com `@Dependent`. Por mais que algumas pessoas da equipe possam saber que o valor padrão é esse, com o passar do tempo haverá pessoas que talvez não saibam disso. Com o valor `@Dependent` fica claro para quem lê o código qual é o escopo do ManagedBean.  
+  
+---  
+  
+Tome bastante cuidado ao injetar um `Dependent` ManagedBean dentro de um `ApplicationScoped`. Essa abordagem pode levar ao problema de `Memory Leak`. Após um método utilizar um ManagedBean do tipo `Dependent` ele não é totalmente descartado, mantendo uma referência para o `ApplicationScoped`. Se o mesmo método for chamado novamente, outra referência será criada para ser utilizada e assim em diante.
+
+
+##  Capítulo 7:  Guarde dados para toda a aplicação com o @ApplicationScoped 
+
+O `ApplicationScoped` ManagedBean tem o comportamento semelhante ao do padrão de projeto _Singleton_ , mantendo uma única instância de determinado bean na memória.
+
+_Fig. 7.1: ApplicationScoped ManagedBean tratando requisição_
+
+  
+  
+
+
+A imagem 7.1 mostra como o JSF tratará a requisição ao se utilizar um ManagedBean `ApplicationScoped`:
+
+  1. O usuário iniciará uma requisição;
+  2. O ManagedBean processará as informações necessárias;
+  3. As informações do ManagedBean ficam disponíveis para o processamento da tela;
+  4. O mesmo ManagedBean responderá a outros requests de usuários, dessa forma, não haverá distinção de qual usuário poderá ou não ter acesso ao dados do ManagedBean.
+
+
+
+Note que não existe individualidade quando se fala de `ApplicationScoped`. No caso de um ManagedBean `ApplicationScoped`, todo usuário terá acesso à mesma instância. Seria uma prática muito errada salvar alguma informação em um `ApplicationScoped` que pertencesse somente a um determinado usuário.
+
+O tipo `ApplicationScoped` está disponível tanto para ManagedBean do pacote `javax.faces.bean` como para os ManagedBeans que utilizem CDI.
+
+A melhor utilização para o `ApplicationScoped` seria para conter valores utilizados por toda a aplicação.
+    
+    
+     1 @ManagedBean
+     2 @ApplicationScoped
+     3 public class ApplicationScopedMB implements Serializable {
+     4   private int numeroDeAcessos;
+     5 
+     6   public int getNumeroDeAcessos() {
+     7     return ++numeroDeAcessos;
+     8   }
+     9 
+    10   public void setNumeroDeAcessos(int numeroDeAcessos) {
+    11     this.numeroDeAcessos = numeroDeAcessos;
+    12   }
+    13 }
+    
+
+A classe `ApplicationScopedMB` mostra como utilizar o `ApplicationScoped`. Todos os usuários do sistema que acessarem esse ManagedBean verão o contador aumentar. Esse tipo de escopo é ideal para conter valores como configuração, ou objetos caros de se criar e que devem ser instanciados apenas uma vez.
+
+Uma outra observação importante sobre o `ApplicationScoped` é que as vezes se faz necessário que ele seja iniciado antes de todos ManagedBeans. Isso é possível através da configuração: `@ManagedBean(eager = true)`. Com essa configuração um ApplicationScoped ManagedBean será iniciado antes que qualquer tela da aplicação seja acessada. 
+
+Esse configuração é bastante útil quando já queremos alguma informação carregada em memória antes que seja solicitada pelo usuário. Imagine que um cache de Cidades seja feito: se não usasse o _eager_ , o cache se faria apenas quando o valor fosse solicitado pela primeira vez, causando demora na chegada da informação.
+
+Outra aplicação para a opção `eager=true` é caso um ApplicationScoped ManagedBean seja injetado dentro de outro ManagedBean. Pode acontecer que o JSF ainda não tenha inicializado o ApplicationScoped e os valores estejam nulos.
+
+
+##  Capítulo 8:  Quando usar o @NoneScoped? 
+
+O NoneScoped ManagedBean tem por característica servir apenas a uma chamada da EL e depois ser eliminado da memória. Veja que sua utilização difere do RequestScoped quanto a duração das informações. O RequestScoped dura por quantas chamadas de EL forem realizadas durante uma requisição. O NoneScoped será eliminado após uma chamada de EL.
+
+_Fig. 8.1: NoneScoped Scoped ManagedBean tratando requisição_
+
+  
+  
+
+
+A imagem 8.1 mostra como o JSF tratará a requisição ao se utilizar um ManagedBean NoneScoped:
+
+  1. O usuário iniciará uma requisição
+  2. O ManagedBean processará as informações necessárias
+  3. As informações do ManagedBean ficam disponíveis para o processamento da tela
+  4. O mesmo ManagedBean não responderá a outras chamadas. Ele será descartado após receber uma chamada.
+
+
+
+É necessário entender que esse escopo tem por característica ser altamente descartável.
+    
+    
+     1 // imports omitidos
+     2 @ManagedBean
+     3 @NoneScoped
+     4 public class NoneScopedMB {
+     5   private int numeroDeAcessos;
+     6 
+     7   public int getNumeroDeAcessos() {
+     8     return ++numeroDeAcessos;
+     9   }
+    10 
+    11   public void setNumeroDeAcessos(int numeroDeAcessos) {
+    12     this.numeroDeAcessos = numeroDeAcessos;
+    13   }
+    14 }
+    
+
+Se o `NoneScopedMB` fosse utilizado da seguinte forma de uma EL, como:
+    
+    
+    1 #{noneScopedMB.numeroDeAcessos} #{noneScopedMB.numeroDeAcessos}
+    
+
+O valor impresso seria `1 1`. O `NoneScoped` atenderia apenas a uma chamada do EL e depois deixaria de existir.
+
+A melhor utilização para o NoneScoped seria para tarefas pontuais, como formatar um campo, exibir hora ou realizar um cálculo. Outro bom uso seria para acessar propriedades do `faces-config.xml`.
+
+O `NoneScoped` ManagedBean está disponível através do pacote `javax.faces.bean`.
+
+
+##  Capítulo 9:  Exibindo Objetos e Mensagens após Redirect e o FlashScoped 
+
+No projeto de exemplo do livro, é possível encontrar uma tela de cadastro como na imagem 9.1.
+
+_Fig. 9.1: Cadastro de cidade_
+
+  
+  
+
+
+Cadastros de dados na aplicação costumam vir com alguma mensagem indicativa para o usuário de que aquele registro foi salvo no banco de dados com sucesso. O problema acontece quando, após realizar a persistência com sucesso, nenhuma mensagem é exibida ao usuário, algo como na imagem 9.2.
+
+_Fig. 9.2: Não exibe dados após uma ação_
+
+  
+  
+
+    
+    
+     1 // finalizando cadastro
+    2 super.exibirMensagemParaUsuario(FacesMessage.SEVERITY_INFO,
+    3              "Nome da cidade cadastrada: " + cidade.getNome());
+    4 
+    5 return "/cadastroComSucesso.xhtml?faces-redirect=true";
+    
+
+Mesmo adicionando a mensagem para ser exibida ao usuário, como no código visto, a mensagem não é exibida e os dados da cidade recém cadastrada não chegam na próxima tela. Isso acontece por um pequeno detalhe, o _redirect_.
+
+Muitos desenvolvedores percebem que, ao realizar um _redirect_ , informações que deveriam ser exibidas na tela não aparecem, como se tivessem sido perdidas. Na verdade, é um comportamento esperado essas informações se perderem, mas para entendermos a razão precisamos compreender o impacto em se utilizar um _redirect_.
+
+Veja na figura 9.3 como funciona o redirect:
+
+_Fig. 9.3: Como funciona o SendRedirect_
+
+  
+  
+
+
+Conseguimos então perceber que:
+
+  1. O usuário enviará um `request` ao ManagedBean;
+  2. Ao executar o comando `SendRedirect`, o ManagedBean envia para o browser do usuário uma URL com um novo destino (esse valor irá em um `%header` do `request`);
+  3. O browser do usuário analisará o response e fará uma nova chamada para a URL que recebeu;
+  4. A nova tela será exibida ao usuário.
+
+
+
+Quando o ManagedBean redireciona o usuário para uma nova tela, todos os dados do request original se perdem. Dados enviados no `form`, mensagens para serem exibidas ao usuário e outros valores se perderão.
+
+Para ajudar o desenvolvedor a tratar esse comportamento foi criado o chamado `FlashScope`. Ao utilizar o `FlashScope` para manter os objetos na memória, o próprio JSF manterá o objeto na memória até que ele seja utilizado. Veja o código da classe `SendRedirectMB` que mostra quando o problema poderá acontecer.
+    
+    
+     1 @ManagedBean
+     2 @RequestScoped
+     3 public class SendRedirectMB extends AbstractMB{
+     4 
+     5   private int valorParaExibir;
+     6   private static final String URL = "URL PARA PÁGINA";
+     7 
+     8   public int getValorParaExibir() {
+     9     return valorParaExibir;
+    10   }
+    11 
+    12   public void setValorParaExibir(int valorParaExibir) {
+    13     this.valorParaExibir = valorParaExibir;
+    14   }
+    15 
+    16   public String redirecionarSemFlash() {
+    17     super.exibirInformacao("Valor Enviado é de: " + 
+    18                             valorParaExibir);
+    19     return URL + "?faces-redirect=true";
+    20   }
+    21 
+    22   public String redirecionarComFlash() {    
+    23     super.exibirInformacao("Valor Enviado é de: " + 
+    24                             valorParaExibir);
+    25     FacesContext instance = 
+    26       FacesContext.getCurrentInstance();
+    27     ExternalContext externalContext = 
+    28       instance.getExternalContext();
+    29     externalContext.getFlash().put("valorParaExibir", 
+    30                                     valorParaExibir);
+    31     externalContext.getFlash().setKeepMessages(true);
+    32     return URL + "?faces-redirect=true";
+    33   }
+    34 }
+    
+
+Uma vez que o método `redirecionarSemFlash` for executado, todos os dados presentes no request original serão perdidos. O método ` super.exibirInformacao` nada mais faz do que exibir uma mensagem para o usuário que pode ser visualizada com um h:messages.
+
+Para exibir um objeto ou um atributo após um `SendRedirect` basta fazer como no método `redirecionarComFlash`. Basta utilizar o FlashScope `externalContext.getFlash().put("valorParaExibir", valorParaExibir);` para armazenar o valor como se fosse um mapa; esse mapa armazenará o valor até o final do redirecionamento. Para exibir esse valor na outra tela, basta fazer: `<h:outputText value="#{flash.valorParaExibir}" />`. Após o valor ser acessado no FlashScope ele será eliminado da memória. É possível também manter o objeto na sessão, basta acessar o objeto por `<h:outputText value="#{flash.keep.valorParaExibir}" />`.
+
+Para exibir uma mensagem para o usuário existem diferentes maneiras: duas fáceis e uma mais complexa. Após inserir a mensagem no contexto para exibi-la para o usuário, basta executar o seguinte comando: `externalContext.getFlash().setKeepMessages(true)`. Desse modo a mensagem será exibida para o usuário após ser redirecionado. O outro modo de exibir a mensagem é adicionar a tag a seguir na página: `<c:set target="#{flash}" property="keepMessages" value="true" />`. Desse modo a mensagem será salva no flash e exibida ao usuário. O último modo envolve criar um `PhaseListener` que faça o trabalho manual de persistir o valor na sessão e depois remover; para maiores informações dessa abordagem visite o link: <http://uaihebert.com/?p=499> .
+
+Veja na imagem 9.4 os dados sendo exibidos após utilizar as técnicas apresentadas aqui.
+
+_Fig. 9.4: Cadastro de cidade_
+
+  
+  
+
+
+
+# Parte 2 - Cuidados com seus Managed Beans
+
+Todo desenvolvedor precisa ter bastante cuidado ao adicionar códigos que lidam com a lógica de visualização da sua aplicação, como definições de "o que pode ser exibido para determinado usuário?", "como exibir determinada informação para perfis diferentes de visualizações".
+
+Um código criado sem pensar em boas práticas pode levar a sérios problemas de manutenção, acabamos por ter classes grandes e complexas, e muitas funções e códigos repetidos.
+
+Cito aqui a teoria da janela quebrada apresentada pelos cientistas James Q. Wilson e George L. Kelling. Imagine um prédio com janelas quebradas. Se essas janelas não forem rapidamente reparadas, a chance de vândalos quebrarem mais janelas aumentam. Do mesmo modo é possível acontecer com sistemas. Basta que o primeiro código _feio_ seja adicionado ao projeto, que aumentará a chance de um segundo código _feio_ aparecer e assim por diante.
+
+
+##  Capítulo 10:  Colocando lógica de rendered no MB 
+
+Considere o código de um panel, no qual existe uma lógica para determinar se ele será exibido ou não:
+    
+    
+    1 <h1>Relatório de Salários</h1>
+    2 <h:panelGrid columns="2" 
+    3       rendered="#{relatorioMB.usuario.papel eq 'ADM'}" >
+    4   <h:outputText value="Salário do Funcionário:" />
+    5   <h:outputText value="#{funcionario.salario}" />
+    6 </h:panelGrid>
+    
+
+O trecho de um relatório de salários poderia claramente exemplificar essa situação. O código do `Relatório de Salários` é simples e fácil de entender, nele existe apenas a lógica para ver se o usuário é ou não administrador. Caso o usuário seja um administrador, então será mostrado o salário do funcionário. 
+
+Uma primeira boa prática seria aplicar o princípio _Tell, don't ask_ ("Diga, não pergunte"). Essa prática diz que é melhor deixar que o próprio objeto diga se ele pode ou não fazer tal ação e não outro objeto calcular essa ação por ele. Veja o código da classe `Usuario`, que mostra como ficaria um método aplicando esse princípio.
+    
+    
+     1 public enum Papel {
+     2   ADM, GERENTE, USUARIO_SIMPLES;
+     3 }
+     4 
+     5 public class Usuario {
+     6   private String login;
+     7   private String email;
+     8   private Papel papel;
+     9   
+    10   public boolean isAdm() {
+    11     return Papel.ADM.equals(papel);
+    12   }
+    13   
+    14   public boolean isGerente() {
+    15     return Papel.GERENTE.equals(papel);
+    16   }
+    17   
+    18   public boolean isUsuarioSimples() {
+    19     return Papel.USUARIO_SIMPLES.equals(papel);
+    20   }
+    21 
+    22   // getters e setters omitidos
+    23 }
+    
+
+Note que a classe `Usuario` informa qual o papel do usuário. A vantagem dessa abordagem é que caso a cláusula `rendered="#{usuario.papel eq 'ADM'}"` passasse para `rendered="#{usuario.papel eq 'ADM' and usuario.dataAdmissao > '10-10-2000'}"` bastaria alterar na classe `Usuario` que todas as ELs que utilizassem o novo método não precisariam ser alteradas. Veja como ficará o código alterado do relatório.
+    
+    
+    1 <h1>Relatório de Salários</h1>
+    2 <h:panelGrid columns="2" rendered="#{relatorioMB.usuario.adm}" >
+    3   <h:outputText value="Salário do Funcionário:" />
+    4   <h:outputText value="#{funcionario.salario}" />
+    5 </h:panelGrid>
+    
+
+Note que não importa quantas vezes a regra para calcular se o usuário é um administrador mude, isso não afetará mais a EL. Independente de quantas vezes a EL for utilizada uma alteração na regra não seria necessária uma alteração nas páginas.
+
+Ainda assim é possível notar que esse código pode ser melhorado. Imagine que agora para ver o salário do funcionário, além de ser administrador o usuário precisa ser do RH. Seria bem simples alterar o relatório e adaptar essa regra.
+    
+    
+    1 <h1>Relatório de Salários</h1>
+    2 <!-- relMB foi reduzido de relatorioMB para melhor 
+    3                         visualização -->
+    4 <h:panelGrid 
+    5    rendered="#{relMB.usuario.rh and relMB.usuario.adm}" >
+    6   <h:outputText value="Salário do Funcionário:" />
+    7   <h:outputText value="#{funcionario.salario}" />
+    8 </h:panelGrid>
+    
+
+Realmente o código está simples e legível, mas imagine se esse mesmo IF está repetido 40x por essa página, e talvez até em outras páginas. 
+
+É agora que entra a triste realidade do desenvolvedor, aquele trágico momento em que percebemos que será necessário vasculhar cada página e ver onde essa regra foi aplicada. E a pior parte é que talvez a condição rendered esteja assim:
+    
+    
+    1 rendered="#{relatorioMB.usuario.rh and relatorioMB.usuario.adm}"
+    2 
+    3 ou 
+    4 
+    5 rendered="#{relatorioMB.usuario.adm and relatorioMB.usuario.rh}"
+    6 
+    7 ou
+    8 
+    9 rendered="#{rel.user.adm and rel.user.rh}"
+    
+
+Essa variação poderia causar a impossibilidade de usar uma pesquisa para localizar o que necessitaria de alteração.
+
+Existe mais uma abordagem simples que ajudará a evitar muita dor de cabeça, basta isolar essas regras em algum lugar, como o ManagedBean. Não é necessário mágica, nem um conhecimento profundo em arquitetura para aplicar essa simples abordagem.
+
+A tag rendered ficaria assim `rendered="#{relatorioMB.usuarioPodeVerSalario}"`. Note que a partir de agora quem está tomando conta dessa regra de view é o próprio ManagedBean. É ele quem dirá se o usuário poderá ver ou não o relatório. Esse método poderia ser replicado por milhares de vezes que, caso a regra mudasse, não haveria impacto nas páginas.
+    
+    
+    1 public boolean isUsuarioPodeVerSalario(){
+    2   return usuario.isADM() && usuario.isRH();
+    3 }
+    
+
+O método `isUsuarioPodeVerSalario` mostra exatamente a vantagem da abordagem de centralizar as regras de view em um ManagedBean. Caso o método fosse utilizado em 30 validações diferentes, não haveria problema algum se a regra alterasse.
+
+
+##  Capítulo 11:  Inicializando Objetos 
+
+Quando estamos implementando os Managed Beans do projeto, precisamos tomar bastante cuidado com a inicialização dos seus atributos, pois algumas armadilhas podem nos esperar. No código a seguir, inicializamos a lista de carros no construtor, mas será que essa é a melhor prática?
+    
+    
+     1 @ManagedBean
+     2 public class InicializandoMB{
+     3     private List<Carro> carros;
+     4 
+     5     @EJB
+     6     private CarroDAO carroDAO;
+     7 
+     8     public InicializandoMB(){
+     9         carros = carroDAO.listAll();
+    10     }
+    11     // getters e setters omitidos
+    12 }
+    
+
+Usamos um EJB no construtor da classe para buscar no banco de dados uma lista de `Carro`. No entanto, a injeção de dependências acontece apenas após a invocação do construtor. Nesse caso, receberemos uma `NullPointerException`, pois o EJB ainda não estará injetado e pronto para ser invocado.
+
+Um modo de evitar todos os problemas listados acima seria inicializar os atributos em um método anotado com `javax.annotation.PostConstruct`. 
+
+Por contrato, uma classe JavaEE terá todos seus recursos inicializados antes do método anotado com @PostConstruct ser invocado.
+    
+    
+     1 @ManagedBean
+     2 public class InicializandoMB {
+     3     private List<Carro> carros;
+     4 
+     5     @EJB
+     6     private CarroDAO carroDAO;
+     7 
+     8     @PostConstruct
+     9     public void init() {
+    10         carros = carroDAO.listAll();
+    11     }
+    12     
+    13     // getters e setters omitidos
+    14 }
+    
+
+Após alterar o código da classe `InicializandoMB`, é possível notar que o código que havia no construtor da classe foi movido para o método `init()` e o construtor foi removido do código. O próprio servidor ficará encarregado de chamar o método `init()` e garantir que ele seja executado antes que o ManagedBean interaja com chamadas externas.
+
+Infelizmente, há uma desvantagem na abordagem de inicialização de atributos em um método anotado com `@PostConstruct`. Considere agora que esse ManagedBean tem outros métodos que não necessitam do valor da lista `carros`.
+    
+    
+     1 @ManagedBean
+     2 public class InicializandoMB{
+     3     private List<Carro> carros;
+     4 
+     5     @EJB
+     6     private CarroDAO carroDAO;
+     7 
+     8     @PostConstruct
+     9     public void init(){
+    10         carros = carroDAO.listAll();
+    11     } 
+    12 
+    13     public List<String> getMarcas(){
+    14         return carroDAO.getMarcas();
+    15     }
+    16 
+    17     public List<String> getModelos(){
+    18         return carroDAO.getModelos();
+    19     }
+    20     // getters e setters omitidos
+    21 }
+    
+
+Repare que o método `getMarcas()` e o método `getModelos` podem ser chamados por uma página que não utilize a lista de `carros` para nada. A desvantagem dessa abordagem é: mesmo que apenas os métodos `getMarcas()` e `getModelos` sejam utilizados, a lista de `carros` continuará a ser carregada do banco de dados, desnecessariamente.
+
+Nesse caso, podemos usar a abordagem _lazy_ (preguiçosa) de se carregar objetos no ManagedBean. Veja na nova versão da classe `InicializandoMB` como utilizar a abordagem de inicialização _lazy_.
+    
+    
+     1 @ManagedBean
+     2 public class InicializandoMB{
+     3    private List<Carro> carros;
+     4 
+     5    @EJB
+     6    private CarroDAO carroDAO;
+     7    
+     8    public List<Carro> getCarros(){
+     9         if (carros == null) {
+    10             carros = carroDAO.listAll();
+    11         }
+    12 
+    13         return carros;
+    14     }
+    15 
+    16     public List<String> getMarcas(){
+    17         return carroDAO.getMarcas();
+    18     }
+    19 
+    20     public List<String> getModelos(){
+    21         return carroDAO.getModelos();
+    22     }
+    23     // getters e setters omitidos
+    24 }
+    
+
+O método `init()` foi removido do código e o método `getCarros` foi alterado. Caso a lista `carros` seja `null`, a consulta será realizada no banco de dados. Com essa abordagem, se o método `getCarros` nunca for invocado, essa lista nunca será inicializada e muitas viagens ao banco de dados deixarão de existir.
+
+A desvantagem dessa abordagem é o fato de que cada método `get` deve ter um teste do tipo `if (objeto == null)`. A quantidade de linhas da classe poderá subir consideravelmente.  
+  
+---  
+  
+**Serve para todo escopo**
+
+Note que iniciar um objeto de modo _lazy_ ou pelo @PostConstruct é uma boa prática e pode/deve ser aplicada a qualquer tipo de escopo e não apenas no `@RequestScoped`, como exibido na classe `InicializandoMB`.  
+  
+---  
+  
+É possível utilizar uma abordagem híbrida na qual temos atributos carregados em um método anotado com `@PostConstruct` e atributos inicializados de modo _lazy_.
+    
+    
+     1 @ManagedBean
+     2 public class InicializandoMB{
+     3     private List<Carro> carros;
+     4     private List<Cidade> cidades;
+     5 
+     6     @EJB
+     7     private CarroDAO carroDAO;
+     8 
+     9     @EJB
+    10     private CidadeDAO cidadeDAO;
+    11 
+    12     @PostConstruct
+    13     public void init() {
+    14         cidades = cidadeDAO.listAll();
+    15     }
+    16 
+    17     public List<Carro> getCarros() {
+    18         if (carros == null) {
+    19             carros = carroDAO.listAll();
+    20         }
+    21         return carros;
+    22     }
+    23 
+    24     public List<String> getMarcas() {
+    25         return carroDAO.getMarcas();
+    26     }
+    27     
+    28     public List<String> getModelos() {
+    29         return carroDAO.getModelos();
+    30     }
+    31     // getters e setters omitidos
+    32 }
+    
+
+No código da classe `InicializandoMB`, é possível ver que ambas abordagens foram utilizadas. Preferencialmente, métodos anotados `@PostConstruct` devem carregar objetos que serão de uso comum em todas ou na maior parte das chamadas realizadas ao ManagedBean.
+
+Uma outra maneira de iniciar objetos é informando ao JSF que um método deve ser executado antes de carregar toda a página. Esse método é informado através da página. Veja como a classe `InicializandoMB` ficará após uma leve refatoração.
+    
+    
+     1 @ManagedBean
+     2 public class InicializandoMB{
+     3     private List<Carro> carros;
+     4     private List<Cidade> cidades;
+     5    
+     6     @EJB
+     7     private CarroDAO carroDAO;
+     8     @EJB
+     9     private CidadeDAO cidadeDAO;    
+    10     
+    11     public void inicializar(){
+    12         cidades = cidadeDAO.listAll();   
+    13         carros = carroDAO.listAll();
+    14     }
+    15     // outros métodos omitidos   
+    16 }
+    
+
+Temos o método `inicializar`, que será disparado quando a página for chamada através da tag `f:event`.
+    
+    
+    1 <f:event type="preRenderView" 
+    2     listener="#{inicializandoMB .inicializar}"/>
+    
+
+Basta adicionar o código da tag `f:event` que o JSF chamará o método que carrega todos os atributos da tela antes de executar qualquer ação.
+
+
+##  Capítulo 12:  Injetando ManagedBeans 
+
+Considere um ManagedBean em que, para decidir se o usuário pode ou não ver determinada informação, ele precisa determinar se o usuário tem o perfil necessário.
+    
+    
+     1 // imports omitidos
+     2 @ManagedBean
+     3 public class CarroMB {
+     4     public List<Carro> getCarrosPorUsuario() {
+     5         List<Carro> carros = new ArrayList<Carro>();
+     6         usuario = // recupera usuário logado
+     7 
+     8         adicionarCarrosSimples(carros, usuario);
+     9         adicionarCarrosEconomicos(carros, usuario);
+    10         adicionarCarrosLuxuosos(carros, usuario);
+    11 
+    12         return carros;
+    13     }
+    14     // outros métodos...
+    15 }
+    
+
+O método `getCarrosPermitidosPorUsuario()` retornaria apenas os carros necessários para determinados tipos de usuário. 
+
+Note que o ManagedBean `CarroMB` precisa de um usuário para realizar a busca dos carros. E de onde viria esse objeto usuário? Esse objeto poderia ser buscado na sessão, mas o caminho até chegar a ela é um tanto quanto longo...
+    
+    
+    1 FacesContext context = FacesContext.getCurrentInstance();
+    2 ExternalContext externalContext = context.getExternalContext();
+    3 HttpServletRequest request = 
+    4     (HttpServletRequest) externalContext.getRequest();
+    5 HttpServletSession session = request.getSession();
+    6 Usuario usuario = 
+    7     (Usuario) session.getAttribute("USUARIO_LOGADO");
+    
+
+Para conseguir acessar o `HttpSession` chamamos 5 métodos em um trecho de código muito extenso e que fica difícil de ler.
+
+Uma prática comum é de ter um ManagedBean que facilite o acesso aos dados do usuário logado. Por exemplo, para acessar o usuário da sessão bastaria fazer `usuarioMB.getUsuario()`.
+
+Existe um modo de acessar um ManagedBean buscando o valor da sessão que é um código tão verboso quanto o já mostrado anteriormente.
+    
+    
+    1 // código reduzido 
+    2 userMB = (UsuarioMB) externalContext.getSessionMap()
+    3                                     .get("UsuarioMB");
+    4 userMB.getUsuario();
+    
+
+É possível extrair um ManagedBean diretamente do contexto do JSF, mas ainda assim é um código que ficará longo. Uma abordagem mais simples seria através da injeção do ManagedBean como dependência.
+    
+    
+     1 @ManagedBean
+     2 public class CarroMB{
+     3    
+     4     @ManagedProperty(value = "#{usuarioMB}")
+     5     private UsuarioMB usuarioMB;
+     6 
+     7     public void setUsuarioMB(UsuarioMB usuarioMB) {
+     8         this.usuarioMB = usuarioMB;
+     9     }
+    10 
+    11     public List<Carro> getCarrosPorUsuario(){
+    12         List<Carro> carros = new ArrayList<Carro>();
+    13         usuario = usuarioMB.getUsuario();
+    14         adicionarCarrosSimples(carros, usuario);
+    15         adicionarCarrosEconomicos(carros, usuario);
+    16         adicionarCarrosLuxuosos(carros, usuario);
+    17     
+    18         return carros;
+    19     }
+    20     // outros métodos...
+    21 }
+    
+
+Para que a injeção funcione, alguns passos são necessários:
+
+  * Utilizar a anotação `@ManagedProperty` sobre o atributo do ManagedBean a ser injetado;
+  * O ManagedBean a ser injetado precisa de um método `set`.
+
+
+
+Utilizar injeção de ManagedBean deixa o código mais simples de ler e entender. 
+
+Outro detalhe sobre a injeção de ManagedBean é que só podemos injetar um ManagedBean dentro de outro com mesmo escopo ou um escopo mais abrangente. Por exemplo: é possível injetar um SessionScoped dentro de um RequestScoped, mas não é possível fazer o inverso.
+
+
+##  Capítulo 13:  Target Unreachable: Enfrente a NullPointerException do JSF 
+
+Como desenvolvedores Java, estamos acostumados a nos deparar com as famosas `NullPointerException`. Também não estaremos livres disso ao trabalhar com JSF; portanto, é preciso aprender a lidar com elas, na forma como podem acontecer no JSF. Considere o simples ManagedBean a seguir:
+    
+    
+     1 @ManagedBean
+     2 public class CidadeMB {
+     3     private Cidade cidade;
+     4     
+     5     public Cidade getCidade() {
+     6         return cidade;
+     7     }
+     8 
+     9     // outros métodos
+    10 }
+    
+
+Caso o código `#{cidadeMB.cidade.nome}` seja executado, a seguinte mensagem de erro será exibida:
+    
+    
+    1 Target Unreachable, 'null' returned null
+    
+
+No exemplo do ManagedBean `CidadeMB`, é possível ver que o atributo `cidade` é retornado mas em nenhum momento é instanciado. Esse erro pode ser facilmente contornado pelas abordagens do capítulo [11](index_split_016.html#InicializandoObjetos).
+    
+    
+     1 @ManagedBean
+     2 public class CidadeMB {
+     3     private Cidade cidade;
+     4     
+     5     public Cidade getCidade() {
+     6         if(cidade == null){
+     7             cidade = new Cidade();
+     8         }
+     9 
+    10         return cidade;
+    11     }
+    12 
+    13     // outros métodos
+    14 }
+    
+
+Note que no código da classe `CidadeMB`, o método `getCidade()` agora contém um `if` para verificar se o atributo `cidade` está `null`.
+
+Se o código `#{cidadeMB.cidade.estado.nome}` for executado, o mesmo erro poderá acontecer. É necessário que todos os atributos não primitivos sejam inicializados antes de serem utilizados.
+
+Um outro motivo para esse erro aparecer poderia ser utilizar a EL `#{cidadeMB.cidade.estado.nome}`, mas esquecer de anotar o ManagedBean com `@ManagedBean` ou `@Named`.
+
+Esse erro também pode acontecer por má utilização da `EL`. Caso a EL `#{cidade.nome}` seja escrita `#cidade.nome`, a mesma mensagem poderá aparecer.
+
+Para finalizar, essa mensagem de erro pode vir descrita dos seguintes modos:
+    
+    
+    1 Target Unreachable, 'null' returned null
+    2 
+    3 javax.el.PropertyNotFoundException: /pagina.xhtml @13,154 
+    4 value="#{cidade.nome}": Target Unreachable, 'null' returned null
+    5 
+    6 
+    7 Alvo inalcançável, SEU_ATRIBUTO retornou null
+    
+
+
+##  Capítulo 14:  Cuidado com o "Value is not valid" 
+
+Existem erros que acontecem por detalhes sutis, cujos motivos às vezes demoramos horas para descobrir. O erro `Value is not valid` é um deles.
+
+Ele é comumente encontrado quando usamos componentes do tipo `select`.
+
+_Fig. 14.1: Value is not valid_
+
+  
+  
+
+
+Devido ao fato de que o _select_ é utilizado em classes, o JSF tentará comparar os valores através dos métodos `hashCode` e `equals`. Esse erro pode acontecer caso sua classe não esteja implementando esses dois métodos corretamente. O método `hashCode` deve sempre retornar um inteiro que represente numericamente a classe. Esse inteiro é comumente utilizado pela interface Set e outros componentes. O método `equals` deve sempre retornar se um objeto é igual ao outro, e o resultado não pode variar. Para melhores detalhes veja: <http://tutorials.jenkov.com/java-collections/hashcode-equals.html>
+    
+    
+     1 public class Cidade{
+     2     private int id;
+     3     private String nome;
+     4     
+     5     // outros métodos
+     6 
+     7     @Override
+     8     public int hashCode() {
+     9         int hashCode = 33;
+    10         hashCode = hashCode * 17 + id;
+    11         hashCode = hashCode * 31 + nome.hashCode();
+    12         return hashCode;
+    13     }
+    14 
+    15 
+    16     @Override
+    17     public boolean equals(Object obj) {
+    18         if (obj instanceof Cidade) {
+    19             Cidade cidade = (Cidade) obj;
+    20             return cidade.id == id;
+    21         }
+    22 
+    23         return false;
+    24     }
+    25 }
+    
+
+A classe `Cidade` está descrita no formato adequado para ser utilizada em um componente `select`.
+
+
+# Parte 3 - Front-ends JSF
+
+Um dos maiores problemas de pessoas que usam o JSF começa pelos arquivos de páginas. Má utilização do JSF pode levar a problemas de arquitetura, a comportamentos estranhos e até mesmo a desenvolvedores achando que é falha do próprio JSF.
+
+Escolher entre JSP ou xhtml, otimizar o uso do Facelets, saber quando utilizar _action_ ou _actionListener_ são assuntos que serão vistos nessa parte do livro.
+
+
+##  Capítulo 15:  Utilizar JSP ou xhtml? 
+
+O `JSP` é um velho guerreiro e conhecido do mundo Java Web. Com o `JSP` veio a grande utilização do `Servlet` para fazer a integração e o desacoplamento entre o código `HTML` e o código `Java`.
+
+Nas primeiras versões do JSF, o `JSP` foi intensamente utilizado para exibir as informações para o usuário. Já com a versão 2.0 do JSF, apareceu o `xhtml`, com uma tecnologia chamada `Facelets`.
+
+Note que as vantagens do `JSP` sobre o `xhtml` estão mais relacionadas com a questão de estudo e aprendizado. Muitas empresas adotam o JSP ainda pelo fato de ser a primeira tecnologia a ser utilizada para Java Web, e acaba sendo mais prático e barato continuar a utilizar a mesma tecnologia.
+
+Conheço pessoas que até hoje são contra determinados frameworks. Por exemplo, algum conhecido que usou a versão 0.5 do JSF e não gostou e espalhou isso para frente. Reconheço que antes da versão 2.0 era muito difícil de se trabalhar com o JSF, mas poucos são os que não gostaram dessa nova versão. 
+
+Posso citar um caso em que uma pessoa me disse: "odeio Hibernate pois tem muito XML". Eu respondi que atualmente poderia se fazer a aplicação toda com anotação e a pessoa me disse que ainda assim preferia nem olhar o Hibernate.
+
+Com relação ao `xhtml`, quando utilizado com `Facelets` (que veremos em breve), é possível ressaltar as seguintes vantagens:
+
+  * XHTML com Facelets podem executar até 50% mais rápido que o JSP;
+  * Todas as tags utilizadas nas páginas são declaradas de modo dinâmico, não necessitam estar declaradas em um TLD (Tag Library Descriptor);
+  * Facelets permitem Templates de modo avançado, em que a reutilização de código é muito alta.
+
+
+
+Na codificação das páginas, é possível ver como o código de um `JSP` é semelhante a uma página `xhtml`. Só é possível notar essa semelhança em página simples, uma vez que as páginas aumentam sua complexidade e em número de componentes o código ficará bastante distinto. Um JSP ficaria como:
+    
+    
+     1 <%@ taglib uri="http://java.sun.com/jsf/core" prefix="f" %>
+     2 <%@ taglib uri="http://java.sun.com/jsf/html" prefix="h" %>
+     3 <html>
+     4   <head>
+     5     <title>Exemplo JSP</title>
+     6   </head>
+     7   <body>
+     8     <h:form>
+     9       <h:outputText value="Olá Mundo JSP!" />
+    10     </h:form>
+    11   </body>
+    12 </html>
+    
+
+Enquanto que o código equivalente no `xhtml` ficaria:
+    
+    
+     1 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     2 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+     3 <html xmlns="http://www.w3.org/1999/xhtml" 
+     4   xmlns:h="http://java.sun.com/jsf/html">
+     5   <h:head>
+     6     <title>Exemplo xhtml</title>
+     7   </h:head>
+     8   <h:body>
+     9     <h:form>
+    10       <h:outputText value="Olá Mundo xhtml!" />
+    11     </h:form>
+    12   </h:body>
+    13 </html>
+    
+
+
+##  Capítulo 16:  Utilizando imagens/css/javascript de modos simples 
+
+Quando precisamos trabalhar com imagens em nossas aplicações, uma abordagem muito utilizada é passar o caminho completo de um arquivo.
+    
+    
+    1 <!-- código que podem ou não exibir a imagem -->
+    2 <h:graphicImage value="../imagens/minhoca.jpg" />
+    3 <h:graphicImage 
+    4   value="#{facesContext.externalContext.requestContextPath}
+    5     /WebContent/imagens/minhoca.jpg" />
+    
+
+E a mesma prática também ocorre quando falamos de css e javascript.
+    
+    
+    1 <!-- código que podem importar o css/javascript -->
+    2 <link rel="stylesheet" type="text/css" 
+    3   href="../meu_css/style.css">
+    4 <script type="text/javascript" 
+    5   src="../meu_javascript/script.js" />
+    
+
+Veja que o caminho físico foi passado para a página poder exibir uma imagem ou utilizar os recursos do css e do javascript. O problema é que basta mudar a página de lugar que os códigos já vistos param de funcionar. 
+
+É muito complicado refatorar os diretórios das páginas uma vez que existe uma dependência tão forte entre o recurso utilizado.
+
+Para resolver esse problema, o JSF 2 tem o recurso chamado _Libraries_ (bibliotecas). Ele tratará cada tipo de recurso como uma biblioteca, ou seja, na aplicação pode existir uma ou mais bibliotecas para imagens, css e javascript.
+
+Para utilizar os recursos de nossa aplicação, basta criar uma pasta chamada `resources`, que ficará na raiz do projeto. Essa pasta conterá a estrutura de pastas e arquivos necessários para serem utilizados como bibliotecas. A imagem 16.1 mostra como deve ficar essa estrutura.
+
+_Fig. 16.1: Estrutura das pastas_
+
+  
+  
+
+
+Note que outras 3 pastas existem abaixo de `resources`: `css`, `imagens` e `javascript`. Cada diretório que for adicionado abaixo da pasta `resources` será tratado como uma biblioteca. 
+
+A vantagem dessa abordagem é a facilidade para acessar os recursos.
+    
+    
+    1 <!-- Código para importar os arquivos -->
+    2 <h:outputStylesheet library="css" name="estilo.css" />
+    3 <h:outputScript library="javascript" name="ola.js" />
+    4 
+    5 <!-- Código para utilizar os recursos -->
+    6 <h:graphicImage library="imagens" name="minhoca.jpg" />
+    
+
+Para adicionar o _javascript_ , o _css_ e utilizar uma imagem basta apontar para a biblioteca e para o nome do recurso. Ao utilizar essa abordagem é possível mudar as estruturas das páginas, que não haverá problemas para localizar as bibliotecas. 
+
+Note que, no trecho do código que mostra como utilizar os valores, em nenhum momento foi utilizado o caminho físico para se chegar aos arquivos.
+
+
+##  Capítulo 17:  Boa utilização do Facelets 
+
+Incorporado oficialmente à versão 2 do JSF, uma das vantagens do _Facelets_ é a possibilidade de se utilizar um esquema de _Template_ nas páginas da aplicação. 
+
+Veja na imagem 17.1 como ficará a estrutura das páginas utilizadas no código fonte deste livro.
+
+_Fig. 17.1: Estrutura das pastas_
+
+  
+  
+
+    
+    
+     1 <!-- master.xhtml -->
+     2 <html xmlns="http://www.w3.org/1999/xhtml"
+     3   xmlns:ui="http://java.sun.com/jsf/facelets"
+     4   xmlns:h="http://java.sun.com/jsf/html"
+     5   xmlns:f="http://java.sun.com/jsf/core">
+     6 
+     7 <h:head>
+     8     <h:outputStylesheet library="css" name="estilo.css" />
+     9     <h:outputScript library="javascript" name="ola.js" />
+    10 </h:head>
+    11 <h:body>
+    12   <f:view>
+    13     <div id="divLeft">
+    14       <ui:insert name="divLeft">        
+    15         <ui:include src="left.xhtml" />
+    16       </ui:insert>
+    17     </div>
+    18 
+    19     <div id="divMain">
+    20       <ui:insert name="divMain" />
+    21     </div>
+    22   </f:view>
+    23 </h:body>
+    24 </html>
+    
+
+Para utilizar uma página que servirá como _Template_ , basta fazer como no código da página `master.xhtml`. Esse layout é simples, apenas com um menu lateral e uma área principal para exibir as informações. Sobre o código da página `master.xhtml` é possível dizer:
+
+  * `<ui:insert name="divLeft"></ui:insert>` define uma área que será substituída. Note que essa área pode conter um valor padrão ou estar em branco.
+  * `<ui:include src="left.xhtml" />` faz a inclusão de uma página.
+
+
+
+A página do menu é uma página ainda mais simples, apenas com botões que serão inseridos em todas as páginas que utilizarem o `Template`.
+    
+    
+     1 <!-- left.xhtml -->
+     2 <h:body>
+     3   <ui:composition>
+     4     <h:form>
+     5       <p:button outcome="/applicationScoped.xhtml" 
+     6                                   value="@ApplicationScoped" />
+     7       <p:button outcome="/conversationScoped.xhtml"
+     8                                   value="@ConversationScoped" />
+     9       <p:button outcome="/dependentScoped.xhtml" 
+    10                                   value="@DependentScoped" />
+    11     </h:form>
+    12   </ui:composition>
+    13 </h:body>
+    
+
+Note que o código da página `left.xhtml` não tem conhecimento da página de _Template_. É possível encontrar a tag `<ui:composition>` que define que o código a ser inserido se encontra ali dentro.  
+  
+---  
+  
+**Dica**
+
+É considerada boa prática deixar todo o código que será inserido via _Template_ envolvido pela tag `<ui:composition>`. A vantagem disso é que todo código que estiver fora do `<ui:composition>` será ignorado pelo _view handler_ do JSF. Com essa prática é possível adicionar código no _< h:head>_ para que se possa visualizar a página sem que seja necessário compilar o projeto.  
+  
+---  
+  
+Lembra da imagem da minhoca exibida no capítulo sobre [16](index_split_022.html#recursosComoBibliotecas)? O código da página está utilizando a funcionalidade de _Template_ do JSF 2.0.
+    
+    
+     1 <!-- Página que exibe a minhoca utilizandoBibliotecas.xhtml -->
+     2 <h:body>
+     3   <ui:composition template="/templates/master.xhtml">
+     4     <ui:define name="divMain">
+     5             <h:button value="Ola via JavaScript" 
+     6                       onclick="ola();" />
+     7             <br />
+     8             <p class="titulo">#{mensagens.bibliotecasTexto}</p>
+     9             <h:graphicImage library="imagens" 
+    10                             name="minhoca.jpg" />
+    11     </ui:define>
+    12   </ui:composition>
+    13 </h:body>
+    
+
+Veja como é simples e objetivo o código da página `utilizandoBibliotecas.xhtml`. Através da tag `ui:composition` é indicado qual template será utilizado. E com a tag `ui:define` indicamos qual parte do código iremos sobrescrever.
+
+A vantagem de utilizar `Facelets` como _Template_ é que é possível mudar toda a estrutura de uma aplicação sem afetar todas as páginas. Note que a página `utilizandoBibliotecas.xhtml` não tem a mínima ideia de quantos menus existem na aplicação, ou se há duas ou três barras laterais no layout.
+
+Caso uma reestruturação geral fosse necessária, com `Facelets`, o impacto aconteceria apenas nas páginas de _Template_ , e as páginas que exibem as informações não seriam modificadas.
+
+É preciso ter muito cuidado para não aninhar _form_ s html; para aninhar um _form_ bastaria fazer `<h:form><h:form></h:form></h:form>`. O problema de aninhar _form_ é que cada browser poderá ter comportamentos inesperados, como se perder ao dar focus a um componente, tab e outros.
+    
+    
+    1 <!-- aninhar.xhtml -->
+    2 <ui:composition template="/templates/master.xhtml">
+    3     <h:form>
+    4         <ui:define name="divMain"><br/>
+    5             <p>Alguma coisa</p>
+    6         </ui:define>
+    7         <ui:define name="divRight"/>
+    8     </h:form>
+    9 </ui:composition>
+    
+
+Veja no código da página `aninhar.xhtml` que ao substituir o `ui:define` em alguma, com algum código que contenha o componente `h:form`, _form_ s serão aninhados.
+
+É preciso estar atento para não deixar que essa situação de _form_ aninhado aconteça na aplicação. Um problema já presenciado em fórum era que a _action_ de um botão não era chamada, pois o botão estava dentro de um fórum aninhado.
+
+Outra facilidade do `Facelets` é colocar no Template os componentes que exibirão as mensagem para o usuário. Pode ser um `h:messages` ou um `p:growl` do Primefaces, por exemplo. Desse modo não será necessário declarar esse componente em todas as páginas. Veja no código da página `reutilizandoComponenteMessage.xhtml` como seria possível utilizar um único componente de mensagens para toda a aplicação.
+    
+    
+    1 <!-- reutilizandoComponenteMessage.xhtml -->
+    2 <ui:composition template="/templates/master.xhtml">
+    3     <h:messages />
+    4     <ui:define name="divMain">
+    5         <p>Alguma coisa</p>
+    6     </ui:define>
+    7 </ui:composition>
+    
+
+Cuidado ao ter que sobrescrever diversas regiões nas páginas apenas para apagar um texto que não deveria ser exibido. Seria possível ter um código do tipo:
+    
+    
+    1 <!-- codigo_feio.xhtml -->
+    2 <ui:composition template="/templates/master.xhtml">
+    3     <ui:define name="divLeft01"/>
+    4     <ui:define name="divLeft02"/>
+    5     <ui:define name="divMain"><br/><br/><br/>
+    6         <p>Alguma coisa</p>
+    7     </ui:define>
+    8     <ui:define name="divRight"/>
+    9 </ui:composition>
+    
+
+Veja o exemplo da página `codigo_feio.xhtml`, nela são sobrescritas diversas áreas para não exibirem determinado valor padrão. Em uma página ou outra não seria tanto incômodo, mas caso aconteça em diversas páginas existe um modo de evitar esse problema: basta criar um outro _Template_. É possível ter mais que um _Template_ em um projeto, de modo que ficaria organizado se seu projeto tivesse 33% das páginas em um, e outros 67% em outro _Template_.
+
+
+##  Capítulo 18:  Enviar valores para o ManagedBean 
+
+Muitas vezes precisamos transferir dados que estão sendo exibidos em uma tabela através de um `datatable`, como por exemplo o `id` de uma informação que queremos editar. É possível enviar valores de um `datatable` para um ManagedBean de diversas maneiras.
+
+Para enviar os objetos, como demonstrado abaixo, basta colocar um botão em uma coluna:
+    
+    
+     1 <!-- dataTable.xhtml -->
+     2 <h:form>
+     3   <p:dataTable value="#{cidadeMB.cidades}" var="cidade" >
+     4     <p:column>
+     5       <f:facet name="header">
+     6         #{mensagens.cidadeNome}
+     7       </f:facet>
+     8       <h:outputText value="#{cidade.nome}" />
+     9     </p:column>
+    10     <p:column>
+    11       <!-- BOTÃO AQUI -->
+    12     </p:column>
+    13   </p:dataTable>
+    14 </h:form>
+    
+
+O código da página `dataTable.xhtml` mostra onde deve ficar o botão para enviar um valor para o `ManagedBean`. Ele deve estar dentro de um `h:form` para funcionar corretamente. 
+
+Abaixo veremos modos de enviar o valor o ManagedBean mostrando apenas o codigo do botão. Serão mostrados aqui três modos para enviar um valor: Utilizando f:setPropertyActionListener, por parâmetro e por binding.
+
+###  18.1  Envie valor como parâmetro pelo f:setPropertyActionListener 
+
+Esse é o modo de enviar o parâmetro que necessita de menos métodos, em comparação com o os outros. Ele precisa apenas da tag `f:setPropertyActionListener` para informar ao ManagedBean que uma linha do `dataTable` foi selecionada.
+    
+    
+    1 <p:commandButton value="#{mensagens.enviarValorSetProperty}"
+    2         onclick="exibirCidadeWidget.show()" 
+    3         update=":exibirCidadeGrid">
+    4     <f:setPropertyActionListener value="#{cidade}" 
+    5                                  target="#{cidadeMB.cidade}" />
+    6 </p:commandButton>
+    
+    
+    
+    1 public String atualizarCidade(){
+    2     cidadeDAO.atualizar(cidade);
+    3     return "cidade.xhtml";
+    4 }
+    
+
+A tag `f:setPropertyActionListener` tem como atributos `value` e `target`. `value` indica qual o objeto que será enviado ao ManagedBean; `target` indica qual o ManagedBean receberá o objeto.
+
+Lembre-se de que o escopo do ManagedBean faz diferença. Caso você utilize o RequestScoped, o valor poderá se perder. É necessário entender como funciona cada escopo e utilizar o tipo ideal para cada caso. Para um ManagedBean o ideal seria ViewScoped (veja [4](index_split_008.html#viewScoped)). 
+
+Para que o objeto seja corretamente enviado ao ManagedBean, é necessário ter métodos _getters_ e _setters_ implementados para o atributo.
+
+  
+
+
+###  18.2  Envie valor como parâmetro 
+
+Outro modo simples de se enviar um atributo é por método. Esse método receberá o objeto diretamente como parâmetro através da página.
+    
+    
+    1 <p:commandButton value="Enviar" 
+    2         actionListener="#{cidadeMB.atualizarCidade(cidade)}" />
+    
+    
+    
+    1 public String atualizarCidade(Cidade cidade){
+    2     cidadeDAO.atualizar(cidade);
+    3     return "cidade.xhtml";
+    4 }
+    
+
+É necessário utilizar a versão 3.0 do Servlet e a versão 2.2 de EL para habilitar esse modo de envio de valor. A versão do EL vem do jar utilizado. A versão do Servlet é definida no web.xml.
+    
+    
+    1 <web-app version="3.0" 
+    2     xmlns="http://java.sun.com/xml/ns/javaee" 
+    3     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    4     xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+    5     http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+    
+
+  
+
+
+###  18.3  Envie valor por Binding 
+
+Existe uma técnica chamada `binding` que nada mais é que ligar um componente visual diretamente a um objeto no ManagedBean.
+    
+    
+    1 <p:dataTable value="#{cidadeMB.cidades}" var="cidade"
+    2          binding="#{cidadeMB.dataTable}" rowKey="#{cidade.id}" >
+    3     <!-- outras colunas -->
+    4     <p:column>
+    5         <p:commandButton value="Enviar" 
+    6             actionListener="#{cidadeMB.selecionarCidade}" />
+    7     </p:column>
+    8 </p:dataTable>
+    
+    
+    
+    1 private DataTable dataTable;
+    2     
+    3 public String atualizarCidade(){
+    4     Integer rowIndex = dataTable.getRowIndex() + 1;
+    5     cidade = (Cidade) dataTable.getRowData(rowIndex.toString());
+    6     cidadeDAO.atualizar(cidade);
+    7     return "cidade.xhtml";
+    8 }
+    
+
+Para utilizar o `binding` basta indicar na página qual objeto do tipo `DataTable` estará ligado ao ManagedBean. E para usar no ManagedBean, basta pegar o index da linha que foi selecionada e depois buscar o valor dentro da tabela através do método `getRowData`.
+
+O ruim dessa abordagem é que cria uma acoplamento muito forte entre a página e o ManagedBean, tornando mais difícil a manutenção do código.
+
+  
+
+
+
+##  Capítulo 19:  Temas dinâmicos 
+
+É sempre bom pensar em agradar o usuário, não apenas com maravilhosas funcionalidades, mas também com um visual ao mesmo tempo bonito e funcional em se tratando de cores, imagens de fundo, tipografia etc.
+
+Uma prática interessante poderia ser possuir um conjunto de temas pré-definidos, no qual o usuário pudesse selecionar sua opção preferida. Um ManagedBean de sessão poderia conter o valor default ou carregar algum valor padrão do banco de dados.
+    
+    
+     1 @ManagedBean
+     2 @SessionScoped
+     3 public class UsuarioMB {
+     4     private String userCSS = "estilo.css";
+     5     private List<String> cssDisponivel;
+     6 
+     7     @PostConstruct
+     8     private void init(){
+     9         cssDisponivel = new ArrayList<String>();
+    10         cssDisponivel.add("estilo.css");
+    11         cssDisponivel.add("estilo2.css");
+    12     }
+    13 
+    14     public String alterarEstilo(){
+    15         return null;
+    16     }
+    17     // getters e setters omitidos
+    18 }
+    
+
+O método `alterarEstilo()` apenas retorna null, mantendo o usuário na mesma página.
+
+E basta permitir que o usuário escolha o estilo que será utilizado, por exemplo, através de um `selectOneMenu`:
+    
+    
+     1 <!-- utilizando o estilo dinâmico -->
+     2 <h:outputStylesheet library="css" name="#{usuarioMB.userCSS}" />
+     3 
+     4 <!-- utilizando action que mantém usuário na mesma página -->
+     5 <p><h:outputText value="#{mensagens.troqueTema}:" /></p>
+     6 <p:selectOneMenu value="#{usuarioMB.userCSS}">
+     7 <f:selectItems value="#{usuarioMB.cssDisponivel}" />
+     8 </p:selectOneMenu>
+     9 <p:commandButton value="#{mensagens.troqueTemaTrocar}" 
+    10             action="#{usuarioMB.alterarEstilo()}" ajax="false" />
+    
+
+Para utilizar o estilo dinâmico nas páginas, basta apontar a origem do arquivo CSS para a saída do ManagedBean `<h:outputStylesheet library="css" name="#{usuarioMB.userCSS}" />` e um método que retorne o estilo do usuário.  
+  
+---  
+  
+**Mantenha a opção escolhida pelo usuário**
+
+Apesar do exemplo desse capitulo utilizar todos os valores em memória, é possível salvar essa configuração no banco de dados. Quando o usuário entrar na aplicação, a classe `UsuarioMB` poderia simplesmente acessar um objeto da sessão e buscar o valor do css padrão dele.  
+  
+---
+
+
+##  Capítulo 20:  O que eu uso? Action ou ActionListener?   
+  
+Um dos maiores dilemas durante o desenvolvimento em JSF é o momento em que devemos utilizar `action` ou `actionListener`.
+
+O JSF tem dois modos de tratar as ações do usuário. O primeiro é possível definir como: "esse click vai executar uma ação e essa ação decidirá se o usuário permanece ou muda de tela". Enquanto o segundo podemos definir como: "esse click realizará alguma ação, mas o usuário permanecerá na mesma tela ou será forçadamente redirecionado".
+
+###  20.1  Redirecione o usuário com action 
+    
+    
+    1 <h:commandButton value="Click aqui!" 
+    2   action="#{managedBean.metodo}" />
+    
+    
+    
+    1 public String metodo(){
+    2     // faz alguma coisa
+    3     return "nova_pagina";
+    4 }
+      
+  
+---  
+  
+**Retorno sem extensão**
+
+O código que mostra um exemplo de navegação `return "nova_pagina";` não adiciona a extensão da página. O JSF procurará por uma página com a mesma extensão da URL chamada. Se o usuário que chamou o método estiver na página `<http://site/index.jsf>` o JSF procurará uma página chamada "nova_pagina.jsf". Ao encontrar uma página chamada "nova_pagina.xhtml" ele entenderá que é esse arquivo o destino final.  
+  
+---  
+  
+O que melhor caracteriza uma `action` é um método que retornará um objeto do tipo `String`. A `action` é melhor utilizada em um método que definirá o destino do usuário. Dessa forma, ele pode permanecer na tela que estava ou mudar para uma nova tela. 
+
+Considere que o usuário esteja na tela de cadastro, e uma vez finalizado, ele será redirecionado para a tela de login. É possível retornar `null` e fazer com que o usuário permaneça na mesma tela caso algum erro aconteça.
+    
+    
+    1 public String metodo(){
+    2     // mantém o usuário na mesma tela com todos os dados
+    3     return null;
+    4 }
+    
+
+  
+
+
+###  20.2  Trate eventos com actionListener 
+    
+    
+    1 <!-- como utilizar uma actionListener -->
+    2 <h:commandButton value="Click aqui!" 
+    3                  actionListener="#{managedBean.metodo}" />
+    
+    
+    
+    1 public void metodo(javax.faces.event.ActionEvent event){
+    2     // faz alguma coisa
+    3 }
+    
+
+Uma das características do _actionListener_ é que o usuário sempre permanecerá na mesma tela. Esse tipo de método é muito utilizado em chamada _Ajax_ , e em componentes próprios. Um _actionListener_ recebe como parâmetro um `javax.faces.event.ActionEvent`, com o qual você tem acesso, por exemplo, ao componente que iniciou a ação. Uma boa analogia é você associar o `actionListener` com o tratamento de um evento de um clique, de uma ação.
+
+_ActionListener_ naturalmente não realizará uma navegação, mesmo retornando uma String como feito em uma _Action_. Para realizar uma navegação a partir de um método _ActionListener_ será necessário utilizar o método `sendRedirect`. Para executar um `sendRedirect` basta fazer como no código exibido:
+    
+    
+    1 FacesContext.getCurrentInstance()
+    2   .getExternalContext()
+    3   .redirect("/site.jsf”);
+    
+
+Note que apesar de o método se chamar `redirect` ele é comumente chamado de `sendRedirect`, utilizado através da classe `HttpResponse. sendRedirect`.
+
+Caso apareça alguma mensagem de erro ao executar faça como abaixo:
+    
+    
+    1 response.sendRedirect();
+    2 FacesContext.getCurrentInstance().responseComplete();
+    
+
+O método `responseComplete()` implicitamente informa ao JSF que não será necessário trabalhar o `response`.
+
+  
+
+
+
+# Parte 4 - Aproveite as bibliotecas de componentes
+
+Quando estamos desenvolvendo uma aplicação, muitas vezes precisamos que os elementos que envolvem a nossa tela tenham características diferentes das que por padrão elas possuem. Por exemplo, gostaríamos de ter um campo de texto onde fosse possível adicionar uma máscara. Ou então, um `dataTable` que fizesse ordenação dos dados dentro dele e assim por diante. Nesse caso, precisamos de componentes diferentes. Podemos encontrar esses componentes em bibliotecas, desenvolvidas e disponíveis em variadas formas na comunidade. 
+
+Bibliotecas de componentes são focadas mais na parte de funcionalidades, em geral, criando _dialogs_ , _datatables_ , _galerias_ etc, nas quais, entre as principais, se destacam o Primefaces, Richfaces, Icefaces e OmniFaces. Aliás é possível que qualquer pessoa possa criar sua biblioteca de componente e disponibilizá-la para outros desenvolvedores ou reutilizá-la em diferentes projetos. 
+
+Nesta parte do livro veremos sobre algumas características do Primefaces, Richfaces, Icefaces e OmniFaces. Vantagens e desvantagens e exemplos de código de funcionalidades ricas e interessantes que conseguimos fazer com essas bibliotecas. 
+
+Os exemplos demonstrados aqui não são para comparar uma biblioteca com a outra. Seus exemplos foram escolhidos apenas aleatoriamente. Há componentes que existem em todas as bibliotecas, mas outros apenas em uma.  
+  
+---  
+  
+**Dica**
+
+Nos códigos apresentados no livro foram utilizados diversos nomes de métodos, atributos, classes em português justamente para mostrar que o nome não influencia no comportamento da ação. Alguns tutoriais da internet utilizam de nomes estranhos e às vezes abusivos por acharem que é só com aquele nome que tudo se resolve.  
+  
+---
+
+
+##  Capítulo 21:  Primefaces   
+  
+É considerado por muitos o mais avançado do mercado. Ele tem diversas funcionalidades prontas que facilitam e muito a vida do desenvolvedor. Possui mais de 130 componentes em seu showcase com código que explica como utilizar.
+
+###  21.1  DataTable com seleção com um click 
+
+Um DataTable pode ter diversas configurações e ajustes para melhorar a usabilidade do usuário. Um modo de utilizar o DataTable do Primefaces bem interessante é permitir que com apenas um clique ele exiba o valor da linha selecionada.
+
+_Fig. 21.1: DataTable Primefaces seleção em um clique_
+
+  
+  
+
+
+_Fig. 21.2: DataTable Primefaces seleção em um clique_
+
+  
+  
+
+
+Pelas imagens 21.1 e 21.2 é possível ver como é interessante a abordagem de um clique para exibir os dados da linha selecionada. A ação do clique poderia ser qualquer ação como excluir, alterar etc. 
+
+E como ficaria o código? Veja em seguida como é simples.
+    
+    
+     1 <!-- dataTable.xhtml --> 
+     2 <h:form> 
+     3     <p:dataTable value="#{primefacesMB.cidades}" 
+     4                  var="cidade" 
+     5                  selection="#{primefacesMB.cidade}" 
+     6                  selectionMode="single" 
+     7                  paginator="true" 
+     8                  rows="10" 
+     9                  paginatorTemplate="{CurrentPageReport}  
+    10                     {FirstPageLink} 
+    11                     {PreviousPageLink} {PageLinks} 
+    12                     {NextPageLink} {LastPageLink} 
+    13                     {RowsPerPageDropdown}" 
+    14                  rowsPerPageTemplate="5,10,15" 
+    15                  style="width: 40%" 
+    16                  lazy="true"> 
+    17         <p:ajax event="rowSelect" 
+    18                 update=":cidadeDialogForm" 
+    19                 oncomplete="cidadeWidget.show()"/> 
+    20         <p:column> 
+    21             <f:facet name="header"> 
+    22                 #{mensagens.cidadeId} 
+    23             </f:facet> 
+    24             <h:outputText value="#{cidade.id}"/> 
+    25         </p:column> 
+    26         <p:column> 
+    27             <f:facet name="header"> 
+    28                 #{mensagens.cidadeNome} 
+    29             </f:facet> 
+    30             <h:outputText value="#{cidade.nome}"/> 
+    31         </p:column> 
+    32         <p:column> 
+    33             <f:facet name="header"> 
+    34                 #{mensagens.cidadeEstado} 
+    35             </f:facet> 
+    36             <h:outputText value="#{cidade.estado}"/> 
+    37         </p:column> 
+    38     </p:dataTable> 
+    39 </h:form>
+    
+
+Veja que no código <!-- dataTable.xhtml -->, que é um código fácil de entender e de trabalhar, o atributo `selection="#{primefacesMB.cidade}"` aponta onde ficará armazenada a linha selecionada. O atributo `selectionMode="single"` é utilizado para definir os tipos de seleção possível. O outro pedaço de código relativo ao clique único é a chamada Ajax para mostrar o valor em um _dialog_.
+    
+    
+    1 <p:ajax event="rowSelect" 
+    2                 update=":cidadeDialogForm" 
+    3                 oncomplete="cidadeWidget.show()"/>
+    
+
+A tag `p:ajax` tem o atributo `event` que informa qual ação deve ser executada. `update` realizará atualização de um componente. `oncomplete="cidadeWidget.show()"` exibirá o _dialog_ de cidades.
+    
+    
+     1 <!-- dialog.xhtml --> 
+     2 <p:dialog widgetVar="cidadeWidget" 
+     3       modal="true" 
+     4       header="#{mensagens.cidade}">
+     5   <h:form id="cidadeDialogForm">
+     6     <h:panelGrid columns="2">
+     7       <h:outputText value="#{mensagens.cidadeId}"/>
+     8       <h:outputText value="#{primefacesMB.cidade.id}"/>
+     9       <h:outputText value="#{mensagens.cidadeNome}"/>
+    10       <h:outputText value="#{primefacesMB.cidade.nome}"/>
+    11       <h:outputText value="#{mensagens.cidadeEstado}"/>
+    12       <h:outputText value="#{primefacesMB.cidade.estado}"/>
+    13     </h:panelGrid> 
+    14   </h:form> 
+    15 </p:dialog>
+    
+
+No código da página `dialog.xhtml` é possível ver como utilizar uma dialog para exibir o valor. A propriedade `widgetVar` é uma forma de facilitar a utilização de jQuery/JavaScript dentro de um `xhtml`; a chamada _Ajax_ executa o comando do `widgetVar` assim: `cidadeWidget.show()`. 
+
+O ManagedBean tem apenas get/set do atributo: `List<Cidade> cidades`.
+
+  
+
+
+###  21.2  Drag and Drop 
+
+Uma função que agrada muito aos usuários de aplicações é o chamado Drag and Drop, ou seja, arrastar objetos de um lado e largá-los em outro.
+
+_Fig. 21.3: Drag and Drop_
+
+  
+  
+
+
+_Fig. 21.4: Drag and Drop_
+
+  
+  
+
+
+_Fig. 21.5: Drag and Drop_
+
+  
+  
+
+
+As imagens 21.3, 21.4 e 21.5 mostram que é uma funcionalidade muito interessante que atualmente é fácil de encontrar em diversos programas. O código é composto de dois componentes `p:fieldset` e um outro chamado `p:droppable`.
+    
+    
+     1 <p:fieldset legend="#{mensagens.primefacesEscolhaFotoMinhoca}">
+     2     <p:dataGrid id="fotosDisponiveis" 
+     3                 var="foto" 
+     4                 value="#{primefacesMB.fotos}" 
+     5                 columns="3"> 
+     6         <p:column> 
+     7             <p:panel id="panelFotos" 
+     8                      header="#{foto.nome}" 
+     9                      style="text-align:center"> 
+    10                 <h:panelGrid columns="1" 
+    11                              style="width:100%"> 
+    12                     <p:graphicImage value="#{foto.path}"/> 
+    13                 </h:panelGrid> 
+    14             </p:panel> 
+    15  
+    16             <p:draggable for="panelFotos" 
+    17                          revert="true" 
+    18                          handle=".ui-panel-titlebar" 
+    19                          stack=".ui-panel"/> 
+    20         </p:column> 
+    21     </p:dataGrid> 
+    22 </p:fieldset>
+    
+
+O primeiro `p:fieldSet` é o que exibe os elementos disponíveis para serem arrastados. Dentro dele é possível encontrar um `dataTable`. A lista utilizada no dataTable é `List<Foto> fotos`, onde a classe foto tem apenas duas `String`s; a primeira String é o nome da foto, e a segunda, o caminho físico da foto (por exemplo, `/home/uaihebert/fotos`). O componente `p:draggable` é quem configura qual objeto da tela poderá ser arrastado; ele tem o atributo `for`, que aponta quem poderá ser arrastado; o parâmetro `revert`, que indica que caso o objeto seja largado em um lugar inválido ele deve voltar ao seu lugar de origem; os parâmetros `handle`, que estão falando qual classe servirá de ativador para se mover o objeto, e no caso foi escolhido o título do panel – o usuário não conseguirá mover o objeto a não ser pelo título; `stack`, que controla automaticamente o "arrastar" do componente.
+    
+    
+     1 <p:fieldset id="fotosSelecionadas" 
+     2             legend="#{mensagens.primefacesFotosSelecionada}" 
+     3             columns="3"> 
+     4     <p:outputPanel id="fotosDespejadas"> 
+     5         <h:outputText value="#{mensagens.primefacesArrasteAqui}"
+     6               rendered="#{empty primefacesMB.fotosSelecionadas}"
+     7                       style="font-size:24px;"/> 
+     8         <p:dataGrid var="foto" 
+     9                     value="#{primefacesMB.fotosSelecionadas}" 
+    10                     rendered="#{not empty 
+    11                                primefacesMB.fotosSelecionadas}">
+    12             <p:column> 
+    13                 <p:panel id="panelFotos" 
+    14                          header="#{foto.nome}"> 
+    15                     <p:graphicImage value="#{foto.path}"/> 
+    16                 </p:panel> 
+    17             </p:column> 
+    18 
+    19         </p:dataGrid> 
+    20     </p:outputPanel> 
+    21 </p:fieldset>
+    
+
+O segundo `p:fieldSet` nada mais é do que o responsável por exibir os dados das fotos que foram arrastadas. Logo abaixo do `p:fieldSet` virá o último componente que definirá onde um objeto poderá ser jogado.
+    
+    
+    1 <p:droppable for="fotosSelecionadas" 
+    2                       tolerance="touch" 
+    3                       activeStyleClass="ui-state-highlight" 
+    4                       datasource="fotosDisponiveis" 
+    5                       onDrop="handleDrop"> 
+    6   <p:ajax listener="#{primefacesMB.fotoDespejada}" 
+    7           update="fotosDespejadas fotosDisponiveis"/> 
+    8 </p:droppable>
+    
+
+O componente `p:droppable` define qual objeto receberá os objetos jogados. `for` aponta qual componente segurará o objeto jogado; `tolerance` aponta qual o tipo de ação para que ele considere que o objeto foi jogado; `activeStyleClass` define qual estilo o componente que receberá um objeto terá enquanto ele não for jogado: ver na foto 21.4. `datasource` é o componente que contém os objetos que poderão ser arrastados e `onDrop` é ação que será executada (que veremos em breve). Existe também um listener que realiza a transferência da foto de uma lista (`#{primefacesMB.fotos}`) para outra(`#{primefacesMB.fotosSelecionadas}`).
+    
+    
+    1 // método executado pelo listener 
+    2 public void fotoDespejada(DragDropEvent event) { 
+    3   Foto foto = (Foto) event.getData(); 
+    4 
+    5   getFotos().remove(foto); 
+    6   getFotosSelecionadas().add(foto); 
+    7 }
+    
+    
+    
+    1 function handleDrop(event, ui) { 
+    2     var droppedCar = ui.draggable; 
+    3 
+    4     droppedCar.fadeOut('fast'); 
+    5 }
+    
+
+Efeito _jQuery_ disparado pelo evento `onDrop` definido no componente `droppable`
+
+  
+
+
+###  21.3  Notificador 
+
+É normal enviar uma resposta para usuário indicando se a ação foi realizada ou não. "Salvo com sucesso", "Erro ao alterar" ou "Você tem certeza? Sério mesmo?" são mensagens que são exibidas para os usuários de aplicações.
+
+Veja nas imagens 21.6 e 21.7 um interessante recurso chamado Growl.
+
+_Fig. 21.6: Drag and Drop_
+
+  
+  
+
+
+_Fig. 21.7: Drag and Drop_
+
+  
+  
+
+
+Para utilizar o Growl basta usar um código bastante simples e objetivo:
+    
+    
+     1 <!-- growl.xhtml -->
+     2 <h:form>
+     3   <p:growl id="mensagens"/>
+     4   <h:outputText value="#{mensagens.mensagemSucesso}:"/>
+     5   <p:commandButton value="#{mensagens.enviar}"
+     6       actionListener="#{primefacesMB.mensagemSucesso}"
+     7       update="mensagens"/>
+     8   <h:outputText value="#{mensagens.mensagemErro}: "/>
+     9   <p:commandButton value="#{mensagens.enviar}" 
+    10       actionListener="#{primefacesMB.mensagemErro}"
+    11       update="mensagens"/>
+    12 </h:form>
+    
+
+O código da página `growl.xhtml` tem um componente `p:growl` que é o responsável por mostrar a mensagem ao usuário. Seu comportamento é exatamente igual ao componente `h:messages` do JSF. Os botões exibidos nas páginas nada mais fazem do que uma chamada _Ajax_ que cria a mensagem a ser exibida. Ao final da chamada _Ajax_ os botões estão configurados para atualizarem o `growl` através do atributo `update="mensagens"`.
+
+Para fazer com que uma mensagem seja exibida para um usuário, basta fazer como o código a seguir:
+    
+    
+     1 private final String SUCESSO = "Operação realizada com sucesso";
+     2 private final String ERRO = "Ops! Ocorreu um erro inesperado";
+     3 public void mensagemSucesso(ActionEvent event) {
+     4     FacesContext instance = FacesContext.getCurrentInstance();
+     5     instance.addMessage(null, 
+     6          new FacesMessage(FacesMessage.SEVERITY_INFO, 
+     7                           SUCESSO, 
+     8                           SUCESSO)
+     9                         );
+    10 }
+    11 
+    12 public void mensagemErro(ActionEvent event) {
+    13     FacesContext instance = FacesContext.getCurrentInstance();
+    14     instance.addMessage(null, 
+    15          new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+    16                           ERRO, 
+    17                           ERRO)
+    18                         );
+    19 }
+    
+
+  
+
+
+###  21.4  Auto Complete 
+
+O Auto Complete, como diz o nome, completa uma informação que o usuário está digitando em um `input`. Assim como no google, é possível ter esse mesmo comportamento com o Primefaces. Veja na imagem 21.8 e 21.9 como fica esse componente.
+
+_Fig. 21.8: AutoComplete_
+
+  
+  
+
+
+_Fig. 21.9: AutoComplete_
+
+  
+  
+
+
+Esse componente é altamente configurável e deve ser utilizado com cautela.
+    
+    
+     1 <!-- autoComplete.xhtml -->
+     2 <p:autoComplete id="autoComplete"
+     3                 forceSelection="true"
+     4                 minQueryLength="3"
+     5                 value="#{primefacesMB.cidade}"
+     6                 completeMethod="#{primefacesMB.autoComplete}"
+     7                 var="cidade"
+     8                 itemLabel="#{cidade.nome}"
+     9                 itemValue="#{cidade}"
+    10                 label="#{mensagens.cidade}"
+    11                 dropdown="true"
+    12                 required="true"
+    13                 queryDelay="3000"/>
+    14 <br/>
+    15 <p:commandButton value="#{mensagens.enviar}" 
+    16                  update=":cidadeDialogForm"
+    17                  oncomplete="cidadeWidget.show()"/>
+    
+
+Note no código da página `autoComplete.xhtml` a quantidade de configurações (a maioria não obrigatória) que é possível ter, e existem outras que não foram utilizadas. ` forceSelection` indica se a seleção de algum valor é obrigatória, para evitar que o usuário deixe um valor qualquer, como uma cidade chamada _123***_. `minQueryLength` é a quantidade mínima de caracteres necessários para disparar a chamada no ManagedBean. `value` terá o valor selecionado pelo usuário. `completeMethod="#{primefacesMB.autoComplete}"` é o método que retornará a lista filtrada pelo valor informado pelo usuário. `var` é o nome que um item da lista retornada no método definido no `completeMethod` retornará; `itemLabel` é o nome que será exibido ao usuário; e `itemValue` o valor selecionado que será enviado ao ManagedBean. `dropdown="true"` exibe ou não o botão para exibir os valores. 
+
+`queryDelay` é um contador para disparar a chamada _Ajax_. Imagine que o usuário digitou ABC que é o tamanho mínimo de uma pesquisa definido em `minQueryLength`. Ao atingir 3 caracteres o Primefaces iniciará um contador com um tempo definido em milissegundos na opção `queryDelay`. Caso o usuário edite o texto, o tempo de espera será reiniciado. A chamada _Ajax_ somente será disparada quando o tempo de espera for zerado.
+    
+    
+     1 // metodoAutoComplete.java
+     2 public List<Cidade> autoComplete(String valorPesquisado) {
+     3   final int maximoResultadosExibidos = 5;
+     4 
+     5   if (valorPesquisado == null || valorPesquisado.isEmpty()) {
+     6     int comecarPesquisaPosicao = 1;
+     7     return cidadeDAO.buscaPorPaginacao(comecarPesquisaPosicao,  
+     8             maximoResultadosParaExibido);
+     9   }
+    10 
+    11   return cidadeDAO.findByNameLike(valorPesquisado, 
+    12                                   maximoResultadosParaExibido);
+    
+
+O método da classe `MetodoAutoComplete.java` é bem simples e retorna uma lista. Ele recebe um valor enviado pelo usuário e testa se o valor tem um parâmetro preenchido. Se o usuário clicar no botão do `dropdown` esse valor não viria preenchido.
+
+Fique atento a um detalhe: toda vez que um valor de um componente `select` for um objeto, será necessário um `Converter`. Em nosso caso o `itemValue` foi definido com `#{cidade}`.
+    
+    
+     1 // CidadeConverter.java
+     2 @FacesConverter(forClass = Cidade.class)
+     3 public class CidadeConverter implements Converter {
+     4 
+     5     @Override
+     6     public Object getAsObject(FacesContext arg0, U
+     7                               IComponent arg1, 
+     8                               String key) {
+     9         CidadeDAO cidadeDAO = // busca o DAO;
+    10 
+    11         return cidadeDAO.findById(Integer.parseInt(key));
+    12     }
+    13 
+    14     @Override
+    15     public String getAsString(FacesContext arg0, 
+    16                               UIComponent arg1, 
+    17                               Object cidadeObject) {
+    18         if(cidadeObject != null && 
+    19                            cidadeObject instanceof Cidade){
+    20             Cidade cidade = (Cidade) cidadeObject;
+    21             return String.valueOf(cidade.getId());
+    22         }
+    23 
+    24         return "";
+    25     }
+    26 }
+    
+
+Um converter normal de JSF que simplesmente converte um valor enviado pela View em objeto ou retorna o ID do objeto.  
+  
+---  
+  
+**Dica**
+
+É preciso tomar bastante cuidado com a configuração/utilização de um Converter. A anotação `@FacesConverter(forClass = Cidade.class)` foi utilizada para definir que toda classe `Cidade` da aplicação utilizará esse `Converter`. Infelizmente algumas implementações simplesmente ignoram esse valor da anotação e não encontram o converter. A solução seria utilizar a anotação assim: `@FacesConverter(value = "cidadeConverter")`. E em cada componente que necessitasse de um `Converter` fazer uso do seguinte atributo: converter="cidadeConverter".  
+  
+---  
+  
+  
+
+
+###  21.5  Poll 
+
+Existe um recurso interessante do JSF que é realizar chamadas a um ManagedBean sem a necessidade de ser disparada por um usuário. Em outras palavras, o Primefaces automaticamente dispara chamadas em um período predeterminado por meio do componente `Poll`.
+
+_Fig. 21.10: Poll_
+
+  
+  
+
+
+Esse componente é simples de configurar.
+    
+    
+    1 <h:form>
+    2   <h:outputText id="contadorText" 
+    3                 value="#{mensagens.contadorTexto}: 
+    4                 #{primefacesMB.contador}"/>
+    5 
+    6   <p:poll interval="3" 
+    7           listener="#{primefacesMB.somar}" 
+    8           update="contadorText"/>
+    9 </h:form>
+    
+
+O componente `p:poll` realizará uma chamada _Ajax_ a cada 3 segundos ao ManagedBean e ao final da chamada atualizará o `outputText` para exibir o novo valor.
+    
+    
+     1 private int contador;
+     2 
+     3 public void somar(){
+     4     contador++;
+     5 }
+     6 
+     7 public int getContador() {
+     8     return contador;
+     9 }
+    10 
+    11 public void setContador(int contador) {
+    12     this.contador = contador;
+    13 }
+    
+
+O componente `p:poll` aqui foi utilizado como um contador, mas poderia ser utilizado para verificar se o usuário continua na página do sistema, por exemplo.
+
+  
+
+
+###  21.6  Considerações finais 
+
+Através dos componentes exibidos foi possível ver que existem diversas funcionalidades prontas e que funcionam sem a necessidade de códigos complicados e enormes. Todos os exemplos foram retirados do showcase do próprio Primefaces: <http://primefaces.org/showcase/> . É possível fazer o download do código fonte (SVN) de todos os exemplos aqui: <http://repository.primefaces.org/org/primefaces/prime-showcase/> . 
+
+Em seu fórum é possível falar diretamente com os mantenedores do Primefaces. Lá eles tiram dúvidas e até registram bugs para futuros reparos. É muito utilizado em meio acadêmico (por já vir com um belo CSS) e por sua facilidade de utilização. Os exemplos citados acima são bem fáceis de serem utilizados e aplicados com poucas linhas de código. 
+
+Infelizmente nem tudo são flores: existe também o _"Dark Side"_ do Primefaces. Eles não se preocupam nem um pouco com _retrocompatibilidade_. É muito comum ver na internet pessoas dizendo: "eu mudei da versão x para a x.1 e a tela parou de funcionar". 
+
+É preciso ter bastante cuidado ao mudar de versão, esse componente ainda não está confiável quanto a mudanças. Um novo comportamento interessante deles é que, antigamente ao mudar de versão, caso um parâmetro fosse eliminado de um componente, a tela apresentaria erro. Hoje em dia, diversos componentes que encontram um parâmetro que foi eliminado não dão mais a mensagem de erro. Aquele parâmetro simplesmente passa a ser ignorado.  
+  
+---  
+  
+**Esteja atento**
+
+No capítulo [20](index_split_026.html#actionActionListener) vimos quando e como utilizar action e actionListener. 
+
+É preciso estar atento ao fato de que o componente `p:commandButton` do Primefaces utiliza ajax por padrão. É normal encontrar na internet desenvolvedores reclamando que determinado método não é chamado, ou então que a navegação do método não está sendo feita. 
+
+Como vimos no capítulo [20](index_split_026.html#actionActionListener), apenas uma _action_ executa uma navegação de modo natural. É necessário desativar o ajax do commandButton para que uma _action_ se comporte normalmente. Basta definir que o a opção `ajax` seja igual a `false`.
+    
+    
+    1 <p:commandButton ajax="false" />
+      
+  
+---  
+  
+Na documentação do Primefaces (<http://primefaces.org/documentation.html>) é possível encontrar todos os estilos de todos os componentes, como cor/fonte/configuração de css, e podem ser alterados.
+
+  
+
+
+
+##  Capítulo 22:  Temas Dinâmicos com Primefaces 
+
+Uma das vantagens do Primefaces é a questão do tema. Existem diversos tipos de temas já prontos para serem utilizados e a maior vantagem é que o desenvolvedor também pode criar e utilizar.
+
+Veja com é simples fazer uso de um tema do Primefaces. Primeiro vamos utilizar o ManagedBean de sessão do usuário para saber qual o seu tema.
+    
+    
+     1 // imports omitidos
+     2 @ManagedBean
+     3 @SessionScoped
+     4 public class UsuarioMB {
+     5     private String tema;
+     6     
+     7     public String getTema() {
+     8         if(tema == null){
+     9             tema = "casablanca";
+    10         }
+    11 
+    12         return tema;
+    13     }
+    14     // outros métodos omitidos
+    15 }
+    
+
+Veja que na classe `UsuarioMB` encontra-se uma String chamada `tema` que indicará ao Primefaces qual o tema do usuário. Um detalhe interessante é que no get é feito um teste para saber se o `tema` está null ou não, seria nesse momento que, caso o `tema` estivesse `null`, se pegaria a informação do usuário logado na aplicação.
+
+Para deixar a escolha do tema habilitado para o usuário, bastaria utilizar o componente chamado `ThemeSwitcher` do próprio Primefaces.
+    
+    
+    1 <p:themeSwitcher value="#{usuarioMB.tema}">
+    2   <f:selectItems value="#{temasDisponiveis.temas}" />
+    3 </p:themeSwitcher>
+    
+    
+    
+     1 @ApplicationScoped
+     2 @ManagedBean
+     3 public class TemasDisponiveis {
+     4     private List<String> temas;
+     5 
+     6     public List<String> getTemas() {
+     7         if(temas == null){
+     8             temas = new ArrayList<String>();
+     9             temas.add("casablanca");
+    10             temas.add("cupertino");
+    11             temas.add("dark-hive");
+    12             temas.add("bluesky");
+    13             temas.add("blitzer");
+    14         }
+    15 
+    16         return temas;
+    17     }
+    18 
+    19     public void setTemas(List<String> temas) {
+    20         this.temas = temas;
+    21     }
+    22 }
+    
+
+Basta colocar o componente `ThemeSwitcher` dentro de um `h:form` que, por _Ajax_ , o Primefaces trocará toda a interface de seus componentes. Note que foi criado um ManagedBean com o escopo `ApplicationScoped` que conterá todos os temas da aplicação.
+
+E por último, será necessária uma pequena configuração no web.xml da aplicação. O código adicionado no web.xml informará ao Primefaces onde buscar o tema; em nosso caso, no ManagedBean.
+    
+    
+    1 <context-param>
+    2   <param-name>primefaces.THEME</param-name>
+    3   <param-value>#{usuarioMB.tema}</param-value>
+    4 </context-param>
+    
+
+E para o usuário trocar o tema atual por outros será bem simples. Veja nas imagens 22.1, 22.2 e 22.3.
+
+_Fig. 22.1: Tema selecionado_
+
+  
+  
+
+
+_Fig. 22.2: Escolhendo novo tema_
+
+  
+  
+
+
+_Fig. 22.3: Novo tema aplicado_
+
+  
+  
+
+
+É possível criar um evento ajax para persistir a alteração no banco de dados para o usuário. Basta adicionar a linha `<p:ajax listener="#{usuarioMB.salvarTemaNoDB}"/>` dentro do componente `ThemeSwitcher` que, via _Ajax_ , o Primefaces chamará esse método e esse valor poderá ser persistido.  
+  
+---  
+  
+**Dica**
+
+Note que o objeto `tema` da classe `UsuarioMB` é apenas uma String. Em diversos tutoriais, livros e até mesmo no showcase do Primefaces são utilizadas classes para esse valor.
+
+Neste livro foi utilizada a abordagem de String para ficar mais fácil o entendimento e aplicação.  
+  
+---  
+  
+A melhor parte dessa história é que para utilizar um desses temas basta adicionar os temas predefinidos no pom.xml ou na pasta `WEB-INF/lib`.
+    
+    
+     1 <!-- pom -->
+     2 <dependency>
+     3     <groupId>org.primefaces.themes</groupId>
+     4     <artifactId>cupertino</artifactId>
+     5     <version>${primefaces.tema}</version>
+     6     <scope>runtime</scope>
+     7 </dependency>
+     8 <dependency>
+     9     <groupId>org.primefaces.themes</groupId>
+    10     <artifactId>dark-hive</artifactId>
+    11     <version>${primefaces.tema}</version>
+    12     <scope>runtime</scope>
+    13 </dependency>
+    14 <dependency>
+    15     <groupId>org.primefaces.themes</groupId>
+    16     <artifactId>casablanca</artifactId>
+    17     <version>${primefaces.tema}</version>
+    18     <scope>runtime</scope>
+    19 </dependency>
+    20 <dependency>
+    21     <groupId>org.primefaces.themes</groupId>
+    22     <artifactId>bluesky</artifactId>
+    23     <version>${primefaces.tema}</version>
+    24     <scope>runtime</scope>
+    25 </dependency>
+    26 <dependency>
+    27     <groupId>org.primefaces.themes</groupId>
+    28     <artifactId>blitzer</artifactId>
+    29     <version>${primefaces.tema}</version>
+    30     <scope>runtime</scope>
+    31 </dependency>
+    
+
+Para criar seu próprio tema vá ao site: <http://jqueryui.com/themeroller/> . Nesse site é possível estilizar os aspectos visuais da aplicação; no manual do Primefaces é mostrado como aplicar esse tema recém-criado ao seu projeto.
+
+
+##  Capítulo 23:  Componentes do Primefaces não Aparecem 
+
+É fácil perder bons minutos procurando na internet a solução para esse problema. Às vezes temos um código todo correto, mas o infeliz do componente do Primefaces não aparece por nada.
+    
+    
+    1 <head>
+    2 </head>
+    3 <body>
+    4     <!-- exemplo.xhtml -->
+    5     <p:button value="Ola" />
+    6 </body>
+    
+
+Por mais que um código pareça correto, o Primefaces tem as suas regras para funcionar. O código do arquivo `exemplo.xhtml` mostra uma página com todos os blocos necessários da linguagem HTML. A grande pegadinha aí é que os componentes no Primefaces necessitam de `h:head` e não `head`, e de `h:body` em vez de apenas `body`. Esse pequeno detalhe faz toda diferença. 
+
+Ainda existe um porém. Às vezes, mesmo em uma página com `h:head` e `h:body` o componente não irá aparecer.
+    
+    
+    1 <h:head>
+    2 </h:head>
+    3 <h:body>
+    4     <!-- exemplo2.xhtml -->
+    5     <p:editor value="" />
+    6 </h:body>
+    
+
+Mesmo a página `exemplo2.xhtml` contendo `h:head` e `h:body` em algumas versões do Primefaces esse componente pode não aparecer. Qual seria o motivo?
+
+Diversos componentes do Primefaces necessitam estar envoltos pela tag `h:form`. No código acima bastaria colocar a tag `h:form` antes do `p:editor` e fechá-la após o `p:editor` .
+
+
+##  Capítulo 24:  Richfaces 
+
+O Richfaces é uma velha biblioteca de componentes do JSF, massivamente utilizado no JSF 1.2. Sua utilização no JSF 1.2 era ideal para cenários que necessitassem de _Ajax_.
+
+Atualmente a recém versão 4 foi lançada para voltar a concorrer com as outras bibliotecas do mercado, que hoje tem o foco no JSF 2.0. O Richfaces tem bastantes componentes desenvolvidos, e que facilitam o uso do desenvolvedor.
+
+###  24.1  DataTable com Colunas Congeladas 
+
+A função de congelar colunas é possível de ser utilizada no Excel e pode ser algo muito prático nas aplicações JSF. O Richfaces tem essa função.
+
+_Fig. 24.1: DataTable com Colunas Congeladas_
+
+  
+  
+
+
+_Fig. 24.2: DataTable com Colunas Congeladas_
+
+  
+  
+
+
+_Fig. 24.3: DataTable com Colunas Congeladas_
+
+  
+  
+
+
+As imagens 24.1, 24.2 e 24.3 mostram como esse recurso é interessante para melhorar a utilização dos usuários acostumados com essa facilidade.
+    
+    
+     1 <!-- dataTable.xhtml -->
+     2 <rich:extendedDataTable value="#{richfacesMB.cidades}"
+     3                         var="cidade"
+     4                         frozenColumns="2"
+     5                         style="height:250px; width:400px;"
+     6                         selectionMode="none">
+     7 
+     8     <f:facet name="header">
+     9         <h:outputText value="#{mensagens.cidadePlural}"/>
+    10     </f:facet>
+    11     <rich:column>
+    12         <f:facet name="header">
+    13             <h:outputText value="#{mensagens.cidadeNome}"/>
+    14         </f:facet>
+    15         <h:outputText value="#{cidade.nome}"/>
+    16     </rich:column>
+    17     <rich:column>
+    18         <f:facet name="header">
+    19             <h:outputText value="#{mensagens.cidadeEstado}"/>
+    20         </f:facet>
+    21         <h:outputText value="#{cidade.estado}"/>
+    22     </rich:column>
+    23     <rich:column>
+    24         <f:facet name="header">
+    25             <h:outputText value="#{mensagens.cidadeTotalRuas}"/>
+    26         </f:facet>
+    27         <h:outputText value="#{cidade.totalRuas}"/>
+    28     </rich:column>
+    29     <!-- outras 1000 colunas -->
+    30 </rich:extendedDataTable>
+    
+
+O DataTable, apesar de ter um funcionamento diferente, tem sua configuração bem parecida com a de qualquer outro DataTable. O que o torna diferente é a configuração `frozenColumns="2"` que determina a quantidade de colunas a serem congeladas.
+
+  
+
+
+###  24.2  Tool Tip 
+
+A ferramenta de Tool Tip é bem comum no mundo web, basta passar o mouse que uma informação sobre aquela área será exibida. A imagem 24.4 mostra como essa ferramenta funciona com o Richfaces.
+
+_Fig. 24.4: Tool Tip Normal_
+
+  
+  
+
+    
+    
+    1 <rich:panel>
+    2   #{mensagens.richfacesToolTipNomal}
+    3   <rich:tooltip>
+    4     #{mensagens.richfacesToolTipNomalTexto}
+    5   </rich:tooltip>
+    6 </rich:panel>
+    
+
+O código para exibir um `Tool Tip` precisa apenas do componente `rich:tooltip` dentro da região em que ele deve ser exibido. O Richfaces tem outras configurações possíveis para um `Tool Tip`.
+
+A imagem 24.5 mostra como seria um ToolTip com _delay_.
+
+_Fig. 24.5: Tool Tip com Delay_
+
+  
+  
+
+    
+    
+    1 <rich:panel>
+    2   <h:outputText value="#{mensagens.richfacesToolTipDelay}"/>
+    3   <rich:tooltip followMouse="false" showDelay="2000">
+    4     <h:outputText 
+    5       value="#{mensagens.richfacesToolTipDelayTexto}"/>
+    6   </rich:tooltip>
+    7 </rich:panel>
+    
+
+O _delay_ é usado para atrasar a exibição do `Tool Tip` para o usuário. Para utilizar o _delay_ basta configurar com o atributo `showDelay="2000"` que o texto do `Tool Tip` será exibido após dois segundos. O atributo `followMouse="false"` foi utilizado para informar ao RichFaces que o `Tool Tip` não deve seguir o mouse.
+
+A imagem 24.6 mostra como seria um ToolTip com um texto chamado via _Ajax_.
+
+_Fig. 24.6: Tool Tip via Ajax_
+
+  
+  
+
+    
+    
+     1 <h:form>
+     2   <rich:panel>
+     3     <h:outputText value="#{mensagens.richfacesToolTipAjax}"/>
+     4     <rich:tooltip mode="ajax">
+     5       <h:outputText 
+     6         value="#{mensagens.richfacesToolTipAjaxTexto}"/>
+     7       <h:outputText value="#{richfacesMB.contadorAjax}"/>
+     8     </rich:tooltip>
+     9   </rich:panel>
+    10 </h:form>
+    
+
+Para que uma mensagem exibida seja carregada via _Ajax_ basta utilizar o atributo `mode="ajax"`. O get/set do atributo contadorAjax são normais com a única diferença de que aumentam o contador a cada chamada.
+    
+    
+    1 public int getContadorAjax() {
+    2   return ++contadorAjax;
+    3 }
+    4 
+    5 public void setContadorAjax(int contadorAjax) {
+    6   this.contadorAjax = contadorAjax;
+    7 }
+    
+
+Uma outra opção interessante é a de exibir o `Tool Tip` apenas após o clique. E para tornar essa opção mais interessante uma chamada _Ajax_ poderia ser executada após o clique.
+
+A imagem 24.7 mostra como seria um `Tool Tip` com um clique e _Ajax_.
+
+_Fig. 24.7: Tool Tip via Ajax_
+
+  
+  
+
+    
+    
+    1 <rich:panel>
+    2   <h:outputText 
+    3     value="#{mensagens.richfacesToolTipPorClique}"/>
+    4   <rich:tooltip followMouse="false" showEvent="click" 
+    5           mode="ajax">
+    6     <h:outputText value="#{mensagens.porCliqueTexto}"/>
+    7     <h:outputText value="#{richfacesMB.contadorClique}"/>
+    8   </rich:tooltip>
+    9 </rich:panel>
+    
+
+Para definir que um ToolTip pode ser apenas exibido após o clique basta utilizar o atributo `showEvent="click"`, e um get/set no ManagedBean.
+    
+    
+    1 public int getContadorClique() {
+    2   return contadorClique++;
+    3 }
+    4 
+    5 public void setContadorClique(int contadorClique) {
+    6   this.contadorClique = contadorClique;
+    7 }
+    
+
+  
+
+
+###  24.3  Log 
+
+Uma ferramenta que pode ajudar em requisições _Ajax_ é a ferramenta `Log`. A imagem 24.8 mostra como a ferramenta `Log` trabalha.
+
+_Fig. 24.8: Log de chamadas Ajax_
+
+  
+  
+
+
+Note que são exibidas as informações relacionadas à chamada _Ajax_. É possível também realizar chamadas com outros níveis de Log (ver nível debug 24.9).
+
+_Fig. 24.9: Log de chamadas Ajax com log em Debug_
+
+  
+  
+
+
+E para utilizar esse recurso é necessário adicionar um simples componente à página: <a4j:log/>. Ele realizará todo o trabalho de colocar a chamada _Ajax_ e exibir.
+
+O código da página exibida nas imagens pode ser encontrado abaixo.
+    
+    
+     1 <h:form>
+     2   <h:inputText value="#{richfacesMB.nomeEnviado}"/>
+     3   <a4j:commandButton value="#{mensagens.enviar}" 
+     4                      render="textoEnviado"/>
+     5   <br/>
+     6   <a4j:outputPanel id="textoEnviado">
+     7     <h:outputText value="Hello #{richfacesMB.nomeEnviado}!"
+     8          rendered="#{not empty richfacesMB.nomeEnviado}"/>
+     9   </a4j:outputPanel>
+    10 </h:form>
+    11 <a4j:log/>
+    
+
+  
+
+
+###  24.4  Panel Menu 
+
+O `Panel Menu` é um componente que ajuda na organização de material, e até mesmo facilita a navegação do usuário. Veja na imagem 24.10 como ele é visualmente.
+
+_Fig. 24.10: Panel Menu_
+
+  
+  
+
+
+O interessante desse componente é que ele funciona como um agrupador de conteúdo, tem efeito Jquery ao se trocar de blocos de códigos e é possível integrar com chamadas _Ajax_.
+    
+    
+     1 <rich:panelMenu itemMode="ajax" 
+     2                 groupMode="ajax"
+     3         groupExpandedLeftIcon="triangleUp"
+     4         groupCollapsedLeftIcon="triangleDown"
+     5         topGroupExpandedRightIcon="chevronUp"
+     6         topGroupCollapsedRightIcon="chevronDown" 
+     7         itemLeftIcon="disc"
+     8          itemChangeListener=
+     9            "#{richfacesMB.atualizarGrupoSelecionado}">
+    10   
+    11   <rich:panelMenuGroup label="#{mensagens.richfacesGrupo} 1">
+    12     <rich:panelMenuItem label="Item 1.1" name="Item_1_1"/>
+    13     <rich:panelMenuItem label="Item 1.2" name="Item_1_2"/>
+    14     <rich:panelMenuItem label="Item 1.3" name="Item_1_3"/>
+    15   </rich:panelMenuGroup>
+    16   <rich:panelMenuGroup label="#{mensagens.richfacesGrupo} 2">
+    17     <rich:panelMenuItem label="Item 2.1" name="Item_2_1"/>
+    18     <rich:panelMenuItem label="Item 2.2" name="Item_2_2"/>
+    19     <rich:panelMenuItem label="Item 2.3" name="Item_2_3"/>
+    20     <rich:panelMenuGroup 
+    21       label="#{mensagens.richfacesGrupo} 2.4">
+    22       <rich:panelMenuItem label="Item 2.4.1" 
+    23         name="Item_2_4_1"/>
+    24       <rich:panelMenuItem label="Item 2.4.2" 
+    25         name="Item_2_4_2"/>
+    26       <rich:panelMenuItem label="Item 2.4.3" 
+    27         name="Item_2_4_3"/>
+    28     </rich:panelMenuGroup>
+    29     <rich:panelMenuItem label="Item 2.5" name="Item_2_5"/>
+    30   </rich:panelMenuGroup>
+    31   <rich:panelMenuGroup label="#{mensagens.richfacesGrupo} 3">
+    32     <rich:panelMenuItem label="Item 3.1" name="Item_3_1"/>
+    33     <rich:panelMenuItem label="Item 3.2" name="Item_3_2"/>
+    34     <rich:panelMenuItem label="Item 3.3" name="Item_3_3"/>
+    35   </rich:panelMenuGroup>
+    36 </rich:panelMenu>
+    
+
+Os atributos `itemMode="ajax"` e `groupMode="ajax"` são configurações relacionadas ao _Ajax_. `itemChangeListener="#{richfacesMB.atualizarGrupoSelecionado}"` indica qual método será chamado via _Ajax_ a cada mudança de item.
+
+  
+
+
+###  24.5  Repeat 
+
+Uma função interessante do Richfaces é o componente que pode repetir outros componentes. De certo modo funciona como um loop, mas com valores diferentes.
+    
+    
+     1 <a4j:repeat value="#{richfacesMB.cidadesParaRepeat}" 
+     2             var="cidade" 
+     3             rows="20">
+     4   <rich:panel>
+     5     <f:facet name="header">
+     6       <h:panelGroup>
+     7         <h:outputText value="#{cidade.nome}" />
+     8       </h:panelGroup>
+     9     </f:facet>
+    10     <h:panelGrid columns="2">
+    11       <h:outputText value="#{mensagens.cidadeEstado}" />
+    12       <h:outputText value="#{cidade.estado}" />
+    13       <h:outputText 
+    14         value="#{mensagens.cidadeTotalHabitantes}" />
+    15       <h:outputText value="#{cidade.totalDeHabitacoes}" />
+    16     </h:panelGrid>
+    17   </rich:panel>
+    18 </a4j:repeat>
+    
+
+O componente `a4j:repeat` receberá uma lista de objetos da classe `Cidade` e o atributo `rows="20"` define que serão repetidos 20 objetos por página. Veja a imagem 24.11 como esse componente é visualmente.
+
+_Fig. 24.11: Repeat_
+
+  
+  
+  
+
+
+###  24.6  Considerações Finais 
+
+Existem diversos componentes hoje que ajudam o desenvolvedor com funcionalidades e facilidades.
+
+Outra vantagem do Richfaces é que seu código do lado do servidor é considerado o mais robusto. Ele tem um excelente enfileiramento de chamadas _Ajax_ , utiliza JMS para o componente `a4j:push` e já implementa a validação através da _JSR-303_ (_Bean Validation_).
+
+Infelizmente o Richfaces tem um pequeno número de componentes, sua diversidade é baixa. Outra melhoria que poderia ser feita no Richfaces seria sua documentação que contivesse mais detalhes.
+
+  
+
+
+
+##  Capítulo 25:  Icefaces 
+
+Das bibliotecas citadas aqui, o Icefaces é o mais velho de todos, e um dos menos utilizados.
+
+Ele tem uma biblioteca com diversos componentes para ajudar tanto na parte visual como no _server-side_. Seu showcase pode ser acessado aqui: <http://icefaces-showcase.icesoft.org/showcase.jsf> .
+
+###  25.1  Menu 
+
+O Icefaces fornece um componente de `Menu` que permite chamadas _Ajax_ , além de colocar imagens de modo atrativo ao usuário.
+
+_Fig. 25.1: Menu_
+
+  
+  
+
+
+A imagem 25.1 mostra um menu que poderia ficar acessível a toda aplicação. Ele não tem apenas um tipo de ações, mas indica que pode haver tanto ações específicas (salvar, incluir etc) como navegações.
+    
+    
+     1 <ace:menu type="plain" id="exampleMenu" >
+     2   <ace:submenu label="File" id="file">
+     3     <ace:menuItem id="new"
+     4             value="New"
+     5             actionListener="#{icefacesMB.fireAction}"
+     6             icon="ui-icon">
+     7       <ace:ajax event="activate" 
+     8                 execute="@this" 
+     9                 render="message" />
+    10     </ace:menuItem>
+    11     <ace:menuItem  id="open"
+    12           value="Open"
+    13           actionListener="#{icefacesMB.fireAction}"
+    14           icon="ui-icon">
+    15       <ace:ajax event="activate" 
+    16                 execute="@this" 
+    17                 render="message" />
+    18     </ace:menuItem>
+    19     <ace:menuItem id="save"
+    20             value="Save"
+    21             actionListener="#{icefacesMB.fireAction}"
+    22             icon="ui-icon ui-icon-disk">
+    23       <ace:ajax event="activate" 
+    24                 execute="@this" 
+    25                 render="message" />
+    26     </ace:menuItem>
+    27     <ace:menuItem id="delete"
+    28             value="Delete"
+    29             actionListener="#{icefacesMB.fireAction}"
+    30             icon="ui-icon ui-icon-close">
+    31       <ace:ajax event="activate" 
+    32                 execute="@this" 
+    33                 render="message" />
+    34     </ace:menuItem>
+    35   </ace:submenu>
+    36 
+    37   <ace:submenu id="view" label="View">
+    38     <ace:menuItem id="horizontal"
+    39             value="Horizontal"
+    40             actionListener="#{icefacesMB.fireAction}"
+    41             icon="ui-icon">
+    42       <ace:ajax event="activate" 
+    43                 execute="@this" 
+    44                 render="message" />
+    45     </ace:menuItem>
+    46     <ace:menuItem id="vertical"
+    47             value="Vertical"
+    48             actionListener="#{icefacesMB.fireAction}"
+    49             icon="ui-icon">
+    50       <ace:ajax event="activate" 
+    51                 execute="@this" 
+    52                 render="message" />
+    53     </ace:menuItem>
+    54     <ace:menuItem id="fill"
+    55             value="Fill"
+    56             actionListener="#{icefacesMB.fireAction}"
+    57             icon="ui-icon">
+    58       <ace:ajax event="activate" 
+    59                 execute="@this" 
+    60                 render="message" />
+    61     </ace:menuItem>
+    62   </ace:submenu>
+    63 
+    64   <ace:submenu label="Links">
+    65     <ace:menuItem value="uaiHebert" 
+    66                   url="http://uaihebert.com" 
+    67                   target="_blank" 
+    68                   icon="ui-icon ui-icon-home"/>
+    69     <ace:menuItem value="GUJ" 
+    70                   url="http://www.guj.com.br" 
+    71                   target="_blank" 
+    72                   icon="ui-icon ui-icon-home"/>
+    73     <ace:menuItem value="Casa do Código" 
+    74                   url="http://www.casadocodigo.com.br" 
+    75                   target="_blank" 
+    76                   icon="ui-icon ui-icon-home"/>
+    77   </ace:submenu>
+    78 </ace:menu>
+    
+
+O menu é composto de dois componentes `ace:menu` e `ace:submenu`. Ambos estão envolvendo uma tag chamada `ace:ajax` que executará uma ação _Ajax_ quando cada item for selecionado.
+
+  
+
+
+###  25.2  Dialog 
+
+O Icefaces tem um Dialog que é simples de montar e suas ações são fáceis de definir.
+
+_Fig. 25.2: Dialog_
+
+  
+  
+
+
+_Fig. 25.3: Dialog_
+
+  
+  
+
+
+A imagem 25.2 e 25.3 mostra esse útil componente que, em geral, é utilizado para confirmar ações em muitas partes do sistema.
+    
+    
+     1 <h:panelGrid styleClass="centeredPanelGrid" 
+     2   id="panelGridDialog">
+     3   <h:commandButton id="save" 
+     4                    value="Save" 
+     5                    onclick="confirmation.show()" 
+     6                    type="button"/>
+     7   <h:outputText id="outcome" 
+     8                 value="#{icefacesMB.resultadoDialog}"
+     9           rendered=
+    10             "#{icefacesMB.resultadoDialog != null}"/>
+    11 </h:panelGrid>
+    12 
+    13 <h:form id="formConfirmDialog">
+    14   <ace:confirmationDialog id="confirmDialog"
+    15               widgetVar="confirmation"
+    16               message="Are you sure about this?"
+    17               header="Confirmation"
+    18               width="250"
+    19               height="100"
+    20               closable="true"
+    21               position="center">
+    22     <h:panelGrid columns="2" styleClass="centeredPanelGrid">
+    23       <h:commandButton id="yes" value="Yes" 
+    24                        onclick="confirmation.hide()"
+    25                actionListener=
+    26                  "#{icefacesMB.dialogSim}"/>
+    27       <h:commandButton id="no" value="No" 
+    28                        onclick="confirmation.hide()"
+    29                actionListener=
+    30                  "#{icefacesMB.dialogNao}"/>
+    31     </h:panelGrid>
+    32   </ace:confirmationDialog>
+    33 </h:form>
+    
+
+O componente `ace:confirmationDialog` é utilizado para exibir a confirmação.
+
+  
+
+
+###  25.3  RichText 
+
+Se necessário simular um editor de texto, o Icefaces tem uma boa opção para agradar o usuário.
+
+_Fig. 25.4: RichText_
+
+  
+  
+
+
+E para usar esse componente basta um código bastante simples.
+    
+    
+    1 <ace:richTextEntry value="#{icefacesMB.richText}"
+    2                    skin="kama" toolbar="Default"/>
+    
+
+  
+
+
+###  25.4  Data 
+
+Por diversas vezes criar um componente de data que seja agradável ao usuário é complicado. Diversos códigos de _JavaScript_ e css existem no mercado para tentar fazer uma interface bonita. O Icefaces já tem um componente bastante simples de utilizar.
+
+_Fig. 25.5: Componente de Data_
+
+  
+  
+
+    
+    
+    1 <ace:dateTimeEntry value="#{icefacesMB.data}"
+    2                    pattern="dd/MM/yyyy"
+    3                    renderAsPopup="true"/>
+    
+
+`richTextEntry` é o componente utilizado para criar um editor de texto com diversas opções de formatação. A opção `skin` habilita escolher algum tema disponível do Icefaces, e a opção `toolbar` permite escolher quais componentes estarão disponíveis para o usuário.
+
+[Resize] O _Resize_ é um componente do Icefaces que permite ao usuário alterar o tamanho do componente na tela.
+
+_Fig. 25.6: Resize_
+
+  
+  
+
+
+Na imagem 25.6 é possível ver que existe uma opção de _Resize_ com muitas opções e uma opção de um _Resize_ mais simples.
+    
+    
+     1 <h:inputTextarea value="#{mensagens.icefacesResizeEfeito}">
+     2   <ace:resizable animate="true" 
+     3            ghost="true" 
+     4            effectDuration="slow" 
+     5            minHeight="50" 
+     6            minWidth="200" 
+     7            maxHeight="250" 
+     8            maxWidth="650"/>
+     9 </h:inputTextarea>
+    10 <ace:panel header="#{mensagens.icefacesResizePanel}">
+    11   <h:outputText value="#{mensagens.icefacesResizeGradual}" />
+    12   <ace:resizable handles="all" 
+    13                  grid="20" 
+    14                  minHeight="160" 
+    15                  minWidth="300" 
+    16                  maxHeight="300" 
+    17                  maxWidth="700"/>
+    18 </ace:panel>
+    
+
+Para utilizar o `ace:resizable` basta colocá-lo dentro de outro componente. As configurações `minHeight`, `minWidth`, `maxHeight` e `maxWidth` define configurações relacionadas ao tamanho mínimo e máximo de larguras (_width_) e alturas (_height_). A configuração `animate` indica para o Icefaces que uma animação deve ser utilizada; `ghost="true"` irá exibir um "helper" semitransparente durante o _resize_ ; `effectDuration` define a velocidade do efeito a ser executado.
+
+  
+
+
+###  25.5  Considerações Finais 
+
+O Icefaces tem a vantagem de usar uma abordagem chamada Direct-2-Dom. Ele mantém uma cópia do DOM exibido na página do usuário, quando este envia uma solicitação: ao invés de responder com uma página inteira, o Icefaces enviará apenas o que foi alterado como resposta. Ele verificará a diferença entre o DOM no servidor e o DOM do usuário para enviar apenas o necessário. Com essa tecnologia o tráfego de dados é menor.
+
+O Icefaces tem uma grande quantidade de documentação e exemplos pela internet.
+
+Seu maior defeito é a quantidade de problemas abertos em seu Jira sem correção.  
+  
+---  
+  
+**Cópia Desonesta? Ou se é código livre posso copiar?**
+
+Um outro fato interessante foi que o Icefaces foi acusado de uma cópia do código fonte do Primefaces de modo desleal. <http://blog.primefaces.org/?p=1692> No blog do Primefaces foi exibido um código que foi totalmente copiado, mas não foi dado o devido crédito a quem realmente o criou. Muita coisa aconteceu depois desse dia, e hoje o Icefaces reconheceu que muito dos seus componentes foram baseados e "powered" pelo Primefaces. Isso só aconteceu depois que o criador do Primefaces fez uma reclamação.  
+  
+---  
+  
+  
+
+
+
+##  Capítulo 26:  Evite misturar as Implementações/Bibliotecas de Componentes 
+
+É muito fácil encontrar em uma Implementação ou Biblioteca de Componente algum componente que nos agrade, mas esse componente pode não existir na Implementação/Biblioteca que é utilizada na aplicação em que trabalhamos. Imagine uma aplicação que utilize Mojarra com Icefaces, mas, para um novo requisito da aplicação, um componente existente no Richfaces seria perfeito.
+
+O problema é que cada Implementação/Biblioteca tem suas peculiaridades e suas próprias rotinas para funcionar. Por exemplo, o Primefaces criou seu processador de _Ajax_ através da tag `p:ajax`.
+
+É possível encontrar na internet diversos relatos de problemas relacionados ao misturar o componente `rich:calendar` com `p:toolTip`. O Richfaces tem seu modo próprio de trabalhar, assim como o próprio Primefaces. É necessário entender que cada Implementação/Biblioteca, apesar de ter sua base no JSF, não tem compatibilidade garantida com as outras.  
+  
+---  
+  
+**Aviso do JBoss**
+
+Ao executar uma aplicação no JBoss com o MyFaces a seguinte mensagem é exibida: _"WARN [JBossJSFConfigureListener] MyFaces JSF implementation found! This version of JBoss AS ships with the java.net implementation of JSF. There are known issues when mixing JSF implementations. This warning does not apply to MyFaces component libraries such as Tomahawk. However, myfaces-impl.jar and myfaces-api.jar should not be used without disabling the built-in JSF implementation. See the JBoss wiki for more details "_ Note que o próprio JBoss avisa que o ideal seria apenas utilizar uma implementação, a que ele fornece.  
+  
+---
+
+
+##  Capítulo 27:  Não faça paginação no lado do servidor   
+  
+Uma das grandes dificuldades do JSF é sobre como fazer paginação por demanda. Quando utilizamos o `h:datatable` é possível ver que não existe opção nativa de paginação, veja a imagem 27.1.
+
+_Fig. 27.1: Datatable do JSF_
+
+  
+  
+
+
+Essa tabela conseguimos com o seguinte código:
+    
+    
+     1 <!-- dataTable nativo do JSF --> 
+     2 <h:dataTable value="#{cidadesPaginadas.cidades}" 
+     3              var="cidade"> 
+     4     <h:column> 
+     5         <f:facet name="header"> 
+     6             #{mensagens.cidadeId} 
+     7         </f:facet> 
+     8         <h:outputText value="#{cidade.id}" /> 
+     9     </h:column> 
+    10     <h:column> 
+    11         <f:facet name="header"> 
+    12             #{mensagens.cidadeNome} 
+    13         </f:facet> 
+    14         <h:outputText value="#{cidade.nome}" /> 
+    15     </h:column> 
+    16     <h:column> 
+    17         <f:facet name="header"> 
+    18             #{mensagens.cidadeEstado} 
+    19         </f:facet> 
+    20         <h:outputText value="#{cidade.estado}" /> 
+    21     </h:column> 
+    22 </h:dataTable>
+    
+
+Infelizmente o `dataTable` do JSF não é dos mais bonitos e nem práticos. Se você colocar uma coleção de 100000 itens para o `dataTable`, todos os itens serão exibidos. Dessa forma, além de você manter no mínimo 100000 objetos na memória, a renderização da tela demorará muito, pois a quantidade de informação que deverá ser mostrada é muito grande. Indo mais além, é ruim também para o usuário, já que a usabilidade ficará prejudicada. Como encontrar uma informação numa lista com outras 100000? É como encontrar uma agulha no palheiro.
+
+Existem diversas formas de fazer uma paginação dos dados em um `dataTable`, porém, vamos precisar da ajuda do Primefaces, que já possui toda a infra-estrutura necessária para facilitar nossa tarefa. 
+
+Veja na imagem 27.2 como fica um `DataTable` paginado pelo Primefaces.
+
+_Fig. 27.2: Datatable do Primefaces_
+
+  
+  
+
+    
+    
+     1 <!-- paginação nativa do primefaces --> 
+     2 <p:dataTable value="#{cidadesPaginadas.cidades}" 
+     3     var="cidade"  
+     4     paginator="true" 
+     5     rows="10" 
+     6     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} 
+     7                        {PreviousPageLink} {PageLinks} 
+     8                        {NextPageLink} {LastPageLink} 
+     9                        {RowsPerPageDropdown}" 
+    10                      rowsPerPageTemplate="5,10,15" 
+    11  style="width: 40%"> 
+    12     <p:column> 
+    13         <f:facet name="header"> 
+    14             #{mensagens.cidadeId} 
+    15         </f:facet> 
+    16         <h:outputText value="#{cidade.id}" /> 
+    17     </p:column> 
+    18     <p:column> 
+    19         <f:facet name="header"> 
+    20             #{mensagens.cidadeNome} 
+    21         </f:facet> 
+    22         <h:outputText value="#{cidade.nome}" /> 
+    23     </p:column> 
+    24     <p:column> 
+    25         <f:facet name="header"> 
+    26             #{mensagens.cidadeEstado} 
+    27         </f:facet> 
+    28         <h:outputText value="#{cidade.estado}" /> 
+    29     </p:column> 
+    30 </p:dataTable>
+    
+
+O próprio Primefaces cuida de nos oferecer de antemão um layout agradável para o `dataTable`. Note que o código é bem parecido com um `dataTable` nativo do JSF, e adicionamos poucas configurações do Primefaces relacionadas à paginação. 
+
+Ao utilizar a Paginação nativa do Primefaces, toda a lista é alocada na sessão do usuário. Caso uma consulta retornasse muitos objetos, facilmente poderia estourar a memória do servidor. Temos nesse momento uma paginação que acontece apenas no lado do cliente. Ela melhora a usabilidade da aplicação, mas ainda onera o uso do servidor, mantendo objetos demais e possivelmente desnecessários na memória. 
+
+Para evitar isso, pode-se usar a técnica chamada "paginação por demanda" (_Lazy Pagination_). É uma técnica bem simples que trabalha em cima da seguinte filosofia: "qual a razão de carregar objetos que o usuário pode nem chegar a ver?". 
+
+O princípio da paginação por demanda é simples: a cada clique para ir à próxima página do `dataTable`, uma nova consulta será feita no banco de dados buscando novos valores para exibir. A vantagem dessa técnica é que ao invés de trazer os 100000 registros de uma só vez, virá do banco de dados apenas o que será exibido ao usuário.
+
+Veja na imagem 27.3 e 27.4 como ficará o `DataTable` com Paginação por Demanda.
+
+_Fig. 27.3: Datatable do Primefaces com LazyLoad_
+
+  
+  
+
+
+_Fig. 27.4: Datatable do Primefaces com LazyLoad_
+
+  
+  
+
+    
+    
+     1 <!-- paginação por demanda --> 
+     2 <h:form>
+     3   <p:dataTable value="#{cidadesPaginadasMB.cidadesLazy}"
+     4      var="cidade" paginator="true" rows="10"
+     5      paginatorTemplate="{CurrentPageReport} {FirstPageLink}
+     6           {PreviousPageLink} {PageLinks}
+     7           {NextPageLink} {LastPageLink}
+     8           {RowsPerPageDropdown}"
+     9      rowsPerPageTemplate="5,10,15"
+    10      style="width: 40%"
+    11      lazy="true">
+    12     <p:column sortBy="#{cidade.id}">
+    13       <f:facet name="header">
+    14         #{mensagens.cidadeId}
+    15       </f:facet>
+    16       <h:outputText value="#{cidade.id}"/>
+    17     </p:column>
+    18     <p:column sortBy="#{cidade.nome}" 
+    19           filterBy="#{cidade.nome}">
+    20       <f:facet name="header">
+    21         #{mensagens.cidadeNome}
+    22       </f:facet>
+    23       <h:outputText value="#{cidade.nome}"/>
+    24     </p:column>
+    25     <p:column sortBy="#{cidade.estado}" 
+    26           filterBy="#{cidade.estado}">
+    27       <f:facet name="header">
+    28         #{mensagens.cidadeEstado}
+    29       </f:facet>
+    30       <h:outputText value="#{cidade.estado}"/>
+    31     </p:column>
+    32   </p:dataTable>
+    33 </h:form>
+    
+
+Veja que o código da página é quase o mesmo, com um detalhe muito importante. Precisamos informar que a paginação será feita de forma `lazy`, através do atributo `lazy="true"`. Foram adicionadas no componente `p:column` os atributos `sortBy` para habilitar a ordenação e `filterBy` para indicar o filtro. Toda coluna que utilizar o `sortBy` enviará esse valor na hora em que for alterado. Esse parâmetro funciona do modo Lazy e do modo normal. `filterBy` fará o filtro do campo assim que seu valor for alterado. Essa opção também funciona tanto com Filtro Lazy como do modo normal.
+
+Uma outra diferença está no atributo `value`. Agora indicamos o valor `#{cidadesPaginadas.cidadesLazy}`. Precisamos de algumas mudanças no nosso ManagedBean. Quem é esse `cidadesLazy`?
+    
+    
+     1 @ManagedBean
+     2 @ViewScoped
+     3 public class CidadesPaginadasMB implements Serializable {
+     4     private List<Cidade> cidades;
+     5 
+     6     private LazyDataModel<Cidade> cidadesLazy;
+     7 
+     8     public List<Cidade> getCidades() {
+     9         if(cidades == null){
+    10             CidadeDAO cidadeDAO = 
+    11                 AbstractManagedBean.getCidadeDAO();
+    12             cidades = cidadeDAO.listAll();
+    13         }
+    14 
+    15         return cidades;
+    16     }
+    17 
+    18     public void setCidades(List<Cidade> cidades) {
+    19         this.cidades = cidades;
+    20     }
+    21 
+    22     public LazyDataModel<Cidade> getCidadesLazy() {
+    23         if(cidadesLazy == null){
+    24             cidadesLazy = new CidadeLazyList();
+    25         }
+    26 
+    27         return cidadesLazy;
+    28     }
+    29 
+    30     public void 
+    31         setCidadesLazy(LazyDataModel<Cidade> cidadesLazy) {
+    32         this.cidadesLazy = cidadesLazy;
+    33     }
+    34 }
+    
+
+Veja que o código da classe `CidadesPaginadasMB` sofreu algumas alterações. Agora `cidadesLazy` é apenas um atributo de uma classe abstrata chamada LazyDataModel. `cidadesLazy` tem apenas um _new_ em seu `get`, o que indica que todo o funcionamento da paginação por demanda foi delegado para a classe `CidadesLazyList`.
+    
+    
+     1 public class CidadeLazyList extends LazyDataModel<Cidade> {
+     2 
+     3     private List<Cidade> cidades;
+     4 
+     5 
+     6     @Override
+     7     public List<Cidade> load(int posicaoPrimeiraLinha,
+     8                              int maximoPorPagina,
+     9                              String ordernarPeloCampo,
+    10                              SortOrder ordernarAscOuDesc,
+    11                              Map<String, String> filtros) {
+    12 
+    13         String ordenacao = ordernarAscOuDesc.toString();
+    14 
+    15         if(SortOrder.UNSORTED.equals(ordernarAscOuDesc)){
+    16             ordenacao = SortOrder.ASCENDING.toString();
+    17         }
+    18 
+    19         cidades = 
+    20             getDAO().buscaPorPaginacao(posicaoPrimeiraLinha,
+    21                                          maximoPorPagina,
+    22                                          ordernarPeloCampo,
+    23                                          ordenacao, filtros);
+    24 
+    25         // total encontrado no banco de dados, 
+    26         // caso o filtro esteja preenchido dispara a consulta 
+    27         // novamente
+    28         if (getRowCount() <= 0 || 
+    29            (filtros != null && !filtros.isEmpty())) {
+    30             setRowCount(getDAO().countAll(filtros));
+    31         }
+    32 
+    33         // quantidade a ser exibida em cada página
+    34         setPageSize(maximoPorPagina);
+    35 
+    36         return cidades;
+    37     }
+    38 
+    39     private CidadeDAO getDAO() {
+    40         return AbstractManagedBean.getCidadeDAO();
+    41     }
+    42 
+    43     @Override
+    44     public Cidade getRowData(String rowKey) {
+    45         for (Cidade cidade : cidades) {
+    46             if (rowKey.equals(String.valueOf(cidade.getId())))
+    47                 return cidade;
+    48         }
+    49 
+    50         return null;
+    51     }
+    52 
+    53     @Override
+    54     public Object getRowKey(Cidade cidade) {
+    55         return cidade.getId();
+    56     }
+    57 
+    58     @Override
+    59     public void setRowIndex(int rowIndex) {
+    60         // solução para evitar ArithmeticException
+    61         if (rowIndex == -1 || getPageSize() == 0) {
+    62             super.setRowIndex(-1);
+    63         }
+    64         else
+    65             super.setRowIndex(rowIndex % getPageSize());
+    66     }
+    67 }
+    
+
+A classe `CidadeLazyList` apresenta diversos métodos e configurações, que veremos uma a uma. O método `public List<Cidade> load` recebe como atributo todos os parâmetros necessários para se fazer uma consulta. 
+
+`int posicaoPrimeiraLinha` indica de qual linha do banco de dados a pesquisa deverá iniciar. Dessa forma, caso seu valor seja 10, a pesquisa iniciará a partir do décimo registro que a consulta devolver do banco de dados. 
+
+`int maximoPorPagina` indica a quantidade a ser exibida em cada página. Caso esse valor esteja definido como 20, a cada query disparada no banco de dados apenas 20 resultados deverão ser utilizados. 
+
+`String ordernarPeloCampo` indica em qual campo será ordenada a pesquisa. 
+
+`SortOrder ordernarAscOuDesc` é um Enum do próprio Primefaces que demonstra se é para ordenar ASCENDING (crescente), DESCENDING (decrescente) ou se é UNSORTED (sem ordenação).
+    
+    
+    1 String ordenacao = ordernarAscOuDesc.toString();
+    2 
+    3 if(SortOrder.UNSORTED.equals(ordernarAscOuDesc)) {
+    4     ordenacao = SortOrder.ASCENDING.toString();
+    5 }
+    
+    
+    
+    1 cidades = getDAO().buscaPorPaginacao(posicaoPrimeiraLinha,
+    2                                      maximoPorPagina,
+    3                                      ordernarPeloCampo,
+    4                                      ordenacao, filtros);
+    
+
+O DAO realizará a pesquisa no banco de dados e trará toda a informação necessária. Mais adiante veremos o DAO.
+    
+    
+    1 // total encontrado no banco de dados, 
+    2 // caso o filtro esteja preenchido dispara a consulta novamente
+    3 if (getRowCount() <= 0 || 
+    4    (filtros != null && !filtros.isEmpty())) {
+    5   setRowCount(getDAO().countAll(filtros));
+    6 }
+    
+
+Informa ao `DataTable` a quantidade de registros no banco de dados no total. Caso o filtro seja alterado, a consulta deve ser refeita. Caso o filtro não seja alterado, a consulta será disparada apenas uma vez.
+    
+    
+    1 // quantidade a ser exibida em cada página
+    2 setPageSize(maximoPorPagina);
+    
+
+Informa ao `DataTable` a quantidade de registros a ser exibido por página.
+    
+    
+     1 @Override
+     2 public Cidade getRowData(String rowKey) {
+     3     for (Cidade cidade : cidades) {
+     4         if (rowKey.equals(String.valueOf(cidade.getId())))
+     5             return cidade;
+     6     }
+     7 
+     8     return null;
+     9 }
+    10 
+    11 @Override
+    12 public Object getRowKey(Cidade cidade) {
+    13     return cidade.getId();
+    14 }
+    15 
+    16 @Override
+    17 public void setRowIndex(int rowIndex) {
+    18     // solução para evitar ArithmeticException
+    19     if (rowIndex == -1 || getPageSize() == 0) {
+    20         super.setRowIndex(-1);
+    21     }
+    22     else
+    23         super.setRowIndex(rowIndex % getPageSize());
+    24 }
+    
+
+Os métodos `setRowIndex`, `getRowKey` e `getRowData` são utilizados quando alguma linha do `DataTable` é selecionada. Caso um `DataTable` seja utilizado sem paginação por demanda, esses métodos não são necessários. Eles apenas indicam qual a linha selecionada, o objeto que se encontra na linha e qual o ID do objeto da linha determinada.
+
+É interessante notar que a classe `CidadeLazyList` estende da classe `org.primefaces.model.LazyDataModel`, e por consequência, acaba herdando diversos métodos que já estão implementados. É uma prática comum: um dos seus mais famosos exemplos é quando se cria um Servlet e a classe estendida é a HttpServlet.
+
+Nos métodos do DAO, é sempre importante usar os recursos do seu banco de dados para buscar apenas as informações que deverão ser exibidas. No MySQL, por exemplo, é possível usar a instrução `limit`, que devolverá apenas uma determinada faixa de resultados.
+
+
+# Parte 5 - Funcionalidades ricas com JSF, segurança e otimização do JSF
+
+O JSF por si só nos traz alguns recursos que permitem enriquecer as aplicações que desenvolvemos. Vimos que as bibliotecas de componentes potencializam ainda mais a criação de funcionalidades avançadas. Mas será que sempre precisamos delas? E quando precisarmos, como podemos implementá-las?
+
+
+##  Capítulo 28:  Facilitando o uso do Ajax 
+
+O _Ajax_ é uma técnica que, entre outras coisas, permite atualizar parte de uma tela sem precisar recarregar toda a tela para o usuário. Apesar de poder ser considerado relativamente simples de se implementar, é importante manter alguns cuidados para que não se caia em algumas armadilhas, tanto do ponto de vista da usabilidade, quanto do desenvolvimento. 
+
+Nada melhor do que um exemplo clássico de Ajax, que pode ser visto nas imagens 28.1, 28.2 e 28.3:
+
+_Fig. 28.5: Utilizando Ajax para selectOne_
+
+  
+  
+
+
+_Fig. 28.6: Utilizando Ajax para selectOne_
+
+  
+  
+
+
+_Fig. 28.7: Utilizando Ajax para selectOne_
+
+  
+  
+
+
+Note que é necessário selecionar um Estado, para depois selecionar uma cidade e finalmente um bairro. Mas carregar todos esses objetos em memória pode ser um problema dependendo da quantidade de objetos retornados. Salvar todas opções escondidas na tela e utilizar JavaScript é outra opção, mas caso a quantidade de registros seja muito grande, o usuário levará mais tempo para carregar os valores.
+
+A solução mais prática é utilizar _Ajax_ , que felizmente já vem nativo no JSF 2.0. No JSF 1.x era necessário recorrer a alguma biblioteca de componentes para conseguir usar requisições assíncronas, enquanto que a partir do JSF 2, basta utilizar a tag `f:ajax`.
+    
+    
+     1 <h:form>
+     2   <h:panelGrid columns="3">
+     3     <h:outputText value=
+     4       "#{mensagens.ajaxSelecioneEstado}: "/>
+     5     <h:outputText 
+     6       value="#{mensagens.ajaxSelecioneCidade}: "/>
+     7     <h:outputText 
+     8       value="#{mensagens.ajaxBairro}: " />
+     9     <h:selectOneMenu value="#{ajaxMB.estadoSelecionado}">
+    10       <f:selectItem itemLabel="#{mensagens.ajaxSelecione}" 
+    11                     itemValue=""/>
+    12       <f:selectItems value="#{ajaxMB.estados}"/>
+    13       <f:ajax execute="@this" 
+    14               render="selectCidade selectBairro" 
+    15               listener="#{ajaxMB.alterarEstado}" />
+    16     </h:selectOneMenu>
+    17     <h:selectOneMenu id="selectCidade" 
+    18                      value="#{ajaxMB.cidadeSelecionada}">
+    19       <f:selectItem itemLabel="#{mensagens.ajaxSelecione}"
+    20                     itemValue=""/>
+    21       <f:selectItems value="#{ajaxMB.cidades}"/>
+    22       <f:ajax execute="@this" 
+    23               render="selectBairro" 
+    24               listener="#{ajaxMB.alterarCidade}" />
+    25     </h:selectOneMenu>
+    26     <h:selectOneMenu id="selectBairro" 
+    27                      value="#{ajaxMB.bairroSelecionado}">
+    28       <f:selectItem itemLabel="#{mensagens.ajaxSelecione}"
+    29                     itemValue=""/>
+    30       <f:selectItems value="#{ajaxMB.bairros}"/>
+    31     </h:selectOneMenu>
+    32   </h:panelGrid>
+    33 </h:form>
+    
+
+O componente `f:ajax` é responsável por executar a chamada assíncrona. Toda vez que o `selectOne` for alterado, ele irá enviar o valor definido em `execute="@this"`, nesse caso o `@this` significa o componente atual e que nesse caso é o `selectOne` que está envolvendo o `f:ajax`. 
+
+O atributo `render` indica quais componentes serão atualizados quando a resposta da requisição assíncrona for devolvida. No `selectOne` do Estado, indicamos `selectCidade selectBairro` como tendo que sofrer atualização. Ou seja, quando o Estado for selecionado, os campos de cidade e de bairro serão recarregados, para mostrar as informações condizentes com a escolha do usuário. A imagem 28.4 mostra como funciona uma requisição _Ajax_.
+
+_Fig. 28.8: Requisição Ajax_
+
+  
+  
+
+
+O ManagedBean apenas recebe o valor selecionado em um `selectOne` para decidir qual o valor a ser exibido no próximo.
+
+###  28.1  Sempre indique que a requisição está acontecendo 
+
+Devido ao fato de a requisição Ajax ser feita de forma assíncrona, em alguns momentos pode não haver a certeza de que algo está acontecendo ou sendo processado e com isso, o usuário da aplicação pode ter uma reação que não seja a adequada, e por exemplo, realizar repetidas vezes a ação, até que algo aconteça, dessa forma, enfileirando várias requisições.
+
+Uma boa prática é sempre indicar que uma ação está sendo executada, seja através de uma imagem ou uma animação.
+
+Uma solução interessante é apresentada pelo Primefaces (também presente em outras bibliotecas): o componente chamado `p:ajaxStatus`.
+    
+    
+    1 <p:ajaxStatus onstart="statusDialog.show();" 
+    2               onsuccess="statusDialog.hide();"/>
+    3 
+    4 <p:dialog modal="true" widgetVar="statusDialog" header="Status"
+    5           draggable="false" closable="false">
+    6     <p:graphicImage library="gifs" name="ajaxloadingbar.gif" />
+    7 </p:dialog>
+    
+
+O componente `p:ajaxStatus` automaticamente detectará que uma chamada _Ajax_ foi iniciada e exibirá um dialog para o usuário. Ao final do processamento _Ajax_ o componente fechará o dialog automaticamente, como demonstrado na imagem a seguir.
+
+_Fig. 28.1: Feedback de ação iniciada_
+
+  
+  
+  
+
+
+###  28.2  Dê mensagens de feedback para o usuário 
+
+Sempre dê o feedback do que está acontecendo para o usuário. Uma forma alternativa à imagem é usar simples mensagens que indiquem ao usuário o que está acontecendo. Toda vez que uma ação é executada, o usuário naturalmente espera por um resultado, mas como ele vai saber se algo aconteceu e o quê, sem que nenhuma mensagem indique para ele? O componente Growl explicado no capítulo sobre Primefaces [21](index_split_028.html#Primefaces) mostra como ele funciona.
+
+  
+
+
+###  28.3  Previna-se das várias ações do usuário em requisições assíncronas 
+
+Caso a ação disparada demore mais do que o esperado para finalizar e o usuário dependa do resultado dessa execução para continuar alguma ação, podemos mostrar para ele uma mensagem indicando a demora do processamento.
+
+Na maioria das vezes, é necessário desabilitar o botão, pois o usuário incansavelmente apertará o mesmo botão milhares de vezes. Para fazer isso teremos que usar um pequeno código jQuery.
+    
+    
+     1 <h:form>
+     2   <h:commandButton value="#{mensagens.ajaxBotaoTravado}">
+     3     <f:ajax execute="@form"
+     4         render="@form"
+     5         listener="#{ajaxMB.chamadaAjax}"
+     6         onevent="desabilitarBotao" />
+     7   </h:commandButton>
+     8 </h:form>
+     9 <script type="text/javascript">
+    10   function desabilitarBotao(evento) {
+    11     var botao = evento.source;
+    12     var statusAjax = evento.status;
+    13 
+    14     switch (statusAjax) {
+    15       case "begin":
+    16         botao.disabled = true;
+    17         break;
+    18 
+    19       case "complete":
+    20         break;
+    21 
+    22       case "success":
+    23         botao.disabled = false;
+    24         break;
+    25     }
+    26   }
+    27 </script>
+    
+
+Através da função `desabilitarBotao` o botão será desabilitado ao iniciar a chamada ajax, e ao final da chamada será habilitado novamente. As imagens a seguir mostram como ficará esse botão.
+
+_Fig. 28.2: Desabilitando botão_
+
+  
+  
+
+
+_Fig. 28.3: Desabilitando botão_
+
+  
+  
+  
+
+
+###  28.4  Cuidado ao usar ManagedBeans RequestScoped com Ajax 
+
+Quando usamos requisições _Ajax_ , precisamos tomar alguns cuidados com os ManagedBeans `RequestScoped`. Veja o exemplo da imagem 28.2, onde temos um cenário clássico de uso de requisições assíncronas.
+
+_Fig. 28.4: Utilizando Ajax para selectOne_
+
+  
+  
+
+
+Na imagem 28.2 é possível ver um exemplo no qual quando cada `selectOne` for atualizado, um outro `selectOne` será populado.
+
+Note que uma chamada _Ajax_ a um ManagedBean do tipo RequestScoped sempre precisa enviar os dados necessários para o processamento, já que o ManagedBean não guardará as informações entre as diferentes requisições. Nesse caso, seria necessário enviar o `Estado` selecionado para habilitar o `selectOne` de Cidades. Ao escolher uma `Cidade` seria necessário enviar novamente `Estado` e `Cidade` para poder calcular os valores do `selectOne` de Bairros.
+
+Note que, com escopo de _request_ , poderá funcionar sem problemas, mas a desvantagem é esse trabalho de enviar todos os valores necessários a cada chamada. Poderíamos evitar essa necessidade através de um bean `ViewScoped` ou `ConversationScoped`.
+
+  
+
+
+
+##  Capítulo 29:  Internacionalização e Localização da sua aplicação 
+
+Muitas vezes, desenvolvemos aplicações que serão utilizadas por pessoas de vários lugares do mundo, com diversas características culturais, sendo uma das mais marcantes o idioma. Dessa maneira, o ideal é que nossa aplicação se adapte às diferentes necessidades de locais distintos. Para isso, precisamos que haja algum tipo de suporte do framework para adaptarmos a aplicação a essas necessidades. Isso é o que chamamos de **internacionalização**.
+
+O JSF provê internacionalização para nós através de simples configurações e arquivos `.properties`, que conterão todas as mensagens do sistema. A tradução das diversas mensagens para diferentes idiomas, adaptação de sinais monetários, abreviações e vários outros recursos são conhecidos como **localização**.
+
+Para começarmos a adaptar a aplicação, vamos colocar os arquivos com as mensagens. A imagem 29.1 mostra como ficaria o arquivo utilizando a _IDE Eclipse_.
+
+_Fig. 29.3: Arquivos com mensagens do sistema no Eclipse_
+
+  
+  
+
+
+Dentro desses arquivos podemos ter as mensagens, junto de suas respectivas chaves identificadoras:
+    
+    
+    1 # arquivo bundle_pt.properties
+    2 bemVindo=Seja Bem Vindo
+    3 index=Pagina Principal
+    4 
+    5 
+    6 # arquivo bundle_en.properties
+    7 bemVindo=You are welcome
+    8 index=Welcome Page
+    
+
+O próximo passo é configurar a existência dos arquivos da internacionalização para o JSF. Podemos fazer isso através do `faces-config.xml`, no qual adicionamos a tag `locale-config` para indicar qual será o idioma padrão, que em nosso caso será `pt`, indicando o português. Definimos também o nome arquivo com os idiomas, que chamamos de `bundle`. Com isso, teremos para cada idioma um arquivo `bundle_xx.properties`, onde podemos substituir `xx` pelo código do idioma.
+
+Vamos definir também uma variável chamada `mensagens`, que é configurada também no arquivo `faces-config.xml`.
+    
+    
+    1 <application>
+    2   <locale-config>
+    3     <default-locale>pt</default-locale>
+    4   </locale-config>
+    5   <resource-bundle>
+    6     <base-name>bundle</base-name>
+    7     <var>mensagens</var>
+    8   </resource-bundle>
+    9 </application>
+    
+
+É possível especificar ainda melhor qual a linguagem do arquivo se seu nome for `bundle_pt_BR` e o mesmo pode ser aplicado para as outras linguagens. Nesse caso, estamos indicando a variação do português a ser usado, no caso, o do Brasil.
+
+Outro comportamento importante de se prestar atenção é que, caso o usuário esteja em uma linguagem que não definida no sistema, o JSF escolherá a linguagem padrão, definida na tag `default-locale`.
+
+###  29.1  Permita que o usuário mude o idioma 
+
+Sempre que o usuário acessar a aplicação, um idioma será escolhido para que o conteúdo seja mostrado. Não necessariamente a língua padrão será a que o usuário gostaria. Por isso, precisamos permitir que ele escolha a que preferir.
+
+Com pequenos ajustes na aplicação, é possível fazer com que a linguagem seja escolhida pelo usuário. Primeiro, é necessário criar uma opção para usuário selecionar qual o idioma desejado. Podemos fazer através de um `selectOneMenu` ou então, disponibilizando bandeirinhas das línguas disponíveis, que, quando clicadas, muda para o idioma adequado.
+    
+    
+     1 <h:outputText value="#{mensagens.internacionalizacaoTexto}:" />
+     2 <h:form>
+     3   <h:selectOneMenu value="#{usuarioMB.linguaEscolhida}">
+     4     <f:selectItem itemValue="pt" 
+     5         itemLabel="#{mensagens.internacionalizacaoPT}"/>
+     6     <f:selectItem itemValue="en" 
+     7         itemLabel="#{mensagens.internacionalizacaoEN}"/>
+     8   </h:selectOneMenu> 
+     9   <h:commandButton action="#{usuarioMB.alterarIdioma}" 
+    10          value="#{mensagens.internacionalizacaoTrocar}" />
+    11 </h:form>
+    
+
+É possível notar que o `selectOneMenu` aponta para um ManagedBean que define qual a linguagem a ser selecionada. E existe uma `action`, chamada `alterarIdioma`, que fará todo o trabalho para nós.
+    
+    
+     1 @ManagedBean
+     2 @SessionScoped
+     3 public class UsuarioMB implements Serializable {
+     4   private String linguaEscolhida = "pt";
+     5   private Locale locale;
+     6 
+     7   public String alterarIdioma() {
+     8     locale = new Locale(linguaEscolhida);
+     9     FacesContext instance = 
+    10       FacesContext.getCurrentInstance();
+    11     instance.getViewRoot().setLocale(locale);
+    12     return null;
+    13   }
+    14 
+    15   public Locale getLocale() {
+    16     if(locale == null){
+    17       locale = new Locale(linguaEscolhida);
+    18     }
+    19     
+    20     return locale;
+    21   }
+    22 
+    23   // getters e setters necessários
+    24 }
+    
+
+Note que o ManagedBean `UsuarioMB` tem os atributos para informar qual o `Locale` atual e uma String que contém uma língua padrão e que é utilizada no `selectOne`. Dentro do método `alterarIdioma`, a chamada para o método `setLocale` é feita, passando como parâmetro o idioma `Locale` que o usuário escolheu.
+
+Uma outra opção é envolver um pedaço de um texto por uma linguagem qualquer. Caso em um ponto específico da página seja necessário ter outra língua, basta utilizar o atributo `locale` do componente `f:view`.
+    
+    
+    1 <f:view locale="#{usuarioMB.locale}">
+    2    <!-- códigos do sistema aqui-->
+    3 </f:view>
+      
+  
+---  
+  
+**Boa Prática**
+
+Tenha em mente que colocar todo o texto da sua aplicação em arquivos é uma boa prática mesmo que tenha apenas um idioma.
+
+Pode-se considerar a internacionalização como boa prática pelos seguintes fatos:
+
+  * Facilita a alteração de textos. Caso seja necessário trocar a palavra de Carro para Automóvel, todos os textos se encontram em um arquivo apenas. Não será necessário entrar em cada página do sistema.
+  * Caso após um deploy se perceba que existe uma mensagem errada, bastaria alterar o arquivo de propriedades. Não seria necessário editar as páginas do sistema.
+  * Se fosse necessário criar uma nova linguagem para o sistema, bastaria traduzir o arquivo. Não seria necessária alteração em todas as páginas.
+
+  
+---  
+  
+Para finalizar esse assunto, é possível sobrescrever as mensagens default do JSF. Caso um campo esteja marcado como `required=true` uma mensagem em inglês aparecerá: _ValidationError: Value is required_. Para um sistema em português, essa mensagem pode ser bastante desconfortável para o usuário.
+
+Para alterar as mensagens padrões do JSF, basta adicionar a seguinte configuração ao `faces-config.xml`: `<message-bundle>bundle</message-bundle>`. Com essa configuração o JSF procurará no arquivo de bundle pelas chaves utilizadas pelo JSF.
+    
+    
+     1 <application>
+     2 <locale-config>
+     3     <default-locale>pt</default-locale>
+     4 </locale-config>
+     5    <resource-bundle>
+     6        <base-name>bundle</base-name>
+     7        <var>mensagens</var>
+     8    </resource-bundle>
+     9    <!-- configuração adicionada -->
+    10    <message-bundle>bundle</message-bundle>
+    11 </application>
+    
+    
+    
+    1 # bundle_pt.properties
+    2 javax.faces.component.UIInput.REQUIRED=
+    3                 Campo necessário não preenchido
+    
+    
+    
+    1 # bundle_en.properties
+    2 javax.faces.component.UIInput.REQUIRED=A required field is Empty
+    
+
+Basta adicionar a linha com a chave de campo obrigatória ao arquivo de mensagens, no projeto do livro chamado de bundle, e pronto. O JSF identificará qual a língua do usuário e procurará no respectivo arquivo de mensagens.
+
+Veja nas imagens 29.2 e 29.3 como ficará essa troca dinâmica da língua do sistema.
+
+_Fig. 29.1: Mensagens em Português_
+
+  
+  
+
+
+_Fig. 29.2: Mensagens em Inglês_
+
+  
+  
+
+
+No projeto do livro algumas chaves foram traduzidas, por isso que, mesmo alterando para inglês, nem todas as palavras serão traduzidas.
+
+Para utilizar os valores descritos no arquivo de propriedades basta utilizar #{mensagens.bemVindo}. O JSF irá escolher qual língua utilizar de acordo com as configurações e o idioma do usuário.
+
+  
+
+
+
+##  Capítulo 30:  Utilizando recursos dentro de um Converter 
+
+Criar conversores é uma tarefa bastante recorrente em projetos JSF. No entanto, uma grande dificuldade é que até a versão 2.1 do JSF não era possível trabalhar com injeção de dependências dentro desses componentes. Dessa forma, tendemos a ter códigos complexos e de difícil manutenção dentro do Bean. Mas como podemos fazer pra mantermos nosso código limpo e elegante dentro dos conversores?
+
+###  30.1  Acesse um ManagedBean programaticamente através de Expression Language 
+
+Sempre que precisamos, nas páginas `xhtml`, temos acesso a diversos recursos através das _Expression Languages_. Seria interessante se de alguma maneira também tivéssemos como acessá-los dentro dos conversores. E se houvesse uma possibilidade de usarmos a _Expression Language_ de dentro do conversor?
+    
+    
+     1 @FacesConverter(value = "bairroConverter")
+     2 public class BairroConverter implements Converter {
+     3 
+     4   @Override
+     5   public Object getAsObject(FacesContext fc, UIComponent uic, 
+     6                         String key) {
+     7     FacesContext context = 
+     8       FacesContext.getCurrentInstance();
+     9     ELContext elContext = context.getELContext();
+    10     ELResolver elResolver = elContext.getELResolver();
+    11     
+    12     BairroMB bairroMB = (BairroMB) 
+    13         elResolver.getValue(elContext, null,"BairroMB");
+    14     return bairroMB.find(Integer.valueOf(key));
+    15   }
+    16 
+    17   // outros métodos omitidos
+    18 }
+    
+
+O código da classe `BairroConverter` mostra como buscar um ManagedBean e utilizá-lo para realizar as rotinas necessárias. Note que o método `find` do ManagedBean teria acesso às classes injetadas.
+
+Ao utilizar essa abordagem, o ideal é ter uma classe para abstrair todos os passos necessários para se acessar um ManagedBean.
+    
+    
+     1 // imports omitidos
+     2 public class ManagedBeanLocator {
+     3   public static AbstractMB find(String managedBean) {
+     4     FacesContext context = 
+     5       FacesContext.getCurrentInstance();
+     6     ELContext elContext = context.getELContext();
+     7     ELResolver elResolver = elContext.getELResolver();
+     8     return (AbstractMB) elResolver.getValue(elContext, null, 
+     9                                         managedBean);
+    10   }
+    11 }
+    
+
+E para utilizar o método bastaria fazer:
+    
+    
+    1 BairroMB bairroCrudMB = 
+    2   (BairroMB) ManagedBeanLocator.find("BairroMB");
+    
+
+  
+
+
+
+##  Capítulo 31:  CDI com JSF 
+
+A vantagem do CDI é injetar as dependências e utilizar aquele recurso sem que a classe tenha que se preocupar em instanciá-lo. 
+
+Um bom exemplo seria utilizar o EntityManager do JPA dentro de um ManagedBean.
+    
+    
+     1 @ManagedBean(name="usuarioLoginMB")
+     2 @SessionScoped
+     3 public class UsuarioLoginMB implements Serializable {
+     4   private String login;
+     5   private String senha;
+     6   
+     7   @PersistenceUnit(unitName="meuPU")
+     8   private EntityManagerFactory emFactory;
+     9   
+    10   @Resource
+    11   private UserTransaction userTransaction;
+    12 
+    13   public String login() {
+    14     // ...
+    15   }
+    16 }
+    
+
+No código do ManagedBean `UsuarioLoginMB` é possível ver que temos injetado um `EntityManagerFactory` e um objeto do tipo `UserTransaction`. 
+
+Note que o ManagedBean não tem ideia de onde vieram essas duas instâncias, ele apenas utiliza esses objetos. A grande vantagem do CDI é que um desacoplamento é criado entre classes. Note que não foi necessário passar configuração alguma relacionada ao arquivo `persistence.xml`. O próprio servidor localizou essas informações e criou uma instancia do EntityManagerFactory.
+
+É possível também injetar um EJB e outros recursos dentro de um ManagedBean.
+
+
+##  Capítulo 32:  Evite o "Cross Site Scripting" em seu sistema 
+
+Em um campo de texto de um formulário é possível que o usuário digite qualquer informação, mesmo não sendo a solicitada pelo campo. Por exemplo, em um campo cuja descrição é "Nome", o usuário pode digitar a "Idade", o seu "Endereço" ou qualquer outra informação que ele queira. Sendo assim, já que nesse campo ele pode digitar qualquer informação que seja alfanumérica, o que o impede de preencher esse campo com um pequeno código JavaScript? Algo como:
+    
+    
+    1 <script>alert('ola!');</script>
+    
+
+Com essa informação digitada no campo, ela será cadastrada no banco de dados. Até aí, tudo bem. O problema acontece quando queremos mostrar o nome na tela.
+    
+    
+    1 <h:outputText value="#{cliente.nome}" />
+    
+
+O conteúdo do nome, que no caso é o pequeno trecho de código JavaScript, será inserido dentro do HTML. Isso vai fazer com que durante a exibição da tela, a mensagem de alerta apareça, ou seja, o código JavaScript cadastrado pelo usuário será executado posteriormente. Quão perigoso isso pode ser?
+
+Muitos podem imaginar que isso é inofensivo, pois o usuário não vai digitar algo dessa natureza no campo. No entanto, essa brecha pode ser usada para um ataque poderoso, até mesmo para tirar o sistema do ar. Por exemplo, já que é possível introduzir código JavaScript que em algum momento futuro será executado, o que impede a pessoa de cadastrar um _looping_ infinito que envia requisições assíncronas para a aplicação? Pronto, sua aplicação se tornou alvo de um ataque.
+
+Atacar aplicações através da injeção de código JavaScript é uma técnica chamada _Cross Site Scripting_.
+
+A solução para esse problema é extremamente simples. Para exibir as informações, utilize a tag `h:outputText`. Ela já vem com um mecanismo de proteção, através do atributo `escape`. `true` já é o valor padrão utilizado, e ele fará com que um código Javascript seja apenas impresso, mas não executado.
+
+É uma solução extremamente simples que evita dores de cabeça com ataques a que muitos sistemas estão vulneráveis.
+
+
+##  Capítulo 33:  Otimizando a navegação e performance 
+
+O JSF dispara seu ciclo de vida quando uma navegação é disparada utilizando `h:commandLink` e o `h:commandButton`. No entanto, quando apenas queremos trocar de página, sem disparar ação alguma, não precisamos que todo o ciclo seja executado. A saída para essa situação é utilizar o componente `h:outputLink`, que gera apenas um link convencional.
+
+Seu uso é extremamente simples, bastando indicar no atributo `outcome` qual é a página de destino:
+    
+    
+    1 <h:outputLink outcome="pagina.xhtml" value="Pagina 01"/>
+    
+
+A vantagem de utilizar o `h:outputLink` para navegação é que ele não dispara os ciclo de vida completo do JSF, tornando a navegação um processo mais leve.
+
+
+# Parte 6 - Debug e inspeção de aplicações
+
+Durante o desenvolvimento das aplicações, é comum inspecionarmos o que estamos fazendo através das mensagens de debug e comentários que deixamos pelo código. Mas como podemos fazer esse debug de uma maneira que não polua nosso código ou atrapalhe a nossa aplicação?
+
+Nessa parte, você aprenderá dicas de desenvolvimento e como resolver erros que comuns do dia a dia do desenvolvimento com JSF.
+
+
+##  Capítulo 34:  Limpeza de comentários e debug 
+
+###  34.1  Esconda os comentários da página 
+
+É comum desenvolvedores olharem o código fonte de sistemas e sites que não foram feitos por eles. No entanto, geralmente ao abrir o código fonte de uma página, é possível encontrar comentários no HTML resultante, que além de poluir a saída, tornam a resposta mais pesada. 
+
+Com o JSF, existe um modo simples de esconder todos os comentários que são colocados nos XHTML. Basta adicionar uma configuração no `web.xml` e os comentários não serão mais exibidos.
+    
+    
+    1 <!-- adicionar ao web.xml -->
+    2 <context-param>
+    3     <param-name>javax.faces.FACELETS_SKIP_COMMENTS</param-name>
+    4     <param-value>true</param-value>
+    5 </context-param>
+    
+
+É considerada boa prática esconder os comentários do código XHTML. Primeiro, pelo fato de que comentários em HTML são enviados para o navegador, que o ignora, porém aumenta o tamanho do conteúdo da resposta a ser dada. E segundo, pois pessoas podem burlar de alguma maneira o sistema desenvolvido caso hajam comentários que exponham a existência de alguma falha na implementação.
+
+Um desenvolvedor poderia escrever `<!-- corrigindo falha da data -->` e a partir dessa mensagem, ele poderia descobrir qual falha é essa. Isso poderia acarretar em uma mensagem simples de erro, até falhas em pagamentos, prejuízo financeiro ou queda do servidor em casos mais extremos.
+
+  
+
+
+###  34.2  Debug dos componentes 
+
+Muitas vezes fazemos manipulações na tela e perdemos o controle do que está ou não está na árvore de componentes, por exemplo. Ou então qual é o estado dos componentes e assim por diante. Para resolver essas e outras questões sobre a situação dos componentes, podemos utilizar a tag `<ui:debug>`.
+
+Para acessar os dados fornecidos pelo `<ui:debug />` basta utilizar o atalho `ctrl + shift + d` e uma tela como a mostrada nas imagens 34.1, 34.2 e 34.3 irá aparecer.
+
+_Fig. 34.1: Função Debug do JSF_
+
+  
+  
+
+
+_Fig. 34.2: Função Debug do JSF_
+
+  
+  
+
+
+_Fig. 34.3: Função Debug do JSF_
+
+  
+  
+
+
+Entre outras coisas, o _debug_ é útil para resolver problemas de _Ajax_ quando um _update_ não funciona. Outra situação onde o _debug_ pode ser utilizado é para ver se os valores enviados por um ManagedBean estão chegando à _view_. Apenas tenha o cuidado de colocar o `<ui:debug />` ao final de sua página, caso contrário, ele disparará os _getters_ e _setters_ dos ManagedBean monitorados e assim poderá ocasionar comportamentos inesperados.
+
+  
+
+
+
+##  Capítulo 35:  Organize funcionalidades por ambiente do projeto 
+
+O JSF entende que cada projeto passa por **estágios** e cada um possui características específicas que ajudam de diferentes modos.
+
+Hoje no JSF é possível encontrar os seguintes estágios: `Development`, `UnitTest`, `SystemTest`, `Production` e `Extension`.
+
+Os estágios `SystemTest` e `UnitTest` permitem que ações sejam configuradas para serem executadas em um `Listener`. Caso algum dado, objeto ou configuração sejam necessários apenas para teste, basta configurar no `web.xml` qual o estágio atual da aplicação.
+
+O método `configurarAmbiente` mostra como o estágio poderia ser configurado em um ManagedBean do tipo @ApplicationScoped. Desse modo, bastaria chamar o método para que a aplicação se comportasse dependendo da configuração.
+    
+    
+     1 public void configurarAmbiente() {
+     2 
+     3     FacesContext facesContext = 
+     4         FacesContext.getCurrentInstance();
+     5     Application application =  facesContext.getApplication();
+     6     ProjectStage projectStage = application.getProjectStage();
+     7 
+     8     if (projectStage.equals(ProjectStage.Development)) {
+     9        
+    10         // realiza ações de desenvolvimento
+    11 
+    12     } else if (projectStage.equals(ProjectStage.Production)) {
+    13         
+    14         // realiza ações de produção
+    15 
+    16     } else if (projectStage.equals(ProjectStage.SystemTest)) {
+    17         
+    18         // realiza ações de testes de sistema
+    19 
+    20     } else if (projectStage.equals(ProjectStage.UnitTest)) {
+    21         
+    22         // realiza ações de testes de units
+    23 
+    24     }
+    25 }
+    
+
+Os estágios `Development` e `Production` são os mais utilizados.
+
+É normal que, ao se desenvolver com JSF, erros estejam acontecendo e nenhuma mensagem seja exibida. Às vezes são erros tão simples que caso alguma mensagem fosse exibida rapidamente esses erros seriam resolvidos.
+
+Uma das vantagens do estágio `Development` é que o JSF adiciona automaticamente `h:messages` nas páginas para exibir mensagens de erro, o que é muito prático. 
+
+Já o estágio de `Production` (que é o valor padrão) tem uma característica oposta ao `Development`, ele esconde erros que poderiam ser exibidos ao usuário final.
+
+As implementações do JSF podem realizar ações para otimizar cada estágio escolhido para o projeto. O MyFaces, por exemplo, no estágio `Development` faz o deploy dos arquivos de JavaScript separadamente. Já no estágio `Production` ele irá reduzir, minificar o arquivo e compactar os vários arquivos, a fim de otimizar a performance da aplicação.
+
+Para configurar o estágio da aplicação basta adicionar o parâmetro `javax.faces.PROJECT_STAGE` no `web.xml`:
+    
+    
+    1 <!-- web.xml -->
+    2 <context-param>
+    3     <param-name>javax.faces.PROJECT_STAGE</param-name>
+    4     <param-value>Development</param-value>
+    5 </context-param>
+    
+
+
+##  Capítulo 36:  Refresh automático dos Arquivos 
+
+Em alguns momentos alterações são realizadas diretamente nas páginas do projeto (arquivo xhtml/jsp), mas não são refletidas no código.
+
+É possível informar o JSF que ele deve verificar se algum arquivo de um projeto foi alterado. Com isso o JSF irá atualizar o arquivo alterado no projeto em tempo de execução no servidor.
+
+Para ativar essa funcionalidade, basta adicionar a configuração `javax.faces.FACELETS_REFRESH_PERIOD` no arquivo web.xml.
+    
+    
+    1 <context-param>
+    2     <param-name>javax.faces.FACELETS_REFRESH_PERIOD</param-name>
+    3     <param-value>2</param-value>
+    4 </context-param>
+    
+
+O tempo da configuração `javax.faces.FACELETS_REFRESH_PERIOD` é tratado em segundos.

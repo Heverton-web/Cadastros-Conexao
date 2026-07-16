@@ -1,0 +1,57 @@
+---
+name: data-science-crash-course
+description: >-
+  Passos operacionais extraidos do livro 'Data Science Crash Course' (EN) — Data Science.
+---
+
+# Data Science Crash Course — Passos Operacionais
+
+Conteudo extraido do livro 'Data Science Crash Course'. Contem passos, tecnicas e principios baseados na obra original.
+
+## 1. Conceitos Fundamentais
+- Data Science Crash Course Acknowledgement I would like to express my sincere gratitude to my family for their constant encouragement, patience, and unwavering support throughout the journey of writing this book.
+- Their belief in my work has been my greatest source of motivation and strength.
+- I am deeply thankful to the publishing team for their guidance, professionalism, and dedication in bringing this book to completion.
+- The process of conceptualizing, structuring, revising, and refining this manuscript has been a collaborative effort, enriched by the valuable insights of reviewers, technical experts, and editors whose suggestions significantly enhanced the quality and clarity of this book.
+- I would also like to acknowledge my colleagues, research collaborators, and academic peers who have contributed, directly and indirectly, through discussions, feedback, and shared experiences in the fields of data science, machine learning, and analytics.
+- Their expertise and perspectives have greatly shaped the content and practical orientation of this crash course.
+- Finally, I extend my heartfelt appreciation to all students, professionals, and readers who continue to explore and apply data science in meaningful ways.
+- Your curiosity, enthusiasm, and commitment to learning inspire authors like me to create structured, accessible, and impactful learning resources.
+- This book is dedicated to every learner striving to transform data into knowledge and insight into innovation.
+- Data Science Crash Course About the Author Dr.
+
+## 2. Principios e Tecnicas
+- Deepti Chopra is an accomplished academician specializing in information technology, with a primary focus on natural language processing ( NLP ) and artificial intelligence ( AI ).
+- With over 10.5 years of experience in academia, she has made significant contributions to both research and teaching domains.
+- Deepti&apos;s expertise lies in areas such as machine translation, named entity recognition, morphological analysis, and machine transliteration.
+- Deepti began her academic journey by obtaining a bachelor&apos;s degree in computer science and engineering from Rajasthan College of Engineering for Women.
+- Throughout her undergraduate studies, she consistently excelled and secured top positions in her college.
+- Driven by her passion for language and technology, she pursued a master&apos;s degree in computer science and engineering from Banasthali Vidyapith, where she once again showcased exceptional skills and graduated with top honors.
+- Motivated to delve deeper into her research interests, Deepti pursued a Ph.D. in computer science and engineering from Banasthali Vidyapith.
+- Her doctoral research revolved around enhancing the quality of machine translation, and she achieved remarkable success in this area.
+- Consequently, she earned a Ph.D. degree with a specialization in quality improvement of machine translation.
+- Her doctoral work resulted in the publication of numerous research papers and the grant of an Australian patent for her innovative approach in named entity translation.
+
+## 3. Aplicacoes Praticas
+- Deepti&apos;s commitment to advancing knowledge in her field is reflected in her extensive publication record.
+- She has authored multiple books, most notably Building Machine Learning Systems using Python and Flutter and Dart: Up and Running .
+- Additionally, her research papers have been published in reputable international conferences and journals.
+- Deepti&apos;s commitment and her ability to apply research findings to practical solutions solidify her position as a prominent figure in the field.
+- Data Science Crash Course About the Reviewers &#x2756;&#x2002; Peeyush Maharshi is a technology leader and enterprise architect specializing in data modernization and AI transformation.
+- He focuses on the convergence of analytics and AI, implementing semantic analytical mesh architectures and agentic engineering frameworks to deliver measurable business outcomes.
+- Peeyush provides strategic leadership in building AI-ready enterprise data products, establishing data governance frameworks for responsible AI, and accelerating AI adoption through cloud-native architectures on AWS, Azure, and GCP.
+- His expertise spans generative AI and LLM solutions, including work with OpenAI, Anthropic, and Hugging Face-alongside big data analytics, NLP, machine learning, and IoT implementations.
+- He specializes in defining enterprise data strategies that incorporate data lakes, data fabrics, and data marts while establishing robust data governance to enhance organizational data maturity.
+- Peeyush has led large-scale modernization initiatives, including cloud migrations, containerization, monolith-to-microservices transformations, cognitive automation, various flavors of RAG implementations, and agentic AI deployments for clients across the USA, Europe, the Middle East, and Australia.
+
+## 4. Topicos Avancados
+- His approach combines strategic planning with hands-on technical leadership, defining transformation roadmaps that bridge business objectives with cutting-edge technology solutions through reference architectures, engineering standards, and best practices.
+- A dedicated contributor to the technical community, Peeyush has served as a technical reviewer for several prominent books on Java, enterprise architecture, data, and cloud technologies.
+- He actively participates in technical groups to share his expertise and support the next generation of technologists. &#x2756;&#x2002; Kris Erickson is a data scientist with The Home Depot, America&apos;s largest home improvement retailer.
+- He is currently focused on the GCP stack, with special emphasis on BigQuery, Dataform, and applying Gemini Flash to the data via SQL.
+- Kris is an active reader of science fiction.
+- He also writes under the pen name Eric Kay and has recently published a fiction novel called Above Dark Waters about the intersection of AI therapy, brain privacy, and GenAI.
+- Data Science Crash Course C HAPTER 1 Introduction to Data Science Introduction Data science is a pioneering field that involves combining fields such as statistics, computer science, and domain-specific knowledge to extract meaningful insights from data.
+- In today’s era, a huge amount of data exists in different scenarios; hence, it is conducive to perform analytics on such data to derive useful information and make informed decisions.
+- This chapter discusses the history, evolution, and foundation of data science, giving a clear definition and key concepts used in it.
+- It explores various fields that embody data science and how various problems may be solved and analyzed using it.

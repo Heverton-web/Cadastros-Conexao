@@ -1,0 +1,3027 @@
+## Yesod e Haskell_ aplicações web com programação funcional pura
+
+  1. [page_001](src/pages/page_001.html)
+  2. [page_002](src/pages/page_002.html)
+  3. [page_003](src/pages/page_003.html)
+  4. [page_004](src/pages/page_004.html)
+  5. [page_005](src/pages/page_005.html)
+  6. [page_006](src/pages/page_006.html)
+  7. [page_007](src/pages/page_007.html)
+  8. [page_008](src/pages/page_008.html)
+  9. [page_009](src/pages/page_009.html)
+  10. [page_010](src/pages/page_010.html)
+  11. [page_011](src/pages/page_011.html)
+  12. [page_012](src/pages/page_012.html)
+  13. [page_013](src/pages/page_013.html)
+  14. [page_014](src/pages/page_014.html)
+  15. [page_015](src/pages/page_015.html)
+
+
+
+
+
+
+
+# Sumário
+
+  * [ISBN](index.html)
+  * [Autores](01-autores.html)
+  * [Prefácio](02-prefacio.html)
+  * [1\. Introdução — Configurando o ambiente & primeiros passos](01-stack.html)
+  * [2\. Scaffold & Templates: Configuração do ambiente com Stack](02-stack-scaffold.html)
+  * [3\. Estrutura de projeto Yesod com template yesod-minimal](03-desbravando-o-scaffold-estrutura-do-projeto.html)
+  * [4\. Shakespearean Templates — ser ou não ser, eis a questão ](04-shakespearean-templates.html)
+  * [5\. Montando o front-end com blocos](05-widgets.html)
+  * [6\. Persistência de dados](06-persistencia.html)
+  * [7\. Projeto Livraria](07-projeto-livraria.html)
+  * [8\. Manipulando credenciais e arquivos estáticos](08-credenciais-arquivos.html)
+  * [9\. Criando WebService RESTful](09-restful.html)
+  * [10\. Uma conclusão inevitável](10-conclusao.html)
+
+
+
+
+# ISBN
+
+Impresso e PDF: 978-85-7254-039-1
+
+EPUB: 978-85-7254-040-7
+
+MOBI: 978-85-7254-041-4
+
+> Caso você deseje submeter alguma errata ou sugestão, acesse <http://erratas.casadocodigo.com.br>.
+
+
+# Autores
+
+## Alexandre Garcia de Oliveira
+
+É formado Tecnólogo em Processamento de Dados na Faculdade de Tecnologia da Baixada Santista Rubens Lara (FATEC-RL) em 2004, e Bacharel em Matemática pelo Instituto de Matemática e Estatística da Universidade de São Paulo em 2012, onde também se formou Mestre em Matemática Aplicada em 2015. Leciona há 9 anos no Centro Estadual de Educação Tecnológica Paula Souza (CEETEPS), sendo há 8 anos pelas Fatecs, onde passou pelos campos de Santos, Praia Grande e São Caetano do Sul.
+
+Programa em Haskell há cerca de 6 anos. Ele também é apaixonado pelo Santos Futebol Clube, Álgebra, Final Fantasy 7, viagens de navio e algumas séries e animes.
+
+## Patrick Augusto da Silva
+
+Aluno do curso de Sistemas para Internet na Faculdade de Tecnologia da Baixada Santista Rubens Lara, descobriu o Haskell e Yesod há cerca de 4 anos através do Alexandre, desde então vem programando em Haskell como se não houvesse amanhã.
+
+## Felipe Cannarozzo Lourenço
+
+Formado no curso de tecnologia de Sistemas para Internet e cursista em Analise e Desenvolvimento de Sistemas, ambos da Faculdade de Tecnologia Baixada Santista Rubens Lara, conheceu a linguagem de programação Haskell e o framework Yesod em meados do ano de 2015 através do Alexandre. Leciona no Centro Estadual de Educação Tecnológica Paula Souza (CEETEPS) desde 2016 pela Etec, tendo como sede a Etec Adolpho Berezin, atuando também na Etec Praia Grande e Cubatão. Apaixonado por viagens, jogos de estratégia, séries e animes.
+
+
+# Prefácio
+
+Com a ascensão das metodologias ágeis, o mercado de TI demanda, mais do que nunca, o desenvolvimento rápido de soluções. Existem muitas linguagens de programação e frameworks que possibilitam a construção de aplicações de maneira veloz, e o Yesod está entre eles.
+
+Neste livro você será apresentado a todas as ferramentas necessárias que o Yesod disponibiliza para a construção de uma aplicação web do zero.
+
+### Público-alvo
+
+Este livro é voltado a qualquer desenvolvedor ou desenvolvedora que deseja aprender como construir aplicações web utilizando o paradigma de Programação Funcional e, consequentemente, o Yesod. Também é indicado para quem está em busca de frameworks para desenvolvimento ágil.
+
+### Conhecimentos necessários
+
+Conhecimento básico/intermediário de Haskell, que é a linguagem que o Yesod utiliza. O livro _Haskell: Uma introdução à programação funcional_ traz todo o conhecimento de Haskell necessário para entendimento do paradigma funcional, assim como da linguagem Haskell, para a leitura e compreensão deste livro.
+
+Ter conhecimento básico de arquitetura Web (_Request/Response_) para desenvolvimento horizontal pode ajudar, porém, será abordado no livro. 
+
+É necessário ter um conhecimento básico de GNU+Linux/MacOS e shell. Você também poderá utilizar Windows, porém, não será abordado neste livro.
+
+
+Capítulo 1
+
+# Introdução — Configurando o ambiente & primeiros passos
+
+Neste livro, aprenderemos a mexer no Yesod e, com isso, saberemos como fazer aplicações Web e APIs REST. Iniciaremos com exemplos minimalistas (o mínimo necessário para uma aplicação Web funcionar) até chegar ao acesso ao banco de dados com a API _persistent_. A linguagem utilizada será Haskell, porque o excelentíssimo sistema de tipos do Haskell traz para tempo de compilação muitos erros em tempo de execução, desta forma, diminui-se o custo de produção e custo com manutenção.
+
+Montaremos um projeto com você, que fará uma livraria online na qual teremos duas partes primordiais: cadastro de usuários para compra de livros; e a parte da administração (_dashboard_) na qual administradores poderão cadastrar livros para venda, inserindo dados sobre os livros como nome, autor, e preço. 
+
+Veremos como efetuar o cadastro de clientes e de livros, além de como estes clientes poderão comprar livros através de um carrinho de compras e visualizar seu histórico de compras através de suas respectivas contas. Então aprenderemos o porquê dos Shakespearean Templates e como eles facilitam o desenvolvimento do front-end com seus templates: Hamlet, Julius, Cassius e Lucius.
+
+Fazendo uso dos interpoladores dentro dos templates, o Yesod tomará conta parcialmente do seu front-end e facilitará muito a comunicação com o back-end, evitando-se muitos erros que aconteceriam em tempo de execução (com a aplicação funcionando).
+
+Por enquanto, não se preocupe pois tudo será esclarecido da melhor forma possível, passo a passo. Mas antes de começar, precisamos arrumar nosso ambiente, vamos lá.
+
+## 1.1 O que é o Stack
+
+Stack é uma ferramenta multiplataforma para instalação e configuração de projetos em Haskell, totalmente em linha de comando. Apesar de seu uso não ser obrigatório, por ser um gerenciador de projetos, vamos utilizá-lo no decorrer do livro por facilitar o gerenciamento de dependências.
+
+O Stack possui várias características, entre elas:
+
+  * Instalar o GHC (compilador) em um ambiente isolado, podendo existir vários projetos com diferentes versões do GHC em um mesmo sistema operacional.
+  * Gerenciar o download das dependências necessárias automaticamente;
+  * Construir e compilar o projeto.
+
+
+
+> **Guia do usuário Stack**
+> 
+> No livro, vamos abordar as características essenciais do Stack para o fluxo de trabalho. Caso queria saber mais, não deixe de acessar o guia do usuário para o stack: <https://docs.haskellstack.org/en/stable/GUIDE/#stacks-functions>.
+
+Uma das principais características do Stack é a sua lista de pré-projetos (templates), para que tenhamos um alicerce pronto ao criar um projeto, sem a necessidade de criar um do zero, escrevendo códigos repetidos de configurações, que são **clichês** (_boilerplates_) para quaisquer projetos que você possa criar. 
+
+Estes templates nos dão também a estrutura de pastas e arquivos necessários para criação de um projeto em Yesod de forma a organizá-lo da melhor maneira possível. Posteriormente será abordada a organização mais detalhadamente. Por ora utilizaremos apenas o **REPL** (_read-eval-print-loop_) GHCi, do Haskell, através do Stack.
+
+> **Afinal, o que é REPL?**
+> 
+> Desenvolvedores de primeira viagem utilizam essa funcionalidade em diversas linguagens, porém, não sabem seu nome. Nada mais é que o shell da linguagem, também conhecido como console. É um programa que recebe entradas de dados do usuário, avalia e então retorna o resultado ao usuário. Seu uso é muito comum no início dos estudos em uma linguagem de programação.
+
+## 1.2 Instalando o Stack
+
+O site <https://haskell-lang.org/get-started> contém todo o conteúdo necessário para a instalação e configuração do stack nos três principais sistemas operacionais: GNU/Linux, MacOS e Windows. Porém, você pode seguir os próximos passos do livro.
+
+### GNU/Linux & MacOS
+
+Para instalar o Stack em shell, `sh`, basta rodar no terminal o comando: 
+
+`curl -sSL https://get.haskellstack.org/ | sh`
+
+ou 
+
+`wget -qO- https://get.haskellstack.org/ | sh`
+
+Ao final da execução deste comando, a seguinte mensagem aparecerá: **Stack has been installed to: /usr/local/bin/stack**.
+
+Caso deseje instalar o Stack em alguma distribuição GNU/Linux em particular, acesse o site <https://haskell-lang.org/get-started/linux>.
+
+### Windows
+
+Para utilizadores do Windows, o Stack possui um instalador nas versões 32 e 64 bits. Acesse o site <https://haskell-lang.org/get-started/windows> e escolha o adequado à versão do seu sistema operacional. O instalador possui um wizard, que realizará de forma automática a instalação e avisará quando terminar.
+
+> Os snippets e o projeto do livro serão construídos utilizando o ambiente GNU/Linux. 
+
+## 1.3 Criando um exemplo mínimo monolítico — Main.hs (pragmas e imports)
+
+Com o Stack instalado, vamos criar nossa primeira aplicação Yesod que conterá o mínimo necessário para execução de um projeto Yesod.
+
+Cada pedacinho de código deste exemplo mínimo será apresentado e explicado detalhadamente, para depois vermos e executarmos o código completo.
+
+A melhor forma de fixar o conhecimento é com a mão na massa! Então vamos lá.
+
+### Pragmas
+
+Nosso código será iniciado por pragmas. Mas o que são eles? Os pragmas são instruções para o compilador de extrema importância pois alteram seu funcionamento para aumentar a eficiência do código que será gerado.
+
+No decorrer do livro isso ficará extremamente claro, pois o exemplo mostrado trará à tona a necessidade dos pragmas. Não é necessário que você tenha um domínio avançado sobre os pragmas agora, pois eles são utilizados como um clichê (_boilerplate_). Mesmo assim, é interessante entender qual é o problema e para o que servem. 
+
+Todos os pragmas possuem esta forma: `{-# PRAGMA Palavra #-}`, em que `PRAGMA` indica o tipo de pragma utilizado, seguido por uma informação específica para ele, como `Palavra`.
+
+Existem dois tipos de pragmas: de cabeçalho de arquivo e pragmas em linha. No livro, vamos abordar apenas os de cabeçalho de arquivo, pois possuem muita frequência dentro do framework Yesod.
+
+Com o nome autoexplicativo, os pragmas de cabeçalho de arquivo sempre serão declarados no início de qualquer arquivo, então antecederão quaisquer códigos existentes.
+
+Caso você escreva um pragma inexistente o GHC vai ignorá-lo. Todo pragma começará com `{-#` e será fechado com `#-}`. Resumindo, pragmas são considerados arquivos de cabeçalho e precisam seguir algumas regras: todo pragma de cabeçalho precisa vir antes da palavra-chave `module` no arquivo. Todo arquivo em Haskell, por padrão, necessita de uma nomeação de módulo, que define a chamada deste arquivo. Se o arquivo não possuir um nome de módulo, o compilador assume que seja `Main`. É o equivalente ao nome de uma classe na Programação Orientada a Objetos. Mas não se preocupe tanto com isso agora pois quando houver a necessidade de usá-los bastará copiá-los no arquivo necessário, e no decorrer do projeto o seu uso ficará cristalino. Podem existir muitos pragmas em um arquivo, e podem ser precedidos ou seguidos por comentários sem afetar seu funcionamento.
+
+Vamos dar uma olhada em como um pragma é declarado dentro de um arquivo em Haskell. Se o arquivo possui o nome de `Main.hs` (`.hs` é a extensão do Haskell), o nome do módulo será `Main` e o arquivo ficará assim:
+    
+    
+    {-# LANGUAGE OverloadedStrings     #-}
+    {-# LANGUAGE QuasiQuotes           #-}
+    {-# LANGUAGE TemplateHaskell       #-}
+    {-# LANGUAGE TypeFamilies          #-}
+    
+    module Main where
+    
+
+O código anterior seguiu a primeira regra onde os quatro valores de pragmas do tipo de cabeçalho de arquivo são declarados antecedendo a declaração do módulo.
+
+E podemos fazer comentários antes e depois da declaração dos pragmas sem afetar o seu funcionamento. Ficaria desta maneira:
+    
+    
+    -- Comentário antes dos pragmas
+    {-# LANGUAGE OverloadedStrings     #-}
+    {-# LANGUAGE QuasiQuotes           #-}
+    {-# LANGUAGE TemplateHaskell       #-}
+    {-# LANGUAGE TypeFamilies          #-}
+    -- comentário depois dos pragmas
+    module Main where
+    
+    -- Código omitido
+    
+
+Agora os valores para esses pragmas são os mais diversos. Vejamos `OverloadedStrings`, este pragma é responsável por mudar como o Haskell trata o seu tipo `String`. Temos também o valor `TemplateHaskell`, que é a forma como o framework Yesod lida para construir as telas (_views_) da aplicação através da definição de uma DSL (_Domain Specific Language_).
+
+Em miúdos, pode-se dizer que os pragmas alteram o comportamento do compilador para que tenha maior eficiência na geração do código. O framework Yesod usa e abusa dos pragmas, tendo um ganho considerável de desempenho. Não se assuste com eles, pois durante o desenvolvimento do nosso projeto Yesod o uso será recorrente. Até este momento é tudo que você precisa saber.
+
+### Módulos e Imports
+
+Os módulos são a forma como o Haskell agrupa o código. O desenvolvimento de uma aplicação Yesod demandará de várias estruturas como: tipos de dados algébricos, classes de tipos (_typeclass_), funções e um punhado de outras estruturas, que são agrupadas em módulos.
+
+Um módulo pode ser utilizado por outro, por meio do `import`. Uma comparação análoga com a Programação Orientada a Objetos é o ato de importar uma estrutura de classe dentro de outra. 
+
+Em Java, quando queremos criar um fluxo de dados com o usuário para receber valores digitados, podemos utilizar um objeto da classe `Scanner` que possui tal responsabilidade. Para tal, precisamos digitar `import java.util.Scanner`, no qual `import` é uma palavra reservada do Java que é seguida pelos pacotes em que a classe reside, que neste caso é a classe `Scanner`. Vejamos a seguir um exemplo de importação em java:
+    
+    
+    import java.util.Scanner;
+    
+    public class Principal {
+        public static void main(String... args){
+            Scanner entrada = new Scanner(System.in);
+            // código omitido
+        }
+    }
+    
+
+Informalmente, um módulo em Haskell é o equivalente a uma classe em Java/C# que pode ser importado por outro módulo. No exemplo que construiremos neste capítulo, em que teremos o mínimo exigido para a construção de um projeto utilizando o framework Yesod, temos um módulo chamado `Main` contido dentro do arquivo `Main.hs` com todo o conteúdo/código-fonte do nosso projeto. Em seguida, temos um módulo `Yesod`, que é uma importação de outro módulo dentro do módulo `Main` (o nosso arquivo). Em outras palavras, nosso projeto principal que contém o módulo `Main` está utilizando um módulo externo chamado `Yesod`. Um módulo Haskell é equivalente a uma biblioteca da linguagem Java.
+
+> Imagine que, ao desenvolver uma aplicação em Yesod, você opte por colocar todo o código-fonte em um único módulo. Muitas estruturas dessa aplicação poderiam ser reutilizadas em outros projetos. Como estão todos em um único módulo, seria necessário copiar e colar o código já existente e isso não é uma boa prática. Outro problema seria designar mais de um programador para fazer manutenção no código existente. Em um projeto modularizado fica mais fácil delegar tarefas aos participantes.
+> 
+> Os módulos são a forma como o Haskell lida com este problema, fornecendo modularidade e flexibilidade para a construção dos nossos projetos. Veremos e abusaremos dos módulos na construção do nosso projeto no framework Yesod, porém neste capítulo vamos construir um projeto simples e monolítico, ou seja, em apenas um único arquivo/módulo. Dessa forma, você poderá entender e absorver as estruturas básicas necessárias para o desenvolvimento de um projeto maior e modular. Além disso, utilizaremos outros módulos já implementados do framework Yesod dentro do nosso miniprojeto.
+
+Em nosso projeto, o módulo e o `import` estão definidos assim:
+    
+    
+    module Main where
+    
+    import Yesod
+    
+
+Logo, poderíamos ter um módulo contendo várias importações como estas:
+    
+    
+    module Main where
+    
+    import Yesod
+    import Modulo2
+    import Modulo3
+    import Modulo4
+    
+
+Haskell prega pela modularização do seu código, quanto mais módulos possuir ou mais fragmentado estiver, melhor.
+
+## 1.4 Typeclass Yesod — uma instância para o tipo Aplicacao
+
+Este é o coração de uma aplicação! Toda aplicação construída no Yesod necessita de um tipo de dado algébrico primordial que carrega consigo **todas as funcionalidades primordiais de uma aplicação Yesod**. Por exemplo, temos a definição da rota raiz da aplicação por meio da função `approot` ou a função `makeSessionBackend`, que define a duração das sessões dos usuários logados nesta aplicação. 
+
+O `typeclass` define as configurações para aplicações Yesod. O nome deste tipo de dado algébrico é definido pelo usuário, porém este tipo obrigatoriamente precisa ser uma instância do `typeclass` Yesod. Como uma instância de Yesod deve ser atribuída a este tipo, precisamos declarar um tipo de dado algébrico como este: 
+    
+    
+    data Aplicacao = Aplicacao
+    
+
+Agora precisamos dar o comportamento da classe de tipo `Yesod` para o tipo algébrico `Aplicacao`, ou seja, criar uma instância da classe de tipo Yesod para o tipo algébrico `Aplicacao`. Vejamos a seguir como ficará:
+    
+    
+    instance Yesod Aplicacao
+    
+
+Agora vejamos a assinatura da classe de tipo `Yesod`. Ele possui várias funções a serem implementadas por tipos algébricos: 
+    
+    
+    class Eq (Route a) => Yesod a where
+        approot :: Approot a
+        makeSessionBackend :: a -> IO (Maybe SessionBackend)
+        authRoute :: a -> Maybe (Route a)
+    
+
+Por ora este é um exemplo minimalista, logo não vamos sobrescrever nenhuma das funções. O `typeclass` Yesod possui implementações padrões para todas as suas funções, ou seja, quando fizemos uma instância do `typeclass` Yesod para o tipo algébrico `Aplicacao`, o framework implementou funcionalidades padrões para estas funções.
+
+Existem outras funções associadas ao `typeclass` Yesod, mas aqui por enquanto estamos demonstrando apenas três. 
+
+Quando declaramos o nosso tipo algébrico `data Aplicacao = Aplicacao` e, em seguida, criamos uma instância do `typeclass` Yesod para o tipo algébrico `Aplicacao` com o comando `instance Yesod Aplicacao`, o tipo algébrico passa a ter todas as funções e funcionalidades associadas ao `typeclass` Yesod. 
+
+Caso você não implemente explicitamente uma das funções associadas ao `typeclass` Yesod em seu tipo algébrico `Aplicacao`, uma implementação padrão (default) será feita de forma automática. 
+
+> Caso esteja com alguma dificuldade no entendimento até este momento, não deixe de consultar o nosso livro: **Haskell: Uma introdução à programação funcional**. Não é necessário domínio pleno, porém, é exigido entendimento básico do que é um typeclass. Em suma, um typeclass (classe de tipos) é uma estrutura da Programação Funcional que tem objetivo de agrupar criar comportamentos em comum para quaisquer tipos de dados algébricos. No nosso exemplo o tipo algébrico `Aplicacao` obteve os comportamentos da classe de tipo Yesod.
+
+Pronto! Agora nosso tipo `Aplicacao` possui o comportamento de um tipo Yesod. Isso significa que o tipo `Aplicacao` poderá lidar com tudo que uma aplicação Web precisa, como a implementação de rotas, sistema de autenticação e autorização, sessão etc. Isso ficará cada vez mais claro no decorrer do nosso projeto principal. 
+
+Adiante no livro vamos abordar este assunto outras vezes, relembrando e explicando mais a fundo a classe de tipo Yesod.
+
+## 1.5 mkYesod e parseroutes — Introdução ao sistema de rotas
+
+Muitos frameworks modernos e atuais para Web utilizam o padrão _front controller_ para gerenciar o seu sistema de rotas, e o Yesod está incluído nesta lista. Isso quer dizer que todas as requisições feitas para uma aplicação Yesod sempre entram em um único ponto, um centralizador, e são redirecionadas (roteadas) a partir dele para o destino final. Este centralizador no Yesod é a função `mkYesod` pertencente ao módulo `Yesod.Dispatch`.
+
+O padrão `front-controller` é um padrão de projeto utilizado para a construção de aplicações Web. Ele é um controlador que manuseia todas as requisições para um site, sendo uma arquitetura muito utilizada para o desenvolvimento de aplicações Web por proporcionar flexibilidade e reúso de estruturas, evitando repetição de código (_boilerplate_).
+
+Em contraposição, em sistemas desenvolvidos com JavaEE é necessário criar um novo `Servlet` para cada rota que contenha conteúdo dinâmico e o servidor web automaticamente direciona para o `Servlet` que está implementando a rota.
+
+Yesod utiliza um estilo declarativo para criação de rotas específicas. Estas rotas serão acionadas pelo `front-controller` (centralizador). Para declarar uma rota no Yesod, basta digitar: `/ HomeR GET`. A seguir podemos entender um pouco mais com a definição de cada elemento que foi declarado.
+    
+    
+    /        HomeR    GET
+    ^        ^        ^
+    |        |        o método a ser utilizado pela rota
+    |        o nome da função que implementará o código da rota
+    a URI da rota
+    
+
+Para adicionar uma nova rota, basta adicionar uma nova linha no arquivo de rotas. Por exemplo, podemos fazer isto:
+    
+    
+    /        HomeR    GET
+    /pagina1 Pagina1R GET
+    
+
+Não se preocupe onde exatamente ficam estes arquivos, pois ao final deste capítulo teremos o exemplo completo. Vamos imaginar que nossa aplicação está rodando no seguinte endereço: `www.aplicacao.com.br`. Ao acessar esta URL, a função `HomeR` (`/` significa rota raiz do site) será executada no projeto, executando sua camada de negócio e retornando um resultado que poderá ser uma página HTML, por exemplo.
+
+A diferença da rota raiz/principal (`HomeR`) para a segunda rota (`Pagina1R`) foi a URI adicionada à rota principal do projeto. Partindo do pressuposto de que a URL da aplicação seja `www.aplicacao.com.br`, para acessar a rota da função `Pagina1R` será necessário digitar `www.aplicacao.com.br/pagina1`.
+
+Legal! Mas ainda faltam alguns detalhes. Especificamente, a função onde as rotas são implementadas: elas ficam aninhadas dentro da função `mkYesod`, que nada mais é que uma função do pragma **TemplateHaskell**.
+
+Esta função espera dois parâmetros: o primeiro é uma String que referencia o tipo de dado algébrico com instância de Yesod na aplicação, que no nosso caso é o tipo `Aplicacao`; como segundo parâmetro, temos a função `parseRoutes`, que é um **QuasiQuote** (outro pragma, teremos uma breve explicação sobre ele a seguir). Logo, a implementação das rotas ficará assim:
+    
+    
+    mkYesod "Aplicacao" [parseRoutes| 
+        /         HomeR    GET
+        /pagina1R Pagina1R GET POST
+    |]
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+> Mas o que são os pragmas **TemplateHaskell** e **QuasiQuotes**?
+> 
+> São pragmas e, como dito anteriormente, eles mudam o comportamento do compilador para se obter maior eficiência em determinados casos. **TemplateHaskell** é uma extensão do compilador GHC para Haskell, que adiciona em tempo de compilação facilidades da metaprogramação. Em miúdos, metaprogramação possibilita evitar repetições de código desnecessárias, focando o trabalho do programador onde realmente é necessário. 
+> 
+> Quando um código de metaprogramação é compilado, o código gerado é muito maior do que o código escrito pelo programador. Então o objetivo da metaprogramação é fazer com que o programador evite de escrever códigos repetidos, que serão iguais em quaisquer casos no desenvolvimento de uma aplicação, mudando apenas algumas características, como o nome de um tipo de dado, no nosso caso nome das rotas! Esta pequena linha de código `/pagina1R Pagina1R GET` gerará um código muito maior após compilado. Qualquer outra rota que o programador coloque obterá os mesmos códigos gerados pela rota anterior, mudando apenas o nome do tipo da rota, que neste caso é `Pagina1R`.
+> 
+> Já o **QuasiQuotes** tem o mesmo efeito, mas é específico para DSLs (_Domain Specific Languages_ ou Linguagens de domínio específico). Eles permitem que programadores utilizam DSLs customizadas para pedaços específicos do seu programa, e é muito, mas muito, utilizado para embutir as linguagens de marcação como HTML dentro de outras linguagens. No nosso caso, o QuasiQuotes também será responsável por englobar todo o código HTML e JavaScript. Ele será a ponte entre essas tecnologias para o Yesod.
+
+Dando continuidade ao nosso exemplo, veja como a função da rota precisa ser criada. No caso da rota raiz com a função `Pagina1R`, que possui o método `GET` implementando-a, o resultado final na implementação da função `HomeR`, caso a rota definida seja `/pagina1R Pagina1R GET`, ficará assim:
+    
+    
+    getPagina1R :: Handler Html
+    getPagina1R = -- implementação ocultada
+    
+
+Isso significa que o Yesod vai exigir que no começo da função seja anexado qual método a rota implementa, que neste caso é o método `GET`.
+
+Se houver a necessidade da implementação do método `POST`, que serve para envio de dados por meio de um formulário (ou qualquer outro método HTTP) na rota `Pagina1R`, basta adicionar o método na linha cuja rota foi declarada e depois implementar a função `HomeR` para o método `POST`. Ficará assim:
+    
+    
+    mkYesod "Aplicacao" [parseRoutes| 
+        /        HomeR    GET
+        /pagina1 Pagina1R GET POST
+    |] 
+    
+    getHomeR :: Handler Html
+    getHormeR = -- código omitido
+    
+    getPagina1R :: Handler Html
+    getPagina1R = -- código omitido.
+    
+    postPagina1R :: Handler Html
+    postPagina1R = -- código omitido.
+    
+
+O padrão de gerenciamento de rotas que o Yesod utiliza é o `front-controller`, logo, quando uma requisição é feita para a rota `www.aplicacao.com.br/pagina1`, o pedido cairá dentro de um centralizador que definirá qual função será invocada para execução do método requisitado pelo cliente, este centralizador é a função `mkYesod`.
+
+Isto é, se for uma requisição usando o método `GET`, a função `getPagina1R` será invocada. Se o método da requisição do cliente for `POST`, a função `postPagina1R` será chamada. E por final o sufixo `R` encontrado na declaração das rotas representa apenas boas práticas ao implementar uma rota, para ficar claro que aquela função pertence a uma rota. Finalmente, vamos à implementação das funções de rotas.
+
+## 1.6 Introdução aos Handlers e Widgets
+
+Como visto anteriormente, os tipos das funções possuem um `Handler`, mas afinal de contas o que são os Handlers? Dentro do padrão MVC, que o Yesod adota, os Handlers são considerados os controllers de uma aplicação.
+
+MVC é um padrão de projeto arquitetural e significa: _Model-View-Controller_ (Modelo, Visão, Controlador), no qual o modelo representa entidades e as **regras de negócio de uma aplicação** , a visão representa a **interface gráfica** de uma aplicação (as telas para navegação, e na Web as páginas) e, por último, o controlador faz um "meio de campo" entre a visão e os modelos, pegando informações. Ele pega ações que vêm da visão (telas) e passa para os modelos para executarem alguma regra de negócio que atualiza a visão. 
+
+Este padrão é amplamente utilizado para o desenvolvimento de aplicações Web por encaixar perfeitamente com a arquitetura Web request/response oriunda do protocolo de comunicação HTTP e dos navegadores de internet também chamados de _web-agents_.
+
+Para ficar claro, o **modelo** representa as regras de negócio da nossa aplicação, por exemplo, efetuar a soma de dois números digitados por um usuário. A **visão** representa as páginas HTML da aplicação, que poderia ser um formulário com duas entradas de texto e um botão de envio. (os dois números que serão somados). E por último, temos o **controlador** , que faz o intermédio entre a visão e o modelo - neste caso quando o usuário preenche as duas caixas de texto com números e envia os dados do formulário para o servidor. O controlador receberá estes dois números, executará o modelo que possui a função para a soma de dois números, e atualizará a visão com a resposta gerada pelo modelo.
+
+Quando um usuário faz uma requisição em uma rota de uma aplicação Yesod, esta rota passa por um centralizador que verifica qual Handler está associado à rota pedida. O Handler poderá executar uma regra de negócio, como receber dados da requisição do usuário e inseri-los no banco de dados, ou apenas retornar para o usuário uma resposta contendo outra página HTML. 
+
+Na declaração de uma rota, também chamada de _resource name_ (nome do recurso), o Yesod associa-a a um tipo algébrico predefinido. Desta forma automática, através da metaprogramação, o Yesod cria um tipo como este:
+    
+    
+    data Route Aplicacao = RotaRaiz | Pagina1R
+    
+
+Lembre-se de que este tipo algébrico será gerado pela metaprogramação do `TemplateHaskell` com a função `mkYesod`. Repare que o `type constructor` sempre terá no início o nome `Route`, seguido do nome do tipo. Já o tipo terá a instância do `typeclass` Yesod, que no nosso exemplo chama-se `Aplicacao`, sendo que `RotaRaiz` está associado à rota que representa a raiz da aplicação, `www.aplicacao.com.br`, e `Pagina1R` é o tipo que representará o recurso `www.aplicacao.com.br/pagina1`. É desta forma que o Yesod cria rotas type-safe.
+
+Mas afinal o que é um Handler? É uma função que precisa ser implementada, de forma obrigatória e com algumas convenções, toda vez que um _resource name_ é declarado.
+
+Logo, se temos um _resource name_ chamado `www.aplicacao.com.br/pagina1`, teremos que ter um tipo algébrico associado a este recurso, que no exemplo dado é `Pagina1R`. Precisamos também de um método do protocolo HTTP associado a este recurso, que no exemplo é `GET`. O produto final desta declaração é o Handler que precisará ser implementado. Este Handler se chamará `getPagina1R`, que tem como prefixo `get`, representando o protocolo HTTP deste recurso, e o nome do tipo algébrico declarado, que é `Pagina1R`. No exemplo anterior teremos isto:
+    
+    
+    mkYesod "Aplicacao" [parseRoutes| 
+        /pagina1 Pagina1R GET
+    |] 
+    
+    getPagina1R :: Handler Html
+    getPagina1R = -- código omitido.
+    
+
+> Caso deseje se aprofundar na explicação de como o Yesod faz isso, não deixe de acessar o livro oficial do Yesod com mais informações: <https://www.yesodweb.com/book/routing-and-Handlers>.
+
+Então, os Handlers são a alma de uma aplicação Yesod. Será onde você passará a maior parte do seu tempo desenvolvendo aplicações Yesod. É nele que implementamos o código HTML que será a página exibida para o usuário caso ele acesse um _resource name_ (rota) associado a este Handler.
+
+Toda e qualquer URI acessada em uma aplicação Yesod passará pelo centralizador, que invocará o Handler associado a esta URI.
+
+Agora falta adicionarmos um código HTML para o nosso exemplo ficar completo. Para um primeiro "hello world" basta adicionarmos o seguinte trecho de código:
+    
+    
+    getPagina1R :: Handler Html
+    getPagina1R = defaultLayout [whamlet| Ola Mundo |]
+    
+
+### Uma bisbilhotada nos bloquinhos Widgets e Shakespearean Templates
+
+O que significa a função `defaultLayout` com `[whamlet| |]` vistas no código anterior? O Hamlet é um QuasiQuote chamado de Shakespearean Template. Neste caso, estamos utilizando o Shakespearean Template Hamlet que é responsável por gerar todo o código HTML dentro de uma aplicação Yesod. Ele possui um dialeto único intrínseco, uma forma única de se programar.
+
+Caso quiséssemos embutir algum código JavaScript dentro desta página, precisaríamos utilizar o Shakespearean Template Julius e ficaria assim: `toWidget [julius| alert("ola mundo") |]`. 
+
+Teremos uma explicação profunda sobre os Shakespearean Templates ao longo do livro. Agora reparem na letra `w`, que é o prefixo no `[whamlet| |]`. Este `w` está aí por um bom motivo: ele significa `Widget`. Mas o que são tais Widgets?
+
+Widgets representam toda estrutura do front-end de uma aplicação Yesod, seja um pedaço ou o front-end todo. Pode conter comandos específicos, como a função `setTitle`, que define o título de uma página HTML, tendo a função da tag html `<title>`. Também pode conter toda uma estrutura HTML de uma página, bem como comportamentos dessas páginas por meio da implementação de código JavaScript. E, por último, pode conter código do estilo da página, a implementação do CSS. 
+
+Então, podemos ter uma função contendo todo o código de marcação de uma página como o HTML e, em outra função, todo comportamento desta página por meio do JavaScript e, por último, uma função contendo todo o CSS da página. E podemos ir além fragmentando cada uma dessas três funções em outras diversas funções que retornam o tipo `Widget`. 
+
+Logo, a função que retorna um Widget contendo o HTML de uma página poderia ser fragmentada em três: uma que retorna o cabeçalho da página contendo o `<head>`, outra que contém a tag `<body>` e uma função que retorne um Widget, contendo a tag `<h1>` e `<main>` de uma página HTML. Por fim, podemos grudar todas estas funções que retornam Widget em um único superbloco. 
+
+Agora após uma explicação didática posso dizer a você que o tipo `Widget` é uma **monad transformer** (termo explicado mais à frente) que foi baseada na monad `Writer`. Então a monad `Widget` tem como objetivo juntar os pedaços e encaixar as peças de um determinado lugar.
+
+Mas e se tentarmos implementar uma função Handler e esquecermos de usar a função `defaultLayout`, que recebe um tipo `Widget` como parâmetro e retorna um `Handler Html`, como no exemplo a seguir:
+    
+    
+    getHomeR :: Handler Html
+    getHomeR = [whamlet| Primeira Aplicação Yesod!|]
+    
+
+E tentar compilar o seu projeto o seguinte erro surgirá: 
+    
+    
+        • Couldn't match type ‘WidgetFor site0 ()’
+                         with ‘HandlerFor Aplicacao Html’
+          Expected type: Handler Html
+            Actual type: WidgetFor site0 ()
+    
+
+Este é um erro que pode dar medo para quem está iniciando, mas com o tempo você vai se acostumar e ver que a melhor forma de solucionar um problema no seu código em tempo de compilação é interpretando o que o compilador diz. Traduzindo para o português, ele diz que o tipo `WidgetFor site0 ()` não combina, não encaixa no tipo `HandlerFor Aplicacao Html`. Em uma linguagem simples, ele está dizendo que não dá para encaixar o "quadrado no redondo".
+
+Isso ocorre porque toda função Handler precisa retornar um Handler! Mas no nosso exemplo estamos retornando um Widget em uma função que espera um Handler. Para isso, existe a função `defaultLayout` que espera receber como argumento um Widget. Vejamos a função `defaultLayout`:
+    
+    
+    defaultLayout :: WidgetFor site () -> HandlerFor site Html
+    
+
+Então, para que o código funcione e compile, precisaremos adicionar a função `defaultLayout`, que receberá um `Widget` como parâmetro. Ela ficará desta forma:
+    
+    
+    getHomeR :: Handler Html
+    getHomeR = defaultLayout [whamlet| Primeira Aplicação Yesod!|]
+    
+
+Por ora, vamos omitir alguns detalhes, e focar no que importa neste momento. A função recebe um `WidgetFor site ()` e retorna `HandlerFor site Html`, logo, a função `defaultLayout` satisfaz o retorno final de um `Handler Html`.
+
+> **Então quer dizer que podemos ter um retorno que não seja HTML em um Handler?**
+> 
+> Com certeza, caro leitor, podemos ter um Handler que retorna JSON ou ter um retorno vazio `()` no caso de uma rota que utilize o método POST para inserir dados de um formulário no banco de dados. Isso será explicado em maiores detalhes no capítulo 3 deste livro. Por enquanto, focaremos somente no `Handler Html`.
+
+Resumindo: podemos implementar vários Widgets e, dentro deles, vários Shakespearean Templates que contêm CSS, HTML, JavaScript. Podemos compor estes Widgets agrupando seu conteúdo, colando um após outro e, por final (composição final) usamos a função `defaultLayout` para subir para a monad Handler que vai renderizar a página HTML para o usuário.
+
+## 1.7 A função main — a responsável por iniciar a execução da aplicação
+
+Em qualquer programa, em qualquer linguagem, é necessário um ponto de entrada. Na linguagem Java, temos o `public static void main(String... args)`; na linguagem C, o `int main(int argc, char* argv[])` etc., em Haskell não é diferente, nós temos o `main :: IO ()`. 
+
+Sendo o nosso ponto de entrada, nessa função é onde enganchamos o processo do servidor, como foi mostrado no trecho de código da seção anterior:
+    
+    
+    main :: IO ()
+    main = warp 8080 Aplicacao
+    
+
+A função `warp` é apenas uma conveniência que nos auxilia a rodar o servidor. O Yesod possui o servidor de aplicação warp de forma intrínseca, o que significa que o servidor é executado pela própria aplicação. A função `warp` recebe um inteiro `Int`, que representa a porta em que o servidor receberá as requisições; o segundo parâmetro da função `warp` é o nosso tipo do _Foundation_ , isto é, o tipo de dado algébrico `Aplicacao` que é uma instância do `typeclass` Yesod. 
+
+Note que esta é a raiz do projeto e, de fato, é aqui onde tudo começa, já que todos os Handlers, rotas e todas as outras funcionalidades dependem do alicerce do projeto: o tipo do _Foundation_. No capítulo dois e três vamos abordar esta dependência de forma mais profunda. 
+
+Diferentemente de outras linguagens, como PHP, em que os servidores de aplicação são externos as linguagens, no Yesod, o servidor é gerenciado pela própria aplicação. Neste caso, o próprio Haskell faz o gerenciamento do servidor.
+
+> Caso deseje uma explicação profunda sobre o servidor warp, acesse o site <https://www.yesodweb.com/blog/2011/01/announcing-warp> onde o Michel Snoyman, criador do framework Yesod, dá em detalhes o porquê da escolha do warp como servidor padrão do Yesod e fornece testes de performance comparado a outros servidores de aplicação.
+
+Lembre-se de que estamos lidando com a linguagem Haskell, isto é, composição de funções e a execução de uma função desencadeará várias chamadas de outras funções e tipos.
+
+## 1.8 Executando o projeto
+
+Após tudo o que foi explicado, nada melhor que a prática para fixar o aprendido. Finalmente, vamos executar nossa primeira aplicação Yesod.
+
+Estando no terminal (bash/shell/cmd), crie uma pasta chamada `ExemploMinimo` com o comando: `mkdir ExemploMinimo`, depois entre nela digitando `cd ExemploMinimo`. Feito isso, crie um arquivo novo com o comando: `touch Main.hs`. Este arquivo conterá o código da nossa aplicação. Abra o arquivo com o editor de texto de sua preferência e coloque o código a seguir:
+    
+    
+    {-# LANGUAGE OverloadedStrings     #-}
+    {-# LANGUAGE QuasiQuotes           #-}
+    {-# LANGUAGE TemplateHaskell       #-}
+    {-# LANGUAGE TypeFamilies          #-}
+    module Main where 
+    
+    import Yesod
+    
+    data Aplicacao = Aplicacao
+    
+    instance Yesod Aplicacao
+    
+    mkYesod "Aplicacao" [parseRoutes|
+        / HomeR GET
+    |]
+    
+    getHomeR :: Handler Html
+    getHomeR = defaultLayout [whamlet| Minha Primeira Aplicação Yesod!|]
+    
+    main :: IO ()
+    main = warp 8080 Aplicacao
+    
+
+Salve o arquivo e, no shell dentro da pasta `ExemploMinimo`, digite o comando: `stack exec --package yesod -- ghc`, que vai baixar os pacotes/dependências necessárias para o projeto para uso do compilador GHCI e que o nosso miniprojeto utilizará. 
+
+Podemos ler este comando da seguinte maneira: `stack exec` vai executar algum comando, qual? O `--package`, que é uma flag que espera receber como valor o nome do pacote/dependência a ser baixada. E onde ficará esta dependencia? Na flag final, `-- ghc`. Note que ele não executa o projeto em si. Se tudo ocorrer bem, este texto aparecerá:
+    
+    
+    http-api-data-0.3.7.1: configure
+    http-api-data-0.3.7.1: build
+    http-api-data-0.3.7.1: copy/register
+    persistent-2.7.0: build
+    yaml-0.8.23.3: copy/register
+    persistent-2.7.0: copy/register
+    persistent-template-2.5.2: build
+    persistent-template-2.5.2: copy/register
+    yesod-1.4.5: download
+    yesod-1.4.5: configure
+    yesod-1.4.5: build
+    yesod-1.4.5: copy/register
+    Completed 7 action(s).
+    
+
+Este texto significa que todos os módulos do pacote/dependência Yesod foram baixados com sucesso. Após a instalação do módulo o prompt estará na pasta do projeto e então executarmos a nossa aplicação - digite o comando `stack Main.hs` e _voilà_ , deve aparecer o texto:
+    
+    
+    02/Jun/2018:17:49:18 -0300 [Info#yesod-core] Application launched @(yesod-core-1
+    .4.37.2-IBK4XOsA9aOE8tqaqDvFHF:Yesod.Core.Dispatch .\Yesod\Core\Dispatch.hs:166:11)
+    
+
+Isso demonstra que a aplicação está funcionando em seu computador. O servidor de aplicação warp "levantou" com o nosso projeto. Agora abra o navegador e digite `localhost:8080`. A mensagem que deverá aparecer é: `"Minha Primeira Aplicação Yesod"`.
+
+> Caso esteja com dificuldades de seguir a sequência de comandos utilizados colocarei aqui a sequência de ações feitas da criação da pasta à execução do projeto a partir do bash no linux:
+>     
+>     
+>     $ mkdir ExemploMinimo
+>     $ cd ExemploMinimo/
+>     ExemploMinimo $ touch Main.hs
+>     ExemploMinimo $ stack exec --package yesod -- ghc
+>     ExemploMinimo $ stack Main.hs
+>     
+
+### Stack extras — gerando e executando projetos monolíticos
+
+O intuito deste capítulo é apresentá-lo o mínimo necessário para criação e execução de um projeto em Yesod. Uma estrutura mínima para que você possa entender o funcionamento do framework e suas funções básicas. Dificilmente você vai desenvolver um projeto em um único arquivo, ou seja, de forma monolítica. Todavia, é possível você compilar este miniprojeto em um arquivo executável, ou o que chamamos de arquivo binário. Este arquivo contém todo o código compilado de nosso miniprojeto e pode ser executado em qualquer computador, em diversos sistemas operacionais. É o que vai para a produção e será executado em um ambiente real, ou seja, em um servidor web. 
+
+O problema na forma como executamos o nosso miniprojeto é que ele possui um caráter de testes. Nós não vamos colocar o código-fonte no servidor Web e executar a aplicação com este comando: `stack exec Main.hs`. Podemos resolver isso gerando o arquivo executável ou seja o binário da aplicação que será enviado ao servidor no qual rodará a nossa aplicação.
+
+Para gerar um binário deste miniprojeto ou quaisquer outros monolíticos, estando com o prompt dentro da pasta do projeto, basta digitar: `stack exec -- ghc NomeDoArquivo.hs -o NomeDoCompilado`. No nosso projeto, ficará assim: `stack exec -- ghc Main.hs -o ExemploMinimo`. Este comando vai criar um arquivo executável/binário chamado `ExemploMinimo.exe` \- em seguida executaremos o projeto com o seguinte comando: `./ExemploMinimo`. Após isso veremos que o servidor "subiu" com o nosso projeto e o seguinte texto no bash aparecerá:
+    
+    
+    02/Jun/2018:17:49:18 -0300 [Info#yesod-core] Application launched @(yesod-core-1
+    .4.37.2-IBK4XOsA9aOE8tqaqDvFHF:Yesod.Core.Dispatch .\Yesod\Core\Dispatch.hs:166:11)
+    
+
+Para encerrar a execução do projeto, basta pressionar as teclas `Ctrl + C`, que o serviço será interrompido. Agora dê uma olhada no conteúdo da pasta do projeto digitando `ls` e o seguinte texto aparecerá:
+    
+    
+    $ ls
+    client_session_key.aes  ExemploMinimo.exe*  Main.hi  Main.hs  Main.o
+    
+
+Reparem no arquivo `ExemploMinimo.exe` que foi criado. Este arquivo será usado para ser colocado em um servidor Web e executará sua aplicação. Caso esteja usando sistema operacional Windows, basta ir até a pasta onde o arquivo `ExemploMinimo.exe` está e dê um duplo clique sobre o arquivo. O serviço Web será executado com o nosso projeto. Após isso abra o navegador e digite no browser `localhost:8080` ou `127.0.0.1:8080`.
+
+### Conclusão
+
+Neste capítulo, introduzimos os conceitos básicos do framework Yesod como suas funções `mkYesod`, classe de tipo Yesod, a instância de Yesod para o tipo Aplicação, também da ferramenta auxiliar Stack. Vimos também como manipular rotas e a estrutura básica de um projeto neste framework. O objetivo é introduzir o leitor e leitora ao básico para desenvolvimento de uma aplicação Yesod, fazendo uso de arquivos únicos monolíticos como `snippets`. De agora em diante, estamos prontos para codificar nossa primeira aplicação Web aderindo totalmente ao paradigma funcional.
+
+
+Capítulo 2
+
+# Scaffold & Templates: Configuração do ambiente com Stack
+
+No capítulo anterior aprendemos conceitos sobre Yesod: pragmas, QuasiQuotes, typeclass do Foundation (Yesod), declaração de rotas, Handlers. Colocamos estes conceitos à prova implementando e executando uma aplicação Yesod com o mínimo necessário, introduzindo a você o fluxo de trabalho básico utilizado para o desenvolvimento.
+
+Principalmente no início da aprendizagem, é importante praticar e testar novas funcionalidades e implementações no formato abordado no capítulo anterior, com todo o código em um único arquivo (monolítico). Porém, esta forma possui vários problemas. Os principais são:
+
+  * Todo o código da sua aplicação fica contido em um único arquivo, tornando a manutenção complicada com o eventual crescimento da aplicação. 
+
+  * Com o projeto contido em um único arquivo, teremos uma mistura de códigos de configurações da aplicação (metadados) com implementações como do front-end (Widgets e Sheakespearean Templates), rotas etc. tornando-o confuso e poluído. Seria o equivalente a criar um projeto em Java ou PHP com apenas uma única classe no projeto. É o caos.
+
+
+
+
+Mas a ferramenta Stack possui templates de projetos prontos para serem usados. Estes templates já oferecem uma estrutura básica definida com arquivos separados e modularizados para fácil escalabilidade e manutenção do código existente. Assim, arquivos de configurações de implementações do front-end ficam separados dos de back-end e de acesso ao banco de dados.
+
+Os templates de projeto Yesod possuem uma estrutura predefinida. Pode-se concluir que o stack é uma IDE como NetBeans, Eclipse, Visual Studio, que contém muitos recursos para aumentar a produtividade do trabalho, porém, ela não possui interface gráfica, sendo utilizada apenas através do terminal.
+
+## 2.1 Bem-vindo ao scaffold — os andaimes do Yesod!
+
+O Yesod tem uma maneira simples de lidar com a criação de projetos, que é o scaffold. Em uma tradução literal, significa esqueleto/andaime (que encontramos em obras de construção civil), isto é, o scaffold fornece uma base estrutural para que o desenvolvedor comece a construir sua aplicação. Basicamente, esse processo se resume a:
+
+  * Organizar os arquivos de configuração;
+  * Organizar os arquivos estáticos no servidor;
+  * Estruturar os arquivos do projeto (pastas e códigos-fontes).
+
+
+
+Os arquivos de configuração de uma aplicação Web são responsáveis, por exemplo, por algum tipo de configuração que antecede a execução da aplicação, como a localização do banco de dados e portas usadas pelo servidor.
+
+Os arquivos estáticos constituem-se de imagens, arquivos de estilo em cascata (CSS) ou scripts (em JavaScript, por exemplo) que só serão modificados pelo programador do sistema, e não por um usuário externo.
+
+Por último, a estrutura de pastas e arquivos de um projeto está organizada de forma independente e desacoplada, visando facilitar a inclusão de novas funcionalidades, configurações, refatoração e testes.
+
+Figura 2.1: Layout da estrutura de pastas do Scaffold
+
+## 2.2 Os templates
+
+O Yesod possui vários tipos de modelos (templates) prontos para serem usados de acordo com a necessidade do projeto. Por exemplo: caso você necessite de uma estrutura pronta para uso do banco de dados MySQL, o Yesod já possui um modelo/template para tal, assim como para outros bancos de dados.
+
+Neste livro, utilizaremos o template _yesod-minimal_ , pois é o ideal para quem está iniciando o desenvolvimento de aplicações Web com o framework Yesod. 
+
+Como o próprio nome já diz, este template possui o mínimo necessário para desenvolver um projeto. No decorrer do livro, vamos incrementá-lo com funcionalidades que não estão presentes por padrão, assim progrediremos do mínimo simples até uma aplicação completa, de forma gradativa.
+
+## 2.3 A ferramenta stack
+
+Para gerar um projeto em Yesod, nós utilizaremos o comando `stack new`, que cria automaticamente a estrutura do scaffold.
+
+Para utilizar este comando, basta digitar `stack new nome-projeto nome-template`. Existem vários templates, não apenas para Yesod, e eles podem ser listados com o comando `stack templates`.
+
+Vamos começar. O nosso projeto para este capítulo se chamará: `ExemploScaffold`. Então nosso comando de criação ficará: `stack new ExemploScaffold yesod-minimal`.
+
+Caso tudo ocorra bem, a seguinte mensagem aparecerá:
+    
+    
+    Downloading template "yesod-minimal" to create project "ExemploScaffold" in ExemploScaffold/ ...
+    Looking for .cabal or package.yaml files to use to init the project.
+    Using cabal packages:
+    - ExemploScaffold/
+    
+    Selecting the best among 13 snapshots...
+    
+    Downloaded lts-11.1 build plan.    
+    * Matches lts-11.1
+    
+    Selected resolver: lts-11.1
+    Initialising configuration using resolver: lts-11.1
+    Total number of user packages considered: 1
+    Writing configuration to file: ExemploScaffold/stack.yaml
+    All done.
+    
+
+O comando criou uma pasta chamada `ExemploScaffold` com todos os arquivos e pastas do template `yesod-minimal`. Para entrar nela, digite o comando `cd ExemploScaffold`. Dentro dela, execute `stack setup`, que vai efetuar o download da última versão do compilador GHC. Em caso de sucesso da instalação, aparecerá a mensagem: 
+    
+    
+    Downloaded lts-11.1 build plan.    
+    Preparing to install GHC to an isolated location.
+    This will not interfere with any system-level installation.
+    Downloaded ghc-8.2.2.                                      
+    Installed GHC.                                                                  
+    stack will use a sandboxed GHC it installed
+    For more information on paths, see 'stack path' and 'stack exec env'
+    To use this GHC and packages outside of a project, consider using:
+    stack ghc, stack ghci, stack runghc, or stack exec
+    
+
+Agora, digite o comando `stack build`, para baixar as dependências necessárias ao projeto (os módulos, funções) e gerar o arquivo binário, para que seja usado em um servidor, no diretório `.stack-work`. A partir dele, poderemos executar o projeto após o término deste processo.
+
+Este processo de construção (build) tende a ser demorado na primeira vez em que é efetuado. Nas posteriores, não, pois as dependências já estarão salvas no diretório do projeto. Um novo download de uma nova dependência só será feito caso ela seja necessária ao longo do desenvolvimento do projeto, adicionando-a no arquivo `package.yaml`.
+
+Após a conclusão, temos a seguinte mensagem:
+    
+    
+    ...
+    Cabal-2.0.1.1: download
+    appar-0.1.4: download
+    appar-0.1.4: configure
+    data-default-class-0.1.2.0: build
+    data-default-class-0.1.2.0: copy/register
+    Progress: 7/96
+    
+
+Esta mensagem significa que todos as dependências necessárias ao projeto estão sendo baixadas. Neste caso, ele está na dependência 7 de um total de 96. Este processo se sucederá até que todos as dependências sejam baixadas. Ao final do download das 96 dependências, a mensagem a seguir será apresentada. 
+    
+    
+    Building all executables for `ExemploScaffold' once. After a successful build of all of them, only specified executables will be rebuilt.
+    ...
+    Building library for ExemploScaffold-0.0.0..
+    [1 of 5] Compiling Foundation       ( src/Foundation.hs, .stack-work/dist/x86_64-linux/Cabal-2.0.1.0/build/Foundation.o )
+    [2 of 5] Compiling Add              ( src/Add.hs, .stack-work/dist/x86_64-linux/Cabal-2.0.1.0/build/Add.o )
+    [3 of 5] Compiling Home             ( src/Home.hs, .stack-work/dist/x86_64-linux/Cabal-2.0.1.0/build/Home.o )
+    [4 of 5] Compiling Application      ( src/Application.hs, .stack-work/dist/x86_64-linux/Cabal-2.0.1.0/build/Application.o )
+    [5 of 5] Compiling Paths_ExemploScaffold ( .stack-work/dist/x86_64-linux/Cabal-2.0.1.0/build/autogen/Paths_ExemploScaffold.hs, ...
+    Installing executable ExemploScaffold in /projects/ExemploScaffold/.stack-work/install/x86_64-linux/lts-11.1/8.2.2/bin
+    Registering library for ExemploScaffold-0.0.0..
+    Completed 15 action(s).
+    
+
+Ela significa que construiu o arquivo binário da aplicação e que está compilando todos os arquivos do projeto. Por fim, para executá-lo, digite o comando `stack exec ExemploScaffold`.
+
+Por padrão, o arquivo binário gerado pelo comando `stack build` terá o nome do projeto que foi gerado pelo comando `stack new`, logo, se nosso projeto foi gerado com este comando: `stack new ExemploScaffold yesod-minimal` o nome do binário gerado com o comando `stack build` será: `ExemploScaffold`. Este comando é o último fluxo de trabalho principal com gerenciamento do projeto, que vai de sua criação até a sua execução. A mensagem a seguir indica que o projeto está em execução.
+    
+    
+    21/Mar/2018:19:14:10 +0000 [Info#yesod-core] Application 
+    launched @(yesod-core-1.6.2-9DNx0yaTflP4yFkKZhZej:Yesod.Core.Dispatch .
+    /Yesod/Core/Dispatch.hs:167:11)
+    
+
+Nossa aplicação está funcionando! Basta abrir o navegador e acessar o endereço: `http://localhost:3000` ou `127.0.0.1:3000`.
+
+Veja a seguir todo o fluxo para se criar um projeto Yesod, compilá-lo e executá-lo de forma direta.
+    
+    
+    stack new ExemploMinimo yesod-minimal
+    cd ExemploMinimo
+    stack setup
+    stack build
+    stack exec ExemploMinimo
+    
+
+## 2.4 A fundo no snapshot do Haskell — LTS e Nightly
+
+Imagine uma foto, na qual existem várias informações, pode haver árvores, pessoas, veículos, construções, cores etc. e quando você olha aquela foto, você sabe que todas essas informações estão lá; o snapshot não é muito diferente disso. 
+
+Ele é composto por várias informações, no nosso caso, de bibliotecas. O stack gerencia seus pacotes através de snapshots, que são nada mais nada menos que "fotos" de um conjunto de bibliotecas que, supostamente, devem funcionar juntas. Existem dois tipos:
+
+  * Nightly — é o que acabou de sair do forno, todos os dias um sistema automatizado constrói novos snapshots;
+
+  * LTS, long-term support — que significa "suporte de longo prazo", seu uso é controverso porque ele não passa de um Nightly em um ponto específico de tempo.
+
+
+
+
+Qual usar? Depende, em muitos casos não há motivos para não usar o Nightly, já que você obtém pacotes mais recentes e, além disso, ajuda os seus respectivos desenvolvedores a consertar problemas na base de código mais rapidamente, já que estará usando uma versão mais nova da biblioteca. 
+
+A única desvantagem é o espaço de armazenamento, pois um snapshot novo seria baixado para cada versão do Nightly usada. 
+
+Após escolher um snapshot, você possui duas opções para usá-lo: com o comando `stack new ExemploMinimo yesod-minimal --resolver nightly`, que usaria a última versão do Nightly disponível; ou editar o arquivo `stack.yaml`, na linha do `resolver`, nesse caso é necessário especificar a versão do snapshot, `resolver: nightly-AAAA-MM-DD`. 
+
+Vale lembrar também que se você não quiser escolher, não há problemas, o stack fará isso por você.
+
+É possível criar um snapshot personalizado, que é uma ferramenta experimental; ou simplesmente não usar snapshot, forçar o programador a usar apenas as bibliotecas padrão que vêm junto ao compilador; ou efetuar o download das bibliotecas manualmente, o que não é recomendado para iniciantes.
+
+### Conclusão
+
+Neste capítulo, apresentamos o conceito primário do fluxo de trabalho com o framework Yesod. Também vimos os templates que a ferramenta Stack utiliza e que eles possuem padrões de pastas e layout chamados scaffold. Foi abordado o sistema de snapshot e quais são os snapshots utilizados. No próximo capítulo vamos desbravar todo o conteúdo destes arquivos presentes em um projeto Yesod utilizando o template `yesod-minimal`.
+
+
+Capítulo 3
+
+# Estrutura de projeto Yesod com template yesod-minimal
+
+> Antes de iniciarmos este capítulo, peço a você leitor que crie um novo projeto Yesod! Nosso novo projeto se chamará `Livraria`, utilizando o template `yesod-minimal`.
+
+Vimos como criar um snippet e como criar um projeto. Neste capítulo, vamos aprender a estrutura de um projeto Yesod (template `yesod-minimal`). Entraremos em sua estrutura de pastas, chamadas de arquivos, funções, entre outros. O entendimento dessa estrutura é primordial para que você seja capaz de organizar com eficiência seu projeto para obter maior produtividade. No começo, pode parecer um pouco confuso, mas com tempo e um pouco de prática você verá como é simples e fácil manipular projetos no Yesod. Após algumas configurações iniciais, a maior parte da manipulação no projeto se concentrará em um único local. Ao término deste capítulo você estará habituado(a) aos componentes e processos de um projeto Yesod.
+
+## 3.1 Estrutura de pastas e arquivos de um projeto Yesod
+
+Antes de começarmos a explicação, vamos executar o comando `tree`, estando dentro da pasta `Livraria`. Este comando mostrará a hierarquia de pastas do scaffold `yesod-minimal`:
+    
+    
+    .
+    ├── Livraria.cabal
+    ├── README.md
+    ├── app
+    │   └── Main.hs
+    ├── package.yaml
+    ├── routes
+    ├── src
+    │   ├── Add.hs
+    │   ├── Application.hs
+    │   ├── Foundation.hs
+    │   └── Home.hs
+    └── stack.yaml
+    
+
+Observando a raiz do projeto Livraria teremos os seguintes arquivos: 
+
+  * `Livraria.cabal`
+  * `package.yaml`
+  * `README.md`
+  * `routes`
+  * `stack.yaml`
+
+
+
+Aqui estão os arquivos responsáveis pela configuração do projeto, como gerenciamento das dependências, versão e nome de um projeto, ou seja: arquivos de metainformação. Iniciaremos com dois arquivos que possuem uma relação de dualidade.
+    
+    
+    
+    
+
+### package.yaml e Livraria.cabal
+
+O `Livraria.cabal` é um arquivo de metainformações responsável por gerenciar as dependências de um projeto. O `package.yaml` é um arquivo utilizado pela ferramenta _hpack_ , que gera o arquivo cabal de um projeto a partir de um `package.yml` \- essencialmente, se você estiver usando o hpack, não é necessário tocar no cabal. O stack tem suporte nativo ao hpack, portanto basta possuir o `package.yaml` no projeto; o nome do arquivo cabal gerado vai ter o mesmo nome utilizado no comando `stack new`.
+
+> **O que é .yaml?**
+> 
+> Yaml significa "YAML Ain't Markup Language", em português, "não é linguagem de marcação". Ele possui este nome para distinguir seu propósito centrado em dados no lugar de documentos marcados. Para saber mais sobre o padrão yaml acesse: <https://pt.wikipedia.org/wiki/YAML>.
+
+Vamos dar uma olhada no conteúdo do `package.yaml`:
+    
+    
+    name:    Livraria
+    version: "0.0.0"
+    
+    dependencies:
+    - base
+    - yesod-core
+    
+    # The library contains all of our application code. The executable
+    # defined below is just a thin wrapper.
+    library:
+      source-dirs: src
+    
+    # Runnable executable for our application
+    executables:
+      Livraria:
+        main: Main.hs
+        source-dirs: app
+        ghc-options:
+        - -threaded
+        - -rtsopts
+        - -with-rtsopts=-N
+        dependencies:
+        - Livraria
+    
+
+No início do arquivo, temos o nome da aplicação, a versão na qual o projeto se encontra e uma chave chamada `dependencies` \- vamos nos focar nela. Na chave `dependencies` temos os seguintes valores: `- base`, `- yesod-core`, o que significa que nossa aplicação possui duas dependências, uma chamada `base` e a outra chamada `yesod-core`, que são um conjunto de vários módulos que contêm diversas implementações primordiais em um projeto Yesod.
+
+Então caso haja necessidade de utilizar uma nova dependência com determinadas funcionalidades em nosso projeto, precisaremos abrir este arquivo e adicioná-la após o último pacote como valor da chave `dependencies`. Por exemplo, se precisássemos utilizar o banco de dados PostgreSQL em nosso projeto Livraria, seria necessário adicionar a dependência relacionada a ele no arquivo `package.yaml`, que ficaria assim:
+    
+    
+    name:    Livraria
+    version: "0.0.0"
+    
+    dependencies:
+    - base
+    - yesod-core
+    - persistent-postgresql 
+    
+    ...
+    
+
+Após esta modificação e a compilação do projeto, um novo arquivo `Livraria.cabal` será criado com a dependência `persistent-postgresql` e o projeto Livraria poderá utilizar todos os módulos lá contidos. Durante a construção do nosso projeto Livraria, teremos que adicionar novas dependências e estas serão incluidas no `package.yaml`.
+
+## 3.2 Roteamento — as rotas do projeto
+
+O arquivo `routes` é responsável por conter todas as rotas do projeto. Toda vez que houver a necessidade de implementar uma nova rota, será necessário defini-la no arquivo `routes`, e a implementação mandatória de uma nova função Handler associada.
+
+> Caso queira recapitular o conceito de função Handler, vá até a seção 1.6 do capítulo 1.
+
+Antes de irmos adiante com a explicação, vamos dar uma olhada dentro do arquivo `routes`:
+    
+    
+    /              HomeR GET
+    /add/#Int/#Int AddR  GET
+    
+
+Existe uma função responsável por ler o conteúdo deste arquivo para efetuar a interpretação que vai gerar os "tipos de rota" (`route types`). Esta função é a `parseRoutesFile`, que recebe como parâmetro um tipo `String`, que representa o nome do arquivo que contém a declaração das rotas do projeto.
+
+Outra importante função relacionada é a `mkYesodData`, com dois parâmetros. Esta recebe como primeiro parâmetro o nome do tipo da instância do typeclass `Yesod`, em forma de `String`. Como segundo parâmetro, o retorno da função `parseRoutesFile`, que converterá o conteúdo do arquivo `routes` para o tipo `[Resources]`. As funções `mkYesodData` e `parseRouteFile` localizam-se no arquivo `Foundation.hs`.
+
+### Detalhando as funções mkYesodData e parseRoutesFile
+
+Vamos nos aprofundar nos conceitos envolvidos nas funções `mkYesodData` e `parseRouteFile`.
+
+> Não fique preocupado com o detalhamento dos tipos envolvidos, pois durante a construção do projeto não teremos, a princípio, a necessidade de dominá-los. O objetivo do framework Yesod é alta produtividade utilizando o sistema de tipos do Haskell e por consequência facilitar o desenvolvimento de aplicações.
+
+Começando, vamos olhar a assinatura das duas funções: 
+    
+    
+    parseRoutesFile :: FilePath -> Q Exp
+    mkYesodData :: String -> [Resource] -> Q [Dec]
+    
+
+Em nosso projeto a composição destas duas funções está desta forma:
+    
+    
+    mkYesodData "App" $(parseRoutesFile "routes")
+    
+
+Sobre a função `$( )`, vamos abordá-la posteriormente. O que precisamos entender agora é que `parseRoutesFile "routes"` recebe o tipo `FilePath`, que é o caminho onde se encontra o arquivo `routes` junto do nome do arquivo. No projeto, este arquivo encontra-se na raiz da aplicação, logo é apenas necessário passar o nome do arquivo. O retorno da função `parseRoutesFile` será um tipo `Q Exp` no qual `Q` é um QuasiQuote pertencente ao TemplateHaskell, e também é uma mônada.
+
+De forma direta, a mônada `Q` é um contêiner para os valores contidos em `Exp` e alimentará a função `mkYesodData`. O segundo parâmetro é um `[Resource]`. O `Resource` é o tipo que faz o agrupamento dos tipos de rota com suas respectivas URIs.
+
+Assim concluímos que a função `mkYesodData` é o "gerente das rotas" de um projeto Yesod. Como dito no capítulo 1, o Yesod utiliza a arquitetura Web chamada _front controller_ , e é desta forma que a função `mkYesodData` funciona, associando a rota chamada pelo usuário e invocando o Handler associado a ela.
+
+### Rotas parametrizadas — query string
+
+Uma das práticas comuns no desenvolvimento de aplicações web é a passagem de valores pela URI. Em uma situação hipotética, podemos imaginar um caso onde o cliente precise passar valores entre as requisições. O meio mais prático de se realizar essa tarefa é passar esses valores através da _query string_.
+
+O Yesod faz a captura dos parâmetros da query string utilizando o sistema de tipos do Haskell e o _pattern matching_. Abra o arquivo `routes` e veja a rota `AddR`:
+    
+    
+    /add/#Int/#Int AddR     GET
+    
+
+Ela possui uma sintaxe diferente. Os dois `#Int` significam que a rota recebe um número inteiro, seguido de outro número inteiro, logo é possível submeter dois parâmetros, desta forma: `/add/2/4`. Quando isso é feito, o Handler associado à rota vai capturar os valores declarados na URI (`2` e `4`) como seus parâmetros:
+    
+    
+    getAddR :: Int -> Int -> Handler TypedContent
+    getAddR x y = selectRep $ ...
+    
+
+Desta maneira os valores estarão sempre presentes nas requisições, se assim for desejado, bastando passá-los adiante através da query string. No caso do `AddR`, passar qualquer coisa diferente de dois números inteiros na query string, por exemplo `/add/dois/quatro`, terminará em `404 Not Found`.
+
+Note que, para usar esses valores na query string, é necessário que o tipo utilizado possua uma instância do typeclass `PathPiece`; os tipos comumente usados, como `Text`, `Int`, `Day` e `Bool`, já possuem essa instância.
+
+## 3.3 O arquivo main.hs
+
+O arquivo `main.hs` localiza-se dentro da pasta `app`, sendo responsável pela execução de um projeto. Note que o que foi apresentado no capítulo 1, seção 1.7, é uma função e não um arquivo - o arquivo `main.hs` contém uma função de mesmo nome, que será responsável pela inicialização do projeto. A execução desta função acarretará na chamada do servidor de aplicação _warp_ , associado ao tipo com instância do typeclass `Yesod`, que no projeto (e por padrão, com o uso de um template) se chama `App`. Vamos dar uma olhada dentro do arquivo `main.hs`:
+    
+    
+    import Application () -- for YesodDispatch instance
+    import Foundation
+    import Yesod.Core
+    
+    main :: IO ()
+    main = warp 3000 App
+    
+
+Temos algumas importações de módulos que são necessários para utilização da aplicação. A função `main` tem como retorno um tipo `IO ()` e sua execução levantará o servidor _warp_ , executando todo o projeto.
+
+A necessidade destas importações se deve ao fato de possuírem os tipos e funções elementares para o funcionamento da aplicação. Podemos seguir o fluxo de quais funções e tipos são necessários neste arquivo no momento da chamada da função `main` e onde estes tipos estão localizados. Por exemplo, o tipo `App` está contido no módulo `Foundation`.
+
+Vamos dar uma olhada dentro do arquivo `Foundation.hs`, e verificar o tipo `App`, a instância de `Yesod` para o tipo `App` e a importação do módulo `Yesod.Core`, que contém os principais tipos e funções do framework:
+    
+    
+    {-# LANGUAGE OverloadedStrings #-}
+    {-# LANGUAGE TemplateHaskell   #-}
+    {-# LANGUAGE TypeFamilies      #-}
+    {-# LANGUAGE ViewPatterns      #-}
+    module Foundation where
+    
+    import Yesod.Core
+    
+    data App = App
+    
+    mkYesodData "App" $(parseRoutesFile "routes")
+    
+    instance Yesod App
+    
+
+Com o andamento do projeto vamos ver mais detalhes sobre as importações presentes no arquivo `main.hs`.
+
+## 3.4 Foundation.hs e Application.hs
+
+Agora vamos ao coração do projeto: o arquivo `Foundation.hs`. Como o próprio nome diz, este arquivo é a fundação da aplicação, o equivalente ao alicerce de um prédio a ser construído, que se utiliza dos andaimes e as armações (scaffold utilizado pelos templates). O concreto e as vigas de sustentação são o que darão firmeza e a base, firmeza necessária para a construção de um projeto. 
+
+O `Foundation.hs` é responsável pela criação do tipo principal do projeto. Ele também contém a importação do módulo `Yesod.Core`, que abriga funcionalidades essenciais para os tipos e funções deste arquivo e também a função `mkYesodData`, responsável pelo gerenciamento e direcionamento das rotas criadas e requisitadas na aplicação.
+
+O arquivo `Application.hs` está intrinsecamente ligado ao arquivo `Foundation.hs` por causa da extrema modularização presente na estrutura. A função `mkYesodData` do arquivo `Foundation.hs` provê um retorno para a função `mkYesodDispatch` do arquivo `Application.hs`.
+    
+    
+    
+    
+
+### Módulos Foundation e Application — modularizando rotas e Handlers
+
+Agora nós vamos nos aprofundar na implementação das rotas com o uso do template `yesod-minimal` e faremos uma comparação com a forma que foi feito no exemplo monolítico do capítulo 1. O grande diferencial fica pela fragmentação da função `mkYesod` em duas, presente no projeto monolítico em outras duas funções no projeto com o template: `mkYesodData` e `mkYesodDispatch`. Esta separação é necessária para tornar possível a declaração das rotas e seus respectivos Handlers em módulos separados.
+
+> **Qual a diferença entre as funções`mkYesodData` e `mkYesod`?**
+> 
+> No capítulo 1 vimos a criação de um projeto monolítico. O grande problema desta abordagem é o comprometimento da modularidade da aplicação. A função `mkYesod` é específica para um projeto monolítico, com apenas um único módulo. Para a abordagem onde as rotas são declaradas em um módulo e as funções Handlers geradas destas rotas definidas em outro módulo do projeto, é necessário o uso da função `mkYesodData`. Faz-se uso da função `mkYesodData` emparelhada com a função `mkYesodDispatch` localizada no módulo `Application` para fazer o desacoplamento.
+
+A função `mkYesod` utilizada no projeto monolítico do primeiro capítulo possui algumas responsabilidades como:
+
+  * `Route type`, criação dos tipos de rota associados à sua String URL; 
+  * `Route render function`, criação das funções de renderização da rota; 
+  * `Dispatch function`, responsável por direcionar uma requisição para um Handler. 
+
+
+
+A função de despacho associa os tipos de rota com suas funções Handlers, portanto, todos os Handlers devem ser definidos no mesmo arquivo que a função de despacho e os tipos de rota. No projeto do capítulo, 1 a função `mkYesod` era responsável por este processo. Se você seguir a lógica aqui, todo o seu projeto deve essencialmente viver em um único arquivo! Claramente, isso não é o que queremos. Então, em vez de usar a função `mkYesod`, utilizamos a versão decomposta de `mkYesod`: `mkYesodData` e o `mkYesodDispatch`; todo template de projeto Yesod segue o padrão modularizado.
+
+O fluxo de chamada destas duas funções se inicia com a função `mkYesodData` presente no módulo `Foundation`, no qual ela vai ler o conteúdo do arquivo `routes` e criar os `route types`, (tipos das rotas) associando-os a suas respectivas URIs e aos `route renderers` (funções de renderização). 
+
+O retorno desta função alimenta a função `resourcesApp`, que será um dos parâmetros da função `mkYesodDispatch`, localizada no módulo `Application`. A função `mkYesodDispatch` possui a responsabilidade de fazer as funções de despacho dos `route types` criados para seus respectivos Handlers. Desta forma, as funções Handler não precisam estar no mesmo módulo que os `route types` declarados. 
+
+Todo o processo é automático e feito pelo framework, então não se preocupe em dominar o seu funcionamento de forma integral. Finalizando, é preciso importar os módulos que contêm os Handlers dentro módulo `Application`, pois a função `mkYesodDispatch` precisará saber onde eles residem.
+
+## 3.5 Handlers para todos os lados
+
+Finalmente! Onde vivem? O que comem? Vamos relembrar o capítulo 1, no qual vimos o conceito de Handler utilizado no projeto de forma monolítica, ou seja, em um único arquivo.
+
+No exemplo do projeto monolítico nós declaramos uma função Handler baseada na rota `HomeR` e, quando uma rota é declarada, somos obrigados a implementar um Handler para cada método HTTP da rota. O Handler implementado foi:
+    
+    
+    getHomeR :: Handler Html
+    getHomeR = defaultLayout [whamlet| Minha Primeira Aplicação Yesod!|]
+    
+
+Para o método HTTP `GET` da rota `HomeR`:
+    
+    
+    mkYesod "Aplicacao" [parseRoutes|
+        / HomeR GET
+    |]
+    
+
+Mas afinal, em um projeto com o uso de um template `yesod-minimal`, onde implementaremos os Handlers associados às rotas presentes no arquivo `routes`? Simples, dentro da pasta `src`, mesmo local dos módulos `Foundation` e `Application`. 
+
+> Note que isso não é uma estrutura de organização de projeto obrigatória, e sim apenas uma convenção.
+
+No projeto Livraria possuímos dois módulos Handlers com os respectivos Handlers de suas rotas, o `HomeR` e o `AddR`. Abra o arquivo `routes` do projeto Livraria e você verá algumas rotas declaradas:
+    
+    
+    /              HomeR GET
+    /add/#Int/#Int AddR  GET
+    
+
+Este arquivo contém duas rotas: a rota raiz da aplicação `/`, `HomeR` e a rota `/add/#Int/#Int`, `AddR`. Agora vejamos os arquivos contidos dentro da pasta `src` do projeto Livraria:
+    
+    
+      src
+        ├── Add.hs
+        ├── Application.hs
+        ├── Foundation.hs
+        └── Home.hs
+    
+
+Vale lembrar que, para cada nova rota adicionada, um novo Handler terá que ser implementado, juntamente com todos os Handlers derivados dos métodos do protocolo HTTP para esta rota.
+
+### Criando um novo módulo Handler para uma nova rota
+
+O que é necessário fazer se quisermos criar uma nova rota? Este processo é bem simples, precisamos declarar a URI, seguida do tipo da rota e o método do protocolo HTTP. Abra o arquivo `routes` e adicione a  
+URI `/pagina1` com o _route type_ `Pagina1R` e o método HTTP `GET`. Essa implementação ficará assim:
+    
+    
+    /              HomeR    GET
+    /add/#Int/#Int AddR     GET
+    /pagina1       Pagina1R GET
+    
+
+Agora será necessária a criação de um novo módulo para esta nova rota. Por convenção, um módulo Handler possui o mesmo nome do seu _route type_ e acolherá todos os Handlers necessárias para ele. O tipo possui o nome `Pagina1R`, o que dará origem a um módulo chamado `Pagina1`. 
+
+Este módulo deverá ser criado dentro da pasta `src`. Crie o módulo e a pasta do nosso projeto ficará desta maneira:
+    
+    
+    ├── src
+    │   ├── Add.hs
+    │   ├── Application.hs
+    │   ├── Foundation.hs
+    │   ├── Home.hs
+    │   └── Pagina1.hs
+    
+
+Por padrão todos os módulos Handler possuem como base dois módulos específicos importados. Eles contêm o tipo `Handler` e o tipo `Html`:
+    
+    
+    module Pagina1 where
+    
+    import Foundation
+    import Yesod.Core
+    
+
+Por último, a implementação do Handler. Lembre-se de que o nome de um Handler é a junção do nome do método HTTP (`GET`) com o nome do tipo de rota (`Pagina1R`), assim a função Handler terá o nome `getPagina1R`. O tipo do retorno da função será `Handler Html` pois queremos renderizar uma página com conteúdo HTML para ser interpretado pelo navegador do usuário. Utilizaremos novamente a função `error` na implementação da função Handler `getPagina1R` para sinalizar que esta página precisa ser implementada. Nosso módulo `Pagina1` ficará assim:
+    
+    
+    module Pagina1 where
+    
+    import Foundation
+    import Yesod.Core
+    
+    getPagina1R :: Handler Html
+    getPagina1R = error "Rota pagina1 não implementada"
+    
+
+Agora precisamos apenas compilar o código e executar a aplicação? Errado! Se fizermos isto o seguinte erro será apresentado:
+    
+    
+    ./Livraria/src/Application.hs:14:1: error:
+        • Variable not in scope: getPagina1R :: HandlerT App IO res0
+        • Perhaps you meant data constructor ‘Pagina1R’ (imported from Foundation)
+       |
+    14 | mkYesodDispatch "App" resourcesApp
+       | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    
+
+O compilador insiste em dizer que a função `getPagina1R` não está presente no escopo quando a função `mkYesodDispatch` é executada, então por que este erro surgiu? 
+
+Simples: **todas os Handlers criados precisam estar visíveis ao módulo`Application`** para que a função `mkYesodDispatch` possa localizar e associar as rotas aos seus respectivos Handlers. Abra o módulo `Application` e vamos dar uma olhada nos imports:
+    
+    
+    ...
+    module Application where
+    
+    import Foundation
+    import Yesod.Core
+    
+    import Add
+    import Home
+    
+    mkYesodDispatch "App" resourcesApp
+    
+
+A última coisa que precisamos fazer para que o projeto compile é adicionar a importação do módulo `Pagina1` dentro do módulo `Application`:
+    
+    
+    ...
+    import Add
+    import Home
+    import Pagina1
+    ...
+    
+
+Compilando e executando o projeto, ao acessar a nova rota `localhost:3000/pagina1` através do navegador a mensagem mostrada na página será: 
+    
+    
+    Internal Server Error
+    
+    Rota pagina1 não implementada
+    CallStack (from HasCallStack):
+      error, called at src/Pagina1.hs:7:15 in Livraria-0.0.0-HsYxcA38LocAug1xweCwV9:Pagina1
+    
+
+Repare que a mensagem definida como parâmetro da função `error` dentro da função Handler `getPagina1R` foi mostrada na página. 
+
+Se for desejado adicionar um outro método HTTP na mesma rota, basta fazê-lo juntamente aos outros métodos, a definição de seu respectivo Handler segue as mesmas regras:
+    
+    
+    /pagina1       Pagina1R GET POST
+    
+
+Um detalhe sobre o módulo `Pagina1` é que não adicionamos nenhum pragma, pois neste momento não temos uma implementação concreta na função `getPagina1R`.
+
+É possível ver que o módulo `Home` possui dois tipos de pragmas: o `OverloadedStrings` e o `QuasiQuotes`. Ambos são pesadamente utilizados em conjunto com os Shakespearean Templates. Abordamos superficialmente este assunto no capítulo 1, e vamos vê-los de forma aprofundada no decorrer do desenvolvimento do projeto. No próximo capítulo veremos os Shakespearean Templates.
+
+> Caso você esqueça de efetuar a importação do módulo `Foundation` e `Yesod.Core` dentro do módulo `Pagina1`, no momento da compilação do projeto, o compilador acusará a falta do tipo `Handler` e a falta do tipo `Html` que são utilizados como retorno do Handler.
+
+### Conclusão
+
+Abordamos a estrutura principal do template de projeto `yesod-minimal` e os seus principais arquivos. Vimos os arquivos de configuração (metadados) `package.yaml` e `Livraria.cabal` responsáveis por gerenciar as dependências do projeto, e o arquivo `main.hs`, que contém a função principal, responsável por executar todo o projeto.
+
+Então, chegamos ao módulo `Foundation`, que contém os tipos elementares e a criação das funções e tipos declarados no arquivo `routes` através da função `mkYesodData`. E ao módulo `Application`, que possui o papel de "cabide", agrupando módulos de todo o projeto e sendo responsável por associar os tipos criados no módulo `Foundation` para as suas respectivas funções Handlers através da função `mkYesodDispatch`. 
+
+
+Capítulo 4
+
+# Shakespearean Templates — ser ou não ser, eis a questão 
+
+Os _Shakespearean Templates_ são uma família de linguagem de templates que o o framework Yesod utiliza para o desenvolvimento do _client-side_. Cada template possui um nome e é responsável pela implementação de uma das tecnologias utilizadas no _front-end_ : Hamlet (HTML); Julius (JavaScript); Lucius e Cassius (CSS). 
+
+No projeto que iniciamos no capítulo 3, declaramos duas funções Handler que não estão implementadas e fazem uso da função `error`, ou seja, sem qualquer conteúdo, apenas uma mensagem de erro estática. Estas funções são `postHomeR` do módulo `Home` e a função `getPagina1R` do módulo `Pagina1`, ambas dentro da pasta `src`. Daremos continuidade criando um conteúdo para elas, removendo a função `error` e inserindo um conteúdo que gere uma resposta ao usuário, fazendo uso do HTML, CSS e JavaScript através dos Shakespearean Templates. Estes templates compartilham uma sintaxe em comum e características similares, que são: 
+
+  * Pouca interferência da linguagem subjacente ao embutir os templates dentro do Yesod (código Haskell), o que os torna visualmente discretos. 
+  * Verificação em tempo de compilação garante uma boa formação do conteúdo a ser gerado pelos templates. 
+  * Validação automática para uso de links interpolados, com o uso de URLs _type-safe_
+
+
+
+O primeiro item significa que o ato de implementar o HTML, CSS, JavaScript dentro de um projeto não deixará a sintaxe visivelmente discrepante do Yesod, pelo contrário, o código implementado para o desenvolvimento do _front-end_ aparentará similaridade com a implementação _back-end_ , como uma extensão natural do framework Yesod e do Haskell. Não somente de maneira estética, mas de uma forma prática por usufruir do poderoso sistema de tipos do Haskell na formação do conteúdo HTML, CSS e JavaScript. 
+
+O segundo item será abordado detalhadamente no próximo capítulo e está ligado diretamente com o tipo `Widget`. O Haskell possui pouca redundância de código em suas implementações, o que inclui o Yesod. Este é um pilar fundamental na criação do conteudo do _client-side_. De forma análoga, são como "bloquinhos de brinquedo". Podemos criar estes bloquinhos e utilizá-los, reaproveitá-los em qualquer lugar do nosso projeto, encaixando-os, compondo-os com outros bloquinhos de _Widgets_ \- o conjunto destes bloquinhos dá origem a uma página completa. 
+
+O terceiro item é um dos recursos mais poderoso no desenvolvimento de um projeto Yesod: os links são _type-safe_ , através do uso dos _route types_ (tipos de rotas). Para apontar/referenciar outra página dentro do framework Yesod, é obrigatória a declaração de um tipo de rota, e caso este tipo não exista o projeto não compilará. Isso é fantástico, uma característica pertencente aos Shakespearean Templates. 
+
+> Não há nada intrínseco ligando essas linguagens ao Yesod. Isso significa que você pode utilizar uma independente da outra. Temos como exemplo o desenvolvimento de um web service utilizando o padrão REST em um projeto Yesod. Nesse caso, não será necessário o uso de qualquer um dos quatro Shakespearean Templates, pois esta arquitetura, de forma resumida, recebe e envia JSONs através dos seus recursos (rotas). Isso também é válido para aplicações web desenvolvidas no mesmo domínio, porém a não utilização dessas linguagens trará péssimas consequências, como a perda das rotas _type-safe_. Existem outros efeitos colaterais ruins, e caso deseje saber não deixe de ler este artigo: <https://www.yesodweb.com/blog/2012/10/yesod-pure> feito pelo criador do framework Yesod, Michael Snoyman. Neste artigo, ele implementa um exemplo sem o uso dos Shakespearean Templates, entre outros recursos. 
+
+Na próxima seção veremos o template Hamlet, responsável pela implementação do conteúdo HTML, e como embutir código Haskell dentro do Hamlet com interpolador de tipos. Vamos concluir como a navegação é feita através do uso dos tipos de rota em conjunto com o interpolador de rotas. 
+    
+    
+    
+    
+
+## 4.1 Hamlet — template específico para HTML
+
+O Hamlet é um dos Shakespearean Templates que é responsável pela implementação e geração do HTML. Com ele, podemos declarar quaisquer conteúdos ligados a estrutura de uma página, isto é, a marcação HTML. Vamos olhar dentro do módulo `Pagina1`, na pasta `src`: 
+    
+    
+    module Pagina1 where 
+    
+    import Foundation 
+    import Yesod.Core 
+    
+    getPagina1R :: Handler Html 
+    getPagina1R = error "Rota não implementada"
+    
+
+A função Handler `getPagina1R` está incompleta. Colocamos a função chamada `error` somente para satisfazer o compilador, para que pudéssemos testar o projeto, porém não há qualquer conteúdo implementado. Como já abordado no capítulo 1, estas funções possuem o nome de Handler devido ao tipo do retorno, que é a mônada `Handler`. Logo, temos dois tipos importantes no código anterior: `Handler` e `Html`. Esta mônada tem como parâmetro o tipo `Html`. Vamos implementar essa rota e entender no processo o que está por trás do template Hamlet. 
+
+> Lembre-se de que o tipo `Handler` é um _type synonym_ (sinônimo de tipo) para o tipo `data HandlerT site m a`. Seu sinônimo de tipo é declarado desta forma: `type Handler = HandlerT MyApp IO a`. Caso necessite, dê uma revisada no capítulo 1, que explica sobre a mônada `Handler`. Os sinônimos de tipos nos possibilitam um código enxuto e legível. 
+
+A primeira coisa que você precisa saber é a sintaxe, ou seja, como escrevemos nosso HTML neste template. A seguir, um exemplo: 
+    
+    
+    <p>Parágrafo qualquer 
+    <ul> 
+        <li>Item 1 
+        <li>Item 2
+    
+
+A declaração anterior gerará uma página um código HTML desta forma: 
+    
+    
+    <p>Parágrafo qualquer</p> 
+    <ul> 
+        <li>Item 1</li> 
+        <li>Item 2</li> 
+    </ul>
+    
+
+Isso vale para todas as tags do HTML. O Hamlet vai gerar o código HTML e fechar as tags para você. Isso demonstra como o Hamlet está muito próximo da sintaxe do HTML convencional, o que torna confortável o primeiro contato para os leigos na linguagem; em vez de abrir e fechar as tags, utiliza-se a indentação para fazer isso. 
+
+É desta forma que dizemos ao Hamlet que uma tag está dentro da outra, declarando-a de forma aninhada. Agora que já estamos familiarizados com a sintaxe do Hamlet, voltemos ao projeto Livraria. Vamos implementar o primeiro código HTML adicionando duas tags: `<h1>` e `<p>`. A primeira deverá conter o conteúdo "Livraria", e a segunda, o conteúdo "Iniciando o projeto da livraria com Yesod". Ambas as tags estarão dentro do template Hamlet. Ele é identificado no código pela sintaxe: `[whamlet| |]`. 
+
+Abra o módulo `Pagina1`, na pasta `src`, e acrescente ao escopo da função Handler `getPagina1R` o template com as duas tags. O template será parâmetro para a função `defaultLayout`. O código ficará desta forma: 
+    
+    
+    {-# LANGUAGE QuasiQuotes #-} 
+    module Pagina1 where 
+    
+    import Foundation 
+    import Yesod.Core 
+    
+    getPagina1R :: Handler Html 
+    getPagina1R = defaultLayout [whamlet| 
+        <h1>Livraria 
+        <p>Iniciando o projeto da livraria com Yesod. 
+    |]
+    
+
+Note a presença do pragma `QuasiQuotes`, como já abordado no capítulo 1. Um pragma tem como característica alterar o modo como o Haskell trabalha, logo, ele é necessário para que os Shakespearean Templates funcionem de maneira apropriada. 
+
+> A presença de um QuasiQuote é visível quando encontramos no código a sintaxe `[| |]`. Essa é a forma principal para embutir um conteúdo arbitrário dentro do Haskell, como o Hamlet. 
+
+Caso não seja adicionado o pragma em um módulo que o utilize, um erro em tempo de compilação surgirá com a seguinte mensagem: 
+    
+    
+    ./Livraria/src/Pagina1.hs:8:5: error: parse error on input ‘<’ 
+      | 
+    8 |     <h1> Livraria 
+      |     ^ 
+    
+
+Na mensagem de erro não é especificada a falta da declaração do pragma `QuasiQuotes`, porém fica evidente que o compilador não consegue entender o significado da a tag `<h1>` dentro do `[whamlet| |]`. 
+
+Após a alteração, compile e execute o projeto. Acesse o endereço `localhost:3000/pagina1` e a página com o código HTML que escrevemos no Handler `getPagina1R` será apresentada. O código HTML resultante do acesso a esta rota será: 
+    
+    
+    <!DOCTYPE html> 
+    <html> 
+        <head> 
+            <title></title> 
+        </head> 
+        <body> 
+            <h1>Livraria</h1> 
+            <p>Iniciando o projeto da livraria com Yesod.</p> 
+        </body> 
+    </html>
+    
+
+> Você percebeu que em nenhum lugar precisamos declarar a tag `<html>`, `<head>`, `<title>` e `<body>`? Isso se deve à maneira como o Yesod constrói uma página HTML. Vamos abordar essa construção de forma mais detalhada nos próximos capítulos, pois dois novos itens estão envolvidos: Widgets e uma implementação de uma função específica do typeclass `Yesod`: `defaultLayout`. É importante mantermos o foco inteiramente nos Shakespearean Templates agora. 
+
+Acrescentaremos mais algumas tags no Handler `getPagina1R`. No módulo `Pagina1` vamos acrescentar uma lista de linguagens de programação que nossa livraria poderá abranger, utilizando as tags `<ul>` e `<li>`: 
+    
+    
+    {-# LANGUAGE QuasiQuotes #-} 
+    module Pagina1 where 
+    
+    import Foundation 
+    import Yesod.Core 
+    
+    getPagina1R :: Handler Html 
+    getPagina1R = defaultLayout [whamlet| 
+        <h1>Livraria 
+        <p>Iniciando o projeto da livraria com Yesod. 
+        <h2>Linguagens de programação 
+        <ul> 
+            <li>Java 8 
+            <li>Haskell 
+            <li>C# 
+            <li>(((Clojure))) 
+    |]
+    
+
+Tendo essas tags em mãos, veremos como é feita a declaração de atributos de tag dentro do Hamlet. Vamos adicionar ao nosso projeto o atributo `id` nas tags `<li>` e `<ul>`; ele é representado pelo caractere `#`, logo, para adicioná-lo, precisamos declarar da seguinte forma: 
+    
+    
+    {-# LANGUAGE QuasiQuotes #-} 
+    module Pagina1 where 
+    
+    import Foundation 
+    import Yesod.Core 
+    
+    getPagina1R :: Handler Html 
+    getPagina1R = defaultLayout [whamlet| 
+        <h1>Livraria 
+        <p>Iniciando o projeto da livraria com Yesod. 
+        <h2>Linguagens de programação 
+        <ul #livrosID> 
+            <li #javaID>Java 8 
+            <li #haskellID>Haskell 
+            <li #csID>C# 
+            <li #clojureID>(((Clojure))) 
+    |]
+    
+
+Compile e execute o projeto. Na rota `localhost:3000/pagina1`, nossas tags `<ul>` e `<li>` estarão convertidas para marcação HTML convencional. 
+    
+    
+    <ul id="livros"> 
+        <li id="javaID">Java 8</li> 
+        <li id="haskellID">Haskell</li> 
+        <li id="csID">C#</li> 
+        <li id="clojureID">(((Clojure)))</li>
+    
+
+Similarmente, também é possível adicionar classes desta maneira reduzida. Em vez de escrever `class="valor"`, basta declarar `.valor` e o Hamlet vai cuidar do resto para você. 
+
+> A partir do HTML5, as aspas para atributos são opcionais. Elas só se fazem necessárias caso um valor que possua espaços (" ") seja usado, porém o Hamlet adiciona as aspas de qualquer maneira, para consistir um padrão. 
+
+Vimos o básico da sintaxe do Hamlet, vimos como inserir tags e adicionar atributos a elas. Mas se em algum momento durante o desenvolvimento do projeto houver a necessidade de inserir código Haskell dentro do Hamlet? Se essa lista de livros vier de uma estrutura como uma lista declarada no Haskell e quisermos popular a lista gerada no HTML com a lista do Haskell? Para isto temos um interpolador de código, para embutir código Haskell no Hamlet. Vejamos na próxima seção como efetuar tal ação. 
+
+## 4.2 Interpolador de código puro
+
+Haverá momentos em que será necessário o uso de algum código puro dentro do Hamlet e esta interação será feita através dos interpoladores. Em algumas linguagens de programação, eles aparecem com o nome de _expression language_ (linguagem de expressão), e permitem inserir código de uma linguagem específica em outra linguagem. Como exemplo, no framework JSF pertencente à linguagem Java, a interpolação de código é feita através do interpolador `${ }`, permitindo a inserção de código Java diretamente dentro de uma página XHTML; no PHP, o operador responsável é `<?php ?>`. 
+
+O framework Yesod provê três categorias de interpoladores: código puro, tipo de rota (`route type`) e de templates (Shakespearean Templates). Neste capítulo abordaremos o interpolador de código puro e de rotas. 
+
+O interpolador de código puro possui a seguinte sintaxe: `#{ }`, onde uma declaração oriunda do Haskell (como uma lista) é inserida dentro das chaves. Vamos pensar em uma situação hipotética na qual temos uma tupla `tpl :: (String, String)`. Agora imagine que seja necessário colocar a primeira coordenada da tupla dentro do Hamlet. O que seria necessário fazer? Extrair o valor da tupla e o colocar dentro do interpolador: `#{fst tpl}` (obviamente este trecho de código estaria dentro de um Hamlet). 
+
+Vamos para a prática! No módulo `Pagina1`, declare o tipo: `data Pessoa = Pessoa {pessoaNome :: String}`. Agora dentro do Handler `getPagina1R`, crie uma nomeação chamada `pessoa` do tipo `Pessoa` com o valor `"Felipe"`. Também adicione uma tag `<footer>` no final do conteúdo do `[whmalet| |]`; por último, insira o valor do atributo `pessoaNome` da nomeação `pessoa` como conteúdo da tag `<footer>`, utilizando-se do interpolador de tipos `#{ }`, por exemplo: `Página feita por: #{pessoaNome pessoa}`. O código ficará assim: 
+    
+    
+    {-# LANGUAGE QuasiQuotes #-} 
+    module Pagina1 where 
+    
+    import Foundation 
+    import Yesod.Core 
+    
+    data Pessoa = Pessoa {pessoaNome :: String} 
+    
+    getPagina1R :: Handler Html 
+    getPagina1R = do 
+        let pessoa = Pessoa "Felipe" 
+        defaultLayout [whamlet| 
+            <h1> Livraria 
+            <p> Iniciando o projeto da livraria com Yesod. 
+            <h2> Linguagens de programação 
+            <ul #livrosID name=livros > 
+                <li #javaID>Java 8 
+                <li #haskellID>Haskell 
+                <li #csID>C# 
+                <li #clojureID>(((Clojure))) 
+            <footer> Página feita por: #{pessoaNome pessoa} 
+        |]
+    
+
+Agora compile, execute o projeto e acesse a rota `localhost:300/pagina1`. No final da página teremos o nosso rodapé interpolado. 
+    
+    
+    <footer>Página feita por: Felipe</footer>
+    
+
+Reparem que o interpolador `#{pessoaNome pessoa}` foi substituído por `Felipe`. Quando uma interpolação de um tipo do Haskell for feita dentro do escopo de um Hamlet, a função `toHtml` é invocada de forma arbitrária, transformando o tipo `String` (do campo `pessoaNome`) em um conteúdo HTML. Essa função tem o tipo `ToMarkup a => a -> Html`. 
+
+Essa técnica funciona porque `String` possui uma instância de `ToMarkup`. Além de `String`, tipos como `Int`, `Double`, `Text`, `Bool`, entre outros, também possuem essa instância. Quando se trabalha com um tipo sem a instância necessária para transformá-lo em HTML, é usual convertê-lo para `String` através do typeclass `Show`. 
+
+Agora que vimos o interpolador de código puro, você será apresentado ao interpolador de tipos de rota, um dos grandes trunfos do framework Yesod. 
+    
+    
+    
+    
+
+## 4.3 Interpolador de tipos de rota
+
+O framework Yesod possui uma maneira poderosa de lidar com a navegação em um site, ele faz uso do interpolador de rotas: `@{ }`. O arroba no início da sintaxe caracteriza que seu uso é em conjunto com os tipos referentes as rotas do site, conhecidos como _route types_ (rotas). 
+
+O Yesod permite a inserção de links através do uso de uma `String` na tag `<a>`, em seu atributo `href`, porém esta abordagem permite que o programador insira uma rota inexistente. Para evitar este problema podemos usufruir do interpolador `@{ }`, em conjunto com as rotas declaradas no arquivo `routes`. Com essa abordagem é virtualmente impossível ter um link quebrado. 
+
+Vamos utilizar este interpolador no projeto Livraria. Vá até a pasta `src` e abra o módulo `Home`. Ignore as duas rotas já presentes, falaremos delas posteriormente. No Handler `getHomeR`, acrescente um novo hiperlink para o acesso a rota `Pagina1` utilizando o interpolador de rotas: 
+    
+    
+    [whamlet| 
+        <p><a href=@{Pagina1R}> 
+            Acessar página 1 
+        <p><a href=@{AddR 5 7}> 
+            HTML addition 
+        <p><a href=@{AddR 5 7}?_accept=application/json> 
+            JSON addition 
+    |]
+    
+
+Compile o projeto e execute-o. Desta vez acesse o `localhost`, que levará à rota inicial `HomeR`. O Handler desta rota contém o novo link recém-adicionado. O interpolador de rotas converteu o tipo de rota para a URI desejada automaticamente. Por ser o Haskell que lida com o manuseio das rotas como texto, associando o tipo de rota à respectiva URI, não é possível inserir rotas inválidas devido à checagem que o compilador faz em cada uma delas. 
+
+Aprendemos a usar o interpolador de código puro `#{ }` e o interpolador de tipos de rotas `@{ }`. Agora vamos para o próximo Shakespearean Template: Julius, responsável por injetar JavaScript. 
+
+## 4.4 Julius — a linguagem específica para JavaScript
+
+De todos os Shakespearean Templates, o Julius é, de longe, o mais simples, não fazendo uma manipulação do conteúdo de maneira tão extensa quanto nos outros templates. 
+
+Tendo como um pequeno exemplo, podemos invocar a função `alert` do JavaScript utilizando a seguinte sintaxe: `[julius|alert("Implementando Javascript com Julius")|]`. 
+
+Este template, para funcionar, exige o uso de uma função que até então não foi apresentada, a `toWidget`, logo, a sintaxe completa do uso do Julius é `toWidget [julius|alert("Implementando Javascript com Julius")|]`. 
+
+> A função `toWidget` será explicada no final do capítulo em detalhes, por ora vamos nos ater apenas ao conteúdo do Julius. 
+
+Dando continuidade ao projeto, vamos adicionar algum conteúdo JavaScript no nosso Handler `getPagina1R`. Como estaremos utilizando dois templates separados (Hamlet e Julius), precisaremos combiná-los; a maneira mais prática é simplesmente utilizar a notação `do` dentro do `defaultLayout`. 
+
+Adicione o seguinte trecho de código abaixo do Hamlet: `toWidget [julius| alert("Julius em ação")|]`, como demonstrado a seguir. 
+    
+    
+    defaultLayout $ do 
+        [whamlet| 
+            <h1>Livraria 
+            ... 
+        |] 
+        toWidget [julius| alert("Julius em ação") |]
+    
+
+> **Fique atento à indentação!**
+> 
+> Lembre-se de que o Haskell faz uso da indentação para entender alinhamento e aninhamento e caso algum código não esteja indentado de forma correta, poderá ocorrer o seguinte erro: 
+>     
+>     
+>     ./Livraria/src/Pagina1.hs:12:21: error: Empty 'do' block 
+>        | 
+>     12 |     defaultLayout $ do 
+>        |                     ^^ 
+>     
+> 
+> Esse erro normalmente significa que o template `whamlet` está alinhado com a função `defaultLayout`, sendo que o correto é que ele esteja aninhado. 
+
+Compile e execute o projeto. Ao acessar a página `localhost:3000/pagina1`, uma janela com o texto `Julius em ação` aparecerá. 
+
+Vamos incrementar o JavaScript no Handler `getPagina1R` acrescentando o evento `onclick` à tag `<footer>`. Modificando o conteúdo do Julius que contém a função `alert`, crie uma função chamada `emitirMensagemRodape`, que mostra ao usuário que ele clicou no rodapé. 
+    
+    
+    defaultLayout $ do 
+        [whamlet| 
+            <h1>Livraria 
+            ... 
+            <footer onclick=emitirMensagemRodape()> ... 
+        |] 
+        toWidget [julius| 
+            function emitirMensagemRodape(){ 
+                alert("Você clicou no rodapé"); 
+            } 
+        |]
+    
+
+Como o Hamlet, o Julius também tem a possibilidade de utilizar os interpoladores mostrados na seção anterior. 
+
+## 4.5 Lucius e Cassius — as liguagens específicas para CSS
+
+Esses dois templates são responsáveis pela criação do CSS das páginas dentro do Yesod. Como no Hamlet, é permitida a utilização dos interpoladores; também é possível declarar constantes internas no CSS - algo parecido com as variáveis do SASS. 
+
+A declaração de uma constante, tanto no Lucius quanto no Cassius, se dá por `@nome: valor`; e então pode ser utilizada como valor em qualquer parte do CSS através do interpolador `#{ }`. 
+
+Adicionaremos algum CSS ao Handler `getPagina1R` com o Lucius. A utilização do Lucius é feita da seguinte forma: `[lucius| |]`, como nos outros templates. Além disso, o uso da função `toWidget` também se faz necessário nos templates de CSS. 
+
+> Mas e o template Cassius? Ele será apresentado no final desta seção. A diferença entre ambos é mínima, todavia o template Lucius é mais próximo do CSS convencional, então o foco será no Lucius. 
+
+Abra o módulo `Pagina1` e adicione o novo template `toWidget [lucius| |]` no final do Handler `getPagina1R`. Feito isso, declare o seletor de CSS com o valor `h1` e insira o atributo `color` com o valor `#00FF00`: 
+    
+    
+    defaultLayout $ do 
+        [whamlet| 
+            <h1>Livraria 
+            ... 
+        |] 
+        toWidget [julius| ... |] 
+        toWidget [lucius| h1 { color: #00FF00 } |]
+    
+
+Feita a alteração, compile, execute o projeto e acesse a rota `/pagina1`. O conteúdo da tag `<h1>` ficará verde. Como citado anteriormente, também é possível fazer uso das constantes para atribuir valores às propriedades. 
+    
+    
+    toWidget [lucius| 
+        @corTitulo: #00FF00; 
+        h1 { color : #{corTitulo} } 
+    |]
+    
+
+Indo além, os interpoladores também podem ser usados interoperavelmente entre os templates para facilitar a integração entre o HTML e o CSS, por exemplo, usando o `#{ }` em conjunto com uma `String` fixa para o controle da criação e atribuição dos nomes de classes CSS: 
+    
+    
+    ... 
+    let corParagrafo = "corParagrafo" 
+    defaultLayout $ do 
+        [whamlet| 
+            <h1>Livraria 
+            <p .#{corParagrafo}>Iniciando o projeto ... 
+        |] 
+        toWidget [julius| ... |] 
+        toWidget [lucius| 
+            @corTitulo: #00FF00; 
+            h1 { 
+                color: #{corTitulo}; 
+            } 
+            .#{corParagrafo} { 
+                color: #FF0000; 
+            } 
+        |]
+    
+
+Compile o código e acesse a rota `/pagina1`. O texto do parágrafo ficará vermelho; o que é importante notar é que no final das contas os interpoladores de código puro vão ser transformados em texto. Estes exemplos são simples, limpos e triviais para que o entendimento das funcionalidades dos Shakespearean Templates fique cristalino. 
+
+Você deve estar se perguntando sobre o template Cassius. O template Cassius não faz o uso de chaves (`{ }`). Ele é o que chamamos de _whitespace sensitive_ (sensível ao espaço em branco), utilizando indentação em vez das chaves para efetuar o aninhamento. A sintaxe do Cassius é idêntica à do Lucius, apenas mudando o nome para `[cassius| |]`. Como exemplo, veja o trecho de código CSS implementado na função `getPagina1R` no formato do Cassius: 
+    
+    
+    toWidget [cassius| 
+        @corTitulo: #00FF00; 
+        h1 
+            color: #{corTitulo} 
+        .#{corParagrafo} 
+            color: #FF0000
+    |]
+    
+
+Como observado, as chaves foram trocadas por indentação. É uma alternativa ao Lucius e utiliza o mesmo motor, porém, ele pré-processa todas as entradas para inserir as chaves e ponto e vírgula para formação dos blocos de CSS. 
+
+### toWidget — a ponta do iceberg
+
+No decorrer do capítulo foi citada a função `toWidget`, mas afinal o que é e para que serve? 
+
+Quando usamos vários Shakespearean Templates em um único Handler, é necessário agrupá-los. O responsável por realizar esse agrupamento e formar a página final que será renderizada no navegador é o `Widget`. 
+
+Em vez de termos um único template declarado em uma função Handler, o que engessaria o código, é possível ter múltiplos templates. Isso torna-os extremamente modulares e reutilizáveis em outros Handlers. Eles podem estar localizados em diversos módulos e, posteriormente, ser agrupados em uma função Handler. Os `Widgets` proporcionam modularidade e reutilização de código sem igual para criação do conteúdo _client-side_. 
+
+Resumidamente, todo Shakespearean Template é transformado em um `Widget` para depois ser combinado com outro `Widget` e então alimentar a função `defaultLayot`, por isso a necessidade da função `toWidget`. No próximo capítulo você será apresentado ao tipo `Widget` e verá o seu comportamento, e o porquê de o template Hamlet não utilizar a função `toWidget`.
+
+### Conclusão
+
+O framework Yesod provê soluções poderosas para o desenvolvimento das tecnologias de _client-side_ , como os Shakespearean Templates. Estes são compostos pelos templates Hamlet, responsável pela geração de conteúdo HTML; Julius, responsável pela geração do conteúdo JavaScript; e Cassius e Lucius, ambos responsáveis pela geração do CSS. 
+
+Também foi visto o uso dos interpoladores de tipos para injetar construções puras do Haskell e convertê-las em um conteúdo que o navegador do usuário final possa entender, em especial os interpoladores de rotas, que possuem a característica de tornar links entre páginas _type-safe_.
+
+
+Capítulo 5
+
+# Montando o front-end com blocos
+
+Um dos maiores desafios no desenvolvimento web são as tecnologias do client-side. Uma implementação com o uso destas tecnologias em uma única página é uma tarefa trivial, porém quando lidamos com uma aplicação que possui várias páginas, e a necessidade de reutilizar diversos trechos de código diferentes, a complexidade na construção da aplicação aumenta dramaticamente.
+
+Uma destas complexidades é a necessidade de utilizar trechos de código iguais em múltiplas páginas do projeto, o que cria o problema conhecido como _boilerplate_. Os Widgets provêm uma solução para esta complexidade modularizando todas as partes envolvidas no front-end, tornando a reutilização de código extremamente fácil.
+
+## 5.1 Widgets e Handlers
+
+Os Widgets são responsáveis pela implementação de componentes relacionados ao client-side, de maneira modular e reutilizável. Em outras palavras, são como bloquinhos de código contendo os Shakespearean Templates, que podem ser combinados.
+
+Os Shakespearean Templates são responsáveis pela implementação das tecnologias do client-side, porém eles apenas não satisfazem o tipo de um Handler; um Handler deve retornar o tipo `Handler a`, onde `a` é polimórfico.
+
+> Até este momento, vimos apenas Handlers que retornam `Handler Html`, no decorrer do livro veremos outros tipos como `Hander Value` e `Handler TypedContent`.
+
+Para fornecer o tipo `Handler Html` desejado, pode-se utilizar a função `defaultLayout`, mas nenhum dos Shakespearean Templates satisfaz o tipo exigido por ela. 
+
+Como brevemente citado no capítulo anterior, existe um processo intermediário antes dos templates se tornarem um `Html`. Este processo é responsabilidade da função `toWidget`, que recebe como parâmetro um Shakespearean Template, como o Hamlet, e o coloca dentro de um Widget, que, por sua vez, pode ser composto com outros Widgets.
+
+Resumindo, a função `toWidget` é responsável por transformar os Shakespearean Templates em `Widget`, que podem ser combinados e utilizados em diversas partes do projeto. Por último, o `defaultLayout` recebe esse "pacote" de Widgets e o transforma em `Html`, colocando-o dentro da mônada apropriada: `Handler Html`.
+
+> **Widgets não são comutativos!**
+> 
+> A ordem dos Widgets determina a posição dos elementos HTML que serão renderizados. Caso você adicione um Widget com uma tag `<a>` após o Widget que contém uma tag `<footer>`, ele será renderizado após o conteúdo da tag `<footer>`.
+
+Talvez você aponte que o Hamlet utilizado no projeto Livraria não usou o `toWidget`, e o motivo é simples: o Hamlet possui um açúcar sintático em sua construção. Olhando a sintaxe `[whamlet| |]` fica evidente a letra `w` de prefixo. Pode-se dizer que `[whamlet| |]` é a mesma coisa que `toWidget [hamlet| |]`.
+
+Os Widgets podem ser declarados em funções com o tipo de retorno `Widget` e ser utilizados em múltiplos Handlers. Além disso, estas funções de Widget podem estar em módulos separados e sendo importadas por outros módulos.
+
+### Interpolador de Widgets
+
+Como foi visto no capítulo anterior, é possível agrupar Widgets simplesmente adicionando-os seguidamente, dentro de uma notação `do`, ou utilizando o `>>`. Agora, e se quisermos adicionar um Widget **dentro** de outro Widget?
+
+É aqui que entra o interpolador de Widgets. O `^{ }` permite que dois Widgets separados sejam colocados um dentro do outro:
+    
+    
+    widgetUm = [whamlet| 
+        Aqui temos o primeiro Widget 
+    |]
+    
+    widgetDois = [whamlet|
+        Aqui temos o segundo Widget; com o primeiro Widget:
+        ^{widgetUm}
+        E aqui algum conteúdo extra do segundo Widget
+    |]
+    
+
+Algo importante a se notar é que, quando o `widgetDois` for utilizado, o `widgetUm` deve estar visível. Não é necessário ser o mesmo Widget, e sim apenas algo que retorne um `Widget` com o mesmo nome.
+
+## 5.2 Estruturas de controle dos Shakespearean Templates
+
+Em certos momentos, haverá a necessidade de implementar alguma "lógica" dentro do Hamlet cujo objetivo é de fornecer funcionalidades que dependem do client-side. Para tal, o Hamlet possui estruturas para tonar estas implementações visualmente limpas e simplórias.
+
+### Estrutura de controle $if
+
+Suponha que, ao efetuar uma requisição para a rota `AddR`, quiséssemos que esta rota informasse se a soma dos números submetidos é par ou impar. 
+
+Para isso, podemos implementar uma função auxiliar e, através da função `even` (ou `odd`), retornar uma `String` com o valor `"Par"` ou `"Ímpar"`.
+    
+    
+    getAddR :: Int -> Int -> Handler Html
+    getAddR x y = defaultLayout $ 
+        [whamlet|A soma de #{x} e #{y} é #{imparPar z}|]
+      where
+        z = x + y
+        imparPar x
+            | even x = "Par"
+            | otherwise = "Ímpar"
+    
+
+Foi necessária a implementação de uma função extra para obter o resultado desejado. Agora imagine que esta funcionalidade exista somente nesse trecho de código, logo implementar uma função para verificar paridade de um número é ineficiente. 
+
+Para evitar esse tipo de ocorrência, o Hamlet possibilita uma abordagem mais elegante com o uso da estrutura de controle `$if` diretamente no template; para avaliar o valor passado pela rota sem a necessidade de implementar uma função auxiliar:
+    
+    
+    getAddR :: Int -> Int -> Handler Html
+    getAddR x y = defaultLayout $ 
+        [whamlet|
+            <p>A soma de #{x} e #{y} é 
+                $if (even z)
+                    "Par"
+                $else
+                    "Ímpar"
+        |]
+      where
+        z = x + y
+    
+
+Como no Haskell convencional, o `$if` necessita obrigatoriamente de um `$else`. Esse é um jeito interessante de se gerar conteúdo dinâmico no client-side, principalmente se a funcionalidade existir somente em um único lugar do sistema.
+
+### Estrutura de controle $maybe
+
+Apesar de o `$if` cobrir boa parte dos casos, nem sempre se possui o dado puro; é comum valores passarem previamente por uma série de regras de negócio e, como estamos no Haskell, esses valores terminarão encapsulados em tipos como `Maybe` ou `Either`.
+
+Para o caso do `Maybe`, o Hamlet possui uma construção chamada `$maybe`. Ela funciona de maneira similar ao `$if`, porém é feito o uso de _pattern matching_ dentro de sua declaração para extrair os dados validados:
+    
+    
+    maybeEven :: Int -> Maybe Int
+    maybeEven x | even x = Just x
+                | otherwise = Nothing
+    
+    ...
+    [whamlet|
+        $maybe x <- maybeEven val
+            <p>O número #{x} é par.
+        $nothing
+            <p>O número não é par.
+    |]
+    
+
+Diferentemente do `$else`, a utilização do `$nothing` é opcional. Também é possível utilizar _pattern matching_ no `x` em si, caso ele esteja envelopado por outros tipos.
+
+### Estrutura de controle $forall
+
+Quando se trata de conteúdo dinâmico no front-end, é comum se deparar com estruturas de listas, onde é necessário repetir um mesmo código para cada elemento de uma determinada lista.
+
+Para resolver esse problema, o Yesod usa o `$forall`. Imagine-o como um `map` que retorna uma lista de Widgets, os concatena e depois adiciona o resultado na página:
+    
+    
+    ...
+    [whamlet|
+        $forall val <- [1..10]
+            <p>O valor é #{val}
+    |]
+    
+
+Ou seja, para cada valor da lista, o `$forall` adiciona o código indentado à página. Como no `$maybe`, também é possível utilizar _pattern matching_ onde se encontra o `val`. 
+
+### Conclusão
+
+Vimos como os Widgets agrupam todas as tecnologias utilizadas no client-side, obtendo um nível de flexibilidade e modularidade que dificilmente é encontrada em outras tecnologias para o desenvolvimento de aplicações web. É possível criar Widgets que agrupem HTML, CSS e JavaScript, para invocá-los quando necessário dentro dos Handlers.
+
+
+Capítulo 6
+
+# Persistência de dados
+
+Neste capítulo, abordaremos as estruturas de dados que devem ser utilizadas para lidar com um projeto de livraria, em conjunto com o Yesod. Faremos o uso das ferramentas de persistência de dados que nos são fornecidas através do TemplateHaskell e de nosso módulo de persistência Persistent, e para tanto utilizaremos o scaffold do capítulo anterior.
+
+## 6.1 Introdução ao módulo de persistência
+
+O Haskell possuía vários módulos de persistência, mas nenhum deles cobria o caso de uso do Yesod de maneira apropriada. Levando isso em conta, foi criado o _Persistent_ , que consegue se comunicar com uma vasta seleção de bancos de dados, de maneira a respeitar os mecanismos de segurança de tipos do Haskell. Além disso, ele faz migrações automaticamente, criando e alterando as tabelas conforme necessário. 
+
+O Persistent possui suporte imediato para PostgreSQL, SQLite, MySQL e MongoDB. Em nosso projeto, utilizaremos o SQLite, por ser mais direto e não precisar de muitas configurações. 
+
+Algo louvável sobre este módulo é que todas as funções que utilizaremos no decorrer do capítulo funcionam de maneira interoperável com os outros bancos de dados implementados através do Persistent. Ou seja, se for desejável mudar de `SQLite` para `PostgreSQL`, por exemplo, basta fazer algumas alterações mínimas.
+
+### Configurações iniciais
+
+Como já é esperado, as alterações mais importantes se darão no módulo `Foundation`. Primeiramente, é necessário criarmos uma instância do typeclass `YesodPersist` para o nosso tipo do Foundation. É ela que define o meio utilizado para realizar a interação com o banco de dados.
+    
+    
+    import Yesod.Persist.Core
+    import Database.Persist.Sql (ConnectionPool, 
+                                 runSqlPool, SqlBackend)
+    import Data.Time.Calendar
+    
+    data App = App
+        { appConnPool :: ConnectionPool }
+    
+    instance YesodPersist App where
+        type YesodPersistBackend App = SqlBackend
+        runDB f = getYesod >>= runSqlPool f . appConnPool
+    
+
+O `appConnPool` é onde fica armazenado o pool de conexão do banco de dados e, naturalmente, precisa ser inicializado na função `main`.
+    
+    
+    import Database.Persist.Sql
+    import Database.Persist.Sqlite
+    import Control.Monad.Logger (runNoLoggingT)
+    
+    main :: IO ()
+    main = do
+        appConnPool <- runNoLoggingT $ createSqlitePool "livraria" 10
+        runSqlPersistMPool (runMigration migrateAll) appConnPool
+        warp 3000 $ App appConnPool
+    
+
+Basicamente, a função `createSqlitePool` define qual banco de dados será usado e `runSqlPersistMPool` roda a migração em si utilizando o pool de conexão criado. Como citado anteriormente, uma possível mudança para outro banco de dados seria extremamente simples. No caso do PostgreSQL, bastaria trocar `createSqlitePool` por `createPostgresqlPool` e `"livraria"` pela `String` de conexão apropriada.
+
+Porém, nosso projeto ainda não compila. O parâmetro da função `runMigration`, `migrateAll`, é gerado automaticamente em tempo de compilação a partir de um outro arquivo, onde definimos nosso banco de dados em si, com as tabelas e campos. Esse módulo é geralmente chamado de `Model`, em um respectivo arquivo `Model.hs`, e importado no módulo `Foundation`:
+    
+    
+    {-# LANGUAGE TemplateHaskell #-}
+    {-# LANGUAGE QuasiQuotes #-}
+    {-# LANGUAGE TypeFamilies #-}
+    {-# LANGUAGE ExistentialQuantification #-}
+    {-# LANGUAGE MultiParamTypeClasses #-}
+    {-# LANGUAGE FlexibleInstances #-}
+    {-# LANGUAGE GeneralizedNewtypeDeriving #-}
+    
+    module Model where
+    
+    import Database.Persist.TH
+    import Data.Text
+    import Data.Time.Calendar
+    
+    share
+        [ mkPersist sqlSettings
+        , mkMigrate "migrateAll"
+        , mkDeleteCascade sqlSettings
+        ] [persistLowerCase|
+            Livro
+                plataforma      Plataforma
+                titulo          Text
+                autor           Text
+                valor           Double
+                UniqueLivro titulo autor
+            Venda
+                datado          Day
+                livro           LivroId
+        |]
+    
+
+A função `share` funciona como um distribuidor, aplicando as funções da lista no primeiro parâmetro ao QuasiQuoter no segundo parâmetro. `mkPersist` gera os tipos descritos para funcionamento com o Persistent; `mkMigrate` gera o parâmetro para a função de migração do `main`; e `mkDeleteCascade` cria instâncias de `DeleteCascade` para os tipos fornecidos, o que torna possível a deleção em cascata para os bancos de dados que têm suporte a este tipo de deleção.
+
+Na última linha do `Livro`, nós temos `UniqueLivro titulo autor`, que descreve que uma chave única deve ser criada, nesse caso, com os valores de título e autor de um determinado livro. Essa definição será muito útil mais adiante no capítulo.
+
+Para tipos personalizados, que ainda não possuem as instâncias necessárias para trabalhar com o Persistent, como `Plataforma`, é necessário criar uma instância de `PersistField`. Mas por uma limitação fundamental do TemplateHaskell, não é possível declarar a instância no mesmo módulo onde ela é usada, nós precisamos abrigar nosso tipo `Plataforma` em outro módulo.
+    
+    
+    {-# LANGUAGE TemplateHaskell #-}
+    
+    module Extra where
+    
+    import Database.Persist.TH
+    
+    data Plataforma = Impresso | Ebook
+        deriving (Show, Read, Enum, Bounded, Eq)
+    derivePersistField "Plataforma"
+    
+
+Feito isso, basta importá-lo no módulo `Model`. Essa função, `derivePersistField`, ensina o Haskell como trabalhar com tipos personalizados em relação ao Persistent. Sua única exigência é o tipo em questão ter instâncias válidas de `Show` e `Read`. As outras instâncias se tornarão necessárias no próximo capítulo.
+
+Caso seja necessário tornar algum valor nulável, é necessário apenas adicionar `Maybe` ao tipo; por exemplo, se quisermos que `plataforma` aceite valores nulos:
+
+`plataforma Plataforma Maybe`
+
+Ao contrário do Haskell, dentro do QuasiQuoter, o `Maybe` vem depois do tipo. Isso transforma `Plataforma` em `Maybe Plataforma`, portanto é mandatório envelopar valores não nulos dentro de um `Just`, por exemplo `Just Ebook`, onde valores nulos são representados por `Nothing`. Além de suporte para valores nulos, o Persistent também permite o uso de valores padrão através do `default`:
+
+`valor Double default=100`
+
+### Bastidores
+
+Quando se descreve um tipo no Persistent, através do TemplateHaskell, uma série de transformações ocorre; outros tipos, funções e instâncias são criadas automaticamente para auxiliar o programador. Tomando o `Livro` como exemplo, segue-se da seguinte maneira:
+
+  * Para cada campo de `Livro`, uma função de projeção é criada nos moldes de `tabelaCampo`, ou seja, com `Livro` temos `livroPlataforma`, `livroTitulo` `livroAutor` e `livroValor`;
+  * Além das funções de projeção, também são criados tipos `TabelaCampo`. Para `Livro`, temos `LivroPlataforma`, `LivroTitulo`, `LivroAutor` e `LivroValor`;
+  * Todas as tabelas possuem chave primária, adicionada automaticamente, com o tipo `TabelaId`. Com `Livro`, temos `LivroId`. Note que `LivroId` é apenas um _type synonym_ para `Key Livro`.
+
+
+
+Ao se colocar um tipo de chave primária, como `LivroId`, em outra tabela, cria-se uma chave estrangeira automaticamente. 
+
+A chave primária é carregada separadamente dos outros campos da tabela. Estes são encapsulados por um tipo `Entity`, que possui dois campos. As funções que acessam são `entityKey`, para a chave primária, e `entityVal`, para os outros campos.
+
+Contudo, quando se extrai algo do banco de dados utilizando a chave primária como identificador, esse tipo `Entity` não é utilizado, afinal, você já teria a chave primária em mãos.
+
+## 6.2 Persistência de dados com Handlers — Leitura
+
+Agora que temos nossas configurações de banco de dados em forma, podemos partir para os Handlers, onde a ação realmente acontece. Existe uma série de funções que acessam o banco de dados. Não é necessário escrever uma linha sequer de SQL para interagir com o banco de dados através do Persistent.
+
+Todas as funções de banco de dados trabalham com a _monad transformer_ `ReaderT`, logo, para usá-las em nossos Handlers, nós precisamos ajustar seus tipos.
+
+É aí que entra a função `runDB`. Ela pega uma ou mais ações de banco de dados e retorna seus resultados em uma _monad_ , no nosso caso `Handler`. Primeiramente, vamos alterar a rota `LivroR` e o módulo Handler correspondente às nossas necessidades.
+    
+    
+    /livro/#LivroId             LivroR     GET
+    
+    
+    
+    import Yesod.Persist
+    
+    getLivroR :: LivroId -> Handler Html
+    getLivroR lid = do
+        livro <- runDB . get $ lid
+        defaultLayout [whamlet|
+            $maybe l <- livro
+                <p>#{show $ livroPlataforma l} 
+                    #{show $ livroTitulo l} por #{show $ livroAutor l} 
+                        | Valor: #{livroValor l}
+            $nothing
+                <p>Não há livros com esse ID
+        |]
+    
+
+Aqui utilizamos a função `get`, que busca uma linha no banco de dados por meio de uma chave primária. Caso ela exista na relação, retorna um `Just`; caso contrário, retorna um `Nothing`. 
+
+Como a rota possui um parâmetro, isso abre a possibilidade para o usuário inserir um código de livro que não existe. Caso isso aconteça e uma resposta de erro seja desejada, é possível utilizar a função `get404`. Em vez de retornar um `Maybe`, ela retorna o valor direto; porém, se a chave não existir no banco de dados, a função para o fluxo normal do código e retorna automaticamente um erro `404 Not Found` como resposta da requisição. Isso é conhecido como _short-circuiting_.
+
+Igualmente, temos funções de seleção em massa que nos possibilitam o acesso a muitos valores ao mesmo tempo. Com estas funções, uma página de listagem de livros pode ser facilmente criada.
+    
+    
+    /livro/listar               LivrosR    GET
+    
+    
+    
+    import Database.Persist.Sql (fromSqlKey)
+    
+    getLivrosR :: Handler Html
+    getLivrosR = do
+        livros <- runDB $ selectList [] []
+        defaultLayout [whamlet|
+            <table>
+                <thead>
+                    <tr>
+                        <th>Id
+                        <th>Plataforma
+                        <th>Título
+                        <th>Autor
+                        <th>Valor
+                <tbody>
+                    $forall Entity lid l <- livros
+                        <tr>
+                            <td><a href=@{LivroR lid}>#{fromSqlKey lid}
+                            <td>#{show $ livroPlataforma l}
+                            <td>#{show $ livroTitulo l}
+                            <td>#{show $ livroAutor l}
+                            <td>#{livroValor l}
+        |]
+    
+
+Aqui nós recuperamos todos os livros do banco de dados e os listamos em uma tabela no HTML.
+
+> **Inferência de tipos**
+> 
+> Note que em momento algum foi descrito de qual tabela buscar. Isso só é possível devido ao sistema de tipos do Haskell e aos tipos do banco de dados gerados em tempo de compilação pelo TemplateHaskell. O compilador infere qual é a tabela desejada a partir de outras funções que possuem tipos específicos.
+
+Diferentemente do `get`, o `selectList` recebe dois parâmetros, o primeiro é uma lista de filtros, que é basicamente qualquer coisa que viria após uma cláusula `where` de SQL. Porém, no Haskell, se usam os tipos gerados pelo TemplateHaskell, por exemplo, `selectList [LivroPlataforma ==. Ebook] []` seleciona apenas os livros que são `EBook`; aqui usa-se o tipo do campo como primeiro parâmetro para o operador, e não a função de projeção.
+
+Também existem outros operadores de filtros: 
+
+Operador | Comportamento  
+---|---  
+`!=.` | diferente de  
+`<.` | menor que  
+`>.` | maior que  
+`<=.` | menor ou igual a  
+`>=.` | maior ou igual a  
+`<-.` | checar se um valor está em uma lista  
+`/<-.` | checar se um valor não está em uma lista  
+||. | serve como um _OU_ lógico entre duas listas de filtros  
+  
+Por ser uma lista de filtros, caso seja desejável adicionar um _E_ lógico entre dois filtros, basta colocar outro filtro na lista, obviamente separado por vírgula.
+
+O segundo parâmetro do `selectList` é uma lista de modificadores adicionais que servem para ordenar, limitar e determinar um ponto inicial. A ordenação é dividida em duas partes: `Asc` para ordenar ascendentemente, e `Desc` para ordenar descendentemente, sendo que ambos recebem um parâmetro que é um campo da tabela. Por exemplo, `selectList [] [Asc LivroAutor]` seleciona todos os livros da tabela e os ordena em ordem alfabética por autor. Do mesmo modo dos filtros, é possível utilizar mais de um modificador. Por exemplo, `selectList [] [Asc LivroAutor, Asc LivroTitulo]` ordena os livros por autor e, para os livros de um mesmo autor, os ordena pelo título.
+
+Os outros dois modificadores são `OffsetBy` \- este recebe um número inteiro X, que faz os primeiros X resultados serem ignorados - e `LimitTo` \- que também recebe um número inteiro X, limitando os resultados até uma quantidade X. Estes modificadores são uma excelente maneira de se criar um sistema de paginação, já que o `LimitTo` passa a contar a partir do `OffsetBy`.
+    
+    
+    paginacao pag qt =
+        selectList [] [LimitTo qt, OffsetBy $ (pag - 1) * qt]
+    
+
+### Filtros personalizados
+
+Ocasionalmente, é apetecível utilizar algum filtro mais complexo, que não está disponível por padrão, por exemplo, em uma busca onde o usuário não possui o valor exato a ser buscado. O Persistent fornece os meios necessários para a criação de filtros personalizados. 
+
+A implementação é simples, usando o tipo `Filter`, precisamos de apenas três parâmetros: o campo que deve ser utilizado como pivô do filtro, um valor para ser aplicado no filtro, por exemplo, `LivroTitulo` como campo e `"Haskell"` como valor, e o filtro em si, que será definido em seguida.
+
+Neste exemplo nós descrevemos uma cláusula SQL `ILIKE`.
+    
+    
+    import qualified Data.Text as T
+    
+    (%%.) campo valor =
+        Filter campo
+            (Left $ T.concat ["%", valor, "%"])
+            (BackendSpecificFilter "ILIKE")
+    
+
+Este é aplicado igualmente aos filtros citados anteriormente, caso queiramos buscar todos os livros com `"Haskell"` no título:
+    
+    
+    selectList [LivroTitulo %%. "Haskell"] []
+    
+
+### Outras funções de seleção
+
+Às vezes, a seleção de apenas uma linha da tabela é o necessário, quando queremos buscar o usuário pelo nome, por exemplo. Mas nem sempre se tem a chave primária correspondente em mãos, portanto não é possível utilizar a função `get`. Nessa situação, podemos utilizar a função `selectFirst`. Ela é como o `selectList`, porém, em vez de retornar uma lista com zero ou um elemento, retorna apenas o primeiro resultado encontrado dentro de um `Just`; caso não encontre nada, retorna um `Nothing`. O `selectFirst` recebe os mesmos parâmetros do `selectList`. Internamente, essa função adiciona `LimitTo 1` como modificador.
+    
+    
+    selectFirst [LivroTitulo %%. "Haskell", LivroPlataforma == Ebook] []
+    
+
+Como citado anteriormente no capítulo, as chaves únicas serão muito úteis. Elas servem para identificar uma tabela e não podem ser duplicadas, assim como uma chave primária, porém são mais flexíveis, pois podem ser compostas por valores de qualquer tipo. 
+
+O Persistent possui algumas funções que nos possibilitam utilizar as chaves únicas de maneira bem sucinta. Quanto à parte de seleção, temos a função `getBy`, que possui as mesmas características do `get`, mas recebe uma chave única no lugar da chave primária. Outro ponto importante é que `getBy` retorna uma `Entity`.
+    
+    
+    getBy $ UniqueLivro "Haskell Rocks" "Simon Peyton Jones"
+    
+
+Note que o tipo usado como parâmetro é o mesmo que foi definido no módulo `Model`.
+
+## 6.3 Persistência de dados com Handlers — Escrita
+
+A parte de inserção de dados através do Persistent é tão simples quanto a seleção. Tendo apenas o tipo `Livro` construído, com todas as informações necessárias, basta passá-lo como parâmetro para a função `insert`.
+    
+    
+    /livro/cadastrar            LivroCadR  POST
+    
+    
+    
+    postLivroCadR :: Handler Html
+    postLivroCadR = do
+        let livro =
+          Livro Ebook "Haskell Rocks" "Simon Peyton Jones" 100
+        lid <- runDB $ insert livro
+        redirect $ LivroR lid
+    
+
+Por padrão, o `insert` retorna a chave primária da linha que foi inserida. Se for preciso inserir múltiplas linhas de uma vez só, é possível usar a função `insertMany`, que recebe uma lista com valores e retorna uma outra lista com todas as chaves primárias das linhas inseridas.
+
+Se a tabela em questão possuir alguma chave única, como é o nosso caso, é mais interessante utilizar a função `insertBy`. Ela é como a função `insert`, porém, checa por conflitos. Se o valor inserido, com a chave única, já existir na tabela, o `insertBy` retorna a chave primária dessa linha já existente dentro de um `Left` e não insere nada novo no banco de dados; se nenhum conflito for detectado, ela retorna a chave primária do novo registro dentro de um `Right`.
+    
+    
+    postLivroCadR :: Handler Html
+    postLivroCadR = do
+        let livro =
+          Livro Ebook "Haskell Rocks" "Simon Peyton Jones" 100
+        elid <- runDB $ insertBy livro
+        redirect . LivroR $ either id id elid
+    
+
+### Removendo dados já inseridos
+
+Não muito diferente da parte de inserção, a deleção também é direta ao ponto, porém temos um leque um pouco maior de funções à disposição. Para deletar um registro da tabela, é necessário apenas possuir a chave primária da linha em questão.
+    
+    
+    /livro/remover/#LivroId     LivroDelR  POST
+    
+    
+    
+    postLivroDelR :: LivroId -> Handler Html
+    postLivroDelR lid = do
+        runDB $ delete lid
+        redirect LivrosR
+    
+
+A função não fará nada se a linha com tal chave primária não existir na tabela. Como a seleção, o `delete` possui uma variante `deleteBy`, nos mesmos moldes de `getBy`. Por serem deleções, essas funções não retornam nada no sucesso.
+
+Se nem a chave primária ou alguma chave única estiver disponível, também é possível remover um registro a partir de filtros através da função `deleteWhere`.
+    
+    
+    deleteWhere [LivroTitulo %%. "Haskell", LivroPlataforma ==. Ebook]
+    
+
+Perceba que todos os `EBook` que tiverem `"Haskell"` em seus títulos serão deletados, portanto é estabelecido que `deleteWhere` é uma função que remove múltiplas linhas.
+
+Quando houver uma chave estrangeira ligando duas tabelas, um possível relacionamento impedirá a deleção do registro, a não ser que o outro registro, da outra tabela, também seja deletado. Mas não é necessário deletá-los manualmente pois, como criamos nosso banco de dados com uma instância de `DeleteCascade`, isso torna possível o uso da função `deleteCascade`, que recebe uma chave primária, como o `delete`, porém também deleta os registros conectados através das chaves estrangeiras.
+    
+    
+    postLivroDelR :: LivroId -> Handler Html
+    postLivroDelR lid = do
+        runDB $ deleteCascade lid
+        redirect LivrosR
+    
+
+Assim como com o `delete`, existe uma variante `deleteCascadeWhere`, que deleta em cascata, porém usando filtros em vez de uma chave primária.
+
+### Alterando dados já inseridos
+
+Existem duas maneiras de se alterar dados através do Persistent: atualizando a tabela inteira de uma vez só, ou modificando cada campo separadamente.
+
+Utilizando a função `replace` e a chave primária do registro a ser alterado, é necessário apenas passar o tipo do banco de dados inteiro, com todos os valores, e o registro inteiro será trocado.
+    
+    
+    /livro/alterar/#LivroId     LivroAltR  POST
+    
+    
+    
+    postLivroAltR :: LivroId -> Handler Html
+    postLivroAltR lid = do
+        let livro =
+          Livro Ebook "Haskell Rules" "Simon Peyton Jones" 200
+        runDB $ replace lid livro
+        redirect $ LivroR lid
+    
+
+No nosso caso de uso, `replace` não é tão interessante, pois dificilmente o título do livro seria alterado. Nessa situação, podemos usar a função `update` para alterar apenas o valor do livro.
+    
+    
+    postLivroAltR :: LivroId -> Handler Html
+    postLivroAltR lid = do
+        runDB $ update lid [LivroValor =. 200]
+        redirect $ LivroR lid
+    
+
+Os operadores para atualização são similares em funcionamento aos operadores de filtragem e, como usual, além do `=.`, existem outros 4 operadores que cobrem as operações matemáticas básicas: `+=.`, `-=.`, `*=.`, e `/=.`; estes aplicam adição, subtração, multiplicação, e divisão, respectivamente, a um determinado valor que já está no banco.
+
+Como não poderia deixar de existir, também há a variante `updateWhere`, que recebe uma lista de filtros e uma lista de alterações.
+
+## 6.4 Consultas avançadas
+
+Até agora nós vimos consultas em apenas uma tabela, porém consultar outras tabelas a partir de chaves estrangeiras é um tópico obrigatório, e que será abordado nesta seção. Afinal, um banco de dados relacional sem relacionamentos entre tabelas é extremamente não usual.
+
+O Persistent não possui suporte para cláusulas `JOIN`, porém o mesmo efeito pode ser alcançado combinando outras funções. Por exemplo, caso queiramos recuperar todos os livros vendidos em um determinado dia:
+    
+    
+    /vendas/dia/#Day            VendaDiaR  GET
+    
+    
+    
+    import Data.Time.Calendar
+    
+    getVendaDiaR :: Day -> Handler Html
+    getVendaDiaR dia = do
+        livros <- runDB $ do
+            vendas <- selectList [VendaDatado ==. dia] []
+            mapM (get404 . vendaLivro . entityVal) vendas
+        defaultLayout [whamlet|
+            <p>Livros vendidos no dia #{show dia}:
+            <table>
+                <thead>
+                    <tr>
+                        <th>Plataforma
+                        <th>Título
+                        <th>Autor
+                        <th>Valor
+                <tbody>
+                    $forall Livro p t a v <- livros
+                        <tr>
+                            <td>#{show p}
+                            <td>#{t}
+                            <td>#{a}
+                            <td>#{v}
+        |]
+    
+
+O truque aqui é utilizar, dentro do `mapM`, o `get404` compondo com a função de projeção da chave estrangeira `vendaLivro`, juntamente com `entityVal`, pois o `selectList` retorna um `Entity`. No final das contas, um `JOIN` foi feito; nesse caso utilizamos apenas o lado direito do nosso `INNER JOIN`, que são os livros.
+
+Caso seja desejável pegar os dois lados, é possível fazer o uso de tuplas para agrupar o resultado.
+    
+    
+    vendasLivros <- runDB $ do
+        vendas <- selectList [VendaDatado ==. dia] []
+        livros <- mapM (get404 . vendaLivro . entityVal) vendas
+        return $ zip vendas livros
+    
+
+Aqui não é utilizado o `get` pois ele retorna um `Maybe`; trabalhar com um tipo que representa a possível ausência de um valor, tendo certeza de que ele existe, deixaria o código desnecessariamente verboso. O uso do `get404` nunca resultará em um `404 Not Found` porque todas as chaves garantidamente existem na outra tabela. `VendaLivro` não pode ser um valor nulo, portanto não é possível possuir uma chave estrangeira sem que ela exista originalmente em sua tabela como chave primária.
+
+Outra maneira de se descrever esse método é através da função `belongsToJust`. Ela recebe uma função `tabela1 -> Key tabela2` e um tipo do banco de dados em si. Podemos reimplementar a busca dos livros vendidos da seguinte forma:
+    
+    
+    livros <- mapM (belongsToJust vendaLivro . entityVal) vendas
+    
+
+Tecnicamente, a única mudança real é interna. Se a chave primária não existir na segunda tabela, uma exceção será lançada, porém, isso não ocorrerá aqui; novamente, a eventual não existência da chave primária fere a integridade do banco de dados e, portanto, é impossível que ocorra.
+
+### Conclusão
+
+Neste capítulo, aprendemos como utilizar a ferramenta de persistência Persistent. Com ela, realizamos consultas, inserções, atualizações e deleções de um banco de dados. Com tipos criados em tempo de compilação pelo TemplateHaskell, pudemos trabalhar de maneira aprazível, além de realizar consultas mais avançadas simulando funções originalmente inexistentes na ferramenta.
+
+
+Capítulo 7
+
+# Projeto Livraria
+
+Neste capítulo, abordaremos as estruturas que devem ser utilizadas para criar interações através de formulários dentro do Yesod.
+
+## 7.1 Criando os formulários para seu livro
+
+Não adianta muito ter uma livraria sem livros, correto? Nesta seção trabalharemos com o cadastro de novos livros, bem como a listagem de todos eles em uma página.
+
+Antes de tudo, para utilizar formulários no Yesod, é mandatório adicionar o seguinte código no módulo `Foundation`:
+    
+    
+    import Yesod.Form.I18n.Portuguese
+    
+    instance RenderMessage App FormMessage where
+        renderMessage _ _ = portugueseFormMessage
+    
+
+Esse typeclass nos auxilia a traduzir mensagens, como as que aparecem quando se preenche um campo de e-mail com algo inválido ou quando se deixa um campo obrigatório em branco.
+
+Feito isso, o primeiro passo é definir quais dados o usuário precisa fornecer para cadastrar um novo livro. Em nosso caso, todos os dados de livro definidos no Persistent são necessários. Tendo essa informação em mãos, podemos continuar com a codificação; precisamos declarar a rota que vai abrigar nossa página de cadastro.
+    
+    
+    /livro/cadastrar            LivroCadR  GET POST
+    
+
+O segundo passo é montar nosso formulário a ser utilizado. Existem 3 tipos de formulários no Yesod:
+
+  * `MForm` \- tem um grande poder de customização e, consequentemente, sua definição é mais verbosa e complexa. Também existe um tipo variante `WForm`, que possui o mesmo intuito do `MForm`, porém tem uma construção ligeiramente mais compacta;
+  * `AForm` \- é um tipo de formulário prático que faz o uso de funtores aplicativos em sua construção. Estes são geralmente convertidos para `MForm`, reaproveitando funções de renderização etc. Ambos geram a parte de HTML do formulário;
+  * `FormInput` \- ao contrário dos tipos anteriores, este não gera o HTML, deixando-o a cargo do desenvolvedor front-end. Possui a mesma construção do `AForm` com funtores aplicativos.
+
+
+
+Nós transmitiremos os dados para o servidor através do método `POST`, portanto, é necessário que o Handler trate as informações que virão do front-end. Nós usaremos o formulário `AForm` por ser mais direto e dispensar, parcialmente, a elaboração da parte do HTML, porém os outros tipos também serão demonstrados no decorrer do capítulo.
+
+No geral, quando se define um campo do formulário, é preciso utilizar uma função que retorne `AForm m a` (no caso do `AForm`), temos duas opções: `areq` e `aopt`; o primeiro torna um campo obrigatório, o segundo torna um campo opcional, utilizando o `Maybe`. Além disso, essas funções recebem 3 parâmetros cada: uma função que denota o tipo do campo (`intField`, `textField`, e assim em diante); uma `String` que descreve o `<label>` do campo; e um `Maybe` do mesmo tipo do campo, como um valor padrão.
+    
+    
+    import Yesod.Form.Types
+    import Yesod.Form.Fields
+    import Yesod.Form.Functions
+    
+    formLivroCad :: Html
+        -> MForm Handler (FormResult Livro, Widget)
+    formLivroCad = renderDivs $ Livro
+        <$> areq (selectField optionsEnum) "Plataforma" Nothing
+        <*> areq textField "Título" Nothing
+        <*> areq textField "Autor" Nothing
+        <*> areq doubleField "Valor" Nothing
+    
+
+Apesar de o `AForm` e `FormInput` possuírem uma construção semelhante, com funtores aplicativos, seus _modi operandorum_ não o são. Existem diferenças notáveis, a primeira é o tipo: `FormInput m a`.
+    
+    
+    formLivroCad :: FormInput Handler Livro
+    formLivroCad = Livro
+        <$> ireq (selectField optionsEnum) "Plataforma"
+        <*> ireq textField "Título"
+        <*> ireq textField "Autor"
+        <*> ireq doubleField "Valor"
+    
+
+Além disso, as funções `areq` e `aopt` são chamadas de `ireq` e `iopt`, e elas também possuem parâmetros diferentes. Elas não recebem um valor padrão, já que esse tipo de formulário não gera HTML e o último parâmetro não se refere a uma tag `<label>`, mas sim ao atributo `name` do campo - ambos precisam ser exatamente iguais. 
+
+Comparado ao `AForm`, o `FormInput` fornece flexibilidade no HTML (o outro tipo gera o formulário na ordem do tipo do Haskell), porém possui a desvantagem de não ter uma segurança de tipos tão alta, já que dependerá de o desenvolvedor descrever o HTML do formulário da forma correta.
+
+Como o tipo do formulário é relativamente extenso, é possível adicionar um _type synonym_ no Foundation para reduzir o _boilerplate_.
+    
+    
+    type Form a = Html -> MForm Handler (FormResult a, Widget)
+    
+
+### Tipos de campos mais complexos
+
+É possível notar que, no primeiro campo, usamos uma função um pouco mais complexa. Ela gera um `<select>` com todos os `<option>` de um dado tipo, que o Haskell infere automaticamente, no nosso caso, `Impresso` e `Ebook`.
+
+Existem outros tipos de campos mais embruscados, porém eles possuem definições ligeiramente diferentes. Caso seja necessário o uso de um campo do tipo `radio`, `checkbox` ou `multi-select`, basta utilizar, respectivamente, as funções `radioField`, `checkboxesField` ou `multiSelectField` no lugar do `selectField`; já se o uso de valores arbitrários nos campos for necessário, algo adicional precisa ser feito:
+    
+    
+    areq (selectField $ optionsPairs
+        [ ("Tinta no papel"  , Impresso)
+        , ("Tinta eletrônica", Ebook)
+        ]) "Plataforma" Nothing
+    
+
+A função `optionsPairs` permite que o desenvolvedor associe qualquer valor (desde que seja uma instância de `RenderMessage`, ou um `Text`), que vai ser mostrado, a um outro valor, que vai ser enviado. Funciona da mesma maneira com os outros tipos. Todas as funções possuem renomeações de conveniência chamadas `selectFieldList`, `radioFieldList`, `checkboxesFieldList` e `multiSelectFieldList`, que fazem exatamente a mesma coisa.
+
+Quando o usuário não precisar fornecer um valor para o programa, porém o tipo do formulário necessitar daquele valor, precisaremos encontrar uma solução alternativa. Nós temos algumas opções, entre elas: criar outro tipo para aquele formulário, como uma tupla apenas com os campos necessários; colocar um `hiddenField` no campo com um valor qualquer; ou usar a função `pure` com um valor qualquer. A diferença entre `hiddenField` e `pure` é que o primeiro gera um `<input type="hidden">`, enquanto o segundo não.
+    
+    
+    formLivroCad :: Form Livro
+    formLivroCad = renderDivs $ Livro
+        <$> pure Ebook
+        <*> areq textField "Título" Nothing
+        <*> areq textField "Autor" Nothing
+        <*> areq hiddenField "" (Just 100)
+    
+    
+    
+    formLivroCad :: Form (Text, Text, Double)
+    formLivroCad = renderDivs $ (,,)
+        <*> areq textField "Título" Nothing
+        <*> areq textField "Autor" Nothing
+        <*> areq doubleField "Valor" Nothing
+    
+
+É possível ir além e customizar ainda mais nossos campos. Apesar de o segundo parâmetro do `areq` (ou `aopt`) receber uma `String` no nosso exemplo, o seu tipo é `FieldSettings a`. Só é possível usar uma `String` no lugar de `FieldSettings a` pois existe uma instância do typeclass `IsString` para `FieldSettings a`.
+    
+    
+    data FieldSettings a = FieldSettings
+        { fsLabel   :: SomeMessage a
+        , fsTooltip :: Maybe (SomeMessage a)
+        , fsId      :: Maybe Text
+        , fsName    :: Maybe Text
+        , fsAttrs   :: [(Text, Text)]
+        }
+    
+
+Os nomes dos campos do _value constructor_ são intuitivos; o último, que espera uma lista de tuplas, é basicamente para qualquer outro atributo que seja desejável adicionar a um campo de um formulário, como um `placeholder` ou `autocomplete`, por exemplo: `[("placeholder", "Isto é um placeholder"), ("autocomplete", "on")]`.
+
+### Formulários para todos
+
+Caso uma customização mais profunda dos campos seja desejada, sem perder a segurança de tipos fornecida pelo Haskell, pode-se utilizar o `MForm`. Por padrão, todas as funções que geram campos, através de todos os tipos de formulários, são semelhantes; no caso do `MForm`, temos `mreq` para campos obrigatórios e `mopt` para campos opcionais.
+    
+    
+    formLivroCad' :: Form Livro
+    formLivroCad' w = do
+        (vPlat, cPlat) <- mreq
+            (selectField optionsEnum) "Plataforma" Nothing
+        (vTitulo, cTitulo) <- mreq
+            textField "Título" Nothing
+        (vAutor, cAutor) <- mreq
+            textField "Autor" Nothing
+        (vValor, cValor) <- mreq
+            doubleField "Valor" Nothing
+        let livro = Livro <$> vPlat <*> vTitulo
+                        <*> vAutor <*> vValor
+            widget = [whamlet|
+                ^{w}
+                <p>
+                    <label for=^{fvId cTitulo}>
+                        ^{fvLabel cTitulo}:
+                    ^{fvInput cTitulo}
+                <p>
+                    <label for=^{fvId cAutor}>
+                        ^{fvLabel cAutor}:
+                    ^{fvInput cAutor}
+                <p>
+                    <label for=^{fvId cValor}>
+                        ^{fvLabel cValor}:
+                    ^{fvInput cValor}
+                    <label for=^{fvId cPlat}>
+                        ^{fvLabel cPlat}:
+                    ^{fvInput cPlat}
+            |]
+        return (livro, widget)
+    
+
+A maior desvantagem do `MForm` é evidente: é muito mais verboso, porém como temos total controle sobre o HTML, podemos lidar com os campos não necessários mais facilmente, além de conseguir utilizar qualquer layout ou tags HTML, e fazer validações entre campos de uma maneira muito mais fácil.
+
+Como citado anteriormente no capítulo, existe um variante: o `WForm`. Ele foi desenvolvido como um meio termo, com o intuito de reduzir a verbosidade do `MForm` e, ao mesmo tempo, remediar a dificuldade de trabalhar entre os campos do `AForm`. Seguindo o padrão, utiliza-se `wreq` para campos obrigatórios e `wopt` para campos opcionais.
+    
+    
+    formLivroCad :: Form Livro
+    formLivroCad = renderDivs . wFormToAForm $ do
+        vPlat <- wreq
+            (selectField optionsEnum) "Plataforma" Nothing
+        vTitulo <- wreq
+            textField "Título" Nothing
+        vAutor <- wreq
+            textField "Autor" Nothing
+        vValor <- wreq
+            doubleField "Valor" Nothing
+        return $ Livro 0 <$> vPlat <*> vTitulo
+                         <*> vAutor <*> vValor
+    
+
+Basicamente, utiliza-se esse tipo de formulário quando é necessário fazer alguma espécie de validação como, por exemplo, uma confirmação de senha, onde o valor de um campo depende do outro. Obviamente, se a customização do HTML em si também estiver sendo levada em conta, o `MForm` é uma melhor opção.
+
+Note que o `WForm` não possui meios de renderização, portanto a função `wFormToAForm` se faz necessária, pois esta vai converter o formulário para `AForm`, tornando possível a renderização. Existem outras funções de conversão entre `WForm`, `MForm` e `AForm`, porém elas não são utilizadas tão amplamente.
+
+## 7.2 O outro lado da moeda — camada de apresentação
+
+Tendo o formulário em si pronto, podemos partir para a construção da camada de apresentação. Existem duas funções que podem nos ajudar: `runFormPost`, que renderiza e extrai os valores de um formulário; e `generateFormPost`, que é como o anterior, porém realiza apenas a parte de renderização. Esta pode ser útil quando se fornece um formulário através de um `GET` e recolhe os seus dados através de um `POST`, como é o nosso caso.
+    
+    
+    getLivroCadR :: Handler Html
+    getLivroCadR = do
+        (campos, enctype) <- generateFormPost formLivroCad
+        defaultLayout [whamlet|
+            <form action=@{LivroCadR} method="POST"
+                    enctype=#{enctype}>
+                ^{campos}
+                <button>Enviar
+        |]
+    
+
+O valor que `generateFormPost` retorna é uma tupla com os campos e o `enctype` do formulário. Note que ela retorna os campos apenas e não o formulário em si, portanto este ainda precisa ser colocado manualmente no HTML. O valor do `enctype` é importante pois é ele quem diz se o formulário é `application/x-www-form-urlencoded` ou `multipart/form-data`; usa-se o segundo quando se possui algum arquivo binário para postar ou quando o tamanho do `request body` é consideravelmente grande. O Yesod cuida desse detalhe automaticamente, basta fazer o uso do valor fornecido pela função.
+
+Já no `POST`, precisamos utilizar `runFormPost`, pois coletaremos os dados enviados no formulário.
+    
+    
+    postLivroCadR :: Handler Html
+    postLivroCadR = do
+        ((FormSuccess livro, _), _) <- runFormPost formLivroCad
+        lid <- runDB $ insert livro
+        redirect $ LivroR lid
+    
+
+Aqui apenas adicionamos o livro postado à nossa tabela de livros no banco de dados. O tipo da função é `Handler Html`, mesmo sem ter nenhum Widget, porque ao final do processamento o servidor devolve a página do livro através de um redirecionamento.
+
+Uma implementação alternativa também é possível. A função `runFormPost` pode devolver três valores possíveis: `FormSuccess a`, tudo ocorreu bem; `FormFailure [Text]`, erros ocorreram; e `FormMissing`, nenhum formulário foi enviado. Considerando tais valores, pode-se concluir que é possível fazer o `GET` e o `POST` no mesmo Handler: se o valor for `FormMissing`, significa que o usuário enviou um `GET`, caso contrário, um `POST`.
+    
+    
+    getLivroCadR :: Handler Html
+    getLivroCadR = do
+        ((res, campos), enctype) <- runFormPost formLivroCad
+        case res of
+            FormSuccess livro -> do
+                lid <- runDB $ insert livro
+                redirect $ LivroR lid
+            _ -> 
+                defaultLayout [whamlet|
+                    <form action=@{LivroCadR} method="POST"
+                            enctype=#{enctype}>
+                        ^{campos}
+                        <button>Enviar
+                |]
+    
+    postLivroCadR :: Handler Html
+    postLivroCadR = getLivroCadR
+    
+
+Esse jeito de se implementar o Handler é muito útil caso seu formulário possua parâmetros que são fornecidos através de consultas ao banco de dados, por exemplo, como valores padrão. Nesse caso não seria necessário escrever o código das consultas duas vezes.
+
+### Melhorando o feedback para o usuário
+
+Apesar de os Handlers estarem implementados com os formulários, o usuário não vai ter muita ideia do que está acontecendo, não há nada, até o momento, que o informe de nada. O que podemos fazer é adicionar mensagens que o ajude a compreender um pouco melhor o processo como um todo.
+    
+    
+    getLivroCadR :: Handler Html
+    getLivroCadR = do
+        ((res, campos), enctype) <- runFormPost formLivroCad
+        case res of
+            FormSuccess livro -> do
+                lid <- runDB $ insert livro
+                setMessage
+                    [shamlet|Livro cadastrado com sucesso.|]
+                redirect $ LivroR lid
+            FormFailure erros -> do
+                setMessage
+                    [shamlet| $forall e <- erros
+                        <p>Ocorreu um erro: #{e}
+                    |]
+                redirect getLivroCadR
+            FormMissing ->
+                defaultLayout [whamlet|
+                    <form action=@{LivroCadR} method="POST"
+                            enctype=#{enctype}>
+                        ^{campos}
+                        <button>Enviar
+                |]
+    
+
+Com o uso do `setMessage`, é possível fornecer um feedback para o usuário de acordo com suas ações em relação ao servidor. Estas mensagens aparecerão apenas na resposta da requisição, ou seja, se a página for atualizada, elas não estarão mais lá; esse conceito é conhecido como _flashing_.
+
+### Conclusão
+
+Neste capítulo abordamos o conceito primordial de formulários, como eles funcionam, as diferenças entre todos os seus tipos e suas respectivas possibilidades de personalização, além de demonstrar a melhor situação para o uso de cada um deles.
+
+
+Capítulo 8
+
+# Manipulando credenciais e arquivos estáticos
+
+Até este ponto no livro, nós não trabalhamos com autenticação de usuários, qualquer um com acesso à URL do site poderia fazer quaisquer alterações que desejar nos dados que lá se encontravam. Neste capítulo abordaremos os mecanismos que são necessários para criar um sistema de autenticação e níveis de autorização, integrado com o banco de dados.
+
+## 8.1 Autenticação e autorização
+
+Antes de começarmos, para criarmos um controle de nível de acesso dos usuários que funcione de maneira apropriada no nosso sistema, é preciso adequar nosso módulo `Model`, já que não temos usuários cadastráveis. Fazendo as alterações necessárias:
+    
+    
+    share
+        [ mkPersist sqlSettings
+        , mkMigrate "migrateAll"
+        , mkDeleteCascade sqlSettings
+        ] [persistLowerCase|
+            Livro
+                plataforma      Plataforma
+                titulo          Text
+                autor           Text
+                valor           Double
+                UniqueLivro titulo autor
+            Cliente
+                email           Text
+                senha           Text
+                nome            Text
+                cpf             Text
+                UniqueEmailCliente email
+            Venda
+                datado          Day
+                cliente         ClienteId
+                livro           LivroId
+        |]
+    
+
+Feito isso, é mandatório elaborar a rota de cadastro de clientes, juntamente com o seu Handler. É interessante criar um novo módulo `Cliente`, com os pragmas e importações iguais aos do módulo `Livro`.
+
+### Sessões
+
+Uma parte importante na construção de um site é a habilidade de armazenar informações através de múltiplas requisições. Nem sempre utilizar o banco de dados é a saída mais adequada, pois nem todas as informações precisam ser armazenadas por um longo tempo, por exemplo, se um usuário está logado ou não.
+
+Considerando isso, o Yesod se aproveita do sistema de sessões para lidar com esse problema, onde informações podem ser armazenadas e removidas sem ter muito impacto no resto da aplicação.
+
+Quanto ao módulo `Cliente`, lá também teremos a parte de autenticação do usuário. Para criar um sistema de login, utilizaremos três funções que nos auxiliarão a trabalhar com sessões. Primeiramente nós usaremos a função `setSession`, que recebe dois parâmetros `Text`: o primeiro é uma chave e o segundo, um valor qualquer. Ela estabelece um cookie criptografado e hasheado no lado do cliente. A chave é necessária para identificar o valor pois pode haver múltiplos valores no mesmo cookie.
+    
+    
+    /login                      LoginR     GET POST
+    
+    
+    
+    getLoginR :: Handler Html
+    getLoginR = do
+        ((res, campos), enctype) <- runFormPost . renderDivs $ (,)
+            <$> areq emailField    "Email:" Nothing
+            <*> areq passwordField "Senha:" Nothing
+        case res of
+            FormSuccess (email, senha) -> do
+                cliente <- runDB . getBy $ UniqueEmailCliente email
+                case (fmap ((==) senha . clienteSenha) cliente) of
+                    Just True -> do
+                        setSession "_USR" email
+                        redirect HomeR
+                    _ -> do 
+                        setMessage
+                            [shamlet| <p>Email ou senha errados. |]
+                        redirect LoginR
+            FormFailure erros -> do
+                setMessage
+                    [shamlet| $forall e <- erros
+                        <p>Ocorreu um erro: #{e}
+                    |]
+                redirect LoginR
+            FormMissing -> 
+                defaultLayout [whamlet|
+                    <form action=@{LoginR} method="POST"
+                            enctype=#{enctype}>
+                        ^{campos}
+                        <button>Entrar
+                |]
+    
+    postLoginR :: Handler Html
+    postLoginR = getLoginR
+    
+
+Pode-se armazenar qualquer valor dentro do cookie por meio do `setSession`, desde que seja transformado em um `Text` anteriormente. É comum colocar valores que são utilizados com frequência através da aplicação para reduzir a necessidade de acesso ao banco de dados.
+
+Naturalmente, se temos um login, temos que possuir um logout também. Para tal, faremos o uso da função `deleteSession`. Ela recebe apenas um `Text`, que é a chave que identifica o registro no cookie.
+    
+    
+    /logout                     LogoutR    POST
+    
+    
+    
+    postLogoutR :: Handler Html
+    postLogoutR = do
+        deleteSession "_USR"
+        redirect HomeR
+    
+
+> **Logout: GET ou POST?**
+> 
+> É extremamente recomendado que se faça o logout através do método `POST`. Alguns navegadores possuem um recurso chamado _prefetch_ , que basicamente acessa as rotas `GET` da página previamente, para acelerar o carregamento. Se o logout for feito com `GET`, o usuário pode ser inesperadamente desautenticado.
+
+Como usual, também teremos alterações no módulo `Foundation`. Dentro do _typeclass_ `Yesod` nós temos a função `isAuthorized` que ainda precisa ser definida, ela regra quais rotas são acessíveis e por quem. Esta função recebe dois parâmetros, o primeiro é a rota em si, o segundo é um booleano que indica se o acesso à rota foi através de um método HTTP de leitura ou de escrita, por exemplo, `GET` (`False`) ou `POST` (`True`), respectivamente.
+
+O retorno da função possui o tipo `Handler AuthResult`. `AuthResult` tem 3 _value constructors_ : `Authorized`, o usuário tem o acesso à rota liberado; `AuthenticationRequired`, o usuário precisa se autenticar para acessar a rota, este redireciona para a rota de autenticação padrão (explicada mais adiante na seção); e `Unauthorized Text`, o usuário é desautorizado a acessar a rota, com o código HTTP `403 Forbidden`, juntamente com a mensagem de erro definida.
+    
+    
+    instance Yesod App where
+        isAuthorized (LivroR _) False = return Authorized
+        isAuthorized LivroCadR False = return $
+            Unauthorized "Não autorizado"
+        isAuthorized LivroCadR True = return AuthenticationRequired
+    
+
+Pelo fato de o retorno da função ser um `Handler`, isso torna possível o uso de outras funcionalidades, dentro do `isAuthorized`, que também fazem o uso do `Handler`, como o módulo de persistência, por exemplo.
+
+Esta função é importante pois reduz drasticamente a repetição de código. Em vez de checar pelo nível de autorização do usuário em cada Handler, basta fazer uma função que faz essa checagem e chamá-la conforme o necessário no `isAuthorized`. Isso pode ser facilmente realizado utilizando a função `lookupSession`.
+
+Como `deleteSession`, ela recebe apenas um `Text`, que é a chave que identifica o registro no cookie. O retorno dela é o valor correspondente à chave, encapsulado por um `Maybe`.
+    
+    
+    ehCliente :: Handler AuthResult
+    ehCliente = do
+        mCliente <- lookupSession "_USR"
+        case mCliente of
+            Just email -> return Authorized
+            Nothing -> return AuthenticationRequired
+    
+    instance Yesod App where
+        isAuthorized HomeR _ = return Authorized
+        isAuthorized LoginR _ = return Authorized
+        isAuthorized LogoutR _ = ehCliente
+        isAuthorized (LivroR _) False = ehCliente
+        isAuthorized _ _ = return $ Unauthorized "Não autorizado"
+    
+
+É importante checar quais rotas estão autorizadas e quais não estão com atenção, afinal, não queremos requerer que o usuário esteja autenticado para acessar a página de login.
+
+Mas o que acontece se o usuário tentar acessar uma rota que necessita de autenticação sem ter se autenticado? Ele deve cair no `AuthenticationRequired`. Como citado anteriormente, este tipo diz ao Yesod que o usuário não está autenticado e precisa se autenticar, portanto o redireciona automaticamente para a rota de autenticação padrão. Esta rota é definida na função `authRoute`, do _typeclass_ `Yesod`.
+    
+    
+    instance Yesod App where
+        authRoute _ = Just LoginR
+    
+        isAuthorized HomeR _ = return Authorized
+        isAuthorized LoginR _ = return Authorized
+        isAuthorized LogoutR _ = ehCliente
+        isAuthorized (LivroR _) False = ehCliente
+        isAuthorized _ _ = return $ Unauthorized "Não autorizado"
+    
+
+A função `authRoute` recebe um parâmetro igual ao tipo do `Foundation`, no nosso caso, `App`; ele é muito útil caso precise usar algum valor que está no tipo do `Foundation`. Ela deve retornar a rota de login dentro de um `Maybe`.
+
+## 8.2 Yesod static — Subsite para arquivos estáticos
+
+Muitos sites necessitam de mecanismos para fins variados, como autenticação ou fornecimento de arquivos estáticos. Por serem serviços que podem ser utilizados através de múltiplos sites, o Yesod criou o sistema de _subsites_.
+
+Um subsite é, basicamente, um outro site que pode ser colocado dentro de um site principal, esses subsites possuem suas próprias rotas e Handlers. Nesta seção nós cobriremos o subsite de arquivos estáticos.
+
+### Configurando arquivos estáticos
+
+Arquivos estáticos são uma importante parte de um site, afinal, o conteúdo de um site não é composto apenas por textos. O Yesod implementa o fornecimento de arquivos de estáticos de maneira bem sucinta utilizando as ferramentas que o Haskell disponibiliza, como o sistema de tipos, através do sistema de rotas. 
+
+> **Etags e arquivos cacheados**
+> 
+> Um benefício de se utilizar esse subsite é que os arquivos fornecidos através dele possuem _etags_ , que permitem que os arquivos sejam cacheados. Portanto, eles são reenviados para o cliente apenas se eles forem alterados no servidor, e não a cada requisição.
+
+Alguns subsites, como o de autenticação, fazem o uso de _typeclasses_ para definir suas funcionalidades, escopo, e configurações, porém isso o limita a apenas um subsite por site principal. Com o subsite de arquivos estáticos não usamos um _typeclass_ ; isso permite que tenhamos múltiplos subsites deste tipo.
+
+Por não estar ligado a um _typeclass_ , as configurações do subsite de arquivos estáticos são definidas manualmente. Estas são divididas em duas partes, a primeira é a rota:
+    
+    
+    /static        StaticR    Static getStatic
+    
+
+A segunda é a definição da função `getStatic`, geralmente coloca-se essa função no tipo do Foundation:
+    
+    
+    import Yesod.Static
+    
+    data App = App
+        { appConnPool :: ConnectionPool 
+        , getStatic   :: Static
+        }
+    
+
+A implementação da função em si fica no `main`, junto às outras definições do tipo do `Foundation`:
+    
+    
+    import Yesod.Static
+    
+    main :: IO ()
+    main = do
+        appConnPool <- runNoLoggingT $ createSqlitePool "livraria" 10
+        runSqlPersistMPool (runMigration migrateAll) appConnPool
+        st <- static "static"
+        warp 3000 $ App appConnPool st
+    
+
+Essa função `getStatic` (que poderia ter qualquer outro nome), define onde seus arquivos estáticos estão localizados no servidor. Note que o `"static"` é em relação ao lugar onde o servidor for executado; portanto se você rodar `stack exec` na raiz do projeto, é necessário que o diretório `static` também esteja na raiz do projeto.
+
+Mas não para por aí, assim como existem as rotas _type-safe_ para os Handlers, nós também as temos para os arquivos estáticos. Essas rotas são geradas através da função auxiliar `staticFiles`, que utiliza TemplateHaskell. Adicionando-a ao módulo `Foundation` nós vamos ter todas as rotas geradas para nós:
+    
+    
+    staticFiles "static"
+    
+
+Se você possuir as imagens, `static/imagens/empolgou.jpg` e `static/imagens/empolgou-novamente.jpg`, a função `staticFiles` vai gerar as seguintes rotas:
+
+  * `imagens_empolgou_jpg`
+  * `imagens_empolgou_novamente_jpg`
+
+
+
+O padrão é que todas as barras (`/`), pontos (`.`), e traços (`-`) são trocados por _underlines_ (`_`). É possível acessar a rota dos arquivos estáticos diretamente através de uma `String`, porém não é recomendado, pelo mesmo motivo por que não é recomendado acessar as rotas dos Handlers diretamente através de uma `String`.
+
+Caso seja desejável fornecer múltiplos arquivos estáticos através de subsites diferentes, também é possível, basta adicionar uma nova rota e definir uma outra função nos padrões do `getStatic`:
+    
+    
+    /static        StaticR    Static getStatic
+    /static-alt    StaticR    Static getStaticAlt
+    
+    
+    
+    data App = App
+        { appConnPool  :: ConnectionPool 
+        , getStatic    :: Static
+        , getStaticAlt :: Static
+        }
+    
+
+## 8.3 Upload de arquivos ao servidor
+
+Apesar de o subsite de arquivos estáticos conseguir provisionar qualquer tipo de arquivo, não é adequado utilizá-lo para arquivos dinâmicos. Nesta seção nós cobriremos a parte de upload e fornecimento de arquivos não estáticos.
+
+O fluxo do processo de upload e fornecimento de arquivos dinâmicos é similar ao fluxo da página de cadastro de livros, a diferença fundamental é que estaremos enviando e recebendo arquivos em vez de textos. O primeiro passo é definir o diretório no servidor onde ficarão os arquivos.
+    
+    
+    ebook :: LivroId -> FilePath
+    ebook lid = "files/ebooks/" </> (show . fromSqlKey $ lid)
+    
+
+Nesse caso, o arquivo a ser enviado terá uma relação direta com o registro no banco de dados, portanto é mais prático simplesmente utilizar a chave primária da tabela como nome do arquivo.
+
+Lembre-se de que o caminho é relativo ao executável da aplicação; caso esteja utilizando o stack, é relativo ao local onde o comando `stack exec` for executado. Após definir o diretório para os arquivos, é preciso criar a rota e o Handler, tanto de upload, quanto de download.
+    
+    
+    /livro/#LivroId/upload      UploadR    GET POST
+    
+    
+    
+    getUploadR :: LivroId -> Handler Html
+    getUploadR lid = do
+        ((res, campos), enctype) <- runFormPost . renderDivs $
+            areq fileField "Ebook:" Nothing
+        case res of
+            FormSuccess arquivo -> do
+                liftIO $ fileMove arquivo (ebook lid)
+                redirect $ LivroR lid
+            FormFailure erros -> do
+                setMessage
+                    [shamlet| $forall e <- erros
+                        <p>Ocorreu um erro: #{e}
+                    |]
+                redirect $ UploadR lid
+            FormMissing -> 
+                defaultLayout [whamlet|
+                    <form action=@{UploadR lid} method="POST"
+                            enctype=#{enctype}>
+                        ^{campos}
+                        <button>Enviar
+                |]
+    
+    postUploadR :: LivroId -> Handler Html
+    postUploadR = getUploadR
+    
+
+Nesta parte, não há muitas novidades, com exceção de não estarmos mandando informações para o banco de dados, mas sim para o sistema de arquivos do servidor. A função que faz todo o trabalho para nós é a `fileMove`. Como ela retorna um `IO ()`, o `liftIO` se faz necessário, já que estamos dentro de um `Handler`.
+
+Para gravar o arquivo no sistema, só precisamos passar para a função `fileMove` o arquivo em si, que no nosso caso veio do formulário; e o nome do arquivo. Como citado anteriormente, utilizamos a chave primária da tabela do banco de dados.
+
+Partindo para o download de arquivos nós temos um fluxo ligeiramente diferente do comum, com uma regra de autorização um pouco mais intrincada, afinal o usuário só poderá baixar o ebook se ele o tiver comprado.
+    
+    
+    /livro/#LivroId/download    DownloadR  GET
+    
+    
+    
+    instance Yesod App where
+        isAuthorized (DownloadR _) _ = do
+            musr <- lookupSession "_USR"
+            case musr of
+                Just usr -> do
+                    Just (Entity cid _) <- runDB . getBy $ 
+                        UniqueEmailCliente usr
+                    adquirido <- selectFirst
+                        [ VendaLivro   ==. lid
+                        , VendaCliente ==. cid] []
+                    case adquirido of
+                        Just _ -> return Authorized
+                        _ -> notFound
+                _ -> return AuthenticationRequired
+    
+
+Existem três desfechos ao tentar acessar a rota que faz o download do ebook. Um deles é quando o usuário ainda não se autenticou (`AuthenticationRequired`); fora isso, ou o usuário comprou o ebook em questão e tem acesso ao download, ou ele não comprou o ebook.
+
+Caso ele não tenha comprado o ebook, ele será redirecionado para uma página de erro `404 Not Found` com um _short-circuit_ , através da função `notFound`, e é aí que está o pulo do gato. Se o usuário não tem acesso ao download do ebook, ele não deve nem saber que tal rota de fato existe. Algo importante a se notar é que não interessa onde se esteja no ciclo de vida da requisição, o _short-circuiting_ pode ser feito em qualquer ponto de um código Handler.
+
+Com a parte de autorização feita no _typeclass_ , o código do Handler fica muito mais enxuto.
+    
+    
+    getDownloadR :: LivroId -> Handler ()
+    getDownloadR lid = sendFile "application/epub+zip" (ebook lid)
+    
+
+Observe que a função `sendFile` recebe dois parâmetros, o primeiro é um MIME type, que define como o cliente vai tratar a resposta; o segundo é apenas o caminho até o arquivo para ser enviado.
+
+O retorno é um `Handler ()` porque a função `sendFile` também é uma função de _short-circuit_ e como tal é polimórfica, portanto um tipo precisa ser definido.
+
+### Conclusão
+
+Autenticação e autorização é uma parte fundamental de qualquer sistema, e o Yesod fornece os meios de se construir essa parte, através do sistema de sessões. Outro ponto importante é a provisão de arquivos, tanto estáticos quanto dinâmicos; o Yesod também cuida dessa parte com maestria, integrando-se com o sistema de arquivos do servidor, através do subsite e funções de `IO` arbitrárias.
+
+
+Capítulo 9
+
+# Criando WebService RESTful
+
+Um serviço online não precisa ser, obrigatoriamente, fornecido através de um website; existem inúmeras outras maneiras de se transferir dados entre um cliente e um servidor. Neste capítulo, abordaremos uma arquitetura amplamente utilizada, o WebService RESTful.
+
+Como não poderia ser diferente, o Yesod nos dá todo o poder necessário para a construção de uma API robusta com o mínimo de esforço.
+
+## 9.1 Configurações iniciais
+
+O primeiro passo é definir suas rotas de maneira a aderirem ao padrão REST. Nosso recurso REST fará o uso de 5 métodos HTTP: `GET`, `POST`, `PUT`, `PATCH` e `DELETE`. Algo importante a se notar é que não é necessário utilizar todos os 5 métodos, bem como também é possível utilizar outros métodos além dos 5 citados; o REST é um estilo de arquitetura, ou seja, são convenções que podem ou não ser seguidas, porém, tenha em mente que algo muito fora do padrão descaracterizaria o serviço como RESTful.
+
+Para começar, precisamos definir as rotas ligadas ao livro:
+    
+    
+    /livro/#LivroId LivroR  GET      PUT PATCH DELETE
+    /livros         LivrosR GET POST
+    
+
+> Nessa altura, você vai notar que as rotas recém-definidas vão conflitar com as rotas definidas nos capítulos anteriores. A princípio existem duas saídas: criar um projeto novo; ou criar as rotas no mesmo projeto, mas com URIs e tipos diferentes. Qual caminho tomar fica a seu critério, contudo mais adiante no capítulo uma terceira saída será apresentada.
+
+### Aeson — O pai de Jason
+
+No Yesod, em geral, a estrutura de um WebService RESTful é similar à estrutura de um WebApp, como o que nós construímos nos capítulos anteriores. A grande diferença entre eles é o relacionamento cliente-servidor. 
+
+Em um WebService, é usual que o servidor forneça aos seus possíveis clientes representações de dados em notações como JSON ou XML; já em um WebApp, o servidor geralmente possui clientes predeterminados e os dados são enviados através do HTML.
+
+No nosso caso, nós utilizaremos o JSON, pois o Yesod possui uma integração extremamente facilitada com essa notação, como poderá ser visto ao longo desta seção.
+
+Para utilizar o JSON em nosso projeto, é necessário adicioná-lo às dependências do projeto no arquivo `package.yaml`. A biblioteca desejada se chama `aeson`. Aproveite e adicione também a biblioteca `http-types`, pois vamos utilizá-la mais adiante:
+    
+    
+    dependencies:
+    - base
+    - yesod
+    ...
+    - aeson
+    - http-types
+    
+
+Feito isso, é possível ir para os próximos passos. Para poder usar o JSON com os nossos tipos do banco de dados, é necessário ensinar o Haskell como convertê-los de um tipo do Haskell para JSON e vice-versa. Por sorte, o Yesod nos fornece um meio prático para realizar essa tarefa.
+
+Voltando ao módulo `Model`, nós devemos apenas adicionar o termo `json` ao lado do nome das nossas tabelas:
+    
+    
+    share
+        [ mkPersist sqlSettings
+        , mkMigrate "migrateAll"
+        , mkDeleteCascade sqlSettings
+        ] [persistLowerCase|
+            Livro json
+                plataforma      Plataforma
+                titulo          Text
+                autor           Text
+                valor           Double
+                UniqueLivro titulo autor
+            Cliente json
+                email           Text
+                senha           Text
+                nome            Text
+                cpf             Text
+                UniqueEmailCliente email
+            Venda json
+                datado          Day
+                cliente         ClienteId
+                livro           LivroId
+        |]
+    
+
+Isso faz com que o Yesod crie instâncias dos _typeclasses_ `ToJSON` e `FromJSON` automaticamente para os nossos tipos. Porém, há um problema. Essa técnica funciona apenas se todos os tipos utilizados na tabela também possuírem essas instâncias. O `json` só cria a instância para a tabela em si, e não para os tipos dentro dela.
+
+Os tipos `Text`, `Double`, `Day`, e `LivroId` já possuem uma implementação padrão das instâncias necessárias, porém o tipo `Plataforma` não possui instância alguma de JSON, portanto é necessário criá-las.
+
+Essas instâncias vão juntas à declaração do tipo, no módulo `Extra`:
+    
+    
+    import Data.Aeson
+    
+    data Plataforma = Impresso | Ebook
+        deriving (Show, Read, Enum, Bounded, Eq)
+    derivePersistField "Plataforma"
+    
+    instance ToJSON Plataforma where
+        toJSON (Plataforma x) = object ["plataforma" .= (show x)]
+        toEncoding (Plataforma x) = pairs $ "plataforma" .= (show x)
+    
+    instance FromJSON Plataforma where
+        parseJSON (Object x) = fmap Plataforma $ x .: "plataforma"
+    
+
+Não há muito segredo nas instâncias, um aspecto importante a se notar é que o tipo utilizado para representar um valor JSON no Haskell é o `Value`.
+
+Na instância de `ToJSON`, o operador `.=` é o ponto principal na criação do JSON. Ele pega um par de chave e valor, no nosso caso `String` e `Plataforma`, e devolve um `Pair`; note que esta operação está dentro de uma lista porque a função `object` recebe um `[Pair]` e devolve um `Value`, ou seja, também é possível construir JSONs com vários campos.
+
+> A função `toEncoding` só faz parte da instância por questões de compatibilidade com versões antigas da biblioteca, caso haja mais campos a serem adicionados, basta unificá-los através do `mappend`: `pairs $ "chave1" .= "val1" <> "chave2" .= "val2"`.
+
+Já na instância de `FromJSON`, como esperado, é o processo inverso, a mágica acontece no operador `.:`, que recebe o objeto de um lado e a chave para acessar o valor no objeto do outro lado.
+
+### Aeson e metaprogramação mágica
+
+Por se tratar de Haskell, também é possível gerar as instâncias de `ToJSON` e `FromJSON` para `Plataforma` automaticamente. Basta adicionar um pragma, importar outro módulo e derivar uma instância:
+    
+    
+    {-# LANGUAGE DeriveGeneric #-}
+    
+    import GHC.Generics
+    
+    data Plataforma = Impresso | Ebook
+        deriving (Show, Read, Enum, Bounded, Eq, Generic)
+    derivePersistField "Plataforma"
+    
+    instance ToJSON Plataforma where
+        toEncoding = genericToEncoding defaultOptions
+    
+    instance FromJSON Plataforma
+    
+
+Como pode-se notar, a implementação genérica é mais enxuta, porém não há personalização na construção e desconstrução do JSON. Independente do método escolhido, ambos vão permitir a criação automática das instâncias de JSON para os tipos do banco de dados. 
+
+## 9.2 API Livraria
+
+Pavimentamos o caminho para fomentar a existência de nosso WebService RESTful, o que nos resta agora é implementar nossas rotas. De fato, pouca coisa mudará, se for comparar com o WebApp. Começando pelas requisições `GET`, temos:
+    
+    
+    {-# LANGUAGE OverloadedStrings #-}
+    {-# LANGUAGE QuasiQuotes #-}
+    
+    module Livro where
+    
+    import Foundation
+    import Model
+    import Yesod.Core
+    import Yesod.Persist
+    import Data.Aeson
+    import Network.HTTP.Types.Status
+    
+    getLivroR :: LivroId -> Handler Value
+    getLivroR livroId = do
+        livro <- runDB . get404 $ livroId
+        sendStatusJSON status200 livro
+    
+    getLivrosR :: Handler Value
+    getLivrosR = do
+        livros <- runDB $ selectList [] [Asc LivroTitulo]
+        sendStatusJSON status200 livros
+    
+
+No caso do primeiro Handler, basicamente recebe-se a requisição, pega-se o id do livro e recupera-se o livro no banco a partir do id. Tendo o livro, ele é serializado como JSON e enviado de volta para o usuário no `response body`. O segundo Handler funciona da mesma maneira, porém pega todos os livros e não recebe nenhum argumento. 
+
+Note o tipo do retorno do Handler, `Handler Value`. Isso indica que o Handler retorna um JSON; para tornar possível o retorno como `Value`, utilizamos o `sendStatusJSON`. A função `sendStatusJSON` recebe um `Status` e um valor que possua instância de `ToJSON`. 
+
+O tipo `Status` vem do módulo `Network.HTTP.Types.Status`, no qual a biblioteca foi adicionada anteriormente (`http-types`). Este módulo possui uma série de funções que devolvem status HTTP variados, definidas nos moldes de `status<codigo>`. 
+
+Isso cobre a parte de fornecimento de dados utilizando JSON, porém um WebService também pode conter recursos para cadastros ou modificações de dados, onde é necessário enviar um JSON no `request body`. Como já temos a instância de `FromJSON` para `Livro`, converter o JSON para o tipo do banco de dados é extremamente fácil.
+    
+    
+    postLivrosR :: Handler Value
+    postLivrosR = do
+        livro <- requireCheckJsonBody :: Handler Livro
+        livroId <- runDB $ insert livro
+        sendStatusJSON status201 livroId
+    
+
+Aqui usamos a função `requireCheckJsonBody`. Precisamos definir um tipo explicitamente porque ela é polimórfica e também porque usamos funções polimórficas através do Handler inteiro, então o Haskell não conseguiria inferir o tipo `Livro`.
+
+Em suma, `requireCheckJsonBody` consome o `request body` e extrai o JSON dele. Tendo o JSON em mãos, ele é convertido para o tipo do Haskell. Além de converter os valores para o tipo desejado, esta também é uma função de _short-circuit_ ; se o JSON enviado não conferir com a construção na instância do `FromJSON`, a função retorna `400 Bad Request` com `Invalid Arguments` no `response body` automaticamente.
+
+Quanto aos outros métodos HTTP, eles não se diferem muito do `GET` e `POST` vistos anteriormente.
+    
+    
+    import Data.Aeson.Types (emptyObject)
+    
+    putLivroR :: LivroId -> Handler Html
+    putLivroR livroId = do
+        livro <- requireCheckJsonBody :: Handler Livro
+        runDB $ replace livroId livro
+        sendStatusJSON status203 emptyObject
+    
+    deleteLivroR :: LivroId -> Handler Html
+    deleteLivroR livroId = do
+        runDB $ delete livroId
+        sendStatusJSON status203 emptyObject
+    
+
+As únicas alterações aqui, comparando com o que vimos até esse ponto, são no retorno da requisição em si, o que não deixa de ser uma mudança semântica. A função `emptyObject` faz exatamente o que está descrito em seu nome: retorna um objeto JSON vazio. Em vez de retornar algum conteúdo no `response body`, o que provavelmente seria redundante, nós retornamos um objeto vazio juntamente com o status `203 No Content`.
+
+Quando se quiser enviar campos soltos, por exemplo, para atualizar apenas uma coluna em um banco de dados, nós podemos utilizar uma técnica parecida com as tuplas lá dos formulários no capítulo 7, porém aqui temos um pouco mais de liberdade, já que a natureza do JSON é mais flexível.
+    
+    
+    patchLivroR :: LivroId -> Handler Value
+    patchLivroR livroId = do
+        (valor, plataforma) <- requireCheckJsonBody
+        runDB $ update livroId
+            [LivroValor =. valor, LivroPlataforma =. plataforma]
+        sendStatusJSON status203 emptyObject
+    
+
+Não foi necessária a explicitação do tipo do `requireCheckJsonBody` pois o Haskell conseguiu inferi-lo a partir de outros tipos como `LivroValor` e `LivroPlataforma`.
+
+### JSON no client-side — qual formato deve ser enviado?
+
+Quando um JSON malformado é enviado para um Handler, um `400 Bad Request` é retornado como resposta, como mencionado anteriormente; pois bem, como saber qual formato deve ser enviado? Isso depende de como a instância de `FromJSON` foi definida. 
+
+A instância genérica possui uma tradução direta a partir de um determinado tipo. Por exemplo, para converter para o tipo `Livro`, precisamos de um JSON com o seguinte formato:
+    
+    
+    "{
+        \"plataforma\": \"Ebook\",
+        \"titulo\": \"Haskell Rocks\",
+        \"autor\": \"Simon Peyton Jones\",
+        \"valor\": 100
+    }"
+    
+
+Note que os nomes das chaves são iguais aos nomes dos campos definidos no Persistent. Outro detalhe é que, como o JSON não possui tuplas, elas são representadas como listas. Para um tipo `(Int, String)` temos:
+    
+    
+    "[2, \"Isto é uma tupla!\"]"
+    
+
+Por definição, estas são transformadas em tuplas. Por não existir listas de tipos diferentes no Haskell, não é possível sequer defini-las como um resultado em formato de lista a partir de uma conversão de JSON.
+
+## 9.3 Handlers multitarefa
+
+Ao desenvolver um serviço web, é comum lidar com vários clientes diferentes e, estes, com vários requisitos diferentes. Dependendo do caso, é necessário deixar o cliente escolher o tipo de resposta que ele quer receber de um determinado recurso: JSON, HTML, XML etc.
+
+Além disso, o REST cita que um único recurso deve ser fornecido através de apenas uma URL. No Yesod nós temos os meios para atingir o objetivo de fornecer múltiplos MIME types no mesmo Handler; como você provavelmente já notou, o template `yesod-minimal` vem com um exemplo destes.
+
+> Como dito no início do capítulo, uma terceira maneira de se lidar com as rotas conflitantes seria mostrada. Pois bem, essa maneira é a utilização destes Handlers multitarefa.
+
+Um Handler multitarefa espera receber uma ou mais maneiras de se representar um dado, no caso do exemplo do template, HTML e JSON. Estes Handlers utilizam primariamente duas funções: `selectRep` e `provideRep`.
+
+A função `provideRep` é apenas uma auxiliar que ajuda no encaixe de todos os jeitos diferentes de se expressar informações; já a função `selectRep` é quem define qual resposta será enviada:
+    
+    
+    getLivroR :: LivroId -> Handler Html
+    getLivroR livroId = do
+        livro <- runDB . get $ livroId
+        selectRep $ do
+            provideRep $ 
+                defaultLayout [whamlet|
+                    $maybe l <- livro
+                        <p>#{show $ livroPlataforma l} 
+                            #{show $ livroTitulo l} 
+                                por #{show $ livroAutor l} 
+                                    | Valor: #{livroValor l}
+                    $nothing
+                        <p>Não há livros com esse ID
+                |]
+            provideJson livro
+    
+
+Não temos somente `provideRep` aqui, utilizamos também `provideJson`, que é outra função auxiliar, que faz o manuseio da conversão do JSON por você.
+
+No geral, o `selectRep` sabe qual representação escolher a partir do _request header_ `accept`. Como esse combo de HTML/JSON é mais usual, também existe uma outra função auxiliar que deixa a construção do todo ainda mais direta.
+    
+    
+    getLivroR :: LivroId -> Handler Html
+    getLivroR livroId = do
+        livro <- runDB . get $ livroId
+        defaultLayoutJson widget json
+      where
+        widget = [whamlet| ... |]
+    
+        json :: Handler Value
+        json = returnJson livro
+    
+
+Como na implementação anterior, aqui acontece o mesmo, porém não há a necessidade de se utilizar o `defaultLayout`, nem `provideRep` e `selectRep`; isso é possível pois essas funções já estão embutidas dentro do `defaultLayoutJson`. Quanto às declarações de tipo dentro do `where`, elas só estão ali para evitar problemas de ambiguidade.
+
+Aqui também usamos uma outra função nova, `returnJson`. Ela é literalmente a composição `return . toJSON`. No Yesod é comum se deparar com funções auxiliares, e é recomendado utilizá-las por deixar o código mais legível e compacto. 
+
+### Status codes em Handlers multitarefa
+
+Olhando atentamente, você vai notar que nesses Handlers multitarefa nós não explicitamos o _status code_ da resposta em JSON. De fato, como o Yesod segura todas as pontas por nós, fazendo _short-circuiting_ onde necessário, não é mandatório definir nenhum _status code_ manualmente. 
+
+Todas as funções de _short-circuit_ utilizadas também se adequam ao `request header accept`, retornando JSON quando demandado; mas por questões de semântica, e de seguir o padrão REST, nós devemos definir os _status codes_ nesses Handlers também. No caso do `defaultLayoutJson`, basta passar o `sendStatusJSON` diretamente:
+    
+    
+    getLivroR :: LivroId -> Handler Html
+    getLivroR livroId = do
+        livro <- runDB . get $ livroId
+        defaultLayoutJson widget json
+      where
+        widget = [whamlet| ... |]
+    
+        json :: Handler Value
+        json = sendStatusJSON status200 livro
+    
+
+Igualmente, se o `selectRep` estiver sendo utilizado, é necessário adicionar o `sendStatusJSON` e explicitar o tipo do retorno da função, para evitar problemas com ambiguidade. Nesse caso nós precisamos usar `provideRep`, já que `sendStatusJSON` retorna um `Handler Value`, tornando o uso do `provideJson` desnecessário.
+    
+    
+    getLivroR :: LivroId -> Handler Html
+    getLivroR livroId = do
+        livro <- runDB . get $ livroId
+        selectRep $ do
+            provideRep $ defaultLayout ...
+            provideRep
+                (sendStatusJSON status200 livro :: Handler Value)
+    
+
+Obviamente, não vamos ter diferença alguma neste Handler, já que `200 OK` é retornado por padrão em uma resposta de sucesso, porém, em outros Handlers que necessitam de outros _status codes_ , esse método é conveniente.
+
+### Conclusão
+
+Como em qualquer framework para desenvolvimento web, o WebService é um tópico crucial. Pela maneira como o Yesod funciona, foi possível notar neste capítulo que pouca coisa mudou, comparando ao website original; foi visto como trabalhar com JSON através do Aeson e como utilizá-lo no Yesod, também foi visto incorporar múltiplas respostas em um mesmo Handler.
+
+
+Capítulo 10
+
+# Uma conclusão inevitável
+
+Como foi visto através do livro, pode-se notar que o Yesod é um framework de alta produtividade, onde a maioria da implementação do código se concentra nos Handlers. Isso se deve em grande parte à linguagem, mas também ao modo como o Yesod funciona. Sendo um framework extremamente modular e tendo uma comunidade insaciável, a maioria do trabalho pesado já foi desenvolvido e basta ser utilizado. A parte da linguagem se deve ao conceito de _type-safety_ , que o Yesod utiliza intensamente, delegando ao compilador a checagem da consistência do código, o que permite que o programador foque no que é realmente importante: desenvolver.
+
+Além disso, pelo fato de Yesod ser feito em cima de uma linguagem de programação séria como o Haskell, onde existe um fundamento matemático por trás de tudo e onde as estruturas da linguagem são consistentes, é notório que qualquer aplicação web construída com o Yesod resistirá ao teste do tempo.
+
+A não existência de uma IDE pode ser um fator bloqueante para alguns, contudo isso é parcialmente remediado pelo stack. O stack proporciona uma experiência de uso extremamente fluída, dispondo de todas as ferramentas necessárias para gerenciar um projeto feito em Yesod e, consequentemente, suas dependências.
+
+Também não é desconhecido que o Haskell possui uma curva de aprendizado acentuada, principalmente para a galera que vem de linguagens imperativas; obviamente, um paradigma novo não é algo com que alguém se acostume da noite para o dia, mas, como tudo na vida, é necessário começar de algum lugar e o Yesod é um excelente ponto de início. O Yesod é estruturado de uma maneira bem amigável a quem programa e, para as aplicações mais básicas, não é necessário lidar com nenhuma estrutura mirabolante; e isso possui um preço.
+
+Para deixar o processo de desenvolvimento fácil, o Yesod adota um bocado de camadas de abstração. É necessário concordar que isso adiciona uma certa complexidade ao código e nem sempre se precisa de todas essas camadas para alcançar um determinado objetivo. O Yesod **pode** ser utilizado para microaplicações, porém esse não é o foco do framework.
+
+O Yesod é como uma montanha esperando para ser escalada e este livro é o seu piolet.

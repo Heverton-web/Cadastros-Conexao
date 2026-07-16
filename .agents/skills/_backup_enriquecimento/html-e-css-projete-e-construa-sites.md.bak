@@ -1,0 +1,57 @@
+---
+name: html-e-css-projete-e-construa-sites-jon-duckett
+description: >-
+  Passos operacionais extraidos — desenvolvimento web, full-stack, JavaScript, TypeScript, React, Node.js (PT).
+---
+
+# Html E Css Projete E Construa Sites — Passos Operacionais
+
+Conteudo extraido do livro 'Html E Css Projete E Construa Sites'. Contem passos, tecnicas e principios baseados na obra original.
+
+## 1. Conceitos Fundamentais
+- Pedidos para o Publisher para a permissão deve ser dirigida ao Departamento de Permissões, John Wiley & Sons, Inc., 111 River Street, Hoboken, NJ 07030, (201) 748-  6011, fax (201) 748-6008, ou online em http://www.wiley.com/go/permissions.
+- Limite de Responsabilidade / Isenção de Garantia: O editor e o autor não faz representações ou garantias quanto à exatidão ou completude do conteúdo deste trabalho    Limite de Responsabilidade / Isenção de Garantia: O editor e o autor não faz representações ou garantias quanto à exatidão ou completude do conteúdo deste trabalho  e, especificamente, assumem todas as garantias, incluindo sem limitação, garantias de adequação a um propósito particular.
+- Nenhuma garantia pode ser criado ou estendido por  vendas ou materiais promocionais.
+- O conselho e estratégias aqui contidos pode não ser adequado para cada situação.
+- Este trabalho é vendido com o entendimento de que a  editora não está envolvida na prestação jurídica, contabilidade ou outros serviços profissionais.
+- Se a assistência profissional é necessária, os serviços de um profissional  competente deve ser procurado.
+- Nem a editora nem o autor será responsável por danos surgidos a partir deste.
+- O facto de um sítio organização ou Web é referido neste trabalho  como uma citação e / ou uma fonte potencial de mais informações não significa que o autor ou a editora subscreve as informações da organização ou site pode fornecer ou  recomendações que podem fazer.
+- Além disso, os leitores devem estar cientes de que os sites de Internet listados neste trabalho pode ter mudado ou desapareceram entre quando  este trabalho foi escrito e quando é lido.
+- Para informações gerais sobre nossos outros produtos e serviços, por favor entre em contato com nosso Departamento de Atendimento dentro dos Estados Unidos em (877) 762-2974, fora dos Estados  Unidos em (317) 572-3993 ou fax (317) 572-4002.
+
+## 2. Principios e Tecnicas
+- Wiley também publica seus livros em uma variedade de formatos eletrônicos.
+- Algum conteúdo que aparece na impressão pode não estar disponível em livros eletrônicos.
+- Biblioteca de controlo do número Congresso: 2011932082   Biblioteca de controlo do número Congresso: 2011932082  marcas: Wiley eo logotipo Wiley são marcas comerciais ou marcas registradas da John Wiley & Sons, Inc. e / ou suas afiliadas, nos Estados Unidos e em outros países, e    marcas: Wiley eo logotipo Wiley são marcas comerciais ou marcas registradas da John Wiley & Sons, Inc. e / ou suas afiliadas, nos Estados Unidos e em outros países, e  não podem ser utilizadas sem autorização por escrito.
+- Todas as outras marcas comerciais são propriedade dos seus respectivos proprietários.
+- John Wiley & Sons, Inc. não  está associada a qualquer produto ou fornecedor mencionado neste livro.
+- HTML & CSS  Projetar e construir sites   Para John Wiley & Sons, Inc.
+- Eles    Introdução páginas vêm no início de cada capítulo.
+- Eles  introduzem os temas-chave que você vai aprender.
+- Referência páginas introduzir peças-chave de HTML & CSS.
+- O código    Referência páginas introduzir peças-chave de HTML & CSS.
+
+## 3. Aplicacoes Praticas
+- O código  HTML é mostrado em azul e código CSS é mostrado na cor rosa.  fundo páginas aparecem no branco; eles explicar o contexto dos    fundo páginas aparecem no branco; eles explicar o contexto dos  temas abordados que são discutidos em cada capítulo.
+- Diagrama e infográficos páginas são mostradas em um fundo    Diagrama e infográficos páginas são mostradas em um fundo  escuro.
+- Eles fornecem uma referência simples, visual aos tópicos  discutidos.
+- Exemplo páginas juntos os temas que você aprendeu e demonstrar    Exemplo páginas juntos os temas que você aprendeu e demonstrar  como elas podem ser aplicadas em cada um.  resumo páginas vir no final de cada capítulo.
+- Eles lembrá-lo dos    resumo páginas vir no final de cada capítulo.
+- Eles lembrá-lo dos  principais temas que foram abordados em cada capítulo.   5    INTRODUÇÃO  No trabalho, quando as pessoas olham para a  minha tela e vê-lo cheio de código, não é  incomum para obter um comentário sobre isso  olhando muito complicado ou quão inteligente eu  devo ser para compreendê-lo.
+- A verdade é que  não é tão difícil de aprender a escrever páginas  da web e ler o código usado para criá-los; você  certamente não tem que ser um "programador".
+- HTML compreensão e CSS pode ajudar  qualquer um que trabalha com a web; os  designers podem criar sites mais atraente e  utilizável, editores de sites podem criar melhor  conteúdo, os comerciantes podem se  comunicar com seu público de forma mais  eficaz, e os gerentes podem encomendar  locais melhores e tirar o melhor proveito das  suas equipas.
+- Tenho focado no código que você precisa usar  90% do tempo e omitiu o código que você  raramente vê mesmo se escrever sites é o seu  emprego a tempo inteiro.
+- No final do livro, se  você se deparar com os outros 10% você vai ser  capaz de pesquisar no Google para descobrir o  que isso significa de forma rápida e facilmente.
+
+## 4. Topicos Avancados
+- Tenho também acrescentou informações  práticas sobre tópicos que eu estou mais  frequentes sobre, por exemplo, como preparar  imagens, áudio e vídeo para a web, como  abordar a concepção e construção de um novo  site, como melhorar seus rankings nos motores  de busca (SEO ), e como usar o Google  Analytics para aprender sobre os visitantes do  seu site.
+- Muitos livros que ensinam HTML e CSS assemelham  manuais maçantes.
+- Para tornar mais fácil para você  aprender, que jogou fora o modelo tradicional usado por  editores e redesenhado este livro a partir do zero.
+- É difícil de aprender?   6   INTRODUÇÃO  1: HTML  Vamos passar o primeiro capítulo olhando  como HTML é usado para criar páginas web.
+- Você vai ver que você começa por escrever as  palavras que você deseja que apareçam em  sua página.
+- Você, então, adicionar tags ou  elementos para as palavras para que o  navegador sabe o que é um título, onde um  parágrafo começa e termina, e assim por  diante.
+- O restante desta seção apresenta as marcas  que você tem à sua disposição para criar  páginas web, agrupados em capítulos sobre:  ​texto, listas, links, imagens, tabelas,  formulários, vídeo e áudio flash, e elementos  diversos.
+- Devo avisá-lo que os exemplos nos  primeiros nove capítulos não são  emocionantes para olhar, mas eles são a  base de cada página web.
+- Os seguintes  capítulos sobre CSS irá mostrar-lhe como  fazer suas páginas olhar muito mais  interessante.  2: css  Começamos esta seção com um capítulo que  explica como CSS usa regras para permitir que  você controle o estilo e layout de páginas da  web.
+- Em seguida, passam a olhar para a  grande variedade de propriedades CSS que  você pode usar em suas regras CSS.

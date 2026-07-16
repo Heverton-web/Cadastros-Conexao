@@ -1,0 +1,3542 @@
+<!-- index_split_000.html -->
+
+
+
+<!-- index_split_001.html -->
+## **Agentes de IA com MCP**
+
+Protocolo de Contexto de Modelo para Construção de
+
+Clientes, Serviços e Agentes de Ponta a Ponta
+
+Com os ebooks de Acesso Antecipado, você obtém os livros em sua
+
+forma inicial — o conteúdo bruto e não editado do autor enquanto ele
+
+escreve — para que você possa aproveitar essas tecnologias muito antes
+
+do lançamento oficial desses títulos.
+
+**Kyle Stratis**
+
+
+<!-- index_split_002.html -->
+**Agentes de IA com MCP**
+
+Por Kyle Stratis
+
+Copyright © 2026 O’Reilly Media. Todos os direitos reservados.
+
+Impresso nos Estados Unidos da América.
+
+Publicado por O’Reilly Media, Inc., 1005 Gravenstein Highway North,
+
+Sebastopol, CA 95472.
+
+Os livros da O’Reilly podem ser adquiridos para fins educacionais,
+
+comerciais ou promocionais de vendas. Edições online também estão
+
+disponíveis para a maioria dos títulos (http://oreilly.com). Para mais
+
+informações, entre em contato com nosso departamento de vendas
+
+corporativas/institucionais: 800-998-9938 ou corporate@oreilly.com.
+
+Editores: Jill Leonard e Nicole Butterfield
+
+Designer de Interiores: David Futato
+
+Designer da capa: Karen Montgomery
+
+Ilustradora: Kate Dullea
+
+Maio de 2026: Primeira Edição
+
+**Histórico de revisões da versão antecipada**
+
+07/07/2025: Primeiro lançamento
+
+Consulte http://oreilly.com/catalog/errata.csp?isbn=9798341639553 para
+
+obter detalhes sobre a versão.
+
+O logotipo da O’Reilly é uma marca registrada da O’Reilly Media, Inc. AI
+
+Agents with MCP, a imagem da capa e a identidade visual relacionada são
+
+marcas comerciais da O’Reilly Media, Inc.
+
+As opiniões expressas nesta obra são de responsabilidade do(s) autor(es) e
+
+não representam as opiniões da editora. Embora a editora e o(s) autor(es) tenham se empenhado de boa-fé para garantir a precisão das informações e
+
+instruções contidas nesta obra, a editora e o(s) autor(es) se eximem de toda
+
+responsabilidade por erros ou omissões, incluindo, sem limitação, a
+
+responsabilidade por danos resultantes do uso ou da confiança nesta obra. O
+
+uso das informações e instruções contidas nesta obra é de sua inteira
+
+responsabilidade. Caso algum exemplo de código ou outra tecnologia
+
+contida ou descrita nesta obra esteja sujeita a licenças de código aberto ou
+
+direitos de propriedade intelectual de terceiros, é sua responsabilidade
+
+garantir que seu uso esteja em conformidade com tais licenças e/ou direitos.
+
+979-8-341-63950-8
+
+
+<!-- index_split_003.html -->
+**Sumário resumido (ainda não**
+
+**finalizado)**
+
+Capítulo 1: IA Agêntica e MCP (disponível)
+
+Capítulo 2: Uma Introdução ao Protocolo de Contexto do Modelo
+
+(indisponível)
+
+Capítulo 3: Hospedagem de Clientes (disponível)
+
+Capítulo 3: Identificar um problema claro e presente (indisponível)
+
+Capítulo 4: O Servidor (indisponível)
+
+Capítulo 5: Transportes (indisponível)
+
+Capítulo 6: Aplicação Host (indisponível)
+
+Capítulo 7: Clientes MCP (indisponível)
+
+Capítulo 8: Servidores MCP (indisponível)
+
+Capítulo 9: Juntando Tudo (indisponível)
+
+
+<!-- index_split_004.html -->
+**Capítulo 1. IA Agêntica e MCP**
+
+**NOTA PARA LEITORES DA VERSÃO ANTECIPADA**
+
+Com os ebooks de Acesso Antecipado, você obtém os livros em sua
+
+forma inicial — o conteúdo bruto e não editado do autor enquanto ele
+
+escreve — para que você possa aproveitar essas tecnologias muito antes
+
+do lançamento oficial desses títulos.
+
+Este será o primeiro capítulo do livro final. Observe que o repositório
+
+do GitHub será ativado posteriormente.
+
+Se você deseja participar ativamente da revisão e dos comentários sobre
+
+esta versão preliminar, entre em contato com o editor pelo endereço
+
+jleonard@oreilly.com.
+
+No final de 2024, a Anthropic lançou o Model Context Protocol (MCP) com
+
+grande alarde. A Anthropic não apenas padronizou uma maneira de
+
+transformar chatbots de simples interlocutores em agentes capazes de agir,
+
+como também lançou o MCP simultaneamente com suporte de IDEs
+
+populares com inteligência artificial, bem como do Claude Desktop da
+
+própria Anthropic, impulsionando uma rápida adoção. Um dos principais
+
+componentes da arquitetura do MCP, os servidores MCP, foi projetado para
+
+ser incrivelmente simples de configurar, mas extremamente complexo
+
+quando fluxos de trabalho avançados eram necessários. Isso levou a uma
+
+rápida proliferação de servidores MCP criados por usuários, aprimorando
+
+fluxos de trabalho de IA generativa e consolidando a adoção do MCP como
+
+padrão para a criação de agentes de IA.
+
+Este livro tem como objetivo aprofundar-se no MCP, indo além da
+
+documentação disponível e proporcionando uma compreensão profunda da
+
+arquitetura do MCP, dos recursos que o protocolo e seus SDKs oferecem e,
+
+mais importante, como usar esse conhecimento para construir seus próprios servidores e clientes MCP e aprimorar seus fluxos de trabalho de IA
+
+generativa com eles. Ao fazer isso, você pode transformar chatbots de IA
+
+generativa padrão em agentes completos, capazes de agir, planejar e usar
+
+ferramentas por conta própria, e até mesmo trabalhar em conjunto para
+
+realizar tarefas complexas. Neste capítulo, você aprenderá mais sobre
+
+agentes de IA, o que são, como são usados e como o MCP se encaixa no
+
+cenário de IA generativa. O próximo capítulo abordará o próprio MCP: sua
+
+história, os problemas que resolve, sua arquitetura e exemplos práticos de
+
+MCP em ação. Os três capítulos seguintes abordarão os principais
+
+componentes do MCP: clientes e seus aplicativos host, servidores e
+
+transportes. Com esse conhecimento em mãos, os três capítulos finais
+
+usarão um projeto para lhe dar experiência prática na construção não apenas
+
+de seus próprios servidores, clientes e transportes, mas também de como
+
+utilizá-los em um agente real.
+
+**Afinal, o que é um agente?**
+
+Mas o que exatamente é um agente? Se você pesquisar isso no Google,
+
+encontrará mais definições do que links. Se perguntar ao Claude ou ao
+
+ChatGPT algumas vezes seguidas, poderá até obter respostas diferentes.
+
+Parece que todos têm uma opinião sobre o que é ou não um agente, mas é
+
+difícil falar sobre agentes sem chegar a uma definição comum. Para os
+
+propósitos deste livro, usaremos a definição utilizada pela Anthropic em seu
+
+artigo "Building Effective Agents": um agente é um "sistema... onde
+
+grandes modelos de linguagem (LLMs) direcionam dinamicamente seus
+
+próprios processos e uso de ferramentas, mantendo o controle sobre como
+
+realizam as tarefas". Eles geralmente são implementados como LLMs que
+
+recebem uma tarefa e então usam ferramentas (aqui, uma ferramenta é
+
+qualquer código "externo" ao agente que é chamado por ele para realizar
+
+alguma tarefa) para executar uma ação e coletar feedback antes de
+
+prosseguir. A ação e a coleta de feedback ocorrem em um ciclo, onde o
+
+LLM realiza alguma ação, o feedback é coletado e enviado de volta ao
+
+LLM, e então o LLM decide se apresenta o resultado como final ao usuário, usa o feedback coletado para realizar outra ação ou coleta mais feedback do
+
+usuário.
+
+Vamos analisar um uso comum de agentes e como esse ciclo se pareceria
+
+para cada resultado. Para este exemplo, imagine uma tarefa de
+
+programação: você está em um editor de código com inteligência artificial,
+
+como o Cursor ou o Windsurf, e pede ao chatbot para escrever testes
+
+unitários para o seu código. Os ciclos de ação/feedback podem ser algo
+
+como:
+
+(Figura em breve)
+
+Isso se distingue de um fluxo de trabalho agentivo, um sistema no qual o
+
+código, em vez da LLM (Linguagem de Linguagem de Linguagem),
+
+determina o caminho que a lógica seguirá, mas ainda chama uma LLM para
+
+realizar parte do trabalho. Esse é um padrão comum em sistemas agentivos
+
+e pode ser muito útil para tarefas complexas que exigem algum nível de
+
+lógica determinística, conforme imposto pelo código. Por exemplo, imagine
+
+um aplicativo que recebe código como entrada e o converte em seu
+
+equivalente em outra linguagem. Uma abordagem de fluxo de trabalho para
+
+isso poderia ser receber o código de entrada, chamar uma LLM para
+
+detectar a linguagem em que o código está e, se não detectar nenhuma
+
+linguagem, retornar uma mensagem de erro ao usuário. Se detectar uma
+
+linguagem e houver um analisador sintático determinístico para ela, o
+
+analisador sintático determinístico é chamado no código e a saída traduzida
+
+é retornada ao usuário. Se for detectada uma linguagem para a qual não haja
+
+um analisador sintático, a LLM seria chamada novamente e solicitada a
+
+realizar a tradução, retornando a saída ao usuário. Isso é encadeamento de
+
+prompts, um padrão comum de fluxo de trabalho agentivo para tarefas que
+
+exigem uma ou mais chamadas a um LLM (Learning Language
+
+Management) e um caminho de código para decidir quais os próximos
+
+passos a serem tomados para concluir essa tarefa. Outros padrões comuns
+
+de fluxo de trabalho incluem paralelização, onde várias chamadas a LLMs
+
+são feitas simultaneamente e os resultados são combinados; roteamento,
+
+onde um LLM classifica uma entrada e, em seguida, faz uma de várias
+
+chamadas possíveis a outros LLMs com a entrada classificada; orquestrador-trabalhador, onde um LLM divide uma tarefa, chama LLMs
+
+trabalhadores para executar as tarefas menores e, finalmente, um LLM é
+
+chamado para reunir os resultados; e avaliador-otimizador, onde um LLM
+
+gera uma resposta ao prompt do usuário e uma segunda chamada a um
+
+LLM avalia essa resposta e a apresenta ao usuário, se for aceitável, ou a
+
+retorna com feedback para a primeira chamada a um LLM para
+
+refinamento.
+
+A figura abaixo mostra o fluxo de trabalho de encadeamento de prompts em
+
+ação: a entrada é enviada ao LLM para detectar o idioma. A saída é o
+
+idioma inferido, que é verificado no código para determinar se houve
+
+detecção ou não. O fluxo de trabalho passa para o estado "falha" se nenhum
+
+idioma for detectado e para o estado "sucesso" se houver. O próximo estado
+
+também é determinístico e verifica se existe um analisador sintático
+
+determinístico para o idioma detectado. Se houver, o próximo estado
+
+simplesmente chama o analisador sintático e retorna a saída para o usuário.
+
+Caso contrário, o próximo estado chama um LLM novamente e solicita que
+
+ele faça a tradução, retornando a saída para o usuário.
+
+(Figura em breve)
+
+Em contraste, uma abordagem agentiva, no entanto, forneceria ferramentas
+
+de detecção e tradução de idioma ao LLM (Agente de Linguagem Local) e
+
+simplesmente pediria a ele que detectasse o idioma da entrada e o utilizasse
+
+para escolher a ferramenta de tradução correta. A próxima figura ilustra esse
+
+processo: o usuário fornece o código de entrada e o LLM é acionado. Ele
+
+percorre o ciclo de ação-feedback, detectando o idioma da entrada e
+
+verificando o ambiente em busca de ferramentas para realizar a tradução. Se
+
+houver uma ferramenta apropriada para o agente usar, ele a aciona; caso
+
+contrário, tentará realizar a tradução de forma autônoma. Qualquer que seja
+
+o resultado obtido, ele o retornará ao usuário.
+
+(Figura em breve)
+
+A principal diferença a ser lembrada é que os agentes podem decidir quais
+
+ferramentas usar e quais ações tomar em um ou mais ciclos de feedback de
+
+ação, enquanto os fluxos de trabalho usam caminhos de código para determinar quais ferramentas usar e quais ações tomar, e como tomar essas
+
+ações.
+
+**Como os agentes são usados na IA**
+
+**generativa?**
+
+Como você viu acima, os agentes são implantados para tarefas complexas
+
+onde planejamento, tomada de decisão e uso de ferramentas são necessários
+
+para a conclusão da tarefa. Normalmente, para o usuário, não há diferença
+
+óbvia na interação com um agente em comparação com a interação com
+
+LLMs não-agentes: há uma caixa de bate-papo com um chatbot do outro
+
+lado, o usuário faz perguntas e o chatbot responde. Uma diferença
+
+fundamental com os agentes, no entanto, é que os usuários podem pedir que
+
+eles façam algo, e eles podem executar ações e interagir com o ambiente,
+
+utilizando as ferramentas disponíveis. Um usuário pode perceber isso como
+
+nada mais do que um chatbot mais poderoso, mas os agentes podem
+
+proporcionar experiências personalizadas ao usuário por meio do uso de
+
+ferramentas, prompts especializados, recursos de dados, memória e a
+
+capacidade de coordenar e colaborar com outros agentes.
+
+Essas habilidades extraordinárias despertaram grande interesse em
+
+investigar como fazer com que os agentes trabalhem juntos.
+
+(Mais novidades em breve)
+
+**O que os agentes possibilitam na IA**
+
+**generativa?**
+
+Os agentes e os padrões de projeto que estão sendo inventados e explorados
+
+para eles estão possibilitando alguns dos avanços mais empolgantes na IA
+
+generativa. Um único agente transforma um Modelo de Aprendizagem
+
+Linear (LLM) com uma fonte estática de informações (provenientes de seus
+
+dados de treinamento) em algo capaz de acessar novas informações,
+
+interagir com o ambiente por meio de ferramentas, agir de forma semiautônoma e se comunicar com outros agentes. Todo esse
+
+comportamento deriva tanto da arquitetura do agente (especificamente, o
+
+ciclo de feedback de ação discutido anteriormente neste capítulo) quanto
+
+das capacidades adicionadas a um LLM em um sistema agente: recuperação
+
+de dados, ferramentas e memória.
+
+(Mais novidades em breve)
+
+**Exemplos e casos de uso para agentes**
+
+Para explorar de fato como os agentes são usados, o que eles nos permitem
+
+fazer e em que tipos de tarefas eles se destacam, será útil analisar alguns
+
+casos de uso de agentes, exemplos reais desses casos de uso e, quando
+
+possível, suas arquiteturas. Sistemas baseados em agentes estão sendo
+
+implementados em praticamente todos os lugares, mas alguns casos de uso
+
+têm se destacado recentemente:
+
+Agentes de codificação
+
+Agentes de pesquisa
+
+Agentes de atendimento ao cliente
+
+copilotos/assistentes específicos para cada negócio
+
+Agentes de codificação.
+
+Agentes de pesquisa.
+
+Agentes de atendimento ao cliente.
+
+Copilotos/assistentes específicos para cada negócio.
+
+**O papel do Protocolo de Contexto do Modelo**
+
+**na IA Agética**
+
+Antes do MCP, embora a IA agente ainda fosse relativamente nova, as
+
+organizações que construíam plataformas internas de IA generativa e frameworks públicos como o LangChain precisavam encontrar maneiras
+
+diferentes para que os usuários implementassem ferramentas e as
+
+repassassem para um LLM (Modelo de Aprendizagem Baseado em Lógica)
+
+para uso, sendo que cada LLM exigia seu próprio conector. Isso levou ao
+
+que é conhecido como o "problema MxN": para cada um dos M LLMs que
+
+precisam ser suportados, são necessários N conectores para cada
+
+ferramenta, fonte de dados etc. que se deseja conectar. Se você precisa dar
+
+suporte a 3 modelos e 10 ferramentas, isso significa que você precisa
+
+escrever 30 conectores que se repetem em grande parte, aumentando as
+
+chances de surgirem bugs difíceis de diagnosticar.
+
+(Figura em breve)
+
+O Protocolo de Contexto de Modelo, inspirado no Protocolo de Servidor de
+
+Linguagem (LSP), fornece uma interface comum para a construção de
+
+ferramentas, prompts e recursos de dados, conectando-os a LLMs
+
+(Máquinas de Linguagem Linguística). Dessa forma, para qualquer número
+
+M de LLMs, basta escrever N conectores, transformando o problema M x N
+
+em M + N.
+
+(Figura em breve)
+
+(Mais novidades em breve)
+
+**Outros protocolos em IA Agêntica**
+
+(Mais novidades em breve)
+
+**O que você aprenderá**
+
+O objetivo deste livro é duplo. O principal propósito é familiarizá-lo com
+
+todos os recursos e componentes do Model Context Protocol (MCP),
+
+permitindo que você crie aplicações host (ou seja, agentes, conforme nossa
+
+definição no início do capítulo), clientes, servidores e até mesmo contribua
+
+para o protocolo e seus diversos SDKs. A primeira parte deste livro,
+
+capítulos 2 a 5, atinge esse objetivo por meio de explicações e exemplos. Examinaremos cada componente do MCP e do SDK oficial em Python,
+
+discutiremos suas funções, suas capacidades e como a implementação se
+
+relaciona com o protocolo. À medida que você avança por esses
+
+componentes, encontrará exemplos de código projetados para mostrar uma
+
+implementação prática com o mínimo de código desnecessário, permitindo
+
+que você se concentre no assunto em questão. A segunda parte, capítulos 6 a
+
+9, orienta você na criação de um projeto que utiliza todas as partes da
+
+arquitetura do MCP. Isso lhe proporcionará experiência prática real na
+
+criação de aplicações que podem interagir com servidores MCP por meio de
+
+clientes MCP, servidores MCP e até mesmo camadas de transporte.
+
+O objetivo secundário deste livro é servir como guia de referência. As
+
+seções dos capítulos seguintes, que tratam da arquitetura e da
+
+implementação em Python do Protocolo de Contexto de Modelo (Model
+
+Context Protocol), incluem links para código, a especificação do protocolo
+
+e artigos e projetos que abordam ou utilizam o protocolo. Esses recursos
+
+servirão como ponto de partida sempre que você precisar aprender mais
+
+sobre um conceito abordado no livro ou sobre como esse conceito se
+
+encaixa no estado atual (e em constante evolução) do protocolo. Além
+
+disso, espero que tanto os exemplos de código quanto o projeto sirvam
+
+como pontos de referência para que você possa começar rapidamente seus
+
+próprios projetos.
+
+
+<!-- index_split_005.html -->
+**Capítulo 2. Hospedagem de**
+
+**Clientes**
+
+**NOTA PARA LEITORES DA VERSÃO ANTECIPADA**
+
+Com os ebooks de Acesso Antecipado, você obtém os livros em sua
+
+forma inicial — o conteúdo bruto e não editado do autor enquanto ele
+
+escreve — para que você possa aproveitar essas tecnologias muito antes
+
+do lançamento oficial desses títulos.
+
+Este será o terceiro capítulo do livro final. Observe que o repositório do
+
+GitHub será ativado posteriormente.
+
+Se você deseja participar ativamente da revisão e dos comentários sobre
+
+esta versão preliminar, entre em contato com o editor pelo endereço
+
+jleonard@oreilly.com.
+
+Ao trabalhar com o Protocolo de Contexto de Modelo (MCP), você
+
+normalmente trabalhará com (ou criará!) clientes ou servidores. Em alguns
+
+projetos, você poderá criar ambos. Para realmente entender o protocolo e
+
+usá-lo em todo o seu potencial em seus projetos, você precisará estar
+
+familiarizado com todos os componentes da arquitetura MCP. Neste
+
+capítulo, você aprenderá sobre o lado do consumidor dessa arquitetura:
+
+aplicativos host e clientes.
+
+Primeiramente, vamos analisar os aplicativos host: o que são, o que fazem e
+
+que tipos de aplicativos podem se beneficiar da incorporação do MCP? Em
+
+seguida, examinaremos o próprio cliente. É ele que define o aplicativo host:
+
+ele hospeda o(s) cliente(s), que, por sua vez, permitem que o aplicativo host
+
+se comunique com os servidores MCP.
+
+No entanto, existe um porém: um único cliente só pode se comunicar com
+
+um único servidor. Se você precisar acessar vários servidores, terá que iniciar várias instâncias do cliente ou ter um único cliente que faça apenas
+
+conexões curtas e temporárias com os servidores. Analisaremos os prós e os
+
+contras de cada abordagem e quais casos de uso são mais adequados para
+
+cada uma delas.
+
+Em seguida, você verá um aplicativo host muito simples e o cliente que ele
+
+hospeda. Analisaremos linha por linha para ajudá-lo a entender a estrutura
+
+de um cliente e como ele fornece funcionalidades ao aplicativo host. Por
+
+fim, você aprenderá sobre as melhores práticas para integrar um cliente a
+
+um aplicativo host, garantindo que seu aplicativo permaneça seguro,
+
+confiável e responsivo.
+
+☐ FIGURA A SER DEFINIDA
+
+**O aplicativo host**
+
+Sua aplicação pode ser qualquer coisa que hospede o(s) cliente(s) que
+
+gerenciarão as conexões com os servidores MCP, desde um simples script
+
+de chatbot que recebe algumas informações do usuário e as envia para um
+
+LLM para obter uma resposta, até um IDE completo como o Cursor ou o
+
+Windsurf.
+
+Graças à modularidade do MCP, existem poucas restrições quanto ao que
+
+seu aplicativo host faz para oferecer suporte ao MCP. Ele só precisa se
+
+comunicar com um LLM e hospedar um ou mais clientes MCP. Se você
+
+planeja usar ferramentas, o LLM que seu aplicativo host utiliza também
+
+deve oferecer suporte à chamada de ferramentas.
+
+No exemplo abaixo, você verá um aplicativo host básico. Tudo o que ele faz
+
+em seu estado atual é receber a entrada do usuário em um loop constante e
+
+passá-la para um LLM. Você pode encontrar este script e todo o restante do
+
+código deste capítulo em ch3 no repositório do livro no Github.
+
+
+<!-- index_split_006.html -->
+**Exemplo: Uma aplicação host simples**
+
+**import** **os**
+
+**from** **anthropic** **import** Anthropic
+
+**from** **dotenv** **import** load_dotenv
+
+load_dotenv()
+
+LLM_API_KEY = os.environ["LLM_API_KEY"]
+
+anthropic_client = Anthropic(api_key=LLM_API_KEY)
+
+print("Welcome to your AI Assistant. Type 'goodbye' to quit.")
+
+**def** main():
+
+**while** **True** :
+
+prompt = input("You: ") **if** prompt.lower() == "goodbye":
+
+print("AI Assistant: Goodbye!") **break**
+
+message = anthropic_client.messages.create(
+
+max_tokens=4096, messages=[
+
+{
+
+"role": "user", "content": prompt,
+
+}
+
+],
+
+model="claude-sonnet-4-0",
+
+)
+
+**for** response **in** message.content:
+
+print(f"Assistant: {response.text}")
+
+**if** __name__ == "__main__":
+
+main()
+
+☒ Copiar código de aplicação host funcional sem clientes ✅
+
+2025-04-26
+
+☒ Analise passo a passo o que está acontecendo ✅ 07/05/2025
+
+Aqui temos o início de um host MCP: um script muito simples que recebe
+
+uma entrada do usuário e a envia para um LLM (neste caso, o Claude 3.5 da
+
+Anthropic) e imprime uma resposta. Vamos analisá-lo linha por linha.
+
+Nas linhas 1 a 4, importamos alguns pacotes: os para carregar variáveis de
+
+ambiente, anthropic para a classe cliente Anthropic e dotenv para
+
+carregar temporariamente pares chave-valor de um arquivo em variáveis de
+
+ambiente. Isso permite armazenar informações sensíveis, como chaves de
+
+API, fora do código, em um arquivo convencionalmente chamado .env no
+
+formato KEY=VALUE.
+
+**AVISO**
+
+Não inclua seus arquivos .env no controle de versão, pois isso pode expor suas chaves de API publicamente, levando a consequências como uso não autorizado e altos custos para acesso à API (pagamento conforme o uso). Se você fizer isso acidentalmente, acesse imediatamente o site do seu provedor de chaves e desautorize a(s) chave(s) comprometida(s).
+
+Nas linhas 6 a 9, o aplicativo chama load_dotenv(), que realiza a
+
+tarefa de carregar suas chaves em variáveis de ambiente e, em seguida,
+
+obtém a chave carregada acessando o dicionário os.environ. Essa chave
+
+é então usada para instanciar o cliente Anthropic.
+
+Após exibir uma mensagem de boas-vindas ao usuário na linha 11, o código
+
+entra em um loop infinito. A linha 14 solicita uma mensagem do usuário,
+
+enquanto as linhas 15 a 17 verificam se a mensagem contém a frase de
+
+saída. Se encontrada, a aplicação exibe uma mensagem de despedida ao
+
+usuário e encerra a execução.
+
+As linhas 18 a 28 tratam da comunicação com o modelo. Este é um padrão
+
+que você verá repetidamente ao fazer chamadas LLM a partir do código. No
+
+cliente Anthropic, você acessa a função .messages.create() e
+
+fornece parâmetros como max_tokens para controlar o limite máximo de
+
+tokens a serem gerados em resposta à consulta do usuário, system para
+
+definir o prompt do sistema, moldando a forma como o modelo responde ao
+
+usuário, messages, que é uma lista de dicionários de prompts com uma
+
+função específica (observe que definimos role como "usuário" e content como o prompt do usuário) e, finalmente, model especifica qual
+
+modelo deve ser usado.
+
+A interface messages dentro da API Anthropic é muito poderosa, e a
+
+função create() possui diversos outros parâmetros que você pode
+
+experimentar para ajustar os tipos de respostas que obtém do modelo. Você
+
+pode ler mais na documentação oficial do Anthropic.
+
+As linhas finais, 29-30, percorrem as respostas geradas pelo modelo,
+
+imprimindo o conteúdo textual de quaisquer mensagens recebidas pelo
+
+cliente Anthropic.
+
+Em seguida, vamos mudar do cliente do modelo Antrópico para o cliente
+
+MCP que nossa aplicação irá hospedar.
+
+**O Cliente**
+
+Ao integrar suporte para MCP em seus aplicativos, o cliente é um dos
+
+componentes mais importantes que você desenvolverá e com os quais
+
+trabalhará. Os clientes permitem a comunicação entre os servidores MCP e
+
+seu aplicativo, fornecendo a interface entre o servidor, seu aplicativo e o
+
+modelo de linguagem abrangente que você está utilizando.
+
+Como os clientes atuam como a interface entre seu aplicativo e os
+
+servidores MCP, cabe a eles decidir quais recursos do servidor irão suportar.
+
+Até o momento, os servidores MCP podem fornecer a um aplicativo host:
+
+recursos, que representam dados como arquivos de texto, arquivos
+
+de log e muito mais
+
+prompts
+
+ferramentas, que são códigos executáveis que um agente ou
+
+modelo pode executar
+
+amostragem, uma forma de um servidor solicitar conclusões de
+
+bate-papo do modelo do aplicativo host,
+
+imagens
+
+contexto, que fornece recursos MCP integrados às ferramentas
+
+Você pode aprender mais sobre cada um deles no Capítulo 4: O Servidor.
+
+Além disso, os clientes também podem suportar raízes, que definem limites
+
+(como um local específico do sistema de arquivos) dentro dos quais os
+
+servidores aos quais se conectam devem operar. As raízes não são
+
+estritamente impostas, portanto, cabe ao servidor respeitá-las e ao usuário
+
+cliente avaliar os servidores em potencial antes de utilizá-los.
+
+☐ Figura detalhando a localização e as responsabilidades do
+
+cliente
+
+legenda
+
+Até o momento da redação deste documento, existem dois mecanismos de
+
+transporte principais suportados pelo MCP: Entrada/Saída Padrão (stdio) e
+
+HTTP Streamable. Abordaremos como dar suporte a cada mecanismo
+
+oficial neste capítulo, e no Capítulo 5 você aprenderá mais sobre a própria
+
+camada de transporte, como funcionam as implementações oficiais de
+
+transporte e como implementar seu próprio transporte.
+
+[!Note] A Anthropic lançou recentemente uma versão beta do conector
+
+MCP, que promete permitir que os usuários acessem servidores MCP
+
+remotos diretamente por meio da API de Mensagens do SDK da Anthropic.
+
+Embora pareça que isso possa reduzir a necessidade de clientes
+
+personalizados, até o momento, ele suporta apenas ferramentas e servidores
+
+MCP remotos, o que, como você verá no capítulo sobre servidores MCP,
+
+pode representar um risco de segurança. Além disso, vincula o usuário a
+
+modelos da Anthropic, como o Claude, que podem não ser adequados ao
+
+seu caso de uso específico.
+
+**Design básico do cliente**
+
+Em MCP, um cliente lida com toda a comunicação e conexões com um
+
+servidor. Como as conexões cliente-servidor são ponto a ponto, geralmente é melhor criar uma classe cliente. Um cliente precisa, no mínimo, realizar
+
+as seguintes tarefas:
+
+Conectar a um servidor
+
+Descubra os recursos do servidor
+
+Disponibilize esses recursos para um mestrado em Direito (LLM).
+
+Além dessas operações básicas, costuma ser útil implementar os seguintes
+
+recursos:
+
+Autenticação
+
+Filtragem de recursos
+
+agnosticismo de modelo
+
+No restante deste capítulo, você aprenderá como construir cada um desses
+
+recursos e o que eles possibilitam para seus aplicativos. Vamos começar
+
+esboçando uma interface para uma classe cliente:
+
+...
+
+**class** **MCPClient** :
+
+**def** __init__(self) -> **None** :
+
+**pass**
+
+**async** **def** connect(self) -> **None** :
+
+_"""_
+
+_Connect to the server set in the constructor._
+
+_"""_
+
+**pass**
+
+**async** **def** list_tools(self) -> list[Any]:
+
+_"""_
+
+_Retrieve tools that the server has made available._
+
+_"""_
+
+**pass**
+
+**async** **def** call_tool(self, tool_name: str, tool_args=**None** : 
+
+list | **None**):
+
+_"""_
+
+_Given a tool name and optionally a list of argumnents,_
+
+_execute the_ **Inicializando o cliente e conectando-se a um servidor**
+
+_tool_
+
+_"""_
+
+**pass**
+
+**async** **def** disconnect(self) -> **None** :
+
+_"""_
+
+_Clean up any resources_
+
+_"""_
+
+**pass**
+
+Nesta aula, você criou as assinaturas para 3 métodos, excluindo o
+
+construtor:
+
+connect() - isso inicializará sua conexão com o servidor. A
+
+implementação será diferente dependendo da camada de transporte
+
+escolhida.
+
+list_tools() - isto utilizará a ligação do servidor do cliente
+
+para recuperar as ferramentas que o servidor disponibiliza.
+
+call_tool() - esta função chamará uma ferramenta com o
+
+nome fornecido e quaisquer argumentos fornecidos pelo chamador.
+
+Outro bom nome para o seu cliente poderia ser MCPServer, como é feito
+
+nos exemplos oficiais do Python, já que, da perspectiva da aplicação host, o
+
+objeto instanciado representaria um servidor MCP. Isso pode ser confuso,
+
+então, para este exemplo, decidi chamá-lo de MCPClient. Em seus
+
+projetos, escolha o que fizer mais sentido para você e seus usuários.
+
+Note que este esqueleto começou com o suporte a ferramentas. As
+
+ferramentas são um dos principais recursos básicos do MCP e, sem dúvida,
+
+o caso de uso mais popular para o MCP. As ferramentas podem ajudar a dar
+
+autonomia aos agentes, aumentar o conhecimento dos LLMs e muito mais;
+
+portanto, começaremos implementando o suporte a ferramentas e, em
+
+seguida, mostraremos como dar suporte a todos os diferentes recursos que
+
+um servidor MCP pode fornecer.
+
+[!NOTE] Os três elementos básicos do MCP são ferramentas, prompts e
+
+recursos.
+
+Antes de escrever qualquer código, vamos pensar em como queremos nos
+
+conectar a um servidor. Isso significa pensar em qual meio de transporte
+
+queremos usar. No MCP, um meio de transporte é uma implementação da
+
+camada de transporte do protocolo e gerencia como as mensagens são
+
+enviadas entre o cliente e o servidor.
+
+Até o momento da redação deste documento, o MCP possui duas
+
+implementações principais de transporte integradas: stdio e HTTP
+
+streamable. O transporte stdio é adequado para casos de uso em que se
+
+espera que os servidores sejam executados juntamente com o aplicativo
+
+host, pois utiliza fluxos de entrada e saída padrão para transportar a
+
+comunicação entre o cliente e o servidor. Este é o transporte mais comum,
+
+pois é simples de programar e porque a maioria dos aplicativos comerciais
+
+disponíveis que hospedam clientes MCP espera que o usuário instale e
+
+execute os servidores por conta própria.
+
+**OBSERVAÇÃO**
+
+O SDK Python MCP também inclui um transporte WebSocket e um transporte HTTP Server-Sent Events (SSE), que está sendo substituído pelo Streamable HTTP. Por isso, abordaremos apenas a conexão com o Streamable HTTP, mas os padrões estabelecidos aqui, juntamente com o guia de compatibilidade retroativa da Anthropic, devem ser suficientes para que você, como desenvolvedor cliente, suporte ambos os transportes remotos. Todos esses transportes serão explorados com mais detalhes no capítulo 5.
+
+Por outro lado, o transporte HTTP Streamable integrado é mais adequado
+
+para aplicações em que não se espera que os servidores MCP que elas
+
+consomem sejam executados juntamente com suas aplicações hospedeiras.
+
+Isso é mais evidente no desenvolvimento de plataformas e em ferramentas
+
+hospedadas.
+
+Ao desenvolver uma plataforma ou framework para construir e implantar
+
+produtos subsequentes, não é possível garantir que os servidores MCP
+
+sejam implantados na mesma máquina que a aplicação. Caso contrário, um cliente stdio nunca conseguirá se comunicar com o servidor. Algumas
+
+organizações estão experimentando hospedar servidores MCP em suas
+
+próprias redes, expondo-os ao público. Se você deseja utilizar essa opção,
+
+precisará incorporar suporte a Streamable HTTP em seu cliente.
+
+**AVISO**
+
+Aviso: Qualquer transporte remoto, incluindo o Streamable HTTP, precisa ser devidamente protegido para evitar problemas de segurança. Isso inclui autenticar a conexão e validar os cabeçalhos de origem.
+
+Primeiro, vamos analisar o caso mais simples: a conexão via stdio. Nesta
+
+seção, você criará o construtor e os métodos connect() para a classe
+
+MCPClient. Em seguida, você fará o mesmo para criar um cliente HTTP
+
+Streamable, que pode suportar a conexão com servidores MCP remotos.
+
+Em seguida, analisaremos um exemplo de um cliente que oferece suporte
+
+aos três métodos e como escolher o mais adequado.
+
+**Conectando com stdio**
+
+Ao conectar-se a um servidor MCP com stdio, o cliente iniciará o servidor
+
+como um subprocesso e, em seguida, lerá mensagens de sua entrada padrão
+
+e enviará mensagens por meio de sua saída padrão. Felizmente, o SDK
+
+Python do MCP inclui todas as estruturas necessárias para construirmos
+
+nosso cliente e nos conectarmos via stdio.
+
+Primeiro, vamos configurar o construtor do cliente:
+
+**from** **contextlib** **import** AsyncExitStack
+
+**from** **mcp** **import** ClientSession
+
+**class** **MCPClient** :
+
+**def** __init__(self, name: str, command: str, server_args: 
+
+list[str], env_vars: dict[str, str]=**None**) -> **None** :
+
+self.name = name
+
+self.command = command self.server_args = server_args
+
+self.env_vars = env_vars self._session: ClientSession = **None** self._exit_stack: AsyncExitStack = AsyncExitStack() self._connected: bool = **False**
+
+Neste construtor, você configura diversas propriedades importantes que
+
+permitirão conectar-se e interagir com um servidor MCP. A primeira, name,
+
+simplesmente atribui um nome legível ao cliente instanciado. Isso é útil
+
+para registro de logs, especialmente se você estiver mantendo conexões
+
+com vários servidores, pois permite identificar facilmente a origem
+
+específica de quaisquer logs emitidos. No entanto, não é obrigatório para
+
+um cliente MCP.
+
+Os próximos 3 parâmetros são usados para configurar o servidor. command
+
+identifica o executável a ser executado para iniciar o servidor.
+
+Normalmente, os servidores são executados com python ou node (ou
+
+npx, dependendo da sua instalação local). É tão comum que, na maioria
+
+dos casos de uso, seu cliente pode definir um enum para garantir que um
+
+comando compatível esteja sendo usado. server_args é uma lista de
+
+todos os argumentos de linha de comando que devem ser passados para o
+
+executável command. Isso incluirá, no mínimo, o caminho para o arquivo
+
+do servidor. Se o arquivo aceitar argumentos de linha de comando, digamos
+
+\--port 8000 --verbose, sua lista server_args será semelhante a
+
+["server.py", "--port", "8080"]. Em seguida, temos um
+
+dicionário de variáveis de ambiente em env_vars. Essas variáveis
+
+funcionam como variáveis de ambiente típicas, e você pode até mesmo
+
+descompactar as variáveis de ambiente do seu sistema neste dicionário com
+
+{**os.env} . No entanto, isso não é recomendado, pois pode expor
+
+informações confidenciais ao seu servidor.
+
+Também incluímos algumas propriedades de gerenciamento de conexão
+
+"privadas", como _session, que armazenará a sessão do cliente,
+
+_exit_stack, que gerencia os contextos de conexão assíncronos (mais
+
+sobre isso adiante), e _connected, que nos impedirá de conectar a um
+
+servidor quando já estivermos conectados.
+
+O próximo passo é implementar os métodos connect() e
+
+disconnect() . Aqui, você usará os objetos de gerenciamento de
+
+conexão integrados do SDK MCP do Python para estabelecer e manter a
+
+conexão com o servidor.
+
+**from** **contextlib** **import** AsyncExitStack
+
+**from** **mcp** **import** ClientSession
+
+**from** **mcp.client.stdio** **import** stdio_client
+
+**class** **MCPClient** :
+
+...
+
+**async** **def** connect(self) -> **None** :
+
+_"""_
+
+_Connect to the server set in the constructor._
+
+_"""_
+
+**if** self._connected:
+
+**raise** **RuntimeError**("Client is already connected")
+
+server_parameters = StdioServerParameters(
+
+command=self.command, args=self.server_args, env=self.env_vars **if** self.env_vars **else** **None**
+
+)
+
+_# Connect to stdio server, starting subprocess_ stdio_connection = **await**
+
+self._exit_stack.enter_async_context(stdio_client(server_params))
+
+)
+
+self.read, self.write = stdio_connection
+
+_# Start MCP client session_
+
+self._session = **await**
+
+self._exit_stack.enter_async_context(ClientSession(read_stream=se
+
+lf.read, write_stream=self.write))
+
+_# Initialize session_
+
+**await** self._session.initialize() self._connected = **True**
+
+**async** **def** disconnect(self) -> **None** :
+
+_"""_
+
+_Clean up any resources_
+
+_"""_
+
+**if** self._exit_stack:
+
+**await** self._exit_stack.aclose() self._connected = **False** self._session = **None**
+
+Isso pode parecer complexo, especialmente se você não tiver experiência
+
+com programação assíncrona em Python. Vamos detalhar o que estamos
+
+fazendo aqui para tornar o processo mais compreensível, começando com o
+
+método `connect()`. A primeira coisa que este método faz é verificar a
+
+propriedade `_connected()`. Isso impedirá que o usuário tente abrir
+
+uma conexão já existente. Em seguida, instanciamos um objeto
+
+` StdioServerParameters`, passando as propriedades definidas no
+
+construtor. O restante do código cria os processos e conexões necessários
+
+para executar e usar o servidor MCP. Fazemos isso por meio de
+
+` _exit_stack`, que contém uma instância de `AsyncExitStack`.
+
+[!NOTE] AsyncExitStack permite aninhar manualmente gerenciadores
+
+de contexto assíncronos sem usar a sintaxe mais comum de gerenciador de
+
+contexto async with. Essa é uma escolha ideal porque você pode
+
+adicionar dinamicamente mais gerenciadores de contexto assíncronos à
+
+pilha e liberar com segurança todos os recursos da pilha em ordem com
+
+apenas uma chamada. Esse último recurso é extremamente útil porque
+
+podemos determinar quando desfazer a pilha, em vez de depender da saída
+
+do código do escopo de cada gerenciador de contexto. Isso é feito
+
+chamando a função enter_async_context().
+
+Primeiro, abrimos uma conexão com o servidor stdio, que inicia o
+
+subprocesso no qual a sessão MCP será executada. Passamos uma instância
+
+de stdio_client que é instanciada com o server_params
+
+construído imediatamente antes. Em seguida, descompactamos os
+
+resultados dessa chamada em self.read e self.write, que
+
+representam os fluxos de leitura e gravação da sessão, respectivamente. O
+
+próximo passo é iniciar a sessão do cliente MCP, novamente chamando
+
+enter_async_context(), mas desta vez com uma instância de
+
+ClientSession com os fluxos de leitura e gravação definidos como
+
+self.read e self.write. Isso é armazenado em self._session,
+
+que então inicializamos com initialize(). Este método lida com a iniciação da conexão com o servidor, anuncia as capacidades do cliente para
+
+o servidor, verifica a versão do protocolo suportada pelo servidor e informa
+
+ao servidor que o cliente foi inicializado com sucesso. Finalmente,
+
+definimos self._connected para True.
+
+Em resumo, ao escrever o código de conexão para um servidor stdio, você:
+
+1\. criar uma instância de StdioServerParams
+
+2\. iniciar o subprocesso do servidor stdio em um contexto assíncrono
+
+3\. Inicie a sessão do cliente MCP em outro contexto assíncrono
+
+(aninhado) e armazene-a em self._session
+
+4\. inicializar a própria sessão
+
+Neste exemplo, também criamos o método disconnect(), que
+
+simplesmente chama self._exit_stack.aclose() para fechar
+
+todas as conexões com o servidor em ordem e, em seguida, define
+
+self._connected como False e self._session como None.
+
+Com isso, você pode se conectar e desconectar de servidores MCP usando o
+
+transporte stdio conforme desejar. Embora você ainda não possa fazer nada
+
+com os servidores, você concluiu a parte mais complexa. Parabéns! Agora
+
+faremos a mesma coisa, mas com suporte ao transporte HTTP Streamable.
+
+**Conectando-se com o Streamable HTTP**
+
+Exemplo de terceiros: Streamable HTTP é o principal protocolo de
+
+transporte projetado para uso com servidores MCP remotos. Originalmente,
+
+o HTTP Server-Sent Events (SSE) era o padrão para conexão com
+
+servidores remotos, mas diversos problemas em produção tornaram seu
+
+suporte contínuo inviável. Esses problemas, bem como a arquitetura de
+
+ambos os protocolos de transporte, serão abordados no Capítulo 5.
+
+Ao conectar-se a um servidor remoto com Streamable HTTP, você se
+
+conectará por meio de um único endpoint definido pelo servidor. As
+
+respostas podem ser respostas HTTP padrão imediatas (acionadas pelo
+
+envio de um POST ao servidor e que não exigem uma conexão sempre aberta) ou respostas SSE de streaming (acionadas pelo envio de um GET
+
+vazio ao servidor), sendo estas últimas opcionais e dependentes da
+
+implementação do servidor.
+
+[!Note] “Espere”, você pode estar pensando, “eu achei que o Streamable
+
+HTTP substituísse o HTTP+SSE, qual é a diferença?” Abordaremos as
+
+atualizações no Capítulo 5, mas a principal diferença é que obter uma
+
+resposta SSE é opcional — tanto para o cliente que precisa solicitar uma
+
+resposta de streaming, quanto para o servidor que pode escolher se deseja
+
+ou não suportá-la.
+
+Para dar suporte ao Streamable HTTP, vamos nos concentrar novamente na
+
+construção do construtor de MCPClient, dos métodos connect() e
+
+disconnect() . Vamos começar com o construtor:
+
+**from** **contextlib** **import** AsyncExitStack
+
+**from** **typing** **import** Callable
+
+**from** **mcp** **import** ClientSession
+
+**class** **MCPClient** :
+
+**def** __init__(self, name: str, server_url: str) -> **None** :
+
+self.name = name
+
+self.server_url = server_url self._session: ClientSession = **None** self.exit_stack = AsyncExitStack() self._connected: bool = **False** self._get_session_id: Callable[[], str] = **None**
+
+Isso é assustadoramente semelhante ao construtor do cliente stdio. Como
+
+não estamos iniciando um processo localmente, não precisamos de
+
+command ou server_args, mas precisamos de um local para o servidor,
+
+que server_url fornece. O restante das propriedades é o mesmo no
+
+cliente stdio.
+
+Conectar e desconectar do servidor é bastante semelhante a como você faz
+
+para o cliente stdio:
+
+**from** **mcp** **import** ClientSession
+
+**from** **mcp.client.streamable_http** **import** streamablehttp_client
+
+**class** **MCPClient** :
+
+...
+
+**async** **def** connect(self, headers: dict | **None** = **None**) -> **None** :
+
+**if** self._connected:
+
+**raise** **RuntimeError**("Client is already connected")
+
+_# Connect to Streamable HTTP server_
+
+streamable_connection = **await**
+
+self._exit_stack.enter_async_context(streamablehttp_client(url=se
+
+lf.server_url, headers=headers)))
+
+self.read, self.write, self._get_session_id =
+
+streamable_connection
+
+_# Start MCP client session_
+
+self._session = **await**
+
+self._exit_stack.enter_async_context(ClientSession(read_stream=se
+
+lf.read, write_stream=self.write))
+
+_# Initialize session_
+
+**await** self._session.initialize() self._connected = **True**
+
+**async** **def** disconnect(self) -> **None** :
+
+_"""_
+
+_Clean up any resources_
+
+_"""_
+
+**if** self._exit_stack:
+
+**await** self._exit_stack.aclose() self._connected = **False** self._session = **None**
+
+Esperamos que este código lhe pareça bastante familiar — ele é quase
+
+exatamente igual ao código de connect() e disconnect() para o
+
+cliente stdio. A diferença aqui é que recebemos um parâmetro opcional
+
+headers e o passamos, juntamente com a propriedade server_url,
+
+para streamablehttp_client(), que, junto com read_stream e
+
+write_stream , retorna uma função de retorno de chamada para obter
+
+um ID de sessão do servidor, caso ele o forneça. Se o servidor suportar, isso
+
+pode ser usado para retomar sessões interrompidas. Também não
+
+instanciamos um objeto StdioServerParams, porque a função
+
+streamablehttp_client não recebe um objeto de parâmetros
+
+especial, recebendo, em vez disso, a URL e os cabeçalhos diretamente como parâmetros. Outros parâmetros que seriam de interesse para um
+
+desenvolvedor de cliente incluem:
+
+timeout - tempo em segundos até que as operações HTTP
+
+expirem, do tipo datetime.timedelta. O padrão é 30
+
+segundos.
+
+sse_read_timeout - tempo em segundos para aguardar um
+
+evento adicional antes de expirar o tempo limite, do tipo
+
+datetime.timedelta. O padrão é 5 minutos.
+
+auth - este identificador lida com a autenticação e é do tipo
+
+httpx.auth. Você aprenderá como autenticar sessões com
+
+servidores que o suportam em uma seção posterior.
+
+Enquanto você desenvolve sua classe cliente, vamos analisar uma estratégia
+
+para integrá-la a um aplicativo chatbot. Usaremos o chatbot simplificado
+
+apresentado no início deste capítulo para demonstrar como o cliente MCP
+
+se encaixa em um aplicativo mais amplo baseado em LLM. As únicas
+
+adições serão instanciar um cliente MCP stdio e abrir uma conexão com um
+
+servidor MCP fictício que fornece ferramentas de calculadora como
+
+add_two_numbers, subtract_two_numbers,
+
+multiply_two_numbers e divide_two_numbers.
+
+**from** **client** **import** MCPClient
+
+mcp_client = MCPClient(name="calculator_server_connection", 
+
+command="python", server_args=["calculator_server.py", "--
+
+debug"])
+
+mcp_client.connect()
+
+print("Welcome to your AI Assistant. Type 'goodbye' to quit.")
+
+**def** main():
+
+**while** **True** :
+
+prompt = input("You: ") **if** prompt.lower() == "goodbye":
+
+print("AI Assistant: Goodbye!") **break**
+
+message = anthropic_client.messages.create(
+
+max_tokens=4096, messages=[
+
+{
+
+"role": "user", "content": prompt,
+
+}
+
+],
+
+model="claude-sonnet-4-0",
+
+)
+
+**for** response **in** message.content:
+
+print(f"Assistant: {response.text}")
+
+**if** __name__ == "__main__":
+
+main()
+
+Tudo o que fizemos aqui foi instanciar o cliente e, em seguida, chamar
+
+connect() para abrir uma conexão com o servidor. Como você alteraria
+
+isso para um servidor HTTP Streamable?
+
+Agora vamos ver como aproveitar tudo o que um servidor MCP pode
+
+fornecer ao cliente.
+
+**Interagindo com os recursos do servidor MCP**
+
+Os servidores MCP podem fornecer uma ampla variedade de recursos,
+
+incluindo as primitivas MCP: ferramentas, recursos e prompts. Como
+
+desenvolvedor de cliente, você interagirá com eles por meio do objeto
+
+instanciado ClientSession e, geralmente, usará o mesmo fluxo de
+
+trabalho de duas etapas para cada um deles: descoberta e uso. Para cada um
+
+desses recursos, a descoberta ocorre por meio de uma solicitação
+
+<primitive>/list , que no SDK Python é encapsulada pelos métodos
+
+list_<primitive>s(). Essas chamadas, se o servidor fornecer o
+
+recurso respectivo, retornarão uma lista das ferramentas, recursos ou
+
+prompts disponíveis. O uso dos recursos resultantes requer uma chamada
+
+<primitive>/<verb> , onde o verbo depende da primitiva que está
+
+sendo chamada. No SDK Python, essas chamadas são encapsuladas com
+
+métodos do tipo <verb>_<primitive>(), como call_tool() para
+
+tool/call.
+
+**OBSERVAÇÃO**
+
+O protocolo também permite que mensagens de notificação sejam enviadas pelo servidor (bem como pelo cliente), cabendo ao receptor lidar com as notificações da maneira que desejar. Para conexões HTTP Streamable, essas notificações serão enviadas como qualquer outra mensagem definida pelo transporte, mas serão enviadas como um JSONRPCNotification , uma implementação da classe JSONRPCMessage.
+
+Embora os SDKs MCP disponíveis encapsulem as várias chamadas de
+
+solicitação em métodos que seu cliente pode chamar diretamente,
+
+geralmente é uma boa ideia encapsulá-las em seus próprios métodos de
+
+objeto para que você possa adicionar registro, novas tentativas, parâmetros
+
+de método e quaisquer outras personalizações às suas chamadas para o
+
+servidor, como passar o parâmetro opcional list_<primitive>() para
+
+paginação a qualquer um dos métodos list_<primitive>().
+
+**Ferramentas**
+
+As ferramentas são o recurso mais comum fornecido pelos servidores MCP,
+
+e com razão: fluxos de trabalho com agentes frequentemente exigem
+
+ferramentas para ampliar as capacidades de um LLM básico. As
+
+ferramentas são simplesmente funções determinísticas que um LLM pode
+
+decidir chamar quando necessário. Naturalmente, a função pode fazer
+
+qualquer coisa que você possa imaginar em código, desde calcular números
+
+até encontrar a previsão do tempo em um determinado local. Os servidores
+
+MCP permitem que os clientes descubram e usem essas ferramentas.
+
+Para descobrir ferramentas usando o SDK Python, seu cliente simplesmente
+
+chamaria self.session.list_tools() dentro do cliente, que
+
+retorna um objeto response com uma propriedade tools. Esta
+
+propriedade contém uma lista de todas as ferramentas disponibilizadas pelo
+
+servidor conectado ao cliente, onde as ferramentas possuem as propriedades
+
+name , description, inputSchema, annotations e
+
+model_config . Você pode ver a estrutura atual da classe Tool no módulo
+
+types do SDK Python do MCP.
+
+Chamar list_tools() diretamente pode funcionar bem para casos de
+
+uso básicos, mas se você estiver criando um cliente que será usado em
+
+diferentes servidores com diferentes capacidades e possivelmente em
+
+diferentes aplicações, pode ser vantajoso escrever sua própria função com
+
+algumas salvaguardas, registro de logs e qualquer outra coisa que seus
+
+usuários possam precisar abstraída. Por exemplo, você poderia implementar
+
+a seguinte função:
+
+**import** **logging**
+
+**from** **mcp.types** **import** Tool
+
+logger = logging.getLogger(__name__)
+
+**class** **MCPClient** :
+
+...
+
+**async** **def** get_available_tools(self) -> list[Tool]:
+
+**if** **not** self._connected:
+
+**raise** **RuntimeError**("Client not connected to a 
+
+server")
+
+tools_result = **await** self._session.list_tools() **if** **not** tools_result.tools:
+
+logger.warning("No tools found on server")
+
+**return** tools_result.tools
+
+Este método é um wrapper muito simples em torno do método Session
+
+do objeto list_tools(), que por sua vez encapsula a solicitação
+
+tools/list . Embora simples, o exemplo mostra como você pode
+
+implementar algumas salvaguardas básicas, como a verificação do status da
+
+conexão com o servidor, bem como registros mais detalhados, como a
+
+verificação de resultados vazios da ferramenta. Você pode estender esse
+
+padrão para adicionar novas tentativas, traduzir o formato da ferramenta do
+
+MCP para outro formato compatível com outro LLM e muito mais. Outro
+
+padrão útil que você verá mais adiante neste capítulo é a conversão dos
+
+objetos Tool do MCP em seus próprios objetos, onde você pode
+
+personalizar sua estrutura, implementar funções de tradução para oferecer
+
+suporte a outros LLMs e muito mais.
+
+Agora que seu cliente tem ferramentas, o que você faz com elas? Usá-las, é
+
+claro! Como no exemplo get_available_tools(), vamos encapsular
+
+a função call_tool() do objeto Session, adicionar um pouco de
+
+registro de logs e lidar com os diferentes tipos de resposta disponíveis.
+
+call_tool() retorna um CallToolResult, que é uma lista de
+
+quaisquer tipos de conteúdo do SDK:
+
+TextContent - O resultado da ferramenta é qualquer tipo de
+
+texto que você retornaria ao usuário e é armazenado na
+
+propriedade text.
+
+ImageContent - Se o resultado da ferramenta for uma imagem,
+
+ela será retornada como um objeto ImageContent, com os
+
+dados da imagem armazenados como uma string codificada em
+
+base64 na propriedade data
+
+AudioContent - Algumas ferramentas retornam conteúdo de
+
+áudio. Assim como ImageContent, os dados são codificados em
+
+base64 e residem na propriedade data
+
+EmbeddedResource - As ferramentas podem retornar recursos
+
+incorporados como parte de sua resposta, normalmente para
+
+contexto adicional ou armazenamento em cache de dados. Os
+
+dados do recurso residem na propriedade resource, que pode ser
+
+TextResourceContents (representando o conteúdo de texto
+
+de, por exemplo, um recurso de arquivo de configuração) ou
+
+BlobResourceContents (representando os dados binários do
+
+recurso como uma string codificada em base64).
+
+Um ponto fundamental a ter em mente é que as solicitações de uso de
+
+ferramentas retornam listas de conteúdo e, em alguns casos, como quando
+
+uma resposta EmbeddedResource é usada como contexto adicional, isso
+
+deve ser esperado e tratado como tal. No exemplo abaixo, você envolverá
+
+call_tool() e retornará representações em string de cada um dos tipos
+
+de resposta de conteúdo de ferramenta válidos.
+
+
+<!-- index_split_007.html -->
+## **AVISO**
+
+Para alguns casos de uso, lidar com os tipos de resposta no próprio cliente pode não ser desejável. Ao desenvolver um cliente, considere o seu usuário: ele desejará ou precisará ter controle sobre como lidar com os diferentes tipos de conteúdo?
+
+**from** **typing** **import** Any
+
+**from** **mcp.types** **import** TextResourceContents, BlobResourceContents
+
+**class** **MCPClient** :
+
+...
+
+**async** **def** use_tool(self, tool_name: str, arguments: dict[str, 
+
+Any] | **None** =**None**) -> list[str]:
+
+**if** **not** self._connected:
+
+**raise** **RuntimeError**("Client not connected to a 
+
+server")
+
+tool_call_result = **await**
+
+self.session.call_tool(name=tool_name, arguments=arguments)
+
+logger.debug(f"Calling tool {tool_name} with arguments 
+
+{arguments}")
+
+results= []
+
+**if** tool_call_result.content:
+
+**for** content **in** tool_call_result.content:
+
+**match** content.type:
+
+**case** "text":
+
+results.append(content.text)
+
+**case** "image" | "audio":
+
+results.append(content.data)
+
+**case** "resource":
+
+**if** is_instance(content.resource, 
+
+TextResourceContents):
+
+results.append(content.resource.text)
+
+**else** :
+
+results.append(content.resource.blob)
+
+**else** :
+
+logger.warning(f"No content in tool call result for 
+
+tool {tool_name}")
+
+**return** results
+
+Aqui, criamos um método use_tool() que, assim como o método
+
+list_tools() , primeiro verifica se o cliente está conectado a uma sessão do servidor e lança uma exceção caso contrário. Em seguida,
+
+fazemos a chamada call_tool(), passando o nome da ferramenta e os
+
+argumentos. Na linha seguinte, adicionamos uma instrução de depuração
+
+para sabermos qual ferramenta está sendo chamada. Se você quiser que o
+
+usuário decida como lidar com os diferentes tipos de conteúdo, pode
+
+retornar os resultados imediatamente neste ponto. Mas, para este exemplo,
+
+verificamos se a lista content não está vazia e, em seguida, iteramos por
+
+cada item nela. Lá, verificamos o tipo do item e adicionamos a
+
+representação de string apropriada à nossa lista de resultados. Se content
+
+estiver vazia, mostramos um aviso ao usuário e, finalmente, retornamos a
+
+lista de resultados. Assim como com list_tools(), envolver
+
+call_tool() nos dá muito mais controle sobre o que acontece durante a
+
+chamada da ferramenta.
+
+**AVISO**
+
+Ao criar agentes que suportam MCP, fique atento à chamada de ferramentas e ao desempenho geral à medida que adiciona ferramentas ao agente. O desempenho tende a cair drasticamente com a adição de mais ferramentas, geralmente devido à maior dificuldade em selecionar a ferramenta correta para uma solicitação. Isso pode ocorrer devido à ambiguidade ou sobreposição nas descrições das ferramentas, bem como ao excesso de informações agregadas nas descrições e interfaces, o que impede o processamento preciso pelo LLM.
+
+Se você estiver criando seu cliente para atender a um aplicativo específico,
+
+como o aplicativo de bate-papo simplificado apresentado no início deste
+
+capítulo, também precisará usar essas chamadas. Muitas APIs LLM que
+
+suportam chamadas de ferramentas possuem um parâmetro opcional
+
+tools, facilitando o envio das ferramentas disponíveis para um modelo.
+
+Outros modelos exigem a criação de uma lista de nomes, descrições e
+
+esquemas de ferramentas no prompt do sistema, mas, para este exemplo,
+
+estamos nos concentrando na API Claude da Anthropic, que aceita um
+
+parâmetro tools. Este parâmetro será adicionado a todas as mensagens do
+
+usuário para o modelo e, em seguida, as respostas resultantes serão analisadas pelo aplicativo host para verificar o uso de alguma ferramenta.
+
+Se alguma ferramenta for encontrada, o aplicativo formulará uma
+
+mensagem tool_result e a adicionará a uma lista de mensagens que é
+
+enviada de volta ao modelo para gerar o resultado final para o usuário.
+
+☐ A fazer - diagrama de sequência para isto com Aplicativo,
+
+Modelo e Servidor, explicando o fluxo acima.
+
+**import** **os**
+
+**from** **anthropic** **import** Anthropic
+
+**from** **dotenv** **import** load_dotenv
+
+load_dotenv()
+
+LLM_API_KEY = os.environ["LLM_API_KEY"]
+
+anthropic_client = Anthropic(api_key=LLM_API_KEY)
+
+mcp_client = MCPClient(name="calculator_server_connection", 
+
+command="python", server_args=["calculator_server.py", "--
+
+debug"])
+
+mcp_client.connect()
+
+available_tools = mcp_client.get_available_tools()
+
+available_tools_dict = [tool.model_dump() **for** tool **in**
+
+available_tools]
+
+print("Welcome to your AI Assistant. Type 'goodbye' to quit.")
+
+**def** main():
+
+**while** **True** :
+
+prompt = input("You: ") **if** prompt.lower() == "goodbye":
+
+print("AI Assistant: Goodbye!") **break**
+
+message = anthropic_client.messages.create(
+
+max_tokens=4096, messages=[
+
+{
+
+"role": "user", "content": prompt,
+
+}
+
+],
+
+model="claude-sonnet-4-0", tools=available_tools_dict, tool_choice="auto"
+
+)
+
+tool_use_message_block = {
+
+"role": "user",
+
+"content": list[dict[str, Any]]: []
+
+}
+
+**if** message.stop_reason == "tool_use":
+
+tool_use_messages = [message **for** message **in**
+
+message.content **if** message.type == "tool_use"]
+
+**for** tool_use **in** tool_use_messages:
+
+tool_result = **await**
+
+mcp_client.use_tool(tool_name=tool_use.name, 
+
+arguments=tool_use.input)
+
+tool_use_message_block["content"].append(
+
+{
+
+"type": "tool_result", "tool_use_id": tool_use.id, "content": tool_result
+
+}
+
+)
+
+**if** tool_use_message_block["content"]:
+
+response = client.messages.create(
+
+max_tokens=4096, messages=[
+
+{"role": "user", "content": prompt},
+
+{"role": "assistant", "content": 
+
+message.content},
+
+tool_use_message_block
+
+],
+
+model="claude-sonnet-4-0", tools=available_tools_dict, tool_choice="auto"
+
+)
+
+**else** :
+
+response = message
+
+display_response = next(message.text **for** message **in**
+
+response.content **if** hasattr(message, "text"))
+
+print(f"Assistant: {display_response}")
+
+**if** __name__ == "__main__":
+
+main()
+
+Este código possui diversas alterações para lidar com a obtenção e o uso de
+
+quaisquer ferramentas necessárias. Primeiro, durante a fase de inicialização, obtemos todas as ferramentas disponíveis do servidor ao qual estamos
+
+conectados com get_available_tools(). Em seguida,
+
+transformamos a lista de objetos Tool em uma lista de dicionários simples
+
+para alimentá-la corretamente de volta ao modelo ([ ] TODO verificar se
+
+isso é necessário). Isso é feito no início do módulo para que a lista de
+
+ferramentas seja obtida apenas uma vez. Se você espera que o servidor ou
+
+servidores aos quais você se conecta alterem as ferramentas que fornecem
+
+durante a conexão, você precisará obter uma nova lista de ferramentas
+
+disponíveis para cada entrada do usuário no modelo ou fazer com que seu
+
+cliente escute e processe uma notificação list_changed do servidor.
+
+Em seguida, atualizamos o código onde criamos a mensagem do usuário
+
+para o modelo, para passar a lista de ferramentas para o parâmetro tools,
+
+além de definir tool_choice para "auto". Você não precisa fazer isso,
+
+pois o modo automático é a configuração padrão e permite que o modelo
+
+decida qual ferramenta ou ferramentas usar para responder à consulta do
+
+usuário. Você também pode definir para "any", onde usará qualquer
+
+ferramenta disponível (mas pelo menos uma), um nome e tipo de
+
+ferramenta "tool" para forçar o modelo a usar uma ferramenta específica
+
+e "none" para impedir que o modelo use qualquer ferramenta disponível.
+
+Após isso, inspecionamos o resultado e inicializamos uma possível
+
+mensagem de uso da ferramenta que será enviada de volta ao modelo. Se a
+
+resposta da mensagem tiver um stop_reason de tool_use, então
+
+sabemos que o modelo está aguardando uma resposta com os resultados da
+
+ferramenta que está solicitando. Como existe a possibilidade de o modelo
+
+solicitar mais de uma chamada de ferramenta, criamos uma lista filtrada
+
+contendo apenas as mensagens de uso da ferramenta e, em seguida,
+
+iteramos por ela, chamando a ferramenta especificada pelo modelo com os
+
+argumentos também especificados pelo modelo. Depois, adicionamos um
+
+dicionário à propriedade content da mensagem de uso da ferramenta,
+
+com a chave type definida como "tool_use", tool_use_id definida
+
+como o ID na resposta da mensagem de uso da ferramenta do modelo e
+
+content como o resultado da chamada da ferramenta.
+
+Após o código sair do escopo desse loop, ele verifica se há um valor
+
+verdadeiro na mensagem de uso da ferramenta, que será definido se a
+
+chamada da ferramenta foi bem-sucedida. Se estiver definido, enviamos
+
+uma lista de mensagens de volta para o modelo: a mensagem do usuário,
+
+uma mensagem do assistente com o conteúdo original da mensagem de uso
+
+da ferramenta e a lista completa de respostas de uso da ferramenta que
+
+construímos anteriormente. Se não houver nenhuma resposta de chamada
+
+de ferramenta na mensagem de uso da ferramenta, simplesmente definimos
+
+response para a mensagem original. Finalmente, usamos o iterador
+
+manual next() para obter o bloco de conteúdo da primeira mensagem que
+
+possui um atributo text e exibi-lo para o usuário.
+
+Nesta seção, você aprendeu sobre as ferramentas fornecidas pelo servidor
+
+MCP, como descobri-las em um servidor, como usá-las e como usá-las no
+
+contexto de um aplicativo de bate-papo. Na próxima seção, você aprenderá
+
+sobre recursos e como usá-los em seu aplicativo, assim como fez com as
+
+ferramentas.
+
+**Recursos**
+
+Como você aprendeu no Capítulo 2, os recursos do MCP podem
+
+desempenhar muitas funções, algumas das quais ainda não foram
+
+totalmente exploradas pelos membros da comunidade, como a de cache
+
+para otimizar o tamanho do prompt. Basicamente, os recursos fornecem a
+
+um aplicativo host e ao LLM com o qual ele interage acesso aos dados
+
+fornecidos pelo servidor MCP. Isso pode incluir registros de banco de
+
+dados, imagens, arquivos de texto e muito mais. Os recursos também
+
+permitem diversas ações:
+
+resources/list ou list_resources() - solicita uma
+
+lista de recursos disponíveis do servidor
+
+resources/templates/list ou
+
+list_resource_templates() - solicita uma lista de
+
+modelos de URI de recursos do servidor. Isso permite construir a
+
+URI de um recurso dinamicamente com base em outras
+
+informações que você possa ter. No SDK do Python, essas strings
+
+se parecem com f-strings, com as seções variáveis delimitadas por
+
+chaves.
+
+resources/read ou read_resource() - acessa o arquivo
+
+fornecido pelo servidor, enviando os dados em formato de texto ou
+
+blob para o LLM.
+
+resources/subscribe ou subscribe_resource() -
+
+inscreve o cliente para receber atualizações do URI do recurso
+
+especificado na chamada.
+
+resources/unsubscribe ou
+
+unsubscribe_resource() - cancela a inscrição do cliente
+
+para receber atualizações do recurso especificado pelo URI do
+
+recurso nos parâmetros.
+
+**OBSERVAÇÃO**
+
+Veja o projeto tupac de Tim Kellogg para uma implementação minimalista de cliente que utiliza recursos do MCP como cache para prompts eficientes.
+
+Primeiro, implementaremos wrappers para os dois métodos de lista.
+
+Continuaremos o padrão que estabelecemos na seção anterior para
+
+get_available_tools(): um wrapper leve com algumas proteções
+
+básicas e registro de logs que pode ser usado como base para fluxos de
+
+trabalho mais complexos.
+
+**from** **mcp.types** **import** Resource, ResourceTemplate
+
+**class** **MCPClient** :
+
+...
+
+**async** **def** get_available_resources(self) -> list[Resource]:
+
+**if** **not** self._connected:
+
+**raise** **RuntimeError**("Client not connected to a 
+
+server")
+
+resources_result = **await** self._session.list_resources()
+
+**if** **not** resources_result.resources:
+
+logger.warning("No resources found on server")
+
+**return** resources_result.resources
+
+**async** **def** get_available_resource_templates(self) ->
+
+list[ResourceTemplate]:
+
+**if** **not** self._connected:
+
+**raise** **RuntimeError**("Client not connected to a 
+
+server")
+
+resource_templates_result = **await**
+
+self._session.list_resource_templates()
+
+**if** **not** resource_templates_result.resources:
+
+logger.warning("No resource templates found on 
+
+server")
+
+**return** resource_templates_result.resources
+
+Esses dois métodos são quase idênticos entre si e ao método
+
+get_available_tools(). Novamente, cada função verifica se há
+
+uma conexão antes de fazer qualquer requisição ao servidor, em seguida
+
+chama o método de lista apropriado, verifica se há um resultado e o retorna,
+
+incluindo um aviso caso o resultado esteja vazio. Assim como o método
+
+list_tools() , ambos os métodos de lista aceitam um parâmetro de
+
+cursor opcional para paginação dos resultados. Veremos esse padrão
+
+novamente para prompts na próxima seção, então pense em como você
+
+poderia expandir a funcionalidade dos wrappers dos métodos de lista e
+
+como também poderia tornar o código mais conciso.
+
+**OBSERVAÇÃO**
+
+Os recursos e os modelos de recursos têm praticamente o mesmo conjunto de propriedades: uri, name, description, mimeType, size, annotations e model_config. Para os modelos de recursos, em vez de uri, eles têm uma propriedade uriTemplate.
+
+Em seguida, implementaremos um wrapper do método de sessão
+
+read_resource() e, seguindo o padrão estabelecido no exemplo
+
+anterior, o chamaremos de use_resource(). Este código receberá um URI de recurso (ou um URI preenchido a partir de um modelo de recurso),
+
+lerá o recurso e o retornará ao chamador como uma string de texto ou uma
+
+string de dados codificada em base64.
+
+**from** **mcp.types** **import** BlobResourceContents, TextResourceContents
+
+**class** **MCPClient** :
+
+...
+
+**async** **def** get_resource(self, uri: str) ->
+
+list[BlobResourceContents | TextResourceContents]:
+
+**if** **not** self._connected:
+
+**raise** **RuntimeError**("Client not connected to a 
+
+server")
+
+resource_read_result = **await**
+
+self._session.read_resource(uri=uri)
+
+**if** **not** resource_read_result.contents:
+
+logger.warning(f"No content read for resource URI 
+
+{uri}")
+
+**return** resource_read_result.contents
+
+Este método requer pouco mais: apenas nossa proteção de conexão padrão e
+
+o aviso de resultado vazio. De forma semelhante a
+
+get_available_tools(), em vez de transformar as classes MCP
+
+BlobResourceContents e TextResourceContents, nós as
+
+retornamos ao usuário como estão, pois elas fornecem informações valiosas
+
+sobre o tipo de string retornada, o que está de acordo com a filosofia de
+
+processamento mínimo deste conjunto de exemplos.
+
+O protocolo MCP também permite que os clientes se inscrevam para
+
+receber notificações de alteração de recursos; no entanto, até o momento da
+
+redação deste documento, o tratamento de notificações está implementado
+
+apenas parcialmente no SDK Python e não há uma maneira fornecida de
+
+encaminhar notificações para funções de tratamento ou registrar
+
+manipuladores. Isso parece estar disponível no SDK TypeScript, porém.
+
+Até agora, você aprendeu como obter uma lista de recursos disponíveis e
+
+modelos de recursos e, com um URI de recurso em mãos, como ler esse
+
+recurso. Mas como você os usaria em um aplicativo host? Lembre-se de que
+
+os recursos existem principalmente para fornecer contexto adicional às consultas do usuário, permitindo que seu aplicativo faça coisas como
+
+adicionar um script Bash a uma consulta do usuário sobre seu script. Para
+
+ver isso em ação, vamos usar novamente nosso exemplo de aplicativo
+
+chatbot host minimalista do início do capítulo, mas desta vez procuraremos
+
+a chave "context:" no prompt do usuário e a usaremos como contexto para a
+
+solicitação do modelo. Quando o aplicativo é iniciado e sempre que o
+
+usuário executa o comando "atualizar", o aplicativo obtém a lista atual de
+
+recursos do servidor e a exibe. Quando o aplicativo encontra "context:" no
+
+prompt do usuário, ele usa o que vem depois para selecionar um recurso
+
+específico e adicioná-lo como contexto à pergunta original do usuário.
+
+**import** **os**
+
+**import** **re**
+
+**from** **anthropic** **import** Anthropic
+
+**from** **dotenv** **import** load_dotenv
+
+**from** **mcp_client** **import** MCPClient
+
+load_dotenv()
+
+LLM_API_KEY = os.environ["LLM_API_KEY"]
+
+anthropic_client = Anthropic(api_key=LLM_API_KEY)
+
+mcp_client = MCPClient(name="calculator_server_connection", 
+
+command="python", server_args=["calculator_server.py", "--
+
+debug"])
+
+mcp_client.connect()
+
+**def** extract_resource_name(prompt: str) -> str | **None** :
+
+match = re.search(r'context:\s+(\S+)', prompt) **return** match.group(1) **if** match **else** **None**
+
+**def** display_resources(available_resources: dict[str, dict[str, 
+
+str]) -> **None** :
+
+print(f"Available resource contexts are: ") **for** resource **in** available_resources:
+
+print(f"{resource.name} \-- {resource.description}")
+
+print(f"Add a context to your prompt with 'context: <name>' 
+
+entering the name of one of the resources above.")
+
+**def** refresh_resources() -> dict[str, dict[str, str]]:
+
+available_resources = **await**
+
+mcp_client.get_available_resources()
+
+**return** {resource.name: resource.model_dump() **for** resource **in**
+
+available_resources}
+
+**def** main():
+
+print("Welcome to your AI Assistant. Type 'goodbye' to quit 
+
+or 'refresh' to reload and redisplay available resources.")
+
+available_resources = refresh_resources() display_resources(available_resources=available_resources)
+
+**while** **True** :
+
+prompt = input("You: ") lc_prompt = prompt.lower() context_messages = []
+
+**if** lc_prompt == "goodbye":
+
+print("AI Assistant: Goodbye!") **break**
+
+**if** lc_prompt == "refresh":
+
+available_resources = refresh_resources()
+
+display_resources(available_resources=available_resources)
+
+**break**
+
+**if** "context:" **in** lc_prompt:
+
+resource_name =
+
+extract_resource_name(prompt=lc_prompt)
+
+**if** **not** resource_name:
+
+print("WARNING: Context resource name not found 
+
+in user input")
+
+**elif** resource_name **in** available_resources.keys():
+
+resource_contents = **await**
+
+mcp_client.get_resource(uri=available_resources[resource_name]
+
+["uri"])
+
+**if** isinstance(resource_contents, 
+
+TextResourceContents):
+
+context_message = {
+
+"type": "text", "text": resource_contents.text
+
+}
+
+**elif** resource_contents.mimeType **in** ["image/jpeg", 
+
+"image/png", "image/gif", "image/webp"]: _# b64-encoded image_
+
+context_message = {
+
+"type": image "source": {
+
+"type": "base64",
+
+"media_type": 
+
+resource_contents.mimeType,
+
+"data": resource_contents.blob
+
+}
+
+}
+
+**else** :
+
+print(f"WARNING: Unable to process mimeType 
+
+{resource_contents.mimeType} for resource {resource_name}")
+
+messages = [
+
+{
+
+"role": "user", "content": [
+
+{
+
+"type": "text", "text": prompt
+
+}
+
+]
+
+}
+
+]
+
+messages[0]["content"].extend(context_messages)
+
+message = anthropic_client.messages.create(
+
+messages=messages, model="claude-sonnet-4-0",
+
+)
+
+display_response = next(message.text **for** message **in**
+
+response.content **if** hasattr(message, "text"))
+
+print(f"Assistant: {display_response}")
+
+**if** __name__ == "__main__":
+
+main()
+
+Essa integração começou exatamente como a integração que você fez na
+
+seção Ferramentas: conectar-se ao servidor MCP por meio do cliente,
+
+descobrir os elementos primitivos disponíveis, como recursos neste caso, e
+
+carregá-los na memória. Adicionamos duas novas funções utilitárias:
+
+extract_resource_name(), que realiza uma análise básica de
+
+expressões regulares para obter o nome de um recurso a partir da entrada do
+
+usuário, e display_resources, que exibe a lista de recursos
+
+disponíveis para o usuário, cria um dicionário para acesso rápido por nome de recurso e, opcionalmente, atualiza a lista. Ela também fornece
+
+informações ao usuário sobre como adicionar contexto aos seus prompts.
+
+Na função main(), atualizamos a mensagem de boas-vindas para informar
+
+ao usuário que uma mensagem contendo apenas a palavra "atualizar"
+
+atualizará e exibirá novamente a lista de recursos. Adicionamos uma
+
+verificação para a mensagem "atualizar" e, em seguida, uma verificação
+
+para a palavra-chave "contexto:". Se essa palavra-chave for encontrada em
+
+qualquer lugar na entrada do usuário, a função
+
+extract_resource_name() é chamada para tentar extrair o nome do
+
+recurso do prompt. Se o código não conseguir extrair um nome de recurso,
+
+ele imprime um aviso e, em seguida, sai do escopo da verificação
+
+"contexto:", estendendo o campo content da primeira mensagem na lista
+
+messages . Esta lista ainda está vazia, portanto, nada muda neste caso, e o
+
+prompt simples do usuário é enviado como está para o LLM.
+
+Se o nome do recurso for encontrado no prompt e também existir na lista de
+
+recursos disponíveis, lemos o recurso para a memória e verificamos se é um
+
+texto simples ou um blob. Se for texto, criamos um bloco de conteúdo com
+
+o texto. Se for um blob, verificamos se o mimeType corresponde a algum
+
+dos tipos de imagem suportados pela API do modelo Anthropic e, em caso
+
+afirmativo, construímos um bloco de conteúdo com esses dados e, em
+
+seguida, estendemos a lista de conteúdo na mensagem do usuário com o
+
+dicionário construído. Se nenhuma das duas condições for verdadeira,
+
+avisamos o usuário e continuamos enviando o prompt do usuário para o
+
+LLM.
+
+**OBSERVAÇÃO**
+
+Ao adicionar contexto a um prompt do usuário, por exemplo, você não deve criar uma mensagem de usuário separada, como faz com o próprio prompt. Em vez disso, converta a mensagem de usuário para seu formato completo: um dicionário aninhado com uma chave "type" e uma chave "content", que contém uma lista de dicionários, e adicione quaisquer mensagens de contexto a essa lista.
+
+Você pode fazer várias melhorias neste exemplo. Para expandir seus
+
+conhecimentos, tente implementar suporte para listar e usar modelos de
+
+recursos juntamente com recursos normais. Em seguida, tente dar suporte a
+
+vários arquivos de contexto em vez de apenas um, seja com análise de texto
+
+regular ou até mesmo com outra chamada LLM. Você pode fazer mais
+
+alguns ajustes: independentemente de a palavra-chave "context:" ser
+
+encontrada ou não, essa parte do prompt ainda será enviada para o LLM.
+
+Isso não é o ideal. Como você melhoraria isso?
+
+**OBSERVAÇÃO**
+
+Como você já deve ter percebido, muitas dessas melhorias são práticas recomendadas típicas da engenharia de software e não são específicas da IA generativa. Embora a engenharia de IA esteja se tornando uma disciplina por si só, ela ainda é, em sua essência, engenharia de software e, portanto, as práticas e ferramentas que você utiliza como engenheiro de software também serão úteis no desenvolvimento para IA.
+
+**Instruções**
+
+Os prompts são o último dos três principais recursos primitivos fornecidos
+
+pelos servidores MCP. Eles são projetados para serem controlados pelo
+
+usuário do aplicativo, que deve poder escolher qual ou quais prompts deseja
+
+usar, de forma semelhante à interface vista no exemplo de aplicativo host na
+
+seção anterior. Cada definição de prompt possui um identificador único
+
+name , um description opcional e legível por humanos, e um
+
+arguments opcional, que é uma lista de dicionários com um name, um
+
+description opcional e legível por humanos, e um required
+
+opcional, indicando se o argumento é obrigatório ou não. Cabe então à
+
+implementação do cliente ou ao aplicativo host que utiliza o prompt inserir
+
+valores para cada um dos argumentos. Esses são chamados de prompts
+
+dinâmicos.
+
+O SDK Python simplifica o tratamento de prompts para nós, com o método
+
+Session da classe list_prompts() retornando uma lista de objetos
+
+Prompt , que possuem as propriedades de definição de prompt listadas no
+
+parágrafo anterior. Quando você recebe um prompt específico com get_prompt() , você fornece o nome e os argumentos do prompt e
+
+recebe uma lista de objetos PromptMessage, que são mensagens prontas
+
+para uso que podem ser convertidas em um dicionário simples e enviadas
+
+diretamente para o LLM. Observe o exemplo de integração com o host na
+
+última seção, prestando muita atenção à estrutura das mensagens enviadas
+
+ao LLM. Elas são dicionários com chaves role e content, e essas são as
+
+duas propriedades obrigatórias de um objeto PromptMessage. O
+
+conteúdo em si pode ser TextContent, ImageContent,
+
+AudioContent ou um `EmbeddedResource`. Recursos incorporados são
+
+exatamente o que você imagina: recursos que são inseridos em um bloco de
+
+conteúdo da mensagem, assim como o aplicativo host de exemplo criado na
+
+seção anterior.
+
+Vamos dar continuidade ao padrão das duas seções anteriores e encapsular
+
+esses dois métodos em nosso próprio cliente:
+
+**from** **mcp.types** **import** Prompt
+
+**class** **MCPClient** :
+
+...
+
+**async** **def** get_available_prompts(self) -> list[Prompt]:
+
+**if** **not** self._connected:
+
+**raise** **RuntimeError**("Client not connected to a 
+
+server")
+
+prompt_result = **await** self._session.list_prompts() **if** **not** prompt_result.prompts:
+
+logger.warning("No prompts found on server")
+
+**return** prompt_result.prompts
+
+Não há muito o que explicar sobre esse padrão que você já não tenha visto
+
+antes. Configuramos uma verificação de conexão, obtemos a lista de
+
+prompts e garantimos que a lista de resultados não esteja vazia antes de
+
+retorná-la ao usuário. O wrapper get_prompt() também será bastante
+
+familiar. Obteremos o nome e os argumentos do prompt do usuário,
+
+carregaremos o prompt do servidor com os argumentos fornecidos e
+
+retornaremos o objeto MCP PromptMessage de volta para o aplicativo.
+
+**from** **mcp.types** **import** PromptMessage
+
+**class** **MCPClient** :
+
+...
+
+**async** **def** load_prompt(self, name: str, arguments: dict[str, 
+
+str]) -> list[PromptMessage]:
+
+**if** **not** self._connected:
+
+**raise** **RuntimeError**("Client not connected to a 
+
+server")
+
+prompt_load_result = **await**
+
+self._session.get_prompt(name=name, arguments=arguments)
+
+**if** **not** prompt_load_result.messages:
+
+logger.warning(f"No prompt found for prompt {name}")
+
+**else** :
+
+logger.warning(f"Loaded prompt {name} with 
+
+description {prompt_load_result.description}")
+
+**return** prompt_load_result.messages
+
+Isso é semelhante à forma como recuperamos recursos na seção anterior.
+
+Temos nossas salvaguardas padrão, passamos name e arguments sem
+
+alterações para o método get_prompt() da sessão e adicionamos alguns
+
+registros.
+
+**OBSERVAÇÃO**
+
+Assim como ocorre com recursos e ferramentas, o protocolo oferece suporte a notificações quando a lista de prompts disponíveis é alterada. Infelizmente, também não existe uma API voltada para o usuário para lidar com essas notificações do servidor e ouvi-las, embora os clientes possam se inscrever para recebê-las. Se você quiser usá-las, precisará lidar com o roteamento para um callback por conta própria, mas existem alguns exemplos no código-fonte do SDK que você pode seguir, como o roteamento de callbacks de amostragem em Session._received_request(). Código-fonte. Você também pode criar uma nova função que lide com todas as mensagens e passá-la para o construtor do cliente no parâmetro message_handler. Isso precisaria lidar com todas as mensagens, mas permitiria que você também criasse a lógica de tratamento de notificações.
+
+Assim como acontece com os outros elementos primitivos, existem
+
+inúmeras maneiras de integrar prompts à sua aplicação, tantas quantas você
+
+possa imaginar, e até mais. Para demonstrar como você pode usar a funcionalidade de prompts disponível em sua aplicação, utilizaremos a
+
+mesma aplicação base dos dois exemplos anteriores, para que o uso dos
+
+elementos primitivos do servidor e dos prompts fique claro e não seja
+
+obscurecido por muita lógica da aplicação. Também utilizaremos um padrão
+
+de interação com o usuário semelhante ao que usamos na seção Recursos.
+
+Nesse padrão, a aplicação obtém uma lista de elementos primitivos
+
+disponíveis (neste caso, prompts), os exibe para o usuário e permite que ele
+
+selecione qual usar em sua entrada. Esse prompt será enviado diretamente
+
+para o LLM e a aplicação processará e exibirá a resposta.
+
+**import** **os**
+
+**import** **re**
+
+**from** **anthropic** **import** Anthropic
+
+**from** **dotenv** **import** load_dotenv
+
+**from** **mcp_client** **import** MCPClient
+
+load_dotenv()
+
+LLM_API_KEY = os.environ["LLM_API_KEY"]
+
+anthropic_client = Anthropic(api_key=LLM_API_KEY)
+
+mcp_client = MCPClient(name="calculator_server_connection", 
+
+command="python", server_args=["calculator_server.py", "--
+
+debug"])
+
+mcp_client.connect()
+
+**def** parse_prompt(prompt: str) -> dict[str, str]:
+
+pattern = r'prompt:\s*(\w+)(?:\s+(\w+)\s+(\w+))*' full_match = re.search(r'prompt:\s*(\w+)((?:\s+\w+\s+\w+)*)', 
+
+text)
+
+**if** **not** full_match:
+
+**return** **None**
+
+prompt_name = full_match.group(1) args_string = full_match.group(2).strip() arg_pairs = re.findall(r'(\w+)\s+(\w+)', args_string)
+
+**return** {
+
+'prompt_name': prompt_name, 'arg_pairs': {arg[0]: arg[1] **for** arg **in** arg_pairs **if**
+
+arg_paris}
+
+}
+
+**def** display_prompts(available_prompts: dict[str, dict[str, str]) 
+
+-> **None** :
+
+print(f"Available prompts are: ") print(f"Prompt Name -- Prompt Description -- Prompt 
+
+Arguments")
+
+**for** prompt **in** available_prompts:
+
+**if** arguments := prompt.get("arguments"):
+
+prompt_arguments = "".join([f"{argument['name']}, 
+
+{argument['description']}, {argument['required']}" **for** argument
+
+**in** arguments])
+
+print(f"{prompt['name']} \-- {prompt['description']} \-- 
+
+{prompt_arguments}")
+
+print(f"Use a prompt with 'prompt: <name> <argument_name1>
+
+<argument_value1> ...' using the name and argumetns of one of the 
+
+prompts above.")
+
+**def** refresh_prompts() -> dict[str, dict[str, str]] | **None** :
+
+available_prompts = **await** mcp_client.get_available_prompts() **return** {prompt.name: prompt.model_dump() **for** prompt **in**
+
+available_prompts} **if** available_prompts **else** **None**
+
+**def** main():
+
+print("Welcome to your AI Assistant. Type 'goodbye' to quit 
+
+or 'refresh' to reload and redisplay available resources.")
+
+available_prompts = refresh_prompts() **if** available_prompts:
+
+display_prompts(available_prompts=available_prompts)
+
+**while** **True** :
+
+prompt = input("You: ") lc_prompt = prompt.lower() messages = []
+
+**if** lc_prompt == "goodbye":
+
+print("AI Assistant: Goodbye!") **break**
+
+**if** lc_prompt == "refresh":
+
+available_prompts = refresh_prompts() display_prompts(available_prompts=available_prompts) **break**
+
+**if** "prompt:" **in** lc_prompt:
+
+prompt_input = parse_prompt(prompt=lc_prompt) **if** **not** prompt_input:
+
+print("WARNING: Prompt input malformed. Use a 
+
+prompt with 'prompt: <name> <argument_name1> <argument_value1>
+
+...'")
+
+**elif** prompt_input["name"] **in**
+
+available_prompts.keys():
+
+prompt_contents = **await**
+
+mcp_client.load_prompt(name=prompt_input["name"], 
+
+arguments=prompt_input['arguments'])
+
+messages = [{"role": prompt_message.role, 
+
+"content": prompt_message.content} **for** prompt_message **in**
+
+prompt_contents]
+
+**else** :
+
+print(f"Prompt name {prompt_input['name']} not 
+
+found in available prompts.")
+
+**if** **not** messages:
+
+messages = [
+
+{
+
+"role": "user", "content": [
+
+{
+
+"type": "text", "text": prompt
+
+}
+
+]
+
+}
+
+]
+
+message = anthropic_client.messages.create(
+
+messages=messages, model="claude-sonnet-4-0",
+
+)
+
+display_response = next(message.text **for** message **in**
+
+response.content **if** hasattr(message, "text"))
+
+print(f"Assistant: {display_response}")
+
+**if** __name__ == "__main__":
+
+main()
+
+Esta versão do código faz tudo o que configuramos na introdução deste
+
+exemplo. Começando pelos loops principais, primeiro chamamos uma
+
+função refresh_prompts() que chama o método
+
+get_available_prompts() que implementamos no cliente e retorna
+
+uma lista de dicionários semelhante ao exemplo de Recursos, onde as chaves são os nomes dos prompts e os valores são os dicionários dos
+
+objetos de prompt. Se prompts forem encontrados, chamamos então
+
+display_prompts(), que apresenta ao usuário uma lista dos prompts
+
+disponíveis, bem como instruções para usá-los.
+
+Neste exemplo, permitimos que o usuário atualize e exiba novamente os
+
+prompts manualmente com o comando “refresh” e utilize um prompt
+
+fornecendo o comando “prompt:”, o nome do prompt e quaisquer
+
+argumentos pertinentes. Descompactamos a lista de objetos Prompt em
+
+primitivas Python para uso com o cliente Python Anthropic e, em seguida,
+
+enviamos as mensagens para o modelo e exibimos as mensagens recebidas.
+
+A capacidade de manipular essas primitivas a partir de servidores MCP
+
+abrangerá quase todos os casos de uso de servidores MCP atualmente
+
+disponíveis (e alguns que não estão, como o sistema de notificação). Mas há
+
+algumas outras coisas que você pode fazer com suas conexões cliente-
+
+servidor se quiser trabalhar em um nível mais baixo.
+
+**Aprofundando-se**
+
+Na base do MCP, assim como nas diversas implementações do protocolo
+
+nos SDKs, existe um sistema que envia e recebe mensagens entre clientes e
+
+servidores. No SDK Python, todos os métodos de sessão que encapsulamos
+
+envolvem um método ` send_request()`. Este método pode ser
+
+encontrado em ` mcp.shared.session.BaseSession`, do qual as
+
+classes `Session` específicas do cliente e do servidor herdam. Por isso,
+
+teoricamente, você também poderia enviar suas próprias requisições
+
+personalizadas para um servidor que as suporte, mas precisaria criar suas
+
+próprias classes `Request`, `RequestParams` e `Result` para isso.
+
+Existem alguns outros métodos não documentados que você pode usar no
+
+objeto de sessão do cliente. send_ping() envia uma solicitação de ping
+
+para o servidor conectado. O servidor retornará um EmptyResult dentro
+
+de um ServerResult, que não contém dados, mas indica a presença de
+
+uma conexão ativa com o servidor. set_logging_level(), dado um
+
+objeto LoggingLevel da biblioteca types do MCP, pode alterar o nível
+
+de registro do servidor para a conexão, se o servidor permitir. Os registros iniciados pelo servidor são enviados ao cliente por meio de notificações; no
+
+entanto, diferentemente das notificações de assinatura, as notificações de
+
+registro têm seu próprio parâmetro no construtor ClientSession,
+
+chamado logging_callback. Você implementaria sua própria função
+
+de retorno de chamada de registro que segue o protocolo LoggingFnT
+
+(código-fonte) e a passaria para o construtor através do parâmetro
+
+logging_callback :
+
+**from** **mcp.types** **import** LoggingMessageNotificationsParams
+
+**class** **MCPClient** :
+
+...
+
+**async** **def** _handle_logs(self, params: 
+
+LoggingMessageNotificationsParams) -> **None** :
+
+**if** params.level **in** ("error", "critical", "alert", 
+
+"emergency"):
+
+print(f"[{params.level}] - {params.data}")
+
+**async** **def** connect(self) -> **None** :
+
+_"""_
+
+_Connect to the server set in the constructor._
+
+_"""_
+
+... _# Removing setup code for brevity_ _# Start MCP client session_
+
+self._session = **await**
+
+self._exit_stack.enter_async_context(ClientSession(read_stream=se
+
+lf.read, write_stream=self.write, logging_callback=_handle_logs))
+
+_# Initialize session_
+
+**await** self._session.initialize() self._connected = **True**
+
+Aqui, handle_logs() é uma função muito simples que verifica o nível
+
+de log relatado nos parâmetros fornecidos pelo servidor e, se o nível estiver
+
+dentro do conjunto que fornecemos, imprime o nível e os dados. Esta lista
+
+de níveis não é exaustiva, mas o MCP segue os níveis de severidade do
+
+syslog definidos na RFC 5424. Além de level e data,
+
+LoggingMessageNotificationsParams também fornece um nome
+
+logger opcional e um dicionário model_config. send_progress_notification() envia uma notificação ao
+
+servidor com um valor progress_token e a quantidade de progress
+
+como um número de ponto flutuante. Opcionalmente, você também pode
+
+enviar um valor de ponto flutuante total e uma string message para o
+
+servidor. A forma como esses valores serão apresentados dependerá do
+
+servidor ao qual você está se conectando e dos requisitos do servidor para
+
+atualizações de progresso.
+
+**Fornecendo recursos de cliente MCP**
+
+Na seção anterior, você viu um exemplo de implementação de um callback
+
+para lidar com mensagens de log de um servidor MCP conectado. Nesta,
+
+você verá esse padrão repetido, mas para fornecer recursos de cliente ao
+
+servidor MCP conectado. Existem dois recursos principais que um cliente
+
+pode fornecer a um servidor: amostragem, onde o servidor pode solicitar
+
+conclusões de chat do LLM ao qual o cliente está conectado, e acesso root,
+
+que indica aos servidores a quais áreas do sistema de arquivos do aplicativo
+
+host o servidor tem acesso.
+
+Os servidores não são obrigados a usar ou respeitar essas funcionalidades,
+
+mas se o seu cliente as fornecer, você é obrigado a anunciar que o seu
+
+cliente as oferece, o que ocorre durante a fase de inicialização da conexão
+
+cliente-servidor. Para fornecer funcionalidades ao cliente, o fluxo de
+
+trabalho geral é o seguinte:
+
+1\. Na sua classe cliente, implemente uma função de retorno de
+
+chamada que será invocada quando o servidor fizer a solicitação.
+
+2\. Certifique-se de que o retorno de chamada siga o protocolo
+
+estabelecido para a capacidade, como SamplingFnT.
+
+3\. Passe a função de retorno de chamada para o construtor
+
+ClientSession através do parâmetro apropriado, como
+
+sampling_callback para amostragem.
+
+E é isso. Claro que a maior parte do esforço se concentra na etapa 1 e será
+
+única dependendo do seu caso de uso e fluxo de interação.
+
+**Amostragem**
+
+A amostragem é uma funcionalidade do cliente que permite ao servidor
+
+MCP utilizar qualquer LLM ao qual o cliente e seu aplicativo host estejam
+
+conectados. Isso possibilita fluxos de trabalho agentes a partir do servidor
+
+MCP, como permitir a escolha e o uso de ferramentas aninhadas, ou que o
+
+servidor faça uma pergunta ao LLM e use essa resposta para escolher ou
+
+preencher informações em um prompt fornecido, ou qualquer outra coisa
+
+que sua imaginação possa conceber. Como essa é uma funcionalidade
+
+fornecida pelo cliente, o trabalho necessário é um pouco menor do que o
+
+necessário para usar funcionalidades fornecidas pelo servidor. Assim como
+
+você viu com o registro de logs, a classe ClientSession fornece um
+
+protocolo SamplingFnT que define a assinatura da função de retorno de
+
+chamada de amostragem que você implementará, e o construtor possui um
+
+parâmetro sampling_callback que receberá sua função de retorno de
+
+chamada a ser usada quando um servidor conectado enviar uma solicitação
+
+de amostragem.
+
+**AVISO**
+
+Devido ao risco de conceder acesso a um servidor externo ao LLM que seu aplicativo utiliza e pelo qual você está pagando, tanto eu quanto a Anthropic recomendamos fortemente que você implemente algum tipo de processo de aprovação com intervenção humana (HITL) antes que um servidor possa enviar uma solicitação a um LLM por meio de seu cliente e aplicativo.
+
+Neste exemplo, seguiremos o fluxo de trabalho geral acima, criando um
+
+retorno de chamada de amostragem simples que implementa a interface
+
+SamplingFnT e passando-o para o construtor ClientSession:
+
+**from** **mcp.shared.context** **import** RequestContext
+
+**from** **mcp.types** **import** CreateMessageRequestParams, 
+
+CreateMessageResult, ErrorData, TextContent
+
+**class** **MCPClient** :
+
+**def** __init__(self, name: str, server_url: str, llm_client: 
+
+Anthropic) -> **None** :
+
+self.name = name
+
+self.server_url = server_url self._session: ClientSession = **None** self.exit_stack = AsyncExitStack() self._connected: bool = **False** self._get_session_id: Callable[[], str] = **None** self._llm_client = llm_client
+
+**async** **def** _handle_sampling(self, context: RequestContext, 
+
+params: CreateMessageRequestParams) -> CreateMessageResult |
+
+ErrorData:
+
+messages = []
+
+**for** message **in** params.messages:
+
+**if** isinstance(message, TextContent):
+
+messages.append({"role": message.role, "content": 
+
+message.text})
+
+**else** :
+
+messages.append({"role": message.role, "content": 
+
+message.data})
+
+response = self._llm_client.messages.create(
+
+max_tokens=params.maxTokens, messages=messages model="claude-sonnet-4-0",
+
+)
+
+**return** CreateMessageResult(
+
+role=response.role, content=response.content model="claude-sonnet-4-0"
+
+)
+
+**async** **def** connect(self) -> **None** :
+
+_"""_
+
+_Connect to the server set in the constructor._
+
+_"""_
+
+... _# Removing setup code for brevity_ _# Start MCP client session_
+
+self._session = **await**
+
+self._exit_stack.enter_async_context(ClientSession(read_stream=se
+
+lf.read, write_stream=self.write, 
+
+sampling_callback=_handle_sampling))
+
+_# Initialize session_
+
+**await** self._session.initialize() self._connected = **True** Neste exemplo, adicionamos um parâmetro llm_client ao construtor
+
+MCPClient, visto que o cliente precisará acessar o cliente LLM para
+
+rotear mensagens entre o LLM e o servidor. O manipulador,
+
+_handle_sampling() , constrói uma mensagem a partir dos tipos MCP
+
+e a envia para o LLM, assumindo um modelo Antrópico. Não faça isso na
+
+prática. Seu manipulador deve solicitar permissão do usuário antes de
+
+enviar a solicitação do cliente para o modelo do aplicativo. Em seguida, no
+
+método connect(), passamos o método do manipulador de amostragem
+
+para o construtor ClientSession por meio de
+
+sampling_callback. Para ver todos os parâmetros que um servidor
+
+pode enviar, você pode consultar a definição da classe
+
+CreateMessageParams.
+
+**Apoiando as Raízes**
+
+☐ TODOS
+
+As raízes no MCP são normalmente expostas por meio de
+
+interfaces de configuração de espaço de trabalho ou projeto. (do
+
+protocolo)
+
+No protocolo, os servidores DEVEM respeitar os limites, mas não
+
+são obrigados a fazê-lo.
+
+**Suporte a múltiplos modelos**
+
+Uma das principais vantagens de usar o MCP é que ele oferece a liberdade,
+
+como desenvolvedor de aplicativos, de permitir que seus usuários utilizem
+
+diversos modelos ou o modelo de sua escolha. Com o MCP, você não fica
+
+restrito a um único modelo, apesar dos exemplos neste capítulo utilizarem
+
+um modelo Antrópico. A maneira mais simples de implementar isso seria
+
+escrever uma função de tradução em seu cliente para cada par primitivo-
+
+família de modelo, que converta os objetos MCP para o formato esperado
+
+pela família de modelo em questão. Você pode aprimorar esse design básico
+
+criando uma classe para cada primitiva que possa ser construída a partir do objeto MCP e que tenha um método de tradução como membro dessa
+
+classe. O código abaixo faz exatamente isso para ferramentas:
+
+**from** **typing** **import** Any
+
+**class** **InternalTool** :
+
+**def** __init__(self, name: str, input_schema: dict[str, Any], 
+
+description: str | **None** = **None**) -> **None** :
+
+self.name = name,
+
+self.input_schema = input_schema, self.description = description
+
+**def** translate_to_openai(self) -> dict[str, Any]:
+
+**return** {
+
+"type": "function", "name": self.name, "description": self.description, "parameters": self.input_schema
+
+}
+
+example_tool = InternalTool(name=mcp_tool.name, 
+
+input_schema=mcp_tool.inputSchema, 
+
+description=mcp_tool.description)
+
+openai_tool = example_tool.translate_to_openai()
+
+Como os formatos das ferramentas Anthropic e OpenAI são muito
+
+semelhantes, este exemplo é bastante simples: escrevemos um construtor
+
+que define os valores de name, input_schema e description da
+
+instância e, em seguida, escrevemos translate_to_openai(), que
+
+retorna um dicionário com as chaves type, name, description e
+
+parameters . A estrutura esperada para parameters da OpenAI e
+
+inputSchema da Anthropic também é a mesma.
+
+[!Note] No exemplo anterior, traduzimos um objeto Tool da nossa
+
+representação interna para o formato de chamada de função da OpenAI. A
+
+API da OpenAI também suporta chamadas diretas a servidores MCP
+
+remotos.
+
+
+<!-- index_split_008.html -->
+**Utilizando vários servidores**
+
+Todos os exemplos até agora mostraram seu cliente se conectando a um
+
+único servidor. E embora um único cliente só possa se conectar a um único
+
+servidor, o SDK do Python fornece uma classe ` ClientSessionGroup`
+
+para ajudar a gerenciar várias sessões simultaneamente dentro de um
+
+cliente. Ele faz isso conectando-se a um ` ClientSession` existente com
+
+` connect_with_session()` ou a um servidor criando um novo
+
+` ClientSession` com `conenct_to_server()` e, em seguida,
+
+carregando todos os elementos/componentes (ferramentas, recursos e
+
+prompts) oferecidos pelo servidor conectado nas propriedades do objeto. As
+
+sessões também são armazenadas no objeto `ClientSessionGroup`,
+
+juntamente com um mapeamento de cada ferramenta para a sessão
+
+apropriada. Todos esses elementos podem ser acessados por meio das
+
+propriedades sessions, prompts, resources e tools, e as
+
+ferramentas podem ser chamadas da mesma forma que seriam em um único
+
+ClientSession: com call_tool(). Você também pode se
+
+desconectar de um servidor individual com o método
+
+disconnect_from_server() , que também removerá quaisquer
+
+componentes de servidor carregados. No exemplo abaixo, criaremos um
+
+cliente simples que se conecta a servidores por meio de um
+
+ClientSessionGroup .
+
+**from** **mcp.client.session_group** **import** ClientSessionGroup, 
+
+ServerParameters
+
+**class** **MCPClient** :
+
+**def** __init__(self, name: str) -> **None** :
+
+self.name = name
+
+self.server_url = server_url self._session_group = ClientSessionGroup()
+
+@property
+
+**def** connected() -> bool:
+
+**return** **True** **if** self._session_group.sessions **else** **False**
+
+**async** **def** connect(self, server_params: ServerParameters) ->
+
+**None** :
+
+_"""_
+
+_Connect to a server via ClientSessionGroup._
+
+_"""_
+
+_# Start MCP client session_
+
+**await**
+
+self._session_group.connect_to_server(server_params=server_params
+
+)
+
+self._connected = **True**
+
+Do ponto de vista do cliente, isso é mais simples, já que o
+
+ClientSessionGroup lida com todo o gerenciamento de conexões que
+
+o cliente de servidor único fazia nos exemplos anteriores. Em vez de uma
+
+propriedade _session que é None até que uma conexão seja
+
+estabelecida, instanciamos um objeto ClientSessionGroup e o
+
+armazenamos em _session_group. Alteramos o membro do objeto
+
+connected para uma propriedade dinâmica que verifica se há algum
+
+objeto de sessão na lista sessions do grupo de sessão. Em seguida,
+
+temos o método connect, que simplesmente recebe um objeto
+
+ServerParameters . Este é, na verdade, um alias de tipo Python para
+
+StdioServerParameters, SseServerParameters ou
+
+StreamableHttpParameters . Usamos isso para conectar a um único
+
+servidor, e todo o gerenciamento de conexão é feito pelo grupo de sessão. A
+
+desvantagem é que ainda não há suporte para incluir callbacks ao
+
+estabelecer os objetos ClientSession individuais. Isso pode ser
+
+contornado acessando as propriedades de callback "privadas" do objeto
+
+ClientSession, mas isso deve ser usado com moderação.
+
+O construtor ClientSessionGroup também aceita um gancho opcional
+
+no parâmetro component_name_hook, que serve para renomear um
+
+componente de forma a evitar conflitos de nomes. Trata-se de uma função
+
+que recebe uma string (o nome do componente) e um objeto
+
+Implementation, e retorna outra string (o componente renomeado).
+
+**Melhores práticas**
+
+Algumas práticas recomendadas ainda não estão totalmente estabelecidas,
+
+outras foram definidas pela comunidade, e outras ainda são práticas recomendadas gerais de engenharia. No entanto, uma visão geral de todas
+
+elas, aplicadas aos clientes, ajudará você a criar rapidamente clientes MCP
+
+resilientes e prontos para produção para seus próprios aplicativos.
+
+**Segurança**
+
+Aut.
+
+Humano no circuito
+
+**Retomando as conexões**
+
+Retomando (clientes remotos) - a partir da especificação do
+
+protocolo, e como fazer com o SDK do Python?
+
+a. Se o cliente desejar retomar a conexão após uma
+
+interrupção, ele DEVE enviar uma solicitação HTTP GET
+
+para o endpoint MCP e incluir o cabeçalho Last-
+
+Event-ID para indicar o último ID de evento recebido.
+
+– O servidor PODE usar este cabeçalho para
+
+reproduzir mensagens que teriam sido enviadas
+
+após o último ID de evento, no fluxo que foi
+
+desconectado, e para retomar o fluxo a partir
+
+desse ponto.
+
+– O servidor NÃO DEVE reproduzir mensagens
+
+que teriam sido entregues em um fluxo diferente.
+
+**Resultados da paginação**
+
+Suporte à paginação para resultados paginados
+
+– Quais resultados são paginados, como obter o cursor (um
+
+PaginatedResult possui uma propriedade nextCursor),
+
+como usá-lo (os métodos de listagem recebem um
+
+parâmetro de cursor)
+
+**Informações do cliente**
+
+Definir client_info no construtor da sessão (não é uma prática
+
+recomendada estabelecida, mas vale a pena usar).
+
+
+<!-- index_split_009.html -->
+**Sobre o autor**
+
+Kyle Stratis é o fundador e consultor principal da Stratis Data Labs, onde
+
+oferece a startups e grandes empresas sua expertise em engenharia de IA,
+
+visão computacional, engenharia de dados e engenharia de plataformas de
+
+aprendizado de máquina, adquirida ao longo de mais de uma década como
+
+engenheiro de software. Além de projetar arquitetura de dados, construir
+
+plataformas e agentes de IA e migrar fluxos de trabalho analíticos para a
+
+nuvem para seus clientes, ele escreve sobre Python, mestrados em direito
+
+(LLMs) e gestão do conhecimento pessoal.
+
+
+<!-- titlepage.xhtml -->
+

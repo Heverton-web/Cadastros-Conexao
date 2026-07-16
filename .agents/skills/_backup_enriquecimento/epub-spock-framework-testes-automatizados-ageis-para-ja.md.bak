@@ -1,0 +1,44 @@
+---
+name: epub-spock-framework-testes-automatizados-ageis-para-ja
+description: >-
+  Passos operacionais extraidos do livro 'EPUB Spock framework testes automatizados ágeis para Java e REST' (PT) — Java, Testes.
+---
+# Conteudo Extraido
+Fonte: EPUB - [PT] EPUB Spock framework_ testes automatizados ágeis para Java e REST - Desconhecido.txt
+
+
+## Conceitos Fundamentais
+- page_002 Sumário ISBN Agradecimentos Sobre o livro Prefácio Comentários sobre o livro 1.
+- Data-Driven Testing – Facilitando os testes de múltiplos cenários 6.
+- Exception Conditions - Testes à espera de exceções 7.
+- Relatórios profissionais com Spock Reports Extension 11.
+- Apêndice A - Guia de Groovy para desenvolvedores Java 14.
+- Apêndice B - Perguntas frequentes sobre o Spock 15.
+
+## Principios e Tecnicas
+- Código-fonte dos projetos Todos os códigos desta obra estão em projetos no repositório https://github.com/jyoshiriro/exemplos-livro-spock-framework/ . page_004 Agradecimentos Agradeço primeiramente a Deus, pelo dom da vida, por todas as oportunidades
+- Agradeço a minha mãe, dona Mizuko, que sempre fez de tudo para que eu tivesse uma educação de qualidade ao alcance de suas possibilidades financeiras.
+- Sua insistência no meu foco nos estudos foi determinante para que eu me tornasse o profissional que sou.
+- Agradeço a meu pai, José ( In Memoriam ), que deu todo o apoio para que eu somente estudasse durante a infância e adolescência.
+- Agradeço a minha amada esposa e companheira de muitos anos, Danusa.
+- Seu jeito carinhoso e meigo são uma contínua inspiração para meu cotidiano pessoal e profissional.
+
+## Aplicacoes Praticas
+- Agradeço ao professor Manoel José dos Santos Sena, que foi o primeiro a me sugerir que escrevesse um livro, em 2008.
+- Agradeço ao professor Eduardo Martins Guerra, que foi o primeiro a publicar meus textos, em forma de artigos para a antiga revista MundoJava, tornando-me conhecido nacionalmente.
+- Lira, que me ajudou na melhoria das imagens para a 2ª edição, de agosto de 2019.
+- Espero que este trabalho ajude você a criar testes fantásticos! page_005 Sobre o livro Esta obra destina-se a estudantes e profissionais de desenvolvimento de software, principalmente para a plataforma Java.
+- Profissionais que trabalham exclusivamente criando testes também são público para este livro, pois o Spock também permite criar testes para REST APIs.
+- Para melhor acompanhar o conteúdo desta obra, são necessárias noções intermediárias de programação com a plataforma Java, tais como: configuração do ambiente, orientação a objetos, coleções e tratamento de exceções.
+
+## Topicos Avancados
+- Esses capítulos são destinados a profissionais com o mínimo de conhecimento sobre essas tecnologias.
+- Conceitos básicos sobre testes de software não são necessários, pois são revisados em vários tópicos do livro.
+- Caso você, leitor ou leitora, tenha pouco ou nenhum conhecimento sobre a linguagem Groovy, pode recorrer ao Apêndice A - Guia de Groovy para desenvolvedores Java .
+- A versão do Spock abordada neste livro foi a 2.3-groovy-4.0 , lançada em 29 de setembro de 2022, sendo a mais recente versão estável no momento da escrita deste livro.
+- Possui certificações internacionais PMI (ACP), OMG (OCUP Fundamental) e ORACLE (SCBCD 5, SCWCD 5, SCJP 6 e SOA Suite 11g Certified Implementation Specialist).
+- Atua profissionalmente com desenvolvimento de software desde 2002, mas programa desde 1994.
+
+## Secao 5
+- Também colaborou com os projetos open source Struts 2 e Grails.
+- Programar é uma de suas grandes paixões. É professor desde 2003, atuando como instrutor em vários cursos de programação.

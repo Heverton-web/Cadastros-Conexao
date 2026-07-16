@@ -1,0 +1,56 @@
+---
+name: building-ai-agent-platforms
+description: >- Arquitetura e operacao de plataformas de agentes de IA — design de plataforma, API e observabilidade
+---
+
+# Building Ai Agent Platforms — Passos Operacionais
+
+Conteudo extraido do livro 'Building Ai Agent Platforms'. Contem passos, tecnicas e principios baseados na obra original.
+
+## 1. Conceitos Fundamentais
+- Building AI Agent Platforms Capítulo 1.
+- Aplicações de IA e seu ciclo de vida Nota para leitores da versão antecipada Com os ebooks de Acesso Antecipado, você obtém os livros em sua forma inicial — o conteúdo bruto e não editado dos autores enquanto escrevem — para que possa aproveitar essas tecnologias muito antes do lançamento oficial desses títulos.
+- Este será o primeiro capítulo do livro final.
+- Observe que o repositório do GitHub será ativado posteriormente.
+- Se você deseja participar ativamente da revisão e dos comentários sobre esta versão preliminar, entre em contato com o editor pelo endereço arufino@oreilly.com. “A questão de saber se as máquinas podem pensar (...) é tão relevante quanto a questão de saber se os submarinos podem nadar.” Edsger Dijkstra O lançamento do ChatGPT em novembro de 2022 mudou fundamentalmente a indústria de software.
+- Ele não apenas catalisou o uso de aplicações de Inteligência Artificial Generativa (GenAI) e assistentes de codificação baseados em IA para o desenvolvimento de software, como também acelerou drasticamente o desenvolvimento de "aplicações de IA".
+- Embora o desenvolvimento de software com modelos de aprendizado de máquina não seja novidade, a ampla disponibilidade do ChatGPT representou um passo revolucionário.
+- Ele possibilitou a criação de aplicações inimagináveis para muitos desenvolvedores há poucos anos e reduziu significativamente as barreiras de entrada, tornando o desenvolvimento de aplicações de IA mais acessível do que nunca.
+- Isso desencadeou uma verdadeira corrida do ouro, com startups e grandes corporações disputando a criação de novos aplicativos.
+- O ritmo da inovação é impressionante, com um novo Modelo de Linguagem Ampla (LLM, na sigla em inglês), framework, biblioteca ou prática de desenvolvimento sendo anunciado quase semanalmente.
+
+## 2. Principios e Tecnicas
+- Embora possa parecer que você está em território desconhecido, muitas das melhores práticas da engenharia de software tradicional ainda são relevantes.
+- Muita gente está reinventando a roda desnecessariamente.
+- Uma plataforma eficaz para aplicações de IA elimina o hype, permitindo que sua organização não apenas crie aplicações de IA rapidamente, mas também com alta qualidade.
+- Para entender as funcionalidades essenciais de tal plataforma, vamos primeiro analisar o que são aplicações de IA e identificar os desafios específicos durante seu desenvolvimento.
+- Este capítulo começa definindo aplicações de IA, casos de uso em que são aplicadas e padrões de arquitetura típicos que seguem.
+- Em seguida, compara o ciclo de vida da aplicação com o de uma aplicação de software tradicional.
+- Explica como a disciplina de Engenharia de IA pode ser vista como a continuação dos princípios de DevOps.
+- Finalmente, destaca as principais semelhanças e diferenças em relação ao software e descreve como os desafios específicos da Engenharia de IA são melhor abordados, contrastando-os com antipadrões comuns.
+- Em sua essência, uma aplicação de IA é qualquer aplicativo de software que fornece funcionalidades baseadas em modelos de inteligência artificial.
+- Isso significa que o desenvolvimento de aplicações de IA é uma atividade multifuncional, que exige a colaboração de desenvolvedores, cientistas de dados e especialistas da área.
+
+## 3. Aplicacoes Praticas
+- O termo IA (Inteligência Artificial) abrange uma ampla gama de tecnologias, desde sistemas simples baseados em regras até redes neurais complexas.
+- Embora academicamente incorreto, com as inovações recentes e o domínio da IA Generativa no campo do aprendizado de máquina, o termo é frequentemente usado como sinônimo de IA Generativa.
+- Este livro também seguirá essa convenção.
+- Sempre que aplicações de IA forem mencionadas neste livro, elas se referirão a aplicações construídas com modelos generativos.
+- Modelos generativos são um tipo específico de modelo de Aprendizado de Máquina (ML) capaz de gerar novo conteúdo, seja texto, imagens, áudio ou vídeo.
+- Aplicações de IA agregam valor ao explorar essas capacidades generativas na implementação de suas funcionalidades.
+- Essas aplicações diferem significativamente daquelas que se integram a modelos de aprendizado de máquina mais tradicionais, como algoritmos de detecção de fraudes ou sistemas de recomendação.
+- Isso se deve principalmente à variedade de entradas e saídas potenciais.
+- Os exemplos anteriores produziriam um resultado Verdadeiro ou Falso e, talvez, uma pontuação de confiança, enquanto um modelo generativo poderia gerar qualquer texto imaginável.
+- Isso acarreta desafios diferentes e, portanto, exige estratégias específicas para lidar com eles.
+
+## 4. Topicos Avancados
+- É importante esclarecer também que não estamos nos referindo a aplicativos que foram simplesmente construídos com a ajuda de assistentes de codificação com IA.
+- No entanto, esses assistentes de codificação são, na verdade, aplicativos de IA em si 1 .
+- Uma aplicação de IA utiliza fundamentalmente as capacidades da IA generativa para fornecer funcionalidades voltadas para o usuário, podendo variar desde um simples script ou chatbot até geradores de imagens e sistemas assistentes complexos.
+- É importante ressaltar que o processo que utiliza a IA generativa não precisa necessariamente ser exposto ao usuário final para que uma aplicação seja considerada uma aplicação de IA (embora talvez não seja aconselhável anunciá-la como tal, a menos que a IA seja relativamente óbvia).
+- Modelos Fundamentais No contexto das aplicações de IA discutidas neste livro, um termo mais amplamente utilizado para modelos generativos é frequentemente "modelos de fundação".
+- É importante notar que, embora muitos modelos generativos de grande porte sejam modelos de fundação, este último termo é mais abrangente, englobando qualquer modelo grande e pré-treinado, projetado para adaptação a uma ampla gama de tarefas.
+- Diferentemente dos modelos tradicionais de aprendizado de máquina, que são treinados e otimizados para uma única tarefa específica, os modelos fundamentais são modelos de propósito geral.
+- Isso significa que eles podem ser aplicados a uma ampla variedade de contextos sem a necessidade de serem retreinados, o que os torna o bloco de construção "fundamental" para aplicações de IA.
+- Embora os Modelos de Linguagem de Grande Porte (LLMs, na sigla em inglês) sejam o exemplo mais conhecido, os modelos fundamentais não se limitam apenas a texto.
+- Eles podem ser multimodais, ou seja, podem compreender e gerar conteúdo em diferentes tipos de dados, como texto, imagens, áudio e vídeo.

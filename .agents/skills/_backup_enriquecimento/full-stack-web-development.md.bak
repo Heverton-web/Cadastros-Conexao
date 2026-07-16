@@ -1,0 +1,57 @@
+---
+name: full-stack-web-development
+description: >-
+  Passos operacionais extraidos — desenvolvimento web, full-stack, JavaScript, TypeScript, React, Node.js (EN).
+---
+
+# Full Stack Web Development — Passos Operacionais
+
+Conteudo extraido do livro 'Full Stack Web Development'. Contem passos, tecnicas e principios baseados na obra original.
+
+## 1. Conceitos Fundamentais
+- Alongside JavaScript, an array of tools has surfaced, each contributing to the more efficient creation of full-stack applications.
+- This book is dedicated to exploring these developments.
+- We’ll focus on full-stack development, combining TypeScript with a variety of cutting-edge technologies needed to build complete applications through building a hands-on project.
+- Our practical project involves constructing a chat application, similar in essence to the functionality of ChatGPT.
+- It will involve the application of diverse frontend and backend technologies, along with database and API integrations.
+- This book is more than just a guide to coding an application from start to finish.
+- It also aims to teach you about effective development patterns, which are versatile enough to be applied across various technologies of your choice.
+- While it’s assumed that you come with a basic understanding of JavaScript and fundamental web development concepts, every new topic and aspect introduced in the book will be thoroughly explained, ensuring a deep and comprehensive understanding of each subject.
+- In this book, we’ll start by exploring TypeScript, now a key player in web development.
+- Its main advantage is the use of types, which significantly improves the development process.
+
+## 2. Principios e Tecnicas
+- We’ll discuss TypeScript’s history, compare it with JavaScript, and explore its strengths, particularly in enhancing code quality and reducing errors.
+- We’ll also delve into TypeScript’s core concepts, such as syntax, types, interfaces, classes, and generics, providing a thorough understanding of how it works.
+- Then, we’ll shift our focus to backend development, choosing Bun as our main technology.
+- As of 2023, Bun is one of the most promising backend runtimes and is notable for its seamless integration with TypeScript.
+- We’ll cover the essentials of Bun, including setting up the environment, handling authentication, routing, middleware, data validation for requests, building REST APIs, using linters for code quality, debugging, logging, code structure, and effective testing strategies.
+- Next, we’ll dive into using databases, specifically PostgreSQL, one of the most popular SQL-based databases with extensive features.
+- We’ll discuss data storage and how to optimize it.
+- A key focus will be on using TypeScript as an interface for managing the data we store.
+- We’ll start with basic create, read, update, and delete operations, and then move on to using libraries and object-relational mappers to interact with PostgreSQL from TypeScript.
+- This section will also cover integrating PostgreSQL into our backend infrastructure and optimizing its use.
+
+## 3. Aplicacoes Praticas
+- Following that, we’ll tackle API integration, which is crucial for our chat application.
+- We’ll be using the OpenAI GPT API for chat completions.
+- While integrating and configuring this API for our backend, we’ll cover broader topics, such as writing external service integrations effectively, ensuring the correctness of API responses, and incorporating API calls into our REST endpoints.
+- Additionally, we’ll discuss various scenarios where the OpenAI API and its models can be beneficial in web development.
+- The final section of this book focuses on frontend development using Svelte.
+- Known for its simplicity, speed, and beginner-friendliness, Svelte is a standout choice for building web interfaces.
+- We’ll explore reactivity patterns common in single-page application frameworks and apply them to build our chat functionality using Svelte.
+- This includes setting up the environment with TypeScript, understanding Svelte’s core concepts and syntax, integrating the frontend with our REST API, and learning about components, routing, state management, and styling.
+- Additionally, we’ll delve into testing and debugging Svelte code and discuss best practices for maintaining and extending the code base.
+- By the end of this book, you’ll gain more than just knowledge of the specific technologies covered.
+
+## 4. Topicos Avancados
+- You’ll develop a versatile mental framework for full-stack development.
+- This framework will equip you with valuable concepts and practices that are applicable across any technologies and languages you will choose in web project development.
+- Let’s kick off our journey with TypeScript.
+- In this chapter, we’ll dive into an introduction to TypeScript, covering its history, how it stands out from JavaScript, and its advantages.
+- We’ll also get acquainted with TypeScript’s basic syntax, setting the stage for more advanced topics to follow.
+- Here is the list of topics we are going to cover:    * Introduction to TypeScript and its evolution   * Key differences between TypeScript and JavaScript   * The advantages of using TypeScript in modern web development   * Basic syntax of TypeScript    # Technical requirements  In this chapter, there’s no need to install or run anything just yet.
+- We’re going to focus on the basics of TypeScript, so you can ease into it without any setup work.
+- All the code examples we discuss are available in this repository: [https://github.com/PacktPublishing/Full-Stack-Web-Development-with-TypeScript-5/tree/main/Chapter01](https://github.com/PacktPublishing/Full-Stack-Web-Development-with-TypeScript-5/tree/main/Chapter01).  # Introduction to TypeScript and its evolution  JavaScript’s journey to market was remarkably quick.
+- Brendan Eich created its first version in just 10 days, aiming to make web pages interactive through a straightforward scripting language.
+- Over time, JavaScript gradually, then rapidly, became a dominant force in web development, while applications grew increasingly complex.

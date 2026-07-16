@@ -1,0 +1,57 @@
+---
+name: agile-desenvolvimento-de-software-com-entregas-frequent
+description: >-
+  Passos operacionais extraidos do livro 'Agile - Desenvolvimento de software com entregas frequentes e foco no valor de neg cio' (PT) — Agile.
+---
+
+# Agile Desenvolvimento De Software Com Entregas Frequent — Passos Operacionais
+
+Conteudo extraido do livro 'Agile Desenvolvimento De Software Com Entregas Frequent'. Contem passos, tecnicas e principios baseados na obra original.
+
+## 1. Conceitos Fundamentais
+- Página 2 © Casa do Código Todos os direitos reservados e protegidos pela Lei nº9.610, de 10/02/1998.
+- Nenhuma parte deste livro poderá ser reproduzida, nem transmitida, sem auto- rização prévia por escrito da editora, sejam quais forem os meios: fotográficos, eletrônicos, mecânicos, gravação ou quaisquer outros.
+- Casa do Código Livros para o programador Rua Vergueiro, 3185 - 8º andar 04101-300 – Vila Mariana – São Paulo – SP – Brasil  Página 3 Casa do Código Agradecimentos Escrever este livro foi um grande desafio para mim, e passar por esse desafio foi um grande lembrete do quão valiosos são meus familiares, amigos, colegas de trabalho e de comunidade.
+- Sem eles esse livro não teria se tornado realidade.
+- Agradeço à Editora Casa do Código nas pessoas de Paulo Silveira e Adriano Al- meida pela oportunidade que me foi concedida e pela confiança para escrever sobre um assunto tão importante nos dias de hoje como o desenvolvimento ágil de sofware.
+- Agradeço à Bluesoft e a todos os seus colaboradores que sempre me apoiam e ins- piram para buscar melhores práticas e abordagens no desenvolviemento de software e na gestão.
+- Em uma das vezes que foi entrevistado, Steve Jobs sugeriu que devemos nos ex- por às melhores coisas que seres humanos já fizeram (suas obras, seus trabalhos) e então tentar trazer essas coisas para o que você está fazendo.
+- Bem, já faz algum tempo que eu venho tentando seguir esse conselho.
+- É por isso que eu agradeço também aqui a todos aqueles que desde o Manifesto Ágil vêm se dedicando para que possamos encontrar melhores maneiras de se de- senvolver software.
+- Agradeço também à minha noiva Fernanda, que é minha maior fonte de inspi- ração e sempre me apoia em todos os meus desafios.
+
+## 2. Principios e Tecnicas
+- Finalmente, agradeço a você leitor, você é razão pela qual esse livro existe, sem você, esse trabalho não seria sequer necessário.
+- Aproveite a leitura! i  Página 5 Casa do Código Quem sou eu?
+- Atualmente, sou sócio e diretor de produtos e tec- nologia na Bluesoft em São Paulo e também Associated Trainer na Adaptworks.
+- Sou Bacharel em Sistemas de Informação pela FIAP, Black Belt em Lean Seis Sigma pela Fundação Vanzolini, e Management 3.0 Licensed Trainer.
+- O foco principal do meu trabalho é no desenvolvimento de software, atuando na liderança de equipes, no coaching de métodos ágeis, e no desenvolvimento de produtos para a Internet com diversas tecnologias e plataformas.
+- Minha carreira em TI começou em 1999 e desde então trabalhei com uma grande diversidade de tecnologias.
+- Desde 2007 venho aplicando métodos ágeis no dia a dia, e sempre buscando me- lhores formas de se lidar com os desafios da gestão e do desenvolvimento de software.
+- Atuo também como palestrante, tradutor, escritor e podcaster.
+- Escrevo artigos para revistas e portais de TI, e mantenho meu blog andrefaria.com.
+- Para entrar em contato comigo acesse http://contato.andrefaria.com. iii  Página 7 Casa do Código Prefácio O ano era 2001 e eu estava prestes a abandonar a carreira de gerente de projetos de software.
+
+## 3. Aplicacoes Praticas
+- Era o escopo que sempre mudava.
+- O prazo e custo que sempre estouravam.
+- O cliente que nunca sabia o que queria.
+- Fins de semana e madrugadas trabalhando.
+- E a eterna esperança de que “no próximo seria diferente”.
+- Naquele mesmo ano um amigo me emprestou um livro sobre uma tal FDD (Feature-Driven Development) e, após ler e ver sentido em muito do que estava ali, decidi me dar mais uma chance e tentar novamente, mas agora de uma forma dife- rente, afinal, pensei, se você não pode mudar uma situação, deve mudar sua atitude em relação a ela.
+- Naquele momento, abrindo minha mente às possibilidades, abra- cei Agile - sem saber que aquilo era Agile - e mudei completamente o meu destino profissional.
+- Depois do primeiro projeto conseguindo ter minha qualidade de vida e auto-estima profissional recuperadas, e vendo o sorriso no rosto do cliente, decidi mergulhar de cabeça neste mundo.
+- Hoje, depois do que vi na prática, nas trincheiras, por todos esses anos, eu afirmo a você: o resultado dos projetos de desenvolvimento de software que utilizam méto- dos ágeis é muito superior se comparado às técnicas mais tradicionais de gestão de projetos e engenharia de software.
+- E quando eu falo em melhor resultado, não es- tou falando apenas de uma maior entrega de valor, tópico brilhantemente abordado neste livro, mas falo também de aspectos que vão desde a geração de produtos com qualidade técnica à construção de um melhor ambiente de trabalho.
+
+## 4. Topicos Avancados
+- Estou certo de que em poucos anos nos lembraremos de Agile como um marco na nossa profissão, um marco para a área de tecnologia.
+- Mas, afinal de contas, o que é Agile?
+- Bem, por incrível que pareça, esta é uma pergunta difícil de ser respondida.
+- Uma das razões é porque Agile pode não ser nada do que citei, e, ao mesmo tempo, pode v  Página 8 Casa do Código compreender tudo aquilo.
+- É muito difícil explicar Agile sem mostrar a prática.
+- De fato, frequentemente cito que a forma correta de explicar o que é Agile deveria ser “Ei, venha aqui ver como estou fazendo!” E é neste ponto que destaco o valor de cada uma das páginas deste livro, elas mostram o Agile do “mundo real”, infestado de pragmatismo e de preciosas anotações de quem valoriza sim uma boa teoria, mão não antes de pratica-la, de vê-la realmente funcionando.
+- Um livro de verdade sobre Agile não poderia ter capítulos cujos títulos fossem puramente relacionados a uma regra, artefato ou ferramenta de um ou outro método ágil.
+- Um verdadeiro livro sobre Agile deveria manter o foco de seus capítulos na en- trega de valor ao negócio, na otimização deste valor e na construção de um novo ambiente de trabalho, uma nova gestão.
+- Um verdadeiro livro de Agile tiraria os ho- lofotes dos famosos métodos ágeis, tais como Scrum, XP e Kanban, e os apresentaria apenas como um meio para se desenvolver da forma certa produtos que realmente agreguem valor a quem paga a conta: nossos clientes.
+- Sendo assim, não exito em afirmar que este é um verdadeiro livro de Agile.

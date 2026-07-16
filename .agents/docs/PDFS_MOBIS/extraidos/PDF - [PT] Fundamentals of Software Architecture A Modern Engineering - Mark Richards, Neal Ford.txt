@@ -1,0 +1,1427 @@
+[Page 1]
+Mark Richards & Neal Ford
+Fundamentals of 
+Software 
+Architecture
+A Modern Engineering Approach
+2nd Edition
+
+[Page 2]
+9
+7 8 1 0 9 8 1 7 5 5 1 1
+5 7 9 9 9
+ISBN:     978-1-098-17551-1
+US $79.99	   CAN $99.99
+SOFTWARE ARCHITECTURE
+Developers who want to move beyond coding to advance their career aspire to become software architects, 
+yet no real guide has existed to help them do so—until now. This updated edition provides a comprehensive 
+overview of software architecture’s many aspects, with several entirely new chapters covering the latest 
+insights from the field. Existing and prospective architects alike will examine architectural characteristics, 
+architectural patterns, component determination, diagramming architecture, governance, data, 
+generative AI, team topologies, and many other topics.
+Mark Richards and Neal Ford—hands-on practitioners who have taught software architecture classes 
+professionally for years—focus on architecture principles that apply across all technology stacks. You’ll 
+explore software architecture in a modern light, taking into account all the innovations of the past decade.
+This book examines:
+•	 Architecture styles and patterns: Microservices, 
+modular monoliths, microkernels, layered architectures, 
+and many more
+•	 Components: Identification, coupling, cohesion, 
+partitioning, and granularity
+•	 Soft skills: Effective team management, collaboration, 
+business engagement models, negotiation, presentations, 
+and more
+•	 Modern engineering practices: Methods and operational 
+approaches that have changed radically in the past few 
+years, including cloud considerations and generative AI
+•	 Architecture as an engineering discipline: Repeatable 
+results, metrics, and concrete valuations that add rigor 
+to software architecture
+Mark Richards is an experienced 
+hands-on software architect involved 
+in the architecture, design, and 
+implementation of microservices 
+architectures and other distributed 
+systems. He’s the author of numerous 
+O’Reilly technical books and videos.
+Neal Ford is a director, software 
+architect, and meme wrangler at 
+Thoughtworks and an internationally 
+recognized expert on software 
+development and delivery. Neal’s 
+authored eight books (and counting), 
+a number of magazine articles, and 
+dozens of video presentations.
+Fundamentals of Software Architecture
+“An indispensable resource for exploring modern software architecture 
+through a contemporary lens. Whether you are an ‘accidental’ architect 
+stepping into the role or a veteran seeking to ref ine your skills, this book 
+offers the tools and knowledge you need to excel in your craft.”
+Raju Gandhi, author of Head First Git and coauthor of Head First Software Architecture
+
+[Page 3]
+Praise for Fundamentals of Software Architecture
+Mark and Neal have done it again—this revised and expanded second edition
+of their bestseller is an indispensable resource for exploring modern software
+architecture through a contemporary lens. With a nuanced understanding of what
+software architecture truly involves, this comprehensive guide starts with the critical
+importance of trade-off analysis, then delves into a wide range of architectural
+styles and the philosophies that underpin them, along with detailed examinations
+of data and team topologies. Whether you are an “accidental” architect stepping
+into the role or a seasoned veteran seeking to refine your skills, this book offers
+the tools and knowledge you need to excel in your craft.
+—Raju Gandhi, Author of Head First Git
+and Coauthor of Head First Software Architecture
+Neal and Mark aren’t just outstanding software architects; they are also exceptional
+teachers. With Fundamentals of Software Architecture, they have managed to
+condense the sprawling topic of architecture into a concise work that reflects
+their decades of experience. Whether you’re new to the role or you’ve been a
+practicing architect for many years, the updated edition of this book will help you
+be better at your job. I only wish they’d have written it earlier in my career. I’ve
+now used both editions with my architecture graduate students, and will continue
+to recommend it widely in this expanded form.
+—Nathaniel Schutta,
+Coauthor of Fundamentals of Software Engineering
+
+[Page 4]
+Mark and Neal set out to achieve a formidable goal—to elucidate the many, layered
+fundamentals required to excel in software architecture—and they have once again
+completed their quest. The software architecture field continuously evolves, and the role
+requires a daunting breadth and depth of knowledge and skills. This updated book will
+serve as a guide for many as they navigate their journey to software architecture mastery.
+—Rebecca J. Parsons, Technology Advisor
+and Former CTO/CTO Emerita, Thoughtworks
+Mark and Neal truly capture real-world advice for technologists to drive architecture
+excellence. They achieve this by identifying common architecture characteristics
+and the trade-offs that are necessary to drive success.
+—Cassie Shum, Technical Director, Thoughtworks
+
+[Page 5]
+Mark Richards and Neal Ford
+Fundamentals of Software
+Architecture
+A Modern Engineering Approach
+SECOND EDITION
+
+[Page 6]
+978-1-098-17551-1
+[LSI]
+Fundamentals of Software Architecture
+by Mark Richards and Neal Ford
+Copyright © 2025 Mark Richards and Neal Ford. All rights reserved.
+Printed in the United States of America.
+Published by O’Reilly Media, Inc., 1005 Gravenstein Highway North, Sebastopol, CA 95472.
+O’Reilly books may be purchased for educational, business, or sales promotional use. Online editions are
+also available for most titles (http://oreilly.com). For more information, contact our corporate/institutional
+sales department: 800-998-9938 or corporate@oreilly.com.
+Acquisitions Editor: Louise Corrigan
+Development Editor: Sarah Grey
+Production Editor: Christopher Faucher
+Copyeditor: Sonia Saruba
+Proofreader: Piper Content Partners
+Indexer: WordCo Indexing Services, Inc.
+Interior Designer: David Futato
+Cover Designer: Karen Montgomery
+Illustrator: Kate Dullea
+January 2020:
+ First Edition
+March 2025:
+ Second Edition
+Revision History for the Second Edition
+2025-03-12: First Release
+See http://oreilly.com/catalog/errata.csp?isbn=9781098175511 for release details.
+The O’Reilly logo is a registered trademark of O’Reilly Media, Inc. Fundamentals of Software Architecture,
+the cover image, and related trade dress are trademarks of O’Reilly Media, Inc.
+The views expressed in this work are those of the authors and do not represent the publisher’s views.
+While the publisher and the authors have used good faith efforts to ensure that the information and
+instructions contained in this work are accurate, the publisher and the authors disclaim all responsibility
+for errors or omissions, including without limitation responsibility for damages resulting from the use
+of or reliance on this work. Use of the information and instructions contained in this work is at your
+own risk. If any code samples or other technology this work contains or describes is subject to open
+source licenses or the intellectual property rights of others, it is your responsibility to ensure that your use
+thereof complies with such licenses and/or rights.
+
+[Page 7]
+Table of Contents
+Preface. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  xvii
+1. Introduction. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  1
+Defining Software Architecture                                                                                       2
+Laws of Software Architecture                                                                                         6
+Expectations of an Architect                                                                                            8
+Make Architecture Decisions                                                                                       8
+Continually Analyze the Architecture                                                                         9
+Keep Current with Latest Trends                                                                                 9
+Ensure Compliance with Decisions                                                                           10
+Understand Diverse Technologies                                                                             10
+Know the Business Domain                                                                                        11
+Possess Interpersonal Skills                                                                                         11
+Understand and Navigate Politics                                                                              12
+Roadmap                                                                                                                           13
+Part I. 
+Foundations
+2. Architectural Thinking. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  17
+Architecture Versus Design                                                                                          17
+Strategic Versus Tactical Decisions                                                                          18
+Level of Effort                                                                                                             19
+The Significance of Trade-Offs                                                                                19
+Technical Breadth                                                                                                          20
+v
+
+[Page 8]
+The 20-Minute Rule                                                                                                   24
+Developing a Personal Radar                                                                                   25
+Analyzing Trade-Offs                                                                                                    30
+Understanding Business Drivers                                                                                 33
+Balancing Architecture and Hands-On Coding                                                        33
+There’s More to Architectural Thinking                                                                     36
+3. Modularity. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  37
+Modularity Versus Granularity                                                                                    38
+Defining Modularity                                                                                                      38
+Measuring Modularity                                                                                                  40
+Cohesion                                                                                                                      41
+Coupling                                                                                                                      44
+Core Metrics                                                                                                                45
+Distance from the Main Sequence                                                                           46
+Connascence                                                                                                               49
+From Modules to Components                                                                                    54
+4. Architectural Characteristics Defined. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  55
+Architectural Characteristics and System Design                                                     56
+Architectural Characteristics (Partially) Listed                                                         59
+Operational Architectural Characteristics                                                              59
+Structural Architectural Characteristics                                                                 60
+Cloud Characteristics                                                                                                60
+Cross-Cutting Architectural Characteristics                                                         61
+Trade-Offs and Least Worst Architecture                                                                  64
+5. Identifying Architectural Characteristics. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  67
+Extracting Architectural Characteristics from Domain Concerns                         67
+Composite Architectural Characteristics                                                                   68
+Extracting Architectural Characteristics                                                                    69
+Working with Katas                                                                                                   70
+Kata: Silicon Sandwiches                                                                                              71
+Explicit Characteristics                                                                                              72
+Implicit Characteristics                                                                                             75
+Limiting and Prioritizing Architectural Characteristics                                          77
+6. Measuring and Governing Architecture Characteristics. . . . . . . . . . . . . . . . . . . . . . . . . .  81
+Measuring Architecture Characteristics                                                                     81
+vi 
+| 
+Table of Contents
+
+[Page 9]
+Operational Measures                                                                                                82
+Structural Measures                                                                                                   83
+Process Measures                                                                                                        86
+Governance and Fitness Functions                                                                             86
+Governing Architecture Characteristics                                                                 86
+Fitness Functions                                                                                                        87
+7. The Scope of Architectural Characteristics. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  95
+Architectural Quanta and Granularity                                                                       96
+Synchronous Communication                                                                                     99
+The Impact of Scoping                                                                                                100
+Scoping and Architectural Style                                                                             102
+Kata: Going Green                                                                                                   103
+Scoping and the Cloud                                                                                                105
+8. Component-Based Thinking. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  107
+Defining Logical Components                                                                                   107
+Logical Versus Physical Architecture                                                                        110
+Creating a Logical Architecture                                                                                 112
+Identifying Core Components                                                                               113
+Assigning User Stories to Components                                                                117
+Analyzing Roles and Responsibilities                                                                   118
+Analyzing Architectural Characteristics                                                               120
+Restructuring Components                                                                                    120
+Component Coupling                                                                                                 121
+Static Coupling                                                                                                         121
+Temporal Coupling                                                                                                  122
+The Law of Demeter                                                                                                123
+Case Study: Going, Going, Gone—Discovering Components                             125
+Part II. 
+Architecture Styles
+9. Foundations. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  131
+Styles Versus Patterns                                                                                                  131
+Fundamental Patterns                                                                                                 133
+Big Ball of Mud                                                                                                         133
+Unitary Architecture                                                                                               134
+Client/Server                                                                                                             135
+Table of Contents 
+| 
+vii
+
+[Page 10]
+Architecture Partitioning                                                                                           137
+Kata: Silicon Sandwiches—Partitioning                                                               140
+Monolithic Versus Distributed Architectures                                                         143
+Fallacy #1: The Network Is Reliable                                                                      144
+Fallacy #2: Latency Is Zero                                                                                      144
+Fallacy #3: Bandwidth Is Infinite                                                                           145
+Fallacy #4: The Network Is Secure                                                                         146
+Fallacy #5: The Topology Never Changes                                                             147
+Fallacy #6: There Is Only One Administrator                                                      148
+Fallacy #7: Transport Cost Is Zero                                                                         148
+Fallacy #8: The Network Is Homogeneous                                                           149
+The Other Fallacies                                                                                                  149
+Team Topologies and Architecture                                                                           151
+On to Specific Styles                                                                                                    152
+10. Layered Architecture Style. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  153
+Topology                                                                                                                       153
+Style Specifics                                                                                                               155
+Layers of Isolation                                                                                                    155
+Adding Layers                                                                                                           157
+Data Topologies                                                                                                           159
+Cloud Considerations                                                                                                 159
+Common Risks                                                                                                             159
+Governance                                                                                                                   159
+Team Topology Considerations                                                                                 160
+Style Characteristics                                                                                                    161
+When to Use                                                                                                             162
+When Not to Use                                                                                                      163
+Examples and Use Cases                                                                                             163
+11. The Modular Monolith Architecture Style. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  165
+Topology                                                                                                                       165
+Style Specifics                                                                                                               166
+Monolithic Structure                                                                                               167
+Modular Structure                                                                                                    168
+Module Communication                                                                                         168
+Data Topologies                                                                                                           170
+Cloud Considerations                                                                                                 171
+Common Risks                                                                                                             171
+viii 
+| 
+Table of Contents
+
+[Page 11]
+Governance                                                                                                                   172
+Team Topology Considerations                                                                                 174
+Style Characteristics                                                                                                    175
+When to Use                                                                                                             176
+When Not to Use                                                                                                      177
+Examples and Use Cases                                                                                             177
+12. Pipeline Architecture Style. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  181
+Topology                                                                                                                       181
+Style Specifics                                                                                                               182
+Filters                                                                                                                         182
+Pipes                                                                                                                           183
+Data Topologies                                                                                                           184
+Cloud Considerations                                                                                                 184
+Common Risks                                                                                                             185
+Governance                                                                                                                   186
+Team Topology Considerations                                                                                 188
+Style Characteristics                                                                                                    189
+When to Use                                                                                                             190
+When Not to Use                                                                                                      190
+Examples and Use Cases                                                                                             191
+13. Microkernel Architecture Style. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  193
+Topology                                                                                                                       193
+Style Specifics                                                                                                               194
+Core System                                                                                                              194
+Plug-In Components                                                                                               198
+The Spectrum of “Microkern-ality”                                                                      200
+Registry                                                                                                                      201
+Contracts                                                                                                                   201
+Data Topologies                                                                                                           202
+Cloud Considerations                                                                                                 203
+Common Risks                                                                                                             203
+Volatile Core                                                                                                             203
+Plug-In Dependencies                                                                                             204
+Governance                                                                                                                   204
+Team Topology Considerations                                                                                 204
+Architecture Characteristics Ratings                                                                        205
+Examples and Use Cases                                                                                             207
+Table of Contents 
+| 
+ix
+
+[Page 12]
+14. Service-Based Architecture Style. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  209
+Topology                                                                                                                       209
+Style Specifics                                                                                                               211
+Service Design and Granularity                                                                             213
+User Interface Options                                                                                            213
+API Gateway Options                                                                                              215
+Data Topologies                                                                                                           215
+Cloud Considerations                                                                                                 219
+Common Risks                                                                                                             219
+Governance                                                                                                                   219
+Team Topology Considerations                                                                                 220
+Style Characteristics                                                                                                    221
+Examples and Use Cases                                                                                             224
+15. Event-Driven Architecture Style. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  227
+Topology                                                                                                                       228
+Style Specifics                                                                                                               232
+Events Versus Messages                                                                                           232
+Derived Events                                                                                                          233
+Triggering Extensible Events                                                                                  235
+Asynchronous Capabilities                                                                                     235
+Broadcast Capabilities                                                                                             239
+Event Payload                                                                                                            240
+The Swarm of Gnats Antipattern                                                                           246
+Error Handling                                                                                                         249
+Preventing Data Loss                                                                                               253
+Request-Reply Processing                                                                                       256
+Mediated Event-Driven Architecture                                                                    258
+Data Topologies                                                                                                           268
+Monolithic Database Topology                                                                              269
+Domain Database Topology                                                                                   271
+Dedicated Data Topology                                                                                        273
+Cloud Considerations                                                                                                 275
+Common Risks                                                                                                             275
+Governance                                                                                                                   276
+Team Topology Considerations                                                                                 276
+Style Characteristics                                                                                                    277
+Choosing Between Request-Based and Event-Based Models                            280
+Examples and Use Cases                                                                                             280
+x 
+| 
+Table of Contents
+
+[Page 13]
+16. Space-Based Architecture Style. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  283
+Topology                                                                                                                       284
+Style Specifics                                                                                                               286
+Processing Unit                                                                                                        286
+Virtualized Middleware                                                                                           287
+Messaging Grid                                                                                                         287
+Data Grid                                                                                                                   288
+Processing Grid                                                                                                        296
+Deployment Manager                                                                                              297
+Data Pumps                                                                                                               297
+Data Writers                                                                                                              298
+Data Readers                                                                                                             300
+Data Topologies                                                                                                           302
+Cloud Considerations                                                                                                 302
+Common Risks                                                                                                             303
+Frequent Reads from the Database                                                                        303
+Data Synchronization and Consistency                                                                304
+High Data Volumes                                                                                                  304
+Data Collisions                                                                                                         304
+Governance                                                                                                                   307
+Team Topology Considerations                                                                                 310
+Style Characteristics                                                                                                    311
+Examples and Use Cases                                                                                             313
+Concert Ticketing System                                                                                       313
+Online Auction System                                                                                           313
+17. Orchestration-Driven Service-Oriented Architecture. . . . . . . . . . . . . . . . . . . . . . . . . . .  315
+Topology                                                                                                                       315
+Style Specifics                                                                                                               316
+Taxonomy                                                                                                                  317
+Reuse…and Coupling                                                                                             320
+Data Topologies                                                                                                           322
+Cloud Considerations                                                                                                 323
+Common Risks                                                                                                             323
+Governance                                                                                                                   324
+Team Topology Considerations                                                                                 325
+Style Characteristics                                                                                                    325
+Examples and Use Cases                                                                                             327
+Table of Contents 
+| 
+xi
+
+[Page 14]
+18. Microservices Architecture. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  329
+Topology                                                                                                                       330
+Style Specifics                                                                                                               331
+Bounded Context                                                                                                     331
+Granularity                                                                                                                332
+Data Isolation                                                                                                            333
+API Layer                                                                                                                   334
+Operational Reuse                                                                                                    334
+Frontends                                                                                                                  338
+Communication                                                                                                       339
+Choreography and Orchestration                                                                          341
+Transactions and Sagas                                                                                            345
+Data Topologies                                                                                                           348
+Cloud Considerations                                                                                                 351
+Common Risks                                                                                                             351
+Governance                                                                                                                   352
+Team Topology Considerations                                                                                 353
+Style Characteristics                                                                                                    354
+Examples and Use Cases                                                                                             356
+19. Choosing the Appropriate Architecture Style. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  359
+Shifting “Fashion” in Architecture                                                                            359
+Decision Criteria                                                                                                          361
+Monolith Case Study: Silicon Sandwiches                                                               364
+Modular Monolith                                                                                                   365
+Microkernel                                                                                                              366
+Distributed Case Study: Going, Going, Gone                                                         367
+20. Architectural Patterns. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  371
+Reuse                                                                                                                              372
+Separating Domain and Operational Coupling                                                   372
+Communication                                                                                                           375
+Orchestration Versus Choreography                                                                     375
+CQRS                                                                                                                             378
+Infrastructure                                                                                                               379
+Broker-Domain Pattern                                                                                          380
+xii 
+| 
+Table of Contents
+
+[Page 15]
+Part III. 
+Techniques and Soft Skills
+21. Architectural Decisions. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  387
+Architectural Decision Antipatterns                                                                         387
+The Covering Your Assets Antipattern                                                                 387
+Groundhog Day Antipattern                                                                                  389
+Email-Driven Architecture Antipattern                                                               389
+Architectural Significance                                                                                          390
+Architectural Decision Records                                                                                 391
+Basic Structure                                                                                                          392
+Example                                                                                                                     398
+Storing ADRs                                                                                                            400
+ADRs as Documentation                                                                                        401
+Using ADRs for Standards                                                                                      402
+Using ADRs with Existing Systems                                                                       402
+Leveraging Generative AI and LLMs in Architectural Decisions                     402
+22. Analyzing Architecture Risk. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  405
+Risk Matrix                                                                                                                   405
+Risk Assessments                                                                                                         406
+Risk Storming                                                                                                               410
+Phase 1: Identification                                                                                             411
+Phase 2: Consensus                                                                                                  412
+Phase 3: Risk Mitigation                                                                                          415
+User-Story Risk Analysis                                                                                            416
+Risk-Storming Use Case                                                                                             416
+Availability                                                                                                                418
+Elasticity                                                                                                                    420
+Security                                                                                                                      421
+Summary                                                                                                                       422
+23. Diagramming Architecture. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  423
+Diagramming                                                                                                               424
+Tools                                                                                                                           424
+Diagramming Standards: UML, C4, and ArchiMate                                          426
+Diagram Guidelines                                                                                                 428
+Summary                                                                                                                       431
+Table of Contents 
+| 
+xiii
+
+[Page 16]
+24. Making Teams Effective. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  433
+Collaboration                                                                                                                433
+Constraints and Boundaries                                                                                       435
+Architect Personalities                                                                                                436
+The Control-Freak Architect                                                                                  437
+The Armchair Architect                                                                                          437
+The Effective Architect                                                                                            438
+How Much Involvement?                                                                                           439
+Team Warning Signs                                                                                                    443
+Process Loss                                                                                                              443
+Pluralistic Ignorance                                                                                                444
+Leveraging Checklists                                                                                                  445
+Developer Code-Completion Checklist                                                                447
+Unit and Functional Testing Checklist                                                                 448
+Software-Release Checklist                                                                                     449
+Providing Guidance                                                                                                    450
+Summary                                                                                                                       452
+25. Negotiation and Leadership Skills. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  453
+Negotiation and Facilitation                                                                                       453
+Negotiating with Business Stakeholders                                                               453
+Negotiating with Other Architects                                                                        456
+Negotiating with Developers                                                                                  457
+The Software Architect as a Leader                                                                           459
+The 4 Cs of Architecture                                                                                         459
+Be Pragmatic, Yet Visionary                                                                                   461
+Leading Teams by Example                                                                                    462
+Integrating with the Development Team                                                                 465
+Summary                                                                                                                       468
+26. Architectural Intersections. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  469
+Architecture and Implementation                                                                             470
+Operational Concerns                                                                                             471
+Structural Integrity                                                                                                  472
+Architectural Constraints                                                                                       474
+Architecture and Infrastructure                                                                                475
+Architecture and Data Topologies                                                                            477
+Database Topology                                                                                                   478
+Architectural Characteristics                                                                                  479
+xiv 
+| 
+Table of Contents
+
+[Page 17]
+Data Structure                                                                                                           479
+Read/Write Priority                                                                                                 479
+Architecture and Engineering Practices                                                                   480
+Architecture and Team Topologies                                                                           481
+Architecture and Systems Integration                                                                      482
+Architecture and the Enterprise                                                                                482
+Architecture and the Business Environment                                                           483
+Architecture and Generative AI                                                                                484
+Incorporating Generative AI into Architecture                                                   484
+Generative AI as an Architect Assistant                                                               484
+Summary                                                                                                                       485
+27. The Laws of Software Architecture, Revisited. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  487
+First Law: Everything in Software Architecture Is a Trade-Off                            487
+Shared Library Versus Shared Service                                                                  488
+Synchronous Versus Asynchronous Messaging                                                  490
+First Corollary: Missing Trade-Offs                                                                      492
+Second Corollary: You Can’t Do It Just Once                                                      494
+Second Law: Why Is More Important Than How                                                   494
+Out of Context Antipattern                                                                                    494
+The Spectrum Between Extremes                                                                             495
+Parting Words of Advice                                                                                             496
+Appendix. Discussion Questions. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  497
+Index. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  507
+Table of Contents 
+| 
+xv
+
+[Page 19]
+Preface
+Preface to the Second Edition
+“Wow, there’s a lot there!”
+When we set out to write the second edition of Fundamentals of Software Architecture,
+we had a few ideas of things we wanted to flesh out and improve from the first
+edition, but like a lot of software projects, it kept growing.
+One of our met goals was to make the styles sections more consistent, making them
+more useful for comparisons. We also made some changes to our star ratings to add
+sections and a few new categories, and added new sections on cloud considerations,
+data topologies, team topologies, and governance for each architectural style. Along
+the way we made major additions to a number of chapters on popular topics, such as
+Chapters 15 and 18, and added a new chapter (Chapter 11) on the modular monolith
+architectural style.
+We also added several entirely new chapters covering architectural patterns in Chap‐
+ter 20, the intersections of architecture in Chapter 26, and revisiting our laws of
+software architecture (of which there is a new corollary and a new law) in Chapter 27.
+Preface to the First Edition
+Axiom
+A statement or proposition that is regarded as being established, accepted, or
+self-evidently true.
+Mathematicians create theories based on axioms—assumptions for things indisputa‐
+bly true. Software architects also build theories atop axioms, but the software world
+is, well, softer than mathematics: fundamental things continue to change at a rapid
+pace, including the axioms we base our theories upon.
+xvii
+
+[Page 20]
+The software development ecosystem exists in a constant state of dynamic equili‐
+brium: while it exists in a balanced state at any given point in time, it exhibits
+dynamic behavior over the long term. A great modern example of the nature of this
+ecosystem follows the ascension of containerization and the attendant changes: tools
+like Kubernetes didn’t exist a decade ago, yet now entire software conferences exist
+to service its users. The software ecosystem changes chaotically: one small change
+causes another small change; when repeated hundreds of times, it generates a new
+ecosystem.
+Architects have an important responsibility to question assumptions and axioms
+left over from previous eras. Many of the books about software architecture were
+written in an era that only barely resembles the current world. In fact, the authors
+believe that we must question fundamental axioms on a regular basis, in light of
+improved engineering practices, operational ecosystems, software development pro‐
+cesses—everything that makes up the messy, dynamic equilibrium where architects
+and developers work each day.
+Careful observers of software architecture over time witnessed an evolution of capa‐
+bilities. Starting with the engineering practices of Extreme Programming, continuing
+with continuous delivery, the DevOps revolution, microservices, containerization,
+and now cloud-based resources, all of these innovations led to new capabilities and
+trade-offs. As capabilities changed, so did architects’ perspectives on the industry. For
+many years, the tongue-in-cheek definition of software architecture was “the stuff
+that’s hard to change later.” Later, the microservices architecture style appeared, where
+change is a first-class design consideration.
+Each new era requires new practices, tools, measurements, patterns, and a host of
+other changes. This book looks at software architecture in a modern light, taking into
+account all the innovations from the last decade, along with some new metrics and
+measures suited to today’s new structures and perspectives.
+The subtitle of our book is “A Modern Engineering Approach.” Developers have
+long wished to change software development from a craft, where skilled artisans can
+create one-off works, to an engineering discipline, which implies repeatability, rigor,
+and effective analysis. While software engineering still lags behind other types of
+engineering disciplines by many orders of magnitude (to be fair, software is a very
+young discipline compared to most other types of engineering), architects have made
+huge improvements, which we’ll discuss. In particular, modern Agile engineering
+practices have allowed great strides in the types of systems that architects design.
+We also address the critically important issue of trade-off analysis. As a software
+developer, it’s easy to become enamored with a particular technology or approach.
+But architects must always soberly assess the good, bad, and ugly of every choice, and
+virtually nothing in the real world offers convenient binary choices—everything is a
+trade-off. Given this pragmatic perspective, we strive to eliminate value judgments
+xviii 
+| 
+Preface
+
+[Page 21]
+about technology and instead focus on analyzing trade-offs to equip our readers with
+an analytic eye toward technology choices.
+This book won’t make someone a software architect overnight—it’s a nuanced field
+with many facets. We want to provide existing and burgeoning architects a good
+modern overview of software architecture and its many aspects, from structure to soft
+skills. While this book covers well-known patterns, we take a new approach, leaning
+on lessons learned, tools, engineering practices, and other input. We take many
+existing axioms in software architecture and rethink them in light of the current
+ecosystem, and design architectures, taking the modern landscape into account.
+Conventions Used in This Book
+The following typographical conventions are used in this book:
+Italic
+Indicates new terms, URLs, email addresses, filenames, and file extensions.
+Constant width
+Used for program listings, as well as within paragraphs to refer to program
+elements such as variable or function names, databases, data types, environment
+variables, statements, and keywords.
+This element signifies a tip or suggestion.
+This element signifies a general note.
+This element indicates a warning or caution.
+Preface 
+| 
+xix
+
+[Page 22]
+Supplemental Material
+Visit http://fundamentalsofsoftwarearchitecture.com to access the supplemental
+resources for this book.
+If you have a technical question or a problem using the code examples, please send
+email to bookquestions@oreilly.com.
+This book is here to help you get your job done. In general, if example code is
+offered with this book, you may use it in your programs and documentation. You
+do not need to contact us for permission unless you’re reproducing a significant
+portion of the code. For example, writing a program that uses several chunks of code
+from this book does not require permission. Selling or distributing examples from
+O’Reilly books does require permission. Answering a question by citing this book
+and quoting example code does not require permission. Incorporating a significant
+amount of example code from this book into your product’s documentation does
+require permission.
+We appreciate, but generally do not require, attribution. An attribution usually
+includes the title, author, publisher, and ISBN. For example: “Fundamentals of Soft‐
+ware Architecture, Second Edition, by Mark Richards and Neal Ford (O’Reilly). Copy‐
+right 2025 Mark Richards and Neal Ford, 978-1-098-17551-1.”
+If you feel your use of code examples falls outside fair use or the permission given
+above, feel free to contact us at permissions@oreilly.com.
+xx 
+| 
+Preface
+
+[Page 23]
+O’Reilly Online Learning
+For more than 40 years, O’Reilly Media has provided technol‐
+ogy and business training, knowledge, and insight to help
+companies succeed.
+Our unique network of experts and innovators share their knowledge and expertise
+through books, articles, and our online learning platform. O’Reilly’s online learning
+platform gives you on-demand access to live training courses, in-depth learning
+paths, interactive coding environments, and a vast collection of text and video
+from O’Reilly and 200+ other publishers. For more information, please visit http://
+oreilly.com.
+How to Contact Us
+Please address comments and questions concerning this book to the publisher:
+O’Reilly Media, Inc.
+1005 Gravenstein Highway North
+Sebastopol, CA 95472
+800-889-8969 (in the United States or Canada)
+707-827-7019 (international or local)
+707-829-0104 (fax)
+support@oreilly.com
+https://oreilly.com/about/contact.html
+We have a web page for this book, where we list errata, examples, and any additional
+information. You can access this page at https://oreil.ly/fundamentals-of-software-
+architecture-2e.
+For news and information about our books and courses, visit https://oreilly.com.
+Find us on LinkedIn: https://linkedin.com/company/oreilly-media.
+Watch us on YouTube: https://youtube.com/oreillymedia.
+Preface 
+| 
+xxi
+
+[Page 24]
+Acknowledgments
+Mark and Neal would like to thank all the people who attended our classes, work‐
+shops, conference sessions, and user group meetings, as well as all the people who
+listened to versions of this material and provided invaluable feedback. We would also
+like to thank the publishing team at O’Reilly, who made this as painless an experience
+as writing a book can be. In particular, we would like to thank our first edition
+editors, Alicia Young and Virginia Wilson, and our second edition editor, Sarah Grey.
+Acknowledgments from Mark Richards
+In addition to the preceding acknowledgments, I would like to thank my lovely wife,
+Rebecca. Taking everything else on at home and sacrificing the opportunity to work
+on your own book allowed me to do additional consulting gigs and speak at more
+conferences and training classes, giving me the opportunity to practice and hone the
+material for this book. You are the best.
+Acknowledgments from Neal Ford
+I would like to thank my extended family, Thoughtworks as a collective, and Rebecca
+Parsons and Martin Fowler as individual parts of it. Thoughtworks is an extraordi‐
+nary group of people who manage to produce value for customers while keeping a
+keen eye toward why things work so we can improve them. Thoughtworks supported
+this book in many ways and continues to grow Thoughtworkers who challenge and
+inspire every day. I would also like to thank our neighborhood cocktail club for a
+regular escape from routine. Lastly, I would like to thank my wife, Candy, whose
+tolerance for things like book writing and conference speaking apparently knows no
+bounds. For decades she’s kept me grounded and sane enough to function, and I hope
+she will for decades more as the love of my life.
+xxii 
+| 
+Preface
+
+[Page 25]
+CHAPTER 1
+Introduction
+So you’re interested in software architecture. Perhaps you’re a developer who wants
+to move to the next career step, or perhaps you are a project manager who wants
+to understand what happens when software architectures work. You may also be an
+“accidental architect”: someone who makes architecture decisions (defined below)
+but doesn’t have the title of “software architect"…yet.
+Why delve into the realm of software architecture? Perhaps you have experience with
+lots of projects and want to understand more deeply how the larger parts of systems
+fit together, along with the numerous trade-offs. If so, software architecture is an
+obvious next career step.
+This book is designed for all of you. It provides an overview of the extremely
+multifaceted job of “software architect.”
+Software architects must understand and analyze software systems deeply, in all their
+complexity, and must make important trade-off decisions, sometimes with incom‐
+plete information. Many software developers worried that generative AI might slowly
+replace them are considering moving to software architecture, a role much harder
+to replace. Software architects make exactly the kinds of decisions that AI cannot,
+evaluating trade-offs within complex, changing contexts.
+Architecture, like much art, can only be understood in context. Architects base
+their decisions on the realities of their environment. For example, one of the major
+goals of late-20th-century software architecture was to use shared infrastructure and
+resources as efficiently as possible, because operating systems, application servers,
+database servers, and so on were all commercial and very expensive.
+In 2002, trying to build an architecture like microservices would have been incon‐
+ceivably expensive. Imagine strolling into a 2002 data center and telling the head of
+operations, “Hey, I have a great idea for a revolutionary style of architecture, where
+1
+
+[Page 26]
+each service runs on its own isolated machinery with its own dedicated database.
+I’ll need 50 Windows licenses, another 30 application-server licenses, and at least
+50 database server licenses.” We can only build such architectures today because of
+the advent of open source and the updated engineering practices of the DevOps
+revolution. All architectures are products of their context—keep that in mind as you
+read this book.
+Defining Software Architecture
+So what is software architecture? Figure 1-1 illustrates how we like to think about
+software architecture. This definition has four dimensions. The software architecture
+of a system consists of an architecture style as the starting point, combined with the
+architecture characteristics it must support, the logical components to implement its
+behavior, and finally the architecture decisions justifying it all. The system’s structure
+is denoted by the heavy black lines supporting the architecture. We’ll walk quickly
+through these dimensions in the order in which architects analyze them, and subse‐
+quent chapters will provide more details.
+Figure 1-1. Architecture consists of the system’s structure, combined with architecture
+characteristics (“-ilities”), logical components, architecture styles, and decisions
+2 
+| 
+Chapter 1: Introduction
+
+[Page 27]
+Architecture characteristics (see Figure 1-2) define the capabilities of a system (com‐
+monly abbreviated as “-ilities”) and the criteria for its success: in short, what the
+system should do. Architecture characteristics are so important that we’ve devoted
+several chapters in this book to understanding and defining them.
+Figure 1-2. “Architecture characteristics” refer to the “-ilities” that the system must
+support
+Defining Software Architecture 
+| 
+3
+
+[Page 28]
+While architectural characteristics define a system’s capabilities, logical components
+define its behavior. Designing logical components is one of the key structural activi‐
+ties for architects. In Figure 1-3, the logical components form the domains, entities,
+and workflows of the application.
+Figure 1-3. Logical components structure the behavior of the system
+4 
+| 
+Chapter 1: Introduction
+
+[Page 29]
+Once an architect has analyzed the architectural characteristics and logical compo‐
+nents the system needs (both described in detail later), they know enough to choose
+an appropriate architecture style as a starting point for implementing their solution
+Figure 1-4.
+Figure 1-4. Choosing an architectural style involves finding the easiest implementation
+path for a given set of requirements
+The fourth dimension that defines software architecture is architecture decisions,
+which define the rules for how a system should be constructed. For example, an
+architect might make a decision that only the Business and Services layers within
+a layered architecture can access the database (see Figure 1-5), restricting the Pre‐
+sentation layer from making direct database calls. Architecture decisions form the
+constraints of the system and direct the development teams on what is and what isn’t
+allowed.
+Defining Software Architecture 
+| 
+5
+
+[Page 30]
+Figure 1-5. Architecture decisions are rules for constructing systems
+We discuss architecture decisions and how to document them concisely in Chap‐
+ter 21.
+Laws of Software Architecture
+As your two authors set out to write the first edition of this book, we had an
+ambitious goal: we hoped to find things that seemed universally true about software
+architecture and codify them as “laws” of software architecture. As we wrote, we
+kept our eyes peeled for things we could capture; we had hoped to find maybe 10 or
+15. To our surprise, we ended up identifying just two laws in the first edition, and
+uncovered one more while writing the second edition. True to our original intent,
+these three laws seem pretty universal and inform many important perspectives for
+working software architects.
+We learned the First Law of Software Architecture by constantly stumbling across it,
+and we think it gets to the heart of why these universal truths seem so elusive:
+Everything in software architecture is a trade-off.
+—First Law of Software Architecture
+6 
+| 
+Chapter 1: Introduction
+
+[Page 31]
+Nothing exists on a nice, clean spectrum. Every decision a software architect makes
+must account for a large number of variables that take on different values depending
+on the circumstances. Trade-offs are the essence of software architecture decisions.
+If you think you’ve discovered something that isn’t a trade-off, more likely you just
+haven’t identified the trade-off…yet.
+—Corollary 1
+You can’t just do trade-off analysis once and be done with it.
+—Corollary 2
+Teams love standards, and it would be nice if architects could just do One Big
+Trade-off Jamboree to decide on our defaults for which architecture styles to use, how
+parts of the architecture should communicate, how to manage shared functionality,
+and a host of other sticky decisions. But we can’t, because every situation requires
+us to re-evaluate all those trade-offs. (We’ve seen teams try to do this—for example,
+attempting to default to using only choreography in distributed workflows, only to
+discover that it works sometimes and is a spectacular disaster at other times. See
+“Choreography and Orchestration” on page 341 for our discussion.)
+Architecture is broader than just the combination of structural elements, which is
+why our dimensional definition incorporates principles, characteristics, and so on.
+This is reflected in our Second Law of Software Architecture:
+Why is more important than how.
+—Second Law of Software Architecture
+As an experienced architect, if someone shows me an architecture I’ve never seen
+before, I can understand how it works, but I might struggle with why the previous
+architect or team made certain decisions. Architects make decisions within extremely
+specific contexts, making sweeping and generic decisions difficult. Why an architect
+made a particular decision includes the trade-offs they considered, adding to the
+context of why this decision versus another. It turns out that one of the defining
+characteristics of software architecture decisions is they are rarely binary. This brings
+us to the Third Law of Software Architecture:
+Most architecture decisions aren’t binary but rather exist on a spectrum between
+extremes.
+—Third Law of Software Architecture
+Throughout the book, we highlight why architects make certain decisions along with
+trade-offs. We also highlight good techniques for capturing important decisions in
+Chapter 21.
+Laws of Software Architecture 
+| 
+7
+
+[Page 32]
+Readers will recognize these laws at work throughout the book, and we recommend
+keeping them in mind when evaluating software architecture decisions. We come
+back to these laws in Chapter 27 with some additional examples.
+With a working definition of software architecture in place, let’s move into the role
+itself. 
+Expectations of an Architect
+The role of a software architect can range from acting as an expert programmer
+to defining an entire company’s strategic technical direction. This makes trying to
+define it a fool’s errand, but what we can tell you more readily is what’s expected of a
+software architect. We’ve identified eight core expectations for any software architect,
+irrespective of their role, title, or job description:
+• Make architecture decisions
+•
+• Continually analyze the architecture
+•
+• Keep current with latest trends
+•
+• Ensure compliance with decisions
+•
+• Understand diverse technologies, frameworks, platforms, and environments
+•
+• Know the business domain
+•
+• Lead a team and possess interpersonal skills
+•
+• Understand and navigate organizational politics
+•
+Succeeding as a software architect depends on understanding and living up to each of
+these expectations. This section looks at all eight in turn.
+Make Architecture Decisions
+An architect is expected to define the architecture decisions and design principles used
+to guide technology decisions within the team, within the department, or across the
+enterprise.
+Guide is the key word in this first expectation: architects should guide technology
+choices rather than specify them. For example, deciding to use React.js for frontend
+development is a technical decision rather than an architectural decision. Instead of
+making this decision, the architect should instruct the development teams to use a
+reactive-based framework for frontend web development, guiding them to choose
+Angular, Elm, React.js, Vue, or any of the other reactive-based web frameworks. The
+key is asking whether the architecture decision will guide teams in making the right
+technical choices or make the choice for them. That said, there are some occasions
+where architects need to make specific technology decisions in order to preserve a
+8 
+| 
+Chapter 1: Introduction
+
+[Page 33]
+particular architectural characteristic, such as scalability, performance, or availability.
+Architects often struggle with finding this balance, so Chapter 21 is entirely about
+architecture decisions.
+Continually Analyze the Architecture
+An architect is expected to continually analyze the architecture and the current technol‐
+ogy environment and recommend solutions for improvement.
+Architecture vitality assesses how viable an architecture that was defined three or
+more years ago is today, given changes in both business and technology. In our
+experience, not enough architects focus their energies on continually analyzing
+existing architectures. As a result, most architectures experience elements of struc‐
+tural decay, which occurs when developers make coding or design changes that
+impact the required architectural characteristics, such as performance, availability,
+and scalability.
+Other frequently forgotten aspects of this expectation are testing and release environ‐
+ments. Being able to modify code quickly is a kind of agility with obvious benefits,
+but if it takes weeks to test the changes and months to release, the overall architecture
+cannot achieve agility.
+Architects must holistically analyze changes in the technology and the problem
+domain to determine the ongoing soundness of the architecture. This kind of consid‐
+eration is what keeps applications relevant, even if it rarely appears in job postings.
+Keep Current with Latest Trends
+An architect is expected to keep current with the latest technology and industry trends.
+Developers must keep up to date on the latest technologies, as well as those they
+use on a daily basis, to remain relevant (and to retain a job!). It’s even more critical
+for architects to keep current on the latest technical and industry trends. Architects’
+decisions tend to be long-lasting and difficult to change. Understanding trends helps
+architects make decisions that will remain relevant into the future. For example,
+architects in recent years have needed to learn about cloud-based storage and deploy‐
+ment, and as we write this second edition, generative AI is having a massive impact
+on many parts of the development ecosystem.
+Tracking trends and keeping current with those trends is hard, particularly for a
+software architect. In Chapter 2, we discuss some techniques and resources for how
+to do this.
+Expectations of an Architect 
+| 
+9
+
+[Page 34]
+Ensure Compliance with Decisions
+An architect is expected to ensure compliance with architecture decisions and design
+principles.
+Ensuring compliance means continually verifying that the development teams are fol‐
+lowing the decisions and design principles defined, documented, and communicated
+by the architect.
+Imagine that you, as an architect, make a decision to restrict access to the database in
+a layered architecture to only the Business and Services layers (not the Presentation
+layer). This (as you’ll see in Chapter 10) means that the Presentation layer must go
+through all layers of the architecture to make even the simplest of database calls.
+However, a user interface (UI) developer disagrees with this decision and gives the
+Presentation layer direct access to the database for performance reasons. You made
+that architecture decision for a specific reason: so that changes to the database
+changes would not affect the Presentation layer. If you aren’t ensuring compliance
+with your architecture decisions, violations like this can occur. The result can be that
+the architecture fails to provide the required characteristics, and the application or
+system does not work as expected. In Chapter 6, we talk about measuring compliance
+using automated fitness functions and other tools.
+Understand Diverse Technologies
+An architect is expected to have exposure to multiple and diverse technologies, frame‐
+works, platforms, and environments.
+Every architect isn’t expected to be an expert in every framework, platform, and
+language, but they should at least be familiar with a variety of technologies. Most
+environments these days are heterogeneous, so at a minimum, architects should
+know how to interface with multiple systems and services, whatever their language,
+platform, or technology.
+One of the best ways to meet this expectation is to stretch outside your comfort
+zone, aggressively seeking out opportunities to gain experience in multiple languages,
+platforms, and technologies. Architects should focus on technical breadth rather than
+technical depth. Technical breadth includes the stuff you know about, but not at a
+detailed level, combined with the stuff you know a lot about. For example, it’s far
+more valuable for an architect to be familiar with the pros and cons of 10 different
+caching products than to be an expert in only one of them.
+10 
+| 
+Chapter 1: Introduction
+
+[Page 35]
+Know the Business Domain
+An architect is expected to have a certain level of business-domain expertise.
+Effective software architects understand the business problem, goals, and require‐
+ments the architecture is intended to solve, collectively known as the business domain
+of a problem space. It’s difficult to design an effective architecture if you don’t
+understand the requirements of the business. Imagine being an architect at a major
+bank and not understanding common financial terms like average directional index,
+aleatory contracts, rates rally, or even nonpriority debt. You wouldn’t be able to com‐
+municate with stakeholders and business users and would quickly lose credibility.
+The most successful architects we know have broad, hands-on technical knowledge
+and a strong knowledge of a particular domain. They can communicate with C-level
+executives and business users in language these stakeholders know and understand,
+creating confidence that they know what they’re doing and are competent to create an
+effective and correct architecture.
+Possess Interpersonal Skills
+An architect is expected to possess exceptional interpersonal skills, including teamwork,
+facilitation, and leadership.
+As technologists, developers and architects tend to prefer solving technical problems,
+not people problems, so exceptional leadership and interpersonal skills are a difficult
+expectation. However, as Gerald Weinberg was famous for saying, “No matter what
+they tell you, it’s always a people problem.” The guidance that architects provide is not
+only technical—it includes leading the development teams through implementing the
+architecture. Leadership skills are at least half of what it takes to become an effective
+software architect, regardless of role or title.
+The industry is flooded with software architects, all competing for a limited number
+of positions. Those with strong leadership and interpersonal skills stand out from
+the crowd. Conversely, we’ve known many software architects who are excellent tech‐
+nologists but struggle to lead teams, coach and mentor developers, or communicate
+ideas and architecture decisions and principles. Needless to say, those architects have
+difficulties holding down a job.
+Expectations of an Architect 
+| 
+11
+
+[Page 36]
+Understand and Navigate Politics
+An architect is expected to understand the political climate of the enterprise and be able
+to navigate its politics.
+It might seem strange to talk about office politics in a book about software architec‐
+ture, but negotiation skills are crucial to the role. To illustrate, consider two scenarios.
+In the first scenario, a developer decides to leverage a particular design pattern to
+reduce the complexity of a particular piece of convoluted code. That’s a fine decision,
+and the developer does not need to seek approval for it. Programming aspects such as
+code structure, class design, design-pattern selection, and sometimes even language
+choice are all part of the art of programming.
+In the second scenario, the architect responsible for a large customer relationship
+management (CRM) system is having difficulty controlling database access from
+other systems, securing certain customer data, and making changes to the database
+schema. All of these problems stem from too many other systems using the CRM
+database. The architect therefore decides to create application silos, where each appli‐
+cation database is only accessible from the application that owns that database. This
+decision will give the architect better control over the customer data, security, and
+changes.
+However, unlike the developer’s decision in the first scenario, the architect can expect
+almost everyone in the company to challenge their decision (with the possible excep‐
+tion of the CRM application team). Other applications need the CRM data, and if
+they can no longer access the database directly, they must ask the CRM system for
+the data via remote access calls. Product owners, project managers, and business
+stakeholders may object to increases in their costs or effort, while developers may feel
+their approach is better. Almost every decision an architect makes will be challenged.
+Whatever the objections, the architect must navigate organizational politics and apply
+negotiation skills to get most decisions approved. This can be very frustrating; most
+software architects started as developers and got used to making decisions without
+approval or even review. As architects, they’re now finally able to make broad and
+important decisions, but they must justify and fight for almost every one. Negotiation
+skills, like leadership skills, are so necessary that we’ve dedicated an entire chapter to
+them (Chapter 25).
+12 
+| 
+Chapter 1: Introduction
+
+[Page 37]
+Roadmap
+This book consists of three parts:
+Part I: Foundations
+Part I defines the key components of software architecture, focusing on the two
+key elements of architectural structure: architectural characteristics and logical
+components. Analyzing each of these requires different techniques, which we
+cover in depth. The outputs of these activities provide the software architect with
+enough information to choose an appropriate architectural style to provide a
+scaffolding for the general philosophy of the implementation.
+Part II: Architecture Styles
+Part II provides a catalog of architectural styles, the named topologies of software
+architecture. We show the structural and communication differences in each
+style, and provide a basis for comparison along a wide spectrum, including data
+topologies, teams, and physical architectures.
+Part III: Techniques and Soft Skills
+Parts I and II focus on technical aspects of the job, but a major part of the role
+of software architect involves what are traditionally called soft skills: skills that
+involve other people instead of technology. Ironically, soft skills are often the
+most difficult for burgeoning architects to acquire, because the main pathways
+to the software architect role typically involve more technical than interpersonal
+brilliance. However, once on the job, architects discover that these skills are
+vitally important. Thus, Part III of our book covers some critical soft skills to help
+you succeed in the role.
+Roadmap 
+| 
+13
+
+[Page 39]
+PART I
+Foundations
+To understand important trade-offs in architecture, developers must understand
+some basic concepts and terminology concerning components, modularity, coupling,
+and connascence.
+
+[Page 41]
+CHAPTER 2
+Architectural Thinking
+Architectural thinking is about seeing things with an architect’s eye—in other words,
+from an architectural point of view. Understanding how a particular change might
+impact overall scalability, paying attention to how different parts of a system interact,
+and knowing which third-party libraries and frameworks would be most appropriate
+for a given situation are all examples of thinking architecturally.
+Being able to think like an architect first involves understanding what software
+architecture is and the differences between architecture and design. It then involves
+having a wide breadth of knowledge to see solutions and possibilities that others do
+not see; understanding the importance of business drivers and how they translate
+to architectural concerns; and understanding, analyzing, and reconciling trade-offs
+between various solutions and technologies.
+In this chapter, we explore these aspects of thinking like an architect.
+Architecture Versus Design
+Take a moment and picture your dream house in your mind. How many floors does
+it have? Is the roof flat or peaked? Is it a big sprawling, single-story ranch house or
+a multistory contemporary house? How many bedrooms does it have? All of these
+things define the overall structure of the house—in other words, its architecture. Now
+take a moment to picture the inside of the house. Does it have carpeting or hardwood
+floors? What color are the walls? Are there floor lamps or lights hanging from the
+ceiling? All of these things relate to the design of the house.
+Similarly, software architecture is less about a system’s appearance and more about
+its structure, whereas design is more about a system’s appearance and less about its
+structure. For example, the choice to use microservices defines the structure and
+17
+
+[Page 42]
+shape of the system (its architecture), whereas the look and feel of the user interface
+(UI) screen define the design of the system.
+But what about decisions such as whether to break apart a service into smaller parts
+or deciding on a UI framework? Unfortunately, most decisions such as these fall
+somewhere on a spectrum between architecture and design, making it difficult to
+determine what should be considered architecture.
+Leveraging the following criteria can help determine whether something is more
+about architecture or more about design:
+• Is it more strategic in nature or more tactical?
+•
+• How much effort will it take to change or construct?
+•
+• How significant are the trade-offs?
+•
+These factors are shown in Figure 2-1, illustrating the spectrum between architecture
+and design to help determine where a decision lies and who should have the respon‐
+sibility for it.
+Figure 2-1. The spectrum between architecture and design
+Strategic Versus Tactical Decisions
+The more strategic a decision, the more architectural it becomes. Conversely, the
+more tactical a decision, the more it’s likely to be about design. Strategic decisions are
+generally long-term, whereas tactical decisions are generally short-term and usually
+independent of other actions or decisions.
+One good way to determine whether a decision is more strategic or tactical is to
+consider the following questions:
+18 
+| 
+Chapter 2: Architectural Thinking
+
+[Page 43]
+How much thought and planning is involved in the decision?
+A decision that takes a couple of minutes is more likely to be tactical and hence
+more about design, whereas a decision requiring weeks of planning is likely to be
+more strategic and hence more about architecture.
+How many people are involved in the decision?
+A decision made alone or with a colleague is likely more tactical and on the
+design side of the spectrum, whereas a decision requiring lots of meetings with
+many different stakeholders is likely more strategic and on the architectural side
+of the spectrum.
+Is the decision a long-term vision or a short-term action?
+A decision that is likely to change soon is usually tactical in nature and would be
+more about design, whereas one that will last a very long time is typically more
+strategic and more about architecture.
+While these questions are a bit subjective, they nevertheless help in determining
+whether something is strategic or tactical, and thus more about architecture or
+design.
+Level of Effort
+In his famous paper “Who Needs an Architect?”, software architect Martin Fowler
+writes that architecture is “the stuff that’s hard to change.” The harder something is to
+change, generally, the more effort is required, placing that decision or activity toward
+the architectural side of the spectrum. Conversely, something that requires minimal
+effort to implement or change places it more on the design side of the spectrum.
+For example, moving from a monolithic layered architecture to microservices would
+require significant effort, so it would be more about architecture. Rearranging fields
+on a screen would require minimal effort, and therefore be more about design.
+The Significance of Trade-Offs
+Analyzing the trade-offs of a particular decision can help a lot in determining
+whether it is more about architecture or design. The more significant the trade-offs
+are, the more architectural the decision tends to be. For example, choosing to use
+the microservices architecture style provides better scalability, agility, elasticity, and
+fault tolerance. However, this architecture is highly complex, is very expensive, has
+poor data consistency, and doesn’t perform well due to service coupling. These are
+some pretty significant trade-offs. We can conclude that this decision is more on the
+architectural side of the spectrum than design.
+Even design decisions have trade-offs. For example, breaking apart a class file pro‐
+vides better maintainability and readability—at the cost of managing more classes.
+Architecture Versus Design 
+| 
+19
+
+[Page 44]
+These trade-offs are not overly significant (especially compared to microservices’
+trade-offs), so this decision is more on the design side of the spectrum.
+Technical Breadth
+Unlike developers, who must have a significant amount of technical depth to perform
+their jobs, software architects must have a significant amount of technical breadth to
+see things from an architectural point of view. Technical depth is all about having
+deep knowledge of a particular programming language, platform, framework, prod‐
+uct, and so on, whereas technical breadth is all about knowing a little bit about a lot
+of things.
+To better understand the difference, consider the knowledge pyramid shown in
+Figure 2-2. It encapsulates all the technical knowledge in the world, which can be
+broken down into three levels: stuff you know, stuff you know you don’t know, and stuff
+you don’t know you don’t know.
+Figure 2-2. The pyramid representing all knowledge
+Stuff you know includes the technologies, frameworks, languages, and tools technolo‐
+gists use on a daily basis to perform their jobs (such as a Java programmer knowing
+Java). They’re good, or even expert, at all these things. Notice that this level of
+knowledge (represented by the top part of the pyramid) is the smallest and contains
+the fewest things. This is because most technologists have to pick and choose the
+areas in which to develop expertise—no one can be an expert at everything.
+20 
+| 
+Chapter 2: Architectural Thinking
+
+[Page 45]
+Stuff you know you don’t know (the middle part of the pyramid) includes things a
+technologist knows a little about or has heard of but in which they have little or no
+experience or expertise. For example, most technologists have heard of Clojure and
+know it’s a programming language based on Lisp, but can’t write source code in Clo‐
+jure. This level of knowledge is much bigger than the top level. This is because people
+can become familiar with many more things than they can develop expertise in.
+Stuff you don’t know you don’t know is the largest part of the knowledge pyramid. It
+includes the entire host of technologies, tools, frameworks, and languages that would
+be the perfect solution to a problem, if only the technologist trying to solve the
+problem knew that these solutions exist. The goal in any individual’s career should
+be to move things from the stuff you don’t know you don’t know into the second area
+of the pyramid, the stuff you know you don’t know—and, when expertise becomes
+necessary, to move things from the middle part of the pyramid to the top: the stuff
+you know.
+Early on in a developer’s career, expanding the top of the pyramid (Figure 2-3)
+means gaining valuable expertise. However, the stuff you know is also stuff you must
+maintain—nothing is static in the software world. If a developer becomes an expert
+in Ruby on Rails, that expertise won’t last if they ignore Ruby on Rails for a year or
+two. Keeping things at the top of the pyramid requires a time investment to maintain
+expertise. This top part represents the individual’s technical depth: the things they
+know really well.
+Figure 2-3. Developers must maintain expertise to retain it
+Technical Breadth 
+| 
+21
+
+[Page 46]
+However, the nature of knowledge changes as developers transition into the architect
+role. A large part of the value of an architect is that they have a broad understanding
+of technology and how to use it to solve particular problems. For example, it’s better
+for an architect to know that five solutions exist for a particular problem than to
+have singular expertise in only one. The most important parts of the pyramid for
+architects are the top and middle sections; how far the middle section penetrates into
+the bottom section represents an architect’s technical breadth, as shown in Figure 2-4.
+Figure 2-4. How much someone knows about a topic is technical depth, and how many
+topics someone knows is technical breadth
+For an architect, breadth is more important than depth. Because architects must make
+decisions that match capabilities to technical constraints, a broad understanding of a
+wide variety of solutions is valuable. Thus, for an architect, the wise course of action
+is to sacrifice some hard-won expertise and use that time to broaden their portfolio,
+as shown in Figure 2-5. Some areas of expertise will remain, probably in particularly
+enjoyable technology areas, while others usefully atrophy.
+22 
+| 
+Chapter 2: Architectural Thinking
+
+[Page 47]
+Figure 2-5. Enhanced breadth and shrinking depth for the architect role
+Our knowledge pyramid illustrates how fundamentally different the roles of architect
+and developer are. Developers spend their whole careers honing expertise. Transition‐
+ing to the architect role means a shift in that perspective, which many individuals
+find difficult. This in turn leads to two common dysfunctions: first, an architect
+tries to maintain expertise in a wide variety of areas, succeeding in none of them
+and working themselves ragged in the process. Second, it manifests as stale expertise
+—the mistaken sensation that your outdated information is still cutting edge. We see
+this often in large companies where the developers who founded the company have
+moved into leadership roles, yet still make technology decisions using ancient criteria
+(see “Frozen Caveman Antipattern” on page 24).
+Technical Breadth 
+| 
+23
+
+[Page 48]
+Frozen Caveman Antipattern
+An antipattern is what programmer Andrew Koenig defines as something that seems
+like a good idea when you begin, but leads you into trouble. A behavioral antipattern
+commonly observed in the wild, the Frozen Caveman antipattern, describes architects
+who revert to their pet irrational concern for every architecture. For example, one of
+Neal’s colleagues worked on a system that featured a centralized architecture. Each
+time they delivered the design to the client architects, the persistent question was:
+“But what if we lose Italy?” Several years before, a freak communication problem had
+prevented the client’s headquarters from communicating with its stores in Italy, caus‐
+ing great inconvenience. While the chances of this recurring were extremely small,
+the architects had become obsessed with this particular architectural characteristic.
+Generally, this antipattern manifests in architects who have been burned in the past
+by a poor decision or unexpected occurrence, making them particularly cautious
+about anything related. While risk assessment is important, it should be realistic as
+well. Understanding the difference between genuine and perceived technical risk is
+part of the ongoing learning process. Thinking like an architect requires overcoming
+these Frozen Caveman ideas and experiences, seeing other solutions, and asking more
+relevant questions.
+Architects should focus on technical breadth so that they have a larger quiver from
+which to draw arrows. Developers transitioning to the architect role may have
+to change the way they view knowledge acquisition. Balancing the depth and the
+breadth of their portfolio of knowledge is something every developer should consider
+throughout their career. But how does an architect gain technical breadth? The next
+sections provide a few techniques that will help you uncover the “stuff you don’t
+know that you don’t know.”
+The 20-Minute Rule
+As illustrated in Figure 2-5, technical breadth is more important to architects than
+technical depth. But how do you stay current on all the latest trends and buzzwords
+while also working full-time, developing your career, spending time with friends, and
+taking care of your family?
+One technique we use is the 20-minute rule. The idea is to devote at least 20 minutes a
+day to learning something new or diving deeper into a specific topic. Figure 2-6 illus‐
+trates some good places to spend your 20 minutes, such as InfoQ, DZone Refcardz,
+and the Thoughtworks Technology Radar. You can learn more about unfamiliar
+buzzwords by looking them up on the internet, promoting that knowledge from “the
+stuff you don’t know you don’t know” into the “stuff you know you don’t know.” You
+could even spend that time reading a book like this one. The point is to carve some
+24 
+| 
+Chapter 2: Architectural Thinking
+
+[Page 49]
+time out of your busy day to focus on developing your technical breadth and thus
+your career.
+Figure 2-6. The 20-minute rule
+Many technologists, when they first embrace this concept, plan their 20 minutes for
+lunch or after work; however, in our experience, these time periods rarely work. It’s
+easy to start using lunchtimes to catch up on work rather than take a break, and
+evenings are even worse, with social plans, family time, and more after a long day.
+Instead, we strongly recommend taking your 20 minutes first thing in the morning—
+right after grabbing a cup of coffee or tea and, importantly, before you check your
+email. Once you check email, your morning is over and your day has started. Get
+your 20 minutes in while your mind is fresh and before distractions take over.
+Following the 20-minute rule will increase your technical breadth and help you
+develop and maintain the knowledge that will make you an effective software
+architect.
+Developing a Personal Radar
+For most of the ’90s and the beginning of the ’00s, one of your authors was the CTO
+of a small training and consulting company. When he started there, the primary
+platform was Clipper, a rapid-application development tool for building DOS appli‐
+cations atop dBASE files. Until one day it vanished. The company had noticed the
+rise of Windows, but the business market was still DOS…until it abruptly wasn’t.
+One coworker lamented that they couldn’t take their enormous body of now-useless
+Clipper knowledge and replace it with something else. Has any group in history, the
+coworker wondered, learned and thrown away so much detailed knowledge within
+Technical Breadth 
+| 
+25
+
+[Page 50]
+their lifetimes as software developers do? The experience left a lasting impression:
+ignore the march of technology at your peril.
+It also taught us an important lesson about technology bubbles. When developers,
+architects, and other technologists become heavily invested in a specific technology,
+pouring our work and thought into it, we tend to live in a memetic bubble. Inside the
+bubble, which also serves as an echo chamber, everyone knows and cares about that
+technology as much as we do. We might not even see honest appraisals from outside
+the bubble, especially if the bubble was created by a technology vendor in the first
+place. And when the bubble begins to collapse, there’s no warning until it’s too late.
+What we lack in our bubble is a technology radar: a living document to help us assess
+the risks and rewards of existing and nascent technologies. The radar concept comes
+from Thoughtworks, where Neal serves as a director and software architect. In this
+section, we’ll describe how this concept came to be and then show you how to create
+a personal radar.
+The Thoughtworks Technology Radar
+The Technology Advisory Board (TAB) is a group of senior technology leaders within
+Thoughtworks that assists the CTO in making decisions about technology directions
+and strategies for the company and its clients. To stay current, this group began
+producing what’s now a biannual Technology Radar.
+This had unexpected side effects. When Neal spoke at conferences, attendees began
+seeking him out to thank him for helping produce the Radar, often adding that their
+company had started producing its own version. Neal also realized that this was the
+answer to a question constantly asked at conference speaker panels: “How do you
+keep up with technology? How do you figure out what to pursue next?” The answer,
+of course, is that the speakers all have some form of internal radar.
+Parts.    The Thoughtworks Radar consists of four quadrants that attempt to cover
+most of the software-development landscape:
+Tools
+Everything from development tools like IDEs to enterprise-grade integration
+tools
+Languages and frameworks
+Computer languages, libraries, and frameworks, typically open source
+Techniques
+Any practice that assists software development overall, including processes, engi‐
+neering practices, and advice
+26 
+| 
+Chapter 2: Architectural Thinking

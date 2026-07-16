@@ -1,0 +1,56 @@
+---
+name: ai-value-creators
+description: Framework para criar valor com IA Generativa — estratégia, métricas, casos de uso, governança e capacitação
+---
+
+# Ai Value Creators — Passos Operacionais
+
+Conteudo extraido do livro 'Ai Value Creators'. Contem passos, tecnicas e principios baseados na obra original.
+
+## 1. Conceitos Fundamentais
+- +AI to AI+: Generative AI and the “Netscape Moment” Capítulo 1. +IA para IA+: IA Generativa e o “Momento Netscape” O título deste capítulo pode ter te pegado um pouco de surpresa — afinal, o Netscape foi lançado em 1994 e estamos escrevendo este livro em 2025!
+- Neste capítulo, explicaremos o que queremos dizer ao comparar a IA generativa (GenAI) a um "momento Netscape" e, em seguida, abordaremos brevemente uma ampla gama de tópicos, desde como a tecnologia funciona até pontos importantes a serem considerados ao planejar sua jornada com a GenAI.
+- Nossos editores nos disseram para não fazer o primeiro capítulo muito longo, mas optamos por um caminho diferente.
+- Acreditamos que, se oferecermos conteúdo suficiente para reflexão, valor agregado e compartilharmos o que aplicamos diariamente com nossos clientes, você vai querer saber mais.
+- E é exatamente isso que estamos fazendo aqui — é como um episódio piloto da Netflix: é um pouco mais longo que os episódios seguintes, mas os demais são mais concisos e focados no tema em questão.
+- Também fizemos isso para que você não precise ler o livro de forma linear.
+- Por exemplo, podemos mencionar que existem mais de um milhão de modelos de linguagem de grande porte (LLMs) disponíveis, o que nos dá confiança para afirmar que nenhum modelo (por mais popular ou repercutido que seja) será o único dominante.
+- Você pode ter muitos dados corporativos que deseja integrar à sua IA, mas não compartilhar, e isso pode levá-lo a consultar o Capítulo 8 para aprender sobre o cenário de LLM e como usar seus dados com segurança em um modelo de IA.
+- Ou talvez você tenha decidido aprender com nossa experiência quando lhe dissermos que as empresas que criam um plano de capacitação para toda a organização terão um desempenho superior àquelas que deixam a capacitação a cargo de alguns executivos e dos poucos privilegiados com acesso à IA.
+- Nesse caso, você irá para o Capítulo 6 e descobrirá o que Lady Gaga e a Rainha Elizabeth I (pense no século XVI) têm a ver com os planos de capacitação da sua empresa.
+
+## 2. Principios e Tecnicas
+- Estamos bastante confiantes de que todos vocês aprenderão algo com este capítulo — seja sobre insights de negócios, como funcionam os LLMs e os agentes, uma perspectiva histórica, como o futuro já chegou (como a IA com agentes) ou algo mais.
+- O que é um “Momento Netscape”?
+- Por que chamamos este momento de "momento Netscape"?
+- (Ah, Netscape — uma relíquia antiga da internet tão familiar para os jovens de hoje quanto os telefones de disco.
+- Jovens leitores... foi praticamente o primeiro navegador da web do mundo.) Pensem no que aconteceu (presumindo que vocês estavam por perto) quando o Netscape estreou em 1994: a internet começou a se tornar muito tangível e muito pessoal — para todos.
+- De fato, a internet deixou de ser privilégio de poucos e foi democratizada para muitos (embora nem todos tenham aproveitado isso inicialmente).
+- Olhando para trás, é evidente que uma internet democratizada mudou o nosso mundo... para sempre.
+- Mudou a forma como armazenamos dados, nos comunicamos, compramos, namoramos e até votamos!
+- Então, chamamos isso de "momento Netscape" (e eles não acontecem com frequência) porque, neste momento, o mundo compreendeu claramente o potencial da IA, e isso levará a uma enorme quantidade de inovação e ideias no futuro.
+- Mas, assim como aqueles que não aproveitaram a oportunidade original da Netscape, aqueles que não fizerem parte desta onda de IA ficarão para trás e do lado errado da divisão.
+
+## 3. Aplicacoes Praticas
+- Essa divisão não só afetará sua capacidade de se manterem conectados com as normas e práticas sociais em constante evolução, como também restringirá o acesso a serviços e oportunidades essenciais.
+- Este momento Netscape se desenrolará exatamente como o primeiro.
+- Aqueles que tiverem acesso à IA e a utilizarem moldarão o futuro (basta pensar no impacto que aqueles que aproveitaram o acesso à internet e o colocaram para trabalhar fizeram com a indústria de táxis), e aqueles que não o fizerem sairão perdendo, com graves consequências sociais e comerciais.
+- (Os nomes dos perdedores do momento Netscape original foram omitidos para proteger os culpados.) Atualmente, muito se fala sobre como a Geração IA e a ascensão de agentes de IA podem representar o fim do mundo.
+- Não acreditamos que uma tecnologia precise ser capaz de destruir o mundo para transformá-lo, e no que diz respeito a tecnologias que podem acabar com o mundo... vale lembrar que nós, humanos, temos um histórico de criar coisas que lutamos para controlar e que poderiam ter destruído nosso mundo, mas que, ao mesmo tempo, nos ajudaram (por exemplo, a tecnologia nuclear, com a qual criamos medicamentos, energia e bombas).
+- Discutimos isso no Capítulo 5.
+- Finalmente, como acontece com a maioria das grandes coisas na vida, o incrível não aconteceu por acaso.
+- Foi um conjunto de pequenas coisas que se somaram ao longo do tempo para criar um momento que todos notaram.
+- O momento de que estamos falando aqui é composto por experiências, aprendizados, fracassos e avanços que levaram décadas (estamos falando de mais de meio século) para serem construídos.
+- Mas não se engane: a IA de Geração, especialmente na forma de agentes, mudará o mundo.
+
+## 4. Topicos Avancados
+- Aliás, acreditamos que ela se tornará uma parte tão integral de tudo o que fazemos que desejaremos poder voltar no tempo (a IA não pode fazer isso, caso você esteja se perguntando) e redefinir a sigla IA para significar inteligência ambiente em vez de inteligência artificial.
+- Pense em onde você está sentado agora, lendo este livro.
+- Provavelmente há alguma luz ao seu redor: ela não é intrusiva, você não a percebe, está em segundo plano e está lhe auxiliando enquanto você lê esta página — portanto, é ambiente.
+- É isso que acreditamos que a IA vai proporcionar: assistência integrada para muitas coisas que fazemos todos os dias nos negócios.
+- E é por isso que estamos chamando este momento de "momento Netscape".
+- A inteligência artificial vai mudar o mundo.
+- Como ela vai mudar o mundo depende de nós — de todos nós.
+- Inteligência Artificial e o Momento Mágico Arthur C.
+- Clarke disse certa vez: "Qualquer tecnologia suficientemente avançada é indistinguível da magia".
+- E talvez, a primeira vez que você interagiu com o GenAI, tenha sentido um pouco de magia.

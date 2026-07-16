@@ -1,0 +1,44 @@
+---
+name: modern-full-stack-development-frank-w-zammetti
+description: >-
+  Passos operacionais extraidos do livro 'Modern Full Stack Development Frank W Zammetti' (PT) — Modern Full Stack Development Frank W Zammetti.
+---
+
+# Modern Full Stack Development Frank W Zammetti — Passos Operacionais
+
+Conteudo extraido do livro 'Modern Full Stack Development Frank W Zammetti'. Contem passos, tecnicas e principios baseados na obra original.
+
+## 1. Conceitos Fundamentais
+
+- G � "� *� 2� " :� $ A� & I� ( P� * X� , `* . g� 0 o� 2 wp 4 ~� 6 �g 8 �j : �� � @ �[ B �h D �� F �� H ʖ J �2 L � N �� P � R � T �� V �� X ?
+- S�*-Sid��c�):Ή8��NPM���w� �w� �r �6�p> (1)��8blockquot�0���Q�ρ�">Potts�DA,�SA�h�^� o�'�'���g����������Welcom����book!�跀�ou ’��got���@fy�xa����� � ��@y䛘��� tab�(n���@�Z��hap�鑠h�x�� (may��sug�ht�ome� �� �ark�hocolate�iscotti?),�nd�our�rain�eady�o�oak�p�hn�f�nowledge�n�odern�eb�evelopment, ’cause�hat�hs��H�pe�how�s�ll�bout�ڀ�curt����re�܄ be�rawn!
+- File�ystem (fs) �xƁ� �[�s��� � �*�;��d����It�rovid�S�x�PI�or�ork�awith�zlocal��s��i� �atter�؍�clos�1match�����|st�hard�OSIX�unc��s�w��� ��2em��o����s�$,��ne�А� re�Xre(���p�t:�߂�1�x� ��@c� t�s =� "fs");�2� � � is,�Qfac��� necessary�:a��u�(�ǌE��crib� �"(�ait����rue�����p������� �X�Ȍ ����)�!a���Ō`r�ၨp� n��s�ɑ`r�ac��it��:����val���A������(� can,��cours��ss���`��a�Hri� �e���am��wish,��ough��e�!o��� �;� �_�_�����P)�O�O�g�`Y�Ӎ�so�mport��no�H��ay����������*�ؒ�b����� � �Uor� � �'�#I�#{����dog��Lanim�0.j��� � ���9��m���� ��ESM� �ethod.�ass�t�he�ath�o�bfile,�nd�py�idding�ill�e�one!
+- Del�����iG��s:͞hBag,��C���G����1���CFrank �~su��sm�ȉifilepos=0000613946�߈k1� �ߔ (1)��8�����_�ˁ�">Pott��w�XPA,�SA�����o�'�'�_�g"7�a���ǎ?��� � ��si�H�X�L�l����go� t ’� i���ٻXo�(�x���/�m�вh!�er�@we���Hge�H�I��play�A�zour���r�8d��alo� ���ئ2��libra�h��a� h� i� ll�p�o ƀ ��he�erver�Xat�as�uilt�n��previous�hapter.ɀ�end,�e ’ll�ave�urselves��ully�0nctional�Pbmail�pplica����you�ould�se�or�e��if��wanted�o!
+- X��� ���Prec������re�Pr()��method�Ialways��tur�1s���P��.Ԅ �7ca���H�����A�8�hild�h�l��k� �x,�ltim���9i��vtop-leve� �Cbe�I��ed.£��Xha��n� h�@���Q��� � �0�h����a�(�@����s?ىR��g�Xg���ůP�d�g��be�z�x��W�H� �4of�(�asy�,� ��frequ��ly�any�h ۀ��oices,�ith &lt;div&gt; ��hod�l,� ���0�8m�u��� s� le��.
+
+## 2. Principios e Tecnicas
+
+- Once�*getĂ ��installed,�t ’�Ye��client,��d�erhaps��Hub,�����Xinteract��th.�o,�e��se��bout��ting�h���o�e�ڀ�rt�lay�)�I��th��stuff!
+- F��un�Є��1��easy:�is����.org�Ř�ks� me�;� Fig�� 13-1� �[tim�P���a�8�υ_�ǎ�c��er�`img�@c� � 0040�.middle� 536"��460��/���_��6�����g�g"2� �y��� �;�В\�����ъ �@b� e�e�+�������"r��h�B�*��Download� k����� s� ld� ��mega-�xu�pp����� ugg���ʃٕ ��� ��sys��.ƳP�8�Yi�4��`��� �� it.�ote�hat� 뀀�f�ou ’re�n��indows�ystem,�e�u��to�heck�he “Add�yth��3.10� PATH ”�Cbox,�nd�t��end,�li� Disable�ath�eng�9imit�!option.�hese� necessary�Yen��ever� ing�orks�s�xpected�ater.
+- First,�n�he�ef�his�our�orkspace.��o�an�ave�ny�umber�f�ollections,�hich�re�roups��ntaining�ome���equests.�onceptually,��end�o��ink� � �s�roj�xs� ’m� � on���g���]��d�olders�n�8neath� m,�� ��organize�"gs�ir� ��way�Rwish;��re�Ps�o�et�ule��H��,��se�iat� ��several������up��e�8r��t�І I��s�������9lambda�un�lin�maz� Web�ervic��T�~ano��Za��cr� hush-�)�=� mi��named “My�pp. ”�o�:Postm�`Echo��n��� �ш2should�y� �A�ft����inst����automatic�+�ai��llow���Ames������wi����API�Ivid��by��itself��g��familia� ��Ytool.
+- Server-Side Action: Node and NPM�2.
+- A Few More Words: Advanced Node and NPM�3.
+
+## 3. Aplicacoes Praticas
+
+- Client-Side Adventures: React�4.
+- A Few More Words: Advanced React�5.
+- Building a Strong Foundation: TypeScript�6.
+- A Few More Words: Advanced TypeScript�7.
+- Tying It Up in a Bow: Webpack�8.
+
+## 4. Topicos Avancados
+
+- Delivering the Goods: MailBag, the Server�9.
+- Delivering the Goods: MailBag, the Client�10.
+- Time for Fun: BattleJong, the Server�11.
+- Time for Fun: BattleJong, the Client�12.
+- Bringing the Dev Ship into Harbor: Docker�13.
+- Feed Your Face: Fooderator, the Server�14.
+- E� y%����T�Q��d�"2,$����A �.q� ��Ȅ�NU$�'�9� >�]���7�6�b$sޒ�1�rҮ �}pj Q �r, ��b�R�j������y*Ҡ�]�-?��hU#�) i�M�c �G�����]l�jb�����K� Rߟ *3��V�������OU��ަZQ���^U� � 9�? - L�σ��_�ܝ��. rx7x Y%e�(�����!7 ?��Ⱦ�/V Z�����Pj�G�( Q�U�S5 �HS |'����{^W ��2��♥ʆ�RX�����t���Ov�A?uT��vkn�&e"��;�5 ��F,�� [A' ��o��M ��4f Mrq갃ږ���#&�F ��'m�;7�' �r�ԕ��s�) Z� U R ���*!0E��i#��R/�. �*�[�z�F�N![�� JK"j:�zz S�s�z��� Z2�Tn;E��7R�(��I�v�| �����P\y Nm�Z ��� "֗-��g���� � ��[��~�mj{�!$�5(�� ^~�� �xٷ�JU�9��)��� ����`UCJ���-pzt� � Jq����Ѡ�钏r=Q�! �� o Yg 6�{��,�.�q�iċ���Az��� �_�w �h5=:_ x �iUN 4.
+- V�1���/Ļ ����,��5�� ЕW�)h��*�Ģvӵ&"b��f�R'�U �eJV$�JI� fZ+l�9 ˫� B�C�9 ���S �1M\'�����L���������z�x7�^� �̊ד ~���#� � p�R n�3��ǭy0�3���ǭ�7� k/�G� �PV��U�ԋmJ�I�{ f* 1�^M��� �Uہ�V� 6/Z��������]=�������� AZ�:7�l�Iu� ���c0�& ��7� ����z� �x�Y}���B�ؗRW*� ��DKj]� � �z�U�n-\Gp�1��ȭ�7� �s ���&'Z���� �|%� Q m�R|_ ѳ��U��*���&3 ���&���b����� � ���S� �' u U]���� �Ncּ����1��ǭy0�Y � o�� ��b ̻�$ ��b ̻�(� 3�� � ڄ�=� �������H1n�lj�� � ���4�sT�]=�F ' Z�Yn�gm� .���j�f�cb���:��(cf�n�5D֫���!����,�'' �M@��� *襓U��@��~�`��� e��b+,��Q 6��-�xf ,�䎪�WFr�B��3?

@@ -1,0 +1,44 @@
+---
+name: o-programador-pragmatico-de-aprendiz-a-mestre
+description: >-
+  Passos operacionais extraidos do livro 'O Programador Pragmático – De Aprendiz a Mestre' (PT) — Programador, Pragmático, Aprendiz.
+---
+# Conteudo Extraido
+Fonte: EPUB - [PT] O Programador Pragmático – De Aprendiz a Mestre - Desconhecido.txt
+
+
+## Conceitos Fundamentais
+- O programador pragmático [recurso eletrônico] : de aprendiz a mestre / Andrew Hunt, David Thomas ; tradução: Aldir José Coelho Corrêa da Silva ; revisão técnica: Henrique J.
+- Brodbeck. – Dados eletrônicos. – Porto Alegre : Bookman, 2010.
+- CDU 004.42 Catalogação na publicação: Renata de Souza Borges CRB-10/1922 Os Autores Andrew Hunt é marceneiro, músico e consultor.
+- Trabalhou em diversas áreas, entre elas teleco- municações, serviços financeiros, artes gráficas e serviços de Internet.
+- Hunt se especializou em combinar técnicas já consolidadas com tecnologias de ponta, criando soluções novas e práticas.
+- Ele administra sua empresa de consultoria em Raleigh, Carolina do Norte.
+
+## Principios e Tecnicas
+- Antes de se mudar para os Estados Unidos, em 1994, fundou na Inglaterra uma empresa de criação de software certificada pela ISO9001 que distribuiu mundialmente projetos sofisticados e personalizados.
+- Hoje, Thomas é consultor independente e vive em Dallas, Texas.
+- Atualmente, David e Andrew trabalham juntos em The Pragmatic Programmers, L.L.C., ofe- recendo mais de quarenta anos de experiência a clientes em todos os Estados Unidos.
+- Página 3 Tradução: Aldir José Coelho Corrêa da Silva Revisão técnica: Henrique J.
+- Brodbeck Professor do Instituto de Informática da UFRGS 2010 ANDREW HUNT DAVID THOMAS O Programador Pragmático de aprendiz a mestre Versão impressa desta obra: 2010 Página 4 Reservados todos os direitos de publicação, em língua portuguesa, à ARTMED ®
+- Jerônimo de Ornelas, 670 - Santana 90040-340 Porto Alegre RS Fone (51) 3027-7000 Fax (51) 3027-7070 É proibida a duplicação ou reprodução deste volume, no todo ou em parte, sob quaisquer formas ou por quaisquer meios (eletrônico, mecânico, gravação, 
+
+## Aplicacoes Praticas
+- No part of this book may be reproduced or transmitted in any form or by any means, electronic or mechanical, including photocopying, recording or by any information storage retrieval system, without permission from Pearson Education, Inc.
+- Portuguese language edition published by Bookman Companhia Editora Ltda, a Division of Artmed Editora S.A., Copyright (c) 2010.
+- Tradução autorizada a partir do original em língua inglesa da obra intitulada PRAGMATIC PROGRAMMER, THE: FROM JOURNEYMAN TO MASTER, 1ª Edição, autoria de ANDREW HUNT; DAVID THOMAS, publicado por Pearson Education, Inc., sob o selo Addison-Wesley Prof
+- Este livro não poderá ser reproduzido nem em parte nem na íntegra, nem ter partes ou sua íntegra armazenado em qualquer meio, seja mecânico ou eletrônico, inclusive fotorreprografação, sem permissão da Pearson Education, Inc.
+- A edição em língua portuguesa desta obra é publicada por Bookman Companhia Editora Ltda, uma Divisão de Artmed Editora S.A., Copyright (c) 2010.
+- Capa: Rogério Grilho, arte sobre capa original Leitura ﬁ nal: Mirella Nascimento Editora Sênior – Bookman: Arysinha Jacques Affonso Editora responsável por esta obra: Elisa Viali Projeto e editoração: Techbooks Página 5 Para Ellie e Juliet, Elizabeth
+
+## Topicos Avancados
+- Esta obra o ajudará, como indivíduo, a obter um trabalho melhor.
+- Ela não é teórica – nos concentramos em tópicos práticos, no uso da experiência para uma tomada de decisões mais embasada.
+- A palavra pragmático vem do latim pragmaticus – “habilidoso no trabalho” – que, por sua vez, é derivada do grego πραττειν, que significa “fazer”.
+- Basicamente, se resume a conseguir que um computador faça o que você quer que ele faça (ou o que seu usuário quer que ele faça).
+- Como programador, você é parte ouvinte, parte conselheiro, parte intérprete e parte definidor.
+- Tenta capturar requisitos vagos e encon- trar uma maneira de expressá-los para que uma simples máquina possa concretizá-los.
+
+## Secao 5
+- Procura fazer tudo isso contra o implacável decor- rer do tempo do projeto.
+- Você faz pequenos milagres diariamente. É um trabalho difícil.

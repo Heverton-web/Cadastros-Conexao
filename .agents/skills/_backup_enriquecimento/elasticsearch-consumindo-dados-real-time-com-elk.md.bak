@@ -1,0 +1,57 @@
+---
+name: elasticsearch-consumindo-dados-real-time-com-elk
+description: >-
+  Passos operacionais extraidos do livro 'Elasticsearch consumindo dados real - time com ELK' (PT) — Elasticsearch/ELK.
+---
+
+# Elasticsearch Consumindo Dados Real Time Com Elk — Passos Operacionais
+
+Conteudo extraido do livro 'Elasticsearch Consumindo Dados Real Time Com Elk'. Contem passos, tecnicas e principios baseados na obra original.
+
+## 1. Conceitos Fundamentais
+- page_002 Sumário Agradecimentos Sobre o autor Prefácio 1.
+- Dissecando a ELK – Logstash 3.
+- Dissecando a ELK - Elasticsearch 4.
+- Administrando um cluster Elasticsearch 7.
+- Considerações finais  page_003 Agradecimentos Agradeço a Deus pela minha vida e por tudo que possuo, e a meus pais, Maria Odete Santos Lourenço e Eleutério da Silva Lourenço, que me suportaram e proporcionaram a base que me permitiu chegar onde estou hoje.
+- Agradeço também a minha irmã Lucebiane Santos Lourenço e minha namorada Ana Carolina Fernandes do Sim, cujo apoio e carinho são fundamentais na minha vida.
+- Agradeço aos leitores do meu blog ( http://alexandreesl.com ), por me acompanharem nas minhas "aventuras" no mundo da Tecnologia.
+- Ter um blog é uma experiência muito gratificante, que pretendo continuar por muitos anos.
+- Agradeço a meus colegas e ex-colegas de trabalho, Victor Jabur, Élio Capelati, Cláudio Dias Marins e Cristiano Sanchez, cujo apoio foi fundamental para este e muitos outros projetos na minha carreira!
+- Agradeço ao pessoal da Casa do Código, em especial ao Paulo Silveira, a Vivian Matsui e Adriano Almeida, cujo suporte me ajudou a escrever este livro.
+
+## 2. Principios e Tecnicas
+- Desejo-lhes muita sorte e felicidade!
+- Por fim, agradeço a você, leitor, por depositar a sua confiança em mim ao adquirir este livro.
+- Espero que eu possa cumprir as suas expectativas e fornecer uma boa fonte de informações sobre o indexador Elasticsearch e a stack ELK.  page_004 Sobre o autor Figura -1.1: Alexandre Eleutério Santos Lourenço Alexandre Eleutério Santos Lourenço é Arquiteto de Software, com bacharel em Ciência da Computação pela Pontifícia Universidade Católica de São Paulo (PUC-SP).
+- Possui grande experiência na linguagem Java, com a qual trabalha desde 2003.
+- Como arquiteto, tem contato com diversas tecnologias, frameworks e linguagens, como Java, Python, C#, C/C++, Angularjs, HTML5, Apache Cordova, Spring, EJB, Hadoop, Spark e, é claro, ELK.
+- Apaixonado por tecnologia, filmes, seriados e games, possui o blog Tecnologia Explicada ( Technology Explained ), onde publica artigos sobre os mais diversos assuntos do gênero.
+- Também possui alguns artigos publicados no site americano Developer Zone ( https://dzone.com ).  page_005 Prefácio A explosão dos dados Vivemos em um mundo dominado por dados.
+- Nunca foram produzidos tantos dados, de maneira tão rápida.
+- Além disso, nunca se produziram tantos dados de maneira não estruturada, ou seja, que não seguem um modelo de estruturação formalizado, por meio do uso dos conhecidos schemas , como um XSD ou uma tabela em um banco de dados tradicional.
+- Para termos uma ideia do tamanho da massa de dados que temos em mãos, basta vermos os números de empresas como Twitter, Facebook e Netflix.
+
+## 3. Aplicacoes Praticas
+- Tais empresas processam milhões de dados por dia - em 2011, por exemplo, o Twitter publicou em seu blog que seus usuários alcançaram a marca de 200 milhões de tweets por dia! - e precisam de novos modelos para processar essas verdadeiras montanhas de dados, aproveitando-se de conceitos de computação distribuída.
+- Seguindo esses conceitos, diversas tecnologias foram criadas, como hadoop, spark, splunk, bancos NOSQL etc.
+- Neste livro, abordaremos uma dessas novas ferramentas que permitem o processamento (consulta) de conjuntos massivos de dados textuais em tempo real, o Elasticsearch.
+- Para quem se destina este livro?
+- Este livro se destina a desenvolvedores que desejam ampliar seus conhecimentos em Elasticsearch e seu ferramental relacionado, cujos casos de uso discutiremos no decorrer do livro.
+- Para melhor aproveitar o livro, o leitor deve possuir algum conhecimento em REST e JSON, visto que as principais interfaces que temos disponíveis para interagir com um cluster Elasticsearch se utilizam desses padrões de comunicação e formato de mensagens.
+- Conhecimento básico da linguagem Java também pode auxiliar no entendimento.
+- No decorrer do livro, em alguns capítulos teremos hands-on e outros tipos de atividades práticas.
+- Todo o código-fonte dessas atividades se encontra em meu repositório.
+- Se o leitor desejar obter uma referência rápida: https://github.com/alexandreesl/livro-elasticsearch.git Convido o leitor a entrar também no Fórum da Casa do Código: http://forum.casadocodigo.com.br  page_006 Capítulo 1 Introdução 1.1 Conhecendo o Elasticsearch Figura 1.1: Logo do Elasticsearch O Elasticsearch foi criado por Shay Banon em 2010.
+
+## 4. Topicos Avancados
+- Baseado no Apache Lucene, um servidor de busca e indexação textual, o objetivo do Elasticsearch é fornecer um método de se catalogar e efetuar buscas em grandes massas de informação por meio de interfaces REST que recebem/provêm informações em formato JSON.
+- Para entendermos as vantagens de se utilizar um indexador para nossas informações, vamos começar com um exemplo bastante simples.
+- Imagine que temos uma API REST que implementa um CRUD ( Create, Read, Update e Delete ) de clientes.
+- Usaremos o Spring Boot para subir nossa API.
+- Com o intuito de não tirar o nosso foco do assunto principal, vamos mockar os dados em vez de utilizar um banco de dados, por questão de simplicidade.
+- Para começar, vamos criar nossa classe de domínio: public class Cliente { private long id; private String nome; private String email; //getters e setters omitidos } A seguir, criamos as classes Application e ApplicationConfig , responsáveis por configurar e inicializar o REST.
+- Não se preocupe se você não conhecer o Spring Boot, você pode encontrar a API pronta dentro do meu repositório ( https://github.com/alexandreesl/livro-Elasticsearch.git ), na pasta Capitulo 1 .
+- Veja a Application.java : @SpringBootApplication public class Application { public static void main (String[] args) { SpringApplication.run(Application.class, args); } } Veja a ApplicationConfig.java : public class ApplicationConfig { @Named static class JerseyConfig extends ResourceConfig { public JerseyConfig () { this .packages( "br.com.alexandreesl.handson.rest" ); } } } Por fim, criamos a classe ClienteRestService , que executa o CRUD de cadastro de clientes.
+- Com uma interface gráfica simples, é uma ótima forma de se testar APIs REST.
+- Figura 1.2: Postman em ação Outra forma de testar as chamadas é a partir do comando linux/unix curl .

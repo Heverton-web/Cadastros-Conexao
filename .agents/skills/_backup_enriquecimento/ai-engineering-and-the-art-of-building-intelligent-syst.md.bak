@@ -1,0 +1,57 @@
+---
+name: ai-engineering-and-the-art-of-building-intelligent-syst
+description: >-
+  Passos operacionais extraidos do livro 'AI Engineering and the Art of Building Intelligent Systems Levodels for Scalable, Real - World Applications - Caldwell, Lena M' (EN) — Engineering, Building, Intelligent.
+---
+
+# Ai Engineering And The Art Of Building Intelligent Syst — Passos Operacionais
+
+Conteudo extraido do livro 'Ai Engineering And The Art Of Building Intelligent Syst'. Contem passos, tecnicas e principios baseados na obra original.
+
+## 1. Conceitos Fundamentais
+- Desconhecido Engenharia de IA e a Arte de Construir Sistemas Inteligentes Aproveitando modelos fundamentais para aplicações escaláveis no mundo real.
+- Índice Introdução Por que a engenharia de IA é importante agora?
+- Da aprendizagem de máquina aos modelos fundamentais Para quem é este livro?
+- O que são modelos de fundação?
+- Planejamento, memória e autonomia Arquiteturas para Sistemas Multiagentes Aplicações Empresariais Inteligência Artificial na Gestão do Conhecimento Inteligência Artificial para Suporte ao Cliente e Vendas Casos de uso nas áreas jurídica, financeira e de conformidade.
+- Startups e Construtoras Construindo com Recursos Limitados APIs, aceleradores e ferramentas de código aberto Estratégias de entrada no mercado (GTM) e monetização Código aberto, ética e o futuro da engenharia de IA Modelos de peso livre (LLaMA, Mistral, etc.) Riscos, Viés e IA Responsável O futuro dos empregos e funções em engenharia de IA Introdução Em uma década, a inteligência artificial saltou da curiosidade acadêmica à onipresença comercial.
+- Com a convergência de avanços fundamentais em aprendizado profundo, aliados a vastos recursos computacionais e conjuntos de dados massivos e diversificados, organizações de todos os setores estão se esforçando para integrar a IA em seus produtos, serviços e operações.
+- No entanto, o abismo entre "executar um modelo em um notebook" e "entregar um aplicativo baseado em IA confiável, seguro e escalável" permanece grande.
+- É aí que entra a Engenharia de IA — a disciplina que conecta pesquisa e produção, ciência e software, protótipo e produto.
+- Este livro é o seu guia prático para dominar a Engenharia de IA na era dos modelos fundamentais.
+
+## 2. Principios e Tecnicas
+- Seja para criar um assistente conversacional capaz de redigir propostas comerciais, um pipeline de análise de imagens para diagnósticos médicos ou um agente autônomo que coordene fluxos de trabalho complexos, os princípios e padrões apresentados nestas páginas o ajudarão a projetar, desenvolver e manter sistemas de IA robustos.
+- Nesta Introdução, explicamos inicialmente por que a Engenharia de IA é importante hoje, em seguida traçamos a evolução do aprendizado de máquina tradicional até os modelos fundamentais atuais e, por fim, esclarecemos para quem este livro se destina.
+- Por que a engenharia de IA é importante agora?
+- A transição de experimentos para empreendimentos Há poucos anos, a implementação de aprendizado de máquina (ML) em produção era uma prática de nicho, restrita a laboratórios de pesquisa especializados ou gigantes digitais com centenas de cientistas de dados.
+- Hoje, toda empresa inovadora — da saúde e do setor bancário ao varejo, manufatura e outros — busca se tornar uma organização centrada em IA.
+- No entanto, a promessa da IA frequentemente se choca com as realidades da produção: integração com sistemas existentes, conformidade com regulamentações de segurança e privacidade, controle de custos e a necessidade de monitoramento e manutenção contínuos.
+- A Engenharia de IA cristaliza as práticas que transformam a IA de experimentos pontuais em serviços confiáveis, auditáveis e de fácil manutenção.
+- Ela codifica a jornada de ponta a ponta — ingestão e rotulagem de dados; seleção, ajuste fino e avaliação de modelos; provisionamento e implantação de infraestrutura; observabilidade e governança; e iterações contínuas com base no feedback do usuário e nas mudanças de requisitos.
+- A Ascensão dos Modelos de Fundação A base dessa industrialização da IA é o surgimento de modelos fundamentais — grandes redes neurais treinadas em uma ampla gama de dados em larga escala, capazes de serem adaptadas (“ajustadas” ou “projetadas sob demanda”) para executar inúmeras tarefas subsequentes.
+- Modelos como o GPT-4 para linguagem, o DALL·E e o Stable Diffusion para imagens e o Whisper para reconhecimento de fala estabeleceram um novo padrão: em vez de treinar um modelo específico para uma tarefa do zero, as equipes agora começam com um modelo poderoso e de propósito geral e o personalizam.
+
+## 3. Aplicacoes Praticas
+- Essa mudança de paradigma acelera o desenvolvimento, muitas vezes oferecendo desempenho de classe mundial com muito menos exemplos rotulados e custos de engenharia reduzidos.
+- No entanto, o poder dos modelos de base traz novos desafios: como gerenciar os custos de API para casos de uso de alto volume, como garantir a privacidade dos dados quando informações sensíveis trafegam por endpoints de terceiros, como detectar e mitigar resultados tendenciosos ou prejudiciais e como projetar fluxos de trabalho interativos que se adaptem ou transfiram a intervenção humana de forma adequada quando surgirem entradas atípicas.
+- A Engenharia de IA responde a essas questões unindo as melhores práticas de engenharia de software, engenharia de dados, DevOps e segurança em uma estrutura coesa, adaptada para modelos de base.
+- A Convergência das Disciplinas A Engenharia de IA situa-se na intersecção de múltiplas disciplinas: Engenharia de Software Escrever código limpo, modular e testável; implementar pipelines de CI/CD; controle de versão; revisões de código.
+- Engenharia de Dados Construir fluxos de trabalho confiáveis para coleta, transformação e armazenamento de dados; estabelecer contratos de dados e verificações de qualidade.
+- MLOps/LLMOps Automatizar treinamento, avaliação e implantação; rastrear experimentos; orquestrar fluxos de trabalho; monitorar a deriva do modelo.
+- DevOps/SRE Provisionamento de infraestrutura (local, em nuvem ou híbrida); conteinerização e orquestração (Docker, Kubernetes); escalonamento automático; observabilidade (métricas, logs, rastreamento).
+- Segurança e Conformidade Criptografia de dados em repouso e em trânsito; controles de acesso baseados em funções; auditoria e governança; explicação e justificativa das decisões do modelo.
+- Gestão de Produtos e UX Definir as necessidades do usuário; projetar interações humano-IA; equilibrar a automação com a supervisão humana.
+- Não se espera que um único profissional domine todas as áreas.
+
+## 4. Topicos Avancados
+- Em vez disso, a Engenharia de IA fornece uma linguagem comum e um conjunto de padrões para que equipes multifuncionais possam colaborar de forma eficaz, evitando armadilhas e acelerando a entrega de valor.
+- Da aprendizagem de máquina aos modelos fundamentais Fluxos de trabalho tradicionais de aprendizado de máquina Desde os anos 2000 até aproximadamente 2020, a maioria das aplicações de aprendizado de máquina seguiu um fluxo de trabalho bastante uniforme: Coleta e rotulagem de dados Reunir dados específicos do domínio e rotular exemplos para classificação, regressão ou previsão estruturada.
+- Engenharia de Recursos : Criar recursos manualmente — agregados estatísticos, heurísticas de domínio, incorporações — que capturem sinais relevantes.
+- Treinamento de modelos Treinar algoritmos como regressão logística, florestas aleatórias, árvores de decisão com reforço de gradiente ou redes neurais de pequena escala.
+- Avaliação Reserve um conjunto de validação, calcule as métricas (acurácia, precisão/revocação, F1, AUC) e repita o processo.
+- Implantação Empacote o modelo em um microsserviço (por exemplo, Flask, FastAPI), conteinerize-o e implante em produção.
+- Monitoramento Monitorar métricas de desempenho, detectar desvios de dados e agendar um novo treinamento quando o desempenho se degradar.
+- Esse pipeline era eficaz para tarefas clássicas como previsão de churn, detecção de fraudes e previsão de demanda.
+- Mas tinha limitações: Fome de Dados O desempenho só aumentou linearmente com a quantidade de dados rotulados, tornando tarefas específicas ou de baixo volume dispendiosas.
+- Engenharia de Recursos A criação de funcionalidades de alta qualidade frequentemente consumia a maior parte do esforço do projeto.

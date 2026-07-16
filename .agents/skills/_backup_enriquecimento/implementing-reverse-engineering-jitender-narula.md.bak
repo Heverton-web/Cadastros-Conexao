@@ -1,0 +1,57 @@
+---
+name: implementing-reverse-engineering-jitender-narula
+description: >-
+  Passos operacionais extraidos do livro 'Implementing Reverse Engineering - Jitender Narula' (EN) — Implementing, Reverse, Engineering.
+---
+
+# Implementing Reverse Engineering Jitender Narula — Passos Operacionais
+
+Conteudo extraido do livro 'Implementing Reverse Engineering Jitender Narula'. Contem passos, tecnicas e principios baseados na obra original.
+
+## 1. Conceitos Fundamentais
+- Implementing Reverse Engineering: The Real Practice of x86 Internals, Code Calling Conventions, Ransomware Decryption, Application Cracking, Assembly Language, and Proven Cybersecurity Open Source Tools .bookspan { -webkit-text-combine: inherit; } Acknowledgement First and foremost, praises and thanks to my Dad, Mom and God for showering blessings throughout my work to complete the book successfully.
+- I would like to express my deep and sincere gratitude to Atul Narula, my colleague at International Institute of Cyber Security, Mexico for helping with the review process of this book.
+- I am extremely grateful for what he has offered me.
+- I would also like to thank him for his friendship, empathy and great sense of humor.
+- I am extremely grateful to my parents (Ramesh Narula and Mohini Narula) for their love, prayers, care and sacrifices for educating and preparing me for my future.
+- I am very much thankful to my wife and son for their love, understanding, prayers and continuing support to complete this book.
+- Also, I would like to express my thanks to Dr.
+- Shilpi Sahi and Om Narula for their support and motivation throughout this process of writing.
+- Once again, I would like to thank my family for putting up with me while I was spending many nights writing—I could have never completed this book without their support.
+- Finally, I would like to thanks BPB Publications for giving me the opportunity to write my first book for them.
+
+## 2. Principios e Tecnicas
+- Implementing Reverse Engineering: The Real Practice of x86 Internals, Code Calling Conventions, Ransomware Decryption, Application Cracking, Assembly Language, and Proven Cybersecurity Open Source Tools .bookspan { -webkit-text-combine: inherit; } Appendix Macro Macros in the assemble language are used to write modular programs.
+- Macros are the sequence of instruction, assigned by name.
+- They can be used anywhere in the code.
+- The macros make programs shorter and readable.
+- Procedure A procedure or subroutine is a sequence of instructions that perform certain tasks.
+- They are very important in assembly language.
+- They are identified by name and the end of the procedure is identified by RET statement. npad The npad is a macro defined in the listing.inc which resides in Root_Folder\VC\include folder of MSVC. npad macro inserts non-destructive and non-operational instructions, rather than a series of NOP instruction.
+- While doing optimization the compiler insert non-operational instruction for enforcing alignment of the data.
+- A series of NOP’s can also be used, but single instructions are always good for better CPU performance.
+- Figure A.1: Listing.inc file path npad macro is accompanied by a number (X).
+
+## 3. Aplicacoes Praticas
+- Where number X can be from 1 to 15, this number defines the amount of memory alignment or padding required by the compiler during optimization.
+- Compiler pads the extra space between the previous instruction/data and the one after npad macro.
+- If we look into LISTING.INC : npad 1 defines padding of 1 byte NOP npad 2 defines padding of 2 bytes with mov edi, edi instruction. npad 2 defines padding of 3 bytes with lea ecx, [ecx+00] instruction, so on All these are basically different variations of NOP, which have no impact on the code flow.
+- LISTING.INC for reference: ;; LISTING.INC ;; ;; This file contains assembler macros and is included by the files created ;; with the -FA compiler switch to be assembled by MASM (Microsoft Macro ;; Assembler). ;; ;; Copyright (c) 1993-2003, Microsoft Corporation.
+- This is what is referred as the LSB.
+- Now take another example: 1000 0000 In the preceding byte example, bit in the left end most is set to 1.
+- This is what is referred as the MSB.
+- This same concept goes with the WORD, DWORD and so on.
+- WORD (MSB) 1000 0000 0000 0001 (LSB) DWORD (MSB) 1000 0000 0000 0000 0000 0000 0000 0001 (LSB) Signed and Unsigned In mathematics we have positive (1, 2, 3, 4, so on) and negative numbers (-1, -2, -3, -4, so on).
+- Similarly to represent positive and negative number concept in programming, signed and unsigned terms are used.
+
+## 4. Topicos Avancados
+- Unsigned Data is represented by byte of data, where 00 is the lowest number in byte and FF is the highest number in byte.
+- The positive decimal numbers are represented in bytes as shown below and similarly numbers can also be represented in WORD, DWORD: Figure A.2: Positive decimal numbers in bytes For WORD this range is from 0000 to FFFF and for DWORD it is from 00000000 to FFFFFFFF.
+- These all are referred to as unsigned numbers.
+- Signed When data is represented as a signed, then 0x00 to 0x7F is treated as positive and 0x80 to 0xFF is treated as negative numbers: Figure A.3: Signed numbers in bytes As we can observe MSB of all negative number is set to 1 and for positive numbers MSB is set to 0.
+- Consider -4 and + 4 in decimal, its byte and binary representation is: +4 = 0x04 = 0000 0100, MSB = 0 -4 = 0xFC = 1111 1100, MSB = 1 But when the same decimal is represented in WORD, -4 (decimal) will not become 0x00FC.
+- As 0x00FC is not negative, it represents positive number that falls between 0000 and 7FFF.
+- To represent -4 in WORD, we need to extend it as 0xFFFC and in DWORD it is 0xFFFFFFFC.
+- Now we understood that simply changing the MSB bit will not change the polarity of number.
+- To convert positive number to negative and vice versa, can be done by performing 2’s complement of the number.
+- To calculate 2’s complement of number following process is followed: Invert all bits in byte or WORD or DWORD After flapping all bits, add 1 to the number Bit Shifting To understand bit shifting concept, take 0x44 which in binary is: 0100 0100 In bit shifting, bits are shifted either right or left.

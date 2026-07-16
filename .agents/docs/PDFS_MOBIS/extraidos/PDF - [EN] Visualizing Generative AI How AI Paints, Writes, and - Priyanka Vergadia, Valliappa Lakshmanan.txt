@@ -1,0 +1,1899 @@
+[Page 1]
+Visualizing 
+Generative AI  
+HOW AI PAINTS, WRITES, AND ASSISTS
+PRIYANKA VERGADIA & VALLIAPPA LAKSHMANAN
+
+[Page 2]
+Generative AI has the potential to innovate and evolve business processes, but workers are still figuring out 
+how to build with, optimize, and prompt GenAI tools to fit their needs. And of course, there are pitfalls to avoid, 
+like security risks and hallucinations. Getting it right requires an intuitive understanding of the technology’s capabilities 
+and limitations. This approachable guidebook helps learners of all levels navigate GenAI—and have fun while doing it.
+Loaded with insightful diagrams and illustrations, Visualizing Generative AI is the perfect entry point for curious 
+IT professionals, business leaders who want to stay on top of the latest technologies, students exploring careers in
+cloud computing and AI, and anyone else interested in getting started with GenAI. You’ll traverse the generative AI 
+landscape, exploring everything from how this technology works to the ways organizations are already leveraging 
+it to great success.
+•	 Understand how generative AI has evolved, with a focus on major breakthroughs
+•	 Get acquainted with the available tools and platforms for GenAI workloads
+•	 Examine real-world applications, such as chatbots and workflow automation
+•	 Learn fundamentals that you can build upon as you continue your GenAI journey
+Priyanka Vergadia is a senior director at Microsoft and former head of developer advocacy at Google Cloud, with more 
+than 15 years in cloud and AI technology leadership. Author of the bestselling book Visualizing Google Cloud, she’s known 
+for her visual storytelling approach that makes complex cloud and AI technology accessible to millions of users worldwide.
+Valliappa (Lak) Lakshmanan is cofounder and CTO of Obin AI, an agentic AI startup. Previously, he was director 
+of AI solutions at Google and an ML researcher at NOAA. He has authored several O’Reilly books and was elected an 
+American Meteorological Society Fellow for pioneering machine learning in severe weather prediction.
+ML & AI
+“Becoming conversant with GenAI is a core job skill when working with internal and external customers. 
+Visualizing Generative AI explains the basic concepts, their application, and their practical impact through 
+simple and clear visuals. It’s the perfect quick-start guide for leaders and executives new to AI.”
+	
+	
+	
+	
+	
+	
+	
+                                       — Eliot Danner, managing director, Google
+Visualizing Generative AI 
+HOW AI PAINTS, WRITES, AND ASSISTS
+ISBN: 978-1-098-17230-5
+US $35.99                  CAN $44.99
+
+[Page 3]
+Praise for Visualizing 
+Generative AI
+“An engaging, cartoon-illustrated guide that makes complex 
+AI concepts accessible to everyone. This book demystifies how 
+GenAI works, blending clarity (and fun!), perfect for beginners 
+and a refreshing perspective for practitioners too.”
+—Dr. Marily Nika, author of Building AI-Powered Products
+“As someone who has been standing on the sidelines, 
+I’ve finally found a way to catch up on the fundamentals 
+behind GenAI without dedicating all my free time.”
+—Kelsey Hightower, distinguished engineer and author of Kubernetes: Up and Running
+“More than just a technical guide, this book is a blueprint for 
+building responsible Generative AI applications at scale. It provides 
+the architectural patterns needed to balance creativity with the 
+risk, cost, and latency that every platform leader obsesses over.”
+—Gabe Monroy, SVP/GM, Workday Platform
+“AI doesn’t have to be intimidating. This beautifully visual approach 
+transforms GenAI from a mysterious black box into understandable 
+technology that anyone can learn and leverage effectively.”
+—Vanessa Lyon, managing director and senior partner, BCG
+“The most approachable introduction to GenAI available. 
+Cuts through the AI hype with clear visual explanations 
+of how GenAI actually works under the hood. Perfect for 
+developers and leaders building AI applications.”
+—Mona Mona, GenAI Specialist, AWS
+
+[Page 4]
+“Becoming conversant in GenAI is a core job skill when working 
+with internal and external customers. Visualizing Generative AI 
+explains the basic concepts, their application, and their practical 
+impact quickly through simple and clear visuals. It’s the perfect 
+quick start guide for leaders and executives new to AI.”
+—Eliot Danner, managing director, Google
+“Well-written with strong visual illustrations, this is an 
+excellent resource for Gen-AI developers. It breaks down 
+complex architectures and workflows, with each chapter 
+building seamlessly into a practical AI playbook.”
+—Daisy Francis, member of technical staff, OpenAI
+“Working in AI research, I’m constantly bridging the gap between 
+cutting-edge developments and practical implementation. This 
+book is an invaluable resource that cuts through the AI hype to 
+make generative AI use cases accessible without oversimplification. 
+The visual approach clarifies concepts that typically require 
+wading through dense papers or documentation.”
+—Jelle Vanhorenbeke, member of technical staff, Anthropic
+
+[Page 5]
+Visualizing 
+Generative AI
+How AI Paints, Writes, and Assists
+Priyanka Vergadia and Valliappa Lakshmanan
+
+[Page 6]
+Visualizing Generative AI
+How AI Paints, Writes, and Assists
+by Priyanka Vergadia and Valliappa Lakshmanan
+Copyright © 2026 Valliappa Lakshmanan and Priyanka Vergadia. All rights reserved.
+Published by O’Reilly Media, Inc., 1005 Gravenstein Highway North, Sebastopol, CA 95472.
+O’Reilly Media books may be purchased for educational, business, or sales promotional use. Online 
+editions are also available for most titles (oreilly.com). For more information, contact our corporate/
+institutional sales department: 800-998-9938 or corporate@oreilly.com.
+ACQUISITIONS EDITOR:  Megan Laddusaw
+DEVELOPMENT EDITOR:  Sarah Grey
+PRODUCTION EDITOR:  Ashley Stussy
+COPYEDITOR:  Liz Wheeler
+PROOFREADER:  Krsta Technology Solutions
+INDEXER:  BIM Creatives, LLC
+COVER DESIGNER:  Susan Thompson
+INTERIOR DESIGNER:  Ron Bilodeau
+COVER AND INTERIOR ILLUSTRATOR:  
+Tanvi Agarwal (SillyStrokes)
+October 2025:	
+First edition
+REVISION HISTORY OF THE FIRST EDITION
+2025-10-14:  First edition
+The O’Reilly logo is a registered trademark of O’Reilly Media, Inc. Visualizing Generative AI, the cover 
+image, and related trade dress are trademarks of O’Reilly Media, Inc.
+The views expressed in this work are those of the authors and do not represent the publisher’s views. 
+While the publisher and the authors have used good faith efforts to ensure that the information and 
+instructions contained in this work are accurate, the publisher and the authors disclaim all responsi­
+bility for errors or omissions, including without limitation responsibility for damages resulting from 
+the use of or reliance on this work. Use of the information and instructions contained in this work is 
+at your own risk. If any code samples or other technology this work contains or describes is subject 
+to open source licenses or the intellectual property rights of others, it is your responsibility to ensure 
+that your use thereof complies with such licenses and/or rights. 
+978-1-098-17230-5
+[LSI]
+
+[Page 7]
+Contents
+Preface	
+vii
+Chapter 1.	 Generative AI Everywhere All At Once 	
+1
+What Is Generative AI? . .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  3
+AI Gives Machines Human Capabilities.  .  .   .  .   .  .   .  .   .  .   .  .  .  .  . 10
+How Generative AI Works.  .  .   .  .   .  .   .  .   .  .   .  .   .  .   .  .  .  .  .  .  .  .  . 14
+From Transformers to ChatGPT in Six Years . .  .  .  .  .  .  .  .  .  .  .  .   35
+Challenges with Generative AI. .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .   46
+Organization of the Rest of This Book. .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .   51
+Summary .  .  .   .  .   .  .   .  .   .  .   .  .   .  .   .  .   .  .   .  .   .  .  .  .  .  .  .  .  .  .  .  . 51
+Chapter 2.	 Using Generative AI 	
+53
+Great First Drafts.  .  .   .  .   .  .   .  .   .  .   .  .   .  .   .  .   .  .   .  .  .  .  .  .  .  .  .  . 53
+Prompting GenAI Models . .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .   63
+Building Products with GenAI Capabilities.  .  .   .  .   .  .   .  .   .  .  .  .  . 73
+Architecting GenAI Applications.  .  .   .  .   .  .   .  .   .  .   .  .   .  .  .  .  .  .  . 97
+Summary .  .  .   .  .   .  .   .  .   .  .   .  .   .  .   .  .   .  .   .  .   .  .  .  .  .  .  .  .  .  .  . 108
+Chapter 3.	 Generative AI Use Cases	
+111
+Customer Support .  .  .   .  .   .  .   .  .   .  .   .  .   .  .   .  .   .  .  .  .  .  .  .  .  .  . 115
+Code Review and Generation.  .  .   .  .   .  .   .  .   .  .   .  .   .  .  .  .  .  .  .  . 127
+Knowledge Management and Search.  .  .   .  .   .  .   .  .   .  .   .  .  .  .  .  . 139
+Data Analysis and Insights.  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 146
+Marketing and Advertising .  .  .   .  .   .  .   .  .   .  .   .  .   .  .   .  .  .  .  .  .  . 151
+Summary .  .  .   .  .   .  .   .  .   .  .   .  .   .  .   .  .   .  .   .  .   .  .  .  .  .  .  .  .  .  .  . 155
+v
+
+[Page 8]
+Chapter 4.	 Building Agentic Systems	
+157
+Why Agentic Systems?.  .  .   .  .   .  .   .  .   .  .   .  .   .  .   .  .   .  .  .  .  .  .  .  . 159
+Implementing Agents. .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 165
+Agentic Workflow in LangGraph.  .  .   .  .   .  .   .  .   .  .   .  .   .  .  .  .  .  . 173
+Choosing Between AutoGen and LangGraph.  .  .   .  .   .  .   .  .  .  .  . 176
+RAG Agents.  .  .   .  .   .  .   .  .   .  .   .  .   .  .   .  .   .  .   .  .   .  .  .  .  .  .  .  .  .  . 176
+Agents That Operate on Structured Data.  .  .   .  .   .  .   .  .   .  .  .  .  .  . 191
+Agentic Architectures. .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 199
+Agent Integration Patterns.  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 208
+Summary .  .  .   .  .   .  .   .  .   .  .   .  .   .  .   .  .   .  .   .  .   .  .  .  .  .  .  .  .  .  .  . 212
+Chapter 5.	 Architecting GenAI Applications	
+213
+Choosing a Foundational Model. .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 213
+Balancing Creativity and Risk.  .  .   .  .   .  .   .  .   .  .   .  .   .  .  .  .  .  .  .  . 219
+Architectures for Low-Risk Situations .  .  .   .  .   .  .   .  .   .  .   .  .  .  .  . 223
+Architectures for Medium-Risk Situations.  .  .   .  .   .  .   .  .   .  .  .  .  . 228
+Architectures for High-Risk Situations.  .  .   .  .   .  .   .  .   .  .   .  .  .  .  . 231
+Fine-tuning a Model.  .  .   .  .   .  .   .  .   .  .   .  .   .  .   .  .   .  .  .  .  .  .  .  .  . 233
+Summary .  .  .   .  .   .  .   .  .   .  .   .  .   .  .   .  .   .  .   .  .   .  .  .  .  .  .  .  .  .  .  . 251
+Chapter 6.	 Building Responsible GenAI Applications 	
+253
+Why Responsible GenAI Is Different.  .  .   .  .   .  .   .  .   .  .   .  .  .  .  .  . 255
+Value Alignment and Safety.  .  .   .  .   .  .   .  .   .  .   .  .   .  .   .  .  .  .  .  .  . 259
+The Ethics of Human-AI Interaction.  .  .   .  .   .  .   .  .   .  .   .  .  .  .  .  . 264
+Societal Implications.  .  .   .  .   .  .   .  .   .  .   .  .   .  .   .  .   .  .  .  .  .  .  .  .  . 271
+LLMOps.  .  .   .  .   .  .   .  .   .  .   .  .   .  .   .  .   .  .   .  .   .  .  .  .  .  .  .  .  .  .  .  . 277
+Summary and Conclusion.  .  .   .  .   .  .   .  .   .  .   .  .   .  .   .  .  .  .  .  .  .  . 298
+Index	
+299
+	
+About the Authors 	
+309
+vi    Contents
+
+[Page 9]
+Preface
+Generative AI has captured the world’s imagination like no other technology. 
+Within months of ChatGPT’s release in November 2022, everyone, from CEOs to 
+college students, was experimenting with AI-powered tools that could write, code, 
+create images, and solve complex problems. The enthusiasm is infectious—and 
+justified. But as the initial excitement settles, a sobering reality emerges: building 
+production-ready applications with generative AI is fundamentally different from 
+using ChatGPT for quick tasks.
+We wrote this book because we’ve seen countless teams struggle to bridge the gap 
+between the promise of generative AI and the reality of deploying reliable, respon­
+sible applications at scale. The technology is powerful, but it’s also nondetermin­
+istic and prone to hallucination, and it requires careful architectural decisions to 
+balance creativity, risk, cost, and latency. Traditional software engineering prac­
+tices need to evolve to accommodate these unique challenges.
+What Makes GenAI 
+Applications Different
+Generative AI applications aren’t just traditional software with an AI component 
+bolted on. They require a fundamentally different approach to development, 
+testing, and deployment. Unlike deterministic software, GenAI applications 
+produce different outputs for the same inputs. Unlike traditional AI models 
+trained for specific tasks, foundation models are general-purpose tools that can 
+be applied to countless problems—but also carry new risks around bias, toxicity, 
+and misinformation.
+The result is that teams often start with impressive prototypes but struggle to 
+move to production. The demo that works perfectly in the conference room fails 
+when exposed to real user inputs. The chatbot that provides helpful answers 
+during testing starts hallucinating facts when deployed. The content-generation 
+tool that saves hours of work suddenly becomes a compliance nightmare.
+vii
+
+[Page 10]
+Why We Wrote This Book
+Both authors have spent years helping organi­
+zations navigate these challenges. At Google, 
+Microsoft, and at a number of other compa­
+nies, Priyanka and Lak have helped countless 
+developers and organizations adopt cloud 
+technologies and have witnessed firsthand the 
+architectural decisions that make or break AI 
+implementations.  
+We’ve written this book to be an approachable 
+guide to what we believe will remain core ideas 
+in building GenAI applications for real-world 
+use. It’s not about the latest model architec­
+tures or research breakthroughs—it’s about 
+the practical engineering decisions, architec­
+tural patterns, and responsible AI practices 
+that separate successful deployments from 
+expensive experiments.
+What You’ll Learn
+This book takes you on a journey from under­
+standing how generative AI works to deploying 
+responsible applications at scale. We start with 
+the fundamentals: how these models generate 
+text and images, why they behave the way they 
+do, and what makes them both powerful and 
+unpredictable. From there, we show you how to 
+build applications that harness this power while 
+mitigating the risks.
+You’ll learn to architect GenAI applications 
+that balance creativity with reliability, imple­
+ment agentic systems that can reason and act 
+autonomously, and deploy monitoring and 
+evaluation frameworks that ensure your appli­
+cations remain safe and effective over time. Most 
+importantly, you’ll understand how to make 
+responsible choices about when and how to use 
+this technology.
+Throughout the book, we use real-world exam­
+ples and provide code you can run and adapt. 
+Every prompt, every architectural pattern, and 
+every code sample is available in our GitHub re­
+pository (https://github.com/lakshmanok/visual­
+izing-generative-ai) , allowing you to experiment 
+and build upon our examples.
+Who Should Read This Book
+This book is written for several overlapping 
+audiences:
+•	 Software engineers and architects who need to 
+integrate generative AI into existing appli­
+cations or build new AI-powered systems. 
+You’ll learn the architectural patterns, engi­
+neering practices, and infrastructure consid­
+erations needed to deploy GenAI at scale.
+
+•	 Data scientists and ML engineers transition­
+ing from traditional machine learning to 
+generative AI. While many concepts carry 
+over, GenAI requires new approaches to 
+viii    Preface
+
+[Page 11]
+evaluation, monitoring, and model manage­
+ment, which we cover in detail.
+•	 Product managers and technical leaders 
+who need to make informed decisions 
+about when and how to adopt generative 
+AI. Understanding the technology’s capa­
+bilities and limitations is crucial for setting 
+realistic expectations and making sound 
+investment decisions.
+•	 Anyone building with AI who wants to un­
+derstand responsible development practices. 
+As generative AI becomes more powerful 
+and pervasive, building safely and ethical­
+ly isn’t just good practice—it’s essential for 
+sustainable innovation.
+What You Need to Know
+We assume you have some familiarity with APIs 
+and web services. If you’ve worked with machine 
+learning before, that’s helpful but not required—
+we explain the concepts you need as we go.
+More importantly, we assume you’re curious 
+about building applications that work reliably 
+in the real world. This book is hands-on and 
+practical. We’ll show you how to implement 
+every pattern we discuss, and we encourage you 
+to experiment with the examples.
+How This Book Is Organized
+The book is structured to take you from under­
+standing to implementation:
+•	 Chapters 1 and 2 establish the foundation: 
+what generative AI is, how it works, and how 
+to use it effectively through better prompting 
+and API integration.
+•	 Chapter 3 explores real-world use cases 
+across industries, showing how organi­
+zations are successfully deploying GenAI 
+applications today.
+•	 Chapters 4 and 5 dive deep into building 
+applications: implementing agentic systems, 
+choosing the right architectures, and bal­
+ancing the competing demands of creativity, 
+risk, cost, and latency.
+•	 Chapter 6 addresses the critical topic 
+of responsible AI, covering everything 
+from value alignment and human-AI in­
+teraction to environmental impact and 
+governance frameworks.
+Each chapter builds on the previous ones while 
+remaining modular enough that you can focus 
+on specific topics based on your needs.
+How This Book Is Organized    ix
+
+[Page 12]
+A Living Technology
+Generative AI is evolving rapidly. By the time 
+you read this book, new models will have been 
+released, new capabilities will have emerged, 
+and new challenges will have surfaced. Rather 
+than trying to keep up with every development, 
+we’ve focused on principles and patterns that 
+transcend specific models or providers.
+The architectural decisions you make today will 
+determine how easily you can adapt to tomor­
+row’s innovations. The responsible AI prac­
+tices you implement now will shape how your 
+applications scale and evolve. The engineering 
+practices you adopt will determine whether your 
+GenAI applications become reliable, valuable 
+parts of your technology stack or expensive 
+technical debt.
+Our goal is to help you build applications that 
+not only work today but continue to deliver 
+value as the technology evolves. Welcome to the 
+future of software development.
+ 
+Priyanka Vergadia and 
+Valliappa Lakshmanan
+June 2025
+x    Preface
+
+[Page 13]
+Chapter 1
+Generative AI Everywhere 
+All At Once 
+Generative AI (or GenAI) is the ability of machines to create new content. It is a 
+branch of artificial intelligence (AI), which is the field of computer science that 
+tries to make machines autonomously carry out tasks that we associate with 
+human cognition or creativity. Today, GenAI is capable of creating images, essays, 
+poems, music, and even videos at a human level.
+While research on GenAI has been going on for over a decade, it burst onto 
+the public consciousness with the release of ChatGPT (https://oreil.ly/hg_Ii) by 
+OpenAI in November 2022. ChatGPT provided an ability for users to ask for 
+open-ended text (such as “Write a limerick about an office party” or “How do 
+you reverse an array in Python?”) and get answers. ChatGPT became the fast­
+est-growing application ever (https://oreil.ly/ONnn3) , reaching 100 million users 
+in just two months. For comparison, it took TikTok (which was based on an 
+already viable Chinese product called Douyin) nine months and Instagram 2.5 
+years to reach the 100 million mark.
+In this chapter (see Figure 1-1), we will discuss what GenAI is, how it works, why it 
+has gotten so much better recently, and the challenges that remain. Generative AI 
+has taken off because the technology has recently become powerful, and people 
+are discovering that it can greatly improve existing products and ways of working. 
+Discussing the growth curve of GenAI will allow us to provide context for both 
+the technology underpinning generative AI and the products that take advantage 
+of it.
+1
+
+[Page 14]
+Figure 1-1. What you will learn in this chapter.
+2    Chapter 1. Generative AI Everywhere All At Once
+
+[Page 15]
+What Is Generative AI?
+*	
+Generated using Google Workspace with Gemini. May 2024.
+The best way to start a book or talk about GenAI 
+is with a demonstration of its capabilities. This 
+will help us understand both the promise and 
+the shortcomings of the technology. Can we get 
+a GenAI tool to generate this book’s introduc­
+tion for us?
+Mandatory Parlor Trick
+We are writing this book in Google Docs, which 
+includes a Help me write capability to which we 
+supplied the textual input “Write 3 paragraphs 
+for a newsletter…” that is shown in Figure 1-2.
+Textual input, typically consisting of instruc­
+tion, examples, and contextual information 
+(see Figure 1-3 top panel), that is provided to the 
+GenAI model is called a prompt. Google Docs 
+uses GenAI, specifically a GenAI model called 
+Gemini, to handle the previous prompt. The 
+following sidebar contains the output.*
+It’s amazing that an AI is able to create such 
+fluent text. GenAI has gotten so popular (see 
+Figure 1-3, middle panel) because it is so easy to 
+use, and is embedded in popular products like 
+Google Docs. Also, the output text is created in 
+seconds, compared to the minutes to hours it 
+would take to write those paragraphs on your 
+own. Plus, GenAI technology keeps getting 
+better all the time. 
+It’s also eminently clear that our jobs as writ­
+ers are safe for now—the generated text has no 
+personality and is quite forgettable (compare 
+it with our introduction to GenAI in the pages 
+that follow if you are unconvinced!). The only 
+real details in the generated text were already in 
+our prompt.
+Note that if you try out our previous prompt, the 
+results you get will be different. This is not just 
+because the model has changed in the mean­
+time (from Gemini 1.0 to Gemini 3.0 perhaps), 
+but also because GenAI models inherently use 
+randomness when generating new content. 
+This randomness, as we will discuss later in this 
+chapter, is what keeps the generated text from 
+becoming monotonous and repetitive.
+Figure 1-2. Screenshot 
+of Google Docs “Help me 
+write” tool.
+What Is Generative AI?    3
+
+[Page 16]
+Generated text can function as a great starting 
+point for structural outlines and talking points 
+that human writers can elaborate upon. It is rare, 
+however, that you can surface generated content 
+directly to users in any situation where there is a 
+high expectation of quality.
+Even though GenAI does not (yet) reach the 
+level of the world’s best at any specific task, the 
+outputs are good enough that we see it being 
+rapidly adopted in certain types of use cases (see 
+Figure 1-3, bottom panel). It’s used for personal­
+ization at a scale that would be impossible to do 
+using human labor. It’s used to augment humans 
+such as doctors to perform tasks that detract 
+from their “real job” and to reduce errors. You 
+see it used in situations like customer support 
+to increase business efficiency and in cases like 
+fraud detection to increase the number of checks 
+that can be performed.
+GenAI Can Help Humans
+GenAI is not a replacement for humans, espe­
+cially humans who are experts at the particular 
+type of content being produced. However, it can 
+function as an excellent assistant to humans. 
+A 2023 study from Harvard Business School 
+(https://oreil.ly/PNtex) showed that, on tasks that 
+lie “within the frontier” of what AI can do well, 
+Generative AI: A New Frontier in Artificial Intelligence
+Generative AI, a subset of artificial intelligence, 
+has taken the world by storm. Unlike traditional 
+AI, which analyzes and interprets data, genera­
+tive AI creates something completely new, such 
+as text, images, or music. Its rapid adoption, 
+impressive capabilities, and potential for revo­
+lutionizing industries have made it a hot topic 
+of discussion.
+One of the key reasons for generative AI’s popu­
+larity is its user-friendliness. Anyone can gener­
+ate text, images, or music with just a few clicks, 
+making it accessible to a wide range of people, 
+both tech-savvy and non-tech-savvy alike. 
+Another reason for its popularity is its speed. 
+Generative AI can generate high-quality con­
+tent in a matter of seconds, which saves users a 
+significant amount of time. Finally, generative 
+AI is constantly improving. With each passing 
+day, it becomes more sophisticated, capable of 
+producing more realistic and creative content.
+The potential for generative AI is enormous. 
+It has the potential to revolutionize industries 
+such as customer support, marketing, and en­
+tertainment. For example, generative AI can be 
+used to create personalized customer support 
+experiences, generate high-quality marketing 
+content, and create realistic visual effects for 
+movies and TV shows. However, as with any 
+technology, generative AI also brings unique 
+risks. For instance, it can be used to create fake 
+news, deep fakes, and other forms of misin­
+formation, which could lead to serious conse­
+quences. Additionally, the widespread adoption 
+of generative AI could lead to job displacement, 
+as more and more tasks become automated.
+4    Chapter 1. Generative AI Everywhere All At Once
+
+[Page 17]
+Figure 1-3. GenAI is being rapidly adopted for all kinds of use cases. Think about how  these use cases reduce friction and 
+improve accuracy, scale, and efficiency. 
+What Is Generative AI?    5
+
+[Page 18]
+Figure 1-4. Understanding the AI frontier.
+6    Chapter 1. Generative AI Everywhere All At Once
+
+[Page 19]
+We followed our own advice when writing this 
+book, using GenAI as an assistant only on tasks 
+that it is known to be good at. Specifically, we 
+used GenAI tools as a way to brainstorm, to 
+rephrase sentences, and to skim research papers. 
+Unless clearly marked (as with the paragraphs 
+quoted in this section), the text and illustrations 
+in this book were all created by humans. AI 
+assisted, but it did not create.
+What’s on the Frontier?
+It is important to develop an intuitive under­
+standing of what tasks AI can do well, and use it 
+only for those tasks. Let’s look at a few example 
+tasks, one within the frontier, two on the fence, 
+and the fourth beyond the frontier of GenAI. 
+We’ll ask ChatGPT from OpenAI (https://chat.
+openai.com) to perform these tasks.
+Throughout this book, we encourage you 
+to follow along with us whenever possible. 
+You can repeat our actions in this chapter 
+by trying out our prompts on chatgpt.
+com. Note that the responses will vary 
+because the models may have improved 
+between the time we did it and when you 
+are reading this book, and because model 
+responses are nondeterministic.
+NOTE 
+Generating text on a topic that is well covered 
+by the training dataset is within the frontier 
+of GenAI—this is a task at which it excels. For 
+example, we asked the GenAI model to 
+Write a 1-sentence explanation of 
+Fermat’s last theorem
+content created by humans with the assistance 
+of GenAI is better than what humans or AI 
+alone could produce.  
+Think of yourself on a sailboat (see Figure 1-4, 
+top panel) with the wind blowing away from the 
+shore and toward the sea. In this analogy, the 
+task (“heading to sea”) is what you want to do. 
+The sail can either help (if you want to move in 
+the direction of the wind) or it can make things 
+harder (if you want to move against the wind). 
+In this way, the sail is analogous to AI—some­
+times AI can help, and other times, AI can make 
+things harder.
+A frontier task is a task that AI is capable of 
+doing—if you want to head out to sea, you’ll get 
+some movement using just the sail. Sailing in 
+the direction of the wind is a frontier task, and 
+on such a task, the sail (AI) will be assistive. Of 
+course, just as you have to know how to manipu­
+late the sail to catch the wind, you need to know 
+how to use AI effectively.
+A cautionary tale from the same study was that 
+for tasks “outside the frontier” of what AI can do 
+well, subpar AI suggestions can detract humans 
+from doing their best work! In our sailboat anal­
+ogy, sailing back to land when the wind is blow­
+ing you out to sea would be a task that is outside 
+the frontier. The sail is a hindrance to such a 
+task, and you are better off not using the sail.
+Over time, as AI has been employed in a variety 
+of industries, the community has developed an 
+understanding of the kinds of use cases that are 
+within the frontier of the technology. Thus, we 
+see GenAI being used to generate recommenda­
+tions, implement chatbots, and personalize the 
+search function in shopping sites.
+What Is Generative AI?    7
+
+[Page 20]
+and received this response:
+Fermat’s Last Theorem states that there 
+are no three positive integers 
+𝑥,𝑦, and 𝑧 that satisfy the equation 
+𝑥^𝑛+𝑦^𝑛=𝑧^𝑛 for any integer value of 
+𝑛>2.
+This is perfectly correct because Fermat’s last 
+theorem is well covered by the internet data 
+on which ChatGPT was trained—there is a 
+Wikipedia page on Fermat’s last theorem, and 
+thousands more web pages on the topic. You can 
+use this explanation as is, and it’s unclear that a 
+human could improve on it significantly.
+What if we ask the AI to explain the theo­
+rem, not merely parrot it? For example, we 
+asked ChatGPT:
+Why does Fermat’s last theorem specify 
+n > 2?
+We received a response that included the 
+following text:
+When 𝑛=2, the equation becomes 
+the famous Pythagorean theorem: 
+x^2+y^2=z^2. There are many integer 
+solutions to this, known as Pythagorean 
+triples. 
+…
+The difficulty for 𝑛>2 comes from 
+the rapid growth of the powers 𝑥^𝑛, 
+𝑦^𝑛,𝑧^n. For these higher powers, the 
+relationships between 𝑥, y, and z 
+become much more constrained and do not 
+allow for solutions in integers, a fact 
+that was only proven conclusively by 
+Andrew Wiles in 1994.
+*	
+Large language model providers often monitor forums where people report problems and fix their models to handle the reported 
+issue, if not the underlying problem. So a limerick on Fermat’s theorem may start working once this book is in early access, but a 
+limerick on Euler’s primes or some other mathematical theorem may not.
+The previous explanation sounds plausible, but 
+is it true? The fact about the Pythagorean theo­
+rem is true, and Pythagorean triples are, indeed, 
+solutions for n = 2. However, the part about re­
+lationships being constrained is a logical fallacy 
+commonly referred to as “circular reasoning” 
+or “begging the question”—it assumes as true 
+what it is trying to prove. GenAI is not good at 
+logical reasoning. Always double-check the logic 
+behind explanations and rationales generated by 
+GenAI, since plausible isn’t necessarily correct.
+What if we ask, not for a one-sentence explana­
+tion, but for a limerick on the topic? Presumably, 
+there is no limerick on this math theorem in 
+ChatGPT’s training data (that might change 
+once this book is published!*). When we asked 
+the GenAI model to 
+Write a limerick about Fermat’s last 
+theorem
+we received this response:
+There once was a theorem, quite grand,  
+Fermat left it unproved by hand.  
+He said “no cubes or squares,  
+Can sum in such pairs,  
+For n greater than two, take a stand!
+It’s a limerick (has the AABBA rhyme scheme) 
+and is on the topic we requested. On close ex­
+amination, though, the limerick falls apart—the 
+crux of Fermat’s theorem is that there are triples 
+for n = 2, but not for n > 2. So, the third line (“no 
+cubes or squares”) is wrong—there are squares, 
+but there are no cubes. The last line makes no 
+sense (who’s supposed to take a stand?) and is 
+obviously shoehorned into fitting the rhyme 
+8    Chapter 1. Generative AI Everywhere All At Once
+
+[Page 21]
+While Richard Taylor did work on the topic of 
+Galois representations with Laurent Clozel, the 
+citation is wholly made up—volume 99 of the 
+IHÉS journal in 2004 (https://oreil.ly/VHp_B) 
+has four articles, none of which match the previ­
+ous citation. The generated text is plausible, but 
+it is not correct. This sort of plausible, but incor­
+rect, information is called a hallucination. Never 
+use information generated by GenAI without 
+double-checking its factuality!
+ Doubtless, by the time you read this book, 
+GenAI will have advanced past some of 
+the shortcomings we are pointing out in 
+this section. However, for a long time to 
+come, there will continue to be a frontier 
+beyond which GenAI will not be reliable. 
+As you read about new GenAI capabilities 
+and encounter new products and tools 
+that use GenAI, update your understand­
+ing of where the frontier currently is.
+NOTE 
+The inability of GenAI to reproduce factual 
+information can be very surprising when you 
+encounter it for the first time. Which do you 
+think GenAI is better at? Making an exact copy 
+of a painting, or making an artistic impression 
+of one? In Figure 1-5, we show the results from 
+the Imagen GenAI model (built into Gemini; try 
+it by going to gemini.google.com) when we asked 
+it to
+generate an image of the famous 
+painting “The Scream”. Match the style 
+and colors of the original painting 
+closely.
+scheme. Generating a limerick on Fermat’s 
+theorem requires being able to understand the 
+theorem and its history and use this under­
+standing to plan out text that fits a limerick’s 
+rhyme scheme. Such reasoning and planning is 
+not something that GenAI is not yet good at, al­
+though researchers have been making progress 
+in special cases.
+Even though GenAI is a technology built on 
+mimicry of large datasets, GenAI tools struggle 
+to correctly reproduce factual information. For 
+example, asking ChatGPT the following:
+Who did Andrew Wiles’ student who 
+helped him prove Fermat’s last theorem 
+collaborate with afterwards? Cite the 
+paper
+yielded the following response (in 
+November 2024):
+After their groundbreaking work on 
+Fermat’s Last Theorem, Richard Taylor 
+continued his own research, including 
+further contributions to the study of 
+Galois representations and modular 
+forms. He has written influential 
+papers in these areas. One significant 
+later collaboration was with Laurent 
+Clozel and others on the Langlands 
+program, which is a broad and deep set 
+of conjectures in number theory and 
+algebraic geometry.
+A notable paper from this later work 
+is:
+Laurent Clozel, Richard Taylor, 
+“Automorphic forms and Galois 
+representations,”
+Publications Mathématiques de l’IHÉS, 
+99 (2004), 1–218.
+DOI: 10.1007/s10240-004-0010-5.
+What Is Generative AI?    9
+
+[Page 22]
+versus when we asked it to
+create an image that looks like the 
+famous painting “The Scream”, but set 
+the picture in a cornfield. Replace 
+the people in the background with 
+scarecrows.
+It’s clear that the reproduction in the middle 
+is recognizable but not faithful to the original, 
+whereas the image on the right is obviously cre­
+ated in the style of Munch’s painting, but follow­
+ing our instructions. 
+We tend to assume that computers are good 
+at exact reproduction but bad at making ar­
+tistic modifications. GenAI is the opposite! It 
+struggles with exact recall, but excels at mim­
+icry. This is because GenAI does not involve 
+extracting text or images from a database of 
+everything that it has encountered in its train­
+ing data. Instead, GenAI is generating pixels 
+and text based on what is probabilistically likely 
+(we’ll discuss the exact mechanism later in this 
+chapter). It is important to keep this probabilis­
+tic nature of GenAI firmly in mind as you use it. 
+Otherwise, you will end up being surprised by 
+the results.
+In the rest of this chapter, we’ll build up to an in­
+tuitive understanding of the probabilistic nature 
+of GenAI. We’ll start with a quick introduction 
+to AI.
+AI Gives Machines Human Capabilities
+Artificial intelligence is the field of computer 
+science that imbues machines with human-like 
+capabilities. When Facebook tags people in pho­
+tographs or when you deposit a check into your 
+bank account by taking a picture of it, you are 
+relying on machines’ ability to “see” and recog­
+nize faces, text, and numbers. When authors of 
+Apple Books use AI to create an audiobook from 
+their written content, the machine has become 
+able to “speak.” When an iRobot vacuum makes 
+Figure 1-5.  The Scream. (a) Actual painting by Edvard Munch, 1893, from the Google Art Project. (b) Painting as reproduced 
+by GenAI.  (c)  Painting reimagined using GenAI.
+10    Chapter 1. Generative AI Everywhere All At Once
+
+[Page 23]
+its way around furniture, it is relying on a sense 
+of “touch.” Smart speakers such as Alexa and 
+assistants such as Siri can “hear” and react to 
+spoken commands. AI doesn’t taste yet, but 
+there are AI models that can predict how wine 
+will taste based on the growing conditions of 
+the grape.
+All of the previous examples involve AI built 
+into products (such as Facebook, banking apps, 
+or Apple Books). AI is a powerful way for the 
+companies that make these products to reduce 
+friction, improve accuracy, increase scale, and 
+reduce cost. Technology that doesn’t make its 
+way into products is just a curiosity and will 
+have limited impact on the world.
+As an example of AI technology and products, 
+let’s consider how AI analyzes retinal scans.
+GenAI Ecosystem
+The term generative AI, or GenAI, is used to 
+refer to models, products, research areas, and 
+software frameworks (see Figure 1-6). GenAI 
+models like GPT-4, built by OpenAI, provide 
+the ability to generate images and text. GenAI 
+products like ChatGPT incorporate these mod­
+els and provide a nice user interface. Research 
+in the field of GenAI advances the capability of 
+the models. GenAI software stacks are needed 
+to operationalize these models and products. 
+Together, these form the GenAI ecosystem.
+Figure 1-6. The GenAI ecosystem consists of products that incorporate GenAI, models that employ the technology, 
+research that advances it, and software stacks that are needed to operationalize it.
+AI Gives Machines Human Capabilities    11
+
+[Page 24]
+Figure 1-7. How machine learning works.
+Figure 1-8. For machine learning, you need a software stack for the training pipeline and another one for the 
+inference pipeline.
+12    Chapter 1. Generative AI Everywhere All At Once
+
+[Page 25]
+inference pipeline is similar to the training pipe­
+line except that labels are not necessary.
+An AI-infused Product
+What is the advantage of doing retinal scanning 
+using AI? Retinal scanning was possible before 
+AI, but it involved considerable friction and was 
+not scalable. 
+I remember going to an eye doctor who would 
+drop medicine into my eyes to dilate them. The 
+doctor would then look into my eyes with an in­
+strument, to see the state of my retina. Like many 
+people of Indian descent, my pupils are larger 
+than average, and the doctor would usually be 
+worried that it was glaucoma. This would involve 
+further tests, and then I’d get to go home, driving 
+home, dangerously, with still-dilated eyes. 
+Now, there are machines that can scan retinas 
+noninvasively. Because the doctor has the retinal 
+scan from previous years, they can easily com­
+pare the images from past years to see that each 
+pupil remains the same size. 
+Less friction. More accuracy. 
+What’s true of my eyes is true for millions. In 
+India, 60% of people live in villages without 
+access to eye doctors—but medical technicians 
+can mount the machine onto a vehicle, drive it to 
+villages, and provide eye scans with the help of 
+an optometrist working remotely (https://oreil.
+ly/zjbLQ). In many cases, the AI can quickly de­
+termine that there is no problem, and this makes 
+the whole process more efficient, with increased 
+scale. 
+A 2023 blog post by Verily (https://oreil.ly/
+dYZ6p) notes that bringing such an AI-infused 
+From a research area perspective, retinal scans 
+involve machine learning (ML), a type of AI 
+where the machine learns by looking at hun­
+dreds of thousands of images (see Figure 1-7). 
+These images are labeled, meaning each image is 
+marked with its classification (such as healthy, 
+diabetic, or glaucoma). 
+A neural network, so called because it is inspired 
+by the neurons that are part of biological ner­
+vous systems, is a common model that is used 
+to learn from data. The neural network (NN) is 
+a mathematical function that is usually repre­
+sented (both in code and visually) as layers of 
+connected nodes. In the example of classifying 
+retinal images, the input to the NN is an image 
+and the output is a word from a very limited 
+vocabulary (such as diabetic or healthy). 
+Generative AI is a form of machine learning, 
+because the AI is taught using large amounts 
+of data, but its output tends to be much more 
+open-ended than that of most ML applications. 
+The output of GenAI models can be videos, 
+audios, etc. Large language models (LLMs) are 
+GenAI models that are trained on textual inputs 
+to generate natural language text. ChatGPT is an 
+example of a GenAI product that is powered by 
+an LLM. 
+There are two software stacks necessary for 
+machine learning. The first is a training pipeline 
+that is used to tune the model weights based on 
+large amounts of data (See Figure 1-8). Because 
+these models can operate only on numbers, the 
+input data will have to be represented as multi­
+dimensional numbers, termed tensors. Once a 
+model has been trained, it can be used to per­
+form predictions on new inputs. The software 
+stack to do this is called the inference stack. The 
+AI Gives Machines Human Capabilities    13
+
+[Page 26]
+product to market requires high-quality data, 
+the early involvement of cross-functional 
+experts, validation in real-world environments 
+where the AI is designed around humans, and 
+continuing to proactively monitor the perfor­
+mance of the AI system.
+If you are a developer or product manager who 
+hopes to use GenAI, it’s worth focusing your 
+work around this question: how will using 
+GenAI in your product improve accuracy, scale, 
+and/or efficiency? This, then, is the lens with 
+which we will look at generative AI in this book. 
+We will discuss how the technology works, but 
+we will also discuss how you can use it to reduce 
+friction, improve accuracy, increase scale, or 
+reduce costs associated with the ways you do 
+things today. 
+Is This AI?
+A good way to start a debate among technolo­
+gists is to ask if some AI-infused product is truly 
+AI. Are the featured snippets in Google Search 
+AI? How about Google Maps figuring out which 
+subway exit you should take? Facebook sug­
+gesting the people to tag in a photo? Microsoft 
+Copilot summarizing a document? Amazon 
+recommending what other people buy when 
+they look at this product? Are these AI?
+John McCarthy is credited with the statement 
+“as soon as it works, no one calls it AI any more.” 
+Once we become familiar with an application of 
+AI, the AI contribution to the feasibility of the 
+application vanishes into the background, and 
+the use case becomes just another feature of a 
+widely used product.
+Betram Raphael made the point that AI is a col­
+lective name for problems that are not effectively 
+solved by computers. However, the nature of 
+scientific and engineering progress means that 
+the goalposts of what constitutes AI, and what is 
+merely software, keep moving.
+Indeed, with the 2024 Nobel Prize in Physics 
+going to Hopfield and Hinton, who were among 
+the pioneers of neural networks (a form of ma­
+chine learning, which is a form of AI), we could 
+complete John McCarthy’s statement by posit­
+ing that “once it works, we call it physics”!
+Our recommendation is to stop worrying about 
+whether or not you are using AI. Focus on 
+whether what you are doing reduces friction or 
+improves accuracy, scale, or efficiency.
+How Generative AI Works
+Generative AI is a form of machine learning 
+where the output of the NN is open-ended im­
+ages, text, audio, or video. This goes beyond the 
+simple AI models that can only recognize imag­
+es or do one-to-one mapping of words to speech. 
+Instead, a generative AI model “paints” entire 
+images, “writes” entire paragraphs, “speaks” for 
+minutes, and synthesizes long videos. How does 
+it do this?
+In this section, we’ll discuss how generative 
+AI creates images, text, music, and video. But 
+before that, you have to understand how ma­
+chine learning works, because GenAI is a form 
+of machine learning.
+14    Chapter 1. Generative AI Everywhere All At Once
+
+[Page 27]
+How Machine Learning Works
+Typical computer programs consist of a bunch 
+of rules: If the user clicks “like,” then increment 
+the like button count by one. If the user clicks 
+“dislike,” hide the post. But what if the action in­
+volves judgment? If the user clicks “like” on a cute 
+cat photo, show them more photos of cute cats.
+How can the machine determine that an image 
+is of a cat, let alone that the cat is not feral? We 
+could try to write rules such look for a cuddly 
+animal with whiskers, but this begs the ques­
+tion of how to program the meaning of cuddly 
+or identify whether a thin line in the image is 
+a whisker.
+Machine learning provides a data-driven ap­
+proach to this problem. In our example, we’d 
+show the neural network a bunch of labeled 
+photographs of cats, dogs, and anything else we 
+want it to be able to recognize (See Figure 1-9). 
+ML models have parameters called weights that 
+are adjusted in a process called training. We’d 
+train the model by evaluating the output and 
+adjusting the weights until the NN outputs the 
+correct label for each of the labeled photographs. 
+This is called backpropagation. We still may not 
+get 100% accuracy because models are not per­
+fect and because some images may be mislabeled 
+or ambiguous, and that’s often okay—we can 
+stop adjusting the weights when the accuracy 
+stops improving.
+Figure 1-9. The five key components of training machine learning models, and which characteristics are still applicable 
+during inference.
+How Generative AI Works    15
+
+[Page 28]
+Figure 1-10. The ML model inference flow.
+Figure 1-11. Step 1 of transfer learning involves training a foundational model.
+16    Chapter 1. Generative AI Everywhere All At Once
+
+[Page 29]
+After the model has been trained, we deploy 
+the model and let our application’s users upload 
+photos to it (see Figure 1-10). The model takes 
+each unknown image, runs it through the NN, 
+and sends back the output (which is cat, dog, 
+etc.). Based on this output, the application can 
+decide whether or not to show a specific image to 
+users who want to see cute cats. Using a trained 
+machine learning model to do what we trained 
+it to do (to classify what’s depicted in photos, for 
+example) is called inference.
+In many cases, humans can provide feedback, 
+either implicit (they look at relevant pictures 
+longer) or explicit (they click the “Like” button). 
+This sort of human feedback is used to further 
+train the model using a technique called rein­
+forcement learning. Reinforcement learning 
+from human feedback (RLHF) is a key reason 
+that AI models have become so much better, and 
+why many technologies focus on building a large 
+user base that can provide such feedback.
+Training a machine learning model from 
+scratch typically requires a lot of data. A model 
+capable of photograph classification will have 
+millions or billions of weights, and training it 
+(as a rule of thumb) would  require roughly that 
+number of examples. Fortunately, we don’t need 
+millions of labeled cat photos. Transfer learn­
+ing lets us start with a model trained on other 
+image datasets (called a foundational model; 
+see Figure 1-11) and adjust the weights of a small 
+part of the NN (this is called fine-tuning; see 
+Figure 1-12). The resulting model consists of the 
+Figure 1-12.  Step 2 of transfer learning involves fine-tuning. Fine-tuning lets us start from a foundational model and train a 
+bespoke model for our task based on a much smaller dataset.
+How Generative AI Works    17
+
+[Page 30]
+foundational model with a newly trained output 
+layer that is focused on our problem.
+Let’s identify some of the key characteristics of 
+this machine learning model:
+Input
+The input to the model is an image (really, the 
+pixels of an image).
+Data
+The data needed to train the model is a set 
+of photographs and labels that say what is in 
+the image.
+Model
+The model is a mathematical function that 
+works really well at image classification, such 
+as a convolutional neural network.
+Technique
+Because the model has millions of parame­
+ters and we are unlikely to have millions of 
+labeled images specific to our application, 
+we’ll need to fine-tune a foundational model 
+using transfer learning.
+Output
+The output of the image is one word (cat, dog, 
+tiger, etc.) of a limited vocabulary.
+Whenever you look at a machine learning use 
+case, it’s important to identify these five char­
+acteristics. In this chapter, we’ll do this as we 
+discuss how GenAI can create different forms of 
+output—images, text, audio, and video.
+Creating Images
+The first form of GenAI that we will discuss is 
+image generation. How can you create a ma­
+chine learning model that can generate new im­
+ages? In image generation, the input and output 
+are both images (see Figure 1-13). 
+Modern image generation models use a method 
+called conditional diffusion. There are four key 
+ideas underlying this technique (see Figure 1-14): 
+self-supervised denoising, progressive gener­
+ation, text conditioning, and superresolution. 
+Figure 1-13. Conditional diffusion is a technique that can generate images using self-supervised denoising, progressive 
+generation, text conditioning, and superresolution.
+18    Chapter 1. Generative AI Everywhere All At Once
+
+[Page 31]
+This contrasts with image classification (shown 
+in Figure 1-11), where the output is a word, such 
+as “dog,” from a limited vocabulary.
+Self-supervised denoising autoencoder
+Remember that in supervised machine learning, 
+such as the image classification example to teach 
+a model to identify cats, you need a large data­
+set of labeled images with one label per image. 
+For image generation, you’ll need 1000 × 1000 
+output pixel values for each image. The size of 
+the training dataset you need scales with the 
+number of weights you need to train, and when 
+you have one million outputs per image, you 
+will need one million times as many weights to 
+train, and therefore, one million times the size of 
+the dataset that we would need for image clas­
+sification! How are we going to create a labeled 
+dataset of sufficient size?
+Figure 1-14. Four techniques for conditional diffusion.
+How Generative AI Works    19
+
+[Page 32]
+Figure 1-15. How diffusion models use progressive generation.
+Figure 1-16. Image and text conditioning give you more control over the images that are generated by the model.
+20    Chapter 1. Generative AI Everywhere All At Once
+
+[Page 33]
+Diffusion solves this data scarcity problem using 
+a brilliant idea: take an image, add small ran­
+dom variations to the image (this is called noise), 
+then use the noisier image as input and the clean 
+image as output (see Figure 1-14). This sort of 
+technique where the ML model can synthetical­
+ly create training data without needing humans 
+to label the inputs is called self-supervision.
+Because the input of the ML model is a noisy im­
+age and its output is a clean image, the ML mod­
+el learns how to denoise an image. Any model 
+that essentially returns its input is called an 
+autoencoder. Here, because the output image has 
+less noise, it is called a denoising autoencoder.
+To create a good denoising autoencoder, you 
+need millions of images—but you don’t have to 
+spend time labeling them. Once you train the 
+model on these millions of images, it will be ca­
+pable of denoising images with a small amount 
+of noise.
+Progressive generation
+Instead of doing the denoising only once, you 
+can do it multiple times. In progressive genera­
+tion, the idea is to start with a clean image and 
+add noise in steps (Figure 1-15). If each step con­
+sists of adding only a small amount of noise, the 
+denoising autoencoder will be capable of revers­
+ing each individual step. At some point, you can 
+start with pure noise, and the model will be able 
+to reconstruct an image by doing the denoising 
+operation one step at a time (Figure 1-16).
+What kind of images can such progressive gen­
+eration create? If you start from random noise, 
+you will end up with an image that’s akin to the 
+images in the training dataset. This is great if 
+you train the model on a dataset of faces and are 
+happy to end up with a face, any face.
+What if, though, you want to control the image 
+in some manner? Then, you need a technique 
+called conditioning—instead of starting with 
+purely random noise, you would start with a mix 
+of random noise and a desirable image that you 
+want to match (see left panel of Figure 1-16). If 
+you want to generate an image that is like some­
+thing in your training dataset, you can start 
+with that desirable image, suitably degraded, 
+and ask the generative model to denoise that 
+image progressively so that you end up with a 
+similar image.
+This is rather hit-and-miss, though—two images 
+could be alike because they both depict outdoor 
+scenes, or because they both depict moun­
+tainous areas. What level of detail should the 
+similarity capture? What if you’d like to be able 
+to generate images that are completely unlike 
+anything in your training dataset, and so you 
+don’t have a desired likeness to start from? 
+Text conditioning
+It would be ideal if we could condition based 
+on text—perhaps we can provide a sentence 
+that describes the image we want (“two hikers 
+walking up a mountain”). To do that, you have to 
+first train the generative model on text-to-image 
+pairs. If you are training on images in books, 
+you could use the image caption or the sentence 
+that references the image as the text that is used 
+to train the model.
+Rather than train a denoising model purely 
+on the noisy image, we also tell it what’s in the 
+image, so that the denoiser in each step has two 
+How Generative AI Works    21
+
+[Page 34]
+inputs: the noisy image and a caption or descrip­
+tion. The output remains the clean image. This is 
+how the model is conditioned to operate on text.
+Once such a text-conditioned model has been 
+trained, you can use progressive generation—
+start from random noise and a caption that 
+describes the image you want, and end up with 
+a generated image that matches the description 
+(see right panel of Figure 1-16).
+Superresolution
+The approach we just described is sufficient to 
+create a simple illustration, but it can’t create 
+photorealistic images or fine paintings. For that, 
+you need a model that can learn how to handle 
+light, shadow, and other aspects of style. So, 
+modern diffusion models employ yet another 
+machine learning model to go from low-resolu­
+tion images to superresolution, photorealistic 
+images. Such a model can also be trained in a 
+self-supervised way by starting from high-reso­
+lution photographs and paintings, progressively 
+coarsening them, and then repeating the process 
+in reverse during inference (see Figure 1-14).
+Creating Text
+As shown in Figure 1-17, the input to a GenAI 
+model that generates text can be purely text or 
+it can be multimodal (consisting of interleaved 
+images and text). While many popular founda­
+tional models such as Gemini and Claude are 
+multimodal, we’ll simplify the discussion in this 
+section by focusing on text inputs only.
+There are a few key concepts that underlie text 
+generation models: next-word prediction, 
+transformer architecture, prefix tuning, human 
+feedback, conversation state, and instruction 
+tuning. Let’s look at these one by one. These 
+ideas are roughly in chronological order, with 
+each idea building on previous inventions.
+Next-word prediction
+Text generation models are set up to predict the 
+next word given a context. For example, given 
+the following context (see Figure 1-18):
+“We were climbing the”
+The text generation model identifies the next 
+most likely words:
+We were climbing the [hill, mountain, 
+tree, …]
+It chooses one of them based on the candidates’ 
+likelihood, adds it to the context, and then pro­
+ceeds to identify the word most likely to follow:
+We were climbing the mountain [when, 
+at, on, …]
+This method of iteratively predicting one word 
+at a time is what powers many phones’ predic­
+tive text models (Google Search’s autocomplete 
+predicts multiple words at once, but is similar). 
+You may have seen the memes where you plug in 
+a prompt and see what your phone gives you: “I 
+like talking to….” Using this method of itera­
+tively predicting one word at a time, a text gener­
+ation model can generate paragraphs, pages, and 
+even entire books.
+How does the model know which words are 
+likely in a given context? It is shown billions 
+of sentences where the training data consists 
+of N words, and the model needs to learn 
+to predict the N +1th word. The size of the 
+training corpus (billions of words) is such a 
+22    Chapter 1. Generative AI Everywhere All At Once
+
+[Page 35]
+defining characteristic of this approach that it 
+gives text generation models their name: large 
+language models.
+An LLM that always chooses the most likely 
+word would result in repetitive and robotic text. 
+In practice, therefore, an LLM chooses among 
+the most likely set of words in proportion to 
+their relative probabilities. Think of the LLM as 
+throwing a dart at a dartboard where the area 
+corresponding to each candidate word is pro­
+portional to the probability of that word being 
+found in the training data. This is one of the rea­
+sons why when you ask a chatbot the exact same 
+question, you are not guaranteed to get the same 
+answer. Text generation is not deterministic.
+The term “next-word prediction” is not strictly 
+accurate. Modern text generation models do 
+not operate on words. Instead, they operate on 
+tokens. This is because there are many things in 
+text that are hard to represent as just words. 
+Figure 1-17. Basic workflow for GenAI models to produce text.
+Figure 1-18. LLMs predict the next word in a sequence.
+How Generative AI Works    23
+
+[Page 36]
+Figure 1-19. How transformers are structured to include context in their predictions.
+Figure 1-20. The “Attention Is All You Need” paper introduced the idea of self-attention.
+Figure 1-21. How next-word prediction worked before transformers.
+24    Chapter 1. Generative AI Everywhere All At Once
+
+[Page 37]
+Imagine a sentence like the following:
+I bought the GenAI book by Vergadia and 
+Lakshmanan for $45 on amazon.com.
+It would be almost impossible to represent the 
+words here using a finite vocabulary—after all, 
+there will always be unique and rare names, 
+and the set of possible numbers is itself infinite. 
+Instead, what models do is to break the sentence 
+up, and split any word that is not a common 
+word into one- or two-character sequences 
+called tokens. A tokenized version of the sen­
+tence might look something like this:
+I bought the Ge n AI book by V erg ad 
+ia and La k sh ma nan for $ 4 5 on 
+amazon . com.
+The list of these tokens is now finite, and it is 
+possible to represent anything in a corpus of 
+text using them. However, one potential draw­
+back of such tokenization is that text generation 
+models have to work harder to understand the 
+likelihoods of citations (such as lists of people’s 
+names) and numbers.
+Transformer architecture
+Modern generative AI is based on a technol­
+ogy called transformers (Figure 1-19), which 
+was introduced in a famous 2017 paper called 
+Attention Is All You Need (https://oreil.ly/cgw­
+WN), originally for translation problems (see 
+Figure 1-20). It solved several problems associat­
+ed with previous attempts at language problems 
+like translation, homonyms, and word order (see 
+Figure 1-21). 
+In a transformer architecture, the input text 
+is converted into a numerical representation 
+called an embedding, using an NN called an 
+encoder. This embedding, along with preceding 
+words of translated text, is provided as input to 
+a second NN, called a decoder, which outputs 
+the next word of the translation. While trans­
+lation requires both an encoder and a decoder, 
+other language problems like sentiment analy­
+sis and next-word prediction can be addressed 
+with only an encoder or only a decoder (see 
+Figure 1-22).
+Figure 1-22. Different types of transformers are used for different tasks.
+How Generative AI Works    25
+
+[Page 38]
+Figure 1-23. The transformer architecture involves two concepts, attention and positional embeddings, that together solve 
+the problem of word order in translations.
+26    Chapter 1. Generative AI Everywhere All At Once
+
+[Page 39]
+waiter, it would have been “le garçon.” In this 
+way, the decoder learns to pay attention to differ­
+ent words, even to the point of “reasoning” that 
+the person was walking holding the binoculars 
+(“marcher avec des jumelles”). Hence, the title 
+of the famous paper: “Attention Is All You Need” 
+(it’s also a homage to the famous Beatles song 
+“All You Need Is Love”).
+While encoder-decoder models continue to be 
+used for translation and summarization, many 
+modern language models tend to specialize—
+they either have only an encoder or only a de­
+coder! Models with only an encoder are limited 
+to producing embeddings, but embeddings are 
+all you need for a variety of language tasks, in­
+cluding text classification, topic modeling, and 
+search. Models with only a decoder are used to 
+generate open-ended text. GPT-4, Gemini, and 
+Claude are all encoder-only models. 
+The data used to train an LLM tends to come 
+from many publicly available sources such as 
+Common Crawl, Wikipedia, US patents, and 
+corpora of books. Recently, foundational mod­
+el providers have been striking agreements 
+with content owners such as Reddit and Stack 
+Overflow for the right to train their LLMs on 
+copyrighted data.
+Prefix tuning
+A decoder-only LLM is capable of generating 
+text, but we usually want to control the form 
+and content of the text, not just generate what is 
+statistically most likely given the starting point. 
+One way to do this is by fine-tuning the model to 
+follow instructions. Some example prompts are 
+shown in the following: 
+There is one wrinkle: translating between two 
+languages is almost never word-for-word. The 
+word order within sentences varies. One lan­
+guage may have gendered pronouns where the 
+other doesn’t; some words may have different 
+translations depending on the subject. The stan­
+dard way to handle this in early machine learn­
+ing models was to imbue them with memory so 
+that they could remember the words that came 
+before, and to feed in words in sequence. Such 
+recurrent neural networks didn’t work very well.
+The authors of the transformer paper introduced 
+two concepts—positional embeddings and 
+attention—that provided a brilliant solution to 
+this problem (see Figure 1-23). Positional em­
+beddings are exactly what the term sounds like: 
+instead of just creating tokens for each word 
+encountered in the input text, models using this 
+technique also append a relative position. So, if 
+we are “on” the word person in the sentence I saw 
+the person walking…, the representation of the 
+previous words would be (I, -4), (saw, -3), and 
+(the, -2).
+The output of the decoder depends in part on the 
+weights associated with these positions, so that 
+the translation of any word depends in different 
+ways on the words that came before—for exam­
+ple, the weights of the words “I” and “saw” would 
+be high when determining the first word of the 
+translated phrase into French (“j’ai”) because 
+this depends on tense—“I see” would be “je 
+vois”. We say the model is paying attention to 
+the words “I” and “saw” when decoding the 
+word “j’ai”. 
+Similarly, the third word of the translation (“la”) 
+would require heavy weights on “the” and “per­
+son” because French is gendered—had I seen a 
+How Generative AI Works    27
+
+[Page 40]
+•	 Create an outline of a book on GenAI
+•	 Write a poem to celebrate an athlete’s 
+30th birthday
+•	 Summarize the following paragraph in two 
+sentences (followed by a paragraph of text)
+•	 Translate the following text into German 
+(followed by some text)
+The way that foundational model providers 
+imbue their next-word prediction models with 
+these capabilities is called supervised fine-tuning 
+(SFT) or prefix tuning (see Figure 1-24). 
+The model trainer adds a description of the task 
+to be done and prefixes it to the input text they 
+provide to the model. The trainer appends this 
+example to the labeled training data for each of 
+the tasks—the result is one massive dataset cov­
+ering a wide variety of prefixes (each of which is 
+an instruction to the model). The model is thus 
+trained to produce the desired output text given 
+a wide variety of prompts. This way, the LLM 
+learns to follow a wide variety of instructions, 
+instead of being able to do only one specific task.
+While the T5 model from Google (https://oreil.
+ly/YYpTJ), which introduced prefix tuning 
+in 2020, supported only a limited number of 
+tasks, OpenAI’s GPT-3, introduced in 2022, was 
+described as being task-agnostic. It appears that, 
+as the number of tasks a model supports increas­
+es and as the size of the model increases, the 
+model starts to be able (https://oreil.ly/yrWlK) 
+Figure 1-24. Prefix tuning, also known as supervised fine-tuning.
+28    Chapter 1. Generative AI Everywhere All At Once
+
+[Page 41]
+to do tasks that it was not explicitly trained to 
+do, as long as there was some similar task in 
+the training dataset. This is only a hypothesis, 
+however. Between 2020 and 2022, the leading 
+foundational model providers ceased being 
+open about their methods, so it’s unclear what 
+other changes (like meta-prompting; https://
+oreil.ly/noTPQ) OpenAI employed to make their 
+models task-agnostic.
+Human feedback
+The basic transformer approach worked fine 
+for generating short snippets of text or highly 
+conditioned text (such as translations). For more 
+open-ended tasks, the text got less coherent the 
+longer it got. 
+To address this, OpenAI introduced the idea 
+of reinforcement learning with human feedback 
+(RLHF) with its GPT-2 model. Incorporating 
+human feedback (https://oreil.ly/Ewqox) remains 
+an important part of modern LLMs, although 
+an elegant mathematical result called direct pref­
+erence optimization (DPO) has enabled LLMs 
+trained after 2024 to incorporate human feed­
+back while avoiding reinforcement learning.
+The basic idea is to have the tuned model output 
+two different texts, then have a human select 
+which text they prefer (see Figure 1-25). Once 
+you have enough pairs (in practice, 100,000 
+to 1,000,000 examples), it’s possible to train a 
+reward model to predict which text a human 
+would select. The LLM is then fine-tuned to as­
+sign higher probabilities to word continuations 
+that would be more pleasing to humans.
+Pretrained foundational models such as GPT-4, 
+Gemini, and Claude are LLMs that have been 
+Figure 1-25. Reinforcement learning with human feedback (RLHF).
+How Generative AI Works    29
+
+[Page 42]
+Figure 1-26. Products built around foundational models.
+30    Chapter 1. Generative AI Everywhere All At Once
+
+[Page 43]
+prefix-trained to support multiple tasks or to be 
+task-agnostic, then fine-tuned on human feed­
+back. If you use Gemini through Google Cloud 
+Vertex AI or Claude 3 through Amazon Web 
+Services (AWS), you are using a pretrained mod­
+el. This is important because it’s possible to fur­
+ther fine-tune such a model on your own data, 
+using a parameter-efficient fine-tuning (PEFT) 
+method such as low-rank adaptation (LoRA), 
+both of which we’ll discuss later in this book.
+Productionizing the foundational model
+When you use OpenAI’s GPT-4 (http://chat.
+openai.com), Google’s Gemini (http://gemini.
+google.com), or Anthropic’s Claude 3 (http://
+claude.ai) through their web services, you are 
+not getting the foundational model. Instead, you 
+are getting a product that is architected around 
+the foundational model.
+A service such as ChatGPT is an API endpoint to 
+a web service that is powered by the foundational 
+model but also includes a host of additional ca­
+pabilities (see Figure 1-26). The web service keeps 
+conversational state—in other words, it asks the 
+LLM to summarize the previous conversation 
+and automatically adds the summary as addi­
+tional context to the prompt of the next question 
+you ask. The web service might also maintain 
+long-term memory from past sessions—for 
+example, it might use your past queries and fol­
+low-up instructions to provide answers that are 
+better aligned to your personal preferences.
+Many web services often let users invoke ex­
+ternal tools, such as the ability to search the 
+web and incorporate the search results directly 
+into the context of the query. The foundational 
+model, on the other hand, can only generate text 
+based on the training dataset. If you’re a devel­
+oper using a foundational model and you want 
+to fine-tune it to your dataset, include previous 
+conversation state, or call out to some web capa­
+bility, you’ll have to code that up yourself.
+Creating Audio and Video
+Compared to creating images and generating 
+text, the enterprise use cases for creating music 
+and videos are narrower and more specialized 
+(see Figure 1-27). There is also the additional 
+Figure 1-27. Basic audio and video workflow for GenAI models.
+How Generative AI Works    31
+
+[Page 44]
+complication that audio and video have an 
+element of time. So, we’ll provide only a very 
+high-level overview of how music and video 
+generation work.
+Audio
+In 2023, Meta introduced an open source 
+family of models called AudioCraft (https://
+oreil.ly/1T4eg) to generate music and sound 
+effects in response to a text prompt.  Rather 
+than training these models starting from music 
+representations such as MIDI files or sheet 
+music, Meta started from raw audio signals (see 
+Figure 1-28). 
+Two important concepts here are encoding 
+and interleaving:
+Encoding audio
+Dealing with raw audio signals directly 
+would require processing millions of time­
+steps per minute of audio. So, the first step 
+is to train an autoencoder that functions on 
+Figure 1-28. Interleaving audio and video models involves specialized architectures.
+32    Chapter 1. Generative AI Everywhere All At Once
+
+[Page 45]
+raw audio, but also quantize the intermediate 
+embedding to make it small enough for the 
+remaining steps to handle. 
+For example, if you want the audio output at 
+a quality of 48 kHz (the quality of CD record­
+ings), it is possible to reduce the size of raw 
+audio signals by over 10 times.
+Interleaving text and audio
+Text input is converted into a vector repre­
+sentation using standard text-embedding 
+models. Because the raw audio has been 
+converted into audio tokens, we now have 
+two sequences of vectors, one of text and the 
+other of audio. These need to be combined 
+to create the input to the GenAI model. But 
+there is a complication: the audio tokens are 
+spread over timesteps, whereas the text input 
+is static.
+The Meta researchers solve this complica­
+tion by interleaving the two sequences in 
+various ways that preserve the frame rate of 
+the audio and have the same distribution of 
+tokens and text. The interleaving algorithm 
+picks subsets of the audio token sequences 
+or introduces delays within which the text 
+can be interleaved. The specific subsets and 
+delays are determined beforehand (these 
+predetermined patterns are called codebooks) 
+and applied to all the audio and text pairs in 
+the training dataset.
+As with image and text generation models, 
+the interleaved sequence up until a timestep 
+forms the input to the transformer model, 
+and the model is trained to predict the audio 
+tokens of the next timestep. These audio 
+tokens are then decoded with the original 
+decoder to create the audio output.
+Video
+In 2024, Google published a paper (https://oreil.
+ly/Be0fQ) explaining how to generate video con­
+ditioned on text prompts or on an initial image. 
+Called Lumiere (https://oreil.ly/lNH89), the ap­
+proach is new in that it processes all the frames 
+of a short video simultaneously, instead of work­
+ing on time samples (as the Meta audio model, 
+discussed in the previous section, did). With this 
+approach, video generation is exactly like image 
+generation using diffusion (see Figure 1-29), ex­
+cept that video generation operates on one more 
+dimension than image generation! The exact 
+same concepts apply.
+Model architecture
+The encoder part of the model architecture 
+consists of progressively downsampling the 4D 
+input sequence (one temporal dimension, two 
+spatial dimensions of height and width, one 
+dimension of RGB values) using a specific kind 
+of neural network layers called convolutional 
+layers. Convolutional networks find structure 
+in images by operating, not on individual pixels, 
+but on all the pixels within a pixel’s neighbor­
+hood. At the coarsest resolution, the resulting 
+stacks are stacked across time and input into 
+an attention layer, as shown in Figure 1-30. This 
+way, the model can learn to pay attention to 
+different timesteps and parts of the frame. The 
+layers are then reconstructed by upsampling 
+back to the original dimension. This allows the 
+model to learn how to form videos.
+How Generative AI Works    33
+
+[Page 46]
+Figure 1-29. Conditioning for video generation.
+Figure 1-30. Model architecture for video generation.
+34    Chapter 1. Generative AI Everywhere All At Once
+
+[Page 47]
+As with image generation, this video autoen­
+coder architecture can be used to denoise an 
+input video to which random noise has been 
+added. Thus, we can train a diffusion model to 
+generate a video starting from random noise. 
+The Lumiere paper showed that it was possible to 
+freeze the weights of a pretrained image diffu­
+sion model and to train only the newly added 
+time parameters.
+Conditioning
+As with image generation, we don’t want to 
+generate some arbitrary video; we would like to 
+control the content and style of the video. Video 
+generation too can be conditioned off a text 
+prompt. It can also be conditioned off an image 
+that provides the style of the desired video. By 
+2025, video generation models such as Sora, 
+Runway, and Veo had greatly improved on the 
+Lumiere approach and are now capable of creat­
+ing long, quite realistic videos. 
+We hope that this tour through the technologies 
+underpinning GenAI has helped demystify 
+the models. Just understanding the technology 
+doesn’t really do it justice, though. You need to 
+understand what you can do with these capabili­
+ties. For that, you have to look at these technolo­
+gies through the product capabilities lens. What 
+can we do now that we couldn’t do just a few 
+years ago?
+From Transformers to ChatGPT in Six Years
+The 2017 paper that introduced transformers, 
+“Attention Is All You Need,”  was hugely influen­
+tial in machine learning research, but the tech­
+nology was not yet ready to get into the hands of 
+the general public.
+Writing Poetry
+In 2018, one of the authors of this book (Lak) 
+collaborated with one of the “famous eight” 
+engineers who wrote the transformers paper 
+(Lukasz) to use the ideas in that paper to gener­
+ate poetry (https://oreil.ly/REIcH). The idea was 
+to feed in one line of a real poem, and have the 
+model generate a possible next line. 
+We created a training dataset by downloading 
+22,000 lines of poetry from Project Gutenberg  
+(https://gutenberg.org) and extracting pairs of 
+lines, so that the input was a line of poetry and 
+the target output was the next line from the 
+same poem. For example, Shakespeare’s 14-line 
+sonnet on absence would contribute 13 training 
+examples, as shown in Table 1-1.
+We trained the transformer on these input-out­
+put pairs, deployed the model, and asked people 
+to try it out. As a demonstration of the technol­
+ogy, it was powerful. For example, we prompt­
+ed it with a line from a poem by the Persian 
+poet Rumi:
+where did the handsome beloved go
+The model output:
+where art thou worse to me than dead
+In 2018, the fact that we could get a fluent line of 
+poetic text, rather than just gibberish, from just 
+From Transformers to ChatGPT in Six Years    35
+
+[Page 48]
+22,000 examples was amazing. However, the re­
+sulting poetry was not coherent—the first line is 
+about absence, whereas the model’s completion 
+is about disappointment.
+What happens if we try that same line with some 
+modern GenAI models in 2024? Because we 
+have not trained these models on our task, we’ll 
+prepend an instruction to the input:
+You are a poet. I will give you the 
+first line of a couplet. Please suggest 
+a potential second line. 
+First line: where did the handsome 
+beloved go
+Second line:
+In Table 1-2, we show you our results and pro­
+vide a URL where you can try it yourself. Note, 
+however, that the results you obtain won’t match 
+ours because the models use randomness in 
+their generation.
+All these models exhibit both fluency and 
+coherence, although the smallest model is 
+somewhat prosaic.
+What changed between 2017 and 2024?
+One Small Step by OpenAI
+In 2022, OpenAI released ChatGPT as a re­
+search preview (https://oreil.ly/3rD1K), intro­
+ducing it as “a sibling model to InstructGPT, 
+which is trained to follow an instruction in a 
+prompt and provide a detailed response.” It was 
+an incremental improvement, just one step in a 
+long set of improvements to transformers (see 
+Figure 1-31), but it turned out to be the step that 
+moved the technology from being a research 
+curiosity to something laypeople could use.
+Priyanka vividly remembers encountering 
+ChatGPT amidst the whirlwind of her MBA 
+program, where every day seemed to be a race 
+Table 1-1. Training examples for the poetry model
+INPUT
+TARGET OUTPUT
+Being your slave what should I do but tend
+Upon the hours and times of your desire?
+Upon the hours and times of your desire?
+ I have no precious time at all to spend,
+I have no precious time at all to spend,
+Nor services to do, till you require:
+Nor services to do, till you require:
+ Nor dare I chide the world-without-end hour
+ Nor dare I chide the world-without-end hour
+Whilst I, my sovereign, watch the clock for you,
+Whilst I, my sovereign, watch the clock for you,
+Nor think the bitterness of absence sour
+Nor think the bitterness of absence sour
+When you have bid your servant once adieu:
+When you have bid your servant once adieu:
+Nor dare I question with my jealous thought
+Nor dare I question with my jealous thought
+Where you may be, or your affairs suppose,
+Where you may be, or your affairs suppose,
+But like a sad slave, stay and think of nought
+But like a sad slave, stay and think of nought
+Save where you are, how happy you make those;—
+Save where you are, how happy you make those;—
+So true a fool is love, that in your will,
+So true a fool is love, that in your will,
+Though you do any thing, he thinks no ill.
+36    Chapter 1. Generative AI Everywhere All At Once
+
+[Page 49]
+Table 1-2. Poetry completion by a few selected GenAI models in April 2024
+Model and URL to try it out
+Parameter count
+Suggested completion(s)
+ChatGPT 3.5 (OpenAI)
+https://chat.openai.com
+175 billion
+Leaving behind traces of his whispered echo
+Gemini 1.0 Pro (Google)
+https://gemini.google.com 
+Not published
+Option 1: Focused on longing and mystery
+Where did the handsome beloved go?
+His absence leaves my spirit low.
+Option 2:  A more whimsical, nature-inspired approach
+Where did the handsome beloved go?
+Perhaps the wind his secret does know.
+DBRX (Databricks)
+132 billion
+Beneath the moon’s soft glow, his heart still beats in rhythm with your 
+own.
+Claude 3 Sonnet (Anthropic)
+https://claude.ai 
+70 billion
+leaving my heart to ache and soul to woe
+Mistral-7B (Mistral AI)
+https://hugging­
+face.co/mistralai/
+Mistral-7B-Instruct-v0.2 
+7 billion
+perhaps in the twilight, he sailed across the sea. or perhaps he hid within 
+the forest’s secret heart. or perhaps he left to chase the setting sun. 
+Figure 1-31. A long set of improvements to the original transformer model.
+From Transformers to ChatGPT in Six Years    37
+
+[Page 50]
+Knowing that no practical LLM could ever be 
+large enough to capture all human-generat­
+ed text, he even wrote an article in 2022 titled 
+“Why Large Language Models Like ChatGPT Are 
+Bullshit Artists” (although he did cover his bases 
+somewhat by adding the subtitle “and how to use 
+them effectively anyway”; https://oreil.ly/hYd3A).
+What did Lak miss?
+Advances Between 2017 and 2024
+Lak missed that (a) billions of parameters are 
+enough to capture the gist, if not the entirety, 
+of the most commonly needed information, 
+and (b) the culmination of many technology 
+improvements is that GenAI models have vastly 
+improved. In this section, we’ll quickly run 
+through these improvements. 
+Generative AI’s widespread adoption stems 
+from three key factors: its user-friendliness, 
+enabling anyone to utilize it regardless of techni­
+cal expertise; its speed, delivering high-quality 
+results rapidly and saving considerable time; 
+and its continuous advancement, leading to 
+increasing sophistication and capabilities.
+If you are skeptical about the capabilities of 
+LLMs, as Lak used to be, perhaps this will help 
+bring you over to a more optimistic outlook. If 
+you have a colleague or boss who is skeptical 
+about LLMs, share this chapter with them.
+The improvements have happened in four broad 
+areas: model architecture, data quality, algorith­
+mic improvements, and customizability.
+against time. With a stack of company case stud­
+ies towering over her desk, she often found her­
+self drowning in the details. It was during one of 
+these overwhelming moments that she explored 
+ChatGPT, which was all the buzz at the time. 
+With a simple prompt, it effortlessly condensed 
+the intricate narratives of each case study into 
+concise yet insightful summaries. This new­
+found efficiency transformed her study sessions, 
+allowing her to grasp the essence of each case 
+study without getting lost in the minutiae. 
+As her MBA journey progressed, ChatGPT 
+became an indispensable tool in her arsenal. 
+Whenever she hit a roadblock while brainstorm­
+ing paper topics, she turned to it for inspiration. 
+Its ability to generate diverse ideas sparked her 
+creativity and helped her uncover fresh perspec­
+tives to explore. For Priyanka, the most valuable 
+aspect of ChatGPT was its talent for brevity: 
+with word limits on every assignment, it helped 
+her trim down her papers without sacrificing 
+substance. ChatGPT, she felt, effortlessly sculpt­
+ed her verbose drafts into sleek, polished com­
+positions that fit snugly within the confines of 
+her professors’ expectations.
+Your other author, Lak, wasn’t as easily con­
+vinced that ChatGPT could be useful. He still re­
+membered the incoherent text that came out of 
+his poetry language model in 2018, and couldn’t 
+believe that a simple next-word predictor would 
+produce fluent and coherent text. There is a 
+famous theorem (https://oreil.ly/fWt7E) by 
+Claude Shannon that, in simple terms, says that 
+to create an LLM capable of learning the entire 
+corpus of text available on the internet, the LLM 
+would need as many parameters as it would 
+take to store the internet in compressed form. 
+38    Chapter 1. Generative AI Everywhere All At Once

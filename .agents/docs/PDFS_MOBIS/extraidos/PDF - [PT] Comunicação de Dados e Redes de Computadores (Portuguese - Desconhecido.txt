@@ -1,0 +1,2377 @@
+[Page 2]
+F727c 
+ Forouzan, Behrouz A.  
+ 
+ 
+Comunicação de dados e redes de computadores [recurso  
+ 
+eletrônico] / Behrouz A. Forouzan com a colaboração de  
+ 
+ 
+Sophia Chung Fegan ; tradução: Ariovaldo Griesi ; revisão   
+ 
+técnica: Jonas Santiago de Oliveira. – 4. ed. – Dados  
+ 
+ 
+eletrônicos. – Porto Alegre : AMGH, 2010.
+   
+ 
+                  
+Editado também como livro impresso em 2008.
+                  
+ISBN 978-85-63308-47-4
+ 
+ 
+1. Comunicação entre computadores. 2. Redes de  
+ 
+ 
+computadores. I. Fegan, Sophia Chung. II. Título. 
+CDU 004.7
+Catalogação na publicação: Ana Paula M. Magnus – CRB-10/Prov-009/10
+
+[Page 3]
+2010
+COMUNICAÇÃO
+DE DADOS E 
+REDES DE 
+COMPUTADORES
+Quarta Edição
+Behrouz A. Forouzan
+DeAnza College
+com a colaboração de
+Sophia Chung Fegan
+Tradução
+Ariovaldo Griesi
+Revisão Técnica
+Jonas Santiago de Oliveira
+Mestre em Engenharia Elétrica pela USP
+Docente dos cursos de Engenharia de Telecomunicações da UNIFIEO e 
+Sistemas de Informação da FICS — Campos Salles
+Versão impressa
+desta obra: 2008
+
+[Page 4]
+Obra originalmente publicada sob o título
+Data Communications and Networking, 4th Edition
+© 2007 de The McGraw-Hill Companies, Inc.
+1221 Avenue of the Americas, New York, NY 10020
+ISBN da obra original: 13 978–0–07–296775–3
+ 
+  10 0–07–296775–7
+Editora de Desenvolvimento: Alessandra Borges
+Supervisora de Produção: Guacira Simonelli
+Preparação de Texto: Maria Alice da Costa
+Design de capa: Rokusek Design
+Imagem de capa (USE): Women ascending Mount McKinley, Alaska. Mount McKinley 
+ 
+  (Denali) 12.000 feet. ©Allan Kearney/Getty Images.
+Editoração Eletrônica: Crontec Ltda.
+Reservados todos os direitos de publicação, em língua portuguesa, à 
+AMGH Editora Ltda. (AMGH EDITORA é uma parceria entre 
+ARTMED Editora S.A. e MCGRAW-HILL EDUCATION). 
+Av. Jerônimo de Ornelas, 670 - Santana 
+90040-340  Porto Alegre  RS 
+Fone (51) 3027-7000   Fax (51) 3027-7070  
+É proibida a duplicação ou reprodução deste volume, no todo ou em parte, 
+sob quaisquer formas ou por quaisquer meios (eletrônico, mecânico, gravação, 
+fotocópia, distribuição na Web e outros), sem permissão expressa da Editora.  
+SÃO PAULO
+Av. Embaixador Macedo Soares, 10.735 - Pavilhão 5 - Cond. Espace Center  
+Vila Anastácio  05095-035  São Paulo  SP
+Fone (11) 3665-1100  Fax (11) 3667-1333   
+SAC  0800 703-3444
+IMPRESSO NO BRASIL
+PRINTED IN BRAZIL
+
+[Page 5]
+À minha esposa, Faezeh, com carinho
+Behrouz Forouzan
+
+[Page 6]
+vii
+RESUMO DO SUMÁRIO
+Prefácio xxix
+PARTE 1 
+Visão Geral 1 
+Capítulo 1 
+Introdução 3 
+Capítulo 2 
+Modelos de Redes 27
+PARTE 2 
+Camada Física e Meios de Transmissão 55 
+Capítulo 3 
+Dados e Sinais 57 
+Capítulo 4 
+Transmissão Digital 101 
+Capítulo 5 
+Transmissão Analógica 141 
+Capítulo 6 
+Utilização da Largura de Banda: Multiplexação e Espalhamento 161 
+Capítulo 7 
+Meios de Transmissão 191 
+Capítulo 8 
+Comutação 213 
+Capítulo 9 
+O Uso de Redes Telefônicas e a Cabo na Transmissão de Dados 241
+PARTE 3 
+Camada de Enlace de Dados 265 
+Capítulo 10 
+Detecção e Correção de Erros 267 
+Capítulo 11 
+Controle do Enlace de Dados 307 
+Capítulo 12 
+Acesso Múltiplo 363 
+Capítulo 13 
+LANs com Fio: Ethernet 395 
+Capítulo 14 
+LANs sem Fio (Wireless LANs) 421 
+Capítulo 15 
+Conexão de LANs, Redes Backbone e LANs Virtuais 445 
+Capítulo 16 
+WANs sem Fio: Redes de Telefonia Celular e Via Satélite 467 
+Capítulo 17 
+SONET/SDH 491 
+Capítulo 18 
+Redes de Circuitos Virtuais: Frame Relay e ATM 517
+PARTE 4 
+Camada de Rede 547 
+Capítulo 19 
+Camada de Rede: Endereçamento Lógico 549 
+Capítulo 20 
+Camada de Rede: IP 579
+
+[Page 7]
+viii    RESUMO DO SUMÁRIO
+Capítulo 21	
+Camada de Rede: Mapeamento de Endereços, Notificação de Erros e 
+	
+	
+Multicasting  611 
+Capítulo 22	
+Camada de Rede: Entrega, Encaminhamento e Roteamento  647
+PARTE 5	
+Camada de Transporte  701 
+Capítulo 23	
+Comunicação entre Processos: UDP, TCP e SCTP  703 
+Capítulo 24	
+Controle de Congestionamento e Qualidade de Serviços  761
+PARTE 6	
+Camada de Aplicação  795 
+Capítulo 25	
+Sistema de Nomes de Domínios  797 
+Capítulo 26	
+Logging Remoto, Correio Eletrônico e Transferência de Arquivos  817 
+Capítulo 27	
+WWW e HTTP  851 
+Capítulo 28	
+Gerenciamento de Redes: SNMP  873 
+Capítulo 29	
+Multimídia  901
+PARTE 7	
+Segurança  929 
+Capítulo 30	
+Criptografia  931 
+Capítulo 31	
+Segurança de Redes  961 
+Capítulo 32	
+Segurança na Internet: IPSec, SSL/TLS, PGP, VPN e Firewalls  995 
+Apêndice A	 Unicode  1029 
+Apêndice B	 Sistemas de Numeração  1037 
+Apêndice C	 Revisão de Matemática  1043 
+Apêndice D	 Código 8B/6T  1055 
+Apêndice E	
+Histórico sobre a Telefonia nos Estados Unidos  1059 
+Apêndice F	
+Endereços e Sites  1061 
+Apêndice G	 RFCs  1063 
+Apêndice H	 Portas TCP e UDP  1065 
+Acrônimos  1067 
+Glossário  1071 
+Índice Remissivo  1103
+
+[Page 8]
+ix
+SUMÁRIO
+Prefácio  xxix
+PARTE 1  Visão Geral  1
+Capítulo 1  Introdução  3
+1.1	
+COMUNICAÇÃO DE DADOS   3
+Componentes  4
+Representação de Dados  5
+Fluxo de Dados  6
+1.2	
+REDES  7
+Processamento Distribuído  7
+Critérios de Redes  7
+Estruturas Físicas  8
+Modelos de Redes  13
+Categorias de Redes  13
+Interconexão de Redes: Internetwork  15
+1.3	
+A INTERNET  16
+Um Breve Histórico  17
+A Internet Hoje em Dia  17
+1.4	
+PROTOCOLOS E PADRÕES  19
+Protocolos  19
+Padrões  19
+Organizações para Estabelecimento de Padrões  20
+Padrões Internet   21
+1.5	
+LEITURA RECOMENDADA  21
+Livros  21
+Sites*  22
+RFCs  22
+1.6	
+Termos-chave  22
+1.7	
+RESUMO  23
+1.8	
+ATIVIDADEs PRÁTICAs  24
+Questões para Revisão  24
+Exercícios  24
+Atividades de Pesquisa  25
+Capítulo 2  Modelos de Redes  27
+2.1	
+TAREFAS DISTRIBUÍDAS EM CAMADAS  27
+Emissor, Receptor e Transportador  28
+Hierarquia  29
+2.2	
+O MODELO OSI  29
+Arquitetura em Camadas  30
+
+[Page 9]
+x    SUMÁRIO
+Processos Peer-to-peer  30
+Encapsulamento  33
+2.3	
+CAMADAS DO MODELO OSI  33
+Camada Física  33
+Camada de Enlace de Dados  34
+Camada de Rede  36
+Camada de Transporte  37
+Camada de Sessão  39
+Camada de Apresentação  39
+Camada de Aplicação   41
+Resumo sobre as Camadas  42
+2.4	
+CONJUNTO DE PROTOCOLOS TCP/IP  42
+Camadas Física e de Enlace  43
+Camada de Rede  43
+Camada de Transporte  44
+Camada de Aplicação  45
+2.5	
+ENDEREÇAMENTO  45
+Endereços Físicos  46
+Endereços Lógicos  47
+Endereços de Portas  49
+Endereços Específicos  50
+2.6	
+LEITURA RECOMENDADA  50
+Livros  51
+Sites  51
+RFCs  51
+2.7	
+TERMOS-CHAVE  51
+2.8	
+RESUMO  52
+2.9	
+ATIVIDADES PRÁTICAS  52
+Questões para Revisão  52
+Exercícios  53
+Atividades de Pesquisa  54
+PARTE 2  Camada Física e Meios de Transmissão  55
+Capítulo 3  Dados e Sinais  57
+3.1	
+ANALÓGICO E DIGITAL  57
+Dados Analógicos e Digitais  57
+Sinais Analógicos e Digitais  58
+Sinais Periódicos e Não Periódicos  58
+3.2	
+SINAIS ANALÓGICOS PERIÓDICOS  59
+Onda Senoidal  59
+Fase  63
+Comprimento de Onda  64
+Domínios do Tempo e da Freqüência  65
+Sinais Compostos  66
+Largura de Banda  69
+3.3	
+SINAIS DIGITAIS  71
+Taxa de Transferência   73
+Comprimento de Bits  73
+Sinal Digital como um Sinal Analógico Composto  74
+Transmissão de Sinais Digitais  74
+3.4	
+PERDA NA TRANSMISSÃO  80
+Atenuação  81
+Distorção  83
+Ruído  84
+
+[Page 10]
+SUMÁRIO    xi
+3.5	
+LIMITES NA TAXA DE DADOS  85
+Canal sem Ruído: Taxa de Transferência de Nyquist  86
+Canal com Ruído: Capacidade de Shannon  87
+Usando Ambos os Limites  88
+3.6	
+DESEMPENHO  89
+Largura de Banda  89
+Throughput  90
+Latência (Retardo)  90
+Produto Largura de Banda-Retardo  92
+Jitter  94
+3.7	
+LEITURA RECOMENDADA  94
+Livros  94
+3.8	
+TERMOS-CHAVE  94
+3.9	
+RESUMO  95
+3.10	
+ATIVIDADEs PRÁTICAs  96
+Questões para Revisão  96
+Exercícios  96
+Capítulo 4  Transmissão Digital  101
+4.1	
+CONVERSÃO DIGITAL-DIGITAL  101
+Codificação de Linha  101
+Métodos de Codificação de Linha  106
+Codificação de Blocos  115
+Mistura de Sinais  118
+4.2	
+CONVERSÃO ANALÓGICA-DIGITAL  120
+Pulse Code Modulation (PCM)  121
+Modulação Delta (DM)  129
+4.3	
+MODOS DE TRANSMISSÃO  131
+Transmissão Paralela  131
+Transmissão Serial  132
+4.4	
+LEITURA RECOMENDADA  135
+Livros  135
+4.5	
+TERMOS-CHAVE  135
+4.6	
+RESUMO  136
+4.7	
+ATIVIDADES PRÁTICAS  137
+Questões para Revisão  137
+Exercícios  137
+Capítulo 5  Transmissão Analógica  141
+5.1	
+CONVERSÃO DIGITAL-ANALÓGICA  141
+Aspectos da Conversão Digital-Analógica  142
+Chaveamento de Amplitude  144
+Modulação por Chaveamento de Freqüência  146
+Modulação por Chaveamento de Fase  148
+Modulação por Amplitude de Quadratura  152
+5.2	
+CONVERSÃO ANALÓGICA-ANALÓGICA  152
+Modulação em Amplitude  153
+Modulação em Freqüência (Frequency Modulation)  154
+Modulação em Fase (Phase Modulation)  155
+5.3	
+LEITURA RECOMENDADA  156
+Livros  156
+5.4	
+TERMOS-CHAVE  157
+
+[Page 11]
+xii    SUMÁRIO
+5.5	
+RESUMO  157
+5.6	
+ATIVIDADES PRÁTICAS  158
+Questões para Revisão  158
+Exercícios  158
+Capítulo 6  Utilização da Largura de Banda:  
+Multiplexação e Espalhamento  161
+6.1	
+MULTIPLEXAÇÃO  161
+Multiplexação por Divisão de Freqüência  162
+Multiplexação por Divisão de Comprimento de Onda  167
+Multiplexação por Divisão de Tempo  169
+Multiplexação Estatística por Divisão de Tempo  179
+6.2	
+ESPALHAMENTO ESPECTRAL  180
+Espalhamento Espectral por Saltos de Freqüência (FHSS)  181
+Direct Sequence Spread Spectrum  184
+6.3	
+LEITURA RECOMENDADA  185
+Livros  185
+6.4	
+TERMOS-CHAVE  185
+6.5	
+RESUMO  186
+6.6	
+ATIVIDADES PRÁTICAS  187
+Questões para Revisão  187
+Exercícios  187
+Capítulo 7  Meios de Transmissão  191
+7.1	
+MEIOS DE TRANSMISSÃO GUIADOS  192
+Cabo de Par Trançado  192
+Cabo Coaxial  195
+Cabo de Fibra Óptica  198
+7.2	
+MEIOS DE TRANSMISSÃO NÃO GUIADOS  203
+Ondas de Rádio  205
+Microondas  206
+Infravermelho  207
+7.3	
+LEITURA RECOMENDADA  208
+Livros  208
+7.4	
+TERMOS-CHAVE  208
+7.5	
+RESUMO  209
+7.6	
+ATIVIDADES PRÁTICAS  209
+Questões para Revisão  209
+Exercícios  210
+Capítulo 8  Comutação  213
+8.1	
+REDES DE COMUTAÇÃO DE CIRCUITOS  214
+Três Fases  217
+Eficiência  217
+Retardo  217
+Tecnologia de Comutação de Circuitos em Redes de Telefonia  218
+8.2	
+REDES DE DATAGRAMAS  218
+Tabela de Roteamento  220
+Eficiência  220
+Retardo  221
+Redes de Datagramas na Internet  221
+
+[Page 12]
+SUMÁRIO    xiii
+8.3	
+REDE DE CIRCUITOS VIRTUAIS  221
+Endereçamento  222
+Três Fases  223
+Eficiência  226
+Retardo em Redes de Circuitos Virtuais   226
+Tecnologia de Comutação de Circuitos em WANs  227
+8.4	
+ESTRUTURA DE UM COMUTADOR  227
+Estrutura dos Comutadores de Circuitos  227
+Estrutura dos Comutadores de Pacotes  232
+8.5	
+LEITURA RECOMENDADA  235
+Livros  235
+8.6	
+TERMOS-CHAVE  235
+8.7	
+RESUMO  236
+8.8	
+ATIVIDADES PRÁTICAS  236
+Questões para Revisão  236
+Exercícios  237
+Capítulo 9  O Uso de Redes Telefônicas e a Cabo na Transmissão de Dados  241
+9.1	
+REDE TELEFÔNICA  241
+Principais Componentes  241
+Sinalização  244
+Serviços Fornecidos por Redes Telefônicas   247
+9.2	
+MODEMS DISCADOS  248
+Padrões de Modems  249
+9.3	
+LINHA DIGITAL DE ASSINANTE  251
+ADSL  252
+ADSL Lite  254
+HSDL  255
+SDSL  255
+VDSL  255
+Resumo  255
+9.4	
+REDES DE TV A CABO  256
+Redes de TV a Cabo Tradicionais   256
+Rede HFC (Hybric Fyber-Coaxial)   256
+9.5	
+TV A CABO PARA TRANSFERÊNCIA DE DADOS  257
+Largura de Banda   257
+Compartilhamento  259
+CM e CMTS  259
+Métodos de Transmissão de Dados: DOCSIS  260
+9.6	
+LEITURA RECOMENDADA  261
+Livros  261
+9.7	
+TERMOS-CHAVE  261
+9.8	
+RESUMO  262
+9.9	
+ATIVIDADES PRÁTICAS  263
+Questões para Revisão  263
+Exercícios  264
+PARTE 3  Camada de Enlace de Dados  265
+Capítulo 10  Detecção e Correção de Erros  267
+10.1	
+INTRODUÇÃO  267
+Tipos de erros   267
+
+[Page 13]
+xiv    SUMÁRIO
+Redundância  269
+Detecção versus Correção  269
+Correção Antecipada de Erros versus Retransmissão  269
+Códigos de Erros  269
+Aritmética Modular  270
+10.2	
+CÓDIGOS DE BLOCOS  271
+Detecção de Erros  272
+Correção de Erros  273
+Distância de Hamming  274
+Distância de Hamming Mínima   274
+10.3	
+CÓDIGOS DE BLOCOS LINEARES  277
+Distância Mínima para Códigos de Blocos Lineares  278
+Alguns Códigos de Blocos Lineares  278
+10.4	
+CÓDIGOS CÍCLICOS  284
+CRC — Cyclic Redundant Check  284
+Implementação no Hardware  287
+Polinômios  291
+Análise de Códigos Cíclicos  293
+Vantagens dos Códigos Cíclicos  297
+Outros Códigos Cíclicos  297
+10.5	
+CHECKSUM  298
+Conceito  298
+Complemento de Um  298
+Uso do Checksum na Internet  299
+Desempenho  301
+10.6	
+LEITURA RECOMENDADA  301
+Livros  301
+RFCs  301
+10.7	
+TERMOS-CHAVE  301
+10.8	
+RESUMO  302
+10.9	
+ATIVIDADES PRÁTICAS  303
+Questões para Revisão  303
+Exercícios  303
+Capítulo 11  Controle do Enlace de Dados  307
+11.1	
+FRAMING  307
+Framing de Tamanho Fixo  308
+Framing de Tamanho Variável  308
+11.2	
+CONTROLEs DE FLUXO E ERROS  311
+Controle de Fluxo  311
+Controle de Erros  311
+11.3	
+PROTOCOLOS  311
+11.4	
+CANAIS SEM RUÍDO  312
+O Protocolo mais Simples Possível  312
+11.5	
+CANAIS COM RUÍDO  318
+Stop-and-Wait com Solicitação de Repetição Automática   318
+Go-Back-N com Solicitação de Repetição Automática   324
+Selective Repeat Automatic Repeat Request  332
+Piggybacking  339
+11.6	
+HDLC  340
+Configurações e Modos de Transferência  340
+Frames  341
+Campo de Controle  343
+
+[Page 14]
+SUMÁRIO    xv
+11.7	
+PROTOCOLO PONTO A PONTO  346
+Framing  348
+Fases de Transição  349
+Multiplexação  350
+PPP Multilink  355
+11.8	
+LEITURA RECOMENDADA  357
+Livros  357
+11.9	
+TERMOS-CHAVE  357
+11.10	 RESUMO  358
+11.11	 ATIVIDADES PRÁTICAS  359
+Questões para Revisão  359
+Exercícios  359
+Capítulo 12  Acesso Múltiplo  363
+12.1	
+ACESSO RANDÔMICO  364
+ALOHA  365
+CSMA (Carrier Sense Multiple Access)  370
+CSMA/CD (Carrier Sense Multiple Access with Collision Detection)  373
+CSMA/CA (Carrier Sense Multiple Access withCollision Avoidance)  377
+12.2	
+ACESSO CONTROLADO  379
+Reservation  379
+Polling   380
+Token Passing  381
+12.3	
+CANALIZAÇÃO  383
+Frequency-Division Multiple Access (FDMA)  383
+Time-Division Multiple Access (TDMA)  384
+Code-Division Multiple Access (CDMA)  385
+12.4	
+LEITURA RECOMENDADA  390
+Livros  391
+12.5	
+TERMOS-CHAVE  391
+12.6	
+RESUMO  391
+12.7	
+ATIVIDADES PRÁTICAS  392
+Questões para Revisão  392
+Exercícios  393
+Atividades de Pesquisa  394
+Capítulo 13  LANs com Fios: Ethernet   395
+13.1	
+PADRÕES IEEE  395
+Camada de Enlace  396
+Camada Física  397
+13.2	
+ETHERNET-PADRÃO  397
+Subcamada MAC  398
+Camada Física   402
+13.3	
+EVOLUÇÃO DO PADRÃO  406
+Ethernet com Bridges  406
+Switched Ethernet   407
+Ethernet Full-Duplex   408
+13.4	
+FAST ETHERNET  409
+Subcamada MAC  409
+Camada Física  410
+13.5	
+GIGABIT ETHERNET   412
+Subcamada MAC  412
+
+[Page 15]
+xvi    SUMÁRIO
+Camada Física  414
+10 Gigabit Ethernet  416
+13.6	
+LEITURA RECOMENDADA  417
+Livros  417
+13.7	
+TERMOS-CHAVE  417
+13.8	
+RESUMO  417
+13.9	
+ATIVIDADES PRÁTICAS  418
+Questões para Revisão  418
+Exercícios  419
+Capítulo 14  LANs sem Fio (Wireless LANs)  421
+14.1	
+IEEE 802.11  421
+Arquitetura  421
+Subcamada MAC  423
+Mecanismo de Endereçamento  428
+Camada Física   432
+14.2	
+BLUETOOTH  434
+Arquitetura  435
+Camadas no Bluetooth  436
+Camada de Rádio  436
+Camada Banda Base  437
+L2CAP  440
+Outras Camadas Superiores  441
+14.3	
+LEITURA RECOMENDADA  441
+Livros  442
+14.4	
+TERMOS-CHAVE  442
+14.5	
+RESUMO  442
+14.6	
+ATIVIDADES PRÁTICAS  443
+Questões para Revisão  443
+Exercícios  443
+Capítulo 15  Conexão de LANs, Redes Backbone  
+e LANs Virtuais  445
+15.1	
+DISPOSITIVOS DE CONEXÃO  445
+Hubs Passivos  446
+Repetidores  446
+Hubs Ativos  447
+Pontes  447
+Switches de Duas Camadas  454
+Roteadores  455
+Switches de Três Camadas  455
+Gateway  455
+15.2	
+REDES BACKBONE  456
+Backbone de Barramento  456
+Backbone em Estrela  457
+Interligando LANs Remotas  457
+15.3	
+LANs VIRTUAIS  458
+Participação  461
+Configuração  461
+Comunicação entre Switches  462
+Padrão IEEE  462
+Vantagens  463
+15.4	
+LEITURA RECOMENDADA  463
+
+[Page 16]
+SUMÁRIO    xvii
+Livros  463
+Site   463
+15.5	
+TERMOS-CHAVE  463
+15.8	
+RESUMO  464
+15.7	
+ATIVIDADES PRÁTICAS  464
+Questões para Revisão  464
+Exercícios  465
+Capítulo 16  WANs sem Fio: Redes de Telefonia Celular  
+e via Satélite  467
+16.1	
+TELEFONIA CELULAR  467
+Princípio da Reutilização de Freqüências  467
+Transmissão   468
+Recepção  469
+Roaming  469
+Primeira Geração  469
+Segunda Geração  470
+Terceira Geração  477
+16.2	
+REDES VIA SATÉLITE  478
+Órbitas  479
+Área de Cobertura  480
+Três Categorias de Satélites  480
+Satélites GEO  481
+Satélites MEO  481
+GPS  481
+Satélites LEO  484
+16.3	
+LEITURA RECOMENDADA  487
+Livros  487
+16.4	
+TERMOS-CHAVE  487
+16.5	
+RESUMO  487
+16.6	
+ATIVIDADES PRÁTICAS  488
+Questões para Revisão  488
+Exercícios  488
+Capítulo 17  SONET/SDH  491
+17.1	
+ARQUITETURA  491
+Sinais  491
+Dispositivos SONET  492
+Conexões  493
+17.2	
+CAMADAS DO PADRÃO SONET  494
+Camada de Rotas  494
+Camada de Linha  495
+Camada de Seção  495
+Camada Fotônica  495
+Relações Dispositivo–Camada  495
+17.3	
+QUADROS NO SONET  496
+Transmissão de Bits, Bytes e Quadros  496
+Formato de Quadros STS-1  497
+Síntese do Overhead  501
+Encapsulamento  501
+17.4	
+MULTIPLEXAÇÃO STS  503
+Intercalação de Bytes  504
+Sinal Concatenado  505
+Multiplexador  Inserir/retirar  506
+
+[Page 17]
+xviii    SUMÁRIO
+17.5	
+REDES SONET  507
+Redes Lineares  507
+Redes em Anel  509
+Redes de Malha  510
+17.6	
+TRIBUTÁRIOS VIRTUAIS  512
+Tipos de VTs  512
+17.7	
+LEITURA RECOMENDADA  513
+Livros  513
+17.8	
+TERMOS-CHAVE  513
+17.9	
+RESUMO  514
+17.10	 ATIVIDADES PRÁTICAS  514
+Questões para Revisão  514
+Exercícios  515
+Capítulo 18  Redes de Circuitos Virtuais: Frame Relay e ATM  517
+18.1	
+FRAME RELAY  517
+Arquitetura  518
+Camadas do Frame Relay  519
+Endereço Estendido  521
+FRADs  522
+VOFR  522
+LMI  522
+Controle de Congestionamento e Qualidade de Serviço  522
+18.2	
+ATM  523
+Objetivos do Projeto  523
+Problemas  523
+Arquitetura  526
+Comutação  529
+Camadas do ATM  529
+Controle de Congestionamento e Qualidade dos Serviços  535
+18.3	
+LANs ATM  536
+Arquitetura de LANs ATM  536
+Emulação de LANs (LANE)  538
+Modelo Cliente/Servidor  539
+Arquitetura Mista com Cliente/Servidor  540
+18.4	
+LEITURA RECOMENDADA  540
+Livros  541
+18.5	
+TERMOS-CHAVE  541
+18.6	
+RESUMO  541
+18.7	
+ATIVIDADES PRÁTICAS  543
+Questões para Revisão  543
+Exercícios  543
+Atividades de Pesquisa  545
+PARTE 4  Camada de Rede  547
+Capítulo 19  Camada de Rede: Endereçamento Lógico  549
+19.1	
+ENDEREÇOS IPv4  549
+Espaço de Endereços  550
+Notações  550
+Endereçamento com Classes   552
+Endereçamento sem Classes  555
+Tradução de Endereços de Rede (NAT)  563
+
+[Page 18]
+SUMÁRIO    xix
+19.2	
+ENDEREÇOS IPv6  566
+Estrutura  567
+19.3	
+LEITURA RECOMENDADA  572
+Livros  572
+Sites  572
+RFCs  572
+19.4	
+TERMOS-CHAVE  572
+19.5	
+RESUMO  573
+19.6	
+ATIVIDADES PRÁTICAS  574
+Questões para Revisão  574
+Exercícios  574
+Atividades para Pesquisa  577
+Capítulo 20  Camada de Rede: IP  579
+20.1	
+INTERNETWORKING  579
+Necessidade da Camada de Rede  579
+Internet como uma Rede de Datagramas  581
+Internet como uma Rede sem Conexão  582
+20.2	
+IPv4  582
+Datagrama  583
+Fragmentação  589
+Checksum  594
+Opções  594
+20.3	
+IPv6  596
+Vantagens  597
+Formato dos Pacotes  597
+Cabeçalhos de Extensão   602
+20.4	
+TRANSIÇÃO DO IPv4 PARA O IPv6  603
+Pilha Dupla  604
+Tunelamento  604
+Tradução do Cabeçalho  605
+20.5	
+LEITURA RECOMENDADA  605
+Livros  606
+Sites  606
+RFCs  606
+20.6	
+TERMOS-CHAVE  606
+20.7	
+RESUMO  607
+20.8	
+ATIVIDADES PRÁTICAS  607
+Questões para Revisão  607
+Exercícios  608
+Atividades de Pesquisa  609
+Capítulo 21  Camada de Rede: Mapeamento deEndereços,  
+Notificação de Erros e Multicasting  611
+21.1	
+MAPEAMENTO DE ENDEREÇOS  611
+Mapeamento entre Endereços Lógicos e Físicos: ARP  612
+Solução  617
+Mapeamento entre Endereços Físicos e Lógicos: RARP, BOOTP e DHCP  618
+21.2	
+ICMP  621
+Tipos de Mensagens  621
+Formato das Mensagens  621
+Notificação de Erros  622
+
+[Page 19]
+xx    SUMÁRIO
+Consulta  625
+Ferramentas de Debug  627
+21.3	
+IGMP  630
+Gerenciamento de Grupos  630
+Mensagens IGMP  631
+Formato das Mensagens  631
+Operação do IGMP  632
+Solução  634
+Encapsulamento  635
+Solução  637
+Solução  637
+Utilitário Netstat  637
+21.4	
+ICMPv6  638
+Notificação de Erros  638
+Query   639
+21.5	
+LEITURA RECOMENDADA  640
+Livros  641
+Site  641
+RFCs  641
+21.6	
+TERMOS-CHAVE  641
+21.7	
+RESUMO  642
+21.8	
+ATIVIDADES PRÁTICAS  643
+Questões para Revisão  643
+Exercícios  644
+Atividades de Pesquisa  645
+Capítulo 22  Camada de Rede: Entrega, Encaminhamento e Roteamento   647
+22.1	
+ENTREGA  647
+Entrega Direta Versus Indireta  647
+22.2	
+ENCAMINHAMENTO  648
+Técnicas de Encaminhamento  648
+Processo de Encaminhamento  650
+Tabela de Roteamento  655
+22.3	
+PROTOCOLOS DE ROTEAMENTO UNICAST  658
+Otimização  658
+Roteamento Interdomínio e Intradomínio  659
+Roteamento Vetor Distância  660
+Roteamento de Estado do Enlace  666
+Roteamento Vetor Caminho  674
+22.4	
+PROTOCOLOS DE ROTEAMENTO MULTICAST  678
+Unicast, Multicast e Broadcast   678
+Aplicações  681
+Roteamento Multicast  682
+Protocolos de Roteamento  684
+22.5	
+LEITURA RECOMENDADA  694
+Livros  694
+Sites  694
+RFCs  694
+22.6	
+TERMOS-CHAVE  694
+22.7	
+RESUMO  695
+22.8	
+ATIVIDADEs PRÁTICAs   697
+Questões para Revisão  697
+Exercícios  697
+Atividades de Pesquisa  699
+
+[Page 20]
+SUMÁRIO    xxi
+PARTE 5  Camada de Transporte  701
+Capítulo 23  Comunicação entre Processos: UDP, TCP e SCTP  703
+23.1	
+COMUNICAÇÃO ENTRE PROCESSOS  703
+Paradigma Cliente/Servidor  704
+Multiplexação e Demultiplexação  707
+Serviços Sem Conexão Versus Orientado a Conexão  707
+Confiável Versus Não-confiável  708
+Três Protocolos  708
+23.2	
+UDP  709
+Portas conhecidas no UDP  709
+Datagramas de Usuário  710
+Checksum  711
+Operação do UDP  713
+Uso do UDP  715
+23.3	
+TCP  715
+Serviços TCP  715
+Recursos do TCP  719
+Segmento   721
+Conexão TCP  723
+Controle de Fluxo  728
+Controle de Erros  731
+Controle de Congestionamento  735
+23.4	
+SCTP  736
+Serviços SCTP  736
+Características do SCTP  738
+Formato de um Pacote SCTP  742
+Associação SCTP  743
+Controle de Fluxo  748
+Controle de Erros  751
+Controle de Congestionamento  753
+23.5	
+LEITURA RECOMENDADA  753
+Livros  753
+Sites  753
+RFCs  753
+23.6	
+TERMOS-CHAVE  754
+23.7	
+RESUMO  754
+23.8	
+ATIVIDADES PRÁTICAS  756
+Questões para Revisão  756
+Exercícios  757
+Atividades de Pesquisa  759
+Capítulo 24  Controle de Congestionamento e Qualidade de Serviços  761
+24.1	
+TRÁFEGO DE DADOS   761
+Descritor de Tráfego  761
+Perfis de Tráfego  762
+24.2	
+CONGESTIONAMENTO  763
+Desempenho da Rede  764
+24.3	
+CONTROLE DE CONGESTIONAMENTO  765
+Controle de Congestionamento de Anel Aberto  766
+Controle de Congestionamento de Anel Fechado  767
+24.4	
+DOIS EXEMPLOS  768
+Controle de Congestionamento no TCP  769
+Controle de Congestionamento no Frame Relay  773
+
+[Page 21]
+xxii    SUMÁRIO
+24.5	
+QUALIDADE DE SERVIÇOS  775
+Características dos Fluxos  775
+Classes de Fluxo  776
+24.6	
+TÉCNICAS PARA MELHORAR O QoS  776
+Programação  776
+Formatação de Tráfego  777
+Reserva de Recursos  780
+Controle de Admissão  780
+24.7	
+SERVIÇOS INTEGRADOS  780
+Sinalização  781
+Especificação de Fluxo  781
+Admissão  781
+Classes de Serviços  781
+RSVP  782
+Problemas com Serviços Integrados  784
+24.8	
+SERVIÇOS DIFERENCIADOS  785
+Campo DS  785
+24.9	
+QoS EM REDES COMUTADAS  786
+QoS no Frame Relay  787
+QoS no ATM  789
+24.10	 LEITURA RECOMENDADA  790
+Livros  791
+24.11	 TERMOS-CHAVE  791
+24.12	 RESUMO  791
+24.13	 ATIVIDADES PRÁTICAS  792
+Questões para Revisão  792
+Exercícios  793
+PARTE 6  Camada de Aplicação  795
+Capítulo 25  Sistema de Nomes de Domínios  797
+25.1	
+ESPAÇO DE NOMES  798
+Espaço de Nomes Plano  798
+Espaço de Nomes Hierárquico  798
+25.2	
+ESPAÇO DE NOMES DE DOMÍNIOS  799
+Label  799
+Nome de Domínio  799
+Domínio  801
+25.3	
+DISTRIBUIÇÃO DO ESPAÇO DE NOMES  801
+Hierarquia dos Servidores de Nomes  802
+Zona  802
+Servidor Raiz  803
+Servidores Primários e Secundários  803
+25.4	
+O DNS NA INTERNET  803
+Domínios Genéricos  804
+Domínios de Países  805
+Domínio Reverso  805
+25.5	
+RESOLUÇÃO   806
+Resolvedor  806
+Mapeamento de Nomes para Endereços  807
+Mapeamento de Endereços para Nomes  807
+Resolução Recursiva  808
+Resolução Iterativa  808
+Caching  808
+
+[Page 22]
+SUMÁRIO    xxiii
+25.6	
+MENSAGENS DNS  809
+Cabeçalho  809
+25.7	
+TIPOS DE REGISTROS  811
+Registro de Respostas  811
+Registro de Recursos  811
+25.8	
+Entidade Registradora  811
+25.9	
+SISTEMA DE NOMES E DOMÍNIOS DINÂMICOS (DDNS)  812
+25.10	 ENCAPSULAMENTO  812
+25.11	 LEITURA RECOMENDADA  812
+Livros  813
+Sites  813
+RFCs  813
+25.12	 TERMOS-CHAVE  813
+25.13	 RESUMO  813
+25.14	 ATIVIDADES PRÁTICAS  814
+Questões para Revisão  814
+Exercícios  815
+Capítulo 26  Logging Remoto, Correio Eletrônico e  
+Transferência de Arquivos  817
+26.1	
+LOGGING REMOTO  817
+TELNET  817
+26.2	
+CORREIO ELETRÔNICO  824
+Arquitetura  824
+User Agent  828
+Simple Mail Transfer Protocol: SMTP   834
+Agente de Acesso a Mensagens: POP e IMAP  837
+Webmail  839
+26.3	
+TRANSFERÊNCIA DE ARQUIVOS  840
+FTP  840
+FTP Anônimo  844
+26.4	
+LEITURA RECOMENDADA  845
+Livros  845
+Sites  845
+RFCs  845
+26.5	
+TERMOS-CHAVE  845
+26.6	
+RESUMO  846
+26.7	
+ATIVIDADES PRÁTICAS  847
+Questões para Revisão  847
+Exercícios  848
+Atividades de Pesquisa  848
+Capítulo 27  WWW e HTTP  851
+27.1	
+ARQUITETURA  851
+Cliente (Browser)  852
+Servidor  852
+Uniform Resource Locator (URL)  853
+Cookies  853
+27.2	
+DOCUMENTOS WEB  854
+Documentos Estáticos  855
+Documentos Dinâmicos  857
+Documentos Ativos  860
+
+[Page 23]
+xxiv    SUMÁRIO
+27.3	
+HTTP  861
+Transação HTTP  861
+Conexão Persistente versus Não Persistente  868
+Servidor Proxy  868
+27.4	
+LEITURA RECOMENDADA  869
+Livros  869
+Sites  869
+RFCs  869
+27.5	
+TERMOS-CHAVE  869
+27.6	
+RESUMO  870
+27.7	
+ATIVIDADES PRÁTICAS  871
+Questões para Revisão  871
+Exercícios  871
+Capítulo 28  Gerenciamento de Redes: SNMP  873
+28.1	
+SISTEMA DE GERENCIAMENTO DE REDES  873
+Gerenciamento de Conﬁguração  874
+Gerenciamento de Falhas  875
+Gerenciamento de Desempenho  876
+Gerenciamento de Segurança  876
+Gerenciamento de Contabilização  877
+28.2	
+SNMP   877
+Conceito  877
+Componentes do Gerenciamento  878
+SMI   881
+MIB  886
+Ordem Lexicográfica  889
+SNMP  891
+Mensagens  893
+Portas UDP  895
+Segurança  897
+28.3	
+LEITURA RECOMENDADA  897
+Livros  897
+Sites  897
+RFCs  897
+28.4	
+TERMOS-CHAVE  897
+28.5	
+RESUMO  898
+28.6	
+ATIVIDADES PRÁTICAS  899
+Questões para Revisão  899
+Exercícios  899
+Capítulo 29  Multimídia  901
+29.1	
+DIGITALIZAÇÃO DE ÁUDIO E VÍDEO  902
+Digitalização de Áudio  902
+Digitalização de Vídeo  902
+29.2	
+COMPRESSÃO DE ÁUDIO E VÍDEO  903
+Compressão de Áudio  903
+Compressão de Vídeo  904
+29.3	
+STREAMING DE ÁUDIO E VÍDEO ARMAZENADO  908
+Primeiro Método: Utilização de um Servidor Web  909
+Segundo Método: Uso de um Servidor Web com Metafile  909
+Terceiro Método: Emprego de um Media Server  910
+Quarto Método: Uso de um Media Server e do RTSP  911
+
+[Page 24]
+SUMÁRIO    xxv
+29.4	
+STREAMING DE ÁUDIO E VÍDEO EM TEMPO REAL  912
+29.5	
+ÁUDIO/VÍDEO INTERATIVO EM TEMPO REAL  912
+Características  912
+29.6	
+RTP  916
+Formato de Pacotes RTP  917
+Porta UDP  919
+29.7	
+RTCP  919
+Sender Report  919
+Receiver Report  920
+Source Description  920
+Bye  920
+APP  920
+Porta UDP  920
+29.8	
+VOZ SOBRE IP  920
+SIP  920
+H.323  923
+29.9	
+LEITURA RECOMENDADA  925
+Livros  925
+Sites  925
+29.10	 TERMOS-CHAVE  925
+29.11	 RESUMO  926
+29.12	 ATIVIDADES PRÁTICAS  927
+Questões para Revisão  927
+Exercícios  927
+Atividades de Pesquisa  928
+PARTE 7  Segurança  929
+Capítulo 30  Criptografia  931
+30.1	
+INTRODUÇÃO  931
+Deﬁnições  931
+Duas Categorias  932
+30.2	
+CRIPTOGRAFIA DE CHAVE SIMÉTRICA  935
+Cifras Tradicionais  935
+Cifras Modernas Simples  938
+Cifras Cíclicas Modernas  940
+Modo de Operação  945
+30.3	
+CRIPTOGRAFIA DE CHAVE ASSIMÉTRICA  949
+RSA  949
+Difﬁe-Hellman  952
+30.4	
+LEITURA RECOMENDADA  956
+Livros  956
+30.5	
+TERMOS-CHAVE  956
+30.6	
+RESUMO  957
+30.7	
+ATIVIDADES PRÁTICAS  958
+Questões para Revisão  958
+Exercícios  959
+Atividades de Pesquisa  960
+Capítulo 31  Segurança de Redes  961
+31.1	
+SERVIÇOS DE SEGURANÇA  961
+Conﬁdencialidade da Mensagem  962
+
+[Page 25]
+xxvi    SUMÁRIO
+Integridade da Mensagem  962
+Autenticação de Mensagens  962
+Não-Repúdio de Mensagens  962
+Autenticação de Entidades  962
+31.2	
+CONFIDENCIALIDADE DA MENSAGEM  962
+Conﬁdencialidade com Criptografia de Chave Simétrica  963
+Conﬁdencialidade com Criptografia de Chave Assimétrica  963
+31.3	
+INTEGRIDADE DA MENSAGEM  964
+Documento e Impressão Digital  965
+Mensagem e “digest” da Mensagem  965
+Diferença  965
+Criação e Verificação do “digest”  966
+Critérios para a Função Hash  966
+Algoritmos Hash: SHA-1  967
+31.4	
+AUTENTICAÇÃO DE MENSAGEM  969
+MAC  969
+31.5	
+ASSINATURA DIGITAL  971
+Comparação  971
+Necessidade de Chaves  972
+Processo  973
+Serviços  974
+Sistemas de Assinatura  976
+31.6	
+AUTENTICAÇÃO DE ENTIDADES  976
+Senhas  976
+Confrontação-Resposta  978
+31.7	
+GERENCIAMENTO DE CHAVES  981
+Distribuição de Chaves Simétricas  981
+Distribuição de Chaves Públicas  986
+31.8	
+LEITURA RECOMENDADA  990
+Livros  990
+31.9	
+TERMOS-CHAVE  990
+31.10	 “DIGEST”  991
+31.11	 ATIVIDADES PRÁTICAS  992
+Questões para Revisão  992
+Exercícios  993
+Atividades de Pesquisa  994
+Capítulo 32  Segurança na Internet: IPSec,  
+SSL/TLS, PGP, VPN e Firewalls  995
+32.1	
+IPSecurity (IPSec)   996
+Dois Modos  996
+Dois Protocolos de Segurança  998
+Associação de Segurança  1002
+IKE  1004
+VPN  1004
+32.2	
+SSL/TLS  1008
+Serviços SSL  1008
+Parâmetros de Segurança  1009
+Sessões e Conexões  1011
+Quatro Protocolos  1012
+TLS  1013
+32.3	
+PGP  1014
+Parâmetros de Segurança  1015
+Serviços  1015
+
+[Page 26]
+SUMÁRIO    xxvii
+Situação  1016
+Algoritmos PGP  1017
+Chaveiros  1018
+Certiﬁcados PGP  1019
+32.4	
+FIREWALLS  1021
+Firewall de Filtragem de Pacotes  1022
+Firewall Proxy  1023
+32.5	
+LEITURA RECOMENDADA  1024
+Livros  1024
+32.6	
+TERMOS-CHAVE  1024
+32.7	
+RESUMO  1025
+32.8	
+ATIVIDADES PRÁTICAS  1026
+Questões para Revisão  1026
+Exercícios  1026
+Apêndice A  Unicode  1029
+A.1	
+UNICODE  1029
+Planos  1030
+Plano Multilíngüe Básico (BMP)  1030
+Plano Multilíngüe Suplementar (SMP)  1032
+Plano Ideográfico Suplementar (SIP)  1032
+Plano Especial Suplementar (SSP)  1032
+Planos de Uso Privado (PUPs)  1032
+A.2	
+ASCII  1032
+Apêndice B  Sistemas de Numeração  1037
+B.1	
+BASE 10: DECIMAL  1037
+Pesos  1038
+B.2	
+BASE 2: BINÁRIO  1038
+Pesos  1038
+Conversão  1038
+B.3	
+BASE 16: HEXADECIMAL  1039
+Pesos  1039
+Conversão  1039
+Comparação  1040
+B.4	
+BASE 256: ENDEREÇOS IP  1040
+Pesos  1040
+Conversão  1040
+B.5	
+OUTRAS CONVERSÕES  1041
+Binário e Hexadecimal   1041
+Base 256 e Binário   1042
+Apêndice C  Revisão de Matemática  1043
+C.1	
+FUNÇÕES TRIGONOMÉTRICAS  1043
+Onda Senoidal  1043
+Onda Co-senoidal  1045
+Outras Funções Trigonométricas  1046
+Identidades Trigonométricas  1046
+C.2	
+ANÁLISE DE FOURIER  1046
+Série de Fourier  1046
+Transformadas de Fourier  1048
+
+[Page 27]
+xxviii    SUMÁRIO
+C.3	
+EXPONENCIAÇÃO E LOGARITMOS  1050
+Função Exponencial  1050
+Função Logarítmica  1051
+Apêndice D  Código 8B/6T  1055
+Apêndice E  Histórico sobre a Telefonia nosEstados Unidos  1059
+Antes de 1984  1059
+Entre 1984 e 1996  1059
+Depois de 1996  1059
+Apêndice F  Endereços e Sites  1061
+Apêndice G  RFCs  1063
+Apêndice H  Portas TCP e UDP  1065
+Acrônimos  1067
+Glossário  1071
+Índice Remissivo  1103
+
+[Page 28]
+xxix
+Prefácio
+Redes e sistemas de comunicação de dados talvez sejam as tecnologias que crescem com maior 
+rapidez em nossa cultura hoje em dia. Uma das conseqüências deste crescimento é um aumento 
+surpreendente no número de profissões em que um entendimento destas tecnologias é essencial 
+para o êxito — e um aumento proporcional na quantidade e nas categorias de estudantes fazendo 
+cursos para adquirir conhecimentos sobre elas.
+Características deste Livro
+Várias características do presente livro são concebidas visando tornar particularmente fácil para 
+os estudantes compreender sistemas de comunicação de dados e redes.
+Estrutura
+Usamos o modelo Internet de cinco camadas como arcabouço para o texto não apenas pelo fato 
+de um pleno entendimento do modelo ser essencial para a compreensão da maior parte da teo-
+ria de redes atual como também pelo fato dele se basear numa estrutura de interdependências: 
+cada camada se baseia na camada abaixo dela que, por sua vez, sustenta a camada acima. Da 
+mesma forma, cada conceito introduzido em nosso livro se apóia nos conceitos examinados nas 
+seções anteriores. O modelo Internet foi escolhido porque ele é um protocolo que se encontra 
+totalmente implementado.
+Este livro foi concebido para estudantes com pouco ou nenhum conhecimento em teleco-
+municações ou comunicação de dados. Por esta razão, usamos uma metodologia de “baixo para 
+cima”. Através dessa metodologia, os estudantes aprendem primeiro sobre comunicação de da-
+dos (camadas inferiores) antes de aprenderem sobre redes (camadas superiores).
+Abordagem Visual
+O livro apresenta material altamente técnico, sem o uso de fórmulas complexas e primando 
+pelo equilíbrio entre texto e ﬁguras. Mais de 700 ﬁguras que acompanham o texto oferecem 
+uma oportunidade visual e intuitiva para compreender o assunto. As figuras são particularmente 
+importantes na explicação de conceitos de redes, que se baseiam em conexões e transmissão. 
+Esses dois conceitos são fáceis de se compreender visualmente.
+Pontos de Destaque
+Enfatizamos conceitos importantes em quadros destacados para referência rápida e atenção ime-
+diata.
+
+[Page 29]
+xxx    PREFÁCIO
+Exemplos e Aplicações
+Quando apropriado, selecionamos exemplos que reflitam situações reais. Por exemplo, no Capí-
+tulo 6 mostramos vários casos de telecomunicação nas redes telefônicas atuais. 
+Leitura Recomendada
+Cada capítulo inclui uma lista de livros e sites que podem ser usados para leitura adicional.
+Termos-Chave
+Cada capítulo inclui uma lista de termos-chave para o estudante.
+Resumo
+Cada capítulo termina com um resumo do material visto naquele capítulo. O resumo fornece 
+uma visão geral de todos os pontos importantes do capítulo.
+Atividade Prática
+Os capítulos incluem um conjunto de atividades práticas desenvolvidas para reforçar e aplicar 
+conceitos importantes. Ele é formado por três partes: questões para revisão, exercícios e ativida-
+des para pesquisa (somente para capítulos pertinentes). As questões para revisão se destinam a 
+testar o nível de compreensão inicial do aluno em relação ao material apresentado no capítulo. 
+Os exercícios exigem um entendimento mais profundo do material. As atividades de pesquisa 
+são desenvolvidas para criar motivação para estudo complementar.
+Apêndices 
+Os apêndices se destinam a fornecer um material de referência rápido para revisão dos materiais 
+necessários para entender os conceitos discutidos no livro.
+Glossário e Acrônimos
+O livro contém um amplo glossário e uma lista de acrônimos.
+Mudanças na Quarta Edição
+A Quarta Edição apresenta mudanças importantes em relação à Terceira Edição, tanto em ter-
+mos de organização como de conteúdo.
+Organização
+Apresentamos a seguir as principais mudanças em termos de organização do livro:
+  1.	O Capítulo 6 agora trata também de multiplexação bem como espalhamento.
+  2.	O Capítulo 8 é dedicado agora totalmente à comutação.
+  3.	O conteúdo do Capítulo 12 foi transferido para o Capítulo 11.
+  4.	O Capítulo 17 cobre a tecnologia SONET.
+  5.	O Capítulo 19 discute o endereçamento IP.
+  6.	O Capítulo 20 é dedicado ao Internet Protocol.
+  7.	O Capítulo 21 discute três protocolos: ARP, ICMP e IGMP.
+  8.	O Capítulo 28 é um novo capítulo e é dedicado à administração de redes na Internet.
+  9.	Os Capítulos 29 a 31 antigos agora são os Capítulos 30 a 32.
+
+[Page 30]
+PREFÁCIO    xxxi
+Conteúdo
+Revisamos o conteúdo de vários capítulos, entre os quais os seguintes:
+  1.	Os conteúdos dos Capítulos 1 a 5 foram revisados e ampliados. Foram acrescentados exem-
+plos para esclarecer estes conteúdos.
+  2.	O conteúdo do Capítulo 10 foi revisado e ampliado para incluir métodos de detecção e cor-
+reção de erros.
+  3.	O Capítulo 11 foi revisado para incluir uma discussão completa de vários protocolos de 
+controle de enlace de dados.
+  4.	Entrega, encaminhamento e roteamento de datagramas foram acrescentados ao Capítulo 22.
+  5.	Um novo protocolo de transporte, o SCTP, foi acrescentado ao Capítulo 23.
+  6.	Os conteúdos dos Capítulos 30, 31 e 32 foram revisados e ampliados para incluírem discus-
+são sobre questões de segurança e Internet.
+  7.	Foram acrescentados novos exemplos para esclarecer o entendimento dos conceitos.
+Informações de Final de Capítulo
+  1.	Foi acrescentada uma seção ao final de cada capítulo apresentando fontes adicionais para 
+estudo.
+  2.	As questões para revisão foram alteradas e atualizadas.
+  3.	Os exercícios foram revisados e foram acrescentados novos a capítulos pertinentes.
+  4.	Alguns capítulos contêm atividades de pesquisa.
+Conteúdo
+O livro é dividido em sete partes. A primeira parte é uma visão geral; a última se refere à segu-
+rança de redes. As cinco partes intermediárias foram desenvolvidas para representar as cinco 
+camadas do modelo Internet. A seguir, apresentamos um resumo do conteúdo de cada parte.
+Parte 1: Visão Geral
+A primeira parte dá uma visão geral sobre comunicação de dados e redes. O Capítulo 1 cobre con-
+ceitos introdutórios necessários para o restante do livro. O Capítulo 2 introduz o modelo Internet.
+Parte 2: Camada Física
+A segunda parte é uma discussão da camada física do modelo Internet. Os Capítulos 3 a 6 
+discutem os aspectos de telecomunicação da camada física. O Capítulo 7 introduz os meios de 
+transmissão que, embora não façam parte da camada física, são controlados por ele. O Capítulo 8 
+é dedicado à comutação, que pode ser usada em várias camadas. O Capítulo 9 mostra como as 
+redes públicas, de telefonia e de TV a cabo podem ser usadas para a transferência de dados.
+Parte 3: Camada de Enlace de Dados
+A terceira parte é dedicada à discussão da camada de enlace de dados do modelo Internet. O 
+Capítulo 10 trata da detecção e correção de erros. Os Capítulos 11 e 12 discutem questões rela-
+cionadas ao controle de enlace de dados. Os Capítulos 13 a 16 tratam das LANs. Os Capítulos 
+17 e 18 tratam das WANs. As LANs e WANs são exemplos de redes operando nas duas primeiras 
+camadas do modelo Internet.
+
+[Page 31]
+xxxii    PREFÁCIO
+Parte 4: Camada de Rede
+A quarta parte é dedicada à discussão da camada de rede do modelo Internet. O Capítulo 19 trata 
+dos endereços IP. Os Capítulos 20 e 21 são dedicados aos protocolos de camada de rede como 
+IP, ARP, ICMP e IGMP. O Capítulo 22 discute a entrega, o encaminhamento e o roteamento de 
+pacotes na Internet.
+Parte 5: Camada de Transporte
+A quinta parte é dedicada à discussão da camada de transporte do modelo Internet. O Capítulo 
+23 dá uma visão geral sobre a camada de transporte e discute os serviços e responsabilidades 
+desta camada. Ele também introduz três protocolos da camada de transporte: UDP, TCP e SCTP. 
+O Capítulo 24 discute controle de congestionamento e qualidade de serviço, duas questões rela-
+cionadas à camada de transporte e às duas camadas anteriores.
+Parte 6: Camada de Aplicação
+A sexta parte é dedicada à discussão da camada de aplicação do modelo Internet. O Capítulo 25 
+fala do DNS, o programa aplicativo que é usado por outros programas de aplicação para asso-
+ciar endereços da camada de aplicação aos endereços da camada de rede. Os Capítulos 26 a 29 
+discutem alguns protocolos de aplicação comuns na Internet. 
+Parte 7: Segurança
+A sétima parte é uma discussão sobre segurança. Ela serve como prelúdio para ampliar o estu-
+do sobre este assunto. O Capítulo 30 discute, brevemente, criptografia. O Capítulo 31 introduz 
+aspectos de segurança. O Capítulo 32 mostra como diferentes aspectos de segurança podem ser 
+aplicados às três camadas do modelo Internet.
+Centro de Aprendizagem On-line
+O McGraw-Hill Online Learning Center contém material suplementar. Ele pode ser acessado 
+em www.mhhe.com/forouzan. À medida que os estudantes forem lendo o livro Comunicação de 
+Dados e Redes, poderão fazer os testes de auto-avaliação on-line. Eles também poderão acessar 
+materiais de aula como slides em PowerPoint e fazer uma revisão extra usando animações. As 
+soluções dos exercícios ímpares também podem ser encontradas no site. Esses materiais estão 
+disponíveis em inglês.
+Recursos para o Professor
+Para o professor, o Online Learning Center, em www.mhhe.com/forouzan disponibiliza o Manual 
+do Professor, slides em Power Point, glossário, entre outros. O conteúdo do site está em inglês.
+Para terem acesso aos recursos on-line, os professores brasileiros precisam obter uma senha com 
+a McGraw-Hill Interamericana do Brasil. Os professores devem solicitar a senha por e-mail: 
+divulgação_brasil@mcgraw-hill.com. Na Europa, a senha deve ser obtida com a McGraw-Hill 
+de Portugal: servico_clientes@mcgraw-hill.com.
+Como Usar o Livro
+Este livro foi escrito tanto para o público acadêmico como para o público profissional. Ou seja, 
+também pode ser usado como um guia de auto-estudo para profissionais interessados. Eis algu-
+mas diretrizes.
+As Partes 1 a 3 são altamente recomendadas.
+
+
+As Partes 4 a 6 podem ser vistas se não existir nenhuma disciplina subseqüente sobre o 
+
+
+protocolo TCP/IP.
+A Parte 7 é recomendada se não existir nenhuma disciplina subseqüente sobre segurança 
+
+
+de redes.
+
+[Page 32]
+PREFÁCIO    xxxiii
+Agradecimentos
+É óbvio que o desenvolvimento de um livro com este escopo precisa do apoio de várias pessoas.
+Revisão em Grupo
+A contribuição mais valiosa para a criação de um livro como este provém de revisões feitas por 
+outros colegas da área. Palavras não são suficientes para expressar nossa gratidão aos tantos 
+revisores que investiram várias horas lendo o manuscrito e nos fornecendo comentários e idéias 
+de extrema valia. Gostaríamos de agradecer especialmente a colaboração dos seguintes revisores 
+da terceira e quarta edições deste livro:
+Farid Ahmed, Catholic University
+Kaveh Ashenayi, University of Tulsa
+Yoris Au, University of Texas, San Antonio Essie Bakhtiar, Clayton College & State Uni-
+versity Anthony Barnard, University of Alabama, Brimingham A.T. Burrell, Oklahoma 
+State University Scott Campbell, Miami University Teresa Carrigan, Blackburn College
+Hwa Chang, Tufts University
+Edward Chlebus, Illinois Institute of Technology
+Peter Cooper, Sam Houston State University
+Richard Coppins, Virginia Commonwealth University Harpal Dhillon, Southwestern 
+Oklahoma State University Hans-Peter Dommel, Santa Clara University
+M. Barry Dumas, Baruch College, CUNY William Figg, Dakota State University Dale 
+Fox, Quinnipiac University
+Terrence Fries, Coastal Carolina University Errin Fulp, Wake Forest University 
+Sandeep Gupta, Arizona State University George Hamer, South Dakota State University
+James Henson, California State University, Fresno
+Tom Hilton, Utah State University Allen Holliday, California State University, Fullerton
+Seyed Hossein Hosseini, University of Wisconsin, Milwaukee Gerald Isaacs, Carroll Col-
+lege, Waukesha
+Hrishikesh Joshi, DeVry University
+E.S. Khosravi, Southern University
+Bob Kinicki, Worcester Polytechnic University
+Kevin Kwiat, Hamilton College
+Ten-Hwang Lai, Ohio State University Chung-Wei Lee, Auburn University
+Ka-Cheong Leung, Texas Tech University
+Gertrude Levine, Fairleigh Dickinson University
+Alvin Sek See Lim, Auburn University Charles Liu, California State University, Los An-
+geles Wenhang Liu, California State University, Los Angeles Mark Llewellyn, University 
+of Central Florida
+Sanchita Mal-Sarkar, Cleveland State University
+Louis Marseille, Harford Community College Kevin McNeill, University of Arizona
+Arnold C. Meltzer, George Washington University Rayman Meservy, Brigham Young 
+University Prasant Mohapatra, University of California, Davis
+Hung Z Ngo, SUNY, Buffalo Larry Owens, California State University, Fresno
+Arnold Patton, Bradley University Dolly Samson, Hawaii Paciﬁc University
+
+[Page 33]
+xxxiv    PREFÁCIO
+Joseph Sherif, California State University, Fullerton
+Robert Simon, George Mason University
+Ronald J. Srodawa, Oakland University Daniel Tian, California State University, Monte-
+rey Bay Richard Tibbs, Radford University
+Christophe Veltsos, Minnesota State University, Mankato Yang Wang, University of Ma-
+ryland, College Park Sherali Zeadally, Wayne State University
+Equipe da McGraw-Hill
+Agradecimentos especiais à equipe da McGraw-Hill. Alan Apt, nosso editor, provou como um 
+editor competente pode tornar possível, o impossível. Rebecca Olson, editora de desenvolvi-
+mento, nos ajudou sempre que necessário. Sheila Frank, coordenadora de projeto, nos orientou, 
+com enorme entusiamo, através do processo de produção. Gostaríamos de agradecer David Hash 
+pelo design, Kara Kudronowicz pela produção e Patti Scott, editor de copidesque.
+
+[Page 34]
+Visão Geral
+Objetivos
+A Parte 1 provê uma idéia geral do que veremos no restante do livro. Serão discutidos quatro 
+conceitos principais: comunicações de dados, redes, protocolos e padrões, bem como modelos 
+de redes.
+As redes existem de forma que dados possam ser enviados de um lugar a outro — o concei-
+to básico de comunicação de dados. Para compreender completamente esse assunto, precisamos 
+conhecer os componentes da comunicação de dados, como diferentes tipos de dados podem ser 
+representados e como criar um fluxo de dados.
+A comunicação de dados entre sistemas remotos pode ser atingida por meio de um processo de-
+nominado rede, envolvendo a conexão de computadores, mídia e dispositivos de rede. As redes são 
+divididas em duas categorias principais: redes locais (LANs) e redes remotas (WANs). Esses dois 
+tipos têm diferentes características e diferentes funcionalidades. A Internet, o foco principal do livro, 
+é um conjunto de redes LANs e WANs interconectadas por dispositivos de ligação entre elas.
+Protocolos e padrões são vitais para a implementação das comunicações de dados e das 
+redes. Os protocolos se referem às regras; um padrão é um protocolo que tem sido amplamente 
+adotado por fornecedores e fabricantes.
+Os modelos de redes servem para organizar, unificar e controlar os componentes de hardwa-
+re e software das comunicações de dados e das redes. Embora o termo “modelo de rede” sugira 
+uma relação exclusiva com a rede, o modelo também engloba as comunicações de dados.
+Capítulos
+A primeira parte consiste de dois capítulos: Capítulos 1 e 2.
+Capítulo 1
+No Capítulo 1, introduziremos os conceitos de comunicações de dados e de redes. Discutiremos 
+os componentes das comunicações de dados, representação de dados e o fluxo de dados. Em se-
+guida, partiremos para a estrutura das redes que transportam dados. Abordaremos as topologias 
+de redes, as categorias das redes e o conceito geral que está por trás da Internet. A seção sobre 
+protocolos e padrões fornece uma rápida visão das organizações que estabelecem padrões em 
+comunicações de dados e redes.
+PARTE
+1
+
+[Page 35]
+Capítulo 2
+Os dois modelos de redes predominantes são o Open Systems Interconnection (OSI) e o mo-
+delo Internet (TCP/IP). O primeiro é um modelo teórico; o segundo é o modelo atual utilizado 
+nas comunicações de dados. No Capítulo 2, discutiremos, em primeiro lugar, o modelo OSI para 
+obtermos uma base teórica geral. Em seguida, nos concentraremos no modelo Internet que é a 
+base para o restante deste livro.
+
+[Page 36]
+CAPÍTULO 1
+Introdução
+As comunicações de dados e as redes estão mudando a maneira pela qual fazemos negócios e 
+o modo como vivemos. As decisões no mundo dos negócios têm de ser tomadas de forma cada 
+vez mais rápida e aqueles que o fazem precisam obter acesso imediato a informações precisas. 
+Por que esperar uma semana pela chegada de um relatório da Alemanha pelo correio quando ele 
+poderia ser transmitido de forma quase instantânea por meio das redes de computadores? Hoje 
+em dia, as empresas dependem de redes de computadores e das ligações entre as redes. Antes, 
+porém de perguntarmos com que rapidez conseguimos nos conectar, precisamos saber como 
+as redes operam, que tipos de tecnologias estão disponíveis e qual arquitetura atende melhor a 
+determinado tipo de conjunto de necessidades.
+O desenvolvimento do computador pessoal possibilitou grandes mudanças nas empresas, 
+nas indústrias, nas ciências e na educação. Uma revolução semelhante está ocorrendo nas co-
+municações de dados e nas redes. Avanços tecnológicos estão tornando possível que links de 
+comunicação transportem um número cada vez maior de sinais e de forma mais rápida. Como con-
+seqüência, os serviços estão evoluindo e possibilitando o uso dessa capacidade expandida. Por 
+exemplo, serviços de telefonia estabelecidos por teleconferência, espera de chamadas, correio 
+de voz e identificação de chamadas foram estendidos.
+As pesquisas em comunicações de dados e redes resultaram em novas tecnologias. Um dos 
+objetivos é estar apto a trocar dados como texto, áudio e vídeo de todas as partes do planeta. 
+Queremos acessar a Internet para fazer download e upload de informações de forma rápida e 
+precisa e a qualquer momento.
+O presente capítulo trata de quatro questões: comunicações de dados, redes, a Internet e, 
+finalmente, protocolos e padrões. Em primeiro lugar, apresentamos uma definição ampla de 
+comunicações de dados. Em seguida, definimos redes como uma auto-estrada na qual os dados 
+podem trafegar. A Internet é abordada como um bom exemplo de uma ligação entre redes (isto 
+é, uma rede de redes). Finalmente, discutimos diferentes tipos de protocolos, a diferença entre 
+protocolos e padrões e as organizações que estabelecem esses padrões.
+1.1  COMUNICAÇÃO DE DADOS 
+Quando nos comunicamos, estamos compartilhando informações. Esse compartilhamento pode 
+ser local ou remoto. Entre indivíduos, a comunicação local se dá normalmente frente a frente, ao 
+passo que a comunicação remota ocorre a distância. O termo telecomunicação abrange telefo-
+nia, telegrafia e televisão e comunicação a distância (tele, em grego, quer dizer “distante”).
+3
+
+[Page 37]
+4    CAPÍTULO 1  INTRODUÇÃO
+4    CAPÍTULO 1  INTRODUÇÃO
+A palavra dados se refere a informações apresentadas em qualquer forma que seja acordada 
+entre as partes que criam e usam os dados.
+Comunicação de dados são as trocas de dados entre dois dispositivos por intermédio de 
+algum tipo de meio de transmissão, como um cabo condutor formado por fios. Para que as 
+comunicações de dados ocorram, os dispositivos de comunicação devem fazer parte de um sis-
+tema de comunicações, composto por uma combinação de hardware (equipamentos físicos) e 
+software (programas). A eficácia de um sistema de comunicações de dados depende de quatro 
+características fundamentais: entrega, precisão, sincronização e jitter.
+  1. 	Entrega.  O sistema deve entregar dados no destino correto. Os dados têm de ser recebidos 
+pelo dispositivo ou usuário pretendido e apenas por esse dispositivo ou usuário.
+  2. 	Precisão.  O sistema deve entregar os dados de forma precisa. Dados que foram alterados 
+na transmissão e deixados sem correção são inúteis.
+  3. 	Sincronização.  O sistema deve entregar dados no momento certo. Dados entregues com 
+atraso são inúteis. No caso de vídeo e áudio, a entrega em tempo significa fornecer os dados 
+à medida que eles são produzidos e sem atrasos consideráveis. Esse tipo de entrega é deno-
+minado transmissão em tempo real.
+  4. 	Jitter.  Jitter refere-se à variação no tempo de chegada dos pacotes. É o atraso desigual na 
+entrega de pacotes de áudio e vídeo. Suponhamos, por exemplo, que pacotes de vídeo sejam 
+enviados a cada 30 min. Se alguns desses pacotes chegarem com um atraso de 30 min e 
+outros com um atraso de 40 min, o resultado será uma qualidade de vídeo irregular.
+Componentes
+Um sistema de comunicação de dados é formado por cinco componentes (ver Figura 1.1).
+Figura 1.1     Os cinco componentes da comunicação de dados
+Meio
+Mensagem
+Protocolo
+Protocolo
+Regra 1:
+Regra 2:
+...
+Regra n:
+Regra 1:
+Regra 2:
+...
+Regra n:
+Receptor
+Emissor
+  1. 	Mensagem.  As mensagens são as informações (dados) a serem transmitidas. Entre as for-
+mas populares de informação, temos: texto, números, figuras, áudio e vídeo.
+  2. 	Emissor. O emissor é o dispositivo que envia a mensagem de dados. Pode ser um compu-
+tador, estação de trabalho, aparelho telefônico, televisão e assim por diante.
+  3. 	Receptor.  O receptor é o dispositivo que recebe a mensagem. Pode ser um computador, 
+estação de trabalho, aparelho telefônico, televisão e assim por diante.
+  4. 	Meio de transmissão.  O meio de transmissão é o caminho físico pelo qual uma men-
+sagem trafega do emissor ao receptor. Alguns exemplos de meio de transmissão são os 
+seguintes: cabo de par trançado, cabo coaxial, cabo de fibra óptica e ondas de rádio.
+  5. 	Protocolo.  O protocolo é um conjunto de regras que controla a comunicação de dados. 
+Representa um acordo entre os dispositivos de comunicação. Sem um protocolo, dois
+
+[Page 38]
+dispositivos podem estar conectados, mas, sem se comunicar. De modo semelhante, uma 
+pessoa que fala francês não consegue entender outra que fala apenas o idioma japonês.
+Representação de Dados
+As informações de hoje são transmitidas por diversas formas, tais como por texto, números, 
+imagens, áudio e vídeo.
+Texto
+Em comunicação de dados, o texto é representado como um padrão de bits, uma seqüência de 
+bits (0s ou 1s). Os diferentes conjuntos de padrões de bits foram elaborados para representar 
+símbolos de texto. Cada conjunto é chamado código e o processo de representação de símbolos 
+é denominado codificação. Hoje em dia, o sistema de codificação predominante é denominado 
+Unicode, que usa 32 bits para representar um símbolo ou caractere usado em qualquer lingua-
+gem do mundo. O American Standard Code for Information Interchange (ASCII), desen-
+volvido algumas décadas atrás nos Estados Unidos, agora constitui os 127 primeiros caracteres 
+do Unicode e é também conhecido como Basic Latin. O Apêndice A inclui partes do Unicode.
+Números
+Os números também são representados por padrões de bits. Entretanto, um código como o 
+ASCII não é usado para representar números; o número é convertido diretamente em binário 
+para simplificar as operações matemáticas. O Apêndice B apresenta vários tipos de sistemas de 
+numeração diferentes.
+Imagens
+As imagens também são representadas por padrões de bits. Em sua forma mais simples, uma 
+imagem é composta por uma matriz de pixels (picture elements), em que cada pixel é um peque-
+no ponto. O tamanho do pixel depende de sua resolução. Por exemplo, uma imagem pode ser 
+dividida em 1.000 ou 10.000 pixels. No segundo caso, há uma representação melhor da imagem 
+(melhor resolução); contudo, é necessário mais memória para armazená-la.
+Após uma imagem ser dividida em pixels, é atribuído a cada um deles um padrão de bits. 
+O tamanho e o valor do padrão dependem da imagem. Para uma imagem formada apenas por 
+pontos em preto-e-branco (por exemplo, um tabuleiro de xadrez), um padrão de 1 bit é suficiente 
+para representar um pixel.
+Se uma imagem não for composta por pixels em preto-e-branco puros, podemos aumentar o 
+tamanho do padrão de bits para incluir uma escala de tons de cinza. Por exemplo, para mostrar qua-
+tro níveis de tons de cinza, podemos usar padrões de 2 bits. Um pixel preto pode ser representado 
+por 00, um pixel cinza-escuro por 01, um pixel cinza-claro por 10 e um pixel branco por 11.
+Existem vários métodos para a representação de imagens coloridas. Um dos métodos é de-
+nominado RGB, assim chamado porque cada cor é formada por uma combinação de três cores 
+primárias: vermelha, verde e azul (Red, Green e Blue, em inglês). A intensidade de cada cor é 
+medida e um padrão de bits é atribuído a ela. Outro método é conhecido por YCM, no qual uma 
+cor é composta por uma combinação de três outras cores primárias: amarela, ciano e magenta 
+(Yellow, Cyant e Magenta, em inglês).
+Áudio
+Áudio se refere ao registro ou transmissão (difusão) de som ou música. O áudio é, por natureza, 
+diferente de texto, números ou imagens. Ele é contínuo, não discreto. Mesmo quando usamos 
+SEÇÃO 1.1  COMUNICAÇÃO DE DADOS    5
+
+[Page 39]
+6    CAPÍTULO 1  INTRODUÇÃO
+um microfone para transformar a voz ou a música em um sinal elétrico, criamos um sinal con-
+tínuo. Nos Capítulos 4 e 5, aprenderemos como transformar som ou música em um sinal digital 
+ou analógico.
+Vídeo
+Vídeo se refere ao registro ou à transmissão (difusão) de uma imagem ou filme. O vídeo pode 
+ser produzido tanto como uma entidade contínua (por exemplo, por uma câmera de TV) quanto 
+pode ser uma combinação de imagens, cada uma delas uma entidade discreta, dispostas para 
+transmitir a idéia de movimento. Enfatizando, podemos transformar vídeo em um sinal digital 
+ou analógico, como será visto nos Capítulos 4 e 5.
+Fluxo de Dados
+A comunicação entre dois dispositivos pode ser simplex, half-duplex ou full-duplex, conforme 
+mostrado na Figura 1.2.
+Figura 1.2     Fluxo de dados (simplex, half-duplex e full-duplex)
+Direção dos dados
+Monitor
+Mainframe
+a. Simplex
+b. Half-duplex
+c. Full-duplex
+Direção dos dados no instante 1
+Direção dos dados no instante 2
+Direção dos dados durante todo o tempo
+Estação
+Estação
+Estação
+Estação
+Simplex
+No modo simplex, a comunicação é unidirecional, como em uma via de mão única. Apenas um 
+dos dois dispositivos em um link pode transmitir; o outro pode apenas receber (ver Figura 1.2a).
+Teclados e monitores tradicionais são exemplos de dispositivos simplex. O teclado só é ca-
+paz de introduzir informações; o monitor pode somente mostrar as saídas. O modo simplex pode 
+usar toda a capacidade do canal para enviar dados em uma única direção.
+Half-Duplex
+No modo half-duplex, cada estação pode transmitir, assim como receber, mas não ao mesmo 
+tempo. Quando um dispositivo está transmitindo, o outro pode apenas receber e vice-versa (ver 
+Figura 1.2b).
+
+[Page 40]
+O modo half-duplex é como uma estrada de pista única com tráfego permitido em ambas as 
+direções. Quando carros estão trafegando em uma direção, os veículos que vêm no outro sentido 
+têm de esperar. Em uma transmissão half-duplex, toda a capacidade de um canal é capturada por 
+um dos dois dispositivos que está transmitindo no momento. Walkie-talkies e rádios CB (faixa 
+do cidadão) são exemplos de sistemas half-duplex.
+O modo half-duplex é usado nos casos em que não existem necessidades de comunicação 
+em ambas as direções e ao mesmo tempo; toda a capacidade do canal pode ser utilizada em uma 
+direção.
+Full-Duplex
+No modo full-duplex (também chamado duplex), ambas as estações podem transmitir e receber 
+simultaneamente (ver Figura 1.2c).
+O modo full-duplex é como uma via de mão dupla com tráfego fluindo em ambas as direções 
+ao mesmo tempo. No modo full-duplex, sinais indo em uma direção compartilham a capacidade 
+do link com sinais indo na outra direção. Esse compartilhamento pode ocorrer de duas maneiras: 
+1) O  link contém dois caminhos de transmissão separados fisicamente, um para a transmissão e 
+outro para recepção; 2) a capacidade do canal é dividida entre os sinais que trafegam em ambas 
+as direções.
+Um exemplo comum de comunicação full-duplex é a rede telefônica. Quando duas pessoas estão 
+se comunicando através de uma linha telefônica, estas podem conversar e ouvir ao mesmo tempo.
+O modo full-duplex é usado quando é necessária a comunicação em ambas as direções durante 
+o tempo todo. Entretanto, a capacidade total do canal tem de ser dividida entre as duas direções.
+1.2  REDES
+Uma rede é um conjunto de dispositivos (normalmente conhecido como nós) conectados por 
+links de comunicação. Um nó pode ser um computador, uma impressora ou outro dispositivo de 
+envio e/ou recepção de dados, que estejam conectados a outros nós da rede.
+Processamento Distribuído
+A maioria das redes utiliza processamento distribuído, no qual uma tarefa é dividida entre 
+vários computadores. Em vez de uma única máquina grande ser responsável por todos os aspec-
+tos de um processo, computadores distintos (geralmente um computador pessoal ou estação de 
+trabalho) processam um subconjunto de processos.
+Critérios de Redes
+Uma rede deve ser capaz de atender a certo número de critérios. Os mais importantes são: 
+desempenho, confiabilidade e segurança.
+Desempenho
+O desempenho pode ser medido de várias formas, inclusive pelo tempo de trânsito. Tempo de 
+trânsito é a quantidade de tempo necessária para uma mensagem trafegar de um dispositivo a ou-
+tro. O tempo de resposta é o tempo decorrido entre uma solicitação e sua resposta. O desempenho 
+SEÇÃO 1.2  REDES    7
+
+[Page 41]
+8    CAPÍTULO 1  INTRODUÇÃO
+de uma rede depende de uma série de fatores, inclusive o número de usuários, os tipos de meios 
+de transmissão, as capacidades do hardware conectado e a eficiência do software.
+O desempenho é normalmente avaliado por duas métricas de rede: capacidade de vazão 
+(throughput) e atraso (delay). Em geral, precisamos de mais capacidade de vazão e menos 
+atraso. Entretanto, esses dois critérios são contraditórios. Se tentarmos enviar mais dados para a 
+rede, podemos aumentar o throughput, mas aumentamos o delay em razão do congestionamento 
+de tráfego na rede.
+Confiabilidade
+Além da precisão na entrega, a confiabilidade das redes é medida pela freqüência de falhas, 
+pelo tempo que um link leva para se recuperar de uma falha e pela robustez da rede em caso de 
+uma catástrofe.
+Segurança
+Entre as principais questões de segurança de rede, temos: proteção ao acesso não autorizado de 
+dados, proteção dos dados contra danos e o desenvolvimento e a implementação de políticas e 
+procedimentos para a recuperação de violações e perdas de dados.
+Estruturas Físicas
+Antes de discutirmos as redes, precisamos definir alguns de seus atributos.
+Tipo de Conexão
+Rede são dois ou mais dispositivos conectados através de links. Um link é um caminho de 
+comunicação que transfere dados de um dispositivo a outro. Para fins de visualização, é mais 
+simples imaginar qualquer link como uma reta entre dois pontos. Para ocorrer a comunicação, 
+dois dispositivos devem ser conectados de alguma maneira ao mesmo link ao mesmo tempo. Há dois 
+tipos possíveis de conexões: ponto a ponto e multiponto.
+Ponto a Ponto  Uma conexão ponto a ponto fornece um link dedicado entre dois dispositivos. 
+Toda a capacidade do link é reservada para a transmissão entre os dois dispositivos. A maioria 
+das conexões ponto a ponto usa um pedaço real de fio ou de cabo para conectar as duas extre-
+midades. Outras opções, porém, como links via satélite ou microondas, também são possíveis 
+(ver Figura 1.3a). Quando mudamos os canais de televisão por controle remoto infravermelho 
+estamos estabelecendo uma conexão ponto a ponto entre o controle remoto e o sistema de con-
+trole da TV.
+Multiponto  Uma conexão multiponto (também chamada multidrop) é uma conexão na qual 
+mais de dois dispositivos compartilham um único link (ver Figura 1.3b).
+Em um ambiente multiponto, a capacidade do canal é compartilhada, seja de forma espacial, 
+seja de forma temporal. Se diversos dispositivos puderem usar o link simultaneamente, ele é 
+chamado conexão compartilhada espacialmente. Se os usuários tiverem de se revezar entre si, 
+trata-se de uma conexão compartilhada no tempo.
+Topologia Física
+O termo topologia física se refere à maneira pela qual uma rede é organizada fisicamente. Dois ou 
+mais dispositivos se conectam a um link; dois ou mais links formam uma topologia. A topologia
+
+[Page 42]
+Figura 1.3     Tipos de conexões: ponto a ponto e multiponto
+a. Ponto a ponto
+b. Multiponto 
+Estação
+Estação
+Link
+Estação
+Link
+Mainframe
+Estação
+Estação
+de uma rede é a representação geométrica da relação de todos os links e os dispositivos de uma 
+conexão (geralmente denominados nós) entre si. Existem quatro topologias básicas possíveis: 
+malha, estrela, barramento e anel (ver Figura 1.4).
+Figura 1.4     Tipos de topologia
+Estrela
+Barramento
+Anel
+Malha 
+Topologia
+Malha  Em uma topologia de malha, cada dispositivo possui um link ponto a ponto dedicado 
+com cada um dos demais dispositivos. O termo dedicado significa que o link transporta tráfego 
+apenas entre os dois dispositivos que ele conecta. Para encontrar o número de links físicos 
+em uma rede em malha totalmente conectada com n nós, precisamos considerar primeiro 
+que cada nó deve estar conectado a cada um dos demais nós. O nó 1 deve estar conectado a 
+n – 1 nós, o nó 2 deve estar conectado a n – 1 nós e, finalmente, o nó n deve estar conectado 
+a n – 1 nós. Precisamos de n(n – 1) links físicos. Entretanto, se cada link físico permitir a comuni-
+cação em ambas as direções (modo duplex), podemos dividir o número de links por 2. Em outras 
+palavras, podemos afirmar que, em uma topologia de malha, precisamos de 
+n (n – 1) / 2
+Para acomodar todos esses links, cada dispositivo da rede deve ter (n – 1) portas de entrada/
+saída (I/O) (ver Figura 1.5) a serem conectadas às demais (n – 1) estações.
+SEÇÃO 1.2  REDES    9
+
+[Page 43]
+10    CAPÍTULO 1  INTRODUÇÃO
+Figura 1.5     Topologia de malha completamente conectada (cinco dispositivos)
+Estação
+Estação
+Estação
+Estação
+Estação
+Uma topologia em malha oferece várias vantagens em relação às demais topologias de rede. 
+Em primeiro lugar, o uso de links dedicados garante que cada conexão seja capaz de transportar 
+seu próprio volume de dados, eliminando, portanto, os problemas de tráfego que possam ocor-
+rer quando os links tiverem de ser compartilhados por vários dispositivos. Em segundo, uma 
+topologia de malha é robusta. Se um link se tornar inutilizável, ele não afeta o sistema como 
+um todo. O terceiro ponto é que há uma vantagem de privacidade e segurança. Quando qualquer 
+mensagem trafega ao longo de uma linha dedicada, apenas o receptor pretendido a vê. Os limites 
+físicos impedem que outros usuários acessem essa mensagem. Finalmente, os links ponto a ponto 
+facilitam a identificação de falhas, bem como o isolamento destas. O tráfego pode ser direcionado 
+de forma a evitar links com suspeita de problemas. Essa facilidade permite ao administrador de 
+redes descobrir a localização exata da falha e ajuda na descoberta de sua causa e solução.
+As principais desvantagens de uma topologia em malha estão relacionadas à quantidade de 
+cabeamento e o número de portas I/O necessárias. Em primeiro lugar, como cada dispositivo 
+tem de estar conectado a cada um dos demais, a instalação e a reconstrução são trabalhosas. 
+Em segundo, o volume do cabeamento pode ser maior que o espaço disponível (nas paredes, 
+tetos ou pisos) seja capaz de acomodar. Finalmente, o hardware necessário para conectar cada 
+link (portas I/O e cabos) pode ter um custo proibitivo. Por tais razões, uma topologia de malha 
+normalmente é implementada de forma limitada, por exemplo, em um backbone conectando os 
+principais computadores de uma rede híbrida, que pode conter diversas topologias diferentes.
+Um exemplo prático de uma topologia de malha é a conexão de escritórios regionais via telefone, 
+no qual cada escritório regional precisa estar conectado a cada um dos demais escritórios regionais.
+Topologia estrela  Em uma topologia estrela, cada dispositivo tem um link ponto a ponto dedicado 
+ligado apenas com o controlador central, em geral denominado hub. Os dispositivos não são ligados 
+diretamente entre si. Diferentemente de uma topologia de malha, uma topologia estrela não permite 
+tráfego direto entre os dispositivos. O controlador atua como uma central telefônica: se um dispositi-
+vo quiser enviar dados para outro dispositivo, ele deve enviar os dados ao controlador que, então, os 
+retransmite ao outro dispositivo conectado (ver Figura 1.6).
+Uma topologia estrela é mais barata que uma topologia de malha. Em uma estrela, cada 
+dispositivo precisa apenas de um link e uma porta I/O para conectar-se a um número qualquer 
+de outros dispositivos. Esse fator também facilita a instalação e a reconfiguração. Um volume de 
+cabos bem menor precisa ser instalado e acréscimos, mudanças e eliminações de ligações envol-
+vem apenas uma conexão: aquela entre o dispositivo em questão e o hub.
+Entre outras vantagens, podemos citar a robustez. Se um link falhar, apenas aquele link será 
+afetado. Todos os demais permanecerão ativos. Esse fator por si só também leva a maior facili-
+dade na identificação e no isolamento de falhas.
+
+[Page 44]
+Figura 1.6     Topologia estrela conectando quatro estações
+Estação
+Estação
+Estação
+Estação
+Hub
+Desde que o hub esteja funcionando, ele pode ser usado para monitorar problemas de conectivi-
+dade e desconectar links defeituosos.
+Uma grande desvantagem da topologia estrela é a dependência de toda a topologia em um 
+único ponto, o hub. Se este sair de operação, todo o sistema pára.
+Embora uma topologia estrela necessite de muito menos cabos que uma malha, cada nó deve 
+ser conectado ao hub central. Por essa razão, geralmente se requer uma quantidade maior 
+de cabos na topologia estrela quando comparada a algumas outras topologias (como anel ou 
+barramento).
+A topologia estrela é usada em redes locais (LANs), como veremos no Capítulo 13. LANs 
+de alta velocidade normalmente usam uma topologia estrela com um hub central.
+Topologia de Barramento  Todos os exemplos anteriores descrevem conexões ponto a ponto. 
+Por outro lado, uma topologia de barramento é multiponto. Um longo cabo atua como um 
+backbone que interliga todos os dispositivos da rede (ver Figura 1.7).
+Figura 1.7     Topologia de barramento conectando três estações
+Transceptores
+Transceptores
+Transceptores
+Terminador
+Terminador
+Transceptor-
+vampiro
+Transceptor-
+vampiro
+Transceptor-
+vampiro
+Estação
+Estação
+Estação
+Os nós são conectados ao barramento por meio de cabos transceptores e transceptores-vam-
+piros. Um cabo transceptor é uma conexão que vai de um dispositivo ao cabo principal (bar-
+ramento). Um transceptor-vampiro é um conector que se une ao cabo principal ou perfura a 
+blindagem de um cabo para criar um contato com o núcleo metálico. À medida que um sinal 
+trafega ao longo do backbone, parte de sua energia é transformada em calor. Portanto, o sinal se 
+torna cada vez mais fraco conforme vai se propagando para um ponto cada vez mais distante. 
+Por isso, existe limite no número de transceptores-vampiro que um barramento é capaz de su-
+portar e na distância entre esses transceptores-vampiro.
+Entre as vantagens da topologia de barramento, temos a facilidade de instalação. O cabo de 
+backbone pode ser estendido ao longo do trajeto e então conectado aos nós através de cabos 
+transceptores de diversos comprimentos. Dessa forma, um barramento usa menos cabo que as 
+SEÇÃO 1.2   REDES    11
+
+[Page 45]
+12    CAPÍTULO 1  INTRODUÇÃO
+topologias de malha e anel. Em uma topologia estrela, por exemplo, quatro dispositivos de rede 
+na mesma sala precisariam de quatro trechos de cabo percorrendo todo o percurso até chegar ao 
+hub. Em um barramento, essa redundância é eliminada. Apenas o cabo de backbone é estendido 
+ao longo de toda a instalação. Cada cabo transceptor deve ter apenas o tamanho suficiente para 
+alcançar o ponto mais próximo no backbone.
+Entre as desvantagens, temos a dificuldade de reconfiguração e o isolamento de falhas. Normal-
+mente, um barramento é projetado para ter a máxima eficiência na instalação. Portanto, talvez seja 
+difícil acrescentar novos dispositivos. A reflexão de sinais nos transceptores-vampiro pode provo-
+car degradação em termos de qualidade. Existe a possibilidade de essa degradação ser controlada 
+limitando-se o número e o espaçamento entre os dispositivos conectados a um determinado trecho 
+de cabo. Adicionar novos dispositivos pode, portanto, vir a exigir modificações ou a substituição 
+completa do backbone.
+Além disso, uma falha ou a ruptura no cabo de backbone interrompe toda a transmissão, até 
+mesmo entre os dispositivos que se encontram do mesmo lado em que ocorreu o problema. A área 
+danificada reflete sinais de volta na direção de sua origem, gerando ruídos em ambas as direções.
+A topologia de barramento foi uma das primeiras topologias adotadas no projeto das primei-
+ras redes locais. As LANs Ethernet podem usar a topologia de barramento, mas esta é menos 
+popular hoje em dia em razão das questões que iremos discutir no Capítulo 13.
+Topologia de Anel   Em uma topologia de anel, cada dispositivo possui uma conexão ponto a 
+ponto dedicada com os outros dois dispositivos conectados de cada lado. Um sinal percorre todo 
+o anel em um sentido, de dispositivo para dispositivo, até atingir seu destino. Cada dispositivo 
+no anel possui um repetidor. Quando um dispositivo recebe um sinal destinado a outro disposi-
+tivo, seu repetidor regenera os bits e os passa adiante (ver Figura 1.8).
+Figura 1.8     Topologia de anel conectando seis estações
+Estação 
+Estação 
+Estação
+Estação 
+Estação 
+Estação 
+Repetidor
+Repetidor
+Repetidor
+Repetidor
+Repetidor
+Repetidor
+Um anel é relativamente fácil de ser instalado e reconfigurado. Cada dispositivo é ligado 
+apenas aos seus vizinhos imediatos (tanto em termos físicos como lógicos). Acrescentar ou 
+eliminar um dispositivo exige apenas a mudança de duas conexões. Os únicos fatores limitantes 
+são as questões relacionadas ao meio de transmissão e ao tráfego (comprimento máximo do anel 
+e o número máximo de dispositivos). Além disso, o isolamento de falhas é simplificado. Em um 
+anel, geralmente, um sinal está circulando o tempo todo. Se um dispositivo não receber um sinal 
+dentro de um período especificado, ele pode emitir um alarme. Esse alarme alerta o operador da 
+rede sobre o problema e sua localização.
+Entretanto, o tráfego unidirecional pode ser uma desvantagem. Em um anel simples, uma 
+interrupção no anel (por exemplo, uma estação inoperante) pode derrubar toda a rede. Essa
+
+[Page 46]
+fragilidade pode ser resolvida com o emprego de um anel duplo ou de um comutador central 
+capaz de fechar o trecho interrompido no anel.
+A topologia de anel era predominante quando a IBM introduziu sua rede local Token Ring. 
+Hoje em dia, a necessidade de LANs mais rápidas tornou esse sistema menos popular.
+Topologia Híbrida  Uma rede pode ser híbrida. Por exemplo, podemos ter uma topologia prin-
+cipal de anel, e cada ramificação conectando várias estações em uma topologia de barramento, 
+conforme ilustrado na Figura 1.9.
+Figura 1.9     Topologia híbrida: backbone em estrela com três redes na topologia de barramento
+Hub
+Estação 
+Estação 
+Estação 
+Estação 
+Estação 
+Estação 
+Estação 
+Estação 
+Estação 
+Modelos de Redes
+As redes de computadores são criadas por diversas entidades. São necessários padrões de forma 
+que essas redes heterogêneas possam se comunicar entre si. Os dois padrões mais conhecidos 
+são o modelo OSI e o modelo Internet. No Capítulo 2, discutiremos em detalhe esses modelos. 
+O modelo OSI (Open Systems Interconnection) define uma rede de sete camadas; o modelo 
+Internet estabelece uma rede de cinco camadas. Este livro se baseia no modelo Internet com 
+referências ocasionais ao modelo OSI.
+Categorias de Redes
+Hoje em dia, quando falamos de redes, geralmente estamos nos referindo a duas categorias 
+principais: redes locais e redes de ampla abrangência, geograficamente distribuídas. A categoria 
+na qual uma rede pertence é determinada pelo seu tamanho. Uma LAN normalmente cobre uma 
+área geográfica menor que 3 km; uma WAN pode ter uma cobertura mundial. As redes de tama-
+nho intermediário a esses são, em geral, conhecidas como redes de abrangência metropolitana 
+(MAN) e abrangem uma cobertura de dezenas de quilômetros.
+Redes Locais
+Uma rede local (LAN) é privada e interliga dispositivos em um escritório, prédio ou campus 
+(ver Figura 1.10). Dependendo das necessidades de uma organização e do tipo de tecnologia 
+usada, uma LAN pode ser muito simples, a ponto de conectar apenas dois PCs e uma impressora 
+no escritório doméstico de uma pessoa ou se estender por toda a empresa e incluir periféricos de 
+áudio e vídeo. Atualmente, o tamanho de uma LAN é limitado a alguns quilômetros.
+SEÇÃO 1.2  REDES    13
+
+[Page 47]
+14    CAPÍTULO 1  INTRODUÇÃO
+Figura 1.10     LAN isolada conectando 12 computadores a um hub em um gabinete
+Hub
+As LANs são projetadas para permitir que recursos computacionais sejam compartilhados 
+por computadores pessoais ou estações de trabalho. Os recursos a serem compartilhados podem 
+abranger o hardware (impressora), software (aplicativo) ou dados. Um exemplo comum de LAN, 
+encontrado em diversos ambientes empresariais, interliga um grupo de trabalho de computado-
+res com tarefas relacionadas, como estações de trabalho da  engenharia ou PCs da contabilidade. 
+Um dos computadores pode receber uma unidade de disco de grande capacidade, podendo vir 
+a ser um servidor para os PCs clientes. O software pode ser armazenado nesse servidor central 
+e usado conforme a necessidade por todo o grupo. Nesse exemplo, o tamanho da LAN pode ser 
+restrito pelo número de usuários licenciados a utilizar cópia de um software ou pelas restrições 
+no número de usuários simultâneos que acessam o sistema operacional.
+Além do tamanho, as LANs se distinguem de outros tipos de redes pelo seu meio de trans-
+missão e topologia. Em geral, uma LAN usará somente um tipo de meio de transmissão. As 
+topologias de LANs mais comuns são: barramento, anel e estrela.
+As primeiras LANs tinham taxas de transmissão de dados na faixa de 4 a 16 megabits por 
+segundo (Mbps). Hoje em dia, porém, as velocidades normalmente são de 100 a 1.000 Mbps. As 
+LANs serão discutidas em profundidade nos Capítulos 13, 14 e 15.
+LANs sem fio são a mais recente evolução em termos de tecnologia de LAN. Discutiremos 
+isso, em detalhe o Capítulo 14.
+Redes de Ampla Abrangência
+Uma rede de ampla abrangência (WAN) possibilita a transmissão de dados, imagens, áudio e 
+vídeo por longas distâncias, por grandes áreas geográficas que podem compreender um país, um 
+continente ou até mesmo o mundo todo. Nos Capítulos 17 e 18, discutiremos com mais detalhes 
+as redes de ampla abrangência, geograficamente distribuídas. Uma WAN pode ser tão comple-
+xa como os backbones que interligam a Internet ou tão simples como uma linha discada que 
+conecta um computador doméstico à Internet. Normalmente, denominamos a primeira WAN 
+comutada e a segunda, WAN ponto a ponto (Figura 1.11). A WAN comutada conecta os sistemas 
+finais e, geralmente, é formada por um roteador (um dispositivo de conexão entre redes) que se 
+conecta a outra LAN ou WAN. Uma WAN ponto a ponto é constituída por uma linha alugada 
+de uma companhia telefônica ou de uma operadora de TV a cabo que conecta o computador de 
+casa ou uma pequena LAN a um provedor de serviços de Internet (ISP). Esse tipo de WAN é 
+normalmente utilizado para fornecer acesso à Internet.
+
+[Page 48]
+Figura 1.11     WANs: uma WAN comutada e uma WAN ponto-a-ponto 
+WAN
+Ponto-a-Ponto
+a. WAN comutada
+b. WAN Ponto a ponto 
+ISP
+Computador
+Modem
+Modem
+A
+B
+C
+Sistema final
+Sistema final
+Sistema final
+WAN
+comutada
+Um dos primeiros exemplos de WAN comutada é o X.25, uma rede projetada para oferecer 
+compatibilidade entre seus usuários finais. Conforme veremos no Capítulo 18, o X.25 está sen-
+do substituído por uma rede de maior velocidade e eficiência chamada Frame Relay. Um bom 
+exemplo de WAN comutada é a rede de modo de transferência assíncrona (ATM), que é uma 
+rede de pacotes de dados individuais de tamanho fixo, denominados células. Falaremos sobre o 
+ATM no Capítulo 18. Outro exemplo de WAN é a WAN sem fio, que está se tornando cada vez 
+mais popular. Discutiremos, no Capítulo 16, as WANs sem fio e sua evolução.
+Redes de Abrangência Metropolitana
+Uma rede de abrangência metropolitana (MAN) é uma rede com tamanho intermediário entre 
+uma LAN e uma WAN. Normalmente, ela cobre a área dentro de um distrito ou uma cidade. É 
+projetada para clientes que precisam de conectividade de alta velocidade, geralmente para a In-
+ternet, e possui pontos de acesso espalhados por toda ou parte de uma cidade. Um bom exemplo 
+de uma MAN é a parte da rede de uma companhia telefônica que fornece acesso DSL de alta 
+velocidade a seus clientes. Outro exemplo é a rede de TV a cabo que, originalmente, foi projeta-
+da para transmissões de TV a cabo, mas hoje em dia também pode ser usada para a conexão de 
+alta velocidade com a Internet. No Capítulo 9, falaremos mais sobre as linhas DSL e as redes 
+de TV a cabo.
+Interconexão de Redes: Internetwork
+Hoje, é muito raro vermos uma LAN, MAN ou WAN isoladas; elas estão conectadas entre si. 
+Quando duas ou mais redes estiverem conectadas, elas se tornam uma internetwork ou internet.
+Suponhamos, por exemplo, que uma organização tenha dois escritórios, um na costa leste 
+dos Estados Unidos e outro na costa oeste. O escritório estabelecido na costa oeste tem uma LAN 
+com topologia de barramento; o recém-inaugurado escritório da costa leste possui uma LAN com 
+topologia estrela. O presidente da companhia reside em um ponto intermediário entre esses dois 
+escritórios e precisa ter controle sobre o que acontece na empresa a partir de sua casa. Para criar 
+SEÇÃO 1.2  REDES    15
+
+[Page 49]
+16    CAPÍTULO 1  INTRODUÇÃO
+um backbone WAN para conexão dessas três entidades (duas LANs e o computador do presiden-
+te) foi alugada uma WAN comutada (operada por um provedor, por exemplo, uma companhia te-
+lefônica). Entretanto, para conectar as LANs a essa WAN comutada são necessárias três WANs 
+ponto a ponto. Essas WANs ponto a ponto podem ser linhas DSL de alta velocidade fornecida 
+por uma companhia telefônica ou linhas de cable modem fornecidas por uma operadora de TV 
+a cabo conforme ilustrado na Figura 1.12.
+Figura 1.12     Rede heterogênea formada por quatro WANs e duas LANs
+WAN comutada
+WAN
+Ponto a ponto 
+WAN
+Ponto a ponto 
+WAN
+Ponto a ponto
+LAN
+LAN
+Hub
+Roteador
+Roteador
+Roteador
+Roteador
+Modem
+Modem
+Presidente
+• • •
+1.3  A INTERNET
+A Internet revolucionou diversos aspectos de nosso dia-a-dia. Ela afetou a forma pela qual os ne-
+gócios são realizados, bem como a maneira com a qual gastamos nosso tempo de lazer. Enumere 
+as maneiras pelas quais você usou a Internet recentemente. Talvez você tenha enviado um e-mail 
+a um colega de trabalho, tenha pago uma conta de luz, lido um jornal de uma cidade distante 
+ou visto a programação de cinema de seu bairro  tudo isso usando a Internet. Ou, quem sabe, 
+você tenha pesquisado um tópico sobre medicina, feito uma reserva de hotel, batido papo com 
+um amigo ou feito uma comparação de preços para a compra de um automóvel. A Internet é um 
+sistema de comunicação que dá acesso a ampla gama de informações a partir do teclado de seu 
+computador e organizadas para nosso uso.
+A Internet é um sistema organizado e estruturado. Começaremos apresentando um breve 
+histórico dessa rede. Depois, apresentaremos uma descrição de como ela funciona hoje em dia.
+
+[Page 50]
+Um Breve Histórico
+Rede é um grupo de dispositivos de comunicação conectados entre si, como os computadores 
+e as impressoras. Uma internet (note o i minúsculo) são duas ou mais redes que podem se co-
+municar entre si. A mais notável das internets é a Internet (I maiúsculo), uma colaboração de 
+mais de centenas de milhares de redes interconectadas. Os indivíduos, bem como as diversas 
+organizações, como órgãos do governo, escolas, institutos de pesquisa, empresas e bibliotecas 
+em mais de 100 países usam a Internet. Milhões de pessoas são seus usuários. Entretanto, esse 
+extraordinário sistema de comunicação passou a existir apenas em 1969.
+Em meados dos anos 1960, os mainframes em organizações de pesquisa eram dispositivos 
+isolados. Computadores de diferentes fabricantes eram incapazes de se comunicar entre si. 
+A Advanced Research Projects Agency (Arpa) do Departamento de Defesa dos Estados 
+Unidos (DoD) estava interessada em descobrir uma maneira de conectar computadores, de 
+forma que os pesquisadores, os quais eram por eles subsidiados, pudessem compartilhar suas 
+descobertas, reduzindo, portanto, custos e eliminando duplicação de esforços.
+Em 1967, em uma reunião da Association for Computing Machinery (ACM), a Arpa apre-
+sentou suas idéias para a Arpanet, uma pequena rede de computadores conectados. A idéia era 
+a de que cada host (não necessariamente do mesmo fabricante) estaria conectado a um compu-
+tador especializado chamado processador de mensagens de interface (IMP). Os IMPs, por 
+sua vez, estariam conectados entre si. Cada IMP tinha de ser capaz de se comunicar com outros 
+IMPs, assim como com seu próprio host conectado.
+Por volta de 1969, a Arpanet era uma realidade. Quatro nós, na University of California at 
+Los Angeles (Ucla), na University of California at Santa Bárbara (UCSB), no Stanford Research 
+Institute (SRI) e na University of Utah, foram conectados através de IMPs para formarem uma 
+rede. O software chamado Protocolo de Controle de Redes (NCP) fornecia a comunicação entre 
+os hosts.
+Em 1972, Vint Cerf e Bob Kahn, ambos participantes do grupo principal da Arpanet, traba-
+lharam juntos no que eles denominaram Internetting Project. O feito histórico de Cerf e Kahn, 
+registrado em um artigo de 1973, descrevia os protocolos para conseguir a entrega de pacotes de 
+um extremo ao outro. Esse artigo sobre o TCP (Transmission Control Protocol) incluía concei-
+tos como encapsulamento, datagrama e as funções de um gateway.
+Logo depois, autoridades decidiram dividir o TCP em dois protocolos: o TCP (Transmission 
+Control Protocol) e o IP (Internetworking Protocol). O IP trataria do roteamento de datagra-
+mas, ao passo que o TCP seria responsável por funções de mais alto nível, como segmentação, 
+remontagem e detecção de erros. O protocolo de interligação de redes (internetworking proto-
+col) passou a ser conhecido como TCP/IP.
+A Internet Hoje em Dia
+A Internet percorreu um longo caminho desde os anos 1960. Atualmente, a Internet não é uma 
+estrutura hierárquica única. Ela é composta por várias redes locais e remotas, reunidas por meio 
+de dispositivos de conexão e estações comutadoras. É difícil termos uma representação precisa 
+da Internet, pois ela está em contínua mutação — novas redes são acrescentadas, redes exis-
+tentes adicionam continuamente novos endereços e redes de empresas extintas são eliminadas. 
+Na atualidade, a maioria dos usuários que deseja conexão com a Internet utiliza os serviços de 
+SEÇÃO 1.3  A INTERNET    17

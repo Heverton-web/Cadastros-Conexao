@@ -1,0 +1,57 @@
+---
+name: docker-demystified-saibal-ghosh
+description: >-
+  Passos operacionais extraidos do livro 'Docker Demystified - Saibal Ghosh' (EN) — praticas e procedimentos para DevOps, infraestrutura e containers.
+---
+
+# Docker Demystified — Passos Operacionais
+
+Conteudo extraido do livro 'Docker Demystified'. Contem passos, tecnicas e principios baseados na obra original.
+
+## 1. Conceitos Fundamentais
+- I would like to thank the technical reviewers of the book: Indrajit Nandi, Debasis Maity and Sabyasachi Banerjee, all of whom took time out from their busy schedules to technically review the book and give me the reassurance that the book indeed fulfils the objectives for which it was written.
+- My gratitude also goes out to a lot of other people who encouraged me during the writing of this book, none more so than my brother Prabal, who helped me with all the diagrams in the book, as well as my friends and colleagues who kept me on my toes by often asking me about the progress of the book, thereby implicitly nudging me along.
+- This genesis of this book lies in my struggle in trying to decipher and understand Docker while I was learning it and trying to find the answers to questions and doubts that came to my mind while I tried to wrap my head around all the new concepts and terminologies, often facing a sea of doubts with no shoreline in sight.
+- If this book helps in ‘demystifying’ Docker for someone who is new to the technology, I would consider my job well done and my efforts more than adequately compensated.
+- Finally, I would like to thank BPB Publications for helping me throughout the book.   # About the Author  **Saibal Ghosh** works as a Principal Architect in Ericsson India Ltd.
+- He has donned many hats in his career, including being a database administrator, a technical consultant, a technical writer, an application developer, and a trainer.
+- He has a set of specific skills: understanding technology deeply and a keen sense of business pragmatism, and he thrives on matching these optimally.
+- He has over the years, picked up different technologies, and uses them liberally to solve real-world problems in his profession.
+- Of late, he is enamored by DevOps and spends a lot of his time working with Docker and Kubernetes and believes that DevOps is the future of Application Development.
+- He obsesses about technical communication and tries very hard to ensure that such communication is correct, accurate, and to the point.
+
+## 2. Principios e Tecnicas
+- He brings to the table more than twenty years of technical and business experience in and around infrastructure and security, presales, consulting, and solutioning.
+- Outside of work, Saibal loves reading, meditating, doing yoga, and spending time with his family.   # [CHAPTER 1](toc.xhtml#c01)  # [Introduction to Containerization and Docker](toc.xhtml#c01)  # [Introduction](toc.xhtml#s1a)  Containerization is now in vogue in the software development world as an alternative or even as a complement to virtualization.
+- Basically, containerization allows us to encapsulate (containerize) software with all its dependencies and the run-time environment in such a way that it runs uniformly across different infrastructures and platforms.
+- Running software in containerized environments generally use fewer computing resources than running software within different virtual machines, since the latter requires a separate copy of the operating system to run on each virtual machine.
+- However, it was not a static situation, and from time to time, businesses needed to grow their applications or add new applications, in which case they needed to increase the capacity of their servers, or worse go out and get new servers.
+- So, at any given point of time, the IT team had to make an educated guess on how much capacity they would require in the coming months and provision accordingly, and this was a never-ending process.
+- To ensure that the servers were big and powerful enough to take care of all the currently running applications as well as be prepared to meet the future growth, the IT operations team generally erred on the side of caution and often bought servers which were much bigger than the current requirement, resulting in a huge sub-optimal usage of those servers.
+- It was not uncommon to see servers use as low as 10-15% of their full capacity.
+- It was an enormous wastage of computing power, and by implication, company resources.
+- Around 2005, we started hearing about something called virtualization.
+
+## 3. Aplicacoes Praticas
+- Suddenly we had a situation where the next time we needed to add new applications or grow the current applications; we were not required to go out and buy new servers, instead, we could now leverage the functionalities afforded by the virtualization technology to use the spare capacity available on the servers to run numerous business applications and save money by optimizing the use of the servers.
+- However, virtualization or running VMs on the servers came with its own set of downsides; every VM required its dedicated **operating system** (**OS**).
+- The OS, in turn, consumed computing resources, which kind of ate into scarce resources; each OS needed its maintenance, patching, and so on.
+- The OS often required a separate license, and worst of all, for all VM based applications, there was a performance penalty, since the VM based applications were almost always slower than the applications running on bare metal.
+- While virtualization was a step in the right direction, it was certainly not _manna from heaven!_  # [Concept of Containerization](toc.xhtml#s5a)  The foundation of containerization lies in the **Linux Container** (**LXC**) Format.
+- LXC is an operating-system-level virtualization method for running multiple isolated Linux systems (container) on a control host using a single Linux kernel.
+- The fundamental difference between VMs and containers is that a container does not require its own OS, thus inherently making it much more lightweight than a VM.
+- In fact, all containers on a server or a host share a single OS, thus freeing up a huge amount of computing resources such as storage, CPU, and RAM.
+- A VM is slow to boot and takes a relatively long time to start up.
+- Containers, on the other hand, are fast to startup and extremely lightweight.
+
+## 4. Topicos Avancados
+- In fact, containers can have sub-second launch times!
+- So, with containers, we are not only guaranteed speed and agility but also, we save on potential license costs of the operating systems, as well as bypass the hassle of maintaining several operating systems.
+- And this, to put it very simply, optimizes return on investments and translates as net savings for the company.
+- The container is lightweight because it shares the machine’s operating system kernel and does not require the overhead of associating an operating system with each application.
+- Naturally, containers are much smaller in size than a VM, thereby allowing us to have many more containers in the same host as compared to the number of VMs that we could potentially have.
+- The other part relates to software development.
+- We have all had experiences where we developed a piece of software, tested it out on our test systems, and everything ran just fine, still, when it was deployed in the production environment, something did not work out, and either the application ran slowly or sub-optimally, or worse, failed outright.
+- After numerous hours of doing a **root cause analysis** , we finally discovered that there was a library missing on the production environment, or the production environment had a different level of patching as compared to the test system, or something else did not match between the test and production environments leading to the fiasco.
+- With containerization, we have found a way out of this problem.
+- Containerization simply eliminates this problem by bundling (containerizing) the software code together with the related configuration files, libraries, and other run-time dependencies required for it to run.

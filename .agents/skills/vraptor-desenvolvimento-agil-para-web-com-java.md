@@ -1,0 +1,65 @@
+---
+name: vraptor-desenvolvimento-agil-para-web-com-java
+description: >-
+  Passos operacionais extraidos do livro 'VRaptor desenvolvimento ágil para web com java' (PT) — Java, Java Web, Desenvolvimento Web.
+---
+# Conteudo Extraido
+Fonte: EPUB - [PT] EPUB_VRaptor__desenvolvimento_ágil_para_web_com_java - Desconhecido.txt
+
+
+## Conceitos Fundamentais
+- Capítulo 2 Sumário Capítulo 1: Introdução 1.1 Um pouco de história 1.2 Aonde você vai chegar com esse livro?
+- Capítulo 4 Capítulo 1 : Introdução 1.1 Um pouco de história Há muito tempo, desenvolver uma aplicação web em Java era uma tarefa muito trabalhosa.
+- Por um lado, tínhamos os Servlets e JSP, nos quais todo o tratamento das requisições era manual e cada projeto ou empresa acabava criando seu próprio framework — "O" framework — para trabalhar de uma forma mais agradável.
+- Por outro lado, tínhamos vários frameworks que se propunham a resolver os problemas da dificuldade de se trabalhar com os Servlets, mas que lhe obrigavam a escrever toneladas de XML, arquivos .properties e a estender classes ou implementar interfaces
+- Nesse cenário surgiu a ideia de um framework mais simples, que facilitasse o desenvolvimento web sem tornar o projeto refém das suas classes e interfaces.
+- Surgia o VRaptor, criado pelos irmãos Paulo Silveira e Guilherme Silveira, em 2004 na Universidade de São Paulo.
+
+
+  - * **Contribua desenvolvendo para o VRaptor**. O código fonte do VRaptor está no Github, que é, sem dúvida, a melhor ferramenta de compartilhamento de código que temos atualmente. Uma ótima forma de entender melhor o VRaptor é olhando o seu código fonte, em <https://github.com/caelum/vraptor4>. O VRaptor possui uma ótima suíte de testes, que exemplificam muito bem o uso de cada funcionalidade, além de garantir que elas estão funcionando. Com isso, além de aprender mais sobre o VRaptor, você verá também referência sobre formas de escrever testes em Java. Quando se sentir confortável (não hesite em postar dúvidas sobre o código do VRaptor na lista de desenvolvimento caelum-vraptor-dev@googlegroups.com), escolha algum dos tickets em <https://github.com/caelum/vraptor4/issues> e implemente-o, abrindo um Fork no Github e mandando Pull Requests. Se você já tem uma ideia de funcionalidade ou já encontrou um bug, pode mandar Pull Requests mesmo que eles não tenham sido reportados ainda. Durante a revisão do seu Pull Request, você ainda pode ganhar dicas de design, de como escrever testes, de como contribuir melhor para projetos open-source;
+
+  - Agradecimentos especiais aos irmãos Paulo e Guilherme Silveira, por criarem e incentivarem o VRaptor e por me chamarem para trabalhar na Caelum quando eu era apenas um estudante de Ciências da Computação, ao Fabio Kung, por ser o grande evangelista do VRaptor 2, ao Otávio Garcia por ter me ajudado a coordenar o desenvolvimento do VRaptor 3 nos últimos anos, ao Rodrigo Turini, Alberto Souza, Otávio Garcia e Mario Amaral que tiraram o VRaptor 4 do papel e fizeram um trabalho incrível de migração para o CDI e criação de novas funcionalidades, à Ceci Fernandes, por aguentar minhas piadas ruins desde o tempo da faculdade, ao Pedro Matiello, pelo mesmo motivo e por ajudar a revisar este livro, ao Adriano Almeida, por me deixar escrever esse livro, à minha família e à minha (futura) esposa Melissa Ágda por todo o apoio.
+
+  - Os testes passam e esgotamos os casos que queremos suportar no converter. Com o apoio dos testes, agora conseguimos refatorar a classe `DinheiroConverter` sem medo. Fazer testes durante o desenvolvimento é essencial para que tenhamos segurança para evoluir o sistema sem quebrar comportamentos existentes. Além disso, ao usarmos o ciclo do TDD, conseguimos criar classes com um design melhor, mais simples de usar e, mais ainda, ganhamos uma documentação viva sobre o que a classe faz: basta ler os casos de teste. Para saber mais sobre TDD, existe o livro "Test Driven Design em Java" por Maurício Aniche, pela Casa do Código, além das referências, em inglês, "TDD by Example" do Kent Beck e "Growing Object Oriented Software Guided by Tests" de Nat Pryce.
+
+  - Em 2009, o VRaptor foi totalmente reformulado para a versão 3, levando em conta a experiência obtida com os erros e acertos da versão anterior e de muitos outros frameworks da época. Essa versão leva ao extremo os conceitos de Convenção sobre configuração e Injeção de dependências, em que todos os comportamentos normais podem ser mudados facilmente usando anotações ou sobrescrevendo um dos componentes internos — bastando, para tanto, implementar uma classe com a interface desse componente. Além disso, possibilita criar de uma maneira fácil não apenas aplicações web que rodam no _browser_ , mas também serviços web que seguem as ideias de serviços RESTful, facilitando a comunicação entre sistemas e a implementação de AJAX no browser.
+
+  - Repare como o código ficou bem mais complexo que antes, isso usando apenas a `Estante`. Imagine agora esse código espalhado por cada método do seu sistema que depende do banco de dado. A complexidade desse código se dá por uma coisa: a classe `LivrosController` está **criando** a instância de `Estante` para poder trabalhar. Para isso, o `LivrosController` precisa saber qual é a implementação de `Estante` adequada, quais são as configurações necessárias para criar uma instância dessa implementação e, ao final, saber se precisa sinalizar à instância a hora de fechar os recursos abertos. Esse tipo de código está longe de ser responsabilidade da `LivrosController`, portanto não deveria estar aqui.
+
+  - Feito isso, não precisamos mais dos interceptors que havíamos criado, pois o VRaptor Shiro já faz a autenticação e a autorização. Agora, o que precisamos fazer é indicar para o Shiro quais métodos precisam ser autenticados. Precisamos anotar a classe ou o método com `@Secured` para dizer que ele será autenticado. Se a autorização for apenas ter um usuário logado, podemos usar a anotação `@RequiresUser`. Se precisarmos controlar um nivel maior, por exemplo ver se o usuário é admin, usamos a anotação `@RequiresRole` No nosso caso, queremos que o `LivrosController` seja autenticado totalmente, mas apenas alguns métodos precisam ser acessados só pelo admin, então a configuração seria:
+
+  - Os casos felizes (_happy paths_) já foram implementados, agora precisamos pensar nos casos patológicos, por exemplo, quando se passa um valor que não é um dinheiro. Do jeito que a implementação está, ela vai converter para `null` nesse caso, mas se deixarmos assim podemos mascarar erros. Quando a `String` que tentamos converter não é conversível para o tipo desejado, precisamos sinalizar com um erro. A API de converters do VRaptor já possui um erro implementado para isso, o `ConversionException`. Essa exception recebe no construtor uma `Message`, que será automaticamente adicionada como mensagem de validação. Podemos mostrá-la no formulário sem nenhum código adicional.
+
+  - Isso foi feito porque, neste primeiro momento, para construirmos os métodos do controller, bastava apenas qualquer implementação de `Estante` fornecendo a interface necessária. Porém, para termos o sistema funcionando, precisamos definir uma implementação real de `Estante`, que vai guardar os livros para podermos mostrá-los em seguida. São várias as maneiras de fazer isso, por exemplo, guardando os livros em arquivos ou usando algum serviço de armazenamento de dados. Mas a forma mais comum é usar uma implementação que guarda os livros num **banco de dados**. Vamos, então, mudar a implementação de `Estante` do controller para a `EstanteNoBancoDeDados`.
+
+  - Em meados de 2013, motivados pelo grande poder e facilidade de uso do Java EE 7, o VRaptor foi novamente reformulado, desta vez totalmente baseado em CDI, a especificação de injeção de dependências. Com isso, além de todas as vantagens que já existiam no VRaptor 3, temos a possibilidade de usar os recursos nativos do servidor de aplicação, totalmente integrado com os componentes da aplicação. E, como o CDI possui um modo _standalone_ , ainda é possível rodar a aplicação em um servidor web, como o Jetty ou o Tomcat, nesse caso precisando adicionar manualmente outros recursos do Java EE, como a JPA. A versão 4 final está disponível desde março de 2014.
+
+  - Passando a pensar nas URIs como recursos fica muito mais simples para um cliente do sistema consumir os serviços web. Não é mais necessário conhecer a URI de todos os métodos do serviço, somente conhecer as URIs correspondentes aos recursos é o suficiente. Sabendo que temos o recurso `/livros`, o cliente sabe que `GET /livros` significa obter os dados dos livros e `POST /livros` significa criar um livro novo. Se o recurso é um livro específico, `/livros/1234`, o cliente sabe que para obter os dados do livro deve usar `GET`, para editar os dados deve usar `PUT` (ou `PATCH` se for editar apenas alguns campos) e para remover o livro deve usar `%DELETE`.
+## Principios e Tecnicas
+- Em 2009, o VRaptor foi totalmente reformulado para a versão 3, levando em conta a experiência obtida com os erros e acertos da versão anterior e de muitos outros frameworks da época.
+- Essa versão leva ao extremo os conceitos de Convenção sobre configuração e Injeção de dependências, em que todos os comportamentos normais podem ser mudados facilmente usando anotações ou sobrescrevendo um dos componentes internos — bastando, para ta
+- Além disso, possibilita criar de uma maneira fácil não apenas aplicações web que rodam no browser , mas também serviços web que seguem as ideias de serviços RESTful, facilitando a comunicação entre sistemas e a implementação de AJAX no browser.
+- Em meados de 2013, motivados pelo grande poder e facilidade de uso do Java EE 7, o VRaptor foi novamente reformulado, desta vez totalmente baseado em CDI, a especificação de injeção de dependências.
+- Com isso, além de todas as vantagens que já existiam no VRaptor 3, temos a possibilidade de usar os recursos nativos do servidor de aplicação, totalmente integrado com os componentes da aplicação.
+- E, como o CDI possui um modo standalone , ainda é possível rodar a aplicação em um servidor web, como o Jetty ou o Tomcat, nesse caso precisando adicionar manualmente outros recursos do Java EE, como a JPA.
+
+## Aplicacoes Praticas
+- O objetivo desse livro é mostrar muito além do uso básico do VRaptor e suas convenções.
+- Mais importante do que aprender essas convenções é entender a arquitetura interna do VRaptor e como criar suas próprias convenções, adaptando o VRaptor para as necessidades específicas do seu projeto.
+- Saber como as coisas funcionam internamente é metade do caminho andado para que você tenha um domínio sobre o framework e se sinta confortável para fazer o que quiser com ele.
+- Durante os mais de quatro anos do VRaptor 3 e agora no começo do VRaptor 4, tenho respondido as mais variadas dúvidas sobre o seu uso no GUJ ( http://www.guj.com.br ), o que nos ajudou muito a modelar as novas funcionalidades e descobrir bugs .
+- Mas, muito mais do que isso, mostrou-nos todo o poder da extensibilidade: mesmo os problemas mais complexos e necessidades mais específicas dos projetos conseguiram ser resolvidos sobrescrevendo o comportamento do VRaptor usando os meios normais da s
+- Neste livro, você vai ver o uso básico e esperado, junto com o que considero boas práticas e uso produtivo das ferramentas que esse framework proporciona.
+
+## Topicos Avancados
+- Portanto, esse livro é pra quem quer entender como funciona o VRaptor e como aproveitar todo o seu poder e sua extensibilidade para tornar o desenvolvimento de aplicações o mais fácil e produtivo quanto possível.
+- Capítulo 5 Capítulo 2 : O começo de um projeto com VRaptor Um grande problema no desenvolvimento de um projeto é justamente como (e quando) começá-lo.
+- Isso não só na parte técnica. É preciso definir muito bem qual é o problema a ser resolvido, qual é o perfil do usuário do sistema, como será a usabilidade, onde será instalado, e muitos outros detalhes que devem influenciar nas escolhas que você dev
+- Hoje em dia, temos muitas ferramentas — bibliotecas, frameworks, linguagens de programação, servidores etc. — à nossa disposição, o que torna muito difícil definir o que usar.
+- Muitas destas ferramentas são boas e adequadas para resolver o seu problema.
+- Entretanto, mais importante do que saber quando usar uma ferramenta é saber quando não usá-la, ou quando ela vai atrapalhar mais do que ajudar. 2.1 Vantagens e desvantagens O VRaptor é um framework feito para desenvolver aplicações web e também muito
+
+## Secao 5
+- Por ser construído em cima do CDI, a especificação de injeção de dependências do Java EE, todos os comportamentos são implementados por componentes com interfaces específicas, que podem facilmente ser sobrescritos com anotações do CDI.
+- Se for feito o deploy em um servidor de aplicação, como o Glassfish ou o Wildfly , todos os serviços do Java EE podem ser integrados às classes da aplicação, sem nenhuma configuração adicional.
+

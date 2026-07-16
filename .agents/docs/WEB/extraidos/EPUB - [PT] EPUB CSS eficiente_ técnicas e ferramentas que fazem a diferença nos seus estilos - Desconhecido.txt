@@ -1,0 +1,3473 @@
+## CSS eficiente_ técnicas e ferramentas que fazem a diferença nos seus estilos
+
+  1. [page_001](src/pages/page_001.html)
+  2. [page_002](src/pages/page_002.html)
+  3. [page_003](src/pages/page_003.html)
+  4. [page_004](src/pages/page_004.html)
+  5. [page_005](src/pages/page_005.html)
+  6. [page_006](src/pages/page_006.html)
+  7. [page_007](src/pages/page_007.html)
+  8. [page_008](src/pages/page_008.html)
+  9. [page_009](src/pages/page_009.html)
+  10. [page_010](src/pages/page_010.html)
+  11. [page_011](src/pages/page_011.html)
+  12. [page_012](src/pages/page_012.html)
+  13. [page_013](src/pages/page_013.html)
+
+
+
+
+
+
+
+## Sumário
+
+  * [Capítulo 1: Introdução](index_split_001.html#calibre_toc_1)
+  * [Capítulo 2: Seletores CSS](index_split_002.html#calibre_toc_2)
+    * [2.1 Especificidade CSS](index_split_002.html#calibre_toc_11)
+    * [2.2 Como seletores CSS são interpretados](index_split_002.html#calibre_toc_12)
+    * [2.3 Não use IDs como seletores CSS](index_split_002.html#calibre_toc_13)
+  * [Capítulo 3: CSS Orientado a Objetos](index_split_003.html#calibre_toc_3)
+    * [3.1 Princípios básicos de CSS Orientado a Objetos](index_split_003.html#calibre_toc_14)
+    * [3.2 Exemplos de objetos](index_split_003.html#calibre_toc_15)
+    * [3.3 Conclusão](index_split_003.html#calibre_toc_16)
+  * [Capítulo 4: SMACSS](index_split_004.html#calibre_toc_4)
+    * [4.1 Introdução a SMACSS](index_split_004.html#calibre_toc_17)
+    * [4.2 Nomenclatura](index_split_004.html#calibre_toc_18)
+    * [4.3 Base](index_split_004.html#calibre_toc_19)
+    * [4.4 Layout](index_split_004.html#calibre_toc_20)
+    * [4.5 Módulo](index_split_004.html#calibre_toc_21)
+    * [4.6 Estado](index_split_004.html#calibre_toc_22)
+    * [4.7 Tema](index_split_004.html#calibre_toc_23)
+    * [4.8 Mais exemplos da prática de SMACSS](index_split_004.html#calibre_toc_24)
+    * [4.9 Conclusão](index_split_004.html#calibre_toc_25)
+  * [Capítulo 5: BEM](index_split_005.html#calibre_toc_5)
+    * [5.1 Pensando BEM](index_split_005.html#calibre_toc_26)
+    * [5.2 Escrevendo BEM](index_split_005.html#calibre_toc_27)
+    * [5.3 Conclusão](index_split_005.html#calibre_toc_28)
+  * [Capítulo 6: Pré-processadores CSS](index_split_006.html#calibre_toc_6)
+    * [6.1 O que são pré-processadores CSS?](index_split_006.html#calibre_toc_29)
+    * [6.2 Aninhamento de regras](index_split_006.html#calibre_toc_30)
+    * [6.3 Variáveis](index_split_006.html#calibre_toc_31)
+    * [6.4 Mixins](index_split_006.html#calibre_toc_32)
+    * [6.5 Extensão/Herança](index_split_006.html#calibre_toc_33)
+    * [6.6 Importação](index_split_006.html#calibre_toc_34)
+    * [6.7 Mais superpoderes de Sass](index_split_006.html#calibre_toc_35)
+  * [Capítulo 7: CSS namespaces](index_split_007.html#calibre_toc_7)
+    * [7.1 Os CSS namespaces mais comuns](index_split_007.html#calibre_toc_36)
+    * [7.2 Conclusão](index_split_007.html#calibre_toc_37)
+  * [Capítulo 8: Task Runners](index_split_008.html#calibre_toc_8)
+    * [8.1 O que são Task Runners?](index_split_008.html#calibre_toc_38)
+    * [8.2 Como instalar o Gulp](index_split_008.html#calibre_toc_39)
+    * [8.3 Gulp API](index_split_008.html#calibre_toc_40)
+    * [8.4 Exemplo de tarefas com Gulp](index_split_008.html#calibre_toc_41)
+    * [8.5 Sugestões de plugins Gulp](index_split_008.html#calibre_toc_42)
+    * [8.6 Conclusão](index_split_008.html#calibre_toc_43)
+  * [Capítulo 9: ITCSS](index_split_009.html#calibre_toc_9)
+    * [9.1 O que é ITCSS?](index_split_009.html#calibre_toc_44)
+    * [9.2 As camadas do triângulo invertido](index_split_009.html#calibre_toc_45)
+    * [9.3 Organização do código com ITCSS](index_split_009.html#calibre_toc_46)
+    * [9.4 Conclusão](index_split_009.html#calibre_toc_47)
+  * [Capítulo 10: O fim](index_split_010.html#calibre_toc_10)
+
+
+
+
+Visite o site da Editora Casa do Código e conheça os livros com preços promocionais - [www.casadocodigo.com.br](http://www.casadocodigo.com.br). 
+
+
+##  Capítulo 1:  Introdução 
+
+Ah, as CSS! As queridas folhas de estilo que tanto amamos ─ e, às vezes, odiamos ─, que estão conosco, os desenvolvedores _front-end_ , na maioria dos dias de nosso trabalho!
+
+Desde que nosso colega norueguês **Håkon Wium Lie** brindou o mundo com sua invenção inteligentemente chamada de _Cascading Style Sheets_ (CSS), muita coisa já aconteceu com essas danadinhas!
+
+_Fig. 1.1: Håkon Wium Lie tentando convencer o W3C a aprovar as CSS_
+
+  
+  
+
+
+Atualmente, é possível alcançar com CSS o que, até não muito tempo atrás, não se passava de sonho ou do uso de muitos códigos JavaScript. Devido a suas modernas características recentes, CSS se popularizou e ganhou os corações de muitos desenvolvedores e entusiastas por todo o mundo!
+
+As Folhas de Estilo não são tão complicadas de se aprender. Ao contrário, são populares justamente pela sua facilidade e rápido início, aliado à visualização imediata do que se está fazendo! Em suma: as CSS são famosas!
+
+Entretanto, como qualquer aspecto de nossas vidas, também existe o lado ruim. Com o passar do tempo, essa facilidade de uso trouxe um lado negativo ao ecossistema de estilização para web: a adoção involuntária de más práticas de uso. 
+
+Não que isso tenha sido algo maquiavélico, uma conspiração de meia dúzia de _webdevs_ maléficos rumo à disseminação de práticas ruins. Simplesmente aconteceu. Por conta disso e por ninguém ter avisado que não era certo, essas más práticas simplesmente se propagaram...
+
+#### Com a palavra: quem entende do assunto
+
+O Autor tem a felicidade de manter contato com alguns dos grandes nomes do cenário mundial quando o assunto é CSS. Certamente, o que pessoas como **Harry Roberts** e **Jonathan Snook** pensam sobre boas práticas conta bastante!
+
+Para enfatizar o quão importante é adotar as boas práticas que estão presentes neste livro, o Autor perguntou a estas duas sumidades: _Por que uma Arquitetura CSS é importante? E por que precisamos de uma?_
+
+**Harry Roberts** , do **CSS Wizardry** (<http://goo.gl/sXt93d>), criador da metodologia ITCSS ([9](index_split_009.html#chapter-itcss)) que chega ao Brasil com exclusividade por meio deste livro, respondeu:
+
+_CSS é incrivelmente fácil de escrever ─ incrivelmente fácil ─, mas possui uma ordem de magnitude mais difícil para se gerir, manter e escalar. Como os projetos ficam mais maduros e maiores, CSS pode realmente começar a "comer pelas beiradas", causando quantidades incalculáveis de confusão, dores de cabeça e frustrações para os desenvolvedores responsáveis por geri-los._
+
+_Isso se dá, principalmente, devido a uma série de princípios fundamentais de CSS que tornam inerentemente mais difícil a gestão de qualquer projeto de UI não trivial: é impossível encapsular totalmente regras, então todas elas têm a capacidade de herdar ou repassar estilização de e para outras; nada é imutável, logo, é possível acidentalmente desfazer ou interferir com outras regras no projeto; não existe fluxo de controle ou lógica, o que significa que não há nenhuma pista sobre a forma ou o estado do projeto; sua sintaxe liberal (loose syntax) torna muito fácil que as pessoas façam a coisa errada; há total dependência da ordem do código, o que significa que, se porções de código são movidas (ou adicionadas em partes erradas do projeto), um monte de outras coisas podem (potencialmente) quebrar; a especificidade trabalha contra alguns dos outros princípios de design do core da linguagem; e o fato de ser tão simples significa que todo mundo que mexe com CSS, muitas vezes, tem sua opinião de como as coisas devem ser feitas, o que leva a colisões e confusão._
+
+_Quando todos esses problemas se reúnem em grande escala, cada um é ampliado e se torna ainda mais evidente. Uma arquitetura CSS nos fornece uma forma estruturada de escrita e gerenciamento de CSS de uma forma que tanto contorna ou doma essas esquisitices, quanto dá aos desenvolvedores um conjunto de regras e diretrizes a seguir a fim de continuar a escrever CSS que é amigável, são, simples de compreender e mais fácil de escalar._
+
+**Jonathan Snook** , criador do SMACSS ([4](index_split_004.html#chapter-smacss)), disse:
+
+_Sistemas grandes, complexos, em crescimento, precisam de organização. Todos estes precisam de alguma maneira de dar sentido à complexidade. Programação orientada a objetos existe há décadas como uma maneira de estabelecer a ordem em meio ao caos. Desenvolvimento server-side tem sido por anos a ascensão popular de frameworks MVC. JavaScript tem sido a ascensão de ferramentas para gerenciamento de dependência._
+
+_Somente nos últimos anos, temos visto qualquer tentativa de organizar CSS de uma forma sensata. Abordagens como OOCSS e SMACSS surgiram para proporcionar entendimento mais facilitado de projetos, permitindo qualquer um a, rapidamente, "pular dentro" e ser mais produtivo, a ser capaz de fazer isso sem a sensação de que tudo vai desmoronar quando alguma mudança é feita._
+
+Estas são palavras de eminentes desenvolvedores front-end do planeta Terra. Se elas não são suficientes para fazer você chegar à conclusão de que uma Arquitetura CSS mais robusta é **imprescindível** para projetos front-end profissionais, então não há mais nada no mundo que o fará!
+
+#### Conclusão
+
+Este livro tem o objetivo de ajudar, pelo menos um pouquinho, a disseminar algumas boas práticas e tecnologias interessantíssimas para se escrever e manutenir projetos CSS, para você que já trabalha (ou trabalhou) com as Folhas de Estilo e quer aprimorar seu trabalho, passando a escrever **CSS eficiente**.
+
+Portanto, nele você **não vai** encontrar explicações básico-teóricas como: o que é e como é formada uma regra CSS; regras de usuário, de navegador e de autor; comparativo entre CSS inline, incorporado e externo; qual a diferença entre IDs e classes; o que são pseudoclasses e pseudoelementos; quais as propriedades CSS existentes e valores possíveis para cada etc. 
+
+Na verdade, muitas dessas informações nem serão úteis aqui. Logo, façamos um combinado: ficará subentendido que você é uma pessoa que já estudou tudo isso e agora aprimorará suas habilidades.
+
+Imagine que estamos cuspindo em nossas respectivas mãos e as apertando em um chacoalhar amistoso para selar esse pacto.
+
+Aproveite a leitura!
+
+
+##  Capítulo 2:  Seletores CSS 
+
+A maioria dos desenvolvedores front-end, principalmente os que dão menor importância à teoria, criam suas próprias regras CSS como se não houvesse amanhã. Embora isso seja verdade em relação a alguns prazos estabelecidos pela doce e carismática figura do gerente de projetos, as Folhas de Estilo são escritas sem planejamento, sem preparação, sem consciência e sem muitos outros atributos essenciais para que um trabalho bem feito possa ser executado.
+
+Se você se enquadra nessa infeliz descrição, este capítulo é importantíssimo, já que vai abordar temas como Especificidade CSS, explicação de como os seletores CSS são interpretados e outras dicas gerais. O intuito é a disseminação da prática de planejar a escrita de regras CSS antes de escrever código às cegas. Ou seja, pensar antes de fazer.
+
+Além da vantagem óbvia de adquirir mais conhecimentos e passar a escrever CSS melhor, você também terá condições de argumentar com o seu gerente de projetos sobre como é importante planejar suas Folhas de Estilo para obter um CSS mais eficiente e profissional.
+
+E se, ainda assim, não adiantar, peça a ele que me envie um e-mail para que possa ler uma ou duas verdades!
+
+###  2.1  Especificidade CSS 
+
+É simples escrever regras CSS: primeiro escreva o elemento, classe ou ID que se quer estilizar (aí são inclusos seletores avançados), e aplique as propriedades cabíveis. 
+
+Entretanto, já aconteceu de você criar uma regra e, por algum motivo, ela não "entrar em ação"? Quer dizer, você a criou esperando que tudo corresse bem, mas, por algum motivo, ela não foi aplicada e outra regra teve precedência?
+
+Provavelmente isso acontece com todos que trabalham com CSS. É devido à **especificidade de CSS** que isso ocorre. Um dos motivos de haver "Cascata" em "Folha de Estilo em Cascata" é referente, justamente, a quão específica determinada regra é, para ser "mais importante" que outras e entrar em ação em detrimento às demais.
+
+#### O que é a Especificidade CSS?
+
+Desconhecer a teoria e a prática da Especificidade CSS não raramente leva a confusões, desgostos e falsas acusações de bugs ─ "Já criei a regra, mas ela não funciona!" ─, já havendo relatos de aumento de pressão e náuseas. Entretanto, não é algo tão difícil de se entender.
+
+Pense na especificidade CSS como um **sistema de pesos** que serve para determinar qual regra CSS tem precedência quando várias podem ser aplicadas ao mesmo elemento. Regras com maior peso têm preferência sobre regras de menor peso e, por isso, "ganharão" e "entrarão em ação" quando o navegador renderizar os estilos.
+
+_Toda_ regra CSS tem sua especificidade implícita; portanto, mesmo não sabendo, você _já_ se vale da especificidade! A ideia é que, a partir de agora, você faça isso conscientemente!
+
+#### Entendendo a especificidade CSS
+
+Existem 4 categorias que definem o nível de especificidade a um dado seletor. Preste atenção na ordem, pois é importante. Para facilitar as explicações, vamos atribuir letras a cada uma:
+
+a) Estilos inline;
+
+b) IDs;
+
+c) Classes, pseudoclasses e atributos;
+
+d) Elementos e pseudoelementos.
+
+Por exemplo, seria possível visualizar a especificidade de um elemento `h1` da seguinte maneira:
+    
+    
+    1 h1 = (a=0), (b=0), (c=0), (d=1)
+    
+
+Quer dizer, no seletor `h1` existe: 0 estilos inline; 0 IDs; 0 classes, pseudoclasses e atributos; 1 elemento ou pseudoelemento.
+
+Para ficar menos verboso, isso poderia ser mostrado como:
+    
+    
+    1 h1 = 0,0,0,1
+    
+
+Para facilitar ainda mais, também é possível "transformar" isso em um número inteiro:
+    
+    
+    1 h1 = 0001
+    
+
+_Fig. 2.1: Especificidade do seletor h1_
+
+  
+  
+
+
+Se o seletor fosse `#content h1`, teríamos:
+    
+    
+    1 #content h1 = 0,1,0,1
+    
+
+Ou:
+    
+    
+    1 #content h1 = 0101
+    
+
+_Fig. 2.2: Especificidade do seletor #content h1_
+
+  
+  
+
+
+Isso significa que, se ambas as regras existissem em um conjunto de estilos de uma página, `#content h1` teria precedência em relação a `h1`, dado que **0101 > 0001**.
+
+Atente-se ao fato de que a matemática envolvida é somente para demonstrar a lógica que acontece "nos bastidores". Seria completamente incoerente se, por padrão, CSS priorizasse a estilização de um elemento puro em detrimento à estilização deste mesmo elemento dentro de um contêiner (neste caso, um ID), que é um seletor mais específico.
+
+Mais um:
+    
+    
+    1 #sidebar ul li a.myclass:hover = 0,1,2,3
+    
+
+0 estilos inline; 1 ID; 2 classes, pseudoclasses ou atributos; 3 elementos ou pseudoelementos.
+
+_Fig. 2.3: Especificidade do seletor #sidebar ul li a.myclass:hover_
+
+  
+  
+  
+---  
+  
+Pense rápido: qual o peso do seletor universal `*`? **0**! Ele não tem estilos inline, IDs, classes, pseudoclasses ou atributos, nem elementos ou pseudoelementos. Simples assim!  
+  
+---  
+  
+Para ajudar a fixação do conceito, tente responder: dado um conjunto de regras CSS, entre os seletores `#content article ul` e `#content .list`, ambos servindo perfeitamente para estilizar listas dentro de um contêiner, qual dos dois teria mais peso e entraria em ação?
+
+Fazendo os cálculos:
+    
+    
+    1 #content article ul = 0,1,0,2
+    
+
+_Fig. 2.4: Especificidade do seletor #content article ul_
+
+  
+  
+
+    
+    
+    1 #content .list = 0,1,1,0
+    
+
+_Fig. 2.5: Especificidade do seletor #content .list_
+
+  
+  
+
+
+No seletor `#content article ul`, existe: 0 estilos inline; 1 ID; 0 classes, pseudoclasses e atributos; 2 elemento ou pseudoelemento. Já no `#content .list`, 0 estilos inline; 1 ID; 1 classe, pseudoclasses ou atributo; 0 elemento ou pseudoelemento.
+
+Como **0110 > 0102**, a regra com o seletor `#content .list` teria mais peso, além de também ser um seletor CSS com melhor performance, como se verá a seguir.
+
+Para treinar bastante, invente alguns seletores sem pensar no peso e depois tente chegar ao seu cálculo. Para conferir se você acertou, use a Calculadora de Especificidade CSS, disponível em <http://goo.gl/ekN1G0>.
+
+#### Casos especiais na Especificidade CSS
+
+Existem alguns casos especiais na Especificidade CSS:
+
+  * Empate;
+  * `!important`.
+
+
+
+No caso de acontecer um empate, ou seja, duas ou mais regras em um mesmo conjunto de Folhas de Estilo com o mesmo peso, a cascata CSS entra em ação.
+
+Ao usar `!important`, o valor da respectiva propriedade ganha prioridade sobre quaisquer efeitos da Especificidade. Havendo conflito entre vários `!important`, novamente entra em ação o efeito cascata, com precedência das CSS de usuário às de autor.  
+  
+---  
+  
+`!important` foi originalmente criado para ser usado somente como uma maneira de sobrepor regras de folhas de estilo de autor. Infelizmente, seu uso se espalhou da maneira errada e, atualmente, ele é usado indiscriminadamente: por preguiça e/ou desconhecimento da Especificidade CSS.
+
+Agora que você já conhece sobre a Especificidade, **comece a usar`!important` somente para o fim a que se destina!**  
+  
+---  
+  
+Como explicado anteriormente, _toda_ regra CSS tem sua Especificidade implícita; ou seja, você já estava se valendo disso mesmo sem saber. A ideia é que, a partir de agora, você faça uso dos benefícios da especificidade CSS conscientemente! Ao utilizá-la, você escreverá melhores seletores e escapará de situações em que, sem este conhecimento, não se compreende bem por que "tal" ou "qual" propriedade não está sendo apresentada, mesmo tendo sido declarada.
+
+  
+
+
+###  2.2  Como seletores CSS são interpretados 
+
+No dia a dia de trabalho com CSS, infelizmente, não é tão comum os desenvolvedores prestarem atenção em como estão escrevendo os seletores CSS. A imensa maioria não se recorda que a forma como os seletores são escritos influencia a performance de CSS, afetando diretamente na qualidade do código e em como essas regras são avaliadas pelo interpretador. É mais ou menos como acontecia com a Especificidade CSS antes de você ter lido o tópico anterior.
+
+Vale sempre lembrar de que pelo menos 80% das questões de performance de web sites são referentes a front-end (<http://bit.ly/1M1Db4h>). Portanto, é interessante e, em alguns casos, _vital_ para o sucesso de um site, que os seletores CSS sejam escritos e otimizados de modo a garantir o melhor desempenho possível!
+
+É verdade que as dicas apresentadas a seguir aplicam-se, principalmente, a sites de alto desempenho, nos quais a velocidade é uma característica imprescindível e mil elementos podem estar presentes no DOM. Porém, não importa se você está desenvolvendo o próximo Facebook ou um site para o decorador local: as melhores práticas são as melhores práticas!
+
+Seletores CSS não são novidades para você. Os seletores mais básicos são de tipo (como `div`), ID (`#header`) e classe (`.tweet`), respectivamente. Os mais incomuns incluem pseudoclasses comuns (`:hover`) e seletores CSS3 mais complexos, incluindo `:first-child` ou `[class^="grid-"]`.
+
+Seletores têm uma eficiência inerente que, partindo dos mais eficientes para os menos eficientes, são:
+
+  1. ID (`#header`);
+  2. Classe (`.promo`);
+  3. Tipo (`div`);
+  4. Irmão adjacente (`h2 + p`);
+  5. Filho (`li > ul`);
+  6. Descendente (`ul a`);
+  7. Universal (`*`);
+  8. Atributo (`[type="text"]`);
+  9. Pseudoclasse / Pseudoelemento (`a:hover`).
+
+
+
+É importante notar que, apesar de, tecnicamente, um ID ser mais rápido e mais performático, essa diferença é mínima, até desprezível (como será mostrado no decorrer do livro). 
+
+#### Combinando seletores CSS
+
+É possível ter seletores independentes, como `#nav`, que vão selecionar qualquer elemento de ID "nav", ou você pode combinar seletores, como `#nav a`, que vão corresponder a qualquer link/âncora dentro de qualquer elemento de ID de "nav" (no caso, seria somente 1 por página, por tratar-se de ID).
+
+Pode parecer estranho e um pouco difícil de se entender rapidamente, mas, diferentemente do que a maioria dos ocidentais, que costumam ler da esquerda para a direita, **seletores CSS são lidos da direita para a esquerda** pelos navegadores. Para tentar compreender o motivo pelo qual os browsers fazem isso, lembremo-nos daqueles jogos de "encontre o caminho" que brincávamos nas revistas da nossa infância. Todos nós iniciávamos a resolução pelo objetivo final do emaranhado de trajetórias, retrocedendo até um dos pontos iniciais possíveis.
+
+_Fig. 2.6: Você já brincou com isso, admita!_
+
+  
+  
+
+
+É mais eficiente para um navegador começar sua procura por combinações a partir do elemento mais à direita (o que ele sabe que receberá o estilo) e trabalhar o seu caminho de volta através da árvore de DOM, do que começar no alto dessa árvore e percorrer o caminho para baixo, pois poderia nem mesmo acabar no seletor que precisa receber a estilização (também conhecido como **seletor-chave**).
+
+Já deu pra ter uma noção, mas, caso queira uma explicação mais detalhada, confira o tópico _CSS Selectors parsed right to left. Why?_ no Stack Overflow (<http://bit.ly/1MP8m5c>).
+
+#### O seletor-chave
+
+O seletor-chave, como discutido, é a parte mais à direita de um seletor CSS. Ele é o que o interpretador do browser procura em primeiro lugar. Lembre-se da ordem dos seletores mais eficientes que abordamos anteriormente. Seja qual for o seletor-chave da vez, ao escrever CSS eficiente, é este que conterá o segredo do alto desempenho!
+
+Um seletor como:
+    
+    
+    1 #content .intro { }
+    
+
+O navegador procurará todas as instâncias de `.intro` e, depois, começará a subir no DOM até encontrar o elemento `#content`.
+
+No entanto, o seguinte seletor não é muito performático:
+    
+    
+    1 #content * { }
+    
+
+O que ele faz é olhar para cada elemento da página (para cada um, mesmo!) e, em seguida, checar se qualquer um deles é descendente de `#content`. Este é um **seletor com performance ruim** e, como seletor-chave, é muito "expensivo". Usando esse conhecimento, é possível tomar melhores decisões quanto ao modo de classificar e selecionar elementos.
+
+Vamos dizer que, em uma página realmente grande de um site realmente enorme, há centenas ou, mesmo, milhares de elementos `a`. Há, também, uma pequena seção de links de mídia social em um `ul` com um ID "social", com 3 links, digamos que: Twitter, Facebook e Google+, além de incontáveis outras âncoras.
+
+Portanto, seria excessivamente custoso e nada performático um seletor como:
+    
+    
+    1 #social a {}
+    
+
+O que vai acontecer aqui é que o navegador avaliará todos os milhares de links na página antes de fazer o _match_ com os de `#social`. O seletor-chave corresponde a muitos outros elementos que nada têm a ver com a estilização pretendida!
+
+Para remediar a situação, uma solução possível seria adicionar um seletor mais específico e explícito, `.social-link`, para cada um dos `a` da área social. Porém, isso iria de encontro ao fato de que não é aconselhado colocar classes desnecessárias na marcação quando é possível usar uma solução mais enxuta.
+
+É por isso que o **desenvolvimento web focado em desempenho** é algo tão interessante. Um estranho equilíbrio entre melhores práticas de padrões web e performance!
+
+Considere o seguinte código HTML:
+    
+    
+    1 <ul id="social">
+    2     <li><a href="#" class="twitter">Twitter</a></li>
+    3     <li><a href="#" class="facebook">Facebook</a></li>
+    4     <li><a href="#" class="gplus">Google+</a></li>
+    5 </ul>
+    
+
+Com o seguinte CSS:
+    
+    
+    1 #social a {}
+    
+
+Agora, veja este outro HTML:
+    
+    
+    1 #social .social-link {}
+    
+
+Ou, dependendo da marcação presente:
+    
+    
+    1 .social-link {}
+    
+
+Esse novo seletor-chave vai corresponder a poucos elementos, o que significa que o navegador conseguirá interpretar a estilização mais rapidamente e passar para a próxima tarefa a ser feita.
+
+Lembre-se de que seletores-chave determinam quanto trabalho o navegador terá de fazer. Preste bastante atenção neles!
+
+#### Superqualificando seletores
+
+Você já viu o que é um seletor-chave e que é nele que está a maior parte do trabalho que o interpretador de CSS do navegador tem de fazer. A boa notícia é que é possível trabalhar para otimizá-lo ainda mais! A melhor coisa sobre ter bons seletores-chave explícitos e criar CSS eficiente e de qualidade é que é possível evitar a "superqualificação" de seletores.
+
+Um seletor superqualificado se parece com:
+    
+    
+    1 html body .wrapper #content a {}
+    
+
+O navegador tem de olhar para todos os elementos `a`, verificar se está em um elemento de ID `content` respectivamente e assim por diante, até chegar em `html`. Isso faz com que ele passe por caminhos que não precisa realmente, sendo pelo menos 3 desses elementos no seletor totalmente desnecessários.
+    
+    
+    1 #content a {}
+    
+
+Um outro exemplo (infelizmente) bastante comum:
+    
+    
+    1 ul#nav li a {}
+    
+
+Já se sabe que, se o `a` está dentro de `li`, que tem de estar dentro de `#nav`, de modo que é possível eliminar o `li` do seletor logo de cara. Como o `#nav` é um ID (e já sabemos que só podem existir IDs únicos e exclusivamente nominados na página), o elemento `ul` também pode ser eliminado.
+
+Uma forma melhor (mas ainda não ideal) de se escrever seria:
+    
+    
+    1 #nav a { }
+      
+  
+---  
+  
+Seletores superqualificados fazem com que o navegador trabalhe mais do que precisa e deveria. Construa seletores mais enxutos e de alto desempenho, eliminando partes desnecessárias.  
+  
+---  
+  
+#### Toda essa otimização de seletores é realmente necessária?
+
+A resposta curta é: provavelmente, não.
+
+A resposta mais longa é que depende do site que está sendo desenvolvido. Se você está trabalhando no próximo projeto de seu portfólio pessoal, dê preferência a escrever um código limpo em detrimento à performance de CSS, porque, neste caso, não fará tanta diferença. Agora, se você está construindo a próxima Amazon, microssegundos de velocidades na página farão a diferença!
+
+Entretanto, independentemente do tamanho do seu projeto, os navegadores interpretarão de forma igual e terão o mesmo trabalho de análise das regras CSS. Se estiver escrevendo algo como:
+    
+    
+    1 div:nth-of-type(3) ul:last-child li:nth-of-type(odd) * { 
+    2     font-weight: bold;
+    3 }
+    
+
+Você, muito provavelmente, está fazendo a coisa errada!
+
+Porém, se seu humilde projeto web começa a expandir e a ter cada vez mais acessos, crescendo exponencialmente acima do esperado de uma hora para a outra, os recursos despendidos para otimizar o CSS serão o melhor investimento a ser feito? Será que não haverá arrependimentos por não ter escrito um bom CSS desde o começo se isso acontecer? Fica a questão.
+
+  
+
+
+###  2.3  Não use IDs como seletores CSS 
+
+Quando se está aprendendo a trabalhar com CSS, é comum que se estude logo no início as diferenças entre IDs e classes; quais vantagens e desvantagens cada um apresenta; como e quando usar um ou outro e assim por diante. Mas, após a realização de alguns testes de performance, pode ser que esse aprendizado original precise de uma pequena revisão.
+
+Quando se é desenvolvedor web, fazer com que códigos e/ou marcações sejam cada vez melhores, independente de em qual linguagem estiverem, é praticamente inerente ao ofício. Com isso em mente, algumas considerações interessantes podem ser encontradas, principalmente em relação ao uso de seletores de ID em CSS, após se fazer alguns testes com performance em folhas de estilo.
+
+Porém, existem alguns pontos que merecem ser levados em consideração:
+
+  * Performance;
+  * Fragmentação;
+  * Tradição.
+
+
+
+#### Performance
+
+Pergunte para qualquer codificador CSS e ele responderá que os seletores de ID são os mais rápidos. Entretanto, isso vem com uma grande limitação: IDs são os seletores mais rápidos somente se forem os seletores-chave. 
+
+Para um seletor `#home a`, chega a ser até normal supor que o browser vai localizar o elemento de ID _home_ e aplicar os valores das propriedades em todos seus links. Rapidíssimo, não é? Agora, veja o que realmente acontece: ele pega todos os elementos `a` e verifica se são descendentes imediatos de `#home`. Caso não seja, vai checando os ascendentes até chegar a `<html>`.
+
+Será que a diferença de performance é tão grande mesmo? Para ter certeza, foram feitos 3 testes usando o **Criador de Testes CSS** de Steve Souders (<http://goo.gl/DwfTuC>). Cada um deles utilizou 1.000 elementos que foram selecionados a partir de IDs individuais, classes ou IDs com os seletores `a`. As páginas foram recarregadas diversas vezes para pegar a média dos resultados (números em ms).
+
+_Fig. 2.7: Média de resultados dos testes (ms)_
+
+  
+  
+
+
+Para as 1.000 regras testadas, os IDs mostraram-se cerca de 1 milésimo de segundo mais rápido do que as classes como um seletor-chave. Em outras palavras, **a diferença de desempenho entre IDs e classes é irrelevante!**
+
+O cenário mais comum de se usar um ID como _namespace_ de um elemento (sendo este o seletor-chave) é realmente mais lento do que usando uma classe. Mas, novamente, somente com 13 milissegundos de diferença. Isso também é válido para os poucos bytes extras para adicionar uma classe a um elemento que já tenha um ID, por exemplo, mudando `<div id="search">` para `<div id="search" class="search">`.
+
+Porém, isso não quer dizer que todos os seletores sejam iguais. O seletor universal `*` e alguns CSS3 têm desempenho relativamente fraco quando usados como seletores-chave.
+
+_Fig. 2.8: Desempenho de seletores: porcentagem por tipo de seletor_
+
+  
+  
+
+
+No entanto, usando seletores CSS, não se torna um problema se for para 1 a 2 seletores (elementos e/ou classes). O impacto na sua performance é pequeno se comparado a outras coisas, como otimização de imagens ou redução de requisições HTTP. Esse tipo de coisa é o que realmente importa quando se tem a **performance do site** como fator preponderante.
+
+#### Fragmentação
+
+Além de serem "anzóis de estilo", IDs são utilizados como identificadores de fragmentos específicos da página (um `href` que termina em `#ancora` leva ao elemento de ID _âncora_) e para uso de JavaScript. Se já existem IDs na página por outras razões, por que não reutilizá-los para estilizar? O problema é que isso torna o código fragmentado: há dependências entre CSS e JavaScript e/ou um identificador de fragmento. Usando classes, é possível decidir mudar para um (novo) esquema de nomeação a qualquer momento e tudo com que é preciso se preocupar é alterar alguns nomes no CSS e HTML.
+
+Existem muito poucos casos em que estilos baseados em ID nunca serão reutilizados. Um exemplo é usar `#search` para a caixa de busca do site. Pode-se decidir mais tarde que uma nova caixa de busca será adicionada em outro local (abaixo dos resultados de busca, por exemplo).
+
+Mesmo ele sendo único nesse projeto, talvez você queira um pouco de CSS rápido para copiar e colar em um projeto futuro, que também pode ter uma caixa de pesquisa no rodapé da página. Ainda que para um grupo complexo de folhas de estilo, é possível dividir esses padrões em vários trechos reutilizáveis de CSS. Usar classes em vez de IDs impede que esses problemas potenciais venham à tona.
+
+Ao contrário de IDs, **não há nenhuma restrição em usar várias classes** , tanto em mais de uma vez na página, quanto várias delas em um mesmo elemento. Navegadores ainda estilizarão IDs, mesmo se, por engano, houver duplicação em uma página. Mas aventurar-se fora do HTML válido o torna propenso a problemas.
+
+#### Tradição
+
+Estilizar com IDs e classes são uma das primeiras coisas que aprendemos sobre CSS. Por isso, pode ser um desafio ler que não se deve usar IDs em seletores CSS. O ramo do desenvolvimento web está sempre mudando. Ocasionalmente, precisamos reavaliar o que funciona ou não, em vez de apenas ficar com o que está nos servido bem, sem questionamentos.
+
+No momento, estamos passando por um renascimento maciço com HTML5, CSS3, desempenho de JavaScript e outros eventos. Logo, é um bom momento para esse repensar. É importante examinar as razões de forma racional e decidir se as questões apresentadas são realmente válidas, em vez de rejeitá-las de antemão.
+
+#### Conclusão
+
+Como pôde ser constatado, parece que não há razões convincentes para se usar IDs em seletores CSS (a não ser para _namespaces_ , uso de _widgets_ e _plugins_ específicos em CMSs e casos similares). Classes podem fazer tudo o que IDs fazem! Pense nisso na próxima vez que iniciar um projeto e tente trabalhar com classes, deixando os IDs para identificadores de fragmentos ou _hooks_ para JavaScript.
+
+Agora que já vimos mais sobre especificidade e algumas boas práticas, veremos no próximo capítulo como dar o próximo passo na eficiência de seu CSS conhecendo CSS orientado a objetos.
+
+**P.S.** : aquela conversa de pedir para seu gerente de projetos me enviar e-mails foi brincadeira. É sério. Não faça isso!
+
+  
+
+
+
+##  Capítulo 3:  CSS Orientado a Objetos 
+
+Apesar de ser possível encontrar alguns desenvolvedores web que praticam as duas artes milenares principais da profissão (front-end e back-end), o mais comum é que se escolha uma dessas áreas para investir e seguir com os estudos. Mesmo que você não seja versado nos místicos conhecimentos do back-end, pelo menos já deve ter ouvido falar em **Orientação a Objetos**.
+
+Tentando abstrair e simplificar o máximo possível, o objetivo do paradigma é **evitar repetição de código**.  
+  
+---  
+  
+O Autor tem total desapreço à palavra 'paradigma', mas pesquisas mostram que livros que a têm, em pelo menos uma ocorrência, contam com vendagem 12,73% superior.  
+  
+---  
+  
+No final do dia ─ e, por "dia", leia-se: décadas de esforços combinados por desenvolvedores do mundo inteiro ─, a Orientação a Objetos está aí para ajudar a não repetir código e, consequentemente, facilitar a expansão e manutenção por meio de seus inúmeros métodos e técnicas.
+
+Em 2009, devido à comprovada eficiência do paradigma (olha a palavrinha aí outra vez!), a desenvolvedora **Nicole Sullivan** (ex-Yahoo!) teve a ideia de trazer o conceito para o front-end para que o objetivo principal também pudesse ser aplicado em CSS. Assim surgiu o **CSS Orientado a Objetos**. Na verdade, ela chamou de _Object Oriented CSS_ (OOCSS); isso é uma tradução.
+
+Dê uma boa olhada no códigos CSS de seus últimos projetos e veja que há **muita** repetição desnecessária de propriedades. Quantas declarações para definir fontes, espaçamentos e posicionamentos repetidas, linha por linha, existem? ─ calma, não precisa contar realmente; foi apenas para enfatizar que é comum de acontecer. Isso acaba gerando problemas de médio prazo que atrapalham o andamento de qualquer projeto que se preze.
+
+A boa notícia é que existe uma cura: **CSS Orientado a Objetos**.  
+  
+---  
+  
+Para deixar bem claro, não se trata de mudar a sintaxe do CSS ou instalar algum pacote mágico que o fará melhor. CSS Orientado a Objetos é uma metáfora para indicar que é possível escrever um CSS mais eficiente, sem repetições, que enseje a projetos mais profissionais. No caso do que é mostrado neste capítulo, é considerado por alguns até como um _framework_.  
+  
+---  
+  
+CSS Orientado a Objetos visa resolver alguns problemas clássicos de CSS, tais como:
+
+  * A dificuldade de tocar projetos de médio/grande porte (é preciso ser um expert para isso);
+  * O tamanho dos arquivos CSS é cada vez maior conforme o projeto evolui;
+  * Reúso de código quase inexistente (pessoas não confiam em código alheio);
+  * Código frágil (até o melhor código pode se perder quando um não expert mexe nele).
+
+
+
+Ao analisar estes itens, facilmente se constatará que o problema que os origina é, além da falta de padronização de código, não planejar para escrevê-los! Ou seja, não há mais reflexão a respeito da aplicação da tecnologia CSS, ou, se preferir, o não amadurecimento profissional da maioria dos que a aplicam.
+
+Segundo a Dona Sullivan (<http://goo.gl/VUV2xA>), as soluções que emergem do uso de OOCSS são inúmeras (e tentadoras), tornando seu CSS:
+
+  * **Modular** : combinável, reusável e extensível;
+  * **Leve** : relacionamento 1:N entre CSS e potenciais layouts;
+  * **Rápido** : poucas requisições HTTP e tamanhos mínimos de arquivos;
+  * **Pronto para o futuro** : manutenível, semântico e padronizado;
+  * **Simplificado e acessível** : um bombonzinho!
+
+
+
+Se, na sua opinião, essas são características desejáveis a um código CSS, continue lendo.
+
+###  3.1  Princípios básicos de CSS Orientado a Objetos 
+
+Dentro da proposta de OOCSS, existem dois princípios mais importantes:
+
+  * Separar estrutura e skin;
+  * Separar contêiner e conteúdo.
+
+
+
+**Separar estrutura e skin** significa repetir características visuais como "skins" separadas, que podem ser combinadas em vários "objetos" para conseguir-se uma extensa gama de variações visuais sem muito código. Por exemplo, backgrounds e estilos de borda.
+
+A diretriz também pode significar o uso de classes para nomear objetos e componentes, em vez de confiar somente na semântica HTML. Por exemplo, um objeto de mídia com `class="media"` e seus componentes com `class="img"` (para componentes de imagem e vídeo) e `class="bd"` (para componentes de texto). Ao referenciar essas classes nas folhas de estilo, o HTML ganha uma flexibilidade maior; ou seja, se um novo elemento de mídia surgir nos próximos anos (como `<svg>`), ele pode receber a estilização sem que seja preciso mexer em sequer uma linha de CSS!
+
+**Separar contêiner e conteúdo** essencialmente quer dizer: raramente use estilos que dependam de localização. Idealmente, um objeto deve parecer-se igual, independentemente de onde estiver na página, ou mesmo se trocar de página.
+
+Em vez de estilizar um título secundário específico com `.myObject h2 {}`, cria-se e aplica-se uma classe que **descreve** o elemento em questão, como `<h2 class="category-title">`. Isso garante que:
+
+  * Todos os `<h2>` sem a classe não sejam afetados inadvertidamente;
+  * Todos os `<h2>` com a classe tenham o mesmo estilo;
+  * Não é preciso criar estilos extras para os casos em que seja preciso que um `.myObject` se pareça com um `<h2>` não estilizado.
+
+
+
+#### O que é "objeto" em OOCSS?
+
+Continuando com a metáfora de Orientação a Objetos (OO), um objeto em CSS é análogo a uma instância de uma classe Java ou PHP, por exemplo.
+
+Um objeto CSS é formado por 4 elementos:
+
+  * HTML, que pode ser 1 ou mais nós do DOM;
+  * Declarações CSS, que estilizam estes nós, começando com o nome da classe referente ao _wrapper_ ;
+  * Componentes como imagens de background e _sprites_ , por exemplo;
+  * Comportamentos JavaScript, _listeners_ ou métodos associados.
+
+
+
+Isso pode ser confuso porque cada classe CSS não é um objeto necessariamente, mas pode ser uma propriedade de uma classe _wrapper_. Por exemplo:
+    
+    
+    1 <div class="mod">
+    2     <div class="inner">
+    3         <div class="hd">Bloco Head</div>
+    4         <div class="bd">Bloco Body</div>
+    5         <div class="ft">Bloco Foot</div>
+    6     </div>
+    7 </div>
+    
+
+O objeto é um módulo, indicado pela classe `mod`. Ele contém 4 nós-propriedades (que não podem existir sem o módulo), incluindo 2 regiões obrigatórias (`inner` e `bd`) e 2 regiões opcionais (`hd` e `ft`).
+
+#### OOCSS e performance
+
+Valer-se de OOCSS também traz o benefício da performance, que é duplo:
+
+  * **Intenso reúso de código** : o que significa menos código CSS, arquivos menores e transferências mais rápidas;
+  * **Menos repaints e reflows** : se não sabe o que isso significa, leia o artigo: _O que todo desenvolvedor front-end deve saber sobre renderização de páginas web_ (<http://goo.gl/9rCo4B>).
+
+  
+
+
+###  3.2  Exemplos de objetos 
+
+Existem diversos tipos de "objetos" em OOCSS. Veja exemplos de alguns deles a seguir para fixar melhor os conceitos e aliar teoria à prática.
+
+#### Media
+
+O objeto `Media` permite que você tenha uma imagem (ou flash) ou outro tipo de mídia com tamanho fixo à esquerda ou direita com algum conteúdo que a descreva no centro.
+
+Classes:
+
+  * `.media`: wrapper do objeto Media;
+  * `.img`: nó-filho do objeto Media, sendo geralmente um link ou imagem, aparecendo à esquerda do nó `.bd` (opcionalmente consta no objeto);
+  * `.bd`: área principal de conteúdo do objeto Media, pode conter quaisquer outros objetos (obrigatório constar no objeto);
+  * `.imgExt`: nó-filho do objeto Media, sendo geralmente um link ou imagem, aparecendo à direita do nó `.bd` (opcionalmente consta no objeto).
+
+
+
+HTML:
+    
+    
+     1 <div class="media">
+     2     <a href="http://twitter.com/stubbornella" class="img">
+     3         <img src="http://a3.twimg.com/image.jpg" 
+     4             alt="Stubbornella">
+     5     </a>
+     6 
+     7     <div class="bd">
+     8         <a href="http://twitter.com/stubbornella">
+     9             @Stubbornella
+    10         </a> 
+    11         <span class="detail">14 minutos atr&aacute;s</span>
+    12     </div>
+    13 </div>
+    
+
+#### Data Table
+
+O objeto `Data Table` se destina a formatar uma tabela corretamente para determinados tipos de dados.
+
+Classes:
+
+  * `.data`: wrapper do `Data Table`;
+  * `.txtL`: alinha à esquerda, sendo o padrão (aplicável em `table`, `tr`, `td` ou `th`);
+  * `.txtR`: alinha à direita (aplicável em `table`, `tr`, `td` ou `th`);
+  * `.txtC`: alinha ao centro horizontal (aplicável em `table`, `tr`, `td` ou `th`);
+  * `.txtT`: alinha ao topo (aplicável em `table`, `tr`, `td` ou `th`);
+  * `.txtB`: alinha ao fundo (aplicável em `table`, `tr`, `td` ou `th`);
+  * `.txtM`: alinha ao centro vertical (aplicável em `table`, `tr`, `td` ou `th`).
+
+
+
+HTML:
+    
+    
+     1 <div class="data">
+     2     <table class="txtC"><!-- alinhamento da tabela ao centro -->
+     3         <tr class="odd txtL">
+     4             <th scope="row" class="txtR">
+     5                 Alinhado &agrave; direita 
+     6             </th>
+     7             <td>Alinhado &agrave; esquerda</td>
+     8         </tr>
+     9 
+    10         <tr class="even">
+    11             <th scope="row">Alinhado ao centro</th>
+    12             <td>Alinhado ao centro</td>
+    13         </tr>
+    14     </table>
+    15 </div>
+    
+
+Existem bem mais objetos, mas, como informado anteriormente, estes exemplos foram somente para se ver algo aplicado na prática. No repositório oficial (<http://goo.gl/6ZqGKo>), é possível encontrar tudo e mais um pouco sobre OOCSS. Contudo, para conseguir mexer com segurança, você precisa conhecer um pouco sobre pré-processadores CSS, assunto de um capítulo vindouro.
+
+  
+
+
+###  3.3  Conclusão 
+
+A Sra. Sullivan ─ na verdade, não sei se ela é casada, mas mantenho o Sra. em sinal de respeito ─ gentilmente disponibilizou um wiki no GitHub (<http://goo.gl/rBwNjN>). O repositório contém um projeto bem ferramentado para brincar com OOCSS, contando com uma configuração de VM com Vagrant, comandos `make` e outras características bonitas de se ver, e um domínio com exemplos práticos dos conceitos de OOCSS para facilitar a disseminação de suas ideias (<http://goo.gl/cCFAhH>). Acessando estas referências, você pode encontrar mais informações a respeito de CSS Orientado a Objetos e continuar seus estudos.
+
+A ideia de trazer conceitos de Orientação a Objetos para CSS foi louvável, mas, na prática, a proposta apresentada por Nicole é um tanto engessada, dado que é preciso conhecer o que está disponível e trabalhar com classes e estruturas predefinidas. Não seria interessante se tudo isso fosse um pouco mais flexível e, como _plus_ , tivesse algum tipo de aprimoramento de arquitetura?
+
+OOCSS inspirou muitos desenvolvedores a realizar trabalhos melhores e, até, a desenvolver novas soluções inspiradas/baseadas na ideia de desacoplamento e reúso intenso de CSS. É o caso de **SMACSS** , tema do próximo capítulo.
+
+  
+
+
+
+##  Capítulo 4:  SMACSS 
+
+**Jonathan Snook** é um desenvolvedor canadense que, assim como você, percebeu que a maneira como o CSS é escrito e gerenciado poderia ser melhor. Evidentemente, o fato de ter trabalhado durante anos em um sem-número de projetos ─ inclusive para grandes empresas, como Yahoo!, mesma empresa que Sullivan, do CSS orientado a objetos, do capítulo [3](index_split_003.html#chapter-css-orientado-a-objetos)) ─ o ajudou a constatar isso. Ante tamanha indignação e com intuito de auxiliar os colegas desenvolvedores, como também a si próprio, decidiu normatizar determinadas regras para que isso fosse possível. Em 2011, 2 anos depois do surgimento de OOCSS, surgiu **SMACSS**.
+
+SMACSS (pronuncia-se "smacks") significa _Scalable and Modular Architecture for CSS_ (ou Arquitetura Escalável e Modular para CSS). Ela está mais para uma **normatização** , como foi dito, do que para uma "invenção CSS". Foi algo que surgiu em virtude da análise do trabalho do próprio Snook e de colegas ao observar as melhores práticas para estruturar código CSS em grandes projetos, mas que, como você verá logo a seguir, pode ser usado em projetos de qualquer porte.
+
+Nas palavras do próprio Jonathan, SMACSS está mais para um guia do que para um framework, como alguns costumam considerar. Não se trata de nenhum arquivo que precise ser baixado ou ser instalado; trata-se, na verdade, de tentar documentar uma abordagem prática, útil e consistente ao escrever CSS.
+
+Por esse mesmo motivo, não precisa ser seguido à risca necessariamente: pode-se, depois de aprender SMACSS, aplicar o que se julga mais conveniente para determinado projeto ou incorporar somente as partes que fazem sentido **para você** ao seu próprio _know-how_ de desenvolvimento.
+
+Este capítulo não tem a pretensão de substituir o conhecimento que se encontra no livro oficial ─ que pode ser adquirido em <https://smacss.com/> por um precinho muito camarada ─; ao contrário, pretende apresentar SMACSS e passar por suas principais diretrizes para que você possa conhecer mais a respeito. Ao constatar que é um método que realmente vale a pena ser aprendido mais a fundo, você pode optar por adquirir o livro e saber de mais detalhes e nuances a respeito.
+
+###  4.1  Introdução a SMACSS 
+
+Um dos primeiros conhecimentos que se adquire em SMACSS é a respeito da estrutura e organização de seus arquivos. Mesmo em projetos de médio porte, raramente é possível encontrar todas as regras CSS em um único arquivo de desenvolvimento! Em SMACSS, existem 5 categorias básicas de organização de código CSS:
+
+  * Base;
+  * Layout;
+  * _Module_ (Módulo);
+  * _State_ (Estado);
+  * _Theme_ (Tema);
+
+
+
+Regras **Base** são as regras padrão. São quase que exclusivamente seletores de elementos, mas também pode haver seletores de atributos, pseudoclasses ou seletores mais avançados, como seletores-irmãos.
+
+Regras **Layout** dividem a página em seções, podendo conter 1 ou mais módulos.
+
+**Módulo** contém as regras principais de um projeto, as que dão o "volume" de CSS. Elas são, como indica o próprio nome, as partes modulares e, consequentemente, as mais usadas.
+
+Regras **Estado** descrevem como determinado layout ou módulo se comporta em determinada condição ou "estado" (ativo ou inativo; oculto ou visível). Também descrevem como um módulo pode ser diferente dependendo da página em que está; por exemplo, ser apresentado de um jeito na página inicial e de outro em uma interna.
+
+As regras **Tema** são similares às **Estado** , haja vista que descrevem como layouts ou módulos devem se parecer em determinadas situações. A maioria dos sites não precisa de temas, mas é bom estar preparado para quando for o caso.
+
+Não é necessário preocupar-se em decorar as categorias; você as fixará com o tempo e prática de SMACSS. Preocupe-se, neste momento, em saber que a ideia é que o CSS seja organizado em vários arquivos, separados por "função", com regras/ linhas-guia específicas que se aplicam a cada "tipo" e sua razão de existir.
+
+Com essa organização, torna-se possível evitar repetições de regras e o código fica muito mais organizado e manutenível, além de também facilitar bastante o período de adaptação e entendimento de projeto de novos participantes que também conheçam SMACSS. Criam-se **padrões** , certamente algo de que todo projeto que almeje contar com o status "profissional" precisa.
+
+  
+
+
+###  4.2  Nomenclatura 
+
+Valer-se de determinadas regras de nomenclatura é conveniente ao se separar as regras nestas 5 categorias, porque ajuda a identificar, de imediato, a qual delas certa folha de estilo pertence e seu papel no escopo geral do projeto.
+
+Convencionou-se usar um prefixo para diferenciar entre Layout, Módulo e Estado:
+
+  * Usar `l-` (ou `layout-`) para Layouts;
+  * Usar `is-` para Estados (exemplo: `is-hidden`, `is-collapsed`);
+  * Não usar prefixo `m-` ou `module-` para Módulos; por serem as folhas de estilo em maior número em projetos, torna-se desnecessário.
+
+
+
+Veja alguns exemplos:
+    
+    
+     1 /* Módulo "Example" */
+     2 .example {}
+     3 
+     4 /* Módulo "Callout" */
+     5 .callout {}
+     6 
+     7 /* Módulo "Callout" com Estado */
+     8 .callout.is-collapsed {}
+     9 
+    10 /* Módulo de campo de formulário */
+    11 .field {}
+    12 
+    13 /* Layout "Inline" */
+    14 .l-inline {}
+    
+
+  
+
+
+###  4.3  Base 
+
+Regras **Base** são aplicadas a elementos usando seletor de elemento, de seletor-descendente ou de seletor-filho, além de pseudoclasses. Não estão inclusos seletores de ID e classes. 
+
+Servem para definir como é a aparência padrão de determinados elementos todas as vezes em que estes aparecem nas páginas do projeto. Incluem especificações de tamanhos de títulos, aparência padrão de links, estilos de fontes, backgrounds gerais etc. Geralmente, não há necessidade de se usar `!important` em estilos Base.
+
+Exemplo:
+    
+    
+     1 body,
+     2 form { 
+     3     margin: 0; 
+     4     padding: 0;
+     5 }
+     6 
+     7     input[type="text"] {
+     8         border: 1px solid #999;
+     9     }
+    10 
+    11 a {
+    12     color: #039;
+    13 }
+    14 
+    15     a:hover {
+    16         color: #03c;
+    17     }
+    
+
+Também servem de exemplo aqueles _CSS reset_ , com regras que "zeram" determinadas propriedades para tentar uniformizar a apresentação entre navegadores ─ embora o Autor considere a abordagem de usar um "padronizador", como `normalize.css` (<http://goo.gl/TxmiBv>), mais eficiente.
+
+Veja outro exemplo de uma folha de estilo Base, extraído de um projeto real:
+    
+    
+     1 *,
+     2 *:before,
+     3 *:after { box-sizing: border-box; }
+     4 
+     5 /* @see http://stackoverflow.com/a/2610741/922143 */
+     6 
+     7 ::-webkit-input-placeholder { /* WebKit browsers */
+     8     color: #333;
+     9 }
+    10 
+    11 :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    12     color: #333;
+    13     opacity: 1;
+    14 }
+    15 
+    16 ::-moz-placeholder { /* Mozilla Firefox 19+ */
+    17     color: #333;
+    18     opacity: 1;
+    19 }
+    20 
+    21 :-ms-input-placeholder { /* Internet Explorer 10+ */
+    22     color: #333;
+    23 }
+    24 
+    25 body {
+    26     font-family: Arial, sans-serif;
+    27     overflow-x: hidden;
+    28 }
+    29 
+    30 h1,
+    31 h2,
+    32 h3,
+    33 h4,
+    34 h5,
+    35 h6 {
+    36     letter-spacing: 1px;
+    37 }
+    38 
+    39 figure {
+    40     margin: 0;
+    41 }
+    42 
+    43 input,
+    44 select,
+    45 textarea {
+    46     font-size: 1rem;
+    47 }
+    
+
+  
+
+
+###  4.4  Layout 
+
+**Layout** pode ser entendido de muitas maneiras diferentes, dependendo de seu contexto e da área de atuação em que a palavra é usada. No caso de SMACSS, é preciso diferenciar entre os componentes maiores e menores que formam uma página, sendo aqueles as regras Layout e, estes, Módulos, que serão vistos logo em seguida.
+
+Para facilitar o entendimento, relembre da explicação dada anteriormente: layouts podem conter 1 ou mais módulos. Eles também podem ser divididos entre "maiores" e "menores" (bem menos comuns), baseando-se na sua frequência de reúso nas páginas de um projeto.
+
+Apesar daquele princípio de que não se deve usar IDs como seletores CSS ([2.3](index_split_002.html#section-nao-use-ids-como-seletores-css)), em SMACSS não é tão incomum seu uso para designar layouts maiores, como headers, footers etc. Contudo, não há nenhum tipo de problema em continuar não usando IDs como seletores CSS.
+
+Exemplo de regras de Layout:
+    
+    
+     1 #header,
+     2 #article,
+     3 #footer {
+     4     margin: auto;
+     5     width: 960px;
+     6 }
+     7 
+     8 #article {
+     9     border: solid #ccc;
+    10     border-width: 1px 0 0;
+    11 }
+    
+
+Geralmente, seletores de layout são únicos (razão da leniência ao usar IDs), mas há casos em que eles precisam responder a alguns fatores. Por exemplo, um site pode apresentar layouts diferentes baseado na preferência de quem o está acessando. Nesse caso, essa regra continuaria sendo uma regra Layout em SMACSS, mas usada em combinação com outro estilo de layout.
+
+Veja:
+    
+    
+     1 article {
+     2     float: left;
+     3 }
+     4 
+     5 #sidebar {
+     6     float: right;
+     7 }
+     8 
+     9 .l-flipped #article {
+    10     float: right;
+    11 }
+    12 
+    13 .l-flipped #sidebar {
+    14     float: left;
+    15 }
+    
+
+No exemplo, `.l-flipped` seria aplicado a um elemento em nível acima, como `body`, o que permitiria que o posicionamento dos principais componentes fosse alternado.
+
+Ou, em um exemplo mais condizente às (irrefreáveis e irreversíveis) tendências de web design responsivo:
+    
+    
+     1 #article {
+     2     float: left;
+     3     width: 80%;
+     4 }
+     5 
+     6 #sidebar {
+     7     float: right;
+     8     width: 20%;
+     9 }
+    10 
+    11 .l-fixed #article {
+    12     width: 600px;
+    13 }
+    14 
+    15 .l-fixed #sidebar {
+    16     width: 200px;
+    17 }
+      
+  
+---  
+  
+Para mais informações sobre Web Design Responsivo e aprender suas técnicas introdutórias, adquira o livro "Web Design Responsivo: páginas adaptáveis para todos os dispositivos" (também de autoria de Tárcio Zemel): <http://goo.gl/kqvWtn>.  
+  
+---  
+  
+  
+
+
+###  4.5  Módulo 
+
+Como já citado brevemente, regras **Módulo** são o cerne de sua aplicação, comumente o que mais se trabalha em projetos que utilizam SMACSS. São componentes mais específicos, como barras de navegação, widgets e assim por diante.
+
+Módulos se encontrarão dentro de layouts quase sempre. Também é possível que eles sejam usados dentro de outros módulos, o que, na verdade, é até comum de acontecer. Porém, tenha sempre em mente que, ao ser criado, seu objetivo é conseguir funcionar como um componente isolado (_standalone_).
+
+Idealmente, deve ser possível usar quantos módulos forem necessários em uma página, ─ ou até mesmo trocar um de lugar ou, mesmo, de uma página para outra ─ sem que seja preciso realizar nenhum ajuste. Em função disto, para eles é **estritamente proibido** usar IDs e/ou seletores de elementos!
+
+Só tome cuidado para não incorrer no erro de fazer algo como:
+    
+    
+     1 <div class="module">
+     2     <span>Tipo de Informa&ccedil;&atilde;o</span>
+     3 </div>
+     4 
+     5 .module > h2 {
+     6     padding: 5px;
+     7 }
+     8 
+     9 .module span {
+    10     padding: 5px;
+    11 }
+    
+
+Em um primeiro momento, ele atende aos requisitos de um módulo de ser possível alterá-lo de lugar ou página e ser independente, não sendo afetado por estilos condicionais baseados em sua localização. Porém, além de essa solução apresentar um seletor ineficiente, pode ser necessário o acréscimo de outras informações que, não necessariamente, são apresentadas da mesma maneira, como:
+    
+    
+    1 <div class="module">
+    2     <span>Tipo de informa&ccedil;&atilde;o</span>
+    3     <span>Outro tipo de Informa&ccedil;&atilde;o</span>
+    4 </div>
+    5 
+    6 [...]
+    
+
+O segundo `<span>` e quaisquer outros que ali forem colocados sem a intenção de receber essa mesma estilização serão afetados pelas mesmas regras que o primeiro. Se não for a intenção, será preciso "remendar" a situação com outras regras ou com o infame `!important`. Portanto, atenção a esse tipo de "tentação" que, apesar de ser mais fácil de planejar e escrever, pode reservar surpresas desagradáveis para um futuro próximo!
+
+Se você estiver se perguntando: "Mas como resolver isso?", não se preocupe, pois antes de terminar este livro você já terá visto bastante coisa sobre nomenclatura e semântica em CSS.
+
+  
+
+
+###  4.6  Estado 
+
+Em SMACSS, **Estado** é algo que serve para incrementar/sobrescrever outros estilos, geralmente (e por convenção) com classes prefixadas com `is-`. Por exemplo, um menu ou seção com a aparência _accordion_ pode estar no estado aberto ou fechado; uma mensagem do sistema pode estar em um estado de sucesso ou erro.
+
+Geralmente, estados são aplicados ao mesmo elemento como uma regra de layout ou módulo. Por exemplo:
+    
+    
+    1 <div id="header" class="is-collapsed">
+    2     <form>
+    3         <div class="msg is-error">Mensagem de erro!</div>
+    4 
+    5         <label for="searchbox" class="is-hidden">Buscar</label>
+    6         <input type="search" id="searchbox">
+    7     </form>
+    8 </div>
+    
+
+Outro ponto importante ao qual ficar atento é que geralmente estados possuem vínculo com JavaScript (JS). Afinal, como se trata de um elemento que possui estados diferentes, é preciso alternar entre estes de alguma maneira quando algum _trigger_ é acionado. Na atual tecnologia web disponível, isso é feito via JS.
+
+Esta é mais uma convenção que ajuda bastante: (quase) sempre que vir um prefixo `is-` sendo usado, automaticamente você já pode identificar que se trata de estado com dependência de código JavaScript.
+
+Porém, também é possível se valer do atributo `data-` para trabalhar com estados, dado que seletores de atributo também podem desempenhar bem esse papel. Entretanto, mesmo se valendo deles, o JS ainda é necessário para realizar a alternância. Veja:
+    
+    
+     1 .btn[data-state="default"] {
+     2     color: #333;
+     3 }
+     4 
+     5 .btn[data-state="pressed"] {
+     6     color: #000;
+     7 }
+     8 
+     9 .btn[data-state="disabled"] {
+    10     opacity: .5;
+    11     pointer-events: none;
+    12 }
+    
+    
+    
+    1 <button class="btn" data-state="disabled">Desabilitado</button>
+    
+
+Como observação final, tratando-se de estados, na perspectiva de SMACSS não há restrições em se usar `!important`.
+
+#### Exceções e flexibilidade com regras de Estado
+
+Haverá casos em que um estado será bastante específico e terá relação com somente um módulo em particular.
+
+Para esses casos em que uma regra de estado é feita especialmente para algum módulo, o nome da sua classe deve ter o mesmo nome dele. Também, a regra pode estar no mesmo arquivo em que ele está, não havendo necessidade de ficar separado junto com os outros arquivos de estado.
+
+Por exemplo:
+    
+    
+    1 .tab {
+    2     background-color: #800080;
+    3     color: #fff;
+    4 }
+    5 
+    6     .is-tab-active {
+    7         background-color: #fff;
+    8         color: #000;
+    9     }
+    
+
+  
+
+
+###  4.7  Tema 
+
+O significado de **Tema** em SMACSS é o mesmo que em qualquer outro site que não a utiliza: um conjunto diferenciado de cores, imagens e elementos de UI que caracterizam o _look & feel_ das páginas de um site.
+
+Quanto à elaboração de SMACSS, o autor Jonathan Snook ficou em dúvida em destinar uma categoria especificamente para temas, dado que a porcentagem de projetos web que adotam seu uso não é tão alta assim. De qualquer maneira, para fins de organização, ele optou por destinar espaço para este tipo de situação, consequentemente tornando SMACSS uma arquitetura mais robusta.
+
+No final das contas, foi uma decisão inteligente, já que esta separação enseja a uma troca/substituição fácil de temas, quando necessário, geralmente em ocasiões em que o projeto quer servir uma skin diferenciada com algumas "alterações cosméticas". Por exemplo, ocasiões sazonais (datas comemorativas, como Páscoa, Natal etc.); alternativas para quem usa o site (disponibilizar uma skin masculina e uma feminina); um esquema de cores diferente a cada seção etc.
+
+Para que essas alterações ─ incluídas, aqui, fontes ─ possam ser feitas dentro da arquitetura SMACSS, Tema pode alterar qualquer outra categoria, uma vez que, para atender a uma necessidade de criação de temas, pode ser preciso alterar estilos Base, Layout, Módulo ou Estado.
+
+Na prática, o que acontece é que o arquivo de um tema sobrescreve as regras já estipuladas em quaisquer das outras categorias SMACSS para que a estilização necessária seja feita. Veja um exemplo de um tema alterando uma característica de um módulo:
+    
+    
+     1 /* module-name.css */
+     2 
+     3 .mod {
+     4     border: 1px solid #000;
+     5 }
+     6 
+     7 /* theme.css */
+     8 
+     9 .mod {
+    10     border-color: #00f;
+    11 }
+    
+
+Sim, é tão simples quanto se valer das próprias características de cascata de CSS! Tendo um arquivo de tema pronto, para que este sobrescreva as regras de uma regra Base, Layout, Módulo ou Estado, basta carregar seu arquivo dinamicamente (via JavaScript) ou não.
+
+Também existe outra possibilidade, caso se demande muita personalização: regras específicas para o tema. Uma vantagem adicional para essa possibilidade é conseguir um ajuste fino de aparência, ao colocar as classes somente nos base, layout, módulo ou estado que se queira.
+
+Um exemplo prático:
+    
+    
+    1 /* theme.css */
+    2 
+    3 .theme-border {
+    4     border-color: #800080;
+    5 }
+    6 
+    7 .theme-background {
+    8     background: linear-gradient(...);
+    9 }
+    
+
+Atente ao fato de que, caso opte por usar classes específicas de tema, existe a convenção de se usar o prefixo `theme-`.
+
+  
+
+
+###  4.8  Mais exemplos da prática de SMACSS 
+
+Como já citado anteriormente, este capítulo nunca teve a pretensão de substituir o conhecimento que se encontra no livro oficial de SMACSS. A parte teórica a respeito já está de bom tamanho como proposta deste livro. Porém, para ajudar na fixação do que foi explicado, alguns exemplos práticos podem ser de bastante ajuda.
+
+#### Estrututa de diretórios
+
+Em projetos do mundo real, não importando qual seja a estrutura do projeto que abriga os estilos, geralmente cada uma das categorias de SMACSS fica separada por um diretório. Algo como:
+
+_Fig. 4.1: Estrutura de diretórios SMACSS_
+
+  
+  
+
+
+Não há quaisquer restrições em haver outros diretórios no mesmo nível hierárquico dos que constituem as categorias de SMACSS.
+
+Como foi visto, nem todos os projetos precisam de _theme_ e, para os casos em que estados são feitos especificamente para um módulo, podem estar no mesmo arquivo que ele. Como SMACSS não é rígida, nada impede de o diretório _state_ também ser dispensável, caso essa seja sua preferência. O que nos traz para:
+
+_Fig. 4.2: Estrutura de diretórios SMACSS sem state e theme_
+
+  
+  
+
+
+Vale lembrar novamente que SMACSS é sobre convenções não rígidas, então faça como **você** e/ou sua equipe acharem melhor. É possível até não quererem usar _state_ e _theme_ em um primeiro momento, mas deixar os diretórios presentes na estrutura caso se decidam ou precisem se valer deles.  
+  
+---  
+  
+Se estiver usando Git para controlar as versões do projeto, basta adicionar um arquivo `.gitkeep` em cada um dos diretórios para que eles sejam considerados no repositório mesmo não tendo outros arquivos.  
+  
+---  
+  
+#### Arquivos na estrutura SMACSS
+
+Dentro de cada diretório, portanto, constam os respectivos arquivos referentes àquela categoria SMACSS. Em um projeto fictício, poderíamos ter algo como:
+
+_Fig. 4.3: Estrutura de diretórios SMACSS com exemplos de arquivos_
+
+  
+  
+
+
+Neste projeto-exemplo, no diretório "base" a função dos arquivos, além dos óbvios `fonts.css` e `forms.css`, seriam: `base.css` com regras mais gerais referentes a elementos, tais como estilização de links, tamanhos de títulos, parágrafos e listas, entrelinhas etc.; e `generics.css` para classes genéricas, que podem ser usadas em qualquer ponto do site para surtir determinado efeito visual que se queira. Um trecho desse `generics.css` poderia ser:
+    
+    
+     1 [...]
+     2 
+     3 .bold {
+     4     font-weight: bold !important;
+     5 }
+     6 
+     7 .italic {
+     8     font-style: italic !important;
+     9 }
+    10 
+    11 .uppercase {
+    12     text-transform: uppercase !important;
+    13 }
+    14 
+    15 .font-size-extra {
+    16     font-size: 150% !important;
+    17 }
+    18 
+    19 [...]
+    
+
+Note a presença de `!important` em cada uma dessas regras. Neste exemplo, o motivo da existência dessas classes é que elas serão usadas em momentos em que suas respectivas estilizações se fizerem necessárias, sem que ocorram repetições desnecessárias. É bem mais rápido, prático e performático definir uma regra somente uma vez, usando uma classe que faça seus efeitos visíveis, do que repetir propriedades e valores em várias diferentes.
+
+Como são genéricas, pode ser que o elemento em que sejam aplicadas já tenha recebido alguma diretriz em contrário. Por exemplo, se determinado elemento foi estilizado com `text-transform: capitalize;`, dependendo do restante dos estilos pode não adiantar inserir a classe `uppercase`. Logo, esse `!important` garante que a regra genérica tente prioridade e, de antemão, entre em ação sem que seja preciso mexer em mais estilos.  
+  
+---  
+  
+**Saiba quando quebrar regras**
+
+Foi dito anteriormente que, em estilos Base, geralmente não há necessidade de se usar `!important`. Este poderia ser um caso em que se optaria por usar. Não há nenhum problema em quebrar regras, desde que seja algo coerente e justificado, tal como o foi.  
+  
+---  
+  
+Quanto aos arquivos no diretório `layout`, geralmente são somente definições das estruturas principais das páginas do site. Mesmo que não se tenha quaisquer estilizações referentes a algum layout, muitos adeptos a SMACSS criam os respectivos arquivos e definem uma regra vazia, somente para "demarcar território" e, de quebra, ainda poupar um pouco de trabalho futuro, caso seja preciso.
+
+Dessa forma, não haveria qualquer contraindicação em se ter somente isto no arquivo `footer.css`:
+    
+    
+    1 .l-footer { }
+    
+
+Embora seja mais comum haver algumas propriedades e valores, como em:
+    
+    
+    1 .l-footer {
+    2     background-color: #d0d0d0;
+    3     color: #333;
+    4 }
+    
+
+Em relação aos arquivos em _modules_ , como já explicado, estes são o cerne das Folhas de Estilo dentro de uma arquitetura SMACSS; são os arquivos que conterão a maioria das regras. Por isso, esse é o diretório com mais arquivos. Faça como já está acostumado e escreva lindas, concisas e pensadas regras CSS para aplicar em seu projeto.
+
+  
+
+
+###  4.9  Conclusão 
+
+Como ficou evidente, SMACSS é uma arquitetura flexível, elaborada com base em anos de observação e experiência em projetos de alto nível.
+
+Se esta foi a primeira vez que você teve contato com SMACSS, o conselho é que abrace a metodologia em alguns projetos para experimentar seus resultados. Se já havia ouvido falar, mas ainda não sabia bem do que se tratava, dê uma chance a SMACSS e, certamente, verá o nível de organização e produtividade de seus projetos melhorarem bastante!
+
+Ainda é possível ir além com a eficiência de seu código e arquitetura. Lembre-se: muito da qualidade de código vem da padronização. Não seria muito bom caso houvesse uma maneira de se usar uma padronização já consagrada na hora de criar suas classes e, de brinde, essa abordagem ainda garantir que você identifique a estrutura de sua marcação no CSS instantaneamente?
+
+No próximo capítulo, conheça **BEM**.
+
+  
+
+
+
+##  Capítulo 5:  BEM 
+
+Você já ouviu falar no **Yandex**? Se você é russo, a probabilidade é bem maior; se não é, saiba que se trata do buscador com maior _market share_ da terra de Putin (60%). Ele também é um dos mais usados buscadores do mundo, contando com centenas de milhões de buscas por dia!
+
+A Yandex também oferece outros serviços, contando com um ecossistema web bastante significativo. Quando começou a crescer e sentir a necessidade de aprimorar e manter o front-end desse sistema, surgiu **BEM** (acrônimo para _Block, Element, Modifier_ ou **Bloco, Elemento, Modificador**).
+
+Na verdade, BEM é uma metodologia completa; um verdadeiro framework de front-end, que abarca diversas regras e ferramentas úteis. Tecnicamente, trata-se de uma arquitetura baseada em templates DSL construídos sobre `Node.js` (saiba mais a respeito em <http://bem.info/>).
+
+No ocidente, geralmente quando se fala sobre BEM, está se falando sobre a **convenção de nomenclatura** usada e, consequentemente, a maneira de pensar as estruturas (ou **módulos** , se você já conhece SMACSS, mostrado no capítulo [4](index_split_004.html#chapter-smacss)).
+
+É essa convenção de nomenclatura para Bloco, Elemento e Modificador que você conhecerá agora.  
+  
+---  
+  
+Não faz parte das regras estabelecidas pela BEM; mas, para os exemplos, serão usadas palavras em inglês, o que, dependendo do alcance e intenção de seus projetos, você também deveria fazer.  
+  
+---  
+  
+###  5.1  Pensando BEM 
+
+Como se sabe desde o capítulo sobre CSS orientado a objetos ([3](index_split_003.html#chapter-css-orientado-a-objetos)), os conceitos de Nicole Sullivan inspiraram diversos desenvolvedores, técnicas e metodologias. Coincidência ou não, a essência de OOCSS também pode ser encontrada em BEM: desacoplamento e reúso de código através de uma série de padrões preestabelecidos.
+
+Em se tratando de BEM, seu uso vem na mudança de como se enxergam as estruturas/módulos que se está desenvolvendo e, obviamente, conhecer suas convenções de nomenclatura.
+
+Em termos simples, temos:
+
+  * **Bloco** : entidade independente com seu próprio significado; é a abstração mais geral de um componente/módulo;
+  * **Elemento** : descendente (e parte) de um Bloco; ajuda a formá-lo, como um todo;
+  * **Modificador** : um estado ou "versão" diferente de um Bloco ou Elemento.
+
+
+
+Segundo imagens disponibilizadas por uma das desenvolvedoras da própria Yandex, **Varvara Stepanova** , no memorável artigo escrito em 2012, _A New Front-End Methodology: BEM_ (<http://goo.gl/ZiBO0B>), será possível visualizar e entender melhor esses conceitos.
+
+Veja a representação de uma página fictícia qualquer:
+
+_Fig. 5.1: Uma página fictícia qualquer_
+
+  
+  
+
+
+É possível "dividir" essa página (em um primeiro momento, mentalmente) em diversos Blocos:
+
+_Fig. 5.2: Uma página fictícia qualquer mentalmente 'dividida'_
+
+  
+  
+
+
+Veja mais de perto, por exemplo, o Bloco circulado de azul, Busca:
+
+_Fig. 5.3: Bloco de busca mentalmente separado em azul_
+
+  
+  
+
+
+É possível encontrar os Elementos que formam esse bloco:
+
+_Fig. 5.4: Elementos do Bloco de busca_
+
+  
+  
+
+
+Como exemplo de modificador, poderíamos ter uma apresentação diferenciada para quando o foco no _input_ acontece ou quando se submetem e se buscam informações dinamicamente.
+
+Veja o Bloco das abas com seus respectivos Elementos:
+
+_Fig. 5.5: Bloco de abas mentalmente separado em rosa_
+
+  
+  
+
+
+Nada impede que haja Blocos dentro de Blocos:
+
+_Fig. 5.6: Blocos dentro de Blocos_
+
+  
+  
+
+
+Na verdade, eles já estavam lá antes de você ver as imagens com as divisões e mesmo nos projetos em que você participou antes de ter lido qualquer coisa sobre tudo isso! Você ainda só não tinha aprendido a **visualizar BEM**! ;)
+
+Por isso, a partir do momento em que se decide trabalhar com ele, a própria maneira de enxergar as estruturas de uma página se altera, uma vez que se começa a visualizá-las conforme os Blocos, Elementos e Modificadores, automaticamente.
+
+Você vai saber o que é isso depois de usar BEM em alguns projetos, tenha certeza!
+
+  
+
+
+###  5.2  Escrevendo BEM 
+
+Agora que você já consegue "visualizar BEM" ─ pode demorar um pouco para que isso aconteça, então, treine! ─, é hora de aprender a "escrever BEM". Quer dizer, tomar conhecimento de como é a convenção da sua sintaxe.
+
+É simples:
+    
+    
+    1 .block {}
+    2 
+    3 .block__element {}
+    4 
+    5 .block--modifier {}
+    
+
+Nas convenções de sua nomenclatura, Blocos são classes com o próprio nome da estrutura; Elementos são delimitados com `__`; e Modificadores delimitados com `--`.
+
+Pegando o exemplo mostrado antes do Bloco de busca:
+    
+    
+    1 .search {} /* Bloco */
+    2 
+    3 .search__field {} /* Elemento */
+    4 
+    5 .search--searching {} /* Modificador */
+    
+
+Essa convenção garante que todos os desenvolvedores que conheçam BEM identifiquem a estrutura em que o estilo atuará instantaneamente! O oposto também vale: ao se olhar o HTML, pelo nome das classes, já se sabe o que esperar do CSS que estiliza aquela porção de código.
+
+Voltando à metaexemplos, veja alguns seletores para ajudar a fixar o conceito:
+    
+    
+    1 .person {}
+    2 
+    3 .person__hand {}
+    4 
+    5 .person--female {}
+    6 
+    7 .person--female__hand {}
+    8 
+    9 .person__hand--left {}
+    
+
+O Bloco `person` tem vários Elementos, como `hand`, e pode ter Modificadores, como `female`. Por sua vez, os Elementos também podem ter modificadores, tais como `left`.
+
+Só de ter olhado para este metacódigo, você já foi capaz de saber que algumas das estruturas HTML correspondentes poderiam ser:
+    
+    
+    1 <div class="person">
+    2     <div class="person__hand">
+    3         [...]
+    4     </div>
+    5 </div>
+    
+    
+    
+    1 <div class="person--female">
+    2     <div class="person__hand">
+    3         [...]
+    4     </div>
+    5 </div>
+    
+    
+    
+    1 <div class="person">
+    2     <div class="person__hand--left">
+    3         [...]
+    4     </div>
+    5 
+    6     <div class="person__hand">
+    7         [...]
+    8     </div>
+    9 </div>
+    
+
+E a recíproca é verdadeira: se tivesse olhado primeiro o HTML, já poderia inferir como seria o CSS.
+
+Outra grande vantagem é que, usando BEM, você consegue escrever seletores menores e não conflitantes, evitando muitos dos problemas de especificidade CSS ([2.1](index_split_002.html#section-especificidade-css)) que poderiam acontecer, fazendo seu código seguir aquelas boas práticas que são tratadas por todo este livro.
+
+Em outras palavras, **cada classe BEM é única e autossuficiente!** Afinal, um seletor como este:
+    
+    
+    1 html #content > .person .hand {}
+    
+
+É muito mais verboso e menos eficiente (pensando em manutenibilidade e performance) do que este:
+    
+    
+    1 .person__hand {}
+    
+
+Sendo que ambos serviriam para estilizar exatamente os mesmos elementos!
+
+Note que não é preciso que toda a estrutura do DOM esteja representada nos seletores. Mesmo que o HTML tivesse mais níveis, não seria preciso uma classe `.personbodyarmhand`; uma `.person``hand` já conseguiria estilizar o que fosse necessário para tornar a classe única e a estrutura inteligível.  
+  
+---  
+  
+Idealmente, cada Bloco deve ser absolutamente independente; ou seja, deve ser possível mudá-lo de posição na página ou de página, sem que nenhuma alteração de CSS precise ser feita.  
+  
+---  
+  
+Lembra do objeto Media do capítulo sobre CSS orientado a objetos ([3](index_split_003.html#chapter-css-orientado-a-objetos))? Usando BEM, seus seletores CSS poderiam ser escritos mais ou menos assim:
+    
+    
+    1 .media {}
+    2 
+    3     .media__img {}
+    4 
+    5         .media__img--rev {}
+    6 
+    7     .media__bd {}
+    
+
+Perceba que muitos também gostam de colocar níveis de indentação extras para ajudar ainda mais a identificar a estrutura de códigos. Com ou sem esse _plus_ , são poucas as alterações, e elas trazem muitas vantagens!
+
+  
+
+
+###  5.3  Conclusão 
+
+Como você viu, a convenção de nomenclatura de BEM tem muito de OOCSS: garante desacoplamento e reúso intenso de código por meio de uma série de padrões preestabelecidos; padrões, estes, facílimos de serem aprendidos e fixados.
+
+Alguns desenvolvedores têm uma reclamação: "BEM é feio!". Parece que ter vários `__` e `--` por todo o HTML e CSS (e, comumente, JavaScript) não agrada a todos. Na opinião do Autor, isso não atrapalha em absolutamente nada e, de certa forma, é até divertido!
+
+Mas se, para você, o uso dessa sintaxe for menos compensatório que:
+
+  * Código desacoplado;
+  * Reúso automático de código;
+  * Menos repetições;
+  * Rápida identificação de estruturas HTML através do CSS (e vice-versa);
+  * Independência absoluta de classes;
+  * Seletores menores e mais performáticos;
+  * CSS mais manutenível.
+
+
+
+A decisão fica por sua conta. Esperamos que escolha BEM! ;-)
+
+Entretanto, será que, depois de conhecer os conceitos sobre OOCSS ([3](index_split_003.html#chapter-css-orientado-a-objetos)), SMACSS ([4](index_split_004.html#chapter-smacss)) e BEM, ainda é possível aprimorar seus códigos e _workflow_ ao desenvolver CSS? É o que você vai descobrir no próximo capítulo, sobre **pré-processadores CSS**.
+
+  
+
+
+
+##  Capítulo 6:  Pré-processadores CSS 
+
+Se você estiver lendo este livro na sequência dos capítulos, neste ponto você já conhece sobre CSS orientado a objetos ([3](index_split_003.html#chapter-css-orientado-a-objetos)), SMACSS ([4](index_split_004.html#chapter-smacss)) e BEM ([5](index_split_005.html#chapter-bem)). Para os acostumados a fazer só o feijão com arroz de CSS, são evoluções bastante consideráveis!
+
+Porém, mesmo que você já tenha visto algo a respeito dessas técnicas ou tenha pesquisado e se aprofundado mais, ainda é possível aprimorar seus códigos e workflow ao desenvolver CSS! Existe uma maneira de usar características com que só pessoas que conhecem linguagens de programação estão acostumadas, e aplicar conceitos e técnicas de programação a suas folhas de estilo!
+
+Respire fundo, acomode-se e seja bem-vindo ao mundo dos **pré-processadores CSS**!
+
+###  6.1  O que são pré-processadores CSS? 
+
+Consultando a Wikipédia ─ que está longe de ser uma fonte de consulta fidedigna, mas, para este caso, vá lá ─, é possível saber que **um pré-processador é um programa que recebe texto e efetua conversões léxicas nele. As conversões podem incluir substituição de macros, inclusão condicional e inclusão de outros arquivos.**
+
+Quer dizer, você escreverá código na sintaxe do pré-processador de sua preferência e, através de alguns processos de conversão, ele transforma (ou _compila_) essa sintaxe específica e própria em código CSS, a que todos já estamos habituados. Caso contrário, não se teria nenhuma estilização, já que, para este fim, os navegadores precisam de arquivos `.css`. 
+
+Aquela velha história de `Input -> Magic -> Output`. No caso específico dos pré-processadores de CSS, o `Input` é o código do pré-processador que você estiver usando e, o `Output`, o bom e velho CSS ─ às vezes, chamado de _CSS puro_.
+
+Neste momento, se você ainda não tinha ouvido falar (ou lido) sobre pré-processadores CSS, isso pode parecer exótico e/ou desnecessário. Afinal, para que incluir mais uma etapa no processo de escrita de CSS se já se pode escrever diretamente, como sempre se fez? E é justamente ao responder essa questão que o poder dos pré-processadores se mostra!
+
+Se não houvesse quaisquer vantagens em usá-los, certamente milhares de desenvolvedores pelo mundo não o fariam. Todos eles optaram pelos pré-processadores CSS pelo simples motivo de que estes contam com _features_ que extrapolam as capacidades nativas do CSS! Algumas possibilidades com pré-processadores são:
+
+  * Usar variáveis;
+  * Usar funções;
+  * Aninhamento de regras;
+  * Operações aritméticas;
+  * Estender regras a partir de regras pré-existentes.
+
+
+
+Se você já tem alguma vivência com programação, o simples vislumbre de poder usar este tipo de coisa em CSS já deve parecer fantástico; se não, o fato de isso parecer fantástico para quem já programa deve parecer fantástico! Vamos combinar o seguinte: pré-processamento de CSS é fantástico de qualquer jeito!
+
+Através dessas e outras facilidades que eles oferecem, muitos desenvolvedores pelo mundo inteiro ─ muitos, mesmo! ─ estão adotando-os para melhorar seus fluxos de criação de estilo e organização de projetos. Continue lendo para também fazer parte dessa galera!
+
+#### Os pré-processadores CSS mais conhecidos
+
+Agora que já foi entendido que essa história toda de pré-processadores resume-se a escrever um pseudo-CSS que, por meio de processos específicos, será transformado em CSS de fato; saiba que, dentre os pré-processadores existentes atualmente, três deles são mais usados:
+
+  * Sass (<http://sass-lang.com/>);
+  * Less (<http://lesscss.org/>);
+  * Stylus (<http://learnboost.github.io/stylus/>).
+
+
+
+_Fig. 6.1: Os pré-processadores CSS mais usados (e o Stylus)_
+
+  
+  
+
+
+Em função do uso global, o Stylus consta como menção honrosa. Nas rodinhas de boteco de programadores e noites do pijama para maratonas de Senhor dos Anéis, quando o assunto for pré-processadores CSS, certamente se falará sobre Sass e Less.  
+  
+---  
+  
+Este capítulo se reserva a explicar e demonstrar as principais características de pré-processadores CSS. Para instruções sobre como instalá-los em seu sistema, configurá-los e as maneiras possíveis de se compilar código, consulte os respectivos sites oficiais.  
+  
+---  
+  
+Basicamente, Sass e Less fornecem quase o mesmo acervo de funcionalidades. Há várias controvérsias e discussões acalouradas entre os adeptos de um e outro, mas a verdade é que, nessa quase conversão de características, ao optar por usar Sass ou Less, você estará bem servido e conseguirá melhorar **muito** a organização e workflow de desenvolvimento de estilos!
+
+#### Pequena observação sobre a sintaxe Sass
+
+O Autor tem uma preferência pessoal por **Sass** ; todos os exemplos de códigos e features que serão mostrados a seguir serão feitos com código dessa sintaxe. Como acabou de ser explicado, Less também provê as maneiras de se fazer igual, de modo que não haverá prejuízo no entendimento.
+
+A pequena observação é que Sass oferece **2 sintaxes diferentes** para se trabalhar:
+
+  * SCSS
+  * Sass
+
+
+
+SCSS (Sassy CSS) ─ que tem extensão de arquivos `.scss` ─ pode ser considerada como uma extensão de CSS, valendo-se da mesma sintaxe-base e, praticamente, a mesma forma de escrever regras. Basicamente, se você abrir um arquivo `.scss` e escrever CSS puro ali, será um arquivo Sass válido.
+
+A sintaxe Sass ─ sim, a sintaxe tem o mesmo nome do pré-processador ─, cuja extensão dos arquivos é `.sass`, já é bem diferente do CSS com que a maioria dos webdevs está acostumada, primando pela concisão e rapidez na escrita. Demora-se um pouco mais para aprender a escrevê-la, mas alguns garantem que, uma vez que se domina, é difícil voltar atrás.
+
+Este capítulo se propõe a apresentar a linguagem. Portanto, a sintaxe SCSS será usada por ser mais parecida com CSS puro, facilitando a assimilação e fixação dos conceitos.
+
+  
+
+
+###  6.2  Aninhamento de regras 
+
+Logo no primeiro dia de estudos de HTML, é fácil constatar que se trata de uma linguagem que usa elementos aninhados para funcionar: o aninhamento confere estrutura e organização hierárquica ao documento. CSS, por sua vez, não possui tal característica.
+
+O poder de Sass começa a se mostrar já aqui: é possível **aninhar regras** CSS para escrever um código mais conciso e menor, conferindo hierarquia visual às regras e facilitando da leitura!
+
+Por exemplo, veja este trecho de CSS:
+    
+    
+     1 nav ul {
+     2     list-style: none;
+     3     margin: 0;
+     4     padding: 0;
+     5 }
+     6 
+     7 nav li {
+     8     display: inline-block;
+     9 }
+    10 
+    11 nav a {
+    12     display: block;
+    13     padding: 6px 12px;
+    14     text-decoration: none;
+    15 }
+    
+
+Em SCSS, é possível escrever assim:
+    
+    
+     1 nav {
+     2     ul {
+     3         margin: 0;
+     4         padding: 0;
+     5         list-style: none;
+     6     }
+     7 
+     8     li {
+     9         display: inline-block;
+    10     }
+    11 
+    12     a {
+    13         display: block;
+    14         padding: 6px 12px;
+    15         text-decoration: none;
+    16     }
+    17 }
+    
+
+Não é incrível? Agora você pode aninhar regras de estilos e, ao compilar o código, será gerado o mesmo CSS mostrado anteriormente. A questão é que você poupou escrita e a declaração está visualmente mais inteligível, evidenciando, em um só golpe de vista, a hierarquia intrínseca das regras!
+
+#### Referência ao ascendente
+
+Em algumas situações, é preciso fazer referência ao ascendente para se montar uma regra apropriadamente. Por exemplo, dentro do aninhamento permitido por Sass, como seria para colocar uma regra com `:hover`?
+
+Se tentar algo como:
+    
+    
+    1 .selector {
+    2     :hover {
+    3     }
+    4 }
+    
+
+O CSS compilado será `.selector :hover {}` (note o espaço), o que não é o necessário para se alcançar o objetivo de usar este pseudoseletor.
+
+Para esses casos, Sass provê uma característica muito interessante, tornando possível fazer referência ao elemento ascendente imediatamente superior: o caractere `&`.
+
+Neste exemplo do `hover`, o código correto seria:
+    
+    
+    1 .selector {
+    2     &:hover {
+    3     }
+    4 }
+    
+
+Isso geraria o CSS: `.selector:hover {}` (exatamente o que se está querendo).
+
+Sempre que, em Sass, você deparar-se com `&`, já sabe que a intenção é repetir o seletor ascendente imediato na regra, independente de que parte dela esteja. Veja:
+    
+    
+    1 .selector {
+    2     .parent-selector--modified & {
+    3     }
+    4 }
+    
+
+Isso vai compilar para:
+    
+    
+    1 .parent-selector--modified .selector {}
+    
+
+O seguinte código:
+    
+    
+    1 #custom-checkbox {
+    2     & + label {
+    3     }
+    4 
+    5     &:checked + label {
+    6     }
+    7 }
+    
+
+compilará o CSS:
+    
+    
+    1 #custom-checkbox {
+    2 }
+    3 
+    4 #custom-checkbox + label {
+    5 }
+    6 
+    7 #custom-checkbox:checked + label {
+    8 }
+    
+
+#### Sass e BEM
+
+O padrão de nomenclatura BEM traz diversas vantagens no desenvolvimento de front-end, como explicado no capítulo [5](index_split_005.html#chapter-bem). Porém, conforme foi mostrado até agora sobre o caractere de referência ao ascendente imediato, um trecho Sass do tipo:
+    
+    
+    1 .selector {
+    2     &--modifier {
+    3     }
+    4 }
+    
+
+Compilaria para:
+    
+    
+    1 .selector .selector--modifer {}
+    
+
+O que, definitivamente, não é o esperado.
+
+Felizmente, desde a versão Sass 3.4, os adeptos ao BEM contam com uma grata característica: uma compilação especial quando se usa o padrão de nomenclatura!
+
+Sass identifica automaticamente os padrões de escrita BEM e gera CSS da maneira que se espera! Caso em que se pode escrever tranquilamente o seguinte:
+    
+    
+    1 .selector {
+    2     &--modifier {
+    3     }
+    4 
+    5     &__subelement {
+    6         &--submodifier {
+    7         }
+    8     }
+    9 }
+    
+
+E obter o compilado:
+    
+    
+    1 .selector--modifier {
+    2 }
+    3 
+    4 .selector__subelement {
+    5 }
+    6 
+    7 .selector__subelement--submodifier {
+    8 }
+    
+
+Também é possível escrever tantas referências mais aos respectivos elementos ascendentes imediatos quanto sejam precisas, já que, a partir dessa versão, o Sass compreende a sintaxe BEM e gera CSS corretamente, respeitando-o e garantindo regras com boa performance de seletores-chaves ([2.2](index_split_002.html#title-o-seletor-chave))!
+
+  
+
+
+###  6.3  Variáveis 
+
+Se o poder dos pré-processadores de CSS fosse limitado a somente permitir o uso de **variáveis** , ainda assim seriam tão famosos e usados como são atualmente! Poder usar variáveis é, simplesmente, um incrível avanço na organização e manutenibilidade de um conjunto de Folhas de Estilo!
+
+Variáveis em Sass são como variáveis em qualquer linguagem de programação: referências nominais capazes de armazenar valores que podem ser chamadas em trechos de código subsequentes para resgatar e usá-los conforme necessário. Para declarar uma variável, basta dar um nome qualquer (sem espaços e/ou caracteres especiais) precedido de `$`, usar `:` e dar o valor que se queira, como em:
+    
+    
+    1 $mainColor: #c0ffee;
+    
+
+Isso feito, basta usar a variável à vontade! Por exemplo:
+    
+    
+     1 $main-color: #c0ffee;
+     2 
+     3 header {
+     4     background-color: $main-color;
+     5 }
+     6 
+     7 a {
+     8     color: $main-color;
+     9 }
+    10 
+    11 footer .highlight {
+    12     border: 2px solid $main-color;
+    13 }
+    
+
+que compilaria:
+    
+    
+     1 header {
+     2     background-color: #c0ffee;
+     3 }
+     4 
+     5 a {
+     6     color: #c0ffee;
+     7 }
+     8 
+     9 footer .highlight {
+    10     border: 2px solid #c0ffee;
+    11 }
+    
+
+A imensa vantagem é poder substituir absolutamente todas as referências àquela cor, alterando somente uma linha de código. Mesmo nesse exemplo com somente 3 regras, já seria muito bom. Imagine em projetos do mundo real, em que não é raro precisar de alterações dessa natureza em dezenas de regras!
+
+Variáveis podem conter quaisquer valores usados em CSS, como em:
+    
+    
+    1 $font-stack: Helvetica, sans-serif;
+    2 $width: 5em;
+    
+
+Quando não são declaradas fora de regras ─ como em todos os exemplos mostrados até agora ─, a variável fica disponível em todo o código. Mas também é possível limitar seu escopo de atuação ao declará-la dentro de uma regra:
+    
+    
+    1 .l-main {
+    2     $width: 5em;
+    3     width: $width;
+    4 }
+    
+
+Se tentássemos usar `$width` em qualquer outro lugar fora de `.l-sidebar`, isso resultaria em erro.
+
+**A não ser que** seja usado o modificador `!global`, que faz com que ela esteja disponível também em qualquer ponto do código. Nesse caso, seria possível algo como:
+    
+    
+    1 .l-main {
+    2     $width: 5em !global;
+    3     width: $width;
+    4 }
+    5 
+    6 .l-sidebar {
+    7     width: $width;
+    8 }
+    
+
+que seria compilado para:
+    
+    
+    1 .l-main {
+    2     width: 5em;
+    3 }
+    4 
+    5 .l-sidebar {
+    6     width: 5em;
+    7 }
+    
+
+#### Interpolação de variáveis
+
+Sass permite que seja possível interpolar variáveis. Em termos simples, seria como juntar o valor de variáveis com outras variáveis ou valores.
+
+Para se fazer isso, referencia-se a variável usando `#{VARIAVEL}` e, automaticamente, a interpolação acontece. Para ficar mais claro, veja o exemplo:
+    
+    
+    1 $vert: top;
+    2 $horz: left;
+    3 $radius: 5px;
+    4 
+    5 .rounded-#{$vert}-#{$horz} {
+    6     border-#{$vert}-#{$horz}-radius: $radius;
+    7 }
+    
+
+que gera o CSS:
+    
+    
+    1 .rounded-top-left {
+    2     border-top-left-radius: 5px;
+    3 }
+    
+
+  
+
+
+###  6.4  Mixins 
+
+**Mixins** permitem que se façam agrupamentos de declarações CSS para serem reusados onde se queira. Certamente, são uma das features mais poderosas de Sass! Se você já brincou com programação, mixins lembram bastante funções.
+
+Para se trabalhar com eles, o par `@mixin`/`@include` sempre estará presente. O primeiro para definir o mixin, em si; o segundo, para indicar em qual ponto do código se quer usá-lo.
+
+Veja este trecho de código Sass com um mixin para arredondamento de bordas sendo definido e usado:
+    
+    
+     1 @mixin border-radius($radius) {
+     2     -webkit-border-radius: $radius;
+     3        -moz-border-radius: $radius;
+     4         -ms-border-radius: $radius;
+     5             border-radius: $radius;
+     6 }
+     7 
+     8 .box { 
+     9     @include border-radius(10px);
+    10 }
+    
+
+Isso gerará o seguinte CSS:
+    
+    
+    1 .box {
+    2     -webkit-border-radius: 10px;
+    3        -moz-border-radius: 10px;
+    4         -ms-border-radius: 10px;
+    5             border-radius: 10px;
+    6 }
+    
+
+Com 6 linhas de código, você agora pode arredondar bordas em qualquer regra que quiser, apenas usando um `@include`! Como vantagem adicional, ainda consegue especificar qual será o raio na própria chamada ao mixin! 
+
+Essa possibilidade de passar o valor que se quer para atuar em mixins (_argumentos_) certamente faz deles mais poderosos. É possível passar quantos quiser, que nem as funções em linguagens de programação. Caso se passe um argumento já especificando um valor, este será o valor padrão usado desde que ele seja omitido ao se usar o `@include`. Veja:
+    
+    
+     1 @mixin rounded($vert, $horz, $radius: 10px) {
+     2     -webkit-border-#{$vert}-#{$horz}-radius: $radius;
+     3        -moz-border-radius-#{$vert}#{$horz}: $radius;
+     4             border-#{$vert}-#{$horz}-radius: $radius;
+     5 }
+     6 
+     7 .l-footer {
+     8     @include rounded(top, left, 5px);
+     9 }
+    10 
+    11 .l-sidebar {
+    12     @include rounded(top, left, 8px);
+    13 }
+    14 
+    15 .navbar li {
+    16     @include rounded(top, left);
+    17 }
+    
+
+Isso compila para:
+    
+    
+     1 .l-footer {
+     2     -webkit-border-top-left-radius: 5px;
+     3        -moz-border-radius-topleft: 5px;
+     4             border-top-left-radius: 5px;
+     5 }
+     6 
+     7 .l-sidebar {
+     8     -webkit-border-top-left-radius: 8px;
+     9        -moz-border-radius-topleft: 8px;
+    10             border-top-left-radius: 8px;
+    11 }
+    12 
+    13 .navbar li {
+    14     -webkit-border-top-left-radius: 10px;
+    15        -moz-border-radius-topleft: 10px;
+    16             border-top-left-radius: 10px;
+    17 }
+    
+
+  
+
+
+###  6.5  Extensão/Herança 
+
+Indubitavelmente, Extensão/Herança é uma das principais características de pré-processadores CSS! 
+
+No caso específico de Sass, é possível usar `@extend` para compartilhar uma série de propriedades/valores de várias regras diferentes em uma mesma regra! Isso mantém o código dentro do princípio da não repetição (_DRY_), faz com que seja preciso escrever bem menos código e, de quebra, ainda garante que o CSS compilado seja mais lógico e eficiente!
+
+Como exemplo, suponha que você tenha esta regra:
+    
+    
+    1 .default-box {
+    2     background-color: #efefef;
+    3     border: 1px solid #000;
+    4     color: #333;
+    5 }
+    
+
+Caso seja preciso criar variações disso com Sass, uma das maneiras possíveis seria estendê-la em outra regra! Assim:
+    
+    
+    1 .alert-box {
+    2     @extend .default-box;
+    3     font-size: 2em;
+    4 }
+    
+
+o que compilaria para:
+    
+    
+    1 .default-box, .alert-box {
+    2     background-color: #efefef;
+    3     border: 1px solid #000;
+    4     color: #333;
+    5 }
+    6 
+    7 .alert-box {
+    8     font-size: 2em;
+    9 }
+    
+
+Percebe o poder que isso oferece? Você pode ter um arquivo com definições genéricas de regras que podem ser estendidas em quaisquer outras do projeto! Por exemplo, regras do tipo:
+    
+    
+     1 [...]
+     2 
+     3 .bold {
+     4     font-weight: bold;
+     5 }
+     6 
+     7 .italic {
+     8     font-style: italic;
+     9 }
+    10 
+    11 .display-block {
+    12     display: block;
+    13 }
+    14 
+    15 .display-none {
+    16     display: none;
+    17 }
+    18 
+    19 .underline {
+    20     text-decoration: underline;
+    21 }
+    22 
+    23 .no-underline {
+    24     text-decoration: none;
+    25 }
+    26 
+    27 .text-left {
+    28     text-align: left;
+    29 }
+    30 
+    31 .text-center {
+    32     text-align: center;
+    33 }
+    34 
+    35 .text-right {
+    36     text-align: right;
+    37 }
+    38 
+    39 .text-justify {
+    40     text-align: justify;
+    41 }
+    42 
+    43 [...]
+    
+
+Se quiséssemos uma regra para um módulo que precise ter apresentação em bloco, negrito e texto justificado, só seria necessário estender regras já especificadas anteriormente!
+    
+    
+    1 .my-module {
+    2     @extend .display-block, .bold, .text-justify;
+    3     border: 1px solid #ccc;
+    4 }
+    
+
+que compilaria para:
+    
+    
+     1 [ ... ]
+     2 
+     3 .bold, .my-module {
+     4     font-weight: bold;
+     5 }
+     6 
+     7 .display-block, .my-module {
+     8     display: block;
+     9 }
+    10 
+    11 .text-justify, .my-module {
+    12     text-align: justify;
+    13 }
+    14 
+    15 [ ... ]
+    16 
+    17 .my-module {
+    18     border: 1px solid #ccc;
+    19 }
+    
+
+É ou não é uma economia tremenda de digitação com um compilado condizente ao melhor que CSS tem a oferecer?
+
+#### Seletores placeholder
+
+No exemplo anterior, foi possível observar que todas as regras especificadas no Sass estão presentes no CSS gerado. É até conveniente que classes, como `.bold`, `.display-block` etc. sejam geradas, já que podem ser úteis ao se trabalhar com JavaScript, adicionando e excluindo classes conforme eventos e ações.
+
+Entretanto, pode haver situações em que determinadas regras que serão estendidas só precisem existir para isso e não precisem estar presentes no CSS compilado. Para isso, saiba que existem o **seletores placeholder** (_placeholder selectors_).
+
+Criar um placeholder selector é como uma regra comum, com a diferença de que não se coloca um elemento, classe ou ID, mas sim um %. Por exemplo, se fosse preciso usar um seletor placeholder para estender nos estilos mostrados antes, ficaria:
+    
+    
+     1 [ ... ]
+     2 
+     3 %bold {
+     4     font-weight: bold;
+     5 }
+     6 
+     7 %italic {
+     8     font-style: italic;
+     9 }
+    10 
+    11 %display-block {
+    12     display: block;
+    13 }
+    14 
+    15 %display-none {
+    16     display: none;
+    17 }
+    18 
+    19 %underline {
+    20     text-decoration: underline;
+    21 }
+    22 
+    23 %no-underline {
+    24     text-decoration: none;
+    25 }
+    26 
+    27 %text-left {
+    28     text-align: left;
+    29 }
+    30 
+    31 %text-center {
+    32     text-align: center;
+    33 }
+    34 
+    35 %text-right {
+    36     text-align: right;
+    37 }
+    38 
+    39 %text-justify {
+    40     text-align: justify;
+    41 }
+    42 
+    43 [ ... ]
+    
+
+Para indicar a extensão:
+    
+    
+    1 .my-module {
+    2     @extend %display-block, %bold, %text-justify;
+    3     border: 1px solid #ccc;
+    4 }
+    
+
+A grande diferença está no CSS compilado, que seria somente:
+    
+    
+     1 .my-module {
+     2     font-weight: bold;
+     3 }
+     4 
+     5 .my-module {
+     6     display: block;
+     7 }
+     8 
+     9 .my-module {
+    10     text-align: justify;
+    11 }
+    12 
+    13 .my-module {
+    14     border: 1px solid #ccc;
+    15 }
+    
+
+Observando o compilado, parece que foi um desperdício definir várias regras com o mesmo seletor com somente uma propriedade definida. Entretanto, lembre-se de que os placeholder selectors podem ser estendidos em qualquer lugar, consequentemente alterando a compilação de folhas de estilo conforme seu uso.
+
+Outra ocasião bastante útil para eles é quando se tem que usar fontes personalizadas em projetos. Dá pra fazer algo como:
+    
+    
+     1 @font-face {
+     2     font-family: 'custom_font';
+     3     src: url('font/my-custom-font.eot');
+     4     src: url('font/my-custom-font.eot?#iefix') 
+     5         format('embedded-opentype'),
+     6          url('font/my-custom-font.woff2') format('woff2'),
+     7          url('font/my-custom-font.woff') format('woff'),
+     8          url('font/my-custom-font.ttf') format('truetype');
+     9     font-weight: normal;
+    10     font-style: normal;
+    11 }
+    12 
+    13 %custom-font {
+    14     font-family: 'custom_font';
+    15 }
+    
+
+Sempre que precisar que algum elemento, classe ou ID seja agraciado com a fonte diferenciada, estenda o seletor placeholder.
+
+Em suma, **placeholder selectors não aparecem no CSS compilado** , servindo exclusivamente para propósitos de Extensão/ Herança.
+
+  
+
+
+###  6.6  Importação 
+
+Levando em conta o que se aprendeu no capítulo ([4](index_split_004.html#chapter-smacss)) sobre SMACSS e as vantagens do Sass ao permitir Extensão/Herança, não surpreenderia se você já tivesse chegado à conclusão de que, em projetos mais profissionais, é preciso que se tenha diversos arquivos diferentes, cada um com seu propósito e contendo suas respectivas regras de estilo.
+
+Para essas ocasiões, o Sass oferece um recurso de importação, usando `@import`.
+
+No exemplo de placeholder selectors mostrado agora há pouco, certamente haveria um arquivo Sass com todos eles e, conforme a necessidade e a organização do projeto ─ por exemplo, o uso da metodologia SMACSS ─, a criação de mais arquivos para conterem as regras devidas. Em uma demonstração simples, 2 arquivos:
+
+_Fig. 6.2: Demonstração simples com 2 arquivos_
+
+  
+  
+
+
+Logo no início do arquivo `style.scss`, bastaria colocar:
+    
+    
+    1 @import 'generics';
+    
+
+Tudo o que está dentro de `_generics.scss` poderia ser acessado. Não é preciso colocar o `_` nem `.scss` na sintaxe de importação. Também é possível ─ e, quase sempre, necessário ─ importar vários arquivos, separando-os por vírgula na declaração do `@import`.
+
+Neste ponto, cabem duas observações importantes.
+
+A primeira é que se deve ter atenção ao nome do arquivo que foi importado, que começa com um subtraço (_underline_). Dentro da dinâmica do Sass, isso é chamado de **partial** e significa que, na compilação, somente será gerado um arquivo CSS de `style.scss`. Em outras palavras, na compilação, partials não geram sua contraparte `.css`.
+
+A segunda é que é importante não confundir esse `@import` com a importação de arquivos que já existe em CSS puro. Esta faz uma requisição extra no servidor, chamando um arquivo à parte; aquela junta todos os arquivos importados no importador, garantindo a geração de um arquivo único com todas as regras.  
+  
+---  
+  
+Por padrão, Sass não permite importar arquivos `.css` diretamente.  
+  
+---  
+  
+Para finalizar, é possível a importação de arquivos em subdiretórios. Em um projeto com estrutura Sass, por exemplo, poderia haver um arquivo único que importasse todos os partials necessários:
+
+_Fig. 6.3: Exemplo de estrutura com arquivos .scss_
+
+  
+  
+
+
+No início do arquivo `style.scss`, colocaríamos:
+    
+    
+     1 @import
+     2     'base/base',
+     3     'base/fonts',
+     4     'base/forms',
+     5     'base/generics',
+     6     'layout/content',
+     7     'layout/footer',
+     8     'layout/header',
+     9     'layout/menu',
+    10     'module/button',
+    11     'module/pagination',
+    12     'module/search'
+    13 ;
+    
+
+Cada arquivo importado poderia também ter declarações de `@import`, o que causaria um "efeito bola de neve" de importação e, como o esperado, ainda continuaria compilando somente o arquivo `style.css`.
+
+  
+
+
+###  6.7  Mais superpoderes de Sass 
+
+Sass é uma linguagem poderosíssima, que facilmente encheria um livro inteiro, além do que já foi apresentado:
+
+  * Operadores aritméticos (`+`, `-`, `*`, `/`);
+  * Estruturas de controle (`if`, `while`, `for`, `each`);
+  * Diferentes resultados de compilação (_nested_ , _expanded_ , _compact_ , _compressed_);
+  * Funções personalizadas;
+  * E muito mais!
+
+
+
+Tudo isso você encontra no site oficial do Sass (<http://sass-lang.com/>). Para já brincar um pouquinho sem ter que instalar a ferramentaria necessária para se trabalhar, acesse o SassMeister (<http://goo.gl/aQYSpg>). Depois disso, para continuar os estudos, há artigos de grande utilidade no _The Sass Way_ (<http://goo.gl/GEjBGe>).
+
+Para aprimorar ainda mais a Arquitetura CSS de seus projetos, de uma maneira que permita uma melhor identificação da sua estrutura e manutenção, no próximo capítulo, veja sobre **CSS Namespaces**.
+
+  
+
+
+
+##  Capítulo 7:  CSS namespaces 
+
+Como visto, SMACSS ([4](index_split_004.html#chapter-smacss)) e BEM ([5](index_split_005.html#chapter-bem)) podem fazer maravilhas pela arquitetura e organização de seus projetos. A boa notícia é que é possível ir mais além!
+
+Em diversas linguagens de programação bastante usadas no mundo inteiro, existe o conceito de **namespaces**. Algumas o suportam nativa e explicitamente, como, por exemplo, a maioria das linguagens de back-end modernas; mas, outras, como JavaScript, não o aceitam. Entretanto, é possível fazer algumas marotices no código (leia-se: gambiarras) para que namespacing possa ser aplicado e conseguir seus benefícios intrínsecos obtidos.
+
+Mas o que são namespaces e qual é a sua finalidade?
+
+Tentando explicar de maneira simples e sucinta, namespaces são como regiões no código, nas quais nomes ─ de variáveis, de funções etc ─ são válidos dentro destas linguagens de programação. Apesar de não ter certeza quanto à acuidade da tradução, em terras tupiniquins, alguns costumam usar o termo **espaços de nomes**.
+
+Na prática, isso quer dizer que, dentro de determinado "espaço de nome", é possível atribuir nomes a instâncias e entidades sem que ocorra algum conflito caso termos idênticos sejam escolhidos em outros espaços de nomes.
+
+Ou seja, torna-se possível usar termos idênticos dentro de namespaces diferentes sem que haja confusão. Adicionalmente, essa sua diferenciação traz a vantagem extra de ser possível identificar imediatamente a qual espaço de nome tal entidade pertence com um só golpe de vista.
+
+Evidentemente, no momento, um CSS que não seja uma linguagem de programação não pode se valer dos benefícios completos de namespacing. Mas, tal como acontece com OOCSS ([3](index_split_003.html#chapter-css-orientado-a-objetos)), por meio de algumas convenções bastante interessantes, é possível trazer parte dos seus benefícios para a linguagem e tentar encontrar alguma vantagem nisso.
+
+É mais simples do que você poderia imaginar.  
+  
+---  
+  
+Este capítulo não é sobre o Namespace Module da W3C (<http://goo.gl/EoQjvt>); mas sobre convenções de nomes de classes para ajudar na leitura e compreensão de códigos.  
+  
+---  
+  
+###  7.1  Os CSS namespaces mais comuns 
+
+Como você deve saber, por não se tratar de uma linguagem de programação, aplicar namespacing em CSS é possível através de **convenções de nomes** ─ assim como muito de bom que acontece em CSS. Na prática, trata-se apenas de colocar um prefixo nos nomes dos seletores para conseguir atribuir um namespace e começar a se valer dos benefícios de imediata identificação e melhor compreensão do código.
+
+Os namespaces de CSS mais comuns ─ mostrados por **Harry Roberts** em um conhecido artigo a respeito (<http://goo.gl/917hCW>) ─ são:
+
+  * **o-** : objeto;
+  * **c-** : componente;
+  * **u-** : utilitário;
+  * **t-** : tema;
+  * **s-** : escopo (_scope_);
+  * **is-** /**has-** : estado/ condição;
+  * **_** : hack (!);
+  * **js-** : JavaScript;
+  * **qa-** : quality assurance (QA).
+
+
+
+Só de observar essa lista, já é possível perceber o quão mais comunicativo seu código pode ser ao, simplesmente, prefixar os nomes de suas classes! Veja mais detalhes sobre cada um dos namespaces a seguir.
+
+Além disso, há uma vantagem extra: usar namespaces em CSS combina perfeitamente com BEM ([5](index_split_005.html#chapter-bem))! Quer dizer, você pode continuar escrevendo código CSS com Bloco, Elemento e Modificador, aprimorando a arquitetura, legibilidade e entendimento do código, somente ao usar essa convenção de prefixos!
+
+#### Objeto: o-
+
+Formato:
+    
+    
+    1 .o-object-name[<element>|<modifier>] {}
+    
+
+Exemplo:
+    
+    
+    1 .o-layout {}
+    2 
+    3     .o-layout__item {}
+    4 
+    5     .o-layout--fixed {}
+    
+
+O namespace **Objeto** é especialmente útil para pessoas que se valem do OOCSS, que, a esta altura, você já deve conhecer depois de ter lido o capítulo [3](index_split_003.html#chapter-css-orientado-a-objetos).
+
+Dado um projeto fictício que segue algumas das boas práticas para CSS eficiente já mostradas, imagine que seja preciso que se altere o `padding` das recomendações dadas por pessoas, por exemplo. Encontra-se o seguinte trecho de código:
+    
+    
+    1 <blockquote class="media testimonial">
+    2 </blockquote>
+    
+
+Em relação ao CSS correspondente, foi decidido colocar o `padding` em `.testimonial` para resolver a questão. Daria certo, mas, fazendo alguns testes, opta-se por fazer a adição da propriedade em `.media`, já que isso traz o resultado esperado.
+
+A grande questão nesse exemplo é que `.media` é somente uma abstração de OOCSS. Ele tem de manter suas características de ser reusável e de não receber "cosméticos" que poderiam alterar seu visual dependendo de onde seja colocado. Mesmo que o código mostrado já tenha a aplicação de algumas técnicas de CSS eficiente, é possível melhorá-lo e torná-lo mais claro e comunicativo.
+
+Bastaria fazer:
+    
+    
+    1 <blockquote class="o-media testimonial">
+    2 </blockquote>
+    
+
+Somente com a adição do prefixo do namespace Objeto, agora o código comunica a qualquer outro desenvolvedor sobre sua natureza de objeto/ abstração e também que ele não deve ser estilizado. Isso evitaria alterações nefastas nele. Logo, vemos que:
+
+  * Objetos são abstratos;
+  * Objetos podem ser usados em qualquer número ao longo do projeto;
+  * Tenha cuidado e atenção redobrada quando se deparar com elementos `o-`.
+
+
+
+#### Componente: c-
+
+Formato:
+    
+    
+    1 .c-component-name[<element>|<modifier>] {}
+    
+
+Exemplo:
+    
+    
+    1 .c-modal {}
+    2 
+    3     .c-modal__title {}
+    4 
+    5     .c-modal--gallery {}
+    
+
+O namespace **Componente** identifica a maior parte dos elementos de UI que qualquer um pode olhar e identificar imediatamente, por exemplo: "Isso é um botão", "Isso é um modal" etc.). Ao contrário de Objetos, alterações de estilo em Componentes não afetam nada além do componente em si, como vemos nesse último exemplo, nada além do modal. Enquanto objetos são abstrações, componentes são implementações específicas.
+
+Para aprimorar o exemplo dado anteriormente, bastaria:
+    
+    
+    1 <blockquote class="o-media c-testimonial">
+    2 </blockquote>
+    
+
+Se quando a solicitação de aumento de `padding` tivesse sido feita com essa marcação presente, imediatamente já se teria percebido que ela precisaria ser feita a `.testimonial`, dada sua prefixação de componente. Teríamos a garantia de que toda e qualquer modificação realizada afetaria somente componentes `.testimonial` e nada mais! Assim:
+
+  * Componentes são implementações específicas de UI;
+  * Podemos modificá-los de maneira segura;
+  * Qualquer coisa com prefixo `c-` é algo específico.
+
+
+
+#### Utilitário: u-
+
+Formato:
+    
+    
+    1 .u-utility-name {}
+    
+
+Exemplo:
+    
+    
+    1 .u-clearfix {}
+    
+
+O namespace **Utilitário** é usado para regras que têm responsabilidade única, servindo a propósitos muito específicos e, na maioria das vezes, sendo destinadas a prover uma, e somente uma, estilização. Por exemplo, `.u-text-center` para alinhar ao centro um texto. Não é incomum que tenham `!important` para garantir que ganharão na batalha da especificidade CSS ([2.1](index_split_002.html#section-especificidade-css)).
+
+Devido à sua natureza de estilização focada, excepcional, única, direta e que também permite sua utilização globalmente no projeto, é muito importante usar esse prefixo quando este se vale de namespaces CSS.
+
+Por exemplo, veja este trecho de código:
+    
+    
+    1 .footer .text-center {
+    2     font-size: 75%;
+    3 }
+    
+
+O problema é que `.text-center` agora tem duas responsabilidades quando aparece em qualquer lugar dentro de `.footer`. Isso causa efeitos colaterais, algo que um utilitário jamais ─ jamais! ─ pode ter.
+
+Isso nos traz a uma conclusão óbvia a respeito do uso do namespace Utilitário: se começa com `u-`, **jamais reatribua!** Utilitários devem ser definidos uma vez para nunca mais precisarem ser alterados.
+
+Veja este exemplo de HTML:
+    
+    
+    1 <div class="font-size-large">
+    2     <blockquote class="pullquote">
+    3     </blockquote>
+    4 </div>
+    
+
+Somente olhando para o código, pode ser confuso para um desenvolvedor perceber o porquê de o tamanho da fonte do `blockquote` ser diferente do que estava sendo esperado. O motivo é que ele está herdando esse tamanho de `.font-size-large`.
+
+Veja como é possível clarear o código e garantir que este tipo de dúvida não ocorra, somente usando prefixos de namespaces de CSS:
+    
+    
+    1 <div class="u-font-size-large">
+    2     <blockquote class="c-pullquote">
+    3     </blockquote>
+    4 </div>
+    
+
+Logo, vimos que:
+
+  * Utilitários são estilos da pesada!
+  * Alerte a outros desenvolvedores sobre eles, colocando o prefixo `u-`.
+  * Nunca os reatribua a qualquer elemento que tenha um prefixo `u-`.
+
+
+
+#### Tema: t-
+
+Formato:
+    
+    
+    1 .t-theme-name {}
+    
+
+Exemplo:
+    
+    
+    1 .t-light {}
+    
+
+O namespace **Tema** , como sugere o próprio nome, é para auxiliar na marcação HTML e na criação de seletores CSS em projetos que suportam temas.
+
+A maioria dos projetos que suportam temas trabalham com o conceito de **Stateful Themes** (<http://goo.gl/Vrpyt0>), quer dizer, temas que podem ser habilitados e desabilitados. Por exemplo, pense em sites que em cada página ou seção tem uma paleta de cores ou um seletor de temas num painel de controles. Geralmente, isso é feito colocando-se alguma classe que indica que o tema está no elemento `body`. 
+
+Valendo-nos do que foi visto sobre pré-processadores CSS ([6](index_split_006.html#chapter-pre-processadores-css)), é possível pensar em códigos como:
+    
+    
+     1 .c-btn {
+     2     background-color: #333;
+     3     color: #e4e4e4;
+     4     display: inline-block;
+     5     padding: 1em;
+     6 
+     7     .t-light & {
+     8         background-color: #e4e4e4;
+     9         color: #333;
+    10     }
+    11 }
+    
+
+Ou seja, o elemento `.c-btn` possui determinado estilo por padrão, mas, quando o tema light está ativo ─ a classe `.t-light` é colocada no elemento `body` ─, as cores de background e foreground se invertem. Caso se precise editar o aspecto de algum elemento em um tema específico, já se sabe onde encontrar sua definição, uma vez que ficam todas vinculadas ao elemento padrão (no mesmo arquivo). Assim:
+
+  * Namespaces de tema são de alto nível;
+  * Eles proveem contexto/ escopo para diversas outras regras;
+  * São úteis para sinalizar a condição atual da UI.
+
+
+
+#### Escopo: s-
+
+Formato:
+    
+    
+    1 .s-scope-name {}
+    
+
+Exemplo:
+    
+    
+    1 .s-cms-content {}
+    
+
+O namespace **Escopo** (_scope_) deve ser usado somente em alguns casos bastante específicos. Preste muita atenção para não usá-lo de maneira inapropriada.
+
+Na maioria das vezes, escopo pode ser utilizado para especificar um contexto para alguma seção particular da UI. Um exemplo seria o código HTML gerado por um CMS ─ que, sabemos, nem sempre é da melhor qualidade. Você pode utilizar um namespace de escopo como um contêiner e, com a porção de elementos contextualizada, estilizar a partir daí.
+
+Uma porção de código de exemplo:
+    
+    
+     1 <nav class="c-nav-primary">
+     2     ...
+     3 </nav>
+     4 
+     5 <section class="s-cms-content">
+     6     <h1>...</h1>
+     7 
+     8     <p>...</p>
+     9 
+    10     <p>...</p>
+    11 
+    12     <ul>
+    13         ...
+    14     </ul>
+    15 
+    16     <p>...</p>
+    17 </section>
+    18 
+    19 <ul class="c-share-links">
+    20     ...
+    21 </ul>
+    22 
+    23 <a href="#" class="c-btn c-btn--primary">
+    24     Pr&oacute;ximo artigo
+    25 </a>
+    
+
+Veja que `.s-cms-content` serve como um contêiner para o conteúdo automático gerado e, com isso, abre-se a possibilidade de uma estilização fina para adequá-lo às diretrizes de UI do projeto.
+
+Um exemplo (com Sass):
+    
+    
+     1 .s-cms-content {
+     2     font: 16px/1.5 serif;
+     3 
+     4     h1, h2, h3, h4, h5, h6 {
+     5         font: bold 100%/1.5 sans-serif;
+     6     }
+     7 
+     8     a {
+     9         text-decoration: underline;
+    10     }
+    11 }
+    
+
+Como você já deve saber a esta altura, estilizar elementos diretamente não é lá considerado uma boa prática para se ter CSS eficiente. Porém, em casos como esse, não deixa de ser uma solução aceitável para se conseguir uma estilização apropriada.
+
+Em virtude disso e dos problemas de CSS que podem aparecer por consequência, é importante lembrar que o namespace Escopo deve ser usado com cautela e somente quando realmente necessário. Portanto:
+
+  * Escopos devem ser raramente usados, logo, tenha certeza absoluta de que precisa deles;
+  * Eles dependem inteiramente de aninhamento; esteja ciente disso.
+
+
+
+#### Estado/Condição: is-/has-
+
+Formato:
+    
+    
+    1 .[is|has]-state {}
+    
+
+Exemplos:
+    
+    
+    1 .is-open {}
+    2 
+    3 .has-dropdown {}
+    
+
+O namespace **Estado/ Condição** advém do SMACSS ([4](index_split_004.html#chapter-smacss)) e, como explicado, serve para indicar estados temporários da UI que precisam ser estilizados de acordo com essa condição.
+
+Não raramente, ao usar um inspetor de código (por exemplo, Chrome DevTools) para saber mais sobre algum elemento interativo de UI, como um modal, é comum vermos classes/elementos aparecendo e desaparecendo, "ligando" e "desligando". Ao inspecionar-se um código, é bastante esclarecedor ver uma classe como `is-open` aparecer e desaparecer, pois informa de maneira muito clara o que está acontecendo naquele trecho específico da interface.
+    
+    
+    1 <div class="c-modal is-open">
+    2     ...
+    3 </div>
+    
+
+E não somente quando se olha para o HTML. Ao analisar um arquivo de estilos com esse namespace, tudo fica muito mais claro.
+    
+    
+    1 .c-modal {
+    2     &.is-open {}
+    3 
+    4     &__content {
+    5         &.is-loading {}
+    6     }
+    7 }
+    
+
+Algo importante a saber é que um estado/condição se diferencia de um Modificador de BEM ([5](index_split_005.html#chapter-bem)) devido à característica de ser temporário. Ou seja, um estado/condição pode mudar de um momento para o outro, devido a alguma ação tomada pelo visitante (por exemplo, `.is-expanded`) ou alguma interação com o servidor, como `.is-updating`. Logo, vimos que:
+
+  * Estado/ condição é temporário;
+  * Certifique-se de que sejam facilmente percebidos e entendidos no HTML;
+  * Nunca escreva uma classe de estado/ condição "pura". Ele é sempre atrelado a outra.
+
+
+
+#### Hack: _
+    
+    
+    1 ._<namespace>hack-name {}
+    
+
+Exemplo:
+    
+    
+    1 ._c-footer-mobile {}
+    
+
+O namespace **Hack** , devido a seu próprio nome e objetivo que decorre daí, deve ser usado somente em casos raros. Ter essa marcação no código ajuda todos a identificar que se trata de um hack que (teoricamente) deve ser resolvido de maneiras convencionais, assim que possível.
+
+Exemplo:
+    
+    
+    1 @media screen and (max-width: 30em) {
+    2     // É preciso forçar o footer a ter uma largura fixa
+    3     // em viewports menores
+    4     ._c-footer-mobile {
+    5         height: 80px;
+    6     }
+    7 }
+    
+
+Resumindo:
+
+  * Hacks são feios;
+  * Hacks devem ser temporários, portanto não faça reúso ou vincule-os a suas classes;
+  * Fique atento ao número de hacks no código.
+
+
+
+#### JavaScript: js-
+
+Formato:
+    
+    
+    1 .js-component-name {}
+    
+
+Exemplo:
+    
+    
+    1 .js-modal {}
+    
+
+O namespace **JavaScript** , como você deve imaginar, indica que há algum tipo de interação com JavaScript associada ao elemento em que se encontra. Em teoria, não se deve ter estilo e comportamento associados ao mesmo _hook_ no código, logo, geralmente esse namespace é usado para fazer a **separação de preocupações** (_Separation of Concerns_).
+
+Usá-lo também traz uma tranquilidade extra ao projeto, já que desenvolvedores podem mexer no CSS à vontade sem se preocupar com alguma possível quebra em JS e vice-versa.
+
+Portanto, na prática, classes como `.js-modal` pouco têm a ver com CSS e estilização, servindo mais como hooks JavaScript, propriamente ditos. Assim:
+
+  * JavaScript e CSS têm preocupações diferentes (_Separation of Concerns_), então use hooks diferentes;
+  * Tendo hooks diferentes para CSS e JS, a codificação em cada um deles torna-se mais segura.
+
+
+
+#### Quality Assurance (QA): qa-
+
+Formato:
+    
+    
+    1 .qa-node-name {}
+    
+
+Exemplo:
+    
+    
+    1 .qa-error-login {}
+    
+
+O namespace **Quality Assurance (QA)** , apesar de não ser o mais usado da lista, pode ser extremamente útil e valioso quando se está trabalhando com testes de UI e com ferramentas de automatização como **Selenium** (<http://goo.gl/N7523e>). Ou até mesmo com um navegador _headless_ , em que é extremamente comum scripts do tipo:
+
+  1. Visite `site.dev/login`;
+  2. Insira um nome de usuário incorreto;
+  3. Insira uma senha incorreta;
+  4. Espere (_Expect_) por um erro no DOM.
+
+
+
+Até aqui, nenhuma novidade. Mas, pense bem: se os testes são feitos usando como hooks nomes de classes CSS ─ e é isso mesmo o que geralmente acontece ─, uma simples troca de nomes pode fazer com que eles comecem a falhar!
+
+Fazendo um paralelo com o namespace `js-`, aqui uma separação de preocupações também seria conveniente. Isso permitiria que diferentes pessoas ou equipes pudessem atuar de maneira independente, fazendo o que quer que fosse preciso.
+
+Para melhorar a situação, uma medida interessantíssima a ser tomada é começar a usar o namespace QA e, para os que fazem os testes, a utilizar essas classes como hooks ao invés das normais presentes no código, ficando com classes como neste exemplo:
+    
+    
+    1 <strong class="c-message c-message--error qa-error-login">
+    
+
+Resumindo:
+
+  * Usar hooks de estilo para testes é um tanto obscuro, então, não faça isso;
+  * Use-os como hooks classes específicas para testes;
+  * Garanta que qualquer refatoração de UI não afete os hooks de QA.
+
+  
+
+
+###  7.2  Conclusão 
+
+Como muitas das boas práticas de CSS, **CSS Namespaces** nada mais são do que convenções de codificação que, se bem usadas, trazem numerosas vantagens aos projetos que se valem delas. Tecnicamente, são apenas pseudo-namespaces, mas, de qualquer forma, dentro das atuais limitações de CSS, ajudam bastante!
+
+Existem até vantagens não explícitas, como o fato de se conseguir mais produtividade com editores/IDEs com _autocomplete_.
+
+_Fig. 7.1: Por essa você não esperava!_
+
+  
+  
+
+
+Se, por qualquer motivo, seja preciso destacar visualmente um ou mais namespaces, isso se torna possível com uma simples regra:
+    
+    
+    1 [class^="c-"],
+    2 [class*=" c-"] {
+    3     outline: 5px solid red;
+    4 }
+    
+
+A lista de namespaces apresentados não é fixa e nem imutável, só reflete o que é mais comumente usado por aí, enquanto você está lendo estas palavras. Apesar de não ser única ─ como se pode ver em **FUN** (<http://goo.gl/G0cWkX>) e outras propostas existentes.
+
+Devido à facilidade de aprendizado e de uso de CSS Namespaces, somados aos imensos benefícios e ganhos que são trazidos aos projetos, realmente não há motivos para que os namespaces também não façam parte do seu rol de convenções CSS.
+
+Automatizar tarefas é sempre algo bom a se fazer e certamente usar **Task Runners** em seus projetos é um passo inteligente a ser dado, o que veremos a seguir.
+
+  
+
+
+
+##  Capítulo 8:  Task Runners 
+
+Se você estiver lendo este livro sequencialmente, você já viu CSS orientado a objetos ([3](index_split_003.html#chapter-css-orientado-a-objetos)), SMACSS ([4](index_split_004.html#chapter-smacss)), BEM ([5](index_split_005.html#chapter-bem)), pré-processadores CSS () e CSS namespaces ([7](index_split_007.html#chapter-css-namespaces)). Um belo caminho rumo à escrita de CSS mais eficiente!
+
+Algo que pode passar essa eficiência a um outro nível é a **automatização**. É bastante comum os desenvolvedores terem de fazer tarefas repetitivas, seja ao iniciar projetos ou durante todo seu ciclo de desenvolvimento. Muitas delas são recorrentes, tendo de ser executadas a todo momento. Por exemplo, compilar Sass para CSS.
+
+Felizmente, é possível dar um passo além na eficiência e produtividade front-end por meio dos automatizadores de tarefas, mais conhecidos como **Task Runners**.
+
+###  8.1  O que são Task Runners? 
+
+Como já citado, task runners são ferramentas que se destinam a automatizar tarefas variadas que devem acontecer em determinados momentos do desenvolvimento ─ isso vale também para o back-end, mas não é o foco deste livro.
+
+Tarefas como compilar CSS de pré-processadores, verificar erros de JavaScript, combinar e minificar _assets_ , otimizar imagens, e muitas outras podem ser automatizadas. Sim, elas podem ser executadas pelos task runners de maneira transparente e indolor, fazendo com que a produtividade das pessoas envolvidas no projeto atinja limites nunca antes imaginados!
+
+Eles permitem que se criem tarefas que podem ser chamadas e executadas através da linha de comando, além de ficarem rodando em background, só esperando você salvar determinado tipo de arquivo, para dar início à execução de uma série de instruções automatizadas, previamente programadas!
+
+#### Grunt e Gulp
+
+De maneira semelhante aos pré-processadores CSS (), no mundo da automatização de tarefas, também há dois task runners que são usados pela maioria das pessoas:
+
+  * Grunt (<http://gruntjs.com/>);
+  * Gulp (<http://gulpjs.com/>).
+
+
+
+Na prática, ambos podem executar as mesmas tarefas e contam com quase a mesma gama de possibilidades. O que realmente muda é a maneira como se escreve e como se dão as instruções, para que cada um faça o que deve fazer.
+
+**Grunt** tem sintaxe mais parecida com um arquivo de configuração, sendo mais verboso e, consequentemente, gerando arquivos maiores. **Gulp** , por sua vez, remete mais a quem gosta de dar instruções, de programar mesmo, tendo como características principais uma sintaxe mais enxuta e performance espantosa. Estamos falando de **microssegundos** ─ caso não saiba, **1s = 1.000.000μs**!
+
+O Gulp baseia-se em alguns princípios básicos:
+
+  * Fácil de usar: ao preferir código, em vez de configuração, ele mantém simples o que é simples e faz tarefas complexas bem mais administráveis;
+  * Eficiente: Gulp usa o poder de _streams_ de `Node.js`, o que permite builds muito mais rápidos e dispensa a necessidade de gravação de arquivos intermediários em disco;
+  * Alta qualidade: as diretrizes estritas para plugins do Gulp garantem que eles permaneçam simples e trabalhem da maneira que se espera;
+  * Fácil de aprender: com uma API mínima, aprende-se a trabalhar com ele quase que na hora!
+
+
+
+Código em vez de configuração (_code over configuration_) significa que realmente é preciso programar, montar scripts.
+
+A eficiência do Gulp muito se dá em função de este usar streams do Node (<http://goo.gl/gGcxVW>). Tecnicamente, stream é uma interface abstrata implementada por vários objetos. Porém, pense neles como os pipes de sistemas `*NIX`, em que é possível jogar o resultado de um comando diretamente em outro.
+
+Sua alta qualidade e facilidade de aprendizado garantem plugins igualmente eficientes. Também, devido ao próprio modo como o Gulp funciona, essa facilidade de aprender e usar são absurdas; é uma curtíssima (quase inexistente) curva de aprendizado para começar a mexer com uma das mais poderosas ferramentas de desenvolvimento front-end que surgiram nos últimos tempos!
+
+Em virtude dessas características e do gosto pessoal do Autor, será usado Gulp para os exemplos sobre task runners. Entretanto, lembre-se: é possível realizar tudo o que será mostrado também com o Grunt, alterando e adaptando uma coisa aqui e ali.
+
+  
+
+
+###  8.2  Como instalar o Gulp 
+
+Gulp é JavaScript com Node. A primeira coisa que você precisará é instalar o `Node.js` ─ instruções em <http://nodejs.org/>. Tomando por base que você está mexendo em um sistema de gente grande, isso é tão simples quando digitar uma linha de comando no terminal (caso já até não o tenha instalado). Depois disso, instale o Gulp globalmente no sistema com:
+    
+    
+    1 npm install -g gulp
+    
+
+Já que estamos lidando com Node, um arquivo `package.json` na raiz do projeto se faz necessário para indicar quais módulos serão usados. É possível que o Node o crie automaticamente com `npm init`, o que iniciará um prompt interativo que perguntará um monte de coisas (tais como: nome do projeto, versão, descrição, licença, autor etc.). Na verdade, para começar a adicionar módulos, só é preciso que esse arquivo seja um JSON válido (mais sobre JSON em <http://goo.gl/bofIoU>). Um JSON válido mínimo não passa de `{}`. Caso queira ser mais prático, basta executar:
+    
+    
+    1 echo "{}" > package.json
+    
+
+Já com o arquivo `package.json` na raiz do projeto com um JSON válido, execute:
+    
+    
+    1 npm install --save-dev gulp
+    
+
+Com isso, o Gulp já está instalado e pronto para ser usado no projeto.
+
+Revisando:
+
+  * `npm install -g gulp`
+  * `echo "{}" > package.json`
+  * `npm install --save-dev gulp`
+
+
+
+Depois disso, seu `package.json` deve estar assim (logicamente, a versão pode se alterar):
+    
+    
+    1 {
+    2   "devDependencies": {
+    3     "gulp": "3.8.10"
+    4   }
+    5 }
+    
+
+Como você viu, para instalar módulos, o comando é `npm install --save-dev [MÓDULO]`. Na verdade, a instalação propriamente dita dispensa o uso de `--save-dev`, mas usar esse parâmetro garante que a definição do módulo seja gravada no `package.json`. Isso torna as coisas mais fáceis ao se iniciar um projeto que usa Gulp.  
+  
+---  
+  
+Caso esteja usando controle de versão, não é preciso incluir o diretório `node_modules`, já que, ao se clonar um projeto que tenha um `package.json`, basta executar `npm install` para que ele seja criado automaticamente junto com os módulos/ dependências que serão usados.  
+  
+---  
+  
+#### gulpfile.js
+
+Agora que o básico para se mexer com Gulp está preparado, é hora do `gulpfile.js`. Nesse arquivo, que também deve ficar na raiz, é onde os scripts das tarefas instaladas constam. É nele que, efetivamente, os comandos sobre o que fazer e como fazer são passados para o Gulp.
+
+Um _boilerplate_ para o `gulpfile.js` poderia ser:
+    
+    
+    1 var gulp = require( 'gulp' );
+    2  
+    3 gulp.task( 'default', function() {
+    4     // Tarefas
+    5 } );
+    
+
+Primeiramente, requere-se o módulo `gulp`. Isso deve ser feito com todos módulos que você pretende usar. Depois, cria-se uma tarefa `default` com as instruções que serão realizadas com sua execução. Do jeito que está, você já pode executar no terminal: `gulp`.
+
+Apesar de ser uma tarefa nada útil, ela já deve retornar algo como:
+    
+    
+    1 [gulp] Using file [...]/gulpfile.js
+    2 [gulp] Working directory changed to [...]
+    3 [gulp] Running 'default'...
+    4 [gulp] Finished 'default' in 85 μs
+    
+
+Atente-se à maneira de executar uma tarefa, que é usar `gulp` seguido de seu nome. Por exemplo, se você tivesse criado uma tarefa `concatAssets`, você a executaria com `gulp concatAssets`. No caso, funcionou executando somente `gulp`, porque foi usado um nome de tarefa especial. Quando uma tarefa `default` está definida, é ela que será executada caso nenhum outro nome seja passado.
+
+  
+
+
+###  8.3  Gulp API 
+
+Já está claro que um dos princípios norteadores do Gulp é a simplicidade. Indo ao encontro disso, sua API é extremamente simples e enxuta, limitando-se a quatro funções principais:
+
+  * `src()`: arquivo(s) que entrará(ão) na sequência de pipes para serem tratados/manipulados;
+  * `task()`: define tarefas no Gulp;
+  * `dest()`: destino(s) do(s) arquivo(s) que passou pelos pipes;
+  * `watch()`: observa arquivo(s) e faz alguma coisa quando esse(s) é(são) alterado(s).
+
+
+
+Obviamente, cada um tem suas opções, possibilidade e detalhes técnicos. Apesar de essas breves palavras sobre cada já darem uma noção sobre as respectivas funções, seria interessante olhar a página da API do Gulp (<http://goo.gl/7cviok>).
+
+  
+
+
+###  8.4  Exemplo de tarefas com Gulp 
+
+Basicamente, você já sabe como trabalhar com Gulp! A partir de agora, é usar os módulos Gulp disponíveis (e, quem sabe, até criar alguns) e conhecer as peculiaridades de uso de cada um. Um exemplo vai ajudar a clarear as coisas e fixar o conhecimento.
+
+O Gulp, para este exemplo, vai trabalhar com os módulos:
+
+  * `gulp-ruby-sass`: para compilar Sass (<http://goo.gl/Qbf0hq>);
+  * `gulp-autoprefixer`: para colocar automaticamente _vendor prefixes_ em seletores (<http://goo.gl/eCrNp5>);
+  * `gulp-minify-css`: para minificar CSS (<http://goo.gl/Ln6JL3>);
+  * `gulp-livereload`: para recarregar a página automaticamente quando um arquivo for salvo (<http://goo.gl/tK9Lak>).
+
+  
+---  
+  
+Para descobrir mais plugins e módulos, acesse <http://gulpjs.com/plugins/>.  
+  
+---  
+  
+Usando a função `watch()` do Gulp, tudo isso vai acontecer **automaticamente** ao se salvar algum arquivo Sass.
+
+#### Instalando módulos Gulp
+
+Para instalar os módulos necessários ao exemplo:
+    
+    
+    1 npm install --save-dev gulp-ruby-sass gulp-autoprefixer 
+    2 gulp-minify-css gulp-livereload tiny-lr
+    
+
+Vale lembrar que, para usar o `gulp-ruby-sass` ─ que é só um pouquinho mais lento que `gulp-sass` (<http://goo.gl/I8D18V>), mas possui opções mais interessantes ─, é preciso que você tenha Ruby instalado.
+
+Também é preciso ter a extensão LiveReload para Chrome (<http://goo.gl/FXPwAL>), pois o `gulp-livereload` usa `tiny-lr`. Por isso, ele consta na lista de módulos a serem instalados.
+
+_Fig. 8.1: É preciso habilitar o LiveReload no Chrome_
+
+  
+  
+
+
+Depois de rodar o comando, seu `package.json` deve estar parecido com:
+    
+    
+     1 {
+     2   "devDependencies": {
+     3     "gulp": "3.8.10",
+     4     "gulp-ruby-sass": "0.7.1",
+     5     "gulp-autoprefixer": "2.1.0",
+     6     "gulp-minify-css": "0.4.3",
+     7     "gulp-livereload": "3.6.0",
+     8     "tiny-lr": "0.1.5"
+     9   }
+    10 }
+    
+
+#### Estrutura do projeto-exemplo
+
+Para esse projeto-exemplo, considere a seguinte estrutura:
+
+_Fig. 8.2: Exemplo de estrutura de diretórios_
+
+  
+  
+
+
+`index.html`:
+    
+    
+     1 <!doctype html>
+     2 <html>
+     3     <head>
+     4         <meta charset="utf-8">
+     5         <title>Gulp test</title>
+     6         <link href="style.css" rel="stylesheet">
+     7     </head>
+     8  
+     9     <body>
+    10         <p>Texto do teste.</p>
+    11     </body>
+    12 </html>
+    
+
+`_variables.scss`:
+    
+    
+    1 $backgroundColor: tomato;
+    2 $defaultTextColor: #fff;
+    
+
+`style.scsss`:
+    
+    
+    1 @import 'variables';
+    2  
+    3 body {
+    4     background-color: $backgroundColor;
+    5     color: $defaultTextColor;
+    6 }
+    
+
+#### Editar o gulpfile.js
+
+Agora será preciso editar o `gulpfile.js` para que fique adequado aos propósitos do projeto-exemplo. Para começar, é preciso requerer os módulos e os atribuir a suas respectivas variáveis:
+    
+    
+    1 var gulp      = require( 'gulp' ),
+    2     sass      = require( 'gulp-ruby-sass' ),
+    3     prefix    = require( 'gulp-autoprefixer' ),
+    4     minifycss = require( 'gulp-minify-css' ),
+    5     refresh   = require( 'gulp-livereload' ),
+    6     server    = require( 'tiny-lr' )();
+    
+
+Repare que, para o `gulp-livereload` e `tiny-lr`, foram dados nomes de variáveis diferentes, embora seja uma convenção nomear uma variável com o nome do módulo que ela recebe ─ daqui a pouco você vai entender o motivo.
+
+Agora, chegou o momento de indicar ao Gulp o que fazer. Lembre-se dos pipes: o(s) arquivos(s) indicado(s) em `src()` passa(m) por um comando e o resultado disso é jogado para o próximo, e assim por diante.
+    
+    
+     1 gulp.task( 'compileStyles', function() {
+     2     gulp.src( 'src/style.scss' )
+     3         .pipe( sass( {
+     4             noCache      : true,
+     5             precision    : 4,
+     6             unixNewlines : true
+     7         } ) )
+     8         .pipe( prefix( 'last 3 version' ) )
+     9         .pipe( minifycss() )
+    10         .pipe( gulp.dest( 'dist' ) )
+    11         .pipe( refresh(server) );
+    12 } );
+    
+
+Perceba que há opções definidas para `gulp-ruby-sass`. Isso é perfeitamente normal para vários módulos Gulp. Geralmente o que está disponível e quais as opções possíveis são informações disponibilizadas na própria página do módulo. Também, veja o motivo de aquelas variáveis terem recebido nomes diferentes do nome do módulo: fica mais entendível quando se lê `refresh(server)`, não é verdade?
+
+Finalmente, a parte mágica que automatiza inclusive o recarregar de página, poupando até de ter que dar o foco na janela do navegador e apertar `F5` ─ ou pior: clicar no botão `Recarregar`.
+    
+    
+    1 gulp.task( 'watch', function() {
+    2     server.listen( 35729, function( err ) {
+    3         if ( err ) { return console.log( err ); }
+    4  
+    5         gulp.watch( 'src/**/*.{sass,scss}', [
+    6             'compileStyles'
+    7         ] );
+    8     } );
+    9 } );
+    
+
+A tarefa chamada `watch` inicia um servidor LiveReload, escutando na porta 35729 (a porta padrão desse server) e colocando no console algum acontecimento inesperado. O "filé mignon" é a parte que indica que, caso qualquer arquivo Sass seja alterado em qualquer parte do diretório `src`, a tarefa `compileStyles` deve ser executada e a página recarregada. Afinal, é para isso que o LiveReload serve.
+
+O arquivo `gulpfile.js` final deve parecer-se com:
+    
+    
+     1 var gulp      = require( 'gulp' ),
+     2     sass      = require( 'gulp-ruby-sass' ),
+     3     prefix    = require( 'gulp-autoprefixer' ),
+     4     minifycss = require( 'gulp-minify-css' ),
+     5     refresh   = require( 'gulp-livereload' ),
+     6     server    = require( 'tiny-lr' )();
+     7  
+     8 gulp.task( 'compileStyles', function() {
+     9     gulp.src('src/style.scss')
+    10         .pipe(sass({
+    11             noCache      : true,
+    12             precision    : 4,
+    13             unixNewlines : true
+    14         }))
+    15         .pipe(prefix('last 3 version'))
+    16         .pipe(minifycss())
+    17         .pipe(gulp.dest('dist'))
+    18         .pipe(refresh(server));
+    19 } );
+    20  
+    21 gulp.task( 'watch', function() {
+    22     server.listen( 35729, function( err ) {
+    23         if ( err ) { return console.log( err ); }
+    24  
+    25         gulp.watch( 'src/**/*.{sass,scss}', [
+    26             'compileStyles'
+    27         ] );
+    28     } );
+    29 } );
+    
+
+Com essas quase 30 linhas de código, agora é possível abrir `index.html`, executar `gulp watch`, ativar a extensão LiveReload no navegador, e partir para o abraço (leia-se: editar um arquivo Sass em `src`). Quase que instantaneamente, você verá as alterações aparecendo na tela de seu navegador!
+
+Agora você entende aqueles preceitos do Gulp: **Velocidade** , **Eficiência** e **Simplicidade**.
+
+  
+
+
+###  8.5  Sugestões de plugins Gulp 
+
+Existem centenas de módulos/ plugins para o Gulp e, a cada dia, mais e mais aparecem pela web. Não seria viável manter uma lista completa, mas, certamente, algumas indicações de módulos úteis para tarefas comuns é bem-vinda.
+
+  * `gulp-util`: funções úteis variadas (<http://goo.gl/fH3Qhq>);
+  * `gulp-jshint`: detecta erros e problemas potenciais de JavaScript (<http://goo.gl/9GG5JQ>);
+  * `gulp-uglify`: minifica arquivos (<http://goo.gl/iVLc8p>);
+  * `gulp-imagemin`: minifica/ otimiza imagens (<http://goo.gl/GT8rNO>);
+  * `gulp-replace`: substitui `strings` em arquivos (<http://goo.gl/tuhD8v>);
+  * `gulp-concat`: concatena arquivos (<http://goo.gl/UGpyfZ>);
+  * `delete-files-folder`: remove arquivos e diretórios (<http://goo.gl/OV2SCB>);
+  * `gulp-rev`: adiciona hash aleatório em nomes de arquivos (<http://goo.gl/9HTXri>).
+
+  
+
+
+###  8.6  Conclusão 
+
+Kronos é implacável, principalmente quando se trata de desenvolvimento web. Não há como evitar que novas tecnologias apareçam com novas propostas, solicitando uma nova maneira de pensar e fazer, a fim de tentar sanar problemas já conhecidos. Este é, precisamente, o caso do Gulp: com a intenção de ajudar na automação de tarefas repetitivas e liberar a mente criativa dos desenvolvedores, é uma das melhores e mais eficientes ferramentas para front-end dos últimos anos!
+
+Aprofunde seus conhecimentos na ferramenta e certamente perceberá que, quando tiver se acostumado às facilidades e ao imenso ganho de produtividade proporcionado pelos task runners, não tem como voltar atrás!
+
+Agora, que tal conhecer uma forma inovadora de organizar sua Arquitetura CSS por meio de uma metodologia inédita no Brasil? Conheça **ITCSS** no próximo capítulo.
+
+  
+
+
+
+##  Capítulo 9:  ITCSS 
+
+Neste ponto do livro, você já conheceu CSS orientado a objetos ([3](index_split_003.html#chapter-css-orientado-a-objetos)), SMACSS ([4](index_split_004.html#chapter-smacss)), BEM ([5](index_split_005.html#chapter-bem)), pré-processadores CSS (), CSS namespaces ([7](index_split_007.html#chapter-css-namespaces)) e várias práticas e dicas sobre como escrever CSS mais eficiente.
+
+São conhecimentos/técnicas que podem ser usados e aplicados conforme a necessidade de cada projeto ou, melhor, como um know-how de técnicas que podem ser usadas em qualquer combinação para que você consiga levar a arquitetura CSS deles para o próximo nível!
+
+E por falar em "próximo nível", algo novo chegou ao mundo das boas práticas de CSS; algo bastante recente que, com exclusividade e em primeira mão, sendo tratada pela primeira vez em uma publicação nacional, você vai conhecer agora: **Inverted Triangle CSS** ou **ITCSS**.
+
+###  9.1  O que é ITCSS? 
+
+ITCSS é uma metodologia criada por **Harry Roberts** que vem sendo trabalhada e aprimorada por mais de 4 anos, através de experiências em projetos de front-end de grande porte. Lembra-se de qual foi a resposta do próprio Harry quando o Autor perguntou por que uma arquitetura CSS era importante? Refrescando sua memória, reposta foi:
+
+_CSS é incrivelmente fácil de escrever ─ incrivelmente fácil ─, mas possui uma ordem de magnitude mais difícil para se gerir, manter e escalar. Como os projetos ficam mais maduros e maiores, CSS pode realmente começar a "comer pelas beiradas", causando quantidades incalculáveis de confusão, dores de cabeça e frustrações para os desenvolvedores responsáveis por geri-los._
+
+_Isso se dá, principalmente, devido a uma série de princípios fundamentais de CSS que tornam inerentemente mais difícil a gestão de qualquer projeto de UI não trivial._
+
+Consulte o capítulo [1](index_split_001.html#title-harry-nicole-jonathan) e releia a resposta completa.
+
+Pensando justamente nesse tipo de limitação inerente às CSS foi que Harry criou **ITCSS**. Como sugere o próprio nome, é a representação abstrata da arquitetura CSS de um projeto por meio de um triângulo invertido. Esse triângulo possui camadas que, conforme avançam, tornam-se mais específicas e focadas em realizar tarefas.
+
+ITCSS não é uma nova tecnologia a ser aprendida, tampouco algum programa que se deva instalar. Trata-se de uma metodologia ou um modelo ─ ou, diriam alguns, um _meta framework_ ─ bastante simples de se trabalhar, que propõe uma arquitetura CSS diferente e mais eficiente.
+
+_Fig. 9.1: Triângulo invertido dividido em camadas_
+
+  
+  
+
+
+Alguns dos principais benefícios de usar ITCSS são:
+
+  * Por ser simplíssima, é uma metodologia acessível a qualquer um;
+  * Organiza e gerencia o código em cascata;
+  * Cria uma organização, na qual se sabe onde cada parte do código deve estar;
+  * Reduz perdas e redundância de código;
+  * Evita dores de cabeça com especificidade CSS ([2.1](index_split_002.html#section-especificidade-css)).
+
+
+
+Parece muito bom para ser verdade, mas acredite: simplesmente é!
+
+  
+
+
+###  9.2  As camadas do triângulo invertido 
+
+As 7 camadas do triângulo invertido são:
+
+  * **Configurações** (_Settings_): variáveis e configurações globais;
+  * **Ferramentas** (_Tools_): funções e mixins;
+  * **Genérico** (_Generic_): estilos genéricos (resets, normalizes etc.);
+  * **Elementos** (_Elements_): estilização de elementos HTML diretamente;
+  * **Objetos** (_Objects_): padrões não cosméticos (mais sobre OOCSS em [3](index_split_003.html#chapter-css-orientado-a-objetos));
+  * **Componentes** (_Components_): peças de UI isoladas (menu dropdown, carousel etc.);
+  * **Trumps** : utilitários, helpers, sobrescritas e hacks.
+
+
+
+_Fig. 9.2: Camadas do triângulo invertido_
+
+  
+  
+  
+---  
+  
+Perceba que _Trumps_ não teve tradução. Na verdade, o próprio Harry Roberts explica que esta é uma palavra que, em inglês, é sinônimo de _beat_ , que, nesse contexto, seria algo como **ultrapassar alguém ou alguma coisa por dizer ou fazer algo melhor**.
+
+Para fins de concisão e estilo, acredito que, quando ITCSS for mais popular na Terra dos Papagaios, não haverá maiores questões em continuar usando o termo _Trumps_ ─ que é até bem simpático e agradável de se pronunciar, diga-se de passagem.  
+  
+---  
+  
+Além desta organização mais formal, ITCSS é norteado por alguns princípios gerais:
+
+  * Sem uso de IDs, somente classes;
+  * Criação modular de componentes, em vez de páginas;
+  * Uso e abuso de classes no HTML (nada de economia de caracteres aqui).
+
+
+
+Para complementar sua robustez, ITCSS é construída em cima de 3 métricas-chave:
+
+  * **Geral para explícito:** começa-se pelos estilos mais gerais e genéricos possíveis e, a partir daí, vão-se colocando camadas de estilo adicionais;
+  * **Baixa Especificidade para alta Especificidade:** regras com especificidade menor aparecem em camadas mais genéricas; regras de maior, em camadas mais específicas/ focadas;
+  * **Muito alcance para pouco alcance:** as regras presentes em camadas mais genéricas afetam grande parte do DOM e, à medida que vão se afunilando, alcançam cada vez menos porções.
+
+
+
+_Fig. 9.3: Métricas-chave do triângulo invertido_
+
+  
+  
+
+
+Como será constatado a seguir, construir o CSS baseado nessas métricas-chave garante que questões com especificidade sejam mitigadas e que o código seja escrito em uma ordem lógica e progressiva. Como se verá, isso traz grande capacidade de extensão e menos redundância.
+
+Se pudesse representar a relação **especificidade x localização na folha de estilos** por meio de um gráfico para um projeto comum, este seria mais ou menos assim:
+
+_Fig. 9.4: Especificidade por localização em projetos sem ITCSS_
+
+  
+  
+
+
+Já usando ITCSS e todas as vantagens que sua arquitetura traz:
+
+_Fig. 9.5: Especificidade por localização em projetos usando ITCSS_
+
+  
+  
+
+
+Isso ilustra nitidamente as vantagens que estão ao seu alcance e que você aprenderá agora, sabendo mais sobre cada uma das camadas de ITCSS.
+
+#### Configurações (settings)
+
+Em ITCSS não é obrigatório que se faça uso de pré-processadores CSS. Porém, devido a todas as vantagens já vistas no capítulo [6](index_split_006.html#chapter-pre-processadores-css), seu uso é extremamente aconselhável. Neste caso, é na camada **Configurações** que o trabalho começará.
+
+Quando pensar na camada Configurações, pense no termo _estilos globais_ , já que é exatamente onde esse tipo de estilo deve estar.
+
+Exemplo:
+    
+    
+    1 $environment: dev;
+    2 
+    3 $rem-base: 16px !default;
+    4 
+    5 $main-color: #c00fee;
+    6 
+    7 $module-size: rem-calc(20px);
+    
+
+#### Ferramentas (tools)
+
+A camada **Ferramentas** deve conter funções e mixins ─ olha os pré-processadores CSS aí! ─ relativos ao projeto. Essa camada vem logo após a de Configurações, porque pode ser necessário que alguma função ou mixin faça uso de uma configuração global qualquer.
+
+Exemplo:
+    
+    
+     1 @function strip-unit($num) {
+     2     @return $num / ($num * 0 + 1);
+     3 }
+     4 
+     5 @function convert-to-rem($value, $base-value: $rem-base) {
+     6     $value: strip-unit($value) / strip-unit($base-value) * 1rem;
+     7 
+     8     @if ($value == 0rem) { $value: 0; } // Turn 0rem into 0
+     9 
+    10     @return $value;
+    11 }
+    12 
+    13 @function rem-calc($values, $base-value: $rem-base) {
+    14     $max: length($values);
+    15 
+    16     @if $max == 1 {
+    17         @return convert-to-rem(nth($values, 1), $base-value);
+    18     }
+    19 
+    20     $remValues: ();
+    21 
+    22     @for $i from 1 through $max {
+    23         $remValues: append(
+    24                         $remValues,
+    25                         convert-to-rem(
+    26                             nth($values, $i),
+    27                             $base-value
+    28                         )
+    29                     );
+    30     }
+    31 
+    32     @return $remValues;
+    33 }
+    
+
+#### Genérico (generic)
+
+Na camada **Genérico** é que o CSS que efetivamente vai entrar em ação ─ o resultado da compilação do pré-processador, diga-se dessa forma ─ começa a ser escrito. Aqui é onde se definirão eventuais _CSS resets_ ; onde se coloca um `Normalize.css` (<http://goo.gl/YFPLMO>); e onde um `box-sizing` geral é definido.
+
+Essa camada afeta a imensa maioria do DOM, por isso, deve ser mais ampla e genérica, estando mais para a base do triângulo invertido.
+
+Exemplo:
+    
+    
+    1 * { 
+    2     -webkit-box-sizing: border-box;
+    3        -moz-box-sizing: border-box;
+    4             box-sizing: border-box;
+    5 }
+    
+
+#### Elementos (elements)
+
+Na camada **Elementos** , consta a estilização de elementos HTML, propriamente ditos. Seguindo na metodologia do ITCSS, é uma camada ligeiramente mais específica que comporta estilizações de elementos HTML diretamente, conforme as necessidades do projeto.
+
+Devido ao tipo de estilização que há nela, geralmente depois de definidos os estilos, não é necessário que se mexa mais com eles, ficando essa tarefa para as camadas mais específicas do triângulo.
+
+Exemplo:
+    
+    
+    1 img,
+    2 iframe,
+    3 object,
+    4 embed,
+    5 video {
+    6     height: auto;
+    7     max-width: 100%;
+    8 }
+    
+
+#### Objetos (objects)
+
+A camada **Objetos** comporta estilos não cosméticos/abstratos, remetendo mais a OOCSS (mais informações em [3](index_split_003.html#chapter-css-orientado-a-objetos)), grids, contêineres e outros desta natureza.
+
+Exemplo:
+    
+    
+     1 .media { 
+     2     margin: 10px;
+     3 
+     4     &, .bd {
+     5         overflow: hidden; 
+     6         _overflow: visible; 
+     7         zoom: 1;
+     8     }
+     9 
+    10     .img { 
+    11         float: left;
+    12         margin-right: 10px;
+    13 
+    14         &--ext {
+    15             float: right;
+    16             margin-left: 10px;
+    17         }
+    18     }
+    19 
+    20     .img img {
+    21         display: block;
+    22     }
+    23 }
+    
+
+#### Componentes (components)
+
+A camada **Componentes** é a que comporta o maior número de estilizações, já que nela devem constar os códigos dos elementos de UI do projeto (menus, carousels, slider etc.). Para facilitar o entendimento, faça um paralelo com os Módulos de SMACSS ([4.5](index_split_004.html#section-smacss-module)).
+
+Seguindo a proposta do ITCSS, essa é uma camada mais específica, que faz uso de tudo o que foi definido nas anteriores, tendo um nível de especificidade maior.
+
+#### Trumps
+
+Para se ter um código totalmente elegante e formal, a camada Componentes poderia ter sido considerada a última. Porém, como "na prática, a teoria é outra", ITCSS usa a camada **Trumps** como uma maneira de vencer (_beats_) os estilos das anteriores (se necessário), tornando-se o último bastião de estilização dentro da metodologia.
+
+Esta camada contém utilitários, helpers, sobrescritas e hacks e, devido ao propósito pelo qual existe, não se acanhe em usar `!important` se necessário. Trumps é a ponta do triângulo e, em decorrência disso, a camada com as regras mais específicas, explícitas e focadas.
+
+Exemplo:
+    
+    
+    1 .half-width {
+    2     width: 50% !important;
+    3 }
+    
+
+  
+
+
+###  9.3  Organização do código com ITCSS 
+
+Como foi possível perceber, a estrutura triangular invertida de ITCSS permite a organização do código, não mais por função ─ estilos para tipografia, para formulários etc. ─, agora, organiza-se por **explicitude** e **especificidade**.
+
+Em função da organização de ITCSS, a hierarquia, a cascata e a especificidade CSS trabalham a favor do desenvolvedor, já que cada camada somente dá prosseguimento ao que a anterior já definiu!
+
+Como sugestão do próprio criador de ITCSS, recomenda-se que, na prática, cada camada seja formada por uma série de partials (Sass) com a seguinte convenção de nome: `_<camada>.<partial>.scss`.
+
+Exemplos:
+    
+    
+    1 _settings.colors.scss
+    2 _elements.headings.scss
+    3 _components.tabs.scss
+    
+
+Cada partial deve ser o mais granular e específico possível, contendo somente o código necessário para cumprir a função a que se destina. Por exemplo, um arquivo `_elements.headings.scss` deve conter tão somente regras para os títulos (h1-h6) e nada mais. Caso haja, por exemplo, uma seção em que títulos e subtítulos sejam apresentados de maneira diferente, isso poderia constar em um outro arquivo, como `_components.page-title.scss`, por meio de classes como `.page-title` e `.page-title-sub`.
+
+Essa é a maneira como ITCSS funciona e para a qual sua estrutura de triângulo foi concebida: não se colocam todos os estilos de cabeçalhos juntos; colocam-se os estilos referentes a elementos juntos e tudo o que é baseado em classes em um outro agrupamento! Com isso, organiza-se o projeto em métricas úteis de CSS e não em blocos temáticos, que, na maioria das vezes, trazem questões de cascata e especificidade.
+
+Na prática, usando Sass, todas as camadas funcionam juntas por meio da importação desses vários arquivos ─ respeitando-se a ordem do triângulo invertido, obviamente:
+    
+    
+     1 @import 
+     2     'settings.colors',
+     3     'settings.global',
+     4 
+     5     'tools.functions',
+     6     'tools.mixins',
+     7 
+     8     'generic.box-sizing',
+     9     'generic.normalize',
+    10 
+    11     'elements.headings',
+    12     'elements.links',
+    13 
+    14     'objects.grid',
+    15     'objects.wrappers',
+    16 
+    17     'components.buttons',
+    18     'components.carousel',
+    19     'components.main-nav',
+    20 
+    21     'trumps.clearfix',
+    22     'trumps.ie8'
+    23     'trumps.utilities',
+    24 ;
+    
+
+Dentro da estrutura de camadas de ITCSS, você pode usar a ordem de importação que quiser, desde que sejam obedecidos os seguintes critérios de similaridade:
+
+  * **Especificidade:** todos os seletores de elementos ou de classes ou todos utilitários com `!important` etc.;
+  * **Explicitude:** estilizar todos os elementos base HTML ou de UI etc.;
+  * **Alcance:** capacidade de afetar todo o DOM (por exemplo, `* {}`); partes do DOM (exemplo, `a {}`); uma seção do DOM (`.carousel {}`); ou um nó específico do DOM (`.clearfix {}`).
+
+  
+
+
+###  9.4  Conclusão 
+
+Como visto, ITCSS é uma nova maneira de pensar e organizar a arquitetura CSS de seus projetos. Sua estrutura permite parar de ordená-los por temas e passar a usar métricas úteis de CSS. Para isso, ele é organizado funcionalmente em camadas que aproveitam a hierarquia, cascata e especificidade CSS.
+
+Como qualquer metodologia, não se trata de regras rígidas nem conceitos escritos em pedra. Caso tenha gostado, mas gostaria de alterar uma ou outra coisa, sinta-se à vontade! Por exemplo, em vez de usar a estrutura de nomes de partials indicada, você pode querer organizar tudo em subpastas com o nome do arquivo simplificado:
+
+_Fig. 9.6: Organize os projetos como for melhor para você e sua equipe: não há normas rígidas_
+
+  
+  
+
+
+Isso, obviamente, alteraria a importação dos partials em seu `style.scss`:
+    
+    
+     1 @import 
+     2     'settings/colors',
+     3     'settings/global',
+     4 
+     5     'tools/functions',
+     6     'tools/mixins',
+     7 
+     8     'generics/box-sizing',
+     9     'generics/normalize',
+    10 
+    11     'elements/headings',
+    12     'elements/links',
+    13 
+    14     'objects/grid',
+    15     'objects/wrappers',
+    16 
+    17     'components/buttons',
+    18     'components/carousel',
+    19     'components/main-nav',
+    20 
+    21     'trumps/clearfix',
+    22     'trumps/ie8'
+    23     'trumps/utilities',
+    24 ;
+    
+
+Perceba que o `generic` também foi alterado para `generics`. Uma adaptação meramente material ao gosto de quem está usando, que deixa a proposta de arquitetura CSS mais personalizada sem se abster dos benefícios que ela oferece!
+
+A metodologia foi criada para ajudar, não para atrapalhar. Portanto, teste, experimente, use, reúse e adapte-a conforme seja necessário, sempre aproveitando o que de melhor ITCSS tem a oferecer!
+
+  
+
+
+
+##  Capítulo 10:  O fim 
+
+Este é o fim. O fim do início de seus estudos sobre como escrever CSS melhor e começar a usar uma arquitetura CSS decente!
+
+Se leu o livro na íntegra e prestou atenção, agora você já conhece mais a fundo sobre seletores CSS ([2](index_split_002.html#chapter-seletores-css)), CSS orientado a objetos ([3](index_split_003.html#chapter-css-orientado-a-objetos)), SMACSS ([4](index_split_004.html#chapter-smacss)), BEM ([5](index_split_005.html#chapter-bem)), pré-processadores CSS ([6](index_split_006.html#chapter-pre-processadores-css)) e o novíssimo ITCSS ([9](index_split_009.html#chapter-itcss)). 
+
+Para os acostumados a fazer só o feijão com arroz de CSS, são evoluções bastante consideráveis, que, sem sombra de dúvidas, farão com que você passe para o próximo nível nos conhecimentos e técnicas de front-end!
+
+Você não precisa usar tudo o que foi visto de uma vez. Faça suas experimentações. Teste usar algumas das técnicas/metodologias em um projeto, depois troque para outras em outro. A experimentação trouxe a humanidade até aqui e você pode ser aquele que ajudará o mundo a dar um passo além!
+
+Aproveite que adquiriu este livro e ─ além de sugerir aos colegas que também façam o mesmo ─, volte aos capítulos e faça consultas quantas vezes forem necessárias. Siga os links e sugestões mostrados e sempre continue estudando!
+
+Algo a se levar em consideração, que também ajuda a produzir **CSS eficiente** , é tentar manter o código fiel a um **guia de estilos**. Isto é, uma série de orientações de escrita de código que deve ser seguida por aqueles que mexem nos estilos do projeto. Existe uma máxima quanto a isso: **O código de um projeto deve parecer que foi escrito por uma só pessoa**. Seguir um guia de estilo ajuda bastante quanto a isso, tenha certeza!
+
+Guias de estilos facilmente poderiam ter sido um capítulo incluído neste livro, mas como são muitos e bastante variados ─ para CSS e para pré-processadores CSS ─, é mais conveniente que você os encontre em uma busca e decida por aqueles que se adequem mais à sua maneira e a seus hábitos de codificação.
+
+Para começar, dê uma olhada no Idiomatic CSS (<http://goo.gl/gLJI8e>) e no artigo _CSS Style Guides_ (<http://goo.gl/HVTY5K>), que conta com referências a alguns notórios, como GitHub, Google e WordPress.
+
+Não deve ser nenhuma surpresa que as técnicas e conhecimentos mostrados aqui podem ser tão dinâmicos e mutáveis quanto a própria web! Ademais, existem muitos mais conceitos/metodologias por aí que, apesar de bem parecidos com o que foi mostrado durante todo o livro, também possam ser dignos de sua atenção ─ como Atomic Design (<http://goo.gl/d7BJQs>), Organic CSS (<http://goo.gl/PHQCJJ>) ou PostCSS (<https://goo.gl/4oXfV0>), só para citar alguns.
+
+Logo, nada de achar que agora você é o Sr. (ou Sra.) front-end; você está apenas dando continuidade à jornada. A partir dessas informações e somente com **muita prática** , você conseguirá efetivamente dar os próximos passos na melhoria e na evolução de conhecimentos sobre front-end para se tornar um profissional melhor.
+
+Como diria _Morpheus_ , **há uma diferença entre conhecer o caminho e trilhar o caminho**.
+
+Bons estudos!

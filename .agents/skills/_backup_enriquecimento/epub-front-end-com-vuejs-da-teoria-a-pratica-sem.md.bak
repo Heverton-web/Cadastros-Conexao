@@ -1,0 +1,57 @@
+---
+name: epub-front-end-com-vue-js-da-teoria-pr-tica-sem-co
+description: >-
+  Passos operacionais extraidos — desenvolvimento web, full-stack, JavaScript, TypeScript, React, Node.js (PT).
+---
+
+# Epub Front End Com Vuejs Da Teoria A Pratica Sem — Passos Operacionais
+
+Conteudo extraido do livro 'Epub Front End Com Vuejs Da Teoria A Pratica Sem'. Contem passos, tecnicas e principios baseados na obra original.
+
+## 1. Conceitos Fundamentais
+- Possui uma força imensa de elevar a qualidade da Web brasileira.
+- Os milhares de representantes dessa comunidade produzem conteúdos ótimos em seus blogs, listas de discussão, Facebook e conversas de boteco.
+- Nós nos encontramos em eventos memoráveis em todo o Brasil.
+- Esse livro quer ser uma pequena celebração desse sucesso.
+- Inspirados em projetos internacionais semelhantes – como o recomendadíssimo _Smashing Book_ – trazemos essa **Coletânea de Front-end**.
+- Um grupo de 11 autores de renome nacional na comunidade se juntou para escrever artigos que julgamos relevantes para a Web.
+- E mais importante até que o pequeno grupo de desbravadores desse projeto, queremos abrir o caminho para mais um canal da comunidade front-end.
+- Queremos feedback, queremos que briguem conosco pra que lancemos novas edições, com mais autores e mais temas.  ###  1.1  Os capítulos e os autores   O livro está organizado em capítulos independentes, cada um com seu autor.
+- Conversamos entre nós, mas cada tópico é expressão do próprio criador.
+- A única regra era: escrever algo memorável, que fizesse a diferença na Web brasileira.
+
+## 2. Principios e Tecnicas
+- Nesse nosso meio que muda rápido, não queríamos falar da moda do mês.
+- Começamos tentando rediscutir o papel da Web redescobrindo o **Progressive Enhancement** com _Luiz Real_.
+- É impressionante como uma técnica com anos de idade é cada vez mais atual.
+- E como há muita gente ainda ignorando essa prática essencial.
+- Na sequência, _Diego Eis_ aborda **Responsive, Adaptive e Fault Tolerance** com muitas buzzwords e polêmicas.
+- O autor mostra como a Web é genialmente imprevisível, adaptativa e flexível e discute o _mindset_ correto pra lidar com isso.
+- Entra então _Bernard De Luna_ falando sobre **Como criar frameworks CSS**.
+- Mais que uma abordagem puramente técnica, é um tratado sobre a necessidade de padrões nos projetos e uma discussão interessante sobre o papel dos frameworks nas equipes Web.
+- Em seguida temos _Giovanni Keppelen_ , que apresenta uma introdução detalhada ao **AngularJS** , um dos principais expoentes atuais do grupo de frameworks JavaScript MVC.
+- Ele demonstra códigos práticos dos principais módulos do Angular e os motivos pelos quais você deve considerar essa ferramenta em suas aplicações.
+
+## 3. Aplicacoes Praticas
+- A discussão sobre acessibilidade é bastante profunda com dois nomes de peso.
+- Primeiro, _Reinaldo Ferraz_ discute o coração da acessibilidade vista pelo W3C, mostrando as práticas fundamentais das **WCAG** que muitas vezes ainda são ignoradas no mercado.
+- Depois, _Deivid Marques_ expande o tema abordando **WAI-ARIA** e as novas marcações de acessibilidade pensando em interações ricas na Web.
+- Com exemplos excelentes, ele mostra como os novos atributos podem ser incorporados sem esforço nas suas aplicações.
+- Com a Web evoluindo a passos largos e browsers cada vez mais espertos, o que não faltam são novas APIs para explorar todo esse potencial. _Jaydson Gomes_ mostra várias **APIs modernas** que você já pode usar hoje, como WebStorage, PostMessage, WebNotifications e History.
+- Como o tema é longo, _Almir Filho_ mostra ainda mais APIs, agora com foco em acesso a **recursos de dispositivos modernos**.
+- Aborda aspectos sobre câmera, acelerômetro, aúdio, GPS, vibração e mais.
+- É o que você precisa saber pra dominar a Web em suas novas fronteiras.
+- Na sequência, _Caio Gondim_ mostra como dominar todo esse mundo do front-end e facilitar o desenvolvimento com **Debug no browser e Dev Tools**.
+- É um capítulo bastante aprofundado em como incorporar o uso das ferramentas de desenvolvimento no seu dia a dia com bastante produtividade e recursos úteis.
+
+## 4. Topicos Avancados
+- No último capítulo, _Eduardo Shiota_ fala de **testes com JavaScript**.
+- Um assunto de vital importância para garantir a qualidade de qualquer projeto que envolva front-end.
+- E, por fim, eu, _Sérgio Lopes_ , idealizador da coletânea, escrevi esse prefácio e fiz o papel de editor, revisor técnico, cobrador de prazos e distribuidor de pitacos no texto alheio.
+- Em nome de todos os autores, espero que goste dos temas que escolhemos e aproveite o livro.
+- Vamos mudar a Web juntos!      ---      **Sobre o editor**  Sérgio Lopes é instrutor e desenvolvedor na Caelum, onde dá aulas de front-end e outras coisas.
+- Escreve bastante conteúdo sobre front em seu blog (sergiolopes.org), twitter (@sergio_caelum) e outros lugares.
+- Participa de muitos eventos no Brasil todo e publicou o livro _"A Web Mobile"_ também pela editora Casa do Código.  _Fig. 1.1_           ---            ##  Capítulo 2:  Progressive Enhancement: construindo um site melhor para todos   Com navegadores cada vez mais modernos, cheios de recursos, a tendência é que nossos sites também fiquem cada vez mais sofisticados.
+- Porém, não podemos esquecer: nem todo mundo que acessa nossos sites está usando um navegador com os últimos recursos.
+- O primeiro pensamento que aparece na cabeça de muitos quando ouvem algo parecido é: mas eu posso obrigar meus usuários a atualizarem seus navegadores.
+- Ou então: usuário com navegador desatualizado não merece acessar meu site!

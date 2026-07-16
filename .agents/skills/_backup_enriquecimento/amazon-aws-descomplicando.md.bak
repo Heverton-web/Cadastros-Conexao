@@ -1,0 +1,57 @@
+---
+name: epub-amazon-aws-descomplicando-a-computa-o-na-nuve
+description: >-
+  Passos operacionais extraidos do livro 'EPUB Amazon AWS_ descomplicando a computação na nuvem' (PT) — praticas e procedimentos para DevOps, infraestrutura e containers.
+---
+
+# Amazon Aws Descomplicando — Passos Operacionais
+
+Conteudo extraido do livro 'Amazon Aws Descomplicando'. Contem passos, tecnicas e principios baseados na obra original.
+
+## 1. Conceitos Fundamentais
+- Introdução](01-introducao.html)   * [2\.
+- Amazon S3](02-amazon-s3.html)   * [3\.
+- Amazon S3 - Gerenciando operações com AWS SDK](03-amazon-s3-sdk.html)   * [4\.
+- Amazon EC2 (Elastic Compute Cloud)](04-amazon-ec2.html)   * [5\.
+- Amazon EC2 — Instalando o Apache, PHP e MySQL na instância](05-amazon-ec2-lamp.html)   * [6\.
+- Amazon EC2 ─ Instalando e configurando o Wordpress](06-amazon-ec2-wordpress.html)   * [7\.
+- Amazon RDS (Relational Database Service)](07-amazon-rds.html)   * [8\.
+- Amazon ElastiCache](08-amazon-elasticache.html)   * [9\.
+- Amazon Route 53](09-amazon-route-53.html)   * [10\.
+- Amazon CloudFront](10-amazon-cloudfront.html)   * [11\.
+
+## 2. Principios e Tecnicas
+- Amazon SES (Simple Email Service)](11-amazon-ses.html)   * [12\.
+- Amazon SNS (Simple Notification Service)](12-amazon-sns.html)   * [13\.
+- Amazon CloudWatch](13-amazon-cloudwatch.html)   * [14\.
+- Gerenciamento de custos da conta](14-gerenciamento-de-custos.html)   * [15\.
+- Apêndice 1 — Instalando o AWS CLI e configurando as credenciais de acesso](15-apendice-1.html)   * [16\.
+- Apêndice 2 — Linux: comandos básicos](16-apendice-2.html)   * [17\.
+- Apêndice 3 — MySQL: comandos básicos](17-apendice-3.html)   * [18\.
+- Apêndice 4 — Configuração do Apache para utilizar URLs amigáveis](18-apendice-4.html)     # ISBN  Impresso e PDF: 978-85-5519-237-1  EPUB: 978-85-5519-238-8  MOBI: 978-85-5519-239-5  > Você pode discutir sobre este livro no Fórum da Casa do Código: <http://forum.casadocodigo.com.br/>. >  > Caso você deseje submeter alguma errata ou sugestão, acesse <http://erratas.casadocodigo.com.br>.   # Sobre o Autor  Figura -2.1: Jonathan Lamim Antunes  Tudo começou em 2004, quando entrei para a escola técnica.
+- Lá, estudei informática e aprendi sobre manutenção, redes de computadores e sistemas operacionais, mas o que me atraiu mesmo foram as matérias relacionadas à programação.
+- Aprendi a programar usando Delphi, depois comecei a estudar JavaScript e HTML, e foi aí que me apaixonei por desenvolvimento para web.
+
+## 3. Aplicacoes Praticas
+- Em 2005, concluí o curso técnico e me mudei do interior de Minas Gerais para o Espírito Santo, onde comecei a ter oportunidades de colocar em prática tudo o que já havia aprendido.
+- Comecei então a escrever artigos sobre desenvolvimento web, dar aulas de programação e informática básica, e auxiliar alunos de uma escola particular durante as aulas no laboratório de informática.
+- Com o passar do tempo, fui me aprofundando nos estudos sobre desenvolvimento web, passei a colaborar com projetos open source e a visão foi se abrindo ainda mais.
+- Quanto mais eu aprendia, mais eu queria ensinar e compartilhar.
+- Já são mais de 300 artigos escritos, muitas horas de aulas ministradas, várias palestras e hangouts, e ainda sinto que posso compartilhar muito mais conteúdo.
+- Hoje sou CEO da JLamim Tecnologia & Educação, onde trabalhamos com desenvolvimento web e mobile, cursos em diversas áreas, programas de mentoria, consultoria e SEO.
+- Para conhecer um pouco mais sobre o meu trabalho e meus artigos, veja os links:    * **Site:** <http://www.jonathanlamim.com.br>   * **Facebook:** <https://www.facebook.com/JonathanLamimAntunes>   * **Instagram:** <http://instagram.com/jonathanlamim>   * **Twitter:** <http://twitter.com/jlamim>     # Agradecimentos  Este é o meu segundo livro, e mais uma vez tenho de agradecer a Deus por tudo que ele tem feito.
+- Mais uma vez deixo meus agradecimentos à editora Casa do Código e toda a sua equipe pelo excelente trabalho realizado em mais esta publicação.
+- Ao amigo Mikael Hadler, por ter aceitado o desafio de fazer a revisão técnica deste livro, contribuindo com o seu conhecimento para que o conteúdo das próximas páginas possa ser de fácil assimilação e aprendizado.
+- À minha esposa, Juliana, por ter tido ainda mais paciência durante todos esses meses em que eu trabalhei neste livro.
+
+## 4. Topicos Avancados
+- Aos meus pais, irmãos, tios, padrinhos, amigos, por acreditarem no meu trabalho e me ajudarem a seguir em frente mesmo nos momentos em que o cansaço e o desânimo eram grandes.
+- Obrigado a você que está lendo esta obra, que acreditou que o conteúdo dela pode ser útil para o seu crescimento profissional.   # Sobre o livro  Infraestrutura é um ponto muito importante quando se trata de grandes aplicações, pois é preciso pensar em escalabilidade, gerenciamento e, principalmente, os serviços necessários para o bom funcionamento dessas aplicações.
+- No decorrer deste livro, você encontrará informações e detalhes sobre diversos serviços da Amazon AWS.
+- Eles possibilitarão a você hospedar e gerenciar facilmente aplicações dos mais variados tamanhos, fazendo uso de variados recursos e com um custo possível de ser controlado.
+- Com a Amazon AWS, você pagará apenas pelos recursos que utilizar, o que torna o serviço ainda mais atraente e viável.
+- Se você precisa de uma infraestrutura robusta para rodar um aplicativo por tempo pré-determinado, então você pode alocar os recursos de infraestrutura necessários somente para esse período e, ao terminar, voltar para a infraestrutura inicial.
+- Seguro, escalável e com grande durabilidade, tornou-se uma das ferramentas mais utilizadas por desenvolvedores e equipes de TI para o armazenamento de arquivos, criptografados ou não.
+- Neste capítulo, veremos detalhes sobre o seu funcionamento, como configurar e usar os seus recursos para fazer upload de páginas estáticas de um site.  ### Capítulo 3 — Amazon S3 — Gerenciando operações com AWS SDK  O AWS SDK é uma ferramenta de integração utilizada no desenvolvimento de sistemas que fazem uso de recursos e serviços do AWS, e neste capítulo você verá exemplos de aplicação do AWS SDK para o AWS S3.
+- Neste capítulo, veremos como usar o SDK em linguagens como NodeJS, Python e PHP para criar buckets e enviar arquivos.  ### Capítulo 4 — Amazon EC2 (Elastic Compute Cloud)  O EC2 é o serviço que permite a você criar, na nuvem, instâncias de servidores virtuais usando diferentes configurações — isso inclui armazenamento, memória e processadores — e sistemas operacionais (Windows ou Unix).
+- É em uma instância do EC2 que você vai colocar sua aplicação para funcionar.

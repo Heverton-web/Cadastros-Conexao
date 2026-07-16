@@ -1,0 +1,5566 @@
+## PDF - [PT] Google App Engine - Construindo servicos na nuvem - Desconhecido
+
+  1. [Página 5](page_005.html)
+  2. [Página 6](page_006.html)
+  3. [Página 7](page_007.html)
+  4. [Página 8](page_008.html)
+  5. [Página 9](page_009.html)
+  6. [Página 10](page_010.html)
+  7. [Página 11](page_011.html)
+  8. [Página 16](page_016.html)
+  9. [Página 19](page_019.html)
+  10. [Página 20](page_020.html)
+  11. [Página 21](page_021.html)
+  12. [Página 22](page_022.html)
+  13. [Página 23](page_023.html)
+  14. [Página 24](page_024.html)
+  15. [Página 25](page_025.html)
+  16. [Página 28](page_028.html)
+  17. [Página 29](page_029.html)
+  18. [Página 30](page_030.html)
+  19. [Página 31](page_031.html)
+  20. [Página 33](page_033.html)
+  21. [Página 34](page_034.html)
+  22. [Página 35](page_035.html)
+  23. [Página 36](page_036.html)
+  24. [Página 37](page_037.html)
+  25. [Página 39](page_039.html)
+  26. [Página 40](page_040.html)
+  27. [Página 41](page_041.html)
+  28. [Página 42](page_042.html)
+  29. [Página 43](page_043.html)
+  30. [Página 46](page_046.html)
+  31. [Página 47](page_047.html)
+  32. [Página 53](page_053.html)
+  33. [Página 56](page_056.html)
+  34. [Página 57](page_057.html)
+  35. [Página 58](page_058.html)
+  36. [Página 59](page_059.html)
+  37. [Página 60](page_060.html)
+  38. [Página 65](page_065.html)
+  39. [Página 66](page_066.html)
+  40. [Página 67](page_067.html)
+  41. [Página 68](page_068.html)
+  42. [Página 69](page_069.html)
+  43. [Página 70](page_070.html)
+  44. [Página 78](page_078.html)
+  45. [Página 79](page_079.html)
+  46. [Página 80](page_080.html)
+  47. [Página 83](page_083.html)
+  48. [Página 84](page_084.html)
+  49. [Página 89](page_089.html)
+  50. [Página 90](page_090.html)
+  51. [Página 91](page_091.html)
+  52. [Página 92](page_092.html)
+  53. [Página 94](page_094.html)
+  54. [Página 96](page_096.html)
+  55. [Página 97](page_097.html)
+  56. [Página 98](page_098.html)
+  57. [Página 99](page_099.html)
+  58. [Página 100](page_100.html)
+  59. [Página 101](page_101.html)
+  60. [Página 102](page_102.html)
+  61. [Página 103](page_103.html)
+  62. [Página 107](page_107.html)
+  63. [Página 108](page_108.html)
+  64. [Página 109](page_109.html)
+  65. [Página 110](page_110.html)
+  66. [Página 111](page_111.html)
+  67. [Página 112](page_112.html)
+  68. [Página 113](page_113.html)
+  69. [Página 115](page_115.html)
+  70. [Página 120](page_120.html)
+  71. [Página 121](page_121.html)
+  72. [Página 122](page_122.html)
+  73. [Página 123](page_123.html)
+  74. [Página 124](page_124.html)
+  75. [Página 125](page_125.html)
+  76. [Página 126](page_126.html)
+  77. [Página 127](page_127.html)
+  78. [Página 128](page_128.html)
+  79. [Página 129](page_129.html)
+  80. [Página 130](page_130.html)
+  81. [Página 131](page_131.html)
+  82. [Página 132](page_132.html)
+  83. [Página 134](page_134.html)
+  84. [Página 136](page_136.html)
+  85. [Página 137](page_137.html)
+  86. [Página 138](page_138.html)
+  87. [Página 139](page_139.html)
+  88. [Página 140](page_140.html)
+  89. [Página 141](page_141.html)
+  90. [Página 144](page_144.html)
+  91. [Página 145](page_145.html)
+  92. [Página 146](page_146.html)
+  93. [Página 147](page_147.html)
+  94. [Página 148](page_148.html)
+  95. [Página 149](page_149.html)
+  96. [Página 150](page_150.html)
+  97. [Página 153](page_153.html)
+  98. [Página 154](page_154.html)
+  99. [Página 155](page_155.html)
+  100. [Página 156](page_156.html)
+  101. [Página 157](page_157.html)
+  102. [Página 158](page_158.html)
+  103. [Página 159](page_159.html)
+  104. [Página 160](page_160.html)
+  105. [Página 161](page_161.html)
+  106. [Página 162](page_162.html)
+  107. [Página 164](page_164.html)
+  108. [Página 165](page_165.html)
+  109. [Página 168](page_168.html)
+  110. [Página 169](page_169.html)
+  111. [Página 171](page_171.html)
+  112. [Página 172](page_172.html)
+  113. [Página 173](page_173.html)
+  114. [Página 174](page_174.html)
+  115. [Página 179](page_179.html)
+  116. [Página 180](page_180.html)
+  117. [Página 181](page_181.html)
+  118. [Página 182](page_182.html)
+  119. [Página 183](page_183.html)
+  120. [Página 184](page_184.html)
+  121. [Página 185](page_185.html)
+  122. [Página 186](page_186.html)
+  123. [Página 187](page_187.html)
+  124. [Página 188](page_188.html)
+  125. [Página 189](page_189.html)
+  126. [Página 190](page_190.html)
+  127. [Página 191](page_191.html)
+  128. [Página 192](page_192.html)
+  129. [Página 193](page_193.html)
+  130. [Página 194](page_194.html)
+  131. [Página 195](page_195.html)
+  132. [Página 196](page_196.html)
+
+
+
+
+Engine, pois há uma boa parte do conteúdo dedicado a isso.
+
+É interessante que o leitor possua familiaridade com Java e  
+programação orientada a objetos, bem como com a IDE Eclipse,  
+para poder aproveitar com mais intensidade o material apresentado,  
+e se aventurar nos exercícios propostos. Porém, o livro aborda todos  
+os conteúdos de forma didática, construindo os exemplos desde o  
+início e detalhando os conceitos a partir de um nível que possa ser  
+compreendido por programadores com qualquer nível de  
+experiência.
+
+Paulo César Siécola é Mestre em Ciência da Computação pelo  
+Instituto de Matemática e Estatística da Universidade de São Paulo  
+(2011). Possui graduação em Engenharia Elétrica pelo Instituto  
+Nacional de Telecomunicações - INATEL (2005).
+
+Atualmente, é Especialista em Sistemas Sênior no Inatel  
+Competence Center e Professor em cursos de Pós-Graduação no  
+INATEL. Tem experiência em desenvolvimento de software em C,  
+Java e C#, atuando principalmente nos seguintes temas:  
+desenvolvimento Web, sistemas embarcados, análise de protocolos  
+de redes de computadores e desenvolvimento de aplicações para  
+GNU/Linux embarcado.
+
+Gostaria de agradecer ao Adriano Almeida, pela oportunidade  
+de publicar um livro na Casa do Código, e também agradecer a  
+Vivian Matsui, pelo empenho e dedicação nas revisões didáticas.
+
+Agradeço aos meus professores e mestres, pois, sem eles, não  
+poderia compartilhar o conhecimento.
+
+Sobre o autor
+
+Agradecimentos
+
+
+Agradeço meus pais, que são a fonte da minha motivação para o  
+trabalho.
+
+Obrigado meu Deus, pelos dons que de Ti recebi. Espero estar  
+utilizando-os com sabedoria e equilíbrio.
+
+Finalmente, agradeço a minha amada esposa Isabel, pela  
+paciência, apoio e incentivo sem igual.
+
+
+1
+
+1
+
+2
+
+4
+
+4
+
+5
+
+6
+
+7
+
+8
+
+8
+
+8
+
+10
+
+14
+
+16
+
+17
+
+23
+
+24
+
+27
+
+28
+
+Sumário
+
+1 O que é Google App Engine
+
+1.1 Sandbox
+
+1.2 Armazenamento de dados
+
+1.3 Agendamento de tarefas
+
+1.4 Cotas e limites
+
+1.5 Console de administração
+
+1.6 Conclusão
+
+2 Preparando o ambiente de desenvolvimento
+
+2.1 Instalando o JDK 7
+
+2.2 Google App Engine SDK for Java 1.9.30
+
+2.3 Instalando e configurando o Eclipse
+
+2.4 Instalando o Google Plugin for Eclipse
+
+2.5 Conclusão
+
+3 Desenvolvendo a primeira aplicação para o GAE
+
+3.1 Construindo o projeto básico
+
+3.2 Acrescento o primeiro servlet
+
+3.3 Executando a aplicação
+
+3.4 Publicando no GAE
+
+3.5 Experimentando o console do GAE
+
+Sumário  
+Casa do Código
+
+
+29
+
+30
+
+31
+
+31
+
+32
+
+35
+
+36
+
+37
+
+40
+
+42
+
+44
+
+45
+
+46
+
+52
+
+53
+
+53
+
+54
+
+61
+
+63
+
+65
+
+69
+
+70
+
+70
+
+72
+
+76
+
+81
+
+82
+
+3.6 Configurando a versão da aplicação
+
+3.7 Conclusão
+
+4 Construindo serviços REST com Jersey
+
+4.1 Preparando o projeto para trabalhar com serviços REST
+
+4.2 Criando o primeiro serviço REST
+
+4.3 Testando o serviço
+
+4.4 Publicando a aplicação no GAE
+
+4.5 Testando o serviço com o REST Console
+
+4.6 Geração do contrato do serviço com WADL
+
+4.7 Conclusão
+
+5 Criando um serviço REST completo com Jersey
+
+5.1 Criando o modelo de produtos
+
+5.2 Criando a classe do serviço
+
+5.3 Conclusão
+
+6 Armazenando dados no Google Cloud Datastore
+
+6.1 O que é o Google Cloud Datastore
+
+6.2 Configurando o projeto para trabalhar com Datastore
+
+6.3 Testando na máquina local
+
+6.4 Índices do Datastore
+
+6.5 Administrando o Datastore no GAE
+
+6.6 Conclusão
+
+7 Gerando mensagens de log
+
+7.1 Configurando o projeto para geração logs
+
+7.2 Métodos para geração de logs
+
+7.3 Visualizando as mensagens de log no GAE
+
+7.4 Conclusão
+
+8 Protegendo serviços com HTTP Basic Authentication
+
+Casa do Código  
+Sumário
+
+
+84
+
+85
+
+88
+
+91
+
+10495
+
+106
+
+106
+
+107
+
+128
+
+130
+
+131
+
+133
+
+134
+
+138
+
+141
+
+148
+
+149
+
+149
+
+150
+
+152
+
+153
+
+154
+
+155
+
+155
+
+157
+
+158
+
+8.1 O que é HTTP Basic Authentication
+
+8.2 Configurando o projeto para HTTP Basic Authentication
+
+8.3 Criando a classe de filtro e protegendo os serviços
+
+8.4 Testando o serviço de produtos com HTTP Basic  
+Authentication
+
+8.5 Adicionando anotações para controle de permissões e papéis
+
+8.6 Conclusão
+
+9 Adicionando o serviço de usuários
+
+9.1 Criando o modelo de usuários
+
+9.2 Criando o serviço de usuários
+
+9.3 Conclusão
+
+10 Enviando mensagens com o Google Cloud Messaging
+
+10.1 O que é Google Cloud Messaging
+
+10.2 Configurando o projeto no GAE para utilizar o GCM
+
+10.3 Obtendo a API Key
+
+10.4 O aplicativo móvel para Android
+
+10.5 Enviando mensagens a aplicativos móveis com o GCM
+
+10.6 Conclusão
+
+11 Agendando tarefas no GAE
+
+11.1 Como funcionam as tarefas agendadas no GAE
+
+11.2 Criando o novo serviço agendado
+
+11.3 Configurando a tarefa
+
+11.4 Acompanhando a execução do console do GAE
+
+11.5 Conclusão
+
+12 Utilizando Memory Cache
+
+12.1 O que é MemCache
+
+12.2 Utilizando JCache
+
+12.3 Usando MemCache no mecanismo de autenticação
+
+Sumário  
+Casa do Código
+
+
+162
+
+164
+
+165
+
+166
+
+167
+
+169
+
+170
+
+177
+
+180
+
+183
+
+183
+
+185
+
+186
+
+12.4 Visualizando o MemCache do console do GAE
+
+12.5 Conclusão
+
+13 Protegendo serviços com OAuth 2
+
+13.1 O que é OAuth 2
+
+13.2 Criando a aplicação exemplooauth
+
+13.3 Criando o serviço de usuários
+
+13.4 Fornecendo os tokens de autenticação
+
+13.5 Criando a classe de filtro
+
+13.6 Testando com o REST Console
+
+13.7 Comportamento da aplicação cliente
+
+13.8 Conclusão
+
+14 Algo mais sobre Google App Engine
+
+14.1 Conclusão
+
+Casa do Código  
+Sumário
+
+
+CAPÍTULO 1
+
+O Google App Engine é uma plataforma de computação nas  
+nuvens que permite a execução de aplicações Web na infraestrutura  
+do Google, de forma fácil e escalável, sem a necessidade de  
+manutenção em sistemas operacionais e servidores. Todas as  
+aplicações ficam hospedadas sob o domínio appspot.com, e podem  
+ser acessadas por todo o mundo ou apenas por pessoas/aplicações  
+autorizadas.
+
+As aplicações podem ser desenvolvidas em Java, Python, PHP e  
+Go, com um ambiente de runtime específico para cada linguagem.
+
+O estilo de cobrança do Google App Engine é o pay as you go,  
+ou seja, você só paga pelo tanto que a aplicação usar de recursos da  
+plataforma. Porém, é possível iniciar o desenvolvimento sem pagar  
+nada, com limites razoáveis de banda, armazenamento e número de  
+acessos por mês. Esses limites são suficientes para provas de  
+conceitos, estudos e até mesmo aplicações de pequeno porte.
+
+Durante este livro, será utilizada a linguagem de programação  
+Java para o desenvolvimento de aplicações de exemplo, que serão  
+hospedadas no Google App Engine. Por isso, o foco das descrições a  
+partir desse ponto será exclusivo para essa linguagem.
+
+O QUE É GOOGLE APP  
+ENGINE
+
+1.1 SANDBOX
+
+1 O QUE É GOOGLE APP ENGINE   
+1
+
+
+Você utilizará muito esse console de administração das  
+aplicações que forem publicadas no Google App Engine.
+
+Agora que você já sabe um pouco sobre o que o Google App  
+Engine, como plataforma, pode oferecer, você poderá preparar seu  
+ambiente de desenvolvimento seguindo as instruções do próximo  
+capítulo.
+
+1.6 CONCLUSÃO
+
+6   
+1.6 CONCLUSÃO
+
+
+execute os passos a seguir:
+
+1\. Configure o local do workspace que você desejar:
+
+Figura 2.1: Configurando o local do workspace
+
+2\. Clique em OK e aguarde até que o Eclipse carregue  
+totalmente;
+
+3\. Acesse o menu Window -> Preference para abrir a janela  
+de configurações do Eclipse;
+
+4\. Nessa janela, acesse a opção Java -> Installed JREs ;
+
+5\. Adicione um novo JRE, clicando no botão Add . Selecione o  
+local onde você instalou o JDK 7;
+
+6\. Selecione a opção jdk1.7.0_80 como a opção padrão. Isso  
+fará com que as novas aplicações sejam criadas utilizando essa  
+JRE;
+
+2.3 INSTALANDO E CONFIGURANDO O ECLIPSE   
+9
+
+
+Figura 2.2: Configurando a JRE padrão
+
+7\. Clique em OK.
+
+Para instalar o Google Plugin for Eclipse, execute os passos a  
+seguir, dentro do Eclipse:
+
+1\. Acesse o menu Help -> Install New Software ;
+
+2\. Na janela que abrir, clique no botão Add para adicionar o  
+repositório de ferramentas do Google para o Eclipse 4.4;
+
+3\. Adicione   
+o   
+endereço
+
+https://dl.google.com/eclipse/plugin/4.4 no campo
+
+2.4 INSTALANDO O GOOGLE PLUGIN FOR  
+ECLIPSE
+
+10   
+2.4 INSTALANDO O GOOGLE PLUGIN FOR ECLIPSE
+
+
+Location no pop-up que se abrir, e clique em OK ;
+
+Figura 2.3: Configurando o repositório do Google Plugin  
+for Eclipse
+
+4\. Aguarde até que o Eclipse carregue as opções de ferramentas  
+para a instalação;
+
+5\. Depois de o Eclipse carregar as opções de instalação do  
+repositório do Google, selecione as seguintes opções, pelo  
+menos:
+
+Google App Engine Maven Integration  
+Google Plugin for Eclipse 4.4
+
+Google App Engine Java SDK 1.9.30
+
+A tela de instalação do Eclipse deverá ficar como a figura  
+a seguir:
+
+2.4 INSTALANDO O GOOGLE PLUGIN FOR ECLIPSE   
+11
+
+
+Figura 2.4: Opções de instalação no Eclipse
+
+6\. Clique em Next ;
+
+7\. Aceite todos os termos das licenças, e depois cliquem em
+
+Finish para dar início ao processo de download e  
+instalação;
+
+8\. Depois que tudo for baixado e instalado, o Eclipse pedirá para  
+ser reiniciado;
+
+9\. Depois de reiniciar o Eclipse, acesse o menu Window ->
+
+Preference e veja que há uma nova opção com o nome de
+
+Google ;
+
+12   
+2.4 INSTALANDO O GOOGLE PLUGIN FOR ECLIPSE
+
+
+10\. Expanda a opção Google e clique no item App Engine .  
+Veja que o App Engine SDK já está instalado e configurado  
+corretamente:
+
+Figura 2.5: Google App Engine instalado
+
+11\. Nessa mesma tela, vá à opção Java -> Compiler e  
+configure o item Compiler compliance level para 1.7;
+
+12\. Repare também que, no canto inferior direito do Eclipse, há a  
+opção para você deixar o Eclipse logado na sua conta do  
+Google. É interessante fazer isso para que ele acesse a sua  
+conta durante a criação de novos projetos, criando uma  
+aplicação nova no GAE;
+
+2.4 INSTALANDO O GOOGLE PLUGIN FOR ECLIPSE   
+13
+
+
+UTILIZANDO O MAVEN
+
+O plugin do Google para o Eclipse possui boas  
+ferramentas para a criação e publicação de projetos para  
+o GAE, mas neste livro você criará um projeto utilizando  
+o Maven como gerenciador de dependências. Por isso, o  
+processo será um pouco diferente, mas valerá a pena  
+quando você tiver de acrescentar bibliotecas ao projeto,  
+como será o caso no capítulo Construindo serviços REST  
+com Jersey, onde será inserido o Jersey para trabalhar  
+com REST.
+
+13\. Ainda na tela de preferências do Eclipse, vá à opção Maven -
+
+> Archetypes e clique no botão Add Remote Catalog para  
+adicionar o catálogo de arquiteturas de projeto, dentre elas a  
+de projetos para o Google App Engine;
+
+14\. Na tela que se abrir, preencha o campo Catalog File com o  
+endereço http://repo1.maven.org/maven2/archetype-
+
+catalog.xml e clique em OK ;
+
+15\. Clique em OK para fechar a tela de preferências do Eclipse;
+
+16\. Realize as demais configurações no workspace do Eclipse que  
+você desejar ou que já está acostumado.
+
+Esses foram os passos para a preparação do ambiente de  
+desenvolvimento para trabalhar com o Google App Engine. No  
+próximo capítulo, você vai construir sua primeira aplicação em Java  
+e publicá-la no GAE.
+
+2.5 CONCLUSÃO
+
+14   
+2.5 CONCLUSÃO
+
+
+2.5 CONCLUSÃO   
+15
+
+
+Figura 3.2: Criando novo projeto no GAE
+
+4\. Clique no botão Create e aguarde até que o GAE crie seu  
+projeto;
+
+Assim que o projeto for criado, você será redirecionado para o  
+dashboard principal da plataforma do Google Cloud. Nos  
+capítulos adiante, você aprenderá algumas ferramentas da  
+seção App Engine desse dashboard.
+
+5\. Tendo o Project ID do projeto recém-criado, vá ao Eclipse  
+e acesse o menu File -> New -> Maven Project :
+
+6\. Na tela que aparecer, clique em Next ;
+
+7\. Na opção Catalog , escolha o catálogo adicionado no  
+capítulo   
+anterior   
+e,   
+em   
+seguida,   
+filtre   
+por
+
+com.google.appengine.archetypes ;
+
+18   
+3.1 CONSTRUINDO O PROJETO BÁSICO
+
+
+8\. Dentre as opções que aparecerem, escolha o Artifact Id   
+com o nome de appengine-skeleton-archetype , como  
+mostra a figura a seguir:
+
+Figura 3.3: Escolha do tipo do projeto
+
+9\. Clique em Next e preencha os dados para a criação do novo  
+projeto:
+
+3.1 CONSTRUINDO O PROJETO BÁSICO   
+19
+
+
+Figura 3.4: Dados para criação do projeto
+
+Nessa tela, é importante se atentar para a versão do App  
+Engine, que no caso foi colocado 1.9.30 e o Application
+
+Id , que deve ser igual ao que você criou para o novo projeto  
+no console do GAE.
+
+10\. Clique em Finish para a criação do projeto e aguarde.
+
+Dois erros de verificação do Eclipse aparecerão nos arquivos
+
+nbactions.xml e pom.xml . Não é necessário tomar  
+nenhuma atitude para que o projeto funcione, mas o Eclipse  
+pode ficar reclamando toda vez que você for publicar o  
+projeto. Por isso, se desejar, continue executando os passos a  
+seguir:
+
+20   
+3.1 CONSTRUINDO O PROJETO BÁSICO
+
+
+11\. No arquivo nbactions.xml , remova as três primeiras linhas  
+desse arquivo para resolver o primeiro problema de  
+verificação apontado pelo Eclipse, como dito no passo  
+anterior:
+
+#set( $symbol_pound = '#' )  
+#set( $symbol_dollar = '$' )  
+#set( $symbol_escape = '\' )
+
+12\. No arquivo pom.xml , vá até onde o Eclipse mostra o erro,  
+que é em uma tag com o nome de execution , posicione o  
+cursor e pressione CTRL + 1 para abrir as opções de  
+correção desse erro;
+
+13\. Clique na opção Permanently mark goal... , que aparece  
+duas vezes. Repita o processo novamente. Isso vai resolver o  
+segundo problema de verificação do Eclipse que, como dito  
+nos passos anteriores, apenas indica que ele encontrou algo de  
+errado. Deixar esse erro pode ser um pouco irritante toda vez  
+que você for colocar a aplicação para rodar.
+
+14\. Clique no projeto e acesse o menu Maven -> Update
+
+Project . Certificar-se de que seu projeto está completamente  
+atualizado com todas as dependências que o arquivo
+
+pom.xml do Maven diz para ele ter. Seu projeto agora deve  
+ficar sem nenhum erro.
+
+Nesse momento, o projeto apenas foi criado e vinculado à  
+aplicação criada no GAE, porém ainda não foi feito o deploy.
+
+A estrutura de diretórios e arquivos do projeto criado deverá  
+ficar como mostra a figura a seguir:
+
+Estrutura do projeto
+
+3.1 CONSTRUINDO O PROJETO BÁSICO   
+21
+
+
+adicionados ao projeto à medida que ele for ganhando novas  
+funcionalidades.
+
+Para testar a aplicação, antes é necessário adicionar um servlet  
+para exibir uma mensagem de boas-vindas. O template do projeto  
+criado não possui nada desse tipo, por isso, execute os passos a  
+seguir:
+
+1\. No projeto exemplo1 , na pasta src/main/webapp , crie o  
+arquivo index.html para ser o ponto de entrada da  
+aplicação, com um link para o servlet que será criado a seguir:
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//  
+EN">
+
+<html>  
+<head>  
+<meta http-equiv="content-type" content="text/html; cha  
+rset=UTF-8">
+
+<title>Hello App Engine</title>  
+</head>  
+<body>  
+<h1>Hello App Engine!</h1>  
+<table>  
+<tr>  
+<td colspan="2" style="font-weight:bold;">Available  
+Servlets:</td>   
+</tr>  
+<tr>  
+<td><a href="exemplo1">Exemplo1</a></td>  
+</tr>  
+</table>  
+</body>  
+</html>
+
+2\. Crie o pacote com.siecola.exemplo1 , onde o servlet será  
+criado;
+
+3\. Dentro desse pacote, crie a classe Exemplo1Servlet . Nele  
+será criado o método que vai tratar a requisição ao servlet:
+
+3.2 ACRESCENTO O PRIMEIRO SERVLET
+
+3.2 ACRESCENTO O PRIMEIRO SERVLET   
+23
+
+
+import javax.servlet.http.HttpServlet;
+
+@SuppressWarnings("serial")  
+public class Exemplo1Servlet extends HttpServlet {
+
+}
+
+4\. Crie o método doGet , que será invocado quando o usuário  
+clicar no link da página index.html e invocar esse servlet:
+
+public void doGet(HttpServletRequest req, HttpServletRespon  
+se resp)
+
+throws IOException {  
+resp.setContentType("text/plain");  
+resp.getWriter().println("Hello, world");  
+}
+
+5\. Abra o arquivo web.xml e acrescente as configurações a  
+seguir para adicionar o caminho do novo servlet e também a  
+página index.html como sendo o arquivo de boas-vindas:
+
+<servlet>  
+<servlet-name>Exemplo1</servlet-name>  
+<servlet-class>com.siecola.exemplo1.Exemplo1Servlet</se  
+rvlet-class>
+
+</servlet>  
+<servlet-mapping>  
+<servlet-name>Exemplo1</servlet-name>  
+<url-pattern>/exemplo1</url-pattern>  
+</servlet-mapping>  
+<welcome-file-list>  
+<welcome-file>index.html</welcome-file>  
+</welcome-file-list>
+
+Agora, sua aplicação já está pronta para ser executada na sua  
+máquina local de desenvolvimento!
+
+A aplicação criada na seção anterior pode ser executada  
+localmente para fins de depuração como uma aplicação Web  
+comum construída em Java. Para isso, execute os passos a seguir:
+
+3.3 EXECUTANDO A APLICAÇÃO
+
+24   
+3.3 EXECUTANDO A APLICAÇÃO
+
+
+1\. Clique com o botão direito no projeto e acesse o menu Run
+
+As --> Run on Server . Isso fará com que as opções de  
+execução da aplicação sejam exibidas;
+
+2\. Selecione a opção Google -> Google App Engine para  
+escolher   
+executar   
+a   
+aplicação   
+no   
+ambiente   
+de  
+desenvolvimento simulado da sua máquina, como vemos na  
+figura a seguir:
+
+Figura 3.6: Executando o projeto
+
+3.3 EXECUTANDO A APLICAÇÃO   
+25
+
+
+3\. Clique em Finish para que o Eclipse crie um novo servidor  
+na aba Servers , e adicione o projeto exemplo1 para ser  
+executado nele.
+
+Figura 3.7: Projeto na aba Servers
+
+Um servidor será iniciado para que a aplicação seja executada  
+em um ambiente simulado, semelhante à infraestrutura  
+disponível no GAE.
+
+Nesse momento, o Eclipse abrirá uma aba no endereço  
+http://localhost:8888/, onde a página index.html criada está  
+sendo exibida. Você também pode acessar essa página pelo browser  
+da sua máquina.
+
+Figura 3.8: Página de boas-vindas
+
+A página exibirá o link para o servlet que foi criado. Clique nele  
+para acessá-lo. Isso redirecionará a requisição para o servlet que foi  
+criado, de nome Exemplo1Servlet .
+
+26   
+3.3 EXECUTANDO A APLICAÇÃO
+
+
+Figura 3.9: Hello World
+
+Executar e depurar a aplicação na máquina local de  
+desenvolvimento é muito interessante, pois é muito mais simples de  
+encontrar os erros no código, uma vez que é possível executá-lo  
+passo a passo, como em um programa em Java normal.
+
+Há também um console de administração local, que pode ser  
+acessado em http://localhost:8888/_ah/admin.
+
+Figura 3.10: Console de administração local
+
+Algumas dessas funções, como o Datastore Viewer , poderão  
+ser utilizadas no capítulo Armazenando dados no Google Cloud  
+Datastore, para visualizar as entidades e os dados armazenados na  
+sua máquina local de desenvolvimento.
+
+3.4 PUBLICANDO NO GAE
+
+3.4 PUBLICANDO NO GAE   
+27
+
+
+aprender mais sobre o console de administração do GAE e como ele  
+pode ajudar.
+
+Uma configuração importante é a versão da aplicação, que pode  
+ser feito na tag version do arquivo appengine-web.xml , como no  
+exemplo a seguir:
+
+<version>1-1</version>
+
+Com isso, é possível manter várias versões em execução ao  
+mesmo tempo no App Engine, e ainda poder escolher qual é a  
+versão que será acessada por padrão, como se vê na figura seguinte.  
+Isso pode ser acessado no menu principal, na seção Versions do  
+App Engine:
+
+Figura 3.11: Versões da aplicação
+
+Nessa página, pode-se observar qual versão é a padrão - aquela  
+que será executada se o usuário acessar a URL da aplicação, sem  
+especificar qual versão deseja. As demais versões da aplicação em  
+execução podem ser acessadas colocando sua identificação antes da  
+sua URL, como no exemplo a seguir. Da mesma forma, os relatórios  
+de uso, gráficos e logs podem ser filtrados para cada versão:
+
+http://1-1-dot-pcs-exemplo1.appspot.com/
+
+3.6   
+CONFIGURANDO   
+A   
+VERSÃO   
+DA  
+APLICAÇÃO
+
+3.6 CONFIGURANDO A VERSÃO DA APLICAÇÃO   
+29
+
+
+Ainda na página de controle de versões, é possível tornar uma  
+versão padrão ou mesmo apagar alguma que você não deseja que  
+fique disponível mais.
+
+Apenas lembrando, o código desse projeto está no repositório  
+do livro, no endereço: https://github.com/siecola/GAEBook
+
+Neste capítulo, você aprendeu a publicar seu primeiro projeto  
+no Google App Engine! Além disso, pode conhecer um pouco do  
+seu console de administração Web, uma ferramenta que pode  
+ajudar muito no gerenciamento das aplicações publicadas no GAE.
+
+No próximo capítulo, você verá como criar um serviço REST  
+nesse primeiro projeto, utilizando o framework Jersey.
+
+3.7 CONCLUSÃO
+
+30   
+3.7 CONCLUSÃO
+
+
+CAPÍTULO 4
+
+A API Jersey é a implementação de referência da especificação  
+JAX-RS (JSR 339) para construção de Web Services RESTful. Com  
+ela, é possível construir uma aplicação no GAE para prover serviços  
+REST de forma descomplicada, como se estivéssemos trabalhando  
+em um projeto como Apache TomCat ou outro servidor.
+
+Para trabalhar com a API Jersey, é necessário adicionar algumas  
+bibliotecas ao projeto, como será descrito na próxima seção.
+
+Nesta seção será demonstrado como preparar o projeto
+
+exemplo1 que rodará no GAE com a API Jersey, Datastore, JSON  
+e Google Cloud Messaging, a serem mostrados nos capítulos  
+seguintes. Para isso, execute os passos a seguir, para adicionar as  
+dependências ao projeto:
+
+1\. Abra o arquivo pom.xml , localizado na raiz da projeto, que  
+contém as suas configurações de dependências;
+
+2\. Procure pela tag dependencies , onde as dependências são  
+listadas;
+
+CONSTRUINDO SERVIÇOS  
+REST COM JERSEY
+
+4.1   
+PREPARANDO   
+O   
+PROJETO   
+PARA  
+TRABALHAR COM SERVIÇOS REST
+
+4 CONSTRUINDO SERVIÇOS REST COM JERSEY   
+31
+
+
+3\. Dentro dessa tag, acrescente a dependência do Jersey, que será  
+responsável, dentre outras coisas, pela criação dos serviços  
+REST:
+
+<dependency>  
+<groupId>org.glassfish.jersey.containers</groupId>  
+<artifactId>jersey-container-servlet</artifactId>  
+<version>2.22.1</version>  
+</dependency>
+
+4\. Ainda dentro dessa tag, acrescente a dependência da  
+biblioteca Jackson para trabalhar com o formato JSON com o  
+Jersey:
+
+<dependency>  
+<groupId>org.glassfish.jersey.media</groupId>  
+<artifactId>jersey-media-json-jackson</artifactId>  
+<version>2.22.1</version>  
+</dependency>
+
+Existem outras bibliotecas para se trabalhar com JSON com o  
+Jersey, mas essa é uma das mais conhecidas e fáceis de se  
+trabalhar. Você verá no próximo capítulo que os métodos  
+poderão ser construídos com parâmetros de retorno do tipo  
+de objetos complexos e até listas deles, sem a necessidade de  
+chamar qualquer método para convertê-los para JSON - o que  
+acelera muito o desenvolvimento.
+
+1\. Salve o arquivo pom.xml , que o Maven vai se encarregar de  
+baixar os arquivos .jar para utilizar o Jersey com todas as  
+suas dependências.
+
+Agora que o projeto já possui as bibliotecas e dependências  
+básicas, é possível começar a desenvolver o primeiro serviço REST  
+com Jersey.
+
+4.2 CRIANDO O PRIMEIRO SERVIÇO REST
+
+32   
+4.2 CRIANDO O PRIMEIRO SERVIÇO REST
+
+
+Aqui será criado um serviço REST simples, para que o ambiente  
+possa ser validado com as configurações mínimas. Para isso, execute  
+os passos a seguir:
+
+1\. No Eclipse, crie o pacote com.siecola.exemplo1.services   
+na aplicação exemplo1 . Nesse pacote é que serão criadas as  
+classes que vão implementar os serviços REST. É  
+recomendado que todas as classes fiquem em um mesmo  
+pacote, pois assim facilita a configuração de mapeamento do  
+Jersey a ser realizado no arquivo web.xml ;
+
+2\. Abra o arquivo web.xml da aplicação, localizado na pasta
+
+src/main/webapp/WEB-INF . Ele contém configurações que  
+são verificadas na inicialização da aplicação, como os servlets  
+existentes, que dizem ao Jersey onde estão os serviços REST  
+que devem ser providos e parâmetros para serem  
+configurados nesse momento;
+
+3\. Antes do fechamento da tag web-app , adicione o trecho a  
+seguir. Ele diz ao Jersey que os serviços estão no pacote
+
+com.siecola.exemplo1.services e também que o  
+caminho padrão para acessá-los deverá ser /api/ :
+
+<servlet>  
+<servlet-name>Exemplo1Services</servlet-name>  
+<servlet-class>org.glassfish.jersey.servlet.ServletCont  
+ainer</servlet-class>
+
+<init-param>  
+<param-name>jersey.config.server.provider.packages</  
+param-name>
+
+<param-value>com.siecola.exemplo1.services</param-v  
+alue>
+
+</init-param>  
+<init-param>  
+<param-name>org.glassfish.jersey.api.json.POJOMappi  
+ngFeature</param-name>
+
+<param-value>true</param-value>  
+</init-param>   
+<load-on-startup>1</load-on-startup>  
+</servlet>
+
+4.2 CRIANDO O PRIMEIRO SERVIÇO REST   
+33
+
+
+http://localhost:8888/api/helloworld/teste/Matilde   
+, sendo que a última parte do endereço ( Matilde ) é o  
+parâmetro a ser passado para a operação. O resultado deve ser  
+como mostra a figura a seguir:
+
+Figura 4.1: Acessando o serviço
+
+O comportamento da operação, como descrito, é retornar a  
+frase de boas-vindas com o nome passado como parâmetro.
+
+Agora que a aplicação exemplo1 possui um serviço REST, no  
+projeto do Eclipse, altere a versão dela no arquivo web.xml para
+
+1-1 , e publique no Google App Engine.
+
+Vá ao console do GAE no menu Versions , e altere a versão  
+padrão para 1-1 , como mostra a figura a seguir, para que você  
+possa ver a nova versão publicada. Para isso, clique na versão 1-1 e  
+depois no botão Make Default :
+
+Figura 4.2: Alterando a versão padrão
+
+4.4 PUBLICANDO A APLICAÇÃO NO GAE
+
+36   
+4.4 PUBLICANDO A APLICAÇÃO NO GAE
+
+
+Acesse o serviço helloworld algumas vezes e depois visualize  
+o gráfico de requisições no console do GAE, na seção Dashboard .  
+Repare que a versão 1-1 já aparece selecionada para exibir os  
+dados no gráfico:
+
+Figura 4.3: Gráfico de requisições
+
+Nessa mesma página, é possível ver os acessos à aplicação por  
+URL:
+
+Figura 4.4: Acessos à aplicação
+
+Embora o Google Chrome possua boas opções para o
+
+4.5 TESTANDO O SERVIÇO COM O REST  
+CONSOLE
+
+4.5 TESTANDO O SERVIÇO COM O REST CONSOLE   
+37
+
+
+No próximo capítulo, você criará um serviço um pouco mais  
+complexo, com várias operações e com um modelo de dados com  
+vários atributos. Dessa forma, você aprenderá mais sobre como  
+trabalhar com o Jersey e um pouco mais sobre o console do GAE.
+
+4.7 CONCLUSÃO   
+43
+
+
+usados pelos serviços da aplicação. A organização desses  
+modelos em único pacote é puramente para fins de  
+organização da estrutura do código do projeto. Não existe  
+nenhuma implicação em criar as classes dos modelos em  
+pacotes diferentes, diferentemente das classes dos serviços que  
+devem ser criados todos em um único pacote.
+
+2\. Dentro desse novo pacote, crie a classe do modelo de  
+produtos, com o nome de Product .
+
+3\. Na classe Product , crie seus atributos e os getters e
+
+setters , como no trecho de código a seguir:
+
+import java.io.Serializable;
+
+public class Product implements Serializable {
+
+private static final long serialVersionUID = 1L;
+
+private String productID;  
+private String name;  
+private String model;  
+private int code;  
+private float price;
+
+//getters and setters  
+}
+
+Esse será o modelo do produto a ser utilizado pelo serviço de  
+gerenciamento de produtos. Todas as operações usarão essa classe,  
+logo, uma alteração aqui afeta diretamente a compatibilidade desse  
+serviço.
+
+No capítulo seguinte, Armazenando dados no Google Cloud  
+Datastore, o mesmo modelo de produto será utilizado para persistir  
+suas informações no Datastore.
+
+5.2 CRIANDO A CLASSE DO SERVIÇO
+
+46   
+5.2 CRIANDO A CLASSE DO SERVIÇO
+
+
+Agora, é necessário criar o serviço de gerenciamento de  
+produtos. Para isso, execute os passos a seguir:
+
+1\. No pacote com.siecola.exemplo1.services , crie a classe
+
+ProductManager para implementar o novo serviço de  
+CRUD de produtos.
+
+2\. Coloque a anotação @Path na declaração da classe, para  
+indicar que esse serviço deverá ser acessado pelo caminho  
+informado, como no trecho a seguir:
+
+import javax.ws.rs.Path;
+
+@Path("/products")  
+public class ProductManager {
+
+}
+
+Isso fará com que o serviço de gerenciamento de produtos seja  
+acessado pela URL /api/products .
+
+3\. Crie o método privado createProduct , a ser utilizado  
+somente para criar um produto dummy a partir de seu código,  
+pois até o momento não há uma tabela onde os produtos  
+serão armazenados. A ideia aqui é apenas mostrar como criar  
+as operações e interagir com objetos complexos como  
+parâmetros de entrada e saída.
+
+private Product createProduct (int code) {  
+Product product = new Product();  
+product.setProductID(Integer.toString(code));  
+product.setCode(code);  
+product.setModel("Model " + code);  
+product.setName("Name " + code);  
+product.setPrice(10 * code);  
+return product;  
+}
+
+4\. Crie o método getProduct para implementar a operação de  
+ler um produto pelo seu código, passado como parâmetro:
+
+5.2 CRIANDO A CLASSE DO SERVIÇO   
+47
+
+
+@GET  
+@Produces(MediaType.APPLICATION_JSON)  
+@Path("/{code}")  
+public Product getProduct(@PathParam("code") int code) {   
+  
+return createProduct(code);  
+}
+
+Essa operação de recuperar um produto específico,  
+implementada pelo método getProduct , será acessada pela  
+URI /api/product/{code} . O parâmetro {code} , passado  
+na URL, representa o código do produto. O retorno dessa  
+operação é um objeto complexo do tipo Product , e será  
+representado no formato JSON, como no trecho a seguir:
+
+{  
+"productID": "3",  
+"name": "Nome 3",  
+"model": "Model 3",  
+"code": 3,  
+"price": 30.0  
+}
+
+5\. Crie a operação para retornar todos os produtos em uma lista,  
+como:
+
+@GET  
+@Produces(MediaType.APPLICATION_JSON)  
+public List<Product> getProducts() {  
+List<Product> products = new ArrayList<>();  
+for (int j = 1; j <= 5; j++) {  
+products.add(createProduct(j));  
+}  
+return products;  
+}
+
+Essa operação, que não recebe nenhum parâmetro, pode ser  
+acessada pela URL api/products com o método HTTP
+
+GET . Ela devolve uma lista de produtos criados no momento  
+de sua chamada. O formato devolvido será uma lista no  
+formato JSON, semelhante ao exemplo a seguir:
+
+[{
+
+48   
+5.2 CRIANDO A CLASSE DO SERVIÇO
+
+
+"productID": "1",  
+"name": "Name 1",  
+"model": "Model 1",  
+"code": 1,  
+"price": 10.0  
+}, {  
+"productID": "2",  
+"name": "Name 2",  
+"model": "Model 2",  
+"code": 2,  
+"price": 20.0  
+}, {  
+"productID": "3",  
+"name": "Name 3",  
+"model": "Model 3",  
+"code": 3,  
+"price": 30.0  
+}]
+
+6\. Crie a operação para inserir um novo produto. Ela deve  
+receber o produto como parâmetro de entrada e devolvê-lo  
+como saída:
+
+@POST  
+@Produces(MediaType.APPLICATION_JSON)  
+@Consumes(MediaType.APPLICATION_JSON)  
+public Product saveProduct(Product product) {  
+product.setProductID(Integer.toString(product.getCode()  
+));
+
+return product;  
+}
+
+A anotação @Consumes(MediaType.APPLICATION_JSON)   
+significa que a operação deve receber, através do corpo da  
+requisição, um objeto no formato JSON. Essa operação deve  
+ser acessada pela URL api/products , com o método HTTP
+
+POST e com o produto a ser inserido no corpo da requisição.  
+Isso pode ser feito com o REST Console configurado como na  
+figura a seguir, que mostra a seção Target :
+
+5.2 CRIANDO A CLASSE DO SERVIÇO   
+49
+
+
+Figura 5.1: Inserindo um novo produto com o REST  
+Console - Target
+
+E na seção Body , o REST Console deve ser configurado com  
+na figura:
+
+Figura 5.2: Inserindo um novo produto com o REST  
+Console - Body
+
+O modelo e produto a ser inserido deve ser como mostra o  
+trecho adiante:
+
+{  
+"name": "Name 6",  
+"model": "Model 6",  
+"code": 6,  
+"price": 60.0  
+}
+
+7\. Agora crie a operação para apagar um produto, como no  
+trecho a seguir:
+
+50   
+5.2 CRIANDO A CLASSE DO SERVIÇO
+
+
+serviço de gerenciamento de produtos, porém, todos os métodos  
+serão alterados para buscar os produtos no Google Cloud Datastore.  
+Para isso, execute os passos a seguir:
+
+1\. No modelo de produtos, na classe Product do pacote
+
+com.siecola.exemplo1.models , adicione o atributo id ,  
+como no trecho a seguir, juntamente com seu getter e setter:
+
+private long id;
+
+A unidade fundamental do sistema de armazenamento com o  
+Datastore é uma Entity que possui uma identidade imutável,  
+representada por uma chave e por parâmetros que podem ser  
+alterados. Uma entidade pode ser criada, apagada, alterada ou  
+recuperada pelo seu identificador e localizada através de  
+consultas de seus outros parâmetros.
+
+2\. Na classe ProductManager , crie o método privado
+
+productToEntity para fazer a conversão de um objeto
+
+Product para um objeto Entity , como no trecho a seguir.  
+Ele será utilizado nos métodos onde for necessário converter  
+um produto para uma entidade Product para salvar no  
+Datastore.
+
+private void productToEntity (Product product, Entity produ  
+ctEntity) {
+
+productEntity.setProperty("ProductID", product.getProdu  
+ctID());
+
+productEntity.setProperty("Name", product.getName());  
+productEntity.setProperty("Code", product.getCode());  
+productEntity.setProperty("Model", product.getModel());  
+productEntity.setProperty("Price", product.getPrice());  
+}
+
+3\. Crie o método privado entityToProduct para fazer a  
+conversão de um objeto Entity para um objeto do tipo
+
+Product . Ele será usado nos métodos onde for necessário  
+buscar uma entidade do Datastore e converter no objeto
+
+Product a ser retornado nas operações do serviço.
+
+6.2 CONFIGURANDO O PROJETO PARA TRABALHAR COM DATASTORE   
+55
+
+
+private Product entityToProduct (Entity productEntity) {  
+Product product = new Product();  
+product.setId(productEntity.getKey().getId());  
+product.setProductID((String) productEntity.getProperty(  
+"ProductID"));
+
+product.setName((String) productEntity.getProperty("Nam  
+e"));
+
+product.setCode(Integer.parseInt(productEntity.getPrope  
+rty("Code")
+
+.toString()));  
+product.setModel((String) productEntity.getProperty("Mo  
+del"));
+
+product.setPrice(Float.parseFloat(productEntity.getProp  
+erty("Price")
+
+.toString()));   
+return product;  
+}
+
+1\. Ainda na classe ProductManager , altere o método
+
+saveProduct , que é quem implementa a operação para  
+inserir um novo produto. Dessa vez, o produto que chegar  
+como parâmetro no corpo da requisição HTTP POST será  
+salvo no Google Cloud Datastore com a execução do código a  
+seguir:
+
+@POST  
+@Produces(MediaType.APPLICATION_JSON)  
+@Consumes(MediaType.APPLICATION_JSON)  
+public Product saveProduct(Product product) {
+
+DatastoreService datastore = DatastoreServiceFactory  
+.getDatastoreService();
+
+Key productKey = KeyFactory.createKey("Products", "prod  
+uctKey");
+
+Entity productEntity = new Entity("Products", productKe  
+y);
+
+productToEntity (product, productEntity);
+
+datastore.put(productEntity);
+
+product.setId(productEntity.getKey().getId());  
+return product;  
+}
+
+56   
+6.2 CONFIGURANDO O PROJETO PARA TRABALHAR COM DATASTORE
+
+
+A primeira linha do método obtém uma instância do serviço  
+Datastore para ser utilizada, nesse caso, para inserção de um  
+novo produto. A segunda linha instancia uma chave que será  
+usada na criação da entidade produto. Essa chave ficará  
+incompleta até que a entidade seja inserida no Datastore, onde  
+será possível obter a identificação única de sua criação, o que é  
+realizado na penúltima linha do método.
+
+A terceira linha cria uma nova entidade do tipo Products   
+(nesse caso, uma analogia ao nome da tabela é válida), com a  
+chave criada na linha anterior. A quarta linha preenche as  
+propriedades da entidade productStore em um esquema  
+chave-valor (que seriam os nomes dos campos e seus valores),  
+sendo finalizado pela inserção do novo produto com a  
+penúltima linha do método.
+
+Evidentemente, o trecho mostrado é simples o suficiente para  
+apenas mostrar a essência da utilização do serviço Datastore,  
+pois algumas verificações poderiam ser feitas, por exemplo, se  
+algum campo mandatório está presente no objeto produto  
+recebido ou se já há algum cadastrado com o mesmo código.  
+Para resumir e fazer uma relação com a tabela comparativa da  
+seção anterior, tem-se que:
+
+O tipo que está sendo colocado no Datastore é o de  
+nome Products ;  
+A entidade é o produto recebido como parâmetro do  
+método saveProduct ;  
+As propriedades possuem os nomes: ProductID ,
+
+Name , Code , Model , Price ;  
+O valor da chave da entidade salva foi atribuída ao  
+atributo id , de product .
+
+2\. Para listar todos os produtos cadastrados, é necessário criar  
+uma consulta no Datastore para que ele retorne todas as
+
+6.2 CONFIGURANDO O PROJETO PARA TRABALHAR COM DATASTORE   
+57
+
+
+entidades do tipo Products , baseado ou não em uma  
+ordenação por uma de suas propriedades. No exemplo a  
+seguir, isso foi feito com base na propriedade Code ,  
+ordenando a lista de produtos de forma crescente de acordo  
+com esse valor. O método getProducts deve então ficar da  
+seguinte forma:
+
+@GET  
+@Produces(MediaType.APPLICATION_JSON)  
+public List<Product> getProducts() {
+
+List<Product> products = new ArrayList<>();  
+DatastoreService datastore = DatastoreServiceFactory  
+.getDatastoreService();
+
+Query query;  
+query = new Query("Products").addSort("Code", SortDirec  
+tion.ASCENDING);
+
+List<Entity> productsEntities = datastore.prepare(query  
+).asList(
+
+FetchOptions.Builder.withDefaults());
+
+for (Entity productEntity : productsEntities) {  
+Product product = entityToProduct(productEntity);
+
+products.add(product);  
+}
+
+return products;  
+}
+
+O que aparece de novo nesse método é justamente a busca de  
+todas as entidades, realizada pelo objeto do tipo Query , que  
+usa a propriedade Code para organizá-las de forma  
+crescente. Com isso, o método asList do objeto
+
+datastore retorna a lista de todas as entidades (produtos)  
+de nome Products .
+
+3\. Para recuperar apenas um produto do Datastore usando  
+seu código como parâmetro de pesquisa, basta alterar o
+
+58   
+6.2 CONFIGURANDO O PROJETO PARA TRABALHAR COM DATASTORE
+
+
+método getProduct como no trecho a seguir:
+
+@GET  
+@Produces(MediaType.APPLICATION_JSON)  
+@Path("/{code}")  
+public Product getProduct(@PathParam("code") int code) {
+
+DatastoreService datastore = DatastoreServiceFactory  
+.getDatastoreService();
+
+Filter codeFilter = new FilterPredicate("Code", FilterO  
+perator.EQUAL, code);
+
+Query query = new Query("Products").setFilter(codeFilte  
+r);
+
+Entity productEntity = datastore.prepare(query).asSingl  
+eEntity();
+
+if (productEntity != null) {  
+Product product = entityToProduct(productEntity);
+
+return product;  
+} else {  
+throw new WebApplicationException(Status.NOT_FOUND)  
+;
+
+}  
+}
+
+Para localizar uma entidade específica a partir de uma de suas  
+propriedades, é necessário utilizar um filtro. Nesse exemplo, é  
+criado um filtro para a propriedade Code , para que seja igual  
+ao código passado como parâmetro pela URL. Após isso, a  
+busca é realizada, requisitando somente uma entidade  
+(produto). Caso ela seja encontrada, o objeto Product é  
+preenchido com as informações e retornado como resposta,  
+porém, caso não seja, uma exceção é lançada para indicar que  
+ele não foi encontrado com o código fornecido, por meio do  
+código HTTP 404 - Not Found .
+
+4\. Para alterar uma entidade específica, deve-se alterar o método
+
+alterProduct , como no trecho a seguir. Ele é semelhante ao  
+método para buscar somente uma entidade, em termos da
+
+6.2 CONFIGURANDO O PROJETO PARA TRABALHAR COM DATASTORE   
+59
+
+
+consulta para localizar tal produto a partir do código. A partir  
+daí, as alterações são aplicadas ao produto e este salvo  
+novamente no Datastore:
+
+@PUT  
+@Produces(MediaType.APPLICATION_JSON)  
+@Consumes(MediaType.APPLICATION_JSON)  
+@Path("/{code}")  
+public Product alterProduct(@PathParam("code") int code, Pr  
+oduct product) {
+
+DatastoreService datastore = DatastoreServiceFactory  
+.getDatastoreService();
+
+Filter codeFilter = new FilterPredicate("Code",  
+FilterOperator.EQUAL, code);
+
+Query query = new Query("Products").setFilter(codeFilte  
+r);
+
+Entity productEntity = datastore.prepare(query).asSingl  
+eEntity();
+
+if (productEntity != null) {   
+productToEntity (product, productEntity);
+
+datastore.put(productEntity);
+
+product.setId(productEntity.getKey().getId());  
+return product;  
+} else {  
+throw new WebApplicationException(Status.NOT_FOUND)  
+;
+
+}  
+}
+
+Repare na linha datastore.put(productEntity); , que  
+salva o produto no Datastore novamente, com as alterações  
+recebidas do modelo recebido no corpo da requisição HTTP
+
+PUT .
+
+5\. Por último, para apagar uma entidade, basta modificar o  
+método deleteProduct , como mostra o trecho a seguir:
+
+@DELETE  
+@Produces(MediaType.APPLICATION_JSON)
+
+60   
+6.2 CONFIGURANDO O PROJETO PARA TRABALHAR COM DATASTORE
+
+
+Figura 6.5: Criando entidades no Datastore com  
+GQL
+
+Nesta seção, é possível visualizar os índices criados para cada  
+entidade:
+
+Figura 6.6: Visualizando os índices
+
+Nesta seção, você pode fazer backup, restaurar, copiar e apagar  
+entidades de forma massiva e ainda desabilitar as operações de  
+escrita no Datastore na instância onde você está administrando.
+
+Visualização dos índices de pesquisa
+
+Administração
+
+68   
+6.5 ADMINISTRANDO O DATASTORE NO GAE
+
+
+VERSÃO SIMPLIFICADA DO CONSOLE LOCAL DO DATASTORE
+
+Há uma versão simplificada do console de administração do  
+Datastore que pode ser acessada na sua máquina de  
+desenvolvimento, quando a aplicação está em execução. Ele  
+pode   
+ser   
+acessado   
+pelo   
+endereço:  
+http://localhost:8888/_ah/admin/datastore
+
+Neste capítulo, você aprendeu uma importante tarefa: como  
+persistir dados no Google Cloud Datastore. Além disso, você  
+também aprendeu técnicas de como pesquisar entidades salvas no  
+Datastore, validações e como administrar tudo por meio do console  
+de administração do GAE.
+
+No próximo capítulo, você verá como gerar mensagens de log  
+através de uma aplicação no GAE, e como visualizar essas  
+mensagens no console de administração do GAE.
+
+6.6 CONCLUSÃO
+
+6.6 CONCLUSÃO   
+69
+
+
+CAPÍTULO 7
+
+Por muitas vezes, é necessário depurar ou registrar eventos em  
+aplicações que estão sendo executadas no GAE, para que possam ser  
+analisados em um momento futuro. Em algumas situações, apenas  
+as estatísticas, gráficos de requisições, trace e logs gerados e exibidos  
+pelo console do GAE (que são muito bons) não são suficientes para  
+descobrir a causa raiz de um problema.
+
+Para isso, é necessário lançar mão da geração de mensagens log  
+pela aplicação. Essas mensagens então poderão ser visualizadas no  
+console do GAE. Para geração de logs pela aplicação, pode se usar o
+
+java.util.logging.Logger , como será mostrado neste capítulo.
+
+Neste capítulo, você gerará mensagens de log nas operações do  
+serviço de gerenciamento de produtos para serem visualizadas no  
+console do GAE. Mas antes, é necessário realizar algumas  
+configurações no projeto exemplo1 :
+
+Abra   
+o   
+arquivo   
+  
+src/main/webapp/WEB-
+
+INF/logging.properties , que é onde são feitas as configurações  
+para a geração de log, e veja que há a propriedade .level ,  
+configurada inicialmente com o valor padrão WARNING .
+
+GERANDO MENSAGENS DE  
+LOG
+
+7.1   
+CONFIGURANDO   
+O   
+PROJETO   
+PARA  
+GERAÇÃO LOGS
+
+70   
+7 GERANDO MENSAGENS DE LOG
+
+
+serviço de gerenciamento de produtos, onde serão colocados  
+comandos dentro dos métodos da classe ProductManager .
+
+Dessa forma, toda vez que uma operação desse serviço for  
+acessada, a aplicação vai gerar uma mensagem de log, que poderá  
+ser visualizada no console do GAE, como será mostrado na próxima  
+seção deste capítulo.
+
+A   
+primeira   
+coisa   
+a   
+fazer   
+é   
+importar   
+a   
+biblioteca
+
+java.util.logging.Logger na classe ProductManager :
+
+import java.util.logging.Logger;
+
+Para utilizar os métodos de geração de log da classe Logger, crie  
+um atributo privado e estático dentro da classe ProductManager :
+
+private static final Logger log = Logger.getLogger("ProductManager"  
+);
+
+A chamada Logger.getLogger("ProductManager") cria ou  
+localiza uma instância do mecanismo de log com o nome fornecido;  
+nesse caso foi utilizado o próprio nome da classe.
+
+Pronto! Agora é só usar o atributo log com um dos seguintes  
+métodos:
+
+log.finest("Mensagem de nível DEBUG");  
+log.finer("Mensagem de nível DEBUG");  
+log.fine("Mensagem de nível DEBUG");  
+log.config("Mensagem de nível DEBUG");  
+log.info("Mensagem de nível INFO");  
+log.warning("Mensagem de nível WARNING");  
+log.severe("Mensagem de nível ERROR");
+
+Veja que as mensagens de nível de DEBUG podem ser geradas  
+pelos métodos finest , finer , fine ou config . Para a  
+mensagem de nível ERROR , deve ser utilizado o método severe .  
+Já as mensagens de nível INFO e WARNING possuem os seus  
+métodos próprios.
+
+7.2 MÉTODOS PARA GERAÇÃO DE LOGS   
+73
+
+
+Ainda, ao serem utilizados os métodos de escrita na saída  
+padrão, a mensagem será encarada como do nível INFO :
+
+System.out.println("Mensagem INFO");
+
+E ao ser usado o métodos de escrita na saída de erro, a  
+mensagem será encarada como do nível WARNING :
+
+System.err.println("Mensagem WARNING");
+
+As mensagens do nível CRITICAL são reservadas para exceções  
+que não forem tratadas, ou seja, quando isso acontece, o mecanismo  
+de log do GAE encarará essas mensagens com o nível CRITICAL .
+
+Vale lembrar de que as mensagens que efetivamente serão  
+gravadas no mecanismo de log serão aquelas que estiverem com um  
+nível de log acima do filtro configurado na propriedade .level do  
+arquivo src/main/webapp/WEB-INF/logging.properties .
+
+Veja a seguir como pode ficar o método deleteProduct ,  
+recheado de mensagens de log para registrar tudo o que pode  
+acontecer quando ele é chamado, com mensagens de níveis  
+diferentes, dependendo da gravidade ou razão do evento.
+
+@DELETE  
+@Produces(MediaType.APPLICATION_JSON)  
+@Path("/{code}")  
+public Product deleteProduct(@PathParam("code") int code) {
+
+//Mensagem 1 - DEBUG  
+log.fine("Tentando apagar produto com código=[" + code + "  
+]");
+
+DatastoreService datastore = DatastoreServiceFactory  
+.getDatastoreService();
+
+Filter codeFilter = new FilterPredicate("Code",  
+FilterOperator.EQUAL, code);
+
+Query query = new Query("Products").setFilter(codeFilter);
+
+Entity productEntity = datastore.prepare(query).asSingleEn
+
+74   
+7.2 MÉTODOS PARA GERAÇÃO DE LOGS
+
+
+geraram:
+
+Figura 7.3: Filtrando log pela URL da requisição
+
+Repare que somente as mensagens de log que foram  
+geradas pela requisição à URL api/products/1 é que  
+apareceram como resultado do filtro. Isso é muito útil  
+quando você deseja ver o que aconteceu quando um  
+produto X foi acessado, por qualquer método.
+
+Você também pode combinar filtros, como no exemplo a seguir,  
+onde só aparecem mensagens de log de requisições GET na URL
+
+api/products :
+
+Figura 7.4: Combinando filtros de log
+
+7.3 VISUALIZANDO AS MENSAGENS DE LOG NO GAE   
+79
+
+
+É possível expandir cada mensagem da lista para ver detalhes do  
+que acontece. O ícone localizado à esquerda da mensagem refere-se  
+à sua severidade, como nas opções de configuração do filtro para  
+essa opção. Nos detalhes da mensagem expandida, é possível ver  
+qual foi o método HTTP usado para a requisição, a URL de acesso,  
+detalhes do cliente, o código HTTP de retorno, tempo de resposta,  
+consumo de CPU e algumas outras coisas mais.
+
+Veja um exemplo onde foi gerada também uma mensagem pelo  
+método deleteProduct , informando que o produto de código 1  
+foi apagado com sucesso:
+
+Figura 7.5: Mensagem no log
+
+Há um link na linha da mensagem de log, logo à esquerda da  
+URL da requisição. Se você clicar nele, será redirecionado para a  
+página de Trace , onde poderá analisar com muito mais clareza  
+tudo o que aconteceu, como pode ser visto na figura a seguir:
+
+Figura 7.6: Trace da requisição
+
+Repare nessa página que é possível ter um gráfico com o tempo  
+que cada operação levou para executar, desde o tratamento da  
+requisição em si pelo método, como pelo tempo em que houve a
+
+80   
+7.3 VISUALIZANDO AS MENSAGENS DE LOG NO GAE
+
+
+consulta ao serviço de Datastore.
+
+Saber utilizar bem as ferramentas de logs e trace pode  
+economizar muito tempo na depuração de um erro, ou no processo  
+de otimização de um tempo de resposta muito longo de uma  
+requisição. Não deixe de explorar essas funcionalidades que o  
+GAE oferece!
+
+Neste capítulo, você aprendeu a gerar mensagens de log e  
+visualizá-las no console do GAE, realizando filtros das mais diversas  
+formas. Você viu como o GAE é detalhando nas informações sobre  
+o que aconteceu em cada requisição à aplicação. Tudo para que  
+torne o trabalho do desenvolvedor ou do administrador da  
+aplicação mais fácil para descobrir um erro, ou otimizar o tempo de  
+resposta da aplicação. Saber usar as ferramentas de análise de logs  
+oferecidas pelo GAE é um grande diferencial de um profissional que  
+deseja trabalhar com essa plataforma.
+
+No próximo capítulo, você aprenderá como proteger o acesso  
+aos serviços da aplicação exemplo1 , utilizando um mecanismo de  
+autenticação simples, o HTTP Basic Auth .
+
+7.4 CONCLUSÃO
+
+7.4 CONCLUSÃO   
+81
+
+
+CAPÍTULO 8
+
+O serviço de gerenciamento de produtos, que foi criado e  
+publicado no GAE, está acessível a qualquer usuário ou sistema, sem  
+nenhum mecanismo de autenticação para evitar acessos não  
+autorizados. Aliás, não há nenhum tipo de solicitação de  
+autorização. Isso significa que, caso você estivesse construindo um  
+sistema proprietário, exclusivo para uso de um cliente, qualquer  
+pessoa que tivesse conhecimento dele, e que estivesse conectada à  
+internet, poderia utilizá-lo. E se você ou o seu cliente estivessem  
+pagando pela infraestrutura do GAE, poderia haver custos por  
+excesso de requisições de usuários e locais desconhecidos.
+
+Esse fato não seria um problema se você estivesse  
+disponibilizando uma API pública, ou seja, algo que fosse servir  
+para qualquer sistema consumir de forma gratuita. Aí você pode  
+pensar: "Mas assim eu teria de pagar para ter essa API publicada no  
+GAE!?". Não, se você não habilitar a cobrança na sua aplicação. O  
+que pode acontecer é a sua aplicação chegar a um determinado  
+limite diário de consumo do GAE, como número máximo de  
+requisições ou tempo de CPU, e ficar inacessível até o próximo  
+período de contabilização (diário ou mensal).
+
+Ainda bem que, por padrão, as aplicações criadas no GAE não
+
+PROTEGENDO SERVIÇOS  
+COM HTTP BASIC  
+AUTHENTICATION
+
+82   
+8 PROTEGENDO SERVIÇOS COM HTTP BASIC AUTHENTICATION
+
+
+autenticação e autorização de acesso de usuários a serviços REST  
+com o Jersey. Dessa forma, também será mostrado como construir  
+um mecanismo usando filtros, que serão chamados em cada  
+requisição HTTP. Dentro desses filtros é que será implementada a  
+verificação das credenciais de acesso ao serviço.
+
+O mecanismo HTTP Basic Authentication é muito simples de  
+ser implementado, tanto do lado do servidor como do cliente. Ele  
+apenas requer que, em toda requisição HTTP, o cliente envie o  
+cabeçalho Authorization , como mostrado a seguir:
+
+Authorization: Basic QWRtaW46QWRtaW4=
+
+O campo Authorization deve conter o esquema de  
+autenticação, Basic , como diz o próprio nome do esquema, e as  
+credenciais de acesso (usuário e senha), codificados em Base64, no  
+formato "usuario:senha".
+
+O servidor para tratar a requisição e autorizá-la ou não, deve  
+executar os seguintes passos:
+
+1\. Verificar   
+a   
+existência   
+do   
+cabeçalho   
+com   
+o   
+nome
+
+Authorization ;  
+2\. Ler e validar o esquema de autenticação, que deve ser do tipo
+
+Basic ;  
+3\. Ler a string com as credenciais em formato Base64;  
+4\. Decodificar as credenciais em formato Base64 e obter o  
+usuário e a senha enviados pelo cliente;  
+5\. De posse do usuário e da senha, o servidor pode buscar em  
+uma base de dados, para verificar se as credenciais estão  
+corretas e o usuário tem permissão de acesso, baseado em  
+regras ou papéis.
+
+8.1 O QUE É HTTP BASIC AUTHENTICATION
+
+84   
+8.1 O QUE É HTTP BASIC AUTHENTICATION
+
+
+Agora que você já sabe o que é e como funciona o mecanismo  
+HTTP Basic Authentication, é hora utilizá-lo no projeto para  
+proteger o serviço de gerenciamento de produtos. Primeiramente  
+com o básico, que é simplesmente configurar o projeto para  
+proteger todas as requisições a esse serviço, verificando um usuário  
+e sua senha, fixos no código, para que os conceitos primordiais  
+possam ser entendidos. Para isso, siga os passos a seguir:
+
+1\. Abra o arquivo src/main/webapp/WEB-INF/web.xml e  
+localize a declaração do servlet de nome Exemplo1Services :
+
+<servlet>  
+<servlet-name>Exemplo1Services</servlet-name>
+
+2\. No final da tag servlet , antes do parâmetro <load-on-
+
+startup>1</load-on-startup> , adicione o trecho a seguir  
+para dizer ao Jersey que todas as requisições ao servlet
+
+Exemplo1Services , que na verdade intercepta tudo o que  
+chega na URL /api , sejam antes tratadas pelo filtro presente  
+em com.siecola.exemplo1.authentication.AuthFilter :
+
+<init-param>  
+<param-name>jersey.config.server.provider.classnames</p  
+aram-name>
+
+<param-value>com.siecola.exemplo1.authentication.AuthFi  
+lter;org.glassfish.jersey.filter.LoggingFilter</param-value>
+
+</init-param>
+
+A   
+classe   
+  
+AuthFilter   
+será   
+criada   
+no   
+pacote
+
+com.siecola.exemplo1.authentication do projeto, e será  
+responsável por realizar o processo de autenticação de todas  
+as requisições feitas na URL /api/* . Essa classe será  
+implementada na próxima seção deste capítulo.
+
+O arquivo src/main/webapp/WEB-INF/web.xml , nesse  
+momento, deverá ficar assim:
+
+<servlet>  
+<servlet-name>Exemplo1</servlet-name>
+
+86   
+8.2 CONFIGURANDO O PROJETO PARA HTTP BASIC AUTHENTICATION
+
+
+<servlet-class>com.siecola.exemplo1.Exemplo1Servlet</servl  
+et-class>
+
+</servlet>  
+<servlet-mapping>  
+<servlet-name>Exemplo1</servlet-name>  
+<url-pattern>/exemplo1</url-pattern>  
+</servlet-mapping>  
+<welcome-file-list>  
+<welcome-file>index.html</welcome-file>  
+</welcome-file-list>
+
+<servlet>  
+<servlet-name>Exemplo1Services</servlet-name>  
+<servlet-class>org.glassfish.jersey.servlet.ServletContain  
+er</servlet-class>
+
+<init-param>  
+<param-name>jersey.config.server.provider.packages</pa  
+ram-name>
+
+<param-value>com.siecola.exemplo1.services</param-value  
+>
+
+</init-param>  
+<init-param>  
+<param-name>org.glassfish.jersey.api.json.POJOMappingF  
+eature</param-name>
+
+<param-value>true</param-value>  
+</init-param>  
+<init-param>  
+<param-name>jersey.config.server.provider.classnames</  
+param-name>
+
+<param-value>com.siecola.exemplo1.authentication.AuthF  
+ilter;org.glassfish.jersey.filter.LoggingFilter</param-value>
+
+</init-param>  
+<load-on-startup>1</load-on-startup>  
+</servlet>  
+<servlet-mapping>  
+<servlet-name>Exemplo1Services</servlet-name>  
+<url-pattern>/api/*</url-pattern>  
+</servlet-mapping>
+
+É importante dizer que há, pelo menos, mais duas outras  
+formas de se construir uma aplicação com HTTP Basic  
+Authentication, utilizando o Jersey. Essa é uma forma amigável  
+e que se adapta bem com a plataforma do App Engine.
+
+8.2 CONFIGURANDO O PROJETO PARA HTTP BASIC AUTHENTICATION   
+87
+
+
+Como mostrado na seção anterior, o aplicação foi configurada  
+no arquivo src/main/webapp/WEB-INF/web.xml , para que todas  
+as requisições na URL api/* sejam antes tratadas pelo filtro  
+presente na classe AuthFilter . Então, agora é preciso criá-lo com  
+seu esqueleto básico. Para isso, siga os passos:
+
+1\. Crie o pacote com.siecola.exemplo1.authentication no  
+projeto.
+
+2\. Crie a classe AuthFilter dentro desse pacote:
+
+import javax.ws.rs.container.ContainerRequestFilter;
+
+public class AuthFilter implements ContainerRequestFilter {
+
+private static final String ACCESS_UNAUTHORIZED = "Você  
+não tem permissão para acessar esse recurso";
+
+}
+
+A   
+classe   
+deve   
+implementar   
+a   
+interface
+
+javax.ws.rs.container.ContainerRequestFilter , que  
+possui o método filter .
+
+3\. Crie o método filter , que será invocado, segundo as  
+configurações feitas no arquivo src/main/webapp/WEB-
+
+INF/web.xml , quando uma requisição chegar à URL api/* :
+
+@Override  
+public void filter(ContainerRequestContext requestContext)   
+{
+
+}
+
+Esse método recebe como parâmetro um objeto do tipo
+
+ContainerRequestContext , que nesse momento será usado  
+apenas para dizer ao Jersey se a requisição foi aceita ou não.
+
+8.3 CRIANDO A CLASSE DE FILTRO E  
+PROTEGENDO OS SERVIÇOS
+
+88   
+8.3 CRIANDO A CLASSE DE FILTRO E PROTEGENDO OS SERVIÇOS
+
+
+4\. Crie o método privado decode , que será utilizado apenas  
+para decodificar e separar o usuário e a senha da requisição do  
+formato Base64:
+
+private String[] decode(String auth) {   
+auth = auth.replaceFirst("[B|b]asic ", "");
+
+byte[] decodedBytes = DatatypeConverter.parseBase64Bina  
+ry(auth);
+
+if (decodedBytes == null || decodedBytes.length == 0) {  
+return null;  
+}
+
+return new String(decodedBytes).split(":", 2);  
+}
+
+Repare que ele recebe uma string, que deve conter o conteúdo  
+do cabeçalho Authorization da requisição. Como foi dito  
+anteriormente, esse conteúdo estará no seguinte formato:
+
+Authorization: Basic QWRtaW46QWRtaW4=
+
+O método decode , então, extrai a string depois do valor
+
+Basic   
+,   
+chamando   
+o   
+método
+
+DatatypeConverter.parseBase64Binary(String auth) ,  
+que decodifica o formato Base64 e devolve um array de bytes.
+
+Se ele não for vazio, o método decode devolve um array de  
+String de duas posições, sendo a primeira com o usuário e a  
+segunda com a senha.
+
+5\. Nesse momento, o método filter terá apenas uma  
+verificação se o cabeçalho Authorization está presente ou  
+não, e se o usuário e a senha conferem com um valor fixo  
+colocado no código. Isso será feito para simplificar o  
+entendimento, a análise do mecanismo HTTP Basic  
+Authentication e de outros conceitos que você ainda vai ver  
+neste capítulo. Veja como ele deve ficar:
+
+8.3 CRIANDO A CLASSE DE FILTRO E PROTEGENDO OS SERVIÇOS   
+89
+
+
+@Override  
+public void filter(ContainerRequestContext requestContext)   
+{
+
+String auth = requestContext.getHeaderString("Authoriza  
+tion");
+
+if (auth == null) {  
+requestContext.abortWith(Response.status(Response.S  
+tatus.UNAUTHORIZED)
+
+.entity(ACCESS_UNAUTHORIZED).build());  
+return;  
+}
+
+String[] loginPassword = decode(auth);
+
+if (loginPassword == null || loginPassword.length != 2)  
+{  
+requestContext.abortWith(Response.status(Response.S  
+tatus.UNAUTHORIZED)
+
+.entity(ACCESS_UNAUTHORIZED).build());  
+return;  
+}
+
+if (loginPassword[0].equals("Admin")  
+&& loginPassword[1].equals("Admin")) {  
+return;  
+} else {  
+requestContext.abortWith(Response.status(Response.S  
+tatus.UNAUTHORIZED)
+
+.entity(ACCESS_UNAUTHORIZED).build());  
+}  
+}
+
+Somente se o usuário e a senha, depois de terem sido  
+decodificados do formato Base64, baterem com o que está fixo  
+no código, é que o método retorna sem nenhuma alteração no  
+contexto da requisição, pela variável requestContext do  
+tipo ContainerRequestContext . Nos demais casos - como  
+ausência do cabeçalho Authorization ; usuário ou senha  
+vazio; usuário ou senha incorretos -, é sinalizado ao contexto  
+da requisição que ela deve ser abortada, por meio do método
+
+abortWith , que recebe como parâmetro um valor do tipo
+
+Response .
+
+90   
+8.3 CRIANDO A CLASSE DE FILTRO E PROTEGENDO OS SERVIÇOS
+
+
+requestContext.abortWith(Response.status(Response.Status.UN  
+AUTHORIZED)
+
+.entity( ACCESS_UNAUTHORIZED).build());
+
+Nele, é possível definir o código HTTP de resposta, que nesse  
+caso foi utilizado sabiamente o HTTP 401 UNAUTHORIZED ,  
+indicando que a requisição não foi autorizada e, por isso, ela  
+não prosseguirá até o seu destino, que seria algum método  
+que trata a operação do serviço de gerenciamento de  
+produtos. No objeto Response , ainda é possível colocar uma  
+frase, indicando o motivo de a requisição ter sido respondida  
+com esse código HTTP.
+
+Agora que os serviços da aplicação exemplo1 já estão  
+protegidos com o mecanismo de autenticação HTTP Basic  
+Authentication, acesse-os com o REST Console e veja que, sem  
+inserir as credenciais de acesso, toda requisição é negada pela  
+aplicação:
+
+8.4 TESTANDO O SERVIÇO DE PRODUTOS  
+COM HTTP BASIC AUTHENTICATION
+
+8.4 TESTANDO O SERVIÇO DE PRODUTOS COM HTTP BASIC AUTHENTICATION
+
+91
+
+
+Figura 8.1: Resposta com HTTP 401 UNAUTHORIZED
+
+Repare que o cabeçalho Status Code da mensagem de  
+resposta à requisição - que foi um GET na URL api/products -  
+na tentativa de listar todos produtos, veio com o código HTTP 401
+
+UNAUTHORIZED . Esse código de resposta foi gerado pelo método
+
+filter criado anteriormente, mais especificamente aqui:
+
+String auth = requestContext.getHeaderString("Authorization");
+
+if (auth == null) {
+
+requestContext.abortWith(Response.status(Response.Status.UNAUT  
+HORIZED)
+
+.entity(ACCESS_UNAUTHORIZED).build());  
+return;  
+}
+
+Como o if testa a presença do campo Authorization na  
+requisição, e ele não foi colocado, como mostra a figura a seguir, a  
+requisição é então negada com o código HTTP 401 UNAUTHORIZED :
+
+92   
+8.4 TESTANDO O SERVIÇO DE PRODUTOS COM HTTP BASIC  
+AUTHENTICATION
+
+
+Figura 8.2: Requisição sem cabeçalho Authorization
+
+Para fazer com que as requisições possam ser aceitas pela  
+aplicação exemplo1 , basta inserir as credenciais de acesso na seção
+
+Authorization do REST Console, como nos passos a seguir:
+
+1\. Na seção Authorization do REST Console, clique no botão
+
+Basic Auth ;
+
+2\. Na janela que aparecer, preencha com as credenciais de acesso  
+aos serviços da aplicação exemplo1 , que estão fixos como  
+sendo Admin para usuário e senha:
+
+Figura 8.3: Colocando credenciais de acesso
+
+3\. Clique no botão Set Header , para que o REST Console crie  
+o campo Authorization , com as credenciais de acesso  
+codificadas no formato Base64. Dessa forma, o REST Console  
+ficará configurado como mostra a figura seguir:
+
+8.4 TESTANDO O SERVIÇO DE PRODUTOS COM HTTP BASIC AUTHENTICATION
+
+93
+
+
+recurso, como uma operação de um serviço REST, ela é  
+roteada até chegar no método que vai tratá-la, método  
+esse que pertence a uma classe que representa o serviço  
+em questão.
+
+Veja o que deve ser feito para utilizar anotações nos métodos e  
+implementar os requisitos apresentados de segurança no serviço de  
+produtos:
+
+1\. Na   
+classe
+
+com.siecola.exemplo1.authentication.AuthFilter ,  
+adicione o atributo privado a seguir para acessar informações  
+do recurso (serviço) e suas operações:
+
+@Context  
+private ResourceInfo resourceInfo;
+
+Por enquanto, o que será feito é somente saber se o método  
+destino da requisição possui alguma anotação.
+
+2\. No início do método filter , coloque a linha a seguir para  
+poder ter acesso às informações do método destino da  
+requisição:
+
+Method method = resourceInfo.getResourceMethod();
+
+A chamada resourceInfo.getResourceMethod() retorna  
+um objeto do tipo Method , que traz informações sobre o  
+método que implementa a operação de destino da requisição.
+
+3\. Logo em seguida, usando a variável method , verifique se o  
+método a ser acessado pela requisição possui a anotação
+
+@PermitAll , que faz com que a requisição seja autorizada,  
+sem a necessidade da autenticação do usuário:
+
+if (method.isAnnotationPresent(PermitAll.class)) {  
+return;  
+}
+
+8.5 ADICIONANDO ANOTAÇÕES PARA CONTROLE DE PERMISSÕES E PAPÉIS
+
+97
+
+
+Com a chamada method.isAnnotationPresent() , pode-se  
+verificar a presença de uma anotação no método invocado  
+pela requisição. Dessa forma, é possível tomar decisões no  
+mecanismo de autenticação e autorização, como é o caso aqui,  
+que verifica a presença da anotação @PermitAll . Se ela  
+existir, não há a necessidade de continuar executando o  
+método filter para verificar as credenciais de acesso,  
+fazendo com que a requisição siga adiante até o seu destino.
+
+Isso pode ser utilizado para permitir o acesso a operações de  
+serviços sem a necessidade de autenticação do usuário.
+
+4\. Agora, para fazer com que as operações de listar todos os  
+produtos e de buscar somente um pelo seu código fiquem  
+abertas, sem a necessidade de autenticação, basta colocar a  
+anotação @PermitAll nos seus respectivos métodos, como  
+da forma a seguir:
+
+Para o método de ler somente um produto pelo seu  
+código, acessado pela URL api/products/{code} , as  
+anotações devem ficar assim:
+
+@GET  
+@Produces(MediaType.APPLICATION_JSON)  
+@Path("/{code}")  
+@PermitAll  
+public Product getProduct(@PathParam("code") int code)   
+{
+
+E para o método de ler todos os produtos, acessado pela  
+URL api/products/ , devem ficar da seguinte forma:
+
+@GET  
+@Produces(MediaType.APPLICATION_JSON)  
+@PermitAll  
+public List<Product> getProducts() {
+
+Para certificar-se de que tudo está funcionando, execute  
+os seguintes testes, sem configurar o cabeçalho
+
+98   
+8.5 ADICIONANDO ANOTAÇÕES PARA CONTROLE DE PERMISSÕES E  
+PAPÉIS
+
+
+Authorization com as credenciais de acesso no REST  
+Console, e verifique os resultados:
+
+Acesse a operação de listar todos os produtos por meio  
+da URL api/products : você verá que a lista de  
+produtos será respondida pela operação;
+
+Busque um produto existente pelo seu código através da  
+URL api/products/{code} : você terá o produto  
+informado na resposta.
+
+Acesse a operação para excluir o produto pelo seu código  
+através da mesma URL api/products/{code} : a  
+aplicação negará sua requisição, com o código HTTP 401
+
+UNAUTHORIZED , pois essa é uma operação que necessita  
+que um usuário seja autenticado para que ela possa ser  
+executada.
+
+Veja que a primeira diretriz de segurança do serviço de  
+produtos, definida no início desta seção, já foi satisfeita.
+
+5\. Para implementar as demais regras de autorização do serviço  
+de produtos, é necessário fazer pequenas mudanças  
+estruturais   
+no   
+método   
+  
+filter   
+  
+da   
+classe
+
+com.siecola.exemplo1.authentication.AuthFilter ,  
+apenas para ficar um código mais elegante e de fácil  
+entendimento. A primeira é tirar a parte que valida as  
+credenciais de acesso, passando para um método privado, que  
+também terá a função de checar se papel do usuário tem  
+permissão especificada no método, através de suas anotações,  
+como será visto mais adiante. Veja como deve ficar esse novo  
+método privado:
+
+private boolean checkCredentialsAndRoles (String username,   
+String password, Set<String> roles) {
+
+boolean isUserAllowed = false;
+
+8.5 ADICIONANDO ANOTAÇÕES PARA CONTROLE DE PERMISSÕES E PAPÉIS
+
+99
+
+
+if (username.equals("Admin") && password.equals("Admin"  
+)) {
+
+if(roles.contains("ADMIN"))  
+{  
+isUserAllowed = true;  
+}  
+}
+
+if (isUserAllowed == false) {  
+if (username.equals("User") && password.equals("Use  
+r")) {
+
+if(roles.contains("USER"))  
+{  
+isUserAllowed = true;  
+}  
+}   
+}
+
+return isUserAllowed;  
+}
+
+Como a ideia é fazer com que exista dois usuários com papéis  
+distintos, ADMIN e USER , e ainda não há base de dados de  
+usuários, é necessário realizar os testes das credenciais e dos  
+papéis separadamente. Quando o serviço de usuários e sua  
+base de dados forem construídos no capítulo Adicionando o  
+serviço de usuários, esse método ficará mais simples e elegante.
+
+Repare que agora, além de verificar o usuário e a senha, o  
+método também verifica se o usuário pertence a um dos  
+papéis permitidos para a requisição. Essa lista de papéis pode  
+ser colocada na anotação @RolesAllowed , no método que  
+implementa a operação do serviço.
+
+Porém, da forma como foi implementado o método
+
+checkCredentialsAndRoles , todas as operações deverão  
+possuir uma lista de papéis de usuários que podem acessá-las.  
+Isso também pode ser alterado. Por exemplo, se a lista  
+informada no parâmetro estiver vazia, nenhum teste é feito  
+para o papel do usuário, liberando ou não somente com a
+
+100   
+8.5 ADICIONANDO ANOTAÇÕES PARA CONTROLE DE PERMISSÕES E  
+PAPÉIS
+
+
+verificação das credenciais.
+
+6\. Agora, no final do método filter , no lugar onde as  
+credenciais do usuário eram verificadas, retire o trecho de  
+código a seguir, que fazia a validação das credenciais que  
+estavam fixas no código:
+
+if (loginPassword[0].equals("Admin")
+
+&& loginPassword[1].equals("Admin")) {  
+return;  
+} else {
+
+requestContext.abortWith(Response.status(Response.Status.UN  
+AUTHORIZED)
+
+.entity(ACCESS_UNAUTHORIZED).build());  
+}
+
+E substitua pela chamada do novo método privado, criado no  
+passo anterior ( checkCredentialsAndRoles ), buscando  
+antes a lista de papéis que está anotada no método:
+
+RolesAllowed rolesAllowed = method.getAnnotation(RolesAllowe  
+d.class);  
+Set<String> rolesSet = new HashSet<String>(Arrays.asList(rol  
+esAllowed.value()));
+
+if (checkCredentialsAndRoles (loginPassword[0], loginPasswor  
+d[1], rolesSet) == false) {
+
+requestContext.abortWith(Response.status(Response.Status.UN  
+AUTHORIZED)
+
+.entity(ACCESS_UNAUTHORIZED).build());  
+return;   
+}
+
+As duas primeiras linhas desse trecho de código resgatam a  
+lista de papéis de usuário que o método destino da requisição  
+permite, através da anotação @RolesAllowed() , que ainda  
+será colocada nele.
+
+Logo a seguir, o método checkCredentialsAndRoles é  
+chamado, passando as credenciais fornecidas na requisição e  
+também a lista de papéis que o método permite. Se as  
+credenciais estiverem corretas e o usuário possuir um papel
+
+8.5 ADICIONANDO ANOTAÇÕES PARA CONTROLE DE PERMISSÕES E PAPÉIS
+
+101
+
+
+presente nessa lista, a requisição será aceita e encaminhada  
+para ser trata pelo método responsável por isso; caso  
+contrário, será abortada com o código   
+HTTP   
+401
+
+UNAUTHORIZED , como já era feito.
+
+7\. Por último, deve-se colocar as anotações nos métodos das  
+operações restantes do serviço de produtos na classe
+
+com.siecola.exemplo1.services.ProductManager   
+.  
+Lembrando de que as diretrizes de segurança que ainda faltam  
+são:
+
+Permitir que somente o usuário com papel ADMIN possa  
+apagar um produto;
+
+O cadastro e alteração de produtos deve ser feito somente  
+por usuários com o papel USER .
+
+Para satisfazer a primeira regra, basta colocar a anotação
+
+@RolesAllowed("ADMIN")   
+  
+no   
+método
+
+deleteProduct , como mostrado a seguir:
+
+@DELETE  
+@Produces(MediaType.APPLICATION_JSON)  
+@Path("/{code}")  
+@RolesAllowed("ADMIN")  
+public Product deleteProduct(@PathParam("code") int cod  
+e) {
+
+Isso fará com que, no método filter da classe
+
+com.siecola.exemplo1.authentication.AuthFilter   
+, a lista de papéis recuperada para validação do usuário  
+tenha apenas o valor ADMIN . Ou seja, somente um  
+usuário com esse papel poderá acessar essa operação  
+desse serviço.
+
+Para satisfazer a segunda regra, da alteração e criação de  
+produtos somente pelo usuário com papel USER , basta  
+colocar uma anotação da mesma forma, porém com o
+
+102   
+8.5 ADICIONANDO ANOTAÇÕES PARA CONTROLE DE PERMISSÕES E  
+PAPÉIS
+
+
+valor USER .
+
+Para a operação de criação de produtos:
+
+@POST  
+@Produces(MediaType.APPLICATION_JSON)  
+@Consumes(MediaType.APPLICATION_JSON)  
+@RolesAllowed("USER")  
+public Product saveProduct(Product product) {
+
+E para a operação de alteração de produtos:
+
+@PUT  
+@Produces(MediaType.APPLICATION_JSON)  
+@Consumes(MediaType.APPLICATION_JSON)  
+@Path("/{code}")  
+@RolesAllowed("USER")  
+public Product alterProduct(@PathParam("code") int code  
+, Product product) {
+
+Pronto! O serviço de gerenciamento de produtos agora possui  
+autenticação e autorização de usuários, inclusive com definição de  
+diferentes papéis.
+
+Realize alguns testes, acessando as operações desse serviço  
+usando o REST Console, alternando entre o usuário Admin e o
+
+User para ver os diferentes comportamentos introduzidos pelas  
+alterações realizadas nesta seção, principalmente com relação aos  
+papéis.
+
+Durante seus testes com as novas regras de autorização de  
+usuários no serviço de produtos, você deve ter percebido algo  
+estranho: o usuário com papel ADMIN não pode cadastrar e alterar  
+produtos. A explicação, na verdade, é bem simples, pois seu papel  
+não está presente na anotação nesses métodos.
+
+Para resolver isso, basta alterar a anotação @RolesAllowed   
+para ficar da seguinte forma:
+
+Múltiplos papéis para uma mesma operação
+
+8.5 ADICIONANDO ANOTAÇÕES PARA CONTROLE DE PERMISSÕES E PAPÉIS
+
+103
+
+
+A partir de agora, qualquer serviço que for criado na aplicação
+
+exemplo1 poderá utilizar o mesmo mecanismo já desenvolvido,  
+utilizando as anotações que foram colocadas no serviço de produtos.
+
+No próximo capítulo, você tornará o mecanismo de  
+autenticação ainda mais eficiente e sofisticado, criando um serviço  
+de gerenciamento de usuários do sistema e uma tabela no Datastore  
+para poder armazenar seus dados. Com essa tabela, será possível  
+guardar as credenciais de acesso, papéis e outras informações sobre  
+o usuário.
+
+8.6 CONCLUSÃO   
+105
+
+
+métodos privados para conversão da entidade do Datastore para o  
+objeto User , a ser utilizado como parâmetro de entrada e saída das  
+operações (e vice-e-versa). Dessa forma, você pode isolar a lógica  
+das operações com mais clareza, deixando apenas as questões de  
+interação com o Datastore.
+
+Para isso, crie o método que faz a conversão do objeto User   
+para o tipo da entidade a ser armazenada no Datastore:
+
+private void userToEntity (User user, Entity userEntity) {
+
+userEntity.setProperty(PROP_EMAIL, user.getEmail());  
+userEntity.setProperty(PROP_PASSWORD, user.getPassword());  
+userEntity.setProperty(PROP_GCM_REG_ID, user.getGcmRegId());  
+userEntity.setProperty(PROP_LAST_LOGIN, user.getLastLogin());  
+userEntity.setProperty(PROP_LAST_GCM_REGISTER, user.getLastGCM  
+Register());
+
+userEntity.setProperty(PROP_ROLE, user.getRole());  
+}
+
+Em seguida, crie o método privado para fazer a conversão  
+contrária, ou seja, de uma entidade Users do Datastore para um  
+objeto User :
+
+private User entityToUser (Entity userEntity) {
+
+User user = new User();  
+user.setId(userEntity.getKey().getId());
+
+user.setEmail((String) userEntity.getProperty(PROP_EMAIL));  
+user.setPassword((String) userEntity.getProperty(PROP_PASSWORD  
+));
+
+user.setGcmRegId((String) userEntity.getProperty(PROP_GCM_REG_  
+ID));
+
+user.setId(userEntity.getKey().getId());  
+user.setLastLogin((Date) userEntity.getProperty(PROP_LAST_LOGI  
+N));
+
+user.setLastGCMRegister((Date) userEntity.getProperty(PROP_LAS  
+T_GCM_REGISTER));
+
+user.setRole((String) userEntity.getProperty(PROP_ROLE));
+
+return user;  
+}
+
+Inicialização da aplicação
+
+110   
+9.2 CRIANDO O SERVIÇO DE USUÁRIOS
+
+
+Se você reparar bem nos requisitos descritos no início desta  
+seção, você vai perceber que há um problema técnico: como  
+cadastrar um usuário, se essa operação só pode ser feita por um  
+usuário com o papel ADMIN ? Então como cadastrarei o primeiro  
+usuário?
+
+Para resolver isso, é necessário criar um servlet de inicialização,  
+que será chamado assim que a aplicação for iniciada. Assim, será  
+possível criar um primeiro usuário na aplicação caso não exista  
+nenhum criado ainda. Obviamente, esse usuário deverá ter o papel
+
+ADMIN com uma senha conhecida. Quando a aplicação for  
+instalada e executada pela primeira vez, essa senha do usuário
+
+ADMIN poderá ser alterada.
+
+Para ficar melhor ainda e evitar que todos os usuários ADMIN   
+sejam apagados, pode-se fazer uma lógica mais elaborada nesse  
+servlet de inicialização, contando quantos usuários com o papel
+
+ADMIN existem e, caso não haja nenhum, um novo é criado com as  
+credenciais conhecidas. Essa técnica é muito utilizada quando há  
+essa necessidade de algo somente funcionar, se já houver dados  
+válidos em uma tabela do banco de dados, por exemplo.
+
+Para criar esse novo servlet e fazer com que ele seja chamado na  
+inicialização da aplicação, deve ser adicionada uma nova  
+configuração no arquivo src/main/webapp/WEB-INF/web.xml ,  
+pela tag <listener> . Dentro dessa tag, deverá ser informada a  
+classe com seu caminho completo:
+
+<listener>
+
+<listener-class>com.siecola.exemplo1.InitServletContextClass</  
+listener-class>  
+</listener>
+
+Agora, no pacote com.siecola.exemplo1 , crie a classe
+
+InitServletContextClass   
+implementando   
+a   
+interface
+
+ServletContextListener :
+
+9.2 CRIANDO O SERVIÇO DE USUÁRIOS   
+111
+
+
+public class InitServletContextClass implements ServletContextList  
+ener {
+
+private static final Logger log = Logger.getLogger("InitServle  
+tContextClass");
+
+@Override  
+public void contextInitialized(ServletContextEvent arg0) {  
+log.info("Aplicação Exemplo1 iniciada!");  
+}
+
+@Override  
+public void contextDestroyed(ServletContextEvent arg0) {  
+}  
+}
+
+O método   
+contextInitialized será chamado na  
+inicialização da aplicação. É importante de lembrar de que, no  
+ambiente de desenvolvimento, esse método será invocado  
+assim que a aplicação entrar em execução no Eclipse. Porém,  
+no ambiente de produção do GAE, ele só será chamado  
+quando algum serviço da aplicação for invocado.
+
+Para deixar o código mais simples, crie o método privado
+
+initializeUserEntities para ser chamado de dentro de
+
+contextInitialized :
+
+@Override  
+public void contextInitialized(ServletContextEvent arg0) {
+
+log.info("Aplicação Exemplo1 iniciada!");
+
+initializeUserEntities();  
+}
+
+Ele será o responsável por realizar a lógica de buscar no Google  
+Cloud Datastore por entidades do tipo Users com o papel ADMIN ;  
+e caso não encontre nenhum, deverá criar com as credenciais de  
+acesso conhecidas, como mostra o trecho de código a seguir:
+
+112   
+9.2 CRIANDO O SERVIÇO DE USUÁRIOS
+
+
+private void initializeUserEntities() {
+
+DatastoreService datastore = DatastoreServiceFactory  
+.getDatastoreService();
+
+Filter roleFilter = new FilterPredicate(UserManager.PROP_ROLE,  
+FilterOperator.EQUAL, "ADMIN");
+
+Query query = new Query(UserManager.USER_KIND).setFilter(roleF  
+ilter);
+
+List <Entity> entities = datastore.prepare(query).asList(Fetch  
+Options.Builder.withLimit(1));
+
+if (entities.size() == 0) {  
+log.info("Nenhum usuário encontrado. Inicializando o tipo   
+Users no Datastore");
+
+Key userKey = KeyFactory.createKey(UserManager.USER_KIND,   
+"userKey");
+
+Entity userEntity = new Entity(UserManager.USER_KIND, user  
+Key);
+
+userEntity.setProperty(UserManager.PROP_EMAIL, "admin@siec  
+ola.com");
+
+userEntity.setProperty(UserManager.PROP_PASSWORD, "Admin#7"  
+);
+
+userEntity.setProperty(UserManager.PROP_GCM_REG_ID, "");  
+userEntity.setProperty(UserManager.PROP_LAST_LOGIN, Calend  
+ar.getInstance().getTime());
+
+userEntity.setProperty(UserManager.PROP_LAST_GCM_REGISTER,  
+Calendar.getInstance().getTime());  
+userEntity.setProperty(UserManager.PROP_ROLE, "ADMIN");
+
+datastore.put(userEntity);  
+}  
+}
+
+Repare que, no início do método, um filtro é criado para  
+pesquisar por entidades do tipo Users que possuam a propriedade  
+de nome role igual a ADMIN . Em seguida, é feita uma consulta  
+para saber se existe pelo menos uma entidade que satisfaça tal  
+condição. Caso não exista nenhuma entidade Users com a  
+propriedade role igual a ADMIN , é criado então uma nova  
+entidade, com as credenciais de acesso fixas. Se esse código executar  
+uma vez, na próxima vez que a aplicação entrar em execução, esse
+
+9.2 CRIANDO O SERVIÇO DE USUÁRIOS   
+113
+
+
+usuário não será criado, a não ser que ele tenha sido apagado ou  
+tenha seu papel alterado.
+
+Há algumas outras formas de se pesquisar simplesmente pela  
+existência de entidades no Datastore, como se fosse contá-las, mas a  
+sintaxe é um pouco complexa comparada à redução de  
+processamento que ela traz. Para esse caso, que só será executado  
+uma vez, quando a aplicação iniciar, não vale a pena.
+
+Execute a sua aplicação na máquina de desenvolvimento e  
+verifique se, no console de administração, no endereço
+
+http://localhost:8888/_ah/admin , o tipo Users foi criado e a  
+entidade criada pelo método initializeUserEntities realmente  
+aparece
+
+Agora que há pelo menos um usuário no Datastore, você pode  
+alterar o mecanismo de autenticação e autorização dos serviços da  
+aplicação exemplo1 para utilizar os usuários que estão cadastrados  
+lá.
+
+Lembre-se de que no capítulo Protegendo serviços com HTTP  
+Basic   
+Authentication,   
+a   
+classe
+
+com.siecola.exemplo1.authentication.AuthFilter utilizou  
+credenciais de acesso fixas no código. Agora é o momento de alterar  
+seus métodos e deixá-los mais elegantes e profissionais.
+
+Para   
+isso,   
+abra   
+essa   
+classe,   
+vá   
+ao   
+método
+
+checkCredentialsAndRoles e faça as seguintes alterações:
+
+1\. Utilize a informação do username , passada como parâmetro  
+para o método, para localizar o usuário no Datastore;  
+2\. Caso não encontre, retorne dizendo que o usuário não está  
+autorizado;
+
+Alterando o mecanismo de autenticação dos serviços
+
+114   
+9.2 CRIANDO O SERVIÇO DE USUÁRIOS
+
+
+3\. Se o usuário existir, confirme se a senha está correta e que ele  
+é de um dos papéis autorizados para acessar a operação do  
+serviço em questão. Caso a senha não bata ou ele não seja de  
+um dos papéis autorizados, retorne negando a autorização;  
+4\. Passe mais um parâmetro para o método, que é a variável
+
+ContainerRequestContext requestContext , parâmetro  
+do método filter , para que ela seja preenchida com as  
+informações do usuário, caso ele seja autorizado. Essa  
+informação será passada para dentro do método que trata a  
+operação do serviço para obter informações como username   
+ou o e-mail, como está sendo usado.
+
+Para começar, altere a assinatura do método para receber como  
+parâmetro   
+a   
+variável   
+  
+ContainerRequestContext
+
+requestContext :
+
+private boolean checkCredentialsAndRoles (String username, String   
+password, Set<String> roles, ContainerRequestContext requestContex  
+t)
+
+A chamada desse método deve ficar assim:
+
+if (checkCredentialsAndRoles (loginPassword[0], loginPassword[1],   
+rolesSet, requestContext) == false) {
+
+requestContext.abortWith(Response.status(Response.Status.UNAUT  
+HORIZED)
+
+.entity(ACCESS_UNAUTHORIZED).build());  
+return;   
+}
+
+Dentro do método checkCredentialsAndRoles , o objeto do  
+tipo User será inserido na variável requestContext , mas para  
+isso é necessário fazer com a classe User implemente a interface
+
+Principal :
+
+public class User implements Principal {
+
+private long id;  
+private String email;  
+private String password;
+
+9.2 CRIANDO O SERVIÇO DE USUÁRIOS   
+115
+
+
+private String gcmRegId;  
+private Date lastLogin;  
+private Date lastGCMRegister;  
+private String role;
+
+@Override  
+public String getName() {  
+return this.email;  
+}
+
+//getters and setters  
+}
+
+O método checkCredentialsAndRoles deverá ficar como  
+mostra o código a seguir. Apesar de ele parecer um pouco mais  
+complexo, agora ele faz seu trabalho de checar se um usuário está ou  
+não autorizado a acessar uma operação, utilizando a informação  
+obtida do Datastore, por meio de seu e-mail.
+
+private boolean checkCredentialsAndRoles (String username, String   
+password, Set<String> roles, ContainerRequestContext requestContex  
+t) {
+
+boolean isUserAllowed = false;
+
+DatastoreService datastore = DatastoreServiceFactory  
+.getDatastoreService();
+
+Filter emailFilter = new FilterPredicate(UserManager.PROP_EMAI  
+L, FilterOperator.EQUAL, username);
+
+Query query = new Query(UserManager.USER_KIND).setFilter(email  
+Filter);
+
+Entity userEntity = datastore.prepare(query).asSingleEntity();
+
+if (userEntity != null) {   
+if (password.equals(userEntity.getProperty(UserManager.PRO  
+P_PASSWORD)) &&
+
+roles.contains(userEntity.getProperty(UserManager.  
+PROP_ROLE))) {
+
+final User user = new User();
+
+user.setEmail((String) userEntity.getProperty(UserMana  
+ger.PROP_EMAIL));
+
+user.setPassword((String) userEntity.getProperty(UserM  
+anager.PROP_PASSWORD));
+
+116   
+9.2 CRIANDO O SERVIÇO DE USUÁRIOS
+
+
+user.setId(userEntity.getKey().getId());  
+user.setGcmRegId((String) userEntity.getProperty(UserM  
+anager.PROP_GCM_REG_ID));
+
+user.setLastLogin((Date) Calendar.getInstance().getTim  
+e());
+
+user.setLastGCMRegister((Date) userEntity.getProperty(  
+UserManager.PROP_LAST_GCM_REGISTER));
+
+user.setRole((String) userEntity.getProperty(UserManag  
+er.PROP_ROLE));
+
+userEntity.setProperty(UserManager.PROP_LAST_LOGIN, us  
+er.getLastLogin());
+
+datastore.put(userEntity);
+
+requestContext.setSecurityContext(new SecurityContext(  
+) {
+
+@Override  
+public boolean isUserInRole(String role) {  
+return role.equals(user.getRole());  
+}
+
+@Override  
+public boolean isSecure() {  
+return true;  
+}
+
+@Override  
+public Principal getUserPrincipal() {  
+return user;  
+}
+
+@Override  
+public String getAuthenticationScheme() {  
+return SecurityContext.BASIC_AUTH;  
+}  
+});
+
+isUserAllowed = true;  
+}  
+}
+
+return isUserAllowed;  
+}
+
+Repare que, depois que as credenciais de acesso do usuário são  
+verificadas e se ele possui autorização através de seu papel, o objeto
+
+9.2 CRIANDO O SERVIÇO DE USUÁRIOS   
+117
+
+
+do tipo User é inserido no contexto da requisição pela chamada
+
+requestContext.setSecurityContext . Essa informação poderá  
+ser usada dentro do método que implementa a operação do serviço,  
+por exemplo, para verificar qual é o usuário que realizou a  
+requisição. Isso é algo muito importante para verificar se um  
+usuário está realmente acessando uma informação que pertence a  
+ele e não a outro usuário, por exemplo.
+
+Agora o mecanismo de autenticação está mais elaborado e  
+elegante. Você verá como ficará fácil implementar as regras de  
+autorização por meio das anotações nos métodos dos serviços e  
+também verificando qual usuário está acessando.
+
+Seguindo com a implementação do Requisito 2, que é a  
+operação para listar todos os usuários, volte na classe
+
+com.siecola.exemplo1.services.UserManager e crie o método  
+público para buscar no Datastore todas as entidades do tipo Users .  
+Lembre-se de que o requisito pede que essa operação só possa ser  
+acessada por um usuário com papel ADMIN , por isso ela deve ser  
+anotada para tal:
+
+@GET  
+@Produces(MediaType.APPLICATION_JSON)  
+@RolesAllowed({"ADMIN"})  
+public List<User> getUsers() {
+
+List<User> users = new ArrayList<>();  
+DatastoreService datastore = DatastoreServiceFactory  
+.getDatastoreService();
+
+Query query = new Query(USER_KIND).addSort(PROP_EMAIL, SortDir  
+ection.ASCENDING);
+
+List<Entity> userEntities = datastore.prepare(query).asList(  
+FetchOptions.Builder.withDefaults());
+
+for (Entity userEntity : userEntities) {  
+User user = entityToUser(userEntity);
+
+Criando a operação para listar todos os usuários
+
+118   
+9.2 CRIANDO O SERVIÇO DE USUÁRIOS
+
+
+users.add(user);  
+}
+
+return users;  
+}
+
+Repare que o objeto do tipo Query é instanciado para buscar as  
+entidades do tipo Users , ordenada de forma crescente (ou  
+alfabética) pelo valor da propriedade e-mail.
+
+A anotação @RolesAllowed({"ADMIN"}) é para fazer com que  
+essa operação seja acessada somente por usuários com o papel
+
+ADMIN , como já foi dito.
+
+A implementação do Requisito 5 é semelhante ao método  
+anterior, mas em vez de retornar uma lista, o método deve receber o  
+e-mail como parâmetro e pesquisá-lo no Datastore.
+
+Essa operação deve ser acessada somente por um usuário com o  
+papel ADMIN ou pelo próprio usuário dono das informações.  
+Porém, colocar a anotação @RolesAllowed({"ADMIN", "USER"})   
+não resolve, já que faria com que qualquer usuário com papel USER   
+acesse, e não somente o dono. Será necessário implementar uma  
+lógica para verificar se a requisição foi feita pelo usuário que é dono  
+das informações, e isso será feito pegando a informação que foi  
+injetada na variável ContainerRequestContext requestContext   
+do método filter da classe AuthFilter , ou seja, o usuário em  
+si.
+
+Veja como fica o método:
+
+@GET  
+@Produces(MediaType.APPLICATION_JSON)  
+@RolesAllowed({"ADMIN", "USER"})  
+@Path("/{email}")  
+public User getUser(@PathParam(PROP_EMAIL) String email) {
+
+Criando a operação de recuperar um usuário
+
+9.2 CRIANDO O SERVIÇO DE USUÁRIOS   
+119
+
+
+if (securityContext.getUserPrincipal().getName().equals(email)  
+||  
+securityContext.isUserInRole("ADMIN")) {  
+DatastoreService datastore = DatastoreServiceFactory  
+.getDatastoreService();
+
+Filter emailFilter = new FilterPredicate(PROP_EMAIL, Filte  
+rOperator.EQUAL, email);
+
+Query query = new Query(USER_KIND).setFilter(emailFilter);  
+Entity userEntity = datastore.prepare(query).asSingleEntit  
+y();
+
+if (userEntity != null) {  
+User user = entityToUser(userEntity);
+
+return user;  
+} else {  
+throw new WebApplicationException(Status.NOT_FOUND);  
+}   
+} else {  
+throw new WebApplicationException(Status.FORBIDDEN);  
+}  
+}
+
+Você pode se perguntar se a seguinte instrução não daria  
+exceção se houvesse mais de uma entidade com o mesmo e-mail:
+
+Entity userEntity = datastore.prepare(query).asSingleEntity();
+
+Sim, daria, mas isso será resolvido nas validações nas operações  
+de inserir e alterar usuários.
+
+Repare no teste feito logo no início do método:
+
+if (securityContext.getUserPrincipal().getName().equals(email) ||
+
+securityContext.isUserInRole("ADMIN")) {
+
+Ele serve justamente para permitir que o recurso seja acessado  
+somente por usuários com o papel ADMIN ou pelo próprio dono da  
+informação. Até poderia se dizer que a anotação @RolesAllowed   
+fica desnecessária, mas pode existir um outro tipo de papel, que  
+talvez não tenha permissão para acessar essa operação, então é
+
+120   
+9.2 CRIANDO O SERVIÇO DE USUÁRIOS
+
+
+melhor pecar pelo excesso aqui.
+
+O atributo securityContext deve ser declarado da seguinte  
+forma:
+
+@Context  
+SecurityContext securityContext;
+
+Ele traz as informações da requisição, inclusive do usuário que  
+foi inserido no método checkCredentialsAndRoles da classe
+
+AuthFilter .
+
+De acordo com o Requisito 3, a operação de criação de usuários  
+pode ser feita por qualquer usuário, mas somente aquele que tiver o  
+papel ADMIN poderá criar outro com esse mesmo papel. Isso pode  
+ser feito, verificando se há um usuário autenticado na requisição, e  
+se ele possui o papel   
+ADMIN   
+por   
+meio   
+do   
+teste
+
+securityContext.isUserInRole("ADMIN") ,   
+que   
+retorna  
+verdadeiro caso o usuário esteja autenticado pertença a esse papel.
+
+Além disso, é necessário verificar se já não existe um usuário  
+com o mesmo endereço de e-mail, para não haver usuários  
+duplicados no Datastore. Para isso, pode-se criar um método  
+privado para fazer essa verificação, como mostra o código a seguir:
+
+private boolean checkIfEmailExist (User user) {
+
+DatastoreService datastore = DatastoreServiceFactory  
+.getDatastoreService();
+
+Filter emailFilter = new FilterPredicate(PROP_EMAIL, FilterOpe  
+rator.EQUAL, user.getEmail());
+
+Query query = new Query(USER_KIND).setFilter(emailFilter);  
+Entity userEntity = datastore.prepare(query).asSingleEntity();
+
+if (userEntity == null) {  
+return false;  
+} else {
+
+Escrevendo a operação para criar um usuário
+
+9.2 CRIANDO O SERVIÇO DE USUÁRIOS   
+121
+
+
+if (userEntity.getKey().getId() == user.getId()) {  
+//está alterando o mesmo user  
+return false;  
+} else {   
+return true;  
+}   
+}  
+}
+
+Esse método é muito semelhante ao código do método
+
+checkIfCodeExist da classe ProductManager , porém a  
+validação aqui é feita com o e-mail do usuário.
+
+O método para criar um usuário deve ficar da seguinte forma:
+
+@POST  
+@Produces(MediaType.APPLICATION_JSON)  
+@Consumes(MediaType.APPLICATION_JSON)  
+@PermitAll  
+public User saveUser(User user) {
+
+DatastoreService datastore = DatastoreServiceFactory  
+.getDatastoreService();
+
+if (!checkIfEmailExist (user)) {  
+if (!securityContext.isUserInRole("ADMIN")) {  
+user.setRole("USER");  
+}  
+Key userKey = KeyFactory.createKey(USER_KIND, "userKey");  
+Entity userEntity = new Entity(USER_KIND, userKey);
+
+user.setGcmRegId("");  
+user.setLastGCMRegister(null);  
+user.setLastLogin(null);
+
+userToEntity (user, userEntity);
+
+datastore.put(userEntity);
+
+user.setId(userEntity.getKey().getId());   
+} else {  
+throw new WebApplicationException("Já existe um usuário ca  
+dastrado com o mesmo e-mail", Status.BAD_REQUEST);
+
+}
+
+return user;  
+}
+
+122   
+9.2 CRIANDO O SERVIÇO DE USUÁRIOS
+
+
+public String getName() {  
+return this.email;  
+}
+
+//getters and setters  
+}
+
+A anotação @Email garante que o valor do campo por ele  
+anotado tenha o padrão de um endereço de e-mail. Já a anotação
+
+@NotNull faz com que o campo tenha de ter um valor diferente de
+
+null .
+
+Para utilizar essas anotações, basta adicionar mais uma  
+dependência no arquivo pom.xml :
+
+<dependency>
+
+<groupId>org.glassfish.jersey.ext</groupId>  
+<artifactId>jersey-bean-validation</artifactId>  
+<version>2.22.1</version>  
+</dependency>
+
+E para fazer com que a validação seja de fato aplicada nos  
+métodos das operações dos serviços, basta utilizar a anotação
+
+@Valid antes do parâmetro nos métodos, como o exemplo a seguir  
+para o método de criação de um novo usuário:
+
+public User saveUser(@Valid User user) {
+
+Agora, todo usuário será validado antes de ser passado para o  
+método saveUser , e caso esteja inválido, de acordo com as  
+anotações na classe User , a requisição será negada com o código
+
+HTTP 400 Bad Request .
+
+Isso garante o que pede o Requisito 8.
+
+No Requisito 4, a operação de alterar um usuário é semelhante  
+ao da criação, com algumas validações e regras a mais, como:
+
+Criando a operação de alterar um usuário
+
+124   
+9.2 CRIANDO O SERVIÇO DE USUÁRIOS
+
+
+} else {  
+throw new WebApplicationException("Já existe um us  
+uário cadastrado com o mesmo e-mail", Status.BAD_REQUEST);
+
+}  
+} else {  
+throw new WebApplicationException(Status.FORBIDDEN);  
+}  
+} else {  
+throw new WebApplicationException("O ID do usuário deve se  
+r informado para ser alterado", Status.BAD_REQUEST);
+
+}  
+}
+
+Essa operação ainda poderia ter outras validações, como por  
+exemplo, evitar que o usuário, se não for ADMIN , não poder alterar  
+os campos gcmRegId , lastLogin e lastGCMRegister .
+
+Agora que você já sabe como aplicar regras de validações e  
+autorizações, fica fácil implementar a operação para apagar um  
+usuário, como pede o Requisito 6. Ele pede que um usuário só  
+possa ser apagado por ele mesmo ou por um outro que seja ADMIN .  
+Além disso, a operação deve receber como parâmetro o e-mail do  
+usuário. Veja como ela pode ficar:
+
+@DELETE  
+@Produces(MediaType.APPLICATION_JSON)  
+@Path("/{email}")  
+@RolesAllowed({"ADMIN", "USER"})  
+public User deleteUser(@PathParam("email") String email) {
+
+if (securityContext.getUserPrincipal().getName().equals(email)  
+||  
+securityContext.isUserInRole("ADMIN")) {  
+DatastoreService datastore = DatastoreServiceFactory  
+.getDatastoreService();
+
+Filter emailFilter = new FilterPredicate(PROP_EMAIL,  
+FilterOperator.EQUAL, email);
+
+Query query = new Query(USER_KIND).setFilter(emailFilter);
+
+Entity userEntity = datastore.prepare(query).asSingleEntit
+
+Criando a operação para excluir um usuário
+
+126   
+9.2 CRIANDO O SERVIÇO DE USUÁRIOS
+
+
+y();
+
+if (userEntity != null) {  
+datastore.delete(userEntity.getKey());
+
+User user = entityToUser(userEntity);
+
+return user;  
+} else {   
+throw new WebApplicationException(Status.NOT_FOUND);   
+  
+}  
+} else {  
+throw new WebApplicationException(Status.FORBIDDEN);  
+}   
+}
+
+Repare que o teste para se certificar de que o usuário é ADMIN ,  
+ou é o próprio que será apagado, é exatamente o mesmo usado nas  
+outras operações.
+
+Por último, o Requisito 7, que se refere a uma operação para  
+atualizar o valor do registro do usuário no GCM e a data que isso foi  
+feito. Esse registro será mais bem explicado no capítulo Enviando  
+mensagens com o Google Cloud Messaging, mas por enquanto, você  
+só precisar fazer a operação e salvar o que vier, como mostra o  
+código a seguir:
+
+@PUT  
+@Produces(MediaType.APPLICATION_JSON)  
+@Path("/update_gcm_reg_id/{gcmRegId}")  
+@RolesAllowed({"USER"})  
+public User updateGCMRegId(@PathParam("gcmRegId") String gcmRegId)   
+{
+
+DatastoreService datastore = DatastoreServiceFactory  
+.getDatastoreService();
+
+Filter emailFilter = new FilterPredicate(PROP_EMAIL,  
+FilterOperator.EQUAL, securityContext.getUserPrincipal  
+().getName());
+
+Query query = new Query(USER_KIND).setFilter(emailFilter);
+
+Atualizando o valor do registro do GCM
+
+9.2 CRIANDO O SERVIÇO DE USUÁRIOS   
+127
+
+
+Entity userEntity = datastore.prepare(query).asSingleEntity();
+
+if (userEntity != null) {
+
+userEntity.setProperty(PROP_GCM_REG_ID, gcmRegId);  
+userEntity.setProperty(PROP_LAST_GCM_REGISTER, Calendar.ge  
+tInstance().getTime());
+
+User user = entityToUser(userEntity);
+
+datastore.put(userEntity);
+
+return user;  
+} else {   
+throw new WebApplicationException(Status.NOT_FOUND);   
+  
+}  
+}
+
+Repare que não é necessário passar o endereço de e-mail do  
+usuário que será alterado, pois como somente ele poderá acessar a  
+operação, ele será localizado pelas informações contidas em
+
+securityContext .
+
+Depois que o usuário é localizado, as propriedades gcmRegId e
+
+lastGCMRegister são atualizadas e salvas de volta no Datastore.
+
+Neste capítulo, você construiu o serviço de usuários, além de ter  
+incrementado   
+o   
+mecanismo   
+de   
+autenticação   
+com   
+novas  
+funcionalidades como permissões baseadas em papéis. Você  
+também aprendeu sobre como é possível fazer validação do modelo  
+de dados utilizado nas operações, algo que pode economizar muito  
+tempo e código, apenas usando anotações.
+
+No próximo capítulo, você aprenderá sobre uma funcionalidade  
+muito interessante do Google App Engine: enviar mensagens para
+
+9.3 CONCLUSÃO
+
+128   
+9.3 CONCLUSÃO
+
+
+dispositivos móveis por meio de uma aplicação desenvolvida para o  
+GAE. Isso equivale ao mecanismo conhecido como Push  
+Notification, que auxilia muito os desenvolvedores do lado da  
+aplicação móvel, como também os do lado da aplicação de back-  
+end, a enviar notificações a usuários desses dispositivos.
+
+9.3 CONCLUSÃO   
+129
+
+
+CAPÍTULO 10
+
+Se você é um usuário comum de aplicativos de smartphone  
+(Android, iOS, Windows Phone e outros), com certeza já deve ter  
+utilizado alguma função de tais aplicativos, que permitia que você  
+recebesse mensagens e notificações de algum servidor, como de e-  
+mail, comunicador ou rede social.
+
+Você já parou para se perguntar como isso realmente funciona?  
+Será que esse aplicativo fica a todo instante consultando o servidor  
+para saber se há novas mensagens para ele? Será que quem  
+desenvolveu o sistema teve de manter uma conexão aberta o tempo  
+todo para receber essas notificações?
+
+Com certeza algum desses mecanismos citados foi usado, mas  
+ficar consultando o servidor a cada 5 segundos, por exemplo, traria  
+uma quantidade de requisições muito grande para ele, visto que  
+pode haver milhares de clientes conectados, querendo saber se há  
+alguma mensagem nova.
+
+Utilizando o Google Cloud Messaging, é possível resolver todas  
+essas questões de uma maneira bem simples, tanto para quem  
+desenvolve o lado servidor do sistema quanto para quem desenvolve  
+o aplicativo móvel.
+
+ENVIANDO MENSAGENS  
+COM O GOOGLE CLOUD  
+MESSAGING
+
+130   
+10 ENVIANDO MENSAGENS COM O GOOGLE CLOUD MESSAGING
+
+
+O Google Cloud Messaging (GCM) é um serviço gratuito do  
+Google App Engine, que permite que você envie e receba mensagens  
+entre aplicações servidoras e clientes. Isso quer dizer que você pode  
+desenvolver uma aplicação no GAE para enviar mensagens para  
+aplicativos móveis, no Android por exemplo, sem a preocupação de  
+saber onde ele está localizado ou se está conectado à internet ou  
+não.
+
+Do lado da aplicação Android, você não precisa se preocupar em  
+desenvolver códigos para ficar consultando o servidor a todo o  
+momento e nem se preocupar em estabelecer uma conexão com ele.
+
+A arquitetura completa do GCM inclui a aplicação responsável  
+por gerar as mensagens que se conecta no GCM Connection Server,  
+que é o responsável por gerenciar todo o mecanismo filas e de envio  
+das mensagens para os aplicativos móveis e cuidar de seus registros,  
+para que possam ser localizados. Veja a figura a seguir que ilustra tal  
+arquitetura:
+
+Figura 10.1: Arquitetura do GCM. Fonte: https://developers.google.com/cloud-messaging/gcm
+
+É possível interagir com o GCM Connection Server de duas  
+formas: conexão HTTP e XMPP. Este livro trata exclusivamente do
+
+10.1 O QUE É GOOGLE CLOUD MESSAGING
+
+Visão geral da arquitetura do GCM
+
+10.1 O QUE É GOOGLE CLOUD MESSAGING   
+131
+
+
+A primeira biblioteca é chamada GCM Server , responsável por  
+toda a parte de conexão e comunicação com o GCM Connection  
+Server. Para adicionar essa dependência ao projeto exemplo1 , abra  
+o arquivo pom.xml e coloque o seguinte trecho na seção  
+dependências:
+
+<dependency>
+
+<groupId>com.ganyo</groupId>  
+<artifactId>gcm-server</artifactId>  
+<version>1.0.2</version>  
+</dependency>
+
+A segunda biblioteca é opcional e só deve ser adicionada caso  
+você queira enviar mensagens no formato JSON para seus clientes.  
+Ela é a biblioteca GSon do Google, para formatação de dados em  
+JSON. Para isso, adicione a dependência a seguir no arquivo
+
+pom.xml :
+
+<dependency>
+
+<groupId>com.google.code.gson</groupId>  
+<artifactId>gson</artifactId>  
+<version>2.5</version>  
+</dependency>
+
+E é só isso, em termos de dependências, para que o projeto
+
+exemplo1 fique apto a trabalhar com o GCM.
+
+Para que a sua aplicação do GAE possa enviar mensagens pelo  
+GCM, é necessário antes dar permissão a ela pelo console do GAE.  
+Para isso, acesse o menu principal no canto superior esquerdo, e  
+escolha a opção API Manager -> Overview , como mostra a figuar  
+a seguir:
+
+10.3 OBTENDO A API KEY
+
+134   
+10.3 OBTENDO A API KEY
+
+
+Figura 10.2: Habilitando o GCM
+
+Clique no botão Enable API para habilitar a aplicação
+
+exemplo1 a acessar a API do GCM para enviar mensagens a  
+dispositivos móveis.
+
+Nessa mesma tela, vai aparecer uma mensagem dizendo que essa  
+API está habilitada, mas que não há nenhuma credencial cadastrada,  
+e que por isso você ainda não pode usar. Clique no botão Go to
+
+Credentials para ir para a tela e criá-la, como mostra a figura a  
+seguir:
+
+Figura 10.3: Criando credencial para o GCM
+
+10.3 OBTENDO A API KEY   
+135
+
+
+Nessa tela, clique no link API Key , como está realçado na  
+figura. Isso fará com que apareça uma caixa de diálogo perguntando  
+qual o tipo de chave você deseja criar. Para esse caso, que é uma  
+aplicação do GAE que vai utilizar essa credencial para enviar  
+mensagens ao GCM, é necessário escolher a opção Server Key .
+
+Figura 10.4: Server API Key
+
+Na tela de criação da chave, digite um nome para ela, para que  
+você possa identificá-la depois. Se for necessário, por questões de  
+segurança, você pode definir um endereço ou uma faixa de IPs que  
+estarão habilitados a utilizarem essa chave. Se nenhum endereço for  
+colocado, significa que a chave poderá ser acessada de qualquer  
+lugar da internet. Por enquanto, deixe esse campo vazio para que  
+você possa testar a aplicação de qualquer lugar, seja hospedada no  
+GAE ou na sua máquina desenvolvimento.
+
+136   
+10.3 OBTENDO A API KEY
+
+
+Figura 10.5: Criando Server API Key
+
+Pronto! Agora você pode ver a sua chave criada:
+
+Figura 10.6: Listando as API Key criadas
+
+Esse o valor deverá ser usado dentro da aplicação Java para  
+acessar o GCM e enviar mensagens aos dispositivos móveis.
+
+10.3 OBTENDO A API KEY   
+137
+
+
+No   
+repositório   
+de   
+código   
+do   
+livro  
+(https://github.com/siecola/GAEBook), você pode encontrar uma  
+aplicação Android de exemplo, que se registra para receber  
+mensagens pelo GCM, através do Sender ID da aplicação  
+hospedada no GAE. Depois de registrada, a aplicação espera por  
+mensagens recebidas pelo GCM.
+
+Quando uma mensagem é recebida, uma notificação aparece na  
+barra de notificações do dispositivo. A aplicação foi projetada para  
+receber qualquer notificação, em qualquer formato, exibindo-a  
+exatamente como ela veio.
+
+Se o usuário clicar na notificação de mensagem recebida, ela será  
+exibida na tela principal da aplicação, mostrando todo o payload da  
+mensagem.
+
+Veja a figura a seguir da tela da aplicação Android de exemplo:
+
+Figura 10.7: Aplicação Android de exemplo
+
+Para se registrar na sua aplicação do GAE, estando com o  
+dispositivo conectado na internet, basta digitar o Sender ID   
+obtido no console do GAE, como explicado na seção Conceitos
+
+10.4 O APLICATIVO MÓVEL PARA ANDROID
+
+138   
+10.4 O APLICATIVO MÓVEL PARA ANDROID
+
+@tenebroso
+
+
+importantes deste capítulo. Após isso, clique no botão Register ,  
+que a aplicação tentará se registrar e obter um Registration ID .
+
+O valor obtido no campo Registration ID é o que deve ser  
+utilizado quando a aplicação exemplo1 desejar enviar uma  
+mensagem para esse dispositivo. Esse campo permite que seu valor  
+seja copiado para a área de transferência do Android. Esse mesmo  
+valor é o que deve ser salvo na propriedade gcmRegId do tipo
+
+User no Datastore, criado no capítulo Adicionando o serviço
+
+de usuários .
+
+Em uma aplicação real no Android, esse processo de registro no  
+GCM seria feito em background e, em seguida, ela deveria acessar a  
+operação /update_gcm_reg_id/{gcmRegId} do serviço de  
+gerenciamento de usuários, atualizando o valor do Registrarion
+
+ID obtido. Isso não está sendo feito por essa aplicação de exemplo  
+do Android. Por isso, você deve copiar o valor do campo
+
+Registration ID e atualizá-lo na operação citada do serviço de  
+usuários, como mostra a figura a seguir:
+
+Figura 10.8: Atualizando o Registration ID
+
+10.4 O APLICATIVO MÓVEL PARA ANDROID   
+139
+
+
+A figura a seguir mostra como a aplicação Android fica depois  
+de registrar-se no GCM:
+
+Figura 10.9: Aplicação registrada no GCM
+
+Quando uma notificação for enviada a esse dispositivo através  
+de seu Registration ID , pela aplicação exemplo1 que está no  
+GAE, o GCM Connection Server encaminhará essa mensagem pela  
+Internet até chegar na aplicação exemplo do Android. Ele, por sua  
+vez, vai exibir uma notificação na barra de notificações, e quando o  
+usuário clicar nela, a mensagem será exibida na tela da aplicação,  
+como mostra a figura a seguir:
+
+140   
+10.4 O APLICATIVO MÓVEL PARA ANDROID
+
+
+de usuários. O terceiro parâmetro é o número de tentativas que o  
+GCM deve fazer, caso não consiga enviar a mensagem na primeira  
+vez.
+
+ENVIANDO MENSAGENS DA MÁQUINA DE DESENVOLVIMENTO
+
+É possível enviar mensagens através do GCM mesmo quando a  
+aplicação servidora está em execução na máquina de  
+desenvolvimento.
+
+Para ilustrar melhor todo o mecanismo, crie um novo serviço,  
+responsável por fazer esse trabalho na aplicação exemplo1 . Para  
+isso, crie uma nova classe chamada MessageManager no pacote
+
+com.siecola.exemplo1.services :
+
+@Path("/message")  
+public class MessageManager {
+
+private static final Logger log = Logger.getLogger("MessageMan  
+ager");
+
+@Context  
+SecurityContext securityContext;  
+}
+
+Esse novo serviço será acessado pela URL api/message . Para  
+tornar o exemplo mais interessante, será enviado como mensagem  
+pelo GCM aos aplicativos móveis um dos produtos cadastrados no  
+Datastore, usando o formato JSON.
+
+Dentro desse serviço, crie uma operação para efetivamente  
+enviar as informações do produto pelo GCM. Essa operação deve  
+receber dois parâmetros: o código do produto a ser enviado e o  
+endereço do e-mail do usuário. Através do endereço de e-mail, será  
+possível localizar o usuário e o valor do registro de sua aplicação
+
+10.5 ENVIANDO MENSAGENS A APLICATIVOS MÓVEIS COM O GCM   
+143
+
+
+móvel no GCM.
+
+@POST  
+@Path("/sendproduct/{product_code}/{email}")  
+@RolesAllowed({"ADMIN"})  
+public String sendProduct (@PathParam("product_code") int productC  
+ode, @PathParam("email") String email) {
+
+}
+
+Essa operação deverá ser acessada pelo método HTTP POST por  
+meio da URL /sendproduct/{product_code}/{email} .
+
+Para tornar o exemplo um pouco mais simples, o produto e o  
+usuário serão localizados no Datastore por meio de métodos  
+privados criados na classe MessageManager , da mesma forma  
+como já foi mostrado em capítulos anteriores:
+
+private User findUser(String email) {
+
+DatastoreService datastore = DatastoreServiceFactory  
+.getDatastoreService();
+
+Filter emailFilter = new FilterPredicate(UserManager.PROP_EMAI  
+L, FilterOperator.EQUAL, email);
+
+Query query = new Query(UserManager.USER_KIND).setFilter(email  
+Filter);
+
+Entity userEntity = datastore.prepare(query).asSingleEntity();
+
+if (userEntity != null) {  
+return UserManager.entityToUser(userEntity);  
+} else {  
+return null;  
+}   
+}
+
+private Product findProduct (int code) {
+
+DatastoreService datastore = DatastoreServiceFactory  
+.getDatastoreService();
+
+Filter codeFilter = new FilterPredicate("Code", FilterOperator  
+.EQUAL, code);
+
+Query query = new Query("Products").setFilter(codeFilter);  
+Entity productEntity = datastore.prepare(query).asSingleEntity  
+();
+
+144   
+10.5 ENVIANDO MENSAGENS A APLICATIVOS MÓVEIS COM O GCM
+
+
+if (productEntity != null) {   
+return ProductManager.entityToProduct(productEntity);  
+} else {  
+return null;  
+}   
+}
+
+Com isso, no início do método sendProduct criado para  
+implementar a operação de enviar um produto, pode-se chamar  
+esses dois métodos para localizar o produto e o usuário, utilizando  
+os parâmetros recebidos da operação:
+
+Product product;   
+if ((product = findProduct(productCode)) == null) {
+
+throw new WebApplicationException(Status.NOT_FOUND);  
+}
+
+User user;  
+if ((user = findUser(email)) == null) {
+
+throw new WebApplicationException(Status.BAD_REQUEST);  
+}
+
+Agora é só implementar a lógica para enviar a mensagem pelo  
+GCM, da mesma forma como foi explicado no início desta seção, só  
+que utilizando os dados retirados do Datastore. Além disso,  
+colocando um pouco mais de tratamento, caso algo dê errado, como  
+por exemplo, o usuário não estar registrado no GCM:
+
+Sender sender = new Sender("API_KEY");   
+Gson gson = new Gson();  
+Message message = new Message.Builder().addData("product", gson.to  
+Json(product)).build();   
+Result result;
+
+try {
+
+result = sender.send(message, user.getGcmRegId(), 5);   
+if (result.getMessageId() != null) {  
+String canonicalRegId = result.getCanonicalRegistrationId(  
+);
+
+if (canonicalRegId != null) {  
+log.severe("Usuário [" + user.getEmail() + "] com mais  
+de um registro");  
+}  
+} else {
+
+10.5 ENVIANDO MENSAGENS A APLICATIVOS MÓVEIS COM O GCM   
+145
+
+
+String error = result.getErrorCodeName();  
+log.severe("Usuário [" + user.getEmail() + "] não registra  
+do");
+
+log.severe(error);  
+throw new WebApplicationException(Status.NOT_FOUND);   
+  
+}  
+} catch (IOException e) {
+
+throw new WebApplicationException(Status.INTERNAL_SERVER_ERROR  
+);  
+}  
+return "Produto " + product.getName() + " enviado com sucesso para
+
+usuário " + user.getEmail();
+
+Na linha Sender sender = new Sender("API_KEY"); , você  
+deve substituir a string API_KEY pela chave obtida para a sua  
+aplicação exemplo1 , como detalha os passos da seção Obtendo a  
+API Key.
+
+O teste logo abaixo da linha result = sender.send(message,
+
+user.getGcmRegId(), 5); serve para verificar se o usuário está  
+realmente registrado no GCM com o registro armazenado no  
+Datastore. Dessa forma, se ele não estiver, a operação retorna com o  
+código HTTP 404 Not Found .
+
+Se tudo der certo e o GCM receber a mensagem, a operação  
+retorna com o código HTTP 200 OK , informando que a mensagem  
+foi entregue ao GCM.
+
+146   
+10.5 ENVIANDO MENSAGENS A APLICATIVOS MÓVEIS COM O GCM
+
+
+ENVIO DA MENSAGEM PELO GCM
+
+Como foi dito no início deste capítulo, quando se utiliza o  
+mecanismo HTTP, a mensagem é entregue ao GCM, mas não  
+há confirmação de que ela realmente foi entregue ao  
+dispositivo móvel.
+
+A aplicação que envia a mensagem não recebe uma resposta,  
+positiva ou negativa, que a mensagem foi entregue ao  
+dispositivo móvel. Isso é uma característica quando se usa o  
+tipo de conexão HTTP com o GCM Connection Server.
+
+Para testar o funcionamento desse serviço, basta usar o REST  
+Console, passando um código de um produto armazenado no  
+Datastore e o e-mail do usuário que você tenha cadastrado o
+
+Registration ID , como mostra a figura a seguir:
+
+Figura 10.11: Testando o serviço
+
+10.5 ENVIANDO MENSAGENS A APLICATIVOS MÓVEIS COM O GCM   
+147
+
+
+O mecanismo do GCM é muito interessante e, ao mesmo  
+tempo, fácil de ser utilizado. Como você pode observar, toda a tarefa  
+pesada de enfileirar as mensagens e tentar entregá-las a cada  
+dispositivo móvel, fica a cargo do GCM Connection Server. A  
+aplicação deve simplesmente conectar-se nele e enviar a mensagem.
+
+Parabéns! Você construiu um serviço REST que aciona o  
+mecanismo do GCM para enviar mensagens a dispositivos móveis.  
+Esse serviço pode ser usado por outras aplicações, que não estão  
+rodando no GAE, para solicitar que tal trabalho seja feito.
+
+No próximo capítulo, você aprenderá mais uma funcionalidade  
+interessante que a plataforma do Google App Engine oferece:  
+agendamento de tarefas. Esse é um recurso muito interessante  
+quando você deseja executar alguma tarefa, em um intervalo de  
+tempo pré-determinado.
+
+10.6 CONCLUSÃO
+
+148   
+10.6 CONCLUSÃO
+
+
+CAPÍTULO 11
+
+Em aplicações Web, a necessidade de agendar tarefas para serem  
+executadas de forma automática é muito comum. Por exemplo, para  
+enviar e-mails durante a faixa de horário com menor tráfego de  
+rede, executar limpeza de banco de dados ou arquivos de log etc.
+
+Com o Google App Engine, é possível programar uma tarefa  
+para ser executada automaticamente pela plataforma. Essa tarefa,  
+então, vai acessar um serviço da sua aplicação, utilizando o método
+
+HTTP GET . Dessa forma, basta criar um serviço e uma operação,  
+especificamente para ser chamado pela tarefa agendada. Dentro do  
+método, que tratará a requisição a essa operação, você pode realizar  
+a atividade programada.
+
+A operação que é acessada pela tarefa agendada é igual a  
+qualquer outra, com as mesmas regras, como por exemplo, o tempo  
+execução e resposta. Além disso, para que o GAE considerar que a  
+tarefa foi executada com sucesso pela sua aplicação, a operação deve  
+retornar com o código HTTP com os valores entre 200 e 299,  
+inclusive.
+
+No GAE, as aplicações no regime gratuito da plataforma podem
+
+AGENDANDO TAREFAS NO  
+GAE
+
+11.1   
+COMO   
+FUNCIONAM   
+AS   
+TAREFAS  
+AGENDADAS NO GAE
+
+11 AGENDANDO TAREFAS NO GAE   
+149
+
+
+ter até 20 tarefas agendadas, enquanto as que estão com o  
+mecanismo de cobrança ativado podem ter até 100.
+
+TAREFAS AGENDADAS NO AMBIENTE DE DESENVOLVIMENTO
+
+As tarefas agendas não funcionam no ambiente de  
+desenvolvimento, então você deve obrigatoriamente publicar a  
+aplicação para vê-las funcionando.
+
+Para exemplificar o mecanismo de tarefas agendadas, crie um  
+novo serviço com uma única operação, para imprimir uma  
+mensagem no log da aplicação.
+
+Para facilitar o trabalho e deixar o foco somente no  
+agendamento da tarefa, o novo serviço não deverá passar pelo  
+mecanismo de autenticação.
+
+Para que o serviço não faça parte do mecanismo de  
+autenticação, crie um novo pacote na aplicação com o nome de
+
+com.siecola.exemplo1.cronservices . Nesse novo pacote, crie a  
+classe que vai implementar o serviço e a operação que será chamada  
+pela tarefa agendada:
+
+@Path("cron1")  
+public class CronService {
+
+private static final Logger log = Logger.getLogger("CronServic  
+e");
+
+@GET
+
+11.2 CRIANDO O NOVO SERVIÇO AGENDADO
+
+150   
+11.2 CRIANDO O NOVO SERVIÇO AGENDADO
+
+
+@Produces("application/json")  
+@Path("testcron")  
+public void testCron() {  
+log.severe("Cron message --- " + Calendar.getInstance().ge  
+tTime());
+
+}  
+}
+
+Como você pode ver, ele é um método comum para  
+implementar uma operação normal, sem nada de novo. A sua URL  
+de   
+acesso,   
+como   
+foi   
+configurado   
+pelas   
+anotações,   
+será:
+
+cron/cron1/testcron , sendo que a primeira parte da URL, ou  
+seja, cron , será configurada no arquivo web.xml . O que essa  
+operação faz é apenas exibir uma mensagem no log da aplicação,  
+quando ela for chamada pela tarefa agendada.
+
+Como esse serviço está fora do pacote dos demais serviços, é  
+necessário adicionar uma nova configuração no arquivo web.xml ,  
+fazendo com que o novo pacote e a nova classe sejam enxergados  
+pelo Jersey como serviços, além de dizer que eles não devem passar  
+pelo mecanismo de autenticação. Veja como deve ficar a nova  
+configuração nesse arquivo:
+
+<servlet>
+
+<servlet-name>CronServices</servlet-name>  
+<servlet-class>org.glassfish.jersey.servlet.ServletContainer</  
+servlet-class>
+
+<init-param>  
+<param-name>jersey.config.server.provider.packages</param-  
+name>
+
+<param-value>com.siecola.exemplo1.cronservices</param-value  
+>
+
+</init-param>  
+<init-param>  
+<param-name>org.glassfish.jersey.api.json.POJOMappingFeatu  
+re</param-name>
+
+<param-value>true</param-value>  
+</init-param>  
+<load-on-startup>1</load-on-startup>  
+</servlet>  
+<servlet-mapping>
+
+<servlet-name>CronServices</servlet-name>  
+<url-pattern>/cron/*</url-pattern>
+
+11.2 CRIANDO O NOVO SERVIÇO AGENDADO   
+151
+
+
+</servlet-mapping>
+
+Repare que a configuração para o novo servlet não inclui o  
+parâmetro para que as requisições a ele passem pelo filtro, que faz o  
+mecanismo de autenticação. Veja também que a URL configurada é
+
+/cron/* .
+
+Para configurar as tarefas agendadas da aplicação, é necessário  
+criar o arquivo de nome cron.xml , dentro da pasta
+
+src/main/webapp/WEB-INF/ . Nele, é possível configurar mais de  
+uma tarefa, com agendamentos e URLs diferentes.
+
+Veja no exemplo a seguir como deve ficar o agendamento de  
+uma tarefa a ser executada a cada dois minutos para acessar o  
+serviço que foi criado na seção anterior:
+
+<?xml version="1.0" encoding="UTF-8"?>  
+<cronentries>
+
+<cron>  
+<url>/cron/cron1/testcron</url>  
+<description>Mensagem do Cron a cada 2 minutos</description>  
+<schedule>every 2 minutes</schedule>  
+</cron>  
+</cronentries>
+
+O campo url define o endereço da operação a ser chamada  
+quando a tarefa tiver de ser executada. No campo description ,  
+você pode colocar um texto descritivo sobre a tarefa. Essa  
+informação aparecerá no console do GAE, na seção de  
+gerenciamento das tarefas agendadas. E finalmente, no campo
+
+schedule é onde você deve definir a periodicidade de execução da  
+tarefa.
+
+As tarefas podem ser agendadas para executarem de diversas
+
+11.3 CONFIGURANDO A TAREFA
+
+Formato do agendamento
+
+152   
+11.3 CONFIGURANDO A TAREFA
+
+
+Figura 11.1: Monitorando tarefas agendadas
+
+Como a tarefa criada simplesmente exibe uma mensagem no  
+log, vá até a seção que exibe as mensagens no console do GAE para  
+certificar-se de que ela realmente está escrevendo a mensagem a  
+cada 2 minutos, como foi programada.
+
+Figura 11.2: Mensagem da tarefa agendada
+
+Neste capítulo, você aprendeu mais uma funcionalidade da  
+plataforma do Google App Engine para agendar tarefas para serem  
+executadas de forma automática por ele, de dentro da sua aplicação,  
+sem grandes esforços, apenas configurando um arquivo XML.
+
+No próximo capítulo, você utilizará outra funcionalidade  
+interessante do GAE, que o memory cache, usado para manter dados  
+na memória, sem utilizar o Datastore.
+
+11.5 CONCLUSÃO
+
+154   
+11.5 CONCLUSÃO
+
+
+CAPÍTULO 12
+
+O mecanismo de autenticação de usuários da aplicação
+
+exemplo1 atualiza a data/hora na propriedade lastLogin no tipo
+
+Users do Datastore toda a vez que ele acessa o sistema. Essa  
+informação pode ser usada para saber, por exemplo, qual foi a  
+última vez que ele acessou o sistema e também para saber quais são  
+os usuários que há muito não utilizam a aplicação.
+
+Como você deve perceber, essa informação é muito útil para fins  
+estatísticos, pois é importante saber se os usuários da sua aplicação  
+são assíduos. Porém, é bem provável que você não necessite de uma  
+informação tão precisa, a ponto de indicar exatamente a data/hora  
+do último acesso, com minutos e segundos de precisão. Talvez  
+bastasse que tivesse a precisão de minutos ou horas.
+
+Então, como fazer para gerenciar todas as requisições de  
+autenticação e, ao mesmo tempo, atualizar a data/hora de último  
+acesso de apenas algumas requisições, em intervalos de tempo de  
+alguns minutos, para fins estatísticos? Isso pode ser feito com um  
+serviço muito interessante da plataforma do Google App Engine,  
+chamado MemCache.
+
+O MemCache é uma funcionalidade do GAE que permite que a
+
+UTILIZANDO MEMORY  
+CACHE
+
+12.1 O QUE É MEMCACHE
+
+12 UTILIZANDO MEMORY CACHE   
+155
+
+
+De posse da instância de Cache , para inserir um valor no  
+MemCache, basta executar o método put :
+
+cache.put("chave", "valor");
+
+Lembrando de que o método put pode receber valores do tipo
+
+Object como parâmetros.
+
+Para ler algum valor do MemCache, basta utilizar o método
+
+get :
+
+String valor = (Date)cache.get("chave");
+
+Se a chave não existir no MemCache, o objeto retornado será  
+nulo.
+
+Para verificar se uma chave existe no Memcache, pode-se  
+utilizar o método containsKey , que recebe como argumento a  
+chave de pesquisa, retornando verdadeiro, caso encontre, e falso,  
+caso contrário.
+
+Para remover uma chave do MemCache, basta usar o método
+
+remove , que recebe como parâmetro o valor da chave a ser  
+removida:
+
+cache.remove("chave");
+
+Nesta seção, será mostrado como utilizar o serviço MemCache
+
+Inserindo e buscando valores no MemCache
+
+Verificando se uma chave existe no MemCache
+
+Removendo uma chave do MemCache
+
+12.3 USANDO MEMCACHE NO MECANISMO  
+DE AUTENTICAÇÃO
+
+158   
+12.3 USANDO MEMCACHE NO MECANISMO DE AUTENTICAÇÃO
+
+
+do GAE para melhorar o desempenho do mecanismo de  
+autenticação da aplicação exemplo1 , persistindo a informação do  
+último login do usuário somente se ele acessou algum serviço dessa  
+aplicação há mais de 30 segundos. Isso fará com que o número de  
+acessos ao Datastore para realizar essa tarefa caia bastante, pois  
+atualmente em toda requisição que é feita, essa informação é  
+atualizada é persistida nele.
+
+Para começar, desacople a persistência da informação do  
+usuário no Datastore do método checkCredentialsAndRoles da  
+classe   
+  
+AuthFilter   
+,   
+do   
+pacote
+
+com.siecola.exemplo1.authentication   
+  
+da   
+aplicação
+
+exemplo1 , criando um novo método privado para realizar tal  
+tarefa, que agora vai utilizar o MemCache. Para isso, retire o  
+seguinte trecho desse método:
+
+final User user = new User();
+
+user.setEmail((String) userEntity.getProperty(UserManager.PROP_EMA  
+IL));  
+user.setPassword((String) userEntity.getProperty(UserManager.PROP_  
+PASSWORD));  
+user.setId(userEntity.getKey().getId());  
+user.setGcmRegId((String) userEntity.getProperty(UserManager.PROP_  
+GCM_REG_ID));  
+user.setLastLogin((Date) Calendar.getInstance().getTime());  
+user.setLastGCMRegister((Date) userEntity.getProperty(UserManager.  
+PROP_LAST_GCM_REGISTER));  
+user.setRole((String) userEntity.getProperty(UserManager.PROP_ROLE  
+));
+
+userEntity.setProperty(UserManager.PROP_LAST_LOGIN, user.getLastLo  
+gin());  
+datastore.put(userEntity);
+
+Substitua esse trecho pela chamada do novo método:
+
+final User user = updateUserLogin(datastore, userEntity);
+
+Agora crie o novo método, a princípio para realizar os mesmos  
+passos que o trecho retirado fazia:
+
+12.3 USANDO MEMCACHE NO MECANISMO DE AUTENTICAÇÃO   
+159
+
+
+deverão ter os valores do último login atualizados para  
+o usuário em questão.
+
+Como você pode perceber, o número de acessos ao Datastore  
+para a atualização da informação de data/hora do último login de  
+cada usuário reduzirá bastante. O tempo de 30 segundos escolhido  
+para esse exemplo pode até ser maior, em uma aplicação real,  
+dependendo da necessidade, reduzindo ainda mais os acessos ao  
+Datastore para gravação de dados.
+
+Para implementar os requisitos apresentados, comece alterando  
+o método updateUserLogin , incluindo o código responsável por  
+realizar a lógica proposta por eles:
+
+User user = new User();  
+boolean canUseCache = true;  
+boolean saveOnCache = true;
+
+String email = (String) userEntity.getProperty(UserManager.PROP_EM  
+AIL);
+
+Cache cache;  
+try {
+
+CacheFactory cacheFactory = CacheManager.getInstance().getCach  
+eFactory();
+
+cache = cacheFactory.createCache(Collections.emptyMap());
+
+if (cache.containsKey(email)) {  
+Date lastLogin = (Date)cache.get(email);  
+if ((Calendar.getInstance().getTime().getTime() - lastLogi  
+n.getTime()) < 30000) {
+
+saveOnCache = false;  
+}  
+}
+
+if (saveOnCache == true) {  
+cache.put(email, (Date)Calendar.getInstance().getTime());   
+  
+canUseCache = false;   
+}  
+} catch (CacheException e) {
+
+canUseCache = false;   
+}
+
+12.3 USANDO MEMCACHE NO MECANISMO DE AUTENTICAÇÃO   
+161
+
+
+Repare que, depois que a instância do MemCache foi  
+requisitada, o código verifica a existência de uma chave com o valor  
+do   
+e-mail   
+do   
+usuário   
+autenticado,   
+pelo   
+método
+
+cache.containsKey(email) . Caso exista algum valor, a data lá  
+armazenada é comparada com a atual do sistema. Se o intervalo for  
+maior do que 30 segundos, a informação é atualizada no MemCache  
+e posteriormente no Datastore, como pode ser visto no restante do  
+código desse método:
+
+if (canUseCache == false) {
+
+user.setEmail((String) userEntity.getProperty(UserManager.PROP  
+_EMAIL));
+
+user.setPassword((String) userEntity.getProperty(UserManager.P  
+ROP_PASSWORD));
+
+user.setId(userEntity.getKey().getId());  
+user.setGcmRegId((String) userEntity.getProperty(UserManager.P  
+ROP_GCM_REG_ID));
+
+user.setLastLogin((Date) Calendar.getInstance().getTime());  
+user.setLastGCMRegister((Date) userEntity.getProperty(UserMana  
+ger.PROP_LAST_GCM_REGISTER));
+
+user.setRole((String) userEntity.getProperty(UserManager.PROP_  
+ROLE));
+
+userEntity.setProperty(UserManager.PROP_LAST_LOGIN, user.getLa  
+stLogin());
+
+datastore.put(userEntity);   
+}
+
+return user;
+
+Perceba que o código que atualiza o Datastore só é executado  
+caso a informação não esteja no MemCache ainda, ou se já se  
+passaram 30 segundos desde a última atualização do MemCache  
+para esse usuário. Isso reduz os acessos de escrita ao Datastore para  
+cada usuário.
+
+O console do GAE possui uma seção específica para exibir as
+
+12.4 VISUALIZANDO O MEMCACHE DO  
+CONSOLE DO GAE
+
+162   
+12.4 VISUALIZANDO O MEMCACHE DO CONSOLE DO GAE
+
+
+informações que estão armazenadas no MemCache. Para acessá-las,  
+basta ir ao menu principal da aplicação na seção App Engine e  
+escolher a opção MemCache :
+
+Figura 12.1: Estatísticas do MemCache
+
+Nessa mesma tela, é possível localizar os dados armazenados no  
+MemCache, localizando-os por meio da sua chave:
+
+Figura 12.2: Dados do MemCache
+
+12.4 VISUALIZANDO O MEMCACHE DO CONSOLE DO GAE   
+163
+
+
+MEMCACHE NO AMBIENTE DE DESENVOLVIMENTO
+
+O   
+MemCache   
+também   
+funciona   
+no   
+ambiente   
+de  
+desenvolvimento, mas o console de administração local não  
+possui uma interface para exibir os dados contidos nele. Isso só  
+está disponível na interface do console do GAE do ambiente de  
+produção.
+
+Neste capítulo, você melhorou o desempenho do mecanismo de  
+autenticação de usuários, utilizando o serviço MemCache do GAE,  
+mais uma funcionalidade muito interessante e útil da plataforma do  
+Google.
+
+No próximo capítulo, você aprenderá mais uma funcionalidade  
+do MemCache, que é a configuração do tempo que a informação  
+pode ficar armazenada no memory cache, antes de ser  
+automaticamente   
+apagada.   
+Isso   
+será   
+muito   
+útil   
+para   
+o  
+gerenciamento de tokens, utilizado no mecanismo de autenticação  
+OAuth, que será o foco principal do capítulo, onde será apresentada  
+uma nova forma de autenticação de usuários.
+
+12.5 CONCLUSÃO
+
+164   
+12.5 CONCLUSÃO
+
+
+<servlet-name>exemplooauth_services</servlet-name>  
+<servlet-class>org.glassfish.jersey.servlet.ServletContainer</  
+servlet-class>
+
+<init-param>  
+<param-name>jersey.config.server.provider.packages</param-  
+name>
+
+<param-value>com.siecola.exemplooauth.services</param-value  
+>
+
+</init-param>  
+<init-param>  
+<param-name>jersey.config.server.provider.classnames</para  
+m-name>
+
+<param-value>com.siecola.exemplooauth.authentication.AuthF  
+ilter;org.glassfish.jersey.filter.LoggingFilter</param-value>
+
+</init-param>   
+<load-on-startup>1</load-on-startup>  
+</servlet>  
+<servlet-mapping>
+
+<servlet-name>exemplooauth_services</servlet-name>  
+<url-pattern>/api/*</url-pattern>  
+</servlet-mapping>
+
+<listener>
+
+<listener-class>com.siecola.exemplooauth.InitServletContextCla  
+ss</listener-class>  
+</listener>
+
+Como o projeto exemplooauth só terá o serviço de usuários,  
+principalmente porque essa base será utilizada pelo mecanismo  
+OAuth, você deve criá-lo da mesma forma como foi feito no projeto
+
+exemplo1 .
+
+O modelo de usuário deve ser a primeira coisa a ser criada. Ele  
+será o mesmo usado no projeto exemplo1 . Por isso, crie o pacote
+
+com.siecola.exemplooauth.models .
+
+Em seguida, copie a classe User da aplicação exemplo1 e faça  
+as devidas alterações de nomes de pacotes para o novo projeto
+
+13.3 CRIANDO O SERVIÇO DE USUÁRIOS
+
+Modelo User
+
+13.3 CRIANDO O SERVIÇO DE USUÁRIOS   
+169
+
+
+exemplooauth .
+
+O serviço de usuários também será o mesmo que foi utilizado no  
+projeto exemplo1 , com as mesmas anotações e regras. Para isso,  
+crie o pacote com.siecola.exemplooauth.services .
+
+Depois, copie a classe UserManager da aplicação exemplo1 e  
+faça as devidas alterações de nomes de pacotes para o novo projeto
+
+exemplooauth .
+
+Para   
+inicializar   
+a   
+base   
+de   
+usuários,   
+crie   
+a   
+classe
+
+InitServletContextClass , que de acordo com as configurações  
+feitas no arquivo web.xml , será chamada assim que a aplicação  
+subir. Para isso, crie o pacote com.siecola.exemplooauth .
+
+Por último, copie a classe InitServletContextClass e faça as  
+devidas alterações de nomes de pacotes para o novo projeto
+
+exemplooauth .
+
+O provedor de autenticação, na verdade, será um serviço para  
+fornecer os tokens aos clientes quando eles solicitarem.  
+Obviamente, esse serviço deve estar acessível a qualquer usuário,  
+mesmo que ele não esteja autenticado.
+
+Para que o usuário receba o token, é necessário que ele esteja  
+cadastrado no Datastore. Por isso, ele deverá fornecer suas  
+credenciais corretas ao provedor de autenticação.
+
+Serviço de usuários
+
+Inicializando os dados de usuários
+
+13.4   
+FORNECENDO   
+OS   
+TOKENS   
+DE  
+AUTENTICAÇÃO
+
+170   
+13.4 FORNECENDO OS TOKENS DE AUTENTICAÇÃO
+
+
+Parte do código do provedor de autenticação que será  
+apresentado foi retirado da própria documentação e projetos de  
+exemplo do Apache Oltu, que você pode encontrar em  
+https://oltu.apache.org/.
+
+Para começar, crie uma nova classe chamada OAuthToken . Ela  
+implementará o serviço onde os clientes solicitarão o token de  
+acesso, por meio da URL api/token .
+
+@Path("/token")  
+public class OAuthToken {
+
+}
+
+Esse serviço terá apenas uma operação, que será onde os tokens  
+poderão ser requisitados. Ela deverá ser acessada utilizando o  
+método HTTP POST , recebendo no corpo da mensagem no formato
+
+application/x-www-form-urlencoded as credenciais de acesso  
+do usuário que solicita o token. Além disso, a operação deverá  
+responder com o token de acesso, no formato application/json .  
+Para isso, crie o método autorize , como mostrado a seguir:
+
+@POST  
+@Consumes("application/x-www-form-urlencoded")  
+@Produces("application/json")  
+@PermitAll  
+public Response authorize(@Context HttpServletRequest request, Mul  
+tivaluedMap<String, String> form)
+
+throws OAuthSystemException {
+
+}
+
+Como dito anteriormente, essa operação poderá ser acessada  
+por qualquer usuário cadastrado, mesmo que ele não esteja  
+autenticado ou com um token que recebeu previamente. Por isso, a  
+anotação @PermitAll deve ser usada.
+
+Para que seja possível acessar o corpo da requisição, que carrega  
+as credenciais do cliente, é necessário criar uma classe que estende  
+de HttpServletRequestWrapper , pois o Jersey por padrão não
+
+13.4 FORNECENDO OS TOKENS DE AUTENTICAÇÃO   
+171
+
+
+passa a mensagem que recebeu no corpo da mensagem. Para isso,  
+no mesmo arquivo onde a classe OAuthToken foi criada, crie a  
+classe OAuthRequestWrapper , sobrescrevendo os métodos
+
+getParameter e getParameterValues :
+
+class OAuthRequestWrapper extends HttpServletRequestWrapper {
+
+private MultivaluedMap<String, String> form;
+
+public OAuthRequestWrapper(HttpServletRequest request,  
+MultivaluedMap<String, String> form) {  
+super(request);  
+this.form = form;  
+}
+
+@Override  
+public String getParameter(String name) {  
+String value = super.getParameter(name);  
+if (value == null) {  
+value = form.getFirst(name);  
+}  
+return value;  
+}
+
+@Override  
+public String[] getParameterValues(String name) {  
+String[] values = super.getParameterValues(name);  
+if(values == null && form.get(name) != null){  
+values = new String[form.get(name).size()];  
+values = form.get(name).toArray(values);  
+}  
+return values;  
+}  
+}
+
+O formato das credenciais de acesso que o cliente deve enviar na  
+requisição para pegar o token deve ter o seguinte formato:
+
+grant_type=password&username=admin@siecola.com&password=Admin#7&cl  
+ient_secret=Admin#7&client_id=admin@siecola.com
+
+Sendo   
+que   
+nesse   
+exemplo,   
+o   
+login   
+do   
+usuário   
+é
+
+admin@siecola.com e a senha é Admin#7 . Os parâmetros
+
+client_secret e client_id são exigidos pelo interpretador do  
+Apache Oltu e podem ser utilizados para identificar a aplicação
+
+172   
+13.4 FORNECENDO OS TOKENS DE AUTENTICAÇÃO
+
+
+cliente, que está fazendo a requisição em nome de um usuário.
+
+Para iniciar com a implementação do método autorize ,  
+comece realizando a interpretação da mensagem com as credenciais  
+do usuário e também gerando o número que representará o token  
+de acesso, como mostra o trecho a seguir:
+
+try {  
+OAuthTokenRequest oauthRequest = new OAuthTokenRequest(new OAuthRe  
+questWrapper(request, form));  
+OAuthIssuer oauthIssuerImpl = new OAuthIssuerImpl(
+
+new MD5Generator());
+
+Veja que o objeto OAuthTokenRequest oauthRequest é  
+criado a partir da requisição que chega no método authorize . Ele  
+conterá todas as informações necessárias para o tratamento e  
+geração do token.
+
+Em seguida, verifique se o usuário, cujo e-mail foi fornecido nas  
+credenciais, realmente está cadastrado no Datastore:
+
+Entity userEntity = findUserByEmail(oauthRequest.getUsername());  
+if (userEntity == null) {
+
+return buildInvalidUserPassResponse();   
+}
+
+Depois, verifique se o tipo da credencial fornecida está correto,  
+assim como se senha do usuário bate com o que está cadastrado no  
+Datastore:
+
+if (oauthRequest.getParam(OAuth.OAUTH_GRANT_TYPE).equals(
+
+GrantType.AUTHORIZATION_CODE.toString())) {  
+if (!checkAuthCode(oauthRequest.getParam(OAuth.OAUTH_CODE))) {  
+return buildBadAuthCodeResponse();  
+}  
+} else if (oauthRequest.getParam(OAuth.OAUTH_GRANT_TYPE).equals(
+
+GrantType.PASSWORD.toString())) {  
+if (!userEntity.getProperty(UserManager.PROP_PASSWORD).equals(  
+oauthRequest.getPassword())) {
+
+return buildInvalidUserPassResponse();  
+}  
+}
+
+13.4 FORNECENDO OS TOKENS DE AUTENTICAÇÃO   
+173
+
+
+Se tudo estiver correto, gere o token e responda de volta,  
+informando o valor da chave de acesso, o tipo do token e o tempo  
+em que ele será válido (nesse caso, 3600 segundos):
+
+final String accessToken = oauthIssuerImpl.accessToken();
+
+if (saveToken(oauthRequest.getUsername(), accessToken)) {
+
+OAuthResponse response = OAuthASResponse  
+.tokenResponse(HttpServletResponse.SC_OK)  
+.setAccessToken(accessToken)  
+.setExpiresIn("3600")  
+.setTokenType("bearer")
+
+.buildJSONMessage();  
+return Response.status(response.getResponseStatus())  
+.entity(response.getBody()).build();   
+} else {
+
+return buildInternalServerError();  
+}
+
+Repare no teste e na chamada ao método saveToken . Ele é  
+usado para salvar o token criado no MemCache, associando com o  
+endereço de e-mail do usuário. Na próxima seção, isso será  
+explicado melhor.
+
+Caso alguma exceção aconteça, como má formação da  
+credencial ou informação faltando, responda com uma mensagem  
+de erro apropriada:
+
+} catch (OAuthProblemException e) {
+
+OAuthResponse res = OAuthASResponse  
+.errorResponse(HttpServletResponse.SC_BAD_REQUEST).err  
+or(e)
+
+.buildJSONMessage();  
+return Response.status(res.getResponseStatus())  
+.entity(res.getBody()).build();  
+}
+
+Os métodos privados   
+buildBadAuthCodeResponse() ,
+
+buildInvalidUserPassResponse()   
+  
+e
+
+buildInternalServerError() foram utilizados nos trechos de  
+código mostrados para geração de mensagens de resposta de erro,
+
+174   
+13.4 FORNECENDO OS TOKENS DE AUTENTICAÇÃO
+
+
+caso algo desse errado, como senha inválida ou erro de parser da  
+credencial de acesso.
+
+Também   
+foram   
+mostrados   
+os   
+métodos   
+privados
+
+checkAuthCode para verificar o tipo de token de autenticação  
+(Bearer token), e findUserByEmail() para localizar o usuário no  
+Datastore através de seu e-mail.
+
+Esses códigos, assim como o restante do projeto, estão no  
+repositório   
+de   
+código   
+do   
+livro,   
+no   
+endereço:  
+https://github.com/siecola/GAEBook.
+
+Quando o token é gerado no método authorize , outro  
+método é chamado para salvá-lo no serviço MemCache do Google  
+App Engine. O MemCache foi escolhido para guardar o token  
+gerado por duas razões: para que não haja acessos de escrita e leitura  
+no Datastore sempre que o token for gerado e verificado a cada  
+requisição, e para utilizar seu mecanismo de expiração configurável,  
+fazendo que o token possa deixar de existir após esse tempo, sem  
+que você tenha de escrever códigos para lidar com isso.
+
+Para facilitar o trabalho com o MemCache, crie um Singleton   
+para fornecer a instância do MemCache, já configurado com o  
+tempo de expiração dos valores que nele serão inseridos. Para isso,  
+cria   
+a   
+classe   
+  
+TokenCacheManager   
+  
+no   
+pacote
+
+com.siecola.exemplooauth , como mostra o trecho a seguir:
+
+import java.util.HashMap;  
+import java.util.Map;  
+import java.util.concurrent.TimeUnit;
+
+import javax.cache.Cache;  
+import javax.cache.CacheException;  
+import javax.cache.CacheFactory;  
+import javax.cache.CacheManager;
+
+Armazenando tokens no MemCache
+
+13.4 FORNECENDO OS TOKENS DE AUTENTICAÇÃO   
+175
+
+
+import com.google.appengine.api.memcache.jsr107cache.GCacheFactory  
+;
+
+public class TokenCacheManager {
+
+private static TokenCacheManager instance = null;
+
+private static Cache cache;
+
+private TokenCacheManager(){}
+
+}
+
+Para pegar a instância de TokenCacheManager e do objeto
+
+Cache para acessar o MemCache, crie o método getInstance ,  
+como mostrado a seguir:
+
+public static TokenCacheManager getInstance() throws CacheExceptio  
+n {
+
+if (instance == null) {  
+CacheFactory cacheFactory = CacheManager.getInstance().get  
+CacheFactory();
+
+Map properties = new HashMap<>();  
+properties.put(GCacheFactory.EXPIRATION_DELTA, TimeUnit.HO  
+URS.toSeconds(1));
+
+cache = cacheFactory.createCache(properties);  
+instance = new TokenCacheManager();  
+}
+
+return instance;  
+}
+
+A configuração do tempo de expiração dos valores a serem  
+inseridos no MemCache é feita pela criação da propriedade
+
+GCacheFactory.EXPIRATION_DELTA , que expressa o tempo em  
+segundos. Como você pode ver, agora a instância do MemCache  
+que será usada na aplicação exemplooauth está configurada para  
+expirar os valores nele inseridos em uma hora, ou seja, 3600  
+segundos, como foi configurado na resposta do método
+
+authorize da classe OAuthToken .
+
+Por fim, para ter acesso à instância de Cache que foi criada no
+
+176   
+13.4 FORNECENDO OS TOKENS DE AUTENTICAÇÃO
+
+
+método getInstance , crie o método getCache para retorná-la:
+
+public Cache getCache() {
+
+return this.cache;  
+}
+
+Agora toda a aplicação poderá utilizar o Singleton
+
+TokenCacheManager , que traz uma instância de Cache já  
+configurada.
+
+A classe de filtro do projeto exemplooauth será bem parecida  
+com a que foi criada no projeto exemplo1 , com apenas algumas  
+alterações, pois agora ela retirar um token da requisição, e não mais  
+o e-mail e a senha do usuário.
+
+Para   
+isso,   
+crie   
+o   
+pacote
+
+com.siecola.exemplooauth.authentication e a classe
+
+AuthFilter , da mesma forma como foi feito no projeto
+
+exemplo1 :
+
+public class AuthFilter implements ContainerRequestFilter {
+
+private static final String ACCESS_UNAUTHORIZED = "Você não te  
+m permissão para acessar esse recurso";
+
+@Context  
+private ResourceInfo resourceInfo;
+
+@Override  
+public void filter(ContainerRequestContext requestContext) {
+
+}  
+}
+
+O início desse método é exatamente igual ao do projeto
+
+exemplo1 , onde a presença da anotação @PermitAll é verificada,  
+assim como a presença do cabeçalho Authorization , que  
+carregará o token obtido pelo usuário:
+
+13.5 CRIANDO A CLASSE DE FILTRO
+
+13.5 CRIANDO A CLASSE DE FILTRO   
+177
+
+
+Method method = resourceInfo.getResourceMethod();
+
+if (method.isAnnotationPresent(PermitAll.class)) {
+
+return;  
+}
+
+String auth = requestContext.getHeaderString("Authorization");
+
+if (auth == null) {
+
+requestContext.abortWith(Response.status(Response.Status.UNAUT  
+HORIZED)
+
+.entity(ACCESS_UNAUTHORIZED).build());  
+return;  
+}
+
+Em seguida, pegue o token do cabeçalho Authorization e  
+passe para o método checkCredentialsAndRoles , que deverá ser  
+alterado para receber o valor do token em vez do e-mail e a senha do  
+usuário:
+
+String accessToken = auth.substring("Bearer ".length());
+
+RolesAllowed rolesAllowed = method.getAnnotation(RolesAllowed.clas  
+s);  
+Set<String> rolesSet = new HashSet<String>(Arrays.asList(rolesAllo  
+wed.value()));
+
+if (checkCredentialsAndRoles (accessToken, rolesSet, requestContex  
+t) == false) {
+
+requestContext.abortWith(Response.status(Response.Status.UNAUT  
+HORIZED)
+
+.entity(ACCESS_UNAUTHORIZED).build());  
+return;   
+}
+
+Agora o método checkCredentialsAndRoles deverá receber  
+o valor do token enviado na requisição, procurando-o no  
+MemCache, caso ainda não tenha expirado. Após isso, é necessário  
+localizar o usuário por meio do seu endereço de e-mail, que está  
+atrelado ao token no MemCache:
+
+private boolean checkCredentialsAndRoles (String accessToken, Set<
+
+Validando os tokens no MemCache
+
+178   
+13.5 CRIANDO A CLASSE DE FILTRO
+
+
+String> roles, ContainerRequestContext requestContext) {
+
+boolean isUserAllowed = false;  
+String email;   
+try {  
+Cache cache = TokenCacheManager.getInstance().getCache();   
+  
+if (cache.containsKey(accessToken)) {  
+email = (String) cache.get(accessToken);   
+DatastoreService datastore = DatastoreServiceFactory  
+.getDatastoreService();  
+Filter emailFilter = new FilterPredicate(UserManager.P  
+ROP_EMAIL, FilterOperator.EQUAL, email);
+
+Query query = new Query(UserManager.USER_KIND).setFilt  
+er(emailFilter);
+
+Entity userEntity = datastore.prepare(query).asSingleE  
+ntity();
+
+if (userEntity != null) {   
+if (roles.contains(userEntity.getProperty(UserMana  
+ger.PROP_ROLE))) {
+
+final User user = updateUserLogin(datastore, u  
+serEntity);
+
+requestContext.setSecurityContext(new Security  
+Context() {
+
+@Override  
+public boolean isUserInRole(String role) {  
+return role.equals(user.getRole());  
+}   
+@Override  
+public boolean isSecure() {  
+return true;  
+}   
+@Override  
+public Principal getUserPrincipal() {  
+return user;  
+}   
+@Override  
+public String getAuthenticationScheme() {  
+return SecurityContext.BASIC_AUTH;  
+}  
+});   
+isUserAllowed = true;  
+}  
+}   
+}  
+} catch (CacheException e) {  
+}   
+return isUserAllowed;
+
+13.5 CRIANDO A CLASSE DE FILTRO   
+179
+
+
+}
+
+Depois que o usuário é localizado no Datastore pelo seu e-mail  
+que estava atrelado ao token no MemCache, o código segue sua  
+execução da mesma forma como foi feito no projeto exemplo1 ,  
+inclusive chamando o método   
+updateUserLogin para  
+implementar o mecanismo da lógica de salvar a data/hora do último  
+login do usuário.
+
+Tudo pronto! Agora é só colocar a aplicação exemplooauth em  
+execução e testar o mecanismo de autenticação OAuth 2 que foi  
+implementado nela.
+
+É possível testar o mecanismo de autenticação OAuth 2 da  
+aplicação, utilizando o REST Console. Para isso, execute-a no  
+Eclipse na sua máquina de desenvolvimento.
+
+Se a aplicação exemplooauth estiver no mesmo workspace do  
+Eclipse do projeto exemplo1 , remova-o do servidor na aba
+
+Servers e adicione o projeto exemplooauth .
+
+Para adquirir o token de acesso, é necessário acessar o serviço  
+que foi criado como parte do provedor de autenticação. Para isso,  
+configure o REST Console para realizar um POST no endereço  
+http://localhost:8888/api/token.
+
+Ele deverá ser configurado para aceitar uma resposta com o  
+conteúdo no formato application/json e enviar no corpo da
+
+13.6 TESTANDO COM O REST CONSOLE
+
+Requisitando o token com o REST Console
+
+180   
+13.6 TESTANDO COM O REST CONSOLE
+
+
+requisição as credenciais no formato application/x-www-form-
+
+urlencoded . Tais credenciais, como já foi explicado, deverá ter os  
+seguinte formato:
+
+grant_type=password&username=admin@siecola.com&password=Admin#7&cl  
+ient_secret=Admin#7&client_id=admin@siecola.com
+
+Veja como fica configurado o REST Console na seção Target   
+para satisfazer esses requisitos:
+
+Figura 13.1: Solicitando token com REST Console - Target.
+
+E na seção Body , onde as credenciais para solicitar o token  
+deverão ficar:
+
+Figura 13.2: Solicitando token com REST Console - Body.
+
+A resposta à requisição ao serviço que fornece o token é no
+
+13.6 TESTANDO COM O REST CONSOLE   
+181
+
+
+formato JSON, como mostrado a seguir:
+
+{
+
+"token_type": "bearer",  
+"expires_in": 3600,  
+"access_token": "3ec10cd3f53a311e87dd4097f2ed2fb5"  
+}
+
+Nele, há o tipo do token obtido, que é o Bearer, o tempo em  
+segundos que esse token é válido no provedor de autenticação e o  
+valor da chave de acesso em si.
+
+Figura 13.3: Token gerado
+
+Agora que o token já foi obtido no provedor de autenticação, é  
+possível utilizá-lo para acessar o serviço de usuários ou qualquer  
+outro que você crie na aplicação exemplooauth , que esteja no  
+pacote com.siecola.exemplooauth.services . Para isso, basta  
+incluir, em todas as requisições, o cabeçalho Authorization no  
+seguinte formato:
+
+Authorization: Bearer token_de_acesso
+
+Acessando o serviço de usuários com o token obtido
+
+182   
+13.6 TESTANDO COM O REST CONSOLE
+
+
+Onde o token_de_acesso é o valor da chave obtida do  
+provedor de autenticação. Veja como fica o REST Console,  
+configurado para tal:
+
+Figura 13.4: Campo Authorization
+
+Os passos que foram descritos na seção anterior são exatamente  
+aqueles que uma aplicação cliente, desenvolvida em Java, Android,  
+Swift ou qualquer outra linguagem, deve executar para poder  
+adquirir o token de acesso e usá-lo em todas as requisições aos  
+serviços providos por uma aplicação que implementa o mecanismo  
+OAuth 2 com Bearer token.
+
+Além disso, a aplicação cliente também deve se atentar ao fato  
+que o token vai expirar no provedor de autenticação. Por isso,  
+quando uma tentativa de acesso a alguma serviço falhar e ela receber  
+um o código HTTP 401 UNAUTHORIZED , um novo token deve ser  
+requisitado.
+
+E é isso! Agora você pode construir serviços REST, hospedados  
+no Google App Engine, de forma mais segura com o mecanismo de
+
+13.7 COMPORTAMENTO DA APLICAÇÃO  
+CLIENTE
+
+13.8 CONCLUSÃO
+
+13.7 COMPORTAMENTO DA APLICAÇÃO CLIENTE   
+183
+
+
+autenticação OAuth 2 com Bearer token. Um mecanismo muito  
+utilizado e conhecido.
+
+184   
+13.8 CONCLUSÃO
+
+
+CAPÍTULO 14
+
+O Google App Engine é uma plataforma fantástica que sempre  
+está inovando e lançando novas funcionalidades. Há algumas outras  
+coisas que você pode se interessar ou talvez necessite para um outro  
+projeto. Veja a seguir alguns temas e uma referência de consulta na  
+documentação do Google.
+
+É possível enviar e receber e-mails de uma aplicação do Google  
+App   
+Engine.   
+Para   
+maiores   
+informações,   
+consulte  
+https://cloud.google.com/appengine/docs/java/mail/.
+
+O Google oferece uma infraestrutura de hospedagem de banco  
+de dados, semelhante ao MySQL. Com ele, você pode desenvolver  
+aplicações que necessitem de uma base de dados relacional ou que  
+um dia poderão ser portadas para outra plataforma. Para maiores  
+informações,   
+consulte  
+https://cloud.google.com/appengine/docs/java/cloud-sql/.
+
+Esse é um framework para desenvolvimento de APIs na parte do
+
+ALGO MAIS SOBRE  
+GOOGLE APP ENGINE
+
+Envio e recebimento de e-mails
+
+Google Cloud SQL
+
+Google Cloud Endpoints
+
+14 ALGO MAIS SOBRE GOOGLE APP ENGINE   
+185
+
+
+back-end de uma aplicação do GAE, para ser utilizado por clientes  
+móveis como Android e iOS. O conceito é interessante e agiliza  
+muito o desenvolvimento de ambas as partes, mas é necessário  
+avaliar com cuidado sua utilização se você deseja desenvolver uma  
+aplicação que possa ser usada por uma gama maior de clientes  
+desenvolvidos em outras tecnologias e linguagens.
+
+Para   
+maiores   
+informações,   
+consulte  
+https://cloud.google.com/appengine/docs/java/endpoints/.
+
+É possível utilizar JPA ou JDO para acessar os dados no Google  
+Cloud Datasotre, abstraindo a API de baixo nível nativa do SDK.
+
+Para   
+informações   
+sobre   
+como   
+utilizar   
+JDO,   
+consulte  
+https://cloud.google.com/appengine/docs/java/datastore/jdo/overvi  
+ew.
+
+Para   
+informações   
+sobre   
+como   
+utilizar   
+JPA,   
+consulte  
+https://cloud.google.com/appengine/docs/java/datastore/jpa/overvi  
+ew-dn2
+
+Lembre-se de que você pode encontrar tudo o que foi  
+desenvolvido aqui no repositório de código do livro no endereço:  
+https://github.com/siecola/GAEBook.
+
+Você também pode participar do Fórum da Casa do Código,  
+deixando   
+comentários,   
+dúvidas   
+ou   
+sugestões.   
+O   
+link   
+é:  
+http://forum.casadocodigo.com.br.
+
+Espero que vocês tenham gostado e aproveitado do livro! Até o  
+próximo!
+
+JPA e JDO
+
+14.1 CONCLUSÃO
+
+186   
+14.1 CONCLUSÃO

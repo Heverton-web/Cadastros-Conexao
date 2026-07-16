@@ -1,0 +1,503 @@
+=== google-app-engine === (5566 linhas totais, conteudo comeca na linha 137)
+=== Primeiras 1882 linhas significativas extraidas
+
+Engine, pois há uma boa parte do conteúdo dedicado a isso.
+É interessante que o leitor possua familiaridade com Java e
+programação orientada a objetos, bem como com a IDE Eclipse,
+para poder aproveitar com mais intensidade o material apresentado,
+e se aventurar nos exercícios propostos. Porém, o livro aborda todos
+os conteúdos de forma didática, construindo os exemplos desde o
+início e detalhando os conceitos a partir de um nível que possa ser
+compreendido por programadores com qualquer nível de
+Paulo César Siécola é Mestre em Ciência da Computação pelo
+Instituto de Matemática e Estatística da Universidade de São Paulo
+(2011). Possui graduação em Engenharia Elétrica pelo Instituto
+Nacional de Telecomunicações - INATEL (2005).
+Atualmente, é Especialista em Sistemas Sênior no Inatel
+Competence Center e Professor em cursos de Pós-Graduação no
+INATEL. Tem experiência em desenvolvimento de software em C,
+Java e C#, atuando principalmente nos seguintes temas:
+desenvolvimento Web, sistemas embarcados, análise de protocolos
+de redes de computadores e desenvolvimento de aplicações para
+Gostaria de agradecer ao Adriano Almeida, pela oportunidade
+de publicar um livro na Casa do Código, e também agradecer a
+Vivian Matsui, pelo empenho e dedicação nas revisões didáticas.
+Agradeço aos meus professores e mestres, pois, sem eles, não
+Agradeço meus pais, que são a fonte da minha motivação para o
+Obrigado meu Deus, pelos dons que de Ti recebi. Espero estar
+utilizando-os com sabedoria e equilíbrio.
+Finalmente, agradeço a minha amada esposa Isabel, pela
+2 Preparando o ambiente de desenvolvimento
+2.2 Google App Engine SDK for Java 1.9.30
+2.4 Instalando o Google Plugin for Eclipse
+3 Desenvolvendo a primeira aplicação para o GAE
+4.1 Preparando o projeto para trabalhar com serviços REST
+4.5 Testando o serviço com o REST Console
+4.6 Geração do contrato do serviço com WADL
+5 Criando um serviço REST completo com Jersey
+6 Armazenando dados no Google Cloud Datastore
+6.2 Configurando o projeto para trabalhar com Datastore
+7.1 Configurando o projeto para geração logs
+7.3 Visualizando as mensagens de log no GAE
+8 Protegendo serviços com HTTP Basic Authentication
+8.2 Configurando o projeto para HTTP Basic Authentication
+8.3 Criando a classe de filtro e protegendo os serviços
+8.4 Testando o serviço de produtos com HTTP Basic
+8.5 Adicionando anotações para controle de permissões e papéis
+10 Enviando mensagens com o Google Cloud Messaging
+10.2 Configurando o projeto no GAE para utilizar o GCM
+10.5 Enviando mensagens a aplicativos móveis com o GCM
+11.1 Como funcionam as tarefas agendadas no GAE
+11.4 Acompanhando a execução do console do GAE
+12.3 Usando MemCache no mecanismo de autenticação
+12.4 Visualizando o MemCache do console do GAE
+13.4 Fornecendo os tokens de autenticação
+O Google App Engine é uma plataforma de computação nas
+nuvens que permite a execução de aplicações Web na infraestrutura
+do Google, de forma fácil e escalável, sem a necessidade de
+manutenção em sistemas operacionais e servidores. Todas as
+aplicações ficam hospedadas sob o domínio appspot.com, e podem
+ser acessadas por todo o mundo ou apenas por pessoas/aplicações
+As aplicações podem ser desenvolvidas em Java, Python, PHP e
+Go, com um ambiente de runtime específico para cada linguagem.
+O estilo de cobrança do Google App Engine é o pay as you go,
+ou seja, você só paga pelo tanto que a aplicação usar de recursos da
+plataforma. Porém, é possível iniciar o desenvolvimento sem pagar
+nada, com limites razoáveis de banda, armazenamento e número de
+acessos por mês. Esses limites são suficientes para provas de
+conceitos, estudos e até mesmo aplicações de pequeno porte.
+Durante este livro, será utilizada a linguagem de programação
+Java para o desenvolvimento de aplicações de exemplo, que serão
+hospedadas no Google App Engine. Por isso, o foco das descrições a
+partir desse ponto será exclusivo para essa linguagem.
+Você utilizará muito esse console de administração das
+aplicações que forem publicadas no Google App Engine.
+Agora que você já sabe um pouco sobre o que o Google App
+Engine, como plataforma, pode oferecer, você poderá preparar seu
+ambiente de desenvolvimento seguindo as instruções do próximo
+1\. Configure o local do workspace que você desejar:
+Figura 2.1: Configurando o local do workspace
+2\. Clique em OK e aguarde até que o Eclipse carregue
+3\. Acesse o menu Window -> Preference para abrir a janela
+4\. Nessa janela, acesse a opção Java -> Installed JREs ;
+5\. Adicione um novo JRE, clicando no botão Add . Selecione o
+6\. Selecione a opção jdk1.7.0_80 como a opção padrão. Isso
+fará com que as novas aplicações sejam criadas utilizando essa
+Para instalar o Google Plugin for Eclipse, execute os passos a
+1\. Acesse o menu Help -> Install New Software ;
+2\. Na janela que abrir, clique no botão Add para adicionar o
+repositório de ferramentas do Google para o Eclipse 4.4;
+https://dl.google.com/eclipse/plugin/4.4 no campo
+2.4 INSTALANDO O GOOGLE PLUGIN FOR ECLIPSE
+Location no pop-up que se abrir, e clique em OK ;
+Figura 2.3: Configurando o repositório do Google Plugin
+4\. Aguarde até que o Eclipse carregue as opções de ferramentas
+5\. Depois de o Eclipse carregar as opções de instalação do
+repositório do Google, selecione as seguintes opções, pelo
+A tela de instalação do Eclipse deverá ficar como a figura
+2.4 INSTALANDO O GOOGLE PLUGIN FOR ECLIPSE
+Figura 2.4: Opções de instalação no Eclipse
+7\. Aceite todos os termos das licenças, e depois cliquem em
+Finish para dar início ao processo de download e
+8\. Depois que tudo for baixado e instalado, o Eclipse pedirá para
+9\. Depois de reiniciar o Eclipse, acesse o menu Window ->
+Preference e veja que há uma nova opção com o nome de
+2.4 INSTALANDO O GOOGLE PLUGIN FOR ECLIPSE
+10\. Expanda a opção Google e clique no item App Engine .
+Veja que o App Engine SDK já está instalado e configurado
+11\. Nessa mesma tela, vá à opção Java -> Compiler e
+configure o item Compiler compliance level para 1.7;
+12\. Repare também que, no canto inferior direito do Eclipse, há a
+opção para você deixar o Eclipse logado na sua conta do
+Google. É interessante fazer isso para que ele acesse a sua
+conta durante a criação de novos projetos, criando uma
+2.4 INSTALANDO O GOOGLE PLUGIN FOR ECLIPSE
+O plugin do Google para o Eclipse possui boas
+ferramentas para a criação e publicação de projetos para
+o GAE, mas neste livro você criará um projeto utilizando
+o Maven como gerenciador de dependências. Por isso, o
+processo será um pouco diferente, mas valerá a pena
+quando você tiver de acrescentar bibliotecas ao projeto,
+como será o caso no capítulo Construindo serviços REST
+com Jersey, onde será inserido o Jersey para trabalhar
+13\. Ainda na tela de preferências do Eclipse, vá à opção Maven -
+> Archetypes e clique no botão Add Remote Catalog para
+adicionar o catálogo de arquiteturas de projeto, dentre elas a
+14\. Na tela que se abrir, preencha o campo Catalog File com o
+endereço http://repo1.maven.org/maven2/archetype-
+15\. Clique em OK para fechar a tela de preferências do Eclipse;
+16\. Realize as demais configurações no workspace do Eclipse que
+Esses foram os passos para a preparação do ambiente de
+desenvolvimento para trabalhar com o Google App Engine. No
+próximo capítulo, você vai construir sua primeira aplicação em Java
+4\. Clique no botão Create e aguarde até que o GAE crie seu
+Assim que o projeto for criado, você será redirecionado para o
+dashboard principal da plataforma do Google Cloud. Nos
+capítulos adiante, você aprenderá algumas ferramentas da
+5\. Tendo o Project ID do projeto recém-criado, vá ao Eclipse
+e acesse o menu File -> New -> Maven Project :
+6\. Na tela que aparecer, clique em Next ;
+7\. Na opção Catalog , escolha o catálogo adicionado no
+8\. Dentre as opções que aparecerem, escolha o Artifact Id
+com o nome de appengine-skeleton-archetype , como
+9\. Clique em Next e preencha os dados para a criação do novo
+Figura 3.4: Dados para criação do projeto
+Nessa tela, é importante se atentar para a versão do App
+Engine, que no caso foi colocado 1.9.30 e o Application
+Id , que deve ser igual ao que você criou para o novo projeto
+10\. Clique em Finish para a criação do projeto e aguarde.
+Dois erros de verificação do Eclipse aparecerão nos arquivos
+nbactions.xml e pom.xml . Não é necessário tomar
+nenhuma atitude para que o projeto funcione, mas o Eclipse
+pode ficar reclamando toda vez que você for publicar o
+projeto. Por isso, se desejar, continue executando os passos a
+11\. No arquivo nbactions.xml , remova as três primeiras linhas
+desse arquivo para resolver o primeiro problema de
+verificação apontado pelo Eclipse, como dito no passo
+12\. No arquivo pom.xml , vá até onde o Eclipse mostra o erro,
+que é em uma tag com o nome de execution , posicione o
+cursor e pressione CTRL + 1 para abrir as opções de
+13\. Clique na opção Permanently mark goal... , que aparece
+duas vezes. Repita o processo novamente. Isso vai resolver o
+segundo problema de verificação do Eclipse que, como dito
+nos passos anteriores, apenas indica que ele encontrou algo de
+errado. Deixar esse erro pode ser um pouco irritante toda vez
+que você for colocar a aplicação para rodar.
+14\. Clique no projeto e acesse o menu Maven -> Update
+Project . Certificar-se de que seu projeto está completamente
+atualizado com todas as dependências que o arquivo
+pom.xml do Maven diz para ele ter. Seu projeto agora deve
+Nesse momento, o projeto apenas foi criado e vinculado à
+aplicação criada no GAE, porém ainda não foi feito o deploy.
+A estrutura de diretórios e arquivos do projeto criado deverá
+adicionados ao projeto à medida que ele for ganhando novas
+Para testar a aplicação, antes é necessário adicionar um servlet
+para exibir uma mensagem de boas-vindas. O template do projeto
+criado não possui nada desse tipo, por isso, execute os passos a
+1\. No projeto exemplo1 , na pasta src/main/webapp , crie o
+arquivo index.html para ser o ponto de entrada da
+aplicação, com um link para o servlet que será criado a seguir:
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//
+<meta http-equiv="content-type" content="text/html; cha
+Available
+2\. Crie o pacote com.siecola.exemplo1 , onde o servlet será
+3\. Dentro desse pacote, crie a classe Exemplo1Servlet . Nele
+será criado o método que vai tratar a requisição ao servlet:
+public class Exemplo1Servlet extends HttpServlet {
+4\. Crie o método doGet , que será invocado quando o usuário
+clicar no link da página index.html e invocar esse servlet:
+public void doGet(HttpServletRequest req, HttpServletRespon
+resp.getWriter().println("Hello, world");
+5\. Abra o arquivo web.xml e acrescente as configurações a
+seguir para adicionar o caminho do novo servlet e também a
+página index.html como sendo o arquivo de boas-vindas:
+com.siecola.exemplo1.Exemplo1Servlet</se
+Agora, sua aplicação já está pronta para ser executada na sua
+A aplicação criada na seção anterior pode ser executada
+localmente para fins de depuração como uma aplicação Web
+comum construída em Java. Para isso, execute os passos a seguir:
+1\. Clique com o botão direito no projeto e acesse o menu Run
+As --> Run on Server . Isso fará com que as opções de
+2\. Selecione a opção Google -> Google App Engine para
+desenvolvimento simulado da sua máquina, como vemos na
+3\. Clique em Finish para que o Eclipse crie um novo servidor
+na aba Servers , e adicione o projeto exemplo1 para ser
+Um servidor será iniciado para que a aplicação seja executada
+em um ambiente simulado, semelhante à infraestrutura
+Nesse momento, o Eclipse abrirá uma aba no endereço
+http://localhost:8888/, onde a página index.html criada está
+sendo exibida. Você também pode acessar essa página pelo browser
+A página exibirá o link para o servlet que foi criado. Clique nele
+para acessá-lo. Isso redirecionará a requisição para o servlet que foi
+Executar e depurar a aplicação na máquina local de
+desenvolvimento é muito interessante, pois é muito mais simples de
+encontrar os erros no código, uma vez que é possível executá-lo
+passo a passo, como em um programa em Java normal.
+Há também um console de administração local, que pode ser
+acessado em http://localhost:8888/_ah/admin.
+Figura 3.10: Console de administração local
+Algumas dessas funções, como o Datastore Viewer , poderão
+ser utilizadas no capítulo Armazenando dados no Google Cloud
+Datastore, para visualizar as entidades e os dados armazenados na
+aprender mais sobre o console de administração do GAE e como ele
+Uma configuração importante é a versão da aplicação, que pode
+ser feito na tag version do arquivo appengine-web.xml , como no
+Com isso, é possível manter várias versões em execução ao
+mesmo tempo no App Engine, e ainda poder escolher qual é a
+versão que será acessada por padrão, como se vê na figura seguinte.
+Isso pode ser acessado no menu principal, na seção Versions do
+Nessa página, pode-se observar qual versão é a padrão - aquela
+que será executada se o usuário acessar a URL da aplicação, sem
+especificar qual versão deseja. As demais versões da aplicação em
+execução podem ser acessadas colocando sua identificação antes da
+sua URL, como no exemplo a seguir. Da mesma forma, os relatórios
+de uso, gráficos e logs podem ser filtrados para cada versão:
+Ainda na página de controle de versões, é possível tornar uma
+versão padrão ou mesmo apagar alguma que você não deseja que
+Apenas lembrando, o código desse projeto está no repositório
+do livro, no endereço: https://github.com/siecola/GAEBook
+Neste capítulo, você aprendeu a publicar seu primeiro projeto
+no Google App Engine! Além disso, pode conhecer um pouco do
+seu console de administração Web, uma ferramenta que pode
+ajudar muito no gerenciamento das aplicações publicadas no GAE.
+No próximo capítulo, você verá como criar um serviço REST
+nesse primeiro projeto, utilizando o framework Jersey.
+A API Jersey é a implementação de referência da especificação
+JAX-RS (JSR 339) para construção de Web Services RESTful. Com
+ela, é possível construir uma aplicação no GAE para prover serviços
+REST de forma descomplicada, como se estivéssemos trabalhando
+em um projeto como Apache TomCat ou outro servidor.
+Para trabalhar com a API Jersey, é necessário adicionar algumas
+bibliotecas ao projeto, como será descrito na próxima seção.
+Nesta seção será demonstrado como preparar o projeto
+exemplo1 que rodará no GAE com a API Jersey, Datastore, JSON
+e Google Cloud Messaging, a serem mostrados nos capítulos
+seguintes. Para isso, execute os passos a seguir, para adicionar as
+1\. Abra o arquivo pom.xml , localizado na raiz da projeto, que
+contém as suas configurações de dependências;
+2\. Procure pela tag dependencies , onde as dependências são
+3\. Dentro dessa tag, acrescente a dependência do Jersey, que será
+responsável, dentre outras coisas, pela criação dos serviços
+org.glassfish.jersey.containers
+jersey-container-servlet
+4\. Ainda dentro dessa tag, acrescente a dependência da
+biblioteca Jackson para trabalhar com o formato JSON com o
+org.glassfish.jersey.media
+jersey-media-json-jackson
+Existem outras bibliotecas para se trabalhar com JSON com o
+Jersey, mas essa é uma das mais conhecidas e fáceis de se
+trabalhar. Você verá no próximo capítulo que os métodos
+poderão ser construídos com parâmetros de retorno do tipo
+de objetos complexos e até listas deles, sem a necessidade de
+chamar qualquer método para convertê-los para JSON - o que
+1\. Salve o arquivo pom.xml , que o Maven vai se encarregar de
+baixar os arquivos .jar para utilizar o Jersey com todas as
+Agora que o projeto já possui as bibliotecas e dependências
+básicas, é possível começar a desenvolver o primeiro serviço REST
+Aqui será criado um serviço REST simples, para que o ambiente
+possa ser validado com as configurações mínimas. Para isso, execute
+1\. No Eclipse, crie o pacote com.siecola.exemplo1.services
+na aplicação exemplo1 . Nesse pacote é que serão criadas as
+classes que vão implementar os serviços REST. É
+recomendado que todas as classes fiquem em um mesmo
+pacote, pois assim facilita a configuração de mapeamento do
+Jersey a ser realizado no arquivo web.xml ;
+2\. Abra o arquivo web.xml da aplicação, localizado na pasta
+src/main/webapp/WEB-INF . Ele contém configurações que
+são verificadas na inicialização da aplicação, como os servlets
+existentes, que dizem ao Jersey onde estão os serviços REST
+que devem ser providos e parâmetros para serem
+3\. Antes do fechamento da tag web-app , adicione o trecho a
+seguir. Ele diz ao Jersey que os serviços estão no pacote
+com.siecola.exemplo1.services e também que o
+caminho padrão para acessá-los deverá ser /api/ :
+Exemplo1Services
+org.glassfish.jersey.servlet.ServletCont
+jersey.config.server.provider.packages</
+com.siecola.exemplo1.services</param-v
+org.glassfish.jersey.api.json.POJOMappi
+http://localhost:8888/api/helloworld/teste/Matilde
+, sendo que a última parte do endereço ( Matilde ) é o
+parâmetro a ser passado para a operação. O resultado deve ser
+O comportamento da operação, como descrito, é retornar a
+frase de boas-vindas com o nome passado como parâmetro.
+Agora que a aplicação exemplo1 possui um serviço REST, no
+projeto do Eclipse, altere a versão dela no arquivo web.xml para
+Vá ao console do GAE no menu Versions , e altere a versão
+padrão para 1-1 , como mostra a figura a seguir, para que você
+possa ver a nova versão publicada. Para isso, clique na versão 1-1 e
+Acesse o serviço helloworld algumas vezes e depois visualize
+o gráfico de requisições no console do GAE, na seção Dashboard .
+Repare que a versão 1-1 já aparece selecionada para exibir os
+Nessa mesma página, é possível ver os acessos à aplicação por
+Embora o Google Chrome possua boas opções para o
+4.5 TESTANDO O SERVIÇO COM O REST CONSOLE
+No próximo capítulo, você criará um serviço um pouco mais
+complexo, com várias operações e com um modelo de dados com
+vários atributos. Dessa forma, você aprenderá mais sobre como
+trabalhar com o Jersey e um pouco mais sobre o console do GAE.
+usados pelos serviços da aplicação. A organização desses
+modelos em único pacote é puramente para fins de
+organização da estrutura do código do projeto. Não existe
+nenhuma implicação em criar as classes dos modelos em
+pacotes diferentes, diferentemente das classes dos serviços que
+devem ser criados todos em um único pacote.
+2\. Dentro desse novo pacote, crie a classe do modelo de
+3\. Na classe Product , crie seus atributos e os getters e
+setters , como no trecho de código a seguir:
+public class Product implements Serializable {
+private static final long serialVersionUID = 1L;
+Esse será o modelo do produto a ser utilizado pelo serviço de
+gerenciamento de produtos. Todas as operações usarão essa classe,
+logo, uma alteração aqui afeta diretamente a compatibilidade desse
+No capítulo seguinte, Armazenando dados no Google Cloud
+Datastore, o mesmo modelo de produto será utilizado para persistir
+Agora, é necessário criar o serviço de gerenciamento de
+produtos. Para isso, execute os passos a seguir:
+1\. No pacote com.siecola.exemplo1.services , crie a classe
+ProductManager para implementar o novo serviço de
+2\. Coloque a anotação @Path na declaração da classe, para
+indicar que esse serviço deverá ser acessado pelo caminho
+Isso fará com que o serviço de gerenciamento de produtos seja
+3\. Crie o método privado createProduct , a ser utilizado
+somente para criar um produto dummy a partir de seu código,
+pois até o momento não há uma tabela onde os produtos
+serão armazenados. A ideia aqui é apenas mostrar como criar
+as operações e interagir com objetos complexos como
+private Product createProduct (int code) {
+product.setProductID(Integer.toString(code));
+4\. Crie o método getProduct para implementar a operação de
+ler um produto pelo seu código, passado como parâmetro:
+public Product getProduct(@PathParam("code") int code) {
+Essa operação de recuperar um produto específico,
+implementada pelo método getProduct , será acessada pela
+URI /api/product/{code} . O parâmetro {code} , passado
+na URL, representa o código do produto. O retorno dessa
+operação é um objeto complexo do tipo Product , e será
+representado no formato JSON, como no trecho a seguir:
+5\. Crie a operação para retornar todos os produtos em uma lista,
+List products = new ArrayList<>();
+Essa operação, que não recebe nenhum parâmetro, pode ser
+acessada pela URL api/products com o método HTTP
+GET . Ela devolve uma lista de produtos criados no momento
+de sua chamada. O formato devolvido será uma lista no
+formato JSON, semelhante ao exemplo a seguir:
+6\. Crie a operação para inserir um novo produto. Ela deve
+receber o produto como parâmetro de entrada e devolvê-lo
+public Product saveProduct(Product product) {
+product.setProductID(Integer.toString(product.getCode()
+A anotação @Consumes(MediaType.APPLICATION_JSON)
+significa que a operação deve receber, através do corpo da
+requisição, um objeto no formato JSON. Essa operação deve
+ser acessada pela URL api/products , com o método HTTP
+POST e com o produto a ser inserido no corpo da requisição.
+Isso pode ser feito com o REST Console configurado como na
+figura a seguir, que mostra a seção Target :
+Figura 5.1: Inserindo um novo produto com o REST
+E na seção Body , o REST Console deve ser configurado com
+Figura 5.2: Inserindo um novo produto com o REST
+O modelo e produto a ser inserido deve ser como mostra o
+7\. Agora crie a operação para apagar um produto, como no
+serviço de gerenciamento de produtos, porém, todos os métodos
+serão alterados para buscar os produtos no Google Cloud Datastore.
+1\. No modelo de produtos, na classe Product do pacote
+com.siecola.exemplo1.models , adicione o atributo id ,
+como no trecho a seguir, juntamente com seu getter e setter:
+A unidade fundamental do sistema de armazenamento com o
+Datastore é uma Entity que possui uma identidade imutável,
+representada por uma chave e por parâmetros que podem ser
+alterados. Uma entidade pode ser criada, apagada, alterada ou
+recuperada pelo seu identificador e localizada através de
+2\. Na classe ProductManager , crie o método privado
+productToEntity para fazer a conversão de um objeto
+Product para um objeto Entity , como no trecho a seguir.
+Ele será utilizado nos métodos onde for necessário converter
+um produto para uma entidade Product para salvar no
+private void productToEntity (Product product, Entity produ
+productEntity.setProperty("ProductID", product.getProdu
+productEntity.setProperty("Name", product.getName());
+productEntity.setProperty("Code", product.getCode());
+productEntity.setProperty("Model", product.getModel());
+productEntity.setProperty("Price", product.getPrice());
+3\. Crie o método privado entityToProduct para fazer a
+conversão de um objeto Entity para um objeto do tipo
+Product . Ele será usado nos métodos onde for necessário
+buscar uma entidade do Datastore e converter no objeto
+Product a ser retornado nas operações do serviço.
+6.2 CONFIGURANDO O PROJETO PARA TRABALHAR COM DATASTORE
+private Product entityToProduct (Entity productEntity) {
+product.setId(productEntity.getKey().getId());
+product.setProductID((String) productEntity.getProperty(
+product.setName((String) productEntity.getProperty("Nam
+product.setCode(Integer.parseInt(productEntity.getPrope
+product.setModel((String) productEntity.getProperty("Mo
+product.setPrice(Float.parseFloat(productEntity.getProp
+1\. Ainda na classe ProductManager , altere o método
+saveProduct , que é quem implementa a operação para
+inserir um novo produto. Dessa vez, o produto que chegar
+como parâmetro no corpo da requisição HTTP POST será
+salvo no Google Cloud Datastore com a execução do código a
+public Product saveProduct(Product product) {
+DatastoreService datastore = DatastoreServiceFactory
+Key productKey = KeyFactory.createKey("Products", "prod
+Entity productEntity = new Entity("Products", productKe
+productToEntity (product, productEntity);
+product.setId(productEntity.getKey().getId());
+6.2 CONFIGURANDO O PROJETO PARA TRABALHAR COM DATASTORE
+A primeira linha do método obtém uma instância do serviço
+Datastore para ser utilizada, nesse caso, para inserção de um
+novo produto. A segunda linha instancia uma chave que será
+usada na criação da entidade produto. Essa chave ficará
+incompleta até que a entidade seja inserida no Datastore, onde
+será possível obter a identificação única de sua criação, o que é
+A terceira linha cria uma nova entidade do tipo Products
+(nesse caso, uma analogia ao nome da tabela é válida), com a
+chave criada na linha anterior. A quarta linha preenche as
+propriedades da entidade productStore em um esquema
+chave-valor (que seriam os nomes dos campos e seus valores),
+sendo finalizado pela inserção do novo produto com a
+Evidentemente, o trecho mostrado é simples o suficiente para
+apenas mostrar a essência da utilização do serviço Datastore,
+pois algumas verificações poderiam ser feitas, por exemplo, se
+algum campo mandatório está presente no objeto produto
+recebido ou se já há algum cadastrado com o mesmo código.
+Para resumir e fazer uma relação com a tabela comparativa da
+O tipo que está sendo colocado no Datastore é o de
+A entidade é o produto recebido como parâmetro do
+As propriedades possuem os nomes: ProductID ,
+O valor da chave da entidade salva foi atribuída ao
+2\. Para listar todos os produtos cadastrados, é necessário criar
+uma consulta no Datastore para que ele retorne todas as
+6.2 CONFIGURANDO O PROJETO PARA TRABALHAR COM DATASTORE
+entidades do tipo Products , baseado ou não em uma
+ordenação por uma de suas propriedades. No exemplo a
+seguir, isso foi feito com base na propriedade Code ,
+ordenando a lista de produtos de forma crescente de acordo
+com esse valor. O método getProducts deve então ficar da
+List products = new ArrayList<>();
+DatastoreService datastore = DatastoreServiceFactory
+query = new Query("Products").addSort("Code", SortDirec
+List productsEntities = datastore.prepare(query
+for (Entity productEntity : productsEntities) {
+Product product = entityToProduct(productEntity);
+O que aparece de novo nesse método é justamente a busca de
+todas as entidades, realizada pelo objeto do tipo Query , que
+usa a propriedade Code para organizá-las de forma
+crescente. Com isso, o método asList do objeto
+datastore retorna a lista de todas as entidades (produtos)
+3\. Para recuperar apenas um produto do Datastore usando
+seu código como parâmetro de pesquisa, basta alterar o
+6.2 CONFIGURANDO O PROJETO PARA TRABALHAR COM DATASTORE
+método getProduct como no trecho a seguir:
+public Product getProduct(@PathParam("code") int code) {
+DatastoreService datastore = DatastoreServiceFactory
+Filter codeFilter = new FilterPredicate("Code", FilterO
+Query query = new Query("Products").setFilter(codeFilte
+Entity productEntity = datastore.prepare(query).asSingl
+Product product = entityToProduct(productEntity);
+throw new WebApplicationException(Status.NOT_FOUND)
+Para localizar uma entidade específica a partir de uma de suas
+propriedades, é necessário utilizar um filtro. Nesse exemplo, é
+criado um filtro para a propriedade Code , para que seja igual
+ao código passado como parâmetro pela URL. Após isso, a
+busca é realizada, requisitando somente uma entidade
+(produto). Caso ela seja encontrada, o objeto Product é
+preenchido com as informações e retornado como resposta,
+porém, caso não seja, uma exceção é lançada para indicar que
+ele não foi encontrado com o código fornecido, por meio do
+4\. Para alterar uma entidade específica, deve-se alterar o método
+alterProduct , como no trecho a seguir. Ele é semelhante ao
+método para buscar somente uma entidade, em termos da
+6.2 CONFIGURANDO O PROJETO PARA TRABALHAR COM DATASTORE
+consulta para localizar tal produto a partir do código. A partir
+daí, as alterações são aplicadas ao produto e este salvo
+public Product alterProduct(@PathParam("code") int code, Pr
+DatastoreService datastore = DatastoreServiceFactory
+Filter codeFilter = new FilterPredicate("Code",
+Query query = new Query("Products").setFilter(codeFilte
+Entity productEntity = datastore.prepare(query).asSingl
+productToEntity (product, productEntity);
+product.setId(productEntity.getKey().getId());
+throw new WebApplicationException(Status.NOT_FOUND)
+Repare na linha datastore.put(productEntity); , que
+salva o produto no Datastore novamente, com as alterações

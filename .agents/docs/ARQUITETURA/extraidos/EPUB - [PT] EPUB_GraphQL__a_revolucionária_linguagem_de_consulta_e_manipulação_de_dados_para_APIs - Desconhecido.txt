@@ -1,0 +1,3732 @@
+## EPUB GraphQL_ a revolucionária linguagem de consulta e manipulação de dados para APIs
+
+  1. [Capítulo 1](src/pages/page_001.html)
+  2. [Capítulo 2](src/pages/page_002.html)
+  3. [Capítulo 3](src/pages/page_003.html)
+  4. [Capítulo 4](src/pages/page_004.html)
+  5. [Capítulo 5](src/pages/page_005.html)
+  6. [Capítulo 6](src/pages/page_006.html)
+  7. [Capítulo 7](src/pages/page_007.html)
+  8. [Capítulo 8](src/pages/page_008.html)
+  9. [Capítulo 9](src/pages/page_009.html)
+  10. [Capítulo 10](src/pages/page_010.html)
+  11. [Capítulo 11](src/pages/page_011.html)
+  12. [Capítulo 12](src/pages/page_012.html)
+  13. [Capítulo 13](src/pages/page_013.html)
+  14. [Capítulo 14](src/pages/page_014.html)
+  15. [Capítulo 15](src/pages/page_015.html)
+  16. [Capítulo 16](src/pages/page_016.html)
+
+
+
+
+
+
+
+# Sumário
+
+  * [ISBN](index.html)
+  * [Sobre o livro](01-sobre-o-livro.html)
+  * [Para quem é este livro?](02-publico-alvo.html)
+  * [Sobre o autor](03-sobre-o-autor.html)
+  * [Para me seguir:](03b-para-seguir.html)
+  * [Agradecimentos](04-agradecimentos.html)
+  * [Prefácio](05-prefacio.html)
+  * Parte 1 — Introdução ao GraphQL
+    * [1 Conhecendo um novo mundo](01-conhecendo-um-novo-mundo.html)
+    * [2 Conceitos básicos do GraphQL](02-conceitos-basicos-do-graphql.html)
+  * Parte 2 — GraphQL e Apollo Sandbox
+    * [3 Conheça onde vamos brincar — Apollo Sandbox](03-conheca-onde-vamos-brincar.html)
+    * [4 Buscando e alterando dados](04-buscando-e-alterando-dados.html)
+    * [5 Conhecendo melhor os types](05-conhecendo-melhor-os-types.html)
+  * Parte 3 — Criando uma aplicação
+    * [6 Desenvolvimento front-end](06-desenvolvimento-front-end.html)
+  * Parte 4 — Programando um servidor
+    * [7 Desenvolvimento back-end](07-desenvolvimento-back-end.html)
+
+
+
+
+# ISBN
+
+Impresso e PDF: 978-85-7254-011-7
+
+EPUB: 978-85-7254-012-4
+
+MOBI: 978-85-7254-013-1
+
+> Caso você deseje submeter alguma errata ou sugestão, acesse <http://erratas.casadocodigo.com.br>.
+
+
+# Sobre o livro
+
+Neste livro, aprenderemos sobre o que realmente é o tão falado _GraphQL_ e desenvolveremos uma aplicação no front-end e outra no back-end.
+
+Este livro está separado em quatro partes.
+
+Na **Parte 1** , seremos introduzidos ao mundo do GraphQL. Conheceremos essa ferramenta, quem a usa, onde podemos usá-la para facilitar nosso trabalho e aprenderemos seus conceitos básicos.
+
+Chegando à **Parte 2** , nós aprenderemos os comandos do GraphQL em um ambiente pronto feito com _Apollo_ , que nos poupará o trabalho de ter que criar uma aplicação para aprender a trabalhar com GraphQL.
+
+Com este ambiente nos fornecendo um servidor, na **Parte 3** , desenvolveremos uma aplicação front-end com JavaScript puro para consumir este serviço.
+
+E, para finalizar, na **Parte 4** , nós desenvolveremos o servidor com o serviço GraphQL que viemos consumindo desde a _Parte 2_ , utilizando o _Apollo_.
+
+
+# Para quem é este livro?
+
+O GraphQL é independente de linguagem de programação ou banco de dados, então aprender sobre ele não exige um conhecimento avançado em programação.
+
+Porém, este livro é destinado a desenvolvedores e desenvolvedoras web que já possuam pelo menos um conhecimento básico com front ou back-end e queiram aprender um novo modo de construir aplicações modernas e flexíveis de forma rápida, simples e produtiva.
+
+No final do livro, desenvolveremos uma aplicação completa (cliente e servidor), então conhecer um pouco de JavaScript ajudará no entendimento.
+
+
+# Sobre o autor
+
+Figura -3.1: Akira Hanashiro
+
+  * Formado em Análise e Desenvolvimento de Sistemas - Fatec (2011 - 2013)
+  * Pós-graduado em Projetos e Desenvolvimento de Aplicações Web - UniFatea (2014 - 2015)
+  * MBA em Machine Learning - XP Educação (2017 - 2019)
+
+
+
+Sou desenvolvedor web. Gosto de cozinhar, tocar violão e teclado, desenhar, malhar, games, séries, livros, estudar sobre hipnose, economia, finanças, desenvolvimento de jogos (Unity) e várias outras coisas, mas gosto muito mesmo de front-end.
+
+Nasci em São Paulo, cresci no Japão e, aos 15 anos, voltei ao Brasil. Iniciei minha carreira em TI aos 18 anos, lecionando desenvolvimento de jogos digitais. Trabalho com desenvolvimento web desde 2013 e atuo em home office desde 2014.
+
+Já estudei várias linguagens de programação, mas a que me prendeu mesmo foi o JavaScript. Porém, utilizo a que for melhor dependendo da situação. Gosto de experimentar novas tecnologias e aprender coisas novas. Já mexi com desenvolvimento web (front e back), desktop, mobile, jogos, machine learning, plugins para softwares, linha de comando etc.
+
+Trabalhei em projetos para empresas como Ambev, Siemens, Vivo, Itaú, Gauge, Embraer e também ajudei várias startups a se desenvolverem.
+
+Fui instrutor de cursos online na TreinaWeb (<https://treinaweb.com.br>), onde criei mais de 95 cursos, centenas de posts para blog e Instagram, vídeos para YouTube, workshops etc. Além disso, fui responsável pelo desenvolvimento da plataforma de cursos online da empresa.
+
+Hoje em dia, trabalho como Front-end Engineer para empresas americanas.
+
+
+# Para me seguir:
+
+  * **GitHub:** <https://github.com/hanashiro>
+
+  * **LinkedIn:** <https://www.linkedin.com/in/hanashiro>
+
+  * **Instagram (dicas de programação e carreira):** <https://www.instagram.com/akirahanashiro>
+
+  * **Meus jogos:** <https://mewters.com>
+
+  * **Portfólio:** <https://hanashiro.vercel.app>
+
+
+
+
+
+# Agradecimentos
+
+Agradeço a Deus por todas as oportunidades que tive na vida.
+
+Dedico o livro aos meus pais, que sempre se esforçaram para me dar uma vida confortável, me cobrando apenas o estudo.
+
+Muito obrigado à família e aos amigos, que sempre me incentivam, me apoiam e confiam em minhas escolhas — por mais insanas que possam parecer.
+
+Obrigado a todos com quem já estudei e trabalhei, pois foi assim que adquiri minha experiência, o que vem me ajudado a alcançar vários objetivos.
+
+Obrigado à equipe da Casa do Código, principalmente à Vivian Matsui, por me orientar e ajudar a realizar um dos meus objetivos deste ano: escrever meu primeiro livro.
+
+E, claro, agradeço a você por ter escolhido este meu livro para obter mais conhecimento e evoluir em sua carreira.
+
+
+# Prefácio
+
+A revolucionária linguagem de consulta e manipulação de dados GraphQL definitivamente veio para ficar. Ela tem conquistado grandes empresas dos mais diversos ramos, desde redes sociais e até mesmo do sistema financeiro. Tem sido colocada à prova em muitas aplicações, e vem demonstrando sua grande flexibilidade para resolver os mais variados tipos de problemas em APIs.
+
+Neste livro, você vai descobrir o que vem a ser GraphQL, o porquê de ela ser tão poderosa, como implementá-la de forma rápida (em Node.js + Apollo Server), e como consumi-la de forma rápida, com dois exemplos (no Apollo Sandbox e com JavaScript na web).
+
+Este livro vai desafiar você, em várias etapas, a ultrapassar os limites desta brochura, para que você realize outras implementações não contempladas aqui — uma grande oportunidade para aprender ainda mais.
+
+Boa leitura!
+
+* * *
+
+Nic Marcondes
+
+
+# Parte 1 — Introdução ao GraphQL
+
+Capítulo 1
+
+# Conhecendo um novo mundo
+
+Olá, _web developer_! Então você tem interesse em conhecer o GraphQL? Ótimo, tenho certeza de que não vai se arrepender.
+
+No começo, eu fiquei curioso por tanta gente estar falando sobre ele, mas para mim nunca tinha ficado clara a razão de ele existir e o que ele realmente fazia — afinal, todos nós sobrevivemos até hoje sem ele, não é mesmo? Mas, quando o estudei a fundo, finalmente entendi o seu propósito e realmente percebi que, em muitos cenários, ele seria muito interessante.
+
+Neste capítulo, você vai conhecer o que realmente é o GraphQL. Boa leitura!
+
+## 1.1 Conheça o GraphQL
+
+Você sabe o que realmente é o GraphQL? Muitas pessoas pensam que sabem, mas costumam estar enganadas. Eis o que muitas vezes encontramos sendo dito nas comunidades:
+
+  * "Ah, é uma nova forma de fazer consultas para bancos não relacionais."
+  * "Não passa de um novo framework JavaScript para se criar APIs."
+  * "Ele está querendo substituir o SQL."
+  * "É só mais uma camada para colocar na aplicação e nos dar mais dor de cabeça."
+  * "É a biblioteca que vai substituir o REST."
+
+
+
+Está tudo errado! Mas não as culpo, pois eu também pensava que era uma coisa totalmente diferente do que realmente é. Para que você também o entenda, vamos imaginar um cenário com um determinado problema, e você conseguirá enxergar por conta própria o que o GraphQL resolve.
+
+### O problema
+
+Vamos imaginar que estamos em um projeto de um sistema que gerencia escolas. O back-end será só um, mas o lado do cliente terá várias aplicações bem distintas:
+
+  * **Sistema Administrador** \- responsável pelo cadastro de escolas, professores(as), alunos(as), pais, grades curriculares etc.
+  * **Sistema do Professor** \- organiza a agenda do professor, permite lançar notas de provas e trabalhos, fazer registro de presença, enviar mensagens para os pais de um aluno, dar advertências etc.
+  * **Sistema do Responsável** \- tem uma lista dos filhos do responsável, pela qual ele pode se comunicar com professores e professoras, visualizar todas as notas, advertências, datas de provas, ver a grade de aulas etc.
+
+
+
+Muitas APIs serão consumidas pelas três aplicações, tornando o back-end bem simples de se administrar e evitando código repetido. Cada um desses sistemas terá uma versão _web_ e uma versão _mobile_.
+
+A versão mobile será mais resumida e poderá ser acessada offline. Também teremos que permitir que pessoas com internet móvel lenta tenham uma boa experiência, então não fará sentido enviar dados que não serão usados no mobile. Aí começam a surgir alguns problemas:
+
+  1. O administrador, ao receber a lista de professores, terá os dados pessoais, de contato e endereço, que o responsável não deve ver ao receber a lista de professores;
+  2. O professor tem acesso a todos os dados dos alunos no sistema web, mas no mobile ele teria apenas as informações mais importantes que fossem úteis para o seu trabalho em sala de aula;
+  3. O responsável tem todos os detalhes das atividades de seus filhos no sistema web, mas o aplicativo mobile só exibirá informações mais básicas, como as notas tiradas;
+  4. O professor acessa suas aulas e, pelas aulas, acessa os alunos delas. O responsável acessa seus filhos; pelos filhos, acessa as aulas deles e, pelas aulas, acessa o professor responsável por aquela disciplina. Ou seja: são os mesmos dados, mas acessados por caminhos diferentes.
+
+
+
+O primeiro problema podemos resolver facilmente verificando qual o perfil de quem está fazendo a requisição dos dados. Assim, podemos enviar apenas o que aquele usuário tem permissão de ver. 
+
+Mas e quanto aos outros problemas? Como enviar menos dados para a aplicação mobile? E pior: pode ser que web e mobile usem bibliotecas que exijam um certo formato nos dados a serem exibidos. Então, além de menos dados, pode ser que o aplicativo precise dos dados em uma estrutura levemente diferente.
+
+### O que poderíamos fazer?
+
+Uma solução rápida? Podemos pegar a API de listar professores, `/professores`, e criar outra, `/professores/mobile`. O mesmo vale para as outras APIs que, no mobile, teriam menos dados ou cujos dados precisariam estar levemente diferentes.
+
+Quanto ao quarto problema, sem chance! Seriam duas APIs totalmente diferentes. Parece algo bobo e simples, mas imagine esse sistema crescendo cada vez mais, e você tendo que, a cada alteração, mudar em dois lugares que são bem parecidos.
+
+Isso foi só um exemplo, pois com o tempo podem aparecer mais lugares em que a API específica para mobile seja necessária. Não é preciso muita experiência para saber que algum dia isso pode trazer muito retrabalho.
+
+### O que poderia ser feito?
+
+E se o front-end pudesse ter a capacidade de dizer ao back-end quais informações ele quer e até mesmo a estrutura desses dados? Não teríamos que ficar criando APIs repetidas, nem forçar uma aplicação a receber dados que ela não vai usar.
+
+Essa é uma das principais funções do GraphQL! Com ele, o cliente pode dizer ao servidor quais dados ele quer e como é a estrutura que ele quer.
+
+Também é comum que grandes sistemas utilizem mais de um banco de dados para aproveitar as vantagens de cada um. Podemos, por exemplo, ter dados relacionais no MySQL, guardar certas informações em forma de documentos no MongoDB e ter pequenos dados para consultas rápidas no Redis.
+
+Seria bom não se preocupar em como ir a cada um desses dados, não é mesmo? É outro ponto em que o GraphQL pode ajudar!
+
+## 1.2 Então, o que realmente é o GraphQL?
+
+O GraphQL foi criado pelo Facebook, que começou a usá-lo em seus aplicativos em 2012. Foi anunciado ao público na React.js Conf 2015 e teve o seu código aberto em 2016.
+
+Podemos dizer que o GraphQL é uma linguagem de consulta e manipulação, assim como o SQL. Enquanto o SQL é um padrão para fazer consultas em bancos de dados, o GraphQL nos dá a possiblidade de indicar a uma API os dados que queremos. Isso dá liberdade ao front-end de indicar o que ele realmente precisa a partir de um único endpoint disponibilizado pelo back-end. 
+
+Sei que isso parece estranho e perigoso, mas acredite: é simples e seguro. Você entenderá melhor conforme formos avançando no livro.
+
+Hoje em dia, o GraphQL é um projeto da GraphQL Foundation hospedado pela Linux Foundation e mantido por várias empresas como Airbnb, AWS, Atlassian, IBM, Meta (Facebook), Microsoft, PayPal, Prisma, Shopify e Twitter.
+
+## 1.3 Vantagens do GraphQL
+
+### Schema
+
+No GraphQL, nós declaramos a estrutura do dado, então o cliente sempre sabe a estrutura do dado que receberá. Isso também gera automaticamente uma documentação e validação de tipos.
+
+### Tudo em uma única requisição
+
+Já precisou fazer uma requisição, pegar o ID do objeto e fazer uma segunda requisição? Chega disso! Com o GraphQL, você indica tudo o que precisa e recebe tudo certinho com uma única requisição.
+
+### Nem mais, nem menos
+
+O cliente indica o que precisa receber.
+
+Você é front-end? Não precisa mais ficar chamando alguém do back-end para dizer que tem dado faltando ou que estão vindo dados que você não vai usar.
+
+Você é back-end? Não precisa mais ficar perguntando para alguém do front-end o que ele precisa e como é a estrutura que melhor atende à tela que ele vai criar. Simplesmente sirva os dados e deixe que o front-end escolha o que ele precisa, como se fosse um restaurante self-service.
+
+### Desenvolvimento rápido
+
+Há bibliotecas que nos permitem trabalhar facilmente com GraphQL que já implementam de forma bem simples coisas como cache, melhoria na atualização da interface e atualizações em tempo real com Web Sockets.
+
+### Criação de APIs de forma rápida e simples
+
+Você verá que vamos criar uma única API; e, para que ela entregue algo ao cliente, utilizaremos bem pouco código.
+
+## 1.4 Onde posso usar?
+
+Você pode usar o GraphQL em qualquer lugar onde haja uma comunicação entre cliente e servidor via API, seja web, desktop ou mobile.
+
+Um cenário muito interessante para se usar o GraphQL é quando você vai expor a sua API para que terceiros a usem.
+
+Provavelmente haverá situações em que essas pessoas já possuam um sistema funcionando com uma estrutura de dados própria, e cada campo com um nome diferente dos campos presentes nos seus dados. E há também chances de nem usarem 100% dos dados que a sua API fornece.
+
+Com o GraphQL, essas pessoas poderão indicar exatamente os dados de que precisam na estrutura, com os campos nomeados de acordo com suas necessidades.
+
+## 1.5 Nem tudo são flores
+
+Como sempre, tudo tem um lado bom e um lado ruim. Se você trabalha há um tempo com programação já deve saber que tudo depende de outra coisa. Raramente teremos uma resposta definitiva.
+
+Então, não podemos basear nossas escolhas de ferramentas apenas porque algo está na moda e as pessoas dizem que é bom. A ferramenta precisa fazer sentido e trazer algum valor para nós durante o desenvolvimento de uma solução.
+
+Vamos ver alguns problemas de se usar o GraphQL.
+
+### Complexidade da consulta
+
+Imagine buscar dados de um autor em um sistema de uma livraria. Esta operação será bem simples e leve. Imagine o seguinte `json` como resultado:
+    
+    
+    {
+        "nome": "Carlos Abreu",
+        "pais": "Brasil",
+        "site": "livrosdocarlos.exemplo.com"
+    }
+    
+
+Porém, se fizermos uma busca de vários autores, cada um com uma lista dos livros que escreveu e cada livro com os respectivos comentários feitos por clientes que compraram o livro, esta operação ficará mais pesada.
+
+Imagine a seguinte resposta:
+    
+    
+    [
+        {
+            "nome": "Carlos Abreu",
+            "pais": "Brasil",
+            "site": "livrosdocarlos.exemplo.com",
+            "livros": [
+                "titulo": "A Revelação",
+                "ano": 2019,
+                "comentarios": [
+                    {
+                        "nome": "Marta Silva",
+                        "avaliacao": 5,
+                        "comentario": "Muito interessante!"
+                    },
+                    ...
+                ]
+            ]
+        },
+        ...
+    ]
+    
+
+É possível, ainda, fazer operações que retornem dados repetidos, como buscar um autor com sua lista de livros e esta lista vir com o nome do autor junto aos seus livros. Teríamos a seguinte resposta:
+    
+    
+    [
+        {
+            "nome": "Carlos Abreu",
+            "pais": "Brasil",
+            "site": "livrosdocarlos.exemplo.com",
+            "livros": [
+                "titulo": "A Revelação",
+                "ano": 2019,
+                "autor": {
+                    "nome": "Carlos Abreu",
+                    "pais": "Brasil",
+                    "site": "livrosdocarlos.exemplo.com",
+                    "livros": [
+                        "titulo": "A Revelação",
+                        "ano": 2019,
+                        "autor": {
+                            ...
+                        }
+                    ]
+                }
+            ]
+        },
+        ...
+    ]
+    
+
+Estas operações mais complexas podem ser muito pesadas para o servidor, então pode ser necessário limitar a quantidade de níveis que podem ser acessados.
+
+### Avaliação de limites
+
+Há casos em que disponibilizamos uma API a terceiros para que tenham acesso a um serviço. Um exemplo é a API do YouTube, que nos permite fazer busca de vídeos da plataforma e exibi-los em nossa aplicação.
+
+Pode ser que você queira limitar a quantidade de requisições e apenas permitir mais operações mediante pagamento do seu serviço. Isso pode ser difícil no GraphQL, já que uma única requisição pode ser leve como também pode ser muito pesada, como vimos anteriormente.
+
+### Cache
+
+Normalmente tratamos o cache das aplicações de acordo com a URL que acessamos. Cache é bom porque nos permite retornar dados que já foram acessados anteriormente com mais rapidez, além de diminuir a quantidade de requisições de um cliente ao servidor — lembra que eu disse que no GraphQL nós criamos apenas uma única API?
+
+> Observação: a lista original de desvantagens do GraphQL era outra, mas durante o desenvolvimento deste livro todos os itens foram solucionados e precisei pesquisar sobre outras desvantagens.
+> 
+> Mesmo assim, os itens aqui apresentados já possuem soluções sendo desenvolvidas, o que mostra como esta tecnologia está se desenvolvendo rapidamente e pode ser utilizada sem receio de aparecer problemas em sua implementação.
+
+## 1.6 Quem usa?
+
+Empresas como Coursera e Netflix estavam com problemas parecidos e começaram a trabalhar em projetos como o GraphQL.
+
+Quando o GraphQL teve seu código aberto, a Coursera cancelou seu projeto e adotou a solução do Facebook. A Netflix continuou com seu projeto, Falcor — apesar de hoje em dia ela também utilizar o GraphQL.
+
+Atualmente, muitas outras empresas usam o GraphQL: Facebook, GitHub, Twitter, PayPal, KLM, GetNinjas, Dailymotion, Shopify e Pinterest. 
+
+Você pode ver uma lista mais completa de empresas que usam o GraphQL em: <https://graphql.org/users/>.
+
+### Interessado? Interessada?
+
+Neste capítulo, nós conhecemos o que realmente é o GraphQL: uma linguagem de consultas de APIs e manipulação de dados. Juntos, nós imaginamos um cenário em que o uso dele seria bem interessante.
+
+Vimos suas vantagens e também aprendemos que, em certos momentos, ele não é a melhor solução. Portanto, o melhor é analisar bem as necessidades do projeto para definir as melhores ferramentas para podermos desenvolver uma solução.
+
+
+Capítulo 2
+
+# Conceitos básicos do GraphQL
+
+Espero que a apresentação que fizemos no capítulo anterior tenha deixado um gostinho de "quero mais". Neste capítulo, nós veremos alguns conceitos básicos do GraphQL. Ainda não há código a ser executado para testar. Apenas teremos a apresentação da sintaxe para que você já se acostume antes de botarmos a mão na massa.
+
+## 2.1 Conheça a SDL
+
+Um esquema (_schema_) é uma representação de um objeto. Como usamos o GraphQL para fazer consultas de dados, ele precisa conhecer a estrutura desses dados para saber quais campos estão disponíveis. Por isso, precisamos de um modo de declarar esses esquemas.
+
+Como uma das ideias bases do GraphQL é funcionar com qualquer linguagem de programação e framework, foi criada uma linguagem própria de declaração de esquemas, a _Schema Definition Language_ (Linguagem de Definição de Esquema) ou, simplesmente, SDL. Assim podemos declarar nossos esquemas de forma única para qualquer linguagem.
+
+Imagine que queremos definir o esquema de um aluno. Vamos ver como modelá-lo com a SDL:
+    
+    
+    type Aluno{
+        id: ID!
+        nomeCompleto: String!
+        idade: Int
+    }
+    
+
+É diferente de muita coisa com que você deve estar acostumado(a), não é mesmo? Vamos por partes, então.
+
+Os elementos mais básicos do esquema do GraphQL são os _types_. Com eles, nós definimos a estrutura dos objetos que poderão ser buscados (seus campos e respectivos tipos). Eles são declarados com a palavra-chave `type`.
+
+Em seguida, declaramos o nome do nosso _type_ , `Aluno`. Os campos ficam entre chaves e, dentro delas, nós indicamos um campo em cada linha. Primeiro vem o nome e depois o tipo do dado, separados por dois pontos.
+
+Então temos, por exemplo, o campo com o nome `idade`, que é do tipo `Int`. `Int` indica um campo que aceita apenas números inteiros. Mais adiante vamos conhecer os tipos que o GraphQL aceita.
+
+Note que não há vírgulas ou ponto e vírgula separando os campos, nós simplesmente pulamos linha. O `!` após o tipo do dado indica que o campo é obrigatório; então, os campos `id` e `nomeCompleto` são obrigatórios, enquanto o campo `idade` pode ficar em branco.
+
+Que tal agora criar um outro _type_? Teremos agora o _type_ `Curso`, que terá uma lista de alunos.
+    
+    
+    type Curso{
+        id: ID!
+        disciplina: String!
+        alunos: [Aluno!]!
+    }
+    
+
+Fizemos algo parecido com a estruturação de `Aluno`. Mas veja que agora temos um campo do tipo `Aluno`, que é um tipo que declaramos anteriormente. Como será uma **lista** de alunos, declaramos com **colchetes**.
+
+O `!` de fora indica que a lista não pode ser vazia. Isso significa que, se não tivermos nenhum aluno para retornar, receberemos um _Array_ vazio. Sem esse `!` do lado de fora dos colchetes, na ausência de alunos, o campo `alunos` teria seu valor como `null`.
+
+Já o `!` de dentro dos colchetes, junto ao nome `Aluno`, indica que os alunos da lista não poderão ter valor nulo. Isso significa que não teremos um _Array_ com elementos vazios, apenas objetos do tipo `Aluno`. Sem esse `!`, poderíamos ter um _Array_ assim: `[null, null]`.
+
+Vamos agora indicar que cada aluno só pode estar matriculado em apenas um curso. Então, vamos arrumar o nosso _type_ `Aluno`.
+    
+    
+    type Aluno{
+        id: ID!
+        nomeCompleto: String!
+        idade: Int
+        curso: Curso
+    }
+    
+
+Indicamos um `curso` do tipo `Curso`. Note que não colocamos `!` porque o aluno pode estar sem nenhum curso. Também não colocamos colchetes, o que indica que cada aluno só pode ter um curso.
+
+## 2.2 Fazendo as primeiras consultas (queries)
+
+Falamos tanto sobre o GraphQL ter sido criado para se fazer consultas, mas ainda nem sequer vimos como isso funciona.
+
+Primeiro, temos que ter um esquema já declarado em nosso back-end, como o `Aluno` e `Curso` que vimos anteriormente. Então o front-end faria uma requisição a uma API, enviando o que ele quer que seja retornado. Chamamos isso de _query_ (consulta).
+
+Temos o esquema `Aluno` com os campos `id`, `nomeCompleto`, `idade` e `curso`. Imagine que a gente queira buscar todos os alunos, mas só os campos `nomeCompleto` e `idade`. Ficaria da seguinte maneira:
+    
+    
+    query {
+        allAlunos {
+            nomeCompleto
+            idade
+        }
+    }
+    
+
+Indicamos com a palavra-chave `query` que queremos fazer uma consulta. Como consultas são as operações mais comuns do GraphQL, essa palavra pode ser omitida do código.
+
+Em seguida, abrimos chaves para indicar que tipo de operação de consulta queremos fazer. Como queremos todos os alunos, vamos pedir a operação `allAlunos`. Esses nomes de operações somos nós mesmos que definimos no back-end. Mais adiante veremos onde e como fazer isso.
+
+Esse `allAlunos` é chamado de "campo raiz" (_root field_). Após ele, nós simplesmente indicamos o _payload_ , que é o grupo de campos que queremos que sejam retornados.
+
+Poderíamos enviar essa _query_ para um back-end já com alguns dados em um banco de dados. Com essa consulta, teríamos uma resposta como o seguinte `json`:
+    
+    
+    {
+        "data": {
+            "allAlunos": [
+                {
+                    "nomeCompleto": "Maria Souza",
+                    "idade": 25
+                },
+                {
+                    "nomeCompleto": "João Silva",
+                    "idade": 20
+                }
+            ]
+        }
+    }
+    
+
+E se quisermos que também venha o curso de cada aluno da nossa lista? Lembre-se de que `Aluno` possui um campo `curso` que é do tipo `Curso`, o qual possui os campos `id`, `disciplina` e `alunos`. Então basta indicarmos o campo `curso`, abrirmos chaves novamente e indicarmos o que queremos que seja retornado.
+    
+    
+    {
+        allAlunos {
+            idade
+            nomeCompleto
+            curso {
+                id
+                materia: disciplina
+            }
+        }
+    }
+    
+
+Com a adição de `curso` e seus respectivos campos, teríamos um retorno como o seguinte `json`:
+    
+    
+    {
+        "data": {
+            "allAlunos": [
+                {
+                    "idade": 25,
+                    "nomeCompleto": "Maria Souza",
+                    "curso": {
+                        "id": "123",
+                        "materia": "GraphQL"
+                    }
+                },
+                {
+                    "idade": 20,
+                    "nomeCompleto": "João Silva",
+                    "curso": {
+                        "id": "321",
+                        "materia": "RxJS"
+                    }
+                }
+            ]
+        }
+    }
+    
+
+Veja que dessa vez nós já omitimos a palavra-chave `query`. Na consulta, nós alteramos a posição dos campos `nomeCompleto` e `idade` do aluno. Isso fez com que o `json` retornado também tivesse a posição dos campos alterada.
+
+Repare também que, ao indicar o campo `disciplina`, nós colocamos a palavra `materia` e, depois de dois pontos (`:`), colocamos o nome do campo, `disciplina`. E o resultado foi que o campo `disciplina` veio como `materia`. Ou seja, podemos até mesmo renomear os campos que serão retornados.
+
+A possibilidade de renomear campos é muito útil caso você disponibilize a sua API a terceiros e eles já possuam uma estrutura com outros nomes. Isso evitaria o trabalho de reestruturar objetos por estarem com nomes de campos ou estruturas diferentes.
+
+## 2.3 Passando parâmetros para as consultas
+
+Poder passar parâmetros para nossas consultas é muito importante, já que nem sempre vamos querer que qualquer dado seja retornado. Precisamos de uma maneira de indicar o que queremos com mais detalhes.
+
+Com isso, poderemos indicar, por exemplo, que queremos que apenas três dados sejam retornados, ou que queremos todos os alunos que possuam o nome **João** , ou que os alunos venham ordenados pelo nome em ordem alfabética.
+    
+    
+    {
+        allAlunos(first: 3){
+            nomeCompleto
+            idade
+        }
+    }
+    
+
+Para indicar parâmetros, basta passá-los entre parênteses junto ao campo raiz. No exemplo mostrado, indicamos que queremos que sejam retornados apenas os três primeiros objetos da lista que o nosso back-end retornaria.
+
+Os parâmetros disponíveis somos nós mesmos que indicamos no back-end, e podemos passar vários ao mesmo tempo. Mais adiante você verá como declarar isso com a SDL.
+    
+    
+    
+    
+
+## 2.4 Criando, alterando e apagando dados (mutations)
+
+O GraphQL não serve apenas para buscar dados. Ele também nos permite criar, alterar e apagar dados. Como essas três operações causam modificações, no GraphQL nós as chamamos de _mutations_.
+
+As _mutations_ nos permitem indicar ao back-end que queremos fazer alguma modificação nos dados presentes em nosso banco de dados ou criar um novo. Quando o back-end receber esses comandos, nós vamos escrever um código para fazer a conexão com o banco de dados para fazer a operação desejada. Veremos como programar o back-end mais à frente.
+
+_Mutations_ seguem a mesma estrutura que vimos anteriormente com as _queries_ , mas é obrigatório indicar a palavra-chave `mutation`. Do contrário, o GraphQL vai entender que você está fazendo uma _query_.
+
+Vamos ver como fazer para criar um `Aluno`.
+    
+    
+    mutation{
+        createAluno(nomeCompleto: "Akira Hanashiro", idade: 25){
+            id
+        }
+    }
+    
+
+Primeiro, indicamos a palavra-chave `mutation`. Em seguida, temos o campo raiz que indica o nome da operação, `createAluno`. As operações somos nós mesmos que criamos, assim como a `allAlunos`. Logo veremos como declarar essas operações.
+
+> Uma boa prática para o nome das operações é indicar a ação que se quer fazer junto com o nome do esquema com o qual se está trabalhando. 
+> 
+> Então, aqui no nosso exemplo de _mutations_ , teríamos basicamente as operações `createAluno` para criar um aluno, `updateAluno` para atualizar um aluno existente e `deleteAluno` para apagar um aluno.
+
+Depois, passamos os parâmetros necessários para a operação dentro de parênteses. Como estamos criando um `Aluno`, precisamos passar o valor dos campos `nomeCompleto` e `idade`. Lembre-se de que definimos no nosso esquema de `Aluno` que o campo `idade` não é obrigatório, então não daria erro se nós não tivéssemos passado a idade como parâmetro. O campo **id** não é passado na criação porque ele é gerado no banco de dados durante a criação.
+
+Por fim, nós indicamos o que queremos de retorno. Podemos pedir todos os campos do aluno criado, assim como em uma _query_ , mas neste exemplo nós pedimos apenas para retornar o `id` que foi gerado. Afinal, se estamos criando um aluno, temos todos os dados aqui. Só não temos ainda o `id`, pois ele é gerado no banco de dados.
+
+Com isso, teríamos um retorno como o seguinte:
+    
+    
+    {
+        "data": {
+            "createAluno": {
+                "id": "MjEvMTIvMjAxMg"
+            }
+        }
+    }
+    
+
+Para inserir um `Curso`, bastaria executar um `createCurso`. Depois, bastaria ligar os cursos e alunos — mas isso será assunto de outro capítulo.
+
+A alteração e remoção de dados seguem o mesmo padrão. Veremos com mais detalhes quando finalmente botarmos nossas mãos no código.
+
+## 2.5 Sendo notificado sobre alterações de dados (subscriptions)
+
+Até aqui, vimos sobre fazer consultas e modificar dados. Com apenas isso já estaria bom, não é mesmo?
+
+Mas hoje em dia é muito comum a necessidade de manter as nossas aplicações com os dados atualizados em tempo real. Um bom exemplo é o Facebook: não precisamos ficar atualizando a página para ver se recebemos comentários, curtidas ou mensagens. Elas são atualizadas em nossas telas automaticamente assim que algum contato nosso faz alguma ação.
+
+É aí que entra outra parte muito importante do GraphQL, as _subscriptions_. Por meio delas, o front-end pode indicar ao back-end que quer ser notificado sobre algum evento, como uma operação de _mutation_.
+
+Imagine que criamos um aplicativo que exibe uma lista de alunos e que fizemos uma _subscription_ indicando que queremos saber sobre novos alunos. Com isso, cada aluno que for criado a partir de uma _mutation_ será enviado para a nossa aplicação e nós receberemos os dados dele. Dessa maneira, poderemos atualizar a nossa lista de alunos automaticamente.
+
+Voltando para o nosso esquema de `Aluno`, teríamos o seguinte código para indicar uma inscrição para sermos notificados sobre a criação de um novo aluno:
+    
+    
+    subscription {
+        newAluno {
+            nomeCompleto
+            idade
+        }
+    }
+    
+
+Primeiro, indicamos a palavra-chave `subscription`. Em seguida, temos o campo raiz que indica o nome da operação, `newAluno`. Isso indica que queremos ser notificados sobre um novo aluno. Podemos especificar as operações cujas notificações desejamos receber (criação, alteração e remoção).
+
+> Também somos nós que definimos os nomes das operações aqui e veremos como declarar isso a seguir. Quando um aluno for criado com a operação `createAluno`, ficaremos esperando por um novo aluno. Então, demos o nome de `newAluno`.
+
+No final, como já vimos anteriormente, passamos os nomes dos campos que queremos receber. Assim que um novo aluno for criado, receberemos por _WebSockets_ os novos dados.
+
+Então, imagine que acabamos de inserir um novo aluno. A nossa aplicação receberá o novo dado inserido.
+    
+    
+    {
+        "newAluno": {
+            "nomeCompleto": "Carlos Monteiro",
+            "idade": 22
+        }
+    }
+    
+
+> **WebSockets**
+> 
+> A comunicação entre cliente e servidor normalmente é feita quando o cliente faz uma requisição ao servidor, criando uma conexão. Quando o servidor responde, essa conexão é encerrada. Um servidor não pode enviar dados a um cliente sem este ter feito uma requisição.
+> 
+> _WebSocket_ é uma tecnologia na qual uma conexão entre cliente e servidor é criada e mantida, permitindo que tanto cliente quanto servidor enviem dados livremente em ambas as direções.
+> 
+> Para saber mais sobre como funcionam os WebSockets e sua diferença com o HTTP, veja o vídeo _O que são WebSockets_ , da TreinaWeb, disponível em: <https://youtu.be/VQ4cAHbWi0Y>.
+
+## 2.6 Definindo esquemas
+
+Vimos as operações que o GraphQL nos permite fazer: _queries_ , _mutations_ e _subscriptions_. Mas seria um grande problema de segurança se pudéssemos fazer qualquer operação, não é mesmo? E de onde será que saíram aqueles nomes de operações como "allAlunos", "createAlunos" e "newAluno"?
+
+No começo deste capítulo, nós usamos a SDL para declarar os _types_ `Aluno` e `Curso`. Na verdade, não é só isso que devemos declarar. Cada tipo de operação que será aceita pelo back-end também deve ser declarado no esquema. Isso significa que temos que declarar nossas _queries_ , _mutations_ e _subscriptions_ , incluindo se aceitam ou não parâmetros.
+
+Isso é muito importante, porque nos permite indicar as operações que o front-end poderá fazer. É como um contrato entre cliente e servidor.
+
+Você se lembra da nossa operação de buscar todos os alunos?
+    
+    
+    query {
+        allAlunos{
+            nomeCompleto
+            idade
+        }
+    }
+    
+
+Temos aqui uma _query_ em que a operação se chama `allAlunos` e que retorna dados do _type_ `Aluno`. Para permitir essa consulta, precisamos fazer a seguinte declaração em nosso esquema:
+    
+    
+    type Query{
+        allAlunos: [Aluno!]!
+    }
+    
+
+Vimos que a palavra-chave `type` serve para declararmos nossos tipos, como fizemos com `Aluno` e `Curso`; mas, quando estamos escrevendo nosso esquema para a nossa API, temos também três _types_ especiais: `Query`, `Mutation` e `Subscription`. Dentro deles, nós declaramos as operações que vamos aceitar do cliente e o que cada uma delas retorna.
+
+Então, para aceitar uma consulta de `Aluno`, indicamos o _type_ `Query`. Dentro dele, nós declaramos o nome da operação de retornar todos os alunos. As boas práticas nos indicam usar a palavra _all_ junto com o nome do _type_ no plural. Por isso, criamos o nome da operação como `allAlunos`.
+
+Após dois pontos, nós indicamos o que essa operação retorna. Indicamos que é um _Array_ de `Aluno`. Lembre-se de que o `!` indica que o valor retornado é obrigatório, não pode ser nulo. Então o `Aluno!` impede que o _Array_ possua valores nulos, e o último `!`, fora dos colchetes, indica que o valor retornado também não pode ser nulo. Isso significa que, no caso de não haver nenhum aluno, retornaremos um _Array_ vazio em vez de _null_.
+
+Depois, também vimos que podemos passar parâmetros:
+    
+    
+    {
+        allAlunos(first: 3){
+            nomeCompleto
+            idade
+        }
+    }
+    
+
+Mas precisamos também explicitar que parâmetros são permitidos. Para declarar os parâmetros, basta passá-los entre parênteses. Apenas o nome e o tipo de dado do parâmetro são necessários na declaração do esquema. As ações que eles farão em nossas operações serão implementadas por nós em nosso código no back-end.
+    
+    
+    type Query{
+        allAlunos(first: Int): [Aluno!]!
+    }
+    
+
+Aprendemos também sobre _mutations_ e _subscriptions_ :
+    
+    
+    mutation{
+        createAluno(nomeCompleto: "Akira Hanashiro", idade: 25){
+            id
+        }
+    }
+    
+    subscription{
+        newAluno{
+            nomeCompleto
+            idade
+        }
+    }
+    
+
+Para permitir essas operações, basta seguir o mesmo padrão e declará-las em nosso esquema.
+    
+    
+    type Mutation{
+        createAluno(nomeCompleto: String!, idade: Int): Aluno!
+    }
+    
+    type Subscription{
+        newAluno: Aluno!
+    }
+    
+
+Nosso esquema completo ficaria da seguinte maneira:
+    
+    
+    type Aluno{
+        id: ID!
+        nomeCompleto: String!
+        idade: Int
+        curso: Curso
+    }
+    
+    type Curso{
+        id: ID!
+        disciplina: String!
+        alunos: [Aluno!]!
+    }
+    
+    type Query{
+        allAlunos(first: Int): [Aluno!]!
+    }
+    
+    type Mutation{
+        createAluno(nomeCompleto: String!, idade: Int): Aluno!
+    }
+    
+    type Subscription{
+        newAluno: Aluno!
+    }
+    
+
+### Preparado? Preparada?
+
+Neste capítulo, aprendemos alguns conceitos básicos do GraphQL, como _queries_ , _mutations_ e _subscriptions_. Também fomos introduzidos à sintaxe usada para declarar esquemas e fazer as operações.
+
+Agora você está pronto(a) para mergulhar neste novo mundo. A partir deste ponto, nós finalmente colocaremos nossas mãos no código.
+
+Vamos lá?
+
+
+# Parte 2 — GraphQL e Apollo Sandbox
+
+Capítulo 3
+
+# Conheça onde vamos brincar — Apollo Sandbox
+
+Agora que já conhecemos a base do GraphQL (_schemas_ , _queries_ , _mutations_ e _subscriptions_), finalmente começaremos a executar um pouco de código.
+
+Para não termos o grande trabalho de criar um back-end completo logo no início de nossos estudos, eu já deixei pronto um servidor com GraphQL para usarmos. Isso nos possibilitará ter um ambiente com GraphQL onde poderemos testar comandos sem nos preocuparmos com programação no momento.
+
+No final do livro, veremos como montar um servidor passo a passo com Node.js.
+
+## 3.1 Configurando o ambiente
+
+Antes de começarmos, você precisa ter o Node.js instalado em seu computador. Caso ainda não o tenha, você pode obtê-lo em: <https://nodejs.org/>.
+
+Em seguida, você precisa baixar o código do nosso projeto no repositório no GitHub, em: <https://github.com/hanashiro/cdc-livro-graphql/>. Não é necessário ter conta no GitHub para obter o código.
+
+Você verá três pastas: 
+
+  * `back` \- back-end que iremos desenvolver;
+  * `front` \- front-end do nosso projeto que iremos criar;
+  * `sandbox` \- ambiente onde iremos brincar agora no começo do livro.
+
+
+
+Com o Node.js já instalado, abra o seu terminal na pasta `sandbox` e execute o comando `npm install`. Isso vai instalar todas as bibliotecas necessárias para o nosso projeto poder ser executado.
+
+Assim que a instalação for finalizada, execute `npm start`. Isso irá iniciar o projeto. Agora basta abrir o navegador e acessar o endereço <http://localhost:3000/graphql>. Você verá a seguinte tela:
+
+Figura 3.1: Apollo Sandbox.
+
+Esse é o `Apollo Sandbox`, um ambiente onde podemos executar e testar nossos comandos, e eles serão executados pelo nosso back-end. Portanto, poderemos inserir, alterar, remover e buscar dados diretamente nele, sem a necessidade de criar um front-end no momento. Quando criamos um servidor usando o `Apollo`, nós obtemos o `Sandbox` automaticamente.
+
+> Apollo é uma ferramenta que facilita o trabalho com GraphQL tanto no cliente quanto no servidor. 
+> 
+> Para saber mais, conheça o site oficial do Apollo: <https://apollographql.com/>.
+
+O `Sandbox` usa o nosso `schema` para entender a estrutura de dados e comandos existentes. Com isso ele pode listar os comandos existentes, sugerir autocompletar os comandos e/ou campos que estamos escrevendo. Ou seja, além de uma incrível ferramenta para executar e testar nossas _APIs_ , ele também funciona como documentação de nossos comandos.
+
+## 3.2 Declaração de esquemas
+
+Dentro do diretório `sandbox`, abra o arquivo `schema.js`. É nele onde todo o esquema do nosso _back-end_ está declarado. Não se preocupe em entender tudo o que há nele no momento, pois até o final do livro você irá entender as declarações aqui presentes — lembre-se de que também iremos desenvolver o nosso próprio _back-end_.
+
+Você verá declarações como as que vimos anteriormente:
+    
+    
+    type Query {
+      aluno(id: ID!): Aluno
+      alunos(where: AlunosWhere): [Aluno]!
+      curso(id: ID!): Curso
+      cursos(where: CursosWhere): [Curso]!
+    }
+    
+    type Mutation {
+      createAluno(data: AlunoInput!): Aluno
+      deleteAluno(where: AlunoWhere!): Aluno
+      updateAluno(where: AlunoWhere!, data: AlunoInput!): Aluno
+    
+      createCurso(data: CursoInput!): Curso
+      deleteCurso(where: CursoWhere!): Curso
+      updateCurso(where: CursoWhere!, data: CursoInput!): Curso
+    }
+    
+    type Subscription {
+      aluno(where: AlunoSubscriptionFilter!): AlunoSubscriptionPayload
+      curso(where: CursoSubscriptionFilter!): CursoSubscriptionPayload
+    }
+    
+    type Aluno{
+      id: ID!
+      nomeCompleto: String!
+      idade: Int
+      curso: Curso
+    }
+    
+    type Curso{
+      id: ID!
+      disciplina: String!
+      alunos: [Aluno!]!
+    }
+    
+
+É com base nesse arquivo que o `Sandbox` saberá as operações existentes no nosso sistema.
+
+## 3.3 Venha brincar no Sandbox!
+
+Vamos conhecer melhor o Apollo Sandbox. 
+
+Ao abrir o navegador em <http://localhost:3000/graphql>, teremos uma tela como a seguinte imagem.
+
+Figura 3.2: Apollo Sandbox.
+
+O número 1 indica onde vamos escrever nossos comandos (campo de operação). O botão próximo ao número 2 (Run) é onde vamos clicar para executar o nosso comando (ou você pode executar pelo atalho `Ctrl + Enter`). A área onde está o número 3 (campo de resposta) é onde vai aparecer a resposta do servidor.
+
+A área onde está o número 4 é onde fica a documentação. Por padrão, o Sandbox mostra todas as _queries_ que podemos fazer. Se você clicar no botão "+" ao lado de `alunos`, por exemplo, ele inserirá o comando para a busca de alunos e, em seguida, exibirá os campos pertencentes à estrutura de `aluno` que podemos adicionar à busca.
+
+Se clicar em `Root`, poderá também ver as operações de `mutation` e `subscription`.
+
+### Ansioso? Ansiosa?
+
+Neste capítulo, nós vimos como preparar nosso ambiente. Também conhecemos o Apollo Sandbox, no qual finalmente vamos executar nossos comandos.
+
+No capítulo seguinte, nós utilizaremos o Apollo Sandbox para inserir, remover, alterar e buscar dados por meio de _queries_ , _mutations_ e _subscriptions_.
+
+
+Capítulo 4
+
+# Buscando e alterando dados
+
+Finalmente chegou o momento de colocar em prática o que aprendemos até agora. Vamos utilizar o Sandbox do Apollo para executar alguns comandos. Ele também será um ótimo lugar para aprofundarmos nossos conhecimentos sobre o GraphQL.
+
+Lembre-se de que, para iniciar o Sandbox, basta abrir o terminal no diretório do projeto, executar o comando `npm start` e abrir no navegador o endereço <http://localhost:3000/graphql>.
+
+## 4.1 Inserindo dados
+
+Para poder buscar, alterar e remover nossos dados, precisamos deles em nosso banco de dados. Então vamos iniciar nossas atividades com a criação de dados.
+
+Como vimos anteriormente, utilizamos _mutations_ para inserir dados. Então precisamos escrever que queremos uma _mutation_ e, dentro dela, nós indicamos o nome da operação que queremos executar. Quando formos criar nosso servidor, veremos que somos nós que definimos o nome das operações. Aqui neste projeto que estamos executando, eu já deixei várias operações prontas.
+
+Para criar um novo aluno, vamos usar a operação `createAluno`. Assim que você começar a escrever, o Sandbox vai sugerir algumas opções, tentando adivinhar o que você quer, como pode ser visto na imagem a seguir.
+
+Figura 4.1: Sandbox — sugestão automática de comandos.
+
+Sempre que quiser uma sugestão do Sandbox sobre o que pode ser escrito, basta pressionar as teclas `Ctrl + Barra de Espaço`. Isso facilita muito nosso trabalho, pois nos poupa de abrir a documentação a todo momento para procurar o nome exato de algum comando disponível, ou ter que digitar cada letra de um nome grande.
+
+Vamos lembrar o modo de se inserir um novo dado com GraphQL:
+    
+    
+    mutation{
+         createAluno(
+              nomeCompleto: "Maria Silva", 
+              idade: 25
+         ){
+              id
+         }
+    }
+    
+
+Indicamos o nome da operação (`createAluno`) e passamos os valores dos campos dentro de parênteses (`nomeCompleto` e `idade`). Dentro de chaves, nós indicamos o nome dos campos que queremos que sejam retornados — aqui, indicamos apenas o campo `id`, que é gerado automaticamente no banco de dados.
+
+Acontece que aqui há uma pequena alteração: em vez de passar os campos diretamente dentro de parênteses, devemos passar dentro de um campo chamado `data`. É apenas uma convenção para manter a organização. Você entenderá melhor quando vermos sobre **variáveis** , mas lembre-se: quando formos criar nosso próprio servidor, teremos a liberdade de criar nossa API como quisermos.
+
+Então, para inserir um novo, basta inserir os campos dentro de um campo `data`, e teremos o comando no seguinte formato:
+    
+    
+    mutation{
+         createAluno(
+            data: {
+              nomeCompleto: "Maria Silva", 
+              idade: 25
+            }
+         ){
+              id
+         }
+    }
+    
+
+Aperte o botão `Run` ou pressione as teclas `Ctrl + Enter` para executar o comando. A resposta da API aparecerá no painel da direita com o campo que pedimos que fosse retornado, `id`.
+
+Figura 4.2: Sandbox — criação de aluno.
+
+## 4.2 Busca simples
+
+Agora que já temos um aluno em nosso banco de dados, vamos fazer uma consulta para que esse dado possa ser retornado sempre que quisermos.
+
+Você se lembra de que anteriormente vimos a operação `allAlunos`? Esse é um nome que podemos escolher para a nossa operação quando formos criar nosso próprio back-end, mas aqui eu simplesmente peguei o nome do schema e passei para o plural.
+
+Portanto, para retornar todos os alunos, basta indicarmos que queremos uma query e passar o nome da operação, `alunos`. Em seguida, passamos o nome dos campos que queremos que sejam retornados.
+    
+    
+    query{
+         alunos{
+              id
+              nomeCompleto
+              idade
+         }
+    }
+    
+
+Lembre-se também de que, quando estamos escrevendo _queries_ , a palavra `query` pode ser omitida, deixando nosso comando da seguinte forma:
+    
+    
+    {
+         alunos{
+              id
+              nomeCompleto
+              idade
+         }
+    }
+    
+
+Teremos a seguinte resposta:
+    
+    
+    {
+         "data": {
+              "alunos": [
+                    {   
+                         "id": "1549159200000",
+                         "nomeCompleto": "Maria Silva",
+                         "idade": 25 
+                    }
+              ]
+         }
+    }
+    
+
+## 4.3 Atualizando dados
+
+Vamos alterar o nosso dado de aluno com a operação `updateAluno`. Para fazer essa atualização de dado, precisamos passar os novos valores dos campos que queremos alterar e um identificador para o GraphQL saber qual objeto deve ser alterado. No nosso caso, nosso identificador é o campo `id`.
+
+Essas informações serão passadas como parâmetros. Os novos valores dos campos devem ser passados no parâmetro `data` e o identificador deve ser passado no parâmetro `where`.
+
+Após os parâmetros, podemos indicar os campos que queremos que sejam retornados do objeto que acabou de ser atualizado. No exemplo a seguir, pegamos nosso aluno e alteramos sua idade para o valor `26`.
+    
+    
+    mutation{
+         updateAluno(
+              data: {
+                    idade: 26
+              }
+              where: {
+                    id: "1549159200000"
+              }
+         ){
+              id
+              nomeCompleto
+              idade
+         }
+    }
+    
+
+Teremos a seguinte resposta:
+    
+    
+    {
+         "data": {
+              "updateAluno": [
+                    {   
+                         "id": "1549159200000",
+                         "nomeCompleto": "Maria Silva",
+                         "idade": 26
+                    }
+              ]
+         }
+    }
+    
+
+## 4.4 Removendo dados
+
+O que falta agora é aprendermos a apagar o dado existente. Isso é bem mais simples, pois basta executar a operação `deleteAluno` e passar o identificador do objeto que queremos apagar para o parâmetro `where`.
+
+Por fim, também podemos indicar o nome dos campos que queremos que sejam retornados do objeto que estamos apagando. Isso pode ser útil caso você queira, por exemplo, listar ao usuário os dados que foram apagados. Após o objeto ter sido apagado, não há mais como recuperá-lo, então caso queira exibi-lo, esta é a última chance.
+    
+    
+    mutation{
+         deleteAluno(
+              where: {
+                    id: "1549159200000"
+              }
+         ){
+              id
+              nomeCompleto
+              idade
+         }
+    }
+    
+
+Teremos a seguinte resposta:
+    
+    
+    {
+         "data": {
+              "deleteAluno": [
+                    {   
+                         "id": "1549159200000",
+                         "nomeCompleto": "Maria Silva",
+                         "idade": 26
+                    }
+              ]
+         }
+    }
+    
+
+> O GraphQL exige que toda operação retorne pelo menos algum dado.
+> 
+> Mesmo que você não precise que nada seja retornado ao apagar um objeto, precisamos indicar no mínimo um campo para ser retornado.
+
+Agora nosso banco está vazio, pois apagamos o único dado que tínhamos. Execute a operação `alunos` novamente e teremos um _array_ vazio como retorno.
+    
+    
+    {
+         "data": {
+              "alunos": []
+         }
+    }
+    
+
+## 4.5 Relacionando dados
+
+Vimos as operações com apenas um aluno, mas lembre-se de que `Aluno` também possui o campo `curso`. Como fazer para criar um aluno com um curso e manter esse relacionamento? Temos três possibilidades: criar um aluno com um curso, conectar um aluno e um curso existentes, e remover essa conexão.
+
+### Criando dados relacionados
+
+Vamos começar criando um novo aluno e um novo curso. Primeiro começamos escrevendo da mesma maneira que escrevemos quando criamos um aluno. 
+
+O que vamos adicionar agora é o campo `curso`. Como há a possibilidade de criar um novo curso ou conectar o novo aluno a um curso já existente, precisamos indicar que queremos criar um novo curso. Então, passamos o campo `curso_create` e, em seguida, passamos os campos do novo curso, lembrando que esses campos somos nós mesmos que definimos no `back-end`. No final, indicamos os campos que queremos que sejam retornados.
+    
+    
+    mutation{
+         createAluno(
+              data: {
+                    nomeCompleto: "Maria Silva"
+                    idade: 26
+                    curso_create: {
+                         disciplina: "GraphQL"
+                    }
+              }
+         ){
+              id
+              nomeCompleto
+              idade
+              curso{
+                    id
+                    disciplina
+              }
+         }
+    }
+    
+
+Teremos a seguinte resposta:
+    
+    
+    {
+         "data": {
+              "createAluno": {
+                    "id": "1674416082039",
+                    "nomeCompleto": "Maria Silva",
+                    "idade": 26,
+                    "curso": {
+                         "id": "161674416082039",
+                         "disciplina": "GraphQL"
+                    }
+              }
+         }
+    }
+    
+
+Agora temos um novo aluno e um novo curso criados, e eles estão conectados. Podemos buscar alunos e indicar que queremos as informações do curso em que um aluno está.
+    
+    
+    {
+         alunos{
+              id
+              nomeCompleto
+              curso{
+                    id
+                    disciplina
+              }
+         }
+    }
+    
+
+Também podemos fazer a busca na outra direção, ou seja, procurar por cursos e pedir para virem os alunos que estão ligados a ele.
+    
+    
+    {
+        cursos{
+            id
+            disciplina
+            alunos{
+                nomeCompleto
+                idade
+            }
+        }
+    }
+    
+
+### Conectando dados já existentes
+
+Vimos como ligar dados no momento de sua criação. Mas e se quisermos conectar um dado já existente? Há duas situações: criar um dado novo e ligar a um já existente ou conectar dois dados já existentes.
+
+Quando criamos um aluno e indicamos que queríamos criar um novo curso também, indicamos o campo `curso_create`. Para criar um novo aluno e conectá-lo a um curso já existente, basta indicar o campo `curso_connect` e passar o `id` do curso ao qual queremos conectar o nosso novo aluno.
+    
+    
+    mutation{
+      createAluno(
+        data: {
+          nomeCompleto: "João Silva"
+          idade: 20
+          curso_connect: {
+            id: "1674414987454"
+          }
+        }
+      ){
+        id
+        nomeCompleto
+        idade
+        curso{
+          id
+          disciplina
+        }
+      }
+    }
+    
+
+Agora vamos criar um novo aluno, mas ainda não vamos conectá-lo a nenhum curso.
+    
+    
+    mutation{
+      createAluno(
+        data: {
+          nomeCompleto: "Carlos Monteiro"
+          idade: 22
+        }
+      ){
+        id
+        nomeCompleto
+        idade
+      }
+    }
+    
+
+Queremos fazer uma alteração nos dados já existentes para poder conectá-los. Para isso, basta usar a operação `updateAluno` que já conhecemos e indicar o `curso_connect` que vimos anteriormente.
+    
+    
+    mutation{
+      updateAluno(
+        where: {
+          id: "1674416174277"
+        }
+        data: {
+          curso_connect: {
+            id: "161674416082039"
+          }
+        }
+      ){
+        id
+        nomeCompleto
+        curso{
+          id
+          disciplina
+        }
+      }
+    }
+    
+
+Com isso, pudemos conectar dois dados que já existiam, mas que não estavam conectados.
+
+### Desconectando dados
+
+Para desconectar uma ligação, é bem simples. Fazemos o _update_ e, em vez de indicar o campo `curso_connect`, indicamos o `curso_disconnect` passando o valor `true`.
+    
+    
+    mutation{
+      updateAluno(
+        where: {
+          id: "1674416174277"
+        }
+        data: {
+          curso_disconnect: true
+        }
+      ){
+        id
+        nomeCompleto
+        curso{
+          disciplina
+        }
+      }
+    }
+    
+
+Agora desconectamos do curso o aluno que acabamos de criar.
+
+## 4.6 Buscando dados
+
+Agora que temos dados em nosso banco de dados, vamos aprender como fazer buscas.
+
+A primeira forma, e a mais simples, é aquela em que são retornados todos os dados. Como já vimos, basta indicar o nome do nosso esquema no plural como nome da operação. Em seguida, basta indicar os campos que queremos que sejam retornados.
+    
+    
+    {
+        alunos{
+            nomeCompleto
+            idade
+            curso{
+                disciplina
+            }
+        }
+    }
+    
+
+Se quisermos que apenas um aluno venha, indicamos o nome do próprio esquema. Para o servidor saber qual dado deve ser retornado, passamos um identificador único como parâmetro. No nosso caso, indicamos o campo `id` como identificador quando montamos nosso esquema.
+
+Parâmetros assim, com o objetivo de indicar qual dado queremos que seja retornado, são chamados de _filtros_. Lembre-se que, como seremos nós que criaremos as regras, poderemos escolher receber um objeto qualquer no formato que quisermos.
+
+No exemplo a seguir, estamos procurando por um único aluno com o `id` "1674416082039".
+    
+    
+    {
+        aluno(
+            id: "1674416082039"
+        ){
+            nomeCompleto
+            idade
+        }
+    }
+    
+
+## 4.7 Variáveis
+
+Até o momento, nós só passamos valores fixos nos parâmetros de nossas operações, como o `id` do aluno que queríamos que fosse retornado.
+
+O problema é que, quando quisermos alterar nossas operações, sejam _queries_ ou _mutations_ , teremos que alterar esses valores no código que escrevemos. Isso não é bom, principalmente no momento em que formos criar nosso projeto.
+
+O melhor jeito é deixar o nosso código de uma maneira estática, tendo a certeza de que não alteramos algo por acidente. Quanto aos valores dos parâmetros, podemos passá-los de variáveis, permitindo que eles, sim, sejam dinâmicos.
+
+No Sandbox, as variáveis são inseridas no espaço indicado pelo número 1 na imagem a seguir. Caso em sua tela esse campo `Variables` esteja encostado na parte inferior da tela, basta clicar e arrastar para cima para poder escrever nele.
+
+Figura 4.3: Sandbox — local para escrever variáveis.
+
+Anteriormente, nós fizemos uma _query_ que buscou um aluno pelo seu `id`.
+    
+    
+    {
+        aluno(
+            id: "1674416082039"
+        ){
+            nomeCompleto
+            idade
+        }
+    }
+    
+
+Para começar a trabalhar com variáveis, basta alterarmos três coisas:
+
+**1\. Remover valores fixos**
+
+O valor fixo do nosso parâmetro será trocado pelo nome de uma variável que nós vamos criar. Variáveis devem ter seu nome iniciado por `$`. Vamos chamar a nossa variável de `$alunoID`.
+
+**2\. Declarar variáveis**
+
+Devemos declarar o nome da nossa variável no início do comando para o GraphQL saber que aquela é uma variável aceita pela nossa consulta. 
+
+Para isso, indicamos o nome da variável dentro de parênteses logo após a palavra-chave `query` ou `mutation`. Após o nome da variável, nós indicamos o tipo dela. No nosso caso, o campo `id` é do tipo `ID`.
+
+**3\. Passar o valor da variável**
+
+Por último, precisamos indicar o valor dessa variável que o nosso comando está recebendo. No Sandbox, nós passamos no campo indicado anteriormente, `Variables`.
+
+Os valores são passados em formato `json`, e o nome dos campos do `json` devem ser iguais aos nomes das variáveis declaradas, apenas ignorando o `$` no início do nome do campo.
+
+Com essas alterações, nossa nova consulta ficará da seguinte maneira:
+    
+    
+    query ($alunoID: ID!){
+        aluno(
+            id: $alunoID
+        ){
+            nomeCompleto
+            idade
+        }
+    }
+    
+
+E passaremos o seguinte `json`:
+    
+    
+    {
+        "alunoID": "1674416082039"
+    }
+    
+
+Perceba que agora podemos mudar os valores dos nossos parâmetros apenas alterando o nosso `json`, e o código da nossa consulta ficará intocado. Isso permite separar comandos de dados, o que é ótimo em programas, já que os comandos são estáticos e os dados são dinâmicos. 
+
+Além disso, se tivermos que passar vários dados como parâmetro, nossa `query` não ficará gigante, pois não precisaremos declarar cada campo.
+
+Foi dito anteriormente que, em operações de busca, a palavra-chave `query` pode ser omitida. Porém, quando estamos trabalhando com variáveis, é necessário indicar `query` no começo do comando.
+
+## 4.8 Filtros
+
+Filtros são como nós indicamos a uma consulta o que queremos que seja retornado. Assim, tudo o que não satisfaz o filtro não virá para nós. Um exemplo bem simples é caso queiramos que sejam retornados apenas os alunos com idade maior que 21.
+
+Filtros são passados por parâmetros. Quando criarmos nosso próprio servidor, poderemos passar qualquer tipo de parâmetro que desejarmos e decidir o que esse parâmetro fará em nosso código.
+
+No caso de `alunos`, eu já deixei vários filtros prontos. Basta usar o campo `where` quando formos fazer uma busca de alunos e indicar o campo pelo qual queremos fazer o filtro.
+
+Se indicarmos que queremos o campo `idade` igual a 21, nada será retornado, pois não cadastramos nenhum aluno com essa idade.
+    
+    
+    {
+        alunos(
+            where: {
+                idade: 21
+            }
+        ){
+            nomeCompleto
+            idade
+        }
+    }
+    
+
+Esse código fará uma busca por todos os alunos com o campo `idade` que possua exatamente o valor que passamos, 21. Mas, como dissemos antes, e se quisermos buscar pelos alunos com mais de 21?
+
+Para casos como esse, deixei vários filtros prontos. Para procurarmos por `idade` maior que 21, basta passar o campo `idade_gt`, como no código a seguir:
+    
+    
+    {
+        alunos(
+            where: {
+                idade_gt: 21
+            }
+        ){
+            nomeCompleto
+            idade
+        }
+    }
+    
+
+Esse sufixo `_gt` vem do inglês _greater than_ (maior do que). Um outro filtro é o `idade_in`. Para ele nós passamos uma lista de valores, como `[21, 22]`, e então o servidor retornará todos os alunos que possuam idade igual a 21 ou 22.
+
+Ao escrever o campo `idade` e pressionar as teclas `Ctrl + Espaço`, você verá todos os filtros que estão disponíveis.
+
+  1. `idade_in` — retorna alunos com idades contidas na lista que passarmos;
+  2. `idade_lt` — retorna alunos com idades menores da que passarmos;
+  3. `idade_gt` — retorna alunos com idades maiores da que passarmos;
+  4. `idade_not` — retorna alunos com idades diferentes da que passarmos;
+  5. `idade_lte` — retorna alunos com idades menores ou iguais à que passarmos;
+  6. `idade_gte` — retorna alunos com idades maiores ou iguais à que passarmos.
+
+
+
+Esses filtros são interessantes pelo fato de o campo `idade` ser do tipo `Int`. No caso de um campo do tipo `String`, como é o caso do `nomeCompleto`, precisaremos de mais alguns filtros além desses.
+
+Além dos que vimos anteriormente, o campo `nomeCompleto` também terá os seguintes filtros:
+
+  1. `nomeCompleto_ends_with` — retorna alunos cujo nome termina com a _string_ que passarmos;
+  2. `nomeCompleto_starts_with` — retorna alunos cujo nome começa com a _string_ que passarmos;
+  3. `nomeCompleto_not_contains` — retorna alunos cujo nome não possua a _string_ que passarmos;
+  4. `nomeCompleto_not_ends_with` — retorna alunos cujo nome não termina com a _string_ que passarmos;
+  5. `nomeCompleto_not_starts_with` — retorna alunos cujo nome não começa com a _string_ que passarmos.
+
+
+
+Teste fazer o mesmo com `Curso`. Você verá que não é possível. Isso porque essas operações não foram implementadas para ele — o que mostra como podemos ter controle sobre cada operação disponível ao cliente.
+
+## 4.9 Paginação
+
+Quando estamos fazendo buscas em um banco de dados com muitos dados, provavelmente não vamos querer que todos os dados venham de uma só vez, pois causaria um grande consumo de memória na aplicação tanto do servidor quanto do cliente, sem contar o tempo para transferir os dados.
+
+Por isso, existe a **paginação** , que nos permite requisitar apenas uma determinada quantidade de dados, como os 10 primeiros resultados ou os 10 últimos.
+
+Aqui podemos ver o uso do parâmetro `first`. Se quisermos que apenas os dois primeiros resultados sejam retornados, escreveremos o seguinte código:
+    
+    
+    {
+        alunos(
+            where: {
+                first: 2
+            }
+        ){
+            nomeCompleto
+            idade
+        }
+    }
+    
+
+Se quisermos que sejam retornados dois elementos, mas que o primeiro seja pulado, retornando, na verdade, o segundo e o terceiro elementos apenas, podemos usar o parâmetro `skip`, para o qual passamos quantos elementos desejamos pular.
+    
+    
+    {
+        alunos(
+            where: {
+                first: 2
+                skip: 1
+            }
+        ){
+            nomeCompleto
+            idade
+        }
+    }
+    
+
+## 4.10 Ordenação
+
+Já que a ideia do GraphQL é pedirmos exatamente o que queremos, claro que não podia faltar uma maneira de pedirmos para nossos resultados virem ordenados de acordo com nossas necessidades.
+
+Para ordená-los, basta utilizar o parâmetro `orderBy`. Ele deve receber o nome do campo pelo qual queremos ordenar.
+
+No exemplo a seguir, nós pedimos que os alunos venham ordenados pelo nome.
+    
+    
+    {
+        alunos(
+            where: {
+                orderBy: "nomeCompleto"
+            }
+        ){
+            nomeCompleto
+            idade
+        }
+    }
+    
+
+Pedimos que os campos retornados fossem `nomeCompleto` e `idade`. Porém, não somos obrigados a requisitar o campo pelo qual estamos ordenando. Isso significa que, no exemplo anterior, mesmo pedindo para ordenar pelo campo `nomeCompleto`, poderíamos ter pedido apenas o campo `idade`.
+
+> Vale lembrar mais uma vez que todos esses parâmetros são declarados e programados por nós mesmos. Estou demonstrando estas operações de filtro e ordenação para que você possa imaginar as possibilidades que podemos inventar ao usar GraphQL, não nos limitando apenas a consultas básicas. Realmente, podemos dar muito poder ao front-end.
+
+## 4.11 Renomeando campos
+
+Há momentos em que será necessário renomear os campos. Vamos ver um simples exemplo de uma busca com um filtro para entender o problema:
+    
+    
+    {
+        alunos(
+            where: {
+                idade_gt: 21
+            }        
+        ){
+            nomeCompleto
+            idade
+        }
+    }
+    
+
+Teremos o seguinte resultado:
+    
+    
+    {
+      "data": {
+        "alunos": [
+          {
+            "nomeCompleto": "Maria Silva",
+            "idade": 26
+          },
+          {
+            "nomeCompleto": "Carlos Monteiro",
+            "idade": 22
+          }
+        ]
+      }
+    }
+    
+
+Veja que dentro do campo `data` é retornado primeiro o nome da operação que fizemos, `alunos`. E se quisermos fazer duas operações ao mesmo tempo com filtros diferentes, dessa vez uma que retorne alunos com `idade` maior que 21 e alunos com `idade` menor do que 21? Podemos fazer isso, pois, afinal, uma das ideias do GraphQL é permitir que solicitemos tudo o que precisamos em uma única requisição.
+
+Teríamos o seguinte código:
+    
+    
+    {
+        alunos(
+            where: {
+                idade_gt: 21
+            }        
+        ){
+            nomeCompleto
+            idade
+        }
+    
+        alunos(
+            where: {
+                idade_lt: 21
+            }        
+        ){
+            nomeCompleto
+            idade
+        }
+    }
+    
+
+Isso não vai funcionar, pois estamos chamando a operação `alunos` duas vezes, e o JSON retornado não pode conter dois campos com os mesmos nomes. É neste momento que se faz necessária a renomeação dos campos retornados.
+
+Assim como vimos anteriormente na parte de renomear campos, basta passarmos o nome que queremos, passar dois pontos e, por último, o nome do campo. Podemos fazer exatamente o mesmo com operações.
+    
+    
+    {
+        resultado1: alunos(
+            where: {
+                idade_gt: 21
+            }        
+        ){
+            nomeCompleto
+            idade
+        }
+    
+        resultado2: alunos(
+            where: {
+                idade_lt: 21
+            }        
+        ){
+            nomeCompleto
+            idade
+        }
+    }
+    
+
+Agora teremos dois grupos em nosso resultado:
+    
+    
+    {
+      "data": {
+        "resultado1": [
+          {
+            "nomeCompleto": "Maria Silva",
+            "idade": 26
+          },
+          {
+            "nomeCompleto": "Carlos Monteiro",
+            "idade": 22
+          }
+        ],
+        "resultado2": [
+          {
+            "nomeCompleto": "João Silva",
+            "idade": 20
+          }
+        ]
+      }
+    }
+    
+
+## 4.12 Fragmentos
+
+Acabamos de ver como fazer consultas diferentes para o mesmo esquema. Porém, note que tivemos que repetir os campos `nomeCompleto` e `idade`.
+    
+    
+    {
+        resultado1: alunos(
+            where: {
+                idade_gt: 21
+            }        
+        ){
+            nomeCompleto
+            idade
+        }
+    
+        resultado2: alunos(
+            where: {
+                idade_lt: 21
+            }        
+        ){
+            nomeCompleto
+            idade
+        }
+    }
+    
+
+Nesse exemplo, não parece ser um grande problema. Porém, em um sistema de verdade, provavelmente teremos vários campos. Será um grande problema caso precisemos manter as consultas com os mesmos campos. Caso você altere em um lugar, corre o risco de esquecer-se de alterar em outro, sem contar o trabalho de ficar escrevendo campos repetidos.
+
+Por isso, existem os _fragments_ (fragmentos). Eles nos permitem declarar um grupo de campos de um determinado esquema. Assim, nós só precisamos indicar em nossas consultas quais fragmentos queremos. Caso tenhamos que alterar os campos a serem chamados, alteramos em um lugar só.
+
+Para declarar um fragmento, basta utilizar a palavra-chave `fragment`, indicar um nome e dizer de qual esquema estamos criando esse fragmento. Após isso, basta indicarmos os campos que queremos entre chaves, como estamos acostumados.
+    
+    
+    fragment meusCampos on Aluno{
+        nomeCompleto
+        idade
+    }
+    
+
+Para utilizar um fragmento, basta passar o nome do fragmento no lugar do nome dos campos lá em nossa consulta. Para o GraphQL saber que se trata de um fragmento, e não do nome de um campo, precisamos passar `...` antes do nome do fragmento.
+
+Nossa consulta anterior ficará da seguinte maneira:
+    
+    
+    {
+        resultado1: alunos(
+            where: {
+                idade_gt: 21
+            }        
+        ){
+            ...meusCampos
+        }
+    
+        resultado2: alunos(
+            where: {
+                idade_lt: 21
+            }        
+        ){
+            ...meusCampos
+        }
+    }
+    
+
+Como declaramos que `meusCampos` é um fragmento de `Aluno`, só podemos utilizá-lo dentro de uma consulta de `Aluno`.
+
+## 4.13 Recebendo notificações
+
+As _subscriptions_ do GraphQL nos permitem que sejamos notificados assim que alguma alteração ocorrer com os nossos dados.
+
+Vimos que há três possibilidades: quando um novo objeto é criado, quando um objeto existente é alterado e quando um objeto existente é apagado.
+
+Para começar a receber notificações sobre o que está acontecendo com nossos dados, precisamos executar uma operação do tipo `subscription`. Vamos criar uma, à qual daremos o nome de `updatedAlunos`.
+
+Dentro dela, nós precisamos indicar o tipo do qual queremos receber notificações. Vamos colocar `aluno`. Em seguida, precisamos passar o `where` para indicar o tipo de notificação queremos receber.
+
+Como notificações ocorrem quando um dado é alterado, receberemos uma assim que uma operação `mutation` ocorrer. Podemos indicar mais de um tipo de `mutation`. Basta indicarmos uma lista de valores que queremos. Então passaremos o campo `mutation_in` e indicaremos em um _Array_ os tipos que queremos receber.
+
+Os tipos disponíveis são `CREATED`, `UPDATED` e `DELETED`. Vamos colocar apenas o `UPDATED` para recebermos notificações apenas quando um dado for atualizado.
+
+Então, nós indicamos os campos que queremos receber. Podemos receber um campo chamado `mutation`, que indica a operação que ocorreu. No nosso caso, receberemos apenas o `UPDATED`. Esse campo é importante, pois pode ser que queiramos receber notificações também na criação e remoção, e este campo vai nos indicar qual operação ocorreu.
+
+Em seguida, nós devemos passar o campo `node` e, dentro dele, indicar os campos do nosso objeto `Aluno`.
+    
+    
+    subscription updatedAlunos {
+      aluno(where: {
+        mutation_in: [UPDATED]
+      }){
+        mutation
+        node{
+          id
+          nomeCompleto
+          idade
+        }
+      }
+    }
+    
+
+Execute este comando no Sandbox. Ele apenas começará a esperar, como mostrado no número 1 na figura seguinte.
+
+Figura 4.4: Sandbox — criação de subscription.
+
+Vamos simplesmente atualizar algum aluno qualquer, como já fizemos anteriormente. Execute o comando a seguir:
+    
+    
+    mutation{
+         updateAluno(
+              data: {
+                    idade: 25
+              }
+              where: {
+                    id: "1674416174277"
+              }
+         ){
+              id
+              nomeCompleto
+              idade
+         }
+    }
+    
+
+Ao executar este comando, veja a área `Subscriptions`. Teremos agora ao lado direito a seguinte resposta:
+    
+    
+    {
+      "data": {
+        "aluno": {
+          "mutation": "UPDATED",
+          "node": {
+            "id": "1674416174277",
+            "nomeCompleto": "Carlos Monteiro",
+            "idade": 25
+          }
+        }
+      }
+    }
+    
+
+Recebemos pelo campo `mutation` o tipo de operação que ocorreu, `UPDATED`, e dentro de `node` recebemos os campos do aluno que teve seus dados modificados. Se você alterar novamente qualquer aluno, receberemos os novos dados.
+
+### Estamos indo muito bem!
+
+Neste capítulo, nós pegamos nossos conhecimentos básicos que adquirimos sobre a sintaxe do GraphQL e os botamos em prática no Sandbox do Apollo. Finalmente, pudemos ver nossos comandos em ação ao buscar, criar, atualizar e apagar dados. Além disso, também aprendemos a receber notificações assim que uma operação modifica nossos dados.
+
+A seguir, vamos nos aprofundar mais em alguns elementos que já conhecemos e conhecer alguns elementos novos que fazem parte da estrutura do GraphQL.
+
+
+Capítulo 5
+
+# Conhecendo melhor os types
+
+Estamos muito próximos de criar nosso próprio front-end e back-end. Mas, antes disso, vamos conhecer um pouco mais sobre os tipos de dados presentes no GraphQL. Isso nos permitirá ter um controle melhor da nossa aplicação ao criar nossos _schemas_.
+
+## 5.1 Types
+
+Como vimos anteriormente, os elementos mais básicos do esquema do GraphQL são os _types_ , também chamados de "tipos". Nós usamos _types_ para definir a estrutura dos objetos e seus respectivos campos e tipos.
+
+Vamos revisar rapidamente como os _types_ funcionam. Aqui temos um exemplo de um _type_ que chamamos de `Aluno`.
+    
+    
+    type Aluno{
+        id: ID!
+        nomeCompleto: String!
+        idade: Int
+    }
+    
+
+_Types_ são declarados com a palavra-chave `type`. Em seguida, abrimos chaves e declaramos em cada linha o nome dos campos que esse objeto terá. Na frente de cada um dos campos, nós devemos colocar dois pontos e indicar o seu tipo. A seguir, veremos melhor sobre tipos de campos.
+
+Acima nós declaramos os tipos `ID`, `String` e `Int`, mas os campos também podem ser do tipo que nós mesmos criamos com a declaração `type`. Então, podemos ter um campo que seja do tipo `Aluno`, como no exemplo a seguir:
+    
+    
+    type Aluno{
+        id: ID!
+        nomeCompleto: String!
+        idade: Int
+        melhorAmigo: Aluno
+    }
+    
+
+## 5.2 Scalar Types
+
+Sabemos como declarar _types_ para definir a estrutura de objetos e que podemos utilizá-los para tipar campos, como o _type_ `Aluno`; mas, para declarar certos campos, como um simples número ou palavra, precisaremos de dados concretos em vez de outros objetos.
+
+Um exemplo de dado concreto é o campo `nomeCompleto` de `Aluno`, que declaramos como `String`. Esses tipos que já vêm com o GraphQL são chamados de _Scalar Types_. São cinco no total:
+
+**Int**
+
+Indica um número inteiro, ou seja, sem casas decimais. Esse campo aceita números positivos e negativos. Exemplo: a idade de uma pessoa.
+    
+    
+    
+    
+
+**Float**
+
+Indica números flutuantes, ou seja, com casas decimais. Aceita números positivos e negativos. Exemplo: o preço de um produto.
+
+**String**
+
+Indica uma sequência de caracteres, sejam letras, números ou símbolos. Exemplo: nome ou e-mail de uma pessoa.
+
+**Boolean**
+
+Indica um dos possíveis valores: `true` (verdadeiro) ou `false` (falso). Exemplo: se um aluno está ou não aprovado em uma matéria.
+
+**ID** É um tipo de dado do GraphQL que indica um identificador único para cada objeto existente em nosso banco de dados. Exemplo: chaves primárias dos bancos de dados.
+
+## 5.3 Enumeration Types
+
+_Enumeration Types_ , também conhecidos como _Enums_ , são um tipo especial de _Scalar Types_. A diferença é que os _Enums_ são restritos a um grupo de valores que nós definimos.
+
+Um bom exemplo é quando vimos sobre _subscriptions_. Lembre-se da resposta que recebemos quando fizemos uma alteração:
+    
+    
+    {
+      "data": {
+        "aluno": {
+          "mutation": "UPDATED",
+          "node": {
+            "id": "cjkhjrhf6dr220b58qke4mepk",
+            "nomeCompleto": "Carlos Monteiro",
+            "idade": 25
+          }
+        }
+      }
+    }
+    
+
+Veja o campo `mutation`. Ele recebeu o valor `UPDATED`. Vimos que podemos receber três tipos de valores nesse campo: `CREATED`, `UPDATED` e `DELETED`. Então os _Enums_ são uma forma de restringirmos os valores que um campo pode ter.
+
+Se você olhar o arquivo `schema.js`, verá a seguinte estrutura chamada `MutationType`:
+    
+    
+    enum MutationType{
+        CREATED
+        UPDATED
+        DELETED
+    }
+    
+
+É uma boa prática manter os valores de _Enums_ com letras maiúsculas, mas isso não é obrigatório.
+
+Agora, se declararmos algum campo com o tipo `MutationType`, este campo só poderá ter um dos três valores que declaramos.
+
+## 5.4 Input Types
+
+Quando estávamos trabalhando com _mutations_ , nós passamos valores como strings e números pelos parâmetros, como podemos ver no exemplo a seguir:
+    
+    
+    mutation{
+         createAluno(
+              data: {
+            nomeCompleto: "Maria Silva", 
+                idade: 25
+          }
+         ){
+              id
+         }
+    }
+    
+
+Note que `data` é um objeto, e os campos `nomeCompleto` e `idade` fazem parte desse objeto. O que aconteceu aqui foi a declaração de uma estrutura de dados com estes campos e que foi passada como parâmetro para a _mutation_ `createAluno`.
+
+Então podemos criar um `type` com esses campos e dar um nome como `AlunoParametros`?
+
+Até poderíamos. O problema é que todo `type` declarado passa a fazer parte do _schema_. Isso sujaria o nosso banco, pois teríamos então `Aluno` e `AlunoParametros`. Quando queremos fazer uma busca de alunos, vamos em `Aluno`, nunca fazemos uma busca de `AlunoParametros`, já que este tipo teria sido declarado apenas para termos uma estrutura de dados.
+
+Quando queremos declarar uma estrutura que seja apenas para uso de entrada de dados, usamos os _inputs_.
+
+_Inputs_ se parecem com _types_ , mas nós os declaramos com a palavra-chave `input`. É também uma boa prática colocar **Input** como sufixo no nome de _inputs_.
+    
+    
+    input AlunoInput{
+        nomeCompleto: String!
+        idade: Int
+    }
+    
+
+Note que, como estamos apenas declarando a estrutura de um objeto que poderá ser passado como parâmetro, e não um objeto representando algo retornado do banco de dados, não precisamos do campo `id`.
+
+Por essa mesma razão, você não pode fazer _queries_ , _mutations_ e _subscriptions_ de _inputs_ , pois eles apenas representam uma estrutura de dados que nós vamos enviar ao servidor, e não algo que está sendo salvo no banco.
+
+Teríamos algo no seguinte formato:
+    
+    
+    mutation CreateAluno($dados: AlunoInput!) {
+      createAluno(data: $dados) {
+        id
+        nomeCompleto
+      }
+    }
+    
+
+Note também que aqui vemos novamente o poder das variáveis. Nosso código ficou bem mais limpo, pois não precisamos mais passar cada um dos campos do objeto como parâmetro.
+
+Outro cenário em que os _inputs_ se tornam úteis é quando precisamos passar dados por _mutations_ para o nosso servidor, mas não queremos que esses dados estejam disponíveis em outras operações.
+
+Imagine que desejamos fazer login em um sistema. Poderíamos criar o seguinte _input_ :
+    
+    
+    input LoginInput{
+        email: String!
+        senha: String!
+    }
+    
+
+Por razões de segurança, não vamos querer que alguém crie uma _query_ que retorne os e-mails e senhas dos nossos usuários. Criar um _input_ vai possibilitar que trabalhemos com essa estrutura de dado, mas sem permitir que _queries_ sejam feitas para que estes dados sejam retornados.
+
+Veremos melhor sobre o uso de _inputs_ no momento em que criarmos nosso próprio serviço com GraphQL no back-end.
+
+### Acabou a brincadeira
+
+Anteriormente, aprendemos a brincar no Sandbox do Apollo e agora aprofundamos um pouco mais nossos conhecimentos sobre os tipos de dados do GraphQL. Pudemos entender melhor os _types_ e conhecemos os _inputs_. Vimos também como criar _Enums_ , muito útil quando queremos limitar os possíveis valores de um campo.
+
+Agora que já brincamos bastante, vamos finalmente começar a produzir código!
+
+
+# Parte 3 — Criando uma aplicação
+
+Capítulo 6
+
+# Desenvolvimento front-end
+
+Agora que conhecemos bem o GraphQL e temos o nosso servidor, vamos criar um simples programa que vai consumir esse serviço. Para focarmos no funcionamento do GraphQL, utilizaremos JavaScript puro. Assim, você poderá entender como o GraphQL funciona e como utilizá-lo com qualquer biblioteca ou framework.
+
+## 6.1 Conhecendo o nosso projeto
+
+Vamos montar uma aplicação bem simples para consumir nosso serviço GraphQL. Ela exibirá uma lista com os alunos cadastrados. Poderemos inserir novos alunos e apagar os já presentes na lista.
+
+Figura 6.1: Front-end — aplicação.
+
+Para focarmos nossos estudos no GraphQL, o layout da aplicação será simples. Não vamos utilizar CSS aqui, mas você é livre para estilizar como quiser.
+
+O código completo deste projeto pode ser baixado pelo GitHub, em <https://github.com/hanashiro/cdc-livro-graphql/>. Ele também será apresentado por completo no final deste capítulo.
+
+## 6.2 O nosso HTML
+
+Vamos iniciar nosso projeto. Para deixar tudo mais bem organizado, crie uma pasta com o nome `front`. Dentro desta pasta, vamos criar um arquivo chamado `index.html`, onde teremos a estrutura da nossa aplicação, e um arquivo chamado `scripts.js`, onde programaremos a conexão com o GraphQL.
+
+Vamos iniciar nosso `index.html` com a estrutura básica de um documento HTML. Também já vamos incluir nosso arquivo `scripts.js` no nosso documento usando a tag `<script>`.
+    
+    
+    <!DOCTYPE html>
+    <html>
+    <body>
+    
+    <script src="./scripts.js"></script>
+    </body>
+    </html>
+    
+
+A nossa estrutura será escrita antes da tag `<script>`.
+
+Agora vamos criar nosso formulário. Como vimos anteriormente, na apresentação do nosso projeto, teremos um campo para colocar o nome do aluno e outro para a idade.
+
+Primeiro criamos o formulário com a tag `<form>` e damos um nome ao formulário usando o atributo `name`.
+    
+    
+    <form name="novoAluno">
+    
+    </form>
+    
+
+Dentro da tag `<form>`, vamos colocar os campos para podermos escrever o nome e a idade. Para isso, utilizaremos a tag `<input>`. Também precisamos passar um nome para cada campo usando o atributo `name`.
+
+O campo de nome será do tipo texto, então passaremos `text` para o atributo `type` da tag. O campo de idade será do tipo número, então passaremos `number` para o atributo `type` da tag.
+
+Para o usuário saber o que escrever em cada campo, podemos passar um texto que será exibido quando o campo estiver vazio. Fazemos isso por meio do atributo `placeholder`.
+    
+    
+    <form name="novoAluno">
+        <input type="text" name="nomeCompleto" placeholder="Nome Completo" >
+        <input type="number" name="idade" placeholder="Idade">
+    </form>
+    
+
+Para finalizar nosso formulário, vamos colocar um botão escrito "Adicionar Aluno" após os campos que acabamos de criar, com a tag `button`. Para indicar que ele é responsável por enviar os dados do formulário, passamos no botão o atributo `type` com o valor `submit`.
+    
+    
+    <form name="novoAluno">
+        <input type="text" name="nomeCompleto" placeholder="Nome Completo" >
+        <input type="number" name="idade" placeholder="Idade">
+        <button type="submit" >Adicionar Aluno</button>
+    </form>
+    
+
+Teremos o resultado da imagem seguinte:
+
+Figura 6.2: Front-end — formulário.
+
+## 6.3 Abrindo nossa aplicação
+
+Para certas operações que faremos, como requisições ao Apollo, precisaremos que nossa aplicação seja fornecida por um servidor. Podemos subir facilmente um servidor local em nossa máquina utilizando o Node.js.
+
+Vamos utilizar o `tw-dev-server` para isso. Essa ferramenta rápida e leve nos permite subir um servidor de arquivos estáticos, como HTML e JavaScript.
+
+> O `tw-dev-server` também recebe requisições para simular um servidor com banco de dados, sendo muito útil quando estamos prototipando um sistema ou estudando.
+> 
+> Para saber mais sobre essa ferramenta, acesse: <https://github.com/treinaweb/tw-dev-server/>.
+
+O `tw-dev-server` é instalado utilizando o `npm`. Para instalá-lo, abra o seu terminal e execute o comando `npm i -g @treinaweb/tw-dev-server`. Para utilizá-lo, basta abrir o terminal dentro da pasta com os arquivos do seu projeto e executar `tw-dev-server`.
+
+Figura 6.3: Tela do tw-dev-server
+
+Agora você poderá acessar sua aplicação pelo navegador no endereço <http://localhost:3002/>.
+
+## 6.4 Conexão com o serviço do GraphQL
+
+Para iniciar uma conexão com o nosso servidor GraphQL fornecido pelo Apollo, vamos utilizar JavaScript. Abra o arquivo `scripts.js` que criamos anteriormente. Vamos deixar tudo o que for parte da conexão com o nosso servidor GraphQL dentro de um objeto, que vamos chamar de `GraphQl`:
+    
+    
+    const GraphQl = {
+    
+    }
+    
+
+Primeiramente, para consumir o serviço fornecido pelo nosso servidor, precisamos acessar seu endereço. Ele está definido como `http://localhost:3000/graphql`. Coloque esse endereço dentro do nosso objeto `GraphQl`. Vamos inseri-lo em um campo que chamaremos de `endpoint`.
+    
+    
+    const GraphQl = {
+        endpoint: 'http://localhost:3000/graphql'
+    }
+    
+
+Por último, vamos usar a função `fetch` do JavaScript, que serve para criar requisições, para podermos criar uma função que fará as _queries_ para o servidor e retornará sua resposta. Chamaremos esta função de `exec()`, que receberá dois parâmetros: `query` e `variaveis`. Criaremos essa função dentro do objeto `GraphQl`.
+
+A função `fetch()` recebe como primeiro parâmetro o endereço a ser acessado e, como segundo, um objeto de configuração. O objeto de configuração de requisições para um servidor com GraphQL deve ter as seguintes propriedades:
+
+  * **method** : tipo da requisição (`GET`, `POST`, `PUT`, `DELETE` etc.). Requisições para o GraphQL devem ser do tipo `POST`.
+  * **headers** : cabeçalho da requisição, onde indicamos algumas informações complementares sobre ela. Aqui precisamos indicar que o conteúdo transferido é do tipo JSON. Fazemos isso indicando o campo `Content-Type` com o valor `application/json`.
+  * **body** : objeto enviado ao servidor. Requisições para o GraphQL devem ter um campo `query` e um campo `variables`.
+
+
+
+O objeto passado para a requisição deve ser convertido em _string_ ; para isso, usamos a função `JSON.stringify()`.
+
+O `fetch()` receberá uma resposta do servidor, a qual precisaremos converter para JSON. Pegamos essa resposta com `then()` e passamos uma função que recebe a resposta. O objeto recebido já possui um método chamado `json()`, que fará a conversão para nós.
+    
+    
+    const GraphQl = {
+        endpoint: 'http://localhost:3000/graphql',
+    
+        exec: function(query, variaveis){
+            return fetch(GraphQl.endpoint, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({ query: query, variables: variaveis }),
+            })
+              .then(resposta => resposta.json())
+        }
+    }
+    
+
+## 6.5 Buscando dados
+
+Já criamos um objeto com uma função que nos permite enviar requisições ao nosso servidor GraphQL fornecido pelo servidor. Já temos também alguns alunos cadastrados no servidor. Vamos permitir que nossa aplicação os busque para, depois, podermos listá-los.
+
+Tudo o que estiver relacionado aos dados dos alunos (buscar, criar, apagar e alterar) será posto dentro de um objeto chamado `Aluno`. Assim, teremos nossas funções organizadas e centralizadas em um único objeto.
+
+Primeiro, vamos criar ao final do arquivo `scripts.js` um objeto chamado `Aluno`. Dentro dele, nós criaremos uma propriedade chamada `lista`, que iniciará com um _Array_ vazio como valor. É nessa lista onde armazenaremos os alunos que o nosso servidor GraphQL retornará.
+    
+    
+    const Aluno = {
+        lista: []
+    }
+    
+
+Ainda dentro deste objeto, nós também vamos criar uma função com o nome `buscar`. Ela vai executar a nossa função `GraphQl.exec()`, passando uma _query_ de busca de todos os alunos presentes lá no servidor.
+    
+    
+    const Aluno = {
+        lista: [],
+        buscar: function(){
+            const query = `
+            query{
+              alunos{
+                id
+                nomeCompleto
+                idade
+              }
+            }
+            `;
+            return GraphQl.exec(query);
+        }
+    }
+    
+    
+    
+    
+    
+
+## 6.6 Exibindo lista de alunos
+
+Temos uma função que busca todos os alunos do nosso servidor GraphQL. Agora nós precisamos de um jeito de executar esta função, pegar os dados retornados e exibi-los ao usuário. Para isso, criaremos uma lista.
+
+Vamos voltar ao arquivo `index.html` e adicionar um elemento de lista logo abaixo do formulário. Vamos colocar um `id` na lista para podermos acessá-la pelo JavaScript.
+
+> Como os código começarão a ficar mais compridos daqui para a frente, vou omitir parte do código com reticências (...). Lembre-se de que o código completo será mostrado no final do capítulo e também está disponível pelo endereço <https://github.com/hanashiro/cdc-livro-graphql/>.
+    
+    
+        ...
+        <button type="submit" >Adicionar Aluno</button>
+    </form>
+    <ul id="listaAlunos" ></ul>
+    
+
+Para podermos acessar este elemento de lista do HTML no nosso JavaScript, vamos guardá-lo em uma variável chamada `listaAlunos` no começo do arquivo `scripts.js`.
+    
+    
+    const listaAlunos = document.querySelector('#listaAlunos');
+    
+    const GraphQl = {
+        ...
+    
+
+Agora, para exibir nossos dados nessa lista do HTML, vamos criar um objeto que terá funções relacionadas à manipulação da nossa tela. Vamos chamar este objeto de `Template`. Dentro dele, vamos criar uma função chamada `listarAluno`. Esta função vai pegar a lista de alunos presente no objeto `Aluno` e utilizá-la para gerar os itens que serão exibidos. 
+
+Começamos a função declarando uma variável chamada `html`, que armazenará o HTML dos itens da lista que será exibida. Em seguida, pegamos o _Array_ de alunos presente no objeto `Aluno` e executamos o `forEach()`. Trata-se de um método que nos permite executar uma função para cada item do _Array_. Dentro da função, recebemos cada um dos alunos e vamos criar uma _string_ com o HTML referente ao item da lista, com o nome e idade do aluno. Cada uma dessas _strings_ será armazenada na nossa variável `html`.
+
+Após executar essa função para todos os alunos do _Array_ , vamos pegar nosso elemento de lista que guardamos na variável `listaAlunos` e injetar o HTML que criamos através da propriedade `innerHTML`.
+    
+    
+    const Template = {
+        listarAluno: function(){
+            let html = ''
+            Aluno.lista.forEach((aluno) => {
+                html += `<li>Nome: ${aluno.nomeCompleto} - Idade: ${aluno.idade}`
+            })
+            listaAlunos.innerHTML = html;
+        }
+    }
+    
+
+Precisamos de uma função que chame a função de busca de alunos, armazene os dados na lista e chame a função `listarAluno()` para exibirmos os dados na tela. Dentro de `Template`, vamos criar uma função que chamaremos de `iniciar()`.
+
+A função `iniciar()` chamará a função `Aluno.buscar()`. Ao executá-la, receberemos um objeto com o campo `data`, e dentro dele teremos o campo `alunos`, como vimos anteriormente nos retornos das buscas no Apollo Sandbox. Vamos guardar este retorno em `Aluno.lista`.
+
+Após armazenar os dados retornados do servidor na lista, basta chamarmos `Template.listarAluno()`.
+    
+    
+    const Template = {
+        iniciar: function(){
+            Aluno.buscar()
+                .then(({data: {alunos}}) => {
+                    Aluno.lista = alunos;
+                    Template.listarAluno();
+                })
+        },
+        listarAluno: function(){
+            ...
+    
+
+Sempre que quisermos que os dados do servidor sejam exibidos, basta chamar `Template.iniciar()`. Para que nossa aplicação já inicie com os dados sendo apresentados, adicione a chamada dessa função na última linha do arquivo `scripts.js`.
+    
+    
+        ...
+            listaAlunos.innerHTML = html;
+        }
+    }
+    
+    Template.iniciar();
+    
+    
+    
+    
+    
+
+## 6.7 Enviando dados
+
+Agora que já sabemos listar dados, vamos ver como criá-los. Como estamos falando de manipulação de dados, vamos voltar ao nosso objeto `Aluno`. Dentro dele, vamos criar uma função chamada `criar()`, que receberá um objeto chamado `novoAluno` contendo o nome completo e a idade.
+
+Chamaremos a função `GraphQl.exec()`, passando o código de `mutation` para a criação de aluno que aprendemos anteriormente, e passando `novoAluno` como variável com os dados da nossa requisição.
+    
+    
+    const Aluno = {
+        ...
+        criar: function(novoAluno){
+            const query = `
+            mutation ($nomeCompleto: String!, $idade: Int!){
+              createAluno(data: {
+                nomeCompleto: $nomeCompleto
+                idade: $idade
+              }){
+                id
+                nomeCompleto
+                idade
+              }
+            }
+            `;
+            return GraphQl.exec(query, novoAluno);
+        }
+    }
+    
+
+## 6.8 Criando novos alunos
+
+Acabamos de preparar uma função que envia dados ao servidor para criar um novo aluno. Vamos agora fazer com que possamos pegar dados de um novo aluno a partir do nosso formulário e inseri-lo na nossa lista. Como é algo que vai manipular nosso HTML, vamos voltar ao nosso objeto `Template`.
+
+Vamos criar uma função chamada `inserirAlunoLista()`, que receberá um objeto `novoAluno`. Dentro dela, nós simplesmente vamos inserir o novo aluno no final da lista `Aluno.lista` e chamar `Template.listarAluno()`, que cria a lista e a exibe, para atualizar a nossa tela.
+    
+    
+    const Template = {
+        ...
+        inserirAlunoLista: function(novoAluno){
+            Aluno.lista.push(novoAluno);
+            Template.listarAluno();
+        }
+    }
+    
+
+Precisamos pegar o formulário com os dados do novo aluno, enviá-los ao servidor e atualizar nossa lista. Ainda dentro de `Template`, vamos criar uma função `criarAluno()`, que será chamada pelo formulário. 
+
+O comportamento padrão de um formulário HTML submetido é nos enviar para outra página, mas precisamos evitar isso, pois nossa aplicação possui apenas uma única tela. Funções que são chamadas por eventos de formulário recebem um objeto `event` como parâmetro automaticamente. Este objeto possui uma função chamada `preventDefault()`, que previne o comportamento padrão do evento em questão.
+    
+    
+    const Template = {
+        criarAluno: function(event){
+            event.preventDefault();
+        },
+        inserirAlunoLista: function(novoAluno){
+        ...
+    }
+    
+
+Em seguida, vamos acessar nosso formulário e armazená-lo em uma variável `formulario` para podermos ter acesso aos dados inseridos pelo usuário. Isso é feito pelo objeto `document.forms`, passando o nome que demos a ele, `novoAluno`.
+    
+    
+    const Template = {
+        criarAluno: function(event){
+            event.preventDefault();
+            const formulario = document.forms.novoAluno
+        },
+        inserirAlunoLista: function(novoAluno){
+        ...
+    }
+    
+
+Vamos criar um objeto que terá dois campos: `nomeCompleto` e `idade`. Para pegar estes valores dos campos do formulário, basta acessá-lo pela nossa variável `formulario`, acessar o nome do campo que definimos no HTML pelo atributo `name` e a propriedade `value`.
+
+Lembre-se de que definimos no _schema_ que o campo `idade` é do tipo _number_. Acontece que os campos do nosso formulário retornam _strings_. Portanto, precisamos converter a idade para número com a função `parseInt()`.
+    
+    
+    const Template = {
+        criarAluno: function(event){
+            event.preventDefault();
+            const formulario = document.forms.novoAluno,
+                novoAluno = {
+                nomeCompleto: formulario.nomeCompleto.value,
+                idade: parseInt(formulario.idade.value)
+            };
+        },
+        inserirAlunoLista: function(novoAluno){
+        ...
+    }
+    
+
+Para impedir que um aluno com dados em branco seja enviado ao servidor, vamos primeiro fazer uma verificação com `if` para ter certeza de que ambos os campos estão preenchidos. Se tudo estiver certo, vamos apagar os valores dos campos do formulário para que depois possamos já criar outro aluno.
+
+Basta então chamar `Aluno.criar()` e passar o objeto `novoAluno` com os dados que pegamos do nosso formulário antes de apagá-lo. Receberemos uma resposta com um campo `data`, que terá o objeto `createAluno` com os dados do novo aluno, inclusive o ID gerado pelo banco. Vale lembrar que os campos retornados aqui foram definidos por nós mesmos quando criamos a função `Aluno.criar()`.
+
+Com o novo aluno em mãos, basta passá-lo para `Template.inserirAlunoLista()` para que ele seja adicionado ao _Array_ e exibido na tela.
+    
+    
+    const Template = {
+        criarAluno: function(event){
+            event.preventDefault();
+            const formulario = document.forms.novoAluno,
+                novoAluno = {
+                nomeCompleto: formulario.nomeCompleto.value,
+                idade: parseInt(formulario.idade.value)
+            };
+            if(novoAluno.nomeCompleto && novoAluno.idade){
+                formulario.nomeCompleto.value = '';
+                formulario.idade.value = '';
+                Aluno.criar(novoAluno)
+                    .then(({data: {createAluno}}) => {
+                        Template.inserirAlunoLista(createAluno);
+                    })
+            }
+        },
+        inserirAlunoLista: function(novoAluno){
+        ...
+    }
+    
+
+Para que essa função seja executada, vamos voltar ao nosso `index.html` e chamá-la no evento de envio do formulário (`onsubmit`). Não se esqueça de passar o objeto `event` como parâmetro para que possamos usar a função `preventDefault()`. Esse objeto é criado automaticamente em eventos como o `onsubmit`, `onclick`, `onkeypress` etc.
+    
+    
+    <form name="novoAluno" onsubmit="Template.criarAluno(event)">
+        <input type="text" name="nomeCompleto" placeholder="Nome Completo" >
+        <input type="number" name="idade" placeholder="Idade">
+        <button type="submit" >Adicionar Aluno</button>
+    </form>
+    
+
+## 6.9 Apagando dados
+
+Já podemos criar alunos, e precisamos poder apagar também. Por ser manipulação de dados, vamos voltar ao nosso objeto `Aluno`. Dentro dele, vamos criar uma função chamada `apagar()`, que vai receber o ID do aluno que queremos remover.
+
+Chamaremos a função `GraphQl.exec()`, passando o código de `mutation` para a remoção de aluno (que aprendemos anteriormente) e a variável `id`.
+    
+    
+    const Aluno = {
+        ...
+        apagar: function(id){
+            const query = `
+            mutation ($id: ID!){
+              deleteAluno(
+                where: {
+                  id: $id
+                }
+              ){
+                id
+              }
+            }
+            `;
+            return GraphQl.exec(query, {id});
+        }
+    }
+    
+
+### Removendo alunos da lista
+
+Preparamos a função que indica ao servidor que queremos apagar um aluno. Agora vamos integrar essa função com a nossa tela, possibilitando que o usuário indique qual aluno ele quer apagar. Como é algo que vai manipular nosso HTML, vamos voltar ao nosso objeto `Template`.
+
+Vamos criar uma função chamada `removerAlunoLista()`, que receberá uma variável `id`. Dentro dessa função, nós vamos acessar a nossa lista em `Aluno.lista` e executar o método `filter`.
+
+> O método `filter()` serve para remover itens de um Array, retornando um Array novo sem os elementos que nós indicarmos. Ele recebe uma função, a qual será executada para cada item do Array. Se a função retornar `true`, o item será mantido no Array. Se a função retornar `false`, o item será removido do Array.
+
+Passamos uma função que recebe cada aluno da lista. Verificamos se o id do aluno é diferente do id que recebemos como parâmetro. Se o id for diferente, vai retornar `true`, mantendo o aluno na lista. Se for igual, vai retornar `false`, removendo o aluno da lista.
+
+Teremos uma nova lista, sem o aluno que queríamos remover. Basta atribuir esta nova lista a `Aluno.lista` e chamar `Template.listarAluno()`, que cria a lista e a exibe, para atualizar a nossa tela.
+    
+    
+    const Template = {
+        ...
+        removerAlunoLista: function(id){
+            Aluno.lista = Aluno.lista.filter(aluno => aluno.id !== id);
+            Template.listarAluno();
+        }
+    }
+    
+
+Então já temos o `Aluno.apagar()`, que remove o aluno do banco, e `Template.removerAlunoLista()`, que remove o aluno da nossa tela.
+
+Para não precisarmos ficar chamando uma função de cada vez sempre que quisermos apagar um aluno, vamos criar uma função que chame essas duas funções. Vamos chamá-la de `apagarAluno()` e criá-la dentro de `Template`. Ela precisará receber o `id` do aluno a ser apagado.
+    
+    
+    const Template = {
+        ...
+        apagarAluno: function(id){
+            Aluno.apagar(id)
+                .then(() => {
+                    Template.removerAlunoLista(id);
+                })
+        },
+        removerAlunoLista: function(id){
+        ...
+    }
+    
+
+Para que possamos indicar qual aluno será apagado, vamos adicionar um botão ao lado de cada aluno na lista.
+
+Vamos voltar à nossa função `Template.listarAluno()` e alterar o HTML criado e armazenado na variável `html`. Adicionaremos um botão que, ao ser clicado, chamará a função `Template.apagarAluno()` com o `id` do aluno a ser apagado.
+    
+    
+    const Template = {
+        ...
+        listarAluno: function(){
+            let html = ''
+            Aluno.lista.forEach((aluno) => {
+                html += `<li>Nome: ${aluno.nomeCompleto} - Idade: ${aluno.idade} - <button onclick="Template.apagarAluno('${aluno.id}')" >X</button></li>`
+            })
+            listaAlunos.innerHTML = html;
+        }
+        ...
+    }
+    
+
+## 6.10 Recebendo dados por meio de subscriptions
+
+Como vimos anteriormente, podemos também receber dados do servidor quando houver alguma alteração neles. Para isso, é possível nos inscrevermos para alguma alteração, por meio de _subscriptions_.
+
+_Subscriptions_ do GraphQL funcionam pelo protocolo `ws` (WebSocket). O endereço que precisamos para iniciar a conexão com WebSocket é `ws://localhost:3000/graphql`.
+
+Vamos passá-lo para o método construtor de uma nova conexão WebSocket, que é criada com `new webSocket()`. Primeiro passamos o endereço e depois passamos o nome do subprotocolo que o Apollo exige, que deve ser `graphql-transport-ws`.
+
+Armazenaremos essa conexão dentro de um campo chamado `wsConnection` dentro do nosso objeto `GraphQl`.
+    
+    
+    const GraphQl = {
+        endpoint: 'http://localhost:3000/graphql',
+        wsConnection: new WebSocket('ws://localhost:3000/graphql', 'graphql-transport-ws'),
+        ...
+    }
+    
+
+Vamos configurar o que deve ser feito quando esta conexão iniciar. Ainda no objeto `GraphQl`, vamos criar uma função chamada `iniciarWs()`. Como teremos que executar outras tarefas após a conexão ser feita, e criar conexões é algo assíncrono, vamos começar a `iniciarWs()` retornando uma `Promise` para podermos saber quando a conexão estiver estabelecida.
+    
+    
+    const GraphQl = {
+        ...
+        iniciarWS: function(){
+            return new Promise(resolve => {
+    
+            })
+        }
+    }
+    
+
+Dentro da `Promise` que criamos, vamos indicar o que fazer quando a conexão WebSocket for aberta. Para isso, passamos uma função para o evento `onopen` do objeto que criamos, `wsConnection`. Nós enviaremos um objeto chamado `mensagem` com uma propriedade `type` de valor `connection_init`, pelo método `send()` do objeto `wsConnection`. Ele precisa ser convertido para _String_ antes de ser enviado.
+
+Com isso, nós indicamos ao Apollo que queremos iniciar uma conexão.
+    
+    
+    ...
+    iniciarWS: function(){
+        return new Promise(resolve => {
+            GraphQl.wsConnection.onopen = function(){
+                const mensagem = {
+                    type: 'connection_init'
+                };
+                GraphQl.wsConnection.send(JSON.stringify(mensagem));
+            }
+        })
+    }
+    
+
+Ainda precisamos indicar quando a nossa ação acabou, chamando o `resolve()` da `Promise`. Para isso, precisamos esperar que o Apollo nos envie uma mensagem de confirmação de conexão.
+
+E como tratamos as notificações que o servidor nos enviar? Fazemos isso passando uma função para o evento `onmessage` do objeto `wsConnection`.
+
+Após o início da conexão com `GraphQl.wsConnection.send`, vamos passar uma função ao evento `onmessage` do objeto `wsConnection`. Essa função recebe um parâmetro `event`, o qual possui informações sobre o evento de mensagem que estamos recebendo do Apollo. O objeto `event` possui um campo `data`, o qual vamos converter para JSON e guardar dentro de uma variável `resposta`. Esse será o retorno do serviço do GraphQL.
+
+Esse retorno possui alguns tipos que nos permitem saber sobre o que está acontecendo na conexão. Primeiro, fazemos uma verificação com `if` para saber se o dado é do tipo `connection_ack`, que indica que a conexão foi estabelecida com sucesso. Se for, chamamos o `resolve()` da `Promise`.
+
+Caso a resposta seja do tipo `next`, indica que o servidor está enviando dados para nós. O objeto `resposta` terá um campo chamado `payload`, e dentro dele terá um objeto `data`. Como estamos trabalhando com a inscrição de `Aluno`, virá um campo `aluno` dentro dele. Lembre-se de que, quando nos inscrevemos, recebemos um campo chamado `mutation` que indica o tipo da operação que foi realizada no servidor (`CREATED`, `DELETED`, `UPDATED`). Vamos verificar qual o tipo de operação realizada.
+
+Se o tipo for `CREATED`, receberemos um novo aluno dentro do campo `node`. Então, para atualizar nossa lista, basta utilizarmos nossa função `Template.inserirAlunoLista()` passando o aluno recebido. Se o tipo for `DELETED`, os dados estarão dentro do atributo `previousValues`. Vamos pegar o `id` do aluno e armazená-lo em uma variável `id`. 
+
+Para atualizar nossa lista, basta passar este `id` para a nossa função `Template.removerAlunoLista()`.
+    
+    
+    GraphQl.wsConnection.onmessage = function (event) {
+        const resposta = JSON.parse(event.data);
+        if(resposta.type === 'connection_ack'){
+            resolve();
+        }
+        if(resposta.type === 'next'){
+            const aluno = resposta.payload.data.aluno;
+            if(aluno.mutation === 'CREATED'){
+                Template.inserirAlunoLista(aluno.node);
+            }else if(aluno.mutation === 'DELETED'){
+                const id = aluno.previousValues.id;
+                Template.removerAlunoLista(id);
+            }
+        }
+    }
+    
+
+> Estamos apenas vendo como criar e apagar dados. Ao final deste capítulo, você estará apto para desenvolver sozinho a funcionalidade "UPDATED" — o que deixarei como um desafio.
+
+Essas são as funções a serem executadas ao recebermos dados do servidor. Mas lembre-se de que precisamos enviar ao servidor uma inscrição indicando os dados que queremos. Como estamos falando de dados, vamos ao nosso objeto `Aluno` e vamos criar uma função chamada `subscription`.
+
+Dentro desta função, nós criaremos nossa `subscription` como aprendemos anteriormente e pediremos para escutar os eventos `CREATED` e `DELETED`.
+
+Essa operação será enviada ao servidor pelo método `send()` do objeto `wsConnection` e o objeto a ser enviado deve ser convertido em _string_. Junto com a operação, precisamos passar um campo `id` para identificar a ação e indicar o tipo da mensagem que estamos enviando, que será do tipo `subscribe`. O comando de subscrição deve ser passado dentro do objeto `payload` em um campo chamado `query`.
+    
+    
+    const Aluno = {
+        ...
+        subscription: function(){
+            const query = `
+            subscription updatedAlunos {
+              aluno(where: {
+                mutation_in: [CREATED, DELETED]
+              }){
+                mutation
+                node{
+                  id
+                  nomeCompleto
+                  idade
+                }
+                previousValues{
+                      id
+                }
+              }
+            }
+            `;
+            GraphQl.wsConnection.send(JSON.stringify({
+                id: '1',
+                type: 'subscribe',
+                payload: { query }
+            }))
+        }
+    }
+    
+
+Agora que já definimos como lidar com os dados enviados do servidor e quais dados queremos receber, precisamos iniciar estas configurações. 
+
+Vamos à função `iniciar` do objeto `Template`. No final dela, vamos chamar a função que criamos, `GraphQl.iniciarWS()`. Como ela retorna uma `Promise` assim que a operação de conexão for finalizada, definimos que, após tudo pronto, executaremos a função `Aluno.subscription()` para indicar ao Apollo os dados que queremos receber.
+    
+    
+    const Template = {
+        iniciar: function(){
+            Aluno.buscar()
+                .then(({data: {alunos}}) => {
+                    Aluno.lista = alunos;
+                    Template.listarAluno();
+                })
+    
+            GraphQl.iniciarWS().then(Aluno.subscription);
+        },
+        ...
+    }
+    
+
+Precisamos arrumar um único detalhe agora: quando alguém criar ou apagar um dado, receberemos esta informação e atualizaremos nossa lista. Porém, nós também seremos notificados sobre nossas próprias ações de criar e apagar. 
+
+Como nossas operações de criar e apagar já estão atualizando a lista, precisamos apagar isso para que a ação de tentar atualizar a lista não ocorra duas vezes.
+
+Em `Template.criarAluno()`, vamos remover o `Template.inserirAlunoLista()`.
+    
+    
+    criarAluno: function(){
+        event.preventDefault();
+        const formulario = document.forms.novoAluno,
+            novoAluno = {
+            nomeCompleto: formulario.nomeCompleto.value,
+            idade: parseInt(formulario.idade.value)
+        };
+        if(novoAluno.nomeCompleto && novoAluno.idade){
+            formulario.nomeCompleto.value = '';
+            formulario.idade.value = '';
+            Aluno.criar(novoAluno);
+            // removido
+        }
+    },
+    
+
+Em `Template.apagarAluno()`, vamos remover o `Template.removerAlunoLista()`.
+    
+    
+        apagarAluno: function(id){
+            Aluno.apagar(id);
+            // apagado
+        },
+    
+
+Agora, se você for ao Apollo Sandbox e criar ou remover algum aluno, nossa página será atualizada. Você pode testar também abrindo dois navegadores com nossa aplicação. Ao criar ou remover algum aluno em uma página, a lista da outra janela também será atualizada.
+
+## 6.11 Código do front-end completo
+
+Nosso HTML final ficará da seguinte maneira:
+    
+    
+    <!DOCTYPE html>
+    <html>
+    <body>
+        <form name="novoAluno" onsubmit="Template.criarAluno(event)" >
+            <input type="text" name="nomeCompleto" placeholder="Nome Completo" >
+            <input type="number" name="idade" placeholder="Idade">
+            <button type="submit" >Adicionar Aluno</button>
+        </form>
+    
+        <ul id="listaAlunos" ></ul>
+    
+        <script src="./scripts.js"></script>
+    </body>
+    </html>
+    
+
+E nosso arquivo `scripts.js` ficará assim:
+    
+    
+    const listaAlunos = document.querySelector('#listaAlunos');
+    
+    
+    const GraphQl = {
+        endpoint: 'http://localhost:3000/graphql',
+        wsConnection: new WebSocket('ws://localhost:3000/graphql', 'graphql-transport-ws'),
+        exec: function(query, variaveis){
+            return fetch(GraphQl.endpoint, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({ query: query, variables: variaveis }),
+            })
+              .then(resposta => resposta.json())
+        },
+        iniciarWS: function(){
+            return new Promise(resolve => {
+                    GraphQl.wsConnection.onopen = function(){
+                        const mensagem = {
+                                    type: 'connection_init'
+                        };
+                        GraphQl.wsConnection.send(JSON.stringify(mensagem));
+    
+                        GraphQl.wsConnection.onmessage = function (event) {
+                            const resposta = JSON.parse(event.data);
+                            if(resposta.type === 'connection_ack'){
+                                resolve();
+                            }
+                            if(resposta.type === 'next'){
+                                const aluno = resposta.payload.data.aluno;
+                                if(aluno.mutation === 'CREATED'){
+                                    Template.inserirAlunoLista(aluno.node);
+                                }else if(aluno.mutation === 'DELETED'){
+                                    const id = aluno.previousValues.id;  
+                                    Template.removerAlunoLista(id);
+                                }
+                            }
+                        }
+                }
+            })
+        }
+    }
+    
+    const Aluno = {
+        lista: [],
+        buscar: function(){
+            const query = `
+            query{
+              alunos{
+                id
+                nomeCompleto
+                idade
+              }
+            }
+            `;
+            return GraphQl.exec(query);
+        },
+        criar: function(novoAluno){
+            const query = `
+            mutation ($nomeCompleto: String!, $idade: Int!){
+              createAluno(data: {
+                nomeCompleto: $nomeCompleto
+                idade: $idade
+              }){
+                id
+                nomeCompleto
+                idade
+              }
+            }
+            `;
+            return GraphQl.exec(query, novoAluno);
+        },
+        apagar: function(id){
+            const query = `
+            mutation ($id: ID!){
+              deleteAluno(
+                where: {
+                  id: $id
+                }
+              ){
+                id
+              }
+            }
+            `;
+            return GraphQl.exec(query, {id});
+        },
+        subscription: function(){
+            const query = `
+            subscription updatedAlunos {
+              aluno(where: {
+                mutation_in: [CREATED, DELETED]
+              }){
+                mutation
+                node{
+                  id
+                  nomeCompleto
+                  idade
+                }
+                previousValues{
+                      id
+                }
+              }
+            }
+            `;
+            GraphQl.wsConnection.send(JSON.stringify({
+                id: '1',
+                type: 'subscribe',
+                payload: { query }
+            }))
+        }
+    }
+    
+    const Template = {
+        iniciar: function(){
+            Aluno.buscar()
+                .then(({data: {alunos}}) => {
+                    Aluno.lista = alunos;
+                    Template.listarAluno();
+                })
+    
+            GraphQl.iniciarWS().then(Aluno.subscription);
+        },
+        listarAluno: function(){
+            let html = ''
+            Aluno.lista.forEach((aluno) => {
+                html += `<li>Nome: ${aluno.nomeCompleto} - Idade: ${aluno.idade} - <button onclick="Template.apagarAluno('${aluno.id}')" >X</button></li>`
+            })
+            listaAlunos.innerHTML = html;
+        },
+        criarAluno: function(event){
+            event.preventDefault();
+            const formulario = document.forms.novoAluno,
+                novoAluno = {
+                nomeCompleto: formulario.nomeCompleto.value,
+                idade: parseInt(formulario.idade.value)
+            };
+            if(novoAluno.nomeCompleto && novoAluno.idade){
+                formulario.nomeCompleto.value = '';
+                formulario.idade.value = '';
+                Aluno.criar(novoAluno);
+            }
+        },
+        inserirAlunoLista: function(novoAluno){
+            Aluno.lista.push(novoAluno);
+            Template.listarAluno();
+        },
+        apagarAluno: function(id){
+            Aluno.apagar(id);
+        },
+        removerAlunoLista: function(id){
+            Aluno.lista = Aluno.lista.filter(aluno => aluno.id !== id);
+            Template.listarAluno();
+        }
+    }
+    
+    
+    Template.iniciar();
+    
+
+## 6.12 Tela feita!
+
+Neste capítulo, vimos como criar um front-end simples e funcional conectado ao nosso servidor GraphQL com Apollo. Já podemos buscar, criar e remover alunos. Também vimos como ter a aplicação atualizada automaticamente com as _subscriptions_.
+
+Não deixe de tentar criar a funcionalidade de atualizar dados já existentes, que deixei como desafio. Caso prefira adicionar este novo recurso após terminar de ler o livro, não tem problema. Isso não influenciará na continuação da leitura.
+
+No próximo capítulo, veremos como criar nosso próprio servidor GraphQL, igual ao que temos usado!
+
+
+# Parte 4 — Programando um servidor
+
+Capítulo 7
+
+# Desenvolvimento back-end
+
+Agora temos um front-end que consome um serviço GraphQL. Neste último capítulo, veremos como criar este serviço GraphQL no back-end utilizando o próprio Node.js, que já temos instalado em nossa máquina.
+
+Utilizaremos conceitos já apresentados nos capítulos anteriores, os quais ficarão mais claros agora que os veremos na prática.
+
+## 7.1 Iniciando nosso projeto Node.js
+
+O código completo deste projeto pode ser baixado pelo GitHub através do endereço <https://github.com/hanashiro/cdc-livro-graphql/>. Ele também será apresentado por completo no final deste capítulo.
+
+Para iniciar nosso projeto back-end, vamos criar uma pasta chamada `back`.
+
+Projetos Node.js utilizam um arquivo chamado `package.json`, que contém informações como nome do projeto, versão do código, descrição etc. Uma das partes mais importantes desse arquivo é ter a lista de bibliotecas e frameworks que utilizaremos. Assim, ao compartilharmos nosso projeto, apenas enviamos o código que escrevemos. Bibliotecas e frameworks são instalados automaticamente na versão certa de acordo com o que chamamos de _lista de dependências_.
+
+O NPM cria este arquivo `package.json` automaticamente para nós. Abra o terminal e, dentro da pasta `back`, execute o comando `npm init -y` para criá-lo. Com o `package.json` criado, poderemos salvar a lista de bibliotecas e frameworks que utilizaremos em nosso servidor.
+
+Ainda no terminal, execute o comando `npm install @apollo/server`. O `npm install` indica ao `npm` que queremos instalar algo na pasta em que estamos. Você também pode executar `npm i` como atalho para `npm install`. Em seguida, temos o nome da biblioteca que queremos instalar. O `@apollo/server` nos ajudará a criar um serviço GraphQL em poucas linhas.
+
+## 7.2 Schema e Resolvers
+
+### Iniciando o schema da aplicação
+
+Vimos no começo do livro que primeiro precisamos definir um _schema_ para a aplicação. Para deixar tudo organizado, vamos criar um arquivo chamado `schema.js`. 
+
+Dentro dele, vamos escrever nosso _schema_ como se fosse uma _string_ comum e guardá-la em uma variável chamada `schema`. No fim do arquivo, nós exportaremos essa _string_ para poder importá-la e utilizá-la em outro arquivo.
+
+Note que a _string_ é criada com crases ( ` ), e não com aspas simples ou duplas. Isso permite que quebremos a linha sem precisar concatenar com o operador `+`.
+
+Iniciaremos nosso _schema_ com a estrutura do _type_ `Aluno`, igual ao que aprendemos anteriormente.
+    
+    
+    const schema = `
+    type Aluno{
+        id: ID!
+        nomeCompleto: String!
+        idade: Int
+    }
+    `
+    module.exports = schema;
+    
+
+### Resolvendo requisições
+
+Quando um cliente faz uma requisição a um servidor com GraphQL, precisamos indicar uma função que será executada para tratar o pedido e dar uma resposta. Para isso, vamos criar um arquivo com o nome `resolvers.js`.
+
+Dentro deste arquivo, teremos um objeto chamado `resolvers`, onde ficarão as funções que serão executadas para resolver as solicitações do cliente. No final do arquivo, nós vamos exportar o objeto para podermos acessá-lo em outros arquivos.
+    
+    
+    const resolvers = {
+    
+    };
+    module.exports = resolvers;
+    
+    
+    
+    
+    
+
+## 7.3 Criando um servidor com Apollo Server
+
+Agora que já temos uma estrutura base para o GraphQL (_schema_ e lugar para as funções que serão executadas), precisamos criar um servidor que receberá as requisições do cliente e se integrará com o GraphQL.
+
+Vamos criar um arquivo chamado `server.js` e importar o `ApolloServer` do pacote `@apollo/server`, que permitirá a configuração de um servidor GraphQL. Em seguida, importaremos a função `startStandaloneServer` do pacote `@apollo/server/standalone`, que nos permitirá iniciar um servidor rapidamente.
+
+Também importaremos os arquivos `schema.js` e `resolvers.js`, para que o servidor que vamos criar conheça o nosso _schema_ e tenha acesso às funções que serão executadas.
+    
+    
+    const { ApolloServer } = require('@apollo/server'),
+      { startStandaloneServer } = require('@apollo/server/standalone'),
+        schema = require('./schema'),
+        resolvers = require('./resolvers');
+    
+
+> O `startStandaloneServer` é recomendado para iniciar um servidor Apollo de forma rápida. Porém, caso você precise de alguma configuração mais avançada, você pode integrar o Apollo a um servidor já existente criado a partir de um framework como Express ou NestJS.
+> 
+> O `startStandaloneServer` não dá suporte a `subscriptions`. Nós vamos primeiro aprender a criar um servidor funcional com ele, e depois aprenderemos a integrá-lo a um servidor com `Express`, para que possamos utilizar `subscriptions`.
+
+Agora que já importamos tudo o que precisamos, vamos começar a criar o nosso servidor. Você verá que, com Node.js e Apollo, será bem mais simples do que imagina!
+
+Criamos um servidor instanciando `ApolloServer` e o guardamos em uma variável `server`. Passamos um objeto de configuração com os `resolvers`. O `schema` é passado no campo `typeDefs`.
+
+Para iniciar o servidor, basta executar a função `startStandaloneServer` e passar o servidor que criamos como primeiro parâmetro. Como segundo parâmetro, passamos um objeto com a configuração de inicialização do servidor. Neste caso, vamos passar a porta em que o servidor vai escutar as requisições do cliente, que será a `3000`.
+    
+    
+    ...
+    const server = new ApolloServer({ typeDefs: schema, resolvers });
+    
+    startStandaloneServer(server, {
+        listen: { port: 3000 }
+    }).then(() => {
+      console.log(`Servidor funcionando!`);
+    });
+    
+
+Agora, com o nosso servidor pronto, não precisaremos mais alterar o arquivo `server.js`. Todas as funcionalidades que formos criar daqui em diante serão feitas apenas nos arquivos `schema.js` e `resolvers.js`.
+
+Para iniciar o servidor, execute o comando `node server.js`.
+
+## 7.4 Erguendo o servidor automaticamente após cada alteração
+
+Após cada alteração que fizermos em nosso código, teremos que parar o servidor e iniciá-lo novamente. Isso pode ser bem cansativo e tomar tempo de desenvolvimento.
+
+Para melhorar nosso fluxo de trabalho, podemos arranjar uma maneira de o servidor ser iniciado automaticamente após cada alteração que fizermos em nosso código. Há dois modos bem comuns de se fazer isso.
+
+O modo clássico é utilizar uma ferramenta feita em Node.js chamada **nodemon**. Ela nos permite executar um arquivo e ele ser reexecutado automaticamente assim que qualquer arquivo presente no mesmo diretório for alterado.
+
+Para instalar o nodemon globalmente em sua máquina, execute `npm install -g nodemon`. Após a instalação, ele estará acessível pela linha de comando a partir de qualquer lugar da sua máquina.
+
+Agora, quando quiser subir o servidor, execute `nodemon server.js` em vez de `node server.js`. Conforme formos alterando os arquivos de nosso projeto, o nodemon se encarregará de subir o servidor de novo automaticamente.
+
+> O nodemon não se limita apenas a JavaScript: ele também pode ser utilizado para reexecutar qualquer comando quando um arquivo for alterado.
+> 
+> Você pode, por exemplo, reexecutar um arquivo Ruby ou Python caso esteja estudando essas linguagens. Basta indicar `--exec`, passar o comando a ser reexecutado a cada alteração de arquivos entre aspas e, por último, indicar o arquivo a ser executado pelo comando. Por exemplo:
+> 
+>   * `nodemon --exec "ruby" ./app.rb`
+>   * `nodemon --exec "python" ./app.py`
+> 
+
+
+A nova maneira de fazer o servidor ser reiniciado automaticamente após cada alteração é utilizar o _**watch mode**_ do próprio Node.js, que foi introduzido a partir da versão 18.11.0. Para ativar o _watch mode_ , basta passar o parâmetro `--watch` ao executar o comando `node`: `node --watch server.js`.
+
+## 7.5 Permitindo busca de alunos
+
+Quando iniciamos com o Apollo Sandbox, vimos que podemos fazer buscas, criar, apagar e alterar dados assim que declararmos o _schema_. Porém, quando criamos um serviço GraphQL, apenas podemos fazer operações que declaramos no _schema_.
+
+Então, para que nosso serviço GraphQL permita a busca de alunos, precisamos voltar ao `schema.js` e declarar o tipo de busca. Para isso, declaramos o _type_ `Query` e, dentro dele, o tipo de _query_ e o que ela retorna.
+
+Vamos dizer que o retorno é uma lista que não pode ser vazia, e os dados dessa lista serão do tipo `Aluno`, que já declaramos no início deste capítulo.
+    
+    
+    const schema = `
+    type Query {
+        alunos: [Aluno]!
+    }
+    ...
+    
+
+Agora que a busca de alunos está declarada no _schema_ , precisamos criar uma função que será executada para tratar essa requisição e dar uma resposta ao cliente. Vamos ao arquivo `resolvers.js`. 
+
+Para simplificar nossos estudos, vamos utilizar um _Array_ no lugar de um banco de dados para armazenar nossos dados. Vamos chamá-lo de `listaAlunos` e vamos iniciar com alguns alunos, simulando um banco de dados já com alguns dados gravados. Os dados de alunos precisam ter pelo menos os campos que foram declarados no _schema_.
+    
+    
+    const listaAlunos = [
+        {
+            "id": "123",
+            "nomeCompleto": "Carlos Monteiro",
+            "idade": 25
+        },
+        {
+            "id": "456",
+            "nomeCompleto": "Maria Silva",
+            "idade": 26
+        },
+        {
+            "id": "789",
+            "nomeCompleto": "João Souza",
+            "idade": 23
+        }
+    ];
+    
+    const resolvers = {
+    ...
+    
+
+Dentro do objeto `resolvers` que criamos anteriormente, vamos criar uma função que retornará nossa lista de alunos. Esta função deve ter o mesmo nome da operação que declaramos no _schema_ (`alunos`) e precisa estar dentro de um objeto com o mesmo nome do tipo da operação (`Query`).
+    
+    
+    const resolvers = {
+      Query: {
+        alunos: function() {
+            return listaAlunos;
+        }
+      }
+    };
+    ...
+    
+
+Note que apenas retornamos o nosso _Array_ que possui nossos alunos. A única diferença entre uma aplicação real é que nós faríamos acesso a um banco de dados e então retornaríamos a lista de alunos vinda do banco.
+
+Agora nós já percebemos que não precisamos nos preocupar se o GraphQL é inseguro por permitir que o cliente indique os dados que ele quer receber, pois a todo o momento estamos no controle de cada detalhe. 
+
+Se o campo de um objeto não estiver no _schema_ , o cliente não consegue requisitar — e nós fazemos o acesso ao banco de dados manualmente, o que nos dá flexibilidade e total controle da nossa aplicação.
+
+## 7.6 Testando as requisições com Sandbox
+
+Já declaramos a busca de nossos alunos, mas como testaremos se tudo está funcionando?
+
+Ao declarar o servidor, o Apollo já nos fornece o Apollo Sandbox, onde brincamos no começo do livro. Ele utiliza o nosso _schema_ para saber quais estruturas dos dados e quais comandos estão disponíveis.
+
+Figura 7.1: Apollo Sandbox.
+
+Como indicamos que nosso servidor subiria na porta 3000, basta acessar `http://localhost:3000` em seu navegador para acessar o Sandbox. Faça um teste de busca de alunos como aprendemos anteriormente:
+    
+    
+    {
+      alunos{
+        id
+        nomeCompleto
+        idade
+      }
+    }
+    
+
+Teremos o seguinte resultado:
+    
+    
+    {
+      "data": {
+        "alunos": [
+          {
+            "id": "123",
+            "nomeCompleto": "Carlos Monteiro",
+            "idade": 25
+          },
+          {
+            "id": "456",
+            "nomeCompleto": "Maria Silva",
+            "idade": 26
+          },
+          {
+            "id": "789",
+            "nomeCompleto": "João Souza",
+            "idade": 23
+          }
+        ]
+      }
+    }
+    
+
+Vamos experimentar a funcionalidade de renomear campos que vimos no começo de nossos estudos de GraphQL.
+
+Renomeie o campo `nomeCompleto` para `nome`. Vamos também remover o campo `idade`, para testar se ele realmente não virá.
+    
+    
+    {
+      alunos{
+        id
+        nome: nomeCompleto
+      }
+    }
+    
+
+Teremos o seguinte resultado:
+    
+    
+    {
+      "data": {
+        "alunos": [
+          {
+            "id": "123",
+            "nome": "Carlos Monteiro"
+          },
+          {
+            "id": "456",
+            "nome": "Maria Silva"
+          },
+          {
+            "id": "789",
+            "nome": "João Souza"
+          }
+        ]
+      }
+    }
+    
+
+Note que já temos um serviço do GraphQL funcionando e permitindo que, além de buscas, também indiquemos quais campos queremos que sejam retornados, além de podermos renomeá-los. Nosso único trabalho foi declarar uma busca no _schema_ e criar uma função que retorna todos os alunos, e o próprio GraphQL se encarregou de todo o resto!
+
+Por enquanto, nosso serviço apenas permite a busca de todos os alunos. Vamos continuar evoluindo-o.
+    
+    
+    
+    
+
+## 7.7 Fazendo busca de um único aluno
+
+Para permitir a busca de apenas um aluno, precisamos declarar outra _query_ no _schema_.
+
+Vamos ao arquivo `schema.js` e, no `schema`, vamos declarar dentro do _type_ `Query` uma busca de um único aluno. Vamos chamar de `aluno`. Ele recebe um campo `id` do tipo `ID` como parâmetro e retorna um único objeto do tipo `Aluno`.
+    
+    
+    const schema = `
+    type Query {
+        aluno(id: ID!): Aluno
+        alunos: [Aluno]!
+    }
+    ...
+    
+
+Agora que temos o _schema_ preparado, vamos ao arquivo `resolvers.js` para criar nossa função que tratará da busca deste aluno pelo seu ID. Como aprendemos, o nome da função deve ter o mesmo nome da operação. Então, nossa função se chamará `aluno()`, e ficará dentro de `Query`.
+
+Toda função do _resolvers_ recebe um objeto `root` e um parâmetro que contém os dados enviados pelo cliente. Então, aqui, como declaramos no _schema_ que precisamos receber um campo chamado `id`, receberemos o campo `id` dentro deste parâmetro da função.
+
+Vamos acessar nosso _Array_ de alunos e executar o método `find()`, comparando o `id` recebido com o `id` de cada aluno. Caso encontremos um aluno com o `id` igual ao recebido, retornaremos este aluno. Caso contrário, a função retornará `undefined`.
+    
+    
+    const resolvers = {
+      Query: {
+        aluno: function(root, args) {  
+                const id = args.id;
+                return listaAlunos.find(aluno => aluno.id == id);
+            },
+        alunos: function() {
+            ...
+    
+
+No Sandbox, teste a seguinte busca:
+    
+    
+    {
+      aluno(id: "456"){
+        id
+        nome: nomeCompleto
+      }
+    }
+    
+
+Teremos o seguinte resultado:
+    
+    
+    {
+      "data": {
+        "aluno": {
+          "id": "456",
+          "nome": "Maria Silva"
+        }
+      }
+    }
+    
+
+Na segunda vez ficou mais fácil, não é mesmo? Este é o fluxo que vamos seguir para montar as demais operações, mas as seguintes terão alguns detalhes a mais.
+
+## 7.8 Apagando alunos
+
+Vamos permitir a remoção de alunos do nosso "banco de dados". Você já sabe que a primeira coisa a se fazer é ir ao arquivo `schema.js` e declarar essa operação, mas agora teremos um pouco mais de trabalho.
+
+Uma das diferenças agora é que apagar um dado não é uma _query_ , é uma _mutation_. Então, vamos declarar o _type_ `Mutation`. Para seguir o padrão, vamos criar a remoção com o nome `deleteAluno`.
+
+Seguindo a mesma ideia da busca de um único aluno, poderíamos criar nossa _mutation_ da seguinte maneira:
+    
+    
+    const schema = `
+    type Query {
+        aluno(id: ID!): Aluno
+        alunos: [Aluno]!
+    }
+    
+    type Mutation {
+        deleteAluno(id: ID!): Aluno
+    }
+    
+
+Perfeito! Isso já daria certo. Porém, ao invés de passar diretamente um `id`, vamos ver como declarar um objeto que receba um `id` e que possa ser usado para apagar um aluno. Isso pode ser interessante para quando precisarmos passar mais de um campo e quisermos reutilizar este objeto em outras operações.
+
+Como declarar este objeto que queremos receber? É agora que precisaremos dos _Inputs_ que vimos anteriormente.
+
+Primeiro vamos declarar um _Input_. Ele possui a mesma estrutura de um _Type_ , mas é declarado com a palavra-chave `input`. Como queremos utilizá-lo para receber o `id` do aluno que será apagado, vamos declarar este campo dentro dele. Nomearemos este _input_ de `AlunoWhere`.
+    
+    
+    ...
+    input AlunoWhere{
+        id: ID!
+    }
+    
+
+Agora vamos modificar nossa _mutation_ `deleteAluno` para receber um `AlunoWhere` como parâmetro.
+    
+    
+    ...
+    type Mutation {
+        deleteAluno(where: AlunoWhere!): Aluno
+    }
+    
+
+Em vez de receber um `id` diretamente, agora recebemos um objeto `where` com um campo `id`. E podemos reutilizar este objeto em outras operações, caso seja necessário. Assim, a declaração da _mutation_ ficou mais limpa e organizada, não importando o número de campos que precisamos receber. E caso esses campos sejam utilizados em outros lugares e a gente precise fazer alguma alteração, basta alterar em um único lugar.
+
+Vamos ao arquivo `resolvers.js` para criar a função de remoção do aluno. Chamaremos a função de `deleteAluno`, que deverá ficar dentro de um objeto chamado `Mutation`. Ela vai receber os parâmetros enviados pelo cliente, no caso, um objeto `where` com um campo `id`.
+
+Vamos procurar a posição do aluno no _Array_ pelo método `findIndex()`, comparando o ID enviado pelo cliente com os campos `id` dos alunos. Se o método `findIndex()` não encontrar o aluno indicado pelo `id`, será retornado o valor `-1`. Se encontrado, teremos um índice maior ou igual a zero, que indica a posição deste aluno no _Array_ , então utilizaremos o método `splice()` para removê-lo do _Array_.
+
+O `splice()` recebe dois parâmetros: o índice do primeiro item que queremos remover e quantos itens desejamos que sejam removidos. Este método retorna um novo _Array_ com os itens eliminados. Como tiramos apenas um aluno, vamos pegar o primeiro (e único) objeto do novo _Array_ retornado, ou seja, posição 0. Se nenhum aluno for encontrado, retornaremos `null`:
+    
+    
+    ...
+    Mutation: {
+      deleteAluno: function(root, args){
+          const indice = listaAlunos.findIndex(aluno => aluno.id == args.where.id);
+          if(indice >= 0){
+              return listaAlunos.splice(indice, 1)[0];
+          }
+          return null;
+      }
+    }
+    
+
+Agora vamos testar o seguinte comando no Sandbox:
+    
+    
+    mutation{
+      deleteAluno(where: {
+        id: "123"
+      }){
+        id
+        nomeCompleto
+      }
+    }
+    
+
+Se agora você testar listar todos os alunos, verá que um foi apagado. Se tentar apagar o mesmo aluno novamente, receberá `null` como resposta.
+
+> Como estamos utilizando um _Array_ no lugar do banco de dados, sempre que o servidor for reiniciado, teremos o valor do nosso _Array_ reiniciado também.
+    
+    
+    
+    
+
+## 7.9 Criando novos alunos
+
+Agora que aprendemos a apagar alunos e criar _Inputs_ , vamos ver como criar alunos. Será um processo bem parecido.
+
+Primeiro, vamos ao arquivo `schema.js`. Como recebemos um objeto chamado `data` na criação de um aluno, precisamos criar um _input_ para ele também. Os alunos recebem um campo `nomeCompleto`, que é obrigatório, e um campo `idade`. Nosso _input_ para a criação de aluno se chamará `AlunoInput`.
+    
+    
+    input AlunoInput{
+        nomeCompleto: String!
+        idade: Int
+    }
+    
+
+E agora podemos criar nossa _mutation_ de criação de aluno, que chamaremos de `createAluno`.
+    
+    
+    type Mutation {
+        createAluno(data: AlunoInput!): Aluno
+        deleteAluno(where: AlunoWhere!): Aluno
+    }
+    
+
+Agora vamos ao `resolvers.js` para criar nossa função `createAluno()` dentro de `Mutation`. Ela receberá um parâmetro com o objeto `data` que terá o nome e idade do aluno. Em um banco de dados comum, teríamos um `id` gerado automaticamente. Vamos simular isso pegando o tempo atual e inserindo no campo `id`.
+
+Por fim, vamos inserir o novo aluno no nosso _Array_ e retorná-lo.
+    
+    
+    createAluno: function(root, args){
+        const novoAluno = args.data;
+        novoAluno.id = Date.now();
+    
+        listaAlunos.push(novoAluno);
+        return novoAluno;
+    }
+    
+
+Para testar, vamos ao Sandbox para executar o seguinte comando:
+    
+    
+    mutation{
+      createAluno(data: {
+        nomeCompleto: "Phil Kamiya",
+        idade: 20
+      }){
+        id
+        nomeCompleto
+      }
+    }
+    
+
+Teremos o seguinte retorno:
+    
+    
+    {
+      "data": {
+        "createAluno": {
+          "id": "742024200000",
+          "nomeCompleto": "Phil Kamiya"
+        }
+      }
+    }
+    
+
+## 7.10 Permitindo subscriptions
+
+Ainda falta permitir inscrições por meio de WebSockets. Vamos arrumar nosso `schema` e `resolver` primeiro. Pode ser que seu servidor comece a dar erros, pois estamos usando o `startStandaloneServer`, que não possui suporte a `subscriptions`. Após a configuração, vamos criar um novo servidor usando `Express`.
+
+Vamos ao nosso `schema.js`. Lembra que indicamos o tipo de filtro para as operações para as quais queremos nos inscrever, e elas apenas podiam ter três possíveis valores, `CREATED`, `UPDATED` e `DELETED`? Para limitarmos os possíveis valores que serão passados aqui, criaremos um `enum`. Vamos chamá-lo de `ModelMutationType`.
+    
+    
+    enum ModelMutationType{
+        CREATED
+        UPDATED
+        DELETED
+    }
+    
+
+Para as inscrições, passamos os tipos de operações como um filtro. Como é uma estrutura que recebemos do cliente, precisamos declarar isso como um _input_. Ele terá o nosso conhecido campo `mutation_in`, que será um _Array_ que poderá receber os valores que declaramos em nosso _enum_. Vamos chamar de `AlunoSubscriptionFilter`.
+    
+    
+    input AlunoSubscriptionFilter {
+        mutation_in: [ ModelMutationType! ]
+    }
+    
+
+O retorno que recebemos de uma inscrição possui três campos: `mutation` (indica o tipo da operação realizada), `node` (objeto que foi criado ou atualizado) e `previousValue` (objeto que foi apagado ou valor anterior do objeto que foi atualizado). Para declarar essa estrutura que servirá de resposta para as inscrições, vamos criar um _type_ que chamaremos de `AlunoSubscriptionPayload`.
+    
+    
+    type AlunoSubscriptionPayload{
+        mutation: ModelMutationType
+        node: Aluno 
+        previousValues: Aluno
+    }
+    
+
+Agora teremos que declarar a inscrição de aluno. Isso será dentro do _type_ `Subscription`. Chamaremos de `aluno`, que receberá um parâmetro do tipo `AlunoSubscriptionFilter` e retornará um objeto do tipo `AlunoSubscriptionPayload`.
+    
+    
+    type Subscription {
+        aluno(where: AlunoSubscriptionFilter!): AlunoSubscriptionPayload
+    }
+    
+
+Agora precisamos arrumar o nosso `resolvers.js`. Porém, aqui teremos alguns detalhes a mais para resolver.
+
+Primeiro, precisamos do canal de comunicação que enviará dados ao cliente. Podemos fazer isso com a biblioteca `graphql-subscriptions`. Vamos instalá-la com o comando `npm i graphql-subscriptions`.
+
+A comunicação é feita com o `PubSub`. Esta classe nos permitirá enviar dados por WebSockets aos clientes que fizerem uma _subscription_.
+
+No começo do `resolvers.js`, vamos importar o `PubSub`, instanciá-lo e guardar na variável `pubsub`.
+    
+    
+    const { PubSub } = require('graphql-subscriptions');
+    const pubsub = new PubSub();
+    
+
+Dentro do objeto `resolvers`, precisamos criar um objeto `Subscription` e, dentro deste, teremos um objeto `aluno` com uma função `subscribe`.
+
+Os dados recebidos do cliente terão o objeto `where` com o campo `mutation_in`, que é um _Array_ com um ou mais dos três valores que declaramos como _enum_ (`CREATED`, `UPDATED` e `DELETED`).
+
+Vamos utilizar o método `.map()` para inserir um prefixo `aluno_` nesses nomes. Assim, teremos canais específicos para cada operação de aluno. Então se um cliente quiser ouvir sobre criação e remoção de dados, por exemplo, nos passará `[CREATED, DELETED]`. Nós transformaremos isso em `[aluno_CREATED, aluno_DELETED]`. Assim, se futuramente você quiser incluir outros dados além de aluno, não haverá conflito nos canais de comunicação.
+
+Por fim, precisamos passar esta lista para o método `asyncIterator()` de `pubsub`. Isso permitirá ao servidor saber onde o cliente quis se inscrever.
+    
+    
+      ...
+        Subscription: {
+            aluno: {
+              subscribe: (root, args) => {
+                  const eventNames = args.where.mutation_in.map(eventName => `aluno_${eventName}`);
+                  return pubsub.asyncIterator(eventNames);
+              }
+            },
+        }
+    
+
+Agora que criamos a possibilidade de inscrição, nosso servidor já saberá quem quer receber dados e quais tipos de dados querem receber. Mas ainda precisamos dizer ao servidor que ele deve notificar os clientes quando os dados forem criados ou removidos. Isso é bem simples! Basta executar o método `publish()` do `pubsub`, passando o canal em que queremos enviar os dados e os dados que serão enviados ao cliente.
+
+Em `resolvers.Mutation.createAluno()` adicionaremos este código, passando o canal `aluno_CREATED` e o objeto `aluno`, que possui o campo `mutation` com o valor `CREATED` e o novo aluno no campo `node`.
+    
+    
+    Mutation: {
+      createAluno: function(root, args){
+        const novoAluno = args.data;
+        novoAluno.id = Date.now();
+    
+        listaAlunos.push(novoAluno);
+    
+        pubsub.publish('aluno_CREATED', {
+          aluno: {
+            mutation: 'CREATED',
+            node: novoAluno,
+            previousValues: null
+    
+          }
+        });
+        return novoAluno;
+      },
+      ...
+    }
+    
+
+Vamos fazer o mesmo em `resolvers.Mutation.deleteAluno()`. Nós estávamos retornando o aluno removido do _Array_. Vamos agora armazenar este aluno apagado da lista em uma variável `alunoDeletado` para poder reutilizá-lo.
+
+Ao executar o `publish()`, passaremos `alunoDeletado` no campo `previousValues`, e o canal utilizado será o `aluno_DELETED`.
+    
+    
+    Mutation: {
+      ...
+      deleteAluno: function(root, args){
+        const indice = listaAlunos.findIndex(aluno => aluno.id == args.where.id);
+        if(indice >= 0){
+          const alunoDeletado =  listaAlunos.splice(indice, 1)[0];
+          pubsub.publish('aluno_DELETED', {
+            aluno: {
+              mutation: 'DELETED',
+              node: null,
+              previousValues: alunoDeletado
+            }
+          });
+          return alunoDeletado;
+        }
+        return null;
+      }
+    }
+    
+
+## 7.11 Servidor Express com Apollo
+
+Como dito anteriormente, o `startStandaloneServer` não suporta `subscriptions`. Então, vamos criar um servidor Express com o Apollo para que possamos ter essa funcionalidade.
+
+Para não perder o que já fizemos no arquivo `server.js`, vamos apenas renomeá-lo para `server.old.js`. Assim você pode mantê-lo como referência.
+
+Vamos primeiro instalar algumas dependências:
+    
+    
+    npm i express graphql-ws ws @graphql-tools/schema
+    
+
+Agora, crie um novo arquivo `server.js`. Vamos fazer as importações necessárias. Conforme formos utilizando, eu vou explicando suas funções.
+
+Logo após as importações, vamos definir uma constante `PORT` com o valor `3000`. Esta será a porta em que o servidor Express vai rodar. Em um código maior como esse que vamos escrever, é interessante ter uma constante para a porta e outras configurações, pois assim você pode alterar a porta apenas em um lugar, e não em todos os lugares em que ela é utilizada, além de tê-la em um lugar de fácil acesso caso precise alterá-la.
+    
+    
+    const { ApolloServer } = require('@apollo/server');
+    const { expressMiddleware } = require('@apollo/server/express4');
+    const { ApolloServerPluginDrainHttpServer } = require('@apollo/server/plugin/drainHttpServer');
+    const { createServer } = require('http');
+    const express = require('express');
+    const { makeExecutableSchema } = require('@graphql-tools/schema');
+    const { WebSocketServer } = require('ws');
+    const { useServer } = require('graphql-ws/lib/use/ws');
+    const bodyParser = require('body-parser');
+    const cors = require('cors');
+    
+    const resolvers = require('./resolvers');
+    const schema = require('./schema');
+    
+    const PORT = 3000;
+    
+
+Em seguida vamos fazer com que o nosso esquema seja executável. Isso é necessário para que o Apollo Server possa entender o esquema e resolver as requisições vindas do cliente. Para isso, vamos executar a função `makeExecutableSchema()` e passar como parâmetro o esquema e os _resolvers_. O resultado dessa função será armazenado em uma constante `schemaExecutavel`.
+    
+    
+    const schemaExecutavel = makeExecutableSchema({ typeDefs: schema, resolvers });
+    
+
+Agora vamos criar uma aplicação `Express`. Para isso, basta executar a função `express()` e armazenar o resultado em uma constante `app`. 
+
+Em seguida, vamos criar um servidor `http` para receber as requisições vindas do cliente. Para isso, vamos executar a função `createServer()` e passar como parâmetro a aplicação `Express` que acabamos de criar. O resultado desta função será armazenado em uma constante `servidorHttp`.
+    
+    
+    const app = express();
+    const servidorHttp = createServer(app);
+    
+
+Já temos o servidor `http` criado. Agora vamos criar o servidor `WebSocket`. Para isso, vamos instanciar o `WebSocketServer()` e passar como parâmetro o servidor `http` que acabamos de criar. Também vamos passar o caminho `/graphql` como parâmetro, indicando que nosso servidor GraphQL estará funcionando neste caminho. O resultado desta função será armazenado em uma constante `servidorWS`.
+    
+    
+    const servidorWS = new WebSocketServer({
+        server: servidorHttp,
+        path: "/graphql",
+    });
+    
+
+O próximo passo é executar o `useServer` do `graphql-ws`. Essa biblioteca nos permite usar `WebSockets` com `GraphQL`. A função `useServer` pode ser usada para que depois possamos limpar qualquer estado do servidor quando ele não for mais necessário.
+
+Então, vamos executar `useServer` e passar um objeto como parâmetro. Este objeto deve conter o esquema executável que criamos anteriormente. Como segundo parâmetro, vamos passar o servidor `WebSocket` que criamos anteriormente. O resultado desta função será armazenado em uma constante `limparServidor`.
+    
+    
+    const limparServidor = useServer({ schema: schemaExecutavel }, servidorWS);
+    
+
+Chegou a hora de criar o servidor `Apollo`. Para isso, vamos executar a função `ApolloServer` e passar como parâmetro o esquema executável que criamos anteriormente. 
+
+Também passaremos um _array_ na propriedade `plugins` contendo o plugin `ApolloServerPluginDrainHttpServer`, e passaremos como parâmetro o servidor `http` que criamos anteriormente. Isso é necessário para que o servidor `Apollo` saiba como desligar o servidor `http` da forma correta quando ele não for mais necessário.
+
+Faremos o mesmo para o servidor `WebSocket`. Para isso, criaremos um objeto com as configurações do comportamento desejado. A função `serverWillStart` é disparada quando o servidor `Apollo` estiver se preparando para iniciar. Como retorno, podemos passar um objeto com uma função chamada `drainServer`, a qual é executada quando o servidor `Apollo` estiver se preparando para desligar. Nesta função, vamos chamar o `limparServidor` que criamos anteriormente e chamar seu método `dispose`, o qual desligará o servidor `WebSocket` da forma correta.
+    
+    
+    const servidor = new ApolloServer({
+        schema: schemaExecutavel,
+        plugins: [
+            ApolloServerPluginDrainHttpServer({ httpServer: servidorHttp }),
+            {
+                async serverWillStart() {
+                    return {
+                        async drainServer() {
+                            await limparServidor.dispose();
+                        },
+                    };
+                },
+            },
+        ],
+    });
+    
+
+Agora, finalmente vamos iniciar nosso servidor `Apollo`. Para isso, vamos executar o método `start`. Ele retorna uma `Promise`. Vamos esperá-la ser resolvida para poder configurar o servidor `Express`. 
+
+Para a configuração, vamos executar o método `use` de `app` e passar como parâmetro o caminho `/graphql`, no qual vamos adicionar essas configurações. 
+
+Como segundo parâmetro, vamos passar o `cors`, que permite que o servidor `Express` aceite requisições vindas de outros domínios. Afinal, nosso servidor `Apollo` está na porta `3000`, enquanto nosso front-end está na porta `3002`. Como terceiro parâmetro, vamos passar o `bodyParser.json`, para que o servidor `Express` aceite requisições com o corpo no formato `JSON`.
+
+Por fim, vamos passar o `expressMiddleware` com o nosso servidor `Apollo` como parâmetro. Isso fará a integração do servidor `Express` com o servidor `Apollo`.
+
+Após essa configuração, vamos executar o método `listen` de `servidorHttp` e passar como parâmetro a porta em que o servidor `Express` vai rodar, que está na constante `PORT`. Isso fará com que o servidor `Express` comece a rodar.
+    
+    
+    servidor.start().then(() => {
+        app.use("/graphql", cors(), bodyParser.json(), expressMiddleware(servidor));
+    
+        servidorHttp.listen(PORT, () => {
+            console.log(`Servidor funcionando em http://localhost:${PORT}/graphql`);
+        });
+    });
+    
+
+Agora você pode ir ao Sandbox e testar a inscrição como aprendemos anteriormente. Execute o seguinte comando no Sandbox:
+    
+    
+    subscription updatedAlunos {
+      aluno(where: {
+        mutation_in: [CREATED, DELETED]
+      }){
+        mutation
+        node{
+          id
+          nomeCompleto
+          idade
+        }
+      }
+    }
+    
+
+O Sandbox começará a esperar por notificações, como indicado pelo número 1 na figura seguinte.
+
+Figura 7.2: Sandbox — criação de subscription.
+
+Agora precisamos deixar esta tela dessa maneira, pois ela está esperando por atualizações em nossa lista de alunos. Para podermos executar outros comandos, abra uma nova aba no Sandbox (indicado pelo número 2 na imagem).
+
+Crie um novo aluno na nova aba que se abriu no Sandbox:
+    
+    
+    mutation{
+      createAluno(data: {
+        nomeCompleto: "Amábile Brizon",
+        idade: 19
+      }){
+        id
+        nomeCompleto
+        idade
+      }
+    }
+    
+
+Ao executar este comando, volte à aba onde executamos a `subscription`. Teremos agora, ao lado direito da tela, a seguinte resposta:
+    
+    
+    {
+      "data": {
+        "aluno": {
+          "mutation": "CREATED",
+          "node": {
+            "id": "782802000000",
+            "nomeCompleto": "Amábile Brizon",
+            "idade": 19
+          }
+        }
+      }
+    }
+    
+
+## 7.12 Testando front-end e back-end
+
+Temos um serviço completo de GraphQL criado completamente por nós! Só precisamos testá-lo.
+
+Basta subir o servidor do front-end com o `tw-dev-server` e teremos um front-end consumindo um serviço GraphQL.
+
+> A ação de alterar um dado já existente eu vou deixar como um desafio para você. Utilize os conhecimentos adquiridos até o momento para adicionar esta funcionalidade à nossa aplicação.
+
+## 7.13 Código do back-end completo
+
+Nosso arquivo `schema.js` ficou assim:
+    
+    
+    const schema = `
+    type Query {
+        aluno(id: ID!): Aluno
+        alunos: [Aluno]!
+    }
+    
+    type Mutation {
+        createAluno(data: AlunoInput!): Aluno
+        deleteAluno(where: AlunoWhere!): Aluno
+    }
+    
+    type Subscription {
+        aluno(where: AlunoSubscriptionFilter!): AlunoSubscriptionPayload
+    }
+    
+    type Aluno{
+        id: ID!
+        nomeCompleto: String!
+        idade: Int
+    }
+    
+    input AlunoInput{
+        nomeCompleto: String!
+        idade: Int
+    }
+    input AlunoWhere{
+        id: ID!
+    }
+    
+    input AlunoSubscriptionFilter {
+        mutation_in: [ ModelMutationType! ]
+    }
+    
+    type AlunoSubscriptionPayload{
+        mutation: ModelMutationType
+        node: Aluno 
+        previousValues: Aluno
+    }
+    
+    enum ModelMutationType{
+        CREATED
+        UPDATED
+        DELETED
+    }
+    `;
+    module.exports = schema;
+    
+
+Nosso arquivo `resolvers.js` ficou da seguinte maneira:
+    
+    
+    const { PubSub } = require('graphql-subscriptions');
+    const pubsub = new PubSub();
+    
+    const listaAlunos = [
+        {
+            "id": "123",
+            "nomeCompleto": "Carlos Monteiro",
+            "idade": 25
+        },
+        {
+            "id": "456",
+            "nomeCompleto": "Maria Silva",
+            "idade": 26
+        },
+        {
+            "id": "789",
+            "nomeCompleto": "João Souza",
+            "idade": 23
+        }
+    ];
+    
+    const resolvers = {
+        Query: {
+            aluno: function(root, args) {  
+                const id = args.id;
+                return listaAlunos.find(aluno => aluno.id == id);
+            },
+            alunos: function() {
+                return listaAlunos;
+            }
+        },
+        Mutation: {
+            createAluno: function(root, args){
+                const novoAluno = args.data;
+                novoAluno.id = Date.now();
+    
+                listaAlunos.push(novoAluno);
+    
+                pubsub.publish('aluno_CREATED', {
+                    aluno: {
+                        mutation: 'CREATED',
+                        node: novoAluno,
+                        previousValues: null
+    
+                    }
+                });
+                return novoAluno;
+            },
+            deleteAluno: function(root, args){
+                const indice = listaAlunos.findIndex(aluno => aluno.id == args.where.id);
+                if(indice >= 0){
+                    const alunoDeletado =  listaAlunos.splice(indice, 1)[0];
+                    pubsub.publish('aluno_DELETED', {
+                        aluno: {
+                            mutation: 'DELETED',
+                            node: null,
+                            previousValues: alunoDeletado
+                        }
+                    });
+                    return alunoDeletado;
+                }
+                return null;
+            }
+        },
+        Subscription: {
+            aluno: {
+              subscribe: (root, args) => {
+                  const eventNames = args.where.mutation_in.map(eventName => `aluno_${eventName}`);
+                  return pubsub.asyncIterator(eventNames);
+              }
+            },
+        },
+    };
+    
+    module.exports = resolvers;
+    
+
+E, por fim, nosso arquivo `server.js`:
+    
+    
+    const { ApolloServer } = require('@apollo/server');
+    const { expressMiddleware } = require('@apollo/server/express4');
+    const {
+        ApolloServerPluginDrainHttpServer,
+    } = require('@apollo/server/plugin/drainHttpServer');
+    const { createServer } = require('http');
+    const express = require('express');
+    const { makeExecutableSchema } = require('@graphql-tools/schema');
+    const { WebSocketServer } = require('ws');
+    const { useServer } = require('graphql-ws/lib/use/ws');
+    const bodyParser = require('body-parser');
+    const cors = require('cors');
+    
+    const resolvers = require('./resolvers');
+    const schema = require('./schema');
+    
+    const PORT = 3000;
+    
+    // Cria o esquema, que será usado separadamente pelo ApolloServer e
+    // o servidor WebSocket.
+    const schemaExecutavel = makeExecutableSchema({ typeDefs: schema, resolvers });
+    
+    // Cria uma aplicação Express e um servidor HTTP; vamos anexar o servidor
+    // WebSocket e o ApolloServer para este servidor HTTP.
+    const app = express();
+    const servidorHttp = createServer(app);
+    
+    // Cria nosso servidor WebSocket usando o servidor HTTP que acabamos de configurar.
+    const servidorWS = new WebSocketServer({
+        server: servidorHttp,
+        path: "/graphql",
+    });
+    
+    // Salva as informações do servidor retornado para que possamos
+    // desligar este servidor mais tarde.
+    const limparServidor = useServer({ schema: schemaExecutavel }, servidorWS);
+    
+    // Configuração do ApolloServer.
+    const servidor = new ApolloServer({
+        schema: schemaExecutavel,
+        plugins: [
+            // Desligamento adequado para o servidor HTTP.
+            ApolloServerPluginDrainHttpServer({ httpServer: servidorHttp }),
+    
+            // Desligamento adequado para o servidor WebSocket.
+            {
+                async serverWillStart() {
+                    return {
+                        async drainServer() {
+                            await limparServidor.dispose();
+                        },
+                    };
+                },
+            },
+        ],
+    });
+    
+    servidor.start().then(() => {
+        app.use("/graphql", cors(), bodyParser.json(), expressMiddleware(servidor));
+    
+        // Agora que o nosso servidor HTTP está totalmente configurado, podemos iniciá-lo.
+        servidorHttp.listen(PORT, () => {
+            console.log(`Servidor funcionando em http://localhost:${PORT}/graphql`);
+        });
+    });
+    
+
+## 7.14 Missão cumprida!
+
+Missão cumprida! Finalizamos nossos estudos sobre GraphQL!
+
+Vimos que montar um serviço GraphQL pode ser bem simples. Lembre-se de que o GraphQL pode ser utilizado com qualquer linguagem de programação, banco de dados ou framework.
+
+Se você chegou até aqui com tudo funcionando, então você finalizou este livro com sucesso e agora já sabe muito sobre como trabalhar com GraphQL, tanto no _front_ quanto no _back_. Parabéns!
+
+Eu realmente espero que este livro tenha sido de grande valor para você e para a sua carreira.
+
+O código completo deste projeto pode ser encontrado no meu GitHub, pelo seguinte endereço: <https://github.com/hanashiro/cdc-livro-graphql/>
+
+Outros links para continuar aprendendo sobre GraphQL:
+
+  * **Site oficial do GraphQL:** <https://graphql.org>
+  * **Tutoriais de GraphQL:** <https://www.howtographql.com>
+  * **Apollo:** <https://www.apollographql.com/>
+
+
+
+Muito obrigado por escolher este livro para o seu aprendizado. Até o nosso próximo encontro!

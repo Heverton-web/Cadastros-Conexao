@@ -1,0 +1,44 @@
+---
+name: nosql-como-armazenar-os-dados-de-uma-aplicacao-moderna
+description: >-
+  Passos operacionais extraidos do livro 'NoSQL como armazenar os dados de uma aplicação moderna' (PT) — NoSQL.
+---
+# Conteudo Extraido
+Fonte: EPUB - [PT] EPUB NoSQL_ como armazenar os dados de uma aplicação moderna - Desconhecido.txt
+
+
+## Conceitos Fundamentais
+- page_002 Sumário ISBN Agradecimentos Sobre o autor Sobre o livro 1.
+- Consistência versus disponibilidade e os bancos chave valor 5.
+- Mais sobre bancos chave valor e persistência poliglota 6.
+- Relacionamentos complexos com bancos orientados a grafos 9.
+- Referências bibliográficas page_003 ISBN Impresso e PDF: 978-85-5519-192-3 EPUB: 978-85-5519-193-0 MOBI: 978-85-5519-194-7 Caso você deseje submeter alguma errata ou sugestão, acesse http://erratas.casadocodigo.com.br . page_004 Agradecimentos Agrade
+- Agradeço também a todos os grandes profissionais com quem trabalhei ao longo dos últimos anos e com quem tive a aportunidade de aprender muito.
+
+## Principios e Tecnicas
+- Mais do que um agredecimento, dedico esta obra à minha família por todo o apoio e as horas que deixei de passar com eles para investir neste livro: minha esposa Mayra, e meus filhos Luca e Lia. page_005 Sobre o autor David Paniz é desenvolvedor de so
+- Já passou por diversos tipos de empresas e projetos, desde grandes consultorias prestando serviço para bancos e para a antiga BM&amp;F, hoje parte da B3 (Brasil Bolsa Balcão), até pequenas empresas, incluindo times de desenvolvimento notáveis como o 
+- Ao longo de sua carreira, trabalhou com várias linguagens e plataformas, em especial Java, Ruby, Clojure e JS, na maior parte do tempo com foco no desenvolvimento back-end e nas práticas ágeis.
+- Já palestrou em importantes eventos nacionais, como Agile Brazil, Oxente Rails e QCon. page_006 Sobre o livro Este livro se destina a pessoas de desenvolvimento e arquitetura de software que já tenham experiência com algum tipo de banco de dados rela
+- Pré-requisitos No decorrer do livro, quando um novo conceito ou funcionalidade é apresentado, normalmente existe a comparação com os bancos relacionais e o SQL.
+- Então, ter um conhecimento prévio sobre conceitos básicos de bancos de dados, como tabelas, joins, forma normal (normalização de dados) e um pouco de SQL, ajudará muito o entendimento.
+
+## Aplicacoes Praticas
+- Por isso, não existe a necessidade de conhecer bem alguma linguagem de programação específica, nem mesmo as utilizadas, mas é importante ter noções de programação para compreender e reproduzir os códigos apresentados.
+- A maior parte das tecnologias apresentadas pode ser instalada em Windows, Mac ou Linux, e todas elas possuem imagens prontas para rodar em docker containers.
+- Apesar da preferência por ambientes baseados em Unix, é possível reproduzir quase todos os exercícios em qualquer sistema operacional.
+- Se você usa Windows, é recomendado usar o WSL2, e então instalar os bancos direto na distribuição instalada ou rodar usando o Docker.
+- Mas um detalhe importantíssimo e pouco discutido é sobre a forma de persistência de dados. É comum a discussão sobre qual banco relacional será usado entre MySQL, Postgres, Oracle, ou algum outro.
+- Porém, o uso de um banco de dados relacional é praticamente unânime.
+
+## Topicos Avancados
+- Aplicações como portais de notícias exigem um alto volume de leitura por conta da audiência.
+- Aplicações que indexam logs ou geram painéis com indicadores de negócio em tempo real são aplicações com muita escrita para agregar os dados.
+- Em muitos casos, a simples questão do volume de dados para armazenar já é um problema.
+- Pense no banco de dados que armazena todos os mais de 1 bilhão de usuários ativos no Facebook, além de todo o conteúdo que eles geram diariamente.
+- Ou pense em todos os sites indexados pelo Google e como eles guardam o histórico de buscas de cada usuário logado.
+- Além disso, algumas necessidades de negócio são muito complicadas de implementar em cima de um banco relacional.
+
+## Secao 5
+- Baseado nessas novas necessidades e novos modelos de aplicações, um grupo de pessoas começou a ressaltar a importância na forma de armazenar os dados, e daí surgiu o movimento chamado NoSQL.
+- No começo, a sigla era interpretada como 'No SQL' ( Não SQL , em inglês).

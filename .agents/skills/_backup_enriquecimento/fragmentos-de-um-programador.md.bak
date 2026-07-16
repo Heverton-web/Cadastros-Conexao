@@ -1,0 +1,57 @@
+---
+name: fragmentos-de-um-programador
+description: >-
+  Passos operacionais extraidos do livro 'Fragmentos de um programador' (PT) — Fragmentos.
+---
+
+# Fragmentos De Um Programador — Passos Operacionais
+
+Conteudo extraido do livro 'Fragmentos De Um Programador'. Contem passos, tecnicas e principios baseados na obra original.
+
+## 1. Conceitos Fundamentais
+- Página 3 Impresso e PDF: 978-85-5519-222-7 EPUB: 978-85-5519-223-4 MOBI: 978-85-5519-224-1 Caso você deseje submeter alguma errata ou sugestão, acesse http://erratas.casadocodigo.com.br.
+- ISBN  Página 4 Phil Calçado é diretor de engenharia na DigitalOcean em Nova Iorque.
+- Em vidas passadas, ele foi diretor de engenharia na SoundCloud em Berlim, ajudou empresas a adotar SOA e entrega contínua na ThoughtWorks em Londres, Sidney e Melbourne.
+- Antes de se tornar um nômade, ele trabalhou na equipe de vídeos da Globo.com no Rio de Janeiro.
+- QUEM É PHIL CALÇADO  Página 5 PREFÁCIO Eu me lembro até hoje de quando comecei a frequentar o GUJ, em 2006.
+- Era uma comunidade pequena, muito longe do tamanho que tem hoje, mas vibrante.
+- Praticamente todas as discussões que aconteciam por lá geravam longos debates, alguns até acalorados, porém todos cheios de aprendizados.
+- Era comum ver as opiniões firmes do Phillip por lá.
+- Lembro-me até hoje de que, já naquela época, ele falava sobre granularidade de serviços e sua cruzada contra a hipercomplexidade de algumas plataformas da época.
+- Naquela época, eu engatinhava no mundo do desenvolvimento e acompanhava atentamente cada artigo que o Phillip publicava no seu antigo site, o Fragmental, que nem existe mais hoje.
+
+## 2. Principios e Tecnicas
+- O que é uma pena, pois tinha muito conteúdo bom e que valerá até muitos anos ainda à frente.
+- Em uma conversa recente, falamos com o Phillip e conseguimos desenterrar seu blog.
+- Fizemos uma coleta dos seus artigos publicados lá no passado no Fragmental, e que são leitura obrigatória até hoje para qualquer desenvolvedor de software de respeito.
+- Mesclamos também com conteúdos atuais que ele escreve em inglês, traduzidos para o português com a curadoria da Casa do Código.
+- Você vai colher opiniões e vários insights sobre design de software, integração de sistemas, Orientação a Objetos, Domain- Driven Design, microsserviços e muito mais, tudo aqui dentro destas páginas.
+- Espero que você aproveite esse estudo e que valha a pena para você, assim como o Fragmental valeu a pena para mim lá no  Página 6 passado e me fez olhar o mundo do desenvolvimento de software com olhos muito mais criteriosos.
+- Como ocorreu com tantas crianças da década de 80, meus pais ficaram muito preocupados com o tempo que eu gastava jogando videogame.
+- Um dia, meu pai, que trabalhava em projetos de engenharia de petróleo, me disse que me daria um computador, o primeiro de toda a minha família.
+- Meus olhos brilharam, imaginando todos aqueles jogos a que eu nunca tinha tido acesso no meu Mega Drive, mas sobre os quais havia lido em revistas.
+- Grande foi a minha decepção quando, em vez do 386 que eu havia imaginado, ganhei um livro.
+
+## 3. Aplicacoes Praticas
+- Eram umas cem páginas ensinando conceitos básicos de programação, linguagem de máquina, e diagramas de circuito descrevendo o computador.
+- Este era o manual do TK-83, produzido por uma empresa chamada Microdigital.
+- O computador era mais velho que eu, basicamente um clone brasileiro do britânico Sinclair ZX 81.
+- Não havia interface com o usuário, e a única maneira de interagir com o computador era escrevendo programas em BASIC.
+- Meu pai disse que só me daria o computador em si depois que eu aprendesse a programar.
+- Então, pelos próximos seis meses, passei muitas horas lendo aquele livro e escrevendo programas no papel.
+- Após verificar meu progresso, enfim ganhei o tal computador dos meus pais.
+- Infelizmente, a pessoa que iria vender o TK-83 não o tinha mais INTRODUÇÃO 1 INTRODUÇÃO 1  Página 11 disponível, logo eles conseguiram um TK2000.
+- Era um hardware mais moderno, mas em vez de um clone do ZX81, eu tinha em mãos um clone do Apple II+.
+- Passei um bom tempo lutando com a diferença entre os modelos — pode-se dizer que comecei a ter apreço por portabilidade de código com onze anos!
+
+## 4. Topicos Avancados
+- Muitos anos, linguagens de programação e computadores depois, com 20 anos de idade, decidi largar a faculdade e a vida de freelancer e me dedicar ao meu trabalho como desenvolvedor em uma pequena agência web no centro do Rio de Janeiro.
+- O trabalho era interessante no início, mas aos poucos fui percebendo que todo projeto se resumia a escrever o mesmo gerenciador de conteúdo (CMS).
+- Pensando em facilitar minha vida, passei um fim de semana escrevendo um CMS genérico, em ASP 3.0.
+- Este foi o maior sistema que eu já tinha visto.
+- E durante seu desenvolvimento e eventual customização para clientes, aprendi da maneira difícil sobre boas práticas em software.
+- Traumatizado com essas experiências, eu acabei atraído pela linguagem Java.
+- Esta tecnologia prometia não só portabilidade, mas era também fortemente baseada em objetos.
+- Todos os livros me diziam que esses tais objetos eram a bala de prata em software de fácil manutenção.
+- O problema é que ninguém conseguia me dizer o que era um objeto.
+- Enquanto eu ainda estava na faculdade, um professor descreveu o paradigma da seguinte forma: "Orientação a Objetos é como ser um bebê.

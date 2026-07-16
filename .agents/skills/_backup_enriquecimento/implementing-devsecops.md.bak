@@ -1,0 +1,57 @@
+---
+name: implementing-devsecops-with-docker-and-kubernetes
+description: >-
+  Passos operacionais extraidos do livro 'Implementing DevSecOps with Docker and Kubernetes An Experiential Guide to Operate in the DevOps Environment for Securing and Monitoring Container Applications (English Edition)' (EN) — praticas e procedimentos para DevOps, infraestrutura e containers.
+---
+
+# Implementing Devsecops — Passos Operacionais
+
+Conteudo extraido do livro 'Implementing Devsecops'. Contem passos, tecnicas e principios baseados na obra original.
+
+## 1. Conceitos Fundamentais
+- Implementing   DevSecOps   with Docker and   Kubernetes   An Experiential Guide to Operate in the DevOps   Environment for Securing and Monitoring   Container Applications   José Manuel Ortega Candel   www.bpbonline.com    FIRST EDITION 2022   Copyright © BPB Publications, India   ISBN: 978-93-5551-118-8   All Rights Reserved.
+- No part of this publication may be reproduced, distributed or transmitted in any form or by any means or stored in a database or retrieval system, without the prior written permission of the publisher with the exception to the program listings which may be entered, stored and executed in a computer system, but they can not be reproduced by the means of publication, photocopy, recording, or by any electronic and mechanical means.
+- LIMITS OF LIABILITY AND DISCLAIMER OF WARRANTY   The information contained in this book is true to correct and the best of author’s and publisher’s knowledge.
+- The author has made every effort to ensure the accuracy of these publications, but publisher cannot be held responsible for any loss or damage arising from any information in this book.
+- All trademarks referred to in the book are acknowledged as properties of their respective owners but BPB Publications cannot guarantee the accuracy of this information.   www.bpbonline.com    Dedicated to   My parents and brothers    About the Author   José Manuel Ortega has been working as a software engineer and security researcher, focusing on new technologies, open source, security, and testing.
+- His aim has been to specialize in Python and DevOps security projects with Docker.
+- He is currently working as a security tester engineer, analyzing and testing the security of applications.
+- He has collaborated with universities and the official college of computer engineers, presenting articles and holding conferences.
+- He has also been a speaker at national and international conferences.
+- You can find his conferences and talks related to Python, Security, and Docker on his personal site \- http://jmortega.github.io    About the Reviewers   Ajay a DevOps enthusiast, is always eager to learn new technologies related to automating application lifecycle management.
+
+## 2. Principios e Tecnicas
+- He has also reviewed Cloud Analytics using Microsoft Azure Stack.
+- He loves R&D and has a keen interest in inventing or optimizing and implementing solutions.
+- Prajeesh Prathap is an experienced technologist who specializes in building web scale, cloud native applications with special interest in event-driven, distributed systems.
+- Prajeesh currently works as the platform and operations teams’ manager for IT&Care in the Netherlands, specializing in setting up the containerized environments, CI/CD using Azure DevOps, observability platforms etc.
+- He is a regular speaker at numerous technology conferences and has authored courses on Reactive Microservices in .NET Core and Continuous Delivery with VSTS & PowerShell DSC.
+- Acknowledgements   First and foremost, I would like to thank everyone at BPB Publications for giving me the opportunity to publish this book, which tries to cover some of the technologies that we can find within the DevSecOps ecosystem.
+- I would also like to thank my teachers and friends at the University for giving me the ability to continuously learn in a world that becomes increasingly complex.
+- Lastly, I would like to thank the editors, reviewers, and publishers for carrying out this project successfully.
+- Preface   In the last few years, the knowledge of DevSecOps tools in IT companies has increased due to the growth of specific technologies based on containers like Docker and Kubernetes.
+- Docker is an open source containerization tool that makes it easier to streamline product delivery, and Kubernetes is a portable and extensible open source platform for managing workloads and services.
+
+## 3. Aplicacoes Praticas
+- The primary goal of this book is to create a theory and practice mix that emphasizes on the core concepts of DevSecOps, Docker containers and Kubernetes clustering from a security, monitoring, and administration perspective.
+- This book is helpful for learning the basic and advanced concepts of Docker containers from a security point of view.
+- The book is divided into 14 chapters and provides a detailed description of the core concepts of DevSecOps tools: Docker containers and Kubernetes platforms.
+- Chapter 1 introduces DevSecOps challenges, methodologies, and tools as a new movement that tries to improve the security of applications.
+- The idea of DevSecOps is to take security as a requirement in the application design, development, and delivery process.
+- Chapter 2 introduces main container platforms, like Docker and Kubernetes, that provide infrastructure for both the development and operations teams.
+- The idea of this chapter is to introduce the main technologies that will be used throughout the book and other alternatives for containers, like Podman.
+- Chapter 3 covers topics like how Docker manages images and containers, the main commands used for generating our images from Dockerfile, and how we can optimize our docker images by minimizing their size and, in turn, reducing the attack surface.
+- Chapter 4 explores security best practices and other aspects like Docker capabilities, which containers leverage in order to provide more features, such as the privileged container.
+- We will also review Docker Content Trust and Docker Registry in this chapter; they provide a secure way to upload our images in Docker Hub Platform and private registry.
+
+## 4. Topicos Avancados
+- Finally, we will review other registries like Harbor and Quay.
+- Chapter 5 walks us through Docker daemon, AppArmor, and seccomp profiles, which provide kernel-enhancement features to limit system calls.
+- We will also review tools like Docker Bench Security and Lynis, which follow security best practices in the Docker environment, and take a look at some of the important recommendations that can be followed during auditing and Docker deployment in a production environment.
+- Chapter 6 discusses best practices for building container images securely.
+- In addition to ensuring that your container is properly configured, you must ensure that all image layers in a container are free from known vulnerabilities.
+- This is done through tools that perform a static scan of images in the Docker repositories.
+- We will also review some open source tools, like Clair and Anchore, in this chapter to discover vulnerabilities in container images.
+- Chapter 7 explores attack vectors that can affect container deployments with Docker and covers topics like Docker Container threats and system attacks that can impact Docker applications.
+- We will review examples of attacks and exploits that could target running containers.
+- Additionally, we will review specific CVE in Docker images and understand how we can get details about specific vulnerabilities with the Vulners API.

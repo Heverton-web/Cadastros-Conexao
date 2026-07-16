@@ -1,0 +1,44 @@
+---
+name: desbravando-java-e-orientacao-a-objetos-um-guia-para-o
+description: >-
+  Passos operacionais extraidos do livro 'Desbravando Java e orientação a objetos um guia para o iniciante da linguagem' (PT) — Java.
+---
+# Conteudo Extraido
+Fonte: EPUB - [PT] EPUB Desbravando Java e orientação a objetos_ um guia para o iniciante da linguagem - Desconhecido.txt
+
+
+## Conceitos Fundamentais
+- Continuando seus estudos page_003 ISBN Impresso e PDF: 978-85-5519-058-2 EPUB: 978-85-5519-059-9 MOBI: 978-85-5519-060-5 Você pode discutir sobre este livro no Fórum da Casa do Código: http://forum.casadocodigo.com.br/ .
+- Caso você deseje submeter alguma errata ou sugestão, acesse http://erratas.casadocodigo.com.br . page_004 Dedicatória "À minha filha Clara" — Rodrigo Turini Agradecimentos Não há outra maneira de começar este livro que não seja agradecendo a todos qu
+- Victor Harada, Maurício Aniche e Guilherme Silveira foram alguns deles.
+- Fica um agradecimento especial ao Paulo Silveira, não só pela sua detalhada revisão e suas diversas sugestões e melhorias para este livro, mas também pela influência direta que tem em meu dia a dia profissional.
+- Gostaria também de estender o agradecimento para toda equipe da Caelum.
+- São profissionais exemplares que me incentivam a aprender e ensinar diariamente. page_005 Capítulo 1 Java 1.1 Nosso primeiro código Java No lugar de começar com conceitos e teorias, vamos logo partir para uma boa dose de prática!
+
+## Principios e Tecnicas
+- Não se preocupe, em breve cada uma dessas palavras terá seu sentido bem claro.
+- Salve o arquivo em algum diretório de sua preferência, mas é importante que ele se chame MeuPrimeiroPrograma.java .
+- Nosso próximo passo será compilar esse código-fonte.
+- Faremos isso manualmente utilizando o javac , compilador padrão da Oracle.
+- Abra seu terminal e digite javac MeuPrimeiroPrograma.java .
+- Note que, para isso, você precisa estar na mesma pasta do arquivo, ou passar o caminho completo para ele.
+
+## Aplicacoes Praticas
+- Um exemplo em Windows seria: D:\&gt; cd Desktop\livro D:\Desktop\livro&gt; O mesmo comando pode ser utilizado em um ambiente Unix (Linux ou Mac OS).
+- Em Windows, usamos o comando dir : D:\Desktop\livro&gt; dir MeuPrimeiroPrograma.java MeuPrimeiroPrograma.class Porém, nos outros sistemas que foram citados, o comando será ls .
+- Repare: turini ~ $ cd Desktop/livro turini/Desktop/livro ~ $ ls MeuPrimeiroPrograma.java MeuPrimeiroPrograma.class Note que, se nenhum erro de compilação ocorrer, no mesmo diretório agora existirá um novo arquivo com o mesmo nome de nossa classe Java
+- Este novo arquivo é o bytecode gerado pelo compilador.
+- Para executá-lo, ainda pelo terminal, digite o comando java MeuPrimeiroPrograma .
+- O comando java é o responsável por executar a JVM (máquina virtual, ou Java Virtual Machine ) que vai interpretar o bytecode de seu programa.
+
+## Topicos Avancados
+- Você já compilou e executou o seu primeiro programa em Java.
+- Não se preocupe, a JVM, bytecode e outros conceitos e siglas importantes serão melhor detalhados mais à frente.
+- Instalação do Java Para executar os códigos deste livro, você precisará ter o JDK ( Java Development Kit ) instalado.
+- Se precisar, você pode seguir as instruções do link a seguir para instalar de acordo com seu sistema operacional: http://www.caelum.com.br/apostila-java-orientacao-objetos/apendice-instalacao-do-java/ Precisa de ajuda?
+- Não deixe de nos mandar um e-mail no fórum da Casa do Código: http://forum.casadocodigo.com.br/ 1.2 Algumas regras e convenções Você pode ter reparado que seguimos algumas regras e convenções até agora.
+- Podemos começar pelo nome de nosso arquivo, MeuPrimeiroPrograma .
+
+## Secao 5
+- Dessa forma, "esse nome de classe" vira "EsseNomeDeClasse" .
+- Essa abordagem é bastante conhecida como CamelCase .

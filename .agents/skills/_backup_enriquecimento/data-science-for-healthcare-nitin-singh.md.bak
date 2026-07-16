@@ -1,0 +1,57 @@
+---
+name: data-science-for-healthcare-nitin-singh
+description: >-
+  Passos operacionais extraidos do livro 'Data Science for Healthcare - Nitin Singh' (EN) — Data Science.
+---
+
+# Data Science For Healthcare Nitin Singh — Passos Operacionais
+
+Conteudo extraido do livro 'Data Science For Healthcare Nitin Singh'. Contem passos, tecnicas e principios baseados na obra original.
+
+## 1. Conceitos Fundamentais
+- Data Science for Healthcare Acknowledgement This book came together with help from many people.
+- I am grateful for the time, patience, and honest feedback that carried it to the finish line.
+- Thank you to the BPB editorial team for backing the idea and guiding it from proposal to manuscript.
+- I am especially grateful to editors for clear edits, timely questions, and insistence on formatting and maintaining timelines.
+- The technical reviewers strengthened every chapter.
+- Their notes led to sharper explanations, better structure, and the right level of technical depth.
+- I have learned a great deal from colleagues and mentors across my professional journey.
+- Teams at Amazon, Deloitte, Sanofi and Primera challenged assumptions and kept the focus on outcomes.
+- Many ideas took shape in everyday conversations and working sessions.
+- I would also like to acknowledge my colleague Neha Mathur for her valuable insights and constructive feedback during the development of several concepts discussed in this book.
+
+## 2. Principios e Tecnicas
+- To the BPB team, thank you for your patience, encouragement, and faith through long evenings and weekend revisions.
+- To the readers, thank you for your time.
+- I hope this book helps you understand use cases and real-world applications of AI in healthcare.
+- Data Science for Healthcare About the Author Nitin Singh is a data science professional with over 14 years of experience working at the intersection of healthcare, analytics, and artificial intelligence.
+- His career began with data-driven problem solving at global organizations such as Amazon and Deloitte, where he built a strong grounding in large-scale data systems and business analytics.
+- Over time, his focus shifted towards using data to improve healthcare delivery and decision-making.
+- At Primera Medical Technologies, a captive unit of Prime Healthcare in the United States, Nitin led projects on predictive modeling and natural language processing aimed at enhancing hospital operations and patient outcomes.
+- Later, as part of the real-world evidence team at Sanofi, he worked on machine learning and generative AI applications that connected pharmaceutical insights with real-world clinical practice.
+- Academically, Nitin has an engineering background and is an alumnus of the Indian School of Business, where he completed the advanced management program in business analytics.
+- He is currently pursuing a PhD at the Indian Institute of Technology, Patna in the field of artificial intelligence and data science.
+
+## 3. Aplicacoes Praticas
+- His work reflects a deep belief that data science achieves its highest value when used with empathy and purpose.
+- Through his research and writing, he continues to explore how data and technology can make healthcare more efficient, equitable, and human-centered.
+- Data Science for Healthcare About the Reviewers Sreenivasareddy is an experienced lead data and analytics engineer with a strong track record of delivering scalable, high-performance data solutions across healthcare, finance, insurance, and supply chain domains.
+- Currently focused on designing and modernizing data platforms using cloud-native technologies and tools, including Azure, Snowflake, and Databricks.
+- With deep expertise in data engineering, ETL/ELT pipelines, BI dashboards, and analytics modernization, he has a passion for building efficient, automated, and production-ready data workflows that drive actionable insights.
+- Committed to data quality, performance, and observability, ensuring the correct data reaches the right users at the right time.
+- He is an active reader of comics, nonfiction, and IT-related books, and serves as a technical reviewer for various books on data engineering, data science, and business intelligence.
+- Sujan is a data enthusiast with experience working in diverse domains such as healthcare manufacturing, digital accessibility, and enterprise AI.
+- Passionate about applying AI/ ML use cases in varied setup.
+- Curious to explore new tools, techniques and data sources which in turn adds value to business by building workflows, model training, and curating use cases.
+
+## 4. Topicos Avancados
+- Experience working with finance and supply chain domains as part of enterprise AI.
+- Always up for new challenges and applying optimized solutions in scale.
+- Kevin Joseph K is a tech enthusiast, author, and tutor with expertise in AI, machine learning, and generative AI.
+- He has authored two books and published a research paper on operating systems.
+- Alongside academic and industry experience, he has worked on data-driven solutions in the healthcare sector, focusing on automation and real-world impact.
+- Outside of technology, he enjoys reading and expresses his creativity through playing the piano.
+- Data Science for Healthcare C HAPTER 1 Introduction to Data Science in Healthcare Introduction In the nexus of healthcare and technology, data science emerges as a transformative force.
+- This chapter introduces the foundational principles that bridge healthcare and data science, offering readers an insight into the potential of data to reshape patient care, research, and administration.
+- We will explore key data sources in healthcare, from electronic health records ( EHRs ) to wearable tech, and touch upon the tools and techniques that turn this data into actionable insights.
+- By the end of this chapter, readers will have a solid understanding of the essential role data science plays in modern healthcare.

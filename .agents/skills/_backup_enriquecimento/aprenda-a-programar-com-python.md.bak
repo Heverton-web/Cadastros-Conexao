@@ -1,0 +1,57 @@
+---
+name: aprenda-a-programar-com-python
+description: >-
+  Passos operacionais extraidos do livro 'Aprenda a programar com python' (PT) — Python.
+---
+
+# Aprenda A Programar Com Python — Passos Operacionais
+
+Conteudo extraido do livro 'Aprenda A Programar Com Python'. Contem passos, tecnicas e principios baseados na obra original.
+
+## 1. Conceitos Fundamentais
+- Capítulo 4 Prefácio Se há poucos anos as competências de programação eram necessárias apenas para quem se queria dedicar à informática, hoje são requisito importante em muitas outras atividades.
+- Para além da capacidade de criar programas utilizando uma dada linguagem de programação, aprender a programar contribui para o desenvolvimento de competências importantes noutros domínios, como as habilidades relacionadas às estratégias de resolução de problemas.
+- A linguagem Python ganhou muita relevância nos últimos anos na indústria de software, sendo hoje utilizada em projetos de muitos tipos, desde os mais simples até os mais sofisticados, por exemplo, na área da Inteligência Artificial.
+- Ainda assim, comparado a outras linguagens de programação, Python apresenta uma sintaxe mais simples, ou menos complexa, tendo, por isso, sido adotada nas unidades curriculares introdutórias de programação em muitas instituições de ensino superior de todo o mundo.
+- A aprendizagem introdutória de programação exige uma abordagem muito prática, envolvendo o desenvolvimento de um elevado número de programas de complexidade crescente.
+- É uma tarefa complicada para muitas pessoas, dado que, para além do conhecimento da sintaxe e da semântica da linguagem de programação, é necessário desenvolver estratégias de resolução de problemas adequadas aos desafios que são colocados.
+- É nesse contexto que materiais pedagógicos de qualidade, que apresentem os conceitos e exemplos de uma forma simples e direta, podem ser um importante suporte à aprendizagem.
+- É esse o caso do presente livro, “Aprenda a programar com Python: Descomplicando o desenvolvimento de software.”, de autoria do Dr.
+- Leonardo Soares e Silva e do Dr.
+- Gabriel Fortes, editado pela Casa do Código.
+
+## 2. Principios e Tecnicas
+- Este livro resulta da experiência dos autores em disciplinas introdutórias de programação, bem como do seu envolvimento em atividades de investigação que buscam formas de suportar eficazmente a aprendizagem dos estudantes.
+- O livro será certamente útil para pessoas com pouco ou nenhum conhecimento prévio em programação, ou seja, aquelas que estão vivenciando a sua primeira experiência neste domínio.
+- O livro usa uma linguagem simples e direta, procura estimular estratégias de aprendizagem adequadas à programação, sendo muito apoiada em exemplos do dia a dia da leitora, do leitor, ilustrando como conceitos da programação são utilizados em diversos tipos de programas, como nas redes sociais ou nos jogos.
+- A abordagem utilizada recorre a recursos visuais para fazer analogias ou explicar conceitos da programação que são naturalmente abstratos.
+- O livro conta igualmente com uma grande variedade de exercícios com respostas que vão ajudar você a desenvolver as suas próprias competências de programação.
+- O meu conhecimento dos autores e do próprio livro levam-me a recomendar a sua utilização por todas as pessoas que se pretendam iniciar no mundo fascinante, mas complexo, da programação de computadores.
+- António José Mendes, Professor no Departamento de Engenharia Informática da Universidade de Coimbra - Portugal.
+- Capítulo 5 Sobre este livro Seja bem-vindo, leitor, seja bem-vinda, leitora.
+- Ao longo deste livro vamos apresentar o incrível universo da programação e esperamos que você aproveite a leitura para explorar o seu lado criativo na criação de programas!
+- A proposta deste livro é promover o aprendizado de programação utilizando uma abordagem pedagógica, centrada na pessoa que nunca programou (ou que teve pouco contato com a área).
+
+## 3. Aplicacoes Praticas
+- Ao longo de nossa experiência enquanto professores, pudemos observar e entender as principais dificuldades dos aprendizes de programação e aqui você poderá aproveitar toda essa dinâmica de estudo que pudemos aprimorar.
+- Os conceitos de programação apresentados neste livro são fundados no Python 3.10, mas em sua maioria aplicam-se às versões anteriores da versão 3.
+- Sobre os autores Leonardo Soares e Silva é professor de computação do Instituto Federal de Pernambuco há mais de 10 anos.
+- Também é pesquisador e investiga estratégias para facilitar os processos de ensino e aprendizagem de programação.
+- É doutorando pela Universidade de Coimbra (Portugal) e possui mestrado pela Universidade Federal de Campina Grande.
+- Gabriel Fortes é professor e pesquisador na Universidad Alberto Hurtado (Chile), onde faz investigações sobre pensamento, discurso e espaços educacionais pensados para promoção de aprendizagem colaborativa.
+- É mestre e doutor pela Universidade Federal de Pernambuco em Psicologia Cognitiva.
+- Como ler este livro Olá, em breve você será apresentada(o) ao incrível universo da programação, mas antes de continuar precisamos dar algumas dicas sobre como ler este livro.
+- É muito importante você dedicar alguns minutos para ler essa seção, pois ela vai ajudar você a compreender melhor a lógica por trás da construção de cada capítulo.
+- Se você é novato ou novata na programação ou não conhece a linguagem Python, recomendamos ler este livro de forma progressiva e sequencial.
+
+## 4. Topicos Avancados
+- Ou seja, iniciar no capítulo 1, seguir para o 2, e assim em diante.
+- Caso já saiba algo, uma recomendação sempre válida é revisar os conteúdos “já conhecidos” antes de avançar para seções que vão lhe apresentar novo conhecimento.
+- Independente de qual seja a forma como vai ler este livro, é imprescindível que você realize as atividades propostas, para praticar o que foi apresentado.
+- Sabe-se que a prática é fundamental ao aprendizado de programação, uma área que envolve conceitos teóricos, mas também muitas ações práticas aplicadas na construção de softwares.
+- A realização das atividades também é útil para que você avalie o que sabe e o que ainda não sabe, podendo direcionar melhor os seus estudos.
+- A seguir destacamos alguns elementos visuais que utilizaremos ao longo do livro para auxiliar sua aprendizagem.
+- Ícone utilizado no livro Para destacar informações importantes no capítulo utilizamos o ícone a seguir.
+- Fique atento(a), pois são revisões de tópicos relevantes e avisos sobre erros comuns na programação e como evitá-los.
+- Figura 0.1: Este ícone indica uma parte do texto que merece maior atenção.
+- Códigos de programação Os códigos de programação serão apresentados em uma fonte diferente dos demais textos do livro, como representado a seguir: # Exemplo de algoritmo.

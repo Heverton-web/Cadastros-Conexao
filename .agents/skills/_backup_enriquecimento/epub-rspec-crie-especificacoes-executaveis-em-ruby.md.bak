@@ -1,0 +1,61 @@
+---
+name: epub-rspec-crie-especificacoes-executaveis-em-ruby
+description: >-
+  Passos operacionais extraidos do livro 'EPUB RSpec crie especificações executáveis em Ruby' (PT) — Ruby, Testes.
+---
+
+# Epub Rspec Crie Especificacoes Executaveis Em Ruby — Passos Operacionais
+
+Skill baseada no livro 'Epub Rspec Crie Especificacoes Executaveis Em Ruby'. Contem passos, tecnicas e principios extraidos diretamente da obra original.
+
+## 1. Conceitos Fundamentais
+
+- page_002 Sumário Dedicatória Agradecimentos Sobre o autor Apresentação Capítulo 1: Visão geral sobre TDD 1.1 TDD e sua história 1.2 E por qual motivo eu deveria usar TDD?
+- Capítulo 2: Primeiros passos com RSpec e Cucumber 2.1 Olá RSpec 2.2 Olá Cucumber 2.3 O que é BDD?
+- Sem o trabalho árduo e constante suporte da minha mãe, eu não estaria aqui hoje, escrevendo um livro.
+- Ela é minha heroína e a pessoa mais batalhadora que já conheci.
+- Obrigado Lilian Pessoa por me dar as oportunidades que tive na vida.
+- Escrever um livro é uma empreitada bem mais trabalhosa que eu pensei.
+- Essas horas não foram um investimento apenas meu, foi também da minha noiva.
+- Vários meses sem ter um final de semana tranquilo para passar ao lado dela.
+- Obrigado Ana Raquel por segurar essa barra e por me apoiar até a última palavra deste livro.  page_005 Agradecimentos Primeiro eu gostaria de agradecer ao Adriano Almeida, da Casa do Código, pelo convite para escrever este livro.
+- Sem esse primeiro empurrão é muito improvável que esse livro existiria.
+
+## 2. Principios e Tecnicas
+
+- Escrevê-lo foi não só um excelente desafio mas também uma grande oportunidade de aprendizado.
+- Gostaria de agradecer também à Plataformatec e a todo mundo que trabalha comigo lá.
+- São os melhores profissionais com quem eu já trabalhei e me inspiram todo dia a ser um profissional melhor.
+- Não posso deixar também de agradecer a minha família e amigos como um todo.
+- Ao fazer este livro, tive que abdicar de passar inúmeras horas com eles, decisão que não foi fácil de tomar e muito menos de manter.
+- Por fim, gostaria de agradecer às pessoas que investiram seu tempo revisando as primeiras versões deste livro.
+- Eles não tinham nenhuma obrigação de fazê-lo, fizeram pela boa vontade, amizade, por serem colaborativos e pela vontade de aprender algo novo.
+- São eles: Bernardo Chaves, Erich Kist, Danilo Inacio e Anna Cruz.  page_006 Sobre o autor Hugo Baraúna é cofundador e sócio da Plataformatec, empresa de consultoria em desenvolvimento de software especializada em Ruby e Rails.
+- A Plataformatec é referência nacional e internacional no mundo Ruby, devido principalmente a seus projetos open source e sua colaboração com a comunidade.
+- Ele atua tanto na direção da empresa quanto como desenvolvedor, tendo participado de projetos de consultoria, coaching e desenvolvimento para startups e empresas da Fortune 1000.
+
+## 3. Aplicacoes Praticas
+
+- Hugo se formou em Engenharia de Computação pela Politécnica da USP.
+- Durante a faculdade, passou pelo laboratório USP-Microsoft e por empresas como Procwork e IBM.
+- Para ele, só é possível fazer produtos e serviços de qualidade quando se ama o que faz.  page_007 Apresentação Abordagem do livro Este livro não é um manual do Cucumber e de RSpec.
+- Já existem diversos lugares listando as funcionalidades, classes e métodos do Cucumber e RSpec.
+- Portanto, o objetivo não é repetir o que já existe pronto em vários outros lugares.
+- A abordagem deste livro é apresentar como usar essas ferramentas, em vez de mostrar todos os detalhes de cada uma delas.
+- Saber o que as ferramentas oferecem é diferente de saber como usá-las.
+- Além da mostra do uso básico, várias boas práticas não documentadas previamente também são apresentadas, utilizando exemplos ao longo do livro inteiro.
+- Estrutura do livro Este livro está estruturado em quatro partes: A primeira consiste em uma introdução ao conceito e histórico do TDD e BDD, assim como um primeiro contato com o RSpec e com o Cucumber.
+- Ela é formada pelos capítulos 1 e 2 ; A segunda é uma apresentação geral do RSpec.
+
+## 4. Topicos Avancados
+
+- Passando pela estrutura básica de um teste de unidade feito com ele, pela organização de testes e pelo uso de test doubles como mocks e stubs.
+- Ela é formada pelos capítulos 3 a 5 ; A terceira parte consiste em uma apresentação do Cucumber e de como usá-lo para escrever especificações executáveis.
+- Ela é formada pelos capítulos 6 a 9 ; Por fim, na quarta e última parte, nós construiremos uma aplicação do zero seguindo o conceito de outside-in development do BDD, utilizando RSpec e Cucumber.
+- Ela é formada pelos capítulos 10 a 16 .
+- Estou aprendendo ou já sei programar em Ruby mas nunca fiz TDD Se você se enquadra no caso acima, este livro é perfeito para você.
+- Você irá aprender como fazer testes automatizados e seguir o fluxo de TDD e BDD para fazer um código mais fácil de ser mantido e com mais qualidade.
+- Aprender uma habilidade nova não é simples, mas pode ser mais eficiente com a ajuda de uma apresentação estruturada e de um caminho definido.
+- Este livro mostra passo a passo como usar o RSpec e o Cucumber para construir uma aplicação inteira seguindo o fluxo de TDD/BDD.
+- Já faço testes automatizados mas não sei se estou fazendo do jeito certo Existem diversos fatores que influenciam o desenvolvimento de bons testes.
+- Fazer testes do jeito certo não é apenas ter cobertura de testes em 100%.

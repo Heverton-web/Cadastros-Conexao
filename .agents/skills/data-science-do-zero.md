@@ -1,0 +1,77 @@
+---
+name: data-science-do-zero
+description: Data science com Python — estatística, visualização, ML básico. Baseado no livro de Joel Grus.
+---
+
+# Data Science Do Zero — Passos Operacionais
+
+Conteudo extraido do livro 'Data Science Do Zero'. Contem passos, tecnicas e principios baseados na obra original.
+
+## 1. Conceitos Fundamentais
+- [Page 2] A compra deste conteúdo não prevê atendimento e fornecimento de suporte técnico operacional, instalação ou configuração do sistema de leitor de ebooks.
+- Em alguns casos, e dependendo da plataforma, o suporte poderá ser obtido com o fabricante do equipamento e/ou loja de comércio de ebooks.  [Page 4] Data Science do Zero Copyright © 2016 da Starlin Alta Editora e Consultoria Eireli.
+- ISBN: 978-85-508-0387-6 Translated from original Data Science from Scratch by Joel Grus.
+- Copyright © 2015 by O’Reilly Media.
+- This translation is published and sold by permission of O’Reilly Media, Inc., the owner of all rights to publish and sell the same.
+- PORTUGUESE language edition published by Starlin Alta Editora e Consultoria Eireli, Copyright © 2016 by Starlin Alta Editora e Consultoria Eireli.
+- Todos os direitos estão reservados e protegidos por Lei.
+- Nenhuma parte deste livro, sem autorização prévia por escrito da editora, poderá ser reproduzida ou transmitida.
+- A violação dos Direitos Autorais é crime estabelecido na Lei nº 9.610/98 e com punição de acordo com o artigo 184 do Código Penal.
+- A editora não se responsabiliza pelo conteúdo da obra, formulada exclusivamente pelo(s) autor(es).
+
+
+  - Todos os direitos estão reservados e protegidos por Lei. Nenhuma parte deste livro, sem autorização prévia
+
+  - ISBN 978-1-491-90142-7. This translation is published and sold by permission of O’Reilly Media, Inc., the
+
+  - A compra deste conteúdo não prevê atendimento e fornecimento de suporte técnico operacional, instalação
+
+  - owner of all rights to publish and sell the same. PORTUGUESE language edition published by Starlin Alta
+
+  - por escrito da editora, poderá ser reproduzida ou transmitida. A violação dos Direitos Autorais é crime
+
+  - Comercial são de responsabilidade de seus proprietários. A editora informa não estar associada a nenhum
+## 2. Principios e Tecnicas
+- Marcas Registradas: Todos os termos mencionados e reconhecidos como Marca Registrada e/ou Comercial são de responsabilidade de seus proprietários.
+- A editora informa não estar associada a nenhum produto e/ou fornecedor apresentado no livro.
+- Edição revisada conforme o Acordo Ortográfico da Língua Portuguesa de 2009.
+- Obra disponível para venda corporativa e/ou personalizada.
+- Para mais informações, fale com projetos@altabooks.com.br Produção Editorial Editora Alta Books Produtor Editorial Claudia Braga Thiê Alves Produtor Editorial (Design) Aurélio Corrêa Gerência Editorial Anderson Vieira Supervisão de Qualidade Editorial Sergio de Souza Assistente Editorial Carolina Giannini Marketing Editorial Silas Amaro marketing@altabooks.com.br Gerência de Captação e Contratação de Obras J.
+- Acesse o site www.altabooks.com.br e procure pelo título do livro desejado para ter acesso às erratas, aos arquivos de apoio e/ou a outros conteúdos aplicáveis à obra.
+- Suporte Técnico: A obra é comercializada na forma em que está, sem direito a suporte técnico ou orientação pessoal/exclusiva ao leitor.
+- Dados Internacionais de Catalogação na Publicação (CIP) Vagner Rodolfo CRB-8/9410 G885d     Grus, Joel Data Science do Zero [ recurso eletrônico ] / Joel Grus; traduzido por Welington Nascimento. - Rio de Janeiro : Alta Books, 2016. 336 p. : il. ; 3,8 MB.
+- Tradução de: Data Science From Scratch: First Principles with Python Inclui índice.
+- ISBN: 978-85-508-0387-6 (Ebook)  [Page 6] 1.
+
+
+  - ou configuração do sistema de leitor de ebooks. Em alguns casos, e dependendo da plataforma, o suporte
+
+  - Acesse o site www.altabooks.com.br e procure pelo título do livro desejado para ter acesso às erratas,
+
+  - Translated from original Data Science from Scratch by Joel Grus. Copyright © 2015 by O’Reilly Media.
+
+  - A editora não se responsabiliza pelo conteúdo da obra, formulada exclusivamente pelo(s) autor(es).
+## 3. Aplicacoes Praticas
+- CDD 005.13      CDU 004.655.3 Rua Viúva Cláudio, 291 - Bairro Industrial do Jacaré CEP: 20.970-031 - Rio de Janeiro (RJ) Tels.: (21) 3278-8069 / 3278-8419 www.altabooks.com.br — altabooks@altabooks.com.br www.facebook.com/altabooks — www.instagram.com/altabooks  [Page 8] 1. 2.
+- Sumário Prefácio Introdução A Ascensão dos Dados O Que É Data Science?
+- Motivação Hipotética: DataSciencester Encontrando Conectores-Chave Cientistas de Dados Que Você Talvez Conheça Salários e Experiência Contas Pagas Tópicos de Interesse Em Diante Curso Relâmpago de Python O Básico Iniciando em Python Python Zen Formatação de Espaço em Branco Módulos Aritmética Funções Strings (cadeias de caracteres) Exceções Listas Tuplas Dicionários Conjuntos Controle de Fluxo  [Page 9] 3. 4. 5.
+- Veracidade Não Tão Básico Ordenação Compreensões de Lista Geradores e Iteradores Aleatoriedade Expressões Regulares Programação Orientada a Objeto Ferramentas Funcionais Enumeração (enumerate) Descompactação de Zip e Argumentos args e kwargs Bem-vindo à DataSciencester!
+- Para Mais Esclarecimentos Visualizando Dados matplotlib Gráficos de Barra Gráficos de Linhas Gráficos de Dispersão Para Mais Esclarecimentos Álgebra Linear Vetores Matrizes Para Mais Esclarecimentos Estatística Descrevendo um Conjunto Único de Dados Tendências Centrais Dispersão Correlação Paradoxo de Simpson Alguns Outros Pontos de Atenção sobre Correlação Correlação e Causalidade Para Mais Esclarecimentos  [Page 10] 6. 7. 8. 9.
+- Exemplo: Livros O’Reilly Sobre Dados Usando APIs JSON (e XML) Usando Uma API Não Autenticada Encontrando APIs Exemplo: Usando as APIs do Twitter Obtendo Credenciais Para Mais Esclarecimentos Trabalhando com Dados Explorando Seus Dados Explorando Dados Unidimensionais Duas Dimensões Muitas Dimensões Limpando e Transformando Manipulando Dados Redimensionando Redução da Dimensionalidade Para Mais Esclarecimentos Aprendizado de Máquina Modelagem O Que É Aprendizado de Máquina?
+- Sobreajuste e Sub-Ajuste Precisão Compromisso entre Polarização e Variância Recursos Extração e Seleção de Característica Para Mais Esclarecimentos K–Vizinhos Mais Próximos O Modelo Exemplo: Linguagens Favoritas A Maldição da Dimensionalidade Para Mais Esclarecimentos Naive Bayes Um Filtro de Spam Muito Estúpido  [Page 12] 14. 15. 16. 17.
+- Entropia A Entropia de uma Partição Criando uma Árvore de Decisão Juntando Tudo Florestas Aleatórias  [Page 13] 18. 19. 20. 21. 22.
+- Filtragem Colaborativa Baseada no Usuário Filtragem Colaborativa Baseada em Itens Para Mais Esclarecimentos Bases de Dados e SQL CREATE TABLE e INSERT UPDATE DELETE SELECT GROUP BY ORDER BY JOIN Subconsultas Índices Otimização de Consulta NoSQL Para Mais Esclarecimentos MapReduce Exemplo: Contagem de Palavras Por que MapReduce?
+- MapReduce Mais Generalizado Exemplo: Analisando Atualizações de Status Exemplo: Multiplicação de Matriz Um Adendo: Combinadores Para Mais Esclarecimentos Vá em Frente e Pratique Data Science IPython Matemática Não Do Zero NumPy pandas scikit-learn Visualização R  [Page 15] Encontre Dados Pratique Data Science Hacker News Carros de Bombeiros Camisetas E Você?  [Page 16] • • • Prefácio Data Science Data science tem sido chamada de “o emprego mais sexy do Século 21” (http://bit.ly/1Bqe-1WY), provavelmente por alguém que nunca tenha visitado um quartel do corpo de bombeiros.
+
+## 4. Topicos Avancados
+- De qualquer forma, data science é um campo em evidência e está em alta; não requer muita investigação para encontrar prognósticos de analistas de que, nos próximos dez anos, precisaremos de bilhões e bilhões de cientistas de dados a mais do que possuímos atualmente.
+- Afinal de contas, não conseguimos produzir cientistas de dados se não soubermos o que realmente é.
+- De acordo com o diagrama de Venn (http://drewconway.com/zia/2013/3/26/the-data-science-venn-diagr), um tanto famoso nesta área, data science se encontra na interseção de: Habilidades de hacker Conhecimento de estatística e matemática Competência significativa Originalmente, planejei escrever um livro abordando os três, mas eu rapidamente percebi que uma abordagem completa de “competência significativa” exigiria dezenas de milhares de páginas.
+- Assim, eu decidi focar nos dois primeiros.
+- Meu objetivo é ajudá-lo a desenvolver habilidades de hacker, as quais você precisará para iniciar a prática em data science.
+- Meu outro objetivo é fazer você se sentir confortável com matemática e estatística, que são a base de data science.
+- De alguma forma, este livro é uma grande ambição.
+- A melhor maneira de aprender a hackear é hackeando coisas.
+- Ao ler este livro, você terá um bom entendimento de como eu hackeio as coisas, que talvez não seja a melhor forma para você.
+- Você entenderá quais ferramentas eu uso que talvez não sejam as  [Page 17] melhores para você.
+

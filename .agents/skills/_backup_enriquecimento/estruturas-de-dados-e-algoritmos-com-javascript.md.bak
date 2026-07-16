@@ -1,0 +1,57 @@
+---
+name: estruturas-de-dados-e-algoritmos-com-javascript-gr
+description: >-
+  Passos operacionais extraidos — desenvolvimento web, full-stack, JavaScript, TypeScript, React, Node.js (PT).
+---
+
+# Estruturas De Dados E Algoritmos Com Javascript — Passos Operacionais
+
+Conteudo extraido do livro 'Estruturas De Dados E Algoritmos Com Javascript'. Contem passos, tecnicas e principios baseados na obra original.
+
+## 1. Conceitos Fundamentais
+- 2ª Edição  Loiane Groner   ##   Novatec   Copyright © Packt Publishing 2018.
+- First published in the English language under the title ‘Learning JavaScript Data Structures and Algorithms - Third Edition – (9781788623872)’   ## Copyright © Packt Publishing 2018.
+- Publicação original em inglês intitulada ‘Learning JavaScript Data Structures and Algorithms - Third Edition – (9781788623872)’  ## Esta tradução é publicada e vendida com a permissão da Packt Publishing.  ## © Novatec Editora Ltda. [2018].  ## Todos os direitos reservados e protegidos pela Lei 9.610 de 19/02/1998.
+- É proibida a reprodução desta obra, mesmo parcial, por qualquer processo, sem prévia autorização, por escrito, do autor e da Editora.  ## Editor: Rubens Prates  Tradução: Lúcia A.
+- Kinoshita  Revisão gramatical: Tássia Carvalho  Editoração eletrônica: Carolina Kuwabata   ## ISBN: 978-85-7522-728-2  ## Histórico de edições impressas:  ## Fevereiro/2019 Segunda edição  Abril/2018 Primeira reimpressão  Março/2017 Primeira edição (ISBN: 978-85-7522-553-0)   ## Novatec Editora Ltda.
+- Rua Luís Antônio dos Santos 110  02460-000 – São Paulo, SP – Brasil  Tel.: +55 11 2959-6529  E-mail: [novatec@novatec.com.br](mailto:novatec%40novatec.com.br?subject=)  Site: [www.novatec.com.br](http://www.novatec.com.br)  Twitter: [twitter.com/novateceditora](http://twitter.com/novateceditora)  Facebook: [facebook.com/novatec](http://facebook.com/novatec)  LinkedIn: [linkedin.com/in/novatec](http://linkedin.com/in/novatec)   # Aos meus pais, por seu amor e assistência, e por me guiarem durante todos esses anos.
+- Atualmente, trabalha como analista de negócios e desenvolvedora de Java/HTML5/JavaScript em uma instituição financeira norte-americana.
+- É apaixonada por tecnologia, publica artigos em seu blog e ministra palestras em conferências sobre Java, ExtJS, Cordova, Ionic, TypeScript e Angular.
+- É Google Developer Expert em Web Technologies (Tecnologias Web) e Angular, e Microsoft Most Valuable Professional em Visual Studio e Development Technologies (Tecnologias de Desenvolvimento).
+- É também autora de outros livros da Packt.
+
+## 2. Principios e Tecnicas
+- Gostaria de agradecer aos meus pais a educação, a orientação e os conselhos que me deram por todos esses anos, e ao meu marido por ser paciente e me apoiar, incentivando-me para que eu continue fazendo o que amo.
+- Também gostaria de agradecer aos leitores deste e de outros livros que escrevi o apoio e o feedback.
+- Sobre os revisores  Todd Zebert é desenvolvedor web full stack e trabalha atualmente na Miles.
+- Já foi revisor técnico de vários livros e vídeos, é palestrante frequente em conferências sobre JavaScript, Drupal e tecnologias relacionadas, além de ter um blog de tecnologia na Medium.
+- Tem experiência prévia diversificada em tecnologia, incluindo infraestrutura, engenharia de rede, gerenciamento de projetos e liderança em TI.
+- Começou a trabalhar com desenvolvimento web no navegador Mosaic original.
+- É empreendedor e faz parte da comunidade de startups de Los Angeles.
+- Acredita em trabalhos voluntários, código aberto, maker/STEM/STEAM e em retribuição à comunidade.
+- Kashyap Mukkamala é um arquiteto de software entusiasmado, trabalha na Egen Solutions Inc. e é autor do livro Hands-On Data Structures and Algorithms with JavaScript.
+- Quando não está resolvendo problemas de empresas Fortune 500 na Egen, Kashyap concentra-se em construir a web do futuro e, com isso, está ajudando a comunidade a crescer e a aprender.   # Prefácio  JavaScript, uma das linguagens de programação mais populares atualmente, é conhecida como a linguagem da internet porque os navegadores a entendem de modo nativo, sem a instalação de qualquer plugin.
+
+## 3. Aplicacoes Praticas
+- A linguagem JavaScript evoluiu muito, a ponto de não ser mais apenas uma linguagem de frontend; nos dias de hoje, ela está igualmente presente no servidor (NodeJS), no banco de dados (MongoDB) e em dispositivos móveis, além de ser usada em dispositivos embarcados e na Iot (Internet of Things, ou Internet das Coisas).
+- Conhecer as estruturas de dados é muito importante para qualquer profissional da área de tecnologia.
+- Trabalhar como desenvolvedor significa ser capaz de resolver problemas com a ajuda das linguagens de programação, e as estruturas de dados são uma parte indispensável das soluções que precisamos criar para resolver esses problemas.
+- Escolher uma estrutura de dados incorreta também pode impactar o desempenho do programa que escrevemos.
+- Por isso, é importante conhecer as diferentes estruturas de dados e saber aplicá-las de forma apropriada.
+- Os algoritmos são o estado da arte em ciência da computação.
+- Há muitas maneiras de resolver o mesmo problema, e algumas abordagens são melhores que outras.
+- É por isso que conhecer os algoritmos mais famosos também é muito importante.
+- Este livro foi escrito para iniciantes que queiram conhecer estruturas de dados e algoritmos, mas também para aqueles que já tenham familiaridade com eles, mas desejem conhecê-los usando JavaScript.
+- A quem este livro se destina  Se você é estudante de ciência da computação ou está iniciando a sua carreira na área de tecnologia e quer explorar os melhores recursos de JavaScript, este livro foi escrito para você.
+
+## 4. Topicos Avancados
+- Se já tem familiaridade com programação, mas quer aperfeiçoar suas habilidades com algoritmos e estruturas de dados, este livro também foi feito para você.
+- Basta ter conhecimento básico de JavaScript e de lógica de programação para começar a se divertir com os algoritmos.
+- O que este livro inclui  O Capítulo 1, JavaScript – uma visão geral rápida, apresenta o básico sobre JavaScript, aquilo que devemos conhecer antes de ver as estruturas de dados e os algoritmos.
+- Além disso, aborda a configuração do ambiente de desenvolvimento de que precisaremos neste livro.
+- O Capítulo 2, Visão geral sobre ECMAScript e TypeScript, aborda algumas funcionalidades novas de JavaScript introduzidas a partir de 2015, além de incluir as funcionalidades básicas do TypeScript, um superconjunto do JavaScript.
+- O Capítulo 3, Arrays, explica como usar a estrutura de dados mais básica e mais utilizada, os arrays.
+- Esse capítulo mostra como declarar, inicializar, adicionar e remover elementos de um array.
+- Também aborda o uso dos métodos do Array nativo de JavaScript.
+- O Capítulo 4, Pilhas, apresenta a estrutura de dados de pilha, mostrando como criar, adicionar e remover elementos dela.
+- Também mostra como usar pilhas para resolver alguns problemas relacionados à ciência da computação.

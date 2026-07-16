@@ -1,0 +1,1917 @@
+[Page 1]
+Building
+Applications
+with AI Agents
+Designing and Implementing 
+Multiagent Systems
+Michael Albada
+
+[Page 2]
+ISBN:  978-1-098-17650-1
+US $79.99	   CAN $99.99
+DATA
+Generative AI has revolutionized how organizations tackle problems, accelerating the journey from 
+concept to prototype to solution. As the models become increasingly capable, we have witnessed a new 
+design pattern emerge: AI agents. By combining tools, knowledge, memory, and learning with advanced 
+foundation models, we can now sequence multiple model inferences together to solve ambiguous and 
+difficult problems. From coding agents to research agents to analyst agents and more, we’ve already 
+seen agents accelerate teams and organizations. While these agents enhance efficiency, they often require 
+extensive planning, drafting, and revising to complete complex tasks, and deploying them remains a 
+challenge for many organizations, especially as technology and research rapidly develops.
+This book is your indispensable guide through this intricate and fast-moving landscape. Author Michael 
+Albada provides a practical and research-based approach to designing and implementing single- and 
+multiagent systems. It simplifies the complexities and equips you with the tools to move from concept 
+to solution efficiently.
+•	 Understand the distinct features of 
+foundation model-enabled AI agents
+•	 Discover the core components and design 
+principles of AI agents
+•	 Explore design trade-offs and implement 
+effective multiagent systems
+•	 Design and deploy tailored AI solutions, 
+enhancing efficiency and innovation 
+in your field
+Michael Albada is a seasoned 
+machine learning engineer with 
+expertise in deploying large-scale 
+solutions for major tech firms 
+including Uber, ServiceNow, and 
+Microsoft. He holds degrees from 
+Stanford University, the University 
+of Cambridge, and Georgia Tech, 
+specializing in machine learning.
+Building Applications with AI Agents
+“The best single-volume introduction to building AI agent systems—you can read 
+hundreds of papers or this one book.”
+Arun Rao
+Ex-Meta GenAI group, adjunct professor at UCLA
+
+[Page 3]
+Praise for Building Applications with AI Agents
+Finally, a book about really scaling AI into the human workforce. Michael does a great job
+leveraging his expertise at scalable organizations like Uber and Microsoft to teach any
+technical leader in a small and medium business how to really create scalable agentic
+solutions for their transformation.
+—Birju Shah, professor of product management and AI at
+Kellogg School of Management, Northwestern University,
+former head of Uber AI product team
+A sharp, practical guide, Building Applications with AI Agents equips leaders to move
+from generative AI hype to real-world systems. It distills complex concepts into
+actionable strategies, bridging vision and execution for organizations seeking measurable
+efficiency and competitive edge.
+—Amanda Cheng, partner of Founders Bay
+As a clinician working at the intersection of medicine and technology, I found this to be
+an essential read for anyone building AI agents—clear, practical, and rich with insight
+into tools, orchestration, and design patterns relevant to healthcare use cases like intake,
+triage, and workflow integration.
+—Carrie Ho, MD, assistant professor,
+hematologist/oncologist, UCSF
+
+[Page 4]
+This is the book I wish every team had before deploying agents, a clear, rigorous approach
+to architecture, safety, and measurement that accelerates delivery and reduces risk.
+—Brad Sarsfield, senior director, Microsoft Security
+AI Research & Development
+The best single-volume introduction to building AI agent systems—you can read
+hundreds of papers or this one book.
+—Arun Rao, ex-Meta GenAI group, adjunct professor at UCLA
+
+[Page 5]
+Michael Albada
+Building Applications
+with AI Agents
+Designing and Implementing Multiagent Systems
+
+[Page 6]
+978-1-098-17650-1
+[LSI]
+Building Applications with AI Agents
+by Michael Albada
+Copyright © 2025 Advance AI LLC. All rights reserved.
+Published by O’Reilly Media, Inc., 141 Stony Circle, Suite 195, Santa Rosa, CA 95401.
+O’Reilly books may be purchased for educational, business, or sales promotional use. Online editions are
+also available for most titles (https://oreilly.com). For more information, contact our corporate/institu‐
+tional sales department: 800-998-9938 or corporate@oreilly.com.
+Acquisitions Editor: Nicole Butterfield
+Development Editor: Shira Evans
+Production Editor: Ashley Stussy
+Copyeditor: nSight, Inc.
+Proofreader: Piper Content Partners
+Indexer: nSight, Inc.
+Cover Designer: Karen Montgomery
+Cover Illustrator: José Marzan Jr.
+Interior Designer: David Futato
+Interior Illustrator: Kate Dullea
+September 2025:
+ First Edition
+Revision History for the First Edition
+2025-09-16: First Release
+See https://oreilly.com/catalog/errata.csp?isbn=9781098176501 for release details.
+The O’Reilly logo is a registered trademark of O’Reilly Media, Inc. Building Applications with AI Agents,
+the cover image, and related trade dress are trademarks of O’Reilly Media, Inc.
+The views expressed in this work are those of the author and do not represent the publisher’s views. While
+the publisher and the author have used good faith efforts to ensure that the information and instructions
+contained in this work are accurate, the publisher and the author disclaim all responsibility for errors or
+omissions, including without limitation responsibility for damages resulting from the use of or reliance
+on this work. Use of the information and instructions contained in this work is at your own risk. If any
+code samples or other technology this work contains or describes is subject to open source licenses or the
+intellectual property rights of others, it is your responsibility to ensure that your use thereof complies
+with such licenses and/or rights.
+
+[Page 7]
+Table of Contents
+Preface. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  xiii
+1. Introduction to Agents. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  1
+Defining AI Agents                                                                                                            1
+The Pretraining Revolution                                                                                              2
+Types of Agents                                                                                                                  3
+Model Selection                                                                                                                  5
+From Synchronous to Asynchronous Operations                                                        6
+Practical Applications and Use Cases                                                                              7
+Workflows and Agents                                                                                                      8
+Principles for Building Effective Agentic Systems                                                      11
+Organizing for Success in Building Agentic Systems                                                 12
+Agentic Frameworks                                                                                                       13
+LangGraph                                                                                                                     13
+AutoGen                                                                                                                        14
+CrewAI                                                                                                                           14
+OpenAI Agents Software Development Kit (SDK)                                                 14
+Conclusion                                                                                                                        15
+2. Designing Agent Systems. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  17
+Our First Agent System                                                                                                   17
+Core Components of Agent Systems                                                                            20
+Model Selection                                                                                                                21
+Tools                                                                                                                                   24
+Designing Capabilities for Specific Tasks                                                                 24
+Tool Integration and Modularity                                                                               25
+Memory                                                                                                                             25
+Short-Term Memory                                                                                                    26
+v
+
+[Page 8]
+Long-Term Memory                                                                                                    26
+Memory Management and Retrieval                                                                         26
+Orchestration                                                                                                                    27
+Design Trade-Offs                                                                                                            27
+Performance: Speed/Accuracy Trade-Offs                                                               27
+Scalability: Engineering Scalability for Agent Systems                                           28
+Reliability: Ensuring Robust and Consistent Agent Behavior                               29
+Costs: Balancing Performance and Expense                                                            30
+Architecture Design Patterns                                                                                         32
+Single-Agent Architectures                                                                                         32
+Multiagent Architectures: Collaboration, Parallelism, and Coordination           32
+Best Practices                                                                                                                    34
+Iterative Design                                                                                                             34
+Evaluation Strategy                                                                                                      35
+Real-World Testing                                                                                                      37
+Conclusion                                                                                                                        39
+3. User Experience Design for Agentic Systems. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  41
+Interaction Modalities                                                                                                     42
+Text-Based                                                                                                                     43
+Graphical Interfaces                                                                                                     46
+Speech and Voice Interfaces                                                                                        50
+Video-Based Interfaces                                                                                                53
+Combining Modalities for Seamless Experiences                                                    54
+The Autonomy Slider                                                                                                   55
+Synchronous Versus Asynchronous Agent Experiences                                            58
+Design Principles for Synchronous Experiences                                                     58
+Design Principles for Asynchronous Experiences                                                  59
+Finding the Balance Between Proactive and Intrusive Agent Behavior               59
+Context Retention and Continuity                                                                                60
+Maintaining State Across Interactions                                                                      61
+Personalization and Adaptability                                                                               62
+Communicating Agent Capabilities                                                                              63
+Communicating Confidence and Uncertainty                                                         64
+Asking for Guidance and Input from Users                                                             65
+Failing Gracefully                                                                                                         65
+Trust in Interaction Design                                                                                            66
+Conclusion                                                                                                                        68
+4. Tool Use. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  71
+LangChain Fundamentals                                                                                               72
+Local Tools                                                                                                                     73
+vi 
+| 
+Table of Contents
+
+[Page 9]
+API-Based Tools                                                                                                           75
+Plug-In Tools                                                                                                                 78
+Model Context Protocol                                                                                              81
+Stateful Tools                                                                                                                 84
+Automated Tool Development                                                                                       85
+Foundation Models as Tool Makers                                                                           85
+Real-Time Code Generation                                                                                       86
+Tool Use Configuration                                                                                                   87
+Conclusion                                                                                                                        88
+5. Orchestration. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  89
+Agent Types                                                                                                                      90
+Reflex Agents                                                                                                                90
+ReAct Agents                                                                                                                 90
+Planner-Executor Agents                                                                                            91
+Query-Decomposition Agents                                                                                   91
+Reflection Agents                                                                                                         91
+Deep Research Agents                                                                                                 92
+Tool Selection                                                                                                                   93
+Standard Tool Selection                                                                                               94
+Semantic Tool Selection                                                                                               97
+Hierarchical Tool Selection                                                                                       101
+Tool Execution                                                                                                               105
+Tool Topologies                                                                                                              105
+Single Tool Execution                                                                                                106
+Parallel Tool Execution                                                                                              107
+Chains                                                                                                                          107
+Graphs                                                                                                                          109
+Context Engineering                                                                                                     112
+Conclusion                                                                                                                      113
+6. Knowledge and Memory. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  115
+Foundational Approaches to Memory                                                                        116
+Managing Context Windows                                                                                    116
+Traditional Full-Text Search                                                                                     117
+Semantic Memory and Vector Stores                                                                          119
+Introduction to Semantic Search                                                                             119
+Implementing Semantic Memory with Vector Stores                                           119
+Retrieval-Augmented Generation                                                                            121
+Semantic Experience Memory                                                                                 122
+GraphRAG                                                                                                                      123
+Using Knowledge Graphs                                                                                         123
+Table of Contents 
+| 
+vii
+
+[Page 10]
+Building Knowledge Graphs                                                                                     124
+Promise and Peril of Dynamic Knowledge Graphs                                              130
+Note-Taking                                                                                                                133
+Conclusion                                                                                                                      134
+7. Learning in Agentic Systems. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  135
+Nonparametric Learning                                                                                              135
+Nonparametric Exemplar Learning                                                                         135
+Reflexion                                                                                                                      137
+Experiential Learning                                                                                                141
+Parametric Learning: Fine-Tuning                                                                              146
+Fine-Tuning Large Foundation Models                                                                  146
+The Promise of Small Models                                                                                   151
+Supervised Fine-Tuning                                                                                            153
+Direct Preference Optimization                                                                               158
+Reinforcement Learning with Verifiable Rewards                                                161
+Conclusion                                                                                                                      162
+8. From One Agent to Many. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  163
+How Many Agents Do I Need?                                                                                    163
+Single-Agent Scenarios                                                                                              163
+Multiagent Scenarios                                                                                                 170
+Swarms                                                                                                                         177
+Principles for Adding Agents                                                                                       178
+Multiagent Coordination                                                                                              180
+Democratic Coordination                                                                                         180
+Manager Coordination                                                                                              181
+Hierarchical Coordination                                                                                        182
+Actor-Critic Approaches                                                                                           182
+Automated Design of Agent Systems                                                                          184
+Communication Techniques                                                                                        189
+Local Versus Distributed Communication                                                             189
+Agent-to-Agent Protocol                                                                                          189
+Message Brokers and Event Buses                                                                               192
+Actor Frameworks: Ray, Orleans, and Akka                                                              195
+Orchestration and Workflow Engines                                                                        199
+Managing State and Persistence                                                                                   201
+Conclusion                                                                                                                      202
+9. Validation and Measurement. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  205
+Measuring Agentic Systems                                                                                         205
+Measurement Is the Keystone                                                                                  206
+viii 
+| 
+Table of Contents
+
+[Page 11]
+Integrating Evaluation into the Development Lifecycle                                       207
+Creating and Scaling Evaluation Sets                                                                      207
+Component Evaluation                                                                                                 209
+Evaluating Tools                                                                                                         209
+Evaluating Planning                                                                                                   210
+Evaluating Memory                                                                                                    212
+Evaluating Learning                                                                                                   213
+Holistic Evaluation                                                                                                        214
+Performance in End-to-End Scenarios                                                                   214
+Consistency                                                                                                                 216
+Coherence                                                                                                                   217
+Hallucination                                                                                                              218
+Handling Unexpected Inputs                                                                                   219
+Preparing for Deployment                                                                                            220
+Conclusion                                                                                                                      221
+10. Monitoring in Production. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  223
+Monitoring Is How You Learn                                                                                     224
+Monitoring Stacks                                                                                                          226
+Grafana with OpenTelemetry, Loki, and Tempo                                                   227
+ELK Stack (Elasticsearch, Logstash/Fluentd, Kibana)                                          227
+Arize Phoenix                                                                                                             228
+SigNoz                                                                                                                          229
+Langfuse                                                                                                                       229
+Choosing the Right Stack                                                                                              230
+OTel Instrumentation                                                                                                    230
+Visualization and Alerting                                                                                            232
+Monitoring Patterns                                                                                                      235
+Shadow Mode                                                                                                             235
+Canary Deployments                                                                                                 235
+Regression Trace Collection                                                                                     236
+Self-Healing Agents                                                                                                   236
+User Feedback as an Observability Signal                                                                  236
+Distribution Shifts                                                                                                         237
+Metric Ownership and Cross-Functional Governance                                            239
+Conclusion                                                                                                                      241
+11. Improvement Loops. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  243
+Feedback Pipelines                                                                                                         245
+Automated Issue Detection and Root Cause Analysis                                          250
+Human-in-the-Loop Review                                                                                    251
+Prompt and Tool Refinement                                                                                   254
+Table of Contents 
+| 
+ix
+
+[Page 12]
+Aggregating and Prioritizing Improvements                                                         259
+Experimentation                                                                                                            260
+Shadow Deployments                                                                                                261
+A/B Testing                                                                                                                  262
+Bayesian Bandits                                                                                                         263
+Continuous Learning                                                                                                    265
+In-Context Learning                                                                                                  265
+Offline Retraining                                                                                                      267
+Conclusion                                                                                                                      268
+12. Protecting Agentic Systems. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  271
+The Unique Risks of Agentic Systems                                                                        272
+Emerging Threat Vectors                                                                                              273
+Securing Foundation Models                                                                                       275
+Defensive Techniques                                                                                                276
+Red Teaming                                                                                                               278
+Threat Modeling with MAESTRO                                                                           281
+Protecting Data in Agentic Systems                                                                            283
+Data Privacy and Encryption                                                                                   283
+Data Provenance and Integrity                                                                                285
+Handling Sensitive Data                                                                                            286
+Securing Agents                                                                                                             288
+Safeguards                                                                                                                   288
+Protections from External Threats                                                                          290
+Protections from Internal Failures                                                                          292
+Conclusion                                                                                                                      296
+13. Human-Agent Collaboration. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  297
+Roles and Autonomy                                                                                                     297
+The Changing Role of Humans in Agent Systems                                                298
+Aligning Stakeholders and Driving Adoption                                                       299
+Scaling Collaboration                                                                                                    300
+Agent Scope and Organizational Roles                                                                   302
+Shared Memory and Context Boundaries                                                              303
+Trust, Governance, and Compliance                                                                          305
+The Lifecycle of Trust                                                                                                305
+Accountability Frameworks                                                                                      306
+Escalation Design and Oversight                                                                             309
+Privacy and Regulatory Compliance                                                                       310
+Conclusion: The Future of Human-Agent Teams                                                     312
+x 
+| 
+Table of Contents
+
+[Page 13]
+Glossary. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  315
+Index. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  319
+Table of Contents 
+| 
+xi
+
+[Page 15]
+Preface
+When I first started connecting language models, tools, orchestration, and memory
+together into what we now call an agent, I was surprised by how capable this design
+pattern was, and just how much confusion there was about this topic. During my
+time building agents and sharing my findings on incident investigation, threat hunt‐
+ing, vulnerability detection, and more, I found that this latest design pattern enabled
+us to solve whole new classes of problems, but also came with many practical hurdles
+to making them reliable for real-world applications. Engineers, scientists, product
+managers, and leadership all wanted to know more. “How do I get my agent to
+work?” “I can get my agent to work some of the time, but how do I get it to work
+most or all of the time?” “How do I choose a model for my use case?” “How do I
+design good tools for my agent?” “What kind of memory do I need?” “Should I use
+RAG?” “Should I build a single-agent or multiagent system?” “What architecture
+should I use?” “Do I need to fine-tune?” “How do I enable agents to learn from expe‐
+rience and improve over time?”
+While there are many blog posts and research papers that focus on specific aspects of
+the topic of designing agent systems, I realized there were a lack of accessible, holistic,
+trustworthy guides for this. I couldn’t find the book that I wanted to share with my
+colleagues, so I set out to write it.
+Through in-depth discussions, I’ve helped teams navigate the complexities of AI
+agents, considering their unique goals, constraints, and environments. AI agent sys‐
+tems are intricate, blending autonomy, decision making, and interaction in ways that
+traditional software doesn’t. They’re data-driven, adaptive, and involve multiple com‐
+ponents like perception, reasoning, action, and learning, all while interfacing with
+users, tools, and other agents. Complicating matters, the foundation models that
+power these agents are probabilistic and stochastic by nature, making evaluation and
+testing more challenging.
+This book takes a comprehensive approach to building applications with AI agents. It
+covers the entire lifecycle, from conceptualization to deployment and maintenance,
+xiii
+
+[Page 16]
+illustrated with real-world case studies, supported by references, and reviewed by
+practitioners in the field. Sections on advanced topics—like agent architectures, tool
+integration, memory systems, orchestration, multiagent coordination, measurement,
+monitoring, security, and ethical considerations—are further refined by expert input.
+Writing this book has been a journey of discovery for me as well. The initial drafts
+sparked conversations that challenged my views and introduced new ideas. I hope
+this process continues as you read it, bringing your own insights. Feel free to share
+any feedback you might have for this book via Twitter (X), LinkedIn, my personal
+website, or any other channels that you can find.
+What This Book Is About
+This book provides a practical framework for building robust applications using AI
+agents. It addresses key challenges and offers solutions to questions such as:
+• What defines an AI agent, and when should I use one? How do agents differ from
+traditional machine learning (ML) systems?
+• How do I design agent architectures for specific use cases, including scenario
+selection, and core components like tools, memory, planning, and orchestration?
+• What are effective strategies for agent planning, reasoning, execution, tool selec‐
+tion, and topologies like chains, trees, and graphs?
+• How can I enable agents to learn from experience through nonparametric meth‐
+ods, fine-tuning, and transfer learning?
+• How do I scale from single-agent to multiagent systems, including coordination
+patterns like democratic, hierarchical, or actor-critic approaches?
+• How do I evaluate and improve agent performance with metrics, testing, and
+production monitoring?
+• What tools and frameworks are best for development, deployment, and securing
+agents against risks?
+• How do I ensure agents are safe, ethical, and scalable, with considerations for
+user experience (UX), trust, bias, fairness, and regulatory compliance?
+The content draws from established engineering principles and emerging practices in
+AI agents, with case studies (such as customer support, personal assistants, legal,
+advertising, and code review agents) and discussions on trade-offs to help you tailor
+solutions to your needs.
+xiv 
+| 
+Preface
+
+[Page 17]
+What This Book Is Not
+This book isn’t an introduction to AI or ML basics. It assumes familiarity with con‐
+cepts like neural networks, natural language processing, and basic programming in
+languages like Python. If you’re new to these, pointers to resources are provided, but
+the focus is on applied agent building.
+It’s also not a step-by-step tutorial for specific tools, as technologies evolve rapidly.
+Instead, it offers guidance on evaluating and selecting tools, with pseudocode and
+examples to illustrate concepts. For hands-on implementation, online tutorials and
+documentation are recommended, including frameworks like LangChain and
+AutoGen.
+Who This Book Is For
+This book is for engineers, developers, and technical leaders aiming to build AI
+agent-based applications. It’s geared toward roles like AI engineers, software develop‐
+ers, ML engineers, data scientists, and product managers with a technical bent. You
+might relate to scenarios like the following:
+• You’re tasked with building an autonomous system for decision support, or inter‐
+active services.
+• You have a working agent prototype and you want to harden it and get it ready
+for production.
+• Your team struggles with agent reliability—handling failures, adapting to
+dynamic environments, or orchestrating complex tasks—and you want system‐
+atic approaches including orchestration, memory, and learning from experience.
+• You’re integrating agents into existing workflows and seek best practices for scal‐
+ability, multiagent coordination, UX design, measurement, validation, monitor‐
+ing, and security.
+You can also benefit if you’re a tool builder identifying gaps in the agent ecosystem, a
+researcher exploring applications, or a job seeker preparing for AI agent roles.
+Navigating This Book
+The chapters follow the lifecycle of building an AI agent application, organized into
+three main sections.
+The first three chapters cover core concepts, design principles, and essential
+components:
+Preface 
+| 
+xv
+
+[Page 18]
+• Chapter 1 introduces agents, their promise, use cases, how they compare to tradi‐
+tional ML, and recent advancements.
+• Chapter 2 provides an overview of designing agent systems, including scenario
+selection, core components (model selection, tools, memory, planning), design
+trade-offs, architecture patterns (single-agent, multiagent, modular), and best
+practices.
+• Chapter 3 focuses on UX design, covering interaction modalities (text, graphical,
+speech, video), synchronous versus asynchronous experiences, context retention,
+communicating capabilities, trust, and key UX principles.
+The next five chapters focus on creating, orchestrating, and scaling agents:
+• Chapter 4 dives into tools, including design (local, API-based, plug-in, hierar‐
+chies) and automated tool development (code generation, imitation learning, tool
+learning from rewards).
+• Chapter 5 covers orchestration, with fundamentals (parameterization, tool selec‐
+tion, execution), tool selection methods (generative, semantic, hierarchical,
+machine-learned), tool topologies (decomposition, single/parallel/sequential exe‐
+cution, chains, trees, graphs), and planning strategies (incremental execution,
+zero-shot, few-shot, ReAct).
+• Chapter 6 explores memory, including foundational approaches (context win‐
+dows, keyword-based), semantic memory and vector stores (semantic search,
+RAG, experience memory), GraphRAG (knowledge graphs), and working mem‐
+ory (whiteboards, note-taking).
+• Chapter 7 addresses learning from experience, with nonparametric learning
+(experiences as examples, exploration/exploitation, reflection), parametric learn‐
+ing (fine-tuning large/small models), and transfer learning.
+• Chapter 8 discusses scaling from one agent to many, including when to use mul‐
+tiagents, coordination (democratic, manager, hierarchical, actor-critic, automated
+design), and frameworks such as LangChain.
+The final five chapters address validation, monitoring, security, improvement, and
+human-agent integration:
+• Chapter 9 covers measurement and validation, with key objectives (accuracy,
+robustness, efficiency, etc.), evaluation sets, unit tests (tools, planning, memory,
+learning), integration tests (end-to-end, consistency, hallucinations), limitations,
+and deployment preparation.
+• Chapter 10 focuses on production monitoring, including causes of failures, agent
+metrics (system health, automated/human evaluation, feedback), distribution
+shifts, and monitoring at scale (analytics, alerting, logging).
+xvi 
+| 
+Preface
+
+[Page 19]
+• Chapter 11 explores improvement loops, with feedback pipelines (issue detec‐
+tion, human review, refinement, prioritization), experimentation (shadow
+deployments, A/B testing, adaptive, gating), and continuous learning (in-context,
+offline retraining, online reinforcement).
+• Chapter 12 addresses protecting agent systems, covering unique risks, securing
+LLMs (model selection, defenses, red teaming, fine-tuning), data protection (pri‐
+vacy, provenance), securing agents (safeguards, external/internal protections),
+and governance/compliance.
+• Chapter 13 discusses humans and agents, with ethical principles (oversight,
+transparency, fairness, explainability, privacy), building trust/oversight, address‐
+ing bias, and accountability/regulatory considerations.
+Feel free to skip sections you’re familiar with—the book is modular by design.
+Note: I often use “we” to refer to you (the reader) and me, fostering a collaborative
+learning vibe.
+Conventions Used in This Book
+The following typographical conventions are used in this book:
+Italic
+Indicates new terms, URLs, email addresses, filenames, and file extensions.
+Constant width
+Used for program listings, as well as within paragraphs to refer to program ele‐
+ments such as variable or function names, databases, data types, environment
+variables, statements, and keywords.
+Constant width bold
+Shows commands or other text that should be typed literally by the user.
+Constant width italic
+Shows text that should be replaced with user-supplied values or by values deter‐
+mined by context.
+Using Code Examples
+Supplemental material (code examples, exercises, etc.) is available for download at
+https://oreil.ly/building-applications-with-ai-agents-supp.
+If you have a technical question or a problem using the code examples, please email
+support@oreilly.com.
+Preface 
+| 
+xvii
+
+[Page 20]
+This book is here to help you get your job done. In general, if example code is offered
+with this book, you may use it in your programs and documentation. You do not
+need to contact us for permission unless you’re reproducing a significant portion of
+the code. For example, writing a program that uses several chunks of code from this
+book does not require permission. Selling or distributing examples from O’Reilly
+books does require permission. Answering a question by citing this book and quoting
+example code does not require permission. Incorporating a significant amount of
+example code from this book into your product’s documentation does require
+permission.
+We appreciate, but generally do not require, attribution. An attribution usually
+includes the title, author, publisher, and ISBN. For example: “Building Applications
+with AI Agents by Michael Albada (O’Reilly). Copyright 2025 Advance AI LLC,
+978-1-098-17650-1.”
+If you feel your use of code examples falls outside fair use or the permission given
+above, feel free to contact us at permissions@oreilly.com.
+O’Reilly Online Learning
+For more than 40 years, O’Reilly Media has provided technol‐
+ogy and business training, knowledge, and insight to help
+companies succeed.
+Our unique network of experts and innovators share their knowledge and expertise
+through books, articles, and our online learning platform. O’Reilly’s online learning
+platform gives you on-demand access to live training courses, in-depth learning
+paths, interactive coding environments, and a vast collection of text and video from
+O’Reilly and 200+ other publishers. For more information, visit https://oreilly.com.
+How to Contact Us
+Please address comments and questions concerning this book to the publisher:
+O’Reilly Media, Inc.
+141 Stony Circle, Suite 195
+Santa Rosa, CA 95401
+800-889-8969 (in the United States or Canada)
+707-827-7019 (international or local)
+707-829-0104 (fax)
+support@oreilly.com
+https://oreilly.com/about/contact.html
+xviii 
+| 
+Preface
+
+[Page 21]
+We have a web page for this book, where we list errata and any additional informa‐
+tion. You can access this page at https://oreil.ly/building-applications-with-ai-agents-1e.
+For news and information about our books and courses, visit https://oreilly.com.
+Find us on LinkedIn: https://linkedin.com/company/oreilly-media
+Watch us on YouTube: https://youtube.com/oreillymedia
+Acknowledgments
+As a first-time author, it’s humbling to discover just how many people it takes to write
+a book, and it’s thanks to the contributions of many wonderful people that this book
+has come to fruition.
+This book took over a year to write, and I’m especially grateful to the technical
+reviewers who carved out their valuable time to share their detailed feedback, per‐
+spective, and insight. Nuno Campos has brought invaluable expertise on all things
+agents and LangChain and pointed me to concepts I had missed. Prashanth Josyula
+held the writing and the code examples to a high bar of technical rigor and brought
+deep technical expertise. Megan MacLennan has been my technical writing expert,
+helping ensure accessibility and relevance to a wide audience. Early drafts are always
+imperfect, and I’m deeply grateful to my technical reviewers for tolerating my blun‐
+ders and oversights with grace. Thank you for all of your patience and your invalua‐
+ble suggestions.
+I also want to offer a special thanks to Anthony Wainman, who has been a thought
+partner from the earliest stages of this book, and offered invaluable guidance on the
+structure, content, examples, and so much more.
+This book wouldn’t have been possible without the fantastic team at O’Reilly, espe‐
+cially my development editor, Shira Evans, who helped shepherd the project. Many
+thanks to Melissa Potter for providing early feedback and reviews, and my produc‐
+tion editors Ashley Stussy and Gregory Hyman. Nicole Butterfield has been invalua‐
+ble in turning concepts into reality.
+I also want to thank everyone who read the early release version of the book and
+offered suggestions and encouragement, including Tiago Dufau de Vargas, Jenny
+Song, Leonidas Askianakis, Karthik Rao, and Drew Hoskins.
+I owe so much to my brilliant current and former colleagues at Microsoft, Service‐
+Now, and Uber, especially Olcay Cirit, Dawn Woodard, Sameera Poduri, Zoubin
+Ghahramani, Piero Molino, Pablo Bellver, Jaikumar Ganesh, Jay Stokes, Marc-
+Alexandre Cote, Chi Wang, Anush Sankaran, Amir Abdi, Tong Wang, Antonios Mat‐
+akos, Max Golovanov, Abe Starosta, Francis Beckert, Malachi Jones, Taylor Black,
+Ryan Sweet, Lital Badash, Amir Pirogovsky, Alexander Stojanovic, Brad Sarsfield,
+Preface 
+| 
+xix
+
+[Page 22]
+Chang Kawaguchi, Jure Leskovic, Chiyu Zhang, Andrew Zhao, Matthieu Lin, and
+many, many more. Thank you for your wisdom, your insight, your patience, your
+mentorship, and your many suggestions.
+I would like to thank Luke Miratrix, who introduced me to statistics and taught me
+how to code. I would also like to thank my core academic mentors Lisa Schmitt, Lise
+Shelton, James Sheehan, Finbarr Livesey, Matthew Sommer, James Ward, Charles
+Isbell, Michael Littman, Zsolt Kira, and Constantine Dovrolis for shaping my think‐
+ing in ways big and small.
+This book is, in many ways, a distillation of lessons I’ve learned throughout my life
+and career, and I am grateful to many more people than I can name here. I am deeply
+grateful to have the opportunity to release this book out into the world, and I truly
+hope it serves you well.
+xx 
+| 
+Preface
+
+[Page 23]
+CHAPTER 1
+Introduction to Agents
+We are witnessing a profound technological transformation driven by autonomous
+agents—intelligent software systems capable of independent reasoning, decision mak‐
+ing, and interacting effectively within dynamic environments. Unlike traditional soft‐
+ware, autonomous agents interpret contexts, adapt to changing scenarios, and
+perform sophisticated actions with minimal human oversight.
+Defining AI Agents
+Autonomous agents are intelligent systems designed to independently analyze data,
+interpret their environment, and make context-driven decisions. As the popularity of
+the term “agent” grows, its meaning has become diluted, often applied to systems
+lacking genuine autonomy. In practice, agency exists on a spectrum. True autono‐
+mous agents demonstrate meaningful decision making, context-driven reasoning,
+and adaptive behaviors. Conversely, many systems labeled as “agents” may simply
+execute deterministic scripts or tightly controlled workflows. Designing genuinely
+autonomous, adaptive agents is challenging, prompting many teams to adopt simpler
+approaches to achieve quicker outcomes. Therefore, the key test of a true agent is
+whether it demonstrates real decision making rather than following static scripts.
+The rapid evolution of autonomous agents is primarily driven by breakthroughs in
+foundation models and reinforcement learning. While traditional use cases with
+foundation models have focused on generating human-readable outputs, the latest
+advances enable these models to generate structured function signatures and parame‐
+ter selections. Orchestration frameworks can then execute these functions—enabling
+agents to look up data, manipulate external systems, and perform concrete actions.
+Throughout this book, we will use the term “agentic system” to describe the full sup‐
+porting functionality that enables an agent to run effectively, including the tools,
+memory, foundation model, orchestration, and supporting infrastructure.
+1
+
+[Page 24]
+With a growing range of protocols such as Model Context Protocol (discussed in
+Chapter 4) and Agent-to-Agent Protocol (discussed in Chapter 8), these agents will
+be able to use remote tools and collaborate with other agents to solve problems. This
+unlocks enormous opportunities for sophisticated automation—but it also brings a
+profound responsibility to design, measure, and manage these systems thoughtfully,
+ensuring their actions align with human values and operate safely in complex,
+dynamic environments.
+The Pretraining Revolution
+While traditional ML is an incredibly powerful technique, it is usually limited by the
+quantity and quality of the dataset. ML practitioners will typically tell you that they
+spend the majority of their time not training models, but on collecting and cleaning
+datasets that they can use for training. The incredible success of generative models
+that have been trained on large volumes of data have shown that single models can
+now adapt to a wide range of tasks without any additional training. This upends years
+of practice. To build an application that used ML previously required hiring an ML
+engineer or data scientist, having them collect data, and then deploying that model.
+With the latest developments in large, pretrained generative models, high-quality
+models that will work reasonably well for many use cases are now available through a
+single call to a hosted model without any training or hosting required. This dramati‐
+cally lowers the cost and complexity of building applications enabled with ML
+and AI.
+Recent advancements in large language models (LLMs) such as GPT-5, Anthropic’s
+Claude, Meta’s Llama, Google’s Gemini Ultra, and DeepSeek’s V3 have increased the
+performance on a range of difficult tasks even further, widening the scope of prob‐
+lems solvable with pretrained models. These foundation models offer robust natural
+language understanding and content generation capabilities, enhancing agent func‐
+tionality through:
+Natural language understanding
+Interpreting and responding intuitively to user inputs
+Context-aware interaction
+Maintaining context for relevant and accurate responses over extended
+interactions
+Structured content generation
+Producing text, code, and structured outputs essential for analytical and creative
+tasks
+While these models are very capable on their own, they can also be used to make
+decisions within well-scoped areas, adapt to new information, and invoke tools to
+accomplish real work. Integration with sophisticated orchestration frameworks
+2 
+| 
+Chapter 1: Introduction to Agents
+
+[Page 25]
+enables these models to interact directly with external systems and execute practical
+tasks. These models are capable of:
+Contextual interpretation and decision making
+Navigating ambiguous situations without exhaustive preprogramming
+Tool use
+Calling other software to retrieve information or take actions
+Adaptive planning
+Planning and executing complex, multistep actions autonomously
+Information summarization
+Rapidly processing extensive documents, extracting key insights, thereby aiding
+legal analysis, research synthesis, and content curation
+Management of unstructured data
+Interpreting and responding intelligently to unstructured texts such as emails,
+documents, logs, and reports
+Code generation
+Writing and executing code and writing unit tests
+Routine task automation
+Efficiently handling repetitive activities in customer service and administrative
+workflows, freeing human workers to focus on more nuanced tasks
+Multimodal information synthesis
+Performing intricate analyses of image, audio, or video data at scale
+This enhanced flexibility enables autonomous agents to effectively handle complex
+and dynamic scenarios that static ML models typically cannot address.
+Types of Agents
+As the term “agent” has gained popularity, its meaning has broadened to encompass a
+wide range of AI-enabled systems, often creating confusion about what truly consti‐
+tutes an AI agent. The Information categorizes agents into seven practical types,
+reflecting how these technologies are being applied today:
+Business-task agents
+These agents automate predefined business workflows, such as UiPath’s robotic
+process automation, Microsoft Power Automate’s low-code flows, or Zapier’s app
+integrations. They execute sequences of deterministic actions, typically triggered
+by events, with minimal contextual reasoning.
+Types of Agents 
+| 
+3
+
+[Page 26]
+Conversational agents
+This category includes chatbots and customer service agents that engage users
+through natural language interfaces. They are optimized for dialogue manage‐
+ment, intent recognition, and conversational turn-taking, such as virtual assis‐
+tants embedded in customer support platforms.
+Research agents
+Research agents conduct information gathering, synthesis, and summarization
+tasks. They scan documents, knowledge bases, or the web to provide structured
+outputs that assist human analysts. Examples include Perplexity AI and Elicit.
+Analytics agents
+Analytics agents, such as Power BI Copilot or Glean, focus on interpreting struc‐
+tured datasets and generating insights, dashboards, and reports. They often inte‐
+grate tightly with enterprise data warehouses, enabling users to query complex
+data in natural language.
+Developer agents
+Tools like Cursor, Windsurf, and GitHub Copilot represent coding agents, which
+assist developers by generating, refactoring, and explaining code. They integrate
+deeply into IDE workflows to augment software development productivity.
+Domain-specific agents
+These agents are tuned for specialized professional domains, such as legal (Har‐
+vey), medical (Hippocratic AI), or finance agents. They combine domain-specific
+knowledge with structured workflows to deliver targeted, expert-level assistance.
+Browser-using agents
+These agents navigate, interact with, extract information from, and take actions
+on websites without human interaction. As opposed to traditional robotic pro‐
+cess automation, which follows prescripted steps, modern browser-using agents
+combine language understanding, visual perception, and dynamic planning to
+adapt on the fly.
+In addition to these seven types of agents, voice and video agents are important and
+also expected to increase in adoption in the coming years:
+Voice agents
+Powered by end-to-end speech understanding and generation, these agents are
+enabling conversational automation in areas like customer service, appointment
+scheduling, and even real-time order processing.
+Video agents
+These agents present users with avatar-based video responses, combining lip-
+synced speech, facial expression, and gesture. They’re emerging rapidly in sales,
+4 
+| 
+Chapter 1: Introduction to Agents
+
+[Page 27]
+training, customer onboarding, marketing, and virtual presence tools—enabling
+scalable, personalized video interactions without manual production.
+Importantly, the number and variety of agent types is growing rapidly, and we will
+likely see new kinds of agents emerge across many domains as the field and its under‐
+lying technologies evolve. In this book, our emphasis is on the core category of agents
+built around language models, particularly those using text and code. While we touch
+on business‑task automation, voice, and video, we’ll primarily explore agents built
+around language models—their architectures, reasoning, and UX—in subsequent
+chapters.
+Now that we’ve discussed the evolving types of agents, the next critical question
+becomes: which model should you choose to power your agent? Model selection is a
+complex and rapidly changing domain. As discussed in the next section, you’ll need
+to balance factors like task complexity, modality support, latency and cost constraints,
+and integration requirements to make the right choice for your agent.
+Model Selection
+Today, we are fortunate to have a proliferation of powerful models available from
+both commercial providers and the open source community. OpenAI, Anthropic,
+Google, Meta, and DeepSeek each offer state-of-the-art foundation models with
+impressive general-purpose capabilities. At the same time, open-weight models like
+Llama, Mistral, and Gemma are pushing the boundaries of what can be achieved with
+local or fine-tuned deployments. Even more striking is the rapid advancement of
+small- and medium-sized models. New techniques for distillation, quantization, and
+synthetic data generation are enabling compact models to inherit surprising levels of
+capability from their larger counterparts.
+This explosion of choice is good news: competition is driving faster innovation, better
+performance, and lower costs. But it also creates a dilemma—how do you choose the
+right model for your agentic system? The truth is, there isn’t a one-size-fits-all answer.
+In fact, one of the most reasonable starting points is simply to use the latest general-
+purpose model from a leading provider like OpenAI or Anthropic. As you can see in
+Table 1-1, these models offer strong performance out of the box, require little cus‐
+tomization, and will take you surprisingly far for many applications. GPT-5 mini
+(Aug 2025) leads overall with the highest mean score (0.819), closely followed by o4-
+mini (0.812) and o3 (0.811). Proprietary and open-access models like Qwen3, Grok 4,
+Claude 4, and Kimi K2 also show competitive results.
+Model Selection 
+| 
+5
+
+[Page 28]
+Table 1-1. HELM Core Scenario leaderboard (August 2025). Comparative benchmark
+performance of the top 10 models across reasoning and evaluation tasks: MMLU-Pro,
+GPQA, IFEval, WildBench, and Omni-MATH.
+Model
+Mean
+score
+MMLU-Pro
+—COT
+correct
+GPQA—
+COT correct
+IFEval—
+IFEval
+Strict Acc
+WildBench—
+WB Score
+Omni-
+MATH—
+Acc
+GPT-5 mini (2025-08-07)
+0.819
+0.835
+0.756
+0.927
+0.855
+0.722
+o4-mini (2025-04-16)
+0.812
+0.82
+0.735
+0.929
+0.854
+0.72
+o3 (2025-04-16)
+0.811
+0.859
+0.753
+0.869
+0.861
+0.714
+GPT-5 (2025-08-07)
+0.807
+0.863
+0.791
+0.875
+0.857
+0.647
+Qwen3 235B A22B Instruct 2507
+FP8
+0.798
+0.844
+0.726
+0.835
+0.866
+0.718
+Grok 4 (0709)
+0.785
+0.851
+0.726
+0.949
+0.797
+0.603
+Claude 4 Opus (20250514,
+extended thinking)
+0.78
+0.875
+0.709
+0.849
+0.852
+0.616
+gpt-oss-120b
+0.77
+0.795
+0.684
+0.836
+0.845
+0.688
+Kimi K2 Instruct
+0.768
+0.819
+0.652
+0.85
+0.862
+0.654
+Claude 4 Sonnet (20250514,
+extended thinking)
+0.766
+0.843
+0.706
+0.84
+0.838
+0.602
+That said, they aren’t always the most efficient choice. For many tasks—especially
+those that are well-defined, low-latency, or cost-sensitive—much smaller models can
+provide near-equivalent performance at a fraction of the cost. This has led to a grow‐
+ing trend: automated model selection. Some platforms now route simpler queries to
+fast, inexpensive small models, reserving the large, expensive models for more com‐
+plex reasoning. This dynamic test-time optimization is proving effective, and it hints
+at a future where multimodel systems become the norm.
+The key takeaway is that you can spend enormous effort optimizing model selection
+for marginal gains—but unless your scale or constraints demand it, starting simple is
+fine. Over time, it’s often worth experimenting with smaller models, fine-tuning, or
+adding retrieval to improve performance and reduce costs. Just remember: the future
+is almost certainly multimodel, and designing for flexibility now will pay off later.
+From Synchronous to Asynchronous Operations
+Traditional software systems typically execute tasks synchronously, moving step-by-
+step and waiting for each action to finish before starting the next. While this
+approach is straightforward, it can lead to significant inefficiencies—especially when
+waiting on external inputs or processing large volumes of data.
+In contrast, autonomous agents are designed for asynchronous operation. They can
+manage multiple tasks in parallel, swiftly adapt to new information, and prioritize
+6 
+| 
+Chapter 1: Introduction to Agents
+
+[Page 29]
+actions dynamically based on changing conditions. This asynchronous processing
+dramatically enhances efficiency, reducing idle time and optimizing the use of com‐
+putational resources.
+The practical implications of this shift are substantial. For example:
+• Emails can arrive with reply drafts already prepared.
+• Invoices can come with pre-populated payment details.
+• Software engineers might receive tickets accompanied by code to solve them and
+unit tests to assess them.
+• Customer support agents can be provided with suggested responses and recom‐
+mended actions.
+• Security analysts can receive alerts that have already been automatically investi‐
+gated and enriched with relevant threat intelligence.
+In each case, agents are not just speeding up routine workflows—they are changing
+the nature of work itself. This evolution transforms human roles from task executors
+to task managers. Rather than spending time on repetitive or mechanical steps, indi‐
+viduals can focus on strategic oversight, review, and high-value decision making—
+amplifying human creativity and judgment while letting agents handle the opera‐
+tional details. These agents make it much easier for human roles to be proactive
+rather than reactive.
+Practical Applications and Use Cases
+The versatility of autonomous agents opens up a myriad of applications across differ‐
+ent industries. To keep this book grounded in clear, specific use cases, I have seven
+real-world example agents with evaluation systems available in the public GitHub
+repo supporting this book. We will frequently turn back to these examples as we
+explore the key aspects of agent systems:
+Customer support agent
+Customer support is one of the most prevalent applications for autonomous
+agents. These agents handle common inquiries, process refunds, update orders,
+and escalate complex issues to human representatives, providing 24/7 support
+while enhancing customer satisfaction and reducing operational costs.
+Financial services agent
+In banking and financial services, agents assist with account management, loan
+processing, fraud investigation, and investment portfolio rebalancing. They
+streamline customer service, accelerate transaction processing, and improve
+security by detecting suspicious activities in real time.
+Practical Applications and Use Cases 
+| 
+7
+
+[Page 30]
+Healthcare patient intake and triage agent
+These agents support frontline healthcare operations by registering new patients,
+verifying insurance, assessing symptoms to prioritize care, scheduling appoint‐
+ments, managing medical histories, and coordinating referrals, thereby improv‐
+ing workflow efficiency and patient outcomes.
+IT help desk agent
+IT help desk agents manage user access, troubleshoot network and system issues,
+deploy software updates, respond to security incidents, and escalate unresolved
+issues to specialists. They enhance productivity by resolving common technical
+problems swiftly.
+Legal document review agent
+Legal agents assist attorneys and paralegals by reviewing contracts, conducting
+legal research, performing client intake and conflict checks, managing discovery,
+assessing compliance, calculating damages, and tracking deadlines. This helps to
+streamline workflows and improve accuracy in legal operations.
+Security Operations Center (SOC) analyst agent
+SOC analyst agents investigate security alerts, gather threat intelligence, query
+logs, triage incidents, isolate compromised hosts, and provide updates to security
+teams. They accelerate incident response and strengthen organizational security
+posture.
+Supply chain and logistics agent
+In supply chain management, agents optimize inventory, track shipments, evalu‐
+ate suppliers, coordinate warehouse operations, forecast demand, manage dis‐
+ruptions, and handle compliance requirements. These capabilities help maintain
+resilience and efficiency across global networks.
+Autonomous agents offer significant potential across various use cases, from cus‐
+tomer support and personal assistance to legal services and advertising. By integrat‐
+ing these agents into their operations, organizations can achieve greater efficiency,
+improve service quality, and unlock new opportunities for innovation and growth. As
+we continue to explore the capabilities and applications of autonomous agents in this
+book, it becomes evident that their impact will be profound and far-reaching across
+multiple industries.
+Now that we’ve looked at some example agents, in the next section, we’ll discuss some
+of the key considerations when designing our agentic systems.
+Workflows and Agents
+In many real‐world projects, choosing between a simple script, a deterministic work‐
+flow, a traditional chatbot, a retrieval‐augmented generation (RAG) system, or a
+8 
+| 
+Chapter 1: Introduction to Agents
+
+[Page 31]
+full‐blown autonomous agent can be the difference between an elegant solution and
+an overengineered, hard‐to‐maintain mess. To make this choice clearer, consider four
+key factors: the variability of your inputs, the complexity of the reasoning required,
+any performance or compliance constraints, and the ongoing maintenance burden.
+First, when might you choose not to use a foundation model—or any ML component
+at all? If your inputs are fully predictable and every possible output can be described
+in advance, a handful of lines of procedural code are often faster, cheaper, and far eas‐
+ier to test than an ML–based pipeline. For example, parsing a log file that always fol‐
+lows the format “YYYY‐MM‐DD HH:MM:SS—message” can be handled reliably
+with a small regular‐expression‐based parser in Python or Go. Likewise, if your appli‐
+cation demands millisecond‐level latency—such as an embedded system that must
+react to sensor data in real time—there simply isn’t time for a language model API
+call. In such cases, traditional code is the right choice. Finally, regulated domains
+(medical devices, aeronautics, certain financial systems) often require fully determin‐
+istic, auditable decision logic—black‐box neural models won’t satisfy certification
+requirements. If any of these conditions hold—deterministic inputs, strict perfor‐
+mance or explainability needs, or a static problem domain—plain code is almost
+always preferable to a foundation model.
+Next, consider deterministic or semiautomated workflows. Here, the logic can be
+expressed as a finite set of steps or branches, and you know ahead of time where you
+might need human intervention or extra error handling. Suppose you ingest invoices
+from a small set of vendors and each invoice arrives in one of three known formats:
+CSV, JSON, or PDF. You can build a workflow that routes each format to its corre‐
+sponding parser, checks for mismatches, and halts for a human review if any fields
+fail a simple reconciliation—no deep semantic understanding is required. Likewise, if
+your system must retry failed steps with exponential backoff or pause for a manager’s
+approval, a workflow engine (such as Airflow, AWS Step Functions, or a well‐
+structured set of scripts) offers clearer control over error paths than an LLM could.
+Deterministic workflows make sense whenever you can enumerate all decision
+branches in advance and you need tight, auditable control over each branch. In such
+scenarios, workflows scale more naturally than large, ad hoc scripts but still avoid the
+complexity and cost of running an agentic pipeline.
+Traditional chatbots or RAG systems occupy the next tier of complexity: they add
+natural language understanding and document retrieval but stop short of autono‐
+mous, multistep planning. If your primary need is to let users ask questions about a
+knowledge base—say, searching a product manual, a legal archive, or corporate wikis
+—a RAG system can embed documents into a vector store, retrieve relevant passages
+in response to a query, and generate coherent, context‐aware answers. For instance,
+an internal IT help desk might use RAG to answer “How do I reset my VPN creden‐
+tials?” by fetching the latest troubleshooting guide and summarizing the relevant
+steps. Unlike autonomous agents, RAG systems do not independently decide on
+Workflows and Agents 
+| 
+9
+
+[Page 32]
+follow‐up actions (like filing a ticket or scheduling a callback); they simply surface
+information. A traditional chatbot or RAG approach makes sense when the task is
+primarily question‐answering over structured or unstructured content, with limited
+need for external API calls or decision orchestration. Maintenance costs are lower
+than for agents—your main overhead lies in keeping document embeddings up to
+date and refining prompts—but you sacrifice the agent’s ability to plan multistep
+workflows or learn from feedback loops.
+Finally, we reach autonomous agents—situations where neither simple code, nor rigid
+workflows, nor RAG suffice because inputs are unstructured, novel, or highly vari‐
+able, and because you require dynamic, multistep planning or continuous learning
+from feedback. Consider a customer support center that receives free‐form emails
+with issues ranging from “my laptop battery is swelling and might erupt” to “I keep
+getting billed for services I didn’t order.” A rule‐based workflow or a RAG‐powered
+FAQ lookup would shatter under such open‐ended variety, but an agent powered by a
+foundation model can parse intent, extract relevant entities, consult a knowledge
+base, draft an appropriate response, and even escalate to a human if necessary—all
+without being told every possible branch in advance. Similarly, in supply chain man‐
+agement, an agent that ingests real‐time inventory data, supplier lead times, and sales
+forecasts can replan shipment schedules dynamically; a deterministic workflow
+would require constant manual updates to handle new exceptions.
+Agents also excel when many subtasks must run in parallel—such as a security opera‐
+tions agent that simultaneously queries threat intelligence APIs, scans network tele‐
+metry, and performs sandbox analysis on suspicious binaries. Because agents operate
+asynchronously and reprioritize based on real‐time data, they avoid the brittle “one‐
+step‐at‐a‐time” nature of workflows or RAG systems. To justify the higher compute
+and maintenance costs of running a foundation model, you need this level of contex‐
+tual reasoning, parallel task orchestration, or ongoing self‐improvement—scenarios
+where rigid code, workflows, or chatbots would be too brittle or expensive to
+maintain.
+Table 1-2. Distinguishing workflows and agents from traditional code
+Characteristic
+Traditional code
+Workflow
+Autonomous agent
+Input structure
+Fully predictable schemas
+Mostly predictable with
+finite branches
+Highly unstructured or novel inputs
+Explainability
+Full transparency; easily
+auditable
+Explicit branch-by-branch
+audit trail
+Black-box components requiring
+additional tooling
+Latency
+Ultra-low latency
+Moderate latency
+Higher latency
+Adaptability and
+learning
+None
+Limited
+High (learning from feedback)
+10 
+| 
+Chapter 1: Introduction to Agents
+
+[Page 33]
+Every path carries trade‐offs. Pure code is cheap and fast but inflexible; workflows
+offer control but break down when inputs grow wildly variable; traditional chatbots
+or RAG are great for question‐answering over documents but cannot orchestrate
+multistep actions; and agents are powerful but demanding—both in terms of cloud
+compute and engineering effort to monitor, tune, and govern. Before choosing, ask:
+are my inputs unstructured or unpredictable? Do I need multistep planning that
+adapts to intermediate results? Can a document retrieval system suffice for my users’
+information needs, or must the system decide and act autonomously? Will I want this
+system to improve itself over time with minimal human intervention? And can I tol‐
+erate the latency and maintenance burden of a foundation model?
+In short, if your task is a fixed, deterministic transformation, write some simple code.
+If there are a handful of known branches and you require explicit error‐handling
+checkpoints, use a deterministic workflow. If you primarily need natural language
+question‐answering over a corpus, choose a traditional chatbot or RAG architecture.
+But if you face high variability, open‐ended reasoning, dynamic planning needs, or
+continual learning requirements, invest in an autonomous agent. Making this choice
+thoughtfully ensures that you get the right balance of simplicity, performance, and
+adaptability—so your solution remains both effective and maintainable as require‐
+ments evolve.
+Principles for Building Effective Agentic Systems
+Creating successful autonomous agents requires an approach that prioritizes scalabil‐
+ity, modularity, continuous learning, resilience, and future-proofing:
+Scalability
+Ensure that agents can handle growing workloads and diverse tasks by utilizing
+distributed architectures, cloud-based infrastructure, and efficient algorithms
+that support parallel processing and resource optimization. Example: a customer
+support agent that processes 10 tickets per minute may crash or hang when traf‐
+fic spikes to 1,000 if not backed by autoscaling infrastructure.
+Modularity
+Design agents with independent, interchangeable components connected
+through clear interfaces. This modular approach simplifies maintenance, pro‐
+motes flexibility, and facilitates rapid adaptation to new requirements or technol‐
+ogies. Example: a poorly modular agent that hardcodes all its tools in its agent
+service would require a full redeployment anytime a small addition or modifica‐
+tion is needed to a tool.
+Continuous learning
+Equip agents with mechanisms to learn from experience, such as in-context
+learning. Integrate user feedback to refine agent behaviors and maintain
+Principles for Building Effective Agentic Systems 
+| 
+11
+
+[Page 34]
+performance relevance as tasks evolve. Example: agents that ignore feedback
+loops may keep making the same mistakes—like misclassifying contract clauses
+or failing to escalate critical support issues.
+Resilience
+Develop robust resilience architectures capable of gracefully handling errors,
+security threats, timeouts, and unexpected conditions. Incorporate comprehen‐
+sive error handling, stringent security measures, and redundancy to ensure relia‐
+ble and continuous agent operations. Example: agents without retry or fallback
+logic may crash entirely when a single API call fails, leaving the user waiting and
+confused.
+Future-proofing
+Build agent systems around open standards and scalable infrastructure, fostering
+a culture of innovation to adapt quickly to emerging technologies and evolving
+user expectations. Example: tightly coupling your agent to one proprietary ven‐
+dor’s prompt format can make switching models painful and limit
+experimentation.
+Adhering to these principles enables organizations to develop autonomous agents
+that remain effective and relevant, adapting seamlessly to technological advance‐
+ments and changing operational environments.
+Organizing for Success in Building Agentic Systems
+The widespread availability of foundation models via simple API calls has spurred
+extensive experimentation with agent systems across many organizations. Teams fre‐
+quently embark on independent proofs of concept, leading to valuable discoveries
+and innovative ideas. However, this ease of experimentation often results in fragmen‐
+tation—overlapping projects, duplicated efforts, and unfinished experiments become
+scattered throughout the organization. Conversely, premature standardization could
+stifle creativity and trap organizations into rigid frameworks or vendor-specific solu‐
+tions. Achieving success requires balancing flexibility for experimentation with suffi‐
+cient alignment for scalability and coherence.
+In the early phases of agent development, organizations should actively encourage
+exploratory efforts, permitting teams to test various architectures, workflows, and
+models freely. Over time, as successful patterns and best practices become apparent,
+strategic alignment becomes critical. Implementing a “one standard per large group”
+strategy can effectively balance this need. Within specific departments or functional
+areas, teams can standardize around common tools and methodologies, streamlining
+collaboration without restricting broader organizational innovation.
+Another essential aspect of success is avoiding vendor lock-in by adopting open
+standards, such as OpenAPI, and embracing modular system designs. These practices
+12 
+| 
+Chapter 1: Introduction to Agents
+
+[Page 35]
+help ensure flexibility and reduce dependency on any single technology or provider,
+facilitating future adaptability.
+Effective knowledge sharing is also crucial. Lessons learned from both successful and
+unsuccessful experiments should be communicated widely via internal forums,
+shared repositories, and comprehensive documentation. This collaborative approach
+accelerates organizational learning, minimizes redundant efforts, and promotes col‐
+lective improvement.
+Lastly, governance frameworks should remain lightweight and flexible, emphasizing
+guiding principles over rigid mandates. A streamlined governance structure enables
+teams to innovate confidently while remaining aligned with overarching organiza‐
+tional objectives.
+Organizing successfully around agentic systems is fundamentally iterative. Organiza‐
+tions must continually reassess their strategies to maintain a dynamic balance
+between exploration and standardization. By cultivating an environment that values
+experimentation, collaborative learning, and open standards, organizations can effec‐
+tively transition agentic systems from isolated experiments into scalable, transforma‐
+tive solutions that are deeply integrated into their operational processes.
+Agentic Frameworks
+Numerous frameworks currently exist for developing autonomous agents, each
+addressing critical functionalities such as skills integration, memory management,
+planning, orchestration, experiential learning, and multiagent coordination. This list
+is certainly not exhaustive, but leading frameworks include the following.
+LangGraph
+Strengths
+Modular orchestration framework based on directed graphs whose nodes contain
+discrete units of logic (often foundation model calls) and whose edges manage
+the flow of data through complex, potentially cyclic workflows; strong developer
+ergonomics; native support for asynchronous workflows and retries
+Trade-offs
+Requires custom logic for advanced planning and memory; less built-in support
+for multiagent collaboration
+Best for
+Teams building robust, single-agent or light multiagent systems with explicit,
+inspectable flow control
+Agentic Frameworks 
+| 
+13
+
+[Page 36]
+AutoGen
+Strengths
+Powerful multiagent orchestration; dynamic role assignment; flexible messaging-
+based interaction between agents
+Trade-offs
+Can be heavyweight or complex for simple use cases; more opinionated around
+agent interaction patterns
+Best for
+Research and production systems involving dialogue between multiple agents
+(e.g., manager-worker, self-reflection loops)
+CrewAI
+Strengths
+Easy to learn and use; quick setup for prototyping; useful abstractions like “crew”
+and “tasks”
+Trade-offs
+Limited customization and control over orchestration internals; less mature than
+LangGraph or AutoGen for complex workflows
+Best for
+Developers who want to get started quickly on practical, human-centric agents
+like assistants or support agents
+OpenAI Agents Software Development Kit (SDK)
+Strengths
+Deep integration with OpenAI’s tool ecosystem; secure and easy-to-use function
+calling, memory primitives, and tool routing
+Trade-offs
+Tightly coupled to OpenAI’s infrastructure; may be less flexible or portable for
+custom agent stacks or open source toolchains
+Best for
+Teams already using the OpenAI API and looking for a fast way to build secure,
+tool-using agents with minimal scaffolding
+14 
+| 
+Chapter 1: Introduction to Agents
+
+[Page 37]
+While each framework offers unique advantages and limitations, continuous innova‐
+tion and competition in this space are expected to drive further evolution. For early
+prototypes, CrewAI or OpenAI Agents SDK can get you running quickly. For scal‐
+able, production-grade systems, LangGraph and AutoGen provide more control and
+sophistication. These frameworks are also not necessary, and many teams choose to
+build directly against the model provider APIs. This book primarily focuses on Lang‐
+Graph, chosen for its straightforward yet powerful approach to agent system develop‐
+ment. Through detailed explanations, practical examples, and real-world scenarios,
+we demonstrate how LangGraph effectively addresses the complexity and dynamics
+required by modern intelligent agents.
+Conclusion
+Autonomous agents represent a transformative development in AI, capable of per‐
+forming complex, dynamic tasks with a high degree of autonomy. This chapter has
+outlined the foundational concepts of agents, highlighted their advancements over
+traditional ML systems, and discussed their practical applications and limitations. As
+we delve deeper into the design and implementation of these systems, it becomes
+clear that the thoughtful integration of agents into various domains holds the poten‐
+tial to drive significant innovation and efficiency.
+While the various approaches to designing autonomous agents discussed in this
+chapter have demonstrated significant capabilities and potential, they also highlight
+the complexity and challenges involved in creating effective and adaptable systems.
+Each method, from rule-based systems to advanced cognitive architectures, offers
+unique strengths but also comes with inherent limitations. In this book, I aim to
+bridge these gaps.
+Conclusion 
+| 
+15
+
+[Page 39]
+CHAPTER 2
+Designing Agent Systems
+Most practitioners don’t begin with a grand design document when building agent
+systems. They start with a messy problem, a foundation model API key, and a rough
+idea of what might help. This chapter is your quick start to get you up and running.
+We’ll cover each of the following topics in more depth through the rest of the book,
+and many will get their own chapter, but this chapter will give you an overview of
+how to design an agentic system, all grounded in a specific example of managing cus‐
+tomer support for an ecommerce platform.
+Our First Agent System
+Let’s start with the problem we’re solving. Every day, your customer-support team
+fields dozens or hundreds of emails asking to refund a broken mug, cancel an unship‐
+ped order, or change a delivery address. For each message, a human agent has to read
+free-form text, look up the order in your backend, call the appropriate API, and then
+type a confirmation email. This repetitive two-minute process is ripe for
+automation—but only if we carve off the right slice. When we realize that humans
+type keys and click buttons, often following rules and guidelines, we see that many of
+these same patterns can be performed by well-designed systems that rely on founda‐
+tion models. We want our agent to take a raw customer message plus the order
+record, decide which tool to call (issue_refund, cancel_order, or update_
+address_for_order), invoke that tool with the correct parameters, and then send a
+brief confirmation message. That two-step workflow is narrow enough to build
+quickly, valuable enough to free up human time, and rich enough to showcase intelli‐
+gent behavior. We can build a working agent for this use case in just a few lines of
+code:
+from langchain.tools import tool
+from langchain_openai.chat_models import ChatOpenAI
+17
+
+[Page 40]
+from langchain.schema import SystemMessage, HumanMessage, AIMessage
+from langchain_core.messages.tool import ToolMessage
+from langgraph.graph import StateGraph
+# -- 1) Define our single business tool
+@tool
+def cancel_order(order_id: str) -> str:
+    """Cancel an order that hasn't shipped."""
+    # (Here you'd call your real backend API)
+    return f"Order {order_id} has been cancelled."
+# -- 2) The agent "brain": invoke LLM, run tool, then invoke LLM again
+def call_model(state):
+    msgs = state["messages"]
+    order = state.get("order", {"order_id": "UNKNOWN"})
+    # System prompt tells the model exactly what to do
+    prompt = (
+        f'''You are an ecommerce support agent.
+        ORDER ID: {order['order_id']}
+        If the customer asks to cancel, call cancel_order(order_id) 
+        and then send a simple confirmation.
+        Otherwise, just respond normally.'''
+    )
+    full = [SystemMessage(prompt)] + msgs
+    # 1st LLM pass: decides whether to call our tool
+    AIMessage = ChatOpenAI(model="gpt-5", temperature=0)(full)
+    out = [first]
+    if getattr(first, "tool_calls", None):
+        # run the cancel_order tool
+        tc = first.tool_calls[0]
+        result = cancel_order(**tc["args"])
+        out.append(ToolMessage(content=result, tool_call_id=tc["id"]))
+        # 2nd LLM pass: generate the final confirmation text
+        AIMessage = ChatOpenAI(model="gpt-5", temperature=0)(full + out)
+        out.append(second)
+    return {"messages": out}
+# -- 3) Wire it all up in a StateGraph
+def construct_graph():
+    g = StateGraph({"order": None, "messages": []})
+    g.add_node("assistant", call_model)
+    g.set_entry_point("assistant")
+    return g.compile()
+graph = construct_graph()
+if __name__ == "__main__":
+18 
+| 
+Chapter 2: Designing Agent Systems
+
+[Page 41]
+example_order = {"order_id": "A12345"}
+    convo = [HumanMessage(content="Please cancel my order A12345.")]
+    result = graph.invoke({"order": example_order, "messages": convo})
+    for msg in result["messages"]:
+        print(f"{msg.type}: {msg.content}")  
+Great—you now have a working “cancel order” agent. Before we expand our agent,
+let’s reflect on why we started with such a simple slice. Scoping is always a balancing
+act. If you narrow your task too much—say, only cancellations—you miss out on
+other high-volume requests like refunds or address changes, limiting real-world
+impact. But if you broaden it too far—“automate every support inquiry”—you’ll
+drown in edge cases like billing disputes, product recommendations, and technical
+troubleshooting. And if you keep it vague—“improve customer satisfaction”—you’ll
+never know when you’ve succeeded.
+Instead, by focusing on a clear, bounded workflow—canceling orders—we ensure
+concrete inputs (customer message + order record), structured outputs (tool calls +
+confirmations), and a tight feedback loop. For example, imagine an email that says,
+“Please cancel my order #B73973 because I found a cheaper option elsewhere.” A
+human agent would look up the order, verify it hasn’t shipped, click “Cancel,” and
+reply with a confirmation. Translating this into code means invoking cancel_
+order(order_id="B73973") and sending a simple confirmation message back to the
+customer.
+Now that we have a working “cancel order” agent, the next question is: does it
+actually work? In production, we don’t just want our agent to run—we want to know
+how well it performs, what it gets right, and where it fails. For our cancel order agent,
+we care about questions like:
+• Did it call the correct tool (cancel_order)?
+• Did it pass the right parameters (the correct order ID)?
+• Did it send a clear, correct confirmation message to the customer?
+In our open source repository, you’ll find a full evaluation script to automate this
+process:
+• Evaluation dataset
+• Batch evaluation script
+Here’s a minimal, simplified version of this logic for how you might test your agent
+directly:
+# Minimal evaluation check
+example_order = {"order_id": "B73973"}
+convo = [HumanMessage(content='''Please cancel order #B73973. 
+    I found a cheaper option elsewhere.''')]
+Our First Agent System 
+| 
+19
+
+[Page 42]
+result = graph.invoke({"order": example_order, "messages": convo})
+assert any("cancel_order" in str(m.content) for m in result["messages"], 
+    "Cancel order tool not called")
+assert any("cancelled" in m.content.lower() for m in result["messages"], 
+    "Confirmation message missing")
+print("✅ Agent passed minimal evaluation.")
+This snippet ensures that the tool was called and the confirmation was sent. Of
+course, real evaluation goes deeper: you can measure tool precision, parameter accu‐
+racy, and overall task success rates across hundreds of examples to catch edge cases
+before deploying. We’ll dive into evaluation strategies and frameworks in depth in
+Chapter 9, but for now, remember: an untested agent is an untrusted agent.
+Because both steps are automated using @tool decorators, writing tests against real
+tickets becomes trivial—and you instantly gain measurable metrics like tool recall,
+parameter accuracy, and confirmation quality. Now that we’ve built and evaluated a
+minimal agent, let’s explore the core design decisions that will shape its capabilities
+and impact.
+Core Components of Agent Systems
+Designing an effective agent-based system requires a deep understanding of the core
+components that enable agents to perform their tasks successfully. Each component
+plays a critical role in shaping the agent’s capabilities, efficiency, and adaptability.
+From selecting the right models to equipping the agent with tools, memory, and plan‐
+ning capabilities, these elements must work together to ensure that the agent can
+operate in dynamic and complex environments. This section delves into the key com‐
+ponents—the foundation model, tools, and memory—and explores how they interact
+to form a cohesive agent system. Figure 2-1 shows the core components of an agent
+system.
+Figure 2-1. Core components of an agent system.
+20 
+| 
+Chapter 2: Designing Agent Systems
+
+[Page 43]
+Model Selection
+At the heart of every agent-based system lies the model that drives the agent’s
+decision-making, interaction, and learning capabilities. Selecting the right model is
+foundational: it determines how the agent interprets inputs, generates outputs, and
+adapts to its environment. This decision influences the system’s performance, scala‐
+bility, latency, and cost. Choosing an appropriate model depends on the complexity of
+the agent’s tasks, the nature of the input data, infrastructure constraints, and the
+trade-offs between generality, speed, and precision.
+Broadly speaking, model selection starts with assessing task complexity. Large foun‐
+dation models—such as GPT-5 or Claude Opus 4.1—are well suited for agents oper‐
+ating in open-ended environments, where nuanced understanding, flexible reasoning,
+and creative generation are essential. These models offer impressive generalization
+and excel at tasks involving ambiguity, contextual nuance, or multiple steps. However,
+their strengths come at a cost: they require significant computational resources, often
+demand cloud infrastructure, and introduce higher latency. They are best reserved for
+applications like personal assistants, research agents, or enterprise systems that must
+handle a wide range of unpredictable queries.
+In contrast, smaller models—such as distilled ModernBERT variants or Phi-4—are
+often more appropriate for agents performing well-defined, repetitive tasks. These
+models run efficiently on local hardware, respond quickly, and are less expensive to
+deploy and maintain. They work well in structured settings like customer support,
+information retrieval, or data labeling, where precision is needed but creativity and
+flexibility are less important. When real-time responsiveness or resource constraints
+are critical, smaller models may outperform their larger counterparts simply by being
+more practical.
+An increasingly important dimension in model selection is modality. Agents today
+often need to process not just text, but also images, audio, or structured data. Multi‐
+modal models, such as GPT-5 and Claude 4.1, enable agents to interpret and combine
+diverse data types—text, visuals, speech, and more. This expands the agent’s utility in
+domains like healthcare, robotics, and customer support, where decisions rely on
+integrating multiple forms of input. In contrast, text-only models remain ideal for
+purely language-driven use cases, offering lower complexity and faster inference in
+scenarios where additional modalities provide little added value.
+Another key consideration is openness and customizability. Open source models,
+such as Llama and DeepSeek, provide developers with full transparency and the abil‐
+ity to fine-tune or modify the model as needed. This flexibility is particularly impor‐
+tant for privacy-sensitive, regulated, or domain-specific applications. Open source
+models can be hosted on private infrastructure, tailored to unique use cases, and
+deployed without licensing costs—though they do require more engineering
+Model Selection 
+| 
+21
+
+[Page 44]
+overhead. By contrast, proprietary models like GPT-5, Claude, and Cohere offer pow‐
+erful capabilities via API and come with managed infrastructure, monitoring, and
+performance optimizations. These models are ideal for teams seeking rapid develop‐
+ment and deployment, though customization is often limited and costs can scale
+quickly with usage.
+The choice between using a pretrained general-purpose model or a custom-trained
+model depends on the specificity and stakes of the agent’s domain. Pretrained
+models—trained on broad internet-scale corpora—work well for general language
+tasks, rapid prototyping, and scenarios where domain precision is not critical. These
+models can often be lightly fine-tuned or adapted through prompting techniques to
+achieve strong performance with minimal effort. However, in specialized domains—
+such as medicine, law, or technical support—custom-trained models can provide sig‐
+nificant advantages. By training on curated, domain-specific datasets, developers can
+endow agents with deeper expertise and contextual understanding, leading to more
+accurate and trustworthy outputs.
+Cost and latency considerations often tip the scales in real-world deployments. Large
+models deliver high performance but are expensive to run and may introduce
+response delays. In cases where that is untenable, smaller models or compressed ver‐
+sions of larger models provide a better balance. Many developers adopt hybrid strate‐
+gies, where a powerful model handles the most complex queries and a lightweight
+model handles routine tasks. In some systems, dynamic model routing ensures that
+each request is evaluated and routed to the most appropriate model based on com‐
+plexity or urgency—enabling systems to optimize both cost and quality.
+The Center for Research on Foundation Models at Stanford University has released
+the Holistic Evaluation of Language Models, providing rigorous third-party perfor‐
+mance measurement across a wide range of models. In Table 2-1, a small selection of
+language models are shown along with their performance on the Massive Multitask
+Language Understanding (MMLU) benchmark, a commonly used general assessment
+of these models’ abilities. These measurements are not perfect, but they provide us
+with a common ruler with which to compare performance. In general, we see that
+larger models perform better, but inconsistently (some models perform better than
+their size would suggest). Significantly more computation resources are required to
+obtain high performance.
+Table 2-1. Selected open weight models by performance and size
+Model
+Maintainer
+MMLU Parameters
+(billion)
+VRAM (full precision
+model in GB)
+Sample hardware
+required
+Llama 3.1 Instruct
+Turbo
+Meta
+56.1
+8
+20
+RTX 3090
+Gemma 2
+Google
+72.1
+9
+22.5
+RTX 3090
+22 
+| 
+Chapter 2: Designing Agent Systems
+
+[Page 45]
+Model
+Maintainer
+MMLU Parameters
+(billion)
+VRAM (full precision
+model in GB)
+Sample hardware
+required
+NeMo
+Mistral
+65.3
+12
+24
+RTX 3090
+Phi-3
+Microsoft
+77.5
+14.7
+29.4
+A100
+Qwen1.5
+Alibaba
+74.4
+32
+60.11
+A100
+Llama 3
+Meta
+79.3
+70
+160
+4xA100
+Conversely, this means moderate performance can be obtained at a small fraction of
+the cost. As you’ll see in Table 2-1, models up to roughly 14 billion parameters can be
+run on a single consumer-grade graphics processing unit (GPU), such as NVIDIA’s
+RTX 3090 with 24 GB of video RAM. Above this threshold, though, you will probably
+want a server-grade GPU such as NVIDIA’s A100, which comes in 40 GB and 80 GB
+varieties. Models are called “open weight” when the architecture and weights (or
+parameters) of the model have been released freely to the public, so anyone with the
+necessary hardware can load and use the model for inference without paying for
+access. We will not get into the details of hardware selection, but these select open
+weight models show a range of performance levels at different sizes. These small,
+open weight models continue to improve at a rapid pace, bringing increasing
+amounts of intelligence into smaller form factors. While they might not work well for
+your hardest problems, they can handle easier, more routine tasks at a fraction of the
+price. For our example ecommerce support agent, a small fast model suffices—but if
+we expanded into product recommendations or sentiment-based escalation, a larger
+model could unlock new capabilities.
+Now let’s take a look at several of the large flagship models. Note that two of these
+models, DeepSeek-v3 and Llama 3.1 Instruct Turbo 405B, have been released as open
+weight models but the others have not. That said, these large models typically require
+at least 12 GPUs for reasonable performance, but they can require many more. These
+large models are almost always used on servers in large data centers. Typically, the
+model trainers charge for access to these models based on the number of input and
+output tokens. The advantage of this is that the developer does not need to worry
+about servers and GPU utilization but can begin building right away. Table 2-2 shows
+the model costs and performance on the same MMLU benchmark.
+Table 2-2. Selected large models by performance and cost
+Model
+Maintainer
+MMLU Relative price per million
+input tokens
+Relative price per million
+output tokens
+DeepSeek-v3
+DeepSeek
+87.2
+2.75
+3.65
+Claude 4 Opus Extended Thinking
+Anthropic
+86.5
+75
+125
+Gemini 2.5 Pro
+Google
+86.2
+12.5
+25
+Llama 3.1 Instruct Turbo 405B
+Meta
+84.5
+1
+1
+o4-mini
+OpenAI
+83.2
+5.5
+7.33
+Model Selection 
+| 
+23
+
+[Page 46]
+Model
+Maintainer
+MMLU Relative price per million
+input tokens
+Relative price per million
+output tokens
+Grok 3
+xAI
+79.9
+15
+25
+Nova Pro
+Amazon
+82.0
+4
+5.33
+Mistral Large 2
+Mistral
+80.0
+10
+10
+In Table 2-2, prices are shown as a multiple of the price per million tokens on Llama
+3.1, which was the least expensive at the time of publishing. At the time of publishing,
+Meta is charging $0.20 per million input tokens and $0.60 per million output tokens.
+You might also notice that performance does not directly correlate to price. Also
+know that performance on benchmarks offers useful guidance, but your mileage may
+vary in how these benchmarks align with your particular task. When possible, com‐
+pare the model for your task and find the model that provides you with the best price
+per performance.
+Ultimately, model selection is not a onetime decision but a strategic design choice
+that must be revisited as agent capabilities, user needs, and infrastructure evolve.
+Developers must weigh trade-offs between generality and specialization, performance
+and cost, simplicity and extensibility. By carefully considering the task complexity,
+input modalities, operational constraints, and customization needs, teams can choose
+models that enable their agents to act efficiently, scale reliably, and perform with pre‐
+cision in the real world.
+Tools
+In agent-based systems, tools are the fundamental capabilities that enable agents to
+perform specific actions or solve problems. Tools represent the functional building
+blocks of an agent, providing the ability to execute tasks and interact with both users
+and other systems. An agent’s effectiveness depends on the range and sophistication
+of its tools.
+Designing Capabilities for Specific Tasks
+Tools are typically tailored to the tasks that the agent is designed to solve. When
+designing tools, developers must consider how the agent will perform under different
+conditions and contexts. A well-designed toolset ensures that the agent can handle a
+variety of tasks with precision and efficiency. Tools can be divided into three main
+categories:
+Local tools
+These are actions that the agent performs based on internal logic and computa‐
+tions without external dependencies. Local tools are often rule-based or involve
+executing predefined functions. Examples include mathematical calculations,
+data retrieval from local databases, or simple decision making based on
+24 
+| 
+Chapter 2: Designing Agent Systems
+
+[Page 47]
+predefined rules (e.g., deciding whether to approve or deny a request based on set
+criteria).
+API-based tools
+API-based tools enable agents to interact with external services or data sources.
+These tools enable agents to extend their capabilities beyond the local environ‐
+ment by fetching real-time data or leveraging third-party systems. For instance, a
+virtual assistant might use an API to pull weather data, stock prices, or social
+media updates, enabling it to provide more contextual and relevant responses to
+user queries.
+Model Context Protocol (MCP)
+MCP-based tools enable agents to provide structured, real-time context to lan‐
+guage models using the Model Context Protocol, a standardized schema for pass‐
+ing external knowledge, memory, and state into the model’s prompt. Unlike
+traditional API calls that require full round-trip execution, MCP enables agents
+to inject rich, dynamic context—such as user profiles, conversation history, world
+state, or task-specific metadata—directly into the model’s reasoning process
+without invoking separate tools. They are particularly effective in reducing
+redundant tool use, preserving conversational state, and injecting real-time situa‐
+tional awareness into model behavior.
+While local tools enable agents to perform tasks independently using internal logic
+and rule-based functions, such as calculations or data retrieval from local databases,
+API-based tools enable agents to connect with external services. This allows for the
+access of real-time data or third-party systems to provide contextually relevant
+responses and extended functionality.
+Tool Integration and Modularity
+Modular design is critical for tool development. Each tool should be designed as a
+self-contained module that can be easily integrated or replaced as needed. This
+approach enables developers to update or extend the agent’s functionality without
+overhauling the entire system. A customer service chatbot might start with a basic set
+of tools for handling simple queries and later have more complex tools (e.g., dispute
+resolution or advanced troubleshooting) added without disrupting the agent’s core 
+operations.
+Memory
+Memory is an essential component that enables agents to store and retrieve informa‐
+tion, enabling them to maintain context, learn from past interactions, and improve
+decision making over time. Effective memory management ensures that agents can
+Memory 
+| 
+25
+
+[Page 48]
+operate efficiently in dynamic environments and adapt to new situations based on
+historical data. We’ll discuss memory in much more detail in Chapter 6.
+Short-Term Memory
+Short-term memory refers to an agent’s ability to store and manage information rele‐
+vant to the current task or conversation. This type of memory is typically used to
+maintain context during an interaction, enabling the agent to make coherent deci‐
+sions in real time. A customer service agent that remembers a user’s previous queries
+within a session can provide more accurate and context-aware responses, enhancing
+user experience.
+Short-term memory is often implemented using rolling context windows, which
+enable the agent to maintain a sliding window of recent information while discarding
+outdated data. This is particularly useful in applications like chatbots or virtual assis‐
+tants, where the agent must remember recent interactions but can forget older, irrele‐
+vant details.
+Long-Term Memory
+Long-term memory, on the other hand, enables agents to store knowledge and expe‐
+riences over extended periods, enabling them to draw on past information to inform
+future actions. This is particularly important for agents that need to improve over
+time or provide personalized experiences based on user preferences.
+Long-term memory is often implemented using databases, knowledge graphs, or
+fine-tuned models. These structures enable agents to store structured data (e.g., user
+preferences, historical performance metrics) and retrieve it when needed. A health‐
+care monitoring agent might retain long-term data on a patient’s vital signs, enabling
+it to detect trends or provide historical insights to healthcare providers.
+Memory Management and Retrieval
+Effective memory management involves organizing and indexing stored data so that
+it can be easily retrieved when needed. Agents that rely on memory must be able to
+differentiate between relevant and irrelevant data and retrieve information quickly to
+ensure seamless performance. In some cases, agents may also need to forget certain
+information to avoid cluttering their memory with outdated or unnecessary details.
+An ecommerce recommendation agent must store user preferences and past purchase
+history to provide personalized recommendations. However, it must also prioritize
+recent data to ensure that recommendations remain relevant and accurate as user
+preferences change over time.
+26 
+| 
+Chapter 2: Designing Agent Systems
+
+[Page 49]
+Orchestration
+Orchestration is what turns isolated capabilities into end-to-end solutions: it’s the
+logic that composes, schedules, and supervises a series of skills so that each action
+flows into the next and works toward a clear objective. At its core, orchestration eval‐
+uates possible sequences of tool or skill invocations, forecasts their likely outcomes,
+and picks the path most likely to succeed in multistep tasks—whether that’s plotting
+an optimal delivery route that balances traffic, time windows, and vehicle availability,
+or assembling a complex data-processing pipeline.
+Because real-world conditions can change in an instant—new information arrives,
+priorities shift, or resources become unavailable—an orchestrator must continuously
+monitor both progress and environment, pausing or rerouting workflows as needed
+to stay on course. In many scenarios, agents build plans incrementally: they execute a
+handful of steps, then reassess and update the remaining workflow based on fresh
+results. A conversational assistant, for example, might confirm each subtask’s out‐
+come before planning the next, dynamically adapting its sequence to ensure respon‐
+siveness and robustness.
+Without a solid orchestration layer, even the most powerful skills risk running at
+cross-purposes or stalling entirely. We’ll dig into the patterns, architectures, and best
+practices for building resilient, flexible orchestration engines in Chapter 5.
+Design Trade-Offs
+Designing agent-based systems involves balancing multiple trade-offs to optimize
+performance, scalability, reliability, and cost. These trade-offs require developers to
+make strategic decisions that can significantly impact how the agent performs in real-
+world environments. This section explores the critical trade-offs involved in creating
+effective agent systems and provides guidance on how to approach these challenges.
+Performance: Speed/Accuracy Trade-Offs
+A key trade-off in agent design is balancing speed and accuracy. High performance
+often enables an agent to quickly process information, make decisions, and execute
+tasks, but this can come at the expense of precision. Conversely, focusing on accuracy
+can slow the agent down, particularly when complex models or computationally
+intensive techniques are required.
+In real-time environments, such as autonomous vehicles or trading systems, rapid
+decision making is essential, with milliseconds sometimes making a critical differ‐
+ence; here, prioritizing speed over accuracy may be necessary to ensure timely
+responses. However, tasks like legal analysis or medical diagnostics require high pre‐
+cision, making it acceptable to sacrifice some speed to ensure reliable results.
+Design Trade-Offs 
+| 
+27
+
+[Page 50]
+A hybrid approach can also be effective, where an agent initially provides a fast,
+approximate response and then refines it with a more accurate follow-up. This
+approach is common in recommendation systems or diagnostics, where a quick ini‐
+tial suggestion is validated and improved with additional time and data.
+Scalability: Engineering Scalability for Agent Systems
+Scalability is a critical challenge for modern agent-based systems, especially those that
+rely heavily on deep learning models and real-time processing. As agent systems grow
+in complexity, data volume, and task concurrency, it becomes critical to manage com‐
+putational resources, particularly GPUs. GPUs are the backbone for accelerating the
+training and inference of large AI models, but efficient scaling requires careful engi‐
+neering to avoid bottlenecks, underutilization, and rising operational costs. This sec‐
+tion outlines strategies for effectively scaling agent systems by optimizing GPU
+resources and architecture.
+GPU resources are often the most expensive and limiting factor in scaling agent sys‐
+tems, making their efficient use a top priority. Proper resource management enables
+agents to handle increasing workloads while minimizing the latency and cost associ‐
+ated with high-performance computing. A critical strategy for scalability is dynamic
+GPU allocation, which involves assigning GPU resources based on real-time demand.
+Instead of statically allocating GPUs to agents or tasks, dynamic allocation ensures
+that GPUs are only used when necessary, reducing idle time and optimizing
+utilization.
+Elastic GPU provisioning further enhances efficiency, using cloud services or on-
+premises GPU clusters that automatically scale resources based on current workloads.
+Priority queuing and intelligent task scheduling add another layer of efficiency, giving
+high-priority tasks immediate GPU access while queuing less critical ones during
+peak times.
+In large-scale agent systems, latency can become a significant issue, particularly when
+agents need to interact in real-time or near-real-time environments. Optimizing for
+minimal latency is essential for ensuring that agents remain responsive and capable of
+meeting performance requirements. Scheduling GPU tasks efficiently across dis‐
+tributed systems can reduce latency and ensure that agents operate smoothly under
+heavy loads.
+One effective strategy is asynchronous task execution, which enables GPU tasks to be
+processed in parallel without waiting for previous tasks to be completed, maximizing
+GPU resource utilization and reducing idle time between tasks.
+Another strategy is dynamic load balancing across GPUs, which prevents any single
+GPU from becoming a bottleneck by distributing tasks to underutilized resources.
+For agent systems reliant on GPU-intensive tasks, such as running complex inference
+28 
+| 
+Chapter 2: Designing Agent Systems

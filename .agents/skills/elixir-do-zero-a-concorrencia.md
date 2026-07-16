@@ -1,0 +1,78 @@
+---
+name: elixir-do-zero-a-concorrencia-casa-do-codigo
+description: >-
+  Passos operacionais extraidos — desenvolvimento web, full-stack, JavaScript, TypeScript, React, Node.js (PT).
+---
+
+# Elixir Do Zero A Concorrencia — Passos Operacionais
+
+Conteudo extraido do livro 'Elixir Do Zero A Concorrencia'. Contem passos, tecnicas e principios baseados na obra original.
+
+## 1. Conceitos Fundamentais
+- Caso você deseje submeter alguma errata ou sugestão, acesse   http://erratas.casadocodigo.com.br.
+- ISBN   Comecei a desenvolver minhas primeiras linhas de código a   mais ou menos doze anos atrás, em 2004, enquanto estava, por   incrível que pareça, em um curso de Web Design com Photoshop e   outras ferramentas visuais.
+- Realmente achava que eu seria um   designer ou coisa do tipo.
+- Mas assim que coloquei os olhos no   código, que na época era apenas JavaScript com HTML, fiquei   muito entusiasmado.
+- Daquele tempo para cá, me aprofundei mais e mais nesta área,   e trabalhei em diversas organizações como programador, em que   tive a oportunidade de desenvolver vários projetos nas mais   diversas tecnologias.
+- Hoje, sou formado em gestão de TI, com   curso de pós-graduação em segurança da informação e trabalho   para uma empresa no Reino Unido.
+- Eu diria que, após todos esses anos e experiências, se existe   uma coisa que gosto neste setor, esta seria escrever código.
+- Não   sou preso a nenhuma linguagem específica — apesar de ter uma   delas tatuada em meu braço (risos) —, gosto de observar a sintaxe,   os problemas que elas podem resolver e os diferentes paradigmas,   principalmente quando se trata do paradigma funcional.
+- Neste livro, gostaria de lhe convidar a explorar comigo os   fundamentos de uma das mais promissoras linguagens funcionais   do momento, a linguagem Elixir.
+- Fique à vontade para me encontrar no Twitter ou GitHub, caso   queira fazer um elogio ou mesmo uma crítica sobre o livro.
+
+
+  - coletados pelo garbage collector (coletor de lixo). Isso significa que
+
+  - lento, já que o Elixir precisa copiar a lista inteira e criar uma nova
+
+  - lista com 2, seguida de pipe lista com 3, seguida de pipe lista vazia,
+
+  - significa: crie o teste antes de tudo e o faça falhar, em seguida faça
+
+  - alta e difícil de estender para outros domínios, então é aí que entra
+
+  - caso a cabeça da lista é o número 1, e a cauda é o restante da lista;
+## 2. Principios e Tecnicas
+- SOBRE O AUTOR   https://twitter.com/tiagodavibr   https://github.com/tiagodavi   Décadas atrás, os processadores eram projetados com apenas   um núcleo.
+- Então, naquela época, fazia sentido programar sem   pensar em distribuição de tarefas por núcleos de processamento.
+- A maioria dos programadores não se preocupava se estava   utilizando todo o potencial do processador para executar tarefas   em paralelo.
+- Entretanto, hoje, depois de várias pesquisas neste   setor, os processadores evoluíram e passaram a ter não apenas um   núcleo, mas diversos!
+- Hoje estes processadores são conhecidos   como multi-core e são muito comuns, até mesmo em aparelhos   celulares.
+- No momento, vivemos neste cenário moderno e em constante   evolução, mas muitos programadores continuam escrevendo   código de maneira clássica, sem considerar que hoje podemos   extrair muito mais dos processadores no sentido de podermos   processar diversas tarefas em paralelo, a fim de termos um   resultado muito mais eficiente.
+- Diversas linguagens tentam resolver esse problema.
+- Mas a   implementação desses recursos em geral é muito complicada e, no   final, eles não conseguem resolver o problema de fato.
+- Sistemas orientados a objeto têm de lidar com mutação de   estado em processos paralelos.
+- E quando você tem diversos núcleos   disputando o mesmo espaço de memória, para checar esse estado,   o resultado final pode ser um desastre.
+
+
+  - head e o restante da lista no tail. Em seguida, esta função executa a
+
+  - encontrada e retorna uma lista com eles. Isso é útil pois, se dois ou
+
+  - 2 . Se isso for verdade, o teste vai passar; caso contrário, falhará.
+
+  - visitar somente o assunto que lhe interessa, desde que você já saiba
+## 3. Aplicacoes Praticas
+- Neste livro, vamos estudar a linguagem de programação Elixir  PREFÁCIO   que resolve muito bem este problema.
+- Por ser uma linguagem   imutável e utilizar o paradigma funcional, Elixir nos permite   pensar em termos de funções e transformação de dados.
+- Elixir também é baseado em processos que se comunicam   isoladamente e, por isso, não sofre efeitos colaterais indesejados   como outras linguagens.
+- Em vez disso, ele potencialmente cria   uma nova versão limpa dos dados a cada possível mutação.
+- Elixir executa código em pequenos processos e cada um com   seu próprio estado, o que faz com que a construção de sistemas   distribuídos e concorrentes seja feita de forma natural,   transparente e fácil.
+- Se você é recém-chegado no universo da programação, creio   que este livro não lhe cairá muito bem devido aos diversos aspectos   técnicos que são comparados e explicados aqui.
+- Mas se por outro   lado, você já possui alguma experiência com programação, seja   qual for a linguagem, e tem vontade de aprender um pouco mais   sobre a forma funcional de pensar, utilizando como base os   diversos aspectos da linguagem de programação Elixir, então este   livro é para você.
+- Espero que sirva bem ao seu propósito.
+- É requerido que você entenda um pouco sobre Orientação a   Objetos, estruturas de dados, funções, variáveis e constantes.
+- Você   terá de lidar com terminal, editores de código, Elixir e Erlang.
+
+## 4. Topicos Avancados
+- Logo, conhecer estes assuntos previamente pode ajudar.
+- Sugiro que leia em ordem, do início ao fim, pois os assuntos   são abordados pouco a pouco e o conhecimento é exigido   conforme os capítulos vão avançando.
+- Porém, nada o impede de   visitar somente o assunto que lhe interessa, desde que você já saiba   do que se trata.
+- PARA    QUEM    ESTE    LIVRO    FOI   ESCRITO  Como ler este livro   Palavras em destaque são escritas desta maneira: destaque .
+- Ela serve para resolver problemas de escalabilidade,   tolerância a falhas e alta concorrência, sem abrir mão de   desempenho e produtividade.
+- Por ser executada sob a máquina virtual do Erlang,   originalmente projetada para este propósito, Elixir nativamente   nos traz estes e outros recursos.
+- Ele estende a capacidade do   Erlang, acrescentando novas características que abstraem conceitos   complexos, e funciona como uma camada que usufrui do poder do   Erlang, mas com uma curva de aprendizado mais baixa e uma série   de outros recursos úteis.
+- Erlang foi projetado para lidar com sistemas altamente   concorrentes e que devem funcionar próximo de 100%, sem falhas.
+- Porém, sua sintaxe é complexa e possui uma curva de aprendizado   alta e difícil de estender para outros domínios, então é aí que entra   o Elixir, justamente para preencher estas deficiências do Erlang.
+- Existem alguns cases interessantes que tiram proveito do   Erlang, como é o caso do Facebook — que escreveu seu sistema de   chat nesta tecnologia — e do WhatsApp — que consegue processar  INTRODUÇÃO  1 INTRODUÇÃO    1   dezenas de milhares de mensagens com apenas um servidor,   usando menos da metade de sua capacidade.
+

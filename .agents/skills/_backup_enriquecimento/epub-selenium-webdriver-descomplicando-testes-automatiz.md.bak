@@ -1,0 +1,57 @@
+---
+name: epub-selenium-webdriver-descomplicando-testes-automatiz
+description: >-
+  Passos operacionais extraidos do livro 'EPUB Selenium webdriver descomplicando testes automatizados com java' (PT) — Java, Testes, Desenvolvimento Web.
+---
+
+# Epub Selenium Webdriver Descomplicando Testes Automatiz — Passos Operacionais
+
+Conteudo extraido do livro 'Epub Selenium Webdriver Descomplicando Testes Automatiz'. Contem passos, tecnicas e principios baseados na obra original.
+
+## 1. Conceitos Fundamentais
+- page_002 Sumário ISBN AGRADECIMENTOS PREFÁCIO SOBRE O AUTOR SOBRE O LIVRO 1.
+- Mais navegadores e headless browser 11.
+- Criando suítes de teste com JUnit 16.
+- Aplicando o conhecimento na prática 18.
+- Por onde prosseguir: dicas e ferramentas complementares  page_003 ISBN Impresso e PDF: 978-85-94188-72-4 EPUB: 978-85-94188-73-1 MOBI: 978-85-94188-74-8 Caso você deseje submeter alguma errata ou sugestão, acesse http://erratas.casadocodigo.com.br .  page_004 AGRADECIMENTOS Dedico este livro à minha amada esposa, meus pais e minha irmã por todo o apoio e carinho em toda a minha vida.
+- Agradeço aos amigos-irmãos que a vida me deu e que sempre me deram forças e incentivo para investir nos meus projetos.
+- Ana Paula pela paciência durante meus anos de faculdade e por me apoiar em mais esta iniciativa.
+- Agradeço à Eschiley Mayra, que, além de profissional de altíssima qualidade com quem aprendi muito, é também uma grande amiga.
+- Agradeço a todos os colegas de trabalho com quem tive a oportunidade de aprender e me desenvolver profissionalmente.
+- Agradeço à editora Casa do Código por me conceder a oportunidade deste lançamento.
+
+## 2. Principios e Tecnicas
+- Agradeço a você leitor, pelo interesse em aprender sobre teste de software em especial Selenium WebDriver.  page_005 PREFÁCIO Por Ana Paula Gonçalves Serra O conceito de teste pode ser definido como uma atividade que tem por objetivo verificar se o software produzido está de acordo com sua especificação e se satisfaz as expectativas do cliente.
+- Teste de software é parte integrante do processo de Validação e Verificação (V&amp;V) da Engenharia de Software.
+- Sendo que verificação refere-se ao conjunto de tarefas que garantem que o software implementa corretamente uma função específica, e validação refere-se ao conjunto de tarefas que asseguram que o software foi criado e pode ser rastreado segundo os requisitos do cliente.
+- A definição de V&amp;V abrange muitas atividades de garantia da qualidade de software, sendo uma preocupação constante no desenvolvimento de software e difícil de ser obtida.
+- A atividade de teste, das atividades de verificação e validação, é considerada um elemento crítico para garantia da qualidade.
+- Segundo Pressman, a distribuição recomendada de esforço em todo o processo de software é muitas vezes referida como a regra 40-20-40.
+- Esta regra recomenda que 40% do esforço seja realizado nas fases de análise e projeto, 20% na fase de codificação e 40% realizado na fase de teste.
+- Essa distribuição do esforço é apenas uma diretriz e varia de acordo com a natureza de cada projeto.
+- Mas é possível observar a importância e muitas vezes as dificuldades de garantir que 40% do projeto seja utilizado para testes.
+- O planejamento, execução e controle de teste são dispendiosos e trabalhosos no processo de desenvolvimento de software.
+
+## 3. Aplicacoes Praticas
+- Com isso, as ferramentas de testes estão entre as primeiras ferramentas de software a serem utilizadas.
+- Atualmente, essas ferramentas oferecem uma variedade de recursos que podem reduzir significativamente os problemas identificados, de modo a garantir a qualidade de software, aumentar a produtividade e diminuir os custos.
+- Neste livro, Rafael apresenta, de forma introdutória e objetiva, como automatizar testes utilizando duas ferramentas: JUnit e Selenium WebDriver.
+- O autor demonstra passo a passo e com exemplos para apoiar profissionais que queiram aprender e utilizar automação de testes, melhorando a qualidade de seus softwares.
+- Rafael tem trabalhado com testes desde a graduação em Ciência da Computação na Universidade São Judas Tadeu.
+- Eu, como professora dele e orientadora de Trabalho de Conclusão de Curso, pude acompanhar toda a sua trajetória, desde 2014.
+- Seu conhecimento na área de testes e na automação de testes é vasto, e este livro é a extensão de sua experiência de trabalho diário com desenvolvimento de software, refletindo todo seu conhecimento sobre o assunto de automação de testes e ferramentas.
+- Os profissionais que buscam orientação sobre ferramentas de automação de testes para criação de casos de testes automatizados, especialmente para Web, aprenderão como instalá-las e utilizá-las de modo a garantir maior eficiência, qualidade de software e redução de custos no desenvolvimento de software.
+- Ana Paula Gonçalves Serra Coordenadora dos cursos de Análise e Desenvolvimento de Sistemas, Ciência da Computação e Sistemas de Informação da Universidade São Judas Tadeu.
+- Por Eschiley Mayra Rolim A busca pela qualidade na entrega de um software tem sido constante, tornando a fase de testes fundamental.
+
+## 4. Topicos Avancados
+- Quando falamos em testes, uma das primeiras preocupações que aparecem são os prazos de entrega e a garantia de que uma nova versão não afetará a anterior.
+- Desta forma, é necessário realizar os testes de regressão, que, se executados manualmente, muitas vezes são repetitivos, cansativos e demandam muito esforço.
+- É nesse momento que podemos nos aliar à automação.
+- A automação de testes de software tem sido um assunto muito abordado, pois traz inúmeras vantagens para quem a utiliza, como redução de custos e prazos.
+- Minha primeira experiência com testes automatizados foi na faculdade, onde pude conhecer alguns conceitos e ferramentas.
+- Posteriormente tive a oportunidade de aprender mais sobre o assunto em um curso ministrado pelo Rafael.
+- O Selenium WebDriver é uma excelente escolha para iniciarmos a automação dos nossos testes, pois é uma ferramenta livre, gratuita e permite o uso em diferentes linguagens de programação e browsers, além de oferecer facilidades que vamos descobrir à medida que avançarmos os capítulos.
+- Este livro representa a experiência adquirida pelo Rafael nos últimos anos, ensinando-nos desde os conceitos básicos até a criação de scripts automatizados de uma forma clara e de fácil entendimento.  page_006 SOBRE O AUTOR Rafael Peixoto Silva trabalha com qualidade de software desde 2010.
+- Bacharel em Ciência da Computação pela Universidade São Judas Tadeu, possui certificação CTAL-TM (Certified Testers Advanced Level - Test Manager) concedido pelo BSTQB (Brazilian Software Test Qualification Board) trabalhou em grandes empresas nacionais e multinacionais principalmente nas áreas bancárias e de seguros.
+- Atualmente, é QA Sênior na TEx Soluções, líder em soluções online para corretoras de seguros.

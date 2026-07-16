@@ -1,0 +1,57 @@
+---
+name: sistemas-de-banco-de-dados
+description: >-
+  Principios de sistemas de banco de dados extraidos via OCR do livro 'Sistemas de Banco de Dados' (Elmasri & Navathe, 7ª ed).
+---
+
+# Sistemas de Banco de Dados — Principios Fundamentais
+
+Conteudo extraido via OCR do livro 'Sistemas de Banco de Dados' (Elmasri & Navathe, 7ª ed, 134 paginas processadas).
+
+## 1. Conceitos Fundamentais
+- Navathe Faculdade de Computação Georgia Institute of Technology  Tradugao Daniel Vieira  Revisao técnica Enzo Seraphim Thatyana F.
+- Nenhuma parte desta publicação poderá ser reproduzida  ou transmitida de qualquer modo ou por qualquer outro meio, eletrénico ou mecanico, incluindo fotocdpia, gravação ou qualquer outro tipo de sistema de armazenamento e transmissio de  informagao, sem prévia autoriz:  VICE-PRESIDENTE DE EDUCAGAO GERENTE DE PRODUTOS  SUPERVISORA DE PRODUGAO EDITORIAL CoorDENADOR DE PRODUGAO EDITORIAL Eprrora DE TEXTO  o por escrito da Pearson Education do Brasil.
+- Juliano Costa Alexandre Mattioli Silvana Afonso  Jean Xavier  Sabrina Levensteinas  Eprroras As  stentes Karina Ono e Mariana Rodrigues  Rodrigo Orsi  o Renata Siqueira Campos  Maria Aiko  Natélia Gaio (sobre o projeto original de Micha Pawlitzki/Terra/Corbis) Casa de Ideias  EsTAGIÁRIO PREPARAC  ReEvisio Cara DIAGRAMAGAO E PROJETO GRAFICO  Dados Internacionais de Catalogacao na Publicacao (CIP) (Camara Brasileira do Livro, SP, Brasil)  Elmasri, Ramez  Sistemas de banco de dados / Ramez Elmasri, Shamkant B.
+- Navathe; tradugao Daniel Vieira; revisão técnica Enzo Seraphim, Thatyana de Faria Piola Seraphim. -- 7. ed. -- Sao Paulo : Pearson Education do Brasil, 2018.
+- III Seraphim, Thatyana de Faria Piola.
+- Titulo.  18-16099 CDD-005.75  Indice para catdlogo sistematico: 1.
+- Banco de dados : Sistemas : Processamento de dados 005.75 2.
+- Nossa apresentação enfatiza os fundamentos da modelagem e projeto de banco de dados, as linguagens e modelos fornecidos pelos sistemas de gerenciamento de banco de dados e as técnicas de implementação do sistema de banco de dados.
+- O propósito do livro é que ele seja usado como um livro-texto para um curso de um ou dois semestres sobre sistemas de banco de dados nos níveis técnico, graduação ou pós-graduação, e como um livro de referência.
+- Nosso objetivo é oferecer uma apresentação profunda e atualizada dos aspectos mais importantes dos sistemas e aplicações de banco de dados, bem como das tecnologias relacionadas.
+
+## 2. Principios e Tecnicas
+- Consideramos que os leitores estejam acostumados aos conceitos elementares de programação e estruturação de dados, e que tenham tido algum contato com os fundamentos de organização de computadores.
+- A seguir, estão os principais recursos do livro:  W Uma organizagao autocontida e flexivel, que pode ser ajustada as necessidades individuais; em particular, os capitulos podem ser usados em diferentes ordens, dependendo da preferéncia do professor.
+- WN Um diagrama de dependéncia (mostrado mais adiante neste prefacio) para indicar quais capitulos dependem de capitulos anteriores; isso podera orientar o professor que queira ajustar a ordem de apresentacao dos capitulos.  m A Sala Virtual inclui uma colegao de suplementos, incluindo um rico conjunto de materiais para professores e alunos, como slides do PowerPoint, figuras do texto e um guia do professor com soluções.
+- Organização e conteúdo da sétima edicao  Ha algumas mudangas organizacionais na sétima edigao, bem como melhorias nos capitulos individuais.
+- O livro agora é dividido em doze partes, da seguinte forma:  mW A Parte 1 (capitulos 1 e 2) descreve os conceitos introdutérios basicos, necessa- rios para uma boa compreensao dos modelos, sistemas e linguagens de banco de dados.
+- Os capitulos 1 e 2 apresentam bancos de dados, usuarios tipicos e conceitos de SGBD, terminologia e arquitetura, bem como uma discussao do progresso das tecnologias de banco de dados com o passar do tempo e uma breve histéria dos modelos de dados.
+- Esses capitulos tém sido usados para introduzir algumas das novas tecnologias, como sistemas NOSQL.  m A Parte 2 (capitulos 3 e 4) inclui a apresentacdo sobre modelagem de entidade-re- lacionamento e projeto de banco de dados; contudo, é importante observar que os professores podem utilizar os capitulos sobre o modelo relacional (capitulos 5 a 8) antes dos capitulos 3 e 4 se esta for sua ordem de apresentacao preferida para o material do curso.
+- No Capitulo 3, apresentamos os conceitos do modelo Entidade-Relacionamento (ER) e dos diagramas ER, usando-os para ilustrar o projeto conceitual do banco de dados.
+- O Capitulo 4 mostra como o modelo ER basico pode ser estendido a fim de incorporar outros conceitos de modelagem, como subclasses, especializagao, generalizagao, tipos (categorias) de união e heranga, levando ao modelo de dados Enhanced-ER (EER) e aos diagramas EER.
+- A notação para os diagramas de classe da UML também é apresentada nos Capitulos 7 e 8 como um modelo alternativo e notagao diagramatica para os diagramas ER/EER.  mw A Parte 3 (capitulos 5 a 9) inclui uma apresentação detalhada sobre os bancos de dados relacionais e SQL, com material novo nos capitulos sobre SQL, abordando algumas construções SQL que nao estavam na edição anterior.
+
+## 3. Aplicacoes Praticas
+- O Capitulo 6 descreve algumas das partes básicas do padrao SQL para bancos de dados relacionais, incluindo definigdo de dados, operações de modificação de dados e consultas SQL simples.
+- O Capitulo 7 apresenta consultas SQL mais complexas, bem como 0s conceitos SQL de gatilhos, asserções, visdes e modificagao de esquema.
+- O Capitulo 8 descreve as operações formais da Algebra relacional e introduz o cAlculo relacional.
+- O material sobre SQL (capitulos 6 e 7) é apresentado antes da nossa apresentacao sobre algebra relacional e calculo, no Capitulo 8, para permitir que os professores iniciem projetos SQL mais no come¢o do curso, se desejarem (é possivel abordar o Capitulo 8 antes dos capitulos 6 e 7 se o professor preferir essa ordem).
+- O capitulo final da Parte 3, Capitulo 9, aborda o mapeamento ER e EER- -relacional, algoritmos que podem ser usados para projetar um esquema de banco de dados relacional a partir de um esquema conceitual ER/EER.
+- A Parte 4 (capitulos 10 e 11) sao os capitulos referentes as técnicas de progra- magao de banco de dados; esses capitulos podem ser designados como materiais de leitura e aumentados com materiais na linguagem de programacao especifica usada no curso para projetos de programagao (grande parte dessa documentagao pode ser facilmente encontrada na web).
+- O Capitulo 10 aborda tópicos tradicio- nais de programacao SQL, como SQL embutida, SQL dinamica, ODBC, SQLJ, JDBC e SQL/CLI.
+- O Capitulo 11 apresenta a programacao de banco de dados na web, usando a linguagem de script PHP em nossos exemplos, e inclui material novo que discute tecnologias Java para a programacao de banco de dados da web.
+- A Parte 5 (capitulos 12 e 13) aborda o material atualizado sobre bancos de dados objeto-relacional e orientados a objeto (Capitulo 12) e XML (Capitulo 13); ambos os capitulos agora incluem uma apresentacado explicando como o padrao SQL incorpora conceitos de objeto e de XML nas versGes mais recentes do padrao SQL.
+- O Capitulo 12 primeiro introduz os conceitos para bancos de dados de objeto e depois mostra como eles foram incorporados no padrao SQL para adicionar recursos de objeto a sistemas de banco de dados relacionais.
+
+## 4. Topicos Avancados
+- Em seguida, ele aborda o padrao de modelo de objeto ODMG e sua definição de objeto e linguagens de consulta.
+- O Capitulo 13 aborda o modelo e as linguagens XML (eXtensible Markup Language) e discute como a XML esta relacionada aos sistemas de banco de dados.
+- Ele apresenta conceitos e linguagens XML e compara o modelo XML com os modelos tradicionais de banco de dados.
+- Mostramos também como os dados podem ser convertidos entre a XML e representag6es relacionais, e os comandos SQL para extrair documentos XML de tabelas relacionais.
+- A Parte 6 (capitulos 14 e 15) sao os capitulos de normalização e teoria do projeto relacional (passamos todos os aspectos formais dos algoritmos de normalizagao para o Capitulo 15).
+- O Capitulo 14 define as dependéncias funcionais e as formas normais baseadas em dependéncias funcionais.
+- O Capitulo 14 também desenvolve uma abordagem de normalizacao intuitiva passo a passo e inclui as definigdes de dependéncias multivaloradas e dependéncias de jungao.
+- O Capitulo 15 aborda a teoria da normalização e os formalismos, teorias e algoritmos desenvolvidos para o projeto de banco de dados relacional por meio da normalizacao, incluindo os algoritmos de decomposição relacionais e os algoritmos de sintese relacional.
+- A Parte 7 (capitulos 16 e 17) contém os capitulos sobre organizag6es de arquivo em disco (Capitulo 16) e indexação de arquivos de banco de dados (Capitulo 17).
+- O Capitulo 16 descreve os principais métodos de organizacao de arquivos de registros em disco, incluindo arquivos ordenados (clasificados), desordenados (heap) e de hash; nele, sao abordadas as técnicas de hashing estatico e dinamico.

@@ -1,0 +1,95 @@
+---
+name: epub-angular-11-e-firebase-construindo-uma-aplica-
+description: >-
+  Passos operacionais extraidos — desenvolvimento web, full-stack, JavaScript, TypeScript, React, Node.js (PT).
+---
+
+# EPUB Angular 11 e firebase  construindo uma aplicação integrada com a plataforma do Google — Passos Operacionais
+
+Skill baseada no livro "EPUB Angular 11 e firebase  construindo uma aplicação integrada com a plataforma do Google" (PT). Contem passos praticos e sequencias operacionais.
+
+Use quando o usuario pedir orientacao pratica sobre: desenvolvimento web, full-stack, JavaScript, TypeScript, React, Node.js.
+
+---
+
+## 1. ## Angular 11 e firebase_ construindo uma aplicação integrada com a plataforma do Google
+
+
+## 2. ## 1.1 Angular
+
+
+## 3. ## 1.2 TypeScript
+
+
+## 4. ## 1.3 O estudo de caso
+
+
+## 5. ## 2.1 NodeJS
+
+
+## 6. ## 2.2 Instalação do Angular 11
+
+
+## 7. ## 2.3 Editor de desenvolvimento
+
+
+## 8. ## 2.4 Angular CLI - Criação do projeto
+
+
+## 9. ## 2.5 Arquitetura da aplicação
+
+
+## 10. ## 2.6 Estilizando a aplicação com Bootstrap
+
+
+## 11. ## 2.7 PrimeNG - Coleção de componentes ricos
+
+
+## 12. ## 3.1 Criação do projeto no console do Firebase
+
+## Conceitos Fundamentais
+
+- > Vou adotar duas práticas a partir desse momento. Para todos os artefatos gerados com Angular CLI a partir daqui, usarei mas _não mencionarei_ a flag `--skipTests`. A segunda será durante a explicação do código. Na maioria das vezes, serão omitidos os `imports` das classes dos componentes, evitando um código muito extenso e quebrando a fluidez da leitura. Não se preocupe pois no final de cada seção, ou quando julgar importante, deixarei o link específico do requisito implementado do repositório no GitHub.
+- Na pasta `core` serão colocadas as classes e interfaces disponíveis para toda a aplicação. Na pasta `components` ficarão os componentes. Cada componente é composto de uma classe, um template e um arquivo de estilo. Os modelos serão inseridos em `models`. São as classes que representam as entidades do negócio. Em `modules` ficarão os módulos de componentes, que serão reutilizados. Finalmente, a pasta `services` será o destino de classes que acessam o banco, autenticação e outros recursos.
+- O objetivo desta obra é apresentar as principais características da plataforma, utilizando a **versão 8** (atualizada para **versão 11**), através da implementação de uma aplicação que guiará os capítulos. Logo, você não vai encontrar um capítulo teórico dedicado aos conceitos de componentes, serviços, roteamentos ou validação de formulários, porém, vai, sim, explorar esses tópicos identificados dentro de um requisito do projeto.
+- Neste livro, proponho um sistema que permita explorar os conceitos fundamentais do framework como componentes, rotas e serviços. Vamos integrar nossa aplicação com o Firebase, utilizando serviços de autenticação, armazenamento de dados e execução de funções no lado do servidor. Embora de contexto simples, cobrirá todos esses aspectos, e a partir disso você poderá construir desde sistemas com modelagem simples aos mais complexos.
+- Dentre outros atributos que pesam a favor do desenvolvimento utilizando Angular, temos recursos modernos de plataforma da web para fornecer experiências semelhantes a aplicativos com PWA (_Progressive Web Application_). Com esses recursos e diversos produtos é possível criar aplicativos móveis utilizando Cordova, Ionic e Native script ou desenvolver sistemas desktops, com acesso a APIs dos sistemas operacionais.
+
+
+  - > Vou adotar duas práticas a partir desse momento. Para todos os artefatos gerados com Angular CLI a partir daqui, usarei mas _não mencionarei_ a flag `--skipTests`. A segunda será durante a explicação do código. Na maioria das vezes, serão omitidos os `imports` das classes dos componentes, evitando um código muito extenso e quebrando a fluidez da leitura. Não se preocupe pois no final de cada seção, ou quando julgar importante, deixarei o link específico do requisito implementado do repositório no GitHub.
+
+  - Na pasta `core` serão colocadas as classes e interfaces disponíveis para toda a aplicação. Na pasta `components` ficarão os componentes. Cada componente é composto de uma classe, um template e um arquivo de estilo. Os modelos serão inseridos em `models`. São as classes que representam as entidades do negócio. Em `modules` ficarão os módulos de componentes, que serão reutilizados. Finalmente, a pasta `services` será o destino de classes que acessam o banco, autenticação e outros recursos.
+
+  - O objetivo desta obra é apresentar as principais características da plataforma, utilizando a **versão 8** (atualizada para **versão 11**), através da implementação de uma aplicação que guiará os capítulos. Logo, você não vai encontrar um capítulo teórico dedicado aos conceitos de componentes, serviços, roteamentos ou validação de formulários, porém, vai, sim, explorar esses tópicos identificados dentro de um requisito do projeto.
+## Princípios e Técnicas
+
+- Iniciei na programação desenvolvendo em Java, Struts, JSF, Spring, mas em 2016 comecei a olhar o JavaScript com outros olhos. Precisei desenvolver um aplicativo na época e fiquei surpreso com a velocidade do desenvolvimento e com as coisas que eu podia implementar (na minha ignorância, se resumia a _popups_). Assim, iniciei meus estudos nessa perspectiva e hoje desenvolvo em Angular, Ionic, Cordova e Android.
+- Quem está acostumado com a instalação de programas com interfaces gráficas, o famoso _“Clique em 'próximo'”_ , pode estranhar um pouco o uso de linhas de comandos em terminais. No entanto, com o uso frequente, nota-se a praticidade na criação, testes e publicação de projetos. Somente no primeiro programa a instalação é gráfica e necessária para passos posteriores.
+- No primeiro objeto utilizamos um decorator do tipo `@ViewChild` para acessar o componente. O nome informado nos parênteses, `'inputFile'`, deve ter uma referência no template, que faremos posteriormente. Além disso, incluímos o atributo `static`, que se encarrega de verificar os resultados da consulta antes da execução da detecção de alteração no componente.
+- > Bootstrap é um framework web com código-fonte aberto para desenvolvimento de componentes de interface e front-end para sites e aplicações web usando HTML, CSS e JavaScript, baseado em modelos de design para a tipografia, melhorando a experiência do usuário em um site amigável e responsivo. (<https://pt.wikipedia.org/wiki/Bootstrap_(framework_front-end>))
+- > Embora você não precise se preocupar com as constantes atualizações do Angular, recomendo fortemente utilizar a mesma versão para acompanhar o projeto desenvolvido no livro, evitando a quebra do código ou mudança de nomeclatura de métodos. As versões das bibliotecas utilizadas estão no arquivo `package.json`, disponível no link <https://bit.ly/3q20UNp>.
+
+
+  - Quem está acostumado com a instalação de programas com interfaces gráficas, o famoso _“Clique em 'próximo'”_ , pode estranhar um pouco o uso de linhas de comandos em terminais. No entanto, com o uso frequente, nota-se a praticidade na criação, testes e publicação de projetos. Somente no primeiro programa a instalação é gráfica e necessária para passos posteriores.
+
+  - No primeiro objeto utilizamos um decorator do tipo `@ViewChild` para acessar o componente. O nome informado nos parênteses, `'inputFile'`, deve ter uma referência no template, que faremos posteriormente. Além disso, incluímos o atributo `static`, que se encarrega de verificar os resultados da consulta antes da execução da detecção de alteração no componente.
+
+  - > Bootstrap é um framework web com código-fonte aberto para desenvolvimento de componentes de interface e front-end para sites e aplicações web usando HTML, CSS e JavaScript, baseado em modelos de design para a tipografia, melhorando a experiência do usuário em um site amigável e responsivo. (<https://pt.wikipedia.org/wiki/Bootstrap_(framework_front-end>))
+
+  - > Embora você não precise se preocupar com as constantes atualizações do Angular, recomendo fortemente utilizar a mesma versão para acompanhar o projeto desenvolvido no livro, evitando a quebra do código ou mudança de nomeclatura de métodos. As versões das bibliotecas utilizadas estão no arquivo `package.json`, disponível no link <https://bit.ly/3q20UNp>.
+## Aplicações Práticas
+
+- Para isso, identificamos a palavra reservada `abstract`. Além disso, logo depois do nome `ServiceFirebase`, tipamos para uma classe genérica estendendo de umas das classes modelos, conforme apresentada no capítulo 3.  Note que também usamos a palavra `implements` seguida de `ICRUD<T>`, o que significa que devemos implementar todos os métodos da interface.
+- Temos vários objetos cujos valores receberemos de outros componentes, indicados com o decorator `@Input()`, como a lista de movimentação em `movimentacoes`, a requisição selecionada no objeto `requisicaoSelecionada`, o _dialog_ que exibe a lista em `displayDialogMovimentacoes` e `funcionarioLogado`, que representa o funcionário logado na aplicação.
+- Não vamos criar uma rota específica para esse componente. Isso porque utilizaremos uma abordagem de componente _pai-filho_. Nesse caso, a classe pai será o componente da requisição e vamos referenciar no template `requisicao.component.html` o seletor da movimentação `app-movimentacao` disponível na classe do componente `movimentacao.component.ts`.
+- Conseguimos acompanhar as alterações de estado e a validade dos controles de formulário. Usamos a diretiva de controle `*ngIf` para verificar a validade da variável `emailcontrole.invalid`. Se verdadeiro, verificamos a obrigação do preenchimento com `emailControle.errors.required` e se é um campo do tipo `email` com `emailControle.errors.email`.
+- O Visual Studio Code, ou popularmente chamado de VSCode, está disponível em <https://code.visualstudio.com>. Além de possuir uma quantidade enorme de extensões que facilitam a programação, como _autocomplete_ , indentação, integração nativa com GIT, entre outros (a lista é extensa...), a ferramenta é leve e possui um terminal integrado.
+
+## Principios e Tecnicas
+
+  - Neste livro, proponho um sistema que permita explorar os conceitos fundamentais do framework como componentes, rotas e serviços. Vamos integrar nossa aplicação com o Firebase, utilizando serviços de autenticação, armazenamento de dados e execução de funções no lado do servidor. Embora de contexto simples, cobrirá todos esses aspectos, e a partir disso você poderá construir desde sistemas com modelagem simples aos mais complexos.
+
+  - Dentre outros atributos que pesam a favor do desenvolvimento utilizando Angular, temos recursos modernos de plataforma da web para fornecer experiências semelhantes a aplicativos com PWA (_Progressive Web Application_). Com esses recursos e diversos produtos é possível criar aplicativos móveis utilizando Cordova, Ionic e Native script ou desenvolver sistemas desktops, com acesso a APIs dos sistemas operacionais.
+
+  - Iniciei na programação desenvolvendo em Java, Struts, JSF, Spring, mas em 2016 comecei a olhar o JavaScript com outros olhos. Precisei desenvolver um aplicativo na época e fiquei surpreso com a velocidade do desenvolvimento e com as coisas que eu podia implementar (na minha ignorância, se resumia a _popups_). Assim, iniciei meus estudos nessa perspectiva e hoje desenvolvo em Angular, Ionic, Cordova e Android.
+

@@ -1,0 +1,44 @@
+---
+name: epub-componentes-reutilizaveis-em-java-com-reflexao-e-a
+description: >-
+  Passos operacionais extraidos do livro 'EPUB Componentes reutilizáveis em Java com reflexão e anotações' (PT) — Java.
+---
+# Conteudo Extraido
+Fonte: EPUB - [PT] EPUB Componentes reutilizáveis em Java com reflexão e anotações - Desconhecido.txt
+
+
+## Conceitos Fundamentais
+- page_002 Sumário Agradecimentos pessoais Agradecimentos profissionais Minibiografia do autor Por que um livro sobre reflexão e anotações?
+- Nossa vida é feita de pessoas e de experiências, e é a partir disso que seguimos nossos caminhos e realizamos nossas escolhas.
+- Primeiramente deixo um agradecimento institucional ao ITA, um instituto que é referência nacional e internacional em engenharia, em onde me formei em Engenharia da Computação e fiz meu mestrado e doutorado.
+- Além disso, também foi um local onde tive a oportunidade de atuar como professor por mais de 5 anos.
+- Foram experiências que me marcaram e são uma importante parte da minha história.
+- Eu saí do ITA, mas com certeza o ITA não saiu de mim!
+
+## Principios e Tecnicas
+- Um grande amigo, que sempre me incentivou e que foi grande mentor, cujos ensinamentos foram muito além de questões técnicas.
+- Agradeço à revista MundoJ, principalmente ao Marco Guapo, inicialmente por ter aberto espaço para que eu escrevesse sobre minhas ideias e meus conhecimentos.
+- Em seguida, Guapo confiou a mim o conteúdo da revista como editor-chefe.
+- Através da minha atuação na revista eu pude aprender muita coisa e me manter sempre atualizado durante os últimos anos.
+- Por meio dos artigos que escrevi, ganhei experiência e tomei gosto pela escrita de conteúdo técnico.
+- Posso afirmar com certeza que a semente desse livro foi plantada em alguns de meus artigos durante os últimos anos.
+
+## Aplicacoes Praticas
+- Agradeço em especial pelo apoio e incentivo de Fabio Kon, Fábio Silveira, Jefferson Souza, Uirá Kulezsa, Ademar Aguiar e Filipe Correia.
+- Também agradeço pelos meus gurus Joseph Yoder e Rebecca Wirfs-Brock, com quem aprendi demais e tive discussões muito interessantes sobre modelagem e arquitetura de software.
+- Agradeço ao INPE, instituição onde trabalho e desenvolvo minha pesquisa.
+- Apesar de estar aqui a pouco tempo, eu me identifiquei muito com seu ambiente propício para o desenvolvimento e aplicação de novas ideias.
+- Agradeço por ter me recebido de braços abertos e confiado em minhas ideias.
+- Tenho certeza de que nos próximos anos poderei contribuir para seu crescimento a partir de minha ideias e da minha pesquisa.
+
+## Topicos Avancados
+- Deixo um agradecimento em especial ao Paulo Silveira e ao Adriano Almeida, por estarem sempre disponíveis a discussões relacionadas ao conteúdo desse livro. page_006 Minibiografia do autor Eduardo Martins Guerra nasceu em Juiz de Fora em 1980 e curso
+- Desde essa época, ele já despertou seu interesse pela programação, começando com a digitação de código Basic que vinha em revistas no seu defasado computador Exato Pro.
+- A diversão era mais ver o efeito de pequenas modificações no código do que o jogo que saía como resultado.
+- Nessa época, pouco depois, também fez um curso de Clipper, onde desenvolveu seu primeiro software: um gerenciador de canil!
+- Incentivado por seus professores, pela facilidade com disciplinas na área de exatas, prestou o vestibular para o ITA em 1998, logo após o término de seus estudos, e foi aprovado.
+- Durante o curso, ele optou pela carreira militar e pelo curso de computação, além de participar de atividades extracurriculares como projetos para a empresa júnior e aulas no curso pré-vestibular para pessoas carentes, CASD Vestibulares.
+
+## Secao 5
+- Dois dias depois de se formar, casou-se com sua mais forte paixão, sua atual esposa, Roberta.
+- Após formado, em 2003, foi alocado no Centro de Computação da Aeronáutica de São José dos Campos (CCA-SJ), onde ficaria pelos próximos 4 anos.

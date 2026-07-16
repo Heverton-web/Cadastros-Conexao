@@ -1,0 +1,57 @@
+---
+name: mysql-comece-com-o-principal-banco-de-dados-open-source
+description: >-
+  Passos operacionais extraidos do livro 'MySQL Comece com o principal banco de dados open source do mercado' (PT) — Banco de Dados, Data Science.
+---
+
+# Mysql Comece Com O Principal Banco De Dados Open Source — Passos Operacionais
+
+Conteudo extraido do livro 'Mysql Comece Com O Principal Banco De Dados Open Source'. Contem passos, tecnicas e principios baseados na obra original.
+
+## 1. Conceitos Fundamentais
+- Página 2 Casa do Código Prefácio Escrevo este livro pensando nas pessoas que estão começando a estudar banco de dados, a trabalhar com ele, e queiram algo bem prático para iniciar; e para os desenvolvedores que necessitam de uma ajuda no dia a dia, que queiram migrar suas aplicações para o MySQL, ou se aperfeiçoar utilizando, na prá- tica, os benefícios deste poderoso Sistema Gerenciador de Banco de Dados (SGBD). i  Página 4 Casa do Código Agradecimentos Ao lado de um grande homem existe uma grande mulher.
+- E ao meu lado, desde a época em que estava estudando para ingressar na universidade, te- nho uma mulher fantástica.
+- Minha musa inspiradora, que sempre apoiou e incentivou minha carreira profissional e minha busca por conhecimento.
+- Gostaria também de agradecer a minha família, principalmente minha mãe.
+- Mesmo não entendendo muito o que eu faço, ela sempre apoiou minhas decisões e me ajudou no que estava ao seu alcance.
+- A todas as pessoas com que tive a experiência de trabalhar, aprender, ensi- nar e conviver.
+- Saiba que tentei absorver o melhor de cada uma e todas foram importantes à sua maneira.
+- Também, a todos os professores que tive em minha vida, pois, sem eles, nada de que já conquistei profissionalmente seria possível.
+- Sempre me mos- traram o caminho para que eu conseguisse buscar conhecimento.
+- Por último, não poderia deixar de agradecer à Casa do Código, que me proporcionou esta maravilhosa experiência de escrever este livro.
+
+## 2. Principios e Tecnicas
+- Muito obri- gado! iii  Página 6 Casa do Código Sobre o autor Vinicius Carvalho teve seu primeiro contato com o computador em um curso de MS-DOS com Windows 95 e, desde então, apaixonou-se pela computação.
+- Ao longo da adolescência, procurou aperfeiçoar-se e fazer alguns cursos até chegar a hora de escolher sua formação na faculdade.
+- Formou-se em Sistemas de Informações, pós-graduou-se em Engenharia de Software e não parou de aprender coisas novas.
+- Apaixonado pela busca pelo conhecimento, procura manter-se atualizado nas tendências de desenvolvimento de software, tecnologia e tem como meta aprender algo novo todos os dias.
+- Na sua carreira profissional, teve oportunidades de trabalhar como ana- lista de suporte, desenvolvedor, gerente de projetos, consultor e como um em- preendedor incansável, arriscando-se a ter seu próprio negócio.
+- Atualmente é analista de sistemas sênior do maior grupo de ensino do mundo, a Kroton, além de também fazer algumas consultorias na área de desenvolvimento de software e participar de grupos de discussão sobre empreendedorismo em sua cidade.
+- Teve chance de palestrar em congresso de software livre como o VOL DAY, evento criado pela comunidade Viva o Linux; publicar artigos em diver- sos congressos no Brasil; e ministrar aulas de graduação no Centro Universi- tário Filadélfia (UniFil), faculdade que é referência em cursos de graduação e pós-graduação no Paraná, na qual se formou.
+- Sua página pessoal é http://www.viniciuscdes.net.
+- É o equivalente à bicicleta para nossa mente.” – Steve Jobs Quando vamos iniciar o desenvolvimento de um novo projeto, um grande ponto de interrogação surge em nossa cabeça a respeito de qual tecnologia utilizar.
+- Algo que deve ser levado em consideração é o seu orçamento.
+
+## 3. Aplicacoes Praticas
+- Esco- lher ferramentas livres de taxas, de qualidade e que o suportem é de grande importância.
+- Ao escolher o MySQL como opção de Sistema Gerenciador de Banco de Dados (SGBD), além de uma ferramenta gratuita criada na base da licença de software livre, você também está optando por qualidade, robustez e segurança.
+- Estes são adjetivos que um gerenciador deve ter, pois guardar seus dados ou de seus clientes com segurança é o mais importante.
+- Sobre o MySQL Casa do Código Além das ferramentas, você também deve preocupar-se com o planeja- mento do projeto que está desenvolvendo.
+- A modelagem e a construção do banco de dados de um sistema é o coração dele.
+- O banco de dados vai impac- tar o processo inteiro: desde o início da criação do projeto, o desempenho do sistema durante seu desenvolvimento e até sua manutenção e expansão pos- teriormente.
+- Por isso, volto a frisar a importância de uma boa modelagem e de um bom gerenciador.
+- É isto que farei ao decorrer deste livro: apresentar a modelagem do pro- jeto, boas práticas, tudo isso de uma forma bem prática, para que, no final, você seja capaz de criar um banco de dados relacional para qualquer aplica- ção ou sistemas comerciais que deseja desenvolver. 1.1 Sobre o MySQL Quando você digita ‘MySQL’ no Google, o primeiro resultado mostra que ele é o banco de dados open source mais popular do mundo.
+- Preciso dizer mais alguma coisa?
+- As maiores empresas de tecnologia utilizam e muitas delas contribuem para o projeto.
+
+## 4. Topicos Avancados
+- Em vez de escrever algo teórico ou histórico para explicar o que é o MySQL e elencar suas qualidades, eu escolhi criar um mapa mental para listar suas vantagens de forma clara e visual.
+- Você pode acessar o link http://www.mysql.com/why-mysql/topreasons.html para ler um pouco mais sobre essas características e, no demais, deixo a parte histórica como dever de casa para você pesquisar. 2  Página 14 Casa do Código Capítulo 1.
+- Introdução Fig. 1.1: Características do MySQL 1.2 Banco de dados Apesar de banco de dados ser um termo técnico, a maioria das pessoas nos dias de hoje tem contato direto com ele.
+- De fato, grande parte da população atualmente tem acesso a equipamentos, cuja função (principal ou secundária) é o armazenamento de informações.
+- Quem, hoje em dia, não usa um telefone celular?
+- Desde o seu surgimento, esse tipo de aparelho possui uma agenda, na qual podemos gravar nomes e telefones para, em um segundo momento, acessá- los.
+- Uma lista telefônica impressa também é um exemplo válido disso, pois nela são relatados todos os nomes, endereços e números de telefone das em- presas e dos moradores da sua cidade e, eventualmente, dos arredores.
+- Tudo isso remete ao conceito de banco de dados, ou seja, umlocalnoqual é possível armazenar informações para consulta ou utilização, quando ne- 3  Página 15 1.2.
+- Banco de dados Casa do Código cessário.
+- O próprio banco vai gerenciar a estrutura dos registros e se encarre- gará de criar espaço para novos registros, alterando seu conteúdo de acordo com as solicitações da aplicação que o está acessando.

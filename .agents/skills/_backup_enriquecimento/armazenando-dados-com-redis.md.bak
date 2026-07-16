@@ -1,0 +1,57 @@
+---
+name: armazenando-dados-com-redis
+description: >-
+  Passos operacionais extraidos do livro 'Armazenando dados com Redis' (PT) — Banco de Dados, Data Science.
+---
+
+# Armazenando Dados Com Redis — Passos Operacionais
+
+Conteudo extraido do livro 'Armazenando Dados Com Redis'. Contem passos, tecnicas e principios baseados na obra original.
+
+## 1. Conceitos Fundamentais
+- Página 2 Casa do Código À minha amada esposa e querido filho. i  Página 4 Casa do Código Agradecimentos “Your time is limited, so don’t waste it living someone else’s life.
+- Don’t be trapped by dogma — which is living with the results of other people’s thinking.
+- Don’t let the noise of others’ opinions drown out your own inner voice.
+- And most important, have the courage to follow your heart and intuition.
+- They somehow already know what you truly want to become.
+- Everything else is secondary.” – Steve Jobs Escrever um livro é sempre uma tarefa longa e difícil, pois temos que apli- car muito esforço e tempo.
+- Por este motivo tenho muito a agradecer às pessoas que me ajudaram direta ou indiretamente ao longo dessa jornada.
+- Em primeiro lugar agradeço à minha esposa Andressa pelo seu apoio in- condicional e pelo carinho durante as diversas horas que passei escrevendo o livro.
+- Ao meu filho Rafael pela sua compreensão e paciência, à minha mãe e irmãos por todo o seu apoio.
+- Agradeço também a todo o pessoal da Casa do Código pela orientação e ajuda, principalmente ao Paulo Silveira e o Adriano Almeida por acreditar, apoiar e me acompanhar no decorrer do meu trabalho nesse livro.
+
+## 2. Principios e Tecnicas
+- E principalmente agradeço a você leitor por investir seu precioso tempo nesse livro.
+- Obrigado a todos vocês! iii  Página 6 Casa do Código Sobre o autor Brasileiro, nascido no estado de São Paulo.
+- Rodrigo Lazoti é bacharel em Sistemas de informação pela Faculdade Drummond e Pós-graduado em Engenharia de Software pela PUC-MG.
+- Por este motivo, a intenção foi escrever um livro prático e nada mais justo do que começar demonstrando como instalar o Re- dis.
+- Em geral a instalação do Redis é uma tarefa bem simples para quem utiliza sistemas operacionais baseados no Unix, porém, para quem utiliza Windows, esta tarefa pode não ser tão simples ou até mesmo recomendada.
+- Este livro foi escrito utilizando a versão 2.8.x do Redis. 1.1 Instalando no Unix, Linux e Mac OS Para sistemas operacionais baseados no Unix, como Linux e Mac OS, a ins- talação pode ser feita a partir do código-fonte do Redis que está disponível  Página 13 1.2.
+- Instalando no Windows Casa do Código em: http://redis.io/download Uma outra opção seria realizar a instalação por um gerenciador de paco- tes, como o HomeBrew (http://brew.sh) do Mac OS ou o apt-get do Debian e seus derivados.
+- Mas nos exemplos a seguir vou utilizar a instalação através do código-fonte, pois isso pode ser realizado facilmente por qualquer sistema operacional baseado no Unix.
+- Veja a seguir como fazer a instalação a partir do código-fonte: wget http://download.redis.io/releases/redis-2.8.x.tar.gz tar zxvf redis-2.8.x.tar.gz cd redis-2.8.x make No bloco de comandos anterior, o download do Redis é feito utilizando o programa de linha de comando wget.
+- O x é o número do release, lembre-se de substituí-lo.
+
+## 3. Aplicacoes Praticas
+- Assim que o download estiver concluído, o arquivo é des- compactado com o comando tar na pasta redis-2.8.x e, após a sua des- compactação, é necessário realizar a compilação do código-fonte do Redis utilizando o comando make.
+- A compilação pode demorar um pouco para terminar, mas após o fim da execução desse comando, o Redis já esta pronto para o uso e os arquivos binários gerados estarão acessíveis através da pasta src.
+- O programa wget não existe nativamente no Mac OS e para resolver isso podemos substituí-lo pelo programa curl, que consegue fazer o download de um arquivo pela linha de comando da seguinte forma: curl http://download.redis.io/releases/redis-2.8.x.tar.gz -o redis-2.8.x.tar.gz 1.2 Instalando no Windows O Redis não suporta oficialmente o sistema operacional Windows, mas é pos- sível instalar uma versão experimental baseada na versão 2.6 do Redis, man- tida pelo grupo Microsoft Open Tech.
+- Por se tratar de uma versão experimen- tal, é importante deixar claro que até o momento em que este livro foi escrito a sua instalação é recomendada apenas em ambiente de desenvolvimento. 2  Página 14 Casa do Código Capítulo 1.
+- Começando com o Redis A versão mantida pelo Microsoft Open Tech pode ser obtida através do link https://github.com/MSOpenTech/redis mas, para simplificar, vamos realizar o download de um arquivo compactado do repositório do projeto através do link: https://github.com/MSOpenTech/redis/archive/2.6.zip Após o download do arquivo, vamos descompactá-lo na pasta redis-2.6, dentro da qual existe uma pasta bin.
+- Esta última con- tém dois arquivos no formato zip: o arquivo redisbin.zip e o redisbin64.zip, que contém os executáveis para a plataforma 32 e 64 bits do Windows, respectivamente.
+- Depois de selecionado o arquivo correspondente à sua plataforma, basta descompactá-lo. 1.3 Iniciando o Redis Iniciar o Redis utilizando sua configuração padrão é uma tarefa extrema- mente simples e rápida.
+- Para os sistemas operacionais Unix, Linux e Mac OS, acesse a pasta src, que contém os arquivos binários gerados pelo comando make, e execute: ./redis-server Para o sistema operacional Windows, execute o arquivo redis-server.exe que foi extraído do arquivo redisbin.zip ou redisbin64.zip conforme a plataforma escolhida.
+- Independente do sistema operacional utilizado, o Redis irá exibir uma saída bem parecida com a demonstrada a seguir: 3  Página 15 1.4.
+- Olá Redis Casa do Código Figura 1.1: Saída do servidor Redis.
+
+## 4. Topicos Avancados
+- Não se preocupe com as mensagens geradas pelo Redis nesse momento, o importante agora é que o servidor do Redis está funcionando de forma ade- quada. 1.4 Olá Redis Agora que já temos um servidor do Redis sendo executado, chegou o mo- mento de realizarmos o famoso “Olá Mundo”, que neste exemplo será um “ola redis!”.
+- Novamente, não se preocupe com os comandos utilizados a se- guir, nem mesmo com os conceitos do Redis, pois tudo isso será explicado no decorrer do livro.
+- Precisamos utilizar uma aplicação cliente que consiga conectar a esse ser- vidor do Redis.
+- A distribuição do Redis já nos fornece um cliente de conexão, sendo que esse cliente é a forma mais simples e direta de interagir com o ser- vidor do Redis.
+- Ele é conhecido como CLI, que na língua inglesa significa command-line interface.
+- A partir de agora, sempre que você encontrar a sigla CLI, lembre-se que é uma referência ao cliente nativo para linha de comando do Redis. 4  Página 16 Casa do Código Capítulo 1.
+- Começando com o Redis O CLI encontra-se na mesma pasta onde o comando redis-server foi executado.
+- Ele é um arquivo chamado redis-cli nas plataformas baseadas no Unix e redis-cli.exe na plataforma Windows.
+- Ao executar o CLI, será apresentada a seguinte interface: rodrigolazoti@MacBook-Pro:~/redis-2.8.x/src =&gt; ./redis-cli redis 127.0.0.1:6379&gt; Agora chegou o momento de utilizarmos o Redis.
+- Vamos iniciar usando o comando ECHO, que serve apenas para retornar uma mensagem enviada para ele através desse comando.

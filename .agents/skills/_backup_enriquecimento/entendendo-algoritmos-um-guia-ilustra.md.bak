@@ -1,0 +1,57 @@
+---
+name: entendendo-algoritmos-um-guia-ilustra
+description: >-
+  Passos operacionais extraidos do livro 'Entendendo Algoritmos Um guia ilustra' (PT) — Algoritmos.
+---
+
+# Entendendo Algoritmos Um Guia Ilustra — Passos Operacionais
+
+Conteudo extraido do livro 'Entendendo Algoritmos Um Guia Ilustra'. Contem passos, tecnicas e principios baseados na obra original.
+
+## 1. Conceitos Fundamentais
+- Página 3 Original English language edition published by Manning Publications Co., Copyright © 2015 by Manning Publications.
+- Portuguese-language edition for Brazil copyright © 2017 by Novatec Editora.
+- Página 4 Edição original em Inglês publicada pela Manning Publications Co., Copyright © 2015 pela Manning Publications.
+- Edição em Português para o Brasil copyright © 2017 pela Novatec Editora.
+- Todos os direitos reservados. © Novatec Editora Ltda. 2017.
+- Todos os direitos reservados e protegidos pela Lei 9.610 de 19/02/1998.
+- É proibida a reprodução desta obra, mesmo parcial, por qualquer processo, sem prévia autorização, por escrito, do autor e da Editora.
+- Editor: Rubens Prates Tradução: BrodTec Revisão técnica: Nilo Menezes Revisão gramatical: Marta Almeida de Sá Assistente editorial: Priscila A.
+- Yoshimatsu Editoração eletrônica: Carolina Kuwabata  Página 5 ISBN: 978-85-7522-662-9 Histórico de edições impressas: Abril/2017 Primeira edição Novatec Editora Ltda.
+- Pesquisa em largura Encontrando o caminho mínimo Filas Implementando o grafo  Página 9 Implementando o algoritmo Tempo de execução Recapitulando 7 Algoritmo de Dijkstra Trabalhando com o algoritmo de Dijkstra Terminologia Adquirindo um piano Arestas com pesos negativos Implementação Recapitulando 8 Algoritmos gulosos O problema do cronograma da sala de aula O problema da mochila O problema da cobertura de conjuntos Algoritmos de aproximação Problemas NP-completos Caixeiro-viajante, passo a passo Como faço para saber se um problema é NP-completo?
+
+## 2. Principios e Tecnicas
+- Recapitulando 9 Programação dinâmica O problema da mochila A solução simples Programação dinâmica Perguntas frequentes sobre o problema da mochila O que acontece se você adicionar um item?
+- O que acontece se você modi^car a ordem das linhas?
+- É possível preencher a tabela a partir das colunas, em vez de a partir das linhas?
+- O que acontece se você adicionar um item menor?
+- Você consegue roubar frações de um item?
+- Otimizando o seu itinerário de viagem  Página 10 Lidando com itens com interdependência É possível que a solução requeira mais de dois subproblemas?
+- É possível que a melhor solução não utilize a capacidade total da mochila?
+- Maior substring comum Criando a tabela Preenchendo a tabela A solução Maior subsequência comum Maior subsequência comum – solução Recapitulando 10 K-vizinhos mais próximos Classizcando laranja versus toranjas Criando um sistema de recomendações Extração de características Regressão Escolhendo boas características Introdução ao aprendizado de máquina OCR Criando um ^ltro de spam Prevendo a bolsa de valores Recapitulando 11 Próximos passos Árvores Índices invertidos A transformada de Fourier Algoritmos paralelos MapReduce Por que os algoritmos distribuídos são úteis?
+- Função map Função reduce Filtro de Bloom e HyperLogLog Filtros de Bloom  Página 11 HyperLogLog Algoritmos SHA Comparando arquivos Veri^cando senhas Hash sensitivo local Troca de chaves de Diwe-Hellman Programação linear Epílogo Respostas dos exercícios  Página 12 Prefácio Comecei a programar como um hobby.
+- O livro Visual Basic 6 for Dummies me ensinou o básico, e continuei a ler outros livros para aprender mais.
+
+## 3. Aplicacoes Praticas
+- Porém o tema algoritmos era incompreensível para mim.
+- Eu me lembro de ler os sumários dos meus primeiros livros de algoritmos e pensar “°nalmente vou entender este assunto!”.
+- No entanto, era um conteúdo muito denso, e desisti depois de algumas semanas.
+- Foi quando tive o meu primeiro professor bom de algoritmos que eu percebi o quão simples e elegantes eles eram.
+- Alguns anos atrás, escrevi a minha primeira postagem ilustrada em um blog.
+- Eu aprendo melhor com imagens, e gostei muito do estilo ilustrado.
+- Desde então, tenho feito algumas postagens ilustradas sobre programação funcional, Git, aprendizado de máquina e concorrência.
+- A propósito, eu era um escritor medíocre quando comecei.
+- Explicar conceitos técnicos é difícil.
+- Página 13 Criar bons exemplos e descrever conceitos complicados são atividades que levam tempo.
+
+## 4. Topicos Avancados
+- Sendo assim, é mais fácil passar por cima da parte complicada.
+- Achava que estava fazendo um trabalho muito bom até que um dia, depois de uma de minhas postagens ter °cado famosa, um colega de trabalho me disse “Eu li o seu texto e ainda não entendi isso”.
+- Foi quando percebi que eu ainda tinha muito a aprender para me aprimorar.
+- Em algum momento enquanto escrevia essas postagens para o blog, a Manning entrou em contato comigo e perguntou se eu queria produzir um livro ilustrado.
+- Bem, acontece que os editores da Manning sabem muito bem como explicar conceitos técnicos, e eles me ensinaram como ensinar.
+- Escrevi este livro para sanar um problema pessoal: queria um livro que explicasse bem os conceitos técnicos difíceis, além de apresentar algoritmos fáceis de ser compreendidos.
+- Melhorei muito a minha escrita desde aquela primeira postagem, e espero que você ache este livro de leitura fácil e informativa.
+- Página 14 Agradecimentos Agradeço à Manning por ter me dado a oportunidade de escrever este livro e por me proporcionar muita liberdade criativa.
+- Agradeço aos meus editores Marjan Bace e Mike Stephens por me manterem na linha, ao Bert Bates por me ensinar a escrever e à Jennifer Sout por ser uma editora incrível, responsável e prestativa.
+- Agradeço também a todo o time de produção da Manning: Kevin Sullivan, Mary Piergies, Ti§any Taylor, Leslie Haimes e aos outros nos bastidores.

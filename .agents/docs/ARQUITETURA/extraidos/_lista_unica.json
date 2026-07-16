@@ -1,0 +1,130 @@
+{
+  "total_epub_unique": 24,
+  "extracted_ok": 24,
+  "failed": 0,
+  "books": [
+    {
+      "filename": "EPUB - [PT] Arquitetura Limpa - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\ARQUITETURA\\extraidos\\EPUB - [PT] Arquitetura Limpa - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\ARQUITETURA\\extraidos\\EPUB - [PT] Arquitetura Limpa - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [EN] Building Multi - Tenant SaaS Architectures - Tod Golding.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\ARQUITETURA\\extraidos\\EPUB - [EN] Building Multi - Tenant SaaS Architectures - Tod Golding.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\ARQUITETURA\\extraidos\\EPUB - [EN] Building Multi - Tenant SaaS Architectures - Tod Golding.meta.json"
+    },
+    {
+      "filename": "EPUB - [EN] Building Server - side and Microservices with Go - Dušan Stojanović.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\ARQUITETURA\\extraidos\\EPUB - [EN] Building Server - side and Microservices with Go - Dušan Stojanović.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\ARQUITETURA\\extraidos\\EPUB - [EN] Building Server - side and Microservices with Go - Dušan Stojanović.meta.json"
+    },
+    {
+      "filename": "EPUB - [EN] Clean Architecture for Android - 2nd Edition - Boudjnah, Eran.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\ARQUITETURA\\extraidos\\EPUB - [EN] Clean Architecture for Android - 2nd Edition - Boudjnah, Eran.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\ARQUITETURA\\extraidos\\EPUB - [EN] Clean Architecture for Android - 2nd Edition - Boudjnah, Eran.meta.json"
+    },
+    {
+      "filename": "EPUB - [EN] Designing Data - Intensive Applications The Big Ideas Behind Reliable, Scalable, and Maintainable Systems - Martin Kleppmann.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\ARQUITETURA\\extraidos\\EPUB - [EN] Designing Data - Intensive Applications The Big Ideas Behind Reliable, Scalable, and Maintainable Systems - Martin Kleppmann.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\ARQUITETURA\\extraidos\\EPUB - [EN] Designing Data - Intensive Applications The Big Ideas Behind Reliable, Scalable, and Maintainable Systems - Martin Kleppmann.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] EPUB_APIs_REST__seus_serviços_prontos_para_o_mundo_real - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\ARQUITETURA\\extraidos\\EPUB - [PT] EPUB_APIs_REST__seus_serviços_prontos_para_o_mundo_real - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\ARQUITETURA\\extraidos\\EPUB - [PT] EPUB_APIs_REST__seus_serviços_prontos_para_o_mundo_real - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] EPUB Arquitetura de software distribuído_ boas práticas para um mundo de microsserviços - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\ARQUITETURA\\extraidos\\EPUB - [PT] EPUB Arquitetura de software distribuído_ boas práticas para um mundo de microsserviços - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\ARQUITETURA\\extraidos\\EPUB - [PT] EPUB Arquitetura de software distribuído_ boas práticas para um mundo de microsserviços - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] EPUB_Arquitetura_de_software_e_tomada_de_decisão - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\ARQUITETURA\\extraidos\\EPUB - [PT] EPUB_Arquitetura_de_software_e_tomada_de_decisão - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\ARQUITETURA\\extraidos\\EPUB - [PT] EPUB_Arquitetura_de_software_e_tomada_de_decisão - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] EPUB_GraphQL__a_revolucionária_linguagem_de_consulta_e_manipulação_de_dados_para_APIs - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\ARQUITETURA\\extraidos\\EPUB - [PT] EPUB_GraphQL__a_revolucionária_linguagem_de_consulta_e_manipulação_de_dados_para_APIs - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\ARQUITETURA\\extraidos\\EPUB - [PT] EPUB_GraphQL__a_revolucionária_linguagem_de_consulta_e_manipulação_de_dados_para_APIs - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] Explorando APIs e bibliotecas Java JDBC, IO, Threads, JavaFX e mais - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\ARQUITETURA\\extraidos\\EPUB - [PT] Explorando APIs e bibliotecas Java JDBC, IO, Threads, JavaFX e mais - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\ARQUITETURA\\extraidos\\EPUB - [PT] Explorando APIs e bibliotecas Java JDBC, IO, Threads, JavaFX e mais - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [EN] Facilitating Software Architecture (for Raymond Rhine) - Andrew Harmel-Law.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\ARQUITETURA\\extraidos\\EPUB - [EN] Facilitating Software Architecture (for Raymond Rhine) - Andrew Harmel-Law.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\ARQUITETURA\\extraidos\\EPUB - [EN] Facilitating Software Architecture (for Raymond Rhine) - Andrew Harmel-Law.meta.json"
+    },
+    {
+      "filename": "EPUB - [EN] Fundamentals of Software Architecture (for Raymond Rhine) - Mark Richards & Neal Ford.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\ARQUITETURA\\extraidos\\EPUB - [EN] Fundamentals of Software Architecture (for Raymond Rhine) - Mark Richards & Neal Ford.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\ARQUITETURA\\extraidos\\EPUB - [EN] Fundamentals of Software Architecture (for Raymond Rhine) - Mark Richards & Neal Ford.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] Fundamentos da Arquitetura de Software - Mark Richards & Neal Ford.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\ARQUITETURA\\extraidos\\EPUB - [PT] Fundamentos da Arquitetura de Software - Mark Richards & Neal Ford.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\ARQUITETURA\\extraidos\\EPUB - [PT] Fundamentos da Arquitetura de Software - Mark Richards & Neal Ford.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] Google App Engine - Construindo servicos na nuvem - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\ARQUITETURA\\extraidos\\EPUB - [PT] Google App Engine - Construindo servicos na nuvem - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\ARQUITETURA\\extraidos\\EPUB - [PT] Google App Engine - Construindo servicos na nuvem - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [EN] Head First Software Architecture_ A Learner's Guide to - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\ARQUITETURA\\extraidos\\EPUB - [EN] Head First Software Architecture_ A Learner's Guide to - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\ARQUITETURA\\extraidos\\EPUB - [EN] Head First Software Architecture_ A Learner's Guide to - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] Introdução à Arquitetura e Design de Software - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\ARQUITETURA\\extraidos\\EPUB - [PT] Introdução à Arquitetura e Design de Software - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\ARQUITETURA\\extraidos\\EPUB - [PT] Introdução à Arquitetura e Design de Software - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [EN] Learning Domain - Driven Design Aligning Software - Vladik Khononov.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\ARQUITETURA\\extraidos\\EPUB - [EN] Learning Domain - Driven Design Aligning Software - Vladik Khononov.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\ARQUITETURA\\extraidos\\EPUB - [EN] Learning Domain - Driven Design Aligning Software - Vladik Khononov.meta.json"
+    },
+    {
+      "filename": "EPUB - [EN] Mastering APIs for Enterprise Applications - Rajan Subramanian.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\ARQUITETURA\\extraidos\\EPUB - [EN] Mastering APIs for Enterprise Applications - Rajan Subramanian.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\ARQUITETURA\\extraidos\\EPUB - [EN] Mastering APIs for Enterprise Applications - Rajan Subramanian.meta.json"
+    },
+    {
+      "filename": "EPUB - [EN] Modern Data Architecture in AI_ Optimize AI data storage, - Abhik Choudhury & Praneeth Puchakayala & Aishwarya Badlani.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\ARQUITETURA\\extraidos\\EPUB - [EN] Modern Data Architecture in AI_ Optimize AI data storage, - Abhik Choudhury & Praneeth Puchakayala & Aishwarya Badlani.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\ARQUITETURA\\extraidos\\EPUB - [EN] Modern Data Architecture in AI_ Optimize AI data storage, - Abhik Choudhury & Praneeth Puchakayala & Aishwarya Badlani.meta.json"
+    },
+    {
+      "filename": "EPUB - [EN] Principles of Software Architecture Modernization - Pacheco, Diego;Sgro, Sam.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\ARQUITETURA\\extraidos\\EPUB - [EN] Principles of Software Architecture Modernization - Pacheco, Diego;Sgro, Sam.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\ARQUITETURA\\extraidos\\EPUB - [EN] Principles of Software Architecture Modernization - Pacheco, Diego;Sgro, Sam.meta.json"
+    },
+    {
+      "filename": "EPUB - [PT] Rest - Construa APIs inteligentes de maneira simples - Desconhecido.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\ARQUITETURA\\extraidos\\EPUB - [PT] Rest - Construa APIs inteligentes de maneira simples - Desconhecido.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\ARQUITETURA\\extraidos\\EPUB - [PT] Rest - Construa APIs inteligentes de maneira simples - Desconhecido.meta.json"
+    },
+    {
+      "filename": "EPUB - [EN] RESTful API Design Principles - Alex Rodriguez.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\ARQUITETURA\\extraidos\\EPUB - [EN] RESTful API Design Principles - Alex Rodriguez.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\ARQUITETURA\\extraidos\\EPUB - [EN] RESTful API Design Principles - Alex Rodriguez.meta.json"
+    },
+    {
+      "filename": "EPUB - [EN] Software Architecture and Decision - Making - Srinath Perera.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\ARQUITETURA\\extraidos\\EPUB - [EN] Software Architecture and Decision - Making - Srinath Perera.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\ARQUITETURA\\extraidos\\EPUB - [EN] Software Architecture and Decision - Making - Srinath Perera.meta.json"
+    },
+    {
+      "filename": "EPUB - [EN] Version Control with Git Powerful Tools and Techniques for - Prem Kumar Ponuthorai and Jon Loeliger.epub",
+      "extracted": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\ARQUITETURA\\extraidos\\EPUB - [EN] Version Control with Git Powerful Tools and Techniques for - Prem Kumar Ponuthorai and Jon Loeliger.txt",
+      "meta": "C:\\Users\\trcnologia\\Desktop\\PROJETOS\\proj_erp\\scripts\\..\\.agents\\docs\\ARQUITETURA\\extraidos\\EPUB - [EN] Version Control with Git Powerful Tools and Techniques for - Prem Kumar Ponuthorai and Jon Loeliger.meta.json"
+    }
+  ],
+  "mobi_pending": [
+    "MOBI - [PT] Enterprise Architect’s Handbook A Blueprint to Design and - Dr_ Vishwakarma J S.mobi"
+  ]
+}

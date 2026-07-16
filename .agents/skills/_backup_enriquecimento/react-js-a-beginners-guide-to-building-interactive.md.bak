@@ -1,0 +1,63 @@
+---
+name: react-js-a-beginners-guide-to-building-interactive
+description: >-
+  Passos operacionais extraidos — desenvolvimento web, full-stack, JavaScript, TypeScript, React, Node.js (EN).
+---
+
+# React JS. A Beginners Guide to Building Interactive Web Apps 2024 (Ellington A.) (z - library.sk, 1lib.sk, z-lib.sk) — Passos Operacionais
+
+Skill baseada no livro "React JS. A Beginners Guide to Building Interactive Web Apps 2024 (Ellington A.) (z - library.sk, 1lib.sk, z-lib.sk)" (EN). Contem passos praticos e sequencias operacionais.
+
+Use quando o usuario pedir orientacao pratica sobre: desenvolvimento web, full-stack, JavaScript, TypeScript, React, Node.js.
+
+---
+
+## 1. ## PDF - [EN] React JS. A Beginners Guide to Building Interactive Web Apps 2024 (Ellington A.) (z - library.sk, 1lib.sk, z-lib.sk)
+
+
+## Procedimentos
+
+1. [Página 100](page_100.html)
+1. [Página 101](page_101.html)
+1. [Página 102](page_102.html)
+1. [Página 103](page_103.html)
+1. [Página 104](page_104.html)
+1. [Página 105](page_105.html)
+1. [Página 106](page_106.html)
+1. [Página 107](page_107.html)
+1. [Página 108](page_108.html)
+1. [Página 109](page_109.html)
+1. [Página 10](page_010.html)
+1. [Página 110](page_110.html)
+1. [Página 111](page_111.html)
+1. [Página 112](page_112.html)
+1. [Página 113](page_113.html)
+1. [Página 114](page_114.html)
+1. [Página 115](page_115.html)
+1. [Página 116](page_116.html)
+1. [Página 117](page_117.html)
+1. [Página 118](page_118.html)
+
+## Conceitos Fundamentais
+
+- tory of your project. As your proficiency in React develops, you’ll naturally discover a file organization strat­
+- tial. It helps not only in navigating through the project with ease but also plays a crucial role in maintaining
+- fies the creation of interactive UIs. Developers can effortlessly map out views for each application state, and
+- familiarity with JSX grows, it evolves into a potent expressive medium, vital for bringing to life the interac­
+- which is essential for various functionalities like registrations, data entries, or search functionalities. The
+
+## Princípios e Técnicas
+
+- racy and stability of the software. Utilizing tools like Jest and React Testing Library, coupled with adherence
+- lower efficiency, and potential user dissatisfaction. Timely detection and resolution of these issues are vital
+- startups alike translates to a robust market for skilled React developers. Proficiency in React not only opens
+- to serve as a bridge from the initial intrigue of novices to the refined proficiency of professional React de­
+- This focus is particularly beneficial for developers aspiring to advance in their careers or tackle more chal­
+
+## Aplicações Práticas
+
+- to enhance existing React skills, this book provides the essential knowledge, skills, and insights required to
+- to tool for developers aiming to create fast, scalable, and straightforward web applications, especially those
+- nents, typically from parent to child, in a top-down flow. This unidirectional data flow simplifies the appli­
+- libraries, or preprocessors like SASS. Directly linking CSS files in JavaScript files scopes styles to partic­
+- In essence, JSX is a transformative feature in React, presenting a declarative and legible method for crafting

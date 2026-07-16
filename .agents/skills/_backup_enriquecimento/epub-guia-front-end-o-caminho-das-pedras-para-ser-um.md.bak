@@ -1,0 +1,57 @@
+---
+name: epub-guia-front-end-o-caminho-das-pedras-para-ser-
+description: >-
+  Passos operacionais extraidos — desenvolvimento web, full-stack, JavaScript, TypeScript, React, Node.js (PT).
+---
+
+# Epub Guia Front End O Caminho Das Pedras Para Ser Um — Passos Operacionais
+
+Conteudo extraido do livro 'Epub Guia Front End O Caminho Das Pedras Para Ser Um'. Contem passos, tecnicas e principios baseados na obra original.
+
+## 1. Conceitos Fundamentais
+- São tantas tecnologias, metodologias, boas práticas e outros tantos tópicos que surgem todos os dias, que eu confesso: realmente, fica muito difícil acompanhar tudo.
+- Além da sobrecarga enorme que é ficar testando todas as novidades.
+- Eu mesmo tenho que filtrar bastante os assuntos a aprender.
+- Geralmente, eu não me atenho a nada que eu não precise utilizar em algum projeto.
+- Não vou aprender a utilizar um **framework** ou uma ferramenta, simplesmente porque todo mundo está comentando por aí.
+- Eu preciso trabalhar, afinal de contas.
+- Tenho que garantir o Jack Daniels das crianças.
+- Mas, seria pedir muito ter alguém ao meu lado no início da minha carreira dizendo o que é perda de tempo?
+- Muitos devs que decidem se aventurar aprendem toda a matéria sozinhos.
+- Eu mesmo, quando adolescente inconsequente, não queria, nem a pau, estudar por conta própria.
+
+## 2. Principios e Tecnicas
+- Isso mudou depois que comecei a trabalhar com web.
+- Aprender algo sozinho é interessante!
+- Certamente, você pode acabar perdendo bastante tempo tentando descobrir o que vai torná-lo ou não produtivo.
+- É um processo chato e trabalhoso e nem sempre você acerta.
+- Quando estamos sozinhos, é quase certo que deixaremos passar informações importantes no processo de aprendizado.
+- Já vi tantos bons desenvolvedores front-end que iniciaram sua carreira como autodidatas, mas não tinham ideia do que era controle de versão, WAI-ARIA ou, até mesmo, propriedades corriqueiras do CSS.
+- Não porque eles eram desatentos, mas porque estavam focados em outros tópicos.
+- Isso é normal acontecer quando aprendemos algo de forma não linear, e misturando fontes do conteúdo.
+- Por isso, é tão importante ter alguém que mostre, pelo menos, a direção correta.
+- Você economiza tempo e, talvez, até algum dinheiro nesse processo.  #### A missão deste guia  Este guia tem a missão de ajudar qualquer pessoa que queira iniciar na área de web.
+
+## 3. Aplicacoes Praticas
+- Foquei-me em desenvolvedores front-end porque é a área no qual os profissionais possuem maior familiaridade quando desejam entrar no mercado de web.
+- Mesmo assim, se você é um apenas um curioso sobre o assunto, mas quer entender melhor sobre o tema, talvez este livro possa ajudar.
+- Este guia vai apresentar os assuntos mais básicos e importantes, tentando auxiliar aqueles que já adentraram ou querem adentrar, agora, o mercado de web.  #### Organização por prioridade  Não separei os tópicos por ordem de dificuldade, mas sim por ordem de **prioridade**.
+- Quero deixar claro que a escolha das prioridades atende a minha opinião.
+- Ou seja, há milhares de pessoas aí afora que pensam diferente de mim.
+- Eu decidi, aqui, o que seria mais ou menos importante aprender para ingressar na área.
+- Outra ressalva que faço é que, talvez, você precise aprender um assunto mais complicado antes de passar para tópicos tido como mais fáceis.
+- Por exemplo: é mais significativo que um dev front-end saiba primeiro o básico de JavaScript do que de SEO.
+- Você até encontra um bom emprego sabendo apenas HTML, CSS e SEO, mas, na maioria dos casos, JavaScript costuma ser mais relevante.  #### O que este guia não é?
+- Definitivamente, este guia **não** é um livro didático, logo, ele não vai ensinar nada do começo ao fim, nem tão pouco código.
+
+## 4. Topicos Avancados
+- Este livro se propõe a mostrar o "caminho das pedras", ditando o que você precisa aprender, mostrando todos os assuntos pertinentes para se tornar um dev front-end e quais os assuntos mais comentados por aí.
+- Isso não quer dizer que você precise aprender tudo o que está listado aqui.
+- Este livro vai ajudá-lo a decidir o que aprender primeiro.
+- Mas, sem dúvida, você precisa saber que estes assuntos existem.
+- Vou tentar indicar links de referências (em inglês e em português) para estudo durante o percorrer do livro.
+- Tome tempo para visitá-los e estudá-los também.
+- São links com muito conteúdo importante.
+- Ensinar o "caminho das pedras".
+- Fazê-lo entrar da maneira correta no mundo do desenvolvimento web.
+- É isso que este livro se propõe a fazer.

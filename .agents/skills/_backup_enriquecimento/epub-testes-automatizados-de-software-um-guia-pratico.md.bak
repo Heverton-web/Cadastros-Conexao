@@ -1,0 +1,44 @@
+---
+name: epub-testes-automatizados-de-software-um-guia-pratico
+description: >-
+  Passos operacionais extraidos do livro 'EPUB Testes automatizados de software um guia prático' (PT) — Testes.
+---
+# Conteudo Extraido
+Fonte: EPUB - [PT] EPUB Testes automatizados de software_ um guia prático - Desconhecido.txt
+
+
+## Conceitos Fundamentais
+- Capítulo 2: Praticando Test-Driven Development (TDD) 2.1 Testes, do jeito que você já sabe 2.2 Mudando a maneira de desenvolver 2.3 Test-Driven Development 2.4 Efeitos no design de classes 2.5 Baby steps 2.6 Devo ver o teste falhar? 2.7 TDD 100% do t
+- Capítulo 3: Mock Objects 3.1 Simulando a infraestrutura 3.2 Mock Objects 3.3 Mocks estritos e acoplamento 3.4 Fugindo de métodos estáticos 3.5 Garantindo que métodos foram invocados 3.6 Contando o número de vezes que o método foi invocado 3.7 Outros 
+- Meu nome é Mauricio Aniche, e trabalho com desenvolvimento de software há por volta de 10 anos.
+- Em boa parte desse tempo, atuei como consultor para diferentes empresas do mercado brasileiro e internacional.
+- Com certeza, as linguagens mais utilizadas por mim ao longo da minha carreira foram Java, C# e C.
+- Como sempre pulei de projeto em projeto (e, por consequência, de tecnologia em tecnologia), nunca fui a fundo em nenhuma delas.
+
+## Principios e Tecnicas
+- Em meu último ano da graduação, 2007, comecei a ler mais sobre a ideia de testes automatizados e TDD.
+- Achei muito interessante e útil a ideia de se escrever um programa para testar seu programa, e decidi praticar tudo isso, por conta própria, para entender melhor como funcionava.
+- De 2007 em diante, resolvi praticar, pesquisar e divulgar melhor minhas ideias sobre o assunto.
+- Comecei devagar, apenas blogando o que estava na minha cabeça e sobre o que gostaria de feedback de outros desenvolvedores.
+- Mas para fazer isso de maneira mais decente, resolvi ingressar no programa de Mestrado da Universidade de São Paulo.
+- Lá, pesquisei sobre os efeitos da prática de TDD no design de classes.
+
+## Aplicacoes Praticas
+- Palestrei nos principais eventos de métodos ágeis do país (como Agile Brazil, Encontro Ágil), de desenvolvimento de software (QCON SP e DNAD), entre outros menores.
+- Cheguei a participar de eventos internacionais também; fui o único palestrante brasileiro no Primeiro Workshop Internacional sobre TDD, em 2010, na cidade de Paris.
+- Isso mostra também que tenho participado dos eventos acadêmicos.
+- Em 2011, apresentei um estudo sobre TDD no WBMA (Workshop Brasileiro de Métodos Ágeis), e em 2012, no maior simpósio brasileiro sobre engenharia de software, o SBES.
+- Atualmente trabalho pela Caelum, como consultor e instrutor.
+- Também sou aluno de doutorado pela Universidade de São Paulo, onde continuo a pesquisar sobre a relação dos testes de unidade e qualidade do código.
+
+## Topicos Avancados
+- Nos últimos anos tenho olhado-o de todos os pontos de vista possíveis: de praticante, de acadêmico, de pesquisador, de apaixonado, de frio.
+- Esse livro é o relato de tudo que aprendi nesses últimos anos. page_005 Capítulo 1 : Testes de Unidade Com certeza, todo desenvolvedor de software já escreveu um trecho de código que não funcionava.
+- E pior, muitas vezes só descobrimos que o código não funciona quando nosso cliente nos reporta o bug.
+- Nesse momento, perdemos a confiança no nosso código (já que o número de bugs é alto) e o cliente perde a confiança na equipe de desenvolvimento (já que ela não entrega código de qualidade).
+- Mas será que isso é difícil de acontecer? 1.1 Um código qualquer Para exemplificar isso, imagine que hoje trabalhamos em um sistema de leilão.
+- Nesse sistema, um determinado trecho de código é responsável por devolver o maior lance de um leilão.
+
+## Secao 5
+- Ao receber um leilão, ele varre a lista buscando o maior valor.
+- Veja que a variável maiorDeTodos é inicializada com o menor valor que cabe em um double .

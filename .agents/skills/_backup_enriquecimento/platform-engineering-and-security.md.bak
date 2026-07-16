@@ -1,0 +1,57 @@
+---
+name: platform-engineering-and-security
+description: >-
+  Passos operacionais extraidos do livro 'Platform Engineering and Security' (EN) — Segurança.
+---
+
+# Platform Engineering And Security — Passos Operacionais
+
+Conteudo extraido do livro 'Platform Engineering And Security'. Contem passos, tecnicas e principios baseados na obra original.
+
+## 1. Conceitos Fundamentais
+- Platform Engineering and Security .koboSpan { -webkit-text-combine: inherit; } C HAPTER 9 Productization and Collaboration Introduction The field of software development has experienced rapid change, resulting in frequent releases and multiple daily deployments now being considered standard practice across organizations.
+- Platform engineering represents a significant advancement; it is a discipline that bridges development, operations, and infrastructure.
+- Platforms have transitioned from simple tool collections to foundational components of modern software delivery, empowering organizations to build, deploy, and scale applications with speed and reliability.
+- However, the success of these platforms relies on their technical capabilities, and their perception and management within the organization: productization and collaboration are critical.
+- Productization involves treating platforms as products by having dedicated roadmaps, user-centric design, and continuous improvement cycles.
+- This ensures that the platform evolves according to the needs of its users, typically developers and operations teams rely on it to deliver high-quality software.
+- By adopting a product mindset, platform teams can create functional, intuitive, reliable, and scalable systems, driving greater adoption and user satisfaction.
+- Collaboration connects platform teams to the rest of the organization.
+- In the age of DevOps and agile methodologies, collaboration between development, operations, security, and platform teams is crucial for developing platforms that meet the organization’s needs.
+- This chapter explores the dynamics of productization and collaboration within platform engineering and how platforms can be turned into products that deliver tangible value to users.
+
+## 2. Principios e Tecnicas
+- It looks at how collaboration across teams unlocks this potential.
+- From the technical aspects of designing scalable platforms to the cultural shifts needed to break down silos, this chapter helps organizations enhance their platform engineering practices.
+- Structure The chapter covers the following topics: Productization in platform engineering Technical aspects of productization Collaborations in platform engineering Cultural and organizational differences Challenges and solutions Measuring KPIs Cultural and organizational differences Objectives By the end, readers will have a deeper understanding of how to create, manage, and scale platforms as products that not only meet but exceed the expectations of their users.
+- This chapter will provide an interlink between and details of productization and collaboration in achieving secure platform engineering.
+- It highlights the importance of treating platform components as products, complete with defined APIs, documentation, and SLAs, to enhance efficiency and reusability.
+- It also addresses the cultural and organizational factors that influence collaboration, offering strategies to foster a shared responsibility for security across different teams.
+- By combining practical solutions with real-world examples and measurable KPIs, this chapter provides a roadmap for organizations to build and scale secure platforms through effective productization and collaborative efforts.
+- Productization in platform engineering In the context of traditional software development, platforms have frequently been viewed as a set of tools and services designed to address specific, immediate requirements.
+- These tools are usually created independently and with a narrow focus, often solving a particular issue or facilitating a specific procedure.
+- Following deployment, these tools or services typically receive minimal maintenance, with attention given only when there are issues or when a critical update is necessary.
+
+## 3. Aplicacoes Praticas
+- While this method is functional, it often leads to inconsistent, fragmented user experiences and platforms that do not adapt to their users' evolving needs.
+- Need for platform as a product mindset The concept of platform as a product represents a significant shift in thinking, transforming internal platforms from static tools into evolving products that consistently cater to the needs of their users, primarily developers, operations, and other technical teams.
+- Like any consumer-oriented product, a platform viewed through the product lens undergoes continuous development, iteration, and enhancement: It is driven by a clear vision, managed through a roadmap, and evaluated based on its capacity to meet user needs and generate business value.
+- Transitioning from treating platforms as one-time tools to continuously maintained products necessitates a fundamental shift in the approach of platform teams.
+- Rather than exclusively focusing on addressing immediate technical challenges, teams must embrace a long-term outlook , perceiving the platform as a dynamic entity that evolves.
+- One of the very good examples is Spotify’s Backstage for treating a DevOps platform as a product that transformed developer productivity and organizational efficiency.
+- The key to the development of Backstage was adopting a product mindset and fostering a community-driven ecosystem.
+- This led to the creation of a platform by Spotify that not only solved its internal challenges but also became a valuable product across the globe.
+- Here are some of the insights into how Spotify treated Backstage as a Product : Product mindset : Backstage was developed with a clear focus on the end users (developers).
+- The product team gathered feedback from engineering teams to prioritize features and improvements.
+
+## 4. Topicos Avancados
+- Dedicated team : A dedicated platform engineering team was responsible for building, maintaining, and evolving Backstage.
+- This team was responsible for defining the roadmap, sprints, and user research.
+- Iterative development : Backstage was rolled out incrementally, starting with a few teams and gradually expanding across Spotify.
+- The feedback loop was followed, and continuous improvements were made.
+- Metrics and KPIs : The product team tracked metrics such as developer productivity, time-to-market, and platform adoption to measure the success of Backstage.
+- These metrics helped in the future investment of the product.
+- This platform as a product approach built a Backstage portal and benefited a large number of organizations across the globe by adopting Backstage as a self-service portal.
+- Long-term vision A productized platform is constructed with a long-term vision in focus: This vision is typically aligned with the broader objectives of the organization, guaranteeing that the platform not only caters to current needs but is also scalable and adaptable to future requirements.
+- Roadmaps play a critical role in managing platform development.
+- These roadmaps describe the planned evolution of the platform, encompassing new features, enhancements, and integrations, and are regularly updated based on user feedback and shifting priorities.

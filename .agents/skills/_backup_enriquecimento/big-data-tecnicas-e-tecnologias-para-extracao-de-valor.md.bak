@@ -1,0 +1,44 @@
+---
+name: big-data-tecnicas-e-tecnologias-para-extracao-de-valor
+description: >-
+  Passos operacionais extraidos do livro 'Big data técnicas e tecnologias para extração de valor dos dados' (PT) — Big Data.
+---
+# Conteudo Extraido
+Fonte: EPUB - [PT] EPUB Big data_ técnicas e tecnologias para extração de valor dos dados - Desconhecido.txt
+
+
+## Conceitos Fundamentais
+- page_002 Sumário ISBN Agradecimentos Sobre a autora Prefácio Dedicatória *“É um erro capital teorizar antes de ter dados.
+- Sem se perceber, começa-se a distorcer os fatos para ajustá-los às teorias, em vez de mudar as teorias para que se ajustem aos fatos.”* 1.
+- O que muda com Big Data page_003 ISBN Impresso e PDF: 978-85-5519-231-9 EPUB: 978-85-5519-232-6 MOBI: 978-85-5519-233-3 Caso você deseje submeter alguma errata ou sugestão, acesse http://erratas.casadocodigo.com.br . page_004 Agradecimentos O lado bo
+- Agradeço também ao meu marido Evandro, pelo incentivo, parceria e amor. É muito bom tê-lo ao meu lado.
+- Além da família, tive a sorte de ter grandes mentores em minha vida, inspirando-me e dando suporte à minha carreira.
+- Thesko, Karen e Tereza, sou grata por todas as conversas e lições de vida.
+
+## Principios e Tecnicas
+- Agradeço também aos profissionais e amigos do Laboratório de Sustentabilidade (Lassu), Fundação Instituto de Administração (FIA), Fórum de IoT, UTFPR, BSI Tecnologia e SDI Sistemas.
+- Sempre tive em mente que as oportunidades não aparecem, você precisa criá-las.
+- Foi buscando uma oportunidade que cheguei à Casa do Código, onde apostaram em minha iniciativa e me deram suporte na escrita do livro.
+- Vivian, obrigada pelas valiosas revisões durante todo esse processo.
+- Um agradecimento especial aos alunos dos quais tive a oportunidade de compartilhar conhecimento sobre Big Data.
+- Foram vocês os principais incentivadores para a criação deste livro.
+
+## Aplicacoes Praticas
+- Possui artigos publicados na área de tecnologias de Big Data e já ministrou mais de 300 horas de palestras e aulas sobre o tema para empresas, entidades públicas e programas de MBA da USP e Fundação Instituto de Administração (FIA).
+- Atua também como revisora de código no programa Nanodegree em Análise de Dados da rede de cursos on-line Udacity.
+- Fez parte do corpo docente do departamento de computação da Universidade Tecnológica Federal do Paraná (UTFPR) no período de 2011 a 2012.
+- Graduou-se em Administração de Empresas pela Universidade Estadual do Norte do Paraná (UENP) em 2004, e em Análise e Desenvolvimento de Sistemas pela UTFPR em 2011.
+- Concluiu o curso de Especialização Lato Sensu em Tecnologia Java pela UTFPR em 2010.
+- Atualmente, é mestranda em Engenharia de Computação pela Escola Politécnica da Universidade de São Paulo (Poli-USP).
+
+## Topicos Avancados
+- Mais informações podem ser encontradas em seu perfil no LinkedIn: https://www.linkedin.com/in/rosangelafpm . page_006 Prefácio Público-alvo Este livro é indicado para estudantes universitários, pesquisadores e profissionais que desejam compreender o 
+- Embora tenha um viés técnico, o livro não é destinado somente aos profissionais da área de computação.
+- As tecnologias e soluções de Big Data são apresentadas em uma abordagem mais conceitual, com o objetivo de detalhar as características e capacidades de cada uma delas.
+- O enfoque do livro é dado aos processos existentes em um projeto de Big Data.
+- Para isso, cada capítulo foi planejado para apresentar informações sobre as principais atividades em um projeto, desde a captura até a visualização de dados.
+- A partir dessa estrutura, profissionais de diferentes áreas que desejam atuar com esse tema poderão também se beneficiar do conteúdo do livro, obtendo informações relevantes para inspirá-los na aplicação de Big Data em sua área de atuação.
+
+## Secao 5
+- Porém, o leitor pode utilizar o livro como base para identificar quais áreas de estudo em relação a Big Data ele pode se aprofundar.
+- Ao término da leitura deste livro, o leitor poderá compreender as diversas possibilidades existentes para atuar nesse universo tão promissor.

@@ -1,0 +1,57 @@
+---
+name: epub-yesod-e-haskell-aplica-es-web-com-programa-o-
+description: >-
+  Passos operacionais extraidos — desenvolvimento web, full-stack, JavaScript, TypeScript, React, Node.js (PT).
+---
+
+# Epub Yesod E Haskell Aplicacoes Web Com Programacao — Passos Operacionais
+
+Conteudo extraido do livro 'Epub Yesod E Haskell Aplicacoes Web Com Programacao'. Contem passos, tecnicas e principios baseados na obra original.
+
+## 1. Conceitos Fundamentais
+- Introdução — Configurando o ambiente & primeiros passos](01-stack.html)   * [2\.
+- Scaffold & Templates: Configuração do ambiente com Stack](02-stack-scaffold.html)   * [3\.
+- Estrutura de projeto Yesod com template yesod-minimal](03-desbravando-o-scaffold-estrutura-do-projeto.html)   * [4\.
+- Shakespearean Templates — ser ou não ser, eis a questão ](04-shakespearean-templates.html)   * [5\.
+- Montando o front-end com blocos](05-widgets.html)   * [6\.
+- Persistência de dados](06-persistencia.html)   * [7\.
+- Projeto Livraria](07-projeto-livraria.html)   * [8\.
+- Manipulando credenciais e arquivos estáticos](08-credenciais-arquivos.html)   * [9\.
+- Criando WebService RESTful](09-restful.html)   * [10\.
+- Uma conclusão inevitável](10-conclusao.html)     # ISBN  Impresso e PDF: 978-85-7254-039-1  EPUB: 978-85-7254-040-7  MOBI: 978-85-7254-041-4  > Caso você deseje submeter alguma errata ou sugestão, acesse <http://erratas.casadocodigo.com.br>.   # Autores  ## Alexandre Garcia de Oliveira  É formado Tecnólogo em Processamento de Dados na Faculdade de Tecnologia da Baixada Santista Rubens Lara (FATEC-RL) em 2004, e Bacharel em Matemática pelo Instituto de Matemática e Estatística da Universidade de São Paulo em 2012, onde também se formou Mestre em Matemática Aplicada em 2015.
+
+## 2. Principios e Tecnicas
+- Leciona há 9 anos no Centro Estadual de Educação Tecnológica Paula Souza (CEETEPS), sendo há 8 anos pelas Fatecs, onde passou pelos campos de Santos, Praia Grande e São Caetano do Sul.
+- Programa em Haskell há cerca de 6 anos.
+- Leciona no Centro Estadual de Educação Tecnológica Paula Souza (CEETEPS) desde 2016 pela Etec, tendo como sede a Etec Adolpho Berezin, atuando também na Etec Praia Grande e Cubatão.
+- Apaixonado por viagens, jogos de estratégia, séries e animes.   # Prefácio  Com a ascensão das metodologias ágeis, o mercado de TI demanda, mais do que nunca, o desenvolvimento rápido de soluções.
+- Existem muitas linguagens de programação e frameworks que possibilitam a construção de aplicações de maneira veloz, e o Yesod está entre eles.
+- Neste livro você será apresentado a todas as ferramentas necessárias que o Yesod disponibiliza para a construção de uma aplicação web do zero.  ### Público-alvo  Este livro é voltado a qualquer desenvolvedor ou desenvolvedora que deseja aprender como construir aplicações web utilizando o paradigma de Programação Funcional e, consequentemente, o Yesod.
+- Também é indicado para quem está em busca de frameworks para desenvolvimento ágil.  ### Conhecimentos necessários  Conhecimento básico/intermediário de Haskell, que é a linguagem que o Yesod utiliza.
+- O livro _Haskell: Uma introdução à programação funcional_ traz todo o conhecimento de Haskell necessário para entendimento do paradigma funcional, assim como da linguagem Haskell, para a leitura e compreensão deste livro.
+- Ter conhecimento básico de arquitetura Web (_Request/Response_) para desenvolvimento horizontal pode ajudar, porém, será abordado no livro.
+- É necessário ter um conhecimento básico de GNU+Linux/MacOS e shell.
+
+## 3. Aplicacoes Praticas
+- Você também poderá utilizar Windows, porém, não será abordado neste livro.
+- Capítulo 1  # Introdução — Configurando o ambiente & primeiros passos  Neste livro, aprenderemos a mexer no Yesod e, com isso, saberemos como fazer aplicações Web e APIs REST.
+- Iniciaremos com exemplos minimalistas (o mínimo necessário para uma aplicação Web funcionar) até chegar ao acesso ao banco de dados com a API _persistent_.
+- A linguagem utilizada será Haskell, porque o excelentíssimo sistema de tipos do Haskell traz para tempo de compilação muitos erros em tempo de execução, desta forma, diminui-se o custo de produção e custo com manutenção.
+- Montaremos um projeto com você, que fará uma livraria online na qual teremos duas partes primordiais: cadastro de usuários para compra de livros; e a parte da administração (_dashboard_) na qual administradores poderão cadastrar livros para venda, inserindo dados sobre os livros como nome, autor, e preço.
+- Veremos como efetuar o cadastro de clientes e de livros, além de como estes clientes poderão comprar livros através de um carrinho de compras e visualizar seu histórico de compras através de suas respectivas contas.
+- Então aprenderemos o porquê dos Shakespearean Templates e como eles facilitam o desenvolvimento do front-end com seus templates: Hamlet, Julius, Cassius e Lucius.
+- Fazendo uso dos interpoladores dentro dos templates, o Yesod tomará conta parcialmente do seu front-end e facilitará muito a comunicação com o back-end, evitando-se muitos erros que aconteceriam em tempo de execução (com a aplicação funcionando).
+- Por enquanto, não se preocupe pois tudo será esclarecido da melhor forma possível, passo a passo.
+- Mas antes de começar, precisamos arrumar nosso ambiente, vamos lá.  ## 1.1 O que é o Stack  Stack é uma ferramenta multiplataforma para instalação e configuração de projetos em Haskell, totalmente em linha de comando.
+
+## 4. Topicos Avancados
+- Apesar de seu uso não ser obrigatório, por ser um gerenciador de projetos, vamos utilizá-lo no decorrer do livro por facilitar o gerenciamento de dependências.
+- O Stack possui várias características, entre elas:    * Instalar o GHC (compilador) em um ambiente isolado, podendo existir vários projetos com diferentes versões do GHC em um mesmo sistema operacional.   * Gerenciar o download das dependências necessárias automaticamente;   * Construir e compilar o projeto.    > **Guia do usuário Stack** >  > No livro, vamos abordar as características essenciais do Stack para o fluxo de trabalho.
+- Caso queria saber mais, não deixe de acessar o guia do usuário para o stack: <https://docs.haskellstack.org/en/stable/GUIDE/#stacks-functions>.
+- Uma das principais características do Stack é a sua lista de pré-projetos (templates), para que tenhamos um alicerce pronto ao criar um projeto, sem a necessidade de criar um do zero, escrevendo códigos repetidos de configurações, que são **clichês** (_boilerplates_) para quaisquer projetos que você possa criar.
+- Estes templates nos dão também a estrutura de pastas e arquivos necessários para criação de um projeto em Yesod de forma a organizá-lo da melhor maneira possível.
+- Posteriormente será abordada a organização mais detalhadamente.
+- Por ora utilizaremos apenas o **REPL** (_read-eval-print-loop_) GHCi, do Haskell, através do Stack.  > **Afinal, o que é REPL?** >  > Desenvolvedores de primeira viagem utilizam essa funcionalidade em diversas linguagens, porém, não sabem seu nome.
+- Nada mais é que o shell da linguagem, também conhecido como console.
+- É um programa que recebe entradas de dados do usuário, avalia e então retorna o resultado ao usuário.
+- Seu uso é muito comum no início dos estudos em uma linguagem de programação.  ## 1.2 Instalando o Stack  O site <https://haskell-lang.org/get-started> contém todo o conteúdo necessário para a instalação e configuração do stack nos três principais sistemas operacionais: GNU/Linux, MacOS e Windows.

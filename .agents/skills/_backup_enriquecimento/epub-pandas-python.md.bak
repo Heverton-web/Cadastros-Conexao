@@ -1,0 +1,59 @@
+---
+name: epub-pandas-python
+description: >-
+  Passos operacionais extraidos do livro 'Epub Pandas Python' (PT) — Epub Pandas Python.
+---
+
+# Epub Pandas Python — Passos Operacionais
+
+## 1. Conceitos Fundamentais
+
+- Transformação e limpeza de DataFrames 7.
+- Um pouco de Machine Learning  page_003 ISBN Impresso e PDF: 978-85-7254-048-3 EPUB: 978-85-7254-049-0 MOBI: 978-85-7254-050-6 Caso você deseje submeter alguma errata ou sugestão, acesse http://erratas.casadocodigo.com.br .  page_004 Prefácio Ciência de dados ( data science ) é um processo que emprega técnicas estatísticas e computacionais para analisar grandes bases de dados, procurando extrair delas conhecimento útil para empresas, instituições científicas, governos e demais organizações.
+- Tipicamente, os projetos de ciência de dados são divididos em quatro macroetapas de execução.
+- A primeira consiste simplesmente na definição do problema que será resolvido (por exemplo, criar um sistema para caracterizar o perfil dos clientes de uma empresa).
+- A segunda é a etapa de pré-processamento, onde as bases de dados relevantes (base de vendas, base de clientes etc.) devem ser reunidas e adequadamente formatadas.
+- Na terceira etapa, um algoritmo é aplicado sobre os dados pré-processados, com o objetivo de extrair um modelo estatístico ou de Machine Learning .
+- Este modelo tem por objetivo identificar padrões de relacionamento entre os itens de dados (por exemplo, o algoritmo pode gerar um modelo que revela as características mais comuns dos compradores de cada produto).
+- Por fim, na quarta etapa, os especialistas da empresa avaliam os resultados gerados pelo modelo, procurando determinar a relevância e validade deles.
+- De acordo com a literatura, a etapa de pré-processamento de dados (segunda etapa) costuma ser a mais trabalhosa em qualquer projeto relacionado à ciência de dados, ocupando tipicamente 80% do tempo consumido. É nesta fase que são realizadas as tarefas de seleção , limpeza e transformação dos dados que serão utilizados pelo algoritmo de Machine Learning / Estatística.
+- O objetivo da seleção de dados é coletar e reunir todos os dados que sejam relevantes para a resolução do problema de ciência de dados definido (por exemplo, combinar dados dos sistemas corporativos da empresa com dados disponibilizados na internet).
+
+## 2. Principios e Tecnicas
+
+- Limpeza, significa eliminar sujeira e informações irrelevantes.
+- Por fim, transformação consiste em converter os dados de origem para um outro formato, mais adequado para ser usado pelo algoritmo.
+- As atividades de seleção, limpeza e transformação de dados são comumente referenciadas como atividades de Data Wrangling , Data Munging ou Data Preparation .
+- A biblioteca pandas ( Python Data Analysis Library ) foi especialmente projetada para oferecer o suporte ao processo de Data Wrangling.
+- Trata-se de um software livre, do tipo open source, que ao longo dos últimos anos se consolidou como a biblioteca para ciência de dados mais utilizada no ambiente Python.
+- As funcionalidades oferecidas pela pandas consistem basicamente em uma combinação de técnicas eficientes para processamento de vetores e matrizes, com um conjunto de funções específicas para a manipulação de dados tabulares, que se assemelham muito às oferecidas pelo Excel e pela famosa linguagem SQL.
+- Alguns exemplos: Importar, de forma direta e padronizada, dados estruturados de diferentes tipos de fontes, tais como: arquivos texto (CSV, JSON etc.), bancos de dados e planilhas eletrônicas.
+- Combinar de forma inteligente registros provenientes de diferentes bases de dados (operação conhecida como merge ou join ); Produzir resultados agregados e tabulações ( group by ); Limpar e transformar bases de dados (ex.: aplicação de filtros sobre linhas e colunas de tabelas, ordenação e ranqueamento dos dados, tratamento de dados ausentes etc.).
+- Produzir diferentes tipos de gráficos a partir de dados armazenados em colunas de tabelas.
+- Este livro aborda a pandas sob uma perspectiva profissional, explicando como utilizá-la para resolver problemas práticos e, muitas vezes, difíceis de Data Wrangling.
+
+## 3. Aplicacoes Praticas
+
+- O livro combina a teoria com um projeto prático, que envolve o uso da pandas como ferramenta para viabilizar a execução das atividades de seleção, estudo, limpeza e transformação de uma base de dados real que contém informações detalhadas sobre diversos países (variando desde a população e extensão de cada país até as características de suas bandeiras, entre outras informações).
+- O projeto mostrará o passo a passo para realizar o pré-processamento desta base de dados, que será então utilizada como fonte para a criação de um modelo de Machine Learning, mais especificamente, um modelo de classificação de dados.
+- Público-alvo Estudantes e profissionais envolvidos com ciência de dados (independente da área ou nível de experiência); Usuários do Excel que pretendem migrar para o Python; Pessoas com conhecimento de SQL que pretendem trabalhar com Python.
+- Sobre o autor Eduardo Corrêa Gonçalves cursou Doutorado em Ciência da Computação pela UFF (2015) com período sanduíche na University of Kent, no Reino Unido.
+- Também cursou Mestrado (2004) e Graduação (1999) em Ciência da Computação pela UFF.
+- Possui certificação Oracle Database SQL Certified Expert (OCE).
+- Atualmente, trabalha como administrador de banco de dados no Instituto Brasileiro de Geografia e Estatística (IBGE) e também atua como professor colaborador na Escola Nacional de Ciências Estatísticas (ENCE-IBGE).
+- Suas áreas de interesse são: Banco de Dados, Algoritmos, Processamento de Linguagem Natural e Python.
+- Agradecimentos Inicialmente, agradeço a todos os alunos e professores da ENCE por terem contribuído com valiosas sugestões, críticas e ideias interessantes para este livro. É por isso que sempre fico feliz em lecionar disciplinas relacionadas à ciência de dados, banco de dados e Python para a graduação em Estatística!
+- Agradeço aos meus pais, Ana e Joaquim, pelo apoio de sempre.
+
+## 4. Topicos Avancados
+
+- Obrigado, também, queridos Amanda, Inês e Antonio!
+- Mais do que tudo, agradeço a Glauce, o amor de minha vida, por seu carinho, compreensão e suporte ao longo dos últimos dez anos.  page_005 Capítulo 1 Muito prazer, biblioteca pandas Você já deve ter ouvido falar que, nos últimos anos, muitas empresas têm empregado a ciência de dados ( data science ) com o propósito de alcançar um melhor posicionamento no mercado.
+- Mas o que é exatamente ciência de dados?
+- Que tipo de conhecimento posso obter em processos de ciência de dados?
+- Este capítulo responde estas questões e explica por que a pandas se tornou uma das ferramentas mais utilizadas em projetos de ciência de dados. 1.1 O que é ciência de dados?
+- De uma maneira simples, é possível definir a ciência de dados como um processo que emprega técnicas estatísticas e computacionais para resolver o problema da descoberta de conhecimento valioso em grandes bases de dados.
+- Figura 1.1: Ciência de dados: um pequeno, porém valioso diamante de conhecimento é extraído a partir de uma grande montanha de dados A ciência de dados baseia-se na utilização de algoritmos , que são capazes de vasculhar grandes bases de dados de modo eficiente (ou seja, com certa rapidez) com o intuito de extrair modelos que descrevem padrões de relacionamento interessantes escondidos dentro da montanha de dados.
+- De acordo com estudos recentes (veja mais em https://www.networkworld.com/article/3325397/idc-expect-175-zettabytes-of-data-worldwide-by-2025.html ), o volume total de dados digitais disponíveis no planeta é igual a 33ZB (33 zetabytes, ou seja, 33 x 10 21 bytes), podendo atingir a marca de 175ZB em 2025.
+- Estamos falando não apenas de dados estruturados (tabelas, planilhas etc.) mas, principalmente, de dados não estruturados (documentos, vídeos, fotos etc.).
+- Diante desta situação, é bastante natural que cientistas e analistas de negócio alimentem o seguinte desejo: por que não tentamos analisar estes dados para que novas informações sejam descobertas e utilizadas de forma estratégica para a tomada de decisões?

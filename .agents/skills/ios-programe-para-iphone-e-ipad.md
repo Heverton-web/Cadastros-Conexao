@@ -1,0 +1,78 @@
+---
+name: ios-programe-para-iphone-e-ipad
+description: >-
+  Passos operacionais extraidos — desenvolvimento web, full-stack, JavaScript, TypeScript, React, Node.js (PT).
+---
+
+# Ios Programe Para Iphone E Ipad — Passos Operacionais
+
+Conteudo extraido do livro 'Ios Programe Para Iphone E Ipad'. Contem passos, tecnicas e principios baseados na obra original.
+
+## 1. Conceitos Fundamentais
+- Não só seus marketshares possuem números impressionantes, mas também o   número de vendas da App Store traz ânimo para nós, desenvolvedores.
+- Mesmo com o número expressivo de dispositivos Android, é estimado que a App   Store seja responsável por 85-90% do faturamento de todas os aplicativos móveis já   vendidos (http://bit.ly/appstoreNumeros) , tendo revertido quase 4 bilhões de dóla-   res aos desenvolvedores de iPad e iPhone.
+- De acordo com o site de análise mobile flurry.com, o mercado brasi-   leiro atingiu, em 2012, a décima posição mundial em número de smartphones.
+- São   mais de 13 milhões de dispositivos, em sua grande maioria iPhones e Androids.
+- Este   site do Google pode agregar mais informações:  http://www.thinkwithgoogle.com/mobileplanet/pt-br/   Você encontra mais sobre o marketshare de dispositivos móveis através dos sites:   http://www.netmarketshare.com/ http://gs.statcounter.com/  Você pode estar lendo este livro para criar sua própria aplicação.
+- Desenvolvendo para o iOS   Casa do Código  procurando um novo emprego, para trabalhar com tecnologias novas.
+- Esse também   é um grande mercado, com um número de vagas crescendo.
+- Para estar nesse mercado, seja com um emprego novo ou para desenvolver sua   própria aplicação e colocá-la na App Store, você precisa saber programar para o sis-   tema operacional iOS.  1.1   Desenvolvendo para o iOS  Em 2007, com o lançamento do iPhone, o sistema operacional que roda dentro do   dispositivo tinha o criativo nome de iPhone OS.
+- Com a evolução dos dispositivos e   a chegada do iPad, o sistema mudou de nome para iOS.
+- O iOS nasceu do já antigo   sistema operacional, o OS X.
+
+
+  - presa (Company Identifier), e um prefixo para a classe (Class prefix). Insira os valores
+
+  - zação e término do aplicativo. É esta classe que inicializa o nosso controller principal
+
+  - view selecione o Attributes Inspector em View -> Utilities -> Show Attributes Inspector,
+
+  - existe a documentação, e o Xcode torna bastante fácil o acesso a ela: basta abrir o pai-
+
+  - File -> New -> File...), e selecione o template Objective-C class. Clique no botão Next,
+
+  - Button, com os textos “Dissolver”, “Virar página”, “Subir vertical” e “Girar horizontal”
+## 2. Principios e Tecnicas
+- Curiosamente, no início não havia como desenvolver para o iPhone.
+- O kit de   desenvolvimento, o SDK, só ficou disponível em 2008.
+- Nessa época ele era pago,   tornando-se gratuito em 2010 (apesar disso, os betas só podem ser utilizados pelos   desenvolvedores que possuem uma conta paga na Apple).
+- Para instalar o SDK e programar para o iOS, você vai necessariamente precisar de   um computador que rode o OS X.
+- Basicamente você só poderá desenvolver com um   Mac.
+- Sim, é um computador bem mais caro do que o valor que estamos habituados.
+- Você pode comprar seu Mac em diversos lugares, sendo que alguns apresentam até   preços melhores que na própria Apple Store.
+- No caso de você ser estudante, há um   desconto significativo de 10%, fique atento:  http://store.apple.com/br/browse/home/education_routing   Atualmente o iOS SDK vem junto com a ferramenta que auxilia a desenvolver   o código, a IDE, que se chama Xcode.
+- Você fará apenas um único download que   conterá ambos.
+- Veremos esse processo de instalação no próximo capítulo.  1.2   Como o livro está organizado e focado  Este livro aborda os pilares fundamentais de desenvolvimento para iOS, cobrindo   desde a estrutura básica de um aplicativo, passando por detalhes da principal ferra-   menta de desenvolvimento, o Xcode.
+
+
+  - ao controlador “Sobre”, de tal forma que sua área fique azulada, e então solte o clique.
+
+  - irá ser utilizado no botão para retornar a tela anterior - caso nenhum valor seja infor-
+
+  - 4) Repita os passos 1 a 3 para a tela “Inserir novo compromisso”, com o título “Inserir”
+
+  - Por ser retangular, para criar views é necessário especificar as coordenadas x e y, além
+## 3. Aplicacoes Praticas
+- Também veremos alguns tópicos mais avança-   dos, como requisições de rede e execução concorrente de tarefas, além de detalhes   da linguagem.
+- Para você ter um melhor proveito desse livro, é importante já possuir   uma boa experiência com uma outra linguagem de programação, e que se sinta con-   fortável para utilizar estruturas de controle e atuar na solução de problemas lógicos.  2   Casa do Código   Capítulo 1.
+- Introdução  Uma das principais preocupações que tive ao escrever o livro foi balancear a pro-   fundidade com a qual assuntos mais básicos e fundamentais são abordados, porém   sem deixar de lado os leitores mais ávidos por detalhes técnicos.
+- A apresentação   de funcionalidades e recursos, inclusive da ferramenta de desenvolvimento, muitas   vezes será feita de maneira orgânica, contextualizada em diversos aplicativos, o que   possibilita a criação de exemplos relevantes e práticos.
+- Foi dada muita atenção para   a criação de material que lhe instigue a querer sempre continuar adiante.
+- Todo feed-   back é mais que bem vindo.
+- Faça testes, use sua criatividade.
+- Não se atenha aos diversos   exemplos que temos aqui.
+- Apesar de serem muitos, aproveite para criar e ir além.  1.3   Códigos para download e lista de discussão  Todos os projetos apresentados no livro estão disponíveis para download no ende-   reço https://github.com/rafaelsteil/livro-ios-exemplos, incluindo as eventuais corre-   ções e modificações.
+- Além disso, criamos uma lista para perguntas e respostas tanto   sobre o livro quanto sobre programação para iOS em geral.
+
+## 4. Topicos Avancados
+- O acesso é livre, através   do seguinte endereço:  https://groups.google.com/d/forum/programacaoios  3   Capítulo 2   Hello World, seu primeiro programa   em iOS  Aplicativos para iOS seguem uma estrutura relativamente simples, se formos com-   parar com aplicações que rodam em um browser ou no desktop.
+- Além disso, ao   contrário de outros sistemas mobile, como Android, detalhes no iOS são mais pa-   dronizados, existindo uma quantidade muito menor de dispositivos e resoluções de   tela, o que simplifica muito a vida na hora de criar aplicativos.
+- Quem já fez aplica-   ções para a web sabe o quão difícil é criar um sistema que funcione bem em diversos   tamanhos de telas, configurações variadas dos computadores e, além disso tudo, em   diferentes browsers.
+- Com iOS estes problemas são muito menores, pois se você fizer   um aplicativo para iPhone, poderá ter a certeza que ele rodará da mesma maneira   para todos os usuários.
+- Claro, a medida em que o sistema vai evoluindo e novas ver-   sões são lançadas no mercado, temos que lidar as variações de processador, memória   e densidade de tela.   2.1.
+- Instalando a ferramenta de desenvolvimento - Xcode   Casa do Código  Compreendendo mais a fundo resoluções e densidades   de pixel  Uma leitura muito interessante é o post “Pixels, pixels ou pixels?”, na   URL http://bit.ly/A6odLG.
+- O código-fonte deste capítulo está disponível na pasta “HelloWorld” (lembrando   que o endereço do site com os códigos está na introdução do livro).  2.1   Instalando a ferramenta de desenvolvimento -   Xcode  A Apple disponibiliza gratuitamente todas as ferramentas e documentação para de-   senvolver para iOS, incluindo um simulador de iPhone e iPad que funciona incri-   velmente bem, além do Xcode, que é onde todo o código é escrito e compilado.
+- A   maneira mais fácil de obter o Xcode é através da Mac App Store, disponível desde   versão 10.6.6 do OS X.
+- Basta procurar por “Xcode” e instalar gratuitamente.
+- Ou acesse o website da   ferramenta e clique em “View in Mac App Store": https://developer.apple.com/xcode/  Vale lembrar que o Xcode já contém todas as ferramentas do SDK para o iOS (e   para o OS X também!).  2.2   Seu primeiro programa  Nesta seção vamos ver como criar uma simples aplicação para iPhone, do início ao   fim.
+

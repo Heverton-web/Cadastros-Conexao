@@ -1,0 +1,78 @@
+---
+name: mastering-docker-second-edition
+description: >-
+  Passos operacionais extraidos do livro 'Mastering Docker - Second Edition' (EN) — praticas e procedimentos para DevOps, infraestrutura e containers.
+---
+
+# Mastering Docker — Passos Operacionais
+
+Conteudo extraido do livro 'Mastering Docker'. Contem passos, tecnicas e principios baseados na obra original.
+
+## 1. Conceitos Fundamentais
+- No part of this book may be reproduced, stored in a retrieval system, or transmitted in   any form or by any means, without the prior written permission of the publisher, except in the case of brief   quotations embedded in critical articles or reviews.
+- Every effort has been made in the preparation of this   book to ensure the accuracy of the information presented.
+- However, the information contained in this book is sold without warranty, either express or implied.
+- Neither the authors, nor Packt Publishing, and its dealers and distributors will be held liable for any   damages caused or alleged to be caused directly or indirectly by this book.
+- Packt Publishing has endeavored to provide trademark information about all of the companies and   products mentioned in this book by the appropriate use of capitals.
+- However, Packt Publishing cannot   guarantee the accuracy of this information.
+- First published: December 2015  Second edition: July 2017  Production reference: 1200717  Published by Packt Publishing Ltd.
+- Livery Place   35 Livery Street   Birmingham   B3 2PB, UK.
+- During his career, he has had varied responsibilities in many   different sectors, ranging from looking after an entire IT infrastructure to providing first-line, second-line,   and senior support in both client-facing and internal teams for small and large organizations.
+- Russ works almost exclusively with Linux, using open source systems and tools across both dedicated   hardware and virtual machines hosted in public and private clouds at Node4 Limited, where he heads up   the Open Source Solutions team.
+
+
+  - s.docker.com/opensource/project/software-required/ and for Windows users at https://docs.docker.com/opensource/project/software-r
+
+  - following the tutorial on deploying your first application at https://coreos.com/tectonic/docs/latest/tutorials/first-app.html.
+
+  - In the GitHub repository at https://github.com/russmckendrick/mastering-docker in the /chapter12 folder, there is a folder
+
+  - To find out more about etcd, refer to https://en.wikipedia.org/wiki/CoreOS#ETCD. You can also visit https://github.com/cor
+
+  - generate the names can be found at https://github.com/moby/moby/blob/master/pkg/namesgenerator/names-generator.go. As you
+
+  - In the repository for this book, which is available at https://github.com/russmckendrick/mastering-docker/, you will find
+## 2. Principios e Tecnicas
+- In his spare time, he has written four books on Docker: Monitoring Docker, Extending Docker, and   Docker Bootcamp, which are all available now from Packt, as well as contributing to Monitoring and   Management With Docker and Containers, which was published by The New Stack.
+- He also buys way too many vinyl records.
+- I would like to thank my family and friends for their support and being so understanding about all of   the time I have spent in front of the computer, writing.
+- I would also like to thank my colleagues at   Node4 and also our customers for their kind words of support and encouragement throughout the   writing process.
+- Scott Gallagher has been fascinated with technology since he played Oregon Trail in elementary school.
+- His love for it continued through middle school as he worked on more Apple IIe computers.
+- In high   school, he learned how to build computers and program in BASIC.
+- His college years were all about   server technologies such as Novell, Microsoft, and Red Hat.
+- After college, he continued to work on   Novell, all the while maintaining an interest in all technologies.
+- He then moved on to manage Microsoft   environments and, eventually, what he was most passionate about: Linux environments.
+
+
+  - OpenShift (https://www.openshift.com/) offering. Services such as Artifactory by JFrog (https://www.jfrog.com/artifactor
+
+  - You can view the raw template by going to https://editions-us-east-1.s3.amazonaws.com/aws/stable/Docker.tmpl, or you can
+
+  - find a list of tools that support Clair on its integration page, https://coreos.com/clair/docs/latest/integrations.html.
+
+  - You can download the installer from the Docker store at https://store.docker.com/editions/community/docker-ce-desktop-m
+## 3. Aplicacoes Praticas
+- Now, his focus is   on Docker and cloud environments.
+- I would like to thank my family for their support not only while I worked on this book, but throughout   my life and career.
+- A special thank you goes to my wife, who is my soul mate, the love of my life, the   most important person in my life, and the reason I push myself to be the best I can be each day.
+- I would   also like to thank my kids, who are the most amazing thing in this world; I truly am blessed to be able   to watch them grow each day.
+- And lastly, I want to thank my parents, who helped me become the person   I am today.
+- About the Reviewers  Srdjan Grubor is a software engineer who has worked on projects small and big, spanning in complexity   from a single-line script to two complete Linux distributions.
+- Nowadays, among other things, he is   developing a distributed PaaS system for Endless OS, based on Docker, that will provide people in   remote places the full power of the internet through knowledge aggregation and asynchronous caching.
+- He   enjoys breaking things just to see how they work--tinkering and solving challenging problems.
+- He   believes that there is always room for philanthropy in technology.
+- Christopher Janietz is what is nowadays is called a DevOp, combining practices from the world of   development and IT operations.
+
+## 4. Topicos Avancados
+- He works for MediaMarktSaturn, Europeâ€™s largest consumer   electronics retailer.
+- Furthermore, he is a content creator for LinkedIn Germany, where he provides video   training for programming as well as infrastructure automation.
+- In his spare time, he likes to cram science   papers and learn about new technologies every day.
+- I personally would like to thank my colleagues and friends Andreas Gero and Emanuel Kechter, two well-   respected masters in the Docker universe.   www.PacktPub.com  For support files and downloads related to your book, please visit www.PacktPub.com.
+- Did you know that Packt offers eBook versions of every book published, with PDF and ePub files   available?
+- You can upgrade to the eBook version at www.PacktPub.com and as a print book customer, you are   entitled to a discount on the eBook copy.
+- Get in touch with us at service@packtpub.com for more details.
+- At www.PacktPub.com, you can also read a collection of free technical articles, sign up for a range of free   newsletters and receive exclusive discounts and offers on Packt books and eBooks.  https://www.packtpub.com/mapt  Get the most in-demand software skills with Mapt.
+- Mapt gives you full access to all Packt books and   video courses, as well as industry-leading tools to help you plan your personal development and advance   your career.
+- Fully searchable across every book published by Packt   Copy and paste, print, and bookmark content   On demand and accessible via a web browser   Customer Feedback  Thanks for purchasing this Packt book.
+

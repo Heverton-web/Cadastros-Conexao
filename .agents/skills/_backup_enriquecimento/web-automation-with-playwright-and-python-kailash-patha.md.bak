@@ -1,0 +1,57 @@
+---
+name: web-automation-with-playwright-and-python-kailash-patha
+description: >-
+  Passos operacionais extraidos do livro 'Web Automation with Playwright and Python - Kailash Pathak' (EN) — Python, Automação, Desenvolvimento Web.
+---
+
+# Web Automation With Playwright And Python Kailash Patha — Passos Operacionais
+
+Conteudo extraido do livro 'Web Automation With Playwright And Python Kailash Patha'. Contem passos, tecnicas e principios baseados na obra original.
+
+## 1. Conceitos Fundamentais
+- Web Automation with Playwright and Python using AI and MCP Acknowledgement I want to express my deepest gratitude to my family, friends, company, followers and the software testing community for their unwavering support and encouragement throughout this book&apos;s writing.
+- I am also grateful to BPB Publications for their guidance and expertise in bringing this book to fruition.
+- It was a long journey of revising this book, with valuable participation and collaboration of reviewers, technical experts, and editors.
+- I would also like to acknowledge the valuable contributions of my colleagues and co-worker during many years working in the tech industry, who have taught me so much and provided valuable feedback on my work.
+- Finally, I would like to thank all the readers who have taken an interest in my book and for their support in making it a reality.
+- Your encouragement has been invaluable.
+- Web Automation with Playwright and Python using AI and MCP About the Author Kailash Pathak is currently working as a senior QA lead manager with decades of experience in the tech industry; his expertise revolves around QA engineering and automation.
+- He is Microsoft® Most Valuable Professional ( MVP ) | PMI-ACP® | ITIL® | PRINCE2 Practitioner® | ISTQB | AWS (CFL) Certified.
+- Throughout his career, he has developed a deep expertise in quality assurance and automation, leading QA teams to ensure adherence to quality standards in software products and implementing effective testing strategies.
+- In addition to his core work, he is actively involved in giving conferences, webinars, and conducting workshops, where he shares his expertise with others in the field.
+
+## 2. Principios e Tecnicas
+- He also actively participates in knowledge-sharing through platforms like LinkedIn, X, and medium to help the testing community.
+- Web Automation with Playwright and Python using AI and MCP C HAPTER 1 Introduction to Playwright and Python Introduction In this chapter, we will set the stage for mastering Playwright, a modern, open-source automation library, combined with the versatility of Python, one of the most beginner-friendly yet powerful programming languages.
+- Together, they form a dynamic duo for creating robust, scalable, and maintainable test scripts that simplify your work as a quality assurance ( QA ) engineer.
+- Whether you are validating a web application’s user interface ( UI ), testing application programming interfaces ( APIs ), or ensuring cross-browser compatibility, Playwright and Python have the best combination.
+- Next, we will discuss why we chose Python for web automation.
+- A deep overview of Playwright, a popular automation testing framework developed by Microsoft .
+- Furthermore, we will explain why we chose Playwright for web automation.
+- Finally, you will see how we do the setup and configuration of Playwright with Python.
+- Structure The chapter covers the following topics: •&#9; Importance of web automation •&#9; Choosing Python for web automation •&#9; Choosing Playwright for web automation •&#9; Setting up Playwright with Python installation and configuration Objectives By the end of this chapter, you will be able to understand the importance of automation testing and why automation is an integral part of modern software development practices.
+- You will know why Python is used for web automation.
+
+## 3. Aplicacoes Praticas
+- Overview of Playwright and how to setup Playwright with Python and get knowledge of setup and configuration Playwright with Python.
+- Importance of web automation Automation testing is the process of using specialized software tools and scripts to execute predefined test cases on a software application, compare actual outcomes with expected results, and report the findings.
+- Unlike manual testing, which relies on human testers to interact with the application, automation testing leverages scripts and tools to perform repetitive, time-consuming, or complex tasks with greater speed, accuracy, and efficiency.
+- It is a foundation of modern software development, ensuring that applications meet quality standards in an era of rapid development cycles and complex systems.
+- Automation testing is integral to the software development lifecycle ( SDLC ), particularly in Agile and DevOps methodologies, where frequent releases demand quick and reliable testing.
+- It is used to validate functionality, performance, security, and user experience ( UX ) across various platforms, including web, mobile, desktop, and API-based applications.
+- By automating repetitive, complex, or time- consuming testing tasks, it ensures software quality in an era of rapid development cycles and intricate systems.
+- However, the journey of automation testing spans decades, evolving from rudimentary scripts to sophisticated artificial intelligence ( AI )-driven frameworks.
+- As automation testing evolved over time, new tools and technologies emerged that offered more capabilities and flexibility for testers.
+- Some of the current tools for automation testing include Selenium, Appium, Ranorex, Katalon Studio, TestComplete, UFT, Cypress, Playwright, Robot Framework, Cucumber and TestNG.
+
+## 4. Topicos Avancados
+- These tools support web, desktop, and mobile based applications with supporting the various programming languages such as Java, Python, C#, Ruby and JavaScript.
+- They also support different types of testing such as functional testing, behavior-driven development ( BDD ) testing, UI testing, API testing and test-driven development ( TDD ) testing.
+- In the next section, we will explore the four stages of test automation, from the early days of record and playback tools to the current state of AI/ machine learning ( ML ) based tools.
+- Record and playback tools Record and playback tools are automation tools that allow users to record their interactions with an application (e.g., clicks, keystrokes, navigation) and then replay those actions to automate repetitive tasks, primarily for testing purposes.
+- These tools capture user actions as scripts or sequences that can be edited and executed later.
+- The following is how they work: •&#9; Recording : The tool monitors user interactions with the application (e.g., mouse clicks, data entry) and generates a script or macro representing those actions. •&#9; Playback : The recorded script is executed to replicate the same actions on the application, typically for testing purposes like regression or functional testing. •&#9; Editing : Some tools allow users to modify recorded scripts to add logic, parameters, or assertions for validation.
+- The following are the key features: •&#9; User-friendly interface requiring minimal coding knowledge. •&#9; Ability to capture UI interactions (e.g., web, desktop, or mobile applications). •&#9; Support for basic validation and assertions (e.g., checking if an element exists). •&#9; Exportable scripts in languages like Java, JavaScript, Python, C#. •&#9; Integration with test management tools or continuous integration/continuous deployment ( CI/CD ) pipelines.
+- The following are the use cases: •&#9; Automating repetitive UI-based test cases where there are minimal changes are required. •&#9; Functional and regression testing of web applications. •&#9; Quick prototyping of test scripts for non-technical testers. •&#9; Testing scenarios requiring exact replication of user behavior.
+- The following are the advantages: &#9;•&#9; Ease of use : Minimal coding skills required, making them accessible to beginners or non-technical users (e.g., product owner, business analyst). •&#9;&#9; Speed : Rapid creation of test scripts through recording. •&#9;&#9; Low setup time : No need to write code from scratch. •&#9;&#9; Cross-platform : Many tools support multiple platforms (web, desktop, mobile).
+- The following are the disadvantages: •&#9; Fragility : Scripts are often tightly coupled to the UI, breaking if the UI changes (e.g., element IDs or layouts). •&#9; Limited flexibility : Difficult to handle complex logic, data-driven testing, or dynamic scenarios. •&#9; Maintenance overhead : Recorded scripts require frequent updates for evolving applications. •&#9; Scalability issues : Not ideal for large-scale or complex test suites.

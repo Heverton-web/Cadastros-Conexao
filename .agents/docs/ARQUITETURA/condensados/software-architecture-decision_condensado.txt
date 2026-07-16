@@ -1,0 +1,503 @@
+=== software-architecture-decision === (10971 linhas totais, conteudo comeca na linha 284)
+=== Primeiras 3543 linhas significativas extraidas
+
+ePUB is an open, industry-standard format for eBooks. However, support of
+ePUB and its many features varies across reading devices and applications.
+Use your device or app settings to customize the presentation to your liking.
+Settings that you can customize often include font, font size, single or
+double column, landscape or portrait mode, and figures that you can click
+or tap to enlarge. For additional information about the settings and features
+on your reading device or app, visit the device manufacturer’s Web site.
+Many titles include programming code or configuration examples. To
+optimize the presentation of these elements, view the eBook in single-
+column, landscape mode and adjust the font size to the smallest setting. In
+addition to presenting code and configurations in the reflowable text format,
+we have included images of the code that mimic the presentation found in
+the print book; therefore, where the reflowable format may compromise the
+presentation of the code listing, you will see a “Click here to view code
+image” link. Click the link to view the print-fidelity code image. To return
+to the previous page viewed, click the Back button on your device or app.
+Leveraging Leadership, Technology, and Product
+Many of the designations used by manufacturers and sellers to distinguish
+their products are claimed as trademarks. Where those designations appear
+in this book, and the publisher was aware of a trademark claim, the
+designations have been printed with initial capital letters or in all capitals.
+The author and publisher have taken care in the preparation of this book,
+but make no expressed or implied warranty of any kind and assume no
+responsibility for errors or omissions. No liability is assumed for incidental
+or consequential damages in connection with or arising out of the use of the
+information or programs contained herein.
+For information about buying this title in bulk quantities, or for special sales
+opportunities (which may include electronic versions; custom cover
+designs; and content particular to your business, training goals, marketing
+focus, or branding interests), please contact our corporate sales department
+at corpsales@pearsoned.com or (800) 382-3419.
+For government sales inquiries, please contact
+For questions about sales outside the U.S., please contact
+Library of Congress Control Number: 2023946912
+Cover image: wowomnom/Shutterstock; AVA AVA/Shutterstock
+All rights reserved. This publication is protected by copyright, and
+permission must be obtained from the publisher prior to any prohibited
+reproduction, storage in a retrieval system, or transmission in any form or
+by any means, electronic, mechanical, photocopying, recording, or likewise.
+For information regarding permissions, request forms and the appropriate
+contacts within the Pearson Education Global Rights & Permissions
+Department, please visit www.pearson.com/permissions.
+Pearson is dedicated to creating bias-free content that reflects the diversity
+of all learners. We embrace the many dimensions of diversity, including but
+not limited to race, ethnicity, gender, socioeconomic status, ability, age,
+sexual orientation, and religious or political beliefs.
+Education is a powerful force for equity and change in our world. It has the
+potential to deliver opportunities that improve lives and enable economic
+mobility. As we work with authors to create content for every product and
+service, we acknowledge our responsibility to demonstrate inclusivity and
+incorporate diverse scholarship so that everyone can achieve their potential
+through learning. As the world’s leading learning company, we have a duty
+to help drive change and live up to our purpose to help more people create a
+better life for themselves and to create a better world.
+Our ambition is to purposefully contribute to a world where:
+Everyone has an equitable and lifelong opportunity to succeed
+Our educational products and services are inclusive and represent the
+Our educational content accurately reflects the histories and
+Our educational content prompts deeper discussions with learners and
+motivates them to expand their own learning (and worldview).
+While we work hard to present unbiased content, we want to hear from you
+about any concerns or needs with this Pearson product so that we can
+Please contact us with concerns about any potential bias at
+https://www.pearson.com/report-bias.html.
+This book is dedicated to my family: Miyuru, Basilu, and Nithika. Your
+presence brings color and purpose to my life. And to my parents, whose
+unwavering love and trust continue to astonish and uplift me.
+I also extend my heartfelt gratitude to Frank for your steadfast support
+throughout this journey to its realization. Your insights were invaluable in
+2 Understanding Systems, Design, and Architecture
+Question 1: When Is the Best Time to Market?
+Question 2: What Is the Skill Level of the Team?
+Question 3: What Is Our System’s Performance
+Question 4: When Can We Rewrite the System?
+Seven Principles: The Overarching Concepts
+Principle 1: Drive Everything from the User’s Journey
+Principle 2: Use an Iterative Thin Slice Strategy
+Principle 3: On Each Iteration, Add the Most Value for
+Principle 4: Make Decisions and Absorb the Risks
+Principle 5: Design Deeply Things That Are Hard to
+Principle 6: Eliminate the Unknowns and Learn from the
+Evidence by Working on Hard Problems Early and in
+Principle 7: Understand the Trade-offs Between
+Cohesion and Flexibility in the Software Architecture
+3 Mental Models for Understanding and Explaining System
+Model 1: Cost of Switching to the Kernel Mode from the
+Model 6: Latency and Utilization Trade-offs
+Model 7: Designing for Throughput with the Maximal
+Principle 3: Good Products Do Not Need a Manual: Its
+Principle 4: Think in Terms of Information Exchange
+Principle 6: Design UX Before Implementation
+7 Macro Architecture: Preserving Consistency of State
+Why Do We Need to Go Beyond Transactions?
+Approach 1: Redefining the Problem to Require Lesser
+Common Interaction Security Scenarios for an App
+Take Caution When Running User-Provided Code
+9 Macro Architecture: Handling High Availability and Scale
+Scaling for a Modern Architecture: Base Solution
+Approach 1: Successive Bottleneck Elimination
+10 Macro Architecture: Microservices Considerations
+Solution 1: One Microservice Updating the Database
+Solution 2: Two Microservices Updating the Database
+Loosely Coupled, Repository-Based Teams as an Alternative to
+Understanding Best Practices for Writing a Service
+Using Locks (and Signaling) in Applications
+CPU-Bound Applications (CPU >> Memory and No
+Memory-Bound Applications (CPU + Bound Memory
+Balanced Applications (CPU + Memory + I/O)
+I/O-Bound Applications (I/O + Memory > CPU)
+Why Do Systems Fail, and What Can We Do About Them?
+Evolving the System: How to Learn from Your Users and
+I started my architecting journey as an Apache open-source developer and
+have continued that for 20 years. I learned a lot by watching and later
+participating in architecture discussions in developer lists for those open-
+source projects, which is a great place for an aspiring architect to start.
+I have played a major role in the architecture of Apache Axis2, Apache
+Airavata, WSO2 CEP (Siddhi), and WSO2 Choreo. I have designed two
+SOAP engines and worked closely with four. I was (and continue to be) a
+committer (a developer who can commit to a code base) for Apache Axis,
+Axis2, Apache Geronimo, and Apache Airavata.
+I joined WSO2 in 2009. WSO2 products are used by many Fortune 500
+companies such as airlines, banks, governments, and so on. At WSO2, I
+played an architecture review role for 10+ projects and 100+ releases. I
+reviewed hundreds of customer-solution architectures and deployments and
+sat in on thousands of architecture reviews.
+At WSO2, when we faced a problem that could not be resolved by the
+immediate team, we set up a war room, where a hand-picked team restlessly
+attacked the problem. I have been in many war rooms and have led several,
+which have made me painfully aware of mistakes made in the software
+architecture. I’ve had a front row seat to world-class technical leadership
+and have also built many systems and learned from mistakes.
+Later switching to analytics and AI-related topics, I co-designed WSO2
+Siddhi and envisioned and shaped the AI features in WSO2 Choreo.
+Throughout this time, I published 40+ peer-reviewed research articles,
+which have been referenced by thousands of other research publications.
+I hope you enjoy this book. Given the central role software plays in the
+world today, I will be content if this book helps make you a better software
+architect, knowing that I have contributed to better software that will be the
+Register your copy of Software Architecture and Decision-Making on
+the InformIT site for convenient access to updates and/or corrections as
+they become available. To start the registration process, go to
+informit.com/register and log in or create an account. Enter the product
+ISBN (9780138249595) and click Submit. Look on the Registered
+Products tab for an Access Bonus Content link next to this product, and
+follow that link to access any available bonus materials. If you would
+like to be notified of exclusive offers on new editions and updates, please
+When we are developing software systems, our goal is to build systems that
+meet quality standards and that provide the highest return on investment
+(ROI) in the long run or in a predefined time horizon. This, in turn,
+becomes the goal of software architecture, which is the blueprint for
+Here, ROI is not just about being economical. If spending more on the
+product results in more revenue, consider that a good ROI. On the other
+hand, shoddy design leads to numerous changes later, ultimately costing a
+lot more. Good software architecture balances both extremes and
+Architectural design includes many things—for example, finding the right
+abstractions, deciding which features to include, determining the depth of
+each feature, setting quality of service (QOS) parameters, establishing the
+degree of flexibility, timing, and user experience.
+As software architects, we learn about abstractions, architecture styles, and
+patterns. We study their pros and cons, which one to use in a given
+situation, and how to compose them with an awareness of pitfalls, negative
+examples, and use cases. However, many errors are made not because we
+do not understand these things. Most design mistakes are caused by a lack
+Here, judgment refers to the ability to make considered decisions or arrive
+at sensible conclusions optimizing for the most important outcome.
+I have seen this outcome again and again in my 20 years of architecting
+systems. Here are the common mistakes I’ve found:
+Trying to incorporate too many features required by the user’s
+Making the design too flexible or too consistent, which impacts
+Limiting depth, which significantly affects user experience (UX)
+Solving useless problems for the end user
+Inadequately focusing on the user’s journey and experience
+We make most of these mistakes because we do not know about the future,
+about the users who will use the system, and about how the system works at
+the edge of its capabilities. Here, I see the need for judgment. I see
+leadership challenges, not technical challenges!
+To me, leadership is about managing uncertainty, bringing order to chaos,
+providing hope for a better future, and progressing toward that future.
+A leader is a dealer in hope. —Napoleon Bonaparte
+This is not to say leaders must be omniscient and always know what the
+future will bring, but they should have a vision of the future; they should
+manage uncertainty in such a way that minimizes risk. Leaders should
+communicate their vision and its implementation to others and shepherd
+Let me repeat the same statement from an architect’s point of view. It is not
+to say software architects must be omniscient and always know how a
+system will be used and what it should have, but they should have a vision
+of the overall solution. They should manage uncertainty in such a way that
+minimizes risk. Leaders should communicate their vision and
+implementation to the team and guide them toward building the system and
+I am not saying that knowledge is not important for an architect. It is.
+However, judgment plays a key role too. Sadly, knowledge is
+I have seen a lot of good books and articles about software architectural
+concepts: Bob Martin’s books, Gregor Hohpe’s books, and Martin Fowler’s
+blogs, to name a few. Yet, they focus mainly on knowledge and less on
+I have also seen a lot of good books on leadership: The Hard Things About
+Hard Things by Ben Horowitz, Trillion Dollar Coach by Eric Schmidt et
+al., Team of Teams: New Rules of Engagement for a Complex World by
+Stanley McChrystal, Good Strategy, Bad Strategy by Richard Rumelt, and
+other books by Jocko Willink, to name a few. They discuss judgment but
+only at a general level, not at a technical level. There is a gap between good
+leadership and good software architectural judgment.
+This book discusses the gap between the two—leadership and software
+architectural judgment. It describes software leadership and how we can use
+it to the best advantage when building our systems. As mentioned, my
+experience shows that many of our architectural mistakes come from the
+This is not a book about how to manage your team, nor is it a book about
+engineering management or about HR and how to build the team. It’s also
+not a book about strategy. Further, this book does not cover how to create a
+vision. You must have a vision—your own or one shared by your
+cofounders or executive board members. Although there is a lot written
+about vision, I am not sure it can be explained sufficiently.
+This is a technical book, so it is a book about technical judgment. It
+explains principles and concepts I believe a senior architect must
+understand deeply and discusses how to employ those principles to manage
+uncertainty. This is a book about how technical leaders/architects should
+think and how to oversee their product by managing uncertainty.
+For example, one thesis of this book is to think deeply but implement
+slowly. Another example is that leaders must define the scope, taking up the
+yoke of uncertainty without passing it down to coworkers. Questions and
+principles discussed in this book help us manage uncertainty and provide a
+Is this book useful if you are not in charge? I think it is. People follow
+whoever offers to handle uncertainty in order to progress. Good architects
+start to play the role years before they are given the title. The more
+knowledgeable you are, the better chance you’ll have if you do choose to
+lead. Take the initiative; help your leader and deliver. You will find you
+If you believe someone plays that role better than you, by all means, follow,
+question, and learn from them! In this case, there is a lot you can do to help
+the leader, using what we discuss in the book. Your turn will follow.
+This book draws examples from many role models who exemplify technical
+leadership. I name two specifically: Kelly Johnson, who designed aircraft
+like the U-2 and the Blackbird SR-71, and the Wright brothers, Orville and
+Wilbur, whom we all know. These leaders showed a kind of deep technical
+control that made systems that seemed to be impossible possible, while
+utilizing limited resources. Granted, there are many software leaders like
+Jeff Dean of Google, whom I hold in the same esteem, but they are
+contemporaries, and their methods are not yet published as books. This fact
+forces me to choose the previously mentioned models for the book.
+As we all know, the Wright brothers built the first powered airplane with
+sustained and controlled flight. They had no college education and owned
+and operated a bicycle shop. They competed against well-funded
+professionals and yet went on to win. Granted, there were many aircraft
+designs before the Wright brothers, but they were the first to get all the
+parameters of the design right. The Wright brothers showed great judgment
+by building a glider, learning how to control it, learning to tweak it, and
+then adding propellers and engines, which gradually evolved their gilder
+into an aircraft. Figuring out the right parameters is a lesson we all can use.
+The Wright brothers had an intuitive feel to the design, which they acquired
+over the years. They later achieved both fame and fortune.
+Kelly Johnson was the aircraft designer for the Lockheed U-2, the SR-71
+Blackbird, and 40 other aircrafts. The Blackbird is invisible to radar, can
+outrun missiles, and has never been shot down in 20+ years of service. It
+was the first production aircraft to exceed Mach 3 (three times the speed of
+sound). Kelly also built the first fighter capable of Mach 2 and the first
+fighter to exceed 400 mph. His U-2 craft reached and sustained altitudes of
+70,000 feet.1 He could take an impossible goal, break it into doable tasks,
+demand excellence, and then make everything work. Kelly was known to
+finish projects early and under budget, returning money to the government.
+His boss reportedly said, “That damned Swede can actually see air,”
+referring to Kelly’s intuitive feel to the design.2
+1\. https://en.wikipedia.org/wiki/Lockheed_U-2
+2\. https://en.wikipedia.org/wiki/Kelly_Johnson_(engineer)
+The terms architecture and design are often used interchangeably, although
+design is a full detailed blueprint (e.g., class diagrams and sequence
+diagrams), whereas architecture is the high-level conceptual view (e.g.,
+component view and component-level sequence diagram). We focus on the
+high-level view; hence, I use the term architecture throughout.
+We can use the three layers of architecture of The Open Group Architecture
+Framework (TOGAF) to pinpoint topics we focus on in this book:
+The business architecture layer sketches out the business operations
+and shows how various components work together to propel the
+The information systems architecture layer splits into two parts: data
+and application architecture. Data architecture centers around
+categorizing different data types and highlighting their connections.
+On the other hand, application architecture identifies unique system
+parts, such as services, and clarifies their interaction within the
+The technology architecture layer describes the specifically chosen
+technologies. They include elements like software standards, software
+packages used, hardware, networks, and the fine details of security.
+The core focus of this book rests on the information system architecture.
+Nonetheless, we may discuss technology architecture if the choice of
+technology significantly impacts our discussion.
+The connection between business architecture and information system
+architecture is more intricate. The design of the information system
+architecture heavily depends on various business considerations. These
+factors include not only the business architecture but also elements like
+project schedules, the skills of the team, and the challenges from
+competitors. Although these considerations are not usually included in the
+business architecture in frameworks like TOGAF, they do influence the
+implementation of the architecture and the strategic course of the
+organization. Together, these are referred to as the “business context.” A
+main challenge in system architecture is to keep this business context in
+mind when making technology decisions. Ensuring this is a responsibility
+that falls to leadership. A key goal of the five questions we discuss in this
+book is to ensure we maintain this business context.
+There are two prominent approaches to system architecture:
+The waterfall approach is based on the premise that it’s feasible to identify
+the system’s requirements in full detail beforehand. Therefore, this
+approach suggests thorough planning followed by execution. An example
+of this approach can be seen in the TOGAF architecture design model
+(ADM), which demonstrates how to capture requirements accurately and
+develop them. In addition, groups like the Object Management Group
+(OMG) and International Organization for Standardization (ISO) offer
+standards supporting similar conceptual models.
+On the other hand, iterative approaches, like agile, focus on quickly rolling
+out a version and collaborating with users to refine requirements and
+construct a system that can genuinely benefit the user.
+When pitting these two approaches against each other, I lean toward agile.
+Efforts have been made to blend iterative features with models like ADM,
+but in practice, it’s often too complicated to maintain the rapid pace needed
+for iterative models (usually one- to two-week iterations). With large
+organizations and complex projects, more central planning could be
+justified, though, even after working with hundreds of enterprise
+companies, including Fortune 500 firms, I have yet to see such a project
+Many software processes, such as TOGAF ADM, standards, and reference
+architectures, are grounded in the waterfall model and aim to capture the
+requirements precisely. While valuable lessons can be learned from
+TOGAF, OMG, and ISO, they operate under the assumption that
+requirements can be largely defined beforehand and will only undergo
+gradual changes. In contrast, I believe our experiences have proven
+otherwise. I endorse a more interactive or agile approach where
+requirements are kept simpler and informal, continuously improving in
+short iterations, while learning from users.
+At a broader design level, I favor breaking the system into loosely
+connected subsystems (each potentially interacting with users and providing
+value), defining APIs between them, and then operating them independently
+with high-level oversight to connect the dots.
+While architects may find utility in TOGAF and similar models, I hesitate
+to recommend them in this book. This is an opinion formed from my
+The focus of this book is on agile approaches. So, before we dive into the
+book, it is useful to understand the typical roles in a software project.
+Product managers, with the help of business stakeholders, UX designers,
+and architects, decide what to build. Architects work with engineering
+managers and the team to build the product. The product manager then
+works with everyone to ensure the required quality (demanding excellence).
+The scope of the architect’s role might change, based on where the work
+takes place. For example, in a startup, architects might handle product
+management, deciding the features to build, whereas in a large company,
+architects might be disconnected from the requirement specifications.
+However, in an era when we are moving away from the waterfall approach
+to the iterative, agile software development approach, responsibilities are
+being shared, and these roles are merging. For example, I believe architects
+should work hand in hand with product managers when deciding which
+features to include, when to include them, and when defining UX,
+This book is segmented into four parts. Although the book focuses on
+judgment, knowledge is just as important. Parts II and III delve into the
+topic of knowledge, while exploring how we can judge its use.
+In Part I, Chapter 2 discusses software architecture, uncertainty, and
+judgment. It identifies five questions and seven principles to help us handle
+What is our system’s performance sensitivity?
+Drive everything from the user’s journey.
+On each iteration, add the most value for the least effort to
+Design deeply things that are hard to change but implement them
+Eliminate the unknowns and learn from the evidence by working
+Understand the trade-offs between coherence and flexibility in the
+As we explore in detail in Chapter 2, these five questions and seven
+principles address each of the common architectural mistakes we often
+In Part II, we dig into two performance and user experience (UX) areas,
+which, in my opinion, are not well understood by many architects. First is
+system performance, which decides what is and what is not feasible in our
+architectures. The second is UX, which often decides user adoption—thus,
+Chapter 3 is more detailed and technical compared to the other chapters.
+These specifics are crucial, and they aren’t widely covered in other books.
+If you’re initially seeking a broader understanding, you could briefly go
+through Chapter 3, but I recommend revisiting it to grasp the finer points
+Chapter 4 emphasizes the importance of UX principles and persuades you
+to bring UX expertise into the team early on and listen to those experts’
+advice. Additionally, I want to stress the importance of UX for APIs,
+Part III focuses on how to build a system or an application. We discuss two
+levels: the macro level, where we compose services into a coherent
+architecture, and the micro level, where we learn how to build good
+In this part, whenever possible, we explain a default architectural choice
+that works most of the time and more complex ones, discussing how to
+choose the right one for your company. This discussion includes anti-
+patterns and common mistakes. It talks about these technical ideas that I
+Understanding macro architecture is described in
+Chapter 7: Preserving Consistency of State
+Writing a good usable service is described in Chapter 11.
+Building stable systems is described in Chapter 12.
+I dedicate a separate chapter to microservices considerations, instead of
+dispersing them in Chapters 6, 7, and 8. I believe this approach makes it
+easier to grasp the whole concept as a combined entity rather than
+I explain each technical decision based on the applicable five questions and
+Part IV includes only Chapter 13, which discusses how everything comes
+together. This chapter focuses on establishing a fast feedback cycle,
+removing anything that slows developers down from completing iterations,
+receiving feedback, and learning. This chapter urges leaders to ensure
+developers can do their jobs efficiently, while getting personally involved to
+solve any issues that hold the developers back.
+Software architecture is a plan to build a software system. This plan usually
+involves two things: defining a system as a set of components and
+specifying how those components work together. In complex systems, this
+decomposition happens recursively, where the architect breaks down each
+component into smaller components and defines their behaviors.
+There are good plans and bad plans. The same goes for software
+architecture. What are the goals of good software architecture?
+The overarching goal of software systems (hence, for software architecture)
+is to build systems that meet quality standards and that provide the highest
+return on investment (ROI) in the long run or within a defined period of
+time. Long run is the operative ideal here. For example, if we do not invest
+long term and build a crappy product, we end up with unhappy users,
+ultimately losing their revenue or spending too much money trying to make
+them happy. Cheaper in the short run is often more expensive in the long
+run. You pay now, or you pay later. On the other hand, adding a critical new
+feature, thus spending more money, can give us more revenue, improving
+Three kinds of uncertainty complicate architecting. First, we have a partial
+understanding of our users and what they want. Second, we have a limited
+comprehension of how our systems behave, especially in complicated and
+new situations. Third, we fail to recognize that as use cases and users
+evolve, their requirements change. Therefore, we want our architectures to
+be easy to understand and flexible, enabling us to handle surprises.
+When reaching for the best architecture, we can employ several best
+Making decisions as late as possible. For example, when we start the
+design, we know the least about a system and the problems we are
+supposed to solve. If we can postpone solving some problems, we
+have an opportunity to learn more. This approach lets us make better
+Envisioning a design that is easy to understand and to change.
+Problems change over time, and we may face a few surprises.
+Because a system goes through frequent changes over its lifetime,
+good architecture makes those changes easier.
+Saying no to features as much as possible. Many system features are
+rarely used, although they were often deemed important at design
+time. Knowing the audience, implementing only necessary features,
+and communicating why not may save us money in the long run.
+Many argue that these tactics are always good, even considering them to be
+goals of the architecture. I disagree. To me, even those tactics incur costs;
+thus, everything is relative, and these tactics are useful only if they help us
+achieve the overarching goal. Let’s look at a few examples.
+If we know that a use case will significantly change in the future, forcing us
+to rewrite the system from scratch, we should not invest in making the
+When writing a cloud app, we have two choices: We can choose a single
+cloud, taking advantage of its unique strengths for our application, or we
+can make the application portable across several cloud providers. Choosing
+only one cloud vendor makes development easier, but there is a chance that
+we may have to rewrite the system or parts of the system if porting to a
+different cloud. The cost of making the current version portable may be
+much higher than rewriting it, only if required.
+You may have a great architecture that makes the system easy to change;
+however, it involves complicated concepts that will be hard for the current
+team to handle. (It may have been an adverse call forcing us to choose this
+architecture.) You fight with the army you have, at least until you have
+You may be a startup trying to get your MVP out. Then, chances are you
+will rewrite everything once you are successful. You would not care for
+scale or even ease of change at this stage.
+Uncertainties create risks, but the remedies have their costs too, which also
+create risks. Architecting is balancing those risks. Context is king, and it is
+hard to architect with evergreen rules and to get them right. To quote a Star
+Universal law is for lackeys. Context is for kings.
+Understanding all types of risks, planning around those uncertainties,
+communicating the plan, enlisting people, and managing risk along the way
+define leadership. This book discusses the leadership process in software
+As discussed, design requires holistic decisions that keep the big picture
+and final goal in focus. Although there are many good tactics such as
+creating designs that are easy to change, we need to ensure the medicine is
+not worse than the problem. Gregor Hohpe explains that architecture creates
+options, just like financing alternatives, which is an apt analogy because
+having options also incurs costs. Sometimes, it makes sense to have
+options, and sometimes it does not. An architect must have options and the
+wisdom to recognize when not to use them.
+System design is like war: You must know your enemy (the problem, how
+often it changes, etc.) and your strengths and weaknesses of the team and
+yourself. Also, you must play the odds. For example, if the cost of being
+portable is 50% more, but there is only a 10% chance that you will have to
+move to a different cloud, then the expected cost of being portable early is
+150%. However, if we choose to not be portable, then there is a 10% chance
+that we will have to port later. Let’s assume that to port later we have to do
+250% more work. Then, the expected cost of not being portable is (100% +
+250 * 10%) = 125%, which suggests that we should go with the nonportable
+Chapter 1 discussed the concept of business context, which includes not
+only TOGAF’s business architecture but also other factors like project
+timelines, team skills, and competitive threats. It’s this business context
+along with user experience that add complexity to software architecture.
+Any given situation will present various trade-offs in terms of costs, which
+could include time, complexity, required skills, and benefits like
+performance, stability, and speed to market. The relative importance of
+these costs and benefits varies depending on the business context and user
+experience. Making these trade-offs and arriving at the right technical
+This book proposes five questions and seven principles that help us
+understand the context, acting as guideposts for good judgment. Part II and
+Part III discuss knowledge and explain how it relates to judgment.
+As a reminder, the five questions include
+What is our system’s performance sensitivity?
+Drive everything from the user’s journey.
+On each iteration, add the most value for the least effort to support
+Design deeply things that are hard to change but implement them
+Eliminate the unknowns and learn from the evidence by working on
+Understand the trade-offs between cohesion and flexibility in the
+The five questions are designed to help us understand the terrain (or the
+business context). Starting with time, team, and performance requirements,
+the effects of the first two questions are well understood. Performance
+comes next because it determines how much precision we need in the
+design. Many find the fourth question regarding rewrites odd, but I believe
+there is a natural second phase to all projects, where we can rewrite the
+system. This question is crucial because it defines the first phase and lets us
+defer some hard but not immediate problems uncovered by the fifth
+question to the second phase. I believe this question significantly clarifies
+Once we understand the terrain, the seven principles are about what to
+implement, when, and how. The first principle tells us we should look at
+everything from the vantage point of the user and choose only things that
+are useful for their journey. The second and third principles say that we
+should iterate, starting with a thin slide, exploring the design space, and

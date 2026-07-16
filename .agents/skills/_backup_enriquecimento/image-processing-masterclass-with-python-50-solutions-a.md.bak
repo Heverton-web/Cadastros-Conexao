@@ -1,0 +1,44 @@
+---
+name: image-processing-masterclass-with-python-50-solutions-a
+description: >-
+  Passos operacionais extraidos do livro 'Image Processing Masterclass with Python 50+ Solutions and - Sandipan Dey' (EN) — Python.
+---
+# Conteudo Extraido
+Fonte: EPUB - [EN] Image Processing Masterclass with Python 50+ Solutions and - Sandipan Dey.txt
+
+
+## Conceitos Fundamentais
+- Página 2 Image Processing Masterclass with Python 50+ Solutions and Techniques Solving Complex Digital Image Processing Challenges Using Numpy, Scipy, Pytorch and Keras Sandipan Dey www.bpbonline.com Página 3 FIRST EDITION 2021 Copyright © BPB Public
+- No part of this publication may be reproduced, distributed or transmitted in any form or by any means or stored in a database or retrieval system, without the prior written permission of the publisher with the exception to the program listings which 
+- LIMITS OF LIABILITY AND DISCLAIMER OF WARRANTY The information contained in this book is true to correct and the best of author’s and publisher’s knowledge.
+- The author has made every eﬀort to ensure the accuracy of these publications, but publisher cannot be held responsible for any loss or damage arising from any information in this book.
+- All trademarks referred to in the book are acknowledged as properties of their respective owners but BPB Publications cannot guarantee the accuracy of this information.
+- Distributors: Página 4 BPB PUBLICATIONS 20, Ansari Road, Darya Ganj New Delhi-110002 Ph: 23254990/23254991 MICRO MEDIA Shop No. 5, Mahendra Chambers, 150 DN Rd.
+
+## Principios e Tecnicas
+- He earned his master’s degree in computer science from the University of Maryland, Baltimore County and has published in a few IEEE data mining conferences and journals.
+- He has also authored a couple of image processing books, published from an international publication house.
+- He has earned certiﬁcations from 100+ MOOCs on data science, machine learning, deep learning, image processing, natural language processing, artiﬁcial intelligence, algorithms, statistics, mathematics, and related courses.
+- He is a regular blogger data science central, and medium.com) and is a machine learning education enthusiast.
+- Página 8 About the Reviewer Jyoti Dabass is a Full-Time Ph.D.
+- Her research interest is focused on computer vision, deep learning, fuzzy logic, machine learning, artiﬁcial intelligence, image processing, computer-aided diagnosis, and natural language processing.
+
+## Aplicacoes Praticas
+- She has earned certiﬁcations from 400+ MOOCs on data science, machine learning, deep learning, image processing, and related courses.
+- She believes this book will give you enough hands-on experience to jump-start your career in computer vision.
+- Página 9 Acknowledgements There are a few people who I want to thank for the continued and ongoing support they have given me during the writing of this book.
+- First and foremost, I would like to thank my parents for continuously encouraging me to write the book—I could have never completed this book without their support.
+- I am grateful to the excellent online courses provided by top schools across the globe over the past few years.
+- Few of them are image processing (@Coursera by Duke, Northwestern), computer vision and image analysis (@edX by Microsoft), computational photography (@Coursera by Georgia Tech), machine learning (@Coursera by Stanford, University of Toronto; @edX by
+
+## Topicos Avancados
+- Página 10 Preface This book covers many diﬀerent aspects of image processing through diﬀerent types of problems —starting from standard image processing to the recent advancements in image processing with machine learning and deep learning models.
+- The key focus is on the implementation of diﬀerent algorithms using python libraries to solve an exhaustive set of important and relevant image processing problems (with diﬀerent levels of complexity) in more than one way.
+- The book describes the theoretical concepts required to solve a problem, discussed on the mathematical perspective as well as on the intuitive one, to make it easy for the readers to understand.
+- It demonstrates the impact of running an algorithm on a set of colored images with input/output images.
+- It also provides some cutting-edge solutions to a few advanced problems from the leading image processing research conferences/journals.
+- Every chapter is followed by quite a few challenging exercise problems to create an opportunity for the readers to test the skills they have learned and got hands-on.
+
+## Secao 5
+- Considering the trade-oﬀ between the vast majority of topics to be covered in the book and Página 11 to keep the volume manageable, this book will be released in two parts.
+- Part-1 will start from the basics and will gradually proceed towards solving advanced problems.

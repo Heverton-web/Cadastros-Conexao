@@ -1,0 +1,57 @@
+---
+name: strategic-devops
+description: >-
+  Passos operacionais extraidos do livro 'Strategic DevOps' (EN) — praticas e procedimentos para DevOps, infraestrutura e containers.
+---
+
+# Strategic Devops — Passos Operacionais
+
+Conteudo extraido do livro 'Strategic Devops'. Contem passos, tecnicas e principios baseados na obra original.
+
+## 1. Conceitos Fundamentais
+- Abrams  www.bpbonline.com   First Edition 2025  Copyright © BPB Publications, India  eISBN: 978-93-65899-269  All Rights Reserved.
+- No part of this publication may be reproduced, distributed or transmitted in any   form or by any means or stored in a database or retrieval system, without the prior written permission   of the publisher with the exception to the program listings which may be entered, stored and executed   in a computer system, but they can not be reproduced by the means of publication, photocopy,   recording, or by any electronic and mechanical means.
+- LIMITS OF LIABILITY AND DISCLAIMER OF WARRANTY   The information contained in this book is true and correct to the best of author’s and publisher’s   knowledge.
+- The author has made every effort to ensure the accuracy of these publications, but the   publisher cannot be held responsible for any loss or damage arising from any information in this   book.
+- Abrams   About the Authors  Benjamin Abrams was born in San Diego, California, and later   became a wandering nomad, traveling throughout the United States,   Canada, and Thailand.
+- Although he attended college during his career, he left to take a good   job without completing his degree.
+- Open-   source is part of his DNA; he has contributed to open-source projects   throughout his entire career and has served as a maintainer for many   of them.
+- If he could speak to what early retirement would look like,   he would spend all his work time donatinged to the community.
+- With   over a decade of experience, he has gained a unique perspective that   motivates him to share his experiences.
+- He began sharing his work   publicly through conferences, webinars, and blog posts as early as   2016\.
+
+## 2. Principios e Tecnicas
+- He loves discussing automation, operations engineering,   security, observability, culture, and scaling teams.
+- He is incredibly   grateful that he has had the opportunity to use these experiences to   refine his craft before deciding that he wanted to tackle something a   bit meatier.
+- These experiences led him to start writing High   Performance DevOps.
+- This book has been in the works for a decade;   he just needed to decide to write it.
+- He decided to bring along two   experts to help deliver the best outcome, which he will introduce   shortly.
+- He looks forward to taking you on a unique journey and providing a   fresh perspective on the various cultural and technical aspects of the   DevOps philosophy.
+- Before diving into the nitty-gritty or how-to   aspects, we will introduce the necessary vocabulary, concepts, and   theory for each topic.
+- In each chapter, you can expect us to use real   war stories from our experiences to reinforce the topic.
+- We will focus   on helping you produce the correct answers rather than providing   them for you.
+- We will bring value to various engineering-related   personas by carefully weaving themes, concepts, stories, and hands-   on exercises that are relevant to their specific needs.
+
+## 3. Aplicacoes Praticas
+- Sean Riordan was born in Anchorage, Alaska, and received a BS in   computer engineering from Montana State University in Bozeman.
+- Fond of ensuring things work as expected, Sean began his career out   of college in the oil industry, where he specified safety system   instrumentation and developed hardware test plans to ensure their   functionality.
+- After moving into software, Sean spent the next ten   years writing tests and guiding teams across IoT and health tech on   how to build a scalable and performant test suite.
+- Abrams was born in Los Angeles, CA, and received an MBA   from the University of Chicago, where he also took graduate courses   in the department of economics.
+- He possesses numerous   qualifications that make him the ideal person to address questions   related to valuation.
+- He is an Accredited Senior Appraiser (ASA)   with the American Society of Appraisers (ASA) and a Certified   Public Accountant (CPA) (inactive status).
+- Has been valuing   businesses for more than 40 years.
+- Valuation is the science and art of   determining the amount an investor should be willing to pay for   business ownership or a set of assets.
+- His very first assignment was   valuing Columbia Pictures, which was acquired by Coca-Cola in   1982 and later sold to Sony.
+- Thus, he has experience valuing very   large and small firms.
+
+## 4. Topicos Avancados
+- As a published author in valuation, he has a lot   to bring to the table.
+- He has written four books on valuation and more   than 20 quantitative journal articles.
+- He invented more than 160   mathematical formulas, valuation models, and algorithms.
+- He can   help us provide some missing and much-needed language to bridge   the gap between engineering, management, and sales.
+- About the Reviewers  ❖Babafemi Bulugbe is a dedicated DevOps and cloud engineer with  over five years of hands-on experience in optimizing and managing   cloud environments across Microsoft Azure and Amazon Web Services   (AWS) platforms.
+- He is highly proficient in designing, deploying, and   maintaining scalable, highly available, and secure cloud infrastructures   tailored to business and operational needs.
+- Babafemi is skilled in automating CI/CD pipelines, provisioning   infrastructure as code (IaC), and applying industry best practices to   ensure infrastructure reliability, performance, and security.
+- His work   consistently drives efficiency and resilience in modern cloud-based   systems.
+- He brings strong expertise in scripting with PowerShell, Bash, and   Python, enabling him to automate workflows, streamline deployment   processes, and manage complex environments with precision.
+- Known   for his attention to detail and a proactive approach, Babafemi   collaborates effectively with cross-functional teams to deliver high-   impact cloud solutions.

@@ -1,0 +1,57 @@
+---
+name: epub-css-eficiente-t-cnicas-e-ferramentas-que-faze
+description: >-
+  Passos operacionais extraidos — desenvolvimento web, full-stack, JavaScript, TypeScript, React, Node.js (PT).
+---
+
+# Epub Css Eficiente Tecnicas E Ferramentas Que Fazem A — Passos Operacionais
+
+Conteudo extraido do livro 'Epub Css Eficiente Tecnicas E Ferramentas Que Fazem A'. Contem passos, tecnicas e principios baseados na obra original.
+
+## 1. Conceitos Fundamentais
+- As queridas folhas de estilo que tanto amamos ─ e, às vezes, odiamos ─, que estão conosco, os desenvolvedores _front-end_ , na maioria dos dias de nosso trabalho!
+- Desde que nosso colega norueguês **Håkon Wium Lie** brindou o mundo com sua invenção inteligentemente chamada de _Cascading Style Sheets_ (CSS), muita coisa já aconteceu com essas danadinhas!  _Fig. 1.1: Håkon Wium Lie tentando convencer o W3C a aprovar as CSS_          Atualmente, é possível alcançar com CSS o que, até não muito tempo atrás, não se passava de sonho ou do uso de muitos códigos JavaScript.
+- Devido a suas modernas características recentes, CSS se popularizou e ganhou os corações de muitos desenvolvedores e entusiastas por todo o mundo!
+- As Folhas de Estilo não são tão complicadas de se aprender.
+- Ao contrário, são populares justamente pela sua facilidade e rápido início, aliado à visualização imediata do que se está fazendo!
+- Entretanto, como qualquer aspecto de nossas vidas, também existe o lado ruim.
+- Com o passar do tempo, essa facilidade de uso trouxe um lado negativo ao ecossistema de estilização para web: a adoção involuntária de más práticas de uso.
+- Não que isso tenha sido algo maquiavélico, uma conspiração de meia dúzia de _webdevs_ maléficos rumo à disseminação de práticas ruins.
+- Por conta disso e por ninguém ter avisado que não era certo, essas más práticas simplesmente se propagaram...  #### Com a palavra: quem entende do assunto  O Autor tem a felicidade de manter contato com alguns dos grandes nomes do cenário mundial quando o assunto é CSS.
+- Certamente, o que pessoas como **Harry Roberts** e **Jonathan Snook** pensam sobre boas práticas conta bastante!
+
+## 2. Principios e Tecnicas
+- Para enfatizar o quão importante é adotar as boas práticas que estão presentes neste livro, o Autor perguntou a estas duas sumidades: _Por que uma Arquitetura CSS é importante?
+- E por que precisamos de uma?_  **Harry Roberts** , do **CSS Wizardry** (<http://goo.gl/sXt93d>), criador da metodologia ITCSS ([9](index_split_009.html#chapter-itcss)) que chega ao Brasil com exclusividade por meio deste livro, respondeu:  _CSS é incrivelmente fácil de escrever ─ incrivelmente fácil ─, mas possui uma ordem de magnitude mais difícil para se gerir, manter e escalar.
+- Uma arquitetura CSS nos fornece uma forma estruturada de escrita e gerenciamento de CSS de uma forma que tanto contorna ou doma essas esquisitices, quanto dá aos desenvolvedores um conjunto de regras e diretrizes a seguir a fim de continuar a escrever CSS que é amigável, são, simples de compreender e mais fácil de escalar._  **Jonathan Snook** , criador do SMACSS ([4](index_split_004.html#chapter-smacss)), disse:  _Sistemas grandes, complexos, em crescimento, precisam de organização.
+- Todos estes precisam de alguma maneira de dar sentido à complexidade.
+- Programação orientada a objetos existe há décadas como uma maneira de estabelecer a ordem em meio ao caos.
+- Desenvolvimento server-side tem sido por anos a ascensão popular de frameworks MVC.
+- JavaScript tem sido a ascensão de ferramentas para gerenciamento de dependência._  _Somente nos últimos anos, temos visto qualquer tentativa de organizar CSS de uma forma sensata.
+- Abordagens como OOCSS e SMACSS surgiram para proporcionar entendimento mais facilitado de projetos, permitindo qualquer um a, rapidamente, "pular dentro" e ser mais produtivo, a ser capaz de fazer isso sem a sensação de que tudo vai desmoronar quando alguma mudança é feita._  Estas são palavras de eminentes desenvolvedores front-end do planeta Terra.
+- Se elas não são suficientes para fazer você chegar à conclusão de que uma Arquitetura CSS mais robusta é **imprescindível** para projetos front-end profissionais, então não há mais nada no mundo que o fará!  #### Conclusão  Este livro tem o objetivo de ajudar, pelo menos um pouquinho, a disseminar algumas boas práticas e tecnologias interessantíssimas para se escrever e manutenir projetos CSS, para você que já trabalha (ou trabalhou) com as Folhas de Estilo e quer aprimorar seu trabalho, passando a escrever **CSS eficiente**.
+- Portanto, nele você **não vai** encontrar explicações básico-teóricas como: o que é e como é formada uma regra CSS; regras de usuário, de navegador e de autor; comparativo entre CSS inline, incorporado e externo; qual a diferença entre IDs e classes; o que são pseudoclasses e pseudoelementos; quais as propriedades CSS existentes e valores possíveis para cada etc.
+
+## 3. Aplicacoes Praticas
+- Na verdade, muitas dessas informações nem serão úteis aqui.
+- Logo, façamos um combinado: ficará subentendido que você é uma pessoa que já estudou tudo isso e agora aprimorará suas habilidades.
+- Imagine que estamos cuspindo em nossas respectivas mãos e as apertando em um chacoalhar amistoso para selar esse pacto.
+- Aproveite a leitura!   ##  Capítulo 2:  Seletores CSS   A maioria dos desenvolvedores front-end, principalmente os que dão menor importância à teoria, criam suas próprias regras CSS como se não houvesse amanhã.
+- Embora isso seja verdade em relação a alguns prazos estabelecidos pela doce e carismática figura do gerente de projetos, as Folhas de Estilo são escritas sem planejamento, sem preparação, sem consciência e sem muitos outros atributos essenciais para que um trabalho bem feito possa ser executado.
+- Se você se enquadra nessa infeliz descrição, este capítulo é importantíssimo, já que vai abordar temas como Especificidade CSS, explicação de como os seletores CSS são interpretados e outras dicas gerais.
+- O intuito é a disseminação da prática de planejar a escrita de regras CSS antes de escrever código às cegas.
+- Ou seja, pensar antes de fazer.
+- Além da vantagem óbvia de adquirir mais conhecimentos e passar a escrever CSS melhor, você também terá condições de argumentar com o seu gerente de projetos sobre como é importante planejar suas Folhas de Estilo para obter um CSS mais eficiente e profissional.
+- E se, ainda assim, não adiantar, peça a ele que me envie um e-mail para que possa ler uma ou duas verdades!  ###  2.1  Especificidade CSS   É simples escrever regras CSS: primeiro escreva o elemento, classe ou ID que se quer estilizar (aí são inclusos seletores avançados), e aplique as propriedades cabíveis.
+
+## 4. Topicos Avancados
+- Entretanto, já aconteceu de você criar uma regra e, por algum motivo, ela não "entrar em ação"?
+- Quer dizer, você a criou esperando que tudo corresse bem, mas, por algum motivo, ela não foi aplicada e outra regra teve precedência?
+- Provavelmente isso acontece com todos que trabalham com CSS.
+- É devido à **especificidade de CSS** que isso ocorre.
+- Um dos motivos de haver "Cascata" em "Folha de Estilo em Cascata" é referente, justamente, a quão específica determinada regra é, para ser "mais importante" que outras e entrar em ação em detrimento às demais.  #### O que é a Especificidade CSS?
+- Desconhecer a teoria e a prática da Especificidade CSS não raramente leva a confusões, desgostos e falsas acusações de bugs ─ "Já criei a regra, mas ela não funciona!" ─, já havendo relatos de aumento de pressão e náuseas.
+- Entretanto, não é algo tão difícil de se entender.
+- Pense na especificidade CSS como um **sistema de pesos** que serve para determinar qual regra CSS tem precedência quando várias podem ser aplicadas ao mesmo elemento.
+- Regras com maior peso têm preferência sobre regras de menor peso e, por isso, "ganharão" e "entrarão em ação" quando o navegador renderizar os estilos.  _Toda_ regra CSS tem sua especificidade implícita; portanto, mesmo não sabendo, você _já_ se vale da especificidade!
+- A ideia é que, a partir de agora, você faça isso conscientemente!  #### Entendendo a especificidade CSS  Existem 4 categorias que definem o nível de especificidade a um dado seletor.

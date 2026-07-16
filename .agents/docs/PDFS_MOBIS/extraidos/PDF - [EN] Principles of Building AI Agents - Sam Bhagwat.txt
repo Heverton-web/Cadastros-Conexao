@@ -1,0 +1,991 @@
+[Page 1]
+Sam Bhagwat
+Cofounder & CEO Mastra.ai
+Sam Bhagwat
+Principles of Building AI Agents
+Principles 
+of Building 
+AI Agents
+2nd Edition
+Understanding frontier tech is essential for building the 
+future. Sam has done it once with Gatsby, and now again 
+with Mastra - Paul Klein, CEO of Browserbase
+Rapid advances in large language models (LLMs) have 
+made new kinds of AI applications, known as agents, 
+possible. Written by a veteran of web development, 
+Principles of Building AI Agents focuses on the substance 
+without hype or buzzwords. This book walks through:
+•
+The key building blocks of agents: 
+providers, models, prompts, tools, memory
+•
+How to break down complex tasks 
+with agentic workflows
+•
+Giving agents access to knowledge bases 
+with RAG (retrieval-augmented generation)
+If you’re trying to build agents or assistants into your 
+product, you need to read “Principles” ASAP - Peter 
+Kazanjy, Author of Founding Sales and CEO of Atrium
+Sam Bhagwat is the founder of Mastra, an 
+open-source JavaScript agent framework, 
+and previously the co-founder of Gatsby, the 
+popular React framework.
+Get a free digital copy 
+for your e-reader: 
+mastra.ai/book
+
+[Page 2]
+PRINCIPLES OF BUILDING
+AI AGENTS
+SAM BHAGWAT
+
+[Page 4]
+CONTENTS
+Foreword
+ix
+Sam Bhagwat
+Introduction
+xiii
+PART I
+PROMPTING A LARGE
+LANGUAGE MODEL (LLM)
+1. A BRIEF HISTORY OF LLMS
+3
+2. CHOOSING A PROVIDER AND
+MODEL
+5
+Hosted vs open-source
+5
+Model size: accuracy vs cost/latency
+6
+Context window size
+6
+Reasoning models
+7
+Providers and models (May 2025)
+8
+3. WRITING GREAT PROMPTS
+9
+Give the LLM more examples
+9
+A “seed crystal” approach
+10
+Use the system prompt
+10
+Weird formatting tricks
+11
+Example: a great prompt
+11
+PART II
+BUILDING AN AGENT
+4. AGENTS 101
+15
+Levels of Autonomy
+15
+Code Example
+16
+
+[Page 5]
+5. MODEL ROUTING AND
+STRUCTURED OUTPUT
+18
+Structured output
+19
+6. TOOL CALLING
+20
+Designing your tools: the most
+important step
+22
+Real-world example: Alana’s book
+recommendation agent
+22
+7. AGENT MEMORY
+25
+Working memory
+25
+Hierarchical memory
+26
+Memory processors
+28
+`TokenLimiter`
+28
+`ToolCallFilter`
+29
+8. DYNAMIC AGENTS
+31
+What are Dynamic Agents?
+31
+Example: Creating a Dynamic Agent
+32
+Agent middleware
+33
+9. AGENT MIDDLEWARE
+34
+Guardrails
+34
+Agent authentication and
+authorization
+35
+PART III
+TOOLS & MCP
+10. POPULAR THIRD-PARTY TOOLS
+39
+Web scraping & computer use
+39
+Third-party integrations
+40
+
+[Page 6]
+11. MODEL CONTEXT PROTOCOL
+(MCP): CONNECTING AGENTS AND
+TOOLS
+42
+What is MCP
+42
+MCP Primitives
+43
+The MCP Ecosystem
+43
+When to use MCP
+44
+Building an MCP Server and Client
+45
+What’s next for MCP
+46
+Conclusion
+47
+PART IV
+GRAPH-BASED WORKFLOWS
+12. WORKFLOWS 101
+51
+13. BRANCHING, CHAINING, MERGING,
+CONDITIONS
+52
+Branching
+52
+Chaining
+53
+Merging
+54
+Conditions
+55
+Best Practices and Notes
+56
+14. SUSPEND AND RESUME
+57
+15. STREAMING UPDATES
+61
+How to streaming from within
+functions
+62
+Why streaming matters
+63
+How to Build This
+63
+16. OBSERVABILITY AND TRACING
+65
+Observability
+65
+Tracing
+66
+
+[Page 7]
+Evals
+68
+Final notes on observability and
+tracing
+68
+PART V
+RETRIEVAL-AUGMENTED
+GENERATION (RAG)
+17. RAG 101
+73
+18. CHOOSING A VECTOR DATABASE
+75
+19. SETTING UP YOUR RAG PIPELINE
+77
+Chunking
+77
+Embedding
+78
+Upsert
+78
+Indexing
+78
+Querying
+79
+Reranking
+79
+Code Example
+80
+20. ALTERNATIVES TO RAG
+83
+Agentic RAG
+83
+Reasoning-Augmented Generation
+(ReAG)
+84
+Full Context Loading
+85
+Conclusion
+86
+PART VI
+MULTI-AGENT SYSTEMS
+21. MULTI-AGENT 101
+89
+22. AGENT SUPERVISOR
+92
+23. CONTROL FLOW
+93
+24. WORKFLOWS AS TOOLS
+94
+
+[Page 8]
+25. COMBINING THE PATTERNS
+95
+26. MULTI-AGENT STANDARDS
+97
+How A2A works
+98
+A2A vs. MCP
+98
+PART VII
+EVALS
+27. EVALS 101
+103
+28. TEXTUAL EVALS
+105
+Accuracy and reliability
+105
+Understanding context
+106
+Output
+107
+Code Example
+108
+29. OTHER EVALS
+109
+Classiﬁcation or Labeling Evals
+109
+Agent Tool Usage Evals
+109
+Prompt Engineering Evals
+110
+A/B testing
+110
+Human data review
+111
+PART VIII
+DEVELOPMENT & DEPLOYMENT
+30. LOCAL DEVELOPMENT
+115
+Building an agentic web frontend
+115
+Building an agent backend
+116
+31. DEPLOYMENT
+118
+Deployment challenges
+118
+Using a managed platform
+119
+
+[Page 9]
+PART IX
+EVERYTHING ELSE
+32. MULTIMODAL
+123
+Image Generation
+124
+Use Cases
+125
+Voice
+126
+Video
+128
+33. CODE GENERATION
+129
+34. WHAT’S NEXT
+131
+
+[Page 10]
+FOREWORD
+SAM BHAGWAT
+2nd edition
+Two months is a short time to write a new edition of
+a book, but life moves fast in AI.
+This edition has new content on MCP, image
+gen, voice, A2A, web browsing and computer use,
+workﬂow streaming, code generation, agentic RAG,
+and deployment.
+AI engineering continues to get hotter and
+hotter. Mastra’s weekly downloads have doubled
+each of the last two months. At a typical SF AI
+evening meetup, I give away a hundred copies of this
+book.
+Then two days ago, a popular developer news-
+letter tweeted about this book and 3,500 people (!)
+downloaded a digital copy (available for free at
+mastra.ai/book if you are reading a paper copy).
+
+[Page 11]
+x
+SAM BHAGWAT
+So yes, 2025 is truly the year of agents. Thanks
+for reading, and happy building!
+Sam Bhagwat
+San Francisco, CA
+May 2025
+1st edition
+For the last three months, I’ve been holed up in an
+apartment in San Francisco’s Dogpatch district with
+my cofounders, Shane Thomas and Abhi Aiyer.
+We’re building an open-source JavaScript frame-
+work called Mastra to help people build their own
+AI agents and assistants.
+We’ve come to the right spot.
+We’re in the Winter 2025 batch of YCombinator,
+the most popular startup incubator in the world
+(colloquially, YC W25).
+Over half of the batch is building some sort of
+“vertical agent” — AI application generating CAD
+diagrams for aerospace engineers, Excel ﬁnancials
+for private equity, a customer support agent for iOS
+apps.
+These three months have come at some personal
+sacriﬁce.
+Shane has traveled from South Dakota with his
+girlfriend Elizabeth, their three-year-old daughter
+
+[Page 12]
+Foreword
+xi
+and newborn son. I usually have 50-50 custody of my
+seven-year-old son and ﬁve-year-old daughter, but
+for these three months I’m down to every-other-
+weekend. Abhi’s up from LA, where he bleeds
+Lakers purple and gold.
+Our backstory is that Shane, Abhi and I met
+while building a popular open-source JavaScript
+website framework called Gatsby. I was the co-
+founder, and Shane and Abhi were key engineers.
+While OpenAI and Anthropic’s models are
+widely available, the secrets of building eﬀective AI
+applications are hidden in niche Twitter/X accounts,
+in-person SF meetups, and founder groupchats.
+But AI engineering is just a new domain, like
+data engineering a few years ago, or DevOps before
+that. It’s not impossibly complex. An engineer with a
+framework like Mastra should be able to get up to
+speed in a day or two. With the right tools, it’s easy to
+build an agent as it is to build a website.
+This book is intentionally a short read, even with
+the code examples and diagrams we’ve included. It
+should ﬁt in your back pocket, or slide into your
+purse. You should be able to use the code examples
+and get something simple working in a day or two.
+Sam Bhagwat
+San Francisco, CA
+March 2025
+
+[Page 14]
+INTRODUCTION
+We’ve structured this book into a few diﬀerent
+sections.
+Prompting a Large Language Model (LLM)
+provides some background on what LLMs are, how
+to choose one, and how to talk to them.
+Building an Agent introduces a key building
+block of AI development. Agents are a layer on top
+of LLMs: they can execute code, store and access
+memory, and communicate with other agents. Chat-
+bots are typically powered by agents.
+Graph-based Workﬂows have emerged as a
+useful technique for building with LLMs when
+agents don’t deliver predictable enough output.
+Retrieval-Augmented 
+Generation 
+(RAG),
+covers a common pattern of LLM-driven search.
+RAG helps you search through large corpuses of
+
+[Page 15]
+xiv
+Introduction
+(typically proprietary) information in order to send
+the relevant bits to any particular LLM call.
+Multi-agent systems cover the coordination
+aspects of bringing agents into production. The
+problems often involve a signiﬁcant amount of orga-
+nizational design!
+Testing with Evals is important in checking
+whether your application is delivering users suﬃ-
+cient quality.
+Local dev and serverless deployment are the
+two places where your code needs to work. You need
+to be able to iterate quickly on your machine, then
+get code live on the Internet.
+Note that we don’t talk about traditional
+machine learning (ML) topics like reinforcement
+learning, training models, and ﬁne-tuning.
+Today most AI applications only need to use
+LLMs, rather than build them.
+
+[Page 16]
+PART I
+PROMPTING A LARGE
+LANGUAGE MODEL (LLM)
+
+[Page 18]
+A
+1
+A BRIEF HISTORY OF LLMS
+I has been a perennial on-the-horizon
+technology for over forty years.
+There have been notable advances
+over the 2000s and 2010s: chess engines, speech
+recognition, self-driving cars.
+The bulk of the progress on “generative AI” has
+come since 2017, when eight researchers from
+Google wrote a paper called “Attention is All You
+Need”.
+It described an architecture for generating text
+where a “large language model” (LLM) was given a
+set of “tokens” (words and punctuation) and was
+focused on predicting the next “token”.
+The next big step forward happened in
+November 2022. A chat interface called ChatGPT,
+produced by a well-funded startup called OpenAI,
+went viral overnight.
+
+[Page 19]
+4
+SAM BHAGWAT
+Today, there are several diﬀerent providers of
+LLMs, which provide both consumer chat interfaces
+and developer APIs:
+OpenAI. Founded in 2015 by eight people
+including AI researcher Ilya Sutskever,
+software engineer Greg Brockman, Sam
+Altman (the head of YC), and Elon Musk.
+Anthropic (Claude). Founded in 2020 by
+Dario Amodei and a group of former
+OpenAI researchers. Produces models
+popular for code writing, as well as API-
+driven tasks.
+Google (Gemini). The core LLM is being
+produced by the DeepMind team
+acquired by Google in 2014.
+Meta (Llama). The Facebook parent
+company produces the Llama class of
+open-source models. Considered the
+leading US open-source AI group.
+Others include Mistral (an open-source
+French company), DeepSeek (an open-
+source Chinese company).
+
+[Page 20]
+O
+2
+CHOOSING A PROVIDER AND
+MODEL
+ne of the ﬁrst choices you’ll need to
+make building an AI application is
+which model to build on. Here are some
+considerations:
+Hosted vs open-source
+The ﬁrst piece of advice we usually give people
+when building AI applications is to start with a
+hosted provider like OpenAI, Anthropic, or Google
+Gemini.
+Even if you think you will need to use open-
+source, prototype with cloud APIs, or you’ll be
+debugging infra issues instead of actually iterating
+on your code. One way to do this without rewriting a
+lot of code is to use a model routing library (more on
+that later).
+
+[Page 21]
+6
+SAM BHAGWAT
+Model size: accuracy vs cost/latency
+Large language models work by multiplying arrays
+and matrixes of numbers together. Each provider
+has larger models, which are more expensive, accu-
+rate, and slower, and smaller models, which are
+faster, cheaper, and less accurate.
+We typically recommend that people start with
+more expensive models when prototyping — once
+you get something working, you can tweak cost.
+Context window size
+One variable you may want to think about is the
+“context window” of your model. How many tokens
+can it take? Sometimes, especially for early prototyp-
+ing, you may want to feed huge amounts of context
+into a model to save the eﬀort of selecting the rele-
+vant context.
+Right now, the longest context windows belong
+to the Google Gemini Flash set of models; Gemini
+Flash 1.5 Pro supports a 2 million token context
+window (roughly 4,000 pages of text).
+This allows some interesting applications; you
+might imagine a support assistant with the entire
+codebase in its context window.
+
+[Page 22]
+Principles of Building AI Agents
+7
+Reasoning models
+Another type of model is what’s called a “reasoning
+model”, namely, that it does a lot of logic internally
+before returning a response. It might take seconds,
+or minutes, to give a response, and it will return a
+response all at once (while streaming some
+“thinking steps” along the way).
+Reasoning models are getting a lot better and
+they’re doing it fast. Now, they’re able to break down
+complicated problems and actually “think” through
+them in steps, almost like a human would.
+What’s changed? New techniques like chain-of-
+thought prompting let these models show their
+work, step by step. Even better, newer methods like
+“chain of draft” and “chain of preference optimiza-
+tion” help them stay focused. Instead of rambling-
+writing out every tiny detail or repeating them-
+selves-they cut to the chase, only sharing the most
+important steps and skipping the ﬂuﬀ. This means
+you get clear, eﬃcient reasoning, not a wall of text.
+Bottom line: if you give these models enough
+context and good examples, they can deliver surpris-
+ingly smart, high-quality answers to tough ques-
+tions. For example, if you want the model to help
+diagnose a tricky medical case, giving it the patient’s
+history, symptoms, and a few sample cases will lead
+to much better results than just asking a vague ques-
+
+[Page 23]
+8
+SAM BHAGWAT
+tion. The trick is still the same: the more you help
+them up front, the better their reasoning gets.
+You should think of reasoning models as “report
+generators” — you need to give them lots of context
+up front via many-shot prompting (more on that
+later). If you do that, they can return high-quality
+responses. If not, they will go oﬀ the rails.
+Suggested reading: “o1 isn’t a chat model” by
+Ben Hylak
+Providers and models (May 2025)
+
+[Page 24]
+O
+3
+WRITING GREAT PROMPTS
+ne of the foundational skills in AI
+engineering is writing good prompts.
+LLMs will follow instructions, if you
+know how to specify them well. Here’s a few tips and
+techniques that will help:
+Give the LLM more examples
+There are three basic techniques to prompting.
+Zero-shot: The “YOLO” approach. Ask
+the question and hope for the best.
+Single-shot: Ask a question, then provide
+one example (w/ input + output) to guide
+the model
+Few-shot: Give multiple examples for
+more precise control over the output.
+
+[Page 25]
+10
+SAM BHAGWAT
+More examples = more guidance, but also takes
+more time.
+A “seed crystal” approach
+If you’re not sure where to start, you can ask the
+model to generate a prompt for you. E.g. “Generate a
+prompt for requesting a picture of a dog playing
+with a whale.” This gives you a solid v1 to reﬁne. You
+can also ask the model to suggest what could make
+that prompt better.
+Typically you should ask the same model that
+you’ll be prompting: Claude is best at generating
+prompts for Claude, gpt-4o for gpt-4o, etc.
+We actually built a prompt CMS into Mastra’s
+local development environment for this reason.
+Use the system prompt
+When accessing models via API, they usually have
+the ability to set a system prompt, eg, give the model
+characteristics that you want it to have. This will be
+in addition to the speciﬁc “user prompt” that gets
+passed in.
+A fun example is to ask the model to answer the
+same question as diﬀerent personas, eg as Steve Jobs
+vs as Bill Gates, or as Harry Potter vs as Draco
+Malfoy.
+This is good for helping you shape the tone with
+
+[Page 26]
+Principles of Building AI Agents
+11
+which an agent or assistant responds, but usually
+doesn’t improve accuracy.
+Weird formatting tricks
+AI models can be sensitive to formatting—use it to
+your advantage:
+CAPITALIZATION can add weight to
+certain words.
+XML-like structure can help models
+follow instructions more precisely.
+Claude & GPT-4 respond better to
+structured prompts (e.g., task,
+context, constraints).
+Experiment and tweak—small changes in struc-
+ture can make a huge diﬀerence! You can measure
+with evals (more on that later).
+Example: a great prompt
+If you think your prompts are detailed, go through
+and read some production prompts. They tend to be
+very detailed. Here’s an example of (about one-third
+of) a live production code-generation prompt (used
+in a tool called bolt.new.)
+
+[Page 28]
+PART II
+BUILDING AN AGENT
+
+[Page 30]
+Y
+4
+AGENTS 101
+ou can use direct LLM calls for one-shot
+transformations: “given a video transcript,
+write a draft description.”
+For ongoing, complex interactions, you typically
+need to build an agent on top. Think of agents as AI
+employees rather than contractors: they main-
+tain context, have speciﬁc roles, and can use tools to
+accomplish tasks.
+Levels of Autonomy
+There are a lot of diﬀerent deﬁnitions of agents and
+agency ﬂoating around. We prefer to think of agency
+as a spectrum. Like self-driving cars, there are
+diﬀerent levels of agent autonomy.
+
+[Page 31]
+16
+SAM BHAGWAT
+At a low level, agents make binary choices
+in a decision tree
+At a medium level, agents have memory,
+call tools, and retry failed tasks
+At a high level, agents do planning, divide
+tasks into subtasks, and manage their
+task queue.
+This book mostly focuses on agents on low-to-
+medium levels of autonomy. Right now, there are
+only a few examples of widely deployed, high-
+autonomy agents.
+Code Example
+In Mastra, agents have persistent memory, consistent
+model conﬁgurations, and can access a suite of tools
+and workﬂows.
+Here’s how to create a basic agent:
+
+[Page 32]
+Principles of Building AI Agents
+17
+
+[Page 33]
+I
+5
+MODEL ROUTING AND
+STRUCTURED OUTPUT
+t’s useful to be able to quickly test and
+experiment with diﬀerent models without
+needing to learn multiple provider SDKs. This
+is known as model routing.
+Here’s a JavaScript example with the AI SDK
+library:
+
+[Page 34]
+Principles of Building AI Agents
+19
+Structured output
+When you use LLMs as part of an application, you
+often want them to return data in JSON format
+instead of unstructured text. Most models support
+“structured output” to enable this.
+Here’s an example of requesting a structured
+response by providing a schema:
+LLMs are very powerful for processing unstruc-
+tured or semi-structured text. Consider passing in
+the text of a resume and extracting a list of jobs,
+employers, and date ranges, or passing in a medical
+record and extracting a list of symptoms.
+
+[Page 35]
+T
+6
+TOOL CALLING
+ools are functions that agents can call to
+perform 
+speciﬁc 
+tasks 
+— 
+whether
+that's fetching weather data, querying
+a database, or processing calculations.
+The key to eﬀective tool use is clear communica-
+tion with the model about what each tool does and
+when to use it.
+Here's an example of creating and using a tool:
+
+[Page 36]
+Principles of Building AI Agents
+21
+BEST PRACTICES:
+Provide detailed descriptions in the tool
+deﬁnition and system prompt
+Use speciﬁc input/output schemas
+Use semantic naming that matches the
+tool's function (eg multiplyNumbers
+instead of doStuﬀ)
+
+[Page 37]
+22
+SAM BHAGWAT
+Remember: The more clearly you communicate a
+tool's purpose and usage to the model, the more
+likely it is to use it correctly. You should describe
+both what it does and when to call it.
+Designing your tools: the most important step
+WHEN YOU’RE CREATING an AI application, the most
+important thing you should do is think carefully
+about your tool design.
+• What is the list of all the tools you’ll need?
+• What will each of them do?
+Write this out clearly before you start coding.
+Real-world example: Alana’s book
+recommendation agent
+Alana Goyal, a Mastra investor, wanted to build
+an agent that could give intelligent recommenda-
+tions and analysis about a corpus of investor
+book recommendations.
+FIRST ATTEMPT:
+She tried dropping all the books into the agent’s
+knowledge window. This didn’t work well — the
+
+[Page 38]
+Principles of Building AI Agents
+23
+agent couldn’t reason about the data in a structured
+way.
+BETTER APPROACH:
+She broke the problem down into a set of specif-
+ic tools, each handling a diﬀerent aspect of the data:
+• A tool for accessing the corpus of investors
+• A tool for book recommendations
+• A tool for books tagged by genre
+Then, she added more tools for common
+operations:
+• Get all books by genre
+• Get book recommendations by investor
+• Sort people writing recommendations by
+type (founders, investors, etc.)
+If a human analyst were doing this project,
+they’d follow a speciﬁc set of operations or queries.
+The trick is to take those operations and
+write them as tools or queries that your agent
+can use.
+RESULT:
+With these tools in place, the agent could now
+intelligently analyze the corpus of books, answer
+nuanced questions, and provide useful recommen-
+dations — just like a skilled human analyst.
+•
+ •
+ •
+
+[Page 39]
+24
+SAM BHAGWAT
+TAKEAWAY:
+Think like an analyst. Break your problem into
+clear, reusable operations. Write each as a tool.
+If you do this, your agent will be much more ca-
+pable, reliable, and useful.
+
+[Page 40]
+M
+7
+AGENT MEMORY
+emory is crucial for creating agents
+that maintain meaningful, contextual
+conversations over time. While LLMs
+can process individual messages eﬀectively, they
+need help managing longer-term context and histor-
+ical interactions.
+Working memory
+Working memory stores relevant, persistent, long-
+term characteristics of users. A popular example of
+how to see working memory is to ask ChatGPT what
+it knows about you.
+(For me, because my children often talk to it on
+my devices, it will tell me that I’m a ﬁve year old girl
+who loves squishmellows.)
+
+[Page 41]
+26
+SAM BHAGWAT
+Hierarchical memory
+Hierarchical memory is a fancy way of saying to use
+recent messages along with relevant long-term
+memories.
+For example, let’s say we were having a conversa-
+tion. A few minutes in, you asked me what I did last
+weekend.
+When you ask, I search in my memory for rele-
+vant events (ie, from last weekend). Then I think
+about the last few messages we’ve exchanged. Then,
+I join those two things together in my “context
+window” and I formulate a response to you.
+Roughly speaking, that’s what a good agent
+memory system looks like too. Let’s take a simple
+case, and say we have an array of messages, a user
+sends in a query, and we want to decide what to
+include.
+Here’s how we would do that in Mastra:
+The lastMessages setting maintains a sliding
+
+[Page 42]
+Principles of Building AI Agents
+27
+window of the most recent messages. This ensures
+your agent always has access to the immediate
+conversation context:
+semanticRecall indicates that we’ll be using
+RAG (more later) to search through past conver-
+sations.
+topK is the number of messages to retrieve.
+messageRange  is the range on each side of the
+match to include.
+Visualization of the memory retrieval process
+Instead of overwhelming the model with the en-
+tire conversation history, it selectively includes the
+most pertinent past interactions.
+By being selective about which context to
+include, we prevent context window overﬂow while
+still maintaining the most relevant information for
+the current interaction.
+
+[Page 43]
+28
+SAM BHAGWAT
+Note: As context windows continue to grow, devel-
+opers often start by throwing everything in the
+context window and setting up memory later!
+Memory processors
+SOMETIMES INCREASING your context window is not
+the right solution. It’s counterintuitive but some-
+times you want to deliberately prune your context
+window or just control it.
+Memory Processors allow you to modify the list
+of messages retrieved from memory before they are
+added to the agent’s context window and sent to the
+LLM. This is useful for managing context size,
+ﬁltering content, and optimizing performance.
+Mastra provides built-in processors.
+`TokenLimiter`
+This processor is used to prevent errors caused by
+exceeding the LLM’s context window limit. It counts
+the tokens in the retrieved memory messages and
+removes the oldest messages until the total count is
+below the speciﬁed limit.
+
+[Page 44]
+Principles of Building AI Agents
+29
+`ToolCallFilter`
+This processor removes tool calls from the memory
+messages sent to the LLM. It saves tokens by
+excluding potentially verbose tool interactions from
+the context, which is useful if the details aren’t
+needed for future interactions. It’s also useful if you
+always want your agent to call a speciﬁc tool again
+and not rely on previous tool results in memory.
+
+[Page 46]
+T
+8
+DYNAMIC AGENTS
+he simplest way to conﬁgure an agent is to
+pass a string for their system prompt, a
+string for the provider and model name,
+and an object/dictionary for a list of tools that they
+are provided.
+But that creates a challenge. What if you want to
+change these things at runtime?
+What are Dynamic Agents?
+Choosing between dynamic and static agents is ulti-
+mately a tradeoﬀ between predictability and power.
+A dynamic agent is an agent whose properties—
+like instructions, model, and available tools—can be
+determined at runtime, not just when the agent is
+created.
+This means your agent can change how it acts
+
+[Page 47]
+32
+SAM BHAGWAT
+based on user input, environment, or any other
+runtime context you provide.
+Example: Creating a Dynamic Agent
+Here’s an example of a dynamic support agent that
+adjusts its behavior based on the user’s subscription
+tier and language preferences:
+
+[Page 48]
+Principles of Building AI Agents
+33
+Agent middleware
+
+[Page 49]
+O
+9
+AGENT MIDDLEWARE
+nce we see that it’s useful to specify the
+system prompt, model, and tool options
+at runtime, we start to think about the
+other things we might want to do at runtime as well.
+Guardrails
+Guardrails are a general term for sanitizing the input
+coming into your agent, or the output coming out.
+Input sanitization tries broadly to guard against
+“prompt injection” attacks.
+These include model “jailbreaking” (“IGNORE
+PREVIOUS INSTRUCTIONS AND…”), requests for
+PII, and oﬀ-topic chats that could run up your LLM
+bills.
+Luckily, over the last couple years, the models
+
+[Page 50]
+Principles of Building AI Agents
+35
+are getting better at guarding against malicious
+input; the most memorable examples of prompt
+injections are from a couple years ago.
+Chris Bakke prompt injection attack, December 2023
+Agent authentication and authorization
+There are two layers of permissions to consider for
+agents.
+First, permissioning of which resources an agent
+should have access to. Second, permissioning
+around which users can access to an agent.
+The ﬁrst one we covered in the previous section;
+the second we’ll discuss here. Middleware is the
+typical place to put any agent authorization, because
+it’s in the perimeter around the agent rather than
+within the agent’s inner loop.
+One thing to think about when building agents is

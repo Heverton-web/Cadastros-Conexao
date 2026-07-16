@@ -1,0 +1,57 @@
+---
+name: epub-react-native-desenvolvimento-de-aplicativos-m
+description: >-
+  Passos operacionais extraidos — desenvolvimento web, full-stack, JavaScript, TypeScript, React, Node.js (PT).
+---
+
+# Epub React Native Desenvolvimento De Aplicativos — Passos Operacionais
+
+Conteudo extraido do livro 'Epub React Native Desenvolvimento De Aplicativos'. Contem passos, tecnicas e principios baseados na obra original.
+
+## 1. Conceitos Fundamentais
+- História do desenvolvimento do React Native](01-historia-do-desenvolvimento-do-react-native.html)   * [2\.
+- Instalação e configurações iniciais](02-instalacao-e-configuracao-iniciais.html)   * [3\.
+- Funcionamento do React Native](03-funcionamento-do-react-native.html)   * [4\.
+- Criando os primeiros componentes](04-criando-os-primeiros-componentes.html)   * [5\.
+- Componentes estilizados (CSS-in-JS)](05-inserindo-estilos.html)   * [6\.
+- O básico de layouts com o Flexbox](06-layouts-com-flexbox.html)   * [7\.
+- Renderização condicional](07-renderizacao-condicional.html)   * [8\.
+- State, eventos e componentes controlados e não controlados](08-state-eventos-e-componentes-controlados.html)   * [9\.
+- Requisições AJAX e APIs](09-requisicoes-ajax.html)   * [10\.
+- Navegação](10-navegacao.html)   * [11\.
+
+## 2. Principios e Tecnicas
+- Integração com o banco de dados do Firebase](11-integracao-com-o-firebase.html)   * [12\.
+- Trabalhando com Hooks](12-trabalhando-com-hooks.html)   * [13\.
+- O futuro do React Native](13-o-futuro-do-react-native.html)   * [14\.
+- Referências](14-referencias.html)     # ISBN  Impresso e PDF: 978-65-86110-09-8  EPUB: 978-65-86110-06-7  MOBI: 978-65-86110-08-1  > Caso você deseje submeter alguma errata ou sugestão, acesse <http://erratas.casadocodigo.com.br>.   # Dedicatória  Dedicamos este livro às nossas famílias: Maria Aparecida de Freitas Escudelario e Irineu Escudelario; Ednilda Cicilini de Pinho, Ilidio Graciano Martins de Pinho e Lucas Martins de Pinho.
+- Graças ao apoio de vocês, conseguimos concluir mais este trabalho.
+- Do fundo dos nossos corações, muito obrigado.
+- Amamos vocês.   # Agradecimentos  Primeiramente, gostaríamos de agradecer muito às nossas famílias que sempre nos apoiaram, motivaram e educaram a buscarmos sempre sermos pessoas melhores, seja no trabalho, com os amigos e principalmente com o próximo.
+- Também somos muito gratos aos nossos amigos e mentores.
+- A ajuda de todos foi extremamente valiosa para a conclusão deste trabalho.
+- Nosso muito obrigado a cada um de vocês.
+
+## 3. Aplicacoes Praticas
+- Também gostaríamos de agradecer à Editora Casa do Código por nos dar a oportunidade e o espaço para compartilhar este conhecimento de React Native.
+- Em especial, um agradecimento a Vivian Matsui, sempre muito presente e parceira em todo o processo da construção deste livro.
+- E por fim, e não menos importante, gostaríamos de agradecer a você que está lendo!
+- Muito obrigado pela confiança em nosso trabalho!
+- Nós nos esforçamos muito para trazer um material de qualidade, atual e de acordo com o que o mercado de trabalho está esperando de um profissional que trabalha com esta tecnologia.
+- Ficamos na esperança de que este material ajude você a ser um profissional da tecnologia ainda melhor.
+- Boa leitura e bons códigos!   # Autores  ### Bruna de Freitas Escudelario  Figura -2.1: Bruna de Freitas Escudelario.
+- Desenvolvedora front-end desde 2016.
+- Fez bacharelado em Ciência da Computação pela Pontifícia Universidade Católica de São Paulo (PUC-SP) e é coautora do livro _Construct 2: Crie seu primeiro jogo multiplataforma_ , também publicado pela Editora Casa do Código, e do livro _O Básico da Modelagem 3D com o Blender_ , publicado pela Editora Viena.
+- Sempre gostou muito de ler e estuda diariamente por meio de cursos, artigos e vídeos na internet.
+
+## 4. Topicos Avancados
+- Começou a se aventurar no desenvolvimento de jogos há pouco tempo, mas já acumulou experiência suficiente para tocar seu primeiro negócio na internet – junto com o Diego –, a _Time to Play_ , uma iniciativa especializada em recursos para a construção de jogos digitais.
+- Hoje atua como desenvolvedora front-end em uma grande empresa de aprendizagem corporativa de São Paulo.    * Site: <https://brunaescudelario.github.io/>    ### Diego Martins de Pinho  Figura -2.2: Diego Martins de Pinho.
+- Desenvolvedor de software desde 2013, tem experiência na área da educação e domínio em tecnologias web de front-end e back-end.
+- Dentre as principais linguagens estão o Java e o JavaScript.
+- Fez bacharelado em Ciência da Computação pela Pontifícia Universidade Católica de São Paulo (PUC-SP) e possui MBA em Gerenciamento da Tecnologia da Informação pela Faculdade de Informática e Administração Paulista (FIAP).
+- Tem uma grande paixão pela educação e gosta muito de ensinar.
+- Escreve artigos sobre tecnologia na internet, faz apresentações em eventos e é entusiasta em programação para jogos, modelagem (2D e 3D) e animação.
+- É coautor do livro _Construct 2: Crie seu primeiro jogo multiplataforma_ e autor do livro _ECMAScript 6: Entre de cabeça no futuro do JavaScript_ , ambos publicados pela Editora Casa do Código.
+- Hoje atua na área da educação como Professor Especialista de Programação e Jogos na Escola Móbile Integral em São Paulo.
+- Também é responsável pela iniciativa Code Prestige de ensino de programação a distância.    * Site: <https://diegopinho.com.br>     # Prefácio  Quando o Diego e a Bruna me convidaram para escrever estas linhas iniciais do novo livro de React Native que estão publicando, fiquei extremamente feliz.
