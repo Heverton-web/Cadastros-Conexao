@@ -10,6 +10,16 @@ interface RequestBody {
   agente_id: string;
   mensagem: string;
   historico?: ChatMessage[];
+  session_id?: string;
+}
+
+interface UsageInfo {
+  prompt_tokens: number;
+  completion_tokens: number;
+  total_tokens: number;
+  input_cost: number;
+  output_cost: number;
+  total_cost: number;
 }
 
 // ═══════════════════════════════════════════════════════════════════
@@ -101,7 +111,7 @@ serve(async (req: Request) => {
     const isSuperAdmin = profile?.is_super_admin === true;
 
     const body: RequestBody = await req.json();
-    const { agente_id, mensagem, historico = [] } = body;
+    const { agente_id, mensagem, historico = [], session_id } = body;
 
     if (!agente_id || !mensagem) {
       return new Response(
@@ -267,6 +277,8 @@ serve(async (req: Request) => {
     ];
 
     let resposta: string;
+    let usage: UsageInfo | null = null;
+    const sid = session_id || crypto.randomUUID();
 
     if (agente.execution_mode === "webhook" && agente.webhook_url) {
       // ═══ WEBHOOK MODE: Despachar pra URL externa ═══
@@ -322,6 +334,63 @@ serve(async (req: Request) => {
 
       const apiData = await apiResponse.json();
       resposta = apiData.choices?.[0]?.message?.content || "Sem resposta do modelo.";
+
+      // ═══ CAPTURAR USAGE DA API ═══
+      const apiUsage = apiData.usage;
+      if (apiUsage) {
+        const pt = apiUsage.prompt_tokens ?? 0;
+        const ct = apiUsage.completion_tokens ?? 0;
+
+        // Buscar precos do modelo na tabela modelos_ia
+        let inputCost = 0;
+        let outputCost = 0;
+        try {
+          const modelo = agente.modelo;
+          const { data: precos } = await supabase
+            .from("modelos_ia")
+            .select("input_cost, output_cost")
+            .or("modelo_id.eq." + modelo + ",nome.ilike.%" + modelo + "%")
+            .order("versao_id", { ascending: false })
+            .limit(1);
+
+          if (precos && precos.length > 0) {
+            inputCost = Number(precos[0].input_cost) || 0;
+            outputCost = Number(precos[0].output_cost) || 0;
+          }
+        } catch {
+          // fallback: custo zero se nao encontrar tabela
+        }
+
+        const totalCost = (pt / 1_000_000 * inputCost) + (ct / 1_000_000 * outputCost);
+
+        usage = {
+          prompt_tokens: pt,
+          completion_tokens: ct,
+          total_tokens: pt + ct,
+          input_cost: inputCost,
+          output_cost: outputCost,
+          total_cost: totalCost,
+        };
+
+        // Logar uso
+        try {
+          await supabase.from("agentes_usage_log").insert({
+            empresa_id: agente.empresa_id,
+            agente_id,
+            session_id: sid,
+            modelo: agente.modelo,
+            provedor: agente.provedor_url,
+            prompt_tokens: pt,
+            completion_tokens: ct,
+            total_tokens: pt + ct,
+            input_cost: inputCost,
+            output_cost: outputCost,
+            total_cost: totalCost,
+          });
+        } catch {
+          // fire-and-forget: log falhou, segue
+        }
+      }
     }
 
     // Salvar conversa
@@ -337,7 +406,33 @@ serve(async (req: Request) => {
       mensagens: novasMensagens,
     });
 
-    return new Response(JSON.stringify({ resposta }), {
+    // Calcular total da sessao
+    let sessionCost = 0;
+    if (usage) {
+      try {
+        const { data: logs } = await supabase
+          .from("agentes_usage_log")
+          .select("total_cost")
+          .eq("session_id", sid);
+        if (logs) {
+          sessionCost = logs.reduce((sum, l) => sum + Number(l.total_cost), 0);
+        }
+      } catch {
+        sessionCost = usage.total_cost;
+      }
+    }
+
+    return new Response(JSON.stringify({
+      resposta,
+      usage: usage ? {
+        session_id: sid,
+        action_cost: usage.total_cost,
+        session_cost: sessionCost,
+        prompt_tokens: usage.prompt_tokens,
+        completion_tokens: usage.completion_tokens,
+        total_tokens: usage.total_tokens,
+      } : null,
+    }), {
       headers: { "Content-Type": "application/json", ...corsHeaders },
     });
   } catch (err) {

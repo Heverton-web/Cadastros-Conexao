@@ -71,10 +71,19 @@ export async function setModulosAcesso(
   modulosAcesso: ModulosAcesso,
 ): Promise<void> {
   const { data: user } = await supabase.auth.getUser();
+
+  // Buscar empresa_id do profile para salvar na tabela permissoes
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("empresa_id")
+    .eq("id", usuarioId)
+    .single();
+
   const { error } = await supabase.from("permissoes").upsert(
     {
       usuario_id: usuarioId,
       modulos_acesso: modulosAcesso as any,
+      empresa_id: profile?.empresa_id || null,
       updated_by: user.user?.id || null,
     },
     { onConflict: "usuario_id" },

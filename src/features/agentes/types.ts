@@ -49,6 +49,36 @@ export interface ChatMessage {
   content: string;
 }
 
+export interface UsageInfo {
+  session_id: string;
+  action_cost: number;
+  session_cost: number;
+  prompt_tokens: number;
+  completion_tokens: number;
+  total_tokens: number;
+}
+
+export interface ChatResponse {
+  resposta: string;
+  usage: UsageInfo | null;
+}
+
+export interface AgenteUsageLog {
+  id: string;
+  empresa_id: string | null;
+  agente_id: string | null;
+  session_id: string;
+  modelo: string;
+  provedor: string;
+  prompt_tokens: number;
+  completion_tokens: number;
+  total_tokens: number;
+  input_cost: number;
+  output_cost: number;
+  total_cost: number;
+  created_at: string;
+}
+
 export type WizardStep = "api" | "modulo" | "knowledge" | "revisao";
 
 export interface CriarAgenteInput {

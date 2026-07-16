@@ -7,6 +7,8 @@ import type {
   ChatMessage,
   CriarAgenteInput,
   UpdateAgenteInput,
+  UsageInfo,
+  AgenteUsageLog,
 } from "./types";
 
 // ── Agentes CRUD ──────────────────────────────────────────────
@@ -188,12 +190,14 @@ export async function toggleTabela(
 export async function enviarMensagemPlayground(
   agenteId: string,
   mensagem: string,
-  historico: ChatMessage[] = []
-): Promise<string> {
+  historico: ChatMessage[] = [],
+  sessionId?: string
+): Promise<{ resposta: string; usage: UsageInfo | null }> {
   const { data: sessionData } = await supabase.auth.getSession();
   const token = sessionData?.session?.access_token;
   if (!token) throw new Error("Não autenticado");
 
+  const sid = sessionId || crypto.randomUUID();
   const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
   const res = await fetch(
     `${supabaseUrl}/functions/v1/agentes-ia-chat`,
@@ -203,7 +207,7 @@ export async function enviarMensagemPlayground(
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({ agente_id: agenteId, mensagem, historico }),
+      body: JSON.stringify({ agente_id: agenteId, mensagem, historico, session_id: sid }),
       signal: AbortSignal.timeout(60000),
     }
   );
@@ -214,7 +218,10 @@ export async function enviarMensagemPlayground(
   }
 
   const result = await res.json();
-  return result.resposta;
+  return {
+    resposta: result.resposta,
+    usage: result.usage ?? null,
+  };
 }
 
 export async function listarConversas(
@@ -236,6 +243,68 @@ export async function deletarConversas(agenteId: string): Promise<void> {
     .delete()
     .eq("agente_id", agenteId);
   if (error) throw error;
+}
+
+// ── Gastos / Usage ────────────────────────────────────────────
+
+export async function buscarGastosSessao(
+  sessionId: string
+): Promise<{ total_cost: number; total_tokens: number; chamadas: number }> {
+  const { data, error } = await supabase
+    .from("agentes_usage_log")
+    .select("total_cost, total_tokens")
+    .eq("session_id", sessionId);
+
+  if (error) throw error;
+  const rows = data ?? [];
+  return {
+    total_cost: rows.reduce((s, r) => s + Number(r.total_cost), 0),
+    total_tokens: rows.reduce((s, r) => s + r.total_tokens, 0),
+    chamadas: rows.length,
+  };
+}
+
+export async function buscarGastosHoje(
+  empresaId: string
+): Promise<{ total_cost: number; total_tokens: number; chamadas: number }> {
+  const hoje = new Date();
+  hoje.setHours(0, 0, 0, 0);
+
+  let query = supabase
+    .from("agentes_usage_log")
+    .select("total_cost, total_tokens")
+    .gte("created_at", hoje.toISOString());
+
+  if (empresaId) {
+    query = query.eq("empresa_id", empresaId);
+  }
+
+  const { data, error } = await query;
+  if (error) throw error;
+  const rows = data ?? [];
+  return {
+    total_cost: rows.reduce((s, r) => s + Number(r.total_cost), 0),
+    total_tokens: rows.reduce((s, r) => s + r.total_tokens, 0),
+    chamadas: rows.length,
+  };
+}
+
+export async function buscarGastosAgente(
+  agenteId: string,
+  dias: number = 30
+): Promise<AgenteUsageLog[]> {
+  const desde = new Date();
+  desde.setDate(desde.getDate() - dias);
+
+  const { data, error } = await supabase
+    .from("agentes_usage_log")
+    .select("*")
+    .eq("agente_id", agenteId)
+    .gte("created_at", desde.toISOString())
+    .order("created_at", { ascending: false });
+
+  if (error) throw error;
+  return data ?? [];
 }
 
 // ── Helpers ───────────────────────────────────────────────────
