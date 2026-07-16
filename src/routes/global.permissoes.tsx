@@ -340,14 +340,20 @@ function AdminSuperPermissoes() {
     }
   }
 
-  async function handleSalvarEdicao(id: string, formData: any) {
+  async function handleSalvarEdicao(id: string, formData: any, novosModulosMap?: Record<string, any>) {
     try {
+      const updateData: Record<string, any> = {
+        nome: formData.nome_completo,
+        ambiente: formData.departamento,
+      };
+
+      if (formData.empresa_id !== undefined) {
+        updateData.empresa_id = formData.empresa_id || null;
+      }
+
       const { error } = await supabase
         .from("profiles")
-        .update({
-          nome: formData.nome_completo,
-          ambiente: formData.departamento,
-        })
+        .update(updateData)
         .eq("id", id);
 
       if (error) throw error;
@@ -363,6 +369,10 @@ function AdminSuperPermissoes() {
             "Dados atualizados, mas não foi possível alterar a senha.",
           );
         }
+      }
+
+      if (novosModulosMap) {
+        await setModulosAcesso(id, novosModulosMap);
       }
 
       toast.success("Credencial atualizada!");
@@ -805,6 +815,7 @@ function AdminSuperPermissoes() {
           usuario={editandoUsuario}
           onClose={() => setEditandoUsuario(null)}
           onSave={handleSalvarEdicao}
+          modulos={modulos}
         />
       )}
 
@@ -859,6 +870,7 @@ function NovaCredencialModal({
     whatsapp_corporativo: "",
     departamento: "",
     senha_padrao: "",
+    empresa_id: "",
   });
 
   const [modulosMap, setModulosMap] = useState<Record<string, any>>({});
@@ -866,6 +878,11 @@ function NovaCredencialModal({
     Record<string, boolean>
   >({});
   const [salvando, setSalvando] = useState(false);
+  const [empresas, setEmpresas] = useState<Empresa[]>([]);
+
+  useEffect(() => {
+    listarEmpresas().then(setEmpresas);
+  }, []);
 
   function toggleModuloAcessar(modKey: string) {
     setModulosMap((prev) => {
@@ -919,7 +936,7 @@ function NovaCredencialModal({
           p_email: form.email_corporativo,
           p_senha: form.senha_padrao || "conexao123",
           p_nome: form.nome_completo,
-          p_empresa_id: null,
+          p_empresa_id: form.empresa_id || null,
           p_is_super_admin: false,
         },
       );
@@ -1013,6 +1030,20 @@ function NovaCredencialModal({
               setForm((prev) => ({ ...prev, senha_padrao: e.target.value }))
             }
           />
+          <select
+            className="w-full rounded-lg border border-input-border bg-input-bg px-4 py-3 text-sm text-text-main outline-none focus:border-accent min-h-[44px]"
+            value={form.empresa_id}
+            onChange={(e) =>
+              setForm((prev) => ({ ...prev, empresa_id: e.target.value }))
+            }
+          >
+            <option value="">Vincular a Empresa (opcional)</option>
+            {empresas.map((emp) => (
+              <option key={emp.id} value={emp.id}>
+                {emp.nome}
+              </option>
+            ))}
+          </select>
         </div>
 
         {/* Módulos e Permissões */}
@@ -1236,10 +1267,12 @@ function EditCredencialModal({
   usuario,
   onClose,
   onSave,
+  modulos,
 }: {
   usuario: ProfileRow;
   onClose: () => void;
-  onSave: (id: string, form: any) => Promise<void>;
+  onSave: (id: string, form: any, modulosMap?: Record<string, any>) => Promise<void>;
+  modulos: ModuloUIO[];
 }) {
   const [form, setForm] = useState({
     nome_completo: usuario.nome || "",
@@ -1247,18 +1280,79 @@ function EditCredencialModal({
     whatsapp_corporativo: "",
     departamento: usuario.ambiente || "",
     nova_senha: "",
+    empresa_id: usuario.empresa_id || "",
   });
   const [salvando, setSalvando] = useState(false);
+  const [modulosMap, setModulosMap] = useState<Record<string, any>>({});
+  const [expandedModulosDetalhes, setExpandedModulosDetalhes] = useState<
+    Record<string, boolean>
+  >({});
+  const [empresas, setEmpresas] = useState<Empresa[]>([]);
+  const [loadedPerms, setLoadedPerms] = useState(false);
+
+  useEffect(() => {
+    listarEmpresas().then(setEmpresas);
+  }, []);
+
+  useEffect(() => {
+    getModulosAcesso(usuario.id).then((data) => {
+      if (data) setModulosMap(data);
+      setLoadedPerms(true);
+    });
+  }, [usuario.id]);
+
+  function toggleModuloAcessar(modKey: string) {
+    setModulosMap((prev) => {
+      const current = prev[modKey];
+      return {
+        ...prev,
+        [modKey]: {
+          ...current,
+          acessar: !current?.acessar,
+          paginas: current?.acessar
+            ? []
+            : modulos.find((m) => m.key === modKey)?.paginas.map((p) => p.id) ||
+              [],
+          acoes: current?.acessar
+            ? []
+            : modulos.find((m) => m.key === modKey)?.acoes.map((a) => a.key) ||
+              [],
+        },
+      };
+    });
+  }
+
+  function togglePagina(modKey: string, paginaId: string) {
+    setModulosMap((prev) => {
+      const mod = prev[modKey];
+      if (!mod?.acessar) return prev;
+      const paginas = mod.paginas.includes(paginaId)
+        ? mod.paginas.filter((p: string) => p !== paginaId)
+        : [...mod.paginas, paginaId];
+      return { ...prev, [modKey]: { ...mod, paginas } };
+    });
+  }
+
+  function toggleAcao(modKey: string, acaoKey: string) {
+    setModulosMap((prev) => {
+      const mod = prev[modKey];
+      if (!mod?.acessar) return prev;
+      const acoes = mod.acoes.includes(acaoKey)
+        ? mod.acoes.filter((a: string) => a !== acaoKey)
+        : [...mod.acoes, acaoKey];
+      return { ...prev, [modKey]: { ...mod, acoes } };
+    });
+  }
 
   async function handleSave() {
     setSalvando(true);
-    await onSave(usuario.id, form);
+    await onSave(usuario.id, form, modulosMap);
     setSalvando(false);
   }
 
   return (
     <div className="fixed inset-0 z-[100] flex items-end justify-center bg-black/60 backdrop-blur-sm sm:items-center">
-      <div className="w-full max-w-md rounded-t-2xl sm:rounded-2xl bg-card border border-border/50 p-0 shadow-2xl shadow-black/40 max-h-[90dvh] overflow-hidden flex flex-col">
+      <div className="w-full max-w-2xl rounded-t-2xl sm:rounded-2xl bg-card border border-border/50 p-0 shadow-2xl shadow-black/40 max-h-[90dvh] overflow-hidden flex flex-col">
         <div className="bg-gradient-to-br from-accent/20 via-accent/10 to-transparent px-6 pt-6 pb-4 border-b border-border/50 relative">
           <div className="flex items-center gap-3">
             <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent/15 text-accent">
@@ -1268,6 +1362,9 @@ function EditCredencialModal({
               <h2 className="text-xl font-bold text-text-main tracking-tight">
                 Editar Credencial
               </h2>
+              <p className="text-sm text-text-muted mt-0.5">
+                Atualize dados e permissões da credencial
+              </p>
             </div>
           </div>
           <button
@@ -1277,57 +1374,227 @@ function EditCredencialModal({
             <X size={20} />
           </button>
         </div>
-        <div className="px-6 py-6 flex-1 space-y-4">
-        <input
-          placeholder="Nome Completo"
-          className="mb-3 w-full rounded-lg border border-input-border bg-input-bg px-4 py-3 text-sm text-text-main outline-none focus:border-accent min-h-[44px]"
-          value={form.nome_completo}
-          onChange={(e) =>
-            setForm((prev) => ({ ...prev, nome_completo: e.target.value }))
-          }
-        />
-        <input
-          placeholder="Email Corporativo"
-          className="mb-3 w-full rounded-lg border border-input-border bg-input-bg px-4 py-3 text-sm text-text-main outline-none focus:border-accent min-h-[44px]"
-          type="email"
-          disabled
-          value={form.email_corporativo}
-          onChange={(e) =>
-            setForm((prev) => ({ ...prev, email_corporativo: e.target.value }))
-          }
-        />
-        <input
-          placeholder="WhatsApp (opcional)"
-          className="mb-3 w-full rounded-lg border border-input-border bg-input-bg px-4 py-3 text-sm text-text-main outline-none focus:border-accent min-h-[44px]"
-          value={form.whatsapp_corporativo}
-          onChange={(e) =>
-            setForm((prev) => ({
-              ...prev,
-              whatsapp_corporativo: e.target.value,
-            }))
-          }
-        />
-        <select
-          className="mb-3 w-full rounded-lg border border-input-border bg-input-bg px-4 py-3 text-sm text-text-main outline-none focus:border-accent min-h-[44px]"
-          value={form.departamento}
-          onChange={(e) =>
-            setForm((prev) => ({ ...prev, departamento: e.target.value }))
-          }
-        >
-          <option value="">Departamento</option>
-          <option value="Vendas">Vendas</option>
-          <option value="Administrativo">Administrativo</option>
-          <option value="Financeiro">Financeiro</option>
-          <option value="TI">TI</option>
-        </select>
-        <PasswordInput
-          placeholder="Nova senha (deixe vazio para manter)"
-          className="mb-4 w-full rounded-lg border border-input-border bg-input-bg px-4 py-3 text-sm text-text-main outline-none focus:border-accent min-h-[44px]"
-          value={form.nova_senha}
-          onChange={(e) =>
-            setForm((prev) => ({ ...prev, nova_senha: e.target.value }))
-          }
-        />
+        <div className="px-6 py-6 flex-1 min-h-0 overflow-y-auto space-y-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <input
+              placeholder="Nome Completo"
+              className="w-full rounded-lg border border-input-border bg-input-bg px-4 py-3 text-sm text-text-main outline-none focus:border-accent min-h-[44px]"
+              value={form.nome_completo}
+              onChange={(e) =>
+                setForm((prev) => ({ ...prev, nome_completo: e.target.value }))
+              }
+            />
+            <input
+              placeholder="Email Corporativo"
+              className="w-full rounded-lg border border-input-border bg-input-bg px-4 py-3 text-sm text-text-main outline-none focus:border-accent min-h-[44px]"
+              type="email"
+              disabled
+              value={form.email_corporativo}
+              onChange={(e) =>
+                setForm((prev) => ({ ...prev, email_corporativo: e.target.value }))
+              }
+            />
+            <input
+              placeholder="WhatsApp (opcional)"
+              className="w-full rounded-lg border border-input-border bg-input-bg px-4 py-3 text-sm text-text-main outline-none focus:border-accent min-h-[44px]"
+              value={form.whatsapp_corporativo}
+              onChange={(e) =>
+                setForm((prev) => ({
+                  ...prev,
+                  whatsapp_corporativo: e.target.value,
+                }))
+              }
+            />
+            <select
+              className="w-full rounded-lg border border-input-border bg-input-bg px-4 py-3 text-sm text-text-main outline-none focus:border-accent min-h-[44px]"
+              value={form.departamento}
+              onChange={(e) =>
+                setForm((prev) => ({ ...prev, departamento: e.target.value }))
+              }
+            >
+              <option value="">Departamento</option>
+              <option value="Vendas">Vendas</option>
+              <option value="Administrativo">Administrativo</option>
+              <option value="Financeiro">Financeiro</option>
+              <option value="TI">TI</option>
+            </select>
+            <PasswordInput
+              placeholder="Nova senha (deixe vazio para manter)"
+              className="w-full rounded-lg border border-input-border bg-input-bg px-4 py-3 text-sm text-text-main outline-none focus:border-accent min-h-[44px]"
+              value={form.nova_senha}
+              onChange={(e) =>
+                setForm((prev) => ({ ...prev, nova_senha: e.target.value }))
+              }
+            />
+            <select
+              className="w-full rounded-lg border border-input-border bg-input-bg px-4 py-3 text-sm text-text-main outline-none focus:border-accent min-h-[44px]"
+              value={form.empresa_id}
+              onChange={(e) =>
+                setForm((prev) => ({ ...prev, empresa_id: e.target.value }))
+              }
+            >
+              <option value="">Vincular a Empresa (opcional)</option>
+              {empresas.map((emp) => (
+                <option key={emp.id} value={emp.id}>
+                  {emp.nome}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {loadedPerms && (
+            <div className="mb-6 border-t border-border-subtle pt-4">
+              <p className="text-xs font-bold text-text-muted uppercase tracking-wider mb-3">
+                Módulos e Permissões
+              </p>
+              <div className="space-y-3">
+                {modulos.map((mod) => {
+                  const modAcesso = modulosMap[mod.key];
+                  const ativo = modAcesso?.acessar === true;
+                  const Icon = mod.icon;
+
+                  return (
+                    <div
+                      key={mod.key}
+                      className="rounded-lg bg-input-bg p-3 border border-border-subtle/50"
+                    >
+                      <div className="flex items-center gap-2 mb-2">
+                        <div
+                          className={cn(
+                            "p-1.5 rounded-lg transition-colors",
+                            ativo
+                              ? "bg-accent/10 text-accent"
+                              : "bg-bg-dark text-text-muted",
+                          )}
+                        >
+                          <Icon size={14} />
+                        </div>
+                        <span
+                          className={cn(
+                            "text-xs font-bold",
+                            ativo ? "text-text-main" : "text-text-muted",
+                          )}
+                        >
+                          {mod.nome}
+                        </span>
+
+                        <div className="ml-auto flex items-center gap-3">
+                          {ativo && (
+                            <button
+                              onClick={() =>
+                                setExpandedModulosDetalhes((prev) => ({
+                                  ...prev,
+                                  [mod.key]: !prev[mod.key],
+                                }))
+                              }
+                              className="text-text-muted hover:text-text-main transition-colors p-1 rounded-md hover:bg-surface-hover/50"
+                            >
+                              {!expandedModulosDetalhes[mod.key] ? (
+                                <EyeOff size={14} />
+                              ) : (
+                                <Eye size={14} />
+                              )}
+                            </button>
+                          )}
+                          <button
+                            onClick={() => toggleModuloAcessar(mod.key)}
+                            className="flex items-center gap-2 group cursor-pointer"
+                          >
+                            <div className="flex items-center gap-1.5 text-xs font-medium">
+                              {ativo ? (
+                                <Unlock size={12} className="text-accent" />
+                              ) : (
+                                <Lock
+                                  size={12}
+                                  className="text-text-muted group-hover:text-text-main transition-colors"
+                                />
+                              )}
+                              <span
+                                className={
+                                  ativo
+                                    ? "text-accent"
+                                    : "text-text-muted group-hover:text-text-main transition-colors"
+                                }
+                              >
+                                {ativo ? "Acesso liberado" : "Sem acesso"}
+                              </span>
+                            </div>
+                            <div
+                              className={cn(
+                                "relative inline-flex h-4 w-7 shrink-0 items-center rounded-full transition-colors duration-200 ease-in-out",
+                                ativo
+                                  ? "bg-accent"
+                                  : "bg-bg-dark border border-border-subtle",
+                              )}
+                            >
+                              <span
+                                className={cn(
+                                  "pointer-events-none inline-block h-3 w-3 transform rounded-full bg-white shadow-sm transition duration-200 ease-in-out",
+                                  ativo ? "translate-x-3.5" : "translate-x-0.5",
+                                )}
+                              />
+                            </div>
+                          </button>
+                        </div>
+                      </div>
+
+                      {ativo && !expandedModulosDetalhes[mod.key] && (
+                        <div className="pl-8 space-y-3 border-l border-border-subtle/30 ml-2.5 mt-3 pt-1">
+                          {mod.paginas.length > 0 && (
+                            <div>
+                              <p className="text-xs font-bold text-text-muted uppercase mb-1.5">
+                                Páginas
+                              </p>
+                              <div className="flex flex-wrap gap-1.5">
+                                {mod.paginas.map((pag) => (
+                                  <button
+                                    key={pag.id}
+                                    onClick={() => togglePagina(mod.key, pag.id)}
+                                    className={cn(
+                                      "rounded-md px-2.5 py-1 text-xs font-medium transition-colors",
+                                      modulosMap[mod.key]?.paginas?.includes(pag.id)
+                                        ? "bg-accent/15 text-accent border border-accent/30"
+                                        : "bg-bg-dark text-text-muted border border-border-subtle/50 hover:text-text-main",
+                                    )}
+                                  >
+                                    {pag.label}
+                                  </button>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+
+                          {mod.acoes.length > 0 && (
+                            <div>
+                              <p className="text-xs font-bold text-text-muted uppercase mb-1.5">
+                                Ações
+                              </p>
+                              <div className="flex flex-wrap gap-1.5">
+                                {mod.acoes.map((ac) => (
+                                  <button
+                                    key={ac.key}
+                                    onClick={() => toggleAcao(mod.key, ac.key)}
+                                    className={cn(
+                                      "rounded-md px-2.5 py-1 text-xs font-medium transition-colors",
+                                      modulosMap[mod.key]?.acoes?.includes(ac.key)
+                                        ? "bg-accent/15 text-accent border border-accent/30"
+                                        : "bg-bg-dark text-text-muted border border-border-subtle/50 hover:text-text-main",
+                                    )}
+                                  >
+                                    {ac.label}
+                                  </button>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
         </div>
 
         <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end px-6 pb-6 pt-4 border-t border-border/50">
@@ -1340,12 +1607,14 @@ function EditCredencialModal({
           <button
             onClick={handleSave}
             disabled={!form.nome_completo || salvando}
-            className="flex-1 sm:flex-none rounded-xl bg-accent px-6 py-2.5 text-sm font-semibold text-accent-fg shadow-md shadow-accent/20 hover:bg-accent-hover disabled:opacity-50 transition-all duration-200 min-h-[44px] flex items-center justify-center"
+            className="flex-1 sm:flex-none rounded-xl bg-accent px-6 py-2.5 text-sm font-semibold text-accent-fg shadow-md shadow-accent/20 hover:bg-accent-hover disabled:opacity-50 transition-all duration-200 min-h-[44px] flex items-center justify-center gap-2"
           >
             {salvando ? (
               <Loader2 size={16} className="animate-spin" />
             ) : (
-              "Salvar"
+              <>
+                <Save size={16} /> Salvar
+              </>
             )}
           </button>
         </div>

@@ -9,6 +9,8 @@ export type ProductSheetTipo =
   | "acessorio"
   | "instrumental"
   | "promocional"
+  | "parafuso_retensao"
+  | "cicatrizador"
 
 export interface CatalogoCategoria {
   id: string
@@ -76,7 +78,7 @@ export interface CatalogoImplante {
   protocolos?: CatalogoProtocoloFresagem[]
 }
 
-export type ProdutoTipoImagem = "implante" | "abutment" | "kit"
+export type ProdutoTipoImagem = "implante" | "abutment" | "kit" | "parafuso_retensao" | "cicatrizador"
 export type FonteImagem = "upload" | "url" | "gdrive"
 
 export interface CatalogoImagemProduto {

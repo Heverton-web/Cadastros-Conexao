@@ -49,6 +49,10 @@ export function ProdutoFormModal({
   const atualizarAbutment = useAtualizarAbutment()
   const criarKit = useCriarKit()
   const atualizarKit = useAtualizarKit()
+  const criarParafusoRetencao = useCriarParafusoRetencao()
+  const atualizarParafusoRetencao = useAtualizarParafusoRetencao()
+  const criarCicatrizador = useCriarCicatrizador()
+  const atualizarCicatrizador = useAtualizarCicatrizador()
 
   const { data: categorias } = useCategorias()
   const { data: conexoes } = useConexoes()
@@ -62,6 +66,8 @@ export function ProdutoFormModal({
   const { data: tiposReab } = useTiposReabilitacao()
   const { data: tiposAbutment } = useTiposAbutment()
   const { data: etapas } = useEtapas()
+  const { data: parafusosRetensao } = useParafusosRetensao()
+  const { data: cicatrizadoresData } = useCicatrizadores()
 
   const { data: implDetalhe } = useImplanteDetalhe(editingItem?.tipo === "implante" ? editingItem.sku : "")
   const { data: abDetalhe } = useAbutmentDetalhe(editingItem?.tipo === "abutment" ? editingItem.sku : "")
@@ -69,7 +75,9 @@ export function ProdutoFormModal({
 
   const [tipo, setTipo] = useState<ProdutoTipo>(
     editingItem?.tipo === "implante" ? "implante" :
-    editingItem?.tipo === "abutment" ? "abutment" : "kit"
+    editingItem?.tipo === "abutment" ? "abutment" :
+    editingItem?.tipo === "parafuso_retensao" ? "parafuso_retensao" :
+    editingItem?.tipo === "cicatrizador" ? "cicatrizador" : "kit"
   )
   const [saving, setSaving] = useState(false)
 
@@ -91,6 +99,16 @@ export function ProdutoFormModal({
     familia_ids: [] as string[], preco: 0,
   })
 
+  const [parafusoRetencao, setParafusoRetencao] = useState({
+    sku: "", nome: "", torque_ncm: 0, vinculo_tipo: "" as "abutment" | "componente" | "",
+    vinculo_sku: "", chave_sku: "", preco: 0,
+  })
+
+  const [cicatrizador, setCicatrizador] = useState({
+    sku: "", nome: "", altura_transmucoso: 0, diametro_plataforma: "",
+    torque_ncm: 0, familia_id: "", chave_sku: "", preco: 0,
+  })
+
   const [fresagemHard, setFresagemHard] = useState<{ fresa_sku: string; ordem: number }[]>([])
   const [fresagemSoft, setFresagemSoft] = useState<{ fresa_sku: string; ordem: number }[]>([])
   const [seqAnalógica, setSeqAnalógica] = useState<SeqEtapa[]>([])
@@ -102,6 +120,8 @@ export function ProdutoFormModal({
     setImplante({ categoria_id: "", conexao_id: "", familia_id: "", linha_id: "", sku: "", diametro_mm: 0, comprimento_mm: 0, torque_insercao: 0, rosca_interna: "", regiao_apical: "", regiao_cervical: "", material: "", superficie: "", tratamento: "", chave_sku: "", preco: 0 })
     setAbutment({ familia_id: "", tipo_reabilitacao_id: "", tipo_abutment_id: "", sku: "", diametro_plataforma: "", angulacao_graus: 0, altura_transmucoso: 0, altura_corpo: 0, torque_ncm: 0, preco: 0 })
     setKit({ categoria_id: "", sku: "", nome: "", descricao: "", familia_ids: [], preco: 0 })
+    setParafusoRetencao({ sku: "", nome: "", torque_ncm: 0, vinculo_tipo: "", vinculo_sku: "", chave_sku: "", preco: 0 })
+    setCicatrizador({ sku: "", nome: "", altura_transmucoso: 0, diametro_plataforma: "", torque_ncm: 0, familia_id: "", chave_sku: "", preco: 0 })
     setFresagemHard([])
     setFresagemSoft([])
     setSeqAnalógica([])
@@ -381,7 +401,7 @@ export function ProdutoFormModal({
           <div className="space-y-2">
             <label className={labelCls}>Tipo de Produto</label>
             <div className="flex gap-2">
-              {(["implante", "abutment", "kit"] as ProdutoTipo[]).map((t) => (
+              {(["implante", "abutment", "parafuso_retensao", "cicatrizador", "kit"] as ProdutoTipo[]).map((t) => (
                 <button
                   key={t}
                   onClick={() => setTipo(t)}
@@ -394,8 +414,10 @@ export function ProdutoFormModal({
                 >
                   {t === "implante" && <Package className="h-4 w-4" />}
                   {t === "abutment" && <Layers className="h-4 w-4" />}
+                  {t === "parafuso_retensao" && <AlertTriangle className="h-4 w-4" />}
+                  {t === "cicatrizador" && <AlertTriangle className="h-4 w-4" />}
                   {t === "kit" && <ShoppingBag className="h-4 w-4" />}
-                  {t === "implante" ? "Implante" : t === "abutment" ? "Componente" : "Kit"}
+                  {t === "implante" ? "Implante" : t === "abutment" ? "Componente" : t === "parafuso_retensao" ? "Parafuso Retenção" : t === "cicatrizador" ? "Cicatrizador" : "Kit"}
                 </button>
               ))}
             </div>
@@ -455,11 +477,28 @@ export function ProdutoFormModal({
             />
           )}
 
+          {tipo === "parafuso_retensao" && (
+            <ParafusoRetencaoForm
+              data={parafusoRetencao}
+              onChange={(d) => setParafusoRetencao(d)}
+              chaves={chaves}
+            />
+          )}
+
+          {tipo === "cicatrizador" && (
+            <CicatrizadorForm
+              data={cicatrizador}
+              onChange={(d) => setCicatrizador(d)}
+              familias={familias}
+              chaves={chaves}
+            />
+          )}
+
           {/* Imagens do produto */}
           <ImageUploader
             empresaId={empresaId}
             produtoTipo={tipo}
-            produtoSku={editingItem?.sku || implante.sku || abutment.sku || kit.sku}
+            produtoSku={editingItem?.sku || implante.sku || abutment.sku || kit.sku || parafusoRetencao.sku || cicatrizador.sku}
             imagensExistentes={imagens}
             onImagensChange={setImagens}
           />

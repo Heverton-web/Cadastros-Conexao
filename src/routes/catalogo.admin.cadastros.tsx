@@ -10,11 +10,13 @@ import {
   useTiposReabilitacao, useTiposAbutment, useCategoriasAcessorio,
   useCategoriasInstrumental, useCategoriasKit, useWorkflows, useEtapas,
   useAcessorios, useChavesFerramental, useInstrumentais,
+  useParafusosRetensao, useCicatrizadores,
   useToggleCategoriaAtivo, useToggleConexaoAtivo, useToggleLinhaAtivo,
   useToggleFamiliaAtivo, useToggleFresaAtivo, useToggleTipoReabilitacaoAtivo,
   useToggleTipoAbutmentAtivo, useToggleCategoriaAcessorioAtivo,
   useToggleAcessorioAtivo, useToggleChaveFerramentalAtivo,
   useToggleCategoriaInstrumentalAtivo, useToggleInstrumentalAtivo,
+  useToggleParafusoRetencaoAtivo, useToggleCicatrizadorAtivo,
   useToggleCategoriaKitAtivo, useToggleWorkflowAtivo, useToggleEtapaAtivo,
 } from "~/features/catalogo/hooks/useCatalogo"
 import { useCatalogoEmpresaId } from "~/features/catalogo/hooks/useCatalogoEmpresa"
@@ -42,7 +44,7 @@ export const catalogoAdminCadastrosRoute = createRoute({
 
 const TABS = [
   { key: "estrutura", label: "Estrutura", icon: Layers, subTabs: ["Categorias", "Conexões", "Famílias", "Linhas"] },
-  { key: "protetico", label: "Componentes Protéticos", icon: Stethoscope, subTabs: ["Tipos de Reabilitação", "Tipos de Abutment", "Tipos de Componente", "Componentes", "Workflows Protéticos", "Etapas de Workflow"] },
+  { key: "protetico", label: "Componentes Protéticos", icon: Stethoscope, subTabs: ["Tipos de Reabilitação", "Tipos de Abutment", "Tipos de Componente", "Componentes", "Parafusos de Retenção", "Cicatrizadores", "Workflows Protéticos", "Etapas de Workflow"] },
   { key: "instrumentais", label: "Instrumentais", icon: Scissors, subTabs: ["Chaves Protéticas", "Chaves Cirúrgicas", "Fresas", "Instrumentos Opcionais", "Instrumentos Complementares", "Categorias de Instrumental"] },
   { key: "kits", label: "Kits", icon: Package, subTabs: ["Categorias de Kit"] },
 ]
@@ -126,6 +128,8 @@ function CadastroContent({ tab, subTab }: { tab: string; subTab: string }) {
   const { data: acessorios } = useAcessorios()
   const { data: chaves } = useChavesFerramental()
   const { data: instrumentais } = useInstrumentais()
+  const { data: parafusosRetensao } = useParafusosRetensao()
+  const { data: cicatrizadores } = useCicatrizadores()
 
   const toggleCategoria = useToggleCategoriaAtivo()
   const toggleConexao = useToggleConexaoAtivo()
@@ -139,6 +143,8 @@ function CadastroContent({ tab, subTab }: { tab: string; subTab: string }) {
   const toggleChave = useToggleChaveFerramentalAtivo()
   const toggleCatInstrumental = useToggleCategoriaInstrumentalAtivo()
   const toggleInstrumental = useToggleInstrumentalAtivo()
+  const toggleParafusoRetencao = useToggleParafusoRetencaoAtivo()
+  const toggleCicatrizador = useToggleCicatrizadorAtivo()
   const toggleCatKit = useToggleCategoriaKitAtivo()
   const toggleWorkflow = useToggleWorkflowAtivo()
   const toggleEtapa = useToggleEtapaAtivo()
@@ -250,6 +256,42 @@ function CadastroContent({ tab, subTab }: { tab: string; subTab: string }) {
           { key: "altura_mm", label: "Altura (mm)", type: "number" as const },
         ],
         table: "catalogo_acessorios",
+        pk: "sku",
+      }
+      if (subTab === "Parafusos de Retenção") return {
+        headers: ["SKU", "Nome", "Vínculo", "Torque", "Ativo", "Ações"],
+        rows: (parafusosRetensao ?? []).map((p) => ({ ...p })),
+        fields: [
+          { key: "sku", label: "SKU", type: "text" as const, required: true },
+          { key: "nome", label: "Nome", type: "text" as const, required: true },
+          { key: "vinculo_tipo", label: "Vinculado a", type: "select" as const, required: true, options: [
+            { value: "abutment", label: "Abutment" },
+            { value: "componente", label: "Componente" },
+          ]},
+          { key: "vinculo_sku", label: "SKU do Vínculo", type: "text" as const, required: true },
+          { key: "torque_ncm", label: "Torque (N·cm)", type: "number" as const },
+          { key: "chave_sku", label: "Chave de Fixação", type: "select" as const, options: (chaves ?? []).map((c) => ({ value: c.sku, label: c.nome })) },
+        ],
+        table: "catalogo_parafusos_retensao",
+        pk: "sku",
+      }
+      if (subTab === "Cicatrizadores") return {
+        headers: ["SKU", "Nome", "Família", "Ø Plataforma", "Altura", "Ativo", "Ações"],
+        rows: (cicatrizadores ?? []).map((c) => ({ ...c })),
+        fields: [
+          { key: "sku", label: "SKU", type: "text" as const, required: true },
+          { key: "nome", label: "Nome", type: "text" as const, required: true },
+          { key: "familia_id", label: "Família", type: "select" as const, options: (familias ?? []).map((f) => ({ value: f.id, label: f.nome })) },
+          { key: "diametro_plataforma", label: "Ø Plataforma", type: "select" as const, options: [
+            { value: "3.5", label: "3.5 mm" },
+            { value: "4.3", label: "4.3 mm" },
+            { value: "5.0", label: "5.0 mm" },
+          ]},
+          { key: "altura_transmucoso", label: "Altura (mm)", type: "number" as const },
+          { key: "torque_ncm", label: "Torque (N·cm)", type: "number" as const },
+          { key: "chave_sku", label: "Chave de Instalação", type: "select" as const, options: (chaves ?? []).map((c) => ({ value: c.sku, label: c.nome })) },
+        ],
+        table: "catalogo_cicatrizadores",
         pk: "sku",
       }
       if (subTab === "Workflows Protéticos") return {
@@ -404,6 +446,8 @@ function CadastroContent({ tab, subTab }: { tab: string; subTab: string }) {
                           else if (tabela === "catalogo_chaves_ferramental") toggleChave.mutate({ sku: row.sku, ativo: !row.ativo })
                           else if (tabela === "catalogo_categorias_instrumental") toggleCatInstrumental.mutate({ id: row.id, ativo: !row.ativo })
                           else if (tabela === "catalogo_instrumentais_gerais") toggleInstrumental.mutate({ sku: row.sku, ativo: !row.ativo })
+                          else if (tabela === "catalogo_parafusos_retensao") toggleParafusoRetencao.mutate({ sku: row.sku, ativo: !row.ativo })
+                          else if (tabela === "catalogo_cicatrizadores") toggleCicatrizador.mutate({ sku: row.sku, ativo: !row.ativo })
                           else if (tabela === "catalogo_categorias_kit") toggleCatKit.mutate({ id: row.id, ativo: !row.ativo })
                           else if (tabela === "catalogo_workflows") toggleWorkflow.mutate({ id: row.id, ativo: !row.ativo })
                           else if (tabela === "catalogo_etapas_workflow") toggleEtapa.mutate({ id: row.id, ativo: !row.ativo })
