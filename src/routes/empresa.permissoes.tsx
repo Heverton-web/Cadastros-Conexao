@@ -1650,8 +1650,8 @@ function EditCredencialModal({
                                     className={cn(
                                       "rounded-md px-2.5 py-1 text-xs font-medium transition-colors",
                                       modulosMap[mod.key]?.paginas?.includes(pag.id)
-                                        ? "bg-accent/15 text-accent border border-accent/30"
-                                        : "bg-bg-dark text-text-muted border border-border-subtle/50 hover:text-text-main",
+                                        ? "bg-amber-500/15 text-amber-500 border border-amber-500/30"
+                                        : "bg-red-500/15 text-red-500 border border-red-500/30",
                                     )}
                                   >
                                     {pag.label}
@@ -1674,8 +1674,8 @@ function EditCredencialModal({
                                     className={cn(
                                       "rounded-md px-2.5 py-1 text-xs font-medium transition-colors",
                                       modulosMap[mod.key]?.acoes?.includes(ac.key)
-                                        ? "bg-accent/15 text-accent border border-accent/30"
-                                        : "bg-bg-dark text-text-muted border border-border-subtle/50 hover:text-text-main",
+                                        ? "bg-emerald-500/15 text-emerald-500 border border-emerald-500/30"
+                                        : "bg-red-500/15 text-red-500 border border-red-500/30",
                                     )}
                                   >
                                     {ac.label}
