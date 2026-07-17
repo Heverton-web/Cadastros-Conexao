@@ -2,9 +2,9 @@ import { createRoute } from "@tanstack/react-router";
 import { authLayout } from "./_auth";
 import { useAuth } from "~/lib/auth";
 import { supabase } from "~/lib/supabase";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, type ReactNode } from "react";
 import {
-  BrainCircuit, RefreshCw, Loader2, ChevronDown, ExternalLink,
+  BrainCircuit, RefreshCw, Loader2, ChevronDown, ExternalLink, Trophy,
 } from "lucide-react";
 import toast from "react-hot-toast";
 import { RequireSuperAdmin } from "~/components/guards";
@@ -170,6 +170,32 @@ function Page() {
     }
   }
 
+  const rankingCodificacao = [...modelos]
+    .filter((m) => m.reasoning !== false && (m.tool_call ?? true))
+    .sort((a, b) => {
+      const wa = a.win_rate ?? 0;
+      const wb = b.win_rate ?? 0;
+      if (wb !== wa) return wb - wa;
+      return custoMedio(a) - custoMedio(b);
+    });
+
+  const melhorCodificacao = rankingCodificacao[0] ?? null;
+
+  const rankingCustoBeneficio = [...modelos]
+    .filter((m) => m.win_rate != null && custoMedio(m) !== Infinity)
+    .sort((a, b) => {
+      const scoreA = (a.win_rate ?? 0) / custoMedio(a);
+      const scoreB = (b.win_rate ?? 0) / custoMedio(b);
+      return scoreB - scoreA;
+    });
+
+  const melhorCustoBeneficio = rankingCustoBeneficio[0] ?? null;
+
+  const modelosMaisCaros = [...modelos]
+    .filter((m) => custoMedio(m) !== Infinity)
+    .sort((a, b) => custoMedio(b) - custoMedio(a))
+    .slice(0, 5);
+
   return (
     <div className="min-h-screen p-4 md:p-8">
       <div className="max-w-6xl mx-auto space-y-6">
@@ -222,6 +248,50 @@ function Page() {
           <div className="rounded-xl bg-red-500/10 border border-red-500/30 p-4">
             <p className="text-sm text-red-400">{erro}</p>
           </div>
+        )}
+
+        {!loading && modelos.length > 0 && (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <CardDestaque
+              titulo="Melhor para Codificação"
+              icone={<BrainCircuit size={20} className="text-emerald-400" />}
+              modelo={melhorCodificacao}
+              badge="Top Win Rate + Tooling"
+              cor="emerald"
+            />
+            <CardDestaque
+              titulo="Melhor Custo-Benefício"
+              icone={<BrainCircuit size={20} className="text-amber-400" />}
+              modelo={melhorCustoBeneficio}
+              badge="Win Rate ÷ Custo"
+              cor="amber"
+            />
+          </div>
+        )}
+
+        {!loading && modelos.length > 0 && (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <RankingCard
+              titulo="1. Ranking Custo-Benefício para Codificação"
+              descricao="Modelos com melhor relação Win Rate ÷ custo médio, priorizando reasoning e tool calls."
+              itens={rankingCustoBeneficio.slice(0, 10).map((m) => ({
+                modelo: m,
+                valor: `Score ${(m.win_rate! / custoMedio(m)).toFixed(1)}`,
+              }))}
+            />
+            <RankingCard
+              titulo="2. Modelos Mais Caros da Atualidade"
+              descricao="Top 5 modelos com maior custo médio (input + output) por 1M tokens."
+              itens={modelosMaisCaros.map((m) => ({
+                modelo: m,
+                valor: `$${custoMedio(m).toFixed(2)}`,
+              }))}
+            />
+          </div>
+        )}
+
+        {!loading && modelos.length > 0 && (
+          <ModelosPorProvedor modelos={modelos} />
         )}
 
         {loading ? (
@@ -320,4 +390,155 @@ function formatTokens(val: number): string {
   if (val >= 1_000_000) return `${(val / 1_000_000).toFixed(1)}M`;
   if (val >= 1_000) return `${(val / 1_000).toFixed(1)}K`;
   return String(val);
+}
+
+function custoMedio(m: Modelo): number {
+  const input = m.input_cost ?? 0;
+  const output = m.output_cost ?? 0;
+  if (input === 0 && output === 0) return Infinity;
+  return (input + output) / 2;
+}
+
+function ModelosPorProvedor({ modelos }: { modelos: Modelo[] }) {
+  const agrupado = new Map<string, Modelo[]>();
+  for (const m of modelos) {
+    const key = m.provedor || "Sem provedor";
+    if (!agrupado.has(key)) agrupado.set(key, []);
+    agrupado.get(key)!.push(m);
+  }
+  const provedores = [...agrupado.entries()].sort((a, b) => b[1].length - a[1].length);
+
+  return (
+    <div className="rounded-xl bg-card border border-border overflow-hidden">
+      <div className="p-4 border-b border-border">
+        <h3 className="text-sm font-semibold text-text-main">Modelos por Provedor</h3>
+        <p className="text-xs text-text-muted mt-1">
+          {provedores.length} provedor(es) · {modelos.length} modelo(s) no total
+        </p>
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-border">
+        {provedores.map(([provedor, lista]) => (
+          <div key={provedor} className="bg-card p-4">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-sm font-semibold text-text-main">{provedor}</span>
+              <span className="text-[11px] font-medium px-2 py-0.5 rounded bg-surface-hover text-text-muted">
+                {lista.length}
+              </span>
+            </div>
+            <ul className="space-y-1">
+              {lista.map((m) => (
+                <li key={m.id} className="flex items-center justify-between gap-2 text-xs">
+                  <span className="text-text-muted truncate">{m.nome}</span>
+                  <span className="font-mono text-text-main shrink-0">
+                    {m.win_rate != null ? `${m.win_rate}%` : "-"}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function CardDestaque({
+  titulo, icone, modelo, badge, cor,
+}: {
+  titulo: string;
+  icone: ReactNode;
+  modelo: Modelo | null;
+  badge: string;
+  cor: "emerald" | "amber";
+}) {
+  const borda = cor === "emerald" ? "border-emerald-500/40" : "border-amber-500/40";
+  const bgGrad = cor === "emerald"
+    ? "from-emerald-500/10 to-transparent"
+    : "from-amber-500/10 to-transparent";
+  return (
+    <div className={`rounded-xl bg-card border ${borda} overflow-hidden`}>
+      <div className={`bg-gradient-to-br ${bgGrad} p-4`}>
+        <div className="flex items-center justify-between mb-3">
+          <h3 className="text-sm font-semibold text-text-main flex items-center gap-2">
+            {icone}
+            {titulo}
+          </h3>
+          {modelo && (
+            <span className="inline-flex items-center gap-1 text-[10px] font-medium px-2 py-0.5 rounded bg-surface-hover text-text-muted">
+              <Trophy size={11} /> {badge}
+            </span>
+          )}
+        </div>
+        {modelo ? (
+          <div>
+            <p className="text-lg font-bold text-white leading-tight">{modelo.nome}</p>
+            <p className="text-xs text-text-muted mt-0.5">
+              {modelo.provedor} · {modelo.modalidade}
+            </p>
+            <div className="flex flex-wrap gap-x-4 gap-y-1 mt-3 text-xs">
+              <span className="text-text-muted">
+                Win Rate:{" "}
+                <span className="text-text-main font-mono font-semibold">
+                  {modelo.win_rate != null ? `${modelo.win_rate}%` : "-"}
+                </span>
+              </span>
+              <span className="text-text-muted">
+                Custo médio:{" "}
+                <span className="text-text-main font-mono font-semibold">
+                  ${custoMedio(modelo).toFixed(2)}
+                </span>
+              </span>
+              <span className="text-text-muted">
+                Contexto:{" "}
+                <span className="text-text-main font-mono font-semibold">
+                  {modelo.context_window != null ? formatTokens(modelo.context_window) : "-"}
+                </span>
+              </span>
+            </div>
+          </div>
+        ) : (
+          <p className="text-sm text-text-muted">Sem dados suficientes.</p>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function RankingCard({
+  titulo, descricao, itens,
+}: {
+  titulo: string;
+  descricao: string;
+  itens: { modelo: Modelo; valor: string }[];
+}) {
+  return (
+    <div className="rounded-xl bg-card border border-border overflow-hidden">
+      <div className="p-4 border-b border-border">
+        <h3 className="text-sm font-semibold text-text-main">{titulo}</h3>
+        <p className="text-xs text-text-muted mt-1">{descricao}</p>
+      </div>
+      {itens.length === 0 ? (
+        <p className="p-4 text-sm text-text-muted">Sem dados suficientes.</p>
+      ) : (
+        <ol className="divide-y divide-border/50">
+          {itens.map((item, i) => (
+            <li key={item.modelo.id} className="flex items-center gap-3 p-3 hover:bg-surface-hover transition-colors">
+              <span className="flex items-center justify-center w-6 h-6 rounded-full bg-surface-hover text-xs font-bold text-text-muted shrink-0">
+                {i + 1}
+              </span>
+              <div className="min-w-0 flex-1">
+                <p className="text-sm text-text-main font-medium truncate">{item.modelo.nome}</p>
+                <p className="text-[11px] text-text-muted truncate">
+                  {item.modelo.provedor} · {item.modelo.modalidade}
+                </p>
+              </div>
+              <span className="text-xs font-mono font-semibold text-accent shrink-0">
+                {item.valor}
+              </span>
+            </li>
+          ))}
+        </ol>
+      )}
+    </div>
+  );
 }
