@@ -4,7 +4,7 @@
  */
 
 const https = require('https');
-const TOKEN = 'sbp_aa98d34c7b02c9545b3ec68f22ef9542bff48839';
+const TOKEN = process.env.SUPABASE_SERVICE_TOKEN || '';
 const PROJECT = 'cluuqzhizeqvkgvfdisx';
 const ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNsbHVxemhpemVxdmtndmZkaXh4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzU2ODI4MDAsImV4cCI6MjA1MTI1ODgwMH0.YOUR_ANON_KEY_HERE'; // placeholder
 

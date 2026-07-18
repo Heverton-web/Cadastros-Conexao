@@ -1,5 +1,5 @@
 const https = require('https');
-const TOKEN = 'sbp_aa98d34c7b02c9545b3ec68f22ef9542bff48839';
+const TOKEN = process.env.SUPABASE_SERVICE_TOKEN || '';
 const PROJECT = 'cluuqzhizeqvkgvfdisx';
 
 const sql = `

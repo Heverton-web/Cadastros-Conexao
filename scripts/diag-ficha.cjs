@@ -1,5 +1,5 @@
 const https = require('https');
-const TOKEN = 'sbp_aa98d34c7b02c9545b3ec68f22ef9542bff48839';
+const TOKEN = process.env.SUPABASE_SERVICE_TOKEN || '';
 const PROJECT = 'cluuqzhizeqvkgvfdisx';
 const SERVICE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNsdXVxemhpemVxdmtndmZkaXN4Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4MTc4ODc2OSwiZXhwIjoyMDk3MzY0NzY5fQ.nFgZm_frOy8K6e6LUpQNqQ4zVMrNoCKcM8MqYfDv9Ag';
 
