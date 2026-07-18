@@ -168,7 +168,7 @@ import { linkRedirectRoute } from "./routes/r.$linkId";
 import { catalogoIndexRoute } from "./routes/catalogo.index";
 import { catalogoImplantesRoute, catalogoImplantesConexaoRoute, catalogoImplantesFamiliaRoute, catalogoImplantesLinhaRoute } from "./routes/catalogo.implantes";
 import { catalogoComponentesRoute, catalogoComponentesTipoReabRoute, catalogoComponentesFamiliaRoute, catalogoComponentesTipoAbutmentRoute } from "./routes/catalogo.componentes";
-import { catalogoKitsRoute } from "./routes/catalogo.kits";
+import { catalogoKitsRoute, catalogoKitsTipoRoute } from "./routes/catalogo.kits";
 import { catalogoPromocionaisRoute } from "./routes/catalogo.promocionais";
 import { catalogoProdutoRoute } from "./routes/catalogo.produto.$tipo.$sku";
 import { catalogoCarrinhoRoute } from "./routes/catalogo.carrinho";
@@ -223,6 +223,7 @@ export const routeTree = rootRoute.addChildren([
   catalogoComponentesFamiliaRoute,
   catalogoComponentesTipoAbutmentRoute,
   catalogoKitsRoute,
+  catalogoKitsTipoRoute,
   catalogoPromocionaisRoute,
   catalogoProdutoRoute,
   // Loja pública (acesso externo)

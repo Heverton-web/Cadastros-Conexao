@@ -12,14 +12,14 @@ import {
   useCategorias, useConexoes, useFamilias, useLinhas,
   useFresas, useCategoriasKit, useChavesFerramental,
   useAcessorios, useInstrumentais, useTiposReabilitacao, useTiposAbutment,
-  useEtapas,
+  useEtapas, useTodosKits, useAbutments,
   useParafusosRetensao, useCriarParafusoRetencao, useAtualizarParafusoRetencao,
   useCicatrizadores, useCriarCicatrizador, useAtualizarCicatrizador,
   useImplanteDetalhe, useAbutmentDetalhe, useKitDetalhe,
   useProtocolos,
 } from "~/features/catalogo/hooks/useCatalogo"
 import { salvarSequenciaProtetica } from "~/features/catalogo/services/sequencia-protetica.service"
-import { salvarProtocoloFresagem } from "~/features/catalogo/services/implantes.service"
+import { salvarProtocoloFresagem, getProtocoloFresagem, salvarImplanteChaves, listarImplanteChaves, salvarImplanteKits, listarImplanteKits, salvarImplanteAbutments, listarImplanteAbutments, listarImplanteCicatrizadores, salvarImplanteCicatrizadores } from "~/features/catalogo/services/implantes.service"
 import { adicionarBOMItem } from "~/features/catalogo/services/kits.service"
 import { listarImagens } from "~/features/catalogo/services/imagens.service"
 import { ImplanteForm } from "./forms/ImplanteForm"
@@ -70,6 +70,8 @@ export function ProdutoFormModal({
   const { data: parafusosRetensao } = useParafusosRetensao()
   const { data: cicatrizadoresData } = useCicatrizadores()
   const { data: protocolos } = useProtocolos()
+  const { data: todosKits } = useTodosKits()
+  const { data: todosAbutments } = useAbutments()
 
   const { data: implDetalhe } = useImplanteDetalhe(editingItem?.tipo === "implante" ? editingItem.sku : "")
   const { data: abDetalhe } = useAbutmentDetalhe(editingItem?.tipo === "abutment" ? editingItem.sku : "")
@@ -89,6 +91,7 @@ export function ProdutoFormModal({
     rosca_interna: "", regiao_apical: "", regiao_cervical: "",
     material: "", superficie: "", tratamento: "", chave_sku: "", preco: 0,
     macrogeometria: "", osso_soft: "", osso_hard: "",
+    diametro_plataforma_mm: 0, ativo: true,
   })
 
   const [abutment, setAbutment] = useState({
@@ -118,9 +121,13 @@ export function ProdutoFormModal({
   const [seqDigital, setSeqDigital] = useState<SeqEtapa[]>([])
   const [kitBom, setKitBom] = useState<BomItem[]>([])
   const [imagens, setImagens] = useState<CatalogoImagemProduto[]>([])
+  const [chavesIds, setChavesIds] = useState<string[]>([])
+  const [kitsIds, setKitsIds] = useState<string[]>([])
+  const [abutmentsIds, setAbutmentsIds] = useState<string[]>([])
+  const [cicatrizadoresIds, setCicatrizadoresIds] = useState<string[]>([])
 
   function resetForms() {
-    setImplante({ categoria_id: "", conexao_id: "", familia_id: "", linha_id: "", sku: "", diametro_mm: 0, comprimento_mm: 0, torque_insercao: 0, rosca_interna: "", regiao_apical: "", regiao_cervical: "", material: "", superficie: "", tratamento: "", chave_sku: "", preco: 0, macrogeometria: "", osso_soft: "", osso_hard: "" })
+    setImplante({ categoria_id: "", conexao_id: "", familia_id: "", linha_id: "", sku: "", diametro_mm: 0, comprimento_mm: 0, torque_insercao: 0, rosca_interna: "", regiao_apical: "", regiao_cervical: "", material: "", superficie: "", tratamento: "", chave_sku: "", preco: 0, macrogeometria: "", osso_soft: "", osso_hard: "", diametro_plataforma_mm: 0, ativo: true })
     setAbutment({ familia_id: "", tipo_reabilitacao_id: "", tipo_abutment_id: "", sku: "", diametro_plataforma: "", angulacao_graus: 0, altura_transmucoso: 0, altura_corpo: 0, torque_ncm: 0, preco: 0 })
     setKit({ categoria_id: "", sku: "", nome: "", descricao: "", familia_ids: [], preco: 0 })
     setParafusoRetencao({ sku: "", nome: "", torque_ncm: 0, vinculo_tipo: "", vinculo_sku: "", chave_sku: "", preco: 0 })
@@ -131,6 +138,10 @@ export function ProdutoFormModal({
     setSeqDigital([])
     setKitBom([])
     setImagens([])
+    setChavesIds([])
+    setKitsIds([])
+    setAbutmentsIds([])
+    setCicatrizadoresIds([])
   }
 
   useEffect(() => {
@@ -162,9 +173,9 @@ export function ProdutoFormModal({
       const d = implDetalhe
       const extras = (d.detalhes_extras ?? {}) as Record<string, string>
       setImplante({
-        categoria_id: extras.categoria_id ?? "",
-        conexao_id: extras.conexao_id ?? "",
-        familia_id: extras.familia_id ?? "",
+        categoria_id: (d as any).categoria_id ?? extras.categoria_id ?? "",
+        conexao_id: (d as any).conexao_id ?? extras.conexao_id ?? "",
+        familia_id: (d as any).familia_id ?? extras.familia_id ?? "",
         linha_id: d.linha_id ?? "",
         sku: d.sku ?? "",
         diametro_mm: d.diametro_mm ?? 0,
@@ -179,15 +190,35 @@ export function ProdutoFormModal({
         chave_sku: extras.chave_sku ?? "",
         preco: d.preco ?? 0,
         macrogeometria: (d as unknown as Record<string, unknown>).macrogeometria as string ?? "",
-        osso_soft: extras.osso_soft ?? "",
-        osso_hard: extras.osso_hard ?? "",
+        osso_soft: (d as any).osso_soft ?? extras.osso_soft ?? "",
+        osso_hard: (d as any).osso_hard ?? extras.osso_hard ?? "",
+        diametro_plataforma_mm: (d as any).diametro_plataforma_mm ?? 0,
+        ativo: d.ativo ?? true,
       })
-      // Carregar protocolos de fresagem existentes
-      const protos = (d as unknown as Record<string, unknown>).protocolos as Array<{ fresa_sku: string; tipo_osso: string; ordem_uso: number }> | undefined
-      if (protos) {
-        setFresagemHard(protos.filter((p) => ["D1","D2"].includes(p.tipo_osso)).map((p) => ({ fresa_sku: p.fresa_sku, ordem: p.ordem_uso, tipo_osso: p.tipo_osso })))
-        setFresagemSoft(protos.filter((p) => ["D3","D4","D5"].includes(p.tipo_osso)).map((p) => ({ fresa_sku: p.fresa_sku, ordem: p.ordem_uso, tipo_osso: p.tipo_osso })))
-      }
+      // Carregar protocolos de fresagem do modelo novo (2 tabelas)
+      getProtocoloFresagem(empresaId, d.sku)
+        .then((protos) => {
+          if (!protos?.length) return
+          setFresagemHard(protos.filter((p: any) => ["D1","D2"].includes(p.tipo_osso)).map((p: any) => ({ fresa_sku: p.fresa_sku, ordem: p.ordem_uso, tipo_osso: p.tipo_osso })))
+          setFresagemSoft(protos.filter((p: any) => ["D3","D4","D5"].includes(p.tipo_osso)).map((p: any) => ({ fresa_sku: p.fresa_sku, ordem: p.ordem_uso, tipo_osso: p.tipo_osso })))
+        })
+        .catch(() => {})
+      // Carregar chaves vinculadas ao implante
+      listarImplanteChaves(empresaId, d.sku)
+        .then(setChavesIds)
+        .catch(() => setChavesIds([]))
+      // Carregar kits vinculados ao implante
+      listarImplanteKits(empresaId, d.sku)
+        .then(setKitsIds)
+        .catch(() => setKitsIds([]))
+      // Carregar abutments vinculados ao implante
+      listarImplanteAbutments(empresaId, d.sku)
+        .then(setAbutmentsIds)
+        .catch(() => setAbutmentsIds([]))
+      // Carregar cicatrizadores vinculados ao implante
+      listarImplanteCicatrizadores(empresaId, d.sku)
+        .then(setCicatrizadoresIds)
+        .catch(() => setCicatrizadoresIds([]))
     }
     if (editingItem.tipo === "abutment" && abDetalhe) {
       const d = abDetalhe
@@ -267,16 +298,18 @@ export function ProdutoFormModal({
       regiao_cervical: implante.regiao_cervical || undefined,
       preco: implante.preco || undefined,
       macrogeometria: implante.macrogeometria || undefined,
+      categoria_id: implante.categoria_id || undefined,
+      conexao_id: implante.conexao_id || undefined,
+      familia_id: implante.familia_id || undefined,
+      osso_soft: implante.osso_soft || undefined,
+      osso_hard: implante.osso_hard || undefined,
+      diametro_plataforma_mm: implante.diametro_plataforma_mm || undefined,
+      ativo: implante.ativo,
       detalhes_extras: {
         material: implante.material || undefined,
         superficie: implante.superficie || undefined,
         tratamento: implante.tratamento || undefined,
         chave_sku: implante.chave_sku || undefined,
-        categoria_id: implante.categoria_id || undefined,
-        conexao_id: implante.conexao_id || undefined,
-        familia_id: implante.familia_id || undefined,
-        osso_soft: implante.osso_soft || undefined,
-        osso_hard: implante.osso_hard || undefined,
       },
     }
   }
@@ -332,6 +365,10 @@ export function ProdutoFormModal({
         if (protocolos.length > 0) {
           await salvarProtocoloFresagem(empresaId, implante.sku, protocolos)
         }
+        await salvarImplanteChaves(empresaId, implante.sku, chavesIds)
+        await salvarImplanteKits(empresaId, implante.sku, kitsIds)
+        await salvarImplanteAbutments(empresaId, implante.sku, abutmentsIds)
+        await salvarImplanteCicatrizadores(empresaId, implante.sku, cicatrizadoresIds)
       } else if (tipo === "abutment") {
         const payload = makeAbutmentPayload()
         if (editingItem) {
@@ -490,6 +527,17 @@ export function ProdutoFormModal({
               chaves={chaves}
               protocolos={protocolos}
               onGerarSku={gerarSkuSugerido}
+              chavesIds={chavesIds}
+              onChavesChange={setChavesIds}
+              kits={todosKits}
+              kitsIds={kitsIds}
+              onKitsChange={setKitsIds}
+              abutments={todosAbutments}
+              abutmentsIds={abutmentsIds}
+              onAbutmentsChange={setAbutmentsIds}
+              cicatrizadores={cicatrizadoresData}
+              cicatrizadoresIds={cicatrizadoresIds}
+              onCicatrizadoresChange={setCicatrizadoresIds}
             />
           )}
 

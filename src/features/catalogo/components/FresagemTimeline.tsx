@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useMemo } from "react"
 import toast from "react-hot-toast"
 import { Eye, ShoppingCart, Check, Plus } from "lucide-react"
 import { addToCart, formatBRL, getPrecoFromDB } from "~/features/catalogo/services/carrinho.service"
@@ -13,7 +13,11 @@ interface FresagemTimelineProps {
 }
 
 export function FresagemTimeline({ implanteSku, protocolos }: FresagemTimelineProps) {
-  const [tab, setTab] = useState<"Hard (I-II)" | "Soft (III-IV)">("Hard (I-II)")
+  const uniqueTipos = useMemo(() => {
+    const seen = new Set<string>()
+    return protocolos.map((p) => p.tipo_osso).filter((t) => { if (!t || seen.has(t)) return false; seen.add(t); return true })
+  }, [protocolos])
+  const [tab, setTab] = useState<string>(uniqueTipos[0] ?? "")
   const [addedSkus, setAddedSkus] = useState<Set<string>>(new Set())
 
   const filtered = protocolos
@@ -51,7 +55,7 @@ export function FresagemTimeline({ implanteSku, protocolos }: FresagemTimelinePr
       <div className="flex items-center justify-between">
         <h3 className="text-lg font-bold text-white">Protocolo de Fresagem</h3>
         <div className="flex gap-2">
-          {(["Hard (I-II)", "Soft (III-IV)"] as const).map((t) => (
+          {uniqueTipos.map((t) => (
             <button
               key={t}
               onClick={() => setTab(t)}
@@ -59,7 +63,7 @@ export function FresagemTimeline({ implanteSku, protocolos }: FresagemTimelinePr
                 tab === t ? "bg-[var(--color-accent)] text-[var(--color-accent-fg)]" : "bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-hover)]"
               }`}
             >
-              Osso {t.split(" ")[0]}
+              {t}
             </button>
           ))}
         </div>
@@ -131,7 +135,7 @@ export function FresagemTimeline({ implanteSku, protocolos }: FresagemTimelinePr
 
         {filtered.length === 0 && (
           <p className="text-sm text-center py-8 text-[var(--color-text-muted)] col-span-full">
-            Nenhuma fresa cadastrada para Osso {tab.split(" ")[0]}
+            Nenhuma fresa cadastrada para {tab}
           </p>
         )}
       </div>

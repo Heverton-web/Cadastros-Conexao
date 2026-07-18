@@ -1,4 +1,5 @@
-export type TipoOsso = "Soft (III-IV)" | "Hard (I-II)"
+/** @deprecated Dynamic from DB - use string */
+export type TipoOsso = string
 
 export type ProductSheetTipo =
   | "implante"
@@ -184,12 +185,11 @@ export interface CatalogoTipoOpcional {
   created_at: string
   updated_at: string
 }
-
 // ============================================================
-// FRESAGENS - Tipos e Protocolos
+// TIPOS DE OSSO - Densidade óssea (antes: Tipos de Fresagens)
 // ============================================================
 
-export interface CatalogoTipoFresagem {
+export interface CatalogoTipoOsso {
   id: string
   empresa_id: string
   nome: string
@@ -303,6 +303,7 @@ export interface CatalogoImplante {
   regiao_apical: string | null
   regiao_cervical: string | null
   torque_insercao: number | null
+  diametro_plataforma_mm: number | null
   macrogeometria: string | null
   material: string | null
   superficie: string | null
@@ -344,6 +345,8 @@ export interface CatalogoAbutment {
   created_at: string
   updated_at: string
   tipo_abutment?: CatalogoCpsTipoAbutment
+  familia_id?: string
+  familia?: CatalogoIpsFamilia
   parafuso?: CatalogoParafuso
   chave?: CatalogoChave
   imagens?: CatalogoImagemProduto[]
@@ -578,6 +581,18 @@ export interface CatalogoKitOpcional {
   empresa_id: string
   kit_sku: string
   opcional_id: string
+}
+
+export interface CatalogoImplanteKit {
+  empresa_id: string
+  implante_sku: string
+  kit_sku: string
+}
+
+export interface CatalogoImplanteAbutment {
+  empresa_id: string
+  implante_sku: string
+  abutment_sku: string
 }
 
 // ============================================================

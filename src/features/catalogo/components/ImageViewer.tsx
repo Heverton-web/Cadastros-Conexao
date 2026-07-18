@@ -44,11 +44,20 @@ export function ImageViewer() {
           style={{ transform: `scale(${scale})` }}
           onClick={(e) => e.stopPropagation()}
         >
-          {/* Mock for 3D/Image */}
-          <div className="w-64 h-64 md:w-96 md:h-96 rounded-full opacity-20 mix-blend-screen bg-[#c9a655]" />
-          <div className="absolute inset-0 flex items-center justify-center text-[#c9a655] animate-pulse">
-            <span className="text-sm font-bold uppercase tracking-widest">{imageViewer.alt}</span>
-          </div>
+          {imageViewer.src ? (
+            <img 
+              src={imageViewer.src} 
+              alt={imageViewer.alt} 
+              className="max-w-full max-h-[80vh] object-contain rounded-xl"
+            />
+          ) : (
+            <>
+              <div className="w-64 h-64 md:w-96 md:h-96 rounded-full opacity-20 mix-blend-screen bg-[#c9a655]" />
+              <div className="absolute inset-0 flex items-center justify-center text-[#c9a655] animate-pulse">
+                <span className="text-sm font-bold uppercase tracking-widest">{imageViewer.alt}</span>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>

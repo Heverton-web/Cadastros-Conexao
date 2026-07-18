@@ -696,6 +696,11 @@ export function useWorkflowDetalhe(workflowId: string) {
 }
 
 // --- Kits ---
+export function useTiposKit() {
+  const empresaId = useEmpresaId()
+  return useQuery({ queryKey: ["catalogo", "tipos-kit", empresaId], queryFn: () => kits.listarTiposKit(empresaId), enabled: !!empresaId })
+}
+
 export function useKitsAtivos() {
   const empresaId = useEmpresaId()
   return useQuery({ queryKey: ["catalogo", "kits", "ativos", empresaId], queryFn: () => kits.listarKitsAtivos(empresaId), enabled: !!empresaId })
@@ -1111,5 +1116,42 @@ export function useImagensProduto(tipo: ProdutoTipoImagem | undefined, sku: stri
     queryKey: ["catalogo", "imagens", empresaId, tipo, sku],
     queryFn: () => imagensService.listarImagens(empresaId, tipo!, sku!),
     enabled: !!empresaId && !!tipo && !!sku,
+  })
+}
+
+// --- Dados Relacionados ao Implante ---
+export function useChavesDoImplante(implanteSku: string) {
+  const empresaId = useEmpresaId()
+  return useQuery({
+    queryKey: ["catalogo", "implante-chaves", empresaId, implanteSku],
+    queryFn: () => implantes.listarChavesDoImplante(empresaId, implanteSku),
+    enabled: !!empresaId && !!implanteSku,
+  })
+}
+
+export function useCicatrizadoresDoImplante(implanteSku: string) {
+  const empresaId = useEmpresaId()
+  return useQuery({
+    queryKey: ["catalogo", "implante-cicatrizadores", empresaId, implanteSku],
+    queryFn: () => implantes.listarCicatrizadoresDoImplante(empresaId, implanteSku),
+    enabled: !!empresaId && !!implanteSku,
+  })
+}
+
+export function useAbutmentsDaFamilia(familiaId: string | null | undefined) {
+  const empresaId = useEmpresaId()
+  return useQuery({
+    queryKey: ["catalogo", "familia-abutments", empresaId, familiaId],
+    queryFn: () => implantes.listarAbutmentsDaFamilia(empresaId, familiaId!),
+    enabled: !!empresaId && !!familiaId,
+  })
+}
+
+export function useKitsComChavesEmComum(implanteSku: string) {
+  const empresaId = useEmpresaId()
+  return useQuery({
+    queryKey: ["catalogo", "implante-kits", empresaId, implanteSku],
+    queryFn: () => implantes.listarKitsComChavesEmComum(empresaId, implanteSku),
+    enabled: !!empresaId && !!implanteSku,
   })
 }

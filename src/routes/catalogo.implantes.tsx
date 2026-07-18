@@ -225,6 +225,22 @@ function ImplantList({ linhaId, conexaoId, familiaId, empresa, onBack }: { linha
   const corFamilia = familia?.cor_identificacao ?? "#c9a655"
   const empresaId = useCatalogoEmpresaId()
   const [imagensMap, setImagensMap] = useState<Map<string, CatalogoImagemProduto[]>>(new Map())
+  const [diametroFiltro, setDiametroFiltro] = useState<number | null>(null)
+
+  // Diâmetros únicos desta linha
+  const diametrosUnicos = useMemo(() => {
+    const set = new Set<number>()
+    for (const i of implantes ?? []) {
+      if (i.diametro_mm) set.add(i.diametro_mm)
+    }
+    return Array.from(set).sort((a, b) => a - b)
+  }, [implantes])
+
+  // Implantes filtrados por diâmetro
+  const implantesFiltrados = useMemo(() => {
+    if (diametroFiltro === null) return implantes ?? []
+    return (implantes ?? []).filter((i) => i.diametro_mm === diametroFiltro)
+  }, [implantes, diametroFiltro])
 
   // Buscar imagens dos implantes
   useEffect(() => {
@@ -270,18 +286,52 @@ function ImplantList({ linhaId, conexaoId, familiaId, empresa, onBack }: { linha
 
       {/* Count */}
       <p className="text-xs font-bold uppercase tracking-widest text-[var(--color-text-muted)] border-b border-[var(--color-border-subtle)] pb-4">
-        {implantes?.length ?? 0} resultado(s)
+        {implantesFiltrados.length} resultado(s)
       </p>
 
-      {implantes?.length === 0 ? (
+      {/* Filtro por Diâmetro */}
+      {diametrosUnicos.length > 1 && (
+        <div className="space-y-3">
+          <p className="text-xs font-bold uppercase tracking-widest text-[var(--color-accent)]">Selecione o Diâmetro</p>
+          <div className="flex flex-wrap gap-2">
+            <button
+              onClick={() => setDiametroFiltro(null)}
+              className={cn(
+                "px-4 py-2 rounded-full text-sm font-bold border transition-all duration-200",
+                diametroFiltro === null
+                  ? "bg-[var(--color-accent)] text-black border-[var(--color-accent)]"
+                  : "bg-transparent text-[var(--color-text-muted)] border-[var(--color-border-subtle)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+              )}
+            >
+              Todos
+            </button>
+            {diametrosUnicos.map((d) => (
+              <button
+                key={d}
+                onClick={() => setDiametroFiltro(d === diametroFiltro ? null : d)}
+                className={cn(
+                  "px-4 py-2 rounded-full text-sm font-bold border transition-all duration-200",
+                  diametroFiltro === d
+                    ? "bg-[var(--color-accent)] text-black border-[var(--color-accent)]"
+                    : "bg-transparent text-[var(--color-text-muted)] border-[var(--color-border-subtle)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+                )}
+              >
+                Ø {d} mm
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {implantesFiltrados.length === 0 ? (
         <div className="text-center py-24 rounded-3xl border border-[var(--color-border-subtle)] bg-[var(--color-surface)]/30 backdrop-blur-md">
           <PackageOpen className="h-14 w-14 mx-auto mb-6 opacity-20 text-white" />
           <p className="text-xl font-black text-white tracking-tight">Nenhum implante encontrado</p>
-          <p className="text-sm text-[var(--color-text-muted)] mt-2 max-w-sm mx-auto">Esta linha não possui implantes cadastrados. Volte e selecione outra linha.</p>
+          <p className="text-sm text-[var(--color-text-muted)] mt-2 max-w-sm mx-auto">{diametroFiltro !== null ? `Nenhum implante com diâmetro Ø ${diametroFiltro} mm nesta linha.` : 'Esta linha não possui implantes cadastrados. Volte e selecione outra linha.'}</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 gap-4">
-          {(implantes ?? []).map((impl) => (
+          {implantesFiltrados.map((impl) => (
             <Link
               to="/catalogo/produto/$tipo/$sku"
               params={{ tipo: 'implante', sku: impl.sku }}

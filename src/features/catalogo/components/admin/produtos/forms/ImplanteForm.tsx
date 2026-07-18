@@ -1,11 +1,13 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
-import { Trash2 } from "lucide-react"
-import type { CatalogoCategoria, CatalogoIpsConexao, CatalogoIpsFamilia, CatalogoIpsLinha, CatalogoFresa, CatalogoChave, CatalogoProtocoloFresagem } from "~/features/catalogo/types"
+import { Trash2, Plus } from "lucide-react"
+import type { CatalogoCategoria, CatalogoIpsConexao, CatalogoIpsFamilia, CatalogoIpsLinha, CatalogoFresa, CatalogoChave, CatalogoProtocoloFresagem, CatalogoKit, CatalogoAbutment, CatalogoCicatrizador } from "~/features/catalogo/types"
 
 const implanteSchema = z.object({
+  // Categoria
+  categoria_id: z.string().optional(),
   // Hierarquia
   conexao_id: z.string().min(1, "Conexão é obrigatória"),
   familia_id: z.string().min(1, "Família é obrigatória"),
@@ -28,8 +30,12 @@ const implanteSchema = z.object({
   macrogeometria: z.string().optional(),
   material: z.string().optional(),
   superficie: z.string().optional(),
+  diametro_plataforma_mm: z.coerce.number().optional(),
+  // Chaves
+  chaves_ids: z.array(z.string()).optional(),
   // Comercial
   preco: z.coerce.number().min(0, "Preço não pode ser negativo").optional(),
+  ativo: z.boolean().default(true),
 })
 
 export type ImplanteFormData = z.infer<typeof implanteSchema>
@@ -43,13 +49,27 @@ interface Props {
   linhas: CatalogoIpsLinha[] | undefined
   fresas: CatalogoFresa[] | undefined
   chaves: CatalogoChave[] | undefined
+  chavesIds: string[]
+  onChavesChange: (ids: string[]) => void
   protocolos: CatalogoProtocoloFresagem[] | undefined
   onGerarSku: () => void
+  // Composição
+  kits: CatalogoKit[] | undefined
+  kitsIds: string[]
+  onKitsChange: (skus: string[]) => void
+  abutments: CatalogoAbutment[] | undefined
+  abutmentsIds: string[]
+  onAbutmentsChange: (skus: string[]) => void
+  cicatrizadores: CatalogoCicatrizador[] | undefined
+  cicatrizadoresIds: string[]
+  onCicatrizadoresChange: (skus: string[]) => void
 }
 
 export function ImplanteForm({
   data, onChange, categorias, conexoes, familias, linhas,
-  fresas, chaves, protocolos, onGerarSku,
+  fresas, chaves, chavesIds, onChavesChange, protocolos, onGerarSku,
+  kits, kitsIds, onKitsChange, abutments, abutmentsIds, onAbutmentsChange,
+  cicatrizadores, cicatrizadoresIds, onCicatrizadoresChange,
 }: Props) {
   const { register, formState: { errors } } = useForm<ImplanteFormData>({
     resolver: zodResolver(implanteSchema),
@@ -64,6 +84,17 @@ export function ImplanteForm({
 
   return (
     <div className="space-y-4">
+      <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655]">Categoria</h3>
+      <div className="grid grid-cols-2 gap-4">
+        <div className="space-y-2">
+          <label className={labelCls}>Categoria</label>
+          <select {...register("categoria_id")} value={data.categoria_id} onChange={(e) => onChange({ ...data, categoria_id: e.target.value })} className={selectCls}>
+            <option value="">Nenhuma</option>
+            {categorias?.filter((cat) => !cat.tipo || cat.tipo === "implante").map((cat) => <option key={cat.id} value={cat.id}>{cat.nome}</option>)}
+          </select>
+        </div>
+      </div>
+
       <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655]">Hierarquia</h3>
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">
@@ -113,7 +144,7 @@ export function ImplanteForm({
         </div>
         <div className="space-y-2">
           <label className={labelCls}>Descrição</label>
-          <input type="text" {...register("descricao")} value={data.descricao} onChange={(e) => onChange({ ...data, descricao: e.target.value })} className={inputCls} placeholder="Descrição do implante" />
+          <textarea rows={3} {...register("descricao")} value={data.descricao} onChange={(e) => onChange({ ...data, descricao: e.target.value })} className={inputCls} placeholder="Descrição do implante" />
         </div>
       </div>
 
@@ -134,6 +165,44 @@ export function ImplanteForm({
           </select>
         </div>
       </div>
+
+      <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655] pt-2">Composição do Implante</h3>
+
+      {/* Chaves */}
+      <CompositionSection
+        label="Chaves"
+        selectedIds={chavesIds}
+        options={chaves?.map((c) => ({ id: c.id, label: `${c.nome} (${c.sigla ?? c.sku})` })) ?? []}
+        placeholder="Selecione uma chave..."
+        onChange={onChavesChange}
+      />
+
+      {/* Kits */}
+      <CompositionSection
+        label="Kits"
+        selectedIds={kitsIds}
+        options={kits?.filter((k) => !kitsIds.includes(k.sku)).map((k) => ({ id: k.sku, label: k.nome })) ?? []}
+        placeholder="Selecione um kit..."
+        onChange={onKitsChange}
+      />
+
+      {/* Abutments */}
+      <CompositionSection
+        label="Abutments / Componentes"
+        selectedIds={abutmentsIds}
+        options={abutments?.filter((a) => !abutmentsIds.includes(a.sku)).map((a) => ({ id: a.sku, label: a.sku })) ?? []}
+        placeholder="Selecione um abutment..."
+        onChange={onAbutmentsChange}
+      />
+
+      {/* Cicatrizadores */}
+      <CompositionSection
+        label="Cicatrizadores"
+        selectedIds={cicatrizadoresIds}
+        options={cicatrizadores?.filter((c) => !cicatrizadoresIds.includes(c.sku)).map((c) => ({ id: c.sku, label: `${c.nome} (${c.sku})` })) ?? []}
+        placeholder="Selecione um cicatrizador..."
+        onChange={onCicatrizadoresChange}
+      />
 
       <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655] pt-2">Especificações Cirúrgicas</h3>
       <div className="grid grid-cols-2 gap-4">
@@ -159,6 +228,10 @@ export function ImplanteForm({
           <label className={labelCls}>Macrogeometria</label>
           <input type="text" {...register("macrogeometria")} value={data.macrogeometria} onChange={(e) => onChange({ ...data, macrogeometria: e.target.value })} className={inputCls} placeholder="Ex: Taper" />
         </div>
+        <div className="space-y-2">
+          <label className={labelCls}>Ø Plataforma mm</label>
+          <input type="number" step="0.1" {...register("diametro_plataforma_mm")} value={data.diametro_plataforma_mm} onChange={(e) => onChange({ ...data, diametro_plataforma_mm: Number(e.target.value) })} className={inputCls} placeholder="Ex: 4.5" />
+        </div>
       </div>
 
       <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655] pt-2">Material & Superfície</h3>
@@ -180,7 +253,92 @@ export function ImplanteForm({
           <input type="number" step="0.01" min="0" {...register("preco")} value={data.preco} onChange={(e) => onChange({ ...data, preco: Number(e.target.value) })} className={inputCls} placeholder="0,00" />
           {errors.preco && <p className="text-xs text-red-400">{errors.preco.message}</p>}
         </div>
+        <div className="space-y-2">
+          <label className={labelCls}>Ativo</label>
+          <button
+            type="button"
+            onClick={() => onChange({ ...data, ativo: !data.ativo })}
+            className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+              data.ativo ? "bg-[#c9a655]" : "bg-white/10"
+            }`}
+          >
+            <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+              data.ativo ? "translate-x-6" : "translate-x-1"
+            }`} />
+          </button>
+        </div>
       </div>
+    </div>
+  )
+}
+
+// ============================================================
+// CompositionSection — select + Adicionar button pattern
+// ============================================================
+
+function CompositionSection({
+  label, selectedIds, options, placeholder, onChange,
+}: {
+  label: string
+  selectedIds: string[]
+  options: { id: string; label: string }[]
+  placeholder: string
+  onChange: (ids: string[]) => void
+}) {
+  const [selected, setSelected] = useState("")
+
+  function handleAdd() {
+    if (selected && !selectedIds.includes(selected)) {
+      onChange([...selectedIds, selected])
+      setSelected("")
+    }
+  }
+
+  function handleRemove(id: string) {
+    onChange(selectedIds.filter((s) => s !== id))
+  }
+
+  const allOptions = options.length > 0 ? options : []
+  const selectedLabels = selectedIds.map((id) => {
+    const found = allOptions.find((o) => o.id === id)
+    return { id, label: found?.label ?? id }
+  })
+
+  return (
+    <div className="rounded-xl border border-white/10 bg-[var(--color-surface)]/50 p-4 space-y-3">
+      <p className="text-[10px] font-black uppercase tracking-widest text-gray-500">{label}</p>
+      <div className="flex gap-3">
+        <select
+          value={selected}
+          onChange={(e) => setSelected(e.target.value)}
+          className="flex-1 bg-[#0f172a] border border-white/10 rounded-lg px-4 py-3 text-sm text-white appearance-none cursor-pointer focus:outline-none focus:border-[#c9a655]/50 transition-colors"
+        >
+          <option value="">{placeholder}</option>
+          {allOptions.filter((o) => !selectedIds.includes(o.id)).map((o) => (
+            <option key={o.id} value={o.id}>{o.label}</option>
+          ))}
+        </select>
+        <button
+          type="button"
+          onClick={handleAdd}
+          disabled={!selected}
+          className="px-5 py-3 rounded-lg text-xs font-black uppercase tracking-wider text-[#0f172a] bg-gradient-to-r from-[#c9a655] to-[#e8d48b] hover:from-[#e8d48b] hover:to-[#c9a655] transition-all shrink-0 disabled:opacity-30 disabled:cursor-not-allowed"
+        >
+          Adicionar
+        </button>
+      </div>
+      {selectedLabels.length > 0 && (
+        <div className="flex flex-wrap gap-2 pt-1">
+          {selectedLabels.map((item) => (
+            <span key={item.id} className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#c9a655]/10 border border-[#c9a655]/20 text-xs font-medium text-[#c9a655]">
+              {item.label}
+              <button type="button" onClick={() => handleRemove(item.id)} className="ml-0.5 text-[#c9a655]/50 hover:text-red-400 transition-colors">
+                <Trash2 size={12} />
+              </button>
+            </span>
+          ))}
+        </div>
+      )}
     </div>
   )
 }

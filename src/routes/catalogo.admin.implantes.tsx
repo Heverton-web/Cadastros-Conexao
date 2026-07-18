@@ -7,8 +7,9 @@ import { useState, useEffect } from "react"
 import { Plus, Pencil, Trash2, ToggleRight, ToggleLeft } from "lucide-react"
 import { supabase } from "~/core/supabase"
 import { useQueryClient, useQuery } from "@tanstack/react-query"
-import { useCategorias, useConexoes, useFamilias, useLinhas, useFresas, useToggleConexaoAtivo, useToggleFamiliaAtivo, useToggleLinhaAtivo } from "~/features/catalogo/hooks/useCatalogo"
+import { useCategorias, useConexoes, useFamilias, useLinhas, useFresas, useToggleConexaoAtivo, useToggleFamiliaAtivo, useToggleLinhaAtivo, useTodosKits, useAbutments, useCicatrizadores } from "~/features/catalogo/hooks/useCatalogo"
 import { useCatalogoEmpresaId } from "~/features/catalogo/hooks/useCatalogoEmpresa"
+import { salvarImplanteChaves, salvarImplanteKits, salvarImplanteAbutments, salvarImplanteCicatrizadores, listarImplanteKits, listarImplanteAbutments, listarImplanteCicatrizadores } from "~/features/catalogo/services/implantes.service"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "~/components/ui/dialog"
 import { Switch } from "~/components/ui/switch"
 import { ImageUploader } from "~/features/catalogo/components/admin/produtos/ImageUploader"
@@ -46,21 +47,34 @@ function AdminImplantesPage() {
   const [implEditing, setImplEditing] = useState<CatalogoImplante | null>(null)
   const [implData, setImplData] = useState({ categoria_id: "", conexao_id: "", familia_id: "", linha_id: "", sku: "", nome: "", sigla: "", descricao: "", osso_soft: "", osso_hard: "", diametro_mm: 0, comprimento_mm: 0, rosca_interna: "", macrogeometria: "", torque_insercao: 0, material: "", superficie: "", preco: 0, ativo: true })
   const [implChaves, setImplChaves] = useState<string[]>([])
+  const [implKits, setImplKits] = useState<string[]>([])
+  const [implAbutments, setImplAbutments] = useState<string[]>([])
+  const [implCicatrizadores, setImplCicatrizadores] = useState<string[]>([])
   const [implError, setImplError] = useState("")
 
   const { data: implantes } = useQuery({ queryKey: ["catalogo", "implantes", empresaId], queryFn: async () => { const { data } = await supabase.from("catalogo_implantes").select("*, linha:catalogo_ips_linhas(*, familia:catalogo_ips_familias(*, conexao:catalogo_ips_conexoes(*, categoria:catalogo_categorias(*))))").eq("empresa_id", empresaId).order("sku"); return (data ?? []) as CatalogoImplante[] }, enabled: !!empresaId })
   const { data: allChaves } = useQuery({ queryKey: ["catalogo", "chaves"], queryFn: async () => { const { data } = await supabase.from("catalogo_chaves").select("*").eq("empresa_id", empresaId).order("nome"); return (data ?? []) as any[] }, enabled: !!empresaId })
   const { data: protocolos } = useQuery({ queryKey: ["catalogo", "protocolos"], queryFn: async () => { const { data } = await supabase.from("catalogo_protocolos_fresagens").select("*").eq("empresa_id", empresaId).order("nome"); return (data ?? []) as any[] }, enabled: !!empresaId })
+  const { data: allKits } = useTodosKits()
+  const { data: allAbutments } = useAbutments()
+  const { data: allCicatrizadores } = useCicatrizadores()
 
   function openNewImpl() {
     setImplEditing(null)
     setImplData({ categoria_id: categorias?.[0]?.id ?? "", conexao_id: "", familia_id: "", linha_id: "", sku: "", nome: "", sigla: "", descricao: "", osso_soft: "", osso_hard: "", diametro_mm: 0, comprimento_mm: 0, rosca_interna: "", macrogeometria: "", torque_insercao: 0, material: "", superficie: "", preco: 0, ativo: true })
-    setImplChaves([]); setImplError(""); setImplModalOpen(true)
+    setImplChaves([]); setImplKits([]); setImplAbutments([]); setImplCicatrizadores([]); setImplError(""); setImplModalOpen(true)
   }
   function openEditImpl(impl: CatalogoImplante) {
     setImplEditing(impl)
     setImplData({ categoria_id: impl.categoria_id ?? "", conexao_id: impl.conexao_id ?? "", familia_id: impl.familia_id ?? "", linha_id: impl.linha_id ?? "", sku: impl.sku, nome: impl.nome ?? "", sigla: impl.sigla ?? "", descricao: impl.descricao ?? "", osso_soft: impl.osso_soft ?? "", osso_hard: impl.osso_hard ?? "", diametro_mm: impl.diametro_mm ?? 0, comprimento_mm: impl.comprimento_mm ?? 0, rosca_interna: impl.rosca_interna ?? "", macrogeometria: impl.macrogeometria ?? "", torque_insercao: impl.torque_insercao ?? 0, material: impl.material ?? "", superficie: impl.superficie ?? "", preco: impl.preco ?? 0, ativo: impl.ativo !== false })
-    setImplChaves([]); setImplError(""); setImplModalOpen(true)
+    setImplChaves([]); setImplKits([]); setImplAbutments([]); setImplCicatrizadores([]); setImplError(""); setImplModalOpen(true)
+    // Carregar dados vinculados
+    import("~/features/catalogo/services/implantes.service").then((svc) => {
+      svc.listarImplanteChaves(empresaId, impl.sku).then(setImplChaves).catch(() => setImplChaves([]))
+      svc.listarImplanteKits(empresaId, impl.sku).then(setImplKits).catch(() => setImplKits([]))
+      svc.listarImplanteAbutments(empresaId, impl.sku).then(setImplAbutments).catch(() => setImplAbutments([]))
+      svc.listarImplanteCicatrizadores(empresaId, impl.sku).then(setImplCicatrizadores).catch(() => setImplCicatrizadores([]))
+    })
   }
 
   async function handleSaveImpl() {
@@ -84,13 +98,12 @@ function AdminImplantesPage() {
       const { error } = await supabase.from("catalogo_implantes").insert(payload)
       if (error) { setImplError(error.message); return }
     }
-    // Salvar chaves N:M
+    // Salvar chaves, kits, abutments e cicatrizadores vinculados
     if (implData.sku) {
-      await supabase.from("catalogo_implante_chaves").delete().eq("empresa_id", empresaId).eq("implante_sku", implData.sku)
-      if (implChaves.length > 0) {
-        const rows = implChaves.map(id => ({ empresa_id: empresaId, implante_sku: implData.sku, chave_id: id }))
-        await supabase.from("catalogo_implante_chaves").insert(rows)
-      }
+      await salvarImplanteChaves(empresaId, implData.sku, implChaves)
+      await salvarImplanteKits(empresaId, implData.sku, implKits)
+      await salvarImplanteAbutments(empresaId, implData.sku, implAbutments)
+      await salvarImplanteCicatrizadores(empresaId, implData.sku, implCicatrizadores)
     }
     setImplModalOpen(false); qc.invalidateQueries({ queryKey: ["catalogo"] })
   }
@@ -213,12 +226,40 @@ function AdminImplantesPage() {
               <div className="space-y-2"><label className={labelCls}>Protocolo Osso Hard (I-II)</label><select value={implData.osso_hard} onChange={e=>setImplData({...implData,osso_hard:e.target.value})} className={selectCls}><option value="">Nenhum</option>{protocolos?.filter((p:any)=>["D1","D2"].includes(p.tipo_osso)).map((p:any)=><option key={p.id} value={p.id}>{p.nome}</option>)}</select></div>
             </div>
 
-            {/* Chaves (Multi-select) */}
-            <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655]">Chaves Compatíveis</h3>
-            <div className="flex flex-wrap gap-2">
-              {allChaves?.map((ch:any) => { const sel = implChaves.includes(ch.sku); return <button key={ch.sku} type="button" onClick={()=>setImplChaves(sel ? implChaves.filter(s=>s!==ch.sku) : [...implChaves, ch.sku])} className={`px-3 py-2 rounded-lg text-xs font-bold transition-all border ${sel ? "bg-[#c9a655]/20 text-[#c9a655] border-[#c9a655]/30" : "bg-[var(--color-surface)] text-gray-400 border-white/10 hover:border-white/20"}`}>{ch.nome}</button> })}
-              {(!allChaves || allChaves.length === 0) && <p className="text-xs text-gray-500 italic">Nenhuma chave cadastrada</p>}
-            </div>
+            {/* Composição do Implante */}
+            <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655]">Composição do Implante</h3>
+
+            <CompositionSection
+              label="CHAVES COMPATÍVEIS"
+              selectedIds={implChaves}
+              options={allChaves?.map((ch: any) => ({ id: ch.sku, label: `${ch.nome} (${ch.sku})` })) ?? []}
+              placeholder="Selecione uma chave..."
+              onChange={setImplChaves}
+            />
+
+            <CompositionSection
+              label="KITS"
+              selectedIds={implKits}
+              options={allKits?.map((k: any) => ({ id: k.sku, label: k.nome })) ?? []}
+              placeholder="Selecione um kit..."
+              onChange={setImplKits}
+            />
+
+            <CompositionSection
+              label="ABUTMENTS / COMPONENTES"
+              selectedIds={implAbutments}
+              options={allAbutments?.map((a: any) => ({ id: a.sku, label: a.sku })) ?? []}
+              placeholder="Selecione um abutment..."
+              onChange={setImplAbutments}
+            />
+
+            <CompositionSection
+              label="CICATRIZADORES"
+              selectedIds={implCicatrizadores}
+              options={allCicatrizadores?.map((c: any) => ({ id: c.sku, label: `${c.nome} (${c.sku})` })) ?? []}
+              placeholder="Selecione um cicatrizador..."
+              onChange={setImplCicatrizadores}
+            />
 
             {/* Especificações Técnicas */}
             <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655]">Especificações Técnicas</h3>
@@ -401,6 +442,77 @@ function SimpleForm({ subTab, editingItem, table, empresaId, onClose, onSuccess 
         <button onClick={onClose} className="px-6 py-3 rounded-xl border border-white/10 text-white font-bold hover:bg-white/5">Cancelar</button>
         <button onClick={save} className="px-6 py-3 rounded-xl text-[#0f172a] font-black hover:scale-105 transition-transform" style={{background:"linear-gradient(135deg, #c9a655, #e8d48b)"}}>Salvar</button>
       </DialogFooter>
+    </div>
+  )
+}
+
+// ============================================================
+// CompositionSection — select + Adicionar button pattern
+// ============================================================
+
+function CompositionSection({
+  label, selectedIds, options, placeholder, onChange,
+}: {
+  label: string
+  selectedIds: string[]
+  options: { id: string; label: string }[]
+  placeholder: string
+  onChange: (ids: string[]) => void
+}) {
+  const [selected, setSelected] = useState("")
+
+  function handleAdd() {
+    if (selected && !selectedIds.includes(selected)) {
+      onChange([...selectedIds, selected])
+      setSelected("")
+    }
+  }
+
+  function handleRemove(id: string) {
+    onChange(selectedIds.filter((s) => s !== id))
+  }
+
+  const allOptions = options.length > 0 ? options : []
+  const selectedLabels = selectedIds.map((id) => {
+    const found = allOptions.find((o) => o.id === id)
+    return { id, label: found?.label ?? id }
+  })
+
+  return (
+    <div className="rounded-xl border border-white/10 bg-[var(--color-surface)]/50 p-4 space-y-3">
+      <p className="text-[10px] font-black uppercase tracking-widest text-gray-500">{label}</p>
+      <div className="flex gap-3">
+        <select
+          value={selected}
+          onChange={(e) => setSelected(e.target.value)}
+          className="flex-1 bg-[#0f172a] border border-white/10 rounded-lg px-4 py-3 text-sm text-white appearance-none cursor-pointer focus:outline-none focus:border-[#c9a655]/50 transition-colors"
+        >
+          <option value="">{placeholder}</option>
+          {allOptions.filter((o) => !selectedIds.includes(o.id)).map((o) => (
+            <option key={o.id} value={o.id}>{o.label}</option>
+          ))}
+        </select>
+        <button
+          type="button"
+          onClick={handleAdd}
+          disabled={!selected}
+          className="px-5 py-3 rounded-lg text-xs font-black uppercase tracking-wider text-[#0f172a] bg-gradient-to-r from-[#c9a655] to-[#e8d48b] hover:from-[#e8d48b] hover:to-[#c9a655] transition-all shrink-0 disabled:opacity-30 disabled:cursor-not-allowed"
+        >
+          Adicionar
+        </button>
+      </div>
+      {selectedLabels.length > 0 && (
+        <div className="flex flex-wrap gap-2 pt-1">
+          {selectedLabels.map((item) => (
+            <span key={item.id} className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#c9a655]/10 border border-[#c9a655]/20 text-xs font-medium text-[#c9a655]">
+              {item.label}
+              <button type="button" onClick={() => handleRemove(item.id)} className="ml-0.5 text-[#c9a655]/50 hover:text-red-400 transition-colors">
+                <Trash2 size={12} />
+              </button>
+            </span>
+          ))}
+        </div>
+      )}
     </div>
   )
 }

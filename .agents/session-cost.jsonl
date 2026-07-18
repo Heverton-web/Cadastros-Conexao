@@ -673,3 +673,5 @@
 {"ts":"2026-07-18T00:59:42.177Z","action":"bash","model":"opencode/hy3-free","session_id":"oc-mrpnmpvm-2fne","tokens_in":69,"tokens_out":17,"cost":0,"session_total":0}
 {"ts":"2026-07-18T00:59:46.923Z","action":"read","model":"opencode/hy3-free","session_id":"oc-mrpnmpvm-2fne","tokens_in":20,"tokens_out":451,"cost":0,"session_total":0}
 {"ts":"2026-07-18T01:01:44.450Z","action":"bash","model":"opencode/hy3-free","session_id":"oc-mrpnmpvm-2fne","tokens_in":278,"tokens_out":18,"cost":0,"session_total":0}
+{"ts":"2026-07-18T17:07:24Z","action":"saudacao-inicial","model":"moonshotai/kimi-k3","tokens_in":8000,"tokens_out":60,"cost":0.0272,"session_total":0.0272}
+{"ts":"2026-07-18T17:07:24.288Z","action":"bash","model":"opencode/hy3-free","session_id":"oc-mrqmb7uc-ynk8","tokens_in":83,"tokens_out":3,"cost":0,"session_total":0}
