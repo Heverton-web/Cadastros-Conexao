@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, createContext, useContext } from 'react';
 import { Search, ShoppingBag, Menu, Home, ArrowLeft } from 'lucide-react';
 import { Link, useNavigate } from '@tanstack/react-router';
 import '../styles/theme.css';
@@ -8,6 +8,9 @@ import { useAuth } from '~/lib/auth';
 import { CartDrawer } from './CartDrawer';
 import { ImageViewer } from './ImageViewer';
 import { ProductSheet } from './ProductSheet';
+
+export const CatalogoVisibilityContext = createContext({ showPrices: true, showSearchBar: true });
+export const useCatalogoVisibility = () => useContext(CatalogoVisibilityContext);
 import { supabase } from '~/lib/supabase';
 import { getCatalogoDesign, mergeWithDefaults } from '../services/design.service';
 
@@ -40,10 +43,16 @@ function applyDesignToRoot(config: ReturnType<typeof mergeWithDefaults>) {
     '--color-success': config.colors.success,
     '--color-error': config.colors.error,
     '--color-accent-muted': `${config.colors.accent}1f`,
+    '--catalogo-hero-bg': config.images.heroBackgroundUrl || '',
+    '--catalogo-page-bg': config.images.pageBackgroundUrl || '',
+    '--catalogo-font-family': config.typography.fontFamily || "'Inter', sans-serif",
+    '--catalogo-font-mono': config.typography.fontFamilyMono || "'JetBrains Mono', monospace",
   };
   for (const [k, v] of Object.entries(cssMap)) {
     root.style.setProperty(k, v);
   }
+  // Aplica fonte no body
+  document.body.style.fontFamily = config.typography.fontFamily || "'Inter', sans-serif";
 }
 
 export function StoreLayout({ children, empresaId: empresaIdProp, fullHeight, zoom }: StoreLayoutProps) {
@@ -51,6 +60,7 @@ export function StoreLayout({ children, empresaId: empresaIdProp, fullHeight, zo
   const [isBackVisible, setIsBackVisible] = useState(false);
   const [logoUrl, setLogoUrl] = useState('');
   const [resolvedEmpresaId, setResolvedEmpresaId] = useState<string | null>(empresaIdProp ?? null);
+  const [visibility, setVisibility] = useState({ showPrices: true, showSearchBar: true });
   const navigate = useNavigate();
   const cart = useCarrinho();
   const { qtd } = cartTotais(cart);
@@ -115,6 +125,20 @@ export function StoreLayout({ children, empresaId: empresaIdProp, fullHeight, zo
         // Aplica no :root para prioridade máxima
         applyDesignToRoot(config);
 
+        // Atualiza visibilidade
+        setVisibility({
+          showPrices: config.visibility.showPrices,
+          showSearchBar: config.visibility.showSearchBar,
+        });
+
+        // Background da página
+        if (config.images.pageBackgroundUrl) {
+          document.body.style.backgroundImage = `url(${config.images.pageBackgroundUrl})`;
+          document.body.style.backgroundSize = 'cover';
+          document.body.style.backgroundPosition = 'center';
+          document.body.style.backgroundAttachment = 'fixed';
+        }
+
         // Favicon: tenta catalogo_design_config, senão fallback para empresas_config
         let faviconSrc = config.images.faviconUrl;
         if (!faviconSrc) {
@@ -159,9 +183,11 @@ export function StoreLayout({ children, empresaId: empresaIdProp, fullHeight, zo
         '--color-bg', '--color-surface', '--color-surface-hover', '--color-card',
         '--color-text-main', '--color-text-muted', '--color-border-subtle',
         '--color-input-bg', '--color-input-border', '--color-success', '--color-error',
-        '--color-accent-muted',
+        '--color-accent-muted', '--catalogo-hero-bg', '--catalogo-page-bg',
       ];
       vars.forEach(v => root.style.removeProperty(v));
+      document.body.style.backgroundImage = '';
+      document.body.style.fontFamily = '';
 
       // Restaura favicon genérico
       const link = document.querySelector<HTMLLinkElement>("link[rel='icon']");
@@ -194,16 +220,18 @@ export function StoreLayout({ children, empresaId: empresaIdProp, fullHeight, zo
             )}
           </div>
         </div>
-        <div className="flex-1 max-w-xl mx-8 relative hidden lg:block">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] w-4 h-4" />
-          <input
-            type="text"
-            placeholder="Buscar por SKU, Linha ou Dimensão..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full h-11 pl-12 pr-4 rounded-full bg-[var(--color-surface)]/50 border border-[var(--color-input-border)] text-sm focus:border-[var(--color-accent)] focus:bg-[var(--color-input-bg)] focus:shadow-[0_0_15px_rgba(201,166,85,0.15)] focus:outline-none transition-all text-white placeholder-[var(--color-text-muted)]"
-          />
-        </div>
+        {visibility.showSearchBar && (
+          <div className="flex-1 max-w-xl mx-8 relative hidden lg:block">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] w-4 h-4" />
+            <input
+              type="text"
+              placeholder="Buscar por SKU, Linha ou Dimensão..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full h-11 pl-12 pr-4 rounded-full bg-[var(--color-surface)]/50 border border-[var(--color-input-border)] text-sm focus:border-[var(--color-accent)] focus:bg-[var(--color-input-bg)] focus:shadow-[0_0_15px_rgba(201,166,85,0.15)] focus:outline-none transition-all text-white placeholder-[var(--color-text-muted)]"
+            />
+          </div>
+        )}
         <div className="flex items-center gap-2 sm:gap-4 lg:gap-6 shrink-0">
           <Link to="/catalogo" search={{ empresa: resolvedEmpresaId ?? null }} className="group p-2 sm:p-3 rounded-full bg-[var(--color-surface)] border border-[var(--color-border-subtle)] hover:border-[var(--color-accent)] hover:bg-[var(--color-surface-hover)] transition-all">
             <Home className="w-4 h-4 sm:w-5 sm:h-5 text-white group-hover:text-[var(--color-accent)] transition-colors" />
@@ -229,7 +257,9 @@ export function StoreLayout({ children, empresaId: empresaIdProp, fullHeight, zo
         className="flex-1 flex flex-col overflow-y-auto overflow-x-hidden"
         style={zoom ? { zoom: `${zoom}` } : undefined}
       >
-        {children}
+        <CatalogoVisibilityContext.Provider value={visibility}>
+          {children}
+        </CatalogoVisibilityContext.Provider>
       </main>
 
       {/* Global Modals */}

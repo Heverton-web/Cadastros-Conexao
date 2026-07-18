@@ -1,7 +1,7 @@
 import { useState } from "react"
 import toast from "react-hot-toast"
 import { Eye, ShoppingCart, Check, Plus } from "lucide-react"
-import { addToCart, formatBRL, mockPreco } from "~/features/catalogo/services/carrinho.service"
+import { addToCart, formatBRL, getPrecoFromDB } from "~/features/catalogo/services/carrinho.service"
 import { playCoinSound } from "~/features/catalogo/services/audio.service"
 import type { ProductSheetTipo, CatalogoProtocoloFresagem } from "~/features/catalogo/types"
 import { ProductThumb } from "./ProductThumb"
@@ -20,9 +20,9 @@ export function FresagemTimeline({ implanteSku, protocolos }: FresagemTimelinePr
     .filter((p) => p.tipo_osso === tab)
     .sort((a, b) => a.ordem_uso - b.ordem_uso)
 
-  const handleAddFresa = (sku: string, nome: string) => {
-    const preco = mockPreco("fresa", sku)
-    addToCart({ sku, nome, tipo: "fresa", cor: "#c9a655", preco })
+  const handleAddFresa = (sku: string, nome: string, preco?: number) => {
+    const precoFinal = getPrecoFromDB(preco, "fresa", sku)
+    addToCart({ sku, nome, tipo: "fresa", cor: "#c9a655", preco: precoFinal })
     playCoinSound()
     setAddedSkus((prev) => new Set(prev).add(sku))
     toast.success(`${nome} adicionado`, {
@@ -101,7 +101,7 @@ export function FresagemTimeline({ implanteSku, protocolos }: FresagemTimelinePr
                   </p>
                 )}
                 <p className="text-xs text-[var(--color-text-muted)]">
-                  Valor un: <span className="font-semibold text-[#c9a655]">{formatBRL(mockPreco("fresa", p.fresa_sku))}</span>
+                  Valor un: <span className="font-semibold text-[#c9a655]">{formatBRL(getPrecoFromDB(p.fresa?.preco, "fresa", p.fresa_sku))}</span>
                 </p>
               </div>
 
@@ -114,7 +114,7 @@ export function FresagemTimeline({ implanteSku, protocolos }: FresagemTimelinePr
                   <Eye className="w-4 h-4" />
                 </button>
                 <button
-                  onClick={() => handleAddFresa(p.fresa_sku, nome)}
+                  onClick={() => handleAddFresa(p.fresa_sku, nome, p.fresa?.preco)}
                   className={`flex items-center justify-center gap-1.5 flex-1 px-3 py-2 rounded-lg text-xs font-bold transition-all duration-300 ${
                     isAdded
                       ? "bg-[var(--color-success)] text-white"

@@ -44,7 +44,7 @@ function AdminImplantesPage() {
   // Implante modal state
   const [implModalOpen, setImplModalOpen] = useState(false)
   const [implEditing, setImplEditing] = useState<CatalogoImplante | null>(null)
-  const [implData, setImplData] = useState({ categoria_id: "", conexao_id: "", familia_id: "", linha_id: "", sku: "", nome: "", sigla: "", descricao: "", osso_soft: "", osso_hard: "", diametro_plataforma_mm: 0, comprimento_mm: 0, rosca_interna: "", macrogeometria: "", torque_ncm: 0, material: "", superficie: "", preco: 0, ativo: true })
+  const [implData, setImplData] = useState({ categoria_id: "", conexao_id: "", familia_id: "", linha_id: "", sku: "", nome: "", sigla: "", descricao: "", osso_soft: "", osso_hard: "", diametro_mm: 0, comprimento_mm: 0, rosca_interna: "", macrogeometria: "", torque_ncm: 0, material: "", superficie: "", preco: 0, ativo: true })
   const [implChaves, setImplChaves] = useState<string[]>([])
   const [implError, setImplError] = useState("")
 
@@ -54,12 +54,12 @@ function AdminImplantesPage() {
 
   function openNewImpl() {
     setImplEditing(null)
-    setImplData({ categoria_id: categorias?.[0]?.id ?? "", conexao_id: "", familia_id: "", linha_id: "", sku: "", nome: "", sigla: "", descricao: "", osso_soft: "", osso_hard: "", diametro_plataforma_mm: 0, comprimento_mm: 0, rosca_interna: "", macrogeometria: "", torque_ncm: 0, material: "", superficie: "", preco: 0, ativo: true })
+    setImplData({ categoria_id: categorias?.[0]?.id ?? "", conexao_id: "", familia_id: "", linha_id: "", sku: "", nome: "", sigla: "", descricao: "", osso_soft: "", osso_hard: "", diametro_mm: 0, comprimento_mm: 0, rosca_interna: "", macrogeometria: "", torque_ncm: 0, material: "", superficie: "", preco: 0, ativo: true })
     setImplChaves([]); setImplError(""); setImplModalOpen(true)
   }
   function openEditImpl(impl: CatalogoImplante) {
     setImplEditing(impl)
-    setImplData({ categoria_id: impl.categoria_id ?? "", conexao_id: impl.conexao_id ?? "", familia_id: impl.familia_id ?? "", linha_id: impl.linha_id ?? "", sku: impl.sku, nome: impl.nome ?? "", sigla: impl.sigla ?? "", descricao: impl.descricao ?? "", osso_soft: impl.osso_soft ?? "", osso_hard: impl.osso_hard ?? "", diametro_plataforma_mm: impl.diametro_plataforma_mm ?? impl.diametro_mm ?? 0, comprimento_mm: impl.comprimento_mm ?? 0, rosca_interna: impl.rosca_interna ?? "", macrogeometria: impl.macrogeometria ?? "", torque_ncm: impl.torque_ncm ?? impl.torque_insercao ?? 0, material: impl.material ?? "", superficie: impl.superficie ?? "", preco: impl.preco ?? 0, ativo: impl.ativo !== false })
+    setImplData({ categoria_id: impl.categoria_id ?? "", conexao_id: impl.conexao_id ?? "", familia_id: impl.familia_id ?? "", linha_id: impl.linha_id ?? "", sku: impl.sku, nome: impl.nome ?? "", sigla: impl.sigla ?? "", descricao: impl.descricao ?? "", osso_soft: impl.osso_soft ?? "", osso_hard: impl.osso_hard ?? "", diametro_mm: impl.diametro_mm ?? 0, comprimento_mm: impl.comprimento_mm ?? 0, rosca_interna: impl.rosca_interna ?? "", macrogeometria: impl.macrogeometria ?? "", torque_ncm: impl.torque_ncm ?? impl.torque_insercao ?? 0, material: impl.material ?? "", superficie: impl.superficie ?? "", preco: impl.preco ?? 0, ativo: impl.ativo !== false })
     setImplChaves([]); setImplError(""); setImplModalOpen(true)
   }
 
@@ -218,7 +218,7 @@ function AdminImplantesPage() {
             {/* Especificações Técnicas */}
             <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655]">Especificações Técnicas</h3>
             <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2"><label className={labelCls}>Ø Plataforma (mm)</label><input type="number" step="0.1" value={implData.diametro_plataforma_mm} onChange={e=>setImplData({...implData,diametro_plataforma_mm:Number(e.target.value)})} className={inputCls} /></div>
+              <div className="space-y-2"><label className={labelCls}>Ø Diâmetro (mm)</label><input type="number" step="0.1" value={implData.diametro_mm} onChange={e=>setImplData({...implData,diametro_mm:Number(e.target.value)})} className={inputCls} /></div>
               <div className="space-y-2"><label className={labelCls}>Comprimento (mm)</label><input type="number" step="0.1" value={implData.comprimento_mm} onChange={e=>setImplData({...implData,comprimento_mm:Number(e.target.value)})} className={inputCls} /></div>
               <div className="space-y-2"><label className={labelCls}>Rosca Interna</label><input type="text" value={implData.rosca_interna} onChange={e=>setImplData({...implData,rosca_interna:e.target.value})} className={inputCls} placeholder="Ex: M 1.6" /></div>
               <div className="space-y-2"><label className={labelCls}>Macrogeometria</label><input type="text" value={implData.macrogeometria} onChange={e=>setImplData({...implData,macrogeometria:e.target.value})} className={inputCls} placeholder="Ex: Taper" /></div>

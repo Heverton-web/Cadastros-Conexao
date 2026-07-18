@@ -1,7 +1,7 @@
 import { createRoute, useParams, useNavigate, useSearch } from "@tanstack/react-router"
 import { rootRoute } from "./__root"
-import { StoreLayout } from "~/features/catalogo/components/StoreLayout"
-import { useImplanteDetalhe, useAbutmentDetalhe, useKitDetalhe, usePromocionalDetalhe, useProtocoloFresagem, useGuias } from "~/features/catalogo/hooks/useCatalogo"
+import { StoreLayout, useCatalogoVisibility } from "~/features/catalogo/components/StoreLayout"
+import { useImplanteDetalhe, useAbutmentDetalhe, useKitDetalhe, usePromocionalDetalhe, useProtocoloFresagem, useGuias, useImagensProduto } from "~/features/catalogo/hooks/useCatalogo"
 import { addToCart, formatBRL, getPrecoFromDB, mockPreco, resolveBOMItem } from "~/features/catalogo/services/carrinho.service"
 import { playCoinSound } from "~/features/catalogo/services/audio.service"
 import { FresagemTimeline } from "~/features/catalogo/components/FresagemTimeline"
@@ -56,14 +56,25 @@ function ProdutoPage() {
 
 /* ─── Shared Components ────────────────────────────────────────────── */
 
-function ProductImage({ cor, nome, onClick }: { cor: string; nome: string; onClick: () => void }) {
+function ProductImage({ cor, nome, onClick, imageUrl }: { cor: string; nome: string; onClick: () => void; imageUrl?: string | null }) {
   return (
     <div
       onClick={onClick}
       className="cursor-zoom-in aspect-square rounded-2xl bg-gradient-to-br from-[var(--color-surface)] to-[#0f172a] border border-[var(--color-border-subtle)] overflow-hidden relative flex flex-col items-center justify-center group transition-all duration-300 hover:shadow-[0_0_60px_rgba(201,166,85,0.08)]"
     >
-      <div className="absolute inset-0 opacity-10 group-hover:opacity-25 mix-blend-screen transition-opacity duration-500" style={{ background: `radial-gradient(circle at 30% 30%, ${cor} 0%, transparent 60%)` }} />
-      <Box className="w-28 h-28 sm:w-36 sm:h-36 opacity-[0.07] relative z-10 transition-transform group-hover:scale-110 duration-700" style={{ color: cor }} />
+      {imageUrl ? (
+        <img
+          src={imageUrl}
+          alt={nome}
+          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+          loading="lazy"
+        />
+      ) : (
+        <>
+          <div className="absolute inset-0 opacity-10 group-hover:opacity-25 mix-blend-screen transition-opacity duration-500" style={{ background: `radial-gradient(circle at 30% 30%, ${cor} 0%, transparent 60%)` }} />
+          <Box className="w-28 h-28 sm:w-36 sm:h-36 opacity-[0.07] relative z-10 transition-transform group-hover:scale-110 duration-700" style={{ color: cor }} />
+        </>
+      )}
       <div className="absolute bottom-6 px-4 py-2 rounded-full border border-[var(--color-border-subtle)] bg-[#0f172a]/60 backdrop-blur-md opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0">
         <p className="font-mono text-[10px] tracking-widest text-white flex items-center gap-2">
           <ExternalLink className="w-3 h-3" /> Toque para ampliar
@@ -89,6 +100,7 @@ function ProductHeader({ cor, badge, nome, sku }: { cor: string; badge?: string;
 
 function AddButton({ tipo, sku, nome, cor, precoDB, compact }: { tipo: ProductSheetTipo; sku: string; nome: string; cor: string; precoDB?: number | null; compact?: boolean }) {
   const [added, setAdded] = useState(false)
+  const { showPrices } = useCatalogoVisibility()
   const preco = getPrecoFromDB(precoDB, tipo, sku)
 
   const handleAdd = () => {
@@ -127,7 +139,7 @@ function AddButton({ tipo, sku, nome, cor, precoDB, compact }: { tipo: ProductSh
         ) : (
           <>
             <ShoppingCart className="h-4 w-4 transition-transform group-hover:scale-110" />
-            ADICIONAR — {formatBRL(preco)}
+            {showPrices ? `ADICIONAR — ${formatBRL(preco)}` : "ADICIONAR"}
           </>
         )}
       </span>
@@ -179,6 +191,7 @@ function SectionTabs({ tabs, active, onChange }: { tabs: { key: string; label: s
 function ImplanteDetail({ sku }: { sku: string }) {
   const { data: impl } = useImplanteDetalhe(sku)
   const { data: protocolos } = useProtocoloFresagem(sku)
+  const { data: imagens } = useImagensProduto("implante", sku)
   const [activeTab, setActiveTab] = useState("ficha")
 
   if (!impl) return <LoadingState />
@@ -186,6 +199,7 @@ function ImplanteDetail({ sku }: { sku: string }) {
   const cor = impl.linha?.familia?.cor_identificacao ?? "#c9a655"
   const nome = `${impl.linha?.familia?.nome ?? ""} ${impl.diametro_mm}×${impl.comprimento_mm}`
   const qtdProtocolo = protocolos?.length ?? 0
+  const imageUrl = imagens?.[0]?.url_imagem ?? null
 
   const tabs = [
     { key: "ficha", label: "Ficha Técnica" },
@@ -197,7 +211,7 @@ function ImplanteDetail({ sku }: { sku: string }) {
       {/* Sidebar — Imagem + CTA */}
       <div className="lg:col-span-4 xl:col-span-5">
         <div className="lg:sticky lg:top-28 space-y-6">
-          <ProductImage cor={cor} nome={nome} onClick={() => openImageViewer("", nome)} />
+          <ProductImage cor={cor} nome={nome} onClick={() => openImageViewer(imageUrl ?? "", nome)} imageUrl={imageUrl} />
           <div className="hidden lg:block">
             <AddButton tipo="implante" sku={impl.sku} nome={nome} cor={cor} precoDB={(impl as unknown as Record<string, unknown>).preco as number | null} />
           </div>
@@ -207,6 +221,12 @@ function ImplanteDetail({ sku }: { sku: string }) {
       {/* Conteúdo */}
       <div className="lg:col-span-8 xl:col-span-7 space-y-8">
         <ProductHeader cor={cor} badge={impl.linha?.familia?.nome} nome={nome} sku={impl.sku} />
+
+        {impl.descricao && (
+          <div className="rounded-2xl border border-[var(--color-border-subtle)] bg-[var(--color-surface)]/30 p-4 sm:p-6">
+            <p className="text-sm text-[var(--color-text-muted)] leading-relaxed">{impl.descricao}</p>
+          </div>
+        )}
 
         <div className="lg:hidden">
           <AddButton tipo="implante" sku={impl.sku} nome={nome} cor={cor} precoDB={(impl as unknown as Record<string, unknown>).preco as number | null} />
@@ -227,6 +247,12 @@ function ImplanteDetail({ sku }: { sku: string }) {
               <SpecCard label="Torque Max" value={impl.torque_insercao ? `${impl.torque_insercao} N·cm` : "—"} />
               <SpecCard label="Região Apical" value={impl.regiao_apical || "—"} />
               <SpecCard label="Região Cervical" value={impl.regiao_cervical || "—"} />
+              {(impl.detalhes_extras as Record<string, unknown>)?.material && (
+                <SpecCard label="Material" value={String((impl.detalhes_extras as Record<string, unknown>).material)} />
+              )}
+              {(impl.detalhes_extras as Record<string, unknown>)?.superficie && (
+                <SpecCard label="Superfície" value={String((impl.detalhes_extras as Record<string, unknown>).superficie)} />
+              )}
             </div>
           </div>
         )}
@@ -254,12 +280,14 @@ function ImplanteDetail({ sku }: { sku: string }) {
 function AbutmentDetail({ sku }: { sku: string }) {
   const { data: ab } = useAbutmentDetalhe(sku)
   const { data: guias } = useGuias({ familia_id: ab?.familia_id })
+  const { data: imagens } = useImagensProduto("abutment", sku)
   const [activeTab, setActiveTab] = useState("ficha")
 
   if (!ab) return <LoadingState />
 
   const cor = ab.familia?.cor_identificacao ?? "#c9a655"
   const nome = `${ab.tipo_abutment?.nome ?? ""} ${ab.familia?.nome ?? ""}`
+  const imageUrl = imagens?.[0]?.url_imagem ?? null
 
   const tabs = [
     { key: "ficha", label: "Especificações" },
@@ -270,7 +298,7 @@ function AbutmentDetail({ sku }: { sku: string }) {
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
       <div className="lg:col-span-4 xl:col-span-5">
         <div className="lg:sticky lg:top-28 space-y-6">
-          <ProductImage cor={cor} nome={nome} onClick={() => openImageViewer("", nome)} />
+          <ProductImage cor={cor} nome={nome} onClick={() => openImageViewer(imageUrl ?? "", nome)} imageUrl={imageUrl} />
           <div className="hidden lg:block">
             <AddButton tipo="abutment" sku={ab.sku} nome={nome} cor={cor} precoDB={(ab as unknown as Record<string, unknown>).preco as number | null} />
           </div>
@@ -316,6 +344,7 @@ function AbutmentDetail({ sku }: { sku: string }) {
 
 function KitDetail({ sku }: { sku: string }) {
   const { data: kit } = useKitDetalhe(sku)
+  const { data: imagens } = useImagensProduto("kit", sku)
   const [activeTab, setActiveTab] = useState("ficha")
 
   if (!kit) return <LoadingState />
@@ -331,12 +360,13 @@ function KitDetail({ sku }: { sku: string }) {
 
   const cor = "#c9a655"
   const nome = kit.nome
+  const imageUrl = imagens?.[0]?.url_imagem ?? null
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
       <div className="lg:col-span-4 xl:col-span-5">
         <div className="lg:sticky lg:top-28 space-y-6">
-          <ProductImage cor={cor} nome={nome} onClick={() => openImageViewer("", nome)} />
+          <ProductImage cor={cor} nome={nome} onClick={() => openImageViewer(imageUrl ?? "", nome)} imageUrl={imageUrl} />
           <div className="hidden lg:block">
             <AddButton tipo="kit" sku={kit.sku} nome={nome} cor={cor} precoDB={(kit as unknown as Record<string, unknown>).preco as number | null} />
           </div>

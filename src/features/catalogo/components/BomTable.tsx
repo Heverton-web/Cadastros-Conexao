@@ -1,6 +1,6 @@
 import { ShoppingCart, Check, Eye, Plus } from "lucide-react"
 import toast from "react-hot-toast"
-import { addToCart, formatBRL, mockPreco } from "~/features/catalogo/services/carrinho.service"
+import { addToCart, formatBRL, getPrecoFromDB } from "~/features/catalogo/services/carrinho.service"
 import { playCoinSound } from "~/features/catalogo/services/audio.service"
 import type { ProductSheetTipo } from "~/features/catalogo/types"
 import { ProductThumb } from "./ProductThumb"
@@ -15,12 +15,12 @@ const TIPO_LABEL: Record<string, string> = {
 }
 
 interface BomTableProps {
-  items: { tipo: string; sku: string; nome: string; quantidade: number }[]
+  items: { tipo: string; sku: string; nome: string; quantidade: number; preco?: number }[]
 }
 
 export function BomTable({ items }: BomTableProps) {
-  const handleAdd = (item: { tipo: string; sku: string; nome: string }) => {
-    const preco = mockPreco(item.tipo as ProductSheetTipo, item.sku)
+  const handleAdd = (item: { tipo: string; sku: string; nome: string; preco?: number }) => {
+    const preco = getPrecoFromDB(item.preco, item.tipo as ProductSheetTipo, item.sku)
     addToCart({ sku: item.sku, nome: item.nome, tipo: item.tipo as ProductSheetTipo, cor: "#c9a655", preco })
     playCoinSound()
     toast.success(`${item.nome} adicionado`, {
@@ -74,7 +74,7 @@ export function BomTable({ items }: BomTableProps) {
                   Qtd no kit: <span className="font-semibold" style={{ color }}>{item.quantidade}</span>
                 </p>
                 <p className="text-xs text-[var(--color-text-muted)]">
-                  Valor un: <span className="font-semibold" style={{ color }}>{formatBRL(mockPreco(item.tipo as ProductSheetTipo, item.sku))}</span>
+                  Valor un: <span className="font-semibold" style={{ color }}>{formatBRL(getPrecoFromDB(item.preco, item.tipo as ProductSheetTipo, item.sku))}</span>
                 </p>
               </div>
 

@@ -15,8 +15,14 @@ import * as clientesService from "../services/clientes.service"
 import * as gruposService from "../services/grupos.service"
 import * as pedidosService from "../services/pedidos.service"
 import * as orcamentosService from "../services/orcamentos.service"
+import * as imagensService from "../services/imagens.service"
+import * as chavesService from "../services/chaves.service"
+import * as fresasTiposService from "../services/fresas-tipos.service"
+import * as fresagensService from "../services/fresagens.service"
+import * as complementaresService from "../services/complementares.service"
+import * as opcionaisService from "../services/opcionais.service"
 import toast from "react-hot-toast"
-import type { CatalogoImplante, CatalogoKit, CatalogoAbutment, CatalogoCategoria, CatalogoConexao, CatalogoLinha, CatalogoFamilia, CatalogoFresa, CatalogoTipoReabilitacao, CatalogoTipoAbutment, CatalogoCategoriaAcessorio, CatalogoAcessorio, CatalogoChaveFerramental, CatalogoCategoriaInstrumental, CatalogoInstrumentalGeral, CatalogoCategoriaKit, CatalogoWorkflow, CatalogoEtapaWorkflow, CatalogoParafusoRetencao, CatalogoCicatrizador } from "../types"
+import type { CatalogoImplante, CatalogoKit, CatalogoAbutment, CatalogoCategoria, CatalogoConexao, CatalogoLinha, CatalogoFamilia, CatalogoFresa, CatalogoTipoReabilitacao, CatalogoTipoAbutment, CatalogoCategoriaAcessorio, CatalogoAcessorio, CatalogoChaveFerramental, CatalogoCategoriaInstrumental, CatalogoInstrumentalGeral, CatalogoCategoriaKit, CatalogoWorkflow, CatalogoEtapaWorkflow, CatalogoParafusoRetencao, CatalogoCicatrizador, CatalogoTipoChave, CatalogoTipoFresa, CatalogoTipoComplementar, CatalogoTipoOpcional, ProdutoTipoImagem, CatalogoImagemProduto } from "../types"
 
 function useEmpresaId(): string {
   return useCatalogoEmpresaId()
@@ -159,6 +165,10 @@ export function useImplantesPorLinha(linhaId: string) {
 export function useProtocoloFresagem(implanteSku: string) {
   const empresaId = useEmpresaId()
   return useQuery({ queryKey: ["catalogo", "fresagem", empresaId, implanteSku], queryFn: () => implantes.getProtocoloFresagem(empresaId, implanteSku), enabled: !!empresaId && !!implanteSku })
+}
+export function useProtocolos() {
+  const empresaId = useEmpresaId()
+  return useQuery({ queryKey: ["catalogo", "protocolos-fresagens", empresaId], queryFn: () => fresagensService.listarProtocolos(empresaId), enabled: !!empresaId })
 }
 
 export function useFresas() {
@@ -439,6 +449,119 @@ export function useToggleChaveFerramentalAtivo() {
     },
     onSettled: () => {
       qc.invalidateQueries({ queryKey: ["catalogo", "chaves"] })
+    },
+  })
+}
+
+// --- Tipos de Instrumentais ---
+export function useTiposChaves() {
+  const empresaId = useEmpresaId()
+  return useQuery({ queryKey: ["catalogo", "tipos-chaves", empresaId], queryFn: () => chavesService.listarTiposChaves(empresaId), enabled: !!empresaId })
+}
+
+export function useToggleTipoChaveAtivo() {
+  const empresaId = useEmpresaId()
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: ({ id, ativo }: { id: string; ativo: boolean }) => chavesService.toggleTipoChaveAtivo(id, ativo),
+    onMutate: async ({ id, ativo }) => {
+      await qc.cancelQueries({ queryKey: ["catalogo", "tipos-chaves", empresaId] })
+      const prev = qc.getQueryData<CatalogoTipoChave[]>(["catalogo", "tipos-chaves", empresaId])
+      qc.setQueryData<CatalogoTipoChave[]>(["catalogo", "tipos-chaves", empresaId], (old) =>
+        old?.map((c) => (c.id === id ? { ...c, ativo } : c)) ?? []
+      )
+      return { prev }
+    },
+    onError: (err, _vars, ctx) => {
+      if (ctx?.prev) qc.setQueryData(["catalogo", "tipos-chaves", empresaId], ctx.prev)
+      toast.error("Erro ao alterar tipo de chave: " + (err as Error).message)
+    },
+    onSettled: () => {
+      qc.invalidateQueries({ queryKey: ["catalogo", "tipos-chaves"] })
+    },
+  })
+}
+
+export function useTiposFresas() {
+  const empresaId = useEmpresaId()
+  return useQuery({ queryKey: ["catalogo", "tipos-fresas", empresaId], queryFn: () => fresasTiposService.listarTiposFresas(empresaId), enabled: !!empresaId })
+}
+
+export function useToggleTipoFresaAtivo() {
+  const empresaId = useEmpresaId()
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: ({ id, ativo }: { id: string; ativo: boolean }) => fresasTiposService.toggleTipoFresaAtivo(id, ativo),
+    onMutate: async ({ id, ativo }) => {
+      await qc.cancelQueries({ queryKey: ["catalogo", "tipos-fresas", empresaId] })
+      const prev = qc.getQueryData<CatalogoTipoFresa[]>(["catalogo", "tipos-fresas", empresaId])
+      qc.setQueryData<CatalogoTipoFresa[]>(["catalogo", "tipos-fresas", empresaId], (old) =>
+        old?.map((c) => (c.id === id ? { ...c, ativo } : c)) ?? []
+      )
+      return { prev }
+    },
+    onError: (err, _vars, ctx) => {
+      if (ctx?.prev) qc.setQueryData(["catalogo", "tipos-fresas", empresaId], ctx.prev)
+      toast.error("Erro ao alterar tipo de fresa: " + (err as Error).message)
+    },
+    onSettled: () => {
+      qc.invalidateQueries({ queryKey: ["catalogo", "tipos-fresas"] })
+    },
+  })
+}
+
+export function useTiposComplementares() {
+  const empresaId = useEmpresaId()
+  return useQuery({ queryKey: ["catalogo", "tipos-complementares", empresaId], queryFn: () => complementaresService.listarTiposComplementares(empresaId), enabled: !!empresaId })
+}
+
+export function useToggleTipoComplementarAtivo() {
+  const empresaId = useEmpresaId()
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: ({ id, ativo }: { id: string; ativo: boolean }) => complementaresService.toggleTipoComplementarAtivo(id, ativo),
+    onMutate: async ({ id, ativo }) => {
+      await qc.cancelQueries({ queryKey: ["catalogo", "tipos-complementares", empresaId] })
+      const prev = qc.getQueryData<CatalogoTipoComplementar[]>(["catalogo", "tipos-complementares", empresaId])
+      qc.setQueryData<CatalogoTipoComplementar[]>(["catalogo", "tipos-complementares", empresaId], (old) =>
+        old?.map((c) => (c.id === id ? { ...c, ativo } : c)) ?? []
+      )
+      return { prev }
+    },
+    onError: (err, _vars, ctx) => {
+      if (ctx?.prev) qc.setQueryData(["catalogo", "tipos-complementares", empresaId], ctx.prev)
+      toast.error("Erro ao alterar tipo complementar: " + (err as Error).message)
+    },
+    onSettled: () => {
+      qc.invalidateQueries({ queryKey: ["catalogo", "tipos-complementares"] })
+    },
+  })
+}
+
+export function useTiposOpcionais() {
+  const empresaId = useEmpresaId()
+  return useQuery({ queryKey: ["catalogo", "tipos-opcionais", empresaId], queryFn: () => opcionaisService.listarTiposOpcionais(empresaId), enabled: !!empresaId })
+}
+
+export function useToggleTipoOpcionalAtivo() {
+  const empresaId = useEmpresaId()
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: ({ id, ativo }: { id: string; ativo: boolean }) => opcionaisService.toggleTipoOpcionalAtivo(id, ativo),
+    onMutate: async ({ id, ativo }) => {
+      await qc.cancelQueries({ queryKey: ["catalogo", "tipos-opcionais", empresaId] })
+      const prev = qc.getQueryData<CatalogoTipoOpcional[]>(["catalogo", "tipos-opcionais", empresaId])
+      qc.setQueryData<CatalogoTipoOpcional[]>(["catalogo", "tipos-opcionais", empresaId], (old) =>
+        old?.map((c) => (c.id === id ? { ...c, ativo } : c)) ?? []
+      )
+      return { prev }
+    },
+    onError: (err, _vars, ctx) => {
+      if (ctx?.prev) qc.setQueryData(["catalogo", "tipos-opcionais", empresaId], ctx.prev)
+      toast.error("Erro ao alterar tipo opcional: " + (err as Error).message)
+    },
+    onSettled: () => {
+      qc.invalidateQueries({ queryKey: ["catalogo", "tipos-opcionais"] })
     },
   })
 }
@@ -978,5 +1101,15 @@ export function useToggleCicatrizadorAtivo() {
     onSettled: () => {
       qc.invalidateQueries({ queryKey: ["catalogo", "cicatrizadores"] })
     },
+  })
+}
+
+// --- Imagens ---
+export function useImagensProduto(tipo: ProdutoTipoImagem | undefined, sku: string | undefined) {
+  const empresaId = useEmpresaId()
+  return useQuery({
+    queryKey: ["catalogo", "imagens", empresaId, tipo, sku],
+    queryFn: () => imagensService.listarImagens(empresaId, tipo!, sku!),
+    enabled: !!empresaId && !!tipo && !!sku,
   })
 }

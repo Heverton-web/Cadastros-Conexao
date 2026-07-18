@@ -16,6 +16,7 @@ import {
   useParafusosRetensao, useCriarParafusoRetencao, useAtualizarParafusoRetencao,
   useCicatrizadores, useCriarCicatrizador, useAtualizarCicatrizador,
   useImplanteDetalhe, useAbutmentDetalhe, useKitDetalhe,
+  useProtocolos,
 } from "~/features/catalogo/hooks/useCatalogo"
 import { salvarSequenciaProtetica } from "~/features/catalogo/services/sequencia-protetica.service"
 import { salvarProtocoloFresagem } from "~/features/catalogo/services/implantes.service"
@@ -68,6 +69,7 @@ export function ProdutoFormModal({
   const { data: etapas } = useEtapas()
   const { data: parafusosRetensao } = useParafusosRetensao()
   const { data: cicatrizadoresData } = useCicatrizadores()
+  const { data: protocolos } = useProtocolos()
 
   const { data: implDetalhe } = useImplanteDetalhe(editingItem?.tipo === "implante" ? editingItem.sku : "")
   const { data: abDetalhe } = useAbutmentDetalhe(editingItem?.tipo === "abutment" ? editingItem.sku : "")
@@ -86,6 +88,7 @@ export function ProdutoFormModal({
     sku: "", diametro_mm: 0, comprimento_mm: 0, torque_insercao: 0,
     rosca_interna: "", regiao_apical: "", regiao_cervical: "",
     material: "", superficie: "", tratamento: "", chave_sku: "", preco: 0,
+    macrogeometria: "", osso_soft: "", osso_hard: "",
   })
 
   const [abutment, setAbutment] = useState({
@@ -117,7 +120,7 @@ export function ProdutoFormModal({
   const [imagens, setImagens] = useState<CatalogoImagemProduto[]>([])
 
   function resetForms() {
-    setImplante({ categoria_id: "", conexao_id: "", familia_id: "", linha_id: "", sku: "", diametro_mm: 0, comprimento_mm: 0, torque_insercao: 0, rosca_interna: "", regiao_apical: "", regiao_cervical: "", material: "", superficie: "", tratamento: "", chave_sku: "", preco: 0 })
+    setImplante({ categoria_id: "", conexao_id: "", familia_id: "", linha_id: "", sku: "", diametro_mm: 0, comprimento_mm: 0, torque_insercao: 0, rosca_interna: "", regiao_apical: "", regiao_cervical: "", material: "", superficie: "", tratamento: "", chave_sku: "", preco: 0, macrogeometria: "", osso_soft: "", osso_hard: "" })
     setAbutment({ familia_id: "", tipo_reabilitacao_id: "", tipo_abutment_id: "", sku: "", diametro_plataforma: "", angulacao_graus: 0, altura_transmucoso: 0, altura_corpo: 0, torque_ncm: 0, preco: 0 })
     setKit({ categoria_id: "", sku: "", nome: "", descricao: "", familia_ids: [], preco: 0 })
     setParafusoRetencao({ sku: "", nome: "", torque_ncm: 0, vinculo_tipo: "", vinculo_sku: "", chave_sku: "", preco: 0 })
@@ -175,7 +178,16 @@ export function ProdutoFormModal({
         tratamento: extras.tratamento ?? "",
         chave_sku: extras.chave_sku ?? "",
         preco: d.preco ?? 0,
+        macrogeometria: (d as unknown as Record<string, unknown>).macrogeometria as string ?? "",
+        osso_soft: extras.osso_soft ?? "",
+        osso_hard: extras.osso_hard ?? "",
       })
+      // Carregar protocolos de fresagem existentes
+      const protos = (d as unknown as Record<string, unknown>).protocolos as Array<{ fresa_sku: string; tipo_osso: string; ordem_uso: number }> | undefined
+      if (protos) {
+        setFresagemHard(protos.filter((p) => p.tipo_osso?.includes("Hard")).map((p) => ({ fresa_sku: p.fresa_sku, ordem: p.ordem_uso })))
+        setFresagemSoft(protos.filter((p) => p.tipo_osso?.includes("Soft")).map((p) => ({ fresa_sku: p.fresa_sku, ordem: p.ordem_uso })))
+      }
     }
     if (editingItem.tipo === "abutment" && abDetalhe) {
       const d = abDetalhe
@@ -226,6 +238,12 @@ export function ProdutoFormModal({
       if (!abutment.familia_id) return "Família é obrigatória"
       if (!abutment.tipo_reabilitacao_id) return "Tipo de reabilitação é obrigatório"
       if (!abutment.tipo_abutment_id) return "Tipo de abutment é obrigatório"
+    } else if (tipo === "parafuso_retensao") {
+      if (!parafusoRetencao.sku) return "SKU é obrigatório"
+      if (!parafusoRetencao.nome) return "Nome é obrigatório"
+    } else if (tipo === "cicatrizador") {
+      if (!cicatrizador.sku) return "SKU é obrigatório"
+      if (!cicatrizador.nome) return "Nome é obrigatório"
     } else if (tipo === "kit") {
       if (!kit.sku) return "SKU é obrigatório"
       if (!kit.nome) return "Nome é obrigatório"
@@ -235,8 +253,11 @@ export function ProdutoFormModal({
   }
 
   function makeImplantePayload() {
+    const fam = familias?.find((f) => f.id === implante.familia_id)
+    const nome = fam ? `${fam.nome} ${implante.diametro_mm}×${implante.comprimento_mm}` : `${implante.diametro_mm}×${implante.comprimento_mm}`
     return {
       sku: implante.sku,
+      nome,
       linha_id: implante.linha_id,
       diametro_mm: implante.diametro_mm,
       comprimento_mm: implante.comprimento_mm,
@@ -245,6 +266,7 @@ export function ProdutoFormModal({
       regiao_apical: implante.regiao_apical || undefined,
       regiao_cervical: implante.regiao_cervical || undefined,
       preco: implante.preco || undefined,
+      macrogeometria: implante.macrogeometria || undefined,
       detalhes_extras: {
         material: implante.material || undefined,
         superficie: implante.superficie || undefined,
@@ -253,6 +275,8 @@ export function ProdutoFormModal({
         categoria_id: implante.categoria_id || undefined,
         conexao_id: implante.conexao_id || undefined,
         familia_id: implante.familia_id || undefined,
+        osso_soft: implante.osso_soft || undefined,
+        osso_hard: implante.osso_hard || undefined,
       },
     }
   }
@@ -320,6 +344,37 @@ export function ProdutoFormModal({
           ...seqDigital.map((e, i) => ({ tipo_workflow: "digital" as const, etapa_ordem: i + 1, etapa_nome: e.etapa_nome, acessorio_sku: e.acessorio_sku })),
         ]
         await salvarSequenciaProtetica(empresaId, abutment.sku, allEtapas)
+      } else if (tipo === "parafuso_retensao") {
+        const payload = {
+          sku: parafusoRetencao.sku,
+          nome: parafusoRetencao.nome,
+          torque_ncm: parafusoRetencao.torque_ncm || undefined,
+          vinculo_tipo: parafusoRetencao.vinculo_tipo || undefined,
+          vinculo_sku: parafusoRetencao.vinculo_sku || undefined,
+          chave_sku: parafusoRetencao.chave_sku || undefined,
+          preco: parafusoRetencao.preco || undefined,
+        }
+        if (editingItem) {
+          await atualizarParafusoRetencao.mutateAsync({ sku: editingItem.sku, input: payload })
+        } else {
+          await criarParafusoRetencao.mutateAsync(payload)
+        }
+      } else if (tipo === "cicatrizador") {
+        const payload = {
+          sku: cicatrizador.sku,
+          nome: cicatrizador.nome,
+          altura_transmucoso: cicatrizador.altura_transmucoso || undefined,
+          diametro_plataforma: cicatrizador.diametro_plataforma || undefined,
+          torque_ncm: cicatrizador.torque_ncm || undefined,
+          familia_id: cicatrizador.familia_id || undefined,
+          chave_sku: cicatrizador.chave_sku || undefined,
+          preco: cicatrizador.preco || undefined,
+        }
+        if (editingItem) {
+          await atualizarCicatrizador.mutateAsync({ sku: editingItem.sku, input: payload })
+        } else {
+          await criarCicatrizador.mutateAsync(payload)
+        }
       } else {
         const payload = makeKitPayload()
         if (editingItem) {
@@ -433,11 +488,7 @@ export function ProdutoFormModal({
               linhas={linhas}
               fresas={fresas}
               chaves={chaves}
-              fresagemHard={fresagemHard}
-              fresagemSoft={fresagemSoft}
-              addFresagem={addFresagem}
-              removeFresagem={removeFresagem}
-              updateFresagem={updateFresagem}
+              protocolos={protocolos}
               onGerarSku={gerarSkuSugerido}
             />
           )}

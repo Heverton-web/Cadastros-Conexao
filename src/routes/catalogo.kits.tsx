@@ -2,7 +2,7 @@ import { createRoute, Link, useSearch } from "@tanstack/react-router"
 import { rootRoute } from "./__root"
 import { StoreLayout } from "~/features/catalogo/components/StoreLayout"
 import { useKitsAtivos } from "~/features/catalogo/hooks/useCatalogo"
-import { formatBRL, mockPreco } from "~/features/catalogo/services/carrinho.service"
+import { formatBRL, getPrecoFromDB } from "~/features/catalogo/services/carrinho.service"
 import { ShoppingBag, ArrowLeft, Box } from "lucide-react"
 
 export const catalogoKitsRoute = createRoute({
@@ -42,7 +42,7 @@ function CatalogoKitsPage() {
         {/* Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {(kits ?? []).map((kit) => {
-            const preco = mockPreco("kit", kit.sku)
+            const preco = getPrecoFromDB(kit.preco, "kit", kit.sku)
             const qtdPecas = kit.composicao?.length ?? 0
             return (
               <Link

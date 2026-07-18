@@ -148,10 +148,6 @@ export function ImplanteForm({
           {errors.comprimento_mm && <p className="text-xs text-red-400">{errors.comprimento_mm.message}</p>}
         </div>
         <div className="space-y-2">
-          <label className={labelCls}>Ø Plataforma mm</label>
-          <input type="number" step="0.1" {...register("diametro_mm")} value={data.diametro_mm} onChange={(e) => onChange({ ...data, diametro_mm: Number(e.target.value) })} className={inputCls} />
-        </div>
-        <div className="space-y-2">
           <label className={labelCls}>Torque N·cm</label>
           <input type="number" {...register("torque_insercao")} value={data.torque_insercao} onChange={(e) => onChange({ ...data, torque_insercao: Number(e.target.value) })} className={inputCls} />
         </div>

@@ -166,7 +166,7 @@ function CatalogoStoreContent({ empresaId }: { empresaId: string }) {
       <div className="flex-1 flex flex-col">
       {/* Hero */}
       {visibility.showHeroSection && (
-        <div className="relative shrink-0">
+        <div className="relative shrink-0" style={{ backgroundImage: 'var(--catalogo-hero-bg)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
           {effects.enableBlobs && (
             <div
               className="absolute top-[-40%] left-1/2 -translate-x-1/2 w-[700px] h-[700px] rounded-full pointer-events-none"

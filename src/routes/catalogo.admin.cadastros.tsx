@@ -11,12 +11,14 @@ import {
   useCategoriasKit, useWorkflows, useEtapas,
   useChavesFerramental,
   useParafusosRetensao, useCicatrizadores,
+  useTiposChaves, useTiposFresas, useTiposComplementares, useTiposOpcionais,
   useToggleCategoriaAtivo, useToggleConexaoAtivo, useToggleLinhaAtivo,
   useToggleFamiliaAtivo, useToggleFresaAtivo, useToggleTipoReabilitacaoAtivo,
   useToggleTipoAbutmentAtivo,
   useToggleChaveFerramentalAtivo,
   useToggleParafusoRetencaoAtivo, useToggleCicatrizadorAtivo,
   useToggleCategoriaKitAtivo, useToggleWorkflowAtivo, useToggleEtapaAtivo,
+  useToggleTipoChaveAtivo, useToggleTipoFresaAtivo, useToggleTipoComplementarAtivo, useToggleTipoOpcionalAtivo,
 } from "~/features/catalogo/hooks/useCatalogo"
 import { useCatalogoEmpresaId } from "~/features/catalogo/hooks/useCatalogoEmpresa"
 import { useState } from "react"
@@ -125,6 +127,10 @@ function CadastroContent({ tab, subTab }: { tab: string; subTab: string }) {
   const { data: chaves } = useChavesFerramental()
   const { data: parafusosRetensao } = useParafusosRetensao()
   const { data: cicatrizadores } = useCicatrizadores()
+  const { data: tiposChaves } = useTiposChaves()
+  const { data: tiposFresas } = useTiposFresas()
+  const { data: tiposComplementares } = useTiposComplementares()
+  const { data: tiposOpcionais } = useTiposOpcionais()
 
   const toggleCategoria = useToggleCategoriaAtivo()
   const toggleConexao = useToggleConexaoAtivo()
@@ -139,6 +145,10 @@ function CadastroContent({ tab, subTab }: { tab: string; subTab: string }) {
   const toggleCatKit = useToggleCategoriaKitAtivo()
   const toggleWorkflow = useToggleWorkflowAtivo()
   const toggleEtapa = useToggleEtapaAtivo()
+  const toggleTipoChave = useToggleTipoChaveAtivo()
+  const toggleTipoFresa = useToggleTipoFresaAtivo()
+  const toggleTipoComplementar = useToggleTipoComplementarAtivo()
+  const toggleTipoOpcional = useToggleTipoOpcionalAtivo()
 
   const [formOpen, setFormOpen] = useState(false)
   const [editingItem, setEditingItem] = useState<Record<string, unknown> | null>(null)
@@ -286,7 +296,7 @@ function CadastroContent({ tab, subTab }: { tab: string; subTab: string }) {
     if (tab === "instrumentais") {
       if (subTab === "Tipos de Chaves") return {
         headers: ["Nome", "Sigla", "Ativo", "Ações"],
-        rows: [],
+        rows: (tiposChaves ?? []).map((c) => ({ ...c })),
         fields: [
           { key: "nome", label: "Nome", type: "text" as const, required: true },
           { key: "sigla", label: "Sigla", type: "text" as const },
@@ -296,7 +306,7 @@ function CadastroContent({ tab, subTab }: { tab: string; subTab: string }) {
       }
       if (subTab === "Tipos de Fresas") return {
         headers: ["Nome", "Sigla", "Ativo", "Ações"],
-        rows: [],
+        rows: (tiposFresas ?? []).map((c) => ({ ...c })),
         fields: [
           { key: "nome", label: "Nome", type: "text" as const, required: true },
           { key: "sigla", label: "Sigla", type: "text" as const },
@@ -306,7 +316,7 @@ function CadastroContent({ tab, subTab }: { tab: string; subTab: string }) {
       }
       if (subTab === "Tipos Complementares") return {
         headers: ["Nome", "Sigla", "Ativo", "Ações"],
-        rows: [],
+        rows: (tiposComplementares ?? []).map((c) => ({ ...c })),
         fields: [
           { key: "nome", label: "Nome", type: "text" as const, required: true },
           { key: "sigla", label: "Sigla", type: "text" as const },
@@ -316,7 +326,7 @@ function CadastroContent({ tab, subTab }: { tab: string; subTab: string }) {
       }
       if (subTab === "Tipos Opcionais") return {
         headers: ["Nome", "Sigla", "Ativo", "Ações"],
-        rows: [],
+        rows: (tiposOpcionais ?? []).map((c) => ({ ...c })),
         fields: [
           { key: "nome", label: "Nome", type: "text" as const, required: true },
           { key: "sigla", label: "Sigla", type: "text" as const },
@@ -386,6 +396,10 @@ function CadastroContent({ tab, subTab }: { tab: string; subTab: string }) {
                           else if (tabela === "catalogo_tipos_kits") toggleCatKit.mutate({ id: row.id, ativo: !row.ativo })
                           else if (tabela === "catalogo_cps_tipos_workflows") toggleWorkflow.mutate({ id: row.id, ativo: !row.ativo })
                           else if (tabela === "catalogo_cps_etapas_workflows") toggleEtapa.mutate({ id: row.id, ativo: !row.ativo })
+                          else if (tabela === "catalogo_tipos_chaves") toggleTipoChave.mutate({ id: row.id, ativo: !row.ativo })
+                          else if (tabela === "catalogo_tipos_fresas") toggleTipoFresa.mutate({ id: row.id, ativo: !row.ativo })
+                          else if (tabela === "catalogo_tipos_complementares") toggleTipoComplementar.mutate({ id: row.id, ativo: !row.ativo })
+                          else if (tabela === "catalogo_tipos_opcionais") toggleTipoOpcional.mutate({ id: row.id, ativo: !row.ativo })
                         }}
                         className="transition-colors"
                       >
