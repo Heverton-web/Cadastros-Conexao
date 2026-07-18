@@ -1,33 +1,57 @@
 export type TipoOsso = "Soft (III-IV)" | "Hard (I-II)"
-export type TipoFerramenta = "Aperto" | "Medição" | "Cirúrgica"
+
 export type ProductSheetTipo =
   | "implante"
   | "abutment"
   | "kit"
   | "fresa"
   | "chave"
-  | "acessorio"
-  | "instrumental"
-  | "promocional"
-  | "parafuso_retensao"
+  | "complementar"
+  | "opcional"
+  | "componente"
+  | "parafuso"
   | "cicatrizador"
+  | "promocional"
+
+export type ProdutoTipoImagem =
+  | "implante"
+  | "abutment"
+  | "kit"
+  | "parafuso"
+  | "cicatrizador"
+  | "chave"
+  | "fresa"
+  | "complementar"
+  | "opcional"
+  | "componente"
+
+export type FonteImagem = "upload" | "url" | "gdrive"
+
+// ============================================================
+// ESTRUTURA - Categorias
+// ============================================================
 
 export interface CatalogoCategoria {
   id: string
   empresa_id: string
   nome: string
+  sigla: string | null
   locked: boolean
   ativo: boolean
   created_at: string
   updated_at: string
 }
 
-export interface CatalogoConexao {
+// ============================================================
+// ESTRUTURA - Hierarquia IPS (Implante/Prótese/Sistema)
+// ============================================================
+
+export interface CatalogoIpsConexao {
   id: string
   empresa_id: string
   categoria_id: string
   nome: string
-  sigla: string | null
+  sigla: string
   locked: boolean
   ativo: boolean
   created_at: string
@@ -35,19 +59,20 @@ export interface CatalogoConexao {
   categoria?: CatalogoCategoria
 }
 
-export interface CatalogoFamilia {
+export interface CatalogoIpsFamilia {
   id: string
   empresa_id: string
   conexao_id: string
   nome: string
   cor_identificacao: string
+  locked: boolean
   ativo: boolean
   created_at: string
   updated_at: string
-  conexao?: CatalogoConexao
+  conexao?: CatalogoIpsConexao
 }
 
-export interface CatalogoLinha {
+export interface CatalogoIpsLinha {
   id: string
   empresa_id: string
   familia_id: string
@@ -55,31 +80,192 @@ export interface CatalogoLinha {
   ativo: boolean
   created_at: string
   updated_at: string
-  familia?: CatalogoFamilia
+  familia?: CatalogoIpsFamilia
 }
 
-export interface CatalogoImplante {
-  sku: string
+// ============================================================
+// ESTRUTURA - Tipos de Componentes
+// ============================================================
+
+export interface CatalogoCpsTipoReabilitacao {
+  id: string
   empresa_id: string
-  linha_id: string
-  diametro_mm: number
-  comprimento_mm: number
-  rosca_interna: string | null
-  regiao_apical: string | null
-  regiao_cervical: string | null
-  torque_insercao: number | null
-  detalhes_extras: Record<string, unknown>
-  preco: number
+  nome: string
+  sigla: string | null
   ativo: boolean
   created_at: string
   updated_at: string
-  linha?: CatalogoLinha
-  imagens?: CatalogoImagemImplante[]
-  protocolos?: CatalogoProtocoloFresagem[]
 }
 
-export type ProdutoTipoImagem = "implante" | "abutment" | "kit" | "parafuso_retensao" | "cicatrizador"
-export type FonteImagem = "upload" | "url" | "gdrive"
+export interface CatalogoCpsTipoAbutment {
+  id: string
+  empresa_id: string
+  nome: string
+  sigla: string | null
+  tipo_reabilitacao_id: string | null
+  ativo: boolean
+  created_at: string
+  updated_at: string
+  tipo_reabilitacao?: CatalogoCpsTipoReabilitacao
+}
+
+export interface CatalogoCpsTipoComponente {
+  id: string
+  empresa_id: string
+  nome: string
+  sigla: string | null
+  categoria_id: string | null
+  ativo: boolean
+  created_at: string
+  updated_at: string
+  categoria?: CatalogoCategoria
+}
+
+export interface CatalogoCpsTipoParafuso {
+  id: string
+  empresa_id: string
+  nome: string
+  sigla: string | null
+  ativo: boolean
+  created_at: string
+  updated_at: string
+}
+
+export interface CatalogoCpsTipoCicatrizador {
+  id: string
+  empresa_id: string
+  nome: string
+  sigla: string | null
+  ativo: boolean
+  created_at: string
+  updated_at: string
+}
+
+// ============================================================
+// INSTRUMENTAIS - Tipos
+// ============================================================
+
+export interface CatalogoTipoChave {
+  id: string
+  empresa_id: string
+  nome: string
+  sigla: string | null
+  ativo: boolean
+  created_at: string
+  updated_at: string
+}
+
+export interface CatalogoTipoFresa {
+  id: string
+  empresa_id: string
+  nome: string
+  sigla: string | null
+  ativo: boolean
+  created_at: string
+  updated_at: string
+}
+
+export interface CatalogoTipoComplementar {
+  id: string
+  empresa_id: string
+  nome: string
+  sigla: string | null
+  ativo: boolean
+  created_at: string
+  updated_at: string
+}
+
+export interface CatalogoTipoOpcional {
+  id: string
+  empresa_id: string
+  nome: string
+  sigla: string | null
+  ativo: boolean
+  created_at: string
+  updated_at: string
+}
+
+// ============================================================
+// FRESAGENS - Tipos e Protocolos
+// ============================================================
+
+export interface CatalogoTipoFresagem {
+  id: string
+  empresa_id: string
+  nome: string
+  sigla: string | null
+  ativo: boolean
+  created_at: string
+  updated_at: string
+}
+
+export interface CatalogoProtocoloFresagem {
+  id: string
+  empresa_id: string
+  nome: string
+  tipo_osso: string
+  sigla: string | null
+  diametro_mm_aplicavel: number | null
+  ativo: boolean
+  created_at: string
+  updated_at: string
+  fresas?: CatalogoProtocoloFresaItem[]
+}
+
+export interface CatalogoProtocoloFresaItem {
+  id: string
+  empresa_id: string
+  protocolo_id: string
+  fresa_id: string
+  ordem: number
+  created_at: string
+  fresa?: CatalogoFresa
+}
+
+// ============================================================
+// KITS - Tipos
+// ============================================================
+
+export interface CatalogoTipoKit {
+  id: string
+  empresa_id: string
+  nome: string
+  sigla: string | null
+  ativo: boolean
+  created_at: string
+  updated_at: string
+}
+
+// ============================================================
+// WORKFLOWS - Tipos e Etapas
+// ============================================================
+
+export interface CatalogoCpsTipoWorkflow {
+  id: string
+  empresa_id: string
+  nome: string
+  sigla: string | null
+  ativo: boolean
+  created_at: string
+  updated_at: string
+}
+
+export interface CatalogoCpsEtapaWorkflow {
+  id: string
+  empresa_id: string
+  tipo_workflow_id: string
+  nome: string
+  sigla: string | null
+  ordem: number
+  ativo: boolean
+  created_at: string
+  updated_at: string
+  tipo_workflow?: CatalogoCpsTipoWorkflow
+}
+
+// ============================================================
+// PRODUTOS - Imagens
+// ============================================================
 
 export interface CatalogoImagemProduto {
   id: string
@@ -95,239 +281,308 @@ export interface CatalogoImagemProduto {
 /** @deprecated Use CatalogoImagemProduto */
 export type CatalogoImagemImplante = CatalogoImagemProduto
 
-export interface CatalogoFresa {
+// ============================================================
+// PRODUTOS - Implantes
+// ============================================================
+
+export interface CatalogoImplante {
   sku: string
   empresa_id: string
-  nome: string
-  diametro_mm: number | null
-  venda_avulsa: boolean
-  ativo: boolean
-  preco: number
-  created_at: string
-  updated_at: string
-}
-
-export interface CatalogoProtocoloFresagem {
-  id: string
-  empresa_id: string
-  implante_sku: string
-  fresa_sku: string
-  tipo_osso: TipoOsso
-  ordem_uso: number
-  created_at: string
-  fresa?: CatalogoFresa
-}
-
-export interface CatalogoTipoReabilitacao {
-  id: string
-  empresa_id: string
-  nome: string
-  ativo: boolean
-  created_at: string
-  updated_at: string
-}
-
-export interface CatalogoTipoAbutment {
-  id: string
-  empresa_id: string
+  linha_id: string
+  conexao_id: string | null
+  familia_id: string | null
+  categoria_id: string | null
   nome: string
   sigla: string | null
+  descricao: string | null
+  osso_soft: string | null
+  osso_hard: string | null
+  diametro_mm: number
+  comprimento_mm: number
+  rosca_interna: string | null
+  regiao_apical: string | null
+  regiao_cervical: string | null
+  torque_insercao: number | null
+  macrogeometria: string | null
+  material: string | null
+  superficie: string | null
+  detalhes_extras: Record<string, unknown>
+  preco: number
   ativo: boolean
   created_at: string
   updated_at: string
+  linha?: CatalogoIpsLinha
+  conexao?: CatalogoIpsConexao
+  familia?: CatalogoIpsFamilia
+  imagens?: CatalogoImagemProduto[]
+  chaves?: CatalogoChave[]
+  protocolo_soft?: CatalogoProtocoloFresagem
+  protocolo_hard?: CatalogoProtocoloFresagem
 }
+
+// ============================================================
+// PRODUTOS - Abutments
+// ============================================================
 
 export interface CatalogoAbutment {
   sku: string
   empresa_id: string
-  familia_id: string
-  tipo_reabilitacao_id: string
   tipo_abutment_id: string
-  diametro_plataforma: string | null
+  parafuso_id: string | null
+  chave_id: string | null
+  nome: string
+  sigla: string | null
+  descricao: string | null
+  diametro_plataforma_mm: number | null
+  altura_transmucoso_mm: number | null
+  altura_corpo_mm: number | null
   angulacao_graus: number | null
-  altura_transmucoso: number | null
-  altura_corpo: number | null
   torque_ncm: number | null
+  material: string | null
   preco: number
   ativo: boolean
   created_at: string
   updated_at: string
-  familia?: CatalogoFamilia
-  tipo_reabilitacao?: CatalogoTipoReabilitacao
-  tipo_abutment?: CatalogoTipoAbutment
+  tipo_abutment?: CatalogoCpsTipoAbutment
+  parafuso?: CatalogoParafuso
+  chave?: CatalogoChave
   imagens?: CatalogoImagemProduto[]
 }
 
-export interface CatalogoSequenciaProtetica {
-  id: string
-  empresa_id: string
-  abutment_sku: string
-  tipo_workflow: 'analógico' | 'digital'
-  etapa_ordem: number
-  etapa_nome: string
-  acessorio_sku: string
-  created_at: string
-  acessorio?: CatalogoAcessorio
-}
+// ============================================================
+// PRODUTOS - Componentes
+// ============================================================
 
-export interface CatalogoCategoriaAcessorio {
-  id: string
+export interface CatalogoComponente {
+  sku: string
   empresa_id: string
+  tipo_componente_id: string | null
+  tipo_abutment_id: string | null
+  parafuso_id: string | null
+  chave_id: string | null
   nome: string
+  sigla: string | null
+  descricao: string | null
+  diametro_plataforma_mm: number | null
+  altura_transmucoso_mm: number | null
+  altura_corpo_mm: number | null
+  angulacao_graus: number | null
+  tipo: string | null
+  tipo_travamento: string | null
+  material: string | null
+  preco: number
   ativo: boolean
   created_at: string
   updated_at: string
+  tipo_componente?: CatalogoCpsTipoComponente
+  tipo_abutment?: CatalogoCpsTipoAbutment
+  parafuso?: CatalogoParafuso
+  chave?: CatalogoChave
+  imagens?: CatalogoImagemProduto[]
 }
 
-export interface CatalogoAcessorio {
+// ============================================================
+// PRODUTOS - Parafusos
+// ============================================================
+
+export interface CatalogoParafuso {
   sku: string
   empresa_id: string
-  categoria_id: string
+  tipo_parafuso_id: string | null
+  chave_id: string | null
   nome: string
+  sigla: string | null
+  descricao: string | null
+  torque_ncm: number | null
+  material: string | null
+  preco: number
+  ativo: boolean
+  created_at: string
+  updated_at: string
+  tipo_parafuso?: CatalogoCpsTipoParafuso
+  chave?: CatalogoChave
+  imagens?: CatalogoImagemProduto[]
+}
+
+/** @deprecated Use CatalogoParafuso */
+export type CatalogoParafusoRetencao = CatalogoParafuso
+
+// ============================================================
+// PRODUTOS - Cicatrizadores
+// ============================================================
+
+export interface CatalogoCicatrizador {
+  sku: string
+  empresa_id: string
+  implante_id: string | null
+  chave_id: string | null
+  nome: string
+  sigla: string | null
+  descricao: string | null
+  diametro_plataforma_mm: number | null
+  altura_transmucoso_mm: number | null
+  altura_corpo_mm: number | null
+  torque_ncm: number | null
+  material: string | null
+  preco: number
+  ativo: boolean
+  created_at: string
+  updated_at: string
+  implante?: CatalogoImplante
+  chave?: CatalogoChave
+  imagens?: CatalogoImagemProduto[]
+}
+
+// ============================================================
+// INSTRUMENTAIS - Produtos
+// ============================================================
+
+export interface CatalogoChave {
+  sku: string
+  empresa_id: string
+  tipo_chave_id: string | null
+  kit_id: string | null
+  nome: string
+  sigla: string | null
+  descricao: string | null
+  tipo: string | null
+  comprimento: string | null
   diametro_mm: number | null
-  altura_mm: number | null
-  caracteristicas: Record<string, unknown>
-  ativo: boolean
+  material: string | null
   preco: number
+  ativo: boolean
   created_at: string
   updated_at: string
-  categoria?: CatalogoCategoriaAcessorio
+  tipo_chave?: CatalogoTipoChave
+  imagens?: CatalogoImagemProduto[]
 }
 
-export interface CatalogoChaveFerramental {
+/** @deprecated Use CatalogoChave */
+export type CatalogoChaveFerramental = CatalogoChave
+
+export interface CatalogoFresa {
   sku: string
   empresa_id: string
+  tipo_fresa_id: string | null
+  kit_id: string | null
   nome: string
-  tipo_ferramenta: TipoFerramenta
-  ativo: boolean
+  sigla: string | null
+  descricao: string | null
+  tipo: string | null
+  comprimento: string | null
+  diametro_mm: number | null
+  material: string | null
   preco: number
-  created_at: string
-  updated_at: string
-}
-
-export interface CatalogoAcessorioFerramental {
-  empresa_id: string
-  acessorio_sku: string
-  ferramenta_sku: string
-  obrigatorio: boolean
-  created_at: string
-  ferramenta?: CatalogoChaveFerramental
-}
-
-export interface CatalogoCategoriaInstrumental {
-  id: string
-  empresa_id: string
-  nome: string
   ativo: boolean
   created_at: string
   updated_at: string
+  tipo_fresa?: CatalogoTipoFresa
+  imagens?: CatalogoImagemProduto[]
 }
 
-export interface CatalogoInstrumentalGeral {
+export interface CatalogoComplementar {
   sku: string
   empresa_id: string
-  categoria_id: string
+  tipo_complementar_id: string | null
+  kit_id: string | null
   nome: string
+  sigla: string | null
+  descricao: string | null
+  tipo: string | null
+  comprimento: string | null
+  diametro_mm: number | null
+  material: string | null
   preco: number
-  created_at: string
-  updated_at: string
-  categoria?: CatalogoCategoriaInstrumental
-}
-
-export interface CatalogoWorkflow {
-  id: string
-  empresa_id: string
-  nome: string
   ativo: boolean
   created_at: string
   updated_at: string
+  tipo_complementar?: CatalogoTipoComplementar
+  imagens?: CatalogoImagemProduto[]
 }
 
-export interface CatalogoEtapaWorkflow {
-  id: string
+export interface CatalogoOpcional {
+  sku: string
   empresa_id: string
-  ordem: number
+  tipo_opcional_id: string | null
+  kit_id: string | null
   nome: string
+  sigla: string | null
+  descricao: string | null
+  tipo: string | null
+  comprimento: string | null
+  diametro_mm: number | null
+  material: string | null
+  preco: number
   ativo: boolean
   created_at: string
   updated_at: string
+  tipo_opcional?: CatalogoTipoOpcional
+  imagens?: CatalogoImagemProduto[]
 }
 
-export interface CatalogoGuiaReabilitacao {
-  id: string
-  empresa_id: string
-  familia_id: string
-  tipo_abutment_id: string
-  diametro_plataforma: string
-  workflow_id: string
-  etapa_id: string
-  acessorio_sku: string
-  created_at: string
-  familia?: CatalogoFamilia
-  tipo_abutment?: CatalogoTipoAbutment
-  workflow?: CatalogoWorkflow
-  etapa?: CatalogoEtapaWorkflow
-  acessorio?: CatalogoAcessorio
-}
-
-export interface CatalogoCategoriaKit {
-  id: string
-  empresa_id: string
-  nome: string
-  ativo: boolean
-  created_at: string
-  updated_at: string
-}
+// ============================================================
+// KITS - Produto
+// ============================================================
 
 export interface CatalogoKit {
   sku: string
   empresa_id: string
-  categoria_id: string
+  tipo_kit_id: string | null
   nome: string
+  sigla: string | null
   descricao: string | null
-  ativo: boolean
   preco: number
+  ativo: boolean
   created_at: string
   updated_at: string
-  categoria?: CatalogoCategoriaKit
-  familias?: CatalogoKitFamilia[]
-  composicao?: CatalogoKitComposicao[]
+  tipo_kit?: CatalogoTipoKit
+  chaves?: CatalogoChave[]
+  fresas?: CatalogoFresa[]
+  complementares?: CatalogoComplementar[]
+  opcionais?: CatalogoOpcional[]
   imagens?: CatalogoImagemProduto[]
 }
 
-export interface CatalogoKitFamilia {
+/** @deprecated Use CatalogoKit with tipo_kit_id */
+export type CatalogoCategoriaKit = CatalogoTipoKit
+
+// ============================================================
+// PIVOT TABLES - N:M
+// ============================================================
+
+export interface CatalogoImplanteChave {
+  empresa_id: string
+  implante_sku: string
+  chave_id: string
+}
+
+export interface CatalogoKitChave {
   empresa_id: string
   kit_sku: string
-  familia_id: string
-  familia?: CatalogoFamilia
+  chave_id: string
 }
 
-export type BOMItemTipo = "fresa" | "chave" | "acessorio" | "instrumental" | "implante" | "parafuso_retensao" | "cicatrizador"
-
-export interface CatalogoKitComposicao {
-  id: string
+export interface CatalogoKitFresa {
   empresa_id: string
   kit_sku: string
-  quantidade: number
-  fresa_sku: string | null
-  chave_sku: string | null
-  acessorio_sku: string | null
-  instrumental_sku: string | null
-  implante_sku: string | null
-  created_at: string
-  fresa?: CatalogoFresa | null
-  chave?: CatalogoChaveFerramental | null
-  acessorio?: CatalogoAcessorio | null
-  instrumental?: CatalogoInstrumentalGeral | null
-  implante?: CatalogoImplante | null
+  fresa_id: string
 }
 
-export interface BOMItem {
-  tipo: BOMItemTipo
-  sku: string
-  nome: string
-  quantidade: number
+export interface CatalogoKitComplementar {
+  empresa_id: string
+  kit_sku: string
+  complementar_id: string
 }
+
+export interface CatalogoKitOpcional {
+  empresa_id: string
+  kit_sku: string
+  opcional_id: string
+}
+
+// ============================================================
+// COMERCIAL
+// ============================================================
 
 export interface CatalogoCupom {
   id: string
@@ -374,37 +629,9 @@ export interface CatalogoPromocionalItem {
   created_at: string
 }
 
-export interface CatalogoParafusoRetencao {
-  sku: string
-  empresa_id: string
-  nome: string
-  torque_ncm: number | null
-  vinculo_tipo: "abutment" | "componente"
-  vinculo_sku: string
-  chave_sku: string | null
-  preco: number
-  ativo: boolean
-  created_at: string
-  updated_at: string
-  chave?: CatalogoChaveFerramental
-}
-
-export interface CatalogoCicatrizador {
-  sku: string
-  empresa_id: string
-  nome: string
-  altura_transmucoso: number | null
-  diametro_plataforma: string | null
-  torque_ncm: number | null
-  familia_id: string | null
-  chave_sku: string | null
-  preco: number
-  ativo: boolean
-  created_at: string
-  updated_at: string
-  familia?: CatalogoFamilia
-  chave?: CatalogoChaveFerramental
-}
+// ============================================================
+// UI TYPES
+// ============================================================
 
 export interface ProductSheetResult {
   tipo: ProductSheetTipo
@@ -433,13 +660,50 @@ export const CATALOGO_TIPO_LABEL: Record<ProductSheetTipo, string> = {
   kit: "Kit",
   fresa: "Fresa",
   chave: "Chave",
-  acessorio: "Acessório",
-  instrumental: "Instrumental",
+  complementar: "Complementar",
+  opcional: "Opcional",
+  componente: "Componente",
+  parafuso: "Parafuso",
+  cicatrizador: "Cicatrizador",
   promocional: "Promocional",
 }
 
-export const TIPO_FERRAMENTA_LABEL: Record<TipoFerramenta, string> = {
-  Aperto: "Aperto",
-  Medição: "Medição",
-  Cirúrgica: "Cirúrgica",
-}
+// ============================================================
+// DEPRECATED ALIASES (manter compatibilidade temporária)
+// ============================================================
+
+/** @deprecated Use CatalogoIpsConexao */
+export type CatalogoConexao = CatalogoIpsConexao
+/** @deprecated Use CatalogoIpsFamilia */
+export type CatalogoFamilia = CatalogoIpsFamilia
+/** @deprecated Use CatalogoIpsLinha */
+export type CatalogoLinha = CatalogoIpsLinha
+/** @deprecated Use CatalogoCpsTipoReabilitacao */
+export type CatalogoTipoReabilitacao = CatalogoCpsTipoReabilitacao
+/** @deprecated Use CatalogoCpsTipoAbutment */
+export type CatalogoTipoAbutment = CatalogoCpsTipoAbutment
+/** @deprecated Use CatalogoCpsTipoWorkflow */
+export type CatalogoWorkflow = CatalogoCpsTipoWorkflow
+/** @deprecated Use CatalogoCpsEtapaWorkflow */
+export type CatalogoEtapaWorkflow = CatalogoCpsEtapaWorkflow
+/** @deprecated Removed */
+export type CatalogoSequenciaProtetica = Record<string, unknown>
+/** @deprecated Removed */
+export type CatalogoCategoriaAcessorio = Record<string, unknown>
+/** @deprecated Removed */
+export type CatalogoAcessorio = Record<string, unknown>
+/** @deprecated Removed */
+export type CatalogoAcessorioFerramental = Record<string, unknown>
+/** @deprecated Removed */
+export type CatalogoCategoriaInstrumental = Record<string, unknown>
+/** @deprecated Removed */
+export type CatalogoInstrumentalGeral = Record<string, unknown>
+/** @deprecated Removed */
+export type CatalogoGuiaReabilitacao = Record<string, unknown>
+/** @deprecated Removed */
+export type CatalogoKitFamilia = Record<string, unknown>
+/** @deprecated Removed */
+export type CatalogoKitComposicao = Record<string, unknown>
+/** @deprecated Removed */
+export type BOMItem = Record<string, unknown>
+export type BOMItemTipo = "fresa" | "chave" | "complementar" | "opcional" | "implante" | "parafuso" | "cicatrizador" | "componente"

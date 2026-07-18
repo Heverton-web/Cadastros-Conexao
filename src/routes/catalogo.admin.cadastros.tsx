@@ -7,15 +7,14 @@ import { AdminLayout } from "~/features/catalogo/components/AdminLayout"
 import { useAuth } from "~/core/auth/useAuth"
 import {
   useCategorias, useConexoes, useFamilias, useLinhas, useFresas,
-  useTiposReabilitacao, useTiposAbutment, useCategoriasAcessorio,
-  useCategoriasInstrumental, useCategoriasKit, useWorkflows, useEtapas,
-  useAcessorios, useChavesFerramental, useInstrumentais,
+  useTiposReabilitacao, useTiposAbutment,
+  useCategoriasKit, useWorkflows, useEtapas,
+  useChavesFerramental,
   useParafusosRetensao, useCicatrizadores,
   useToggleCategoriaAtivo, useToggleConexaoAtivo, useToggleLinhaAtivo,
   useToggleFamiliaAtivo, useToggleFresaAtivo, useToggleTipoReabilitacaoAtivo,
-  useToggleTipoAbutmentAtivo, useToggleCategoriaAcessorioAtivo,
-  useToggleAcessorioAtivo, useToggleChaveFerramentalAtivo,
-  useToggleCategoriaInstrumentalAtivo, useToggleInstrumentalAtivo,
+  useToggleTipoAbutmentAtivo,
+  useToggleChaveFerramentalAtivo,
   useToggleParafusoRetencaoAtivo, useToggleCicatrizadorAtivo,
   useToggleCategoriaKitAtivo, useToggleWorkflowAtivo, useToggleEtapaAtivo,
 } from "~/features/catalogo/hooks/useCatalogo"
@@ -44,9 +43,9 @@ export const catalogoAdminCadastrosRoute = createRoute({
 
 const TABS = [
   { key: "estrutura", label: "Estrutura", icon: Layers, subTabs: ["Categorias", "Conexões", "Famílias", "Linhas"] },
-  { key: "protetico", label: "Componentes Protéticos", icon: Stethoscope, subTabs: ["Tipos de Reabilitação", "Tipos de Abutment", "Tipos de Componente", "Componentes", "Parafusos de Retenção", "Cicatrizadores", "Workflows Protéticos", "Etapas de Workflow"] },
-  { key: "instrumentais", label: "Instrumentais", icon: Scissors, subTabs: ["Chaves Protéticas", "Chaves Cirúrgicas", "Fresas", "Instrumentos Opcionais", "Instrumentos Complementares", "Categorias de Instrumental"] },
-  { key: "kits", label: "Kits", icon: Package, subTabs: ["Categorias de Kit"] },
+  { key: "protetico", label: "Componentes Protéticos", icon: Stethoscope, subTabs: ["Tipos de Reabilitação", "Tipos de Abutment", "Parafusos", "Cicatrizadores", "Workflows", "Etapas de Workflow"] },
+  { key: "instrumentais", label: "Instrumentais", icon: Scissors, subTabs: ["Tipos de Chaves", "Tipos de Fresas", "Tipos Complementares", "Tipos Opcionais"] },
+  { key: "kits", label: "Kits", icon: Package, subTabs: ["Tipos de Kit"] },
 ]
 
 function AdminCadastrosPage() {
@@ -120,14 +119,10 @@ function CadastroContent({ tab, subTab }: { tab: string; subTab: string }) {
   const { data: fresas } = useFresas()
   const { data: tiposReab } = useTiposReabilitacao()
   const { data: tiposAbutment } = useTiposAbutment()
-  const { data: catsAcessorio } = useCategoriasAcessorio()
-  const { data: catsInstrumental } = useCategoriasInstrumental()
   const { data: catsKit } = useCategoriasKit()
   const { data: workflows } = useWorkflows()
   const { data: etapas } = useEtapas()
-  const { data: acessorios } = useAcessorios()
   const { data: chaves } = useChavesFerramental()
-  const { data: instrumentais } = useInstrumentais()
   const { data: parafusosRetensao } = useParafusosRetensao()
   const { data: cicatrizadores } = useCicatrizadores()
 
@@ -138,11 +133,7 @@ function CadastroContent({ tab, subTab }: { tab: string; subTab: string }) {
   const toggleFresa = useToggleFresaAtivo()
   const toggleTipoReab = useToggleTipoReabilitacaoAtivo()
   const toggleTipoAbutment = useToggleTipoAbutmentAtivo()
-  const toggleCatAcessorio = useToggleCategoriaAcessorioAtivo()
-  const toggleAcessorio = useToggleAcessorioAtivo()
   const toggleChave = useToggleChaveFerramentalAtivo()
-  const toggleCatInstrumental = useToggleCategoriaInstrumentalAtivo()
-  const toggleInstrumental = useToggleInstrumentalAtivo()
   const toggleParafusoRetencao = useToggleParafusoRetencaoAtivo()
   const toggleCicatrizador = useToggleCicatrizadorAtivo()
   const toggleCatKit = useToggleCategoriaKitAtivo()
@@ -175,10 +166,11 @@ function CadastroContent({ tab, subTab }: { tab: string; subTab: string }) {
   function getSubTabConfig() {
     if (tab === "estrutura") {
       if (subTab === "Categorias") return {
-        headers: ["Nome", "Pré-definido", "Ativo", "Ações"],
+        headers: ["Nome", "Sigla", "Pré-definido", "Ativo", "Ações"],
         rows: (categorias ?? []).map((c) => ({ ...c })),
         fields: [
           { key: "nome", label: "Nome", type: "text" as const, required: true },
+          { key: "sigla", label: "Sigla", type: "text" as const },
           { key: "ativo", label: "Ativo", type: "toggle" as const },
         ],
         table: "catalogo_categorias",
@@ -190,21 +182,22 @@ function CadastroContent({ tab, subTab }: { tab: string; subTab: string }) {
         fields: [
           { key: "categoria_id", label: "Categoria", type: "select" as const, required: true, options: (categorias ?? []).map((c) => ({ value: c.id, label: c.nome })) },
           { key: "nome", label: "Nome", type: "text" as const, required: true },
-          { key: "sigla", label: "Sigla", type: "text" as const },
+          { key: "sigla", label: "Sigla", type: "text" as const, required: true },
           { key: "ativo", label: "Ativo", type: "toggle" as const },
         ],
-        table: "catalogo_conexoes",
+        table: "catalogo_ips_conexoes",
         pk: "id",
       }
       if (subTab === "Famílias") return {
-        headers: ["Nome", "Cor", "Conexão", "Ativo", "Ações"],
+        headers: ["Nome", "Cor", "Conexão", "Pré-definido", "Ativo", "Ações"],
         rows: (familias ?? []).map((f) => ({ ...f })),
         fields: [
           { key: "conexao_id", label: "Conexão", type: "select" as const, required: true, options: (conexoes ?? []).map((c) => ({ value: c.id, label: c.nome })) },
           { key: "nome", label: "Nome", type: "text" as const, required: true },
           { key: "cor_identificacao", label: "Cor de Identificação", type: "color" as const },
+          { key: "ativo", label: "Ativo", type: "toggle" as const },
         ],
-        table: "catalogo_familias",
+        table: "catalogo_ips_familias",
         pk: "id",
       }
       if (subTab === "Linhas") return {
@@ -215,17 +208,20 @@ function CadastroContent({ tab, subTab }: { tab: string; subTab: string }) {
           { key: "nome", label: "Nome", type: "text" as const, required: true },
           { key: "ativo", label: "Ativo", type: "toggle" as const },
         ],
-        table: "catalogo_linhas",
+        table: "catalogo_ips_linhas",
         pk: "id",
       }
     }
 
     if (tab === "protetico") {
       if (subTab === "Tipos de Reabilitação") return {
-        headers: ["Nome", "Ativo", "Ações"],
+        headers: ["Nome", "Sigla", "Ativo", "Ações"],
         rows: (tiposReab ?? []).map((t) => ({ ...t })),
-        fields: [{ key: "nome", label: "Nome", type: "text" as const, required: true }],
-        table: "catalogo_tipos_reabilitacao",
+        fields: [
+          { key: "nome", label: "Nome", type: "text" as const, required: true },
+          { key: "sigla", label: "Sigla", type: "text" as const },
+        ],
+        table: "catalogo_cps_tipos_reabilitacao",
         pk: "id",
       }
       if (subTab === "Tipos de Abutment") return {
@@ -235,167 +231,110 @@ function CadastroContent({ tab, subTab }: { tab: string; subTab: string }) {
           { key: "nome", label: "Nome", type: "text" as const, required: true },
           { key: "sigla", label: "Sigla", type: "text" as const },
         ],
-        table: "catalogo_tipos_abutment",
+        table: "catalogo_cps_tipos_abutments",
         pk: "id",
       }
-      if (subTab === "Tipos de Componente") return {
-        headers: ["Nome", "Ativo", "Ações"],
-        rows: (catsAcessorio ?? []).map((c) => ({ ...c })),
-        fields: [{ key: "nome", label: "Nome", type: "text" as const, required: true }],
-        table: "catalogo_categorias_acessorio",
-        pk: "id",
-      }
-      if (subTab === "Componentes") return {
-        headers: ["SKU", "Nome", "Tipo", "Ø (mm)", "Ativo", "Ações"],
-        rows: (acessorios ?? []).map((a) => ({ ...a })),
-        fields: [
-          { key: "sku", label: "SKU", type: "text" as const, required: true },
-          { key: "categoria_id", label: "Tipo", type: "select" as const, required: true, options: (catsAcessorio ?? []).map((c) => ({ value: c.id, label: c.nome })) },
-          { key: "nome", label: "Nome", type: "text" as const, required: true },
-          { key: "diametro_mm", label: "Diâmetro (mm)", type: "number" as const },
-          { key: "altura_mm", label: "Altura (mm)", type: "number" as const },
-        ],
-        table: "catalogo_acessorios",
-        pk: "sku",
-      }
-      if (subTab === "Parafusos de Retenção") return {
+      if (subTab === "Parafusos") return {
         headers: ["SKU", "Nome", "Vínculo", "Torque", "Ativo", "Ações"],
         rows: (parafusosRetensao ?? []).map((p) => ({ ...p })),
         fields: [
           { key: "sku", label: "SKU", type: "text" as const, required: true },
           { key: "nome", label: "Nome", type: "text" as const, required: true },
-          { key: "vinculo_tipo", label: "Vinculado a", type: "select" as const, required: true, options: [
-            { value: "abutment", label: "Abutment" },
-            { value: "componente", label: "Componente" },
-          ]},
-          { key: "vinculo_sku", label: "SKU do Vínculo", type: "text" as const, required: true },
           { key: "torque_ncm", label: "Torque (N·cm)", type: "number" as const },
           { key: "chave_sku", label: "Chave de Fixação", type: "select" as const, options: (chaves ?? []).map((c) => ({ value: c.sku, label: c.nome })) },
         ],
-        table: "catalogo_parafusos_retensao",
+        table: "catalogo_parafusos",
         pk: "sku",
       }
       if (subTab === "Cicatrizadores") return {
-        headers: ["SKU", "Nome", "Família", "Ø Plataforma", "Altura", "Ativo", "Ações"],
+        headers: ["SKU", "Nome", "Ø Plataforma", "Altura", "Ativo", "Ações"],
         rows: (cicatrizadores ?? []).map((c) => ({ ...c })),
         fields: [
           { key: "sku", label: "SKU", type: "text" as const, required: true },
           { key: "nome", label: "Nome", type: "text" as const, required: true },
-          { key: "familia_id", label: "Família", type: "select" as const, options: (familias ?? []).map((f) => ({ value: f.id, label: f.nome })) },
-          { key: "diametro_plataforma", label: "Ø Plataforma", type: "select" as const, options: [
-            { value: "3.5", label: "3.5 mm" },
-            { value: "4.3", label: "4.3 mm" },
-            { value: "5.0", label: "5.0 mm" },
-          ]},
+          { key: "diametro_plataforma", label: "Ø Plataforma", type: "text" as const },
           { key: "altura_transmucoso", label: "Altura (mm)", type: "number" as const },
           { key: "torque_ncm", label: "Torque (N·cm)", type: "number" as const },
-          { key: "chave_sku", label: "Chave de Instalação", type: "select" as const, options: (chaves ?? []).map((c) => ({ value: c.sku, label: c.nome })) },
         ],
         table: "catalogo_cicatrizadores",
         pk: "sku",
       }
-      if (subTab === "Workflows Protéticos") return {
-        headers: ["Nome", "Ativo", "Ações"],
+      if (subTab === "Workflows") return {
+        headers: ["Nome", "Sigla", "Ativo", "Ações"],
         rows: (workflows ?? []).map((w) => ({ ...w })),
-        fields: [{ key: "nome", label: "Nome", type: "text" as const, required: true }],
-        table: "catalogo_workflows",
+        fields: [
+          { key: "nome", label: "Nome", type: "text" as const, required: true },
+          { key: "sigla", label: "Sigla", type: "text" as const },
+        ],
+        table: "catalogo_cps_tipos_workflows",
         pk: "id",
       }
       if (subTab === "Etapas de Workflow") return {
-        headers: ["Ordem", "Nome", "Ativo", "Ações"],
+        headers: ["Ordem", "Nome", "Sigla", "Ativo", "Ações"],
         rows: (etapas ?? []).map((e) => ({ ...e })),
         fields: [
+          { key: "tipo_workflow_id", label: "Tipo de Workflow", type: "select" as const, required: true, options: (workflows ?? []).map((w) => ({ value: w.id, label: w.nome })) },
           { key: "ordem", label: "Ordem", type: "number" as const, required: true },
           { key: "nome", label: "Nome", type: "text" as const, required: true },
+          { key: "sigla", label: "Sigla", type: "text" as const },
         ],
-        table: "catalogo_etapas_workflow",
+        table: "catalogo_cps_etapas_workflows",
         pk: "id",
       }
     }
 
     if (tab === "instrumentais") {
-      if (subTab === "Chaves Protéticas") return {
-        headers: ["SKU", "Nome", "Tipo", "Ativo", "Ações"],
-        rows: (chaves ?? []).filter((c) => c.tipo_ferramenta !== "Cirúrgica").map((c) => ({ ...c })),
+      if (subTab === "Tipos de Chaves") return {
+        headers: ["Nome", "Sigla", "Ativo", "Ações"],
+        rows: [],
         fields: [
-          { key: "sku", label: "SKU", type: "text" as const, required: true },
           { key: "nome", label: "Nome", type: "text" as const, required: true },
-          { key: "tipo_ferramenta", label: "Tipo", type: "select" as const, required: true, options: [
-            { value: "Aperto", label: "Aperto" },
-            { value: "Medição", label: "Medição" },
-          ]},
+          { key: "sigla", label: "Sigla", type: "text" as const },
         ],
-        table: "catalogo_chaves_ferramental",
-        pk: "sku",
+        table: "catalogo_tipos_chaves",
+        pk: "id",
       }
-      if (subTab === "Chaves Cirúrgicas") return {
-        headers: ["SKU", "Nome", "Tipo", "Ativo", "Ações"],
-        rows: (chaves ?? []).filter((c) => c.tipo_ferramenta === "Cirúrgica").map((c) => ({ ...c })),
+      if (subTab === "Tipos de Fresas") return {
+        headers: ["Nome", "Sigla", "Ativo", "Ações"],
+        rows: [],
         fields: [
-          { key: "sku", label: "SKU", type: "text" as const, required: true },
           { key: "nome", label: "Nome", type: "text" as const, required: true },
-          { key: "tipo_ferramenta", label: "Tipo", type: "select" as const, required: true, options: [
-            { value: "Cirúrgica", label: "Cirúrgica" },
-          ]},
+          { key: "sigla", label: "Sigla", type: "text" as const },
         ],
-        table: "catalogo_chaves_ferramental",
-        pk: "sku",
+        table: "catalogo_tipos_fresas",
+        pk: "id",
       }
-      if (subTab === "Fresas") return {
-        headers: ["SKU", "Nome", "Ø (mm)", "Venda Avulsa", "Ativo", "Ações"],
-        rows: (fresas ?? []).map((f) => ({ ...f })),
+      if (subTab === "Tipos Complementares") return {
+        headers: ["Nome", "Sigla", "Ativo", "Ações"],
+        rows: [],
         fields: [
-          { key: "sku", label: "SKU", type: "text" as const, required: true },
           { key: "nome", label: "Nome", type: "text" as const, required: true },
-          { key: "diametro_mm", label: "Diâmetro (mm)", type: "number" as const },
-          { key: "venda_avulsa", label: "Venda Avulsa", type: "toggle" as const },
+          { key: "sigla", label: "Sigla", type: "text" as const },
         ],
-        table: "catalogo_fresas",
-        pk: "sku",
+        table: "catalogo_tipos_complementares",
+        pk: "id",
       }
-      if (subTab === "Instrumentos Opcionais") {
-        const catOpcional = (catsInstrumental ?? []).find((c) => c.nome.toLowerCase().includes("opcion"))
-        return {
-          headers: ["SKU", "Nome", "Categoria", "Ativo", "Ações"],
-          rows: (instrumentais ?? []).filter((i) => catOpcional ? i.categoria_id === catOpcional.id : false).map((i) => ({ ...i })),
-          fields: [
-            { key: "sku", label: "SKU", type: "text" as const, required: true },
-            { key: "nome", label: "Nome", type: "text" as const, required: true },
-            { key: "categoria_id", label: "Categoria", type: "select" as const, required: true, options: (catsInstrumental ?? []).map((c) => ({ value: c.id, label: c.nome })) },
-          ],
-          table: "catalogo_instrumentais_gerais",
-          pk: "sku",
-        }
-      }
-      if (subTab === "Instrumentos Complementares") {
-        const catCompl = (catsInstrumental ?? []).find((c) => c.nome.toLowerCase().includes("compl"))
-        return {
-          headers: ["SKU", "Nome", "Categoria", "Ativo", "Ações"],
-          rows: (instrumentais ?? []).filter((i) => catCompl ? i.categoria_id === catCompl.id : false).map((i) => ({ ...i })),
-          fields: [
-            { key: "sku", label: "SKU", type: "text" as const, required: true },
-            { key: "nome", label: "Nome", type: "text" as const, required: true },
-            { key: "categoria_id", label: "Categoria", type: "select" as const, required: true, options: (catsInstrumental ?? []).map((c) => ({ value: c.id, label: c.nome })) },
-          ],
-          table: "catalogo_instrumentais_gerais",
-          pk: "sku",
-        }
-      }
-      if (subTab === "Categorias de Instrumental") return {
-        headers: ["Nome", "Ativo", "Ações"],
-        rows: (catsInstrumental ?? []).map((c) => ({ ...c })),
-        fields: [{ key: "nome", label: "Nome", type: "text" as const, required: true }],
-        table: "catalogo_categorias_instrumental",
+      if (subTab === "Tipos Opcionais") return {
+        headers: ["Nome", "Sigla", "Ativo", "Ações"],
+        rows: [],
+        fields: [
+          { key: "nome", label: "Nome", type: "text" as const, required: true },
+          { key: "sigla", label: "Sigla", type: "text" as const },
+        ],
+        table: "catalogo_tipos_opcionais",
         pk: "id",
       }
     }
 
     if (tab === "kits") {
-      if (subTab === "Categorias de Kit") return {
-        headers: ["Nome", "Ativo", "Ações"],
+      if (subTab === "Tipos de Kit") return {
+        headers: ["Nome", "Sigla", "Ativo", "Ações"],
         rows: (catsKit ?? []).map((c) => ({ ...c })),
-        fields: [{ key: "nome", label: "Nome", type: "text" as const, required: true }],
-        table: "catalogo_categorias_kit",
+        fields: [
+          { key: "nome", label: "Nome", type: "text" as const, required: true },
+          { key: "sigla", label: "Sigla", type: "text" as const },
+        ],
+        table: "catalogo_tipos_kits",
         pk: "id",
       }
     }
@@ -435,22 +374,18 @@ function CadastroContent({ tab, subTab }: { tab: string; subTab: string }) {
                       <button
                         onClick={() => {
                           if (tabela === "catalogo_categorias") toggleCategoria.mutate({ id: row.id, ativo: !row.ativo })
-                          else if (tabela === "catalogo_conexoes") toggleConexao.mutate({ id: row.id, ativo: !row.ativo })
-                          else if (tabela === "catalogo_linhas") toggleLinha.mutate({ id: row.id, ativo: !row.ativo })
-                          else if (tabela === "catalogo_familias") toggleFamilia.mutate({ id: row.id, ativo: !row.ativo })
+                          else if (tabela === "catalogo_ips_conexoes") toggleConexao.mutate({ id: row.id, ativo: !row.ativo })
+                          else if (tabela === "catalogo_ips_linhas") toggleLinha.mutate({ id: row.id, ativo: !row.ativo })
+                          else if (tabela === "catalogo_ips_familias") toggleFamilia.mutate({ id: row.id, ativo: !row.ativo })
                           else if (tabela === "catalogo_fresas") toggleFresa.mutate({ sku: row.sku, ativo: !row.ativo })
-                          else if (tabela === "catalogo_tipos_reabilitacao") toggleTipoReab.mutate({ id: row.id, ativo: !row.ativo })
-                          else if (tabela === "catalogo_tipos_abutment") toggleTipoAbutment.mutate({ id: row.id, ativo: !row.ativo })
-                          else if (tabela === "catalogo_categorias_acessorio") toggleCatAcessorio.mutate({ id: row.id, ativo: !row.ativo })
-                          else if (tabela === "catalogo_acessorios") toggleAcessorio.mutate({ sku: row.sku, ativo: !row.ativo })
-                          else if (tabela === "catalogo_chaves_ferramental") toggleChave.mutate({ sku: row.sku, ativo: !row.ativo })
-                          else if (tabela === "catalogo_categorias_instrumental") toggleCatInstrumental.mutate({ id: row.id, ativo: !row.ativo })
-                          else if (tabela === "catalogo_instrumentais_gerais") toggleInstrumental.mutate({ sku: row.sku, ativo: !row.ativo })
-                          else if (tabela === "catalogo_parafusos_retensao") toggleParafusoRetencao.mutate({ sku: row.sku, ativo: !row.ativo })
+                          else if (tabela === "catalogo_cps_tipos_reabilitacao") toggleTipoReab.mutate({ id: row.id, ativo: !row.ativo })
+                          else if (tabela === "catalogo_cps_tipos_abutments") toggleTipoAbutment.mutate({ id: row.id, ativo: !row.ativo })
+                          else if (tabela === "catalogo_chaves") toggleChave.mutate({ sku: row.sku, ativo: !row.ativo })
+                          else if (tabela === "catalogo_parafusos") toggleParafusoRetencao.mutate({ sku: row.sku, ativo: !row.ativo })
                           else if (tabela === "catalogo_cicatrizadores") toggleCicatrizador.mutate({ sku: row.sku, ativo: !row.ativo })
-                          else if (tabela === "catalogo_categorias_kit") toggleCatKit.mutate({ id: row.id, ativo: !row.ativo })
-                          else if (tabela === "catalogo_workflows") toggleWorkflow.mutate({ id: row.id, ativo: !row.ativo })
-                          else if (tabela === "catalogo_etapas_workflow") toggleEtapa.mutate({ id: row.id, ativo: !row.ativo })
+                          else if (tabela === "catalogo_tipos_kits") toggleCatKit.mutate({ id: row.id, ativo: !row.ativo })
+                          else if (tabela === "catalogo_cps_tipos_workflows") toggleWorkflow.mutate({ id: row.id, ativo: !row.ativo })
+                          else if (tabela === "catalogo_cps_etapas_workflows") toggleEtapa.mutate({ id: row.id, ativo: !row.ativo })
                         }}
                         className="transition-colors"
                       >
@@ -538,5 +473,3 @@ function CadastroContent({ tab, subTab }: { tab: string; subTab: string }) {
     </>
   )
 }
-
-

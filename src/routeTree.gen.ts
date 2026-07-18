@@ -187,6 +187,13 @@ import { catalogoAdminGruposRoute } from "./routes/catalogo.admin.grupos";
 import { catalogoAdminOrcamentosRoute } from "./routes/catalogo.admin.orcamentos";
 import { catalogoAdminPedidosRoute } from "./routes/catalogo.admin.pedidos";
 import { catalogoAdminSolicitacoesRoute } from "./routes/catalogo.admin.solicitacoes";
+import { catalogoAdminImplantesRoute } from "./routes/catalogo.admin.implantes";
+import { catalogoAdminComponentesRoute } from "./routes/catalogo.admin.componentes";
+import { catalogoAdminInstrumentaisRoute } from "./routes/catalogo.admin.instrumentais";
+import { catalogoAdminKitsRoute } from "./routes/catalogo.admin.kits";
+import { catalogoAdminWorkflowsRoute } from "./routes/catalogo.admin.workflows";
+import { catalogoAdminFresagensRoute } from "./routes/catalogo.admin.fresagens";
+import { catalogoAdminCategoriasRoute } from "./routes/catalogo.admin.categorias";
 import { catalogoEmpresaSlugRoute } from "./routes/catalogo.empresa.$slug";
 
 import { catalogoLojaIndexRoute } from "./routes/catalogo-loja.$slug.index";
@@ -399,5 +406,12 @@ export const routeTree = rootRoute.addChildren([
     catalogoAdminOrcamentosRoute,
     catalogoAdminPedidosRoute,
     catalogoAdminSolicitacoesRoute,
+    catalogoAdminImplantesRoute,
+    catalogoAdminComponentesRoute,
+    catalogoAdminInstrumentaisRoute,
+    catalogoAdminKitsRoute,
+    catalogoAdminWorkflowsRoute,
+    catalogoAdminFresagensRoute,
+    catalogoAdminCategoriasRoute,
   ]),
 ]);

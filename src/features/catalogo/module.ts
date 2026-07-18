@@ -1,6 +1,7 @@
 import {
   Package, LayoutDashboard, Tag, Truck, Percent, ShoppingBag, Layers, Settings, Eye, Palette,
   Users, UserPlus, FileText, ShoppingCart, ClipboardList, AlertCircle,
+  Scissors, Stethoscope, Wrench, Boxes, Workflow, Drill,
 } from "lucide-react"
 import {
   registerModule, registerNavItem, registerPermission, registerPermissionDefaults,
@@ -14,27 +15,30 @@ export const catalogoModule: ModuleDefinition = {
   descricao: "Catálogo de implantes, componentes, kits e pacotes promocionais",
   icon: Package,
   routes: [
-    // Loja pública
     "/catalogo",
     "/catalogo/produto/$tipo/$sku",
     "/catalogo/carrinho",
     "/catalogo/checkout",
-    // Admin
-    "/catalogo/admin/produtos",
+    "/catalogo/admin/dashboard",
+    "/catalogo/admin/implantes",
+    "/catalogo/admin/componentes",
+    "/catalogo/admin/instrumentais",
+    "/catalogo/admin/kits",
+    "/catalogo/admin/workflows",
+    "/catalogo/admin/fresagens",
+    "/catalogo/admin/categorias",
     "/catalogo/admin/cadastros",
+    "/catalogo/admin/produtos",
     "/catalogo/admin/cupons",
     "/catalogo/admin/frete",
     "/catalogo/admin/promocionais",
-    "/catalogo/admin/dashboard",
     "/catalogo/admin/configuracoes",
     "/catalogo/admin/design",
-    // Novas rotas admin
     "/catalogo/admin/clientes",
     "/catalogo/admin/grupos",
     "/catalogo/admin/orcamentos",
     "/catalogo/admin/pedidos",
     "/catalogo/admin/solicitacoes",
-    // Loja pública (acesso externo)
     "/loja/$slug",
     "/loja/$slug/login",
     "/loja/$slug/pedidos",
@@ -86,14 +90,13 @@ export const catalogoModule: ModuleDefinition = {
       })
     }
 
-    // Nav items existentes
     registerNavItem({
       id: "catalogo-preview",
       label: "Preview",
       icon: Eye,
       to: "/catalogo",
       permissionCheck: (perms) => perms?.catalogo_ver_catalogo === true,
-      order: 95,
+      order: 97,
       moduloKey: "catalogo",
       noChildMatch: true,
       external: true,
@@ -104,25 +107,70 @@ export const catalogoModule: ModuleDefinition = {
       icon: LayoutDashboard,
       to: "/catalogo/admin/dashboard",
       permissionCheck: (perms) => perms?.catalogo_dashboard === true,
-      order: 99,
+      order: 98,
       moduloKey: "catalogo",
     })
     registerNavItem({
-      id: "catalogo-admin-produtos",
-      label: "Produtos",
+      id: "catalogo-admin-implantes",
+      label: "Implantes",
       icon: Package,
-      to: "/catalogo/admin/produtos",
+      to: "/catalogo/admin/implantes",
       permissionCheck: (perms) => perms?.catalogo_gerenciar_produtos === true,
       order: 100,
       moduloKey: "catalogo",
     })
     registerNavItem({
-      id: "catalogo-admin-cadastros",
-      label: "Cadastros",
-      icon: Layers,
-      to: "/catalogo/admin/cadastros",
-      permissionCheck: (perms) => perms?.catalogo_gerenciar_cadastros === true,
+      id: "catalogo-admin-componentes",
+      label: "Componentes",
+      icon: Stethoscope,
+      to: "/catalogo/admin/componentes",
+      permissionCheck: (perms) => perms?.catalogo_gerenciar_produtos === true,
       order: 101,
+      moduloKey: "catalogo",
+    })
+    registerNavItem({
+      id: "catalogo-admin-instrumentais",
+      label: "Instrumentais",
+      icon: Scissors,
+      to: "/catalogo/admin/instrumentais",
+      permissionCheck: (perms) => perms?.catalogo_gerenciar_produtos === true,
+      order: 102,
+      moduloKey: "catalogo",
+    })
+    registerNavItem({
+      id: "catalogo-admin-kits",
+      label: "Kits",
+      icon: Boxes,
+      to: "/catalogo/admin/kits",
+      permissionCheck: (perms) => perms?.catalogo_gerenciar_produtos === true,
+      order: 103,
+      moduloKey: "catalogo",
+    })
+    registerNavItem({
+      id: "catalogo-admin-workflows",
+      label: "Workflows",
+      icon: Workflow,
+      to: "/catalogo/admin/workflows",
+      permissionCheck: (perms) => perms?.catalogo_gerenciar_produtos === true,
+      order: 104,
+      moduloKey: "catalogo",
+    })
+    registerNavItem({
+      id: "catalogo-admin-fresagens",
+      label: "Fresagens",
+      icon: Drill,
+      to: "/catalogo/admin/fresagens",
+      permissionCheck: (perms) => perms?.catalogo_gerenciar_produtos === true,
+      order: 105,
+      moduloKey: "catalogo",
+    })
+    registerNavItem({
+      id: "catalogo-admin-categorias",
+      label: "Categorias",
+      icon: Layers,
+      to: "/catalogo/admin/categorias",
+      permissionCheck: (perms) => perms?.catalogo_gerenciar_cadastros === true,
+      order: 99,
       moduloKey: "catalogo",
     })
     registerNavItem({
@@ -131,7 +179,7 @@ export const catalogoModule: ModuleDefinition = {
       icon: Percent,
       to: "/catalogo/admin/cupons",
       permissionCheck: (perms) => perms?.catalogo_gerenciar_cupons === true,
-      order: 102,
+      order: 110,
       moduloKey: "catalogo",
     })
     registerNavItem({
@@ -140,7 +188,7 @@ export const catalogoModule: ModuleDefinition = {
       icon: Truck,
       to: "/catalogo/admin/frete",
       permissionCheck: (perms) => perms?.catalogo_gerenciar_frete === true,
-      order: 103,
+      order: 111,
       moduloKey: "catalogo",
     })
     registerNavItem({
@@ -149,7 +197,7 @@ export const catalogoModule: ModuleDefinition = {
       icon: Tag,
       to: "/catalogo/admin/promocionais",
       permissionCheck: (perms) => perms?.catalogo_gerenciar_promocionais === true,
-      order: 104,
+      order: 112,
       moduloKey: "catalogo",
     })
     registerNavItem({
@@ -158,7 +206,7 @@ export const catalogoModule: ModuleDefinition = {
       icon: Settings,
       to: "/catalogo/admin/configuracoes",
       permissionCheck: (perms) => perms?.catalogo_dashboard === true,
-      order: 106,
+      order: 120,
       moduloKey: "catalogo",
     })
     registerNavItem({
@@ -167,18 +215,17 @@ export const catalogoModule: ModuleDefinition = {
       icon: Palette,
       to: "/catalogo/admin/design",
       permissionCheck: (perms) => perms?.catalogo_gerenciar_design === true,
-      order: 107,
+      order: 121,
       moduloKey: "catalogo",
     })
 
-    // Novos nav items
     registerNavItem({
       id: "catalogo-admin-clientes",
       label: "Clientes",
       icon: Users,
       to: "/catalogo/admin/clientes",
       permissionCheck: (perms) => perms?.catalogo_gerenciar_clientes === true,
-      order: 108,
+      order: 130,
       moduloKey: "catalogo",
     })
     registerNavItem({
@@ -187,7 +234,7 @@ export const catalogoModule: ModuleDefinition = {
       icon: UserPlus,
       to: "/catalogo/admin/grupos",
       permissionCheck: (perms) => perms?.catalogo_gerenciar_grupos === true,
-      order: 109,
+      order: 131,
       moduloKey: "catalogo",
     })
     registerNavItem({
@@ -196,7 +243,7 @@ export const catalogoModule: ModuleDefinition = {
       icon: FileText,
       to: "/catalogo/admin/orcamentos",
       permissionCheck: (perms) => perms?.catalogo_gerenciar_orcamentos === true,
-      order: 110,
+      order: 132,
       moduloKey: "catalogo",
     })
     registerNavItem({
@@ -205,7 +252,7 @@ export const catalogoModule: ModuleDefinition = {
       icon: ShoppingCart,
       to: "/catalogo/admin/pedidos",
       permissionCheck: (perms) => perms?.catalogo_gerenciar_pedidos === true,
-      order: 111,
+      order: 133,
       moduloKey: "catalogo",
     })
     registerNavItem({
@@ -214,7 +261,7 @@ export const catalogoModule: ModuleDefinition = {
       icon: AlertCircle,
       to: "/catalogo/admin/solicitacoes",
       permissionCheck: (perms) => perms?.catalogo_gerenciar_solicitacoes === true,
-      order: 112,
+      order: 134,
       moduloKey: "catalogo",
     })
 

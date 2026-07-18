@@ -1,10 +1,13 @@
 
-import { RequirePermission } from "~/components/guards";import { createRoute } from "@tanstack/react-router"
+import { RequirePermission } from "~/components/guards"
+import { createRoute } from "@tanstack/react-router"
 import { authLayout } from "./_auth"
 import { EmpresaCrudGuard } from "~/features/catalogo/components/EmpresaCrudGuard"
 import { AdminLayout } from "~/features/catalogo/components/AdminLayout"
-import { useImplantesAtivos, useKitsAtivos, useAbutments, useCupons, useWorkflows } from "~/features/catalogo/hooks/useCatalogo"
-import { Package, Layers, ShoppingBag, Percent, GitBranch, EyeOff } from "lucide-react"
+import { useCatalogoEmpresaId } from "~/features/catalogo/hooks/useCatalogoEmpresa"
+import { useQuery } from "@tanstack/react-query"
+import { supabase } from "~/core/supabase"
+import { Package, Stethoscope, Scissors, Boxes, Workflow, Drill, LayoutDashboard, TrendingUp, ShoppingCart } from "lucide-react"
 
 export const catalogoAdminDashboardRoute = createRoute({
   getParentRoute: () => authLayout,
@@ -19,19 +22,32 @@ export const catalogoAdminDashboardRoute = createRoute({
 })
 
 function AdminDashboardPage() {
-  const { data: implantes } = useImplantesAtivos()
-  const { data: kits } = useKitsAtivos()
-  const { data: abutments } = useAbutments()
-  const { data: cupons } = useCupons()
-  const { data: workflows } = useWorkflows()
+  const empresaId = useCatalogoEmpresaId()
 
-  const inactiveKits = (kits ?? []).filter((k) => !k.ativo)
+  const { data: implantes } = useQuery({ queryKey: ["dash", "implantes", empresaId], queryFn: async () => { const { count } = await supabase.from("catalogo_implantes").select("*", { count: "exact", head: true }).eq("empresa_id", empresaId).eq("ativo", true); return count ?? 0 }, enabled: !!empresaId })
+  const { data: abutments } = useQuery({ queryKey: ["dash", "abutments", empresaId], queryFn: async () => { const { count } = await supabase.from("catalogo_abutments").select("*", { count: "exact", head: true }).eq("empresa_id", empresaId).eq("ativo", true); return count ?? 0 }, enabled: !!empresaId })
+  const { data: componentes } = useQuery({ queryKey: ["dash", "componentes", empresaId], queryFn: async () => { const { count } = await supabase.from("catalogo_componentes").select("*", { count: "exact", head: true }).eq("empresa_id", empresaId).eq("ativo", true); return count ?? 0 }, enabled: !!empresaId })
+  const { data: parafusos } = useQuery({ queryKey: ["dash", "parafusos", empresaId], queryFn: async () => { const { count } = await supabase.from("catalogo_parafusos").select("*", { count: "exact", head: true }).eq("empresa_id", empresaId).eq("ativo", true); return count ?? 0 }, enabled: !!empresaId })
+  const { data: cicatrizadores } = useQuery({ queryKey: ["dash", "cicatrizadores", empresaId], queryFn: async () => { const { count } = await supabase.from("catalogo_cicatrizadores").select("*", { count: "exact", head: true }).eq("empresa_id", empresaId).eq("ativo", true); return count ?? 0 }, enabled: !!empresaId })
+  const { data: chaves } = useQuery({ queryKey: ["dash", "chaves", empresaId], queryFn: async () => { const { count } = await supabase.from("catalogo_chaves").select("*", { count: "exact", head: true }).eq("empresa_id", empresaId).eq("ativo", true); return count ?? 0 }, enabled: !!empresaId })
+  const { data: fresas } = useQuery({ queryKey: ["dash", "fresas", empresaId], queryFn: async () => { const { count } = await supabase.from("catalogo_fresas").select("*", { count: "exact", head: true }).eq("empresa_id", empresaId).eq("ativo", true); return count ?? 0 }, enabled: !!empresaId })
+  const { data: kits } = useQuery({ queryKey: ["dash", "kits", empresaId], queryFn: async () => { const { count } = await supabase.from("catalogo_kits").select("*", { count: "exact", head: true }).eq("empresa_id", empresaId).eq("ativo", true); return count ?? 0 }, enabled: !!empresaId })
+  const { data: workflows } = useQuery({ queryKey: ["dash", "workflows", empresaId], queryFn: async () => { const { count } = await supabase.from("catalogo_cps_tipos_workflows").select("*", { count: "exact", head: true }).eq("empresa_id", empresaId).eq("ativo", true); return count ?? 0 }, enabled: !!empresaId })
+  const { data: protocolos } = useQuery({ queryKey: ["dash", "protocolos", empresaId], queryFn: async () => { const { count } = await supabase.from("catalogo_protocolos_fresagens").select("*", { count: "exact", head: true }).eq("empresa_id", empresaId).eq("ativo", true); return count ?? 0 }, enabled: !!empresaId })
+  const { data: pedidos } = useQuery({ queryKey: ["dash", "pedidos", empresaId], queryFn: async () => { const { count } = await supabase.from("catalogo_pedidos").select("*", { count: "exact", head: true }).eq("empresa_id", empresaId); return count ?? 0 }, enabled: !!empresaId })
+  const { data: orcamentos } = useQuery({ queryKey: ["dash", "orcamentos", empresaId], queryFn: async () => { const { count } = await supabase.from("catalogo_orcamentos").select("*", { count: "exact", head: true }).eq("empresa_id", empresaId); return count ?? 0 }, enabled: !!empresaId })
 
-  const cards = [
-    { label: "Implantes Ativos", value: implantes?.length ?? 0, icon: Package, color: "#c9a655" },
-    { label: "Kits Comercializados", value: kits?.length ?? 0, icon: ShoppingBag, color: "#e8d48b" },
-    { label: "Abutments/Pilares", value: abutments?.length ?? 0, icon: Layers, color: "#c9a655" },
-    { label: "Workflows", value: workflows?.length ?? 0, icon: GitBranch, color: "#e8d48b" },
+  const totalProdutos = (implantes ?? 0) + (abutments ?? 0) + (componentes ?? 0) + (parafusos ?? 0) + (cicatrizadores ?? 0) + (chaves ?? 0) + (fresas ?? 0) + (kits ?? 0)
+
+  const kpis = [
+    { label: "Total Produtos", value: totalProdutos, icon: Package, color: "#c9a655" },
+    { label: "Implantes", value: implantes ?? 0, icon: Package, color: "#e8d48b" },
+    { label: "Componentes", value: (abutments ?? 0) + (componentes ?? 0), icon: Stethoscope, color: "#c9a655" },
+    { label: "Instrumentais", value: (chaves ?? 0) + (fresas ?? 0), icon: Scissors, color: "#e8d48b" },
+    { label: "Kits", value: kits ?? 0, icon: Boxes, color: "#c9a655" },
+    { label: "Workflows", value: workflows ?? 0, icon: Workflow, color: "#e8d48b" },
+    { label: "Protocolos Fresagem", value: protocolos ?? 0, icon: Drill, color: "#c9a655" },
+    { label: "Pedidos", value: pedidos ?? 0, icon: ShoppingCart, color: "#e8d48b" },
   ]
 
   return (
@@ -44,9 +60,9 @@ function AdminDashboardPage() {
           </div>
         </div>
 
-        {/* KPIs Premium */}
+        {/* KPIs */}
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 md:gap-6">
-          {cards.map((card, i) => (
+          {kpis.map((card) => (
             <div key={card.label} className="relative group rounded-2xl bg-[var(--color-surface)] border border-transparent hover:border-white/10 p-6 transition-all shadow-lg overflow-hidden flex flex-col">
               <div className="absolute top-0 right-0 p-4 opacity-[0.04] group-hover:opacity-[0.08] group-hover:scale-110 transition-all duration-500" style={{ color: card.color }}>
                 <card.icon className="w-20 h-20" />
@@ -60,29 +76,52 @@ function AdminDashboardPage() {
           ))}
         </div>
 
-        {/* Inativos */}
-        {inactiveKits.length > 0 && (
-          <div className="rounded-2xl p-6 bg-[var(--color-surface)]/50 backdrop-blur-md border border-[var(--color-border-subtle)] shadow-xl relative overflow-hidden">
-            <div className="absolute top-0 left-0 w-1 h-full bg-red-500/50" />
-            <h3 className="text-lg font-bold text-white mb-6 flex items-center gap-2">
-               <EyeOff className="w-5 h-5 text-red-400" />
-               Atenção: SKUs Inativos ({inactiveKits.length})
+        {/* Resumo */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="rounded-2xl p-6 bg-[var(--color-surface)]/50 backdrop-blur-md border border-[var(--color-border-subtle)] shadow-xl">
+            <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
+              <TrendingUp className="w-5 h-5 text-[#c9a655]" />
+              Resumo por Categoria
             </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-              {inactiveKits.map((k) => (
-                <div key={k.sku} className="flex items-center gap-4 p-4 rounded-xl bg-[var(--color-background)] border border-red-500/20 transition-colors hover:bg-red-500/10">
-                  <div className="w-10 h-10 rounded-full bg-red-500/10 flex items-center justify-center shrink-0">
-                    <ShoppingBag className="h-4 w-4 text-red-400" />
-                  </div>
-                  <div className="min-w-0">
-                    <p className="font-bold text-white text-sm truncate">{k.nome}</p>
-                    <p className="text-[10px] uppercase tracking-widest font-mono text-[var(--color-text-muted)] mt-0.5">SKU: {k.sku}</p>
-                  </div>
+            <div className="space-y-3">
+              {[
+                { label: "Implantes", total: implantes ?? 0 },
+                { label: "Abutments", total: abutments ?? 0 },
+                { label: "Componentes", total: componentes ?? 0 },
+                { label: "Parafusos", total: parafusos ?? 0 },
+                { label: "Cicatrizadores", total: cicatrizadores ?? 0 },
+                { label: "Chaves", total: chaves ?? 0 },
+                { label: "Fresas", total: fresas ?? 0 },
+                { label: "Kits", total: kits ?? 0 },
+              ].map((item) => (
+                <div key={item.label} className="flex items-center justify-between">
+                  <span className="text-sm text-[var(--color-text-muted)]">{item.label}</span>
+                  <span className="text-sm font-bold text-white">{item.total}</span>
                 </div>
               ))}
             </div>
           </div>
-        )}
+
+          <div className="rounded-2xl p-6 bg-[var(--color-surface)]/50 backdrop-blur-md border border-[var(--color-border-subtle)] shadow-xl">
+            <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
+              <LayoutDashboard className="w-5 h-5 text-[#c9a655]" />
+              Atividade Comercial
+            </h3>
+            <div className="space-y-3">
+              {[
+                { label: "Pedidos Recebidos", total: pedidos ?? 0 },
+                { label: "Orçamentos Criados", total: orcamentos ?? 0 },
+                { label: "Workflows Ativos", total: workflows ?? 0 },
+                { label: "Protocolos de Fresagem", total: protocolos ?? 0 },
+              ].map((item) => (
+                <div key={item.label} className="flex items-center justify-between">
+                  <span className="text-sm text-[var(--color-text-muted)]">{item.label}</span>
+                  <span className="text-sm font-bold text-white">{item.total}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
     </AdminLayout>
   )

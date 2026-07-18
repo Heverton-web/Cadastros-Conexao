@@ -4,7 +4,7 @@ import type { CatalogoCicatrizador } from "../types"
 export async function listarCicatrizadores(empresaId: string): Promise<CatalogoCicatrizador[]> {
   const { data, error } = await supabase
     .from("catalogo_cicatrizadores")
-    .select("*, familia:catalogo_familias(*), chave:catalogo_chaves_ferramental(*)")
+    .select("*, implante:catalogo_implantes(*), chave:catalogo_chaves(*)")
     .eq("empresa_id", empresaId)
     .order("nome")
   if (error) throw error
@@ -12,13 +12,11 @@ export async function listarCicatrizadores(empresaId: string): Promise<CatalogoC
 }
 
 export async function criarCicatrizador(empresaId: string, input: {
-  sku: string
-  nome: string
-  altura_transmucoso?: number
-  diametro_plataforma?: string
-  torque_ncm?: number
-  familia_id?: string
-  chave_sku?: string
+  sku: string; nome: string
+  implante_id?: string; chave_id?: string
+  sigla?: string; descricao?: string
+  diametro_plataforma_mm?: number; altura_transmucoso_mm?: number
+  altura_corpo_mm?: number; torque_ncm?: number; material?: string
   preco?: number
 }): Promise<CatalogoCicatrizador> {
   const { data, error } = await supabase
@@ -31,13 +29,11 @@ export async function criarCicatrizador(empresaId: string, input: {
 }
 
 export async function atualizarCicatrizador(empresaId: string, sku: string, input: Partial<{
-  nome: string
-  altura_transmucoso: number
-  diametro_plataforma: string
-  torque_ncm: number
-  familia_id: string
-  chave_sku: string
-  preco: number
+  nome: string; implante_id: string; chave_id: string
+  sigla: string; descricao: string
+  diametro_plataforma_mm: number; altura_transmucoso_mm: number
+  altura_corpo_mm: number; torque_ncm: number; material: string
+  preco: number; ativo: boolean
 }>): Promise<CatalogoCicatrizador> {
   const { data, error } = await supabase
     .from("catalogo_cicatrizadores")
@@ -51,19 +47,11 @@ export async function atualizarCicatrizador(empresaId: string, sku: string, inpu
 }
 
 export async function toggleCicatrizadorAtivo(empresaId: string, sku: string, ativo: boolean): Promise<void> {
-  const { error } = await supabase
-    .from("catalogo_cicatrizadores")
-    .update({ ativo })
-    .eq("empresa_id", empresaId)
-    .eq("sku", sku)
+  const { error } = await supabase.from("catalogo_cicatrizadores").update({ ativo }).eq("empresa_id", empresaId).eq("sku", sku)
   if (error) throw error
 }
 
 export async function removerCicatrizador(empresaId: string, sku: string): Promise<void> {
-  const { error } = await supabase
-    .from("catalogo_cicatrizadores")
-    .delete()
-    .eq("empresa_id", empresaId)
-    .eq("sku", sku)
+  const { error } = await supabase.from("catalogo_cicatrizadores").delete().eq("empresa_id", empresaId).eq("sku", sku)
   if (error) throw error
 }
