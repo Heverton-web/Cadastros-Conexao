@@ -70,11 +70,11 @@ function AdminComponentesPage() {
   // Abutment modal
   const [abutModalOpen, setAbutModalOpen] = useState(false)
   const [abutEditing, setAbutEditing] = useState<any>(null)
-  const [abutData, setAbutData] = useState({ sku: "", nome: "", sigla: "", descricao: "", tipo_abutment_id: "", parafuso_id: "", chave_id: "", diametro_plataforma_mm: 0, altura_transmucoso_mm: 0, altura_corpo_mm: 0, angulacao_graus: 0, torque_ncm: 0, material: "", preco: 0, ativo: true })
+  const [abutData, setAbutData] = useState({ sku: "", nome: "", sigla: "", descricao: "", tipo_abutment_id: "", parafuso_id: "", chave_id: "", diametro_plataforma_mm: 0, altura_transmucoso_mm: 0, altura_corpo_mm: 0, angulacao_graus: 0, torque_ncm: 0, preco: 0, ativo: true })
   const [abutError, setAbutError] = useState("")
 
-  function openNewAbut() { setAbutEditing(null); setAbutData({ sku: "", nome: "", sigla: "", descricao: "", tipo_abutment_id: "", parafuso_id: "", chave_id: "", diametro_plataforma_mm: 0, altura_transmucoso_mm: 0, altura_corpo_mm: 0, angulacao_graus: 0, torque_ncm: 0, material: "", preco: 0, ativo: true }); setAbutError(""); setAbutModalOpen(true) }
-  function openEditAbut(item: any) { setAbutEditing(item); setAbutData({ sku: item.sku, nome: item.nome ?? "", sigla: item.sigla ?? "", descricao: item.descricao ?? "", tipo_abutment_id: item.tipo_abutment_id ?? "", parafuso_id: item.parafuso_id ?? "", chave_id: item.chave_id ?? "", diametro_plataforma_mm: item.diametro_plataforma_mm ?? 0, altura_transmucoso_mm: item.altura_transmucoso_mm ?? 0, altura_corpo_mm: item.altura_corpo_mm ?? 0, angulacao_graus: item.angulacao_graus ?? 0, torque_ncm: item.torque_ncm ?? 0, material: item.material ?? "", preco: item.preco ?? 0, ativo: item.ativo !== false }); setAbutError(""); setAbutModalOpen(true) }
+  function openNewAbut() { setAbutEditing(null); setAbutData({ sku: "", nome: "", sigla: "", descricao: "", tipo_abutment_id: "", parafuso_id: "", chave_id: "", diametro_plataforma_mm: 0, altura_transmucoso_mm: 0, altura_corpo_mm: 0, angulacao_graus: 0, torque_ncm: 0, preco: 0, ativo: true }); setAbutError(""); setAbutModalOpen(true) }
+  function openEditAbut(item: any) { setAbutEditing(item); setAbutData({ sku: item.sku, nome: item.nome ?? "", sigla: item.sigla ?? "", descricao: item.descricao ?? "", tipo_abutment_id: item.tipo_abutment_id ?? "", parafuso_id: item.parafuso_id ?? "", chave_id: item.chave_id ?? "", diametro_plataforma_mm: item.diametro_plataforma_mm ?? 0, altura_transmucoso_mm: item.altura_transmucoso_mm ?? 0, altura_corpo_mm: item.altura_corpo_mm ?? 0, angulacao_graus: item.angulacao_graus ?? 0, torque_ncm: item.torque_ncm ?? 0, preco: item.preco ?? 0, ativo: item.ativo !== false }); setAbutError(""); setAbutModalOpen(true) }
 
   async function handleSaveAbut() {
     setAbutError("")
@@ -593,8 +593,8 @@ function AdminComponentesPage() {
             <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655]">Vinculações</h3>
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2"><label className={labelCls}>Tipo de Abutment *</label><select value={abutData.tipo_abutment_id} onChange={e=>setAbutData({...abutData,tipo_abutment_id:e.target.value})} className={selectCls}><option value="">Selecione...</option>{tiposAbutment?.map((t:any)=><option key={t.id} value={t.id}>{t.nome}</option>)}</select></div>
-              <div className="space-y-2"><label className={labelCls}>Parafuso *</label><select value={abutData.parafuso_id} onChange={e=>setAbutData({...abutData,parafuso_id:e.target.value})} className={selectCls}><option value="">Selecione...</option>{parafusosList?.map((p:any)=><option key={p.sku} value={p.sku}>{p.nome}</option>)}</select></div>
-              <div className="space-y-2"><label className={labelCls}>Chave</label><select value={abutData.chave_id} onChange={e=>setAbutData({...abutData,chave_id:e.target.value})} className={selectCls}><option value="">Nenhuma</option>{chavesList?.map((c:any)=><option key={c.sku} value={c.sku}>{c.nome}</option>)}</select></div>
+              <div className="space-y-2"><label className={labelCls}>Parafuso *</label><select value={abutData.parafuso_id} onChange={e=>setAbutData({...abutData,parafuso_id:e.target.value})} className={selectCls}><option value="">Selecione...</option>{parafusosList?.map((p:any)=><option key={p.id} value={p.id}>{p.nome}</option>)}</select></div>
+              <div className="space-y-2"><label className={labelCls}>Chave</label><select value={abutData.chave_id} onChange={e=>setAbutData({...abutData,chave_id:e.target.value})} className={selectCls}><option value="">Nenhuma</option>{chavesList?.map((c:any)=><option key={c.id} value={c.id}>{c.nome}</option>)}</select></div>
             </div>
             <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655]">Identificação</h3>
             <div className="grid grid-cols-2 gap-4">
@@ -640,8 +640,8 @@ function AdminComponentesPage() {
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2"><label className={labelCls}>Tipo de Componente *</label><select value={compData.tipo_componente_id} onChange={e=>setCompData({...compData,tipo_componente_id:e.target.value})} className={selectCls}><option value="">Selecione...</option>{tiposComponente?.map((t:any)=><option key={t.id} value={t.id}>{t.nome}</option>)}</select></div>
               <div className="space-y-2"><label className={labelCls}>Tipo de Abutment *</label><select value={compData.tipo_abutment_id} onChange={e=>setCompData({...compData,tipo_abutment_id:e.target.value})} className={selectCls}><option value="">Selecione...</option>{tiposAbutment?.map((t:any)=><option key={t.id} value={t.id}>{t.nome}</option>)}</select></div>
-              <div className="space-y-2"><label className={labelCls}>Parafuso *</label><select value={compData.parafuso_id} onChange={e=>setCompData({...compData,parafuso_id:e.target.value})} className={selectCls}><option value="">Selecione...</option>{parafusosList?.map((p:any)=><option key={p.sku} value={p.sku}>{p.nome}</option>)}</select></div>
-              <div className="space-y-2"><label className={labelCls}>Chave</label><select value={compData.chave_id} onChange={e=>setCompData({...compData,chave_id:e.target.value})} className={selectCls}><option value="">Nenhuma</option>{chavesList?.map((c:any)=><option key={c.sku} value={c.sku}>{c.nome}</option>)}</select></div>
+              <div className="space-y-2"><label className={labelCls}>Parafuso *</label><select value={compData.parafuso_id} onChange={e=>setCompData({...compData,parafuso_id:e.target.value})} className={selectCls}><option value="">Selecione...</option>{parafusosList?.map((p:any)=><option key={p.id} value={p.id}>{p.nome}</option>)}</select></div>
+              <div className="space-y-2"><label className={labelCls}>Chave</label><select value={compData.chave_id} onChange={e=>setCompData({...compData,chave_id:e.target.value})} className={selectCls}><option value="">Nenhuma</option>{chavesList?.map((c:any)=><option key={c.id} value={c.id}>{c.nome}</option>)}</select></div>
             </div>
             <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655]">Identificação</h3>
             <div className="grid grid-cols-2 gap-4">
@@ -687,7 +687,7 @@ function AdminComponentesPage() {
             <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655]">Vinculações</h3>
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2"><label className={labelCls}>Tipo de Parafuso *</label><select value={parData.tipo_parafuso_id} onChange={e=>setParData({...parData,tipo_parafuso_id:e.target.value})} className={selectCls}><option value="">Selecione...</option>{tiposParafuso?.map((t:any)=><option key={t.id} value={t.id}>{t.nome}</option>)}</select></div>
-              <div className="space-y-2"><label className={labelCls}>Chave</label><select value={parData.chave_id} onChange={e=>setParData({...parData,chave_id:e.target.value})} className={selectCls}><option value="">Nenhuma</option>{chavesList?.map((c:any)=><option key={c.sku} value={c.sku}>{c.nome}</option>)}</select></div>
+              <div className="space-y-2"><label className={labelCls}>Chave</label><select value={parData.chave_id} onChange={e=>setParData({...parData,chave_id:e.target.value})} className={selectCls}><option value="">Nenhuma</option>{chavesList?.map((c:any)=><option key={c.id} value={c.id}>{c.nome}</option>)}</select></div>
             </div>
             <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655]">Identificação</h3>
             <div className="grid grid-cols-2 gap-4">
@@ -727,8 +727,8 @@ function AdminComponentesPage() {
           <div className="px-6 py-4 space-y-4 overflow-y-auto flex-1 min-h-0">
             <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655]">Vinculações</h3>
             <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2"><label className={labelCls}>Implante *</label><select value={cicData.implante_id} onChange={e=>setCicData({...cicData,implante_id:e.target.value})} className={selectCls}><option value="">Selecione...</option>{implantesList?.map((im:any)=><option key={im.sku} value={im.sku}>{im.sku} - {im.nome}</option>)}</select></div>
-              <div className="space-y-2"><label className={labelCls}>Chave</label><select value={cicData.chave_id} onChange={e=>setCicData({...cicData,chave_id:e.target.value})} className={selectCls}><option value="">Nenhuma</option>{chavesList?.map((c:any)=><option key={c.sku} value={c.sku}>{c.nome}</option>)}</select></div>
+              <div className="space-y-2"><label className={labelCls}>Implante *</label><select value={cicData.implante_id} onChange={e=>setCicData({...cicData,implante_id:e.target.value})} className={selectCls}><option value="">Selecione...</option>{implantesList?.map((im:any)=><option key={im.id} value={im.id}>{im.sku} - {im.nome}</option>)}</select></div>
+              <div className="space-y-2"><label className={labelCls}>Chave</label><select value={cicData.chave_id} onChange={e=>setCicData({...cicData,chave_id:e.target.value})} className={selectCls}><option value="">Nenhuma</option>{chavesList?.map((c:any)=><option key={c.id} value={c.id}>{c.nome}</option>)}</select></div>
             </div>
             <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655]">Identificação</h3>
             <div className="grid grid-cols-2 gap-4">
