@@ -204,8 +204,8 @@ function AdminImplantesPage() {
             {/* Protocolos de Fresagem */}
             <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655]">Protocolos de Fresagem</h3>
             <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2"><label className={labelCls}>Protocolo Osso Soft (III-IV)</label><select value={implData.osso_soft} onChange={e=>setImplData({...implData,osso_soft:e.target.value})} className={selectCls}><option value="">Nenhum</option>{protocolos?.filter((p:any)=>p.tipo_osso?.includes("Soft")).map((p:any)=><option key={p.id} value={p.id}>{p.nome}</option>)}</select></div>
-              <div className="space-y-2"><label className={labelCls}>Protocolo Osso Hard (I-II)</label><select value={implData.osso_hard} onChange={e=>setImplData({...implData,osso_hard:e.target.value})} className={selectCls}><option value="">Nenhum</option>{protocolos?.filter((p:any)=>p.tipo_osso?.includes("Hard")).map((p:any)=><option key={p.id} value={p.id}>{p.nome}</option>)}</select></div>
+              <div className="space-y-2"><label className={labelCls}>Protocolo Osso Soft (III-IV)</label><select value={implData.osso_soft} onChange={e=>setImplData({...implData,osso_soft:e.target.value})} className={selectCls}><option value="">Nenhum</option>{protocolos?.filter((p:any)=>["D3","D4","D5"].includes(p.tipo_osso)).map((p:any)=><option key={p.id} value={p.id}>{p.nome}</option>)}</select></div>
+              <div className="space-y-2"><label className={labelCls}>Protocolo Osso Hard (I-II)</label><select value={implData.osso_hard} onChange={e=>setImplData({...implData,osso_hard:e.target.value})} className={selectCls}><option value="">Nenhum</option>{protocolos?.filter((p:any)=>["D1","D2"].includes(p.tipo_osso)).map((p:any)=><option key={p.id} value={p.id}>{p.nome}</option>)}</select></div>
             </div>
 
             {/* Chaves (Multi-select) */}
