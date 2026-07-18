@@ -1,0 +1,646 @@
+# CONTEXTO E OBJETIVO
+
+O objetivo é melhorar e "otimizar" o banco de dados e os respectivos modais de interface (UI) para coleta/cadastro desses dados, seguindo as definições técnicas e as regras de negócio estabelecidas abaixo.
+
+# REGRAS GERAIS DE NEGÓCIO E ARQUITETURA
+
+1. **Auditoria:** Todas as tabelas devem conter automaticamente os campos `created_at` e `updated_at`.
+
+2. **Contexto de Empresa (`empresa_id`):** O campo `empresa_id` NUNCA deve ser exibido como um input para o usuário no modal. Ele deve ser preenchido/injetado automaticamente pelo backend usando o contexto do usuário logado (sessão/auth). Este capo só será exibido a usuário do tipo SUPER ADMIN.
+
+3. **Selects em Cascata:** Sempre que houver dependência hierárquica (ex: Categoria -> Conexão -> Família -> Linha), o modal deve implementar Dropdowns (Selects) dependentes. Escolher o item pai filtra automaticamente os itens filhos correspondentes e desabilita os selects abaixo enquanto o pai não for selecionado.
+
+4. **Relacionamentos em Lista (N:M):** Para campos definidos como "lista de IDs" ou associações múltiplas (ex: chaves, fresas, imagens, instrumentais em kits), implemente usando [ESCOLHA: Tabelas Pivô (Join Tables) relacionais no banco OR colunas de Array (`uuid[]`)]. *Nota: Para listas que exigem metadados de ordenação, como a ordem das fresas no protocolo, utilize obrigatoriamente uma Tabela Pivô contendo a coluna `ordem` (ex: `protocolo_id`, `fresa_id`, `ordem`).*
+
+5. **Visibilidade e Renderização Condicional:** Caso um campo da tabela esteja vazio ou seja do tipo `null`, o elemento/componente UI não será renderizado no frontend ao visualizar ou listar os dados.
+
+---
+
+# DEFINIÇÕES DE ESTRUTURA E CATEGORIAS
+
+## 1. Nav Item "ESTRUTURA" (Menu Lateral e Menu Grid)
+
+### 1.1 Aba "Categorias"
+
+- **ROTA / GATILHO UI:** `/catalogo/admin/categorias` -> aba "Categorias" -> botão "Nova Categoria" (Abre Modal de Cadastro de Categorias)
+- **TABELA DB:** `catalogo_categorias`
+- **DADOS (Campos do Modal/Tabela):**
+  - `id`: uuid (Auto-gerado, PK)
+  - `nome`: string (Obrigatório, input text no modal)
+  - `sigla`: string (Opcional, input text no modal)
+  - `locked`: boolean (Default: false, switch no modal renderizado apenas para usuários com perfil SUPER ADMIN)
+  - `ativo`: boolean (Default: true, switch no modal)
+- **RELACIONAMENTOS (FKs):**
+  - `empresa_id`: FK -> Empresas (Obrigatório, injetado pelo sistema)
+
+---
+
+# DEFINIÇÕES DE IMPLANTES
+
+## 1. Nav Item "IMPLANTES" (Menu Lateral e Menu Grid) -> aba "Estrutura"
+
+### 1.1 Sub aba "Conexões"
+
+- **ROTA / GATILHO UI:** `/catalogo/admin/implantes` -> aba "Estrutura" -> sub aba "Conexões" -> botão "Nova Conexão" (Abre Modal de Cadastro de Conexões)
+- **TABELA DB:** `catalogo_ips_conexoes`
+- **DADOS (Campos do Modal/Tabela):**
+  - `id`: uuid (Auto-gerado, PK)
+  - `nome`: string (Obrigatório, input text no modal)
+  - `sigla`: string (Obrigatório, input text no modal)
+  - `locked`: boolean (Default: true, não aparece no modal)
+  - `ativo`: boolean (Default: true, switch/checkbox no modal)
+- **RELACIONAMENTOS (FKs):**
+  - `empresa_id`: FK -> Empresas (Obrigatório, injetado pelo sistema)
+  - `categoria_id`: FK -> `catalogo_categorias` (Obrigatório, select no modal. Precisa ter pelo menos 1 Categoria)
+
+### 1.2 Sub aba "Famílias"
+
+- **ROTA / GATILHO UI:** `/catalogo/admin/implantes` -> aba "Estrutura" -> sub aba "Famílias" -> botão "Nova Família" (Abre Modal de Cadastro de Famílias)
+- **TABELA DB:** `catalogo_ips_familias`
+- **DADOS (Campos do Modal/Tabela):**
+  - `id`: uuid (Auto-gerado, PK)
+  - `nome`: string (Obrigatório, input text no modal)
+  - `cor_identificacao`: string hex color (Obrigatório, color picker/hex input no modal)
+  - `locked`: boolean (Default: true, não aparece no modal)
+  - `ativo`: boolean (Default: true, switch/checkbox no modal)
+- **RELACIONAMENTOS (FKs):**
+  - `empresa_id`: FK -> Empresas (Obrigatório, injetado pelo sistema)
+  - `conexao_id`: FK -> `catalogo_ips_conexoes` (Obrigatório, select no modal. Precisa ter pelo menos 1 Conexão)
+
+### 1.3 Sub aba "Linhas"
+
+- **ROTA / GATILHO UI:** `/catalogo/admin/implantes` -> aba "Estrutura" -> sub aba "Linhas" -> botão "Nova Linha" (Abre Modal de Cadastro de Linhas)
+- **TABELA DB:** `catalogo_ips_linhas`
+- **DADOS (Campos do Modal/Tabela):**
+  - `id`: uuid (Auto-gerado, PK)
+  - `nome`: string (Obrigatório, input text no modal)
+  - `ativo`: boolean (Default: true, switch/checkbox no modal)
+- **RELACIONAMENTOS (FKs):**
+  - `empresa_id`: FK -> Empresas (Obrigatório, injetado pelo sistema)
+  - `familia_id`: FK -> `catalogo_ips_familias` (Obrigatório, select no modal. Precisa ter pelo menos 1 Família)
+
+## 2. Nav Item "IMPLANTES" (Menu Lateral e Menu Grid) -> aba "Produtos"
+
+### 2.1 Sub aba "Implantes"
+
+- **ROTA / GATILHO UI:** `/catalogo/admin/implantes` -> aba "Produtos" -> sub aba "Implantes" -> botão "Novo Implante" (Abre Modal de Cadastro de Implantes)
+- **TABELA DB:** `catalogo_implantes`
+- **DADOS / CAMPOS DO MODAL:**
+  - **Hierarquia de Estrutura (Selects em Cascata na UI):**
+    - `categoria_id`: FK -> `catalogo_categorias` (Default: Categoria de Implantes)
+    - `conexao_id`: FK -> `catalogo_ips_conexoes`
+    - `familia_id`: FK -> `catalogo_ips_familias`
+    - `linha_id`: FK -> `catalogo_ips_linhas`
+    *(Regra de UI: O preenchimento deve garantir a cadeia `Categoria -> Conexão -> Família -> Linha` completa através de selects dependentes)*
+  - **Vinculações Múltiplas (Multi-Selects na UI):**
+    - `chaves_id`: Lista de FKs -> `catalogo_chaves`
+    - `osso_soft`: FK -> `catalogo_protocolos_fresagens` (Obrigatório, select no modal. Protocolo para osso soft)
+    - `osso_hard`: FK -> `catalogo_protocolos_fresagens` (Obrigatório, select no modal. Protocolo para osso hard)
+  - **Identificação:**
+    - `sku`: string (PK manual, input text obrigatório)
+    - `nome`: string (Obrigatório, input text no modal)
+    - `sigla`: string (Opcional, input text no modal)
+    - `descricao`: string (textarea)
+  - **Imagens do Produto (Botões/Tabs para seleção de tipo de origem de imagem):**
+    - `arquivo`: file (input upload no modal, salva no bucket de storage e armazena a URL)
+    - `url_s3`: string (input text no modal)
+    - `url_google_drive`: string (input text no modal)
+  - **Especificações Técnicas:**
+    - `diametro_plataforma_mm`: number (input number, decimal)
+    - `comprimento_mm`: number (input number, decimal)
+    - `rosca_interna`: number (input number, decimal)
+    - `macrogeometria`: string (input text)
+    - `torque_ncm`: number (input number)
+    - `material`: string (input text)
+    - `superficie`: string (input text)
+  - **Comercial e Status:**
+    - `preco`: number (decimal/currency input)
+    - `ativo`: boolean (Default: true, switch/checkbox)
+- **RELACIONAMENTOS DO SISTEMA:**
+  - `empresa_id`: FK -> Empresas (Obrigatório, injetado pelo sistema)
+  - `categoria_id`: FK -> `catalogo_categorias`
+  - `conexao_id`: FK -> `catalogo_ips_conexoes` (Obrigatório)
+  - `familia_id`: FK -> `catalogo_ips_familias` (Obrigatório)
+  - `linha_id`: FK -> `catalogo_ips_linhas` (Obrigatório)
+  - `osso_soft`: FK -> `catalogo_protocolos_fresagens` (Obrigatório)
+  - `osso_hard`: FK -> `catalogo_protocolos_fresagens` (Obrigatório)
+
+---
+
+# DEFINIÇÕES DE COMPONENTES
+
+## 1. Nav Item "COMPONENTES" (Menu Lateral e Menu Grid) -> aba "Estrutura"
+
+### 1.1 Sub aba "Tipos de Reabilitação"
+
+- **ROTA / GATILHO UI:** `/catalogo/admin/componentes` -> aba "Estrutura" -> sub aba "Tipos de Reabilitação" -> botão "Novo Tipo de Reabilitação" (Abre Modal de Cadastro de Tipos de Reabilitação)
+- **TABELA DB:** `catalogo_cps_tipos_reabilitacao`
+- **DADOS (Campos do Modal/Tabela):**
+  - `id`: uuid (Auto-gerado, PK)
+  - `nome`: string (Obrigatório, input text no modal)
+  - `sigla`: string (Opcional, input text no modal)
+  - `ativo`: boolean (Default: true, switch/checkbox no modal)
+  - **Vinculações Múltiplas (Multi-Select na UI):**
+    - `familia_id`: Lista ou FK -> `catalogo_ips_familias` (Obrigatório, select no modal. Precisa ter pelo menos 1 Família)
+- **RELACIONAMENTOS (FKs):**
+  - `empresa_id`: FK -> Empresas (Obrigatório, injetado pelo sistema)
+
+### 1.2 Sub aba "Tipos de Abutments"
+
+- **ROTA / GATILHO UI:** `/catalogo/admin/componentes` -> aba "Estrutura" -> sub aba "Tipos de Abutments" -> botão "Novo Tipo de Abutment" (Abre Modal de Cadastro de Tipos de Abutments)
+- **TABELA DB:** `catalogo_cps_tipos_abutments`
+- **DADOS (Campos do Modal/Tabela):**
+  - `id`: uuid (Auto-gerado, PK)
+  - `nome`: string (Obrigatório, input text no modal)
+  - `sigla`: string (Opcional, input text no modal)
+  - `ativo`: boolean (Default: true, switch/checkbox no modal)
+  - **Vinculações (Select na UI):**
+    - `tipo_reabilitacao_id`: FK -> `catalogo_cps_tipos_reabilitacao` (Obrigatório, select no modal. Precisa ter pelo menos 1 Tipo de Reabilitação)
+- **RELACIONAMENTOS (FKs):**
+  - `empresa_id`: FK -> Empresas (Obrigatório, injetado pelo sistema)
+  - `tipo_reabilitacao_id`: FK -> `catalogo_cps_tipos_reabilitacao`
+
+### 1.3 Sub aba "Tipos de Componentes"
+
+- **ROTA / GATILHO UI:** `/catalogo/admin/componentes` -> aba "Estrutura" -> sub aba "Tipos de Componentes" -> botão "Novo Tipo de Componente" (Abre Modal de Cadastro de Tipos de Componentes)
+- **TABELA DB:** `catalogo_cps_tipos_componentes`
+- **DADOS (Campos do Modal/Tabela):**
+  - `id`: uuid (Auto-gerado, PK)
+  - `nome`: string (Obrigatório, input text no modal)
+  - `sigla`: string (Opcional, input text no modal)
+  - `ativo`: boolean (Default: true, switch/checkbox no modal)
+- **RELACIONAMENTOS (FKs):**
+  - `empresa_id`: FK -> Empresas (Obrigatório, injetado pelo sistema)
+  - `categoria_id`: FK -> `catalogo_categorias` (Default: Categoria de Componentes)
+
+### 1.4 Sub aba "Tipos de Parafusos"
+
+- **ROTA / GATILHO UI:** `/catalogo/admin/componentes` -> aba "Estrutura" -> sub aba "Tipos de Parafusos" -> botão "Novo Tipo de Parafuso" (Abre Modal de Cadastro de Tipos de Parafusos)
+- **TABELA DB:** `catalogo_cps_tipos_parafusos`
+- **DADOS (Campos do Modal/Tabela):**
+  - `id`: uuid (Auto-gerado, PK)
+  - `nome`: string (Obrigatório, input text no modal)
+  - `sigla`: string (Opcional, input text no modal)
+  - `ativo`: boolean (Default: true, switch/checkbox no modal)
+- **RELACIONAMENTOS (FKs):**
+  - `empresa_id`: FK -> Empresas (Obrigatório, injetado pelo sistema)
+
+### 1.5 Sub aba "Tipos de Cicatrizadores"
+
+- **ROTA / GATILHO UI:** `/catalogo/admin/componentes` -> aba "Estrutura" -> sub aba "Tipos de Cicatrizadores" -> botão "Novo Tipo de Cicatrizador" (Abre Modal de Cadastro de Tipos de Cicatrizadores)
+- **TABELA DB:** `catalogo_cps_tipos_cicatrizadores`
+- **DADOS (Campos do Modal/Tabela):**
+  - `id`: uuid (Auto-gerado, PK)
+  - `nome`: string (Obrigatório, input text no modal)
+  - `sigla`: string (Opcional, input text no modal)
+  - `ativo`: boolean (Default: true, switch/checkbox no modal)
+- **RELACIONAMENTOS (FKs):**
+  - `empresa_id`: FK -> Empresas (Obrigatório, injetado pelo sistema)
+
+## 2. Nav Item "COMPONENTES" (Menu Lateral e Menu Grid) -> aba "Produtos"
+
+### 2.1 Sub aba "Abutments"
+
+- **ROTA / GATILHO UI:** `/catalogo/admin/componentes` -> aba "Produtos" -> sub aba "Abutments" -> botão "Novo Abutment" (Abre Modal de Cadastro de Abutments)
+- **TABELA DB:** `catalogo_abutments`
+- **DADOS / CAMPOS DO MODAL:**
+  - **Vinculações (Select na UI):**
+    - `tipo_abutment_id`: FK -> `catalogo_cps_tipos_abutments` (Obrigatório)
+    - `parafuso_id`: FK -> `catalogo_parafusos` (Obrigatório)
+    - `chave_id`: FK -> `catalogo_chaves` (Opcional/Select)
+  - **Identificação:**
+    - `sku`: string (PK manual, input text obrigatório)
+    - `nome`: string (Obrigatório, input text no modal)
+    - `sigla`: string (Opcional, input text no modal)
+    - `descricao`: string (textarea)
+  - **Imagens do Produto (Botões/Tabs para seleção de tipo):**
+    - `arquivo`: file (input upload no modal, salva no bucket de storage e armazena a URL)
+    - `url_s3`: string (input text no modal)
+    - `url_google_drive`: string (input text no modal)
+  - **Especificações Técnicas:**
+    - `diametro_plataforma_mm`: number (input number, decimal)
+    - `altura_transmucoso_mm`: number (input number, decimal)
+    - `altura_corpo_mm`: number (input number, decimal)
+    - `angulacao_graus`: number (input number)
+    - `torque_ncm`: number (input number)
+    - `material`: string (input text)
+  - **Comercial e Status:**
+    - `preco`: number (decimal/currency input)
+    - `ativo`: boolean (Default: true, switch/checkbox)
+- **RELACIONAMENTOS DO SISTEMA:**
+  - `empresa_id`: FK -> Empresas (Obrigatório, injetado pelo sistema)
+  - `tipo_abutment_id`: FK -> `catalogo_cps_tipos_abutments`
+  - `parafuso_id`: FK -> `catalogo_parafusos`
+  - `chave_id`: FK -> `catalogo_chaves`
+
+### 2.2 Sub aba "Componentes"
+
+- **ROTA / GATILHO UI:** `/catalogo/admin/componentes` -> aba "Produtos" -> sub aba "Componentes" -> botão "Novo Componente" (Abre Modal de Cadastro de Componentes)
+- **TABELA DB:** `catalogo_componentes`
+- **DADOS / CAMPOS DO MODAL:**
+  - **Vinculações (Select na UI):**
+    - `tipo_componente_id`: FK -> `catalogo_cps_tipos_componentes` (Obrigatório)
+    - `tipo_abutment_id`: FK -> `catalogo_cps_tipos_abutments` (Obrigatório)
+    - `parafuso_id`: FK -> `catalogo_parafusos` (Obrigatório)
+    - `chave_id`: FK -> `catalogo_chaves` (Opcional/Select)
+  - **Identificação:**
+    - `sku`: string (PK manual, input text obrigatório)
+    - `nome`: string (Obrigatório, input text no modal)
+    - `sigla`: string (Opcional, input text no modal)
+    - `descricao`: string (textarea)
+  - **Imagens do Produto (Botões/Tabs para seleção de tipo):**
+    - `arquivo`: file (input upload no modal, salva no bucket de storage e armazena a URL)
+    - `url_s3`: string (input text no modal)
+    - `url_google_drive`: string (input text no modal)
+  - **Especificações Técnicas:**
+    - `diametro_plataforma_mm`: number (input number, decimal)
+    - `altura_transmucoso_mm`: number (input number, decimal)
+    - `altura_corpo_mm`: number (input number, decimal)
+    - `angulacao_graus`: number (input number)
+    - `tipo`: string (input text no modal)
+    - `tipo_travamento`: string (input text no modal)
+    - `material`: string (input text)
+  - **Comercial e Status:**
+    - `preco`: number (decimal/currency input)
+    - `ativo`: boolean (Default: true, switch/checkbox)
+- **RELACIONAMENTOS DO SISTEMA:**
+  - `empresa_id`: FK -> Empresas (Obrigatório, injetado pelo sistema)
+  - `tipo_abutment_id`: FK -> `catalogo_cps_tipos_abutments`
+  - `tipo_componente_id`: FK -> `catalogo_cps_tipos_componentes`
+  - `parafuso_id`: FK -> `catalogo_parafusos`
+  - `chave_id`: FK -> `catalogo_chaves`
+
+### 2.3 Sub aba "Parafusos"
+
+- **ROTA / GATILHO UI:** `/catalogo/admin/componentes` -> aba "Produtos" -> sub aba "Parafusos" -> botão "Novo Parafuso" (Abre Modal de Cadastro de Parafusos)
+- **TABELA DB:** `catalogo_parafusos`
+- **DADOS / CAMPOS DO MODAL:**
+  - **Vinculações (Select na UI):**
+    - `tipo_parafuso_id`: FK -> `catalogo_cps_tipos_parafusos` (Obrigatório)
+    - `chave_id`: FK -> `catalogo_chaves` (Opcional/Select)
+  - **Identificação:**
+    - `sku`: string (PK manual, input text obrigatório)
+    - `nome`: string (Obrigatório, input text no modal)
+    - `sigla`: string (Opcional, input text no modal)
+    - `descricao`: string (textarea)
+  - **Imagens do Produto (Botões/Tabs para seleção de tipo):**
+    - `arquivo`: file (input upload no modal, salva no bucket de storage e armazena a URL)
+    - `url_s3`: string (input text no modal)
+    - `url_google_drive`: string (input text no modal)
+  - **Especificações Técnicas:**
+    - `torque_ncm`: number (input number)
+    - `material`: string (input text)
+  - **Comercial e Status:**
+    - `preco`: number (decimal/currency input)
+    - `ativo`: boolean (Default: true, switch/checkbox)
+- **RELACIONAMENTOS DO SISTEMA:**
+  - `empresa_id`: FK -> Empresas (Obrigatório, injetado pelo sistema)
+  - `tipo_parafuso_id`: FK -> `catalogo_cps_tipos_parafusos`
+  - `chave_id`: FK -> `catalogo_chaves`
+
+### 2.4 Sub aba "Cicatrizadores"
+
+- **ROTA / GATILHO UI:** `/catalogo/admin/componentes` -> aba "Produtos" -> sub aba "Cicatrizadores" -> botão "Novo Cicatrizador" (Abre Modal de Cadastro de Cicatrizadores)
+- **TABELA DB:** `catalogo_cicatrizadores`
+- **DADOS / CAMPOS DO MODAL:**
+  - **Vinculações (Select na UI):**
+    - `implante_id`: FK -> `catalogo_implantes` (Obrigatório)
+    - `chave_id`: FK -> `catalogo_chaves` (Opcional/Select)
+  - **Identificação:**
+    - `sku`: string (PK manual, input text obrigatório)
+    - `nome`: string (Obrigatório, input text no modal)
+    - `sigla`: string (Opcional, input text no modal)
+    - `descricao`: string (textarea)
+  - **Imagens do Produto (Botões/Tabs para seleção de tipo):**
+    - `arquivo`: file (input upload no modal, salva no bucket de storage e armazena a URL)
+    - `url_s3`: string (input text no modal)
+    - `url_google_drive`: string (input text no modal)
+  - **Especificações Técnicas:**
+    - `diametro_plataforma_mm`: number (input number, decimal)
+    - `altura_transmucoso_mm`: number (input number, decimal)
+    - `altura_corpo_mm`: number (input number, decimal)
+    - `torque_ncm`: number (input number)
+    - `material`: string (input text)
+  - **Comercial e Status:**
+    - `preco`: number (decimal/currency input)
+    - `ativo`: boolean (Default: true, switch/checkbox)
+- **RELACIONAMENTOS DO SISTEMA:**
+  - `empresa_id`: FK -> Empresas (Obrigatório, injetado pelo sistema)
+  - `implante_id`: FK -> `catalogo_implantes`
+  - `chave_id`: FK -> `catalogo_chaves`
+
+---
+
+# DEFINIÇÕES DE INSTRUMENTAIS
+
+## 1. Nav Item "INSTRUMENTAIS" (Menu Lateral e Menu Grid) -> aba "Estrutura"
+
+### 1.1 Sub aba "Tipos de Chaves"
+
+- **ROTA / GATILHO UI:** `/catalogo/admin/instrumentais` -> aba "Estrutura" -> sub aba "Tipos de Chaves" -> botão "Novo Tipo de Chave" (Abre Modal de Cadastro de Tipos de Chaves)
+- **TABELA DB:** `catalogo_tipos_chaves`
+- **DADOS (Campos do Modal/Tabela):**
+  - `id`: uuid (Auto-gerado, PK)
+  - `nome`: string (Obrigatório, input text no modal)
+  - `sigla`: string (Opcional, input text no modal)
+  - `ativo`: boolean (Default: true, switch/checkbox no modal)
+- **RELACIONAMENTOS (FKs):**
+  - `empresa_id`: FK -> Empresas (Obrigatório, injetado pelo sistema)
+
+### 1.2 Sub aba "Tipos de Fresas"
+
+- **ROTA / GATILHO UI:** `/catalogo/admin/instrumentais` -> aba "Estrutura" -> sub aba "Tipos de Fresas" -> botão "Novo Tipo de Fresa" (Abre Modal de Cadastro de Tipos de Fresas)
+- **TABELA DB:** `catalogo_tipos_fresas`
+- **DADOS (Campos do Modal/Tabela):**
+  - `id`: uuid (Auto-gerado, PK)
+  - `nome`: string (Obrigatório, input text no modal)
+  - `sigla`: string (Opcional, input text no modal)
+  - `ativo`: boolean (Default: true, switch/checkbox no modal)
+- **RELACIONAMENTOS (FKs):**
+  - `empresa_id`: FK -> Empresas (Obrigatório, injetado pelo sistema)
+
+### 1.3 Sub aba "Tipos Complementares"
+
+- **ROTA / GATILHO UI:** `/catalogo/admin/instrumentais` -> aba "Estrutura" -> sub aba "Tipos Complementares" -> botão "Novo Tipo Complementar" (Abre Modal de Cadastro de Tipos Complementares)
+- **TABELA DB:** `catalogo_tipos_complementares`
+- **DADOS (Campos do Modal/Tabela):**
+  - `id`: uuid (Auto-gerado, PK)
+  - `nome`: string (Obrigatório, input text no modal)
+  - `sigla`: string (Opcional, input text no modal)
+  - `ativo`: boolean (Default: true, switch/checkbox no modal)
+- **RELACIONAMENTOS (FKs):**
+  - `empresa_id`: FK -> Empresas (Obrigatório, injetado pelo sistema)
+
+### 1.4 Sub aba "Tipos Opcionais"
+
+- **ROTA / GATILHO UI:** `/catalogo/admin/instrumentais` -> aba "Estrutura" -> sub aba "Tipos Opcionais" -> botão "Novo Tipo Opcional" (Abre Modal de Cadastro de Tipos Opcionais)
+- **TABELA DB:** `catalogo_tipos_opcionais`
+- **DADOS (Campos do Modal/Tabela):**
+  - `id`: uuid (Auto-gerado, PK)
+  - `nome`: string (Obrigatório, input text no modal)
+  - `sigla`: string (Opcional, input text no modal)
+  - `ativo`: boolean (Default: true, switch/checkbox no modal)
+- **RELACIONAMENTOS (FKs):**
+  - `empresa_id`: FK -> Empresas (Obrigatório, injetado pelo sistema)
+
+## 2. Nav Item "INSTRUMENTAIS" (Menu Lateral e Menu Grid) -> aba "Produtos"
+
+### 2.1 Sub aba "Chaves"
+
+- **ROTA / GATILHO UI:** `/catalogo/admin/instrumentais` -> aba "Produtos" -> sub aba "Chaves" -> botão "Nova Chave" (Abre Modal de Cadastro de Chaves)
+- **TABELA DB:** `catalogo_chaves`
+- **DADOS / CAMPOS DO MODAL:**
+  - **Vinculações (Select na UI):**
+    - `tipo_chave_id`: FK -> `catalogo_tipos_chaves` (Obrigatório)
+    - `kit_id`: FK -> `catalogo_kits` (Opcional/Select para vincular a um Kit)
+  - **Identificação:**
+    - `sku`: string (PK manual, input text obrigatório)
+    - `nome`: string (Obrigatório, input text no modal)
+    - `sigla`: string (Opcional, input text no modal)
+    - `descricao`: string (textarea)
+  - **Imagens do Produto (Botões/Tabs para seleção de tipo):**
+    - `arquivo`: file (input upload no modal, salva no bucket de storage e armazena a URL)
+    - `url_s3`: string (input text no modal)
+    - `url_google_drive`: string (input text no modal)
+  - **Especificações Técnicas:**
+    - `tipo`: string (input text)
+    - `comprimento`: string (input text)
+    - `diametro_mm`: number (input number, decimal)
+    - `material`: string (input text)
+  - **Comercial e Status:**
+    - `preco`: number (decimal/currency input)
+    - `ativo`: boolean (Default: true, switch/checkbox)
+- **RELACIONAMENTOS DO SISTEMA:**
+  - `empresa_id`: FK -> Empresas (Obrigatório, injetado pelo sistema)
+  - `tipo_chave_id`: FK -> `catalogo_tipos_chaves`
+  - `kit_id`: FK -> `catalogo_kits`
+
+### 2.2 Sub aba "Fresas"
+
+- **ROTA / GATILHO UI:** `/catalogo/admin/instrumentais` -> aba "Produtos" -> sub aba "Fresas" -> botão "Nova Fresa" (Abre Modal de Cadastro de Fresas)
+- **TABELA DB:** `catalogo_fresas`
+- **DADOS / CAMPOS DO MODAL:**
+  - **Vinculações (Select na UI):**
+    - `tipo_fresa_id`: FK -> `catalogo_tipos_fresas` (Obrigatório)
+    - `kit_id`: FK -> `catalogo_kits` (Opcional/Select para vincular a um Kit)
+  - **Identificação:**
+    - `sku`: string (PK manual, input text obrigatório)
+    - `nome`: string (Obrigatório, input text no modal)
+    - `sigla`: string (Opcional, input text no modal)
+    - `descricao`: string (textarea)
+  - **Imagens do Produto (Botões/Tabs para seleção de tipo):**
+    - `arquivo`: file (input upload no modal, salva no bucket de storage e armazena a URL)
+    - `url_s3`: string (input text no modal)
+    - `url_google_drive`: string (input text no modal)
+  - **Especificações Técnicas:**
+    - `tipo`: string (input text)
+    - `comprimento`: string (input text)
+    - `diametro_mm`: number (input number, decimal)
+    - `material`: string (input text)
+  - **Comercial e Status:**
+    - `preco`: number (decimal/currency input)
+    - `ativo`: boolean (Default: true, switch/checkbox)
+- **RELACIONAMENTOS DO SISTEMA:**
+  - `empresa_id`: FK -> Empresas (Obrigatório, injetado pelo sistema)
+  - `tipo_fresa_id`: FK -> `catalogo_tipos_fresas`
+  - `kit_id`: FK -> `catalogo_kits`
+
+### 2.3 Sub aba "Complementares"
+
+- **ROTA / GATILHO UI:** `/catalogo/admin/instrumentais` -> aba "Produtos" -> sub aba "Complementares" -> botão "Novo Instrumento Complementar" (Abre Modal de Cadastro de Instrumentos Complementares)
+- **TABELA DB:** `catalogo_complementares`
+- **DADOS / CAMPOS DO MODAL:**
+  - **Vinculações (Select na UI):**
+    - `tipo_complementar_id`: FK -> `catalogo_tipos_complementares` (Obrigatório)
+    - `kit_id`: FK -> `catalogo_kits` (Opcional/Select para vincular a um Kit)
+  - **Identificação:**
+    - `sku`: string (PK manual, input text obrigatório)
+    - `nome`: string (Obrigatório, input text no modal)
+    - `sigla`: string (Opcional, input text no modal)
+    - `descricao`: string (textarea)
+  - **Imagens do Produto (Botões/Tabs para seleção de tipo):**
+    - `arquivo`: file (input upload no modal, salva no bucket de storage e armazena a URL)
+    - `url_s3`: string (input text no modal)
+    - `url_google_drive`: string (input text no modal)
+  - **Especificações Técnicas:**
+    - `tipo`: string (input text)
+    - `comprimento`: string (input text)
+    - `diametro_mm`: number (input number, decimal)
+    - `material`: string (input text)
+  - **Comercial e Status:**
+    - `preco`: number (decimal/currency input)
+    - `ativo`: boolean (Default: true, switch/checkbox)
+- **RELACIONAMENTOS DO SISTEMA:**
+  - `empresa_id`: FK -> Empresas (Obrigatório, injetado pelo sistema)
+  - `tipo_complementar_id`: FK -> `catalogo_tipos_complementares`
+  - `kit_id`: FK -> `catalogo_kits`
+
+### 2.4 Sub aba "Opcionais"
+
+- **ROTA / GATILHO UI:** `/catalogo/admin/instrumentais` -> aba "Produtos" -> sub aba "Opcionais" -> botão "Novo Instrumento Opcional" (Abre Modal de Cadastro de Instrumentos Opcionais)
+- **TABELA DB:** `catalogo_opcionais`
+- **DADOS / CAMPOS DO MODAL:**
+  - **Vinculações (Select na UI):**
+    - `tipo_opcional_id`: FK -> `catalogo_tipos_opcionais` (Obrigatório)
+    - `kit_id`: FK -> `catalogo_kits` (Opcional/Select para vincular a um Kit)
+  - **Identificação:**
+    - `sku`: string (PK manual, input text obrigatório)
+    - `nome`: string (Obrigatório, input text no modal)
+    - `sigla`: string (Opcional, input text no modal)
+    - `descricao`: string (textarea)
+  - **Imagens do Produto (Botões/Tabs para seleção de tipo):**
+    - `arquivo`: file (input upload no modal, salva no bucket de storage e armazena a URL)
+    - `url_s3`: string (input text no modal)
+    - `url_google_drive`: string (input text no modal)
+  - **Especificações Técnicas:**
+    - `tipo`: string (input text)
+    - `comprimento`: string (input text)
+    - `diametro_mm`: number (input number, decimal)
+    - `material`: string (input text)
+  - **Comercial e Status:**
+    - `preco`: number (decimal/currency input)
+    - `ativo`: boolean (Default: true, switch/checkbox)
+- **RELACIONAMENTOS DO SISTEMA:**
+  - `empresa_id`: FK -> Empresas (Obrigatório, injetado pelo sistema)
+  - `tipo_opcional_id`: FK -> `catalogo_tipos_opcionais`
+  - `kit_id`: FK -> `catalogo_kits`
+
+---
+
+# DEFINIÇÕES DE KITS
+
+## 1. Nav Item "KITS" (Menu Lateral e Menu Grid) -> aba "Estrutura"
+
+### 1.1 Sub aba "Tipos de Kits"
+
+- **ROTA / GATILHO UI:** `/catalogo/admin/kits` -> aba "Estrutura" -> sub aba "Tipos de Kits" -> botão "Novo Tipo de Kit" (Abre Modal de Cadastro de Tipos de Kits)
+- **TABELA DB:** `catalogo_tipos_kits`
+- **DADOS (Campos do Modal/Tabela):**
+  - `id`: uuid (Auto-gerado, PK)
+  - `nome`: string (Obrigatório, input text no modal)
+  - `sigla`: string (Opcional, input text no modal)
+  - `ativo`: boolean (Default: true, switch/checkbox no modal)
+- **RELACIONAMENTOS (FKs):**
+  - `empresa_id`: FK -> Empresas (Obrigatório, injetado pelo sistema)
+
+## 2. Nav Item "KITS" (Menu Lateral e Menu Grid) -> aba "Produtos"
+
+### 2.1 Sub aba "Kits"
+
+- **ROTA / GATILHO UI:** `/catalogo/admin/kits` -> aba "Produtos" -> sub aba "Kits" -> botão "Novo Kit" (Abre Modal de Cadastro de Kits)
+- **TABELA DB:** `catalogo_kits`
+- **DADOS / CAMPOS DO MODAL:**
+  - **Vinculações (Select na UI):**
+    - `tipo_kit_id`: FK -> `catalogo_tipos_kits` (Obrigatório)
+  - **Identificação:**
+    - `sku`: string (PK manual, input text obrigatório)
+    - `nome`: string (Obrigatório, input text no modal)
+    - `sigla`: string (Opcional, input text no modal)
+    - `descricao`: string (textarea)
+  - **Imagens do Produto (Botões/Tabs para seleção de tipo):**
+    - `arquivo`: file (input upload no modal, salva no bucket de storage e armazena a URL)
+    - `url_s3`: string (input text no modal)
+    - `url_google_drive`: string (input text no modal)
+  - **Composição do Kit (Seções/Multi-Selects dinâmicos no Modal):**
+    - `chaves_id`: Lista de FKs -> `catalogo_chaves`
+    - `fresas_id`: Lista de FKs -> `catalogo_fresas`
+    - `complementares_id`: Lista de FKs -> `catalogo_complementares`
+    - `opcionais_id`: Lista de FKs -> `catalogo_opcionais`
+    *(Regras das Seções de UI no Modal "Novo Kit":*
+       1. *Seção Chaves:* 1 Select para escolher um item em `catalogo_chaves` + 1 Botão "Adicionar" para incluir o item à lista visual de chaves que compõem o kit.
+       2. *Seção Fresas:* 1 Select para escolher um item em `catalogo_fresas` + 1 Botão "Adicionar" para incluir o item à lista visual de fresas que compõem o kit.
+       3. *Seção Instrumentais Complementares:* 1 Select para escolher um item em `catalogo_complementares` + 1 Botão "Adicionar" para incluir na lista visual de complementares.
+       4. *Seção Instrumentais Opcionais:* 1 Select para escolher um item em `catalogo_opcionais` + 1 Botão "Adicionar" para incluir na lista visual de opcionais.)
+  - **Comercial e Status:**
+    - `preco`: number (decimal/currency input)
+    - `ativo`: boolean (Default: true, switch/checkbox)
+- **RELACIONAMENTOS DO SISTEMA:**
+  - `empresa_id`: FK -> Empresas (Obrigatório, injetado pelo sistema)
+  - `tipo_kit_id`: FK -> `catalogo_tipos_kits`
+
+---
+
+# DEFINIÇÕES DE WORKFLOWS
+
+## 1. Nav Item "WORKFLOWS" (Menu Lateral e Menu Grid) -> aba "Estrutura"
+
+### 1.1 Sub aba "Tipos de Workflows"
+
+- **ROTA / GATILHO UI:** `/catalogo/admin/workflows` -> aba "Estrutura" -> sub aba "Tipos de Workflows" -> botão "Novo Tipo de Workflow" (Abre Modal de Cadastro de Tipos de Workflows)
+- **TABELA DB:** `catalogo_cps_tipos_workflows`
+- **DADOS (Campos do Modal/Tabela):**
+  - `id`: uuid (Auto-gerado, PK)
+  - `nome`: string (Obrigatório, input text no modal)
+  - `sigla`: string (Opcional, input text no modal)
+  - `ativo`: boolean (Default: true, switch/checkbox no modal)
+- **RELACIONAMENTOS (FKs):**
+  - `empresa_id`: FK -> Empresas (Obrigatório, injetado pelo sistema)
+
+## 2. Nav Item "WORKFLOWS" (Menu Lateral e Menu Grid) -> aba "Etapas"
+
+### 2.1 Sub aba "Etapas do Workflow"
+
+- **ROTA / GATILHO UI:** `/catalogo/admin/workflows` -> aba "Etapas" -> sub aba "Etapas do Workflow" -> botão "Nova Etapa do Workflow" (Abre Modal de Cadastro de Etapas do Workflow)
+- **TABELA DB:** `catalogo_cps_etapas_workflows`
+- **DADOS (Campos do Modal/Tabela):**
+  - `id`: uuid (Auto-gerado, PK)
+  - `tipo_workflow_id`: FK -> `catalogo_cps_tipos_workflows` (Obrigatório, select no modal)
+  - `nome`: string (Obrigatório, input text no modal)
+  - `sigla`: string (Opcional, input text no modal)
+  - `ordem`: number (Input number para definir a ordem da etapa, ex: 1, 2, 3)
+  - `ativo`: boolean (Default: true, switch/checkbox no modal)
+- **RELACIONAMENTOS (FKs):**
+  - `empresa_id`: FK -> Empresas (Obrigatório, injetado pelo sistema)
+  - `tipo_workflow_id`: FK -> `catalogo_cps_tipos_workflows`
+
+---
+
+# DEFINIÇÕES DE FRESAGENS
+
+## 1. Nav Item "FRESAGENS" (Menu Lateral e Menu Grid) -> aba "Estrutura"
+
+### 1.1 Sub aba "Tipos de Fresagens"
+
+- **ROTA / GATILHO UI:** `/catalogo/admin/fresagens` -> aba "Estrutura" -> sub aba "Tipos de Fresagens" -> botão "Novo Tipo de Fresagem" (Abre Modal de Cadastro de Tipos de Fresagens)
+- **TABELA DB:** `catalogo_tipos_fresagens`
+- **DADOS (Campos do Modal/Tabela):**
+  - `id`: uuid (Auto-gerado, PK)
+  - `nome`: string (Obrigatório, input text no modal)
+  - `sigla`: string (Opcional, input text no modal)
+  - `ativo`: boolean (Default: true, switch/checkbox no modal)
+- **RELACIONAMENTOS (FKs):**
+  - `empresa_id`: FK -> Empresas (Obrigatório, injetado pelo sistema)
+
+## 2. Nav Item "FRESAGENS" (Menu Lateral e Menu Grid) -> aba "Protocolos"
+
+### 2.1 Sub aba "Protocolos de Fresagens"
+
+- **ROTA / GATILHO UI:** `/catalogo/admin/fresagens` -> aba "Protocolos" -> sub aba "Protocolos de Fresagens" -> botão "Novo Protocolo de Fresagem" (Abre Modal de Cadastro de Protocolos de Fresagens)
+- **TABELA DB:** `catalogo_protocolos_fresagens`
+- **DADOS (Campos do Modal/Tabela):**
+  - `id`: uuid (Auto-gerado, PK)
+  - `nome`: string (Obrigatório, input text no modal)
+  - `tipo_osso`: string (Obrigatório, input text/select no modal, ex: "Soft" ou "Hard")
+  - `sigla`: string (Opcional, input text no modal)
+  - `ativo`: boolean (Default: true, switch/checkbox no modal)
+  - **Vinculações de Diâmetro (Select na UI):**
+    - `diametro_mm_aplicável`: number / decimal (Select que busca e apresenta os valores únicos/distintos da coluna `diametro_mm` dos implantes cadastrados na tabela `catalogo_implantes`)
+  - **Composição da Sequência de Fresas (Componente Específico com Ordenação):**
+    - `fresas`: Tabela Pivô -> `catalogo_protocolos_fresas_itens` contendo (`protocolo_id`, `fresa_id`, `ordem`)
+    *(Regra de UI para Sequência de Fresas: O modal deve renderizar um componente específico contendo:*
+       1. *Select para o usuário escolher a Fresa a partir da tabela `catalogo_fresas`.*
+       2. *Input number ou definição automática para a `ordem` da fresa dentro do protocolo.*
+       3. *Botão "Adicionar Fresa" que insere o item em uma lista visual ordenada.*
+       4. *A lista visual deve permitir que o usuário altere a ordem dos itens antes de salvar clicando em botões de "Subir / Descer" ou arrastando e soltando.)*
+- **RELACIONAMENTOS (FKs):**
+  - `empresa_id`: FK -> Empresas (Obrigatório, injetado pelo sistema)
+  - `fresas`: Relacionamento 1:N com a tabela pivô `catalogo_protocolos_fresas_itens`
+
+---
+
+# ORDEM DE EXECUÇÃO ESPERADA
+
+1. **Modelagem de Dados & Migrations:** Crie/atualize todas as tabelas, enums e chaves estrangeiras especificadas acima no schema do banco de dados (criando as tabelas pivô necessárias para ordenação, como `catalogo_protocolos_fresas_itens`). Gere e aplique as migrations correspondentes se aplicável à stack.
+2. **Schemas de Validação:** Crie os schemas de validação (ex: Zod) correspondentes para cada entidade do sistema, garantindo todas as regras de obrigatoriedade, chaves manuais (SKUs) e tipos de dados corretos.
+3. **Desenvolvimento dos Modais UI:** Crie todos os modais de interface (UI) descritos nos blocos de `ROTA / GATILHO UI` (Categorias, Conexões, Famílias, Linhas, Implantes, Tipos de Reabilitação, Abutments, Componentes, Parafusos, Cicatrizadores, Chaves, Fresas, Complementares, Opcionais, Kits, Workflows, Etapas do Workflow, Tipos de Fresagens e Protocolos de Fresagens).
+4. **Integração Visual e Comportamental:** Garanta a implementação perfeita dos comportamentos específicos solicitados nos modais: selects em cascata, injeção de contexto `empresa_id`, seções de montagem dinâmica de listas para Kits, e o construtor visual de ordem/sequência de fresas para os Protocolos de Fresagem.
