@@ -71,7 +71,12 @@ function AdminImplantesPage() {
     if (!implData.familia_id) { setImplError("Família é obrigatória"); return }
     if (!implData.linha_id) { setImplError("Linha é obrigatória"); return }
 
-    const payload = { ...implData, empresa_id: empresaId }
+    // UUID columns: converter "" para null (Postgres rejeita string vazia em uuid)
+    const UUID_COLS = ["categoria_id", "conexao_id", "familia_id", "linha_id", "osso_soft", "osso_hard"] as const
+    const sanitized = Object.fromEntries(
+      Object.entries(implData).map(([k, v]) => [k, UUID_COLS.includes(k as typeof UUID_COLS[number]) && v === "" ? null : v])
+    )
+    const payload = { ...sanitized, empresa_id: empresaId }
     if (implEditing) {
       const { error } = await supabase.from("catalogo_implantes").update(payload).eq("sku", implEditing.sku).eq("empresa_id", empresaId)
       if (error) { setImplError(error.message); return }
