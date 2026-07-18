@@ -1119,6 +1119,15 @@ export function useImagensProduto(tipo: ProdutoTipoImagem | undefined, sku: stri
   })
 }
 
+export function useImagensBatch(tipo: ProdutoTipoImagem | undefined, skus: string[]) {
+  const empresaId = useEmpresaId()
+  return useQuery({
+    queryKey: ["catalogo", "imagens-batch", empresaId, tipo, skus.sort().join(",")],
+    queryFn: () => imagensService.listarImagensBatch(empresaId, tipo!, skus),
+    enabled: !!empresaId && !!tipo && skus.length > 0,
+  })
+}
+
 // --- Dados Relacionados ao Implante ---
 export function useChavesDoImplante(implanteSku: string) {
   const empresaId = useEmpresaId()

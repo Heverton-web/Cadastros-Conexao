@@ -1,14 +1,14 @@
-import { createRoute, useParams, useNavigate, useSearch } from "@tanstack/react-router"
+import { createRoute, useParams, useNavigate, useSearch, Link } from "@tanstack/react-router"
 import { rootRoute } from "./__root"
 import { StoreLayout, useCatalogoVisibility } from "~/features/catalogo/components/StoreLayout"
-import { useImplanteDetalhe, useAbutmentDetalhe, useKitDetalhe, usePromocionalDetalhe, useProtocoloFresagem, useGuias, useImagensProduto, useChavesDoImplante, useCicatrizadoresDoImplante, useAbutmentsDaFamilia, useKitsComChavesEmComum } from "~/features/catalogo/hooks/useCatalogo"
+import { useImplanteDetalhe, useAbutmentDetalhe, useKitDetalhe, usePromocionalDetalhe, useProtocoloFresagem, useGuias, useImagensProduto, useImagensBatch, useChavesDoImplante, useCicatrizadoresDoImplante, useAbutmentsDaFamilia, useKitsComChavesEmComum } from "~/features/catalogo/hooks/useCatalogo"
 import { addToCart, formatBRL, getPrecoFromDB, mockPreco, resolveBOMItem } from "~/features/catalogo/services/carrinho.service"
 import { playCoinSound } from "~/features/catalogo/services/audio.service"
 import { FresagemTimeline } from "~/features/catalogo/components/FresagemTimeline"
 import { SequenciaProtetica } from "~/features/catalogo/components/SequenciaProtetica"
 import { BomTable } from "~/features/catalogo/components/BomTable"
 import type { ProductSheetTipo } from "~/features/catalogo/types"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import toast from "react-hot-toast"
 import { ArrowLeft, ShoppingCart, Box, Zap, ExternalLink, Check, Tag, TrendingDown } from "lucide-react"
 import { openImageViewer } from "~/features/catalogo/services/ui.service"
@@ -252,6 +252,16 @@ function ImplanteDetail({ sku }: { sku: string }) {
   const { data: kits } = useKitsComChavesEmComum(sku)
   const [activeTab, setActiveTab] = useState("ficha")
 
+  // ── Imagens dos produtos relacionados (batch) ──
+  const chavesSkus = (chaves ?? []).map((c) => c.sku)
+  const cicSkus = (cicatrizadores ?? []).map((c) => c.sku)
+  const abSkus = (abutments ?? []).map((a) => a.sku)
+  const kitSkus = (kits ?? []).map((k) => k.sku)
+  const { data: imagensChaves } = useImagensBatch("chave", chavesSkus)
+  const { data: imagensCic } = useImagensBatch("cicatrizador", cicSkus)
+  const { data: imagensAb } = useImagensBatch("abutment", abSkus)
+  const { data: imagensKits } = useImagensBatch("kit", kitSkus)
+
   if (!impl) return <LoadingState />
 
   // ── Inativo: não renderiza ──
@@ -395,96 +405,108 @@ function ImplanteDetail({ sku }: { sku: string }) {
         {/* ─── Chaves ─── */}
         {activeTab === "chaves" && (
           <div className="space-y-3">
-            {chavesAtivas.map((chave) => (
-              <RelatedProductCard
-                key={chave.sku}
-                nome={chave.nome}
-                sku={chave.sku}
-                cor={cor}
-                preco={chave.preco}
-                tipo="chave"
-                imageUrl={chave.imagens?.[0]?.url_imagem}
-                onImageClick={() => openImageViewer(chave.imagens?.[0]?.url_imagem ?? "", chave.nome)}
-              >
-                {chave.tipo_chave?.nome && (
-                  <span className="inline-flex items-center px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-[var(--color-accent)]/10 text-[var(--color-accent)]">
-                    {chave.tipo_chave.nome}
-                  </span>
-                )}
-              </RelatedProductCard>
-            ))}
+            {chavesAtivas.map((chave) => {
+              const img = imagensChaves?.get(chave.sku)?.[0]?.url_imagem
+              return (
+                <RelatedProductCard
+                  key={chave.sku}
+                  nome={chave.nome}
+                  sku={chave.sku}
+                  cor={cor}
+                  preco={chave.preco}
+                  tipo="chave"
+                  imageUrl={img}
+                  onImageClick={() => openImageViewer(img ?? "", chave.nome)}
+                >
+                  {chave.tipo_chave?.nome && (
+                    <span className="inline-flex items-center px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-[var(--color-accent)]/10 text-[var(--color-accent)]">
+                      {chave.tipo_chave.nome}
+                    </span>
+                  )}
+                </RelatedProductCard>
+              )
+            })}
           </div>
         )}
 
         {/* ─── Kits ─── */}
         {activeTab === "kits" && (
           <div className="space-y-3">
-            {kitsAtivos.map((kit) => (
-              <RelatedProductCard
-                key={kit.sku}
-                nome={kit.nome}
-                sku={kit.sku}
-                cor={cor}
-                preco={kit.preco}
-                tipo="kit"
-                imageUrl={kit.imagens?.[0]?.url_imagem}
-                onImageClick={() => openImageViewer(kit.imagens?.[0]?.url_imagem ?? "", kit.nome)}
-              >
-                {kit.tipo_kit?.nome && (
-                  <span className="inline-flex items-center px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-[var(--color-accent)]/10 text-[var(--color-accent)]">
-                    {kit.tipo_kit.nome}
-                  </span>
-                )}
-              </RelatedProductCard>
-            ))}
+            {kitsAtivos.map((kit) => {
+              const img = imagensKits?.get(kit.sku)?.[0]?.url_imagem
+              return (
+                <RelatedProductCard
+                  key={kit.sku}
+                  nome={kit.nome}
+                  sku={kit.sku}
+                  cor={cor}
+                  preco={kit.preco}
+                  tipo="kit"
+                  imageUrl={img}
+                  onImageClick={() => openImageViewer(img ?? "", kit.nome)}
+                >
+                  {kit.tipo_kit?.nome && (
+                    <span className="inline-flex items-center px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-[var(--color-accent)]/10 text-[var(--color-accent)]">
+                      {kit.tipo_kit.nome}
+                    </span>
+                  )}
+                </RelatedProductCard>
+              )
+            })}
           </div>
         )}
 
         {/* ─── Cicatrizadores ─── */}
         {activeTab === "cicatrizadores" && (
           <div className="space-y-3">
-            {cicatAtivos.map((cic) => (
-              <RelatedProductCard
-                key={cic.sku}
-                nome={cic.nome}
-                sku={cic.sku}
-                cor={cor}
-                preco={cic.preco}
-                tipo="cicatrizador"
-                imageUrl={cic.imagens?.[0]?.url_imagem}
-                onImageClick={() => openImageViewer(cic.imagens?.[0]?.url_imagem ?? "", cic.nome)}
-              >
-                {cic.sigla && (
-                  <span className="inline-flex items-center px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-[var(--color-accent)]/10 text-[var(--color-accent)]">
-                    {cic.sigla}
-                  </span>
-                )}
-              </RelatedProductCard>
-            ))}
+            {cicatAtivos.map((cic) => {
+              const img = imagensCic?.get(cic.sku)?.[0]?.url_imagem
+              return (
+                <RelatedProductCard
+                  key={cic.sku}
+                  nome={cic.nome}
+                  sku={cic.sku}
+                  cor={cor}
+                  preco={cic.preco}
+                  tipo="cicatrizador"
+                  imageUrl={img}
+                  onImageClick={() => openImageViewer(img ?? "", cic.nome)}
+                >
+                  {cic.sigla && (
+                    <span className="inline-flex items-center px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-[var(--color-accent)]/10 text-[var(--color-accent)]">
+                      {cic.sigla}
+                    </span>
+                  )}
+                </RelatedProductCard>
+              )
+            })}
           </div>
         )}
 
         {/* ─── Abutments ─── */}
         {activeTab === "abutments" && (
           <div className="space-y-3">
-            {abutAtivos.map((ab) => (
-              <RelatedProductCard
-                key={ab.sku}
-                nome={`${ab.tipo_abutment?.nome ?? ""} ${ab.familia?.nome ?? ""}`.trim()}
-                sku={ab.sku}
-                cor={cor}
-                preco={ab.preco}
-                tipo="abutment"
-                imageUrl={ab.imagens?.[0]?.url_imagem}
-                onImageClick={() => openImageViewer(ab.imagens?.[0]?.url_imagem ?? "", ab.nome ?? ab.sku)}
-              >
-                {ab.tipo_abutment?.nome && (
-                  <span className="inline-flex items-center px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-[var(--color-accent)]/10 text-[var(--color-accent)]">
-                    {ab.tipo_abutment.nome}
-                  </span>
-                )}
-              </RelatedProductCard>
-            ))}
+            {abutAtivos.map((ab) => {
+              const img = imagensAb?.get(ab.sku)?.[0]?.url_imagem
+              return (
+                <RelatedProductCard
+                  key={ab.sku}
+                  nome={`${ab.tipo_abutment?.nome ?? ""} ${ab.familia?.nome ?? ""}`.trim()}
+                  sku={ab.sku}
+                  cor={cor}
+                  preco={ab.preco}
+                  tipo="abutment"
+                  imageUrl={img}
+                  onImageClick={() => openImageViewer(img ?? "", ab.nome ?? ab.sku)}
+                >
+                  {ab.tipo_abutment?.nome && (
+                    <span className="inline-flex items-center px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-[var(--color-accent)]/10 text-[var(--color-accent)]">
+                      {ab.tipo_abutment.nome}
+                    </span>
+                  )}
+                </RelatedProductCard>
+              )
+            })}
           </div>
         )}
       </div>
@@ -647,6 +669,43 @@ function KitDetail({ sku }: { sku: string }) {
   const { data: kit } = useKitDetalhe(sku)
   const { data: imagens } = useImagensProduto("kit", sku)
   const [activeTab, setActiveTab] = useState("ficha")
+  const [compatData, setCompatData] = useState<any[]>([])
+  const [relatedKits, setRelatedKits] = useState<any[]>([])
+  const [complementKits, setComplementKits] = useState<any[]>([])
+
+  // Buscar dados de compatibilidade e relacionados
+  useEffect(() => {
+    if (!kit?.sku || !kit?.empresa_id) return
+    const empresaId = kit.empresa_id
+
+    // Compatibilidade: implantes vinculados ao kit
+    supabase.from("catalogo_kit_implantes").select("*").eq("empresa_id", empresaId).eq("kit_sku", sku)
+      .then(({ data }) => setCompatData(data ?? []))
+
+    // Kits relacionados (que compartilham chaves)
+    supabase.from("catalogo_kit_chaves").select("chave_id").eq("empresa_id", empresaId).eq("kit_sku", sku)
+      .then(async ({ data: chaves }) => {
+        if (!chaves || chaves.length === 0) { setRelatedKits([]); return }
+        const chaveIds = chaves.map(c => c.chave_id)
+        const { data: otherKits } = await supabase.from("catalogo_kit_chaves").select("kit_sku").eq("empresa_id", empresaId).in("chave_id", chaveIds).neq("kit_sku", sku)
+        if (!otherKits || otherKits.length === 0) { setRelatedKits([]); return }
+        const uniqueSkus = [...new Set(otherKits.map(k => k.kit_sku))]
+        const { data: kitsData } = await supabase.from("catalogo_kits").select("sku, nome, tipo_kit:catalogo_tipos_kits(nome)").eq("empresa_id", empresaId).in("sku", uniqueSkus).eq("ativo", true)
+        setRelatedKits(kitsData ?? [])
+      })
+
+    // Kits complementares (que compartilham fresas)
+    supabase.from("catalogo_kit_fresas").select("fresa_id").eq("empresa_id", empresaId).eq("kit_sku", sku)
+      .then(async ({ data: fresas }) => {
+        if (!fresas || fresas.length === 0) { setComplementKits([]); return }
+        const fresaIds = fresas.map(f => f.fresa_id)
+        const { data: otherKits } = await supabase.from("catalogo_kit_fresas").select("kit_sku").eq("empresa_id", empresaId).in("fresa_id", fresaIds).neq("kit_sku", sku)
+        if (!otherKits || otherKits.length === 0) { setComplementKits([]); return }
+        const uniqueSkus = [...new Set(otherKits.map(k => k.kit_sku))]
+        const { data: kitsData } = await supabase.from("catalogo_kits").select("sku, nome, tipo_kit:catalogo_tipos_kits(nome)").eq("empresa_id", empresaId).in("sku", uniqueSkus).eq("ativo", true)
+        setComplementKits(kitsData ?? [])
+      })
+  }, [kit?.sku, kit?.empresa_id])
 
   if (!kit) return <LoadingState />
 
@@ -678,9 +737,15 @@ function KitDetail({ sku }: { sku: string }) {
     .map((item) => resolveBOMItem(item as Parameters<typeof resolveBOMItem>[0]))
     .filter(Boolean) as { tipo: string; sku: string; nome: string; quantidade: number; preco?: number }[]
 
+  // ── Verificar se é "todos os diâmetros" ──
+  const isAllDiametros = compatData.some((d: any) => d.todos_diametros)
+
   const tabs: SectionTab[] = [
     { key: "ficha", label: "Ficha", count: specs.length },
     { key: "composicao", label: "Composição", count: bomItems.length },
+    { key: "compatibilidade", label: "Compatibilidade", count: isAllDiametros ? 1 : compatData.length },
+    { key: "relacionados", label: "Relacionados", count: relatedKits.length },
+    { key: "complementares", label: "Complementares", count: complementKits.length },
   ]
 
   return (
@@ -743,6 +808,106 @@ function KitDetail({ sku }: { sku: string }) {
               <BomTable items={bomItems} />
             ) : (
               <EmptyState msg="Nenhum item na composição" hint="Adicione itens à composição na edição do kit." />
+            )}
+          </div>
+        )}
+
+        {/* ─── Compatibilidade ─── */}
+        {activeTab === "compatibilidade" && (
+          <div className="rounded-2xl border border-[var(--color-border-subtle)] bg-[var(--color-surface)]/30 p-4 sm:p-6 shadow-lg shadow-black/20 backdrop-blur-sm">
+            {isAllDiametros ? (
+              <div className="text-center py-8">
+                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[#c9a655]/10 mb-4">
+                  <Check className="h-8 w-8 text-[#c9a655]" />
+                </div>
+                <h3 className="text-lg font-black text-white mb-2">Compatível com todos os diâmetros</h3>
+                <p className="text-sm text-[var(--color-text-muted)] max-w-md mx-auto">
+                  Este kit é compatível com <strong className="text-[#c9a655]">todos os diâmetros e linhas</strong> de implantes desta empresa.
+                </p>
+              </div>
+            ) : compatData.length > 0 ? (
+              <div className="space-y-4">
+                <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655]">Implantes Compatíveis</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {compatData.map((item: any) => (
+                    <div key={item.implante_sku} className="flex items-center gap-3 p-3 rounded-xl bg-[var(--color-surface)] border border-white/5">
+                      <div className="w-8 h-8 rounded-lg bg-[#c9a655]/10 flex items-center justify-center shrink-0">
+                        <Box className="h-4 w-4 text-[#c9a655]" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-bold text-white">{item.implante_sku}</p>
+                        <p className="text-xs text-gray-400">SKU do implante</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <EmptyState msg="Nenhuma compatibilidade definida" hint="Associe implantes na edição do kit." />
+            )}
+          </div>
+        )}
+
+        {/* ─── Relacionados ─── */}
+        {activeTab === "relacionados" && (
+          <div className="rounded-2xl border border-[var(--color-border-subtle)] bg-[var(--color-surface)]/30 p-4 sm:p-6 shadow-lg shadow-black/20 backdrop-blur-sm">
+            {relatedKits.length > 0 ? (
+              <div className="space-y-4">
+                <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655]">Kits Relacionados</h3>
+                <p className="text-xs text-gray-400">Kits que compartilham as mesmas chaves compatíveis.</p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {relatedKits.map((rk: any) => (
+                    <Link
+                      key={rk.sku}
+                      to="/catalogo/produto/$tipo/$sku"
+                      params={{ tipo: "kit", sku: rk.sku }}
+                      className="flex items-center gap-3 p-3 rounded-xl bg-[var(--color-surface)] border border-white/5 hover:border-[#c9a655]/30 transition-colors no-underline"
+                    >
+                      <div className="w-8 h-8 rounded-lg bg-[#c9a655]/10 flex items-center justify-center shrink-0">
+                        <Box className="h-4 w-4 text-[#c9a655]" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-bold text-white">{rk.nome}</p>
+                        <p className="text-xs text-gray-400">{rk.tipo_kit?.nome ?? rk.sku}</p>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <EmptyState msg="Nenhum kit relacionado" hint="Kits que compartilham chaves aparecerão aqui." />
+            )}
+          </div>
+        )}
+
+        {/* ─── Complementares ─── */}
+        {activeTab === "complementares" && (
+          <div className="rounded-2xl border border-[var(--color-border-subtle)] bg-[var(--color-surface)]/30 p-4 sm:p-6 shadow-lg shadow-black/20 backdrop-blur-sm">
+            {complementKits.length > 0 ? (
+              <div className="space-y-4">
+                <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655]">Kits Complementares</h3>
+                <p className="text-xs text-gray-400">Kits que compartilham as mesmas fresas compatíveis.</p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {complementKits.map((ck: any) => (
+                    <Link
+                      key={ck.sku}
+                      to="/catalogo/produto/$tipo/$sku"
+                      params={{ tipo: "kit", sku: ck.sku }}
+                      className="flex items-center gap-3 p-3 rounded-xl bg-[var(--color-surface)] border border-white/5 hover:border-[#c9a655]/30 transition-colors no-underline"
+                    >
+                      <div className="w-8 h-8 rounded-lg bg-[#c9a655]/10 flex items-center justify-center shrink-0">
+                        <Box className="h-4 w-4 text-[#c9a655]" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-bold text-white">{ck.nome}</p>
+                        <p className="text-xs text-gray-400">{ck.tipo_kit?.nome ?? ck.sku}</p>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <EmptyState msg="Nenhum kit complementar" hint="Kits que compartilham fresas aparecerão aqui." />
             )}
           </div>
         )}
