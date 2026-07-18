@@ -112,8 +112,8 @@ export function ProdutoFormModal({
     torque_ncm: 0, familia_id: "", chave_sku: "", preco: 0,
   })
 
-  const [fresagemHard, setFresagemHard] = useState<{ fresa_sku: string; ordem: number }[]>([])
-  const [fresagemSoft, setFresagemSoft] = useState<{ fresa_sku: string; ordem: number }[]>([])
+  const [fresagemHard, setFresagemHard] = useState<{ fresa_sku: string; ordem: number; tipo_osso: string }[]>([])
+  const [fresagemSoft, setFresagemSoft] = useState<{ fresa_sku: string; ordem: number; tipo_osso: string }[]>([])
   const [seqAnalógica, setSeqAnalógica] = useState<SeqEtapa[]>([])
   const [seqDigital, setSeqDigital] = useState<SeqEtapa[]>([])
   const [kitBom, setKitBom] = useState<BomItem[]>([])
@@ -185,8 +185,8 @@ export function ProdutoFormModal({
       // Carregar protocolos de fresagem existentes
       const protos = (d as unknown as Record<string, unknown>).protocolos as Array<{ fresa_sku: string; tipo_osso: string; ordem_uso: number }> | undefined
       if (protos) {
-        setFresagemHard(protos.filter((p) => p.tipo_osso?.includes("Hard")).map((p) => ({ fresa_sku: p.fresa_sku, ordem: p.ordem_uso })))
-        setFresagemSoft(protos.filter((p) => p.tipo_osso?.includes("Soft")).map((p) => ({ fresa_sku: p.fresa_sku, ordem: p.ordem_uso })))
+        setFresagemHard(protos.filter((p) => ["D1","D2"].includes(p.tipo_osso)).map((p) => ({ fresa_sku: p.fresa_sku, ordem: p.ordem_uso, tipo_osso: p.tipo_osso })))
+        setFresagemSoft(protos.filter((p) => ["D3","D4","D5"].includes(p.tipo_osso)).map((p) => ({ fresa_sku: p.fresa_sku, ordem: p.ordem_uso, tipo_osso: p.tipo_osso })))
       }
     }
     if (editingItem.tipo === "abutment" && abDetalhe) {
@@ -326,8 +326,8 @@ export function ProdutoFormModal({
           await criarImplante.mutateAsync(payload)
         }
         const protocolos = [
-          ...fresagemHard.map((f) => ({ fresa_sku: f.fresa_sku, tipo_osso: "Hard (I-II)" as const, ordem_uso: f.ordem })),
-          ...fresagemSoft.map((f) => ({ fresa_sku: f.fresa_sku, tipo_osso: "Soft (III-IV)" as const, ordem_uso: f.ordem })),
+          ...fresagemHard.map((f) => ({ fresa_sku: f.fresa_sku, tipo_osso: f.tipo_osso, ordem_uso: f.ordem })),
+          ...fresagemSoft.map((f) => ({ fresa_sku: f.fresa_sku, tipo_osso: f.tipo_osso, ordem_uso: f.ordem })),
         ]
         if (protocolos.length > 0) {
           await salvarProtocoloFresagem(empresaId, implante.sku, protocolos)
@@ -406,7 +406,7 @@ export function ProdutoFormModal({
   function addFresagem(tipoOsso: "hard" | "soft") {
     const setter = tipoOsso === "hard" ? setFresagemHard : setFresagemSoft
     const arr = tipoOsso === "hard" ? fresagemHard : fresagemSoft
-    setter([...arr, { fresa_sku: "", ordem: arr.length + 1 }])
+    setter([...arr, { fresa_sku: "", ordem: arr.length + 1, tipo_osso: tipoOsso === "hard" ? "D1" : "D3" }])
   }
   function removeFresagem(tipoOsso: "hard" | "soft", idx: number) {
     const setter = tipoOsso === "hard" ? setFresagemHard : setFresagemSoft

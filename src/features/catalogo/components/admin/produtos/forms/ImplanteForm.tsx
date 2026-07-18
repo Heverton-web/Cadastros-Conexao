@@ -123,14 +123,14 @@ export function ImplanteForm({
           <label className={labelCls}>Protocolo Osso Soft (III-IV)</label>
           <select {...register("osso_soft")} value={data.osso_soft} onChange={(e) => onChange({ ...data, osso_soft: e.target.value })} className={selectCls}>
             <option value="">Nenhum</option>
-            {protocolos?.filter((p) => p.tipo_osso.includes("Soft")).map((p) => <option key={p.id} value={p.id}>{p.nome}</option>)}
+            {protocolos?.filter((p) => ["D3","D4","D5"].includes(p.tipo_osso)).map((p) => <option key={p.id} value={p.id}>{p.nome}</option>)}
           </select>
         </div>
         <div className="space-y-2">
           <label className={labelCls}>Protocolo Osso Hard (I-II)</label>
           <select {...register("osso_hard")} value={data.osso_hard} onChange={(e) => onChange({ ...data, osso_hard: e.target.value })} className={selectCls}>
             <option value="">Nenhum</option>
-            {protocolos?.filter((p) => p.tipo_osso.includes("Hard")).map((p) => <option key={p.id} value={p.id}>{p.nome}</option>)}
+            {protocolos?.filter((p) => ["D1","D2"].includes(p.tipo_osso)).map((p) => <option key={p.id} value={p.id}>{p.nome}</option>)}
           </select>
         </div>
       </div>
