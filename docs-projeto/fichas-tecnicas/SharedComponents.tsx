@@ -4,13 +4,13 @@ function ProductImage({ cor, nome, onClick, imageUrl }: { cor: string; nome: str
   return (
     <div
       onClick={onClick}
-      className="cursor-zoom-in aspect-square rounded-2xl bg-gradient-to-br from-[var(--color-surface)] to-[#0f172a] border border-[var(--color-border-subtle)] overflow-hidden relative flex flex-col items-center justify-center group transition-all duration-300 hover:shadow-[0_0_60px_rgba(201,166,85,0.08)]"
+      className="cursor-zoom-in aspect-square rounded-2xl bg-gradient-to-br from-[var(--color-surface)] to-[#0f172a] border border-[var(--color-border-subtle)] overflow-hidden relative flex flex-col items-center justify-center p-4 group transition-all duration-300 hover:shadow-[0_0_60px_rgba(201,166,85,0.08)]"
     >
       {imageUrl ? (
         <img
           src={imageUrl}
           alt={nome}
-          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+          className="w-full h-full object-contain transition-transform duration-700 group-hover:scale-105"
           loading="lazy"
         />
       ) : (
@@ -19,7 +19,7 @@ function ProductImage({ cor, nome, onClick, imageUrl }: { cor: string; nome: str
           <Box className="w-28 h-28 sm:w-36 sm:h-36 opacity-[0.07] relative z-10 transition-transform group-hover:scale-110 duration-700" style={{ color: cor }} />
         </>
       )}
-      <div className="absolute bottom-6 px-4 py-2 rounded-full border border-[var(--color-border-subtle)] bg-[#0f172a]/60 backdrop-blur-md opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0">
+      <div className="absolute bottom-6 px-4 py-2 rounded-full border border-[var(--color-border-subtle)] bg-[#0f172a]/60 backdrop-blur-md">
         <p className="font-mono text-[10px] tracking-widest text-white flex items-center gap-2">
           <ExternalLink className="w-3 h-3" /> Toque para ampliar
         </p>

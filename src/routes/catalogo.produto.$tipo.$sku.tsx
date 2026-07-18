@@ -65,7 +65,7 @@ function ProductImage({ cor, nome, onClick, imageUrl }: { cor: string; nome: str
   return (
     <div
       onClick={onClick}
-      className="cursor-zoom-in aspect-square rounded-2xl bg-gradient-to-br from-[var(--color-surface)] to-[#0f172a] border border-[var(--color-border-subtle)] overflow-hidden relative flex flex-col items-center justify-center group transition-all duration-300 hover:shadow-[0_0_60px_rgba(201,166,85,0.08)]"
+      className="cursor-zoom-in aspect-square rounded-2xl bg-gradient-to-br from-[var(--color-surface)] to-[#0f172a] border border-[var(--color-border-subtle)] overflow-hidden relative flex flex-col items-center justify-center p-4 group transition-all duration-300 hover:shadow-[0_0_60px_rgba(201,166,85,0.08)]"
     >
       {imageUrl ? (
         <img

@@ -1,30 +1,35 @@
 ---
 name: deploy-vps
 description: >
-  Deploy workflow do ERP Odonto com rollback automático, health check
-  pós-deploy, versionamento automático e notificação de status.
+  Deploy workflow completo do ERP Odonto: commit → migration → push → merge → build → deploy.
+  Inclui rollback automático, health check pós-deploy, versionamento e notificação.
   DISPARO: ativar SOMENTE quando o usuário disser "deploy", "/deploy" ou "fazer deploy".
   NÃO ativar em nenhum outro contexto.
 ---
 
 # Deploy VPS — ERP Odonto
 
-Deploy completo com segurança e rollback.
+Deploy completo com pré-requisitos automáticos e rollback.
 
 ## Regra
 
 Só executar quando o usuário disser "deploy" ou "/deploy" explicitamente.
+
+## Fluxo Resumido
+
+```
+Commit → Migrations → Push → Merge (se branch) → Build → Deploy VPS
+```
 
 ## Pré-requisitos
 
 - `vps.env` no raiz do projeto
 - `.env` no raiz com:
   - `VITE_SUPABASE_URL` e `VITE_SUPABASE_ANON_KEY` (frontend)
-  - `SUPABASE_ACCESS_TOKEN` (deploy de Edge Functions via CLI)
-  - `SUPABASE_DB_PASSWORD` (aplicar migrations via `pg`)
-- **Supabase CLI** instalado: `npm install -g supabase`
-- **Node + `pg`** disponíveis (usado para aplicar migrations via `SUPABASE_DB_URL`)
-- Build local passando: `npm run build`
+  - `SUPABASE_ACCESS_TOKEN` (Edge Functions via CLI)
+  - `SUPABASE_DB_PASSWORD` (migrations via `pg`)
+- **Node + `pg`** disponíveis (migrations via conexão direta)
+- Build local deve passar
 
 ### Project ref
 
@@ -33,21 +38,30 @@ Extrair do `VITE_SUPABASE_URL`:
 URL=https://<PROJECT_REF>.supabase.co  →  PROJECT_REF=<PROJECT_REF>
 DB_URL=postgresql://postgres:<SUPABASE_DB_PASSWORD>@db.<PROJECT_REF>.supabase.co:5432/postgres
 ```
-> A senha do `DB_URL` deve ser `encodeURIComponent`-ada (pode conter `@`, `#`, `%`).
 
-## Workflow
+---
+
+## Workflow Completo
 
 ### Step 0: Economia de Tokens
 
 Seguir diretrizes de economia de tokens do AGENTS.md.
 
-### Step 1: Verificar mudanças locais
+### Step 1: Verificar e Commitar mudanças locais
 
 ```bash
 git status --porcelain
 ```
 
-Se houver mudanças, perguntar mensagem de commit. Se não, pular.
+Se houver mudanças (staged ou unstaged):
+1. Perguntar mensagem de commit (ou usar padrão automático)
+2. `git add -A && git commit -m "<mensagem>"`
+3. Se NÃO houver mudanças, pular para Step 2.
+
+**Mensagem padrão automática** (se usuário não especificar):
+```
+feat(catalogo): update via deploy workflow
+```
 
 ### Step 2: Verificar build local
 
@@ -55,59 +69,122 @@ Se houver mudanças, perguntar mensagem de commit. Se não, pular.
 npm run build
 ```
 
-Se falhar, NÃO prosseguir com deploy.
+Se falhar, **INTERROMPER** — NÃO prosseguir.
 
-### Step 3: Commit + Push
+### Step 3: Push para origin
 
 ```bash
-git add -A && git commit -m "<mensagem>" && git push origin main
+git push origin main
 ```
 
-### Step 3.5: Aplicar Migration (se houver SQL novo)
+Se estiver em branch feature, fazer push com `-u`:
+```bash
+git push -u origin <branch_name>
+```
 
-As migrations ficam em `supabase/migrations/`. Aplicar via `pg` (não há `supabase db push`
-configurado neste projeto). Script padrão (salvar em `/tmp/apply_migration.js`):
+### Step 4: Merge (se estiver em branch feature)
+
+Verificar se está em branch diferente de `main`:
+```bash
+CURRENT_BRANCH=$(git branch --show-current)
+```
+
+Se `CURRENT_BRANCH != "main"`:
+```bash
+git checkout main && git merge <branch_name> && git push origin main
+```
+
+Se já estiver em `main`, pular.
+
+### Step 5: Aplicar Migrations (se houver SQL novo)
+
+Verificar se há migrations não aplicadas:
+```bash
+# Listar migrations locais
+ls -1 supabase/migrations/*.sql | sort
+```
+
+Se houver migrations, aplicar via conexão direta ao banco:
 
 ```javascript
-const fs = require("fs");
-const path = require("path");
-const pg = require("C:/.../supabase-mcp-server/node_modules/pg"); // ajustar caminho
+// Script: apply-migration.js
+const { Client } = require('pg');
+const fs = require('fs');
+const path = require('path');
 
+// Ler .env
 const env = {};
-for (const line of fs.readFileSync("C:/.../.env", "utf8").split("\n")) {
-  const m = line.match(/^([A-Z0-9_]+)=(.*)$/); if (m) env[m[1]] = m[2].trim().replace(/^["']|["']$/g, "");
+for (const line of fs.readFileSync('.env', 'utf8').split('\n')) {
+  const m = line.match(/^([A-Z0-9_]+)=(.*)$/);
+  if (m) env[m[1]] = m[2].trim().replace(/^["']|["']$/g, '');
 }
-const ref = env.VITE_SUPABASE_URL.replace("https://", "").split(".")[0];
+
+const ref = env.VITE_SUPABASE_URL.replace('https://', '').split('.')[0];
 const DB_URL = `postgresql://postgres:${encodeURIComponent(env.SUPABASE_DB_PASSWORD)}@db.${ref}.supabase.co:5432/postgres`;
-const sql = fs.readFileSync(path.join("C:/.../supabase/migrations", "<ARQUIVO>.sql"), "utf8");
+
+const migrationsDir = 'supabase/migrations';
+const files = fs.readdirSync(migrationsDir)
+  .filter(f => f.endsWith('.sql'))
+  .sort();
 
 (async () => {
-  const c = new pg.Client({ connectionString: DB_URL, ssl: { rejectUnauthorized: false } });
-  await c.connect();
-  await c.query(sql);
-  console.log("Migration aplicada.");
-  await c.end();
+  const client = new Client({ connectionString: DB_URL, ssl: { rejectUnauthorized: false } });
+  await client.connect();
+
+  for (const file of files) {
+    const version = file.split('_')[0];
+
+    // Verificar se já foi aplicada
+    const check = await client.query(
+      'SELECT 1 FROM supabase_migrations.schema_migrations WHERE version = $1',
+      [version]
+    );
+
+    if (check.rows.length > 0) {
+      console.log(`SKIP (já aplicada): ${version}`);
+      continue;
+    }
+
+    console.log(`Aplicando: ${file}`);
+    const sql = fs.readFileSync(path.join(migrationsDir, file), 'utf8');
+
+    try {
+      await client.query(sql);
+      await client.query(
+        'INSERT INTO supabase_migrations.schema_migrations (version, statements) VALUES ($1, ARRAY[$2]::text[])',
+        [version, '-- Applied via deploy workflow']
+      );
+      console.log(`OK: ${version}`);
+    } catch (e) {
+      console.error(`ERRO na migration ${version}: ${e.message}`);
+      await client.end();
+      process.exit(1);
+    }
+  }
+
+  await client.end();
+  console.log('Migrations concluídas.');
 })();
 ```
 
-### Step 3.6: Deploy de Edge Function (Supabase)
-
-Para alterações em `supabase/functions/<NOME>/index.ts`:
-
+Executar:
 ```bash
-# 1. Login com token do .env (SUPABASE_ACCESS_TOKEN)
-TOKEN=$(grep SUPABASE_ACCESS_TOKEN .env | head -1 | sed 's/.*=//' | tr -d '"' | tr -d "'")
-supabase login --token "$TOKEN"
-
-# 2. Deploy da função (lê supabase/functions/<NOME>)
-supabase functions deploy <NOME> --project-ref <PROJECT_REF>
+node apply-migration.js
 ```
 
-> O CLI faz upload direto (não precisa de Docker rodando localmente).
-> Não requer `git push` — o deploy usa os arquivos locais.
-> Após o deploy, testar a função (ex: `supabase functions invoke <NOME>`).
+Se migration falhar, **INTERROMPER** — NÃO fazer deploy.
 
-### Step 4: Ler credenciais
+### Step 6: Deploy de Edge Function (se aplicável)
+
+Se houver alterações em `supabase/functions/`:
+
+```bash
+TOKEN=$(grep SUPABASE_ACCESS_TOKEN .env | head -1 | sed 's/.*=//' | tr -d '"' | tr -d "'")
+npx supabase login --token "$TOKEN"
+npx supabase functions deploy <NOME_FUNCAO> --project-ref <PROJECT_REF>
+```
+
+### Step 7: Ler credenciais VPS
 
 ```bash
 source vps.env
@@ -120,46 +197,38 @@ Variáveis necessárias:
 - `VPS_USER`
 - `VPS_PASSWORD`
 
-### Step 5: Determinar versão
+### Step 8: Determinar versão
 
 ```bash
-# Última tag
-git describe --tags --abbrev=0 2>/dev/null || echo "v0"
-
-# Ou incrementar manualmente
+# Última tag ou incrementar
+LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0")
+echo "Última tag: $LAST_TAG"
 ```
 
-### Step 6: SSH na VPS
+### Step 9: SSH na VPS + Backup
 
 ```python
 import paramiko
 
 client = paramiko.SSHClient()
 client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-client.connect(
-    VPS_IP,
-    username=VPS_USER,
-    password=VPS_PASSWORD,
-    timeout=30
+client.connect(VPS_IP, username=VPS_USER, password=VPS_PASSWORD, timeout=30)
+
+# Backup da imagem atual
+stdin, stdout, stderr = client.exec_command(
+    "docker service inspect erp-odonto_app --format '{{.Spec.TaskTemplate.ContainerSpec.Image}}' 2>/dev/null"
 )
+current_image = stdout.read().decode().strip()
+client.exec_command(f"echo 'Rollback image: {current_image}' > /tmp/rollback-info.txt")
 ```
 
-### Step 7: Backup (rollback point)
-
-```bash
-# Salvar versão atual para rollback
-cd /root/Cadastros-Conexao
-CURRENT_IMAGE=$(docker service inspect erp-odonto_app --format '{{.Spec.TaskTemplate.ContainerSpec.Image}}' 2>/dev/null)
-echo "Rollback image: $CURRENT_IMAGE" > /tmp/rollback-info.txt
-```
-
-### Step 8: Git pull na VPS
+### Step 10: Git pull na VPS
 
 ```bash
 cd /root/Cadastros-Conexao && git pull origin main
 ```
 
-### Step 9: Docker build
+### Step 11: Docker build
 
 ```bash
 cd /root/Cadastros-Conexao && docker build --no-cache \
@@ -169,67 +238,62 @@ cd /root/Cadastros-Conexao && docker build --no-cache \
   --build-arg VITE_SUPABASE_ANON_KEY=<KEY> .
 ```
 
-**Se build falhar:** Interromper, NÃO fazer push/update.
+**Se build falhar:** Interromper, NÃO push/update.
 
-### Step 10: Docker push
+### Step 12: Docker push
 
 ```bash
 docker push hevertonperes/erp-odonto:v<NUMERO>
+docker push hevertonperes/erp-odonto:latest
 ```
 
-**Se push falhar:** Verificar docker login, interromper.
-
-### Step 11: Service update
+### Step 13: Service update
 
 ```bash
 docker service update --force --image hevertonperes/erp-odonto:v<NUMERO> erp-odonto_app
 ```
 
-### Step 12: Health check
+### Step 14: Health check
 
 ```bash
-# Aguardar service estabilizar
 sleep 10
-
-# Verificar se container está rodando
 docker service ps erp-odonto_app --format "{{.CurrentState}}" | head -1
-
-# Verificar logs
-docker service logs erp-odonto_app --tail 10 2>&1 | grep -i "error\|fatal" || true
+docker service logs erp-odonto_app --tail 20 2>&1 | grep -i "error\|fatal" || true
 ```
 
-### Step 13: Rollback (se necessário)
+### Step 15: Rollback (se necessário)
 
 Se health check falhar:
-
 ```bash
-# Ler imagem de rollback
 ROLLBACK_IMAGE=$(cat /tmp/rollback-info.txt | cut -d' ' -f3)
-
-# Reverter service
 docker service update --force --image $ROLLBACK_IMAGE erp-odonto_app
 ```
 
-### Step 14: Fechar SSH
+### Step 16: Fechar SSH + Tag
 
 ```python
 client.close()
 ```
 
-### Step 15: Notificar resultado
+Tag local:
+```bash
+git tag -a v<NUMERO> -m "Deploy v<NUMERO>" && git push origin v<NUMERO>
+```
+
+### Step 17: Notificar resultado
 
 ```markdown
 ## Deploy Concluído ✅
 
 - **Versão:** v<NUMERO>
+- **Branch:** <branch>
+- **Commits:** <lista>
+- **Migrations:** <lista ou "nenhuma">
 - **Status:** Sucesso
 - **Tempo:** ~Xmin
 
-### Alterações
-- <lista de commits>
-
 ### Próximos passos
-- Verificar em https://<dominio>
+- Verificar em https://erp.vpsconexao.org
 ```
 
 Ou em caso de falha:
@@ -238,36 +302,35 @@ Ou em caso de falha:
 ## Deploy com Falha ❌
 
 - **Versão:** v<NUMERO>
-- **Status:** Falha
-- **Erro:** <descrição do erro>
-- **Rollback:** <status do rollback>
+- **Erro:** <descrição>
+- **Rollback:** <status>
 
 ### Ação necessária
 - <ação recomendada>
 ```
 
-## Observações
-
-- **Versão:** incrementar v10 → v11 → v12...
-- **Timeout:** ~5min total (docker build é o mais lento)
-- **Rollback:** automático se health check falhar
-- **Backup:** sempre salvar imagem anterior antes de atualizar
-- **Edge Functions** são independentes do Docker: deploy via `supabase functions deploy` (Step 3.6)
-- **Migrations** aplicadas via `pg` + `SUPABASE_DB_URL` (Step 3.5), não via CLI `db push`
-- **Dois alvos de deploy:** (1) Frontend = Docker VPS; (2) Backend/Supabase = Edge Functions + migrations
+---
 
 ## Regras Obrigatórias
 
-1. **Build local** — sempre verificar antes do deploy
-2. **Backup** — sempre salvar imagem anterior
-3. **Health check** — sempre verificar pós-deploy
-4. **Rollback** — automático se falhar
-5. **Notificação** — sempre informar resultado
-6. **Edge Function** — se houve mudança em `supabase/functions/`, rodar Step 3.6
-7. **Migration** — se houve SQL novo em `supabase/migrations/`, rodar Step 3.5 antes do deploy
+1. **Commit** — sempre commitar antes do deploy (Step 1)
+2. **Build local** — sempre verificar antes do deploy (Step 2)
+3. **Push** — sempre enviar para remote (Step 3)
+4. **Merge** — se branch feature, merge em main (Step 4)
+5. **Migrations** — se SQL novo, aplicar ANTES do deploy (Step 5)
+6. **Backup** — sempre salvar imagem anterior (Step 9)
+7. **Health check** — sempre verificar pós-deploy (Step 14)
+8. **Rollback** — automático se falhar (Step 15)
+9. **Tag** — versionar cada deploy (Step 16)
+10. **Notificação** — sempre informar resultado (Step 17)
+
+## Dois Alvos de Deploy
+
+1. **Frontend** = Docker VPS (Steps 7-15)
+2. **Backend/Supabase** = Edge Functions + migrations (Steps 5-6)
 
 ## Economia de Tokens
 
 - **Lean-CTX:** Apenas comandos necessários
 - **Caveman:** Deploy conciso
-- **Pre-flight:** Verificar build local
+- **Pre-flight:** Verificar build local antes de tudo
