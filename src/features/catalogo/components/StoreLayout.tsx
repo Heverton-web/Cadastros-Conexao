@@ -61,6 +61,7 @@ export function StoreLayout({ children, empresaId: empresaIdProp, fullHeight, zo
   const [isBackVisible, setIsBackVisible] = useState(false);
   const [resolvedEmpresaId, setResolvedEmpresaId] = useState<string | null>(empresaIdProp ?? EMPRESA_ID ?? null);
   const [visibility, setVisibility] = useState({ showPrices: true, showSearchBar: true });
+  const [logoUrl, setLogoUrl] = useState('');
   const navigate = useNavigate();
   const cart = useCarrinho();
   const { qtd } = cartTotais(cart);
@@ -104,7 +105,7 @@ export function StoreLayout({ children, empresaId: empresaIdProp, fullHeight, zo
 
     async function loadDesign() {
       try {
-        const saved = await getCatalogoDesign(resolvedEmpresaId!);
+        const saved = await getCatalogoDesign();
         const config = mergeWithDefaults(saved as any);
 
         if (cancelled) return;
