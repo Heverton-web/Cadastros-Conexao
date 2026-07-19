@@ -1,4 +1,4 @@
-import { createRoute, Link, useNavigate, useParams, useSearch } from "@tanstack/react-router"
+import { createRoute, Link, useNavigate, useParams } from "@tanstack/react-router"
 import { rootRoute } from "./__root"
 import { StoreLayout } from "~/features/catalogo/components/StoreLayout"
 import { DrillDown } from "~/features/catalogo/components/DrillDown"
@@ -31,8 +31,6 @@ function CatalogoKitsPage() {
   const navigate = useNavigate()
   const params = useParams({ strict: false }) as Record<string, string | undefined>
   const tipoKitId = params.tipoKitId ?? null
-  const search = useSearch({ strict: false }) as Record<string, string | undefined>
-  const empresaNav = search.empresa ?? null
 
   // Contagem de kits por tipo
   const countByTipo = useMemo(() => {
@@ -49,8 +47,7 @@ function CatalogoKitsPage() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
         <KitsList
           tipoKitId={tipoKitId}
-          empresa={empresaNav}
-          onBack={() => navigate({ to: '/catalogo/kits', search: { empresa: empresaNav } })}
+          onBack={() => navigate({ to: '/catalogo/kits' })}
         />
       </div>
     </StoreLayout>
@@ -73,8 +70,8 @@ function CatalogoKitsPage() {
               sublabel: t.sigla ?? undefined,
               count: countByTipo[t.id] ?? 0,
             }))}
-          onSelect={(id) => navigate({ to: '/catalogo/kits/$tipoKitId', params: { tipoKitId: id }, search: { empresa: empresaNav } })}
-          onBack={() => navigate({ to: '/catalogo', search: { empresa: empresaNav } })}
+          onSelect={(id) => navigate({ to: '/catalogo/kits/$tipoKitId', params: { tipoKitId: id } })}
+          onBack={() => navigate({ to: '/catalogo' })}
           isLoading={loadingTipos}
         />
       </div>
@@ -82,7 +79,7 @@ function CatalogoKitsPage() {
   )
 }
 
-function KitsList({ tipoKitId, empresa, onBack }: { tipoKitId: string; empresa?: string; onBack: () => void }) {
+function KitsList({ tipoKitId, onBack }: { tipoKitId: string; onBack: () => void }) {
   const { data: todosKits, isLoading } = useKitsAtivos()
   const { data: tiposKit } = useTiposKit()
   const tipoKit = (tiposKit ?? []).find((t) => t.id === tipoKitId)
@@ -156,7 +153,6 @@ function KitsList({ tipoKitId, empresa, onBack }: { tipoKitId: string; empresa?:
                 key={kit.sku}
                 to="/catalogo/produto/$tipo/$sku"
                 params={{ tipo: "kit", sku: kit.sku }}
-                search={{ empresa }}
                 className="group rounded-2xl border border-[var(--color-border-subtle)] bg-[var(--color-surface)]/50 overflow-hidden transition-all duration-300 hover:border-[var(--color-accent)]/40 hover:shadow-[0_8px_30px_rgba(201,166,85,0.08)] no-underline"
               >
                 <div className="p-6 flex flex-col justify-between min-h-[220px]">

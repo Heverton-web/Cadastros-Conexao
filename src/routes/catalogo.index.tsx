@@ -3,8 +3,8 @@ import { rootRoute } from "./__root"
 import { StoreLayout } from "~/features/catalogo/components/StoreLayout"
 import { useState, useEffect } from "react"
 import { supabase } from "~/lib/supabase"
-import { Loader2, Building2, Crosshair, ShieldCheck, Box, Tag, Package, Layers, ShoppingBag, Percent, Star, Heart, Diamond, Circle, Zap, Target, Award, Gem, Hexagon, Pentagon, Triangle, Square, Store, type LucideIcon } from "lucide-react"
-import { listarEmpresas, type Empresa } from "~/shared/empresas"
+import { Loader2, Crosshair, ShieldCheck, Box, Tag, Package, Layers, ShoppingBag, Percent, Star, Heart, Diamond, Circle, Zap, Target, Award, Gem, Hexagon, Pentagon, Triangle, Square, type LucideIcon } from "lucide-react"
+import { EMPRESA_ID } from "~/config/empresa"
 import { getCatalogoDesign, mergeWithDefaults, type CatalogoDesignConfig } from "~/features/catalogo/services/design.service"
 import { WatermarkShape } from "~/features/catalogo/components/WatermarkShape"
 
@@ -24,106 +24,11 @@ function withProtocol(url: string): string {
 export const catalogoIndexRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/catalogo",
-  validateSearch: (s: Record<string, unknown>) => {
-    const raw = s.empresa as string | undefined
-    const empresa = raw && raw !== "null" ? raw : null
-    return { empresa }
-  },
   component: CatalogoIndexPage,
 })
 
 function CatalogoIndexPage() {
-  const [loading, setLoading] = useState(true)
-  const [empresaId, setEmpresaId] = useState<string | null>(null)
-  const [isSuperAdmin, setIsSuperAdmin] = useState(false)
-  const [empresas, setEmpresas] = useState<Empresa[]>([])
-
-  useEffect(() => {
-    let cancelled = false
-    async function init() {
-      const searchParams = new URLSearchParams(window.location.search)
-      const paramEmpresa = searchParams.get("empresa")
-      if (paramEmpresa && paramEmpresa !== "null") {
-        if (!cancelled) { setEmpresaId(paramEmpresa); setLoading(false) }
-        return
-      }
-      const { data: { user } } = await supabase.auth.getUser()
-      if (!user || cancelled) { if (!cancelled) setLoading(false); return }
-      const { data: profile } = await supabase.from("profiles").select("empresa_id, is_super_admin").eq("id", user.id).single()
-      if (!profile || cancelled) { if (!cancelled) setLoading(false); return }
-      if (profile.is_super_admin === true) {
-        if (cancelled) return
-        setIsSuperAdmin(true)
-        const emps = await listarEmpresas()
-        if (cancelled) return
-        setEmpresas(emps.filter(e => e.ativo !== false))
-        setLoading(false)
-        return
-      }
-      if (profile.empresa_id && profile.empresa_id !== "null" && !cancelled) {
-        window.location.href = `/catalogo?empresa=${profile.empresa_id}`
-      } else if (!cancelled) { setLoading(false) }
-    }
-    init()
-    return () => { cancelled = true }
-  }, [])
-
-  if (loading) {
-    return (
-      <StoreLayout empresaId={null}>
-        <div className="flex items-center justify-center min-h-[60vh]">
-          <Loader2 size={24} className="animate-spin text-[var(--color-accent)]" />
-        </div>
-      </StoreLayout>
-    )
-  }
-
-  if (isSuperAdmin && !empresaId) {
-    return (
-      <StoreLayout empresaId={null}>
-        <div className="px-6 lg:px-16 py-12 max-w-7xl mx-auto">
-          <div className="flex flex-col items-center mb-12">
-            <div className="w-16 h-16 rounded-2xl bg-[var(--color-accent)]/15 flex items-center justify-center mb-4">
-              <Building2 size={32} className="text-[var(--color-accent)]" />
-            </div>
-            <h1 className="text-2xl font-black text-white mb-2">Selecione a Loja</h1>
-            <p className="text-sm text-[var(--color-text-muted)]">Escolha a empresa para visualizar o catálogo</p>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {empresas.map((emp) => (
-              <a key={emp.id} href={`/catalogo?empresa=${emp.id}`}
-                className="flex items-center gap-4 p-5 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border-subtle)] hover:border-[var(--color-accent)] hover:bg-[var(--color-surface-hover)] transition-all text-left group no-underline">
-                <div className="w-12 h-12 rounded-xl bg-[var(--color-input-bg)] border border-[var(--color-border-subtle)] flex items-center justify-center shrink-0 group-hover:border-[var(--color-accent)] transition-colors">
-                  <Building2 size={20} className="text-[var(--color-text-muted)] group-hover:text-[var(--color-accent)]" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-bold text-white truncate">{emp.nome}</p>
-                  <p className="text-xs text-[var(--color-text-muted)]">/{emp.slug}</p>
-                </div>
-                <span className="text-[var(--color-text-muted)] group-hover:text-[var(--color-accent)] transition-colors text-lg">→</span>
-              </a>
-            ))}
-          </div>
-        </div>
-      </StoreLayout>
-    )
-  }
-
-  if (!empresaId) {
-    return (
-      <StoreLayout empresaId={null}>
-        <div className="flex flex-col items-center justify-center min-h-[60vh] text-center px-6">
-          <div className="w-16 h-16 rounded-3xl bg-[var(--color-surface)] flex items-center justify-center mb-6 shadow-xl border border-[var(--color-border-subtle)]">
-            <Store className="text-[var(--color-accent)]" size={32} />
-          </div>
-          <h1 className="text-3xl font-black text-white mb-3">Bem-vindo ao Catálogo</h1>
-          <p className="text-[var(--color-text-muted)] max-w-sm">Utilize o link exclusivo fornecido pela sua empresa para acessar a linha completa de produtos.</p>
-        </div>
-      </StoreLayout>
-    )
-  }
-
-  return <CatalogoStoreContent empresaId={empresaId} />
+  return <CatalogoStoreContent empresaId={EMPRESA_ID} />
 }
 
 function CatalogoStoreContent({ empresaId }: { empresaId: string }) {
@@ -201,7 +106,6 @@ function CatalogoStoreContent({ empresaId }: { empresaId: string }) {
                 <Link
                   key={key}
                   to={`/catalogo/${key}` as any}
-                  search={{ empresa: empresaId } as any}
                   className="card-catalogo group relative rounded-2xl sm:rounded-3xl backdrop-blur-xl transition-all duration-300 overflow-hidden flex flex-col items-center justify-start pt-6 sm:pt-8 lg:pt-10 pb-6 sm:pb-8 px-4 sm:px-6 lg:px-8 no-underline shadow-xl hover:-translate-y-1 sm:hover:-translate-y-2 aspect-square"
                   style={{
                     backgroundColor: card!.cardBg || "var(--color-surface)",

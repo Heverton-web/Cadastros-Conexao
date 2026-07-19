@@ -7,6 +7,7 @@ import { useCarrinho, cartTotais, setCarrinhoScope } from '../services/carrinho.
 import { useAuth } from '~/lib/auth';
 import { CartDrawer } from './CartDrawer';
 import { ImageViewer } from './ImageViewer';
+import { EMPRESA_ID } from '~/config/empresa';
 import { ProductSheet } from './ProductSheet';
 
 export const CatalogoVisibilityContext = createContext({ showPrices: true, showSearchBar: true });
@@ -58,8 +59,7 @@ function applyDesignToRoot(config: ReturnType<typeof mergeWithDefaults>) {
 export function StoreLayout({ children, empresaId: empresaIdProp, fullHeight, zoom }: StoreLayoutProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [isBackVisible, setIsBackVisible] = useState(false);
-  const [logoUrl, setLogoUrl] = useState('');
-  const [resolvedEmpresaId, setResolvedEmpresaId] = useState<string | null>(empresaIdProp ?? null);
+  const [resolvedEmpresaId, setResolvedEmpresaId] = useState<string | null>(empresaIdProp ?? EMPRESA_ID ?? null);
   const [visibility, setVisibility] = useState({ showPrices: true, showSearchBar: true });
   const navigate = useNavigate();
   const cart = useCarrinho();
@@ -70,26 +70,13 @@ export function StoreLayout({ children, empresaId: empresaIdProp, fullHeight, zo
   useEffect(() => {
     setCarrinhoScope(resolvedEmpresaId, profile?.id ?? null);
   }, [resolvedEmpresaId, profile?.id]);
-
-  // Resolve empresaId: se prop foi passada, usa; senão, busca do auth
+  // Resolve empresaId: se prop foi passada, usa; senão, usa EMPRESA_ID do config
   useEffect(() => {
     if (empresaIdProp) {
       setResolvedEmpresaId(empresaIdProp);
       return;
     }
-    async function resolveFromAuth() {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return;
-      const { data: profile } = await supabase
-        .from('profiles')
-        .select('empresa_id')
-        .eq('id', user.id)
-        .single();
-      if (profile?.empresa_id) {
-        setResolvedEmpresaId(profile.empresa_id);
-      }
-    }
-    resolveFromAuth();
+    setResolvedEmpresaId(EMPRESA_ID ?? null);
   }, [empresaIdProp]);
 
   // Check admin
@@ -233,7 +220,7 @@ export function StoreLayout({ children, empresaId: empresaIdProp, fullHeight, zo
           </div>
         )}
         <div className="flex items-center gap-2 sm:gap-4 lg:gap-6 shrink-0">
-          <Link to="/catalogo" search={{ empresa: resolvedEmpresaId ?? null }} className="group p-2 sm:p-3 rounded-full bg-[var(--color-surface)] border border-[var(--color-border-subtle)] hover:border-[var(--color-accent)] hover:bg-[var(--color-surface-hover)] transition-all">
+          <Link to="/catalogo" className="group p-2 sm:p-3 rounded-full bg-[var(--color-surface)] border border-[var(--color-border-subtle)] hover:border-[var(--color-accent)] hover:bg-[var(--color-surface-hover)] transition-all">
             <Home className="w-4 h-4 sm:w-5 sm:h-5 text-white group-hover:text-[var(--color-accent)] transition-colors" />
           </Link>
           <button

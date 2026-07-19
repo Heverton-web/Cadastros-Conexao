@@ -1,4 +1,4 @@
-import { createRoute, Link, useNavigate, useParams, useSearch } from "@tanstack/react-router"
+import { createRoute, Link, useNavigate, useParams } from "@tanstack/react-router"
 import { rootRoute } from "./__root"
 import { StoreLayout } from "~/features/catalogo/components/StoreLayout"
 import { DrillDown } from "~/features/catalogo/components/DrillDown"
@@ -49,9 +49,6 @@ function CatalogoImplantesPage() {
   const conexaoId = params.conexaoId ?? null
   const familiaId = params.familiaId ?? null
   const linhaId = params.linhaId ?? null
-  const search = useSearch({ strict: false }) as Record<string, string | undefined>
-  const empresaProp = search.empresa ?? undefined
-  const empresaNav = search.empresa ?? null
 
   // Contagem de implantes por linha
   const countByLinha = useMemo(() => {
@@ -92,8 +89,7 @@ function CatalogoImplantesPage() {
           linhaId={linhaId}
           conexaoId={conexaoId!}
           familiaId={familiaId!}
-          empresa={empresaProp}
-          onBack={() => navigate({ to: '/catalogo/implantes/$conexaoId/$familiaId', params: { conexaoId: conexaoId!, familiaId: familiaId! }, search: { empresa: empresaNav } })}
+          onBack={() => navigate({ to: '/catalogo/implantes/$conexaoId/$familiaId', params: { conexaoId: conexaoId!, familiaId: familiaId! } })}
         />
       </div>
     </StoreLayout>
@@ -105,8 +101,8 @@ function CatalogoImplantesPage() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
         <LinhasList
           familiaId={familiaId}
-          onSelect={(id) => navigate({ to: '/catalogo/implantes/$conexaoId/$familiaId/$linhaId', params: { conexaoId: conexaoId!, familiaId, linhaId: id }, search: { empresa: empresaNav } })}
-          onBack={() => navigate({ to: '/catalogo/implantes/$conexaoId', params: { conexaoId: conexaoId! }, search: { empresa: empresaNav } })}
+          onSelect={(id) => navigate({ to: '/catalogo/implantes/$conexaoId/$familiaId/$linhaId', params: { conexaoId: conexaoId!, familiaId, linhaId: id } })}
+          onBack={() => navigate({ to: '/catalogo/implantes/$conexaoId', params: { conexaoId: conexaoId! } })}
         />
       </div>
     </StoreLayout>
@@ -118,8 +114,8 @@ function CatalogoImplantesPage() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
         <FamiliasList
           conexaoId={conexaoId}
-          onSelect={(id) => navigate({ to: '/catalogo/implantes/$conexaoId/$familiaId', params: { conexaoId, familiaId: id }, search: { empresa: empresaNav } })}
-          onBack={() => navigate({ to: '/catalogo/implantes', search: { empresa: empresaNav } })}
+          onSelect={(id) => navigate({ to: '/catalogo/implantes/$conexaoId/$familiaId', params: { conexaoId, familiaId: id } })}
+          onBack={() => navigate({ to: '/catalogo/implantes' })}
           countLinhasByFamilia={countLinhasByFamilia}
         />
       </div>
@@ -143,8 +139,8 @@ function CatalogoImplantesPage() {
               sublabel: c.sigla ?? undefined,
               count: countFamiliasByConexao[c.id] ?? 0,
             }))}
-          onSelect={(id) => navigate({ to: '/catalogo/implantes/$conexaoId', params: { conexaoId: id }, search: { empresa: empresaNav } })}
-          onBack={() => navigate({ to: '/catalogo', search: { empresa: empresaNav } })}
+          onSelect={(id) => navigate({ to: '/catalogo/implantes/$conexaoId', params: { conexaoId: id } })}
+          onBack={() => navigate({ to: '/catalogo' })}
           isLoading={loadingConexoes}
         />
       </div>
@@ -218,7 +214,7 @@ function LinhasList({ familiaId, onSelect, onBack }: { familiaId: string; onSele
   )
 }
 
-function ImplantList({ linhaId, conexaoId, familiaId, empresa, onBack }: { linhaId: string; conexaoId: string; familiaId: string; empresa?: string; onBack: () => void }) {
+function ImplantList({ linhaId, conexaoId, familiaId, onBack }: { linhaId: string; conexaoId: string; familiaId: string; onBack: () => void }) {
   const { data: implantes, isLoading } = useImplantesPorLinha(linhaId)
   const { data: familias } = useFamilias()
   const familia = (familias ?? []).find((f) => f.id === familiaId)
@@ -335,7 +331,7 @@ function ImplantList({ linhaId, conexaoId, familiaId, empresa, onBack }: { linha
             <Link
               to="/catalogo/produto/$tipo/$sku"
               params={{ tipo: 'implante', sku: impl.sku }}
-              search={{ conexao: conexaoId, familia: familiaId, linha: linhaId, empresa: empresa ?? null }}
+              search={{ conexao: conexaoId, familia: familiaId, linha: linhaId }}
               className="no-underline"
               key={impl.sku}
             >

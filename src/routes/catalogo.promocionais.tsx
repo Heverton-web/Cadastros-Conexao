@@ -1,4 +1,4 @@
-import { createRoute, Link, useSearch } from "@tanstack/react-router"
+import { createRoute, Link } from "@tanstack/react-router"
 import { rootRoute } from "./__root"
 import { StoreLayout } from "~/features/catalogo/components/StoreLayout"
 import { usePromocionaisAtivos } from "~/features/catalogo/hooks/useCatalogo"
@@ -13,15 +13,13 @@ export const catalogoPromocionaisRoute = createRoute({
 
 function CatalogoPromocionaisPage() {
   const { data: promos, isLoading } = usePromocionaisAtivos()
-  const search = useSearch({ strict: false }) as Record<string, string | undefined>
-  const empresa = search.empresa ?? null
 
   return (
     <StoreLayout>
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 sm:space-y-12 w-full">
         {/* Header */}
         <div className="flex items-start sm:items-center gap-4 sm:gap-6 mb-8 sm:mb-12">
-          <Link to="/catalogo" search={{ empresa }} className="group shrink-0 flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-full border border-[var(--color-border-subtle)] hover:bg-[var(--color-surface)] hover:border-[var(--color-accent)] transition-all mt-1 sm:mt-0">
+          <Link to="/catalogo" className="group shrink-0 flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-full border border-[var(--color-border-subtle)] hover:bg-[var(--color-surface)] hover:border-[var(--color-accent)] transition-all mt-1 sm:mt-0">
             <ArrowLeft className="h-4 w-4 sm:h-5 sm:w-5 text-[var(--color-text-muted)] group-hover:text-[var(--color-accent)] transition-colors" />
           </Link>
           <div>
@@ -53,7 +51,6 @@ function CatalogoPromocionaisPage() {
               key={promo.id}
               to="/catalogo/produto/$tipo/$sku"
               params={{ tipo: "promocional", sku: promo.id }}
-              search={{ empresa }}
               className="group rounded-2xl border border-[var(--color-border-subtle)] bg-[var(--color-surface)]/50 overflow-hidden transition-all duration-300 hover:border-[var(--color-accent)]/40 hover:shadow-[0_8px_30px_rgba(201,166,85,0.08)]"
             >
               {/* Imagem — 30% */}

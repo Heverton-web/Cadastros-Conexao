@@ -156,7 +156,6 @@ function CatalogoStoreContent({ empresaId }: { empresaId: string }) {
                   <Link
                     key={key}
                     to={`/catalogo/${key}` as any}
-                    search={{ empresa: empresaId } as any}
                     className="card-catalogo group relative rounded-2xl sm:rounded-3xl backdrop-blur-xl transition-all overflow-hidden flex flex-col items-center justify-end p-3 sm:p-5 lg:p-8 no-underline shadow-2xl hover:-translate-y-2"
                     style={{
                       backgroundColor: card!.cardBg || "var(--color-surface)",

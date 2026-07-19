@@ -30,14 +30,13 @@ function ProdutoPage() {
   const sku = (params as Record<string, string>).sku
   const navigate = useNavigate()
   const search = useSearch({ strict: false }) as Record<string, string | null>
-  const empresa = search.empresa
 
   const backTo = () => {
-    if (tipo === 'implante') return navigate({ to: '/catalogo/implantes/$conexaoId/$familiaId/$linhaId', params: { conexaoId: search.conexao!, familiaId: search.familia!, linhaId: search.linha! }, search: { empresa } })
-    if (tipo === 'abutment') return navigate({ to: '/catalogo/componentes/$familiaId/$tipoReabId/$tipoAbutmentId', params: { familiaId: search.familia!, tipoReabId: search.tipoReab!, tipoAbutmentId: search.tipoAbutment! }, search: { empresa } })
-    if (tipo === 'kit') return navigate({ to: '/catalogo/kits', search: { empresa } })
-    if (tipo === 'promocional') return navigate({ to: '/catalogo/promocionais', search: { empresa } })
-    navigate({ to: '/catalogo', search: { empresa } })
+    if (tipo === 'implante') return navigate({ to: '/catalogo/implantes/$conexaoId/$familiaId/$linhaId', params: { conexaoId: search.conexao!, familiaId: search.familia!, linhaId: search.linha! } })
+    if (tipo === 'abutment') return navigate({ to: '/catalogo/componentes/$familiaId/$tipoReabId/$tipoAbutmentId', params: { familiaId: search.familia!, tipoReabId: search.tipoReab!, tipoAbutmentId: search.tipoAbutment! } })
+    if (tipo === 'kit') return navigate({ to: '/catalogo/kits' })
+    if (tipo === 'promocional') return navigate({ to: '/catalogo/promocionais' })
+    navigate({ to: '/catalogo' })
   }
 
   return (
