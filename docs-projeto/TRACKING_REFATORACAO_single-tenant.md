@@ -39,20 +39,20 @@
 - [x] Aplicar migration no banco
 - [x] Testar SELECTs como `authenticated` → retorna dados ✅
 - [x] Testar que `anon` não acessa ✅
-- [ ] `npm run build` → passou ✅
+- [x] `npm run build` → passou ✅
 
 ---
 
 ## ETAPA 2 — Banco de Dados: Trigger e RPCs
 
-- [ ] Criar migration `20260720000002_single_tenant_rpcs.sql`
-- [ ] Refatorar `handle_new_user()` → empresa_id fixo
-- [ ] Refatorar `admin_criar_usuario` → remover `p_empresa_id`
-- [ ] Refatorar `admin_deletar_usuario` → remover filtro empresa
-- [ ] Simplificar `get_current_empresa_id()` → sem consultar profiles
-- [ ] Aplicar migration no banco
-- [ ] Testar criação de usuário sem empresa_id no metadata ✅
-- [ ] `npm run build` → passou ✅
+- [x] Criar migration `20260720000002_single_tenant_rpcs.sql`
+- [x] Refatorar `handle_new_user()` → empresa_id fixo
+- [x] Refatorar `admin_criar_usuario` → remover `p_empresa_id`
+- [x] Refatorar `admin_deletar_usuario` → remover filtro empresa
+- [x] Simplificar `get_current_empresa_id()` → sem consultar profiles
+- [x] Aplicar migration no banco
+- [x] Testar criação de usuário sem empresa_id no metadata ✅
+- [x] `npm run build` → passou ✅
 
 ---
 
@@ -217,8 +217,8 @@
 | Etapa | Status | Build |
 |-------|--------|-------|
 | Etapa 0 — Preparação | 🟢 Concluída | ✅ |
-| Etapa 1 — RLS Banco | 🟡 Em progresso | — |
-| Etapa 2 — Triggers/RPCs | 🔴 Pendente | — |
+| Etapa 1 — RLS Banco | 🟢 Concluída | ✅ |
+| Etapa 2 — Triggers/RPCs | 🟢 Concluída | ✅ |
 | Etapa 3 — Core Frontend | 🔴 Pendente | — |
 | Etapa 4 — Hook Catálogo | 🔴 Pendente | — |
 | Etapa 5 — Services Catálogo | 🔴 Pendente | — |
@@ -231,4 +231,4 @@
 | Etapa 9 — Rotas/Guards | 🔴 Pendente | — |
 | Etapa 10 — Limpeza Final | 🔴 Pendente | — |
 
-**Concluídas: 1/14 etapas**
+**Concluídas: 3/14 etapas**
