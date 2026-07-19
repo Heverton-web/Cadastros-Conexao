@@ -1,4 +1,5 @@
 import { supabase } from "~/core/supabase/client";
+import { EMPRESA_ID } from "~/config/empresa"
 import type {
   AgenteIA,
   AgenteKnowledgeDoc,
@@ -13,26 +14,26 @@ import type {
 
 // ── Agentes CRUD ──────────────────────────────────────────────
 
-export async function listarAgentes(empresaId: string): Promise<AgenteIA[]> {
+export async function listarAgentes(): Promise<AgenteIA[]> {
   const { data, error } = await supabase
     .from("agentes_ia")
     .select("*")
-    .eq("empresa_id", empresaId)
+    .eq("empresa_id", EMPRESA_ID)
     .order("created_at", { ascending: false });
   if (error) throw error;
   return data ?? [];
 }
 
 export async function listarTodosAgentes(
-  empresaId?: string,
+  EMPRESA_ID?: string,
 ): Promise<AgenteIA[]> {
   let query = supabase
     .from("agentes_ia")
     .select("*")
     .order("created_at", { ascending: false });
 
-  if (empresaId) {
-    query = query.eq("empresa_id", empresaId);
+  if (EMPRESA_ID) {
+    query = query.eq("empresa_id", EMPRESA_ID);
   }
 
   const { data, error } = await query;
@@ -51,13 +52,13 @@ export async function buscarAgente(id: string): Promise<AgenteIA | null> {
 }
 
 export async function criarAgente(
-  empresaId: string | null,
+  EMPRESA_ID: string | null,
   input: CriarAgenteInput
 ): Promise<AgenteIA> {
   const { data, error } = await supabase
     .from("agentes_ia")
     .insert({
-      empresa_id: empresaId || null,
+      empresa_id: EMPRESA_ID || null,
       nome: input.nome,
       modulo_key: input.modulo_key,
       route: input.route ?? null,
@@ -265,7 +266,7 @@ export async function buscarGastosSessao(
 }
 
 export async function buscarGastosHoje(
-  empresaId: string
+  EMPRESA_ID: string
 ): Promise<{ total_cost: number; total_tokens: number; chamadas: number }> {
   const hoje = new Date();
   hoje.setHours(0, 0, 0, 0);
@@ -275,8 +276,8 @@ export async function buscarGastosHoje(
     .select("total_cost, total_tokens")
     .gte("created_at", hoje.toISOString());
 
-  if (empresaId) {
-    query = query.eq("empresa_id", empresaId);
+  if (EMPRESA_ID) {
+    query = query.eq("empresa_id", EMPRESA_ID);
   }
 
   const { data, error } = await query;

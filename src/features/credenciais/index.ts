@@ -1,4 +1,5 @@
 import { supabase } from "~/core/supabase";
+import { EMPRESA_ID } from "~/config/empresa"
 
 export type EscopoCredencial = {
   modulo: string;
@@ -36,11 +37,11 @@ export async function listarCredenciais() {
   return data as Credencial[];
 }
 
-export async function listarCredenciaisPorEmpresa(empresaId: string) {
+export async function listarCredenciaisPorEmpresa() {
   const { data, error } = await supabase
     .from("credenciais")
     .select("*")
-    .eq("empresa_id", empresaId)
+    .eq("empresa_id", EMPRESA_ID)
     .order("created_at", { ascending: false });
   if (error) throw error;
   return data as Credencial[];

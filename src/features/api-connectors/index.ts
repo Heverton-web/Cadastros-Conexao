@@ -1,4 +1,5 @@
 import { supabase } from "~/core/supabase";
+import { EMPRESA_ID } from "~/config/empresa"
 import { registerActionExecutor } from "~/registry";
 
 export type ApiConnectorType = "api_call" | "webhook";
@@ -30,7 +31,7 @@ export type ApiConnectorInput = Omit<
 
 export async function listApiConnectors(
   type?: ApiConnectorType,
-  empresaId?: string | null,
+  EMPRESA_ID?: string | null,
   moduloKey?: string | null,
 ) {
   let query = supabase
@@ -40,9 +41,9 @@ export async function listApiConnectors(
   if (type) {
     query = query.eq("type", type);
   }
-  if (empresaId) {
-    query = query.eq("empresa_id", empresaId);
-  } else if (empresaId === null) {
+  if (EMPRESA_ID) {
+    query = query.eq("empresa_id", EMPRESA_ID);
+  } else if (EMPRESA_ID === null) {
     // Para SuperAdmins que querem ver apenas configurações globais (se aplicável), ou deixe sem filtro para ver tudo
   }
   if (moduloKey) {
