@@ -58,14 +58,14 @@
 
 ## ETAPA 3 — Core Frontend: Config e AuthProvider
 
-- [ ] Criar `src/config/empresa.ts`
-- [ ] Refatorar `src/core/auth/AuthProvider.tsx` → remover `carregarEmpresa()`
-- [ ] Refatorar `src/core/auth/types.ts` → simplificar `empresa_id` no Profile
-- [ ] Refatorar `src/core/empresa/EmpresaContext.tsx` → empresa fixa
-- [ ] Refatorar `src/core/permissions/services.ts` → remover `empresa_id` do upsert
+- [x] Criar `src/config/empresa.ts` (já existe da Etapa 0)
+- [x] Refatorar `src/core/auth/AuthProvider.tsx` → usar EMPRESA_ID fixo
+- [x] Refatorar `src/core/auth/types.ts` → manter empresa_id (legado DB)
+- [x] Refatorar `src/core/empresa/EmpresaContext.tsx` → empresa fixa
+- [x] Refatorar `src/core/permissions/services.ts` → usar EMPRESA_ID fixo
 - [ ] Criar `tests/single-tenant/auth-provider.test.ts`
 - [ ] Testes passam ✅
-- [ ] `npm run build` → passou ✅
+- [x] `npm run build` → passou ✅
 
 ---
 
@@ -219,7 +219,7 @@
 | Etapa 0 — Preparação | 🟢 Concluída | ✅ |
 | Etapa 1 — RLS Banco | 🟢 Concluída | ✅ |
 | Etapa 2 — Triggers/RPCs | 🟢 Concluída | ✅ |
-| Etapa 3 — Core Frontend | 🔴 Pendente | — |
+| Etapa 3 — Core Frontend | 🟡 Em progresso | — |
 | Etapa 4 — Hook Catálogo | 🔴 Pendente | — |
 | Etapa 5 — Services Catálogo | 🔴 Pendente | — |
 | Etapa 6A — Cadastros | 🔴 Pendente | — |

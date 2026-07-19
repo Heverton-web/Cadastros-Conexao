@@ -3,6 +3,7 @@ import { supabase } from "~/core/supabase";
 import { AuthContext } from "./useAuth";
 import { type Profile, type EmpresaInfo, type ModulosAcesso } from "./types";
 import { getAllPermissionKeys } from "~/registry";
+import { EMPRESA_ID } from "~/config/empresa";
 import toast from "react-hot-toast";
 
 export function AuthProvider({ children }: { children: ReactNode }) {
@@ -18,18 +19,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [modulosAtivos, setModulosAtivos] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const carregarEmpresa = useCallback(async (empresaId: string) => {
+  const carregarEmpresa = useCallback(async () => {
     const { data: emp } = await supabase
       .from("empresas")
       .select("id, nome, slug")
-      .eq("id", empresaId)
+      .eq("id", EMPRESA_ID)
       .single();
     if (!emp) return;
 
     const { data: config } = await supabase
       .from("empresas_config")
       .select("logo_url, logo_index_url, logo_app_url, favicon_url, theme")
-      .eq("empresa_id", empresaId)
+      .eq("empresa_id", EMPRESA_ID)
       .single();
 
     setEmpresa({
@@ -46,7 +47,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const { data: modulos } = await supabase
       .from("empresa_modulos")
       .select("modulo_key, ativo")
-      .eq("empresa_id", empresaId)
+      .eq("empresa_id", EMPRESA_ID)
       .eq("ativo", true);
 
     setModulosAtivos((modulos ?? []).map((m) => m.modulo_key));
@@ -120,9 +121,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setModulosAcesso(modulosAcc);
       }
 
-      if (p.empresa_id) {
-        await carregarEmpresa(p.empresa_id);
-      }
+      // single-tenant: empresa sempre é a mesma
+      await carregarEmpresa();
     }
   }
 

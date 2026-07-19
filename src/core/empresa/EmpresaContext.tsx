@@ -6,7 +6,7 @@ import {
   type ReactNode,
 } from "react";
 import { supabase } from "~/core/supabase";
-import { useAuth } from "~/core/auth";
+import { EMPRESA_ID } from "~/config/empresa";
 import type { Empresa, EmpresaDesign } from "./types";
 
 type EmpresaContextValue = {
@@ -22,19 +22,11 @@ const EmpresaContext = createContext<EmpresaContextValue>({
 });
 
 export function EmpresaProvider({ children }: { children: ReactNode }) {
-  const { profile } = useAuth();
   const [empresa, setEmpresa] = useState<Empresa | null>(null);
   const [config, setConfig] = useState<EmpresaDesign | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!profile?.empresa_id) {
-      setEmpresa(null);
-      setConfig(null);
-      setLoading(false);
-      return;
-    }
-
     let cancelled = false;
 
     async function load() {
@@ -44,12 +36,12 @@ export function EmpresaProvider({ children }: { children: ReactNode }) {
           supabase
             .from("empresas")
             .select("*")
-            .eq("id", profile!.empresa_id)
+            .eq("id", EMPRESA_ID)
             .single(),
           supabase
             .from("empresas_config")
             .select("*")
-            .eq("empresa_id", profile!.empresa_id)
+            .eq("empresa_id", EMPRESA_ID)
             .single(),
         ]);
         if (!cancelled) {
@@ -69,7 +61,7 @@ export function EmpresaProvider({ children }: { children: ReactNode }) {
     return () => {
       cancelled = true;
     };
-  }, [profile?.empresa_id]);
+  }, []);
 
   return (
     <EmpresaContext.Provider value={{ empresa, config, loading }}>
