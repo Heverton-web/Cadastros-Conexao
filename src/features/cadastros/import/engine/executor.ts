@@ -1,4 +1,5 @@
 import { supabase } from "~/core/supabase";
+import { EMPRESA_ID } from "~/config/empresa";
 import { dispararEventoModulo } from "~/core/services/webhooks";
 import type { ClienteCsvRow, ClienteValidation, ClienteImportProgress } from "../types";
 
@@ -6,7 +7,7 @@ const BATCH_SIZE = 50;
 
 export async function importarClientesEmLote(
   rows: ClienteCsvRow[],
-  empresaId: string,
+
   onProgress?: (progress: ClienteImportProgress) => void,
 ): Promise<{ inserted: number; errors: string[] }> {
   const errors: string[] = [];
@@ -15,7 +16,7 @@ export async function importarClientesEmLote(
   for (let i = 0; i < rows.length; i += BATCH_SIZE) {
     const batch = rows.slice(i, i + BATCH_SIZE);
     const toInsert = batch.map((row) => ({
-      empresa_id: empresaId,
+      empresa_id: EMPRESA_ID,
 
       // Dados pessoais
       nome_doutor: row.nome,
@@ -68,8 +69,8 @@ export async function importarClientesEmLote(
     dispararEventoModulo(
       "cadastros",
       "clientes.importados",
-      { count: inserted, empresa_id: empresaId },
-      empresaId,
+      { count: inserted, empresa_id: EMPRESA_ID },
+      EMPRESA_ID,
     ).catch(() => {});
   }
 

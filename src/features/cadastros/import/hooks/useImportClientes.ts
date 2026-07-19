@@ -1,13 +1,10 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { importarClientesEmLote } from "../engine/executor";
-import { useAuth } from "~/lib/auth";
 import type { ClienteCsvRow, ClienteImportProgress } from "../types";
 import { useState } from "react";
 
 export function useImportClientes() {
   const qc = useQueryClient();
-  const { empresa } = useAuth();
-  const empresaId = empresa?.id;
   const [progress, setProgress] = useState<ClienteImportProgress>({
     current: 0,
     total: 0,
@@ -16,9 +13,8 @@ export function useImportClientes() {
 
   const mutation = useMutation({
     mutationFn: async (rows: ClienteCsvRow[]) => {
-      if (!empresaId) throw new Error("Empresa não selecionada");
       setProgress({ current: 0, total: rows.length, status: "executing" });
-      const result = await importarClientesEmLote(rows, empresaId, setProgress);
+      const result = await importarClientesEmLote(rows, setProgress);
       setProgress({
         current: rows.length,
         total: rows.length,
