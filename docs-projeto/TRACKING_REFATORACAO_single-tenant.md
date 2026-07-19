@@ -188,17 +188,17 @@
 - [x] `dispararWebhooks()` — effectiveEmpresaId = empresaId ?? EMPRESA_ID
 - [x] `dispararEventoModulo()` — effectiveEmpresaId = empresaId ?? EMPRESA_ID
 - [x] `empresa_id` nos logs → usar effectiveEmpresaId
-- [ ] Atualizar todos os call sites de `dispararEventoModulo()` (callers já passam empresa_id)
+- [x] Atualizar todos os call sites de `dispararEventoModulo()` (callers já passam empresa_id)
 - [x] `npm run build` → passou ✅
 
 ---
 
 ## ETAPA 9 — Rotas e Guards
 
-- [ ] Simplificar `EmpresaCrudContext.tsx`
-- [ ] Revisar guards de `modulosAtivos`
-- [ ] Remover rotas `adminSuperEmpresasRoute` / `adminSuperEmpresaDetailRoute`
-- [ ] `npm run build` → passou ✅
+- [x] Simplificar `EmpresaCrudContext.tsx` — retorna EMPRESA_ID fixo
+- [x] Revisar guards de `modulosAtivos` — já funcionam com single-tenant
+- [ ] Remover rotas `adminSuperEmpresasRoute` / `adminSuperEmpresaDetailRoute` (manter para Super Admin)
+- [x] `npm run build` → passou ✅
 
 ---
 
@@ -229,8 +229,8 @@
 | Etapa 6C — Módulos Médios | 🟢 Concluída | ✅ |
 | Etapa 6D — Baixo Impacto | 🟢 Concluída | ✅ |
 | Etapa 7 — Módulo Empresas | 🟡 Em progresso | ✅ |
-| Etapa 8 — Webhooks | 🟡 Em progresso | ✅ |
-| Etapa 9 — Rotas/Guards | 🔴 Pendente | — |
-| Etapa 10 — Limpeza Final | 🔴 Pendente | — |
+| Etapa 8 — Webhooks | 🟢 Concluída | ✅ |
+| Etapa 9 — Rotas/Guards | 🟢 Concluída | ✅ |
+| Etapa 10 — Limpeza Final | 🟡 Em progresso | ✅ |
 
-**Concluídas: 8/14 etapas (outras 4 em progresso)**
+**Concluídas: 10/14 etapas (outras 4 em progresso)**
