@@ -3,6 +3,7 @@ import { rootRoute } from "./__root"
 import { StoreLayout } from "~/features/catalogo/components/StoreLayout"
 import { useState, useEffect } from "react"
 import { supabase } from "~/lib/supabase"
+import { EMPRESA_ID } from "~/config/empresa"
 import { Loader2, Crosshair, ShieldCheck, Box, Tag, Package, Layers, ShoppingBag, Percent, Star, Heart, Diamond, Circle, Zap, Target, Award, Gem, Hexagon, Pentagon, Triangle, Square, type LucideIcon } from "lucide-react"
 import { getCatalogoDesign, mergeWithDefaults, type CatalogoDesignConfig } from "~/features/catalogo/services/design.service"
 import { WatermarkShape } from "~/features/catalogo/components/WatermarkShape"
@@ -39,22 +40,9 @@ function CatalogoEmpresaPage() {
   const [notFound, setNotFound] = useState(false)
 
   useEffect(() => {
-    async function loadEmpresa() {
-      const { data } = await supabase
-        .from("empresas")
-        .select("id, nome, slug")
-        .eq("slug", slug)
-        .eq("ativo", true)
-        .single()
-
-      if (data) {
-        setEmpresa(data as EmpresaData)
-      } else {
-        setNotFound(true)
-      }
-      setLoading(false)
-    }
-    loadEmpresa()
+    // Single-tenant: empresa fixa via config
+    setEmpresa({ id: EMPRESA_ID, nome: "Conexão Implant", slug: slug })
+    setLoading(false)
   }, [slug])
 
   if (loading) {
