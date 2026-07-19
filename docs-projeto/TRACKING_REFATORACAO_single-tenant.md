@@ -30,15 +30,15 @@
 
 ## ETAPA 1 — Banco de Dados: Simplificar RLS
 
-- [ ] Criar migration `20260720000001_single_tenant_rls.sql`
-- [ ] Remover função `pode_acessar_empresa()`
-- [ ] Simplificar `get_current_empresa_id()` → retorna ID fixo
-- [ ] Recriar policies: catálogo (~55 tabelas) → `authenticated`
-- [ ] Recriar policies: core tables (`cadastros`, `credenciais`, `atividades`, etc.)
-- [ ] Recriar policies: módulos (`funis`, `nps`, `crm`, `marketing`, `rotas`, `despesas`, `hub`, `linktree`, `mapas`)
-- [ ] Aplicar migration no banco
-- [ ] Testar SELECTs como `authenticated` → retorna dados ✅
-- [ ] Testar que `anon` não acessa ✅
+- [x] Criar migration `20260720000001_single_tenant_rls.sql`
+- [x] Remover função `pode_acessar_empresa()`
+- [x] Simplificar `get_current_empresa_id()` → retorna ID fixo
+- [x] Recriar policies: catálogo (~55 tabelas) → `authenticated`
+- [x] Recriar policies: core tables (`cadastros`, `credenciais`, `atividades`, etc.)
+- [x] Recriar policies: módulos (`funis`, `nps`, `crm`, `marketing`, `rotas`, `despesas`, `hub`, `linktree`, `mapas`)
+- [x] Aplicar migration no banco
+- [x] Testar SELECTs como `authenticated` → retorna dados ✅
+- [x] Testar que `anon` não acessa ✅
 - [ ] `npm run build` → passou ✅
 
 ---
@@ -217,7 +217,7 @@
 | Etapa | Status | Build |
 |-------|--------|-------|
 | Etapa 0 — Preparação | 🟢 Concluída | ✅ |
-| Etapa 1 — RLS Banco | 🔴 Pendente | — |
+| Etapa 1 — RLS Banco | 🟡 Em progresso | — |
 | Etapa 2 — Triggers/RPCs | 🔴 Pendente | — |
 | Etapa 3 — Core Frontend | 🔴 Pendente | — |
 | Etapa 4 — Hook Catálogo | 🔴 Pendente | — |
