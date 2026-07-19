@@ -1,4 +1,5 @@
 import { supabase } from "~/core/supabase";
+import { EMPRESA_ID } from "~/config/empresa"
 import { dispararEventoModulo } from "~/core/services/webhooks";
 import type { Despesa, DespesaFormData, DespesaFiltros } from "../types";
 
@@ -100,13 +101,13 @@ export async function atualizarDespesa(
 
 export async function excluirDespesa(
   id: string,
-  empresaId: string,
+  EMPRESA_ID: string,
 ): Promise<void> {
   const { error } = await supabase
     .from("despesas")
     .delete()
     .eq("id", id)
-    .eq("empresa_id", empresaId);
+    .eq("empresa_id", EMPRESA_ID);
   if (error) throw error;
 }
 

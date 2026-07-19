@@ -1,14 +1,15 @@
 import { supabase } from "~/core/supabase/client";
+import { EMPRESA_ID } from "~/config/empresa"
 import { dispararEventoModulo } from "~/core/services/webhooks";
 import type { HubGamificationLevel, HubBadge, HubUserBadge } from "../types";
 
 const MODULO_KEY = "hub";
 
-export async function fetchHubLevels(empresaId: string) {
+export async function fetchHubLevels() {
   const { data, error } = await supabase
     .from("hub_niveis_gamificacao")
     .select("*")
-    .eq("empresa_id", empresaId)
+    .eq("empresa_id", EMPRESA_ID)
     .order("order_index");
   if (error) throw error;
   return data as HubGamificationLevel[];
@@ -24,11 +25,11 @@ export async function upsertHubLevel(level: Partial<HubGamificationLevel>) {
   return data as HubGamificationLevel;
 }
 
-export async function fetchHubBadges(empresaId: string) {
+export async function fetchHubBadges() {
   const { data, error } = await supabase
     .from("hub_emblemas")
     .select("*")
-    .eq("empresa_id", empresaId)
+    .eq("empresa_id", EMPRESA_ID)
     .order("created_at", { ascending: false });
   if (error) throw error;
   return data as HubBadge[];
@@ -60,12 +61,12 @@ export async function deleteHubBadge(id: string) {
   if (error) throw error;
 }
 
-export async function fetchHubUserBadges(userId: string, empresaId: string) {
+export async function fetchHubUserBadges(userId: string, EMPRESA_ID: string) {
   const { data, error } = await supabase
     .from("hub_emblemas_usuario")
     .select("*, hub_badges(*)")
     .eq("user_id", userId)
-    .eq("empresa_id", empresaId);
+    .eq("empresa_id", EMPRESA_ID);
   if (error) throw error;
   return data as (HubUserBadge & { hub_badges: HubBadge })[];
 }
@@ -73,11 +74,11 @@ export async function fetchHubUserBadges(userId: string, empresaId: string) {
 export async function awardHubBadge(
   userId: string,
   badgeId: string,
-  empresaId: string,
+  EMPRESA_ID: string,
 ) {
   const { data, error } = await supabase
     .from("hub_emblemas_usuario")
-    .insert({ user_id: userId, badge_id: badgeId, empresa_id: empresaId })
+    .insert({ user_id: userId, badge_id: badgeId, empresa_id: EMPRESA_ID })
     .select()
     .single();
   if (error) throw error;
@@ -91,18 +92,18 @@ export async function awardHubBadge(
   dispararEventoModulo(
     MODULO_KEY,
     "badge.conquistado",
-    { badge_id: badgeId, badge_nome: badge?.nome, usuario_id: userId, empresa_id: empresaId },
-    empresaId,
+    { badge_id: badgeId, badge_nome: badge?.nome, usuario_id: userId, empresa_id: EMPRESA_ID },
+    EMPRESA_ID,
   ).catch(() => {});
 
   return data as HubUserBadge;
 }
 
-export async function fetchHubRanking(empresaId: string) {
+export async function fetchHubRanking() {
   const { data, error } = await supabase
     .from("profiles")
     .select("id, nome, hub_points, hub_status, avatar_url")
-    .eq("empresa_id", empresaId)
+    .eq("empresa_id", EMPRESA_ID)
     .gt("hub_points", 0)
     .order("hub_points", { ascending: false })
     .limit(50);

@@ -1,11 +1,12 @@
 import { supabase } from "~/core/supabase";
+import { EMPRESA_ID } from "~/config/empresa"
 import type { LinkSalvo, TipoLink } from "../types";
 
-export async function listarLinks(empresaId: string): Promise<LinkSalvo[]> {
+export async function listarLinks(): Promise<LinkSalvo[]> {
   const { data } = await supabase
     .from("gerador_links")
     .select("*")
-    .eq("empresa_id", empresaId)
+    .eq("empresa_id", EMPRESA_ID)
     .order("created_at", { ascending: false });
   return (data as LinkSalvo[]) || [];
 }

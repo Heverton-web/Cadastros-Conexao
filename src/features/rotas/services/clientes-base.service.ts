@@ -1,8 +1,9 @@
 import { supabase } from "~/core/supabase";
+import { EMPRESA_ID } from "~/config/empresa"
 import type { RotaClienteBase, ClienteBaseFilters } from "../types";
 
 export async function listarClientesBase(
-  empresaId?: string | null,
+  EMPRESA_ID?: string | null,
   usuarioId?: string | null,
   filters?: ClienteBaseFilters,
 ): Promise<RotaClienteBase[]> {
@@ -12,7 +13,7 @@ export async function listarClientesBase(
     .eq("ativo", true)
     .order("nome");
 
-  if (empresaId) query = query.eq("empresa_id", empresaId);
+  if (EMPRESA_ID) query = query.eq("empresa_id", EMPRESA_ID);
   if (usuarioId) query = query.eq("usuario_id", usuarioId);
 
   if (filters?.cidade) query = query.ilike("cidade", `%${filters.cidade}%`);
@@ -109,7 +110,7 @@ export async function excluirClienteBase(id: string): Promise<void> {
 }
 
 export async function contarClientesBase(
-  empresaId?: string | null,
+  EMPRESA_ID?: string | null,
   usuarioId?: string | null,
 ): Promise<number> {
   let query = supabase
@@ -117,7 +118,7 @@ export async function contarClientesBase(
     .select("*", { count: "exact", head: true })
     .eq("ativo", true);
 
-  if (empresaId) query = query.eq("empresa_id", empresaId);
+  if (EMPRESA_ID) query = query.eq("empresa_id", EMPRESA_ID);
   if (usuarioId) query = query.eq("usuario_id", usuarioId);
 
   const { count, error } = await query;

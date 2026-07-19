@@ -1,4 +1,5 @@
 import { supabase } from "~/core/supabase";
+import { EMPRESA_ID } from "~/config/empresa"
 import { dispararEventoModulo } from "~/core/services/webhooks";
 import type { Manutencao, ManutencaoInput } from "../types";
 
@@ -8,9 +9,9 @@ const MENSAGEM_PADRAO =
   "Estamos em manutenção. Voltamos em breve. Agradecemos a compreensão.";
 
 export async function listarManutencoes(
-  empresaId: string | null | undefined,
+  EMPRESA_ID: string | null | undefined,
 ): Promise<Manutencao[]> {
-  const target = empresaId ?? null;
+  const target = EMPRESA_ID ?? null;
   let query = supabase
     .from("modulos_manutencao")
     .select("*")
@@ -23,9 +24,9 @@ export async function listarManutencoes(
 }
 
 export async function listarManutencoesAtivas(
-  empresaId: string | null | undefined,
+  EMPRESA_ID: string | null | undefined,
 ): Promise<Manutencao[]> {
-  const todas = await listarManutencoes(empresaId);
+  const todas = await listarManutencoes(EMPRESA_ID);
   const agora = Date.now();
   return todas.filter((m) => {
     if (!m.ativo) return false;
@@ -35,10 +36,10 @@ export async function listarManutencoesAtivas(
 }
 
 export async function salvarManutencao(
-  empresaId: string | null | undefined,
+  EMPRESA_ID: string | null | undefined,
   input: ManutencaoInput,
 ): Promise<Manutencao> {
-  const target = empresaId ?? null;
+  const target = EMPRESA_ID ?? null;
   const mensagem = input.mensagem?.trim() || MENSAGEM_PADRAO;
 
   const { data: authData } = await supabase.auth.getUser();
@@ -93,9 +94,9 @@ export async function salvarManutencao(
 
 export async function desativarManutencao(
   id: string,
-  empresaId: string | null | undefined,
+  EMPRESA_ID: string | null | undefined,
 ): Promise<void> {
-  const target = empresaId ?? null;
+  const target = EMPRESA_ID ?? null;
 
   const { data: atual, error: buscaErr } = await supabase
     .from("modulos_manutencao")
@@ -130,9 +131,9 @@ export async function desativarManutencao(
 export async function atualizarManutencao(
   id: string,
   input: Partial<ManutencaoInput>,
-  empresaId: string | null | undefined,
+  EMPRESA_ID: string | null | undefined,
 ): Promise<Manutencao> {
-  const target = empresaId ?? null;
+  const target = EMPRESA_ID ?? null;
 
   const { data: atual, error: buscaErr } = await supabase
     .from("modulos_manutencao")

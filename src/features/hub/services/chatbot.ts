@@ -1,11 +1,12 @@
 import { supabase } from "~/core/supabase/client";
+import { EMPRESA_ID } from "~/config/empresa"
 import type { HubChatbotConfig } from "../types";
 
-export async function fetchHubChatbotConfig(empresaId: string) {
+export async function fetchHubChatbotConfig() {
   const { data, error } = await supabase
     .from("hub_config_chatbot")
     .select("*")
-    .eq("empresa_id", empresaId)
+    .eq("empresa_id", EMPRESA_ID)
     .single();
   if (error && error.code !== "PGRST116") throw error;
   return data as HubChatbotConfig | null;
@@ -23,8 +24,8 @@ export async function upsertHubChatbotConfig(
   return data as HubChatbotConfig;
 }
 
-export async function sendHubChatMessage(message: string, empresaId: string) {
-  const config = await fetchHubChatbotConfig(empresaId);
+export async function sendHubChatMessage(message: string, EMPRESA_ID: string) {
+  const config = await fetchHubChatbotConfig(EMPRESA_ID);
   if (!config || !config.enabled || !config.webhook_url) {
     return { reply: "Chatbot não configurado nesta empresa." };
   }
@@ -32,7 +33,7 @@ export async function sendHubChatMessage(message: string, empresaId: string) {
     const response = await fetch(config.webhook_url, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message, empresa_id: empresaId }),
+      body: JSON.stringify({ message, empresa_id: EMPRESA_ID }),
       signal: AbortSignal.timeout(30000),
     });
     const data = await response.json();

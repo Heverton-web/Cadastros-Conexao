@@ -1,4 +1,5 @@
 import { supabase } from "~/core/supabase";
+import { EMPRESA_ID } from "~/config/empresa"
 import { dispararEventoModulo } from "~/core/services/webhooks";
 import type { DespesaPeriodo, Frequencia } from "../types";
 
@@ -98,13 +99,13 @@ export async function reabrirPeriodo(id: string): Promise<DespesaPeriodo> {
 
 export async function excluirPeriodo(
   id: string,
-  empresaId: string,
+  EMPRESA_ID: string,
 ): Promise<void> {
   const { count } = await supabase
     .from("despesas")
     .select("id", { count: "exact", head: true })
     .eq("periodo_id", id)
-    .eq("empresa_id", empresaId);
+    .eq("empresa_id", EMPRESA_ID);
   if (count && count > 0) {
     throw new Error("Não é possível excluir o período: existem despesas vinculadas a ele.");
   }
@@ -112,7 +113,7 @@ export async function excluirPeriodo(
     .from("despesas_periodos")
     .delete()
     .eq("id", id)
-    .eq("empresa_id", empresaId);
+    .eq("empresa_id", EMPRESA_ID);
   if (error) throw error;
 }
 

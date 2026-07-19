@@ -1,4 +1,5 @@
 import { supabase } from "~/core/supabase";
+import { EMPRESA_ID } from "~/config/empresa"
 import type { RotaTrajeto, RotaVisita } from "../types";
 import { calcularDistanciaGoogle } from "./google-maps.service";
 
@@ -24,12 +25,12 @@ function haversineDistance(
 
 // Calculate distance between two points using company's Google Maps key
 export async function calcularDistancia(
-  empresaId: string,
+  EMPRESA_ID: string,
   origem: { lat: number; lng: number },
   destino: { lat: number; lng: number },
 ): Promise<{ distancia_km: number; duracao_minutos: number }> {
   try {
-    const result = await calcularDistanciaGoogle(empresaId, origem, destino);
+    const result = await calcularDistanciaGoogle(EMPRESA_ID, origem, destino);
     if (result.distancia_km > 0) {
       return {
         distancia_km: result.distancia_km,

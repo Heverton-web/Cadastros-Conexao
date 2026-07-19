@@ -1,12 +1,13 @@
 import { supabase } from "~/core/supabase/client";
+import { EMPRESA_ID } from "~/config/empresa"
 import { dispararEventoModulo } from "~/core/services/webhooks";
 import type { HubMaterial, HubMaterialAsset, HubLanguage } from "../types";
 
 const MODULO_KEY = "hub";
 
-export async function fetchHubMaterials(empresaId?: string) {
+export async function fetchHubMaterials(EMPRESA_ID?: string) {
   let query = supabase.from("hub_materiais").select("*");
-  if (empresaId) query = query.eq("empresa_id", empresaId);
+  if (EMPRESA_ID) query = query.eq("empresa_id", EMPRESA_ID);
   const { data, error } = await query.order("created_at", { ascending: false });
   if (error) throw error;
   return data as HubMaterial[];
@@ -101,13 +102,13 @@ export async function logHubAccess(log: {
 
 export async function fetchHubAccessLogs(
   materialId: string,
-  empresaId: string,
+  EMPRESA_ID: string,
 ) {
   const { data, error } = await supabase
     .from("hub_logs_acesso")
     .select("*")
     .eq("material_id", materialId)
-    .eq("empresa_id", empresaId)
+    .eq("empresa_id", EMPRESA_ID)
     .order("timestamp", { ascending: false });
   if (error) throw error;
   return data as import("../types").HubAccessLog[];

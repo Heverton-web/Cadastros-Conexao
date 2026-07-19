@@ -1,4 +1,5 @@
 import { supabase } from "~/core/supabase";
+import { EMPRESA_ID } from "~/config/empresa"
 import type { DespesaTipo } from "../types";
 
 export async function listarTiposDespesa(
@@ -64,12 +65,12 @@ export async function atualizarTipoDespesa(
 
 export async function excluirTipoDespesa(
   id: string,
-  empresaId: string,
+  EMPRESA_ID: string,
 ): Promise<void> {
   const { error } = await supabase
     .from("despesas_tipos")
     .delete()
     .eq("id", id)
-    .eq("empresa_id", empresaId);
+    .eq("empresa_id", EMPRESA_ID);
   if (error) throw error;
 }

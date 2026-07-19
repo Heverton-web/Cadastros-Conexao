@@ -1,4 +1,5 @@
 import { supabase } from "~/core/supabase";
+import { EMPRESA_ID } from "~/config/empresa"
 import { parseUA } from "../utils/userAgent";
 import type { LinkClique, TipoLink } from "../types";
 import { dispararEventoModulo } from "~/core/services/webhooks";
@@ -46,14 +47,14 @@ function extrairDominio(ref: string | null): string {
 }
 
 export async function getDashboardStats(
-  empresaId: string,
+  EMPRESA_ID: string,
   dataInicio?: string,
   dataFim?: string,
 ) {
   let queryLinks = supabase
     .from("gerador_links")
     .select("id, titulo, tipo, created_at")
-    .eq("empresa_id", empresaId);
+    .eq("empresa_id", EMPRESA_ID);
 
   if (dataInicio) queryLinks = queryLinks.gte("created_at", dataInicio);
   if (dataFim) queryLinks = queryLinks.lte("created_at", dataFim);

@@ -1,16 +1,17 @@
 import { supabase } from "~/core/supabase";
+import { EMPRESA_ID } from "~/config/empresa"
 import { dispararEventoModulo } from "~/core/services/webhooks";
 import type { Funil, FunilInput } from "../types";
 
 const MODULO_KEY = "funis";
 
-export async function listarFunis(empresaId?: string): Promise<Funil[]> {
+export async function listarFunis(EMPRESA_ID?: string): Promise<Funil[]> {
   let query = supabase
     .from("funis")
     .select("*, tarefas:funis_tarefas(*)")
     .order("created_at", { ascending: false });
-  if (empresaId) {
-    query = query.eq("empresa_id", empresaId);
+  if (EMPRESA_ID) {
+    query = query.eq("empresa_id", EMPRESA_ID);
   }
   const { data, error } = await query;
   if (error) throw error;
@@ -36,7 +37,7 @@ export async function buscarFunil(id: string): Promise<Funil> {
 
 export async function criarFunil(
   input: FunilInput,
-  empresaId?: string | null,
+  EMPRESA_ID?: string | null,
 ): Promise<Funil> {
   const {
     data: { user },
@@ -49,7 +50,7 @@ export async function criarFunil(
       titulo: input.titulo,
       descricao: input.descricao ?? null,
       created_by: user.id,
-      empresa_id: empresaId ?? null,
+      empresa_id: EMPRESA_ID ?? null,
     })
     .select()
     .single();

@@ -1,13 +1,14 @@
 import { supabase } from "~/core/supabase";
+import { EMPRESA_ID } from "~/config/empresa"
 import type { RotasFormPergunta, FormPerguntaTipo } from "../types";
 
 export async function listarPerguntas(
-  empresaId: string,
+  EMPRESA_ID: string,
 ): Promise<RotasFormPergunta[]> {
   const { data, error } = await supabase
     .from("rotas_form_perguntas")
     .select("*")
-    .eq("empresa_id", empresaId)
+    .eq("empresa_id", EMPRESA_ID)
     .eq("ativo", true)
     .order("ordem");
   if (error) throw error;

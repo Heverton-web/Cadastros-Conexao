@@ -1,11 +1,12 @@
 import { supabase } from "~/core/supabase/client";
+import { EMPRESA_ID } from "~/config/empresa"
 import type { HubSystemConfig } from "../types";
 
-export async function fetchHubConfig(empresaId: string) {
+export async function fetchHubConfig() {
   const { data, error } = await supabase
     .from("hub_config_sistema")
     .select("*")
-    .eq("empresa_id", empresaId)
+    .eq("empresa_id", EMPRESA_ID)
     .single();
   if (error && error.code !== "PGRST116") throw error;
   return data as HubSystemConfig | null;
@@ -22,7 +23,7 @@ export async function upsertHubConfig(config: Partial<HubSystemConfig>) {
 }
 
 export async function updateHubTheme(
-  empresaId: string,
+  EMPRESA_ID: string,
   themeDark: Record<string, string>,
   environmentThemes?: Record<string, unknown>,
 ) {
@@ -30,7 +31,7 @@ export async function updateHubTheme(
     .from("hub_config_sistema")
     .upsert(
       {
-        empresa_id: empresaId,
+        empresa_id: EMPRESA_ID,
         theme_dark: themeDark,
         environment_themes: environmentThemes || {},
       },
