@@ -1,4 +1,5 @@
 import { supabase } from "~/core/supabase";
+import { EMPRESA_ID } from "~/config/empresa"
 import { dispararEventoModulo } from "~/core/services/webhooks";
 import type { NpsResposta } from "../types";
 
@@ -12,13 +13,13 @@ type FiltrosRespostas = {
 };
 
 export async function listarRespostas(
-  empresaId: string,
+  EMPRESA_ID: string,
   filtros?: FiltrosRespostas,
 ): Promise<NpsResposta[]> {
   let query = supabase
     .from("nps_respostas")
     .select("*")
-    .eq("empresa_id", empresaId)
+    .eq("empresa_id", EMPRESA_ID)
     .order("created_at", { ascending: false });
 
   if (filtros?.dateFrom) {
@@ -51,12 +52,12 @@ export async function listarRespostas(
 }
 
 export async function criarResposta(
-  empresaId: string,
+  EMPRESA_ID: string,
   resposta: Omit<NpsResposta, "id" | "empresa_id" | "created_at">,
 ): Promise<NpsResposta> {
   const { data, error } = await supabase
     .from("nps_respostas")
-    .insert({ ...resposta, empresa_id: empresaId })
+    .insert({ ...resposta, empresa_id: EMPRESA_ID })
     .select()
     .single();
 
@@ -65,16 +66,16 @@ export async function criarResposta(
   dispararEventoModulo(
     MODULO_KEY,
     "nps.resposta_recebida",
-    { resposta_id: data.id, nps_score: data.nps_score, csat: data.csat, empresa_id: empresaId },
-    empresaId,
+    { resposta_id: data.id, nps_score: data.nps_score, csat: data.csat, empresa_id: EMPRESA_ID },
+    EMPRESA_ID,
   ).catch(() => {});
 
   if (data.nps_score !== null && data.nps_score <= 6) {
     dispararEventoModulo(
       MODULO_KEY,
       "nps.detrator_detectado",
-      { resposta_id: data.id, nps_score: data.nps_score, comentario: data.nps_comment, empresa_id: empresaId },
-      empresaId,
+      { resposta_id: data.id, nps_score: data.nps_score, comentario: data.nps_comment, empresa_id: EMPRESA_ID },
+      EMPRESA_ID,
     ).catch(() => {});
   }
 

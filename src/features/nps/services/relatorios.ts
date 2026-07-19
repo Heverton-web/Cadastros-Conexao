@@ -1,4 +1,5 @@
 import { supabase } from "~/core/supabase";
+import { EMPRESA_ID } from "~/config/empresa"
 import type { NpsRelatorioEnvio } from "../types";
 
 export async function listarRelatorios(

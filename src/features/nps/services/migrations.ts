@@ -1,4 +1,5 @@
 import { supabase } from "~/core/supabase";
+import { EMPRESA_ID } from "~/config/empresa"
 
 export async function migrarPerguntasEmpresa(empId: string) {
   if (!empId) return;
