@@ -243,7 +243,7 @@ function RelatedProductCard({
 
 function ImplanteDetail({ sku }: { sku: string }) {
   const { getIcon } = useTabIcons()
-  const { data: impl } = useImplanteDetalhe(sku)
+  const { data: impl, isLoading } = useImplanteDetalhe(sku)
   const { data: protocolos } = useProtocoloFresagem(sku)
   const { data: imagens } = useImagensProduto("implante", sku)
   const { data: chaves } = useChavesDoImplante(sku)
@@ -262,7 +262,8 @@ function ImplanteDetail({ sku }: { sku: string }) {
   const { data: imagensAb } = useImagensBatch("abutment", abSkus)
   const { data: imagensKits } = useImagensBatch("kit", kitSkus)
 
-  if (!impl) return <LoadingState />
+  if (isLoading) return <LoadingState />
+  if (!impl) return <EmptyState msg="Implante não encontrado" hint="Verifique se o SKU está correto e a empresa está selecionada." />
 
   // ── Inativo: não renderiza ──
   if (!impl.ativo) return null
@@ -343,25 +344,25 @@ function ImplanteDetail({ sku }: { sku: string }) {
         {/* ─── Ficha Técnica ─── */}
         {activeTab === "ficha" && (
           <div className="space-y-6">
-            {/* Breadcrumb hierárquico */}
+            {/* Breadcrumb hierárquico — usa dados do join aninhado OU colunas diretas */}
             <div className="flex flex-wrap items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.15em] text-[var(--color-text-muted)]">
-              {impl.categoria_id && <span>{impl.linha?.familia?.conexao?.categoria?.nome ?? impl.categoria_id}</span>}
-              {impl.conexao_id && (
+              {impl.linha?.familia?.conexao?.categoria?.nome && <span>{impl.linha.familia.conexao.categoria.nome}</span>}
+              {impl.linha?.familia?.conexao?.nome && (
                 <>
-                  {impl.categoria_id && <span className="opacity-40">/</span>}
-                  <span>{impl.linha?.familia?.conexao?.nome ?? impl.conexao_id}</span>
+                  {impl.linha?.familia?.conexao?.categoria?.nome && <span className="opacity-40">/</span>}
+                  <span>{impl.linha.familia.conexao.nome}</span>
                 </>
               )}
-              {impl.familia_id && (
+              {impl.linha?.familia?.nome && (
                 <>
-                  {(impl.categoria_id || impl.conexao_id) && <span className="opacity-40">/</span>}
-                  <span>{impl.linha?.familia?.nome ?? impl.familia_id}</span>
+                  {(impl.linha?.familia?.conexao?.categoria?.nome || impl.linha?.familia?.conexao?.nome) && <span className="opacity-40">/</span>}
+                  <span>{impl.linha.familia.nome}</span>
                 </>
               )}
-              {impl.linha_id && (
+              {impl.linha?.nome && (
                 <>
                   <span className="opacity-40">/</span>
-                  <span>{impl.linha?.nome ?? impl.linha_id}</span>
+                  <span>{impl.linha.nome}</span>
                 </>
               )}
             </div>

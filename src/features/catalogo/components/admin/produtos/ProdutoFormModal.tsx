@@ -87,7 +87,8 @@ export function ProdutoFormModal({
 
   const [implante, setImplante] = useState({
     categoria_id: "", conexao_id: "", familia_id: "", linha_id: "",
-    sku: "", diametro_mm: 0, comprimento_mm: 0, torque_insercao: 0,
+    sku: "", nome: "", sigla: "", descricao: "",
+    diametro_mm: 0, comprimento_mm: 0, torque_insercao: 0,
     rosca_interna: "", regiao_apical: "", regiao_cervical: "",
     material: "", superficie: "", tratamento: "", chave_sku: "", preco: 0,
     macrogeometria: "", osso_soft: "", osso_hard: "",
@@ -127,7 +128,7 @@ export function ProdutoFormModal({
   const [cicatrizadoresIds, setCicatrizadoresIds] = useState<string[]>([])
 
   function resetForms() {
-    setImplante({ categoria_id: "", conexao_id: "", familia_id: "", linha_id: "", sku: "", diametro_mm: 0, comprimento_mm: 0, torque_insercao: 0, rosca_interna: "", regiao_apical: "", regiao_cervical: "", material: "", superficie: "", tratamento: "", chave_sku: "", preco: 0, macrogeometria: "", osso_soft: "", osso_hard: "", diametro_plataforma_mm: 0, ativo: true })
+    setImplante({ categoria_id: "", conexao_id: "", familia_id: "", linha_id: "", sku: "", nome: "", sigla: "", descricao: "", diametro_mm: 0, comprimento_mm: 0, torque_insercao: 0, rosca_interna: "", regiao_apical: "", regiao_cervical: "", material: "", superficie: "", tratamento: "", chave_sku: "", preco: 0, macrogeometria: "", osso_soft: "", osso_hard: "", diametro_plataforma_mm: 0, ativo: true })
     setAbutment({ familia_id: "", tipo_reabilitacao_id: "", tipo_abutment_id: "", sku: "", diametro_plataforma: "", angulacao_graus: 0, altura_transmucoso: 0, altura_corpo: 0, torque_ncm: 0, preco: 0 })
     setKit({ categoria_id: "", sku: "", nome: "", descricao: "", familia_ids: [], preco: 0 })
     setParafusoRetencao({ sku: "", nome: "", torque_ncm: 0, vinculo_tipo: "", vinculo_sku: "", chave_sku: "", preco: 0 })
@@ -178,6 +179,9 @@ export function ProdutoFormModal({
         familia_id: (d as any).familia_id ?? extras.familia_id ?? "",
         linha_id: d.linha_id ?? "",
         sku: d.sku ?? "",
+        nome: d.nome ?? "",
+        sigla: d.sigla ?? "",
+        descricao: d.descricao ?? "",
         diametro_mm: d.diametro_mm ?? 0,
         comprimento_mm: d.comprimento_mm ?? 0,
         torque_insercao: d.torque_insercao ?? 0,
@@ -298,6 +302,8 @@ export function ProdutoFormModal({
       regiao_cervical: implante.regiao_cervical || undefined,
       preco: implante.preco || undefined,
       macrogeometria: implante.macrogeometria || undefined,
+      sigla: implante.sigla || undefined,
+      descricao: implante.descricao || undefined,
       categoria_id: implante.categoria_id || undefined,
       conexao_id: implante.conexao_id || undefined,
       familia_id: implante.familia_id || undefined,
@@ -400,7 +406,7 @@ export function ProdutoFormModal({
         const payload = {
           sku: cicatrizador.sku,
           nome: cicatrizador.nome,
-          altura_transmucoso: cicatrizador.altura_transmucoso || undefined,
+          altura_transmucoso_mm: cicatrizador.altura_transmucoso || undefined,
           diametro_plataforma: cicatrizador.diametro_plataforma || undefined,
           torque_ncm: cicatrizador.torque_ncm || undefined,
           familia_id: cicatrizador.familia_id || undefined,
