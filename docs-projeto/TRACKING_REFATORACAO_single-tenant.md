@@ -71,11 +71,11 @@
 
 ## ETAPA 4 — Core Frontend: Hook useCatalogoEmpresaId
 
-- [ ] Refatorar `src/features/catalogo/hooks/useCatalogoEmpresaId.ts` → retorna `EMPRESA_ID` fixo
+- [x] Refatorar `src/features/catalogo/hooks/useCatalogoEmpresaId.ts` → retorna `EMPRESA_ID` fixo
 - [ ] Remover resolução por slug/URL/search params/auth cascade
 - [ ] Criar `tests/single-tenant/catalogo-empresa-id.test.ts`
 - [ ] Testes passam ✅
-- [ ] `npm run build` → passou ✅
+- [x] `npm run build` → passou ✅
 
 ---
 
@@ -220,7 +220,7 @@
 | Etapa 1 — RLS Banco | 🟢 Concluída | ✅ |
 | Etapa 2 — Triggers/RPCs | 🟢 Concluída | ✅ |
 | Etapa 3 — Core Frontend | 🟡 Em progresso | — |
-| Etapa 4 — Hook Catálogo | 🔴 Pendente | — |
+| Etapa 4 — Hook Catálogo | 🟡 Em progresso | — |
 | Etapa 5 — Services Catálogo | 🔴 Pendente | — |
 | Etapa 6A — Cadastros | 🔴 Pendente | — |
 | Etapa 6B — NPS | 🔴 Pendente | — |
