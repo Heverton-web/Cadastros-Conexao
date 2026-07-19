@@ -1,4 +1,5 @@
 import { supabase } from "~/core/supabase";
+import { EMPRESA_ID } from "~/config/empresa";
 import type { Empresa, EmpresaDesign, ModuloEmpresa } from "./types";
 
 export async function listarEmpresas(): Promise<Empresa[]> {
@@ -117,7 +118,7 @@ export async function buscarEmpresaDesign(
   const { data, error } = await supabase
     .from("empresas_config")
     .select("*")
-    .eq("empresa_id", empresaId)
+    .eq("empresa_id", EMPRESA_ID)
     .single();
   if (error) throw error;
   return data as EmpresaDesign | null;
@@ -140,7 +141,7 @@ export async function salvarEmpresaDesign(
   const payload = { ...input, updated_at: new Date().toISOString() };
   const { error } = await supabase
     .from("empresas_config")
-    .upsert({ empresa_id: empresaId, ...payload });
+    .upsert({ empresa_id: EMPRESA_ID, ...payload });
   if (error) throw error;
 }
 
@@ -153,7 +154,7 @@ export async function listarModulosEmpresa(
   const { data, error } = await supabase
     .from("empresa_modulos")
     .select("*")
-    .eq("empresa_id", empresaId)
+    .eq("empresa_id", EMPRESA_ID)
     .order("modulo_key");
   if (error) throw error;
   return (data ?? []) as ModuloEmpresa[];
@@ -178,7 +179,7 @@ export async function upsertModuloEmpresa(
   const { error } = await supabase
     .from("empresa_modulos")
     .upsert(
-      { empresa_id: empresaId, modulo_key: moduloKey, ativo },
+      { empresa_id: EMPRESA_ID, modulo_key: moduloKey, ativo },
       { onConflict: "empresa_id,modulo_key" },
     );
   if (error) throw error;
@@ -253,7 +254,7 @@ export async function ativarModulosParaEmpresa(
   modulos: string[],
 ): Promise<void> {
   const inserts = modulos.map((modulo_key) => ({
-    empresa_id: empresaId,
+    empresa_id: EMPRESA_ID,
     modulo_key,
     ativo: true,
   }));
