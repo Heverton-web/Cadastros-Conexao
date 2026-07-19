@@ -4,19 +4,18 @@ import type { CartItem, ProductSheetTipo } from "../types"
 
 const STORAGE_PREFIX = "conexao_cart_v1"
 
-let scopeEmpresaId: string | null = null
 let scopeUserId: string | null = null
 let items: CartItem[] = []
 let listeners: Array<() => void> = []
 
-function scopeKey(EMPRESA_ID: string | null, userId: string | null): string {
-  const e = EMPRESA_ID ?? "anon"
+function scopeKey(userId: string | null): string {
+  const e = EMPRESA_ID
   const u = userId ?? "anon"
   return `${STORAGE_PREFIX}_${e}_${u}`
 }
 
 function storageKey(): string {
-  return scopeKey(scopeEmpresaId, scopeUserId)
+  return scopeKey(scopeUserId)
 }
 
 function loadFromStorage(): void {
@@ -50,24 +49,21 @@ function getSnapshot(): CartItem[] {
 }
 
 /**
- * Define o escopo do carrinho (empresa + usuário) e carrega o carrinho
- * persistido para esse escopo. Isso garante isolamento multi-tenant:
- * cada empresa e cada usuário logado possuem seu próprio carrinho,
- * impedindo vazamento de itens entre empresas/usuários.
+ * Define o escopo do carrinho (usuário) e carrega o carrinho
+ * persistido para esse escopo. Em single-tenant, a empresa é fixa (EMPRESA_ID).
  */
-export function setCarrinhoScope(EMPRESA_ID: string | null, userId: string | null): void {
-  if (scopeEmpresaId === EMPRESA_ID && scopeUserId === userId) return
+export function setCarrinhoScope(userId: string | null): void {
+  if (scopeUserId === userId) return
 
   // Persiste o carrinho atual no escopo antigo antes de trocar
   if (typeof window !== "undefined") {
     try {
-      localStorage.setItem(scopeKey(scopeEmpresaId, scopeUserId), JSON.stringify(items))
+      localStorage.setItem(storageKey(), JSON.stringify(items))
     } catch {
       // ignora
     }
   }
 
-  scopeEmpresaId = EMPRESA_ID
   scopeUserId = userId
   loadFromStorage()
   listeners.forEach((l) => l())

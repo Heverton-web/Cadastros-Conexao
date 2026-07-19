@@ -94,7 +94,7 @@ function KitsList({ tipoKitId, onBack }: { tipoKitId: string; onBack: () => void
   useEffect(() => {
     if (!kits || kits.length === 0) return
     const skus = kits.map((k) => k.sku)
-    listarImagensBatch(empresaId, "kit", skus).then(setImagensMap).catch(() => {})
+    listarImagensBatch("kit", skus).then(setImagensMap).catch(() => {})
   }, [kits, empresaId])
 
   if (isLoading) {

@@ -52,7 +52,6 @@ export function validarArquivoImagem(file: File): { valido: boolean; erro?: stri
  * Upload de imagem para Supabase Storage.
  */
 export async function uploadImagem(
-  EMPRESA_ID: string,
   tipo: ProdutoTipoImagem,
   sku: string,
   file: File,
@@ -80,7 +79,6 @@ export async function uploadImagem(
  * Adiciona uma imagem por URL externa (S3 ou Google Drive).
  */
 export async function adicionarImagemUrl(
-  EMPRESA_ID: string,
   tipo: ProdutoTipoImagem,
   sku: string,
   url: string,
@@ -126,7 +124,6 @@ export async function adicionarImagemUrl(
  * Lista imagens de um produto.
  */
 export async function listarImagens(
-  EMPRESA_ID: string,
   tipo: ProdutoTipoImagem,
   sku: string,
 ): Promise<CatalogoImagemProduto[]> {
@@ -147,7 +144,6 @@ export async function listarImagens(
  * Retorna um Map<sku, imagens[]>.
  */
 export async function listarImagensBatch(
-  EMPRESA_ID: string,
   tipo: ProdutoTipoImagem,
   skus: string[],
 ): Promise<Map<string, CatalogoImagemProduto[]>> {
@@ -176,7 +172,6 @@ export async function listarImagensBatch(
  * Remove uma imagem. Se foi upload, também remove do Storage.
  */
 export async function removerImagem(
-  EMPRESA_ID: string,
   imagemId: string,
   fonte: FonteImagem = "upload",
   path?: string,
@@ -199,7 +194,6 @@ export async function removerImagem(
  * Atualiza a ordem de exibição de múltiplas imagens.
  */
 export async function reordenarImagens(
-  EMPRESA_ID: string,
   tipo: ProdutoTipoImagem,
   sku: string,
   ordens: { id: string; ordem: number }[],
@@ -222,13 +216,12 @@ export async function reordenarImagens(
  * Comprime automaticamente imagens > 5MB.
  */
 export async function uploadEAdicionarImagem(
-  EMPRESA_ID: string,
   tipo: ProdutoTipoImagem,
   sku: string,
   file: File,
 ): Promise<CatalogoImagemProduto> {
   const arquivoFinal = await compressImage(file)
-  const { url, path } = await uploadImagem(EMPRESA_ID, tipo, sku, arquivoFinal)
+  const { url, path } = await uploadImagem(tipo, sku, arquivoFinal)
 
   // Buscar última ordem
   const { data: ultima } = await supabase

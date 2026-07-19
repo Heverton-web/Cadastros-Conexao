@@ -50,7 +50,7 @@ export async function saveConfiguracoes(config: CatalogoConfiguracoes): Promise<
   const { error } = await supabase
     .from("catalogo_configuracoes")
     .upsert({
-      empresa_id: config.empresa_id,
+      empresa_id: EMPRESA_ID,
       nome_loja: config.nome_loja,
       cnpj: config.cnpj,
       email_contato: config.email_contato,

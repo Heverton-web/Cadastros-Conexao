@@ -3,7 +3,6 @@ import { EMPRESA_ID } from "~/config/empresa"
 import type { CatalogoFavorito } from "../types/pedidos"
 
 export async function listarFavoritos(
-  EMPRESA_ID: string,
   clienteId: string,
 ): Promise<CatalogoFavorito[]> {
   const { data, error } = await supabase
@@ -17,7 +16,6 @@ export async function listarFavoritos(
 }
 
 export async function adicionarFavorito(
-  EMPRESA_ID: string,
   clienteId: string,
   produtoSku: string,
   produtoTipo: string,
@@ -37,7 +35,6 @@ export async function adicionarFavorito(
 }
 
 export async function removerFavorito(
-  EMPRESA_ID: string,
   clienteId: string,
   produtoSku: string,
 ): Promise<void> {
@@ -51,7 +48,6 @@ export async function removerFavorito(
 }
 
 export async function isFavorito(
-  EMPRESA_ID: string,
   clienteId: string,
   produtoSku: string,
 ): Promise<boolean> {
@@ -67,16 +63,15 @@ export async function isFavorito(
 }
 
 export async function toggleFavorito(
-  EMPRESA_ID: string,
   clienteId: string,
   produtoSku: string,
   produtoTipo: string,
 ): Promise<boolean> {
-  const exists = await isFavorito(EMPRESA_ID, clienteId, produtoSku)
+  const exists = await isFavorito(clienteId, produtoSku)
   if (exists) {
-    await removerFavorito(EMPRESA_ID, clienteId, produtoSku)
+    await removerFavorito(clienteId, produtoSku)
     return false
   }
-  await adicionarFavorito(EMPRESA_ID, clienteId, produtoSku, produtoTipo)
+  await adicionarFavorito(clienteId, produtoSku, produtoTipo)
   return true
 }

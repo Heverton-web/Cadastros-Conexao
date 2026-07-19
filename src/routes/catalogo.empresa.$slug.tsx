@@ -89,7 +89,7 @@ function CatalogoStoreContent({ empresaId }: { empresaId: string }) {
   const [empresaNome, setEmpresaNome] = useState<string>("")
 
   useEffect(() => {
-    getCatalogoDesign(empresaId).then(setConfig)
+    getCatalogoDesign().then(setConfig)
     supabase.from("empresas").select("nome").eq("id", empresaId).single().then(({ data }) => {
       if (data?.nome) setEmpresaNome(data.nome)
     })

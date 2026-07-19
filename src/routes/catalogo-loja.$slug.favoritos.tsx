@@ -25,7 +25,7 @@ function LojaFavoritosPage() {
   async function load() {
     if (!isLogado || !cliente) return
     try {
-      setFavoritos(await listarFavoritos(empresaId, cliente.id))
+      setFavoritos(await listarFavoritos(cliente.id))
     } finally {
       setLoading(false)
     }
@@ -35,7 +35,7 @@ function LojaFavoritosPage() {
 
   async function handleRemove(sku: string) {
     if (!cliente) return
-    await removerFavorito(empresaId, cliente.id, sku)
+    await removerFavorito(cliente.id, sku)
     setFavoritos((f) => f.filter((fav) => fav.produto_sku !== sku))
   }
 

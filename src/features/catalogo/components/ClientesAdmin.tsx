@@ -52,8 +52,8 @@ export function ClientesAdmin() {
     setLoading(true)
     try {
       const [c, g] = await Promise.all([
-        listarClientes(empresaId, { search: search || undefined }),
-        listarGrupos(empresaId),
+        listarClientes({ search: search || undefined }),
+        listarGrupos(),
       ])
       setClientes(c)
       setGrupos(g)
@@ -69,7 +69,7 @@ export function ClientesAdmin() {
     if (!empresaId) return
     setLoadingCadastros(true)
     try {
-      const data = await listarCadastrosDisponiveis(empresaId, termo || undefined)
+      const data = await listarCadastrosDisponiveis(termo || undefined)
       setCadastros(data)
     } finally {
       setLoadingCadastros(false)
@@ -153,7 +153,7 @@ export function ClientesAdmin() {
     if (editing) {
       await atualizarCliente(editing.id, form)
     } else {
-      await criarCliente(empresaId, form)
+      await criarCliente(form)
     }
     setDialogOpen(false)
     load()

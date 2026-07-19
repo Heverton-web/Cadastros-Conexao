@@ -60,7 +60,7 @@ export function SequenciaProtetica({ familiaId, tipoAbutmentId, familiaNome, tip
   useEffect(() => {
     if (!abutmentSku || !empresaId) return
     setLoading(true)
-    listarSequenciaProtetica(empresaId, abutmentSku)
+    listarSequenciaProtetica(abutmentSku)
       .then((data) => {
         const grouped = groupEtapas(data)
         setWorkflows(grouped)

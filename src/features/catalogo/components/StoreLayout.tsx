@@ -66,10 +66,10 @@ export function StoreLayout({ children, empresaId: empresaIdProp, fullHeight, zo
   const { qtd } = cartTotais(cart);
   const { profile } = useAuth();
 
-  // Isola o carrinho por empresa + usuário logado (multi-tenant).
+  // Isola o carrinho por usuário logado (single-tenant: empresa fixa).
   useEffect(() => {
-    setCarrinhoScope(resolvedEmpresaId, profile?.id ?? null);
-  }, [resolvedEmpresaId, profile?.id]);
+    setCarrinhoScope(profile?.id ?? null);
+  }, [profile?.id]);
   // Resolve empresaId: se prop foi passada, usa; senão, usa EMPRESA_ID do config
   useEffect(() => {
     if (empresaIdProp) {

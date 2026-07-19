@@ -242,7 +242,7 @@ function ImplantList({ linhaId, conexaoId, familiaId, onBack }: { linhaId: strin
   useEffect(() => {
     if (!implantes || implantes.length === 0) return
     const skus = implantes.map((i) => i.sku)
-    listarImagensBatch(empresaId, "implante", skus).then(setImagensMap).catch(() => {})
+    listarImagensBatch("implante", skus).then(setImagensMap).catch(() => {})
   }, [implantes, empresaId])
 
   if (isLoading) {

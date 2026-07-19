@@ -3,7 +3,6 @@ import { EMPRESA_ID } from "~/config/empresa"
 import type { CatalogoSequenciaProtetica } from "../types"
 
 export async function listarSequenciaProtetica(
-  EMPRESA_ID: string,
   abutmentSku: string
 ): Promise<CatalogoSequenciaProtetica[]> {
   const { data, error } = await supabase
@@ -17,7 +16,6 @@ export async function listarSequenciaProtetica(
 }
 
 export async function salvarSequenciaProtetica(
-  EMPRESA_ID: string,
   abutmentSku: string,
   etapas: { tipo_workflow: string; etapa_ordem: number; etapa_nome: string; acessorio_sku: string }[]
 ): Promise<void> {

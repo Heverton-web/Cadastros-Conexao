@@ -34,7 +34,7 @@ export function SolicitacoesAdmin() {
     if (!empresaId) return
     setLoading(true)
     try {
-      setSolicitacoes(await listarSolicitacoes(empresaId))
+      setSolicitacoes(await listarSolicitacoes())
     } finally {
       setLoading(false)
     }

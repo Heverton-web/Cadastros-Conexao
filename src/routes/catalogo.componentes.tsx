@@ -216,7 +216,7 @@ function AbutmentList({ familiaId, tipoAbutmentId, tipoReabId, onBack }: { famil
   useEffect(() => {
     if (filtered.length === 0) return
     const skus = filtered.map((a) => a.sku)
-    listarImagensBatch(empresaId, "abutment", skus).then(setImagensMap).catch(() => {})
+    listarImagensBatch("abutment", skus).then(setImagensMap).catch(() => {})
   }, [filtered, empresaId])
 
   if (isLoading) {

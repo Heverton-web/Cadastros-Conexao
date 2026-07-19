@@ -905,7 +905,7 @@ export function useClientesCatalogo(filters?: { tipo?: string; ativo?: boolean; 
   const empresaId = useEmpresaId()
   return useQuery({
     queryKey: ["catalogo", "clientes", empresaId, filters],
-    queryFn: () => clientesService.listarClientes(empresaId, filters),
+    queryFn: () => clientesService.listarClientes(filters),
     enabled: !!empresaId,
   })
 }
@@ -914,8 +914,8 @@ export function useCriarClienteCatalogo() {
   const empresaId = useEmpresaId()
   const qc = useQueryClient()
   return useMutation({
-    mutationFn: (input: Parameters<typeof clientesService.criarCliente>[1]) =>
-      clientesService.criarCliente(empresaId, input),
+    mutationFn: (input: Parameters<typeof clientesService.criarCliente>[0]) =>
+      clientesService.criarCliente(input),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "clientes", empresaId] }),
   })
 }
@@ -943,8 +943,8 @@ export function useCriarGrupoCliente() {
   const empresaId = useEmpresaId()
   const qc = useQueryClient()
   return useMutation({
-    mutationFn: (input: Parameters<typeof gruposService.criarGrupo>[1]) =>
-      gruposService.criarGrupo(empresaId, input),
+    mutationFn: (input: Parameters<typeof gruposService.criarGrupo>[0]) =>
+      gruposService.criarGrupo(input),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "grupos", empresaId] }),
   })
 }
@@ -954,7 +954,7 @@ export function usePedidosCatalogo(filters?: { status?: string; cliente_id?: str
   const empresaId = useEmpresaId()
   return useQuery({
     queryKey: ["catalogo", "pedidos", empresaId, filters],
-    queryFn: () => pedidosService.listarPedidos(empresaId, filters as any),
+    queryFn: () => pedidosService.listarPedidos(filters as any),
     enabled: !!empresaId,
   })
 }
@@ -963,8 +963,8 @@ export function useCriarPedidoCatalogo() {
   const empresaId = useEmpresaId()
   const qc = useQueryClient()
   return useMutation({
-    mutationFn: (input: Parameters<typeof pedidosService.criarPedido>[1]) =>
-      pedidosService.criarPedido(empresaId, input),
+    mutationFn: (input: Parameters<typeof pedidosService.criarPedido>[0]) =>
+      pedidosService.criarPedido(input),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "pedidos", empresaId] }),
   })
 }
@@ -984,7 +984,7 @@ export function useOrcamentosCatalogo(filters?: { status?: string; colaborador_i
   const empresaId = useEmpresaId()
   return useQuery({
     queryKey: ["catalogo", "orcamentos", empresaId, filters],
-    queryFn: () => orcamentosService.listarOrcamentos(empresaId, filters as any),
+    queryFn: () => orcamentosService.listarOrcamentos(filters as any),
     enabled: !!empresaId,
   })
 }
@@ -994,7 +994,7 @@ export function useCriarOrcamentoCatalogo() {
   const qc = useQueryClient()
   return useMutation({
     mutationFn: (input: Parameters<typeof orcamentosService.criarOrcamento>[1]) =>
-      orcamentosService.criarOrcamento(empresaId, input),
+      orcamentosService.criarOrcamento(input),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "orcamentos", empresaId] }),
   })
 }
@@ -1114,7 +1114,7 @@ export function useImagensProduto(tipo: ProdutoTipoImagem | undefined, sku: stri
   const empresaId = useEmpresaId()
   return useQuery({
     queryKey: ["catalogo", "imagens", empresaId, tipo, sku],
-    queryFn: () => imagensService.listarImagens(empresaId, tipo!, sku!),
+    queryFn: () => imagensService.listarImagens(tipo!, sku!),
     enabled: !!empresaId && !!tipo && !!sku,
   })
 }
@@ -1123,7 +1123,7 @@ export function useImagensBatch(tipo: ProdutoTipoImagem | undefined, skus: strin
   const empresaId = useEmpresaId()
   return useQuery({
     queryKey: ["catalogo", "imagens-batch", empresaId, tipo, skus.sort().join(",")],
-    queryFn: () => imagensService.listarImagensBatch(empresaId, tipo!, skus),
+    queryFn: () => imagensService.listarImagensBatch(tipo!, skus),
     enabled: !!empresaId && !!tipo && skus.length > 0,
   })
 }

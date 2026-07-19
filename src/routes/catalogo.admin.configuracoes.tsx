@@ -38,7 +38,7 @@ function AdminConfiguracoesPage() {
   useEffect(() => {
     if (!empresaId) return
     setLoading(true)
-    getConfiguracoes(empresaId)
+    getConfiguracoes()
       .then(setConfig)
       .finally(() => setLoading(false))
   }, [empresaId])
@@ -47,7 +47,7 @@ function AdminConfiguracoesPage() {
     if (!empresaId) return
     setSaving(true)
     try {
-      await saveConfiguracoes({ ...config, empresa_id: empresaId })
+      await saveConfiguracoes(config)
       toast.success("Configurações salvas com sucesso!")
     } catch (e: any) {
       toast.error(e.message || "Erro ao salvar configurações")

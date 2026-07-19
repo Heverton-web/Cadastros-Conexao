@@ -76,7 +76,7 @@ function AdminDesignPage() {
   useEffect(() => {
     if (!selectedEmpresaId) return
     setLoading(true)
-    getCatalogoDesign(selectedEmpresaId)
+    getCatalogoDesign()
       .then(setConfig)
       .finally(() => setLoading(false))
   }, [selectedEmpresaId])
@@ -85,7 +85,7 @@ function AdminDesignPage() {
     if (!selectedEmpresaId) return
     setSaving(true)
     try {
-      await saveCatalogoDesign(selectedEmpresaId, config)
+      await saveCatalogoDesign(config)
       toast.success("Design salvo com sucesso!")
     } catch (e: any) {
       toast.error(e.message || "Erro ao salvar design")

@@ -90,7 +90,7 @@ export function GruposAdmin() {
   const loadPrecos = useCallback(async (grupoId: string) => {
     if (!empresaId) return
     try {
-      setPrecosGrupo(await listarPrecosGrupo(empresaId, grupoId))
+      setPrecosGrupo(await listarPrecosGrupo(grupoId))
     } catch {
       setPrecosGrupo([])
     }
@@ -207,7 +207,7 @@ export function GruposAdmin() {
   async function handleCopiarPrecos() {
     if (!grupoOrigemCopiar || !editing) return
     try {
-      const qtd = await copiarPrecosGrupo(empresaId, grupoOrigemCopiar, editing.id)
+      const qtd = await copiarPrecosGrupo(grupoOrigemCopiar, editing.id)
       await loadPrecos(editing.id)
       setDialogCopiarOpen(false)
       setGrupoOrigemCopiar("")
@@ -225,13 +225,12 @@ export function GruposAdmin() {
     if (editing) {
       await atualizarGrupo(editing.id, formDados)
     } else {
-      const grupo = await criarGrupo(empresaId, formDados)
+      const grupo = await criarGrupo(formDados)
       grupoId = grupo.id
     }
 
     if (grupoId) {
       await salvarPrecosGrupo(
-        empresaId,
         grupoId,
         precosGrupo.map((p) => ({
           produto_sku: p.produto_sku,

@@ -25,7 +25,7 @@ export function PedidosAdmin() {
     if (!empresaId) return
     setLoading(true)
     try {
-      setPedidos(await listarPedidos(empresaId, { search: search || undefined }))
+      setPedidos(await listarPedidos({ search: search || undefined }))
     } finally {
       setLoading(false)
     }

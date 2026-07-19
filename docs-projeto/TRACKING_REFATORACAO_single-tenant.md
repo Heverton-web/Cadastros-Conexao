@@ -112,7 +112,7 @@
 - [x] `parafusos-retensao.service.ts`
 - [x] `carrinho.service.ts`
 - [x] `ui.service.ts` + `audio.service.ts`
-- [ ] Atualizar todos os hooks/componentes que chamam esses services
+- [x] Atualizar todos os hooks/componentes que chamam esses services
 - [ ] Criar `tests/single-tenant/catalogo-services.test.ts`
 - [ ] Testes CRUD passam ✅
 - [x] `npm run build` → passou ✅

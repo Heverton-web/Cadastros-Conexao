@@ -18,7 +18,7 @@ export async function resolvePreco(
   if (contexto === "visitante") return null
   if (contexto === "colaborador") return precoBase
   if (contexto === "cliente" && clienteId && EMPRESA_ID) {
-    return resolverPrecoCliente(clienteId, produtoSku, produtoTipo, precoBase, EMPRESA_ID)
+    return resolverPrecoCliente(clienteId, produtoSku, produtoTipo, precoBase)
   }
   return precoBase
 }
@@ -28,7 +28,6 @@ async function resolverPrecoCliente(
   produtoSku: string,
   produtoTipo: string,
   precoBase: number,
-  EMPRESA_ID: string,
 ): Promise<number> {
   // 1. Busca grupo do cliente
   const { data: cliente } = await supabase

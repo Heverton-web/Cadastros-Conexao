@@ -163,7 +163,7 @@ export function ProdutoFormModal({
       return
     }
     const tipoItem = editingItem.tipo as ProdutoTipoImagem
-    listarImagens(empresaId, tipoItem, editingItem.sku)
+    listarImagens(tipoItem, editingItem.sku)
       .then(setImagens)
       .catch(() => setImagens([]))
   }, [open, editingItem, empresaId])
@@ -386,7 +386,7 @@ export function ProdutoFormModal({
           ...seqAnalógica.map((e, i) => ({ tipo_workflow: "analógico" as const, etapa_ordem: i + 1, etapa_nome: e.etapa_nome, acessorio_sku: e.acessorio_sku })),
           ...seqDigital.map((e, i) => ({ tipo_workflow: "digital" as const, etapa_ordem: i + 1, etapa_nome: e.etapa_nome, acessorio_sku: e.acessorio_sku })),
         ]
-        await salvarSequenciaProtetica(empresaId, abutment.sku, allEtapas)
+        await salvarSequenciaProtetica(abutment.sku, allEtapas)
       } else if (tipo === "parafuso_retensao") {
         const payload = {
           sku: parafusoRetencao.sku,

@@ -33,7 +33,6 @@ export async function buscarGrupo(id: string): Promise<CatalogoGrupoCliente | nu
 }
 
 export async function criarGrupo(
-  EMPRESA_ID: string,
   input: CatalogoGrupoClienteInput,
 ): Promise<CatalogoGrupoCliente> {
   const { data, error } = await supabase
@@ -72,7 +71,6 @@ export async function deletarGrupo(id: string): Promise<void> {
 // ============================================================
 
 export async function listarPrecosGrupo(
-  EMPRESA_ID: string,
   grupoId: string,
 ): Promise<CatalogoGrupoPreco[]> {
   const { data, error } = await supabase
@@ -86,7 +84,6 @@ export async function listarPrecosGrupo(
 }
 
 export async function criarPrecoGrupo(
-  EMPRESA_ID: string,
   input: CatalogoGrupoPrecoInput,
 ): Promise<CatalogoGrupoPreco> {
   const { data, error } = await supabase
@@ -239,7 +236,6 @@ export async function listarProdutosEmpresa(): Promise<ProdutoDisponivel[]> {
 // ============================================================
 
 export async function salvarPrecosGrupo(
-  EMPRESA_ID: string,
   grupoId: string,
   precos: Array<{
     produto_sku: string
@@ -277,7 +273,6 @@ export async function salvarPrecosGrupo(
 // ============================================================
 
 export async function copiarPrecosGrupo(
-  EMPRESA_ID: string,
   grupoOrigemId: string,
   grupoDestinoId: string,
 ): Promise<number> {

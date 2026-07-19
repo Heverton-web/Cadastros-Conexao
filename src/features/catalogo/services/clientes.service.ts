@@ -26,7 +26,6 @@ export interface CadastroDisponivel {
 // ============================================================
 
 export async function listarClientes(
-  EMPRESA_ID: string,
   filters?: { tipo?: string; ativo?: boolean; search?: string; grupo_id?: string },
 ): Promise<CatalogoCliente[]> {
   let query = supabase
@@ -69,7 +68,6 @@ export async function buscarClientePorUserId(userId: string): Promise<CatalogoCl
 }
 
 export async function criarCliente(
-  EMPRESA_ID: string,
   input: CatalogoClienteInput,
 ): Promise<CatalogoCliente> {
   // Se tem cadastro_id, busca dados do cadastro para preencher nome/email
@@ -151,10 +149,8 @@ export async function deletarCliente(id: string): Promise<void> {
 // ============================================================
 
 export async function listarCadastrosDisponiveis(
-  EMPRESA_ID: string,
   search?: string,
 ): Promise<CadastroDisponivel[]> {
-  // IDs de cadastros já vinculados a um cliente do catálogo nesta empresa
   const { data: vinculados } = await supabase
     .from("catalogo_clientes")
     .select("cadastro_id")
@@ -201,7 +197,6 @@ export async function listarPermissoesCliente(
 }
 
 export async function salvarPermissoesCliente(
-  EMPRESA_ID: string,
   clienteId: string,
   permissoes: CatalogoClientePermissaoKey[],
 ): Promise<void> {

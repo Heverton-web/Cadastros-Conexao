@@ -10,7 +10,6 @@ import { dispararEventoModulo } from "~/core/services/webhooks"
 const MODULO_KEY = "catalogo"
 
 export async function listarSolicitacoes(
-  EMPRESA_ID: string,
   filters?: { status?: SolicitacaoStatus },
 ): Promise<CatalogoSolicitacaoAcesso[]> {
   let query = supabase
@@ -27,7 +26,6 @@ export async function listarSolicitacoes(
 }
 
 export async function criarSolicitacao(
-  EMPRESA_ID: string,
   input: CatalogoSolicitacaoAcessoInput,
 ): Promise<CatalogoSolicitacaoAcesso> {
   const { data, error } = await supabase

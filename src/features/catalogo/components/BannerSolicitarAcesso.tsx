@@ -33,7 +33,7 @@ export function BannerSolicitarAcesso({
     if (!form.nome || !form.email) return
     setLoading(true)
     try {
-      await criarSolicitacao(empresaId, {
+      await criarSolicitacao({
         nome: form.nome,
         email: form.email,
         telefone: form.telefone || undefined,

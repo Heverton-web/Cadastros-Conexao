@@ -14,7 +14,6 @@ const MODULO_KEY = "catalogo"
 // ============================================================
 
 export async function listarPedidos(
-  EMPRESA_ID: string,
   filters?: { status?: StatusPedido; cliente_id?: string; search?: string },
 ): Promise<CatalogoPedido[]> {
   let query = supabase
@@ -37,7 +36,6 @@ export async function listarPedidos(
 }
 
 export async function listarPedidosCliente(
-  EMPRESA_ID: string,
   clienteId: string,
 ): Promise<CatalogoPedido[]> {
   const { data, error } = await supabase
@@ -61,7 +59,6 @@ export async function buscarPedido(id: string): Promise<CatalogoPedido | null> {
 }
 
 export async function criarPedido(
-  EMPRESA_ID: string,
   input: CatalogoPedidoInput,
 ): Promise<CatalogoPedido> {
   const valorSubtotal = input.itens.reduce(

@@ -14,7 +14,6 @@ const MODULO_KEY = "catalogo"
 // ============================================================
 
 export async function listarOrcamentos(
-  EMPRESA_ID: string,
   filters?: { status?: StatusOrcamento; colaborador_id?: string; search?: string },
 ): Promise<CatalogoOrcamento[]> {
   let query = supabase
@@ -37,7 +36,6 @@ export async function listarOrcamentos(
 }
 
 export async function listarOrcamentosColaborador(
-  EMPRESA_ID: string,
   colaboradorId: string,
 ): Promise<CatalogoOrcamento[]> {
   const { data, error } = await supabase
@@ -71,7 +69,6 @@ export async function buscarOrcamentoPorToken(token: string): Promise<CatalogoOr
 }
 
 export async function criarOrcamento(
-  EMPRESA_ID: string,
   colaboradorId: string,
   input: CatalogoOrcamentoInput,
 ): Promise<CatalogoOrcamento> {

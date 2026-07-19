@@ -25,7 +25,7 @@ export function OrcamentosAdmin() {
     if (!empresaId) return
     setLoading(true)
     try {
-      setOrcamentos(await listarOrcamentos(empresaId, { search: search || undefined }))
+      setOrcamentos(await listarOrcamentos({ search: search || undefined }))
     } finally {
       setLoading(false)
     }
