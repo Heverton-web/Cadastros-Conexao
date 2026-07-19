@@ -1,4 +1,5 @@
 import { supabase } from "~/lib/supabase"
+import { EMPRESA_ID } from "~/config/empresa"
 import type {
   CatalogoPedido,
   CatalogoPedidoInput,
@@ -13,13 +14,13 @@ const MODULO_KEY = "catalogo"
 // ============================================================
 
 export async function listarPedidos(
-  empresaId: string,
+  EMPRESA_ID: string,
   filters?: { status?: StatusPedido; cliente_id?: string; search?: string },
 ): Promise<CatalogoPedido[]> {
   let query = supabase
     .from("catalogo_pedidos")
     .select("*, itens:catalogo_pedido_itens(*)")
-    .eq("empresa_id", empresaId)
+    .eq("empresa_id", EMPRESA_ID)
     .order("created_at", { ascending: false })
 
   if (filters?.status) query = query.eq("status", filters.status)
@@ -36,13 +37,13 @@ export async function listarPedidos(
 }
 
 export async function listarPedidosCliente(
-  empresaId: string,
+  EMPRESA_ID: string,
   clienteId: string,
 ): Promise<CatalogoPedido[]> {
   const { data, error } = await supabase
     .from("catalogo_pedidos")
     .select("*, itens:catalogo_pedido_itens(*)")
-    .eq("empresa_id", empresaId)
+    .eq("empresa_id", EMPRESA_ID)
     .eq("cliente_id", clienteId)
     .order("created_at", { ascending: false })
   if (error) throw error
@@ -60,7 +61,7 @@ export async function buscarPedido(id: string): Promise<CatalogoPedido | null> {
 }
 
 export async function criarPedido(
-  empresaId: string,
+  EMPRESA_ID: string,
   input: CatalogoPedidoInput,
 ): Promise<CatalogoPedido> {
   const valorSubtotal = input.itens.reduce(
@@ -90,7 +91,7 @@ export async function criarPedido(
   const { data: pedido, error: pedError } = await supabase
     .from("catalogo_pedidos")
     .insert({
-      empresa_id: empresaId,
+      empresa_id: EMPRESA_ID,
       cliente_id: input.cliente_id ?? null,
       orcamento_id: input.orcamento_id ?? null,
       colaborador_id: input.colaborador_id ?? null,
@@ -114,7 +115,7 @@ export async function criarPedido(
   // Insere itens
   if (input.itens.length > 0) {
     const itensRows = input.itens.map((item) => ({
-      empresa_id: empresaId,
+      empresa_id: EMPRESA_ID,
       pedido_id: pedido.id,
       produto_sku: item.produto_sku,
       produto_tipo: item.produto_tipo,
@@ -130,7 +131,7 @@ export async function criarPedido(
 
   dispararEventoModulo(MODULO_KEY, "pedido.criado", {
     pedido_id: pedido.id,
-    empresa_id: empresaId,
+    empresa_id: EMPRESA_ID,
   }).catch(() => {})
 
   return buscarPedido(pedido.id) as Promise<CatalogoPedido>
@@ -139,7 +140,7 @@ export async function criarPedido(
 export async function atualizarStatusPedido(
   id: string,
   status: StatusPedido,
-  empresaId?: string,
+  EMPRESA_ID?: string,
 ): Promise<CatalogoPedido> {
   const { data, error } = await supabase
     .from("catalogo_pedidos")
@@ -152,7 +153,7 @@ export async function atualizarStatusPedido(
   const eventoKey = `pedido.${status}` as const
   dispararEventoModulo(MODULO_KEY, eventoKey, {
     pedido_id: id,
-    empresa_id: empresaId ?? data.empresa_id,
+    empresa_id: EMPRESA_ID ?? data.empresa_id,
   }).catch(() => {})
 
   return data as CatalogoPedido

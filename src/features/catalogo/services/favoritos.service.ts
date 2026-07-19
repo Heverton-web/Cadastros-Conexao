@@ -1,14 +1,15 @@
 import { supabase } from "~/lib/supabase"
+import { EMPRESA_ID } from "~/config/empresa"
 import type { CatalogoFavorito } from "../types/pedidos"
 
 export async function listarFavoritos(
-  empresaId: string,
+  EMPRESA_ID: string,
   clienteId: string,
 ): Promise<CatalogoFavorito[]> {
   const { data, error } = await supabase
     .from("catalogo_favoritos")
     .select("*")
-    .eq("empresa_id", empresaId)
+    .eq("empresa_id", EMPRESA_ID)
     .eq("cliente_id", clienteId)
     .order("created_at", { ascending: false })
   if (error) throw error
@@ -16,7 +17,7 @@ export async function listarFavoritos(
 }
 
 export async function adicionarFavorito(
-  empresaId: string,
+  EMPRESA_ID: string,
   clienteId: string,
   produtoSku: string,
   produtoTipo: string,
@@ -24,7 +25,7 @@ export async function adicionarFavorito(
   const { data, error } = await supabase
     .from("catalogo_favoritos")
     .insert({
-      empresa_id: empresaId,
+      empresa_id: EMPRESA_ID,
       cliente_id: clienteId,
       produto_sku: produtoSku,
       produto_tipo: produtoTipo,
@@ -36,28 +37,28 @@ export async function adicionarFavorito(
 }
 
 export async function removerFavorito(
-  empresaId: string,
+  EMPRESA_ID: string,
   clienteId: string,
   produtoSku: string,
 ): Promise<void> {
   const { error } = await supabase
     .from("catalogo_favoritos")
     .delete()
-    .eq("empresa_id", empresaId)
+    .eq("empresa_id", EMPRESA_ID)
     .eq("cliente_id", clienteId)
     .eq("produto_sku", produtoSku)
   if (error) throw error
 }
 
 export async function isFavorito(
-  empresaId: string,
+  EMPRESA_ID: string,
   clienteId: string,
   produtoSku: string,
 ): Promise<boolean> {
   const { data, error } = await supabase
     .from("catalogo_favoritos")
     .select("id")
-    .eq("empresa_id", empresaId)
+    .eq("empresa_id", EMPRESA_ID)
     .eq("cliente_id", clienteId)
     .eq("produto_sku", produtoSku)
     .maybeSingle()
@@ -66,16 +67,16 @@ export async function isFavorito(
 }
 
 export async function toggleFavorito(
-  empresaId: string,
+  EMPRESA_ID: string,
   clienteId: string,
   produtoSku: string,
   produtoTipo: string,
 ): Promise<boolean> {
-  const exists = await isFavorito(empresaId, clienteId, produtoSku)
+  const exists = await isFavorito(EMPRESA_ID, clienteId, produtoSku)
   if (exists) {
-    await removerFavorito(empresaId, clienteId, produtoSku)
+    await removerFavorito(EMPRESA_ID, clienteId, produtoSku)
     return false
   }
-  await adicionarFavorito(empresaId, clienteId, produtoSku, produtoTipo)
+  await adicionarFavorito(EMPRESA_ID, clienteId, produtoSku, produtoTipo)
   return true
 }

@@ -1,4 +1,5 @@
 import { useSyncExternalStore } from "react"
+import { EMPRESA_ID } from "~/config/empresa"
 import type { ProductSheetTipo } from "../types"
 
 interface UIState {

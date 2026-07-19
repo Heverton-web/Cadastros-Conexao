@@ -1,4 +1,5 @@
 import { supabase } from "~/lib/supabase"
+import { EMPRESA_ID } from "~/config/empresa"
 import type {
   CatalogoOrcamento,
   CatalogoOrcamentoInput,
@@ -13,13 +14,13 @@ const MODULO_KEY = "catalogo"
 // ============================================================
 
 export async function listarOrcamentos(
-  empresaId: string,
+  EMPRESA_ID: string,
   filters?: { status?: StatusOrcamento; colaborador_id?: string; search?: string },
 ): Promise<CatalogoOrcamento[]> {
   let query = supabase
     .from("catalogo_orcamentos")
     .select("*, itens:catalogo_orcamento_itens(*), colaborador:profiles(id, nome, email)")
-    .eq("empresa_id", empresaId)
+    .eq("empresa_id", EMPRESA_ID)
     .order("created_at", { ascending: false })
 
   if (filters?.status) query = query.eq("status", filters.status)
@@ -36,13 +37,13 @@ export async function listarOrcamentos(
 }
 
 export async function listarOrcamentosColaborador(
-  empresaId: string,
+  EMPRESA_ID: string,
   colaboradorId: string,
 ): Promise<CatalogoOrcamento[]> {
   const { data, error } = await supabase
     .from("catalogo_orcamentos")
     .select("*, itens:catalogo_orcamento_itens(*)")
-    .eq("empresa_id", empresaId)
+    .eq("empresa_id", EMPRESA_ID)
     .eq("colaborador_id", colaboradorId)
     .order("created_at", { ascending: false })
   if (error) throw error
@@ -70,7 +71,7 @@ export async function buscarOrcamentoPorToken(token: string): Promise<CatalogoOr
 }
 
 export async function criarOrcamento(
-  empresaId: string,
+  EMPRESA_ID: string,
   colaboradorId: string,
   input: CatalogoOrcamentoInput,
 ): Promise<CatalogoOrcamento> {
@@ -101,7 +102,7 @@ export async function criarOrcamento(
   const { data: orcamento, error: orcError } = await supabase
     .from("catalogo_orcamentos")
     .insert({
-      empresa_id: empresaId,
+      empresa_id: EMPRESA_ID,
       colaborador_id: colaboradorId,
       cliente_id: input.cliente_id ?? null,
       cliente_nome: clienteNome,
@@ -120,7 +121,7 @@ export async function criarOrcamento(
   // Insere itens
   if (input.itens.length > 0) {
     const itensRows = input.itens.map((item) => ({
-      empresa_id: empresaId,
+      empresa_id: EMPRESA_ID,
       orcamento_id: orcamento.id,
       produto_sku: item.produto_sku,
       produto_tipo: item.produto_tipo,
@@ -136,7 +137,7 @@ export async function criarOrcamento(
 
   dispararEventoModulo(MODULO_KEY, "orcamento.criado", {
     orcamento_id: orcamento.id,
-    empresa_id: empresaId,
+    empresa_id: EMPRESA_ID,
     colaborador_id: colaboradorId,
   }).catch(() => {})
 
@@ -146,7 +147,7 @@ export async function criarOrcamento(
 export async function atualizarStatusOrcamento(
   id: string,
   status: StatusOrcamento,
-  empresaId?: string,
+  EMPRESA_ID?: string,
 ): Promise<CatalogoOrcamento> {
   const updates: Record<string, unknown> = {
     status,
@@ -167,7 +168,7 @@ export async function atualizarStatusOrcamento(
   const eventoKey = `orcamento.${status}` as const
   dispararEventoModulo(MODULO_KEY, eventoKey, {
     orcamento_id: id,
-    empresa_id: empresaId ?? data.empresa_id,
+    empresa_id: EMPRESA_ID ?? data.empresa_id,
   }).catch(() => {})
 
   return data as CatalogoOrcamento

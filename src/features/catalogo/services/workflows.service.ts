@@ -1,24 +1,25 @@
 import { supabase } from "~/core/supabase"
+import { EMPRESA_ID } from "~/config/empresa"
 import type { CatalogoCpsTipoWorkflow, CatalogoCpsEtapaWorkflow } from "../types"
 
 // ============================================================
 // Tipos de Workflow
 // ============================================================
 
-export async function listarTiposWorkflow(empresaId: string): Promise<CatalogoCpsTipoWorkflow[]> {
+export async function listarTiposWorkflow(): Promise<CatalogoCpsTipoWorkflow[]> {
   const { data, error } = await supabase
     .from("catalogo_cps_tipos_workflows")
     .select("*")
-    .eq("empresa_id", empresaId)
+    .eq("empresa_id", EMPRESA_ID)
     .order("nome")
   if (error) throw error
   return (data as CatalogoCpsTipoWorkflow[]) ?? []
 }
 
-export async function criarTipoWorkflow(empresaId: string, input: { nome: string; sigla?: string }): Promise<CatalogoCpsTipoWorkflow> {
+export async function criarTipoWorkflow(input: { nome: string; sigla?: string }): Promise<CatalogoCpsTipoWorkflow> {
   const { data, error } = await supabase
     .from("catalogo_cps_tipos_workflows")
-    .insert({ empresa_id: empresaId, ...input })
+    .insert({ empresa_id: EMPRESA_ID, ...input })
     .select()
     .single()
   if (error) throw error
@@ -39,11 +40,11 @@ export async function removerTipoWorkflow(id: string): Promise<void> {
 // Etapas do Workflow
 // ============================================================
 
-export async function listarEtapas(empresaId: string, tipoWorkflowId?: string): Promise<CatalogoCpsEtapaWorkflow[]> {
+export async function listarEtapas(tipoWorkflowId?: string): Promise<CatalogoCpsEtapaWorkflow[]> {
   let query = supabase
     .from("catalogo_cps_etapas_workflows")
     .select("*, tipo_workflow:catalogo_cps_tipos_workflows(*)")
-    .eq("empresa_id", empresaId)
+    .eq("empresa_id", EMPRESA_ID)
     .order("ordem")
   if (tipoWorkflowId) query = query.eq("tipo_workflow_id", tipoWorkflowId)
   const { data, error } = await query
@@ -51,12 +52,12 @@ export async function listarEtapas(empresaId: string, tipoWorkflowId?: string): 
   return (data as CatalogoCpsEtapaWorkflow[]) ?? []
 }
 
-export async function criarEtapa(empresaId: string, input: {
+export async function criarEtapa(input: {
   tipo_workflow_id: string; nome: string; sigla?: string; ordem?: number
 }): Promise<CatalogoCpsEtapaWorkflow> {
   const { data, error } = await supabase
     .from("catalogo_cps_etapas_workflows")
-    .insert({ empresa_id: empresaId, ...input })
+    .insert({ empresa_id: EMPRESA_ID, ...input })
     .select()
     .single()
   if (error) throw error
@@ -77,7 +78,7 @@ export async function removerEtapa(id: string): Promise<void> {
 // Detalhe do Workflow (com etapas)
 // ============================================================
 
-export async function getWorkflowDetalhe(empresaId: string, workflowId: string): Promise<{
+export async function getWorkflowDetalhe(workflowId: string): Promise<{
   workflow: CatalogoCpsTipoWorkflow
   etapas: CatalogoCpsEtapaWorkflow[]
 } | null> {
@@ -88,7 +89,7 @@ export async function getWorkflowDetalhe(empresaId: string, workflowId: string):
     .single()
   if (wErr) throw wErr
 
-  const etapas = await listarEtapas(empresaId, workflowId)
+  const etapas = await listarEtapas(EMPRESA_ID, workflowId)
 
   return { workflow: workflow as CatalogoCpsTipoWorkflow, etapas }
 }

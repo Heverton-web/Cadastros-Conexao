@@ -1,4 +1,5 @@
 import { supabase } from "~/lib/supabase"
+import { EMPRESA_ID } from "~/config/empresa"
 
 export interface CatalogoConfiguracoes {
   empresa_id: string
@@ -30,16 +31,16 @@ export const DEFAULT_CONFIGURACOES: CatalogoConfiguracoes = {
   cupons_habilitado: true,
 }
 
-export async function getConfiguracoes(empresaId: string): Promise<CatalogoConfiguracoes> {
+export async function getConfiguracoes(): Promise<CatalogoConfiguracoes> {
   const { data, error } = await supabase
     .from("catalogo_configuracoes")
     .select("*")
-    .eq("empresa_id", empresaId)
+    .eq("empresa_id", EMPRESA_ID)
     .single()
 
   if (error || !data) {
     // Se não existir, retorna defaults
-    return { ...DEFAULT_CONFIGURACOES, empresa_id: empresaId }
+    return { ...DEFAULT_CONFIGURACOES, empresa_id: EMPRESA_ID }
   }
 
   return data as CatalogoConfiguracoes

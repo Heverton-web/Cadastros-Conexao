@@ -1,4 +1,5 @@
 import { useSyncExternalStore } from "react"
+import { EMPRESA_ID } from "~/config/empresa"
 import type { CartItem, ProductSheetTipo } from "../types"
 
 const STORAGE_PREFIX = "conexao_cart_v1"
@@ -8,8 +9,8 @@ let scopeUserId: string | null = null
 let items: CartItem[] = []
 let listeners: Array<() => void> = []
 
-function scopeKey(empresaId: string | null, userId: string | null): string {
-  const e = empresaId ?? "anon"
+function scopeKey(EMPRESA_ID: string | null, userId: string | null): string {
+  const e = EMPRESA_ID ?? "anon"
   const u = userId ?? "anon"
   return `${STORAGE_PREFIX}_${e}_${u}`
 }
@@ -54,8 +55,8 @@ function getSnapshot(): CartItem[] {
  * cada empresa e cada usuário logado possuem seu próprio carrinho,
  * impedindo vazamento de itens entre empresas/usuários.
  */
-export function setCarrinhoScope(empresaId: string | null, userId: string | null): void {
-  if (scopeEmpresaId === empresaId && scopeUserId === userId) return
+export function setCarrinhoScope(EMPRESA_ID: string | null, userId: string | null): void {
+  if (scopeEmpresaId === EMPRESA_ID && scopeUserId === userId) return
 
   // Persiste o carrinho atual no escopo antigo antes de trocar
   if (typeof window !== "undefined") {
@@ -66,7 +67,7 @@ export function setCarrinhoScope(empresaId: string | null, userId: string | null
     }
   }
 
-  scopeEmpresaId = empresaId
+  scopeEmpresaId = EMPRESA_ID
   scopeUserId = userId
   loadFromStorage()
   listeners.forEach((l) => l())

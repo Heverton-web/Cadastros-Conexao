@@ -1,17 +1,18 @@
 import { supabase } from "~/core/supabase"
+import { EMPRESA_ID } from "~/config/empresa"
 import type { CatalogoFrete } from "../types"
 
-export async function listarFretes(empresaId: string): Promise<CatalogoFrete[]> {
+export async function listarFretes(): Promise<CatalogoFrete[]> {
   const { data, error } = await supabase
     .from("catalogo_fretes")
     .select("*")
-    .eq("empresa_id", empresaId)
+    .eq("empresa_id", EMPRESA_ID)
     .order("cep_inicio")
   if (error) throw error
   return data as CatalogoFrete[]
 }
 
-export async function criarFrete(empresaId: string, input: {
+export async function criarFrete(input: {
   cep_inicio: string
   cep_fim: string
   valor: number
@@ -19,7 +20,7 @@ export async function criarFrete(empresaId: string, input: {
 }): Promise<CatalogoFrete> {
   const { data, error } = await supabase
     .from("catalogo_fretes")
-    .insert({ empresa_id: empresaId, ...input })
+    .insert({ empresa_id: EMPRESA_ID, ...input })
     .select()
     .single()
   if (error) throw error
@@ -42,12 +43,12 @@ export async function removerFrete(id: string): Promise<void> {
   if (error) throw error
 }
 
-export async function consultarFrete(empresaId: string, cep: string): Promise<CatalogoFrete | null> {
+export async function consultarFrete(cep: string): Promise<CatalogoFrete | null> {
   const cepNum = cep.replace(/\D/g, "")
   const { data, error } = await supabase
     .from("catalogo_fretes")
     .select("*")
-    .eq("empresa_id", empresaId)
+    .eq("empresa_id", EMPRESA_ID)
     .lte("cep_inicio", cepNum)
     .gte("cep_fim", cepNum)
     .limit(1)

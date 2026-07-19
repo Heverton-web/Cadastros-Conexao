@@ -1,24 +1,25 @@
 import { supabase } from "~/core/supabase"
+import { EMPRESA_ID } from "~/config/empresa"
 import type { CatalogoOpcional, CatalogoTipoOpcional } from "../types"
 
 // ============================================================
 // Tipos de Opcionais
 // ============================================================
 
-export async function listarTiposOpcionais(empresaId: string): Promise<CatalogoTipoOpcional[]> {
+export async function listarTiposOpcionais(): Promise<CatalogoTipoOpcional[]> {
   const { data, error } = await supabase
     .from("catalogo_tipos_opcionais")
     .select("*")
-    .eq("empresa_id", empresaId)
+    .eq("empresa_id", EMPRESA_ID)
     .order("nome")
   if (error) throw error
   return data as CatalogoTipoOpcional[]
 }
 
-export async function criarTipoOpcional(empresaId: string, input: { nome: string; sigla?: string }): Promise<CatalogoTipoOpcional> {
+export async function criarTipoOpcional(input: { nome: string; sigla?: string }): Promise<CatalogoTipoOpcional> {
   const { data, error } = await supabase
     .from("catalogo_tipos_opcionais")
-    .insert({ empresa_id: empresaId, ...input })
+    .insert({ empresa_id: EMPRESA_ID, ...input })
     .select()
     .single()
   if (error) throw error
@@ -39,31 +40,31 @@ export async function removerTipoOpcional(id: string): Promise<void> {
 // Opcionais
 // ============================================================
 
-export async function listarOpcionais(empresaId: string): Promise<CatalogoOpcional[]> {
+export async function listarOpcionais(): Promise<CatalogoOpcional[]> {
   const { data, error } = await supabase
     .from("catalogo_opcionais")
     .select("*, tipo_opcional:catalogo_tipos_opcionais(*)")
-    .eq("empresa_id", empresaId)
+    .eq("empresa_id", EMPRESA_ID)
     .order("nome")
   if (error) throw error
   return data as CatalogoOpcional[]
 }
 
-export async function criarOpcional(empresaId: string, input: {
+export async function criarOpcional(input: {
   sku: string; nome: string; tipo_opcional_id?: string
   sigla?: string; descricao?: string; tipo?: string
   comprimento?: string; diametro_mm?: number; material?: string; preco?: number
 }): Promise<CatalogoOpcional> {
   const { data, error } = await supabase
     .from("catalogo_opcionais")
-    .insert({ empresa_id: empresaId, ...input })
+    .insert({ empresa_id: EMPRESA_ID, ...input })
     .select()
     .single()
   if (error) throw error
   return data as CatalogoOpcional
 }
 
-export async function atualizarOpcional(empresaId: string, sku: string, input: Partial<{
+export async function atualizarOpcional(sku: string, input: Partial<{
   nome: string; tipo_opcional_id: string; sigla: string; descricao: string
   tipo: string; comprimento: string; diametro_mm: number; material: string
   preco: number; ativo: boolean
@@ -71,7 +72,7 @@ export async function atualizarOpcional(empresaId: string, sku: string, input: P
   const { data, error } = await supabase
     .from("catalogo_opcionais")
     .update(input)
-    .eq("empresa_id", empresaId)
+    .eq("empresa_id", EMPRESA_ID)
     .eq("sku", sku)
     .select()
     .single()
@@ -79,12 +80,12 @@ export async function atualizarOpcional(empresaId: string, sku: string, input: P
   return data as CatalogoOpcional
 }
 
-export async function toggleOpcionalAtivo(empresaId: string, sku: string, ativo: boolean): Promise<void> {
-  const { error } = await supabase.from("catalogo_opcionais").update({ ativo }).eq("empresa_id", empresaId).eq("sku", sku)
+export async function toggleOpcionalAtivo(sku: string, ativo: boolean): Promise<void> {
+  const { error } = await supabase.from("catalogo_opcionais").update({ ativo }).eq("empresa_id", EMPRESA_ID).eq("sku", sku)
   if (error) throw error
 }
 
-export async function removerOpcional(empresaId: string, sku: string): Promise<void> {
-  const { error } = await supabase.from("catalogo_opcionais").delete().eq("empresa_id", empresaId).eq("sku", sku)
+export async function removerOpcional(sku: string): Promise<void> {
+  const { error } = await supabase.from("catalogo_opcionais").delete().eq("empresa_id", EMPRESA_ID).eq("sku", sku)
   if (error) throw error
 }

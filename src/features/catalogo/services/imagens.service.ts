@@ -1,4 +1,5 @@
 import { supabase } from "~/core/supabase"
+import { EMPRESA_ID } from "~/config/empresa"
 import type { CatalogoImagemProduto, ProdutoTipoImagem, FonteImagem } from "../types"
 import { compressImage } from "../lib/compressImage"
 
@@ -51,7 +52,7 @@ export function validarArquivoImagem(file: File): { valido: boolean; erro?: stri
  * Upload de imagem para Supabase Storage.
  */
 export async function uploadImagem(
-  empresaId: string,
+  EMPRESA_ID: string,
   tipo: ProdutoTipoImagem,
   sku: string,
   file: File,
@@ -60,7 +61,7 @@ export async function uploadImagem(
   if (!validacao.valido) throw new Error(validacao.erro)
 
   const ext = file.name.split(".").pop()?.toLowerCase() || "jpg"
-  const path = `${empresaId}/${tipo}/${sku}/${crypto.randomUUID()}.${ext}`
+  const path = `${EMPRESA_ID}/${tipo}/${sku}/${crypto.randomUUID()}.${ext}`
 
   const { error: uploadError } = await supabase.storage
     .from(BUCKET)
@@ -79,7 +80,7 @@ export async function uploadImagem(
  * Adiciona uma imagem por URL externa (S3 ou Google Drive).
  */
 export async function adicionarImagemUrl(
-  empresaId: string,
+  EMPRESA_ID: string,
   tipo: ProdutoTipoImagem,
   sku: string,
   url: string,
@@ -95,7 +96,7 @@ export async function adicionarImagemUrl(
   const { data: ultima } = await supabase
     .from("catalogo_imagens_produto")
     .select("ordem_exibicao")
-    .eq("empresa_id", empresaId)
+    .eq("empresa_id", EMPRESA_ID)
     .eq("produto_tipo", tipo)
     .eq("produto_sku", sku)
     .order("ordem_exibicao", { ascending: false })
@@ -107,7 +108,7 @@ export async function adicionarImagemUrl(
   const { data, error } = await supabase
     .from("catalogo_imagens_produto")
     .insert({
-      empresa_id: empresaId,
+      empresa_id: EMPRESA_ID,
       produto_tipo: tipo,
       produto_sku: sku,
       url_imagem: urlFinal,
@@ -125,14 +126,14 @@ export async function adicionarImagemUrl(
  * Lista imagens de um produto.
  */
 export async function listarImagens(
-  empresaId: string,
+  EMPRESA_ID: string,
   tipo: ProdutoTipoImagem,
   sku: string,
 ): Promise<CatalogoImagemProduto[]> {
   const { data, error } = await supabase
     .from("catalogo_imagens_produto")
     .select("*")
-    .eq("empresa_id", empresaId)
+    .eq("empresa_id", EMPRESA_ID)
     .eq("produto_tipo", tipo)
     .eq("produto_sku", sku)
     .order("ordem_exibicao")
@@ -146,7 +147,7 @@ export async function listarImagens(
  * Retorna um Map<sku, imagens[]>.
  */
 export async function listarImagensBatch(
-  empresaId: string,
+  EMPRESA_ID: string,
   tipo: ProdutoTipoImagem,
   skus: string[],
 ): Promise<Map<string, CatalogoImagemProduto[]>> {
@@ -155,7 +156,7 @@ export async function listarImagensBatch(
   const { data, error } = await supabase
     .from("catalogo_imagens_produto")
     .select("*")
-    .eq("empresa_id", empresaId)
+    .eq("empresa_id", EMPRESA_ID)
     .eq("produto_tipo", tipo)
     .in("produto_sku", skus)
     .order("ordem_exibicao")
@@ -175,7 +176,7 @@ export async function listarImagensBatch(
  * Remove uma imagem. Se foi upload, também remove do Storage.
  */
 export async function removerImagem(
-  empresaId: string,
+  EMPRESA_ID: string,
   imagemId: string,
   fonte: FonteImagem = "upload",
   path?: string,
@@ -189,7 +190,7 @@ export async function removerImagem(
     .from("catalogo_imagens_produto")
     .delete()
     .eq("id", imagemId)
-    .eq("empresa_id", empresaId)
+    .eq("empresa_id", EMPRESA_ID)
 
   if (error) throw error
 }
@@ -198,7 +199,7 @@ export async function removerImagem(
  * Atualiza a ordem de exibição de múltiplas imagens.
  */
 export async function reordenarImagens(
-  empresaId: string,
+  EMPRESA_ID: string,
   tipo: ProdutoTipoImagem,
   sku: string,
   ordens: { id: string; ordem: number }[],
@@ -208,7 +209,7 @@ export async function reordenarImagens(
       .from("catalogo_imagens_produto")
       .update({ ordem_exibicao: ordem })
       .eq("id", id)
-      .eq("empresa_id", empresaId)
+      .eq("empresa_id", EMPRESA_ID)
   )
 
   const results = await Promise.all(updates)
@@ -221,19 +222,19 @@ export async function reordenarImagens(
  * Comprime automaticamente imagens > 5MB.
  */
 export async function uploadEAdicionarImagem(
-  empresaId: string,
+  EMPRESA_ID: string,
   tipo: ProdutoTipoImagem,
   sku: string,
   file: File,
 ): Promise<CatalogoImagemProduto> {
   const arquivoFinal = await compressImage(file)
-  const { url, path } = await uploadImagem(empresaId, tipo, sku, arquivoFinal)
+  const { url, path } = await uploadImagem(EMPRESA_ID, tipo, sku, arquivoFinal)
 
   // Buscar última ordem
   const { data: ultima } = await supabase
     .from("catalogo_imagens_produto")
     .select("ordem_exibicao")
-    .eq("empresa_id", empresaId)
+    .eq("empresa_id", EMPRESA_ID)
     .eq("produto_tipo", tipo)
     .eq("produto_sku", sku)
     .order("ordem_exibicao", { ascending: false })
@@ -245,7 +246,7 @@ export async function uploadEAdicionarImagem(
   const { data, error } = await supabase
     .from("catalogo_imagens_produto")
     .insert({
-      empresa_id: empresaId,
+      empresa_id: EMPRESA_ID,
       produto_tipo: tipo,
       produto_sku: sku,
       url_imagem: url,

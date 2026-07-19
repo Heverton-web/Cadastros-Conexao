@@ -1,4 +1,5 @@
 import { supabase } from "~/lib/supabase"
+import { EMPRESA_ID } from "~/config/empresa"
 import type {
   CatalogoSolicitacaoAcesso,
   CatalogoSolicitacaoAcessoInput,
@@ -9,13 +10,13 @@ import { dispararEventoModulo } from "~/core/services/webhooks"
 const MODULO_KEY = "catalogo"
 
 export async function listarSolicitacoes(
-  empresaId: string,
+  EMPRESA_ID: string,
   filters?: { status?: SolicitacaoStatus },
 ): Promise<CatalogoSolicitacaoAcesso[]> {
   let query = supabase
     .from("catalogo_solicitacoes_acesso")
     .select("*")
-    .eq("empresa_id", empresaId)
+    .eq("empresa_id", EMPRESA_ID)
     .order("created_at", { ascending: false })
 
   if (filters?.status) query = query.eq("status", filters.status)
@@ -26,13 +27,13 @@ export async function listarSolicitacoes(
 }
 
 export async function criarSolicitacao(
-  empresaId: string,
+  EMPRESA_ID: string,
   input: CatalogoSolicitacaoAcessoInput,
 ): Promise<CatalogoSolicitacaoAcesso> {
   const { data, error } = await supabase
     .from("catalogo_solicitacoes_acesso")
     .insert({
-      empresa_id: empresaId,
+      empresa_id: EMPRESA_ID,
       nome: input.nome,
       email: input.email,
       telefone: input.telefone ?? null,
@@ -44,7 +45,7 @@ export async function criarSolicitacao(
 
   dispararEventoModulo(MODULO_KEY, "solicitacao_acesso.criada", {
     solicitacao_id: data.id,
-    empresa_id: empresaId,
+    empresa_id: EMPRESA_ID,
   }).catch(() => {})
 
   return data as CatalogoSolicitacaoAcesso

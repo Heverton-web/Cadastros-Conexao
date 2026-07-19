@@ -81,41 +81,41 @@
 
 ## ETAPA 5 — Services: Catálogo (31 services)
 
-- [ ] `implantes.service.ts` — remover param `empresaId`
-- [ ] `abutments.service.ts`
-- [ ] `componentes.service.ts`
-- [ ] `parafusos.service.ts`
-- [ ] `cicatrizadores.service.ts`
-- [ ] `chaves.service.ts`
-- [ ] `complementares.service.ts`
-- [ ] `opcionais.service.ts`
-- [ ] `fresas.service.ts` + `fresas-tipos.service.ts`
-- [ ] `fresagens.service.ts`
-- [ ] `kits.service.ts`
-- [ ] `acessorios.service.ts`
-- [ ] `hierarquia.service.ts`
-- [ ] `grupos.service.ts`
-- [ ] `clientes.service.ts`
-- [ ] `orcamentos.service.ts`
-- [ ] `pedidos.service.ts`
-- [ ] `favoritos.service.ts`
-- [ ] `imagens.service.ts`
-- [ ] `promocionais.service.ts`
-- [ ] `cupons.service.ts`
-- [ ] `frete.service.ts`
-- [ ] `configuracoes.service.ts`
-- [ ] `design.service.ts`
-- [ ] `workflows.service.ts`
-- [ ] `sequencia-protetica.service.ts`
-- [ ] `solicitacoes.service.ts`
-- [ ] `precos-grupo.service.ts`
-- [ ] `parafusos-retensao.service.ts`
-- [ ] `carrinho.service.ts`
-- [ ] `ui.service.ts` + `audio.service.ts`
+- [x] `implantes.service.ts` — remover param `empresaId`
+- [x] `abutments.service.ts`
+- [x] `componentes.service.ts`
+- [x] `parafusos.service.ts`
+- [x] `cicatrizadores.service.ts`
+- [x] `chaves.service.ts`
+- [x] `complementares.service.ts`
+- [x] `opcionais.service.ts`
+- [x] `fresas.service.ts` + `fresas-tipos.service.ts`
+- [x] `fresagens.service.ts`
+- [x] `kits.service.ts`
+- [x] `acessorios.service.ts`
+- [x] `hierarquia.service.ts`
+- [x] `grupos.service.ts`
+- [x] `clientes.service.ts`
+- [x] `orcamentos.service.ts`
+- [x] `pedidos.service.ts`
+- [x] `favoritos.service.ts`
+- [x] `imagens.service.ts`
+- [x] `promocionais.service.ts`
+- [x] `cupons.service.ts`
+- [x] `frete.service.ts`
+- [x] `configuracoes.service.ts`
+- [x] `design.service.ts`
+- [x] `workflows.service.ts`
+- [x] `sequencia-protetica.service.ts`
+- [x] `solicitacoes.service.ts`
+- [x] `precos-grupo.service.ts`
+- [x] `parafusos-retensao.service.ts`
+- [x] `carrinho.service.ts`
+- [x] `ui.service.ts` + `audio.service.ts`
 - [ ] Atualizar todos os hooks/componentes que chamam esses services
 - [ ] Criar `tests/single-tenant/catalogo-services.test.ts`
 - [ ] Testes CRUD passam ✅
-- [ ] `npm run build` → passou ✅
+- [x] `npm run build` → passou ✅
 
 ---
 
@@ -221,7 +221,7 @@
 | Etapa 2 — Triggers/RPCs | 🟢 Concluída | ✅ |
 | Etapa 3 — Core Frontend | 🟡 Em progresso | — |
 | Etapa 4 — Hook Catálogo | 🟡 Em progresso | — |
-| Etapa 5 — Services Catálogo | 🔴 Pendente | — |
+| Etapa 5 — Services Catálogo | 🟡 Em progresso | — |
 | Etapa 6A — Cadastros | 🔴 Pendente | — |
 | Etapa 6B — NPS | 🔴 Pendente | — |
 | Etapa 6C — Módulos Médios | 🔴 Pendente | — |

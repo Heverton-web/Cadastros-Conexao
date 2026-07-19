@@ -1,4 +1,5 @@
 import { supabase } from "~/core/supabase"
+import { EMPRESA_ID } from "~/config/empresa"
 import type {
   CatalogoCategoria, CatalogoIpsConexao, CatalogoIpsFamilia, CatalogoIpsLinha,
 } from "../types"
@@ -9,20 +10,20 @@ import type {
 
 const TABLE_CATEGORIAS = "catalogo_categorias"
 
-export async function listarCategorias(empresaId: string): Promise<CatalogoCategoria[]> {
+export async function listarCategorias(): Promise<CatalogoCategoria[]> {
   const { data, error } = await supabase
     .from(TABLE_CATEGORIAS)
     .select("*")
-    .eq("empresa_id", empresaId)
+    .eq("empresa_id", EMPRESA_ID)
     .order("nome")
   if (error) throw error
   return data as CatalogoCategoria[]
 }
 
-export async function criarCategoria(empresaId: string, input: { nome: string; sigla?: string; locked?: boolean }): Promise<CatalogoCategoria> {
+export async function criarCategoria(input: { nome: string; sigla?: string; locked?: boolean }): Promise<CatalogoCategoria> {
   const { data, error } = await supabase
     .from(TABLE_CATEGORIAS)
-    .insert({ empresa_id: empresaId, ...input })
+    .insert({ empresa_id: EMPRESA_ID, ...input })
     .select()
     .single()
   if (error) throw error
@@ -56,11 +57,11 @@ export async function removerCategoria(id: string): Promise<void> {
 
 const TABLE_CONEXOES = "catalogo_ips_conexoes"
 
-export async function listarConexoes(empresaId: string, categoriaId?: string): Promise<CatalogoIpsConexao[]> {
+export async function listarConexoes(categoriaId?: string): Promise<CatalogoIpsConexao[]> {
   let query = supabase
     .from(TABLE_CONEXOES)
     .select("*, categoria:catalogo_categorias(*)")
-    .eq("empresa_id", empresaId)
+    .eq("empresa_id", EMPRESA_ID)
     .order("nome")
   if (categoriaId) query = query.eq("categoria_id", categoriaId)
   const { data, error } = await query
@@ -68,10 +69,10 @@ export async function listarConexoes(empresaId: string, categoriaId?: string): P
   return data as CatalogoIpsConexao[]
 }
 
-export async function criarConexao(empresaId: string, input: { categoria_id: string; nome: string; sigla: string }): Promise<CatalogoIpsConexao> {
+export async function criarConexao(input: { categoria_id: string; nome: string; sigla: string }): Promise<CatalogoIpsConexao> {
   const { data, error } = await supabase
     .from(TABLE_CONEXOES)
-    .insert({ empresa_id: empresaId, ...input })
+    .insert({ empresa_id: EMPRESA_ID, ...input })
     .select()
     .single()
   if (error) throw error
@@ -94,11 +95,11 @@ export async function removerConexao(id: string): Promise<void> {
 
 const TABLE_FAMILIAS = "catalogo_ips_familias"
 
-export async function listarFamilias(empresaId: string, conexaoId?: string): Promise<CatalogoIpsFamilia[]> {
+export async function listarFamilias(conexaoId?: string): Promise<CatalogoIpsFamilia[]> {
   let query = supabase
     .from(TABLE_FAMILIAS)
     .select("*, conexao:catalogo_ips_conexoes(*, categoria:catalogo_categorias(*))")
-    .eq("empresa_id", empresaId)
+    .eq("empresa_id", EMPRESA_ID)
     .order("nome")
   if (conexaoId) query = query.eq("conexao_id", conexaoId)
   const { data, error } = await query
@@ -106,10 +107,10 @@ export async function listarFamilias(empresaId: string, conexaoId?: string): Pro
   return data as CatalogoIpsFamilia[]
 }
 
-export async function criarFamilia(empresaId: string, input: { conexao_id: string; nome: string; cor_identificacao?: string }): Promise<CatalogoIpsFamilia> {
+export async function criarFamilia(input: { conexao_id: string; nome: string; cor_identificacao?: string }): Promise<CatalogoIpsFamilia> {
   const { data, error } = await supabase
     .from(TABLE_FAMILIAS)
-    .insert({ empresa_id: empresaId, ...input })
+    .insert({ empresa_id: EMPRESA_ID, ...input })
     .select()
     .single()
   if (error) throw error
@@ -143,11 +144,11 @@ export async function removerFamilia(id: string): Promise<void> {
 
 const TABLE_LINHAS = "catalogo_ips_linhas"
 
-export async function listarLinhas(empresaId: string, familiaId?: string): Promise<CatalogoIpsLinha[]> {
+export async function listarLinhas(familiaId?: string): Promise<CatalogoIpsLinha[]> {
   let query = supabase
     .from(TABLE_LINHAS)
     .select("*, familia:catalogo_ips_familias(*)")
-    .eq("empresa_id", empresaId)
+    .eq("empresa_id", EMPRESA_ID)
     .order("nome")
   if (familiaId) query = query.eq("familia_id", familiaId)
   const { data, error } = await query
@@ -155,10 +156,10 @@ export async function listarLinhas(empresaId: string, familiaId?: string): Promi
   return data as CatalogoIpsLinha[]
 }
 
-export async function criarLinha(empresaId: string, input: { familia_id: string; nome: string }): Promise<CatalogoIpsLinha> {
+export async function criarLinha(input: { familia_id: string; nome: string }): Promise<CatalogoIpsLinha> {
   const { data, error } = await supabase
     .from(TABLE_LINHAS)
-    .insert({ empresa_id: empresaId, ...input })
+    .insert({ empresa_id: EMPRESA_ID, ...input })
     .select()
     .single()
   if (error) throw error

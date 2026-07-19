@@ -1,4 +1,5 @@
 import { supabase } from "~/lib/supabase"
+import { EMPRESA_ID } from "~/config/empresa"
 import type {
   CatalogoCliente,
   CatalogoClienteInput,
@@ -25,13 +26,13 @@ export interface CadastroDisponivel {
 // ============================================================
 
 export async function listarClientes(
-  empresaId: string,
+  EMPRESA_ID: string,
   filters?: { tipo?: string; ativo?: boolean; search?: string; grupo_id?: string },
 ): Promise<CatalogoCliente[]> {
   let query = supabase
     .from("catalogo_clientes")
     .select("*, grupo:catalogo_grupos_clientes(*)")
-    .eq("empresa_id", empresaId)
+    .eq("empresa_id", EMPRESA_ID)
     .order("nome")
 
   if (filters?.tipo) query = query.eq("tipo", filters.tipo)
@@ -68,7 +69,7 @@ export async function buscarClientePorUserId(userId: string): Promise<CatalogoCl
 }
 
 export async function criarCliente(
-  empresaId: string,
+  EMPRESA_ID: string,
   input: CatalogoClienteInput,
 ): Promise<CatalogoCliente> {
   // Se tem cadastro_id, busca dados do cadastro para preencher nome/email
@@ -97,7 +98,7 @@ export async function criarCliente(
       email,
       password: input.senha,
       email_confirm: true,
-      user_metadata: { empresa_id: empresaId, nome },
+      user_metadata: { empresa_id: EMPRESA_ID, nome },
     })
     if (authError) throw authError
     userId = authData.user.id
@@ -106,7 +107,7 @@ export async function criarCliente(
   const { data, error } = await supabase
     .from("catalogo_clientes")
     .insert({
-      empresa_id: empresaId,
+      empresa_id: EMPRESA_ID,
       cadastro_id: input.cadastro_id ?? null,
       user_id: userId,
       grupo_id: input.grupo_id ?? null,
@@ -150,14 +151,14 @@ export async function deletarCliente(id: string): Promise<void> {
 // ============================================================
 
 export async function listarCadastrosDisponiveis(
-  empresaId: string,
+  EMPRESA_ID: string,
   search?: string,
 ): Promise<CadastroDisponivel[]> {
   // IDs de cadastros já vinculados a um cliente do catálogo nesta empresa
   const { data: vinculados } = await supabase
     .from("catalogo_clientes")
     .select("cadastro_id")
-    .eq("empresa_id", empresaId)
+    .eq("empresa_id", EMPRESA_ID)
     .not("cadastro_id", "is", null)
 
   const idsVinculados = (vinculados ?? []).map((v) => v.cadastro_id).filter(Boolean)
@@ -200,7 +201,7 @@ export async function listarPermissoesCliente(
 }
 
 export async function salvarPermissoesCliente(
-  empresaId: string,
+  EMPRESA_ID: string,
   clienteId: string,
   permissoes: CatalogoClientePermissaoKey[],
 ): Promise<void> {
@@ -213,7 +214,7 @@ export async function salvarPermissoesCliente(
   // Insere novas
   if (permissoes.length > 0) {
     const rows = permissoes.map((key) => ({
-      empresa_id: empresaId,
+      empresa_id: EMPRESA_ID,
       cliente_id: clienteId,
       permissao_key: key,
       ativo: true,

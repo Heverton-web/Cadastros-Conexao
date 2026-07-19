@@ -1,4 +1,5 @@
 import { supabase } from "~/lib/supabase"
+import { EMPRESA_ID } from "~/config/empresa"
 
 export interface CatalogoDesignColors {
   accent: string
@@ -445,22 +446,22 @@ export function mergeWithDefaults(saved: Record<string, any> | null): CatalogoDe
   return deepMerge(DEFAULT_CATALOGO_CONFIG as Record<string, any>, saved) as CatalogoDesignConfig
 }
 
-export async function getCatalogoDesign(empresaId: string): Promise<CatalogoDesignConfig> {
+export async function getCatalogoDesign(): Promise<CatalogoDesignConfig> {
   const { data } = await supabase
     .from("catalogo_design_config")
     .select("config")
-    .eq("empresa_id", empresaId)
+    .eq("empresa_id", EMPRESA_ID)
     .single()
 
   if (!data?.config) return DEFAULT_CATALOGO_CONFIG
   return mergeWithDefaults(data.config as Record<string, any>)
 }
 
-export async function saveCatalogoDesign(empresaId: string, config: CatalogoDesignConfig): Promise<void> {
+export async function saveCatalogoDesign(config: CatalogoDesignConfig): Promise<void> {
   const { error } = await supabase
     .from("catalogo_design_config")
     .upsert({
-      empresa_id: empresaId,
+      empresa_id: EMPRESA_ID,
       config: config as unknown as Record<string, any>,
       updated_at: new Date().toISOString(),
     }, { onConflict: "empresa_id" })

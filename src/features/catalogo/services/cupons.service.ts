@@ -1,20 +1,21 @@
 import { supabase } from "~/core/supabase"
+import { EMPRESA_ID } from "~/config/empresa"
 import { dispararEventoModulo } from "~/core/services/webhooks"
 import type { CatalogoCupom } from "../types"
 
 const MODULO_KEY = "catalogo"
 
-export async function listarCupons(empresaId: string): Promise<CatalogoCupom[]> {
+export async function listarCupons(): Promise<CatalogoCupom[]> {
   const { data, error } = await supabase
     .from("catalogo_cupons")
     .select("*")
-    .eq("empresa_id", empresaId)
+    .eq("empresa_id", EMPRESA_ID)
     .order("created_at", { ascending: false })
   if (error) throw error
   return data as CatalogoCupom[]
 }
 
-export async function criarCupom(empresaId: string, input: {
+export async function criarCupom(input: {
   codigo: string
   tipo: "percentual" | "fixo"
   valor: number
@@ -22,7 +23,7 @@ export async function criarCupom(empresaId: string, input: {
 }): Promise<CatalogoCupom> {
   const { data, error } = await supabase
     .from("catalogo_cupons")
-    .insert({ empresa_id: empresaId, ...input })
+    .insert({ empresa_id: EMPRESA_ID, ...input })
     .select()
     .single()
   if (error) throw error
@@ -45,17 +46,17 @@ export async function removerCupom(id: string): Promise<void> {
   if (error) throw error
 }
 
-export async function validarCupom(empresaId: string, codigo: string): Promise<CatalogoCupom | null> {
+export async function validarCupom(codigo: string): Promise<CatalogoCupom | null> {
   const { data, error } = await supabase
     .from("catalogo_cupons")
     .select("*")
-    .eq("empresa_id", empresaId)
+    .eq("empresa_id", EMPRESA_ID)
     .eq("codigo", codigo.toUpperCase())
     .eq("ativo", true)
     .single()
   if (error || !data) return null
   if (data.validade && new Date(data.validade) < new Date()) return null
-  dispararEventoModulo(MODULO_KEY, "cupom.utilizado", { cupom_id: data.id, codigo, empresa_id: empresaId }, empresaId).catch(() => {})
+  dispararEventoModulo(MODULO_KEY, "cupom.utilizado", { cupom_id: data.id, codigo, empresa_id: EMPRESA_ID }, EMPRESA_ID).catch(() => {})
   return data as CatalogoCupom
 }
 

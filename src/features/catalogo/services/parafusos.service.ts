@@ -1,24 +1,25 @@
 import { supabase } from "~/core/supabase"
+import { EMPRESA_ID } from "~/config/empresa"
 import type { CatalogoParafuso, CatalogoCpsTipoParafuso } from "../types"
 
 // ============================================================
 // Tipos de Parafusos
 // ============================================================
 
-export async function listarTiposParafusos(empresaId: string): Promise<CatalogoCpsTipoParafuso[]> {
+export async function listarTiposParafusos(): Promise<CatalogoCpsTipoParafuso[]> {
   const { data, error } = await supabase
     .from("catalogo_cps_tipos_parafusos")
     .select("*")
-    .eq("empresa_id", empresaId)
+    .eq("empresa_id", EMPRESA_ID)
     .order("nome")
   if (error) throw error
   return data as CatalogoCpsTipoParafuso[]
 }
 
-export async function criarTipoParafuso(empresaId: string, input: { nome: string; sigla?: string }): Promise<CatalogoCpsTipoParafuso> {
+export async function criarTipoParafuso(input: { nome: string; sigla?: string }): Promise<CatalogoCpsTipoParafuso> {
   const { data, error } = await supabase
     .from("catalogo_cps_tipos_parafusos")
-    .insert({ empresa_id: empresaId, ...input })
+    .insert({ empresa_id: EMPRESA_ID, ...input })
     .select()
     .single()
   if (error) throw error
@@ -39,30 +40,30 @@ export async function removerTipoParafuso(id: string): Promise<void> {
 // Parafusos
 // ============================================================
 
-export async function listarParafusos(empresaId: string): Promise<CatalogoParafuso[]> {
+export async function listarParafusos(): Promise<CatalogoParafuso[]> {
   const { data, error } = await supabase
     .from("catalogo_parafusos")
     .select("*, tipo_parafuso:catalogo_cps_tipos_parafusos(*), chave:catalogo_chaves(*)")
-    .eq("empresa_id", empresaId)
+    .eq("empresa_id", EMPRESA_ID)
     .order("nome")
   if (error) throw error
   return data as CatalogoParafuso[]
 }
 
-export async function criarParafuso(empresaId: string, input: {
+export async function criarParafuso(input: {
   sku: string; nome: string; tipo_parafuso_id?: string; chave_id?: string
   sigla?: string; descricao?: string; torque_ncm?: number; material?: string; preco?: number
 }): Promise<CatalogoParafuso> {
   const { data, error } = await supabase
     .from("catalogo_parafusos")
-    .insert({ empresa_id: empresaId, ...input })
+    .insert({ empresa_id: EMPRESA_ID, ...input })
     .select()
     .single()
   if (error) throw error
   return data as CatalogoParafuso
 }
 
-export async function atualizarParafuso(empresaId: string, sku: string, input: Partial<{
+export async function atualizarParafuso(sku: string, input: Partial<{
   nome: string; tipo_parafuso_id: string; chave_id: string
   sigla: string; descricao: string; torque_ncm: number; material: string
   preco: number; ativo: boolean
@@ -70,7 +71,7 @@ export async function atualizarParafuso(empresaId: string, sku: string, input: P
   const { data, error } = await supabase
     .from("catalogo_parafusos")
     .update(input)
-    .eq("empresa_id", empresaId)
+    .eq("empresa_id", EMPRESA_ID)
     .eq("sku", sku)
     .select()
     .single()
@@ -78,12 +79,12 @@ export async function atualizarParafuso(empresaId: string, sku: string, input: P
   return data as CatalogoParafuso
 }
 
-export async function toggleParafusoAtivo(empresaId: string, sku: string, ativo: boolean): Promise<void> {
-  const { error } = await supabase.from("catalogo_parafusos").update({ ativo }).eq("empresa_id", empresaId).eq("sku", sku)
+export async function toggleParafusoAtivo(sku: string, ativo: boolean): Promise<void> {
+  const { error } = await supabase.from("catalogo_parafusos").update({ ativo }).eq("empresa_id", EMPRESA_ID).eq("sku", sku)
   if (error) throw error
 }
 
-export async function removerParafuso(empresaId: string, sku: string): Promise<void> {
-  const { error } = await supabase.from("catalogo_parafusos").delete().eq("empresa_id", empresaId).eq("sku", sku)
+export async function removerParafuso(sku: string): Promise<void> {
+  const { error } = await supabase.from("catalogo_parafusos").delete().eq("empresa_id", EMPRESA_ID).eq("sku", sku)
   if (error) throw error
 }

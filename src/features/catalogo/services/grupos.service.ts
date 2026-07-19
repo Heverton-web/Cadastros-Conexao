@@ -1,4 +1,5 @@
 import { supabase } from "~/lib/supabase"
+import { EMPRESA_ID } from "~/config/empresa"
 import type {
   CatalogoGrupoCliente,
   CatalogoGrupoClienteInput,
@@ -11,11 +12,11 @@ import type {
 // CRUD Grupos de Clientes
 // ============================================================
 
-export async function listarGrupos(empresaId: string): Promise<CatalogoGrupoCliente[]> {
+export async function listarGrupos(): Promise<CatalogoGrupoCliente[]> {
   const { data, error } = await supabase
     .from("catalogo_grupos_clientes")
     .select("*")
-    .eq("empresa_id", empresaId)
+    .eq("empresa_id", EMPRESA_ID)
     .order("nome")
   if (error) throw error
   return data as CatalogoGrupoCliente[]
@@ -32,12 +33,12 @@ export async function buscarGrupo(id: string): Promise<CatalogoGrupoCliente | nu
 }
 
 export async function criarGrupo(
-  empresaId: string,
+  EMPRESA_ID: string,
   input: CatalogoGrupoClienteInput,
 ): Promise<CatalogoGrupoCliente> {
   const { data, error } = await supabase
     .from("catalogo_grupos_clientes")
-    .insert({ empresa_id: empresaId, ...input })
+    .insert({ empresa_id: EMPRESA_ID, ...input })
     .select()
     .single()
   if (error) throw error
@@ -71,13 +72,13 @@ export async function deletarGrupo(id: string): Promise<void> {
 // ============================================================
 
 export async function listarPrecosGrupo(
-  empresaId: string,
+  EMPRESA_ID: string,
   grupoId: string,
 ): Promise<CatalogoGrupoPreco[]> {
   const { data, error } = await supabase
     .from("catalogo_grupo_precos")
     .select("*")
-    .eq("empresa_id", empresaId)
+    .eq("empresa_id", EMPRESA_ID)
     .eq("grupo_id", grupoId)
     .order("produto_tipo")
   if (error) throw error
@@ -85,12 +86,12 @@ export async function listarPrecosGrupo(
 }
 
 export async function criarPrecoGrupo(
-  empresaId: string,
+  EMPRESA_ID: string,
   input: CatalogoGrupoPrecoInput,
 ): Promise<CatalogoGrupoPreco> {
   const { data, error } = await supabase
     .from("catalogo_grupo_precos")
-    .insert({ empresa_id: empresaId, ...input })
+    .insert({ empresa_id: EMPRESA_ID, ...input })
     .select()
     .single()
   if (error) throw error
@@ -123,38 +124,38 @@ export async function deletarPrecoGrupo(id: string): Promise<void> {
 // Produtos disponíveis para override
 // ============================================================
 
-export async function listarProdutosEmpresa(empresaId: string): Promise<ProdutoDisponivel[]> {
+export async function listarProdutosEmpresa(): Promise<ProdutoDisponivel[]> {
   const [implantes, abutments, fresas, chaves, acessorios, instrumentais, kits] = await Promise.all([
     supabase
       .from("catalogo_implantes")
       .select("sku, preco, linha:catalogo_linhas(nome, familia:catalogo_familias(nome))")
-      .eq("empresa_id", empresaId)
+      .eq("empresa_id", EMPRESA_ID)
       .eq("ativo", true),
     supabase
       .from("catalogo_abutments")
       .select("sku, preco, familia:catalogo_familias(nome)")
-      .eq("empresa_id", empresaId),
+      .eq("empresa_id", EMPRESA_ID),
     supabase
       .from("catalogo_fresas")
       .select("sku, nome, preco")
-      .eq("empresa_id", empresaId)
+      .eq("empresa_id", EMPRESA_ID)
       .eq("ativo", true),
     supabase
       .from("catalogo_chaves_ferramental")
       .select("sku, nome, preco")
-      .eq("empresa_id", empresaId),
+      .eq("empresa_id", EMPRESA_ID),
     supabase
       .from("catalogo_acessorios")
       .select("sku, nome, preco, categoria:catalogo_categorias_acessorios(nome)")
-      .eq("empresa_id", empresaId),
+      .eq("empresa_id", EMPRESA_ID),
     supabase
       .from("catalogo_instrumentais_gerais")
       .select("sku, nome, preco")
-      .eq("empresa_id", empresaId),
+      .eq("empresa_id", EMPRESA_ID),
     supabase
       .from("catalogo_kits")
       .select("sku, nome, preco")
-      .eq("empresa_id", empresaId)
+      .eq("empresa_id", EMPRESA_ID)
       .eq("ativo", true),
   ])
 
@@ -238,7 +239,7 @@ export async function listarProdutosEmpresa(empresaId: string): Promise<ProdutoD
 // ============================================================
 
 export async function salvarPrecosGrupo(
-  empresaId: string,
+  EMPRESA_ID: string,
   grupoId: string,
   precos: Array<{
     produto_sku: string
@@ -252,13 +253,13 @@ export async function salvarPrecosGrupo(
   await supabase
     .from("catalogo_grupo_precos")
     .delete()
-    .eq("empresa_id", empresaId)
+    .eq("empresa_id", EMPRESA_ID)
     .eq("grupo_id", grupoId)
 
   // Insere novos
   if (precos.length > 0) {
     const rows = precos.map((p) => ({
-      empresa_id: empresaId,
+      empresa_id: EMPRESA_ID,
       grupo_id: grupoId,
       produto_sku: p.produto_sku,
       produto_tipo: p.produto_tipo,
@@ -276,14 +277,14 @@ export async function salvarPrecosGrupo(
 // ============================================================
 
 export async function copiarPrecosGrupo(
-  empresaId: string,
+  EMPRESA_ID: string,
   grupoOrigemId: string,
   grupoDestinoId: string,
 ): Promise<number> {
   const { data: origem, error: fetchError } = await supabase
     .from("catalogo_grupo_precos")
     .select("produto_sku, produto_tipo, preco, preco_tipo, desconto_percentual")
-    .eq("empresa_id", empresaId)
+    .eq("empresa_id", EMPRESA_ID)
     .eq("grupo_id", grupoOrigemId)
 
   if (fetchError) throw fetchError
@@ -293,12 +294,12 @@ export async function copiarPrecosGrupo(
   await supabase
     .from("catalogo_grupo_precos")
     .delete()
-    .eq("empresa_id", empresaId)
+    .eq("empresa_id", EMPRESA_ID)
     .eq("grupo_id", grupoDestinoId)
 
   // Insere cópias
   const rows = origem.map((p) => ({
-    empresa_id: empresaId,
+    empresa_id: EMPRESA_ID,
     grupo_id: grupoDestinoId,
     produto_sku: p.produto_sku,
     produto_tipo: p.produto_tipo,
