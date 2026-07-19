@@ -235,7 +235,9 @@ cd /root/Cadastros-Conexao && docker build --no-cache \
   -t hevertonperes/erp-odonto:latest \
   -t hevertonperes/erp-odonto:v<NUMERO> \
   --build-arg VITE_SUPABASE_URL=<URL> \
-  --build-arg VITE_SUPABASE_ANON_KEY=<KEY> .
+  --build-arg VITE_SUPABASE_ANON_KEY=<KEY> \
+  --build-arg VITE_EMPRESA_ID=<EMPRESA_ID> \
+  --build-arg VITE_EMPRESA_SLUG=<EMPRESA_SLUG> .
 ```
 
 **Se build falhar:** Interromper, NÃO push/update.
