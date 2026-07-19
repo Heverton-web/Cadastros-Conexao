@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { useEmpresa } from "~/core/empresa/useEmpresa";
+import { EMPRESA_ID } from "~/config/empresa";
 import { useAuth } from "~/lib/auth";
 import {
   listarRotas,
@@ -21,16 +21,15 @@ export function useRotas(filtros?: {
   data_inicio?: string;
   data_fim?: string;
 }) {
-  const { empresa } = useEmpresa();
   const { user, profile } = useAuth();
 
   const isSuperAdmin = profile?.is_super_admin;
 
   return useQuery({
-    queryKey: ["rotas", empresa?.id, user?.id, filtros],
+    queryKey: ["rotas", EMPRESA_ID, user?.id, filtros],
     queryFn: () =>
       listarRotas(
-        isSuperAdmin ? null : empresa?.id,
+        isSuperAdmin ? null : EMPRESA_ID,
         isSuperAdmin ? null : user?.id,
         filtros,
       ),
@@ -56,14 +55,11 @@ export function useRotaComClientes(id: string) {
 
 export function useCriarRota() {
   const qc = useQueryClient();
-  const { empresa } = useEmpresa();
   const { user, profile } = useAuth();
 
   return useMutation({
     mutationFn: (form: RotaFormData & { empresa_id?: string }) => {
-      const empresaId = form.empresa_id || empresa?.id;
-      if (!empresaId)
-        throw new Error("Selecione uma empresa para criar a rota");
+      const empresaId = form.empresa_id || EMPRESA_ID;
       return criarRota(empresaId, user!.id, form);
     },
     onSuccess: () => {
@@ -83,10 +79,8 @@ export function useAtualizarRota() {
       id: string;
       updates: Parameters<typeof atualizarRota>[1];
     }) => atualizarRota(id, updates),
-    onSuccess: (_, { id }) => {
+    onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["rotas"] });
-      qc.invalidateQueries({ queryKey: ["rota", id] });
-      qc.invalidateQueries({ queryKey: ["rota-clientes", id] });
     },
   });
 }
@@ -106,17 +100,9 @@ export function useIniciarRota() {
   const qc = useQueryClient();
 
   return useMutation({
-    mutationFn: ({
-      id,
-      localizacao,
-    }: {
-      id: string;
-      localizacao: { lat: number; lng: number };
-    }) => iniciarRota(id, localizacao),
-    onSuccess: (_, { id }) => {
+    mutationFn: ({ rotaId }: { rotaId: string }) => iniciarRota(rotaId),
+    onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["rotas"] });
-      qc.invalidateQueries({ queryKey: ["rota", id] });
-      qc.invalidateQueries({ queryKey: ["rota-clientes", id] });
     },
   });
 }
@@ -126,30 +112,20 @@ export function useFinalizarRota() {
 
   return useMutation({
     mutationFn: ({
-      id,
-      localizacao,
-      stats,
+      rotaId,
+      status,
     }: {
-      id: string;
-      localizacao: { lat: number; lng: number };
-      stats: {
-        total_visitas: number;
-        total_km: number;
-        total_tempo_trajeto_min: number;
-        valor_reembolso: number;
-      };
-    }) => finalizarRota(id, localizacao, stats),
-    onSuccess: (_, { id }) => {
+      rotaId: string;
+      status: RotaStatus;
+    }) => finalizarRota(rotaId, status),
+    onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["rotas"] });
-      qc.invalidateQueries({ queryKey: ["rota", id] });
-      qc.invalidateQueries({ queryKey: ["rota-clientes", id] });
     },
   });
 }
 
 export function useAdicionarClientesNaRota() {
   const qc = useQueryClient();
-  const { empresa } = useEmpresa();
 
   return useMutation({
     mutationFn: ({
@@ -158,7 +134,7 @@ export function useAdicionarClientesNaRota() {
     }: {
       rotaId: string;
       clienteIds: string[];
-    }) => adicionarClientesNaRota(rotaId, empresa?.id ?? "", clienteIds),
+    }) => adicionarClientesNaRota(rotaId, EMPRESA_ID, clienteIds),
     onSuccess: (_, { rotaId }) => {
       qc.invalidateQueries({ queryKey: ["rota-clientes", rotaId] });
     },
@@ -183,11 +159,11 @@ export function useReordenarClientes() {
   return useMutation({
     mutationFn: ({
       rotaId,
-      ordemIds,
+      clienteIds,
     }: {
       rotaId: string;
-      ordemIds: string[];
-    }) => reordenarClientes(rotaId, ordemIds),
+      clienteIds: string[];
+    }) => reordenarClientes(rotaId, clienteIds),
     onSuccess: (_, { rotaId }) => {
       qc.invalidateQueries({ queryKey: ["rota-clientes", rotaId] });
     },

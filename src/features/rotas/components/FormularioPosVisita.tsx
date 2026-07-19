@@ -18,7 +18,7 @@ import {
   DialogFooter,
 } from "~/components/ui/dialog";
 import { Loader2 } from "lucide-react";
-import { useEmpresa } from "~/core/empresa/useEmpresa";
+import { EMPRESA_ID } from "~/config/empresa";
 import { listarPerguntas } from "../services/form.service";
 import {
   atualizarVisita,
@@ -34,7 +34,6 @@ type Props = {
 };
 
 export function FormularioPosVisita({ rotaClienteId, onDone }: Props) {
-  const { empresa, loading: empresaLoading } = useEmpresa();
   const [perguntas, setPerguntas] = useState<RotasFormPergunta[]>([]);
   const [respostas, setRespostas] = useState<Record<string, unknown>>({});
   const [loading, setLoading] = useState(true);
@@ -42,13 +41,8 @@ export function FormularioPosVisita({ rotaClienteId, onDone }: Props) {
 
   useEffect(() => {
     async function load() {
-      if (empresaLoading) return;
-      if (!empresa?.id) {
-        setLoading(false);
-        return;
-      }
       try {
-        const data = await listarPerguntas(empresa.id);
+        const data = await listarPerguntas(EMPRESA_ID);
         setPerguntas(data);
       } catch (err) {
         console.error("Erro ao carregar perguntas:", err);
@@ -57,7 +51,7 @@ export function FormularioPosVisita({ rotaClienteId, onDone }: Props) {
       }
     }
     load();
-  }, [empresa?.id, empresaLoading]);
+  }, []);
 
   function updateResposta(perguntaId: string, valor: unknown) {
     setRespostas((prev) => ({ ...prev, [perguntaId]: valor }));
@@ -101,7 +95,7 @@ export function FormularioPosVisita({ rotaClienteId, onDone }: Props) {
     }
   }
 
-  if (empresaLoading || loading) {
+  if (loading) {
     return (
       <div className="flex items-center justify-center p-8">
         <Loader2 className="h-6 w-6 animate-spin" />

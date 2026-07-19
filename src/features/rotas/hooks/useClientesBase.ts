@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { useEmpresa } from "~/core/empresa/useEmpresa";
+import { EMPRESA_ID } from "~/config/empresa";
 import { useAuth } from "~/lib/auth";
 import {
   listarClientesBase,
@@ -12,16 +12,15 @@ import {
 import type { ClienteBaseFilters } from "../types";
 
 export function useClientesBase(filters?: ClienteBaseFilters) {
-  const { empresa } = useEmpresa();
   const { user, profile } = useAuth();
 
   const isSuperAdmin = profile?.is_super_admin;
 
   return useQuery({
-    queryKey: ["clientes-base", empresa?.id, user?.id, filters],
+    queryKey: ["clientes-base", EMPRESA_ID, user?.id, filters],
     queryFn: () =>
       listarClientesBase(
-        isSuperAdmin ? null : empresa?.id,
+        isSuperAdmin ? null : EMPRESA_ID,
         isSuperAdmin ? null : user?.id,
         filters,
       ),
@@ -30,16 +29,15 @@ export function useClientesBase(filters?: ClienteBaseFilters) {
 }
 
 export function useContarClientesBase() {
-  const { empresa } = useEmpresa();
   const { user, profile } = useAuth();
 
   const isSuperAdmin = profile?.is_super_admin;
 
   return useQuery({
-    queryKey: ["clientes-base-count", empresa?.id, user?.id],
+    queryKey: ["clientes-base-count", EMPRESA_ID, user?.id],
     queryFn: () =>
       contarClientesBase(
-        isSuperAdmin ? null : empresa?.id,
+        isSuperAdmin ? null : EMPRESA_ID,
         isSuperAdmin ? null : user?.id,
       ),
     enabled: !!user?.id,
@@ -48,14 +46,13 @@ export function useContarClientesBase() {
 
 export function useCriarClienteBase() {
   const qc = useQueryClient();
-  const { empresa } = useEmpresa();
   const { user } = useAuth();
 
   return useMutation({
     mutationFn: (cliente: Parameters<typeof criarClienteBase>[0]) =>
       criarClienteBase({
         ...cliente,
-        empresa_id: empresa!.id,
+        empresa_id: EMPRESA_ID,
         usuario_id: user!.id,
       }),
     onSuccess: () => {
@@ -67,7 +64,6 @@ export function useCriarClienteBase() {
 
 export function useCriarClientesBaseEmLote() {
   const qc = useQueryClient();
-  const { empresa } = useEmpresa();
   const { user } = useAuth();
 
   return useMutation({
@@ -75,7 +71,7 @@ export function useCriarClientesBaseEmLote() {
       criarClientesBaseEmLote(
         clientes.map((c) => ({
           ...c,
-          empresa_id: c.empresa_id || empresa?.id || "",
+          empresa_id: c.empresa_id || EMPRESA_ID,
           usuario_id: c.usuario_id || user?.id || "",
         })),
       ),
