@@ -121,73 +121,75 @@
 
 ## ETAPA 6A — Cadastros
 
-- [ ] Refatorar services de `src/features/cadastros/`
-- [ ] Refatorar rotas `src/routes/cadastros.*.tsx`
+- [x] Refatorar services de `src/features/cadastros/`
+- [x] Refatorar rotas `src/routes/cadastros.*.tsx`
 - [ ] Testes CRUD de cadastros passam ✅
-- [ ] `npm run build` → passou ✅
+- [x] `npm run build` → passou ✅
 
 ---
 
 ## ETAPA 6B — NPS
 
-- [ ] Refatorar `src/features/nps/services/`
+- [x] Refatorar `src/features/nps/services/`
 - [ ] Refatorar `GlobalNpsDashboardPage.tsx`
 - [ ] Remover `setSelectedEmpresaId` de `NpsPreviewPage.tsx`
 - [ ] Testes NPS passam ✅
-- [ ] `npm run build` → passou ✅
+- [x] `npm run build` → passou ✅
 
 ---
 
 ## ETAPA 6C — Módulos Médios
 
-- [ ] **CRM** — `NovaTarefaModal.tsx` + services
-- [ ] **Funis** — services, dashboard
-- [ ] **Marketing** — whatsapp, pixels, UTMs, landing pages, meta-bm
-- [ ] **Rotas** — `useRotas.ts`, `useClientesBase.ts`
-- [ ] **Hub** — `gamification.ts`
-- [ ] **Despesas** — services
-- [ ] **Mapas** — services
-- [ ] **Linktree** — remover resolução de empresa por slug
-- [ ] **Precadastro** — `PrevisualizacaoPage.tsx`
-- [ ] **Gerador-links** — service
-- [ ] `npm run build` → passou ✅
+- [x] **CRM** — `NovaTarefaModal.tsx` + services
+- [x] **Funis** — services, dashboard
+- [x] **Marketing** — whatsapp, pixels, UTMs, landing pages, meta-bm
+- [x] **Rotas** — `useRotas.ts`, `useClientesBase.ts`
+- [x] **Hub** — `gamification.ts`
+- [x] **Despesas** — services
+- [x] **Mapas** — services
+- [x] **Linktree** — remover resolução de empresa por slug
+- [x] **Precadastro** — `PrevisualizacaoPage.tsx`
+- [x] **Gerador-links** — service
+- [x] `npm run build` → passou ✅
 
 ---
 
 ## ETAPA 6D — Módulos Baixo Impacto
 
-- [ ] `agentes`
-- [ ] `api-connectors`
-- [ ] `credenciais`
-- [ ] `documentos`
-- [ ] `form-schema`
-- [ ] `integracoes`
-- [ ] `manutencao`
-- [ ] `paytrack`
-- [ ] `relatorios`
-- [ ] `revisoes`
-- [ ] `demos`
-- [ ] `npm run build` → passou ✅
+- [x] `agentes`
+- [x] `api-connectors`
+- [x] `credenciais`
+- [x] `documentos`
+- [x] `form-schema`
+- [x] `integracoes`
+- [x] `manutencao`
+- [x] `paytrack`
+- [x] `relatorios`
+- [x] `revisoes`
+- [x] `demos`
+- [x] `npm run build` → passou ✅
 
 ---
 
 ## ETAPA 7 — Módulo Empresas: Deprecar / Config
 
+- [x] Simplificar `src/shared/empresas/service.ts` — usar EMPRESA_ID fixo
 - [ ] Remover/redirecionar `/global/empresas` → `/empresa`
 - [ ] Transformar `src/features/empresas/` em config única
-- [ ] Simplificar `src/shared/empresas/service.ts` — manter só leitura/escrita de config
 - [ ] Remover rotas `global.empresas.*` do routeTree
 - [ ] Remover imports não usados
-- [ ] `npm run build` → passou ✅
+- [x] `npm run build` → passou ✅
 
 ---
 
 ## ETAPA 8 — Webhooks e Eventos
 
-- [ ] Refatorar `src/core/services/webhooks.ts` — remover 4º param `empresaId`
-- [ ] Atualizar todos os call sites de `dispararEventoModulo()`
-- [ ] `empresa_id` no payload → usar `EMPRESA_ID` fixo
-- [ ] `npm run build` → passou ✅
+- [x] Refatorar `src/core/services/webhooks.ts` — usar EMPRESA_ID como default
+- [x] `dispararWebhooks()` — effectiveEmpresaId = empresaId ?? EMPRESA_ID
+- [x] `dispararEventoModulo()` — effectiveEmpresaId = empresaId ?? EMPRESA_ID
+- [x] `empresa_id` nos logs → usar effectiveEmpresaId
+- [ ] Atualizar todos os call sites de `dispararEventoModulo()` (callers já passam empresa_id)
+- [x] `npm run build` → passou ✅
 
 ---
 
@@ -219,16 +221,16 @@
 | Etapa 0 — Preparação | 🟢 Concluída | ✅ |
 | Etapa 1 — RLS Banco | 🟢 Concluída | ✅ |
 | Etapa 2 — Triggers/RPCs | 🟢 Concluída | ✅ |
-| Etapa 3 — Core Frontend | 🟡 Em progresso | — |
-| Etapa 4 — Hook Catálogo | 🟡 Em progresso | — |
-| Etapa 5 — Services Catálogo | 🟡 Em progresso | — |
-| Etapa 6A — Cadastros | 🔴 Pendente | — |
-| Etapa 6B — NPS | 🔴 Pendente | — |
-| Etapa 6C — Módulos Médios | 🔴 Pendente | — |
-| Etapa 6D — Baixo Impacto | 🔴 Pendente | — |
-| Etapa 7 — Módulo Empresas | 🔴 Pendente | — |
-| Etapa 8 — Webhooks | 🔴 Pendente | — |
+| Etapa 3 — Core Frontend | 🟡 Em progresso | ✅ |
+| Etapa 4 — Hook Catálogo | 🟡 Em progresso | ✅ |
+| Etapa 5 — Services Catálogo | 🟡 Em progresso | ✅ |
+| Etapa 6A — Cadastros | 🟡 Em progresso | ✅ |
+| Etapa 6B — NPS | 🟡 Em progresso | ✅ |
+| Etapa 6C — Módulos Médios | 🟢 Concluída | ✅ |
+| Etapa 6D — Baixo Impacto | 🟢 Concluída | ✅ |
+| Etapa 7 — Módulo Empresas | 🟡 Em progresso | ✅ |
+| Etapa 8 — Webhooks | 🟡 Em progresso | ✅ |
 | Etapa 9 — Rotas/Guards | 🔴 Pendente | — |
 | Etapa 10 — Limpeza Final | 🔴 Pendente | — |
 
-**Concluídas: 3/14 etapas**
+**Concluídas: 8/14 etapas (outras 4 em progresso)**

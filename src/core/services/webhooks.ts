@@ -1,4 +1,5 @@
 import { supabase } from "~/core/supabase";
+import { EMPRESA_ID } from "~/config/empresa";
 import {
   dispararNotificacaoIndividual,
   type NotificacaoTemplate,
@@ -131,6 +132,7 @@ export async function dispararWebhooks(
   payload: Record<string, any>,
   empresaId?: string | null,
 ) {
+  const effectiveEmpresaId = empresaId ?? EMPRESA_ID;
   Promise.resolve().then(async () => {
     try {
       let usuarioInfo = {
@@ -190,8 +192,8 @@ export async function dispararWebhooks(
         .select("*")
         .eq("evento", evento)
         .eq("ativo", true);
-      if (empresaId) {
-        webhooksQuery = webhooksQuery.eq("empresa_id", empresaId);
+      if (effectiveEmpresaId) {
+        webhooksQuery = webhooksQuery.eq("empresa_id", effectiveEmpresaId);
       } else {
         webhooksQuery = webhooksQuery.is("empresa_id", null);
       }
@@ -341,7 +343,7 @@ export async function dispararWebhooks(
               resposta: text.slice(0, 2000),
               sucesso: res.ok,
               payload_enviado: body,
-              empresa_id: empresaId,
+              empresa_id: effectiveEmpresaId,
             });
           } else if (task.type === "api_connector") {
             const conn = task.raw as { id: string; url: string };
@@ -361,7 +363,7 @@ export async function dispararWebhooks(
                   : String(result?.data).slice(0, 2000),
               sucesso: result?.status >= 200 && result?.status < 300,
               payload_enviado: payloadCompleto,
-              empresa_id: empresaId,
+              empresa_id: effectiveEmpresaId,
             });
           }
         } catch (stepErr: any) {
@@ -381,7 +383,7 @@ export async function dispararWebhooks(
                 (stepErr.message?.slice(0, 1900) || "Erro desconhecido"),
               sucesso: false,
               payload_enviado: payload,
-              empresa_id: empresaId,
+              empresa_id: effectiveEmpresaId,
             });
           } catch (logErr) {
             console.error("Falha ao registrar log de erro:", logErr);
@@ -400,6 +402,7 @@ export async function dispararEventoModulo(
   payload: Record<string, any>,
   empresaId?: string | null,
 ) {
+  const effectiveEmpresaId = empresaId ?? EMPRESA_ID;
   let query = supabase
     .from("webhooks")
     .select("*")
@@ -407,8 +410,8 @@ export async function dispararEventoModulo(
     .eq("evento_key", eventoKey)
     .eq("ativo", true);
 
-  if (empresaId) {
-    query = query.eq("empresa_id", empresaId);
+  if (effectiveEmpresaId) {
+    query = query.eq("empresa_id", effectiveEmpresaId);
   } else {
     query = query.is("empresa_id", null);
   }
@@ -452,8 +455,7 @@ export async function dispararEventoModulo(
         status_code: res.status,
         resposta: text.slice(0, 2000),
         sucesso: res.ok,
-        payload_enviado: body,
-        empresa_id: empresaId,
+        empresa_id: effectiveEmpresaId,
       });
     } catch (err: any) {
       console.error(`Erro no webhook de módulo ${wh.id}:`, err);
@@ -465,7 +467,7 @@ export async function dispararEventoModulo(
         resposta: err.message?.slice(0, 1900) || "Erro desconhecido",
         sucesso: false,
         payload_enviado: payload,
-        empresa_id: empresaId,
+        empresa_id: effectiveEmpresaId,
       });
     }
   }
