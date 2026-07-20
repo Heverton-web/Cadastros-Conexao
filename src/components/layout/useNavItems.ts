@@ -217,8 +217,6 @@ function buildMarketingSubGroups(items: NavItem[]): NavSubGroup[] {
 function buildAdminSection(): NavModuleSection {
   const adminItems: NavItem[] = [
     { path: "/global/modulos", label: "Módulos ERP", icon: Puzzle },
-    { path: "/global/empresas", label: "Empresas ERP", icon: Building2 },
-    { path: "/global/permissoes", label: "Permissões", icon: KeyRound },
   ];
   const infraItems: NavItem[] = [
     { path: "/global/banco", label: "Banco de Dados", icon: Database },

@@ -17,7 +17,7 @@ function LojaIndexPage() {
   const { isVisitante } = useCatalogoVisitante()
 
   return (
-    <StoreLayout empresaId={empresaId}>
+    <StoreLayout>
       <div className="space-y-6 p-4 lg:p-8">
         {/* Banner para visitantes */}
         {isVisitante && (

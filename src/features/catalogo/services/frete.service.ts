@@ -1,12 +1,10 @@
 import { supabase } from "~/core/supabase"
-import { EMPRESA_ID } from "~/config/empresa"
 import type { CatalogoFrete } from "../types"
 
 export async function listarFretes(): Promise<CatalogoFrete[]> {
   const { data, error } = await supabase
     .from("catalogo_fretes")
     .select("*")
-    .eq("empresa_id", EMPRESA_ID)
     .order("cep_inicio")
   if (error) throw error
   return data as CatalogoFrete[]
@@ -20,7 +18,7 @@ export async function criarFrete(input: {
 }): Promise<CatalogoFrete> {
   const { data, error } = await supabase
     .from("catalogo_fretes")
-    .insert({ empresa_id: EMPRESA_ID, ...input })
+    .insert({ ...input })
     .select()
     .single()
   if (error) throw error
@@ -48,7 +46,6 @@ export async function consultarFrete(cep: string): Promise<CatalogoFrete | null>
   const { data, error } = await supabase
     .from("catalogo_fretes")
     .select("*")
-    .eq("empresa_id", EMPRESA_ID)
     .lte("cep_inicio", cepNum)
     .gte("cep_fim", cepNum)
     .limit(1)

@@ -12,7 +12,6 @@ export type StatusOrcamento =
 
 export interface CatalogoOrcamento {
   id: string
-  empresa_id: string
   colaborador_id: string
   cliente_id: string | null
   cliente_nome: string | null
@@ -37,7 +36,6 @@ export interface CatalogoOrcamento {
 
 export interface CatalogoOrcamentoItem {
   id: string
-  empresa_id: string
   orcamento_id: string
   produto_sku: string
   produto_tipo: string

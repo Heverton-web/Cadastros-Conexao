@@ -1,5 +1,4 @@
 import { supabase } from "~/lib/supabase"
-import { EMPRESA_ID } from "~/config/empresa"
 import type { CatalogoFavorito } from "../types/pedidos"
 
 export async function listarFavoritos(
@@ -8,7 +7,6 @@ export async function listarFavoritos(
   const { data, error } = await supabase
     .from("catalogo_favoritos")
     .select("*")
-    .eq("empresa_id", EMPRESA_ID)
     .eq("cliente_id", clienteId)
     .order("created_at", { ascending: false })
   if (error) throw error
@@ -23,7 +21,6 @@ export async function adicionarFavorito(
   const { data, error } = await supabase
     .from("catalogo_favoritos")
     .insert({
-      empresa_id: EMPRESA_ID,
       cliente_id: clienteId,
       produto_sku: produtoSku,
       produto_tipo: produtoTipo,
@@ -41,7 +38,6 @@ export async function removerFavorito(
   const { error } = await supabase
     .from("catalogo_favoritos")
     .delete()
-    .eq("empresa_id", EMPRESA_ID)
     .eq("cliente_id", clienteId)
     .eq("produto_sku", produtoSku)
   if (error) throw error
@@ -54,7 +50,6 @@ export async function isFavorito(
   const { data, error } = await supabase
     .from("catalogo_favoritos")
     .select("id")
-    .eq("empresa_id", EMPRESA_ID)
     .eq("cliente_id", clienteId)
     .eq("produto_sku", produtoSku)
     .maybeSingle()

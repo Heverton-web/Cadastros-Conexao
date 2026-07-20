@@ -1,17 +1,16 @@
 /**
  * EmpresaCrudContext — Single-Tenant
  *
- * Em modo single-tenant, a empresa é sempre a mesma (EMPRESA_ID fixo).
- * Este hook retorna a constante diretamente, sem precisar de React Context.
+ * Em modo single-tenant, a empresa é sempre a mesma.
+ * Este hook retorna uma constante diretamente.
  */
-import { EMPRESA_ID } from "~/config/empresa";
 
 /**
  * Retorna o ID da empresa atual (fixo em single-tenant).
  * Mantido para compatibilidade com componentes existentes.
  */
 export function useEmpresaCrudId(): string {
-  return EMPRESA_ID;
+  return "default"
 }
 
 /**
@@ -21,5 +20,5 @@ export function useEmpresaCrudId(): string {
 export const EmpresaCrudContext = {
   Provider: ({ children }: { children: React.ReactNode }) => children,
   Consumer: ({ children }: { children: (value: string) => React.ReactNode }) =>
-    children(EMPRESA_ID),
+    children("default"),
 };

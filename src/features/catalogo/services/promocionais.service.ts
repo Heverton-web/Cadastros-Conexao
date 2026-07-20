@@ -1,5 +1,4 @@
 import { supabase } from "~/core/supabase"
-import { EMPRESA_ID } from "~/config/empresa"
 import { dispararEventoModulo } from "~/core/services/webhooks"
 import type { CatalogoPromocional } from "../types"
 
@@ -9,7 +8,6 @@ export async function listarPromocionais(): Promise<CatalogoPromocional[]> {
   const { data, error } = await supabase
     .from("catalogo_promocionais")
     .select("*, itens:catalogo_promocional_itens(*)")
-    .eq("empresa_id", EMPRESA_ID)
     .order("created_at", { ascending: false })
   if (error) throw error
   return data as CatalogoPromocional[]
@@ -20,7 +18,6 @@ export async function listarPromocionaisAtivos(): Promise<CatalogoPromocional[]>
   const { data, error } = await supabase
     .from("catalogo_promocionais")
     .select("*, itens:catalogo_promocional_itens(*)")
-    .eq("empresa_id", EMPRESA_ID)
     .eq("ativo", true)
     .or(`expira_em.is.null,expira_em.gt.${now}`)
     .order("created_at", { ascending: false })
@@ -32,7 +29,6 @@ export async function getPromocionalDetalhe(id: string): Promise<CatalogoPromoci
   const { data, error } = await supabase
     .from("catalogo_promocionais")
     .select("*, itens:catalogo_promocional_itens(*)")
-    .eq("empresa_id", EMPRESA_ID)
     .eq("id", id)
     .single()
   if (error) throw error
@@ -49,17 +45,17 @@ export async function criarPromocional(input: {
   const { itens, ...promoData } = input
   const { data, error } = await supabase
     .from("catalogo_promocionais")
-    .insert({ empresa_id: EMPRESA_ID, ...promoData })
+    .insert({ ...promoData })
     .select()
     .single()
   if (error) throw error
 
   if (itens?.length) {
-    const rows = itens.map((item) => ({ empresa_id: EMPRESA_ID, promocional_id: data.id, ...item }))
+    const rows = itens.map((item) => ({ promocional_id: data.id, ...item }))
     await supabase.from("catalogo_promocional_itens").insert(rows)
   }
 
-  dispararEventoModulo(MODULO_KEY, "promocional.criado", { promocional_id: data.id, nome: data.nome, empresa_id: EMPRESA_ID }, EMPRESA_ID).catch(() => {})
+  dispararEventoModulo(MODULO_KEY, "promocional.criado", { promocional_id: data.id, nome: data.nome }).catch(() => {})
   return data as CatalogoPromocional
 }
 

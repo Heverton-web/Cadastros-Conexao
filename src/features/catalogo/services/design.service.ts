@@ -1,5 +1,4 @@
 import { supabase } from "~/lib/supabase"
-import { EMPRESA_ID } from "~/config/empresa"
 
 export interface CatalogoDesignColors {
   accent: string
@@ -447,24 +446,50 @@ export function mergeWithDefaults(saved: Record<string, any> | null): CatalogoDe
 }
 
 export async function getCatalogoDesign(): Promise<CatalogoDesignConfig> {
-  const { data } = await supabase
-    .from("catalogo_design_config")
-    .select("config")
-    .eq("empresa_id", EMPRESA_ID)
-    .single()
+  try {
+    const { data, error } = await supabase
+      .from("catalogo_design_config")
+      .select("config")
+      .limit(1)
+      .maybeSingle()
 
-  if (!data?.config) return DEFAULT_CATALOGO_CONFIG
-  return mergeWithDefaults(data.config as Record<string, any>)
+    if (error || !data?.config) return DEFAULT_CATALOGO_CONFIG
+
+    const config = data.config as Record<string, any>
+
+    // Lidar com config corrompido (char-by-char storage bug antigo)
+    if (config && typeof config === "object" && !Array.isArray(config) && config["0"] === "{") {
+      try {
+        const reconstructed = Object.values(config).join("")
+        const parsed = JSON.parse(reconstructed)
+        return mergeWithDefaults(parsed)
+      } catch {
+        return DEFAULT_CATALOGO_CONFIG
+      }
+    }
+
+    return mergeWithDefaults(config)
+  } catch {
+    return DEFAULT_CATALOGO_CONFIG
+  }
 }
 
 export async function saveCatalogoDesign(config: CatalogoDesignConfig): Promise<void> {
+  // Deletar todos os rows existentes antes de inserir (single-tenant sem PK)
+  const { error: delError } = await supabase
+    .from("catalogo_design_config")
+    .delete()
+    .neq("updated_at", "1900-01-01")
+
+  if (delError) throw delError
+
+  // Inserir novo row
   const { error } = await supabase
     .from("catalogo_design_config")
-    .upsert({
-      empresa_id: EMPRESA_ID,
+    .insert({
       config: config as unknown as Record<string, any>,
       updated_at: new Date().toISOString(),
-    }, { onConflict: "empresa_id" })
+    })
 
   if (error) throw error
 }

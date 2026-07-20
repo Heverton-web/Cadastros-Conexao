@@ -2,10 +2,10 @@ import { useState } from "react"
 import { Upload, X } from "lucide-react"
 import type { CatalogoDesignImages } from "../../services/design.service"
 import { supabase } from "~/lib/supabase"
+import { EMPRESA_ID } from "~/config/empresa"
 
 interface ImagesSectionProps {
   images: CatalogoDesignImages
-  empresaId: string
   onChange: (images: CatalogoDesignImages) => void
 }
 
@@ -16,14 +16,14 @@ const IMAGE_FIELDS: { key: keyof CatalogoDesignImages; label: string; descriptio
   { key: "pageBackgroundUrl", label: "Background da Página", description: "Imagem de fundo de toda a loja" },
 ]
 
-export function ImagesSection({ images, empresaId, onChange }: ImagesSectionProps) {
+export function ImagesSection({ images, onChange }: ImagesSectionProps) {
   const [uploading, setUploading] = useState<string | null>(null)
 
   async function handleUpload(key: keyof CatalogoDesignImages, file: File) {
     setUploading(key)
     try {
       const ext = file.name.split(".").pop() || "png"
-      const fileName = `catalogo/${empresaId}/${key}.${ext}`
+      const fileName = `catalogo/${EMPRESA_ID}/${key}.${ext}`
 
       const { error: uploadError } = await supabase.storage
         .from("logos")

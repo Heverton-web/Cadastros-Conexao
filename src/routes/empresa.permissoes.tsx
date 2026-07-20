@@ -13,7 +13,7 @@ import {
   setModulosAcesso,
 } from "~/core/permissions/services";
 
-import { listarEmpresas, type Empresa } from "~/features/empresas";
+import { EMPRESA_ID } from "~/config/empresa";
 import {
   getAllModules,
   getNavItemsByModule,
@@ -85,8 +85,7 @@ type ModuloUIO = {
 
 function AdminPermissoes() {
   const { profile } = useAuth();
-  const isSuper = profile?.is_super_admin === true;
-  const empresaVinculada = profile?.empresa_id as string | undefined;
+  const empresaVinculada = EMPRESA_ID;
 
   const [usuarios, setUsuarios] = useState<ProfileRow[]>([]);
   const [permMap, setPermMap] = useState<Record<string, Permissoes>>({});
@@ -102,10 +101,6 @@ function AdminPermissoes() {
   const [saving, setSaving] = useState<string | null>(null);
   const [editandoUsuario, setEditandoUsuario] = useState<ProfileRow | null>(
     null,
-  );
-  const [empresas, setEmpresas] = useState<Empresa[]>([]);
-  const [filtroEmpresa, setFiltroEmpresa] = useState<string>(
-    empresaVinculada || "",
   );
   const [termoBusca, setTermoBusca] = useState("");
   const [criandoNovaCredencial, setCriandoNovaCredencial] = useState(false);
@@ -142,16 +137,8 @@ function AdminPermissoes() {
   }, []);
 
   useEffect(() => {
-    if (isSuper || empresaVinculada) {
-      Promise.all([
-        carregarUsuarios(filtroEmpresa || undefined),
-        listarEmpresas(),
-      ]).then(([_, emps]) => {
-        if (isSuper) setEmpresas(emps);
-        else setEmpresas(emps.filter((e) => e.id === empresaVinculada));
-      });
-    }
-  }, [profile]);
+    carregarUsuarios(empresaVinculada);
+  }, []);
 
   async function carregarUsuarios(empresaId?: string) {
     setLoading(true);
@@ -162,14 +149,8 @@ function AdminPermissoes() {
       )
       .order("nome");
 
-    if (!isSuper && empresaVinculada) {
-      query = query
-        .eq("empresa_id", empresaVinculada)
-        .neq("is_super_admin", true);
-    } else if (empresaId) {
+    if (empresaId) {
       query = query.eq("empresa_id", empresaId);
-    } else if (!isSuper) {
-      query = query.eq("empresa_id", null).neq("is_super_admin", true);
     }
 
     const { data: profiles } = await query;
@@ -201,15 +182,7 @@ function AdminPermissoes() {
     setLoading(false);
   }
 
-  if (!isSuper && !empresaVinculada) {
-    return (
-      <div className="flex items-center justify-center p-8">
-        <p className="text-text-muted text-sm">
-          Acesso restrito a Super Admin ou usuários com empresa vinculada.
-        </p>
-      </div>
-    );
-  }
+
 
   function togglePerm(userId: string, key: keyof Permissoes) {
     setPermMap((prev) => ({
@@ -309,7 +282,7 @@ function AdminPermissoes() {
       toast.success(
         novoStatus ? "Credencial ativada!" : "Credencial inativada!",
       );
-      carregarUsuarios(filtroEmpresa || undefined);
+      carregarUsuarios(empresaVinculada);
     } catch (e: any) {
       toast.error(
         "Erro ao alterar. A coluna 'ativo' (boolean) existe em profiles?",
@@ -327,7 +300,7 @@ function AdminPermissoes() {
       if (error) throw error;
       toast.success("Credencial excluída com sucesso!");
       setCredencialParaDeletar(null);
-      carregarUsuarios(filtroEmpresa || undefined);
+      carregarUsuarios(empresaVinculada);
     } catch (e: any) {
       toast.error(
         "Erro ao excluir credencial: " + (e.message || "desconhecido"),
@@ -343,9 +316,7 @@ function AdminPermissoes() {
         ambiente: formData.departamento,
       };
 
-      if (isSuper && formData.empresa_id !== undefined) {
-        updateData.empresa_id = formData.empresa_id || null;
-      }
+
 
       const { error } = await supabase
         .from("profiles")
@@ -373,7 +344,7 @@ function AdminPermissoes() {
 
       toast.success("Credencial atualizada!");
       setEditandoUsuario(null);
-      carregarUsuarios(filtroEmpresa || undefined);
+      carregarUsuarios(empresaVinculada);
     } catch (e: any) {
       toast.error("Erro ao salvar: " + e.message);
       console.error(e);
@@ -388,13 +359,7 @@ function AdminPermissoes() {
     setExpandedModulosDetalhes((prev) => ({ ...prev, [key]: !prev[key] }));
   }
 
-  function handleEmpresaChange(val: string) {
-    setFiltroEmpresa(val);
-    carregarUsuarios(val || undefined);
-  }
-
   const usuariosFiltrados = usuarios.filter((u) => {
-    if (filtroEmpresa && u.empresa_id !== filtroEmpresa) return false;
     if (
       termoBusca &&
       !u.nome.toLowerCase().includes(termoBusca.toLowerCase()) &&
@@ -419,24 +384,6 @@ function AdminPermissoes() {
       </div>
 
       <div className="mb-4 flex flex-col sm:flex-row sm:items-center gap-3">
-        {isSuper && (
-          <div className="flex items-center gap-2 shrink-0">
-            <Building2 size={14} className="text-text-muted" />
-            <select
-              value={filtroEmpresa}
-              onChange={(e) => handleEmpresaChange(e.target.value)}
-              className="px-3 py-1.5 rounded-lg bg-input-bg border border-input-border text-text-main text-sm"
-            >
-              <option value="">Todas as empresas</option>
-              {empresas.map((emp) => (
-                <option key={emp.id} value={emp.id}>
-                  {emp.nome}
-                </option>
-              ))}
-            </select>
-          </div>
-        )}
-
         <div className="flex items-center gap-3 flex-1">
           <div className="relative flex-1 max-w-sm">
             <Search
@@ -504,9 +451,7 @@ function AdminPermissoes() {
                       </span>
                       <span className="text-xs text-text-muted block truncate">
                         {u.email} | {u.ambiente}
-                        {u.empresa_id
-                          ? ` | ${empresas.find((e) => e.id === u.empresa_id)?.nome || "—"}`
-                          : ""}
+
                       </span>
                     </div>
                   </div>
@@ -812,7 +757,6 @@ function AdminPermissoes() {
           onClose={() => setEditandoUsuario(null)}
           onSave={handleSalvarEdicao}
           modulos={modulos}
-          isSuperAdmin={isSuper}
         />
       )}
 
@@ -821,7 +765,6 @@ function AdminPermissoes() {
           onClose={() => setCriandoNovaCredencial(false)}
           modulos={modulos}
           empresaId={empresaVinculada}
-          isSuperAdmin={isSuper}
         />
       )}
 
@@ -860,12 +803,10 @@ function NovaCredencialModal({
   onClose,
   modulos,
   empresaId,
-  isSuperAdmin,
 }: {
   onClose: () => void;
   modulos: ModuloUIO[];
   empresaId?: string;
-  isSuperAdmin?: boolean;
 }) {
   const [form, setForm] = useState({
     nome_completo: "",
@@ -913,13 +854,6 @@ function NovaCredencialModal({
     Record<string, boolean>
   >({});
   const [salvando, setSalvando] = useState(false);
-  const [empresas, setEmpresas] = useState<Empresa[]>([]);
-
-  useEffect(() => {
-    if (isSuperAdmin) {
-      listarEmpresas().then(setEmpresas);
-    }
-  }, [isSuperAdmin]);
 
   function toggleModuloAcessar(modKey: string) {
     setModulosMap((prev) => {
@@ -973,7 +907,7 @@ function NovaCredencialModal({
           p_email: form.email_corporativo,
           p_senha: form.senha_padrao || "conexao123",
           p_nome: form.nome_completo,
-          p_empresa_id: (isSuperAdmin && form.empresa_id) ? form.empresa_id : (empresaId || null),
+          p_empresa_id: empresaId || null,
           p_is_super_admin: false,
         },
       );
@@ -1085,25 +1019,7 @@ function NovaCredencialModal({
               }
             />
           </div>
-          {isSuperAdmin && (
-            <div>
-              <label className="mb-1.5 text-xs font-medium text-text-muted">Vincular a Empresa</label>
-              <select
-                className="w-full h-11 rounded-xl border border-border bg-input-bg px-4 text-sm text-text-main font-medium placeholder:text-text-muted/60 outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent transition-all duration-200"
-                value={form.empresa_id}
-                onChange={(e) =>
-                  setForm((prev) => ({ ...prev, empresa_id: e.target.value }))
-                }
-              >
-                <option value="">Selecione (opcional)</option>
-                {empresas.map((emp) => (
-                  <option key={emp.id} value={emp.id}>
-                    {emp.nome}
-                  </option>
-                ))}
-              </select>
-            </div>
-          )}
+
         </div>
 
         {/* Módulos e Permissões */}
@@ -1341,13 +1257,11 @@ function EditCredencialModal({
   onClose,
   onSave,
   modulos,
-  isSuperAdmin,
 }: {
-  usuario: ProfileRow;
+  usuario: any;
   onClose: () => void;
-  onSave: (id: string, form: any, modulosMap?: Record<string, any>) => Promise<void>;
+  onSave: (id: string, formData: any, novosModulos?: Record<string, any>) => void;
   modulos: ModuloUIO[];
-  isSuperAdmin?: boolean;
 }) {
   const [form, setForm] = useState({
     nome_completo: usuario.nome || "",
@@ -1362,14 +1276,7 @@ function EditCredencialModal({
   const [expandedModulosDetalhes, setExpandedModulosDetalhes] = useState<
     Record<string, boolean>
   >({});
-  const [empresas, setEmpresas] = useState<Empresa[]>([]);
   const [loadedPerms, setLoadedPerms] = useState(false);
-
-  useEffect(() => {
-    if (isSuperAdmin) {
-      listarEmpresas().then(setEmpresas);
-    }
-  }, [isSuperAdmin]);
 
   useEffect(() => {
     getModulosAcesso(usuario.id).then((data) => {
@@ -1518,25 +1425,7 @@ function EditCredencialModal({
                 }
               />
             </div>
-            {isSuperAdmin && (
-              <div>
-                <label className="mb-1.5 text-xs font-medium text-text-muted">Vincular a Empresa</label>
-                <select
-                  className="w-full h-11 rounded-xl border border-border bg-input-bg px-4 text-sm text-text-main font-medium placeholder:text-text-muted/60 outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent transition-all duration-200"
-                  value={form.empresa_id}
-                  onChange={(e) =>
-                    setForm((prev) => ({ ...prev, empresa_id: e.target.value }))
-                  }
-                >
-                  <option value="">Selecione (opcional)</option>
-                  {empresas.map((emp) => (
-                    <option key={emp.id} value={emp.id}>
-                      {emp.nome}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            )}
+
           </div>
 
           {loadedPerms && (

@@ -1,0 +1,41 @@
+TASKS: 
+- Crie o arquivo de TRACKING para as TASKS
+- Crie testes temporários individuais checagem para cada uma das TASKS
+- Atualize o TRACKING a cada TASK concluída
+- Só finalize uma TASK quando a mesma estiver 100% concluída, testada e buildada.
+- Remova arquivos de testes temporários após finalizar uma TASK
+---
+## Legenda de Status
+| Símbolo | Significado |
+|---------|------------|
+| `[ ]` | Não iniciado |
+| `[/]` | Em progresso |
+| `[x]` | Concluído |
+| `[!]` | Bloqueado / problema |
+---
+LIMPEZA:
+- DELETAR todos os registros do banco de dados referentes ao módulo `Catálogo`
+ACESSO:
+- Acessar a rota `/catalogo/admin/implantes`
+FRONTEND e LÓGICA:
+- Cadastrar via modais de cadastramento:
+  - `Conexões` pelo modal `Modal de Cadastro de Conexões`
+  - `Famílias` pelo modal `Modal de Cadastro de Famílias`
+  - `Linhas` pelo modal `Modal de Cadastro de Linhas`
+  - `Implantes` pelo modal `Modal de Cadastro de Implantes`
+BANCO DE DADOS:
+- Verificar a persistência, relacionamentos de dados e adequação das tabelas correspondentes a cada tipo de dado:
+  - `Conexões` tabela `catalogo_ips_conexoes`
+  - `Famílias` tabela `catalogo_ips_familias`
+  - `Linhas` tabela `catalogo_ips_inhas`
+  - `Implantes` tabela `catalogo_implantes`
+FRONTEND e RENDERIZAÇÃO:
+- Verificar se os dados persistem e renderizam corretamente no frontend:
+  - Rota `/catalogo/implantes`
+  - DrillDown correspondente
+  - `Implantes` -> Ficha técnica
+REGRAS:
+
+ORIENTAÇÕES:
+- Utilize as imagens da pasta `"F:\#PRODUTOS\produtos_CONEXÃO\# 02. COMPONENTES\Morse_Index_NP"` para o cadastramento da imagem do produto.
+- Utilize as credenciais do SUPER ADMIN para realizar as TASKS: hevertoneduardoperes@gmail.com @#Khen741963

@@ -47,7 +47,7 @@ function CatalogoEmpresaPage() {
 
   if (loading) {
     return (
-      <StoreLayout empresaId={empresa?.id ?? null}>
+      <StoreLayout>
         <div className="flex items-center justify-center min-h-[60vh]">
           <Loader2 size={24} className="animate-spin text-[var(--color-accent)]" />
         </div>
@@ -57,7 +57,7 @@ function CatalogoEmpresaPage() {
 
   if (notFound || !empresa) {
     return (
-      <StoreLayout empresaId={null}>
+      <StoreLayout>
         <div className="flex flex-col items-center justify-center min-h-[60vh] text-center px-6">
           <h1 className="text-4xl font-black text-white mb-4">Loja não encontrada</h1>
           <p className="text-[var(--color-text-muted)]">Esta loja não existe ou está desativada.</p>
@@ -74,18 +74,14 @@ function CatalogoEmpresaPage() {
 
 function CatalogoStoreContent({ empresaId }: { empresaId: string }) {
   const [config, setConfig] = useState<CatalogoDesignConfig | null>(null)
-  const [empresaNome, setEmpresaNome] = useState<string>("")
 
   useEffect(() => {
     getCatalogoDesign().then(setConfig)
-    supabase.from("empresas").select("nome").eq("id", empresaId).single().then(({ data }) => {
-      if (data?.nome) setEmpresaNome(data.nome)
-    })
   }, [empresaId])
 
   if (!config) {
     return (
-      <StoreLayout empresaId={empresaId}>
+      <StoreLayout>
         <div className="flex items-center justify-center min-h-[60vh]">
           <Loader2 size={24} className="animate-spin text-[var(--color-accent)]" />
         </div>
@@ -107,7 +103,7 @@ function CatalogoStoreContent({ empresaId }: { empresaId: string }) {
         : "grid-cols-2 lg:grid-cols-4"
 
   return (
-    <StoreLayout empresaId={empresaId} fullHeight zoom={0.85}>
+    <StoreLayout fullHeight zoom={0.85}>
       <div className="flex flex-col overflow-hidden flex-1">
         {visibility.showHeroSection && (
           <div className="relative shrink-0">
@@ -179,7 +175,7 @@ function CatalogoStoreContent({ empresaId }: { empresaId: string }) {
         {visibility.showFooter && footer && (
           <div className="shrink-0 px-4 sm:px-6 lg:px-16 pb-6 pt-2.5 flex items-center justify-center gap-3">
             <p className="text-[10px] sm:text-xs" style={{ color: footer.textColor }}>
-              {empresaNome || footer.text} &copy; {new Date().getFullYear()}
+              {footer.text} &copy; {new Date().getFullYear()}
             </p>
             <div className="flex items-center gap-1 sm:gap-2">
               {footer.socialLinks.instagram && (

@@ -1,5 +1,4 @@
 import { supabase } from "~/core/supabase"
-import { EMPRESA_ID } from "~/config/empresa"
 import type { CatalogoComplementar, CatalogoTipoComplementar } from "../types"
 
 // ============================================================
@@ -10,7 +9,6 @@ export async function listarTiposComplementares(): Promise<CatalogoTipoComplemen
   const { data, error } = await supabase
     .from("catalogo_tipos_complementares")
     .select("*")
-    .eq("empresa_id", EMPRESA_ID)
     .order("nome")
   if (error) throw error
   return data as CatalogoTipoComplementar[]
@@ -19,7 +17,7 @@ export async function listarTiposComplementares(): Promise<CatalogoTipoComplemen
 export async function criarTipoComplementar(input: { nome: string; sigla?: string }): Promise<CatalogoTipoComplementar> {
   const { data, error } = await supabase
     .from("catalogo_tipos_complementares")
-    .insert({ empresa_id: EMPRESA_ID, ...input })
+    .insert({ ...input })
     .select()
     .single()
   if (error) throw error
@@ -44,7 +42,6 @@ export async function listarComplementares(): Promise<CatalogoComplementar[]> {
   const { data, error } = await supabase
     .from("catalogo_complementares")
     .select("*, tipo_complementar:catalogo_tipos_complementares(*)")
-    .eq("empresa_id", EMPRESA_ID)
     .order("nome")
   if (error) throw error
   return data as CatalogoComplementar[]
@@ -57,7 +54,7 @@ export async function criarComplementar(input: {
 }): Promise<CatalogoComplementar> {
   const { data, error } = await supabase
     .from("catalogo_complementares")
-    .insert({ empresa_id: EMPRESA_ID, ...input })
+    .insert({ ...input })
     .select()
     .single()
   if (error) throw error
@@ -72,7 +69,6 @@ export async function atualizarComplementar(sku: string, input: Partial<{
   const { data, error } = await supabase
     .from("catalogo_complementares")
     .update(input)
-    .eq("empresa_id", EMPRESA_ID)
     .eq("sku", sku)
     .select()
     .single()
@@ -81,11 +77,9 @@ export async function atualizarComplementar(sku: string, input: Partial<{
 }
 
 export async function toggleComplementarAtivo(sku: string, ativo: boolean): Promise<void> {
-  const { error } = await supabase.from("catalogo_complementares").update({ ativo }).eq("empresa_id", EMPRESA_ID).eq("sku", sku)
   if (error) throw error
 }
 
 export async function removerComplementar(sku: string): Promise<void> {
-  const { error } = await supabase.from("catalogo_complementares").delete().eq("empresa_id", EMPRESA_ID).eq("sku", sku)
   if (error) throw error
 }

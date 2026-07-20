@@ -1,12 +1,10 @@
 import { supabase } from "~/core/supabase"
-import { EMPRESA_ID } from "~/config/empresa"
 import type { CatalogoCicatrizador } from "../types"
 
 export async function listarCicatrizadores(): Promise<CatalogoCicatrizador[]> {
   const { data, error } = await supabase
     .from("catalogo_cicatrizadores")
     .select("*, implante:catalogo_implantes(*), chave:catalogo_chaves(*)")
-    .eq("empresa_id", EMPRESA_ID)
     .order("nome")
   if (error) throw error
   return data as CatalogoCicatrizador[]
@@ -22,7 +20,7 @@ export async function criarCicatrizador(input: {
 }): Promise<CatalogoCicatrizador> {
   const { data, error } = await supabase
     .from("catalogo_cicatrizadores")
-    .insert({ empresa_id: EMPRESA_ID, ...input })
+    .insert({ ...input })
     .select()
     .single()
   if (error) throw error
@@ -39,7 +37,6 @@ export async function atualizarCicatrizador(sku: string, input: Partial<{
   const { data, error } = await supabase
     .from("catalogo_cicatrizadores")
     .update(input)
-    .eq("empresa_id", EMPRESA_ID)
     .eq("sku", sku)
     .select()
     .single()
@@ -48,11 +45,9 @@ export async function atualizarCicatrizador(sku: string, input: Partial<{
 }
 
 export async function toggleCicatrizadorAtivo(sku: string, ativo: boolean): Promise<void> {
-  const { error } = await supabase.from("catalogo_cicatrizadores").update({ ativo }).eq("empresa_id", EMPRESA_ID).eq("sku", sku)
   if (error) throw error
 }
 
 export async function removerCicatrizador(sku: string): Promise<void> {
-  const { error } = await supabase.from("catalogo_cicatrizadores").delete().eq("empresa_id", EMPRESA_ID).eq("sku", sku)
   if (error) throw error
 }

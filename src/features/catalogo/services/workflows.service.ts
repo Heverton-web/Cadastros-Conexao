@@ -1,5 +1,4 @@
 import { supabase } from "~/core/supabase"
-import { EMPRESA_ID } from "~/config/empresa"
 import type { CatalogoCpsTipoWorkflow, CatalogoCpsEtapaWorkflow } from "../types"
 
 // ============================================================
@@ -10,7 +9,6 @@ export async function listarTiposWorkflow(): Promise<CatalogoCpsTipoWorkflow[]> 
   const { data, error } = await supabase
     .from("catalogo_cps_tipos_workflows")
     .select("*")
-    .eq("empresa_id", EMPRESA_ID)
     .order("nome")
   if (error) throw error
   return (data as CatalogoCpsTipoWorkflow[]) ?? []
@@ -19,7 +17,7 @@ export async function listarTiposWorkflow(): Promise<CatalogoCpsTipoWorkflow[]> 
 export async function criarTipoWorkflow(input: { nome: string; sigla?: string }): Promise<CatalogoCpsTipoWorkflow> {
   const { data, error } = await supabase
     .from("catalogo_cps_tipos_workflows")
-    .insert({ empresa_id: EMPRESA_ID, ...input })
+    .insert({ ...input })
     .select()
     .single()
   if (error) throw error
@@ -44,7 +42,6 @@ export async function listarEtapas(tipoWorkflowId?: string): Promise<CatalogoCps
   let query = supabase
     .from("catalogo_cps_etapas_workflows")
     .select("*, tipo_workflow:catalogo_cps_tipos_workflows(*)")
-    .eq("empresa_id", EMPRESA_ID)
     .order("ordem")
   if (tipoWorkflowId) query = query.eq("tipo_workflow_id", tipoWorkflowId)
   const { data, error } = await query
@@ -57,7 +54,7 @@ export async function criarEtapa(input: {
 }): Promise<CatalogoCpsEtapaWorkflow> {
   const { data, error } = await supabase
     .from("catalogo_cps_etapas_workflows")
-    .insert({ empresa_id: EMPRESA_ID, ...input })
+    .insert({ ...input })
     .select()
     .single()
   if (error) throw error
@@ -89,7 +86,7 @@ export async function getWorkflowDetalhe(workflowId: string): Promise<{
     .single()
   if (wErr) throw wErr
 
-  const etapas = await listarEtapas(EMPRESA_ID, workflowId)
+  const etapas = await listarEtapas(workflowId)
 
   return { workflow: workflow as CatalogoCpsTipoWorkflow, etapas }
 }

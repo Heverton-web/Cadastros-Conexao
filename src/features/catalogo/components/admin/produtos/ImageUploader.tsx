@@ -12,7 +12,6 @@ const SERVICE_ROLE_KEY = import.meta.env.VITE_SUPABASE_SERVICE_ROLE_KEY
 interface Props {
   produtoTipo: ProdutoTipoImagem
   produtoSku: string
-  empresaId: string
   imagensExistentes?: CatalogoImagemProduto[]
   onImagensChange?: (imgs: CatalogoImagemProduto[]) => void
 }
@@ -21,7 +20,7 @@ const labelCls = "text-xs font-bold uppercase tracking-widest text-gray-400"
 const inputCls = "w-full bg-[var(--color-surface)] border border-white/10 rounded-lg p-3 text-white"
 const selectCls = "w-full bg-[var(--color-surface)] border border-white/10 rounded-lg p-3 text-white"
 
-export function ImageUploader({ produtoTipo, produtoSku, empresaId, imagensExistentes, onImagensChange }: Props) {
+export function ImageUploader({ produtoTipo, produtoSku, imagensExistentes, onImagensChange }: Props) {
   const [imagemId, setImagemId] = useState<string | null>(null)
   const [imageUrl, setImageUrl] = useState("")
   const [fonte, setFonte] = useState<FonteImagem>("upload")
@@ -31,12 +30,11 @@ export function ImageUploader({ produtoTipo, produtoSku, empresaId, imagensExist
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
-    if (!produtoSku || !empresaId) return
+    if (!produtoSku) return
     const load = async () => {
       const { data } = await supabase
         .from("catalogo_imagens_produto")
         .select("id, url_imagem, fonte")
-        .eq("empresa_id", empresaId)
         .eq("produto_tipo", produtoTipo)
         .eq("produto_sku", produtoSku)
         .limit(1)
@@ -48,7 +46,7 @@ export function ImageUploader({ produtoTipo, produtoSku, empresaId, imagensExist
       }
     }
     load()
-  }, [produtoSku, empresaId, produtoTipo])
+  }, [produtoSku, produtoTipo])
 
   async function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0]
@@ -61,7 +59,7 @@ export function ImageUploader({ produtoTipo, produtoSku, empresaId, imagensExist
 
       const ext = arquivoFinal.name.split(".").pop() || "png"
       const safeName = `${Date.now()}-${Math.random().toString(36).substring(2, 8)}.${ext}`
-      const filePath = `${empresaId}/${produtoTipo}/${produtoSku}/${safeName}`
+      const filePath = `public/${produtoTipo}/${produtoSku}/${safeName}`
       const uploadUrl = `${SUPABASE_URL}/storage/v1/object/catalogo-imagens/${filePath}`
 
       const res = await fetch(uploadUrl, {
@@ -77,7 +75,7 @@ export function ImageUploader({ produtoTipo, produtoSku, empresaId, imagensExist
         await supabase.from("catalogo_imagens_produto").update({ url_imagem: publicUrl, fonte: "upload" }).eq("id", imagemId)
       } else {
         const { data, error } = await supabase.from("catalogo_imagens_produto").insert({
-          empresa_id: empresaId, produto_tipo: produtoTipo, produto_sku: produtoSku,
+          produto_tipo: produtoTipo, produto_sku: produtoSku,
           url_imagem: publicUrl, fonte: "upload", ordem_exibicao: 0,
         }).select("id").single()
         if (error) { toast.error(error.message); setUploading(false); return }
@@ -115,7 +113,7 @@ export function ImageUploader({ produtoTipo, produtoSku, empresaId, imagensExist
       if (error) { toast.error(error.message); return }
     } else {
       const { data, error } = await supabase.from("catalogo_imagens_produto").insert({
-        empresa_id: empresaId, produto_tipo: produtoTipo, produto_sku: produtoSku,
+        produto_tipo: produtoTipo, produto_sku: produtoSku,
         url_imagem: urlFinal, fonte: f, ordem_exibicao: 0,
       }).select("id").single()
       if (error) { toast.error(error.message); return }

@@ -1,5 +1,4 @@
 import { supabase } from "~/core/supabase"
-import { EMPRESA_ID } from "~/config/empresa"
 import type { CatalogoOpcional, CatalogoTipoOpcional } from "../types"
 
 // ============================================================
@@ -10,7 +9,6 @@ export async function listarTiposOpcionais(): Promise<CatalogoTipoOpcional[]> {
   const { data, error } = await supabase
     .from("catalogo_tipos_opcionais")
     .select("*")
-    .eq("empresa_id", EMPRESA_ID)
     .order("nome")
   if (error) throw error
   return data as CatalogoTipoOpcional[]
@@ -19,7 +17,7 @@ export async function listarTiposOpcionais(): Promise<CatalogoTipoOpcional[]> {
 export async function criarTipoOpcional(input: { nome: string; sigla?: string }): Promise<CatalogoTipoOpcional> {
   const { data, error } = await supabase
     .from("catalogo_tipos_opcionais")
-    .insert({ empresa_id: EMPRESA_ID, ...input })
+    .insert({ ...input })
     .select()
     .single()
   if (error) throw error
@@ -44,7 +42,6 @@ export async function listarOpcionais(): Promise<CatalogoOpcional[]> {
   const { data, error } = await supabase
     .from("catalogo_opcionais")
     .select("*, tipo_opcional:catalogo_tipos_opcionais(*)")
-    .eq("empresa_id", EMPRESA_ID)
     .order("nome")
   if (error) throw error
   return data as CatalogoOpcional[]
@@ -57,7 +54,7 @@ export async function criarOpcional(input: {
 }): Promise<CatalogoOpcional> {
   const { data, error } = await supabase
     .from("catalogo_opcionais")
-    .insert({ empresa_id: EMPRESA_ID, ...input })
+    .insert({ ...input })
     .select()
     .single()
   if (error) throw error
@@ -72,7 +69,6 @@ export async function atualizarOpcional(sku: string, input: Partial<{
   const { data, error } = await supabase
     .from("catalogo_opcionais")
     .update(input)
-    .eq("empresa_id", EMPRESA_ID)
     .eq("sku", sku)
     .select()
     .single()
@@ -81,11 +77,9 @@ export async function atualizarOpcional(sku: string, input: Partial<{
 }
 
 export async function toggleOpcionalAtivo(sku: string, ativo: boolean): Promise<void> {
-  const { error } = await supabase.from("catalogo_opcionais").update({ ativo }).eq("empresa_id", EMPRESA_ID).eq("sku", sku)
   if (error) throw error
 }
 
 export async function removerOpcional(sku: string): Promise<void> {
-  const { error } = await supabase.from("catalogo_opcionais").delete().eq("empresa_id", EMPRESA_ID).eq("sku", sku)
   if (error) throw error
 }

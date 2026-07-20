@@ -1,3 +1,4 @@
+import { EMPRESA_ID } from "~/config/empresa"
 import { RequirePermission, RequireSuperAdmin } from "~/components/guards"
 import { createRoute } from "@tanstack/react-router"
 import { authLayout } from "./_auth"
@@ -76,7 +77,7 @@ function AdminCategoriasPage() {
   async function handleSave() {
     if (!nome.trim()) { toast.error("Nome é obrigatório"); return }
 
-    const payload: Record<string, unknown> = { empresa_id: empresaId, nome: nome.trim(), sigla: sigla.trim() || null, locked, ativo }
+    const payload: Record<string, unknown> = { empresa_id: EMPRESA_ID, nome: nome.trim(), sigla: sigla.trim() || null, locked, ativo }
 
     if (editing) {
       const { error } = await supabase.from("catalogo_categorias").update({ nome: payload.nome, sigla: payload.sigla, locked, ativo }).eq("id", editing.id)

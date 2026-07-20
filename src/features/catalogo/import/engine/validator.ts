@@ -16,15 +16,8 @@ export interface ExistingDataCache {
   tiposAbutment: Map<string, string>
 }
 
-export async function loadExistingDataCache(empresaId: string): Promise<ExistingDataCache> {
+export async function loadExistingDataCache(): Promise<ExistingDataCache> {
   const [catRes, catKitRes, conRes, famRes, linRes, tipoReabRes, tipoAbtRes] = await Promise.all([
-    supabase.from("catalogo_categorias").select("id, nome").eq("empresa_id", empresaId),
-    supabase.from("catalogo_categorias_kit").select("id, nome").eq("empresa_id", empresaId),
-    supabase.from("catalogo_conexoes").select("id, nome").eq("empresa_id", empresaId),
-    supabase.from("catalogo_familias").select("id, nome").eq("empresa_id", empresaId),
-    supabase.from("catalogo_linhas").select("id, nome").eq("empresa_id", empresaId),
-    supabase.from("catalogo_tipos_reabilitacao").select("id, nome").eq("empresa_id", empresaId),
-    supabase.from("catalogo_tipos_abutment").select("id, nome").eq("empresa_id", empresaId),
   ])
 
   const skuTables = [
@@ -34,7 +27,6 @@ export async function loadExistingDataCache(empresaId: string): Promise<Existing
   ]
   const allSkus = new Set<string>()
   for (const table of skuTables) {
-    const { data } = await supabase.from(table).select("sku").eq("empresa_id", empresaId)
     data?.forEach((r) => allSkus.add(r.sku))
   }
 
@@ -64,7 +56,6 @@ function toMap(rows: { id: string; nome: string }[] | null, keyField: string, va
 interface ValidateRowsParams {
   importType: ImportType
   rows: Record<string, unknown>[]
-  empresaId: string
   existingData?: ExistingDataCache
 }
 

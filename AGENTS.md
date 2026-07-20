@@ -1,318 +1,77 @@
-# AGENTS.md — ERP Odonto & Bubble Reverse Engineering
+# AGENTS.md — ERP Odonto
 
-**Idioma:** PT-BR obrigatório.
+**Idioma:** PT-BR. **Sem greetings.** Direto ao ponto.
 
-## Estrutura do Projeto
+## Estrutura
 
-- **Raiz** → `bubble_reverse_engineering/`: Engenharia reversa de Bubble.io + configs globais.
-- **`proj_erp/`** → Aplicação ERP (TanStack Start + React Router + Vite + Supabase).
-- **`supabase-mcp-server/`** → MCP server TypeScript para gerenciar banco Supabase.
+- `proj_erp/` → ERP (TanStack Start + React Router + Vite + Supabase)
+- `bubble_reverse_engineering/` → Engenharia reversa Bubble.io
+- `supabase-mcp-server/` → MCP server para Supabase
 
----
-
-## Comandos de Desenvolvimento (ERP Odonto)
+## Comandos
 
 ```bash
-npm run dev      # dev server (Vite)
-npm run build    # build produção
+npm run dev      # dev server
+npm run build    # build produção (RODAR APÓS QUALQUER ALTERAÇÃO)
 npm run format   # Prettier
 npm run lint     # ESLint
 ```
 
----
-
 ## MCP Supabase
 
-Server em `supabase-mcp-server/` (build: `npm run build` em `src/index.ts`).
+Server em `supabase-mcp-server/`. Tools: `supabase_execute_sql`, `supabase_list_tables`, `supabase_describe_table`, `supabase_apply_migration`.
 
-**Tools disponíveis:**
+## Regras de UI
 
-| Tool                       | Uso                                     |
-| -------------------------- | --------------------------------------- |
-| `supabase_execute_sql`     | SQL arbitrário (SELECT, DDL, DML)       |
-| `supabase_list_tables`     | Lista tabelas de um schema              |
-| `supabase_describe_table`  | Descreve colunas, constraints, RLS      |
-| `supabase_apply_migration` | Aplica `.sql` de `supabase/migrations/` |
+- **PROIBIDO** `window.confirm()`, `window.alert()`, `window.prompt()`
+- **OBRIGATÓRIO** `AlertDialog` (exclusões) ou `Dialog` (conteúdo) de `~/components/ui/`
+- Dialogs com scroll: `DialogContent flex flex-col max-h-[85vh] overflow-hidden` + body `overflow-y-auto flex-1 min-h-0`
+-参照 existente em `~/components/ui/alert-dialog` e `~/components/ui/dialog` para padrão
 
----
+## Arquitetura
 
-## Regras de UI (ERP Odonto)
+- **Multi-tenant**: toda tabela → `empresa_id` UUID FK. RLS filtra por `empresa_id`.
+- **Módulos**: self-contained em `src/features/<modulo>/`. Única conexão = banco de dados.
+- **Eventos**: todo módulo DEVE ter `events[]` no `module.ts` (min 2) + `dispararEventoModulo()` fire-and-forget.
+- **Permissões**: toda rota → `RequirePermission` ou `RequireSuperAdmin`. Botões → check `permissoes?.chave`.
+- **Build**: `npm run build` DEVE passar após qualquer alteração.
 
-### NUNCA usar alertas nativos do navegador/Sistema
+## Economia de Tokens (RIGOROSO)
 
-- **PROIBIDO**: `window.confirm()`, `window.alert()`, `window.prompt()`
-- **OBRIGATÓRIO**: Usar componentes de modal da aplicação (`AlertDialog` ou `Dialog`)
+### O que fazer
+- **Skill-first**: ler skill antes de tarefa complexa (`.agents/skills/<nome>/SKILL.md`)
+- **Lean-CTX**: `grep` antes de `read`. Assinaturas antes de corpos. Nunca ler arquivo inteiro sem necessidade
+- **Subagents**: delegar tarefas paralelas via `task` — 5 tarefas independentes = 5 subagents, não 5 turnos inline
+- **Cache interno**: consolidar edits em `write`/`edit` único, não troca incremental
+- **`/clear`**: ao finalizar tarefas longas para limpar contexto acumulado
+- **Caveman**: respostas telegráficas. Sem re-emitir arquivos inteiros. Só diffs/chunks cirúrgicos
 
-### Componentes de modal disponíveis
+### O que NÃO fazer
+- Nunca ler arquivo "só pra ver" — ter objetivo claro
+- Nunca fazer `read` de diretório grande — usar `glob`/`grep`
+- Nunca gerar explicações longas sem pedido explícito
+- Nunca delegar design inicial a subagent (escopo é seu, execução é dele)
+- Nunca spawnar subagent sem tarefa autocontida e verificável
 
-- `AlertDialog` de `~/components/ui/alert-dialog` — para confirmações de exclusão e ações destrutivas
-- `Dialog` de `~/components/ui/dialog` — para modais de conteúdo genérico
+### Skills essenciais
+| Skill | Trigger |
+|---|---|
+| `deploy-vps` | "deploy", "/deploy" |
+| `calcular-gastos-sessao` | "quanto gastei", "custo sessão" |
+| `criar-modulo` | "novo módulo", "criar módulo" |
+| `validar-modulo` | "validar módulo", "verificar módulo" |
+| `pre-flight-check` | antes de mudanças estruturais |
+| `lean-ctx` | inspeção de código sem ler arquivos inteiros |
+| `caveman` | modo ultra-condensado |
 
-### Padrão para exclusões
+## Deploy
 
-```tsx
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
-  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle
-} from "~/components/ui/alert-dialog";
+Só executar quando usuário disser "deploy" ou "/deploy". Usar skill `deploy-vps`. Build DEVE passar antes do push.
 
-// Estado para controlar o modal
-const [itemParaDeletar, setItemParaDeletar] = useState<ItemType | null>(null);
+## Gastos
 
-// Botão de delete abre o modal
-<button onClick={() => setItemParaDeletar(item)}>
-  <Trash2 size={14} />
-</button>
+Ao final de cada ação, exibir `[💰 Ação: R$ X | Sessão: R$ Y]`. Detalhes na skill `calcular-gastos-sessao`.
 
-// AlertDialog no JSX
-<AlertDialog open={!!itemParaDeletar} onOpenChange={(o) => !o && setItemParaDeletar(null)}>
-  <AlertDialogContent className="bg-card border-border">
-    <AlertDialogHeader>
-      <AlertDialogTitle>Excluir item?</AlertDialogTitle>
-      <AlertDialogDescription>
-        Esta ação não pode ser desfeita.
-      </AlertDialogDescription>
-    </AlertDialogHeader>
-    <AlertDialogFooter>
-      <AlertDialogCancel>Cancelar</AlertDialogCancel>
-      <AlertDialogAction onClick={handleConfirmDelete} className="bg-destructive">
-        Excluir
-      </AlertDialogAction>
-    </AlertDialogFooter>
-  </AlertDialogContent>
-</AlertDialog>
-```
+## Bubble Reverse Engineering
 
-### Padrão de scroll em Dialogs (OBRIGATÓRIO)
-
-**TODOS os `DialogContent` com formulários ou conteúdo extenso DEVEM ter scroll funcional.** Sem isso, o conteúdo fica cortado e o usuário não consegue acessar todos os campos.
-
-**Padrão obrigatório:**
-
-```tsx
-// DialogContent: flex-col + max-h + overflow-hidden
-<DialogContent className="bg-[#0f172a] border-[var(--color-border-subtle)] text-white flex flex-col max-h-[85vh] overflow-hidden">
-
-  {/* Header: shrink-0 para não encolher */}
-  <DialogHeader className="shrink-0">
-    <DialogTitle>Título</DialogTitle>
-    <DialogDescription>Descrição</DialogDescription>
-  </DialogHeader>
-
-  {/* Body: overflow-y-auto + flex-1 + min-h-0 → scrolla quando conteúdo é maior que max-h */}
-  <div className="px-6 py-4 space-y-4 overflow-y-auto flex-1 min-h-0">
-    {/* campos do formulário */}
-  </div>
-
-  {/* Footer: shrink-0 para não encolher */}
-  <DialogFooter className="shrink-0">
-    <button>Salvar</button>
-  </DialogFooter>
-</DialogContent>
-```
-
-**Checklist ao criar/editar Dialog:**
-- [ ] `DialogContent` tem `flex flex-col max-h-[85vh] overflow-hidden`
-- [ ] `DialogHeader` tem `shrink-0`
-- [ ] Body div tem `overflow-y-auto flex-1 min-h-0`
-- [ ] `DialogFooter` tem `shrink-0`
-- [ ] Testar: conteúdo maior que viewport → scroll deve funcionar
-
----
-
-## Regras de Arquitetura (ERP Odonto)
-
-### Multi-tenant por empresa_id
-
-- Toda tabela criada DEVE ter coluna `empresa_id` (UUID, FK para `empresas.id`)
-- RLS policies devem filtrar por `empresa_id`
-- Super Admin filtra por empresa; Admin vê apenas sua empresa
-
-### Módulos independentes
-
-- Cada módulo é self-contained em `src/features/<modulo>/`
-- A única camada de conexão entre módulos é o BANCO DE DADOS
-- Excluir um módulo não deve afetar outros
-- Tabelas do módulo devem ser criadas no mesmo banco (multi-tenant)
-- Arquivos críticos: `src/registry/modules.ts`, `src/features/cadastros/permissions.ts`
-
-### 🚨 REGRA OBRIGATÓRIA: Eventos na Central de Ações
-
-**TODO módulo novo (ou existente sem eventos) DEVE:**
-
-1. **`events: [...]` no `module.ts`** — com `key`, `label`, `descricao`, `type` (`status_change` | `button_action`)
-2. **Mínimo 2 eventos** por módulo (criação + ação principal)
-3. **`dispararEventoModulo()` nos services** — fire-and-forget com `.catch(() => {})`
-4. **Aba `eventos` registrada** no array `abas` do module.ts
-5. **`empresa_id` no payload** — sempre passar o ID da empresa no payload e como 4º argumento
-6. **Build passando** — `npm run build` deve passar antes de considerar concluído
-
-**Eventos SEMPRE aparecem automaticamente na Central de Ações** — não precisa modificar `CentralAcoesTab.tsx`.
-
-**Padrão de código:**
-```ts
-import { dispararEventoModulo } from "~/core/services/webhooks";
-
-const MODULO_KEY = "meu-modulo";
-
-dispararEventoModulo(MODULO_KEY, "entidade.criada", { entidade_id: id, empresa_id }, empresaId)
-  .catch(() => {});  // fire-and-forget obrigatório
-```
-
----
-
-## 🚨 REGRA OBRIGATÓRIA: Enforcement de Permissões
-
-### Toda rota autenticada DEVE usar `RequirePermission` ou `RequireSuperAdmin`
-
-**Componentes de guard** em `~/components/guards`:
-
-- `RequirePermission` — verifica `modulosAcesso[key].acessar` + `permissoes[key]`
-- `RequireSuperAdmin` — verifica `profile.is_super_admin`
-
-**Padrão obrigatório em toda rota:**
-
-```tsx
-import { RequirePermission } from "~/components/guards";
-
-export const minhaRota = createRoute({
-  getParentRoute: () => authLayout,
-  path: "/meu-modulo/minha-rota",
-  component: () => (
-    <RequirePermission modulo="meu-modulo" permissions={["minha_permissao"]}>
-      <MinhaPagina />
-    </RequirePermission>
-  ),
-});
-```
-
-### Checklist para novo módulo
-
-- [ ] Criar `src/features/meu-modulo/permissions.ts` com todas as chaves
-- [ ] Criar `src/features/meu-modulo/module.ts` com `permissions[]`, `setup()`, `events[]`
-- [ ] Registrar permissões no `setup()` via `registerPermission()`
-- [ ] Registrar nav items com `permissionCheck` real (nunca `() => true`)
-- [ ] Registrar defaults por ambiente via `registerPermissionDefaults()`
-- [ ] Em CADA rota: `<RequirePermission modulo="meu-modulo" permissions={["permissao_chave"]}>`
-- [ ] Em CADA botão de ação: `permissoes?.minha_permissao === true` para habilitar/renderizar
-- [ ] `npm run build` passar sem erros
-- [ ] Testar: usuário SEM permissão não acessa a rota (redirecionado)
-- [ ] Testar: usuário SEM permissão não vê botões de ação
-
----
-
-## Eficiência de Tokens
-
-- **Skill-First**: Antes de tarefa complexa, checar `.agents/skills/` ou skills do OpenCode.
-- **Caveman**: Utilize o estilo ultra‑condensado (`caveman` skill) – sem markdown decorativo, apenas patches ou linhas alteradas.
-- **Headroom**: Ative o filtro (`headroom-filter.js`) para logs longos; ele remove ruído e mantém apenas as linhas de erro relevantes.
-- **Lean‑Context**: Prefira inspeções de AST/TS (`lean-ctx` skill) ao invés de leitura completa de arquivos.
-- **Pre‑flight Check**: Rode `npm run check:types` e `npm run test:safe` antes de modificações estruturais (`pre-flight-check` skill).
-- **Lazy Reading**: Leia arquivos somente quando necessário.
-- **Context Clearing**: Sugira `/clear` ao finalizar etapas longas.
-
----
-
-## Regras Estritas do Sistema de Agente
-
-### 🛑 MÉTODO CAVEMAN ATIVADO
-
-- **SEM greetings ou explicações desnecessárias**: Não dizer "Claro, posso ajudar com isso".
-- **SEM re-emitir arquivos inteiros**: Apenas diffs unificados ou chunks cirúrgicos.
-- **Direto ao ponto**: "[Arquivo] alterado. [Razão]". Minimizar palavras geradas.
-- **Explicações SOMENTE com "?"**: Se o usuário pergunta "Por quê?" com interrogação, aí explica.
-
-### 🔍 ESTRATÉGIA LEAN-CTX (LIMITAÇÕES DE CONTEXTO)
-
-- **Não usar ferramentas genéricas**: Evitar `cat` ou `grep` em diretórios grandes.
-- **Ler assinaturas primeiro**: Priorizar interfaces TypeScript e `index.d.ts` antes de pedir corpos inteiros.
-- **Agrupar edições**: Usar multi-file writes em vez de trocas incrementais de chat.
-- **Executar com cache interno**: Quando editar arquivo, consolidar subtarefas em comando único.
-
-### 💾 ESQUEMA RTK (REAL-TIME KNOWLEDGE)
-
-- **Manter lições aprendidas**: Se descobrir regra de sistema, comportamento de infraestrutura (e.g., quirks do Supabase MCP) ou bug repetível, registrar IMEDIATAMENTE no scratchpad abaixo.
-- **Consultar scratchpad**: Antes de qualquer plano de execução, revisar learnings prévios.
-
----
-
-### 📝 SCRATCHPAD RTK (Agente: Registre aprendizados aqui durante execução)
-
-- **Learnt**: Laboratório de Testes (global.laboratorio.tsx): requer migration 00054 para RPCs de token real. Fallback automático para UUID local se RPC indisponível. Página reescrita com 3 abas (Gerador, Teste de Fluxo, Histórico). Central de Testes (global.testes.tsx): fetch com AbortSignal.timeout(30000) adicionado.
-- **Regra Obrigatória**: SEMPRE rodar `npm run build` após QUALQUER alteração de código para validar ausência de erros. Nunca assumir que edição está correta sem verificar build.
-
----
-
-## 🪙 Gastos por Ação (OBRIGATÓRIO — Todos os Agentes)
-
-**TODO agente de IA operando neste workspace DEVE** ao final de cada ação:
-
-1. **Calcular custo da ação** — tokens consumidos × preço do modelo (fonte: tabela `modelos_ia` do módulo `/global/modelos-ia`)
-2. **Appendar `.agents/session-cost.jsonl`** — formato JSONL:
-   ```jsonl
-   {"ts":"2026-07-14T10:30:00Z","action":"criar-modulo","model":"claude-sonnet-4-20250514","tokens_in":1200,"tokens_out":3400,"cost":0.0087,"session_total":0.0423}
-   ```
-3. **Exibir no output**:
-   ```
-   [💰 Ação: R$ 0,0087 | Sessão: R$ 0,0423]
-   ```
-
-**Fallback de preços** (se modelo não encontrado em `modelos_ia`):
-
-| Provedor | Input (por 1M tok) | Output (por 1M tok) |
-|---|---|---|
-| Claude Sonnet 4 | $3.00 | $15.00 |
-| Claude Haiku 3.5 | $1.00 | $5.00 |
-| GPT-4o | $2.50 | $10.00 |
-| GPT-4o-mini | $0.15 | $0.60 |
-| Gemini 2.0 Flash | $0.10 | $0.40 |
-| DeepSeek V3 | $0.50 | $2.00 |
-
-- **Skill**: `calcular-gastos-sessao` — instruções detalhadas e consultas SQL/API
-- **Aplica-se a**: OpenCode, MimoCode, Antigravity, Codex, Claude Code, Cursor e qualquer outro agente que opere neste workspace
-- **Moeda**: BRL (R$) — converter USD × 5,50 se necessário
-- **Época**: Gastos exibidos em R$, 4 casas decimais
-
----
-
-## Deploy e Skills
-
-### Deploy
-
-- Só executar quando o usuário disser "deploy", "/deploy" ou "fazer deploy".
-- Usar skill `deploy-vps`. Build deve passar antes do push.
-
-### Bubble Reverse Engineering
-
-- Pipeline completo via `/bubble-tech-lead` + skills em `.agents/skills/`.
-
-### Skills Disponíveis
-
-| Skill                          | Descrição                                   |
-| ------------------------------ | ------------------------------------------- |
-| `calcular-gastos-sessao`       | Calcula gastos por ação e sessão de agentes de IA, usando preços do módulo modelos-ia |
-| `criar-modulo`                 | Cria estrutura completa de novo módulo           |
-| `criar-rota`                   | Cria rota protegida no ERP Odonto                |
-| `gerar-crud`                   | Operações CRUD com React Query              |
-| `criar-componente-modulo`      | Cria componente React seguindo padrões shadcn/ui do ERP Odonto                    |
-| `adicionar-permissao`          | Adiciona permissão ao sistema de permissões do ERP Odonto                    |
-| `validar-modulo`               | Verificar integridade do módulo             |
-| `documentar-modulo`            | Gerar documentação do módulo                |
-| `deploy-vps`                   | Deploy via Docker + VPS                     |
-| `planejar-modulo-repo-externo` | Analisar repo externo e planejar integração como módulo independente no ERP Odonto |
-| `gerenciar-nav-items`          | Gerencia nav items (itens de navegação lateral) de módulos do ERP Odonto. Adiciona, renomeia, reordena ou remove nav items mantendo consistência de rotas, permissões e module.ts                    |
-| `design-frontend`              | Embeleza o frontend de uma rota do ERP Odonto aplicando classes de estilo do design system do dashboard. Trigger: /design <rota> — Exemplo: /design /cadastros/solicitacoes |
-| `responsividade`               | Analisa a responsividade de um módulo do ERP Odonto, gera documentação e IMPLEMENTA o plano de correção sem quebrar o funcionamento do módulo ou aplicação. Trigger: /responsividade <nome_modulo> |
-| `criar-design-modulo`          | Cria a estrutura de configuração de Design System para um módulo existente do ERP Odonto — gera rota /modulo/design e registra hasDesignConfig no module.ts. Inclui padrões de UI/UX baseados no módulo cadastros. |
-| `gerar-pagina`                 | Gera página React completa com PageHeader, breadcrumb, layout responsivo mobile-first e tokens do Design System para um módulo do ERP Odonto. Inclui estados de loading, erro e vazio. |
-| `gerar-formulario`             | Gera formulário React completo com React Hook Form + Zod + componentes do Design System (CSS vars / Tailwind v4) para um módulo existente do ERP Odonto. |
-| `gerar-modal`                  | Gera componente Modal/Dialog completo usando shadcn/ui Dialog com variantes (confirmação, formulário, informação) e tokens do Design System para um módulo do ERP Odonto. |
-| `google-maps-platform`         | Collection of skills for architecting and implementing production-ready code using Google Maps Platform APIs and SDKs for any map, place, address, geocoding, routing/ETA, nearby search, 3D / Street View / static map, marker clustering, custom styling, drawing, geofencing, heatmap, or environmental features — across Web, Android, iOS, and Web Services APIs. |
-| `loop`                         | Especifica um loop de agente autônomo para tarefas iterativas com verificação e parada. |
-| `rtk-memory`                   | Memória RTK (Real-Time Knowledge) para agentes - registra lições aprendidas durante execução. |
-| `lean-ctx`                     | Estratégia LEAN-CTX para limitação de contexto - evita grep em diretórios grandes, lê assinaturas primeiro. |
-| `caveman`                      | Modo comunicação ultra-curtas (Caveman Style) - respostas diretas, sem greetings ou explicações desnecessárias. |
-| `pre-flight-check`             | Verificação prévia antes de implementações complexas. |
-| `implementar-mapa-dark-premium`| Implementa mapa dark premium com tokens CSS e componentes para o módulo de presença. |
-| `headroom`                     | Framework para componentes UI reutilizáveis em React com Tailwind CSS. |
-| `modulo-completo`              | Workflow completo: Documentação → Design → Responsividade |
-| `loop-modulo-completo`         | Roda pipeline iterativo de módulo até tudo passar |
+Pipeline via `/bubble-tech-lead` + skills em `.agents/skills/`.

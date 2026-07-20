@@ -1,5 +1,4 @@
 import { supabase } from "~/lib/supabase"
-import { EMPRESA_ID } from "~/config/empresa"
 import type {
   CatalogoSolicitacaoAcesso,
   CatalogoSolicitacaoAcessoInput,
@@ -15,7 +14,6 @@ export async function listarSolicitacoes(
   let query = supabase
     .from("catalogo_solicitacoes_acesso")
     .select("*")
-    .eq("empresa_id", EMPRESA_ID)
     .order("created_at", { ascending: false })
 
   if (filters?.status) query = query.eq("status", filters.status)
@@ -31,7 +29,6 @@ export async function criarSolicitacao(
   const { data, error } = await supabase
     .from("catalogo_solicitacoes_acesso")
     .insert({
-      empresa_id: EMPRESA_ID,
       nome: input.nome,
       email: input.email,
       telefone: input.telefone ?? null,
@@ -43,7 +40,6 @@ export async function criarSolicitacao(
 
   dispararEventoModulo(MODULO_KEY, "solicitacao_acesso.criada", {
     solicitacao_id: data.id,
-    empresa_id: EMPRESA_ID,
   }).catch(() => {})
 
   return data as CatalogoSolicitacaoAcesso
@@ -69,7 +65,6 @@ export async function responderSolicitacao(
   const eventoKey = `solicitacao_acesso.${status}` as const
   dispararEventoModulo(MODULO_KEY, eventoKey, {
     solicitacao_id: id,
-    empresa_id: data.empresa_id,
   }).catch(() => {})
 
   return data as CatalogoSolicitacaoAcesso

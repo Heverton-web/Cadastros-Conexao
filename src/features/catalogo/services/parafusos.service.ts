@@ -1,5 +1,4 @@
 import { supabase } from "~/core/supabase"
-import { EMPRESA_ID } from "~/config/empresa"
 import type { CatalogoParafuso, CatalogoCpsTipoParafuso } from "../types"
 
 // ============================================================
@@ -10,7 +9,6 @@ export async function listarTiposParafusos(): Promise<CatalogoCpsTipoParafuso[]>
   const { data, error } = await supabase
     .from("catalogo_cps_tipos_parafusos")
     .select("*")
-    .eq("empresa_id", EMPRESA_ID)
     .order("nome")
   if (error) throw error
   return data as CatalogoCpsTipoParafuso[]
@@ -19,7 +17,7 @@ export async function listarTiposParafusos(): Promise<CatalogoCpsTipoParafuso[]>
 export async function criarTipoParafuso(input: { nome: string; sigla?: string }): Promise<CatalogoCpsTipoParafuso> {
   const { data, error } = await supabase
     .from("catalogo_cps_tipos_parafusos")
-    .insert({ empresa_id: EMPRESA_ID, ...input })
+    .insert({ ...input })
     .select()
     .single()
   if (error) throw error
@@ -44,7 +42,6 @@ export async function listarParafusos(): Promise<CatalogoParafuso[]> {
   const { data, error } = await supabase
     .from("catalogo_parafusos")
     .select("*, tipo_parafuso:catalogo_cps_tipos_parafusos(*), chave:catalogo_chaves(*)")
-    .eq("empresa_id", EMPRESA_ID)
     .order("nome")
   if (error) throw error
   return data as CatalogoParafuso[]
@@ -56,7 +53,7 @@ export async function criarParafuso(input: {
 }): Promise<CatalogoParafuso> {
   const { data, error } = await supabase
     .from("catalogo_parafusos")
-    .insert({ empresa_id: EMPRESA_ID, ...input })
+    .insert({ ...input })
     .select()
     .single()
   if (error) throw error
@@ -71,7 +68,6 @@ export async function atualizarParafuso(sku: string, input: Partial<{
   const { data, error } = await supabase
     .from("catalogo_parafusos")
     .update(input)
-    .eq("empresa_id", EMPRESA_ID)
     .eq("sku", sku)
     .select()
     .single()
@@ -80,11 +76,9 @@ export async function atualizarParafuso(sku: string, input: Partial<{
 }
 
 export async function toggleParafusoAtivo(sku: string, ativo: boolean): Promise<void> {
-  const { error } = await supabase.from("catalogo_parafusos").update({ ativo }).eq("empresa_id", EMPRESA_ID).eq("sku", sku)
   if (error) throw error
 }
 
 export async function removerParafuso(sku: string): Promise<void> {
-  const { error } = await supabase.from("catalogo_parafusos").delete().eq("empresa_id", EMPRESA_ID).eq("sku", sku)
   if (error) throw error
 }

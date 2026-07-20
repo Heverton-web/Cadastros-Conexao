@@ -1,15 +1,12 @@
 import { createRoute, useNavigate } from "@tanstack/react-router";
 import { authLayout } from "./_auth";
-import { useAuth } from "~/lib/auth";
 import {
   buscarEmpresaDesign,
   salvarEmpresaDesign,
   uploadEmpresaLogo,
-  deletarEmpresaLogo,
-  listarEmpresas,
-  type Empresa,
   type EmpresaDesign,
 } from "~/features/empresas";
+import { EMPRESA_ID } from "~/config/empresa";
 import { useState, useEffect } from "react";
 import {
   Image,
@@ -17,8 +14,6 @@ import {
   Loader2,
   ArrowLeft,
   Upload,
-  Trash2,
-  Building2,
 } from "lucide-react";
 import toast from "react-hot-toast";
 import { RequirePermission } from "~/components/guards";
@@ -34,16 +29,10 @@ export const adminEmpresaConfigBrandingRoute = createRoute({
 });
 
 function AdminEmpresaConfigBranding() {
-  const { profile: authProfile } = useAuth();
-  const isSuper = authProfile?.is_super_admin === true;
-  const minhaEmpresaId = authProfile?.empresa_id as string | undefined;
   const navigate = useNavigate();
 
-  const [empresas, setEmpresas] = useState<Empresa[]>([]);
-  const [empresaId, setEmpresaId] = useState(minhaEmpresaId || "");
-  const [config, setConfig] = useState<EmpresaDesign | null>(null);
+  const empresaId = EMPRESA_ID;
   const [loading, setLoading] = useState(true);
-
   const [logoIndex, setLogoIndex] = useState("");
   const [logoApp, setLogoApp] = useState("");
   const [favicon, setFavicon] = useState("");
@@ -51,30 +40,12 @@ function AdminEmpresaConfigBranding() {
   const [uploading, setUploading] = useState<string | null>(null);
 
   useEffect(() => {
-    if (isSuper) {
-      listarEmpresas().then((emps) => {
-        setEmpresas(emps);
-        const eid = empresaId || emps[0]?.id || "";
-        setEmpresaId(eid);
-        if (eid) loadConfig(eid);
-        else setLoading(false);
-      });
-    } else if (minhaEmpresaId) {
-      setEmpresaId(minhaEmpresaId);
-      loadConfig(minhaEmpresaId);
-    } else {
-      setLoading(false);
-    }
+    loadConfig();
   }, []);
 
-  useEffect(() => {
-    if (empresaId && !loading) loadConfig(empresaId);
-  }, [empresaId]);
-
-  async function loadConfig(eid: string) {
+  async function loadConfig() {
     setLoading(true);
-    const cfg = await buscarEmpresaDesign(eid);
-    setConfig(cfg);
+    const cfg: EmpresaDesign | null = await buscarEmpresaDesign(empresaId);
     setLogoIndex(cfg?.logo_index_url || "");
     setLogoApp(cfg?.logo_app_url || "");
     setFavicon(cfg?.favicon_url || "");
@@ -84,8 +55,7 @@ function AdminEmpresaConfigBranding() {
   async function handleUpload(tipo: "logo_index" | "logo_app" | "favicon") {
     const input = document.createElement("input");
     input.type = "file";
-    input.accept =
-      "image/png,image/jpeg,image/webp,image/svg+xml,image/x-icon,image/vnd.microsoft.icon";
+    input.accept = "image/png,image/jpeg,image/webp,image/svg+xml,image/x-icon,image/vnd.microsoft.icon";
     input.onchange = async () => {
       const file = input.files?.[0];
       if (!file) return;
@@ -101,7 +71,7 @@ function AdminEmpresaConfigBranding() {
           favicon_url: tipo === "favicon" ? url : favicon || undefined,
         });
         toast.success("Upload OK!");
-        loadConfig(empresaId);
+        loadConfig();
       } catch (e: any) {
         toast.error("Erro upload: " + e.message);
       }
@@ -125,28 +95,18 @@ function AdminEmpresaConfigBranding() {
     setSaving(false);
   }
 
-  function LogoField({
-    label,
-    tipo,
-    url,
-  }: {
+  function LogoField({ label, tipo, url }: {
     label: string;
     tipo: "logo_index" | "logo_app" | "favicon";
     url: string;
   }) {
     return (
       <div className="rounded-xl bg-input-bg p-4">
-        <label className="text-xs font-medium text-text-muted mb-2 block">
-          {label}
-        </label>
+        <label className="text-xs font-medium text-text-muted mb-2 block">{label}</label>
         <div className="flex items-start gap-4">
           <div className="w-24 h-24 rounded-lg border border-border-subtle bg-white flex items-center justify-center overflow-hidden shrink-0">
             {url ? (
-              <img
-                src={url}
-                className="w-full h-full object-contain"
-                alt={label}
-              />
+              <img src={url} className="w-full h-full object-contain" alt={label} />
             ) : (
               <Image size={24} className="text-text-muted/40" />
             )}
@@ -204,70 +164,29 @@ function AdminEmpresaConfigBranding() {
         </h1>
       </div>
 
-      {isSuper && (
-        <div className="mb-4 p-3 rounded-lg bg-card border border-border-subtle">
-          <div className="flex items-center gap-2">
-            <Building2 size={14} className="text-text-muted shrink-0" />
-            <select
-              value={empresaId}
-              onChange={(e) => setEmpresaId(e.target.value)}
-              className="w-full px-3 py-1.5 rounded-lg bg-input-bg border border-input-border text-text-main text-sm"
-            >
-              <option value="">Selecione empresa</option>
-              {empresas.map((emp) => (
-                <option key={emp.id} value={emp.id}>
-                  {emp.nome}
-                </option>
-              ))}
-            </select>
+      <div className="space-y-4">
+        <div className="rounded-xl bg-card p-4 border border-border-subtle">
+          <h2 className="text-sm font-bold text-text-main mb-3">Logomarcas e Favicon</h2>
+          <p className="text-xs text-text-muted mb-4">
+            Upload de arquivos ou URL externa. Uploads vão p/ storage Supabase.
+          </p>
+          <div className="space-y-4">
+            <LogoField label="Logo Página de Login" tipo="logo_index" url={logoIndex} />
+            <LogoField label="Logo Aplicação (header)" tipo="logo_app" url={logoApp} />
+            <LogoField label="Favicon" tipo="favicon" url={favicon} />
           </div>
         </div>
-      )}
-
-      {!empresaId ? (
-        <p className="text-center text-sm text-text-muted py-8">
-          Selecione uma empresa.
-        </p>
-      ) : (
-        <div className="space-y-4">
-          <div className="rounded-xl bg-card p-4 border border-border-subtle">
-            <h2 className="text-sm font-bold text-text-main mb-3">
-              Logomarcas e Favicon
-            </h2>
-            <p className="text-xs text-text-muted mb-4">
-              Upload de arquivos ou URL externa. Uploads vão p/ storage
-              Supabase.
-            </p>
-            <div className="space-y-4">
-              <LogoField
-                label="Logo Página de Login"
-                tipo="logo_index"
-                url={logoIndex}
-              />
-              <LogoField
-                label="Logo Aplicação (header)"
-                tipo="logo_app"
-                url={logoApp}
-              />
-              <LogoField label="Favicon" tipo="favicon" url={favicon} />
-            </div>
-          </div>
-          <div className="flex justify-end">
-            <button
-              onClick={handleSave}
-              disabled={saving}
-              className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-accent text-accent-fg text-sm font-medium hover:bg-accent-hover disabled:opacity-50"
-            >
-              {saving ? (
-                <Loader2 size={14} className="animate-spin" />
-              ) : (
-                <Save size={14} />
-              )}{" "}
-              Salvar
-            </button>
-          </div>
+        <div className="flex justify-end">
+          <button
+            onClick={handleSave}
+            disabled={saving}
+            className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-accent text-accent-fg text-sm font-medium hover:bg-accent-hover disabled:opacity-50"
+          >
+            {saving ? <Loader2 size={14} className="animate-spin" /> : <Save size={14} />}{" "}
+            Salvar
+          </button>
         </div>
-      )}
+      </div>
     </div>
   );
 }

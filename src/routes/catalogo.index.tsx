@@ -33,18 +33,14 @@ function CatalogoIndexPage() {
 
 function CatalogoStoreContent({ empresaId }: { empresaId: string }) {
   const [config, setConfig] = useState<CatalogoDesignConfig | null>(null)
-  const [empresaNome, setEmpresaNome] = useState<string>("")
 
   useEffect(() => {
     getCatalogoDesign().then(setConfig)
-    supabase.from("empresas").select("nome").eq("id", empresaId).single().then(({ data }) => {
-      if (data?.nome) setEmpresaNome(data.nome)
-    })
   }, [empresaId])
 
   if (!config) {
     return (
-      <StoreLayout empresaId={empresaId}>
+      <StoreLayout>
         <div className="flex items-center justify-center min-h-[60vh]">
           <Loader2 size={24} className="animate-spin text-[var(--color-accent)]" />
         </div>
@@ -66,7 +62,7 @@ function CatalogoStoreContent({ empresaId }: { empresaId: string }) {
         : "grid-cols-2 lg:grid-cols-4 max-w-5xl mx-auto"
 
   return (
-    <StoreLayout empresaId={empresaId}>
+    <StoreLayout>
       {/* Wrapper flex-1 para empurrar footer ao fundo */}
       <div className="flex-1 flex flex-col">
       {/* Hero */}
@@ -141,7 +137,7 @@ function CatalogoStoreContent({ empresaId }: { empresaId: string }) {
       {visibility.showFooter && footer && (
         <div className="shrink-0 px-4 sm:px-6 lg:px-16 pb-6 pt-2.5 flex items-center justify-center gap-3">
           <p className="text-[10px] sm:text-xs" style={{ color: footer.textColor }}>
-            {empresaNome || footer.text} &copy; {new Date().getFullYear()}
+            {footer.text} &copy; {new Date().getFullYear()}
           </p>
           <div className="flex items-center gap-1 sm:gap-2">
             {footer.socialLinks.instagram && (

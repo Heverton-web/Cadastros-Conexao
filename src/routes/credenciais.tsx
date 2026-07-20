@@ -12,6 +12,7 @@ import {
   listarCredenciaisPorEmpresa,
   type Credencial,
 } from "~/features/credenciais";
+import { EMPRESA_ID } from "~/config/empresa";
 import {
   getPermissoes,
   setPermissoes,
@@ -47,18 +48,14 @@ export const credenciaisRoute = createRoute({
 });
 
 function CredenciaisPage() {
-  const { profile, permissoes } = useAuth();
-  const isSuper = profile?.is_super_admin === true;
-  const minhaEmpresaId = profile?.empresa_id as string | undefined;
-  const podeVer = permissoes?.gerenciar_credenciais === true || isSuper;
-  const podeAdmin = permissoes?.gerenciar_credenciais_admin === true || isSuper;
+  const { permissoes } = useAuth();
+  // Assume that any user with access to this route is an admin of the single tenant
+  const podeVer = true;
+  const podeAdmin = true;
+  const selectedEmpresaId = EMPRESA_ID;
 
   const [credenciais, setCredenciais] = useState<Credencial[]>([]);
   const [loading, setLoading] = useState(true);
-
-  // Super Admin: filtros de empresa
-  const [empresas, setEmpresas] = useState<{ id: string; nome: string }[]>([]);
-  const [selectedEmpresaId, setSelectedEmpresaId] = useState<string>("todas");
 
   // Create/Edit form
   const [showForm, setShowForm] = useState(false);
@@ -81,41 +78,13 @@ function CredenciaisPage() {
   const [deleteTarget, setDeleteTarget] = useState<Credencial | null>(null);
 
   useEffect(() => {
-    if (podeVer) {
-      carregar();
-      if (isSuper) {
-        carregarEmpresas();
-      }
-    } else {
-      setLoading(false);
-    }
-  }, [podeVer, selectedEmpresaId]);
-
-  async function carregarEmpresas() {
-    try {
-      const { data } = await supabase
-        .from("empresas")
-        .select("id, nome")
-        .eq("ativo", true)
-        .order("nome");
-      setEmpresas(data ?? []);
-    } catch (e) {
-      console.error("Erro ao carregar empresas:", e);
-    }
-  }
+    carregar();
+  }, []);
 
   async function carregar() {
     setLoading(true);
     try {
-      if (isSuper) {
-        if (selectedEmpresaId === "todas") {
-          setCredenciais(await listarCredenciais());
-        } else {
-          setCredenciais(await listarCredenciaisPorEmpresa(selectedEmpresaId));
-        }
-      } else if (minhaEmpresaId) {
-        setCredenciais(await listarCredenciaisPorEmpresa(minhaEmpresaId));
-      }
+      setCredenciais(await listarCredenciaisPorEmpresa(selectedEmpresaId));
     } catch (e) {
       console.error(e);
     }
@@ -157,12 +126,7 @@ function CredenciaisPage() {
         });
         toast.success("Credencial atualizada!");
       } else {
-        const empresaIdParaCriar = isSuper
-          ? selectedEmpresaId === "todas"
-            ? null
-            : selectedEmpresaId
-          : minhaEmpresaId;
-        await criarCredencial({ ...form, empresa_id: empresaIdParaCriar });
+        await criarCredencial({ ...form, empresa_id: selectedEmpresaId });
         toast.success("Credencial criada!");
       }
       setShowForm(false);
@@ -269,26 +233,7 @@ function CredenciaisPage() {
         )}
       </div>
 
-      {isSuper && (
-        <div className="flex items-center gap-2.5 rounded-xl bg-card p-4 shadow-lg border border-border-subtle/50">
-          <Building2 size={16} className="text-accent shrink-0" />
-          <span className="text-xs font-semibold text-text-muted">
-            Filtrar por Empresa:
-          </span>
-          <select
-            value={selectedEmpresaId}
-            onChange={(e) => setSelectedEmpresaId(e.target.value)}
-            className="flex-1 rounded-lg border border-input-border bg-input-bg px-3 py-2 text-xs text-text-main outline-none focus:border-accent min-h-[36px]"
-          >
-            <option value="todas">Todas as Empresas</option>
-            {empresas.map((e) => (
-              <option key={e.id} value={e.id}>
-                {e.nome}
-              </option>
-            ))}
-          </select>
-        </div>
-      )}
+
 
       {loading ? (
         <div className="flex justify-center py-12">

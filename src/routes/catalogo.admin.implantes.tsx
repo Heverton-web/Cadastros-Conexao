@@ -1,3 +1,4 @@
+import { EMPRESA_ID } from "~/config/empresa"
 import { RequirePermission } from "~/components/guards"
 import { createRoute } from "@tanstack/react-router"
 import { authLayout } from "./_auth"
@@ -52,9 +53,9 @@ function AdminImplantesPage() {
   const [implCicatrizadores, setImplCicatrizadores] = useState<string[]>([])
   const [implError, setImplError] = useState("")
 
-  const { data: implantes } = useQuery({ queryKey: ["catalogo", "implantes", empresaId], queryFn: async () => { const { data } = await supabase.from("catalogo_implantes").select("*, linha:catalogo_ips_linhas(*, familia:catalogo_ips_familias(*, conexao:catalogo_ips_conexoes(*, categoria:catalogo_categorias(*))))").eq("empresa_id", empresaId).order("sku"); return (data ?? []) as CatalogoImplante[] }, enabled: !!empresaId })
-  const { data: allChaves } = useQuery({ queryKey: ["catalogo", "chaves"], queryFn: async () => { const { data } = await supabase.from("catalogo_chaves").select("*").eq("empresa_id", empresaId).order("nome"); return (data ?? []) as any[] }, enabled: !!empresaId })
-  const { data: protocolos } = useQuery({ queryKey: ["catalogo", "protocolos"], queryFn: async () => { const { data } = await supabase.from("catalogo_protocolos_fresagens").select("*").eq("empresa_id", empresaId).order("nome"); return (data ?? []) as any[] }, enabled: !!empresaId })
+  const { data: implantes } = useQuery({ queryKey: ["catalogo", "implantes", empresaId], queryFn: async () => { const { data } = await supabase.from("catalogo_implantes").select("*, linha:catalogo_ips_linhas(*, familia:catalogo_ips_familias(*, conexao:catalogo_ips_conexoes(*, categoria:catalogo_categorias(*))))").order("sku"); return (data ?? []) as CatalogoImplante[] }, enabled: !!empresaId })
+  const { data: allChaves } = useQuery({ queryKey: ["catalogo", "chaves"], queryFn: async () => { const { data } = await supabase.from("catalogo_chaves").select("*").order("nome"); return (data ?? []) as any[] }, enabled: !!empresaId })
+  const { data: protocolos } = useQuery({ queryKey: ["catalogo", "protocolos"], queryFn: async () => { const { data } = await supabase.from("catalogo_protocolos_fresagens").select("*").order("nome"); return (data ?? []) as any[] }, enabled: !!empresaId })
   const { data: allKits } = useTodosKits()
   const { data: allAbutments } = useAbutments()
   const { data: allCicatrizadores } = useCicatrizadores()
@@ -90,9 +91,9 @@ function AdminImplantesPage() {
     const sanitized = Object.fromEntries(
       Object.entries(implData).map(([k, v]) => [k, UUID_COLS.includes(k as typeof UUID_COLS[number]) && v === "" ? null : v])
     )
-    const payload = { ...sanitized, empresa_id: empresaId }
+    const payload = { ...sanitized, empresa_id: EMPRESA_ID }
     if (implEditing) {
-      const { error } = await supabase.from("catalogo_implantes").update(payload).eq("sku", implEditing.sku).eq("empresa_id", empresaId)
+      const { error } = await supabase.from("catalogo_implantes").update(payload).eq("sku", implEditing.sku)
       if (error) { setImplError(error.message); return }
     } else {
       const { error } = await supabase.from("catalogo_implantes").insert(payload)
@@ -100,10 +101,10 @@ function AdminImplantesPage() {
     }
     // Salvar chaves, kits, abutments e cicatrizadores vinculados
     if (implData.sku) {
-      await salvarImplanteChaves(empresaId, implData.sku, implChaves)
-      await salvarImplanteKits(empresaId, implData.sku, implKits)
-      await salvarImplanteAbutments(empresaId, implData.sku, implAbutments)
-      await salvarImplanteCicatrizadores(empresaId, implData.sku, implCicatrizadores)
+      await salvarImplanteChaves(implData.sku, implChaves)
+      await salvarImplanteKits(implData.sku, implKits)
+      await salvarImplanteAbutments(implData.sku, implAbutments)
+      await salvarImplanteCicatrizadores(implData.sku, implCicatrizadores)
     }
     setImplModalOpen(false); qc.invalidateQueries({ queryKey: ["catalogo"] })
   }
@@ -344,7 +345,7 @@ function SimpleForm({ subTab, editingItem, table, empresaId, onClose, onSuccess 
     if (isFamilia && !cor.trim()) { setError("Cor de identificação é obrigatória"); return }
     if (isLinha && !parentId) { setError("Família é obrigatória"); return }
 
-    const payload: Record<string,unknown> = { empresa_id: empresaId, nome: nome.trim(), sigla: sigla.trim(), ativo }
+    const payload: Record<string,unknown> = { empresa_id: EMPRESA_ID, nome: nome.trim(), sigla: sigla.trim(), ativo }
 
     if (isConexao) {
       payload.categoria_id = parentId

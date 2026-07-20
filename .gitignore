@@ -49,8 +49,25 @@ dist/
 # Sistema
 .DS_Store
 Thumbs.db
+
 # Scripts de teste temporários
 test-*.py
 
 # OpenCode local
 .opencode/
+
+# Arquivos de teste temporários
+test-*.py
+
+# Pasta docs
+docs
+
+# Pasta docs-projeto
+docs-projeto
+
+# Arquivos de credenciais
+.env
+.credencials.env
+.vps.env
+.vps.config.env
+.vps.deploy.env

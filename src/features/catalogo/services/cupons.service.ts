@@ -1,5 +1,4 @@
 import { supabase } from "~/core/supabase"
-import { EMPRESA_ID } from "~/config/empresa"
 import { dispararEventoModulo } from "~/core/services/webhooks"
 import type { CatalogoCupom } from "../types"
 
@@ -9,7 +8,6 @@ export async function listarCupons(): Promise<CatalogoCupom[]> {
   const { data, error } = await supabase
     .from("catalogo_cupons")
     .select("*")
-    .eq("empresa_id", EMPRESA_ID)
     .order("created_at", { ascending: false })
   if (error) throw error
   return data as CatalogoCupom[]
@@ -23,7 +21,7 @@ export async function criarCupom(input: {
 }): Promise<CatalogoCupom> {
   const { data, error } = await supabase
     .from("catalogo_cupons")
-    .insert({ empresa_id: EMPRESA_ID, ...input })
+    .insert({ ...input })
     .select()
     .single()
   if (error) throw error
@@ -50,13 +48,12 @@ export async function validarCupom(codigo: string): Promise<CatalogoCupom | null
   const { data, error } = await supabase
     .from("catalogo_cupons")
     .select("*")
-    .eq("empresa_id", EMPRESA_ID)
     .eq("codigo", codigo.toUpperCase())
     .eq("ativo", true)
     .single()
   if (error || !data) return null
   if (data.validade && new Date(data.validade) < new Date()) return null
-  dispararEventoModulo(MODULO_KEY, "cupom.utilizado", { cupom_id: data.id, codigo, empresa_id: EMPRESA_ID }, EMPRESA_ID).catch(() => {})
+  dispararEventoModulo(MODULO_KEY, "cupom.utilizado", { cupom_id: data.id, codigo }).catch(() => {})
   return data as CatalogoCupom
 }
 

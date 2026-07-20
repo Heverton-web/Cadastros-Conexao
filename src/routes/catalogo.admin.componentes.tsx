@@ -1,3 +1,4 @@
+import { EMPRESA_ID } from "~/config/empresa"
 import { RequirePermission } from "~/components/guards"
 import { createRoute } from "@tanstack/react-router"
 import { authLayout } from "./_auth"
@@ -82,7 +83,7 @@ function AdminComponentesPage() {
     if (!abutData.nome.trim()) { setAbutError("Nome é obrigatório"); return }
     if (!abutData.tipo_abutment_id) { setAbutError("Tipo de Abutment é obrigatório"); return }
     if (!abutData.parafuso_id) { setAbutError("Parafuso é obrigatório"); return }
-    const payload = { ...abutData, empresa_id: empresaId }
+    const payload = { ...abutData, empresa_id: EMPRESA_ID }
     if (abutEditing) {
       const { error } = await supabase.from("catalogo_abutments").update(payload).eq("sku", abutEditing.sku).eq("empresa_id", empresaId)
       if (error) { setAbutError(error.message); return }
@@ -115,7 +116,7 @@ function AdminComponentesPage() {
     if (!compData.tipo_componente_id) { setCompError("Tipo de Componente é obrigatório"); return }
     if (!compData.tipo_abutment_id) { setCompError("Tipo de Abutment é obrigatório"); return }
     if (!compData.parafuso_id) { setCompError("Parafuso é obrigatório"); return }
-    const payload = { ...compData, empresa_id: empresaId }
+    const payload = { ...compData, empresa_id: EMPRESA_ID }
     if (compEditing) {
       const { error } = await supabase.from("catalogo_componentes").update(payload).eq("sku", compEditing.sku).eq("empresa_id", empresaId)
       if (error) { setCompError(error.message); return }
@@ -146,7 +147,7 @@ function AdminComponentesPage() {
     if (!parData.sku.trim()) { setParError("SKU é obrigatório"); return }
     if (!parData.nome.trim()) { setParError("Nome é obrigatório"); return }
     if (!parData.tipo_parafuso_id) { setParError("Tipo de Parafuso é obrigatório"); return }
-    const payload = { ...parData, empresa_id: empresaId }
+    const payload = { ...parData, empresa_id: EMPRESA_ID }
     if (parEditing) {
       const { error } = await supabase.from("catalogo_parafusos").update(payload).eq("sku", parEditing.sku).eq("empresa_id", empresaId)
       if (error) { setParError(error.message); return }
@@ -177,7 +178,7 @@ function AdminComponentesPage() {
     if (!cicData.sku.trim()) { setCicError("SKU é obrigatório"); return }
     if (!cicData.nome.trim()) { setCicError("Nome é obrigatório"); return }
     if (!cicData.implante_id) { setCicError("Implante é obrigatório"); return }
-    const payload = { ...cicData, empresa_id: empresaId }
+    const payload = { ...cicData, empresa_id: EMPRESA_ID }
     if (cicEditing) {
       const { error } = await supabase.from("catalogo_cicatrizadores").update(payload).eq("sku", cicEditing.sku).eq("empresa_id", empresaId)
       if (error) { setCicError(error.message); return }
@@ -230,7 +231,7 @@ function AdminComponentesPage() {
 
     if (activeModal === "abutment") {
       if (!parentId) { setError("Tipo de Reabilitação é obrigatório"); return }
-      const payload = { empresa_id: empresaId, nome: nome.trim(), sigla: sigla.trim() || null, ativo, tipo_reabilitacao_id: parentId }
+      const payload = { empresa_id: EMPRESA_ID, nome: nome.trim(), sigla: sigla.trim() || null, ativo, tipo_reabilitacao_id: parentId }
       if (editing) {
         const { error } = await supabase.from("catalogo_cps_tipos_abutments").update({ nome: payload.nome, sigla: payload.sigla, ativo, tipo_reabilitacao_id: parentId }).eq("id", editing.id)
         if (error) { setError(error.message); return }
@@ -240,7 +241,7 @@ function AdminComponentesPage() {
       }
       toast.success(editing ? "Tipo de Abutment atualizado!" : "Tipo de Abutment criado!")
     } else if (activeModal === "componente") {
-      const payload = { empresa_id: empresaId, nome: nome.trim(), sigla: sigla.trim() || null, ativo }
+      const payload = { empresa_id: EMPRESA_ID, nome: nome.trim(), sigla: sigla.trim() || null, ativo }
       if (editing) {
         const { error } = await supabase.from("catalogo_cps_tipos_componentes").update({ nome: payload.nome, sigla: payload.sigla, ativo }).eq("id", editing.id)
         if (error) { setError(error.message); return }
@@ -250,7 +251,7 @@ function AdminComponentesPage() {
       }
       toast.success(editing ? "Tipo de Componente atualizado!" : "Tipo de Componente criado!")
     } else if (activeModal === "parafuso") {
-      const payload = { empresa_id: empresaId, nome: nome.trim(), sigla: sigla.trim() || null, ativo }
+      const payload = { empresa_id: EMPRESA_ID, nome: nome.trim(), sigla: sigla.trim() || null, ativo }
       if (editing) {
         const { error } = await supabase.from("catalogo_cps_tipos_parafusos").update({ nome: payload.nome, sigla: payload.sigla, ativo }).eq("id", editing.id)
         if (error) { setError(error.message); return }
@@ -260,7 +261,7 @@ function AdminComponentesPage() {
       }
       toast.success(editing ? "Tipo de Parafuso atualizado!" : "Tipo de Parafuso criado!")
     } else if (activeModal === "cicatrizador") {
-      const payload = { empresa_id: empresaId, nome: nome.trim(), sigla: sigla.trim() || null, ativo }
+      const payload = { empresa_id: EMPRESA_ID, nome: nome.trim(), sigla: sigla.trim() || null, ativo }
       if (editing) {
         const { error } = await supabase.from("catalogo_cps_tipos_cicatrizadores").update({ nome: payload.nome, sigla: payload.sigla, ativo }).eq("id", editing.id)
         if (error) { setError(error.message); return }
@@ -270,7 +271,7 @@ function AdminComponentesPage() {
       }
       toast.success(editing ? "Tipo de Cicatrizador atualizado!" : "Tipo de Cicatrizador criado!")
     } else {
-      const payload: Record<string, unknown> = { empresa_id: empresaId, nome: nome.trim(), sigla: sigla.trim() || null, ativo }
+      const payload: Record<string, unknown> = { empresa_id: EMPRESA_ID, nome: nome.trim(), sigla: sigla.trim() || null, ativo }
       if (editing) {
         const { error } = await supabase.from("catalogo_cps_tipos_reabilitacao").update({ nome: payload.nome, sigla: payload.sigla, ativo }).eq("id", editing.id)
         if (error) { setError(error.message); return }
@@ -278,7 +279,7 @@ function AdminComponentesPage() {
         const { data, error } = await supabase.from("catalogo_cps_tipos_reabilitacao").insert(payload).select().single()
         if (error) { setError(error.message); return }
         if (data && familiasIds.length > 0) {
-          const rows = familiasIds.map(fid => ({ tipo_reabilitacao_id: data.id, familia_id: fid, empresa_id: empresaId }))
+          const rows = familiasIds.map(fid => ({ tipo_reabilitacao_id: data.id, familia_id: fid, empresa_id: EMPRESA_ID }))
           await supabase.from("catalogo_cps_tipos_reabilitacao_familias").insert(rows)
         }
       }

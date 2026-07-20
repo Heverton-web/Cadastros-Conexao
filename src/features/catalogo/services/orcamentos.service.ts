@@ -1,5 +1,4 @@
 import { supabase } from "~/lib/supabase"
-import { EMPRESA_ID } from "~/config/empresa"
 import type {
   CatalogoOrcamento,
   CatalogoOrcamentoInput,
@@ -19,7 +18,6 @@ export async function listarOrcamentos(
   let query = supabase
     .from("catalogo_orcamentos")
     .select("*, itens:catalogo_orcamento_itens(*), colaborador:profiles(id, nome, email)")
-    .eq("empresa_id", EMPRESA_ID)
     .order("created_at", { ascending: false })
 
   if (filters?.status) query = query.eq("status", filters.status)
@@ -41,7 +39,6 @@ export async function listarOrcamentosColaborador(
   const { data, error } = await supabase
     .from("catalogo_orcamentos")
     .select("*, itens:catalogo_orcamento_itens(*)")
-    .eq("empresa_id", EMPRESA_ID)
     .eq("colaborador_id", colaboradorId)
     .order("created_at", { ascending: false })
   if (error) throw error
@@ -99,7 +96,6 @@ export async function criarOrcamento(
   const { data: orcamento, error: orcError } = await supabase
     .from("catalogo_orcamentos")
     .insert({
-      empresa_id: EMPRESA_ID,
       colaborador_id: colaboradorId,
       cliente_id: input.cliente_id ?? null,
       cliente_nome: clienteNome,
@@ -118,7 +114,6 @@ export async function criarOrcamento(
   // Insere itens
   if (input.itens.length > 0) {
     const itensRows = input.itens.map((item) => ({
-      empresa_id: EMPRESA_ID,
       orcamento_id: orcamento.id,
       produto_sku: item.produto_sku,
       produto_tipo: item.produto_tipo,
@@ -134,7 +129,6 @@ export async function criarOrcamento(
 
   dispararEventoModulo(MODULO_KEY, "orcamento.criado", {
     orcamento_id: orcamento.id,
-    empresa_id: EMPRESA_ID,
     colaborador_id: colaboradorId,
   }).catch(() => {})
 
@@ -144,7 +138,6 @@ export async function criarOrcamento(
 export async function atualizarStatusOrcamento(
   id: string,
   status: StatusOrcamento,
-  EMPRESA_ID?: string,
 ): Promise<CatalogoOrcamento> {
   const updates: Record<string, unknown> = {
     status,
@@ -165,7 +158,6 @@ export async function atualizarStatusOrcamento(
   const eventoKey = `orcamento.${status}` as const
   dispararEventoModulo(MODULO_KEY, eventoKey, {
     orcamento_id: id,
-    empresa_id: EMPRESA_ID ?? data.empresa_id,
   }).catch(() => {})
 
   return data as CatalogoOrcamento
@@ -197,7 +189,6 @@ export async function converterEmPedido(
   const { data: pedido, error: pedError } = await supabase
     .from("catalogo_pedidos")
     .insert({
-      empresa_id: orcamento.empresa_id,
       cliente_id: orcamento.cliente_id,
       orcamento_id: orcamento.id,
       colaborador_id: orcamento.colaborador_id,
@@ -215,7 +206,6 @@ export async function converterEmPedido(
 
   // Copia itens
   const itensRows = orcamento.itens.map((item) => ({
-    empresa_id: orcamento.empresa_id,
     pedido_id: pedido.id,
     produto_sku: item.produto_sku,
     produto_tipo: item.produto_tipo,
@@ -229,12 +219,11 @@ export async function converterEmPedido(
   if (itensError) throw itensError
 
   // Atualiza status do orçamento
-  await atualizarStatusOrcamento(orcamentoId, "pedido", orcamento.empresa_id)
+  await atualizarStatusOrcamento(orcamentoId, "pedido")
 
   dispararEventoModulo(MODULO_KEY, "orcamento.pedido_criado", {
     orcamento_id: orcamentoId,
     pedido_id: pedido.id,
-    empresa_id: orcamento.empresa_id,
   }).catch(() => {})
 
   return pedido.id

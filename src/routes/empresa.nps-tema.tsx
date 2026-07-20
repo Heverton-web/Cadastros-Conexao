@@ -5,10 +5,10 @@ import { useState, useEffect } from "react";
 import {
   salvarEmpresaConfig,
   uploadEmpresaLogo,
-  listarEmpresas,
   buscarEmpresa,
   buscarEmpresaConfig,
 } from "~/features/empresas";
+import { EMPRESA_ID } from "~/config/empresa";
 import { NPS_SURVEY_DEFAULTS, SURVEY_COLOR_GROUPS } from "~/features/nps/theme";
 import {
   Palette,
@@ -284,11 +284,8 @@ const TABS_CONFIG = [
 
 /* ---------- Main editor page ---------- */
 function NpsTemaPage() {
-  const { profile, empresa: minhaEmpresa } = useAuth();
-  const isSuperAdmin = profile?.is_super_admin === true;
+  const selectedEmpresaId = EMPRESA_ID;
 
-  const [empresas, setEmpresas] = useState<Empresa[]>([]);
-  const [selectedEmpresaId, setSelectedEmpresaId] = useState("");
   const [empresaNome, setEmpresaNome] = useState("");
   const [logoUrl, setLogoUrl] = useState<string | null>(null);
   const [loadingEmp, setLoadingEmp] = useState(true);
@@ -300,22 +297,10 @@ function NpsTemaPage() {
   const [showModal, setShowModal] = useState(false);
   const noBorders = colors.no_borders === "true";
 
-  // Init: set default empresa
+  // Init: load config
   useEffect(() => {
-    if (isSuperAdmin) {
-      listarEmpresas().then((emps) => {
-        setEmpresas(emps.filter((e) => e.ativo));
-        const defId = emps.find((e) => e.ativo)?.id ?? "";
-        setSelectedEmpresaId(defId);
-        setLoadingEmp(false);
-      });
-    } else if (profile?.empresa_id) {
-      setSelectedEmpresaId(profile.empresa_id);
-      setLoadingEmp(false);
-    } else {
-      setLoadingEmp(false);
-    }
-  }, [isSuperAdmin, profile?.empresa_id]);
+    setLoadingEmp(false);
+  }, []);
 
   // Load empresa config when selected changes
   useEffect(() => {
@@ -433,19 +418,7 @@ function NpsTemaPage() {
           </div>
 
           <div className="flex items-center gap-3">
-            {isSuperAdmin && (
-              <select
-                value={selectedEmpresaId}
-                onChange={(e) => setSelectedEmpresaId(e.target.value)}
-                className="px-3 py-1.5 rounded-lg bg-secondary/80 border border-border/50 text-foreground text-sm max-w-[200px]"
-              >
-                {empresas.map((emp) => (
-                  <option key={emp.id} value={emp.id}>
-                    {emp.nome}
-                  </option>
-                ))}
-              </select>
-            )}
+
             <button
               onClick={handleSave}
               disabled={saving || !selectedEmpresaId}

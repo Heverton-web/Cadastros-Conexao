@@ -1,3 +1,4 @@
+import { EMPRESA_ID } from "~/config/empresa"
 import { RequirePermission } from "~/components/guards"
 import { createRoute } from "@tanstack/react-router"
 import { authLayout } from "./_auth"
@@ -60,7 +61,7 @@ function AdminFresagensPage() {
   async function handleSaveTipo() {
     setTipoError("")
     if (!tipoNome.trim()) { setTipoError("Nome é obrigatório"); return }
-    const payload = { empresa_id: empresaId, nome: tipoNome.trim(), sigla: tipoSigla.trim() || null, ativo: tipoAtivo }
+    const payload = { empresa_id: EMPRESA_ID, nome: tipoNome.trim(), sigla: tipoSigla.trim() || null, ativo: tipoAtivo }
     if (tipoEditing) { const { error } = await supabase.from("catalogo_tipos_ossos").update({ nome: payload.nome, sigla: payload.sigla, ativo: tipoAtivo }).eq("id", tipoEditing.id); if (error) { setTipoError(error.message); return } }
     else { const { error } = await supabase.from("catalogo_tipos_ossos").insert(payload); if (error) { setTipoError(error.message); return } }
     toast.success(tipoEditing ? "Atualizado!" : "Criado!")
@@ -81,7 +82,7 @@ function AdminFresagensPage() {
     setProtoError("")
     if (!protoData.nome.trim()) { setProtoError("Nome é obrigatório"); return }
     if (!protoData.tipo_osso) { setProtoError("Tipo de Osso é obrigatório"); return }
-    const payload = { ...protoData, empresa_id: empresaId }
+    const payload = { ...protoData, empresa_id: EMPRESA_ID }
     let protoId = protoEditing?.id
     if (protoEditing) { const { error } = await supabase.from("catalogo_protocolos_fresagens").update(payload).eq("id", protoEditing.id); if (error) { setProtoError(error.message); return } }
     else { const { data, error } = await supabase.from("catalogo_protocolos_fresagens").insert(payload).select("id").single(); if (error) { setProtoError(error.message); return } protoId = data?.id }
@@ -89,7 +90,7 @@ function AdminFresagensPage() {
     if (protoId) {
       await supabase.from("catalogo_protocolos_fresas_itens").delete().eq("empresa_id", empresaId).eq("protocolo_id", protoId)
       if (protoFresas.length > 0) {
-        const rows = protoFresas.map((f, i) => ({ empresa_id: empresaId, protocolo_id: protoId, fresa_id: f.fresa_id, ordem: i + 1 }))
+        const rows = protoFresas.map((f, i) => ({ empresa_id: EMPRESA_ID, protocolo_id: protoId, fresa_id: f.fresa_id, ordem: i + 1 }))
         await supabase.from("catalogo_protocolos_fresas_itens").insert(rows)
       }
     }

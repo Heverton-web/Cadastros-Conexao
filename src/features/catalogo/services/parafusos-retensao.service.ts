@@ -1,12 +1,10 @@
 import { supabase } from "~/core/supabase"
-import { EMPRESA_ID } from "~/config/empresa"
 import type { CatalogoParafusoRetencao } from "../types"
 
 export async function listarParafusosRetensao(): Promise<CatalogoParafusoRetencao[]> {
   const { data, error } = await supabase
     .from("catalogo_parafusos_retensao")
     .select("*, chave:catalogo_chaves_ferramental(*)")
-    .eq("empresa_id", EMPRESA_ID)
     .order("nome")
   if (error) throw error
   return data as CatalogoParafusoRetencao[]
@@ -23,7 +21,7 @@ export async function criarParafusoRetencao(input: {
 }): Promise<CatalogoParafusoRetencao> {
   const { data, error } = await supabase
     .from("catalogo_parafusos_retensao")
-    .insert({ empresa_id: EMPRESA_ID, ...input })
+    .insert({ ...input })
     .select()
     .single()
   if (error) throw error
@@ -41,7 +39,6 @@ export async function atualizarParafusoRetencao(sku: string, input: Partial<{
   const { data, error } = await supabase
     .from("catalogo_parafusos_retensao")
     .update(input)
-    .eq("empresa_id", EMPRESA_ID)
     .eq("sku", sku)
     .select()
     .single()
@@ -53,7 +50,6 @@ export async function toggleParafusoRetencaoAtivo(sku: string, ativo: boolean): 
   const { error } = await supabase
     .from("catalogo_parafusos_retensao")
     .update({ ativo })
-    .eq("empresa_id", EMPRESA_ID)
     .eq("sku", sku)
   if (error) throw error
 }
@@ -62,7 +58,6 @@ export async function removerParafusoRetencao(sku: string): Promise<void> {
   const { error } = await supabase
     .from("catalogo_parafusos_retensao")
     .delete()
-    .eq("empresa_id", EMPRESA_ID)
     .eq("sku", sku)
   if (error) throw error
 }

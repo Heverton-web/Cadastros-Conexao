@@ -13,7 +13,6 @@ export type StatusPedido =
 
 export interface CatalogoPedido {
   id: string
-  empresa_id: string
   cliente_id: string | null
   orcamento_id: string | null
   colaborador_id: string | null
@@ -40,7 +39,6 @@ export interface CatalogoPedido {
 
 export interface CatalogoPedidoItem {
   id: string
-  empresa_id: string
   pedido_id: string
   produto_sku: string
   produto_tipo: string
@@ -96,7 +94,6 @@ export const STATUS_PEDIDO_COLOR: Record<StatusPedido, string> = {
 
 export interface CatalogoFavorito {
   id: string
-  empresa_id: string
   cliente_id: string
   produto_sku: string
   produto_tipo: string

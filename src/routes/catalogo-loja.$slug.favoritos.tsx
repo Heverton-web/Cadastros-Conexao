@@ -41,7 +41,7 @@ function LojaFavoritosPage() {
 
   if (authLoading || loading) {
     return (
-      <StoreLayout empresaId={empresaId}>
+      <StoreLayout>
         <div className="p-8 text-center text-[var(--color-text-muted)]">Carregando...</div>
       </StoreLayout>
     )
@@ -49,7 +49,7 @@ function LojaFavoritosPage() {
 
   if (!isLogado) {
     return (
-      <StoreLayout empresaId={empresaId}>
+      <StoreLayout>
         <div className="p-8 text-center">
           <p className="text-[var(--color-text-muted)]">Faça login para ver seus favoritos.</p>
           <a href={`/loja/${slug}/login`} className="text-[var(--color-accent)] hover:underline mt-2 inline-block">
@@ -61,7 +61,7 @@ function LojaFavoritosPage() {
   }
 
   return (
-    <StoreLayout empresaId={empresaId}>
+    <StoreLayout>
       <div className="p-4 lg:p-8 space-y-4">
         <h1 className="text-2xl font-bold text-white">Meus Favoritos</h1>
 

@@ -34,7 +34,6 @@ export type FonteImagem = "upload" | "url" | "gdrive"
 
 export interface CatalogoCategoria {
   id: string
-  empresa_id: string
   nome: string
   sigla: string | null
   locked: boolean
@@ -49,7 +48,6 @@ export interface CatalogoCategoria {
 
 export interface CatalogoIpsConexao {
   id: string
-  empresa_id: string
   categoria_id: string
   nome: string
   sigla: string
@@ -62,7 +60,6 @@ export interface CatalogoIpsConexao {
 
 export interface CatalogoIpsFamilia {
   id: string
-  empresa_id: string
   conexao_id: string
   nome: string
   cor_identificacao: string
@@ -75,7 +72,6 @@ export interface CatalogoIpsFamilia {
 
 export interface CatalogoIpsLinha {
   id: string
-  empresa_id: string
   familia_id: string
   nome: string
   ativo: boolean
@@ -90,7 +86,6 @@ export interface CatalogoIpsLinha {
 
 export interface CatalogoCpsTipoReabilitacao {
   id: string
-  empresa_id: string
   nome: string
   sigla: string | null
   ativo: boolean
@@ -100,7 +95,6 @@ export interface CatalogoCpsTipoReabilitacao {
 
 export interface CatalogoCpsTipoAbutment {
   id: string
-  empresa_id: string
   nome: string
   sigla: string | null
   tipo_reabilitacao_id: string | null
@@ -112,7 +106,6 @@ export interface CatalogoCpsTipoAbutment {
 
 export interface CatalogoCpsTipoComponente {
   id: string
-  empresa_id: string
   nome: string
   sigla: string | null
   categoria_id: string | null
@@ -124,7 +117,6 @@ export interface CatalogoCpsTipoComponente {
 
 export interface CatalogoCpsTipoParafuso {
   id: string
-  empresa_id: string
   nome: string
   sigla: string | null
   ativo: boolean
@@ -134,7 +126,6 @@ export interface CatalogoCpsTipoParafuso {
 
 export interface CatalogoCpsTipoCicatrizador {
   id: string
-  empresa_id: string
   nome: string
   sigla: string | null
   ativo: boolean
@@ -148,7 +139,6 @@ export interface CatalogoCpsTipoCicatrizador {
 
 export interface CatalogoTipoChave {
   id: string
-  empresa_id: string
   nome: string
   sigla: string | null
   ativo: boolean
@@ -158,7 +148,6 @@ export interface CatalogoTipoChave {
 
 export interface CatalogoTipoFresa {
   id: string
-  empresa_id: string
   nome: string
   sigla: string | null
   ativo: boolean
@@ -168,7 +157,6 @@ export interface CatalogoTipoFresa {
 
 export interface CatalogoTipoComplementar {
   id: string
-  empresa_id: string
   nome: string
   sigla: string | null
   ativo: boolean
@@ -178,7 +166,6 @@ export interface CatalogoTipoComplementar {
 
 export interface CatalogoTipoOpcional {
   id: string
-  empresa_id: string
   nome: string
   sigla: string | null
   ativo: boolean
@@ -191,7 +178,6 @@ export interface CatalogoTipoOpcional {
 
 export interface CatalogoTipoOsso {
   id: string
-  empresa_id: string
   nome: string
   sigla: string | null
   ativo: boolean
@@ -201,7 +187,6 @@ export interface CatalogoTipoOsso {
 
 export interface CatalogoProtocoloFresagem {
   id: string
-  empresa_id: string
   nome: string
   tipo_osso: string
   sigla: string | null
@@ -214,7 +199,6 @@ export interface CatalogoProtocoloFresagem {
 
 export interface CatalogoProtocoloFresaItem {
   id: string
-  empresa_id: string
   protocolo_id: string
   fresa_id: string
   ordem: number
@@ -228,7 +212,6 @@ export interface CatalogoProtocoloFresaItem {
 
 export interface CatalogoTipoKit {
   id: string
-  empresa_id: string
   nome: string
   sigla: string | null
   ativo: boolean
@@ -242,7 +225,6 @@ export interface CatalogoTipoKit {
 
 export interface CatalogoCpsTipoWorkflow {
   id: string
-  empresa_id: string
   nome: string
   sigla: string | null
   ativo: boolean
@@ -252,7 +234,6 @@ export interface CatalogoCpsTipoWorkflow {
 
 export interface CatalogoCpsEtapaWorkflow {
   id: string
-  empresa_id: string
   tipo_workflow_id: string
   nome: string
   sigla: string | null
@@ -269,7 +250,6 @@ export interface CatalogoCpsEtapaWorkflow {
 
 export interface CatalogoImagemProduto {
   id: string
-  empresa_id: string
   produto_tipo: ProdutoTipoImagem
   produto_sku: string
   url_imagem: string
@@ -287,7 +267,6 @@ export type CatalogoImagemImplante = CatalogoImagemProduto
 
 export interface CatalogoImplante {
   sku: string
-  empresa_id: string
   linha_id: string
   conexao_id: string | null
   familia_id: string | null
@@ -327,7 +306,6 @@ export interface CatalogoImplante {
 
 export interface CatalogoAbutment {
   sku: string
-  empresa_id: string
   tipo_abutment_id: string
   parafuso_id: string | null
   chave_id: string | null
@@ -358,7 +336,6 @@ export interface CatalogoAbutment {
 
 export interface CatalogoComponente {
   sku: string
-  empresa_id: string
   tipo_componente_id: string | null
   tipo_abutment_id: string | null
   parafuso_id: string | null
@@ -390,7 +367,6 @@ export interface CatalogoComponente {
 
 export interface CatalogoParafuso {
   sku: string
-  empresa_id: string
   tipo_parafuso_id: string | null
   chave_id: string | null
   nome: string
@@ -416,7 +392,6 @@ export type CatalogoParafusoRetencao = CatalogoParafuso
 
 export interface CatalogoCicatrizador {
   sku: string
-  empresa_id: string
   implante_id: string | null
   chave_id: string | null
   nome: string
@@ -442,7 +417,6 @@ export interface CatalogoCicatrizador {
 
 export interface CatalogoChave {
   sku: string
-  empresa_id: string
   tipo_chave_id: string | null
   kit_id: string | null
   nome: string
@@ -465,7 +439,6 @@ export type CatalogoChaveFerramental = CatalogoChave
 
 export interface CatalogoFresa {
   sku: string
-  empresa_id: string
   tipo_fresa_id: string | null
   kit_id: string | null
   nome: string
@@ -485,7 +458,6 @@ export interface CatalogoFresa {
 
 export interface CatalogoComplementar {
   sku: string
-  empresa_id: string
   tipo_complementar_id: string | null
   kit_id: string | null
   nome: string
@@ -505,7 +477,6 @@ export interface CatalogoComplementar {
 
 export interface CatalogoOpcional {
   sku: string
-  empresa_id: string
   tipo_opcional_id: string | null
   kit_id: string | null
   nome: string
@@ -529,7 +500,6 @@ export interface CatalogoOpcional {
 
 export interface CatalogoKit {
   sku: string
-  empresa_id: string
   tipo_kit_id: string | null
   nome: string
   sigla: string | null
@@ -554,43 +524,36 @@ export type CatalogoCategoriaKit = CatalogoTipoKit
 // ============================================================
 
 export interface CatalogoImplanteChave {
-  empresa_id: string
   implante_sku: string
   chave_id: string
 }
 
 export interface CatalogoKitChave {
-  empresa_id: string
   kit_sku: string
   chave_id: string
 }
 
 export interface CatalogoKitFresa {
-  empresa_id: string
   kit_sku: string
   fresa_id: string
 }
 
 export interface CatalogoKitComplementar {
-  empresa_id: string
   kit_sku: string
   complementar_id: string
 }
 
 export interface CatalogoKitOpcional {
-  empresa_id: string
   kit_sku: string
   opcional_id: string
 }
 
 export interface CatalogoImplanteKit {
-  empresa_id: string
   implante_sku: string
   kit_sku: string
 }
 
 export interface CatalogoImplanteAbutment {
-  empresa_id: string
   implante_sku: string
   abutment_sku: string
 }
@@ -601,7 +564,6 @@ export interface CatalogoImplanteAbutment {
 
 export interface CatalogoCupom {
   id: string
-  empresa_id: string
   codigo: string
   tipo: "percentual" | "fixo"
   valor: number
@@ -613,7 +575,6 @@ export interface CatalogoCupom {
 
 export interface CatalogoFrete {
   id: string
-  empresa_id: string
   cep_inicio: string
   cep_fim: string
   valor: number
@@ -624,7 +585,6 @@ export interface CatalogoFrete {
 
 export interface CatalogoPromocional {
   id: string
-  empresa_id: string
   nome: string
   descricao: string | null
   preco: number
@@ -637,7 +597,6 @@ export interface CatalogoPromocional {
 
 export interface CatalogoPromocionalItem {
   id: string
-  empresa_id: string
   promocional_id: string
   sku: string
   tipo: string

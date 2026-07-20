@@ -1,5 +1,4 @@
 import { supabase } from "~/lib/supabase"
-import { EMPRESA_ID } from "~/config/empresa"
 
 /**
  * Resolve o preço de um produto considerando o contexto:
@@ -13,11 +12,10 @@ export async function resolvePreco(
   produtoTipo: string,
   precoBase: number,
   clienteId?: string | null,
-  EMPRESA_ID?: string | null,
 ): Promise<number | null> {
   if (contexto === "visitante") return null
   if (contexto === "colaborador") return precoBase
-  if (contexto === "cliente" && clienteId && EMPRESA_ID) {
+  if (contexto === "cliente" && clienteId) {
     return resolverPrecoCliente(clienteId, produtoSku, produtoTipo, precoBase)
   }
   return precoBase
@@ -42,7 +40,6 @@ async function resolverPrecoCliente(
   const { data: override } = await supabase
     .from("catalogo_grupo_precos")
     .select("preco")
-    .eq("empresa_id", EMPRESA_ID)
     .eq("grupo_id", cliente.grupo_id)
     .eq("produto_sku", produtoSku)
     .eq("produto_tipo", produtoTipo)
@@ -74,7 +71,6 @@ export async function resolvePrecoBatch(
   contexto: "visitante" | "colaborador" | "cliente",
   produtos: Array<{ sku: string; tipo: string; preco_base: number }>,
   clienteId?: string | null,
-  EMPRESA_ID?: string | null,
 ): Promise<Map<string, number | null>> {
   const result = new Map<string, number | null>()
 
@@ -89,7 +85,7 @@ export async function resolvePrecoBatch(
   }
 
   // Para cliente: busca grupo e overrides de uma vez
-  if (!clienteId || !EMPRESA_ID) {
+  if (!clienteId) {
     for (const p of produtos) result.set(`${p.tipo}:${p.sku}`, p.preco_base)
     return result
   }
@@ -114,7 +110,6 @@ export async function resolvePrecoBatch(
   const { data: overrides } = await supabase
     .from("catalogo_grupo_precos")
     .select("produto_sku, produto_tipo, preco")
-    .eq("empresa_id", EMPRESA_ID)
     .eq("grupo_id", cliente.grupo_id)
 
   const overrideMap = new Map(

@@ -1,4 +1,5 @@
 
+import { EMPRESA_ID } from "~/config/empresa"
 import { RequirePermission } from "~/components/guards"
 import { createRoute } from "@tanstack/react-router"
 import { authLayout } from "./_auth"
@@ -30,7 +31,7 @@ function AdminConfiguracoesPage() {
   const empresaId = useCatalogoEmpresaId()
   const [config, setConfig] = useState<CatalogoConfiguracoes>({
     ...DEFAULT_CONFIGURACOES,
-    empresa_id: empresaId,
+    empresa_id: EMPRESA_ID,
   })
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
@@ -300,7 +301,7 @@ function CategoriasConexoesSection() {
     setSaving(true)
     try {
       if (formType === "categoria") {
-        const payload = { empresa_id: empresaId, nome: formNome }
+        const payload = { empresa_id: EMPRESA_ID, nome: formNome }
         if (editingItem) {
           const { error } = await supabase.from("catalogo_categorias").update({ nome: formNome }).eq("id", editingItem.id)
           if (error) throw error
@@ -309,7 +310,7 @@ function CategoriasConexoesSection() {
           if (error) throw error
         }
       } else {
-        const payload = { empresa_id: empresaId, nome: formNome, sigla: formSigla || null, categoria_id: formCategoriaId }
+        const payload = { empresa_id: EMPRESA_ID, nome: formNome, sigla: formSigla || null, categoria_id: formCategoriaId }
         if (editingItem) {
           const { error } = await supabase.from("catalogo_conexoes").update({ nome: formNome, sigla: formSigla || null, categoria_id: formCategoriaId }).eq("id", editingItem.id)
           if (error) throw error

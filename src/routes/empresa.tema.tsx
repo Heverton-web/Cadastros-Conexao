@@ -1,14 +1,12 @@
 import { createRoute } from "@tanstack/react-router";
 import { authLayout } from "./_auth";
-import { useAuth } from "~/lib/auth";
 import {
   salvarEmpresaDesign,
-  listarEmpresas,
   buscarEmpresaDesign,
-  type Empresa,
 } from "~/features/empresas";
+import { EMPRESA_ID } from "~/config/empresa";
 import { useState, useEffect } from "react";
-import { Palette, Save, Loader2, Building2 } from "lucide-react";
+import { Palette, Save, Loader2 } from "lucide-react";
 import toast from "react-hot-toast";
 import { RequirePermission } from "~/components/guards";
 
@@ -43,32 +41,14 @@ const LABELS_CORES: Record<string, string> = {
 };
 
 function AdminTema() {
-  const { profile, empresa: minhaEmpresa } = useAuth();
-
-  const [empresas, setEmpresas] = useState<Empresa[]>([]);
-  const [empresaId, setEmpresaId] = useState("");
-  const [empresaNome, setEmpresaNome] = useState("");
-  const [loadingEmp, setLoadingEmp] = useState(true);
+  const empresaId = EMPRESA_ID;
 
   const [cores, setCores] = useState<Record<string, string>>(CORES_PADRAO);
   const [saving, setSaving] = useState(false);
+  const [loadingEmp, setLoadingEmp] = useState(true);
 
-  // Init: set default empresa from user's empresa, or first in list
+  // Load config on mount
   useEffect(() => {
-    if (!profile?.is_super_admin) return;
-    listarEmpresas().then((emps) => {
-      setEmpresas(emps);
-      const defaultId = minhaEmpresa?.id ?? emps[0]?.id ?? "";
-      setEmpresaId(defaultId);
-      setLoadingEmp(false);
-    });
-  }, [profile, minhaEmpresa]);
-
-  // Load config when empresaId changes
-  useEffect(() => {
-    if (!empresaId) return;
-    const emp = empresas.find((e) => e.id === empresaId);
-    setEmpresaNome(emp?.nome ?? "");
     buscarEmpresaDesign(empresaId).then((config) => {
       if (config) {
         setCores({
@@ -78,25 +58,15 @@ function AdminTema() {
       } else {
         setCores(CORES_PADRAO);
       }
+      setLoadingEmp(false);
     });
-  }, [empresaId, empresas]);
-
-  if (!profile?.is_super_admin) {
-    return (
-      <div className="flex items-center justify-center p-8">
-        <p className="text-text-muted text-sm">
-          Acesso restrito ao administrador da empresa.
-        </p>
-      </div>
-    );
-  }
+  }, []);
 
   async function handleSave() {
-    if (!empresaId) return;
     setSaving(true);
     try {
       await salvarEmpresaDesign(empresaId, { theme: cores });
-      toast.success(`Tema salvo para ${empresaNome}!`);
+      toast.success(`Tema salvo!`);
     } catch (e: any) {
       toast.error(e.message);
     }
@@ -126,7 +96,7 @@ function AdminTema() {
         </div>
         <button
           onClick={handleSave}
-          disabled={saving || !empresaId}
+          disabled={saving}
           className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-accent text-accent-fg text-sm font-medium hover:bg-accent-hover transition-colors disabled:opacity-50"
         >
           {saving ? (
@@ -136,24 +106,6 @@ function AdminTema() {
           )}
           Salvar
         </button>
-      </div>
-
-      {/* Seletor de empresa */}
-      <div className="mb-4 p-3 rounded-lg bg-card border border-border-subtle">
-        <div className="flex items-center gap-2">
-          <Building2 size={14} className="text-text-muted" />
-          <select
-            value={empresaId}
-            onChange={(e) => setEmpresaId(e.target.value)}
-            className="flex-1 px-3 py-1.5 rounded-lg bg-input-bg border border-input-border text-text-main text-sm"
-          >
-            {empresas.map((emp) => (
-              <option key={emp.id} value={emp.id}>
-                {emp.nome}
-              </option>
-            ))}
-          </select>
-        </div>
       </div>
 
       <div className="space-y-4">
@@ -203,9 +155,6 @@ function AdminTema() {
                   />
                 ))}
             </div>
-            <span className="text-xs text-text-muted">
-              {empresaNome || "Empresa"}
-            </span>
           </div>
         </div>
       </div>

@@ -1,5 +1,4 @@
 import { supabase } from "~/core/supabase"
-import { EMPRESA_ID } from "~/config/empresa"
 import type { CatalogoTipoOsso, CatalogoProtocoloFresagem, CatalogoProtocoloFresaItem } from "../types"
 
 // ============================================================
@@ -10,7 +9,6 @@ export async function listarTiposOsso(): Promise<CatalogoTipoOsso[]> {
   const { data, error } = await supabase
     .from("catalogo_tipos_ossos")
     .select("*")
-    .eq("empresa_id", EMPRESA_ID)
     .order("nome")
   if (error) throw error
   return data as CatalogoTipoOsso[]
@@ -19,7 +17,7 @@ export async function listarTiposOsso(): Promise<CatalogoTipoOsso[]> {
 export async function criarTipoOsso(input: { nome: string; sigla?: string }): Promise<CatalogoTipoOsso> {
   const { data, error } = await supabase
     .from("catalogo_tipos_ossos")
-    .insert({ empresa_id: EMPRESA_ID, ...input })
+    .insert({ ...input })
     .select()
     .single()
   if (error) throw error
@@ -44,7 +42,6 @@ export async function listarProtocolos(): Promise<CatalogoProtocoloFresagem[]> {
   const { data, error } = await supabase
     .from("catalogo_protocolos_fresagens")
     .select("*")
-    .eq("empresa_id", EMPRESA_ID)
     .order("nome")
   if (error) throw error
   return data as CatalogoProtocoloFresagem[]
@@ -54,7 +51,6 @@ export async function getProtocoloDetalhe(id: string): Promise<CatalogoProtocolo
   const { data, error } = await supabase
     .from("catalogo_protocolos_fresagens")
     .select("*, fresas:catalogo_protocolos_fresas_itens(*, fresa:catalogo_fresas(*))")
-    .eq("empresa_id", EMPRESA_ID)
     .eq("id", id)
     .single()
   if (error) throw error
@@ -66,7 +62,7 @@ export async function criarProtocolo(input: {
 }): Promise<CatalogoProtocoloFresagem> {
   const { data, error } = await supabase
     .from("catalogo_protocolos_fresagens")
-    .insert({ empresa_id: EMPRESA_ID, ...input })
+    .insert({ ...input })
     .select()
     .single()
   if (error) throw error
@@ -79,7 +75,6 @@ export async function atualizarProtocolo(id: string, input: Partial<{
   const { data, error } = await supabase
     .from("catalogo_protocolos_fresagens")
     .update(input)
-    .eq("empresa_id", EMPRESA_ID)
     .eq("id", id)
     .select()
     .single()
@@ -88,12 +83,10 @@ export async function atualizarProtocolo(id: string, input: Partial<{
 }
 
 export async function toggleProtocoloAtivo(id: string, ativo: boolean): Promise<void> {
-  const { error } = await supabase.from("catalogo_protocolos_fresagens").update({ ativo }).eq("empresa_id", EMPRESA_ID).eq("id", id)
   if (error) throw error
 }
 
 export async function removerProtocolo(id: string): Promise<void> {
-  const { error } = await supabase.from("catalogo_protocolos_fresagens").delete().eq("empresa_id", EMPRESA_ID).eq("id", id)
   if (error) throw error
 }
 
@@ -103,10 +96,9 @@ export async function removerProtocolo(id: string): Promise<void> {
 
 export async function salvarProtocoloFresas(protocoloId: string, items: { fresa_id: string; ordem: number }[]): Promise<void> {
   // Delete existing
-  await supabase.from("catalogo_protocolos_fresas_itens").delete().eq("empresa_id", EMPRESA_ID).eq("protocolo_id", protocoloId)
   // Insert new
   if (items.length > 0) {
-    const rows = items.map((f, i) => ({ empresa_id: EMPRESA_ID, protocolo_id: protocoloId, fresa_id: f.fresa_id, ordem: i + 1 }))
+    const rows = items.map((f, i) => ({ protocolo_id: protocoloId, fresa_id: f.fresa_id, ordem: i + 1 }))
     const { error } = await supabase.from("catalogo_protocolos_fresas_itens").insert(rows)
     if (error) throw error
   }
@@ -116,7 +108,6 @@ export async function listarProtocoloFresas(protocoloId: string): Promise<Catalo
   const { data, error } = await supabase
     .from("catalogo_protocolos_fresas_itens")
     .select("*, fresa:catalogo_fresas(*)")
-    .eq("empresa_id", EMPRESA_ID)
     .eq("protocolo_id", protocoloId)
     .order("ordem")
   if (error) throw error

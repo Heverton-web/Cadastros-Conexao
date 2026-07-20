@@ -184,7 +184,6 @@ export function GruposAdmin() {
         ...prev,
         {
           id: `local_${Date.now()}`,
-          empresa_id: empresaId,
           grupo_id: editing?.id ?? "",
           produto_sku: precoForm.produto!.sku,
           produto_tipo: precoForm.produto!.tipo,

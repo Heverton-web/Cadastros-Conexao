@@ -1,11 +1,9 @@
 import { createRoute } from "@tanstack/react-router";
 import { authLayout } from "./_auth";
-import { useAuth } from "~/lib/auth";
 import { supabase } from "~/core/supabase";
 import {
   buscarEmpresa,
   atualizarEmpresa,
-  listarEmpresas,
   buscarEmpresaConfig,
   salvarEmpresaConfig,
   uploadEmpresaLogo,
@@ -13,6 +11,7 @@ import {
   type Empresa,
   type EmpresaConfig,
 } from "~/features/empresas";
+import { EMPRESA_ID } from "~/config/empresa";
 import {
   listarCredenciaisPorEmpresa,
   criarCredencial,
@@ -106,32 +105,14 @@ export const adminEmpresaRoute = createRoute({
 });
 
 function AdminEmpresa() {
-  const { profile: authProfile } = useAuth();
-  const isSuper = authProfile?.is_super_admin === true;
-  const minhaEmpresaId = authProfile?.empresa_id as string | undefined;
-
   const [tab, setTab] = useState<Tab>("dados");
-  const [empresas, setEmpresas] = useState<Empresa[]>([]);
-  const [empresaId, setEmpresaId] = useState(minhaEmpresaId || "");
+  const empresaId = EMPRESA_ID;
   const [empresa, setEmpresa] = useState<Empresa | null>(null);
   const [config, setConfig] = useState<EmpresaConfig | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (isSuper) {
-      listarEmpresas().then((emps) => {
-        setEmpresas(emps);
-        const eid = empresaId || emps[0]?.id || "";
-        setEmpresaId(eid);
-        if (eid) loadData(eid);
-        else setLoading(false);
-      });
-    } else if (minhaEmpresaId) {
-      setEmpresaId(minhaEmpresaId);
-      loadData(minhaEmpresaId);
-    } else {
-      setLoading(false);
-    }
+    loadData(empresaId);
   }, []);
 
   async function loadData(eid: string) {
@@ -145,18 +126,7 @@ function AdminEmpresa() {
     setLoading(false);
   }
 
-  function handleEmpresaChange(eid: string) {
-    setEmpresaId(eid);
-    loadData(eid);
-  }
 
-  if (!isSuper && !minhaEmpresaId) {
-    return (
-      <div className="flex items-center justify-center p-8">
-        <p className="text-text-muted text-sm">Sem empresa vinculada.</p>
-      </div>
-    );
-  }
 
   return (
     <div className="p-4 max-w-5xl mx-auto">
@@ -172,25 +142,7 @@ function AdminEmpresa() {
         </div>
       </div>
 
-      {isSuper && (
-        <div className="mb-4 p-3 rounded-lg bg-card border border-border-subtle">
-          <div className="flex items-center gap-2">
-            <Building2 size={14} className="text-text-muted shrink-0" />
-            <select
-              value={empresaId}
-              onChange={(e) => handleEmpresaChange(e.target.value)}
-              className="w-full px-3 py-1.5 rounded-lg bg-input-bg border border-input-border text-text-main text-sm"
-            >
-              <option value="">Selecione uma empresa</option>
-              {empresas.map((emp) => (
-                <option key={emp.id} value={emp.id}>
-                  {emp.nome}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-      )}
+
 
       <div className="flex gap-1 rounded-xl bg-card p-1 overflow-x-auto whitespace-nowrap scrollbar-hide mb-4">
         {[
@@ -219,10 +171,6 @@ function AdminEmpresa() {
         <div className="flex justify-center py-12">
           <Loader2 size={24} className="animate-spin text-accent" />
         </div>
-      ) : !empresaId ? (
-        <p className="text-center text-sm text-text-muted py-8">
-          Selecione uma empresa.
-        </p>
       ) : (
         <>
           {tab === "dados" && (

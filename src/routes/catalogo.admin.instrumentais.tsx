@@ -1,3 +1,4 @@
+import { EMPRESA_ID } from "~/config/empresa"
 import { RequirePermission } from "~/components/guards"
 import { createRoute } from "@tanstack/react-router"
 import { authLayout } from "./_auth"
@@ -76,7 +77,7 @@ function AdminInstrumentaisPage() {
     setError("")
     if (!nome.trim()) { setError("Nome é obrigatório"); return }
     const table = activeModal === "tipo_chave" ? "catalogo_tipos_chaves" : activeModal === "tipo_fresa" ? "catalogo_tipos_fresas" : activeModal === "tipo_complementar" ? "catalogo_tipos_complementares" : "catalogo_tipos_opcionais"
-    const payload = { empresa_id: empresaId, nome: nome.trim(), sigla: sigla.trim() || null, ativo }
+    const payload = { empresa_id: EMPRESA_ID, nome: nome.trim(), sigla: sigla.trim() || null, ativo }
     if (editing) { const { error } = await supabase.from(table).update({ nome: payload.nome, sigla: payload.sigla, ativo }).eq("id", editing.id); if (error) { setError(error.message); return } }
     else { const { error } = await supabase.from(table).insert(payload); if (error) { setError(error.message); return } }
     toast.success(editing ? "Atualizado!" : "Criado!")
@@ -104,7 +105,7 @@ function AdminInstrumentaisPage() {
     if (!prodData.sku.trim()) { setProdError("SKU é obrigatório"); return }
     if (!prodData.nome.trim()) { setProdError("Nome é obrigatório"); return }
     const table = subTab === "Chaves" ? "catalogo_chaves" : subTab === "Fresas" ? "catalogo_fresas" : subTab === "Complementares" ? "catalogo_complementares" : "catalogo_opcionais"
-    const payload = { ...prodData, empresa_id: empresaId }
+    const payload = { ...prodData, empresa_id: EMPRESA_ID }
     if (prodEditing) { const { error } = await supabase.from(table).update(payload).eq("sku", prodEditing.sku).eq("empresa_id", empresaId); if (error) { setProdError(error.message); return } }
     else { const { error } = await supabase.from(table).insert(payload); if (error) { setProdError(error.message); return } }
     toast.success(prodEditing ? "Atualizado!" : "Criado!")

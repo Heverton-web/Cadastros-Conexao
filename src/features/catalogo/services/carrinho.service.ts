@@ -1,5 +1,4 @@
 import { useSyncExternalStore } from "react"
-import { EMPRESA_ID } from "~/config/empresa"
 import type { CartItem, ProductSheetTipo } from "../types"
 
 const STORAGE_PREFIX = "conexao_cart_v1"
@@ -9,9 +8,8 @@ let items: CartItem[] = []
 let listeners: Array<() => void> = []
 
 function scopeKey(userId: string | null): string {
-  const e = EMPRESA_ID
   const u = userId ?? "anon"
-  return `${STORAGE_PREFIX}_${e}_${u}`
+  return `${STORAGE_PREFIX}_${u}`
 }
 
 function storageKey(): string {
@@ -50,7 +48,7 @@ function getSnapshot(): CartItem[] {
 
 /**
  * Define o escopo do carrinho (usuário) e carrega o carrinho
- * persistido para esse escopo. Em single-tenant, a empresa é fixa (EMPRESA_ID).
+ * persistido para esse escopo..
  */
 export function setCarrinhoScope(userId: string | null): void {
   if (scopeUserId === userId) return

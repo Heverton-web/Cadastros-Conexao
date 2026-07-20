@@ -1,3 +1,4 @@
+import { EMPRESA_ID } from "~/config/empresa"
 import { RequirePermission } from "~/components/guards"
 import { createRoute } from "@tanstack/react-router"
 import { authLayout } from "./_auth"
@@ -75,7 +76,7 @@ function AdminKitsPage() {
   async function handleSaveTipo() {
     setTipoError("")
     if (!tipoNome.trim()) { setTipoError("Nome é obrigatório"); return }
-    const payload = { empresa_id: empresaId, nome: tipoNome.trim(), sigla: tipoSigla.trim() || null, ativo: tipoAtivo }
+    const payload = { empresa_id: EMPRESA_ID, nome: tipoNome.trim(), sigla: tipoSigla.trim() || null, ativo: tipoAtivo }
     if (tipoEditing) { const { error } = await supabase.from("catalogo_tipos_kits").update({ nome: payload.nome, sigla: payload.sigla, ativo }).eq("id", tipoEditing.id); if (error) { setTipoError(error.message); return } }
     else { const { error } = await supabase.from("catalogo_tipos_kits").insert(payload); if (error) { setTipoError(error.message); return } }
     toast.success(tipoEditing ? "Atualizado!" : "Criado!")
@@ -111,7 +112,7 @@ function AdminKitsPage() {
     setKitError("")
     if (!kitData.sku.trim()) { setKitError("SKU é obrigatório"); return }
     if (!kitData.nome.trim()) { setKitError("Nome é obrigatório"); return }
-    const payload = { ...kitData, empresa_id: empresaId }
+    const payload = { ...kitData, empresa_id: EMPRESA_ID }
     if (kitEditing) { const { error } = await supabase.from("catalogo_kits").update(payload).eq("sku", kitEditing.sku).eq("empresa_id", empresaId); if (error) { setKitError(error.message); return } }
     else { const { error } = await supabase.from("catalogo_kits").insert(payload); if (error) { setKitError(error.message); return } }
     // Save N:M composition
@@ -123,15 +124,15 @@ function AdminKitsPage() {
       supabase.from("catalogo_kit_opcionais").delete().eq("empresa_id", empresaId).eq("kit_sku", sku),
       supabase.from("catalogo_kit_implantes").delete().eq("empresa_id", empresaId).eq("kit_sku", sku),
     ])
-    if (kitChaves.length > 0) await supabase.from("catalogo_kit_chaves").insert(kitChaves.map(id => ({ empresa_id: empresaId, kit_sku: sku, chave_id: id })))
-    if (kitFresas.length > 0) await supabase.from("catalogo_kit_fresas").insert(kitFresas.map(id => ({ empresa_id: empresaId, kit_sku: sku, fresa_id: id })))
-    if (kitComplementares.length > 0) await supabase.from("catalogo_kit_complementares").insert(kitComplementares.map(id => ({ empresa_id: empresaId, kit_sku: sku, complementar_id: id })))
-    if (kitOpcionais.length > 0) await supabase.from("catalogo_kit_opcionais").insert(kitOpcionais.map(id => ({ empresa_id: empresaId, kit_sku: sku, opcional_id: id })))
+    if (kitChaves.length > 0) await supabase.from("catalogo_kit_chaves").insert(kitChaves.map(id => ({ empresa_id: EMPRESA_ID, kit_sku: sku, chave_id: id })))
+    if (kitFresas.length > 0) await supabase.from("catalogo_kit_fresas").insert(kitFresas.map(id => ({ empresa_id: EMPRESA_ID, kit_sku: sku, fresa_id: id })))
+    if (kitComplementares.length > 0) await supabase.from("catalogo_kit_complementares").insert(kitComplementares.map(id => ({ empresa_id: EMPRESA_ID, kit_sku: sku, complementar_id: id })))
+    if (kitOpcionais.length > 0) await supabase.from("catalogo_kit_opcionais").insert(kitOpcionais.map(id => ({ empresa_id: EMPRESA_ID, kit_sku: sku, opcional_id: id })))
     // Save implantes compatibility
     if (kitTodosDiametros) {
-      await supabase.from("catalogo_kit_implantes").insert({ empresa_id: empresaId, kit_sku: sku, implante_sku: "*", todos_diametros: true })
+      await supabase.from("catalogo_kit_implantes").insert({ empresa_id: EMPRESA_ID, kit_sku: sku, implante_sku: "*", todos_diametros: true })
     } else if (kitImplantes.length > 0) {
-      await supabase.from("catalogo_kit_implantes").insert(kitImplantes.map(s => ({ empresa_id: empresaId, kit_sku: sku, implante_sku: s, todos_diametros: false })))
+      await supabase.from("catalogo_kit_implantes").insert(kitImplantes.map(s => ({ empresa_id: EMPRESA_ID, kit_sku: sku, implante_sku: s, todos_diametros: false })))
     }
     toast.success(kitEditing ? "Kit atualizado!" : "Kit criado!")
     setKitModalOpen(false); qc.invalidateQueries({ queryKey: ["catalogo"] })

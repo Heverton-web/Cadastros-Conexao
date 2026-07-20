@@ -1,8 +1,6 @@
 import { supabase } from "~/lib/supabase"
-import { EMPRESA_ID } from "~/config/empresa"
 
 export interface CatalogoConfiguracoes {
-  empresa_id: string
   nome_loja: string
   cnpj: string
   email_contato: string
@@ -17,7 +15,6 @@ export interface CatalogoConfiguracoes {
 }
 
 export const DEFAULT_CONFIGURACOES: CatalogoConfiguracoes = {
-  empresa_id: "",
   nome_loja: "ERP Odonto",
   cnpj: "",
   email_contato: "",
@@ -35,12 +32,11 @@ export async function getConfiguracoes(): Promise<CatalogoConfiguracoes> {
   const { data, error } = await supabase
     .from("catalogo_configuracoes")
     .select("*")
-    .eq("empresa_id", EMPRESA_ID)
     .single()
 
   if (error || !data) {
     // Se não existir, retorna defaults
-    return { ...DEFAULT_CONFIGURACOES, empresa_id: EMPRESA_ID }
+    return DEFAULT_CONFIGURACOES
   }
 
   return data as CatalogoConfiguracoes
@@ -50,7 +46,6 @@ export async function saveConfiguracoes(config: CatalogoConfiguracoes): Promise<
   const { error } = await supabase
     .from("catalogo_configuracoes")
     .upsert({
-      empresa_id: EMPRESA_ID,
       nome_loja: config.nome_loja,
       cnpj: config.cnpj,
       email_contato: config.email_contato,
@@ -63,7 +58,7 @@ export async function saveConfiguracoes(config: CatalogoConfiguracoes): Promise<
       checkout_habilitado: config.checkout_habilitado,
       cupons_habilitado: config.cupons_habilitado,
       updated_at: new Date().toISOString(),
-    }, { onConflict: "empresa_id" })
+    })
 
   if (error) throw error
 }

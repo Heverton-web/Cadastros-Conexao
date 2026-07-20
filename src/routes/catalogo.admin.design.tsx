@@ -1,7 +1,6 @@
 
 import { RequirePermission } from "~/components/guards";import { createRoute } from "@tanstack/react-router"
 import { authLayout } from "./_auth"
-import { useAuth } from "~/lib/auth"
 import { useState, useEffect } from "react"
 import { Save, Loader2, ExternalLink, Copy, Check } from "lucide-react"
 import toast from "react-hot-toast"
@@ -22,7 +21,7 @@ import {
   DEFAULT_CATALOGO_CONFIG,
   type CatalogoDesignConfig,
 } from "~/features/catalogo/services/design.service"
-import { listarEmpresas, type Empresa } from "~/shared/empresas"
+
 
 export const catalogoAdminDesignRoute = createRoute({
   getParentRoute: () => authLayout,
@@ -34,7 +33,7 @@ export const catalogoAdminDesignRoute = createRoute({
   ),
 })
 
-type TabKey = "colors" | "typography" | "texts" | "visibility" | "images" | "effects" | "cards" | "themes"
+type TabKey = "colors" | "typography" | "texts" | "visibility" | "images" | "effects" | "cards" | "themes" | "footer"
 
 const TABS: { key: TabKey; label: string }[] = [
   { key: "themes", label: "Temas" },
@@ -49,40 +48,20 @@ const TABS: { key: TabKey; label: string }[] = [
 ]
 
 function AdminDesignPage() {
-  const { profile, empresa } = useAuth()
-  const isSuperAdmin = profile?.is_super_admin === true
-
-  const [empresas, setEmpresas] = useState<Empresa[]>([])
-  const [selectedEmpresaId, setSelectedEmpresaId] = useState(empresa?.id ?? "")
   const [config, setConfig] = useState<CatalogoDesignConfig>(DEFAULT_CATALOGO_CONFIG)
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [activeTab, setActiveTab] = useState<TabKey>("colors")
   const [copied, setCopied] = useState(false)
 
-  // Super Admin: carrega lista de empresas
   useEffect(() => {
-    if (isSuperAdmin) {
-      listarEmpresas().then((emps) => {
-        setEmpresas(emps)
-        if (!selectedEmpresaId && emps.length > 0) {
-          setSelectedEmpresaId(emps[0].id)
-        }
-      })
-    }
-  }, [isSuperAdmin])
-
-  // Carrega config quando empresa muda
-  useEffect(() => {
-    if (!selectedEmpresaId) return
     setLoading(true)
     getCatalogoDesign()
       .then(setConfig)
       .finally(() => setLoading(false))
-  }, [selectedEmpresaId])
+  }, [])
 
   async function handleSave() {
-    if (!selectedEmpresaId) return
     setSaving(true)
     try {
       await saveCatalogoDesign(config)
@@ -94,15 +73,9 @@ function AdminDesignPage() {
     }
   }
 
-  const selectedEmpresa = empresas.find((e) => e.id === selectedEmpresaId)
-
-  // URL da loja pública
-  const storeUrl = selectedEmpresa?.slug
-    ? `${window.location.origin}/catalogo/${selectedEmpresa.slug}`
-    : ""
+  const storeUrl = `${window.location.origin}/catalogo`
 
   async function handleCopyLink() {
-    if (!storeUrl) return
     try {
       await navigator.clipboard.writeText(storeUrl)
       setCopied(true)
@@ -121,50 +94,34 @@ function AdminDesignPage() {
           <h1 className="text-lg font-bold text-text-main">Design da Loja</h1>
           <p className="text-xs text-text-muted">
             Personalize a aparência da loja do catálogo
-            {selectedEmpresa && ` — ${selectedEmpresa.nome}`}
           </p>
         </div>
 
         <div className="flex items-center gap-3">
-          {/* Seletor de empresa (Super Admin) */}
-          {isSuperAdmin && empresas.length > 0 && (
-            <select
-              value={selectedEmpresaId}
-              onChange={(e) => setSelectedEmpresaId(e.target.value)}
-              className="px-3 py-2 rounded-lg bg-input-bg border border-input-border text-text-main text-sm"
-            >
-              {empresas.map((emp) => (
-                <option key={emp.id} value={emp.id}>{emp.nome}</option>
-              ))}
-            </select>
-          )}
-
           {/* Link da loja + Copiar */}
-          {storeUrl && (
-            <div className="flex items-center gap-2">
-              <a
-                href={storeUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-card border border-border-subtle text-text-muted text-xs hover:text-accent hover:border-accent/50 transition-colors"
-              >
-                <ExternalLink size={12} />
-                <span className="max-w-[200px] truncate">Loja</span>
-              </a>
-              <button
-                onClick={handleCopyLink}
-                className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-card border border-border-subtle text-text-muted text-xs hover:text-accent hover:border-accent/50 transition-colors"
-                title="Copiar link da loja"
-              >
-                {copied ? <Check size={12} className="text-success" /> : <Copy size={12} />}
-                {copied ? "Copiado!" : "Copiar link"}
-              </button>
-            </div>
-          )}
+          <div className="flex items-center gap-2">
+            <a
+              href={storeUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-card border border-border-subtle text-text-muted text-xs hover:text-accent hover:border-accent/50 transition-colors"
+            >
+              <ExternalLink size={12} />
+              <span className="max-w-[200px] truncate">Loja</span>
+            </a>
+            <button
+              onClick={handleCopyLink}
+              className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-card border border-border-subtle text-text-muted text-xs hover:text-accent hover:border-accent/50 transition-colors"
+              title="Copiar link da loja"
+            >
+              {copied ? <Check size={12} className="text-success" /> : <Copy size={12} />}
+              {copied ? "Copiado!" : "Copiar link"}
+            </button>
+          </div>
 
           <button
             onClick={handleSave}
-            disabled={saving || !selectedEmpresaId || loading}
+            disabled={saving || loading}
             className="flex items-center gap-2 px-4 py-2 rounded-lg bg-accent text-accent-fg text-sm font-semibold hover:bg-accent-hover transition-colors disabled:opacity-50"
           >
             {saving ? <Loader2 size={14} className="animate-spin" /> : <Save size={14} />}
@@ -172,6 +129,7 @@ function AdminDesignPage() {
           </button>
         </div>
       </div>
+
 
       {loading ? (
         <div className="flex items-center justify-center py-20">
@@ -227,7 +185,6 @@ function AdminDesignPage() {
               {activeTab === "images" && (
                 <ImagesSection
                   images={config.images}
-                  empresaId={selectedEmpresaId}
                   onChange={(images) => setConfig({ ...config, images })}
                 />
               )}
@@ -241,7 +198,7 @@ function AdminDesignPage() {
                 <CardsSection
                   cards={config.cards}
                   onChange={(cards) => setConfig({ ...config, cards })}
-                  isSuperAdmin={isSuperAdmin}
+                  isSuperAdmin={false}
                 />
               )}
               {activeTab === "footer" && (

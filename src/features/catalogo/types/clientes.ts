@@ -8,7 +8,6 @@ export type PrecoTipo = "percentual" | "fixo"
 
 export interface CatalogoGrupoCliente {
   id: string
-  empresa_id: string
   nome: string
   descricao: string | null
   preco_tipo: PrecoTipo
@@ -32,7 +31,6 @@ export interface CatalogoGrupoClienteInput {
 
 export interface CatalogoGrupoPreco {
   id: string
-  empresa_id: string
   grupo_id: string
   produto_sku: string
   produto_tipo: string
@@ -72,7 +70,6 @@ export type ClienteTipo = "cliente" | "parceiro" | "revendedor"
 
 export interface CatalogoCliente {
   id: string
-  empresa_id: string
   cadastro_id: string | null
   user_id: string | null
   grupo_id: string | null
@@ -112,7 +109,6 @@ export interface CatalogoClienteInput {
 
 export interface CatalogoClientePermissao {
   id: string
-  empresa_id: string
   cliente_id: string
   permissao_key: string
   ativo: boolean
@@ -138,7 +134,6 @@ export type SolicitacaoStatus = "pendente" | "aprovada" | "rejeitada"
 
 export interface CatalogoSolicitacaoAcesso {
   id: string
-  empresa_id: string
   nome: string
   email: string
   telefone: string | null

@@ -1,5 +1,4 @@
 import { supabase } from "~/core/supabase"
-import { EMPRESA_ID } from "~/config/empresa"
 import type { CatalogoImagemProduto, ProdutoTipoImagem, FonteImagem } from "../types"
 import { compressImage } from "../lib/compressImage"
 
@@ -60,7 +59,7 @@ export async function uploadImagem(
   if (!validacao.valido) throw new Error(validacao.erro)
 
   const ext = file.name.split(".").pop()?.toLowerCase() || "jpg"
-  const path = `${EMPRESA_ID}/${tipo}/${sku}/${crypto.randomUUID()}.${ext}`
+  const path = `${tipo}/${sku}/${crypto.randomUUID()}.${ext}`
 
   const { error: uploadError } = await supabase.storage
     .from(BUCKET)
@@ -94,7 +93,6 @@ export async function adicionarImagemUrl(
   const { data: ultima } = await supabase
     .from("catalogo_imagens_produto")
     .select("ordem_exibicao")
-    .eq("empresa_id", EMPRESA_ID)
     .eq("produto_tipo", tipo)
     .eq("produto_sku", sku)
     .order("ordem_exibicao", { ascending: false })
@@ -106,7 +104,6 @@ export async function adicionarImagemUrl(
   const { data, error } = await supabase
     .from("catalogo_imagens_produto")
     .insert({
-      empresa_id: EMPRESA_ID,
       produto_tipo: tipo,
       produto_sku: sku,
       url_imagem: urlFinal,
@@ -130,7 +127,6 @@ export async function listarImagens(
   const { data, error } = await supabase
     .from("catalogo_imagens_produto")
     .select("*")
-    .eq("empresa_id", EMPRESA_ID)
     .eq("produto_tipo", tipo)
     .eq("produto_sku", sku)
     .order("ordem_exibicao")
@@ -152,7 +148,6 @@ export async function listarImagensBatch(
   const { data, error } = await supabase
     .from("catalogo_imagens_produto")
     .select("*")
-    .eq("empresa_id", EMPRESA_ID)
     .eq("produto_tipo", tipo)
     .in("produto_sku", skus)
     .order("ordem_exibicao")
@@ -185,7 +180,6 @@ export async function removerImagem(
     .from("catalogo_imagens_produto")
     .delete()
     .eq("id", imagemId)
-    .eq("empresa_id", EMPRESA_ID)
 
   if (error) throw error
 }
@@ -203,7 +197,6 @@ export async function reordenarImagens(
       .from("catalogo_imagens_produto")
       .update({ ordem_exibicao: ordem })
       .eq("id", id)
-      .eq("empresa_id", EMPRESA_ID)
   )
 
   const results = await Promise.all(updates)
@@ -227,7 +220,6 @@ export async function uploadEAdicionarImagem(
   const { data: ultima } = await supabase
     .from("catalogo_imagens_produto")
     .select("ordem_exibicao")
-    .eq("empresa_id", EMPRESA_ID)
     .eq("produto_tipo", tipo)
     .eq("produto_sku", sku)
     .order("ordem_exibicao", { ascending: false })
@@ -239,7 +231,6 @@ export async function uploadEAdicionarImagem(
   const { data, error } = await supabase
     .from("catalogo_imagens_produto")
     .insert({
-      empresa_id: EMPRESA_ID,
       produto_tipo: tipo,
       produto_sku: sku,
       url_imagem: url,

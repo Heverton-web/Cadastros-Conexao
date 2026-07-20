@@ -7,7 +7,6 @@ import { useCarrinho, cartTotais, setCarrinhoScope } from '../services/carrinho.
 import { useAuth } from '~/lib/auth';
 import { CartDrawer } from './CartDrawer';
 import { ImageViewer } from './ImageViewer';
-import { EMPRESA_ID } from '~/config/empresa';
 import { ProductSheet } from './ProductSheet';
 
 export const CatalogoVisibilityContext = createContext({ showPrices: true, showSearchBar: true });
@@ -17,7 +16,6 @@ import { getCatalogoDesign, mergeWithDefaults } from '../services/design.service
 
 interface StoreLayoutProps {
   children: React.ReactNode;
-  empresaId?: string | null;
   fullHeight?: boolean;
   zoom?: number;
 }
@@ -56,10 +54,9 @@ function applyDesignToRoot(config: ReturnType<typeof mergeWithDefaults>) {
   document.body.style.fontFamily = config.typography.fontFamily || "'Inter', sans-serif";
 }
 
-export function StoreLayout({ children, empresaId: empresaIdProp, fullHeight, zoom }: StoreLayoutProps) {
+export function StoreLayout({ children, fullHeight, zoom }: StoreLayoutProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [isBackVisible, setIsBackVisible] = useState(false);
-  const [resolvedEmpresaId, setResolvedEmpresaId] = useState<string | null>(empresaIdProp ?? EMPRESA_ID ?? null);
   const [visibility, setVisibility] = useState({ showPrices: true, showSearchBar: true });
   const [logoUrl, setLogoUrl] = useState('');
   const navigate = useNavigate();
@@ -71,14 +68,7 @@ export function StoreLayout({ children, empresaId: empresaIdProp, fullHeight, zo
   useEffect(() => {
     setCarrinhoScope(profile?.id ?? null);
   }, [profile?.id]);
-  // Resolve empresaId: se prop foi passada, usa; senão, usa EMPRESA_ID do config
-  useEffect(() => {
-    if (empresaIdProp) {
-      setResolvedEmpresaId(empresaIdProp);
-      return;
-    }
-    setResolvedEmpresaId(EMPRESA_ID ?? null);
-  }, [empresaIdProp]);
+  // empresaId resolution removed (single-tenant)
 
   // Check admin
   useEffect(() => {
@@ -99,7 +89,6 @@ export function StoreLayout({ children, empresaId: empresaIdProp, fullHeight, zo
 
   // Carrega design config e aplica no :root
   useEffect(() => {
-    if (!resolvedEmpresaId) return;
 
     let cancelled = false;
 
@@ -127,16 +116,8 @@ export function StoreLayout({ children, empresaId: empresaIdProp, fullHeight, zo
           document.body.style.backgroundAttachment = 'fixed';
         }
 
-        // Favicon: tenta catalogo_design_config, senão fallback para empresas_config
-        let faviconSrc = config.images.faviconUrl;
-        if (!faviconSrc) {
-          const { data: empConfig } = await supabase
-            .from("empresas_config")
-            .select("favicon_url")
-            .eq("empresa_id", resolvedEmpresaId!)
-            .single();
-          faviconSrc = empConfig?.favicon_url || "";
-        }
+        // Favicon: usa config do catalogo_design_config
+        const faviconSrc = config.images.faviconUrl;
         if (faviconSrc) {
           let link = document.querySelector<HTMLLinkElement>("link[rel='icon']");
           if (!link) {
@@ -160,7 +141,7 @@ export function StoreLayout({ children, empresaId: empresaIdProp, fullHeight, zo
     loadDesign();
 
     return () => { cancelled = true; };
-  }, [resolvedEmpresaId]);
+  }, []);
 
   // Cleanup: remove CSS vars customizadas e restaura favicon ao desmontar
   useEffect(() => {

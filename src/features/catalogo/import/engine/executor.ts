@@ -13,12 +13,11 @@ interface ExecuteImportParams {
   importType: ImportType
   validRows: ValidatedRow[]
   editedRows: Map<number, Record<string, unknown>>
-  empresaId: string
   onProgress: (progress: ImportProgress) => void
 }
 
 export async function executeImport(params: ExecuteImportParams): Promise<ImportResult> {
-  const { importType, validRows, editedRows, empresaId, onProgress } = params
+  const { importType, validRows, editedRows, onProgress } = params
   const startTime = Date.now()
 
   const progress: ImportProgress = {
@@ -42,9 +41,9 @@ export async function executeImport(params: ExecuteImportParams): Promise<Import
   if (importType === "hierarquia") {
     const allRows = validRows.map((row) => {
       const edited = editedRows.get(row.rowIndex)
-      return { ...(edited ?? row.data), empresa_id: empresaId }
+      return { ...(edited ?? row.data), }
     })
-    const result = await insertHierarquiaBatch(allRows, empresaId)
+    const result = await insertHierarquiaBatch(allRows)
     progress.insertedCount = result.inserted
     progress.errorCount = result.errors.length
     progress.errors = result.errors
@@ -56,9 +55,9 @@ export async function executeImport(params: ExecuteImportParams): Promise<Import
   } else if (importType === "kits") {
     const allRows = validRows.map((row) => {
       const edited = editedRows.get(row.rowIndex)
-      return { ...(edited ?? row.data), empresa_id: empresaId }
+      return { ...(edited ?? row.data), }
     })
-    const result = await insertKitsBatch(allRows, empresaId)
+    const result = await insertKitsBatch(allRows)
     progress.insertedCount = result.inserted
     progress.errorCount = result.errors.length
     progress.errors = result.errors
@@ -70,9 +69,9 @@ export async function executeImport(params: ExecuteImportParams): Promise<Import
   } else if (importType === "workflows") {
     const allRows = validRows.map((row) => {
       const edited = editedRows.get(row.rowIndex)
-      return { ...(edited ?? row.data), empresa_id: empresaId }
+      return { ...(edited ?? row.data), }
     })
-    const result = await insertWorkflowsBatch(allRows, empresaId)
+    const result = await insertWorkflowsBatch(allRows)
     progress.insertedCount = result.inserted
     progress.errorCount = result.errors.length
     progress.errors = result.errors
@@ -87,11 +86,11 @@ export async function executeImport(params: ExecuteImportParams): Promise<Import
       const batch = batches[i]
       const rowsToInsert = batch.map((row) => {
         const edited = editedRows.get(row.rowIndex)
-        return { ...(edited ?? row.data), empresa_id: empresaId }
+        return { ...(edited ?? row.data), }
       })
 
       try {
-        const result = await insertSimpleBatch(importType, rowsToInsert, empresaId)
+        const result = await insertSimpleBatch(importType, rowsToInsert)
         progress.currentBatch = i + 1
         progress.processedRows += batch.length
         progress.insertedCount += result.inserted
@@ -123,7 +122,7 @@ export async function executeImport(params: ExecuteImportParams): Promise<Import
     }
   }
 
-  await fireImportEvents(importType, empresaId, details)
+  await fireImportEvents(importType, details)
 
   return {
     success: progress.errorCount === 0,
@@ -139,7 +138,6 @@ export async function executeImport(params: ExecuteImportParams): Promise<Import
 async function insertSimpleBatch(
   importType: ImportType,
   rows: Record<string, unknown>[],
-  empresaId: string
 ): Promise<{ inserted: number; updated: number; errors: ImportError[]; details: ImportResultDetail[] }> {
   const table = getTableForImportType(importType)
   if (!table) return { inserted: 0, updated: 0, errors: [], details: [] }
@@ -157,7 +155,7 @@ async function insertSimpleBatch(
     const finalRow: Record<string, unknown> = { ...rest }
 
     if (importType === "implantes" || importType === "abutments") {
-      const linhaId = await resolveLinhaId(empresaId, familia_nome as string, linha_nome as string)
+      const linhaId = await resolveLinhaId(familia_nome as string, linha_nome as string)
       if (linhaId) finalRow.linha_id = linhaId
       else if (linha_nome) {
         errors.push({
@@ -168,7 +166,7 @@ async function insertSimpleBatch(
     }
 
     if (importType === "abutments") {
-      const familiaId = await resolveFamiliaId(empresaId, familia_nome as string)
+      const familiaId = await resolveFamiliaId(familia_nome as string)
       if (familiaId) finalRow.familia_id = familiaId
       else {
         errors.push({
@@ -177,10 +175,10 @@ async function insertSimpleBatch(
         continue
       }
 
-      const tipoReabId = await resolveTipoReabilitacaoId(empresaId, tipo_reabilitacao_nome as string)
+      const tipoReabId = await resolveTipoReabilitacaoId(tipo_reabilitacao_nome as string)
       if (tipoReabId) finalRow.tipo_reabilitacao_id = tipoReabId
       else {
-        const newId = await createTipoReabilitacao(empresaId, tipo_reabilitacao_nome as string)
+        const newId = await createTipoReabilitacao(tipo_reabilitacao_nome as string)
         if (newId) finalRow.tipo_reabilitacao_id = newId
         else {
           errors.push({
@@ -190,10 +188,10 @@ async function insertSimpleBatch(
         }
       }
 
-      const tipoAbtId = await resolveTipoAbutmentId(empresaId, tipo_abutment_nome as string)
+      const tipoAbtId = await resolveTipoAbutmentId(tipo_abutment_nome as string)
       if (tipoAbtId) finalRow.tipo_abutment_id = tipoAbtId
       else {
-        const newId = await createTipoAbutment(empresaId, tipo_abutment_nome as string)
+        const newId = await createTipoAbutment(tipo_abutment_nome as string)
         if (newId) finalRow.tipo_abutment_id = newId
         else {
           errors.push({
@@ -205,10 +203,10 @@ async function insertSimpleBatch(
     }
 
     if (importType === "acessorios" || importType === "instrumentais") {
-      const catId = await resolveCategoriaId(empresaId, importType, categoria_nome as string)
+      const catId = await resolveCategoriaId(importType, categoria_nome as string)
       if (catId) finalRow.categoria_id = catId
       else {
-        const newId = await createCategoria(empresaId, importType, categoria_nome as string)
+        const newId = await createCategoria(importType, categoria_nome as string)
         if (newId) finalRow.categoria_id = newId
         else {
           errors.push({
@@ -225,14 +223,14 @@ async function insertSimpleBatch(
   if (toUpsert.length > 0) {
     const { error } = await supabase
       .from(table)
-      .upsert(toUpsert, { onConflict: "empresa_id,sku" })
+      .upsert(toUpsert, { onConflict: "sku" })
 
     if (error) {
       for (const row of toUpsert) {
         try {
           const { error: singleErr } = await supabase
             .from(table)
-            .upsert([row], { onConflict: "empresa_id,sku" })
+            .upsert([row], { onConflict: "sku" })
           if (singleErr) {
             errors.push({
               rowIndex: -1, data: row, error: singleErr.message,
@@ -262,7 +260,6 @@ async function insertSimpleBatch(
 
 async function insertHierarquiaBatch(
   rows: Record<string, unknown>[],
-  empresaId: string
 ): Promise<{ inserted: number; updated: number; errors: ImportError[]; details: ImportResultDetail[] }> {
   const categorias = new Map<string, { nome: string }>()
   const conexoes = new Map<string, { nome: string; sigla?: string; categoria_nome: string }>()
@@ -307,7 +304,7 @@ async function insertHierarquiaBatch(
   for (const [, cat] of categorias) {
     const { error } = await supabase
       .from("catalogo_categorias")
-      .upsert({ empresa_id: empresaId, nome: cat.nome }, { onConflict: "empresa_id,nome" })
+      .upsert({ nome: cat.nome }, { onConflict: "nome" })
     if (error) {
       errors.push({ rowIndex: -1, data: cat, error: error.message, errorCode: error.code ?? "INSERT_FAILED", recoverable: true })
     } else {
@@ -317,7 +314,6 @@ async function insertHierarquiaBatch(
   }
 
   const { data: catRows } = await supabase
-    .from("catalogo_categorias").select("id, nome").eq("empresa_id", empresaId)
   const catIdMap = new Map(catRows?.map((r) => [r.nome.toLowerCase(), r.id]) ?? [])
 
   for (const [, con] of conexoes) {
@@ -328,7 +324,7 @@ async function insertHierarquiaBatch(
     }
     const { error } = await supabase
       .from("catalogo_conexoes")
-      .upsert({ empresa_id: empresaId, categoria_id: catId, nome: con.nome, sigla: con.sigla ?? null }, { onConflict: "empresa_id,categoria_id,nome" })
+      .upsert({ categoria_id: catId, nome: con.nome, sigla: con.sigla ?? null }, { onConflict: "categoria_id,nome" })
     if (error) {
       errors.push({ rowIndex: -1, data: con, error: error.message, errorCode: error.code ?? "INSERT_FAILED", recoverable: true })
     } else {
@@ -338,7 +334,6 @@ async function insertHierarquiaBatch(
   }
 
   const { data: conRows } = await supabase
-    .from("catalogo_conexoes").select("id, nome").eq("empresa_id", empresaId)
   const conIdMap = new Map(conRows?.map((r) => [r.nome.toLowerCase(), r.id]) ?? [])
 
   for (const [, fam] of familias) {
@@ -349,7 +344,7 @@ async function insertHierarquiaBatch(
     }
     const { error } = await supabase
       .from("catalogo_familias")
-      .upsert({ empresa_id: empresaId, conexao_id: conId, nome: fam.nome, cor_identificacao: fam.cor ?? null }, { onConflict: "empresa_id,conexao_id,nome" })
+      .upsert({ conexao_id: conId, nome: fam.nome, cor_identificacao: fam.cor ?? null }, { onConflict: "conexao_id,nome" })
     if (error) {
       errors.push({ rowIndex: -1, data: fam, error: error.message, errorCode: error.code ?? "INSERT_FAILED", recoverable: true })
     } else {
@@ -359,7 +354,6 @@ async function insertHierarquiaBatch(
   }
 
   const { data: famRows } = await supabase
-    .from("catalogo_familias").select("id, nome").eq("empresa_id", empresaId)
   const famIdMap = new Map(famRows?.map((r) => [r.nome.toLowerCase(), r.id]) ?? [])
 
   for (const [, lin] of linhas) {
@@ -370,7 +364,7 @@ async function insertHierarquiaBatch(
     }
     const { error } = await supabase
       .from("catalogo_linhas")
-      .upsert({ empresa_id: empresaId, familia_id: famId, nome: lin.nome }, { onConflict: "empresa_id,familia_id,nome" })
+      .upsert({ familia_id: famId, nome: lin.nome }, { onConflict: "familia_id,nome" })
     if (error) {
       errors.push({ rowIndex: -1, data: lin, error: error.message, errorCode: error.code ?? "INSERT_FAILED", recoverable: true })
     } else {
@@ -384,7 +378,6 @@ async function insertHierarquiaBatch(
 
 async function insertKitsBatch(
   rows: Record<string, unknown>[],
-  empresaId: string
 ): Promise<{ inserted: number; updated: number; errors: ImportError[]; details: ImportResultDetail[] }> {
   const errors: ImportError[] = []
   const details: ImportResultDetail[] = []
@@ -415,14 +408,13 @@ async function insertKitsBatch(
     }
   }
 
-  const cache = await loadExistingDataCache(empresaId)
+  const cache = await loadExistingDataCache()
 
   for (const [sku, kit] of kitMap) {
     try {
-      const catKitId = await resolveOrCreateCategoriaKit(empresaId, kit.mainData.categoria_kit_nome as string, cache)
+      const catKitId = await resolveOrCreateCategoriaKit(kit.mainData.categoria_kit_nome as string, cache)
 
       const kitData = {
-        empresa_id: empresaId,
         sku,
         nome: kit.mainData.nome,
         descricao: kit.mainData.descricao ?? null,
@@ -433,7 +425,7 @@ async function insertKitsBatch(
 
       const { error: kitErr } = await supabase
         .from("catalogo_kits")
-        .upsert(kitData, { onConflict: "empresa_id,sku" })
+        .upsert(kitData, { onConflict: "sku" })
 
       if (kitErr) {
         errors.push({ rowIndex: -1, data: kitData, error: kitErr.message, errorCode: kitErr.code ?? "INSERT_FAILED", recoverable: false })
@@ -445,24 +437,21 @@ async function insertKitsBatch(
 
       if (kit.familiaNomes.length > 0) {
         const { data: allFam } = await supabase
-          .from("catalogo_familias").select("id, nome").eq("empresa_id", empresaId)
         const famMap = new Map(allFam?.map((f) => [f.nome.toLowerCase(), f.id]) ?? [])
 
         const kitFamiliaRows = kit.familiaNomes
           .map((fn) => famMap.get(fn.toLowerCase()))
           .filter((f): f is string => !!f)
-          .map((familiaId) => ({ empresa_id: empresaId, kit_sku: sku, familia_id: familiaId }))
+          .map((familiaId) => ({ kit_sku: sku, familia_id: familiaId }))
 
         if (kitFamiliaRows.length > 0) {
           await supabase.from("catalogo_kit_familias").delete()
-            .eq("empresa_id", empresaId).eq("kit_sku", sku)
           await supabase.from("catalogo_kit_familias").insert(kitFamiliaRows)
         }
       }
 
       if (kit.bomItems.length > 0) {
         await supabase.from("catalogo_kit_composicao").delete()
-          .eq("empresa_id", empresaId).eq("kit_sku", sku)
 
         for (const bom of kit.bomItems) {
           const fkColumn = BOM_FK_MAP[bom.tipo as BOMItemTipo]
@@ -472,7 +461,6 @@ async function insertKitsBatch(
           }
 
           const bomRow: Record<string, unknown> = {
-            empresa_id: empresaId,
             kit_sku: sku,
             quantidade: bom.quantidade,
           }
@@ -497,7 +485,6 @@ async function insertKitsBatch(
 
 async function insertWorkflowsBatch(
   rows: Record<string, unknown>[],
-  empresaId: string
 ): Promise<{ inserted: number; updated: number; errors: ImportError[]; details: ImportResultDetail[] }> {
   const errors: ImportError[] = []
   const details: ImportResultDetail[] = []
@@ -548,7 +535,7 @@ async function insertWorkflowsBatch(
     try {
       const { data: wfData, error: wfErr } = await supabase
         .from("catalogo_workflows")
-        .upsert({ empresa_id: empresaId, nome: wf.nome }, { onConflict: "empresa_id,nome" })
+        .upsert({ nome: wf.nome }, { onConflict: "nome" })
         .select("id")
         .single()
 
@@ -564,11 +551,10 @@ async function insertWorkflowsBatch(
         const { data: etapaData, error: etapaErr } = await supabase
           .from("catalogo_etapas_workflow")
           .upsert({
-            empresa_id: empresaId,
             workflow_id: wfData.id,
             nome: etapa.nome,
             ordem: etapa.ordem,
-          }, { onConflict: "empresa_id,workflow_id,nome" })
+          }, { onConflict: "workflow_id,nome" })
           .select("id")
           .single()
 
@@ -582,14 +568,12 @@ async function insertWorkflowsBatch(
           if (guia.familia_nome) {
             const { data: fam } = await supabase
               .from("catalogo_familias").select("id")
-              .eq("empresa_id", empresaId).ilike("nome", guia.familia_nome).single()
             familiaId = fam?.id ?? null
           }
 
           const { error: guiaErr } = await supabase
             .from("catalogo_guias_reabilitacao")
             .insert({
-              empresa_id: empresaId,
               etapa_id: etapaData.id,
               familia_id: familiaId,
               diametro_plataforma: guia.diametro ? String(guia.diametro) : null,
@@ -630,89 +614,83 @@ function getTableForImportType(importType: ImportType): string {
   return tableMap[importType] ?? ""
 }
 
-async function resolveLinhaId(empresaId: string, familiaNome?: string, linhaNome?: string): Promise<string | null> {
+async function resolveLinhaId(familiaNome?: string, linhaNome?: string): Promise<string | null> {
   if (!familiaNome || !linhaNome) return null
   const { data: familia } = await supabase
     .from("catalogo_familias").select("id")
-    .eq("empresa_id", empresaId).ilike("nome", familiaNome).single()
   if (!familia) return null
   const { data: linha } = await supabase
     .from("catalogo_linhas").select("id")
-    .eq("empresa_id", empresaId).eq("familia_id", familia.id).ilike("nome", linhaNome).single()
   return linha?.id ?? null
 }
 
-async function resolveFamiliaId(empresaId: string, familiaNome?: string): Promise<string | null> {
+async function resolveFamiliaId(familiaNome?: string): Promise<string | null> {
   if (!familiaNome) return null
   const { data } = await supabase
     .from("catalogo_familias").select("id")
-    .eq("empresa_id", empresaId).ilike("nome", familiaNome).single()
   return data?.id ?? null
 }
 
-async function resolveTipoReabilitacaoId(empresaId: string, nome: string): Promise<string | null> {
+async function resolveTipoReabilitacaoId(nome: string): Promise<string | null> {
   if (!nome) return null
   const { data } = await supabase
     .from("catalogo_tipos_reabilitacao").select("id")
-    .eq("empresa_id", empresaId).ilike("nome", nome).single()
   return data?.id ?? null
 }
 
-async function createTipoReabilitacao(empresaId: string, nome: string): Promise<string | null> {
+async function createTipoReabilitacao(nome: string): Promise<string | null> {
   if (!nome) return null
   const { data } = await supabase
     .from("catalogo_tipos_reabilitacao")
-    .insert({ empresa_id: empresaId, nome })
+    .insert({ nome })
     .select("id")
     .single()
   return data?.id ?? null
 }
 
-async function resolveTipoAbutmentId(empresaId: string, nome: string): Promise<string | null> {
+async function resolveTipoAbutmentId(nome: string): Promise<string | null> {
   if (!nome) return null
   const { data } = await supabase
     .from("catalogo_tipos_abutment").select("id")
-    .eq("empresa_id", empresaId).ilike("nome", nome).single()
   return data?.id ?? null
 }
 
-async function createTipoAbutment(empresaId: string, nome: string): Promise<string | null> {
+async function createTipoAbutment(nome: string): Promise<string | null> {
   if (!nome) return null
   const { data } = await supabase
     .from("catalogo_tipos_abutment")
-    .insert({ empresa_id: empresaId, nome })
+    .insert({ nome })
     .select("id")
     .single()
   return data?.id ?? null
 }
 
-async function resolveCategoriaId(empresaId: string, importType: ImportType, nome: string): Promise<string | null> {
+async function resolveCategoriaId(importType: ImportType, nome: string): Promise<string | null> {
   if (!nome) return null
   const table = importType === "acessorios" ? "catalogo_categorias_acessorio" : "catalogo_categorias_instrumental"
   const { data } = await supabase
     .from(table).select("id")
-    .eq("empresa_id", empresaId).ilike("nome", nome).single()
   return data?.id ?? null
 }
 
-async function createCategoria(empresaId: string, importType: ImportType, nome: string): Promise<string | null> {
+async function createCategoria(importType: ImportType, nome: string): Promise<string | null> {
   if (!nome) return null
   const table = importType === "acessorios" ? "catalogo_categorias_acessorio" : "catalogo_categorias_instrumental"
   const { data } = await supabase
     .from(table)
-    .insert({ empresa_id: empresaId, nome })
+    .insert({ nome })
     .select("id")
     .single()
   return data?.id ?? null
 }
 
-async function resolveOrCreateCategoriaKit(empresaId: string, nome: string, cache: ExistingDataCache): Promise<string | null> {
+async function resolveOrCreateCategoriaKit(nome: string, cache: ExistingDataCache): Promise<string | null> {
   if (!nome) return null
   const existing = cache.categoriasKit.get(nome.toLowerCase())
   if (existing) return existing
   const { data } = await supabase
     .from("catalogo_categorias_kit")
-    .insert({ empresa_id: empresaId, nome })
+    .insert({ nome })
     .select("id")
     .single()
   return data?.id ?? null
@@ -720,7 +698,6 @@ async function resolveOrCreateCategoriaKit(empresaId: string, nome: string, cach
 
 async function fireImportEvents(
   importType: ImportType,
-  empresaId: string,
   details: ImportResultDetail[]
 ): Promise<void> {
   try {
@@ -730,8 +707,7 @@ async function fireImportEvents(
       dispararEventoModulo("catalogo", "importacao.concluida", {
         import_type: importType,
         count: inserts.length,
-        empresa_id: empresaId,
-      }, empresaId).catch(() => {})
+      }).catch(() => {})
     }
   } catch {
     // webhook import failed — non-critical

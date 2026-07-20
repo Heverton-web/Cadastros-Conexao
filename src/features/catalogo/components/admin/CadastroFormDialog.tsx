@@ -40,7 +40,7 @@ function getDefaults(fields: FieldConfig[]) {
 }
 
 export function CadastroFormDialog({
-  open, onOpenChange, fields, table, pk, editingItem, empresaId, onSuccess,
+  open, onOpenChange, fields, table, pk, editingItem, onSuccess,
 }: {
   open: boolean
   onOpenChange: (open: boolean) => void
@@ -48,7 +48,6 @@ export function CadastroFormDialog({
   table: string
   pk: string
   editingItem: Record<string, unknown> | null
-  empresaId: string
   onSuccess: () => void
 }) {
   const schema = buildSchema(fields)
@@ -72,9 +71,8 @@ export function CadastroFormDialog({
       reset(getDefaults(fields))
     }
   }, [open, editingItem, fields, reset])
-
   async function onSubmit(data: FormData) {
-    const payload: Record<string, unknown> = { empresa_id: empresaId }
+    const payload: Record<string, unknown> = {}
     for (const f of fields) {
       const val = data[f.key]
       if (val !== undefined && val !== "" && val !== null) {
