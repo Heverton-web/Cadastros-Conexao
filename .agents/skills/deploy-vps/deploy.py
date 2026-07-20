@@ -11,6 +11,8 @@ DH_PASS = "@#Khen741963@#"
 
 SUPABASE_URL = "https://cluuqzhizeqvkgvfdisx.supabase.co"
 SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNsdXVxemhpemVxdmtndmZkaXN4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE3ODg3NjksImV4cCI6MjA5NzM2NDc2OX0.GM3quHA1z_9kCiMEYsfAh9Pi0KVdnCIFQEYe-wwE9MM"
+EMPRESA_ID = "6687e2f0-1ff6-406d-b621-7927764f121a"
+EMPRESA_SLUG = "conexao-implantes"
 
 IMAGE_NAME = "hevertonperes/erp-odonto"
 SERVICE_NAME = "erp-odonto_app"
@@ -68,7 +70,9 @@ def main():
         f"cd /root/Cadastros-Conexao && docker build --no-cache "
         f"-t {IMAGE_NAME}:latest -t {IMAGE_NAME}:v{next_ver} "
         f"--build-arg VITE_SUPABASE_URL={SUPABASE_URL} "
-        f"--build-arg VITE_SUPABASE_ANON_KEY={SUPABASE_ANON} ."
+        f"--build-arg VITE_SUPABASE_ANON_KEY={SUPABASE_ANON} "
+        f"--build-arg VITE_EMPRESA_ID={EMPRESA_ID} "
+        f"--build-arg VITE_EMPRESA_SLUG={EMPRESA_SLUG} ."
     )
     status, _ = run_cmd(ssh, build_cmd, timeout=600)
     if status != 0:
