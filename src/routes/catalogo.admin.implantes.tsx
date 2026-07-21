@@ -345,9 +345,10 @@ function SimpleForm({ subTab, editingItem, table, empresaId, onClose, onSuccess 
     if (isFamilia && !cor.trim()) { setError("Cor de identificação é obrigatória"); return }
     if (isLinha && !parentId) { setError("Família é obrigatória"); return }
 
-    const payload: Record<string,unknown> = { nome: nome.trim(), sigla: sigla.trim(), ativo }
+    const payload: Record<string,unknown> = { nome: nome.trim(), ativo }
 
     if (isConexao) {
+      payload.sigla = sigla.trim()
       payload.categoria_id = parentId
       payload.locked = editingItem ? editingItem.locked : true // default true, não muda
     }
@@ -388,11 +389,13 @@ function SimpleForm({ subTab, editingItem, table, empresaId, onClose, onSuccess 
         <input type="text" value={nome} onChange={e => setNome(e.target.value)} className={inputCls} placeholder="Ex: Conexão hexagonal" />
       </div>
 
-      {/* Sigla */}
-      <div className="space-y-2">
-        <label className={labelCls}>Sigla {isConexao && <span className="text-red-400">*</span>}</label>
-        <input type="text" value={sigla} onChange={e => setSigla(e.target.value)} className={inputCls} placeholder={isConexao ? "Ex: HEX" : "Ex: AB"} />
-      </div>
+      {/* Sigla - apenas para Conexões */}
+      {isConexao && (
+        <div className="space-y-2">
+          <label className={labelCls}>Sigla <span className="text-red-400">*</span></label>
+          <input type="text" value={sigla} onChange={e => setSigla(e.target.value)} className={inputCls} placeholder="Ex: HEX" />
+        </div>
+      )}
 
       {/* Famílias: Conexão */}
       {isFamilia && (

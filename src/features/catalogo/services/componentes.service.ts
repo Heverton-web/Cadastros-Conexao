@@ -229,10 +229,12 @@ export async function atualizarAbutment(sku: string, input: Partial<{
 }
 
 export async function toggleAbutmentAtivo(sku: string, ativo: boolean): Promise<void> {
+  const { error } = await supabase.from("catalogo_abutments").update({ ativo }).eq("sku", sku)
   if (error) throw error
 }
 
 export async function removerAbutment(sku: string): Promise<void> {
+  const { error } = await supabase.from("catalogo_abutments").delete().eq("sku", sku)
   if (error) throw error
   dispararEventoModulo(MODULO_KEY, "produto.removido", { sku, tipo: "abutment" }).catch(() => {})
 }
@@ -297,9 +299,11 @@ export async function atualizarComponente(sku: string, input: Partial<{
 }
 
 export async function toggleComponenteAtivo(sku: string, ativo: boolean): Promise<void> {
+  const { error } = await supabase.from("catalogo_componentes").update({ ativo }).eq("sku", sku)
   if (error) throw error
 }
 
 export async function removerComponente(sku: string): Promise<void> {
+  const { error } = await supabase.from("catalogo_componentes").delete().eq("sku", sku)
   if (error) throw error
 }

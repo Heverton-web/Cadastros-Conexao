@@ -48,12 +48,12 @@ function AdminInstrumentaisPage() {
   const [sigla, setSigla] = useState("")
   const [ativo, setAtivo] = useState(true)
   const [error, setError] = useState("")
-  const [activeModal, setActiveModal] = useState<"tipo_chave" | "tipo_fresa" | "chave" | "fresa">("tipo_chave")
+  const [activeModal, setActiveModal] = useState<"tipo_chave" | "tipo_fresa" | "tipo_complementar" | "tipo_opcional" | "chave" | "fresa" | "complementar" | "opcional">("tipo_chave")
 
   // Product modal state
   const [prodModalOpen, setProdModalOpen] = useState(false)
   const [prodEditing, setProdEditing] = useState<any>(null)
-  const [prodData, setProdData] = useState({ sku: "", nome: "", sigla: "", descricao: "", tipo_chave_id: "", tipo_fresa_id: "", tipo: "", comprimento: "", diametro_mm: 0, material: "", preco: 0, ativo: true })
+  const [prodData, setProdData] = useState({ sku: "", nome: "", sigla: "", descricao: "", tipo_chave_id: "", tipo_fresa_id: "", tipo_complementar_id: "", tipo_opcional_id: "", kit_id: "", tipo: "", comprimento: "", diametro_mm: 0, material: "", preco: 0, ativo: true })
   const [prodError, setProdError] = useState("")
 
   const [deleteItem, setDeleteItem] = useState<{ id: string; label: string; table: string } | null>(null)
@@ -105,7 +105,32 @@ function AdminInstrumentaisPage() {
     if (!prodData.sku.trim()) { setProdError("SKU é obrigatório"); return }
     if (!prodData.nome.trim()) { setProdError("Nome é obrigatório"); return }
     const table = subTab === "Chaves" ? "catalogo_chaves" : subTab === "Fresas" ? "catalogo_fresas" : subTab === "Complementares" ? "catalogo_complementares" : "catalogo_opcionais"
-    const payload = { ...prodData}
+    
+    const payload: any = { 
+      sku: prodData.sku.trim(),
+      nome: prodData.nome.trim(),
+      sigla: prodData.sigla?.trim() || null,
+      descricao: prodData.descricao?.trim() || null,
+      tipo: prodData.tipo?.trim() || null,
+      comprimento: prodData.comprimento?.trim() || null,
+      diametro_mm: prodData.diametro_mm || null,
+      material: prodData.material?.trim() || null,
+      preco: prodData.preco || 0,
+      ativo: prodData.ativo
+    }
+
+    if (prodData.kit_id) payload.kit_id = prodData.kit_id
+
+    if (subTab === "Chaves") {
+      if (prodData.tipo_chave_id) payload.tipo_chave_id = prodData.tipo_chave_id
+    } else if (subTab === "Fresas") {
+      if (prodData.tipo_fresa_id) payload.tipo_fresa_id = prodData.tipo_fresa_id
+    } else if (subTab === "Complementares") {
+      if (prodData.tipo_complementar_id) payload.tipo_complementar_id = prodData.tipo_complementar_id
+    } else if (subTab === "Opcionais") {
+      if (prodData.tipo_opcional_id) payload.tipo_opcional_id = prodData.tipo_opcional_id
+    }
+
     if (prodEditing) { const { error } = await supabase.from(table).update(payload).eq("sku", prodEditing.sku); if (error) { setProdError(error.message); return } }
     else { const { error } = await supabase.from(table).insert(payload); if (error) { setProdError(error.message); return } }
     toast.success(prodEditing ? "Atualizado!" : "Criado!")
@@ -289,7 +314,7 @@ function AdminInstrumentaisPage() {
               <div className="space-y-2"><label className={labelCls}>Material</label><input type="text" value={prodData.material} onChange={e=>setProdData({...prodData,material:e.target.value})} className={inputCls} /></div>
             </div>
             <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655]">Imagens do Produto</h3>
-            <ImageUploader produtoTipo={subTab==="Chaves"?"chave":subTab==="Fresas"?"fresa":subTab==="Complementares"?"complementar":"opcional"} produtoSku={prodData.sku} empresaId={empresaId} />
+            <ImageUploader produtoTipo={subTab==="Chaves"?"chave":subTab==="Fresas"?"fresa":subTab==="Complementares"?"complementar":"opcional"} produtoSku={prodData.sku} />
             <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655]">Comercial</h3>
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2"><label className={labelCls}>Preço (R$)</label><input type="number" step="0.01" min="0" value={prodData.preco} onChange={e=>setProdData({...prodData,preco:Number(e.target.value)})} className={inputCls} /></div>

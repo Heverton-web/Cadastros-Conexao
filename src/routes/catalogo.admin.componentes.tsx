@@ -28,6 +28,11 @@ const inputCls = "w-full bg-[var(--color-surface)] border border-white/10 rounde
 const selectCls = "w-full bg-[var(--color-surface)] border border-white/10 rounded-lg p-3 text-white"
 const labelCls = "text-xs font-bold uppercase tracking-widest text-gray-400"
 
+/** Converte strings vazias em null para colunas UUID */
+function sanitizeUuids(obj: Record<string, unknown>, keys: string[]): Record<string, unknown> {
+  return Object.fromEntries(Object.entries(obj).map(([k, v]) => [k, keys.includes(k) && v === "" ? null : v]))
+}
+
 function AdminComponentesPage() {
   const [subTab, setSubTab] = useState("Tipos de Reabilitação")
   const empresaId = useCatalogoEmpresaId()
@@ -71,19 +76,18 @@ function AdminComponentesPage() {
   // Abutment modal
   const [abutModalOpen, setAbutModalOpen] = useState(false)
   const [abutEditing, setAbutEditing] = useState<any>(null)
-  const [abutData, setAbutData] = useState({ sku: "", nome: "", sigla: "", descricao: "", tipo_abutment_id: "", parafuso_id: "", chave_id: "", diametro_plataforma_mm: 0, altura_transmucoso_mm: 0, altura_corpo_mm: 0, angulacao_graus: 0, torque_ncm: 0, preco: 0, ativo: true })
+  const [abutData, setAbutData] = useState({ sku: "", nome: "", sigla: "", descricao: "", tipo_abutment_id: "", parafuso_id: "", chave_id: "", diametro_plataforma: 0, altura_transmucoso: 0, altura_corpo: 0, angulacao_graus: 0, torque_ncm: 0, preco: 0, ativo: true })
   const [abutError, setAbutError] = useState("")
 
-  function openNewAbut() { setAbutEditing(null); setAbutData({ sku: "", nome: "", sigla: "", descricao: "", tipo_abutment_id: "", parafuso_id: "", chave_id: "", diametro_plataforma_mm: 0, altura_transmucoso_mm: 0, altura_corpo_mm: 0, angulacao_graus: 0, torque_ncm: 0, preco: 0, ativo: true }); setAbutError(""); setAbutModalOpen(true) }
-  function openEditAbut(item: any) { setAbutEditing(item); setAbutData({ sku: item.sku, nome: item.nome ?? "", sigla: item.sigla ?? "", descricao: item.descricao ?? "", tipo_abutment_id: item.tipo_abutment_id ?? "", parafuso_id: item.parafuso_id ?? "", chave_id: item.chave_id ?? "", diametro_plataforma_mm: item.diametro_plataforma_mm ?? 0, altura_transmucoso_mm: item.altura_transmucoso_mm ?? 0, altura_corpo_mm: item.altura_corpo_mm ?? 0, angulacao_graus: item.angulacao_graus ?? 0, torque_ncm: item.torque_ncm ?? 0, preco: item.preco ?? 0, ativo: item.ativo !== false }); setAbutError(""); setAbutModalOpen(true) }
+  function openNewAbut() { setAbutEditing(null); setAbutData({ sku: "", nome: "", sigla: "", descricao: "", tipo_abutment_id: "", parafuso_id: "", chave_id: "", diametro_plataforma: 0, altura_transmucoso: 0, altura_corpo: 0, angulacao_graus: 0, torque_ncm: 0, preco: 0, ativo: true }); setAbutError(""); setAbutModalOpen(true) }
+  function openEditAbut(item: any) { setAbutEditing(item); setAbutData({ sku: item.sku, nome: item.nome ?? "", sigla: item.sigla ?? "", descricao: item.descricao ?? "", tipo_abutment_id: item.tipo_abutment_id ?? "", parafuso_id: item.parafuso_id ?? "", chave_id: item.chave_id ?? "", diametro_plataforma: item.diametro_plataforma ?? 0, altura_transmucoso: item.altura_transmucoso ?? 0, altura_corpo: item.altura_corpo ?? 0, angulacao_graus: item.angulacao_graus ?? 0, torque_ncm: item.torque_ncm ?? 0, preco: item.preco ?? 0, ativo: item.ativo !== false }); setAbutError(""); setAbutModalOpen(true) }
 
   async function handleSaveAbut() {
     setAbutError("")
     if (!abutData.sku.trim()) { setAbutError("SKU é obrigatório"); return }
     if (!abutData.nome.trim()) { setAbutError("Nome é obrigatório"); return }
-    if (!abutData.tipo_abutment_id) { setAbutError("Tipo de Abutment é obrigatório"); return }
-    if (!abutData.parafuso_id) { setAbutError("Parafuso é obrigatório"); return }
-    const payload = { ...abutData}
+    const UUID_KEYS = ["tipo_abutment_id", "parafuso_id", "chave_id"]
+    const payload = sanitizeUuids({ ...abutData }, UUID_KEYS)
     if (abutEditing) {
       const { error } = await supabase.from("catalogo_abutments").update(payload).eq("sku", abutEditing.sku)
       if (error) { setAbutError(error.message); return }
@@ -113,10 +117,8 @@ function AdminComponentesPage() {
     setCompError("")
     if (!compData.sku.trim()) { setCompError("SKU é obrigatório"); return }
     if (!compData.nome.trim()) { setCompError("Nome é obrigatório"); return }
-    if (!compData.tipo_componente_id) { setCompError("Tipo de Componente é obrigatório"); return }
-    if (!compData.tipo_abutment_id) { setCompError("Tipo de Abutment é obrigatório"); return }
-    if (!compData.parafuso_id) { setCompError("Parafuso é obrigatório"); return }
-    const payload = { ...compData}
+    const UUID_KEYS = ["tipo_componente_id", "tipo_abutment_id", "parafuso_id", "chave_id"]
+    const payload = sanitizeUuids({ ...compData }, UUID_KEYS)
     if (compEditing) {
       const { error } = await supabase.from("catalogo_componentes").update(payload).eq("sku", compEditing.sku)
       if (error) { setCompError(error.message); return }
@@ -146,8 +148,8 @@ function AdminComponentesPage() {
     setParError("")
     if (!parData.sku.trim()) { setParError("SKU é obrigatório"); return }
     if (!parData.nome.trim()) { setParError("Nome é obrigatório"); return }
-    if (!parData.tipo_parafuso_id) { setParError("Tipo de Parafuso é obrigatório"); return }
-    const payload = { ...parData}
+    const UUID_KEYS = ["tipo_parafuso_id", "chave_id"]
+    const payload = sanitizeUuids({ ...parData }, UUID_KEYS)
     if (parEditing) {
       const { error } = await supabase.from("catalogo_parafusos").update(payload).eq("sku", parEditing.sku)
       if (error) { setParError(error.message); return }
@@ -177,8 +179,8 @@ function AdminComponentesPage() {
     setCicError("")
     if (!cicData.sku.trim()) { setCicError("SKU é obrigatório"); return }
     if (!cicData.nome.trim()) { setCicError("Nome é obrigatório"); return }
-    if (!cicData.implante_id) { setCicError("Implante é obrigatório"); return }
-    const payload = { ...cicData}
+    const UUID_KEYS = ["implante_id", "chave_id"]
+    const payload = sanitizeUuids({ ...cicData }, UUID_KEYS)
     if (cicEditing) {
       const { error } = await supabase.from("catalogo_cicatrizadores").update(payload).eq("sku", cicEditing.sku)
       if (error) { setCicError(error.message); return }
@@ -207,7 +209,7 @@ function AdminComponentesPage() {
   const [activeModal, setActiveModal] = useState<"reab" | "abutment" | "componente" | "parafuso" | "cicatrizador">("reab")
 
   // Delete
-  const [deleteItem, setDeleteItem] = useState<{ id: string; label: string; table: string } | null>(null)
+  const [deleteItem, setDeleteItem] = useState<{ id: string; label: string; table: string; pkColumn?: string } | null>(null)
 
   function openNew() {
     if (subTab === "Tipos de Abutment") { setActiveModal("abutment"); setEditing(null); setNome(""); setSigla(""); setAtivo(true); setParentId(""); setError(""); setModalOpen(true) }
@@ -230,7 +232,7 @@ function AdminComponentesPage() {
     if (!nome.trim()) { setError("Nome é obrigatório"); return }
 
     if (activeModal === "abutment") {
-      if (!parentId) { setError("Tipo de Reabilitação é obrigatório"); return }
+
       const payload = { nome: nome.trim(), sigla: sigla.trim() || null, ativo, tipo_reabilitacao_id: parentId }
       if (editing) {
         const { error } = await supabase.from("catalogo_cps_tipos_abutments").update({ nome: payload.nome, sigla: payload.sigla, ativo, tipo_reabilitacao_id: parentId }).eq("id", editing.id)
@@ -290,10 +292,11 @@ function AdminComponentesPage() {
 
   async function handleDelete() {
     if (!deleteItem) return
+    const pkCol = deleteItem.pkColumn ?? "id"
     if (deleteItem.table === "catalogo_cps_tipos_reabilitacao") {
       await supabase.from("catalogo_cps_tipos_reabilitacao_familias").delete().eq("tipo_reabilitacao_id", deleteItem.id)
     }
-    const { error } = await supabase.from(deleteItem.table).delete().eq("id", deleteItem.id)
+    const { error } = await supabase.from(deleteItem.table).delete().eq(pkCol, deleteItem.id)
     if (error) { toast.error(error.message); return }
     toast.success("Excluído!"); setDeleteItem(null); qc.invalidateQueries({ queryKey: ["catalogo"] })
   }
@@ -436,9 +439,9 @@ function AdminComponentesPage() {
                     <TableCell className="text-sm font-mono">{item.sku}</TableCell>
                     <TableCell className="text-sm font-medium text-white">{item.nome}</TableCell>
                     <TableCell className="text-sm text-gray-300">{item.tipo_abutment?.nome ?? "—"}</TableCell>
-                    <TableCell className="text-sm text-gray-300">{item.diametro_plataforma_mm ?? "—"}</TableCell>
+                    <TableCell className="text-sm text-gray-300">{item.diametro_plataforma ?? "—"}</TableCell>
                     <TableCell><button onClick={() => toggleAbutAtivo(item.sku, !item.ativo)}>{item.ativo ? <ToggleRight className="h-7 w-7 text-green-400" /> : <ToggleLeft className="h-7 w-7 text-gray-500" />}</button></TableCell>
-                    <TableCell><div className="flex items-center gap-2"><button onClick={() => openEditAbut(item)} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-[#c9a655]/20 text-[var(--color-text-muted)] hover:text-[#c9a655]"><Pencil className="h-3.5 w-3.5"/></button><button onClick={() => setDeleteItem({ id: item.sku, label: item.nome, table: "catalogo_abutments" })} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-red-500/20 text-[var(--color-text-muted)] hover:text-red-400"><Trash2 className="h-3.5 w-3.5"/></button></div></TableCell>
+                    <TableCell><div className="flex items-center gap-2"><button onClick={() => openEditAbut(item)} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-[#c9a655]/20 text-[var(--color-text-muted)] hover:text-[#c9a655]"><Pencil className="h-3.5 w-3.5"/></button><button onClick={() => setDeleteItem({ id: item.sku, label: item.nome, table: "catalogo_abutments", pkColumn: "sku" })} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-red-500/20 text-[var(--color-text-muted)] hover:text-red-400"><Trash2 className="h-3.5 w-3.5"/></button></div></TableCell>
                   </TableRow>
                 ))}
                 {(abutments ?? []).length === 0 && <TableRow><TableCell colSpan={6} className="p-4 text-center text-text-muted">Nenhum abutment cadastrado</TableCell></TableRow>}
@@ -461,7 +464,7 @@ function AdminComponentesPage() {
                     <TableCell className="text-sm text-gray-300">{item.tipo_abutment?.nome ?? "—"}</TableCell>
                     <TableCell className="text-sm text-gray-300">{item.diametro_plataforma_mm ?? "—"}</TableCell>
                     <TableCell><button onClick={() => toggleCompAtivo(item.sku, !item.ativo)}>{item.ativo ? <ToggleRight className="h-7 w-7 text-green-400" /> : <ToggleLeft className="h-7 w-7 text-gray-500" />}</button></TableCell>
-                    <TableCell><div className="flex items-center gap-2"><button onClick={() => openEditComp(item)} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-[#c9a655]/20 text-[var(--color-text-muted)] hover:text-[#c9a655]"><Pencil className="h-3.5 w-3.5"/></button><button onClick={() => setDeleteItem({ id: item.sku, label: item.nome, table: "catalogo_componentes" })} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-red-500/20 text-[var(--color-text-muted)] hover:text-red-400"><Trash2 className="h-3.5 w-3.5"/></button></div></TableCell>
+                    <TableCell><div className="flex items-center gap-2"><button onClick={() => openEditComp(item)} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-[#c9a655]/20 text-[var(--color-text-muted)] hover:text-[#c9a655]"><Pencil className="h-3.5 w-3.5"/></button><button onClick={() => setDeleteItem({ id: item.sku, label: item.nome, table: "catalogo_componentes", pkColumn: "sku" })} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-red-500/20 text-[var(--color-text-muted)] hover:text-red-400"><Trash2 className="h-3.5 w-3.5"/></button></div></TableCell>
                   </TableRow>
                 ))}
                 {(componentesList ?? []).length === 0 && <TableRow><TableCell colSpan={7} className="p-4 text-center text-text-muted">Nenhum componente cadastrado</TableCell></TableRow>}
@@ -483,7 +486,7 @@ function AdminComponentesPage() {
                     <TableCell className="text-sm text-gray-300">{item.tipo_parafuso?.nome ?? "—"}</TableCell>
                     <TableCell className="text-sm text-gray-300">{item.torque_ncm ?? "—"}</TableCell>
                     <TableCell><button onClick={() => toggleParAtivo(item.sku, !item.ativo)}>{item.ativo ? <ToggleRight className="h-7 w-7 text-green-400" /> : <ToggleLeft className="h-7 w-7 text-gray-500" />}</button></TableCell>
-                    <TableCell><div className="flex items-center gap-2"><button onClick={() => openEditPar(item)} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-[#c9a655]/20 text-[var(--color-text-muted)] hover:text-[#c9a655]"><Pencil className="h-3.5 w-3.5"/></button><button onClick={() => setDeleteItem({ id: item.sku, label: item.nome, table: "catalogo_parafusos" })} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-red-500/20 text-[var(--color-text-muted)] hover:text-red-400"><Trash2 className="h-3.5 w-3.5"/></button></div></TableCell>
+                    <TableCell><div className="flex items-center gap-2"><button onClick={() => openEditPar(item)} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-[#c9a655]/20 text-[var(--color-text-muted)] hover:text-[#c9a655]"><Pencil className="h-3.5 w-3.5"/></button><button onClick={() => setDeleteItem({ id: item.sku, label: item.nome, table: "catalogo_parafusos", pkColumn: "sku" })} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-red-500/20 text-[var(--color-text-muted)] hover:text-red-400"><Trash2 className="h-3.5 w-3.5"/></button></div></TableCell>
                   </TableRow>
                 ))}
                 {(parafusosProdutos ?? []).length === 0 && <TableRow><TableCell colSpan={6} className="p-4 text-center text-text-muted">Nenhum parafuso cadastrado</TableCell></TableRow>}
@@ -505,7 +508,7 @@ function AdminComponentesPage() {
                     <TableCell className="text-sm text-gray-300">{item.implante?.nome ?? item.implante?.sku ?? "—"}</TableCell>
                     <TableCell className="text-sm text-gray-300">{item.diametro_plataforma_mm ?? "—"}</TableCell>
                     <TableCell><button onClick={() => toggleCicAtivo(item.sku, !item.ativo)}>{item.ativo ? <ToggleRight className="h-7 w-7 text-green-400" /> : <ToggleLeft className="h-7 w-7 text-gray-500" />}</button></TableCell>
-                    <TableCell><div className="flex items-center gap-2"><button onClick={() => openEditCic(item)} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-[#c9a655]/20 text-[var(--color-text-muted)] hover:text-[#c9a655]"><Pencil className="h-3.5 w-3.5"/></button><button onClick={() => setDeleteItem({ id: item.sku, label: item.nome, table: "catalogo_cicatrizadores" })} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-red-500/20 text-[var(--color-text-muted)] hover:text-red-400"><Trash2 className="h-3.5 w-3.5"/></button></div></TableCell>
+                    <TableCell><div className="flex items-center gap-2"><button onClick={() => openEditCic(item)} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-[#c9a655]/20 text-[var(--color-text-muted)] hover:text-[#c9a655]"><Pencil className="h-3.5 w-3.5"/></button><button onClick={() => setDeleteItem({ id: item.sku, label: item.nome, table: "catalogo_cicatrizadores", pkColumn: "sku" })} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-red-500/20 text-[var(--color-text-muted)] hover:text-red-400"><Trash2 className="h-3.5 w-3.5"/></button></div></TableCell>
                   </TableRow>
                 ))}
                 {(cicatrizadoresProdutos ?? []).length === 0 && <TableRow><TableCell colSpan={6} className="p-4 text-center text-text-muted">Nenhum cicatrizador cadastrado</TableCell></TableRow>}
@@ -535,7 +538,7 @@ function AdminComponentesPage() {
             {/* Tipo de Reabilitação (apenas para Abutment) */}
             {activeModal === "abutment" && (
               <div className="space-y-2">
-                <label className={labelCls}>Tipo de Reabilitação <span className="text-red-400">*</span></label>
+                <label className={labelCls}>Tipo de Reabilitação</label>
                 <select value={parentId} onChange={e => setParentId(e.target.value)} className={selectCls}>
                   <option value="">Selecione...</option>
                   {(tiposReab ?? []).map((t: any) => <option key={t.id} value={t.id}>{t.nome}</option>)}
@@ -581,7 +584,7 @@ function AdminComponentesPage() {
       {/* Modal Excluir */}
       <AlertDialog open={!!deleteItem} onOpenChange={o => !o && setDeleteItem(null)}>
         <AlertDialogContent style={{background:"var(--color-card, #1e293b)",borderColor:"rgba(201,166,85,0.15)"}}>
-          <AlertDialogHeader><AlertDialogTitle className="text-white">Excluir tipo?</AlertDialogTitle><AlertDialogDescription><strong>{deleteItem?.nome}</strong> será removido permanentemente.</AlertDialogDescription></AlertDialogHeader>
+          <AlertDialogHeader><AlertDialogTitle className="text-white">Excluir tipo?</AlertDialogTitle><AlertDialogDescription><strong>{deleteItem?.label}</strong> será removido permanentemente.</AlertDialogDescription></AlertDialogHeader>
           <AlertDialogFooter><AlertDialogCancel>Cancelar</AlertDialogCancel><AlertDialogAction onClick={handleDelete} className="bg-red-500 text-white hover:bg-red-600">Excluir</AlertDialogAction></AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
@@ -593,9 +596,9 @@ function AdminComponentesPage() {
           <div className="px-6 py-4 space-y-4 overflow-y-auto flex-1 min-h-0">
             <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655]">Vinculações</h3>
             <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2"><label className={labelCls}>Tipo de Abutment *</label><select value={abutData.tipo_abutment_id} onChange={e=>setAbutData({...abutData,tipo_abutment_id:e.target.value})} className={selectCls}><option value="">Selecione...</option>{tiposAbutment?.map((t:any)=><option key={t.id} value={t.id}>{t.nome}</option>)}</select></div>
-              <div className="space-y-2"><label className={labelCls}>Parafuso *</label><select value={abutData.parafuso_id} onChange={e=>setAbutData({...abutData,parafuso_id:e.target.value})} className={selectCls}><option value="">Selecione...</option>{parafusosList?.map((p:any)=><option key={p.id} value={p.id}>{p.nome}</option>)}</select></div>
-              <div className="space-y-2"><label className={labelCls}>Chave</label><select value={abutData.chave_id} onChange={e=>setAbutData({...abutData,chave_id:e.target.value})} className={selectCls}><option value="">Nenhuma</option>{chavesList?.map((c:any)=><option key={c.id} value={c.id}>{c.nome}</option>)}</select></div>
+              <div className="space-y-2"><label className={labelCls}>Tipo de Abutment</label><select value={abutData.tipo_abutment_id} onChange={e=>setAbutData({...abutData,tipo_abutment_id:e.target.value})} className={selectCls}><option value="">Selecione...</option>{tiposAbutment?.map((t:any)=><option key={t.id} value={t.id}>{t.nome}</option>)}</select></div>
+              <div className="space-y-2"><label className={labelCls}>Parafuso</label><select value={abutData.parafuso_id} onChange={e=>setAbutData({...abutData,parafuso_id:e.target.value})} className={selectCls}><option value="">Selecione...</option>{parafusosList?.map((p:any)=><option key={p.sku} value={p.sku}>{p.nome}</option>)}</select></div>
+              <div className="space-y-2"><label className={labelCls}>Chave</label><select value={abutData.chave_id} onChange={e=>setAbutData({...abutData,chave_id:e.target.value})} className={selectCls}><option value="">Nenhuma</option>{chavesList?.map((c:any)=><option key={c.sku} value={c.sku}>{c.nome}</option>)}</select></div>
             </div>
             <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655]">Identificação</h3>
             <div className="grid grid-cols-2 gap-4">
@@ -606,15 +609,15 @@ function AdminComponentesPage() {
             </div>
             <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655]">Especificações Técnicas</h3>
             <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2"><label className={labelCls}>Ø Plataforma (mm)</label><input type="number" step="0.1" value={abutData.diametro_plataforma_mm} onChange={e=>setAbutData({...abutData,diametro_plataforma_mm:Number(e.target.value)})} className={inputCls} /></div>
-              <div className="space-y-2"><label className={labelCls}>Altura Transmucoso (mm)</label><input type="number" step="0.1" value={abutData.altura_transmucoso_mm} onChange={e=>setAbutData({...abutData,altura_transmucoso_mm:Number(e.target.value)})} className={inputCls} /></div>
-              <div className="space-y-2"><label className={labelCls}>Altura Corpo (mm)</label><input type="number" step="0.1" value={abutData.altura_corpo_mm} onChange={e=>setAbutData({...abutData,altura_corpo_mm:Number(e.target.value)})} className={inputCls} /></div>
+              <div className="space-y-2"><label className={labelCls}>Ø Plataforma (mm)</label><input type="number" step="0.1" value={abutData.diametro_plataforma} onChange={e=>setAbutData({...abutData,diametro_plataforma:Number(e.target.value)})} className={inputCls} /></div>
+              <div className="space-y-2"><label className={labelCls}>Altura Transmucoso (mm)</label><input type="number" step="0.1" value={abutData.altura_transmucoso} onChange={e=>setAbutData({...abutData,altura_transmucoso:Number(e.target.value)})} className={inputCls} /></div>
+              <div className="space-y-2"><label className={labelCls}>Altura Corpo (mm)</label><input type="number" step="0.1" value={abutData.altura_corpo} onChange={e=>setAbutData({...abutData,altura_corpo:Number(e.target.value)})} className={inputCls} /></div>
               <div className="space-y-2"><label className={labelCls}>Ângulo (graus)</label><input type="number" value={abutData.angulacao_graus} onChange={e=>setAbutData({...abutData,angulacao_graus:Number(e.target.value)})} className={inputCls} /></div>
               <div className="space-y-2"><label className={labelCls}>Torque (N·cm)</label><input type="number" value={abutData.torque_ncm} onChange={e=>setAbutData({...abutData,torque_ncm:Number(e.target.value)})} className={inputCls} /></div>
-              <div className="space-y-2"><label className={labelCls}>Material</label><input type="text" value={abutData.material} onChange={e=>setAbutData({...abutData,material:e.target.value})} className={inputCls} placeholder="Ex: Titânio" /></div>
+              
             </div>
             <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655]">Imagens do Produto</h3>
-            <ImageUploader produtoTipo="abutment" produtoSku={abutData.sku} empresaId={empresaId} />
+            <ImageUploader produtoTipo="abutment" produtoSku={abutData.sku} />
             <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655]">Comercial</h3>
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2"><label className={labelCls}>Preço (R$)</label><input type="number" step="0.01" min="0" value={abutData.preco} onChange={e=>setAbutData({...abutData,preco:Number(e.target.value)})} className={inputCls} /></div>
@@ -639,10 +642,10 @@ function AdminComponentesPage() {
           <div className="px-6 py-4 space-y-4 overflow-y-auto flex-1 min-h-0">
             <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655]">Vinculações</h3>
             <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2"><label className={labelCls}>Tipo de Componente *</label><select value={compData.tipo_componente_id} onChange={e=>setCompData({...compData,tipo_componente_id:e.target.value})} className={selectCls}><option value="">Selecione...</option>{tiposComponente?.map((t:any)=><option key={t.id} value={t.id}>{t.nome}</option>)}</select></div>
-              <div className="space-y-2"><label className={labelCls}>Tipo de Abutment *</label><select value={compData.tipo_abutment_id} onChange={e=>setCompData({...compData,tipo_abutment_id:e.target.value})} className={selectCls}><option value="">Selecione...</option>{tiposAbutment?.map((t:any)=><option key={t.id} value={t.id}>{t.nome}</option>)}</select></div>
-              <div className="space-y-2"><label className={labelCls}>Parafuso *</label><select value={compData.parafuso_id} onChange={e=>setCompData({...compData,parafuso_id:e.target.value})} className={selectCls}><option value="">Selecione...</option>{parafusosList?.map((p:any)=><option key={p.id} value={p.id}>{p.nome}</option>)}</select></div>
-              <div className="space-y-2"><label className={labelCls}>Chave</label><select value={compData.chave_id} onChange={e=>setCompData({...compData,chave_id:e.target.value})} className={selectCls}><option value="">Nenhuma</option>{chavesList?.map((c:any)=><option key={c.id} value={c.id}>{c.nome}</option>)}</select></div>
+              <div className="space-y-2"><label className={labelCls}>Tipo de Componente</label><select value={compData.tipo_componente_id} onChange={e=>setCompData({...compData,tipo_componente_id:e.target.value})} className={selectCls}><option value="">Selecione...</option>{tiposComponente?.map((t:any)=><option key={t.id} value={t.id}>{t.nome}</option>)}</select></div>
+              <div className="space-y-2"><label className={labelCls}>Tipo de Abutment</label><select value={compData.tipo_abutment_id} onChange={e=>setCompData({...compData,tipo_abutment_id:e.target.value})} className={selectCls}><option value="">Selecione...</option>{tiposAbutment?.map((t:any)=><option key={t.id} value={t.id}>{t.nome}</option>)}</select></div>
+              <div className="space-y-2"><label className={labelCls}>Parafuso</label><select value={compData.parafuso_id} onChange={e=>setCompData({...compData,parafuso_id:e.target.value})} className={selectCls}><option value="">Selecione...</option>{parafusosList?.map((p:any)=><option key={p.sku} value={p.sku}>{p.nome}</option>)}</select></div>
+              <div className="space-y-2"><label className={labelCls}>Chave</label><select value={compData.chave_id} onChange={e=>setCompData({...compData,chave_id:e.target.value})} className={selectCls}><option value="">Nenhuma</option>{chavesList?.map((c:any)=><option key={c.sku} value={c.sku}>{c.nome}</option>)}</select></div>
             </div>
             <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655]">Identificação</h3>
             <div className="grid grid-cols-2 gap-4">
@@ -662,7 +665,7 @@ function AdminComponentesPage() {
               <div className="space-y-2"><label className={labelCls}>Material</label><input type="text" value={compData.material} onChange={e=>setCompData({...compData,material:e.target.value})} className={inputCls} placeholder="Ex: Titânio" /></div>
             </div>
             <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655]">Imagens do Produto</h3>
-            <ImageUploader produtoTipo="componente" produtoSku={compData.sku} empresaId={empresaId} />
+            <ImageUploader produtoTipo="componente" produtoSku={compData.sku} />
             <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655]">Comercial</h3>
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2"><label className={labelCls}>Preço (R$)</label><input type="number" step="0.01" min="0" value={compData.preco} onChange={e=>setCompData({...compData,preco:Number(e.target.value)})} className={inputCls} /></div>
@@ -687,8 +690,8 @@ function AdminComponentesPage() {
           <div className="px-6 py-4 space-y-4 overflow-y-auto flex-1 min-h-0">
             <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655]">Vinculações</h3>
             <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2"><label className={labelCls}>Tipo de Parafuso *</label><select value={parData.tipo_parafuso_id} onChange={e=>setParData({...parData,tipo_parafuso_id:e.target.value})} className={selectCls}><option value="">Selecione...</option>{tiposParafuso?.map((t:any)=><option key={t.id} value={t.id}>{t.nome}</option>)}</select></div>
-              <div className="space-y-2"><label className={labelCls}>Chave</label><select value={parData.chave_id} onChange={e=>setParData({...parData,chave_id:e.target.value})} className={selectCls}><option value="">Nenhuma</option>{chavesList?.map((c:any)=><option key={c.id} value={c.id}>{c.nome}</option>)}</select></div>
+              <div className="space-y-2"><label className={labelCls}>Tipo de Parafuso</label><select value={parData.tipo_parafuso_id} onChange={e=>setParData({...parData,tipo_parafuso_id:e.target.value})} className={selectCls}><option value="">Selecione...</option>{tiposParafuso?.map((t:any)=><option key={t.id} value={t.id}>{t.nome}</option>)}</select></div>
+              <div className="space-y-2"><label className={labelCls}>Chave</label><select value={parData.chave_id} onChange={e=>setParData({...parData,chave_id:e.target.value})} className={selectCls}><option value="">Nenhuma</option>{chavesList?.map((c:any)=><option key={c.sku} value={c.sku}>{c.nome}</option>)}</select></div>
             </div>
             <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655]">Identificação</h3>
             <div className="grid grid-cols-2 gap-4">
@@ -703,7 +706,7 @@ function AdminComponentesPage() {
               <div className="space-y-2"><label className={labelCls}>Material</label><input type="text" value={parData.material} onChange={e=>setParData({...parData,material:e.target.value})} className={inputCls} placeholder="Ex: Titânio" /></div>
             </div>
             <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655]">Imagens do Produto</h3>
-            <ImageUploader produtoTipo="parafuso" produtoSku={parData.sku} empresaId={empresaId} />
+            <ImageUploader produtoTipo="parafuso" produtoSku={parData.sku} />
             <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655]">Comercial</h3>
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2"><label className={labelCls}>Preço (R$)</label><input type="number" step="0.01" min="0" value={parData.preco} onChange={e=>setParData({...parData,preco:Number(e.target.value)})} className={inputCls} /></div>
@@ -728,8 +731,8 @@ function AdminComponentesPage() {
           <div className="px-6 py-4 space-y-4 overflow-y-auto flex-1 min-h-0">
             <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655]">Vinculações</h3>
             <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2"><label className={labelCls}>Implante *</label><select value={cicData.implante_id} onChange={e=>setCicData({...cicData,implante_id:e.target.value})} className={selectCls}><option value="">Selecione...</option>{implantesList?.map((im:any)=><option key={im.id} value={im.id}>{im.sku} - {im.nome}</option>)}</select></div>
-              <div className="space-y-2"><label className={labelCls}>Chave</label><select value={cicData.chave_id} onChange={e=>setCicData({...cicData,chave_id:e.target.value})} className={selectCls}><option value="">Nenhuma</option>{chavesList?.map((c:any)=><option key={c.id} value={c.id}>{c.nome}</option>)}</select></div>
+              <div className="space-y-2"><label className={labelCls}>Implante</label><select value={cicData.implante_id} onChange={e=>setCicData({...cicData,implante_id:e.target.value})} className={selectCls}><option value="">Selecione...</option>{implantesList?.map((im:any)=><option key={im.sku} value={im.sku}>{im.sku} - {im.nome}</option>)}</select></div>
+              <div className="space-y-2"><label className={labelCls}>Chave</label><select value={cicData.chave_id} onChange={e=>setCicData({...cicData,chave_id:e.target.value})} className={selectCls}><option value="">Nenhuma</option>{chavesList?.map((c:any)=><option key={c.sku} value={c.sku}>{c.nome}</option>)}</select></div>
             </div>
             <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655]">Identificação</h3>
             <div className="grid grid-cols-2 gap-4">
@@ -748,7 +751,7 @@ function AdminComponentesPage() {
             </div>
             {/* Imagens do Produto */}
             <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655]">Imagens do Produto</h3>
-            <ImageUploader produtoTipo="cicatrizador" produtoSku={cicData.sku} empresaId={empresaId} />
+            <ImageUploader produtoTipo="cicatrizador" produtoSku={cicData.sku} />
             <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655]">Comercial</h3>
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2"><label className={labelCls}>Preço (R$)</label><input type="number" step="0.01" min="0" value={cicData.preco} onChange={e=>setCicData({...cicData,preco:Number(e.target.value)})} className={inputCls} /></div>
