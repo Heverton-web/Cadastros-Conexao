@@ -84,12 +84,20 @@ DROP POLICY IF EXISTS catalogo_cat_kit_empresa ON catalogo_categorias_kit;
 CREATE POLICY catalogo_cat_kit_all ON catalogo_categorias_kit
   FOR ALL USING (true) WITH CHECK (true);
 
--- Catalogo Kit Familias
-DROP POLICY IF EXISTS catalogo_kit_fam_empresa ON catalogo_kit_familias;
-CREATE POLICY catalogo_kit_fam_all ON catalogo_kit_familias
-  FOR ALL USING (true) WITH CHECK (true);
+-- Catalogo Kit Familias (tabela dropada em 20260717000001)
+DO $$ BEGIN
+  IF EXISTS (SELECT 1 FROM information_schema.tables WHERE table_schema='public' AND table_name='catalogo_kit_familias') THEN
+    DROP POLICY IF EXISTS catalogo_kit_fam_empresa ON catalogo_kit_familias;
+    CREATE POLICY catalogo_kit_fam_all ON catalogo_kit_familias
+      FOR ALL USING (true) WITH CHECK (true);
+  END IF;
+END $$;
 
--- Catalogo Kit Composicao
-DROP POLICY IF EXISTS catalogo_kit_comp_empresa ON catalogo_kit_composicao;
-CREATE POLICY catalogo_kit_comp_all ON catalogo_kit_composicao
-  FOR ALL USING (true) WITH CHECK (true);
+-- Catalogo Kit Composicao (tabela dropada em 20260717000001)
+DO $$ BEGIN
+  IF EXISTS (SELECT 1 FROM information_schema.tables WHERE table_schema='public' AND table_name='catalogo_kit_composicao') THEN
+    DROP POLICY IF EXISTS catalogo_kit_comp_empresa ON catalogo_kit_composicao;
+    CREATE POLICY catalogo_kit_comp_all ON catalogo_kit_composicao
+      FOR ALL USING (true) WITH CHECK (true);
+  END IF;
+END $$;

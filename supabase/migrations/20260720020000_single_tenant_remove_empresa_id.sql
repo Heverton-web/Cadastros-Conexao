@@ -4,118 +4,114 @@
 -- Descrição: Remove coluna empresa_id de todas as tabelas do catálogo
 --            O sistema é single-tenant (CONEXÃO IMPLANTES).
 --            empresa_id não é mais necessário.
+-- Nota: IF EXISTS em todas as tabelas para ser idempotente
+--       (algumas tabelas foram dropadas/renomeadas em migrations anteriores)
 -- ============================================================
 
 -- ============================================================
 -- 1. TABELAS DE HIERARQUIA (Categoria → Conexão → Família → Linha)
 -- ============================================================
-ALTER TABLE catalogo_categorias DROP COLUMN IF EXISTS empresa_id;
-ALTER TABLE catalogo_ips_conexoes DROP COLUMN IF EXISTS empresa_id;
-ALTER TABLE catalogo_ips_familias DROP COLUMN IF EXISTS empresa_id;
-ALTER TABLE catalogo_ips_linhas DROP COLUMN IF EXISTS empresa_id;
+ALTER TABLE IF EXISTS catalogo_categorias DROP COLUMN IF EXISTS empresa_id;
+ALTER TABLE IF EXISTS catalogo_ips_conexoes DROP COLUMN IF EXISTS empresa_id;
+ALTER TABLE IF EXISTS catalogo_ips_familias DROP COLUMN IF EXISTS empresa_id;
+ALTER TABLE IF EXISTS catalogo_ips_linhas DROP COLUMN IF EXISTS empresa_id;
 
 -- ============================================================
 -- 2. TABELAS DE PRODUTOS
 -- ============================================================
-ALTER TABLE catalogo_implantes DROP COLUMN IF EXISTS empresa_id;
-ALTER TABLE catalogo_kits DROP COLUMN IF EXISTS empresa_id;
-ALTER TABLE catalogo_abutments DROP COLUMN IF EXISTS empresa_id;
-ALTER TABLE catalogo_chaves DROP COLUMN IF EXISTS empresa_id;
-ALTER TABLE catalogo_fresas DROP COLUMN IF EXISTS empresa_id;
-ALTER TABLE catalogo_cicatrizadores DROP COLUMN IF EXISTS empresa_id;
-ALTER TABLE catalogo_componentes DROP COLUMN IF EXISTS empresa_id;
-ALTER TABLE catalogo_parafusos DROP COLUMN IF EXISTS empresa_id;
-ALTER TABLE catalogo_parafusos_retensao DROP COLUMN IF EXISTS empresa_id;
-ALTER TABLE catalogo_opcionais DROP COLUMN IF EXISTS empresa_id;
-ALTER TABLE catalogo_complementares DROP COLUMN IF EXISTS empresa_id;
+ALTER TABLE IF EXISTS catalogo_implantes DROP COLUMN IF EXISTS empresa_id;
+ALTER TABLE IF EXISTS catalogo_kits DROP COLUMN IF EXISTS empresa_id;
+ALTER TABLE IF EXISTS catalogo_abutments DROP COLUMN IF EXISTS empresa_id;
+ALTER TABLE IF EXISTS catalogo_chaves DROP COLUMN IF EXISTS empresa_id;
+ALTER TABLE IF EXISTS catalogo_fresas DROP COLUMN IF EXISTS empresa_id;
+ALTER TABLE IF EXISTS catalogo_cicatrizadores DROP COLUMN IF EXISTS empresa_id;
+ALTER TABLE IF EXISTS catalogo_componentes DROP COLUMN IF EXISTS empresa_id;
+ALTER TABLE IF EXISTS catalogo_parafusos DROP COLUMN IF EXISTS empresa_id;
+ALTER TABLE IF EXISTS catalogo_parafusos_retensao DROP COLUMN IF EXISTS empresa_id;
+ALTER TABLE IF EXISTS catalogo_opcionais DROP COLUMN IF EXISTS empresa_id;
+ALTER TABLE IF EXISTS catalogo_complementares DROP COLUMN IF EXISTS empresa_id;
 
 -- ============================================================
 -- 3. TABELAS DE TIPOS
 -- ============================================================
-ALTER TABLE catalogo_tipos_chaves DROP COLUMN IF EXISTS empresa_id;
-ALTER TABLE catalogo_tipos_fresas DROP COLUMN IF EXISTS empresa_id;
-ALTER TABLE catalogo_tipos_complementares DROP COLUMN IF EXISTS empresa_id;
-ALTER TABLE catalogo_tipos_opcionais DROP COLUMN IF EXISTS empresa_id;
-ALTER TABLE catalogo_cps_tipos_reabilitacao DROP COLUMN IF EXISTS empresa_id;
-ALTER TABLE catalogo_cps_tipos_abutments DROP COLUMN IF EXISTS empresa_id;
-ALTER TABLE catalogo_cps_tipos_componentes DROP COLUMN IF EXISTS empresa_id;
-ALTER TABLE catalogo_cps_tipos_parafusos DROP COLUMN IF EXISTS empresa_id;
-ALTER TABLE catalogo_cps_tipos_cicatrizadores DROP COLUMN IF EXISTS empresa_id;
-ALTER TABLE catalogo_cps_tipos_workflows DROP COLUMN IF EXISTS empresa_id;
-ALTER TABLE catalogo_cps_etapas_workflows DROP COLUMN IF EXISTS empresa_id;
+ALTER TABLE IF EXISTS catalogo_tipos_chaves DROP COLUMN IF EXISTS empresa_id;
+ALTER TABLE IF EXISTS catalogo_tipos_fresas DROP COLUMN IF EXISTS empresa_id;
+ALTER TABLE IF EXISTS catalogo_tipos_complementares DROP COLUMN IF EXISTS empresa_id;
+ALTER TABLE IF EXISTS catalogo_tipos_opcionais DROP COLUMN IF EXISTS empresa_id;
+ALTER TABLE IF EXISTS catalogo_cps_tipos_reabilitacao DROP COLUMN IF EXISTS empresa_id;
+ALTER TABLE IF EXISTS catalogo_cps_tipos_abutments DROP COLUMN IF EXISTS empresa_id;
+ALTER TABLE IF EXISTS catalogo_cps_tipos_componentes DROP COLUMN IF EXISTS empresa_id;
+ALTER TABLE IF EXISTS catalogo_cps_tipos_parafusos DROP COLUMN IF EXISTS empresa_id;
+ALTER TABLE IF EXISTS catalogo_cps_tipos_cicatrizadores DROP COLUMN IF EXISTS empresa_id;
+ALTER TABLE IF EXISTS catalogo_cps_tipos_workflows DROP COLUMN IF EXISTS empresa_id;
+ALTER TABLE IF EXISTS catalogo_cps_etapas_workflows DROP COLUMN IF EXISTS empresa_id;
 
 -- ============================================================
 -- 4. TABELAS DE RELACIONAMENTO N:M (Pivot)
 -- ============================================================
-ALTER TABLE catalogo_implante_chaves DROP COLUMN IF EXISTS empresa_id;
-ALTER TABLE catalogo_implante_kit DROP COLUMN IF EXISTS empresa_id;
-ALTER TABLE catalogo_implante_abutment DROP COLUMN IF EXISTS empresa_id;
-ALTER TABLE catalogo_kit_chaves DROP COLUMN IF EXISTS empresa_id;
-ALTER TABLE catalogo_kit_fresas DROP COLUMN IF EXISTS empresa_id;
-ALTER TABLE catalogo_kit_complementares DROP COLUMN IF EXISTS empresa_id;
-ALTER TABLE catalogo_kit_opcionais DROP COLUMN IF EXISTS empresa_id;
-ALTER TABLE catalogo_kit_familias DROP COLUMN IF EXISTS empresa_id;
-ALTER TABLE catalogo_kit_implantes DROP COLUMN IF EXISTS empresa_id;
-ALTER TABLE catalogo_kit_composicao DROP COLUMN IF EXISTS empresa_id;
+ALTER TABLE IF EXISTS catalogo_implante_chaves DROP COLUMN IF EXISTS empresa_id;
+ALTER TABLE IF EXISTS catalogo_implante_kit DROP COLUMN IF EXISTS empresa_id;
+ALTER TABLE IF EXISTS catalogo_implante_abutment DROP COLUMN IF EXISTS empresa_id;
+ALTER TABLE IF EXISTS catalogo_kit_chaves DROP COLUMN IF EXISTS empresa_id;
+ALTER TABLE IF EXISTS catalogo_kit_fresas DROP COLUMN IF EXISTS empresa_id;
+ALTER TABLE IF EXISTS catalogo_kit_complementares DROP COLUMN IF EXISTS empresa_id;
+ALTER TABLE IF EXISTS catalogo_kit_opcionais DROP COLUMN IF EXISTS empresa_id;
+ALTER TABLE IF EXISTS catalogo_kit_familias DROP COLUMN IF EXISTS empresa_id;
+ALTER TABLE IF EXISTS catalogo_kit_implantes DROP COLUMN IF EXISTS empresa_id;
+ALTER TABLE IF EXISTS catalogo_kit_composicao DROP COLUMN IF EXISTS empresa_id;
 
 -- ============================================================
 -- 5. TABELAS DE PROTOCOLO
 -- ============================================================
-ALTER TABLE catalogo_protocolos_fresagens DROP COLUMN IF EXISTS empresa_id;
-ALTER TABLE catalogo_protocolos_fresas_itens DROP COLUMN IF EXISTS empresa_id;
-ALTER TABLE catalogo_protocolo_fresagem DROP COLUMN IF EXISTS empresa_id;
+ALTER TABLE IF EXISTS catalogo_protocolos_fresagens DROP COLUMN IF EXISTS empresa_id;
+ALTER TABLE IF EXISTS catalogo_protocolos_fresas_itens DROP COLUMN IF EXISTS empresa_id;
+ALTER TABLE IF EXISTS catalogo_protocolo_fresagem DROP COLUMN IF EXISTS empresa_id;
 
 -- ============================================================
 -- 6. TABELAS DE CONFIGURAÇÃO
 -- ============================================================
-ALTER TABLE catalogo_configuracoes DROP COLUMN IF EXISTS empresa_id;
-ALTER TABLE catalogo_design_config DROP COLUMN IF EXISTS empresa_id;
-ALTER TABLE catalogo_grupo_precos DROP COLUMN IF EXISTS empresa_id;
-ALTER TABLE catalogo_grupos_clientes DROP COLUMN IF EXISTS empresa_id;
-ALTER TABLE catalogo_categorias_kit DROP COLUMN IF EXISTS empresa_id;
+ALTER TABLE IF EXISTS catalogo_configuracoes DROP COLUMN IF EXISTS empresa_id;
+ALTER TABLE IF EXISTS catalogo_design_config DROP COLUMN IF EXISTS empresa_id;
+ALTER TABLE IF EXISTS catalogo_grupo_precos DROP COLUMN IF EXISTS empresa_id;
+ALTER TABLE IF EXISTS catalogo_grupos_clientes DROP COLUMN IF EXISTS empresa_id;
+ALTER TABLE IF EXISTS catalogo_categorias_kit DROP COLUMN IF EXISTS empresa_id;
 
 -- ============================================================
 -- 7. TABELAS DE CLIENTES/PEDIDOS
 -- ============================================================
-ALTER TABLE catalogo_clientes DROP COLUMN IF EXISTS empresa_id;
-ALTER TABLE catalogo_cliente_permissoes DROP COLUMN IF EXISTS empresa_id;
-ALTER TABLE catalogo_pedidos DROP COLUMN IF EXISTS empresa_id;
-ALTER TABLE catalogo_pedido_itens DROP COLUMN IF EXISTS empresa_id;
-ALTER TABLE catalogo_orcamentos DROP COLUMN IF EXISTS empresa_id;
-ALTER TABLE catalogo_orcamento_itens DROP COLUMN IF EXISTS empresa_id;
-ALTER TABLE catalogo_solicitacoes_acesso DROP COLUMN IF EXISTS empresa_id;
+ALTER TABLE IF EXISTS catalogo_clientes DROP COLUMN IF EXISTS empresa_id;
+ALTER TABLE IF EXISTS catalogo_cliente_permissoes DROP COLUMN IF EXISTS empresa_id;
+ALTER TABLE IF EXISTS catalogo_pedidos DROP COLUMN IF EXISTS empresa_id;
+ALTER TABLE IF EXISTS catalogo_pedido_itens DROP COLUMN IF EXISTS empresa_id;
+ALTER TABLE IF EXISTS catalogo_orcamentos DROP COLUMN IF EXISTS empresa_id;
+ALTER TABLE IF EXISTS catalogo_orcamento_itens DROP COLUMN IF EXISTS empresa_id;
+ALTER TABLE IF EXISTS catalogo_solicitacoes_acesso DROP COLUMN IF EXISTS empresa_id;
 
 -- ============================================================
 -- 8. TABELAS DE IMAGENS/FAVORITOS
 -- ============================================================
-ALTER TABLE catalogo_imagens_produto DROP COLUMN IF EXISTS empresa_id;
-ALTER TABLE catalogo_favoritos DROP COLUMN IF EXISTS empresa_id;
+ALTER TABLE IF EXISTS catalogo_imagens_produto DROP COLUMN IF EXISTS empresa_id;
+ALTER TABLE IF EXISTS catalogo_favoritos DROP COLUMN IF EXISTS empresa_id;
 
 -- ============================================================
 -- 9. TABELAS PROMOCIONAIS/CUPONS/FRETE
 -- ============================================================
-ALTER TABLE catalogo_promocionais DROP COLUMN IF EXISTS empresa_id;
-ALTER TABLE catalogo_promocional_itens DROP COLUMN IF EXISTS empresa_id;
-ALTER TABLE catalogo_cupons DROP COLUMN IF EXISTS empresa_id;
-ALTER TABLE catalogo_fretes DROP COLUMN IF EXISTS empresa_id;
+ALTER TABLE IF EXISTS catalogo_promocionais DROP COLUMN IF EXISTS empresa_id;
+ALTER TABLE IF EXISTS catalogo_promocional_itens DROP COLUMN IF EXISTS empresa_id;
+ALTER TABLE IF EXISTS catalogo_cupons DROP COLUMN IF EXISTS empresa_id;
+ALTER TABLE IF EXISTS catalogo_fretes DROP COLUMN IF EXISTS empresa_id;
 
 -- ============================================================
 -- 10. TABELAS INSTRUMENTAIS
 -- ============================================================
-ALTER TABLE catalogo_instrumentais DROP COLUMN IF EXISTS empresa_id;
-ALTER TABLE catalogo_instrumental_geral DROP COLUMN IF EXISTS empresa_id;
-ALTER TABLE catalogo_fresagens DROP COLUMN IF EXISTS empresa_id;
+ALTER TABLE IF EXISTS catalogo_instrumentais DROP COLUMN IF EXISTS empresa_id;
+ALTER TABLE IF EXISTS catalogo_instrumental_geral DROP COLUMN IF EXISTS empresa_id;
+ALTER TABLE IF EXISTS catalogo_fresagens DROP COLUMN IF EXISTS empresa_id;
 
 -- ============================================================
 -- 11. TABELAS DE SEQUÊNCIA PROTÉTICA
 -- ============================================================
-ALTER TABLE catalogo_sequencia_protetica DROP COLUMN IF EXISTS empresa_id;
-
--- ============================================================
--- 12. SEED DATA: Atualizar inserts que usam empresa_id
--- ============================================================
--- O seed pode continuar funcionando因为 empresa_id é removido da tabela
--- Mas se houver funções que inserem com empresa_id, elas precisam ser atualizadas
+ALTER TABLE IF EXISTS catalogo_sequencia_protetica DROP COLUMN IF EXISTS empresa_id;
 
 -- ============================================================
 -- VERIFICAÇÃO FINAL
@@ -152,7 +148,7 @@ DECLARE
 BEGIN
   FOREACH tbl IN ARRAY tables_with_empresa LOOP
     IF NOT EXISTS (SELECT 1 FROM information_schema.tables WHERE table_schema='public' AND table_name=tbl) THEN
-      RAISE NOTICE 'Tabela % não existe, pulando verificação...', tbl;
+      RAISE NOTICE 'Tabela % nao existe, pulando verificacao...', tbl;
       CONTINUE;
     END IF;
 
@@ -167,8 +163,13 @@ BEGIN
     END IF;
   END LOOP;
 
-  RAISE NOTICE '✅ Todas as tabelas catálogo não possuem mais empresa_id';
+  RAISE NOTICE 'Todas as tabelas catalogo nao possuem mais empresa_id';
 END $$;
+
+-- ============================================================
+-- RELOAD SCHEMA CACHE (PostgREST)
+-- ============================================================
+NOTIFY pgrst, 'reload schema';
 
 -- ============================================================
 -- FIM DA MIGRATION
