@@ -91,7 +91,7 @@ function AdminImplantesPage() {
     const sanitized = Object.fromEntries(
       Object.entries(implData).map(([k, v]) => [k, UUID_COLS.includes(k as typeof UUID_COLS[number]) && v === "" ? null : v])
     )
-    const payload = { ...sanitized, empresa_id: EMPRESA_ID }
+    const payload = { ...sanitized}
     if (implEditing) {
       const { error } = await supabase.from("catalogo_implantes").update(payload).eq("sku", implEditing.sku)
       if (error) { setImplError(error.message); return }
@@ -178,7 +178,7 @@ function AdminImplantesPage() {
                     <TableCell className="text-sm">{impl.linha?.familia?.conexao?.nome ?? ""}</TableCell>
                     <TableCell className="text-sm">{impl.linha?.familia?.nome ?? ""}</TableCell>
                     <TableCell className="text-sm">{impl.linha?.nome ?? ""}</TableCell>
-                    <TableCell><button onClick={async()=>{await supabase.from("catalogo_implantes").update({ativo:!impl.ativo}).eq("sku",impl.sku).eq("empresa_id",empresaId);qc.invalidateQueries({queryKey:["catalogo"]})}}>{impl.ativo?<ToggleRight className="h-7 w-7 text-green-400"/>:<ToggleLeft className="h-7 w-7 text-gray-500"/>}</button></TableCell>
+                    <TableCell><button onClick={async()=>{await supabase.from("catalogo_implantes").update({ativo:!impl.ativo}).eq("sku",impl.sku);qc.invalidateQueries({queryKey:["catalogo"]})}}>{impl.ativo?<ToggleRight className="h-7 w-7 text-green-400"/>:<ToggleLeft className="h-7 w-7 text-gray-500"/>}</button></TableCell>
                     <TableCell><div className="flex items-center gap-2"><button onClick={()=>window.open(`/catalogo/produto/implante/${impl.sku}?empresa=${empresaId}`,'_blank')} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-green-500/20 text-[var(--color-text-muted)] hover:text-green-400" title="Ver Ficha Técnica"><ExternalLink className="h-3.5 w-3.5"/></button><button onClick={()=>openEditImpl(impl)} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-[#c9a655]/20 text-[var(--color-text-muted)] hover:text-[#c9a655]"><Pencil className="h-3.5 w-3.5"/></button><button onClick={()=>setDeleteItem({id:impl.sku,label:impl.nome??impl.sku,table:"catalogo_implantes",pkColumn:"sku"})} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-red-500/20 text-[var(--color-text-muted)] hover:text-red-400"><Trash2 className="h-3.5 w-3.5"/></button></div></TableCell>
                   </TableRow>
                 ))}
@@ -345,7 +345,7 @@ function SimpleForm({ subTab, editingItem, table, empresaId, onClose, onSuccess 
     if (isFamilia && !cor.trim()) { setError("Cor de identificação é obrigatória"); return }
     if (isLinha && !parentId) { setError("Família é obrigatória"); return }
 
-    const payload: Record<string,unknown> = { empresa_id: EMPRESA_ID, nome: nome.trim(), sigla: sigla.trim(), ativo }
+    const payload: Record<string,unknown> = { nome: nome.trim(), sigla: sigla.trim(), ativo }
 
     if (isConexao) {
       payload.categoria_id = parentId

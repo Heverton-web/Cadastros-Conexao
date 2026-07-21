@@ -34,18 +34,18 @@ function AdminComponentesPage() {
   const qc = useQueryClient()
 
   // Data
-  const { data: tiposReab } = useQuery({ queryKey: ["catalogo", "tipos-reabilitacao", empresaId], queryFn: async () => { const { data } = await supabase.from("catalogo_cps_tipos_reabilitacao").select("*").eq("empresa_id", empresaId).order("nome"); return (data ?? []) as CatalogoCpsTipoReabilitacao[] }, enabled: !!empresaId })
-  const { data: tiposAbutment } = useQuery({ queryKey: ["catalogo", "tipos-abutment", empresaId], queryFn: async () => { const { data } = await supabase.from("catalogo_cps_tipos_abutments").select("*, tipo_reabilitacao:catalogo_cps_tipos_reabilitacao(*)").eq("empresa_id", empresaId).order("nome"); return (data ?? []) as any[] }, enabled: !!empresaId })
-  const { data: tiposComponente } = useQuery({ queryKey: ["catalogo", "tipos-componente", empresaId], queryFn: async () => { const { data } = await supabase.from("catalogo_cps_tipos_componentes").select("*").eq("empresa_id", empresaId).order("nome"); return (data ?? []) as any[] }, enabled: !!empresaId })
-  const { data: tiposParafuso } = useQuery({ queryKey: ["catalogo", "tipos-parafuso", empresaId], queryFn: async () => { const { data } = await supabase.from("catalogo_cps_tipos_parafusos").select("*").eq("empresa_id", empresaId).order("nome"); return (data ?? []) as any[] }, enabled: !!empresaId })
-  const { data: tiposCicatrizador } = useQuery({ queryKey: ["catalogo", "tipos-cicatrizador", empresaId], queryFn: async () => { const { data } = await supabase.from("catalogo_cps_tipos_cicatrizadores").select("*").eq("empresa_id", empresaId).order("nome"); return (data ?? []) as any[] }, enabled: !!empresaId })
-  const { data: abutments } = useQuery({ queryKey: ["catalogo", "abutments", empresaId], queryFn: async () => { const { data } = await supabase.from("catalogo_abutments").select("*, tipo_abutment:catalogo_cps_tipos_abutments(*), parafuso:catalogo_parafusos(*), chave:catalogo_chaves(*)").eq("empresa_id", empresaId).order("sku"); return (data ?? []) as any[] }, enabled: !!empresaId })
-  const { data: parafusosList } = useQuery({ queryKey: ["catalogo", "parafusos-list"], queryFn: async () => { const { data } = await supabase.from("catalogo_parafusos").select("*").eq("empresa_id", empresaId).order("nome"); return (data ?? []) as any[] }, enabled: !!empresaId })
-  const { data: chavesList } = useQuery({ queryKey: ["catalogo", "chaves-list"], queryFn: async () => { const { data } = await supabase.from("catalogo_chaves").select("*").eq("empresa_id", empresaId).order("nome"); return (data ?? []) as any[] }, enabled: !!empresaId })
-  const { data: componentesList } = useQuery({ queryKey: ["catalogo", "componentes", empresaId], queryFn: async () => { const { data } = await supabase.from("catalogo_componentes").select("*, tipo_componente:catalogo_cps_tipos_componentes(*), tipo_abutment:catalogo_cps_tipos_abutments(*), parafuso:catalogo_parafusos(*), chave:catalogo_chaves(*)").eq("empresa_id", empresaId).order("sku"); return (data ?? []) as any[] }, enabled: !!empresaId })
-  const { data: parafusosProdutos } = useQuery({ queryKey: ["catalogo", "parafusos-produtos", empresaId], queryFn: async () => { const { data } = await supabase.from("catalogo_parafusos").select("*, tipo_parafuso:catalogo_cps_tipos_parafusos(*), chave:catalogo_chaves(*)").eq("empresa_id", empresaId).order("sku"); return (data ?? []) as any[] }, enabled: !!empresaId })
-  const { data: cicatrizadoresProdutos } = useQuery({ queryKey: ["catalogo", "cicatrizadores-produtos", empresaId], queryFn: async () => { const { data } = await supabase.from("catalogo_cicatrizadores").select("*, implante:catalogo_implantes(*), chave:catalogo_chaves(*)").eq("empresa_id", empresaId).order("sku"); return (data ?? []) as any[] }, enabled: !!empresaId })
-  const { data: implantesList } = useQuery({ queryKey: ["catalogo", "implantes-list", empresaId], queryFn: async () => { const { data } = await supabase.from("catalogo_implantes").select("sku, nome").eq("empresa_id", empresaId).order("sku"); return (data ?? []) as any[] }, enabled: !!empresaId })
+  const { data: tiposReab } = useQuery({ queryKey: ["catalogo", "tipos-reabilitacao", empresaId], queryFn: async () => { const { data } = await supabase.from("catalogo_cps_tipos_reabilitacao").select("*").order("nome"); return (data ?? []) as CatalogoCpsTipoReabilitacao[] }, enabled: !!empresaId })
+  const { data: tiposAbutment } = useQuery({ queryKey: ["catalogo", "tipos-abutment", empresaId], queryFn: async () => { const { data } = await supabase.from("catalogo_cps_tipos_abutments").select("*, tipo_reabilitacao:catalogo_cps_tipos_reabilitacao(*)").order("nome"); return (data ?? []) as any[] }, enabled: !!empresaId })
+  const { data: tiposComponente } = useQuery({ queryKey: ["catalogo", "tipos-componente", empresaId], queryFn: async () => { const { data } = await supabase.from("catalogo_cps_tipos_componentes").select("*").order("nome"); return (data ?? []) as any[] }, enabled: !!empresaId })
+  const { data: tiposParafuso } = useQuery({ queryKey: ["catalogo", "tipos-parafuso", empresaId], queryFn: async () => { const { data } = await supabase.from("catalogo_cps_tipos_parafusos").select("*").order("nome"); return (data ?? []) as any[] }, enabled: !!empresaId })
+  const { data: tiposCicatrizador } = useQuery({ queryKey: ["catalogo", "tipos-cicatrizador", empresaId], queryFn: async () => { const { data } = await supabase.from("catalogo_cps_tipos_cicatrizadores").select("*").order("nome"); return (data ?? []) as any[] }, enabled: !!empresaId })
+  const { data: abutments } = useQuery({ queryKey: ["catalogo", "abutments", empresaId], queryFn: async () => { const { data } = await supabase.from("catalogo_abutments").select("*, tipo_abutment:catalogo_cps_tipos_abutments(*), parafuso:catalogo_parafusos(*), chave:catalogo_chaves(*)").order("sku"); return (data ?? []) as any[] }, enabled: !!empresaId })
+  const { data: parafusosList } = useQuery({ queryKey: ["catalogo", "parafusos-list"], queryFn: async () => { const { data } = await supabase.from("catalogo_parafusos").select("*").order("nome"); return (data ?? []) as any[] }, enabled: !!empresaId })
+  const { data: chavesList } = useQuery({ queryKey: ["catalogo", "chaves-list"], queryFn: async () => { const { data } = await supabase.from("catalogo_chaves").select("*").order("nome"); return (data ?? []) as any[] }, enabled: !!empresaId })
+  const { data: componentesList } = useQuery({ queryKey: ["catalogo", "componentes", empresaId], queryFn: async () => { const { data } = await supabase.from("catalogo_componentes").select("*, tipo_componente:catalogo_cps_tipos_componentes(*), tipo_abutment:catalogo_cps_tipos_abutments(*), parafuso:catalogo_parafusos(*), chave:catalogo_chaves(*)").order("sku"); return (data ?? []) as any[] }, enabled: !!empresaId })
+  const { data: parafusosProdutos } = useQuery({ queryKey: ["catalogo", "parafusos-produtos", empresaId], queryFn: async () => { const { data } = await supabase.from("catalogo_parafusos").select("*, tipo_parafuso:catalogo_cps_tipos_parafusos(*), chave:catalogo_chaves(*)").order("sku"); return (data ?? []) as any[] }, enabled: !!empresaId })
+  const { data: cicatrizadoresProdutos } = useQuery({ queryKey: ["catalogo", "cicatrizadores-produtos", empresaId], queryFn: async () => { const { data } = await supabase.from("catalogo_cicatrizadores").select("*, implante:catalogo_implantes(*), chave:catalogo_chaves(*)").order("sku"); return (data ?? []) as any[] }, enabled: !!empresaId })
+  const { data: implantesList } = useQuery({ queryKey: ["catalogo", "implantes-list", empresaId], queryFn: async () => { const { data } = await supabase.from("catalogo_implantes").select("sku, nome").order("sku"); return (data ?? []) as any[] }, enabled: !!empresaId })
   const { data: familias } = useFamilias()
 
   // Toggles
@@ -83,9 +83,9 @@ function AdminComponentesPage() {
     if (!abutData.nome.trim()) { setAbutError("Nome é obrigatório"); return }
     if (!abutData.tipo_abutment_id) { setAbutError("Tipo de Abutment é obrigatório"); return }
     if (!abutData.parafuso_id) { setAbutError("Parafuso é obrigatório"); return }
-    const payload = { ...abutData, empresa_id: EMPRESA_ID }
+    const payload = { ...abutData}
     if (abutEditing) {
-      const { error } = await supabase.from("catalogo_abutments").update(payload).eq("sku", abutEditing.sku).eq("empresa_id", empresaId)
+      const { error } = await supabase.from("catalogo_abutments").update(payload).eq("sku", abutEditing.sku)
       if (error) { setAbutError(error.message); return }
     } else {
       const { error } = await supabase.from("catalogo_abutments").insert(payload)
@@ -96,7 +96,7 @@ function AdminComponentesPage() {
   }
 
   async function toggleAbutAtivo(sku: string, ativo: boolean) {
-    await supabase.from("catalogo_abutments").update({ ativo }).eq("sku", sku).eq("empresa_id", empresaId)
+    await supabase.from("catalogo_abutments").update({ ativo }).eq("sku", sku)
     qc.invalidateQueries({ queryKey: ["catalogo"] })
   }
 
@@ -116,9 +116,9 @@ function AdminComponentesPage() {
     if (!compData.tipo_componente_id) { setCompError("Tipo de Componente é obrigatório"); return }
     if (!compData.tipo_abutment_id) { setCompError("Tipo de Abutment é obrigatório"); return }
     if (!compData.parafuso_id) { setCompError("Parafuso é obrigatório"); return }
-    const payload = { ...compData, empresa_id: EMPRESA_ID }
+    const payload = { ...compData}
     if (compEditing) {
-      const { error } = await supabase.from("catalogo_componentes").update(payload).eq("sku", compEditing.sku).eq("empresa_id", empresaId)
+      const { error } = await supabase.from("catalogo_componentes").update(payload).eq("sku", compEditing.sku)
       if (error) { setCompError(error.message); return }
     } else {
       const { error } = await supabase.from("catalogo_componentes").insert(payload)
@@ -129,7 +129,7 @@ function AdminComponentesPage() {
   }
 
   async function toggleCompAtivo(sku: string, ativo: boolean) {
-    await supabase.from("catalogo_componentes").update({ ativo }).eq("sku", sku).eq("empresa_id", empresaId)
+    await supabase.from("catalogo_componentes").update({ ativo }).eq("sku", sku)
     qc.invalidateQueries({ queryKey: ["catalogo"] })
   }
 
@@ -147,9 +147,9 @@ function AdminComponentesPage() {
     if (!parData.sku.trim()) { setParError("SKU é obrigatório"); return }
     if (!parData.nome.trim()) { setParError("Nome é obrigatório"); return }
     if (!parData.tipo_parafuso_id) { setParError("Tipo de Parafuso é obrigatório"); return }
-    const payload = { ...parData, empresa_id: EMPRESA_ID }
+    const payload = { ...parData}
     if (parEditing) {
-      const { error } = await supabase.from("catalogo_parafusos").update(payload).eq("sku", parEditing.sku).eq("empresa_id", empresaId)
+      const { error } = await supabase.from("catalogo_parafusos").update(payload).eq("sku", parEditing.sku)
       if (error) { setParError(error.message); return }
     } else {
       const { error } = await supabase.from("catalogo_parafusos").insert(payload)
@@ -160,7 +160,7 @@ function AdminComponentesPage() {
   }
 
   async function toggleParAtivo(sku: string, ativo: boolean) {
-    await supabase.from("catalogo_parafusos").update({ ativo }).eq("sku", sku).eq("empresa_id", empresaId)
+    await supabase.from("catalogo_parafusos").update({ ativo }).eq("sku", sku)
     qc.invalidateQueries({ queryKey: ["catalogo"] })
   }
 
@@ -178,9 +178,9 @@ function AdminComponentesPage() {
     if (!cicData.sku.trim()) { setCicError("SKU é obrigatório"); return }
     if (!cicData.nome.trim()) { setCicError("Nome é obrigatório"); return }
     if (!cicData.implante_id) { setCicError("Implante é obrigatório"); return }
-    const payload = { ...cicData, empresa_id: EMPRESA_ID }
+    const payload = { ...cicData}
     if (cicEditing) {
-      const { error } = await supabase.from("catalogo_cicatrizadores").update(payload).eq("sku", cicEditing.sku).eq("empresa_id", empresaId)
+      const { error } = await supabase.from("catalogo_cicatrizadores").update(payload).eq("sku", cicEditing.sku)
       if (error) { setCicError(error.message); return }
     } else {
       const { error } = await supabase.from("catalogo_cicatrizadores").insert(payload)
@@ -191,7 +191,7 @@ function AdminComponentesPage() {
   }
 
   async function toggleCicAtivo(sku: string, ativo: boolean) {
-    await supabase.from("catalogo_cicatrizadores").update({ ativo }).eq("sku", sku).eq("empresa_id", empresaId)
+    await supabase.from("catalogo_cicatrizadores").update({ ativo }).eq("sku", sku)
     qc.invalidateQueries({ queryKey: ["catalogo"] })
   }
 
@@ -231,7 +231,7 @@ function AdminComponentesPage() {
 
     if (activeModal === "abutment") {
       if (!parentId) { setError("Tipo de Reabilitação é obrigatório"); return }
-      const payload = { empresa_id: EMPRESA_ID, nome: nome.trim(), sigla: sigla.trim() || null, ativo, tipo_reabilitacao_id: parentId }
+      const payload = { nome: nome.trim(), sigla: sigla.trim() || null, ativo, tipo_reabilitacao_id: parentId }
       if (editing) {
         const { error } = await supabase.from("catalogo_cps_tipos_abutments").update({ nome: payload.nome, sigla: payload.sigla, ativo, tipo_reabilitacao_id: parentId }).eq("id", editing.id)
         if (error) { setError(error.message); return }
@@ -241,7 +241,7 @@ function AdminComponentesPage() {
       }
       toast.success(editing ? "Tipo de Abutment atualizado!" : "Tipo de Abutment criado!")
     } else if (activeModal === "componente") {
-      const payload = { empresa_id: EMPRESA_ID, nome: nome.trim(), sigla: sigla.trim() || null, ativo }
+      const payload = { nome: nome.trim(), sigla: sigla.trim() || null, ativo }
       if (editing) {
         const { error } = await supabase.from("catalogo_cps_tipos_componentes").update({ nome: payload.nome, sigla: payload.sigla, ativo }).eq("id", editing.id)
         if (error) { setError(error.message); return }
@@ -251,7 +251,7 @@ function AdminComponentesPage() {
       }
       toast.success(editing ? "Tipo de Componente atualizado!" : "Tipo de Componente criado!")
     } else if (activeModal === "parafuso") {
-      const payload = { empresa_id: EMPRESA_ID, nome: nome.trim(), sigla: sigla.trim() || null, ativo }
+      const payload = { nome: nome.trim(), sigla: sigla.trim() || null, ativo }
       if (editing) {
         const { error } = await supabase.from("catalogo_cps_tipos_parafusos").update({ nome: payload.nome, sigla: payload.sigla, ativo }).eq("id", editing.id)
         if (error) { setError(error.message); return }
@@ -261,7 +261,7 @@ function AdminComponentesPage() {
       }
       toast.success(editing ? "Tipo de Parafuso atualizado!" : "Tipo de Parafuso criado!")
     } else if (activeModal === "cicatrizador") {
-      const payload = { empresa_id: EMPRESA_ID, nome: nome.trim(), sigla: sigla.trim() || null, ativo }
+      const payload = { nome: nome.trim(), sigla: sigla.trim() || null, ativo }
       if (editing) {
         const { error } = await supabase.from("catalogo_cps_tipos_cicatrizadores").update({ nome: payload.nome, sigla: payload.sigla, ativo }).eq("id", editing.id)
         if (error) { setError(error.message); return }
@@ -271,7 +271,7 @@ function AdminComponentesPage() {
       }
       toast.success(editing ? "Tipo de Cicatrizador atualizado!" : "Tipo de Cicatrizador criado!")
     } else {
-      const payload: Record<string, unknown> = { empresa_id: EMPRESA_ID, nome: nome.trim(), sigla: sigla.trim() || null, ativo }
+      const payload: Record<string, unknown> = { nome: nome.trim(), sigla: sigla.trim() || null, ativo }
       if (editing) {
         const { error } = await supabase.from("catalogo_cps_tipos_reabilitacao").update({ nome: payload.nome, sigla: payload.sigla, ativo }).eq("id", editing.id)
         if (error) { setError(error.message); return }
@@ -279,7 +279,7 @@ function AdminComponentesPage() {
         const { data, error } = await supabase.from("catalogo_cps_tipos_reabilitacao").insert(payload).select().single()
         if (error) { setError(error.message); return }
         if (data && familiasIds.length > 0) {
-          const rows = familiasIds.map(fid => ({ tipo_reabilitacao_id: data.id, familia_id: fid, empresa_id: EMPRESA_ID }))
+          const rows = familiasIds.map(fid => ({ tipo_reabilitacao_id: data.id, familia_id: fid}))
           await supabase.from("catalogo_cps_tipos_reabilitacao_familias").insert(rows)
         }
       }

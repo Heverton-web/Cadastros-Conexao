@@ -31,10 +31,10 @@ function AdminFresagensPage() {
   const qc = useQueryClient()
 
   // Tipos de Osso (nova tabela)
-  const { data: tiposOsso } = useQuery({ queryKey: ["catalogo", "tipos-osso"], queryFn: async () => { const { data } = await supabase.from("catalogo_tipos_ossos").select("*").eq("empresa_id", empresaId).order("nome"); return (data ?? []) as any[] }, enabled: !!empresaId })
-  const { data: protocolos } = useQuery({ queryKey: ["catalogo", "protocolos-fresagem"], queryFn: async () => { const { data } = await supabase.from("catalogo_protocolos_fresagens").select("*").eq("empresa_id", empresaId).order("nome"); return (data ?? []) as any[] }, enabled: !!empresaId })
-  const { data: fresasList } = useQuery({ queryKey: ["catalogo", "fresas-for-protocolo"], queryFn: async () => { const { data } = await supabase.from("catalogo_fresas").select("sku, nome, diametro_mm").eq("empresa_id", empresaId).order("nome"); return (data ?? []) as any[] }, enabled: !!empresaId })
-  const { data: implantesDiametros } = useQuery({ queryKey: ["catalogo", "implantes-diametros"], queryFn: async () => { const { data } = await supabase.from("catalogo_implantes").select("diametro_mm").eq("empresa_id", empresaId); const unique = [...new Set((data ?? []).map((i: any) => i.diametro_mm).filter(Boolean))]; return unique.sort((a: number, b: number) => a - b) as number[] }, enabled: !!empresaId })
+  const { data: tiposOsso } = useQuery({ queryKey: ["catalogo", "tipos-osso"], queryFn: async () => { const { data } = await supabase.from("catalogo_tipos_ossos").select("*").order("nome"); return (data ?? []) as any[] }, enabled: !!empresaId })
+  const { data: protocolos } = useQuery({ queryKey: ["catalogo", "protocolos-fresagem"], queryFn: async () => { const { data } = await supabase.from("catalogo_protocolos_fresagens").select("*").order("nome"); return (data ?? []) as any[] }, enabled: !!empresaId })
+  const { data: fresasList } = useQuery({ queryKey: ["catalogo", "fresas-for-protocolo"], queryFn: async () => { const { data } = await supabase.from("catalogo_fresas").select("sku, nome, diametro_mm").order("nome"); return (data ?? []) as any[] }, enabled: !!empresaId })
+  const { data: implantesDiametros } = useQuery({ queryKey: ["catalogo", "implantes-diametros"], queryFn: async () => { const { data } = await supabase.from("catalogo_implantes").select("diametro_mm"); const unique = [...new Set((data ?? []).map((i: any) => i.diametro_mm).filter(Boolean))]; return unique.sort((a: number, b: number) => a - b) as number[] }, enabled: !!empresaId })
 
   // Tipo modal
   const [tipoModalOpen, setTipoModalOpen] = useState(false)
@@ -61,7 +61,7 @@ function AdminFresagensPage() {
   async function handleSaveTipo() {
     setTipoError("")
     if (!tipoNome.trim()) { setTipoError("Nome é obrigatório"); return }
-    const payload = { empresa_id: EMPRESA_ID, nome: tipoNome.trim(), sigla: tipoSigla.trim() || null, ativo: tipoAtivo }
+    const payload = { nome: tipoNome.trim(), sigla: tipoSigla.trim() || null, ativo: tipoAtivo }
     if (tipoEditing) { const { error } = await supabase.from("catalogo_tipos_ossos").update({ nome: payload.nome, sigla: payload.sigla, ativo: tipoAtivo }).eq("id", tipoEditing.id); if (error) { setTipoError(error.message); return } }
     else { const { error } = await supabase.from("catalogo_tipos_ossos").insert(payload); if (error) { setTipoError(error.message); return } }
     toast.success(tipoEditing ? "Atualizado!" : "Criado!")
@@ -73,7 +73,7 @@ function AdminFresagensPage() {
 
   async function openEditProto(item: any) {
     setProtoEditing(item); setProtoData({ nome: item.nome, tipo_osso: item.tipo_osso ?? "", sigla: item.sigla ?? "", diametro_mm_aplicavel: item.diametro_mm_aplicavel ?? 0, ativo: item.ativo !== false }); setProtoError(""); setSelFresa("")
-    const { data } = await supabase.from("catalogo_protocolos_fresas_itens").select("fresa_id, ordem").eq("empresa_id", empresaId).eq("protocolo_id", item.id).order("ordem")
+    const { data } = await supabase.from("catalogo_protocolos_fresas_itens").select("fresa_id, ordem").eq("protocolo_id", item.id).order("ordem")
     setProtoFresas((data ?? []).map((r: any) => ({ fresa_id: r.fresa_id, ordem: r.ordem })))
     setProtoModalOpen(true)
   }
@@ -82,15 +82,15 @@ function AdminFresagensPage() {
     setProtoError("")
     if (!protoData.nome.trim()) { setProtoError("Nome é obrigatório"); return }
     if (!protoData.tipo_osso) { setProtoError("Tipo de Osso é obrigatório"); return }
-    const payload = { ...protoData, empresa_id: EMPRESA_ID }
+    const payload = { ...protoData}
     let protoId = protoEditing?.id
     if (protoEditing) { const { error } = await supabase.from("catalogo_protocolos_fresagens").update(payload).eq("id", protoEditing.id); if (error) { setProtoError(error.message); return } }
     else { const { data, error } = await supabase.from("catalogo_protocolos_fresagens").insert(payload).select("id").single(); if (error) { setProtoError(error.message); return } protoId = data?.id }
     // Save fresas with ordering
     if (protoId) {
-      await supabase.from("catalogo_protocolos_fresas_itens").delete().eq("empresa_id", empresaId).eq("protocolo_id", protoId)
+      await supabase.from("catalogo_protocolos_fresas_itens").delete().eq("protocolo_id", protoId)
       if (protoFresas.length > 0) {
-        const rows = protoFresas.map((f, i) => ({ empresa_id: EMPRESA_ID, protocolo_id: protoId, fresa_id: f.fresa_id, ordem: i + 1 }))
+        const rows = protoFresas.map((f, i) => ({ protocolo_id: protoId, fresa_id: f.fresa_id, ordem: i + 1 }))
         await supabase.from("catalogo_protocolos_fresas_itens").insert(rows)
       }
     }

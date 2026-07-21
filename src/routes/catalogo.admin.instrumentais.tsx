@@ -32,14 +32,14 @@ function AdminInstrumentaisPage() {
   const qc = useQueryClient()
 
   // Data
-  const { data: tiposChave } = useQuery({ queryKey: ["catalogo", "tipos-chave"], queryFn: async () => { const { data } = await supabase.from("catalogo_tipos_chaves").select("*").eq("empresa_id", empresaId).order("nome"); return (data ?? []) as any[] }, enabled: !!empresaId })
-  const { data: tiposFresa } = useQuery({ queryKey: ["catalogo", "tipos-fresa"], queryFn: async () => { const { data } = await supabase.from("catalogo_tipos_fresas").select("*").eq("empresa_id", empresaId).order("nome"); return (data ?? []) as any[] }, enabled: !!empresaId })
-  const { data: chaves } = useQuery({ queryKey: ["catalogo", "chaves-list2"], queryFn: async () => { const { data } = await supabase.from("catalogo_chaves").select("*, tipo_chave:catalogo_tipos_chaves(*)").eq("empresa_id", empresaId).order("sku"); return (data ?? []) as any[] }, enabled: !!empresaId })
-  const { data: fresas } = useQuery({ queryKey: ["catalogo", "fresas-list2"], queryFn: async () => { const { data } = await supabase.from("catalogo_fresas").select("*, tipo_fresa:catalogo_tipos_fresas(*)").eq("empresa_id", empresaId).order("sku"); return (data ?? []) as any[] }, enabled: !!empresaId })
-  const { data: tiposComplementar } = useQuery({ queryKey: ["catalogo", "tipos-complementar"], queryFn: async () => { const { data } = await supabase.from("catalogo_tipos_complementares").select("*").eq("empresa_id", empresaId).order("nome"); return (data ?? []) as any[] }, enabled: !!empresaId })
-  const { data: complementares } = useQuery({ queryKey: ["catalogo", "complementares-list"], queryFn: async () => { const { data } = await supabase.from("catalogo_complementares").select("*, tipo_complementar:catalogo_tipos_complementares(*)").eq("empresa_id", empresaId).order("sku"); return (data ?? []) as any[] }, enabled: !!empresaId })
-  const { data: tiposOpcional } = useQuery({ queryKey: ["catalogo", "tipos-opcional"], queryFn: async () => { const { data } = await supabase.from("catalogo_tipos_opcionais").select("*").eq("empresa_id", empresaId).order("nome"); return (data ?? []) as any[] }, enabled: !!empresaId })
-  const { data: opcionais } = useQuery({ queryKey: ["catalogo", "opcionais-list"], queryFn: async () => { const { data } = await supabase.from("catalogo_opcionais").select("*, tipo_opcional:catalogo_tipos_opcionais(*)").eq("empresa_id", empresaId).order("sku"); return (data ?? []) as any[] }, enabled: !!empresaId })
+  const { data: tiposChave } = useQuery({ queryKey: ["catalogo", "tipos-chave"], queryFn: async () => { const { data } = await supabase.from("catalogo_tipos_chaves").select("*").order("nome"); return (data ?? []) as any[] }, enabled: !!empresaId })
+  const { data: tiposFresa } = useQuery({ queryKey: ["catalogo", "tipos-fresa"], queryFn: async () => { const { data } = await supabase.from("catalogo_tipos_fresas").select("*").order("nome"); return (data ?? []) as any[] }, enabled: !!empresaId })
+  const { data: chaves } = useQuery({ queryKey: ["catalogo", "chaves-list2"], queryFn: async () => { const { data } = await supabase.from("catalogo_chaves").select("*, tipo_chave:catalogo_tipos_chaves(*)").order("sku"); return (data ?? []) as any[] }, enabled: !!empresaId })
+  const { data: fresas } = useQuery({ queryKey: ["catalogo", "fresas-list2"], queryFn: async () => { const { data } = await supabase.from("catalogo_fresas").select("*, tipo_fresa:catalogo_tipos_fresas(*)").order("sku"); return (data ?? []) as any[] }, enabled: !!empresaId })
+  const { data: tiposComplementar } = useQuery({ queryKey: ["catalogo", "tipos-complementar"], queryFn: async () => { const { data } = await supabase.from("catalogo_tipos_complementares").select("*").order("nome"); return (data ?? []) as any[] }, enabled: !!empresaId })
+  const { data: complementares } = useQuery({ queryKey: ["catalogo", "complementares-list"], queryFn: async () => { const { data } = await supabase.from("catalogo_complementares").select("*, tipo_complementar:catalogo_tipos_complementares(*)").order("sku"); return (data ?? []) as any[] }, enabled: !!empresaId })
+  const { data: tiposOpcional } = useQuery({ queryKey: ["catalogo", "tipos-opcional"], queryFn: async () => { const { data } = await supabase.from("catalogo_tipos_opcionais").select("*").order("nome"); return (data ?? []) as any[] }, enabled: !!empresaId })
+  const { data: opcionais } = useQuery({ queryKey: ["catalogo", "opcionais-list"], queryFn: async () => { const { data } = await supabase.from("catalogo_opcionais").select("*, tipo_opcional:catalogo_tipos_opcionais(*)").order("sku"); return (data ?? []) as any[] }, enabled: !!empresaId })
 
   // Modal state
   const [modalOpen, setModalOpen] = useState(false)
@@ -77,7 +77,7 @@ function AdminInstrumentaisPage() {
     setError("")
     if (!nome.trim()) { setError("Nome é obrigatório"); return }
     const table = activeModal === "tipo_chave" ? "catalogo_tipos_chaves" : activeModal === "tipo_fresa" ? "catalogo_tipos_fresas" : activeModal === "tipo_complementar" ? "catalogo_tipos_complementares" : "catalogo_tipos_opcionais"
-    const payload = { empresa_id: EMPRESA_ID, nome: nome.trim(), sigla: sigla.trim() || null, ativo }
+    const payload = { nome: nome.trim(), sigla: sigla.trim() || null, ativo }
     if (editing) { const { error } = await supabase.from(table).update({ nome: payload.nome, sigla: payload.sigla, ativo }).eq("id", editing.id); if (error) { setError(error.message); return } }
     else { const { error } = await supabase.from(table).insert(payload); if (error) { setError(error.message); return } }
     toast.success(editing ? "Atualizado!" : "Criado!")
@@ -105,8 +105,8 @@ function AdminInstrumentaisPage() {
     if (!prodData.sku.trim()) { setProdError("SKU é obrigatório"); return }
     if (!prodData.nome.trim()) { setProdError("Nome é obrigatório"); return }
     const table = subTab === "Chaves" ? "catalogo_chaves" : subTab === "Fresas" ? "catalogo_fresas" : subTab === "Complementares" ? "catalogo_complementares" : "catalogo_opcionais"
-    const payload = { ...prodData, empresa_id: EMPRESA_ID }
-    if (prodEditing) { const { error } = await supabase.from(table).update(payload).eq("sku", prodEditing.sku).eq("empresa_id", empresaId); if (error) { setProdError(error.message); return } }
+    const payload = { ...prodData}
+    if (prodEditing) { const { error } = await supabase.from(table).update(payload).eq("sku", prodEditing.sku); if (error) { setProdError(error.message); return } }
     else { const { error } = await supabase.from(table).insert(payload); if (error) { setProdError(error.message); return } }
     toast.success(prodEditing ? "Atualizado!" : "Criado!")
     setProdModalOpen(false); qc.invalidateQueries({ queryKey: ["catalogo"] })
@@ -114,7 +114,7 @@ function AdminInstrumentaisPage() {
 
   async function toggleProdAtivo(sku: string, ativo: boolean) {
     const table = subTab === "Chaves" ? "catalogo_chaves" : subTab === "Fresas" ? "catalogo_fresas" : subTab === "Complementares" ? "catalogo_complementares" : "catalogo_opcionais"
-    await supabase.from(table).update({ ativo }).eq("sku", sku).eq("empresa_id", empresaId)
+    await supabase.from(table).update({ ativo }).eq("sku", sku)
     qc.invalidateQueries({ queryKey: ["catalogo"] })
   }
 

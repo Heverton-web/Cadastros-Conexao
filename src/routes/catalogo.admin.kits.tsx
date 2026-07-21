@@ -32,13 +32,13 @@ function AdminKitsPage() {
   const qc = useQueryClient()
 
   // Data
-  const { data: tiposKit } = useQuery({ queryKey: ["catalogo", "tipos-kit"], queryFn: async () => { const { data } = await supabase.from("catalogo_tipos_kits").select("*").eq("empresa_id", empresaId).order("nome"); return (data ?? []) as any[] }, enabled: !!empresaId })
-  const { data: kits } = useQuery({ queryKey: ["catalogo", "kits-list"], queryFn: async () => { const { data } = await supabase.from("catalogo_kits").select("*, tipo_kit:catalogo_tipos_kits(*)").eq("empresa_id", empresaId).order("sku"); return (data ?? []) as any[] }, enabled: !!empresaId })
-  const { data: chavesList } = useQuery({ queryKey: ["catalogo", "chaves-for-kit"], queryFn: async () => { const { data } = await supabase.from("catalogo_chaves").select("sku, nome").eq("empresa_id", empresaId).order("nome"); return (data ?? []) as any[] }, enabled: !!empresaId })
-  const { data: fresasList } = useQuery({ queryKey: ["catalogo", "fresas-for-kit"], queryFn: async () => { const { data } = await supabase.from("catalogo_fresas").select("sku, nome").eq("empresa_id", empresaId).order("nome"); return (data ?? []) as any[] }, enabled: !!empresaId })
-  const { data: complementaresList } = useQuery({ queryKey: ["catalogo", "complementares-for-kit"], queryFn: async () => { const { data } = await supabase.from("catalogo_complementares").select("sku, nome").eq("empresa_id", empresaId).order("nome"); return (data ?? []) as any[] }, enabled: !!empresaId })
-  const { data: opcionaisList } = useQuery({ queryKey: ["catalogo", "opcionais-for-kit"], queryFn: async () => { const { data } = await supabase.from("catalogo_opcionais").select("sku, nome").eq("empresa_id", empresaId).order("nome"); return (data ?? []) as any[] }, enabled: !!empresaId })
-  const { data: implantesList } = useQuery({ queryKey: ["catalogo", "implantes-for-kit"], queryFn: async () => { const { data } = await supabase.from("catalogo_implantes").select("sku, nome, diametro_mm, conexao_id, familia_id, linha_id, conexao:catalogo_ips_conexoes!inner(nome), familia:catalogo_ips_familias!inner(nome), linha:catalogo_ips_linhas!inner(nome)").eq("empresa_id", empresaId).eq("ativo", true).order("sku"); return (data ?? []) as any[] }, enabled: !!empresaId })
+  const { data: tiposKit } = useQuery({ queryKey: ["catalogo", "tipos-kit"], queryFn: async () => { const { data } = await supabase.from("catalogo_tipos_kits").select("*").order("nome"); return (data ?? []) as any[] }, enabled: !!empresaId })
+  const { data: kits } = useQuery({ queryKey: ["catalogo", "kits-list"], queryFn: async () => { const { data } = await supabase.from("catalogo_kits").select("*, tipo_kit:catalogo_tipos_kits(*)").order("sku"); return (data ?? []) as any[] }, enabled: !!empresaId })
+  const { data: chavesList } = useQuery({ queryKey: ["catalogo", "chaves-for-kit"], queryFn: async () => { const { data } = await supabase.from("catalogo_chaves").select("sku, nome").order("nome"); return (data ?? []) as any[] }, enabled: !!empresaId })
+  const { data: fresasList } = useQuery({ queryKey: ["catalogo", "fresas-for-kit"], queryFn: async () => { const { data } = await supabase.from("catalogo_fresas").select("sku, nome").order("nome"); return (data ?? []) as any[] }, enabled: !!empresaId })
+  const { data: complementaresList } = useQuery({ queryKey: ["catalogo", "complementares-for-kit"], queryFn: async () => { const { data } = await supabase.from("catalogo_complementares").select("sku, nome").order("nome"); return (data ?? []) as any[] }, enabled: !!empresaId })
+  const { data: opcionaisList } = useQuery({ queryKey: ["catalogo", "opcionais-for-kit"], queryFn: async () => { const { data } = await supabase.from("catalogo_opcionais").select("sku, nome").order("nome"); return (data ?? []) as any[] }, enabled: !!empresaId })
+  const { data: implantesList } = useQuery({ queryKey: ["catalogo", "implantes-for-kit"], queryFn: async () => { const { data } = await supabase.from("catalogo_implantes").select("sku, nome, diametro_mm, conexao_id, familia_id, linha_id, conexao:catalogo_ips_conexoes!inner(nome), familia:catalogo_ips_familias!inner(nome), linha:catalogo_ips_linhas!inner(nome)").eq("ativo", true).order("sku"); return (data ?? []) as any[] }, enabled: !!empresaId })
 
   // Type modal
   const [tipoModalOpen, setTipoModalOpen] = useState(false)
@@ -76,7 +76,7 @@ function AdminKitsPage() {
   async function handleSaveTipo() {
     setTipoError("")
     if (!tipoNome.trim()) { setTipoError("Nome é obrigatório"); return }
-    const payload = { empresa_id: EMPRESA_ID, nome: tipoNome.trim(), sigla: tipoSigla.trim() || null, ativo: tipoAtivo }
+    const payload = { nome: tipoNome.trim(), sigla: tipoSigla.trim() || null, ativo: tipoAtivo }
     if (tipoEditing) { const { error } = await supabase.from("catalogo_tipos_kits").update({ nome: payload.nome, sigla: payload.sigla, ativo }).eq("id", tipoEditing.id); if (error) { setTipoError(error.message); return } }
     else { const { error } = await supabase.from("catalogo_tipos_kits").insert(payload); if (error) { setTipoError(error.message); return } }
     toast.success(tipoEditing ? "Atualizado!" : "Criado!")
@@ -90,11 +90,11 @@ function AdminKitsPage() {
     setKitEditing(item); setKitData({ sku: item.sku, nome: item.nome ?? "", sigla: item.sigla ?? "", descricao: item.descricao ?? "", tipo_kit_id: item.tipo_kit_id ?? "", preco: item.preco ?? 0, ativo: item.ativo !== false }); setKitError("")
     // Load composition
     const [chRes, frRes, coRes, opRes, imRes] = await Promise.all([
-      supabase.from("catalogo_kit_chaves").select("chave_id").eq("empresa_id", empresaId).eq("kit_sku", item.sku),
-      supabase.from("catalogo_kit_fresas").select("fresa_id").eq("empresa_id", empresaId).eq("kit_sku", item.sku),
-      supabase.from("catalogo_kit_complementares").select("complementar_id").eq("empresa_id", empresaId).eq("kit_sku", item.sku),
-      supabase.from("catalogo_kit_opcionais").select("opcional_id").eq("empresa_id", empresaId).eq("kit_sku", item.sku),
-      supabase.from("catalogo_kit_implantes").select("implante_sku, todos_diametros").eq("empresa_id", empresaId).eq("kit_sku", item.sku),
+      supabase.from("catalogo_kit_chaves").select("chave_id").eq("kit_sku", item.sku),
+      supabase.from("catalogo_kit_fresas").select("fresa_id").eq("kit_sku", item.sku),
+      supabase.from("catalogo_kit_complementares").select("complementar_id").eq("kit_sku", item.sku),
+      supabase.from("catalogo_kit_opcionais").select("opcional_id").eq("kit_sku", item.sku),
+      supabase.from("catalogo_kit_implantes").select("implante_sku, todos_diametros").eq("kit_sku", item.sku),
     ])
     setKitChaves((chRes.data ?? []).map((r: any) => r.chave_id))
     setKitFresas((frRes.data ?? []).map((r: any) => r.fresa_id))
@@ -112,27 +112,27 @@ function AdminKitsPage() {
     setKitError("")
     if (!kitData.sku.trim()) { setKitError("SKU é obrigatório"); return }
     if (!kitData.nome.trim()) { setKitError("Nome é obrigatório"); return }
-    const payload = { ...kitData, empresa_id: EMPRESA_ID }
-    if (kitEditing) { const { error } = await supabase.from("catalogo_kits").update(payload).eq("sku", kitEditing.sku).eq("empresa_id", empresaId); if (error) { setKitError(error.message); return } }
+    const payload = { ...kitData}
+    if (kitEditing) { const { error } = await supabase.from("catalogo_kits").update(payload).eq("sku", kitEditing.sku); if (error) { setKitError(error.message); return } }
     else { const { error } = await supabase.from("catalogo_kits").insert(payload); if (error) { setKitError(error.message); return } }
     // Save N:M composition
     const sku = kitData.sku
     await Promise.all([
-      supabase.from("catalogo_kit_chaves").delete().eq("empresa_id", empresaId).eq("kit_sku", sku),
-      supabase.from("catalogo_kit_fresas").delete().eq("empresa_id", empresaId).eq("kit_sku", sku),
-      supabase.from("catalogo_kit_complementares").delete().eq("empresa_id", empresaId).eq("kit_sku", sku),
-      supabase.from("catalogo_kit_opcionais").delete().eq("empresa_id", empresaId).eq("kit_sku", sku),
-      supabase.from("catalogo_kit_implantes").delete().eq("empresa_id", empresaId).eq("kit_sku", sku),
+      supabase.from("catalogo_kit_chaves").delete().eq("kit_sku", sku),
+      supabase.from("catalogo_kit_fresas").delete().eq("kit_sku", sku),
+      supabase.from("catalogo_kit_complementares").delete().eq("kit_sku", sku),
+      supabase.from("catalogo_kit_opcionais").delete().eq("kit_sku", sku),
+      supabase.from("catalogo_kit_implantes").delete().eq("kit_sku", sku),
     ])
-    if (kitChaves.length > 0) await supabase.from("catalogo_kit_chaves").insert(kitChaves.map(id => ({ empresa_id: EMPRESA_ID, kit_sku: sku, chave_id: id })))
-    if (kitFresas.length > 0) await supabase.from("catalogo_kit_fresas").insert(kitFresas.map(id => ({ empresa_id: EMPRESA_ID, kit_sku: sku, fresa_id: id })))
-    if (kitComplementares.length > 0) await supabase.from("catalogo_kit_complementares").insert(kitComplementares.map(id => ({ empresa_id: EMPRESA_ID, kit_sku: sku, complementar_id: id })))
-    if (kitOpcionais.length > 0) await supabase.from("catalogo_kit_opcionais").insert(kitOpcionais.map(id => ({ empresa_id: EMPRESA_ID, kit_sku: sku, opcional_id: id })))
+    if (kitChaves.length > 0) await supabase.from("catalogo_kit_chaves").insert(kitChaves.map(id => ({ kit_sku: sku, chave_id: id })))
+    if (kitFresas.length > 0) await supabase.from("catalogo_kit_fresas").insert(kitFresas.map(id => ({ kit_sku: sku, fresa_id: id })))
+    if (kitComplementares.length > 0) await supabase.from("catalogo_kit_complementares").insert(kitComplementares.map(id => ({ kit_sku: sku, complementar_id: id })))
+    if (kitOpcionais.length > 0) await supabase.from("catalogo_kit_opcionais").insert(kitOpcionais.map(id => ({ kit_sku: sku, opcional_id: id })))
     // Save implantes compatibility
     if (kitTodosDiametros) {
-      await supabase.from("catalogo_kit_implantes").insert({ empresa_id: EMPRESA_ID, kit_sku: sku, implante_sku: "*", todos_diametros: true })
+      await supabase.from("catalogo_kit_implantes").insert({ kit_sku: sku, implante_sku: "*", todos_diametros: true })
     } else if (kitImplantes.length > 0) {
-      await supabase.from("catalogo_kit_implantes").insert(kitImplantes.map(s => ({ empresa_id: EMPRESA_ID, kit_sku: sku, implante_sku: s, todos_diametros: false })))
+      await supabase.from("catalogo_kit_implantes").insert(kitImplantes.map(s => ({ kit_sku: sku, implante_sku: s, todos_diametros: false })))
     }
     toast.success(kitEditing ? "Kit atualizado!" : "Kit criado!")
     setKitModalOpen(false); qc.invalidateQueries({ queryKey: ["catalogo"] })
@@ -142,11 +142,11 @@ function AdminKitsPage() {
     if (!deleteItem) return
     if (deleteItem.table === "catalogo_kits") {
       await Promise.all([
-        supabase.from("catalogo_kit_chaves").delete().eq("empresa_id", empresaId).eq("kit_sku", deleteItem.id),
-        supabase.from("catalogo_kit_fresas").delete().eq("empresa_id", empresaId).eq("kit_sku", deleteItem.id),
-        supabase.from("catalogo_kit_complementares").delete().eq("empresa_id", empresaId).eq("kit_sku", deleteItem.id),
-        supabase.from("catalogo_kit_opcionais").delete().eq("empresa_id", empresaId).eq("kit_sku", deleteItem.id),
-        supabase.from("catalogo_kit_implantes").delete().eq("empresa_id", empresaId).eq("kit_sku", deleteItem.id),
+        supabase.from("catalogo_kit_chaves").delete().eq("kit_sku", deleteItem.id),
+        supabase.from("catalogo_kit_fresas").delete().eq("kit_sku", deleteItem.id),
+        supabase.from("catalogo_kit_complementares").delete().eq("kit_sku", deleteItem.id),
+        supabase.from("catalogo_kit_opcionais").delete().eq("kit_sku", deleteItem.id),
+        supabase.from("catalogo_kit_implantes").delete().eq("kit_sku", deleteItem.id),
       ])
     }
     const { error } = await supabase.from(deleteItem.table).delete().eq(deleteItem.id.includes("-") ? "id" : "sku", deleteItem.id)
@@ -190,7 +190,7 @@ function AdminKitsPage() {
               <TableCell className="text-sm font-medium text-white">{item.nome}</TableCell>
               <TableCell className="text-sm text-gray-300">{item.tipo_kit?.nome??"—"}</TableCell>
               <TableCell className="text-sm text-gray-300">R$ {item.preco?.toFixed(2) ?? "0,00"}</TableCell>
-              <TableCell><button onClick={async()=>{await supabase.from("catalogo_kits").update({ativo:!item.ativo}).eq("sku",item.sku).eq("empresa_id",empresaId);qc.invalidateQueries({queryKey:["catalogo"]})}}>{item.ativo?<ToggleRight className="h-7 w-7 text-green-400"/>:<ToggleLeft className="h-7 w-7 text-gray-500"/>}</button></TableCell>
+              <TableCell><button onClick={async()=>{await supabase.from("catalogo_kits").update({ativo:!item.ativo}).eq("sku",item.sku);qc.invalidateQueries({queryKey:["catalogo"]})}}>{item.ativo?<ToggleRight className="h-7 w-7 text-green-400"/>:<ToggleLeft className="h-7 w-7 text-gray-500"/>}</button></TableCell>
               <TableCell><div className="flex items-center gap-2"><button onClick={()=>openEditKit(item)} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-[#c9a655]/20 text-[var(--color-text-muted)] hover:text-[#c9a655]"><Pencil className="h-3.5 w-3.5"/></button><button onClick={()=>setDeleteItem({id:item.sku,label:item.nome,table:"catalogo_kits"})} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-red-500/20 text-[var(--color-text-muted)] hover:text-red-400"><Trash2 className="h-3.5 w-3.5"/></button></div></TableCell>
             </TableRow>)}{(kits??[]).length===0&&<TableRow><TableCell colSpan={6} className="p-4 text-center text-text-muted">Nenhum kit cadastrado</TableCell></TableRow>}</TableBody></Table>
           )}

@@ -30,8 +30,8 @@ function AdminWorkflowsPage() {
   const empresaId = useCatalogoEmpresaId()
   const qc = useQueryClient()
 
-  const { data: tiposWorkflow } = useQuery({ queryKey: ["catalogo", "tipos-workflow"], queryFn: async () => { const { data } = await supabase.from("catalogo_cps_tipos_workflows").select("*").eq("empresa_id", empresaId).order("nome"); return (data ?? []) as any[] }, enabled: !!empresaId })
-  const { data: etapas } = useQuery({ queryKey: ["catalogo", "etapas-workflow"], queryFn: async () => { const { data } = await supabase.from("catalogo_cps_etapas_workflows").select("*, tipo_workflow:catalogo_cps_tipos_workflows(*)").eq("empresa_id", empresaId).order("ordem"); return (data ?? []) as any[] }, enabled: !!empresaId })
+  const { data: tiposWorkflow } = useQuery({ queryKey: ["catalogo", "tipos-workflow"], queryFn: async () => { const { data } = await supabase.from("catalogo_cps_tipos_workflows").select("*").order("nome"); return (data ?? []) as any[] }, enabled: !!empresaId })
+  const { data: etapas } = useQuery({ queryKey: ["catalogo", "etapas-workflow"], queryFn: async () => { const { data } = await supabase.from("catalogo_cps_etapas_workflows").select("*, tipo_workflow:catalogo_cps_tipos_workflows(*)").order("ordem"); return (data ?? []) as any[] }, enabled: !!empresaId })
 
   // Tipo modal
   const [tipoModalOpen, setTipoModalOpen] = useState(false)
@@ -56,7 +56,7 @@ function AdminWorkflowsPage() {
   async function handleSaveTipo() {
     setTipoError("")
     if (!tipoNome.trim()) { setTipoError("Nome é obrigatório"); return }
-    const payload = { empresa_id: EMPRESA_ID, nome: tipoNome.trim(), sigla: tipoSigla.trim() || null, ativo: tipoAtivo }
+    const payload = { nome: tipoNome.trim(), sigla: tipoSigla.trim() || null, ativo: tipoAtivo }
     if (tipoEditing) { const { error } = await supabase.from("catalogo_cps_tipos_workflows").update({ nome: payload.nome, sigla: payload.sigla, ativo }).eq("id", tipoEditing.id); if (error) { setTipoError(error.message); return } }
     else { const { error } = await supabase.from("catalogo_cps_tipos_workflows").insert(payload); if (error) { setTipoError(error.message); return } }
     toast.success(tipoEditing ? "Atualizado!" : "Criado!")
@@ -71,7 +71,7 @@ function AdminWorkflowsPage() {
     setEtapaError("")
     if (!etapaData.nome.trim()) { setEtapaError("Nome é obrigatório"); return }
     if (!etapaData.tipo_workflow_id) { setEtapaError("Tipo de Workflow é obrigatório"); return }
-    const payload = { ...etapaData, empresa_id: EMPRESA_ID }
+    const payload = { ...etapaData}
     if (etapaEditing) { const { error } = await supabase.from("catalogo_cps_etapas_workflows").update(payload).eq("id", etapaEditing.id); if (error) { setEtapaError(error.message); return } }
     else { const { error } = await supabase.from("catalogo_cps_etapas_workflows").insert(payload); if (error) { setEtapaError(error.message); return } }
     toast.success(etapaEditing ? "Atualizada!" : "Criada!")
