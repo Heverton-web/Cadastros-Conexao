@@ -61,6 +61,10 @@ function AdminDesignPage() {
       .finally(() => setLoading(false))
   }, [])
 
+  useEffect(() => {
+    document.title = config?.texts?.storeName ? `${config.texts.storeName} - Design da Loja` : "Design da Loja"
+  }, [config?.texts?.storeName])
+
   async function handleSave() {
     setSaving(true)
     try {
@@ -140,7 +144,7 @@ function AdminDesignPage() {
           {/* Coluna Esquerda — Painel de Edição */}
           <div className="space-y-6">
             {/* Tabs */}
-            <div className="flex gap-1 p-1 rounded-xl bg-card border border-border-subtle overflow-x-auto">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-3 gap-1 p-1 rounded-xl bg-card border border-border-subtle">
               {TABS.map((tab) => (
                 <button
                   key={tab.key}
@@ -198,7 +202,7 @@ function AdminDesignPage() {
                 <CardsSection
                   cards={config.cards}
                   onChange={(cards) => setConfig({ ...config, cards })}
-                  isSuperAdmin={false}
+                  isSuperAdmin={true}
                 />
               )}
               {activeTab === "footer" && (

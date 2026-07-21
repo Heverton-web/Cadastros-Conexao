@@ -1,14 +1,18 @@
 import { useEffect } from "react";
 import { useAuth } from "~/core/auth";
 import { useEmpresaTheme } from "~/core/theme";
+import { useLocation } from "@tanstack/react-router";
 
 const GENERIC_FAVICON = "/favicon-generic.svg";
 
 export function useFavicon() {
   const { profile, empresa } = useAuth();
   const { faviconUrl } = useEmpresaTheme();
+  const location = useLocation();
 
   useEffect(() => {
+    if (location.pathname.startsWith("/catalogo")) return;
+
     const link = document.querySelector<HTMLLinkElement>("link[rel='icon']");
     if (!link) return;
 

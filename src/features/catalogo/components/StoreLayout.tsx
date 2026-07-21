@@ -119,13 +119,20 @@ export function StoreLayout({ children, fullHeight, zoom }: StoreLayoutProps) {
         // Favicon: usa config do catalogo_design_config
         const faviconSrc = config.images.faviconUrl;
         if (faviconSrc) {
-          let link = document.querySelector<HTMLLinkElement>("link[rel='icon']");
-          if (!link) {
-            link = document.createElement("link");
-            link.rel = "icon";
-            document.head.appendChild(link);
+          const links = document.querySelectorAll<HTMLLinkElement>("link[rel*='icon']");
+          if (links.length > 0) {
+            links.forEach(link => { link.href = faviconSrc; });
+          } else {
+            const newLink = document.createElement("link");
+            newLink.rel = "icon";
+            newLink.href = faviconSrc;
+            document.head.appendChild(newLink);
           }
-          link.href = faviconSrc;
+        }
+
+        // Título da página
+        if (config.texts?.storeName) {
+          document.title = config.texts.storeName;
         }
 
         // Logo
@@ -159,10 +166,9 @@ export function StoreLayout({ children, fullHeight, zoom }: StoreLayoutProps) {
       document.body.style.fontFamily = '';
 
       // Restaura favicon genérico
-      const link = document.querySelector<HTMLLinkElement>("link[rel='icon']");
-      if (link) {
-        link.href = "/favicon-generic.svg";
-      }
+      const links = document.querySelectorAll<HTMLLinkElement>("link[rel*='icon']");
+      links.forEach(link => { link.href = "/favicon.ico"; });
+      document.title = "ERP Odonto";
     };
   }, []);
 

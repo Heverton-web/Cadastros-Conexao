@@ -1,5 +1,6 @@
 import type { CatalogoDesignFooter } from "../../services/design.service"
 import { Instagram, Facebook, Twitter, Youtube, Linkedin, MessageCircle, Globe, Mail, Phone, MapPin } from "lucide-react"
+import { Switch } from "~/components/ui/switch"
 
 interface FooterSectionProps {
   footer: CatalogoDesignFooter
@@ -186,14 +187,29 @@ export function FooterSection({ footer, onChange }: FooterSectionProps) {
                   <Icon className="h-4 w-4" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <label className="text-[10px] text-text-muted block mb-0.5">{label}</label>
-                  <input
-                    type="text"
-                    value={footer.socialLinks[key]}
-                    onChange={(e) => updateSocial(key, e.target.value)}
-                    className="w-full px-2 py-1 rounded-lg bg-input-bg border border-input-border text-text-main text-xs"
-                    placeholder={placeholder}
-                  />
+                  <div className="flex items-center justify-between mb-0.5">
+                    <label className="text-[10px] text-text-muted">{label}</label>
+                    <Switch
+                      checked={isActive}
+                      onCheckedChange={(checked) => {
+                        if (checked) {
+                          updateSocial(key, placeholder)
+                        } else {
+                          updateSocial(key, "")
+                        }
+                      }}
+                      className="scale-75"
+                    />
+                  </div>
+                  {isActive && (
+                    <input
+                      type="text"
+                      value={footer.socialLinks[key]}
+                      onChange={(e) => updateSocial(key, e.target.value)}
+                      className="w-full px-2 py-1 rounded-lg bg-input-bg border border-input-border text-text-main text-xs mt-1"
+                      placeholder={placeholder}
+                    />
+                  )}
                 </div>
               </div>
             )

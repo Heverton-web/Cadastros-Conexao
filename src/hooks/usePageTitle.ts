@@ -11,6 +11,9 @@ export function usePageTitle() {
 
   useEffect(() => {
     const path = location.pathname;
+    // O módulo de catálogo gerencia seu próprio título dinamicamente a partir do banco
+    if (path.startsWith("/catalogo")) return;
+
     const modules = getAllModules();
 
     let moduleName = "";

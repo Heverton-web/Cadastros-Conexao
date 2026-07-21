@@ -9,8 +9,10 @@ import {
   Zap, Target, Award, Gem,
   type LucideIcon,
 } from "lucide-react"
+import { IconImplante, IconComponente, IconKit, IconPromocao } from "../IconsOdonto"
 
-const ICON_MAP: Record<string, LucideIcon> = {
+const ICON_MAP: Record<string, any> = {
+  IconImplante, IconComponente, IconKit, IconPromocao,
   Crosshair, ShieldCheck, Box, Tag,
   Package, Layers, ShoppingBag, Percent,
   Star, Heart, Diamond, Circle,

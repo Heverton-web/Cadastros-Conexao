@@ -7,8 +7,10 @@ import { Loader2, Crosshair, ShieldCheck, Box, Tag, Package, Layers, ShoppingBag
 import { EMPRESA_ID } from "~/config/empresa"
 import { getCatalogoDesign, mergeWithDefaults, type CatalogoDesignConfig } from "~/features/catalogo/services/design.service"
 import { WatermarkShape } from "~/features/catalogo/components/WatermarkShape"
+import { IconImplante, IconComponente, IconKit, IconPromocao } from "~/features/catalogo/components/IconsOdonto"
 
-const ICON_MAP: Record<string, LucideIcon> = {
+const ICON_MAP: Record<string, any> = {
+  IconImplante, IconComponente, IconKit, IconPromocao,
   Crosshair, ShieldCheck, Box, Tag,
   Package, Layers, ShoppingBag, Percent,
   Star, Heart, Diamond, Circle,
@@ -59,22 +61,33 @@ function CatalogoStoreContent({ empresaId }: { empresaId: string }) {
       ? "grid-cols-2 max-w-md mx-auto"
       : visibleCount === 3
         ? "grid-cols-2 sm:grid-cols-3 max-w-3xl mx-auto"
-        : "grid-cols-2 lg:grid-cols-4 max-w-5xl mx-auto"
+        : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 max-w-5xl mx-auto"
 
   return (
     <StoreLayout>
-      {/* Wrapper flex-1 para empurrar footer ao fundo */}
-      <div className="flex-1 flex flex-col">
+      {/* Wrapper flex-1 para empurrar footer ao fundo e alinhar verticalmente o centro */}
+      <div className="flex-1 flex flex-col justify-center relative">
       {/* Hero */}
       {visibility.showHeroSection && (
-        <div className="relative shrink-0" style={{ backgroundImage: 'var(--catalogo-hero-bg)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
+        <div className="relative shrink-0 z-0">
+          {config.images.heroBackgroundUrl && (
+            <div
+              className="absolute inset-0 pointer-events-none"
+              style={{
+                backgroundImage: `url(${config.images.heroBackgroundUrl})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                opacity: config.images.heroBackgroundOpacity ?? 0.1,
+              }}
+            />
+          )}
           {effects.enableBlobs && (
             <div
               className="absolute top-[-40%] left-1/2 -translate-x-1/2 w-[700px] h-[700px] rounded-full pointer-events-none"
               style={{ backgroundColor: effects.blobColor, opacity: effects.blobOpacity, filter: `blur(${effects.blobBlur}px)` }}
             />
           )}
-          <div className="px-5 sm:px-6 lg:px-16 pt-5 pb-2 sm:pt-10 sm:pb-4 lg:pt-14 lg:pb-8 max-w-7xl mx-auto relative z-10 flex flex-col items-center text-center">
+          <div className="px-5 sm:px-6 lg:px-16 pt-8 pb-4 sm:pt-12 sm:pb-6 lg:pt-16 lg:pb-8 max-w-7xl mx-auto relative z-10 flex flex-col items-center text-center">
             <div className="inline-flex items-center gap-2 px-3 py-1 sm:px-4 sm:py-1.5 rounded-full border border-[var(--color-accent-muted)] bg-[var(--color-surface)]/50 backdrop-blur-md mb-3 sm:mb-4 lg:mb-4">
               <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[var(--color-accent)] animate-pulse" />
               <span className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-[var(--color-accent)]">
@@ -93,7 +106,7 @@ function CatalogoStoreContent({ empresaId }: { empresaId: string }) {
 
       {/* Cards */}
       {visibility.showCategoryCards && visibleCount > 0 && (
-        <div className="px-4 sm:px-6 lg:px-16 pt-3 pb-6 sm:pt-5 sm:pb-10 max-w-7xl mx-auto w-full flex-1">
+        <div className="px-4 sm:px-6 lg:px-16 pt-4 pb-8 sm:pt-6 sm:pb-12 lg:pt-8 lg:pb-16 max-w-7xl mx-auto w-full">
           <div className={`grid ${gridColsClass} gap-3 sm:gap-5 lg:gap-8 auto-rows-fr w-full`}>
             {visibleCards.map((key) => {
               const card = cards[key]
@@ -102,10 +115,10 @@ function CatalogoStoreContent({ empresaId }: { empresaId: string }) {
                 <Link
                   key={key}
                   to={`/catalogo/${key}` as any}
-                  className="card-catalogo group relative rounded-2xl sm:rounded-3xl backdrop-blur-xl transition-all duration-300 overflow-hidden flex flex-col items-center justify-start pt-6 sm:pt-8 lg:pt-10 pb-6 sm:pb-8 px-4 sm:px-6 lg:px-8 no-underline shadow-xl hover:-translate-y-1 sm:hover:-translate-y-2 aspect-square"
+                  className="card-catalogo group relative rounded-2xl sm:rounded-3xl backdrop-blur-xl transition-all duration-300 overflow-hidden flex flex-col items-center justify-center p-4 sm:p-6 lg:p-8 no-underline shadow-xl hover:-translate-y-1 sm:hover:-translate-y-2 h-full min-h-[180px] sm:min-h-[200px] lg:min-h-[220px]"
                   style={{
                     backgroundColor: card!.cardBg || "var(--color-surface)",
-                    border: "0.7px solid var(--color-border-subtle)",
+                    border: `1px solid ${card!.cardBorder || "var(--color-border-subtle)"}`,
                   }}
                 >
                   <div className="absolute top-0 inset-x-0 h-1/2 bg-gradient-to-b from-[var(--color-accent-muted)] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -113,19 +126,21 @@ function CatalogoStoreContent({ empresaId }: { empresaId: string }) {
                     <WatermarkShape
                       shape={cards.watermarkShape || "diamond"}
                       color={card!.watermarkColor || card!.iconColor}
-                      className="bottom-0 right-0 w-16 h-16 sm:w-24 sm:h-24 lg:w-36 lg:h-36"
+                      className="bottom-0 right-0 w-16 h-16 sm:w-24 sm:h-24 lg:w-36 lg:h-36 absolute"
                     />
                   )}
                   <div
-                    className="w-12 h-12 sm:w-14 sm:h-14 lg:w-20 lg:h-20 rounded-xl sm:rounded-2xl bg-[var(--color-input-bg)] border border-[var(--color-border-subtle)] flex items-center justify-center mb-3 sm:mb-4 lg:mb-6 relative z-10 group-hover:border-[var(--color-accent)] transition-colors shadow-xl"
+                    className="w-12 h-12 sm:w-14 sm:h-14 lg:w-20 lg:h-20 shrink-0 rounded-xl sm:rounded-2xl bg-[var(--color-input-bg)] border border-[var(--color-border-subtle)] flex items-center justify-center mb-3 sm:mb-4 lg:mb-6 relative z-10 group-hover:border-[var(--color-accent)] transition-colors shadow-xl"
                     style={{ color: card!.iconColor }}
                   >
-                    {Icon && <Icon size={22} className="sm:hidden" />}
-                    {Icon && <Icon size={26} className="hidden sm:block lg:hidden" />}
+                    {Icon && <Icon size={26} className="sm:hidden" />}
+                    {Icon && <Icon size={28} className="hidden sm:block lg:hidden" />}
                     {Icon && <Icon size={32} className="hidden lg:block" />}
                   </div>
-                  <h3 className="text-sm sm:text-lg lg:text-2xl font-bold relative z-10 text-center leading-tight" style={{ color: card!.titleColor }}>{card!.title}</h3>
-                  <p className="text-[9px] sm:text-xs lg:text-sm mt-1 sm:mt-2 relative z-10 group-hover:opacity-80 transition-colors text-center leading-snug hidden sm:block" style={{ color: card!.descColor }}>{card!.description}</p>
+                  <h3 className="text-sm sm:text-lg lg:text-2xl font-bold relative z-10 text-center leading-tight mb-1 sm:mb-2" style={{ color: card!.titleColor }}>{card!.title}</h3>
+                  <div className="h-6 sm:h-10 hidden sm:flex items-start justify-center">
+                    <p className="text-[9px] sm:text-xs lg:text-sm relative z-10 group-hover:opacity-80 transition-colors text-center leading-snug line-clamp-2" style={{ color: card!.descColor }}>{card!.description}</p>
+                  </div>
                 </Link>
               )
             })}

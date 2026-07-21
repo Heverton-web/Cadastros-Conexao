@@ -1,4 +1,4 @@
-import { PREDEFINED_THEMES, type CatalogoDesignConfig } from "../../services/design.service"
+import { PREDEFINED_THEMES, type CatalogoDesignConfig, DEFAULT_CATALOGO_CONFIG } from "../../services/design.service"
 
 interface ThemesSectionProps {
   config: CatalogoDesignConfig
@@ -48,7 +48,7 @@ export function ThemesSection({ config, onApply }: ThemesSectionProps) {
       </div>
 
       <button
-        onClick={() => onApply(config)}
+        onClick={() => onApply(DEFAULT_CATALOGO_CONFIG)}
         className="w-full p-3 rounded-xl bg-card border border-border-subtle hover:border-accent/50 text-xs text-text-muted hover:text-accent transition-colors"
       >
         ↩ Reverter para tema padrão (Dourado)

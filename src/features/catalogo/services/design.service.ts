@@ -68,6 +68,7 @@ export interface CatalogoDesignImages {
   logoUrl: string
   faviconUrl: string
   heroBackgroundUrl: string
+  heroBackgroundOpacity: number
   pageBackgroundUrl: string
 }
 
@@ -147,7 +148,7 @@ export const DEFAULT_CARDS: CatalogoDesignCards = {
     id: "implantes",
     title: "Implantes",
     description: "Cone Morse, HE, HI.",
-    icon: "Crosshair",
+    icon: "IconImplante",
     iconColor: "#c9a655",
     cardBg: "#1e293b",
     cardBorder: "#1e293b",
@@ -160,7 +161,7 @@ export const DEFAULT_CARDS: CatalogoDesignCards = {
     id: "componentes",
     title: "Componentes",
     description: "Pilares e Motor Protético.",
-    icon: "ShieldCheck",
+    icon: "IconComponente",
     iconColor: "#c9a655",
     cardBg: "#1e293b",
     cardBorder: "#1e293b",
@@ -173,7 +174,7 @@ export const DEFAULT_CARDS: CatalogoDesignCards = {
     id: "kits",
     title: "Kits",
     description: "Maletas e Cirurgia Guiada.",
-    icon: "Box",
+    icon: "IconKit",
     iconColor: "#c9a655",
     cardBg: "#1e293b",
     cardBorder: "#1e293b",
@@ -186,7 +187,7 @@ export const DEFAULT_CARDS: CatalogoDesignCards = {
     id: "promocionais",
     title: "Promoções",
     description: "Ofertas exclusivas e combos.",
-    icon: "Tag",
+    icon: "IconPromocao",
     iconColor: "#c9a655",
     cardBg: "#1e293b",
     cardBorder: "#1e293b",
@@ -348,6 +349,7 @@ export const PREDEFINED_THEMES: { id: string; name: string; emoji: string; confi
 ]
 
 export const AVAILABLE_ICONS = [
+  "IconImplante", "IconComponente", "IconKit", "IconPromocao",
   "Crosshair", "ShieldCheck", "Box", "Tag",
   "Package", "Layers", "ShoppingBag", "Percent",
   "Star", "Heart", "Diamond", "Circle",
@@ -382,6 +384,7 @@ export const DEFAULT_CATALOGO_CONFIG: CatalogoDesignConfig = {
     logoUrl: "",
     faviconUrl: "",
     heroBackgroundUrl: "",
+    heroBackgroundOpacity: 0.1,
     pageBackgroundUrl: "",
   },
   elementBackgrounds: {
