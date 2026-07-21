@@ -32,8 +32,8 @@ async function run() {
 
   await step("Login como consultor", async () => {
     await page.goto(APP_URL + "/", { waitUntil: "networkidle" });
-    await page.fill('input[type="email"]', "consultor@conexao.com.br");
-    await page.fill('input[type="password"]', "Conexao@2026");
+    await page.fill('input[type="email"]', process.env.CONSULTOR_EMAIL || "");
+    await page.fill('input[type="password"]', process.env.CONSULTOR_PASSWORD || "");
     await page.click('button[type="submit"]');
     await page.waitForURL("**/consultor", { timeout: 10000 });
   });

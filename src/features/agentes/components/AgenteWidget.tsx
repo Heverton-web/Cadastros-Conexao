@@ -2,6 +2,7 @@ import { useState, createContext, useContext, useEffect, useRef } from "react";
 import { useLocation } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { MessageSquare, X, Send, Loader2, Bot } from "lucide-react";
+import DOMPurify from "dompurify";
 import { supabase } from "~/core/supabase/client";
 import type { AgenteIA } from "../types";
 
@@ -213,7 +214,7 @@ function AgenteChatDialog({
             ) : (
               <div className="max-w-[85%] px-3 py-2.5 rounded-xl text-sm bg-white/5 text-gray-300 border border-white/10 leading-relaxed">
                 <div
-                  dangerouslySetInnerHTML={{ __html: renderMarkdown(msg.content) }}
+                  dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(renderMarkdown(msg.content), { ALLOWED_TAGS: ["strong", "em", "div", "span", "br"], ALLOWED_ATTR: ["class"] }) }}
                 />
               </div>
             )}

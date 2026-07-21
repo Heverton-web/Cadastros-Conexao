@@ -589,7 +589,7 @@ function PreCadastroPage() {
         empresaId,
       );
 
-      console.log(`[2FA] PIN ${pin} enviado para ${contatoFormatado}`);
+      // PIN logging removed for security — PIN is sent via SMS only
       setTempo2FA(300);
       setPinInput("");
       setStep("2fa_validar");

@@ -1,18 +1,20 @@
+import os
 import paramiko
 import re
 import sys
 import time
 
-VPS_IP = "167.86.69.79"
-VPS_USER = "root"
-VPS_PASSWORD = "conexao2026"
-DH_USER = "hevertonperes"
-DH_PASS = "@#Khen741963@#"
+# Security: all credentials from environment variables, never hardcoded
+VPS_IP = os.environ.get("VPS_IP", "")
+VPS_USER = os.environ.get("VPS_USER", "root")
+VPS_PASSWORD = os.environ.get("VPS_PASSWORD", "")
+DH_USER = os.environ.get("DOCKER_HUB_USERNAME", "")
+DH_PASS = os.environ.get("DOCKER_HUB_PASSWORD", "")
 
-SUPABASE_URL = "https://cluuqzhizeqvkgvfdisx.supabase.co"
-SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNsdXVxemhpemVxdmtndmZkaXN4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE3ODg3NjksImV4cCI6MjA5NzM2NDc2OX0.GM3quHA1z_9kCiMEYsfAh9Pi0KVdnCIFQEYe-wwE9MM"
-EMPRESA_ID = "6687e2f0-1ff6-406d-b621-7927764f121a"
-EMPRESA_SLUG = "conexao-implantes"
+SUPABASE_URL = os.environ.get("VITE_SUPABASE_URL", "")
+SUPABASE_ANON = os.environ.get("VITE_SUPABASE_ANON_KEY", "")
+EMPRESA_ID = os.environ.get("VITE_EMPRESA_ID", "")
+EMPRESA_SLUG = os.environ.get("VITE_EMPRESA_SLUG", "")
 
 IMAGE_NAME = "hevertonperes/erp-odonto"
 SERVICE_NAME = "erp-odonto_app"
@@ -33,6 +35,12 @@ def run_cmd(ssh, cmd, timeout=300):
     return status, err
 
 def main():
+    # Validate required env vars
+    missing = [k for k, v in {"VPS_IP": VPS_IP, "VPS_PASSWORD": VPS_PASSWORD, "DOCKER_HUB_PASSWORD": DH_PASS, "VITE_SUPABASE_URL": SUPABASE_URL}.items() if not v]
+    if missing:
+        print(f"ERROR: Missing required env vars: {', '.join(missing)}", flush=True)
+        sys.exit(1)
+
     print("Connecting to VPS...", flush=True)
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())

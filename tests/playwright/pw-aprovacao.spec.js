@@ -32,8 +32,8 @@ async function run() {
 
   await step("Login como cadastro", async () => {
     await page.goto(APP_URL + "/", { waitUntil: "networkidle" });
-    await page.fill('input[type="email"]', "cadastro@conexao.com.br");
-    await page.fill('input[type="password"]', "Conexao@2026");
+    await page.fill('input[type="email"]', process.env.CADASTRO_EMAIL || "");
+    await page.fill('input[type="password"]', process.env.CADASTRO_PASSWORD || "");
     await page.click('button[type="submit"]');
     await page.waitForURL("**/dashboard", { timeout: 10000 });
   });

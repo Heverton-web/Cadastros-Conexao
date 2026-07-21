@@ -2,6 +2,18 @@ import { Server } from "@modelcontextprotocol/sdk/server/index.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { execSync } from "child_process";
 
+const SAFE_PATH_PATTERN = /^[a-zA-Z0-9_\-\/]+$/;
+const ALLOWED_COMPONENTS = new Set([
+  "accordion", "alert", "alert-dialog", "avatar", "badge", "button",
+  "calendar", "card", "carousel", "chart", "checkbox", "collapsible",
+  "command", "context-menu", "dialog", "drawer", "dropdown-menu", "form",
+  "hover-card", "input", "input-otp", "label", "menubar",
+  "navigation-menu", "pagination", "popover", "progress", "radio-group",
+  "resizable", "scroll-area", "select", "separator", "sheet", "sidebar",
+  "skeleton", "slider", "sonner", "switch", "table", "tabs", "textarea",
+  "toast", "toggle", "toggle-group", "tooltip",
+]);
+
 const server = new Server(
   { name: "mcp-shadcn", version: "1.0.0" },
   { capabilities: { tools: {} } },
@@ -36,6 +48,12 @@ server.setRequestHandler("tools/call", async (request) => {
     case "shadcn_add": {
       const component = args?.component as string;
       const path = (args?.path as string) || "src/components/ui";
+      if (!ALLOWED_COMPONENTS.has(component)) {
+        return { content: [{ type: "text", text: `Componente '${component}' não é válido. Use shadcn_list para ver opções.` }] };
+      }
+      if (!SAFE_PATH_PATTERN.test(path) || path.length > 200) {
+        return { content: [{ type: "text", text: `Path inválido: ${path}` }] };
+      }
       try {
         execSync(`npx shadcn-ui@latest add ${component} --path ${path}`, {
           stdio: "pipe",

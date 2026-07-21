@@ -127,8 +127,9 @@ function extractArenaModels(html: string): ArenaModel[] {
 // ---------- Main ----------
 
 serve(async (req: Request) => {
+  const allowedOrigin = Deno.env.get("CORS_ALLOWED_ORIGIN") || "*";
   const corsHeaders = {
-    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Origin": allowedOrigin,
     "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
   };
 

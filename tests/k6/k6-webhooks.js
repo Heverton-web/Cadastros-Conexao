@@ -2,14 +2,9 @@ import http from "k6/http";
 import { check, sleep, group } from "k6";
 import { Rate } from "k6/metrics";
 
-const BASE_URL = "https://cluuqzhizeqvkgvfdisx.supabase.co";
-const ANON_KEY =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNsdXVxemhpemVxdmtndmZkaXN4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE3ODg3NjksImV4cCI6MjA5NzM2NDc2OX0.GM3quHA1z_9kCiMEYsfAh9Pi0KVdnCIFQEYe-wwE9MM";
+import { BASE_URL, ANON_KEY, SUPER_ADMIN_EMAIL as EMAIL, SUPER_ADMIN_PASSWORD as PASS } from "./config.js";
 
 const errorRate = new Rate("webhook_errors");
-
-const EMAIL = "hevertoneduardoperes@gmail.com";
-const PASS = "@#Khen741963@#";
 
 export const options = {
   stages: [
@@ -24,6 +19,7 @@ export const options = {
 };
 
 function login() {
+  if (!EMAIL || !PASS) { console.error("Missing K6_SUPER_ADMIN_EMAIL or K6_SUPER_ADMIN_PASSWORD"); return null; }
   const res = http.post(
     `${BASE_URL}/auth/v1/token?grant_type=password`,
     JSON.stringify({ email: EMAIL, password: PASS }),

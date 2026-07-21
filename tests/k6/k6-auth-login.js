@@ -12,16 +12,16 @@ const loginDuration = new Trend("login_duration");
 
 const CREDENTIALS = [
   {
-    email: "cadastro@conexao.com.br",
-    password: "Conexao@2026",
+    email: EMAIL,
+    password: PASSWORD,
     role: "cadastro",
   },
   {
-    email: "consultor@conexao.com.br",
-    password: "Conexao@2026",
+    email: __ENV.K6_USER_CONSULTOR_EMAIL || EMAIL,
+    password: __ENV.K6_USER_CONSULTOR_PASSWORD || PASSWORD,
     role: "consultor",
   },
-  { email: "ti@conexao.com.br", password: "Conexao@2026", role: "ti" },
+  { email: __ENV.K6_USER_TI_EMAIL || EMAIL, password: __ENV.K6_USER_TI_PASSWORD || PASSWORD, role: "ti" },
 ];
 
 export const options = {

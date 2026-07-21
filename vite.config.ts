@@ -2,7 +2,7 @@ import { defineConfig, type Plugin } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import { resolve } from "path";
-import { execSync, spawn } from "child_process";
+import { spawn } from "child_process";
 
 function testRunnerPlugin(): Plugin {
   return {
@@ -16,7 +16,7 @@ function testRunnerPlugin(): Plugin {
         }
 
         res.setHeader("Content-Type", "application/json");
-        res.setHeader("Access-Control-Allow-Origin", "*");
+        res.setHeader("Access-Control-Allow-Origin", "http://localhost:5173");
         res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
         res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
@@ -41,7 +41,27 @@ function testRunnerPlugin(): Plugin {
               return;
             }
 
-            const paths = testFiles.join(" ");
+            // Security: validate each path against safe pattern (only test file paths)
+            const SAFE_PATH_PATTERN = /^[a-zA-Z0-9_\.\-\/\.]+$/;
+            const safeFiles = testFiles.filter((f: string) =>
+              typeof f === "string" &&
+              f.length > 0 &&
+              f.length < 200 &&
+              SAFE_PATH_PATTERN.test(f) &&
+              (f.endsWith(".test.ts") ||
+                f.endsWith(".test.tsx") ||
+                f.endsWith(".test.js") ||
+                f.endsWith(".spec.ts") ||
+                f.endsWith(".spec.tsx") ||
+                f.endsWith(".spec.js") ||
+                f.endsWith(".smoke.js"))
+            );
+            if (safeFiles.length === 0) {
+              res.statusCode = 400;
+              res.end(JSON.stringify({ error: "No valid test file paths provided" }));
+              return;
+            }
+
             const cwd = process.cwd();
 
             const child = spawn(
@@ -49,14 +69,13 @@ function testRunnerPlugin(): Plugin {
               [
                 "vitest",
                 "run",
-                paths,
+                ...safeFiles,
                 "--reporter=json",
                 "--reporter=verbose",
                 "--no-file-parallelism",
               ],
               {
                 cwd,
-                shell: true,
                 env: { ...process.env, FORCE_COLOR: "0" },
               },
             );

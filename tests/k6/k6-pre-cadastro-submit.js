@@ -2,15 +2,13 @@ import http from "k6/http";
 import { check, sleep, group } from "k6";
 import { Rate } from "k6/metrics";
 
-const BASE_URL = "https://cluuqzhizeqvkgvfdisx.supabase.co";
-const ANON_KEY =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNsdXVxemhpemVxdmtndmZkaXN4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE3ODg3NjksImV4cCI6MjA5NzM2NDc2OX0.GM3quHA1z_9kCiMEYsfAh9Pi0KVdnCIFQEYe-wwE9MM";
+import { BASE_URL, ANON_KEY, SUPER_ADMIN_EMAIL, SUPER_ADMIN_PASSWORD } from "./config.js";
 
 const errorRate = new Rate("submit_errors");
 
 const SUPER_ADMIN = {
-  email: "hevertoneduardoperes@gmail.com",
-  pass: "@#Khen741963@#",
+  email: SUPER_ADMIN_EMAIL,
+  pass: SUPER_ADMIN_PASSWORD,
 };
 
 export const options = {

@@ -2,18 +2,10 @@ import http from "k6/http";
 import { check, sleep, group } from "k6";
 import { Rate } from "k6/metrics";
 
-const BASE_URL = "https://cluuqzhizeqvkgvfdisx.supabase.co";
-const ANON_KEY =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNsdXVxemhpemVxdmtndmZkaXN4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE3ODg3NjksImV4cCI6MjA5NzM2NDc2OX0.GM3quHA1z_9kCiMEYsfAh9Pi0KVdnCIFQEYe-wwE9MM";
+import { BASE_URL, ANON_KEY, USERS } from "./config.js";
 
 const errorRate = new Rate("poll_errors");
 const pollDuration = new Trend("poll_duration");
-
-const USERS = [
-  { email: "cadastro@conexao.com.br", pass: "Conexao@2026" },
-  { email: "consultor@conexao.com.br", pass: "Conexao@2026" },
-  { email: "ti@conexao.com.br", pass: "Conexao@2026" },
-];
 
 export const options = {
   stages: [

@@ -3,11 +3,8 @@ import { supabase } from "~/core/supabase"
 import { Trash2, Image as ImageIcon } from "lucide-react"
 import toast from "react-hot-toast"
 import { compressImage } from "~/features/catalogo/lib/compressImage"
-import { extrairUrlGoogleDrive } from "~/features/catalogo/services/imagens.service"
+import { extrairUrlGoogleDrive, uploadImagem, uploadEAdicionarImagem } from "~/features/catalogo/services/imagens.service"
 import type { ProdutoTipoImagem, FonteImagem, CatalogoImagemProduto } from "~/features/catalogo/types"
-
-const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL
-const SERVICE_ROLE_KEY = import.meta.env.VITE_SUPABASE_SERVICE_ROLE_KEY
 
 interface Props {
   produtoTipo: ProdutoTipoImagem
@@ -19,6 +16,23 @@ interface Props {
 const labelCls = "text-xs font-bold uppercase tracking-widest text-gray-400"
 const inputCls = "w-full bg-[var(--color-surface)] border border-white/10 rounded-lg p-3 text-white"
 const selectCls = "w-full bg-[var(--color-surface)] border border-white/10 rounded-lg p-3 text-white"
+
+/** Tipos de arquivo permitidos — previne upload de SVG/HTML maliciosos */
+const ALLOWED_EXTENSIONS = ["jpg", "jpeg", "png", "webp", "gif"]
+const MAX_SIZE_MB = 10
+
+function isAllowedFile(file: File): boolean {
+  const ext = file.name.split(".").pop()?.toLowerCase() ?? ""
+  if (!ALLOWED_EXTENSIONS.includes(ext)) {
+    toast.error(`Extensão .${ext} não permitida. Use: JPG, PNG, WebP ou GIF.`)
+    return false
+  }
+  if (file.size > MAX_SIZE_MB * 1024 * 1024) {
+    toast.error(`Arquivo muito grande (max ${MAX_SIZE_MB}MB).`)
+    return false
+  }
+  return true
+}
 
 export function ImageUploader({ produtoTipo, produtoSku, imagensExistentes, onImagensChange }: Props) {
   const [imagemId, setImagemId] = useState<string | null>(null)
@@ -51,38 +65,30 @@ export function ImageUploader({ produtoTipo, produtoSku, imagensExistentes, onIm
   async function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0]
     if (!file) return
+
+    if (!isAllowedFile(file)) return
+
     setUploading(true)
 
     try {
-      // Comprime imagens > 5MB sem perda de qualidade
       const arquivoFinal = await compressImage(file)
-
-      const ext = arquivoFinal.name.split(".").pop() || "png"
-      const safeName = `${Date.now()}-${Math.random().toString(36).substring(2, 8)}.${ext}`
-      const filePath = `public/${produtoTipo}/${produtoSku}/${safeName}`
-      const uploadUrl = `${SUPABASE_URL}/storage/v1/object/catalogo-imagens/${filePath}`
-
-      const res = await fetch(uploadUrl, {
-        method: "POST",
-        headers: { "apikey": SERVICE_ROLE_KEY, "Authorization": `Bearer ${SERVICE_ROLE_KEY}`, "Content-Type": arquivoFinal.type || "image/png" },
-        body: arquivoFinal,
-      })
-      if (!res.ok) { const err = await res.json(); toast.error("Erro upload: " + (err.message || res.statusText)); setUploading(false); return }
-
-      const publicUrl = `${SUPABASE_URL}/storage/v1/object/public/catalogo-imagens/${filePath}`
+      const { url } = await uploadImagem(produtoTipo, produtoSku, arquivoFinal)
 
       if (imagemId) {
-        await supabase.from("catalogo_imagens_produto").update({ url_imagem: publicUrl, fonte: "upload" }).eq("id", imagemId)
+        await supabase.from("catalogo_imagens_produto").update({ url_imagem: url, fonte: "upload" }).eq("id", imagemId)
       } else {
         const { data, error } = await supabase.from("catalogo_imagens_produto").insert({
-          produto_tipo: produtoTipo, produto_sku: produtoSku,
-          url_imagem: publicUrl, fonte: "upload", ordem_exibicao: 0,
+          produto_tipo: produtoTipo,
+          produto_sku: produtoSku,
+          url_imagem: url,
+          fonte: "upload",
+          ordem_exibicao: 0,
         }).select("id").single()
         if (error) { toast.error(error.message); setUploading(false); return }
         if (data) setImagemId(data.id)
       }
 
-      setImageUrl(publicUrl)
+      setImageUrl(url)
       setFonte("upload")
       toast.success("Imagem salva!")
     } catch (err: any) {
@@ -97,7 +103,6 @@ export function ImageUploader({ produtoTipo, produtoSku, imagensExistentes, onIm
     if (!urlInput.trim()) return
     const f: FonteImagem = tipoAnexo === "url_s3" ? "url" : "gdrive"
 
-    // Converte URL do Google Drive para URL direta de download
     let urlFinal = urlInput.trim()
     if (f === "gdrive") {
       try {
@@ -113,8 +118,11 @@ export function ImageUploader({ produtoTipo, produtoSku, imagensExistentes, onIm
       if (error) { toast.error(error.message); return }
     } else {
       const { data, error } = await supabase.from("catalogo_imagens_produto").insert({
-        produto_tipo: produtoTipo, produto_sku: produtoSku,
-        url_imagem: urlFinal, fonte: f, ordem_exibicao: 0,
+        produto_tipo: produtoTipo,
+        produto_sku: produtoSku,
+        url_imagem: urlFinal,
+        fonte: f,
+        ordem_exibicao: 0,
       }).select("id").single()
       if (error) { toast.error(error.message); return }
       if (data) setImagemId(data.id)
@@ -166,7 +174,7 @@ export function ImageUploader({ produtoTipo, produtoSku, imagensExistentes, onIm
 
       {tipoAnexo === "arquivo" && (
         <div>
-          <input ref={fileInputRef} type="file" accept="image/*" onChange={handleFileUpload} disabled={uploading}
+          <input ref={fileInputRef} type="file" accept=".jpg,.jpeg,.png,.webp,.gif" onChange={handleFileUpload} disabled={uploading}
             className="w-full bg-[var(--color-surface)] border border-white/10 rounded-lg p-3 text-white text-sm file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-bold file:bg-[#c9a655]/20 file:text-[#c9a655] hover:file:bg-[#c9a655]/30 disabled:opacity-50" />
           {uploading && <p className="text-xs text-[#c9a655] mt-1">Compressando e enviando...</p>}
         </div>

@@ -70,8 +70,9 @@ function sanitizeData(tabelaNome: string, data: Record<string, any>[]): Record<s
 // ═══════════════════════════════════════════════════════════════════
 
 serve(async (req: Request) => {
+  const allowedOrigin = Deno.env.get("CORS_ALLOWED_ORIGIN") || "*";
   const corsHeaders = {
-    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Origin": allowedOrigin,
     "Access-Control-Allow-Headers":
       "authorization, x-client-info, apikey, content-type",
   };
