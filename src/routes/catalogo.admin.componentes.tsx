@@ -76,17 +76,17 @@ function AdminComponentesPage() {
   // Abutment modal
   const [abutModalOpen, setAbutModalOpen] = useState(false)
   const [abutEditing, setAbutEditing] = useState<any>(null)
-  const [abutData, setAbutData] = useState({ sku: "", nome: "", sigla: "", descricao: "", tipo_abutment_id: "", parafuso_id: "", chave_id: "", diametro_plataforma: 0, altura_transmucoso: 0, altura_corpo: 0, angulacao_graus: 0, torque_ncm: 0, preco: 0, ativo: true })
+  const [abutData, setAbutData] = useState({ sku: "", nome: "", sigla: "", descricao: "", familia_id: "", tipo_abutment_id: "", parafuso_id: "", chave_id: "", diametro_plataforma: 0, altura_transmucoso: 0, altura_corpo: 0, angulacao_graus: 0, torque_ncm: 0, preco: 0, ativo: true })
   const [abutError, setAbutError] = useState("")
 
-  function openNewAbut() { setAbutEditing(null); setAbutData({ sku: "", nome: "", sigla: "", descricao: "", tipo_abutment_id: "", parafuso_id: "", chave_id: "", diametro_plataforma: 0, altura_transmucoso: 0, altura_corpo: 0, angulacao_graus: 0, torque_ncm: 0, preco: 0, ativo: true }); setAbutError(""); setAbutModalOpen(true) }
-  function openEditAbut(item: any) { setAbutEditing(item); setAbutData({ sku: item.sku, nome: item.nome ?? "", sigla: item.sigla ?? "", descricao: item.descricao ?? "", tipo_abutment_id: item.tipo_abutment_id ?? "", parafuso_id: item.parafuso_id ?? "", chave_id: item.chave_id ?? "", diametro_plataforma: item.diametro_plataforma ?? 0, altura_transmucoso: item.altura_transmucoso ?? 0, altura_corpo: item.altura_corpo ?? 0, angulacao_graus: item.angulacao_graus ?? 0, torque_ncm: item.torque_ncm ?? 0, preco: item.preco ?? 0, ativo: item.ativo !== false }); setAbutError(""); setAbutModalOpen(true) }
+  function openNewAbut() { setAbutEditing(null); setAbutData({ sku: "", nome: "", sigla: "", descricao: "", familia_id: "", tipo_abutment_id: "", parafuso_id: "", chave_id: "", diametro_plataforma: 0, altura_transmucoso: 0, altura_corpo: 0, angulacao_graus: 0, torque_ncm: 0, preco: 0, ativo: true }); setAbutError(""); setAbutModalOpen(true) }
+  function openEditAbut(item: any) { setAbutEditing(item); setAbutData({ sku: item.sku, nome: item.nome ?? "", sigla: item.sigla ?? "", descricao: item.descricao ?? "", familia_id: item.familia_id ?? "", tipo_abutment_id: item.tipo_abutment_id ?? "", parafuso_id: item.parafuso_id ?? "", chave_id: item.chave_id ?? "", diametro_plataforma: item.diametro_plataforma ?? 0, altura_transmucoso: item.altura_transmucoso ?? 0, altura_corpo: item.altura_corpo ?? 0, angulacao_graus: item.angulacao_graus ?? 0, torque_ncm: item.torque_ncm ?? 0, preco: item.preco ?? 0, ativo: item.ativo !== false }); setAbutError(""); setAbutModalOpen(true) }
 
   async function handleSaveAbut() {
     setAbutError("")
     if (!abutData.sku.trim()) { setAbutError("SKU é obrigatório"); return }
     if (!abutData.nome.trim()) { setAbutError("Nome é obrigatório"); return }
-    const UUID_KEYS = ["tipo_abutment_id", "parafuso_id", "chave_id"]
+    const UUID_KEYS = ["familia_id", "tipo_abutment_id", "parafuso_id", "chave_id"]
     const payload = sanitizeUuids({ ...abutData }, UUID_KEYS)
     if (abutEditing) {
       const { error } = await supabase.from("catalogo_abutments").update(payload).eq("sku", abutEditing.sku)
@@ -107,17 +107,17 @@ function AdminComponentesPage() {
   // Componente modal
   const [compModalOpen, setCompModalOpen] = useState(false)
   const [compEditing, setCompEditing] = useState<any>(null)
-  const [compData, setCompData] = useState({ sku: "", nome: "", sigla: "", descricao: "", tipo_componente_id: "", tipo_abutment_id: "", parafuso_id: "", chave_id: "", diametro_plataforma_mm: 0, altura_transmucoso_mm: 0, altura_corpo_mm: 0, angulacao_graus: 0, tipo: "", tipo_travamento: "", material: "", preco: 0, ativo: true })
+  const [compData, setCompData] = useState({ sku: "", nome: "", sigla: "", descricao: "", familia_id: "", tipo_componente_id: "", tipo_abutment_id: "", parafuso_id: "", chave_id: "", diametro_plataforma_mm: 0, altura_transmucoso_mm: 0, altura_corpo_mm: 0, angulacao_graus: 0, tipo: "", tipo_travamento: "", material: "", preco: 0, ativo: true })
   const [compError, setCompError] = useState("")
 
-  function openNewComp() { setCompEditing(null); setCompData({ sku: "", nome: "", sigla: "", descricao: "", tipo_componente_id: "", tipo_abutment_id: "", parafuso_id: "", chave_id: "", diametro_plataforma_mm: 0, altura_transmucoso_mm: 0, altura_corpo_mm: 0, angulacao_graus: 0, tipo: "", tipo_travamento: "", material: "", preco: 0, ativo: true }); setCompError(""); setCompModalOpen(true) }
-  function openEditComp(item: any) { setCompEditing(item); setCompData({ sku: item.sku, nome: item.nome ?? "", sigla: item.sigla ?? "", descricao: item.descricao ?? "", tipo_componente_id: item.tipo_componente_id ?? "", tipo_abutment_id: item.tipo_abutment_id ?? "", parafuso_id: item.parafuso_id ?? "", chave_id: item.chave_id ?? "", diametro_plataforma_mm: item.diametro_plataforma_mm ?? 0, altura_transmucoso_mm: item.altura_transmucoso_mm ?? 0, altura_corpo_mm: item.altura_corpo_mm ?? 0, angulacao_graus: item.angulacao_graus ?? 0, tipo: item.tipo ?? "", tipo_travamento: item.tipo_travamento ?? "", material: item.material ?? "", preco: item.preco ?? 0, ativo: item.ativo !== false }); setCompError(""); setCompModalOpen(true) }
+  function openNewComp() { setCompEditing(null); setCompData({ sku: "", nome: "", sigla: "", descricao: "", familia_id: "", tipo_componente_id: "", tipo_abutment_id: "", parafuso_id: "", chave_id: "", diametro_plataforma_mm: 0, altura_transmucoso_mm: 0, altura_corpo_mm: 0, angulacao_graus: 0, tipo: "", tipo_travamento: "", material: "", preco: 0, ativo: true }); setCompError(""); setCompModalOpen(true) }
+  function openEditComp(item: any) { setCompEditing(item); setCompData({ sku: item.sku, nome: item.nome ?? "", sigla: item.sigla ?? "", descricao: item.descricao ?? "", familia_id: item.familia_id ?? "", tipo_componente_id: item.tipo_componente_id ?? "", tipo_abutment_id: item.tipo_abutment_id ?? "", parafuso_id: item.parafuso_id ?? "", chave_id: item.chave_id ?? "", diametro_plataforma_mm: item.diametro_plataforma_mm ?? 0, altura_transmucoso_mm: item.altura_transmucoso_mm ?? 0, altura_corpo_mm: item.altura_corpo_mm ?? 0, angulacao_graus: item.angulacao_graus ?? 0, tipo: item.tipo ?? "", tipo_travamento: item.tipo_travamento ?? "", material: item.material ?? "", preco: item.preco ?? 0, ativo: item.ativo !== false }); setCompError(""); setCompModalOpen(true) }
 
   async function handleSaveComp() {
     setCompError("")
     if (!compData.sku.trim()) { setCompError("SKU é obrigatório"); return }
     if (!compData.nome.trim()) { setCompError("Nome é obrigatório"); return }
-    const UUID_KEYS = ["tipo_componente_id", "tipo_abutment_id", "parafuso_id", "chave_id"]
+    const UUID_KEYS = ["familia_id", "tipo_componente_id", "tipo_abutment_id", "parafuso_id", "chave_id"]
     const payload = sanitizeUuids({ ...compData }, UUID_KEYS)
     if (compEditing) {
       const { error } = await supabase.from("catalogo_componentes").update(payload).eq("sku", compEditing.sku)
@@ -138,17 +138,17 @@ function AdminComponentesPage() {
   // Parafuso modal
   const [parModalOpen, setParModalOpen] = useState(false)
   const [parEditing, setParEditing] = useState<any>(null)
-  const [parData, setParData] = useState({ sku: "", nome: "", sigla: "", descricao: "", tipo_parafuso_id: "", chave_id: "", torque_ncm: 0, material: "", preco: 0, ativo: true })
+  const [parData, setParData] = useState({ sku: "", nome: "", sigla: "", descricao: "", familia_id: "", tipo_parafuso_id: "", chave_id: "", torque_ncm: 0, material: "", preco: 0, ativo: true })
   const [parError, setParError] = useState("")
 
-  function openNewPar() { setParEditing(null); setParData({ sku: "", nome: "", sigla: "", descricao: "", tipo_parafuso_id: "", chave_id: "", torque_ncm: 0, material: "", preco: 0, ativo: true }); setParError(""); setParModalOpen(true) }
-  function openEditPar(item: any) { setParEditing(item); setParData({ sku: item.sku, nome: item.nome ?? "", sigla: item.sigla ?? "", descricao: item.descricao ?? "", tipo_parafuso_id: item.tipo_parafuso_id ?? "", chave_id: item.chave_id ?? "", torque_ncm: item.torque_ncm ?? 0, material: item.material ?? "", preco: item.preco ?? 0, ativo: item.ativo !== false }); setParError(""); setParModalOpen(true) }
+  function openNewPar() { setParEditing(null); setParData({ sku: "", nome: "", sigla: "", descricao: "", familia_id: "", tipo_parafuso_id: "", chave_id: "", torque_ncm: 0, material: "", preco: 0, ativo: true }); setParError(""); setParModalOpen(true) }
+  function openEditPar(item: any) { setParEditing(item); setParData({ sku: item.sku, nome: item.nome ?? "", sigla: item.sigla ?? "", descricao: item.descricao ?? "", familia_id: item.familia_id ?? "", tipo_parafuso_id: item.tipo_parafuso_id ?? "", chave_id: item.chave_id ?? "", torque_ncm: item.torque_ncm ?? 0, material: item.material ?? "", preco: item.preco ?? 0, ativo: item.ativo !== false }); setParError(""); setParModalOpen(true) }
 
   async function handleSavePar() {
     setParError("")
     if (!parData.sku.trim()) { setParError("SKU é obrigatório"); return }
     if (!parData.nome.trim()) { setParError("Nome é obrigatório"); return }
-    const UUID_KEYS = ["tipo_parafuso_id", "chave_id"]
+    const UUID_KEYS = ["familia_id", "tipo_parafuso_id", "chave_id"]
     const payload = sanitizeUuids({ ...parData }, UUID_KEYS)
     if (parEditing) {
       const { error } = await supabase.from("catalogo_parafusos").update(payload).eq("sku", parEditing.sku)
@@ -169,17 +169,17 @@ function AdminComponentesPage() {
   // Cicatrizador modal
   const [cicModalOpen, setCicModalOpen] = useState(false)
   const [cicEditing, setCicEditing] = useState<any>(null)
-  const [cicData, setCicData] = useState({ sku: "", nome: "", sigla: "", descricao: "", implante_id: "", chave_id: "", diametro_plataforma_mm: 0, altura_transmucoso_mm: 0, altura_corpo_mm: 0, torque_ncm: 0, material: "", preco: 0, ativo: true })
+  const [cicData, setCicData] = useState({ sku: "", nome: "", sigla: "", descricao: "", familia_id: "", implante_id: "", chave_id: "", diametro_plataforma_mm: 0, altura_transmucoso_mm: 0, altura_corpo_mm: 0, torque_ncm: 0, material: "", preco: 0, ativo: true })
   const [cicError, setCicError] = useState("")
 
-  function openNewCic() { setCicEditing(null); setCicData({ sku: "", nome: "", sigla: "", descricao: "", implante_id: "", chave_id: "", diametro_plataforma_mm: 0, altura_transmucoso_mm: 0, altura_corpo_mm: 0, torque_ncm: 0, material: "", preco: 0, ativo: true }); setCicError(""); setCicModalOpen(true) }
-  function openEditCic(item: any) { setCicEditing(item); setCicData({ sku: item.sku, nome: item.nome ?? "", sigla: item.sigla ?? "", descricao: item.descricao ?? "", implante_id: item.implante_id ?? "", chave_id: item.chave_id ?? "", diametro_plataforma_mm: item.diametro_plataforma_mm ?? 0, altura_transmucoso_mm: item.altura_transmucoso_mm ?? 0, altura_corpo_mm: item.altura_corpo_mm ?? 0, torque_ncm: item.torque_ncm ?? 0, material: item.material ?? "", preco: item.preco ?? 0, ativo: item.ativo !== false }); setCicError(""); setCicModalOpen(true) }
+  function openNewCic() { setCicEditing(null); setCicData({ sku: "", nome: "", sigla: "", descricao: "", familia_id: "", implante_id: "", chave_id: "", diametro_plataforma_mm: 0, altura_transmucoso_mm: 0, altura_corpo_mm: 0, torque_ncm: 0, material: "", preco: 0, ativo: true }); setCicError(""); setCicModalOpen(true) }
+  function openEditCic(item: any) { setCicEditing(item); setCicData({ sku: item.sku, nome: item.nome ?? "", sigla: item.sigla ?? "", descricao: item.descricao ?? "", familia_id: item.familia_id ?? "", implante_id: item.implante_id ?? "", chave_id: item.chave_id ?? "", diametro_plataforma_mm: item.diametro_plataforma_mm ?? 0, altura_transmucoso_mm: item.altura_transmucoso_mm ?? 0, altura_corpo_mm: item.altura_corpo_mm ?? 0, torque_ncm: item.torque_ncm ?? 0, material: item.material ?? "", preco: item.preco ?? 0, ativo: item.ativo !== false }); setCicError(""); setCicModalOpen(true) }
 
   async function handleSaveCic() {
     setCicError("")
     if (!cicData.sku.trim()) { setCicError("SKU é obrigatório"); return }
     if (!cicData.nome.trim()) { setCicError("Nome é obrigatório"); return }
-    const UUID_KEYS = ["implante_id", "chave_id"]
+    const UUID_KEYS = ["familia_id", "implante_id", "chave_id"]
     const payload = sanitizeUuids({ ...cicData }, UUID_KEYS)
     if (cicEditing) {
       const { error } = await supabase.from("catalogo_cicatrizadores").update(payload).eq("sku", cicEditing.sku)
@@ -596,6 +596,7 @@ function AdminComponentesPage() {
           <div className="px-6 py-4 space-y-4 overflow-y-auto flex-1 min-h-0">
             <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655]">Vinculações</h3>
             <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2"><label className={labelCls}>Família</label><select value={abutData.familia_id} onChange={e=>setAbutData({...abutData,familia_id:e.target.value})} className={selectCls}><option value="">Selecione...</option>{(familias ?? []).map((f:any)=><option key={f.id} value={f.id}>{f.nome}</option>)}</select></div>
               <div className="space-y-2"><label className={labelCls}>Tipo de Abutment</label><select value={abutData.tipo_abutment_id} onChange={e=>setAbutData({...abutData,tipo_abutment_id:e.target.value})} className={selectCls}><option value="">Selecione...</option>{tiposAbutment?.map((t:any)=><option key={t.id} value={t.id}>{t.nome}</option>)}</select></div>
               <div className="space-y-2"><label className={labelCls}>Parafuso</label><select value={abutData.parafuso_id} onChange={e=>setAbutData({...abutData,parafuso_id:e.target.value})} className={selectCls}><option value="">Selecione...</option>{parafusosList?.map((p:any)=><option key={p.sku} value={p.sku}>{p.nome}</option>)}</select></div>
               <div className="space-y-2"><label className={labelCls}>Chave</label><select value={abutData.chave_id} onChange={e=>setAbutData({...abutData,chave_id:e.target.value})} className={selectCls}><option value="">Nenhuma</option>{chavesList?.map((c:any)=><option key={c.sku} value={c.sku}>{c.nome}</option>)}</select></div>
@@ -642,6 +643,7 @@ function AdminComponentesPage() {
           <div className="px-6 py-4 space-y-4 overflow-y-auto flex-1 min-h-0">
             <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655]">Vinculações</h3>
             <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2"><label className={labelCls}>Família</label><select value={compData.familia_id} onChange={e=>setCompData({...compData,familia_id:e.target.value})} className={selectCls}><option value="">Selecione...</option>{(familias ?? []).map((f:any)=><option key={f.id} value={f.id}>{f.nome}</option>)}</select></div>
               <div className="space-y-2"><label className={labelCls}>Tipo de Componente</label><select value={compData.tipo_componente_id} onChange={e=>setCompData({...compData,tipo_componente_id:e.target.value})} className={selectCls}><option value="">Selecione...</option>{tiposComponente?.map((t:any)=><option key={t.id} value={t.id}>{t.nome}</option>)}</select></div>
               <div className="space-y-2"><label className={labelCls}>Tipo de Abutment</label><select value={compData.tipo_abutment_id} onChange={e=>setCompData({...compData,tipo_abutment_id:e.target.value})} className={selectCls}><option value="">Selecione...</option>{tiposAbutment?.map((t:any)=><option key={t.id} value={t.id}>{t.nome}</option>)}</select></div>
               <div className="space-y-2"><label className={labelCls}>Parafuso</label><select value={compData.parafuso_id} onChange={e=>setCompData({...compData,parafuso_id:e.target.value})} className={selectCls}><option value="">Selecione...</option>{parafusosList?.map((p:any)=><option key={p.sku} value={p.sku}>{p.nome}</option>)}</select></div>
@@ -690,6 +692,7 @@ function AdminComponentesPage() {
           <div className="px-6 py-4 space-y-4 overflow-y-auto flex-1 min-h-0">
             <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655]">Vinculações</h3>
             <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2"><label className={labelCls}>Família</label><select value={parData.familia_id} onChange={e=>setParData({...parData,familia_id:e.target.value})} className={selectCls}><option value="">Selecione...</option>{(familias ?? []).map((f:any)=><option key={f.id} value={f.id}>{f.nome}</option>)}</select></div>
               <div className="space-y-2"><label className={labelCls}>Tipo de Parafuso</label><select value={parData.tipo_parafuso_id} onChange={e=>setParData({...parData,tipo_parafuso_id:e.target.value})} className={selectCls}><option value="">Selecione...</option>{tiposParafuso?.map((t:any)=><option key={t.id} value={t.id}>{t.nome}</option>)}</select></div>
               <div className="space-y-2"><label className={labelCls}>Chave</label><select value={parData.chave_id} onChange={e=>setParData({...parData,chave_id:e.target.value})} className={selectCls}><option value="">Nenhuma</option>{chavesList?.map((c:any)=><option key={c.sku} value={c.sku}>{c.nome}</option>)}</select></div>
             </div>
@@ -731,6 +734,7 @@ function AdminComponentesPage() {
           <div className="px-6 py-4 space-y-4 overflow-y-auto flex-1 min-h-0">
             <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655]">Vinculações</h3>
             <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2"><label className={labelCls}>Família</label><select value={cicData.familia_id} onChange={e=>setCicData({...cicData,familia_id:e.target.value})} className={selectCls}><option value="">Selecione...</option>{(familias ?? []).map((f:any)=><option key={f.id} value={f.id}>{f.nome}</option>)}</select></div>
               <div className="space-y-2"><label className={labelCls}>Implante</label><select value={cicData.implante_id} onChange={e=>setCicData({...cicData,implante_id:e.target.value})} className={selectCls}><option value="">Selecione...</option>{implantesList?.map((im:any)=><option key={im.sku} value={im.sku}>{im.sku} - {im.nome}</option>)}</select></div>
               <div className="space-y-2"><label className={labelCls}>Chave</label><select value={cicData.chave_id} onChange={e=>setCicData({...cicData,chave_id:e.target.value})} className={selectCls}><option value="">Nenhuma</option>{chavesList?.map((c:any)=><option key={c.sku} value={c.sku}>{c.nome}</option>)}</select></div>
             </div>
