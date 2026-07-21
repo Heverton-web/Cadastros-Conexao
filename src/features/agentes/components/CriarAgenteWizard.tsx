@@ -18,12 +18,11 @@ const STEPS: { key: WizardStep; label: string }[] = [
 ];
 
 interface Props {
-  empresaId: string | null;
   agenteParaEditar?: AgenteIA | null;
   onClose: () => void;
 }
 
-export function CriarAgenteWizard({ empresaId, agenteParaEditar, onClose }: Props) {
+export function CriarAgenteWizard({ agenteParaEditar, onClose }: Props) {
   const [step, setStep] = useState<WizardStep>("api");
   const stepIdx = STEPS.findIndex((s) => s.key === step);
 
@@ -88,7 +87,7 @@ export function CriarAgenteWizard({ empresaId, agenteParaEditar, onClose }: Prop
         google_drive_folder_url: googleDriveUrl || undefined,
       };
       try {
-        const novoAgente = await criar.mutateAsync({ empresaId, input });
+        const novoAgente = await criar.mutateAsync(input);
         setAgenteId(novoAgente.id);
         setStep("knowledge");
       } catch (err: any) {
@@ -130,8 +129,7 @@ export function CriarAgenteWizard({ empresaId, agenteParaEditar, onClose }: Prop
           onSuccess: () => {
             dispararEventoModulo(MODULO_KEY, "agente.editado", {
               agente_id: agenteParaEditar.id,
-              empresa_id: empresaId,
-            }, empresaId).catch(() => {});
+            }).catch(() => {});
             onClose();
           },
         }
@@ -139,8 +137,7 @@ export function CriarAgenteWizard({ empresaId, agenteParaEditar, onClose }: Prop
     } else {
       dispararEventoModulo(MODULO_KEY, "agente.criado", {
         agente_id: agenteId,
-        empresa_id: empresaId,
-      }, empresaId).catch(() => {});
+      }).catch(() => {});
       onClose();
     }
   }

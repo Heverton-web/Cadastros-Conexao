@@ -8,7 +8,6 @@ import { Button } from "~/components/ui/button";
 import { Skeleton } from "~/components/ui/skeleton";
 import { EmptyState } from "~/components/ui/empty-state";
 import {
-  AlertDialog,
   AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
@@ -18,7 +17,6 @@ import {
   AlertDialogTitle,
 } from "~/components/ui/alert-dialog";
 import {
-  Dialog,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -27,7 +25,6 @@ import {
 } from "~/components/ui/dialog";
 import { Input } from "~/components/ui/input";
 import {
-  Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
@@ -36,7 +33,7 @@ import {
 import { dispararEventoModulo } from "~/core/services/webhooks";
 import * as pixelsService from "../services/pixels.service";
 import type { MarketingPixel } from "../types";
-
+import { EMPRESA_ID } from "~/config/empresa";
 const MODULO_KEY = "mktg-pixels";
 
 const TIPO_INFO: Record<string, { label: string; color: string; bg: string }> = {
@@ -62,23 +59,23 @@ export function PixelsList() {
   const [salvando, setSalvando] = useState(false);
 
   useEffect(() => {
-    if (!profile?.empresa_id) {
+    if (!EMPRESA_ID) {
       setCarregando(false);
       return;
     }
-    pixelsService.listarPixels(profile.empresa_id)
+    pixelsService.listarPixels(EMPRESA_ID)
       .then(setPixels)
       .catch(() => toast.error("Erro ao carregar pixels"))
       .finally(() => setCarregando(false));
-  }, [profile?.empresa_id]);
+  }, [EMPRESA_ID]);
 
   async function handleCriarPixel(e: React.FormEvent) {
     e.preventDefault();
-    if (!profile?.empresa_id || !formNome.trim() || !formPixelId.trim()) return;
+    if (!EMPRESA_ID || !formNome.trim() || !formPixelId.trim()) return;
     setSalvando(true);
     try {
       const data = await pixelsService.criarPixel({
-        empresa_id: profile.empresa_id,
+        empresa_id: EMPRESA_ID,
         nome: formNome.trim(),
         pixel_id: formPixelId.trim(),
         tipo: formTipo as MarketingPixel["tipo"],
@@ -87,7 +84,7 @@ export function PixelsList() {
       if (data) {
         setPixels((prev) => [data, ...prev]);
         toast.success("Pixel adicionado com sucesso!");
-        dispararEventoModulo(MODULO_KEY, "evento.registrado", { pixel_id: data.id, nome: formNome, tipo: formTipo, empresa_id: profile.empresa_id }, profile.empresa_id).catch(() => {});
+        dispararEventoModulo(MODULO_KEY, "evento.registrado", { pixel_id: data.id, nome: formNome, tipo: formTipo, empresa_id: EMPRESA_ID }, EMPRESA_ID).catch(() => {});
       }
       setNovoPixelOpen(false);
       setFormNome("");

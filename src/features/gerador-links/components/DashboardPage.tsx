@@ -77,8 +77,8 @@ export function DashboardPage() {
     ? undefined
     : new Date(now.getTime() - Number(periodo) * 86400000).toISOString().slice(0, 10);
 
-  const { data: stats, isLoading } = useDashboardStats(dataInicio, dataFim, empresaId);
-  const { data: links } = useLinks(empresaId);
+  const { data: stats, isLoading } = useDashboardStats(dataInicio, dataFim);
+  const { data: links } = useLinks();
 
   function handleExportCSV() {
     if (!stats?.top_links || stats.top_links.length === 0) {

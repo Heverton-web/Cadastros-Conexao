@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { supabase } from "~/core/supabase";
+import { EMPRESA_ID } from "~/config/empresa";
 import { useAuth } from "~/lib/auth";
 import type { NpsPergunta } from "~/features/nps/types";
 import type { Empresa, EmpresaDesign } from "~/core/empresa";
@@ -74,13 +75,13 @@ export default function NpsPreviewPage() {
           setLoadingEmpresas(false);
         })
         .catch(() => setLoadingEmpresas(false));
-    } else if (profile?.empresa_id) {
-      setSelectedEmpresaId(profile.empresa_id);
+    } else if (EMPRESA_ID) {
+      setSelectedEmpresaId(EMPRESA_ID);
       setLoadingEmpresas(false);
     } else {
       setLoadingEmpresas(false);
     }
-  }, [isSuperAdmin, profile?.empresa_id]);
+  }, [isSuperAdmin]);
 
   useEffect(() => {
     if (!selectedEmpresaId) {

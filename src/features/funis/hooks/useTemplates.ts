@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { useAuth } from "~/lib/auth";
+import { EMPRESA_ID } from "~/config/empresa";
 import {
   listarTemplates,
   criarTemplate,
@@ -10,20 +10,16 @@ import {
 import type { TemplateInput } from "../types";
 
 export function useTemplates() {
-  const { profile } = useAuth();
-  const empresa_id = profile?.empresa_id;
   return useQuery({
-    queryKey: ["funis-templates", empresa_id],
-    queryFn: () => listarTemplates(empresa_id ?? undefined),
+    queryKey: ["funis-templates", EMPRESA_ID],
+    queryFn: () => listarTemplates(EMPRESA_ID),
   });
 }
 
 export function useCriarTemplate() {
-  const { profile } = useAuth();
   const queryClient = useQueryClient();
-  const empresa_id = profile?.empresa_id;
   return useMutation({
-    mutationFn: (input: TemplateInput) => criarTemplate(input, empresa_id),
+    mutationFn: (input: TemplateInput) => criarTemplate(input, EMPRESA_ID),
     onSuccess: () =>
       queryClient.invalidateQueries({ queryKey: ["funis-templates"] }),
   });

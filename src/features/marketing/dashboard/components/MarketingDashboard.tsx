@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useAuth } from "~/lib/auth";
+import { EMPRESA_ID } from "~/config/empresa";
 import { PageHeader } from "~/components/ui/page-header";
 import { Card } from "~/components/ui/card";
 import { Skeleton } from "~/components/ui/skeleton";
@@ -14,8 +14,7 @@ import {
 import { buscarMetricas, buscarEventosAgregados } from "../../lib/analytics";
 
 export function MarketingDashboard() {
-  const { profile } = useAuth();
-  const empresaId = profile?.empresa_id;
+  const empresaId = EMPRESA_ID;
   const [metricas, setMetricas] = useState<
     { label: string; valor: number | string }[]
   >([]);

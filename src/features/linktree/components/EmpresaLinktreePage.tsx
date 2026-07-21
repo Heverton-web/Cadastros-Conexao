@@ -15,6 +15,7 @@ import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "~/components/ui/tabs";
 import { useAuth } from "~/lib/auth";
+import { EMPRESA_ID } from "~/config/empresa";
 import {
   useEmpresaConfig,
   useSalvarEmpresaConfig,
@@ -48,7 +49,7 @@ export function EmpresaLinktreePage() {
   const isSuper = profile?.is_super_admin === true;
 
   const [selectedEmpresaId, setSelectedEmpresaId] = useState<string | null>(
-    isSuper ? null : (profile?.empresa_id ?? null),
+    isSuper ? null : EMPRESA_ID,
   );
 
   const { data: config, isLoading: loadingConfig } =

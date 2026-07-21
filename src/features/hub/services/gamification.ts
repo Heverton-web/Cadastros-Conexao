@@ -1,5 +1,4 @@
 import { supabase } from "~/core/supabase/client";
-import { EMPRESA_ID } from "~/config/empresa"
 import { dispararEventoModulo } from "~/core/services/webhooks";
 import type { HubGamificationLevel, HubBadge, HubUserBadge } from "../types";
 
@@ -9,7 +8,6 @@ export async function fetchHubLevels() {
   const { data, error } = await supabase
     .from("hub_niveis_gamificacao")
     .select("*")
-    .eq("empresa_id", EMPRESA_ID)
     .order("order_index");
   if (error) throw error;
   return data as HubGamificationLevel[];
@@ -29,7 +27,6 @@ export async function fetchHubBadges() {
   const { data, error } = await supabase
     .from("hub_emblemas")
     .select("*")
-    .eq("empresa_id", EMPRESA_ID)
     .order("created_at", { ascending: false });
   if (error) throw error;
   return data as HubBadge[];
@@ -66,7 +63,6 @@ export async function fetchHubUserBadges(userId: string, EMPRESA_ID: string) {
     .from("hub_emblemas_usuario")
     .select("*, hub_badges(*)")
     .eq("user_id", userId)
-    .eq("empresa_id", EMPRESA_ID);
   if (error) throw error;
   return data as (HubUserBadge & { hub_badges: HubBadge })[];
 }
@@ -103,7 +99,6 @@ export async function fetchHubRanking() {
   const { data, error } = await supabase
     .from("profiles")
     .select("id, nome, hub_points, hub_status, avatar_url")
-    .eq("empresa_id", EMPRESA_ID)
     .gt("hub_points", 0)
     .order("hub_points", { ascending: false })
     .limit(50);

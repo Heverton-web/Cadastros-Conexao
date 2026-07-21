@@ -1,12 +1,11 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "~/core/supabase";
-import { useAuth } from "~/lib/auth";
+import { EMPRESA_ID } from "~/config/empresa";
 import { dispararEventoModulo } from "~/core/services/webhooks";
 import type { MapasDistributor, MapasConsultant } from "../types";
 
 export function useMapasDistributors() {
-  const { profile } = useAuth();
-  const empresaId = profile?.empresa_id;
+  const empresaId = EMPRESA_ID;
   return useQuery({
     queryKey: ["mapas", "distributors", empresaId],
     queryFn: async () => {
@@ -20,8 +19,7 @@ export function useMapasDistributors() {
 }
 
 export function useMapasConsultants() {
-  const { profile } = useAuth();
-  const empresaId = profile?.empresa_id;
+  const empresaId = EMPRESA_ID;
   return useQuery({
     queryKey: ["mapas", "consultants", empresaId],
     queryFn: async () => {
@@ -36,7 +34,6 @@ export function useMapasConsultants() {
 
 export function useUpsertDistributor(onSuccess?: () => void) {
   const qc = useQueryClient();
-  const { profile } = useAuth();
   return useMutation({
     mutationFn: async (payload: Partial<MapasDistributor>) => {
       if (payload.id) {
@@ -87,7 +84,6 @@ export function useDeleteDistributor() {
 
 export function useUpsertConsultant(onSuccess?: () => void) {
   const qc = useQueryClient();
-  const { profile } = useAuth();
   return useMutation({
     mutationFn: async (payload: Partial<MapasConsultant>) => {
       if (payload.id) {

@@ -25,7 +25,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "~/components/ui/select";
-import { useAuth } from "~/lib/auth";
+import { EMPRESA_ID } from "~/config/empresa";
 import { useLead, useAtualizarLead } from "../hooks/useLeads";
 
 const STATUS_LABELS: Record<string, string> = {
@@ -48,9 +48,8 @@ const STATUS_COLORS: Record<string, string> = {
 
 export function LeadDetail() {
   const { id } = useParams({ from: "/auth/marketing/leads/$id" });
-  const { profile } = useAuth();
   const navigate = useNavigate();
-  const empresaId = profile?.empresa_id ?? "";
+  const empresaId = EMPRESA_ID;
   const { data: lead, isLoading } = useLead(id, empresaId);
   const atualizarLead = useAtualizarLead(empresaId);
 

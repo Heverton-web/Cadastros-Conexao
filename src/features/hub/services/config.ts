@@ -1,12 +1,10 @@
 import { supabase } from "~/core/supabase/client";
-import { EMPRESA_ID } from "~/config/empresa"
 import type { HubSystemConfig } from "../types";
 
 export async function fetchHubConfig() {
   const { data, error } = await supabase
     .from("hub_config_sistema")
     .select("*")
-    .eq("empresa_id", EMPRESA_ID)
     .single();
   if (error && error.code !== "PGRST116") throw error;
   return data as HubSystemConfig | null;

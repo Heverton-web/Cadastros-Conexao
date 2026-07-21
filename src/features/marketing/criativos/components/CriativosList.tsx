@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Palette, Plus, Search, Trash2, Image, Video, FileImage } from "lucide-react";
 import toast from "react-hot-toast";
-import { useAuth } from "~/lib/auth";
+import { EMPRESA_ID } from "~/config/empresa";
 import { PageHeader } from "~/components/ui/page-header";
 import { Card, CardContent } from "~/components/ui/card";
 import { Button } from "~/components/ui/button";
@@ -49,8 +49,7 @@ const STATUS_COLORS: Record<string, string> = {
 };
 
 export function CriativosList() {
-  const { profile } = useAuth();
-  const empresaId = profile?.empresa_id ?? "";
+  const empresaId = EMPRESA_ID;
   const { data: criativos = [], isLoading } = useCriativos(empresaId);
   const criarCriativo = useCriarCriativo(empresaId);
   const excluirCriativo = useExcluirCriativo(empresaId);

@@ -51,13 +51,12 @@ export function NovaTarefaModal({
 
   // Buscar consultores da empresa para selecionar responsável
   const { data: consultores } = useQuery({
-    queryKey: ["consultores-empresa", profile?.empresa_id],
+    queryKey: ["consultores-empresa"],
     enabled: open && !!profile,
     queryFn: async () => {
       const { data } = await supabase
         .from("usuarios")
         .select("id, nome_completo")
-        .eq("empresa_id", profile!.empresa_id)
         .in("role", ["consultor", "gestor"])
         .order("nome_completo");
       return data ?? [];
@@ -75,7 +74,6 @@ export function NovaTarefaModal({
     setBusy(true);
     try {
       const { error } = await supabase.from("tarefas").insert({
-        empresa_id: profile.empresa_id,
         cliente_id: clienteId || null,
         responsavel_id: form.responsavel_id,
         criador_id: profile.id,

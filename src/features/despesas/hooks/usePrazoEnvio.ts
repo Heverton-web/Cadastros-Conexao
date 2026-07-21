@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "~/lib/auth";
+import { EMPRESA_ID } from "~/config/empresa";
 import { buscarPeriodo } from "../services/periodos.service";
 import { buscarConfig } from "../services/config.service";
 
@@ -16,7 +17,7 @@ export function usePrazoEnvio(
   overrideEmpresaId?: string,
 ): PrazoEnvio {
   const { profile } = useAuth();
-  const empresa_id = overrideEmpresaId || (profile?.empresa_id ?? "");
+  const empresa_id = overrideEmpresaId || EMPRESA_ID;
 
   const { data: periodo } = useQuery({
     queryKey: ["despesa-periodo", periodo_id],

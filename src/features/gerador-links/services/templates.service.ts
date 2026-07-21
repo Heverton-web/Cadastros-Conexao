@@ -1,18 +1,14 @@
 import { supabase } from "~/core/supabase";
-import { EMPRESA_ID } from "~/config/empresa"
 import type { TemplateMensagem, TipoTemplate } from "../types";
 
 export async function listarTemplates(): Promise<TemplateMensagem[]> {
   const { data } = await supabase
     .from("gerador_modelos")
     .select("*")
-    .eq("empresa_id", EMPRESA_ID)
     .order("created_at", { ascending: false });
   return (data as TemplateMensagem[]) || [];
 }
-
 export async function criarTemplate(input: {
-  empresa_id: string;
   tipo: TipoTemplate;
   nome: string;
   conteudo: Record<string, string>;

@@ -9,14 +9,12 @@ import { Input } from "~/components/ui/input";
 import { Skeleton } from "~/components/ui/skeleton";
 import { EmptyState } from "~/components/ui/empty-state";
 import {
-  Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
 } from "~/components/ui/select";
 import {
-  AlertDialog,
   AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
@@ -26,7 +24,6 @@ import {
   AlertDialogTitle,
 } from "~/components/ui/alert-dialog";
 import {
-  Dialog,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -35,7 +32,7 @@ import {
 } from "~/components/ui/dialog";
 import { listarUtms, criarUtm, deletarUtm } from "../services/utm.service";
 import type { Utm } from "../../types";
-
+import { EMPRESA_ID } from "~/config/empresa";
 const UTM_SOURCES = [
   { value: "all", label: "Todos" },
   { value: "google", label: "Google" },
@@ -67,23 +64,23 @@ export function UtmHistory() {
   const [salvando, setSalvando] = useState(false);
 
   useEffect(() => {
-    if (!profile?.empresa_id) {
+    if (!EMPRESA_ID) {
         setCarregando(false);
         return;
     }
-    listarUtms(profile.empresa_id)
+    listarUtms(EMPRESA_ID)
       .then(setUtms)
       .catch(() => toast.error("Erro ao carregar UTMs"))
       .finally(() => setCarregando(false));
-  }, [profile?.empresa_id]);
+  }, [EMPRESA_ID]);
 
   async function handleCriarUtm(e: React.FormEvent) {
     e.preventDefault();
-    if (!profile?.empresa_id || !formNome.trim() || !formUrl.trim() || !formCampaign.trim()) return;
+    if (!EMPRESA_ID || !formNome.trim() || !formUrl.trim() || !formCampaign.trim()) return;
     setSalvando(true);
     try {
       const data = await criarUtm({
-        empresa_id: profile.empresa_id,
+        empresa_id: EMPRESA_ID,
         nome: formNome.trim(),
         url_destino: formUrl.trim(),
         utm_source: formSource,

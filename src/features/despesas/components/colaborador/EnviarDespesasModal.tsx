@@ -6,6 +6,7 @@ import { usePrazoEnvio } from "../../hooks/usePrazoEnvio";
 import { criarOuAtualizarEnvio } from "../../services/envios.service";
 import { enviarDespesas } from "../../services/despesas.service";
 import { useAuth } from "~/lib/auth";
+import { EMPRESA_ID } from "~/config/empresa";
 import {
   Dialog,
   DialogContent,
@@ -48,7 +49,7 @@ export function EnviarDespesasModal({
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [sending, setSending] = useState(false);
   const { profile } = useAuth();
-  const empresa_id = profile?.empresa_id ?? "";
+  const empresa_id = EMPRESA_ID;
   const usuario_id = profile?.id ?? "";
   const { data: periodos } = usePeriodosAbertos();
   const { data: despesas, isLoading } = useMinhasDespesas({

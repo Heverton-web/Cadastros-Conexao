@@ -20,7 +20,6 @@ export type NotificacaoTemplate = {
   destinatario_tipo?: string;
   created_at: string;
   updated_at: string;
-  empresa_id?: string | null;
   modulo_key?: string | null;
 };
 
@@ -53,7 +52,6 @@ export async function marcarTodasComoLidas(usuarioId: string) {
 }
 
 export async function listarTemplates(
-  empresaId?: string | null,
   moduloKey?: string | null,
 ) {
   let query = supabase
@@ -61,9 +59,6 @@ export async function listarTemplates(
     .select("*")
     .order("evento");
 
-  if (empresaId) {
-    query = query.eq("empresa_id", empresaId);
-  }
   if (moduloKey) {
     query = query.eq("modulo_key", moduloKey);
   }
@@ -85,7 +80,6 @@ export async function criarTemplate(
       ativo: input.ativo,
       ordem: input.ordem ?? 0,
       destinatario_tipo: input.destinatario_tipo || "consultor",
-      empresa_id: input.empresa_id,
       modulo_key: input.modulo_key,
       updated_at: new Date().toISOString(),
     })
@@ -288,22 +282,13 @@ export async function dispararNotificacaoIndividual(
 export async function dispararNotificacoesInternas(
   evento: string,
   payload: Record<string, any>,
-  empresaId?: string,
 ) {
   try {
-    let query = supabase
+    const { data: templates, error } = await supabase
       .from("notificacoes_modelos")
       .select("*")
       .eq("evento", evento)
       .eq("ativo", true);
-
-    if (empresaId) {
-      query = query.eq("empresa_id", empresaId);
-    } else {
-      query = query.is("empresa_id", null);
-    }
-
-    const { data: templates, error } = await query;
 
     if (error || !templates || templates.length === 0) return;
 

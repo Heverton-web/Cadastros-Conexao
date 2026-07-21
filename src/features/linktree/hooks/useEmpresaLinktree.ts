@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { useAuth } from "~/lib/auth";
+import { EMPRESA_ID } from "~/config/empresa";
 import {
   listarEmpresaConfig,
   salvarEmpresaConfig,
@@ -23,8 +23,7 @@ import type {
 } from "../types-empresa";
 
 export function useEmpresaConfig(empresaId?: string | null) {
-  const { profile } = useAuth();
-  const eid = empresaId ?? profile?.empresa_id;
+  const eid = empresaId ?? EMPRESA_ID;
   return useQuery({
     queryKey: ["empresa-linktree-config", eid],
     queryFn: () => listarEmpresaConfig(eid!),
@@ -34,8 +33,7 @@ export function useEmpresaConfig(empresaId?: string | null) {
 }
 
 export function useSalvarEmpresaConfig(empresaId?: string | null) {
-  const { profile } = useAuth();
-  const eid = empresaId ?? profile?.empresa_id;
+  const eid = empresaId ?? EMPRESA_ID;
   const qc = useQueryClient();
   return useMutation({
     mutationFn: (config: Parameters<typeof salvarEmpresaConfig>[1]) =>
@@ -55,8 +53,7 @@ export function useSlugDisponivel(slug: string, empresaId?: string) {
 }
 
 export function useSecoes(empresaId?: string | null) {
-  const { profile } = useAuth();
-  const eid = empresaId ?? profile?.empresa_id;
+  const eid = empresaId ?? EMPRESA_ID;
   return useQuery({
     queryKey: ["empresa-linktree-secoes", eid],
     queryFn: () => listarSecoes(eid!),
@@ -65,8 +62,7 @@ export function useSecoes(empresaId?: string | null) {
 }
 
 export function useCriarSecao(empresaId?: string | null) {
-  const { profile } = useAuth();
-  const eid = empresaId ?? profile?.empresa_id;
+  const eid = empresaId ?? EMPRESA_ID;
   const qc = useQueryClient();
   return useMutation({
     mutationFn: (input: EmpresaSectionInput) => criarSecao(eid!, input),
@@ -100,8 +96,7 @@ export function useDeletarSecao() {
 }
 
 export function useLinks(empresaId?: string | null) {
-  const { profile } = useAuth();
-  const eid = empresaId ?? profile?.empresa_id;
+  const eid = empresaId ?? EMPRESA_ID;
   return useQuery({
     queryKey: ["empresa-linktree-links", eid],
     queryFn: () => listarLinks(eid!),
@@ -110,8 +105,7 @@ export function useLinks(empresaId?: string | null) {
 }
 
 export function useCriarLink(empresaId?: string | null) {
-  const { profile } = useAuth();
-  const eid = empresaId ?? profile?.empresa_id;
+  const eid = empresaId ?? EMPRESA_ID;
   const qc = useQueryClient();
   return useMutation({
     mutationFn: ({
@@ -174,8 +168,7 @@ export function useAnalytics(
   periodo: AnalyticsPeriodo,
   empresaId?: string | null,
 ) {
-  const { profile } = useAuth();
-  const eid = empresaId ?? profile?.empresa_id;
+  const eid = empresaId ?? EMPRESA_ID;
   return useQuery({
     queryKey: ["empresa-linktree-analytics", eid, periodo],
     queryFn: () => listarAnalytics(eid!, periodo),

@@ -2,7 +2,6 @@ import { supabase } from "~/core/supabase";
 import type { DespesaEnvio, EnvioFiltros } from "../types";
 
 export async function listarEnviosEmpresa(
-  empresa_id: string,
   filtros?: EnvioFiltros,
 ): Promise<DespesaEnvio[]> {
   let query = supabase
@@ -10,7 +9,6 @@ export async function listarEnviosEmpresa(
     .select(
       "*, periodo:despesas_periodos(*), usuario:profiles!usuario_id(nome, email), aprovador:profiles!aprovador_id(nome, email)",
     )
-    .eq("empresa_id", empresa_id)
     .order("created_at", { ascending: false });
 
   if (filtros?.status) query = query.eq("status", filtros.status);
@@ -23,16 +21,14 @@ export async function listarEnviosEmpresa(
 }
 
 export async function listarEnviosPendentes(
-  empresa_id: string,
 ): Promise<DespesaEnvio[]> {
-  return listarEnviosEmpresa(empresa_id, { status: "pendente" });
+  return listarEnviosEmpresa({ status: "pendente" });
 }
 
 export async function listarMeusEnvios(
-  empresa_id: string,
   usuario_id: string,
 ): Promise<DespesaEnvio[]> {
-  return listarEnviosEmpresa(empresa_id, { usuario_id });
+  return listarEnviosEmpresa({ usuario_id });
 }
 
 export async function buscarEnvio(id: string): Promise<DespesaEnvio> {
@@ -48,14 +44,12 @@ export async function buscarEnvio(id: string): Promise<DespesaEnvio> {
 }
 
 export async function buscarEnvioPorPeriodo(
-  empresa_id: string,
   usuario_id: string,
   periodo_id: string,
 ): Promise<DespesaEnvio | null> {
   const { data, error } = await supabase
     .from("despesas_envios")
     .select("*, periodo:despesas_periodos(*)")
-    .eq("empresa_id", empresa_id)
     .eq("usuario_id", usuario_id)
     .eq("periodo_id", periodo_id)
     .maybeSingle();
@@ -64,17 +58,15 @@ export async function buscarEnvioPorPeriodo(
 }
 
 export async function criarOuAtualizarEnvio(
-  empresa_id: string,
   usuario_id: string,
   periodo_id: string,
 ): Promise<DespesaEnvio> {
-  let envio = await buscarEnvioPorPeriodo(empresa_id, usuario_id, periodo_id);
+  let envio = await buscarEnvioPorPeriodo(usuario_id, periodo_id);
 
   if (!envio) {
     const { data, error } = await supabase
       .from("despesas_envios")
       .insert({
-        empresa_id,
         usuario_id,
         periodo_id,
         total_despesas: 0,
@@ -93,7 +85,6 @@ export async function criarOuAtualizarEnvio(
 export async function aprovarEnvio(
   id: string,
   aprovador_id: string,
-  empresa_id: string,
 ): Promise<DespesaEnvio> {
   const { data, error } = await supabase
     .from("despesas_envios")
@@ -112,7 +103,6 @@ export async function aprovarEnvio(
     .update({ status: "aprovada" })
     .eq("periodo_id", data.periodo_id)
     .eq("usuario_id", data.usuario_id)
-    .eq("empresa_id", empresa_id)
     .eq("status", "pendente");
 
   return data as DespesaEnvio;
@@ -122,7 +112,6 @@ export async function reprovarEnvio(
   id: string,
   aprovador_id: string,
   comentario: string,
-  empresa_id: string,
 ): Promise<DespesaEnvio> {
   const { data, error } = await supabase
     .from("despesas_envios")
@@ -142,7 +131,6 @@ export async function reprovarEnvio(
     .update({ status: "reprovada", comentario_reprovacao: comentario })
     .eq("periodo_id", data.periodo_id)
     .eq("usuario_id", data.usuario_id)
-    .eq("empresa_id", empresa_id)
     .eq("status", "pendente");
 
   return data as DespesaEnvio;
@@ -154,22 +142,19 @@ export async function aprovarEnvioParcial(
   despesasAprovadas: string[],
   despesasReprovadas: string[],
   comentario: string,
-  empresa_id: string,
 ): Promise<DespesaEnvio> {
   if (despesasAprovadas.length > 0) {
     await supabase
       .from("despesas")
       .update({ status: "aprovada" })
-      .in("id", despesasAprovadas)
-      .eq("empresa_id", empresa_id);
+      .in("id", despesasAprovadas);
   }
 
   if (despesasReprovadas.length > 0) {
     await supabase
       .from("despesas")
       .update({ status: "reprovada", comentario_reprovacao: comentario })
-      .in("id", despesasReprovadas)
-      .eq("empresa_id", empresa_id);
+      .in("id", despesasReprovadas);
   }
 
   const { data, error } = await supabase

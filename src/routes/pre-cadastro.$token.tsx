@@ -286,11 +286,11 @@ function PreCadastroPage() {
     const tipo = form.tipo as "PF" | "PJ";
     setSchemaLoading(true);
     Promise.all([
-      carregarSchema(tipo, "dados", empresaId),
-      carregarSchema(tipo, "endereco_empresa", empresaId),
-      carregarSchema(tipo, "endereco_entrega", empresaId),
-      carregarSchema(tipo, "endereco_cobranca", empresaId),
-      carregarSchema(tipo, "documentos", empresaId),
+      carregarSchema(tipo, "dados"),
+      carregarSchema(tipo, "endereco_empresa"),
+      carregarSchema(tipo, "endereco_entrega"),
+      carregarSchema(tipo, "endereco_cobranca"),
+      carregarSchema(tipo, "documentos"),
     ]).then(([dados, endEmpresa, endEntrega, endCobranca, docs]) => {
       setSchemaDados(dados);
       setSchemaEndEmpresa(endEmpresa);

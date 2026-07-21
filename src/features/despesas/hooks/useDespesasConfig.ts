@@ -1,10 +1,11 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "~/lib/auth";
+import { EMPRESA_ID } from "~/config/empresa";
 import { buscarConfig, criarOuAtualizarConfig } from "../services/config.service";
 
 export function useDespesasConfig(overrideEmpresaId?: string) {
   const { profile } = useAuth();
-  const empresa_id = overrideEmpresaId || (profile?.empresa_id ?? "");
+  const empresa_id = overrideEmpresaId || EMPRESA_ID;
 
   return useQuery({
     queryKey: ["despesa-config", empresa_id],
@@ -16,7 +17,7 @@ export function useDespesasConfig(overrideEmpresaId?: string) {
 export function useSalvarConfig() {
   const { profile } = useAuth();
   const queryClient = useQueryClient();
-  const empresa_id = profile?.empresa_id ?? "";
+  const empresa_id = EMPRESA_ID;
 
   return useMutation({
     mutationFn: async (config: {

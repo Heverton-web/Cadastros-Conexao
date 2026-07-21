@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Mail, Plus, Search, Trash2, BarChart3, Send, Clock } from "lucide-react";
 import toast from "react-hot-toast";
-import { useAuth } from "~/lib/auth";
+import { EMPRESA_ID } from "~/config/empresa";
 import { PageHeader } from "~/components/ui/page-header";
 import { Card, CardContent } from "~/components/ui/card";
 import { Button } from "~/components/ui/button";
@@ -54,8 +54,7 @@ const STATUS_COLORS: Record<string, string> = {
 };
 
 export function EmailCampanhasList() {
-  const { profile } = useAuth();
-  const empresaId = profile?.empresa_id ?? "";
+  const empresaId = EMPRESA_ID;
   const { data: campanhas = [], isLoading } = useCampanhas(empresaId);
   const criarCampanha = useCriarCampanha(empresaId);
   const excluirCampanha = useExcluirCampanha(empresaId);

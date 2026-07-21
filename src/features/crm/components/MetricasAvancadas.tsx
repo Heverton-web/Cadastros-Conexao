@@ -74,7 +74,6 @@ export function MetricasAvancadas({ periodo = "mes" }: Props) {
     enabled: !!profile,
     queryFn: async () => {
       const userId = profile!.id;
-      const empresaId = profile!.empresa_id;
 
       // Visitas no período
       const { data: visitas, count: totalVisitas } = await supabase

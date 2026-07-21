@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { supabase } from "~/core/supabase";
+import { EMPRESA_ID } from "~/config/empresa";
 import { useAuth } from "~/lib/auth";
 import { carregarSchema, type CampoSchema } from "~/features/form-schema";
 import { listarEmpresas } from "~/shared/empresas";
@@ -35,7 +36,7 @@ export default function PrevisualizacaoPage() {
   const isSuperAdmin = profile?.is_super_admin === true;
   const [empresas, setEmpresas] = useState<Empresa[]>([]);
   const [selectedEmpresaId, setSelectedEmpresaId] = useState<string>(
-    profile?.empresa_id ?? "",
+    EMPRESA_ID,
   );
   const [loadingEmpresas, setLoadingEmpresas] = useState(true);
   const [step, setStep] = useState<Step>("tipo");
@@ -55,24 +56,23 @@ export default function PrevisualizacaoPage() {
           setEmpresas(emp.filter((e) => e.ativo));
           setLoadingEmpresas(false);
         })
-        .catch(() => setLoadingEmpresas(false));
-    } else if (profile?.empresa_id) {
-      setSelectedEmpresaId(profile.empresa_id);
+    } else if (EMPRESA_ID) {
+      setSelectedEmpresaId(EMPRESA_ID);
       setLoadingEmpresas(false);
     } else {
       setLoadingEmpresas(false);
     }
-  }, [isSuperAdmin, profile?.empresa_id]);
+  }, [isSuperAdmin]);
 
   useEffect(() => {
     if (!tipoPessoa || !selectedEmpresaId) return;
     setSchemaLoading(true);
     Promise.all([
-      carregarSchema(tipoPessoa, "dados", selectedEmpresaId),
-      carregarSchema(tipoPessoa, "endereco_empresa", selectedEmpresaId),
-      carregarSchema(tipoPessoa, "endereco_entrega", selectedEmpresaId),
-      carregarSchema(tipoPessoa, "endereco_cobranca", selectedEmpresaId),
-      carregarSchema(tipoPessoa, "documentos", selectedEmpresaId),
+      carregarSchema(tipoPessoa, "dados"),
+      carregarSchema(tipoPessoa, "endereco_empresa"),
+      carregarSchema(tipoPessoa, "endereco_entrega"),
+      carregarSchema(tipoPessoa, "endereco_cobranca"),
+      carregarSchema(tipoPessoa, "documentos"),
     ]).then(([dados, endEmpresa, endEntrega, endCobranca, docs]) => {
       setSchemaDados(dados);
       setSchemaEndEmpresa(endEmpresa);

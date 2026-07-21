@@ -1,5 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "~/lib/auth";
+import { EMPRESA_ID } from "~/config/empresa";
 import {
   listarMinhasDespesas,
   listarDespesasEmpresa,
@@ -19,7 +20,7 @@ export function useMinhasDespesas(
   overrideEmpresaId?: string,
 ) {
   const { profile } = useAuth();
-  const empresa_id = overrideEmpresaId || (profile?.empresa_id ?? "");
+  const empresa_id = overrideEmpresaId || EMPRESA_ID;
   const usuario_id = profile?.id ?? "";
 
   return useQuery({
@@ -34,7 +35,7 @@ export function useDespesasEmpresa(
   overrideEmpresaId?: string,
 ) {
   const { profile } = useAuth();
-  const empresa_id = overrideEmpresaId || (profile?.empresa_id ?? "");
+  const empresa_id = overrideEmpresaId || EMPRESA_ID;
 
   return useQuery({
     queryKey: ["despesas-empresa", empresa_id, filtros],
@@ -54,7 +55,7 @@ export function useDespesa(id: string) {
 export function useCriarDespesa() {
   const { profile } = useAuth();
   const queryClient = useQueryClient();
-  const empresa_id = profile?.empresa_id ?? "";
+  const empresa_id = EMPRESA_ID;
   const usuario_id = profile?.id ?? "";
 
   return useMutation({
@@ -93,7 +94,7 @@ export function useCriarDespesa() {
 export function useAtualizarDespesa() {
   const { profile } = useAuth();
   const queryClient = useQueryClient();
-  const empresa_id = profile?.empresa_id ?? "";
+  const empresa_id = EMPRESA_ID;
 
   return useMutation({
     mutationFn: ({ id, updates }: { id: string; updates: Partial<Despesa> }) =>
@@ -109,7 +110,7 @@ export function useAtualizarDespesa() {
 export function useExcluirDespesa() {
   const { profile } = useAuth();
   const queryClient = useQueryClient();
-  const empresa_id = profile?.empresa_id ?? "";
+  const empresa_id = EMPRESA_ID;
 
   return useMutation({
     mutationFn: (id: string) => excluirDespesa(id, empresa_id),
@@ -124,7 +125,7 @@ export function useExcluirDespesa() {
 export function useEnviarDespesas() {
   const { profile } = useAuth();
   const queryClient = useQueryClient();
-  const empresa_id = profile?.empresa_id ?? "";
+  const empresa_id = EMPRESA_ID;
   const usuario_id = profile?.id ?? "";
 
   return useMutation({
@@ -143,7 +144,7 @@ export function useEnviarDespesas() {
 export function useAprovarDespesa() {
   const { profile } = useAuth();
   const queryClient = useQueryClient();
-  const empresa_id = profile?.empresa_id ?? "";
+  const empresa_id = EMPRESA_ID;
 
   return useMutation({
     mutationFn: (id: string) => aprovarDespesa(id),
@@ -161,7 +162,7 @@ export function useAprovarDespesa() {
 export function useReprovarDespesa() {
   const { profile } = useAuth();
   const queryClient = useQueryClient();
-  const empresa_id = profile?.empresa_id ?? "";
+  const empresa_id = EMPRESA_ID;
 
   return useMutation({
     mutationFn: ({ id, comentario }: { id: string; comentario: string }) =>

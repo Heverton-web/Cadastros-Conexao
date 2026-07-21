@@ -1,5 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "~/lib/auth";
+import { EMPRESA_ID } from "~/config/empresa";
 import {
   listarEnviosEmpresa,
   listarEnviosPendentes,
@@ -17,7 +18,7 @@ export function useEnviosEmpresa(
   overrideEmpresaId?: string,
 ) {
   const { profile } = useAuth();
-  const empresa_id = overrideEmpresaId || (profile?.empresa_id ?? "");
+  const empresa_id = overrideEmpresaId || EMPRESA_ID;
 
   return useQuery({
     queryKey: ["despesas-envios", empresa_id, filtros],
@@ -28,7 +29,7 @@ export function useEnviosEmpresa(
 
 export function useEnviosPendentes(overrideEmpresaId?: string) {
   const { profile } = useAuth();
-  const empresa_id = overrideEmpresaId || (profile?.empresa_id ?? "");
+  const empresa_id = overrideEmpresaId || EMPRESA_ID;
 
   return useQuery({
     queryKey: ["despesas-envios-pendentes", empresa_id],
@@ -39,7 +40,7 @@ export function useEnviosPendentes(overrideEmpresaId?: string) {
 
 export function useMeusEnvios(overrideEmpresaId?: string) {
   const { profile } = useAuth();
-  const empresa_id = overrideEmpresaId || (profile?.empresa_id ?? "");
+  const empresa_id = overrideEmpresaId || EMPRESA_ID;
   const usuario_id = profile?.id ?? "";
 
   return useQuery({
@@ -60,7 +61,7 @@ export function useEnvio(id: string) {
 export function useCriarOuAtualizarEnvio() {
   const { profile } = useAuth();
   const queryClient = useQueryClient();
-  const empresa_id = profile?.empresa_id ?? "";
+  const empresa_id = EMPRESA_ID;
   const usuario_id = profile?.id ?? "";
 
   return useMutation({
@@ -80,7 +81,7 @@ export function useCriarOuAtualizarEnvio() {
 export function useAprovarEnvio() {
   const { profile } = useAuth();
   const queryClient = useQueryClient();
-  const empresa_id = profile?.empresa_id ?? "";
+  const empresa_id = EMPRESA_ID;
   const aprovador_id = profile?.id ?? "";
 
   return useMutation({
@@ -102,7 +103,7 @@ export function useAprovarEnvio() {
 export function useReprovarEnvio() {
   const { profile } = useAuth();
   const queryClient = useQueryClient();
-  const empresa_id = profile?.empresa_id ?? "";
+  const empresa_id = EMPRESA_ID;
   const aprovador_id = profile?.id ?? "";
 
   return useMutation({
@@ -125,7 +126,7 @@ export function useReprovarEnvio() {
 export function useAprovarEnvioParcial() {
   const { profile } = useAuth();
   const queryClient = useQueryClient();
-  const empresa_id = profile?.empresa_id ?? "";
+  const empresa_id = EMPRESA_ID;
   const aprovador_id = profile?.id ?? "";
 
   return useMutation({

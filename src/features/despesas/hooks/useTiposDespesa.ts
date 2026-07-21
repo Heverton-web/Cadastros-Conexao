@@ -1,5 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "~/lib/auth";
+import { EMPRESA_ID } from "~/config/empresa";
 import {
   listarTiposDespesa,
   listarTiposDespesaAtivos,
@@ -11,7 +12,7 @@ import type { DespesaTipo } from "../types";
 
 export function useTiposDespesa(overrideEmpresaId?: string) {
   const { profile } = useAuth();
-  const empresa_id = overrideEmpresaId || profile?.empresa_id || "";
+  const empresa_id = overrideEmpresaId || EMPRESA_ID;
 
   return useQuery({
     queryKey: ["despesas-tipos", empresa_id],
@@ -22,7 +23,7 @@ export function useTiposDespesa(overrideEmpresaId?: string) {
 
 export function useTiposDespesaAtivos(overrideEmpresaId?: string) {
   const { profile } = useAuth();
-  const empresa_id = overrideEmpresaId || profile?.empresa_id || "";
+  const empresa_id = overrideEmpresaId || EMPRESA_ID;
 
   return useQuery({
     queryKey: ["despesas-tipos-ativos", empresa_id],
@@ -34,7 +35,7 @@ export function useTiposDespesaAtivos(overrideEmpresaId?: string) {
 export function useCriarTipoDespesa(overrideEmpresaId?: string) {
   const { profile } = useAuth();
   const queryClient = useQueryClient();
-  const empresa_id = overrideEmpresaId || profile?.empresa_id || "";
+  const empresa_id = overrideEmpresaId || EMPRESA_ID;
 
   return useMutation({
     mutationFn: (tipo: Partial<DespesaTipo>) =>
@@ -53,7 +54,7 @@ export function useCriarTipoDespesa(overrideEmpresaId?: string) {
 export function useAtualizarTipoDespesa(overrideEmpresaId?: string) {
   const { profile } = useAuth();
   const queryClient = useQueryClient();
-  const empresa_id = overrideEmpresaId || profile?.empresa_id || "";
+  const empresa_id = overrideEmpresaId || EMPRESA_ID;
 
   return useMutation({
     mutationFn: ({
@@ -77,7 +78,7 @@ export function useAtualizarTipoDespesa(overrideEmpresaId?: string) {
 export function useExcluirTipoDespesa(overrideEmpresaId?: string) {
   const { profile } = useAuth();
   const queryClient = useQueryClient();
-  const empresa_id = overrideEmpresaId || profile?.empresa_id || "";
+  const empresa_id = overrideEmpresaId || EMPRESA_ID;
 
   return useMutation({
     mutationFn: (id: string) => excluirTipoDespesa(id, empresa_id),

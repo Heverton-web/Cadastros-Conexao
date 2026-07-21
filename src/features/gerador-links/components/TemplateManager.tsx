@@ -46,7 +46,7 @@ const TIPO_TEMPLATE_LABEL: Record<string, string> = {
 export function TemplateManager() {
   const { empresaId, empresas, empresaSelecionada, setEmpresaSelecionada, isSuperAdmin } = useEmpresaSuperAdmin();
   const { profile, permissoes } = useAuth();
-  const { data: templates, isLoading } = useTemplates(empresaId);
+  const { data: templates, isLoading } = useTemplates();
   const criarTemplate = useCriarTemplate();
   const atualizarTemplate = useAtualizarTemplate();
   const deletarTemplate = useDeletarTemplate();

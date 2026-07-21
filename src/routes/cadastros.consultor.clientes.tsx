@@ -4,13 +4,13 @@ import { useState, useEffect } from "react";
 import { useAuth } from "~/lib/auth";
 import { listarCadastros } from "~/features/clientes";
 import {
-  Loader2,
   ArrowLeft,
   Search,
   ArrowRight,
   CheckCircle,
   AlertTriangle,
 } from "lucide-react";
+import { EMPRESA_ID } from "~/config/empresa";
 
 export const consultorClientesRoute = createRoute({
   getParentRoute: () => authLayout,
@@ -33,8 +33,8 @@ function ConsultorClientes() {
     if (!user?.id) return;
     setLoading(true);
     try {
-      if (!profile?.empresa_id) return;
-      const data = await listarCadastros(profile.empresa_id, {
+      if (!EMPRESA_ID) return;
+      const data = await listarCadastros(EMPRESA_ID, {
         status: "aprovado",
         created_by: user.id,
       });

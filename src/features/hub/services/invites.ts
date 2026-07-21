@@ -1,5 +1,4 @@
 import { supabase } from "~/core/supabase/client";
-import { EMPRESA_ID } from "~/config/empresa"
 import { dispararEventoModulo } from "~/core/services/webhooks";
 import type { HubInviteToken } from "../types";
 
@@ -42,7 +41,6 @@ export async function fetchHubInvites() {
   const { data, error } = await supabase
     .from("hub_tokens_convite")
     .select("*")
-    .eq("empresa_id", EMPRESA_ID)
     .order("created_at", { ascending: false });
   if (error) throw error;
   return data as HubInviteToken[];

@@ -145,7 +145,7 @@ export const hubDiagnosticPlan: DiagnosticPlan = {
         ctx.log("success", `${integracoes.length} integração(ões) configurada(s)`);
 
         ctx.log("info", "3) Verificando assets de material...");
-        const { data: assets } = await supabase.from("hub_material_assets").select("id, material_id, locale").eq("empresa_id", ctx.empresaId).limit(5);
+        const { data: assets } = await supabase.from("hub_material_assets").select("id, material_id, locale").limit(5);
         ctx.log("success", `${assets?.length ?? 0} assets no hub`);
       },
       cleanup: async () => {},

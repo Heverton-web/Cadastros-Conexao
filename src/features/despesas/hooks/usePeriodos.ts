@@ -1,5 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "~/lib/auth";
+import { EMPRESA_ID } from "~/config/empresa";
 import {
   listarPeriodos,
   listarPeriodosAbertos,
@@ -14,7 +15,7 @@ import type { DespesaPeriodo, Frequencia } from "../types";
 
 export function usePeriodos(overrideEmpresaId?: string) {
   const { profile } = useAuth();
-  const empresa_id = overrideEmpresaId || profile?.empresa_id || "";
+  const empresa_id = overrideEmpresaId || EMPRESA_ID;
 
   return useQuery({
     queryKey: ["despesas-periodos", empresa_id],
@@ -25,7 +26,7 @@ export function usePeriodos(overrideEmpresaId?: string) {
 
 export function usePeriodosAbertos(overrideEmpresaId?: string) {
   const { profile } = useAuth();
-  const empresa_id = overrideEmpresaId || profile?.empresa_id || "";
+  const empresa_id = overrideEmpresaId || EMPRESA_ID;
 
   return useQuery({
     queryKey: ["despesas-periodos-abertos", empresa_id],
@@ -37,7 +38,7 @@ export function usePeriodosAbertos(overrideEmpresaId?: string) {
 export function useCriarPeriodo(overrideEmpresaId?: string) {
   const { profile } = useAuth();
   const queryClient = useQueryClient();
-  const empresa_id = overrideEmpresaId || profile?.empresa_id || "";
+  const empresa_id = overrideEmpresaId || EMPRESA_ID;
 
   return useMutation({
     mutationFn: (periodo: Partial<DespesaPeriodo>) =>
@@ -56,7 +57,7 @@ export function useCriarPeriodo(overrideEmpresaId?: string) {
 export function useAtualizarPeriodo(overrideEmpresaId?: string) {
   const { profile } = useAuth();
   const queryClient = useQueryClient();
-  const empresa_id = overrideEmpresaId || profile?.empresa_id || "";
+  const empresa_id = overrideEmpresaId || EMPRESA_ID;
 
   return useMutation({
     mutationFn: ({
@@ -80,7 +81,7 @@ export function useAtualizarPeriodo(overrideEmpresaId?: string) {
 export function useFecharPeriodo(overrideEmpresaId?: string) {
   const { profile } = useAuth();
   const queryClient = useQueryClient();
-  const empresa_id = overrideEmpresaId || profile?.empresa_id || "";
+  const empresa_id = overrideEmpresaId || EMPRESA_ID;
 
   return useMutation({
     mutationFn: (id: string) => fecharPeriodo(id),
@@ -98,7 +99,7 @@ export function useFecharPeriodo(overrideEmpresaId?: string) {
 export function useReabrirPeriodo(overrideEmpresaId?: string) {
   const { profile } = useAuth();
   const queryClient = useQueryClient();
-  const empresa_id = overrideEmpresaId || profile?.empresa_id || "";
+  const empresa_id = overrideEmpresaId || EMPRESA_ID;
 
   return useMutation({
     mutationFn: (id: string) => reabrirPeriodo(id),
@@ -116,7 +117,7 @@ export function useReabrirPeriodo(overrideEmpresaId?: string) {
 export function useExcluirPeriodo(overrideEmpresaId?: string) {
   const { profile } = useAuth();
   const queryClient = useQueryClient();
-  const empresa_id = overrideEmpresaId || profile?.empresa_id || "";
+  const empresa_id = overrideEmpresaId || EMPRESA_ID;
 
   return useMutation({
     mutationFn: (id: string) => excluirPeriodo(id, empresa_id),
@@ -134,7 +135,7 @@ export function useExcluirPeriodo(overrideEmpresaId?: string) {
 export function useGerarPeriodos(overrideEmpresaId?: string) {
   const { profile } = useAuth();
   const queryClient = useQueryClient();
-  const empresa_id = overrideEmpresaId || profile?.empresa_id || "";
+  const empresa_id = overrideEmpresaId || EMPRESA_ID;
 
   return useMutation({
     mutationFn: ({

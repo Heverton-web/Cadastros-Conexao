@@ -1,12 +1,10 @@
 import { supabase } from "~/core/supabase/client";
-import { EMPRESA_ID } from "~/config/empresa"
 import type { HubCollection, HubCollectionItem } from "../types";
 
 export async function fetchHubCollections() {
   const { data, error } = await supabase
     .from("hub_colecoes")
     .select("*, hub_collection_items(count)")
-    .eq("empresa_id", EMPRESA_ID)
     .order("created_at", { ascending: false });
   if (error) throw error;
   return data as (HubCollection & {

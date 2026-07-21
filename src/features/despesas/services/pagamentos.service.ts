@@ -2,14 +2,12 @@ import { supabase } from "~/core/supabase";
 import type { DespesaPagamento, FormaPagamento } from "../types";
 
 export async function listarPagamentos(
-  empresa_id: string,
 ): Promise<DespesaPagamento[]> {
   const { data, error } = await supabase
     .from("despesas_pagamentos")
     .select(
       "*, envio:despesas_envios(*, periodo:despesas_periodos(*), usuario:profiles!usuario_id(nome, email))",
     )
-    .eq("empresa_id", empresa_id)
     .order("data_pagamento", { ascending: false });
   if (error) throw error;
   return data as DespesaPagamento[];
@@ -40,7 +38,6 @@ export async function buscarPagamento(id: string): Promise<DespesaPagamento> {
 }
 
 export async function criarPagamento(pagamento: {
-  empresa_id: string;
   envio_id: string;
   valor: number;
   forma_pagamento: FormaPagamento;

@@ -525,7 +525,6 @@ export function FormBuilderTab({ empresaId, isSuper }: { empresaId?: string; isS
       etapa: secaoAtual.etapa,
       tipo_pessoa:
         secaoAtual.tipo_pessoa === "ambos" ? undefined : secaoAtual.tipo_pessoa,
-      empresaId: modo === "predefinidos" ? undefined : empresaId,
     });
 
     // Para endereço, filtra só os de tipo_pessoa = 'ambos'
@@ -596,7 +595,7 @@ export function FormBuilderTab({ empresaId, isSuper }: { empresaId?: string; isS
   }
 
   async function handleNovoCampo(dados: Partial<CampoSchema>) {
-    const result = await salvarCampo(dados, empresaId);
+    const result = await salvarCampo(dados);
     if (result?.data) {
       toast.success("Campo criado com sucesso!");
       setShowModal(false);

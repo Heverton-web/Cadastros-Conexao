@@ -1,15 +1,13 @@
-import { EMPRESA_ID } from "~/config/empresa"
-import { RequirePermission, RequireSuperAdmin } from "~/components/guards"
+import { RequirePermission } from "~/components/guards"
 import { createRoute } from "@tanstack/react-router"
 import { authLayout } from "./_auth"
 import { EmpresaCrudGuard } from "~/features/catalogo/components/EmpresaCrudGuard"
 import { AdminLayout } from "~/features/catalogo/components/AdminLayout"
 import { useAuth } from "~/core/auth/useAuth"
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { Plus, Pencil, Trash2, ToggleRight, ToggleLeft } from "lucide-react"
 import { supabase } from "~/core/supabase"
 import { useQueryClient, useQuery } from "@tanstack/react-query"
-import { useCatalogoEmpresaId } from "~/features/catalogo/hooks/useCatalogoEmpresa"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from "~/components/ui/dialog"
 import { Switch } from "~/components/ui/switch"
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "~/components/ui/alert-dialog"
@@ -35,21 +33,20 @@ const labelCls = "text-xs font-bold uppercase tracking-widest text-gray-400"
 function AdminCategoriasPage() {
   const { profile } = useAuth()
   const isSuperAdmin = profile?.is_super_admin === true
-  const empresaId = useCatalogoEmpresaId()
   const qc = useQueryClient()
 
+  // Busca todas as categorias (inclui padrões do sistema com empresa_id NULL)
   const { data: categorias, isLoading } = useQuery({
-    queryKey: ["catalogo", "categorias", empresaId],
+    queryKey: ["catalogo", "categorias"],
     queryFn: async () => {
       const { data, error } = await supabase
         .from("catalogo_categorias")
         .select("*")
-        .eq("empresa_id", empresaId)
+        .order("locked", { ascending: false })
         .order("nome")
       if (error) throw error
       return data as CatalogoCategoria[]
     },
-    enabled: !!empresaId,
   })
 
   const [modalOpen, setModalOpen] = useState(false)
@@ -77,7 +74,7 @@ function AdminCategoriasPage() {
   async function handleSave() {
     if (!nome.trim()) { toast.error("Nome é obrigatório"); return }
 
-    const payload: Record<string, unknown> = { empresa_id: EMPRESA_ID, nome: nome.trim(), sigla: sigla.trim() || null, locked, ativo }
+    const payload: Record<string, unknown> = { nome: nome.trim(), sigla: sigla.trim() || null, locked, ativo }
 
     if (editing) {
       const { error } = await supabase.from("catalogo_categorias").update({ nome: payload.nome, sigla: payload.sigla, locked, ativo }).eq("id", editing.id)
@@ -102,6 +99,11 @@ function AdminCategoriasPage() {
   }
 
   async function toggleAtivo(cat: CatalogoCategoria) {
+    // Apenas SUPER ADMIN pode alterar categorias pré-definidas (locked)
+    if (cat.locked && !isSuperAdmin) {
+      toast.error("Apenas Super Admin pode alterar categorias pré-definidas")
+      return
+    }
     const { error } = await supabase.from("catalogo_categorias").update({ ativo: !cat.ativo }).eq("id", cat.id)
     if (!error) qc.invalidateQueries({ queryKey: ["catalogo", "categorias"] })
   }
@@ -134,8 +136,10 @@ function AdminCategoriasPage() {
             </TableHeader>
             <TableBody>
               {isLoading && <TableRow><TableCell colSpan={5} className="p-8 text-center text-text-muted">Carregando...</TableCell></TableRow>}
-              {!isLoading && (categorias ?? []).map((cat, i) => (
-                <TableRow key={cat.id} className={`${i % 2 === 0 ? "bg-[var(--color-surface)]/30" : "bg-transparent"} hover:bg-[#c9a655]/5 transition-colors border-b border-[var(--color-border-subtle)]/50`}>
+              {!isLoading && (categorias ?? []).map((cat, i) => {
+                const bloqueado = cat.locked && !isSuperAdmin
+                return (
+                <TableRow key={cat.id} className={`${i % 2 === 0 ? "bg-[var(--color-surface)]/30" : "bg-transparent"} hover:bg-[#c9a655]/5 transition-colors border-b border-[var(--color-border-subtle)]/50 ${bloqueado ? "opacity-70" : ""}`}>
                   <TableCell className="text-sm font-medium text-white">{cat.nome}</TableCell>
                   <TableCell className="text-sm text-gray-300">{cat.sigla ?? "—"}</TableCell>
                   <TableCell className="text-sm">
@@ -146,22 +150,37 @@ function AdminCategoriasPage() {
                     )}
                   </TableCell>
                   <TableCell>
-                    <button onClick={() => toggleAtivo(cat)} className="transition-colors">
+                    <button
+                      onClick={() => toggleAtivo(cat)}
+                      disabled={bloqueado}
+                      className="transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+                      title={bloqueado ? "Apenas Super Admin pode alterar" : ""}
+                    >
                       {cat.ativo ? <ToggleRight className="h-7 w-7 text-green-400" /> : <ToggleLeft className="h-7 w-7 text-gray-500" />}
                     </button>
                   </TableCell>
                   <TableCell>
                     <div className="flex items-center gap-2">
-                      <button onClick={() => openEdit(cat)} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-[#c9a655]/20 text-[var(--color-text-muted)] hover:text-[#c9a655] transition-colors" title="Editar">
+                      <button
+                        onClick={() => openEdit(cat)}
+                        disabled={bloqueado}
+                        className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-[#c9a655]/20 text-[var(--color-text-muted)] hover:text-[#c9a655] transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+                        title={bloqueado ? "Apenas Super Admin pode editar" : "Editar"}
+                      >
                         <Pencil className="h-3.5 w-3.5" />
                       </button>
-                      <button onClick={() => setDeleteItem(cat)} disabled={!isSuperAdmin && cat.locked} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-red-500/20 text-[var(--color-text-muted)] hover:text-red-400 transition-colors disabled:opacity-30 disabled:cursor-not-allowed" title={!isSuperAdmin && cat.locked ? "Pré-definido não pode ser excluído" : "Excluir"}>
+                      <button
+                        onClick={() => setDeleteItem(cat)}
+                        disabled={bloqueado}
+                        className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-red-500/20 text-[var(--color-text-muted)] hover:text-red-400 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+                        title={bloqueado ? "Apenas Super Admin pode excluir" : "Excluir"}
+                      >
                         <Trash2 className="h-3.5 w-3.5" />
                       </button>
                     </div>
                   </TableCell>
                 </TableRow>
-              ))}
+              )})}
               {!isLoading && (!categorias || categorias.length === 0) && (
                 <TableRow><TableCell colSpan={5} className="p-8 text-center text-text-muted">Nenhuma categoria cadastrada</TableCell></TableRow>
               )}
@@ -198,7 +217,7 @@ function AdminCategoriasPage() {
               <div className="flex items-center justify-between px-4 py-3 rounded-xl bg-[var(--color-surface)] border border-white/5">
                 <div>
                   <p className="text-sm font-bold text-white">{locked ? "Pré-definido" : "Normal"}</p>
-                  <p className="text-xs text-gray-400">Registros pré-definidos não podem ser excluídos por usuários comuns</p>
+                  <p className="text-xs text-gray-400">Registros pré-definidos não podem ser alterados por usuários comuns</p>
                 </div>
                 <Switch checked={locked} onCheckedChange={setLocked} />
               </div>

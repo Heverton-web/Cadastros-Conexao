@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "~/lib/auth";
+import { EMPRESA_ID } from "~/config/empresa";
 import { getAllModules } from "~/registry";
 import { listarEmpresas } from "~/shared/empresas";
 import toast from "react-hot-toast";
@@ -53,7 +54,7 @@ type ManutencaoPanelProps = {
 };
 
 export function ManutencaoPanel({ scope }: ManutencaoPanelProps) {
-  const { profile, empresa } = useAuth();
+  const { empresa } = useAuth();
   const [empresaSelecionada, setEmpresaSelecionada] = useState<string>("");
 
   const { data: empresas = [] } = useQuery({
@@ -64,7 +65,7 @@ export function ManutencaoPanel({ scope }: ManutencaoPanelProps) {
 
   const effectiveEmpresaId: string | null =
     scope === "empresa"
-      ? empresa?.id ?? profile?.empresa_id ?? null
+      ? empresa?.id ?? EMPRESA_ID
       : empresaSelecionada || null;
 
   const { data: manutencoes = [], isLoading } = useManutencoes(

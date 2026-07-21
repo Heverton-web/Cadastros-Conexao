@@ -16,8 +16,6 @@ export async function importarClientesEmLote(
   for (let i = 0; i < rows.length; i += BATCH_SIZE) {
     const batch = rows.slice(i, i + BATCH_SIZE);
     const toInsert = batch.map((row) => ({
-      empresa_id: EMPRESA_ID,
-
       // Dados pessoais
       nome_doutor: row.nome,
       tipo_pessoa: row.tipo_pessoa?.toUpperCase() || null,
@@ -69,7 +67,7 @@ export async function importarClientesEmLote(
     dispararEventoModulo(
       "cadastros",
       "clientes.importados",
-      { count: inserted, empresa_id: EMPRESA_ID },
+      { count: inserted },
       EMPRESA_ID,
     ).catch(() => {});
   }

@@ -1,6 +1,5 @@
 import { supabase } from "~/core/supabase";
 import { type Permissoes, type ModulosAcesso } from "./types";
-import { EMPRESA_ID } from "~/config/empresa";
 
 export async function getPermissoes(
   usuarioId: string,
@@ -77,7 +76,6 @@ export async function setModulosAcesso(
     {
       usuario_id: usuarioId,
       modulos_acesso: modulosAcesso as any,
-      empresa_id: EMPRESA_ID,
       updated_by: user.user?.id || null,
     },
     { onConflict: "usuario_id" },

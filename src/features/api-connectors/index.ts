@@ -31,7 +31,6 @@ export type ApiConnectorInput = Omit<
 
 export async function listApiConnectors(
   type?: ApiConnectorType,
-  EMPRESA_ID?: string | null,
   moduloKey?: string | null,
 ) {
   let query = supabase
@@ -40,11 +39,6 @@ export async function listApiConnectors(
     .order("name", { ascending: true });
   if (type) {
     query = query.eq("type", type);
-  }
-  if (EMPRESA_ID) {
-    query = query.eq("empresa_id", EMPRESA_ID);
-  } else if (EMPRESA_ID === null) {
-    // Para SuperAdmins que querem ver apenas configurações globais (se aplicável), ou deixe sem filtro para ver tudo
   }
   if (moduloKey) {
     query = query.eq("modulo_key", moduloKey);

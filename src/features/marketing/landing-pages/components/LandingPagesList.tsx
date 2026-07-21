@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Globe, Plus, Search, Trash2, Eye, FileText } from "lucide-react";
 import toast from "react-hot-toast";
-import { useAuth } from "~/lib/auth";
+import { EMPRESA_ID } from "~/config/empresa";
 import { PageHeader } from "~/components/ui/page-header";
 import { Card, CardContent } from "~/components/ui/card";
 import { Button } from "~/components/ui/button";
@@ -52,7 +52,7 @@ const STATUS_COLORS: Record<string, string> = {
 };
 
 export function LandingPagesList() {
-  const { profile } = useAuth();
+  const empresaId = EMPRESA_ID;
   const [pages, setPages] = useState<LandingPage[]>([]);
   const [carregando, setCarregando] = useState(true);
   const [busca, setBusca] = useState("");
@@ -66,30 +66,26 @@ export function LandingPagesList() {
   const [salvando, setSalvando] = useState(false);
 
   useEffect(() => {
-    if (!profile?.empresa_id) {
-      setCarregando(false);
-      return;
-    }
-    lpService.listarLandingPages(profile.empresa_id)
+    lpService.listarLandingPages(empresaId)
       .then(setPages)
       .catch(() => toast.error("Erro ao carregar landing pages"))
       .finally(() => setCarregando(false));
-  }, [profile?.empresa_id]);
+  }, [empresaId]);
 
   async function handleCriarLP(e: React.FormEvent) {
     e.preventDefault();
-    if (!profile?.empresa_id || !formTitulo.trim() || !formSlug.trim()) return;
+    if (!formTitulo.trim() || !formSlug.trim()) return;
     setSalvando(true);
     try {
       const data = await lpService.criarLandingPage(
-        profile.empresa_id,
+        empresaId,
         formTitulo.trim(),
         formTemplate
       );
       if (data) {
         setPages((prev) => [data, ...prev]);
         toast.success("Landing page criada!");
-        dispararEventoModulo(MODULO_KEY, "pagina.criada", { lp_id: data.id, titulo: formTitulo, slug: formSlug, empresa_id: profile.empresa_id }, profile.empresa_id).catch(() => {});
+        dispararEventoModulo(MODULO_KEY, "pagina.criada", { lp_id: data.id, titulo: formTitulo, slug: formSlug }, EMPRESA_ID).catch(() => {});
       }
       setNovaPgOpen(false);
       setFormTitulo("");

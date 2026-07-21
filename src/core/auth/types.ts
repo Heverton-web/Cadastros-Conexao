@@ -21,7 +21,6 @@ export type Profile = {
   departamento?: string;
   ativo: boolean;
   is_super_admin: boolean;
-  empresa_id?: string | null;
 };
 
 export type ModuloAcessoItem = {

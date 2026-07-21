@@ -4,12 +4,10 @@ import { useState, useEffect } from "react";
 import { useAuth } from "~/lib/auth";
 import { supabase } from "~/lib/supabase";
 import {
-  getAppConfig,
   updateAppConfig,
   type AppConfig,
 } from "~/features/admin";
 import {
-  listarCredenciais,
   criarCredencial,
   atualizarCredencial,
   toggleCredencial,
@@ -19,7 +17,6 @@ import {
 } from "~/features/credenciais";
 import { dispararWebhooks } from "~/lib/webhooks";
 import {
-  Loader2,
   Save,
   Plus,
   X,
@@ -41,9 +38,7 @@ import {
   Lightbulb,
 } from "lucide-react";
 import toast from "react-hot-toast";
-
 import {
-  listarPermissoesUsuarios,
   setPermissoes,
   getPermissoes,
   getPermissoesPadrao,
@@ -57,14 +52,13 @@ import { DemosTab } from "~/components/admin/DemosTab";
 import { CentralAcoesTab } from "~/components/admin/CentralAcoesTab";
 import { FormBuilderTab } from "~/components/admin/FormBuilderTab";
 import {
-  listarIntegracoes,
   salvarIntegracao,
   testarConexaoEvolution,
   type IntegracaoConfig,
 } from "~/features/integracoes";
 import { PasswordInput } from "~/components/ui/password-input";
 import { RequireSuperAdmin } from "~/components/guards";
-
+import { EMPRESA_ID } from "~/config/empresa";
 type Tab =
   | "supabase"
   | "credenciais"
@@ -381,7 +375,7 @@ function CredenciaisTab() {
               whatsapp: form.whatsapp_corporativo || "",
               departamento: form.departamento || "",
             },
-            profile?.empresa_id,
+            EMPRESA_ID,
           );
         } catch (err) {
           console.error("Erro ao disparar webhook de credencial:", err);

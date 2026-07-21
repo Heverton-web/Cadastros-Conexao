@@ -33,7 +33,7 @@ export function MaintenanceGate({ children }: { children: ReactNode }) {
   const pathname = location.pathname;
 
   const isSuper = profile?.is_super_admin === true;
-  const empresaId = empresa?.id ?? profile?.empresa_id ?? null;
+  const empresaId = empresa?.id ?? null;
 
   const { ativas, isLoading } = useManutencao();
 

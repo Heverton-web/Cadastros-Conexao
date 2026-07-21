@@ -22,12 +22,10 @@ export type Endereco = {
   cidade: string;
   estado: string;
   endereco_completo: string | null;
-  empresa_id: string | null;
 };
 
 export type Cadastro = {
   id: string;
-  empresa_id: string | null;
   codigo_cliente: string | null;
   tipo_pessoa: "PF" | "PJ" | null;
   status: CadastroStatus;
@@ -62,7 +60,7 @@ export type CadastroInput = {
   link_expiracao?: string | null;
 };
 
-export async function listarCadastros(empresaId: string, filters?: {
+export async function listarCadastros(filters?: {
   status?: CadastroStatus;
   tipo_acao?: CadastroInput["tipo_acao"];
   created_by?: string;
@@ -77,7 +75,6 @@ export async function listarCadastros(empresaId: string, filters?: {
   let query = supabase
     .from("cadastros")
     .select("*, profiles!created_by(nome)")
-    .eq("empresa_id", empresaId)
     .order("created_at", { ascending: false });
 
   if (filters?.status) query = query.eq("status", filters.status);
@@ -158,13 +155,12 @@ export async function deletarCadastro(id: string) {
   if (error) throw error;
 }
 
-export async function criarCadastro(empresaId: string, input: CadastroInput) {
+export async function criarCadastro(input: CadastroInput) {
   const token = crypto.randomUUID();
   const { data, error } = await supabase
     .from("cadastros")
     .insert({
       ...input,
-      empresa_id: empresaId,
       token_acesso: token,
       status: "link_gerado",
       data_criacao_link: new Date().toISOString(),
@@ -194,26 +190,23 @@ export async function aprovarCadastro(id: string, codigo_cliente: string) {
     revisado: true,
   });
 
-  if (cadastro.empresa_id) {
-    const { error } = await supabase.from("clientes").insert({
-      empresa_id: cadastro.empresa_id,
-      cadastro_id: cadastro.id,
-      codigo_cliente: cadastro.codigo_cliente,
-      tipo_pessoa: cadastro.tipo_pessoa,
-      nome_doutor: cadastro.lead_nome || cadastro.nome_temporario || "Sem nome",
-      nome_clinica: null,
-      telefone_contato: cadastro.lead_whatsapp,
-      lead_email: cadastro.lead_email,
-      lead_whatsapp: cadastro.lead_whatsapp,
-      observacoes: cadastro.observacoes,
-      colaborador: cadastro.colaborador,
-      status: "ativo",
-      fonte: "cadastros",
-    });
+  const { error } = await supabase.from("clientes").insert({
+    cadastro_id: cadastro.id,
+    codigo_cliente: cadastro.codigo_cliente,
+    tipo_pessoa: cadastro.tipo_pessoa,
+    nome_doutor: cadastro.lead_nome || cadastro.nome_temporario || "Sem nome",
+    nome_clinica: null,
+    telefone_contato: cadastro.lead_whatsapp,
+    lead_email: cadastro.lead_email,
+    lead_whatsapp: cadastro.lead_whatsapp,
+    observacoes: cadastro.observacoes,
+    colaborador: cadastro.colaborador,
+    status: "ativo",
+    fonte: "cadastros",
+  });
 
-    if (error) {
-      console.error("Erro ao criar cliente automaticamente:", error);
-    }
+  if (error) {
+    console.error("Erro ao criar cliente automaticamente:", error);
   }
 
   return cadastro;

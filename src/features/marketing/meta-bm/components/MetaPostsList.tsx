@@ -9,7 +9,6 @@ import { Input } from "~/components/ui/input";
 import { Skeleton } from "~/components/ui/skeleton";
 import { EmptyState } from "~/components/ui/empty-state";
 import {
-  AlertDialog,
   AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
@@ -19,7 +18,6 @@ import {
   AlertDialogTitle,
 } from "~/components/ui/alert-dialog";
 import {
-  Dialog,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -27,7 +25,6 @@ import {
   DialogTitle,
 } from "~/components/ui/dialog";
 import {
-  Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
@@ -35,7 +32,7 @@ import {
 } from "~/components/ui/select";
 import { Textarea } from "~/components/ui/textarea";
 import { useMetaPosts, useCriarMetaPost, useDeletarMetaPost } from "../hooks/useMetaBm";
-
+import { EMPRESA_ID } from "~/config/empresa";
 const STATUS_COLORS: Record<string, string> = {
   rascunho: "bg-yellow-500/10 text-yellow-400 border-yellow-500/20",
   agendado: "bg-blue-500/10 text-blue-400 border-blue-500/20",
@@ -50,7 +47,7 @@ const PLATAFORMA_ICONS: Record<string, React.ComponentType<{ size?: number; clas
 
 export function MetaPostsList() {
   const { profile } = useAuth();
-  const empresaId = profile?.empresa_id ?? "";
+  const empresaId = EMPRESA_ID ?? "";
   const { data: posts = [], isLoading } = useMetaPosts(empresaId);
   const criarPost = useCriarMetaPost();
   const deletarPost = useDeletarMetaPost();

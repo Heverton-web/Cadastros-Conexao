@@ -1,5 +1,6 @@
 import { createContext, useContext, type ReactNode } from "react";
 import { useAuth } from "~/lib/auth";
+import { EMPRESA_ID } from "~/config/empresa";
 import { useManutencoesAtivas } from "./hooks";
 import type { Manutencao } from "./types";
 
@@ -20,7 +21,7 @@ const ManutencaoContext = createContext<ManutencaoContextValue>({
 export function ManutencaoProvider({ children }: { children: ReactNode }) {
   const { profile, empresa } = useAuth();
   const isSuper = profile?.is_super_admin === true;
-  const empresaId = empresa?.id ?? profile?.empresa_id ?? null;
+  const empresaId = empresa?.id ?? EMPRESA_ID;
 
   const { data = [], isLoading } = useManutencoesAtivas(
     isSuper ? null : empresaId,

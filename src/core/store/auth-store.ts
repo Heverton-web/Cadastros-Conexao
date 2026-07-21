@@ -12,7 +12,7 @@ interface Profile {
   role: string;
   ambiente: string;
   is_super_admin: boolean;
-  empresa_id: string;
+  // empresa_id removido — single-tenant
 }
 
 interface Empresa {

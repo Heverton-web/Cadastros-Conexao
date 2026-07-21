@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useAuth } from "~/lib/auth";
 import {
   Bot,
   Plus,
@@ -33,9 +32,7 @@ const MODULO_LABELS: Record<string, string> = {
 };
 
 export function AgentesPage() {
-  const { empresa } = useAuth();
-  const empresaId = empresa?.id ?? "";
-  const { data: agentes = [], isLoading } = useAgentes(empresaId);
+  const { data: agentes = [], isLoading } = useAgentes();
   const deletar = useDeletarAgente();
   const toggleAtivo = useToggleAgenteAtivo();
 
@@ -187,7 +184,6 @@ export function AgentesPage() {
 
       {wizardOpen && (
         <CriarAgenteWizard
-          empresaId={empresaId}
           agenteParaEditar={editando}
           onClose={() => {
             setWizardOpen(false);

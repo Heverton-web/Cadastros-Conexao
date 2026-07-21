@@ -29,9 +29,7 @@ export function GlobalAgentesPage() {
     isSuperAdmin,
   } = useEmpresaSuperAdmin();
 
-  const { data: agentes = [], isLoading } = useTodosAgentes(
-    isSuperAdmin ? (empresaSelecionada || undefined) : undefined,
-  );
+  const { data: agentes = [], isLoading } = useTodosAgentes();
 
   const [showWizard, setShowWizard] = useState(false);
   const [agenteEditar, setAgenteEditar] = useState<AgenteIA | null>(null);
@@ -120,7 +118,7 @@ export function GlobalAgentesPage() {
                       <td className="p-3 text-text-muted">
                         <div className="flex items-center gap-1.5">
                           <Building2 size={12} />
-                          <span className="text-xs">{a.empresa_id ? a.empresa_id.slice(0, 8) + "..." : "Global"}</span>
+                          <span className="text-xs">Global</span>
                         </div>
                       </td>
                       <td className="p-3">
@@ -163,7 +161,6 @@ export function GlobalAgentesPage() {
 
         {showWizard && (
           <CriarAgenteWizard
-            empresaId={empresaSelecionada || null}
             agenteParaEditar={agenteEditar}
             onClose={() => {
               setShowWizard(false);

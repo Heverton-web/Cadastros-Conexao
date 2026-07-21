@@ -2,7 +2,6 @@ import { createRoute } from "@tanstack/react-router";
 import { authLayout } from "./_auth";
 import { useMemo, useState, useEffect } from "react";
 import {
-  useMapasDistributors,
   useUpsertDistributor,
   useDeleteDistributor,
 } from "~/features/mapas/hooks/useMapasData";
@@ -12,7 +11,6 @@ import { Plus, Pencil, Trash2, Search, Loader2, Building2 } from "lucide-react";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import {
-  Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
@@ -20,14 +18,12 @@ import {
   DialogFooter,
 } from "~/components/ui/dialog";
 import {
-  Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
 } from "~/components/ui/select";
 import {
-  AlertDialog,
   AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
@@ -39,7 +35,7 @@ import {
 import { ALL_UFS } from "~/features/mapas/constants/brazil-states";
 import type { MapasDistributor } from "~/features/mapas/types";
 import { RequirePermission } from "~/components/guards";
-
+import { EMPRESA_ID } from "~/config/empresa";
 export const mapasAdminDistribuidoresRoute = createRoute({
   getParentRoute: () => authLayout,
   path: "/mapas/gestao/distribuidores",
@@ -76,7 +72,7 @@ function MapasAdminDistribuidoresPage() {
   const [loadingCities, setLoadingCities] = useState(false);
 
   async function getEmpresaId(): Promise<string | null> {
-    if (profile?.empresa_id) return profile.empresa_id;
+    if (EMPRESA_ID) return EMPRESA_ID;
     const { data } = await supabase
       .from("empresas")
       .select("id")

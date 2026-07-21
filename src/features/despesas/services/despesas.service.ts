@@ -1,19 +1,16 @@
 import { supabase } from "~/core/supabase";
-import { EMPRESA_ID } from "~/config/empresa"
 import { dispararEventoModulo } from "~/core/services/webhooks";
 import type { Despesa, DespesaFormData, DespesaFiltros } from "../types";
 
 const MODULO_KEY = "despesas";
 
 export async function listarMinhasDespesas(
-  empresa_id: string,
   usuario_id: string,
   filtros?: DespesaFiltros,
 ): Promise<Despesa[]> {
   let query = supabase
     .from("despesas")
     .select("*, tipo:despesas_tipos(*), periodo:despesas_periodos(*)")
-    .eq("empresa_id", empresa_id)
     .eq("usuario_id", usuario_id)
     .order("data_despesa", { ascending: false });
 
@@ -27,7 +24,6 @@ export async function listarMinhasDespesas(
 }
 
 export async function listarDespesasEmpresa(
-  empresa_id: string,
   filtros?: DespesaFiltros,
 ): Promise<Despesa[]> {
   let query = supabase
@@ -35,7 +31,6 @@ export async function listarDespesasEmpresa(
     .select(
       "*, tipo:despesas_tipos(*), periodo:despesas_periodos(*), usuario:profiles!usuario_id(nome, email)",
     )
-    .eq("empresa_id", empresa_id)
     .order("data_despesa", { ascending: false });
 
   if (filtros?.periodo_id) query = query.eq("periodo_id", filtros.periodo_id);
@@ -62,7 +57,6 @@ export async function buscarDespesa(id: string): Promise<Despesa> {
 }
 
 export async function criarDespesa(
-  empresa_id: string,
   usuario_id: string,
   despesa: DespesaFormData,
 ): Promise<Despesa> {
@@ -70,7 +64,6 @@ export async function criarDespesa(
   const { data, error } = await supabase
     .from("despesas")
     .insert({
-      empresa_id,
       usuario_id,
       periodo_id,
       ...rest,
@@ -80,7 +73,7 @@ export async function criarDespesa(
     .single();
   if (error) throw error;
 
-  dispararEventoModulo(MODULO_KEY, "despesa.criada", { despesa_id: data.id, valor: despesa.valor, empresa_id }, empresa_id).catch(() => {});
+  dispararEventoModulo(MODULO_KEY, "despesa.criada", { despesa_id: data.id, valor: despesa.valor }, null).catch(() => {});
 
   return data as Despesa;
 }
@@ -101,13 +94,11 @@ export async function atualizarDespesa(
 
 export async function excluirDespesa(
   id: string,
-  EMPRESA_ID: string,
 ): Promise<void> {
   const { error } = await supabase
     .from("despesas")
     .delete()
-    .eq("id", id)
-    .eq("empresa_id", EMPRESA_ID);
+    .eq("id", id);
   if (error) throw error;
 }
 
@@ -154,13 +145,12 @@ export async function marcarComoPaga(id: string): Promise<Despesa> {
 }
 
 export async function uploadComprovante(
-  empresa_id: string,
   usuario_id: string,
   despesa_id: string,
   file: File,
 ): Promise<string> {
   const ext = file.name.split(".").pop();
-  const fileName = `${empresa_id}/${usuario_id}/${despesa_id}.${ext}`;
+  const fileName = `${usuario_id}/${despesa_id}.${ext}`;
 
   const { error: uploadError } = await supabase.storage
     .from("comprovantes")

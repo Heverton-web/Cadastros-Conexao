@@ -1,29 +1,24 @@
 import { supabase } from "~/core/supabase";
-import { EMPRESA_ID } from "~/config/empresa"
 import { dispararEventoModulo } from "~/core/services/webhooks";
 import type { DespesaPeriodo, Frequencia } from "../types";
 
 const MODULO_KEY = "despesas";
 
 export async function listarPeriodos(
-  empresa_id: string,
 ): Promise<DespesaPeriodo[]> {
   const { data, error } = await supabase
     .from("despesas_periodos")
     .select("*")
-    .eq("empresa_id", empresa_id)
     .order("data_inicio", { ascending: false });
   if (error) throw error;
   return data as DespesaPeriodo[];
 }
 
 export async function listarPeriodosAbertos(
-  empresa_id: string,
 ): Promise<DespesaPeriodo[]> {
   const { data, error } = await supabase
     .from("despesas_periodos")
     .select("*")
-    .eq("empresa_id", empresa_id)
     .eq("status", "aberto")
     .order("data_inicio", { ascending: false });
   if (error) throw error;
@@ -41,13 +36,11 @@ export async function buscarPeriodo(id: string): Promise<DespesaPeriodo> {
 }
 
 export async function buscarPeriodoAtual(
-  empresa_id: string,
 ): Promise<DespesaPeriodo | null> {
   const hoje = new Date().toISOString().split("T")[0];
   const { data, error } = await supabase
     .from("despesas_periodos")
     .select("*")
-    .eq("empresa_id", empresa_id)
     .eq("status", "aberto")
     .lte("data_inicio", hoje)
     .gte("data_fim", hoje)
@@ -66,7 +59,7 @@ export async function criarPeriodo(
     .single();
   if (error) throw error;
 
-  dispararEventoModulo(MODULO_KEY, "periodo.aberto", { periodo_id: data.id, empresa_id: periodo.empresa_id }, periodo.empresa_id).catch(() => {});
+  dispararEventoModulo(MODULO_KEY, "periodo.aberto", { periodo_id: data.id }, null).catch(() => {});
 
   return data as DespesaPeriodo;
 }
@@ -87,33 +80,30 @@ export async function atualizarPeriodo(
 
 export async function fecharPeriodo(id: string): Promise<DespesaPeriodo> {
   const periodo = await atualizarPeriodo(id, { status: "fechado" });
-  dispararEventoModulo(MODULO_KEY, "periodo.fechando", { periodo_id: id, empresa_id: periodo.empresa_id }, periodo.empresa_id).catch(() => {});
+  dispararEventoModulo(MODULO_KEY, "periodo.fechando", { periodo_id: id }, null).catch(() => {});
   return periodo;
 }
 
 export async function reabrirPeriodo(id: string): Promise<DespesaPeriodo> {
   const periodo = await atualizarPeriodo(id, { status: "aberto" });
-  dispararEventoModulo(MODULO_KEY, "periodo.reaberto", { periodo_id: id, empresa_id: periodo.empresa_id }, periodo.empresa_id).catch(() => {});
+  dispararEventoModulo(MODULO_KEY, "periodo.reaberto", { periodo_id: id }, null).catch(() => {});
   return periodo;
 }
 
 export async function excluirPeriodo(
   id: string,
-  EMPRESA_ID: string,
 ): Promise<void> {
   const { count } = await supabase
     .from("despesas")
     .select("id", { count: "exact", head: true })
-    .eq("periodo_id", id)
-    .eq("empresa_id", EMPRESA_ID);
+    .eq("periodo_id", id);
   if (count && count > 0) {
     throw new Error("Não é possível excluir o período: existem despesas vinculadas a ele.");
   }
   const { error } = await supabase
     .from("despesas_periodos")
     .delete()
-    .eq("id", id)
-    .eq("empresa_id", EMPRESA_ID);
+    .eq("id", id);
   if (error) throw error;
 }
 
@@ -126,7 +116,6 @@ function formatarData(year: number, month: number, day: number): string {
 }
 
 export async function gerarPeriodos(
-  empresa_id: string,
   frequencia: Frequencia,
   meses: string[],
 ): Promise<void> {
@@ -139,21 +128,18 @@ export async function gerarPeriodos(
     if (frequencia === "mensal") {
       const ultimoDia = getLastDayOfMonth(ano, mesIndex);
       periodos.push({
-        empresa_id,
         data_inicio: formatarData(ano, mesIndex, 1),
         data_fim: formatarData(ano, mesIndex, ultimoDia),
         status: "aberto",
       });
     } else if (frequencia === "quinzenal") {
       periodos.push({
-        empresa_id,
         data_inicio: formatarData(ano, mesIndex, 1),
         data_fim: formatarData(ano, mesIndex, 15),
         status: "aberto",
       });
       const ultimoDia = getLastDayOfMonth(ano, mesIndex);
       periodos.push({
-        empresa_id,
         data_inicio: formatarData(ano, mesIndex, 16),
         data_fim: formatarData(ano, mesIndex, ultimoDia),
         status: "aberto",
@@ -168,7 +154,6 @@ export async function gerarPeriodos(
           fim.setDate(getLastDayOfMonth(ano, mesIndex));
         }
         periodos.push({
-          empresa_id,
           data_inicio: inicio.toISOString().split("T")[0],
           data_fim: fim.toISOString().split("T")[0],
           status: "aberto",
@@ -183,7 +168,7 @@ export async function gerarPeriodos(
     const { error } = await supabase
       .from("despesas_periodos")
       .upsert(periodos, {
-        onConflict: "empresa_id,data_inicio,data_fim",
+        onConflict: "data_inicio,data_fim",
         ignoreDuplicates: true,
       });
     if (error) throw error;

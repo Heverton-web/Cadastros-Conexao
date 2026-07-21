@@ -8,7 +8,7 @@ import { Button } from "~/components/ui/button";
 import { ArrowRight, Loader2 } from "lucide-react";
 import toast from "react-hot-toast";
 import { dispararEventoModulo } from "~/core/services/webhooks";
-
+import { EMPRESA_ID } from "~/config/empresa";
 export const crmTransferenciaConsultoresRoute = createRoute({
   getParentRoute: () => crmTransferenciaRoute,
   path: "consultores",
@@ -29,7 +29,7 @@ function TransferConsultoresPage() {
         .from("usuarios")
         .select("id, nome_completo")
         .eq("role", "gestor")
-        .eq("empresa_id", profile?.empresa_id)
+        .eq("empresa_id", EMPRESA_ID)
         .order("nome_completo");
       return data ?? [];
     },
@@ -44,7 +44,7 @@ function TransferConsultoresPage() {
         .select("id, nome_completo, email_corporativo")
         .eq("role", "consultor")
         .eq("gestor_id", origem)
-        .eq("empresa_id", profile?.empresa_id)
+        .eq("empresa_id", EMPRESA_ID)
         .order("nome_completo");
       return data ?? [];
     },
@@ -58,7 +58,7 @@ function TransferConsultoresPage() {
         .select(
           "id, data_transferencia, consultor_id, de_gestor_id, para_gestor_id",
         )
-        .eq("empresa_id", profile?.empresa_id)
+        .eq("empresa_id", EMPRESA_ID)
         .order("data_transferencia", { ascending: false })
         .limit(10);
       return data ?? [];
@@ -83,7 +83,7 @@ function TransferConsultoresPage() {
     toast.success("Consultor transferido");
     qc.invalidateQueries({ queryKey: ["transf-consultores-origem", origem] });
     qc.invalidateQueries({ queryKey: ["logs-transfer-consultor"] });
-    dispararEventoModulo("crm", "consultor.transferido", { consultor_id: consultorId, empresa_id: profile?.empresa_id }, profile?.empresa_id).catch(() => {});
+    dispararEventoModulo("crm", "consultor.transferido", { consultor_id: consultorId, empresa_id: EMPRESA_ID }, EMPRESA_ID).catch(() => {});
   }
 
   return (

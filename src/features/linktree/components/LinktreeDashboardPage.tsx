@@ -24,6 +24,7 @@ import {
   AlertDialogTitle,
 } from "~/components/ui/alert-dialog";
 import { useAuth } from "~/core/auth";
+import { EMPRESA_ID } from "~/config/empresa";
 import { supabase } from "~/core/supabase";
 import {
   buildCardUrl,
@@ -53,7 +54,7 @@ export function LinktreeDashboardPage() {
   );
 
   const [filtroEmpresa, setFiltroEmpresa] = useState<string>(
-    profile?.empresa_id ?? "",
+    EMPRESA_ID,
   );
 
   const { data: empresas = [] } = useQuery({
@@ -313,7 +314,7 @@ export function LinktreeDashboardPage() {
         collaborator={editing}
         onSaved={() => refetch()}
         empresaId={
-          isSuper ? filtroEmpresa || null : (profile?.empresa_id ?? null)
+          isSuper ? filtroEmpresa || null : EMPRESA_ID
         }
       />
 

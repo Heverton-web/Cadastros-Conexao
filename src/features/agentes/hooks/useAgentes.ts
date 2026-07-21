@@ -22,18 +22,17 @@ import type { CriarAgenteInput, UpdateAgenteInput, ChatMessage } from "../types"
 
 // ── Agentes ───────────────────────────────────────────────────
 
-export function useAgentes(empresaId: string | undefined) {
+export function useAgentes() {
   return useQuery({
-    queryKey: ["agentes-ia", empresaId],
-    queryFn: () => listarAgentes(empresaId!),
-    enabled: !!empresaId,
+    queryKey: ["agentes-ia"],
+    queryFn: () => listarAgentes(),
   });
 }
 
-export function useTodosAgentes(empresaId?: string) {
+export function useTodosAgentes() {
   return useQuery({
-    queryKey: ["agentes-ia", "all", empresaId],
-    queryFn: () => listarTodosAgentes(empresaId),
+    queryKey: ["agentes-ia", "all"],
+    queryFn: () => listarTodosAgentes(),
   });
 }
 
@@ -48,8 +47,7 @@ export function useAgente(id: string | undefined) {
 export function useCriarAgente() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: ({ empresaId, input }: { empresaId: string | null; input: CriarAgenteInput }) =>
-      criarAgente(empresaId, input),
+    mutationFn: (input: CriarAgenteInput) => criarAgente(input),
     onSuccess: (_data, vars) => {
       qc.invalidateQueries({ queryKey: ["agentes-ia"] });
     },

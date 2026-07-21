@@ -4,7 +4,7 @@ import { registerSW } from "~/pwa/registerSW";
 import { DesignSystemProvider } from "~/design-system";
 import { usePageTitle } from "~/hooks/usePageTitle";
 import { useFavicon } from "~/hooks/useFavicon";
-import { AgenteWidget, WidgetAuthContext } from "~/features/agentes/components/AgenteWidget";
+import { AgenteWidget } from "~/features/agentes/components/AgenteWidget";
 
 registerSW();
 
@@ -18,10 +18,8 @@ function RootLayout() {
 
   return (
     <DesignSystemProvider>
-      <WidgetAuthContext.Provider value={{ empresaId: null }}>
         <Outlet />
         <AgenteWidget />
-      </WidgetAuthContext.Provider>
       <Toaster
         position="top-center"
         toastOptions={{

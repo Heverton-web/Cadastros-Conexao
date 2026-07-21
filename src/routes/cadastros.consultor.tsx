@@ -3,7 +3,6 @@ import { authLayout } from "./_auth";
 import { useState, useEffect } from "react";
 import { useAuth } from "~/lib/auth";
 import {
-  listarCadastros,
   criarCadastro,
   STATUS_LABEL,
   STATUS_COLOR,
@@ -11,7 +10,6 @@ import {
   type CadastroStatus,
 } from "~/features/clientes";
 import {
-  getDocumentosStatusMap,
   DOC_STATUS_LABEL,
   DOC_STATUS_COLOR,
   type DocStatus,
@@ -19,7 +17,6 @@ import {
 import { logAtividade } from "~/core/services";
 import { dispararWebhooks } from "~/lib/webhooks";
 import {
-  Loader2,
   Link2,
   Plus,
   Share2,
@@ -35,7 +32,7 @@ import {
 } from "lucide-react";
 import { Skeleton } from "~/components/ui/skeleton";
 import { EmptyState } from "~/components/ui/empty-state";
-
+import { EMPRESA_ID } from "~/config/empresa";
 export const consultorRoute = createRoute({
   getParentRoute: () => authLayout,
   path: "/cadastros/consultor",
@@ -172,7 +169,7 @@ function ConsultorPage() {
           lead_whatsapp_num: linkForm.whatsapp_num,
           expiracao_dias: linkForm.expiracao_dias,
         },
-        profile?.empresa_id,
+        EMPRESA_ID,
       );
       dispararWebhooks(
         "link_gerado",
@@ -192,7 +189,7 @@ function ConsultorPage() {
           lead_whatsapp_num: linkForm.whatsapp_num,
           expiracao_dias: linkForm.expiracao_dias,
         },
-        profile?.empresa_id,
+        EMPRESA_ID,
       );
       const link = `${window.location.origin}/pre-cadastro/${s.token_acesso}`;
       setLinkGerado(link);

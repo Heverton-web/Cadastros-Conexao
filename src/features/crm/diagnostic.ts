@@ -14,7 +14,7 @@ export const crmDiagnosticPlan: DiagnosticPlan = {
       ctx.log("info", "criando cliente CRM...");
       const dados = ctx.dadosTeste() as any;
       const { data, error } = await supabase.from("clientes").insert({
-        empresa_id: ctx.empresaId, nome_doutor: dados.cliente.nome,
+        nome_doutor: dados.cliente.nome,
         telefone: dados.cliente.telefone, tipo_pessoa: dados.cliente.tipo_pessoa,
         status: "ativo",
       }).select().single();
@@ -24,7 +24,7 @@ export const crmDiagnosticPlan: DiagnosticPlan = {
     },
     read: async (ctx) => {
       ctx.log("info", "listando clientes CRM...");
-      const { data, error } = await supabase.from("clientes").select("id, nome_doutor, status, cidade, ultima_visita").eq("empresa_id", ctx.empresaId).limit(10);
+      const { data, error } = await supabase.from("clientes").select("id, nome_doutor, status, cidade, ultima_visita").limit(10);
       if (error) throw error;
       ctx.log("success", `${data?.length ?? 0} clientes encontrados`);
       const ativos = data?.filter(c => c.status === "ativo").length ?? 0;
@@ -57,7 +57,7 @@ export const crmDiagnosticPlan: DiagnosticPlan = {
         ctx.log("info", "1) Criando cliente CRM...");
         const dados = ctx.dadosTeste() as any;
         const { data: c, error: e1 } = await supabase.from("clientes").insert({
-          empresa_id: ctx.empresaId, nome_doutor: dados.cliente.nome,
+          nome_doutor: dados.cliente.nome,
           telefone: dados.cliente.telefone, tipo_pessoa: dados.cliente.tipo_pessoa,
           status: "ativo",
         }).select().single();
@@ -72,7 +72,7 @@ export const crmDiagnosticPlan: DiagnosticPlan = {
         ctx.log("success", `visita registrada: ultima_visita=${c2?.ultima_visita?.slice(0, 10)}, status=${c2?.status}`);
 
         ctx.log("info", "3) Verificando carteira de clientes...");
-        const { data: carteira } = await supabase.from("clientes").select("id, nome_doutor, status, ultima_visita").eq("empresa_id", ctx.empresaId).limit(10);
+        const { data: carteira } = await supabase.from("clientes").select("id, nome_doutor, status, ultima_visita").limit(10);
         ctx.log("success", `carteira: ${carteira?.length ?? 0} clientes`);
         const comVisita = carteira?.filter(c => c.ultima_visita).length ?? 0;
         ctx.log("info", `clientes com visita registrada: ${comVisita}`);
@@ -91,7 +91,6 @@ export const crmDiagnosticPlan: DiagnosticPlan = {
         const dados = ctx.dadosTeste() as any;
         for (let i = 0; i < 2; i++) {
           const { data: c } = await supabase.from("clientes").insert({
-            empresa_id: ctx.empresaId,
             nome_doutor: `[DIAG] Carteira ${i}`,
             telefone: `119${String(11111111 + i).slice(0, 8)}`,
             tipo_pessoa: "PF",
@@ -101,15 +100,15 @@ export const crmDiagnosticPlan: DiagnosticPlan = {
         }
 
         ctx.log("info", "Filtrando ativos...");
-        const { data: ativos } = await supabase.from("clientes").select("id, nome_doutor, status").eq("empresa_id", ctx.empresaId).eq("status", "ativo").limit(5);
+        const { data: ativos } = await supabase.from("clientes").select("id, nome_doutor, status").eq("status", "ativo").limit(5);
         ctx.log("success", `${ativos?.length ?? 0} clientes ativos`);
 
         ctx.log("info", "Filtrando inativos...");
-        const { data: inativos } = await supabase.from("clientes").select("id, nome_doutor, status").eq("empresa_id", ctx.empresaId).eq("status", "inativo").limit(5);
+        const { data: inativos } = await supabase.from("clientes").select("id, nome_doutor, status").eq("status", "inativo").limit(5);
         ctx.log("success", `${inativos?.length ?? 0} clientes inativos`);
 
         ctx.log("info", "Total geral...");
-        const { count } = await supabase.from("clientes").select("*", { count: "exact", head: true }).eq("empresa_id", ctx.empresaId);
+        const { count } = await supabase.from("clientes").select("*", { count: "exact", head: true });
         ctx.log("success", `total clientes empresa: ${count ?? "N/A"}`);
       },
       cleanup: async (ctx) => {
@@ -127,7 +126,7 @@ export const crmDiagnosticPlan: DiagnosticPlan = {
         ctx.log("info", "1) Criando cliente...");
         const dados = ctx.dadosTeste() as any;
         const { data: c, error: e1 } = await supabase.from("clientes").insert({
-          empresa_id: ctx.empresaId, nome_doutor: dados.cliente.nome,
+          nome_doutor: dados.cliente.nome,
           telefone: dados.cliente.telefone, tipo_pessoa: dados.cliente.tipo_pessoa,
           status: "ativo",
         }).select().single();
@@ -136,7 +135,7 @@ export const crmDiagnosticPlan: DiagnosticPlan = {
         ctx.salvarId("clienteId", c.id);
 
         ctx.log("info", "2) Verificando carteira...");
-        const { data: carteira, error: e2 } = await supabase.from("clientes").select("id, nome_doutor, status, ultima_visita").eq("empresa_id", ctx.empresaId).limit(5);
+        const { data: carteira, error: e2 } = await supabase.from("clientes").select("id, nome_doutor, status, ultima_visita").limit(5);
         if (e2) throw e2;
         ctx.log("success", `carteira: ${carteira?.length ?? 0} clientes`);
       },

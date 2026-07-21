@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { useAuth } from "~/lib/auth";
+import { EMPRESA_ID } from "~/config/empresa";
 import {
   listarColaboradores,
   toggleColaboradorStatus,
@@ -8,8 +8,7 @@ import {
 import type { LinktreeColaboradorComCredencial } from "../types";
 
 export function useColaboradores(filtroEmpresa?: string) {
-  const { profile } = useAuth();
-  const empresaId = filtroEmpresa ?? profile?.empresa_id;
+  const empresaId = filtroEmpresa ?? EMPRESA_ID;
   return useQuery({
     queryKey: ["linktree-colaboradores", empresaId],
     queryFn: () => listarColaboradores(empresaId),

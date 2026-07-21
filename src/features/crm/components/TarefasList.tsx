@@ -109,7 +109,6 @@ export function TarefasList({ clienteId, onNovaTarefa, onTarefaClick }: Props) {
           criador:usuarios!tarefas_criador_id_fkey(id, nome_completo)
         `,
         )
-        .eq("empresa_id", profile!.empresa_id)
         .order("data_vencimento", { ascending: true, nullsFirst: false })
         .order("prioridade", { ascending: false });
 
@@ -181,7 +180,7 @@ export function TarefasList({ clienteId, onNovaTarefa, onTarefaClick }: Props) {
 
       if (error) throw error;
       qc.invalidateQueries({ queryKey: ["tarefas"] });
-      dispararEventoModulo("crm", "tarefa.excluida", { tarefa_id: itemParaDeletar, empresa_id: profile?.empresa_id }, profile?.empresa_id).catch(() => {});
+      dispararEventoModulo("crm", "tarefa.excluida", { tarefa_id: itemParaDeletar }).catch(() => {});
     } catch (err) {
       toast.error("Erro ao deletar tarefa");
     } finally {

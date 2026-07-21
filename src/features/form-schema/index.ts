@@ -1,5 +1,4 @@
 import { supabase } from "~/core/supabase";
-import { EMPRESA_ID } from "~/config/empresa"
 
 export type TipoInput =
   | "text"
@@ -40,22 +39,14 @@ export type NovoCampo = Omit<CampoSchema, "id" | "is_custom">;
 export async function carregarSchema(
   tipo_pessoa: "PF" | "PJ",
   etapa: Etapa,
-  EMPRESA_ID?: string | null,
 ): Promise<CampoSchema[]> {
-  let query = supabase
+  const { data, error } = await supabase
     .from("form_schema")
     .select("*")
     .in("tipo_pessoa", [tipo_pessoa, "ambos"])
     .eq("etapa", etapa)
-    .eq("visivel", true);
-
-  if (EMPRESA_ID) {
-    query = query.or(`empresa_id.is.null,empresa_id.eq.${EMPRESA_ID}`);
-  } else {
-    query = query.is("empresa_id", null);
-  }
-
-  const { data, error } = await query.order("ordem", { ascending: true });
+    .eq("visivel", true)
+    .order("ordem", { ascending: true });
 
   if (error) {
     console.error("[form-schema] carregarSchema:", error);
@@ -67,19 +58,12 @@ export async function carregarSchema(
 export async function listarTodosCampos(filtros?: {
   etapa?: Etapa;
   tipo_pessoa?: TipoPessoa;
-  EMPRESA_ID?: string;
 }): Promise<CampoSchema[]> {
   let q = supabase.from("form_schema").select("*");
 
   if (filtros?.etapa) q = q.eq("etapa", filtros.etapa);
   if (filtros?.tipo_pessoa)
     q = q.in("tipo_pessoa", [filtros.tipo_pessoa, "ambos"]);
-
-  if (filtros?.EMPRESA_ID) {
-    q = q.eq("empresa_id", filtros.EMPRESA_ID);
-  } else {
-    q = q.is("empresa_id", null);
-  }
 
   q = q.order("etapa").order("ordem", { ascending: true });
 
@@ -93,7 +77,6 @@ export async function listarTodosCampos(filtros?: {
 
 export async function salvarCampo(
   campo: Partial<CampoSchema> & { id?: string },
-  EMPRESA_ID?: string,
 ): Promise<{ data: CampoSchema | null; erro?: string }> {
   if (campo.id) {
     const { data, error } = await supabase
@@ -110,7 +93,7 @@ export async function salvarCampo(
   } else {
     const { data, error } = await supabase
       .from("form_schema")
-      .insert({ ...campo, empresa_id: EMPRESA_ID || null, is_custom: true })
+      .insert({ ...campo, is_custom: true })
       .select()
       .single();
     if (error) {

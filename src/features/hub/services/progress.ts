@@ -1,5 +1,4 @@
 import { supabase } from "~/core/supabase/client";
-import { EMPRESA_ID } from "~/config/empresa"
 import { dispararEventoModulo } from "~/core/services/webhooks";
 import type { HubUserProgress, HubCollectionProgress } from "../types";
 
@@ -10,7 +9,6 @@ export async function fetchHubUserProgress(userId: string, EMPRESA_ID: string) {
     .from("hub_progresso_usuario")
     .select("*")
     .eq("user_id", userId)
-    .eq("empresa_id", EMPRESA_ID);
   if (error) throw error;
   return data as HubUserProgress[];
 }
@@ -66,7 +64,6 @@ export async function fetchHubCollectionProgress(
     .from("hub_progresso_colecao")
     .select("*")
     .eq("user_id", userId)
-    .eq("empresa_id", EMPRESA_ID);
   if (error) throw error;
   return data as HubCollectionProgress[];
 }

@@ -1,14 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
-import { useAuth } from "~/lib/auth";
 import { getDashboardStats } from "../services/tracking.service";
 
-export function useDashboardStats(dataInicio?: string, dataFim?: string, empresaIdOverride?: string) {
-  const { profile } = useAuth();
-  const empresaId = empresaIdOverride ?? profile?.empresa_id;
+export function useDashboardStats(dataInicio?: string, dataFim?: string) {
   return useQuery({
-    queryKey: ["gerador-links-dashboard", empresaId, dataInicio, dataFim],
-    queryFn: () => getDashboardStats(empresaId!, dataInicio, dataFim),
-    enabled: !!empresaId,
+    queryKey: ["gerador-links-dashboard", dataInicio, dataFim],
+    queryFn: () => getDashboardStats(dataInicio, dataFim),
     staleTime: 15_000,
     refetchInterval: 30_000,
   });

@@ -35,6 +35,7 @@ import {
   DialogTitle,
 } from "~/components/ui/dialog";
 import { useLeads, useCriarLead, useExcluirLead } from "../hooks/useLeads";
+import { EMPRESA_ID } from "~/config/empresa";
 
 const STATUS_LABELS: Record<string, string> = {
   novo: "Novo",
@@ -57,7 +58,7 @@ const STATUS_COLORS: Record<string, string> = {
 export function LeadsList() {
   const { profile } = useAuth();
   const navigate = useNavigate();
-  const empresaId = profile?.empresa_id ?? "";
+  const empresaId = EMPRESA_ID ?? "";
   const { data: leads = [], isLoading } = useLeads(empresaId);
   const criarLead = useCriarLead(empresaId);
   const excluirLead = useExcluirLead(empresaId);

@@ -8,7 +8,7 @@ import { Input } from "~/components/ui/input";
 import { Skeleton } from "~/components/ui/skeleton";
 import { EmptyState } from "~/components/ui/empty-state";
 import { useMetaCampanhas } from "../hooks/useMetaBm";
-
+import { EMPRESA_ID } from "~/config/empresa";
 const STATUS_COLORS: Record<string, string> = {
   ativa: "bg-green-500/10 text-green-400 border-green-500/20",
   pausada: "bg-yellow-500/10 text-yellow-400 border-yellow-500/20",
@@ -18,7 +18,7 @@ const STATUS_COLORS: Record<string, string> = {
 
 export function MetaCampanhasList() {
   const { profile } = useAuth();
-  const empresaId = profile?.empresa_id ?? "";
+  const empresaId = EMPRESA_ID ?? "";
   const { data: campanhas = [], isLoading } = useMetaCampanhas(empresaId);
   const [busca, setBusca] = useState("");
 

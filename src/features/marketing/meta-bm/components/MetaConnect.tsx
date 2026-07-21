@@ -4,34 +4,33 @@ import toast from "react-hot-toast";
 import { useAuth } from "~/lib/auth";
 import { Button } from "~/components/ui/button";
 import {
-  Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
 } from "~/components/ui/card";
 import { verificarConexao, desconectar } from "../services/auth.service";
-
+import { EMPRESA_ID } from "~/config/empresa";
 export function MetaConnect() {
   const { profile } = useAuth();
   const [conectado, setConectado] = useState(false);
   const [carregando, setCarregando] = useState(true);
 
   useEffect(() => {
-    if (!profile?.empresa_id) {
+    if (!EMPRESA_ID) {
       setCarregando(false);
       return;
     }
-    verificarConexao(profile.empresa_id)
+    verificarConexao(EMPRESA_ID)
       .then((conta) => setConectado(!!conta))
       .catch(console.error)
       .finally(() => setCarregando(false));
-  }, [profile?.empresa_id]);
+  }, [EMPRESA_ID]);
 
   async function handleDesconectar() {
-    if (!profile?.empresa_id) return;
+    if (!EMPRESA_ID) return;
     setCarregando(true);
-    const ok = await desconectar(profile.empresa_id);
+    const ok = await desconectar(EMPRESA_ID);
     if (ok) {
       setConectado(false);
       toast.success("Desconectado do Meta Business Manager");

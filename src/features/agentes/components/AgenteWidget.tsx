@@ -1,16 +1,10 @@
-import { useState, createContext, useContext, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useLocation } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { MessageSquare, X, Send, Loader2, Bot } from "lucide-react";
 import DOMPurify from "dompurify";
 import { supabase } from "~/core/supabase/client";
 import type { AgenteIA } from "../types";
-
-interface AuthInfo {
-  empresaId: string | null;
-}
-
-export const WidgetAuthContext = createContext<AuthInfo>({ empresaId: null });
 
 function renderMarkdown(text: string): string {
   return text
@@ -26,39 +20,26 @@ function renderMarkdown(text: string): string {
     .replace(/\n/g, '<br/>');
 }
 
-export function useWidgetAuth(): AuthInfo {
-  return useContext(WidgetAuthContext);
-}
-
 async function fetchAgentesPorRota(
-  empresaId: string | null,
   route: string
 ): Promise<AgenteIA[]> {
-  let query = supabase
+  const { data, error } = await supabase
     .from("agentes_ia")
     .select("*")
     .eq("ativo", true)
     .eq("route", route);
 
-  if (empresaId) {
-    query = query.eq("empresa_id", empresaId);
-  } else {
-    query = query.is("empresa_id", null);
-  }
-
-  const { data, error } = await query;
   if (error) throw error;
   return (data ?? []) as AgenteIA[];
 }
 
 export function AgenteWidget() {
   const location = useLocation();
-  const { empresaId } = useWidgetAuth();
   const currentRoute = location.pathname;
 
   const { data: agentes = [] } = useQuery({
-    queryKey: ["agentes-widget", empresaId, currentRoute],
-    queryFn: () => fetchAgentesPorRota(empresaId, currentRoute),
+    queryKey: ["agentes-widget", currentRoute],
+    queryFn: () => fetchAgentesPorRota(currentRoute),
     enabled: !!currentRoute,
     staleTime: 30_000,
   });

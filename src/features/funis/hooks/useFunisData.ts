@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { useAuth } from "~/lib/auth";
+import { EMPRESA_ID } from "~/config/empresa";
 import {
   listarFunis,
   buscarFunil,
@@ -27,10 +27,9 @@ import type {
 } from "../types";
 
 export function useFunis() {
-  const { profile } = useAuth();
   return useQuery({
-    queryKey: ["funis", profile?.empresa_id],
-    queryFn: () => listarFunis(profile?.empresa_id ?? undefined),
+    queryKey: ["funis", EMPRESA_ID],
+    queryFn: () => listarFunis(EMPRESA_ID),
     staleTime: 30_000,
   });
 }
@@ -45,34 +44,31 @@ export function useFunil(id: string | null) {
 }
 
 export function useCriarFunil() {
-  const { profile } = useAuth();
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: (input: FunilInput) => criarFunil(input, profile?.empresa_id),
+    mutationFn: (input: FunilInput) => criarFunil(input, EMPRESA_ID),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["funis"] }),
   });
 }
 
 export function useAtualizarFunil() {
-  const { profile } = useAuth();
   const qc = useQueryClient();
   return useMutation({
     mutationFn: ({ id, input }: { id: string; input: Partial<FunilInput> }) =>
       atualizarFunil(id, input),
     onSuccess: (_, { id }) => {
-      qc.invalidateQueries({ queryKey: ["funis", profile?.empresa_id] });
+      qc.invalidateQueries({ queryKey: ["funis", EMPRESA_ID] });
       qc.invalidateQueries({ queryKey: ["funil", id] });
     },
   });
 }
 
 export function useDeletarFunil() {
-  const { profile } = useAuth();
   const qc = useQueryClient();
   return useMutation({
     mutationFn: deletarFunil,
     onSuccess: () =>
-      qc.invalidateQueries({ queryKey: ["funis", profile?.empresa_id] }),
+      qc.invalidateQueries({ queryKey: ["funis", EMPRESA_ID] }),
   });
 }
 

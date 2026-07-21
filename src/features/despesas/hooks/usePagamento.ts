@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "~/lib/auth";
+import { EMPRESA_ID } from "~/config/empresa";
 import {
   criarPagamento,
   marcarComoPago,
@@ -10,7 +11,7 @@ import type { FormaPagamento } from "../types";
 export function useCriarPagamento(overrideEmpresaId?: string) {
   const { profile } = useAuth();
   const queryClient = useQueryClient();
-  const empresa_id = overrideEmpresaId || (profile?.empresa_id ?? "");
+  const empresa_id = overrideEmpresaId || EMPRESA_ID;
 
   return useMutation({
     mutationFn: (pagamento: {
@@ -34,7 +35,7 @@ export function useCriarPagamento(overrideEmpresaId?: string) {
 export function useMarcarComoPago(overrideEmpresaId?: string) {
   const { profile } = useAuth();
   const queryClient = useQueryClient();
-  const empresa_id = overrideEmpresaId || (profile?.empresa_id ?? "");
+  const empresa_id = overrideEmpresaId || EMPRESA_ID;
 
   return useMutation({
     mutationFn: ({ id, comprovante }: { id: string; comprovante?: string }) =>
@@ -50,7 +51,7 @@ export function useMarcarComoPago(overrideEmpresaId?: string) {
 export function useCancelarPagamento(overrideEmpresaId?: string) {
   const { profile } = useAuth();
   const queryClient = useQueryClient();
-  const empresa_id = overrideEmpresaId || (profile?.empresa_id ?? "");
+  const empresa_id = overrideEmpresaId || EMPRESA_ID;
 
   return useMutation({
     mutationFn: (id: string) => cancelarPagamento(id),

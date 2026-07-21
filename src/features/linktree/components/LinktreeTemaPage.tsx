@@ -3,6 +3,7 @@ import { useNavigate } from "@tanstack/react-router";
 import { Loader2 } from "lucide-react";
 import toast from "react-hot-toast";
 import { useAuth } from "~/core/auth";
+import { EMPRESA_ID } from "~/config/empresa";
 import { supabase } from "~/core/supabase";
 import { buscarTemaConfig, salvarTemaConfig } from "~/features/linktree/index";
 import { LinktreeThemeEditor } from "./LinktreeThemeEditor";
@@ -22,7 +23,7 @@ export function LinktreeTemaPage() {
   const [loading, setLoading] = useState(true);
   const [empresas, setEmpresas] = useState<{ id: string; nome: string }[]>([]);
   const [filtroEmpresa, setFiltroEmpresa] = useState<string>(
-    profile?.empresa_id ?? "",
+    EMPRESA_ID,
   );
 
   const can = (key: string) => isSuper || permissoes?.[key] === true;
@@ -47,24 +48,24 @@ export function LinktreeTemaPage() {
   }, [isSuper]);
 
   useEffect(() => {
-    if (!isSuper) setFiltroEmpresa(profile?.empresa_id ?? "");
-  }, [isSuper, profile]);
+    if (!isSuper) setFiltroEmpresa(EMPRESA_ID);
+  }, [isSuper]);
 
   useEffect(() => {
     setLoading(true);
     const empresaId = isSuper
       ? filtroEmpresa || undefined
-      : (profile?.empresa_id ?? undefined);
+      : EMPRESA_ID;
     buscarTemaConfig(empresaId)
       .then(setTheme)
       .catch(() => toast.error("Erro ao carregar tema"))
       .finally(() => setLoading(false));
-  }, [filtroEmpresa, profile, isSuper]);
+  }, [filtroEmpresa, isSuper]);
 
   async function handleSave(t: LinktreeThemeConfig) {
     const empresaId = isSuper
       ? filtroEmpresa || null
-      : (profile?.empresa_id ?? null);
+      : EMPRESA_ID;
     await salvarTemaConfig(empresaId, t);
     setTheme(t);
   }

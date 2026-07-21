@@ -10,7 +10,7 @@ import { Textarea } from "~/components/ui/textarea";
 import { Skeleton } from "~/components/ui/skeleton";
 import { carregarDadosWhatsApp, dispararWhatsApp } from "../services/whatsapp.service";
 import type { WhatsAppLead, WhatsAppCampanha } from "../services/whatsapp.service";
-
+import { EMPRESA_ID } from "~/config/empresa";
 type Contato = {
   nome: string;
   telefone: string;
@@ -33,18 +33,18 @@ export function WhatsappMarketing() {
   const [contatosCSV, setContatosCSV] = useState<Contato[]>([]);
 
   useEffect(() => {
-    if (!profile?.empresa_id) {
+    if (!EMPRESA_ID) {
       setLoading(false);
       return;
     }
     carregarDados();
-  }, [profile?.empresa_id]);
+  }, [EMPRESA_ID]);
 
   async function carregarDados() {
-    if (!profile?.empresa_id) return;
+    if (!EMPRESA_ID) return;
     setLoading(true);
     try {
-      const dados = await carregarDadosWhatsApp(profile.empresa_id);
+      const dados = await carregarDadosWhatsApp(EMPRESA_ID);
       setLeads(dados.leads);
       setLimiteDiario(dados.limiteMax);
       setEnviadosHoje(dados.enviadosHoje);
@@ -122,7 +122,7 @@ export function WhatsappMarketing() {
 
   async function handleDisparar(e: React.FormEvent) {
     e.preventDefault();
-    if (!profile?.empresa_id || !nomeCampanha.trim() || !mensagemText.trim()) return;
+    if (!EMPRESA_ID || !nomeCampanha.trim() || !mensagemText.trim()) return;
     if (contatosFinais.length === 0) {
       toast.error("Selecione pelo menos um contato destinatário!");
       return;
@@ -135,7 +135,7 @@ export function WhatsappMarketing() {
     setSalvando(true);
     try {
       await dispararWhatsApp({
-        empresa_id: profile.empresa_id,
+        empresa_id: EMPRESA_ID,
         nome: nomeCampanha.trim(),
         mensagem: mensagemText.trim(),
         total_contatos: contatosFinais.length,

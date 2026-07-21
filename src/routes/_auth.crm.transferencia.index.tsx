@@ -8,7 +8,7 @@ import { Button } from "~/components/ui/button";
 import { ArrowRight, Loader2 } from "lucide-react";
 import toast from "react-hot-toast";
 import { dispararEventoModulo } from "~/core/services/webhooks";
-
+import { EMPRESA_ID } from "~/config/empresa";
 export const crmTransferenciaIndexRoute = createRoute({
   getParentRoute: () => crmTransferenciaRoute,
   path: "/",
@@ -29,7 +29,7 @@ function TransferenciaPage() {
         .from("usuarios")
         .select("id, nome_completo")
         .eq("role", "consultor")
-        .eq("empresa_id", profile?.empresa_id);
+        .eq("empresa_id", EMPRESA_ID);
       return data ?? [];
     },
   });
@@ -42,7 +42,7 @@ function TransferenciaPage() {
         .from("clientes")
         .select("id, nome_doutor, nome_clinica")
         .eq("consultor_atual_id", origem)
-        .eq("empresa_id", profile?.empresa_id);
+        .eq("empresa_id", EMPRESA_ID);
       return data ?? [];
     },
   });
@@ -55,7 +55,7 @@ function TransferenciaPage() {
         .select(
           "id, data_transferencia, cliente_id, de_consultor_id, para_consultor_id",
         )
-        .eq("empresa_id", profile?.empresa_id)
+        .eq("empresa_id", EMPRESA_ID)
         .order("data_transferencia", { ascending: false })
         .limit(10);
       return data ?? [];
@@ -80,7 +80,7 @@ function TransferenciaPage() {
     toast.success("Cliente transferido");
     qc.invalidateQueries({ queryKey: ["clientes-origem", origem] });
     qc.invalidateQueries({ queryKey: ["logs-transfer"] });
-    dispararEventoModulo("crm", "cliente.transferido", { cliente_id: clienteId, empresa_id: profile?.empresa_id }, profile?.empresa_id).catch(() => {});
+    dispararEventoModulo("crm", "cliente.transferido", { cliente_id: clienteId, empresa_id: EMPRESA_ID }, EMPRESA_ID).catch(() => {});
   }
 
   return (

@@ -63,7 +63,7 @@ const TIPO_OPTIONS = [
 export function HistoricoList() {
   const { empresaId, empresas, empresaSelecionada, setEmpresaSelecionada, isSuperAdmin } = useEmpresaSuperAdmin();
   const { profile, permissoes } = useAuth();
-  const { data: links, isLoading } = useLinks(empresaId);
+  const { data: links, isLoading } = useLinks();
   const deletarLink = useDeletarLink();
   const editarLink = useEditarLink();
   const [filtroTipo, setFiltroTipo] = useState("all");

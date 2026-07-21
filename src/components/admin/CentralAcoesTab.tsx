@@ -250,14 +250,14 @@ function parseCurl(curl: string) {
 }
 
 export function CentralAcoesTab({ empresaId }: { empresaId?: string } = {}) {
-  const { profile } = useAuth();
+  const { profile, empresa } = useAuth();
   const isSuper = profile?.is_super_admin === true;
 
   const [empresas, setEmpresas] = useState<any[]>([]);
 
   // Se for passado via prop, ou se for admin de empresa (sem ser super), força o ID.
   const forcedEmpresaId =
-    empresaId || (!isSuper ? profile?.empresa_id : undefined);
+    empresaId || (!isSuper ? empresa?.id : undefined);
   const [activeEmpresaId, setActiveEmpresaId] = useState<string>(
     forcedEmpresaId || "global",
   );
@@ -348,9 +348,9 @@ export function CentralAcoesTab({ empresaId }: { empresaId?: string } = {}) {
         { data: esquema, error: errSchema },
         { data: integracoesConfig, error: errInt },
       ] = await Promise.all([
-        listApiConnectors(undefined, empId, modKey),
-        listarTemplates(empId, modKey),
-        listarWebhooks(empId, modKey),
+        listApiConnectors(undefined, modKey),
+        listarTemplates(modKey),
+        listarWebhooks(modKey),
         supabase.rpc("obter_esquema_banco"),
         supabase.from("config_integracoes").select("*"),
       ]);
@@ -586,7 +586,6 @@ export function CentralAcoesTab({ empresaId }: { empresaId?: string } = {}) {
           corpo_template: notifCorpo,
           destinatario_tipo: notifDestinatarioTipo,
           ativo: formIsActive,
-          empresa_id: empId,
           modulo_key: modKey,
         };
 
@@ -615,7 +614,6 @@ export function CentralAcoesTab({ empresaId }: { empresaId?: string } = {}) {
           headers: apiHeaders,
           body_template: parsedBody,
           ativo: formIsActive,
-          empresa_id: empId,
           modulo_key: modKey,
         };
 
@@ -645,7 +643,6 @@ export function CentralAcoesTab({ empresaId }: { empresaId?: string } = {}) {
           evento: apiEvento,
           tipo_evento: apiTipoEvento,
           is_active: formIsActive,
-          empresa_id: empId,
           modulo_key: modKey,
         };
 

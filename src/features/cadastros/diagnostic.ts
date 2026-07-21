@@ -10,7 +10,7 @@ export const cadastrosDiagnosticPlan: DiagnosticPlan = {
     create: async (ctx) => {
       ctx.log("info", "criando cliente via supabase...");
       const dados = ctx.dadosTeste() as any;
-      const { data, error } = await supabase.from("clientes").insert({ empresa_id: ctx.empresaId, nome_doutor: dados.nome, tipo_pessoa: dados.tipo, telefone: dados.telefone, status: "link_gerado" }).select().single();
+      const { data, error } = await supabase.from("clientes").insert({ nome_doutor: dados.nome, tipo_pessoa: dados.tipo, telefone: dados.telefone, status: "link_gerado" }).select().single();
       if (error) throw error;
       ctx.log("success", `cliente criado: id=${data.id}, nome="${data.nome_doutor}", status=${data.status}`);
       ctx.salvarId("clienteId", data.id);
@@ -48,7 +48,7 @@ export const cadastrosDiagnosticPlan: DiagnosticPlan = {
       descricao: "Simula pipeline: link_gerado → dados_enviados → em_analise → aprovado",
       steps: async (ctx) => {
         ctx.log("info", "1) Criando cliente com status=link_gerado...");
-        const { data: c, error: e1 } = await supabase.from("clientes").insert({ empresa_id: ctx.empresaId, nome_doutor: "[DIAG] Pipeline Teste", tipo_pessoa: "PF", telefone: "11988887777", status: "link_gerado" }).select().single();
+        const { data: c, error: e1 } = await supabase.from("clientes").insert({ nome_doutor: "[DIAG] Pipeline Teste", tipo_pessoa: "PF", telefone: "11988887777", status: "link_gerado" }).select().single();
         if (e1) throw e1;
         ctx.log("success", `cliente: id=${c.id}, status=${c.status}`);
         ctx.salvarId("clienteId", c.id);
@@ -79,7 +79,7 @@ export const cadastrosDiagnosticPlan: DiagnosticPlan = {
       descricao: "Simula pipeline com correção e reprovação",
       steps: async (ctx) => {
         ctx.log("info", "1) Criando cliente em análise...");
-        const { data: c, error: e1 } = await supabase.from("clientes").insert({ empresa_id: ctx.empresaId, nome_doutor: "[DIAG] Reprovação Teste", tipo_pessoa: "PJ", telefone: "11977776666", status: "em_analise" }).select().single();
+        const { data: c, error: e1 } = await supabase.from("clientes").insert({ nome_doutor: "[DIAG] Reprovação Teste", tipo_pessoa: "PJ", telefone: "11977776666", status: "em_analise" }).select().single();
         if (e1) throw e1;
         ctx.log("success", `cliente: id=${c.id}, status=${c.status}`);
         ctx.salvarId("clienteId", c.id);
@@ -105,7 +105,7 @@ export const cadastrosDiagnosticPlan: DiagnosticPlan = {
       steps: async (ctx) => {
         ctx.log("info", "1) Criando cliente...");
         const dados = ctx.dadosTeste() as any;
-        const { data: c, error: e1 } = await supabase.from("clientes").insert({ empresa_id: ctx.empresaId, nome_doutor: dados.nome, tipo_pessoa: dados.tipo, telefone: dados.telefone, status: "link_gerado" }).select().single();
+        const { data: c, error: e1 } = await supabase.from("clientes").insert({ nome_doutor: dados.nome, tipo_pessoa: dados.tipo, telefone: dados.telefone, status: "link_gerado" }).select().single();
         if (e1) throw e1;
         ctx.log("success", `cliente: id=${c.id}`);
         ctx.salvarId("clienteId", c.id);
@@ -115,7 +115,7 @@ export const cadastrosDiagnosticPlan: DiagnosticPlan = {
         ctx.log("success", `encontrado: "${c2?.nome_doutor}", status=${c2?.status}`);
 
         ctx.log("info", "3) Listando clientes da empresa...");
-        const { data: lista } = await supabase.from("clientes").select("id, status").eq("empresa_id", ctx.empresaId).limit(5);
+        const { data: lista } = await supabase.from("clientes").select("id, status").limit(5);
         ctx.log("success", `clientes na empresa: ${lista?.length ?? 0}`);
         for (const cl of lista ?? []) ctx.log("info", `  ${cl.id?.slice(0, 8)}… status=${cl.status}`);
 

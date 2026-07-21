@@ -1,19 +1,14 @@
 import { supabase } from "~/core/supabase";
-import { EMPRESA_ID } from "~/config/empresa"
 import { dispararEventoModulo } from "~/core/services/webhooks";
 import type { Funil, FunilInput } from "../types";
 
 const MODULO_KEY = "funis";
 
-export async function listarFunis(EMPRESA_ID?: string): Promise<Funil[]> {
-  let query = supabase
+export async function listarFunis(): Promise<Funil[]> {
+  const { data, error } = await supabase
     .from("funis")
     .select("*, tarefas:funis_tarefas(*)")
     .order("created_at", { ascending: false });
-  if (EMPRESA_ID) {
-    query = query.eq("empresa_id", EMPRESA_ID);
-  }
-  const { data, error } = await query;
   if (error) throw error;
   return (data ?? []) as Funil[];
 }
@@ -34,10 +29,8 @@ export async function buscarFunil(id: string): Promise<Funil> {
   }
   return funil;
 }
-
 export async function criarFunil(
   input: FunilInput,
-  EMPRESA_ID?: string | null,
 ): Promise<Funil> {
   const {
     data: { user },
@@ -50,7 +43,6 @@ export async function criarFunil(
       titulo: input.titulo,
       descricao: input.descricao ?? null,
       created_by: user.id,
-      empresa_id: EMPRESA_ID ?? null,
     })
     .select()
     .single();
@@ -77,7 +69,6 @@ export async function criarFunil(
     MODULO_KEY,
     "funil.criado",
     { funil },
-    funil.empresa_id,
   ).catch(() => {});
   return funil;
 }
@@ -98,23 +89,16 @@ export async function atualizarFunil(
     MODULO_KEY,
     "funil.atualizado",
     { funil },
-    funil.empresa_id,
   ).catch(() => {});
   return funil;
 }
 
 export async function deletarFunil(id: string): Promise<void> {
-  const { data: before } = await supabase
-    .from("funis")
-    .select("empresa_id")
-    .eq("id", id)
-    .single();
   const { error } = await supabase.from("funis").delete().eq("id", id);
   if (error) throw error;
   dispararEventoModulo(
     MODULO_KEY,
     "funil.excluido",
     { funilId: id },
-    before?.empresa_id,
   ).catch(() => {});
 }

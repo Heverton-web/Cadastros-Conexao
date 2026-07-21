@@ -264,7 +264,7 @@ function buildAdminSection(): NavModuleSection {
 }
 
 export function useNavItems(): NavModuleSection[] {
-  const { profile, permissoes, modulosAcesso, modulosAtivos } = useAuth();
+  const { profile, empresa, permissoes, modulosAcesso, modulosAtivos } = useAuth();
   const p = permissoes;
 
   const modulosAcessiveis = useMemo(() => {
@@ -277,7 +277,7 @@ export function useNavItems(): NavModuleSection[] {
     }
     const ativos = modulosAtivos || [];
     const isCompanyAdmin = profile?.role === "admin";
-    const hasEmpresa = !!profile?.empresa_id;
+    const hasEmpresa = !!empresa?.id;
     return getAllModules()
       .filter((m) => {
         if (m.key === "empresas-core") {
@@ -309,7 +309,7 @@ export function useNavItems(): NavModuleSection[] {
   return useMemo(() => {
     const isSuper = profile?.is_super_admin === true;
     const isCompanyAdmin =
-      !isSuper && profile?.role === "admin" && !!profile?.empresa_id;
+      !isSuper && profile?.role === "admin" && !!empresa?.id;
     const sections: NavModuleSection[] = [];
 
     // Administração (super admin only) — primeiro módulo
@@ -391,7 +391,7 @@ export function useNavItems(): NavModuleSection[] {
     p,
     profile?.is_super_admin,
     profile?.role,
-    profile?.empresa_id,
+    empresa?.id,
     modulosAtivos,
     modulosAcesso,
     modulosAcessiveis,
@@ -399,7 +399,7 @@ export function useNavItems(): NavModuleSection[] {
 }
 
 export function useModulos() {
-  const { profile, modulosAtivos, modulosAcesso } = useAuth();
+  const { profile, empresa, modulosAtivos, modulosAcesso } = useAuth();
   return useMemo(() => {
     if (profile?.is_super_admin) {
       return getAllModules().map((m) => ({
@@ -410,7 +410,7 @@ export function useModulos() {
     }
     const ativos = modulosAtivos || [];
     const isCompanyAdmin = profile?.role === "admin";
-    const hasEmpresa = !!profile?.empresa_id;
+    const hasEmpresa = !!empresa?.id;
     return getAllModules()
       .filter((m) => {
         if (m.key === "empresas-core") {
@@ -430,7 +430,7 @@ export function useModulos() {
   }, [
     profile?.is_super_admin,
     profile?.role,
-    profile?.empresa_id,
+    empresa?.id,
     modulosAtivos,
     modulosAcesso,
   ]);

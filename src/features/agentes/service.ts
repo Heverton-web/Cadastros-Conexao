@@ -1,5 +1,4 @@
 import { supabase } from "~/core/supabase/client";
-import { EMPRESA_ID } from "~/config/empresa"
 import type {
   AgenteIA,
   AgenteKnowledgeDoc,
@@ -18,25 +17,16 @@ export async function listarAgentes(): Promise<AgenteIA[]> {
   const { data, error } = await supabase
     .from("agentes_ia")
     .select("*")
-    .eq("empresa_id", EMPRESA_ID)
     .order("created_at", { ascending: false });
   if (error) throw error;
   return data ?? [];
 }
 
-export async function listarTodosAgentes(
-  EMPRESA_ID?: string,
-): Promise<AgenteIA[]> {
-  let query = supabase
+export async function listarTodosAgentes(): Promise<AgenteIA[]> {
+  const { data, error } = await supabase
     .from("agentes_ia")
     .select("*")
     .order("created_at", { ascending: false });
-
-  if (EMPRESA_ID) {
-    query = query.eq("empresa_id", EMPRESA_ID);
-  }
-
-  const { data, error } = await query;
   if (error) throw error;
   return data ?? [];
 }
@@ -52,13 +42,11 @@ export async function buscarAgente(id: string): Promise<AgenteIA | null> {
 }
 
 export async function criarAgente(
-  EMPRESA_ID: string | null,
   input: CriarAgenteInput
 ): Promise<AgenteIA> {
   const { data, error } = await supabase
     .from("agentes_ia")
     .insert({
-      empresa_id: EMPRESA_ID || null,
       nome: input.nome,
       modulo_key: input.modulo_key,
       route: input.route ?? null,
@@ -265,22 +253,15 @@ export async function buscarGastosSessao(
   };
 }
 
-export async function buscarGastosHoje(
-  EMPRESA_ID: string
-): Promise<{ total_cost: number; total_tokens: number; chamadas: number }> {
+export async function buscarGastosHoje(): Promise<{ total_cost: number; total_tokens: number; chamadas: number }> {
   const hoje = new Date();
   hoje.setHours(0, 0, 0, 0);
 
-  let query = supabase
+  const { data, error } = await supabase
     .from("agentes_usage_log")
     .select("total_cost, total_tokens")
     .gte("created_at", hoje.toISOString());
 
-  if (EMPRESA_ID) {
-    query = query.eq("empresa_id", EMPRESA_ID);
-  }
-
-  const { data, error } = await query;
   if (error) throw error;
   const rows = data ?? [];
   return {

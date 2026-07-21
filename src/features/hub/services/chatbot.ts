@@ -1,12 +1,10 @@
 import { supabase } from "~/core/supabase/client";
-import { EMPRESA_ID } from "~/config/empresa"
 import type { HubChatbotConfig } from "../types";
 
 export async function fetchHubChatbotConfig() {
   const { data, error } = await supabase
     .from("hub_config_chatbot")
     .select("*")
-    .eq("empresa_id", EMPRESA_ID)
     .single();
   if (error && error.code !== "PGRST116") throw error;
   return data as HubChatbotConfig | null;

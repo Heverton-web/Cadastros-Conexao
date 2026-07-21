@@ -1,5 +1,4 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { useAuth } from "~/lib/auth";
 import {
   listarTemplates,
   criarTemplate,
@@ -8,33 +7,24 @@ import {
 } from "../services/templates.service";
 import type { TipoTemplate } from "../types";
 
-export function useTemplates(empresaIdOverride?: string) {
-  const { profile } = useAuth();
-  const empresaId = empresaIdOverride ?? profile?.empresa_id;
-
+export function useTemplates() {
   return useQuery({
-    queryKey: ["gerador-templates", empresaId],
-    queryFn: () => listarTemplates(empresaId!),
-    enabled: !!empresaId,
+    queryKey: ["gerador-templates"],
+    queryFn: () => listarTemplates(),
     staleTime: 30_000,
   });
 }
 
 export function useCriarTemplate() {
   const qc = useQueryClient();
-  const { profile } = useAuth();
 
   return useMutation({
     mutationFn: (input: {
       tipo: TipoTemplate;
       nome: string;
       conteudo: Record<string, string>;
-      empresa_id?: string;
     }) =>
-      criarTemplate({
-        empresa_id: input.empresa_id ?? profile!.empresa_id!,
-        ...input,
-      }),
+      criarTemplate(input),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["gerador-templates"] }),
   });
 }

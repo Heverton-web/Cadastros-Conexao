@@ -39,7 +39,6 @@ import {
 } from "../hooks/useFunisData";
 import type { FunilTarefa } from "../types";
 import { supabase } from "~/core/supabase";
-import { useAuth } from "~/lib/auth";
 
 type Props = {
   open?: boolean;
@@ -64,21 +63,16 @@ export function TaskModal({
 }: Props) {
   const criar = useCriarTarefa();
   const atualizar = useAtualizarTarefa();
-  const deletar = useDeletarTarefa();
-  const { empresa } = useAuth();
 
   const [profiles, setProfiles] = useState<any[]>([]);
   useEffect(() => {
-    if (empresa?.id) {
-      supabase
-        .from("users")
-        .select("*")
-        .eq("empresa_id", empresa.id)
-        .then(({ data }) => {
-          if (data) setProfiles(data);
-        });
-    }
-  }, [empresa]);
+    supabase
+      .from("users")
+      .select("*")
+      .then(({ data }) => {
+        if (data) setProfiles(data);
+      });
+  }, []);
 
   const [title, setTitle] = useState(task?.titulo ?? "");
   const [description, setDescription] = useState(task?.descricao ?? "");

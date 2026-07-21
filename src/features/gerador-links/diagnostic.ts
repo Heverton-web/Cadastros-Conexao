@@ -8,20 +8,20 @@ export const geradorLinksDiagnosticPlan: DiagnosticPlan = {
   key: "gerador-links",
   nome: "Links",
   dadosTeste: () => ({
-    link: { empresa_id: "", tipo: "whatsapp" as const, titulo: "[DIAG] Link Teste", url_gerada: "https://wa.me/5511999999999", params: { phone: "5511999999999" } },
-    template: { empresa_id: "", tipo: "whatsapp" as const, nome: "[DIAG] Template Teste", conteudo: { mensagem: "Olá, tudo bem?" } },
+    link: { tipo: "whatsapp" as const, titulo: "[DIAG] Link Teste", url_gerada: "https://wa.me/5511999999999", params: { phone: "5511999999999" } },
+    template: { tipo: "whatsapp" as const, nome: "[DIAG] Template Teste", conteudo: { mensagem: "Olá, tudo bem?" } },
   }),
 
   crud: {
     create: async (ctx) => {
       ctx.log("info", "criando link...");
       const dados = ctx.dadosTeste() as any;
-      const link = await linksService.criarLink({ ...dados.link, empresa_id: ctx.empresaId });
+      const link = await linksService.criarLink({ ...dados.link });
       ctx.log("success", `link: id=${link.id}, titulo="${link.titulo}", tipo=${link.tipo}`);
       ctx.salvarId("linkId", link.id);
 
       ctx.log("info", "criando template...");
-      const template = await templatesService.criarTemplate({ ...dados.template, empresa_id: ctx.empresaId });
+      const template = await templatesService.criarTemplate({ ...dados.template });
       ctx.log("success", `template: id=${template.id}, nome="${template.nome}"`);
       ctx.salvarId("templateId", template.id);
     },
@@ -60,21 +60,21 @@ export const geradorLinksDiagnosticPlan: DiagnosticPlan = {
       steps: async (ctx) => {
         ctx.log("info", "1) Criando link WhatsApp...");
         const dados = ctx.dadosTeste() as any;
-        const link = await linksService.criarLink({ ...dados.link, empresa_id: ctx.empresaId });
+        const link = await linksService.criarLink({ ...dados.link });
         ctx.log("success", `link: id=${link.id}, url=${link.url_gerada}`);
         ctx.salvarId("linkId", link.id);
 
         ctx.log("info", "2) Criando template...");
-        const template = await templatesService.criarTemplate({ ...dados.template, empresa_id: ctx.empresaId });
+        const template = await templatesService.criarTemplate({ ...dados.template });
         ctx.log("success", `template: id=${template.id}`);
         ctx.salvarId("templateId", template.id);
 
         ctx.log("info", "3) Registrando cliques (3x)...");
-        for (let i = 0; i < 3; i++) await trackingService.registrarClique(link.id, ctx.empresaId);
+        for (let i = 0; i < 3; i++) await trackingService.registrarClique(link.id);
         ctx.log("success", "3 cliques registrados");
 
         ctx.log("info", "4) Dashboard de tracking...");
-        const stats = await trackingService.getDashboardStats(ctx.empresaId);
+        const stats = await trackingService.getDashboardStats();
         ctx.log("success", `dashboard: ${(stats as any)?.total ?? 0} cliques no período`);
       },
       cleanup: async (ctx) => {

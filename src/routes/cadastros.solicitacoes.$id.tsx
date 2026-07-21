@@ -3,7 +3,6 @@ import { authLayout } from "./_auth";
 import { useState, useEffect } from "react";
 import { useAuth } from "~/lib/auth";
 import {
-  buscarCadastroCompleto,
   aprovarCadastro,
   reprovarCadastro,
   solicitarCorrecao,
@@ -13,7 +12,6 @@ import {
   type CadastroStatus,
 } from "~/features/clientes";
 import {
-  listarDocumentos,
   aprovarDocumento,
   reprovarDocumento,
   solicitarCorrecaoDocumento,
@@ -29,7 +27,6 @@ import { logAtividade } from "~/core/services";
 import { dispararWebhooks } from "~/lib/webhooks";
 import { DocList } from "~/components/ui/doc-viewer";
 import {
-  getRevisoes,
   setRevisaoCampo,
   setRevisoesMassa,
   STATUS_REVISAO_LABEL,
@@ -39,7 +36,6 @@ import {
 } from "~/features/revisoes";
 import { formatPhone } from "~/lib/utils";
 import {
-  ArrowLeft,
   Loader2,
   CheckCircle,
   XCircle,
@@ -55,7 +51,7 @@ import {
 } from "lucide-react";
 import toast from "react-hot-toast";
 import { enviarNotificacaoComTemplate } from "~/core/services";
-
+import { EMPRESA_ID } from "~/config/empresa";
 const LABEL_MAP: Record<string, string> = {
   "pf.nome": "Nome",
   "pf.cpf": "CPF",
@@ -257,8 +253,8 @@ function ClienteDetailPage() {
         status_cadastro: "aprovado",
       };
 
-      dispararWebhooks("botao_aprovar", payload, profile?.empresa_id);
-      dispararWebhooks("aprovado", payload, profile?.empresa_id);
+      dispararWebhooks("botao_aprovar", payload, EMPRESA_ID);
+      dispararWebhooks("aprovado", payload, EMPRESA_ID);
       setShowAprovar(false);
       carregar();
     } catch (e) {
@@ -329,8 +325,8 @@ function ClienteDetailPage() {
         status_cadastro: "reprovado",
       };
 
-      dispararWebhooks("botao_reprovar", payload, profile?.empresa_id);
-      dispararWebhooks("reprovado", payload, profile?.empresa_id);
+      dispararWebhooks("botao_reprovar", payload, EMPRESA_ID);
+      dispararWebhooks("reprovado", payload, EMPRESA_ID);
       setShowReprovar(false);
       carregar();
     } catch (e) {
@@ -412,8 +408,8 @@ function ClienteDetailPage() {
         status_cadastro: "em_correcao",
       };
 
-      dispararWebhooks("botao_corrigir", payload, profile?.empresa_id);
-      dispararWebhooks("em_correcao", payload, profile?.empresa_id);
+      dispararWebhooks("botao_corrigir", payload, EMPRESA_ID);
+      dispararWebhooks("em_correcao", payload, EMPRESA_ID);
       setShowCorrecao(false);
       carregar();
     } catch (e) {
@@ -1212,7 +1208,7 @@ function ClienteDetailPage() {
                 dispararWebhooks(
                   "botao_aprovar",
                   { cadastro_id: id, documento_id: docId },
-                  profile?.empresa_id,
+                  EMPRESA_ID,
                 );
                 const d = await listarDocumentos(id);
                 setDocs(d);
@@ -1233,7 +1229,7 @@ function ClienteDetailPage() {
                 dispararWebhooks(
                   "botao_reprovar",
                   { cadastro_id: id, documento_id: docId, motivo },
-                  profile?.empresa_id,
+                  EMPRESA_ID,
                 );
                 const d = await listarDocumentos(id);
                 setDocs(d);
@@ -1254,7 +1250,7 @@ function ClienteDetailPage() {
                 dispararWebhooks(
                   "botao_corrigir",
                   { cadastro_id: id, documento_id: docId, comentario },
-                  profile?.empresa_id,
+                  EMPRESA_ID,
                 );
                 const d = await listarDocumentos(id);
                 setDocs(d);
