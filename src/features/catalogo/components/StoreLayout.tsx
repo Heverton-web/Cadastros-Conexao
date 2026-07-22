@@ -1,5 +1,5 @@
 import React, { useState, useEffect, createContext, useContext } from 'react';
-import { Search, ShoppingBag, Menu, Home, ArrowLeft } from 'lucide-react';
+import { Search, ShoppingBag, Menu, Home, ArrowLeft, Instagram, Facebook, Twitter, Youtube, Linkedin, MessageCircle, Globe, Mail, Phone, MapPin } from 'lucide-react';
 import { Link, useNavigate } from '@tanstack/react-router';
 import '../styles/theme.css';
 import { toggleCartDrawer } from '../services/ui.service';
@@ -12,7 +12,7 @@ import { ProductSheet } from './ProductSheet';
 export const CatalogoVisibilityContext = createContext({ showPrices: true, showSearchBar: true });
 export const useCatalogoVisibility = () => useContext(CatalogoVisibilityContext);
 import { supabase } from '~/lib/supabase';
-import { getCatalogoDesign, mergeWithDefaults } from '../services/design.service';
+import { getCatalogoDesign, mergeWithDefaults, type CatalogoDesignFooter } from '../services/design.service';
 
 interface StoreLayoutProps {
   children: React.ReactNode;
@@ -54,11 +54,25 @@ function applyDesignToRoot(config: ReturnType<typeof mergeWithDefaults>) {
   document.body.style.fontFamily = config.typography.fontFamily || "'Inter', sans-serif";
 }
 
+const SOCIAL_ICON_MAP: Record<string, typeof Instagram> = {
+  instagram: Instagram,
+  facebook: Facebook,
+  twitter: Twitter,
+  youtube: Youtube,
+  linkedin: Linkedin,
+  whatsapp: MessageCircle,
+  site: Globe,
+  email: Mail,
+  telefone: Phone,
+  endereco: MapPin,
+};
+
 export function StoreLayout({ children, fullHeight, zoom }: StoreLayoutProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [isBackVisible, setIsBackVisible] = useState(false);
-  const [visibility, setVisibility] = useState({ showPrices: true, showSearchBar: true });
+  const [visibility, setVisibility] = useState({ showPrices: true, showSearchBar: true, showFooter: true });
   const [logoUrl, setLogoUrl] = useState('');
+  const [footerConfig, setFooterConfig] = useState<CatalogoDesignFooter | null>(null);
   const navigate = useNavigate();
   const cart = useCarrinho();
   const { qtd } = cartTotais(cart);
@@ -106,6 +120,7 @@ export function StoreLayout({ children, fullHeight, zoom }: StoreLayoutProps) {
         setVisibility({
           showPrices: config.visibility.showPrices,
           showSearchBar: config.visibility.showSearchBar,
+          showFooter: config.visibility.showFooter,
         });
 
         // Background da página
@@ -141,6 +156,10 @@ export function StoreLayout({ children, fullHeight, zoom }: StoreLayoutProps) {
         } else {
           setLogoUrl('');
         }
+        // Footer config (aba "rodapé")
+        if (config.footer) {
+          setFooterConfig(config.footer);
+        }
       } catch {
         // Fallback: mantém defaults do theme.css
       }
@@ -150,7 +169,7 @@ export function StoreLayout({ children, fullHeight, zoom }: StoreLayoutProps) {
     return () => { cancelled = true; };
   }, []);
 
-  // Cleanup: remove CSS vars customizadas e restaura favicon ao desmontar
+  // Cleanup: remove CSS vars customizadas ao desmontar
   useEffect(() => {
     return () => {
       const root = document.documentElement;
@@ -164,11 +183,7 @@ export function StoreLayout({ children, fullHeight, zoom }: StoreLayoutProps) {
       vars.forEach(v => root.style.removeProperty(v));
       document.body.style.backgroundImage = '';
       document.body.style.fontFamily = '';
-
-      // Restaura favicon genérico
-      const links = document.querySelectorAll<HTMLLinkElement>("link[rel*='icon']");
-      links.forEach(link => { link.href = "/favicon.ico"; });
-      document.title = "ERP Odonto";
+      // Não resetamos favicon/title aqui — useFavicon/usePageTitle no __root.tsx cuidam disso
     };
   }, []);
 
@@ -236,6 +251,42 @@ export function StoreLayout({ children, fullHeight, zoom }: StoreLayoutProps) {
           {children}
         </CatalogoVisibilityContext.Provider>
       </main>
+      {/* Footer (aba "rodapé") */}
+      {visibility.showFooter && footerConfig && (
+        <footer
+          className="py-4 px-6 border-t flex items-center justify-center gap-3"
+          style={{
+            backgroundColor: footerConfig.bgColor || 'var(--color-surface)',
+            borderColor: footerConfig.borderColor || 'var(--color-border-subtle)',
+            color: footerConfig.textColor || 'var(--color-text-muted)',
+          }}
+        >
+          <p className="text-xs">{footerConfig.text}</p>
+          {/* Social Links */}
+          {footerConfig.socialLinks && (
+            <div className="flex items-center gap-2">
+              {Object.entries(footerConfig.socialLinks).map(([key, url]) => {
+                if (!url) return null;
+                const Icon = SOCIAL_ICON_MAP[key];
+                if (!Icon) return null;
+                return (
+                  <a
+                    key={key}
+                    href={url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-1.5 rounded-full transition-opacity hover:opacity-100 opacity-70"
+                    style={{ color: footerConfig.iconColor || footerConfig.textColor }}
+                    title={key}
+                  >
+                    <Icon className="w-3.5 h-3.5" />
+                  </a>
+                );
+              })}
+            </div>
+          )}
+        </footer>
+      )}
 
       {/* Global Modals */}
       <CartDrawer />
