@@ -306,6 +306,8 @@ export interface CatalogoImplante {
 
 export interface CatalogoAbutment {
   sku: string
+  familia_id?: string
+  tipo_reabilitacao_id?: string
   tipo_abutment_id: string
   parafuso_id: string | null
   chave_id: string | null
@@ -323,7 +325,6 @@ export interface CatalogoAbutment {
   created_at: string
   updated_at: string
   tipo_abutment?: CatalogoCpsTipoAbutment
-  familia_id?: string
   familia?: CatalogoIpsFamilia
   parafuso?: CatalogoParafuso
   chave?: CatalogoChave

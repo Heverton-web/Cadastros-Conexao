@@ -1,7 +1,7 @@
 import { createRoute, useParams, useNavigate, useSearch, Link } from "@tanstack/react-router"
 import { rootRoute } from "./__root"
 import { StoreLayout, useCatalogoVisibility } from "~/features/catalogo/components/StoreLayout"
-import { useImplanteDetalhe, useAbutmentDetalhe, useKitDetalhe, usePromocionalDetalhe, useProtocoloFresagem, useGuias, useImagensProduto, useImagensBatch, useChavesDoImplante, useCicatrizadoresDoImplante, useAbutmentsDaFamilia, useKitsComChavesEmComum } from "~/features/catalogo/hooks/useCatalogo"
+import { useImplanteDetalhe, useAbutmentDetalhe, useKitDetalhe, usePromocionalDetalhe, useProtocoloFresagem, useGuias, useImagensProduto, useImagensBatch, useChavesDoImplante, useCicatrizadoresDoImplante, useAbutmentsDoImplante, useKitsDoImplante } from "~/features/catalogo/hooks/useCatalogo"
 import { addToCart, formatBRL, getPrecoFromDB, mockPreco, resolveBOMItem } from "~/features/catalogo/services/carrinho.service"
 import { playCoinSound } from "~/features/catalogo/services/audio.service"
 import { FresagemTimeline } from "~/features/catalogo/components/FresagemTimeline"
@@ -10,7 +10,7 @@ import { BomTable } from "~/features/catalogo/components/BomTable"
 import type { ProductSheetTipo } from "~/features/catalogo/types"
 import { useState, useEffect } from "react"
 import toast from "react-hot-toast"
-import { ArrowLeft, ShoppingCart, Box, Zap, ExternalLink, Check, Tag, TrendingDown } from "lucide-react"
+import { ArrowLeft, ShoppingCart, Box, Zap, ExternalLink, Check, Tag, TrendingDown, X, FileText } from "lucide-react"
 import { openImageViewer } from "~/features/catalogo/services/ui.service"
 import { useTabIcons, TabIconsProvider } from "~/features/catalogo/contexts/TabIconsContext"
 
@@ -205,13 +205,68 @@ function EmptyState({ msg, hint }: { msg: string; hint?: string }) {
 
 /* ─── Implante Detail ──────────────────────────────────────────────── */
 
+
+/** Modal com ficha técnica resumida do produto relacionado */
+function FichaTecnicaModal({
+  open, onClose, nome, sku, cor, imagemUrl, specs,
+}: {
+  open: boolean; onClose: () => void; nome: string; sku: string; cor: string
+  imagemUrl?: string | null; specs: Array<{ label: string; value: string | number | null | undefined }>
+}) {
+  if (!open) return null
+  const validSpecs = specs.filter((s) => s.value != null && s.value !== "")
+  return (
+    <div className="fixed inset-0 z-[70] flex items-center justify-center p-4" onClick={onClose}>
+      <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
+      <div
+        className="relative w-full max-w-md rounded-2xl border border-[var(--color-border-subtle)] bg-[#0f172a] shadow-2xl shadow-black/40 overflow-hidden"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Header */}
+        <div className="flex items-center justify-between p-4 border-b border-[var(--color-border-subtle)]">
+          <div className="flex items-center gap-3 min-w-0">
+            <FileText className="w-4 h-4 shrink-0" style={{ color: cor }} />
+            <div className="min-w-0">
+              <h3 className="text-sm font-bold text-white truncate">{nome}</h3>
+              <p className="font-mono text-[10px] text-[var(--color-text-muted)]">SKU: {sku}</p>
+            </div>
+          </div>
+          <button onClick={onClose} className="shrink-0 p-1 rounded-lg hover:bg-white/10 transition-colors">
+            <X className="w-4 h-4 text-[var(--color-text-muted)]" />
+          </button>
+        </div>
+        {/* Body */}
+        <div className="p-4 space-y-4">
+          {imagemUrl && (
+            <div className="w-full h-40 rounded-xl overflow-hidden bg-gradient-to-br from-[var(--color-surface)] to-[#0f172a] border border-[var(--color-border-subtle)] flex items-center justify-center">
+              <img src={imagemUrl} alt={nome} className="w-full h-full object-contain" loading="lazy" />
+            </div>
+          )}
+          {validSpecs.length > 0 ? (
+            <div className="grid grid-cols-2 gap-2">
+              {validSpecs.map((s) => (
+                <div key={s.label} className="p-3 rounded-lg bg-[var(--color-surface)]/60 border border-[var(--color-border-subtle)]">
+                  <span className="block text-[9px] font-bold uppercase tracking-[0.15em] mb-1 text-[var(--color-text-muted)]">{s.label}</span>
+                  <span className="block text-sm font-bold text-white">{s.value}</span>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="text-xs text-[var(--color-text-muted)] text-center py-4">Nenhuma especificação disponível</p>
+          )}
+        </div>
+      </div>
+    </div>
+  )
+}
+
 /** Small product card for related items in tabs (cicatrizadores, abutments, kits, chaves) */
 function RelatedProductCard({
-  nome, sku, cor, preco, tipo, imageUrl, onImageClick, children,
+  nome, sku, cor, preco, tipo, imageUrl, onImageClick, onVerFicha, fichaData, children,
 }: {
   nome: string; sku: string; cor: string; preco?: number | null
   tipo: ProductSheetTipo; imageUrl?: string | null
-  onImageClick: () => void; children?: React.ReactNode
+  onImageClick: () => void; onVerFicha?: () => void; fichaData?: Record<string, string | number | null | undefined>; children?: React.ReactNode
 }) {
   return (
     <div className="flex flex-col sm:flex-row gap-4 p-4 rounded-xl border border-[var(--color-border-subtle)] bg-[var(--color-surface)]/40 hover:border-[var(--color-accent)]/40 transition-all">
@@ -221,7 +276,7 @@ function RelatedProductCard({
         className="shrink-0 w-20 h-20 sm:w-24 sm:h-24 rounded-lg overflow-hidden cursor-zoom-in bg-gradient-to-br from-[var(--color-surface)] to-[#0f172a] border border-[var(--color-border-subtle)] flex items-center justify-center"
       >
         {imageUrl ? (
-          <img src={imageUrl} alt={nome} className="w-full h-full object-cover" loading="lazy" />
+          <img src={imageUrl} alt={nome} className="w-full h-full object-contain" loading="lazy" />
         ) : (
           <Box className="w-8 h-8 opacity-10" style={{ color: cor }} />
         )}
@@ -233,7 +288,16 @@ function RelatedProductCard({
         {children}
       </div>
       {/* CTA */}
-      <div className="shrink-0 flex items-center">
+      <div className="shrink-0 flex flex-col items-center gap-2">
+        {fichaData && Object.keys(fichaData).length > 0 && (
+          <button
+            onClick={onVerFicha}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider border border-[var(--color-border-subtle)] text-[var(--color-text-muted)] hover:text-white hover:border-[var(--color-accent)]/60 transition-all"
+          >
+            <FileText className="w-3 h-3" />
+            Ver Ficha
+          </button>
+        )}
         <AddButton tipo={tipo} sku={sku} nome={nome} cor={cor} precoDB={preco} compact />
       </div>
     </div>
@@ -247,11 +311,10 @@ function ImplanteDetail({ sku }: { sku: string }) {
   const { data: imagens } = useImagensProduto("implante", sku)
   const { data: chaves } = useChavesDoImplante(sku)
   const { data: cicatrizadores } = useCicatrizadoresDoImplante(sku)
-  const { data: abutments } = useAbutmentsDaFamilia(impl?.familia_id)
-  const { data: kits } = useKitsComChavesEmComum(sku)
+  const { data: abutments } = useAbutmentsDoImplante(sku)
+  const { data: kits } = useKitsDoImplante(sku)
   const [activeTab, setActiveTab] = useState("ficha")
-
-  // ── Imagens dos produtos relacionados (batch) ──
+  const [fichaModal, setFichaModal] = useState<{ open: boolean; nome: string; sku: string; imagemUrl?: string | null; specs: Array<{ label: string; value: string | number | null | undefined }> }>({ open: false, nome: "", sku: "", specs: [] })
   const chavesSkus = (chaves ?? []).map((c) => c.sku)
   const cicSkus = (cicatrizadores ?? []).map((c) => c.sku)
   const abSkus = (abutments ?? []).map((a) => a.sku)
@@ -304,6 +367,7 @@ function ImplanteDetail({ sku }: { sku: string }) {
   ]
 
   return (
+    <>
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
       {/* Sidebar — Imagem + CTA */}
       <div className="lg:col-span-4 xl:col-span-5">
@@ -318,7 +382,7 @@ function ImplanteDetail({ sku }: { sku: string }) {
                   onClick={() => openImageViewer(img.url_imagem, nome)}
                   className="shrink-0 w-14 h-14 rounded-lg overflow-hidden border border-[var(--color-border-subtle)] hover:border-[var(--color-accent)] transition-colors"
                 >
-                  <img src={img.url_imagem} alt="" className="w-full h-full object-cover" loading="lazy" />
+                  <img src={img.url_imagem} alt="" className="w-full h-full object-contain" loading="lazy" />
                 </button>
               ))}
             </div>
@@ -417,6 +481,14 @@ function ImplanteDetail({ sku }: { sku: string }) {
                   tipo="chave"
                   imageUrl={img}
                   onImageClick={() => openImageViewer(img ?? "", chave.nome)}
+                  onVerFicha={() => setFichaModal({ open: true, nome: chave.nome, sku: chave.sku, imagemUrl: img, specs: [
+                    { label: "Tipo", value: chave.tipo_chave?.nome },
+                    { label: "Comprimento", value: chave.comprimento },
+                    { label: "Diâmetro", value: chave.diametro_mm ? `${chave.diametro_mm} mm` : null },
+                    { label: "Material", value: chave.material },
+                    { label: "Preco", value: chave.preco ? formatBRL(chave.preco) : null },
+                  ] })}
+                  fichaData={{ tipo: chave.tipo_chave?.nome, diametro: chave.diametro_mm }}
                 >
                   {chave.tipo_chave?.nome && (
                     <span className="inline-flex items-center px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-[var(--color-accent)]/10 text-[var(--color-accent)]">
@@ -444,6 +516,12 @@ function ImplanteDetail({ sku }: { sku: string }) {
                   tipo="kit"
                   imageUrl={img}
                   onImageClick={() => openImageViewer(img ?? "", kit.nome)}
+                  onVerFicha={() => setFichaModal({ open: true, nome: kit.nome, sku: kit.sku, imagemUrl: img, specs: [
+                    { label: "Tipo", value: kit.tipo_kit?.nome },
+                    { label: "Descricao", value: kit.descricao },
+                    { label: "Preco", value: kit.preco ? formatBRL(kit.preco) : null },
+                  ] })}
+                  fichaData={{ tipo: kit.tipo_kit?.nome, descricao: kit.descricao }}
                 >
                   {kit.tipo_kit?.nome && (
                     <span className="inline-flex items-center px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-[var(--color-accent)]/10 text-[var(--color-accent)]">
@@ -471,6 +549,17 @@ function ImplanteDetail({ sku }: { sku: string }) {
                   tipo="cicatrizador"
                   imageUrl={img}
                   onImageClick={() => openImageViewer(img ?? "", cic.nome)}
+                  onVerFicha={() => setFichaModal({ open: true, nome: cic.nome, sku: cic.sku, imagemUrl: img, specs: [
+                    { label: "Sigla", value: cic.sigla },
+                    { label: "Descricao", value: cic.descricao },
+                    { label: "Diam. Plataforma", value: cic.diametro_plataforma_mm ? `${cic.diametro_plataforma_mm} mm` : null },
+                    { label: "Alt. Transmucoso", value: cic.altura_transmucoso_mm ? `${cic.altura_transmucoso_mm} mm` : null },
+                    { label: "Alt. Corpo", value: cic.altura_corpo_mm ? `${cic.altura_corpo_mm} mm` : null },
+                    { label: "Torque", value: cic.torque_ncm ? `${cic.torque_ncm} N.cm` : null },
+                    { label: "Material", value: cic.material },
+                    { label: "Preco", value: cic.preco ? formatBRL(cic.preco) : null },
+                  ] })}
+                  fichaData={{ sigla: cic.sigla, material: cic.material }}
                 >
                   {cic.sigla && (
                     <span className="inline-flex items-center px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-[var(--color-accent)]/10 text-[var(--color-accent)]">
@@ -498,6 +587,17 @@ function ImplanteDetail({ sku }: { sku: string }) {
                   tipo="abutment"
                   imageUrl={img}
                   onImageClick={() => openImageViewer(img ?? "", ab.nome ?? ab.sku)}
+                  onVerFicha={() => setFichaModal({ open: true, nome: `${ab.tipo_abutment?.nome ?? ""} ${ab.familia?.nome ?? ""}`.trim(), sku: ab.sku, imagemUrl: img, specs: [
+                    { label: "Tipo Abutment", value: ab.tipo_abutment?.nome },
+                    { label: "Familia", value: ab.familia?.nome },
+                    { label: "Descricao", value: ab.descricao },
+                    { label: "Torque", value: ab.torque_ncm ? `${ab.torque_ncm} N.cm` : null },
+                    { label: "Alt. Corpo", value: ab.altura_corpo ? `${ab.altura_corpo} mm` : null },
+                    { label: "Alt. Transmucoso", value: ab.altura_transmucoso ? `${ab.altura_transmucoso} mm` : null },
+                    { label: "Angulacao", value: ab.angulacao_graus ? `${ab.angulacao_graus} deg` : null },
+                    { label: "Preco", value: ab.preco ? formatBRL(ab.preco) : null },
+                  ] })}
+                  fichaData={{ tipo: ab.tipo_abutment?.nome, familia: ab.familia?.nome }}
                 >
                   {ab.tipo_abutment?.nome && (
                     <span className="inline-flex items-center px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-[var(--color-accent)]/10 text-[var(--color-accent)]">
@@ -511,6 +611,18 @@ function ImplanteDetail({ sku }: { sku: string }) {
         )}
       </div>
     </div>
+
+    {/* Modal Ficha Tecnica */}
+    <FichaTecnicaModal
+      open={fichaModal.open}
+      onClose={() => setFichaModal((p) => ({ ...p, open: false }))}
+      nome={fichaModal.nome}
+      sku={fichaModal.sku}
+      cor={cor}
+      imagemUrl={fichaModal.imagemUrl}
+      specs={fichaModal.specs}
+    />
+    </>
   )
 }
 /* ─── Abutment Detail ──────────────────────────────────────────────── */
@@ -567,7 +679,7 @@ function AbutmentDetail({ sku }: { sku: string }) {
                   onClick={() => openImageViewer(img.url_imagem, nome)}
                   className="shrink-0 w-14 h-14 rounded-lg overflow-hidden border border-[var(--color-border-subtle)] hover:border-[var(--color-accent)] transition-colors"
                 >
-                  <img src={img.url_imagem} alt="" className="w-full h-full object-cover" loading="lazy" />
+                  <img src={img.url_imagem} alt="" className="w-full h-full object-contain" loading="lazy" />
                 </button>
               ))}
             </div>
@@ -763,7 +875,7 @@ function KitDetail({ sku }: { sku: string }) {
                   onClick={() => openImageViewer(img.url_imagem, nome)}
                   className="shrink-0 w-14 h-14 rounded-lg overflow-hidden border border-[var(--color-border-subtle)] hover:border-[var(--color-accent)] transition-colors"
                 >
-                  <img src={img.url_imagem} alt="" className="w-full h-full object-cover" loading="lazy" />
+                  <img src={img.url_imagem} alt="" className="w-full h-full object-contain" loading="lazy" />
                 </button>
               ))}
             </div>

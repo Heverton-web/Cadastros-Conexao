@@ -200,7 +200,7 @@ export function ProdutoFormModal({
         ativo: d.ativo ?? true,
       })
       // Carregar protocolos de fresagem do modelo novo (2 tabelas)
-      getProtocoloFresagem(empresaId, d.sku)
+      getProtocoloFresagem(d.sku)
         .then((protos) => {
           if (!protos?.length) return
           setFresagemHard(protos.filter((p: any) => ["D1","D2"].includes(p.tipo_osso)).map((p: any) => ({ fresa_sku: p.fresa_sku, ordem: p.ordem_uso, tipo_osso: p.tipo_osso })))
@@ -208,19 +208,19 @@ export function ProdutoFormModal({
         })
         .catch(() => {})
       // Carregar chaves vinculadas ao implante
-      listarImplanteChaves(empresaId, d.sku)
+      listarImplanteChaves(d.sku)
         .then(setChavesIds)
         .catch(() => setChavesIds([]))
       // Carregar kits vinculados ao implante
-      listarImplanteKits(empresaId, d.sku)
+      listarImplanteKits(d.sku)
         .then(setKitsIds)
         .catch(() => setKitsIds([]))
       // Carregar abutments vinculados ao implante
-      listarImplanteAbutments(empresaId, d.sku)
+      listarImplanteAbutments(d.sku)
         .then(setAbutmentsIds)
         .catch(() => setAbutmentsIds([]))
       // Carregar cicatrizadores vinculados ao implante
-      listarImplanteCicatrizadores(empresaId, d.sku)
+      listarImplanteCicatrizadores(d.sku)
         .then(setCicatrizadoresIds)
         .catch(() => setCicatrizadoresIds([]))
     }
@@ -369,12 +369,12 @@ export function ProdutoFormModal({
           ...fresagemSoft.map((f) => ({ fresa_sku: f.fresa_sku, tipo_osso: f.tipo_osso, ordem_uso: f.ordem })),
         ]
         if (protocolos.length > 0) {
-          await salvarProtocoloFresagem(empresaId, implante.sku, protocolos)
+          await salvarProtocoloFresagem(implante.sku, protocolos)
         }
-        await salvarImplanteChaves(empresaId, implante.sku, chavesIds)
-        await salvarImplanteKits(empresaId, implante.sku, kitsIds)
-        await salvarImplanteAbutments(empresaId, implante.sku, abutmentsIds)
-        await salvarImplanteCicatrizadores(empresaId, implante.sku, cicatrizadoresIds)
+        await salvarImplanteChaves(implante.sku, chavesIds)
+        await salvarImplanteKits(implante.sku, kitsIds)
+        await salvarImplanteAbutments(implante.sku, abutmentsIds)
+        await salvarImplanteCicatrizadores(implante.sku, cicatrizadoresIds)
       } else if (tipo === "abutment") {
         const payload = makeAbutmentPayload()
         if (editingItem) {

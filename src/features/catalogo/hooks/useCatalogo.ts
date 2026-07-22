@@ -1055,3 +1055,19 @@ export function useKitsComChavesEmComum(implanteSku: string) {
     enabled: !!implanteSku,
   })
 }
+
+export function useAbutmentsDoImplante(implanteSku: string) {
+  return useQuery({
+    queryKey: ["catalogo", "implante-abutments", implanteSku],
+    queryFn: () => implantes.listarAbutmentsDoImplante(implanteSku),
+    enabled: !!implanteSku,
+  })
+}
+
+export function useKitsDoImplante(implanteSku: string) {
+  return useQuery({
+    queryKey: ["catalogo", "implante-kits-pivot", implanteSku],
+    queryFn: () => implantes.listarKitsDoImplante(implanteSku),
+    enabled: !!implanteSku,
+  })
+}

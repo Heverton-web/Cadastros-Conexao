@@ -4,11 +4,6 @@ import type { CatalogoImplante, CatalogoProtocoloFresagem, CatalogoProtocoloFres
 
 const MODULO_KEY = "catalogo"
 
-/** Resolve SKU do implante → UUID id (catalogo_implantes.id) */
-async function getImplanteId(sku: string): Promise<string | null> {
-  const { data } = await supabase.from("catalogo_implantes").select("id").eq("sku", sku).single()
-  return data?.id ?? null
-}
 
 export async function listarImplantesAtivos(): Promise<CatalogoImplante[]> {
   const { data, error } = await supabase
@@ -262,23 +257,21 @@ export async function listarImplanteAbutments(implanteSku: string): Promise<stri
 // ============================================================
 
 export async function listarImplanteCicatrizadores(implanteSku: string): Promise<string[]> {
-  const implanteId = await getImplanteId(implanteSku)
-  if (!implanteId) return []
   const { data, error } = await supabase
     .from("catalogo_cicatrizadores")
     .select("sku")
-    .eq("implante_id", implanteId)
+    .eq("implante_id", implanteSku)
   if (error) throw error
   return (data as { sku: string }[]).map((r) => r.sku)
 }
 
 export async function salvarImplanteCicatrizadores(implanteSku: string, cicatrizadorSkus: string[]): Promise<void> {
-  const implanteId = await getImplanteId(implanteSku)
-  if (!implanteId) return
-  await supabase.from("catalogo_cicatrizadores").update({ implante_id: null }).eq("implante_id", implanteId)
+  // Limpar vinculações anteriores deste implante
+  await supabase.from("catalogo_cicatrizadores").update({ implante_id: null }).eq("implante_id", implanteSku)
   if (cicatrizadorSkus.length === 0) return
+  // Vincular novos cicatrizadores
   for (const sku of cicatrizadorSkus) {
-    await supabase.from("catalogo_cicatrizadores").update({ implante_id: implanteId }).eq("sku", sku)
+    await supabase.from("catalogo_cicatrizadores").update({ implante_id: implanteSku }).eq("sku", sku)
   }
 }
 
@@ -298,12 +291,10 @@ export async function listarChavesDoImplante(implanteSku: string): Promise<Catal
 
 /** Lista cicatrizadores que referenciam este implante (FK implante_id) */
 export async function listarCicatrizadoresDoImplante(implanteSku: string): Promise<CatalogoCicatrizador[]> {
-  const implanteId = await getImplanteId(implanteSku)
-  if (!implanteId) return []
   const { data, error } = await supabase
     .from("catalogo_cicatrizadores")
     .select("*, implante:catalogo_implantes(*), chave:catalogo_chaves(*)")
-    .eq("implante_id", implanteId)
+    .eq("implante_id", implanteSku)
     .eq("ativo", true)
     .order("nome")
   if (error) throw error
@@ -321,21 +312,42 @@ export async function listarAbutmentsDaFamilia(familiaId: string): Promise<Catal
   return data as CatalogoAbutment[]
 }
 
+/** Lista abutments vinculados ao implante via pivot catalogo_implante_abutment */
+export async function listarAbutmentsDoImplante(implanteSku: string): Promise<CatalogoAbutment[]> {
+  const { data, error } = await supabase
+    .from("catalogo_implante_abutment")
+    .select("abutment:catalogo_abutments(*, tipo_abutment:catalogo_cps_tipos_abutments(*), familia:catalogo_ips_familias(*), parafuso:catalogo_parafusos(*), chave:catalogo_chaves(*))")
+    .eq("implante_sku", implanteSku)
+  if (error) throw error
+  return (data as { abutment: CatalogoAbutment }[]).map((r) => r.abutment).filter(Boolean)
+}
+
+/** Lista kits vinculados ao implante via pivot catalogo_implante_kit */
+export async function listarKitsDoImplante(implanteSku: string): Promise<CatalogoKit[]> {
+  const { data, error } = await supabase
+    .from("catalogo_implante_kit")
+    .select("kit:catalogo_kits(*, tipo_kit:catalogo_tipos_kits(*))")
+    .eq("implante_sku", implanteSku)
+  if (error) throw error
+  return (data as { kit: CatalogoKit }[]).map((r) => r.kit).filter(Boolean)
+}
+
+
 /** Lista kits que compartilham chaves com este implante */
 export async function listarKitsComChavesEmComum(implanteSku: string): Promise<CatalogoKit[]> {
-  // 1. Busca UUIDs das chaves do implante via join
+  // 1. Busca SKUs das chaves do implante via join
   const { data: kc } = await supabase
     .from("catalogo_implante_chaves")
-    .select("chave:catalogo_chaves(id)")
+    .select("chave:catalogo_chaves(sku)")
     .eq("implante_sku", implanteSku)
-  const chaveIds = (kc as { chave: { id: string } | null }[] | null)?.map((r) => r.chave?.id).filter(Boolean) as string[] ?? []
-  if (chaveIds.length === 0) return []
+  const chaveSkus = (kc as { chave: { sku: string } | null }[] | null)?.map((r) => r.chave?.sku).filter(Boolean) as string[] ?? []
+  if (chaveSkus.length === 0) return []
 
   // 2. Busca kits que têm pelo menos uma dessas chaves
   const { data: kk } = await supabase
     .from("catalogo_kit_chaves")
     .select("kit_sku")
-    .in("chave_id", chaveIds)
+    .in("chave_id", chaveSkus)
   const kitSkus = [...new Set((kk as { kit_sku: string }[] | null)?.map((r) => r.kit_sku) ?? [])]
   if (kitSkus.length === 0) return []
 

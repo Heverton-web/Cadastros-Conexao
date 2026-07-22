@@ -71,10 +71,10 @@ function AdminImplantesPage() {
     setImplChaves([]); setImplKits([]); setImplAbutments([]); setImplCicatrizadores([]); setImplError(""); setImplModalOpen(true)
     // Carregar dados vinculados
     import("~/features/catalogo/services/implantes.service").then((svc) => {
-      svc.listarImplanteChaves(empresaId, impl.sku).then(setImplChaves).catch(() => setImplChaves([]))
-      svc.listarImplanteKits(empresaId, impl.sku).then(setImplKits).catch(() => setImplKits([]))
-      svc.listarImplanteAbutments(empresaId, impl.sku).then(setImplAbutments).catch(() => setImplAbutments([]))
-      svc.listarImplanteCicatrizadores(empresaId, impl.sku).then(setImplCicatrizadores).catch(() => setImplCicatrizadores([]))
+      svc.listarImplanteChaves(impl.sku).then(setImplChaves).catch(() => setImplChaves([]))
+      svc.listarImplanteKits(impl.sku).then(setImplKits).catch(() => setImplKits([]))
+      svc.listarImplanteAbutments(impl.sku).then(setImplAbutments).catch(() => setImplAbutments([]))
+      svc.listarImplanteCicatrizadores(impl.sku).then(setImplCicatrizadores).catch(() => setImplCicatrizadores([]))
     })
   }
 
