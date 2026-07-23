@@ -44,7 +44,7 @@ function CatalogoKitsPage() {
   // Etapa 2: Lista de Kits
   if (tipoKitId) return (
     <StoreLayout>
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
         <KitsList
           tipoKitId={tipoKitId}
           onBack={() => navigate({ to: '/catalogo/kits' })}
@@ -144,7 +144,7 @@ function KitsList({ tipoKitId, onBack }: { tipoKitId: string; onBack: () => void
           <p className="text-sm text-[var(--color-text-muted)] mt-2 max-w-sm mx-auto">Este tipo não possui kits cadastrados. Volte e selecione outro tipo.</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
           {kits.map((kit) => (
             <Link
               key={kit.sku}

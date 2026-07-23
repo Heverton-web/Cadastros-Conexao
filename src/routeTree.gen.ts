@@ -170,6 +170,7 @@ import { catalogoImplantesRoute, catalogoImplantesConexaoRoute, catalogoImplante
 import { catalogoComponentesRoute, catalogoComponentesTipoReabRoute, catalogoComponentesFamiliaRoute, catalogoComponentesTipoAbutmentRoute } from "./routes/catalogo.componentes";
 import { catalogoKitsRoute, catalogoKitsTipoRoute } from "./routes/catalogo.kits";
 import { catalogoPromocionaisRoute } from "./routes/catalogo.promocionais";
+import { catalogoBuscaRoute } from "./routes/catalogo.busca";
 import { catalogoProdutoRoute } from "./routes/catalogo.produto.$tipo.$sku";
 import { catalogoCarrinhoRoute } from "./routes/catalogo.carrinho";
 import { catalogoCheckoutRoute } from "./routes/catalogo.checkout";
@@ -225,6 +226,7 @@ export const routeTree = rootRoute.addChildren([
   catalogoKitsRoute,
   catalogoKitsTipoRoute,
   catalogoPromocionaisRoute,
+  catalogoBuscaRoute,
   catalogoProdutoRoute,
   // Loja pública (acesso externo)
   catalogoLojaIndexRoute,

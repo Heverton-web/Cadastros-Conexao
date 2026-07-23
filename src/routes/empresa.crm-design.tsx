@@ -1,6 +1,9 @@
+import { lazy, Suspense } from "react";
 import { createRoute } from "@tanstack/react-router";
 import { authLayout } from "./_auth";
-import { ModuloDesignPage } from "~/design-system/components/ModuloDesignPage";
+const ModuloDesignPage = lazy(() =>
+  import("~/design-system/components/ModuloDesignPage").then((m) => ({ default: m.ModuloDesignPage })),
+);
 import { RequirePermission } from "~/components/guards";
 
 export const empresaCrmDesignRoute = createRoute({
@@ -8,7 +11,9 @@ export const empresaCrmDesignRoute = createRoute({
   path: "/empresa/crm/design",
   component: () => (
     <RequirePermission modulo="empresas-core">
-      <ModuloDesignPage moduloKey="crm" moduloNome="CRM" />
+      <Suspense fallback={null}>
+        <ModuloDesignPage moduloKey="crm" moduloNome="CRM" />
+      </Suspense>
     </RequirePermission>
   ),
 });

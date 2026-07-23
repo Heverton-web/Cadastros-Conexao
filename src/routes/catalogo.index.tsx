@@ -1,11 +1,8 @@
 import { createRoute, Link } from "@tanstack/react-router"
 import { rootRoute } from "./__root"
 import { StoreLayout } from "~/features/catalogo/components/StoreLayout"
-import { useState, useEffect } from "react"
-import { supabase } from "~/lib/supabase"
 import { Loader2, Crosshair, ShieldCheck, Box, Tag, Package, Layers, ShoppingBag, Percent, Star, Heart, Diamond, Circle, Zap, Target, Award, Gem, Hexagon, Pentagon, Triangle, Square, type LucideIcon } from "lucide-react"
-import { EMPRESA_ID } from "~/config/empresa"
-import { getCatalogoDesign, mergeWithDefaults, type CatalogoDesignConfig } from "~/features/catalogo/services/design.service"
+import { useCatalogoDesign } from "~/features/catalogo/hooks/useCatalogo"
 import { WatermarkShape } from "~/features/catalogo/components/WatermarkShape"
 import { IconImplante, IconComponente, IconKit, IconPromocao } from "~/features/catalogo/components/IconsOdonto"
 
@@ -30,15 +27,11 @@ export const catalogoIndexRoute = createRoute({
 })
 
 function CatalogoIndexPage() {
-  return <CatalogoStoreContent empresaId={EMPRESA_ID} />
+  return <CatalogoStoreContent />
 }
 
-function CatalogoStoreContent({ empresaId }: { empresaId: string }) {
-  const [config, setConfig] = useState<CatalogoDesignConfig | null>(null)
-
-  useEffect(() => {
-    getCatalogoDesign().then(setConfig)
-  }, [empresaId])
+function CatalogoStoreContent() {
+  const { data: config } = useCatalogoDesign()
 
   if (!config) {
     return (

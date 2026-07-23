@@ -11,7 +11,7 @@ import {
   type Empresa,
   type EmpresaConfig,
   type ModuloEmpresa,
-} from "~/features/empresas";
+} from "~/shared/empresas";
 import { getAllModules } from "~/registry";
 import { useState, useEffect } from "react";
 import {

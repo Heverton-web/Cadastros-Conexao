@@ -1,18 +1,20 @@
-import React, { useState, useEffect, createContext, useContext } from 'react';
-import { Search, ShoppingBag, Menu, Home, ArrowLeft, Instagram, Facebook, Twitter, Youtube, Linkedin, MessageCircle, Globe, Mail, Phone, MapPin } from 'lucide-react';
+import React, { useState, useEffect, useMemo, createContext, useContext } from 'react';
+import { Search, ShoppingBag, Menu, Home, ArrowLeft, Instagram, Facebook, Twitter, Youtube, Linkedin, MessageCircle, Globe, Mail, Phone, MapPin, Music2 } from 'lucide-react';
 import { Link, useNavigate } from '@tanstack/react-router';
 import '../styles/theme.css';
-import { toggleCartDrawer } from '../services/ui.service';
+import { toggleCartDrawer, toggleNavDrawer } from '../services/ui.service';
 import { useCarrinho, cartTotais, setCarrinhoScope } from '../services/carrinho.service';
 import { useAuth } from '~/lib/auth';
 import { CartDrawer } from './CartDrawer';
+import { NavDrawer } from './NavDrawer';
 import { ImageViewer } from './ImageViewer';
 import { ProductSheet } from './ProductSheet';
 
 export const CatalogoVisibilityContext = createContext({ showPrices: true, showSearchBar: true });
 export const useCatalogoVisibility = () => useContext(CatalogoVisibilityContext);
 import { supabase } from '~/lib/supabase';
-import { getCatalogoDesign, mergeWithDefaults, type CatalogoDesignFooter } from '../services/design.service';
+import { mergeWithDefaults, type CatalogoDesignFooter } from '../services/design.service';
+import { useCatalogoDesign } from '../hooks/useCatalogo';
 
 interface StoreLayoutProps {
   children: React.ReactNode;
@@ -65,6 +67,7 @@ const SOCIAL_ICON_MAP: Record<string, typeof Instagram> = {
   email: Mail,
   telefone: Phone,
   endereco: MapPin,
+  tiktok: Music2,
 };
 
 export function StoreLayout({ children, fullHeight, zoom }: StoreLayoutProps) {
@@ -75,7 +78,7 @@ export function StoreLayout({ children, fullHeight, zoom }: StoreLayoutProps) {
   const [footerConfig, setFooterConfig] = useState<CatalogoDesignFooter | null>(null);
   const navigate = useNavigate();
   const cart = useCarrinho();
-  const { qtd } = cartTotais(cart);
+  const { qtd } = useMemo(() => cartTotais(cart), [cart]);
   const { profile } = useAuth();
 
   // Isola o carrinho por usuário logado (single-tenant: empresa fixa).
@@ -101,73 +104,62 @@ export function StoreLayout({ children, fullHeight, zoom }: StoreLayoutProps) {
     checkAdmin();
   }, []);
 
-  // Carrega design config e aplica no :root
+  // Design config vem do cache do React Query (deduplica fetch entre StoreLayout e páginas que também o consomem)
+  const { data: designConfig } = useCatalogoDesign();
+
+  // Aplica o design config no :root sempre que ele mudar (fetch inicial ou invalidação após save no admin)
   useEffect(() => {
+    if (!designConfig) return;
+    const config = designConfig;
 
-    let cancelled = false;
+    // Aplica no :root para prioridade máxima
+    applyDesignToRoot(config);
 
-    async function loadDesign() {
-      try {
-        const saved = await getCatalogoDesign();
-        const config = mergeWithDefaults(saved as any);
+    // Atualiza visibilidade
+    setVisibility({
+      showPrices: config.visibility.showPrices,
+      showSearchBar: config.visibility.showSearchBar,
+      showFooter: config.visibility.showFooter,
+    });
 
-        if (cancelled) return;
+    // Background da página
+    if (config.images.pageBackgroundUrl) {
+      document.body.style.backgroundImage = `url(${config.images.pageBackgroundUrl})`;
+      document.body.style.backgroundSize = 'cover';
+      document.body.style.backgroundPosition = 'center';
+      document.body.style.backgroundAttachment = 'fixed';
+    }
 
-        // Aplica no :root para prioridade máxima
-        applyDesignToRoot(config);
-
-        // Atualiza visibilidade
-        setVisibility({
-          showPrices: config.visibility.showPrices,
-          showSearchBar: config.visibility.showSearchBar,
-          showFooter: config.visibility.showFooter,
-        });
-
-        // Background da página
-        if (config.images.pageBackgroundUrl) {
-          document.body.style.backgroundImage = `url(${config.images.pageBackgroundUrl})`;
-          document.body.style.backgroundSize = 'cover';
-          document.body.style.backgroundPosition = 'center';
-          document.body.style.backgroundAttachment = 'fixed';
-        }
-
-        // Favicon: usa config do catalogo_design_config
-        const faviconSrc = config.images.faviconUrl;
-        if (faviconSrc) {
-          const links = document.querySelectorAll<HTMLLinkElement>("link[rel*='icon']");
-          if (links.length > 0) {
-            links.forEach(link => { link.href = faviconSrc; });
-          } else {
-            const newLink = document.createElement("link");
-            newLink.rel = "icon";
-            newLink.href = faviconSrc;
-            document.head.appendChild(newLink);
-          }
-        }
-
-        // Título da página
-        if (config.texts?.storeName) {
-          document.title = config.texts.storeName;
-        }
-
-        // Logo
-        if (config.images.logoUrl) {
-          setLogoUrl(config.images.logoUrl);
-        } else {
-          setLogoUrl('');
-        }
-        // Footer config (aba "rodapé")
-        if (config.footer) {
-          setFooterConfig(config.footer);
-        }
-      } catch {
-        // Fallback: mantém defaults do theme.css
+    // Favicon: usa config do catalogo_design_config
+    const faviconSrc = config.images.faviconUrl;
+    if (faviconSrc) {
+      const links = document.querySelectorAll<HTMLLinkElement>("link[rel*='icon']");
+      if (links.length > 0) {
+        links.forEach(link => { link.href = faviconSrc; });
+      } else {
+        const newLink = document.createElement("link");
+        newLink.rel = "icon";
+        newLink.href = faviconSrc;
+        document.head.appendChild(newLink);
       }
     }
-    loadDesign();
 
-    return () => { cancelled = true; };
-  }, []);
+    // Título da página
+    if (config.texts?.storeName) {
+      document.title = config.texts.storeName;
+    }
+
+    // Logo
+    if (config.images.logoUrl) {
+      setLogoUrl(config.images.logoUrl);
+    } else {
+      setLogoUrl('');
+    }
+    // Footer config (aba "rodapé")
+    if (config.footer) {
+      setFooterConfig(config.footer);
+    }
+  }, [designConfig]);
 
   // Cleanup: remove CSS vars customizadas ao desmontar
   useEffect(() => {
@@ -211,7 +203,10 @@ export function StoreLayout({ children, fullHeight, zoom }: StoreLayoutProps) {
           </div>
         </div>
         {visibility.showSearchBar && (
-          <div className="flex-1 max-w-xl mx-8 relative hidden lg:block">
+          <form
+            onSubmit={(e) => { e.preventDefault(); navigate({ to: '/catalogo/busca', search: { q: searchQuery } }); }}
+            className="flex-1 max-w-xl mx-8 relative hidden lg:block"
+          >
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] w-4 h-4" />
             <input
               type="text"
@@ -220,7 +215,7 @@ export function StoreLayout({ children, fullHeight, zoom }: StoreLayoutProps) {
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full h-11 pl-12 pr-4 rounded-full bg-[var(--color-surface)]/50 border border-[var(--color-input-border)] text-sm focus:border-[var(--color-accent)] focus:bg-[var(--color-input-bg)] focus:shadow-[0_0_15px_rgba(201,166,85,0.15)] focus:outline-none transition-all text-white placeholder-[var(--color-text-muted)]"
             />
-          </div>
+          </form>
         )}
         <div className="flex items-center gap-2 sm:gap-4 lg:gap-6 shrink-0">
           <Link to="/catalogo" className="group p-2 sm:p-3 rounded-full bg-[var(--color-surface)] border border-[var(--color-border-subtle)] hover:border-[var(--color-accent)] hover:bg-[var(--color-surface-hover)] transition-all">
@@ -237,7 +232,10 @@ export function StoreLayout({ children, fullHeight, zoom }: StoreLayoutProps) {
               </span>
             )}
           </button>
-          <button className="md:hidden p-1.5 sm:p-2 text-white hover:text-[var(--color-accent)] ml-[-4px]">
+          <button
+            onClick={() => toggleNavDrawer(true)}
+            className="lg:hidden p-1.5 sm:p-2 text-white hover:text-[var(--color-accent)] ml-[-4px]"
+          >
             <Menu className="w-5 h-5 sm:w-6 sm:h-6" />
           </button>
         </div>
@@ -245,7 +243,7 @@ export function StoreLayout({ children, fullHeight, zoom }: StoreLayoutProps) {
 
       <main
         className="flex-1 flex flex-col overflow-y-auto overflow-x-hidden"
-        style={zoom ? { zoom: `${zoom}` } : undefined}
+        style={zoom ? { transform: `scale(${zoom})`, transformOrigin: 'top center', width: `${100 / zoom}%`, marginInline: 'auto' } : undefined}
       >
         <CatalogoVisibilityContext.Provider value={visibility}>
           {children}
@@ -290,6 +288,7 @@ export function StoreLayout({ children, fullHeight, zoom }: StoreLayoutProps) {
 
       {/* Global Modals */}
       <CartDrawer />
+      <NavDrawer />
       <ImageViewer />
       <ProductSheet />
     </div>

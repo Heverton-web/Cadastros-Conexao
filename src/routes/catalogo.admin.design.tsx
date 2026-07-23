@@ -2,6 +2,7 @@
 import { RequirePermission } from "~/components/guards";import { createRoute } from "@tanstack/react-router"
 import { authLayout } from "./_auth"
 import { useState, useEffect } from "react"
+import { useQueryClient } from "@tanstack/react-query"
 import { Save, Loader2, ExternalLink, Copy, Check } from "lucide-react"
 import toast from "react-hot-toast"
 import { AdminLayout } from "~/features/catalogo/components/AdminLayout"
@@ -48,6 +49,7 @@ const TABS: { key: TabKey; label: string }[] = [
 ]
 
 function AdminDesignPage() {
+  const queryClient = useQueryClient()
   const [config, setConfig] = useState<CatalogoDesignConfig>(DEFAULT_CATALOGO_CONFIG)
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
@@ -69,6 +71,7 @@ function AdminDesignPage() {
     setSaving(true)
     try {
       await saveCatalogoDesign(config)
+      queryClient.invalidateQueries({ queryKey: ["catalogo", "design"] })
       toast.success("Design salvo com sucesso!")
     } catch (e: any) {
       toast.error(e.message || "Erro ao salvar design")

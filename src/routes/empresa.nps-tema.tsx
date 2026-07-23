@@ -7,7 +7,7 @@ import {
   uploadEmpresaLogo,
   buscarEmpresa,
   buscarEmpresaConfig,
-} from "~/features/empresas";
+} from "~/shared/empresas";
 import { EMPRESA_ID } from "~/config/empresa";
 import { NPS_SURVEY_DEFAULTS, SURVEY_COLOR_GROUPS } from "~/features/nps/theme";
 import {

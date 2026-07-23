@@ -20,6 +20,8 @@ import * as fresasTiposService from "../services/fresas-tipos.service"
 import * as fresagensService from "../services/fresagens.service"
 import * as complementaresService from "../services/complementares.service"
 import * as opcionaisService from "../services/opcionais.service"
+import * as seqProteticaService from "../services/sequencia-protetica.service"
+import { getCatalogoDesign } from "../services/design.service"
 import toast from "react-hot-toast"
 import type { CatalogoImplante, CatalogoKit, CatalogoAbutment, CatalogoCategoria, CatalogoConexao, CatalogoLinha, CatalogoFamilia, CatalogoFresa, CatalogoTipoReabilitacao, CatalogoTipoAbutment, CatalogoCategoriaAcessorio, CatalogoAcessorio, CatalogoChaveFerramental, CatalogoCategoriaInstrumental, CatalogoInstrumentalGeral, CatalogoCategoriaKit, CatalogoWorkflow, CatalogoEtapaWorkflow, CatalogoParafusoRetencao, CatalogoCicatrizador, CatalogoTipoChave, CatalogoTipoFresa, CatalogoTipoComplementar, CatalogoTipoOpcional, ProdutoTipoImagem, CatalogoImagemProduto } from "../types"
 
@@ -474,6 +476,10 @@ export function useTiposComplementares() {
   return useQuery({ queryKey: ["catalogo", "tipos-complementares"], queryFn: () => complementaresService.listarTiposComplementares() })
 }
 
+export function useComplementares() {
+  return useQuery({ queryKey: ["catalogo", "complementares"], queryFn: () => complementaresService.listarComplementares() })
+}
+
 export function useToggleTipoComplementarAtivo() {
   const qc = useQueryClient()
   return useMutation({
@@ -498,6 +504,10 @@ export function useToggleTipoComplementarAtivo() {
 
 export function useTiposOpcionais() {
   return useQuery({ queryKey: ["catalogo", "tipos-opcionais"], queryFn: () => opcionaisService.listarTiposOpcionais() })
+}
+
+export function useOpcionais() {
+  return useQuery({ queryKey: ["catalogo", "opcionais"], queryFn: () => opcionaisService.listarOpcionais() })
 }
 
 export function useToggleTipoOpcionalAtivo() {
@@ -630,6 +640,14 @@ export function useToggleWorkflowAtivo() {
 
 export function useEtapas() {
   return useQuery({ queryKey: ["catalogo", "etapas"], queryFn: () => workflows.listarEtapas() })
+}
+
+export function useSeqProteticas() {
+  return useQuery({ queryKey: ["catalogo", "seq-proteticas"], queryFn: () => seqProteticaService.listarSeqProteticas() })
+}
+
+export function useCatalogoDesign() {
+  return useQuery({ queryKey: ["catalogo", "design"], queryFn: getCatalogoDesign, staleTime: 5 * 60_000 })
 }
 
 export function useGuias(filters?: { familia_id?: string; workflow_id?: string }) {

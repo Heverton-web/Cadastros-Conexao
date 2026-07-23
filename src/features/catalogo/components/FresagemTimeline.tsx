@@ -4,7 +4,7 @@ import { Check, ShoppingCart, FileText, Box } from "lucide-react"
 import { addToCart, formatBRL, getPrecoFromDB } from "~/features/catalogo/services/carrinho.service"
 import { playCoinSound } from "~/features/catalogo/services/audio.service"
 import { useImagensBatch, useTiposOsso } from "~/features/catalogo/hooks/useCatalogo"
-import type { CatalogoProtocoloFresagem } from "~/features/catalogo/types"
+import type { CatalogoProtocoloFresagem, ProductSheetTipo } from "~/features/catalogo/types"
 import { openImageViewer } from "~/features/catalogo/services/ui.service"
 import { FichaTecnicaModal } from "./FichaTecnicaModal"
 
@@ -15,7 +15,7 @@ interface FresagemTimelineProps {
 
 export function FresagemTimeline({ implanteSku, protocolos }: FresagemTimelineProps) {
   const { data: tiposOsso } = useTiposOsso()
-  const [fichaModal, setFichaModal] = useState<{ open: boolean; nome: string; sku: string; imagemUrl?: string | null; sections: Array<{ title: string; specs: Array<{ label: string; value: string | number | null | undefined }> }>; vinculacoes?: Array<{ nome: string; sku: string; valor?: number | null }> }>({ open: false, nome: "", sku: "", sections: [] })
+  const [fichaModal, setFichaModal] = useState<{ open: boolean; nome: string; sku: string; imagemUrl?: string | null; tipo?: ProductSheetTipo; preco?: number; sections: Array<{ title: string; specs: Array<{ label: string; value: string | number | null | undefined }> }>; vinculacoes?: Array<{ nome: string; sku: string; valor?: number | null }> }>({ open: false, nome: "", sku: "", sections: [] })
 
   // Mapeia tipo_osso (sigla) → categoria (hard/soft)
   const getCategoria = (tipoOsso: string | null | undefined): string | null => {
@@ -84,6 +84,8 @@ export function FresagemTimeline({ implanteSku, protocolos }: FresagemTimelinePr
                 nome,
                 sku: p.fresa_sku,
                 imagemUrl: img,
+                tipo: "fresa",
+                preco,
                 sections: [
                   { title: "Identificação", specs: [
                     { label: "SKU", value: p.fresa_sku },
@@ -116,6 +118,8 @@ export function FresagemTimeline({ implanteSku, protocolos }: FresagemTimelinePr
         sku={fichaModal.sku}
         cor="#c9a655"
         imagemUrl={fichaModal.imagemUrl}
+        tipo={fichaModal.tipo}
+        preco={fichaModal.preco}
         sections={fichaModal.sections}
         vinculacoes={fichaModal.vinculacoes}
       />
@@ -175,7 +179,7 @@ function FresaCard({ ordem, nome, sku, preco, diametroMm, imageUrl, onImageClick
         <p className="font-mono text-[10px] text-[var(--color-text-muted)]">SKU: {sku}</p>
       </div>
       {/* CTA */}
-      <div className="shrink-0 flex flex-row sm:flex-col items-center sm:items-end gap-2">
+      <div className="shrink-0 flex flex-row sm:flex-col items-center gap-2">
         <button
           onClick={onVerFicha}
           className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider border border-[var(--color-border-subtle)] text-[var(--color-text-muted)] hover:text-white hover:border-[var(--color-accent)]/60 transition-all min-h-[32px]"

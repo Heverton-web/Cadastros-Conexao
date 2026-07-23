@@ -5,7 +5,7 @@ import { supabase } from "~/lib/supabase";
 import { buscarCepResiliente } from "~/features/integracoes";
 import { uploadDocumento } from "~/features/documentos";
 import { dispararWebhooks } from "~/lib/webhooks";
-import { carregarSchema, type CampoSchema } from "~/features/form-schema";
+import { carregarSchema, type CampoSchema } from "~/shared/form-schema";
 import toast from "react-hot-toast";
 import {
   Loader2,

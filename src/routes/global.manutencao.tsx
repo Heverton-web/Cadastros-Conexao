@@ -1,14 +1,20 @@
 import { createRoute } from "@tanstack/react-router";
+import { lazy, Suspense } from "react";
 import { authLayout } from "./_auth";
 import { RequireSuperAdmin } from "~/components/guards";
-import { ManutencaoPanel } from "~/features/manutencao/components/ManutencaoPanel";
+
+const ManutencaoPanel = lazy(() =>
+  import("~/features/manutencao/components/ManutencaoPanel").then((m) => ({ default: m.ManutencaoPanel })),
+);
 
 export const globalManutencaoRoute = createRoute({
   getParentRoute: () => authLayout,
   path: "/global/manutencao",
   component: () => (
     <RequireSuperAdmin>
-      <ManutencaoPanel scope="global" />
+      <Suspense fallback={null}>
+        <ManutencaoPanel scope="global" />
+      </Suspense>
     </RequireSuperAdmin>
   ),
 });

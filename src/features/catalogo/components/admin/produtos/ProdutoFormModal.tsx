@@ -10,18 +10,23 @@ import {
   useCriarAbutment, useAtualizarAbutment,
   useCriarKit, useAtualizarKit,
   useCategorias, useConexoes, useFamilias, useLinhas,
-  useFresas, useCategoriasKit, useChavesFerramental,
-  useAcessorios, useInstrumentais, useTiposReabilitacao, useTiposAbutment,
-  useEtapas, useTodosKits, useAbutments,
+  useFresas, useChavesFerramental,
+  useTiposReabilitacao, useTiposAbutment,
+  useTodosKits, useAbutments, useTiposKit, useComplementares, useOpcionais, useSeqProteticas,
   useParafusosRetensao, useCriarParafusoRetencao, useAtualizarParafusoRetencao,
   useCicatrizadores, useCriarCicatrizador, useAtualizarCicatrizador,
   useImplanteDetalhe, useAbutmentDetalhe, useKitDetalhe,
   useProtocolos,
   useTiposOsso,
 } from "~/features/catalogo/hooks/useCatalogo"
-import { salvarSequenciaProtetica } from "~/features/catalogo/services/sequencia-protetica.service"
+import { listarSeqProteticasAbutment, salvarSeqProteticasAbutment } from "~/features/catalogo/services/sequencia-protetica.service"
 import { salvarImplanteChaves, listarImplanteChaves, salvarImplanteKits, listarImplanteKits, salvarImplanteAbutments, listarImplanteAbutments, listarImplanteCicatrizadores, salvarImplanteCicatrizadores } from "~/features/catalogo/services/implantes.service"
-import { adicionarBOMItem } from "~/features/catalogo/services/kits.service"
+import {
+  salvarKitChaves, listarKitChaves, salvarKitFresas, listarKitFresas,
+  salvarKitComplementares, listarKitComplementares, salvarKitOpcionais, listarKitOpcionais,
+  salvarKitKitsComplementares, listarKitKitsComplementares, salvarKitKitsRelacionados, listarKitKitsRelacionados,
+  salvarKitImplantes, listarKitImplantes,
+} from "~/features/catalogo/services/kits.service"
 import { listarImagens } from "~/features/catalogo/services/imagens.service"
 import { salvarAbutmentChaves, listarAbutmentChaves, salvarAbutmentKits, listarAbutmentKits, salvarAbutmentParafusos, listarAbutmentParafusos } from "~/features/catalogo/services/componentes.service"
 import { ImplanteForm } from "./forms/ImplanteForm"
@@ -33,8 +38,6 @@ import { ImageUploader } from "./ImageUploader"
 import type { CatalogoImplante, CatalogoImagemProduto, ProdutoTipoImagem } from "~/features/catalogo/types"
 
 type ProdutoTipo = "implante" | "abutment" | "kit" | "parafuso_retensao" | "cicatrizador"
-interface SeqEtapa { etapa_nome: string; acessorio_sku: string }
-interface BomItem { tipo: "fresa" | "chave" | "acessorio" | "instrumental" | "implante" | "parafuso_retensao" | "cicatrizador"; sku: string; quantidade: number }
 
 export function ProdutoFormModal({
   open, onOpenChange, editingItem, implantes,
@@ -62,13 +65,13 @@ export function ProdutoFormModal({
   const { data: familias } = useFamilias()
   const { data: linhas } = useLinhas()
   const { data: fresas } = useFresas()
-  const { data: catsKit } = useCategoriasKit()
+  const { data: tiposKit } = useTiposKit()
+  const { data: complementares } = useComplementares()
+  const { data: opcionais } = useOpcionais()
   const { data: chaves } = useChavesFerramental()
-  const { data: acessorios } = useAcessorios()
-  const { data: instrumentais } = useInstrumentais()
   const { data: tiposReab } = useTiposReabilitacao()
   const { data: tiposAbutment } = useTiposAbutment()
-  const { data: etapas } = useEtapas()
+  const { data: sequencias } = useSeqProteticas()
   const { data: parafusosRetensao } = useParafusosRetensao()
   const { data: cicatrizadoresData } = useCicatrizadores()
   const { data: protocolos } = useProtocolos()
@@ -105,8 +108,7 @@ export function ProdutoFormModal({
   })
 
   const [kit, setKit] = useState({
-    categoria_id: "", sku: "", nome: "", descricao: "",
-    familia_ids: [] as string[], preco: 0,
+    tipo_kit_id: "", sku: "", nome: "", sigla: "", descricao: "", preco: 0,
   })
 
   const [parafusoRetencao, setParafusoRetencao] = useState({
@@ -119,9 +121,7 @@ export function ProdutoFormModal({
     torque_ncm: 0, familia_id: "", chave_sku: "", preco: 0,
   })
 
-  const [seqAnalógica, setSeqAnalógica] = useState<SeqEtapa[]>([])
-  const [seqDigital, setSeqDigital] = useState<SeqEtapa[]>([])
-  const [kitBom, setKitBom] = useState<BomItem[]>([])
+  const [seqProteticasIds, setSeqProteticasIds] = useState<string[]>([])
   const [imagens, setImagens] = useState<CatalogoImagemProduto[]>([])
   const [chavesIds, setChavesIds] = useState<string[]>([])
   const [kitsIds, setKitsIds] = useState<string[]>([])
@@ -130,16 +130,25 @@ export function ProdutoFormModal({
   const [abtChavesIds, setAbtChavesIds] = useState<string[]>([])
   const [abtKitsIds, setAbtKitsIds] = useState<string[]>([])
   const [abtParafusosIds, setAbtParafusosIds] = useState<string[]>([])
+  const [kitChaves, setKitChaves] = useState<string[]>([])
+  const [kitFresas, setKitFresas] = useState<string[]>([])
+  const [kitComplementares, setKitComplementares] = useState<string[]>([])
+  const [kitOpcionais, setKitOpcionais] = useState<string[]>([])
+  const [kitKitsComplementares, setKitKitsComplementares] = useState<string[]>([])
+  const [kitKitsRelacionados, setKitKitsRelacionados] = useState<string[]>([])
+  const [kitImplantes, setKitImplantes] = useState<string[]>([])
+
+  function toggleInArray(arr: string[], setArr: (v: string[]) => void, sku: string) {
+    setArr(arr.includes(sku) ? arr.filter((s) => s !== sku) : [...arr, sku])
+  }
 
   function resetForms() {
     setImplante({ categoria_id: "", conexao_id: "", familia_id: "", linha_id: "", sku: "", nome: "", sigla: "", descricao: "", diametro_mm: 0, comprimento_mm: 0, torque_insercao: 0, rosca_interna: "", regiao_apical: "", regiao_cervical: "", material: "", superficie: "", tratamento: "", chave_sku: "", preco: 0, macrogeometria: "", osso_soft: "", osso_hard: "", diametro_plataforma_mm: 0, ativo: true })
     setAbutment({ familia_id: "", tipo_reabilitacao_id: "", tipo_abutment_id: "", sku: "", diametro_plataforma: "", angulacao_graus: 0, altura_transmucoso: 0, altura_corpo: 0, torque_ncm: 0, preco: 0 })
-    setKit({ categoria_id: "", sku: "", nome: "", descricao: "", familia_ids: [], preco: 0 })
+    setKit({ tipo_kit_id: "", sku: "", nome: "", sigla: "", descricao: "", preco: 0 })
     setParafusoRetencao({ sku: "", nome: "", torque_ncm: 0, vinculo_tipo: "", vinculo_sku: "", chave_sku: "", preco: 0 })
     setCicatrizador({ sku: "", nome: "", altura_transmucoso: 0, diametro_plataforma: "", torque_ncm: 0, familia_id: "", chave_sku: "", preco: 0 })
-    setSeqAnalógica([])
-    setSeqDigital([])
-    setKitBom([])
+    setSeqProteticasIds([])
     setImagens([])
     setChavesIds([])
     setKitsIds([])
@@ -148,6 +157,13 @@ export function ProdutoFormModal({
     setAbtChavesIds([])
     setAbtKitsIds([])
     setAbtParafusosIds([])
+    setKitChaves([])
+    setKitFresas([])
+    setKitComplementares([])
+    setKitOpcionais([])
+    setKitKitsComplementares([])
+    setKitKitsRelacionados([])
+    setKitImplantes([])
   }
 
   useEffect(() => {
@@ -245,17 +261,27 @@ export function ProdutoFormModal({
       listarAbutmentParafusos(d.sku)
         .then(setAbtParafusosIds)
         .catch(() => setAbtParafusosIds([]))
+      listarSeqProteticasAbutment(d.sku)
+        .then(setSeqProteticasIds)
+        .catch(() => setSeqProteticasIds([]))
     }
     if (editingItem.tipo === "kit" && kitDetalhe) {
-      const d = kitDetalhe
+      const d = kitDetalhe as any
       setKit({
-        categoria_id: d.categoria_id ?? "",
+        tipo_kit_id: d.tipo_kit_id ?? "",
         sku: d.sku ?? "",
         nome: d.nome ?? "",
+        sigla: d.sigla ?? "",
         descricao: d.descricao ?? "",
-        familia_ids: d.familias?.map((f) => f.familia_id) ?? [],
         preco: d.preco ?? 0,
       })
+      listarKitChaves(d.sku).then(setKitChaves).catch(() => setKitChaves([]))
+      listarKitFresas(d.sku).then(setKitFresas).catch(() => setKitFresas([]))
+      listarKitComplementares(d.sku).then(setKitComplementares).catch(() => setKitComplementares([]))
+      listarKitOpcionais(d.sku).then(setKitOpcionais).catch(() => setKitOpcionais([]))
+      listarKitKitsComplementares(d.sku).then(setKitKitsComplementares).catch(() => setKitKitsComplementares([]))
+      listarKitKitsRelacionados(d.sku).then(setKitKitsRelacionados).catch(() => setKitKitsRelacionados([]))
+      listarKitImplantes(d.sku).then(setKitImplantes).catch(() => setKitImplantes([]))
     }
   }, [open, editingItem, implDetalhe, abDetalhe, kitDetalhe])
 
@@ -289,7 +315,6 @@ export function ProdutoFormModal({
     } else if (tipo === "kit") {
       if (!kit.sku) return "SKU é obrigatório"
       if (!kit.nome) return "Nome é obrigatório"
-      if (!kit.categoria_id) return "Categoria é obrigatória"
     }
     return null
   }
@@ -345,10 +370,10 @@ export function ProdutoFormModal({
   function makeKitPayload() {
     return {
       sku: kit.sku,
-      categoria_id: kit.categoria_id,
+      tipo_kit_id: kit.tipo_kit_id || undefined,
       nome: kit.nome,
+      sigla: kit.sigla || undefined,
       descricao: kit.descricao || undefined,
-      familia_ids: kit.familia_ids,
       preco: kit.preco || undefined,
     }
   }
@@ -382,11 +407,7 @@ export function ProdutoFormModal({
         } else {
           await criarAbutment.mutateAsync(payload)
         }
-        const allEtapas = [
-          ...seqAnalógica.map((e, i) => ({ tipo_workflow: "analógico" as const, etapa_ordem: i + 1, etapa_nome: e.etapa_nome, acessorio_sku: e.acessorio_sku })),
-          ...seqDigital.map((e, i) => ({ tipo_workflow: "digital" as const, etapa_ordem: i + 1, etapa_nome: e.etapa_nome, acessorio_sku: e.acessorio_sku })),
-        ]
-        await salvarSequenciaProtetica(abutment.sku, allEtapas)
+        await salvarSeqProteticasAbutment(abutment.sku, seqProteticasIds)
         // Salvar composição do abutment
         await salvarAbutmentChaves(abutment.sku, abtChavesIds)
         await salvarAbutmentKits(abutment.sku, abtKitsIds)
@@ -429,9 +450,13 @@ export function ProdutoFormModal({
         } else {
           await criarKit.mutateAsync(payload)
         }
-        for (const item of kitBom) {
-          await adicionarBOMItem(empresaId, kit.sku, { tipo: item.tipo, sku: item.sku, quantidade: item.quantidade })
-        }
+        await salvarKitChaves(kit.sku, kitChaves)
+        await salvarKitFresas(kit.sku, kitFresas)
+        await salvarKitComplementares(kit.sku, kitComplementares)
+        await salvarKitOpcionais(kit.sku, kitOpcionais)
+        await salvarKitKitsComplementares(kit.sku, kitKitsComplementares)
+        await salvarKitKitsRelacionados(kit.sku, kitKitsRelacionados)
+        await salvarKitImplantes(kit.sku, kitImplantes)
       }
 
       qc.invalidateQueries({ queryKey: ["catalogo"] })
@@ -448,28 +473,6 @@ export function ProdutoFormModal({
     } finally {
       setSaving(false)
     }
-  }
-
-  function addSeqEtapa(tipo: "analógico" | "digital") {
-    const setter = tipo === "analógico" ? setSeqAnalógica : setSeqDigital
-    setter([...(tipo === "analógico" ? seqAnalógica : seqDigital), { etapa_nome: "", acessorio_sku: "" }])
-  }
-  function removeSeqEtapa(tipo: "analógico" | "digital", idx: number) {
-    const setter = tipo === "analógico" ? setSeqAnalógica : setSeqDigital
-    setter((tipo === "analógico" ? seqAnalógica : seqDigital).filter((_, i) => i !== idx))
-  }
-  function updateSeqEtapa(tipo: "analógico" | "digital", idx: number, field: string, value: string) {
-    const setter = tipo === "analógico" ? setSeqAnalógica : setSeqDigital
-    const arr = [...(tipo === "analógico" ? seqAnalógica : seqDigital)]
-    arr[idx] = { ...arr[idx], [field]: value }
-    setter(arr)
-  }
-  function addBomItem() { setKitBom([...kitBom, { tipo: "fresa", sku: "", quantidade: 1 }]) }
-  function removeBomItem(idx: number) { setKitBom(kitBom.filter((_, i) => i !== idx)) }
-  function updateBomItem(idx: number, field: string, value: string | number) {
-    const arr = [...kitBom]
-    arr[idx] = { ...arr[idx], [field]: value }
-    setKitBom(arr)
   }
 
   const labelCls = "text-xs font-bold uppercase tracking-widest text-gray-400"
@@ -544,13 +547,9 @@ export function ProdutoFormModal({
               familias={familias}
               tiposReab={tiposReab}
               tiposAbutment={tiposAbutment}
-              acessorios={acessorios}
-              etapas={etapas}
-              seqAnalógica={seqAnalógica}
-              seqDigital={seqDigital}
-              addSeqEtapa={addSeqEtapa}
-              removeSeqEtapa={removeSeqEtapa}
-              updateSeqEtapa={updateSeqEtapa}
+              sequencias={sequencias}
+              sequenciasIds={seqProteticasIds}
+              onSequenciasChange={setSeqProteticasIds}
               chaves={chaves}
               chavesIds={abtChavesIds}
               onChavesChange={setAbtChavesIds}
@@ -567,17 +566,27 @@ export function ProdutoFormModal({
             <KitForm
               data={kit}
               onChange={(d) => setKit(d)}
-              catsKit={catsKit}
-              familias={familias}
+              tiposKit={tiposKit}
               fresas={fresas}
               chaves={chaves}
-              acessorios={acessorios}
-              instrumentais={instrumentais}
+              complementares={complementares}
+              opcionais={opcionais}
+              kitChaves={kitChaves}
+              kitFresas={kitFresas}
+              kitComplementares={kitComplementares}
+              kitOpcionais={kitOpcionais}
+              onToggleChave={(sku) => toggleInArray(kitChaves, setKitChaves, sku)}
+              onToggleFresa={(sku) => toggleInArray(kitFresas, setKitFresas, sku)}
+              onToggleComplementar={(sku) => toggleInArray(kitComplementares, setKitComplementares, sku)}
+              onToggleOpcional={(sku) => toggleInArray(kitOpcionais, setKitOpcionais, sku)}
+              todosKits={todosKits?.filter((k) => k.sku !== kit.sku)}
+              kitKitsComplementares={kitKitsComplementares}
+              kitKitsRelacionados={kitKitsRelacionados}
+              onToggleKitComplementar={(sku) => toggleInArray(kitKitsComplementares, setKitKitsComplementares, sku)}
+              onToggleKitRelacionado={(sku) => toggleInArray(kitKitsRelacionados, setKitKitsRelacionados, sku)}
               implantes={implantes}
-              kitBom={kitBom}
-              addBomItem={addBomItem}
-              removeBomItem={removeBomItem}
-              updateBomItem={updateBomItem}
+              kitImplantes={kitImplantes}
+              onToggleImplante={(sku) => toggleInArray(kitImplantes, setKitImplantes, sku)}
             />
           )}
 
@@ -598,7 +607,7 @@ export function ProdutoFormModal({
             />
           )}
 
-          {/* Imagens do produto */}
+          {/* ─── Imagens do produto ─── */}
           <ImageUploader
             empresaId={empresaId}
             produtoTipo={tipo}

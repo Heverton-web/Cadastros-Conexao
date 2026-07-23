@@ -70,15 +70,53 @@ export async function getKitDetalhe(sku: string): Promise<CatalogoKit | null> {
 
   if (!data) return null
 
-  // Carregar composição N:M
+  // Carregar composição N:M (contar quantidades via duplicatas nas pivots)
   const [chavesRes, fresasRes, compRes, opcRes] = await Promise.all([
+    supabase.from("catalogo_kit_chaves").select("chave_id").eq("kit_sku", sku),
+    supabase.from("catalogo_kit_fresas").select("fresa_id").eq("kit_sku", sku),
+    supabase.from("catalogo_kit_complementares").select("complementar_id").eq("kit_sku", sku),
+    supabase.from("catalogo_kit_opcionais").select("opcional_id").eq("kit_sku", sku),
   ])
 
-  const kit = data as CatalogoKit
-  kit.chaves = []
-  kit.fresas = []
-  kit.complementares = []
-  kit.opcionais = []
+  // Contar quantidades por SKU (duplicatas = quantidade)
+  const countByField = (rows: Record<string, unknown>[] | null, field: string) => {
+    const map = new Map<string, number>()
+    for (const r of rows ?? []) {
+      const id = String(r[field])
+      map.set(id, (map.get(id) ?? 0) + 1)
+    }
+    return map
+  }
+
+  const chavesQty = countByField(chavesRes.data, "chave_id")
+  const fresasQty = countByField(fresasRes.data, "fresa_id")
+  const compQty = countByField(compRes.data, "complementar_id")
+  const opcQty = countByField(opcRes.data, "opcional_id")
+
+  const uniqueChaves = [...chavesQty.keys()]
+  const uniqueFresas = [...fresasQty.keys()]
+  const uniqueComps = [...compQty.keys()]
+  const uniqueOpcs = [...opcQty.keys()]
+
+  const [chavesData, fresasData, compData, opcData] = await Promise.all([
+    uniqueChaves.length > 0 ? supabase.from("catalogo_chaves").select("*").in("sku", uniqueChaves).then((r) => r.data ?? []) : Promise.resolve([]),
+    uniqueFresas.length > 0 ? supabase.from("catalogo_fresas").select("*").in("sku", uniqueFresas).then((r) => r.data ?? []) : Promise.resolve([]),
+    uniqueComps.length > 0 ? supabase.from("catalogo_complementares").select("*").in("sku", uniqueComps).then((r) => r.data ?? []) : Promise.resolve([]),
+    uniqueOpcs.length > 0 ? supabase.from("catalogo_opcionais").select("*").in("sku", uniqueOpcs).then((r) => r.data ?? []) : Promise.resolve([]),
+  ])
+
+  const kit = data as CatalogoKit & { _quantidades?: Record<string, number> }
+  kit.chaves = chavesData as CatalogoChave[]
+  kit.fresas = fresasData as CatalogoFresa[]
+  kit.complementares = compData as CatalogoComplementar[]
+  kit.opcionais = opcData as CatalogoOpcional[]
+
+  // Guardar quantidades para uso externo
+  kit._quantidades = {}
+  for (const [sku, qty] of chavesQty) kit._quantidades[sku] = qty
+  for (const [sku, qty] of fresasQty) kit._quantidades[sku] = qty
+  for (const [sku, qty] of compQty) kit._quantidades[sku] = qty
+  for (const [sku, qty] of opcQty) kit._quantidades[sku] = qty
 
   return kit
 }
@@ -112,13 +150,20 @@ export async function atualizarKit(sku: string, input: Partial<{
 }
 
 export async function toggleKitAtivo(sku: string, ativo: boolean): Promise<void> {
+  const { error } = await supabase.from("catalogo_kits").update({ ativo }).eq("sku", sku)
   if (error) throw error
 }
 
 export async function removerKit(sku: string): Promise<void> {
-  // Remover composição N:M
+  // Remover composição N:M (sem FK/CASCADE nessas pivots)
   await Promise.all([
+    supabase.from("catalogo_kit_chaves").delete().eq("kit_sku", sku),
+    supabase.from("catalogo_kit_fresas").delete().eq("kit_sku", sku),
+    supabase.from("catalogo_kit_complementares").delete().eq("kit_sku", sku),
+    supabase.from("catalogo_kit_opcionais").delete().eq("kit_sku", sku),
+    supabase.from("catalogo_kit_implantes").delete().eq("kit_sku", sku),
   ])
+  const { error } = await supabase.from("catalogo_kits").delete().eq("sku", sku)
   if (error) throw error
   dispararEventoModulo(MODULO_KEY, "produto.removido", { sku, tipo: "kit" }).catch(() => {})
 }
@@ -127,31 +172,101 @@ export async function removerKit(sku: string): Promise<void> {
 // Composição N:M do Kit
 // ============================================================
 
+export async function listarKitChaves(kitSku: string): Promise<string[]> {
+  const { data, error } = await supabase.from("catalogo_kit_chaves").select("chave_id").eq("kit_sku", kitSku)
+  if (error) throw error
+  return (data as { chave_id: string }[]).map((r) => r.chave_id)
+}
+
 export async function salvarKitChaves(kitSku: string, chaveIds: string[]): Promise<void> {
+  await supabase.from("catalogo_kit_chaves").delete().eq("kit_sku", kitSku)
   if (chaveIds.length === 0) return
   const rows = chaveIds.map((id) => ({ kit_sku: kitSku, chave_id: id }))
   const { error } = await supabase.from("catalogo_kit_chaves").insert(rows)
   if (error) throw error
 }
 
+export async function listarKitFresas(kitSku: string): Promise<string[]> {
+  const { data, error } = await supabase.from("catalogo_kit_fresas").select("fresa_id").eq("kit_sku", kitSku)
+  if (error) throw error
+  return (data as { fresa_id: string }[]).map((r) => r.fresa_id)
+}
+
 export async function salvarKitFresas(kitSku: string, fresaIds: string[]): Promise<void> {
+  await supabase.from("catalogo_kit_fresas").delete().eq("kit_sku", kitSku)
   if (fresaIds.length === 0) return
   const rows = fresaIds.map((id) => ({ kit_sku: kitSku, fresa_id: id }))
   const { error } = await supabase.from("catalogo_kit_fresas").insert(rows)
   if (error) throw error
 }
 
+export async function listarKitComplementares(kitSku: string): Promise<string[]> {
+  const { data, error } = await supabase.from("catalogo_kit_complementares").select("complementar_id").eq("kit_sku", kitSku)
+  if (error) throw error
+  return (data as { complementar_id: string }[]).map((r) => r.complementar_id)
+}
+
 export async function salvarKitComplementares(kitSku: string, complementarIds: string[]): Promise<void> {
+  await supabase.from("catalogo_kit_complementares").delete().eq("kit_sku", kitSku)
   if (complementarIds.length === 0) return
   const rows = complementarIds.map((id) => ({ kit_sku: kitSku, complementar_id: id }))
   const { error } = await supabase.from("catalogo_kit_complementares").insert(rows)
   if (error) throw error
 }
 
+export async function listarKitOpcionais(kitSku: string): Promise<string[]> {
+  const { data, error } = await supabase.from("catalogo_kit_opcionais").select("opcional_id").eq("kit_sku", kitSku)
+  if (error) throw error
+  return (data as { opcional_id: string }[]).map((r) => r.opcional_id)
+}
+
 export async function salvarKitOpcionais(kitSku: string, opcionalIds: string[]): Promise<void> {
+  await supabase.from("catalogo_kit_opcionais").delete().eq("kit_sku", kitSku)
   if (opcionalIds.length === 0) return
   const rows = opcionalIds.map((id) => ({ kit_sku: kitSku, opcional_id: id }))
   const { error } = await supabase.from("catalogo_kit_opcionais").insert(rows)
+  if (error) throw error
+}
+
+export async function listarKitKitsComplementares(kitSku: string): Promise<string[]> {
+  const { data, error } = await supabase.from("catalogo_kit_kits_complementares").select("complementar_sku").eq("kit_sku", kitSku)
+  if (error) throw error
+  return (data as { complementar_sku: string }[]).map((r) => r.complementar_sku)
+}
+
+export async function salvarKitKitsComplementares(kitSku: string, complementarSkus: string[]): Promise<void> {
+  await supabase.from("catalogo_kit_kits_complementares").delete().eq("kit_sku", kitSku)
+  if (complementarSkus.length === 0) return
+  const rows = complementarSkus.map((sku) => ({ kit_sku: kitSku, complementar_sku: sku }))
+  const { error } = await supabase.from("catalogo_kit_kits_complementares").insert(rows)
+  if (error) throw error
+}
+
+export async function listarKitKitsRelacionados(kitSku: string): Promise<string[]> {
+  const { data, error } = await supabase.from("catalogo_kit_kits_relacionados").select("relacionado_sku").eq("kit_sku", kitSku)
+  if (error) throw error
+  return (data as { relacionado_sku: string }[]).map((r) => r.relacionado_sku)
+}
+
+export async function salvarKitKitsRelacionados(kitSku: string, relacionadoSkus: string[]): Promise<void> {
+  await supabase.from("catalogo_kit_kits_relacionados").delete().eq("kit_sku", kitSku)
+  if (relacionadoSkus.length === 0) return
+  const rows = relacionadoSkus.map((sku) => ({ kit_sku: kitSku, relacionado_sku: sku }))
+  const { error } = await supabase.from("catalogo_kit_kits_relacionados").insert(rows)
+  if (error) throw error
+}
+
+export async function listarKitImplantes(kitSku: string): Promise<string[]> {
+  const { data, error } = await supabase.from("catalogo_kit_implantes").select("implante_sku").eq("kit_sku", kitSku)
+  if (error) throw error
+  return (data as { implante_sku: string }[]).map((r) => r.implante_sku)
+}
+
+export async function salvarKitImplantes(kitSku: string, implanteSkus: string[]): Promise<void> {
+  await supabase.from("catalogo_kit_implantes").delete().eq("kit_sku", kitSku)
+  if (implanteSkus.length === 0) return
+  const rows = implanteSkus.map((sku) => ({ kit_sku: kitSku, implante_sku: sku }))
+  const { error } = await supabase.from("catalogo_kit_implantes").insert(rows)
   if (error) throw error
 }
 

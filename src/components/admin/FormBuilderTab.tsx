@@ -10,7 +10,7 @@ import {
   type Etapa,
   type TipoInput,
   type TipoPessoa,
-} from "~/features/form-schema";
+} from "~/shared/form-schema";
 import {
   Eye,
   EyeOff,

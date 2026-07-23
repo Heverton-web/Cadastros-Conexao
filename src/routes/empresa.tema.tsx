@@ -3,7 +3,7 @@ import { authLayout } from "./_auth";
 import {
   salvarEmpresaDesign,
   buscarEmpresaDesign,
-} from "~/features/empresas";
+} from "~/shared/empresas";
 import { EMPRESA_ID } from "~/config/empresa";
 import { useState, useEffect } from "react";
 import { Palette, Save, Loader2 } from "lucide-react";

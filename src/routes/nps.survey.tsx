@@ -5,7 +5,7 @@ import { Button } from "~/components/ui/button";
 import { supabase } from "~/core/supabase";
 import type { NpsPergunta } from "~/features/nps/types";
 import type { Empresa, EmpresaConfig } from "~/core/empresa";
-import { buscarEmpresa, buscarEmpresaConfig } from "~/features/empresas";
+import { buscarEmpresa, buscarEmpresaConfig } from "~/shared/empresas";
 import {
   getNpsThemeVars,
   getNpsNoBorders,

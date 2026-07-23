@@ -3,7 +3,7 @@ name: gerar-crud
 description: >
   Gera operações CRUD completas com React Query hooks, paginação, ordenação,
   filtros avançados, validação Zod, tratamento de erros e cache strategies.
-  Valida multi-tenant (empresa_id obrigatório) em todas as queries.
+  Sistema é single-tenant (empresa_id foi removido do schema, ver 20260721000000_remove_empresa_id_all_tables.sql) — não injetar empresa_id nas queries.
   Trigger: "gerar crud", "criar crud", "operações crud"
 ---
 
@@ -54,14 +54,13 @@ Mapear tipos PostgreSQL → TypeScript:
 
 export interface {{MODULO_PASCAL}} {
   id: string;
-  empresa_id: string;
   created_at: string;
   updated_at: string;
   // campos da tabela
 }
 
 export interface Criar{{MODULO_PASCAL}}Input {
-  // campos de criação (sem id, empresa_id, timestamps)
+  // campos de criação (sem id, timestamps)
 }
 
 export interface Atualizar{{MODULO_PASCAL}}Input {
@@ -110,7 +109,6 @@ const MODULO_KEY = "{{MODULO_KEY}}";
 export const {{MODULO_CAMEL}}Service = {
   // ═══ LISTAR COM FILTROS E PAGINAÇÃO ═══
   async listar(
-    empresaId: string,
     filtros: Filtros{{MODULO_PASCAL}} = {}
   ): Promise<PaginacaoResponse<{{MODULO_PASCAL}}>> {
     const {
@@ -126,8 +124,7 @@ export const {{MODULO_CAMEL}}Service = {
 
     let query = supabase
       .from(TABELA)
-      .select("*", { count: "exact" })
-      .eq("empresa_id", empresaId);
+      .select("*", { count: "exact" });
 
     // Filtros
     if (busca) {
@@ -164,12 +161,11 @@ export const {{MODULO_CAMEL}}Service = {
   },
 
   // ═══ BUSCAR POR ID ═══
-  async buscarPorId(id: string, empresaId: string): Promise<{{MODULO_PASCAL}} | null> {
+  async buscarPorId(id: string): Promise<{{MODULO_PASCAL}} | null> {
     const { data, error } = await supabase
       .from(TABELA)
       .select("*")
       .eq("id", id)
-      .eq("empresa_id", empresaId)
       .single();
 
     if (error) throw error;
@@ -177,75 +173,54 @@ export const {{MODULO_CAMEL}}Service = {
   },
 
   // ═══ CRIAR ═══
-  async criar(input: Criar{{MODULO_PASCAL}}Input, empresaId: string): Promise<{{MODULO_PASCAL}}> {
+  async criar(input: Criar{{MODULO_PASCAL}}Input): Promise<{{MODULO_PASCAL}}> {
     const { data, error } = await supabase
       .from(TABELA)
-      .insert({ ...input, empresa_id: empresaId })
+      .insert(input)
       .select()
       .single();
 
     if (error) throw error;
 
-    dispararEventoModulo(
-      MODULO_KEY,
-      "{{MODULO_KEY}}.criado",
-      { id: data.id, empresa_id: empresaId },
-      empresaId
-    ).catch(() => {});
+    dispararEventoModulo(MODULO_KEY, "{{MODULO_KEY}}.criado", { id: data.id }).catch(() => {});
 
     return data;
   },
 
   // ═══ ATUALIZAR ═══
-  async atualizar(
-    input: Atualizar{{MODULO_PASCAL}}Input,
-    empresaId: string
-  ): Promise<{{MODULO_PASCAL}}> {
+  async atualizar(input: Atualizar{{MODULO_PASCAL}}Input): Promise<{{MODULO_PASCAL}}> {
     const { id, ...campos } = input;
     const { data, error } = await supabase
       .from(TABELA)
       .update(campos)
       .eq("id", id)
-      .eq("empresa_id", empresaId)
       .select()
       .single();
 
     if (error) throw error;
 
-    dispararEventoModulo(
-      MODULO_KEY,
-      "{{MODULO_KEY}}.atualizado",
-      { id, empresa_id: empresaId },
-      empresaId
-    ).catch(() => {});
+    dispararEventoModulo(MODULO_KEY, "{{MODULO_KEY}}.atualizado", { id }).catch(() => {});
 
     return data;
   },
 
   // ═══ EXCLUIR ═══
-  async excluir(id: string, empresaId: string): Promise<void> {
+  async excluir(id: string): Promise<void> {
     const { error } = await supabase
       .from(TABELA)
       .delete()
-      .eq("id", id)
-      .eq("empresa_id", empresaId);
+      .eq("id", id);
 
     if (error) throw error;
 
-    dispararEventoModulo(
-      MODULO_KEY,
-      "{{MODULO_KEY}}.excluido",
-      { id, empresa_id: empresaId },
-      empresaId
-    ).catch(() => {});
+    dispararEventoModulo(MODULO_KEY, "{{MODULO_KEY}}.excluido", { id }).catch(() => {});
   },
 
   // ═══ CONTAR ═══
-  async contar(empresaId: string, filtros: Filtros{{MODULO_PASCAL}} = {}): Promise<number> {
+  async contar(filtros: Filtros{{MODULO_PASCAL}} = {}): Promise<number> {
     let query = supabase
       .from(TABELA)
-      .select("*", { count: "exact", head: true })
-      .eq("empresa_id", empresaId);
+      .select("*", { count: "exact", head: true });
 
     if (filtros.status) {
       query = query.eq("status", filtros.status);
@@ -275,68 +250,64 @@ import type {
 const QUERY_KEY = "{{MODULO_KEY}}";
 
 // ═══ LISTAR ═══
-export function use{{MODULO_PASCAL}}s(empresaId: string, filtros: Filtros{{MODULO_PASCAL}} = {}) {
+export function use{{MODULO_PASCAL}}s(filtros: Filtros{{MODULO_PASCAL}} = {}) {
   return useQuery({
-    queryKey: [QUERY_KEY, empresaId, filtros],
-    queryFn: () => {{MODULO_CAMEL}}Service.listar(empresaId, filtros),
-    enabled: !!empresaId,
+    queryKey: [QUERY_KEY, filtros],
+    queryFn: () => {{MODULO_CAMEL}}Service.listar(filtros),
     staleTime: 5 * 60 * 1000, // 5 minutos
   });
 }
 
 // ═══ BUSCAR POR ID ═══
-export function use{{MODULO_PASCAL}}(id: string, empresaId: string) {
+export function use{{MODULO_PASCAL}}(id: string) {
   return useQuery({
-    queryKey: [QUERY_KEY, id, empresaId],
-    queryFn: () => {{MODULO_CAMEL}}Service.buscarPorId(id, empresaId),
-    enabled: !!id && !!empresaId,
+    queryKey: [QUERY_KEY, id],
+    queryFn: () => {{MODULO_CAMEL}}Service.buscarPorId(id),
+    enabled: !!id,
   });
 }
 
 // ═══ CRIAR ═══
-export function useCriar{{MODULO_PASCAL}}(empresaId: string) {
+export function useCriar{{MODULO_PASCAL}}() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (input: Criar{{MODULO_PASCAL}}Input) =>
-      {{MODULO_CAMEL}}Service.criar(input, empresaId),
+    mutationFn: (input: Criar{{MODULO_PASCAL}}Input) => {{MODULO_CAMEL}}Service.criar(input),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEY, empresaId] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEY] });
     },
   });
 }
 
 // ═══ ATUALIZAR ═══
-export function useAtualizar{{MODULO_PASCAL}}(empresaId: string) {
+export function useAtualizar{{MODULO_PASCAL}}() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (input: Atualizar{{MODULO_PASCAL}}Input) =>
-      {{MODULO_CAMEL}}Service.atualizar(input, empresaId),
+    mutationFn: (input: Atualizar{{MODULO_PASCAL}}Input) => {{MODULO_CAMEL}}Service.atualizar(input),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEY, empresaId] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEY] });
     },
   });
 }
 
 // ═══ EXCLUIR ═══
-export function useExcluir{{MODULO_PASCAL}}(empresaId: string) {
+export function useExcluir{{MODULO_PASCAL}}() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (id: string) => {{MODULO_CAMEL}}Service.excluir(id, empresaId),
+    mutationFn: (id: string) => {{MODULO_CAMEL}}Service.excluir(id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEY, empresaId] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEY] });
     },
   });
 }
 
 // ═══ CONTAR ═══
-export function useContar{{MODULO_PASCAL}}s(empresaId: string, filtros: Filtros{{MODULO_PASCAL}} = {}) {
+export function useContar{{MODULO_PASCAL}}s(filtros: Filtros{{MODULO_PASCAL}} = {}) {
   return useQuery({
-    queryKey: [QUERY_KEY, "count", empresaId, filtros],
-    queryFn: () => {{MODULO_CAMEL}}Service.contar(empresaId, filtros),
-    enabled: !!empresaId,
+    queryKey: [QUERY_KEY, "count", filtros],
+    queryFn: () => {{MODULO_CAMEL}}Service.contar(filtros),
   });
 }
 ```
@@ -357,8 +328,8 @@ git commit -m "feat(<modulo>): gerar CRUD completo com paginação e filtros"
 
 ## Regras Obrigatórias
 
-1. **empresa_id** — toda query filtra por empresa_id
-2. **dispararEventoModulo()** — fire-and-forget com `.catch(() => {})`
+1. **Single-tenant** — não injetar empresa_id (removido do schema, RLS aberta)
+2. **dispararEventoModulo(moduloKey, eventoKey, payload)** — 3 args, fire-and-forget com `.catch(() => {})`
 3. **Ordenação padrão** — created_at desc
 4. **Paginação** — padrão 20 itens por página
 5. **Stale time** — 5 minutos para queries frequentes

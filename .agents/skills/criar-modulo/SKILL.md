@@ -4,7 +4,7 @@ description: >
   Cria estrutura completa de um novo módulo no ERP Odonto incluindo:
   module.ts, permissions.ts, types.ts, service.ts, React Query hooks, testes básicos,
   barrel exports, eventos da Central de Ações e configuração de Design System.
-  Valida multi-tenant (empresa_id obrigatório) e roda build para confirmar.
+  Sistema é single-tenant (empresa_id foi removido do schema em 20260721000000_remove_empresa_id_all_tables.sql) — não injetar empresa_id. RLS é aberta (USING true). Roda build para confirmar.
   Trigger: "criar módulo", "novo módulo", "adicionar módulo"
 ---
 
@@ -147,7 +147,6 @@ export const {{MODULO_CAMEL}}Permissions: Permissao[] = [
 ```typescript
 export interface {{MODULO_PASCAL}} {
   id: string;
-  empresa_id: string;
   created_at: string;
   updated_at: string;
   // campos específicos
@@ -174,73 +173,66 @@ const TABELA = "{{TABELA}}";
 const MODULO_KEY = "{{MODULO_KEY}}";
 
 export const {{MODULO_CAMEL}}Service = {
-  async listar(empresaId: string): Promise<{{MODULO_PASCAL}}[]> {
+  async listar(): Promise<{{MODULO_PASCAL}}[]> {
     const { data, error } = await supabase
       .from(TABELA)
       .select("*")
-      .eq("empresa_id", empresaId)
       .order("created_at", { ascending: false });
 
     if (error) throw error;
     return data || [];
   },
 
-  async buscarPorId(id: string, empresaId: string): Promise<{{MODULO_PASCAL}} | null> {
+  async buscarPorId(id: string): Promise<{{MODULO_PASCAL}} | null> {
     const { data, error } = await supabase
       .from(TABELA)
       .select("*")
       .eq("id", id)
-      .eq("empresa_id", empresaId)
       .single();
 
     if (error) throw error;
     return data;
   },
 
-  async criar(input: Criar{{MODULO_PASCAL}}Input, empresaId: string): Promise<{{MODULO_PASCAL}}> {
+  async criar(input: Criar{{MODULO_PASCAL}}Input): Promise<{{MODULO_PASCAL}}> {
     const { data, error } = await supabase
       .from(TABELA)
-      .insert({ ...input, empresa_id: empresaId })
+      .insert(input)
       .select()
       .single();
 
     if (error) throw error;
 
-    dispararEventoModulo(MODULO_KEY, "{{MODULO_KEY}}.criado", { id: data.id, empresa_id: empresaId }, empresaId)
-      .catch(() => {});
+    dispararEventoModulo(MODULO_KEY, "{{MODULO_KEY}}.criado", { id: data.id }).catch(() => {});
 
     return data;
   },
 
-  async atualizar(input: Atualizar{{MODULO_PASCAL}}Input, empresaId: string): Promise<{{MODULO_PASCAL}}> {
+  async atualizar(input: Atualizar{{MODULO_PASCAL}}Input): Promise<{{MODULO_PASCAL}}> {
     const { id, ...campos } = input;
     const { data, error } = await supabase
       .from(TABELA)
       .update(campos)
       .eq("id", id)
-      .eq("empresa_id", empresaId)
       .select()
       .single();
 
     if (error) throw error;
 
-    dispararEventoModulo(MODULO_KEY, "{{MODULO_KEY}}.atualizado", { id, empresa_id: empresaId }, empresaId)
-      .catch(() => {});
+    dispararEventoModulo(MODULO_KEY, "{{MODULO_KEY}}.atualizado", { id }).catch(() => {});
 
     return data;
   },
 
-  async excluir(id: string, empresaId: string): Promise<void> {
+  async excluir(id: string): Promise<void> {
     const { error } = await supabase
       .from(TABELA)
       .delete()
-      .eq("id", id)
-      .eq("empresa_id", empresaId);
+      .eq("id", id);
 
     if (error) throw error;
 
-    dispararEventoModulo(MODULO_KEY, "{{MODULO_KEY}}.excluido", { id, empresa_id: empresaId }, empresaId)
-      .catch(() => {});
+    dispararEventoModulo(MODULO_KEY, "{{MODULO_KEY}}.excluido", { id }).catch(() => {});
   },
 };
 ```
@@ -252,53 +244,50 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { {{MODULO_CAMEL}}Service } from "../services/{{MODULO_KEY}}.service";
 import type { Criar{{MODULO_PASCAL}}Input, Atualizar{{MODULO_PASCAL}}Input } from "../types";
 
-export function use{{MODULO_PASCAL}}s(empresaId: string) {
+export function use{{MODULO_PASCAL}}s() {
   return useQuery({
-    queryKey: ["{{MODULO_KEY}}", empresaId],
-    queryFn: () => {{MODULO_CAMEL}}Service.listar(empresaId),
-    enabled: !!empresaId,
+    queryKey: ["{{MODULO_KEY}}"],
+    queryFn: () => {{MODULO_CAMEL}}Service.listar(),
   });
 }
 
-export function use{{MODULO_PASCAL}}(id: string, empresaId: string) {
+export function use{{MODULO_PASCAL}}(id: string) {
   return useQuery({
-    queryKey: ["{{MODULO_KEY}}", id, empresaId],
-    queryFn: () => {{MODULO_CAMEL}}Service.buscarPorId(id, empresaId),
-    enabled: !!id && !!empresaId,
+    queryKey: ["{{MODULO_KEY}}", id],
+    queryFn: () => {{MODULO_CAMEL}}Service.buscarPorId(id),
+    enabled: !!id,
   });
 }
 
-export function useCriar{{MODULO_PASCAL}}(empresaId: string) {
+export function useCriar{{MODULO_PASCAL}}() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (input: Criar{{MODULO_PASCAL}}Input) =>
-      {{MODULO_CAMEL}}Service.criar(input, empresaId),
+    mutationFn: (input: Criar{{MODULO_PASCAL}}Input) => {{MODULO_CAMEL}}Service.criar(input),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["{{MODULO_KEY}}", empresaId] });
+      queryClient.invalidateQueries({ queryKey: ["{{MODULO_KEY}}"] });
     },
   });
 }
 
-export function useAtualizar{{MODULO_PASCAL}}(empresaId: string) {
+export function useAtualizar{{MODULO_PASCAL}}() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (input: Atualizar{{MODULO_PASCAL}}Input) =>
-      {{MODULO_CAMEL}}Service.atualizar(input, empresaId),
+    mutationFn: (input: Atualizar{{MODULO_PASCAL}}Input) => {{MODULO_CAMEL}}Service.atualizar(input),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["{{MODULO_KEY}}", empresaId] });
+      queryClient.invalidateQueries({ queryKey: ["{{MODULO_KEY}}"] });
     },
   });
 }
 
-export function useExcluir{{MODULO_PASCAL}}(empresaId: string) {
+export function useExcluir{{MODULO_PASCAL}}() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (id: string) => {{MODULO_CAMEL}}Service.excluir(id, empresaId),
+    mutationFn: (id: string) => {{MODULO_CAMEL}}Service.excluir(id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["{{MODULO_KEY}}", empresaId] });
+      queryClient.invalidateQueries({ queryKey: ["{{MODULO_KEY}}"] });
     },
   });
 }
@@ -326,16 +315,14 @@ vi.mock("~/lib/supabase", () => ({
 }));
 
 describe("{{MODULO_PASCAL}}Service", () => {
-  const empresaId = "test-empresa-id";
-
   it("deve listar registros", async () => {
-    const result = await {{MODULO_CAMEL}}Service.listar(empresaId);
+    const result = await {{MODULO_CAMEL}}Service.listar();
     expect(Array.isArray(result)).toBe(true);
   });
 
   it("deve criar registro", async () => {
     const input = { /* campos obrigatórios */ };
-    const result = await {{MODULO_CAMEL}}Service.criar(input, empresaId);
+    const result = await {{MODULO_CAMEL}}Service.criar(input);
     expect(result).toBeDefined();
   });
 });
@@ -411,8 +398,8 @@ git commit -m "feat(<modulo>): criar módulo <modulo>"
 
 ## Regras Obrigatórias
 
-1. **empresa_id** — toda query filtra por empresa_id
-2. **dispararEventoModulo()** — fire-and-forget com `.catch(() => {})`
+1. **Single-tenant** — não injetar empresa_id (removido em 20260721000000_remove_empresa_id_all_tables.sql). RLS é aberta (USING true)
+2. **dispararEventoModulo(moduloKey, eventoKey, payload)** — 3 args, fire-and-forget com `.catch(() => {})`
 3. **Eventos** — mínimo 3 por módulo (criado, atualizado, excluído)
 4. **Permissões** — usar snake_case sem acentos
 5. **Build** — sempre rodar npm run build antes de commitar

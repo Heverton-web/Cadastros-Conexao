@@ -1,7 +1,11 @@
 import { createRoute } from "@tanstack/react-router";
+import { lazy, Suspense } from "react";
 import { authLayout } from "./_auth";
-import { DetalheRotaPage } from "~/features/rotas/components/DetalheRotaPage";
 import { RequirePermission } from "~/components/guards";
+
+const DetalheRotaPage = lazy(() =>
+  import("~/features/rotas/components/DetalheRotaPage").then((m) => ({ default: m.DetalheRotaPage })),
+);
 
 export const rotaDetailRoute = createRoute({
   getParentRoute: () => authLayout,
@@ -10,7 +14,9 @@ export const rotaDetailRoute = createRoute({
     const { id } = rotaDetailRoute.useParams();
     return (
       <RequirePermission modulo="rotas" permissions={["rotas_planejar", "rotas_executar"]}>
-        <DetalheRotaPage id={id} />
+        <Suspense fallback={null}>
+          <DetalheRotaPage id={id} />
+        </Suspense>
       </RequirePermission>
     );
   },

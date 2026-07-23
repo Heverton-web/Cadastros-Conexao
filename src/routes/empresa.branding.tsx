@@ -5,7 +5,7 @@ import {
   salvarEmpresaDesign,
   uploadEmpresaLogo,
   type EmpresaDesign,
-} from "~/features/empresas";
+} from "~/shared/empresas";
 import { EMPRESA_ID } from "~/config/empresa";
 import { useState, useEffect } from "react";
 import {

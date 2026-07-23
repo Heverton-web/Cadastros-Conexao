@@ -130,15 +130,25 @@ export default defineConfig({
   build: {
     rollupOptions: {
       output: {
-        manualChunks: {
-          "react-vendor": ["react", "react-dom"],
-          tanstack: ["@tanstack/react-router", "@tanstack/react-query"],
-          radix: [
-            "@radix-ui/react-dialog",
-            "@radix-ui/react-dropdown-menu",
-            "@radix-ui/react-alert-dialog",
-          ],
-          charts: ["recharts"],
+        manualChunks(id) {
+          // Função (não objeto) para pegar também "react/jsx-runtime", que o objeto anterior
+          // não capturava — por isso o react-vendor gerado ficava com ~1 byte e o React
+          // acabava vazando pro chunk principal.
+          if (/node_modules\/(react|react-dom)\//.test(id) || id.includes("react/jsx-runtime")) {
+            return "react-vendor";
+          }
+          if (/node_modules\/@tanstack\/(react-router|react-query)\//.test(id)) {
+            return "tanstack";
+          }
+          if (/node_modules\/@radix-ui\//.test(id)) {
+            return "radix";
+          }
+          if (id.includes("node_modules/recharts")) {
+            return "charts";
+          }
+          if (id.includes("node_modules/lucide-react")) {
+            return "lucide";
+          }
         },
       },
     },

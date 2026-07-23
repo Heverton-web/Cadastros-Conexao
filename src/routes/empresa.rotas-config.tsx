@@ -1,6 +1,9 @@
+import { lazy, Suspense } from "react";
 import { createRoute } from "@tanstack/react-router";
 import { authLayout } from "./_auth";
-import { ConfigRotasPage } from "~/features/rotas/components/ConfigRotasPage";
+const ConfigRotasPage = lazy(() =>
+  import("~/features/rotas/components/ConfigRotasPage").then((m) => ({ default: m.ConfigRotasPage })),
+);
 import { RequirePermission } from "~/components/guards";
 
 export const empresaRotasConfigRoute = createRoute({
@@ -8,7 +11,9 @@ export const empresaRotasConfigRoute = createRoute({
   path: "/empresa/rotas/config",
   component: () => (
     <RequirePermission modulo="empresas-core">
-      <ConfigRotasPage />
+      <Suspense fallback={null}>
+        <ConfigRotasPage />
+      </Suspense>
     </RequirePermission>
   ),
 });

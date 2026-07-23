@@ -39,6 +39,7 @@ function AdminKitsPage() {
   const { data: complementaresList } = useQuery({ queryKey: ["catalogo", "complementares-for-kit"], queryFn: async () => { const { data } = await supabase.from("catalogo_complementares").select("sku, nome").order("nome"); return (data ?? []) as any[] }, enabled: !!empresaId })
   const { data: opcionaisList } = useQuery({ queryKey: ["catalogo", "opcionais-for-kit"], queryFn: async () => { const { data } = await supabase.from("catalogo_opcionais").select("sku, nome").order("nome"); return (data ?? []) as any[] }, enabled: !!empresaId })
   const { data: implantesList } = useQuery({ queryKey: ["catalogo", "implantes-for-kit"], queryFn: async () => { const { data } = await supabase.from("catalogo_implantes").select("sku, nome, diametro_mm, conexao_id, familia_id, linha_id, conexao:catalogo_ips_conexoes!inner(nome), familia:catalogo_ips_familias!inner(nome), linha:catalogo_ips_linhas!inner(nome)").eq("ativo", true).order("sku"); return (data ?? []) as any[] }, enabled: !!empresaId })
+  const { data: todosKits } = useQuery({ queryKey: ["catalogo", "todos-kits"], queryFn: async () => { const { data } = await supabase.from("catalogo_kits").select("sku, nome").order("nome"); return (data ?? []) as any[] }, enabled: !!empresaId })
 
   // Type modal
   const [tipoModalOpen, setTipoModalOpen] = useState(false)
@@ -58,6 +59,8 @@ function AdminKitsPage() {
   const [kitOpcionais, setKitOpcionais] = useState<string[]>([])
   const [kitImplantes, setKitImplantes] = useState<string[]>([])
   const [kitTodosDiametros, setKitTodosDiametros] = useState(false)
+  const [kitKitsComplementares, setKitKitsComplementares] = useState<string[]>([])
+  const [kitKitsRelacionados, setKitKitsRelacionados] = useState<string[]>([])
   const [kitError, setKitError] = useState("")
 
   // Select helpers for composition
@@ -66,6 +69,8 @@ function AdminKitsPage() {
   const [selComplementar, setSelComplementar] = useState("")
   const [selOpcional, setSelOpcional] = useState("")
   const [selImplante, setSelImplante] = useState("")
+  const [selKitComplementar, setSelKitComplementar] = useState("")
+  const [selKitRelacionado, setSelKitRelacionado] = useState("")
 
   const [deleteItem, setDeleteItem] = useState<{ id: string; label: string; table: string } | null>(null)
 
@@ -84,17 +89,19 @@ function AdminKitsPage() {
   }
 
   // Kit handlers
-  function openNewKit() { setKitEditing(null); setKitData({ sku: "", nome: "", sigla: "", descricao: "", tipo_kit_id: "", preco: 0, ativo: true }); setKitChaves([]); setKitFresas([]); setKitComplementares([]); setKitOpcionais([]); setKitImplantes([]); setKitTodosDiametros(false); setKitError(""); setSelChave(""); setSelFresa(""); setSelComplementar(""); setSelOpcional(""); setSelImplante(""); setKitModalOpen(true) }
+  function openNewKit() { setKitEditing(null); setKitData({ sku: "", nome: "", sigla: "", descricao: "", tipo_kit_id: "", preco: 0, ativo: true }); setKitChaves([]); setKitFresas([]); setKitComplementares([]); setKitOpcionais([]); setKitImplantes([]); setKitTodosDiametros(false); setKitKitsComplementares([]); setKitKitsRelacionados([]); setKitError(""); setSelChave(""); setSelFresa(""); setSelComplementar(""); setSelOpcional(""); setSelImplante(""); setSelKitComplementar(""); setSelKitRelacionado(""); setKitModalOpen(true) }
 
   async function openEditKit(item: any) {
     setKitEditing(item); setKitData({ sku: item.sku, nome: item.nome ?? "", sigla: item.sigla ?? "", descricao: item.descricao ?? "", tipo_kit_id: item.tipo_kit_id ?? "", preco: item.preco ?? 0, ativo: item.ativo !== false }); setKitError("")
     // Load composition
-    const [chRes, frRes, coRes, opRes, imRes] = await Promise.all([
+    const [chRes, frRes, coRes, opRes, imRes, kcRes, krRes] = await Promise.all([
       supabase.from("catalogo_kit_chaves").select("chave_id").eq("kit_sku", item.sku),
       supabase.from("catalogo_kit_fresas").select("fresa_id").eq("kit_sku", item.sku),
       supabase.from("catalogo_kit_complementares").select("complementar_id").eq("kit_sku", item.sku),
       supabase.from("catalogo_kit_opcionais").select("opcional_id").eq("kit_sku", item.sku),
       supabase.from("catalogo_kit_implantes").select("implante_sku, todos_diametros").eq("kit_sku", item.sku),
+      supabase.from("catalogo_kit_kits_complementares").select("complementar_sku").eq("kit_sku", item.sku),
+      supabase.from("catalogo_kit_kits_relacionados").select("relacionado_sku").eq("kit_sku", item.sku),
     ])
     setKitChaves((chRes.data ?? []).map((r: any) => r.chave_id))
     setKitFresas((frRes.data ?? []).map((r: any) => r.fresa_id))
@@ -104,7 +111,10 @@ function AdminKitsPage() {
     const todosD = implData.some((r: any) => r.todos_diametros)
     setKitTodosDiametros(todosD)
     setKitImplantes(todosD ? [] : implData.map((r: any) => r.implante_sku))
+    setKitKitsComplementares((kcRes.data ?? []).map((r: any) => r.complementar_sku))
+    setKitKitsRelacionados((krRes.data ?? []).map((r: any) => r.relacionado_sku))
     setSelChave(""); setSelFresa(""); setSelComplementar(""); setSelOpcional(""); setSelImplante("")
+    setSelKitComplementar(""); setSelKitRelacionado("")
     setKitModalOpen(true)
   }
 
@@ -123,11 +133,15 @@ function AdminKitsPage() {
       supabase.from("catalogo_kit_complementares").delete().eq("kit_sku", sku),
       supabase.from("catalogo_kit_opcionais").delete().eq("kit_sku", sku),
       supabase.from("catalogo_kit_implantes").delete().eq("kit_sku", sku),
+      supabase.from("catalogo_kit_kits_complementares").delete().eq("kit_sku", sku),
+      supabase.from("catalogo_kit_kits_relacionados").delete().eq("kit_sku", sku),
     ])
     if (kitChaves.length > 0) await supabase.from("catalogo_kit_chaves").insert(kitChaves.map(id => ({ kit_sku: sku, chave_id: id })))
     if (kitFresas.length > 0) await supabase.from("catalogo_kit_fresas").insert(kitFresas.map(id => ({ kit_sku: sku, fresa_id: id })))
     if (kitComplementares.length > 0) await supabase.from("catalogo_kit_complementares").insert(kitComplementares.map(id => ({ kit_sku: sku, complementar_id: id })))
     if (kitOpcionais.length > 0) await supabase.from("catalogo_kit_opcionais").insert(kitOpcionais.map(id => ({ kit_sku: sku, opcional_id: id })))
+    if (kitKitsComplementares.length > 0) await supabase.from("catalogo_kit_kits_complementares").insert(kitKitsComplementares.map(s => ({ kit_sku: sku, complementar_sku: s })))
+    if (kitKitsRelacionados.length > 0) await supabase.from("catalogo_kit_kits_relacionados").insert(kitKitsRelacionados.map(s => ({ kit_sku: sku, relacionado_sku: s })))
     // Save implantes compatibility
     if (kitTodosDiametros) {
       await supabase.from("catalogo_kit_implantes").insert({ kit_sku: sku, implante_sku: "*", todos_diametros: true })
@@ -147,6 +161,8 @@ function AdminKitsPage() {
         supabase.from("catalogo_kit_complementares").delete().eq("kit_sku", deleteItem.id),
         supabase.from("catalogo_kit_opcionais").delete().eq("kit_sku", deleteItem.id),
         supabase.from("catalogo_kit_implantes").delete().eq("kit_sku", deleteItem.id),
+        supabase.from("catalogo_kit_kits_complementares").delete().eq("kit_sku", deleteItem.id),
+        supabase.from("catalogo_kit_kits_relacionados").delete().eq("kit_sku", deleteItem.id),
       ])
     }
     const { error } = await supabase.from(deleteItem.table).delete().eq(deleteItem.id.includes("-") ? "id" : "sku", deleteItem.id)
@@ -222,20 +238,25 @@ function AdminKitsPage() {
         <DialogContent className="bg-[#0f172a] border-[var(--color-border-subtle)] text-white max-w-2xl flex flex-col max-h-[85vh] overflow-hidden">
           <DialogHeader className="shrink-0"><DialogTitle className="text-white">{kitEditing?"Editar":"Novo"} Kit</DialogTitle></DialogHeader>
           <div className="px-6 py-4 space-y-4 overflow-y-auto flex-1 min-h-0">
-            <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655]">Identificação</h3>
+            {/* ─── 1. VINCULAÇÃO ─── */}
+            {tiposKit && tiposKit.length > 0 && (
+              <>
+                <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655]">Vinculação</h3>
+                <div className="space-y-2"><label className={labelCls}>Tipo de Kit *</label><select value={kitData.tipo_kit_id} onChange={e=>setKitData({...kitData,tipo_kit_id:e.target.value})} className={selectCls}><option value="">Selecione...</option>{tiposKit?.map((t:any)=><option key={t.id} value={t.id}>{t.nome}</option>)}</select></div>
+              </>
+            )}
+
+            {/* ─── 2. IDENTIFICAÇÃO ─── */}
+            <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655] pt-2">Identificação</h3>
             <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2"><label className={labelCls}>Tipo de Kit *</label><select value={kitData.tipo_kit_id} onChange={e=>setKitData({...kitData,tipo_kit_id:e.target.value})} className={selectCls}><option value="">Selecione...</option>{tiposKit?.map((t:any)=><option key={t.id} value={t.id}>{t.nome}</option>)}</select></div>
               <div className="space-y-2"><label className={labelCls}>SKU *</label><input type="text" value={kitData.sku} onChange={e=>setKitData({...kitData,sku:e.target.value})} className={inputCls} /></div>
               <div className="space-y-2"><label className={labelCls}>Nome *</label><input type="text" value={kitData.nome} onChange={e=>setKitData({...kitData,nome:e.target.value})} className={inputCls} /></div>
               <div className="space-y-2"><label className={labelCls}>Sigla</label><input type="text" value={kitData.sigla} onChange={e=>setKitData({...kitData,sigla:e.target.value})} className={inputCls} /></div>
-              <div className="space-y-2 col-span-2"><label className={labelCls}>Descrição</label><textarea value={kitData.descricao} onChange={e=>setKitData({...kitData,descricao:e.target.value})} className={inputCls+" min-h-[60px]"} /></div>
             </div>
+            <div className="space-y-2"><label className={labelCls}>Descrição</label><textarea value={kitData.descricao} onChange={e=>setKitData({...kitData,descricao:e.target.value})} className={inputCls+" min-h-[60px]"} /></div>
 
-            <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655]">Imagens do Produto</h3>
-            <ImageUploader produtoTipo="kit" produtoSku={kitData.sku} empresaId={empresaId} />
-
-            {/* Composição do Kit */}
-            <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655]">Composição do Kit</h3>
+            {/* ─── 3. COMPOSIÇÃO ─── */}
+            <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655] pt-2">Composição</h3>
 
             {/* Chaves */}
             <div className="rounded-xl bg-[var(--color-surface)] border border-white/5 p-4 space-y-3">
@@ -277,8 +298,28 @@ function AdminKitsPage() {
               {kitOpcionais.map((sku,i)=><div key={i} className="flex items-center justify-between bg-[var(--color-background)] rounded-lg px-3 py-2 border border-white/5"><span className="text-sm text-white">{opcionaisList?.find((o:any)=>o.sku===sku)?.nome??sku}</span><button onClick={()=>setKitOpcionais(kitOpcionais.filter(s=>s!==sku))} className="text-red-400 hover:text-red-300"><X className="h-4 w-4"/></button></div>)}
             </div>
 
-            {/* Implantes Compatíveis */}
-            <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655]">Implantes Compatíveis</h3>
+            {/* Kits Complementares */}
+            <div className="rounded-xl bg-[var(--color-surface)] border border-white/5 p-4 space-y-3">
+              <p className="text-xs font-bold uppercase tracking-widest text-gray-400">Kits Complementares</p>
+              <div className="flex gap-2">
+                <select value={selKitComplementar} onChange={e=>setSelKitComplementar(e.target.value)} className={selectCls+" flex-1"}><option value="">Selecione um kit...</option>{todosKits?.filter((k:any)=>k.sku!==kitData.sku && !kitKitsComplementares.includes(k.sku)).map((k:any)=><option key={k.sku} value={k.sku}>{k.nome}</option>)}</select>
+                <button onClick={()=>{if(selKitComplementar){setKitKitsComplementares([...kitKitsComplementares,selKitComplementar]);setSelKitComplementar("")}}} disabled={!selKitComplementar} className="px-4 py-2 rounded-lg bg-[#c9a655]/20 text-[#c9a655] font-bold text-sm hover:bg-[#c9a655]/30 transition-colors disabled:opacity-30 shrink-0">Adicionar</button>
+              </div>
+              {kitKitsComplementares.map((sku,i)=><div key={i} className="flex items-center justify-between bg-[var(--color-background)] rounded-lg px-3 py-2 border border-white/5"><span className="text-sm text-white">{todosKits?.find((k:any)=>k.sku===sku)?.nome??sku}</span><button onClick={()=>setKitKitsComplementares(kitKitsComplementares.filter(s=>s!==sku))} className="text-red-400 hover:text-red-300"><X className="h-4 w-4"/></button></div>)}
+            </div>
+
+            {/* Kits Relacionados */}
+            <div className="rounded-xl bg-[var(--color-surface)] border border-white/5 p-4 space-y-3">
+              <p className="text-xs font-bold uppercase tracking-widest text-gray-400">Kits Relacionados</p>
+              <div className="flex gap-2">
+                <select value={selKitRelacionado} onChange={e=>setSelKitRelacionado(e.target.value)} className={selectCls+" flex-1"}><option value="">Selecione um kit...</option>{todosKits?.filter((k:any)=>k.sku!==kitData.sku && !kitKitsRelacionados.includes(k.sku)).map((k:any)=><option key={k.sku} value={k.sku}>{k.nome}</option>)}</select>
+                <button onClick={()=>{if(selKitRelacionado){setKitKitsRelacionados([...kitKitsRelacionados,selKitRelacionado]);setSelKitRelacionado("")}}} disabled={!selKitRelacionado} className="px-4 py-2 rounded-lg bg-[#c9a655]/20 text-[#c9a655] font-bold text-sm hover:bg-[#c9a655]/30 transition-colors disabled:opacity-30 shrink-0">Adicionar</button>
+              </div>
+              {kitKitsRelacionados.map((sku,i)=><div key={i} className="flex items-center justify-between bg-[var(--color-background)] rounded-lg px-3 py-2 border border-white/5"><span className="text-sm text-white">{todosKits?.find((k:any)=>k.sku===sku)?.nome??sku}</span><button onClick={()=>setKitKitsRelacionados(kitKitsRelacionados.filter(s=>s!==sku))} className="text-red-400 hover:text-red-300"><X className="h-4 w-4"/></button></div>)}
+            </div>
+
+            {/* ─── 4. COMPATIBILIDADE ─── */}
+            <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655] pt-2">Implantes Compatíveis</h3>
 
             {/* Toggle Todos os Diâmetros */}
             <div className="rounded-xl bg-[var(--color-surface)] border border-white/5 p-4 space-y-3">
@@ -325,7 +366,12 @@ function AdminKitsPage() {
               </div>
             )}
 
-            <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655]">Comercial</h3>
+            {/* ─── 5. IMAGENS DO PRODUTO ─── */}
+            <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655] pt-2">Imagens do Produto</h3>
+            <ImageUploader produtoTipo="kit" produtoSku={kitData.sku} empresaId={empresaId} />
+
+            {/* ─── 6. COMERCIAL ─── */}
+            <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655] pt-2">Comercial</h3>
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2"><label className={labelCls}>Preço (R$)</label><input type="number" step="0.01" min="0" value={kitData.preco} onChange={e=>setKitData({...kitData,preco:Number(e.target.value)})} className={inputCls} /></div>
               <div className="flex items-center justify-between px-4 py-3 rounded-xl bg-[var(--color-surface)] border border-white/5 mt-6">

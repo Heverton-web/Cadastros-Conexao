@@ -3,6 +3,7 @@ import type { ProductSheetTipo } from "../types"
 
 interface UIState {
   cartDrawerOpen: boolean;
+  navDrawerOpen: boolean;
   imageViewer: {
     isOpen: boolean;
     src: string;
@@ -17,6 +18,7 @@ interface UIState {
 
 let state: UIState = {
   cartDrawerOpen: false,
+  navDrawerOpen: false,
   imageViewer: { isOpen: false, src: "", alt: "" },
   productSheet: { isOpen: false, sku: "", tipo: null },
 }
@@ -41,6 +43,11 @@ export function useUIState(): UIState {
 
 export function toggleCartDrawer(open?: boolean) {
   state = { ...state, cartDrawerOpen: open ?? !state.cartDrawerOpen }
+  notify()
+}
+
+export function toggleNavDrawer(open?: boolean) {
+  state = { ...state, navDrawerOpen: open ?? !state.navDrawerOpen }
   notify()
 }
 

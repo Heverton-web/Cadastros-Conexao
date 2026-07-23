@@ -1,8 +1,7 @@
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
-import { Trash2 } from "lucide-react"
-import type { CatalogoTipoKit, CatalogoFresa, CatalogoChave, CatalogoComplementar, CatalogoOpcional } from "~/features/catalogo/types"
+import type { CatalogoTipoKit, CatalogoFresa, CatalogoChave, CatalogoComplementar, CatalogoOpcional, CatalogoImplante } from "~/features/catalogo/types"
 
 const kitSchema = z.object({
   tipo_kit_id: z.string().optional(),
@@ -31,6 +30,16 @@ interface Props {
   onToggleFresa: (sku: string) => void
   onToggleComplementar: (sku: string) => void
   onToggleOpcional: (sku: string) => void
+  // Kits complementares e relacionados
+  todosKits: { sku: string; nome: string }[] | undefined
+  kitKitsComplementares: string[]
+  kitKitsRelacionados: string[]
+  onToggleKitComplementar: (sku: string) => void
+  onToggleKitRelacionado: (sku: string) => void
+  // Implantes compatíveis
+  implantes: CatalogoImplante[] | undefined
+  kitImplantes: string[]
+  onToggleImplante: (sku: string) => void
 }
 
 export function KitForm({
@@ -38,6 +47,9 @@ export function KitForm({
   fresas, chaves, complementares, opcionais,
   kitChaves, kitFresas, kitComplementares, kitOpcionais,
   onToggleChave, onToggleFresa, onToggleComplementar, onToggleOpcional,
+  todosKits, kitKitsComplementares, kitKitsRelacionados,
+  onToggleKitComplementar, onToggleKitRelacionado,
+  implantes, kitImplantes, onToggleImplante,
 }: Props) {
   const { register, formState: { errors } } = useForm<KitFormData>({
     resolver: zodResolver(kitSchema),
@@ -79,19 +91,13 @@ export function KitForm({
 
   return (
     <div className="space-y-4">
+      {/* ─── 1. IDENTIFICAÇÃO ─── */}
       <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655]">Identificação</h3>
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">
           <label className={labelCls}>SKU *</label>
           <input type="text" {...register("sku")} value={data.sku} onChange={(e) => onChange({ ...data, sku: e.target.value })} className={inputCls} placeholder="Ex: 950000-KIT" />
           {errors.sku && <p className="text-xs text-red-400">{errors.sku.message}</p>}
-        </div>
-        <div className="space-y-2">
-          <label className={labelCls}>Tipo de Kit</label>
-          <select {...register("tipo_kit_id")} value={data.tipo_kit_id} onChange={(e) => onChange({ ...data, tipo_kit_id: e.target.value })} className={selectCls}>
-            <option value="">Selecione...</option>
-            {tiposKit?.map((c) => <option key={c.id} value={c.id}>{c.nome}</option>)}
-          </select>
         </div>
         <div className="space-y-2">
           <label className={labelCls}>Nome *</label>
@@ -107,11 +113,23 @@ export function KitForm({
         <label className={labelCls}>Descrição</label>
         <textarea {...register("descricao")} value={data.descricao} onChange={(e) => onChange({ ...data, descricao: e.target.value })} className={inputCls + " min-h-[80px]"} placeholder="Descrição do kit..." />
       </div>
-      <div className="space-y-2">
-        <label className={labelCls}>Preço (R$)</label>
-        <input type="number" step="0.01" min="0" {...register("preco")} value={data.preco} onChange={(e) => onChange({ ...data, preco: Number(e.target.value) })} className={inputCls} placeholder="0,00" />
-        {errors.preco && <p className="text-xs text-red-400">{errors.preco.message}</p>}
-      </div>
+
+      {/* ─── 2. VINCULAÇÃO ─── */}
+      {tiposKit && tiposKit.length > 0 && (
+        <>
+          <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655] pt-2">Vinculação</h3>
+          <div className="space-y-2">
+            <label className={labelCls}>Tipo de Kit</label>
+            <select {...register("tipo_kit_id")} value={data.tipo_kit_id} onChange={(e) => onChange({ ...data, tipo_kit_id: e.target.value })} className={selectCls}>
+              <option value="">Selecione...</option>
+              {tiposKit?.map((c) => <option key={c.id} value={c.id}>{c.nome}</option>)}
+            </select>
+          </div>
+        </>
+      )}
+
+      {/* ─── 3. COMPOSIÇÃO ─── */}
+      <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655] pt-2">Composição</h3>
 
       <div className="rounded-xl bg-[var(--color-surface)] border border-white/5 p-4 space-y-3">
         <h3 className="text-xs font-black uppercase tracking-widest text-[#c9a655]">Chaves do Kit</h3>
@@ -131,6 +149,37 @@ export function KitForm({
       <div className="rounded-xl bg-[var(--color-surface)] border border-white/5 p-4 space-y-3">
         <h3 className="text-xs font-black uppercase tracking-widest text-[#c9a655]">Instrumentais Opcionais</h3>
         {renderToggleList(opcionais, kitOpcionais, onToggleOpcional)}
+      </div>
+
+      <div className="rounded-xl bg-[var(--color-surface)] border border-white/5 p-4 space-y-3">
+        <h3 className="text-xs font-black uppercase tracking-widest text-[#c9a655]">Kits Complementares</h3>
+        <p className="text-xs text-gray-500">Selecione kits que complementam este kit</p>
+        {renderToggleList(todosKits?.filter(k => k.sku !== data.sku), kitKitsComplementares, onToggleKitComplementar)}
+      </div>
+
+      <div className="rounded-xl bg-[var(--color-surface)] border border-white/5 p-4 space-y-3">
+        <h3 className="text-xs font-black uppercase tracking-widest text-[#c9a655]">Kits Relacionados</h3>
+        <p className="text-xs text-gray-500">Selecione kits relacionados a este kit</p>
+        {renderToggleList(todosKits?.filter(k => k.sku !== data.sku), kitKitsRelacionados, onToggleKitRelacionado)}
+      </div>
+
+      {/* ─── 4. IMPLANTES COMPATÍVEIS ─── */}
+      <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655] pt-2">Implantes Compatíveis</h3>
+      <div className="rounded-xl bg-[var(--color-surface)] border border-white/5 p-4 space-y-3">
+        <p className="text-xs text-gray-500">Selecione os implantes compatíveis com este kit</p>
+        {renderToggleList(
+          implantes?.map((i) => ({ sku: i.sku, nome: i.nome || i.sku })) ?? [],
+          kitImplantes,
+          onToggleImplante,
+        )}
+      </div>
+
+      {/* ─── 6. COMERCIAL ─── */}
+      <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655] pt-2">Comercial</h3>
+      <div className="space-y-2">
+        <label className={labelCls}>Preço (R$)</label>
+        <input type="number" step="0.01" min="0" {...register("preco")} value={data.preco} onChange={(e) => onChange({ ...data, preco: Number(e.target.value) })} className={inputCls} placeholder="0,00" />
+        {errors.preco && <p className="text-xs text-red-400">{errors.preco.message}</p>}
       </div>
     </div>
   )

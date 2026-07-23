@@ -2,12 +2,12 @@ import { X, ShoppingCart, Trash2, Plus, Minus } from "lucide-react"
 import { useUIState, toggleCartDrawer } from "../services/ui.service"
 import { useCarrinho, removeFromCart, setQuantidade, cartTotais, formatBRL } from "../services/carrinho.service"
 import { Link } from "@tanstack/react-router"
-import { useEffect } from "react"
+import { useEffect, useMemo } from "react"
 
 export function CartDrawer() {
   const { cartDrawerOpen } = useUIState()
   const cart = useCarrinho()
-  const { total } = cartTotais(cart)
+  const { total } = useMemo(() => cartTotais(cart), [cart])
 
   useEffect(() => {
     if (cartDrawerOpen) document.body.style.overflow = "hidden"

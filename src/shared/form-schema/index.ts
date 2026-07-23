@@ -1,3 +1,10 @@
+/**
+ * shared/form-schema — Infraestrutura de dados compartilhada da plataforma.
+ *
+ * Este módulo NÃO é uma feature de negócio (sem module.ts, não é registrado no registry).
+ * Pode ser importado por qualquer módulo que precise ler/gravar o schema de campos
+ * do formulário de pré-cadastro (tabela form_schema).
+ */
 import { supabase } from "~/core/supabase";
 
 export type TipoInput =

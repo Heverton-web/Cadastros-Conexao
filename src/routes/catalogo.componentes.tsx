@@ -82,7 +82,7 @@ function CatalogoComponentesPage() {
   // Etapa 4: Lista de abutments
   if (familiaId && tipoReabId && tipoAbutmentId) return (
     <StoreLayout>
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
         <AbutmentList
           familiaId={familiaId}
           tipoAbutmentId={tipoAbutmentId}
@@ -269,7 +269,7 @@ function AbutmentList({ familiaId, tipoAbutmentId, tipoReabId, onBack }: { famil
           <p className="text-sm text-[var(--color-text-muted)] mt-2 max-w-sm mx-auto">Este tipo de abutment não possui itens cadastrados. Volte e selecione outra opção.</p>
         </div>
       ) : (
-      <div className="grid grid-cols-1 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
         {filtered.map((a) => (
           <ProductCard
             key={a.sku}

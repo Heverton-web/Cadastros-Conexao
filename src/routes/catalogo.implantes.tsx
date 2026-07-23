@@ -84,7 +84,7 @@ function CatalogoImplantesPage() {
   // Etapa 4: Lista de implantes
   if (linhaId) return (
     <StoreLayout>
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
         <ImplantList
           linhaId={linhaId}
           conexaoId={conexaoId!}
@@ -326,7 +326,7 @@ function ImplantList({ linhaId, conexaoId, familiaId, onBack }: { linhaId: strin
           <p className="text-sm text-[var(--color-text-muted)] mt-2 max-w-sm mx-auto">{diametroFiltro !== null ? `Nenhum implante com diâmetro Ø ${diametroFiltro} mm nesta linha.` : 'Esta linha não possui implantes cadastrados. Volte e selecione outra linha.'}</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
           {implantesFiltrados.map((impl) => (
             <Link
               to="/catalogo/produto/$tipo/$sku"

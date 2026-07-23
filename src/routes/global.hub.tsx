@@ -1,14 +1,22 @@
+import { lazy, Suspense } from "react";
 import { createRoute } from "@tanstack/react-router";
 import { authLayout } from "./_auth";
-import { HubDashboardPage } from "~/features/hub/pages/HubDashboardPage";
 import { RequireSuperAdmin } from "~/components/guards";
+
+const HubDashboardPage = lazy(() =>
+  import("~/features/hub/pages/HubDashboardPage").then((m) => ({
+    default: m.HubDashboardPage,
+  })),
+);
 
 export const globalHubRoute = createRoute({
   getParentRoute: () => authLayout,
   path: "/global/hub",
   component: () => (
     <RequireSuperAdmin>
-      <HubDashboardPage />
+      <Suspense fallback={null}>
+        <HubDashboardPage />
+      </Suspense>
     </RequireSuperAdmin>
   ),
 });

@@ -61,7 +61,6 @@ npm run build
 | Formato `entidade.acao` | |
 | `dispararEventoModulo()` nos services | |
 | `.catch(() => {})` obrigatório | |
-| `empresa_id` no payload | |
 | Aba `eventos` no array `abas` | |
 
 ### Step 5: Verificar permissões
@@ -135,7 +134,7 @@ Se o usuário solicitar, corrigir problemas comuns:
 | Falta aba `eventos` | Adicionar no array `abas` |
 | Falta `hasDesignConfig` | Adicionar ao module.ts |
 | Falta `RequirePermission` | Adicionar nas rotas |
-| Falta `empresa_id` | Adicionar em queries |
+| Query com `empresa_id` (schema single-tenant não tem mais essa coluna) | Remover filtro |
 
 ## Output
 

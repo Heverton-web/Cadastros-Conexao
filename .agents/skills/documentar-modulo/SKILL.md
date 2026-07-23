@@ -111,7 +111,6 @@ Criar `docs-projeto/docs-design-system/ds-<modulo>.md`:
 ```typescript
 interface {{MODULO_PASCAL}} {
   id: string;
-  empresa_id: string;
   created_at: string;
   updated_at: string;
   // campos específicos

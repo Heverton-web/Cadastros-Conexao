@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { supabase } from "~/core/supabase";
 import { EMPRESA_ID } from "~/config/empresa";
 import { useAuth } from "~/lib/auth";
-import { carregarSchema, type CampoSchema } from "~/features/form-schema";
+import { carregarSchema, type CampoSchema } from "~/shared/form-schema";
 import { listarEmpresas } from "~/shared/empresas";
 import type { Empresa } from "~/core/empresa";
 import {

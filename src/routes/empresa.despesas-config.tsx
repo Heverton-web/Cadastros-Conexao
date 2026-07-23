@@ -1,6 +1,11 @@
+import { lazy, Suspense } from "react";
 import { createRoute } from "@tanstack/react-router";
 import { authLayout } from "./_auth";
-import { ConfigDespesasPage } from "~/features/despesas/components/admin/ConfigDespesasPage";
+const ConfigDespesasPage = lazy(() =>
+  import("~/features/despesas/components/admin/ConfigDespesasPage").then((m) => ({
+    default: m.ConfigDespesasPage,
+  })),
+);
 import { RequirePermission } from "~/components/guards";
 
 export const empresaDespesasConfigRoute = createRoute({
@@ -8,7 +13,9 @@ export const empresaDespesasConfigRoute = createRoute({
   path: "/empresa/despesas-config",
   component: () => (
     <RequirePermission modulo="empresas-core">
-      <ConfigDespesasPage />
+      <Suspense fallback={null}>
+        <ConfigDespesasPage />
+      </Suspense>
     </RequirePermission>
   ),
 });

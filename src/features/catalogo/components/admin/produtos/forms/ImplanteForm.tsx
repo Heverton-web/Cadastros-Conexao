@@ -101,7 +101,8 @@ export function ImplanteForm({
 
   return (
     <div className="space-y-4">
-      <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655]">Categoria</h3>
+      {/* ─── 1. Vinculações ─── */}
+      <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655]">Vinculações</h3>
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">
           <label className={labelCls}>Categoria</label>
@@ -110,10 +111,6 @@ export function ImplanteForm({
             {categorias?.filter((cat) => !cat.tipo || cat.tipo === "implante").map((cat) => <option key={cat.id} value={cat.id}>{cat.nome}</option>)}
           </select>
         </div>
-      </div>
-
-      <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655]">Hierarquia</h3>
-      <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">
           <label className={labelCls}>Conexão *</label>
           <select {...register("conexao_id")} value={data.conexao_id} onChange={(e) => onChange({ ...data, conexao_id: e.target.value, familia_id: "", linha_id: "" })} className={selectCls}>
@@ -140,7 +137,8 @@ export function ImplanteForm({
         </div>
       </div>
 
-      <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655]">Identificação</h3>
+      {/* ─── 2. Identificação ─── */}
+      <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655] pt-2">Identificação</h3>
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">
           <label className={labelCls}>SKU *</label>
@@ -165,6 +163,7 @@ export function ImplanteForm({
         </div>
       </div>
 
+      {/* ─── 3. Composição ─── */}
       <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655] pt-2">Protocolos de Fresagem</h3>
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">
@@ -291,6 +290,7 @@ export function ImplanteForm({
         </div>
       </div>
 
+      {/* ─── 5. Comercial ─── */}
       <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655] pt-2">Comercial</h3>
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">

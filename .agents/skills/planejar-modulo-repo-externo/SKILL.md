@@ -4,7 +4,7 @@ description: >
   Analisa um repositório GitHub externo e planeja a integração como módulo
   independente no ERP Odonto. Gera plano completo: análise do repo origem,
   arquitetura do ERP, adaptação de rotas/permittypes, migration de banco
-  (multi-tenant empresa_id), e passos de implementação.
+  (sistema single-tenant, sem empresa_id), e passos de implementação.
   DISPARO: quando o usuário fornecer um link de repo externo e pedir para
   criar/planejar um novo módulo no ERP.
 ---
@@ -61,9 +61,9 @@ Breve descrição do que o módulo faz
 
 ## Adaptação para o ERP
 ### Database
-- Tabelas a criar (com empresa_id para multi-tenant)
+- Tabelas a criar (sistema é single-tenant, sem empresa_id)
 - Relacionamentos
-- RLS policies
+- RLS policies (padrão atual do projeto: abertas, `USING (true)`)
 
 ### Module Registration
 - module.ts
@@ -106,8 +106,8 @@ Breve descrição do que o módulo faz
 - Permissões devem estar configuradas
 
 ## Observações
-- Tabelas do módulo externo devem ser criadas NO MESMO banco do ERP (multi-tenant)
-- Sempre adicionar `empresa_id` nas tabelas para isolamento por empresa
+- Tabelas do módulo externo devem ser criadas NO MESMO banco do ERP
+- Sistema é single-tenant (empresa_id removido em 20260721000000_remove_empresa_id_all_tables.sql) — NÃO adicionar empresa_id nas tabelas novas
 - Seguir padrões de código do AGENTS.md
 - Reutilizar componentes do design system existente
 - NUNCA usar alertas nativos do navegador

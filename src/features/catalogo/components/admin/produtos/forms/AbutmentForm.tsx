@@ -3,7 +3,8 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { Trash2 } from "lucide-react"
-import type { CatalogoFamilia, CatalogoTipoReabilitacao, CatalogoTipoAbutment, CatalogoAcessorio, CatalogoEtapaWorkflow, CatalogoChave, CatalogoKit, CatalogoParafusoRetencao } from "~/features/catalogo/types"
+import type { CatalogoFamilia, CatalogoTipoReabilitacao, CatalogoTipoAbutment, CatalogoChave, CatalogoKit, CatalogoParafusoRetencao } from "~/features/catalogo/types"
+import type { CatalogoSeqProtetica } from "~/features/catalogo/services/sequencia-protetica.service"
 
 const abutmentSchema = z.object({
   familia_id: z.string().min(1, "Família é obrigatória"),
@@ -20,21 +21,15 @@ const abutmentSchema = z.object({
 
 export type AbutmentFormData = z.infer<typeof abutmentSchema>
 
-interface SeqEtapa { etapa_nome: string; acessorio_sku: string }
-
 interface Props {
   data: AbutmentFormData
   onChange: (data: AbutmentFormData) => void
   familias: CatalogoFamilia[] | undefined
   tiposReab: CatalogoTipoReabilitacao[] | undefined
   tiposAbutment: CatalogoTipoAbutment[] | undefined
-  acessorios: CatalogoAcessorio[] | undefined
-  etapas: CatalogoEtapaWorkflow[] | undefined
-  seqAnalógica: SeqEtapa[]
-  seqDigital: SeqEtapa[]
-  addSeqEtapa: (tipo: "analógico" | "digital") => void
-  removeSeqEtapa: (tipo: "analógico" | "digital", idx: number) => void
-  updateSeqEtapa: (tipo: "analógico" | "digital", idx: number, field: string, value: string) => void
+  sequencias: CatalogoSeqProtetica[] | undefined
+  sequenciasIds: string[]
+  onSequenciasChange: (ids: string[]) => void
   // Composição
   chaves: CatalogoChave[] | undefined
   chavesIds: string[]
@@ -49,8 +44,7 @@ interface Props {
 
 export function AbutmentForm({
   data, onChange, familias, tiposReab, tiposAbutment,
-  acessorios, etapas, seqAnalógica, seqDigital,
-  addSeqEtapa, removeSeqEtapa, updateSeqEtapa,
+  sequencias, sequenciasIds, onSequenciasChange,
   chaves, chavesIds, onChavesChange,
   kits, kitsIds, onKitsChange,
   parafusos, parafusosIds, onParafusosChange,
@@ -163,49 +157,13 @@ export function AbutmentForm({
 
 
 
-      <div className="rounded-xl bg-[var(--color-surface)] border border-white/5 p-4 space-y-3">
-        <h3 className="text-xs font-black uppercase tracking-widest text-[#c9a655]">Sequência Protética — Analógica</h3>
-        {seqAnalógica.length === 0 && <p className="text-xs text-gray-500 italic">Nenhuma etapa adicionada.</p>}
-        {seqAnalógica.map((e, i) => (
-          <div key={i} className="flex items-center gap-3 bg-[var(--color-background)] rounded-lg p-3 border border-white/5">
-            <span className="w-7 h-7 flex items-center justify-center rounded-lg bg-[#c9a655]/10 text-[#c9a655] text-xs font-black shrink-0">{i + 1}</span>
-            <select value={e.etapa_nome} onChange={(e2) => updateSeqEtapa("analógico", i, "etapa_nome", e2.target.value)} className={selectCls + " flex-1"}>
-              <option value="">Selecione a etapa...</option>
-              {etapas?.map((et) => <option key={et.id} value={et.nome}>{et.nome}</option>)}
-            </select>
-            <select value={e.acessorio_sku} onChange={(e2) => updateSeqEtapa("analógico", i, "acessorio_sku", e2.target.value)} className={selectCls + " flex-1"}>
-              <option value="">Selecione o acessório...</option>
-              {acessorios?.map((a) => <option key={a.sku} value={a.sku}>{a.nome}</option>)}
-            </select>
-            <button onClick={() => removeSeqEtapa("analógico", i)} className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-red-500/10 text-red-400/60 hover:text-red-400 transition-colors shrink-0"><Trash2 className="h-3.5 w-3.5" /></button>
-          </div>
-        ))}
-        <button onClick={() => addSeqEtapa("analógico")} className="flex items-center gap-1.5 text-xs font-bold text-[#c9a655] hover:text-[#e8d48b] transition-colors pt-1">
-          <span className="text-lg leading-none">+</span> Adicionar etapa Analógica
-        </button>
-      </div>
-
-      <div className="rounded-xl bg-[var(--color-surface)] border border-white/5 p-4 space-y-3">
-        <h3 className="text-xs font-black uppercase tracking-widest text-[#c9a655]">Sequência Protética — Digital</h3>
-        {seqDigital.length === 0 && <p className="text-xs text-gray-500 italic">Nenhuma etapa adicionada.</p>}
-        {seqDigital.map((e, i) => (
-          <div key={i} className="flex items-center gap-3 bg-[var(--color-background)] rounded-lg p-3 border border-white/5">
-            <span className="w-7 h-7 flex items-center justify-center rounded-lg bg-[#c9a655]/10 text-[#c9a655] text-xs font-black shrink-0">{i + 1}</span>
-            <select value={e.etapa_nome} onChange={(e2) => updateSeqEtapa("digital", i, "etapa_nome", e2.target.value)} className={selectCls + " flex-1"}>
-              <option value="">Selecione a etapa...</option>
-              {etapas?.map((et) => <option key={et.id} value={et.nome}>{et.nome}</option>)}
-            </select>
-            <select value={e.acessorio_sku} onChange={(e2) => updateSeqEtapa("digital", i, "acessorio_sku", e2.target.value)} className={selectCls + " flex-1"}>
-              <option value="">Selecione o acessório...</option>
-              {acessorios?.map((a) => <option key={a.sku} value={a.sku}>{a.nome}</option>)}
-            </select>
-            <button onClick={() => removeSeqEtapa("digital", i)} className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-red-500/10 text-red-400/60 hover:text-red-400 transition-colors shrink-0"><Trash2 className="h-3.5 w-3.5" /></button>
-          </div>
-        ))}
-        <button onClick={() => addSeqEtapa("digital")} className="flex items-center gap-1.5 text-xs font-bold text-[#c9a655] hover:text-[#e8d48b] transition-colors pt-1">
-          <span className="text-lg leading-none">+</span> Adicionar etapa Digital
-        </button>
-      </div>
+      <CompositionSection
+        label="Sequências Protéticas"
+        selectedIds={sequenciasIds}
+        options={sequencias?.map((s) => ({ id: s.id, label: s.sigla ? `${s.nome} (${s.sigla})` : s.nome })) ?? []}
+        placeholder="Selecione uma sequência..."
+        onChange={onSequenciasChange}
+      />
     </div>
   )
 }

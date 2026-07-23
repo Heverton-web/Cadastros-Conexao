@@ -1,16 +1,20 @@
 import { supabase } from "~/core/supabase"
-import { createRoute, useParams, useNavigate, useSearch, Link } from "@tanstack/react-router"
+import { createRoute, useParams, useNavigate, useSearch } from "@tanstack/react-router"
 import { rootRoute } from "./__root"
 import { StoreLayout, useCatalogoVisibility } from "~/features/catalogo/components/StoreLayout"
 import { useImplanteDetalhe, useAbutmentDetalhe, useKitDetalhe, usePromocionalDetalhe, useProtocoloFresagem, useGuias, useImagensProduto, useImagensBatch, useChavesDoImplante, useCicatrizadoresDoImplante, useAbutmentsDoImplante, useKitsDoImplante, useKitsComChavesEmComum } from "~/features/catalogo/hooks/useCatalogo"
 import { addToCart, formatBRL, getPrecoFromDB, mockPreco, resolveBOMItem } from "~/features/catalogo/services/carrinho.service"
 import { playCoinSound } from "~/features/catalogo/services/audio.service"
-import { FresagemTimeline } from "~/features/catalogo/components/FresagemTimeline"
-import { SequenciaProtetica } from "~/features/catalogo/components/SequenciaProtetica"
-import { FichaTecnicaModal } from "~/features/catalogo/components/FichaTecnicaModal"
-import { BomTable } from "~/features/catalogo/components/BomTable"
 import type { ProductSheetTipo } from "~/features/catalogo/types"
-import { useState, useEffect } from "react"
+import { useState, useEffect, lazy, Suspense } from "react"
+
+// Componentes pesados (timeline de fresagem, sequência protética, modal de ficha técnica,
+// tabela de BOM) só são necessários dentro de tabs específicas do detalhe — carregados sob demanda
+// para não engordar o chunk principal da rota pública /catalogo/produto/$tipo/$sku.
+const FresagemTimeline = lazy(() => import("~/features/catalogo/components/FresagemTimeline").then((m) => ({ default: m.FresagemTimeline })))
+const SequenciaProtetica = lazy(() => import("~/features/catalogo/components/SequenciaProtetica").then((m) => ({ default: m.SequenciaProtetica })))
+const FichaTecnicaModal = lazy(() => import("~/features/catalogo/components/FichaTecnicaModal").then((m) => ({ default: m.FichaTecnicaModal })))
+const BomTable = lazy(() => import("~/features/catalogo/components/BomTable").then((m) => ({ default: m.BomTable })))
 import toast from "react-hot-toast"
 import { ArrowLeft, ShoppingCart, Box, Zap, ExternalLink, Check, TrendingDown, X, FileText } from "lucide-react"
 import { openImageViewer } from "~/features/catalogo/services/ui.service"
@@ -33,12 +37,21 @@ function ProdutoPage() {
   const navigate = useNavigate()
   const search = useSearch({ strict: false }) as Record<string, string | null>
 
-  const backTo = () => {
+  const backToFallback = () => {
     if (tipo === 'implante') return navigate({ to: '/catalogo/implantes/$conexaoId/$familiaId/$linhaId', params: { conexaoId: search.conexao!, familiaId: search.familia!, linhaId: search.linha! } })
     if (tipo === 'abutment') return navigate({ to: '/catalogo/componentes/$familiaId/$tipoReabId/$tipoAbutmentId', params: { familiaId: search.familia!, tipoReabId: search.tipoReab!, tipoAbutmentId: search.tipoAbutment! } })
     if (tipo === 'kit') return navigate({ to: '/catalogo/kits' })
     if (tipo === 'promocional') return navigate({ to: '/catalogo/promocionais' })
     navigate({ to: '/catalogo' })
+  }
+
+  const backTo = () => {
+    // Prioriza o histórico real do navegador para voltar exatamente à página
+    // anterior (ex.: produto de origem ao clicar em "Ver página completa" de
+    // uma ficha técnica aninhada). Sem histórico próprio (acesso direto via
+    // link), cai no destino genérico calculado por tipo.
+    if (window.history.length > 1) return window.history.back()
+    backToFallback()
   }
 
   return (
@@ -167,7 +180,10 @@ type SectionTab = { key: string; label: string; count?: number }
 
 function SectionTabs({ tabs, active, onChange, renderIcon }: { tabs: SectionTab[]; active: string; onChange: (key: string) => void; renderIcon: (key: string) => React.ReactNode }) {
   return (
-    <div className="grid grid-cols-3 sm:grid-cols-6 gap-2 sm:gap-2.5">
+    <div
+      className="grid gap-2 sm:gap-2.5 [grid-template-columns:repeat(var(--cols-xs),minmax(0,1fr))] sm:[grid-template-columns:repeat(var(--cols-sm),minmax(0,1fr))]"
+      style={{ "--cols-xs": Math.min(tabs.length, 3), "--cols-sm": Math.min(tabs.length, 6) } as React.CSSProperties}
+    >
       {tabs.map((t) => {
         const isActive = active === t.key
         return (
@@ -239,7 +255,7 @@ function RelatedProductCard({
       </div>
       {/* CTA */}
       {(fichaData && Object.keys(fichaData).length > 0 || Number(preco) > 0) && (
-        <div className="shrink-0 flex flex-row sm:flex-col items-center sm:items-end gap-2">
+        <div className="shrink-0 flex flex-row sm:flex-col items-center gap-2">
           {fichaData && Object.keys(fichaData).length > 0 && (
             <button
               onClick={onVerFicha}
@@ -258,6 +274,7 @@ function RelatedProductCard({
 
 function ImplanteDetail({ sku }: { sku: string }) {
   const { getIcon } = useTabIcons()
+  const navigate = useNavigate()
   const { data: impl, isLoading } = useImplanteDetalhe(sku)
   const { data: protocolos } = useProtocoloFresagem(sku)
   const { data: imagens } = useImagensProduto("implante", sku)
@@ -266,7 +283,7 @@ function ImplanteDetail({ sku }: { sku: string }) {
   const { data: abutments } = useAbutmentsDoImplante(sku)
   const { data: kits } = useKitsDoImplante(sku)
   const [activeTab, setActiveTab] = useState("ficha")
-  const [fichaModal, setFichaModal] = useState<{ open: boolean; nome: string; sku: string; imagemUrl?: string | null; sections: Array<{ title: string; specs: Array<{ label: string; value: string | number | null | undefined }> }>; vinculacoes?: Array<{ nome: string; sku: string; valor?: number | null }> }>({ open: false, nome: "", sku: "", sections: [] })
+  const [fichaModal, setFichaModal] = useState<{ open: boolean; nome: string; sku: string; imagemUrl?: string | null; tipo?: ProductSheetTipo; preco?: number | null; onVerCompleto?: () => void; sections: Array<{ title: string; specs: Array<{ label: string; value: string | number | null | undefined }> }>; vinculacoes?: Array<{ nome: string; sku: string; valor?: number | null; tipo?: ProductSheetTipo }> }>({ open: false, nome: "", sku: "", sections: [] })
   const chavesSkus = (chaves ?? []).map((c) => c.sku)
   const cicSkus = (cicatrizadores ?? []).map((c) => c.sku)
   const abSkus = (abutments ?? []).map((a) => a.sku)
@@ -404,7 +421,9 @@ function ImplanteDetail({ sku }: { sku: string }) {
         {activeTab === "fresagem" && (
           <div className="rounded-2xl border border-[var(--color-border-subtle)] bg-[var(--color-surface)]/30 p-4 sm:p-6 shadow-lg shadow-black/20 backdrop-blur-sm">
             {protocolos && protocolos.length > 0 ? (
-              <FresagemTimeline implanteSku={impl.sku} protocolos={protocolos} />
+              <Suspense fallback={null}>
+                <FresagemTimeline implanteSku={impl.sku} protocolos={protocolos} />
+              </Suspense>
             ) : (
               <EmptyState msg="Nenhum protocolo de fresagem cadastrado" hint="Adicione uma sequência de fresagem na edição do implante." />
             )}
@@ -426,7 +445,7 @@ function ImplanteDetail({ sku }: { sku: string }) {
                   tipo="chave"
                   imageUrl={img}
                   onImageClick={() => openImageViewer(img ?? "", chave.nome)}
-                  onVerFicha={() => setFichaModal({ open: true, nome: chave.nome, sku: chave.sku, imagemUrl: img, sections: [
+                  onVerFicha={() => setFichaModal({ open: true, nome: chave.nome, sku: chave.sku, imagemUrl: img, tipo: "chave", preco: chave.preco, sections: [
                     { title: "Identificação", specs: [
                       { label: "SKU", value: chave.sku },
                       { label: "Nome", value: chave.nome },
@@ -470,7 +489,7 @@ function ImplanteDetail({ sku }: { sku: string }) {
                   tipo="kit"
                   imageUrl={img}
                   onImageClick={() => openImageViewer(img ?? "", kit.nome)}
-                  onVerFicha={() => setFichaModal({ open: true, nome: kit.nome, sku: kit.sku, imagemUrl: img, sections: [
+                  onVerFicha={() => setFichaModal({ open: true, nome: kit.nome, sku: kit.sku, imagemUrl: img, tipo: "kit", preco: kit.preco, onVerCompleto: () => navigate({ to: "/catalogo/produto/$tipo/$sku", params: { tipo: "kit", sku: kit.sku } }), sections: [
                     { title: "Identificação", specs: [
                       { label: "SKU", value: kit.sku },
                       { label: "Nome", value: kit.nome },
@@ -511,7 +530,7 @@ function ImplanteDetail({ sku }: { sku: string }) {
                   tipo="cicatrizador"
                   imageUrl={img}
                   onImageClick={() => openImageViewer(img ?? "", cic.nome)}
-                  onVerFicha={() => setFichaModal({ open: true, nome: cic.nome, sku: cic.sku, imagemUrl: img, sections: [
+                  onVerFicha={() => setFichaModal({ open: true, nome: cic.nome, sku: cic.sku, imagemUrl: img, tipo: "cicatrizador", preco: cic.preco, sections: [
                     { title: "Identificação", specs: [
                       { label: "SKU", value: cic.sku },
                       { label: "Nome", value: cic.nome },
@@ -527,8 +546,8 @@ function ImplanteDetail({ sku }: { sku: string }) {
                       { label: "Preço", value: cic.preco ? formatBRL(cic.preco) : null },
                     ]},
                   ], vinculacoes: [
-                    ...(cic.implante ? [{ nome: cic.implante.nome ?? cic.implante.sku, sku: cic.implante.sku, valor: cic.implante.preco }] : []),
-                    ...(cic.chave ? [{ nome: cic.chave.nome, sku: cic.chave.sku, valor: cic.chave.preco }] : []),
+                    ...(cic.implante ? [{ nome: cic.implante.nome ?? cic.implante.sku, sku: cic.implante.sku, valor: getPrecoFromDB(cic.implante.preco, "implante", cic.implante.sku), tipo: "implante" as ProductSheetTipo }] : []),
+                    ...(cic.chave ? [{ nome: cic.chave.nome, sku: cic.chave.sku, valor: getPrecoFromDB(cic.chave.preco, "chave", cic.chave.sku), tipo: "chave" as ProductSheetTipo }] : []),
                   ] })}
                   fichaData={{ sigla: cic.sigla, material: cic.material }}
                 >
@@ -559,7 +578,7 @@ function ImplanteDetail({ sku }: { sku: string }) {
                   tipo="abutment"
                   imageUrl={img}
                   onImageClick={() => openImageViewer(img ?? "", ab.nome ?? ab.sku)}
-                  onVerFicha={() => setFichaModal({ open: true, nome: `${ab.tipo_abutment?.nome ?? ""} ${ab.familia?.nome ?? ""}`.trim(), sku: ab.sku, imagemUrl: img, sections: [
+                  onVerFicha={() => setFichaModal({ open: true, nome: `${ab.tipo_abutment?.nome ?? ""} ${ab.familia?.nome ?? ""}`.trim(), sku: ab.sku, imagemUrl: img, tipo: "abutment", preco: ab.preco, onVerCompleto: () => navigate({ to: "/catalogo/produto/$tipo/$sku", params: { tipo: "abutment", sku: ab.sku } }), sections: [
                     { title: "Identificação", specs: [
                       { label: "SKU", value: ab.sku },
                       { label: "Nome", value: `${ab.tipo_abutment?.nome ?? ""} ${ab.familia?.nome ?? ""}`.trim() },
@@ -578,8 +597,8 @@ function ImplanteDetail({ sku }: { sku: string }) {
                       { label: "Preço", value: ab.preco ? formatBRL(ab.preco) : null },
                     ]},
                   ], vinculacoes: [
-                    ...(ab.parafuso ? [{ nome: ab.parafuso.nome, sku: ab.parafuso.sku, valor: ab.parafuso.preco }] : []),
-                    ...(ab.chave ? [{ nome: ab.chave.nome, sku: ab.chave.sku, valor: ab.chave.preco }] : []),
+                    ...(ab.parafuso ? [{ nome: ab.parafuso.nome, sku: ab.parafuso.sku, valor: getPrecoFromDB(ab.parafuso.preco, "parafuso", ab.parafuso.sku), tipo: "parafuso" as ProductSheetTipo }] : []),
+                    ...(ab.chave ? [{ nome: ab.chave.nome, sku: ab.chave.sku, valor: getPrecoFromDB(ab.chave.preco, "chave", ab.chave.sku), tipo: "chave" as ProductSheetTipo }] : []),
                   ] })}
                   fichaData={{ tipo: ab.tipo_abutment?.nome, familia: ab.familia?.nome }}
                 >
@@ -598,16 +617,21 @@ function ImplanteDetail({ sku }: { sku: string }) {
     </div>
 
     {/* Modal Ficha Tecnica */}
-    <FichaTecnicaModal
-      open={fichaModal.open}
-      onClose={() => setFichaModal((p) => ({ ...p, open: false }))}
-      nome={fichaModal.nome}
-      sku={fichaModal.sku}
-      cor={cor}
-      imagemUrl={fichaModal.imagemUrl}
-      sections={fichaModal.sections}
-      vinculacoes={fichaModal.vinculacoes}
-    />
+    <Suspense fallback={null}>
+      <FichaTecnicaModal
+        open={fichaModal.open}
+        onClose={() => setFichaModal((p) => ({ ...p, open: false }))}
+        nome={fichaModal.nome}
+        sku={fichaModal.sku}
+        cor={cor}
+        imagemUrl={fichaModal.imagemUrl}
+        tipo={fichaModal.tipo}
+        preco={fichaModal.preco}
+        onVerCompleto={fichaModal.onVerCompleto}
+        sections={fichaModal.sections}
+        vinculacoes={fichaModal.vinculacoes}
+      />
+    </Suspense>
     </>
   )
 }
@@ -615,6 +639,7 @@ function ImplanteDetail({ sku }: { sku: string }) {
 
 function AbutmentDetail({ sku }: { sku: string }) {
   const { getIcon } = useTabIcons()
+  const navigate = useNavigate()
   const { data: ab } = useAbutmentDetalhe(sku)
   const { data: guias } = useGuias({ familia_id: ab?.familia_id })
   const { data: imagens } = useImagensProduto("abutment", sku)
@@ -626,7 +651,7 @@ function AbutmentDetail({ sku }: { sku: string }) {
   const [seqCount, setSeqCount] = useState(0)
   const kitSkus = kits.map((k: any) => k.sku)
   const { data: imagensKits } = useImagensBatch("kit", kitSkus)
-  const [fichaModal, setFichaModal] = useState<{ open: boolean; nome: string; sku: string; imagemUrl?: string | null; sections: Array<{ title: string; specs: Array<{ label: string; value: string | number | null | undefined }> }>; vinculacoes?: Array<{ nome: string; sku: string; valor?: number | null }> }>({ open: false, nome: "", sku: "", sections: [] })
+  const [fichaModal, setFichaModal] = useState<{ open: boolean; nome: string; sku: string; imagemUrl?: string | null; tipo?: ProductSheetTipo; preco?: number | null; onVerCompleto?: () => void; sections: Array<{ title: string; specs: Array<{ label: string; value: string | number | null | undefined }> }>; vinculacoes?: Array<{ nome: string; sku: string; valor?: number | null; tipo?: ProductSheetTipo }> }>({ open: false, nome: "", sku: "", sections: [] })
   useEffect(() => {
     if (!sku) return
     supabase.from("catalogo_seq_protetica_abutments").select("seq_id", { count: "exact", head: true }).eq("abutment_sku", sku)
@@ -817,7 +842,7 @@ function AbutmentDetail({ sku }: { sku: string }) {
                   tipo="chave"
                   imageUrl={img}
                   onImageClick={() => openImageViewer(img ?? "", chave.nome)}
-                  onVerFicha={() => setFichaModal({ open: true, nome: chave.nome, sku: chave.sku, imagemUrl: img, sections: [
+                  onVerFicha={() => setFichaModal({ open: true, nome: chave.nome, sku: chave.sku, imagemUrl: img, tipo: "chave", preco: chave.preco, sections: [
                     { title: "Identificação", specs: [
                       { label: "SKU", value: chave.sku },
                       { label: "Nome", value: chave.nome },
@@ -850,7 +875,7 @@ function AbutmentDetail({ sku }: { sku: string }) {
                   tipo="parafuso"
                   imageUrl={img}
                   onImageClick={() => openImageViewer(img ?? "", parafuso.nome)}
-                  onVerFicha={() => setFichaModal({ open: true, nome: parafuso.nome, sku: parafuso.sku, imagemUrl: img, sections: [
+                  onVerFicha={() => setFichaModal({ open: true, nome: parafuso.nome, sku: parafuso.sku, imagemUrl: img, tipo: "parafuso", preco: Number(parafuso.preco) || 0, sections: [
                     { title: "Identificação", specs: [
                       { label: "SKU", value: parafuso.sku },
                       { label: "Nome", value: parafuso.nome },
@@ -863,7 +888,7 @@ function AbutmentDetail({ sku }: { sku: string }) {
                       { label: "Preço", value: parafuso.preco ? formatBRL(parafuso.preco) : null },
                     ]},
                   ], vinculacoes: [
-                    ...(parafuso.chave ? [{ nome: parafuso.chave.nome, sku: parafuso.chave.sku, valor: parafuso.chave.preco }] : []),
+                    ...(parafuso.chave ? [{ nome: parafuso.chave.nome, sku: parafuso.chave.sku, valor: getPrecoFromDB(parafuso.chave.preco, "chave", parafuso.chave.sku), tipo: "chave" as ProductSheetTipo }] : []),
                   ] })}
                   fichaData={{ torque: parafuso.torque_ncm, material: parafuso.material }}
                 />
@@ -874,13 +899,15 @@ function AbutmentDetail({ sku }: { sku: string }) {
         {/* ─── Sequência Protética ─── */}
         {activeTab === "sequencia" && (
           <div className="rounded-2xl border border-[var(--color-border-subtle)] bg-[var(--color-surface)]/30 p-4 sm:p-6 shadow-lg shadow-black/20 backdrop-blur-sm">
-            <SequenciaProtetica
-              familiaId={ab.familia_id}
-              tipoAbutmentId={ab.tipo_abutment_id}
-              familiaNome={ab.familia?.nome ?? ""}
-              tipoAbutmentNome={ab.tipo_abutment?.nome ?? ""}
-              abutmentSku={ab.sku}
-            />
+            <Suspense fallback={null}>
+              <SequenciaProtetica
+                familiaId={ab.familia_id}
+                tipoAbutmentId={ab.tipo_abutment_id}
+                familiaNome={ab.familia?.nome ?? ""}
+                tipoAbutmentNome={ab.tipo_abutment?.nome ?? ""}
+                abutmentSku={ab.sku}
+              />
+            </Suspense>
           </div>
         )}
 
@@ -900,7 +927,7 @@ function AbutmentDetail({ sku }: { sku: string }) {
                   tipo="kit"
                   imageUrl={img}
                   onImageClick={() => openImageViewer(img ?? "", kit.nome)}
-                  onVerFicha={() => setFichaModal({ open: true, nome: kit.nome, sku: kit.sku, imagemUrl: img, sections: [
+                  onVerFicha={() => setFichaModal({ open: true, nome: kit.nome, sku: kit.sku, imagemUrl: img, tipo: "kit", preco: kit.preco, onVerCompleto: () => navigate({ to: "/catalogo/produto/$tipo/$sku", params: { tipo: "kit", sku: kit.sku } }), sections: [
                     { title: "Identificação", specs: [
                       { label: "SKU", value: kit.sku },
                       { label: "Nome", value: kit.nome },
@@ -927,7 +954,9 @@ function AbutmentDetail({ sku }: { sku: string }) {
           </div>
         )}
       </div>
-      <FichaTecnicaModal open={fichaModal.open} onClose={() => setFichaModal({ ...fichaModal, open: false })} nome={fichaModal.nome} sku={fichaModal.sku} cor={cor} imagemUrl={fichaModal.imagemUrl} sections={fichaModal.sections} vinculacoes={fichaModal.vinculacoes} />
+      <Suspense fallback={null}>
+        <FichaTecnicaModal open={fichaModal.open} onClose={() => setFichaModal({ ...fichaModal, open: false })} nome={fichaModal.nome} sku={fichaModal.sku} cor={cor} imagemUrl={fichaModal.imagemUrl} tipo={fichaModal.tipo} preco={fichaModal.preco} onVerCompleto={fichaModal.onVerCompleto} sections={fichaModal.sections} vinculacoes={fichaModal.vinculacoes} />
+      </Suspense>
     </div>
   )
 }
@@ -936,47 +965,61 @@ function AbutmentDetail({ sku }: { sku: string }) {
 
 function KitDetail({ sku }: { sku: string }) {
   const { getIcon } = useTabIcons()
+  const navigate = useNavigate()
   const { data: kit } = useKitDetalhe(sku)
   const { data: imagens } = useImagensProduto("kit", sku)
   const [activeTab, setActiveTab] = useState("ficha")
   const [compatData, setCompatData] = useState<any[]>([])
   const [relatedKits, setRelatedKits] = useState<any[]>([])
   const [complementKits, setComplementKits] = useState<any[]>([])
-  const [fichaModal, setFichaModal] = useState<{ open: boolean; nome: string; sku: string; imagemUrl?: string | null; sections: Array<{ title: string; specs: Array<{ label: string; value: string | number | null | undefined }> }>; vinculacoes?: Array<{ nome: string; sku: string; valor?: number | null }> }>({ open: false, nome: "", sku: "", sections: [] })
+  const { data: relatedImagens } = useImagensBatch("kit", relatedKits.map((k) => k.sku))
+  const { data: complementImagens } = useImagensBatch("kit", complementKits.map((k) => k.sku))
+  const [fichaModal, setFichaModal] = useState<{ open: boolean; nome: string; sku: string; imagemUrl?: string | null; tipo?: ProductSheetTipo; preco?: number | null; onVerCompleto?: () => void; sections: Array<{ title: string; specs: Array<{ label: string; value: string | number | null | undefined }> }>; vinculacoes?: Array<{ nome: string; sku: string; valor?: number | null; tipo?: ProductSheetTipo }> }>({ open: false, nome: "", sku: "", sections: [] })
 
   // Buscar dados de compatibilidade e relacionados
   useEffect(() => {
-    if (!kit?.sku || !kit?.empresa_id) return
-    const empresaId = kit.empresa_id
+    if (!kit?.sku) return
 
     // Compatibilidade: implantes vinculados ao kit
-    supabase.from("catalogo_kit_implantes").select("*").eq("empresa_id", empresaId).eq("kit_sku", sku)
+    supabase.from("catalogo_kit_implantes").select("*").eq("kit_sku", sku)
       .then(({ data }) => setCompatData(data ?? []))
 
-    // Kits relacionados (que compartilham chaves)
-    supabase.from("catalogo_kit_chaves").select("chave_id").eq("empresa_id", empresaId).eq("kit_sku", sku)
-      .then(async ({ data: chaves }) => {
-        if (!chaves || chaves.length === 0) { setRelatedKits([]); return }
-        const chaveIds = chaves.map(c => c.chave_id)
-        const { data: otherKits } = await supabase.from("catalogo_kit_chaves").select("kit_sku").eq("empresa_id", empresaId).in("chave_id", chaveIds).neq("kit_sku", sku)
-        if (!otherKits || otherKits.length === 0) { setRelatedKits([]); return }
-        const uniqueSkus = [...new Set(otherKits.map(k => k.kit_sku))]
-        const { data: kitsData } = await supabase.from("catalogo_kits").select("sku, nome, preco, tipo_kit:catalogo_tipos_kits(nome)").eq("empresa_id", empresaId).in("sku", uniqueSkus).eq("ativo", true)
-        setRelatedKits(kitsData ?? [])
-      })
+    // Kits relacionados: vínculo explícito (catalogo_kit_kits_relacionados) + kits que compartilham chaves
+    Promise.all([
+      supabase.from("catalogo_kit_kits_relacionados").select("relacionado_sku").eq("kit_sku", sku),
+      supabase.from("catalogo_kit_chaves").select("chave_id").eq("kit_sku", sku),
+    ]).then(async ([{ data: relacionados }, { data: chaves }]) => {
+      const explicitSkus = (relacionados ?? []).map((r) => r.relacionado_sku)
+      let sharedSkus: string[] = []
+      if (chaves && chaves.length > 0) {
+        const chaveIds = chaves.map((c) => c.chave_id)
+        const { data: otherKits } = await supabase.from("catalogo_kit_chaves").select("kit_sku").in("chave_id", chaveIds).neq("kit_sku", sku)
+        sharedSkus = (otherKits ?? []).map((k) => k.kit_sku)
+      }
+      const uniqueSkus = [...new Set([...explicitSkus, ...sharedSkus])]
+      if (uniqueSkus.length === 0) { setRelatedKits([]); return }
+      const { data: kitsData } = await supabase.from("catalogo_kits").select("sku, nome, preco, tipo_kit:catalogo_tipos_kits(nome)").in("sku", uniqueSkus).eq("ativo", true)
+      setRelatedKits(kitsData ?? [])
+    })
 
-    // Kits complementares (que compartilham fresas)
-    supabase.from("catalogo_kit_fresas").select("fresa_id").eq("empresa_id", empresaId).eq("kit_sku", sku)
-      .then(async ({ data: fresas }) => {
-        if (!fresas || fresas.length === 0) { setComplementKits([]); return }
-        const fresaIds = fresas.map(f => f.fresa_id)
-        const { data: otherKits } = await supabase.from("catalogo_kit_fresas").select("kit_sku").eq("empresa_id", empresaId).in("fresa_id", fresaIds).neq("kit_sku", sku)
-        if (!otherKits || otherKits.length === 0) { setComplementKits([]); return }
-        const uniqueSkus = [...new Set(otherKits.map(k => k.kit_sku))]
-        const { data: kitsData } = await supabase.from("catalogo_kits").select("sku, nome, preco, tipo_kit:catalogo_tipos_kits(nome)").eq("empresa_id", empresaId).in("sku", uniqueSkus).eq("ativo", true)
-        setComplementKits(kitsData ?? [])
-      })
-  }, [kit?.sku, kit?.empresa_id])
+    // Kits complementares: vínculo explícito (catalogo_kit_kits_complementares) + kits que compartilham fresas
+    Promise.all([
+      supabase.from("catalogo_kit_kits_complementares").select("complementar_sku").eq("kit_sku", sku),
+      supabase.from("catalogo_kit_fresas").select("fresa_id").eq("kit_sku", sku),
+    ]).then(async ([{ data: complementares }, { data: fresas }]) => {
+      const explicitSkus = (complementares ?? []).map((c) => c.complementar_sku)
+      let sharedSkus: string[] = []
+      if (fresas && fresas.length > 0) {
+        const fresaIds = fresas.map((f) => f.fresa_id)
+        const { data: otherKits } = await supabase.from("catalogo_kit_fresas").select("kit_sku").in("fresa_id", fresaIds).neq("kit_sku", sku)
+        sharedSkus = (otherKits ?? []).map((k) => k.kit_sku)
+      }
+      const uniqueSkus = [...new Set([...explicitSkus, ...sharedSkus])]
+      if (uniqueSkus.length === 0) { setComplementKits([]); return }
+      const { data: kitsData } = await supabase.from("catalogo_kits").select("sku, nome, preco, tipo_kit:catalogo_tipos_kits(nome)").in("sku", uniqueSkus).eq("ativo", true)
+      setComplementKits(kitsData ?? [])
+    })
+  }, [kit?.sku])
 
   if (!kit) return <LoadingState />
 
@@ -995,7 +1038,13 @@ function KitDetail({ sku }: { sku: string }) {
   ].filter(Boolean) as Array<{ label: string; value: string }>
 
   // ── Filtra itens inativos do BOM ──
-  const rawBom = ((kit as unknown as Record<string, unknown[]>).composicao ?? []) as Record<string, unknown>[]
+  const qtds = (kit as any)._quantidades as Record<string, number> | undefined
+  const rawBom: Record<string, unknown>[] = [
+    ...(kit.chaves ?? []).map((c) => ({ chave: c, chave_sku: c.sku, quantidade: qtds?.[c.sku] ?? 1 })),
+    ...(kit.fresas ?? []).map((f) => ({ fresa: f, fresa_sku: f.sku, quantidade: qtds?.[f.sku] ?? 1 })),
+    ...(kit.complementares ?? []).map((c) => ({ acessorio: c, acessorio_sku: c.sku, quantidade: qtds?.[c.sku] ?? 1 })),
+    ...(kit.opcionais ?? []).map((o) => ({ acessorio: o, acessorio_sku: o.sku, quantidade: qtds?.[o.sku] ?? 1 })),
+  ]
   const bomItems = rawBom
     .filter((item) => {
       const related = item.fresa ?? item.chave ?? item.acessorio ?? item.instrumental ?? item.implante
@@ -1093,7 +1142,7 @@ function KitDetail({ sku }: { sku: string }) {
               <EmptyState msg="Nenhuma especificação cadastrada" hint="Preencha os dados técnicos na edição do kit." />
             )}
             <button
-              onClick={() => setFichaModal({ open: true, nome: kit.nome, sku: kit.sku, imagemUrl: imageUrl, sections: [
+              onClick={() => setFichaModal({ open: true, nome: kit.nome, sku: kit.sku, imagemUrl: imageUrl, tipo: "kit", preco: kit.preco, sections: [
                 { title: "Identificação", specs: [
                   { label: "SKU", value: kit.sku },
                   { label: "Nome", value: kit.nome },
@@ -1117,7 +1166,9 @@ function KitDetail({ sku }: { sku: string }) {
         {activeTab === "composicao" && (
           <div className="rounded-2xl border border-[var(--color-border-subtle)] bg-[var(--color-surface)]/30 p-4 sm:p-6 shadow-lg shadow-black/20 backdrop-blur-sm">
             {bomItems.length > 0 ? (
-              <BomTable items={bomItems} />
+              <Suspense fallback={null}>
+                <BomTable items={bomItems} />
+              </Suspense>
             ) : (
               <EmptyState msg="Nenhum item na composição" hint="Adicione itens à composição na edição do kit." />
             )}
@@ -1167,23 +1218,48 @@ function KitDetail({ sku }: { sku: string }) {
               <div className="space-y-4">
                 <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655]">Kits Relacionados</h3>
                 <p className="text-xs text-gray-400">Kits que compartilham as mesmas chaves compatíveis.</p>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  {relatedKits.map((rk: any) => (
-                    <Link
-                      key={rk.sku}
-                      to="/catalogo/produto/$tipo/$sku"
-                      params={{ tipo: "kit", sku: rk.sku }}
-                      className="flex items-center gap-3 p-3 rounded-xl bg-[var(--color-surface)] border border-white/5 hover:border-[#c9a655]/30 transition-colors no-underline"
-                    >
-                      <div className="w-8 h-8 rounded-lg bg-[#c9a655]/10 flex items-center justify-center shrink-0">
-                        <Box className="h-4 w-4 text-[#c9a655]" />
-                      </div>
-                      <div>
-                        <p className="text-sm font-bold text-white">{rk.nome}</p>
-                        <p className="text-xs text-gray-400">{rk.tipo_kit?.nome ?? rk.sku}</p>
-                      </div>
-                    </Link>
-                  ))}
+                <div className="grid grid-cols-1 gap-3">
+                  {relatedKits.map((rk: any) => {
+                    const img = relatedImagens?.get(rk.sku)?.[0]?.url_imagem ?? null
+                    return (
+                      <RelatedProductCard
+                        key={rk.sku}
+                        nome={rk.nome}
+                        sku={rk.sku}
+                        cor="#c9a655"
+                        preco={rk.preco}
+                        tipo="kit"
+                        imageUrl={img}
+                        onImageClick={() => openImageViewer(img ?? "", rk.nome ?? rk.sku)}
+                        onVerFicha={() => setFichaModal({
+                          open: true,
+                          nome: rk.nome,
+                          sku: rk.sku,
+                          imagemUrl: img,
+                          tipo: "kit",
+                          preco: rk.preco,
+                          onVerCompleto: () => navigate({ to: "/catalogo/produto/$tipo/$sku", params: { tipo: "kit", sku: rk.sku } }),
+                          sections: [
+                            { title: "Identificação", specs: [
+                              { label: "SKU", value: rk.sku },
+                              { label: "Nome", value: rk.nome },
+                              { label: "Tipo", value: rk.tipo_kit?.nome },
+                            ]},
+                            { title: "Comercial", specs: [
+                              { label: "Preço", value: rk.preco ? formatBRL(rk.preco) : null },
+                            ]},
+                          ],
+                        })}
+                        fichaData={{ tipo: rk.tipo_kit?.nome ?? "Kit" }}
+                      >
+                        {rk.tipo_kit?.nome && (
+                          <span className="inline-flex items-center px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-[#c9a655]/10 text-[#c9a655]">
+                            {rk.tipo_kit.nome}
+                          </span>
+                        )}
+                      </RelatedProductCard>
+                    )
+                  })}
                 </div>
               </div>
             ) : (
@@ -1199,23 +1275,48 @@ function KitDetail({ sku }: { sku: string }) {
               <div className="space-y-4">
                 <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655]">Kits Complementares</h3>
                 <p className="text-xs text-gray-400">Kits que compartilham as mesmas fresas compatíveis.</p>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  {complementKits.map((ck: any) => (
-                    <Link
-                      key={ck.sku}
-                      to="/catalogo/produto/$tipo/$sku"
-                      params={{ tipo: "kit", sku: ck.sku }}
-                      className="flex items-center gap-3 p-3 rounded-xl bg-[var(--color-surface)] border border-white/5 hover:border-[#c9a655]/30 transition-colors no-underline"
-                    >
-                      <div className="w-8 h-8 rounded-lg bg-[#c9a655]/10 flex items-center justify-center shrink-0">
-                        <Box className="h-4 w-4 text-[#c9a655]" />
-                      </div>
-                      <div>
-                        <p className="text-sm font-bold text-white">{ck.nome}</p>
-                        <p className="text-xs text-gray-400">{ck.tipo_kit?.nome ?? ck.sku}</p>
-                      </div>
-                    </Link>
-                  ))}
+                <div className="grid grid-cols-1 gap-3">
+                  {complementKits.map((ck: any) => {
+                    const img = complementImagens?.get(ck.sku)?.[0]?.url_imagem ?? null
+                    return (
+                      <RelatedProductCard
+                        key={ck.sku}
+                        nome={ck.nome}
+                        sku={ck.sku}
+                        cor="#c9a655"
+                        preco={ck.preco}
+                        tipo="kit"
+                        imageUrl={img}
+                        onImageClick={() => openImageViewer(img ?? "", ck.nome ?? ck.sku)}
+                        onVerFicha={() => setFichaModal({
+                          open: true,
+                          nome: ck.nome,
+                          sku: ck.sku,
+                          imagemUrl: img,
+                          tipo: "kit",
+                          preco: ck.preco,
+                          onVerCompleto: () => navigate({ to: "/catalogo/produto/$tipo/$sku", params: { tipo: "kit", sku: ck.sku } }),
+                          sections: [
+                            { title: "Identificação", specs: [
+                              { label: "SKU", value: ck.sku },
+                              { label: "Nome", value: ck.nome },
+                              { label: "Tipo", value: ck.tipo_kit?.nome },
+                            ]},
+                            { title: "Comercial", specs: [
+                              { label: "Preço", value: ck.preco ? formatBRL(ck.preco) : null },
+                            ]},
+                          ],
+                        })}
+                        fichaData={{ tipo: ck.tipo_kit?.nome ?? "Kit" }}
+                      >
+                        {ck.tipo_kit?.nome && (
+                          <span className="inline-flex items-center px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-[#c9a655]/10 text-[#c9a655]">
+                            {ck.tipo_kit.nome}
+                          </span>
+                        )}
+                      </RelatedProductCard>
+                    )
+                  })}
                 </div>
               </div>
             ) : (
@@ -1224,17 +1325,22 @@ function KitDetail({ sku }: { sku: string }) {
           </div>
         )}
       </div>
-      <FichaTecnicaModal
-        open={fichaModal.open}
-        onClose={() => setFichaModal((p) => ({ ...p, open: false }))}
-        nome={fichaModal.nome}
-        sku={fichaModal.sku}
-        cor={cor}
-        imagemUrl={fichaModal.imagemUrl}
-        sections={fichaModal.sections}
-        vinculacoes={fichaModal.vinculacoes}
-        composicao={bomItems.map((item) => ({ nome: item.nome, quantidade: item.quantidade, sku: item.sku }))}
-      />
+      <Suspense fallback={null}>
+        <FichaTecnicaModal
+          open={fichaModal.open}
+          onClose={() => setFichaModal((p) => ({ ...p, open: false }))}
+          nome={fichaModal.nome}
+          sku={fichaModal.sku}
+          cor={cor}
+          imagemUrl={fichaModal.imagemUrl}
+          tipo={fichaModal.tipo}
+          preco={fichaModal.preco}
+          onVerCompleto={fichaModal.onVerCompleto}
+          sections={fichaModal.sections}
+          vinculacoes={fichaModal.vinculacoes}
+          composicao={fichaModal.sku === kit.sku ? bomItems.map((item) => ({ nome: item.nome, quantidade: item.quantidade, sku: item.sku, tipo: item.tipo as ProductSheetTipo, preco: getPrecoFromDB(item.preco, item.tipo as ProductSheetTipo, item.sku) })) : undefined}
+        />
+      </Suspense>
     </div>
   )
 }

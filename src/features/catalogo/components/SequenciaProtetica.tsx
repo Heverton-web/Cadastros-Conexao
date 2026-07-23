@@ -2,11 +2,12 @@ import { supabase } from "~/lib/supabase"
 import { useState, useEffect, useMemo } from "react"
 import toast from "react-hot-toast"
 import { Check, Box, ShoppingCart, FileText } from "lucide-react"
-import { addToCart, formatBRL } from "~/features/catalogo/services/carrinho.service"
+import { addToCart, formatBRL, getPrecoFromDB } from "~/features/catalogo/services/carrinho.service"
 import { playCoinSound } from "~/features/catalogo/services/audio.service"
 import { openImageViewer } from "~/features/catalogo/services/ui.service"
 import { useCatalogoEmpresaId } from "~/features/catalogo/hooks/useCatalogoEmpresa"
 import { FichaTecnicaModal } from "./FichaTecnicaModal"
+import type { ProductSheetTipo } from "~/features/catalogo/types"
 
 interface SequenciaProteticaProps {
   familiaId: string
@@ -16,7 +17,7 @@ interface SequenciaProteticaProps {
   abutmentSku?: string
 }
 
-interface CompItem { sku: string; nome: string; preco?: number; descricao?: string; parafuso?: { sku: string; nome: string } | null; chave?: { sku: string; nome: string } | null; tipo_componente?: { nome: string } | null; tipo_abutment?: { nome: string } | null }
+interface CompItem { sku: string; nome: string; preco?: number; descricao?: string; parafuso?: { sku: string; nome: string; preco?: number } | null; chave?: { sku: string; nome: string; preco?: number } | null; tipo_componente?: { nome: string } | null; tipo_abutment?: { nome: string } | null }
 
 interface EtapaItem {
   id: string
@@ -38,7 +39,7 @@ export function SequenciaProtetica({ familiaId, tipoAbutmentId, familiaNome, tip
   const [selectedTab, setSelectedTab] = useState<string>("")
   const [loading, setLoading] = useState(false)
   const [imagensMap, setImagensMap] = useState<Map<string, string>>(new Map())
-  const [fichaModal, setFichaModal] = useState<{ open: boolean; nome: string; sku: string; imagemUrl?: string | null; sections: Array<{ title: string; specs: Array<{ label: string; value: string | number | null | undefined }> }>; vinculacoes?: Array<{ nome: string; sku: string; valor?: number | null }> }>({ open: false, nome: "", sku: "", sections: [] })
+  const [fichaModal, setFichaModal] = useState<{ open: boolean; nome: string; sku: string; imagemUrl?: string | null; tipo?: ProductSheetTipo; preco?: number; sections: Array<{ title: string; specs: Array<{ label: string; value: string | number | null | undefined }> }>; vinculacoes?: Array<{ nome: string; sku: string; valor?: number | null; tipo?: ProductSheetTipo }> }>({ open: false, nome: "", sku: "", sections: [] })
 
   useEffect(() => {
     if (!abutmentSku || !empresaId) return
@@ -50,7 +51,7 @@ export function SequenciaProtetica({ familiaId, tipoAbutmentId, familiaNome, tip
 
         const [{ data: etapasData }, { data: etapaCompData }, { data: seqInfo }] = await Promise.all([
           supabase.from("catalogo_seq_protetica_etapas").select("seq_id, etapa_id, etapa:catalogo_cps_etapas_workflows(id, nome, ordem, tipo_workflow:catalogo_cps_tipos_workflows(nome))").in("seq_id", seqIds),
-          supabase.from("catalogo_seq_protetica_etapa_componentes").select("seq_id, etapa_id, componente_sku, componente:catalogo_componentes(sku, nome, preco, descricao, parafuso:catalogo_parafusos(sku, nome), chave:catalogo_chaves(sku, nome), tipo_componente:catalogo_cps_tipos_componentes(nome), tipo_abutment:catalogo_cps_tipos_abutments(nome))").in("seq_id", seqIds),
+          supabase.from("catalogo_seq_protetica_etapa_componentes").select("seq_id, etapa_id, componente_sku, componente:catalogo_componentes(sku, nome, preco, descricao, parafuso:catalogo_parafusos(sku, nome, preco), chave:catalogo_chaves(sku, nome, preco), tipo_componente:catalogo_cps_tipos_componentes(nome), tipo_abutment:catalogo_cps_tipos_abutments(nome))").in("seq_id", seqIds),
           supabase.from("catalogo_seq_proteticas").select("id, nome").in("id", seqIds),
         ])
 
@@ -194,9 +195,9 @@ export function SequenciaProtetica({ familiaId, tipoAbutmentId, familiaNome, tip
                   <p className="font-mono text-[10px] text-[var(--color-text-muted)]">SKU: {comp.sku}</p>
                 </div>
                 {/* CTA — largura fixa para consistência */}
-                <div className="shrink-0 w-full sm:w-[180px] flex flex-row sm:flex-col items-center sm:items-end justify-center sm:justify-start gap-2">
+                <div className="shrink-0 w-full sm:w-[180px] flex flex-row sm:flex-col items-center justify-center gap-2">
                   <button
-                    onClick={() => setFichaModal({ open: true, nome: comp.nome, sku: comp.sku, imagemUrl: img, sections: [
+                    onClick={() => setFichaModal({ open: true, nome: comp.nome, sku: comp.sku, imagemUrl: img, tipo: "acessorio", preco, sections: [
                       { title: "Identificação", specs: [
                         { label: "SKU", value: comp.sku },
                         { label: "Nome", value: comp.nome },
@@ -208,8 +209,8 @@ export function SequenciaProtetica({ familiaId, tipoAbutmentId, familiaNome, tip
                         { label: "Preço", value: preco ? formatBRL(preco) : null },
                       ]},
                     ], vinculacoes: [
-                      ...(comp.parafuso ? [{ nome: comp.parafuso.nome, sku: comp.parafuso.sku, valor: null }] : []),
-                      ...(comp.chave ? [{ nome: comp.chave.nome, sku: comp.chave.sku, valor: null }] : []),
+                      ...(comp.parafuso ? [{ nome: comp.parafuso.nome, sku: comp.parafuso.sku, valor: getPrecoFromDB(comp.parafuso.preco, "parafuso", comp.parafuso.sku), tipo: "parafuso" as ProductSheetTipo }] : []),
+                      ...(comp.chave ? [{ nome: comp.chave.nome, sku: comp.chave.sku, valor: getPrecoFromDB(comp.chave.preco, "chave", comp.chave.sku), tipo: "chave" as ProductSheetTipo }] : []),
                     ] })}
                     className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider border border-[var(--color-border-subtle)] text-[var(--color-text-muted)] hover:text-white hover:border-[var(--color-accent)]/60 transition-all h-8"
                   >
@@ -260,6 +261,8 @@ export function SequenciaProtetica({ familiaId, tipoAbutmentId, familiaNome, tip
       sku={fichaModal.sku}
       cor="#c9a655"
       imagemUrl={fichaModal.imagemUrl}
+      tipo={fichaModal.tipo}
+      preco={fichaModal.preco}
       sections={fichaModal.sections}
       vinculacoes={fichaModal.vinculacoes}
     />
