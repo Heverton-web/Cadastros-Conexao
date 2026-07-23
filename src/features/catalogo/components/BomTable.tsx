@@ -86,32 +86,34 @@ export function BomTable({ items }: BomTableProps) {
             key={`${item.tipo}-${item.sku}`}
             className="flex flex-col sm:flex-row gap-3 sm:gap-4 p-3 sm:p-4 rounded-xl border border-[var(--color-border-subtle)] bg-[var(--color-surface)]/40 hover:border-[var(--color-accent)]/40 transition-all duration-200"
           >
-            {/* Thumbnail */}
-            <div
-              onClick={() => openImageViewer(img ?? "", item.nome)}
-              className="shrink-0 w-16 h-16 sm:w-20 sm:h-20 rounded-lg overflow-hidden cursor-zoom-in bg-gradient-to-br from-[var(--color-surface)] to-[#0f172a] border border-[var(--color-border-subtle)] flex items-center justify-center"
-            >
-              {img ? (
-                <img src={img} alt={item.nome} className="w-full h-full object-contain" loading="lazy" />
-              ) : (
-                <ProductThumb tipo={item.tipo} size="sm" cor={color} />
-              )}
-            </div>
-            {/* Info */}
-            <div className="flex-1 min-w-0 space-y-1">
-              <div className="flex items-center gap-2">
-                <h4 className="text-sm font-bold text-white truncate">{item.nome}</h4>
-                <span className="shrink-0 text-[10px] font-black px-1.5 py-0.5 rounded bg-[var(--color-accent)]/15 text-[var(--color-accent)]">
-                  ×{item.quantidade}
+            <div className="flex gap-3 sm:contents">
+              {/* Thumbnail */}
+              <div
+                onClick={() => openImageViewer(img ?? "", item.nome)}
+                className="shrink-0 w-16 h-16 sm:w-20 sm:h-20 rounded-lg overflow-hidden cursor-zoom-in bg-gradient-to-br from-[var(--color-surface)] to-[#0f172a] border border-[var(--color-border-subtle)] flex items-center justify-center"
+              >
+                {img ? (
+                  <img src={img} alt={item.nome} className="w-full h-full object-contain" loading="lazy" />
+                ) : (
+                  <ProductThumb tipo={item.tipo} size="sm" cor={color} />
+                )}
+              </div>
+              {/* Info */}
+              <div className="flex-1 min-w-0 space-y-1">
+                <div className="flex items-center gap-2">
+                  <h4 className="text-sm font-bold text-white truncate">{item.nome}</h4>
+                  <span className="shrink-0 text-[10px] font-black px-1.5 py-0.5 rounded bg-[var(--color-accent)]/15 text-[var(--color-accent)]">
+                    ×{item.quantidade}
+                  </span>
+                </div>
+                <p className="font-mono text-[10px] text-[var(--color-text-muted)]">SKU: {item.sku}</p>
+                <span className="inline-flex items-center px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-[var(--color-accent)]/10 text-[var(--color-accent)]">
+                  {TIPO_LABEL[item.tipo] ?? item.tipo}
                 </span>
               </div>
-              <p className="font-mono text-[10px] text-[var(--color-text-muted)]">SKU: {item.sku}</p>
-              <span className="inline-flex items-center px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-[var(--color-accent)]/10 text-[var(--color-accent)]">
-                {TIPO_LABEL[item.tipo] ?? item.tipo}
-              </span>
             </div>
             {/* CTA */}
-            <div className="shrink-0 flex flex-row sm:flex-col items-center gap-2">
+            <div className="w-full sm:w-auto shrink-0 flex flex-row sm:flex-col items-center justify-between sm:justify-normal gap-2">
               <button
                 onClick={() => setFichaModal({
                   open: true,

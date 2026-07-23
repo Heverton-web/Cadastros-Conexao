@@ -116,6 +116,15 @@ Pipeline via `/bubble-tech-lead` + skills em `.agents/skills/`.
 - **Fix**: templates corrigidos para 3 args
 - **Padrão**: sempre chamar fire-and-forget com `.catch(() => {})`, nunca `await`
 
+### 2026-07-23 — Correção completa: bug crítico em shared/empresas + shadow EMPRESA_ID em 6 módulos
+- **Bug crítico corrigido**: `shared/empresas/service.ts` usava `EMPRESA_ID` global fixo em vez do parâmetro recebido em `buscarEmpresaDesign`, `salvarEmpresaDesign`, `listarModulosEmpresa`, `upsertModuloEmpresa`, `ativarModulosParaEmpresa` — quebrava `/global/empresas/$id` (super-admin) e preview de tema NPS por empresa. Fix: usar o parâmetro recebido
+- **form-schema movido**: `src/features/form-schema` (não era módulo registrado, sem module.ts) → `src/shared/form-schema`, seguindo o mesmo padrão de `shared/empresas`. Resolve o único import direto feature→feature encontrado (`precadastro` → `form-schema`)
+- **Rotas corrigidas**: 8 arquivos de rota trocaram `~/features/empresas` (shim de compat) por `~/shared/empresas` (caminho direto documentado)
+- **Shadow de `EMPRESA_ID` renomeado para `empresaId`** em ~20 arquivos de `funis`, `hub`, `linktree`, `manutencao`, `nps`, `rotas` (parâmetro local com o mesmo nome do import global — funcionava por shadow, mas era risco de regressão futura)
+- **Bug correlato em `rotas.service.ts`**: 4 chamadas de `dispararEventoModulo` passavam um 4º argumento indevido (assinatura real tem 3) — removido
+- **Método**: 6 subagents em paralelo para o rename mecânico; 4 falharam por limite de sessão da API a meio caminho, mas o trabalho já feito por eles ficou salvo — verificado via grep e completado manualmente o que faltou (só `rotas.service.ts`)
+- **Padrão**: ao usar múltiplos subagents em paralelo para edições mecânicas, sempre validar com grep pós-execução — falha de agent não é falha de escrita, o arquivo pode já estar correto
+
 ### 2026-07-23 — `ativo` não definido no update de tipo workflow
 - **Arquivo**: `src/routes/catalogo.admin.workflows.tsx:147`
 - **Erro**: `ReferenceError: ativo is not defined` ao editar tipo de workflow

@@ -154,32 +154,34 @@ function FresaCard({ ordem, nome, sku, preco, diametroMm, imageUrl, onImageClick
 
   return (
     <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 p-3 sm:p-4 rounded-xl border border-[var(--color-border-subtle)] bg-[var(--color-surface)]/40 hover:border-[var(--color-accent)]/40 transition-all duration-200">
-      {/* Thumbnail */}
-      <div
-        onClick={onImageClick}
-        className="shrink-0 w-16 h-16 sm:w-20 sm:h-20 rounded-lg overflow-hidden cursor-zoom-in bg-gradient-to-br from-[var(--color-surface)] to-[#0f172a] border border-[var(--color-border-subtle)] flex items-center justify-center"
-      >
-        {imageUrl ? (
-          <img src={imageUrl} alt={nome} className="w-full h-full object-contain" loading="lazy" />
-        ) : (
-          <Box className="w-7 h-7 sm:w-8 sm:h-8 opacity-10 text-[#c9a655]" />
-        )}
-      </div>
-      {/* Info */}
-      <div className="flex-1 min-w-0 space-y-1">
-        <div className="flex items-center gap-2">
-          <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[9px] font-black uppercase tracking-wider bg-[#c9a655]/10 text-[#c9a655]">
-            Etapa {ordem}
-          </span>
-          {diametroMm != null && (
-            <span className="text-[10px] text-[var(--color-text-muted)]">Ø {diametroMm} mm</span>
+      <div className="flex gap-3 sm:contents">
+        {/* Thumbnail */}
+        <div
+          onClick={onImageClick}
+          className="shrink-0 w-16 h-16 sm:w-20 sm:h-20 rounded-lg overflow-hidden cursor-zoom-in bg-gradient-to-br from-[var(--color-surface)] to-[#0f172a] border border-[var(--color-border-subtle)] flex items-center justify-center"
+        >
+          {imageUrl ? (
+            <img src={imageUrl} alt={nome} className="w-full h-full object-contain" loading="lazy" />
+          ) : (
+            <Box className="w-7 h-7 sm:w-8 sm:h-8 opacity-10 text-[#c9a655]" />
           )}
         </div>
-        <h4 className="text-sm font-bold text-white truncate">{nome}</h4>
-        <p className="font-mono text-[10px] text-[var(--color-text-muted)]">SKU: {sku}</p>
+        {/* Info */}
+        <div className="flex-1 min-w-0 space-y-1">
+          <div className="flex items-center gap-2">
+            <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[9px] font-black uppercase tracking-wider bg-[#c9a655]/10 text-[#c9a655]">
+              Etapa {ordem}
+            </span>
+            {diametroMm != null && (
+              <span className="text-[10px] text-[var(--color-text-muted)]">Ø {diametroMm} mm</span>
+            )}
+          </div>
+          <h4 className="text-sm font-bold text-white truncate">{nome}</h4>
+          <p className="font-mono text-[10px] text-[var(--color-text-muted)]">SKU: {sku}</p>
+        </div>
       </div>
       {/* CTA */}
-      <div className="shrink-0 flex flex-row sm:flex-col items-center gap-2">
+      <div className="w-full sm:w-auto shrink-0 flex flex-row sm:flex-col items-center justify-between sm:justify-normal gap-2">
         <button
           onClick={onVerFicha}
           className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider border border-[var(--color-border-subtle)] text-[var(--color-text-muted)] hover:text-white hover:border-[var(--color-accent)]/60 transition-all min-h-[32px]"

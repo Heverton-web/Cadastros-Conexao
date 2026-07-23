@@ -178,24 +178,26 @@ export function SequenciaProtetica({ familiaId, tipoAbutmentId, familiaNome, tip
             const img = imagensMap.get(comp.sku)
             return (
               <div key={comp.sku} className="w-full box-border flex flex-col sm:flex-row items-stretch gap-3 sm:gap-4 p-3 sm:p-4 rounded-xl border border-[var(--color-border-subtle)] bg-[var(--color-surface)]/40 hover:border-[var(--color-accent)]/40 transition-all duration-200">
-                {/* Thumbnail */}
-                <div
-                  onClick={() => openImageViewer(img ?? "", comp.nome)}
-                  className="shrink-0 w-16 h-16 sm:w-20 sm:h-20 rounded-lg overflow-hidden cursor-zoom-in bg-gradient-to-br from-[var(--color-surface)] to-[#0f172a] border border-[var(--color-border-subtle)] flex items-center justify-center"
-                >
-                  {img ? (
-                    <img src={img} alt={comp.nome} className="w-full h-full object-contain" loading="lazy" />
-                  ) : (
-                    <Box className="w-7 h-7 sm:w-8 sm:h-8 opacity-10 text-[var(--color-accent)]" />
-                  )}
-                </div>
-                {/* Info */}
-                <div className="flex-1 min-w-0 flex flex-col justify-center gap-1">
-                  <h4 className="text-sm font-bold text-white truncate">{comp.nome}</h4>
-                  <p className="font-mono text-[10px] text-[var(--color-text-muted)]">SKU: {comp.sku}</p>
+                <div className="flex gap-3 sm:contents">
+                  {/* Thumbnail */}
+                  <div
+                    onClick={() => openImageViewer(img ?? "", comp.nome)}
+                    className="shrink-0 w-16 h-16 sm:w-20 sm:h-20 rounded-lg overflow-hidden cursor-zoom-in bg-gradient-to-br from-[var(--color-surface)] to-[#0f172a] border border-[var(--color-border-subtle)] flex items-center justify-center"
+                  >
+                    {img ? (
+                      <img src={img} alt={comp.nome} className="w-full h-full object-contain" loading="lazy" />
+                    ) : (
+                      <Box className="w-7 h-7 sm:w-8 sm:h-8 opacity-10 text-[var(--color-accent)]" />
+                    )}
+                  </div>
+                  {/* Info */}
+                  <div className="flex-1 min-w-0 flex flex-col justify-center gap-1">
+                    <h4 className="text-sm font-bold text-white truncate">{comp.nome}</h4>
+                    <p className="font-mono text-[10px] text-[var(--color-text-muted)]">SKU: {comp.sku}</p>
+                  </div>
                 </div>
                 {/* CTA — largura fixa para consistência */}
-                <div className="shrink-0 w-full sm:w-[180px] flex flex-row sm:flex-col items-center justify-center gap-2">
+                <div className="shrink-0 w-full sm:w-[180px] flex flex-row sm:flex-col items-center justify-between sm:justify-center gap-2">
                   <button
                     onClick={() => setFichaModal({ open: true, nome: comp.nome, sku: comp.sku, imagemUrl: img, tipo: "acessorio", preco, sections: [
                       { title: "Identificação", specs: [

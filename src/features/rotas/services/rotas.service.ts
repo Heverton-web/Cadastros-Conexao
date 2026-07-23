@@ -1,12 +1,11 @@
 import { supabase } from "~/core/supabase";
-import { EMPRESA_ID } from "~/config/empresa"
 import { dispararEventoModulo } from "~/core/services/webhooks";
 import type { Rota, RotaCliente, RotaFormData, RotaStatus } from "../types";
 
 const MODULO_KEY = "rotas";
 
 export async function listarRotas(
-  EMPRESA_ID?: string | null,
+  empresaId?: string | null,
   usuarioId?: string | null,
   filtros?: { status?: RotaStatus; data_inicio?: string; data_fim?: string },
 ): Promise<Rota[]> {
@@ -15,7 +14,7 @@ export async function listarRotas(
     .select("*")
     .order("data_rota", { ascending: false });
 
-  if (EMPRESA_ID) query = query.eq("empresa_id", EMPRESA_ID);
+  if (empresaId) query = query.eq("empresa_id", empresaId);
   if (usuarioId) query = query.eq("usuario_id", usuarioId);
 
   if (filtros?.status) query = query.eq("status", filtros.status);
@@ -56,14 +55,14 @@ export async function buscarRotaComClientes(id: string): Promise<Rota> {
 }
 
 export async function criarRota(
-  EMPRESA_ID: string,
+  empresaId: string,
   usuarioId: string,
   form: RotaFormData,
 ): Promise<Rota> {
   const { data: rota, error: rotaError } = await supabase
     .from("rotas")
     .insert({
-      empresa_id: EMPRESA_ID,
+      empresa_id: empresaId,
       usuario_id: usuarioId,
       titulo: form.titulo,
       data_rota: form.data_rota,
@@ -76,7 +75,7 @@ export async function criarRota(
 
   if (form.cliente_ids.length > 0) {
     const clientesInsert = form.cliente_ids.map((clienteId, index) => ({
-      empresa_id: EMPRESA_ID,
+      empresa_id: empresaId,
       rota_id: rota.id,
       cliente_base_id: clienteId,
       ordem: index + 1,
@@ -89,7 +88,7 @@ export async function criarRota(
     if (clientesError) throw clientesError;
   }
 
-  dispararEventoModulo(MODULO_KEY, "rota.criada", { rota_id: rota.id, titulo: form.titulo, empresa_id: EMPRESA_ID }, EMPRESA_ID).catch(() => {});
+  dispararEventoModulo(MODULO_KEY, "rota.criada", { rota_id: rota.id, titulo: form.titulo, empresa_id: empresaId }).catch(() => {});
 
   return rota as Rota;
 }
@@ -122,7 +121,7 @@ export async function iniciarRota(
     data_inicio: new Date().toISOString(),
     local_inicio: localizacao,
   });
-  dispararEventoModulo(MODULO_KEY, "rota.iniciada", { rota_id: id, empresa_id: rota.empresa_id }, rota.empresa_id).catch(() => {});
+  dispararEventoModulo(MODULO_KEY, "rota.iniciada", { rota_id: id, empresa_id: rota.empresa_id }).catch(() => {});
   return rota;
 }
 
@@ -142,7 +141,7 @@ export async function finalizarRota(
     local_fim: localizacao,
     ...stats,
   });
-  dispararEventoModulo(MODULO_KEY, "rota.finalizada", { rota_id: id, total_visitas: stats.total_visitas, total_km: stats.total_km, empresa_id: rota.empresa_id }, rota.empresa_id).catch(() => {});
+  dispararEventoModulo(MODULO_KEY, "rota.finalizada", { rota_id: id, total_visitas: stats.total_visitas, total_km: stats.total_km, empresa_id: rota.empresa_id }).catch(() => {});
   return rota;
 }
 
@@ -159,7 +158,7 @@ export async function atualizarStatusClienteRota(
   if (error) throw error;
 
   if (status === "realizada") {
-    dispararEventoModulo(MODULO_KEY, "visita.registrada", { rota_cliente_id: rotaClienteId, empresa_id: data.empresa_id }, data.empresa_id).catch(() => {});
+    dispararEventoModulo(MODULO_KEY, "visita.registrada", { rota_cliente_id: rotaClienteId, empresa_id: data.empresa_id }).catch(() => {});
   }
 
   return data as RotaCliente;
@@ -167,7 +166,7 @@ export async function atualizarStatusClienteRota(
 
 export async function adicionarClientesNaRota(
   rotaId: string,
-  EMPRESA_ID: string,
+  empresaId: string,
   clienteIds: string[],
 ): Promise<void> {
   const { data: existentes } = await supabase
@@ -180,7 +179,7 @@ export async function adicionarClientesNaRota(
   let proximaOrdem = (existentes?.[0]?.ordem ?? 0) + 1;
 
   const insert = clienteIds.map((clienteId) => ({
-    empresa_id: EMPRESA_ID,
+    empresa_id: empresaId,
     rota_id: rotaId,
     cliente_base_id: clienteId,
     ordem: proximaOrdem++,
