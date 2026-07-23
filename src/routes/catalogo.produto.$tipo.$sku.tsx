@@ -1,7 +1,8 @@
+import { supabase } from "~/core/supabase"
 import { createRoute, useParams, useNavigate, useSearch, Link } from "@tanstack/react-router"
 import { rootRoute } from "./__root"
 import { StoreLayout, useCatalogoVisibility } from "~/features/catalogo/components/StoreLayout"
-import { useImplanteDetalhe, useAbutmentDetalhe, useKitDetalhe, usePromocionalDetalhe, useProtocoloFresagem, useGuias, useImagensProduto, useImagensBatch, useChavesDoImplante, useCicatrizadoresDoImplante, useAbutmentsDoImplante, useKitsDoImplante } from "~/features/catalogo/hooks/useCatalogo"
+import { useImplanteDetalhe, useAbutmentDetalhe, useKitDetalhe, usePromocionalDetalhe, useProtocoloFresagem, useGuias, useImagensProduto, useImagensBatch, useChavesDoImplante, useCicatrizadoresDoImplante, useAbutmentsDoImplante, useKitsDoImplante, useKitsComChavesEmComum } from "~/features/catalogo/hooks/useCatalogo"
 import { addToCart, formatBRL, getPrecoFromDB, mockPreco, resolveBOMItem } from "~/features/catalogo/services/carrinho.service"
 import { playCoinSound } from "~/features/catalogo/services/audio.service"
 import { FresagemTimeline } from "~/features/catalogo/components/FresagemTimeline"
@@ -632,7 +633,63 @@ function AbutmentDetail({ sku }: { sku: string }) {
   const { data: ab } = useAbutmentDetalhe(sku)
   const { data: guias } = useGuias({ familia_id: ab?.familia_id })
   const { data: imagens } = useImagensProduto("abutment", sku)
-  const { data: kits } = useKitsComChavesEmComum(sku)
+  const [kits, setKits] = useState<any[]>([])
+  const [abChaves, setAbChaves] = useState<any[]>([])
+  const [abParafusos, setAbParafusos] = useState<any[]>([])
+  const [abChavesImagens, setAbChavesImagens] = useState<Map<string, any[]>>(new Map())
+  const [abParafusosImagens, setAbParafusosImagens] = useState<Map<string, any[]>>(new Map())
+  const [fichaModal, setFichaModal] = useState<{ open: boolean; nome: string; sku: string; imagemUrl?: string | null; specs: Array<{ label: string; value: string | number | null | undefined }> }>({ open: false, nome: "", sku: "", specs: [] })
+  useEffect(() => {
+    if (!sku) return
+    supabase.from("catalogo_abutment_chaves").select("chave_id").eq("abutment_sku", sku)
+      .then(async ({ data, error }) => {
+        if (error) { console.error("Erro chaves:", error); return }
+        const ids = (data ?? []).map((r: any) => r.chave_id)
+        if (ids.length === 0) { setAbChaves([]); return }
+        const { data: chaves } = await supabase.from("catalogo_chaves").select("sku, nome, sigla, ativo").in("sku", ids)
+        setAbChaves(chaves ?? [])
+        const skus = (chaves ?? []).map((c: any) => c.sku)
+        if (skus.length > 0) {
+          supabase.from("catalogo_imagens_produto").select("*").eq("produto_tipo", "chave").in("produto_sku", skus)
+            .then(({ data: imgs }) => {
+              const map = new Map<string, any[]>()
+              ;(imgs ?? []).forEach((img: any) => { const arr = map.get(img.produto_sku) ?? []; arr.push(img); map.set(img.produto_sku, arr) })
+              setAbChavesImagens(map)
+            })
+        }
+      }).catch((e) => console.error("Erro chaves:", e))
+    supabase.from("catalogo_abutment_parafusos").select("parafuso_sku").eq("abutment_sku", sku)
+      .then(async ({ data, error }) => {
+        if (error) { console.error("Erro parafusos:", error); return }
+        const skus = (data ?? []).map((r: any) => r.parafuso_sku)
+        if (skus.length === 0) { setAbParafusos([]); return }
+        const { data: parafusos } = await supabase.from("catalogo_parafusos").select("sku, nome, ativo").in("sku", skus)
+        setAbParafusos(parafusos ?? [])
+        if (skus.length > 0) {
+          supabase.from("catalogo_imagens_produto").select("*").eq("produto_tipo", "parafuso").in("produto_sku", skus)
+            .then(({ data: imgs }) => {
+              const map = new Map<string, any[]>()
+              ;(imgs ?? []).forEach((img: any) => { const arr = map.get(img.produto_sku) ?? []; arr.push(img); map.set(img.produto_sku, arr) })
+              setAbParafusosImagens(map)
+            })
+        }
+      }).catch((e) => console.error("Erro parafusos:", e))
+    // Carregar kits via pivot + chave do abutment
+    Promise.all([
+      supabase.from("catalogo_abutment_kits").select("kit_sku").eq("abutment_sku", sku),
+      supabase.from("catalogo_abutments").select("chave_id").eq("sku", sku).single(),
+    ]).then(async ([{ data: pivotKits }, { data: abData }]) => {
+      const pivotSkus = (pivotKits ?? []).map((r: any) => r.kit_sku)
+      let kitSkus = pivotSkus
+      if (kitSkus.length === 0 && abData?.chave_id) {
+        const { data: kk } = await supabase.from("catalogo_kit_chaves").select("kit_sku").eq("chave_id", abData.chave_id)
+        kitSkus = [...new Set((kk ?? []).map((r: any) => r.kit_sku))]
+      }
+      if (kitSkus.length === 0) { setKits([]); return }
+      const { data: kitsData } = await supabase.from("catalogo_kits").select("*, tipo_kit:catalogo_tipos_kits(*)").in("sku", kitSkus).eq("ativo", true)
+      setKits(kitsData ?? [])
+    }).catch((e) => { console.error("Erro kits:", e); setKits([]) })
+  }, [sku])
   const [activeTab, setActiveTab] = useState("ficha")
 
   if (!ab) return <LoadingState />
@@ -645,24 +702,30 @@ function AbutmentDetail({ sku }: { sku: string }) {
   const imageUrl = imagens?.[0]?.url_imagem ?? null
 
   // ── Filtra dados nulos/vazios ──
-  const specs: Array<{ label: string; value: string }> = [
-    { label: "Plataforma", value: ab.diametro_plataforma ? `${ab.diametro_plataforma} mm` : "—" },
-    { label: "Angulação", value: ab.angulacao_graus != null ? `${ab.angulacao_graus}°` : "—" },
-    { label: "Transmucoso", value: ab.altura_transmucoso != null ? `${ab.altura_transmucoso} mm` : "—" },
-    { label: "Corpo", value: ab.altura_corpo != null ? `${ab.altura_corpo} mm` : "—" },
-    { label: "Torque", value: ab.torque_ncm != null ? `${ab.torque_ncm} N·cm` : "—" },
-    ab.material ? { label: "Material", value: ab.material } : null,
-  ].filter(Boolean) as Array<{ label: string; value: string }>
-
+  const specs: Array<{ label: string; value: string | null }> = [
+    { label: "Plataforma", value: ab.diametro_plataforma ? `${ab.diametro_plataforma} mm` : null },
+    { label: "Angulação", value: ab.angulacao_graus != null ? `${ab.angulacao_graus}°` : null },
+    { label: "Transmucoso", value: ab.altura_transmucoso != null ? `${ab.altura_transmucoso} mm` : null },
+    { label: "Altura Corpo", value: ab.altura_corpo != null ? `${ab.altura_corpo} mm` : null },
+    { label: "Torque", value: ab.torque_ncm != null ? `${ab.torque_ncm} N·cm` : null },
+  ].filter((s): s is { label: string; value: string } => s.value != null)
   // ── Filtra kits ativos ──
   const kitsAtivos = kits?.filter((k) => k.ativo) ?? []
+  // ── Combina dados das pivots + colunas antigas FK ──
+  const allChaves = abChaves.length > 0 ? abChaves : (ab.chave ? [ab.chave] : [])
+  const allParafusos = abParafusos.length > 0 ? abParafusos : (ab.parafuso ? [ab.parafuso] : [])
+  const abChavesAtivas = allChaves.filter((c: any) => c.ativo !== false)
+  const abParafusosAtivos = allParafusos.filter((p: any) => p.ativo !== false)
 
   // ── Tabs ──
   const tabs: SectionTab[] = [
     { key: "ficha", label: "Ficha", count: specs.length },
+    { key: "chaves", label: "Chaves", count: abChavesAtivas.length },
+    { key: "parafusos", label: "Parafusos", count: abParafusosAtivos.length },
     { key: "sequencia", label: "Sequência", count: 1 },
     { key: "kits", label: "Kits", count: kitsAtivos.length },
   ]
+
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
@@ -729,6 +792,55 @@ function AbutmentDetail({ sku }: { sku: string }) {
           </div>
         )}
 
+        {/* ─── Chaves ─── */}
+        {activeTab === "chaves" && (
+          <div className="space-y-3">
+            {abChavesAtivas.length > 0 ? abChavesAtivas.map((chave: any) => {
+              const img = abChavesImagens.get(chave.sku)?.[0]?.url_imagem
+              return (
+                <RelatedProductCard
+                  key={chave.sku}
+                  nome={chave.nome}
+                  sku={chave.sku}
+                  cor={cor}
+                  tipo="chave"
+                  imageUrl={img}
+                  onImageClick={() => openImageViewer(img ?? "", chave.nome)}
+                  onVerFicha={() => setFichaModal({ open: true, nome: chave.nome, sku: chave.sku, imagemUrl: img, specs: [
+                    { label: "Sigla", value: chave.sigla },
+                  ] })}
+                  fichaData={{ sigla: chave.sigla }}
+                />
+              )
+            }) : <EmptyState msg="Nenhuma chave vinculada" hint="Vincule chaves na edição do abutment." />}
+          </div>
+        )}
+
+        {/* ─── Parafusos ─── */}
+        {activeTab === "parafusos" && (
+          <div className="space-y-3">
+            {abParafusosAtivos.length > 0 ? abParafusosAtivos.map((parafuso: any) => {
+              const img = abParafusosImagens.get(parafuso.sku)?.[0]?.url_imagem
+              return (
+                <RelatedProductCard
+                  key={parafuso.sku}
+                  nome={parafuso.nome}
+                  sku={parafuso.sku}
+                  cor={cor}
+                  preco={Number(parafuso.preco) || 0}
+                  tipo="parafuso"
+                  imageUrl={img}
+                  onImageClick={() => openImageViewer(img ?? "", parafuso.nome)}
+                  onVerFicha={() => setFichaModal({ open: true, nome: parafuso.nome, sku: parafuso.sku, imagemUrl: img, specs: [
+                    { label: "Torque", value: parafuso.torque_ncm ? `${parafuso.torque_ncm} N·cm` : null },
+                    { label: "Material", value: parafuso.material },
+                  ] })}
+                  fichaData={{ torque: parafuso.torque_ncm, material: parafuso.material }}
+                />
+              )
+            }) : <EmptyState msg="Nenhum parafuso vinculado" hint="Vincule parafusos na edição do abutment." />}
+          </div>
+        )}
         {/* ─── Sequência Protética ─── */}
         {activeTab === "sequencia" && (
           <div className="rounded-2xl border border-[var(--color-border-subtle)] bg-[var(--color-surface)]/30 p-4 sm:p-6 shadow-lg shadow-black/20 backdrop-blur-sm">
@@ -756,6 +868,11 @@ function AbutmentDetail({ sku }: { sku: string }) {
                   tipo="kit"
                   imageUrl={kit.imagens?.[0]?.url_imagem}
                   onImageClick={() => openImageViewer(kit.imagens?.[0]?.url_imagem ?? "", kit.nome)}
+                  onVerFicha={() => setFichaModal({ open: true, nome: kit.nome, sku: kit.sku, imagemUrl: kit.imagens?.[0]?.url_imagem, specs: [
+                    { label: "Tipo", value: kit.tipo_kit?.nome },
+                    { label: "Descrição", value: kit.descricao },
+                  ] })}
+                  fichaData={{ tipo: kit.tipo_kit?.nome }}
                 >
                   {kit.tipo_kit?.nome && (
                     <span className="inline-flex items-center px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-[var(--color-accent)]/10 text-[var(--color-accent)]">
@@ -770,6 +887,7 @@ function AbutmentDetail({ sku }: { sku: string }) {
           </div>
         )}
       </div>
+      <FichaTecnicaModal open={fichaModal.open} onClose={() => setFichaModal({ ...fichaModal, open: false })} nome={fichaModal.nome} sku={fichaModal.sku} cor={cor} imagemUrl={fichaModal.imagemUrl} specs={fichaModal.specs} />
     </div>
   )
 }

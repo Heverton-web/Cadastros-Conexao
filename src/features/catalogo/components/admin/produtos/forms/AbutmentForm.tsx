@@ -1,8 +1,9 @@
+import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { Trash2 } from "lucide-react"
-import type { CatalogoFamilia, CatalogoTipoReabilitacao, CatalogoTipoAbutment, CatalogoAcessorio, CatalogoEtapaWorkflow } from "~/features/catalogo/types"
+import type { CatalogoFamilia, CatalogoTipoReabilitacao, CatalogoTipoAbutment, CatalogoAcessorio, CatalogoEtapaWorkflow, CatalogoChave, CatalogoKit, CatalogoParafusoRetencao } from "~/features/catalogo/types"
 
 const abutmentSchema = z.object({
   familia_id: z.string().min(1, "Família é obrigatória"),
@@ -34,12 +35,25 @@ interface Props {
   addSeqEtapa: (tipo: "analógico" | "digital") => void
   removeSeqEtapa: (tipo: "analógico" | "digital", idx: number) => void
   updateSeqEtapa: (tipo: "analógico" | "digital", idx: number, field: string, value: string) => void
+  // Composição
+  chaves: CatalogoChave[] | undefined
+  chavesIds: string[]
+  onChavesChange: (ids: string[]) => void
+  kits: CatalogoKit[] | undefined
+  kitsIds: string[]
+  onKitsChange: (ids: string[]) => void
+  parafusos: CatalogoParafusoRetencao[] | undefined
+  parafusosIds: string[]
+  onParafusosChange: (ids: string[]) => void
 }
 
 export function AbutmentForm({
   data, onChange, familias, tiposReab, tiposAbutment,
   acessorios, etapas, seqAnalógica, seqDigital,
   addSeqEtapa, removeSeqEtapa, updateSeqEtapa,
+  chaves, chavesIds, onChavesChange,
+  kits, kitsIds, onKitsChange,
+  parafusos, parafusosIds, onParafusosChange,
 }: Props) {
   const { register, formState: { errors } } = useForm<AbutmentFormData>({
     resolver: zodResolver(abutmentSchema),
@@ -118,6 +132,37 @@ export function AbutmentForm({
         </div>
       </div>
 
+      <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655] pt-2">Composição do Abutment</h3>
+
+      {/* Chaves */}
+      <CompositionSection
+        label="Chaves Compatíveis"
+        selectedIds={chavesIds}
+        options={chaves?.map((c) => ({ id: c.sku, label: `${c.nome} (${c.sigla ?? c.sku})` })) ?? []}
+        placeholder="Selecione uma chave..."
+        onChange={onChavesChange}
+      />
+
+      {/* Kits */}
+      <CompositionSection
+        label="Kits"
+        selectedIds={kitsIds}
+        options={kits?.filter((k) => !kitsIds.includes(k.sku)).map((k) => ({ id: k.sku, label: k.nome })) ?? []}
+        placeholder="Selecione um kit..."
+        onChange={onKitsChange}
+      />
+
+      {/* Parafusos */}
+      <CompositionSection
+        label="Parafusos"
+        selectedIds={parafusosIds}
+        options={parafusos?.filter((p) => !parafusosIds.includes(p.sku)).map((p) => ({ id: p.sku, label: p.nome })) ?? []}
+        placeholder="Selecione um parafuso..."
+        onChange={onParafusosChange}
+      />
+
+
+
       <div className="rounded-xl bg-[var(--color-surface)] border border-white/5 p-4 space-y-3">
         <h3 className="text-xs font-black uppercase tracking-widest text-[#c9a655]">Sequência Protética — Analógica</h3>
         {seqAnalógica.length === 0 && <p className="text-xs text-gray-500 italic">Nenhuma etapa adicionada.</p>}
@@ -161,6 +206,76 @@ export function AbutmentForm({
           <span className="text-lg leading-none">+</span> Adicionar etapa Digital
         </button>
       </div>
+    </div>
+  )
+}
+// ============================================================
+// CompositionSection — select + Adicionar button pattern
+// ============================================================
+
+function CompositionSection({
+  label, selectedIds, options, placeholder, onChange,
+}: {
+  label: string
+  selectedIds: string[]
+  options: { id: string; label: string }[]
+  placeholder: string
+  onChange: (ids: string[]) => void
+}) {
+  const [selected, setSelected] = useState("")
+
+  function handleAdd() {
+    if (selected && !selectedIds.includes(selected)) {
+      onChange([...selectedIds, selected])
+      setSelected("")
+    }
+  }
+
+  function handleRemove(id: string) {
+    onChange(selectedIds.filter((s) => s !== id))
+  }
+
+  const allOptions = options.length > 0 ? options : []
+  const selectedLabels = selectedIds.map((id) => {
+    const found = allOptions.find((o) => o.id === id)
+    return { id, label: found?.label ?? id }
+  })
+
+  return (
+    <div className="rounded-xl border border-white/10 bg-[var(--color-surface)]/50 p-4 space-y-3">
+      <p className="text-[10px] font-black uppercase tracking-widest text-gray-500">{label}</p>
+      <div className="flex gap-3">
+        <select
+          value={selected}
+          onChange={(e) => setSelected(e.target.value)}
+          className="flex-1 bg-[#0f172a] border border-white/10 rounded-lg px-4 py-3 text-sm text-white appearance-none cursor-pointer focus:outline-none focus:border-[#c9a655]/50 transition-colors"
+        >
+          <option value="">{placeholder}</option>
+          {allOptions.filter((o) => !selectedIds.includes(o.id)).map((o) => (
+            <option key={o.id} value={o.id}>{o.label}</option>
+          ))}
+        </select>
+        <button
+          type="button"
+          onClick={handleAdd}
+          disabled={!selected}
+          className="px-5 py-3 rounded-lg text-xs font-black uppercase tracking-wider text-[#0f172a] bg-gradient-to-r from-[#c9a655] to-[#e8d48b] hover:from-[#e8d48b] hover:to-[#c9a655] transition-all shrink-0 disabled:opacity-30 disabled:cursor-not-allowed"
+        >
+          Adicionar
+        </button>
+      </div>
+      {selectedLabels.length > 0 && (
+        <div className="flex flex-wrap gap-2 pt-1">
+          {selectedLabels.map((item) => (
+            <span key={item.id} className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#c9a655]/10 border border-[#c9a655]/20 text-xs font-medium text-[#c9a655]">
+              {item.label}
+              <button type="button" onClick={() => handleRemove(item.id)} className="ml-0.5 text-[#c9a655]/50 hover:text-red-400 transition-colors">
+                <Trash2 size={12} />
+              </button>
+            </span>
+          ))}
+        </div>
+      )}
     </div>
   )
 }

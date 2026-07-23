@@ -185,7 +185,7 @@ export async function listarAbutments(): Promise<CatalogoAbutment[]> {
 export async function getAbutmentDetalhe(sku: string): Promise<CatalogoAbutment | null> {
   const { data, error } = await supabase
     .from("catalogo_abutments")
-    .select("*, tipo_abutment:catalogo_cps_tipos_abutments(*, tipo_reabilitacao:catalogo_cps_tipos_reabilitacao(*)), parafuso:catalogo_parafusos(*), chave:catalogo_chaves(*)")
+    .select("*, tipo_abutment:catalogo_cps_tipos_abutments(*, tipo_reabilitacao:catalogo_cps_tipos_reabilitacao(*)), parafuso:catalogo_parafusos(sku, nome), chave:catalogo_chaves(sku, nome)")
     .eq("sku", sku)
     .single()
   if (error) throw error
@@ -237,6 +237,67 @@ export async function removerAbutment(sku: string): Promise<void> {
   const { error } = await supabase.from("catalogo_abutments").delete().eq("sku", sku)
   if (error) throw error
   dispararEventoModulo(MODULO_KEY, "produto.removido", { sku, tipo: "abutment" }).catch(() => {})
+}
+
+// ============================================================
+// Composição do Abutment (N:M)
+// ============================================================
+
+async function getChaveIdsBySku(skus: string[]): Promise<string[]> {
+  if (skus.length === 0) return []
+  const { data } = await supabase.from("catalogo_chaves").select("id").in("sku", skus)
+  return (data as { id: string }[] | null)?.map((r) => r.id) ?? []
+}
+
+export async function salvarAbutmentChaves(abutmentSku: string, chaveSkus: string[]): Promise<void> {
+  await supabase.from("catalogo_abutment_chaves").delete().eq("abutment_sku", abutmentSku)
+  if (chaveSkus.length === 0) return
+  const rows = chaveSkus.map((sku) => ({ abutment_sku: abutmentSku, chave_id: sku }))
+  const { error } = await supabase.from("catalogo_abutment_chaves").insert(rows)
+  if (error) throw error
+}
+
+export async function listarAbutmentChaves(abutmentSku: string): Promise<string[]> {
+  const { data, error } = await supabase
+    .from("catalogo_abutment_chaves")
+    .select("chave_id")
+    .eq("abutment_sku", abutmentSku)
+  if (error) throw error
+  return (data as { chave_id: string }[] | null)?.map((r) => r.chave_id) ?? []
+}
+
+export async function salvarAbutmentKits(abutmentSku: string, kitSkus: string[]): Promise<void> {
+  await supabase.from("catalogo_abutment_kits").delete().eq("abutment_sku", abutmentSku)
+  if (kitSkus.length === 0) return
+  const rows = kitSkus.map((kitSku) => ({ abutment_sku: abutmentSku, kit_sku: kitSku }))
+  const { error } = await supabase.from("catalogo_abutment_kits").insert(rows)
+  if (error) throw error
+}
+
+export async function listarAbutmentKits(abutmentSku: string): Promise<string[]> {
+  const { data, error } = await supabase
+    .from("catalogo_abutment_kits")
+    .select("kit_sku")
+    .eq("abutment_sku", abutmentSku)
+  if (error) throw error
+  return (data as { kit_sku: string }[]).map((r) => r.kit_sku)
+}
+
+export async function salvarAbutmentParafusos(abutmentSku: string, parafusoSkus: string[]): Promise<void> {
+  await supabase.from("catalogo_abutment_parafusos").delete().eq("abutment_sku", abutmentSku)
+  if (parafusoSkus.length === 0) return
+  const rows = parafusoSkus.map((parafusoSku) => ({ abutment_sku: abutmentSku, parafuso_sku: parafusoSku }))
+  const { error } = await supabase.from("catalogo_abutment_parafusos").insert(rows)
+  if (error) throw error
+}
+
+export async function listarAbutmentParafusos(abutmentSku: string): Promise<string[]> {
+  const { data, error } = await supabase
+    .from("catalogo_abutment_parafusos")
+    .select("parafuso_sku")
+    .eq("abutment_sku", abutmentSku)
+  if (error) throw error
+  return (data as { parafuso_sku: string }[]).map((r) => r.parafuso_sku)
 }
 
 // ============================================================

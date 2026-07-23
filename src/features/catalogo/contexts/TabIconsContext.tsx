@@ -21,6 +21,8 @@ const DENTAL_ICONS: Record<string, IconComponent> = {
   kits: IconKit,
   cicatrizadores: IconCicatrizador,
   abutments: IconAbutment,
+  parafusos: Settings,
+  sequencia: Layers,
 }
 
 // ── Icon registry (Lucide — para customização admin) ─────────
@@ -35,8 +37,6 @@ export type TabIconKey = keyof typeof LUCIDE_REGISTRY
 
 // ── Default tab icons ────────────────────────────────────────
 // "dental:" prefix = custom icon; bare key = Lucide
-type IconRef = `dental:${string}` | TabIconKey
-
 const DEFAULT_TAB_ICONS: Record<string, IconRef> = {
   ficha: "dental:ficha",
   protocolos: "dental:protocolos",
@@ -44,6 +44,8 @@ const DEFAULT_TAB_ICONS: Record<string, IconRef> = {
   kits: "dental:kits",
   cicatrizadores: "dental:cicatrizadores",
   abutments: "dental:abutments",
+  parafusos: "dental:parafusos",
+  sequencia: "dental:sequencia",
 }
 
 // ── Context ──────────────────────────────────────────────────

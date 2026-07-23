@@ -665,8 +665,8 @@ export type CatalogoEtapaWorkflow = CatalogoCpsEtapaWorkflow
 export type CatalogoSequenciaProtetica = Record<string, unknown>
 /** @deprecated Removed */
 export type CatalogoCategoriaAcessorio = Record<string, unknown>
-/** @deprecated Removed */
-export type CatalogoAcessorio = Record<string, unknown>
+/** @deprecated Placeholder — campos mínimos p/ AbutmentForm */
+export type CatalogoAcessorio = { id?: string; sku: string; nome: string } & Record<string, unknown>
 /** @deprecated Removed */
 export type CatalogoAcessorioFerramental = Record<string, unknown>
 /** @deprecated Removed */

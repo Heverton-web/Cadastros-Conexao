@@ -22,6 +22,7 @@ import { salvarSequenciaProtetica } from "~/features/catalogo/services/sequencia
 import { salvarProtocoloFresagem, getProtocoloFresagem, salvarImplanteChaves, listarImplanteChaves, salvarImplanteKits, listarImplanteKits, salvarImplanteAbutments, listarImplanteAbutments, listarImplanteCicatrizadores, salvarImplanteCicatrizadores } from "~/features/catalogo/services/implantes.service"
 import { adicionarBOMItem } from "~/features/catalogo/services/kits.service"
 import { listarImagens } from "~/features/catalogo/services/imagens.service"
+import { salvarAbutmentChaves, listarAbutmentChaves, salvarAbutmentKits, listarAbutmentKits, salvarAbutmentParafusos, listarAbutmentParafusos } from "~/features/catalogo/services/componentes.service"
 import { ImplanteForm } from "./forms/ImplanteForm"
 import { AbutmentForm } from "./forms/AbutmentForm"
 import { KitForm } from "./forms/KitForm"
@@ -126,6 +127,9 @@ export function ProdutoFormModal({
   const [kitsIds, setKitsIds] = useState<string[]>([])
   const [abutmentsIds, setAbutmentsIds] = useState<string[]>([])
   const [cicatrizadoresIds, setCicatrizadoresIds] = useState<string[]>([])
+  const [abtChavesIds, setAbtChavesIds] = useState<string[]>([])
+  const [abtKitsIds, setAbtKitsIds] = useState<string[]>([])
+  const [abtParafusosIds, setAbtParafusosIds] = useState<string[]>([])
 
   function resetForms() {
     setImplante({ categoria_id: "", conexao_id: "", familia_id: "", linha_id: "", sku: "", nome: "", sigla: "", descricao: "", diametro_mm: 0, comprimento_mm: 0, torque_insercao: 0, rosca_interna: "", regiao_apical: "", regiao_cervical: "", material: "", superficie: "", tratamento: "", chave_sku: "", preco: 0, macrogeometria: "", osso_soft: "", osso_hard: "", diametro_plataforma_mm: 0, ativo: true })
@@ -143,6 +147,9 @@ export function ProdutoFormModal({
     setKitsIds([])
     setAbutmentsIds([])
     setCicatrizadoresIds([])
+    setAbtChavesIds([])
+    setAbtKitsIds([])
+    setAbtParafusosIds([])
   }
 
   useEffect(() => {
@@ -238,6 +245,16 @@ export function ProdutoFormModal({
         torque_ncm: d.torque_ncm ?? 0,
         preco: d.preco ?? 0,
       })
+      // Carregar composição do abutment
+      listarAbutmentChaves(d.sku)
+        .then(setAbtChavesIds)
+        .catch(() => setAbtChavesIds([]))
+      listarAbutmentKits(d.sku)
+        .then(setAbtKitsIds)
+        .catch(() => setAbtKitsIds([]))
+      listarAbutmentParafusos(d.sku)
+        .then(setAbtParafusosIds)
+        .catch(() => setAbtParafusosIds([]))
     }
     if (editingItem.tipo === "kit" && kitDetalhe) {
       const d = kitDetalhe
@@ -387,6 +404,10 @@ export function ProdutoFormModal({
           ...seqDigital.map((e, i) => ({ tipo_workflow: "digital" as const, etapa_ordem: i + 1, etapa_nome: e.etapa_nome, acessorio_sku: e.acessorio_sku })),
         ]
         await salvarSequenciaProtetica(abutment.sku, allEtapas)
+        // Salvar composição do abutment
+        await salvarAbutmentChaves(abutment.sku, abtChavesIds)
+        await salvarAbutmentKits(abutment.sku, abtKitsIds)
+        await salvarAbutmentParafusos(abutment.sku, abtParafusosIds)
       } else if (tipo === "parafuso_retensao") {
         const payload = {
           sku: parafusoRetencao.sku,
@@ -561,6 +582,15 @@ export function ProdutoFormModal({
               addSeqEtapa={addSeqEtapa}
               removeSeqEtapa={removeSeqEtapa}
               updateSeqEtapa={updateSeqEtapa}
+              chaves={chaves}
+              chavesIds={abtChavesIds}
+              onChavesChange={setAbtChavesIds}
+              kits={todosKits}
+              kitsIds={abtKitsIds}
+              onKitsChange={setAbtKitsIds}
+              parafusos={parafusosRetensao}
+              parafusosIds={abtParafusosIds}
+              onParafusosChange={setAbtParafusosIds}
             />
           )}
 

@@ -7,6 +7,7 @@ import { AdminLayout } from "~/features/catalogo/components/AdminLayout"
 import { useState, useEffect } from "react"
 import { Plus, Pencil, Trash2, ToggleRight, ToggleLeft } from "lucide-react"
 import { supabase } from "~/core/supabase"
+import { listarAbutmentChaves, listarAbutmentKits, listarAbutmentParafusos, salvarAbutmentChaves, salvarAbutmentKits, salvarAbutmentParafusos } from "~/features/catalogo/services/componentes.service"
 import { useQueryClient, useQuery } from "@tanstack/react-query"
 import { useFamilias, useToggleTipoReabilitacaoAtivo, useToggleTipoAbutmentAtivo, useToggleParafusoRetencaoAtivo, useToggleCicatrizadorAtivo } from "~/features/catalogo/hooks/useCatalogo"
 import { useCatalogoEmpresaId } from "~/features/catalogo/hooks/useCatalogoEmpresa"
@@ -53,6 +54,8 @@ function AdminComponentesPage() {
   const { data: implantesList } = useQuery({ queryKey: ["catalogo", "implantes-list", empresaId], queryFn: async () => { const { data } = await supabase.from("catalogo_implantes").select("sku, nome").order("sku"); return (data ?? []) as any[] }, enabled: !!empresaId })
   const { data: familias } = useFamilias()
   const { data: reabFamilias } = useQuery({ queryKey: ["catalogo", "reab-familias", empresaId], queryFn: async () => { const { data } = await supabase.from("catalogo_cps_tipos_reabilitacao_familias").select("*"); return (data ?? []) as { tipo_reabilitacao_id: string; familia_id: string }[] }, enabled: !!empresaId })
+  const { data: todosKits } = useQuery({ queryKey: ["catalogo", "todos-kits", empresaId], queryFn: async () => { const { data } = await supabase.from("catalogo_kits").select("sku, nome").order("nome"); return (data ?? []) as any[] }, enabled: !!empresaId })
+  const { data: todasSequencias } = useQuery({ queryKey: ["catalogo", "todas-sequencias", empresaId], queryFn: async () => { const { data } = await supabase.from("catalogo_seq_proteticas").select("id, nome, sigla").order("nome"); return (data ?? []) as any[] }, enabled: !!empresaId })
 
   // Toggles
   const toggleTipoReab = useToggleTipoReabilitacaoAtivo()
@@ -79,9 +82,22 @@ function AdminComponentesPage() {
   const [abutEditing, setAbutEditing] = useState<any>(null)
   const [abutData, setAbutData] = useState({ sku: "", nome: "", sigla: "", descricao: "", familia_id: "", tipo_reabilitacao_id: "", tipo_abutment_id: "", parafuso_id: "", chave_id: "", diametro_plataforma: 0, altura_transmucoso: 0, altura_corpo: 0, angulacao_graus: 0, torque_ncm: 0, preco: 0, ativo: true })
   const [abutError, setAbutError] = useState("")
+  const [abtChavesIds, setAbtChavesIds] = useState<string[]>([])
+  const [abtParafusosIds, setAbtParafusosIds] = useState<string[]>([])
+  const [abtKitsIds, setAbtKitsIds] = useState<string[]>([])
+  const [abtSeqsIds, setAbtSeqsIds] = useState<string[]>([])
+  function openNewAbut() { setAbutEditing(null); setAbutData({ sku: "", nome: "", sigla: "", descricao: "", familia_id: "", tipo_reabilitacao_id: "", tipo_abutment_id: "", parafuso_id: "", chave_id: "", diametro_plataforma: 0, altura_transmucoso: 0, altura_corpo: 0, angulacao_graus: 0, torque_ncm: 0, preco: 0, ativo: true }); setAbutError(""); setAbtChavesIds([]); setAbtParafusosIds([]); setAbtKitsIds([]); setAbtSeqsIds([]); setAbutModalOpen(true) }
 
-  function openNewAbut() { setAbutEditing(null); setAbutData({ sku: "", nome: "", sigla: "", descricao: "", familia_id: "", tipo_reabilitacao_id: "", tipo_abutment_id: "", parafuso_id: "", chave_id: "", diametro_plataforma: 0, altura_transmucoso: 0, altura_corpo: 0, angulacao_graus: 0, torque_ncm: 0, preco: 0, ativo: true }); setAbutError(""); setAbutModalOpen(true) }
-  function openEditAbut(item: any) { setAbutEditing(item); setAbutData({ sku: item.sku, nome: item.nome ?? "", sigla: item.sigla ?? "", descricao: item.descricao ?? "", familia_id: item.familia_id ?? "", tipo_reabilitacao_id: item.tipo_reabilitacao_id ?? "", tipo_abutment_id: item.tipo_abutment_id ?? "", parafuso_id: item.parafuso_id ?? "", chave_id: item.chave_id ?? "", diametro_plataforma: item.diametro_plataforma ?? 0, altura_transmucoso: item.altura_transmucoso ?? 0, altura_corpo: item.altura_corpo ?? 0, angulacao_graus: item.angulacao_graus ?? 0, torque_ncm: item.torque_ncm ?? 0, preco: item.preco ?? 0, ativo: item.ativo !== false }); setAbutError(""); setAbutModalOpen(true) }
+  function openEditAbut(item: any) {
+    setAbutEditing(item)
+    setAbutData({ sku: item.sku, nome: item.nome ?? "", sigla: item.sigla ?? "", descricao: item.descricao ?? "", familia_id: item.familia_id ?? "", tipo_reabilitacao_id: item.tipo_reabilitacao_id ?? "", tipo_abutment_id: item.tipo_abutment_id ?? "", parafuso_id: item.parafuso_id ?? "", chave_id: item.chave_id ?? "", diametro_plataforma: item.diametro_plataforma ?? 0, altura_transmucoso: item.altura_transmucoso ?? 0, altura_corpo: item.altura_corpo ?? 0, angulacao_graus: item.angulacao_graus ?? 0, torque_ncm: item.torque_ncm ?? 0, preco: item.preco ?? 0, ativo: item.ativo !== false })
+    setAbutError("")
+    listarAbutmentChaves(item.sku).then(setAbtChavesIds).catch(() => setAbtChavesIds([]))
+    listarAbutmentKits(item.sku).then(setAbtKitsIds).catch(() => setAbtKitsIds([]))
+    listarAbutmentParafusos(item.sku).then(setAbtParafusosIds).catch(() => setAbtParafusosIds([]))
+    supabase.from("catalogo_seq_protetica_abutments").select("seq_id").eq("abutment_sku", item.sku).then(({ data }) => setAbtSeqsIds((data ?? []).map((r: any) => r.seq_id))).catch(() => setAbtSeqsIds([]))
+    setAbutModalOpen(true)
+  }
 
   async function handleSaveAbut() {
     setAbutError("")
@@ -96,6 +112,13 @@ function AdminComponentesPage() {
       const { error } = await supabase.from("catalogo_abutments").insert(payload)
       if (error) { setAbutError(error.message); return }
     }
+    // Salvar composição N:M
+    const sku = abutData.sku
+    await salvarAbutmentChaves(sku, abtChavesIds).catch(() => {})
+    await salvarAbutmentKits(sku, abtKitsIds).catch(() => {})
+    await salvarAbutmentParafusos(sku, abtParafusosIds).catch(() => {})
+    await supabase.from("catalogo_seq_protetica_abutments").delete().eq("abutment_sku", sku).then(() => {}).catch(() => {})
+    if (abtSeqsIds.length > 0) { await supabase.from("catalogo_seq_protetica_abutments").insert(abtSeqsIds.map((seqId) => ({ seq_id: seqId, abutment_sku: sku }))).then(() => {}).catch(() => {}) }
     toast.success(abutEditing ? "Abutment atualizado!" : "Abutment criado!")
     setAbutModalOpen(false); qc.invalidateQueries({ queryKey: ["catalogo"] })
   }
@@ -600,8 +623,6 @@ function AdminComponentesPage() {
               <div className="space-y-2"><label className={labelCls}>Família</label><select value={abutData.familia_id} onChange={e=>setAbutData({...abutData,familia_id:e.target.value,tipo_reabilitacao_id:"",tipo_abutment_id:""})} className={selectCls}><option value="">Selecione...</option>{(familias ?? []).map((f:any)=><option key={f.id} value={f.id}>{f.nome}</option>)}</select></div>
               <div className="space-y-2"><label className={labelCls}>Tipo de Reabilitação</label><select value={abutData.tipo_reabilitacao_id} onChange={e=>setAbutData({...abutData,tipo_reabilitacao_id:e.target.value,tipo_abutment_id:""})} className={selectCls} disabled={!abutData.familia_id}><option value="">Selecione...</option>{tiposReab?.filter((t:any)=>reabFamilias?.some(rf=>rf.tipo_reabilitacao_id===t.id && rf.familia_id===abutData.familia_id)).map((t:any)=><option key={t.id} value={t.id}>{t.nome}</option>)}</select></div>
               <div className="space-y-2"><label className={labelCls}>Tipo de Abutment</label><select value={abutData.tipo_abutment_id} onChange={e=>setAbutData({...abutData,tipo_abutment_id:e.target.value})} className={selectCls} disabled={!abutData.tipo_reabilitacao_id}><option value="">Selecione...</option>{tiposAbutment?.filter((t:any)=>t.tipo_reabilitacao_id===abutData.tipo_reabilitacao_id).map((t:any)=><option key={t.id} value={t.id}>{t.nome}</option>)}</select></div>
-              <div className="space-y-2"><label className={labelCls}>Parafuso</label><select value={abutData.parafuso_id} onChange={e=>setAbutData({...abutData,parafuso_id:e.target.value})} className={selectCls}><option value="">Selecione...</option>{parafusosList?.map((p:any)=><option key={p.sku} value={p.sku}>{p.nome}</option>)}</select></div>
-              <div className="space-y-2"><label className={labelCls}>Chave</label><select value={abutData.chave_id} onChange={e=>setAbutData({...abutData,chave_id:e.target.value})} className={selectCls}><option value="">Nenhuma</option>{chavesList?.map((c:any)=><option key={c.sku} value={c.sku}>{c.nome}</option>)}</select></div>
             </div>
             <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655]">Identificação</h3>
             <div className="grid grid-cols-2 gap-4">
@@ -619,9 +640,14 @@ function AdminComponentesPage() {
               <div className="space-y-2"><label className={labelCls}>Torque (N·cm)</label><input type="number" value={abutData.torque_ncm} onChange={e=>setAbutData({...abutData,torque_ncm:Number(e.target.value)})} className={inputCls} /></div>
               
             </div>
-            <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655]">Imagens do Produto</h3>
+            <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655] pt-2">Composição do Abutment</h3>
+            <CompositionSection label="Chaves Compatíveis" selectedIds={abtChavesIds} options={chavesList?.map((c:any)=>({id:c.sku,label:`${c.nome} (${c.sku})`}))??[]} placeholder="Selecione uma chave..." onChange={setAbtChavesIds} />
+            <CompositionSection label="Parafusos" selectedIds={abtParafusosIds} options={parafusosList?.map((p:any)=>({id:p.sku,label:p.nome}))??[]} placeholder="Selecione um parafuso..." onChange={setAbtParafusosIds} />
+            <CompositionSection label="Kits" selectedIds={abtKitsIds} options={todosKits?.map((k:any)=>({id:k.sku,label:k.nome}))??[]} placeholder="Selecione um kit..." onChange={setAbtKitsIds} />
+            <CompositionSection label="Sequências Protéticas" selectedIds={abtSeqsIds} options={todasSequencias?.map((s:any)=>({id:s.id,label:`${s.nome}${s.sigla?` (${s.sigla})`:""}`}))??[]} placeholder="Selecione uma sequência..." onChange={setAbtSeqsIds} />
+            <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655] pt-2">Imagens do Produto</h3>
             <ImageUploader produtoTipo="abutment" produtoSku={abutData.sku} />
-            <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655]">Comercial</h3>
+            <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655] pt-2">Comercial</h3>
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2"><label className={labelCls}>Preço (R$)</label><input type="number" step="0.01" min="0" value={abutData.preco} onChange={e=>setAbutData({...abutData,preco:Number(e.target.value)})} className={inputCls} /></div>
               <div className="flex items-center justify-between px-4 py-3 rounded-xl bg-[var(--color-surface)] border border-white/5 mt-6">
@@ -772,5 +798,34 @@ function AdminComponentesPage() {
         </DialogContent>
       </Dialog>
     </AdminLayout>
+  )
+}
+function CompositionSection({ label, selectedIds, options, placeholder, onChange }: { label: string; selectedIds: string[]; options: { id: string; label: string }[]; placeholder: string; onChange: (ids: string[]) => void }) {
+  const [selected, setSelected] = useState("")
+  function handleAdd() { if (selected && !selectedIds.includes(selected)) { onChange([...selectedIds, selected]); setSelected("") } }
+  function handleRemove(id: string) { onChange(selectedIds.filter((s) => s !== id)) }
+  const allOptions = options.length > 0 ? options : []
+  const selectedLabels = selectedIds.map((id) => { const found = allOptions.find((o) => o.id === id); return { id, label: found?.label ?? id } })
+  return (
+    <div className="rounded-xl border border-white/10 bg-[var(--color-surface)]/50 p-4 space-y-3">
+      <p className="text-[10px] font-black uppercase tracking-widest text-gray-500">{label}</p>
+      <div className="flex gap-3">
+        <select value={selected} onChange={(e) => setSelected(e.target.value)} className="flex-1 bg-[#0f172a] border border-white/10 rounded-lg px-4 py-3 text-sm text-white appearance-none cursor-pointer focus:outline-none focus:border-[#c9a655]/50 transition-colors">
+          <option value="">{placeholder}</option>
+          {allOptions.filter((o) => !selectedIds.includes(o.id)).map((o) => (<option key={o.id} value={o.id}>{o.label}</option>))}
+        </select>
+        <button type="button" onClick={handleAdd} disabled={!selected} className="px-5 py-3 rounded-lg text-xs font-black uppercase tracking-wider text-[#0f172a] bg-gradient-to-r from-[#c9a655] to-[#e8d48b] hover:from-[#e8d48b] hover:to-[#c9a655] transition-all shrink-0 disabled:opacity-30 disabled:cursor-not-allowed">Adicionar</button>
+      </div>
+      {selectedLabels.length > 0 && (
+        <div className="flex flex-wrap gap-2 pt-1">
+          {selectedLabels.map((item) => (
+            <span key={item.id} className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#c9a655]/10 border border-[#c9a655]/20 text-xs font-medium text-[#c9a655]">
+              {item.label}
+              <button type="button" onClick={() => handleRemove(item.id)} className="ml-0.5 text-[#c9a655]/50 hover:text-red-400 transition-colors"><Trash2 size={12} /></button>
+            </span>
+          ))}
+        </div>
+      )}
+    </div>
   )
 }
