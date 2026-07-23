@@ -1,17 +1,16 @@
 import { supabase } from "~/core/supabase";
-import { EMPRESA_ID } from "~/config/empresa"
 import { dispararEventoModulo } from "~/core/services/webhooks";
 import type { NpsWebhookConfig } from "../types";
 
 const MODULO_KEY = "nps";
 
 export async function listarWebhooks(
-  EMPRESA_ID: string,
+  empresaId: string,
 ): Promise<NpsWebhookConfig[]> {
   const { data, error } = await supabase
     .from("nps_webhook_config")
     .select("*")
-    .eq("empresa_id", EMPRESA_ID)
+    .eq("empresa_id", empresaId)
     .order("created_at", { ascending: false });
 
   if (error) throw error;
@@ -19,7 +18,7 @@ export async function listarWebhooks(
 }
 
 export async function salvarWebhook(
-  EMPRESA_ID: string,
+  empresaId: string,
   url: string,
   active: boolean,
   existingId?: string,
@@ -38,7 +37,7 @@ export async function salvarWebhook(
 
   const { data, error } = await supabase
     .from("nps_webhook_config")
-    .insert({ empresa_id: EMPRESA_ID, url, active })
+    .insert({ empresa_id: empresaId, url, active })
     .select()
     .single();
 

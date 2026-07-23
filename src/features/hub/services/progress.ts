@@ -4,7 +4,7 @@ import type { HubUserProgress, HubCollectionProgress } from "../types";
 
 const MODULO_KEY = "hub";
 
-export async function fetchHubUserProgress(userId: string, EMPRESA_ID: string) {
+export async function fetchHubUserProgress(userId: string, empresaId: string) {
   const { data, error } = await supabase
     .from("hub_progresso_usuario")
     .select("*")
@@ -28,7 +28,7 @@ export async function upsertHubUserProgress(
 export async function completeHubMaterial(
   userId: string,
   materialId: string,
-  EMPRESA_ID: string,
+  empresaId: string,
 ) {
   const { data, error } = await supabase
     .from("hub_progresso_usuario")
@@ -36,7 +36,7 @@ export async function completeHubMaterial(
       {
         user_id: userId,
         material_id: materialId,
-        empresa_id: EMPRESA_ID,
+        empresa_id: empresaId,
         status: "completed",
         completed_at: new Date().toISOString(),
       },
@@ -49,8 +49,8 @@ export async function completeHubMaterial(
   dispararEventoModulo(
     MODULO_KEY,
     "material.concluido",
-    { material_id: materialId, usuario_id: userId, empresa_id: EMPRESA_ID },
-    EMPRESA_ID,
+    { material_id: materialId, usuario_id: userId, empresa_id: empresaId },
+    empresaId,
   ).catch(() => {});
 
   return data as HubUserProgress;
@@ -58,7 +58,7 @@ export async function completeHubMaterial(
 
 export async function fetchHubCollectionProgress(
   userId: string,
-  EMPRESA_ID: string,
+  empresaId: string,
 ) {
   const { data, error } = await supabase
     .from("hub_progresso_colecao")
@@ -83,7 +83,7 @@ export async function upsertHubCollectionProgress(
 export async function completeHubCollection(
   userId: string,
   collectionId: string,
-  EMPRESA_ID: string,
+  empresaId: string,
 ) {
   const { data, error } = await supabase
     .from("hub_progresso_colecao")
@@ -91,7 +91,7 @@ export async function completeHubCollection(
       {
         user_id: userId,
         collection_id: collectionId,
-        empresa_id: EMPRESA_ID,
+        empresa_id: empresaId,
         status: "completed",
         completed_at: new Date().toISOString(),
       },
@@ -104,8 +104,8 @@ export async function completeHubCollection(
   dispararEventoModulo(
     MODULO_KEY,
     "trilha.concluida",
-    { collection_id: collectionId, usuario_id: userId, empresa_id: EMPRESA_ID },
-    EMPRESA_ID,
+    { collection_id: collectionId, usuario_id: userId, empresa_id: empresaId },
+    empresaId,
   ).catch(() => {});
 
   return data as HubUserProgress;

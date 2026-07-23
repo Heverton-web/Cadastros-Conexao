@@ -23,13 +23,13 @@ export async function upsertHubIntegrations(
 }
 
 export async function toggleHubProvider(
-  EMPRESA_ID: string,
+  empresaId: string,
   provider: string,
   active: boolean,
 ) {
   const updates: Record<string, unknown> = {};
   updates[`${provider}_active`] = active;
-  updates.empresa_id = EMPRESA_ID;
+  updates.empresa_id = empresaId;
   const { data, error } = await supabase
     .from("hub_integracoes_sistema")
     .upsert(updates, { onConflict: "empresa_id" })

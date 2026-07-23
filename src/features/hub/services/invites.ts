@@ -11,7 +11,7 @@ function generateToken(): string {
 export async function createHubInvite(
   role: string,
   createdBy: string,
-  EMPRESA_ID: string,
+  empresaId: string,
   expiresAt?: string,
 ) {
   const { data, error } = await supabase
@@ -20,7 +20,7 @@ export async function createHubInvite(
       token: generateToken(),
       role,
       created_by: createdBy,
-      empresa_id: EMPRESA_ID,
+      empresa_id: empresaId,
       expires_at: expiresAt,
     })
     .select()
@@ -30,8 +30,8 @@ export async function createHubInvite(
   dispararEventoModulo(
     MODULO_KEY,
     "convite.gerado",
-    { invite_id: data.id, role, created_by: createdBy, empresa_id: EMPRESA_ID },
-    EMPRESA_ID,
+    { invite_id: data.id, role, created_by: createdBy, empresa_id: empresaId },
+    empresaId,
   ).catch(() => {});
 
   return data as HubInviteToken;

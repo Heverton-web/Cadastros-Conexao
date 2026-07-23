@@ -58,7 +58,7 @@ export async function deleteHubBadge(id: string) {
   if (error) throw error;
 }
 
-export async function fetchHubUserBadges(userId: string, EMPRESA_ID: string) {
+export async function fetchHubUserBadges(userId: string, empresaId: string) {
   const { data, error } = await supabase
     .from("hub_emblemas_usuario")
     .select("*, hub_badges(*)")
@@ -70,11 +70,11 @@ export async function fetchHubUserBadges(userId: string, EMPRESA_ID: string) {
 export async function awardHubBadge(
   userId: string,
   badgeId: string,
-  EMPRESA_ID: string,
+  empresaId: string,
 ) {
   const { data, error } = await supabase
     .from("hub_emblemas_usuario")
-    .insert({ user_id: userId, badge_id: badgeId, empresa_id: EMPRESA_ID })
+    .insert({ user_id: userId, badge_id: badgeId, empresa_id: empresaId })
     .select()
     .single();
   if (error) throw error;
@@ -88,8 +88,8 @@ export async function awardHubBadge(
   dispararEventoModulo(
     MODULO_KEY,
     "badge.conquistado",
-    { badge_id: badgeId, badge_nome: badge?.nome, usuario_id: userId, empresa_id: EMPRESA_ID },
-    EMPRESA_ID,
+    { badge_id: badgeId, badge_nome: badge?.nome, usuario_id: userId, empresa_id: empresaId },
+    empresaId,
   ).catch(() => {});
 
   return data as HubUserBadge;

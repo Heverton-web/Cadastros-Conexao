@@ -1,5 +1,4 @@
 import { supabase } from "~/core/supabase";
-import { EMPRESA_ID } from "~/config/empresa"
 import type { Notification } from "../types";
 
 export async function listarNotificacoes(
@@ -48,14 +47,14 @@ export async function criarNotificacao(
   titulo: string,
   mensagem?: string,
   link?: string,
-  EMPRESA_ID?: string,
+  empresaId?: string,
 ): Promise<void> {
   const { error } = await supabase.from("funis_notificacoes").insert({
     user_id: userId,
     titulo,
     mensagem: mensagem ?? null,
     link: link ?? null,
-    empresa_id: EMPRESA_ID ?? null,
+    empresa_id: empresaId ?? null,
   });
   if (error) throw error;
 }

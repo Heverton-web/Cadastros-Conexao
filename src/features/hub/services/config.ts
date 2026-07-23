@@ -21,7 +21,7 @@ export async function upsertHubConfig(config: Partial<HubSystemConfig>) {
 }
 
 export async function updateHubTheme(
-  EMPRESA_ID: string,
+  empresaId: string,
   themeDark: Record<string, string>,
   environmentThemes?: Record<string, unknown>,
 ) {
@@ -29,7 +29,7 @@ export async function updateHubTheme(
     .from("hub_config_sistema")
     .upsert(
       {
-        empresa_id: EMPRESA_ID,
+        empresa_id: empresaId,
         theme_dark: themeDark,
         environment_themes: environmentThemes || {},
       },

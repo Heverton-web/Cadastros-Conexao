@@ -22,8 +22,8 @@ export async function upsertHubChatbotConfig(
   return data as HubChatbotConfig;
 }
 
-export async function sendHubChatMessage(message: string, EMPRESA_ID: string) {
-  const config = await fetchHubChatbotConfig(EMPRESA_ID);
+export async function sendHubChatMessage(message: string, empresaId: string) {
+  const config = await fetchHubChatbotConfig(empresaId);
   if (!config || !config.enabled || !config.webhook_url) {
     return { reply: "Chatbot não configurado nesta empresa." };
   }
@@ -31,7 +31,7 @@ export async function sendHubChatMessage(message: string, EMPRESA_ID: string) {
     const response = await fetch(config.webhook_url, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message, empresa_id: EMPRESA_ID }),
+      body: JSON.stringify({ message, empresa_id: empresaId }),
       signal: AbortSignal.timeout(30000),
     });
     const data = await response.json();

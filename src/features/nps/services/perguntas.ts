@@ -1,17 +1,16 @@
 import { supabase } from "~/core/supabase";
-import { EMPRESA_ID } from "~/config/empresa"
 import { dispararEventoModulo } from "~/core/services/webhooks";
 import type { NpsPergunta } from "../types";
 
 const MODULO_KEY = "nps";
 
 export async function listarPerguntas(
-  EMPRESA_ID: string,
+  empresaId: string,
 ): Promise<NpsPergunta[]> {
   const { data, error } = await supabase
     .from("nps_perguntas")
     .select("*")
-    .eq("empresa_id", EMPRESA_ID)
+    .eq("empresa_id", empresaId)
     .order("order_index", { ascending: true });
 
   if (error) throw error;
@@ -19,12 +18,12 @@ export async function listarPerguntas(
 }
 
 export async function listarPerguntasAtivas(
-  EMPRESA_ID: string,
+  empresaId: string,
 ): Promise<NpsPergunta[]> {
   const { data, error } = await supabase
     .from("nps_perguntas")
     .select("*")
-    .eq("empresa_id", EMPRESA_ID)
+    .eq("empresa_id", empresaId)
     .eq("active", true)
     .order("order_index", { ascending: true });
 
@@ -33,7 +32,7 @@ export async function listarPerguntasAtivas(
 }
 
 export async function criarPergunta(
-  EMPRESA_ID: string,
+  empresaId: string,
   pergunta: Omit<
     NpsPergunta,
     "id" | "empresa_id" | "created_at" | "updated_at"
@@ -41,7 +40,7 @@ export async function criarPergunta(
 ): Promise<NpsPergunta> {
   const { data, error } = await supabase
     .from("nps_perguntas")
-    .insert({ ...pergunta, empresa_id: EMPRESA_ID })
+    .insert({ ...pergunta, empresa_id: empresaId })
     .select()
     .single();
 
@@ -50,8 +49,8 @@ export async function criarPergunta(
   dispararEventoModulo(
     MODULO_KEY,
     "nps.pergunta_criada",
-    { pergunta_id: data.id, empresa_id: EMPRESA_ID },
-    EMPRESA_ID,
+    { pergunta_id: data.id, empresa_id: empresaId },
+    empresaId,
   ).catch(() => {});
 
   return data as NpsPergunta;

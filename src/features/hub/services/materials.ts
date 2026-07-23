@@ -4,7 +4,7 @@ import type { HubMaterial, HubMaterialAsset, HubLanguage } from "../types";
 
 const MODULO_KEY = "hub";
 
-export async function fetchHubMaterials(EMPRESA_ID?: string) {
+export async function fetchHubMaterials(empresaId?: string) {
   let query = supabase.from("hub_materiais").select("*");
   const { data, error } = await query.order("created_at", { ascending: false });
   if (error) throw error;
@@ -100,7 +100,7 @@ export async function logHubAccess(log: {
 
 export async function fetchHubAccessLogs(
   materialId: string,
-  EMPRESA_ID: string,
+  empresaId: string,
 ) {
   const { data, error } = await supabase
     .from("hub_logs_acesso")

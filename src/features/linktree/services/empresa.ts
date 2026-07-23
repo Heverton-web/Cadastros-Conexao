@@ -1,5 +1,4 @@
 import { supabase } from "~/core/supabase";
-import { EMPRESA_ID } from "~/config/empresa"
 import { dispararEventoModulo } from "~/core/services/webhooks";
 import type {
   EmpresaLinktreeConfig,
@@ -14,12 +13,12 @@ import type {
 const MODULO_KEY = "linktree";
 
 export async function listarEmpresaConfig(
-  EMPRESA_ID: string,
+  empresaId: string,
 ): Promise<EmpresaLinktreeConfig | null> {
   const { data, error } = await supabase
     .from("linktree_empresa_config")
     .select("*")
-    .eq("empresa_id", EMPRESA_ID)
+    .eq("empresa_id", empresaId)
     .maybeSingle();
   if (error) throw error;
   return data;
@@ -38,14 +37,14 @@ export async function buscarConfigPorSlug(
 }
 
 export async function salvarEmpresaConfig(
-  EMPRESA_ID: string,
+  empresaId: string,
   config: Partial<
     Pick<EmpresaLinktreeConfig, "slug" | "bio" | "banner_url" | "avatar_url" | "theme">
   >,
 ): Promise<EmpresaLinktreeConfig> {
   const { data, error } = await supabase
     .from("linktree_empresa_config")
-    .upsert({ empresa_id: EMPRESA_ID, ...config }, { onConflict: "empresa_id" })
+    .upsert({ empresa_id: empresaId, ...config }, { onConflict: "empresa_id" })
     .select()
     .single();
   if (error) throw error;
@@ -55,37 +54,37 @@ export async function salvarEmpresaConfig(
 
 export async function verificarSlugDisponivel(
   slug: string,
-  EMPRESA_ID?: string,
+  empresaId?: string,
 ): Promise<boolean> {
   let query = supabase
     .from("linktree_empresa_config")
     .select("empresa_id")
     .eq("slug", slug);
-  if (EMPRESA_ID) query = query.neq("empresa_id", EMPRESA_ID);
+  if (empresaId) query = query.neq("empresa_id", empresaId);
   const { data } = await query.maybeSingle();
   return !data;
 }
 
 export async function listarSecoes(
-  EMPRESA_ID: string,
+  empresaId: string,
 ): Promise<EmpresaLinktreeSection[]> {
   const { data, error } = await supabase
     .from("linktree_empresa_sections")
     .select("*")
-    .eq("empresa_id", EMPRESA_ID)
+    .eq("empresa_id", empresaId)
     .order("ordem");
   if (error) throw error;
   return data ?? [];
 }
 
 export async function criarSecao(
-  EMPRESA_ID: string,
+  empresaId: string,
   input: EmpresaSectionInput,
 ): Promise<EmpresaLinktreeSection> {
   const { data, error } = await supabase
     .from("linktree_empresa_sections")
     .insert({
-      empresa_id: EMPRESA_ID,
+      empresa_id: empresaId,
       titulo: input.titulo,
       imagem_url: input.imagem_url ?? null,
       ordem: input.ordem ?? 0,
@@ -119,25 +118,25 @@ export async function deletarSecao(id: string): Promise<void> {
 }
 
 export async function listarLinks(
-  EMPRESA_ID: string,
+  empresaId: string,
 ): Promise<EmpresaLinktreeLink[]> {
   const { data, error } = await supabase
     .from("linktree_empresa_links")
     .select("*")
-    .eq("empresa_id", EMPRESA_ID)
+    .eq("empresa_id", empresaId)
     .order("ordem");
   if (error) throw error;
   return data ?? [];
 }
 
 export async function listarLinksPublicos(
-  EMPRESA_ID: string,
+  empresaId: string,
 ): Promise<EmpresaLinktreeLink[]> {
   const now = new Date().toISOString();
   const { data, error } = await supabase
     .from("linktree_empresa_links")
     .select("*")
-    .eq("empresa_id", EMPRESA_ID)
+    .eq("empresa_id", empresaId)
     .eq("ativo", true)
     .order("ordem");
   if (error) throw error;
@@ -149,13 +148,13 @@ export async function listarLinksPublicos(
 }
 
 export async function criarLink(
-  EMPRESA_ID: string,
+  empresaId: string,
   sectionId: string,
   input: EmpresaLinkInput,
 ): Promise<EmpresaLinktreeLink> {
   const { data, error } = await supabase
     .from("linktree_empresa_links")
-    .insert({ empresa_id: EMPRESA_ID, section_id: sectionId, ...input })
+    .insert({ empresa_id: empresaId, section_id: sectionId, ...input })
     .select()
     .single();
   if (error) throw error;
@@ -208,20 +207,20 @@ export async function reordenarSecoes(
 
 export async function registrarClique(
   linkId: string,
-  EMPRESA_ID: string,
+  empresaId: string,
   ipHash?: string,
   userAgent?: string,
 ): Promise<void> {
   await supabase.from("linktree_empresa_clicks").insert({
     link_id: linkId,
-    empresa_id: EMPRESA_ID,
+    empresa_id: empresaId,
     ip_hash: ipHash,
     user_agent: userAgent,
   });
 }
 
 export async function listarAnalytics(
-  EMPRESA_ID: string,
+  empresaId: string,
   periodo: AnalyticsPeriodo,
 ): Promise<ClickAnalytics[]> {
   const dias = periodo === "7d" ? 7 : periodo === "30d" ? 30 : 90;
@@ -230,7 +229,7 @@ export async function listarAnalytics(
   const { data, error } = await supabase
     .from("linktree_empresa_clicks")
     .select("link_id")
-    .eq("empresa_id", EMPRESA_ID)
+    .eq("empresa_id", empresaId)
     .gte("clicked_at", desde);
   if (error) throw error;
 

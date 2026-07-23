@@ -1,5 +1,4 @@
 import { supabase } from "~/core/supabase";
-import { EMPRESA_ID } from "~/config/empresa"
 
 type LatLng = { lat: number; lng: number };
 
@@ -9,14 +8,14 @@ export type DistanciaResult = {
 };
 
 export async function calcularDistanciaGoogle(
-  EMPRESA_ID: string,
+  empresaId: string,
   origem: LatLng,
   destino: LatLng,
 ): Promise<DistanciaResult> {
   const { data, error } = await supabase.functions.invoke<DistanciaResult>(
     "calcular-distancia",
     {
-      body: { empresa_id: EMPRESA_ID, origem, destino },
+      body: { empresa_id: empresaId, origem, destino },
     },
   );
 

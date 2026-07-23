@@ -1,8 +1,7 @@
 import { supabase } from "~/core/supabase";
-import { EMPRESA_ID } from "~/config/empresa"
 import type { Template, TemplateInput } from "../types";
 
-export async function listarTemplates(EMPRESA_ID?: string): Promise<Template[]> {
+export async function listarTemplates(empresaId?: string): Promise<Template[]> {
   let query = supabase
     .from("funis_modelos")
     .select(
@@ -10,8 +9,8 @@ export async function listarTemplates(EMPRESA_ID?: string): Promise<Template[]> 
     )
     .order("created_at", { ascending: false });
 
-  if (EMPRESA_ID) {
-    query = query.or(`empresa_id.eq.${EMPRESA_ID},is_public.eq.true`);
+  if (empresaId) {
+    query = query.or(`empresa_id.eq.${empresaId},is_public.eq.true`);
   } else {
     query = query.eq("is_public", true);
   }
@@ -42,7 +41,7 @@ export async function buscarTemplate(id: string): Promise<Template> {
 
 export async function criarTemplate(
   input: TemplateInput,
-  EMPRESA_ID?: string | null,
+  empresaId?: string | null,
 ): Promise<Template> {
   const {
     data: { user },
@@ -56,7 +55,7 @@ export async function criarTemplate(
       descricao: input.descricao ?? null,
       is_public: input.is_public ?? false,
       created_by: user.id,
-      empresa_id: EMPRESA_ID ?? null,
+      empresa_id: empresaId ?? null,
     })
     .select()
     .single();

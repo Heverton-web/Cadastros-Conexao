@@ -1,5 +1,4 @@
 import { supabase } from "~/core/supabase";
-import { EMPRESA_ID } from "~/config/empresa"
 import { dispararEventoModulo } from "~/core/services/webhooks";
 import type { Automation, AutomationInput } from "../types";
 
@@ -17,7 +16,7 @@ export async function listarAutomacoes(funilId: string): Promise<Automation[]> {
 
 export async function criarAutomacao(
   input: AutomationInput,
-  EMPRESA_ID?: string | null,
+  empresaId?: string | null,
 ): Promise<Automation> {
   const {
     data: { user },
@@ -34,7 +33,7 @@ export async function criarAutomacao(
       action_type: input.action_type,
       action_config: input.action_config ?? {},
       created_by: user.id,
-      empresa_id: EMPRESA_ID ?? null,
+      empresa_id: empresaId ?? null,
     })
     .select()
     .single();
