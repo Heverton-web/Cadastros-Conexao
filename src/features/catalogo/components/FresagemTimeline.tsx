@@ -6,6 +6,7 @@ import { playCoinSound } from "~/features/catalogo/services/audio.service"
 import { useImagensBatch, useTiposOsso } from "~/features/catalogo/hooks/useCatalogo"
 import type { CatalogoProtocoloFresagem } from "~/features/catalogo/types"
 import { openImageViewer } from "~/features/catalogo/services/ui.service"
+import { FichaTecnicaModal } from "./FichaTecnicaModal"
 
 interface FresagemTimelineProps {
   implanteSku: string
@@ -14,6 +15,7 @@ interface FresagemTimelineProps {
 
 export function FresagemTimeline({ implanteSku, protocolos }: FresagemTimelineProps) {
   const { data: tiposOsso } = useTiposOsso()
+  const [fichaModal, setFichaModal] = useState<{ open: boolean; nome: string; sku: string; imagemUrl?: string | null; specs: Array<{ label: string; value: string | number | null | undefined }> }>({ open: false, nome: "", sku: "", specs: [] })
 
   // Mapeia tipo_osso (sigla) → categoria (hard/soft)
   const getCategoria = (tipoOsso: string | null | undefined): string | null => {
@@ -77,6 +79,18 @@ export function FresagemTimeline({ implanteSku, protocolos }: FresagemTimelinePr
               diametroMm={p.fresa?.diametro_mm}
               imageUrl={img}
               onImageClick={() => openImageViewer(img ?? "", nome)}
+              onVerFicha={() => setFichaModal({
+                open: true,
+                nome,
+                sku: p.fresa_sku,
+                imagemUrl: img,
+                specs: [
+                  { label: "Diâmetro", value: p.fresa?.diametro_mm ? `${p.fresa.diametro_mm} mm` : null },
+                  { label: "Comprimento", value: p.fresa?.comprimento },
+                  { label: "Material", value: p.fresa?.material },
+                  { label: "Tipo", value: p.fresa?.tipo_fresa?.nome },
+                ]
+              })}
             />
           )
         })}
@@ -87,13 +101,23 @@ export function FresagemTimeline({ implanteSku, protocolos }: FresagemTimelinePr
           </p>
         )}
       </div>
+
+      <FichaTecnicaModal
+        open={fichaModal.open}
+        onClose={() => setFichaModal((p) => ({ ...p, open: false }))}
+        nome={fichaModal.nome}
+        sku={fichaModal.sku}
+        cor="#c9a655"
+        imagemUrl={fichaModal.imagemUrl}
+        specs={fichaModal.specs}
+      />
     </div>
   )
 }
 
-function FresaCard({ ordem, nome, sku, preco, diametroMm, imageUrl, onImageClick }: {
+function FresaCard({ ordem, nome, sku, preco, diametroMm, imageUrl, onImageClick, onVerFicha }: {
   ordem: number; nome: string; sku: string; preco: number; diametroMm?: number | null
-  imageUrl?: string | null; onImageClick: () => void
+  imageUrl?: string | null; onImageClick: () => void; onVerFicha: () => void
 }) {
   const [added, setAdded] = useState(false)
 
@@ -145,7 +169,7 @@ function FresaCard({ ordem, nome, sku, preco, diametroMm, imageUrl, onImageClick
       {/* CTA */}
       <div className="shrink-0 flex flex-row sm:flex-col items-center sm:items-end gap-2">
         <button
-          onClick={onImageClick}
+          onClick={onVerFicha}
           className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider border border-[var(--color-border-subtle)] text-[var(--color-text-muted)] hover:text-white hover:border-[var(--color-accent)]/60 transition-all min-h-[32px]"
         >
           <FileText className="w-3 h-3" />

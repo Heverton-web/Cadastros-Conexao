@@ -1,7 +1,7 @@
 import { supabase } from "~/lib/supabase"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo } from "react"
 import toast from "react-hot-toast"
-import { Check, ArrowLeft, Box, ShoppingCart, FileText } from "lucide-react"
+import { Check, Box, ShoppingCart, FileText } from "lucide-react"
 import { addToCart, formatBRL } from "~/features/catalogo/services/carrinho.service"
 import { playCoinSound } from "~/features/catalogo/services/audio.service"
 import { openImageViewer } from "~/features/catalogo/services/ui.service"
@@ -35,7 +35,7 @@ export function SequenciaProtetica({ familiaId, tipoAbutmentId, familiaNome, tip
   const empresaId = useCatalogoEmpresaId()
   const [addedSkus, setAddedSkus] = useState<Set<string>>(new Set())
   const [workflows, setWorkflows] = useState<WorkflowGroup[]>([])
-  const [selectedWorkflow, setSelectedWorkflow] = useState<string | null>(null)
+  const [selectedTab, setSelectedTab] = useState<string>("")
   const [loading, setLoading] = useState(false)
   const [imagensMap, setImagensMap] = useState<Map<string, string>>(new Map())
   const [fichaModal, setFichaModal] = useState<{ open: boolean; nome: string; sku: string; imagemUrl?: string | null; specs: Array<{ label: string; value: string | number | null | undefined }> }>({ open: false, nome: "", sku: "", specs: [] })
@@ -54,13 +54,18 @@ export function SequenciaProtetica({ familiaId, tipoAbutmentId, familiaNome, tip
           supabase.from("catalogo_seq_proteticas").select("id, nome").in("id", seqIds),
         ])
 
-        // Montar grupos com etapas
+        // Montar grupos com etapas — usar NOME DA SEQUÊNCIA como nome do grupo
         const groups: Record<string, WorkflowGroup> = {}
+        for (const s of seqInfo ?? []) {
+          groups[s.id] = { id: s.id, nome: s.nome || "Sem nome", etapas: [] }
+        }
         for (const e of etapasData ?? []) {
           const seqId = (e as { seq_id: string }).seq_id
           const etapa = (e as { etapa: { id: string; nome: string; ordem: number; tipo_workflow: { nome: string } | null } | null }).etapa
-          const wfName = etapa?.tipo_workflow?.nome ?? (seqInfo?.find((s: { id: string }) => s.id === seqId)?.nome ?? "Workflow")
-          if (!groups[seqId]) groups[seqId] = { id: seqId, nome: wfName, etapas: [] }
+          if (!groups[seqId]) {
+            const wfName = etapa?.tipo_workflow?.nome ?? "Workflow"
+            groups[seqId] = { id: seqId, nome: wfName, etapas: [] }
+          }
           groups[seqId].etapas.push({ id: etapa?.id ?? (e as { etapa_id: string }).etapa_id, nome: etapa?.nome ?? "", ordem: etapa?.ordem ?? 0, componentes: [] })
         }
 
@@ -73,7 +78,6 @@ export function SequenciaProtetica({ familiaId, tipoAbutmentId, familiaNome, tip
             const wfName = seqInfo?.find((s: { id: string }) => s.id === seqId)?.nome ?? "Workflow"
             groups[seqId] = { id: seqId, nome: wfName, etapas: [] }
           }
-          // Encontrar a etapa no grupo e adicionar o componente
           const etapa = groups[seqId].etapas.find((e) => e.id === etapaId)
           if (etapa) {
             etapa.componentes.push({ sku: comp?.sku ?? (c as { componente_sku: string }).componente_sku, nome: comp?.nome ?? "", preco: Number(comp?.preco) || undefined, descricao: comp?.descricao ?? undefined })
@@ -100,9 +104,26 @@ export function SequenciaProtetica({ familiaId, tipoAbutmentId, familiaNome, tip
       .finally(() => setLoading(false))
   }, [abutmentSku, empresaId])
 
+  // Tabs = nomes únicos dos workflows
+  const uniqueTabs = useMemo(() => {
+    const seen = new Set<string>()
+    return workflows.map((w) => w.nome).filter((n) => { if (seen.has(n)) return false; seen.add(n); return true })
+  }, [workflows])
+
+  // Workflow selecionado pela tab
+  const activeWorkflow = useMemo(() => {
+    return workflows.find((w) => w.nome === selectedTab) ?? workflows[0] ?? null
+  }, [workflows, selectedTab])
+
+  // Selecionar primeira tab quando dados carregam
+  useEffect(() => {
+    if (uniqueTabs.length > 0 && !selectedTab) {
+      setSelectedTab(uniqueTabs[0])
+    }
+  }, [uniqueTabs, selectedTab])
+
   if (loading) return (
     <div className="space-y-2">
-      <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-accent)]">{tipoAbutmentNome}</p>
       <h3 className="text-lg font-bold text-white">Sequência Protética</h3>
       <p className="text-sm text-[var(--color-text-muted)]">Carregando...</p>
     </div>
@@ -115,120 +136,115 @@ export function SequenciaProtetica({ familiaId, tipoAbutmentId, familiaNome, tip
     </div>
   )
 
-  if (selectedWorkflow) {
-    const workflow = workflows.find((w) => w.id === selectedWorkflow)
-    return (
-      <>
-      <div className="space-y-4">
-        <button onClick={() => setSelectedWorkflow(null)} className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[var(--color-text-muted)] hover:text-[var(--color-accent)] transition-colors">
-          <ArrowLeft className="w-4 h-4" /> Voltar
-        </button>
-        <div className="space-y-1">
-          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-accent)]">{tipoAbutmentNome}</p>
-          <h3 className="text-xl font-black text-white">{workflow?.nome}</h3>
-        </div>
-        <div className="h-px bg-[var(--color-border-subtle)]" />
-        {workflow?.etapas.map((etapa) => (
-          <div key={etapa.id} className="space-y-2">
-            <p className="text-[10px] font-bold uppercase tracking-widest text-[var(--color-accent)]">Etapa {etapa.ordem}: {etapa.nome}</p>
-            {etapa.componentes.length > 0 ? etapa.componentes.map((comp) => {
-              const isAdded = addedSkus.has(comp.sku)
-              const preco = Number(comp.preco)
-              const temPreco = Number.isFinite(preco) && preco > 0
-              const img = imagensMap.get(comp.sku)
-              return (
-                <div key={comp.sku} className="flex flex-col sm:flex-row gap-4 p-4 rounded-xl border border-[var(--color-border-subtle)] bg-[var(--color-surface)]/40 hover:border-[var(--color-accent)]/40 transition-all">
-                  {/* Thumbnail */}
-                  <div
-                    onClick={() => openImageViewer(img ?? "", comp.nome)}
-                    className="shrink-0 w-20 h-20 sm:w-24 sm:h-24 rounded-lg overflow-hidden cursor-zoom-in bg-gradient-to-br from-[var(--color-surface)] to-[#0f172a] border border-[var(--color-border-subtle)] flex items-center justify-center"
-                  >
-                    {img ? (
-                      <img src={img} alt={comp.nome} className="w-full h-full object-contain" loading="lazy" />
-                    ) : (
-                      <Box className="w-8 h-8 opacity-10 text-[var(--color-accent)]" />
-                    )}
-                  </div>
-                  {/* Info */}
-                  <div className="flex-1 min-w-0 space-y-1.5">
-                    <p className="text-sm font-bold text-white truncate">{comp.nome}</p>
-                    <p className="font-mono text-[10px] text-[var(--color-text-muted)]">SKU: {comp.sku}</p>
-                  </div>
-                  {/* CTA */}
-                  {(temPreco) && (
-                    <div className="shrink-0 flex flex-col items-center gap-2">
-                      <button
-                        onClick={() => setFichaModal({ open: true, nome: comp.nome, sku: comp.sku, imagemUrl: img, specs: [
-                          { label: "SKU", value: comp.sku },
-                          { label: "Nome", value: comp.nome },
-                          { label: "Descricao", value: comp.descricao },
-                          { label: "Preco", value: preco ? formatBRL(preco) : null },
-                        ] })}
-                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider border border-[var(--color-border-subtle)] text-[var(--color-text-muted)] hover:text-white hover:border-[var(--color-accent)]/60 transition-all"
-                      >
-                        <FileText className="w-3 h-3" />
-                        Ver Ficha
-                      </button>
-                      <button
-                        onClick={() => {
-                          addToCart({ sku: comp.sku, nome: comp.nome, tipo: "acessorio", cor: "#c9a655", preco })
-                          playCoinSound()
-                          setAddedSkus((prev) => new Set(prev).add(comp.sku))
-                          toast.success(`${comp.nome} adicionado ao carrinho`, { icon: <Check className="w-4 h-4" />, duration: 2500 })
-                          setTimeout(() => setAddedSkus((prev) => { const next = new Set(prev); next.delete(comp.sku); return next }), 2000)
-                        }}
-                        className={`w-full group relative overflow-hidden rounded-xl font-bold text-sm transition-all duration-300 px-6 py-3 ${
-                          isAdded
-                            ? "bg-[var(--color-success)] text-white shadow-[0_0_20px_rgba(34,197,94,0.2)]"
-                            : "border border-[var(--color-accent)]/40 bg-[var(--color-accent)]/10 text-[var(--color-accent)] hover:bg-[var(--color-accent)] hover:text-[var(--color-accent-fg)] hover:shadow-[0_0_30px_rgba(201,166,85,0.15)]"
-                        }`}
-                      >
-                        <span className="flex items-center justify-center gap-3">
-                          {isAdded ? (
-                            <><Check className="h-4 w-4" />ADICIONADO</>
-                          ) : (
-                            <><ShoppingCart className="h-4 w-4 transition-transform group-hover:scale-110" />ADICIONAR — {formatBRL(preco)}</>
-                          )}
-                        </span>
-                      </button>
-                    </div>
-                  )}
-                </div>
-              )
-            }) : <p className="text-xs text-[var(--color-text-muted)] italic pl-2">Nenhum componente nesta etapa</p>}
-          </div>
-        ))}
-      </div>
-      <FichaTecnicaModal
-        open={fichaModal.open}
-        onClose={() => setFichaModal((p) => ({ ...p, open: false }))}
-        nome={fichaModal.nome}
-        sku={fichaModal.sku}
-        cor="#c9a655"
-        imagemUrl={fichaModal.imagemUrl}
-        specs={fichaModal.specs}
-      />
-    </>
-    )
-  }
-
   return (
     <>
     <div className="space-y-4">
-      <div className="space-y-1">
-        <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-accent)]">{tipoAbutmentNome}</p>
-        <h3 className="text-lg font-bold text-white">Sequência Protética</h3>
+      {/* Header com Tabs */}
+      <div className="flex items-center justify-between">
+        <div className="space-y-1">
+          <h3 className="text-lg font-bold text-white">Sequência Protética</h3>
+        </div>
+        <div className="flex gap-2">
+          {uniqueTabs.map((t) => (
+            <button
+              key={t}
+              onClick={() => setSelectedTab(t)}
+              className={`px-3 py-1.5 text-xs font-bold rounded-md transition-colors ${
+                selectedTab === t ? "bg-[var(--color-accent)] text-[var(--color-accent-fg)]" : "bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-hover)]"
+              }`}
+            >
+              {t}
+            </button>
+          ))}
+        </div>
       </div>
+
       <div className="h-px bg-[var(--color-border-subtle)]" />
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        {workflows.map((wf) => (
-          <button key={wf.id} onClick={() => setSelectedWorkflow(wf.id)} className="text-left p-5 rounded-xl bg-[var(--color-surface)]/60 border border-[var(--color-border-subtle)] hover:border-[var(--color-accent)]/40 transition-all group">
-            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-accent)] mb-1">{tipoAbutmentNome}</p>
-            <h4 className="font-bold text-white group-hover:text-[var(--color-accent)] transition-colors">{wf.nome}</h4>
-            <p className="text-xs text-[var(--color-text-muted)] mt-1">{wf.etapas.length} etapa(s)</p>
-          </button>
-        ))}
-      </div>
+
+      {/* Etapas + Componentes */}
+      {activeWorkflow && activeWorkflow.etapas.length === 0 && (
+        <p className="text-sm text-center py-6 text-[var(--color-text-muted)]">
+          Nenhuma etapa configurada nesta sequência.
+        </p>
+      )}
+      {activeWorkflow?.etapas.map((etapa) => (
+        <div key={etapa.id} className="space-y-3">
+          <p className="text-[10px] font-bold uppercase tracking-widest text-[var(--color-accent)]">
+            Etapa {etapa.ordem}{etapa.nome ? `: ${etapa.nome}` : ""}
+          </p>
+          {etapa.componentes.length > 0 ? etapa.componentes.map((comp) => {
+            const isAdded = addedSkus.has(comp.sku)
+            const preco = Number(comp.preco)
+            const temPreco = Number.isFinite(preco) && preco > 0
+            const img = imagensMap.get(comp.sku)
+            return (
+              <div key={comp.sku} className="flex flex-col sm:flex-row gap-3 sm:gap-4 p-3 sm:p-4 rounded-xl border border-[var(--color-border-subtle)] bg-[var(--color-surface)]/40 hover:border-[var(--color-accent)]/40 transition-all duration-200">
+                {/* Thumbnail */}
+                <div
+                  onClick={() => openImageViewer(img ?? "", comp.nome)}
+                  className="shrink-0 w-16 h-16 sm:w-20 sm:h-20 rounded-lg overflow-hidden cursor-zoom-in bg-gradient-to-br from-[var(--color-surface)] to-[#0f172a] border border-[var(--color-border-subtle)] flex items-center justify-center"
+                >
+                  {img ? (
+                    <img src={img} alt={comp.nome} className="w-full h-full object-contain" loading="lazy" />
+                  ) : (
+                    <Box className="w-7 h-7 sm:w-8 sm:h-8 opacity-10 text-[var(--color-accent)]" />
+                  )}
+                </div>
+                {/* Info */}
+                <div className="flex-1 min-w-0 space-y-1">
+                  <h4 className="text-sm font-bold text-white truncate">{comp.nome}</h4>
+                  <p className="font-mono text-[10px] text-[var(--color-text-muted)]">SKU: {comp.sku}</p>
+                </div>
+                {/* CTA */}
+                <div className="shrink-0 flex flex-row sm:flex-col items-center sm:items-end gap-2">
+                  <button
+                    onClick={() => setFichaModal({ open: true, nome: comp.nome, sku: comp.sku, imagemUrl: img, specs: [
+                      { label: "SKU", value: comp.sku },
+                      { label: "Nome", value: comp.nome },
+                      { label: "Descricao", value: comp.descricao },
+                      { label: "Preco", value: preco ? formatBRL(preco) : null },
+                    ] })}
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider border border-[var(--color-border-subtle)] text-[var(--color-text-muted)] hover:text-white hover:border-[var(--color-accent)]/60 transition-all min-h-[32px]"
+                  >
+                    <FileText className="w-3 h-3" />
+                    Ver Ficha
+                  </button>
+                  {temPreco && (
+                    <button
+                      onClick={() => {
+                        addToCart({ sku: comp.sku, nome: comp.nome, tipo: "acessorio", cor: "#c9a655", preco })
+                        playCoinSound()
+                        setAddedSkus((prev) => new Set(prev).add(comp.sku))
+                        toast.success(`${comp.nome} adicionado ao carrinho`, { icon: <Check className="w-4 h-4" />, duration: 2500 })
+                        setTimeout(() => setAddedSkus((prev) => { const next = new Set(prev); next.delete(comp.sku); return next }), 2000)
+                      }}
+                      className={`group relative overflow-hidden rounded-xl font-bold text-sm transition-all duration-300 min-h-[44px] px-5 py-2.5 ${
+                        isAdded
+                          ? "bg-[var(--color-success)] text-white shadow-[0_0_20px_rgba(34,197,94,0.2)]"
+                          : "border border-[var(--color-accent)]/40 bg-[var(--color-accent)]/10 text-[var(--color-accent)] hover:bg-[var(--color-accent)] hover:text-[var(--color-accent-fg)] hover:shadow-[0_0_30px_rgba(201,166,85,0.15)]"
+                      }`}
+                    >
+                      <span className="flex items-center justify-center gap-2.5">
+                        {isAdded ? (
+                          <><Check className="h-4 w-4" />ADICIONADO</>
+                        ) : (
+                          <><ShoppingCart className="h-4 w-4 transition-transform group-hover:scale-110" />ADICIONAR — {formatBRL(preco)}</>
+                        )}
+                      </span>
+                    </button>
+                  )}
+                </div>
+              </div>
+            )
+          }) : <p className="text-xs text-[var(--color-text-muted)] italic pl-2">Nenhum componente nesta etapa</p>}
+        </div>
+      ))}
+
+      {activeWorkflow && activeWorkflow.etapas.length === 0 && (
+        <p className="text-sm text-center py-8 text-[var(--color-text-muted)]">
+          Nenhuma etapa cadastrada para {selectedTab}
+        </p>
+      )}
     </div>
     <FichaTecnicaModal
       open={fichaModal.open}

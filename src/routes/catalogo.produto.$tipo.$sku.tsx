@@ -595,9 +595,16 @@ function AbutmentDetail({ sku }: { sku: string }) {
   const [abParafusos, setAbParafusos] = useState<any[]>([])
   const [abChavesImagens, setAbChavesImagens] = useState<Map<string, any[]>>(new Map())
   const [abParafusosImagens, setAbParafusosImagens] = useState<Map<string, any[]>>(new Map())
+  const [seqCount, setSeqCount] = useState(0)
   const kitSkus = kits.map((k: any) => k.sku)
   const { data: imagensKits } = useImagensBatch("kit", kitSkus)
   const [fichaModal, setFichaModal] = useState<{ open: boolean; nome: string; sku: string; imagemUrl?: string | null; specs: Array<{ label: string; value: string | number | null | undefined }> }>({ open: false, nome: "", sku: "", specs: [] })
+  useEffect(() => {
+    if (!sku) return
+    supabase.from("catalogo_seq_protetica_abutments").select("seq_id", { count: "exact", head: true }).eq("abutment_sku", sku)
+      .then(({ count }) => setSeqCount(count ?? 0))
+      .catch(() => setSeqCount(0))
+  }, [sku])
   useEffect(() => {
     if (!sku) return
     supabase.from("catalogo_abutment_chaves").select("chave_id").eq("abutment_sku", sku)
@@ -681,7 +688,7 @@ function AbutmentDetail({ sku }: { sku: string }) {
     { key: "ficha", label: "Ficha", count: specs.length },
     { key: "chaves", label: "Chaves", count: abChavesAtivas.length },
     { key: "parafusos", label: "Parafusos", count: abParafusosAtivos.length },
-    { key: "sequencia", label: "Sequência", count: 1 },
+    { key: "sequencia", label: "Sequência", count: seqCount },
     { key: "kits", label: "Kits", count: kitsAtivos.length },
   ]
 

@@ -144,7 +144,7 @@ function AdminWorkflowsPage() {
     setTipoError("")
     if (!tipoNome.trim()) { setTipoError("Nome é obrigatório"); return }
     const payload = { nome: tipoNome.trim(), sigla: tipoSigla.trim() || null, ativo: tipoAtivo }
-    if (tipoEditing) { const { error } = await supabase.from("catalogo_cps_tipos_workflows").update({ nome: payload.nome, sigla: payload.sigla, ativo }).eq("id", tipoEditing.id); if (error) { setTipoError(error.message); return } }
+    if (tipoEditing) { const { error } = await supabase.from("catalogo_cps_tipos_workflows").update({ nome: payload.nome, sigla: payload.sigla, ativo: tipoAtivo }).eq("id", tipoEditing.id); if (error) { setTipoError(error.message); return } }
     else { const { error } = await supabase.from("catalogo_cps_tipos_workflows").insert(payload); if (error) { setTipoError(error.message); return } }
     toast.success(tipoEditing ? "Atualizado!" : "Criado!")
     setTipoModalOpen(false); qc.invalidateQueries({ queryKey: ["catalogo"] })

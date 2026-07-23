@@ -101,4 +101,9 @@ Pipeline via `/bubble-tech-lead` + skills em `.agents/skills/`.
 > Registro persistente de erros resolvidos, decisões arquiteturais e padrões descobertos.
 > Gerenciado pela skill `rtk-memory`. Nunca re-analisar o que já está aqui.
 
-_(nenhum registro ainda — adicionar conforme erros são resolvidos)_
+### 2026-07-23 — `ativo` não definido no update de tipo workflow
+- **Arquivo**: `src/routes/catalogo.admin.workflows.tsx:147`
+- **Erro**: `ReferenceError: ativo is not defined` ao editar tipo de workflow
+- **Causa**: `.update({ ... ativo })` usava variável solta em vez de `tipoAtivo` (state)
+- **Fix**: trocar `ativo` por `ativo: tipoAtivo`
+- **Padrão**: em handlers com destructuring de state, sempre usar o nome explícito do state, nunca apropa variável genérica sem prefixo
