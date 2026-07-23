@@ -15,7 +15,7 @@ interface FresagemTimelineProps {
 
 export function FresagemTimeline({ implanteSku, protocolos }: FresagemTimelineProps) {
   const { data: tiposOsso } = useTiposOsso()
-  const [fichaModal, setFichaModal] = useState<{ open: boolean; nome: string; sku: string; imagemUrl?: string | null; specs: Array<{ label: string; value: string | number | null | undefined }> }>({ open: false, nome: "", sku: "", specs: [] })
+  const [fichaModal, setFichaModal] = useState<{ open: boolean; nome: string; sku: string; imagemUrl?: string | null; sections: Array<{ title: string; specs: Array<{ label: string; value: string | number | null | undefined }> }>; vinculacoes?: Array<{ nome: string; sku: string; valor?: number | null }> }>({ open: false, nome: "", sku: "", sections: [] })
 
   // Mapeia tipo_osso (sigla) → categoria (hard/soft)
   const getCategoria = (tipoOsso: string | null | undefined): string | null => {
@@ -84,11 +84,18 @@ export function FresagemTimeline({ implanteSku, protocolos }: FresagemTimelinePr
                 nome,
                 sku: p.fresa_sku,
                 imagemUrl: img,
-                specs: [
-                  { label: "Diâmetro", value: p.fresa?.diametro_mm ? `${p.fresa.diametro_mm} mm` : null },
-                  { label: "Comprimento", value: p.fresa?.comprimento },
-                  { label: "Material", value: p.fresa?.material },
-                  { label: "Tipo", value: p.fresa?.tipo_fresa?.nome },
+                sections: [
+                  { title: "Identificação", specs: [
+                    { label: "SKU", value: p.fresa_sku },
+                    { label: "Nome", value: nome },
+                    { label: "Diâmetro", value: p.fresa?.diametro_mm ? `${p.fresa.diametro_mm} mm` : null },
+                    { label: "Comprimento", value: p.fresa?.comprimento },
+                    { label: "Material", value: p.fresa?.material },
+                    { label: "Tipo", value: p.fresa?.tipo_fresa?.nome },
+                  ]},
+                  { title: "Comercial", specs: [
+                    { label: "Preço", value: preco ? formatBRL(preco) : null },
+                  ]},
                 ]
               })}
             />
@@ -109,7 +116,8 @@ export function FresagemTimeline({ implanteSku, protocolos }: FresagemTimelinePr
         sku={fichaModal.sku}
         cor="#c9a655"
         imagemUrl={fichaModal.imagemUrl}
-        specs={fichaModal.specs}
+        sections={fichaModal.sections}
+        vinculacoes={fichaModal.vinculacoes}
       />
     </div>
   )
@@ -193,7 +201,7 @@ function FresaCard({ ordem, nome, sku, preco, diametroMm, imageUrl, onImageClick
               ) : (
                 <>
                   <ShoppingCart className="h-4 w-4 transition-transform group-hover:scale-110" />
-                  ADICIONAR — {formatBRL(preco)}
+                  Add {formatBRL(preco)}
                 </>
               )}
             </span>

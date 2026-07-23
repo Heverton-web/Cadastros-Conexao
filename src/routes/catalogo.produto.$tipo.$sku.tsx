@@ -147,7 +147,7 @@ function AddButton({ tipo, sku, nome, cor, precoDB }: { tipo: ProductSheetTipo; 
         ) : (
           <>
             <ShoppingCart className="h-4 w-4 transition-transform group-hover:scale-110" />
-            {showPrices ? `ADICIONAR — ${formatBRL(preco)}` : "ADICIONAR"}
+            {showPrices ? `Add ${formatBRL(preco)}` : "ADICIONAR"}
           </>
         )}
       </span>
@@ -266,7 +266,7 @@ function ImplanteDetail({ sku }: { sku: string }) {
   const { data: abutments } = useAbutmentsDoImplante(sku)
   const { data: kits } = useKitsDoImplante(sku)
   const [activeTab, setActiveTab] = useState("ficha")
-  const [fichaModal, setFichaModal] = useState<{ open: boolean; nome: string; sku: string; imagemUrl?: string | null; specs: Array<{ label: string; value: string | number | null | undefined }> }>({ open: false, nome: "", sku: "", specs: [] })
+  const [fichaModal, setFichaModal] = useState<{ open: boolean; nome: string; sku: string; imagemUrl?: string | null; sections: Array<{ title: string; specs: Array<{ label: string; value: string | number | null | undefined }> }>; vinculacoes?: Array<{ nome: string; sku: string; valor?: number | null }> }>({ open: false, nome: "", sku: "", sections: [] })
   const chavesSkus = (chaves ?? []).map((c) => c.sku)
   const cicSkus = (cicatrizadores ?? []).map((c) => c.sku)
   const abSkus = (abutments ?? []).map((a) => a.sku)
@@ -320,7 +320,7 @@ function ImplanteDetail({ sku }: { sku: string }) {
 
   return (
     <>
-    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-10">
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-10 items-start">
       {/* Sidebar — Imagem + CTA */}
       <div className="lg:col-span-4 xl:col-span-5">
         <div className="lg:sticky lg:top-24 space-y-4 sm:space-y-5">
@@ -426,15 +426,20 @@ function ImplanteDetail({ sku }: { sku: string }) {
                   tipo="chave"
                   imageUrl={img}
                   onImageClick={() => openImageViewer(img ?? "", chave.nome)}
-                  onVerFicha={() => setFichaModal({ open: true, nome: chave.nome, sku: chave.sku, imagemUrl: img, specs: [
-                    { label: "SKU", value: chave.sku },
-                    { label: "Nome", value: chave.nome },
-                    { label: "Descricao", value: chave.descricao },
-                    { label: "Preco", value: chave.preco ? formatBRL(chave.preco) : null },
-                    { label: "Tipo", value: chave.tipo_chave?.nome },
-                    { label: "Comprimento", value: chave.comprimento },
-                    { label: "Diametro", value: chave.diametro_mm ? `${chave.diametro_mm} mm` : null },
-                    { label: "Material", value: chave.material },
+                  onVerFicha={() => setFichaModal({ open: true, nome: chave.nome, sku: chave.sku, imagemUrl: img, sections: [
+                    { title: "Identificação", specs: [
+                      { label: "SKU", value: chave.sku },
+                      { label: "Nome", value: chave.nome },
+                      { label: "Sigla", value: chave.sigla },
+                      { label: "Descrição", value: chave.descricao },
+                      { label: "Tipo", value: chave.tipo_chave?.nome },
+                      { label: "Comprimento", value: chave.comprimento },
+                      { label: "Diâmetro", value: chave.diametro_mm ? `${chave.diametro_mm} mm` : null },
+                      { label: "Material", value: chave.material },
+                    ]},
+                    { title: "Comercial", specs: [
+                      { label: "Preço", value: chave.preco ? formatBRL(chave.preco) : null },
+                    ]},
                   ] })}
                   fichaData={{ tipo: chave.tipo_chave?.nome, diametro: chave.diametro_mm }}
                 >
@@ -465,12 +470,17 @@ function ImplanteDetail({ sku }: { sku: string }) {
                   tipo="kit"
                   imageUrl={img}
                   onImageClick={() => openImageViewer(img ?? "", kit.nome)}
-                  onVerFicha={() => setFichaModal({ open: true, nome: kit.nome, sku: kit.sku, imagemUrl: img, specs: [
-                    { label: "SKU", value: kit.sku },
-                    { label: "Nome", value: kit.nome },
-                    { label: "Descricao", value: kit.descricao },
-                    { label: "Preco", value: kit.preco ? formatBRL(kit.preco) : null },
-                    { label: "Tipo", value: kit.tipo_kit?.nome },
+                  onVerFicha={() => setFichaModal({ open: true, nome: kit.nome, sku: kit.sku, imagemUrl: img, sections: [
+                    { title: "Identificação", specs: [
+                      { label: "SKU", value: kit.sku },
+                      { label: "Nome", value: kit.nome },
+                      { label: "Sigla", value: kit.sigla },
+                      { label: "Descrição", value: kit.descricao },
+                      { label: "Tipo", value: kit.tipo_kit?.nome },
+                    ]},
+                    { title: "Comercial", specs: [
+                      { label: "Preço", value: kit.preco ? formatBRL(kit.preco) : null },
+                    ]},
                   ] })}
                   fichaData={{ tipo: kit.tipo_kit?.nome, descricao: kit.descricao }}
                 >
@@ -501,17 +511,24 @@ function ImplanteDetail({ sku }: { sku: string }) {
                   tipo="cicatrizador"
                   imageUrl={img}
                   onImageClick={() => openImageViewer(img ?? "", cic.nome)}
-                  onVerFicha={() => setFichaModal({ open: true, nome: cic.nome, sku: cic.sku, imagemUrl: img, specs: [
-                    { label: "SKU", value: cic.sku },
-                    { label: "Nome", value: cic.nome },
-                    { label: "Descricao", value: cic.descricao },
-                    { label: "Preco", value: cic.preco ? formatBRL(cic.preco) : null },
-                    { label: "Sigla", value: cic.sigla },
-                    { label: "Diam. Plataforma", value: cic.diametro_plataforma_mm ? `${cic.diametro_plataforma_mm} mm` : null },
-                    { label: "Alt. Transmucoso", value: cic.altura_transmucoso_mm ? `${cic.altura_transmucoso_mm} mm` : null },
-                    { label: "Alt. Corpo", value: cic.altura_corpo_mm ? `${cic.altura_corpo_mm} mm` : null },
-                    { label: "Torque", value: cic.torque_ncm ? `${cic.torque_ncm} N.cm` : null },
-                    { label: "Material", value: cic.material },
+                  onVerFicha={() => setFichaModal({ open: true, nome: cic.nome, sku: cic.sku, imagemUrl: img, sections: [
+                    { title: "Identificação", specs: [
+                      { label: "SKU", value: cic.sku },
+                      { label: "Nome", value: cic.nome },
+                      { label: "Sigla", value: cic.sigla },
+                      { label: "Descrição", value: cic.descricao },
+                      { label: "Material", value: cic.material },
+                      { label: "Diâm. Plataforma", value: cic.diametro_plataforma_mm ? `${cic.diametro_plataforma_mm} mm` : null },
+                      { label: "Alt. Transmucoso", value: cic.altura_transmucoso_mm ? `${cic.altura_transmucoso_mm} mm` : null },
+                      { label: "Alt. Corpo", value: cic.altura_corpo_mm ? `${cic.altura_corpo_mm} mm` : null },
+                      { label: "Torque", value: cic.torque_ncm ? `${cic.torque_ncm} N.cm` : null },
+                    ]},
+                    { title: "Comercial", specs: [
+                      { label: "Preço", value: cic.preco ? formatBRL(cic.preco) : null },
+                    ]},
+                  ], vinculacoes: [
+                    ...(cic.implante ? [{ nome: cic.implante.nome ?? cic.implante.sku, sku: cic.implante.sku, valor: cic.implante.preco }] : []),
+                    ...(cic.chave ? [{ nome: cic.chave.nome, sku: cic.chave.sku, valor: cic.chave.preco }] : []),
                   ] })}
                   fichaData={{ sigla: cic.sigla, material: cic.material }}
                 >
@@ -542,17 +559,27 @@ function ImplanteDetail({ sku }: { sku: string }) {
                   tipo="abutment"
                   imageUrl={img}
                   onImageClick={() => openImageViewer(img ?? "", ab.nome ?? ab.sku)}
-                  onVerFicha={() => setFichaModal({ open: true, nome: `${ab.tipo_abutment?.nome ?? ""} ${ab.familia?.nome ?? ""}`.trim(), sku: ab.sku, imagemUrl: img, specs: [
-                    { label: "SKU", value: ab.sku },
-                    { label: "Nome", value: `${ab.tipo_abutment?.nome ?? ""} ${ab.familia?.nome ?? ""}`.trim() },
-                    { label: "Descricao", value: ab.descricao },
-                    { label: "Preco", value: ab.preco ? formatBRL(ab.preco) : null },
-                    { label: "Tipo Abutment", value: ab.tipo_abutment?.nome },
-                    { label: "Familia", value: ab.familia?.nome },
-                    { label: "Torque", value: ab.torque_ncm ? `${ab.torque_ncm} N.cm` : null },
-                    { label: "Alt. Corpo", value: ab.altura_corpo ? `${ab.altura_corpo} mm` : null },
-                    { label: "Alt. Transmucoso", value: ab.altura_transmucoso ? `${ab.altura_transmucoso} mm` : null },
-                    { label: "Angulacao", value: ab.angulacao_graus ? `${ab.angulacao_graus} deg` : null },
+                  onVerFicha={() => setFichaModal({ open: true, nome: `${ab.tipo_abutment?.nome ?? ""} ${ab.familia?.nome ?? ""}`.trim(), sku: ab.sku, imagemUrl: img, sections: [
+                    { title: "Identificação", specs: [
+                      { label: "SKU", value: ab.sku },
+                      { label: "Nome", value: `${ab.tipo_abutment?.nome ?? ""} ${ab.familia?.nome ?? ""}`.trim() },
+                      { label: "Sigla", value: ab.sigla },
+                      { label: "Descrição", value: ab.descricao },
+                      { label: "Material", value: ab.material },
+                      { label: "Família", value: ab.familia?.nome },
+                      { label: "Tipo Abutment", value: ab.tipo_abutment?.nome },
+                      { label: "Diâm. Plataforma", value: ab.diametro_plataforma_mm ? `${ab.diametro_plataforma_mm} mm` : null },
+                      { label: "Alt. Transmucoso", value: ab.altura_transmucoso_mm ? `${ab.altura_transmucoso_mm} mm` : null },
+                      { label: "Alt. Corpo", value: ab.altura_corpo_mm ? `${ab.altura_corpo_mm} mm` : null },
+                      { label: "Angulação", value: ab.angulacao_graus ? `${ab.angulacao_graus}°` : null },
+                      { label: "Torque", value: ab.torque_ncm ? `${ab.torque_ncm} N.cm` : null },
+                    ]},
+                    { title: "Comercial", specs: [
+                      { label: "Preço", value: ab.preco ? formatBRL(ab.preco) : null },
+                    ]},
+                  ], vinculacoes: [
+                    ...(ab.parafuso ? [{ nome: ab.parafuso.nome, sku: ab.parafuso.sku, valor: ab.parafuso.preco }] : []),
+                    ...(ab.chave ? [{ nome: ab.chave.nome, sku: ab.chave.sku, valor: ab.chave.preco }] : []),
                   ] })}
                   fichaData={{ tipo: ab.tipo_abutment?.nome, familia: ab.familia?.nome }}
                 >
@@ -578,7 +605,8 @@ function ImplanteDetail({ sku }: { sku: string }) {
       sku={fichaModal.sku}
       cor={cor}
       imagemUrl={fichaModal.imagemUrl}
-      specs={fichaModal.specs}
+      sections={fichaModal.sections}
+      vinculacoes={fichaModal.vinculacoes}
     />
     </>
   )
@@ -598,7 +626,7 @@ function AbutmentDetail({ sku }: { sku: string }) {
   const [seqCount, setSeqCount] = useState(0)
   const kitSkus = kits.map((k: any) => k.sku)
   const { data: imagensKits } = useImagensBatch("kit", kitSkus)
-  const [fichaModal, setFichaModal] = useState<{ open: boolean; nome: string; sku: string; imagemUrl?: string | null; specs: Array<{ label: string; value: string | number | null | undefined }> }>({ open: false, nome: "", sku: "", specs: [] })
+  const [fichaModal, setFichaModal] = useState<{ open: boolean; nome: string; sku: string; imagemUrl?: string | null; sections: Array<{ title: string; specs: Array<{ label: string; value: string | number | null | undefined }> }>; vinculacoes?: Array<{ nome: string; sku: string; valor?: number | null }> }>({ open: false, nome: "", sku: "", sections: [] })
   useEffect(() => {
     if (!sku) return
     supabase.from("catalogo_seq_protetica_abutments").select("seq_id", { count: "exact", head: true }).eq("abutment_sku", sku)
@@ -694,7 +722,7 @@ function AbutmentDetail({ sku }: { sku: string }) {
 
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-10">
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-10 items-start">
       {/* Sidebar — Imagem + CTA */}
       <div className="lg:col-span-4 xl:col-span-5">
         <div className="lg:sticky lg:top-24 space-y-4 sm:space-y-5">
@@ -789,12 +817,16 @@ function AbutmentDetail({ sku }: { sku: string }) {
                   tipo="chave"
                   imageUrl={img}
                   onImageClick={() => openImageViewer(img ?? "", chave.nome)}
-                  onVerFicha={() => setFichaModal({ open: true, nome: chave.nome, sku: chave.sku, imagemUrl: img, specs: [
-                    { label: "SKU", value: chave.sku },
-                    { label: "Nome", value: chave.nome },
-                    { label: "Descricao", value: chave.descricao },
-                    { label: "Preco", value: chave.preco ? formatBRL(chave.preco) : null },
-                    { label: "Sigla", value: chave.sigla },
+                  onVerFicha={() => setFichaModal({ open: true, nome: chave.nome, sku: chave.sku, imagemUrl: img, sections: [
+                    { title: "Identificação", specs: [
+                      { label: "SKU", value: chave.sku },
+                      { label: "Nome", value: chave.nome },
+                      { label: "Sigla", value: chave.sigla },
+                      { label: "Descrição", value: chave.descricao },
+                    ]},
+                    { title: "Comercial", specs: [
+                      { label: "Preço", value: chave.preco ? formatBRL(chave.preco) : null },
+                    ]},
                   ] })}
                   fichaData={{ sigla: chave.sigla }}
                 />
@@ -818,13 +850,20 @@ function AbutmentDetail({ sku }: { sku: string }) {
                   tipo="parafuso"
                   imageUrl={img}
                   onImageClick={() => openImageViewer(img ?? "", parafuso.nome)}
-                  onVerFicha={() => setFichaModal({ open: true, nome: parafuso.nome, sku: parafuso.sku, imagemUrl: img, specs: [
-                    { label: "SKU", value: parafuso.sku },
-                    { label: "Nome", value: parafuso.nome },
-                    { label: "Descricao", value: parafuso.descricao },
-                    { label: "Preco", value: parafuso.preco ? formatBRL(parafuso.preco) : null },
-                    { label: "Torque", value: parafuso.torque_ncm ? `${parafuso.torque_ncm} N.cm` : null },
-                    { label: "Material", value: parafuso.material },
+                  onVerFicha={() => setFichaModal({ open: true, nome: parafuso.nome, sku: parafuso.sku, imagemUrl: img, sections: [
+                    { title: "Identificação", specs: [
+                      { label: "SKU", value: parafuso.sku },
+                      { label: "Nome", value: parafuso.nome },
+                      { label: "Descrição", value: parafuso.descricao },
+                      { label: "Tipo", value: parafuso.tipo_parafuso?.nome },
+                      { label: "Torque", value: parafuso.torque_ncm ? `${parafuso.torque_ncm} N.cm` : null },
+                      { label: "Material", value: parafuso.material },
+                    ]},
+                    { title: "Comercial", specs: [
+                      { label: "Preço", value: parafuso.preco ? formatBRL(parafuso.preco) : null },
+                    ]},
+                  ], vinculacoes: [
+                    ...(parafuso.chave ? [{ nome: parafuso.chave.nome, sku: parafuso.chave.sku, valor: parafuso.chave.preco }] : []),
                   ] })}
                   fichaData={{ torque: parafuso.torque_ncm, material: parafuso.material }}
                 />
@@ -861,12 +900,17 @@ function AbutmentDetail({ sku }: { sku: string }) {
                   tipo="kit"
                   imageUrl={img}
                   onImageClick={() => openImageViewer(img ?? "", kit.nome)}
-                  onVerFicha={() => setFichaModal({ open: true, nome: kit.nome, sku: kit.sku, imagemUrl: img, specs: [
-                    { label: "SKU", value: kit.sku },
-                    { label: "Nome", value: kit.nome },
-                    { label: "Descricao", value: kit.descricao },
-                    { label: "Preco", value: kit.preco ? formatBRL(kit.preco) : null },
-                    { label: "Tipo", value: kit.tipo_kit?.nome },
+                  onVerFicha={() => setFichaModal({ open: true, nome: kit.nome, sku: kit.sku, imagemUrl: img, sections: [
+                    { title: "Identificação", specs: [
+                      { label: "SKU", value: kit.sku },
+                      { label: "Nome", value: kit.nome },
+                      { label: "Sigla", value: kit.sigla },
+                      { label: "Descrição", value: kit.descricao },
+                      { label: "Tipo", value: kit.tipo_kit?.nome },
+                    ]},
+                    { title: "Comercial", specs: [
+                      { label: "Preço", value: kit.preco ? formatBRL(kit.preco) : null },
+                    ]},
                   ] })}
                   fichaData={{ tipo: kit.tipo_kit?.nome }}
                 >
@@ -883,7 +927,7 @@ function AbutmentDetail({ sku }: { sku: string }) {
           </div>
         )}
       </div>
-      <FichaTecnicaModal open={fichaModal.open} onClose={() => setFichaModal({ ...fichaModal, open: false })} nome={fichaModal.nome} sku={fichaModal.sku} cor={cor} imagemUrl={fichaModal.imagemUrl} specs={fichaModal.specs} />
+      <FichaTecnicaModal open={fichaModal.open} onClose={() => setFichaModal({ ...fichaModal, open: false })} nome={fichaModal.nome} sku={fichaModal.sku} cor={cor} imagemUrl={fichaModal.imagemUrl} sections={fichaModal.sections} vinculacoes={fichaModal.vinculacoes} />
     </div>
   )
 }
@@ -898,6 +942,7 @@ function KitDetail({ sku }: { sku: string }) {
   const [compatData, setCompatData] = useState<any[]>([])
   const [relatedKits, setRelatedKits] = useState<any[]>([])
   const [complementKits, setComplementKits] = useState<any[]>([])
+  const [fichaModal, setFichaModal] = useState<{ open: boolean; nome: string; sku: string; imagemUrl?: string | null; sections: Array<{ title: string; specs: Array<{ label: string; value: string | number | null | undefined }> }>; vinculacoes?: Array<{ nome: string; sku: string; valor?: number | null }> }>({ open: false, nome: "", sku: "", sections: [] })
 
   // Buscar dados de compatibilidade e relacionados
   useEffect(() => {
@@ -974,7 +1019,7 @@ function KitDetail({ sku }: { sku: string }) {
   ]
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-10">
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-10 items-start">
       {/* Sidebar — Imagem + CTA */}
       <div className="lg:col-span-4 xl:col-span-5">
         <div className="lg:sticky lg:top-24 space-y-4 sm:space-y-5">
@@ -1047,6 +1092,24 @@ function KitDetail({ sku }: { sku: string }) {
             ) : (
               <EmptyState msg="Nenhuma especificação cadastrada" hint="Preencha os dados técnicos na edição do kit." />
             )}
+            <button
+              onClick={() => setFichaModal({ open: true, nome: kit.nome, sku: kit.sku, imagemUrl: imageUrl, sections: [
+                { title: "Identificação", specs: [
+                  { label: "SKU", value: kit.sku },
+                  { label: "Nome", value: kit.nome },
+                  { label: "Sigla", value: kit.sigla },
+                  { label: "Descrição", value: kit.descricao },
+                  { label: "Tipo", value: kit.tipo_kit?.nome },
+                ]},
+                { title: "Comercial", specs: [
+                  { label: "Preço", value: kit.preco ? formatBRL(kit.preco) : null },
+                ]},
+              ] })}
+              className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider border border-[var(--color-border-subtle)] text-[var(--color-text-muted)] hover:text-white hover:border-[var(--color-accent)]/60 transition-all"
+            >
+              <FileText className="w-3.5 h-3.5" />
+              Ver Ficha Completa
+            </button>
           </div>
         )}
 
@@ -1161,6 +1224,17 @@ function KitDetail({ sku }: { sku: string }) {
           </div>
         )}
       </div>
+      <FichaTecnicaModal
+        open={fichaModal.open}
+        onClose={() => setFichaModal((p) => ({ ...p, open: false }))}
+        nome={fichaModal.nome}
+        sku={fichaModal.sku}
+        cor={cor}
+        imagemUrl={fichaModal.imagemUrl}
+        sections={fichaModal.sections}
+        vinculacoes={fichaModal.vinculacoes}
+        composicao={bomItems.map((item) => ({ nome: item.nome, quantidade: item.quantidade, sku: item.sku }))}
+      />
     </div>
   )
 }
@@ -1216,7 +1290,7 @@ function PromocionalDetail({ id }: { id: string }) {
   ]
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-10">
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-10 items-start">
       {/* Sidebar — Imagem + CTA */}
       <div className="lg:col-span-4 xl:col-span-5">
         <div className="lg:sticky lg:top-24 space-y-4 sm:space-y-5">
@@ -1298,7 +1372,7 @@ function PromocionalDetail({ id }: { id: string }) {
 
 function LoadingState() {
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-10">
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-10 items-start">
       <div className="lg:col-span-4 xl:col-span-5">
         <div className="aspect-square rounded-2xl bg-[var(--color-surface)]/50 border border-[var(--color-border-subtle)] animate-pulse" />
       </div>

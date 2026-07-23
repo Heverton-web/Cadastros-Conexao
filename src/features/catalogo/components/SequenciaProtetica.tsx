@@ -16,7 +16,7 @@ interface SequenciaProteticaProps {
   abutmentSku?: string
 }
 
-interface CompItem { sku: string; nome: string; preco?: number; descricao?: string }
+interface CompItem { sku: string; nome: string; preco?: number; descricao?: string; parafuso?: { sku: string; nome: string } | null; chave?: { sku: string; nome: string } | null; tipo_componente?: { nome: string } | null; tipo_abutment?: { nome: string } | null }
 
 interface EtapaItem {
   id: string
@@ -38,7 +38,7 @@ export function SequenciaProtetica({ familiaId, tipoAbutmentId, familiaNome, tip
   const [selectedTab, setSelectedTab] = useState<string>("")
   const [loading, setLoading] = useState(false)
   const [imagensMap, setImagensMap] = useState<Map<string, string>>(new Map())
-  const [fichaModal, setFichaModal] = useState<{ open: boolean; nome: string; sku: string; imagemUrl?: string | null; specs: Array<{ label: string; value: string | number | null | undefined }> }>({ open: false, nome: "", sku: "", specs: [] })
+  const [fichaModal, setFichaModal] = useState<{ open: boolean; nome: string; sku: string; imagemUrl?: string | null; sections: Array<{ title: string; specs: Array<{ label: string; value: string | number | null | undefined }> }>; vinculacoes?: Array<{ nome: string; sku: string; valor?: number | null }> }>({ open: false, nome: "", sku: "", sections: [] })
 
   useEffect(() => {
     if (!abutmentSku || !empresaId) return
@@ -50,7 +50,7 @@ export function SequenciaProtetica({ familiaId, tipoAbutmentId, familiaNome, tip
 
         const [{ data: etapasData }, { data: etapaCompData }, { data: seqInfo }] = await Promise.all([
           supabase.from("catalogo_seq_protetica_etapas").select("seq_id, etapa_id, etapa:catalogo_cps_etapas_workflows(id, nome, ordem, tipo_workflow:catalogo_cps_tipos_workflows(nome))").in("seq_id", seqIds),
-          supabase.from("catalogo_seq_protetica_etapa_componentes").select("seq_id, etapa_id, componente_sku, componente:catalogo_componentes(sku, nome, preco, descricao)").in("seq_id", seqIds),
+          supabase.from("catalogo_seq_protetica_etapa_componentes").select("seq_id, etapa_id, componente_sku, componente:catalogo_componentes(sku, nome, preco, descricao, parafuso:catalogo_parafusos(sku, nome), chave:catalogo_chaves(sku, nome), tipo_componente:catalogo_cps_tipos_componentes(nome), tipo_abutment:catalogo_cps_tipos_abutments(nome))").in("seq_id", seqIds),
           supabase.from("catalogo_seq_proteticas").select("id, nome").in("id", seqIds),
         ])
 
@@ -80,7 +80,7 @@ export function SequenciaProtetica({ familiaId, tipoAbutmentId, familiaNome, tip
           }
           const etapa = groups[seqId].etapas.find((e) => e.id === etapaId)
           if (etapa) {
-            etapa.componentes.push({ sku: comp?.sku ?? (c as { componente_sku: string }).componente_sku, nome: comp?.nome ?? "", preco: Number(comp?.preco) || undefined, descricao: comp?.descricao ?? undefined })
+            etapa.componentes.push({ sku: comp?.sku ?? (c as { componente_sku: string }).componente_sku, nome: comp?.nome ?? "", preco: Number(comp?.preco) || undefined, descricao: comp?.descricao ?? undefined, parafuso: comp?.parafuso ?? undefined, chave: comp?.chave ?? undefined, tipo_componente: comp?.tipo_componente ?? undefined, tipo_abutment: comp?.tipo_abutment ?? undefined })
           }
         }
 
@@ -138,12 +138,10 @@ export function SequenciaProtetica({ familiaId, tipoAbutmentId, familiaNome, tip
 
   return (
     <>
-    <div className="space-y-4">
+    <div className="flex flex-col gap-4">
       {/* Header com Tabs */}
       <div className="flex items-center justify-between">
-        <div className="space-y-1">
-          <h3 className="text-lg font-bold text-white">Sequência Protética</h3>
-        </div>
+        <h3 className="text-lg font-bold text-white">Sequência Protética</h3>
         <div className="flex gap-2">
           {uniqueTabs.map((t) => (
             <button
@@ -168,7 +166,7 @@ export function SequenciaProtetica({ familiaId, tipoAbutmentId, familiaNome, tip
         </p>
       )}
       {activeWorkflow?.etapas.map((etapa) => (
-        <div key={etapa.id} className="space-y-3">
+        <div key={etapa.id} className="flex flex-col gap-3">
           <p className="text-[10px] font-bold uppercase tracking-widest text-[var(--color-accent)]">
             Etapa {etapa.ordem}{etapa.nome ? `: ${etapa.nome}` : ""}
           </p>
@@ -178,7 +176,7 @@ export function SequenciaProtetica({ familiaId, tipoAbutmentId, familiaNome, tip
             const temPreco = Number.isFinite(preco) && preco > 0
             const img = imagensMap.get(comp.sku)
             return (
-              <div key={comp.sku} className="flex flex-col sm:flex-row gap-3 sm:gap-4 p-3 sm:p-4 rounded-xl border border-[var(--color-border-subtle)] bg-[var(--color-surface)]/40 hover:border-[var(--color-accent)]/40 transition-all duration-200">
+              <div key={comp.sku} className="w-full box-border flex flex-col sm:flex-row items-stretch gap-3 sm:gap-4 p-3 sm:p-4 rounded-xl border border-[var(--color-border-subtle)] bg-[var(--color-surface)]/40 hover:border-[var(--color-accent)]/40 transition-all duration-200">
                 {/* Thumbnail */}
                 <div
                   onClick={() => openImageViewer(img ?? "", comp.nome)}
@@ -191,20 +189,29 @@ export function SequenciaProtetica({ familiaId, tipoAbutmentId, familiaNome, tip
                   )}
                 </div>
                 {/* Info */}
-                <div className="flex-1 min-w-0 space-y-1">
+                <div className="flex-1 min-w-0 flex flex-col justify-center gap-1">
                   <h4 className="text-sm font-bold text-white truncate">{comp.nome}</h4>
                   <p className="font-mono text-[10px] text-[var(--color-text-muted)]">SKU: {comp.sku}</p>
                 </div>
-                {/* CTA */}
-                <div className="shrink-0 flex flex-row sm:flex-col items-center sm:items-end gap-2">
+                {/* CTA — largura fixa para consistência */}
+                <div className="shrink-0 w-full sm:w-[180px] flex flex-row sm:flex-col items-center sm:items-end justify-center sm:justify-start gap-2">
                   <button
-                    onClick={() => setFichaModal({ open: true, nome: comp.nome, sku: comp.sku, imagemUrl: img, specs: [
-                      { label: "SKU", value: comp.sku },
-                      { label: "Nome", value: comp.nome },
-                      { label: "Descricao", value: comp.descricao },
-                      { label: "Preco", value: preco ? formatBRL(preco) : null },
+                    onClick={() => setFichaModal({ open: true, nome: comp.nome, sku: comp.sku, imagemUrl: img, sections: [
+                      { title: "Identificação", specs: [
+                        { label: "SKU", value: comp.sku },
+                        { label: "Nome", value: comp.nome },
+                        { label: "Descrição", value: comp.descricao },
+                        { label: "Tipo Componente", value: comp.tipo_componente?.nome },
+                        { label: "Tipo Abutment", value: comp.tipo_abutment?.nome },
+                      ]},
+                      { title: "Comercial", specs: [
+                        { label: "Preço", value: preco ? formatBRL(preco) : null },
+                      ]},
+                    ], vinculacoes: [
+                      ...(comp.parafuso ? [{ nome: comp.parafuso.nome, sku: comp.parafuso.sku, valor: null }] : []),
+                      ...(comp.chave ? [{ nome: comp.chave.nome, sku: comp.chave.sku, valor: null }] : []),
                     ] })}
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider border border-[var(--color-border-subtle)] text-[var(--color-text-muted)] hover:text-white hover:border-[var(--color-accent)]/60 transition-all min-h-[32px]"
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider border border-[var(--color-border-subtle)] text-[var(--color-text-muted)] hover:text-white hover:border-[var(--color-accent)]/60 transition-all h-8"
                   >
                     <FileText className="w-3 h-3" />
                     Ver Ficha
@@ -218,7 +225,7 @@ export function SequenciaProtetica({ familiaId, tipoAbutmentId, familiaNome, tip
                         toast.success(`${comp.nome} adicionado ao carrinho`, { icon: <Check className="w-4 h-4" />, duration: 2500 })
                         setTimeout(() => setAddedSkus((prev) => { const next = new Set(prev); next.delete(comp.sku); return next }), 2000)
                       }}
-                      className={`group relative overflow-hidden rounded-xl font-bold text-sm transition-all duration-300 min-h-[44px] px-5 py-2.5 ${
+                      className={`group relative overflow-hidden rounded-xl font-bold text-sm transition-all duration-300 h-11 px-5 whitespace-nowrap ${
                         isAdded
                           ? "bg-[var(--color-success)] text-white shadow-[0_0_20px_rgba(34,197,94,0.2)]"
                           : "border border-[var(--color-accent)]/40 bg-[var(--color-accent)]/10 text-[var(--color-accent)] hover:bg-[var(--color-accent)] hover:text-[var(--color-accent-fg)] hover:shadow-[0_0_30px_rgba(201,166,85,0.15)]"
@@ -228,7 +235,7 @@ export function SequenciaProtetica({ familiaId, tipoAbutmentId, familiaNome, tip
                         {isAdded ? (
                           <><Check className="h-4 w-4" />ADICIONADO</>
                         ) : (
-                          <><ShoppingCart className="h-4 w-4 transition-transform group-hover:scale-110" />ADICIONAR — {formatBRL(preco)}</>
+                          <><ShoppingCart className="h-4 w-4 transition-transform group-hover:scale-110" />Add {formatBRL(preco)}</>
                         )}
                       </span>
                     </button>
@@ -253,7 +260,8 @@ export function SequenciaProtetica({ familiaId, tipoAbutmentId, familiaNome, tip
       sku={fichaModal.sku}
       cor="#c9a655"
       imagemUrl={fichaModal.imagemUrl}
-      specs={fichaModal.specs}
+      sections={fichaModal.sections}
+      vinculacoes={fichaModal.vinculacoes}
     />
     </>
   )
