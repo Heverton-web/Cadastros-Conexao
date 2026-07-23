@@ -108,6 +108,40 @@ export async function removerImplante(sku: string): Promise<void> {
 }
 
 // ============================================================
+// Fresas de um Protocolo (para preview no form)
+// ============================================================
+
+export async function listarFresasProtocolo(protocoloId: string): Promise<{ ordem: number; fresa_nome: string; fresa_sku: string; diametro_mm: number | null }[]> {
+  // 1. Busca itens do protocolo
+  const { data: itens, error } = await supabase
+    .from("catalogo_protocolos_fresas_itens")
+    .select("ordem, fresa_id")
+    .eq("protocolo_id", protocoloId)
+    .order("ordem")
+  if (error || !itens?.length) return []
+
+  // 2. Busca fresas correspondentes
+  const fresaIds = itens.map((i: any) => i.fresa_id).filter(Boolean)
+  if (fresaIds.length === 0) return itens.map((i: any) => ({ ordem: i.ordem, fresa_nome: i.fresa_id, fresa_sku: i.fresa_id, diametro_mm: null }))
+
+  const { data: fresas } = await supabase
+    .from("catalogo_fresas")
+    .select("sku, nome, diametro_mm")
+    .in("sku", fresaIds)
+  const fresaMap = new Map((fresas ?? []).map((f: any) => [f.sku, f]))
+
+  return itens.map((item: any) => {
+    const fresa = fresaMap.get(item.fresa_id)
+    return {
+      ordem: item.ordem,
+      fresa_nome: fresa?.nome ?? item.fresa_id,
+      fresa_sku: fresa?.sku ?? item.fresa_id,
+      diametro_mm: fresa?.diametro_mm ?? null,
+    }
+  })
+}
+
+// ============================================================
 // Protocolo de Fresagem (LEGADO - mantido para compatibilidade)
 // ============================================================
 
@@ -135,14 +169,22 @@ export async function getProtocoloFresagem(implanteSku: string): Promise<Catalog
   // 3. Busca fresas vinculadas aos protocolos
   const { data: itens } = await supabase
     .from("catalogo_protocolos_fresas_itens")
-    .select("*, fresa:catalogo_fresas(*)")
+    .select("id, protocolo_id, fresa_id, ordem, created_at")
     .in("protocolo_id", protoIds)
     .order("ordem")
   if (!itens?.length) return []
 
-  // 4. Achata no formato que FresagemTimeline espera
+  // 4. Busca fresas correspondentes (sem FK join)
+  const fresaIds = [...new Set(itens.map((i: any) => i.fresa_id).filter(Boolean))]
+  const { data: fresas } = fresaIds.length > 0
+    ? await supabase.from("catalogo_fresas").select("*").in("sku", fresaIds)
+    : { data: [] }
+  const fresaMap = new Map((fresas ?? []).map((f: any) => [f.sku, f]))
+
+  // 5. Achata no formato que FresagemTimeline espera
   return itens.map((item) => {
     const proto = protoMap.get(item.protocolo_id)
+    const fresa = fresaMap.get(item.fresa_id)
     return {
       id: item.id,
       nome: proto?.nome ?? "",
@@ -155,27 +197,43 @@ export async function getProtocoloFresagem(implanteSku: string): Promise<Catalog
       // campos flat usados pelo FresagemTimeline
       ordem_uso: item.ordem,
       fresa_sku: item.fresa_id,
-      fresa: item.fresa ?? null,
+      fresa: fresa ?? null,
     } as unknown as CatalogoProtocoloFresagem
   })
 }
 
 export async function salvarProtocoloFresagem(implanteSku: string, protocolos: { fresa_sku: string; tipo_osso: string; ordem_uso: number }[]): Promise<void> {
-  // Busca protocolos existentes deste implante
+  // 1. Busca osso_soft / osso_hard do implante para saber quais protocolos pertencem a ele
+  const { data: impl } = await supabase
+    .from("catalogo_implantes")
+    .select("osso_soft, osso_hard")
+    .eq("sku", implanteSku)
+    .single()
+  if (!impl) return
+
+  const protoIds = [impl.osso_soft, impl.osso_hard].filter(Boolean)
+  if (protoIds.length === 0) return
+
+  // 2. Deleta apenas os itens dos protocolos deste implante
   const { data: existing } = await supabase
     .from("catalogo_protocolos_fresas_itens")
     .select("id")
+    .in("protocolo_id", protoIds)
   if (existing?.length) {
     const ids = existing.map((e) => e.id)
     await supabase.from("catalogo_protocolos_fresas_itens").delete().in("id", ids)
   }
+
   if (protocolos.length === 0) return
-  // Busca protocolo_id baseado no tipo_osso
+
+  // 3. Busca protocolo_id baseado no tipo_osso (apenas os deste implante)
   const { data: protos } = await supabase
     .from("catalogo_protocolos_fresagens")
     .select("id, tipo_osso")
+    .in("id", protoIds)
   const protoMap = new Map((protos ?? []).map((p) => [p.tipo_osso, p.id]))
-  const rows = protocolos.map((p, i) => ({
+
+  const rows = protocolos.map((p) => ({
     protocolo_id: protoMap.get(p.tipo_osso) ?? "",
     fresa_id: p.fresa_sku,
     ordem: p.ordem_uso,
@@ -188,17 +246,12 @@ export async function salvarProtocoloFresagem(implanteSku: string, protocolos: {
 export async function salvarImplanteChaves(implanteSku: string, chaveSkus: string[]): Promise<void> {
   await supabase.from("catalogo_implante_chaves").delete().eq("implante_sku", implanteSku)
   if (chaveSkus.length === 0) return
-  const chaveUuids = await getChaveIds(chaveSkus)
-  if (chaveUuids.length === 0) return
-  const rows = chaveUuids.map((chaveId) => ({ implante_sku: implanteSku, chave_id: chaveId }))
+  const rows = chaveSkus.map((sku) => ({
+    implante_sku: implanteSku,
+    chave_id: sku,
+  }))
   const { error } = await supabase.from("catalogo_implante_chaves").insert(rows)
   if (error) throw error
-}
-
-async function getChaveIds(skus: string[]): Promise<string[]> {
-  if (skus.length === 0) return []
-  const { data } = await supabase.from("catalogo_chaves").select("id").in("sku", skus)
-  return (data as { id: string }[] | null)?.map((r) => r.id) ?? []
 }
 
 export async function listarImplanteChaves(implanteSku: string): Promise<string[]> {
@@ -207,7 +260,9 @@ export async function listarImplanteChaves(implanteSku: string): Promise<string[
     .select("chave:catalogo_chaves(sku)")
     .eq("implante_sku", implanteSku)
   if (error) throw error
-  return (data as { chave: { sku: string } | null }[] | null)?.map((r) => r.chave?.sku).filter(Boolean) as string[] ?? []
+  return (data as { chave: { sku: string } | null }[] | null)
+    ?.map((r) => r.chave?.sku)
+    .filter(Boolean) as string[] ?? []
 }
 
 // ============================================================

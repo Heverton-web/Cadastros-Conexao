@@ -8,6 +8,7 @@ import { useCatalogoEmpresaId } from "~/features/catalogo/hooks/useCatalogoEmpre
 import { listarImagensBatch } from "~/features/catalogo/services/imagens.service"
 import { useMemo, useEffect, useState } from "react"
 import { ArrowLeft, PackageOpen } from "lucide-react"
+import { cn } from "~/lib/utils"
 import type { CatalogoImagemProduto } from "~/features/catalogo/types"
 
 // Etapa 1: /catalogo/componentes — Escolher Família
@@ -81,12 +82,14 @@ function CatalogoComponentesPage() {
   // Etapa 4: Lista de abutments
   if (familiaId && tipoReabId && tipoAbutmentId) return (
     <StoreLayout>
-      <AbutmentList
-        familiaId={familiaId}
-        tipoAbutmentId={tipoAbutmentId}
-        tipoReabId={tipoReabId}
-        onBack={() => navigate({ to: '/catalogo/componentes/$familiaId/$tipoReabId', params: { familiaId, tipoReabId } })}
-      />
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+        <AbutmentList
+          familiaId={familiaId}
+          tipoAbutmentId={tipoAbutmentId}
+          tipoReabId={tipoReabId}
+          onBack={() => navigate({ to: '/catalogo/componentes/$familiaId/$tipoReabId', params: { familiaId, tipoReabId } })}
+        />
+      </div>
     </StoreLayout>
   )
 
@@ -221,18 +224,19 @@ function AbutmentList({ familiaId, tipoAbutmentId, tipoReabId, onBack }: { famil
 
   if (isLoading) {
     return (
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="space-y-4">
+        <div className="h-10 w-32 rounded-full bg-[var(--color-surface)]/50 animate-pulse" />
         {[1, 2, 3].map((i) => (
-          <div key={i} className="h-64 rounded-2xl bg-[var(--color-surface)]/50 border border-[var(--color-border-subtle)] animate-pulse" />
+          <div key={i} className="h-20 rounded-2xl bg-[var(--color-surface)]/50 border border-[var(--color-border-subtle)] animate-pulse" />
         ))}
       </div>
     )
   }
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 sm:space-y-12 w-full">
-      {/* Header Premium */}
-      <div className="flex items-start sm:items-center gap-4 sm:gap-6 mb-8 sm:mb-12">
+    <div className="space-y-8 sm:space-y-10">
+      {/* Header Premium igual ao DrillDown */}
+      <div className="flex items-start sm:items-center gap-4 sm:gap-6">
         <button
           onClick={onBack}
           className="group shrink-0 flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-full border border-[var(--color-border-subtle)] hover:bg-[var(--color-surface)] hover:border-[var(--color-accent)] transition-all mt-1 sm:mt-0"
@@ -242,7 +246,9 @@ function AbutmentList({ familiaId, tipoAbutmentId, tipoReabId, onBack }: { famil
         <div>
           <div className="inline-flex items-center gap-2 mb-3">
             <div className="flex gap-1">
-              <div className="w-8 h-1.5 rounded-full bg-[var(--color-accent)] transition-all duration-500" />
+              {[0,1,2,3].map((i) => (
+                <div key={i} className={cn("h-1.5 rounded-full transition-all duration-500", i < 4 ? "w-8 bg-[var(--color-accent)]" : "w-2 bg-[var(--color-border-subtle)]")} />
+              ))}
             </div>
             <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-accent)] ml-2">Etapa 4 de 4</span>
           </div>
@@ -251,6 +257,11 @@ function AbutmentList({ familiaId, tipoAbutmentId, tipoReabId, onBack }: { famil
         </div>
       </div>
 
+      {/* Count */}
+      <p className="text-xs font-bold uppercase tracking-widest text-[var(--color-text-muted)] border-b border-[var(--color-border-subtle)] pb-4">
+        {filtered.length} resultado(s)
+      </p>
+
       {filtered.length === 0 ? (
         <div className="text-center py-24 rounded-3xl border border-[var(--color-border-subtle)] bg-[var(--color-surface)]/30 backdrop-blur-md">
           <PackageOpen className="h-14 w-14 mx-auto mb-6 opacity-20 text-white" />
@@ -258,7 +269,7 @@ function AbutmentList({ familiaId, tipoAbutmentId, tipoReabId, onBack }: { famil
           <p className="text-sm text-[var(--color-text-muted)] mt-2 max-w-sm mx-auto">Este tipo de abutment não possui itens cadastrados. Volte e selecione outra opção.</p>
         </div>
       ) : (
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 gap-4">
         {filtered.map((a) => (
           <ProductCard
             key={a.sku}

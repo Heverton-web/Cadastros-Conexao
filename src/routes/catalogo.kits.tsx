@@ -2,12 +2,12 @@ import { createRoute, Link, useNavigate, useParams } from "@tanstack/react-route
 import { rootRoute } from "./__root"
 import { StoreLayout } from "~/features/catalogo/components/StoreLayout"
 import { DrillDown } from "~/features/catalogo/components/DrillDown"
+import { ProductCard } from "~/features/catalogo/components/ProductCard"
 import { useTiposKit, useKitsAtivos } from "~/features/catalogo/hooks/useCatalogo"
 import { useCatalogoEmpresaId } from "~/features/catalogo/hooks/useCatalogoEmpresa"
 import { listarImagensBatch } from "~/features/catalogo/services/imagens.service"
-import { formatBRL, getPrecoFromDB } from "~/features/catalogo/services/carrinho.service"
 import { useMemo, useEffect, useState } from "react"
-import { ShoppingBag, ArrowLeft, Box } from "lucide-react"
+import { ShoppingBag, PackageOpen, ArrowLeft } from "lucide-react"
 import { cn } from "~/lib/utils"
 import type { CatalogoImagemProduto } from "~/features/catalogo/types"
 
@@ -58,7 +58,7 @@ function CatalogoKitsPage() {
     <StoreLayout>
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
         <DrillDown
-          title="Kits"
+          title="Tipos de Kits"
           subtitle="tipo de kit"
           step={1}
           totalSteps={2}
@@ -110,7 +110,7 @@ function KitsList({ tipoKitId, onBack }: { tipoKitId: string; onBack: () => void
 
   return (
     <div className="space-y-8 sm:space-y-10">
-      {/* Header */}
+      {/* Header Premium igual ao DrillDown */}
       <div className="flex items-start sm:items-center gap-4 sm:gap-6">
         <button
           onClick={onBack}
@@ -122,13 +122,13 @@ function KitsList({ tipoKitId, onBack }: { tipoKitId: string; onBack: () => void
           <div className="inline-flex items-center gap-2 mb-3">
             <div className="flex gap-1">
               {[0,1].map((i) => (
-                <div key={i} className={cn("h-1.5 rounded-full transition-all duration-500", i < 2 ? "w-8 bg-[var(--color-accent)]" : "w-2 bg-[var(--color-border-subtle)]") } />
+                <div key={i} className={cn("h-1.5 rounded-full transition-all duration-500", i < 2 ? "w-8 bg-[var(--color-accent)]" : "w-2 bg-[var(--color-border-subtle)]")} />
               ))}
             </div>
             <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-accent)] ml-2">Etapa 2 de 2</span>
           </div>
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-black leading-tight text-white tracking-tighter text-balance">{tipoKit?.nome ?? "Kits"}</h1>
-          <p className="text-sm sm:text-lg mt-1 sm:mt-2 text-[var(--color-text-muted)] text-balance">{kits.length} kit(s) disponível(eis).</p>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-black leading-tight text-white tracking-tighter text-balance">Selecione o Kit</h1>
+          <p className="text-sm sm:text-lg mt-1 sm:mt-2 text-[var(--color-text-muted)] text-balance">{kits.length} kit(s) encontrado(s).</p>
         </div>
       </div>
 
@@ -139,55 +139,28 @@ function KitsList({ tipoKitId, onBack }: { tipoKitId: string; onBack: () => void
 
       {kits.length === 0 ? (
         <div className="text-center py-24 rounded-3xl border border-[var(--color-border-subtle)] bg-[var(--color-surface)]/30 backdrop-blur-md">
-          <ShoppingBag className="h-14 w-14 mx-auto mb-6 opacity-20 text-white" />
+          <PackageOpen className="h-14 w-14 mx-auto mb-6 opacity-20 text-white" />
           <p className="text-xl font-black text-white tracking-tight">Nenhum kit encontrado</p>
           <p className="text-sm text-[var(--color-text-muted)] mt-2 max-w-sm mx-auto">Este tipo não possui kits cadastrados. Volte e selecione outro tipo.</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {kits.map((kit) => {
-            const preco = getPrecoFromDB(kit.preco, "kit", kit.sku)
-            const qtdPecas = kit.composicao?.length ?? 0
-            return (
-              <Link
-                key={kit.sku}
-                to="/catalogo/produto/$tipo/$sku"
-                params={{ tipo: "kit", sku: kit.sku }}
-                className="group rounded-2xl border border-[var(--color-border-subtle)] bg-[var(--color-surface)]/50 overflow-hidden transition-all duration-300 hover:border-[var(--color-accent)]/40 hover:shadow-[0_8px_30px_rgba(201,166,85,0.08)] no-underline"
-              >
-                <div className="p-6 flex flex-col justify-between min-h-[220px]">
-                  <div>
-                    <div className="flex items-start justify-between mb-4">
-                      {imagensMap.get(kit.sku)?.[0]?.url_imagem ? (
-                        <div className="w-11 h-11 rounded-xl overflow-hidden shrink-0 border border-[var(--color-border-subtle)] bg-[var(--color-surface)]">
-                          <img src={imagensMap.get(kit.sku)![0].url_imagem} alt={kit.nome} className="w-full h-full object-contain p-0.5" />
-                        </div>
-                      ) : (
-                        <div className="w-11 h-11 rounded-xl flex items-center justify-center bg-[var(--color-accent)]/10 text-[var(--color-accent)] group-hover:bg-[var(--color-accent)]/20 transition-colors">
-                          <ShoppingBag className="h-5 w-5" />
-                        </div>
-                      )}
-                      <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[var(--color-surface-hover)] border border-[var(--color-border-subtle)]">
-                        <Box className="h-3 w-3 text-[var(--color-text-muted)]" />
-                        <span className="text-[10px] font-bold text-[var(--color-text-muted)]">{qtdPecas} peças</span>
-                      </div>
-                    </div>
-
-                    <h3 className="font-bold text-lg text-white leading-tight mb-2 group-hover:text-[var(--color-accent)] transition-colors line-clamp-2">
-                      {kit.nome}
-                    </h3>
-                    {kit.descricao && (
-                      <p className="text-sm text-[var(--color-text-muted)] line-clamp-2">{kit.descricao}</p>
-                    )}
-                  </div>
-
-                  <div className="pt-4 border-t border-[var(--color-border-subtle)] mt-4">
-                    <span className="text-2xl font-black text-gradient-gold">{formatBRL(preco)}</span>
-                  </div>
-                </div>
-              </Link>
-            )
-          })}
+        <div className="grid grid-cols-1 gap-4">
+          {kits.map((kit) => (
+            <Link
+              key={kit.sku}
+              to="/catalogo/produto/$tipo/$sku"
+              params={{ tipo: "kit", sku: kit.sku }}
+              className="no-underline"
+            >
+              <ProductCard
+                tipo="kit"
+                sku={kit.sku}
+                nome={kit.nome}
+                corIdentificacao="#c9a655"
+                imageUrl={imagensMap.get(kit.sku)?.[0]?.url_imagem}
+              />
+            </Link>
+          ))}
         </div>
       )}
     </div>

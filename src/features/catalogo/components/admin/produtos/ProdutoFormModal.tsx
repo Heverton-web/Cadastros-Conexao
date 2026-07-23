@@ -17,9 +17,10 @@ import {
   useCicatrizadores, useCriarCicatrizador, useAtualizarCicatrizador,
   useImplanteDetalhe, useAbutmentDetalhe, useKitDetalhe,
   useProtocolos,
+  useTiposOsso,
 } from "~/features/catalogo/hooks/useCatalogo"
 import { salvarSequenciaProtetica } from "~/features/catalogo/services/sequencia-protetica.service"
-import { salvarProtocoloFresagem, getProtocoloFresagem, salvarImplanteChaves, listarImplanteChaves, salvarImplanteKits, listarImplanteKits, salvarImplanteAbutments, listarImplanteAbutments, listarImplanteCicatrizadores, salvarImplanteCicatrizadores } from "~/features/catalogo/services/implantes.service"
+import { salvarImplanteChaves, listarImplanteChaves, salvarImplanteKits, listarImplanteKits, salvarImplanteAbutments, listarImplanteAbutments, listarImplanteCicatrizadores, salvarImplanteCicatrizadores } from "~/features/catalogo/services/implantes.service"
 import { adicionarBOMItem } from "~/features/catalogo/services/kits.service"
 import { listarImagens } from "~/features/catalogo/services/imagens.service"
 import { salvarAbutmentChaves, listarAbutmentChaves, salvarAbutmentKits, listarAbutmentKits, salvarAbutmentParafusos, listarAbutmentParafusos } from "~/features/catalogo/services/componentes.service"
@@ -71,6 +72,7 @@ export function ProdutoFormModal({
   const { data: parafusosRetensao } = useParafusosRetensao()
   const { data: cicatrizadoresData } = useCicatrizadores()
   const { data: protocolos } = useProtocolos()
+  const { data: tiposOsso } = useTiposOsso()
   const { data: todosKits } = useTodosKits()
   const { data: todosAbutments } = useAbutments()
 
@@ -117,8 +119,6 @@ export function ProdutoFormModal({
     torque_ncm: 0, familia_id: "", chave_sku: "", preco: 0,
   })
 
-  const [fresagemHard, setFresagemHard] = useState<{ fresa_sku: string; ordem: number; tipo_osso: string }[]>([])
-  const [fresagemSoft, setFresagemSoft] = useState<{ fresa_sku: string; ordem: number; tipo_osso: string }[]>([])
   const [seqAnalógica, setSeqAnalógica] = useState<SeqEtapa[]>([])
   const [seqDigital, setSeqDigital] = useState<SeqEtapa[]>([])
   const [kitBom, setKitBom] = useState<BomItem[]>([])
@@ -137,8 +137,6 @@ export function ProdutoFormModal({
     setKit({ categoria_id: "", sku: "", nome: "", descricao: "", familia_ids: [], preco: 0 })
     setParafusoRetencao({ sku: "", nome: "", torque_ncm: 0, vinculo_tipo: "", vinculo_sku: "", chave_sku: "", preco: 0 })
     setCicatrizador({ sku: "", nome: "", altura_transmucoso: 0, diametro_plataforma: "", torque_ncm: 0, familia_id: "", chave_sku: "", preco: 0 })
-    setFresagemHard([])
-    setFresagemSoft([])
     setSeqAnalógica([])
     setSeqDigital([])
     setKitBom([])
@@ -206,14 +204,6 @@ export function ProdutoFormModal({
         diametro_plataforma_mm: (d as any).diametro_plataforma_mm ?? 0,
         ativo: d.ativo ?? true,
       })
-      // Carregar protocolos de fresagem do modelo novo (2 tabelas)
-      getProtocoloFresagem(d.sku)
-        .then((protos) => {
-          if (!protos?.length) return
-          setFresagemHard(protos.filter((p: any) => ["D1","D2"].includes(p.tipo_osso)).map((p: any) => ({ fresa_sku: p.fresa_sku, ordem: p.ordem_uso, tipo_osso: p.tipo_osso })))
-          setFresagemSoft(protos.filter((p: any) => ["D3","D4","D5"].includes(p.tipo_osso)).map((p: any) => ({ fresa_sku: p.fresa_sku, ordem: p.ordem_uso, tipo_osso: p.tipo_osso })))
-        })
-        .catch(() => {})
       // Carregar chaves vinculadas ao implante
       listarImplanteChaves(d.sku)
         .then(setChavesIds)
@@ -381,13 +371,6 @@ export function ProdutoFormModal({
         } else {
           await criarImplante.mutateAsync(payload)
         }
-        const protocolos = [
-          ...fresagemHard.map((f) => ({ fresa_sku: f.fresa_sku, tipo_osso: f.tipo_osso, ordem_uso: f.ordem })),
-          ...fresagemSoft.map((f) => ({ fresa_sku: f.fresa_sku, tipo_osso: f.tipo_osso, ordem_uso: f.ordem })),
-        ]
-        if (protocolos.length > 0) {
-          await salvarProtocoloFresagem(implante.sku, protocolos)
-        }
         await salvarImplanteChaves(implante.sku, chavesIds)
         await salvarImplanteKits(implante.sku, kitsIds)
         await salvarImplanteAbutments(implante.sku, abutmentsIds)
@@ -467,21 +450,6 @@ export function ProdutoFormModal({
     }
   }
 
-  function addFresagem(tipoOsso: "hard" | "soft") {
-    const setter = tipoOsso === "hard" ? setFresagemHard : setFresagemSoft
-    const arr = tipoOsso === "hard" ? fresagemHard : fresagemSoft
-    setter([...arr, { fresa_sku: "", ordem: arr.length + 1, tipo_osso: tipoOsso === "hard" ? "D1" : "D3" }])
-  }
-  function removeFresagem(tipoOsso: "hard" | "soft", idx: number) {
-    const setter = tipoOsso === "hard" ? setFresagemHard : setFresagemSoft
-    setter((tipoOsso === "hard" ? fresagemHard : fresagemSoft).filter((_, i) => i !== idx))
-  }
-  function updateFresagem(tipoOsso: "hard" | "soft", idx: number, field: string, value: string | number) {
-    const setter = tipoOsso === "hard" ? setFresagemHard : setFresagemSoft
-    const arr = [...(tipoOsso === "hard" ? fresagemHard : fresagemSoft)]
-    arr[idx] = { ...arr[idx], [field]: value }
-    setter(arr)
-  }
   function addSeqEtapa(tipo: "analógico" | "digital") {
     const setter = tipo === "analógico" ? setSeqAnalógica : setSeqDigital
     setter([...(tipo === "analógico" ? seqAnalógica : seqDigital), { etapa_nome: "", acessorio_sku: "" }])
@@ -553,6 +521,7 @@ export function ProdutoFormModal({
               fresas={fresas}
               chaves={chaves}
               protocolos={protocolos}
+              tiposOsso={tiposOsso}
               onGerarSku={gerarSkuSugerido}
               chavesIds={chavesIds}
               onChavesChange={setChavesIds}

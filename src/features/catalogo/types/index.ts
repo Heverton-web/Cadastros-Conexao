@@ -180,6 +180,7 @@ export interface CatalogoTipoOsso {
   id: string
   nome: string
   sigla: string | null
+  categoria: "hard" | "soft"
   ativo: boolean
   created_at: string
   updated_at: string

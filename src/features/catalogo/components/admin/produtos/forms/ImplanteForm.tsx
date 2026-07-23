@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { Trash2, Plus } from "lucide-react"
 import type { CatalogoCategoria, CatalogoIpsConexao, CatalogoIpsFamilia, CatalogoIpsLinha, CatalogoFresa, CatalogoChave, CatalogoProtocoloFresagem, CatalogoKit, CatalogoAbutment, CatalogoCicatrizador } from "~/features/catalogo/types"
+import { listarFresasProtocolo } from "~/features/catalogo/services/implantes.service"
 
 const implanteSchema = z.object({
   // Categoria
@@ -52,6 +53,7 @@ interface Props {
   chavesIds: string[]
   onChavesChange: (ids: string[]) => void
   protocolos: CatalogoProtocoloFresagem[] | undefined
+  tiposOsso: { sigla: string; categoria: string }[] | undefined
   onGerarSku: () => void
   // Composição
   kits: CatalogoKit[] | undefined
@@ -67,7 +69,7 @@ interface Props {
 
 export function ImplanteForm({
   data, onChange, categorias, conexoes, familias, linhas,
-  fresas, chaves, chavesIds, onChavesChange, protocolos, onGerarSku,
+  fresas, chaves, chavesIds, onChavesChange, protocolos, tiposOsso, onGerarSku,
   kits, kitsIds, onKitsChange, abutments, abutmentsIds, onAbutmentsChange,
   cicatrizadores, cicatrizadoresIds, onCicatrizadoresChange,
 }: Props) {
@@ -77,6 +79,21 @@ export function ImplanteForm({
     values: data,
     mode: "onChange",
   })
+
+  // Protocolo de fresagem — preview de fresas
+  type FresaProto = { ordem: number; fresa_nome: string; fresa_sku: string; diametro_mm: number | null }
+  const [fresasSoft, setFresasSoft] = useState<FresaProto[]>([])
+  const [fresasHard, setFresasHard] = useState<FresaProto[]>([])
+
+  useEffect(() => {
+    if (data.osso_soft) { listarFresasProtocolo(data.osso_soft).then(setFresasSoft).catch(() => setFresasSoft([])) }
+    else { setFresasSoft([]) }
+  }, [data.osso_soft])
+
+  useEffect(() => {
+    if (data.osso_hard) { listarFresasProtocolo(data.osso_hard).then(setFresasHard).catch(() => setFresasHard([])) }
+    else { setFresasHard([]) }
+  }, [data.osso_hard])
 
   const inputCls = "w-full bg-[var(--color-surface)] border border-white/10 rounded-lg p-3 text-white"
   const selectCls = "w-full bg-[var(--color-surface)] border border-white/10 rounded-lg p-3 text-white"
@@ -154,15 +171,43 @@ export function ImplanteForm({
           <label className={labelCls}>Protocolo Osso Soft (III-IV)</label>
           <select {...register("osso_soft")} value={data.osso_soft} onChange={(e) => onChange({ ...data, osso_soft: e.target.value })} className={selectCls}>
             <option value="">Nenhum</option>
-            {protocolos?.filter((p) => ["D3","D4","D5"].includes(p.tipo_osso)).map((p) => <option key={p.id} value={p.id}>{p.nome}</option>)}
+            {protocolos?.filter((p) => { const cat = tiposOsso?.find((t) => t.sigla === p.tipo_osso)?.categoria; return cat === "soft" }).map((p) => <option key={p.id} value={p.id}>{p.nome}</option>)}
           </select>
+          {fresasSoft.length > 0 && (
+            <div className="rounded-lg bg-white/5 border border-white/10 p-2 space-y-1">
+              {fresasSoft.map((f) => (
+                <div key={f.fresa_sku} className="flex items-center gap-2 text-[11px]">
+                  <span className="w-5 h-5 flex items-center justify-center rounded bg-[#c9a655]/10 text-[#c9a655] font-black shrink-0">{f.ordem}</span>
+                  <span className="text-white truncate">{f.fresa_nome}</span>
+                  {f.diametro_mm != null && <span className="text-gray-500 shrink-0">Ø {f.diametro_mm}mm</span>}
+                </div>
+              ))}
+            </div>
+          )}
+          {data.osso_soft && fresasSoft.length === 0 && (
+            <p className="text-[10px] text-gray-500 italic">Nenhuma fresa neste protocolo</p>
+          )}
         </div>
         <div className="space-y-2">
           <label className={labelCls}>Protocolo Osso Hard (I-II)</label>
           <select {...register("osso_hard")} value={data.osso_hard} onChange={(e) => onChange({ ...data, osso_hard: e.target.value })} className={selectCls}>
             <option value="">Nenhum</option>
-            {protocolos?.filter((p) => ["D1","D2"].includes(p.tipo_osso)).map((p) => <option key={p.id} value={p.id}>{p.nome}</option>)}
+            {protocolos?.filter((p) => { const cat = tiposOsso?.find((t) => t.sigla === p.tipo_osso)?.categoria; return cat === "hard" }).map((p) => <option key={p.id} value={p.id}>{p.nome}</option>)}
           </select>
+          {fresasHard.length > 0 && (
+            <div className="rounded-lg bg-white/5 border border-white/10 p-2 space-y-1">
+              {fresasHard.map((f) => (
+                <div key={f.fresa_sku} className="flex items-center gap-2 text-[11px]">
+                  <span className="w-5 h-5 flex items-center justify-center rounded bg-[#c9a655]/10 text-[#c9a655] font-black shrink-0">{f.ordem}</span>
+                  <span className="text-white truncate">{f.fresa_nome}</span>
+                  {f.diametro_mm != null && <span className="text-gray-500 shrink-0">Ø {f.diametro_mm}mm</span>}
+                </div>
+              ))}
+            </div>
+          )}
+          {data.osso_hard && fresasHard.length === 0 && (
+            <p className="text-[10px] text-gray-500 italic">Nenhuma fresa neste protocolo</p>
+          )}
         </div>
       </div>
 
@@ -181,7 +226,7 @@ export function ImplanteForm({
       <CompositionSection
         label="Kits"
         selectedIds={kitsIds}
-        options={kits?.filter((k) => !kitsIds.includes(k.sku)).map((k) => ({ id: k.sku, label: k.nome })) ?? []}
+        options={kits?.map((k) => ({ id: k.sku, label: k.nome })) ?? []}
         placeholder="Selecione um kit..."
         onChange={onKitsChange}
       />
@@ -190,7 +235,7 @@ export function ImplanteForm({
       <CompositionSection
         label="Abutments / Componentes"
         selectedIds={abutmentsIds}
-        options={abutments?.filter((a) => !abutmentsIds.includes(a.sku)).map((a) => ({ id: a.sku, label: a.sku })) ?? []}
+        options={abutments?.map((a) => ({ id: a.sku, label: `${a.nome} (${a.sku})` })) ?? []}
         placeholder="Selecione um abutment..."
         onChange={onAbutmentsChange}
       />
@@ -199,7 +244,7 @@ export function ImplanteForm({
       <CompositionSection
         label="Cicatrizadores"
         selectedIds={cicatrizadoresIds}
-        options={cicatrizadores?.filter((c) => !cicatrizadoresIds.includes(c.sku)).map((c) => ({ id: c.sku, label: `${c.nome} (${c.sku})` })) ?? []}
+        options={cicatrizadores?.map((c) => ({ id: c.sku, label: `${c.nome} (${c.sku})` })) ?? []}
         placeholder="Selecione um cicatrizador..."
         onChange={onCicatrizadoresChange}
       />

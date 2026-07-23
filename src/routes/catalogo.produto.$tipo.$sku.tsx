@@ -7,11 +7,12 @@ import { addToCart, formatBRL, getPrecoFromDB, mockPreco, resolveBOMItem } from 
 import { playCoinSound } from "~/features/catalogo/services/audio.service"
 import { FresagemTimeline } from "~/features/catalogo/components/FresagemTimeline"
 import { SequenciaProtetica } from "~/features/catalogo/components/SequenciaProtetica"
+import { FichaTecnicaModal } from "~/features/catalogo/components/FichaTecnicaModal"
 import { BomTable } from "~/features/catalogo/components/BomTable"
 import type { ProductSheetTipo } from "~/features/catalogo/types"
 import { useState, useEffect } from "react"
 import toast from "react-hot-toast"
-import { ArrowLeft, ShoppingCart, Box, Zap, ExternalLink, Check, Tag, TrendingDown, X, FileText } from "lucide-react"
+import { ArrowLeft, ShoppingCart, Box, Zap, ExternalLink, Check, TrendingDown, X, FileText } from "lucide-react"
 import { openImageViewer } from "~/features/catalogo/services/ui.service"
 import { useTabIcons, TabIconsProvider } from "~/features/catalogo/contexts/TabIconsContext"
 
@@ -42,10 +43,10 @@ function ProdutoPage() {
 
   return (
     <StoreLayout>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10 space-y-6 sm:space-y-8">
         <button
           onClick={backTo}
-          className="group shrink-0 flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-full border border-[var(--color-border-subtle)] hover:bg-[var(--color-surface)] hover:border-[var(--color-accent)] transition-all mb-6 sm:mb-8"
+          className="group shrink-0 flex items-center justify-center w-10 h-10 sm:w-11 sm:h-11 rounded-xl border border-[var(--color-border-subtle)] hover:bg-[var(--color-surface)] hover:border-[var(--color-accent)] transition-all"
         >
           <ArrowLeft className="h-4 w-4 sm:h-5 sm:w-5 text-[var(--color-text-muted)] group-hover:text-[var(--color-accent)] transition-colors" />
         </button>
@@ -65,7 +66,7 @@ function ProductImage({ cor, nome, onClick, imageUrl }: { cor: string; nome: str
   return (
     <div
       onClick={onClick}
-      className="cursor-zoom-in aspect-square rounded-2xl bg-gradient-to-br from-[var(--color-surface)] to-[#0f172a] border border-[var(--color-border-subtle)] overflow-hidden relative flex flex-col items-center justify-center p-4 group transition-all duration-300 hover:shadow-[0_0_60px_rgba(201,166,85,0.08)]"
+      className="cursor-zoom-in w-full max-w-[480px] mx-auto aspect-square rounded-2xl bg-gradient-to-br from-[var(--color-surface)] to-[#0f172a] border border-[var(--color-border-subtle)] overflow-hidden relative flex flex-col items-center justify-center p-6 sm:p-8 group transition-all duration-300 hover:shadow-[0_0_60px_rgba(201,166,85,0.08)]"
     >
       {imageUrl ? (
         <img
@@ -77,10 +78,10 @@ function ProductImage({ cor, nome, onClick, imageUrl }: { cor: string; nome: str
       ) : (
         <>
           <div className="absolute inset-0 opacity-10 group-hover:opacity-25 mix-blend-screen transition-opacity duration-500" style={{ background: `radial-gradient(circle at 30% 30%, ${cor} 0%, transparent 60%)` }} />
-          <Box className="w-28 h-28 sm:w-36 sm:h-36 opacity-[0.07] relative z-10 transition-transform group-hover:scale-110 duration-700" style={{ color: cor }} />
+          <Box className="w-24 h-24 sm:w-32 sm:h-32 opacity-[0.07] relative z-10 transition-transform group-hover:scale-110 duration-700" style={{ color: cor }} />
         </>
       )}
-      <div className="absolute bottom-6 px-4 py-2 rounded-full border border-[var(--color-border-subtle)] bg-[#0f172a]/60 backdrop-blur-md">
+      <div className="absolute bottom-4 sm:bottom-6 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border border-[var(--color-border-subtle)] bg-[#0f172a]/60 backdrop-blur-md">
         <p className="font-mono text-[10px] tracking-widest text-white flex items-center gap-2">
           <ExternalLink className="w-3 h-3" /> Toque para ampliar
         </p>
@@ -91,22 +92,24 @@ function ProductImage({ cor, nome, onClick, imageUrl }: { cor: string; nome: str
 
 function ProductHeader({ cor, badge, nome, sku }: { cor: string; badge?: string; nome: string; sku: string }) {
   return (
-    <div className="space-y-4 rounded-2xl bg-gradient-to-br from-[var(--color-surface)]/40 to-transparent border border-[var(--color-border-subtle)]/60 p-5 sm:p-6 backdrop-blur-sm">
+    <div className="space-y-3 sm:space-y-4 rounded-2xl bg-gradient-to-br from-[var(--color-surface)]/40 to-transparent border border-[var(--color-border-subtle)]/60 p-4 sm:p-6 backdrop-blur-sm">
       {badge && (
-        <div className="inline-flex items-center px-4 py-1.5 rounded-full border shadow-lg" style={{ borderColor: cor, backgroundColor: `${cor}1a`, color: cor, boxShadow: `0 0 24px ${cor}22` }}>
+        <div className="inline-flex items-center px-3 sm:px-4 py-1 sm:py-1.5 rounded-full border shadow-lg" style={{ borderColor: cor, backgroundColor: `${cor}1a`, color: cor, boxShadow: `0 0 24px ${cor}22` }}>
           <span className="text-[10px] font-black uppercase tracking-[0.2em]">{badge}</span>
         </div>
       )}
-      <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black leading-[0.95] text-white tracking-tighter text-balance">{nome}</h1>
-      <p className="font-mono text-sm text-[var(--color-text-muted)]">SKU: <span className="text-white/80">{sku}</span></p>
+      <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black leading-[0.95] text-white tracking-tighter text-balance">{nome}</h1>
+      <p className="font-mono text-xs sm:text-sm text-[var(--color-text-muted)]">SKU: <span className="text-white/80">{sku}</span></p>
     </div>
   )
 }
 
-function AddButton({ tipo, sku, nome, cor, precoDB, compact }: { tipo: ProductSheetTipo; sku: string; nome: string; cor: string; precoDB?: number | null; compact?: boolean }) {
+function AddButton({ tipo, sku, nome, cor, precoDB }: { tipo: ProductSheetTipo; sku: string; nome: string; cor: string; precoDB?: number | null }) {
   const [added, setAdded] = useState(false)
   const { showPrices } = useCatalogoVisibility()
-  const preco = getPrecoFromDB(precoDB, tipo, sku)
+  const preco = Number(precoDB)
+
+  if (!Number.isFinite(preco) || preco <= 0) return null
 
   const handleAdd = () => {
     addToCart({ sku, nome, tipo, cor, preco })
@@ -129,13 +132,13 @@ function AddButton({ tipo, sku, nome, cor, precoDB, compact }: { tipo: ProductSh
   return (
     <button
       onClick={handleAdd}
-      className={`w-full group relative overflow-hidden rounded-xl font-bold text-sm transition-all duration-300 ${
+      className={`w-full group relative overflow-hidden rounded-xl font-bold text-sm transition-all duration-300 min-h-[44px] ${
         added
           ? "bg-[var(--color-success)] text-white shadow-[0_0_20px_rgba(34,197,94,0.2)]"
           : "border border-[var(--color-accent)]/40 bg-[var(--color-accent)]/10 text-[var(--color-accent)] hover:bg-[var(--color-accent)] hover:text-[var(--color-accent-fg)] hover:shadow-[0_0_30px_rgba(201,166,85,0.15)]"
-      } ${compact ? "px-6 py-3" : "px-8 py-4"}`}
+      } px-5 py-2.5`}
     >
-      <span className="flex items-center justify-center gap-3">
+      <span className="flex items-center justify-center gap-2.5">
         {added ? (
           <>
             <Check className="h-4 w-4" />
@@ -154,9 +157,9 @@ function AddButton({ tipo, sku, nome, cor, precoDB, compact }: { tipo: ProductSh
 
 function SpecCard({ label, value }: { label: string; value: string }) {
   return (
-    <div className="p-4 rounded-xl bg-[var(--color-surface)]/60 border border-[var(--color-border-subtle)] shadow-sm transition-all duration-300 hover:shadow-md">
-      <span className="block text-[10px] font-bold uppercase tracking-[0.15em] mb-1.5 text-[var(--color-text-muted)]">{label}</span>
-      <span className="block text-lg font-bold text-white">{value}</span>
+    <div className="p-3 sm:p-4 rounded-xl bg-[var(--color-surface)]/60 border border-[var(--color-border-subtle)] shadow-sm transition-all duration-200 hover:shadow-md hover:border-[var(--color-accent)]/20">
+      <span className="block text-[10px] font-bold uppercase tracking-[0.15em] mb-1 text-[var(--color-text-muted)]">{label}</span>
+      <span className="block text-base sm:text-lg font-bold text-white">{value}</span>
     </div>
   )
 }
@@ -164,14 +167,14 @@ type SectionTab = { key: string; label: string; count?: number }
 
 function SectionTabs({ tabs, active, onChange, renderIcon }: { tabs: SectionTab[]; active: string; onChange: (key: string) => void; renderIcon: (key: string) => React.ReactNode }) {
   return (
-    <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
+    <div className="grid grid-cols-3 sm:grid-cols-6 gap-2 sm:gap-2.5">
       {tabs.map((t) => {
         const isActive = active === t.key
         return (
           <button
             key={t.key}
             onClick={() => onChange(t.key)}
-            className={`group flex flex-col items-center gap-1.5 p-3 rounded-xl border transition-all duration-200 ${
+            className={`group flex flex-col items-center gap-1 sm:gap-1.5 p-2.5 sm:p-3 rounded-xl border transition-all duration-200 min-h-[44px] ${
               isActive
                 ? "border-[var(--color-accent)] bg-[var(--color-accent)]/10 shadow-[0_0_20px_rgba(201,166,85,0.1)]"
                 : "border-[var(--color-border-subtle)] bg-[var(--color-surface)]/30 hover:border-white/20 hover:bg-[var(--color-surface)]/60"
@@ -196,9 +199,9 @@ function SectionTabs({ tabs, active, onChange, renderIcon }: { tabs: SectionTab[
 }
 function EmptyState({ msg, hint }: { msg: string; hint?: string }) {
   return (
-    <div className="text-center py-12">
-      <p className="text-sm font-bold text-[var(--color-text-muted)]">{msg}</p>
-      {hint && <p className="text-xs text-[var(--color-text-muted)]/60 mt-1">{hint}</p>}
+    <div className="flex flex-col items-center justify-center py-10 sm:py-12 px-4 text-center">
+      <p className="text-sm font-semibold text-[var(--color-text-muted)]">{msg}</p>
+      {hint && <p className="text-xs text-[var(--color-text-muted)]/60 mt-1.5">{hint}</p>}
     </div>
   )
 }
@@ -206,60 +209,6 @@ function EmptyState({ msg, hint }: { msg: string; hint?: string }) {
 
 /* ─── Implante Detail ──────────────────────────────────────────────── */
 
-
-/** Modal com ficha técnica resumida do produto relacionado */
-function FichaTecnicaModal({
-  open, onClose, nome, sku, cor, imagemUrl, specs,
-}: {
-  open: boolean; onClose: () => void; nome: string; sku: string; cor: string
-  imagemUrl?: string | null; specs: Array<{ label: string; value: string | number | null | undefined }>
-}) {
-  if (!open) return null
-  const validSpecs = specs.filter((s) => s.value != null && s.value !== "")
-  return (
-    <div className="fixed inset-0 z-[70] flex items-center justify-center p-4" onClick={onClose}>
-      <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
-      <div
-        className="relative w-full max-w-md rounded-2xl border border-[var(--color-border-subtle)] bg-[#0f172a] shadow-2xl shadow-black/40 overflow-hidden"
-        onClick={(e) => e.stopPropagation()}
-      >
-        {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-[var(--color-border-subtle)]">
-          <div className="flex items-center gap-3 min-w-0">
-            <FileText className="w-4 h-4 shrink-0" style={{ color: cor }} />
-            <div className="min-w-0">
-              <h3 className="text-sm font-bold text-white truncate">{nome}</h3>
-              <p className="font-mono text-[10px] text-[var(--color-text-muted)]">SKU: {sku}</p>
-            </div>
-          </div>
-          <button onClick={onClose} className="shrink-0 p-1 rounded-lg hover:bg-white/10 transition-colors">
-            <X className="w-4 h-4 text-[var(--color-text-muted)]" />
-          </button>
-        </div>
-        {/* Body */}
-        <div className="p-4 space-y-4">
-          {imagemUrl && (
-            <div className="w-full h-40 rounded-xl overflow-hidden bg-gradient-to-br from-[var(--color-surface)] to-[#0f172a] border border-[var(--color-border-subtle)] flex items-center justify-center">
-              <img src={imagemUrl} alt={nome} className="w-full h-full object-contain" loading="lazy" />
-            </div>
-          )}
-          {validSpecs.length > 0 ? (
-            <div className="grid grid-cols-2 gap-2">
-              {validSpecs.map((s) => (
-                <div key={s.label} className="p-3 rounded-lg bg-[var(--color-surface)]/60 border border-[var(--color-border-subtle)]">
-                  <span className="block text-[9px] font-bold uppercase tracking-[0.15em] mb-1 text-[var(--color-text-muted)]">{s.label}</span>
-                  <span className="block text-sm font-bold text-white">{s.value}</span>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <p className="text-xs text-[var(--color-text-muted)] text-center py-4">Nenhuma especificação disponível</p>
-          )}
-        </div>
-      </div>
-    </div>
-  )
-}
 
 /** Small product card for related items in tabs (cicatrizadores, abutments, kits, chaves) */
 function RelatedProductCard({
@@ -270,37 +219,39 @@ function RelatedProductCard({
   onImageClick: () => void; onVerFicha?: () => void; fichaData?: Record<string, string | number | null | undefined>; children?: React.ReactNode
 }) {
   return (
-    <div className="flex flex-col sm:flex-row gap-4 p-4 rounded-xl border border-[var(--color-border-subtle)] bg-[var(--color-surface)]/40 hover:border-[var(--color-accent)]/40 transition-all">
+    <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 p-3 sm:p-4 rounded-xl border border-[var(--color-border-subtle)] bg-[var(--color-surface)]/40 hover:border-[var(--color-accent)]/40 transition-all duration-200">
       {/* Thumbnail */}
       <div
         onClick={onImageClick}
-        className="shrink-0 w-20 h-20 sm:w-24 sm:h-24 rounded-lg overflow-hidden cursor-zoom-in bg-gradient-to-br from-[var(--color-surface)] to-[#0f172a] border border-[var(--color-border-subtle)] flex items-center justify-center"
+        className="shrink-0 w-16 h-16 sm:w-20 sm:h-20 rounded-lg overflow-hidden cursor-zoom-in bg-gradient-to-br from-[var(--color-surface)] to-[#0f172a] border border-[var(--color-border-subtle)] flex items-center justify-center"
       >
         {imageUrl ? (
           <img src={imageUrl} alt={nome} className="w-full h-full object-contain" loading="lazy" />
         ) : (
-          <Box className="w-8 h-8 opacity-10" style={{ color: cor }} />
+          <Box className="w-7 h-7 sm:w-8 sm:h-8 opacity-10" style={{ color: cor }} />
         )}
       </div>
       {/* Info */}
-      <div className="flex-1 min-w-0 space-y-1.5">
+      <div className="flex-1 min-w-0 space-y-1">
         <h4 className="text-sm font-bold text-white truncate">{nome}</h4>
         <p className="font-mono text-[10px] text-[var(--color-text-muted)]">SKU: {sku}</p>
         {children}
       </div>
       {/* CTA */}
-      <div className="shrink-0 flex flex-col items-center gap-2">
-        {fichaData && Object.keys(fichaData).length > 0 && (
-          <button
-            onClick={onVerFicha}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider border border-[var(--color-border-subtle)] text-[var(--color-text-muted)] hover:text-white hover:border-[var(--color-accent)]/60 transition-all"
-          >
-            <FileText className="w-3 h-3" />
-            Ver Ficha
-          </button>
-        )}
-        <AddButton tipo={tipo} sku={sku} nome={nome} cor={cor} precoDB={preco} compact />
-      </div>
+      {(fichaData && Object.keys(fichaData).length > 0 || Number(preco) > 0) && (
+        <div className="shrink-0 flex flex-row sm:flex-col items-center sm:items-end gap-2">
+          {fichaData && Object.keys(fichaData).length > 0 && (
+            <button
+              onClick={onVerFicha}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider border border-[var(--color-border-subtle)] text-[var(--color-text-muted)] hover:text-white hover:border-[var(--color-accent)]/60 transition-all min-h-[32px]"
+            >
+              <FileText className="w-3 h-3" />
+              Ver Ficha
+            </button>
+          )}
+          <AddButton tipo={tipo} sku={sku} nome={nome} cor={cor} precoDB={preco} />
+        </div>
+      )}
     </div>
   )
 }
@@ -369,10 +320,10 @@ function ImplanteDetail({ sku }: { sku: string }) {
 
   return (
     <>
-    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-10">
       {/* Sidebar — Imagem + CTA */}
       <div className="lg:col-span-4 xl:col-span-5">
-        <div className="lg:sticky lg:top-28 space-y-6">
+        <div className="lg:sticky lg:top-24 space-y-4 sm:space-y-5">
           <ProductImage cor={cor} nome={nome} onClick={() => openImageViewer(imageUrl ?? "", nome)} imageUrl={imageUrl} />
           {/* Miniaturas */}
           {imagens && imagens.length > 1 && (
@@ -381,7 +332,7 @@ function ImplanteDetail({ sku }: { sku: string }) {
                 <button
                   key={img.id}
                   onClick={() => openImageViewer(img.url_imagem, nome)}
-                  className="shrink-0 w-14 h-14 rounded-lg overflow-hidden border border-[var(--color-border-subtle)] hover:border-[var(--color-accent)] transition-colors"
+                  className="shrink-0 w-12 h-12 sm:w-14 sm:h-14 rounded-lg overflow-hidden border border-[var(--color-border-subtle)] hover:border-[var(--color-accent)] transition-colors"
                 >
                   <img src={img.url_imagem} alt="" className="w-full h-full object-contain" loading="lazy" />
                 </button>
@@ -395,7 +346,7 @@ function ImplanteDetail({ sku }: { sku: string }) {
       </div>
 
       {/* Conteúdo */}
-      <div className="lg:col-span-8 xl:col-span-7 space-y-8">
+      <div className="lg:col-span-8 xl:col-span-7 space-y-6 sm:space-y-8">
         <ProductHeader cor={cor} badge={impl.linha?.familia?.nome} nome={nome} sku={impl.sku} />
 
         <div className="lg:hidden">
@@ -407,9 +358,9 @@ function ImplanteDetail({ sku }: { sku: string }) {
 
         {/* ─── Ficha Técnica ─── */}
         {activeTab === "ficha" && (
-          <div className="space-y-6">
+          <div className="space-y-5 sm:space-y-6">
             {/* Breadcrumb hierárquico — usa dados do join aninhado OU colunas diretas */}
-            <div className="flex flex-wrap items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.15em] text-[var(--color-text-muted)]">
+            <div className="flex flex-wrap items-center gap-1 sm:gap-1.5 text-[10px] font-bold uppercase tracking-[0.15em] text-[var(--color-text-muted)]">
               {impl.linha?.familia?.conexao?.categoria?.nome && <span>{impl.linha.familia.conexao.categoria.nome}</span>}
               {impl.linha?.familia?.conexao?.nome && (
                 <>
@@ -431,23 +382,16 @@ function ImplanteDetail({ sku }: { sku: string }) {
               )}
             </div>
 
-            {/* Sigla + Descrição */}
-            {impl.sigla && (
-              <div className="inline-flex items-center px-3 py-1 rounded-full border border-[var(--color-border-subtle)] bg-[var(--color-surface)]/40">
-                <Tag className="w-3 h-3 mr-1.5 text-[var(--color-text-muted)]" />
-                <span className="text-xs font-bold text-white/80">{impl.sigla}</span>
-              </div>
-            )}
-
+            {/* Descrição */}
             {impl.descricao && (
-              <div className="rounded-2xl border border-[var(--color-border-subtle)] bg-[var(--color-surface)]/30 p-4 sm:p-6">
+              <div className="rounded-2xl border border-[var(--color-border-subtle)] bg-[var(--color-surface)]/30 p-4 sm:p-5">
                 <p className="text-sm text-[var(--color-text-muted)] leading-relaxed">{impl.descricao}</p>
               </div>
             )}
 
             {/* Specs — só renderiza não nulos */}
             {specs.length > 0 && (
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 sm:gap-3">
                 {specs.map((s) => (
                   <SpecCard key={s.label} label={s.label} value={s.value} />
                 ))}
@@ -469,8 +413,8 @@ function ImplanteDetail({ sku }: { sku: string }) {
 
         {/* ─── Chaves ─── */}
         {activeTab === "chaves" && (
-          <div className="space-y-3">
-            {chavesAtivas.map((chave) => {
+          <div className="space-y-2.5 sm:space-y-3">
+            {chavesAtivas.length > 0 ? chavesAtivas.map((chave) => {
               const img = imagensChaves?.get(chave.sku)?.[0]?.url_imagem
               return (
                 <RelatedProductCard
@@ -483,11 +427,14 @@ function ImplanteDetail({ sku }: { sku: string }) {
                   imageUrl={img}
                   onImageClick={() => openImageViewer(img ?? "", chave.nome)}
                   onVerFicha={() => setFichaModal({ open: true, nome: chave.nome, sku: chave.sku, imagemUrl: img, specs: [
+                    { label: "SKU", value: chave.sku },
+                    { label: "Nome", value: chave.nome },
+                    { label: "Descricao", value: chave.descricao },
+                    { label: "Preco", value: chave.preco ? formatBRL(chave.preco) : null },
                     { label: "Tipo", value: chave.tipo_chave?.nome },
                     { label: "Comprimento", value: chave.comprimento },
-                    { label: "Diâmetro", value: chave.diametro_mm ? `${chave.diametro_mm} mm` : null },
+                    { label: "Diametro", value: chave.diametro_mm ? `${chave.diametro_mm} mm` : null },
                     { label: "Material", value: chave.material },
-                    { label: "Preco", value: chave.preco ? formatBRL(chave.preco) : null },
                   ] })}
                   fichaData={{ tipo: chave.tipo_chave?.nome, diametro: chave.diametro_mm }}
                 >
@@ -498,14 +445,15 @@ function ImplanteDetail({ sku }: { sku: string }) {
                   )}
                 </RelatedProductCard>
               )
-            })}
+            })
+          : <EmptyState msg="Nenhuma chave vinculada" hint="Vincule chaves na edição do implante." />}
           </div>
         )}
 
         {/* ─── Kits ─── */}
         {activeTab === "kits" && (
-          <div className="space-y-3">
-            {kitsAtivos.map((kit) => {
+          <div className="space-y-2.5 sm:space-y-3">
+            {kitsAtivos.length > 0 ? kitsAtivos.map((kit) => {
               const img = imagensKits?.get(kit.sku)?.[0]?.url_imagem
               return (
                 <RelatedProductCard
@@ -518,9 +466,11 @@ function ImplanteDetail({ sku }: { sku: string }) {
                   imageUrl={img}
                   onImageClick={() => openImageViewer(img ?? "", kit.nome)}
                   onVerFicha={() => setFichaModal({ open: true, nome: kit.nome, sku: kit.sku, imagemUrl: img, specs: [
-                    { label: "Tipo", value: kit.tipo_kit?.nome },
+                    { label: "SKU", value: kit.sku },
+                    { label: "Nome", value: kit.nome },
                     { label: "Descricao", value: kit.descricao },
                     { label: "Preco", value: kit.preco ? formatBRL(kit.preco) : null },
+                    { label: "Tipo", value: kit.tipo_kit?.nome },
                   ] })}
                   fichaData={{ tipo: kit.tipo_kit?.nome, descricao: kit.descricao }}
                 >
@@ -531,14 +481,15 @@ function ImplanteDetail({ sku }: { sku: string }) {
                   )}
                 </RelatedProductCard>
               )
-            })}
+            })
+          : <EmptyState msg="Nenhum kit vinculado" hint="Vincule kits na edição do implante." />}
           </div>
         )}
 
         {/* ─── Cicatrizadores ─── */}
         {activeTab === "cicatrizadores" && (
-          <div className="space-y-3">
-            {cicatAtivos.map((cic) => {
+          <div className="space-y-2.5 sm:space-y-3">
+            {cicatAtivos.length > 0 ? cicatAtivos.map((cic) => {
               const img = imagensCic?.get(cic.sku)?.[0]?.url_imagem
               return (
                 <RelatedProductCard
@@ -551,14 +502,16 @@ function ImplanteDetail({ sku }: { sku: string }) {
                   imageUrl={img}
                   onImageClick={() => openImageViewer(img ?? "", cic.nome)}
                   onVerFicha={() => setFichaModal({ open: true, nome: cic.nome, sku: cic.sku, imagemUrl: img, specs: [
-                    { label: "Sigla", value: cic.sigla },
+                    { label: "SKU", value: cic.sku },
+                    { label: "Nome", value: cic.nome },
                     { label: "Descricao", value: cic.descricao },
+                    { label: "Preco", value: cic.preco ? formatBRL(cic.preco) : null },
+                    { label: "Sigla", value: cic.sigla },
                     { label: "Diam. Plataforma", value: cic.diametro_plataforma_mm ? `${cic.diametro_plataforma_mm} mm` : null },
                     { label: "Alt. Transmucoso", value: cic.altura_transmucoso_mm ? `${cic.altura_transmucoso_mm} mm` : null },
                     { label: "Alt. Corpo", value: cic.altura_corpo_mm ? `${cic.altura_corpo_mm} mm` : null },
                     { label: "Torque", value: cic.torque_ncm ? `${cic.torque_ncm} N.cm` : null },
                     { label: "Material", value: cic.material },
-                    { label: "Preco", value: cic.preco ? formatBRL(cic.preco) : null },
                   ] })}
                   fichaData={{ sigla: cic.sigla, material: cic.material }}
                 >
@@ -569,14 +522,15 @@ function ImplanteDetail({ sku }: { sku: string }) {
                   )}
                 </RelatedProductCard>
               )
-            })}
+            })
+          : <EmptyState msg="Nenhum cicatrizador vinculado" hint="Vincule cicatrizadores na edição do implante." />}
           </div>
         )}
 
         {/* ─── Abutments ─── */}
         {activeTab === "abutments" && (
-          <div className="space-y-3">
-            {abutAtivos.map((ab) => {
+          <div className="space-y-2.5 sm:space-y-3">
+            {abutAtivos.length > 0 ? abutAtivos.map((ab) => {
               const img = imagensAb?.get(ab.sku)?.[0]?.url_imagem
               return (
                 <RelatedProductCard
@@ -589,14 +543,16 @@ function ImplanteDetail({ sku }: { sku: string }) {
                   imageUrl={img}
                   onImageClick={() => openImageViewer(img ?? "", ab.nome ?? ab.sku)}
                   onVerFicha={() => setFichaModal({ open: true, nome: `${ab.tipo_abutment?.nome ?? ""} ${ab.familia?.nome ?? ""}`.trim(), sku: ab.sku, imagemUrl: img, specs: [
+                    { label: "SKU", value: ab.sku },
+                    { label: "Nome", value: `${ab.tipo_abutment?.nome ?? ""} ${ab.familia?.nome ?? ""}`.trim() },
+                    { label: "Descricao", value: ab.descricao },
+                    { label: "Preco", value: ab.preco ? formatBRL(ab.preco) : null },
                     { label: "Tipo Abutment", value: ab.tipo_abutment?.nome },
                     { label: "Familia", value: ab.familia?.nome },
-                    { label: "Descricao", value: ab.descricao },
                     { label: "Torque", value: ab.torque_ncm ? `${ab.torque_ncm} N.cm` : null },
                     { label: "Alt. Corpo", value: ab.altura_corpo ? `${ab.altura_corpo} mm` : null },
                     { label: "Alt. Transmucoso", value: ab.altura_transmucoso ? `${ab.altura_transmucoso} mm` : null },
                     { label: "Angulacao", value: ab.angulacao_graus ? `${ab.angulacao_graus} deg` : null },
-                    { label: "Preco", value: ab.preco ? formatBRL(ab.preco) : null },
                   ] })}
                   fichaData={{ tipo: ab.tipo_abutment?.nome, familia: ab.familia?.nome }}
                 >
@@ -607,7 +563,8 @@ function ImplanteDetail({ sku }: { sku: string }) {
                   )}
                 </RelatedProductCard>
               )
-            })}
+            })
+          : <EmptyState msg="Nenhum abutment vinculado" hint="Vincule abutments na edição do implante." />}
           </div>
         )}
       </div>
@@ -638,6 +595,8 @@ function AbutmentDetail({ sku }: { sku: string }) {
   const [abParafusos, setAbParafusos] = useState<any[]>([])
   const [abChavesImagens, setAbChavesImagens] = useState<Map<string, any[]>>(new Map())
   const [abParafusosImagens, setAbParafusosImagens] = useState<Map<string, any[]>>(new Map())
+  const kitSkus = kits.map((k: any) => k.sku)
+  const { data: imagensKits } = useImagensBatch("kit", kitSkus)
   const [fichaModal, setFichaModal] = useState<{ open: boolean; nome: string; sku: string; imagemUrl?: string | null; specs: Array<{ label: string; value: string | number | null | undefined }> }>({ open: false, nome: "", sku: "", specs: [] })
   useEffect(() => {
     if (!sku) return
@@ -646,7 +605,7 @@ function AbutmentDetail({ sku }: { sku: string }) {
         if (error) { console.error("Erro chaves:", error); return }
         const ids = (data ?? []).map((r: any) => r.chave_id)
         if (ids.length === 0) { setAbChaves([]); return }
-        const { data: chaves } = await supabase.from("catalogo_chaves").select("sku, nome, sigla, ativo").in("sku", ids)
+        const { data: chaves } = await supabase.from("catalogo_chaves").select("sku, nome, preco, sigla, ativo").in("sku", ids)
         setAbChaves(chaves ?? [])
         const skus = (chaves ?? []).map((c: any) => c.sku)
         if (skus.length > 0) {
@@ -663,7 +622,7 @@ function AbutmentDetail({ sku }: { sku: string }) {
         if (error) { console.error("Erro parafusos:", error); return }
         const skus = (data ?? []).map((r: any) => r.parafuso_sku)
         if (skus.length === 0) { setAbParafusos([]); return }
-        const { data: parafusos } = await supabase.from("catalogo_parafusos").select("sku, nome, ativo").in("sku", skus)
+        const { data: parafusos } = await supabase.from("catalogo_parafusos").select("sku, nome, preco, ativo").in("sku", skus)
         setAbParafusos(parafusos ?? [])
         if (skus.length > 0) {
           supabase.from("catalogo_imagens_produto").select("*").eq("produto_tipo", "parafuso").in("produto_sku", skus)
@@ -728,10 +687,10 @@ function AbutmentDetail({ sku }: { sku: string }) {
 
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-10">
       {/* Sidebar — Imagem + CTA */}
       <div className="lg:col-span-4 xl:col-span-5">
-        <div className="lg:sticky lg:top-28 space-y-6">
+        <div className="lg:sticky lg:top-24 space-y-4 sm:space-y-5">
           <ProductImage cor={cor} nome={nome} onClick={() => openImageViewer(imageUrl ?? "", nome)} imageUrl={imageUrl} />
           {/* Miniaturas */}
           {imagens && imagens.length > 1 && (
@@ -740,7 +699,7 @@ function AbutmentDetail({ sku }: { sku: string }) {
                 <button
                   key={img.id}
                   onClick={() => openImageViewer(img.url_imagem, nome)}
-                  className="shrink-0 w-14 h-14 rounded-lg overflow-hidden border border-[var(--color-border-subtle)] hover:border-[var(--color-accent)] transition-colors"
+                  className="shrink-0 w-12 h-12 sm:w-14 sm:h-14 rounded-lg overflow-hidden border border-[var(--color-border-subtle)] hover:border-[var(--color-accent)] transition-colors"
                 >
                   <img src={img.url_imagem} alt="" className="w-full h-full object-contain" loading="lazy" />
                 </button>
@@ -754,7 +713,7 @@ function AbutmentDetail({ sku }: { sku: string }) {
       </div>
 
       {/* Conteúdo */}
-      <div className="lg:col-span-8 xl:col-span-7 space-y-8">
+      <div className="lg:col-span-8 xl:col-span-7 space-y-6 sm:space-y-8">
         <ProductHeader cor={cor} badge={ab.familia?.nome} nome={nome} sku={ab.sku} />
 
         <div className="lg:hidden">
@@ -766,24 +725,40 @@ function AbutmentDetail({ sku }: { sku: string }) {
 
         {/* ─── Ficha Técnica ─── */}
         {activeTab === "ficha" && (
-          <div className="space-y-6">
-            {/* Sigla + Descrição */}
-            {ab.sigla && (
-              <div className="inline-flex items-center px-3 py-1 rounded-full border border-[var(--color-border-subtle)] bg-[var(--color-surface)]/40">
-                <Tag className="w-3 h-3 mr-1.5 text-[var(--color-text-muted)]" />
-                <span className="text-xs font-bold text-white/80">{ab.sigla}</span>
-              </div>
-            )}
+          <div className="space-y-5 sm:space-y-6">
+            {/* Breadcrumb hierárquico */}
+            <div className="flex flex-wrap items-center gap-1 sm:gap-1.5 text-[10px] font-bold uppercase tracking-[0.15em] text-[var(--color-text-muted)]">
+              <span>Componentes</span>
+              {ab.familia?.nome && (
+                <>
+                  <span className="opacity-40">/</span>
+                  <span>{ab.familia.nome}</span>
+                </>
+              )}
+              {ab.tipo_abutment?.tipo_reabilitacao?.nome && (
+                <>
+                  <span className="opacity-40">/</span>
+                  <span>{ab.tipo_abutment.tipo_reabilitacao.nome}</span>
+                </>
+              )}
+              {ab.tipo_abutment?.nome && (
+                <>
+                  <span className="opacity-40">/</span>
+                  <span>{ab.tipo_abutment.nome}</span>
+                </>
+              )}
+            </div>
 
+            {/* Descrição */}
             {ab.descricao && (
-              <div className="rounded-2xl border border-[var(--color-border-subtle)] bg-[var(--color-surface)]/30 p-4 sm:p-6">
+              <div className="rounded-2xl border border-[var(--color-border-subtle)] bg-[var(--color-surface)]/30 p-4 sm:p-5">
                 <p className="text-sm text-[var(--color-text-muted)] leading-relaxed">{ab.descricao}</p>
               </div>
             )}
 
             {/* Specs — só renderiza não nulos */}
             {specs.length > 0 && (
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 sm:gap-3">
                 {specs.map((s) => (
                   <SpecCard key={s.label} label={s.label} value={s.value} />
                 ))}
@@ -794,7 +769,7 @@ function AbutmentDetail({ sku }: { sku: string }) {
 
         {/* ─── Chaves ─── */}
         {activeTab === "chaves" && (
-          <div className="space-y-3">
+          <div className="space-y-2.5 sm:space-y-3">
             {abChavesAtivas.length > 0 ? abChavesAtivas.map((chave: any) => {
               const img = abChavesImagens.get(chave.sku)?.[0]?.url_imagem
               return (
@@ -803,10 +778,15 @@ function AbutmentDetail({ sku }: { sku: string }) {
                   nome={chave.nome}
                   sku={chave.sku}
                   cor={cor}
+                  preco={chave.preco}
                   tipo="chave"
                   imageUrl={img}
                   onImageClick={() => openImageViewer(img ?? "", chave.nome)}
                   onVerFicha={() => setFichaModal({ open: true, nome: chave.nome, sku: chave.sku, imagemUrl: img, specs: [
+                    { label: "SKU", value: chave.sku },
+                    { label: "Nome", value: chave.nome },
+                    { label: "Descricao", value: chave.descricao },
+                    { label: "Preco", value: chave.preco ? formatBRL(chave.preco) : null },
                     { label: "Sigla", value: chave.sigla },
                   ] })}
                   fichaData={{ sigla: chave.sigla }}
@@ -818,7 +798,7 @@ function AbutmentDetail({ sku }: { sku: string }) {
 
         {/* ─── Parafusos ─── */}
         {activeTab === "parafusos" && (
-          <div className="space-y-3">
+          <div className="space-y-2.5 sm:space-y-3">
             {abParafusosAtivos.length > 0 ? abParafusosAtivos.map((parafuso: any) => {
               const img = abParafusosImagens.get(parafuso.sku)?.[0]?.url_imagem
               return (
@@ -832,7 +812,11 @@ function AbutmentDetail({ sku }: { sku: string }) {
                   imageUrl={img}
                   onImageClick={() => openImageViewer(img ?? "", parafuso.nome)}
                   onVerFicha={() => setFichaModal({ open: true, nome: parafuso.nome, sku: parafuso.sku, imagemUrl: img, specs: [
-                    { label: "Torque", value: parafuso.torque_ncm ? `${parafuso.torque_ncm} N·cm` : null },
+                    { label: "SKU", value: parafuso.sku },
+                    { label: "Nome", value: parafuso.nome },
+                    { label: "Descricao", value: parafuso.descricao },
+                    { label: "Preco", value: parafuso.preco ? formatBRL(parafuso.preco) : null },
+                    { label: "Torque", value: parafuso.torque_ncm ? `${parafuso.torque_ncm} N.cm` : null },
                     { label: "Material", value: parafuso.material },
                   ] })}
                   fichaData={{ torque: parafuso.torque_ncm, material: parafuso.material }}
@@ -856,9 +840,11 @@ function AbutmentDetail({ sku }: { sku: string }) {
 
         {/* ─── Kits ─── */}
         {activeTab === "kits" && (
-          <div className="space-y-3">
+          <div className="space-y-2.5 sm:space-y-3">
             {kitsAtivos.length > 0 ? (
-              kitsAtivos.map((kit) => (
+              kitsAtivos.map((kit) => {
+                const img = imagensKits?.get(kit.sku)?.[0]?.url_imagem
+                return (
                 <RelatedProductCard
                   key={kit.sku}
                   nome={kit.nome}
@@ -866,11 +852,14 @@ function AbutmentDetail({ sku }: { sku: string }) {
                   cor={cor}
                   preco={kit.preco}
                   tipo="kit"
-                  imageUrl={kit.imagens?.[0]?.url_imagem}
-                  onImageClick={() => openImageViewer(kit.imagens?.[0]?.url_imagem ?? "", kit.nome)}
-                  onVerFicha={() => setFichaModal({ open: true, nome: kit.nome, sku: kit.sku, imagemUrl: kit.imagens?.[0]?.url_imagem, specs: [
+                  imageUrl={img}
+                  onImageClick={() => openImageViewer(img ?? "", kit.nome)}
+                  onVerFicha={() => setFichaModal({ open: true, nome: kit.nome, sku: kit.sku, imagemUrl: img, specs: [
+                    { label: "SKU", value: kit.sku },
+                    { label: "Nome", value: kit.nome },
+                    { label: "Descricao", value: kit.descricao },
+                    { label: "Preco", value: kit.preco ? formatBRL(kit.preco) : null },
                     { label: "Tipo", value: kit.tipo_kit?.nome },
-                    { label: "Descrição", value: kit.descricao },
                   ] })}
                   fichaData={{ tipo: kit.tipo_kit?.nome }}
                 >
@@ -880,7 +869,7 @@ function AbutmentDetail({ sku }: { sku: string }) {
                     </span>
                   )}
                 </RelatedProductCard>
-              ))
+              )})
             ) : (
               <EmptyState msg="Nenhum kit disponível" hint="Nenhum kit com chaves em comum foi encontrado." />
             )}
@@ -920,7 +909,7 @@ function KitDetail({ sku }: { sku: string }) {
         const { data: otherKits } = await supabase.from("catalogo_kit_chaves").select("kit_sku").eq("empresa_id", empresaId).in("chave_id", chaveIds).neq("kit_sku", sku)
         if (!otherKits || otherKits.length === 0) { setRelatedKits([]); return }
         const uniqueSkus = [...new Set(otherKits.map(k => k.kit_sku))]
-        const { data: kitsData } = await supabase.from("catalogo_kits").select("sku, nome, tipo_kit:catalogo_tipos_kits(nome)").eq("empresa_id", empresaId).in("sku", uniqueSkus).eq("ativo", true)
+        const { data: kitsData } = await supabase.from("catalogo_kits").select("sku, nome, preco, tipo_kit:catalogo_tipos_kits(nome)").eq("empresa_id", empresaId).in("sku", uniqueSkus).eq("ativo", true)
         setRelatedKits(kitsData ?? [])
       })
 
@@ -932,7 +921,7 @@ function KitDetail({ sku }: { sku: string }) {
         const { data: otherKits } = await supabase.from("catalogo_kit_fresas").select("kit_sku").eq("empresa_id", empresaId).in("fresa_id", fresaIds).neq("kit_sku", sku)
         if (!otherKits || otherKits.length === 0) { setComplementKits([]); return }
         const uniqueSkus = [...new Set(otherKits.map(k => k.kit_sku))]
-        const { data: kitsData } = await supabase.from("catalogo_kits").select("sku, nome, tipo_kit:catalogo_tipos_kits(nome)").eq("empresa_id", empresaId).in("sku", uniqueSkus).eq("ativo", true)
+        const { data: kitsData } = await supabase.from("catalogo_kits").select("sku, nome, preco, tipo_kit:catalogo_tipos_kits(nome)").eq("empresa_id", empresaId).in("sku", uniqueSkus).eq("ativo", true)
         setComplementKits(kitsData ?? [])
       })
   }, [kit?.sku, kit?.empresa_id])
@@ -950,7 +939,6 @@ function KitDetail({ sku }: { sku: string }) {
   const specs: Array<{ label: string; value: string }> = [
     { label: "Nome do Kit", value: kit.nome },
     kit.tipo_kit?.nome ? { label: "Tipo", value: kit.tipo_kit.nome } : null,
-    kit.descricao ? { label: "Descrição", value: kit.descricao } : null,
     { label: "SKU", value: kit.sku },
   ].filter(Boolean) as Array<{ label: string; value: string }>
 
@@ -979,10 +967,10 @@ function KitDetail({ sku }: { sku: string }) {
   ]
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-10">
       {/* Sidebar — Imagem + CTA */}
       <div className="lg:col-span-4 xl:col-span-5">
-        <div className="lg:sticky lg:top-28 space-y-6">
+        <div className="lg:sticky lg:top-24 space-y-4 sm:space-y-5">
           <ProductImage cor={cor} nome={nome} onClick={() => openImageViewer(imageUrl ?? "", nome)} imageUrl={imageUrl} />
           {/* Miniaturas */}
           {imagens && imagens.length > 1 && (
@@ -991,7 +979,7 @@ function KitDetail({ sku }: { sku: string }) {
                 <button
                   key={img.id}
                   onClick={() => openImageViewer(img.url_imagem, nome)}
-                  className="shrink-0 w-14 h-14 rounded-lg overflow-hidden border border-[var(--color-border-subtle)] hover:border-[var(--color-accent)] transition-colors"
+                  className="shrink-0 w-12 h-12 sm:w-14 sm:h-14 rounded-lg overflow-hidden border border-[var(--color-border-subtle)] hover:border-[var(--color-accent)] transition-colors"
                 >
                   <img src={img.url_imagem} alt="" className="w-full h-full object-contain" loading="lazy" />
                 </button>
@@ -1005,7 +993,7 @@ function KitDetail({ sku }: { sku: string }) {
       </div>
 
       {/* Conteúdo */}
-      <div className="lg:col-span-8 xl:col-span-7 space-y-8">
+      <div className="lg:col-span-8 xl:col-span-7 space-y-6 sm:space-y-8">
         <ProductHeader cor={cor} badge={kit.tipo_kit?.nome} nome={nome} sku={kit.sku} />
 
         <div className="lg:hidden">
@@ -1017,10 +1005,34 @@ function KitDetail({ sku }: { sku: string }) {
 
         {/* ─── Ficha Técnica ─── */}
         {activeTab === "ficha" && (
-          <div className="space-y-6">
+          <div className="space-y-5 sm:space-y-6">
+            {/* Breadcrumb hierárquico */}
+            <div className="flex flex-wrap items-center gap-1 sm:gap-1.5 text-[10px] font-bold uppercase tracking-[0.15em] text-[var(--color-text-muted)]">
+              <span>Kits</span>
+              {kit.tipo_kit?.nome && (
+                <>
+                  <span className="opacity-40">/</span>
+                  <span>{kit.tipo_kit.nome}</span>
+                </>
+              )}
+              {kit.nome && (
+                <>
+                  <span className="opacity-40">/</span>
+                  <span>{kit.nome}</span>
+                </>
+              )}
+            </div>
+
+            {/* Descrição */}
+            {kit.descricao && (
+              <div className="rounded-2xl border border-[var(--color-border-subtle)] bg-[var(--color-surface)]/30 p-4 sm:p-5">
+                <p className="text-sm text-[var(--color-text-muted)] leading-relaxed">{kit.descricao}</p>
+              </div>
+            )}
+
             {/* Specs — só renderiza não nulos */}
             {specs.length > 0 ? (
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 sm:gap-3">
                 {specs.map((s) => (
                   <SpecCard key={s.label} label={s.label} value={s.value} />
                 ))}
@@ -1197,10 +1209,10 @@ function PromocionalDetail({ id }: { id: string }) {
   ]
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-10">
       {/* Sidebar — Imagem + CTA */}
       <div className="lg:col-span-4 xl:col-span-5">
-        <div className="lg:sticky lg:top-28 space-y-6">
+        <div className="lg:sticky lg:top-24 space-y-4 sm:space-y-5">
           <ProductImage cor={cor} nome={promo.nome} onClick={() => openImageViewer("", promo.nome)} />
           <div className="hidden lg:block">
             <AddButton tipo={"promocional" as ProductSheetTipo} sku={promo.id} nome={promo.nome} cor={cor} precoDB={promo.preco} />
@@ -1209,7 +1221,7 @@ function PromocionalDetail({ id }: { id: string }) {
       </div>
 
       {/* Conteúdo */}
-      <div className="lg:col-span-8 xl:col-span-7 space-y-8">
+      <div className="lg:col-span-8 xl:col-span-7 space-y-6 sm:space-y-8">
         <ProductHeader cor={cor} badge="Oferta Especial" nome={promo.nome} sku={promo.id} />
 
         <div className="lg:hidden">
@@ -1221,13 +1233,24 @@ function PromocionalDetail({ id }: { id: string }) {
 
         {/* ─── Ficha Técnica ─── */}
         {activeTab === "ficha" && (
-          <div className="space-y-6">
+          <div className="space-y-5 sm:space-y-6">
+            {/* Breadcrumb hierárquico */}
+            <div className="flex flex-wrap items-center gap-1 sm:gap-1.5 text-[10px] font-bold uppercase tracking-[0.15em] text-[var(--color-text-muted)]">
+              <span>Promocionais</span>
+              {promo.nome && (
+                <>
+                  <span className="opacity-40">/</span>
+                  <span>{promo.nome}</span>
+                </>
+              )}
+            </div>
+
             {promo.descricao && (
-              <div className="rounded-2xl border border-[var(--color-border-subtle)] bg-[var(--color-surface)]/30 p-4 sm:p-6">
+              <div className="rounded-2xl border border-[var(--color-border-subtle)] bg-[var(--color-surface)]/30 p-4 sm:p-5">
                 <p className="text-sm text-[var(--color-text-muted)] leading-relaxed">{promo.descricao}</p>
               </div>
             )}
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 sm:gap-3">
               <SpecCard label="Preço Original" value={formatBRL(totalItens)} />
               <SpecCard label="Preço Promocional" value={formatBRL(promo.preco)} />
               <SpecCard label="Economia" value={economia > 0 ? `${percentualEconomia}%` : "—"} />
@@ -1268,17 +1291,17 @@ function PromocionalDetail({ id }: { id: string }) {
 
 function LoadingState() {
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-10">
       <div className="lg:col-span-4 xl:col-span-5">
         <div className="aspect-square rounded-2xl bg-[var(--color-surface)]/50 border border-[var(--color-border-subtle)] animate-pulse" />
       </div>
-      <div className="lg:col-span-8 xl:col-span-7 space-y-6">
+      <div className="lg:col-span-8 xl:col-span-7 space-y-5 sm:space-y-6">
         <div className="h-4 w-24 rounded-full bg-[var(--color-surface)]/50 animate-pulse" />
-        <div className="h-10 w-64 rounded-lg bg-[var(--color-surface)]/50 animate-pulse" />
-        <div className="h-4 w-48 rounded bg-[var(--color-surface)]/50 animate-pulse" />
-        <div className="grid grid-cols-3 gap-3 mt-8">
+        <div className="h-8 sm:h-10 w-48 sm:w-64 rounded-lg bg-[var(--color-surface)]/50 animate-pulse" />
+        <div className="h-4 w-40 sm:w-48 rounded bg-[var(--color-surface)]/50 animate-pulse" />
+        <div className="grid grid-cols-3 gap-2.5 sm:gap-3 mt-6 sm:mt-8">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="h-20 rounded-xl bg-[var(--color-surface)]/50 animate-pulse" />
+            <div key={i} className="h-16 sm:h-20 rounded-xl bg-[var(--color-surface)]/50 animate-pulse" />
           ))}
         </div>
       </div>

@@ -10,7 +10,7 @@ import { supabase } from "~/core/supabase"
 import { useQueryClient, useQuery } from "@tanstack/react-query"
 import { useCategorias, useConexoes, useFamilias, useLinhas, useFresas, useToggleConexaoAtivo, useToggleFamiliaAtivo, useToggleLinhaAtivo, useTodosKits, useAbutments, useCicatrizadores } from "~/features/catalogo/hooks/useCatalogo"
 import { useCatalogoEmpresaId } from "~/features/catalogo/hooks/useCatalogoEmpresa"
-import { salvarImplanteChaves, salvarImplanteKits, salvarImplanteAbutments, salvarImplanteCicatrizadores, listarImplanteKits, listarImplanteAbutments, listarImplanteCicatrizadores } from "~/features/catalogo/services/implantes.service"
+import { salvarImplanteChaves, salvarImplanteKits, salvarImplanteAbutments, salvarImplanteCicatrizadores, listarImplanteKits, listarImplanteAbutments, listarImplanteCicatrizadores, listarFresasProtocolo } from "~/features/catalogo/services/implantes.service"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "~/components/ui/dialog"
 import { Switch } from "~/components/ui/switch"
 import { ImageUploader } from "~/features/catalogo/components/admin/produtos/ImageUploader"
@@ -53,12 +53,30 @@ function AdminImplantesPage() {
   const [implCicatrizadores, setImplCicatrizadores] = useState<string[]>([])
   const [implError, setImplError] = useState("")
 
+  // Protocolo de fresagem — preview de fresas
+  type FresaProto = { ordem: number; fresa_nome: string; fresa_sku: string; diametro_mm: number | null }
+  const [fresasSoft, setFresasSoft] = useState<FresaProto[]>([])
+  const [fresasHard, setFresasHard] = useState<FresaProto[]>([])
+  useEffect(() => {
+    if (implData.osso_soft) { listarFresasProtocolo(implData.osso_soft).then(setFresasSoft).catch(() => setFresasSoft([])) }
+    else { setFresasSoft([]) }
+  }, [implData.osso_soft])
+  useEffect(() => {
+    if (implData.osso_hard) { listarFresasProtocolo(implData.osso_hard).then(setFresasHard).catch(() => setFresasHard([])) }
+    else { setFresasHard([]) }
+  }, [implData.osso_hard])
+
   const { data: implantes } = useQuery({ queryKey: ["catalogo", "implantes", empresaId], queryFn: async () => { const { data } = await supabase.from("catalogo_implantes").select("*, linha:catalogo_ips_linhas(*, familia:catalogo_ips_familias(*, conexao:catalogo_ips_conexoes(*, categoria:catalogo_categorias(*))))").order("sku"); return (data ?? []) as CatalogoImplante[] }, enabled: !!empresaId })
   const { data: allChaves } = useQuery({ queryKey: ["catalogo", "chaves"], queryFn: async () => { const { data } = await supabase.from("catalogo_chaves").select("*").order("nome"); return (data ?? []) as any[] }, enabled: !!empresaId })
   const { data: protocolos } = useQuery({ queryKey: ["catalogo", "protocolos"], queryFn: async () => { const { data } = await supabase.from("catalogo_protocolos_fresagens").select("*").order("nome"); return (data ?? []) as any[] }, enabled: !!empresaId })
+  const { data: tiposOsso } = useQuery({ queryKey: ["catalogo", "tipos-osso"], queryFn: async () => { const { data } = await supabase.from("catalogo_tipos_ossos").select("sigla, categoria").eq("ativo", true); return (data ?? []) as any[] }, enabled: !!empresaId })
   const { data: allKits } = useTodosKits()
   const { data: allAbutments } = useAbutments()
   const { data: allCicatrizadores } = useCicatrizadores()
+
+  function protoCategoria(protoTipoOsso: string): string | undefined {
+    return tiposOsso?.find((t: any) => t.sigla === protoTipoOsso)?.categoria
+  }
 
   function openNewImpl() {
     setImplEditing(null)
@@ -223,8 +241,38 @@ function AdminImplantesPage() {
             {/* Protocolos de Fresagem */}
             <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655]">Protocolos de Fresagem</h3>
             <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2"><label className={labelCls}>Protocolo Osso Soft (III-IV)</label><select value={implData.osso_soft} onChange={e=>setImplData({...implData,osso_soft:e.target.value})} className={selectCls}><option value="">Nenhum</option>{protocolos?.filter((p:any)=>["D3","D4","D5"].includes(p.tipo_osso)).map((p:any)=><option key={p.id} value={p.id}>{p.nome}</option>)}</select></div>
-              <div className="space-y-2"><label className={labelCls}>Protocolo Osso Hard (I-II)</label><select value={implData.osso_hard} onChange={e=>setImplData({...implData,osso_hard:e.target.value})} className={selectCls}><option value="">Nenhum</option>{protocolos?.filter((p:any)=>["D1","D2"].includes(p.tipo_osso)).map((p:any)=><option key={p.id} value={p.id}>{p.nome}</option>)}</select></div>
+              <div className="space-y-2">
+                <label className={labelCls}>Protocolo Osso Soft (III-IV)</label>
+                <select value={implData.osso_soft} onChange={e=>setImplData({...implData,osso_soft:e.target.value})} className={selectCls}><option value="">Nenhum</option>{protocolos?.filter((p:any)=>protoCategoria(p.tipo_osso)==="soft").map((p:any)=><option key={p.id} value={p.id}>{p.nome}</option>)}</select>
+                {fresasSoft.length > 0 && (
+                  <div className="rounded-lg bg-white/5 border border-white/10 p-2 space-y-1">
+                    {fresasSoft.map((f) => (
+                      <div key={f.fresa_sku} className="flex items-center gap-2 text-[11px]">
+                        <span className="w-5 h-5 flex items-center justify-center rounded bg-[#c9a655]/10 text-[#c9a655] font-black shrink-0">{f.ordem}</span>
+                        <span className="text-white truncate">{f.fresa_nome}</span>
+                        {f.diametro_mm != null && <span className="text-gray-500 shrink-0">Ø {f.diametro_mm}mm</span>}
+                      </div>
+                    ))}
+                  </div>
+                )}
+                {implData.osso_soft && fresasSoft.length === 0 && <p className="text-[10px] text-gray-500 italic">Nenhuma fresa neste protocolo</p>}
+              </div>
+              <div className="space-y-2">
+                <label className={labelCls}>Protocolo Osso Hard (I-II)</label>
+                <select value={implData.osso_hard} onChange={e=>setImplData({...implData,osso_hard:e.target.value})} className={selectCls}><option value="">Nenhum</option>{protocolos?.filter((p:any)=>protoCategoria(p.tipo_osso)==="hard").map((p:any)=><option key={p.id} value={p.id}>{p.nome}</option>)}</select>
+                {fresasHard.length > 0 && (
+                  <div className="rounded-lg bg-white/5 border border-white/10 p-2 space-y-1">
+                    {fresasHard.map((f) => (
+                      <div key={f.fresa_sku} className="flex items-center gap-2 text-[11px]">
+                        <span className="w-5 h-5 flex items-center justify-center rounded bg-[#c9a655]/10 text-[#c9a655] font-black shrink-0">{f.ordem}</span>
+                        <span className="text-white truncate">{f.fresa_nome}</span>
+                        {f.diametro_mm != null && <span className="text-gray-500 shrink-0">Ø {f.diametro_mm}mm</span>}
+                      </div>
+                    ))}
+                  </div>
+                )}
+                {implData.osso_hard && fresasHard.length === 0 && <p className="text-[10px] text-gray-500 italic">Nenhuma fresa neste protocolo</p>}
+              </div>
             </div>
 
             {/* Composição do Implante */}
@@ -249,7 +297,7 @@ function AdminImplantesPage() {
             <CompositionSection
               label="ABUTMENTS / COMPONENTES"
               selectedIds={implAbutments}
-              options={allAbutments?.map((a: any) => ({ id: a.sku, label: a.sku })) ?? []}
+              options={allAbutments?.map((a: any) => ({ id: a.sku, label: `${a.nome} (${a.sku})` })) ?? []}
               placeholder="Selecione um abutment..."
               onChange={setImplAbutments}
             />

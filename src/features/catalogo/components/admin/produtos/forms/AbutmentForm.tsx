@@ -147,7 +147,7 @@ export function AbutmentForm({
       <CompositionSection
         label="Kits"
         selectedIds={kitsIds}
-        options={kits?.filter((k) => !kitsIds.includes(k.sku)).map((k) => ({ id: k.sku, label: k.nome })) ?? []}
+        options={kits?.map((k) => ({ id: k.sku, label: k.nome })) ?? []}
         placeholder="Selecione um kit..."
         onChange={onKitsChange}
       />
@@ -156,7 +156,7 @@ export function AbutmentForm({
       <CompositionSection
         label="Parafusos"
         selectedIds={parafusosIds}
-        options={parafusos?.filter((p) => !parafusosIds.includes(p.sku)).map((p) => ({ id: p.sku, label: p.nome })) ?? []}
+        options={parafusos?.map((p) => ({ id: p.sku, label: p.nome })) ?? []}
         placeholder="Selecione um parafuso..."
         onChange={onParafusosChange}
       />

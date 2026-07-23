@@ -153,6 +153,10 @@ export function useProtocolos() {
   return useQuery({ queryKey: ["catalogo", "protocolos-fresagens"], queryFn: () => fresagensService.listarProtocolos() })
 }
 
+export function useTiposOsso() {
+  return useQuery({ queryKey: ["catalogo", "tipos-osso"], queryFn: () => fresagensService.listarTiposOsso() })
+}
+
 export function useFresas() {
   return useQuery({ queryKey: ["catalogo", "fresas"], queryFn: () => implantes.listarFresas() })
 }

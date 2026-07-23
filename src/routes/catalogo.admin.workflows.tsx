@@ -5,7 +5,7 @@ import { authLayout } from "./_auth"
 import { EmpresaCrudGuard } from "~/features/catalogo/components/EmpresaCrudGuard"
 import { AdminLayout } from "~/features/catalogo/components/AdminLayout"
 import { useState } from "react"
-import { Plus, Pencil, Trash2, ToggleRight, ToggleLeft } from "lucide-react"
+import { Plus, Pencil, Trash2, ToggleRight, ToggleLeft, ChevronDown, ChevronRight } from "lucide-react"
 import { supabase } from "~/core/supabase"
 import { useQueryClient, useQuery } from "@tanstack/react-query"
 import { useCatalogoEmpresaId } from "~/features/catalogo/hooks/useCatalogoEmpresa"
@@ -51,32 +51,53 @@ function AdminWorkflowsPage() {
   const [etapaError, setEtapaError] = useState("")
 
   const [deleteItem, setDeleteItem] = useState<{ id: string; label: string; table: string } | null>(null)
+
   // Seq Protetica modal
   const [seqModalOpen, setSeqModalOpen] = useState(false)
   const [seqEditing, setSeqEditing] = useState<any>(null)
   const [seqData, setSeqData] = useState({ nome: "", sigla: "", ativo: true })
   const [seqError, setSeqError] = useState("")
-  const [seqAbutmentsIds, setSeqAbutmentsIds] = useState<string[]>([])
-  const [seqEtapasIds, setSeqEtapasIds] = useState<string[]>([])
-  const [seqComponentesIds, setSeqComponentesIds] = useState<string[]>([])
+  const [seqAbutmentSku, setSeqAbutmentSku] = useState("")
+  const [seqEtapasComponentes, setSeqEtapasComponentes] = useState<Record<string, string[]>>({})
+  const [expandedEtapas, setExpandedEtapas] = useState<Set<string>>(new Set())
 
-  function openNewSeq() { setSeqEditing(null); setSeqData({ nome: "", sigla: "", ativo: true }); setSeqError(""); setSeqAbutmentsIds([]); setSeqEtapasIds([]); setSeqComponentesIds([]); setSeqModalOpen(true) }
+  function openNewSeq() {
+    setSeqEditing(null)
+    setSeqData({ nome: "", sigla: "", ativo: true })
+    setSeqError("")
+    setSeqAbutmentSku("")
+    setSeqEtapasComponentes({})
+    setExpandedEtapas(new Set())
+    setSeqModalOpen(true)
+  }
+
   async function openEditSeq(item: any) {
-    setSeqEditing(item); setSeqData({ nome: item.nome ?? "", sigla: item.sigla ?? "", ativo: item.ativo !== false }); setSeqError("")
-    const [{ data: abSku }, { data: etIds }, { data: coSku }] = await Promise.all([
-      supabase.from("catalogo_seq_protetica_abutments").select("abutment_sku").eq("seq_id", item.id),
-      supabase.from("catalogo_seq_protetica_etapas").select("etapa_id").eq("seq_id", item.id),
-      supabase.from("catalogo_seq_protetica_componentes").select("componente_sku").eq("seq_id", item.id),
+    setSeqEditing(item)
+    setSeqData({ nome: item.nome ?? "", sigla: item.sigla ?? "", ativo: item.ativo !== false })
+    setSeqError("")
+
+    const [{ data: abData }, { data: etCoData }] = await Promise.all([
+      supabase.from("catalogo_seq_protetica_abutments").select("abutment_sku").eq("seq_id", item.id).limit(1),
+      supabase.from("catalogo_seq_protetica_etapa_componentes").select("etapa_id, componente_sku").eq("seq_id", item.id),
     ])
-    setSeqAbutmentsIds((abSku ?? []).map((r: any) => r.abutment_sku))
-    setSeqEtapasIds((etIds ?? []).map((r: any) => r.etapa_id))
-    setSeqComponentesIds((coSku ?? []).map((r: any) => r.componente_sku))
+
+    setSeqAbutmentSku((abData?.[0] as any)?.abutment_sku ?? "")
+
+    const etapasComp: Record<string, string[]> = {}
+    for (const row of (etCoData ?? []) as any[]) {
+      if (!etapasComp[row.etapa_id]) etapasComp[row.etapa_id] = []
+      etapasComp[row.etapa_id].push(row.componente_sku)
+    }
+    setSeqEtapasComponentes(etapasComp)
+    setExpandedEtapas(new Set(Object.keys(etapasComp)))
     setSeqModalOpen(true)
   }
 
   async function handleSaveSeq() {
     setSeqError("")
     if (!seqData.nome.trim()) { setSeqError("Nome é obrigatório"); return }
+    if (!seqAbutmentSku) { setSeqError("Selecione um abutment"); return }
+
     let seqId = seqEditing?.id
     if (seqEditing) {
       const { error } = await supabase.from("catalogo_seq_proteticas").update(seqData).eq("id", seqEditing.id)
@@ -86,15 +107,33 @@ function AdminWorkflowsPage() {
       if (error) { setSeqError(error.message); return }
       seqId = data.id
     }
-    // Salvar pivots
+
+    // Salvar abutment (single)
     await supabase.from("catalogo_seq_protetica_abutments").delete().eq("seq_id", seqId)
-    if (seqAbutmentsIds.length > 0) await supabase.from("catalogo_seq_protetica_abutments").insert(seqAbutmentsIds.map((sku) => ({ seq_id: seqId, abutment_sku: sku })))
+    await supabase.from("catalogo_seq_protetica_abutments").insert({ seq_id: seqId, abutment_sku: seqAbutmentSku })
+
+    // Salvar etapas (pivô etapas)
+    const etapaIds = Object.keys(seqEtapasComponentes)
     await supabase.from("catalogo_seq_protetica_etapas").delete().eq("seq_id", seqId)
-    if (seqEtapasIds.length > 0) await supabase.from("catalogo_seq_protetica_etapas").insert(seqEtapasIds.map((eid) => ({ seq_id: seqId, etapa_id: eid })))
-    await supabase.from("catalogo_seq_protetica_componentes").delete().eq("seq_id", seqId)
-    if (seqComponentesIds.length > 0) await supabase.from("catalogo_seq_protetica_componentes").insert(seqComponentesIds.map((sku) => ({ seq_id: seqId, componente_sku: sku })))
+    if (etapaIds.length > 0) {
+      await supabase.from("catalogo_seq_protetica_etapas").insert(etapaIds.map((eid) => ({ seq_id: seqId, etapa_id: eid })))
+    }
+
+    // Salvar etapa→componentes (nova tabela pivô)
+    await supabase.from("catalogo_seq_protetica_etapa_componentes").delete().eq("seq_id", seqId)
+    const inserts: any[] = []
+    for (const [etapaId, comps] of Object.entries(seqEtapasComponentes)) {
+      for (const sku of comps) {
+        inserts.push({ seq_id: seqId, etapa_id: etapaId, componente_sku: sku })
+      }
+    }
+    if (inserts.length > 0) {
+      await supabase.from("catalogo_seq_protetica_etapa_componentes").insert(inserts)
+    }
+
     toast.success(seqEditing ? "Sequência atualizada!" : "Sequência criada!")
-    setSeqModalOpen(false); qc.invalidateQueries({ queryKey: ["catalogo"] })
+    setSeqModalOpen(false)
+    qc.invalidateQueries({ queryKey: ["catalogo"] })
   }
 
   // Tipo handlers
@@ -131,6 +170,34 @@ function AdminWorkflowsPage() {
     const { error } = await supabase.from(deleteItem.table).delete().eq("id", deleteItem.id)
     if (error) { toast.error(error.message); return }
     toast.success("Excluído!"); setDeleteItem(null); qc.invalidateQueries({ queryKey: ["catalogo"] })
+  }
+
+  // Composição helpers
+  function addEtapaToSeq(etapaId: string) {
+    if (!etapaId || seqEtapasComponentes[etapaId]) return
+    setSeqEtapasComponentes({ ...seqEtapasComponentes, [etapaId]: [] })
+    setExpandedEtapas(new Set([...expandedEtapas, etapaId]))
+  }
+  function removeEtapaFromSeq(etapaId: string) {
+    const next = { ...seqEtapasComponentes }
+    delete next[etapaId]
+    setSeqEtapasComponentes(next)
+    const exp = new Set(expandedEtapas)
+    exp.delete(etapaId)
+    setExpandedEtapas(exp)
+  }
+  function toggleEtapaExpand(etapaId: string) {
+    const exp = new Set(expandedEtapas)
+    if (exp.has(etapaId)) exp.delete(etapaId)
+    else exp.add(etapaId)
+    setExpandedEtapas(exp)
+  }
+  function addComponenteToEtapa(etapaId: string, sku: string) {
+    if (!sku || seqEtapasComponentes[etapaId]?.includes(sku)) return
+    setSeqEtapasComponentes({ ...seqEtapasComponentes, [etapaId]: [...(seqEtapasComponentes[etapaId] ?? []), sku] })
+  }
+  function removeComponenteFromEtapa(etapaId: string, sku: string) {
+    setSeqEtapasComponentes({ ...seqEtapasComponentes, [etapaId]: (seqEtapasComponentes[etapaId] ?? []).filter((s) => s !== sku) })
   }
 
   return (
@@ -229,9 +296,20 @@ function AdminWorkflowsPage() {
         <DialogContent className="bg-[#0f172a] border-[var(--color-border-subtle)] text-white max-w-2xl flex flex-col max-h-[85vh] overflow-hidden">
           <DialogHeader className="shrink-0"><DialogTitle className="text-white">{seqEditing?"Editar":"Nova"} Sequência Protética</DialogTitle></DialogHeader>
           <div className="px-6 py-4 space-y-4 overflow-y-auto flex-1 min-h-0">
+            {/* VINCULAÇÕES */}
             <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655]">Vinculações</h3>
-            <CompositionSection label="Abutments" selectedIds={seqAbutmentsIds} options={abutmentsList?.map((a:any)=>({id:a.sku,label:`${a.tipo_abutment?.nome??""} ${a.nome??a.sku}`.trim()}))??[]} placeholder="Selecione um abutment..." onChange={setSeqAbutmentsIds} />
-            <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655]">Identificação</h3>
+            <div className="space-y-2">
+              <label className={labelCls}>Abutment <span className="text-red-400">*</span></label>
+              <select value={seqAbutmentSku} onChange={(e) => setSeqAbutmentSku(e.target.value)} className={selectCls}>
+                <option value="">Selecione um abutment...</option>
+                {abutmentsList?.map((a: any) => (
+                  <option key={a.sku} value={a.sku}>{`${a.tipo_abutment?.nome ?? ""} ${a.nome ?? a.sku}`.trim()}</option>
+                ))}
+              </select>
+            </div>
+
+            {/* IDENTIFICAÇÃO */}
+            <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655] pt-2">Identificação</h3>
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2"><label className={labelCls}>Nome <span className="text-red-400">*</span></label><input type="text" value={seqData.nome} onChange={e=>setSeqData({...seqData,nome:e.target.value})} className={inputCls} /></div>
               <div className="space-y-2"><label className={labelCls}>Sigla</label><input type="text" value={seqData.sigla} onChange={e=>setSeqData({...seqData,sigla:e.target.value})} className={inputCls} /></div>
@@ -240,9 +318,82 @@ function AdminWorkflowsPage() {
               <div><p className="text-sm font-bold text-white">{seqData.ativo?"Ativo":"Inativo"}</p></div>
               <Switch checked={seqData.ativo} onCheckedChange={v=>setSeqData({...seqData,ativo:v})} />
             </div>
+
+            {/* COMPOSIÇÃO DA SEQUÊNCIA */}
             <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655] pt-2">Composição da Sequência</h3>
-            <CompositionSection label="Etapas do Workflow" selectedIds={seqEtapasIds} options={etapas?.map((e:any)=>({id:e.id,label:`${e.ordem}. ${e.nome}`}))??[]} placeholder="Selecione uma etapa..." onChange={setSeqEtapasIds} />
-            <CompositionSection label="Componentes" selectedIds={seqComponentesIds} options={componentesList?.map((c:any)=>({id:c.sku,label:c.nome}))??[]} placeholder="Selecione um componente..." onChange={setSeqComponentesIds} />
+            <p className="text-xs text-gray-500">Adicione etapas e vincule os componentes de cada uma.</p>
+
+            {/* Select para adicionar etapa */}
+            <div className="flex gap-3">
+              <select id="add-etapa-select" value="" onChange={(e) => { if (e.target.value) { addEtapaToSeq(e.target.value); e.target.value = "" } }} className="flex-1 bg-[#0f172a] border border-white/10 rounded-lg px-4 py-3 text-sm text-white appearance-none cursor-pointer focus:outline-none focus:border-[#c9a655]/50 transition-colors">
+                <option value="">Adicionar etapa...</option>
+                {etapas?.filter((e: any) => !seqEtapasComponentes[e.id]).map((e: any) => (
+                  <option key={e.id} value={e.id}>{`${e.ordem}. ${e.nome}`}</option>
+                ))}
+              </select>
+            </div>
+
+            {/* Acordeão de etapas */}
+            {Object.keys(seqEtapasComponentes).length > 0 && (
+              <div className="space-y-2">
+                {Object.entries(seqEtapasComponentes).map(([etapaId, componentes]) => {
+                  const etapa = etapas?.find((e: any) => e.id === etapaId)
+                  const isExpanded = expandedEtapas.has(etapaId)
+                  return (
+                    <div key={etapaId} className="rounded-xl border border-white/10 bg-[var(--color-surface)]/30 overflow-hidden">
+                      {/* Header do acordeão */}
+                      <div className="flex items-center gap-3 px-4 py-3 cursor-pointer hover:bg-white/5 transition-colors" onClick={() => toggleEtapaExpand(etapaId)}>
+                        {isExpanded ? <ChevronDown className="w-4 h-4 text-[#c9a655] shrink-0" /> : <ChevronRight className="w-4 h-4 text-gray-500 shrink-0" />}
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-bold text-white">{etapa?.nome ?? etapaId}</p>
+                          <p className="text-[10px] text-gray-500">{componentes.length} componente(s)</p>
+                        </div>
+                        <button type="button" onClick={(e) => { e.stopPropagation(); removeEtapaFromSeq(etapaId) }} className="w-7 h-7 flex items-center justify-center rounded-md hover:bg-red-500/20 text-gray-500 hover:text-red-400 transition-colors">
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+                      {/* Conteúdo expandível */}
+                      {isExpanded && (
+                        <div className="px-4 pb-4 space-y-3 border-t border-white/5">
+                          {/* Select para adicionar componente */}
+                          <div className="flex gap-3 pt-3">
+                            <select value="" onChange={(e) => { if (e.target.value) { addComponenteToEtapa(etapaId, e.target.value); e.target.value = "" } }} className="flex-1 bg-[#0f172a] border border-white/10 rounded-lg px-4 py-2.5 text-sm text-white appearance-none cursor-pointer focus:outline-none focus:border-[#c9a655]/50 transition-colors">
+                              <option value="">Adicionar componente...</option>
+                              {componentesList?.filter((c: any) => !componentes.includes(c.sku)).map((c: any) => (
+                                <option key={c.sku} value={c.sku}>{c.nome}</option>
+                              ))}
+                            </select>
+                          </div>
+                          {/* Lista de componentes vinculados */}
+                          {componentes.length > 0 ? (
+                            <div className="flex flex-wrap gap-2">
+                              {componentes.map((sku) => {
+                                const comp = componentesList?.find((c: any) => c.sku === sku)
+                                return (
+                                  <span key={sku} className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#c9a655]/10 border border-[#c9a655]/20 text-xs font-medium text-[#c9a655]">
+                                    {comp?.nome ?? sku}
+                                    <button type="button" onClick={() => removeComponenteFromEtapa(etapaId, sku)} className="ml-0.5 text-[#c9a655]/50 hover:text-red-400 transition-colors"><Trash2 size={12} /></button>
+                                  </span>
+                                )
+                              })}
+                            </div>
+                          ) : (
+                            <p className="text-xs text-gray-500 italic">Nenhum componente vinculado a esta etapa</p>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  )
+                })}
+              </div>
+            )}
+
+            {Object.keys(seqEtapasComponentes).length === 0 && (
+              <div className="text-center py-6 rounded-xl border border-dashed border-white/10">
+                <p className="text-xs text-gray-500">Nenhuma etapa adicionada</p>
+              </div>
+            )}
+
             {seqError&&<p className="text-sm text-red-400 text-center">{seqError}</p>}
           </div>
           <DialogFooter className="shrink-0 p-6 border-t border-[var(--color-border-subtle)]">
@@ -259,34 +410,5 @@ function AdminWorkflowsPage() {
         </AlertDialogContent>
       </AlertDialog>
     </AdminLayout>
-  )
-}
-function CompositionSection({ label, selectedIds, options, placeholder, onChange }: { label: string; selectedIds: string[]; options: { id: string; label: string }[]; placeholder: string; onChange: (ids: string[]) => void }) {
-  const [selected, setSelected] = useState("")
-  function handleAdd() { if (selected && !selectedIds.includes(selected)) { onChange([...selectedIds, selected]); setSelected("") } }
-  function handleRemove(id: string) { onChange(selectedIds.filter((s) => s !== id)) }
-  const allOptions = options.length > 0 ? options : []
-  const selectedLabels = selectedIds.map((id) => { const found = allOptions.find((o) => o.id === id); return { id, label: found?.label ?? id } })
-  return (
-    <div className="rounded-xl border border-white/10 bg-[var(--color-surface)]/50 p-4 space-y-3">
-      <p className="text-[10px] font-black uppercase tracking-widest text-gray-500">{label}</p>
-      <div className="flex gap-3">
-        <select value={selected} onChange={(e) => setSelected(e.target.value)} className="flex-1 bg-[#0f172a] border border-white/10 rounded-lg px-4 py-3 text-sm text-white appearance-none cursor-pointer focus:outline-none focus:border-[#c9a655]/50 transition-colors">
-          <option value="">{placeholder}</option>
-          {allOptions.filter((o) => !selectedIds.includes(o.id)).map((o) => (<option key={o.id} value={o.id}>{o.label}</option>))}
-        </select>
-        <button type="button" onClick={handleAdd} disabled={!selected} className="px-5 py-3 rounded-lg text-xs font-black uppercase tracking-wider text-[#0f172a] bg-gradient-to-r from-[#c9a655] to-[#e8d48b] hover:from-[#e8d48b] hover:to-[#c9a655] transition-all shrink-0 disabled:opacity-30 disabled:cursor-not-allowed">Adicionar</button>
-      </div>
-      {selectedLabels.length > 0 && (
-        <div className="flex flex-wrap gap-2 pt-1">
-          {selectedLabels.map((item) => (
-            <span key={item.id} className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#c9a655]/10 border border-[#c9a655]/20 text-xs font-medium text-[#c9a655]">
-              {item.label}
-              <button type="button" onClick={() => handleRemove(item.id)} className="ml-0.5 text-[#c9a655]/50 hover:text-red-400 transition-colors"><Trash2 size={12} /></button>
-            </span>
-          ))}
-        </div>
-      )}
-    </div>
   )
 }

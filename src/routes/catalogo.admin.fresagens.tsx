@@ -41,6 +41,7 @@ function AdminFresagensPage() {
   const [tipoEditing, setTipoEditing] = useState<any>(null)
   const [tipoNome, setTipoNome] = useState("")
   const [tipoSigla, setTipoSigla] = useState("")
+  const [tipoCategoria, setTipoCategoria] = useState<"hard" | "soft">("hard")
   const [tipoAtivo, setTipoAtivo] = useState(true)
   const [tipoError, setTipoError] = useState("")
 
@@ -55,14 +56,14 @@ function AdminFresagensPage() {
   const [deleteItem, setDeleteItem] = useState<{ id: string; label: string; table: string } | null>(null)
 
   // Tipo handlers
-  function openNewTipo() { setTipoEditing(null); setTipoNome(""); setTipoSigla(""); setTipoAtivo(true); setTipoError(""); setTipoModalOpen(true) }
-  function openEditTipo(item: any) { setTipoEditing(item); setTipoNome(item.nome); setTipoSigla(item.sigla ?? ""); setTipoAtivo(item.ativo !== false); setTipoError(""); setTipoModalOpen(true) }
+  function openNewTipo() { setTipoEditing(null); setTipoNome(""); setTipoSigla(""); setTipoCategoria("hard"); setTipoAtivo(true); setTipoError(""); setTipoModalOpen(true) }
+  function openEditTipo(item: any) { setTipoEditing(item); setTipoNome(item.nome); setTipoSigla(item.sigla ?? ""); setTipoCategoria(item.categoria ?? "hard"); setTipoAtivo(item.ativo !== false); setTipoError(""); setTipoModalOpen(true) }
 
   async function handleSaveTipo() {
     setTipoError("")
     if (!tipoNome.trim()) { setTipoError("Nome é obrigatório"); return }
-    const payload = { nome: tipoNome.trim(), sigla: tipoSigla.trim() || null, ativo: tipoAtivo }
-    if (tipoEditing) { const { error } = await supabase.from("catalogo_tipos_ossos").update({ nome: payload.nome, sigla: payload.sigla, ativo: tipoAtivo }).eq("id", tipoEditing.id); if (error) { setTipoError(error.message); return } }
+    const payload = { nome: tipoNome.trim(), sigla: tipoSigla.trim() || null, categoria: tipoCategoria, ativo: tipoAtivo }
+    if (tipoEditing) { const { error } = await supabase.from("catalogo_tipos_ossos").update({ nome: payload.nome, sigla: payload.sigla, categoria: payload.categoria, ativo: tipoAtivo }).eq("id", tipoEditing.id); if (error) { setTipoError(error.message); return } }
     else { const { error } = await supabase.from("catalogo_tipos_ossos").insert(payload); if (error) { setTipoError(error.message); return } }
     toast.success(tipoEditing ? "Atualizado!" : "Criado!")
     setTipoModalOpen(false); qc.invalidateQueries({ queryKey: ["catalogo"] })
@@ -135,13 +136,14 @@ function AdminFresagensPage() {
 
           {/* Tipos de Osso */}
           {subTab === "Tipos de Osso" && (
-            <Table><TableHeader><TableRow className="border-b border-[#c9a655]/20">{["Nome","Sigla","Ativo","Ações"].map(h=><TableHead key={h} className="bg-gradient-to-r from-[#c9a655]/10 to-transparent text-[#c9a655] font-black uppercase tracking-wider text-[10px]">{h}</TableHead>)}</TableRow></TableHeader>
+            <Table><TableHeader><TableRow className="border-b border-[#c9a655]/20">{["Nome","Sigla","Categoria","Ativo","Ações"].map(h=><TableHead key={h} className="bg-gradient-to-r from-[#c9a655]/10 to-transparent text-[#c9a655] font-black uppercase tracking-wider text-[10px]">{h}</TableHead>)}</TableRow></TableHeader>
             <TableBody>{(tiposOsso??[]).map((item:any,i:number)=><TableRow key={item.id} className={`${i%2===0?"bg-[var(--color-surface)]/30":""} hover:bg-[#c9a655]/5 border-b border-[var(--color-border-subtle)]/50`}>
               <TableCell className="text-sm font-medium text-white">{item.nome}</TableCell>
               <TableCell className="text-sm text-gray-300">{item.sigla??"—"}</TableCell>
+              <TableCell><span className={`inline-flex px-2 py-0.5 rounded-full text-[10px] font-bold uppercase ${item.categoria==="hard"?"bg-blue-500/20 text-blue-400":"bg-emerald-500/20 text-emerald-400"}`}>{item.categoria==="hard"?"Hard":"Soft"}</span></TableCell>
               <TableCell><button onClick={async()=>{await supabase.from("catalogo_tipos_ossos").update({ativo:!item.ativo}).eq("id",item.id);qc.invalidateQueries({queryKey:["catalogo"]})}}>{item.ativo?<ToggleRight className="h-7 w-7 text-green-400"/>:<ToggleLeft className="h-7 w-7 text-gray-500"/>}</button></TableCell>
               <TableCell><div className="flex items-center gap-2"><button onClick={()=>openEditTipo(item)} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-[#c9a655]/20 text-[var(--color-text-muted)] hover:text-[#c9a655]"><Pencil className="h-3.5 w-3.5"/></button><button onClick={()=>setDeleteItem({id:item.id,label:item.nome,table:"catalogo_tipos_ossos"})} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-red-500/20 text-[var(--color-text-muted)] hover:text-red-400"><Trash2 className="h-3.5 w-3.5"/></button></div></TableCell>
-            </TableRow>)}{(tiposOsso??[]).length===0&&<TableRow><TableCell colSpan={4} className="p-4 text-center text-text-muted">Nenhum tipo cadastrado</TableCell></TableRow>}</TableBody></Table>
+            </TableRow>)}{(tiposOsso??[]).length===0&&<TableRow><TableCell colSpan={5} className="p-4 text-center text-text-muted">Nenhum tipo cadastrado</TableCell></TableRow>}</TableBody></Table>
           )}
 
           {/* Protocolos de Fresagens */}
@@ -165,6 +167,7 @@ function AdminFresagensPage() {
           <div className="px-6 py-4 space-y-4 overflow-y-auto flex-1 min-h-0">
             <div className="space-y-2"><label className={labelCls}>Nome <span className="text-red-400">*</span></label><input type="text" value={tipoNome} onChange={e=>setTipoNome(e.target.value)} className={inputCls} placeholder="Ex: D1 - Muito Densa" /></div>
             <div className="space-y-2"><label className={labelCls}>Sigla</label><input type="text" value={tipoSigla} onChange={e=>setTipoSigla(e.target.value)} className={inputCls} placeholder="Ex: D1" /></div>
+            <div className="space-y-2"><label className={labelCls}>Categoria <span className="text-red-400">*</span></label><select value={tipoCategoria} onChange={e=>setTipoCategoria(e.target.value as "hard" | "soft")} className={selectCls}><option value="hard">Hard (I-II)</option><option value="soft">Soft (III-V)</option></select></div>
             <div className="flex items-center justify-between px-4 py-3 rounded-xl bg-[var(--color-surface)] border border-white/5">
               <div><p className="text-sm font-bold text-white">{tipoAtivo?"Ativo":"Inativo"}</p></div>
               <Switch checked={tipoAtivo} onCheckedChange={setTipoAtivo} />
@@ -186,7 +189,7 @@ function AdminFresagensPage() {
             <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655]">Dados do Protocolo</h3>
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2"><label className={labelCls}>Nome <span className="text-red-400">*</span></label><input type="text" value={protoData.nome} onChange={e=>setProtoData({...protoData,nome:e.target.value})} className={inputCls} /></div>
-              <div className="space-y-2"><label className={labelCls}>Tipo de Osso <span className="text-red-400">*</span></label><select value={protoData.tipo_osso} onChange={e=>setProtoData({...protoData,tipo_osso:e.target.value})} className={selectCls}><option value="">Selecione...</option>{tiposOsso?.filter((t:any)=>t.ativo).map((t:any)=><option key={t.id} value={t.sigla}>{t.nome}{t.sigla ? ` (${t.sigla})` : ''}</option>)}</select></div>
+              <div className="space-y-2"><label className={labelCls}>Tipo de Osso <span className="text-red-400">*</span></label><select value={protoData.tipo_osso} onChange={e=>setProtoData({...protoData,tipo_osso:e.target.value})} className={selectCls}><option value="">Selecione...</option>{tiposOsso?.filter((t:any)=>t.ativo).map((t:any)=><option key={t.id} value={t.sigla}>{t.nome}{t.sigla ? ` (${t.sigla})` : ''}{t.categoria ? ` — ${t.categoria==="hard"?"Hard":"Soft"}` : ''}</option>)}</select></div>
               <div className="space-y-2"><label className={labelCls}>Sigla</label><input type="text" value={protoData.sigla} onChange={e=>setProtoData({...protoData,sigla:e.target.value})} className={inputCls} /></div>
               <div className="space-y-2"><label className={labelCls}>Ø Aplicável (mm)</label><select value={protoData.diametro_mm_aplicavel} onChange={e=>setProtoData({...protoData,diametro_mm_aplicavel:Number(e.target.value)})} className={selectCls}><option value={0}>Todos</option>{implantesDiametros?.map((d:number)=><option key={d} value={d}>{d} mm</option>)}</select></div>
             </div>

@@ -125,7 +125,9 @@ export function resolveBOMItem(row: { fresa_sku?: string | null; chave_sku?: str
 }
 
 export function formatBRL(v: number): string {
-  return new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(v)
+  const n = Number(v)
+  if (!Number.isFinite(n)) return "R$ 0,00"
+  return new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(n)
 }
 
 const PRECO_BASE: Record<ProductSheetTipo, number> = {
@@ -134,8 +136,11 @@ const PRECO_BASE: Record<ProductSheetTipo, number> = {
   kit: 3200,
   fresa: 85,
   chave: 120,
-  acessorio: 95,
-  instrumental: 150,
+  complementar: 95,
+  opcional: 95,
+  componente: 95,
+  parafuso: 45,
+  cicatrizador: 180,
   promocional: 0,
 }
 
@@ -153,6 +158,7 @@ export function mockPreco(tipo: ProductSheetTipo, sku: string): number {
 }
 
 export function getPrecoFromDB(preco: number | null | undefined, tipo: ProductSheetTipo, sku: string): number {
-  if (preco && preco > 0) return preco
+  const n = Number(preco)
+  if (Number.isFinite(n) && n > 0) return n
   return mockPreco(tipo, sku)
 }
