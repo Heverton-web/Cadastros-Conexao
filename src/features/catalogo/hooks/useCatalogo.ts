@@ -755,7 +755,7 @@ export function useCupons() {
 export function useCriarCupom() {
   const qc = useQueryClient()
   return useMutation({
-    mutationFn: (input: Parameters<typeof cupons.criarCupom>[1]) => cupons.criarCupom(input),
+    mutationFn: (input: Parameters<typeof cupons.criarCupom>[0]) => cupons.criarCupom(input),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "cupons"] }),
   })
 }
@@ -816,6 +816,14 @@ export function usePromocionaisAtivos() {
 
 export function usePromocionalDetalhe(id: string) {
   return useQuery({ queryKey: ["catalogo", "promocional", id], queryFn: () => promocionais.getPromocionalDetalhe(id), enabled: !!id })
+}
+
+export function useItensPromocionalDetalhado(tipo: string | undefined, skus: string[]) {
+  return useQuery({
+    queryKey: ["catalogo", "promocional-item-detalhe", tipo, skus.sort().join(",")],
+    queryFn: () => promocionais.listarItensPromocionalDetalhado(tipo!, skus),
+    enabled: !!tipo && skus.length > 0,
+  })
 }
 
 export function useCriarPromocional() {
@@ -921,8 +929,35 @@ export function useOrcamentosCatalogo(filters?: { status?: string; colaborador_i
 export function useCriarOrcamentoCatalogo() {
   const qc = useQueryClient()
   return useMutation({
-    mutationFn: (input: Parameters<typeof orcamentosService.criarOrcamento>[1]) =>
-      orcamentosService.criarOrcamento(input),
+    mutationFn: ({ colaboradorId, input }: { colaboradorId: string; input: Parameters<typeof orcamentosService.criarOrcamento>[1] }) =>
+      orcamentosService.criarOrcamento(colaboradorId, input),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "orcamentos"] }),
+  })
+}
+
+/** Orçamentos criados pelo colaborador logado ("meus orçamentos") */
+export function useMeusOrcamentosCatalogo(colaboradorId: string | undefined) {
+  return useQuery({
+    queryKey: ["catalogo", "orcamentos", "colaborador", colaboradorId],
+    queryFn: () => orcamentosService.listarOrcamentosColaborador(colaboradorId as string),
+    enabled: Boolean(colaboradorId),
+  })
+}
+
+/** Pedidos da carteira do colaborador logado ("meus pedidos") */
+export function useMeusPedidosCatalogo(colaboradorId: string | undefined) {
+  return useQuery({
+    queryKey: ["catalogo", "pedidos", "colaborador", colaboradorId],
+    queryFn: () => pedidosService.listarPedidosColaborador(colaboradorId as string),
+    enabled: Boolean(colaboradorId),
+  })
+}
+
+export function useAtualizarStatusOrcamento() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: ({ id, status }: { id: string; status: Parameters<typeof orcamentosService.atualizarStatusOrcamento>[1] }) =>
+      orcamentosService.atualizarStatusOrcamento(id, status),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "orcamentos"] }),
   })
 }

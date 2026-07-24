@@ -18,6 +18,7 @@ export async function criarCupom(input: {
   tipo: "percentual" | "fixo"
   valor: number
   validade?: string
+  grupo_id?: string | null
 }): Promise<CatalogoCupom> {
   const { data, error } = await supabase
     .from("catalogo_cupons")
@@ -28,7 +29,7 @@ export async function criarCupom(input: {
   return data as CatalogoCupom
 }
 
-export async function atualizarCupom(id: string, input: Partial<{ codigo: string; tipo: string; valor: number; validade: string; ativo: boolean }>): Promise<CatalogoCupom> {
+export async function atualizarCupom(id: string, input: Partial<{ codigo: string; tipo: string; valor: number; validade: string; ativo: boolean; grupo_id: string | null }>): Promise<CatalogoCupom> {
   const { data, error } = await supabase
     .from("catalogo_cupons")
     .update(input)
@@ -44,7 +45,11 @@ export async function removerCupom(id: string): Promise<void> {
   if (error) throw error
 }
 
-export async function validarCupom(codigo: string): Promise<CatalogoCupom | null> {
+/**
+ * Valida um cupom. Se o cupom for restrito a um grupo (grupo_id preenchido),
+ * só é aceito para cliente pertencente àquele grupo — cupom sem grupo_id é global.
+ */
+export async function validarCupom(codigo: string, clienteId?: string | null): Promise<CatalogoCupom | null> {
   const { data, error } = await supabase
     .from("catalogo_cupons")
     .select("*")
@@ -53,6 +58,17 @@ export async function validarCupom(codigo: string): Promise<CatalogoCupom | null
     .single()
   if (error || !data) return null
   if (data.validade && new Date(data.validade) < new Date()) return null
+
+  if (data.grupo_id) {
+    if (!clienteId) return null
+    const { data: cliente } = await supabase
+      .from("catalogo_clientes")
+      .select("grupo_id")
+      .eq("id", clienteId)
+      .single()
+    if (cliente?.grupo_id !== data.grupo_id) return null
+  }
+
   dispararEventoModulo(MODULO_KEY, "cupom.utilizado", { cupom_id: data.id, codigo }).catch(() => {})
   return data as CatalogoCupom
 }

@@ -20,6 +20,23 @@ function withProtocol(url: string): string {
   return url
 }
 
+function handleCardTilt(e: React.MouseEvent<HTMLAnchorElement>) {
+  const el = e.currentTarget
+  const rect = el.getBoundingClientRect()
+  const px = (e.clientX - rect.left) / rect.width
+  const py = (e.clientY - rect.top) / rect.height
+  el.style.setProperty("--tilt-x", `${(0.5 - py) * 8}deg`)
+  el.style.setProperty("--tilt-y", `${(px - 0.5) * 8}deg`)
+  el.style.setProperty("--spot-x", `${px * 100}%`)
+  el.style.setProperty("--spot-y", `${py * 100}%`)
+}
+
+function resetCardTilt(e: React.MouseEvent<HTMLAnchorElement>) {
+  const el = e.currentTarget
+  el.style.setProperty("--tilt-x", "0deg")
+  el.style.setProperty("--tilt-y", "0deg")
+}
+
 export const catalogoIndexRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/catalogo",
@@ -80,17 +97,17 @@ function CatalogoStoreContent() {
               style={{ backgroundColor: effects.blobColor, opacity: effects.blobOpacity, filter: `blur(${effects.blobBlur}px)` }}
             />
           )}
-          <div className="px-5 sm:px-6 lg:px-16 pt-8 pb-4 sm:pt-12 sm:pb-6 lg:pt-16 lg:pb-8 max-w-7xl mx-auto relative z-10 flex flex-col items-center text-center">
-            <div className="inline-flex items-center gap-2 px-3 py-1 sm:px-4 sm:py-1.5 rounded-full border border-[var(--color-accent-muted)] bg-[var(--color-surface)]/50 backdrop-blur-md mb-3 sm:mb-4 lg:mb-4">
+          <div className="px-5 sm:px-6 lg:px-16 pt-10 pb-6 sm:pt-12 sm:pb-6 lg:pt-16 lg:pb-8 max-w-7xl mx-auto relative z-10 flex flex-col items-center text-center">
+            <div className="inline-flex items-center gap-2 px-3 py-1 sm:px-4 sm:py-1.5 rounded-full border border-[var(--color-accent-muted)] bg-[var(--color-surface)]/50 backdrop-blur-md mb-4 sm:mb-4 lg:mb-4">
               <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[var(--color-accent)] animate-pulse" />
               <span className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-[var(--color-accent)]">
                 {texts.storeTagline}
               </span>
             </div>
-            <h2 className="text-3xl sm:text-5xl lg:text-7xl font-black mb-2 sm:mb-3 lg:mb-4 uppercase tracking-tighter text-transparent bg-clip-text bg-gradient-to-br from-white via-slate-200 to-slate-500 leading-tight">
+            <h2 className="text-4xl sm:text-5xl lg:text-7xl font-black mb-3 sm:mb-3 lg:mb-4 uppercase tracking-tighter text-transparent bg-clip-text bg-gradient-to-br from-white via-slate-200 to-slate-500 leading-[1.1]">
               {texts.heroTitle}
             </h2>
-            <p className="text-xs sm:text-base lg:text-lg text-[var(--color-text-muted)] max-w-2xl leading-relaxed">
+            <p className="text-sm sm:text-base lg:text-lg text-[var(--color-text-muted)] max-w-2xl leading-relaxed">
               {texts.heroSubtitle}
             </p>
           </div>
@@ -104,16 +121,28 @@ function CatalogoStoreContent() {
             {visibleCards.map((key) => {
               const card = cards[key]
               const Icon = ICON_MAP[card!.icon]
+              const isPromo = key === "promocionais"
               return (
                 <Link
                   key={key}
                   to={`/catalogo/${key}` as any}
-                  className="card-catalogo group relative rounded-2xl sm:rounded-3xl backdrop-blur-xl transition-all duration-300 overflow-hidden flex flex-col items-center justify-center p-4 sm:p-6 lg:p-8 no-underline shadow-xl hover:-translate-y-1 sm:hover:-translate-y-2 h-full min-h-[180px] sm:min-h-[200px] lg:min-h-[220px]"
+                  onMouseMove={handleCardTilt}
+                  onMouseLeave={resetCardTilt}
+                  className={`card-catalogo group relative rounded-2xl sm:rounded-3xl backdrop-blur-xl overflow-hidden flex flex-col items-center justify-center p-4 sm:p-6 lg:p-8 no-underline shadow-xl h-full min-h-[180px] sm:min-h-[200px] lg:min-h-[220px] ${isPromo ? "ring-2 ring-[var(--color-accent)]/40" : ""}`}
                   style={{
                     backgroundColor: card!.cardBg || "var(--color-surface)",
-                    border: `1px solid ${card!.cardBorder || "var(--color-border-subtle)"}`,
+                    border: `1px solid ${isPromo ? "var(--color-accent)" : (card!.cardBorder || "var(--color-border-subtle)")}`,
                   }}
                 >
+                  {isPromo && (
+                    <span className="absolute top-3 right-3 z-20 inline-flex items-center gap-1.5 px-2 py-1 rounded-full bg-[var(--color-accent)] text-[#0f172a] text-[9px] sm:text-[10px] font-black uppercase tracking-wider shadow-[0_0_12px_rgba(201,166,85,0.5)]">
+                      <span className="relative flex h-1.5 w-1.5">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#0f172a] opacity-60" />
+                        <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-[#0f172a]" />
+                      </span>
+                      Ofertas
+                    </span>
+                  )}
                   <div className="absolute top-0 inset-x-0 h-1/2 bg-gradient-to-b from-[var(--color-accent-muted)] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                   {visibility.showWatermark !== false && (
                     <WatermarkShape
@@ -131,8 +160,8 @@ function CatalogoStoreContent() {
                     {Icon && <Icon size={32} className="hidden lg:block" />}
                   </div>
                   <h3 className="text-sm sm:text-lg lg:text-2xl font-bold relative z-10 text-center leading-tight mb-1 sm:mb-2" style={{ color: card!.titleColor }}>{card!.title}</h3>
-                  <div className="h-6 sm:h-10 hidden sm:flex items-start justify-center">
-                    <p className="text-[9px] sm:text-xs lg:text-sm relative z-10 group-hover:opacity-80 transition-colors text-center leading-snug line-clamp-2" style={{ color: card!.descColor }}>{card!.description}</p>
+                  <div className="h-8 sm:h-10 flex items-start justify-center px-1">
+                    <p className="text-[10px] sm:text-xs lg:text-sm relative z-10 group-hover:opacity-80 transition-colors text-center leading-snug line-clamp-2" style={{ color: card!.descColor }}>{card!.description}</p>
                   </div>
                 </Link>
               )

@@ -25,6 +25,7 @@ export type ProdutoTipoImagem =
   | "complementar"
   | "opcional"
   | "componente"
+  | "promocional"
 
 export type FonteImagem = "upload" | "url" | "gdrive"
 
@@ -571,6 +572,7 @@ export interface CatalogoCupom {
   valor: number
   validade: string | null
   ativo: boolean
+  grupo_id: string | null
   created_at: string
   updated_at: string
 }

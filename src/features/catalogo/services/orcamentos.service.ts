@@ -93,11 +93,26 @@ export async function criarOrcamento(
     }
   }
 
+  // Busca dados do cliente da carteira do CRM se tem cliente_crm_id
+  if (input.cliente_crm_id && !clienteNome) {
+    const { data: cliente } = await supabase
+      .from("clientes")
+      .select("nome_doutor, lead_email, telefone_contato")
+      .eq("id", input.cliente_crm_id)
+      .single()
+    if (cliente) {
+      clienteNome = cliente.nome_doutor
+      clienteEmail = cliente.lead_email
+      clienteTelefone = cliente.telefone_contato
+    }
+  }
+
   const { data: orcamento, error: orcError } = await supabase
     .from("catalogo_orcamentos")
     .insert({
       colaborador_id: colaboradorId,
       cliente_id: input.cliente_id ?? null,
+      cliente_crm_id: input.cliente_crm_id ?? null,
       cliente_nome: clienteNome,
       cliente_email: clienteEmail,
       cliente_telefone: clienteTelefone,
@@ -190,6 +205,7 @@ export async function converterEmPedido(
     .from("catalogo_pedidos")
     .insert({
       cliente_id: orcamento.cliente_id,
+      cliente_crm_id: orcamento.cliente_crm_id,
       orcamento_id: orcamento.id,
       colaborador_id: orcamento.colaborador_id,
       status: "pendente",

@@ -2,8 +2,10 @@ import { supabase } from "~/core/supabase"
 import { createRoute, useParams, useNavigate, useSearch } from "@tanstack/react-router"
 import { rootRoute } from "./__root"
 import { StoreLayout, useCatalogoVisibility } from "~/features/catalogo/components/StoreLayout"
-import { useImplanteDetalhe, useAbutmentDetalhe, useKitDetalhe, usePromocionalDetalhe, useProtocoloFresagem, useGuias, useImagensProduto, useImagensBatch, useChavesDoImplante, useCicatrizadoresDoImplante, useAbutmentsDoImplante, useKitsDoImplante, useKitsComChavesEmComum } from "~/features/catalogo/hooks/useCatalogo"
+import { useImplanteDetalhe, useAbutmentDetalhe, useKitDetalhe, usePromocionalDetalhe, useItensPromocionalDetalhado, useProtocoloFresagem, useGuias, useImagensProduto, useImagensBatch, useChavesDoImplante, useCicatrizadoresDoImplante, useAbutmentsDoImplante, useKitsDoImplante, useKitsComChavesEmComum } from "~/features/catalogo/hooks/useCatalogo"
 import { addToCart, formatBRL, getPrecoFromDB, mockPreco, resolveBOMItem } from "~/features/catalogo/services/carrinho.service"
+import { resolvePreco } from "~/features/catalogo/services/precos-grupo.service"
+import { useClienteAtivo } from "~/features/catalogo/context/cliente-ativo"
 import { playCoinSound } from "~/features/catalogo/services/audio.service"
 import type { ProductSheetTipo } from "~/features/catalogo/types"
 import { useState, useEffect, lazy, Suspense } from "react"
@@ -103,7 +105,7 @@ function ProductImage({ cor, nome, onClick, imageUrl }: { cor: string; nome: str
   )
 }
 
-function ProductHeader({ cor, badge, nome, sku }: { cor: string; badge?: string; nome: string; sku: string }) {
+function ProductHeader({ cor, badge, nome, sku }: { cor: string; badge?: string; nome: string; sku?: string }) {
   return (
     <div className="space-y-3 sm:space-y-4 rounded-2xl bg-gradient-to-br from-[var(--color-surface)]/40 to-transparent border border-[var(--color-border-subtle)]/60 p-4 sm:p-6 backdrop-blur-sm">
       {badge && (
@@ -111,8 +113,10 @@ function ProductHeader({ cor, badge, nome, sku }: { cor: string; badge?: string;
           <span className="text-[10px] font-black uppercase tracking-[0.2em]">{badge}</span>
         </div>
       )}
-      <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black leading-[0.95] text-white tracking-tighter text-balance">{nome}</h1>
-      <p className="font-mono text-xs sm:text-sm text-[var(--color-text-muted)]">SKU: <span className="text-white/80">{sku}</span></p>
+      <h1 className="text-xl sm:text-3xl lg:text-4xl font-black leading-snug sm:leading-[0.95] text-white tracking-tight sm:tracking-tighter text-balance">{nome}</h1>
+      {sku && (
+        <p className="font-mono text-xs sm:text-sm text-[var(--color-text-muted)]">SKU: <span className="text-white/80">{sku}</span></p>
+      )}
     </div>
   )
 }
@@ -120,9 +124,28 @@ function ProductHeader({ cor, badge, nome, sku }: { cor: string; badge?: string;
 function AddButton({ tipo, sku, nome, cor, precoDB }: { tipo: ProductSheetTipo; sku: string; nome: string; cor: string; precoDB?: number | null }) {
   const [added, setAdded] = useState(false)
   const { showPrices } = useCatalogoVisibility()
-  const preco = Number(precoDB)
+  const { isConsultor, clienteAtivo } = useClienteAtivo()
+  const precoBase = Number(precoDB)
+  const [preco, setPreco] = useState(precoBase)
 
-  if (!Number.isFinite(preco) || preco <= 0) return null
+  // Quando o consultor tem um cliente da carteira selecionado, o preço já
+  // sai com o desconto de grupo desse cliente aplicado automaticamente.
+  useEffect(() => {
+    if (!Number.isFinite(precoBase) || precoBase <= 0) return
+    if (!isConsultor || !clienteAtivo) {
+      setPreco(precoBase)
+      return
+    }
+    let cancelled = false
+    resolvePreco("colaborador", sku, tipo, precoBase, { crmClienteId: clienteAtivo.id }).then((p) => {
+      if (!cancelled && p != null) setPreco(p)
+    })
+    return () => {
+      cancelled = true
+    }
+  }, [precoBase, isConsultor, clienteAtivo?.id, sku, tipo])
+
+  if (!Number.isFinite(precoBase) || precoBase <= 0) return null
 
   const handleAdd = () => {
     addToCart({ sku, nome, tipo, cor, preco })
@@ -236,26 +259,28 @@ function RelatedProductCard({
 }) {
   return (
     <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 p-3 sm:p-4 rounded-xl border border-[var(--color-border-subtle)] bg-[var(--color-surface)]/40 hover:border-[var(--color-accent)]/40 transition-all duration-200">
-      {/* Thumbnail */}
-      <div
-        onClick={onImageClick}
-        className="shrink-0 w-16 h-16 sm:w-20 sm:h-20 rounded-lg overflow-hidden cursor-zoom-in bg-gradient-to-br from-[var(--color-surface)] to-[#0f172a] border border-[var(--color-border-subtle)] flex items-center justify-center"
-      >
-        {imageUrl ? (
-          <img src={imageUrl} alt={nome} className="w-full h-full object-contain" loading="lazy" />
-        ) : (
-          <Box className="w-7 h-7 sm:w-8 sm:h-8 opacity-10" style={{ color: cor }} />
-        )}
-      </div>
-      {/* Info */}
-      <div className="flex-1 min-w-0 space-y-1">
-        <h4 className="text-sm font-bold text-white truncate">{nome}</h4>
-        <p className="font-mono text-[10px] text-[var(--color-text-muted)]">SKU: {sku}</p>
-        {children}
+      <div className="flex gap-3 sm:contents">
+        {/* Thumbnail — vai para a direita no desktop */}
+        <div
+          onClick={onImageClick}
+          className="sm:order-3 shrink-0 w-16 h-16 sm:w-20 sm:h-20 rounded-lg overflow-hidden cursor-zoom-in bg-gradient-to-br from-[var(--color-surface)] to-[#0f172a] border border-[var(--color-border-subtle)] flex items-center justify-center"
+        >
+          {imageUrl ? (
+            <img src={imageUrl} alt={nome} className="w-full h-full object-contain" loading="lazy" />
+          ) : (
+            <Box className="w-7 h-7 sm:w-8 sm:h-8 opacity-10" style={{ color: cor }} />
+          )}
+        </div>
+        {/* Info */}
+        <div className="sm:order-1 flex-1 min-w-0 space-y-1">
+          <h4 className="text-sm font-bold text-white truncate">{nome}</h4>
+          <p className="font-mono text-[10px] text-[var(--color-text-muted)]">SKU: {sku}</p>
+          {children}
+        </div>
       </div>
       {/* CTA */}
       {(fichaData && Object.keys(fichaData).length > 0 || Number(preco) > 0) && (
-        <div className="shrink-0 flex flex-row sm:flex-col items-center gap-2">
+        <div className="sm:order-2 w-full sm:w-auto shrink-0 flex flex-row sm:flex-col items-center justify-between sm:justify-normal gap-2">
           {fichaData && Object.keys(fichaData).length > 0 && (
             <button
               onClick={onVerFicha}
@@ -1355,22 +1380,118 @@ const TIPO_NOME_MAP: Record<string, string> = {
   acessorio: "Acessório",
   instrumental: "Instrumental",
   kit: "Kit",
+  componente: "Componente",
+  parafuso: "Parafuso",
+  cicatrizador: "Cicatrizador",
+  complementar: "Complementar",
+  opcional: "Opcional",
+}
+
+/** Campos técnicos conhecidos entre as tabelas de produto — usados para enriquecer a Ficha Técnica dos itens de um pacote promocional. Preço fica de fora de propósito (item de pacote fechado não é vendido separadamente). */
+const CAMPOS_SPEC_ITEM: Array<{ campo: string; label: string; unidade?: string }> = [
+  { campo: "sigla", label: "Sigla" },
+  { campo: "material", label: "Material" },
+  { campo: "superficie", label: "Superfície" },
+  { campo: "macrogeometria", label: "Macrogeometria" },
+  { campo: "diametro_mm", label: "Diâmetro", unidade: "mm" },
+  { campo: "diametro_plataforma_mm", label: "Diâmetro Plataforma", unidade: "mm" },
+  { campo: "diametro_plataforma", label: "Diâmetro Plataforma", unidade: "mm" },
+  { campo: "comprimento_mm", label: "Comprimento", unidade: "mm" },
+  { campo: "comprimento", label: "Comprimento", unidade: "mm" },
+  { campo: "altura_transmucoso_mm", label: "Altura Transmucoso", unidade: "mm" },
+  { campo: "altura_transmucoso", label: "Altura Transmucoso", unidade: "mm" },
+  { campo: "altura_corpo_mm", label: "Altura Corpo", unidade: "mm" },
+  { campo: "altura_corpo", label: "Altura Corpo", unidade: "mm" },
+  { campo: "angulacao_graus", label: "Angulação", unidade: "°" },
+  { campo: "torque_ncm", label: "Torque", unidade: "Ncm" },
+  { campo: "torque_insercao", label: "Torque de Inserção", unidade: "Ncm" },
+  { campo: "rosca_interna", label: "Rosca Interna" },
+  { campo: "regiao_apical", label: "Região Apical" },
+  { campo: "regiao_cervical", label: "Região Cervical" },
+  { campo: "tipo_travamento", label: "Tipo de Travamento" },
+  { campo: "descricao", label: "Descrição" },
+]
+
+function extrairSpecsProduto(row: Record<string, unknown> | undefined): { label: string; value: string | number }[] {
+  if (!row) return []
+  const specs: { label: string; value: string | number }[] = []
+  for (const { campo, label, unidade } of CAMPOS_SPEC_ITEM) {
+    const valor = row[campo]
+    if (valor === null || valor === undefined || valor === "") continue
+    // Campos com unidade física (mm, °, Ncm) em 0 são dado de seed sem medida real, não uma medida de verdade — omitir.
+    if (unidade && Number(valor) === 0) continue
+    specs.push({ label, value: unidade ? `${valor} ${unidade}` : String(valor) })
+  }
+  return specs
 }
 
 function PromocionalDetail({ id }: { id: string }) {
   const { getIcon } = useTabIcons()
   const { data: promo } = usePromocionalDetalhe(id)
+  const { data: imagensPromo } = useImagensBatch("promocional", [id])
   const [activeTab, setActiveTab] = useState("ficha")
+  const [fichaModal, setFichaModal] = useState<{ open: boolean; nome: string; sku: string; imagemUrl?: string | null; tipo?: ProductSheetTipo; sections: Array<{ title: string; specs: Array<{ label: string; value: string | number | null | undefined }> }> }>({ open: false, nome: "", sku: "", sections: [] })
+
+  const itens = promo?.itens ?? []
+  const skusByTipo = itens.reduce((acc, item) => {
+    if (!acc[item.tipo]) acc[item.tipo] = []
+    acc[item.tipo].push(item.sku)
+    return acc
+  }, {} as Record<string, string[]>)
+  const { data: imgImplante } = useImagensBatch("implante", skusByTipo["implante"] ?? [])
+  const { data: imgAbutment } = useImagensBatch("abutment", skusByTipo["abutment"] ?? [])
+  const { data: imgKit } = useImagensBatch("kit", skusByTipo["kit"] ?? [])
+  const { data: imgParafuso } = useImagensBatch("parafuso", skusByTipo["parafuso"] ?? [])
+  const { data: imgCicatrizador } = useImagensBatch("cicatrizador", skusByTipo["cicatrizador"] ?? [])
+  const { data: imgChave } = useImagensBatch("chave", skusByTipo["chave"] ?? [])
+  const { data: imgFresa } = useImagensBatch("fresa", skusByTipo["fresa"] ?? [])
+  const { data: imgComplementar } = useImagensBatch("complementar", skusByTipo["complementar"] ?? [])
+  const { data: imgOpcional } = useImagensBatch("opcional", skusByTipo["opcional"] ?? [])
+  const { data: imgComponente } = useImagensBatch("componente", skusByTipo["componente"] ?? [])
+
+  const { data: detImplante } = useItensPromocionalDetalhado("implante", skusByTipo["implante"] ?? [])
+  const { data: detAbutment } = useItensPromocionalDetalhado("abutment", skusByTipo["abutment"] ?? [])
+  const { data: detKit } = useItensPromocionalDetalhado("kit", skusByTipo["kit"] ?? [])
+  const { data: detParafuso } = useItensPromocionalDetalhado("parafuso", skusByTipo["parafuso"] ?? [])
+  const { data: detCicatrizador } = useItensPromocionalDetalhado("cicatrizador", skusByTipo["cicatrizador"] ?? [])
+  const { data: detChave } = useItensPromocionalDetalhado("chave", skusByTipo["chave"] ?? [])
+  const { data: detFresa } = useItensPromocionalDetalhado("fresa", skusByTipo["fresa"] ?? [])
+  const { data: detComplementar } = useItensPromocionalDetalhado("complementar", skusByTipo["complementar"] ?? [])
+  const { data: detOpcional } = useItensPromocionalDetalhado("opcional", skusByTipo["opcional"] ?? [])
+  const { data: detComponente } = useItensPromocionalDetalhado("componente", skusByTipo["componente"] ?? [])
 
   if (!promo) return <LoadingState />
 
   if (!promo.ativo) return null
 
-  const itens = promo.itens ?? []
+  const imagemUrl = imagensPromo?.get(id)?.[0]?.url_imagem
+
+  const imagensPorTipo: Record<string, Map<string, { url_imagem: string }[]> | undefined> = {
+    implante: imgImplante, abutment: imgAbutment, kit: imgKit, parafuso: imgParafuso,
+    cicatrizador: imgCicatrizador, chave: imgChave, fresa: imgFresa,
+    complementar: imgComplementar, opcional: imgOpcional, componente: imgComponente,
+  }
+  const getImagemItem = (tipo: string, sku: string) => imagensPorTipo[tipo]?.get(sku)?.[0]?.url_imagem
+
+  const detalhesPorTipo: Record<string, Map<string, Record<string, unknown>> | undefined> = {
+    implante: detImplante, abutment: detAbutment, kit: detKit, parafuso: detParafuso,
+    cicatrizador: detCicatrizador, chave: detChave, fresa: detFresa,
+    complementar: detComplementar, opcional: detOpcional, componente: detComponente,
+  }
+  const getDetalheItem = (tipo: string, sku: string) => detalhesPorTipo[tipo]?.get(sku)
+
   const itensResolvidos = itens.map((item) => {
     const preco = mockPreco(item.tipo as ProductSheetTipo, item.sku)
-    const nome = TIPO_NOME_MAP[item.tipo] ?? item.tipo
-    return { ...item, precoResolvido: preco, nomeResolvido: `${nome} — ${item.sku}` }
+    const nomeTipo = TIPO_NOME_MAP[item.tipo] ?? item.tipo
+    const detalhe = getDetalheItem(item.tipo, item.sku)
+    const nomeReal = detalhe?.nome as string | undefined
+    return {
+      ...item,
+      precoResolvido: preco,
+      nomeResolvido: nomeReal ?? `${nomeTipo} — ${item.sku}`,
+      imagemUrl: getImagemItem(item.tipo, item.sku),
+      specs: extrairSpecsProduto(detalhe),
+    }
   })
   const totalItens = itensResolvidos.reduce((acc, i) => acc + i.precoResolvido, 0)
   const economia = totalItens - promo.preco
@@ -1396,11 +1517,12 @@ function PromocionalDetail({ id }: { id: string }) {
   ]
 
   return (
+    <>
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-10 items-start">
       {/* Sidebar — Imagem + CTA */}
       <div className="lg:col-span-4 xl:col-span-5">
         <div className="lg:sticky lg:top-24 space-y-4 sm:space-y-5">
-          <ProductImage cor={cor} nome={promo.nome} onClick={() => openImageViewer("", promo.nome)} />
+          <ProductImage cor={cor} nome={promo.nome} imageUrl={imagemUrl} onClick={() => openImageViewer(imagemUrl ?? "", promo.nome)} />
           <div className="hidden lg:block">
             <AddButton tipo={"promocional" as ProductSheetTipo} sku={promo.id} nome={promo.nome} cor={cor} precoDB={promo.preco} />
           </div>
@@ -1409,7 +1531,7 @@ function PromocionalDetail({ id }: { id: string }) {
 
       {/* Conteúdo */}
       <div className="lg:col-span-8 xl:col-span-7 space-y-6 sm:space-y-8">
-        <ProductHeader cor={cor} badge="Oferta Especial" nome={promo.nome} sku={promo.id} />
+        <ProductHeader cor={cor} badge="Oferta Especial" nome={promo.nome} />
 
         <div className="lg:hidden">
           <AddButton tipo={"promocional" as ProductSheetTipo} sku={promo.id} nome={promo.nome} cor={cor} precoDB={promo.preco} />
@@ -1455,10 +1577,27 @@ function PromocionalDetail({ id }: { id: string }) {
                   nome={item.nomeResolvido}
                   sku={item.sku}
                   cor={tipoColor(item.tipo)}
-                  preco={item.precoResolvido}
                   tipo={item.tipo as ProductSheetTipo}
-                  onImageClick={() => openImageViewer("", item.nomeResolvido)}
+                  imageUrl={item.imagemUrl}
+                  onImageClick={() => openImageViewer(item.imagemUrl ?? "", item.nomeResolvido)}
+                  fichaData={{ tipo: TIPO_NOME_MAP[item.tipo] ?? item.tipo }}
+                  onVerFicha={() => setFichaModal({
+                    open: true,
+                    nome: item.nomeResolvido,
+                    sku: item.sku,
+                    imagemUrl: item.imagemUrl,
+                    tipo: item.tipo as ProductSheetTipo,
+                    sections: [
+                      { title: "Identificação", specs: [
+                        { label: "SKU", value: item.sku },
+                        { label: "Nome", value: item.nomeResolvido },
+                        { label: "Tipo", value: TIPO_NOME_MAP[item.tipo] ?? item.tipo },
+                      ]},
+                      ...(item.specs.length > 0 ? [{ title: "Especificações Técnicas", specs: item.specs }] : []),
+                    ],
+                  })}
                 >
+                  {/* Item de pacote fechado — sem preço/Add individual: só vende junto */}
                   <span className="inline-flex items-center px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-[var(--color-accent)]/10 text-[var(--color-accent)]">
                     {TIPO_NOME_MAP[item.tipo] ?? item.tipo}
                   </span>
@@ -1471,6 +1610,19 @@ function PromocionalDetail({ id }: { id: string }) {
         )}
       </div>
     </div>
+    <Suspense fallback={null}>
+      <FichaTecnicaModal
+        open={fichaModal.open}
+        onClose={() => setFichaModal((p) => ({ ...p, open: false }))}
+        nome={fichaModal.nome}
+        sku={fichaModal.sku}
+        cor={cor}
+        imagemUrl={fichaModal.imagemUrl}
+        tipo={fichaModal.tipo}
+        sections={fichaModal.sections}
+      />
+    </Suspense>
+    </>
   )
 }
 

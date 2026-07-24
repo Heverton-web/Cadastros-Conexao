@@ -12,6 +12,11 @@ CREATE TABLE IF NOT EXISTS catalogo_seq_protetica_etapa_componentes (
 );
 
 ALTER TABLE catalogo_seq_protetica_etapa_componentes ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS empresa_select_own ON catalogo_seq_protetica_etapa_componentes;
+DROP POLICY IF EXISTS empresa_insert_own ON catalogo_seq_protetica_etapa_componentes;
+DROP POLICY IF EXISTS empresa_delete_own ON catalogo_seq_protetica_etapa_componentes;
+
 CREATE POLICY empresa_select_own ON catalogo_seq_protetica_etapa_componentes FOR SELECT USING (true);
 CREATE POLICY empresa_insert_own ON catalogo_seq_protetica_etapa_componentes FOR INSERT WITH CHECK (true);
 CREATE POLICY empresa_delete_own ON catalogo_seq_protetica_etapa_componentes FOR DELETE USING (true);

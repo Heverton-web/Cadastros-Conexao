@@ -14,6 +14,7 @@ export interface CatalogoOrcamento {
   id: string
   colaborador_id: string
   cliente_id: string | null
+  cliente_crm_id: string | null
   cliente_nome: string | null
   cliente_email: string | null
   cliente_telefone: string | null
@@ -47,6 +48,7 @@ export interface CatalogoOrcamentoItem {
 
 export interface CatalogoOrcamentoInput {
   cliente_id?: string | null
+  cliente_crm_id?: string | null
   cliente_nome?: string | null
   cliente_email?: string | null
   cliente_telefone?: string | null

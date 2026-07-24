@@ -14,6 +14,7 @@ export type StatusPedido =
 export interface CatalogoPedido {
   id: string
   cliente_id: string | null
+  cliente_crm_id: string | null
   orcamento_id: string | null
   colaborador_id: string | null
   status: StatusPedido

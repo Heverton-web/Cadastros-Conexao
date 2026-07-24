@@ -471,8 +471,49 @@ select optgroup option {
   width: 0 !important;
 }
 
+.card-catalogo {
+  --tilt-x: 0deg;
+  --tilt-y: 0deg;
+  --spot-x: 50%;
+  --spot-y: 50%;
+  transform: perspective(1000px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
+  transition: transform 0.15s ease-out, border-color 0.3s ease, box-shadow 0.3s ease;
+  will-change: transform;
+}
+.card-catalogo::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at var(--spot-x) var(--spot-y), rgba(255, 255, 255, 0.1), transparent 55%);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+}
 .card-catalogo:hover {
   border-color: var(--color-accent) !important;
+  transform: perspective(1000px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y)) translateY(-8px);
+  box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.4);
+}
+.card-catalogo:hover::before {
+  opacity: 1;
+}
+
+@keyframes float-slow {
+  0%, 100% { transform: translateY(-2%) rotate(-2deg); }
+  50% { transform: translateY(2%) rotate(2deg); }
+}
+.animate-float-slow {
+  animation: float-slow 8s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card-catalogo,
+  .card-catalogo:hover,
+  .animate-float-slow {
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+  }
 }
 
 /* ── Chat typing animation ── */

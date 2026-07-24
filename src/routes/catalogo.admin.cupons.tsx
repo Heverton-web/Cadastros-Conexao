@@ -3,7 +3,7 @@ import { RequirePermission } from "~/components/guards";import { createRoute } f
 import { authLayout } from "./_auth"
 import { EmpresaCrudGuard } from "~/features/catalogo/components/EmpresaCrudGuard"
 import { useAuth } from "~/core/auth/useAuth"
-import { useCupons, useCriarCupom, useAtualizarCupom, useRemoverCupom } from "~/features/catalogo/hooks/useCatalogo"
+import { useCupons, useCriarCupom, useAtualizarCupom, useRemoverCupom, useGruposClientes } from "~/features/catalogo/hooks/useCatalogo"
 import { useState } from "react"
 import { Percent, Trash2, Plus, Pencil } from "lucide-react"
 import { formatBRL } from "~/features/catalogo/services/carrinho.service"
@@ -27,23 +27,25 @@ function AdminCuponsPage() {
   const { profile } = useAuth()
   const isSuperAdmin = profile?.is_super_admin === true
   const { data: cupons } = useCupons()
+  const { data: grupos } = useGruposClientes()
   const criarMut = useCriarCupom()
   const atualizarMut = useAtualizarCupom()
   const removerMut = useRemoverCupom()
   const [formOpen, setFormOpen] = useState(false)
   const [editingItem, setEditingItem] = useState<CatalogoCupom | null>(null)
   const [itemParaDeletar, setItemParaDeletar] = useState<string | null>(null)
-  const [form, setForm] = useState({ codigo: "", tipo: "percentual" as "percentual" | "fixo", valor: 0, validade: "" })
+  const FORM_INICIAL = { codigo: "", tipo: "percentual" as "percentual" | "fixo", valor: 0, validade: "", grupo_id: "" }
+  const [form, setForm] = useState(FORM_INICIAL)
 
   function openNew() {
     setEditingItem(null)
-    setForm({ codigo: "", tipo: "percentual", valor: 0, validade: "" })
+    setForm(FORM_INICIAL)
     setFormOpen(true)
   }
 
   function openEdit(item: CatalogoCupom) {
     setEditingItem(item)
-    setForm({ codigo: item.codigo, tipo: item.tipo, valor: item.valor, validade: item.validade ?? "" })
+    setForm({ codigo: item.codigo, tipo: item.tipo, valor: item.valor, validade: item.validade ?? "", grupo_id: item.grupo_id ?? "" })
     setFormOpen(true)
   }
 
@@ -51,19 +53,21 @@ function AdminCuponsPage() {
     if (!form.codigo.trim()) return
     const duplicado = cupons?.some((c) => c.codigo.toUpperCase() === form.codigo.toUpperCase() && c.id !== editingItem?.id)
     if (duplicado) return
+    const input = {
+      codigo: form.codigo.toUpperCase(),
+      tipo: form.tipo,
+      valor: form.valor,
+      validade: form.validade || undefined,
+      grupo_id: form.grupo_id || null,
+    }
     if (editingItem) {
-      atualizarMut.mutate({ id: editingItem.id, input: form })
+      atualizarMut.mutate({ id: editingItem.id, input })
     } else {
-      criarMut.mutate({
-        codigo: form.codigo.toUpperCase(),
-        tipo: form.tipo,
-        valor: form.valor,
-        validade: form.validade || undefined,
-      })
+      criarMut.mutate(input)
     }
     setFormOpen(false)
     setEditingItem(null)
-    setForm({ codigo: "", tipo: "percentual", valor: 0, validade: "" })
+    setForm(FORM_INICIAL)
   }
 
   return (
@@ -107,6 +111,15 @@ function AdminCuponsPage() {
                 <label className="text-xs font-bold uppercase tracking-widest text-gray-400">Validade (Opcional)</label>
                 <input type="date" value={form.validade} onChange={(e) => setForm({ ...form, validade: e.target.value })} className="w-full bg-[var(--color-surface)] border border-white/10 rounded-lg p-3 text-white [color-scheme:dark]" />
               </div>
+              <div className="space-y-2">
+                <label className="text-xs font-bold uppercase tracking-widest text-gray-400">Restringir a grupo (Opcional)</label>
+                <select value={form.grupo_id} onChange={(e) => setForm({ ...form, grupo_id: e.target.value })} className="w-full bg-[var(--color-surface)] border border-white/10 rounded-lg p-3 text-white">
+                  <option value="">Global — qualquer cliente</option>
+                  {grupos?.map((g) => (
+                    <option key={g.id} value={g.id}>{g.nome}</option>
+                  ))}
+                </select>
+              </div>
             </div>
             <DialogFooter className="shrink-0">
               <button onClick={handleSave} className="w-full px-6 py-3 rounded-xl text-[#0f172a] font-black" style={{ background: "linear-gradient(135deg, #c9a655, #e8d48b)" }}>{editingItem ? "Salvar" : "Criar Cupom"}</button>
@@ -130,6 +143,9 @@ function AdminCuponsPage() {
                   </span>
                   {c.validade && <span className="text-[10px] text-[var(--color-text-muted)]">Até {new Date(c.validade).toLocaleDateString("pt-BR")}</span>}
                 </div>
+                {c.grupo_id && (
+                  <span className="text-[10px] text-[var(--color-text-muted)]">Restrito: {grupos?.find((g) => g.id === c.grupo_id)?.nome ?? "grupo"}</span>
+                )}
               </div>
             </div>
             

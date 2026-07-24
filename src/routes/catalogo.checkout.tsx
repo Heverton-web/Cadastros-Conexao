@@ -8,7 +8,6 @@ import { validarCupom, aplicarCupom } from "~/features/catalogo/services/cupons.
 import { useAuth } from "~/lib/auth"
 import type { CatalogoCupom } from "~/features/catalogo/types"
 import { CheckCircle, Truck, MapPin, Tag, ShieldCheck, ArrowLeft } from "lucide-react"
-import { EMPRESA_ID } from "~/config/empresa"
 export const catalogoCheckoutRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/catalogo/checkout",
@@ -36,8 +35,7 @@ function CheckoutPage() {
 
   async function handleAplicarCupom() {
     setCupomErro("")
-    if (!EMPRESA_ID) return
-    const result = await validarCupom(EMPRESA_ID, cupomCodigo)
+    const result = await validarCupom(cupomCodigo)
     if (result) setCupom(result)
     else setCupomErro("Cupom inválido ou expirado")
   }

@@ -16,6 +16,13 @@ CREATE TABLE IF NOT EXISTS catalogo_kit_kits_relacionados (
 ALTER TABLE catalogo_kit_kits_complementares ENABLE ROW LEVEL SECURITY;
 ALTER TABLE catalogo_kit_kits_relacionados ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "kit_kits_complementares_select" ON catalogo_kit_kits_complementares;
+DROP POLICY IF EXISTS "kit_kits_complementares_insert" ON catalogo_kit_kits_complementares;
+DROP POLICY IF EXISTS "kit_kits_complementares_delete" ON catalogo_kit_kits_complementares;
+DROP POLICY IF EXISTS "kit_kits_relacionados_select" ON catalogo_kit_kits_relacionados;
+DROP POLICY IF EXISTS "kit_kits_relacionados_insert" ON catalogo_kit_kits_relacionados;
+DROP POLICY IF EXISTS "kit_kits_relacionados_delete" ON catalogo_kit_kits_relacionados;
+
 CREATE POLICY "kit_kits_complementares_select" ON catalogo_kit_kits_complementares
   FOR SELECT USING (
     EXISTS (SELECT 1 FROM catalogo_kits k WHERE k.sku = kit_sku)

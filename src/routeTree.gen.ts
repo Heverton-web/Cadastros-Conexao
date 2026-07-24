@@ -187,6 +187,8 @@ import { catalogoAdminClientesRoute } from "./routes/catalogo.admin.clientes";
 import { catalogoAdminGruposRoute } from "./routes/catalogo.admin.grupos";
 import { catalogoAdminOrcamentosRoute } from "./routes/catalogo.admin.orcamentos";
 import { catalogoAdminPedidosRoute } from "./routes/catalogo.admin.pedidos";
+import { catalogoOrcamentosRoute } from "./routes/catalogo.orcamentos";
+import { catalogoPedidosRoute } from "./routes/catalogo.pedidos";
 import { catalogoAdminSolicitacoesRoute } from "./routes/catalogo.admin.solicitacoes";
 import { catalogoAdminImplantesRoute } from "./routes/catalogo.admin.implantes";
 import { catalogoAdminComponentesRoute } from "./routes/catalogo.admin.componentes";
@@ -408,6 +410,8 @@ export const routeTree = rootRoute.addChildren([
     catalogoAdminGruposRoute,
     catalogoAdminOrcamentosRoute,
     catalogoAdminPedidosRoute,
+    catalogoOrcamentosRoute,
+    catalogoPedidosRoute,
     catalogoAdminSolicitacoesRoute,
     catalogoAdminImplantesRoute,
     catalogoAdminComponentesRoute,

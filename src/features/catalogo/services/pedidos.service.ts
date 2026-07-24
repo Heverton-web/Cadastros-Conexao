@@ -45,6 +45,18 @@ export async function listarPedidosCliente(
   return data as CatalogoPedido[]
 }
 
+export async function listarPedidosColaborador(
+  colaboradorId: string,
+): Promise<CatalogoPedido[]> {
+  const { data, error } = await supabase
+    .from("catalogo_pedidos")
+    .select("*, itens:catalogo_pedido_itens(*)")
+    .eq("colaborador_id", colaboradorId)
+    .order("created_at", { ascending: false })
+  if (error) throw error
+  return data as CatalogoPedido[]
+}
+
 export async function buscarPedido(id: string): Promise<CatalogoPedido | null> {
   const { data, error } = await supabase
     .from("catalogo_pedidos")

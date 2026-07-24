@@ -9,6 +9,8 @@ import { CartDrawer } from './CartDrawer';
 import { NavDrawer } from './NavDrawer';
 import { ImageViewer } from './ImageViewer';
 import { ProductSheet } from './ProductSheet';
+import { ClienteAtivoProvider } from '../context/cliente-ativo';
+import { ClienteAtivoBar } from './ClienteAtivoBar';
 
 export const CatalogoVisibilityContext = createContext({ showPrices: true, showSearchBar: true });
 export const useCatalogoVisibility = () => useContext(CatalogoVisibilityContext);
@@ -180,9 +182,11 @@ export function StoreLayout({ children, fullHeight, zoom }: StoreLayoutProps) {
   }, []);
 
   return (
+    <ClienteAtivoProvider>
     <div
       className={`catalogo-theme flex flex-col relative bg-[var(--color-bg)] ${fullHeight ? 'h-dvh' : 'min-h-dvh'}`}
     >
+      <ClienteAtivoBar />
       <header className="sticky top-0 z-40 bg-[#0f172a]/80 backdrop-blur-2xl h-16 lg:h-20 px-3 sm:px-6 lg:px-16 flex items-center justify-between shadow-2xl shadow-[var(--color-accent-muted)]">
         <div className="flex items-center gap-2 sm:gap-4 shrink-0">
           {isBackVisible && (
@@ -292,5 +296,6 @@ export function StoreLayout({ children, fullHeight, zoom }: StoreLayoutProps) {
       <ImageViewer />
       <ProductSheet />
     </div>
+    </ClienteAtivoProvider>
   );
 }

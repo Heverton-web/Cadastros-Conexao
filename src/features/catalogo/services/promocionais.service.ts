@@ -4,6 +4,42 @@ import type { CatalogoPromocional } from "../types"
 
 const MODULO_KEY = "catalogo"
 
+const TABELA_POR_TIPO_ITEM: Record<string, string> = {
+  implante: "catalogo_implantes",
+  abutment: "catalogo_abutments",
+  kit: "catalogo_kits",
+  parafuso: "catalogo_parafusos",
+  cicatrizador: "catalogo_cicatrizadores",
+  chave: "catalogo_chaves",
+  fresa: "catalogo_fresas",
+  complementar: "catalogo_complementares",
+  opcional: "catalogo_opcionais",
+  componente: "catalogo_componentes",
+}
+
+/**
+ * Busca o registro completo do produto real por trás de um item de pacote
+ * promocional (a tabela catalogo_promocional_itens só guarda sku+tipo).
+ * Usado para enriquecer a Ficha Técnica com specs reais (sem preço — item de
+ * pacote fechado não é vendido separadamente).
+ */
+export async function listarItensPromocionalDetalhado(
+  tipo: string,
+  skus: string[],
+): Promise<Map<string, Record<string, unknown>>> {
+  const tabela = TABELA_POR_TIPO_ITEM[tipo]
+  const map = new Map<string, Record<string, unknown>>()
+  if (!tabela || skus.length === 0) return map
+
+  const { data, error } = await supabase.from(tabela).select("*").in("sku", skus)
+  if (error) throw error
+
+  for (const row of (data ?? []) as Record<string, unknown>[]) {
+    map.set(row.sku as string, row)
+  }
+  return map
+}
+
 export async function listarPromocionais(): Promise<CatalogoPromocional[]> {
   const { data, error } = await supabase
     .from("catalogo_promocionais")
