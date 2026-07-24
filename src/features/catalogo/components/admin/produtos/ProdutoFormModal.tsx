@@ -464,9 +464,11 @@ export function ProdutoFormModal({
       resetForms()
     } catch (err: any) {
       console.error("Erro ao salvar produto:", err)
-      const msg = err?.message || err?.error?.message || err?.details || "Erro ao salvar produto"
       const code = err?.code || err?.error?.code
-      toast.error(code ? `[${code}] ${msg}` : msg, {
+      const msg = code === "23505"
+        ? "Já existe um produto cadastrado com esse SKU. Use outro SKU."
+        : err?.message || err?.error?.message || err?.details || "Erro ao salvar produto"
+      toast.error(code && code !== "23505" ? `[${code}] ${msg}` : msg, {
         style: { background: "var(--color-surface)", color: "#fff", border: "1px solid rgba(239,68,68,0.3)" },
         duration: 6000,
       })

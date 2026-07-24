@@ -258,10 +258,12 @@ async function upsertRecord(
     const { data, error } = await supabase
       .from(config.supabaseTable)
       .upsert(record, { onConflict: config.uniqueKey.join(",") })
-      .select("id")
+      .select()
       .single()
     if (error) return { id: null, sku, action: "inserted", error: error.message }
-    return { id: data?.id ?? null, sku, action: "inserted" }
+    const row = data as Record<string, unknown> | null
+    const id = (row?.id as string | undefined) ?? (row?.sku as string | undefined) ?? null
+    return { id, sku, action: "inserted" }
   }
 
   let query = supabase.from(config.supabaseTable).select("id")
