@@ -7,6 +7,7 @@ import { addToCart, formatBRL, getPrecoFromDB, mockPreco, resolveBOMItem } from 
 import { resolvePreco } from "~/features/catalogo/services/precos-grupo.service"
 import { useClienteAtivo } from "~/features/catalogo/context/cliente-ativo"
 import { playCoinSound } from "~/features/catalogo/services/audio.service"
+import { listarKitsRelacionadosDeChave, listarKitsRelacionadosDeCicatrizador } from "~/features/catalogo/services/kits.service"
 import type { ProductSheetTipo } from "~/features/catalogo/types"
 import { useState, useEffect, lazy, Suspense } from "react"
 
@@ -325,7 +326,7 @@ function ImplanteDetail({ sku }: { sku: string }) {
   if (!impl.ativo) return null
 
   const cor = impl.linha?.familia?.cor_identificacao ?? "#c9a655"
-  const nome = `${impl.linha?.familia?.nome ?? ""} ${impl.diametro_mm}×${impl.comprimento_mm}`
+  const nome = impl.nome
   const imageUrl = imagens?.[0]?.url_imagem ?? null
 
   // ── Filtra dados nulos/vazios ──
@@ -470,21 +471,25 @@ function ImplanteDetail({ sku }: { sku: string }) {
                   tipo="chave"
                   imageUrl={img}
                   onImageClick={() => openImageViewer(img ?? "", chave.nome)}
-                  onVerFicha={() => setFichaModal({ open: true, nome: chave.nome, sku: chave.sku, imagemUrl: img, tipo: "chave", preco: chave.preco, sections: [
-                    { title: "Identificação", specs: [
-                      { label: "SKU", value: chave.sku },
-                      { label: "Nome", value: chave.nome },
-                      { label: "Sigla", value: chave.sigla },
-                      { label: "Descrição", value: chave.descricao },
-                      { label: "Tipo", value: chave.tipo_chave?.nome },
-                      { label: "Comprimento", value: chave.comprimento },
-                      { label: "Diâmetro", value: chave.diametro_mm ? `${chave.diametro_mm} mm` : null },
-                      { label: "Material", value: chave.material },
-                    ]},
-                    { title: "Comercial", specs: [
-                      { label: "Preço", value: chave.preco ? formatBRL(chave.preco) : null },
-                    ]},
-                  ] })}
+                  onVerFicha={async () => {
+                    setFichaModal({ open: true, nome: chave.nome, sku: chave.sku, imagemUrl: img, tipo: "chave", preco: chave.preco, sections: [
+                      { title: "Identificação", specs: [
+                        { label: "SKU", value: chave.sku },
+                        { label: "Nome", value: chave.nome },
+                        { label: "Sigla", value: chave.sigla },
+                        { label: "Descrição", value: chave.descricao },
+                        { label: "Tipo", value: chave.tipo_chave?.nome },
+                        { label: "Comprimento", value: chave.comprimento },
+                        { label: "Diâmetro", value: chave.diametro_mm ? `${chave.diametro_mm} mm` : null },
+                        { label: "Material", value: chave.material },
+                      ]},
+                      { title: "Comercial", specs: [
+                        { label: "Preço", value: chave.preco ? formatBRL(chave.preco) : null },
+                      ]},
+                    ] })
+                    const kits = await listarKitsRelacionadosDeChave(chave.sku)
+                    if (kits.length > 0) setFichaModal((p) => ({ ...p, vinculacoes: kits.map((k) => ({ nome: k.nome, sku: k.sku, valor: k.preco, tipo: "kit" as ProductSheetTipo })) }))
+                  }}
                   fichaData={{ tipo: chave.tipo_chave?.nome, diametro: chave.diametro_mm }}
                 >
                   {chave.tipo_chave?.nome && (
@@ -555,25 +560,30 @@ function ImplanteDetail({ sku }: { sku: string }) {
                   tipo="cicatrizador"
                   imageUrl={img}
                   onImageClick={() => openImageViewer(img ?? "", cic.nome)}
-                  onVerFicha={() => setFichaModal({ open: true, nome: cic.nome, sku: cic.sku, imagemUrl: img, tipo: "cicatrizador", preco: cic.preco, sections: [
-                    { title: "Identificação", specs: [
-                      { label: "SKU", value: cic.sku },
-                      { label: "Nome", value: cic.nome },
-                      { label: "Sigla", value: cic.sigla },
-                      { label: "Descrição", value: cic.descricao },
-                      { label: "Material", value: cic.material },
-                      { label: "Diâm. Plataforma", value: cic.diametro_plataforma_mm ? `${cic.diametro_plataforma_mm} mm` : null },
-                      { label: "Alt. Transmucoso", value: cic.altura_transmucoso_mm ? `${cic.altura_transmucoso_mm} mm` : null },
-                      { label: "Alt. Corpo", value: cic.altura_corpo_mm ? `${cic.altura_corpo_mm} mm` : null },
-                      { label: "Torque", value: cic.torque_ncm ? `${cic.torque_ncm} N.cm` : null },
-                    ]},
-                    { title: "Comercial", specs: [
-                      { label: "Preço", value: cic.preco ? formatBRL(cic.preco) : null },
-                    ]},
-                  ], vinculacoes: [
-                    ...(cic.implante ? [{ nome: cic.implante.nome ?? cic.implante.sku, sku: cic.implante.sku, valor: getPrecoFromDB(cic.implante.preco, "implante", cic.implante.sku), tipo: "implante" as ProductSheetTipo }] : []),
-                    ...(cic.chave ? [{ nome: cic.chave.nome, sku: cic.chave.sku, valor: getPrecoFromDB(cic.chave.preco, "chave", cic.chave.sku), tipo: "chave" as ProductSheetTipo }] : []),
-                  ] })}
+                  onVerFicha={async () => {
+                    const vinculacoesBase = [
+                      ...(cic.implante ? [{ nome: cic.implante.nome ?? cic.implante.sku, sku: cic.implante.sku, valor: getPrecoFromDB(cic.implante.preco, "implante", cic.implante.sku), tipo: "implante" as ProductSheetTipo }] : []),
+                      ...(cic.chave ? [{ nome: cic.chave.nome, sku: cic.chave.sku, valor: getPrecoFromDB(cic.chave.preco, "chave", cic.chave.sku), tipo: "chave" as ProductSheetTipo }] : []),
+                    ]
+                    setFichaModal({ open: true, nome: cic.nome, sku: cic.sku, imagemUrl: img, tipo: "cicatrizador", preco: cic.preco, sections: [
+                      { title: "Identificação", specs: [
+                        { label: "SKU", value: cic.sku },
+                        { label: "Nome", value: cic.nome },
+                        { label: "Sigla", value: cic.sigla },
+                        { label: "Descrição", value: cic.descricao },
+                        { label: "Material", value: cic.material },
+                        { label: "Diâm. Plataforma", value: cic.diametro_plataforma_mm ? `${cic.diametro_plataforma_mm} mm` : null },
+                        { label: "Alt. Transmucoso", value: cic.altura_transmucoso_mm ? `${cic.altura_transmucoso_mm} mm` : null },
+                        { label: "Alt. Corpo", value: cic.altura_corpo_mm ? `${cic.altura_corpo_mm} mm` : null },
+                        { label: "Torque", value: cic.torque_ncm ? `${cic.torque_ncm} N.cm` : null },
+                      ]},
+                      { title: "Comercial", specs: [
+                        { label: "Preço", value: cic.preco ? formatBRL(cic.preco) : null },
+                      ]},
+                    ], vinculacoes: vinculacoesBase })
+                    const kits = await listarKitsRelacionadosDeCicatrizador(cic.sku)
+                    if (kits.length > 0) setFichaModal((p) => ({ ...p, vinculacoes: [...vinculacoesBase, ...kits.map((k) => ({ nome: k.nome, sku: k.sku, valor: k.preco, tipo: "kit" as ProductSheetTipo }))] }))
+                  }}
                   fichaData={{ sigla: cic.sigla, material: cic.material }}
                 >
                   {cic.sigla && (
@@ -867,17 +877,21 @@ function AbutmentDetail({ sku }: { sku: string }) {
                   tipo="chave"
                   imageUrl={img}
                   onImageClick={() => openImageViewer(img ?? "", chave.nome)}
-                  onVerFicha={() => setFichaModal({ open: true, nome: chave.nome, sku: chave.sku, imagemUrl: img, tipo: "chave", preco: chave.preco, sections: [
-                    { title: "Identificação", specs: [
-                      { label: "SKU", value: chave.sku },
-                      { label: "Nome", value: chave.nome },
-                      { label: "Sigla", value: chave.sigla },
-                      { label: "Descrição", value: chave.descricao },
-                    ]},
-                    { title: "Comercial", specs: [
-                      { label: "Preço", value: chave.preco ? formatBRL(chave.preco) : null },
-                    ]},
-                  ] })}
+                  onVerFicha={async () => {
+                    setFichaModal({ open: true, nome: chave.nome, sku: chave.sku, imagemUrl: img, tipo: "chave", preco: chave.preco, sections: [
+                      { title: "Identificação", specs: [
+                        { label: "SKU", value: chave.sku },
+                        { label: "Nome", value: chave.nome },
+                        { label: "Sigla", value: chave.sigla },
+                        { label: "Descrição", value: chave.descricao },
+                      ]},
+                      { title: "Comercial", specs: [
+                        { label: "Preço", value: chave.preco ? formatBRL(chave.preco) : null },
+                      ]},
+                    ] })
+                    const kits = await listarKitsRelacionadosDeChave(chave.sku)
+                    if (kits.length > 0) setFichaModal((p) => ({ ...p, vinculacoes: kits.map((k) => ({ nome: k.nome, sku: k.sku, valor: k.preco, tipo: "kit" as ProductSheetTipo })) }))
+                  }}
                   fichaData={{ sigla: chave.sigla }}
                 />
               )

@@ -15,6 +15,7 @@ import { ImageUploader } from "~/features/catalogo/components/admin/produtos/Ima
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "~/components/ui/alert-dialog"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "~/components/ui/table"
 import toast from "react-hot-toast"
+import { ImportTrigger, TemplatesDropdown, GlobalImportTrigger, IMPORT_TYPE_GROUPS } from "~/features/catalogo/import"
 
 export const catalogoAdminKitsRoute = createRoute({
   getParentRoute: () => authLayout, path: "/catalogo/admin/kits",
@@ -82,7 +83,7 @@ function AdminKitsPage() {
     setTipoError("")
     if (!tipoNome.trim()) { setTipoError("Nome é obrigatório"); return }
     const payload = { nome: tipoNome.trim(), sigla: tipoSigla.trim() || null, ativo: tipoAtivo }
-    if (tipoEditing) { const { error } = await supabase.from("catalogo_tipos_kits").update({ nome: payload.nome, sigla: payload.sigla, ativo }).eq("id", tipoEditing.id); if (error) { setTipoError(error.message); return } }
+    if (tipoEditing) { const { error } = await supabase.from("catalogo_tipos_kits").update({ nome: payload.nome, sigla: payload.sigla, ativo: tipoAtivo }).eq("id", tipoEditing.id); if (error) { setTipoError(error.message); return } }
     else { const { error } = await supabase.from("catalogo_tipos_kits").insert(payload); if (error) { setTipoError(error.message); return } }
     toast.success(tipoEditing ? "Atualizado!" : "Criado!")
     setTipoModalOpen(false); qc.invalidateQueries({ queryKey: ["catalogo"] })
@@ -173,9 +174,16 @@ function AdminKitsPage() {
   return (
     <AdminLayout>
       <div className="space-y-6">
-        <div className="bg-[var(--color-surface)] p-6 rounded-2xl border border-[var(--color-border-subtle)] shadow-lg">
-          <h1 className="text-2xl font-black text-white">Kits</h1>
-          <p className="text-sm mt-1" style={{color:"var(--color-text-muted, #94a3b8)"}}>Gerencie tipos e composição de kits.</p>
+        <div className="bg-[var(--color-surface)] p-6 rounded-2xl border border-[var(--color-border-subtle)] shadow-lg flex items-start justify-between gap-4 flex-wrap">
+          <div>
+            <h1 className="text-2xl font-black text-white">Kits</h1>
+            <p className="text-sm mt-1" style={{color:"var(--color-text-muted, #94a3b8)"}}>Gerencie tipos e composição de kits.</p>
+          </div>
+          <div className="flex gap-2 flex-wrap">
+            <ImportTrigger types={IMPORT_TYPE_GROUPS.kits} />
+            <TemplatesDropdown types={IMPORT_TYPE_GROUPS.kits} />
+            <GlobalImportTrigger />
+          </div>
         </div>
         <div className="flex gap-2 flex-wrap">{SUB_TABS.map(st => <button key={st} onClick={() => setSubTab(st)} className={`px-4 py-3 rounded-xl text-sm font-bold transition-all ${subTab === st ? "bg-[#c9a655] text-[#0f172a]" : "bg-[var(--color-surface)] text-[var(--color-text-muted)] border border-transparent hover:border-white/5"}`}>{st}</button>)}</div>
         <div className="rounded-2xl border bg-[var(--color-surface)]/50 p-6 shadow-xl" style={{borderColor:"rgba(201,166,85,0.15)"}}>

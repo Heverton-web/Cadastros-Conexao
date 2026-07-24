@@ -4,6 +4,7 @@ import { Check, ShoppingCart, FileText, Box } from "lucide-react"
 import { addToCart, formatBRL, getPrecoFromDB } from "~/features/catalogo/services/carrinho.service"
 import { playCoinSound } from "~/features/catalogo/services/audio.service"
 import { useImagensBatch, useTiposOsso } from "~/features/catalogo/hooks/useCatalogo"
+import { listarKitsRelacionadosDeFresa } from "~/features/catalogo/services/kits.service"
 import type { CatalogoProtocoloFresagem, ProductSheetTipo } from "~/features/catalogo/types"
 import { openImageViewer } from "~/features/catalogo/services/ui.service"
 import { FichaTecnicaModal } from "./FichaTecnicaModal"
@@ -15,7 +16,7 @@ interface FresagemTimelineProps {
 
 export function FresagemTimeline({ implanteSku, protocolos }: FresagemTimelineProps) {
   const { data: tiposOsso } = useTiposOsso()
-  const [fichaModal, setFichaModal] = useState<{ open: boolean; nome: string; sku: string; imagemUrl?: string | null; tipo?: ProductSheetTipo; preco?: number; sections: Array<{ title: string; specs: Array<{ label: string; value: string | number | null | undefined }> }>; vinculacoes?: Array<{ nome: string; sku: string; valor?: number | null }> }>({ open: false, nome: "", sku: "", sections: [] })
+  const [fichaModal, setFichaModal] = useState<{ open: boolean; nome: string; sku: string; imagemUrl?: string | null; tipo?: ProductSheetTipo; preco?: number; sections: Array<{ title: string; specs: Array<{ label: string; value: string | number | null | undefined }> }>; vinculacoes?: Array<{ nome: string; sku: string; valor?: number | null; tipo?: ProductSheetTipo }> }>({ open: false, nome: "", sku: "", sections: [] })
 
   // Mapeia tipo_osso (sigla) → categoria (hard/soft)
   const getCategoria = (tipoOsso: string | null | undefined): string | null => {
@@ -79,27 +80,31 @@ export function FresagemTimeline({ implanteSku, protocolos }: FresagemTimelinePr
               diametroMm={p.fresa?.diametro_mm}
               imageUrl={img}
               onImageClick={() => openImageViewer(img ?? "", nome)}
-              onVerFicha={() => setFichaModal({
-                open: true,
-                nome,
-                sku: p.fresa_sku,
-                imagemUrl: img,
-                tipo: "fresa",
-                preco,
-                sections: [
-                  { title: "Identificação", specs: [
-                    { label: "SKU", value: p.fresa_sku },
-                    { label: "Nome", value: nome },
-                    { label: "Diâmetro", value: p.fresa?.diametro_mm ? `${p.fresa.diametro_mm} mm` : null },
-                    { label: "Comprimento", value: p.fresa?.comprimento },
-                    { label: "Material", value: p.fresa?.material },
-                    { label: "Tipo", value: p.fresa?.tipo_fresa?.nome },
-                  ]},
-                  { title: "Comercial", specs: [
-                    { label: "Preço", value: preco ? formatBRL(preco) : null },
-                  ]},
-                ]
-              })}
+              onVerFicha={async () => {
+                setFichaModal({
+                  open: true,
+                  nome,
+                  sku: p.fresa_sku,
+                  imagemUrl: img,
+                  tipo: "fresa",
+                  preco,
+                  sections: [
+                    { title: "Identificação", specs: [
+                      { label: "SKU", value: p.fresa_sku },
+                      { label: "Nome", value: nome },
+                      { label: "Diâmetro", value: p.fresa?.diametro_mm ? `${p.fresa.diametro_mm} mm` : null },
+                      { label: "Comprimento", value: p.fresa?.comprimento },
+                      { label: "Material", value: p.fresa?.material },
+                      { label: "Tipo", value: p.fresa?.tipo_fresa?.nome },
+                    ]},
+                    { title: "Comercial", specs: [
+                      { label: "Preço", value: preco ? formatBRL(preco) : null },
+                    ]},
+                  ]
+                })
+                const kits = await listarKitsRelacionadosDeFresa(p.fresa_sku)
+                if (kits.length > 0) setFichaModal((prev) => ({ ...prev, vinculacoes: kits.map((k) => ({ nome: k.nome, sku: k.sku, valor: k.preco, tipo: "kit" as ProductSheetTipo })) }))
+              }}
             />
           )
         })}

@@ -7,7 +7,6 @@ interface StepExecuteProps {
   importType: ImportType
   validRows: ValidatedRow[]
   editedRows: Map<number, Record<string, unknown>>
-  empresaId: string
   executor: ReturnType<typeof useImportExecutor>
   onComplete: () => void
 }
@@ -16,11 +15,10 @@ export function StepExecute({
   importType,
   validRows,
   editedRows,
-  empresaId,
   executor,
   onComplete,
 }: StepExecuteProps) {
-  const { progress, result, isExecuting, execute, reset } = executor
+  const { progress, result, isExecuting, execute } = executor
 
   useEffect(() => {
     if (validRows.length > 0 && progress.status === "idle") {

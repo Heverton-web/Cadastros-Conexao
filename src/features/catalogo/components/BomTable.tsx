@@ -7,7 +7,16 @@ import type { ProductSheetTipo } from "~/features/catalogo/types"
 import { ProductThumb } from "./ProductThumb"
 import { openImageViewer } from "~/features/catalogo/services/ui.service"
 import { useImagensBatch } from "~/features/catalogo/hooks/useCatalogo"
+import { listarKitsRelacionadosDeChave, listarKitsRelacionadosDeFresa, listarKitsRelacionadosDeCicatrizador } from "~/features/catalogo/services/kits.service"
 import { FichaTecnicaModal } from "./FichaTecnicaModal"
+
+async function buscarKitsRelacionados(tipo: string, sku: string) {
+  const kits = tipo === "chave" ? await listarKitsRelacionadosDeChave(sku)
+    : tipo === "fresa" ? await listarKitsRelacionadosDeFresa(sku)
+    : tipo === "cicatrizador" ? await listarKitsRelacionadosDeCicatrizador(sku)
+    : []
+  return kits.map((k) => ({ nome: k.nome, sku: k.sku, valor: k.preco, tipo: "kit" as ProductSheetTipo }))
+}
 
 const TIPO_LABEL: Record<string, string> = {
   fresa: "Fresa",
@@ -25,7 +34,7 @@ interface BomTableProps {
 }
 
 export function BomTable({ items }: BomTableProps) {
-  const [fichaModal, setFichaModal] = useState<{ open: boolean; nome: string; sku: string; imagemUrl?: string | null; tipo?: ProductSheetTipo; preco?: number; sections: Array<{ title: string; specs: Array<{ label: string; value: string | number | null | undefined }> }>; vinculacoes?: Array<{ nome: string; sku: string; valor?: number | null }> }>({ open: false, nome: "", sku: "", sections: [] })
+  const [fichaModal, setFichaModal] = useState<{ open: boolean; nome: string; sku: string; imagemUrl?: string | null; tipo?: ProductSheetTipo; preco?: number; sections: Array<{ title: string; specs: Array<{ label: string; value: string | number | null | undefined }> }>; vinculacoes?: Array<{ nome: string; sku: string; valor?: number | null; tipo?: ProductSheetTipo }> }>({ open: false, nome: "", sku: "", sections: [] })
 
   const skusByTipo = items.reduce((acc, item) => {
     if (!acc[item.tipo]) acc[item.tipo] = []
@@ -115,25 +124,29 @@ export function BomTable({ items }: BomTableProps) {
             {/* CTA */}
             <div className="w-full sm:w-auto shrink-0 flex flex-row sm:flex-col items-center justify-between sm:justify-normal gap-2">
               <button
-                onClick={() => setFichaModal({
-                  open: true,
-                  nome: item.nome,
-                  sku: item.sku,
-                  imagemUrl: img,
-                  tipo: item.tipo as ProductSheetTipo,
-                  preco,
-                  sections: [
-                    { title: "Identificação", specs: [
-                      { label: "SKU", value: item.sku },
-                      { label: "Nome", value: item.nome },
-                      { label: "Tipo", value: TIPO_LABEL[item.tipo] ?? item.tipo },
-                      { label: "Quantidade no kit", value: item.quantidade },
-                    ]},
-                    { title: "Comercial", specs: [
-                      { label: "Preço", value: preco ? formatBRL(preco) : null },
-                    ]},
-                  ],
-                })}
+                onClick={async () => {
+                  setFichaModal({
+                    open: true,
+                    nome: item.nome,
+                    sku: item.sku,
+                    imagemUrl: img,
+                    tipo: item.tipo as ProductSheetTipo,
+                    preco,
+                    sections: [
+                      { title: "Identificação", specs: [
+                        { label: "SKU", value: item.sku },
+                        { label: "Nome", value: item.nome },
+                        { label: "Tipo", value: TIPO_LABEL[item.tipo] ?? item.tipo },
+                        { label: "Quantidade no kit", value: item.quantidade },
+                      ]},
+                      { title: "Comercial", specs: [
+                        { label: "Preço", value: preco ? formatBRL(preco) : null },
+                      ]},
+                    ],
+                  })
+                  const vinculacoes = await buscarKitsRelacionados(item.tipo, item.sku)
+                  if (vinculacoes.length > 0) setFichaModal((p) => ({ ...p, vinculacoes }))
+                }}
                 className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider border border-[var(--color-border-subtle)] text-[var(--color-text-muted)] hover:text-white hover:border-[var(--color-accent)]/60 transition-all min-h-[32px]"
               >
                 <FileText className="w-3 h-3" />

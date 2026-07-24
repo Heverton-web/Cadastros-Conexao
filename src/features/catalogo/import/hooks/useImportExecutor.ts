@@ -1,14 +1,13 @@
 import { useState, useCallback } from "react"
 import type { ImportType, ValidatedRow, ImportProgress, ImportResult } from "../types"
-import { executeImport } from "../engine/executor"
+import { executeImport, createResolverCache, type ResolverCache } from "../engine/executor"
 
 interface UseImportExecutorParams {
-  empresaId: string
   onImportComplete?: (result: ImportResult) => void
 }
 
-export function useImportExecutor({ empresaId, onImportComplete }: UseImportExecutorParams) {
-  const [progress, setProgress] = useState<ImportProgress>({
+function initialProgress(): ImportProgress {
+  return {
     status: "idle",
     currentStep: 0,
     totalSteps: 5,
@@ -22,15 +21,19 @@ export function useImportExecutor({ empresaId, onImportComplete }: UseImportExec
     errorCount: 0,
     errors: [],
     startTime: 0,
-  })
+  }
+}
 
+export function useImportExecutor({ onImportComplete }: UseImportExecutorParams = {}) {
+  const [progress, setProgress] = useState<ImportProgress>(initialProgress())
   const [result, setResult] = useState<ImportResult | null>(null)
   const [isExecuting, setIsExecuting] = useState(false)
 
   const execute = useCallback(async (
     importType: ImportType,
     validRows: ValidatedRow[],
-    editedRows: Map<number, Record<string, unknown>>
+    editedRows: Map<number, Record<string, unknown>>,
+    cache?: ResolverCache,
   ) => {
     setIsExecuting(true)
     setResult(null)
@@ -56,8 +59,8 @@ export function useImportExecutor({ empresaId, onImportComplete }: UseImportExec
         importType,
         validRows,
         editedRows,
-        empresaId,
         onProgress: setProgress,
+        cache: cache ?? createResolverCache(),
       })
 
       setProgress((p) => ({ ...p, status: importResult.success ? "completed" : "failed" }))
@@ -77,24 +80,10 @@ export function useImportExecutor({ empresaId, onImportComplete }: UseImportExec
     } finally {
       setIsExecuting(false)
     }
-  }, [empresaId, onImportComplete])
+  }, [onImportComplete])
 
   const reset = useCallback(() => {
-    setProgress({
-      status: "idle",
-      currentStep: 0,
-      totalSteps: 5,
-      currentBatch: 0,
-      totalBatches: 0,
-      processedRows: 0,
-      totalRows: 0,
-      insertedCount: 0,
-      updatedCount: 0,
-      skippedCount: 0,
-      errorCount: 0,
-      errors: [],
-      startTime: 0,
-    })
+    setProgress(initialProgress())
     setResult(null)
     setIsExecuting(false)
   }, [])

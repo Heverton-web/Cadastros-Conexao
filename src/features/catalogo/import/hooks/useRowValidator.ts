@@ -1,19 +1,17 @@
 import { useState, useEffect, useRef } from "react"
 import type { ImportType, ValidationResult, ValidatedRow } from "../types"
-import { validateRows, loadExistingDataCache, type ExistingDataCache } from "../engine/validator"
+import { validateRows, loadValidationCache, type ValidationCache } from "../engine/validator"
 
 interface UseRowValidatorParams {
   importType: ImportType | null
   rows: Record<string, unknown>[]
-  empresaId: string
   enabled: boolean
 }
 
-export function useRowValidator({ importType, rows, empresaId, enabled }: UseRowValidatorParams) {
+export function useRowValidator({ importType, rows, enabled }: UseRowValidatorParams) {
   const [validationResult, setValidationResult] = useState<ValidationResult | null>(null)
   const [isValidating, setIsValidating] = useState(false)
-  const [existingData, setExistingData] = useState<ExistingDataCache | null>(null)
-  const cacheRef = useRef<ExistingDataCache | null>(null)
+  const cacheRef = useRef<ValidationCache | null>(null)
 
   useEffect(() => {
     if (!enabled || !importType || rows.length === 0) {
@@ -26,13 +24,10 @@ export function useRowValidator({ importType, rows, empresaId, enabled }: UseRow
     async function validate() {
       setIsValidating(true)
 
-      if (!cacheRef.current) {
-        try {
-          cacheRef.current = await loadExistingDataCache(empresaId)
-          if (!cancelled) setExistingData(cacheRef.current)
-        } catch {
-          // proceed without cache
-        }
+      try {
+        cacheRef.current = await loadValidationCache(importType!, rows)
+      } catch {
+        // segue sem cache — validação estrutural ainda funciona
       }
 
       if (cancelled) return
@@ -40,8 +35,7 @@ export function useRowValidator({ importType, rows, empresaId, enabled }: UseRow
       const result = validateRows({
         importType: importType!,
         rows,
-        empresaId,
-        existingData: cacheRef.current ?? undefined,
+        cache: cacheRef.current ?? undefined,
       })
 
       if (!cancelled) {
@@ -55,21 +49,20 @@ export function useRowValidator({ importType, rows, empresaId, enabled }: UseRow
     return () => {
       cancelled = true
     }
-  }, [importType, rows, empresaId, enabled])
+  }, [importType, rows, enabled])
 
   const revalidate = (editedRows: Map<number, Record<string, unknown>>) => {
     if (!importType || rows.length === 0) return
 
     const finalRows = rows.map((row, index) => {
       const edited = editedRows.get(index)
-      return edited ?? row
+      return edited ? { ...row, ...edited } : row
     })
 
     const result = validateRows({
       importType,
       rows: finalRows,
-      empresaId,
-      existingData: cacheRef.current ?? undefined,
+      cache: cacheRef.current ?? undefined,
     })
 
     setValidationResult(result)
@@ -86,7 +79,6 @@ export function useRowValidator({ importType, rows, empresaId, enabled }: UseRow
   return {
     validationResult,
     isValidating,
-    existingData,
     revalidate,
     getValidRows,
     getErrorRows,

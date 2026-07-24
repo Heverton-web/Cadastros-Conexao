@@ -200,6 +200,68 @@ export async function salvarKitFresas(kitSku: string, fresaIds: string[]): Promi
   if (error) throw error
 }
 
+export async function listarKitsDeChave(chaveSku: string): Promise<string[]> {
+  const { data, error } = await supabase.from("catalogo_kit_chaves").select("kit_sku").eq("chave_id", chaveSku)
+  if (error) throw error
+  return (data as { kit_sku: string }[]).map((r) => r.kit_sku)
+}
+
+export async function salvarKitsDeChave(chaveSku: string, kitSkus: string[]): Promise<void> {
+  await supabase.from("catalogo_kit_chaves").delete().eq("chave_id", chaveSku)
+  if (kitSkus.length === 0) return
+  const rows = kitSkus.map((sku) => ({ kit_sku: sku, chave_id: chaveSku }))
+  const { error } = await supabase.from("catalogo_kit_chaves").insert(rows)
+  if (error) throw error
+}
+
+export async function listarKitsDeFresa(fresaSku: string): Promise<string[]> {
+  const { data, error } = await supabase.from("catalogo_kit_fresas").select("kit_sku").eq("fresa_id", fresaSku)
+  if (error) throw error
+  return (data as { kit_sku: string }[]).map((r) => r.kit_sku)
+}
+
+export async function salvarKitsDeFresa(fresaSku: string, kitSkus: string[]): Promise<void> {
+  await supabase.from("catalogo_kit_fresas").delete().eq("fresa_id", fresaSku)
+  if (kitSkus.length === 0) return
+  const rows = kitSkus.map((sku) => ({ kit_sku: sku, fresa_id: fresaSku }))
+  const { error } = await supabase.from("catalogo_kit_fresas").insert(rows)
+  if (error) throw error
+}
+
+export async function listarKitsDeCicatrizador(cicatrizadorSku: string): Promise<string[]> {
+  const { data, error } = await supabase.from("catalogo_kit_cicatrizadores").select("kit_sku").eq("cicatrizador_sku", cicatrizadorSku)
+  if (error) throw error
+  return (data as { kit_sku: string }[]).map((r) => r.kit_sku)
+}
+
+export async function salvarKitsDeCicatrizador(cicatrizadorSku: string, kitSkus: string[]): Promise<void> {
+  await supabase.from("catalogo_kit_cicatrizadores").delete().eq("cicatrizador_sku", cicatrizadorSku)
+  if (kitSkus.length === 0) return
+  const rows = kitSkus.map((sku) => ({ kit_sku: sku, cicatrizador_sku: cicatrizadorSku }))
+  const { error } = await supabase.from("catalogo_kit_cicatrizadores").insert(rows)
+  if (error) throw error
+}
+
+interface KitResumo { sku: string; nome: string; preco: number | null }
+
+export async function listarKitsRelacionadosDeChave(chaveSku: string): Promise<KitResumo[]> {
+  const { data, error } = await supabase.from("catalogo_kit_chaves").select("kit:catalogo_kits(sku, nome, preco)").eq("chave_id", chaveSku)
+  if (error) throw error
+  return (data as unknown as { kit: KitResumo }[]).map((r) => r.kit).filter(Boolean)
+}
+
+export async function listarKitsRelacionadosDeFresa(fresaSku: string): Promise<KitResumo[]> {
+  const { data, error } = await supabase.from("catalogo_kit_fresas").select("kit:catalogo_kits(sku, nome, preco)").eq("fresa_id", fresaSku)
+  if (error) throw error
+  return (data as unknown as { kit: KitResumo }[]).map((r) => r.kit).filter(Boolean)
+}
+
+export async function listarKitsRelacionadosDeCicatrizador(cicatrizadorSku: string): Promise<KitResumo[]> {
+  const { data, error } = await supabase.from("catalogo_kit_cicatrizadores").select("kit:catalogo_kits(sku, nome, preco)").eq("cicatrizador_sku", cicatrizadorSku)
+  if (error) throw error
+  return (data as unknown as { kit: KitResumo }[]).map((r) => r.kit).filter(Boolean)
+}
+
 export async function listarKitComplementares(kitSku: string): Promise<string[]> {
   const { data, error } = await supabase.from("catalogo_kit_complementares").select("complementar_id").eq("kit_sku", kitSku)
   if (error) throw error

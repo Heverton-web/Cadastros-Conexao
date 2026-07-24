@@ -3,21 +3,30 @@ import type {
   ImportType, ImportProgress, ImportResult,
   ImportResultDetail, ImportError, ValidatedRow
 } from "../types"
-import { BOM_FK_MAP } from "../constants"
-import type { BOMItemTipo } from "../../types"
-import { loadExistingDataCache, type ExistingDataCache } from "./validator"
+import { IMPORT_FIELD_CONFIGS, PROMOCIONAL_ITEM_TIPOS, type FkResolverConfig, type ImportTypeConfig, type ListPivotConfig } from "../constants"
 
 const BATCH_SIZE = 50
+
+export interface ResolverCache {
+  ids: Map<string, string>
+}
+
+export function createResolverCache(): ResolverCache {
+  return { ids: new Map() }
+}
 
 interface ExecuteImportParams {
   importType: ImportType
   validRows: ValidatedRow[]
   editedRows: Map<number, Record<string, unknown>>
   onProgress: (progress: ImportProgress) => void
+  cache?: ResolverCache
 }
 
 export async function executeImport(params: ExecuteImportParams): Promise<ImportResult> {
   const { importType, validRows, editedRows, onProgress } = params
+  const cache = params.cache ?? createResolverCache()
+  const config = IMPORT_FIELD_CONFIGS[importType]
   const startTime = Date.now()
 
   const progress: ImportProgress = {
@@ -38,87 +47,46 @@ export async function executeImport(params: ExecuteImportParams): Promise<Import
 
   const details: ImportResultDetail[] = []
 
-  if (importType === "hierarquia") {
-    const allRows = validRows.map((row) => {
-      const edited = editedRows.get(row.rowIndex)
-      return { ...(edited ?? row.data), }
-    })
-    const result = await insertHierarquiaBatch(allRows)
-    progress.insertedCount = result.inserted
-    progress.errorCount = result.errors.length
-    progress.errors = result.errors
-    progress.processedRows = allRows.length
-    progress.currentBatch = 1
-    progress.totalBatches = 1
-    details.push(...result.details)
-    onProgress({ ...progress })
-  } else if (importType === "kits") {
-    const allRows = validRows.map((row) => {
-      const edited = editedRows.get(row.rowIndex)
-      return { ...(edited ?? row.data), }
-    })
-    const result = await insertKitsBatch(allRows)
-    progress.insertedCount = result.inserted
-    progress.errorCount = result.errors.length
-    progress.errors = result.errors
-    progress.processedRows = allRows.length
-    progress.currentBatch = 1
-    progress.totalBatches = 1
-    details.push(...result.details)
-    onProgress({ ...progress })
-  } else if (importType === "workflows") {
-    const allRows = validRows.map((row) => {
-      const edited = editedRows.get(row.rowIndex)
-      return { ...(edited ?? row.data), }
-    })
-    const result = await insertWorkflowsBatch(allRows)
-    progress.insertedCount = result.inserted
-    progress.errorCount = result.errors.length
-    progress.errors = result.errors
-    progress.processedRows = allRows.length
-    progress.currentBatch = 1
-    progress.totalBatches = 1
-    details.push(...result.details)
-    onProgress({ ...progress })
-  } else {
-    const batches = chunk(validRows, BATCH_SIZE)
-    for (let i = 0; i < batches.length; i++) {
-      const batch = batches[i]
-      const rowsToInsert = batch.map((row) => {
-        const edited = editedRows.get(row.rowIndex)
-        return { ...(edited ?? row.data), }
-      })
+  for (let i = 0; i < validRows.length; i++) {
+    const validatedRow = validRows[i]
+    const edited = editedRows.get(validatedRow.rowIndex)
+    const row = { ...validatedRow.data, ...(edited ?? {}) }
 
-      try {
-        const result = await insertSimpleBatch(importType, rowsToInsert)
-        progress.currentBatch = i + 1
-        progress.processedRows += batch.length
-        progress.insertedCount += result.inserted
-        progress.updatedCount += result.updated
-        progress.errorCount += result.errors.length
-        if (result.errors.length > 0) progress.errors.push(...result.errors)
+    try {
+      const rowDetails = await processRow(config, row, cache)
+      details.push(...rowDetails.details)
+      progress.insertedCount += rowDetails.inserted
+      progress.updatedCount += rowDetails.updated
 
-        const elapsed = Date.now() - startTime
-        const avgTimePerBatch = elapsed / (i + 1)
-        progress.estimatedTimeRemaining = Math.round(
-          avgTimePerBatch * (batches.length - i - 1) / 1000
-        )
-
-        details.push(...result.details)
-      } catch (err) {
-        progress.errorCount += batch.length
-        batch.forEach((row) => {
-          progress.errors.push({
-            rowIndex: row.rowIndex,
-            data: row.data,
-            error: String(err),
-            errorCode: "BATCH_FAILED",
-            recoverable: false,
-          })
+      for (const errMsg of rowDetails.errors) {
+        progress.errors.push({
+          rowIndex: validatedRow.rowIndex,
+          data: row,
+          error: errMsg,
+          errorCode: "IMPORT_ROW_FAILED",
+          recoverable: true,
         })
       }
+      progress.errorCount += rowDetails.errors.length
+    } catch (err) {
+      progress.errorCount += 1
+      progress.errors.push({
+        rowIndex: validatedRow.rowIndex,
+        data: row,
+        error: String(err instanceof Error ? err.message : err),
+        errorCode: "UNKNOWN",
+        recoverable: false,
+      })
+    }
 
-      onProgress({ ...progress })
+    progress.processedRows = i + 1
+    progress.currentBatch = Math.floor(i / BATCH_SIZE) + 1
+
+    if ((i + 1) % 10 === 0 || i === validRows.length - 1) {
+      const elapsed = Date.now() - startTime
+      const avgTimePerRow = elapsed / (i + 1)
+      progress.estimatedTimeRemaining = Math.round(avgTimePerRow * (validRows.length - i - 1) / 1000)
+      onProgress({ ...progress, errors: [...progress.errors] })
     }
   }
 
@@ -135,565 +103,266 @@ export async function executeImport(params: ExecuteImportParams): Promise<Import
   }
 }
 
-async function insertSimpleBatch(
-  importType: ImportType,
-  rows: Record<string, unknown>[],
-): Promise<{ inserted: number; updated: number; errors: ImportError[]; details: ImportResultDetail[] }> {
-  const table = getTableForImportType(importType)
-  if (!table) return { inserted: 0, updated: 0, errors: [], details: [] }
-
-  const errors: ImportError[] = []
+async function processRow(
+  config: ImportTypeConfig,
+  row: Record<string, unknown>,
+  cache: ResolverCache,
+): Promise<{ inserted: number; updated: number; errors: string[]; details: ImportResultDetail[] }> {
   const details: ImportResultDetail[] = []
-  let inserted = 0
-  let updated = 0
+  const errors: string[] = []
 
-  const toUpsert: Record<string, unknown>[] = []
-
-  for (const row of rows) {
-    const { categoria_nome, conexao_nome, familia_nome, linha_nome, tipo_reabilitacao_nome, tipo_abutment_nome, ...rest } = row
-
-    const finalRow: Record<string, unknown> = { ...rest }
-
-    if (importType === "implantes" || importType === "abutments") {
-      const linhaId = await resolveLinhaId(familia_nome as string, linha_nome as string)
-      if (linhaId) finalRow.linha_id = linhaId
-      else if (linha_nome) {
-        errors.push({
-          rowIndex: -1, data: row, error: `Linha "${linha_nome}" nao encontrada`, errorCode: "FK_NOT_FOUND", recoverable: false
-        })
-        continue
-      }
-    }
-
-    if (importType === "abutments") {
-      const familiaId = await resolveFamiliaId(familia_nome as string)
-      if (familiaId) finalRow.familia_id = familiaId
-      else {
-        errors.push({
-          rowIndex: -1, data: row, error: `Familia "${familia_nome}" nao encontrada`, errorCode: "FK_NOT_FOUND", recoverable: false
-        })
-        continue
-      }
-
-      const tipoReabId = await resolveTipoReabilitacaoId(tipo_reabilitacao_nome as string)
-      if (tipoReabId) finalRow.tipo_reabilitacao_id = tipoReabId
-      else {
-        const newId = await createTipoReabilitacao(tipo_reabilitacao_nome as string)
-        if (newId) finalRow.tipo_reabilitacao_id = newId
-        else {
-          errors.push({
-            rowIndex: -1, data: row, error: `Tipo Reabilitacao "${tipo_reabilitacao_nome}" nao encontrado`, errorCode: "FK_NOT_FOUND", recoverable: false
-          })
-          continue
-        }
-      }
-
-      const tipoAbtId = await resolveTipoAbutmentId(tipo_abutment_nome as string)
-      if (tipoAbtId) finalRow.tipo_abutment_id = tipoAbtId
-      else {
-        const newId = await createTipoAbutment(tipo_abutment_nome as string)
-        if (newId) finalRow.tipo_abutment_id = newId
-        else {
-          errors.push({
-            rowIndex: -1, data: row, error: `Tipo Abutment "${tipo_abutment_nome}" nao encontrado`, errorCode: "FK_NOT_FOUND", recoverable: false
-          })
-          continue
-        }
-      }
-    }
-
-    if (importType === "acessorios" || importType === "instrumentais") {
-      const catId = await resolveCategoriaId(importType, categoria_nome as string)
-      if (catId) finalRow.categoria_id = catId
-      else {
-        const newId = await createCategoria(importType, categoria_nome as string)
-        if (newId) finalRow.categoria_id = newId
-        else {
-          errors.push({
-            rowIndex: -1, data: row, error: `Categoria "${categoria_nome}" nao encontrada`, errorCode: "FK_NOT_FOUND", recoverable: false
-          })
-          continue
-        }
-      }
-    }
-
-    toUpsert.push(finalRow)
+  const { resolvedIds, errors: fkErrors, createdDetails } = await resolveRowFks(config, row, cache)
+  errors.push(...fkErrors)
+  for (const created of createdDetails) {
+    details.push({ entity: created.table, action: "inserted", identifier: created.label })
   }
 
-  if (toUpsert.length > 0) {
-    const { error } = await supabase
-      .from(table)
-      .upsert(toUpsert, { onConflict: "sku" })
-
-    if (error) {
-      for (const row of toUpsert) {
-        try {
-          const { error: singleErr } = await supabase
-            .from(table)
-            .upsert([row], { onConflict: "sku" })
-          if (singleErr) {
-            errors.push({
-              rowIndex: -1, data: row, error: singleErr.message,
-              errorCode: singleErr.code ?? "INSERT_FAILED", recoverable: true,
-            })
-          } else {
-            inserted++
-            details.push({ entity: table, action: "inserted", identifier: String(row.sku ?? row.nome) })
-          }
-        } catch (e) {
-          errors.push({
-            rowIndex: -1, data: row, error: String(e),
-            errorCode: "UNKNOWN", recoverable: false,
-          })
-        }
-      }
-    } else {
-      inserted = toUpsert.length
-      toUpsert.forEach((r) =>
-        details.push({ entity: table, action: "inserted", identifier: String(r.sku ?? r.nome) })
-      )
-    }
+  if (fkErrors.length > 0) {
+    return { inserted: 0, updated: 0, errors, details }
   }
 
-  return { inserted, updated, errors, details }
+  if (config.skipMainUpsert) {
+    return { inserted: createdDetails.length, updated: 0, errors, details }
+  }
+
+  if (!config.buildRecord) {
+    errors.push(`Config de import sem buildRecord para ${config.supabaseTable}`)
+    return { inserted: 0, updated: 0, errors, details }
+  }
+
+  const record = config.buildRecord(row, resolvedIds)
+  const upsertResult = await upsertRecord(config, record)
+
+  if (upsertResult.error) {
+    errors.push(upsertResult.error)
+    return { inserted: 0, updated: 0, errors, details }
+  }
+
+  details.push({
+    entity: config.supabaseTable,
+    action: upsertResult.action,
+    identifier: upsertResult.sku ?? upsertResult.id ?? "",
+  })
+
+  if (config.listPivots && upsertResult.id) {
+    const pivotErrors = await handleListPivots(config.listPivots, row, {
+      id: upsertResult.id,
+      sku: upsertResult.sku,
+    }, cache)
+    errors.push(...pivotErrors)
+  }
+
+  if (config.supabaseTable === "catalogo_promocionais" && upsertResult.id) {
+    const itemErrors = await handlePromocionalItens(row, upsertResult.id)
+    errors.push(...itemErrors)
+  }
+
+  return {
+    inserted: upsertResult.action === "inserted" ? 1 : 0,
+    updated: upsertResult.action === "updated" ? 1 : 0,
+    errors,
+    details,
+  }
 }
 
-async function insertHierarquiaBatch(
-  rows: Record<string, unknown>[],
-): Promise<{ inserted: number; updated: number; errors: ImportError[]; details: ImportResultDetail[] }> {
-  const categorias = new Map<string, { nome: string }>()
-  const conexoes = new Map<string, { nome: string; sigla?: string; categoria_nome: string }>()
-  const familias = new Map<string, { nome: string; cor?: string; conexao_nome: string }>()
-  const linhas = new Map<string, { nome: string; familia_nome: string }>()
+async function resolveRowFks(
+  config: ImportTypeConfig,
+  row: Record<string, unknown>,
+  cache: ResolverCache,
+): Promise<{ resolvedIds: Record<string, string>; errors: string[]; createdDetails: { table: string; label: string }[] }> {
+  const resolvedIds: Record<string, string> = {}
+  const errors: string[] = []
+  const createdDetails: { table: string; label: string }[] = []
 
-  for (const row of rows) {
-    const catNome = String(row.categoria_nome).trim()
-    if (catNome) categorias.set(catNome.toLowerCase(), { nome: catNome })
-
-    const conNome = String(row.conexao_nome).trim()
-    const conKey = `${catNome}::${conNome}`.toLowerCase()
-    if (catNome && conNome) {
-      conexoes.set(conKey, {
-        nome: conNome,
-        sigla: row.conexao_sigla ? String(row.conexao_sigla) : undefined,
-        categoria_nome: catNome,
-      })
-    }
-
-    const famNome = String(row.familia_nome).trim()
-    const famKey = `${conNome}::${famNome}`.toLowerCase()
-    if (conNome && famNome) {
-      familias.set(famKey, {
-        nome: famNome,
-        cor: row.familia_cor ? String(row.familia_cor) : undefined,
-        conexao_nome: conNome,
-      })
-    }
-
-    const linNome = String(row.linha_nome).trim()
-    const linKey = `${famNome}::${linNome}`.toLowerCase()
-    if (famNome && linNome) {
-      linhas.set(linKey, { nome: linNome, familia_nome: famNome })
-    }
-  }
-
-  let inserted = 0
-  const errors: ImportError[] = []
-  const details: ImportResultDetail[] = []
-
-  for (const [, cat] of categorias) {
-    const { error } = await supabase
-      .from("catalogo_categorias")
-      .upsert({ nome: cat.nome }, { onConflict: "nome" })
-    if (error) {
-      errors.push({ rowIndex: -1, data: cat, error: error.message, errorCode: error.code ?? "INSERT_FAILED", recoverable: true })
-    } else {
-      inserted++
-      details.push({ entity: "catalogo_categorias", action: "inserted", identifier: cat.nome })
-    }
-  }
-
-  const { data: catRows } = await supabase
-  const catIdMap = new Map(catRows?.map((r) => [r.nome.toLowerCase(), r.id]) ?? [])
-
-  for (const [, con] of conexoes) {
-    const catId = catIdMap.get(con.categoria_nome.toLowerCase())
-    if (!catId) {
-      errors.push({ rowIndex: -1, data: con, error: `Categoria "${con.categoria_nome}" nao encontrada`, errorCode: "FK_NOT_FOUND", recoverable: false })
+  for (const resolver of config.fkResolvers) {
+    const result = await resolveOrCreateFk(resolver, row, resolvedIds, cache)
+    if (result.error) {
+      errors.push(result.error)
       continue
     }
-    const { error } = await supabase
-      .from("catalogo_conexoes")
-      .upsert({ categoria_id: catId, nome: con.nome, sigla: con.sigla ?? null }, { onConflict: "categoria_id,nome" })
-    if (error) {
-      errors.push({ rowIndex: -1, data: con, error: error.message, errorCode: error.code ?? "INSERT_FAILED", recoverable: true })
-    } else {
-      inserted++
-      details.push({ entity: "catalogo_conexoes", action: "inserted", identifier: con.nome })
+    if (result.id) {
+      resolvedIds[resolver.targetField] = result.id
+      if (result.created) {
+        createdDetails.push({ table: resolver.lookupTable, label: String(row[resolver.sourceField] ?? result.id) })
+      }
     }
   }
 
-  const { data: conRows } = await supabase
-  const conIdMap = new Map(conRows?.map((r) => [r.nome.toLowerCase(), r.id]) ?? [])
-
-  for (const [, fam] of familias) {
-    const conId = conIdMap.get(fam.conexao_nome.toLowerCase())
-    if (!conId) {
-      errors.push({ rowIndex: -1, data: fam, error: `Conexao "${fam.conexao_nome}" nao encontrada`, errorCode: "FK_NOT_FOUND", recoverable: false })
-      continue
-    }
-    const { error } = await supabase
-      .from("catalogo_familias")
-      .upsert({ conexao_id: conId, nome: fam.nome, cor_identificacao: fam.cor ?? null }, { onConflict: "conexao_id,nome" })
-    if (error) {
-      errors.push({ rowIndex: -1, data: fam, error: error.message, errorCode: error.code ?? "INSERT_FAILED", recoverable: true })
-    } else {
-      inserted++
-      details.push({ entity: "catalogo_familias", action: "inserted", identifier: fam.nome })
-    }
-  }
-
-  const { data: famRows } = await supabase
-  const famIdMap = new Map(famRows?.map((r) => [r.nome.toLowerCase(), r.id]) ?? [])
-
-  for (const [, lin] of linhas) {
-    const famId = famIdMap.get(lin.familia_nome.toLowerCase())
-    if (!famId) {
-      errors.push({ rowIndex: -1, data: lin, error: `Familia "${lin.familia_nome}" nao encontrada`, errorCode: "FK_NOT_FOUND", recoverable: false })
-      continue
-    }
-    const { error } = await supabase
-      .from("catalogo_linhas")
-      .upsert({ familia_id: famId, nome: lin.nome }, { onConflict: "familia_id,nome" })
-    if (error) {
-      errors.push({ rowIndex: -1, data: lin, error: error.message, errorCode: error.code ?? "INSERT_FAILED", recoverable: true })
-    } else {
-      inserted++
-      details.push({ entity: "catalogo_linhas", action: "inserted", identifier: lin.nome })
-    }
-  }
-
-  return { inserted, updated: 0, errors, details }
+  return { resolvedIds, errors, createdDetails }
 }
 
-async function insertKitsBatch(
-  rows: Record<string, unknown>[],
-): Promise<{ inserted: number; updated: number; errors: ImportError[]; details: ImportResultDetail[] }> {
-  const errors: ImportError[] = []
-  const details: ImportResultDetail[] = []
-  let inserted = 0
+async function resolveOrCreateFk(
+  resolver: FkResolverConfig,
+  row: Record<string, unknown>,
+  resolvedIds: Record<string, string>,
+  cache: ResolverCache,
+): Promise<{ id: string | null; created: boolean; error?: string }> {
+  const rawValue = row[resolver.sourceField]
+  const value = rawValue === null || rawValue === undefined ? "" : String(rawValue).trim()
 
-  const kitMap = new Map<string, {
-    mainData: Record<string, unknown>
-    bomItems: { tipo: string; sku: string; quantidade: number }[]
-    familiaNomes: string[]
-  }>()
-
-  for (const row of rows) {
-    const sku = String(row.sku)
-    if (!kitMap.has(sku)) {
-      kitMap.set(sku, {
-        mainData: row,
-        bomItems: [],
-        familiaNomes: row.familias ? String(row.familias).split(";").map((s) => s.trim()) : [],
-      })
-    }
-    const kit = kitMap.get(sku)!
-    if (row.bom_tipo && row.bom_sku) {
-      kit.bomItems.push({
-        tipo: String(row.bom_tipo),
-        sku: String(row.bom_sku),
-        quantidade: Number(row.bom_quantidade) || 1,
-      })
+  if (!value) {
+    return {
+      id: null,
+      created: false,
+      error: resolver.required ? `Campo "${resolver.sourceField}" é obrigatório` : undefined,
     }
   }
 
-  const cache = await loadExistingDataCache()
+  const scopeValue = resolver.scopeField ? resolvedIds[resolver.scopeField.fromResolved] ?? "" : ""
+  const cacheKey = `${resolver.lookupTable}::${scopeValue}::${value.toLowerCase()}`
+  const cached = cache.ids.get(cacheKey)
+  if (cached) return { id: cached, created: false }
 
-  for (const [sku, kit] of kitMap) {
-    try {
-      const catKitId = await resolveOrCreateCategoriaKit(kit.mainData.categoria_kit_nome as string, cache)
+  let query = supabase.from(resolver.lookupTable).select("id").ilike(resolver.matchField, value)
+  if (resolver.scopeField) query = query.eq(resolver.scopeField.column, scopeValue)
+  const { data: found } = await query.limit(1).maybeSingle()
 
-      const kitData = {
-        sku,
-        nome: kit.mainData.nome,
-        descricao: kit.mainData.descricao ?? null,
-        categoria_id: catKitId ?? null,
-        preco: Number(kit.mainData.preco) || 0,
-        ativo: kit.mainData.ativo !== false,
-      }
+  if (found?.id) {
+    cache.ids.set(cacheKey, found.id)
+    return { id: found.id, created: false }
+  }
 
-      const { error: kitErr } = await supabase
-        .from("catalogo_kits")
-        .upsert(kitData, { onConflict: "sku" })
-
-      if (kitErr) {
-        errors.push({ rowIndex: -1, data: kitData, error: kitErr.message, errorCode: kitErr.code ?? "INSERT_FAILED", recoverable: false })
-        continue
-      }
-
-      inserted++
-      details.push({ entity: "catalogo_kits", action: "inserted", identifier: sku })
-
-      if (kit.familiaNomes.length > 0) {
-        const { data: allFam } = await supabase
-        const famMap = new Map(allFam?.map((f) => [f.nome.toLowerCase(), f.id]) ?? [])
-
-        const kitFamiliaRows = kit.familiaNomes
-          .map((fn) => famMap.get(fn.toLowerCase()))
-          .filter((f): f is string => !!f)
-          .map((familiaId) => ({ kit_sku: sku, familia_id: familiaId }))
-
-        if (kitFamiliaRows.length > 0) {
-          await supabase.from("catalogo_kit_familias").delete()
-          await supabase.from("catalogo_kit_familias").insert(kitFamiliaRows)
-        }
-      }
-
-      if (kit.bomItems.length > 0) {
-        await supabase.from("catalogo_kit_composicao").delete()
-
-        for (const bom of kit.bomItems) {
-          const fkColumn = BOM_FK_MAP[bom.tipo as BOMItemTipo]
-          if (!fkColumn) {
-            errors.push({ rowIndex: -1, data: bom, error: `Tipo BOM invalido: ${bom.tipo}`, errorCode: "INVALID_BOM_TYPE", recoverable: false })
-            continue
-          }
-
-          const bomRow: Record<string, unknown> = {
-            kit_sku: sku,
-            quantidade: bom.quantidade,
-          }
-          bomRow[fkColumn] = bom.sku
-
-          const { error: bomErr } = await supabase
-            .from("catalogo_kit_composicao")
-            .insert(bomRow)
-
-          if (bomErr) {
-            errors.push({ rowIndex: -1, data: bom, error: bomErr.message, errorCode: bomErr.code ?? "BOM_INSERT_FAILED", recoverable: true })
-          }
-        }
-      }
-    } catch (err) {
-      errors.push({ rowIndex: -1, data: kit.mainData, error: String(err), errorCode: "UNKNOWN", recoverable: false })
+  if (!resolver.createIfMissing) {
+    return {
+      id: null,
+      created: false,
+      error: resolver.required ? `"${value}" não encontrado em ${resolver.lookupTable}` : undefined,
     }
   }
 
-  return { inserted, updated: 0, errors, details }
+  const payload = resolver.extraCreateFields
+    ? resolver.extraCreateFields(row, resolvedIds)
+    : { [resolver.matchField]: value }
+
+  const { data: createdRow, error } = await supabase
+    .from(resolver.lookupTable)
+    .insert(payload)
+    .select("id")
+    .single()
+
+  if (error || !createdRow) {
+    return { id: null, created: false, error: `Falha ao criar em ${resolver.lookupTable}: ${error?.message ?? "erro desconhecido"}` }
+  }
+
+  cache.ids.set(cacheKey, createdRow.id)
+  return { id: createdRow.id, created: true }
 }
 
-async function insertWorkflowsBatch(
-  rows: Record<string, unknown>[],
-): Promise<{ inserted: number; updated: number; errors: ImportError[]; details: ImportResultDetail[] }> {
-  const errors: ImportError[] = []
-  const details: ImportResultDetail[] = []
-  let inserted = 0
+async function upsertRecord(
+  config: ImportTypeConfig,
+  record: Record<string, unknown>,
+): Promise<{ id: string | null; sku: string | null; action: "inserted" | "updated"; error?: string }> {
+  const sku = typeof record.sku === "string" ? record.sku : null
 
-  const workflowMap = new Map<string, {
-    nome: string
-    descricao?: string
-    etapas: Map<string, {
-      nome: string
-      ordem: number
-      guias: { familia_nome: string; tipo_abutment_nome: string; diametro: number; acessorio_sku: string }[]
-    }>
-  }>()
-
-  for (const row of rows) {
-    const wfNome = String(row.workflow_nome).trim()
-    if (!workflowMap.has(wfNome)) {
-      workflowMap.set(wfNome, {
-        nome: wfNome,
-        descricao: row.workflow_descricao ? String(row.workflow_descricao) : undefined,
-        etapas: new Map(),
-      })
-    }
-    const wf = workflowMap.get(wfNome)!
-
-    const etapaNome = String(row.etapa_nome).trim()
-    if (!wf.etapas.has(etapaNome)) {
-      wf.etapas.set(etapaNome, {
-        nome: etapaNome,
-        ordem: Number(row.etapa_ordem) || 0,
-        guias: [],
-      })
-    }
-    const etapa = wf.etapas.get(etapaNome)!
-
-    if (row.guia_familia_nome || row.guia_acessorio_sku) {
-      etapa.guias.push({
-        familia_nome: row.guia_familia_nome ? String(row.guia_familia_nome) : "",
-        tipo_abutment_nome: row.guia_tipo_abutment_nome ? String(row.guia_tipo_abutment_nome) : "",
-        diametro: Number(row.guia_diametro) || 0,
-        acessorio_sku: row.guia_acessorio_sku ? String(row.guia_acessorio_sku) : "",
-      })
-    }
+  if (config.uniqueKeyHasDbConstraint) {
+    const { data, error } = await supabase
+      .from(config.supabaseTable)
+      .upsert(record, { onConflict: config.uniqueKey.join(",") })
+      .select("id")
+      .single()
+    if (error) return { id: null, sku, action: "inserted", error: error.message }
+    return { id: data?.id ?? null, sku, action: "inserted" }
   }
 
-  for (const [, wf] of workflowMap) {
-    try {
-      const { data: wfData, error: wfErr } = await supabase
-        .from("catalogo_workflows")
-        .upsert({ nome: wf.nome }, { onConflict: "nome" })
-        .select("id")
-        .single()
+  let query = supabase.from(config.supabaseTable).select("id")
+  for (const key of config.uniqueKey) {
+    query = query.eq(key, record[key] as string)
+  }
+  const { data: existing } = await query.limit(1).maybeSingle()
 
-      if (wfErr) {
-        errors.push({ rowIndex: -1, data: wf, error: wfErr.message, errorCode: wfErr.code ?? "INSERT_FAILED", recoverable: false })
-        continue
-      }
+  if (existing?.id) {
+    const { error } = await supabase.from(config.supabaseTable).update(record).eq("id", existing.id)
+    if (error) return { id: existing.id, sku, action: "updated", error: error.message }
+    return { id: existing.id, sku, action: "updated" }
+  }
 
-      inserted++
-      details.push({ entity: "catalogo_workflows", action: "inserted", identifier: wf.nome })
+  const { data: created, error } = await supabase.from(config.supabaseTable).insert(record).select("id").single()
+  if (error) return { id: null, sku, action: "inserted", error: error.message }
+  return { id: created?.id ?? null, sku, action: "inserted" }
+}
 
-      for (const [, etapa] of wf.etapas) {
-        const { data: etapaData, error: etapaErr } = await supabase
-          .from("catalogo_etapas_workflow")
-          .upsert({
-            workflow_id: wfData.id,
-            nome: etapa.nome,
-            ordem: etapa.ordem,
-          }, { onConflict: "workflow_id,nome" })
-          .select("id")
-          .single()
+async function handleListPivots(
+  pivots: ListPivotConfig[],
+  row: Record<string, unknown>,
+  mainResult: { id: string | null; sku: string | null },
+  cache: ResolverCache,
+): Promise<string[]> {
+  const errors: string[] = []
 
-        if (etapaErr) {
-          errors.push({ rowIndex: -1, data: etapa, error: etapaErr.message, errorCode: etapaErr.code ?? "INSERT_FAILED", recoverable: true })
+  for (const pivot of pivots) {
+    const raw = row[pivot.sourceField]
+    if (raw === null || raw === undefined || String(raw).trim() === "") continue
+
+    const items = String(raw).split(";").map((s) => s.trim()).filter(Boolean)
+    if (items.length === 0) continue
+
+    const ownKeyValue = pivot.ownKeyFrom === "sku" ? mainResult.sku : mainResult.id
+    if (!ownKeyValue) continue
+
+    const pivotRows: Record<string, unknown>[] = []
+    for (let i = 0; i < items.length; i++) {
+      const item = items[i]
+      let refValue: string | null = item
+
+      if (pivot.refLookupTable) {
+        const matchField = pivot.refMatchField ?? "sku"
+        const cacheKey = `${pivot.refLookupTable}::${matchField}::${item.toLowerCase()}`
+        let id = cache.ids.get(cacheKey) ?? null
+        if (!id) {
+          const { data } = await supabase.from(pivot.refLookupTable).select("id").ilike(matchField, item).limit(1).maybeSingle()
+          id = data?.id ?? null
+          if (id) cache.ids.set(cacheKey, id)
+        }
+        if (!id) {
+          errors.push(`"${item}" não encontrado em ${pivot.refLookupTable} (coluna ${pivot.sourceField})`)
           continue
         }
-
-        for (const guia of etapa.guias) {
-          let familiaId: string | null = null
-          if (guia.familia_nome) {
-            const { data: fam } = await supabase
-              .from("catalogo_familias").select("id")
-            familiaId = fam?.id ?? null
-          }
-
-          const { error: guiaErr } = await supabase
-            .from("catalogo_guias_reabilitacao")
-            .insert({
-              etapa_id: etapaData.id,
-              familia_id: familiaId,
-              diametro_plataforma: guia.diametro ? String(guia.diametro) : null,
-              acessorio_sku: guia.acessorio_sku || null,
-            })
-
-          if (guiaErr) {
-            errors.push({ rowIndex: -1, data: guia, error: guiaErr.message, errorCode: guiaErr.code ?? "INSERT_FAILED", recoverable: true })
-          }
-        }
+        refValue = id
       }
-    } catch (err) {
-      errors.push({ rowIndex: -1, data: wf, error: String(err), errorCode: "UNKNOWN", recoverable: false })
+
+      const pivotRow: Record<string, unknown> = { [pivot.ownKeyField]: ownKeyValue, [pivot.refField]: refValue }
+      if (pivot.orderField) pivotRow[pivot.orderField] = i + 1
+      pivotRows.push(pivotRow)
+    }
+
+    if (pivotRows.length > 0) {
+      await supabase.from(pivot.pivotTable).delete().eq(pivot.ownKeyField, ownKeyValue)
+      const { error } = await supabase.from(pivot.pivotTable).insert(pivotRows)
+      if (error) errors.push(`Falha ao gravar ${pivot.pivotTable}: ${error.message}`)
     }
   }
 
-  return { inserted, updated: 0, errors, details }
+  return errors
 }
 
-// Helpers
-function chunk<T>(arr: T[], size: number): T[][] {
-  const chunks: T[][] = []
-  for (let i = 0; i < arr.length; i += size) {
-    chunks.push(arr.slice(i, i + size))
+async function handlePromocionalItens(row: Record<string, unknown>, promocionalId: string): Promise<string[]> {
+  const errors: string[] = []
+  const raw = row.itens
+  if (raw === null || raw === undefined || String(raw).trim() === "") return errors
+
+  const pairs = String(raw).split(";").map((s) => s.trim()).filter(Boolean)
+  const itemRows: { promocional_id: string; sku: string; tipo: string }[] = []
+
+  for (const pair of pairs) {
+    const [tipo, sku] = pair.split(":").map((s) => s.trim())
+    if (!tipo || !sku) {
+      errors.push(`Item de promoção inválido: "${pair}" (use formato tipo:sku)`)
+      continue
+    }
+    if (!(PROMOCIONAL_ITEM_TIPOS as readonly string[]).includes(tipo)) {
+      errors.push(`Tipo de item inválido: "${tipo}" em "${pair}"`)
+      continue
+    }
+    itemRows.push({ promocional_id: promocionalId, sku, tipo })
   }
-  return chunks
-}
 
-function getTableForImportType(importType: ImportType): string {
-  const tableMap: Record<string, string> = {
-    implantes: "catalogo_implantes",
-    abutments: "catalogo_abutments",
-    fresas: "catalogo_fresas",
-    acessorios: "catalogo_acessorios",
-    chaves: "catalogo_chaves_ferramental",
-    instrumentais: "catalogo_instrumentais_gerais",
+  if (itemRows.length > 0) {
+    await supabase.from("catalogo_promocional_itens").delete().eq("promocional_id", promocionalId)
+    const { error } = await supabase.from("catalogo_promocional_itens").insert(itemRows)
+    if (error) errors.push(`Falha ao gravar itens promocionais: ${error.message}`)
   }
-  return tableMap[importType] ?? ""
-}
 
-async function resolveLinhaId(familiaNome?: string, linhaNome?: string): Promise<string | null> {
-  if (!familiaNome || !linhaNome) return null
-  const { data: familia } = await supabase
-    .from("catalogo_familias").select("id")
-  if (!familia) return null
-  const { data: linha } = await supabase
-    .from("catalogo_linhas").select("id")
-  return linha?.id ?? null
-}
-
-async function resolveFamiliaId(familiaNome?: string): Promise<string | null> {
-  if (!familiaNome) return null
-  const { data } = await supabase
-    .from("catalogo_familias").select("id")
-  return data?.id ?? null
-}
-
-async function resolveTipoReabilitacaoId(nome: string): Promise<string | null> {
-  if (!nome) return null
-  const { data } = await supabase
-    .from("catalogo_tipos_reabilitacao").select("id")
-  return data?.id ?? null
-}
-
-async function createTipoReabilitacao(nome: string): Promise<string | null> {
-  if (!nome) return null
-  const { data } = await supabase
-    .from("catalogo_tipos_reabilitacao")
-    .insert({ nome })
-    .select("id")
-    .single()
-  return data?.id ?? null
-}
-
-async function resolveTipoAbutmentId(nome: string): Promise<string | null> {
-  if (!nome) return null
-  const { data } = await supabase
-    .from("catalogo_tipos_abutment").select("id")
-  return data?.id ?? null
-}
-
-async function createTipoAbutment(nome: string): Promise<string | null> {
-  if (!nome) return null
-  const { data } = await supabase
-    .from("catalogo_tipos_abutment")
-    .insert({ nome })
-    .select("id")
-    .single()
-  return data?.id ?? null
-}
-
-async function resolveCategoriaId(importType: ImportType, nome: string): Promise<string | null> {
-  if (!nome) return null
-  const table = importType === "acessorios" ? "catalogo_categorias_acessorio" : "catalogo_categorias_instrumental"
-  const { data } = await supabase
-    .from(table).select("id")
-  return data?.id ?? null
-}
-
-async function createCategoria(importType: ImportType, nome: string): Promise<string | null> {
-  if (!nome) return null
-  const table = importType === "acessorios" ? "catalogo_categorias_acessorio" : "catalogo_categorias_instrumental"
-  const { data } = await supabase
-    .from(table)
-    .insert({ nome })
-    .select("id")
-    .single()
-  return data?.id ?? null
-}
-
-async function resolveOrCreateCategoriaKit(nome: string, cache: ExistingDataCache): Promise<string | null> {
-  if (!nome) return null
-  const existing = cache.categoriasKit.get(nome.toLowerCase())
-  if (existing) return existing
-  const { data } = await supabase
-    .from("catalogo_categorias_kit")
-    .insert({ nome })
-    .select("id")
-    .single()
-  return data?.id ?? null
+  return errors
 }
 
 async function fireImportEvents(

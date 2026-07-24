@@ -1,19 +1,19 @@
 import { useState } from "react"
-import { Download, ChevronDown, Files } from "lucide-react"
-import { generateTemplateXLSX } from "../engine/parser"
-import { IMPORT_FIELD_CONFIGS } from "../constants"
+import { Download, ChevronDown, Files, Globe } from "lucide-react"
+import { generateTemplateXLSX, generateGlobalTemplateXLSX } from "../engine/parser"
+import { IMPORT_FIELD_CONFIGS, IMPORT_TYPES } from "../constants"
 import type { ImportType } from "../types"
 
-const IMPORT_TYPES: ImportType[] = [
-  "hierarquia", "implantes", "abutments", "fresas", "acessorios",
-  "chaves", "instrumentais", "kits", "workflows",
-]
+interface TemplatesDropdownProps {
+  /** Restringe os templates individuais listados (padrão: todos). */
+  types?: ImportType[]
+}
 
-export function TemplatesDropdown() {
+export function TemplatesDropdown({ types = IMPORT_TYPES }: TemplatesDropdownProps) {
   const [open, setOpen] = useState(false)
 
   const downloadAll = () => {
-    IMPORT_TYPES.forEach((type) => {
+    types.forEach((type) => {
       setTimeout(() => generateTemplateXLSX(type), 50)
     })
     setOpen(false)
@@ -36,7 +36,7 @@ export function TemplatesDropdown() {
           <p className="px-3 py-1.5 text-[10px] text-white/30 uppercase tracking-wider">
             Baixar template:
           </p>
-          {IMPORT_TYPES.map((type) => {
+          {types.map((type) => {
             const config = IMPORT_FIELD_CONFIGS[type]
             return (
               <button
@@ -50,7 +50,7 @@ export function TemplatesDropdown() {
                 <Download size={11} className="text-white/30 shrink-0" />
                 <span>{config.label}</span>
                 <span className="ml-auto text-[10px] text-white/20">
-                  {config.templateHeaders.length} campos
+                  {config.targetFields.length} campos
                 </span>
               </button>
             )
@@ -61,9 +61,22 @@ export function TemplatesDropdown() {
               className="w-full flex items-center gap-2 px-3 py-2 text-sm text-amber-400 hover:text-amber-300 hover:bg-amber-500/10 transition-colors text-left font-medium"
             >
               <Files size={11} className="shrink-0" />
-              Baixar Todos
+              Baixar Todos (desta página)
               <span className="ml-auto text-[10px] text-white/20">
-                {IMPORT_TYPES.length} templates
+                {types.length}
+              </span>
+            </button>
+            <button
+              onClick={() => {
+                generateGlobalTemplateXLSX()
+                setOpen(false)
+              }}
+              className="w-full flex items-center gap-2 px-3 py-2 text-sm text-sky-400 hover:text-sky-300 hover:bg-sky-500/10 transition-colors text-left font-medium"
+            >
+              <Globe size={11} className="shrink-0" />
+              Baixar Template Global
+              <span className="ml-auto text-[10px] text-white/20">
+                {IMPORT_TYPES.length} abas
               </span>
             </button>
           </div>

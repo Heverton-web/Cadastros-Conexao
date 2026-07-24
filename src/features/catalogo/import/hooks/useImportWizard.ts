@@ -24,7 +24,25 @@ function deleteMapping(id: string): void {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(existing))
 }
 
-export function useImportWizard(empresaId: string) {
+function initialProgress(): ImportWizardState["progress"] {
+  return {
+    status: "idle",
+    currentStep: 0,
+    totalSteps: 5,
+    currentBatch: 0,
+    totalBatches: 0,
+    processedRows: 0,
+    totalRows: 0,
+    insertedCount: 0,
+    updatedCount: 0,
+    skippedCount: 0,
+    errorCount: 0,
+    errors: [],
+    startTime: 0,
+  }
+}
+
+export function useImportWizard() {
   const [state, setState] = useState<ImportWizardState>({
     importType: null,
     file: null,
@@ -32,21 +50,7 @@ export function useImportWizard(empresaId: string) {
     mappings: [],
     validation: null,
     editedRows: new Map(),
-    progress: {
-      status: "idle",
-      currentStep: 0,
-      totalSteps: 5,
-      currentBatch: 0,
-      totalBatches: 0,
-      processedRows: 0,
-      totalRows: 0,
-      insertedCount: 0,
-      updatedCount: 0,
-      skippedCount: 0,
-      errorCount: 0,
-      errors: [],
-      startTime: 0,
-    },
+    progress: initialProgress(),
     savedMappings: loadSavedMappings(),
   })
 
@@ -86,11 +90,10 @@ export function useImportWizard(empresaId: string) {
       importType: state.importType,
       mappings: state.mappings,
       createdAt: new Date().toISOString(),
-      empresaId,
     }
     saveMapping(template)
     setState((s) => ({ ...s, savedMappings: loadSavedMappings() }))
-  }, [state.importType, state.mappings, empresaId])
+  }, [state.importType, state.mappings])
 
   const loadMapping = useCallback((templateId: string) => {
     const template = state.savedMappings.find((m) => m.id === templateId)
@@ -128,21 +131,7 @@ export function useImportWizard(empresaId: string) {
       mappings: [],
       validation: null,
       editedRows: new Map(),
-      progress: {
-        status: "idle",
-        currentStep: 0,
-        totalSteps: 5,
-        currentBatch: 0,
-        totalBatches: 0,
-        processedRows: 0,
-        totalRows: 0,
-        insertedCount: 0,
-        updatedCount: 0,
-        skippedCount: 0,
-        errorCount: 0,
-        errors: [],
-        startTime: 0,
-      },
+      progress: initialProgress(),
       savedMappings: loadSavedMappings(),
     })
     setCurrentStep(0)

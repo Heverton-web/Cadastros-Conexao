@@ -1,6 +1,9 @@
-import { Network, CircleDot, Component, Disc, Package, Wrench, Scissors, Boxes, GitBranch } from "lucide-react"
+import {
+  Network, CircleDot, Component, Package, Bolt, CircleDashed, Wrench, Disc,
+  PlusSquare, SlidersHorizontal, Boxes, Bone, Layers, GitBranch, ListOrdered, Tag,
+} from "lucide-react"
 import type { ImportType } from "../../types"
-import { IMPORT_FIELD_CONFIGS } from "../../constants"
+import { IMPORT_FIELD_CONFIGS, IMPORT_TYPES } from "../../constants"
 
 interface StepSelectTypeProps {
   selectedType: ImportType | null
@@ -11,18 +14,20 @@ const ICON_MAP: Record<string, React.ReactNode> = {
   Network: <Network size={20} />,
   CircleDot: <CircleDot size={20} />,
   Component: <Component size={20} />,
-  Disc: <Disc size={20} />,
   Package: <Package size={20} />,
+  Bolt: <Bolt size={20} />,
+  CircleDashed: <CircleDashed size={20} />,
   Wrench: <Wrench size={20} />,
-  Scissors: <Scissors size={20} />,
+  Disc: <Disc size={20} />,
+  PlusSquare: <PlusSquare size={20} />,
+  SlidersHorizontal: <SlidersHorizontal size={20} />,
   Boxes: <Boxes size={20} />,
+  Bone: <Bone size={20} />,
+  Layers: <Layers size={20} />,
   GitBranch: <GitBranch size={20} />,
+  ListOrdered: <ListOrdered size={20} />,
+  Tag: <Tag size={20} />,
 }
-
-const IMPORT_TYPES: ImportType[] = [
-  "hierarquia", "implantes", "abutments", "fresas", "acessorios",
-  "chaves", "instrumentais", "kits", "workflows",
-]
 
 export function StepSelectType({ selectedType, onSelect }: StepSelectTypeProps) {
   return (

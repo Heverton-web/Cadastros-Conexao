@@ -4,12 +4,19 @@ export type ImportType =
   | "hierarquia"
   | "implantes"
   | "abutments"
-  | "fresas"
-  | "acessorios"
+  | "componentes"
+  | "parafusos"
+  | "cicatrizadores"
   | "chaves"
-  | "instrumentais"
+  | "fresas"
+  | "complementares"
+  | "opcionais"
   | "kits"
-  | "workflows"
+  | "tipos_osso"
+  | "protocolos_fresagem"
+  | "tipos_workflow"
+  | "etapas_workflow"
+  | "promocionais"
 
 export type RowSeverity = "error" | "warning" | "info"
 
@@ -47,9 +54,7 @@ export type ValueTransform =
   | { type: "boolean" }
   | { type: "date" }
   | { type: "enum"; values: string[] }
-  | { type: "lookup"; table: string; nameField: string; idField: string }
-  | { type: "sku_reference" }
-  | { type: "custom"; fn: (value: unknown) => unknown }
+  | { type: "list" }
 
 export interface MappingTemplate {
   id: string
@@ -57,7 +62,6 @@ export interface MappingTemplate {
   importType: ImportType
   mappings: ColumnMapping[]
   createdAt: string
-  empresaId: string
 }
 
 // ============ VALIDATION ============
@@ -115,6 +119,7 @@ export interface ImportProgress {
   errors: ImportError[]
   startTime: number
   estimatedTimeRemaining?: number
+  currentEntityLabel?: string
 }
 
 export interface ImportError {

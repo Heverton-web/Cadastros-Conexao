@@ -8,6 +8,8 @@ import { useState, useEffect } from "react"
 import { Plus, Pencil, Trash2, ToggleRight, ToggleLeft } from "lucide-react"
 import { supabase } from "~/core/supabase"
 import { listarAbutmentChaves, listarAbutmentKits, listarAbutmentParafusos, salvarAbutmentChaves, salvarAbutmentKits, salvarAbutmentParafusos } from "~/features/catalogo/services/componentes.service"
+import { listarKitsDeCicatrizador, salvarKitsDeCicatrizador } from "~/features/catalogo/services/kits.service"
+import { CompositionSection } from "~/features/catalogo/components/admin/produtos/CompositionSection"
 import { useQueryClient, useQuery } from "@tanstack/react-query"
 import { useFamilias, useToggleTipoReabilitacaoAtivo, useToggleTipoAbutmentAtivo, useToggleParafusoRetencaoAtivo, useToggleCicatrizadorAtivo } from "~/features/catalogo/hooks/useCatalogo"
 import { useCatalogoEmpresaId } from "~/features/catalogo/hooks/useCatalogoEmpresa"
@@ -18,6 +20,7 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "~/components/ui/table"
 import toast from "react-hot-toast"
 import type { CatalogoCpsTipoReabilitacao } from "~/features/catalogo/types"
+import { ImportTrigger, TemplatesDropdown, GlobalImportTrigger, IMPORT_TYPE_GROUPS } from "~/features/catalogo/import"
 
 export const catalogoAdminComponentesRoute = createRoute({
   getParentRoute: () => authLayout, path: "/catalogo/admin/componentes",
@@ -195,9 +198,16 @@ function AdminComponentesPage() {
   const [cicEditing, setCicEditing] = useState<any>(null)
   const [cicData, setCicData] = useState({ sku: "", nome: "", sigla: "", descricao: "", implante_id: "", chave_id: "", diametro_plataforma_mm: 0, altura_transmucoso_mm: 0, altura_corpo_mm: 0, torque_ncm: 0, material: "", preco: 0, ativo: true })
   const [cicError, setCicError] = useState("")
+  const [cicKitsIds, setCicKitsIds] = useState<string[]>([])
 
-  function openNewCic() { setCicEditing(null); setCicData({ sku: "", nome: "", sigla: "", descricao: "", implante_id: "", chave_id: "", diametro_plataforma_mm: 0, altura_transmucoso_mm: 0, altura_corpo_mm: 0, torque_ncm: 0, material: "", preco: 0, ativo: true }); setCicError(""); setCicModalOpen(true) }
-  function openEditCic(item: any) { setCicEditing(item); setCicData({ sku: item.sku, nome: item.nome ?? "", sigla: item.sigla ?? "", descricao: item.descricao ?? "", implante_id: item.implante_id ?? "", chave_id: item.chave_id ?? "", diametro_plataforma_mm: item.diametro_plataforma_mm ?? 0, altura_transmucoso_mm: item.altura_transmucoso_mm ?? 0, altura_corpo_mm: item.altura_corpo_mm ?? 0, torque_ncm: item.torque_ncm ?? 0, material: item.material ?? "", preco: item.preco ?? 0, ativo: item.ativo !== false }); setCicError(""); setCicModalOpen(true) }
+  function openNewCic() { setCicEditing(null); setCicData({ sku: "", nome: "", sigla: "", descricao: "", implante_id: "", chave_id: "", diametro_plataforma_mm: 0, altura_transmucoso_mm: 0, altura_corpo_mm: 0, torque_ncm: 0, material: "", preco: 0, ativo: true }); setCicKitsIds([]); setCicError(""); setCicModalOpen(true) }
+  async function openEditCic(item: any) {
+    setCicEditing(item)
+    setCicData({ sku: item.sku, nome: item.nome ?? "", sigla: item.sigla ?? "", descricao: item.descricao ?? "", implante_id: item.implante_id ?? "", chave_id: item.chave_id ?? "", diametro_plataforma_mm: item.diametro_plataforma_mm ?? 0, altura_transmucoso_mm: item.altura_transmucoso_mm ?? 0, altura_corpo_mm: item.altura_corpo_mm ?? 0, torque_ncm: item.torque_ncm ?? 0, material: item.material ?? "", preco: item.preco ?? 0, ativo: item.ativo !== false })
+    setCicError("")
+    setCicModalOpen(true)
+    setCicKitsIds(await listarKitsDeCicatrizador(item.sku))
+  }
 
   async function handleSaveCic() {
     setCicError("")
@@ -212,6 +222,7 @@ function AdminComponentesPage() {
       const { error } = await supabase.from("catalogo_cicatrizadores").insert(payload)
       if (error) { setCicError(error.message); return }
     }
+    await salvarKitsDeCicatrizador(cicData.sku, cicKitsIds)
     toast.success(cicEditing ? "Cicatrizador atualizado!" : "Cicatrizador criado!")
     setCicModalOpen(false); qc.invalidateQueries({ queryKey: ["catalogo"] })
   }
@@ -328,9 +339,16 @@ function AdminComponentesPage() {
   return (
     <AdminLayout>
       <div className="space-y-6">
-        <div className="bg-[var(--color-surface)] p-6 rounded-2xl border border-[var(--color-border-subtle)] shadow-lg">
-          <h1 className="text-2xl font-black text-white">Componentes</h1>
-          <p className="text-sm mt-1" style={{color:"var(--color-text-muted, #94a3b8)"}}>Gerencie tipos e produtos de componentes protéticos.</p>
+        <div className="bg-[var(--color-surface)] p-6 rounded-2xl border border-[var(--color-border-subtle)] shadow-lg flex items-start justify-between gap-4 flex-wrap">
+          <div>
+            <h1 className="text-2xl font-black text-white">Componentes</h1>
+            <p className="text-sm mt-1" style={{color:"var(--color-text-muted, #94a3b8)"}}>Gerencie tipos e produtos de componentes protéticos.</p>
+          </div>
+          <div className="flex gap-2 flex-wrap">
+            <ImportTrigger types={IMPORT_TYPE_GROUPS.componentes} />
+            <TemplatesDropdown types={IMPORT_TYPE_GROUPS.componentes} />
+            <GlobalImportTrigger />
+          </div>
         </div>
         <div className="flex gap-2 flex-wrap">
           {SUB_TABS.map(st => <button key={st} onClick={() => setSubTab(st)} className={`px-4 py-3 rounded-xl text-sm font-bold transition-all ${subTab === st ? "bg-[#c9a655] text-[#0f172a]" : "bg-[var(--color-surface)] text-[var(--color-text-muted)] border border-transparent hover:border-white/5"}`}>{st}</button>)}
@@ -763,6 +781,8 @@ function AdminComponentesPage() {
               <div className="space-y-2"><label className={labelCls}>Implante</label><select value={cicData.implante_id} onChange={e=>setCicData({...cicData,implante_id:e.target.value})} className={selectCls}><option value="">Selecione...</option>{implantesList?.map((im:any)=><option key={im.sku} value={im.sku}>{im.sku} - {im.nome}</option>)}</select></div>
               <div className="space-y-2"><label className={labelCls}>Chave</label><select value={cicData.chave_id} onChange={e=>setCicData({...cicData,chave_id:e.target.value})} className={selectCls}><option value="">Nenhuma</option>{chavesList?.map((c:any)=><option key={c.sku} value={c.sku}>{c.nome}</option>)}</select></div>
             </div>
+            <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655]">Composição</h3>
+            <CompositionSection label="Kits" selectedIds={cicKitsIds} options={todosKits?.map((k:any)=>({id:k.sku,label:k.nome}))??[]} placeholder="Selecione um kit..." onChange={setCicKitsIds} />
             <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655]">Identificação</h3>
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2"><label className={labelCls}>SKU *</label><input type="text" value={cicData.sku} onChange={e=>setCicData({...cicData,sku:e.target.value})} className={inputCls} placeholder="Ex: CIC-001" /></div>
@@ -798,34 +818,5 @@ function AdminComponentesPage() {
         </DialogContent>
       </Dialog>
     </AdminLayout>
-  )
-}
-function CompositionSection({ label, selectedIds, options, placeholder, onChange }: { label: string; selectedIds: string[]; options: { id: string; label: string }[]; placeholder: string; onChange: (ids: string[]) => void }) {
-  const [selected, setSelected] = useState("")
-  function handleAdd() { if (selected && !selectedIds.includes(selected)) { onChange([...selectedIds, selected]); setSelected("") } }
-  function handleRemove(id: string) { onChange(selectedIds.filter((s) => s !== id)) }
-  const allOptions = options.length > 0 ? options : []
-  const selectedLabels = selectedIds.map((id) => { const found = allOptions.find((o) => o.id === id); return { id, label: found?.label ?? id } })
-  return (
-    <div className="rounded-xl border border-white/10 bg-[var(--color-surface)]/50 p-4 space-y-3">
-      <p className="text-[10px] font-black uppercase tracking-widest text-gray-500">{label}</p>
-      <div className="flex gap-3">
-        <select value={selected} onChange={(e) => setSelected(e.target.value)} className="flex-1 bg-[#0f172a] border border-white/10 rounded-lg px-4 py-3 text-sm text-white appearance-none cursor-pointer focus:outline-none focus:border-[#c9a655]/50 transition-colors">
-          <option value="">{placeholder}</option>
-          {allOptions.filter((o) => !selectedIds.includes(o.id)).map((o) => (<option key={o.id} value={o.id}>{o.label}</option>))}
-        </select>
-        <button type="button" onClick={handleAdd} disabled={!selected} className="px-5 py-3 rounded-lg text-xs font-black uppercase tracking-wider text-[#0f172a] bg-gradient-to-r from-[#c9a655] to-[#e8d48b] hover:from-[#e8d48b] hover:to-[#c9a655] transition-all shrink-0 disabled:opacity-30 disabled:cursor-not-allowed">Adicionar</button>
-      </div>
-      {selectedLabels.length > 0 && (
-        <div className="flex flex-wrap gap-2 pt-1">
-          {selectedLabels.map((item) => (
-            <span key={item.id} className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#c9a655]/10 border border-[#c9a655]/20 text-xs font-medium text-[#c9a655]">
-              {item.label}
-              <button type="button" onClick={() => handleRemove(item.id)} className="ml-0.5 text-[#c9a655]/50 hover:text-red-400 transition-colors"><Trash2 size={12} /></button>
-            </span>
-          ))}
-        </div>
-      )}
-    </div>
   )
 }

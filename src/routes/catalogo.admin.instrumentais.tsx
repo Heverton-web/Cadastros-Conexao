@@ -15,6 +15,9 @@ import { ImageUploader } from "~/features/catalogo/components/admin/produtos/Ima
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "~/components/ui/alert-dialog"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "~/components/ui/table"
 import toast from "react-hot-toast"
+import { listarKitsDeChave, salvarKitsDeChave, listarKitsDeFresa, salvarKitsDeFresa } from "~/features/catalogo/services/kits.service"
+import { CompositionSection } from "~/features/catalogo/components/admin/produtos/CompositionSection"
+import { ImportTrigger, TemplatesDropdown, GlobalImportTrigger, IMPORT_TYPE_GROUPS } from "~/features/catalogo/import"
 
 export const catalogoAdminInstrumentaisRoute = createRoute({
   getParentRoute: () => authLayout, path: "/catalogo/admin/instrumentais",
@@ -40,6 +43,7 @@ function AdminInstrumentaisPage() {
   const { data: complementares } = useQuery({ queryKey: ["catalogo", "complementares-list"], queryFn: async () => { const { data } = await supabase.from("catalogo_complementares").select("*, tipo_complementar:catalogo_tipos_complementares(*)").order("sku"); return (data ?? []) as any[] }, enabled: !!empresaId })
   const { data: tiposOpcional } = useQuery({ queryKey: ["catalogo", "tipos-opcional"], queryFn: async () => { const { data } = await supabase.from("catalogo_tipos_opcionais").select("*").order("nome"); return (data ?? []) as any[] }, enabled: !!empresaId })
   const { data: opcionais } = useQuery({ queryKey: ["catalogo", "opcionais-list"], queryFn: async () => { const { data } = await supabase.from("catalogo_opcionais").select("*, tipo_opcional:catalogo_tipos_opcionais(*)").order("sku"); return (data ?? []) as any[] }, enabled: !!empresaId })
+  const { data: todosKits } = useQuery({ queryKey: ["catalogo", "todos-kits"], queryFn: async () => { const { data } = await supabase.from("catalogo_kits").select("sku, nome").order("nome"); return (data ?? []) as any[] }, enabled: !!empresaId })
 
   // Modal state
   const [modalOpen, setModalOpen] = useState(false)
@@ -53,8 +57,9 @@ function AdminInstrumentaisPage() {
   // Product modal state
   const [prodModalOpen, setProdModalOpen] = useState(false)
   const [prodEditing, setProdEditing] = useState<any>(null)
-  const [prodData, setProdData] = useState({ sku: "", nome: "", sigla: "", descricao: "", tipo_chave_id: "", tipo_fresa_id: "", tipo_complementar_id: "", tipo_opcional_id: "", kit_id: "", tipo: "", comprimento: "", diametro_mm: 0, material: "", preco: 0, ativo: true })
+  const [prodData, setProdData] = useState({ sku: "", nome: "", sigla: "", descricao: "", tipo_chave_id: "", tipo_fresa_id: "", tipo_complementar_id: "", tipo_opcional_id: "", tipo: "", comprimento: "", diametro_mm: 0, material: "", preco: 0, ativo: true })
   const [prodError, setProdError] = useState("")
+  const [prodKitsIds, setProdKitsIds] = useState<string[]>([])
 
   const [deleteItem, setDeleteItem] = useState<{ id: string; label: string; table: string } | null>(null)
 
@@ -86,18 +91,25 @@ function AdminInstrumentaisPage() {
 
   async function handleDelete() {
     if (!deleteItem) return
-    const { error } = await supabase.from(deleteItem.table).delete().eq("id", deleteItem.id)
+    const col = ["catalogo_chaves", "catalogo_fresas", "catalogo_complementares", "catalogo_opcionais"].includes(deleteItem.table) ? "sku" : "id"
+    const { error } = await supabase.from(deleteItem.table).delete().eq(col, deleteItem.id)
     if (error) { toast.error(error.message); return }
     toast.success("Excluído!"); setDeleteItem(null); qc.invalidateQueries({ queryKey: ["catalogo"] })
   }
 
   // Product handlers
   function openNewProd() {
-    if (subTab === "Chaves" || subTab === "Fresas" || subTab === "Complementares" || subTab === "Opcionais") { setProdEditing(null); setProdData({ sku: "", nome: "", sigla: "", descricao: "", tipo_chave_id: "", tipo_fresa_id: "", tipo_complementar_id: "", tipo_opcional_id: "", kit_id: "", tipo: "", comprimento: "", diametro_mm: 0, material: "", preco: 0, ativo: true }); setProdError(""); setProdModalOpen(true) }
+    if (subTab === "Chaves" || subTab === "Fresas" || subTab === "Complementares" || subTab === "Opcionais") { setProdEditing(null); setProdData({ sku: "", nome: "", sigla: "", descricao: "", tipo_chave_id: "", tipo_fresa_id: "", tipo_complementar_id: "", tipo_opcional_id: "", tipo: "", comprimento: "", diametro_mm: 0, material: "", preco: 0, ativo: true }); setProdKitsIds([]); setProdError(""); setProdModalOpen(true) }
   }
 
-  function openEditProd(item: any) {
-    setProdEditing(item); setProdData({ sku: item.sku, nome: item.nome ?? "", sigla: item.sigla ?? "", descricao: item.descricao ?? "", tipo_chave_id: item.tipo_chave_id ?? "", tipo_fresa_id: item.tipo_fresa_id ?? "", tipo_complementar_id: item.tipo_complementar_id ?? "", tipo_opcional_id: item.tipo_opcional_id ?? "", kit_id: item.kit_id ?? "", tipo: item.tipo ?? "", comprimento: item.comprimento ?? "", diametro_mm: item.diametro_mm ?? 0, material: item.material ?? "", preco: item.preco ?? 0, ativo: item.ativo !== false }); setProdError(""); setProdModalOpen(true)
+  async function openEditProd(item: any) {
+    setProdEditing(item)
+    setProdData({ sku: item.sku, nome: item.nome ?? "", sigla: item.sigla ?? "", descricao: item.descricao ?? "", tipo_chave_id: item.tipo_chave_id ?? "", tipo_fresa_id: item.tipo_fresa_id ?? "", tipo_complementar_id: item.tipo_complementar_id ?? "", tipo_opcional_id: item.tipo_opcional_id ?? "", tipo: item.tipo ?? "", comprimento: item.comprimento ?? "", diametro_mm: item.diametro_mm ?? 0, material: item.material ?? "", preco: item.preco ?? 0, ativo: item.ativo !== false })
+    setProdError("")
+    setProdModalOpen(true)
+    if (subTab === "Chaves") setProdKitsIds(await listarKitsDeChave(item.sku))
+    else if (subTab === "Fresas") setProdKitsIds(await listarKitsDeFresa(item.sku))
+    else setProdKitsIds([])
   }
 
   async function handleSaveProd() {
@@ -119,8 +131,6 @@ function AdminInstrumentaisPage() {
       ativo: prodData.ativo
     }
 
-    if (prodData.kit_id) payload.kit_id = prodData.kit_id
-
     if (subTab === "Chaves") {
       if (prodData.tipo_chave_id) payload.tipo_chave_id = prodData.tipo_chave_id
     } else if (subTab === "Fresas") {
@@ -133,6 +143,8 @@ function AdminInstrumentaisPage() {
 
     if (prodEditing) { const { error } = await supabase.from(table).update(payload).eq("sku", prodEditing.sku); if (error) { setProdError(error.message); return } }
     else { const { error } = await supabase.from(table).insert(payload); if (error) { setProdError(error.message); return } }
+    if (subTab === "Chaves") await salvarKitsDeChave(payload.sku, prodKitsIds)
+    else if (subTab === "Fresas") await salvarKitsDeFresa(payload.sku, prodKitsIds)
     toast.success(prodEditing ? "Atualizado!" : "Criado!")
     setProdModalOpen(false); qc.invalidateQueries({ queryKey: ["catalogo"] })
   }
@@ -151,9 +163,16 @@ function AdminInstrumentaisPage() {
   return (
     <AdminLayout>
       <div className="space-y-6">
-        <div className="bg-[var(--color-surface)] p-6 rounded-2xl border border-[var(--color-border-subtle)] shadow-lg">
-          <h1 className="text-2xl font-black text-white">Instrumentais</h1>
-          <p className="text-sm mt-1" style={{color:"var(--color-text-muted, #94a3b8)"}}>Gerencie tipos e produtos de instrumentais.</p>
+        <div className="bg-[var(--color-surface)] p-6 rounded-2xl border border-[var(--color-border-subtle)] shadow-lg flex items-start justify-between gap-4 flex-wrap">
+          <div>
+            <h1 className="text-2xl font-black text-white">Instrumentais</h1>
+            <p className="text-sm mt-1" style={{color:"var(--color-text-muted, #94a3b8)"}}>Gerencie tipos e produtos de instrumentais.</p>
+          </div>
+          <div className="flex gap-2 flex-wrap">
+            <ImportTrigger types={IMPORT_TYPE_GROUPS.instrumentais} />
+            <TemplatesDropdown types={IMPORT_TYPE_GROUPS.instrumentais} />
+            <GlobalImportTrigger />
+          </div>
         </div>
         <div className="flex gap-2 flex-wrap">{SUB_TABS.map(st => <button key={st} onClick={() => setSubTab(st)} className={`px-4 py-3 rounded-xl text-sm font-bold transition-all ${subTab === st ? "bg-[#c9a655] text-[#0f172a]" : "bg-[var(--color-surface)] text-[var(--color-text-muted)] border border-transparent hover:border-white/5"}`}>{st}</button>)}</div>
         <div className="rounded-2xl border bg-[var(--color-surface)]/50 p-6 shadow-xl" style={{borderColor:"rgba(201,166,85,0.15)"}}>
@@ -293,12 +312,12 @@ function AdminInstrumentaisPage() {
                 {(subTab==="Chaves"?tiposChave:subTab==="Fresas"?tiposFresa:subTab==="Complementares"?tiposComplementar:tiposOpcional)?.map((t:any)=><option key={t.id} value={t.id}>{t.nome}</option>)}
               </select>
             </div>
-            <div className="space-y-2">
-              <label className={labelCls}>Vincular a Kit</label>
-              <select value={prodData.kit_id} onChange={e=>setProdData({...prodData,kit_id:e.target.value})} className={selectCls}>
-                <option value="">Nenhum</option>
-              </select>
-            </div>
+            {(subTab === "Chaves" || subTab === "Fresas") && (
+              <>
+                <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655]">Composição</h3>
+                <CompositionSection label="Kits" selectedIds={prodKitsIds} options={todosKits?.map((k:any)=>({id:k.sku,label:k.nome}))??[]} placeholder="Selecione um kit..." onChange={setProdKitsIds} />
+              </>
+            )}
             <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655]">Identificação</h3>
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2"><label className={labelCls}>SKU *</label><input type="text" value={prodData.sku} onChange={e=>setProdData({...prodData,sku:e.target.value})} className={inputCls} /></div>

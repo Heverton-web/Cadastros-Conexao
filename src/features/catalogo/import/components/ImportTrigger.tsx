@@ -1,34 +1,41 @@
 import { useState } from "react"
-import { Upload, ChevronDown, Network, CircleDot, Component, Disc, Package, Wrench, Scissors, Boxes, GitBranch, Layers } from "lucide-react"
+import {
+  Upload, ChevronDown, Network, CircleDot, Component, Package, Bolt, CircleDashed,
+  Wrench, Disc, PlusSquare, SlidersHorizontal, Boxes, Bone, Layers, GitBranch,
+  ListOrdered, Tag, Layers3,
+} from "lucide-react"
 import { ImportDialog } from "./ImportDialog"
-import { useEmpresaCrudId } from "../../contexts/EmpresaCrudContext"
-import { IMPORT_FIELD_CONFIGS } from "../constants"
+import { IMPORT_FIELD_CONFIGS, IMPORT_TYPES } from "../constants"
 import type { ImportType } from "../types"
 
 const ICON_MAP: Record<string, React.ReactNode> = {
   Network: <Network size={13} />,
   CircleDot: <CircleDot size={13} />,
   Component: <Component size={13} />,
-  Disc: <Disc size={13} />,
   Package: <Package size={13} />,
+  Bolt: <Bolt size={13} />,
+  CircleDashed: <CircleDashed size={13} />,
   Wrench: <Wrench size={13} />,
-  Scissors: <Scissors size={13} />,
+  Disc: <Disc size={13} />,
+  PlusSquare: <PlusSquare size={13} />,
+  SlidersHorizontal: <SlidersHorizontal size={13} />,
   Boxes: <Boxes size={13} />,
+  Bone: <Bone size={13} />,
+  Layers: <Layers size={13} />,
   GitBranch: <GitBranch size={13} />,
+  ListOrdered: <ListOrdered size={13} />,
+  Tag: <Tag size={13} />,
 }
 
-const IMPORT_TYPES: ImportType[] = [
-  "hierarquia", "implantes", "abutments", "fresas", "acessorios",
-  "chaves", "instrumentais", "kits", "workflows",
-]
+interface ImportTriggerProps {
+  /** Restringe o dropdown de seleção rápida a estes tipos (padrão: todos). */
+  types?: ImportType[]
+}
 
-export function ImportTrigger() {
+export function ImportTrigger({ types = IMPORT_TYPES }: ImportTriggerProps) {
   const [open, setOpen] = useState(false)
   const [initialType, setInitialType] = useState<ImportType | null>(null)
   const [dropdownOpen, setDropdownOpen] = useState(false)
-  const empresaId = useEmpresaCrudId()
-
-  if (!empresaId) return null
 
   const handleSelectType = (type: ImportType) => {
     setInitialType(type)
@@ -65,7 +72,7 @@ export function ImportTrigger() {
             <p className="px-3 py-1.5 text-[10px] text-white/30 uppercase tracking-wider">
               Importar tipo:
             </p>
-            {IMPORT_TYPES.map((type) => {
+            {types.map((type) => {
               const config = IMPORT_FIELD_CONFIGS[type]
               return (
                 <button
@@ -88,8 +95,8 @@ export function ImportTrigger() {
                 onClick={handleSelectMultiple}
                 className="w-full flex items-center gap-2.5 px-3 py-2 text-sm text-amber-400 hover:text-amber-300 hover:bg-amber-500/10 transition-colors text-left font-medium"
               >
-                <Layers size={13} className="shrink-0" />
-                Importar Varias
+                <Layers3 size={13} className="shrink-0" />
+                Importar Várias
                 <span className="ml-auto text-[10px] text-white/20">
                   wizard completo
                 </span>
@@ -102,7 +109,6 @@ export function ImportTrigger() {
       <ImportDialog
         open={open}
         onOpenChange={handleClose}
-        empresaId={empresaId}
         initialType={initialType}
       />
     </>

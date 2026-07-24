@@ -1,40 +1,61 @@
 import type { ColumnMapping, ImportType } from "../types"
 import { IMPORT_FIELD_CONFIGS } from "../constants"
+import { normalizeText } from "./parser"
 
 const COLUMN_SYNONYMS: Record<string, string[]> = {
   sku: ["sku", "codigo", "code", "item", "cod"],
-  nome: ["nome", "name", "descricao", "description", "desc"],
-  preco: ["preco", "price", "valor", "preço"],
-  diametro_mm: ["diametro", "diameter", "dia", "ø"],
-  comprimento_mm: ["comprimento", "length", "compr", "comp"],
+  nome: ["nome", "name"],
+  sigla: ["sigla", "abreviacao", "abbr"],
+  descricao: ["descricao", "description", "desc"],
+  preco: ["preco", "price", "valor"],
   ativo: ["ativo", "active", "habilitado", "enabled"],
+  diametro_mm: ["diametro", "diameter", "dia"],
+  comprimento_mm: ["comprimento", "length", "compr", "comp"],
+  comprimento: ["comprimento", "length", "compr", "comp"],
+  material: ["material"],
+  tipo: ["tipo", "type"],
   categoria_nome: ["categoria", "category", "cat"],
-  conexao_nome: ["conexao", "connection", "conn", "conexão"],
-  familia_nome: ["familia", "family", "família"],
+  conexao_nome: ["conexao", "connection", "conn"],
+  conexao_sigla: ["sigla conexao", "conexao sigla"],
+  familia_nome: ["familia", "family"],
+  familia_cor: ["cor familia", "familia cor", "cor identificacao"],
   linha_nome: ["linha", "line"],
-  quantidade: ["quantidade", "qty", "quant", "qtd"],
-  rosca_interna: ["rosca", "rosca interna", "thread"],
-  venda_avulsa: ["venda avulsa", "avulso", "solto"],
-  tipo_ferramenta: ["tipo ferramenta", "tipo", "tool type"],
-  descricao: ["descricao", "description", "desc", "descrição"],
-  angulacao_graus: ["angulacao", "angulation", "angulo", "angulação"],
-  altura_transmucoso: ["altura transmucoso", "altura", "height"],
-  diametro_plataforma: ["diametro plataforma", "plataforma", "platform"],
-  tipo_reabilitacao_nome: ["tipo reabilitacao", "reabilitacao", "rehabilitation"],
+  osso_soft_nome: ["osso soft", "protocolo soft"],
+  osso_hard_nome: ["osso hard", "protocolo hard"],
+  rosca_interna: ["rosca", "thread"],
+  regiao_apical: ["regiao apical", "apical"],
+  regiao_cervical: ["regiao cervical", "cervical"],
+  torque_insercao: ["torque insercao", "torque"],
+  macrogeometria: ["macrogeometria"],
+  superficie: ["superficie", "surface"],
   tipo_abutment_nome: ["tipo abutment", "abutment type"],
-  categoria_kit_nome: ["categoria kit", "kit category"],
-  familias: ["familias", "families", "famílias"],
-  bom_tipo: ["bom tipo", "tipo item", "item type", "bom"],
-  bom_sku: ["bom sku", "sku item", "item sku", "sku item bom"],
-  bom_quantidade: ["bom quantidade", "bom qtd", "quantidade item", "qty"],
-  workflow_nome: ["workflow", "protocolo", "protocol"],
-  workflow_descricao: ["workflow descricao", "protocolo descricao", "workflow desc"],
-  etapa_nome: ["etapa", "step", "fase", "stage"],
-  etapa_ordem: ["etapa ordem", "ordem etapa", "step order", "ordem"],
-  guia_familia_nome: ["guia familia", "familia guia", "guide family"],
-  guia_tipo_abutment_nome: ["guia tipo abutment", "guia abutment"],
-  guia_diametro: ["guia diametro", "diametro guia", "guide diameter"],
-  guia_acessorio_sku: ["guia acessorio", "acessorio guia", "guide accessory"],
+  tipo_componente_nome: ["tipo componente", "component type"],
+  tipo_parafuso_nome: ["tipo parafuso", "screw type"],
+  tipo_chave_nome: ["tipo chave", "key type"],
+  tipo_fresa_nome: ["tipo fresa", "drill type"],
+  tipo_complementar_nome: ["tipo complementar"],
+  tipo_opcional_nome: ["tipo opcional"],
+  tipo_kit_nome: ["tipo kit", "kit type"],
+  parafuso_sku: ["sku parafuso", "parafuso sku"],
+  chave_sku: ["sku chave", "chave sku"],
+  implante_sku: ["sku implante", "implante sku"],
+  diametro_plataforma_mm: ["diametro plataforma", "plataforma"],
+  altura_transmucoso_mm: ["altura transmucoso", "transmucoso"],
+  altura_corpo_mm: ["altura corpo", "corpo"],
+  angulacao_graus: ["angulacao", "angulation", "angulo"],
+  torque_ncm: ["torque ncm", "torque"],
+  tipo_osso: ["tipo osso", "sigla tipo de osso", "bone type"],
+  categoria: ["categoria hard soft", "hard soft"],
+  diametro_mm_aplicavel: ["diametro aplicavel", "diametro mm aplicavel"],
+  chaves_skus: ["chaves", "skus chaves"],
+  fresas_skus: ["fresas", "skus fresas"],
+  complementares_skus: ["complementares", "skus complementares"],
+  opcionais_skus: ["opcionais", "skus opcionais"],
+  implantes_skus: ["implantes", "skus implantes"],
+  tipo_workflow_nome: ["tipo workflow", "workflow type"],
+  ordem: ["ordem", "order"],
+  expira_em: ["expira em", "expiracao", "validade"],
+  itens: ["itens", "items"],
 }
 
 export function autoDetectMappings(
@@ -45,24 +66,17 @@ export function autoDetectMappings(
   if (!fieldConfig) return []
 
   return fieldConfig.targetFields.map((target) => {
-    let matchedSource = fileHeaders.find(
-      (h) => h.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "") ===
-        target.key.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-    )
+    let matchedSource = fileHeaders.find((h) => normalizeText(h) === normalizeText(target.key))
+
+    if (!matchedSource) {
+      matchedSource = fileHeaders.find((h) => normalizeText(h) === normalizeText(target.label))
+    }
 
     if (!matchedSource) {
       const synonyms = COLUMN_SYNONYMS[target.key] ?? []
       matchedSource = fileHeaders.find((h) => {
-        const hLower = h.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-        return synonyms.some((s) => hLower.includes(s))
-      })
-    }
-
-    if (!matchedSource) {
-      const keyBase = target.key.split("_")[0]
-      matchedSource = fileHeaders.find((h) => {
-        const hLower = h.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-        return hLower.includes(keyBase.toLowerCase().slice(0, 4))
+        const hNorm = normalizeText(h)
+        return synonyms.some((s) => hNorm.includes(normalizeText(s)))
       })
     }
 
@@ -71,7 +85,7 @@ export function autoDetectMappings(
       targetField: target.key,
       transform: target.transform as ColumnMapping["transform"],
       isRequired: target.required,
-      isAutoGenerated: target.autoGenerated ?? false,
+      isAutoGenerated: false,
     }
   })
 }
@@ -123,6 +137,6 @@ export function getTransformPreview(
 ): string {
   if (value === null || value === undefined || value === "") return "—"
   const transformed = transformValue(value, transform)
-  if (transformed === null) return "(invalido)"
+  if (transformed === null) return "(inválido)"
   return String(transformed)
 }

@@ -13,6 +13,7 @@ import { ImageUploader } from "~/features/catalogo/components/admin/produtos/Ima
 import { ProdutoPickerInline, type PickerItem } from "~/features/catalogo/components/admin/produtos/ProdutoPickerInline"
 import type { CatalogoPromocional } from "~/features/catalogo/types"
 import { CATALOGO_TIPO_LABEL } from "~/features/catalogo/types"
+import { ImportTrigger, TemplatesDropdown, GlobalImportTrigger, IMPORT_TYPE_GROUPS } from "~/features/catalogo/import"
 
 const FORM_INICIAL = { nome: "", descricao: "", preco: 0, expira_em: "" }
 
@@ -116,12 +117,17 @@ function AdminPromocionaisPage() {
           <p className="text-sm mt-1" style={{ color: "var(--color-text-muted, #94a3b8)" }}>Crie pacotes (kits) com preços especiais e prazo de expiração.</p>
         </div>
 
-        <Dialog open={formOpen} onOpenChange={(o) => { if (!o) fecharDialog(); else setFormOpen(o) }}>
-          <DialogTrigger asChild>
-            <button onClick={openNew} className="flex items-center gap-2 px-6 py-3 rounded-xl font-black text-sm transition-transform hover:scale-105" style={{ background: "linear-gradient(135deg, var(--color-gradient-start), var(--color-gradient-mid))", color: "var(--color-accent-fg)" }}>
-              <Plus className="h-4 w-4" /> NOVO PACOTE
-            </button>
-          </DialogTrigger>
+        <div className="flex gap-2 flex-wrap items-center">
+          <ImportTrigger types={IMPORT_TYPE_GROUPS.promocionais} />
+          <TemplatesDropdown types={IMPORT_TYPE_GROUPS.promocionais} />
+          <GlobalImportTrigger />
+
+          <Dialog open={formOpen} onOpenChange={(o) => { if (!o) fecharDialog(); else setFormOpen(o) }}>
+            <DialogTrigger asChild>
+              <button onClick={openNew} className="flex items-center gap-2 px-6 py-3 rounded-xl font-black text-sm transition-transform hover:scale-105" style={{ background: "linear-gradient(135deg, var(--color-gradient-start), var(--color-gradient-mid))", color: "var(--color-accent-fg)" }}>
+                <Plus className="h-4 w-4" /> NOVO PACOTE
+              </button>
+            </DialogTrigger>
           <DialogContent className="bg-[var(--color-background)] border-[var(--color-border-subtle)] text-white max-w-2xl flex flex-col max-h-[85vh] overflow-hidden">
             <DialogHeader className="shrink-0">
               <DialogTitle>{editingItem ? "Editar Pacote Promocional" : "Criar Pacote Promocional"}</DialogTitle>
@@ -175,6 +181,7 @@ function AdminPromocionaisPage() {
             </DialogFooter>
           </DialogContent>
         </Dialog>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">

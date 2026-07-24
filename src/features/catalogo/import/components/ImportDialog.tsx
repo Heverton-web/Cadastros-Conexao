@@ -16,14 +16,13 @@ import type { ImportType } from "../types"
 interface ImportDialogProps {
   open: boolean
   onOpenChange: (open: boolean) => void
-  empresaId: string
   initialType?: ImportType | null
 }
 
-const ALL_STEP_LABELS = ["Tipo", "Arquivo", "Mapeamento", "Validacao", "Importar"]
+const ALL_STEP_LABELS = ["Tipo", "Arquivo", "Mapeamento", "Validação", "Importar"]
 
-export function ImportDialog({ open, onOpenChange, empresaId, initialType }: ImportDialogProps) {
-  const wizard = useImportWizard(empresaId)
+export function ImportDialog({ open, onOpenChange, initialType }: ImportDialogProps) {
+  const wizard = useImportWizard()
   const fileParser = useFileParser()
 
   const hasInitialType = !!initialType
@@ -49,14 +48,12 @@ export function ImportDialog({ open, onOpenChange, empresaId, initialType }: Imp
   const rowValidator = useRowValidator({
     importType,
     rows: mappedData,
-    empresaId,
     enabled: wizard.currentStep === 3 && mappedData.length > 0,
   })
 
   const importExecutor = useImportExecutor({
-    empresaId,
     onImportComplete: () => {
-      // queries will be invalidated by parent
+      // invalidação de queries é feita pela página que abriu o dialog
     },
   })
 
@@ -84,12 +81,19 @@ export function ImportDialog({ open, onOpenChange, empresaId, initialType }: Imp
     wizard.prevStep()
   }
 
+  const handleEditRow = (rowIndex: number, field: string, value: unknown) => {
+    wizard.editRow(rowIndex, field, value)
+    const nextEdited = new Map(wizard.state.editedRows)
+    nextEdited.set(rowIndex, { ...nextEdited.get(rowIndex), [field]: value })
+    rowValidator.revalidate(nextEdited)
+  }
+
   const canProceed = () => {
     switch (wizard.currentStep) {
       case 0: return !!wizard.state.importType
       case 1: return !!fileParser.parsedFile && !fileParser.error
       case 2: return columnMapper.requiredFieldsMet()
-      case 3: return rowValidator.validationResult && rowValidator.validationResult.validRows.length > 0
+      case 3: return !!rowValidator.validationResult && rowValidator.validationResult.validRows.length > 0
       default: return false
     }
   }
@@ -99,7 +103,7 @@ export function ImportDialog({ open, onOpenChange, empresaId, initialType }: Imp
       <DialogContent className="bg-[#0f172a] border-[var(--color-border-subtle)] text-white flex flex-col max-h-[85vh] overflow-hidden max-w-4xl">
         <DialogHeader className="shrink-0">
           <DialogTitle className="text-lg font-semibold">
-            Importar {importType ? IMPORT_FIELD_CONFIGS[importType].label : "Catalogo"}
+            Importar {importType ? IMPORT_FIELD_CONFIGS[importType].label : "Catálogo"}
           </DialogTitle>
           <div className="flex gap-1 mt-3">
             {stepLabels.map((label, i) => {
@@ -115,7 +119,7 @@ export function ImportDialog({ open, onOpenChange, empresaId, initialType }: Imp
                           : "bg-white/10 text-white/40"
                     }`}
                   >
-                    {realStep < wizard.currentStep ? "\u2713" : i + 1}
+                    {realStep < wizard.currentStep ? "✓" : i + 1}
                   </div>
                   <span
                     className={`text-xs hidden sm:inline ${
@@ -158,7 +162,7 @@ export function ImportDialog({ open, onOpenChange, empresaId, initialType }: Imp
               validationResult={rowValidator.validationResult}
               isValidating={rowValidator.isValidating}
               editedRows={wizard.state.editedRows}
-              onEditRow={wizard.editRow}
+              onEditRow={handleEditRow}
               fileHeaders={mappedHeaders}
               importType={wizard.state.importType!}
             />
@@ -168,10 +172,9 @@ export function ImportDialog({ open, onOpenChange, empresaId, initialType }: Imp
               importType={wizard.state.importType!}
               validRows={rowValidator.getValidRows()}
               editedRows={wizard.state.editedRows}
-              empresaId={empresaId}
               executor={importExecutor}
               onComplete={() => {
-                // invalidation handled by parent
+                // invalidação de queries é feita pela página que abriu o dialog
               }}
             />
           )}
@@ -198,7 +201,7 @@ export function ImportDialog({ open, onOpenChange, empresaId, initialType }: Imp
                 disabled={!canProceed()}
                 className="px-4 py-2 text-sm bg-amber-500 text-black font-medium rounded hover:bg-amber-400 disabled:opacity-30 disabled:cursor-not-allowed"
               >
-                {wizard.currentStep === 3 ? "Importar" : "Proximo"}
+                {wizard.currentStep === 3 ? "Importar" : "Próximo"}
               </button>
             )}
           </div>

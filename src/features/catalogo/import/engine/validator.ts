@@ -5,62 +5,57 @@ import type {
 import { IMPORT_FIELD_CONFIGS } from "../constants"
 import { supabase } from "~/core/supabase"
 
-export interface ExistingDataCache {
-  categorias: Map<string, string>
-  categoriasKit: Map<string, string>
-  conexoes: Map<string, string>
-  familias: Map<string, string>
-  linhas: Map<string, string>
-  skus: Set<string>
-  tiposReabilitacao: Map<string, string>
-  tiposAbutment: Map<string, string>
+export interface ValidationCache {
+  /** `${lookupTable}::${matchField}::${valorLowerCase}` -> existe no banco */
+  fkExists: Map<string, boolean>
+  existingSkus: Set<string>
 }
 
-export async function loadExistingDataCache(): Promise<ExistingDataCache> {
-  const [catRes, catKitRes, conRes, famRes, linRes, tipoReabRes, tipoAbtRes] = await Promise.all([
-  ])
+export async function loadValidationCache(
+  importType: ImportType,
+  rows: Record<string, unknown>[],
+): Promise<ValidationCache> {
+  const config = IMPORT_FIELD_CONFIGS[importType]
+  const fkExists = new Map<string, boolean>()
 
-  const skuTables = [
-    "catalogo_implantes", "catalogo_abutments", "catalogo_fresas",
-    "catalogo_acessorios", "catalogo_chaves_ferramental",
-    "catalogo_instrumentais_gerais", "catalogo_kits"
-  ]
-  const allSkus = new Set<string>()
-  for (const table of skuTables) {
-    data?.forEach((r) => allSkus.add(r.sku))
-  }
+  for (const resolver of config.fkResolvers) {
+    const values = Array.from(new Set(
+      rows
+        .map((r) => r[resolver.sourceField])
+        .filter((v): v is string => typeof v === "string" && v.trim() !== "")
+        .map((v) => v.trim()),
+    ))
+    if (values.length === 0) continue
 
-  return {
-    categorias: toMap(catRes.data, "nome", "id"),
-    categoriasKit: toMap(catKitRes.data, "nome", "id"),
-    conexoes: toMap(conRes.data, "nome", "id"),
-    familias: toMap(famRes.data, "nome", "id"),
-    linhas: toMap(linRes.data, "nome", "id"),
-    skus: allSkus,
-    tiposReabilitacao: toMap(tipoReabRes.data, "nome", "id"),
-    tiposAbutment: toMap(tipoAbtRes.data, "nome", "id"),
-  }
-}
-
-function toMap(rows: { id: string; nome: string }[] | null, keyField: string, valueField: string): Map<string, string> {
-  const map = new Map<string, string>()
-  rows?.forEach((r) => {
-    const key = r[keyField as keyof typeof r]
-    if (typeof key === "string") {
-      map.set(key.toLowerCase(), r[valueField as keyof typeof r] as string)
+    const { data } = await supabase.from(resolver.lookupTable).select(resolver.matchField).in(resolver.matchField, values)
+    const foundSet = new Set((data ?? []).map((r) => String((r as unknown as Record<string, unknown>)[resolver.matchField]).toLowerCase()))
+    for (const v of values) {
+      fkExists.set(`${resolver.lookupTable}::${resolver.matchField}::${v.toLowerCase()}`, foundSet.has(v.toLowerCase()))
     }
-  })
-  return map
+  }
+
+  let existingSkus = new Set<string>()
+  if (config.uniqueKeyHasDbConstraint && config.uniqueKey.includes("sku")) {
+    const skus = Array.from(new Set(
+      rows.map((r) => r.sku).filter((v): v is string => typeof v === "string" && v.trim() !== ""),
+    ))
+    if (skus.length > 0) {
+      const { data } = await supabase.from(config.supabaseTable).select("sku").in("sku", skus)
+      existingSkus = new Set((data ?? []).map((r) => (r as { sku: string }).sku))
+    }
+  }
+
+  return { fkExists, existingSkus }
 }
 
 interface ValidateRowsParams {
   importType: ImportType
   rows: Record<string, unknown>[]
-  existingData?: ExistingDataCache
+  cache?: ValidationCache
 }
 
 export function validateRows(params: ValidateRowsParams): ValidationResult {
-  const { importType, rows, existingData } = params
+  const { importType, rows, cache } = params
   const config = IMPORT_FIELD_CONFIGS[importType]
   const errors: RowValidation[] = []
   const warnings: RowValidation[] = []
@@ -77,41 +72,86 @@ export function validateRows(params: ValidateRowsParams): ValidationResult {
           rowIndex: index,
           severity: "error",
           field: field.key,
-          message: `Campo "${field.label}" e obrigatorio`,
+          message: `Campo "${field.label}" é obrigatório`,
         })
       }
     }
 
     for (const field of config.targetFields) {
       const value = row[field.key]
-      if (value === null || value === undefined) continue
+      if (value === null || value === undefined || value === "") continue
 
       if (field.type === "number" && isNaN(Number(value))) {
         rowErrors.push({
           rowIndex: index,
           severity: "error",
           field: field.key,
-          message: `"${field.label}" deve ser numerico. Valor: "${value}"`,
+          message: `"${field.label}" deve ser numérico. Valor: "${value}"`,
           value,
         })
       }
+
+      if (field.transform?.type === "enum" && field.transform.values) {
+        const normalized = String(value).trim().toLowerCase()
+        if (!field.transform.values.some((v) => v.toLowerCase() === normalized)) {
+          rowErrors.push({
+            rowIndex: index,
+            severity: "error",
+            field: field.key,
+            message: `"${field.label}" inválido: "${value}". Use: ${field.transform.values.join(", ")}`,
+          })
+        }
+      }
     }
 
-    if (existingData) {
-      validateForeignKeys(importType, row, index, existingData, rowErrors, rowWarnings)
+    for (const resolver of config.fkResolvers) {
+      const raw = row[resolver.sourceField]
+      const value = raw === null || raw === undefined ? "" : String(raw).trim()
+      if (!value) continue // required-vazio já reportado acima via targetFields, se aplicável
+
+      const key = `${resolver.lookupTable}::${resolver.matchField}::${value.toLowerCase()}`
+      const exists = cache?.fkExists.get(key)
+      if (exists === false) {
+        if (resolver.createIfMissing) {
+          rowWarnings.push({
+            rowIndex: index, severity: "warning", field: resolver.sourceField,
+            message: `"${value}" não existe em ${resolver.lookupTable} e será criado automaticamente`,
+            suggestion: "Criar automaticamente",
+          })
+        } else if (resolver.required) {
+          rowErrors.push({
+            rowIndex: index, severity: "error", field: resolver.sourceField,
+            message: `"${value}" não encontrado em ${resolver.lookupTable}`,
+          })
+        } else {
+          rowWarnings.push({
+            rowIndex: index, severity: "warning", field: resolver.sourceField,
+            message: `"${value}" não encontrado em ${resolver.lookupTable} — campo ficará vazio`,
+          })
+        }
+      }
     }
 
-    if (row.sku && existingData?.skus.has(String(row.sku))) {
+    if (row.sku && cache?.existingSkus.has(String(row.sku))) {
       rowWarnings.push({
         rowIndex: index,
         severity: "warning",
         field: "sku",
-        message: `SKU "${row.sku}" ja existe no sistema. Sera atualizado.`,
+        message: `SKU "${row.sku}" já existe no sistema. Será atualizado.`,
         suggestion: "Atualizar registro existente",
       })
     }
 
-    validateByType(importType, row, index, rowErrors, rowWarnings)
+    if (importType === "implantes") {
+      const d = Number(row.diametro_mm)
+      const c = Number(row.comprimento_mm)
+      if (d > 0 && c > 0 && d > c) {
+        rowWarnings.push({
+          rowIndex: index, severity: "warning", field: "diametro_mm",
+          message: "Diâmetro maior que comprimento — confirme os valores",
+        })
+      }
+    }
 
     errors.push(...rowErrors)
     warnings.push(...rowWarnings)
@@ -141,99 +181,6 @@ export function validateRows(params: ValidateRowsParams): ValidationResult {
     warnings,
     errors,
     summary,
-  }
-}
-
-function validateForeignKeys(
-  importType: ImportType,
-  row: Record<string, unknown>,
-  index: number,
-  cache: ExistingDataCache,
-  errors: RowValidation[],
-  warnings: RowValidation[]
-): void {
-  if (["implantes", "abutments"].includes(importType)) {
-    if (row.familia_nome && !cache.familias.has(String(row.familia_nome).toLowerCase())) {
-      warnings.push({
-        rowIndex: index, severity: "warning", field: "familia_nome",
-        message: `Familia "${row.familia_nome}" nao existe e sera criada`,
-        suggestion: "Criar automaticamente",
-      })
-    }
-  }
-
-  if (importType === "abutments") {
-    if (row.tipo_reabilitacao_nome && !cache.tiposReabilitacao.has(String(row.tipo_reabilitacao_nome).toLowerCase())) {
-      warnings.push({
-        rowIndex: index, severity: "warning", field: "tipo_reabilitacao_nome",
-        message: `Tipo Reabilitacao "${row.tipo_reabilitacao_nome}" nao existe e sera criado`,
-        suggestion: "Criar automaticamente",
-      })
-    }
-    if (row.tipo_abutment_nome && !cache.tiposAbutment.has(String(row.tipo_abutment_nome).toLowerCase())) {
-      warnings.push({
-        rowIndex: index, severity: "warning", field: "tipo_abutment_nome",
-        message: `Tipo Abutment "${row.tipo_abutment_nome}" nao existe e sera criado`,
-        suggestion: "Criar automaticamente",
-      })
-    }
-  }
-
-  if (importType === "kits" && row.categoria_kit_nome && !cache.categoriasKit.has(String(row.categoria_kit_nome).toLowerCase())) {
-    warnings.push({
-      rowIndex: index, severity: "warning", field: "categoria_kit_nome",
-      message: `Categoria Kit "${row.categoria_kit_nome}" nao existe e sera criada`,
-      suggestion: "Criar automaticamente",
-    })
-  }
-
-  if (importType === "kits" && row.bom_sku) {
-    if (!cache.skus.has(String(row.bom_sku))) {
-      errors.push({
-        rowIndex: index, severity: "error", field: "bom_sku",
-        message: `SKU "${row.bom_sku}" do BOM nao existe no catalogo`,
-      })
-    }
-  }
-}
-
-function validateByType(
-  importType: ImportType,
-  row: Record<string, unknown>,
-  index: number,
-  errors: RowValidation[],
-  warnings: RowValidation[]
-): void {
-  if (importType === "kits" && row.bom_tipo) {
-    const validTipos = ["fresa", "chave", "acessorio", "instrumental", "implante"]
-    if (!validTipos.includes(String(row.bom_tipo))) {
-      errors.push({
-        rowIndex: index, severity: "error", field: "bom_tipo",
-        message: `Tipo BOM invalido: "${row.bom_tipo}". Use: ${validTipos.join(", ")}`,
-      })
-    }
-  }
-
-  if (importType === "implantes") {
-    const d = Number(row.diametro_mm)
-    const c = Number(row.comprimento_mm)
-    if (d > 0 && c > 0 && d > c) {
-      warnings.push({
-        rowIndex: index, severity: "warning", field: "diametro_mm",
-        message: "Diametro maior que comprimento — confirme os valores",
-      })
-    }
-  }
-
-  if (importType === "chaves" && row.tipo_ferramenta) {
-    const validTipos = ["Aperto", "Medicao", "Cirurgica"]
-    const normalized = String(row.tipo_ferramenta).trim()
-    if (!validTipos.some((t) => t.toLowerCase() === normalized.toLowerCase())) {
-      errors.push({
-        rowIndex: index, severity: "error", field: "tipo_ferramenta",
-        message: `Tipo Ferramenta invalido: "${row.tipo_ferramenta}". Use: ${validTipos.join(", ")}`,
-      })
-    }
   }
 }
 
