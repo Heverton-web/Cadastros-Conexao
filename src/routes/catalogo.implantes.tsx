@@ -217,6 +217,8 @@ function LinhasList({ familiaId, onSelect, onBack }: { familiaId: string; onSele
 function ImplantList({ linhaId, conexaoId, familiaId, onBack }: { linhaId: string; conexaoId: string; familiaId: string; onBack: () => void }) {
   const { data: implantes, isLoading } = useImplantesPorLinha(linhaId)
   const { data: familias } = useFamilias()
+  const { data: linhas } = useLinhas(familiaId)
+  const linha = (linhas ?? []).find((l) => l.id === linhaId)
   const familia = (familias ?? []).find((f) => f.id === familiaId)
   const corFamilia = familia?.cor_identificacao ?? "#c9a655"
   const empresaId = useCatalogoEmpresaId()
@@ -339,6 +341,7 @@ function ImplantList({ linhaId, conexaoId, familiaId, onBack }: { linhaId: strin
                 tipo="implante"
                 sku={impl.sku}
                 nome={`${impl.diametro_mm}×${impl.comprimento_mm} mm`}
+                badge={linha?.nome}
                 corIdentificacao={impl.linha?.familia?.cor_identificacao || corFamilia}
                 imageUrl={imagensMap.get(impl.sku)?.[0]?.url_imagem}
               />

@@ -1,19 +1,22 @@
 import React from 'react';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Box } from 'lucide-react';
 import '../styles/theme.css';
-import { ProductThumb } from './ProductThumb';
+import { CATALOGO_TIPO_LABEL, type ProductSheetTipo } from '../types';
 
 interface Props {
   sku: string;
   nome: string;
   corIdentificacao: string;
   tipo: string;
+  /** Rótulo específico da categoria (ex: nome do tipo de kit/abutment/família). Se omitido, cai no rótulo genérico do tipo. */
+  badge?: string;
   imageUrl?: string;
   onClick?: () => void;
 }
 
-export function ProductCard({ sku, nome, corIdentificacao, tipo, imageUrl, onClick }: Props) {
+export function ProductCard({ sku, nome, corIdentificacao, tipo, badge, imageUrl, onClick }: Props) {
   const cor = corIdentificacao || '#c9a655';
+  const badgeLabel = badge || CATALOGO_TIPO_LABEL[tipo as ProductSheetTipo] || tipo;
 
   return (
     <div
@@ -30,20 +33,27 @@ export function ProductCard({ sku, nome, corIdentificacao, tipo, imageUrl, onCli
       />
 
       <div className="flex items-center gap-4 relative z-10">
-        <ProductThumb tipo={tipo} cor={cor} imageUrl={imageUrl} size="sm" />
+        <div className="shrink-0 w-16 h-16 rounded-xl overflow-hidden bg-gradient-to-br from-[var(--color-surface)] to-[#0f172a] border border-[var(--color-border-subtle)] flex items-center justify-center">
+          {imageUrl ? (
+            <img src={imageUrl} alt={nome} className="w-full h-full object-contain p-2" loading="lazy" decoding="async" draggable={false} />
+          ) : (
+            <Box className="w-6 h-6 opacity-30" style={{ color: cor }} />
+          )}
+        </div>
 
         <div className="flex-1 min-w-0">
-          <div className="flex items-center mb-1">
-             <span className="text-[9px] font-black uppercase tracking-widest" style={{ color: cor }}>
-               {tipo}
-             </span>
-          </div>
           <h3 className="text-sm font-bold text-white leading-tight mb-1 transition-colors line-clamp-1 group-hover:text-[var(--card-color,var(--color-accent))]">
             {nome}
           </h3>
-          <p className="text-[10px] font-mono text-[var(--color-text-muted)] tracking-widest truncate">
+          <p className="text-[10px] font-mono text-[var(--color-text-muted)] tracking-widest truncate mb-1.5">
             SKU: {sku}
           </p>
+          <span
+            className="inline-block px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-widest border"
+            style={{ color: cor, borderColor: `${cor}40`, backgroundColor: `${cor}10` }}
+          >
+            {badgeLabel}
+          </span>
         </div>
 
         <div className="flex items-center gap-2 shrink-0">

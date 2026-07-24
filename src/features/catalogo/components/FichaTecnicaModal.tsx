@@ -209,7 +209,7 @@ export function FichaTecnicaModal({
               onClick={() => openImageViewer(imagemUrl, nome)}
               className="w-full h-36 sm:h-40 rounded-xl overflow-hidden cursor-zoom-in bg-gradient-to-br from-[var(--color-surface)] to-[#0f172a] border border-[var(--color-border-subtle)] flex items-center justify-center"
             >
-              <img src={imagemUrl} alt={nome} className="w-full h-full object-contain" loading="lazy" />
+              <img src={imagemUrl} alt={nome} className="w-full h-full object-contain py-6" loading="lazy" />
             </div>
           )}
 

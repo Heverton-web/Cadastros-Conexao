@@ -156,6 +156,7 @@ function KitsList({ tipoKitId, onBack }: { tipoKitId: string; onBack: () => void
                 tipo="kit"
                 sku={kit.sku}
                 nome={kit.nome}
+                badge={tipoKit?.nome}
                 corIdentificacao="#c9a655"
                 imageUrl={imagensMap.get(kit.sku)?.[0]?.url_imagem}
               />

@@ -210,6 +210,8 @@ function TiposAbutmentList({ familiaId, tipoReabId, onSelect, onBack, countByTip
 
 function AbutmentList({ familiaId, tipoAbutmentId, tipoReabId, onBack }: { familiaId: string; tipoAbutmentId: string; tipoReabId: string; onBack: () => void }) {
   const { data: abutments, isLoading } = useAbutments(familiaId)
+  const { data: tiposAbutment } = useTiposAbutment()
+  const tipoAbutment = (tiposAbutment ?? []).find((t) => t.id === tipoAbutmentId)
   const filtered = (abutments ?? []).filter((a) => a.tipo_abutment_id === tipoAbutmentId && a.tipo_reabilitacao_id === tipoReabId)
   const empresaId = useCatalogoEmpresaId()
   const [imagensMap, setImagensMap] = useState<Map<string, CatalogoImagemProduto[]>>(new Map())
@@ -276,6 +278,7 @@ function AbutmentList({ familiaId, tipoAbutmentId, tipoReabId, onBack }: { famil
             tipo="abutment"
             sku={a.sku}
             nome={`${a.tipo_abutment?.nome ?? ""} ${a.familia?.nome ?? ""}`}
+            badge={tipoAbutment?.nome}
             corIdentificacao={a.familia?.cor_identificacao || ''}
             imageUrl={imagensMap.get(a.sku)?.[0]?.url_imagem}
             onClick={() => navigate({ to: '/catalogo/produto/$tipo/$sku', params: { tipo: 'abutment', sku: a.sku }, search: { familia: familiaId, tipoAbutment: tipoAbutmentId, tipoReab: tipoReabId } })}
