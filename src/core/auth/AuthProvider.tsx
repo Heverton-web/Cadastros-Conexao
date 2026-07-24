@@ -3,6 +3,7 @@ import { supabase } from "~/core/supabase";
 import { AuthContext } from "./useAuth";
 import { type Profile, type EmpresaInfo, type ModulosAcesso } from "./types";
 import { getAllPermissionKeys } from "~/registry";
+import { buscarChavesPermissaoDosPerfis } from "./perfis.service";
 import { EMPRESA_ID } from "~/config/empresa";
 import toast from "react-hot-toast";
 
@@ -96,15 +97,25 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setPermissoes(allPerms);
         setModulosAcesso(null);
       } else {
-        const { data } = await supabase
-          .from("permissoes")
-          .select("permissoes, modulos_acesso")
-          .eq("usuario_id", userId)
-          .maybeSingle();
+        // Permissão efetiva = união de (permissões dos perfis atribuídos
+        // via usuario_perfis/perfis_permissoes) COM (override em
+        // permissoes.permissoes) — estritamente aditivo, nunca remove
+        // acesso que o override concede explicitamente.
+        const [{ data }, chavesDosPerfis] = await Promise.all([
+          supabase
+            .from("permissoes")
+            .select("permissoes, modulos_acesso")
+            .eq("usuario_id", userId)
+            .maybeSingle(),
+          buscarChavesPermissaoDosPerfis(userId).catch(() => [] as string[]),
+        ]);
 
         const flatPerms = {
           ...((data?.permissoes as Record<string, boolean>) || {}),
         };
+        for (const key of chavesDosPerfis) {
+          flatPerms[key] = true;
+        }
         const modulosAcc = data?.modulos_acesso as ModulosAcesso | null;
 
         if (modulosAcc) {
