@@ -78,6 +78,9 @@ export const catalogoModule: ModuleDefinition = {
     { key: "solicitacao_acesso.criada", label: "Solicitação de Acesso Recebida", descricao: "Quando um visitante solicita acesso ao catálogo", type: "status_change" },
     { key: "solicitacao_acesso.aprovada", label: "Solicitação Aprovada", descricao: "Quando uma solicitação de acesso é aprovada", type: "button_action" },
     { key: "solicitacao_acesso.rejeitada", label: "Solicitação Rejeitada", descricao: "Quando uma solicitação de acesso é rejeitada", type: "button_action" },
+    // Novos — Link de Teste
+    { key: "link_teste.criado", label: "Link de Teste Criado", descricao: "Quando o super admin cria um link de teste do catálogo", type: "button_action" },
+    { key: "link_teste.acessado", label: "Link de Teste Acessado", descricao: "Quando alguém acessa o catálogo por um link de teste", type: "status_change" },
   ],
   hasDesignConfig: true,
   setup: () => {

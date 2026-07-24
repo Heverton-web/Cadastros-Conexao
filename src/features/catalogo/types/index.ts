@@ -579,6 +579,21 @@ export interface CatalogoCupom {
   updated_at: string
 }
 
+export type LinkTesteNivelAcesso = "visitante" | "logado"
+
+export interface CatalogoLinkTeste {
+  id: string
+  token: string
+  nivel_acesso: LinkTesteNivelAcesso
+  descricao: string | null
+  ativo: boolean
+  expires_at: string | null
+  max_usos: number | null
+  usos: number
+  created_by: string | null
+  created_at: string
+}
+
 export interface CatalogoFrete {
   id: string
   cep_inicio: string

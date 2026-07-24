@@ -13,6 +13,7 @@ import { credenciaisRoute } from "./routes/credenciais";
 import { adminConfigRoute } from "./routes/global.acoes";
 import { adminSuperEmpresasRoute } from "./routes/global.empresas";
 import { adminSuperEmpresaDetailRoute } from "./routes/global.empresas.$id";
+import { globalCatalogoLinksTesteRoute } from "./routes/global.catalogo-links-teste";
 import { adminSuperPermissoesRoute } from "./routes/global.permissoes";
 import { adminPermissoesRoute } from "./routes/empresa.permissoes";
 import { empresaPerfisRoute } from "./routes/empresa.perfis";
@@ -205,6 +206,7 @@ import { catalogoLojaLoginRoute } from "./routes/catalogo-loja.$slug.login";
 import { catalogoLojaPedidosRoute } from "./routes/catalogo-loja.$slug.pedidos";
 import { catalogoLojaFavoritosRoute } from "./routes/catalogo-loja.$slug.favoritos";
 import { catalogoLojaOrcamentoRoute } from "./routes/catalogo-loja.$slug.orcamento.$token";
+import { catalogoLinkTesteRoute } from "./routes/catalogo.teste.$token";
 
 export const routeTree = rootRoute.addChildren([
   loginRoute,
@@ -231,6 +233,7 @@ export const routeTree = rootRoute.addChildren([
   catalogoPromocionaisRoute,
   catalogoBuscaRoute,
   catalogoProdutoRoute,
+  catalogoLinkTesteRoute,
   // Loja pública (acesso externo)
   catalogoLojaIndexRoute,
   catalogoLojaLoginRoute,
@@ -249,6 +252,7 @@ export const routeTree = rootRoute.addChildren([
     adminConfigRoute,
     adminSuperEmpresasRoute,
     adminSuperEmpresaDetailRoute,
+    globalCatalogoLinksTesteRoute,
     adminSuperPermissoesRoute,
     adminPermissoesRoute,
     empresaPerfisRoute,

@@ -22,6 +22,17 @@ function storageKey(consultorId: string) {
   return `catalogo:cliente-ativo:${consultorId}`
 }
 
+const FORCAR_VISITANTE_KEY = "catalogo:forcar_visitante"
+
+/** Usado pelo gate de link de teste (nível "visitante") para ignorar qualquer sessão real. */
+export function marcarModoVisitanteForcado() {
+  sessionStorage.setItem(FORCAR_VISITANTE_KEY, "1")
+}
+
+function isModoVisitanteForcado(): boolean {
+  return sessionStorage.getItem(FORCAR_VISITANTE_KEY) === "1"
+}
+
 /**
  * Provider do "cliente ativo" — o cliente da carteira do consultor que ele
  * selecionou pra montar orçamento/pedido. Enquanto selecionado, os preços do
@@ -33,7 +44,7 @@ export function ClienteAtivoProvider({ children }: { children: React.ReactNode }
     "catalogo_colab_ver_produtos",
     "catalogo_colab_criar_orcamento",
   ])
-  const isConsultor = Boolean(profile && podeCatalogoColab)
+  const isConsultor = Boolean(profile && podeCatalogoColab) && !isModoVisitanteForcado()
   const [clienteAtivo, setClienteAtivoState] = useState<ClienteAtivo | null>(null)
 
   // Restaura seleção salva (por consultor) ao montar / trocar de usuário

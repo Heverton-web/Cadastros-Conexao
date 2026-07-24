@@ -1,7 +1,7 @@
 import { supabase } from "~/lib/supabase"
 import { useState, useEffect, useMemo } from "react"
 import toast from "react-hot-toast"
-import { Check, Box, ShoppingCart, FileText } from "lucide-react"
+import { Check, Box, ShoppingCart, FileText, ChevronDown } from "lucide-react"
 import { addToCart, formatBRL, getPrecoFromDB } from "~/features/catalogo/services/carrinho.service"
 import { playCoinSound } from "~/features/catalogo/services/audio.service"
 import { openImageViewer } from "~/features/catalogo/services/ui.service"
@@ -123,6 +123,23 @@ export function SequenciaProtetica({ familiaId, tipoAbutmentId, familiaNome, tip
     }
   }, [uniqueTabs, selectedTab])
 
+  // Etapas expansíveis — por padrão só a primeira etapa do workflow ativo vem aberta
+  const [expandedEtapas, setExpandedEtapas] = useState<Set<string>>(new Set())
+  const etapasKey = activeWorkflow?.etapas.map((e) => e.id).join("|") ?? ""
+  useEffect(() => {
+    setExpandedEtapas(new Set(activeWorkflow?.etapas[0] ? [activeWorkflow.etapas[0].id] : []))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [etapasKey])
+
+  function toggleEtapa(id: string) {
+    setExpandedEtapas((prev) => {
+      const next = new Set(prev)
+      if (next.has(id)) next.delete(id)
+      else next.add(id)
+      return next
+    })
+  }
+
   if (loading) return (
     <div className="space-y-2">
       <h3 className="text-lg font-bold text-white">Sequência Protética</h3>
@@ -166,12 +183,26 @@ export function SequenciaProtetica({ familiaId, tipoAbutmentId, familiaNome, tip
           Nenhuma etapa configurada nesta sequência.
         </p>
       )}
-      {activeWorkflow?.etapas.map((etapa) => (
+      {activeWorkflow?.etapas.map((etapa) => {
+        const isExpanded = expandedEtapas.has(etapa.id)
+        return (
         <div key={etapa.id} className="flex flex-col gap-3">
-          <p className="text-[10px] font-bold uppercase tracking-widest text-[var(--color-accent)]">
-            Etapa {etapa.ordem}{etapa.nome ? `: ${etapa.nome}` : ""}
-          </p>
-          {etapa.componentes.length > 0 ? etapa.componentes.map((comp) => {
+          <button
+            type="button"
+            onClick={() => toggleEtapa(etapa.id)}
+            className="w-full flex items-center justify-between gap-3 p-3 rounded-xl border border-[var(--color-border-subtle)] bg-[var(--color-surface)]/40 hover:border-[var(--color-accent)]/40 transition-all"
+          >
+            <span className="text-[10px] font-bold uppercase tracking-widest text-[var(--color-accent)]">
+              Etapa {etapa.ordem}{etapa.nome ? `: ${etapa.nome}` : ""}
+            </span>
+            <span className="flex items-center gap-2 shrink-0">
+              <span className="text-[10px] font-black px-1.5 py-0.5 rounded bg-[var(--color-accent)]/15 text-[var(--color-accent)]">
+                {etapa.componentes.length}
+              </span>
+              <ChevronDown className={`w-4 h-4 text-[var(--color-text-muted)] transition-transform duration-200 ${isExpanded ? "rotate-180" : ""}`} />
+            </span>
+          </button>
+          {isExpanded && (etapa.componentes.length > 0 ? etapa.componentes.map((comp) => {
             const isAdded = addedSkus.has(comp.sku)
             const preco = Number(comp.preco)
             const temPreco = Number.isFinite(preco) && preco > 0
@@ -246,9 +277,10 @@ export function SequenciaProtetica({ familiaId, tipoAbutmentId, familiaNome, tip
                 </div>
               </div>
             )
-          }) : <p className="text-xs text-[var(--color-text-muted)] italic pl-2">Nenhum componente nesta etapa</p>}
+          }) : <p className="text-xs text-[var(--color-text-muted)] italic pl-2">Nenhum componente nesta etapa</p>)}
         </div>
-      ))}
+        )
+      })}
 
       {activeWorkflow && activeWorkflow.etapas.length === 0 && (
         <p className="text-sm text-center py-8 text-[var(--color-text-muted)]">

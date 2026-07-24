@@ -19,6 +19,7 @@ import {
   Wrench,
   HelpCircle,
   Bot,
+  Link2,
   type LucideIcon,
 } from "lucide-react";
 import { useAuth } from "~/lib/auth";
@@ -236,6 +237,7 @@ function buildAdminSection(): NavModuleSection {
     { path: "/global/agentes", label: "Agentes IA", icon: Bot },
     { path: "/global/limits", label: "Limites de Credenciais", icon: Shield },
     { path: "/global/manutencao", label: "Manutenção", icon: Wrench },
+    { path: "/global/catalogo-links-teste", label: "Links de Teste - Catálogo", icon: Link2 },
     { path: "/empresa/onboarding", label: "Onboarding", icon: HelpCircle },
   ];
   const analyticsItems: NavItem[] = [

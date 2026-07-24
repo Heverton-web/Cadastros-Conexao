@@ -9,7 +9,7 @@ export interface PickerItem {
   nome: string
 }
 
-const TIPO_OPTIONS: ProductSheetTipo[] = ["implante", "abutment", "fresa", "chave", "acessorio", "instrumental", "kit"]
+const TIPO_OPTIONS: ProductSheetTipo[] = ["implante", "abutment", "fresa", "chave", "acessorio", "instrumental", "componente", "kit"]
 
 interface Props {
   produtosDisponiveis: PickerItem[]

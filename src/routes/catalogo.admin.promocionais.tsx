@@ -3,7 +3,7 @@ import { createRoute } from "@tanstack/react-router"
 import { authLayout } from "./_auth"
 import { EmpresaCrudGuard } from "~/features/catalogo/components/EmpresaCrudGuard"
 import { useAuth } from "~/core/auth/useAuth"
-import { usePromocionais, useCriarPromocional, useAtualizarPromocional, useRemoverPromocional, useTodosImplantes, useAbutments, useKitsAtivos, useFresas, useChavesFerramental, useAcessorios, useInstrumentais } from "~/features/catalogo/hooks/useCatalogo"
+import { usePromocionais, useCriarPromocional, useAtualizarPromocional, useRemoverPromocional, useTodosImplantes, useAbutments, useKitsAtivos, useFresas, useChavesFerramental, useAcessorios, useInstrumentais, useComponentes } from "~/features/catalogo/hooks/useCatalogo"
 import { useMemo, useState } from "react"
 import { Tag, Trash2, Plus, Pencil } from "lucide-react"
 import { formatBRL } from "~/features/catalogo/services/carrinho.service"
@@ -44,6 +44,7 @@ function AdminPromocionaisPage() {
   const { data: chaves } = useChavesFerramental()
   const { data: acessorios } = useAcessorios()
   const { data: instrumentais } = useInstrumentais()
+  const { data: componentes } = useComponentes()
 
   const [formOpen, setFormOpen] = useState(false)
   const [editingItem, setEditingItem] = useState<CatalogoPromocional | null>(null)
@@ -58,8 +59,9 @@ function AdminPromocionaisPage() {
     ...(chaves ?? []).map((p) => ({ sku: p.sku, tipo: "chave" as const, nome: p.nome })),
     ...(acessorios ?? []).map((p) => ({ sku: p.sku, tipo: "acessorio" as const, nome: p.nome })),
     ...(instrumentais ?? []).map((p) => ({ sku: p.sku, tipo: "instrumental" as const, nome: p.nome })),
+    ...(componentes ?? []).map((p) => ({ sku: p.sku, tipo: "componente" as const, nome: p.nome })),
     ...(kits ?? []).map((p) => ({ sku: p.sku, tipo: "kit" as const, nome: p.nome })),
-  ], [implantes, abutments, fresas, chaves, acessorios, instrumentais, kits])
+  ], [implantes, abutments, fresas, chaves, acessorios, instrumentais, componentes, kits])
 
   function fecharDialog() {
     setFormOpen(false)

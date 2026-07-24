@@ -19,7 +19,7 @@ const SequenciaProtetica = lazy(() => import("~/features/catalogo/components/Seq
 const FichaTecnicaModal = lazy(() => import("~/features/catalogo/components/FichaTecnicaModal").then((m) => ({ default: m.FichaTecnicaModal })))
 const BomTable = lazy(() => import("~/features/catalogo/components/BomTable").then((m) => ({ default: m.BomTable })))
 import toast from "react-hot-toast"
-import { ArrowLeft, ShoppingCart, Box, Zap, ExternalLink, Check, TrendingDown, X, FileText, ListOrdered } from "lucide-react"
+import { ArrowLeft, ShoppingCart, Box, Zap, ExternalLink, Check, TrendingDown, X, FileText, ListOrdered, ChevronDown } from "lucide-react"
 import { openImageViewer } from "~/features/catalogo/services/ui.service"
 import { useTabIcons, TabIconsProvider } from "~/features/catalogo/contexts/TabIconsContext"
 
@@ -691,6 +691,30 @@ function AbutmentDetail({ sku }: { sku: string }) {
   const { data: implantesCompat } = useImplantesDoAbutment(sku)
   const implCompatSkus = (implantesCompat ?? []).map((i) => i.sku)
   const { data: imagensImplCompat } = useImagensBatch("implante", implCompatSkus)
+
+  // ── Compatibilidade agrupada por linha (accordion — só a primeira linha nasce expandida) ──
+  const implantesCompatAtivos = implantesCompat?.filter((i) => i.ativo) ?? []
+  const implantesCompatPorLinha = new Map<string, { linha: typeof implantesCompatAtivos[number]["linha"]; implantes: typeof implantesCompatAtivos }>()
+  for (const impl of implantesCompatAtivos) {
+    const linhaId = impl.linha_id ?? "sem-linha"
+    if (!implantesCompatPorLinha.has(linhaId)) implantesCompatPorLinha.set(linhaId, { linha: impl.linha, implantes: [] })
+    implantesCompatPorLinha.get(linhaId)!.implantes.push(impl)
+  }
+  const linhasCompatKey = [...implantesCompatPorLinha.keys()].join("|")
+  const [expandedLinhasCompat, setExpandedLinhasCompat] = useState<Set<string>>(new Set())
+  useEffect(() => {
+    const primeira = [...implantesCompatPorLinha.keys()][0]
+    setExpandedLinhasCompat(new Set(primeira ? [primeira] : []))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [linhasCompatKey])
+  function toggleLinhaCompat(linhaId: string) {
+    setExpandedLinhasCompat((prev) => {
+      const next = new Set(prev)
+      if (next.has(linhaId)) next.delete(linhaId)
+      else next.add(linhaId)
+      return next
+    })
+  }
   const { data: imagens } = useImagensProduto("abutment", sku)
   const [kits, setKits] = useState<any[]>([])
   const [abChaves, setAbChaves] = useState<any[]>([])
@@ -784,13 +808,6 @@ function AbutmentDetail({ sku }: { sku: string }) {
   const allParafusos = abParafusos.length > 0 ? abParafusos : (ab.parafuso ? [ab.parafuso] : [])
   const abChavesAtivas = allChaves.filter((c: any) => c.ativo !== false)
   const abParafusosAtivos = allParafusos.filter((p: any) => p.ativo !== false)
-  const implantesCompatAtivos = implantesCompat?.filter((i) => i.ativo) ?? []
-  const implantesCompatPorLinha = new Map<string, { linha: typeof implantesCompatAtivos[number]["linha"]; implantes: typeof implantesCompatAtivos }>()
-  for (const impl of implantesCompatAtivos) {
-    const linhaId = impl.linha_id ?? "sem-linha"
-    if (!implantesCompatPorLinha.has(linhaId)) implantesCompatPorLinha.set(linhaId, { linha: impl.linha, implantes: [] })
-    implantesCompatPorLinha.get(linhaId)!.implantes.push(impl)
-  }
 
   // ── Tabs ──
   const tabs: SectionTab[] = [
@@ -1019,13 +1036,27 @@ function AbutmentDetail({ sku }: { sku: string }) {
         {activeTab === "compatibilidade" && (
           <div className="space-y-5 sm:space-y-6">
             {implantesCompatPorLinha.size > 0 ? (
-              [...implantesCompatPorLinha.entries()].map(([linhaId, grupo]) => (
+              [...implantesCompatPorLinha.entries()].map(([linhaId, grupo]) => {
+                const isExpanded = expandedLinhasCompat.has(linhaId)
+                return (
                 <div key={linhaId} className="space-y-2.5 sm:space-y-3">
-                  <h4 className="text-xs font-black uppercase tracking-widest text-[var(--color-text-muted)] border-b border-[var(--color-border-subtle)] pb-2">
-                    {grupo.linha?.nome ?? "Linha não informada"}
-                    {grupo.linha?.familia?.nome && <span className="opacity-60"> · {grupo.linha.familia.nome}</span>}
-                  </h4>
-                  {grupo.implantes.map((impl) => {
+                  <button
+                    type="button"
+                    onClick={() => toggleLinhaCompat(linhaId)}
+                    className="w-full flex items-center justify-between gap-3 p-3 rounded-xl border border-[var(--color-border-subtle)] bg-[var(--color-surface)]/60 hover:border-[var(--color-accent)]/40 transition-all"
+                  >
+                    <span className="text-xs font-black uppercase tracking-widest text-white">
+                      {grupo.linha?.nome ?? "Linha não informada"}
+                      {grupo.linha?.familia?.nome && <span className="opacity-60 normal-case font-normal"> · {grupo.linha.familia.nome}</span>}
+                    </span>
+                    <span className="flex items-center gap-2 shrink-0">
+                      <span className="text-[10px] font-black px-1.5 py-0.5 rounded bg-[var(--color-accent)]/15 text-[var(--color-accent)]">
+                        {grupo.implantes.length}
+                      </span>
+                      <ChevronDown className={`w-4 h-4 text-[var(--color-text-muted)] transition-transform duration-200 ${isExpanded ? "rotate-180" : ""}`} />
+                    </span>
+                  </button>
+                  {isExpanded && grupo.implantes.map((impl) => {
                     const img = imagensImplCompat?.get(impl.sku)?.[0]?.url_imagem
                     return (
                       <RelatedProductCard
@@ -1043,7 +1074,8 @@ function AbutmentDetail({ sku }: { sku: string }) {
                     )
                   })}
                 </div>
-              ))
+                )
+              })
             ) : (
               <EmptyState msg="Nenhum implante compatível vinculado" hint="Vincule implantes compatíveis na edição do abutment." />
             )}
@@ -1076,8 +1108,8 @@ function KitDetail({ sku }: { sku: string }) {
   useEffect(() => {
     if (!kit?.sku) return
 
-    // Compatibilidade: implantes vinculados ao kit
-    supabase.from("catalogo_kit_implantes").select("*").eq("kit_sku", sku)
+    // Compatibilidade: implantes vinculados ao kit (com linha/família aninhadas p/ agrupamento)
+    supabase.from("catalogo_kit_implantes").select("*, implante:catalogo_implantes(sku, nome, preco, ativo, linha:catalogo_ips_linhas(*, familia:catalogo_ips_familias(*)))").eq("kit_sku", sku)
       .then(({ data }) => setCompatData(data ?? []))
 
     // Kits relacionados: vínculo explícito (catalogo_kit_kits_relacionados) + kits que compartilham chaves
@@ -1116,6 +1148,31 @@ function KitDetail({ sku }: { sku: string }) {
       setComplementKits(kitsData ?? [])
     })
   }, [kit?.sku])
+
+  // ── Compatibilidade agrupada por linha (accordion — só a primeira linha nasce expandida) ──
+  const compatAtivos = compatData.filter((c: any) => c.implante?.ativo !== false && c.implante)
+  const compatPorLinha = new Map<string, { linha: any; implantes: any[] }>()
+  for (const c of compatAtivos) {
+    const linhaId = c.implante.linha_id ?? "sem-linha"
+    if (!compatPorLinha.has(linhaId)) compatPorLinha.set(linhaId, { linha: c.implante.linha, implantes: [] })
+    compatPorLinha.get(linhaId)!.implantes.push(c.implante)
+  }
+  const { data: imagensCompatImpl } = useImagensBatch("implante", compatAtivos.map((c) => c.implante.sku))
+  const compatLinhasKey = [...compatPorLinha.keys()].join("|")
+  const [expandedLinhasKit, setExpandedLinhasKit] = useState<Set<string>>(new Set())
+  useEffect(() => {
+    const primeira = [...compatPorLinha.keys()][0]
+    setExpandedLinhasKit(new Set(primeira ? [primeira] : []))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [compatLinhasKey])
+  function toggleLinhaKit(linhaId: string) {
+    setExpandedLinhasKit((prev) => {
+      const next = new Set(prev)
+      if (next.has(linhaId)) next.delete(linhaId)
+      else next.add(linhaId)
+      return next
+    })
+  }
 
   if (!kit) return <LoadingState />
 
@@ -1284,22 +1341,48 @@ function KitDetail({ sku }: { sku: string }) {
                   Este kit é compatível com <strong className="text-[#c9a655]">todos os diâmetros e linhas</strong> de implantes desta empresa.
                 </p>
               </div>
-            ) : compatData.length > 0 ? (
-              <div className="space-y-4">
-                <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655]">Implantes Compatíveis</h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  {compatData.map((item: any) => (
-                    <div key={item.implante_sku} className="flex items-center gap-3 p-3 rounded-xl bg-[var(--color-surface)] border border-white/5">
-                      <div className="w-8 h-8 rounded-lg bg-[#c9a655]/10 flex items-center justify-center shrink-0">
-                        <Box className="h-4 w-4 text-[#c9a655]" />
-                      </div>
-                      <div>
-                        <p className="text-sm font-bold text-white">{item.implante_sku}</p>
-                        <p className="text-xs text-gray-400">SKU do implante</p>
-                      </div>
+            ) : compatPorLinha.size > 0 ? (
+              <div className="space-y-2.5 sm:space-y-3">
+                {[...compatPorLinha.entries()].map(([linhaId, grupo]) => {
+                  const isExpanded = expandedLinhasKit.has(linhaId)
+                  return (
+                    <div key={linhaId} className="space-y-2.5 sm:space-y-3">
+                      <button
+                        type="button"
+                        onClick={() => toggleLinhaKit(linhaId)}
+                        className="w-full flex items-center justify-between gap-3 p-3 rounded-xl border border-[var(--color-border-subtle)] bg-[var(--color-surface)]/60 hover:border-[#c9a655]/40 transition-all"
+                      >
+                        <span className="text-xs font-black uppercase tracking-widest text-white">
+                          {grupo.linha?.nome ?? "Linha não informada"}
+                          {grupo.linha?.familia?.nome && <span className="opacity-60 normal-case font-normal"> · {grupo.linha.familia.nome}</span>}
+                        </span>
+                        <span className="flex items-center gap-2 shrink-0">
+                          <span className="text-[10px] font-black px-1.5 py-0.5 rounded bg-[#c9a655]/15 text-[#c9a655]">
+                            {grupo.implantes.length}
+                          </span>
+                          <ChevronDown className={`w-4 h-4 text-[var(--color-text-muted)] transition-transform duration-200 ${isExpanded ? "rotate-180" : ""}`} />
+                        </span>
+                      </button>
+                      {isExpanded && grupo.implantes.map((impl: any) => {
+                        const img = imagensCompatImpl?.get(impl.sku)?.[0]?.url_imagem
+                        return (
+                          <RelatedProductCard
+                            key={impl.sku}
+                            nome={impl.nome ?? impl.sku}
+                            sku={impl.sku}
+                            cor="#c9a655"
+                            preco={impl.preco}
+                            tipo="implante"
+                            imageUrl={img}
+                            onImageClick={() => openImageViewer(img ?? "", impl.nome ?? impl.sku)}
+                            onVerFicha={() => navigate({ to: "/catalogo/produto/$tipo/$sku", params: { tipo: "implante", sku: impl.sku } })}
+                            fichaData={{ tipo: "Implante" }}
+                          />
+                        )
+                      })}
                     </div>
-                  ))}
-                </div>
+                  )
+                })}
               </div>
             ) : (
               <EmptyState msg="Nenhuma compatibilidade definida" hint="Associe implantes na edição do kit." />

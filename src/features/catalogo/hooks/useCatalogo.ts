@@ -222,6 +222,10 @@ export function useAbutments(familiaId?: string) {
   return useQuery({ queryKey: ["catalogo", "abutments", familiaId], queryFn: () => componentes.listarAbutments(familiaId) })
 }
 
+export function useComponentes() {
+  return useQuery({ queryKey: ["catalogo", "componentes"], queryFn: () => componentes.listarComponentes() })
+}
+
 export function useAbutmentDetalhe(sku: string) {
   return useQuery({ queryKey: ["catalogo", "abutment", sku], queryFn: () => componentes.getAbutmentDetalhe(sku), enabled: !!sku })
 }
