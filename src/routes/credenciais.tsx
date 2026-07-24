@@ -40,18 +40,22 @@ import {
 } from "lucide-react";
 import toast from "react-hot-toast";
 import { cn } from "~/lib/utils";
+import { RequireSuperAdmin } from "~/components/guards";
 
 export const credenciaisRoute = createRoute({
   getParentRoute: () => authLayout,
   path: "/credenciais",
-  component: CredenciaisPage,
+  component: () => (
+    <RequireSuperAdmin>
+      <CredenciaisPage />
+    </RequireSuperAdmin>
+  ),
 });
 
 function CredenciaisPage() {
-  const { permissoes } = useAuth();
-  // Assume that any user with access to this route is an admin of the single tenant
-  const podeVer = true;
-  const podeAdmin = true;
+  const { permissoes, profile } = useAuth();
+  const podeVer = profile?.is_super_admin === true;
+  const podeAdmin = profile?.is_super_admin === true;
   const selectedEmpresaId = EMPRESA_ID;
 
   const [credenciais, setCredenciais] = useState<Credencial[]>([]);
