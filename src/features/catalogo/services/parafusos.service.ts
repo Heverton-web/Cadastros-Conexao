@@ -76,9 +76,11 @@ export async function atualizarParafuso(sku: string, input: Partial<{
 }
 
 export async function toggleParafusoAtivo(sku: string, ativo: boolean): Promise<void> {
+  const { error } = await supabase.from("catalogo_parafusos").update({ ativo }).eq("sku", sku)
   if (error) throw error
 }
 
 export async function removerParafuso(sku: string): Promise<void> {
+  const { error } = await supabase.from("catalogo_parafusos").delete().eq("sku", sku)
   if (error) throw error
 }

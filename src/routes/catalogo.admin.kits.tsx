@@ -162,6 +162,7 @@ function AdminKitsPage() {
         supabase.from("catalogo_kit_complementares").delete().eq("kit_sku", deleteItem.id),
         supabase.from("catalogo_kit_opcionais").delete().eq("kit_sku", deleteItem.id),
         supabase.from("catalogo_kit_implantes").delete().eq("kit_sku", deleteItem.id),
+        supabase.from("catalogo_implante_kit").delete().eq("kit_sku", deleteItem.id),
         supabase.from("catalogo_kit_kits_complementares").delete().eq("kit_sku", deleteItem.id),
         supabase.from("catalogo_kit_kits_relacionados").delete().eq("kit_sku", deleteItem.id),
       ])
