@@ -1,4 +1,10 @@
-import { type ReactNode, useEffect, useState, useCallback } from "react";
+import {
+  type ReactNode,
+  useEffect,
+  useRef,
+  useState,
+  useCallback,
+} from "react";
 import { supabase } from "~/core/supabase";
 import { AuthContext } from "./useAuth";
 import { type Profile, type EmpresaInfo, type ModulosAcesso } from "./types";
@@ -19,6 +25,67 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [empresa, setEmpresa] = useState<EmpresaInfo | null>(null);
   const [modulosAtivos, setModulosAtivos] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
+
+  // Ref sempre atualizada com o profile mais recente — usada pelo listener
+  // Realtime abaixo, que só é re-inscrito quando o usuário muda (não a cada
+  // render), então não pode confiar num `profile` capturado por closure.
+  const profileRef = useRef<Profile | null>(null);
+  useEffect(() => {
+    profileRef.current = profile;
+  }, [profile]);
+
+  // Recarrega `permissoes`/`modulos_acesso` do usuário informado a partir do
+  // banco. Super admin sempre recebe todas as chaves (bypass); demais
+  // usuários leem a linha da tabela `permissoes` (mesma lógica de
+  // `fetchProfile`, extraída para poder ser reusada pelo Realtime).
+  const carregarPermissoesUsuario = useCallback(
+    async (userId: string, isSuperAdmin: boolean): Promise<void> => {
+      if (isSuperAdmin) {
+        const allPerms: Record<string, boolean> = {};
+        for (const key of getAllPermissionKeys()) {
+          allPerms[key] = true;
+        }
+        setPermissoes(allPerms);
+        setModulosAcesso(null);
+        return;
+      }
+
+      // Permissão efetiva = união de (permissões dos perfis atribuídos via
+      // usuario_perfis/perfis_permissoes) COM (override em
+      // permissoes.permissoes) — estritamente aditivo, nunca remove acesso
+      // que o override concede explicitamente.
+      const [{ data }, chavesDosPerfis] = await Promise.all([
+        supabase
+          .from("permissoes")
+          .select("permissoes, modulos_acesso")
+          .eq("usuario_id", userId)
+          .maybeSingle(),
+        buscarChavesPermissaoDosPerfis(userId).catch(() => [] as string[]),
+      ]);
+
+      const flatPerms = {
+        ...((data?.permissoes as Record<string, boolean>) || {}),
+      };
+      for (const key of chavesDosPerfis) {
+        flatPerms[key] = true;
+      }
+      const modulosAcc = data?.modulos_acesso as ModulosAcesso | null;
+
+      if (modulosAcc) {
+        for (const [, modulo] of Object.entries(modulosAcc)) {
+          if (modulo?.acessar && Array.isArray(modulo.acoes)) {
+            for (const acao of modulo.acoes) {
+              flatPerms[acao] = true;
+            }
+          }
+        }
+      }
+
+      setPermissoes(Object.keys(flatPerms).length > 0 ? flatPerms : null);
+      setModulosAcesso(modulosAcc);
+    },
+    [],
+  );
 
   const carregarEmpresa = useCallback(async () => {
     const { data: emp } = await supabase
@@ -88,54 +155,45 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       .single();
     if (!error && p) {
       setProfile(p as Profile);
-
-      if (p.is_super_admin) {
-        const allPerms: Record<string, boolean> = {};
-        for (const key of getAllPermissionKeys()) {
-          allPerms[key] = true;
-        }
-        setPermissoes(allPerms);
-        setModulosAcesso(null);
-      } else {
-        // Permissão efetiva = união de (permissões dos perfis atribuídos
-        // via usuario_perfis/perfis_permissoes) COM (override em
-        // permissoes.permissoes) — estritamente aditivo, nunca remove
-        // acesso que o override concede explicitamente.
-        const [{ data }, chavesDosPerfis] = await Promise.all([
-          supabase
-            .from("permissoes")
-            .select("permissoes, modulos_acesso")
-            .eq("usuario_id", userId)
-            .maybeSingle(),
-          buscarChavesPermissaoDosPerfis(userId).catch(() => [] as string[]),
-        ]);
-
-        const flatPerms = {
-          ...((data?.permissoes as Record<string, boolean>) || {}),
-        };
-        for (const key of chavesDosPerfis) {
-          flatPerms[key] = true;
-        }
-        const modulosAcc = data?.modulos_acesso as ModulosAcesso | null;
-
-        if (modulosAcc) {
-          for (const [, modulo] of Object.entries(modulosAcc)) {
-            if (modulo?.acessar && Array.isArray(modulo.acoes)) {
-              for (const acao of modulo.acoes) {
-                flatPerms[acao] = true;
-              }
-            }
-          }
-        }
-
-        setPermissoes(Object.keys(flatPerms).length > 0 ? flatPerms : null);
-        setModulosAcesso(modulosAcc);
-      }
+      await carregarPermissoesUsuario(userId, p.is_super_admin === true);
 
       // single-tenant: empresa sempre é a mesma
       await carregarEmpresa();
     }
   }
+
+  // Assinatura Realtime na tabela `permissoes` filtrada pelo usuário logado.
+  // Quando um admin altera a permissão de um usuário já com sessão aberta,
+  // esse usuário recebia a mudança só após deslogar/logar de novo — este
+  // listener corrige isso recarregando permissoes/modulos_acesso ao vivo.
+  // Requer Realtime habilitado na tabela `permissoes` (ver migration
+  // correspondente em supabase/migrations).
+  useEffect(() => {
+    if (!user?.id) return;
+
+    const channel = supabase
+      .channel(`permissoes-changes-${user.id}`)
+      .on(
+        "postgres_changes",
+        {
+          event: "UPDATE",
+          schema: "public",
+          table: "permissoes",
+          filter: `usuario_id=eq.${user.id}`,
+        },
+        () => {
+          carregarPermissoesUsuario(
+            user.id,
+            profileRef.current?.is_super_admin === true,
+          ).catch(() => {});
+        },
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [user?.id, carregarPermissoesUsuario]);
 
   async function login(email: string, password: string): Promise<void> {
     const { error } = await supabase.auth.signInWithPassword({
@@ -146,14 +204,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     toast.success("Login realizado!");
   }
 
+  // Recarrega permissoes do usuário atual — antes só recalculava o ramo
+  // super-admin; agora reusa `carregarPermissoesUsuario` e funciona para
+  // qualquer usuário logado (também chamada pelo listener Realtime acima).
   function refreshPermissoes(): void {
-    if (profile?.is_super_admin) {
-      const allPerms: Record<string, boolean> = {};
-      for (const key of getAllPermissionKeys()) {
-        allPerms[key] = true;
-      }
-      setPermissoes(allPerms);
-    }
+    if (!user?.id) return;
+    carregarPermissoesUsuario(
+      user.id,
+      profile?.is_super_admin === true,
+    ).catch(() => {});
   }
 
   async function logout(): Promise<void> {

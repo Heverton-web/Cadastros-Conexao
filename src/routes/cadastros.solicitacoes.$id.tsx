@@ -1,7 +1,7 @@
 import { createRoute, useNavigate } from "@tanstack/react-router";
 import { authLayout } from "./_auth";
 import { useState, useEffect } from "react";
-import { useAuth } from "~/lib/auth";
+import { useAuth, useCan } from "~/lib/auth";
 import {
   aprovarCadastro,
   reprovarCadastro,
@@ -140,7 +140,10 @@ function limparLogradouro(rua: string): string {
 
 function ClienteDetailPage() {
   const navigate = useNavigate();
-  const { profile, permissoes } = useAuth();
+  const { profile } = useAuth();
+  const podeAcaoCampo = useCan("aprovar_campo");
+  const podeAprovarCadastro = useCan("aprovar_cadastro");
+  const podeVisualizarDocumento = useCan("visualizar_documento");
   const { id } = clienteDetailRoute.useParams();
   const [data, setData] = useState<{
     cadastro: any;
@@ -526,7 +529,6 @@ function ClienteDetailPage() {
     c.status === "reprovado" ||
     c.status === "em_correcao" ||
     c.status === "link_gerado";
-  const podeAcaoCampo = permissoes?.aprovar_campo === true;
   const podeEditarCampos = podeAcaoCampo && !isBloqueado && !isFinal;
 
   const camposDados = [
@@ -724,7 +726,7 @@ function ClienteDetailPage() {
           </div>
         </div>
 
-        {permissoes?.aprovar_cadastro === true &&
+        {podeAprovarCadastro &&
           !isBloqueado &&
           !isFinal &&
           (c.status === "em_analise" || c.status === "dados_enviados") && (
@@ -1193,7 +1195,7 @@ function ClienteDetailPage() {
           </div>
           <DocList
             docs={docs}
-            podeVisualizar={permissoes?.visualizar_documento === true}
+            podeVisualizar={podeVisualizarDocumento}
             podeAcao={podeEditarCampos}
             getTipoLabel={getTipoLabel}
             getStatusLabel={(s) =>

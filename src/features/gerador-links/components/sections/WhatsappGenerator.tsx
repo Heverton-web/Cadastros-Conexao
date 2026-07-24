@@ -7,7 +7,7 @@ import { gerarWhatsApp } from "../../services/geradores.service";
 import { useCriarLink } from "../../hooks/useLinks";
 import { useTemplates } from "../../hooks/useTemplates";
 import { LinkSavedDialog } from "../LinkSavedDialog";
-import { useAuth } from "~/lib/auth";
+import { useAuth, useCan } from "~/lib/auth";
 import { EMPRESA_ID } from "~/config/empresa";
 import { dispararEventoModulo } from "~/core/services/webhooks";
 
@@ -21,8 +21,7 @@ export function WhatsappGenerator() {
   const [linkSalvoId, setLinkSalvoId] = useState<string | null>(null);
 
   const criarLink = useCriarLink();
-  const { profile, permissoes } = useAuth();
-  const podeSalvar = profile?.is_super_admin === true || permissoes?.lk_salvar === true;
+  const podeSalvar = useCan("lk_salvar");
   const { data: templates } = useTemplates();
   const templatesWhats = (templates || []).filter((t) => t.tipo === "whatsapp_msg");
 

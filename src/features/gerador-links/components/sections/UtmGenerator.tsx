@@ -6,7 +6,7 @@ import { Button } from "~/components/ui/button";
 import { gerarUtm } from "../../services/geradores.service";
 import { useCriarLink } from "../../hooks/useLinks";
 import { LinkSavedDialog } from "../LinkSavedDialog";
-import { useAuth } from "~/lib/auth";
+import { useAuth, useCan } from "~/lib/auth";
 
 export function UtmGenerator() {
   const [url, setUrl] = useState("");
@@ -20,8 +20,7 @@ export function UtmGenerator() {
   const [linkSalvoId, setLinkSalvoId] = useState<string | null>(null);
 
   const criarLink = useCriarLink();
-  const { profile, permissoes } = useAuth();
-  const podeSalvar = profile?.is_super_admin === true || permissoes?.lk_salvar === true;
+  const podeSalvar = useCan("lk_salvar");
 
   const urlGerada = useMemo(() => {
     if (!url || !source || !medium || !campaign) return "";

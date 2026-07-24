@@ -6,7 +6,7 @@ import { Button } from "~/components/ui/button";
 import { QRCodeCanvas } from "qrcode.react";
 import { useCriarLink } from "../../hooks/useLinks";
 import { LinkSavedDialog } from "../LinkSavedDialog";
-import { useAuth } from "~/lib/auth";
+import { useAuth, useCan } from "~/lib/auth";
 import { EMPRESA_ID } from "~/config/empresa";
 import { dispararEventoModulo } from "~/core/services/webhooks";
 
@@ -19,9 +19,7 @@ export function QrCodeGenerator() {
   const [linkSalvoId, setLinkSalvoId] = useState<string | null>(null);
 
   const criarLink = useCriarLink();
-  const { profile, permissoes } = useAuth();
-  const isSuper = profile?.is_super_admin === true;
-  const podeSalvar = isSuper || permissoes?.lk_salvar === true;
+  const podeSalvar = useCan("lk_salvar");
 
   function handleDownload() {
     const canvas = document.querySelector("canvas");

@@ -6,7 +6,7 @@ import { Button } from "~/components/ui/button";
 import { gerarGoogleReview } from "../../services/geradores.service";
 import { useCriarLink } from "../../hooks/useLinks";
 import { LinkSavedDialog } from "../LinkSavedDialog";
-import { useAuth } from "~/lib/auth";
+import { useAuth, useCan } from "~/lib/auth";
 
 export function GoogleReviewGenerator() {
   const [placeId, setPlaceId] = useState("");
@@ -15,8 +15,7 @@ export function GoogleReviewGenerator() {
   const [linkSalvoId, setLinkSalvoId] = useState<string | null>(null);
 
   const criarLink = useCriarLink();
-  const { profile, permissoes } = useAuth();
-  const podeSalvar = profile?.is_super_admin === true || permissoes?.lk_salvar === true;
+  const podeSalvar = useCan("lk_salvar");
 
   const urlGerada = useMemo(() => {
     if (!placeId) return "";
