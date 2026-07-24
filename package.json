@@ -17,6 +17,7 @@
     "test:safe": "node headroom-filter.js vitest run",
     "deploy:safe": "node headroom-filter.js python3 deploy_vps.py",
     "check:types": "tsc --noEmit",
+    "check:guards": "node scripts/check-route-guards.mjs",
     "validate:all": "npm run check:types && npm run test:safe"
   },
   "dependencies": {

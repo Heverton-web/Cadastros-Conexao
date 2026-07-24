@@ -6,7 +6,7 @@ import { Button } from "~/components/ui/button";
 import { gerarWaze } from "../../services/geradores.service";
 import { useCriarLink } from "../../hooks/useLinks";
 import { LinkSavedDialog } from "../LinkSavedDialog";
-import { useAuth } from "~/lib/auth";
+import { useAuth, useCan } from "~/lib/auth";
 
 export function WazeGenerator() {
   const [lat, setLat] = useState("");
@@ -16,8 +16,7 @@ export function WazeGenerator() {
   const [linkSalvoId, setLinkSalvoId] = useState<string | null>(null);
 
   const criarLink = useCriarLink();
-  const { profile, permissoes } = useAuth();
-  const podeSalvar = profile?.is_super_admin === true || permissoes?.lk_salvar === true;
+  const podeSalvar = useCan("lk_salvar");
 
   const urlGerada = useMemo(() => {
     if (!lat || !lng) return "";

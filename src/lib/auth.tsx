@@ -1,4 +1,4 @@
-export { AuthProvider, useAuth } from "~/core/auth";
+export { AuthProvider, useAuth, useCan, useCanAny, useCanAll } from "~/core/auth";
 export type { Profile, AuthContextType } from "~/core/auth";
 
 export type AppRole = "dev" | "diretor_comercial" | "gestor" | "consultor";

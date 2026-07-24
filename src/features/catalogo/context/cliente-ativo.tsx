@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from "react"
-import { useAuth } from "~/lib/auth"
+import { useAuth, useCanAny } from "~/lib/auth"
 
 export type ClienteAtivo = { id: string; nomeDoutor: string; nomeClinica: string | null }
 
@@ -28,13 +28,12 @@ function storageKey(consultorId: string) {
  * catálogo resolvem automaticamente pelo grupo de desconto desse cliente.
  */
 export function ClienteAtivoProvider({ children }: { children: React.ReactNode }) {
-  const { profile, permissoes } = useAuth()
-  const isConsultor = Boolean(
-    profile &&
-      (permissoes?.catalogo_colab_ver_produtos ||
-        permissoes?.catalogo_colab_criar_orcamento ||
-        profile.is_super_admin),
-  )
+  const { profile } = useAuth()
+  const podeCatalogoColab = useCanAny([
+    "catalogo_colab_ver_produtos",
+    "catalogo_colab_criar_orcamento",
+  ])
+  const isConsultor = Boolean(profile && podeCatalogoColab)
   const [clienteAtivo, setClienteAtivoState] = useState<ClienteAtivo | null>(null)
 
   // Restaura seleção salva (por consultor) ao montar / trocar de usuário

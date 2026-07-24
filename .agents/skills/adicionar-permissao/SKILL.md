@@ -29,18 +29,14 @@ Check: não existe em src/registry/permissions-registry.ts
 Check: não existe no module.ts do módulo
 ```
 
-### Step 2: Adicionar em types.ts
+### Step 2: (removido)
 
-```typescript
-// src/core/permissions/types.ts
-
-export interface Permissoes {
-  // ... permissões existentes
-
-  // ═══ NOVA PERMISSÃO ═══
-  {{PERMISSAO_KEY}}: boolean;
-}
-```
+~~Editar `src/core/permissions/types.ts`~~ — **não fazer isso**. O tipo real
+hoje é `export type Permissoes = Record<string, boolean>` (ver
+`src/core/permissions/types.ts`), não uma interface com campos nomeados.
+Adicionar um campo lá não tem efeito algum em runtime nem em type-checking
+de chave específica — é passo morto que só sobrevivia na doc antiga desta
+skill. Pule direto para o Step 3.
 
 ### Step 3: Registrar em permissions-registry.ts
 
@@ -157,3 +153,66 @@ git commit -m "feat(<modulo>): adicionar permissão {{PERMISSAO_KEY}}"
 - **Lean-CTX:** Ler apenas arquivos necessários
 - **Caveman:** Alterações cirúrgicas
 - **Pre-flight:** Rodar build após cada alteração
+
+## Estado atual (checagem de permissão em runtime)
+
+### Guards de rota — qual usar
+
+Toda rota em `src/routes/*.tsx` precisa de um destes três guards
+(`src/components/guards/`):
+
+| Guard | Quando usar |
+|---|---|
+| `RequirePermission` | Rota condicionada a permissão(ões) granular(es) e/ou acesso a módulo. Aceita `permissions` (OR por padrão, `requireAll` para AND), `modulo`, `paginas`. Super admin sempre passa. |
+| `RequireSuperAdmin` | Rota exclusiva de super admin (telas globais, `/global/*`). |
+| `RequireEmpresaAdmin` | Rota liberada para super admin OU `profile.role === "admin"` — não é sobre permissão granular, é sobre papel administrativo da empresa. |
+
+Rotas sem nenhum dos três guards devem estar deliberadamente na allowlist de
+`scripts/check-route-guards.mjs` (login, pré-cadastro, catálogo público,
+shells de redirect) — ver Tarefa de CI abaixo.
+
+### Checagem de permissão em componentes — use `useCan`/`useCanAny`/`useCanAll`
+
+Além dos guards de rota, é comum precisar esconder/desabilitar um botão ou
+trecho de UI dentro de uma página já protegida. Antes disso era feito
+ad-hoc em cada componente, duplicando a checagem de super-admin:
+
+```typescript
+// padrão antigo, evitar em código novo
+const podeSalvar = profile?.is_super_admin === true || permissoes?.lk_salvar === true;
+```
+
+Forma preferida agora — hook central em `src/core/auth/usePermission.ts`
+(re-exportado por `~/core/auth` e `~/lib/auth`):
+
+```typescript
+import { useCan, useCanAny, useCanAll } from "~/lib/auth";
+
+const podeSalvar = useCan("lk_salvar");                       // uma chave
+const podeVer = useCanAny(["catalogo_colab_ver_produtos", "catalogo_colab_criar_orcamento"]); // OR
+const podeGerenciar = useCanAll(["hub_ver_analytics", "hub_gerenciar_config"]);               // AND
+```
+
+Os três já embutem o bypass de super admin — não repita
+`profile?.is_super_admin === true ||` na frente. Migração dos ~196 pontos de
+checagem ad-hoc existentes no código é gradual; uma primeira leva de ~12
+arquivos já foi convertida (rotas de `cadastros`, `catalogo` colaborador e
+`gerador-links`) como prova de conceito — não assuma que a migração está
+completa, sempre cheque se o arquivo que você está tocando ainda usa o
+padrão antigo antes de replicá-lo.
+
+### Aviso: duas telas de gestão de permissão
+
+Hoje existem **duas** telas que editam a mesma tabela `permissoes` de formas
+distintas: `/credenciais` e `/empresa/permissoes`. Isso é drift conhecido —
+há uma fase futura planejada para consolidar as duas em uma única tela.
+Até lá, ao mexer em permissões via UI, confirme em qual das duas o usuário
+está para não presumir que só existe uma.
+
+### Invalidação reativa
+
+`AuthProvider` (`src/core/auth/AuthProvider.tsx`) assina Supabase Realtime na
+tabela `permissoes` filtrada pelo usuário logado — uma alteração feita por um
+admin é refletida na sessão já aberta do usuário afetado, sem precisar
+deslogar/logar. Depende de Realtime habilitado na tabela (ver migration
+`supabase/migrations/20260724000000_enable_realtime_permissoes.sql`).

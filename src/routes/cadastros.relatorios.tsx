@@ -2,7 +2,7 @@ import { createRoute, useNavigate } from "@tanstack/react-router";
 import { authLayout } from "./_auth";
 import { useState, useEffect } from "react";
 import { supabase } from "~/lib/supabase";
-import { useAuth } from "~/lib/auth";
+import { useAuth, useCan } from "~/lib/auth";
 import {
   STATUS_LABEL,
   STATUS_COLOR,
@@ -36,9 +36,9 @@ export const relatoriosRoute = createRoute({
 });
 
 function RelatoriosPage() {
-  const { user, profile, permissoes } = useAuth();
+  const { user, profile } = useAuth();
   const navigate = useNavigate();
-  const verTodos = permissoes?.ver_todos_cadastros === true;
+  const verTodos = useCan("ver_todos_cadastros");
   const [periodo, setPeriodo] = useState("30");
   const [filtroStatus, setFiltroStatus] = useState<CadastroStatus | "">("");
   const [loading, setLoading] = useState(true);

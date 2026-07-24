@@ -3,7 +3,7 @@ import { FileText, ShoppingCart, Send, ArrowRightCircle } from "lucide-react"
 import { Badge } from "~/components/ui/badge"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "~/components/ui/table"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "~/components/ui/dialog"
-import { useAuth } from "~/lib/auth"
+import { useAuth, useCan } from "~/lib/auth"
 import { useCarrinho, cartTotais, formatBRL, clearCart } from "../services/carrinho.service"
 import { useClienteAtivo } from "../context/cliente-ativo"
 import {
@@ -16,7 +16,7 @@ import { STATUS_ORCAMENTO_LABEL, STATUS_ORCAMENTO_COLOR, type CatalogoOrcamento 
 import toast from "react-hot-toast"
 
 export function MeusOrcamentos() {
-  const { profile, permissoes } = useAuth()
+  const { profile } = useAuth()
   const { clienteAtivo } = useClienteAtivo()
   const cart = useCarrinho()
   const { total } = cartTotais(cart)
@@ -26,8 +26,8 @@ export function MeusOrcamentos() {
   const converterMut = useConverterOrcamentoPedido()
   const [detalhe, setDetalhe] = useState<CatalogoOrcamento | null>(null)
 
-  const podeCriar = Boolean(permissoes?.catalogo_colab_criar_orcamento)
-  const podeConverter = Boolean(permissoes?.catalogo_colab_converter_pedido)
+  const podeCriar = useCan("catalogo_colab_criar_orcamento")
+  const podeConverter = useCan("catalogo_colab_converter_pedido")
 
   function handleGerarOrcamento() {
     if (!profile) return

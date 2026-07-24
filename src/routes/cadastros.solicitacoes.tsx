@@ -1,7 +1,7 @@
 import { createRoute, useNavigate } from "@tanstack/react-router";
 import { authLayout } from "./_auth";
 import { useState, useEffect } from "react";
-import { useAuth } from "~/lib/auth";
+import { useAuth, useCan } from "~/lib/auth";
 import {
   listarCadastros,
   deletarCadastro,
@@ -61,8 +61,9 @@ export const clientesRoute = createRoute({
 
 function ClientesPage() {
   const navigate = useNavigate();
-  const { profile, permissoes } = useAuth();
-  const podeExcluir = permissoes?.excluir_cadastro === true;
+  const { profile } = useAuth();
+  const podeExcluir = useCan("excluir_cadastro");
+  const podeVerTodos = useCan("ver_todos_cadastros");
   const [data, setData] = useState<
     (Cadastro & { profiles: { nome: string } | null })[]
   >([]);
@@ -107,7 +108,7 @@ function ClientesPage() {
     setLoading(true);
     try {
       const filters: { created_by?: string } = {};
-      if (permissoes?.ver_todos_cadastros !== true)
+      if (podeVerTodos !== true)
         filters.created_by = profile.id;
       const res = await listarCadastros(
         profile!.empresa_id!,
@@ -231,7 +232,7 @@ function ClientesPage() {
             </button>
           )}
         </div>
-        {permissoes?.ver_todos_cadastros && (
+        {podeVerTodos && (
           <select
             value={filtroConsultor}
             onChange={(e) => setFiltroConsultor(e.target.value)}
@@ -315,7 +316,7 @@ function ClientesPage() {
       )}
 
       {/* Status Breakdown */}
-      {!loading && permissoes?.ver_todos_cadastros && (
+      {!loading && podeVerTodos && (
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
           {[
             {
