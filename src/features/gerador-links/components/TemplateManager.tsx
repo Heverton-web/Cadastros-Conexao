@@ -36,7 +36,7 @@ import { useTemplates, useCriarTemplate, useAtualizarTemplate, useDeletarTemplat
 import type { TemplateMensagem } from "../types";
 import { useEmpresaSuperAdmin } from "~/components/shared/useEmpresaSuperAdmin";
 import { EmpresaSuperAdminSelector } from "~/components/shared/EmpresaSuperAdminSelector";
-import { useAuth } from "~/lib/auth";
+import { useCan } from "~/core/auth";
 
 const TIPO_TEMPLATE_LABEL: Record<string, string> = {
   whatsapp_msg: "Mensagem WhatsApp",
@@ -45,12 +45,11 @@ const TIPO_TEMPLATE_LABEL: Record<string, string> = {
 
 export function TemplateManager() {
   const { empresaId, empresas, empresaSelecionada, setEmpresaSelecionada, isSuperAdmin } = useEmpresaSuperAdmin();
-  const { profile, permissoes } = useAuth();
+  const podeGerenciarTemplates = useCan("lk_gerenciar_templates");
   const { data: templates, isLoading } = useTemplates();
   const criarTemplate = useCriarTemplate();
   const atualizarTemplate = useAtualizarTemplate();
   const deletarTemplate = useDeletarTemplate();
-  const can = (key: string) => isSuperAdmin || permissoes?.[key] === true;
 
   const [modalOpen, setModalOpen] = useState(false);
   const [tipo, setTipo] = useState<"whatsapp_msg" | "utm_preset">("whatsapp_msg");
@@ -149,7 +148,7 @@ export function TemplateManager() {
               onChange={setEmpresaSelecionada}
             />
           )}
-          {can("lk_gerenciar_templates") && (
+          {podeGerenciarTemplates && (
             <Button size="sm" onClick={openCreate}>
               <Plus className="w-4 h-4" /> Novo Template
             </Button>
@@ -182,7 +181,7 @@ export function TemplateManager() {
                       {new Date(t.created_at).toLocaleDateString("pt-BR")}
                     </p>
                   </div>
-                  {can("lk_gerenciar_templates") && (
+                  {podeGerenciarTemplates && (
                     <div className="flex items-center gap-1">
                       <button
                         onClick={() => openEdit(t)}

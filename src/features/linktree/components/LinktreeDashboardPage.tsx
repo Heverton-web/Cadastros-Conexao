@@ -23,7 +23,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "~/components/ui/alert-dialog";
-import { useAuth } from "~/core/auth";
+import { useAuth, useCan } from "~/core/auth";
 import { EMPRESA_ID } from "~/config/empresa";
 import { supabase } from "~/core/supabase";
 import {
@@ -40,9 +40,17 @@ import { LinktreeQrModal } from "./LinktreeQrModal";
 import type { LinktreeColaboradorComCredencial } from "~/features/linktree/types";
 
 export function LinktreeDashboardPage() {
-  const { profile, permissoes } = useAuth();
+  const { profile, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const isSuper = profile?.is_super_admin === true;
+  const podeVerDashboard = useCan("lt_ver_dashboard");
+  const podeCriarColaborador = useCan("lt_criar_colaborador");
+  const podeToggleStatus = useCan("lt_toggle_status");
+  const podeVerLink = useCan("lt_ver_link");
+  const podeEditarColaborador = useCan("lt_editar_colaborador");
+  const podeVerQr = useCan("lt_ver_qr");
+  const podeBaixarQr = useCan("lt_baixar_qr");
+  const podeExcluirColaborador = useCan("lt_excluir_colaborador");
 
   const [modalOpen, setModalOpen] = useState(false);
   const [editing, setEditing] =
@@ -79,15 +87,13 @@ export function LinktreeDashboardPage() {
   const toggleMutation = useToggleColaborador();
   const deleteMutation = useDeletarColaborador();
 
-  const can = (key: string) => isSuper || permissoes?.[key] === true;
-
   useEffect(() => {
-    if (!permissoes && !isSuper) return;
-    if (!isSuper && !can("lt_ver_dashboard")) {
+    if (authLoading) return;
+    if (!isSuper && !podeVerDashboard) {
       toast.error("Voce nao tem permissao para acessar o Dashboard");
       navigate({ to: "/", replace: true });
     }
-  }, [permissoes, isSuper, navigate]);
+  }, [authLoading, isSuper, podeVerDashboard, navigate]);
 
   function handleToggle(c: LinktreeColaboradorComCredencial) {
     const next = c.status === "ativo" ? "inativo" : "ativo";
@@ -116,7 +122,7 @@ export function LinktreeDashboardPage() {
             Gerencie os cartoes digitais e QR Codes dos colaboradores.
           </p>
         </div>
-        {can("lt_criar_colaborador") && (
+        {podeCriarColaborador && (
           <Button
             onClick={() => {
               setEditing(null);
@@ -217,7 +223,7 @@ export function LinktreeDashboardPage() {
                         <Switch
                           checked={c.status === "ativo"}
                           onCheckedChange={() => handleToggle(c)}
-                          disabled={!can("lt_toggle_status")}
+                          disabled={!podeToggleStatus}
                         />
                         <span
                           className="rounded-full px-2 py-0.5 text-xs font-medium"
@@ -238,7 +244,7 @@ export function LinktreeDashboardPage() {
                     </td>
                     <td className="p-4">
                       <div className="flex items-center justify-end gap-1">
-                        {can("lt_ver_link") && (
+                        {podeVerLink && (
                           <Button
                             variant="ghost"
                             size="icon"
@@ -254,7 +260,7 @@ export function LinktreeDashboardPage() {
                             </a>
                           </Button>
                         )}
-                        {can("lt_editar_colaborador") && (
+                        {podeEditarColaborador && (
                           <Button
                             variant="ghost"
                             size="icon"
@@ -267,7 +273,7 @@ export function LinktreeDashboardPage() {
                             <Pencil className="size-4" />
                           </Button>
                         )}
-                        {can("lt_ver_qr") && (
+                        {podeVerQr && (
                           <Button
                             variant="ghost"
                             size="icon"
@@ -277,7 +283,7 @@ export function LinktreeDashboardPage() {
                             <QrCode className="size-4" />
                           </Button>
                         )}
-                        {can("lt_baixar_qr") && (
+                        {podeBaixarQr && (
                           <Button
                             variant="ghost"
                             size="icon"
@@ -287,7 +293,7 @@ export function LinktreeDashboardPage() {
                             <Download className="size-4" />
                           </Button>
                         )}
-                        {can("lt_excluir_colaborador") && (
+                        {podeExcluirColaborador && (
                           <Button
                             variant="ghost"
                             size="icon"

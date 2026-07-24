@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { Loader2 } from "lucide-react";
 import toast from "react-hot-toast";
-import { useAuth } from "~/core/auth";
+import { useAuth, useCan } from "~/core/auth";
 import { EMPRESA_ID } from "~/config/empresa";
 import { supabase } from "~/core/supabase";
 import { buscarTemaConfig, salvarTemaConfig } from "~/features/linktree/index";
@@ -13,9 +13,10 @@ import {
 } from "~/features/linktree/types";
 
 export function LinktreeTemaPage() {
-  const { profile, permissoes } = useAuth();
+  const { profile, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const isSuper = profile?.is_super_admin === true;
+  const podeGerenciarTema = useCan("lt_gerenciar_tema");
 
   const [theme, setTheme] = useState<LinktreeThemeConfig>(
     normalizeLinktreeTheme(null),
@@ -26,15 +27,13 @@ export function LinktreeTemaPage() {
     EMPRESA_ID,
   );
 
-  const can = (key: string) => isSuper || permissoes?.[key] === true;
-
   useEffect(() => {
-    if (!permissoes && !isSuper) return;
-    if (!isSuper && !can("lt_gerenciar_tema")) {
+    if (authLoading) return;
+    if (!isSuper && !podeGerenciarTema) {
       toast.error("Voce nao tem permissao para gerenciar o tema");
       navigate({ to: "/linktree/dashboard", replace: true });
     }
-  }, [permissoes, isSuper, navigate]);
+  }, [authLoading, isSuper, podeGerenciarTema, navigate]);
 
   useEffect(() => {
     if (!isSuper) return;

@@ -1,8 +1,7 @@
-import { createRoute } from "@tanstack/react-router";
+import { createRoute, Link } from "@tanstack/react-router";
 import { authLayout } from "./_auth";
 import { useState, useEffect } from "react";
 import { useAuth } from "~/lib/auth";
-import { supabase } from "~/core/supabase";
 import {
   listarCredenciais,
   criarCredencial,
@@ -14,32 +13,19 @@ import {
 } from "~/features/credenciais";
 import { EMPRESA_ID } from "~/config/empresa";
 import {
-  getPermissoes,
-  setPermissoes,
-  getPermissoesPadrao,
-  PERMISSOES_GROUPS,
-  PERMISSOES_LABEL,
-  PERMISSOES_DESC,
-  type Permissoes,
-} from "~/core/permissions";
-import {
   Loader2,
   Plus,
   UserPlus,
   ToggleLeft,
   ToggleRight,
   Shield,
-  ShieldCheck,
-  ShieldX,
+  ShieldAlert,
   X,
-  Save,
   Settings,
   Trash2,
-  Building2,
   Pencil,
 } from "lucide-react";
 import toast from "react-hot-toast";
-import { cn } from "~/lib/utils";
 import { RequireSuperAdmin } from "~/components/guards";
 
 export const credenciaisRoute = createRoute({
@@ -53,7 +39,7 @@ export const credenciaisRoute = createRoute({
 });
 
 function CredenciaisPage() {
-  const { permissoes, profile } = useAuth();
+  const { profile } = useAuth();
   const podeVer = profile?.is_super_admin === true;
   const podeAdmin = profile?.is_super_admin === true;
   const selectedEmpresaId = EMPRESA_ID;
@@ -71,12 +57,6 @@ function CredenciaisPage() {
     departamento: "",
   });
   const [submitting, setSubmitting] = useState(false);
-
-  // Permissions modal
-  const [permCredencial, setPermCredencial] = useState<Credencial | null>(null);
-  const [editPerms, setEditPerms] = useState<Permissoes | null>(null);
-  const [loadingPerms, setLoadingPerms] = useState(false);
-  const [savingPerms, setSavingPerms] = useState(false);
 
   // Confirm delete
   const [deleteTarget, setDeleteTarget] = useState<Credencial | null>(null);
@@ -164,55 +144,6 @@ function CredenciaisPage() {
     }
   }
 
-  async function abrirPermissoes(c: Credencial) {
-    setPermCredencial(c);
-    setLoadingPerms(true);
-    try {
-      const { data: prof } = await supabase
-        .from("profiles")
-        .select("id, ambiente, is_super_admin")
-        .eq("email", c.email_corporativo)
-        .maybeSingle();
-      if (prof) {
-        const perms = await getPermissoes(prof.id, prof.is_super_admin);
-        setEditPerms(perms || getPermissoesPadrao(prof.ambiente as any));
-      } else {
-        setEditPerms(null);
-      }
-    } catch (e) {
-      console.error("Erro ao carregar permissões:", e);
-      toast.error("Erro ao carregar permissões");
-    }
-    setLoadingPerms(false);
-  }
-
-  function togglePerm(key: keyof Permissoes) {
-    if (!editPerms) return;
-    setEditPerms((p) => (p ? { ...p, [key]: !p[key] } : p));
-  }
-
-  async function salvarPermissoes() {
-    if (!permCredencial || !editPerms) return;
-    setSavingPerms(true);
-    try {
-      const { data: prof } = await supabase
-        .from("profiles")
-        .select("id")
-        .eq("email", permCredencial.email_corporativo)
-        .maybeSingle();
-      if (prof) {
-        await setPermissoes(prof.id, editPerms);
-        toast.success("Permissões salvas!");
-      }
-      setPermCredencial(null);
-      setEditPerms(null);
-    } catch (e) {
-      console.error("Erro ao salvar permissões:", e);
-      toast.error("Erro");
-    }
-    setSavingPerms(false);
-  }
-
   if (!podeVer)
     return (
       <div className="flex flex-col items-center justify-center gap-3 p-8 pt-20">
@@ -227,14 +158,22 @@ function CredenciaisPage() {
         <h1 className="text-lg font-bold text-text-main">
           Credenciais de Acesso
         </h1>
-        {podeAdmin && (
-          <button
-            onClick={abrirNova}
-            className="flex items-center gap-2 rounded-xl bg-accent px-4 py-2.5 text-sm font-medium text-accent-fg"
+        <div className="flex items-center gap-2">
+          <Link
+            to="/empresa/permissoes"
+            className="flex items-center gap-2 rounded-xl border border-border px-3 py-2.5 text-sm font-medium text-text-muted hover:text-text-main"
           >
-            <Plus size={16} /> Nova
-          </button>
-        )}
+            <ShieldAlert size={16} /> Permissões
+          </Link>
+          {podeAdmin && (
+            <button
+              onClick={abrirNova}
+              className="flex items-center gap-2 rounded-xl bg-accent px-4 py-2.5 text-sm font-medium text-accent-fg"
+            >
+              <Plus size={16} /> Nova
+            </button>
+          )}
+        </div>
       </div>
 
 
@@ -271,22 +210,13 @@ function CredenciaisPage() {
                 )}
               </div>
               {podeAdmin && (
-                <>
-                  <button
-                    onClick={() => abrirPermissoes(c)}
-                    className="rounded-lg p-2 text-text-muted hover:text-accent"
-                    title="Permissões"
-                  >
-                    <Shield size={16} />
-                  </button>
-                  <button
-                    onClick={() => abrirEditar(c)}
-                    className="rounded-lg p-2 text-text-muted hover:text-text-main"
-                    title="Editar"
-                  >
-                    <Settings size={16} />
-                  </button>
-                </>
+                <button
+                  onClick={() => abrirEditar(c)}
+                  className="rounded-lg p-2 text-text-muted hover:text-text-main"
+                  title="Editar"
+                >
+                  <Settings size={16} />
+                </button>
               )}
               <button
                 onClick={() => handleToggle(c)}
@@ -405,144 +335,6 @@ function CredenciaisPage() {
                 ) : (
                   "Salvar"
                 )}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Permissions Modal */}
-      {permCredencial && (
-        <div className="fixed inset-0 z-[100] flex items-end justify-center bg-black/60 backdrop-blur-sm sm:items-center">
-          <div className="w-full max-w-md rounded-t-2xl sm:rounded-2xl bg-card border border-border/50 p-0 shadow-2xl shadow-black/40 max-h-[90dvh] overflow-hidden flex flex-col">
-            <div className="bg-gradient-to-br from-accent/20 via-accent/10 to-transparent px-6 pt-6 pb-4 border-b border-border/50 relative">
-              <div className="flex items-center gap-3">
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent/15 text-accent">
-                  <Shield size={22} />
-                </div>
-                <div>
-                  <h2 className="text-xl font-bold text-text-main tracking-tight truncate">
-                    {permCredencial.nome_completo}
-                  </h2>
-                  <p className="text-sm text-text-muted mt-0.5">
-                    {permCredencial.email_corporativo}
-                  </p>
-                </div>
-              </div>
-              <button
-                onClick={() => {
-                  setPermCredencial(null);
-                  setEditPerms(null);
-                }}
-                className="absolute right-4 top-5 rounded-lg p-1.5 text-text-muted hover:text-text-main hover:bg-surface-hover transition-colors"
-              >
-                <X size={20} />
-              </button>
-            </div>
-
-            <div className="px-6 py-6 flex-1 space-y-4">
-            {loadingPerms ? (
-              <div className="flex justify-center py-12">
-                <Loader2 size={24} className="animate-spin text-accent" />
-              </div>
-            ) : !editPerms ? (
-              <div className="flex flex-col items-center justify-center py-8 text-center">
-                <ShieldX size={36} className="text-yellow-400 mb-2" />
-                <p className="text-sm font-semibold text-text-main">
-                  Usuário não registrado
-                </p>
-                <p className="text-xs text-text-muted mt-1">
-                  O e-mail ainda não realizou o primeiro acesso.
-                </p>
-              </div>
-            ) : (
-              <>
-                <div className="flex items-center gap-1 mb-4">
-                  <button
-                    onClick={() =>
-                      setEditPerms(getPermissoesPadrao("cadastro"))
-                    }
-                    className="ml-auto text-xs text-accent underline"
-                  >
-                    Restaurar padrões
-                  </button>
-                </div>
-                <div className="flex flex-col gap-3 max-h-[55vh] overflow-y-auto pr-1">
-                  {PERMISSOES_GROUPS.map((group) => (
-                    <div
-                      key={group.label}
-                      className="rounded-xl bg-input-bg p-3"
-                    >
-                      <p className="text-xs font-bold text-text-main mb-2">
-                        {group.label}
-                      </p>
-                      <div className="flex flex-col gap-2">
-                        {group.keys.map((key) => (
-                          <label
-                            key={key}
-                            className="flex items-center gap-3 cursor-pointer group"
-                          >
-                            <button
-                              onClick={() => togglePerm(key)}
-                              className={cn(
-                                "shrink-0 rounded-lg p-1.5 transition",
-                                editPerms[key]
-                                  ? "bg-accent text-accent-fg"
-                                  : "bg-bg-dark text-text-muted group-hover:text-text-main",
-                              )}
-                            >
-                              {editPerms[key] ? (
-                                <ShieldCheck size={16} />
-                              ) : (
-                                <ShieldX size={16} />
-                              )}
-                            </button>
-                            <div className="flex-1 min-w-0">
-                              <p
-                                className={cn(
-                                  "text-xs font-medium",
-                                  editPerms[key]
-                                    ? "text-text-main"
-                                    : "text-text-muted",
-                                )}
-                              >
-                                {PERMISSOES_LABEL[key]}
-                              </p>
-                              <p className="text-xs text-text-muted">
-                                {PERMISSOES_DESC[key]}
-                              </p>
-                            </div>
-                          </label>
-                        ))}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </>
-            )}
-            </div>
-
-            <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end px-6 pb-6 pt-4 border-t border-border/50">
-              <button
-                onClick={() => {
-                  setPermCredencial(null);
-                  setEditPerms(null);
-                }}
-                className="flex-1 sm:flex-none rounded-xl border border-border px-6 py-2.5 text-sm text-text-muted font-semibold hover:text-text-main hover:bg-surface-hover transition-all duration-200 min-h-[44px]"
-              >
-                Cancelar
-              </button>
-              <button
-                onClick={salvarPermissoes}
-                disabled={savingPerms}
-                className="flex items-center justify-center gap-1 flex-1 sm:flex-none rounded-xl bg-accent px-6 py-2.5 text-sm font-semibold text-accent-fg shadow-md shadow-accent/20 hover:bg-accent-hover disabled:opacity-50 transition-all duration-200 min-h-[44px]"
-              >
-                {savingPerms ? (
-                  <Loader2 size={16} className="animate-spin" />
-                ) : (
-                  <Save size={16} />
-                )}{" "}
-                Salvar
               </button>
             </div>
           </div>

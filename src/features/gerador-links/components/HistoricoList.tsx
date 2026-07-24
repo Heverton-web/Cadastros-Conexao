@@ -39,7 +39,7 @@ import { QRCodeCanvas } from "qrcode.react";
 import type { LinkSalvo, LinkClique } from "../types";
 import { useEmpresaSuperAdmin } from "~/components/shared/useEmpresaSuperAdmin";
 import { EmpresaSuperAdminSelector } from "~/components/shared/EmpresaSuperAdminSelector";
-import { useAuth } from "~/lib/auth";
+import { useCan } from "~/core/auth";
 
 const TIPO_LABEL: Record<string, string> = {
   whatsapp: "WhatsApp",
@@ -62,7 +62,8 @@ const TIPO_OPTIONS = [
 
 export function HistoricoList() {
   const { empresaId, empresas, empresaSelecionada, setEmpresaSelecionada, isSuperAdmin } = useEmpresaSuperAdmin();
-  const { profile, permissoes } = useAuth();
+  const podeEditar = useCan("lk_editar");
+  const podeExcluir = useCan("lk_excluir");
   const { data: links, isLoading } = useLinks();
   const deletarLink = useDeletarLink();
   const editarLink = useEditarLink();
@@ -75,8 +76,6 @@ export function HistoricoList() {
   const [cliquesMap, setCliquesMap] = useState<Record<string, number>>({});
   const [editandoLink, setEditandoLink] = useState<LinkSalvo | null>(null);
   const [editTitulo, setEditTitulo] = useState("");
-
-  const can = (key: string) => isSuperAdmin || permissoes?.[key] === true;
 
   const filtrados = (links || []).filter((link) => {
     const matchTipo = filtroTipo === "all" || link.tipo === filtroTipo;
@@ -239,7 +238,7 @@ export function HistoricoList() {
                     >
                       {copiadoId === link.id ? <Check className="w-4 h-4" /> : <ExternalLink className="w-4 h-4" />}
                     </button>
-                    {can("lk_editar") && (
+                    {podeEditar && (
                       <button
                         onClick={() => handleStartEdit(link)}
                         className="text-text-muted hover:text-accent transition-colors p-1"
@@ -262,7 +261,7 @@ export function HistoricoList() {
                     >
                       <Download size={14} />
                     </button>
-                    {can("lk_excluir") && (
+                    {podeExcluir && (
                       <button
                         onClick={() => setItemParaDeletar(link)}
                         className="text-text-muted hover:text-error transition-colors p-1"

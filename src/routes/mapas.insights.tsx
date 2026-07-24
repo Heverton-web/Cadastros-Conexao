@@ -1,6 +1,6 @@
 import { createRoute } from "@tanstack/react-router";
 import { authLayout } from "./_auth";
-import { useAuth } from "~/lib/auth";
+import { useAuth, useCan } from "~/lib/auth";
 import {
   useMapasDistributors,
   useMapasConsultants,
@@ -51,14 +51,11 @@ function getRegionColor(region: Region): string {
 }
 
 function MapasInsightsPage() {
-  const { profile, permissoes } = useAuth();
+  const { profile } = useAuth();
   const navigate = useNavigate();
-  const p = permissoes;
 
-  const canDist = p?.mapas_gerir_distribuidores === true;
-  const canCons = p?.mapas_gerir_consultores === true;
-  const canInsights = p?.mapas_ver_insights === true;
-  const isSuper = profile?.is_super_admin === true;
+  const canDist = useCan("mapas_gerir_distribuidores");
+  const canCons = useCan("mapas_gerir_consultores");
 
   const distQ = useMapasDistributors();
   const consQ = useMapasConsultants();
@@ -233,7 +230,7 @@ function MapasInsightsPage() {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            {(canDist || isSuper) && (
+            {canDist && (
               <button
                 onClick={() => navigate({ to: "/mapas/gestao/distribuidores" })}
                 className="group flex items-center gap-4 rounded-xl bg-surface border border-border p-4 transition-all duration-200 hover:border-accent/30 hover:shadow-lg hover:shadow-accent/5 hover:-translate-y-0.5"
@@ -255,7 +252,7 @@ function MapasInsightsPage() {
                 />
               </button>
             )}
-            {(canCons || isSuper) && (
+            {canCons && (
               <button
                 onClick={() => navigate({ to: "/mapas/gestao/consultores" })}
                 className="group flex items-center gap-4 rounded-xl bg-surface border border-border p-4 transition-all duration-200 hover:border-accent/30 hover:shadow-lg hover:shadow-accent/5 hover:-translate-y-0.5"
