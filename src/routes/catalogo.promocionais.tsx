@@ -3,7 +3,10 @@ import { rootRoute } from "./__root"
 import { StoreLayout } from "~/features/catalogo/components/StoreLayout"
 import { usePromocionaisAtivos } from "~/features/catalogo/hooks/useCatalogo"
 import { formatBRL } from "~/features/catalogo/services/carrinho.service"
+import { listarImagensBatch } from "~/features/catalogo/services/imagens.service"
 import { Tag, Clock, ArrowLeft, Zap } from "lucide-react"
+import { useEffect, useState } from "react"
+import type { CatalogoImagemProduto } from "~/features/catalogo/types"
 
 export const catalogoPromocionaisRoute = createRoute({
   getParentRoute: () => rootRoute,
@@ -13,6 +16,13 @@ export const catalogoPromocionaisRoute = createRoute({
 
 function CatalogoPromocionaisPage() {
   const { data: promos, isLoading } = usePromocionaisAtivos()
+  const [imagensMap, setImagensMap] = useState<Map<string, CatalogoImagemProduto[]>>(new Map())
+
+  useEffect(() => {
+    if (!promos || promos.length === 0) return
+    const ids = promos.map((p) => p.id)
+    listarImagensBatch("promocional", ids).then(setImagensMap).catch(() => {})
+  }, [promos])
 
   return (
     <StoreLayout>
@@ -46,7 +56,9 @@ function CatalogoPromocionaisPage() {
 
         {/* Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {(promos ?? []).map((promo) => (
+          {(promos ?? []).map((promo) => {
+            const imagemUrl = imagensMap.get(promo.id)?.[0]?.url_imagem
+            return (
             <Link
               key={promo.id}
               to="/catalogo/produto/$tipo/$sku"
@@ -55,8 +67,19 @@ function CatalogoPromocionaisPage() {
             >
               {/* Imagem — 30% */}
               <div className="relative h-32 bg-gradient-to-br from-[var(--color-surface)] to-[#0f172a] overflow-hidden">
-                <div className="absolute inset-0 opacity-10 group-hover:opacity-25 mix-blend-screen transition-opacity duration-500" style={{ background: "radial-gradient(circle at 30% 30%, #c9a655 0%, transparent 60%)" }} />
-                <Zap className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 opacity-10 group-hover:opacity-20 transition-opacity" style={{ color: "#c9a655" }} />
+                {imagemUrl ? (
+                  <img
+                    src={imagemUrl}
+                    alt={promo.nome}
+                    className="w-full h-full object-cover"
+                    onError={(e) => { (e.target as HTMLImageElement).style.display = "none" }}
+                  />
+                ) : (
+                  <>
+                    <div className="absolute inset-0 opacity-10 group-hover:opacity-25 mix-blend-screen transition-opacity duration-500" style={{ background: "radial-gradient(circle at 30% 30%, #c9a655 0%, transparent 60%)" }} />
+                    <Zap className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 opacity-10 group-hover:opacity-20 transition-opacity" style={{ color: "#c9a655" }} />
+                  </>
+                )}
                 <div className="absolute top-3 left-3 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#0f172a]/60 backdrop-blur-md border border-[var(--color-border-subtle)]">
                   <Tag className="h-3 w-3 text-[var(--color-accent)]" />
                   <span className="text-[10px] font-bold uppercase tracking-widest text-[var(--color-accent)]">Pacote</span>
@@ -85,7 +108,8 @@ function CatalogoPromocionaisPage() {
                 </div>
               </div>
             </Link>
-          ))}
+            )
+          })}
 
           {promos?.length === 0 && !isLoading && (
             <div className="col-span-full text-center py-16 rounded-2xl border border-[var(--color-border-subtle)] bg-[var(--color-surface)]/30">

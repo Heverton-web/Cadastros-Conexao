@@ -1,11 +1,7 @@
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { useAuth } from "~/lib/auth";
-import { EMPRESA_ID } from "~/config/empresa";
 import { getAllModules } from "~/registry";
-import { listarEmpresas } from "~/shared/empresas";
 import toast from "react-hot-toast";
-import { Wrench, Power, AlertTriangle, CheckCircle2 } from "lucide-react";
+import { Wrench, Power, CheckCircle2 } from "lucide-react";
 import {
   useManutencoes,
   useSalvarManutencao,
@@ -49,28 +45,8 @@ function isAtiva(e: Manutencao): boolean {
   return true;
 }
 
-type ManutencaoPanelProps = {
-  scope: "global" | "empresa";
-};
-
-export function ManutencaoPanel({ scope }: ManutencaoPanelProps) {
-  const { empresa } = useAuth();
-  const [empresaSelecionada, setEmpresaSelecionada] = useState<string>("");
-
-  const { data: empresas = [] } = useQuery({
-    queryKey: ["empresas-manutencao"],
-    queryFn: () => listarEmpresas(),
-    enabled: scope === "global",
-  });
-
-  const effectiveEmpresaId: string | null =
-    scope === "empresa"
-      ? empresa?.id ?? EMPRESA_ID
-      : empresaSelecionada || null;
-
-  const { data: manutencoes = [], isLoading } = useManutencoes(
-    effectiveEmpresaId,
-  );
+export function ManutencaoPanel() {
+  const { data: manutencoes = [], isLoading } = useManutencoes();
 
   const modulos = getAllModules();
   const [moduloKey, setModuloKey] = useState<string>(modulos[0]?.key ?? "");
@@ -79,17 +55,12 @@ export function ManutencaoPanel({ scope }: ManutencaoPanelProps) {
   const [dataFim, setDataFim] = useState("");
   const [encerrarId, setEncerrarId] = useState<string | null>(null);
 
-  const salvar = useSalvarManutencao(effectiveEmpresaId);
-  const desativar = useDesativarManutencao(effectiveEmpresaId);
+  const salvar = useSalvarManutencao();
+  const desativar = useDesativarManutencao();
 
   const moduloSelecionado = modulos.find((m) => m.key === moduloKey);
-  const isGlobalAll = scope === "global" && !empresaSelecionada;
 
-  const ativas = manutencoes.filter(
-    (e) =>
-      isAtiva(e) &&
-      (e.empresa_id ?? null) === (effectiveEmpresaId ?? null),
-  );
+  const ativas = manutencoes.filter(isAtiva);
 
   function handleModuloChange(key: string) {
     setModuloKey(key);
@@ -143,41 +114,10 @@ export function ManutencaoPanel({ scope }: ManutencaoPanelProps) {
           <Wrench size={20} className="text-accent" /> Manutenção de Módulos
         </h1>
         <p className="text-xs text-text-muted">
-          {scope === "global"
-            ? "Ative a manutenção de um módulo ou rota para todas as empresas ou para uma empresa específica."
-            : "Ative a manutenção de um módulo ou rota da sua empresa. Você e o Super Admin continuam acessando."}
+          Ative a manutenção de um módulo ou rota. Usuários verão a mensagem
+          configurada enquanto estiver ativa.
         </p>
       </div>
-
-      {scope === "global" && (
-        <div className="mb-4 rounded-xl border border-border-subtle bg-input-bg/40 p-3">
-          <label className="mb-1 block text-xs font-medium text-text-muted">
-            Escopo da manutenção
-          </label>
-          <select
-            value={empresaSelecionada}
-            onChange={(e) => setEmpresaSelecionada(e.target.value)}
-            className="w-full rounded-lg border border-border bg-input-bg px-3 py-2 text-sm text-text-main outline-none focus:border-accent"
-          >
-            <option value="">Todas as empresas (GLOBAL)</option>
-            {empresas.map((emp) => (
-              <option key={emp.id} value={emp.id}>
-                {emp.nome}
-              </option>
-            ))}
-          </select>
-        </div>
-      )}
-
-      {isGlobalAll && (
-        <div className="mb-4 flex items-start gap-2 rounded-xl border border-amber-500/30 bg-amber-500/10 p-3 text-xs text-amber-300">
-          <AlertTriangle size={16} className="mt-0.5 shrink-0" />
-          <span>
-            Manutenção GLOBAL afeta todas as empresas. Apenas o Super Admin
-            consegue acessar os módulos em manutenção global.
-          </span>
-        </div>
-      )}
 
       {/* Formulário de ativação */}
       <div className="space-y-3 rounded-2xl border border-border-subtle bg-card p-4">
@@ -253,7 +193,7 @@ export function ManutencaoPanel({ scope }: ManutencaoPanelProps) {
         </div>
       </div>
 
-      {/* Lista de manutenções ativas do escopo */}
+      {/* Lista de manutenções ativas */}
       <div className="mt-6">
         <h2 className="mb-3 text-sm font-semibold text-text-main">
           Manutenções ativas
@@ -262,7 +202,7 @@ export function ManutencaoPanel({ scope }: ManutencaoPanelProps) {
           <p className="py-4 text-center text-sm text-text-muted">Carregando...</p>
         ) : ativas.length === 0 ? (
           <p className="rounded-xl border border-border-subtle bg-input-bg/30 py-6 text-center text-sm text-text-muted">
-            Nenhuma manutenção ativa neste escopo.
+            Nenhuma manutenção ativa.
           </p>
         ) : (
           <div className="space-y-2">

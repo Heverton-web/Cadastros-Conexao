@@ -12,6 +12,8 @@ export type ProductSheetTipo =
   | "componente"
   | "parafuso"
   | "cicatrizador"
+  | "acessorio"
+  | "instrumental"
   | "promocional"
 
 export type ProdutoTipoImagem =
@@ -643,6 +645,8 @@ export const CATALOGO_TIPO_LABEL: Record<ProductSheetTipo, string> = {
   componente: "Componente",
   parafuso: "Parafuso",
   cicatrizador: "Cicatrizador",
+  acessorio: "Acessório",
+  instrumental: "Instrumental",
   promocional: "Promocional",
 }
 
@@ -674,8 +678,8 @@ export type CatalogoAcessorio = { id?: string; sku: string; nome: string } & Rec
 export type CatalogoAcessorioFerramental = Record<string, unknown>
 /** @deprecated Removed */
 export type CatalogoCategoriaInstrumental = Record<string, unknown>
-/** @deprecated Removed */
-export type CatalogoInstrumentalGeral = Record<string, unknown>
+/** @deprecated Placeholder — campos mínimos p/ picker de produtos */
+export type CatalogoInstrumentalGeral = { id?: string; sku: string; nome: string } & Record<string, unknown>
 /** @deprecated Removed */
 export type CatalogoGuiaReabilitacao = Record<string, unknown>
 /** @deprecated Removed */

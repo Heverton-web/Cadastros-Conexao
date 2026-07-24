@@ -12,7 +12,7 @@ export const empresaManutencaoRoute = createRoute({
   component: () => (
     <RequireEmpresaAdmin>
       <Suspense fallback={null}>
-        <ManutencaoPanel scope="empresa" />
+        <ManutencaoPanel />
       </Suspense>
     </RequireEmpresaAdmin>
   ),

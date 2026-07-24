@@ -15,6 +15,8 @@ const TABELA_POR_TIPO_ITEM: Record<string, string> = {
   complementar: "catalogo_complementares",
   opcional: "catalogo_opcionais",
   componente: "catalogo_componentes",
+  acessorio: "catalogo_acessorios",
+  instrumental: "catalogo_instrumentais_gerais",
 }
 
 /**
@@ -101,14 +103,25 @@ export async function atualizarPromocional(id: string, input: Partial<{
   preco: number
   expira_em: string
   ativo: boolean
+  itens: { sku: string; tipo: string }[]
 }>): Promise<CatalogoPromocional> {
+  const { itens, ...promoData } = input
   const { data, error } = await supabase
     .from("catalogo_promocionais")
-    .update(input)
+    .update(promoData)
     .eq("id", id)
     .select()
     .single()
   if (error) throw error
+
+  if (itens !== undefined) {
+    await supabase.from("catalogo_promocional_itens").delete().eq("promocional_id", id)
+    if (itens.length) {
+      const rows = itens.map((item) => ({ promocional_id: id, ...item }))
+      await supabase.from("catalogo_promocional_itens").insert(rows)
+    }
+  }
+
   return data as CatalogoPromocional
 }
 

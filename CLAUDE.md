@@ -5,7 +5,6 @@
 ## Estrutura
 
 - `proj_erp/` → ERP (TanStack Start + React Router + Vite + Supabase)
-- `bubble_reverse_engineering/` → Engenharia reversa Bubble.io
 - `supabase-mcp-server/` → MCP server para Supabase
 
 ## Comandos
@@ -124,6 +123,13 @@ Pipeline via `/bubble-tech-lead` + skills em `.agents/skills/`.
 - **Bug correlato em `rotas.service.ts`**: 4 chamadas de `dispararEventoModulo` passavam um 4º argumento indevido (assinatura real tem 3) — removido
 - **Método**: 6 subagents em paralelo para o rename mecânico; 4 falharam por limite de sessão da API a meio caminho, mas o trabalho já feito por eles ficou salvo — verificado via grep e completado manualmente o que faltou (só `rotas.service.ts`)
 - **Padrão**: ao usar múltiplos subagents em paralelo para edições mecânicas, sempre validar com grep pós-execução — falha de agent não é falha de escrita, o arquivo pode já estar correto
+
+### 2026-07-24 — `modulos_manutencao` ficou de fora da limpeza multi-tenant → empresa_id
+- **Erro**: `400` no console ao carregar `modulos_manutencao?select=*&or=(empresa_id.is.null,empresa_id.eq.null)` — coluna `empresa_id` já não existia mais na tabela (removida manualmente/fora do fluxo de migrations), mas o código do módulo `manutencao` (`service.ts`, `hooks.ts`, `ManutencaoContext.tsx`, `ManutencaoPanel.tsx`) ainda filtrava/inseria por ela
+- **Causa raiz dupla**: (1) a migration `20260721000000_remove_empresa_id_all_tables.sql` não incluiu `modulos_manutencao` na lista explícita de tabelas; (2) o filtro `.or(\`empresa_id.is.null,empresa_id.eq.${target}\`)` também gerava sintaxe inválida (`eq.null`) quando `target` era `null`
+- **Fix**: removido `empresa_id` de `Manutencao`/`ManutencaoInput` (types.ts), das funções do service (agora sem parâmetro `empresaId`), dos hooks e do `ManutencaoPanel` (removido prop `scope`/seletor de empresa — painel único, sem escopo). Também removido o 4º argumento (`target`) das chamadas de `dispararEventoModulo`, que já não existe na assinatura real (3 args)
+- **Migration**: `20260724000000_modulos_manutencao_single_tenant.sql` — `DROP COLUMN IF EXISTS empresa_id`, troca das 4 policies antigas por uma única `USING (true)`, aplicada via `supabase db push`
+- **Padrão**: antes de confiar que a migration de remoção de `empresa_id` (`20260721000000`) cobriu uma tabela, `grep` o nome da tabela nesse arquivo — a lista é explícita, não um loop sobre todas as tabelas com a coluna. Tabelas fora da lista (como `modulos_manutencao`) podem ter sido limpas manualmente no banco sem o código/migrations acompanhar
 
 ### 2026-07-23 — `ativo` não definido no update de tipo workflow
 - **Arquivo**: `src/routes/catalogo.admin.workflows.tsx:147`

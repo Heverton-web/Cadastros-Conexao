@@ -1,6 +1,5 @@
 export type Manutencao = {
   id: string;
-  empresa_id: string | null;
   modulo_key: string;
   rota: string | null;
   ativo: boolean;

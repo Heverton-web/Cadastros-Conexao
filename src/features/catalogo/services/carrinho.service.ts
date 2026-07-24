@@ -141,6 +141,8 @@ const PRECO_BASE: Record<ProductSheetTipo, number> = {
   componente: 95,
   parafuso: 45,
   cicatrizador: 180,
+  acessorio: 95,
+  instrumental: 95,
   promocional: 0,
 }
 

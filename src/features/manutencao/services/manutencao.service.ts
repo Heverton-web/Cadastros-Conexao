@@ -7,25 +7,18 @@ const MODULO_KEY = "manutencao";
 const MENSAGEM_PADRAO =
   "Estamos em manutenção. Voltamos em breve. Agradecemos a compreensão.";
 
-export async function listarManutencoes(
-  empresaId: string | null | undefined,
-): Promise<Manutencao[]> {
-  const target = empresaId ?? null;
-  let query = supabase
+export async function listarManutencoes(): Promise<Manutencao[]> {
+  const { data, error } = await supabase
     .from("modulos_manutencao")
     .select("*")
-    .or(`empresa_id.is.null,empresa_id.eq.${target}`)
     .order("created_at", { ascending: false });
 
-  const { data, error } = await query;
   if (error) throw error;
   return (data as Manutencao[]) ?? [];
 }
 
-export async function listarManutencoesAtivas(
-  empresaId: string | null | undefined,
-): Promise<Manutencao[]> {
-  const todas = await listarManutencoes(empresaId);
+export async function listarManutencoesAtivas(): Promise<Manutencao[]> {
+  const todas = await listarManutencoes();
   const agora = Date.now();
   return todas.filter((m) => {
     if (!m.ativo) return false;
@@ -35,35 +28,24 @@ export async function listarManutencoesAtivas(
 }
 
 export async function salvarManutencao(
-  empresaId: string | null | undefined,
   input: ManutencaoInput,
 ): Promise<Manutencao> {
-  const target = empresaId ?? null;
   const mensagem = input.mensagem?.trim() || MENSAGEM_PADRAO;
 
   const { data: authData } = await supabase.auth.getUser();
   const criadoPor = authData.user?.id ?? null;
 
-  const desativaQuery = supabase
+  const { error: desativaErr } = await supabase
     .from("modulos_manutencao")
     .update({ ativo: false })
     .eq("modulo_key", input.modulo_key)
     .is("rota", input.rota as any);
-
-  if (target === null) {
-    desativaQuery.is("empresa_id", null);
-  } else {
-    desativaQuery.eq("empresa_id", target);
-  }
-
-  const { error: desativaErr } = await desativaQuery;
 
   if (desativaErr) throw desativaErr;
 
   const { data, error } = await supabase
     .from("modulos_manutencao")
     .insert({
-      empresa_id: target,
       modulo_key: input.modulo_key,
       rota: input.rota,
       ativo: true,
@@ -76,38 +58,22 @@ export async function salvarManutencao(
 
   if (error) throw error;
 
-  dispararEventoModulo(
-    MODULO_KEY,
-    "manutencao.ativada",
-    {
-      modulo_key: input.modulo_key,
-      rota: input.rota,
-      empresa_id: target,
-      tem_fim: !!input.data_fim,
-    },
-    target,
-  ).catch(() => {});
+  dispararEventoModulo(MODULO_KEY, "manutencao.ativada", {
+    modulo_key: input.modulo_key,
+    rota: input.rota,
+    tem_fim: !!input.data_fim,
+  }).catch(() => {});
 
   return data as Manutencao;
 }
 
-export async function desativarManutencao(
-  id: string,
-  empresaId: string | null | undefined,
-): Promise<void> {
-  const target = empresaId ?? null;
-
+export async function desativarManutencao(id: string): Promise<void> {
   const { data: atual, error: buscaErr } = await supabase
     .from("modulos_manutencao")
     .select("*")
     .eq("id", id)
     .single();
   if (buscaErr) throw buscaErr;
-
-  const manutencao = atual as Manutencao | null;
-  if (manutencao && manutencao.empresa_id !== target) {
-    throw new Error("Registro de manutenção não pertence à empresa informada.");
-  }
 
   const { error } = await supabase
     .from("modulos_manutencao")
@@ -115,37 +81,16 @@ export async function desativarManutencao(
     .eq("id", id);
   if (error) throw error;
 
-  dispararEventoModulo(
-    MODULO_KEY,
-    "manutencao.desativada",
-    {
-      modulo_key: (atual as Manutencao)?.modulo_key,
-      rota: (atual as Manutencao)?.rota,
-      empresa_id: target,
-    },
-    target,
-  ).catch(() => {});
+  dispararEventoModulo(MODULO_KEY, "manutencao.desativada", {
+    modulo_key: (atual as Manutencao)?.modulo_key,
+    rota: (atual as Manutencao)?.rota,
+  }).catch(() => {});
 }
 
 export async function atualizarManutencao(
   id: string,
   input: Partial<ManutencaoInput>,
-  empresaId: string | null | undefined,
 ): Promise<Manutencao> {
-  const target = empresaId ?? null;
-
-  const { data: atual, error: buscaErr } = await supabase
-    .from("modulos_manutencao")
-    .select("*")
-    .eq("id", id)
-    .single();
-  if (buscaErr) throw buscaErr;
-
-  const manutencao = atual as Manutencao | null;
-  if (manutencao && manutencao.empresa_id !== target) {
-    throw new Error("Registro de manutenção não pertence à empresa informada.");
-  }
-
   const { data, error } = await supabase
     .from("modulos_manutencao")
     .update(input)

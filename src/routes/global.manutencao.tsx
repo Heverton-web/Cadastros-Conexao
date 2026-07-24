@@ -13,7 +13,7 @@ export const globalManutencaoRoute = createRoute({
   component: () => (
     <RequireSuperAdmin>
       <Suspense fallback={null}>
-        <ManutencaoPanel scope="global" />
+        <ManutencaoPanel />
       </Suspense>
     </RequireSuperAdmin>
   ),

@@ -1,5 +1,4 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { useAuth } from "~/lib/auth";
 import {
   listarManutencoes,
   listarManutencoesAtivas,
@@ -8,45 +7,40 @@ import {
 } from "./services/manutencao.service";
 import type { ManutencaoInput } from "./types";
 
-export function useManutencoes(empresaId?: string | null) {
+export function useManutencoes() {
   return useQuery({
-    queryKey: ["manutencoes", empresaId ?? "global"],
-    queryFn: () => listarManutencoes(empresaId),
-    enabled: empresaId !== undefined,
+    queryKey: ["manutencoes"],
+    queryFn: () => listarManutencoes(),
   });
 }
 
-export function useManutencoesAtivas(empresaId?: string | null) {
+export function useManutencoesAtivas() {
   return useQuery({
-    queryKey: ["manutencoes-ativas", empresaId ?? "global"],
-    queryFn: () => listarManutencoesAtivas(empresaId),
-    enabled: empresaId !== undefined,
+    queryKey: ["manutencoes-ativas"],
+    queryFn: () => listarManutencoesAtivas(),
   });
 }
 
-export function useSalvarManutencao(empresaId?: string | null) {
+export function useSalvarManutencao() {
   const queryClient = useQueryClient();
-  const key = empresaId ?? "global";
 
   return useMutation({
-    mutationFn: (input: ManutencaoInput) =>
-      salvarManutencao(empresaId, input),
+    mutationFn: (input: ManutencaoInput) => salvarManutencao(input),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["manutencoes", key] });
-      queryClient.invalidateQueries({ queryKey: ["manutencoes-ativas", key] });
+      queryClient.invalidateQueries({ queryKey: ["manutencoes"] });
+      queryClient.invalidateQueries({ queryKey: ["manutencoes-ativas"] });
     },
   });
 }
 
-export function useDesativarManutencao(empresaId?: string | null) {
+export function useDesativarManutencao() {
   const queryClient = useQueryClient();
-  const key = empresaId ?? "global";
 
   return useMutation({
-    mutationFn: (id: string) => desativarManutencao(id, empresaId),
+    mutationFn: (id: string) => desativarManutencao(id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["manutencoes", key] });
-      queryClient.invalidateQueries({ queryKey: ["manutencoes-ativas", key] });
+      queryClient.invalidateQueries({ queryKey: ["manutencoes"] });
+      queryClient.invalidateQueries({ queryKey: ["manutencoes-ativas"] });
     },
   });
 }

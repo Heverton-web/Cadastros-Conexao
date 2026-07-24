@@ -829,7 +829,7 @@ export function useItensPromocionalDetalhado(tipo: string | undefined, skus: str
 export function useCriarPromocional() {
   const qc = useQueryClient()
   return useMutation({
-    mutationFn: (input: Parameters<typeof promocionais.criarPromocional>[1]) => promocionais.criarPromocional(input),
+    mutationFn: (input: Parameters<typeof promocionais.criarPromocional>[0]) => promocionais.criarPromocional(input),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "promocionais"] }),
   })
 }

@@ -260,10 +260,10 @@ function RelatedProductCard({
   return (
     <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 p-3 sm:p-4 rounded-xl border border-[var(--color-border-subtle)] bg-[var(--color-surface)]/40 hover:border-[var(--color-accent)]/40 transition-all duration-200">
       <div className="flex gap-3 sm:contents">
-        {/* Thumbnail — vai para a direita no desktop */}
+        {/* Thumbnail — vai para a esquerda no desktop */}
         <div
           onClick={onImageClick}
-          className="sm:order-3 shrink-0 w-16 h-16 sm:w-20 sm:h-20 rounded-lg overflow-hidden cursor-zoom-in bg-gradient-to-br from-[var(--color-surface)] to-[#0f172a] border border-[var(--color-border-subtle)] flex items-center justify-center"
+          className="sm:order-1 shrink-0 w-16 h-16 sm:w-20 sm:h-20 rounded-lg overflow-hidden cursor-zoom-in bg-gradient-to-br from-[var(--color-surface)] to-[#0f172a] border border-[var(--color-border-subtle)] flex items-center justify-center"
         >
           {imageUrl ? (
             <img src={imageUrl} alt={nome} className="w-full h-full object-contain" loading="lazy" />
@@ -272,7 +272,7 @@ function RelatedProductCard({
           )}
         </div>
         {/* Info */}
-        <div className="sm:order-1 flex-1 min-w-0 space-y-1">
+        <div className="sm:order-2 flex-1 min-w-0 space-y-1">
           <h4 className="text-sm font-bold text-white truncate">{nome}</h4>
           <p className="font-mono text-[10px] text-[var(--color-text-muted)]">SKU: {sku}</p>
           {children}
@@ -280,7 +280,7 @@ function RelatedProductCard({
       </div>
       {/* CTA */}
       {(fichaData && Object.keys(fichaData).length > 0 || Number(preco) > 0) && (
-        <div className="sm:order-2 w-full sm:w-auto shrink-0 flex flex-row sm:flex-col items-center justify-between sm:justify-normal gap-2">
+        <div className="sm:order-3 w-full sm:w-auto shrink-0 flex flex-row sm:flex-col items-center justify-between sm:justify-normal gap-2">
           {fichaData && Object.keys(fichaData).length > 0 && (
             <button
               onClick={onVerFicha}
