@@ -9,6 +9,7 @@ import { Plus, Pencil, Trash2, ToggleRight, ToggleLeft } from "lucide-react"
 import { supabase } from "~/core/supabase"
 import { listarAbutmentChaves, listarAbutmentKits, listarAbutmentParafusos, salvarAbutmentChaves, salvarAbutmentKits, salvarAbutmentParafusos } from "~/features/catalogo/services/componentes.service"
 import { listarKitsDeCicatrizador, salvarKitsDeCicatrizador } from "~/features/catalogo/services/kits.service"
+import { friendlyDbError } from "~/features/catalogo/lib/dbError"
 import { CompositionSection } from "~/features/catalogo/components/admin/produtos/CompositionSection"
 import { useQueryClient, useQuery } from "@tanstack/react-query"
 import { useFamilias, useToggleTipoReabilitacaoAtivo, useToggleTipoAbutmentAtivo, useToggleParafusoRetencaoAtivo, useToggleCicatrizadorAtivo } from "~/features/catalogo/hooks/useCatalogo"
@@ -48,7 +49,7 @@ function AdminComponentesPage() {
   const { data: tiposComponente } = useQuery({ queryKey: ["catalogo", "tipos-componente", empresaId], queryFn: async () => { const { data } = await supabase.from("catalogo_cps_tipos_componentes").select("*").order("nome"); return (data ?? []) as any[] }, enabled: !!empresaId })
   const { data: tiposParafuso } = useQuery({ queryKey: ["catalogo", "tipos-parafuso", empresaId], queryFn: async () => { const { data } = await supabase.from("catalogo_cps_tipos_parafusos").select("*").order("nome"); return (data ?? []) as any[] }, enabled: !!empresaId })
   const { data: tiposCicatrizador } = useQuery({ queryKey: ["catalogo", "tipos-cicatrizador", empresaId], queryFn: async () => { const { data } = await supabase.from("catalogo_cps_tipos_cicatrizadores").select("*").order("nome"); return (data ?? []) as any[] }, enabled: !!empresaId })
-  const { data: abutments } = useQuery({ queryKey: ["catalogo", "abutments", empresaId], queryFn: async () => { const { data } = await supabase.from("catalogo_abutments").select("*, tipo_abutment:catalogo_cps_tipos_abutments(*), parafuso:catalogo_parafusos(*), chave:catalogo_chaves(*)").order("sku"); return (data ?? []) as any[] }, enabled: !!empresaId })
+  const { data: abutments } = useQuery({ queryKey: ["catalogo", "abutments", empresaId], queryFn: async () => { const { data, error } = await supabase.from("catalogo_abutments").select("*, tipo_abutment:catalogo_cps_tipos_abutments(*), parafuso:catalogo_parafusos!fk_abutments_parafuso(*), chave:catalogo_chaves!fk_abutments_chave(*)").order("sku"); if (error) throw error; return (data ?? []) as any[] }, enabled: !!empresaId })
   const { data: parafusosList } = useQuery({ queryKey: ["catalogo", "parafusos-list"], queryFn: async () => { const { data } = await supabase.from("catalogo_parafusos").select("*").order("nome"); return (data ?? []) as any[] }, enabled: !!empresaId })
   const { data: chavesList } = useQuery({ queryKey: ["catalogo", "chaves-list"], queryFn: async () => { const { data } = await supabase.from("catalogo_chaves").select("*").order("nome"); return (data ?? []) as any[] }, enabled: !!empresaId })
   const { data: componentesList } = useQuery({ queryKey: ["catalogo", "componentes", empresaId], queryFn: async () => { const { data } = await supabase.from("catalogo_componentes").select("*, tipo_componente:catalogo_cps_tipos_componentes(*), tipo_abutment:catalogo_cps_tipos_abutments(*), parafuso:catalogo_parafusos(*), chave:catalogo_chaves(*)").order("sku"); return (data ?? []) as any[] }, enabled: !!empresaId })
@@ -110,10 +111,10 @@ function AdminComponentesPage() {
     const payload = sanitizeUuids({ ...abutData }, UUID_KEYS)
     if (abutEditing) {
       const { error } = await supabase.from("catalogo_abutments").update(payload).eq("sku", abutEditing.sku)
-      if (error) { setAbutError(error.message); return }
+      if (error) { setAbutError(friendlyDbError(error)); return }
     } else {
       const { error } = await supabase.from("catalogo_abutments").insert(payload)
-      if (error) { setAbutError(error.message); return }
+      if (error) { setAbutError(friendlyDbError(error)); return }
     }
     // Salvar composição N:M
     const sku = abutData.sku
@@ -148,10 +149,10 @@ function AdminComponentesPage() {
     const payload = sanitizeUuids({ ...compData }, UUID_KEYS)
     if (compEditing) {
       const { error } = await supabase.from("catalogo_componentes").update(payload).eq("sku", compEditing.sku)
-      if (error) { setCompError(error.message); return }
+      if (error) { setCompError(friendlyDbError(error)); return }
     } else {
       const { error } = await supabase.from("catalogo_componentes").insert(payload)
-      if (error) { setCompError(error.message); return }
+      if (error) { setCompError(friendlyDbError(error)); return }
     }
     toast.success(compEditing ? "Componente atualizado!" : "Componente criado!")
     setCompModalOpen(false); qc.invalidateQueries({ queryKey: ["catalogo"] })
@@ -179,10 +180,10 @@ function AdminComponentesPage() {
     const payload = sanitizeUuids({ ...parData }, UUID_KEYS)
     if (parEditing) {
       const { error } = await supabase.from("catalogo_parafusos").update(payload).eq("sku", parEditing.sku)
-      if (error) { setParError(error.message); return }
+      if (error) { setParError(friendlyDbError(error)); return }
     } else {
       const { error } = await supabase.from("catalogo_parafusos").insert(payload)
-      if (error) { setParError(error.message); return }
+      if (error) { setParError(friendlyDbError(error)); return }
     }
     toast.success(parEditing ? "Parafuso atualizado!" : "Parafuso criado!")
     setParModalOpen(false); qc.invalidateQueries({ queryKey: ["catalogo"] })

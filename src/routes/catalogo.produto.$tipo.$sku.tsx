@@ -2,7 +2,7 @@ import { supabase } from "~/core/supabase"
 import { createRoute, useParams, useNavigate, useSearch } from "@tanstack/react-router"
 import { rootRoute } from "./__root"
 import { StoreLayout, useCatalogoVisibility } from "~/features/catalogo/components/StoreLayout"
-import { useImplanteDetalhe, useAbutmentDetalhe, useKitDetalhe, usePromocionalDetalhe, useItensPromocionalDetalhado, useProtocoloFresagem, useGuias, useImagensProduto, useImagensBatch, useChavesDoImplante, useCicatrizadoresDoImplante, useAbutmentsDoImplante, useKitsDoImplante, useKitsComChavesEmComum } from "~/features/catalogo/hooks/useCatalogo"
+import { useImplanteDetalhe, useAbutmentDetalhe, useKitDetalhe, usePromocionalDetalhe, useItensPromocionalDetalhado, useProtocoloFresagem, useGuias, useImagensProduto, useImagensBatch, useChavesDoImplante, useCicatrizadoresDoImplante, useAbutmentsDoImplante, useKitsDoImplante, useKitsComChavesEmComum, useImplantesDoAbutment } from "~/features/catalogo/hooks/useCatalogo"
 import { addToCart, formatBRL, getPrecoFromDB, mockPreco, resolveBOMItem } from "~/features/catalogo/services/carrinho.service"
 import { resolvePreco } from "~/features/catalogo/services/precos-grupo.service"
 import { useClienteAtivo } from "~/features/catalogo/context/cliente-ativo"
@@ -19,7 +19,7 @@ const SequenciaProtetica = lazy(() => import("~/features/catalogo/components/Seq
 const FichaTecnicaModal = lazy(() => import("~/features/catalogo/components/FichaTecnicaModal").then((m) => ({ default: m.FichaTecnicaModal })))
 const BomTable = lazy(() => import("~/features/catalogo/components/BomTable").then((m) => ({ default: m.BomTable })))
 import toast from "react-hot-toast"
-import { ArrowLeft, ShoppingCart, Box, Zap, ExternalLink, Check, TrendingDown, X, FileText } from "lucide-react"
+import { ArrowLeft, ShoppingCart, Box, Zap, ExternalLink, Check, TrendingDown, X, FileText, ListOrdered } from "lucide-react"
 import { openImageViewer } from "~/features/catalogo/services/ui.service"
 import { useTabIcons, TabIconsProvider } from "~/features/catalogo/contexts/TabIconsContext"
 
@@ -252,11 +252,11 @@ function EmptyState({ msg, hint }: { msg: string; hint?: string }) {
 
 /** Small product card for related items in tabs (cicatrizadores, abutments, kits, chaves) */
 function RelatedProductCard({
-  nome, sku, cor, preco, tipo, imageUrl, onImageClick, onVerFicha, fichaData, children,
+  nome, sku, cor, preco, tipo, imageUrl, onImageClick, onVerFicha, onSeqProtetica, fichaData, children,
 }: {
   nome: string; sku: string; cor: string; preco?: number | null
   tipo: ProductSheetTipo; imageUrl?: string | null
-  onImageClick: () => void; onVerFicha?: () => void; fichaData?: Record<string, string | number | null | undefined>; children?: React.ReactNode
+  onImageClick: () => void; onVerFicha?: () => void; onSeqProtetica?: () => void; fichaData?: Record<string, string | number | null | undefined>; children?: React.ReactNode
 }) {
   return (
     <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 p-3 sm:p-4 rounded-xl border border-[var(--color-border-subtle)] bg-[var(--color-surface)]/40 hover:border-[var(--color-accent)]/40 transition-all duration-200">
@@ -280,8 +280,8 @@ function RelatedProductCard({
         </div>
       </div>
       {/* CTA */}
-      {(fichaData && Object.keys(fichaData).length > 0 || Number(preco) > 0) && (
-        <div className="sm:order-3 w-full sm:w-auto shrink-0 flex flex-row sm:flex-col items-center justify-between sm:justify-normal gap-2">
+      {(fichaData && Object.keys(fichaData).length > 0 || Number(preco) > 0 || onSeqProtetica) && (
+        <div className={`sm:order-3 w-full sm:w-auto shrink-0 flex gap-2 ${onSeqProtetica ? "flex-col items-stretch" : "flex-row sm:flex-col items-center justify-between sm:justify-normal"}`}>
           {fichaData && Object.keys(fichaData).length > 0 && (
             <button
               onClick={onVerFicha}
@@ -289,6 +289,15 @@ function RelatedProductCard({
             >
               <FileText className="w-3 h-3" />
               Ver Ficha
+            </button>
+          )}
+          {onSeqProtetica && (
+            <button
+              onClick={onSeqProtetica}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider border border-[var(--color-border-subtle)] text-[var(--color-text-muted)] hover:text-white hover:border-[var(--color-accent)]/60 transition-all min-h-[32px]"
+            >
+              <ListOrdered className="w-3 h-3" />
+              Seq. Protética
             </button>
           )}
           <AddButton tipo={tipo} sku={sku} nome={nome} cor={cor} precoDB={preco} />
@@ -613,6 +622,7 @@ function ImplanteDetail({ sku }: { sku: string }) {
                   tipo="abutment"
                   imageUrl={img}
                   onImageClick={() => openImageViewer(img ?? "", ab.nome ?? ab.sku)}
+                  onSeqProtetica={() => navigate({ to: "/catalogo/produto/$tipo/$sku", params: { tipo: "abutment", sku: ab.sku }, search: { tab: "sequencia" } })}
                   onVerFicha={() => setFichaModal({ open: true, nome: `${ab.tipo_abutment?.nome ?? ""} ${ab.familia?.nome ?? ""}`.trim(), sku: ab.sku, imagemUrl: img, tipo: "abutment", preco: ab.preco, onVerCompleto: () => navigate({ to: "/catalogo/produto/$tipo/$sku", params: { tipo: "abutment", sku: ab.sku } }), sections: [
                     { title: "Identificação", specs: [
                       { label: "SKU", value: ab.sku },
@@ -675,8 +685,12 @@ function ImplanteDetail({ sku }: { sku: string }) {
 function AbutmentDetail({ sku }: { sku: string }) {
   const { getIcon } = useTabIcons()
   const navigate = useNavigate()
+  const search = useSearch({ strict: false }) as Record<string, string | undefined>
   const { data: ab } = useAbutmentDetalhe(sku)
   const { data: guias } = useGuias({ familia_id: ab?.familia_id })
+  const { data: implantesCompat } = useImplantesDoAbutment(sku)
+  const implCompatSkus = (implantesCompat ?? []).map((i) => i.sku)
+  const { data: imagensImplCompat } = useImagensBatch("implante", implCompatSkus)
   const { data: imagens } = useImagensProduto("abutment", sku)
   const [kits, setKits] = useState<any[]>([])
   const [abChaves, setAbChaves] = useState<any[]>([])
@@ -744,7 +758,7 @@ function AbutmentDetail({ sku }: { sku: string }) {
       setKits(kitsData ?? [])
     }).catch((e) => { console.error("Erro kits:", e); setKits([]) })
   }, [sku])
-  const [activeTab, setActiveTab] = useState("ficha")
+  const [activeTab, setActiveTab] = useState(search.tab === "sequencia" ? "sequencia" : "ficha")
 
   if (!ab) return <LoadingState />
 
@@ -770,6 +784,13 @@ function AbutmentDetail({ sku }: { sku: string }) {
   const allParafusos = abParafusos.length > 0 ? abParafusos : (ab.parafuso ? [ab.parafuso] : [])
   const abChavesAtivas = allChaves.filter((c: any) => c.ativo !== false)
   const abParafusosAtivos = allParafusos.filter((p: any) => p.ativo !== false)
+  const implantesCompatAtivos = implantesCompat?.filter((i) => i.ativo) ?? []
+  const implantesCompatPorLinha = new Map<string, { linha: typeof implantesCompatAtivos[number]["linha"]; implantes: typeof implantesCompatAtivos }>()
+  for (const impl of implantesCompatAtivos) {
+    const linhaId = impl.linha_id ?? "sem-linha"
+    if (!implantesCompatPorLinha.has(linhaId)) implantesCompatPorLinha.set(linhaId, { linha: impl.linha, implantes: [] })
+    implantesCompatPorLinha.get(linhaId)!.implantes.push(impl)
+  }
 
   // ── Tabs ──
   const tabs: SectionTab[] = [
@@ -778,6 +799,7 @@ function AbutmentDetail({ sku }: { sku: string }) {
     { key: "parafusos", label: "Parafusos", count: abParafusosAtivos.length },
     { key: "sequencia", label: "Sequência", count: seqCount },
     { key: "kits", label: "Kits", count: kitsAtivos.length },
+    { key: "compatibilidade", label: "Compatibilidade", count: implantesCompatAtivos.length },
   ]
 
 
@@ -989,6 +1011,41 @@ function AbutmentDetail({ sku }: { sku: string }) {
               )})
             ) : (
               <EmptyState msg="Nenhum kit disponível" hint="Nenhum kit com chaves em comum foi encontrado." />
+            )}
+          </div>
+        )}
+
+        {/* ─── Compatibilidade ─── */}
+        {activeTab === "compatibilidade" && (
+          <div className="space-y-5 sm:space-y-6">
+            {implantesCompatPorLinha.size > 0 ? (
+              [...implantesCompatPorLinha.entries()].map(([linhaId, grupo]) => (
+                <div key={linhaId} className="space-y-2.5 sm:space-y-3">
+                  <h4 className="text-xs font-black uppercase tracking-widest text-[var(--color-text-muted)] border-b border-[var(--color-border-subtle)] pb-2">
+                    {grupo.linha?.nome ?? "Linha não informada"}
+                    {grupo.linha?.familia?.nome && <span className="opacity-60"> · {grupo.linha.familia.nome}</span>}
+                  </h4>
+                  {grupo.implantes.map((impl) => {
+                    const img = imagensImplCompat?.get(impl.sku)?.[0]?.url_imagem
+                    return (
+                      <RelatedProductCard
+                        key={impl.sku}
+                        nome={impl.nome}
+                        sku={impl.sku}
+                        cor={cor}
+                        preco={impl.preco}
+                        tipo="implante"
+                        imageUrl={img}
+                        onImageClick={() => openImageViewer(img ?? "", impl.nome)}
+                        onVerFicha={() => navigate({ to: "/catalogo/produto/$tipo/$sku", params: { tipo: "implante", sku: impl.sku } })}
+                        fichaData={{ diametro: `${impl.diametro_mm}×${impl.comprimento_mm}mm` }}
+                      />
+                    )
+                  })}
+                </div>
+              ))
+            ) : (
+              <EmptyState msg="Nenhum implante compatível vinculado" hint="Vincule implantes compatíveis na edição do abutment." />
             )}
           </div>
         )}

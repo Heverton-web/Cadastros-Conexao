@@ -360,7 +360,7 @@ export async function listarCicatrizadoresDoImplante(implanteSku: string): Promi
 export async function listarAbutmentsDaFamilia(familiaId: string): Promise<CatalogoAbutment[]> {
   const { data, error } = await supabase
     .from("catalogo_abutments")
-    .select("*, tipo_abutment:catalogo_cps_tipos_abutments(*), familia:catalogo_ips_familias(*), parafuso:catalogo_parafusos(*), chave:catalogo_chaves(*)")
+    .select("*, tipo_abutment:catalogo_cps_tipos_abutments(*), familia:catalogo_ips_familias(*), parafuso:catalogo_parafusos!fk_abutments_parafuso(*), chave:catalogo_chaves!fk_abutments_chave(*)")
     .eq("familia_id", familiaId)
     .order("sku")
   if (error) throw error
@@ -371,7 +371,7 @@ export async function listarAbutmentsDaFamilia(familiaId: string): Promise<Catal
 export async function listarAbutmentsDoImplante(implanteSku: string): Promise<CatalogoAbutment[]> {
   const { data, error } = await supabase
     .from("catalogo_implante_abutment")
-    .select("abutment:catalogo_abutments(*, tipo_abutment:catalogo_cps_tipos_abutments(*), familia:catalogo_ips_familias(*), parafuso:catalogo_parafusos(*), chave:catalogo_chaves(*))")
+    .select("abutment:catalogo_abutments(*, tipo_abutment:catalogo_cps_tipos_abutments(*), familia:catalogo_ips_familias(*), parafuso:catalogo_parafusos!fk_abutments_parafuso(*), chave:catalogo_chaves!fk_abutments_chave(*))")
     .eq("implante_sku", implanteSku)
   if (error) throw error
   return (data as { abutment: CatalogoAbutment }[]).map((r) => r.abutment).filter(Boolean)

@@ -343,7 +343,13 @@ function CompositionSection({
     onChange(selectedIds.filter((s) => s !== id))
   }
 
+  function handleImportAll() {
+    const novos = allOptions.filter((o) => !selectedIds.includes(o.id)).map((o) => o.id)
+    if (novos.length > 0) onChange([...selectedIds, ...novos])
+  }
+
   const allOptions = options.length > 0 ? options : []
+  const restantes = allOptions.filter((o) => !selectedIds.includes(o.id))
   const selectedLabels = selectedIds.map((id) => {
     const found = allOptions.find((o) => o.id === id)
     return { id, label: found?.label ?? id }
@@ -351,7 +357,18 @@ function CompositionSection({
 
   return (
     <div className="rounded-xl border border-white/10 bg-[var(--color-surface)]/50 p-4 space-y-3">
-      <p className="text-[10px] font-black uppercase tracking-widest text-gray-500">{label}</p>
+      <div className="flex items-center justify-between">
+        <p className="text-[10px] font-black uppercase tracking-widest text-gray-500">{label}</p>
+        {restantes.length > 0 && (
+          <button
+            type="button"
+            onClick={handleImportAll}
+            className="text-[10px] font-black uppercase tracking-wider text-[#c9a655]/70 hover:text-[#c9a655] transition-colors"
+          >
+            Importar Todos
+          </button>
+        )}
+      </div>
       <div className="flex gap-3">
         <select
           value={selected}
@@ -359,7 +376,7 @@ function CompositionSection({
           className="flex-1 bg-[#0f172a] border border-white/10 rounded-lg px-4 py-3 text-sm text-white appearance-none cursor-pointer focus:outline-none focus:border-[#c9a655]/50 transition-colors"
         >
           <option value="">{placeholder}</option>
-          {allOptions.filter((o) => !selectedIds.includes(o.id)).map((o) => (
+          {restantes.map((o) => (
             <option key={o.id} value={o.id}>{o.label}</option>
           ))}
         </select>

@@ -28,7 +28,7 @@ import {
   salvarKitImplantes, listarKitImplantes,
 } from "~/features/catalogo/services/kits.service"
 import { listarImagens } from "~/features/catalogo/services/imagens.service"
-import { salvarAbutmentChaves, listarAbutmentChaves, salvarAbutmentKits, listarAbutmentKits, salvarAbutmentParafusos, listarAbutmentParafusos } from "~/features/catalogo/services/componentes.service"
+import { salvarAbutmentChaves, listarAbutmentChaves, salvarAbutmentKits, listarAbutmentKits, salvarAbutmentParafusos, listarAbutmentParafusos, salvarAbutmentImplantes, listarAbutmentImplantes } from "~/features/catalogo/services/componentes.service"
 import { ImplanteForm } from "./forms/ImplanteForm"
 import { AbutmentForm } from "./forms/AbutmentForm"
 import { KitForm } from "./forms/KitForm"
@@ -130,6 +130,7 @@ export function ProdutoFormModal({
   const [abtChavesIds, setAbtChavesIds] = useState<string[]>([])
   const [abtKitsIds, setAbtKitsIds] = useState<string[]>([])
   const [abtParafusosIds, setAbtParafusosIds] = useState<string[]>([])
+  const [abtImplantesIds, setAbtImplantesIds] = useState<string[]>([])
   const [kitChaves, setKitChaves] = useState<string[]>([])
   const [kitFresas, setKitFresas] = useState<string[]>([])
   const [kitComplementares, setKitComplementares] = useState<string[]>([])
@@ -157,6 +158,7 @@ export function ProdutoFormModal({
     setAbtChavesIds([])
     setAbtKitsIds([])
     setAbtParafusosIds([])
+    setAbtImplantesIds([])
     setKitChaves([])
     setKitFresas([])
     setKitComplementares([])
@@ -264,6 +266,9 @@ export function ProdutoFormModal({
       listarSeqProteticasAbutment(d.sku)
         .then(setSeqProteticasIds)
         .catch(() => setSeqProteticasIds([]))
+      listarAbutmentImplantes(d.sku)
+        .then(setAbtImplantesIds)
+        .catch(() => setAbtImplantesIds([]))
     }
     if (editingItem.tipo === "kit" && kitDetalhe) {
       const d = kitDetalhe as any
@@ -412,6 +417,7 @@ export function ProdutoFormModal({
         await salvarAbutmentChaves(abutment.sku, abtChavesIds)
         await salvarAbutmentKits(abutment.sku, abtKitsIds)
         await salvarAbutmentParafusos(abutment.sku, abtParafusosIds)
+        await salvarAbutmentImplantes(abutment.sku, abtImplantesIds)
       } else if (tipo === "parafuso_retensao") {
         const payload = {
           sku: parafusoRetencao.sku,
@@ -561,6 +567,10 @@ export function ProdutoFormModal({
               parafusos={parafusosRetensao}
               parafusosIds={abtParafusosIds}
               onParafusosChange={setAbtParafusosIds}
+              implantes={implantes}
+              linhas={linhas}
+              implantesIds={abtImplantesIds}
+              onImplantesChange={setAbtImplantesIds}
             />
           )}
 

@@ -1121,6 +1121,14 @@ export function useAbutmentsDoImplante(implanteSku: string) {
   })
 }
 
+export function useImplantesDoAbutment(abutmentSku: string) {
+  return useQuery({
+    queryKey: ["catalogo", "abutment-implantes", abutmentSku],
+    queryFn: () => componentes.listarImplantesDoAbutment(abutmentSku),
+    enabled: !!abutmentSku,
+  })
+}
+
 export function useKitsDoImplante(implanteSku: string) {
   return useQuery({
     queryKey: ["catalogo", "implante-kits-pivot", implanteSku],

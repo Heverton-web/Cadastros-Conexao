@@ -68,23 +68,37 @@ export function KitForm({
     onToggle: (sku: string) => void,
   ) {
     if (!items?.length) return <p className="text-xs text-gray-500 italic">Nenhum item disponível.</p>
+    const restantes = items.filter((item) => !selected.includes(item.sku))
     return (
-      <div className="flex flex-wrap gap-2">
-        {items.map((item) => {
-          const isSelected = selected.includes(item.sku)
-          return (
+      <div className="space-y-2">
+        {restantes.length > 0 && (
+          <div className="flex justify-end">
             <button
-              key={item.sku}
               type="button"
-              onClick={() => onToggle(item.sku)}
-              className={`px-3 py-2 rounded-lg text-xs font-bold transition-all border ${
-                isSelected ? "bg-[#c9a655]/20 text-[#c9a655] border-[#c9a655]/30" : "bg-[var(--color-surface)] text-gray-400 border-white/10 hover:border-white/20"
-              }`}
+              onClick={() => restantes.forEach((item) => onToggle(item.sku))}
+              className="text-[10px] font-black uppercase tracking-wider text-[#c9a655]/70 hover:text-[#c9a655] transition-colors"
             >
-              {item.nome}
+              Importar Todos
             </button>
-          )
-        })}
+          </div>
+        )}
+        <div className="flex flex-wrap gap-2">
+          {items.map((item) => {
+            const isSelected = selected.includes(item.sku)
+            return (
+              <button
+                key={item.sku}
+                type="button"
+                onClick={() => onToggle(item.sku)}
+                className={`px-3 py-2 rounded-lg text-xs font-bold transition-all border ${
+                  isSelected ? "bg-[#c9a655]/20 text-[#c9a655] border-[#c9a655]/30" : "bg-[var(--color-surface)] text-gray-400 border-white/10 hover:border-white/20"
+                }`}
+              >
+                {item.nome}
+              </button>
+            )
+          })}
+        </div>
       </div>
     )
   }

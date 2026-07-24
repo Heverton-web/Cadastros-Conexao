@@ -46,6 +46,7 @@ const DEFAULT_TAB_ICONS: Record<string, IconRef> = {
   abutments: "dental:abutments",
   parafusos: "dental:parafusos",
   sequencia: "dental:sequencia",
+  compatibilidade: "Link",
 }
 
 // ── Context ──────────────────────────────────────────────────

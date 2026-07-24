@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { Trash2 } from "lucide-react"
-import type { CatalogoFamilia, CatalogoTipoReabilitacao, CatalogoTipoAbutment, CatalogoChave, CatalogoKit, CatalogoParafusoRetencao } from "~/features/catalogo/types"
+import type { CatalogoFamilia, CatalogoTipoReabilitacao, CatalogoTipoAbutment, CatalogoChave, CatalogoKit, CatalogoParafusoRetencao, CatalogoImplante, CatalogoIpsLinha } from "~/features/catalogo/types"
 import type { CatalogoSeqProtetica } from "~/features/catalogo/services/sequencia-protetica.service"
 
 const abutmentSchema = z.object({
@@ -40,6 +40,10 @@ interface Props {
   parafusos: CatalogoParafusoRetencao[] | undefined
   parafusosIds: string[]
   onParafusosChange: (ids: string[]) => void
+  implantes: CatalogoImplante[] | undefined
+  linhas: CatalogoIpsLinha[] | undefined
+  implantesIds: string[]
+  onImplantesChange: (ids: string[]) => void
 }
 
 export function AbutmentForm({
@@ -48,6 +52,7 @@ export function AbutmentForm({
   chaves, chavesIds, onChavesChange,
   kits, kitsIds, onKitsChange,
   parafusos, parafusosIds, onParafusosChange,
+  implantes, linhas, implantesIds, onImplantesChange,
 }: Props) {
   const { register, formState: { errors } } = useForm<AbutmentFormData>({
     resolver: zodResolver(abutmentSchema),
@@ -164,6 +169,100 @@ export function AbutmentForm({
         placeholder="Selecione uma sequência..."
         onChange={onSequenciasChange}
       />
+
+      {/* Implantes Compatíveis */}
+      <ImplantesCompativeisSection
+        implantes={implantes}
+        linhas={linhas}
+        selectedIds={implantesIds}
+        onChange={onImplantesChange}
+      />
+    </div>
+  )
+}
+
+// ============================================================
+// ImplantesCompativeisSection — agrupado por linha, com
+// "Importar Todos" por linha e geral
+// ============================================================
+
+function ImplantesCompativeisSection({
+  implantes, linhas, selectedIds, onChange,
+}: {
+  implantes: CatalogoImplante[] | undefined
+  linhas: CatalogoIpsLinha[] | undefined
+  selectedIds: string[]
+  onChange: (ids: string[]) => void
+}) {
+  const grupos = new Map<string, { linha: CatalogoIpsLinha | undefined; implantes: CatalogoImplante[] }>()
+  for (const impl of implantes ?? []) {
+    const linhaId = impl.linha_id ?? "sem-linha"
+    if (!grupos.has(linhaId)) grupos.set(linhaId, { linha: linhas?.find((l) => l.id === linhaId), implantes: [] })
+    grupos.get(linhaId)!.implantes.push(impl)
+  }
+
+  function toggle(sku: string) {
+    onChange(selectedIds.includes(sku) ? selectedIds.filter((s) => s !== sku) : [...selectedIds, sku])
+  }
+
+  function importarTodos(skus: string[]) {
+    const novos = skus.filter((s) => !selectedIds.includes(s))
+    if (novos.length > 0) onChange([...selectedIds, ...novos])
+  }
+
+  const todosOsSkus = (implantes ?? []).map((i) => i.sku)
+
+  return (
+    <div className="rounded-xl border border-white/10 bg-[var(--color-surface)]/50 p-4 space-y-4">
+      <div className="flex items-center justify-between">
+        <p className="text-[10px] font-black uppercase tracking-widest text-gray-500">Implantes Compatíveis</p>
+        {todosOsSkus.length > 0 && (
+          <button
+            type="button"
+            onClick={() => importarTodos(todosOsSkus)}
+            className="text-[10px] font-black uppercase tracking-wider text-[#c9a655]/70 hover:text-[#c9a655] transition-colors"
+          >
+            Importar Todos
+          </button>
+        )}
+      </div>
+
+      {grupos.size === 0 && <p className="text-xs text-gray-500 italic">Nenhum implante cadastrado.</p>}
+
+      {[...grupos.entries()].map(([linhaId, grupo]) => {
+        const skusDoGrupo = grupo.implantes.map((i) => i.sku)
+        return (
+          <div key={linhaId} className="space-y-2 pt-1 border-t border-white/5 first:border-t-0 first:pt-0">
+            <div className="flex items-center justify-between">
+              <p className="text-xs font-bold text-gray-300">{grupo.linha?.nome ?? "Sem linha"}</p>
+              <button
+                type="button"
+                onClick={() => importarTodos(skusDoGrupo)}
+                className="text-[9px] font-bold uppercase tracking-wider text-[#c9a655]/60 hover:text-[#c9a655] transition-colors"
+              >
+                Importar Todos
+              </button>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {grupo.implantes.map((impl) => {
+                const isSelected = selectedIds.includes(impl.sku)
+                return (
+                  <button
+                    key={impl.sku}
+                    type="button"
+                    onClick={() => toggle(impl.sku)}
+                    className={`px-3 py-2 rounded-lg text-xs font-bold transition-all border ${
+                      isSelected ? "bg-[#c9a655]/20 text-[#c9a655] border-[#c9a655]/30" : "bg-[var(--color-surface)] text-gray-400 border-white/10 hover:border-white/20"
+                    }`}
+                  >
+                    {impl.nome}
+                  </button>
+                )
+              })}
+            </div>
+          </div>
+        )
+      })}
     </div>
   )
 }
@@ -193,7 +292,13 @@ function CompositionSection({
     onChange(selectedIds.filter((s) => s !== id))
   }
 
+  function handleImportAll() {
+    const novos = allOptions.filter((o) => !selectedIds.includes(o.id)).map((o) => o.id)
+    if (novos.length > 0) onChange([...selectedIds, ...novos])
+  }
+
   const allOptions = options.length > 0 ? options : []
+  const restantes = allOptions.filter((o) => !selectedIds.includes(o.id))
   const selectedLabels = selectedIds.map((id) => {
     const found = allOptions.find((o) => o.id === id)
     return { id, label: found?.label ?? id }
@@ -201,7 +306,18 @@ function CompositionSection({
 
   return (
     <div className="rounded-xl border border-white/10 bg-[var(--color-surface)]/50 p-4 space-y-3">
-      <p className="text-[10px] font-black uppercase tracking-widest text-gray-500">{label}</p>
+      <div className="flex items-center justify-between">
+        <p className="text-[10px] font-black uppercase tracking-widest text-gray-500">{label}</p>
+        {restantes.length > 0 && (
+          <button
+            type="button"
+            onClick={handleImportAll}
+            className="text-[10px] font-black uppercase tracking-wider text-[#c9a655]/70 hover:text-[#c9a655] transition-colors"
+          >
+            Importar Todos
+          </button>
+        )}
+      </div>
       <div className="flex gap-3">
         <select
           value={selected}
@@ -209,7 +325,7 @@ function CompositionSection({
           className="flex-1 bg-[#0f172a] border border-white/10 rounded-lg px-4 py-3 text-sm text-white appearance-none cursor-pointer focus:outline-none focus:border-[#c9a655]/50 transition-colors"
         >
           <option value="">{placeholder}</option>
-          {allOptions.filter((o) => !selectedIds.includes(o.id)).map((o) => (
+          {restantes.map((o) => (
             <option key={o.id} value={o.id}>{o.label}</option>
           ))}
         </select>

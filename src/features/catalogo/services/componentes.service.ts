@@ -1,6 +1,6 @@
 import { supabase } from "~/core/supabase"
 import { dispararEventoModulo } from "~/core/services/webhooks"
-import type { CatalogoAbutment, CatalogoCpsTipoReabilitacao, CatalogoCpsTipoAbutment, CatalogoComponente } from "../types"
+import type { CatalogoAbutment, CatalogoCpsTipoReabilitacao, CatalogoCpsTipoAbutment, CatalogoComponente, CatalogoImplante } from "../types"
 
 const MODULO_KEY = "catalogo"
 
@@ -176,7 +176,7 @@ export async function removerTipoCicatrizador(id: string): Promise<void> {
 export async function listarAbutments(): Promise<CatalogoAbutment[]> {
   const { data, error } = await supabase
     .from("catalogo_abutments")
-    .select("*, tipo_abutment:catalogo_cps_tipos_abutments(*), parafuso:catalogo_parafusos(*), chave:catalogo_chaves(*)")
+    .select("*, tipo_abutment:catalogo_cps_tipos_abutments(*), parafuso:catalogo_parafusos!fk_abutments_parafuso(*), chave:catalogo_chaves!fk_abutments_chave(*)")
     .order("sku")
   if (error) throw error
   return data as CatalogoAbutment[]
@@ -185,7 +185,7 @@ export async function listarAbutments(): Promise<CatalogoAbutment[]> {
 export async function getAbutmentDetalhe(sku: string): Promise<CatalogoAbutment | null> {
   const { data, error } = await supabase
     .from("catalogo_abutments")
-    .select("*, tipo_abutment:catalogo_cps_tipos_abutments(*, tipo_reabilitacao:catalogo_cps_tipos_reabilitacao(*)), parafuso:catalogo_parafusos(sku, nome), chave:catalogo_chaves(sku, nome)")
+    .select("*, tipo_abutment:catalogo_cps_tipos_abutments(*, tipo_reabilitacao:catalogo_cps_tipos_reabilitacao(*)), parafuso:catalogo_parafusos!fk_abutments_parafuso(sku, nome), chave:catalogo_chaves!fk_abutments_chave(sku, nome)")
     .eq("sku", sku)
     .single()
   if (error) throw error
@@ -298,6 +298,34 @@ export async function listarAbutmentParafusos(abutmentSku: string): Promise<stri
     .eq("abutment_sku", abutmentSku)
   if (error) throw error
   return (data as { parafuso_sku: string }[]).map((r) => r.parafuso_sku)
+}
+
+/** Implantes compatíveis com o abutment — reaproveita a pivot catalogo_implante_abutment (editada até então só pelo lado do implante) */
+export async function salvarAbutmentImplantes(abutmentSku: string, implanteSkus: string[]): Promise<void> {
+  await supabase.from("catalogo_implante_abutment").delete().eq("abutment_sku", abutmentSku)
+  if (implanteSkus.length === 0) return
+  const rows = implanteSkus.map((implanteSku) => ({ implante_sku: implanteSku, abutment_sku: abutmentSku }))
+  const { error } = await supabase.from("catalogo_implante_abutment").insert(rows)
+  if (error) throw error
+}
+
+export async function listarAbutmentImplantes(abutmentSku: string): Promise<string[]> {
+  const { data, error } = await supabase
+    .from("catalogo_implante_abutment")
+    .select("implante_sku")
+    .eq("abutment_sku", abutmentSku)
+  if (error) throw error
+  return (data as { implante_sku: string }[]).map((r) => r.implante_sku)
+}
+
+/** Implantes compatíveis, com linha/família aninhadas — para a aba "Compatibilidade" do detail público */
+export async function listarImplantesDoAbutment(abutmentSku: string): Promise<CatalogoImplante[]> {
+  const { data, error } = await supabase
+    .from("catalogo_implante_abutment")
+    .select("implante:catalogo_implantes(*, linha:catalogo_ips_linhas(*, familia:catalogo_ips_familias(*)))")
+    .eq("abutment_sku", abutmentSku)
+  if (error) throw error
+  return (data as unknown as { implante: CatalogoImplante }[]).map((r) => r.implante).filter(Boolean)
 }
 
 // ============================================================
