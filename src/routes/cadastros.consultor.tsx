@@ -33,10 +33,15 @@ import {
 import { Skeleton } from "~/components/ui/skeleton";
 import { EmptyState } from "~/components/ui/empty-state";
 import { EMPRESA_ID } from "~/config/empresa";
+import { RequirePermission } from "~/components/guards";
 export const consultorRoute = createRoute({
   getParentRoute: () => authLayout,
   path: "/cadastros/consultor",
-  component: ConsultorPage,
+  component: () => (
+    <RequirePermission modulo="cadastros" permissions={["gerar_links"]}>
+      <ConsultorPage />
+    </RequirePermission>
+  ),
 });
 
 const PAISES = [

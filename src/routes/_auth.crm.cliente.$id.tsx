@@ -8,11 +8,16 @@ import { Button } from "~/components/ui/button";
 import { NovaVisitaModal } from "~/features/crm/components/NovaVisitaModal";
 import { VisitaDetalheModal } from "~/features/crm/components/VisitaDetalheModal";
 import { formatBRL, formatDate } from "~/features/crm/lib/comercial";
+import { RequirePermission } from "~/components/guards";
 
 export const crmClienteDetailRoute = createRoute({
   getParentRoute: () => authLayout,
   path: "/crm/cliente/$id",
-  component: ClientePage,
+  component: () => (
+    <RequirePermission modulo="crm" permissions={["crm_cliente_detalhe"]}>
+      <ClientePage />
+    </RequirePermission>
+  ),
 });
 
 function ClientePage() {

@@ -28,11 +28,22 @@ import { TutoriaisPopup } from "~/components/ui/tutoriais-popup";
 import { Skeleton } from "~/components/ui/skeleton";
 import { EmptyState } from "~/components/ui/empty-state";
 import toast from "react-hot-toast";
+import { RequirePermission } from "~/components/guards";
 
 export const dashboardRoute = createRoute({
   getParentRoute: () => authLayout,
   path: "/cadastros/dashboard",
-  component: DashboardPage,
+  // redirectTo custom: o default do guard aponta para esta própria rota
+  // (é o destino pós-login), o que causaria loop de redirecionamento.
+  component: () => (
+    <RequirePermission
+      modulo="cadastros"
+      permissions={["ver_todos_cadastros"]}
+      redirectTo="/credenciais"
+    >
+      <DashboardPage />
+    </RequirePermission>
+  ),
 });
 
 function DashboardPage() {

@@ -14,11 +14,16 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import { RequirePermission } from "~/components/guards";
 
 export const crmEquipeRoute = createRoute({
   getParentRoute: () => authLayout,
   path: "/crm/equipe",
-  component: EquipePage,
+  component: () => (
+    <RequirePermission modulo="crm" permissions={["crm_equipe"]}>
+      <EquipePage />
+    </RequirePermission>
+  ),
 });
 
 function EquipePage() {

@@ -41,11 +41,19 @@ import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
 import { EmptyState } from "~/components/ui/empty-state";
 import { Skeleton } from "~/components/ui/skeleton";
+import { RequirePermission } from "~/components/guards";
 
 export const cadastrosClientesRoute = createRoute({
   getParentRoute: () => authLayout,
   path: "/cadastros/clientes",
-  component: ClientesPage,
+  component: () => (
+    <RequirePermission
+      modulo="cadastros"
+      permissions={["ver_todos_cadastros", "gerar_links"]}
+    >
+      <ClientesPage />
+    </RequirePermission>
+  ),
 });
 
 function ClientesPage() {

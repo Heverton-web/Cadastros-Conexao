@@ -8,11 +8,16 @@ import { ClientePickerModal } from "~/features/crm/components/ClientePickerModal
 import { BuscaGlobal } from "~/features/crm/components/BuscaGlobal";
 import { Button } from "~/components/ui/button";
 import { Plus, Search, Filter } from "lucide-react";
+import { RequirePermission } from "~/components/guards";
 
 export const crmPipelineRoute = createRoute({
   getParentRoute: () => authLayout,
   path: "/crm/pipeline",
-  component: PipelinePage,
+  component: () => (
+    <RequirePermission modulo="crm" permissions={["crm_pipeline"]}>
+      <PipelinePage />
+    </RequirePermission>
+  ),
 });
 
 function PipelinePage() {

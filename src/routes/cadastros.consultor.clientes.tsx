@@ -11,11 +11,16 @@ import {
   AlertTriangle,
 } from "lucide-react";
 import { EMPRESA_ID } from "~/config/empresa";
+import { RequirePermission } from "~/components/guards";
 
 export const consultorClientesRoute = createRoute({
   getParentRoute: () => authLayout,
   path: "/cadastros/consultor/clientes",
-  component: ConsultorClientes,
+  component: () => (
+    <RequirePermission modulo="cadastros" permissions={["gerar_links"]}>
+      <ConsultorClientes />
+    </RequirePermission>
+  ),
 });
 
 function ConsultorClientes() {

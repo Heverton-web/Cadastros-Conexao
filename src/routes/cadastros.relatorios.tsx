@@ -28,11 +28,16 @@ import {
 import { Skeleton } from "~/components/ui/skeleton";
 import { EmptyState } from "~/components/ui/empty-state";
 import toast from "react-hot-toast";
+import { RequirePermission } from "~/components/guards";
 
 export const relatoriosRoute = createRoute({
   getParentRoute: () => authLayout,
   path: "/cadastros/relatorios",
-  component: RelatoriosPage,
+  component: () => (
+    <RequirePermission modulo="cadastros" permissions={["ver_relatorios"]}>
+      <RelatoriosPage />
+    </RequirePermission>
+  ),
 });
 
 function RelatoriosPage() {

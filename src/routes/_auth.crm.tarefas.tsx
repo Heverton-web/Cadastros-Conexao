@@ -7,11 +7,16 @@ import { NovaTarefaModal } from "~/features/crm/components/NovaTarefaModal";
 import { BuscaGlobal } from "~/features/crm/components/BuscaGlobal";
 import { Button } from "~/components/ui/button";
 import { Plus, Search } from "lucide-react";
+import { RequirePermission } from "~/components/guards";
 
 export const crmTarefasRoute = createRoute({
   getParentRoute: () => authLayout,
   path: "/crm/tarefas",
-  component: TarefasPage,
+  component: () => (
+    <RequirePermission modulo="crm" permissions={["crm_tarefas"]}>
+      <TarefasPage />
+    </RequirePermission>
+  ),
 });
 
 function TarefasPage() {
