@@ -4,11 +4,16 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "~/core/supabase";
 import { Building2, ArrowRight, Users } from "lucide-react";
 import { formatBRL } from "~/features/crm/lib/comercial";
+import { RequirePermission } from "~/components/guards";
 
 export const crmDiretoriaIndexRoute = createRoute({
   getParentRoute: () => authLayout,
   path: "/crm/diretoria/",
-  component: DiretoriaIndex,
+  component: () => (
+    <RequirePermission modulo="crm" permissions={["crm_diretoria"]}>
+      <DiretoriaIndex />
+    </RequirePermission>
+  ),
 });
 
 function DiretoriaIndex() {

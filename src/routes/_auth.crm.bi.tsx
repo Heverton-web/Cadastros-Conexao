@@ -46,6 +46,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "~/components/ui/select";
+import { RequirePermission } from "~/components/guards";
 
 type BiSearch = {
   vendedor?: string;
@@ -61,7 +62,11 @@ export const crmBiRoute = createRoute({
     inicio: typeof s.inicio === "string" ? s.inicio : undefined,
     fim: typeof s.fim === "string" ? s.fim : undefined,
   }),
-  component: BIPage,
+  component: () => (
+    <RequirePermission modulo="crm" permissions={["crm_bi"]}>
+      <BIPage />
+    </RequirePermission>
+  ),
 });
 
 const TEMPS: {

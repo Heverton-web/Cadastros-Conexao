@@ -3,11 +3,16 @@ import { authLayout } from "./_auth";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "~/core/supabase";
 import { ArrowRight, BarChart3 } from "lucide-react";
+import { RequirePermission } from "~/components/guards";
 
 export const crmDiretoriaGestorRoute = createRoute({
   getParentRoute: () => authLayout,
   path: "/crm/diretoria/gestor/$id",
-  component: DiretoriaGestor,
+  component: () => (
+    <RequirePermission modulo="crm" permissions={["crm_diretoria"]}>
+      <DiretoriaGestor />
+    </RequirePermission>
+  ),
 });
 
 function DiretoriaGestor() {

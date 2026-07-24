@@ -52,6 +52,7 @@ import {
 import toast from "react-hot-toast";
 import { enviarNotificacaoComTemplate } from "~/core/services";
 import { EMPRESA_ID } from "~/config/empresa";
+import { RequirePermission } from "~/components/guards";
 const LABEL_MAP: Record<string, string> = {
   "pf.nome": "Nome",
   "pf.cpf": "CPF",
@@ -83,7 +84,14 @@ const LABEL_MAP: Record<string, string> = {
 export const clienteDetailRoute = createRoute({
   getParentRoute: () => authLayout,
   path: "/cadastros/solicitacoes/$id",
-  component: ClienteDetailPage,
+  component: () => (
+    <RequirePermission
+      modulo="cadastros"
+      permissions={["ver_todos_cadastros", "gerar_links"]}
+    >
+      <ClienteDetailPage />
+    </RequirePermission>
+  ),
 });
 
 type Tab = "dados" | "endereco" | "documentos";

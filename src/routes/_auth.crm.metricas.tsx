@@ -13,11 +13,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "~/components/ui/select";
+import { RequirePermission } from "~/components/guards";
 
 export const crmMetricasRoute = createRoute({
   getParentRoute: () => authLayout,
   path: "/crm/metricas",
-  component: MetricasPage,
+  component: () => (
+    <RequirePermission modulo="crm" permissions={["crm_metricas"]}>
+      <MetricasPage />
+    </RequirePermission>
+  ),
 });
 
 function MetricasPage() {

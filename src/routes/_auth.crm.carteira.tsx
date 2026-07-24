@@ -19,11 +19,16 @@ import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { formatBRL, type Temperatura } from "~/features/crm/lib/comercial";
 import toast from "react-hot-toast";
+import { RequirePermission } from "~/components/guards";
 
 export const crmCarteiraRoute = createRoute({
   getParentRoute: () => authLayout,
   path: "/crm/carteira",
-  component: Carteira,
+  component: () => (
+    <RequirePermission modulo="crm" permissions={["crm_carteira"]}>
+      <Carteira />
+    </RequirePermission>
+  ),
 });
 
 type ClienteCard = {

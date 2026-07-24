@@ -30,11 +30,16 @@ import {
   Plus,
   Globe,
 } from "lucide-react";
+import { RequirePermission } from "~/components/guards";
 
 export const crmDashboardRoute = createRoute({
   getParentRoute: () => authLayout,
   path: "/crm/dashboard",
-  component: Dashboard,
+  component: () => (
+    <RequirePermission modulo="crm" permissions={["crm_dashboard"]}>
+      <Dashboard />
+    </RequirePermission>
+  ),
 });
 
 function Dashboard() {
