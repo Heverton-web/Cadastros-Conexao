@@ -9,6 +9,9 @@ import type {
   UpdateAgenteInput,
   UsageInfo,
   AgenteUsageLog,
+  ProvedorIA,
+  CriarProvedorInput,
+  UpdateProvedorInput,
 } from "./types";
 
 // ── Agentes CRUD ──────────────────────────────────────────────
@@ -352,4 +355,70 @@ export async function buscarModelosDisponiveis(
   } catch {
     return [];
   }
+}
+
+// ── Provedores IA ──────────────────────────────────────────────
+
+export async function listarProvedores(): Promise<ProvedorIA[]> {
+  const { data, error } = await supabase
+    .from("provedores_ia")
+    .select("*")
+    .order("ordem", { ascending: true });
+  if (error) throw error;
+  return data ?? [];
+}
+
+export async function buscarProvedor(id: string): Promise<ProvedorIA | null> {
+  const { data, error } = await supabase
+    .from("provedores_ia")
+    .select("*")
+    .eq("id", id)
+    .single();
+  if (error && error.code !== "PGRST116") throw error;
+  return data ?? null;
+}
+
+export async function criarProvedor(input: CriarProvedorInput): Promise<ProvedorIA> {
+  const { data, error } = await supabase
+    .from("provedores_ia")
+    .insert({
+      nome: input.nome,
+      url: input.url,
+      api_key_global: input.api_key_global ?? null,
+      modelos: input.modelos,
+      cor: input.cor ?? "#c9a655",
+      icone: input.icone ?? "cpu",
+      ativo: input.ativo ?? true,
+      ordem: input.ordem ?? 0,
+    })
+    .select()
+    .single();
+  if (error) throw error;
+  return data;
+}
+
+export async function atualizarProvedor(input: UpdateProvedorInput): Promise<ProvedorIA> {
+  const { id, ...fields } = input;
+  const { data, error } = await supabase
+    .from("provedores_ia")
+    .update({ ...fields, updated_at: new Date().toISOString() })
+    .eq("id", id)
+    .select()
+    .single();
+  if (error) throw error;
+  return data;
+}
+
+export async function deletarProvedor(id: string): Promise<void> {
+  const { error } = await supabase.from("provedores_ia").delete().eq("id", id);
+  if (error) throw error;
+}
+
+export async function reordenarProvedores(ids: string[]): Promise<void> {
+  const updates = ids.map((id, index) =>
+    supabase.from("provedores_ia").update({ ordem: index + 1 }).eq("id", id)
+  );
+  const results = await Promise.all(updates);
+  const firstError = results.find((r) => r.error)?.error;
+  if (firstError) throw firstError;
 }

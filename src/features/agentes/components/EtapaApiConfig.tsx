@@ -1,87 +1,7 @@
 import { useState } from "react";
 import { Globe, Key, Cpu, Loader2, CheckCircle2, XCircle, ChevronDown, RefreshCw, Webhook, Sparkles } from "lucide-react";
-import { useTestarConexao, useBuscarModelos } from "../hooks/useAgentes";
-
-interface ProvedorInfo {
-  key: string;
-  nome: string;
-  url: string;
-  modelos: string[];
-  placeholderKey: string;
-}
-
-const PROVEDORES: ProvedorInfo[] = [
-  {
-    key: "opencode",
-    nome: "OpenCode",
-    url: "https://api.opencode.ai/v1",
-    modelos: ["mimo/mimo-v2.5-pro", "mimo/mimo-v2.5-flash"],
-    placeholderKey: "oc-...",
-  },
-  {
-    key: "groq",
-    nome: "Groq",
-    url: "https://api.groq.com/openai/v1",
-    modelos: ["llama-3.3-70b-versatile", "llama-3.1-8b-instant", "gemma2-9b-it", "mixtral-8x7b-32768"],
-    placeholderKey: "gsk_...",
-  },
-  {
-    key: "openai",
-    nome: "OpenAI",
-    url: "https://api.openai.com/v1",
-    modelos: ["gpt-4o", "gpt-4o-mini", "gpt-4-turbo", "gpt-3.5-turbo", "o3-mini"],
-    placeholderKey: "sk-...",
-  },
-  {
-    key: "google",
-    nome: "Google AI Studio",
-    url: "https://generativelanguage.googleapis.com/v1beta",
-    modelos: ["gemini-2.5-flash", "gemini-2.5-pro", "gemini-2.0-flash", "gemini-1.5-flash"],
-    placeholderKey: "AIza...",
-  },
-  {
-    key: "mimo",
-    nome: "Mimo (Xiaomi)",
-    url: "https://api.mimo.ai/v1",
-    modelos: ["mimo-v2.5-pro", "mimo-v2.5-flash"],
-    placeholderKey: "",
-  },
-  {
-    key: "openrouter",
-    nome: "OpenRouter",
-    url: "https://openrouter.ai/api/v1",
-    modelos: ["openai/gpt-4o", "anthropic/claude-sonnet-4", "google/gemini-2.5-flash", "meta-llama/llama-4-maverick", "deepseek/deepseek-chat-v3-0324"],
-    placeholderKey: "sk-or-v1-...",
-  },
-  {
-    key: "deepseek",
-    nome: "DeepSeek",
-    url: "https://api.deepseek.com/v1",
-    modelos: ["deepseek-chat", "deepseek-reasoner"],
-    placeholderKey: "sk-...",
-  },
-  {
-    key: "together",
-    nome: "Together AI",
-    url: "https://api.together.xyz/v1",
-    modelos: ["meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo", "mistralai/Mixtral-8x7B-Instruct-v0.1"],
-    placeholderKey: "",
-  },
-  {
-    key: "ollama",
-    nome: "Ollama (local)",
-    url: "http://localhost:11434/v1",
-    modelos: ["llama3.3", "llama3.1", "mistral", "phi3", "gemma2"],
-    placeholderKey: "ollama",
-  },
-  {
-    key: "custom",
-    nome: "Outro (personalizado)",
-    url: "",
-    modelos: [],
-    placeholderKey: "",
-  },
-];
+import { useTestarConexao, useBuscarModelos, useProvedores } from "../hooks/useAgentes";
+import type { ProvedorIA } from "../types";
 
 interface Props {
   apiUrl: string;
@@ -110,31 +30,39 @@ export function EtapaApiConfig({
 }: Props) {
   const teste = useTestarConexao();
   const buscarModelos = useBuscarModelos();
+  const { data: provedores = [] } = useProvedores();
   const [testeResultado, setTesteResultado] = useState<"ok" | "erro" | null>(null);
   const [modelosAPI, setModelosAPI] = useState<string[]>([]);
   const [buscandoModelos, setBuscandoModelos] = useState(false);
 
+  const provedoresAtivos = provedores.filter((p) => p.ativo).sort((a, b) => a.ordem - b.ordem);
+
   const [provedorKey, setProvedorKey] = useState(() => {
-    const found = PROVEDORES.find((p) => p.url === apiUrl);
-    return found?.key ?? (apiUrl ? "custom" : "");
+    const found = provedoresAtivos.find((p) => p.url === apiUrl);
+    return found?.id ?? (apiUrl ? "custom" : "");
   });
 
   function handleProvedorChange(key: string) {
     setProvedorKey(key);
-    const provedor = PROVEDORES.find((p) => p.key === key);
-    if (provedor && provedor.key !== "custom") {
+    setTesteResultado(null);
+    setModelosAPI([]);
+
+    if (key === "custom") {
+      setApiUrl("");
+      return;
+    }
+
+    const provedor = provedoresAtivos.find((p) => p.id === key);
+    if (provedor) {
       setApiUrl(provedor.url);
+      if (provedor.api_key_global) setApiKey(provedor.api_key_global);
       if (provedor.modelos.length > 0 && !provedor.modelos.includes(modelo)) {
         setModelo(provedor.modelos[0]);
       }
-    } else {
-      setApiUrl("");
     }
-    setTesteResultado(null);
-    setModelosAPI([]);
   }
 
-  const provedorSelecionado = PROVEDORES.find((p) => p.key === provedorKey);
+  const provedorSelecionado = provedoresAtivos.find((p) => p.id === provedorKey);
 
   async function handleTestar() {
     setTesteResultado(null);
@@ -236,9 +164,10 @@ export function EtapaApiConfig({
               className="w-full appearance-none px-3 py-2 pr-8 rounded-lg bg-card border border-input-border text-text-main text-sm outline-none focus:border-accent/40 cursor-pointer"
             >
               <option value="">Selecione um provedor</option>
-              {PROVEDORES.map((p) => (
-                <option key={p.key} value={p.key}>{p.nome}</option>
+              {provedoresAtivos.map((p) => (
+                <option key={p.id} value={p.id}>{p.nome}</option>
               ))}
+              <option value="custom">Outro (personalizado)</option>
             </select>
             <ChevronDown size={14} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-text-muted pointer-events-none" />
           </div>
@@ -274,9 +203,12 @@ export function EtapaApiConfig({
             type="password"
             value={apiKey}
             onChange={(e) => setApiKey(e.target.value)}
-            placeholder={provedorSelecionado?.placeholderKey || "Cole sua API key aqui"}
+            placeholder={provedorSelecionado?.api_key_global ? "Usar chave global" : "Cole sua API key aqui"}
             className="w-full px-3 py-2 rounded-lg bg-card border border-input-border text-text-main text-sm outline-none focus:border-accent/40 font-mono"
           />
+          {provedorSelecionado?.api_key_global && (
+            <p className="text-[10px] text-green-400 mt-1">Chave global configurada - sera usada se deixar em branco</p>
+          )}
         </div>
 
         {/* Modelo */}

@@ -81,6 +81,35 @@ export interface AgenteUsageLog {
 
 export type WizardStep = "api" | "modulo" | "knowledge" | "revisao";
 
+export interface ProvedorIA {
+  id: string;
+  nome: string;
+  url: string;
+  api_key_global: string | null;
+  modelos: string[];
+  cor: string;
+  icone: string;
+  ativo: boolean;
+  ordem: number;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface CriarProvedorInput {
+  nome: string;
+  url: string;
+  api_key_global?: string;
+  modelos: string[];
+  cor?: string;
+  icone?: string;
+  ativo?: boolean;
+  ordem?: number;
+}
+
+export interface UpdateProvedorInput extends Partial<CriarProvedorInput> {
+  id: string;
+}
+
 export interface CriarAgenteInput {
   nome: string;
   modulo_key: string;
@@ -99,4 +128,33 @@ export interface CriarAgenteInput {
 export interface UpdateAgenteInput extends Partial<CriarAgenteInput> {
   id: string;
   ativo?: boolean;
+}
+
+export interface ProvedorIA {
+  id: string;
+  nome: string;
+  url: string;
+  api_key_global: string | null;
+  modelos: string[];
+  cor: string;
+  icone: string;
+  ativo: boolean;
+  ordem: number;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface CriarProvedorInput {
+  nome: string;
+  url: string;
+  api_key_global?: string;
+  modelos: string[];
+  cor?: string;
+  icone?: string;
+  ativo?: boolean;
+  ordem?: number;
+}
+
+export interface UpdateProvedorInput extends Partial<CriarProvedorInput> {
+  id: string;
 }

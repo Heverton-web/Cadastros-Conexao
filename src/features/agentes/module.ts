@@ -1,4 +1,4 @@
-import { Bot, Sparkles, Settings, BarChart3 } from "lucide-react";
+import { Bot, Sparkles, Settings, BarChart3, Cpu, Server } from "lucide-react";
 import {
   registerModule,
   registerNavItem,
@@ -21,6 +21,11 @@ export const agentesModule: ModuleDefinition = {
       key: "geral",
       label: "Geral",
       descricao: "Configuracoes gerais dos agentes",
+    },
+    {
+      key: "provedores",
+      label: "Provedores",
+      descricao: "Gerenciar provedores e modelos de IA",
     },
     {
       key: "permissoes",
@@ -58,6 +63,24 @@ export const agentesModule: ModuleDefinition = {
       descricao: "Dispara quando um agente e ativado",
       type: "status_change",
     },
+    {
+      key: "provedor.criado",
+      label: "Provedor Criado",
+      descricao: "Dispara quando um provedor e criado",
+      type: "status_change",
+    },
+    {
+      key: "provedor.editado",
+      label: "Provedor Editado",
+      descricao: "Dispara quando um provedor e editado",
+      type: "status_change",
+    },
+    {
+      key: "provedor.excluido",
+      label: "Provedor Excluido",
+      descricao: "Dispara quando um provedor e excluido",
+      type: "status_change",
+    },
   ],
   hasDiagnostico: false,
   setup: () => {
@@ -77,6 +100,7 @@ export const agentesModule: ModuleDefinition = {
         agentes_editar: true,
         agentes_excluir: true,
         agentes_testar: true,
+        agentes_provedores_gerenciar: true,
       },
       consultor: {
         agentes_ver: false,
@@ -84,6 +108,7 @@ export const agentesModule: ModuleDefinition = {
         agentes_editar: false,
         agentes_excluir: false,
         agentes_testar: false,
+        agentes_provedores_gerenciar: false,
       },
       tecnologia: {
         agentes_ver: true,
@@ -91,6 +116,7 @@ export const agentesModule: ModuleDefinition = {
         agentes_editar: true,
         agentes_excluir: true,
         agentes_testar: true,
+        agentes_provedores_gerenciar: true,
       },
       suporte: {
         agentes_ver: false,
@@ -98,6 +124,7 @@ export const agentesModule: ModuleDefinition = {
         agentes_editar: false,
         agentes_excluir: false,
         agentes_testar: false,
+        agentes_provedores_gerenciar: false,
       },
     });
   },

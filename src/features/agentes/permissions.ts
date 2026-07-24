@@ -14,7 +14,7 @@ export const AGENTES_PERMISSIONS = [
   {
     key: "agentes_editar",
     label: "Editar Agentes",
-    description: "Editar configurações de agentes IA",
+    description: "Editar configuracoes de agentes IA",
     group: "Agentes IA",
   },
   {
@@ -27,6 +27,12 @@ export const AGENTES_PERMISSIONS = [
     key: "agentes_testar",
     label: "Testar Agentes",
     description: "Usar o playground para testar agentes",
+    group: "Agentes IA",
+  },
+  {
+    key: "agentes_provedores_gerenciar",
+    label: "Gerenciar Provedores",
+    description: "Criar/editar/excluir provedores de IA",
     group: "Agentes IA",
   },
 ] as const;

@@ -17,8 +17,14 @@ import {
   deletarConversas,
   testarConexaoApi,
   buscarModelosDisponiveis,
+  listarProvedores,
+  buscarProvedor,
+  criarProvedor,
+  atualizarProvedor,
+  deletarProvedor,
+  reordenarProvedores,
 } from "../service";
-import type { CriarAgenteInput, UpdateAgenteInput, ChatMessage } from "../types";
+import type { CriarAgenteInput, UpdateAgenteInput, ChatMessage, CriarProvedorInput, UpdateProvedorInput } from "../types";
 
 // ── Agentes ───────────────────────────────────────────────────
 
@@ -199,5 +205,62 @@ export function useBuscarModelos() {
   return useMutation({
     mutationFn: ({ provedorUrl, apiKey }: { provedorUrl: string; apiKey: string }) =>
       buscarModelosDisponiveis(provedorUrl, apiKey),
+  });
+}
+
+// ── Provedores IA ────────────────────────────────────────────────
+
+export function useProvedores() {
+  return useQuery({
+    queryKey: ["provedores-ia"],
+    queryFn: () => listarProvedores(),
+  });
+}
+
+export function useProvedor(id: string | undefined) {
+  return useQuery({
+    queryKey: ["provedores-ia", "detail", id],
+    queryFn: () => buscarProvedor(id!),
+    enabled: !!id,
+  });
+}
+
+export function useCriarProvedor() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (input: CriarProvedorInput) => criarProvedor(input),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["provedores-ia"] });
+    },
+  });
+}
+
+export function useAtualizarProvedor() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (input: UpdateProvedorInput) => atualizarProvedor(input),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["provedores-ia"] });
+    },
+  });
+}
+
+export function useDeletarProvedor() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (id: string) => deletarProvedor(id),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["provedores-ia"] });
+    },
+  });
+}
+
+export function useReordenarProvedores() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (ids: string[]) => reordenarProvedores(ids),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["provedores-ia"] });
+    },
   });
 }
