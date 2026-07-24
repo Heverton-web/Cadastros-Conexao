@@ -212,7 +212,7 @@ function CatalogoLinksTestePage() {
             <DialogTitle>Novo Link de Teste</DialogTitle>
             <DialogDescription>O link aponta para /catalogo com o nível de acesso escolhido.</DialogDescription>
           </DialogHeader>
-          <div className="overflow-y-auto flex-1 min-h-0 space-y-4 py-2">
+          <div className="overflow-y-auto flex-1 min-h-0 space-y-4 px-6 py-4">
             <div>
               <label className="text-xs font-bold uppercase tracking-widest text-text-muted block mb-1.5">Nível de Acesso</label>
               <div className="flex gap-2">
