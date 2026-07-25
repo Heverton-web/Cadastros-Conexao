@@ -71,3 +71,6 @@ docs-projeto
 .vps.env
 .vps.config.env
 .vps.deploy.env
+# Graphify output
+graphify-out/
+src/graphify-out/
