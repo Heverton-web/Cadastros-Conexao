@@ -75,6 +75,11 @@ export async function criarConexao(input: { categoria_id: string; nome: string; 
   if (error) throw error
   return data as CatalogoIpsConexao
 }
+export async function atualizarConexao(id: string, input: Partial<{ nome: string; sigla: string; categoria_id: string }>): Promise<CatalogoIpsConexao> {
+  const { data, error } = await supabase.from(TABLE_CONEXOES).update(input).eq("id", id).select("*, categoria:catalogo_categorias(*)").single()
+  if (error) throw error
+  return data as CatalogoIpsConexao
+}
 
 export async function toggleConexaoAtivo(id: string, ativo: boolean): Promise<void> {
   const { error } = await supabase.from(TABLE_CONEXOES).update({ ativo }).eq("id", id)
@@ -157,6 +162,11 @@ export async function criarLinha(input: { familia_id: string; nome: string }): P
     .insert({ ...input })
     .select()
     .single()
+  if (error) throw error
+  return data as CatalogoIpsLinha
+}
+export async function atualizarLinha(id: string, input: Partial<{ nome: string; familia_id: string }>): Promise<CatalogoIpsLinha> {
+  const { data, error } = await supabase.from(TABLE_LINHAS).update(input).eq("id", id).select("*, familia:catalogo_ips_familias(*)").single()
   if (error) throw error
   return data as CatalogoIpsLinha
 }

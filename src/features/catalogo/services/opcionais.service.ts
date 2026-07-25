@@ -23,6 +23,16 @@ export async function criarTipoOpcional(input: { nome: string; sigla?: string })
   if (error) throw error
   return data as CatalogoTipoOpcional
 }
+export async function atualizarTipoOpcional(id: string, input: Partial<{ nome: string; sigla: string | null; ativo: boolean }>): Promise<CatalogoTipoOpcional> {
+  const { data, error } = await supabase
+    .from("catalogo_tipos_opcionais")
+    .update(input)
+    .eq("id", id)
+    .select()
+    .single()
+  if (error) throw error
+  return data as CatalogoTipoOpcional
+}
 
 export async function toggleTipoOpcionalAtivo(id: string, ativo: boolean): Promise<void> {
   const { error } = await supabase.from("catalogo_tipos_opcionais").update({ ativo }).eq("id", id)
@@ -77,9 +87,11 @@ export async function atualizarOpcional(sku: string, input: Partial<{
 }
 
 export async function toggleOpcionalAtivo(sku: string, ativo: boolean): Promise<void> {
+  const { error } = await supabase.from("catalogo_opcionais").update({ ativo }).eq("sku", sku)
   if (error) throw error
 }
 
 export async function removerOpcional(sku: string): Promise<void> {
+  const { error } = await supabase.from("catalogo_opcionais").delete().eq("sku", sku)
   if (error) throw error
 }

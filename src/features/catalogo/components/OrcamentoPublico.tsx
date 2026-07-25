@@ -5,8 +5,7 @@ import { Badge } from "~/components/ui/badge"
 import {
   Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
 } from "~/components/ui/table"
-import { buscarOrcamentoPorToken, atualizarStatusOrcamento } from "../services/orcamentos.service"
-import type { CatalogoOrcamento } from "../types/orcamentos"
+import { buscarOrcamentoPorToken, atualizarStatusOrcamentoPorToken } from "../services/orcamentos.service"
 import { STATUS_ORCAMENTO_LABEL, STATUS_ORCAMENTO_COLOR } from "../types/orcamentos"
 
 interface OrcamentoPublicoProps {
@@ -42,7 +41,7 @@ export function OrcamentoPublico({ token }: OrcamentoPublicoProps) {
     if (!orcamento) return
     setActionLoading(true)
     try {
-      await atualizarStatusOrcamento(orcamento.id, "aprovado")
+      await atualizarStatusOrcamentoPorToken(token, "aprovado")
       setSuccess("Orçamento aprovado com sucesso!")
       setOrcamento({ ...orcamento, status: "aprovado" })
     } catch {
@@ -56,7 +55,7 @@ export function OrcamentoPublico({ token }: OrcamentoPublicoProps) {
     if (!orcamento) return
     setActionLoading(true)
     try {
-      await atualizarStatusOrcamento(orcamento.id, "reprovado")
+      await atualizarStatusOrcamentoPorToken(token, "reprovado")
       setSuccess("Orçamento reprovado.")
       setOrcamento({ ...orcamento, status: "reprovado" })
     } catch {
@@ -65,7 +64,6 @@ export function OrcamentoPublico({ token }: OrcamentoPublicoProps) {
       setActionLoading(false)
     }
   }
-
   function formatBRL(v: number) {
     return new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(v)
   }

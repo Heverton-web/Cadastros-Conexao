@@ -37,6 +37,25 @@ export async function removerTipoReabilitacao(id: string): Promise<void> {
   if (error) throw error
 }
 
+export async function atualizarTipoReabilitacao(id: string, input: { nome?: string; sigla?: string | null; ativo?: boolean }): Promise<void> {
+  const { error } = await supabase.from("catalogo_cps_tipos_reabilitacao").update(input).eq("id", id)
+  if (error) throw error
+}
+
+export async function listarReabFamilias(): Promise<{ tipo_reabilitacao_id: string; familia_id: string }[]> {
+  const { data, error } = await supabase.from("catalogo_cps_tipos_reabilitacao_familias").select("*")
+  if (error) throw error
+  return (data ?? []) as { tipo_reabilitacao_id: string; familia_id: string }[]
+}
+
+export async function salvarReabFamilias(tipoReabId: string, familiaIds: string[]): Promise<void> {
+  await supabase.from("catalogo_cps_tipos_reabilitacao_familias").delete().eq("tipo_reabilitacao_id", tipoReabId)
+  if (familiaIds.length === 0) return
+  const rows = familiaIds.map(fid => ({ tipo_reabilitacao_id: tipoReabId, familia_id: fid }))
+  const { error } = await supabase.from("catalogo_cps_tipos_reabilitacao_familias").insert(rows)
+  if (error) throw error
+}
+
 // ============================================================
 // Tipos de Abutment
 // ============================================================
@@ -67,6 +86,11 @@ export async function toggleTipoAbutmentAtivo(id: string, ativo: boolean): Promi
 
 export async function removerTipoAbutment(id: string): Promise<void> {
   const { error } = await supabase.from("catalogo_cps_tipos_abutments").delete().eq("id", id)
+  if (error) throw error
+}
+
+export async function atualizarTipoAbutment(id: string, input: { nome?: string; sigla?: string | null; ativo?: boolean; tipo_reabilitacao_id?: string | null }): Promise<void> {
+  const { error } = await supabase.from("catalogo_cps_tipos_abutments").update(input).eq("id", id)
   if (error) throw error
 }
 
@@ -103,6 +127,11 @@ export async function removerTipoComponente(id: string): Promise<void> {
   if (error) throw error
 }
 
+export async function atualizarTipoComponente(id: string, input: { nome?: string; sigla?: string | null; ativo?: boolean }): Promise<void> {
+  const { error } = await supabase.from("catalogo_cps_tipos_componentes").update(input).eq("id", id)
+  if (error) throw error
+}
+
 // ============================================================
 // Tipos de Parafusos (NOVO)
 // ============================================================
@@ -130,9 +159,13 @@ export async function toggleTipoParafusoAtivo(id: string, ativo: boolean): Promi
   const { error } = await supabase.from("catalogo_cps_tipos_parafusos").update({ ativo }).eq("id", id)
   if (error) throw error
 }
-
 export async function removerTipoParafuso(id: string): Promise<void> {
   const { error } = await supabase.from("catalogo_cps_tipos_parafusos").delete().eq("id", id)
+  if (error) throw error
+}
+
+export async function atualizarTipoParafuso(id: string, input: { nome?: string; sigla?: string | null; ativo?: boolean }): Promise<void> {
+  const { error } = await supabase.from("catalogo_cps_tipos_parafusos").update(input).eq("id", id)
   if (error) throw error
 }
 
@@ -166,6 +199,11 @@ export async function toggleTipoCicatrizadorAtivo(id: string, ativo: boolean): P
 
 export async function removerTipoCicatrizador(id: string): Promise<void> {
   const { error } = await supabase.from("catalogo_cps_tipos_cicatrizadores").delete().eq("id", id)
+  if (error) throw error
+}
+
+export async function atualizarTipoCicatrizador(id: string, input: { nome?: string; sigla?: string | null; ativo?: boolean }): Promise<void> {
+  const { error } = await supabase.from("catalogo_cps_tipos_cicatrizadores").update(input).eq("id", id)
   if (error) throw error
 }
 

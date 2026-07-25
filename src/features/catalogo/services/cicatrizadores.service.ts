@@ -45,9 +45,11 @@ export async function atualizarCicatrizador(sku: string, input: Partial<{
 }
 
 export async function toggleCicatrizadorAtivo(sku: string, ativo: boolean): Promise<void> {
+  const { error } = await supabase.from("catalogo_cicatrizadores").update({ ativo }).eq("sku", sku)
   if (error) throw error
 }
 
 export async function removerCicatrizador(sku: string): Promise<void> {
+  const { error } = await supabase.from("catalogo_cicatrizadores").delete().eq("sku", sku)
   if (error) throw error
 }

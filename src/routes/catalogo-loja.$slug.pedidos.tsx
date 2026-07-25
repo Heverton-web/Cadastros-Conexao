@@ -1,7 +1,6 @@
 import { createRoute, useParams, redirect } from "@tanstack/react-router"
 import { rootRoute } from "./__root"
 import { StoreLayout } from "~/features/catalogo/components/StoreLayout"
-import { useCatalogoEmpresaId } from "~/features/catalogo/hooks/useCatalogoEmpresa"
 import { useCatalogoCliente } from "~/features/catalogo/hooks/useCatalogoCliente"
 import { useState, useEffect } from "react"
 import { supabase } from "~/lib/supabase"
@@ -20,7 +19,6 @@ export const catalogoLojaPedidosRoute = createRoute({
 
 function LojaPedidosPage() {
   const { slug } = useParams({ from: "/loja/$slug/pedidos" })
-  const empresaId = useCatalogoEmpresaId()
   const { cliente, isLogado, loading: authLoading } = useCatalogoCliente()
   const [pedidos, setPedidos] = useState<CatalogoPedido[]>([])
   const [loading, setLoading] = useState(true)
@@ -31,14 +29,13 @@ function LojaPedidosPage() {
       const { data } = await supabase
         .from("catalogo_pedidos")
         .select("*, itens:catalogo_pedido_itens(*)")
-        .eq("empresa_id", empresaId)
         .eq("cliente_id", cliente!.id)
         .order("created_at", { ascending: false })
       setPedidos((data as CatalogoPedido[]) ?? [])
       setLoading(false)
     }
     load()
-  }, [isLogado, cliente, empresaId])
+  }, [isLogado, cliente])
 
   if (authLoading || loading) {
     return (

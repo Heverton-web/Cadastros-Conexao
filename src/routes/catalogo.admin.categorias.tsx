@@ -6,8 +6,7 @@ import { AdminLayout } from "~/features/catalogo/components/AdminLayout"
 import { useAuth } from "~/core/auth/useAuth"
 import { useState } from "react"
 import { Plus, Pencil, Trash2, ToggleRight, ToggleLeft } from "lucide-react"
-import { supabase } from "~/core/supabase"
-import { useQueryClient, useQuery } from "@tanstack/react-query"
+import { useCategorias, useCriarCategoria, useAtualizarCategoria, useRemoverCategoria, useToggleCategoriaAtivo } from "~/features/catalogo/hooks/useCatalogo"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from "~/components/ui/dialog"
 import { Switch } from "~/components/ui/switch"
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "~/components/ui/alert-dialog"
@@ -33,21 +32,12 @@ const labelCls = "text-xs font-bold uppercase tracking-widest text-gray-400"
 function AdminCategoriasPage() {
   const { profile } = useAuth()
   const isSuperAdmin = profile?.is_super_admin === true
-  const qc = useQueryClient()
 
-  // Busca todas as categorias (inclui padrões do sistema com empresa_id NULL)
-  const { data: categorias, isLoading } = useQuery({
-    queryKey: ["catalogo", "categorias"],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("catalogo_categorias")
-        .select("*")
-        .order("locked", { ascending: false })
-        .order("nome")
-      if (error) throw error
-      return data as CatalogoCategoria[]
-    },
-  })
+  const { data: categorias, isLoading } = useCategorias()
+  const criarCategoria = useCriarCategoria()
+  const atualizarCategoria = useAtualizarCategoria()
+  const removerCategoria = useRemoverCategoria()
+  const toggleCategoriaAtivo = useToggleCategoriaAtivo()
 
   const [modalOpen, setModalOpen] = useState(false)
   const [editing, setEditing] = useState<CatalogoCategoria | null>(null)
@@ -73,29 +63,28 @@ function AdminCategoriasPage() {
 
   async function handleSave() {
     if (!nome.trim()) { toast.error("Nome é obrigatório"); return }
-
-    const payload: Record<string, unknown> = { nome: nome.trim(), sigla: sigla.trim() || null, locked, ativo }
-
-    if (editing) {
-      const { error } = await supabase.from("catalogo_categorias").update({ nome: payload.nome, sigla: payload.sigla, locked, ativo }).eq("id", editing.id)
-      if (error) { toast.error(error.message); return }
-    } else {
-      const { error } = await supabase.from("catalogo_categorias").insert(payload)
-      if (error) { toast.error(error.message); return }
+    try {
+      if (editing) {
+        await atualizarCategoria.mutateAsync({ id: editing.id, input: { nome: nome.trim(), sigla: sigla.trim() || undefined } })
+      } else {
+        await criarCategoria.mutateAsync({ nome: nome.trim(), sigla: sigla.trim() || undefined, locked, ativo })
+      }
+      toast.success(editing ? "Categoria atualizada!" : "Categoria criada!")
+      setModalOpen(false)
+    } catch (err) {
+      toast.error((err as Error).message)
     }
-
-    toast.success(editing ? "Categoria atualizada!" : "Categoria criada!")
-    setModalOpen(false)
-    qc.invalidateQueries({ queryKey: ["catalogo", "categorias"] })
   }
 
   async function handleDelete() {
     if (!deleteItem) return
-    const { error } = await supabase.from("catalogo_categorias").delete().eq("id", deleteItem.id)
-    if (error) { toast.error(error.message); return }
-    toast.success("Categoria excluída!")
-    setDeleteItem(null)
-    qc.invalidateQueries({ queryKey: ["catalogo", "categorias"] })
+    try {
+      await removerCategoria.mutateAsync(deleteItem.id)
+      toast.success("Categoria excluída!")
+      setDeleteItem(null)
+    } catch (err) {
+      toast.error((err as Error).message)
+    }
   }
 
   async function toggleAtivo(cat: CatalogoCategoria) {
@@ -104,8 +93,7 @@ function AdminCategoriasPage() {
       toast.error("Apenas Super Admin pode alterar categorias pré-definidas")
       return
     }
-    const { error } = await supabase.from("catalogo_categorias").update({ ativo: !cat.ativo }).eq("id", cat.id)
-    if (!error) qc.invalidateQueries({ queryKey: ["catalogo", "categorias"] })
+    toggleCategoriaAtivo.mutate({ id: cat.id, ativo: !cat.ativo })
   }
 
   return (

@@ -32,6 +32,17 @@ export async function toggleTipoKitAtivo(id: string, ativo: boolean): Promise<vo
   if (error) throw error
 }
 
+export async function atualizarTipoKit(id: string, input: { nome: string; sigla?: string; ativo: boolean }): Promise<CatalogoTipoKit> {
+  const { data, error } = await supabase
+    .from("catalogo_tipos_kits")
+    .update(input)
+    .eq("id", id)
+    .select()
+    .single()
+  if (error) throw error
+  return data as CatalogoTipoKit
+}
+
 export async function removerTipoKit(id: string): Promise<void> {
   const { error } = await supabase.from("catalogo_tipos_kits").delete().eq("id", id)
   if (error) throw error
@@ -145,15 +156,8 @@ export async function atualizarKit(sku: string, input: Partial<{
     .select()
     .single()
   if (error) throw error
-  dispararEventoModulo(MODULO_KEY, "produto.atualizado", { sku, tipo: "kit" }).catch(() => {})
   return data as CatalogoKit
 }
-
-export async function toggleKitAtivo(sku: string, ativo: boolean): Promise<void> {
-  const { error } = await supabase.from("catalogo_kits").update({ ativo }).eq("sku", sku)
-  if (error) throw error
-}
-
 export async function removerKit(sku: string): Promise<void> {
   // Remover composição N:M (sem FK/CASCADE nessas pivots)
   await Promise.all([
@@ -162,10 +166,17 @@ export async function removerKit(sku: string): Promise<void> {
     supabase.from("catalogo_kit_complementares").delete().eq("kit_sku", sku),
     supabase.from("catalogo_kit_opcionais").delete().eq("kit_sku", sku),
     supabase.from("catalogo_kit_implantes").delete().eq("kit_sku", sku),
+    supabase.from("catalogo_implante_kit").delete().eq("kit_sku", sku),
+    supabase.from("catalogo_kit_kits_complementares").delete().eq("kit_sku", sku),
+    supabase.from("catalogo_kit_kits_relacionados").delete().eq("kit_sku", sku),
   ])
   const { error } = await supabase.from("catalogo_kits").delete().eq("sku", sku)
   if (error) throw error
   dispararEventoModulo(MODULO_KEY, "produto.removido", { sku, tipo: "kit" }).catch(() => {})
+}
+export async function toggleKitAtivo(sku: string, ativo: boolean): Promise<void> {
+  const { error } = await supabase.from("catalogo_kits").update({ ativo }).eq("sku", sku)
+  if (error) throw error
 }
 
 // ============================================================
@@ -328,6 +339,20 @@ export async function salvarKitImplantes(kitSku: string, implanteSkus: string[])
   await supabase.from("catalogo_kit_implantes").delete().eq("kit_sku", kitSku)
   if (implanteSkus.length === 0) return
   const rows = implanteSkus.map((sku) => ({ kit_sku: kitSku, implante_sku: sku }))
+  const { error } = await supabase.from("catalogo_kit_implantes").insert(rows)
+  if (error) throw error
+}
+
+export async function listarKitImplantesDetalhe(kitSku: string): Promise<{ implante_sku: string; todos_diametros: boolean }[]> {
+  const { data, error } = await supabase.from("catalogo_kit_implantes").select("implante_sku, todos_diametros").eq("kit_sku", kitSku)
+  if (error) throw error
+  return (data as { implante_sku: string; todos_diametros: boolean }[]) ?? []
+}
+
+export async function salvarKitImplantesDetalhado(kitSku: string, data: { implante_sku: string; todos_diametros: boolean }[]): Promise<void> {
+  await supabase.from("catalogo_kit_implantes").delete().eq("kit_sku", kitSku)
+  if (data.length === 0) return
+  const rows = data.map((d) => ({ kit_sku: kitSku, ...d }))
   const { error } = await supabase.from("catalogo_kit_implantes").insert(rows)
   if (error) throw error
 }

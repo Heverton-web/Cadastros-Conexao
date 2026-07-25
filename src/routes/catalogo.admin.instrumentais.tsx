@@ -1,15 +1,11 @@
-import { EMPRESA_ID } from "~/config/empresa"
 import { RequirePermission } from "~/components/guards"
 import { createRoute } from "@tanstack/react-router"
 import { authLayout } from "./_auth"
 import { EmpresaCrudGuard } from "~/features/catalogo/components/EmpresaCrudGuard"
 import { AdminLayout } from "~/features/catalogo/components/AdminLayout"
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { Plus, Pencil, Trash2, ToggleRight, ToggleLeft } from "lucide-react"
-import { supabase } from "~/core/supabase"
-import { useQueryClient, useQuery } from "@tanstack/react-query"
-import { useCatalogoEmpresaId } from "~/features/catalogo/hooks/useCatalogoEmpresa"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from "~/components/ui/dialog"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "~/components/ui/dialog"
 import { Switch } from "~/components/ui/switch"
 import { ImageUploader } from "~/features/catalogo/components/admin/produtos/ImageUploader"
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "~/components/ui/alert-dialog"
@@ -18,6 +14,18 @@ import toast from "react-hot-toast"
 import { listarKitsDeChave, salvarKitsDeChave, listarKitsDeFresa, salvarKitsDeFresa } from "~/features/catalogo/services/kits.service"
 import { CompositionSection } from "~/features/catalogo/components/admin/produtos/CompositionSection"
 import { ImportTrigger, TemplatesDropdown, GlobalImportTrigger, IMPORT_TYPE_GROUPS } from "~/features/catalogo/import"
+import {
+  useTiposChaves, useTiposFresas, useTiposComplementares, useTiposOpcionais,
+  useChaves, useFresas, useComplementares, useOpcionais, useTodosKits,
+  useCriarTipoChave, useAtualizarTipoChave, useRemoverTipoChave, useToggleTipoChaveAtivo,
+  useCriarTipoFresa, useAtualizarTipoFresa, useRemoverTipoFresa, useToggleTipoFresaAtivo,
+  useCriarTipoComplementar, useAtualizarTipoComplementar, useRemoverTipoComplementar, useToggleTipoComplementarAtivo,
+  useCriarTipoOpcional, useAtualizarTipoOpcional, useRemoverTipoOpcional, useToggleTipoOpcionalAtivo,
+  useCriarChave, useAtualizarChave, useRemoverChave, useToggleChaveAtivo,
+  useCriarFresa, useAtualizarFresa, useRemoverFresa, useToggleFresaAtivo,
+  useCriarComplementar, useAtualizarComplementar, useRemoverComplementar, useToggleComplementarAtivo,
+  useCriarOpcional, useAtualizarOpcional, useRemoverOpcional, useToggleOpcionalAtivo,
+} from "~/features/catalogo/hooks/useCatalogo"
 
 export const catalogoAdminInstrumentaisRoute = createRoute({
   getParentRoute: () => authLayout, path: "/catalogo/admin/instrumentais",
@@ -31,19 +39,53 @@ const labelCls = "text-xs font-bold uppercase tracking-widest text-gray-400"
 
 function AdminInstrumentaisPage() {
   const [subTab, setSubTab] = useState("Tipos de Chaves")
-  const empresaId = useCatalogoEmpresaId()
-  const qc = useQueryClient()
 
-  // Data
-  const { data: tiposChave } = useQuery({ queryKey: ["catalogo", "tipos-chave"], queryFn: async () => { const { data } = await supabase.from("catalogo_tipos_chaves").select("*").order("nome"); return (data ?? []) as any[] }, enabled: !!empresaId })
-  const { data: tiposFresa } = useQuery({ queryKey: ["catalogo", "tipos-fresa"], queryFn: async () => { const { data } = await supabase.from("catalogo_tipos_fresas").select("*").order("nome"); return (data ?? []) as any[] }, enabled: !!empresaId })
-  const { data: chaves } = useQuery({ queryKey: ["catalogo", "chaves-list2"], queryFn: async () => { const { data } = await supabase.from("catalogo_chaves").select("*, tipo_chave:catalogo_tipos_chaves(*)").order("sku"); return (data ?? []) as any[] }, enabled: !!empresaId })
-  const { data: fresas } = useQuery({ queryKey: ["catalogo", "fresas-list2"], queryFn: async () => { const { data } = await supabase.from("catalogo_fresas").select("*, tipo_fresa:catalogo_tipos_fresas(*)").order("sku"); return (data ?? []) as any[] }, enabled: !!empresaId })
-  const { data: tiposComplementar } = useQuery({ queryKey: ["catalogo", "tipos-complementar"], queryFn: async () => { const { data } = await supabase.from("catalogo_tipos_complementares").select("*").order("nome"); return (data ?? []) as any[] }, enabled: !!empresaId })
-  const { data: complementares } = useQuery({ queryKey: ["catalogo", "complementares-list"], queryFn: async () => { const { data } = await supabase.from("catalogo_complementares").select("*, tipo_complementar:catalogo_tipos_complementares(*)").order("sku"); return (data ?? []) as any[] }, enabled: !!empresaId })
-  const { data: tiposOpcional } = useQuery({ queryKey: ["catalogo", "tipos-opcional"], queryFn: async () => { const { data } = await supabase.from("catalogo_tipos_opcionais").select("*").order("nome"); return (data ?? []) as any[] }, enabled: !!empresaId })
-  const { data: opcionais } = useQuery({ queryKey: ["catalogo", "opcionais-list"], queryFn: async () => { const { data } = await supabase.from("catalogo_opcionais").select("*, tipo_opcional:catalogo_tipos_opcionais(*)").order("sku"); return (data ?? []) as any[] }, enabled: !!empresaId })
-  const { data: todosKits } = useQuery({ queryKey: ["catalogo", "todos-kits"], queryFn: async () => { const { data } = await supabase.from("catalogo_kits").select("sku, nome").order("nome"); return (data ?? []) as any[] }, enabled: !!empresaId })
+  // Data — hooks from useCatalogo
+  const { data: tiposChave } = useTiposChaves()
+  const { data: tiposFresa } = useTiposFresas()
+  const { data: chaves } = useChaves()
+  const { data: fresas } = useFresas()
+  const { data: tiposComplementar } = useTiposComplementares()
+  const { data: complementares } = useComplementares()
+  const { data: tiposOpcional } = useTiposOpcionais()
+  const { data: opcionais } = useOpcionais()
+  const { data: todosKits } = useTodosKits()
+
+  // Mutations — tipos
+  const criarTipoChave = useCriarTipoChave()
+  const atualizarTipoChave = useAtualizarTipoChave()
+  const removerTipoChave = useRemoverTipoChave()
+  const toggleTipoChaveAtivo = useToggleTipoChaveAtivo()
+  const criarTipoFresa = useCriarTipoFresa()
+  const atualizarTipoFresa = useAtualizarTipoFresa()
+  const removerTipoFresa = useRemoverTipoFresa()
+  const toggleTipoFresaAtivo = useToggleTipoFresaAtivo()
+  const criarTipoComplementar = useCriarTipoComplementar()
+  const atualizarTipoComplementar = useAtualizarTipoComplementar()
+  const removerTipoComplementar = useRemoverTipoComplementar()
+  const toggleTipoComplementarAtivo = useToggleTipoComplementarAtivo()
+  const criarTipoOpcional = useCriarTipoOpcional()
+  const atualizarTipoOpcional = useAtualizarTipoOpcional()
+  const removerTipoOpcional = useRemoverTipoOpcional()
+  const toggleTipoOpcionalAtivo = useToggleTipoOpcionalAtivo()
+
+  // Mutations — produtos
+  const criarChave = useCriarChave()
+  const atualizarChave = useAtualizarChave()
+  const removerChave = useRemoverChave()
+  const toggleChaveAtivo = useToggleChaveAtivo()
+  const criarFresa = useCriarFresa()
+  const atualizarFresa = useAtualizarFresa()
+  const removerFresa = useRemoverFresa()
+  const toggleFresaAtivoMut = useToggleFresaAtivo()
+  const criarComplementar = useCriarComplementar()
+  const atualizarComplementar = useAtualizarComplementar()
+  const removerComplementar = useRemoverComplementar()
+  const toggleComplementarAtivo = useToggleComplementarAtivo()
+  const criarOpcional = useCriarOpcional()
+  const atualizarOpcional = useAtualizarOpcional()
+  const removerOpcional = useRemoverOpcional()
+  const toggleOpcionalAtivo = useToggleOpcionalAtivo()
 
   // Modal state
   const [modalOpen, setModalOpen] = useState(false)
@@ -52,7 +94,7 @@ function AdminInstrumentaisPage() {
   const [sigla, setSigla] = useState("")
   const [ativo, setAtivo] = useState(true)
   const [error, setError] = useState("")
-  const [activeModal, setActiveModal] = useState<"tipo_chave" | "tipo_fresa" | "tipo_complementar" | "tipo_opcional" | "chave" | "fresa" | "complementar" | "opcional">("tipo_chave")
+  const [activeModal, setActiveModal] = useState<"tipo_chave" | "tipo_fresa" | "tipo_complementar" | "tipo_opcional">("tipo_chave")
 
   // Product modal state
   const [prodModalOpen, setProdModalOpen] = useState(false)
@@ -81,20 +123,41 @@ function AdminInstrumentaisPage() {
   async function handleSave() {
     setError("")
     if (!nome.trim()) { setError("Nome é obrigatório"); return }
-    const table = activeModal === "tipo_chave" ? "catalogo_tipos_chaves" : activeModal === "tipo_fresa" ? "catalogo_tipos_fresas" : activeModal === "tipo_complementar" ? "catalogo_tipos_complementares" : "catalogo_tipos_opcionais"
-    const payload = { nome: nome.trim(), sigla: sigla.trim() || null, ativo }
-    if (editing) { const { error } = await supabase.from(table).update({ nome: payload.nome, sigla: payload.sigla, ativo }).eq("id", editing.id); if (error) { setError(error.message); return } }
-    else { const { error } = await supabase.from(table).insert(payload); if (error) { setError(error.message); return } }
-    toast.success(editing ? "Atualizado!" : "Criado!")
-    setModalOpen(false); qc.invalidateQueries({ queryKey: ["catalogo"] })
+    const payload = { nome: nome.trim(), sigla: sigla.trim() || null }
+    try {
+      if (editing) {
+        if (activeModal === "tipo_chave") await atualizarTipoChave.mutateAsync({ id: editing.id, input: { ...payload, ativo } })
+        else if (activeModal === "tipo_fresa") await atualizarTipoFresa.mutateAsync({ id: editing.id, input: { ...payload, ativo } })
+        else if (activeModal === "tipo_complementar") await atualizarTipoComplementar.mutateAsync({ id: editing.id, input: { ...payload, ativo } })
+        else await atualizarTipoOpcional.mutateAsync({ id: editing.id, input: { ...payload, ativo } })
+      } else {
+        if (activeModal === "tipo_chave") await criarTipoChave.mutateAsync({ ...payload })
+        else if (activeModal === "tipo_fresa") await criarTipoFresa.mutateAsync({ ...payload })
+        else if (activeModal === "tipo_complementar") await criarTipoComplementar.mutateAsync({ ...payload })
+        else await criarTipoOpcional.mutateAsync({ ...payload })
+      }
+      toast.success(editing ? "Atualizado!" : "Criado!")
+      setModalOpen(false)
+    } catch (e: any) { setError(e.message) }
   }
 
   async function handleDelete() {
     if (!deleteItem) return
-    const col = ["catalogo_chaves", "catalogo_fresas", "catalogo_complementares", "catalogo_opcionais"].includes(deleteItem.table) ? "sku" : "id"
-    const { error } = await supabase.from(deleteItem.table).delete().eq(col, deleteItem.id)
-    if (error) { toast.error(error.message); return }
-    toast.success("Excluído!"); setDeleteItem(null); qc.invalidateQueries({ queryKey: ["catalogo"] })
+    try {
+      const isProduct = ["catalogo_chaves", "catalogo_fresas", "catalogo_complementares", "catalogo_opcionais"].includes(deleteItem.table)
+      if (isProduct) {
+        if (deleteItem.table === "catalogo_chaves") await removerChave.mutateAsync(deleteItem.id)
+        else if (deleteItem.table === "catalogo_fresas") await removerFresa.mutateAsync(deleteItem.id)
+        else if (deleteItem.table === "catalogo_complementares") await removerComplementar.mutateAsync(deleteItem.id)
+        else await removerOpcional.mutateAsync(deleteItem.id)
+      } else {
+        if (deleteItem.table === "catalogo_tipos_chaves") await removerTipoChave.mutateAsync(deleteItem.id)
+        else if (deleteItem.table === "catalogo_tipos_fresas") await removerTipoFresa.mutateAsync(deleteItem.id)
+        else if (deleteItem.table === "catalogo_tipos_complementares") await removerTipoComplementar.mutateAsync(deleteItem.id)
+        else await removerTipoOpcional.mutateAsync(deleteItem.id)
+      }
+      toast.success("Excluído!"); setDeleteItem(null)
+    } catch (e: any) { toast.error(e.message) }
   }
 
   // Product handlers
@@ -116,9 +179,8 @@ function AdminInstrumentaisPage() {
     setProdError("")
     if (!prodData.sku.trim()) { setProdError("SKU é obrigatório"); return }
     if (!prodData.nome.trim()) { setProdError("Nome é obrigatório"); return }
-    const table = subTab === "Chaves" ? "catalogo_chaves" : subTab === "Fresas" ? "catalogo_fresas" : subTab === "Complementares" ? "catalogo_complementares" : "catalogo_opcionais"
-    
-    const payload: any = { 
+
+    const payload: any = {
       sku: prodData.sku.trim(),
       nome: prodData.nome.trim(),
       sigla: prodData.sigla?.trim() || null,
@@ -131,33 +193,43 @@ function AdminInstrumentaisPage() {
       ativo: prodData.ativo
     }
 
-    if (subTab === "Chaves") {
-      if (prodData.tipo_chave_id) payload.tipo_chave_id = prodData.tipo_chave_id
-    } else if (subTab === "Fresas") {
-      if (prodData.tipo_fresa_id) payload.tipo_fresa_id = prodData.tipo_fresa_id
-    } else if (subTab === "Complementares") {
-      if (prodData.tipo_complementar_id) payload.tipo_complementar_id = prodData.tipo_complementar_id
-    } else if (subTab === "Opcionais") {
-      if (prodData.tipo_opcional_id) payload.tipo_opcional_id = prodData.tipo_opcional_id
-    }
-
-    if (prodEditing) { const { error } = await supabase.from(table).update(payload).eq("sku", prodEditing.sku); if (error) { setProdError(error.message); return } }
-    else { const { error } = await supabase.from(table).insert(payload); if (error) { setProdError(error.message); return } }
-    if (subTab === "Chaves") await salvarKitsDeChave(payload.sku, prodKitsIds)
-    else if (subTab === "Fresas") await salvarKitsDeFresa(payload.sku, prodKitsIds)
-    toast.success(prodEditing ? "Atualizado!" : "Criado!")
-    setProdModalOpen(false); qc.invalidateQueries({ queryKey: ["catalogo"] })
+    try {
+      if (subTab === "Chaves") {
+        if (prodData.tipo_chave_id) payload.tipo_chave_id = prodData.tipo_chave_id
+        if (prodEditing) await atualizarChave.mutateAsync({ sku: prodEditing.sku, input: payload })
+        else await criarChave.mutateAsync(payload)
+        await salvarKitsDeChave(payload.sku, prodKitsIds)
+      } else if (subTab === "Fresas") {
+        if (prodData.tipo_fresa_id) payload.tipo_fresa_id = prodData.tipo_fresa_id
+        if (prodEditing) await atualizarFresa.mutateAsync({ sku: prodEditing.sku, input: payload })
+        else await criarFresa.mutateAsync(payload)
+        await salvarKitsDeFresa(payload.sku, prodKitsIds)
+      } else if (subTab === "Complementares") {
+        if (prodData.tipo_complementar_id) payload.tipo_complementar_id = prodData.tipo_complementar_id
+        if (prodEditing) await atualizarComplementar.mutateAsync({ sku: prodEditing.sku, input: payload })
+        else await criarComplementar.mutateAsync(payload)
+      } else {
+        if (prodData.tipo_opcional_id) payload.tipo_opcional_id = prodData.tipo_opcional_id
+        if (prodEditing) await atualizarOpcional.mutateAsync({ sku: prodEditing.sku, input: payload })
+        else await criarOpcional.mutateAsync(payload)
+      }
+      toast.success(prodEditing ? "Atualizado!" : "Criado!")
+      setProdModalOpen(false)
+    } catch (e: any) { setProdError(e.message) }
   }
 
-  async function toggleProdAtivo(sku: string, ativo: boolean) {
-    const table = subTab === "Chaves" ? "catalogo_chaves" : subTab === "Fresas" ? "catalogo_fresas" : subTab === "Complementares" ? "catalogo_complementares" : "catalogo_opcionais"
-    await supabase.from(table).update({ ativo }).eq("sku", sku)
-    qc.invalidateQueries({ queryKey: ["catalogo"] })
+  async function toggleProdAtivo(sku: string, val: boolean) {
+    if (subTab === "Chaves") await toggleChaveAtivo.mutateAsync({ sku, ativo: val })
+    else if (subTab === "Fresas") await toggleFresaAtivoMut.mutateAsync({ sku, ativo: val })
+    else if (subTab === "Complementares") await toggleComplementarAtivo.mutateAsync({ sku, ativo: val })
+    else await toggleOpcionalAtivo.mutateAsync({ sku, ativo: val })
   }
 
-  async function toggleTypeAtivo(id: string, ativo: boolean, table: string) {
-    await supabase.from(table).update({ ativo }).eq("id", id)
-    qc.invalidateQueries({ queryKey: ["catalogo"] })
+  async function toggleTypeAtivo(id: string, val: boolean) {
+    if (subTab === "Tipos de Chaves") await toggleTipoChaveAtivo.mutateAsync({ id, ativo: val })
+    else if (subTab === "Tipos de Fresas") await toggleTipoFresaAtivo.mutateAsync({ id, ativo: val })
+    else if (subTab === "Tipos Complementares") await toggleTipoComplementarAtivo.mutateAsync({ id, ativo: val })
+    else await toggleTipoOpcionalAtivo.mutateAsync({ id, ativo: val })
   }
 
   return (
@@ -190,7 +262,7 @@ function AdminInstrumentaisPage() {
             <TableBody>{(tiposChave??[]).map((item:any,i:number)=><TableRow key={item.id} className={`${i%2===0?"bg-[var(--color-surface)]/30":""} hover:bg-[#c9a655]/5 border-b border-[var(--color-border-subtle)]/50`}>
               <TableCell className="text-sm font-medium text-white">{item.nome}</TableCell>
               <TableCell className="text-sm text-gray-300">{item.sigla??"—"}</TableCell>
-              <TableCell><button onClick={()=>toggleTypeAtivo(item.id,!item.ativo,"catalogo_tipos_chaves")}>{item.ativo?<ToggleRight className="h-7 w-7 text-green-400"/>:<ToggleLeft className="h-7 w-7 text-gray-500"/>}</button></TableCell>
+              <TableCell><button onClick={()=>toggleTypeAtivo(item.id,!item.ativo)}>{item.ativo?<ToggleRight className="h-7 w-7 text-green-400"/>:<ToggleLeft className="h-7 w-7 text-gray-500"/>}</button></TableCell>
               <TableCell><div className="flex items-center gap-2"><button onClick={()=>openEdit(item)} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-[#c9a655]/20 text-[var(--color-text-muted)] hover:text-[#c9a655]"><Pencil className="h-3.5 w-3.5"/></button><button onClick={()=>setDeleteItem({id:item.id,label:item.nome,table:"catalogo_tipos_chaves"})} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-red-500/20 text-[var(--color-text-muted)] hover:text-red-400"><Trash2 className="h-3.5 w-3.5"/></button></div></TableCell>
             </TableRow>)}{(tiposChave??[]).length===0&&<TableRow><TableCell colSpan={4} className="p-4 text-center text-text-muted">Nenhum tipo cadastrado</TableCell></TableRow>}</TableBody></Table>
           )}
@@ -201,7 +273,7 @@ function AdminInstrumentaisPage() {
             <TableBody>{(tiposOpcional??[]).map((item:any,i:number)=><TableRow key={item.id} className={`${i%2===0?"bg-[var(--color-surface)]/30":""} hover:bg-[#c9a655]/5 border-b border-[var(--color-border-subtle)]/50`}>
               <TableCell className="text-sm font-medium text-white">{item.nome}</TableCell>
               <TableCell className="text-sm text-gray-300">{item.sigla??"—"}</TableCell>
-              <TableCell><button onClick={()=>toggleTypeAtivo(item.id,!item.ativo,"catalogo_tipos_opcionais")}>{item.ativo?<ToggleRight className="h-7 w-7 text-green-400"/>:<ToggleLeft className="h-7 w-7 text-gray-500"/>}</button></TableCell>
+              <TableCell><button onClick={()=>toggleTypeAtivo(item.id,!item.ativo)}>{item.ativo?<ToggleRight className="h-7 w-7 text-green-400"/>:<ToggleLeft className="h-7 w-7 text-gray-500"/>}</button></TableCell>
               <TableCell><div className="flex items-center gap-2"><button onClick={()=>openEdit(item)} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-[#c9a655]/20 text-[var(--color-text-muted)] hover:text-[#c9a655]"><Pencil className="h-3.5 w-3.5"/></button><button onClick={()=>setDeleteItem({id:item.id,label:item.nome,table:"catalogo_tipos_opcionais"})} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-red-500/20 text-[var(--color-text-muted)] hover:text-red-400"><Trash2 className="h-3.5 w-3.5"/></button></div></TableCell>
             </TableRow>)}{(tiposOpcional??[]).length===0&&<TableRow><TableCell colSpan={4} className="p-4 text-center text-text-muted">Nenhum tipo cadastrado</TableCell></TableRow>}</TableBody></Table>
           )}
@@ -236,7 +308,7 @@ function AdminInstrumentaisPage() {
             <TableBody>{(tiposFresa??[]).map((item:any,i:number)=><TableRow key={item.id} className={`${i%2===0?"bg-[var(--color-surface)]/30":""} hover:bg-[#c9a655]/5 border-b border-[var(--color-border-subtle)]/50`}>
               <TableCell className="text-sm font-medium text-white">{item.nome}</TableCell>
               <TableCell className="text-sm text-gray-300">{item.sigla??"—"}</TableCell>
-              <TableCell><button onClick={()=>toggleTypeAtivo(item.id,!item.ativo,"catalogo_tipos_fresas")}>{item.ativo?<ToggleRight className="h-7 w-7 text-green-400"/>:<ToggleLeft className="h-7 w-7 text-gray-500"/>}</button></TableCell>
+              <TableCell><button onClick={()=>toggleTypeAtivo(item.id,!item.ativo)}>{item.ativo?<ToggleRight className="h-7 w-7 text-green-400"/>:<ToggleLeft className="h-7 w-7 text-gray-500"/>}</button></TableCell>
               <TableCell><div className="flex items-center gap-2"><button onClick={()=>openEdit(item)} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-[#c9a655]/20 text-[var(--color-text-muted)] hover:text-[#c9a655]"><Pencil className="h-3.5 w-3.5"/></button><button onClick={()=>setDeleteItem({id:item.id,label:item.nome,table:"catalogo_tipos_fresas"})} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-red-500/20 text-[var(--color-text-muted)] hover:text-red-400"><Trash2 className="h-3.5 w-3.5"/></button></div></TableCell>
             </TableRow>)}{(tiposFresa??[]).length===0&&<TableRow><TableCell colSpan={4} className="p-4 text-center text-text-muted">Nenhum tipo cadastrado</TableCell></TableRow>}</TableBody></Table>
           )}
@@ -247,7 +319,7 @@ function AdminInstrumentaisPage() {
             <TableBody>{(tiposComplementar??[]).map((item:any,i:number)=><TableRow key={item.id} className={`${i%2===0?"bg-[var(--color-surface)]/30":""} hover:bg-[#c9a655]/5 border-b border-[var(--color-border-subtle)]/50`}>
               <TableCell className="text-sm font-medium text-white">{item.nome}</TableCell>
               <TableCell className="text-sm text-gray-300">{item.sigla??"—"}</TableCell>
-              <TableCell><button onClick={()=>toggleTypeAtivo(item.id,!item.ativo,"catalogo_tipos_complementares")}>{item.ativo?<ToggleRight className="h-7 w-7 text-green-400"/>:<ToggleLeft className="h-7 w-7 text-gray-500"/>}</button></TableCell>
+              <TableCell><button onClick={()=>toggleTypeAtivo(item.id,!item.ativo)}>{item.ativo?<ToggleRight className="h-7 w-7 text-green-400"/>:<ToggleLeft className="h-7 w-7 text-gray-500"/>}</button></TableCell>
               <TableCell><div className="flex items-center gap-2"><button onClick={()=>openEdit(item)} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-[#c9a655]/20 text-[var(--color-text-muted)] hover:text-[#c9a655]"><Pencil className="h-3.5 w-3.5"/></button><button onClick={()=>setDeleteItem({id:item.id,label:item.nome,table:"catalogo_tipos_complementares"})} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-red-500/20 text-[var(--color-text-muted)] hover:text-red-400"><Trash2 className="h-3.5 w-3.5"/></button></div></TableCell>
             </TableRow>)}{(tiposComplementar??[]).length===0&&<TableRow><TableCell colSpan={4} className="p-4 text-center text-text-muted">Nenhum tipo cadastrado</TableCell></TableRow>}</TableBody></Table>
           )}

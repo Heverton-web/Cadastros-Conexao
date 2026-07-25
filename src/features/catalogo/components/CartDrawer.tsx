@@ -88,7 +88,7 @@ export function CartDrawer() {
             </div>
             
             <Link 
-              to="/catalogo" 
+              to="/catalogo/checkout"
               onClick={() => toggleCartDrawer(false)}
               className="w-full flex items-center justify-center gap-2 py-4 rounded-xl font-black text-sm tracking-widest uppercase transition-all hover:scale-[1.02]"
               style={{ background: "linear-gradient(135deg, #c9a655, #e8d48b)", color: "#0f172a" }}

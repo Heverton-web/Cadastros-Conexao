@@ -23,6 +23,16 @@ export async function criarTipoChave(input: { nome: string; sigla?: string }): P
   if (error) throw error
   return data as CatalogoTipoChave
 }
+export async function atualizarTipoChave(id: string, input: Partial<{ nome: string; sigla: string | null; ativo: boolean }>): Promise<CatalogoTipoChave> {
+  const { data, error } = await supabase
+    .from("catalogo_tipos_chaves")
+    .update(input)
+    .eq("id", id)
+    .select()
+    .single()
+  if (error) throw error
+  return data as CatalogoTipoChave
+}
 
 export async function toggleTipoChaveAtivo(id: string, ativo: boolean): Promise<void> {
   const { error } = await supabase.from("catalogo_tipos_chaves").update({ ativo }).eq("id", id)
@@ -77,9 +87,11 @@ export async function atualizarChave(sku: string, input: Partial<{
 }
 
 export async function toggleChaveAtivo(sku: string, ativo: boolean): Promise<void> {
+  const { error } = await supabase.from("catalogo_chaves").update({ ativo }).eq("sku", sku)
   if (error) throw error
 }
 
 export async function removerChave(sku: string): Promise<void> {
+  const { error } = await supabase.from("catalogo_chaves").delete().eq("sku", sku)
   if (error) throw error
 }

@@ -23,6 +23,16 @@ export async function criarTipoComplementar(input: { nome: string; sigla?: strin
   if (error) throw error
   return data as CatalogoTipoComplementar
 }
+export async function atualizarTipoComplementar(id: string, input: Partial<{ nome: string; sigla: string | null; ativo: boolean }>): Promise<CatalogoTipoComplementar> {
+  const { data, error } = await supabase
+    .from("catalogo_tipos_complementares")
+    .update(input)
+    .eq("id", id)
+    .select()
+    .single()
+  if (error) throw error
+  return data as CatalogoTipoComplementar
+}
 
 export async function toggleTipoComplementarAtivo(id: string, ativo: boolean): Promise<void> {
   const { error } = await supabase.from("catalogo_tipos_complementares").update({ ativo }).eq("id", id)
@@ -77,9 +87,11 @@ export async function atualizarComplementar(sku: string, input: Partial<{
 }
 
 export async function toggleComplementarAtivo(sku: string, ativo: boolean): Promise<void> {
+  const { error } = await supabase.from("catalogo_complementares").update({ ativo }).eq("sku", sku)
   if (error) throw error
 }
 
 export async function removerComplementar(sku: string): Promise<void> {
+  const { error } = await supabase.from("catalogo_complementares").delete().eq("sku", sku)
   if (error) throw error
 }

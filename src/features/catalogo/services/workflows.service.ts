@@ -24,6 +24,17 @@ export async function criarTipoWorkflow(input: { nome: string; sigla?: string })
   return data as CatalogoCpsTipoWorkflow
 }
 
+export async function atualizarTipoWorkflow(id: string, input: Partial<{ nome: string; sigla: string | null; ativo: boolean }>): Promise<CatalogoCpsTipoWorkflow> {
+  const { data, error } = await supabase
+    .from("catalogo_cps_tipos_workflows")
+    .update(input)
+    .eq("id", id)
+    .select()
+    .single()
+  if (error) throw error
+  return data as CatalogoCpsTipoWorkflow
+}
+
 export async function toggleTipoWorkflowAtivo(id: string, ativo: boolean): Promise<void> {
   const { error } = await supabase.from("catalogo_cps_tipos_workflows").update({ ativo }).eq("id", id)
   if (error) throw error
@@ -60,6 +71,17 @@ export async function criarEtapa(input: {
   if (error) throw error
   return data as CatalogoCpsEtapaWorkflow
 }
+export async function atualizarEtapa(id: string, input: Partial<{ tipo_workflow_id: string; nome: string; sigla: string | null; ordem: number; ativo: boolean }>): Promise<CatalogoCpsEtapaWorkflow> {
+  const { data, error } = await supabase
+    .from("catalogo_cps_etapas_workflows")
+    .update(input)
+    .eq("id", id)
+    .select()
+    .single()
+  if (error) throw error
+  return data as CatalogoCpsEtapaWorkflow
+}
+
 
 export async function toggleEtapaAtivo(id: string, ativo: boolean): Promise<void> {
   const { error } = await supabase.from("catalogo_cps_etapas_workflows").update({ ativo }).eq("id", id)

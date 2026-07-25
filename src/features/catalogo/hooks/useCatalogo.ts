@@ -8,6 +8,7 @@ import * as kits from "../services/kits.service"
 import * as cupons from "../services/cupons.service"
 import * as frete from "../services/frete.service"
 import * as parafusosRetensao from "../services/parafusos-retensao.service"
+import * as parafusos from "../services/parafusos.service"
 import * as cicatrizadores from "../services/cicatrizadores.service"
 import * as promocionais from "../services/promocionais.service"
 import * as clientesService from "../services/clientes.service"
@@ -23,7 +24,7 @@ import * as opcionaisService from "../services/opcionais.service"
 import * as seqProteticaService from "../services/sequencia-protetica.service"
 import { getCatalogoDesign } from "../services/design.service"
 import toast from "react-hot-toast"
-import type { CatalogoImplante, CatalogoKit, CatalogoAbutment, CatalogoCategoria, CatalogoConexao, CatalogoLinha, CatalogoFamilia, CatalogoFresa, CatalogoTipoReabilitacao, CatalogoTipoAbutment, CatalogoCategoriaAcessorio, CatalogoAcessorio, CatalogoChaveFerramental, CatalogoCategoriaInstrumental, CatalogoInstrumentalGeral, CatalogoCategoriaKit, CatalogoWorkflow, CatalogoEtapaWorkflow, CatalogoParafusoRetencao, CatalogoCicatrizador, CatalogoTipoChave, CatalogoTipoFresa, CatalogoTipoComplementar, CatalogoTipoOpcional, ProdutoTipoImagem, CatalogoImagemProduto } from "../types"
+import type { CatalogoImplante, CatalogoKit, CatalogoAbutment, CatalogoCategoria, CatalogoConexao, CatalogoLinha, CatalogoFamilia, CatalogoFresa, CatalogoTipoReabilitacao, CatalogoTipoAbutment, CatalogoCategoriaAcessorio, CatalogoAcessorio, CatalogoChaveFerramental, CatalogoCategoriaInstrumental, CatalogoInstrumentalGeral, CatalogoCategoriaKit, CatalogoWorkflow, CatalogoEtapaWorkflow, CatalogoParafusoRetencao, CatalogoCicatrizador, CatalogoTipoChave, CatalogoTipoFresa, CatalogoTipoComplementar, CatalogoTipoOpcional, ProdutoTipoImagem, CatalogoImagemProduto, CatalogoCpsTipoComponente, CatalogoCpsTipoParafuso, CatalogoCpsTipoCicatrizador, CatalogoParafuso, CatalogoChave, CatalogoComponente } from "../types"
 
 
 // --- Hierarquia ---
@@ -54,6 +55,29 @@ export function useToggleCategoriaAtivo() {
     onSettled: () => {
       qc.invalidateQueries({ queryKey: ["catalogo", "categorias"] })
     },
+  })
+}
+export function useCriarCategoria() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: (input: { nome: string; sigla?: string; locked?: boolean }) => hierarquia.criarCategoria(input),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "categorias"] }),
+  })
+}
+
+export function useAtualizarCategoria() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: ({ id, input }: { id: string; input: Partial<{ nome: string; sigla: string }> }) => hierarquia.atualizarCategoria(id, input),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "categorias"] }),
+  })
+}
+
+export function useRemoverCategoria() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: (id: string) => hierarquia.removerCategoria(id),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "categorias"] }),
   })
 }
 
@@ -131,6 +155,78 @@ export function useToggleFamiliaAtivo() {
   })
 }
 
+export function useCriarConexao() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: (input: { categoria_id: string; nome: string; sigla: string }) => hierarquia.criarConexao(input),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "conexoes"] }),
+  })
+}
+
+export function useAtualizarConexao() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: ({ id, input }: { id: string; input: Partial<{ nome: string; sigla: string; categoria_id: string }> }) => hierarquia.atualizarConexao(id, input),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "conexoes"] }),
+  })
+}
+
+export function useRemoverConexao() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: (id: string) => hierarquia.removerConexao(id),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "conexoes"] }),
+  })
+}
+
+export function useCriarFamilia() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: (input: { conexao_id: string; nome: string; cor_identificacao?: string }) => hierarquia.criarFamilia(input),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "familias"] }),
+  })
+}
+
+export function useAtualizarFamilia() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: ({ id, input }: { id: string; input: Partial<{ nome: string; cor_identificacao: string }> }) => hierarquia.atualizarFamilia(id, input),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "familias"] }),
+  })
+}
+
+export function useRemoverFamilia() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: (id: string) => hierarquia.removerFamilia(id),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "familias"] }),
+  })
+}
+
+export function useCriarLinha() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: (input: { familia_id: string; nome: string }) => hierarquia.criarLinha(input),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "linhas"] }),
+  })
+}
+
+export function useAtualizarLinha() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: ({ id, input }: { id: string; input: Partial<{ nome: string; familia_id: string }> }) => hierarquia.atualizarLinha(id, input),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "linhas"] }),
+  })
+}
+
+export function useRemoverLinha() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: (id: string) => hierarquia.removerLinha(id),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "linhas"] }),
+  })
+}
+
 // --- Implantes ---
 export function useImplantesAtivos() {
   return useQuery({ queryKey: ["catalogo", "implantes", "ativos"], queryFn: () => implantes.listarImplantesAtivos() })
@@ -161,6 +257,85 @@ export function useTiposOsso() {
 
 export function useFresas() {
   return useQuery({ queryKey: ["catalogo", "fresas"], queryFn: () => implantes.listarFresas() })
+}
+export function useProtocoloFresas(protocoloId: string) {
+  return useQuery({ queryKey: ["catalogo", "protocolo-fresas", protocoloId], queryFn: () => fresagensService.listarProtocoloFresas(protocoloId), enabled: !!protocoloId })
+}
+
+export function useImplantesDiametros() {
+  return useQuery({ queryKey: ["catalogo", "implantes-diametros"], queryFn: () => fresagensService.listarDiametrosImplantes() })
+}
+
+export function useCriarTipoOsso() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: (input: { nome: string; sigla?: string; categoria?: "hard" | "soft"; ativo?: boolean }) => fresagensService.criarTipoOsso(input),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "tipos-osso"] }),
+  })
+}
+
+export function useAtualizarTipoOsso() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: ({ id, input }: { id: string; input: Partial<{ nome: string; sigla: string | null; categoria: "hard" | "soft"; ativo: boolean }> }) => fresagensService.atualizarTipoOsso(id, input),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "tipos-osso"] }),
+  })
+}
+
+export function useRemoverTipoOsso() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: (id: string) => fresagensService.removerTipoOsso(id),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "tipos-osso"] }),
+  })
+}
+
+export function useToggleTipoOssoAtivo() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: ({ id, ativo }: { id: string; ativo: boolean }) => fresagensService.toggleTipoOssoAtivo(id, ativo),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "tipos-osso"] }),
+  })
+}
+
+export function useCriarProtocolo() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: (input: { nome: string; tipo_osso: string; sigla?: string; diametro_mm_aplicavel?: number }) => fresagensService.criarProtocolo(input),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "protocolos-fresagens"] }),
+  })
+}
+
+export function useAtualizarProtocolo() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: ({ id, input }: { id: string; input: Partial<{ nome: string; tipo_osso: string; sigla: string; diametro_mm_aplicavel: number; ativo: boolean }> }) => fresagensService.atualizarProtocolo(id, input),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "protocolos-fresagens"] }),
+  })
+}
+
+export function useRemoverProtocolo() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: (id: string) => fresagensService.removerProtocolo(id),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "protocolos-fresagens"] }),
+  })
+}
+
+export function useToggleProtocoloAtivo() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: ({ id, ativo }: { id: string; ativo: boolean }) => fresagensService.toggleProtocoloAtivo(id, ativo),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "protocolos-fresagens"] }),
+  })
+}
+
+export function useSalvarProtocoloFresas() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: ({ protocoloId, items }: { protocoloId: string; items: { fresa_id: string; ordem: number }[] }) => fresagensService.salvarProtocoloFresas(protocoloId, items),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "protocolos-fresagens"] }),
+  })
 }
 
 export function useCriarImplante() {
@@ -273,6 +448,337 @@ export function useToggleAbutmentAtivo() {
     onSettled: () => {
       qc.invalidateQueries({ queryKey: ["catalogo", "abutments"] })
     },
+  })
+}
+// --- Componentes: Tipos ---
+export function useTiposComponente() {
+  return useQuery({ queryKey: ["catalogo", "tipos-componente"], queryFn: () => componentes.listarTiposComponentes() })
+}
+
+export function useTiposParafuso() {
+  return useQuery({ queryKey: ["catalogo", "tipos-parafuso"], queryFn: () => componentes.listarTiposParafusos() })
+}
+
+export function useTiposCicatrizador() {
+  return useQuery({ queryKey: ["catalogo", "tipos-cicatrizador"], queryFn: () => componentes.listarTiposCicatrizadores() })
+}
+
+// --- Listas para selects ---
+export function useParafusosList() {
+  return useQuery({ queryKey: ["catalogo", "parafusos-list"], queryFn: () => parafusos.listarParafusos() })
+}
+
+export function useChavesList() {
+  return useQuery({ queryKey: ["catalogo", "chaves-list"], queryFn: () => chavesService.listarChaves() })
+}
+
+export function useReabFamilias() {
+  return useQuery({ queryKey: ["catalogo", "reab-familias"], queryFn: () => componentes.listarReabFamilias() })
+}
+
+export function useTodasSequencias() {
+  return useQuery({ queryKey: ["catalogo", "todas-sequencias"], queryFn: () => seqProteticaService.listarSeqProteticas() })
+}
+
+export function useAbutmentSeqs(abutmentSku: string) {
+  return useQuery({ queryKey: ["catalogo", "abutment-seqs", abutmentSku], queryFn: () => seqProteticaService.listarSeqProteticasAbutment(abutmentSku), enabled: !!abutmentSku })
+}
+
+// --- Componentes: Tipos Mutations ---
+export function useCriarTipoReabilitacao() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: (input: Parameters<typeof componentes.criarTipoReabilitacao>[1]) => componentes.criarTipoReabilitacao(input),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "tipos-reabilitacao"] }),
+  })
+}
+
+export function useAtualizarTipoReabilitacao() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: ({ id, input }: { id: string; input: Parameters<typeof componentes.atualizarTipoReabilitacao>[1] }) => componentes.atualizarTipoReabilitacao(id, input),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "tipos-reabilitacao"] }),
+  })
+}
+
+export function useRemoverTipoReabilitacao() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: (id: string) => componentes.removerTipoReabilitacao(id),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "tipos-reabilitacao"] }),
+  })
+}
+
+export function useSalvarReabFamilias() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: ({ tipoReabId, familiaIds }: { tipoReabId: string; familiaIds: string[] }) => componentes.salvarReabFamilias(tipoReabId, familiaIds),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "reab-familias"] }),
+  })
+}
+
+export function useCriarTipoAbutment() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: (input: Parameters<typeof componentes.criarTipoAbutment>[1]) => componentes.criarTipoAbutment(input),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "tipos-abutment"] }),
+  })
+}
+
+export function useAtualizarTipoAbutment() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: ({ id, input }: { id: string; input: Parameters<typeof componentes.atualizarTipoAbutment>[1] }) => componentes.atualizarTipoAbutment(id, input),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "tipos-abutment"] }),
+  })
+}
+
+export function useRemoverTipoAbutment() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: (id: string) => componentes.removerTipoAbutment(id),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "tipos-abutment"] }),
+  })
+}
+
+export function useCriarTipoComponente() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: (input: Parameters<typeof componentes.criarTipoComponente>[1]) => componentes.criarTipoComponente(input),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "tipos-componente"] }),
+  })
+}
+
+export function useAtualizarTipoComponente() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: ({ id, input }: { id: string; input: Parameters<typeof componentes.atualizarTipoComponente>[1] }) => componentes.atualizarTipoComponente(id, input),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "tipos-componente"] }),
+  })
+}
+
+export function useRemoverTipoComponente() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: (id: string) => componentes.removerTipoComponente(id),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "tipos-componente"] }),
+  })
+}
+
+export function useCriarTipoParafuso() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: (input: Parameters<typeof componentes.criarTipoParafuso>[1]) => componentes.criarTipoParafuso(input),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "tipos-parafuso"] }),
+  })
+}
+
+export function useAtualizarTipoParafuso() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: ({ id, input }: { id: string; input: Parameters<typeof componentes.atualizarTipoParafuso>[1] }) => componentes.atualizarTipoParafuso(id, input),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "tipos-parafuso"] }),
+  })
+}
+
+export function useRemoverTipoParafuso() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: (id: string) => componentes.removerTipoParafuso(id),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "tipos-parafuso"] }),
+  })
+}
+
+export function useCriarTipoCicatrizador() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: (input: Parameters<typeof componentes.criarTipoCicatrizador>[1]) => componentes.criarTipoCicatrizador(input),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "tipos-cicatrizador"] }),
+  })
+}
+
+export function useAtualizarTipoCicatrizador() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: ({ id, input }: { id: string; input: Parameters<typeof componentes.atualizarTipoCicatrizador>[1] }) => componentes.atualizarTipoCicatrizador(id, input),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "tipos-cicatrizador"] }),
+  })
+}
+
+export function useRemoverTipoCicatrizador() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: (id: string) => componentes.removerTipoCicatrizador(id),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "tipos-cicatrizador"] }),
+  })
+}
+
+// --- Componentes: Tipos Toggles ---
+export function useToggleTipoComponenteAtivo() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: ({ id, ativo }: { id: string; ativo: boolean }) => componentes.toggleTipoComponenteAtivo(id, ativo),
+    onMutate: async ({ id, ativo }) => {
+      await qc.cancelQueries({ queryKey: ["catalogo", "tipos-componente"] })
+      const prev = qc.getQueryData<CatalogoCpsTipoComponente[]>(["catalogo", "tipos-componente"])
+      qc.setQueryData<CatalogoCpsTipoComponente[]>(["catalogo", "tipos-componente"], (old) =>
+        old?.map((t) => (t.id === id ? { ...t, ativo } : t)) ?? []
+      )
+      return { prev }
+    },
+    onError: (err, _vars, ctx) => {
+      if (ctx?.prev) qc.setQueryData(["catalogo", "tipos-componente"], ctx.prev)
+      toast.error("Erro ao alterar tipo de componente: " + (err as Error).message)
+    },
+    onSettled: () => qc.invalidateQueries({ queryKey: ["catalogo", "tipos-componente"] }),
+  })
+}
+
+export function useToggleTipoParafusoAtivo() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: ({ id, ativo }: { id: string; ativo: boolean }) => componentes.toggleTipoParafusoAtivo(id, ativo),
+    onMutate: async ({ id, ativo }) => {
+      await qc.cancelQueries({ queryKey: ["catalogo", "tipos-parafuso"] })
+      const prev = qc.getQueryData<CatalogoCpsTipoParafuso[]>(["catalogo", "tipos-parafuso"])
+      qc.setQueryData<CatalogoCpsTipoParafuso[]>(["catalogo", "tipos-parafuso"], (old) =>
+        old?.map((t) => (t.id === id ? { ...t, ativo } : t)) ?? []
+      )
+      return { prev }
+    },
+    onError: (err, _vars, ctx) => {
+      if (ctx?.prev) qc.setQueryData(["catalogo", "tipos-parafuso"], ctx.prev)
+      toast.error("Erro ao alterar tipo de parafuso: " + (err as Error).message)
+    },
+    onSettled: () => qc.invalidateQueries({ queryKey: ["catalogo", "tipos-parafuso"] }),
+  })
+}
+
+export function useToggleTipoCicatrizadorAtivo() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: ({ id, ativo }: { id: string; ativo: boolean }) => componentes.toggleTipoCicatrizadorAtivo(id, ativo),
+    onMutate: async ({ id, ativo }) => {
+      await qc.cancelQueries({ queryKey: ["catalogo", "tipos-cicatrizador"] })
+      const prev = qc.getQueryData<CatalogoCpsTipoCicatrizador[]>(["catalogo", "tipos-cicatrizador"])
+      qc.setQueryData<CatalogoCpsTipoCicatrizador[]>(["catalogo", "tipos-cicatrizador"], (old) =>
+        old?.map((t) => (t.id === id ? { ...t, ativo } : t)) ?? []
+      )
+      return { prev }
+    },
+    onError: (err, _vars, ctx) => {
+      if (ctx?.prev) qc.setQueryData(["catalogo", "tipos-cicatrizador"], ctx.prev)
+      toast.error("Erro ao alterar tipo de cicatrizador: " + (err as Error).message)
+    },
+    onSettled: () => qc.invalidateQueries({ queryKey: ["catalogo", "tipos-cicatrizador"] }),
+  })
+}
+
+// --- Parafusos (produtos) ---
+export function useCriarParafuso() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: (input: Parameters<typeof parafusos.criarParafuso>[1]) => parafusos.criarParafuso(input),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "parafusos"] }),
+  })
+}
+
+export function useAtualizarParafuso() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: ({ sku, input }: { sku: string; input: Parameters<typeof parafusos.atualizarParafuso>[2] }) => parafusos.atualizarParafuso(sku, input),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "parafusos"] }),
+  })
+}
+
+export function useRemoverParafuso() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: (sku: string) => parafusos.removerParafuso(sku),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "parafusos"] }),
+  })
+}
+
+export function useToggleParafusoAtivo() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: ({ sku, ativo }: { sku: string; ativo: boolean }) => parafusos.toggleParafusoAtivo(sku, ativo),
+    onMutate: async ({ sku, ativo }) => {
+      await qc.cancelQueries({ queryKey: ["catalogo", "parafusos-list"] })
+      const prev = qc.getQueryData<CatalogoParafuso[]>(["catalogo", "parafusos-list"])
+      qc.setQueryData<CatalogoParafuso[]>(["catalogo", "parafusos-list"], (old) =>
+        old?.map((p) => (p.sku === sku ? { ...p, ativo } : p)) ?? []
+      )
+      return { prev }
+    },
+    onError: (err, _vars, ctx) => {
+      if (ctx?.prev) qc.setQueryData(["catalogo", "parafusos-list"], ctx.prev)
+      toast.error("Erro ao alterar parafuso: " + (err as Error).message)
+    },
+    onSettled: () => qc.invalidateQueries({ queryKey: ["catalogo", "parafusos"] }),
+  })
+}
+
+// --- Componentes (produtos) ---
+export function useCriarComponenteProduto() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: (input: Parameters<typeof componentes.criarComponente>[1]) => componentes.criarComponente(input),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "componentes"] }),
+  })
+}
+
+export function useAtualizarComponenteProduto() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: ({ sku, input }: { sku: string; input: Parameters<typeof componentes.atualizarComponente>[2] }) => componentes.atualizarComponente(sku, input),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "componentes"] }),
+  })
+}
+
+export function useRemoverComponenteProduto() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: (sku: string) => componentes.removerComponente(sku),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "componentes"] }),
+  })
+}
+
+export function useToggleComponenteAtivo() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: ({ sku, ativo }: { sku: string; ativo: boolean }) => componentes.toggleComponenteAtivo(sku, ativo),
+    onMutate: async ({ sku, ativo }) => {
+      await qc.cancelQueries({ queryKey: ["catalogo", "componentes"] })
+      const prev = qc.getQueryData<CatalogoComponente[]>(["catalogo", "componentes"])
+      qc.setQueryData<CatalogoComponente[]>(["catalogo", "componentes"], (old) =>
+        old?.map((c) => (c.sku === sku ? { ...c, ativo } : c)) ?? []
+      )
+      return { prev }
+    },
+    onError: (err, _vars, ctx) => {
+      if (ctx?.prev) qc.setQueryData(["catalogo", "componentes"], ctx.prev)
+      toast.error("Erro ao alterar componente: " + (err as Error).message)
+    },
+    onSettled: () => qc.invalidateQueries({ queryKey: ["catalogo", "componentes"] }),
+  })
+}
+
+// --- Cicatrizadores: Remover ---
+export function useRemoverCicatrizador() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: (sku: string) => cicatrizadores.removerCicatrizador(sku),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "cicatrizadores"] }),
+  })
+}
+
+// --- Sequencias Protéticas: Abutment ---
+export function useSalvarAbutmentSeqs() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: ({ abutmentSku, seqIds }: { abutmentSku: string; seqIds: string[] }) => seqProteticaService.salvarSeqProteticasAbutment(abutmentSku, seqIds),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "abutment-seqs"] }),
   })
 }
 
@@ -536,6 +1042,234 @@ export function useToggleTipoOpcionalAtivo() {
   })
 }
 
+// --- Chaves (produto) ---
+export function useChaves() {
+  return useQuery({ queryKey: ["catalogo", "chaves-list"], queryFn: () => chavesService.listarChaves() })
+}
+
+export function useCriarChave() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: chavesService.criarChave,
+    onSettled: () => { qc.invalidateQueries({ queryKey: ["catalogo"] }) },
+  })
+}
+
+export function useAtualizarChave() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: ({ sku, input }: { sku: string; input: Parameters<typeof chavesService.atualizarChave>[1] }) => chavesService.atualizarChave(sku, input),
+    onSettled: () => { qc.invalidateQueries({ queryKey: ["catalogo"] }) },
+  })
+}
+
+export function useRemoverChave() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: chavesService.removerChave,
+    onSettled: () => { qc.invalidateQueries({ queryKey: ["catalogo"] }) },
+  })
+}
+
+export function useToggleChaveAtivo() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: ({ sku, ativo }: { sku: string; ativo: boolean }) => chavesService.toggleChaveAtivo(sku, ativo),
+    onSettled: () => { qc.invalidateQueries({ queryKey: ["catalogo"] }) },
+  })
+}
+
+// --- CRUD Tipos Chave ---
+export function useCriarTipoChave() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: chavesService.criarTipoChave,
+    onSettled: () => { qc.invalidateQueries({ queryKey: ["catalogo", "tipos-chaves"] }) },
+  })
+}
+
+export function useAtualizarTipoChave() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: ({ id, input }: { id: string; input: Parameters<typeof chavesService.atualizarTipoChave>[1] }) => chavesService.atualizarTipoChave(id, input),
+    onSettled: () => { qc.invalidateQueries({ queryKey: ["catalogo", "tipos-chaves"] }) },
+  })
+}
+
+export function useRemoverTipoChave() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: chavesService.removerTipoChave,
+    onSettled: () => { qc.invalidateQueries({ queryKey: ["catalogo", "tipos-chaves"] }) },
+  })
+}
+
+// --- CRUD Tipos Fresa ---
+export function useCriarTipoFresa() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: fresasTiposService.criarTipoFresa,
+    onSettled: () => { qc.invalidateQueries({ queryKey: ["catalogo", "tipos-fresas"] }) },
+  })
+}
+
+export function useAtualizarTipoFresa() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: ({ id, input }: { id: string; input: Parameters<typeof fresasTiposService.atualizarTipoFresa>[1] }) => fresasTiposService.atualizarTipoFresa(id, input),
+    onSettled: () => { qc.invalidateQueries({ queryKey: ["catalogo", "tipos-fresas"] }) },
+  })
+}
+
+export function useRemoverTipoFresa() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: fresasTiposService.removerTipoFresa,
+    onSettled: () => { qc.invalidateQueries({ queryKey: ["catalogo", "tipos-fresas"] }) },
+  })
+}
+
+// --- CRUD Tipos Complementar ---
+export function useCriarTipoComplementar() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: complementaresService.criarTipoComplementar,
+    onSettled: () => { qc.invalidateQueries({ queryKey: ["catalogo", "tipos-complementares"] }) },
+  })
+}
+
+export function useAtualizarTipoComplementar() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: ({ id, input }: { id: string; input: Parameters<typeof complementaresService.atualizarTipoComplementar>[1] }) => complementaresService.atualizarTipoComplementar(id, input),
+    onSettled: () => { qc.invalidateQueries({ queryKey: ["catalogo", "tipos-complementares"] }) },
+  })
+}
+
+export function useRemoverTipoComplementar() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: complementaresService.removerTipoComplementar,
+    onSettled: () => { qc.invalidateQueries({ queryKey: ["catalogo", "tipos-complementares"] }) },
+  })
+}
+
+// --- CRUD Tipos Opcional ---
+export function useCriarTipoOpcional() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: opcionaisService.criarTipoOpcional,
+    onSettled: () => { qc.invalidateQueries({ queryKey: ["catalogo", "tipos-opcionais"] }) },
+  })
+}
+
+export function useAtualizarTipoOpcional() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: ({ id, input }: { id: string; input: Parameters<typeof opcionaisService.atualizarTipoOpcional>[1] }) => opcionaisService.atualizarTipoOpcional(id, input),
+    onSettled: () => { qc.invalidateQueries({ queryKey: ["catalogo", "tipos-opcionais"] }) },
+  })
+}
+
+export function useRemoverTipoOpcional() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: opcionaisService.removerTipoOpcional,
+    onSettled: () => { qc.invalidateQueries({ queryKey: ["catalogo", "tipos-opcionais"] }) },
+  })
+}
+
+// --- Fresas (produto) ---
+export function useCriarFresa() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: implantes.criarFresa,
+    onSettled: () => { qc.invalidateQueries({ queryKey: ["catalogo"] }) },
+  })
+}
+
+export function useAtualizarFresa() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: ({ sku, input }: { sku: string; input: Parameters<typeof implantes.atualizarFresa>[1] }) => implantes.atualizarFresa(sku, input),
+    onSettled: () => { qc.invalidateQueries({ queryKey: ["catalogo"] }) },
+  })
+}
+
+export function useRemoverFresa() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: implantes.removerFresa,
+    onSettled: () => { qc.invalidateQueries({ queryKey: ["catalogo"] }) },
+  })
+}
+
+// --- Complementares (produto) ---
+export function useCriarComplementar() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: complementaresService.criarComplementar,
+    onSettled: () => { qc.invalidateQueries({ queryKey: ["catalogo"] }) },
+  })
+}
+
+export function useAtualizarComplementar() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: ({ sku, input }: { sku: string; input: Parameters<typeof complementaresService.atualizarComplementar>[1] }) => complementaresService.atualizarComplementar(sku, input),
+    onSettled: () => { qc.invalidateQueries({ queryKey: ["catalogo"] }) },
+  })
+}
+
+export function useRemoverComplementar() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: complementaresService.removerComplementar,
+    onSettled: () => { qc.invalidateQueries({ queryKey: ["catalogo"] }) },
+  })
+}
+
+export function useToggleComplementarAtivo() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: ({ sku, ativo }: { sku: string; ativo: boolean }) => complementaresService.toggleComplementarAtivo(sku, ativo),
+    onSettled: () => { qc.invalidateQueries({ queryKey: ["catalogo"] }) },
+  })
+}
+
+// --- Opcionais (produto) ---
+export function useCriarOpcional() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: opcionaisService.criarOpcional,
+    onSettled: () => { qc.invalidateQueries({ queryKey: ["catalogo"] }) },
+  })
+}
+
+export function useAtualizarOpcional() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: ({ sku, input }: { sku: string; input: Parameters<typeof opcionaisService.atualizarOpcional>[1] }) => opcionaisService.atualizarOpcional(sku, input),
+    onSettled: () => { qc.invalidateQueries({ queryKey: ["catalogo"] }) },
+  })
+}
+
+export function useRemoverOpcional() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: opcionaisService.removerOpcional,
+    onSettled: () => { qc.invalidateQueries({ queryKey: ["catalogo"] }) },
+  })
+}
+
+export function useToggleOpcionalAtivo() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: ({ sku, ativo }: { sku: string; ativo: boolean }) => opcionaisService.toggleOpcionalAtivo(sku, ativo),
+    onSettled: () => { qc.invalidateQueries({ queryKey: ["catalogo"] }) },
+  })
+}
+
 export function useCategoriasAcessorio() {
   return useQuery({ queryKey: ["catalogo", "cats-acessorio"], queryFn: () => acessorios.listarCategoriasAcessorio() })
 }
@@ -649,6 +1383,150 @@ export function useEtapas() {
 export function useSeqProteticas() {
   return useQuery({ queryKey: ["catalogo", "seq-proteticas"], queryFn: () => seqProteticaService.listarSeqProteticas() })
 }
+// --- Todas Seq Proteticas (inclui inativas) ---
+export function useTodasSeqProteticas() {
+  return useQuery({ queryKey: ["catalogo", "seq-proteticas-todas"], queryFn: () => seqProteticaService.listarTodasSeqProteticas() })
+}
+
+// --- CRUD Tipo Workflow ---
+export function useCriarTipoWorkflow() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: (input: { nome: string; sigla?: string | null }) => workflows.criarTipoWorkflow(input),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "workflows"] }),
+  })
+}
+
+export function useAtualizarTipoWorkflow() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: ({ id, input }: { id: string; input: Partial<{ nome: string; sigla: string | null; ativo: boolean }> }) =>
+      workflows.atualizarTipoWorkflow(id, input),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "workflows"] }),
+  })
+}
+
+export function useRemoverTipoWorkflow() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: (id: string) => workflows.removerTipoWorkflow(id),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "workflows"] }),
+  })
+}
+
+// --- CRUD Etapa Workflow ---
+export function useCriarEtapa() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: (input: { tipo_workflow_id: string; nome: string; sigla?: string; ordem?: number }) =>
+      workflows.criarEtapa(input),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "etapas"] }),
+  })
+}
+
+export function useAtualizarEtapa() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: ({ id, input }: { id: string; input: Partial<{ tipo_workflow_id: string; nome: string; sigla: string | null; ordem: number; ativo: boolean }> }) =>
+      workflows.atualizarEtapa(id, input),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "etapas"] }),
+  })
+}
+
+export function useRemoverEtapa() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: (id: string) => workflows.removerEtapa(id),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "etapas"] }),
+  })
+}
+
+// --- CRUD Seq Protetica ---
+export function useCriarSeqProtetica() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: (input: { nome: string; sigla?: string | null; ativo?: boolean }) =>
+      seqProteticaService.criarSeqProtetica(input),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "seq-proteticas"] }),
+  })
+}
+
+export function useAtualizarSeqProtetica() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: ({ id, input }: { id: string; input: Partial<{ nome: string; sigla: string | null; ativo: boolean }> }) =>
+      seqProteticaService.atualizarSeqProtetica(id, input),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "seq-proteticas"] }),
+  })
+}
+
+export function useToggleSeqProteticaAtivo() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: ({ id, ativo }: { id: string; ativo: boolean }) =>
+      seqProteticaService.toggleSeqProteticaAtivo(id, ativo),
+    onMutate: async ({ id, ativo }) => {
+      await qc.cancelQueries({ queryKey: ["catalogo", "seq-proteticas-todas"] })
+      const prev = qc.getQueryData<seqProteticaService.CatalogoSeqProtetica[]>(["catalogo", "seq-proteticas-todas"])
+      qc.setQueryData<seqProteticaService.CatalogoSeqProtetica[]>(["catalogo", "seq-proteticas-todas"], (old) =>
+        old?.map((s) => (s.id === id ? { ...s, ativo } : s)) ?? []
+      )
+      return { prev }
+    },
+    onError: (err, _vars, ctx) => {
+      if (ctx?.prev) qc.setQueryData(["catalogo", "seq-proteticas-todas"], ctx.prev)
+      toast.error("Erro ao alterar sequência: " + (err as Error).message)
+    },
+    onSettled: () => {
+      qc.invalidateQueries({ queryKey: ["catalogo", "seq-proteticas"] })
+    },
+  })
+}
+
+export function useRemoverSeqProtetica() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: (id: string) => seqProteticaService.removerSeqProtetica(id),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "seq-proteticas"] }),
+  })
+}
+
+export function useSalvarComposicaoSeq() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: ({ seqId, abutment_sku, etapasComponentes }: {
+      seqId: string; abutment_sku: string; etapasComponentes: Record<string, string[]>
+    }) => seqProteticaService.salvarComposicaoSeq(seqId, { abutment_sku, etapasComponentes }),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["catalogo", "seq-proteticas"] })
+    },
+  })
+}
+
+// --- Remoção genérica por tabela ---
+const TABLE_DELETE_MAP: Record<string, (id: string) => Promise<void>> = {
+  catalogo_cps_tipos_workflows: (id) => workflows.removerTipoWorkflow(id),
+  catalogo_cps_etapas_workflows: (id) => workflows.removerEtapa(id),
+  catalogo_seq_proteticas: (id) => seqProteticaService.removerSeqProtetica(id),
+}
+
+export function useRemoverWorkflowsItem() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: ({ id, table }: { id: string; table: string }) => {
+      const fn = TABLE_DELETE_MAP[table]
+      if (!fn) throw new Error(`Tabela não suportada: ${table}`)
+      return fn(id)
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["catalogo", "workflows"] })
+      qc.invalidateQueries({ queryKey: ["catalogo", "etapas"] })
+      qc.invalidateQueries({ queryKey: ["catalogo", "seq-proteticas"] })
+      qc.invalidateQueries({ queryKey: ["catalogo", "seq-proteticas-todas"] })
+    },
+  })
+}
+
 
 export function useCatalogoDesign() {
   return useQuery({ queryKey: ["catalogo", "design"], queryFn: getCatalogoDesign, staleTime: 5 * 60_000 })
@@ -747,6 +1625,85 @@ export function useRemoverKit() {
   const qc = useQueryClient()
   return useMutation({
     mutationFn: (sku: string) => kits.removerKit(sku),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "kits"] }),
+  })
+}
+// --- Kits: Tipos CRUD ---
+export function useCriarTipoKit() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: (input: Parameters<typeof kits.criarTipoKit>[0]) => kits.criarTipoKit(input),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "tipos-kit"] }),
+  })
+}
+
+export function useAtualizarTipoKit() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: ({ id, input }: { id: string; input: Parameters<typeof kits.atualizarTipoKit>[1] }) => kits.atualizarTipoKit(id, input),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "tipos-kit"] }),
+  })
+}
+
+export function useRemoverTipoKit() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: (id: string) => kits.removerTipoKit(id),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "tipos-kit"] }),
+  })
+}
+
+export function useToggleTipoKitAtivo() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: ({ id, ativo }: { id: string; ativo: boolean }) => kits.toggleTipoKitAtivo(id, ativo),
+    onMutate: async ({ id, ativo }) => {
+      await qc.cancelQueries({ queryKey: ["catalogo", "tipos-kit"] })
+      const prev = qc.getQueryData<CatalogoTipoKit[]>(["catalogo", "tipos-kit"])
+      qc.setQueryData<CatalogoTipoKit[]>(["catalogo", "tipos-kit"], (old) =>
+        old?.map((t) => (t.id === id ? { ...t, ativo } : t)) ?? []
+      )
+      return { prev }
+    },
+    onError: (err, _vars, ctx) => {
+      if (ctx?.prev) qc.setQueryData(["catalogo", "tipos-kit"], ctx.prev)
+      toast.error("Erro ao alterar tipo de kit: " + (err as Error).message)
+    },
+    onSettled: () => {
+      qc.invalidateQueries({ queryKey: ["catalogo", "tipos-kit"] })
+    },
+  })
+}
+
+// --- Kits: Implantes para composição ---
+export function useImplantesParaKit() {
+  return useQuery({ queryKey: ["catalogo", "implantes-para-kit"], queryFn: () => implantes.listarImplantesParaKit() })
+}
+
+// --- Kits: Salvar composição N:M ---
+export function useSalvarKitComposition() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: async ({ kitSku, chaves, fresas, complementares, opcionais, kitsComplementares, kitsRelacionados, implantes }: {
+      kitSku: string
+      chaves: string[]
+      fresas: string[]
+      complementares: string[]
+      opcionais: string[]
+      kitsComplementares: string[]
+      kitsRelacionados: string[]
+      implantes: { implante_sku: string; todos_diametros: boolean }[]
+    }) => {
+      await Promise.all([
+        kits.salvarKitChaves(kitSku, chaves),
+        kits.salvarKitFresas(kitSku, fresas),
+        kits.salvarKitComplementares(kitSku, complementares),
+        kits.salvarKitOpcionais(kitSku, opcionais),
+        kits.salvarKitKitsComplementares(kitSku, kitsComplementares),
+        kits.salvarKitKitsRelacionados(kitSku, kitsRelacionados),
+        kits.salvarKitImplantesDetalhado(kitSku, implantes),
+      ])
+    },
     onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "kits"] }),
   })
 }

@@ -1,4 +1,3 @@
-import { EMPRESA_ID } from "~/config/empresa"
 import { RequirePermission } from "~/components/guards"
 import { createRoute } from "@tanstack/react-router"
 import { authLayout } from "./_auth"
@@ -6,17 +5,16 @@ import { EmpresaCrudGuard } from "~/features/catalogo/components/EmpresaCrudGuar
 import { AdminLayout } from "~/features/catalogo/components/AdminLayout"
 import { useState, useEffect } from "react"
 import { Plus, Pencil, Trash2, ToggleRight, ToggleLeft, ExternalLink } from "lucide-react"
-import { supabase } from "~/core/supabase"
-import { useQueryClient, useQuery } from "@tanstack/react-query"
-import { useCategorias, useConexoes, useFamilias, useLinhas, useFresas, useToggleConexaoAtivo, useToggleFamiliaAtivo, useToggleLinhaAtivo, useTodosKits, useAbutments, useCicatrizadores } from "~/features/catalogo/hooks/useCatalogo"
+import { useQueryClient } from "@tanstack/react-query"
+import { useCategorias, useConexoes, useFamilias, useLinhas, useToggleConexaoAtivo, useToggleFamiliaAtivo, useToggleLinhaAtivo, useTodosKits, useAbutments, useCicatrizadores, useTodosImplantes, useChavesFerramental, useProtocolos, useTiposOsso, useCriarImplante, useAtualizarImplante, useToggleImplanteAtivo, useRemoverImplante, useRemoverConexao, useRemoverFamilia, useRemoverLinha, useCriarConexao, useAtualizarConexao, useCriarFamilia, useAtualizarFamilia, useCriarLinha, useAtualizarLinha } from "~/features/catalogo/hooks/useCatalogo"
 import { useCatalogoEmpresaId } from "~/features/catalogo/hooks/useCatalogoEmpresa"
-import { salvarImplanteChaves, salvarImplanteKits, salvarImplanteAbutments, salvarImplanteCicatrizadores, listarImplanteKits, listarImplanteAbutments, listarImplanteCicatrizadores, listarFresasProtocolo } from "~/features/catalogo/services/implantes.service"
+import { salvarImplanteChaves, salvarImplanteKits, salvarImplanteAbutments, salvarImplanteCicatrizadores, listarFresasProtocolo } from "~/features/catalogo/services/implantes.service"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "~/components/ui/dialog"
 import { Switch } from "~/components/ui/switch"
 import { ImageUploader } from "~/features/catalogo/components/admin/produtos/ImageUploader"
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "~/components/ui/alert-dialog"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "~/components/ui/table"
-import type { CatalogoIpsConexao, CatalogoIpsFamilia, CatalogoIpsLinha, CatalogoImplante, CatalogoFresa } from "~/features/catalogo/types"
+import type { CatalogoImplante } from "~/features/catalogo/types"
 import { ImportTrigger, TemplatesDropdown, GlobalImportTrigger, IMPORT_TYPE_GROUPS } from "~/features/catalogo/import"
 
 export const catalogoAdminImplantesRoute = createRoute({
@@ -40,6 +38,13 @@ function AdminImplantesPage() {
   const toggleConexao = useToggleConexaoAtivo()
   const toggleFamilia = useToggleFamiliaAtivo()
   const toggleLinha = useToggleLinhaAtivo()
+  const criarImplante = useCriarImplante()
+  const atualizarImplante = useAtualizarImplante()
+  const toggleImplanteAtivo = useToggleImplanteAtivo()
+  const removerImplante = useRemoverImplante()
+  const removerConexao = useRemoverConexao()
+  const removerFamilia = useRemoverFamilia()
+  const removerLinha = useRemoverLinha()
   const [formOpen, setFormOpen] = useState(false)
   const [editingItem, setEditingItem] = useState<Record<string, unknown> | null>(null)
   const [deleteItem, setDeleteItem] = useState<{ id: string; label: string; table: string; pkColumn: string } | null>(null)
@@ -67,10 +72,10 @@ function AdminImplantesPage() {
     else { setFresasHard([]) }
   }, [implData.osso_hard])
 
-  const { data: implantes } = useQuery({ queryKey: ["catalogo", "implantes", empresaId], queryFn: async () => { const { data } = await supabase.from("catalogo_implantes").select("*, linha:catalogo_ips_linhas(*, familia:catalogo_ips_familias(*, conexao:catalogo_ips_conexoes(*, categoria:catalogo_categorias(*))))").order("sku"); return (data ?? []) as CatalogoImplante[] }, enabled: !!empresaId })
-  const { data: allChaves } = useQuery({ queryKey: ["catalogo", "chaves"], queryFn: async () => { const { data } = await supabase.from("catalogo_chaves").select("*").order("nome"); return (data ?? []) as any[] }, enabled: !!empresaId })
-  const { data: protocolos } = useQuery({ queryKey: ["catalogo", "protocolos"], queryFn: async () => { const { data } = await supabase.from("catalogo_protocolos_fresagens").select("*").order("nome"); return (data ?? []) as any[] }, enabled: !!empresaId })
-  const { data: tiposOsso } = useQuery({ queryKey: ["catalogo", "tipos-osso"], queryFn: async () => { const { data } = await supabase.from("catalogo_tipos_ossos").select("sigla, categoria").eq("ativo", true); return (data ?? []) as any[] }, enabled: !!empresaId })
+  const { data: implantes } = useTodosImplantes()
+  const { data: allChaves } = useChavesFerramental()
+  const { data: protocolos } = useProtocolos()
+  const { data: tiposOsso } = useTiposOsso()
   const { data: allKits } = useTodosKits()
   const { data: allAbutments } = useAbutments()
   const { data: allCicatrizadores } = useCicatrizadores()
@@ -110,14 +115,14 @@ function AdminImplantesPage() {
     const sanitized = Object.fromEntries(
       Object.entries(implData).map(([k, v]) => [k, UUID_COLS.includes(k as typeof UUID_COLS[number]) && v === "" ? null : v])
     )
-    const payload = { ...sanitized}
-    if (implEditing) {
-      const { error } = await supabase.from("catalogo_implantes").update(payload).eq("sku", implEditing.sku)
-      if (error) { setImplError(error.message); return }
-    } else {
-      const { error } = await supabase.from("catalogo_implantes").insert(payload)
-      if (error) { setImplError(error.message); return }
-    }
+    const payload = { ...sanitized }
+    try {
+      if (implEditing) {
+        await atualizarImplante.mutateAsync({ sku: implEditing.sku, input: payload })
+      } else {
+        await criarImplante.mutateAsync(payload as Parameters<typeof criarImplante.mutateAsync>[0])
+      }
+    } catch (err: unknown) { setImplError(err instanceof Error ? err.message : String(err)); return }
     // Salvar chaves, kits, abutments e cicatrizadores vinculados
     if (implData.sku) {
       await salvarImplanteChaves(implData.sku, implChaves)
@@ -128,7 +133,22 @@ function AdminImplantesPage() {
     setImplModalOpen(false); qc.invalidateQueries({ queryKey: ["catalogo"] })
   }
 
-  async function handleDelete() { if (!deleteItem) return; await supabase.from(deleteItem.table).delete().eq(deleteItem.pkColumn, deleteItem.id); qc.invalidateQueries({ queryKey: ["catalogo"] }); setDeleteItem(null) }
+  async function handleDelete() {
+    if (!deleteItem) return
+    try {
+      if (deleteItem.table === "catalogo_implantes") {
+        await removerImplante.mutateAsync(deleteItem.id)
+      } else if (deleteItem.table === "catalogo_ips_conexoes") {
+        await removerConexao.mutateAsync(deleteItem.id)
+      } else if (deleteItem.table === "catalogo_ips_familias") {
+        await removerFamilia.mutateAsync(deleteItem.id)
+      } else if (deleteItem.table === "catalogo_ips_linhas") {
+        await removerLinha.mutateAsync(deleteItem.id)
+      }
+    } catch { /* handled by hooks */ }
+    qc.invalidateQueries({ queryKey: ["catalogo"] })
+    setDeleteItem(null)
+  }
 
   // Filtered selects for cascading
   const filteredConexoes = conexoes?.filter(c => !implData.conexao_id || true) ?? []
@@ -204,7 +224,7 @@ function AdminImplantesPage() {
                     <TableCell className="text-sm">{impl.linha?.familia?.conexao?.nome ?? ""}</TableCell>
                     <TableCell className="text-sm">{impl.linha?.familia?.nome ?? ""}</TableCell>
                     <TableCell className="text-sm">{impl.linha?.nome ?? ""}</TableCell>
-                    <TableCell><button onClick={async()=>{await supabase.from("catalogo_implantes").update({ativo:!impl.ativo}).eq("sku",impl.sku);qc.invalidateQueries({queryKey:["catalogo"]})}}>{impl.ativo?<ToggleRight className="h-7 w-7 text-green-400"/>:<ToggleLeft className="h-7 w-7 text-gray-500"/>}</button></TableCell>
+                    <TableCell><button onClick={()=>toggleImplanteAtivo.mutate({ sku: impl.sku, ativo: !impl.ativo })}>{impl.ativo?<ToggleRight className="h-7 w-7 text-green-400"/>:<ToggleLeft className="h-7 w-7 text-gray-500"/>}</button></TableCell>
                     <TableCell><div className="flex items-center gap-2"><button onClick={()=>window.open(`/catalogo/produto/implante/${impl.sku}?empresa=${empresaId}`,'_blank')} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-green-500/20 text-[var(--color-text-muted)] hover:text-green-400" title="Ver Ficha Técnica"><ExternalLink className="h-3.5 w-3.5"/></button><button onClick={()=>openEditImpl(impl)} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-[#c9a655]/20 text-[var(--color-text-muted)] hover:text-[#c9a655]"><Pencil className="h-3.5 w-3.5"/></button><button onClick={()=>setDeleteItem({id:impl.sku,label:impl.nome??impl.sku,table:"catalogo_implantes",pkColumn:"sku"})} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-red-500/20 text-[var(--color-text-muted)] hover:text-red-400"><Trash2 className="h-3.5 w-3.5"/></button></div></TableCell>
                   </TableRow>
                 ))}
@@ -387,6 +407,13 @@ function SimpleForm({ subTab, editingItem, table, empresaId, onClose, onSuccess 
   const { data: concs } = useConexoes()
   const { data: fams } = useFamilias()
 
+  const criarConexao = useCriarConexao()
+  const atualizarConexao = useAtualizarConexao()
+  const criarFamilia = useCriarFamilia()
+  const atualizarFamilia = useAtualizarFamilia()
+  const criarLinha = useCriarLinha()
+  const atualizarLinha = useAtualizarLinha()
+
   const isConexao = subTab === "Conexões"
   const isFamilia = subTab === "Famílias"
   const isLinha = subTab === "Linhas"
@@ -401,28 +428,27 @@ function SimpleForm({ subTab, editingItem, table, empresaId, onClose, onSuccess 
     if (isFamilia && !cor.trim()) { setError("Cor de identificação é obrigatória"); return }
     if (isLinha && !parentId) { setError("Família é obrigatória"); return }
 
-    const payload: Record<string,unknown> = { nome: nome.trim(), ativo }
-
-    if (isConexao) {
-      payload.sigla = sigla.trim()
-      payload.categoria_id = parentId
-      payload.locked = editingItem ? editingItem.locked : true // default true, não muda
-    }
-    if (isFamilia) {
-      payload.conexao_id = parentId
-      payload.cor_identificacao = cor
-    }
-    if (isLinha) {
-      payload.familia_id = parentId
-    }
-
-    if (editingItem) {
-      const { error } = await supabase.from(table).update(payload).eq("id", editingItem.id)
-      if (error) { setError(error.message); return }
-    } else {
-      const { error } = await supabase.from(table).insert(payload)
-      if (error) { setError(error.message); return }
-    }
+    try {
+      if (isConexao) {
+        if (editingItem) {
+          await atualizarConexao.mutateAsync({ id: editingItem.id as string, input: { nome: nome.trim(), sigla: sigla.trim(), categoria_id: parentId } })
+        } else {
+          await criarConexao.mutateAsync({ categoria_id: parentId, nome: nome.trim(), sigla: sigla.trim() })
+        }
+      } else if (isFamilia) {
+        if (editingItem) {
+          await atualizarFamilia.mutateAsync({ id: editingItem.id as string, input: { nome: nome.trim(), cor_identificacao: cor } })
+        } else {
+          await criarFamilia.mutateAsync({ conexao_id: parentId, nome: nome.trim(), cor_identificacao: cor })
+        }
+      } else if (isLinha) {
+        if (editingItem) {
+          await atualizarLinha.mutateAsync({ id: editingItem.id as string, input: { nome: nome.trim() } })
+        } else {
+          await criarLinha.mutateAsync({ familia_id: parentId, nome: nome.trim() })
+        }
+      }
+    } catch (err: unknown) { setError(err instanceof Error ? err.message : String(err)); return }
     onSuccess()
   }
 

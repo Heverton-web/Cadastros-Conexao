@@ -56,12 +56,27 @@ export async function buscarOrcamento(id: string): Promise<CatalogoOrcamento | n
 }
 
 export async function buscarOrcamentoPorToken(token: string): Promise<CatalogoOrcamento | null> {
-  const { data, error } = await supabase
-    .from("catalogo_orcamentos")
-    .select("*, itens:catalogo_orcamento_itens(*)")
-    .eq("token_acesso", token)
+  // Busca orçamento via RPC SECURITY DEFINER (ignora RLS)
+  const { data: orcamento, error } = await supabase
+    .rpc("buscar_orcamento_por_token", { p_token: token })
     .single()
-  if (error) return null
+  if (error || !orcamento) return null
+
+  // Busca itens separadamente via RPC
+  const { data: itens } = await supabase
+    .rpc("buscar_itens_orcamento", { p_orcamento_id: orcamento.id })
+
+  return { ...orcamento, itens: itens ?? [] } as CatalogoOrcamento
+}
+/** Atualiza status do orçamento por token (acesso público, via RPC SECURITY DEFINER) */
+export async function atualizarStatusOrcamentoPorToken(
+  token: string,
+  status: StatusOrcamento,
+): Promise<CatalogoOrcamento | null> {
+  const { data, error } = await supabase
+    .rpc("atualizar_status_orcamento_por_token", { p_token: token, p_status: status })
+    .single()
+  if (error || !data) return null
   return data as CatalogoOrcamento
 }
 

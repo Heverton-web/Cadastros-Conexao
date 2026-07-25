@@ -429,7 +429,11 @@ export async function listarFresas(): Promise<CatalogoFresa[]> {
   return data as CatalogoFresa[]
 }
 
-export async function criarFresa(input: { sku: string; nome: string; tipo_fresa_id?: string; diametro_mm?: number }): Promise<CatalogoFresa> {
+export async function criarFresa(input: {
+  sku: string; nome: string; tipo_fresa_id?: string
+  sigla?: string; descricao?: string; tipo?: string
+  comprimento?: string; diametro_mm?: number; material?: string; preco?: number
+}): Promise<CatalogoFresa> {
   const { data, error } = await supabase
     .from("catalogo_fresas")
     .insert({ ...input })
@@ -439,10 +443,37 @@ export async function criarFresa(input: { sku: string; nome: string; tipo_fresa_
   return data as CatalogoFresa
 }
 
+export async function atualizarFresa(sku: string, input: Partial<{
+  nome: string; tipo_fresa_id: string; sigla: string; descricao: string
+  tipo: string; comprimento: string; diametro_mm: number; material: string
+  preco: number; ativo: boolean
+}>): Promise<CatalogoFresa> {
+  const { data, error } = await supabase
+    .from("catalogo_fresas")
+    .update(input)
+    .eq("sku", sku)
+    .select()
+    .single()
+  if (error) throw error
+  return data as CatalogoFresa
+}
+
 export async function toggleFresaAtivo(sku: string, ativo: boolean): Promise<void> {
+  const { error } = await supabase.from("catalogo_fresas").update({ ativo }).eq("sku", sku)
   if (error) throw error
 }
 
 export async function removerFresa(sku: string): Promise<void> {
+  const { error } = await supabase.from("catalogo_fresas").delete().eq("sku", sku)
   if (error) throw error
+}
+
+export async function listarImplantesParaKit(): Promise<{ sku: string; nome: string; diametro_mm: number | null; conexao_id: string | null; familia_id: string | null; linha_id: string | null; conexao: { nome: string } | null; familia: { nome: string } | null; linha: { nome: string } | null }[]> {
+  const { data, error } = await supabase
+    .from("catalogo_implantes")
+    .select("sku, nome, diametro_mm, conexao_id, familia_id, linha_id, conexao:catalogo_ips_conexoes!inner(nome), familia:catalogo_ips_familias!inner(nome), linha:catalogo_ips_linhas!inner(nome)")
+    .eq("ativo", true)
+    .order("sku")
+  if (error) throw error
+  return data as any[]
 }

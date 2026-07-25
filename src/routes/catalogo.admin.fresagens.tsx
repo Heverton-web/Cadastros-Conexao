@@ -1,20 +1,17 @@
-import { EMPRESA_ID } from "~/config/empresa"
 import { RequirePermission } from "~/components/guards"
 import { createRoute } from "@tanstack/react-router"
 import { authLayout } from "./_auth"
 import { EmpresaCrudGuard } from "~/features/catalogo/components/EmpresaCrudGuard"
 import { AdminLayout } from "~/features/catalogo/components/AdminLayout"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Plus, Pencil, Trash2, ToggleRight, ToggleLeft, X, ChevronUp, ChevronDown } from "lucide-react"
-import { supabase } from "~/core/supabase"
-import { useQueryClient, useQuery } from "@tanstack/react-query"
-import { useCatalogoEmpresaId } from "~/features/catalogo/hooks/useCatalogoEmpresa"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from "~/components/ui/dialog"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "~/components/ui/dialog"
 import { Switch } from "~/components/ui/switch"
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "~/components/ui/alert-dialog"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "~/components/ui/table"
 import toast from "react-hot-toast"
 import { ImportTrigger, TemplatesDropdown, GlobalImportTrigger, IMPORT_TYPE_GROUPS } from "~/features/catalogo/import"
+import { useTiposOsso, useProtocolos, useFresas, useImplantesDiametros, useProtocoloFresas, useCriarTipoOsso, useAtualizarTipoOsso, useRemoverTipoOsso, useToggleTipoOssoAtivo, useCriarProtocolo, useAtualizarProtocolo, useRemoverProtocolo, useToggleProtocoloAtivo, useSalvarProtocoloFresas } from "~/features/catalogo/hooks/useCatalogo"
 
 export const catalogoAdminFresagensRoute = createRoute({
   getParentRoute: () => authLayout, path: "/catalogo/admin/fresagens",
@@ -28,14 +25,25 @@ const labelCls = "text-xs font-bold uppercase tracking-widest text-gray-400"
 
 function AdminFresagensPage() {
   const [subTab, setSubTab] = useState("Tipos de Osso")
-  const empresaId = useCatalogoEmpresaId()
-  const qc = useQueryClient()
 
-  // Tipos de Osso (nova tabela)
-  const { data: tiposOsso } = useQuery({ queryKey: ["catalogo", "tipos-osso"], queryFn: async () => { const { data } = await supabase.from("catalogo_tipos_ossos").select("*").order("nome"); return (data ?? []) as any[] }, enabled: !!empresaId })
-  const { data: protocolos } = useQuery({ queryKey: ["catalogo", "protocolos-fresagem"], queryFn: async () => { const { data } = await supabase.from("catalogo_protocolos_fresagens").select("*").order("nome"); return (data ?? []) as any[] }, enabled: !!empresaId })
-  const { data: fresasList } = useQuery({ queryKey: ["catalogo", "fresas-for-protocolo"], queryFn: async () => { const { data } = await supabase.from("catalogo_fresas").select("sku, nome, diametro_mm").order("nome"); return (data ?? []) as any[] }, enabled: !!empresaId })
-  const { data: implantesDiametros } = useQuery({ queryKey: ["catalogo", "implantes-diametros"], queryFn: async () => { const { data } = await supabase.from("catalogo_implantes").select("diametro_mm"); const unique = [...new Set((data ?? []).map((i: any) => i.diametro_mm).filter(Boolean))]; return unique.sort((a: number, b: number) => a - b) as number[] }, enabled: !!empresaId })
+  // Query hooks
+  const { data: tiposOsso } = useTiposOsso()
+  const { data: protocolos } = useProtocolos()
+  const { data: fresasList } = useFresas()
+  const { data: implantesDiametros } = useImplantesDiametros()
+
+  // Mutation hooks - Tipos de Osso
+  const criarTipoOsso = useCriarTipoOsso()
+  const atualizarTipoOsso = useAtualizarTipoOsso()
+  const removerTipoOsso = useRemoverTipoOsso()
+  const toggleTipoOssoAtivo = useToggleTipoOssoAtivo()
+
+  // Mutation hooks - Protocolos
+  const criarProtocolo = useCriarProtocolo()
+  const atualizarProtocolo = useAtualizarProtocolo()
+  const removerProtocolo = useRemoverProtocolo()
+  const toggleProtocoloAtivo = useToggleProtocoloAtivo()
+  const salvarProtocoloFresas = useSalvarProtocoloFresas()
 
   // Tipo modal
   const [tipoModalOpen, setTipoModalOpen] = useState(false)
@@ -56,6 +64,17 @@ function AdminFresagensPage() {
 
   const [deleteItem, setDeleteItem] = useState<{ id: string; label: string; table: string } | null>(null)
 
+  // Query for editing protocolo fresas
+  const editingProtoId = protoEditing?.id as string | undefined
+  const { data: protocoloFresasData } = useProtocoloFresas(editingProtoId ?? "")
+
+  // Seed protoFresas when protocoloFresasData loads for editing
+  useEffect(() => {
+    if (protocoloFresasData && protoEditing) {
+      setProtoFresas(protocoloFresasData.map((r) => ({ fresa_id: r.fresa_id, ordem: r.ordem })))
+    }
+  }, [protocoloFresasData, protoEditing])
+
   // Tipo handlers
   function openNewTipo() { setTipoEditing(null); setTipoNome(""); setTipoSigla(""); setTipoCategoria("hard"); setTipoAtivo(true); setTipoError(""); setTipoModalOpen(true) }
   function openEditTipo(item: any) { setTipoEditing(item); setTipoNome(item.nome); setTipoSigla(item.sigla ?? ""); setTipoCategoria(item.categoria ?? "hard"); setTipoAtivo(item.ativo !== false); setTipoError(""); setTipoModalOpen(true) }
@@ -64,19 +83,19 @@ function AdminFresagensPage() {
     setTipoError("")
     if (!tipoNome.trim()) { setTipoError("Nome é obrigatório"); return }
     const payload = { nome: tipoNome.trim(), sigla: tipoSigla.trim() || null, categoria: tipoCategoria, ativo: tipoAtivo }
-    if (tipoEditing) { const { error } = await supabase.from("catalogo_tipos_ossos").update({ nome: payload.nome, sigla: payload.sigla, categoria: payload.categoria, ativo: tipoAtivo }).eq("id", tipoEditing.id); if (error) { setTipoError(error.message); return } }
-    else { const { error } = await supabase.from("catalogo_tipos_ossos").insert(payload); if (error) { setTipoError(error.message); return } }
-    toast.success(tipoEditing ? "Atualizado!" : "Criado!")
-    setTipoModalOpen(false); qc.invalidateQueries({ queryKey: ["catalogo"] })
+    try {
+      if (tipoEditing) { await atualizarTipoOsso.mutateAsync({ id: tipoEditing.id, input: payload }) }
+      else { await criarTipoOsso.mutateAsync(payload) }
+      toast.success(tipoEditing ? "Atualizado!" : "Criado!")
+      setTipoModalOpen(false)
+    } catch (err: unknown) { setTipoError(err instanceof Error ? err.message : "Erro ao salvar"); return }
   }
 
   // Protocolo handlers
   function openNewProto() { setProtoEditing(null); setProtoData({ nome: "", tipo_osso: tiposOsso?.[0]?.sigla ?? "", sigla: "", diametro_mm_aplicavel: 0, ativo: true }); setProtoFresas([]); setProtoError(""); setSelFresa(""); setProtoModalOpen(true) }
 
   async function openEditProto(item: any) {
-    setProtoEditing(item); setProtoData({ nome: item.nome, tipo_osso: item.tipo_osso ?? "", sigla: item.sigla ?? "", diametro_mm_aplicavel: item.diametro_mm_aplicavel ?? 0, ativo: item.ativo !== false }); setProtoError(""); setSelFresa("")
-    const { data } = await supabase.from("catalogo_protocolos_fresas_itens").select("fresa_id, ordem").eq("protocolo_id", item.id).order("ordem")
-    setProtoFresas((data ?? []).map((r: any) => ({ fresa_id: r.fresa_id, ordem: r.ordem })))
+    setProtoEditing(item); setProtoData({ nome: item.nome, tipo_osso: item.tipo_osso ?? "", sigla: item.sigla ?? "", diametro_mm_aplicavel: item.diametro_mm_aplicavel ?? 0, ativo: item.ativo !== false }); setProtoError(""); setSelFresa(""); setProtoFresas([])
     setProtoModalOpen(true)
   }
 
@@ -84,20 +103,14 @@ function AdminFresagensPage() {
     setProtoError("")
     if (!protoData.nome.trim()) { setProtoError("Nome é obrigatório"); return }
     if (!protoData.tipo_osso) { setProtoError("Tipo de Osso é obrigatório"); return }
-    const payload = { ...protoData}
-    let protoId = protoEditing?.id
-    if (protoEditing) { const { error } = await supabase.from("catalogo_protocolos_fresagens").update(payload).eq("id", protoEditing.id); if (error) { setProtoError(error.message); return } }
-    else { const { data, error } = await supabase.from("catalogo_protocolos_fresagens").insert(payload).select("id").single(); if (error) { setProtoError(error.message); return } protoId = data?.id }
-    // Save fresas with ordering
-    if (protoId) {
-      await supabase.from("catalogo_protocolos_fresas_itens").delete().eq("protocolo_id", protoId)
-      if (protoFresas.length > 0) {
-        const rows = protoFresas.map((f, i) => ({ protocolo_id: protoId, fresa_id: f.fresa_id, ordem: i + 1 }))
-        await supabase.from("catalogo_protocolos_fresas_itens").insert(rows)
-      }
-    }
-    toast.success(protoEditing ? "Atualizado!" : "Criado!")
-    setProtoModalOpen(false); qc.invalidateQueries({ queryKey: ["catalogo"] })
+    try {
+      let protoId = protoEditing?.id as string | undefined
+      if (protoEditing) { await atualizarProtocolo.mutateAsync({ id: protoEditing.id, input: protoData }) }
+      else { const result = await criarProtocolo.mutateAsync({ nome: protoData.nome, tipo_osso: protoData.tipo_osso, sigla: protoData.sigla || undefined, diametro_mm_aplicavel: protoData.diametro_mm_aplicavel || undefined }); protoId = result.id }
+      if (protoId) { await salvarProtocoloFresas.mutateAsync({ protocoloId: protoId, items: protoFresas.map((f, i) => ({ fresa_id: f.fresa_id, ordem: i + 1 })) }) }
+      toast.success(protoEditing ? "Atualizado!" : "Criado!")
+      setProtoModalOpen(false)
+    } catch (err: unknown) { setProtoError(err instanceof Error ? err.message : "Erro ao salvar"); return }
   }
 
   function addFresagemFresa() {
@@ -117,9 +130,11 @@ function AdminFresagensPage() {
 
   async function handleDelete() {
     if (!deleteItem) return
-    const { error } = await supabase.from(deleteItem.table).delete().eq("id", deleteItem.id)
-    if (error) { toast.error(error.message); return }
-    toast.success("Excluído!"); setDeleteItem(null); qc.invalidateQueries({ queryKey: ["catalogo"] })
+    try {
+      if (deleteItem.table === "catalogo_tipos_ossos") { await removerTipoOsso.mutateAsync(deleteItem.id) }
+      else if (deleteItem.table === "catalogo_protocolos_fresagens") { await removerProtocolo.mutateAsync(deleteItem.id) }
+      toast.success("Excluído!"); setDeleteItem(null)
+    } catch (err: unknown) { toast.error(err instanceof Error ? err.message : "Erro ao excluir") }
   }
 
   return (
@@ -149,7 +164,7 @@ function AdminFresagensPage() {
               <TableCell className="text-sm font-medium text-white">{item.nome}</TableCell>
               <TableCell className="text-sm text-gray-300">{item.sigla??"—"}</TableCell>
               <TableCell><span className={`inline-flex px-2 py-0.5 rounded-full text-[10px] font-bold uppercase ${item.categoria==="hard"?"bg-blue-500/20 text-blue-400":"bg-emerald-500/20 text-emerald-400"}`}>{item.categoria==="hard"?"Hard":"Soft"}</span></TableCell>
-              <TableCell><button onClick={async()=>{await supabase.from("catalogo_tipos_ossos").update({ativo:!item.ativo}).eq("id",item.id);qc.invalidateQueries({queryKey:["catalogo"]})}}>{item.ativo?<ToggleRight className="h-7 w-7 text-green-400"/>:<ToggleLeft className="h-7 w-7 text-gray-500"/>}</button></TableCell>
+              <TableCell><button onClick={()=>toggleTipoOssoAtivo.mutate({ id: item.id, ativo: !item.ativo })}>{item.ativo?<ToggleRight className="h-7 w-7 text-green-400"/>:<ToggleLeft className="h-7 w-7 text-gray-500"/>}</button></TableCell>
               <TableCell><div className="flex items-center gap-2"><button onClick={()=>openEditTipo(item)} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-[#c9a655]/20 text-[var(--color-text-muted)] hover:text-[#c9a655]"><Pencil className="h-3.5 w-3.5"/></button><button onClick={()=>setDeleteItem({id:item.id,label:item.nome,table:"catalogo_tipos_ossos"})} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-red-500/20 text-[var(--color-text-muted)] hover:text-red-400"><Trash2 className="h-3.5 w-3.5"/></button></div></TableCell>
             </TableRow>)}{(tiposOsso??[]).length===0&&<TableRow><TableCell colSpan={5} className="p-4 text-center text-text-muted">Nenhum tipo cadastrado</TableCell></TableRow>}</TableBody></Table>
           )}
@@ -161,7 +176,7 @@ function AdminFresagensPage() {
               <TableCell className="text-sm font-medium text-white">{item.nome}</TableCell>
               <TableCell className="text-sm text-gray-300">{item.tipo_osso??"—"}</TableCell>
               <TableCell className="text-sm text-gray-300">{item.sigla??"—"}</TableCell>
-              <TableCell><button onClick={async()=>{await supabase.from("catalogo_protocolos_fresagens").update({ativo:!item.ativo}).eq("id",item.id);qc.invalidateQueries({queryKey:["catalogo"]})}}>{item.ativo?<ToggleRight className="h-7 w-7 text-green-400"/>:<ToggleLeft className="h-7 w-7 text-gray-500"/>}</button></TableCell>
+              <TableCell><button onClick={()=>toggleProtocoloAtivo.mutate({ id: item.id, ativo: !item.ativo })}>{item.ativo?<ToggleRight className="h-7 w-7 text-green-400"/>:<ToggleLeft className="h-7 w-7 text-gray-500"/>}</button></TableCell>
               <TableCell><div className="flex items-center gap-2"><button onClick={()=>openEditProto(item)} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-[#c9a655]/20 text-[var(--color-text-muted)] hover:text-[#c9a655]"><Pencil className="h-3.5 w-3.5"/></button><button onClick={()=>setDeleteItem({id:item.id,label:item.nome,table:"catalogo_protocolos_fresagens"})} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-red-500/20 text-[var(--color-text-muted)] hover:text-red-400"><Trash2 className="h-3.5 w-3.5"/></button></div></TableCell>
             </TableRow>)}{(protocolos??[]).length===0&&<TableRow><TableCell colSpan={5} className="p-4 text-center text-text-muted">Nenhum protocolo cadastrado</TableCell></TableRow>}</TableBody></Table>
           )}

@@ -1,26 +1,21 @@
-import { EMPRESA_ID } from "~/config/empresa"
 import { RequirePermission } from "~/components/guards"
 import { createRoute } from "@tanstack/react-router"
 import { authLayout } from "./_auth"
 import { EmpresaCrudGuard } from "~/features/catalogo/components/EmpresaCrudGuard"
 import { AdminLayout } from "~/features/catalogo/components/AdminLayout"
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { Plus, Pencil, Trash2, ToggleRight, ToggleLeft } from "lucide-react"
-import { supabase } from "~/core/supabase"
 import { listarAbutmentChaves, listarAbutmentKits, listarAbutmentParafusos, salvarAbutmentChaves, salvarAbutmentKits, salvarAbutmentParafusos } from "~/features/catalogo/services/componentes.service"
 import { listarKitsDeCicatrizador, salvarKitsDeCicatrizador } from "~/features/catalogo/services/kits.service"
-import { friendlyDbError } from "~/features/catalogo/lib/dbError"
+import { listarSeqProteticasAbutment } from "~/features/catalogo/services/sequencia-protetica.service"
 import { CompositionSection } from "~/features/catalogo/components/admin/produtos/CompositionSection"
-import { useQueryClient, useQuery } from "@tanstack/react-query"
-import { useFamilias, useToggleTipoReabilitacaoAtivo, useToggleTipoAbutmentAtivo, useToggleParafusoRetencaoAtivo, useToggleCicatrizadorAtivo } from "~/features/catalogo/hooks/useCatalogo"
-import { useCatalogoEmpresaId } from "~/features/catalogo/hooks/useCatalogoEmpresa"
+import { useFamilias, useTiposReabilitacao, useTiposAbutment, useTiposComponente, useTiposParafuso, useTiposCicatrizador, useAbutments, useComponentes, useParafusosList, useChavesList, useReabFamilias, useTodasSequencias, useTodosKits, useTodosImplantes, useToggleTipoReabilitacaoAtivo, useToggleTipoAbutmentAtivo, useToggleTipoComponenteAtivo, useToggleTipoParafusoAtivo, useToggleTipoCicatrizadorAtivo, useToggleAbutmentAtivo, useToggleComponenteAtivo, useToggleParafusoAtivo, useToggleCicatrizadorAtivo, useCriarTipoReabilitacao, useAtualizarTipoReabilitacao, useRemoverTipoReabilitacao, useSalvarReabFamilias, useCriarTipoAbutment, useAtualizarTipoAbutment, useRemoverTipoAbutment, useCriarTipoComponente, useAtualizarTipoComponente, useRemoverTipoComponente, useCriarTipoParafuso, useAtualizarTipoParafuso, useRemoverTipoParafuso, useCriarTipoCicatrizador, useAtualizarTipoCicatrizador, useRemoverTipoCicatrizador, useCriarAbutment, useAtualizarAbutment, useRemoverAbutment, useCriarComponenteProduto, useAtualizarComponenteProduto, useRemoverComponenteProduto, useCriarParafuso, useAtualizarParafuso, useRemoverParafuso, useCriarCicatrizador, useAtualizarCicatrizador, useRemoverCicatrizador, useSalvarAbutmentSeqs } from "~/features/catalogo/hooks/useCatalogo"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from "~/components/ui/dialog"
 import { Switch } from "~/components/ui/switch"
 import { ImageUploader } from "~/features/catalogo/components/admin/produtos/ImageUploader"
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "~/components/ui/alert-dialog"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "~/components/ui/table"
 import toast from "react-hot-toast"
-import type { CatalogoCpsTipoReabilitacao } from "~/features/catalogo/types"
 import { ImportTrigger, TemplatesDropdown, GlobalImportTrigger, IMPORT_TYPE_GROUPS } from "~/features/catalogo/import"
 
 export const catalogoAdminComponentesRoute = createRoute({
@@ -40,47 +35,67 @@ function sanitizeUuids(obj: Record<string, unknown>, keys: string[]): Record<str
 
 function AdminComponentesPage() {
   const [subTab, setSubTab] = useState("Tipos de Reabilitação")
-  const empresaId = useCatalogoEmpresaId()
-  const qc = useQueryClient()
 
-  // Data
-  const { data: tiposReab } = useQuery({ queryKey: ["catalogo", "tipos-reabilitacao", empresaId], queryFn: async () => { const { data } = await supabase.from("catalogo_cps_tipos_reabilitacao").select("*").order("nome"); return (data ?? []) as CatalogoCpsTipoReabilitacao[] }, enabled: !!empresaId })
-  const { data: tiposAbutment } = useQuery({ queryKey: ["catalogo", "tipos-abutment", empresaId], queryFn: async () => { const { data } = await supabase.from("catalogo_cps_tipos_abutments").select("*, tipo_reabilitacao:catalogo_cps_tipos_reabilitacao(*)").order("nome"); return (data ?? []) as any[] }, enabled: !!empresaId })
-  const { data: tiposComponente } = useQuery({ queryKey: ["catalogo", "tipos-componente", empresaId], queryFn: async () => { const { data } = await supabase.from("catalogo_cps_tipos_componentes").select("*").order("nome"); return (data ?? []) as any[] }, enabled: !!empresaId })
-  const { data: tiposParafuso } = useQuery({ queryKey: ["catalogo", "tipos-parafuso", empresaId], queryFn: async () => { const { data } = await supabase.from("catalogo_cps_tipos_parafusos").select("*").order("nome"); return (data ?? []) as any[] }, enabled: !!empresaId })
-  const { data: tiposCicatrizador } = useQuery({ queryKey: ["catalogo", "tipos-cicatrizador", empresaId], queryFn: async () => { const { data } = await supabase.from("catalogo_cps_tipos_cicatrizadores").select("*").order("nome"); return (data ?? []) as any[] }, enabled: !!empresaId })
-  const { data: abutments } = useQuery({ queryKey: ["catalogo", "abutments", empresaId], queryFn: async () => { const { data, error } = await supabase.from("catalogo_abutments").select("*, tipo_abutment:catalogo_cps_tipos_abutments(*), parafuso:catalogo_parafusos!fk_abutments_parafuso(*), chave:catalogo_chaves!fk_abutments_chave(*)").order("sku"); if (error) throw error; return (data ?? []) as any[] }, enabled: !!empresaId })
-  const { data: parafusosList } = useQuery({ queryKey: ["catalogo", "parafusos-list"], queryFn: async () => { const { data } = await supabase.from("catalogo_parafusos").select("*").order("nome"); return (data ?? []) as any[] }, enabled: !!empresaId })
-  const { data: chavesList } = useQuery({ queryKey: ["catalogo", "chaves-list"], queryFn: async () => { const { data } = await supabase.from("catalogo_chaves").select("*").order("nome"); return (data ?? []) as any[] }, enabled: !!empresaId })
-  const { data: componentesList } = useQuery({ queryKey: ["catalogo", "componentes", empresaId], queryFn: async () => { const { data } = await supabase.from("catalogo_componentes").select("*, tipo_componente:catalogo_cps_tipos_componentes(*), tipo_abutment:catalogo_cps_tipos_abutments(*), parafuso:catalogo_parafusos(*), chave:catalogo_chaves(*)").order("sku"); return (data ?? []) as any[] }, enabled: !!empresaId })
-  const { data: parafusosProdutos } = useQuery({ queryKey: ["catalogo", "parafusos-produtos", empresaId], queryFn: async () => { const { data } = await supabase.from("catalogo_parafusos").select("*, tipo_parafuso:catalogo_cps_tipos_parafusos(*), chave:catalogo_chaves(*)").order("sku"); return (data ?? []) as any[] }, enabled: !!empresaId })
-  const { data: cicatrizadoresProdutos } = useQuery({ queryKey: ["catalogo", "cicatrizadores-produtos", empresaId], queryFn: async () => { const { data } = await supabase.from("catalogo_cicatrizadores").select("*, implante:catalogo_implantes(*), chave:catalogo_chaves(*)").order("sku"); return (data ?? []) as any[] }, enabled: !!empresaId })
-  const { data: implantesList } = useQuery({ queryKey: ["catalogo", "implantes-list", empresaId], queryFn: async () => { const { data } = await supabase.from("catalogo_implantes").select("sku, nome").order("sku"); return (data ?? []) as any[] }, enabled: !!empresaId })
+  // Data via hooks
+  const { data: tiposReab } = useTiposReabilitacao()
+  const { data: tiposAbutment } = useTiposAbutment()
+  const { data: tiposComponente } = useTiposComponente()
+  const { data: tiposParafuso } = useTiposParafuso()
+  const { data: tiposCicatrizador } = useTiposCicatrizador()
+  const { data: abutments } = useAbutments()
+  const { data: parafusosList } = useParafusosList()
+  const { data: chavesList } = useChavesList()
+  const { data: componentesList } = useComponentes()
+  const { data: cicatrizadoresProdutos } = useCicatrizadores()
+  const { data: implantesList } = useTodosImplantes()
   const { data: familias } = useFamilias()
-  const { data: reabFamilias } = useQuery({ queryKey: ["catalogo", "reab-familias", empresaId], queryFn: async () => { const { data } = await supabase.from("catalogo_cps_tipos_reabilitacao_familias").select("*"); return (data ?? []) as { tipo_reabilitacao_id: string; familia_id: string }[] }, enabled: !!empresaId })
-  const { data: todosKits } = useQuery({ queryKey: ["catalogo", "todos-kits", empresaId], queryFn: async () => { const { data } = await supabase.from("catalogo_kits").select("sku, nome").order("nome"); return (data ?? []) as any[] }, enabled: !!empresaId })
-  const { data: todasSequencias } = useQuery({ queryKey: ["catalogo", "todas-sequencias", empresaId], queryFn: async () => { const { data } = await supabase.from("catalogo_seq_proteticas").select("id, nome, sigla").order("nome"); return (data ?? []) as any[] }, enabled: !!empresaId })
+  const { data: reabFamilias } = useReabFamilias()
+  const { data: todosKits } = useTodosKits()
+  const { data: todasSequencias } = useTodasSequencias()
 
   // Toggles
   const toggleTipoReab = useToggleTipoReabilitacaoAtivo()
   const toggleTipoAbutment = useToggleTipoAbutmentAtivo()
+  const toggleTipoComp = useToggleTipoComponenteAtivo()
+  const toggleTipoPar = useToggleTipoParafusoAtivo()
+  const toggleTipoCic = useToggleTipoCicatrizadorAtivo()
+  const toggleAbut = useToggleAbutmentAtivo()
+  const toggleComp = useToggleComponenteAtivo()
+  const togglePar = useToggleParafusoAtivo()
+  const toggleCic = useToggleCicatrizadorAtivo()
 
-  // Toggle para tipos de componente (via supabase direto)
-  async function toggleTipoComponente(id: string, ativo: boolean) {
-    await supabase.from("catalogo_cps_tipos_componentes").update({ ativo }).eq("id", id)
-    qc.invalidateQueries({ queryKey: ["catalogo"] })
-  }
+  // Mutations - Tipos
+  const criarTipoReab = useCriarTipoReabilitacao()
+  const atualizarTipoReab = useAtualizarTipoReabilitacao()
+  const removerTipoReab = useRemoverTipoReabilitacao()
+  const salvarFamiliasReab = useSalvarReabFamilias()
+  const criarTipoAbut = useCriarTipoAbutment()
+  const atualizarTipoAbut = useAtualizarTipoAbutment()
+  const removerTipoAbut = useRemoverTipoAbutment()
+  const criarTipoComp = useCriarTipoComponente()
+  const atualizarTipoComp = useAtualizarTipoComponente()
+  const removerTipoComp = useRemoverTipoComponente()
+  const criarTipoPar = useCriarTipoParafuso()
+  const atualizarTipoPar = useAtualizarTipoParafuso()
+  const removerTipoPar = useRemoverTipoParafuso()
+  const criarTipoCic = useCriarTipoCicatrizador()
+  const atualizarTipoCic = useAtualizarTipoCicatrizador()
+  const removerTipoCic = useRemoverTipoCicatrizador()
 
-  async function toggleTipoParafuso(id: string, ativo: boolean) {
-    await supabase.from("catalogo_cps_tipos_parafusos").update({ ativo }).eq("id", id)
-    qc.invalidateQueries({ queryKey: ["catalogo"] })
-  }
-
-  async function toggleTipoCicatrizador(id: string, ativo: boolean) {
-    await supabase.from("catalogo_cps_tipos_cicatrizadores").update({ ativo }).eq("id", id)
-    qc.invalidateQueries({ queryKey: ["catalogo"] })
-  }
-
+  // Mutations - Produtos
+  const criarAbut = useCriarAbutment()
+  const atualizarAbut = useAtualizarAbutment()
+  const removerAbut = useRemoverAbutment()
+  const criarComp = useCriarComponenteProduto()
+  const atualizarComp = useAtualizarComponenteProduto()
+  const removerComp = useRemoverComponenteProduto()
+  const criarPar = useCriarParafuso()
+  const atualizarPar = useAtualizarParafuso()
+  const removerPar = useRemoverParafuso()
+  const criarCic = useCriarCicatrizador()
+  const atualizarCic = useAtualizarCicatrizador()
+  const removerCic = useRemoverCicatrizador()
+  const salvarSeqsAbut = useSalvarAbutmentSeqs()
   // Abutment modal
   const [abutModalOpen, setAbutModalOpen] = useState(false)
   const [abutEditing, setAbutEditing] = useState<any>(null)
@@ -99,7 +114,7 @@ function AdminComponentesPage() {
     listarAbutmentChaves(item.sku).then(setAbtChavesIds).catch(() => setAbtChavesIds([]))
     listarAbutmentKits(item.sku).then(setAbtKitsIds).catch(() => setAbtKitsIds([]))
     listarAbutmentParafusos(item.sku).then(setAbtParafusosIds).catch(() => setAbtParafusosIds([]))
-    supabase.from("catalogo_seq_protetica_abutments").select("seq_id").eq("abutment_sku", item.sku).then(({ data }) => setAbtSeqsIds((data ?? []).map((r: any) => r.seq_id))).catch(() => setAbtSeqsIds([]))
+    listarSeqProteticasAbutment(item.sku).then(setAbtSeqsIds).catch(() => setAbtSeqsIds([]))
     setAbutModalOpen(true)
   }
 
@@ -109,27 +124,21 @@ function AdminComponentesPage() {
     if (!abutData.nome.trim()) { setAbutError("Nome é obrigatório"); return }
     const UUID_KEYS = ["familia_id", "tipo_reabilitacao_id", "tipo_abutment_id", "parafuso_id", "chave_id"]
     const payload = sanitizeUuids({ ...abutData }, UUID_KEYS)
-    if (abutEditing) {
-      const { error } = await supabase.from("catalogo_abutments").update(payload).eq("sku", abutEditing.sku)
-      if (error) { setAbutError(friendlyDbError(error)); return }
-    } else {
-      const { error } = await supabase.from("catalogo_abutments").insert(payload)
-      if (error) { setAbutError(friendlyDbError(error)); return }
-    }
+    try {
+      if (abutEditing) {
+        await atualizarAbut.mutateAsync({ sku: abutEditing.sku, input: payload as Parameters<typeof atualizarAbut.mutateAsync>[0]["input"] })
+      } else {
+        await criarAbut.mutateAsync(payload as Parameters<typeof criarAbut.mutateAsync>[0])
+      }
+    } catch (err) { setAbutError((err as Error).message); return }
     // Salvar composição N:M
     const sku = abutData.sku
     await salvarAbutmentChaves(sku, abtChavesIds).catch(() => {})
     await salvarAbutmentKits(sku, abtKitsIds).catch(() => {})
     await salvarAbutmentParafusos(sku, abtParafusosIds).catch(() => {})
-    await supabase.from("catalogo_seq_protetica_abutments").delete().eq("abutment_sku", sku).then(() => {}).catch(() => {})
-    if (abtSeqsIds.length > 0) { await supabase.from("catalogo_seq_protetica_abutments").insert(abtSeqsIds.map((seqId) => ({ seq_id: seqId, abutment_sku: sku }))).then(() => {}).catch(() => {}) }
+    await salvarSeqsAbut.mutateAsync({ abutmentSku: sku, seqIds: abtSeqsIds }).catch(() => {})
     toast.success(abutEditing ? "Abutment atualizado!" : "Abutment criado!")
-    setAbutModalOpen(false); qc.invalidateQueries({ queryKey: ["catalogo"] })
-  }
-
-  async function toggleAbutAtivo(sku: string, ativo: boolean) {
-    await supabase.from("catalogo_abutments").update({ ativo }).eq("sku", sku)
-    qc.invalidateQueries({ queryKey: ["catalogo"] })
+    setAbutModalOpen(false)
   }
 
   // Componente modal
@@ -147,20 +156,15 @@ function AdminComponentesPage() {
     if (!compData.nome.trim()) { setCompError("Nome é obrigatório"); return }
     const UUID_KEYS = ["tipo_componente_id", "tipo_abutment_id", "parafuso_id", "chave_id"]
     const payload = sanitizeUuids({ ...compData }, UUID_KEYS)
-    if (compEditing) {
-      const { error } = await supabase.from("catalogo_componentes").update(payload).eq("sku", compEditing.sku)
-      if (error) { setCompError(friendlyDbError(error)); return }
-    } else {
-      const { error } = await supabase.from("catalogo_componentes").insert(payload)
-      if (error) { setCompError(friendlyDbError(error)); return }
-    }
+    try {
+      if (compEditing) {
+        await atualizarComp.mutateAsync({ sku: compEditing.sku, input: payload as Parameters<typeof atualizarComp.mutateAsync>[0]["input"] })
+      } else {
+        await criarComp.mutateAsync(payload as Parameters<typeof criarComp.mutateAsync>[0])
+      }
+    } catch (err) { setCompError((err as Error).message); return }
     toast.success(compEditing ? "Componente atualizado!" : "Componente criado!")
-    setCompModalOpen(false); qc.invalidateQueries({ queryKey: ["catalogo"] })
-  }
-
-  async function toggleCompAtivo(sku: string, ativo: boolean) {
-    await supabase.from("catalogo_componentes").update({ ativo }).eq("sku", sku)
-    qc.invalidateQueries({ queryKey: ["catalogo"] })
+    setCompModalOpen(false)
   }
 
   // Parafuso modal
@@ -178,26 +182,16 @@ function AdminComponentesPage() {
     if (!parData.nome.trim()) { setParError("Nome é obrigatório"); return }
     const UUID_KEYS = ["tipo_parafuso_id", "chave_id"]
     const payload = sanitizeUuids({ ...parData }, UUID_KEYS)
-    if (parEditing) {
-      const { error } = await supabase.from("catalogo_parafusos").update(payload).eq("sku", parEditing.sku)
-      if (error) { setParError(friendlyDbError(error)); return }
-    } else {
-      const { error } = await supabase.from("catalogo_parafusos").insert(payload)
-      if (error) { setParError(friendlyDbError(error)); return }
-    }
+    try {
+      if (parEditing) {
+        await atualizarPar.mutateAsync({ sku: parEditing.sku, input: payload as Parameters<typeof atualizarPar.mutateAsync>[0]["input"] })
+      } else {
+        await criarPar.mutateAsync(payload as Parameters<typeof criarPar.mutateAsync>[0])
+      }
+    } catch (err) { setParError((err as Error).message); return }
     toast.success(parEditing ? "Parafuso atualizado!" : "Parafuso criado!")
-    setParModalOpen(false); qc.invalidateQueries({ queryKey: ["catalogo"] })
+    setParModalOpen(false)
   }
-
-  async function toggleParAtivo(sku: string, ativo: boolean) {
-    await supabase.from("catalogo_parafusos").update({ ativo }).eq("sku", sku)
-    qc.invalidateQueries({ queryKey: ["catalogo"] })
-  }
-
-  // Cicatrizador modal
-  const [cicModalOpen, setCicModalOpen] = useState(false)
-  const [cicEditing, setCicEditing] = useState<any>(null)
-  const [cicData, setCicData] = useState({ sku: "", nome: "", sigla: "", descricao: "", implante_id: "", chave_id: "", diametro_plataforma_mm: 0, altura_transmucoso_mm: 0, altura_corpo_mm: 0, torque_ncm: 0, material: "", preco: 0, ativo: true })
   const [cicError, setCicError] = useState("")
   const [cicKitsIds, setCicKitsIds] = useState<string[]>([])
 
@@ -216,21 +210,16 @@ function AdminComponentesPage() {
     if (!cicData.nome.trim()) { setCicError("Nome é obrigatório"); return }
     const UUID_KEYS = ["implante_id", "chave_id"]
     const payload = sanitizeUuids({ ...cicData }, UUID_KEYS)
-    if (cicEditing) {
-      const { error } = await supabase.from("catalogo_cicatrizadores").update(payload).eq("sku", cicEditing.sku)
-      if (error) { setCicError(error.message); return }
-    } else {
-      const { error } = await supabase.from("catalogo_cicatrizadores").insert(payload)
-      if (error) { setCicError(error.message); return }
-    }
+    try {
+      if (cicEditing) {
+        await atualizarCic.mutateAsync({ sku: cicEditing.sku, input: payload as Parameters<typeof atualizarCic.mutateAsync>[0]["input"] })
+      } else {
+        await criarCic.mutateAsync(payload as Parameters<typeof criarCic.mutateAsync>[0])
+      }
+    } catch (err) { setCicError((err as Error).message); return }
     await salvarKitsDeCicatrizador(cicData.sku, cicKitsIds)
     toast.success(cicEditing ? "Cicatrizador atualizado!" : "Cicatrizador criado!")
-    setCicModalOpen(false); qc.invalidateQueries({ queryKey: ["catalogo"] })
-  }
-
-  async function toggleCicAtivo(sku: string, ativo: boolean) {
-    await supabase.from("catalogo_cicatrizadores").update({ ativo }).eq("sku", sku)
-    qc.invalidateQueries({ queryKey: ["catalogo"] })
+    setCicModalOpen(false)
   }
 
   // Modal state - Tipos de Reabilitação
@@ -266,75 +255,74 @@ function AdminComponentesPage() {
   async function handleSave() {
     setError("")
     if (!nome.trim()) { setError("Nome é obrigatório"); return }
-
-    if (activeModal === "abutment") {
-
-      const payload = { nome: nome.trim(), sigla: sigla.trim() || null, ativo, tipo_reabilitacao_id: parentId }
-      if (editing) {
-        const { error } = await supabase.from("catalogo_cps_tipos_abutments").update({ nome: payload.nome, sigla: payload.sigla, ativo, tipo_reabilitacao_id: parentId }).eq("id", editing.id)
-        if (error) { setError(error.message); return }
-      } else {
-        const { error } = await supabase.from("catalogo_cps_tipos_abutments").insert(payload)
-        if (error) { setError(error.message); return }
-      }
-      toast.success(editing ? "Tipo de Abutment atualizado!" : "Tipo de Abutment criado!")
-    } else if (activeModal === "componente") {
-      const payload = { nome: nome.trim(), sigla: sigla.trim() || null, ativo }
-      if (editing) {
-        const { error } = await supabase.from("catalogo_cps_tipos_componentes").update({ nome: payload.nome, sigla: payload.sigla, ativo }).eq("id", editing.id)
-        if (error) { setError(error.message); return }
-      } else {
-        const { error } = await supabase.from("catalogo_cps_tipos_componentes").insert(payload)
-        if (error) { setError(error.message); return }
-      }
-      toast.success(editing ? "Tipo de Componente atualizado!" : "Tipo de Componente criado!")
-    } else if (activeModal === "parafuso") {
-      const payload = { nome: nome.trim(), sigla: sigla.trim() || null, ativo }
-      if (editing) {
-        const { error } = await supabase.from("catalogo_cps_tipos_parafusos").update({ nome: payload.nome, sigla: payload.sigla, ativo }).eq("id", editing.id)
-        if (error) { setError(error.message); return }
-      } else {
-        const { error } = await supabase.from("catalogo_cps_tipos_parafusos").insert(payload)
-        if (error) { setError(error.message); return }
-      }
-      toast.success(editing ? "Tipo de Parafuso atualizado!" : "Tipo de Parafuso criado!")
-    } else if (activeModal === "cicatrizador") {
-      const payload = { nome: nome.trim(), sigla: sigla.trim() || null, ativo }
-      if (editing) {
-        const { error } = await supabase.from("catalogo_cps_tipos_cicatrizadores").update({ nome: payload.nome, sigla: payload.sigla, ativo }).eq("id", editing.id)
-        if (error) { setError(error.message); return }
-      } else {
-        const { error } = await supabase.from("catalogo_cps_tipos_cicatrizadores").insert(payload)
-        if (error) { setError(error.message); return }
-      }
-      toast.success(editing ? "Tipo de Cicatrizador atualizado!" : "Tipo de Cicatrizador criado!")
-    } else {
-      const payload: Record<string, unknown> = { nome: nome.trim(), sigla: sigla.trim() || null, ativo }
-      if (editing) {
-        const { error } = await supabase.from("catalogo_cps_tipos_reabilitacao").update({ nome: payload.nome, sigla: payload.sigla, ativo }).eq("id", editing.id)
-        if (error) { setError(error.message); return }
-      } else {
-        const { data, error } = await supabase.from("catalogo_cps_tipos_reabilitacao").insert(payload).select().single()
-        if (error) { setError(error.message); return }
-        if (data && familiasIds.length > 0) {
-          const rows = familiasIds.map(fid => ({ tipo_reabilitacao_id: data.id, familia_id: fid}))
-          await supabase.from("catalogo_cps_tipos_reabilitacao_familias").insert(rows)
+    try {
+      if (activeModal === "abutment") {
+        if (editing) {
+          await atualizarTipoAbut.mutateAsync({ id: editing.id, input: { nome: nome.trim(), sigla: sigla.trim() || null, ativo, tipo_reabilitacao_id: parentId || null } })
+        } else {
+          await criarTipoAbut.mutateAsync({ nome: nome.trim(), sigla: sigla.trim() || undefined, tipo_reabilitacao_id: parentId || undefined })
         }
+        toast.success(editing ? "Tipo de Abutment atualizado!" : "Tipo de Abutment criado!")
+      } else if (activeModal === "componente") {
+        if (editing) {
+          await atualizarTipoComp.mutateAsync({ id: editing.id, input: { nome: nome.trim(), sigla: sigla.trim() || null, ativo } })
+        } else {
+          await criarTipoComp.mutateAsync({ nome: nome.trim(), sigla: sigla.trim() || undefined })
+        }
+        toast.success(editing ? "Tipo de Componente atualizado!" : "Tipo de Componente criado!")
+      } else if (activeModal === "parafuso") {
+        if (editing) {
+          await atualizarTipoPar.mutateAsync({ id: editing.id, input: { nome: nome.trim(), sigla: sigla.trim() || null, ativo } })
+        } else {
+          await criarTipoPar.mutateAsync({ nome: nome.trim(), sigla: sigla.trim() || undefined })
+        }
+        toast.success(editing ? "Tipo de Parafuso atualizado!" : "Tipo de Parafuso criado!")
+      } else if (activeModal === "cicatrizador") {
+        if (editing) {
+          await atualizarTipoCic.mutateAsync({ id: editing.id, input: { nome: nome.trim(), sigla: sigla.trim() || null, ativo } })
+        } else {
+          await criarTipoCic.mutateAsync({ nome: nome.trim(), sigla: sigla.trim() || undefined })
+        }
+        toast.success(editing ? "Tipo de Cicatrizador atualizado!" : "Tipo de Cicatrizador criado!")
+      } else {
+        if (editing) {
+          await atualizarTipoReab.mutateAsync({ id: editing.id, input: { nome: nome.trim(), sigla: sigla.trim() || null, ativo } })
+        } else {
+          const data = await criarTipoReab.mutateAsync({ nome: nome.trim(), sigla: sigla.trim() || undefined })
+          if (data && familiasIds.length > 0) {
+            await salvarFamiliasReab.mutateAsync({ tipoReabId: data.id, familiaIds: familiasIds })
+          }
+        }
+        toast.success(editing ? "Tipo de Reabilitação atualizado!" : "Tipo de Reabilitação criado!")
       }
-      toast.success(editing ? "Tipo de Reabilitação atualizado!" : "Tipo de Reabilitação criado!")
-    }
-    setModalOpen(false); qc.invalidateQueries({ queryKey: ["catalogo"] })
+    } catch (err) { setError((err as Error).message); return }
+    setModalOpen(false)
   }
 
   async function handleDelete() {
     if (!deleteItem) return
-    const pkCol = deleteItem.pkColumn ?? "id"
-    if (deleteItem.table === "catalogo_cps_tipos_reabilitacao") {
-      await supabase.from("catalogo_cps_tipos_reabilitacao_familias").delete().eq("tipo_reabilitacao_id", deleteItem.id)
-    }
-    const { error } = await supabase.from(deleteItem.table).delete().eq(pkCol, deleteItem.id)
-    if (error) { toast.error(error.message); return }
-    toast.success("Excluído!"); setDeleteItem(null); qc.invalidateQueries({ queryKey: ["catalogo"] })
+    try {
+      if (deleteItem.table === "catalogo_cps_tipos_reabilitacao") {
+        await removerTipoReab.mutateAsync(deleteItem.id)
+      } else if (deleteItem.table === "catalogo_cps_tipos_abutments") {
+        await removerTipoAbut.mutateAsync(deleteItem.id)
+      } else if (deleteItem.table === "catalogo_cps_tipos_componentes") {
+        await removerTipoComp.mutateAsync(deleteItem.id)
+      } else if (deleteItem.table === "catalogo_cps_tipos_parafusos") {
+        await removerTipoPar.mutateAsync(deleteItem.id)
+      } else if (deleteItem.table === "catalogo_cps_tipos_cicatrizadores") {
+        await removerTipoCic.mutateAsync(deleteItem.id)
+      } else if (deleteItem.table === "catalogo_abutments") {
+        await removerAbut.mutateAsync(deleteItem.id)
+      } else if (deleteItem.table === "catalogo_componentes") {
+        await removerComp.mutateAsync(deleteItem.id)
+      } else if (deleteItem.table === "catalogo_parafusos") {
+        await removerPar.mutateAsync(deleteItem.id)
+      } else if (deleteItem.table === "catalogo_cicatrizadores") {
+        await removerCic.mutateAsync(deleteItem.id)
+      }
+    } catch (err) { toast.error((err as Error).message); return }
+    toast.success("Excluído!"); setDeleteItem(null)
   }
 
   return (
@@ -421,7 +409,7 @@ function AdminComponentesPage() {
                   <TableRow key={item.id} className={`${i%2===0?"bg-[var(--color-surface)]/30":""} hover:bg-[#c9a655]/5 border-b border-[var(--color-border-subtle)]/50`}>
                     <TableCell className="text-sm font-medium text-white">{item.nome}</TableCell>
                     <TableCell className="text-sm text-gray-300">{item.sigla ?? "—"}</TableCell>
-                    <TableCell><button onClick={() => toggleTipoComponente(item.id, !item.ativo)}>{item.ativo ? <ToggleRight className="h-7 w-7 text-green-400" /> : <ToggleLeft className="h-7 w-7 text-gray-500" />}</button></TableCell>
+                    <TableCell><button onClick={() => toggleTipoComp.mutate({ id: item.id, ativo: !item.ativo })}>{item.ativo ? <ToggleRight className="h-7 w-7 text-green-400" /> : <ToggleLeft className="h-7 w-7 text-gray-500" />}</button></TableCell>
                     <TableCell><div className="flex items-center gap-2"><button onClick={() => openEdit(item)} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-[#c9a655]/20 text-[var(--color-text-muted)] hover:text-[#c9a655]"><Pencil className="h-3.5 w-3.5"/></button><button onClick={() => setDeleteItem({ id: item.id, label: item.nome, table: "catalogo_cps_tipos_componentes" })} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-red-500/20 text-[var(--color-text-muted)] hover:text-red-400"><Trash2 className="h-3.5 w-3.5"/></button></div></TableCell>
                   </TableRow>
                 ))}
@@ -441,7 +429,7 @@ function AdminComponentesPage() {
                   <TableRow key={item.id} className={`${i%2===0?"bg-[var(--color-surface)]/30":""} hover:bg-[#c9a655]/5 border-b border-[var(--color-border-subtle)]/50`}>
                     <TableCell className="text-sm font-medium text-white">{item.nome}</TableCell>
                     <TableCell className="text-sm text-gray-300">{item.sigla ?? "—"}</TableCell>
-                    <TableCell><button onClick={() => toggleTipoParafuso(item.id, !item.ativo)}>{item.ativo ? <ToggleRight className="h-7 w-7 text-green-400" /> : <ToggleLeft className="h-7 w-7 text-gray-500" />}</button></TableCell>
+                    <TableCell><button onClick={() => toggleTipoPar.mutate({ id: item.id, ativo: !item.ativo })}>{item.ativo ? <ToggleRight className="h-7 w-7 text-green-400" /> : <ToggleLeft className="h-7 w-7 text-gray-500" />}</button></TableCell>
                     <TableCell><div className="flex items-center gap-2"><button onClick={() => openEdit(item)} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-[#c9a655]/20 text-[var(--color-text-muted)] hover:text-[#c9a655]"><Pencil className="h-3.5 w-3.5"/></button><button onClick={() => setDeleteItem({ id: item.id, label: item.nome, table: "catalogo_cps_tipos_parafusos" })} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-red-500/20 text-[var(--color-text-muted)] hover:text-red-400"><Trash2 className="h-3.5 w-3.5"/></button></div></TableCell>
                   </TableRow>
                 ))}
@@ -461,7 +449,7 @@ function AdminComponentesPage() {
                   <TableRow key={item.id} className={`${i%2===0?"bg-[var(--color-surface)]/30":""} hover:bg-[#c9a655]/5 border-b border-[var(--color-border-subtle)]/50`}>
                     <TableCell className="text-sm font-medium text-white">{item.nome}</TableCell>
                     <TableCell className="text-sm text-gray-300">{item.sigla ?? "—"}</TableCell>
-                    <TableCell><button onClick={() => toggleTipoCicatrizador(item.id, !item.ativo)}>{item.ativo ? <ToggleRight className="h-7 w-7 text-green-400" /> : <ToggleLeft className="h-7 w-7 text-gray-500" />}</button></TableCell>
+                    <TableCell><button onClick={() => toggleTipoCic.mutate({ id: item.id, ativo: !item.ativo })}>{item.ativo ? <ToggleRight className="h-7 w-7 text-green-400" /> : <ToggleLeft className="h-7 w-7 text-gray-500" />}</button></TableCell>
                     <TableCell><div className="flex items-center gap-2"><button onClick={() => openEdit(item)} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-[#c9a655]/20 text-[var(--color-text-muted)] hover:text-[#c9a655]"><Pencil className="h-3.5 w-3.5"/></button><button onClick={() => setDeleteItem({ id: item.id, label: item.nome, table: "catalogo_cps_tipos_cicatrizadores" })} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-red-500/20 text-[var(--color-text-muted)] hover:text-red-400"><Trash2 className="h-3.5 w-3.5"/></button></div></TableCell>
                   </TableRow>
                 ))}
@@ -483,7 +471,7 @@ function AdminComponentesPage() {
                     <TableCell className="text-sm font-medium text-white">{item.nome}</TableCell>
                     <TableCell className="text-sm text-gray-300">{item.tipo_abutment?.nome ?? "—"}</TableCell>
                     <TableCell className="text-sm text-gray-300">{item.diametro_plataforma ?? "—"}</TableCell>
-                    <TableCell><button onClick={() => toggleAbutAtivo(item.sku, !item.ativo)}>{item.ativo ? <ToggleRight className="h-7 w-7 text-green-400" /> : <ToggleLeft className="h-7 w-7 text-gray-500" />}</button></TableCell>
+                    <TableCell><button onClick={() => toggleAbut.mutate({ sku: item.sku, ativo: !item.ativo })}>{item.ativo ? <ToggleRight className="h-7 w-7 text-green-400" /> : <ToggleLeft className="h-7 w-7 text-gray-500" />}</button></TableCell>
                     <TableCell><div className="flex items-center gap-2"><button onClick={() => openEditAbut(item)} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-[#c9a655]/20 text-[var(--color-text-muted)] hover:text-[#c9a655]"><Pencil className="h-3.5 w-3.5"/></button><button onClick={() => setDeleteItem({ id: item.sku, label: item.nome, table: "catalogo_abutments", pkColumn: "sku" })} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-red-500/20 text-[var(--color-text-muted)] hover:text-red-400"><Trash2 className="h-3.5 w-3.5"/></button></div></TableCell>
                   </TableRow>
                 ))}
@@ -506,7 +494,7 @@ function AdminComponentesPage() {
                     <TableCell className="text-sm text-gray-300">{item.tipo_componente?.nome ?? "—"}</TableCell>
                     <TableCell className="text-sm text-gray-300">{item.tipo_abutment?.nome ?? "—"}</TableCell>
                     <TableCell className="text-sm text-gray-300">{item.diametro_plataforma_mm ?? "—"}</TableCell>
-                    <TableCell><button onClick={() => toggleCompAtivo(item.sku, !item.ativo)}>{item.ativo ? <ToggleRight className="h-7 w-7 text-green-400" /> : <ToggleLeft className="h-7 w-7 text-gray-500" />}</button></TableCell>
+                    <TableCell><button onClick={() => toggleComp.mutate({ sku: item.sku, ativo: !item.ativo })}>{item.ativo ? <ToggleRight className="h-7 w-7 text-green-400" /> : <ToggleLeft className="h-7 w-7 text-gray-500" />}</button></TableCell>
                     <TableCell><div className="flex items-center gap-2"><button onClick={() => openEditComp(item)} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-[#c9a655]/20 text-[var(--color-text-muted)] hover:text-[#c9a655]"><Pencil className="h-3.5 w-3.5"/></button><button onClick={() => setDeleteItem({ id: item.sku, label: item.nome, table: "catalogo_componentes", pkColumn: "sku" })} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-red-500/20 text-[var(--color-text-muted)] hover:text-red-400"><Trash2 className="h-3.5 w-3.5"/></button></div></TableCell>
                   </TableRow>
                 ))}
@@ -528,7 +516,7 @@ function AdminComponentesPage() {
                     <TableCell className="text-sm font-medium text-white">{item.nome}</TableCell>
                     <TableCell className="text-sm text-gray-300">{item.tipo_parafuso?.nome ?? "—"}</TableCell>
                     <TableCell className="text-sm text-gray-300">{item.torque_ncm ?? "—"}</TableCell>
-                    <TableCell><button onClick={() => toggleParAtivo(item.sku, !item.ativo)}>{item.ativo ? <ToggleRight className="h-7 w-7 text-green-400" /> : <ToggleLeft className="h-7 w-7 text-gray-500" />}</button></TableCell>
+                    <TableCell><button onClick={() => togglePar.mutate({ sku: item.sku, ativo: !item.ativo })}>{item.ativo ? <ToggleRight className="h-7 w-7 text-green-400" /> : <ToggleLeft className="h-7 w-7 text-gray-500" />}</button></TableCell>
                     <TableCell><div className="flex items-center gap-2"><button onClick={() => openEditPar(item)} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-[#c9a655]/20 text-[var(--color-text-muted)] hover:text-[#c9a655]"><Pencil className="h-3.5 w-3.5"/></button><button onClick={() => setDeleteItem({ id: item.sku, label: item.nome, table: "catalogo_parafusos", pkColumn: "sku" })} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-red-500/20 text-[var(--color-text-muted)] hover:text-red-400"><Trash2 className="h-3.5 w-3.5"/></button></div></TableCell>
                   </TableRow>
                 ))}
@@ -550,7 +538,7 @@ function AdminComponentesPage() {
                     <TableCell className="text-sm font-medium text-white">{item.nome}</TableCell>
                     <TableCell className="text-sm text-gray-300">{item.implante?.nome ?? item.implante?.sku ?? "—"}</TableCell>
                     <TableCell className="text-sm text-gray-300">{item.diametro_plataforma_mm ?? "—"}</TableCell>
-                    <TableCell><button onClick={() => toggleCicAtivo(item.sku, !item.ativo)}>{item.ativo ? <ToggleRight className="h-7 w-7 text-green-400" /> : <ToggleLeft className="h-7 w-7 text-gray-500" />}</button></TableCell>
+                    <TableCell><button onClick={() => toggleCic.mutate({ sku: item.sku, ativo: !item.ativo })}>{item.ativo ? <ToggleRight className="h-7 w-7 text-green-400" /> : <ToggleLeft className="h-7 w-7 text-gray-500" />}</button></TableCell>
                     <TableCell><div className="flex items-center gap-2"><button onClick={() => openEditCic(item)} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-[#c9a655]/20 text-[var(--color-text-muted)] hover:text-[#c9a655]"><Pencil className="h-3.5 w-3.5"/></button><button onClick={() => setDeleteItem({ id: item.sku, label: item.nome, table: "catalogo_cicatrizadores", pkColumn: "sku" })} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-red-500/20 text-[var(--color-text-muted)] hover:text-red-400"><Trash2 className="h-3.5 w-3.5"/></button></div></TableCell>
                   </TableRow>
                 ))}

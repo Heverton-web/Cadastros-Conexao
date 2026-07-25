@@ -76,12 +76,25 @@ export async function criarPedido(
   )
   const valorTotal = valorSubtotal + (input.valor_frete ?? 0) - (input.cupom_desconto ?? 0)
 
-  // Snapshot do cliente
+  // Snapshot do cliente (loja ou CRM)
   let clienteNome = null
   let clienteEmail = null
   let clienteTelefone = null
 
-  if (input.cliente_id) {
+  if (input.cliente_crm_id) {
+    // Consultor selecionou cliente da carteira CRM
+    const { data: cliente } = await supabase
+      .from("clientes")
+      .select("nome_doutor, lead_email, telefone_contato")
+      .eq("id", input.cliente_crm_id)
+      .single()
+    if (cliente) {
+      clienteNome = cliente.nome_doutor
+      clienteEmail = cliente.lead_email
+      clienteTelefone = cliente.telefone_contato
+    }
+  } else if (input.cliente_id) {
+    // Cliente final da loja
     const { data: cliente } = await supabase
       .from("catalogo_clientes")
       .select("nome, email, telefone")
@@ -98,6 +111,7 @@ export async function criarPedido(
     .from("catalogo_pedidos")
     .insert({
       cliente_id: input.cliente_id ?? null,
+      cliente_crm_id: input.cliente_crm_id ?? null,
       orcamento_id: input.orcamento_id ?? null,
       colaborador_id: input.colaborador_id ?? null,
       status: "pendente",

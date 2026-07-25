@@ -51,6 +51,7 @@ export interface CatalogoPedidoItem {
 
 export interface CatalogoPedidoInput {
   cliente_id?: string | null
+  cliente_crm_id?: string | null
   orcamento_id?: string | null
   colaborador_id?: string | null
   endereco_entrega?: Record<string, unknown> | null

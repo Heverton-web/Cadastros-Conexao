@@ -3,10 +3,13 @@ import { rootRoute } from "./__root"
 import { StoreLayout } from "~/features/catalogo/components/StoreLayout"
 import { useCarrinho, cartTotais, formatBRL, clearCart } from "~/features/catalogo/services/carrinho.service"
 import { useState } from "react"
-import { consultarViaCEP } from "~/features/catalogo/services/frete.service"
+import { consultarViaCEP, consultarFrete } from "~/features/catalogo/services/frete.service"
 import { validarCupom, aplicarCupom } from "~/features/catalogo/services/cupons.service"
 import { useAuth } from "~/lib/auth"
-import type { CatalogoCupom } from "~/features/catalogo/types"
+import { useClienteAtivo } from "~/features/catalogo/context/cliente-ativo"
+import { useCatalogoCliente } from "~/features/catalogo/hooks/useCatalogoCliente"
+import { useCriarPedidoCatalogo } from "~/features/catalogo/hooks/useCatalogo"
+import type { CatalogoCupom, CatalogoFrete } from "~/features/catalogo/types"
 import { CheckCircle, Truck, MapPin, Tag, ShieldCheck, ArrowLeft } from "lucide-react"
 export const catalogoCheckoutRoute = createRoute({
   getParentRoute: () => rootRoute,
@@ -17,27 +20,66 @@ export const catalogoCheckoutRoute = createRoute({
 function CheckoutPage() {
   const items = useCarrinho()
   const { profile } = useAuth()
+  const { isConsultor, clienteAtivo } = useClienteAtivo()
+  const { cliente: catalogoCliente } = useCatalogoCliente()
+  const criarPedido = useCriarPedidoCatalogo()
   const { total } = cartTotais(items)
   const [cep, setCep] = useState("")
   const [endereco, setEndereco] = useState<{ logradouro: string; bairro: string; cidade: string; estado: string } | null>(null)
+  const [frete, setFrete] = useState<CatalogoFrete | null>(null)
+  const [freteErro, setFreteErro] = useState("")
   const [cupomCodigo, setCupomCodigo] = useState("")
   const [cupom, setCupom] = useState<CatalogoCupom | null>(null)
   const [cupomErro, setCupomErro] = useState("")
   const [protocolo, setProtocolo] = useState<string | null>(null)
   const [buscandoCep, setBuscandoCep] = useState(false)
+  const [processando, setProcessando] = useState(false)
 
   async function handleBuscarCep() {
     setBuscandoCep(true)
+    setFreteErro("")
+    setFrete(null)
     const result = await consultarViaCEP(cep.replace(/\D/g, ""))
     setEndereco(result)
+    // Buscar frete real para este CEP
+    const freteResult = await consultarFrete(cep)
+    if (freteResult) {
+      setFrete(freteResult)
+    } else {
+      setFreteErro("CEP fora da área de entrega")
+    }
     setBuscandoCep(false)
   }
 
-  async function handleAplicarCupom() {
-    setCupomErro("")
-    const result = await validarCupom(cupomCodigo)
-    if (result) setCupom(result)
-    else setCupomErro("Cupom inválido ou expirado")
+  async function handleFinalizar() {
+    if (!profile) return
+    if (isConsultor && !clienteAtivo) return
+    if (!isConsultor && !catalogoCliente) return
+    if (freteErro) return
+    setProcessando(true)
+    try {
+      const result = await criarPedido.mutateAsync({
+        cliente_id: isConsultor ? null : catalogoCliente?.id ?? null,
+        cliente_crm_id: isConsultor ? clienteAtivo?.id ?? null : null,
+        colaborador_id: profile.id,
+        valor_frete: frete?.valor ?? 0,
+        cupom_codigo: cupom?.codigo ?? null,
+        cupom_desconto: desconto > 0 ? desconto : undefined,
+        itens: items.map((item) => ({
+          produto_sku: item.sku,
+          produto_tipo: item.tipo,
+          produto_nome: item.nome,
+          quantidade: item.quantidade,
+          preco_unitario: item.preco,
+        })),
+      })
+      setProtocolo(result.id)
+      clearCart()
+    } catch {
+      setFreteErro("Erro ao finalizar pedido. Tente novamente.")
+    } finally {
+      setProcessando(false)
+    }
   }
 
   function handleFinalizar() {
@@ -73,7 +115,7 @@ function CheckoutPage() {
   }
 
   const desconto = cupom ? total - aplicarCupom(total, cupom) : 0
-  const totalFinal = total - desconto
+  const totalFinal = total - desconto + (frete?.valor ?? 0)
 
   return (
     <StoreLayout>
@@ -194,8 +236,14 @@ function CheckoutPage() {
                   </div>
                 )}
                 <div className="flex justify-between text-sm text-[var(--color-text-muted)]">
-                  <span>Frete</span>
-                  <span className="text-[var(--color-accent)] font-semibold">Grátis</span>
+                  <span>Frete{frete?.prazo_dias ? ` (${frete.prazo_dias} dias úteis)` : ""}</span>
+                  {frete ? (
+                    <span className="text-[var(--color-accent)] font-semibold">{formatBRL(frete.valor)}</span>
+                  ) : freteErro ? (
+                    <span className="text-red-400 font-semibold text-xs">{freteErro}</span>
+                  ) : (
+                    <span className="text-[var(--color-text-muted)]">Aguardando CEP</span>
+                  )}
                 </div>
               </div>
 
@@ -206,11 +254,11 @@ function CheckoutPage() {
 
               <button
                 onClick={handleFinalizar}
-                disabled={items.length === 0 || !profile}
+                disabled={items.length === 0 || !profile || processando || !!freteErro || (isConsultor && !clienteAtivo) || (!isConsultor && !catalogoCliente)}
                 className="w-full flex items-center justify-center gap-3 py-4 rounded-xl font-black text-sm uppercase tracking-widest transition-all hover:scale-105 hover:shadow-[0_0_30px_rgba(201,166,85,0.3)] disabled:opacity-50 disabled:hover:scale-100 disabled:cursor-not-allowed"
                 style={{ background: "linear-gradient(135deg, #c9a655, #e8d48b)", color: "#0f172a" }}
               >
-                <ShieldCheck className="w-5 h-5" /> Confirmar Compra
+                <ShieldCheck className="w-5 h-5" /> {processando ? "Processando..." : "Confirmar Compra"}
               </button>
             </div>
           </div>

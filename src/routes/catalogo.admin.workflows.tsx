@@ -1,4 +1,3 @@
-import { EMPRESA_ID } from "~/config/empresa"
 import { RequirePermission } from "~/components/guards"
 import { createRoute } from "@tanstack/react-router"
 import { authLayout } from "./_auth"
@@ -6,9 +5,15 @@ import { EmpresaCrudGuard } from "~/features/catalogo/components/EmpresaCrudGuar
 import { AdminLayout } from "~/features/catalogo/components/AdminLayout"
 import { useState } from "react"
 import { Plus, Pencil, Trash2, ToggleRight, ToggleLeft, ChevronDown, ChevronRight } from "lucide-react"
-import { supabase } from "~/core/supabase"
-import { useQueryClient, useQuery } from "@tanstack/react-query"
-import { useCatalogoEmpresaId } from "~/features/catalogo/hooks/useCatalogoEmpresa"
+import {
+  useWorkflows, useEtapas, useTodasSeqProteticas, useAbutments, useComponentes,
+  useToggleWorkflowAtivo, useToggleEtapaAtivo, useToggleSeqProteticaAtivo,
+  useCriarTipoWorkflow, useAtualizarTipoWorkflow,
+  useCriarEtapa, useAtualizarEtapa,
+  useCriarSeqProtetica, useAtualizarSeqProtetica, useSalvarComposicaoSeq,
+  useRemoverWorkflowsItem,
+} from "~/features/catalogo/hooks/useCatalogo"
+import { listarAbutmentsDaSeq, listarEtapasComponentesDaSeq } from "~/features/catalogo/services/sequencia-protetica.service"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from "~/components/ui/dialog"
 import { Switch } from "~/components/ui/switch"
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "~/components/ui/alert-dialog"
@@ -28,18 +33,16 @@ const labelCls = "text-xs font-bold uppercase tracking-widest text-gray-400"
 
 function AdminWorkflowsPage() {
   const [subTab, setSubTab] = useState("Tipos de Workflow")
-  const empresaId = useCatalogoEmpresaId()
-  const qc = useQueryClient()
 
-  const { data: tiposWorkflow } = useQuery({ queryKey: ["catalogo", "tipos-workflow"], queryFn: async () => { const { data } = await supabase.from("catalogo_cps_tipos_workflows").select("*").order("nome"); return (data ?? []) as any[] }, enabled: !!empresaId })
-  const { data: etapas } = useQuery({ queryKey: ["catalogo", "etapas-workflow"], queryFn: async () => { const { data } = await supabase.from("catalogo_cps_etapas_workflows").select("*, tipo_workflow:catalogo_cps_tipos_workflows(*)").order("ordem"); return (data ?? []) as any[] }, enabled: !!empresaId })
-  const { data: seqs } = useQuery({ queryKey: ["catalogo", "seq-proteticas"], queryFn: async () => { const { data } = await supabase.from("catalogo_seq_proteticas").select("id, nome, sigla, ativo").order("nome"); return (data ?? []) as any[] }, enabled: !!empresaId })
-  const { data: abutmentsList } = useQuery({ queryKey: ["catalogo", "abutments-list"], queryFn: async () => { const { data } = await supabase.from("catalogo_abutments").select("sku, nome, tipo_abutment:catalogo_cps_tipos_abutments(nome)").order("sku"); return (data ?? []) as any[] }, enabled: !!empresaId })
-  const { data: componentesList } = useQuery({ queryKey: ["catalogo", "componentes-list"], queryFn: async () => { const { data } = await supabase.from("catalogo_componentes").select("sku, nome").order("nome"); return (data ?? []) as any[] }, enabled: !!empresaId })
+  const { data: tiposWorkflow } = useWorkflows()
+  const { data: etapas } = useEtapas()
+  const { data: seqs } = useTodasSeqProteticas()
+  const { data: abutmentsList } = useAbutments()
+  const { data: componentesList } = useComponentes()
 
   // Tipo modal
   const [tipoModalOpen, setTipoModalOpen] = useState(false)
-  const [tipoEditing, setTipoEditing] = useState<any>(null)
+  const [tipoEditing, setTipoEditing] = useState<{ id: string; nome: string; sigla: string | null; ativo: boolean } | null>(null)
   const [tipoNome, setTipoNome] = useState("")
   const [tipoSigla, setTipoSigla] = useState("")
   const [tipoAtivo, setTipoAtivo] = useState(true)
@@ -47,7 +50,7 @@ function AdminWorkflowsPage() {
 
   // Etapa modal
   const [etapaModalOpen, setEtapaModalOpen] = useState(false)
-  const [etapaEditing, setEtapaEditing] = useState<any>(null)
+  const [etapaEditing, setEtapaEditing] = useState<{ id: string; tipo_workflow_id: string; nome: string; sigla: string | null; ordem: number; ativo: boolean } | null>(null)
   const [etapaData, setEtapaData] = useState({ tipo_workflow_id: "", nome: "", sigla: "", ordem: 1, ativo: true })
   const [etapaError, setEtapaError] = useState("")
 
@@ -55,12 +58,28 @@ function AdminWorkflowsPage() {
 
   // Seq Protetica modal
   const [seqModalOpen, setSeqModalOpen] = useState(false)
-  const [seqEditing, setSeqEditing] = useState<any>(null)
+  const [seqEditing, setSeqEditing] = useState<{ id: string; nome: string; sigla: string | null; ativo: boolean } | null>(null)
   const [seqData, setSeqData] = useState({ nome: "", sigla: "", ativo: true })
   const [seqError, setSeqError] = useState("")
   const [seqAbutmentSku, setSeqAbutmentSku] = useState("")
   const [seqEtapasComponentes, setSeqEtapasComponentes] = useState<Record<string, string[]>>({})
   const [expandedEtapas, setExpandedEtapas] = useState<Set<string>>(new Set())
+
+  // Mutation hooks
+  const criarTipo = useCriarTipoWorkflow()
+  const atualizarTipo = useAtualizarTipoWorkflow()
+  const removerTipo = useRemoverTipoWorkflow()
+  const toggleTipoAtivo = useToggleWorkflowAtivo()
+  const criarEtapaHook = useCriarEtapa()
+  const atualizarEtapaHook = useAtualizarEtapa()
+  const removerEtapaHook = useRemoverEtapa()
+  const toggleEtapaAtivoHook = useToggleEtapaAtivo()
+  const criarSeq = useCriarSeqProtetica()
+  const atualizarSeq = useAtualizarSeqProtetica()
+  const toggleSeqAtivo = useToggleSeqProteticaAtivo()
+  const removerSeq = useRemoverSeqProtetica()
+  const salvarComposicaoSeq = useSalvarComposicaoSeq()
+  const removerItem = useRemoverWorkflowsItem()
 
   function openNewSeq() {
     setSeqEditing(null)
@@ -72,23 +91,15 @@ function AdminWorkflowsPage() {
     setSeqModalOpen(true)
   }
 
-  async function openEditSeq(item: any) {
+  async function openEditSeq(item: { id: string; nome: string; sigla: string | null; ativo: boolean }) {
     setSeqEditing(item)
     setSeqData({ nome: item.nome ?? "", sigla: item.sigla ?? "", ativo: item.ativo !== false })
     setSeqError("")
 
-    const [{ data: abData }, { data: etCoData }] = await Promise.all([
-      supabase.from("catalogo_seq_protetica_abutments").select("abutment_sku").eq("seq_id", item.id).limit(1),
-      supabase.from("catalogo_seq_protetica_etapa_componentes").select("etapa_id, componente_sku").eq("seq_id", item.id),
-    ])
+    const [abutmentSku] = await listarAbutmentsDaSeq(item.id)
+    const etapasComp = await listarEtapasComponentesDaSeq(item.id)
 
-    setSeqAbutmentSku((abData?.[0] as any)?.abutment_sku ?? "")
-
-    const etapasComp: Record<string, string[]> = {}
-    for (const row of (etCoData ?? []) as any[]) {
-      if (!etapasComp[row.etapa_id]) etapasComp[row.etapa_id] = []
-      etapasComp[row.etapa_id].push(row.componente_sku)
-    }
+    setSeqAbutmentSku(abutmentSku ?? "")
     setSeqEtapasComponentes(etapasComp)
     setExpandedEtapas(new Set(Object.keys(etapasComp)))
     setSeqModalOpen(true)
@@ -100,77 +111,72 @@ function AdminWorkflowsPage() {
     if (!seqAbutmentSku) { setSeqError("Selecione um abutment"); return }
 
     let seqId = seqEditing?.id
-    if (seqEditing) {
-      const { error } = await supabase.from("catalogo_seq_proteticas").update(seqData).eq("id", seqEditing.id)
-      if (error) { setSeqError(error.message); return }
-    } else {
-      const { data, error } = await supabase.from("catalogo_seq_proteticas").insert(seqData).select("id").single()
-      if (error) { setSeqError(error.message); return }
-      seqId = data.id
-    }
-
-    // Salvar abutment (single)
-    await supabase.from("catalogo_seq_protetica_abutments").delete().eq("seq_id", seqId)
-    await supabase.from("catalogo_seq_protetica_abutments").insert({ seq_id: seqId, abutment_sku: seqAbutmentSku })
-
-    // Salvar etapas (pivô etapas)
-    const etapaIds = Object.keys(seqEtapasComponentes)
-    await supabase.from("catalogo_seq_protetica_etapas").delete().eq("seq_id", seqId)
-    if (etapaIds.length > 0) {
-      await supabase.from("catalogo_seq_protetica_etapas").insert(etapaIds.map((eid) => ({ seq_id: seqId, etapa_id: eid })))
-    }
-
-    // Salvar etapa→componentes (nova tabela pivô)
-    await supabase.from("catalogo_seq_protetica_etapa_componentes").delete().eq("seq_id", seqId)
-    const inserts: any[] = []
-    for (const [etapaId, comps] of Object.entries(seqEtapasComponentes)) {
-      for (const sku of comps) {
-        inserts.push({ seq_id: seqId, etapa_id: etapaId, componente_sku: sku })
+    try {
+      if (seqEditing) {
+        await atualizarSeq.mutateAsync({ id: seqEditing.id, input: seqData })
+      } else {
+        const result = await criarSeq.mutateAsync(seqData)
+        seqId = result.id
       }
+      if (!seqId) { setSeqError("Erro ao salvar sequência"); return }
+      await salvarComposicaoSeq.mutateAsync({ seqId, abutment_sku: seqAbutmentSku, etapasComponentes: seqEtapasComponentes })
+      toast.success(seqEditing ? "Sequência atualizada!" : "Sequência criada!")
+      setSeqModalOpen(false)
+    } catch (e) {
+      setSeqError((e as Error).message)
     }
-    if (inserts.length > 0) {
-      await supabase.from("catalogo_seq_protetica_etapa_componentes").insert(inserts)
-    }
-
-    toast.success(seqEditing ? "Sequência atualizada!" : "Sequência criada!")
-    setSeqModalOpen(false)
-    qc.invalidateQueries({ queryKey: ["catalogo"] })
   }
 
   // Tipo handlers
   function openNewTipo() { setTipoEditing(null); setTipoNome(""); setTipoSigla(""); setTipoAtivo(true); setTipoError(""); setTipoModalOpen(true) }
-  function openEditTipo(item: any) { setTipoEditing(item); setTipoNome(item.nome); setTipoSigla(item.sigla ?? ""); setTipoAtivo(item.ativo !== false); setTipoError(""); setTipoModalOpen(true) }
+  function openEditTipo(item: { id: string; nome: string; sigla: string | null; ativo: boolean }) { setTipoEditing(item); setTipoNome(item.nome); setTipoSigla(item.sigla ?? ""); setTipoAtivo(item.ativo !== false); setTipoError(""); setTipoModalOpen(true) }
 
   async function handleSaveTipo() {
     setTipoError("")
     if (!tipoNome.trim()) { setTipoError("Nome é obrigatório"); return }
-    const payload = { nome: tipoNome.trim(), sigla: tipoSigla.trim() || null, ativo: tipoAtivo }
-    if (tipoEditing) { const { error } = await supabase.from("catalogo_cps_tipos_workflows").update({ nome: payload.nome, sigla: payload.sigla, ativo: tipoAtivo }).eq("id", tipoEditing.id); if (error) { setTipoError(error.message); return } }
-    else { const { error } = await supabase.from("catalogo_cps_tipos_workflows").insert(payload); if (error) { setTipoError(error.message); return } }
-    toast.success(tipoEditing ? "Atualizado!" : "Criado!")
-    setTipoModalOpen(false); qc.invalidateQueries({ queryKey: ["catalogo"] })
+    try {
+      if (tipoEditing) {
+        await atualizarTipo.mutateAsync({ id: tipoEditing.id, input: { nome: tipoNome.trim(), sigla: tipoSigla.trim() || null, ativo: tipoAtivo } })
+      } else {
+        await criarTipo.mutateAsync({ nome: tipoNome.trim(), sigla: tipoSigla.trim() || null })
+      }
+      toast.success(tipoEditing ? "Atualizado!" : "Criado!")
+      setTipoModalOpen(false)
+    } catch (e) {
+      setTipoError((e as Error).message)
+    }
   }
 
   // Etapa handlers
   function openNewEtapa() { setEtapaEditing(null); setEtapaData({ tipo_workflow_id: "", nome: "", sigla: "", ordem: 1, ativo: true }); setEtapaError(""); setEtapaModalOpen(true) }
-  function openEditEtapa(item: any) { setEtapaEditing(item); setEtapaData({ tipo_workflow_id: item.tipo_workflow_id ?? "", nome: item.nome, sigla: item.sigla ?? "", ordem: item.ordem ?? 1, ativo: item.ativo !== false }); setEtapaError(""); setEtapaModalOpen(true) }
+  function openEditEtapa(item: { id: string; tipo_workflow_id: string; nome: string; sigla: string | null; ordem: number; ativo: boolean }) { setEtapaEditing(item); setEtapaData({ tipo_workflow_id: item.tipo_workflow_id ?? "", nome: item.nome, sigla: item.sigla ?? "", ordem: item.ordem ?? 1, ativo: item.ativo !== false }); setEtapaError(""); setEtapaModalOpen(true) }
 
   async function handleSaveEtapa() {
     setEtapaError("")
     if (!etapaData.nome.trim()) { setEtapaError("Nome é obrigatório"); return }
     if (!etapaData.tipo_workflow_id) { setEtapaError("Tipo de Workflow é obrigatório"); return }
-    const payload = { ...etapaData}
-    if (etapaEditing) { const { error } = await supabase.from("catalogo_cps_etapas_workflows").update(payload).eq("id", etapaEditing.id); if (error) { setEtapaError(error.message); return } }
-    else { const { error } = await supabase.from("catalogo_cps_etapas_workflows").insert(payload); if (error) { setEtapaError(error.message); return } }
-    toast.success(etapaEditing ? "Atualizada!" : "Criada!")
-    setEtapaModalOpen(false); qc.invalidateQueries({ queryKey: ["catalogo"] })
+    try {
+      if (etapaEditing) {
+        await atualizarEtapaHook.mutateAsync({ id: etapaEditing.id, input: { ...etapaData } })
+      } else {
+        await criarEtapaHook.mutateAsync({ tipo_workflow_id: etapaData.tipo_workflow_id, nome: etapaData.nome, sigla: etapaData.sigla || undefined, ordem: etapaData.ordem })
+      }
+      toast.success(etapaEditing ? "Atualizada!" : "Criada!")
+      setEtapaModalOpen(false)
+    } catch (e) {
+      setEtapaError((e as Error).message)
+    }
   }
 
   async function handleDelete() {
     if (!deleteItem) return
-    const { error } = await supabase.from(deleteItem.table).delete().eq("id", deleteItem.id)
-    if (error) { toast.error(error.message); return }
-    toast.success("Excluído!"); setDeleteItem(null); qc.invalidateQueries({ queryKey: ["catalogo"] })
+    try {
+      await removerItem.mutateAsync({ id: deleteItem.id, table: deleteItem.table })
+      toast.success("Excluído!")
+      setDeleteItem(null)
+    } catch (e) {
+      toast.error((e as Error).message)
+    }
   }
 
   // Composição helpers
@@ -224,10 +230,10 @@ function AdminWorkflowsPage() {
           {/* Tipos de Workflow */}
           {subTab === "Tipos de Workflow" && (
             <Table><TableHeader><TableRow className="border-b border-[#c9a655]/20">{["Nome","Sigla","Ativo","Ações"].map(h=><TableHead key={h} className="bg-gradient-to-r from-[#c9a655]/10 to-transparent text-[#c9a655] font-black uppercase tracking-wider text-[10px]">{h}</TableHead>)}</TableRow></TableHeader>
-            <TableBody>{(tiposWorkflow??[]).map((item:any,i:number)=><TableRow key={item.id} className={`${i%2===0?"bg-[var(--color-surface)]/30":""} hover:bg-[#c9a655]/5 border-b border-[var(--color-border-subtle)]/50`}>
+            <TableBody>{(tiposWorkflow??[]).map((item, i) => <TableRow key={item.id} className={`${i%2===0?"bg-[var(--color-surface)]/30":""} hover:bg-[#c9a655]/5 border-b border-[var(--color-border-subtle)]/50`}>
               <TableCell className="text-sm font-medium text-white">{item.nome}</TableCell>
               <TableCell className="text-sm text-gray-300">{item.sigla??"—"}</TableCell>
-              <TableCell><button onClick={async()=>{await supabase.from("catalogo_cps_tipos_workflows").update({ativo:!item.ativo}).eq("id",item.id);qc.invalidateQueries({queryKey:["catalogo"]})}}>{item.ativo?<ToggleRight className="h-7 w-7 text-green-400"/>:<ToggleLeft className="h-7 w-7 text-gray-500"/>}</button></TableCell>
+              <TableCell><button onClick={()=>toggleTipoAtivo.mutate({id:item.id, ativo:!item.ativo})}>{item.ativo?<ToggleRight className="h-7 w-7 text-green-400"/>:<ToggleLeft className="h-7 w-7 text-gray-500"/>}</button></TableCell>
               <TableCell><div className="flex items-center gap-2"><button onClick={()=>openEditTipo(item)} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-[#c9a655]/20 text-[var(--color-text-muted)] hover:text-[#c9a655]"><Pencil className="h-3.5 w-3.5"/></button><button onClick={()=>setDeleteItem({id:item.id,label:item.nome,table:"catalogo_cps_tipos_workflows"})} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-red-500/20 text-[var(--color-text-muted)] hover:text-red-400"><Trash2 className="h-3.5 w-3.5"/></button></div></TableCell>
             </TableRow>)}{(tiposWorkflow??[]).length===0&&<TableRow><TableCell colSpan={4} className="p-4 text-center text-text-muted">Nenhum tipo cadastrado</TableCell></TableRow>}</TableBody></Table>
           )}
@@ -235,22 +241,22 @@ function AdminWorkflowsPage() {
           {/* Etapas do Workflow */}
           {subTab === "Etapas do Workflow" && (
             <Table><TableHeader><TableRow className="border-b border-[#c9a655]/20">{["Ordem","Nome","Sigla","Tipo Workflow","Ativo","Ações"].map(h=><TableHead key={h} className="bg-gradient-to-r from-[#c9a655]/10 to-transparent text-[#c9a655] font-black uppercase tracking-wider text-[10px]">{h}</TableHead>)}</TableRow></TableHeader>
-            <TableBody>{(etapas??[]).map((item:any,i:number)=><TableRow key={item.id} className={`${i%2===0?"bg-[var(--color-surface)]/30":""} hover:bg-[#c9a655]/5 border-b border-[var(--color-border-subtle)]/50`}>
+            <TableBody>{(etapas??[]).map((item, i) => <TableRow key={item.id} className={`${i%2===0?"bg-[var(--color-surface)]/30":""} hover:bg-[#c9a655]/5 border-b border-[var(--color-border-subtle)]/50`}>
               <TableCell className="text-sm font-bold text-[#c9a655]">{item.ordem}</TableCell>
               <TableCell className="text-sm font-medium text-white">{item.nome}</TableCell>
               <TableCell className="text-sm text-gray-300">{item.sigla??"—"}</TableCell>
               <TableCell className="text-sm text-gray-300">{item.tipo_workflow?.nome??"—"}</TableCell>
-              <TableCell><button onClick={async()=>{await supabase.from("catalogo_cps_etapas_workflows").update({ativo:!item.ativo}).eq("id",item.id);qc.invalidateQueries({queryKey:["catalogo"]})}}>{item.ativo?<ToggleRight className="h-7 w-7 text-green-400"/>:<ToggleLeft className="h-7 w-7 text-gray-500"/>}</button></TableCell>
+              <TableCell><button onClick={()=>toggleEtapaAtivoHook.mutate({id:item.id, ativo:!item.ativo})}>{item.ativo?<ToggleRight className="h-7 w-7 text-green-400"/>:<ToggleLeft className="h-7 w-7 text-gray-500"/>}</button></TableCell>
               <TableCell><div className="flex items-center gap-2"><button onClick={()=>openEditEtapa(item)} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-[#c9a655]/20 text-[var(--color-text-muted)] hover:text-[#c9a655]"><Pencil className="h-3.5 w-3.5"/></button><button onClick={()=>setDeleteItem({id:item.id,label:item.nome,table:"catalogo_cps_etapas_workflows"})} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-red-500/20 text-[var(--color-text-muted)] hover:text-red-400"><Trash2 className="h-3.5 w-3.5"/></button></div></TableCell>
             </TableRow>)}{(etapas??[]).length===0&&<TableRow><TableCell colSpan={6} className="p-4 text-center text-text-muted">Nenhuma etapa cadastrada</TableCell></TableRow>}</TableBody></Table>
           )}
           {/* Sequências Protéticas */}
           {subTab === "Sequências Protéticas" && (
             <Table><TableHeader><TableRow className="border-b border-[#c9a655]/20">{["Nome","Sigla","Ativo","Ações"].map(h=><TableHead key={h} className="bg-gradient-to-r from-[#c9a655]/10 to-transparent text-[#c9a655] font-black uppercase tracking-wider text-[10px]">{h}</TableHead>)}</TableRow></TableHeader>
-            <TableBody>{(seqs??[]).map((item:any,i:number)=><TableRow key={item.id} className={`${i%2===0?"bg-[var(--color-surface)]/30":""} hover:bg-[#c9a655]/5 border-b border-[var(--color-border-subtle)]/50`}>
+            <TableBody>{(seqs??[]).map((item, i) => <TableRow key={item.id} className={`${i%2===0?"bg-[var(--color-surface)]/30":""} hover:bg-[#c9a655]/5 border-b border-[var(--color-border-subtle)]/50`}>
               <TableCell className="text-sm font-medium text-white">{item.nome}</TableCell>
               <TableCell className="text-sm text-gray-300">{item.sigla??"—"}</TableCell>
-              <TableCell><button onClick={async()=>{await supabase.from("catalogo_seq_proteticas").update({ativo:!item.ativo}).eq("id",item.id);qc.invalidateQueries({queryKey:["catalogo"]})}}>{item.ativo?<ToggleRight className="h-7 w-7 text-green-400"/>:<ToggleLeft className="h-7 w-7 text-gray-500"/>}</button></TableCell>
+              <TableCell><button onClick={()=>toggleSeqAtivo.mutate({id:item.id, ativo:!item.ativo})}>{item.ativo?<ToggleRight className="h-7 w-7 text-green-400"/>:<ToggleLeft className="h-7 w-7 text-gray-500"/>}</button></TableCell>
               <TableCell><div className="flex items-center gap-2"><button onClick={()=>openEditSeq(item)} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-[#c9a655]/20 text-[var(--color-text-muted)] hover:text-[#c9a655]"><Pencil className="h-3.5 w-3.5"/></button><button onClick={()=>setDeleteItem({id:item.id,label:item.nome,table:"catalogo_seq_proteticas"})} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-red-500/20 text-[var(--color-text-muted)] hover:text-red-400"><Trash2 className="h-3.5 w-3.5"/></button></div></TableCell>
             </TableRow>)}{(seqs??[]).length===0&&<TableRow><TableCell colSpan={4} className="p-4 text-center text-text-muted">Nenhuma sequência cadastrada</TableCell></TableRow>}</TableBody></Table>
           )}
@@ -282,7 +288,7 @@ function AdminWorkflowsPage() {
         <DialogContent className="bg-[#0f172a] border-[var(--color-border-subtle)] text-white max-w-lg flex flex-col max-h-[85vh] overflow-hidden">
           <DialogHeader className="shrink-0"><DialogTitle className="text-white">{etapaEditing?"Editar":"Nova"} Etapa do Workflow</DialogTitle></DialogHeader>
           <div className="px-6 py-4 space-y-4 overflow-y-auto flex-1 min-h-0">
-            <div className="space-y-2"><label className={labelCls}>Tipo de Workflow <span className="text-red-400">*</span></label><select value={etapaData.tipo_workflow_id} onChange={e=>setEtapaData({...etapaData,tipo_workflow_id:e.target.value})} className={selectCls}><option value="">Selecione...</option>{tiposWorkflow?.map((t:any)=><option key={t.id} value={t.id}>{t.nome}</option>)}</select></div>
+            <div className="space-y-2"><label className={labelCls}>Tipo de Workflow <span className="text-red-400">*</span></label><select value={etapaData.tipo_workflow_id} onChange={e=>setEtapaData({...etapaData,tipo_workflow_id:e.target.value})} className={selectCls}><option value="">Selecione...</option>{tiposWorkflow?.map((t)=><option key={t.id} value={t.id}>{t.nome}</option>)}</select></div>
             <div className="space-y-2"><label className={labelCls}>Nome <span className="text-red-400">*</span></label><input type="text" value={etapaData.nome} onChange={e=>setEtapaData({...etapaData,nome:e.target.value})} className={inputCls} /></div>
             <div className="space-y-2"><label className={labelCls}>Sigla</label><input type="text" value={etapaData.sigla} onChange={e=>setEtapaData({...etapaData,sigla:e.target.value})} className={inputCls} /></div>
             <div className="space-y-2"><label className={labelCls}>Ordem</label><input type="number" min="1" value={etapaData.ordem} onChange={e=>setEtapaData({...etapaData,ordem:Number(e.target.value)})} className={inputCls} /></div>
@@ -310,7 +316,7 @@ function AdminWorkflowsPage() {
               <label className={labelCls}>Abutment <span className="text-red-400">*</span></label>
               <select value={seqAbutmentSku} onChange={(e) => setSeqAbutmentSku(e.target.value)} className={selectCls}>
                 <option value="">Selecione um abutment...</option>
-                {abutmentsList?.map((a: any) => (
+                {abutmentsList?.map((a) => (
                   <option key={a.sku} value={a.sku}>{`${a.tipo_abutment?.nome ?? ""} ${a.nome ?? a.sku}`.trim()}</option>
                 ))}
               </select>
@@ -335,7 +341,7 @@ function AdminWorkflowsPage() {
             <div className="flex gap-3">
               <select id="add-etapa-select" value="" onChange={(e) => { if (e.target.value) { addEtapaToSeq(e.target.value); e.target.value = "" } }} className="flex-1 bg-[#0f172a] border border-white/10 rounded-lg px-4 py-3 text-sm text-white appearance-none cursor-pointer focus:outline-none focus:border-[#c9a655]/50 transition-colors">
                 <option value="">Adicionar etapa...</option>
-                {etapas?.filter((e: any) => !seqEtapasComponentes[e.id]).map((e: any) => (
+                {etapas?.filter((e) => !seqEtapasComponentes[e.id]).map((e) => (
                   <option key={e.id} value={e.id}>{`${e.ordem}. ${e.nome}`}</option>
                 ))}
               </select>
@@ -345,7 +351,7 @@ function AdminWorkflowsPage() {
             {Object.keys(seqEtapasComponentes).length > 0 && (
               <div className="space-y-2">
                 {Object.entries(seqEtapasComponentes).map(([etapaId, componentes]) => {
-                  const etapa = etapas?.find((e: any) => e.id === etapaId)
+                  const etapa = etapas?.find((e) => e.id === etapaId)
                   const isExpanded = expandedEtapas.has(etapaId)
                   return (
                     <div key={etapaId} className="rounded-xl border border-white/10 bg-[var(--color-surface)]/30 overflow-hidden">
@@ -367,7 +373,7 @@ function AdminWorkflowsPage() {
                           <div className="flex gap-3 pt-3">
                             <select value="" onChange={(e) => { if (e.target.value) { addComponenteToEtapa(etapaId, e.target.value); e.target.value = "" } }} className="flex-1 bg-[#0f172a] border border-white/10 rounded-lg px-4 py-2.5 text-sm text-white appearance-none cursor-pointer focus:outline-none focus:border-[#c9a655]/50 transition-colors">
                               <option value="">Adicionar componente...</option>
-                              {componentesList?.filter((c: any) => !componentes.includes(c.sku)).map((c: any) => (
+                              {componentesList?.filter((c) => !componentes.includes(c.sku)).map((c) => (
                                 <option key={c.sku} value={c.sku}>{c.nome}</option>
                               ))}
                             </select>
@@ -376,7 +382,7 @@ function AdminWorkflowsPage() {
                           {componentes.length > 0 ? (
                             <div className="flex flex-wrap gap-2">
                               {componentes.map((sku) => {
-                                const comp = componentesList?.find((c: any) => c.sku === sku)
+                                const comp = componentesList?.find((c) => c.sku === sku)
                                 return (
                                   <span key={sku} className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#c9a655]/10 border border-[#c9a655]/20 text-xs font-medium text-[#c9a655]">
                                     {comp?.nome ?? sku}
