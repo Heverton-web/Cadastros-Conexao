@@ -43,7 +43,7 @@ export function useUpsertDistributor(onSuccess?: () => void) {
           .eq("id", payload.id)
           .select()
           .single();
-        dispararEventoModulo("mapas", "distribuidor.atualizado", { distribuidor_id: data.id, nome: data.name, empresa_id: data.empresa_id }, data.empresa_id).catch(() => {});
+        dispararEventoModulo("mapas-interativos", "mapas.distribuidor.atualizado", { distribuidor_id: data.id, nome: data.name, empresa_id: data.empresa_id }).catch(() => {});
         return data as MapasDistributor;
       }
       const { data } = await supabase
@@ -51,7 +51,7 @@ export function useUpsertDistributor(onSuccess?: () => void) {
         .insert(payload)
         .select()
         .single();
-      dispararEventoModulo("mapas", "distribuidor.criado", { distribuidor_id: data.id, nome: data.name, empresa_id: data.empresa_id }, data.empresa_id).catch(() => {});
+      dispararEventoModulo("mapas-interativos", "mapas.distribuidor.criado", { distribuidor_id: data.id, nome: data.name, empresa_id: data.empresa_id }).catch(() => {});
       return data as MapasDistributor;
     },
     onSuccess: () => {
@@ -73,7 +73,7 @@ export function useDeleteDistributor() {
         .single();
       await supabase.from("mapas_distribuidores").delete().eq("id", id);
       if (dist) {
-        dispararEventoModulo("mapas", "distribuidor.excluido", { distribuidor_id: id, nome: dist.name, empresa_id: dist.empresa_id }, dist.empresa_id).catch(() => {});
+        dispararEventoModulo("mapas-interativos", "mapas.distribuidor.excluido", { distribuidor_id: id, nome: dist.name, empresa_id: dist.empresa_id }).catch(() => {});
       }
     },
     onSuccess: () => {
@@ -93,7 +93,7 @@ export function useUpsertConsultant(onSuccess?: () => void) {
           .eq("id", payload.id)
           .select()
           .single();
-        dispararEventoModulo("mapas", "consultor.atualizado", { consultor_id: data.id, nome: data.name, empresa_id: data.empresa_id }, data.empresa_id).catch(() => {});
+        dispararEventoModulo("mapas-interativos", "mapas.consultor.atualizado", { consultor_id: data.id, nome: data.name, empresa_id: data.empresa_id }).catch(() => {});
         return data as MapasConsultant;
       }
       const { data } = await supabase
@@ -101,7 +101,7 @@ export function useUpsertConsultant(onSuccess?: () => void) {
         .insert(payload)
         .select()
         .single();
-      dispararEventoModulo("mapas", "consultor.criado", { consultor_id: data.id, nome: data.name, empresa_id: data.empresa_id }, data.empresa_id).catch(() => {});
+      dispararEventoModulo("mapas-interativos", "mapas.consultor.criado", { consultor_id: data.id, nome: data.name, empresa_id: data.empresa_id }).catch(() => {});
       return data as MapasConsultant;
     },
     onSuccess: () => {
@@ -122,7 +122,7 @@ export function useDeleteConsultant() {
         .single();
       await supabase.from("mapas_consultores").delete().eq("id", id);
       if (cons) {
-        dispararEventoModulo("mapas", "consultor.excluido", { consultor_id: id, nome: cons.name, empresa_id: cons.empresa_id }, cons.empresa_id).catch(() => {});
+        dispararEventoModulo("mapas-interativos", "mapas.consultor.excluido", { consultor_id: id, nome: cons.name, empresa_id: cons.empresa_id }).catch(() => {});
       }
     },
     onSuccess: () => {

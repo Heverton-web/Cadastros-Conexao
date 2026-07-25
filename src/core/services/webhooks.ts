@@ -381,33 +381,69 @@ export async function dispararEventoModulo(
   eventoKey: string,
   payload: Record<string, any>,
 ) {
-  let query = supabase
-    .from("webhooks")
-    .select("*")
-    .eq("modulo_key", moduloKey)
-    .eq("evento_key", eventoKey)
-    .eq("ativo", true);
+  const [webhooksRes, notifsRes, apisRes] = await Promise.all([
+    supabase
+      .from("webhooks")
+      .select("*")
+      .eq("modulo_key", moduloKey)
+      .eq("evento_key", eventoKey)
+      .eq("ativo", true),
+    supabase
+      .from("notificacoes_modelos")
+      .select("*")
+      .eq("modulo_key", moduloKey)
+      .eq("evento_key", eventoKey)
+      .eq("ativo", true),
+    supabase
+      .from("conectores_api")
+      .select("*")
+      .eq("modulo_key", moduloKey)
+      .eq("evento_key", eventoKey)
+      .eq("is_active", true),
+  ]);
 
-  const { data: webhooks, error } = await query;
-
-  if (error) {
+  if (webhooksRes.error) {
     console.error(
       `Erro ao buscar webhooks do módulo ${moduloKey}/${eventoKey}:`,
-      error,
+      webhooksRes.error,
     );
-    return;
+  }
+  if (notifsRes.error) {
+    console.error(
+      `Erro ao buscar notificações do módulo ${moduloKey}/${eventoKey}:`,
+      notifsRes.error,
+    );
+  }
+  if (apisRes.error) {
+    console.error(
+      `Erro ao buscar conectores de API do módulo ${moduloKey}/${eventoKey}:`,
+      apisRes.error,
+    );
   }
 
-  if (!webhooks?.length) return;
+  const webhooks = webhooksRes.data || [];
+  const notifs = notifsRes.data || [];
+  const apis = apisRes.data || [];
+
+  if (!webhooks.length && !notifs.length && !apis.length) return;
+
+  const body = {
+    ...payload,
+    evento: eventoKey,
+    modulo: moduloKey,
+  };
+
+  for (const n of notifs) {
+    try {
+      await dispararNotificacaoIndividual(n as NotificacaoTemplate, body);
+    } catch (err) {
+      console.error(`Erro na notificação de módulo ${n.id}:`, err);
+    }
+  }
 
   for (const wh of webhooks) {
     try {
-      const body = {
-        ...wh.body_template,
-        ...payload,
-        evento: eventoKey,
-        modulo: moduloKey,
-      };
+      const whBody = { ...wh.body_template, ...body };
       const headers: Record<string, string> = {
         "Content-Type": "application/json",
         ...(wh.headers || {}),
@@ -416,7 +452,7 @@ export async function dispararEventoModulo(
       const res = await fetch(wh.url, {
         method: wh.metodo || "POST",
         headers,
-        body: JSON.stringify(body),
+        body: JSON.stringify(whBody),
       });
       const text = await res.text();
 
@@ -427,6 +463,7 @@ export async function dispararEventoModulo(
         status_code: res.status,
         resposta: text.slice(0, 2000),
         sucesso: res.ok,
+        payload_enviado: whBody,
       });
     } catch (err: any) {
       console.error(`Erro no webhook de módulo ${wh.id}:`, err);
@@ -438,6 +475,37 @@ export async function dispararEventoModulo(
         resposta: err.message?.slice(0, 1900) || "Erro desconhecido",
         sucesso: false,
         payload_enviado: payload,
+      });
+    }
+  }
+
+  for (const conn of apis) {
+    try {
+      const executor = getActionExecutor("api_connector");
+      const result = executor ? await executor(conn.id, body) : null;
+
+      await supabase.from("logs_webhook").insert({
+        webhook_id: null,
+        evento: eventoKey,
+        url: conn.url,
+        status_code: result?.status || 200,
+        resposta:
+          typeof result?.data === "object"
+            ? JSON.stringify(result.data).slice(0, 2000)
+            : String(result?.data).slice(0, 2000),
+        sucesso: result?.status >= 200 && result?.status < 300,
+        payload_enviado: body,
+      });
+    } catch (err: any) {
+      console.error(`Erro no conector de API de módulo ${conn.id}:`, err);
+      await supabase.from("logs_webhook").insert({
+        webhook_id: null,
+        evento: eventoKey,
+        url: conn.url,
+        status_code: null,
+        resposta: err.message?.slice(0, 1900) || "Erro desconhecido",
+        sucesso: false,
+        payload_enviado: body,
       });
     }
   }

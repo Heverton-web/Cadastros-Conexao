@@ -16,8 +16,17 @@ export const criativosModule: ModuleDefinition = {
   routes: ["/marketing/criativos"],
   permissions: CRIATIVOS_PERMISSIONS.map((p) => p.key),
   ambientes: ["cadastro", "tecnologia"],
-  abas: [],
-  events: [],
+  abas: [
+    { key: "eventos", label: "Eventos", descricao: "Eventos e webhooks do módulo" },
+  ],
+  events: [
+    {
+      key: "criativo.criado",
+      label: "Criativo Criado",
+      descricao: "Dispara quando um novo criativo de marketing é adicionado",
+      type: "status_change",
+    },
+  ],
   setup: () => {
     for (const p of CRIATIVOS_PERMISSIONS)
       registerPermission({

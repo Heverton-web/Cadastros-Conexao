@@ -41,7 +41,7 @@ export async function criarTarefa(
     .single();
   if (error) throw error;
   const tarefa = data as FunilTarefa;
-  dispararEventoModulo(MODULO_KEY, "tarefa.criada", { tarefa }, null).catch(
+  dispararEventoModulo(MODULO_KEY, "tarefa.criada", { tarefa }).catch(
     () => {},
   );
   return tarefa;
@@ -71,7 +71,6 @@ export async function atualizarTarefa(
       MODULO_KEY,
       "tarefa.concluida",
       { tarefa },
-      null,
     ).catch(() => {});
   }
   return tarefa;
@@ -100,7 +99,6 @@ export async function moverTarefa(
       MODULO_KEY,
       "tarefa.movida",
       { tarefa, colunaAnterior: before?.coluna_id },
-      null,
     ).catch(() => {});
   }
   return tarefa;

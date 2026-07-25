@@ -83,7 +83,7 @@ function TransferConsultoresPage() {
     toast.success("Consultor transferido");
     qc.invalidateQueries({ queryKey: ["transf-consultores-origem", origem] });
     qc.invalidateQueries({ queryKey: ["logs-transfer-consultor"] });
-    dispararEventoModulo("crm", "consultor.transferido", { consultor_id: consultorId, empresa_id: EMPRESA_ID }, EMPRESA_ID).catch(() => {});
+    dispararEventoModulo("crm", "consultor.transferido", { consultor_id: consultorId, empresa_id: EMPRESA_ID }).catch(() => {});
   }
 
   return (

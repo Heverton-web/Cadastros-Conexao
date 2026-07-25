@@ -50,7 +50,7 @@ export async function atualizarColaborador(
     )
     .single();
   if (error) throw error;
-  dispararEventoModulo(MODULO_KEY, "colaborador.criado", { colaborador_id: data.id, nome: data.nome, empresa_id: data.empresa_id }, data.empresa_id).catch(() => {});
+  dispararEventoModulo(MODULO_KEY, "colaborador.criado", { colaborador_id: data.id, nome: data.nome, empresa_id: data.empresa_id }).catch(() => {});
   return data as LinktreeColaboradorComCredencial;
 }
 
@@ -66,7 +66,7 @@ export async function toggleColaboradorStatus(
     .single();
   if (error) throw error;
   const evento = status === "ativo" ? "colaborador.ativado" : "colaborador.inativado";
-  dispararEventoModulo(MODULO_KEY, evento, { colaborador_id: id, nome: data.nome, status, empresa_id: data.empresa_id }, data.empresa_id).catch(() => {});
+  dispararEventoModulo(MODULO_KEY, evento, { colaborador_id: id, nome: data.nome, status, empresa_id: data.empresa_id }).catch(() => {});
   return data as LinktreeColaborador;
 }
 

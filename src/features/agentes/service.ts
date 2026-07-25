@@ -303,31 +303,34 @@ async function readFileAsText(file: File): Promise<string> {
   });
 }
 
+async function chamarProxyIA<T>(acao: "testar" | "modelos", body: Record<string, unknown>): Promise<T> {
+  const { data: sessionData } = await supabase.auth.getSession();
+  const token = sessionData?.session?.access_token;
+  if (!token) throw new Error("Não autenticado");
+
+  const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+  const res = await fetch(`${supabaseUrl}/functions/v1/agentes-testar-conexao`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ acao, ...body }),
+    signal: AbortSignal.timeout(20000),
+  });
+
+  const json = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(json.error || `Erro ${res.status}`);
+  return json as T;
+}
+
 export async function testarConexaoApi(
   provedorUrl: string,
   apiKey: string,
   modelo: string
 ): Promise<{ ok: boolean; erro?: string }> {
   try {
-    const url = provedorUrl.replace(/\/+$/, "");
-    const res = await fetch(`${url}/chat/completions`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify({
-        model: modelo,
-        messages: [{ role: "user", content: "ping" }],
-        max_tokens: 5,
-      }),
-      signal: AbortSignal.timeout(15000),
-    });
-    if (!res.ok) {
-      const text = await res.text();
-      return { ok: false, erro: `HTTP ${res.status}: ${text.slice(0, 200)}` };
-    }
-    return { ok: true };
+    return await chamarProxyIA<{ ok: boolean; erro?: string }>("testar", { provedorUrl, apiKey, modelo });
   } catch (e) {
     return { ok: false, erro: (e as Error).message };
   }
@@ -338,20 +341,8 @@ export async function buscarModelosDisponiveis(
   apiKey: string
 ): Promise<string[]> {
   try {
-    const url = provedorUrl.replace(/\/+$/, "");
-    const res = await fetch(`${url}/models`, {
-      headers: {
-        Authorization: `Bearer ${apiKey}`,
-      },
-      signal: AbortSignal.timeout(10000),
-    });
-    if (!res.ok) return [];
-    const data = await res.json();
-    const models = data.data ?? data.models ?? [];
-    return models
-      .map((m: any) => m.id ?? m.name ?? m)
-      .filter((id: any) => typeof id === "string")
-      .sort();
+    const result = await chamarProxyIA<{ modelos: string[] }>("modelos", { provedorUrl, apiKey });
+    return result.modelos ?? [];
   } catch {
     return [];
   }

@@ -35,7 +35,7 @@ export async function criarCampanha(input: {
     .select()
     .single();
   if (error) throw error;
-  dispararEventoModulo(MODULO_KEY, "campanha.criada", { campanha_id: data.id, nome: input.nome, empresa_id: input.empresa_id }, input.empresa_id).catch(() => {});
+  dispararEventoModulo(MODULO_KEY, "campanha.criada", { campanha_id: data.id, nome: input.nome, empresa_id: input.empresa_id }).catch(() => {});
   return data as CampanhaEmail;
 }
 

@@ -104,7 +104,7 @@ export const registrarVisita = createServerFn({ method: "POST" })
       webhookStatus = { ok: false, mensagem: (err as Error).message };
     }
 
-    dispararEventoModulo(MODULO_KEY, "visita.realizada", { visita_id: visita.id, cliente_id: data.cliente_id, consultor_id: userId, tipo: data.tipo_visita }, null).catch(() => {});
+    dispararEventoModulo(MODULO_KEY, "visita.realizada", { visita_id: visita.id, cliente_id: data.cliente_id, consultor_id: userId, tipo: data.tipo_visita }).catch(() => {});
     return { visita, webhook: webhookStatus };
   });
 
@@ -125,6 +125,6 @@ export const criarCliente = createServerFn({ method: "POST" })
       .select()
       .single();
     if (error) throw new Error(error.message);
-    dispararEventoModulo(MODULO_KEY, "cliente.criado", { cliente_id: cliente.id, nome: data.nome_doutor, consultor_id: userId }, null).catch(() => {});
+    dispararEventoModulo(MODULO_KEY, "cliente.criado", { cliente_id: cliente.id, nome: data.nome_doutor, consultor_id: userId }).catch(() => {});
     return cliente;
   });

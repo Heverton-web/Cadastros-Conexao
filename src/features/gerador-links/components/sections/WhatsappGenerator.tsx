@@ -49,7 +49,7 @@ export function WhatsappGenerator() {
         params: { telefone, mensagem: mensagem || "" },
       });
       setLinkSalvoId(saved.id);
-      dispararEventoModulo(MODULO_KEY, "link.gerado_whatsapp", { link_id: saved.id, telefone }, EMPRESA_ID).catch(() => {});
+      dispararEventoModulo(MODULO_KEY, "link.gerado_whatsapp", { link_id: saved.id, telefone }).catch(() => {});
     } catch {
       toast.error("Erro ao salvar");
     }

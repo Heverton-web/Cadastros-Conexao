@@ -59,7 +59,7 @@ export async function criarPeriodo(
     .single();
   if (error) throw error;
 
-  dispararEventoModulo(MODULO_KEY, "periodo.aberto", { periodo_id: data.id }, null).catch(() => {});
+  dispararEventoModulo(MODULO_KEY, "periodo.aberto", { periodo_id: data.id }).catch(() => {});
 
   return data as DespesaPeriodo;
 }
@@ -80,13 +80,13 @@ export async function atualizarPeriodo(
 
 export async function fecharPeriodo(id: string): Promise<DespesaPeriodo> {
   const periodo = await atualizarPeriodo(id, { status: "fechado" });
-  dispararEventoModulo(MODULO_KEY, "periodo.fechando", { periodo_id: id }, null).catch(() => {});
+  dispararEventoModulo(MODULO_KEY, "periodo.fechando", { periodo_id: id }).catch(() => {});
   return periodo;
 }
 
 export async function reabrirPeriodo(id: string): Promise<DespesaPeriodo> {
   const periodo = await atualizarPeriodo(id, { status: "aberto" });
-  dispararEventoModulo(MODULO_KEY, "periodo.reaberto", { periodo_id: id }, null).catch(() => {});
+  dispararEventoModulo(MODULO_KEY, "periodo.reaberto", { periodo_id: id }).catch(() => {});
   return periodo;
 }
 

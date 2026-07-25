@@ -42,7 +42,7 @@ export function QrCodeGenerator() {
         params: { url },
       });
       setLinkSalvoId(saved.id);
-      dispararEventoModulo(MODULO_KEY, "link.gerado_qrcode", { link_id: saved.id, url }, EMPRESA_ID).catch(() => {});
+      dispararEventoModulo(MODULO_KEY, "link.gerado_qrcode", { link_id: saved.id, url }).catch(() => {});
     } catch {
       toast.error("Erro ao salvar");
     }

@@ -6,7 +6,6 @@ import {
   ArrowLeft,
 } from "lucide-react";
 import { RequirePermission } from "~/components/guards";
-import { EMPRESA_ID } from "~/config/empresa";
 
 export const adminEmpresaConfigAcoesRoute = createRoute({
   getParentRoute: () => authLayout,
@@ -20,7 +19,6 @@ export const adminEmpresaConfigAcoesRoute = createRoute({
 
 function EmpresaAcoesPage() {
   const navigate = useNavigate();
-  const empresaId = EMPRESA_ID;
 
   return (
     <div className="flex flex-col gap-4 p-4 pb-28">
@@ -43,7 +41,7 @@ function EmpresaAcoesPage() {
         disponíveis.
       </p>
 
-      <CentralAcoesTab empresaId={empresaId} />
+      <CentralAcoesTab />
     </div>
   );
 }

@@ -578,16 +578,12 @@ function PreCadastroPage() {
       });
 
       // Dispara webhook de PIN
-      await dispararWebhooks(
-        "enviar_pin_2fa",
-        {
-          cadastro_id: cadastroId,
-          canal: canal2FA,
-          contato: contatoFormatado,
-          pin,
-        },
-        empresaId,
-      );
+      await dispararWebhooks("enviar_pin_2fa", {
+        cadastro_id: cadastroId,
+        canal: canal2FA,
+        contato: contatoFormatado,
+        pin,
+      });
 
       // PIN logging removed for security — PIN is sent via SMS only
       setTempo2FA(300);
@@ -747,22 +743,14 @@ function PreCadastroPage() {
         .eq("id", cadastroId);
 
       // Dispara webhooks de finalização
-      dispararWebhooks(
-        "dados_enviados",
-        { cadastro_id: cadastroId, token },
-        empresaId,
-      );
-      dispararWebhooks(
-        "em_analise",
-        {
-          cadastro_id: cadastroId,
-          email:
-            contatoEmail ||
-            form.pf.email_comunicacao ||
-            form.pj.email_comunicacao,
-        },
-        empresaId,
-      );
+      dispararWebhooks("dados_enviados", { cadastro_id: cadastroId, token });
+      dispararWebhooks("em_analise", {
+        cadastro_id: cadastroId,
+        email:
+          contatoEmail ||
+          form.pf.email_comunicacao ||
+          form.pj.email_comunicacao,
+      });
 
       // Dispara notificação com template para o consultor comercial
       const { data: cad } = await supabase

@@ -50,7 +50,6 @@ import {
   deletarTemplate,
   type NotificacaoTemplate,
 } from "~/core/services/notificacoes";
-import { useAuth } from "~/core/auth";
 import { getAllModules, getModule } from "~/registry";
 
 type ItemType = "api_call" | "notification" | "webhook";
@@ -249,22 +248,9 @@ function parseCurl(curl: string) {
   return { method, url, headers, body };
 }
 
-export function CentralAcoesTab({ empresaId }: { empresaId?: string } = {}) {
-  const { profile, empresa } = useAuth();
-  const isSuper = profile?.is_super_admin === true;
-
-  const [empresas, setEmpresas] = useState<any[]>([]);
-
-  // Se for passado via prop, ou se for admin de empresa (sem ser super), força o ID.
-  const forcedEmpresaId =
-    empresaId || (!isSuper ? empresa?.id : undefined);
-  const [activeEmpresaId, setActiveEmpresaId] = useState<string>(
-    forcedEmpresaId || "global",
-  );
-  const canSelectEmpresa = isSuper && !empresaId;
-
+export function CentralAcoesTab() {
   const [activeModuleKey, setActiveModuleKey] =
-    useState<string>("empresas-core");
+    useState<string>("cadastros");
 
   const [items, setItems] = useState<ListItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -325,20 +311,12 @@ export function CentralAcoesTab({ empresaId }: { empresaId?: string } = {}) {
   const [showCurlImporter, setShowCurlImporter] = useState(false);
 
   useEffect(() => {
-    if (forcedEmpresaId) {
-      setActiveEmpresaId(forcedEmpresaId);
-    }
-  }, [forcedEmpresaId]);
-
-  useEffect(() => {
     carregarTudo();
-  }, [activeEmpresaId, activeModuleKey]);
+  }, [activeModuleKey]);
 
   async function carregarTudo() {
     setLoading(true);
     try {
-      // Se for global, passamos null pro backend
-      const empId = activeEmpresaId === "global" ? null : activeEmpresaId;
       const modKey = activeModuleKey;
 
       const [
@@ -354,14 +332,6 @@ export function CentralAcoesTab({ empresaId }: { empresaId?: string } = {}) {
         supabase.rpc("obter_esquema_banco"),
         supabase.from("config_integracoes").select("*"),
       ]);
-
-      if (isSuper && empresas.length === 0) {
-        const { data: emps } = await supabase
-          .from("empresas")
-          .select("id, razao_social")
-          .order("razao_social");
-        if (emps) setEmpresas(emps);
-      }
 
       if (integracoesConfig && !errInt) {
         setIntegracoesNativas(integracoesConfig);
@@ -566,7 +536,6 @@ export function CentralAcoesTab({ empresaId }: { empresaId?: string } = {}) {
     try {
       const isNew = activeItem.id.startsWith("new-");
 
-      const empId = activeEmpresaId === "global" ? null : activeEmpresaId;
       const modKey = activeModuleKey;
 
       const eventoAlvo =
@@ -582,6 +551,7 @@ export function CentralAcoesTab({ empresaId }: { empresaId?: string } = {}) {
       if (activeItem.type === "notification") {
         const payload: any = {
           evento: notifEvento,
+          evento_key: notifEvento,
           titulo: notifTitulo,
           corpo_template: notifCorpo,
           destinatario_tipo: notifDestinatarioTipo,
@@ -609,6 +579,7 @@ export function CentralAcoesTab({ empresaId }: { empresaId?: string } = {}) {
         const payload: any = {
           nome: formName,
           evento: apiEvento,
+          evento_key: apiEvento,
           url: apiUrl,
           metodo: apiMethod,
           headers: apiHeaders,
@@ -641,6 +612,7 @@ export function CentralAcoesTab({ empresaId }: { empresaId?: string } = {}) {
             ? null
             : activeItem.raw.response_schema || null,
           evento: apiEvento,
+          evento_key: apiEvento,
           tipo_evento: apiTipoEvento,
           is_active: formIsActive,
           modulo_key: modKey,
@@ -1040,43 +1012,6 @@ export function CentralAcoesTab({ empresaId }: { empresaId?: string } = {}) {
 
         {/* Seletores */}
         <div className="flex flex-col sm:flex-row gap-3 w-full xl:w-auto">
-          {canSelectEmpresa && (
-            <div className="flex flex-col gap-1 w-full sm:w-64 shrink-0">
-              <label className="text-xs font-bold text-text-muted uppercase tracking-wider">
-                Empresa
-              </label>
-              <select
-                value={activeEmpresaId}
-                onChange={(e) => setActiveEmpresaId(e.target.value)}
-                className="w-full rounded-xl border border-input-border bg-bg-dark px-4 py-2.5 text-sm font-semibold text-text-main outline-none focus:border-accent transition-all cursor-pointer hover:border-input-border/80"
-              >
-                <option
-                  value="global"
-                  className="bg-bg-dark text-text-main font-bold"
-                  style={{ backgroundColor: "#0f172a", color: "#f8fafc" }}
-                >
-                  Global (Padrão)
-                </option>
-                <optgroup
-                  label="Específicas por Empresa"
-                  className="bg-bg-dark text-text-muted"
-                  style={{ backgroundColor: "#0f172a", color: "#94a3b8" }}
-                >
-                  {empresas.map((emp) => (
-                    <option
-                      key={emp.id}
-                      value={emp.id}
-                      className="bg-bg-dark text-text-main font-medium"
-                      style={{ backgroundColor: "#0f172a", color: "#f8fafc" }}
-                    >
-                      {emp.razao_social}
-                    </option>
-                  ))}
-                </optgroup>
-              </select>
-            </div>
-          )}
-
           <div className="flex flex-col gap-1 w-full sm:w-64 shrink-0">
             <label className="text-xs font-bold text-text-muted uppercase tracking-wider">
               Módulo

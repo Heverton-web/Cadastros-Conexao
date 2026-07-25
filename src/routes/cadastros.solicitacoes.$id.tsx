@@ -264,8 +264,8 @@ function ClienteDetailPage() {
         status_cadastro: "aprovado",
       };
 
-      dispararWebhooks("botao_aprovar", payload, EMPRESA_ID);
-      dispararWebhooks("aprovado", payload, EMPRESA_ID);
+      dispararWebhooks("botao_aprovar", payload);
+      dispararWebhooks("aprovado", payload);
       setShowAprovar(false);
       carregar();
     } catch (e) {
@@ -336,8 +336,8 @@ function ClienteDetailPage() {
         status_cadastro: "reprovado",
       };
 
-      dispararWebhooks("botao_reprovar", payload, EMPRESA_ID);
-      dispararWebhooks("reprovado", payload, EMPRESA_ID);
+      dispararWebhooks("botao_reprovar", payload);
+      dispararWebhooks("reprovado", payload);
       setShowReprovar(false);
       carregar();
     } catch (e) {
@@ -419,8 +419,8 @@ function ClienteDetailPage() {
         status_cadastro: "em_correcao",
       };
 
-      dispararWebhooks("botao_corrigir", payload, EMPRESA_ID);
-      dispararWebhooks("em_correcao", payload, EMPRESA_ID);
+      dispararWebhooks("botao_corrigir", payload);
+      dispararWebhooks("em_correcao", payload);
       setShowCorrecao(false);
       carregar();
     } catch (e) {
@@ -1215,11 +1215,10 @@ function ClienteDetailPage() {
                   "doc_aprovado",
                   `Documento ${doc?.tipo} aprovado`,
                 );
-                dispararWebhooks(
-                  "botao_aprovar",
-                  { cadastro_id: id, documento_id: docId },
-                  EMPRESA_ID,
-                );
+                dispararWebhooks("botao_aprovar", {
+                  cadastro_id: id,
+                  documento_id: docId,
+                });
                 const d = await listarDocumentos(id);
                 setDocs(d);
               } catch (e) {
@@ -1236,11 +1235,11 @@ function ClienteDetailPage() {
                   "doc_reprovado",
                   `Documento ${doc?.tipo} reprovado: ${motivo}`,
                 );
-                dispararWebhooks(
-                  "botao_reprovar",
-                  { cadastro_id: id, documento_id: docId, motivo },
-                  EMPRESA_ID,
-                );
+                dispararWebhooks("botao_reprovar", {
+                  cadastro_id: id,
+                  documento_id: docId,
+                  motivo,
+                });
                 const d = await listarDocumentos(id);
                 setDocs(d);
               } catch (e) {
@@ -1257,11 +1256,11 @@ function ClienteDetailPage() {
                   "doc_correcao",
                   `Correção solicitada para ${doc?.tipo}: ${comentario}`,
                 );
-                dispararWebhooks(
-                  "botao_corrigir",
-                  { cadastro_id: id, documento_id: docId, comentario },
-                  EMPRESA_ID,
-                );
+                dispararWebhooks("botao_corrigir", {
+                  cadastro_id: id,
+                  documento_id: docId,
+                  comentario,
+                });
                 const d = await listarDocumentos(id);
                 setDocs(d);
               } catch (e) {

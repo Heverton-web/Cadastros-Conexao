@@ -289,6 +289,7 @@ export function ProvedoresTab() {
   const { data: provedores = [], isLoading, refetch } = useProvedores();
   const deletar = useDeletarProvedor();
   const reordenar = useReordenarProvedores();
+  const atualizar = useAtualizarProvedor();
 
   const [showForm, setShowForm] = useState(false);
   const [editingProvedor, setEditingProvedor] = useState<ProvedorIA | null>(null);
@@ -470,7 +471,7 @@ export function ProvedoresTab() {
                       <Switch
                         checked={p.ativo}
                         onCheckedChange={(checked) => {
-                          useAtualizarProvedor().mutate({ id: p.id, ativo: checked }, {
+                          atualizar.mutate({ id: p.id, ativo: checked }, {
                             onSuccess: () => { toast.success(`Provedor ${checked ? "ativado" : "desativado"}`); refetch(); },
                             onError: () => toast.error("Erro ao alterar status"),
                           });
@@ -510,13 +511,15 @@ export function ProvedoresTab() {
         </div>
       )}
 
-      <ProvedorForm
-        provedor={editingProvedor}
-        onClose={() => {
-          setShowForm(false);
-          setEditingProvedor(null);
-        }}
-      />
+      {showForm && (
+        <ProvedorForm
+          provedor={editingProvedor}
+          onClose={() => {
+            setShowForm(false);
+            setEditingProvedor(null);
+          }}
+        />
+      )}
 
       <AlertDialog open={!!deletingProvedor} onOpenChange={(open) => !open && setDeletingProvedor(null)}>
         <AlertDialogContent>
@@ -536,10 +539,4 @@ export function ProvedoresTab() {
       </AlertDialog>
     </div>
   );
-}
-
-// Helper hook para usar no Switch inline
-function useAtualizarProvedor() {
-  const { mutateAsync } = useAtualizarProvedor();
-  return { mutateAsync };
 }

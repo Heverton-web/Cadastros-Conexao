@@ -73,7 +73,7 @@ export async function criarDespesa(
     .single();
   if (error) throw error;
 
-  dispararEventoModulo(MODULO_KEY, "despesa.criada", { despesa_id: data.id, valor: despesa.valor }, null).catch(() => {});
+  dispararEventoModulo(MODULO_KEY, "despesa.criada", { despesa_id: data.id, valor: despesa.valor }).catch(() => {});
 
   return data as Despesa;
 }
@@ -114,7 +114,7 @@ export async function enviarDespesas(
     .eq("status", "rascunho");
   if (error) throw error;
 
-  dispararEventoModulo(MODULO_KEY, "despesa.enviada", { periodo_id, usuario_id }, null).catch(() => {});
+  dispararEventoModulo(MODULO_KEY, "despesa.enviada", { periodo_id, usuario_id }).catch(() => {});
 }
 
 export async function aprovarDespesa(id: string): Promise<Despesa> {
@@ -122,7 +122,7 @@ export async function aprovarDespesa(id: string): Promise<Despesa> {
     status: "aprovada",
     comentario_reprovacao: "",
   });
-  dispararEventoModulo(MODULO_KEY, "despesa.aprovada", { despesa_id: id, empresa_id: despesa.empresa_id }, despesa.empresa_id).catch(() => {});
+  dispararEventoModulo(MODULO_KEY, "despesa.aprovada", { despesa_id: id, empresa_id: despesa.empresa_id }).catch(() => {});
   return despesa;
 }
 
@@ -134,13 +134,13 @@ export async function reprovarDespesa(
     status: "reprovada",
     comentario_reprovacao: comentario,
   });
-  dispararEventoModulo(MODULO_KEY, "despesa.reprovada", { despesa_id: id, comentario, empresa_id: despesa.empresa_id }, despesa.empresa_id).catch(() => {});
+  dispararEventoModulo(MODULO_KEY, "despesa.reprovada", { despesa_id: id, comentario, empresa_id: despesa.empresa_id }).catch(() => {});
   return despesa;
 }
 
 export async function marcarComoPaga(id: string): Promise<Despesa> {
   const despesa = await atualizarDespesa(id, { status: "paga" });
-  dispararEventoModulo(MODULO_KEY, "pagamento.agendado", { despesa_id: id, empresa_id: despesa.empresa_id }, despesa.empresa_id).catch(() => {});
+  dispararEventoModulo(MODULO_KEY, "pagamento.agendado", { despesa_id: id, empresa_id: despesa.empresa_id }).catch(() => {});
   return despesa;
 }
 
