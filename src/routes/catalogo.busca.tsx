@@ -5,6 +5,7 @@ import { StoreLayout } from "~/features/catalogo/components/StoreLayout"
 import { ProductCard } from "~/features/catalogo/components/ProductCard"
 import { useImplantesAtivos, useAbutments, useKitsAtivos, usePromocionaisAtivos } from "~/features/catalogo/hooks/useCatalogo"
 import { Search, ArrowLeft, PackageOpen } from "lucide-react"
+import { useTranslation } from "react-i18next"
 
 export const catalogoBuscaRoute = createRoute({
   getParentRoute: () => rootRoute,
@@ -29,6 +30,7 @@ function CatalogoBuscaPage() {
   const search = useSearch({ strict: false }) as { q?: string }
   const navigate = useNavigate()
   const [query, setQuery] = useState(search.q ?? "")
+  const { t } = useTranslation()
 
   const { data: implantes, isLoading: loadingImplantes } = useImplantesAtivos()
   const { data: abutments, isLoading: loadingAbutments } = useAbutments()
@@ -95,9 +97,9 @@ function CatalogoBuscaPage() {
             <ArrowLeft className="h-4 w-4 sm:h-5 sm:w-5 text-[var(--color-text-muted)] group-hover:text-[var(--color-accent)] transition-colors" />
           </Link>
           <div>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-black leading-tight text-white tracking-tighter text-balance">Buscar</h1>
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-black leading-tight text-white tracking-tighter text-balance">{t("catalogo.search.placeholder").split(",")[0]}</h1>
             <p className="text-sm sm:text-lg mt-1 sm:mt-2 text-[var(--color-text-muted)] text-balance">
-              {search.q ? `Resultados para "${search.q}"` : "Digite algo para buscar."}
+              {search.q ? `Resultados para "${search.q}"` : t("catalogo.search.placeholder")}
             </p>
           </div>
         </div>
@@ -107,7 +109,7 @@ function CatalogoBuscaPage() {
           <input
             type="text"
             autoFocus
-            placeholder="Buscar por SKU, Linha ou Dimensão..."
+            placeholder={t("catalogo.search.placeholder")}
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             className="w-full h-11 pl-12 pr-4 rounded-full bg-[var(--color-surface)]/50 border border-[var(--color-input-border)] text-sm focus:border-[var(--color-accent)] focus:outline-none transition-all text-white placeholder-[var(--color-text-muted)]"
@@ -123,7 +125,7 @@ function CatalogoBuscaPage() {
         ) : !search.q ? null : resultados.length === 0 ? (
           <div className="text-center py-24 rounded-3xl border border-[var(--color-border-subtle)] bg-[var(--color-surface)]/30 backdrop-blur-md">
             <PackageOpen className="h-14 w-14 mx-auto mb-6 opacity-20 text-white" />
-            <p className="text-xl font-black text-white tracking-tight">Nenhum resultado encontrado</p>
+            <p className="text-xl font-black text-white tracking-tight">{t("catalogo.search.noResults")}</p>
             <p className="text-sm text-[var(--color-text-muted)] mt-2 max-w-sm mx-auto">Tente buscar por outro SKU, nome ou dimensão.</p>
           </div>
         ) : (

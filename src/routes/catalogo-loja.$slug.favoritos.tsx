@@ -8,6 +8,7 @@ import { Heart } from "lucide-react"
 import { listarFavoritos, removerFavorito } from "~/features/catalogo/services/favoritos.service"
 import type { CatalogoFavorito } from "~/features/catalogo/types/pedidos"
 import { Button } from "~/components/ui/button"
+import { useTranslation } from "react-i18next"
 
 export const catalogoLojaFavoritosRoute = createRoute({
   getParentRoute: () => rootRoute,
@@ -21,6 +22,7 @@ function LojaFavoritosPage() {
   const { cliente, isLogado, loading: authLoading } = useCatalogoCliente()
   const [favoritos, setFavoritos] = useState<CatalogoFavorito[]>([])
   const [loading, setLoading] = useState(true)
+  const { t } = useTranslation()
 
   async function load() {
     if (!isLogado || !cliente) return
@@ -42,7 +44,7 @@ function LojaFavoritosPage() {
   if (authLoading || loading) {
     return (
       <StoreLayout>
-        <div className="p-8 text-center text-[var(--color-text-muted)]">Carregando...</div>
+        <div className="p-8 text-center text-[var(--color-text-muted)]">{t("common.loading")}</div>
       </StoreLayout>
     )
   }
@@ -51,9 +53,9 @@ function LojaFavoritosPage() {
     return (
       <StoreLayout>
         <div className="p-8 text-center">
-          <p className="text-[var(--color-text-muted)]">Faça login para ver seus favoritos.</p>
+          <p className="text-[var(--color-text-muted)]">{t("catalogo.favorites.loginRequired")}</p>
           <a href={`/loja/${slug}/login`} className="text-[var(--color-accent)] hover:underline mt-2 inline-block">
-            Entrar
+            {t("catalogo.login.submit")}
           </a>
         </div>
       </StoreLayout>
@@ -63,12 +65,12 @@ function LojaFavoritosPage() {
   return (
     <StoreLayout>
       <div className="p-4 lg:p-8 space-y-4">
-        <h1 className="text-2xl font-bold text-white">Meus Favoritos</h1>
+        <h1 className="text-2xl font-bold text-white">{t("catalogo.favorites.title")}</h1>
 
         {favoritos.length === 0 ? (
           <div className="text-center py-12">
             <Heart className="w-12 h-12 text-[var(--color-text-muted)] mx-auto mb-4" />
-            <p className="text-[var(--color-text-muted)]">Nenhum favorito ainda.</p>
+            <p className="text-[var(--color-text-muted)]">{t("catalogo.favorites.empty")}</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -87,7 +89,7 @@ function LojaFavoritosPage() {
                   onClick={() => handleRemove(f.produto_sku)}
                   className="text-red-400 hover:text-red-300"
                 >
-                  Remover
+                  {t("catalogo.favorites.remove")}
                 </Button>
               </div>
             ))}

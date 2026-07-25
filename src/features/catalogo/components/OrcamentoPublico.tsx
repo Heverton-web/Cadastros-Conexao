@@ -7,45 +7,48 @@ import {
 } from "~/components/ui/table"
 import { buscarOrcamentoPorToken, atualizarStatusOrcamentoPorToken } from "../services/orcamentos.service"
 import { STATUS_ORCAMENTO_LABEL, STATUS_ORCAMENTO_COLOR } from "../types/orcamentos"
+import { useTranslation } from "react-i18next"
+import { PublicLangWrapper } from "./PublicLangWrapper"
 
 interface OrcamentoPublicoProps {
   token: string
 }
 
-export function OrcamentoPublico({ token }: OrcamentoPublicoProps) {
+function OrcamentoPublicoContent({ token }: OrcamentoPublicoProps) {
   const [orcamento, setOrcamento] = useState<CatalogoOrcamento | null>(null)
   const [loading, setLoading] = useState(true)
   const [actionLoading, setActionLoading] = useState(false)
   const [error, setError] = useState("")
   const [success, setSuccess] = useState("")
+  const { t } = useTranslation()
 
   useEffect(() => {
     async function load() {
       try {
         const data = await buscarOrcamentoPorToken(token)
         if (!data) {
-          setError("Orçamento não encontrado ou link expirado.")
+          setError(t("catalogo.quote.notFound"))
         } else {
           setOrcamento(data)
         }
       } catch {
-        setError("Erro ao carregar orçamento.")
+        setError(t("catalogo.quote.errorLoad"))
       } finally {
         setLoading(false)
       }
     }
     load()
-  }, [token])
+  }, [token, t])
 
   async function handleAprovar() {
     if (!orcamento) return
     setActionLoading(true)
     try {
       await atualizarStatusOrcamentoPorToken(token, "aprovado")
-      setSuccess("Orçamento aprovado com sucesso!")
+      setSuccess(t("catalogo.quote.approved"))
       setOrcamento({ ...orcamento, status: "aprovado" })
     } catch {
-      setError("Erro ao aprovar orçamento.")
+      setError(t("catalogo.quote.errorApprove"))
     } finally {
       setActionLoading(false)
     }
@@ -56,10 +59,10 @@ export function OrcamentoPublico({ token }: OrcamentoPublicoProps) {
     setActionLoading(true)
     try {
       await atualizarStatusOrcamentoPorToken(token, "reprovado")
-      setSuccess("Orçamento reprovado.")
+      setSuccess(t("catalogo.quote.rejected"))
       setOrcamento({ ...orcamento, status: "reprovado" })
     } catch {
-      setError("Erro ao reprovar orçamento.")
+      setError(t("catalogo.quote.errorReject"))
     } finally {
       setActionLoading(false)
     }
@@ -95,17 +98,17 @@ export function OrcamentoPublico({ token }: OrcamentoPublicoProps) {
     <div className="min-h-screen bg-[#0a0e1a] py-12 px-4">
       <div className="max-w-3xl mx-auto">
         <div className="text-center mb-8">
-          <h1 className="text-2xl font-bold text-white mb-2">Orçamento</h1>
+          <h1 className="text-2xl font-bold text-white mb-2">{t("catalogo.quote.title")}</h1>
           <p className="text-[var(--color-text-muted)]">
             {orcamento.cliente_nome && `Olá, ${orcamento.cliente_nome}! `}
-            Confira os itens abaixo.
+            {t("catalogo.quote.checkItems")}
           </p>
         </div>
 
         <div className="bg-[var(--color-card)] border border-[var(--color-border-subtle)] rounded-xl p-6 mb-6">
           <div className="flex items-center justify-between mb-4">
             <span className="text-sm text-[var(--color-text-muted)]">
-              Orçamento #{orcamento.id.slice(0, 8)}
+              {t("catalogo.quote.title")} #{orcamento.id.slice(0, 8)}
             </span>
             <Badge className={STATUS_ORCAMENTO_COLOR[orcamento.status]}>
               {STATUS_ORCAMENTO_LABEL[orcamento.status]}
@@ -116,10 +119,10 @@ export function OrcamentoPublico({ token }: OrcamentoPublicoProps) {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Produto</TableHead>
-                  <TableHead className="text-center">Qtd</TableHead>
-                  <TableHead className="text-right">Preço Unit.</TableHead>
-                  <TableHead className="text-right">Subtotal</TableHead>
+                  <TableHead>{t("catalogo.quote.product")}</TableHead>
+                  <TableHead className="text-center">{t("catalogo.quote.qty")}</TableHead>
+                  <TableHead className="text-right">{t("catalogo.quote.unitPrice")}</TableHead>
+                  <TableHead className="text-right">{t("catalogo.quote.subtotal")}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -137,7 +140,7 @@ export function OrcamentoPublico({ token }: OrcamentoPublicoProps) {
 
           <div className="flex justify-end mt-4 pt-4 border-t border-[var(--color-border-subtle)]">
             <div className="text-right">
-              <p className="text-sm text-[var(--color-text-muted)]">Total</p>
+              <p className="text-sm text-[var(--color-text-muted)]">{t("catalogo.quote.total")}</p>
               <p className="text-2xl font-bold text-[var(--color-accent)]">
                 {formatBRL(orcamento.valor_total)}
               </p>
@@ -146,7 +149,7 @@ export function OrcamentoPublico({ token }: OrcamentoPublicoProps) {
 
           {orcamento.observacoes && (
             <div className="mt-4 pt-4 border-t border-[var(--color-border-subtle)]">
-              <p className="text-sm text-[var(--color-text-muted)]">Observações:</p>
+              <p className="text-sm text-[var(--color-text-muted)]">{t("catalogo.quote.observations")}</p>
               <p className="text-sm">{orcamento.observacoes}</p>
             </div>
           )}
@@ -170,7 +173,7 @@ export function OrcamentoPublico({ token }: OrcamentoPublicoProps) {
               ) : (
                 <Check className="w-4 h-4 mr-2" />
               )}
-              Aprovar Orçamento
+              {t("catalogo.quote.approve")}
             </Button>
             <Button
               onClick={handleReprovar}
@@ -179,7 +182,7 @@ export function OrcamentoPublico({ token }: OrcamentoPublicoProps) {
               className="border-red-500/30 text-red-400 hover:bg-red-900/20"
             >
               <X className="w-4 h-4 mr-2" />
-              Reprovar
+              {t("catalogo.quote.reject")}
             </Button>
           </div>
         )}
@@ -187,14 +190,22 @@ export function OrcamentoPublico({ token }: OrcamentoPublicoProps) {
         {isTerminal && !success && (
           <div className="text-center">
             <p className="text-[var(--color-text-muted)]">
-              {orcamento.status === "aprovado" && "Orçamento aprovado. Aguardando conversão em pedido."}
-              {orcamento.status === "reprovado" && "Orçamento reprovado."}
-              {orcamento.status === "pedido" && "Orçamento convertido em pedido."}
-              {orcamento.status === "expirado" && "Orçamento expirado."}
+              {orcamento.status === "aprovado" && t("catalogo.quote.approvedStatus")}
+              {orcamento.status === "reprovado" && t("catalogo.quote.rejectedStatus")}
+              {orcamento.status === "pedido" && t("catalogo.quote.convertedStatus")}
+              {orcamento.status === "expirado" && t("catalogo.quote.expiredStatus")}
             </p>
           </div>
         )}
       </div>
     </div>
+  )
+}
+
+export function OrcamentoPublico({ token }: OrcamentoPublicoProps) {
+  return (
+    <PublicLangWrapper>
+      <OrcamentoPublicoContent token={token} />
+    </PublicLangWrapper>
   )
 }

@@ -8,9 +8,11 @@ import { useAuth } from '~/lib/auth';
 import { CartDrawer } from './CartDrawer';
 import { NavDrawer } from './NavDrawer';
 import { ImageViewer } from './ImageViewer';
+import { useTranslation } from 'react-i18next';
 import { ProductSheet } from './ProductSheet';
 import { ClienteAtivoProvider } from '../context/cliente-ativo';
 import { ClienteAtivoBar } from './ClienteAtivoBar';
+import { PublicLangWrapper } from './PublicLangWrapper';
 
 export const CatalogoVisibilityContext = createContext({ showPrices: true, showSearchBar: true });
 export const useCatalogoVisibility = () => useContext(CatalogoVisibilityContext);
@@ -73,6 +75,7 @@ const SOCIAL_ICON_MAP: Record<string, typeof Instagram> = {
 };
 
 export function StoreLayout({ children, fullHeight, zoom }: StoreLayoutProps) {
+  const { t } = useTranslation();
   const [searchQuery, setSearchQuery] = useState('');
   const [isBackVisible, setIsBackVisible] = useState(false);
   const [visibility, setVisibility] = useState({ showPrices: true, showSearchBar: true, showFooter: true });
@@ -182,6 +185,7 @@ export function StoreLayout({ children, fullHeight, zoom }: StoreLayoutProps) {
   }, []);
 
   return (
+    <PublicLangWrapper>
     <ClienteAtivoProvider>
     <div
       className={`catalogo-theme flex flex-col relative bg-[var(--color-bg)] ${fullHeight ? 'h-dvh' : 'min-h-dvh'}`}
@@ -193,7 +197,7 @@ export function StoreLayout({ children, fullHeight, zoom }: StoreLayoutProps) {
             <button
               onClick={() => navigate({ to: '/catalogo/admin/dashboard' })}
               className="p-2 lg:p-2.5 rounded-full bg-[var(--color-surface)] border border-[var(--color-border-subtle)] hover:border-[var(--color-accent)] hover:bg-[var(--color-surface-hover)] transition-all"
-              title="Voltar ao ERP"
+              title={t("catalogo.store.backToERP")}
             >
               <ArrowLeft className="w-4 h-4 lg:w-5 lg:h-5 text-white" />
             </button>
@@ -214,7 +218,7 @@ export function StoreLayout({ children, fullHeight, zoom }: StoreLayoutProps) {
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] w-4 h-4" />
             <input
               type="text"
-              placeholder="Buscar por SKU, Linha ou Dimensão..."
+              placeholder={t("catalogo.search.placeholder")}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full h-11 pl-12 pr-4 rounded-full bg-[var(--color-surface)]/50 border border-[var(--color-input-border)] text-sm focus:border-[var(--color-accent)] focus:bg-[var(--color-input-bg)] focus:shadow-[0_0_15px_rgba(201,166,85,0.15)] focus:outline-none transition-all text-white placeholder-[var(--color-text-muted)]"
@@ -297,5 +301,6 @@ export function StoreLayout({ children, fullHeight, zoom }: StoreLayoutProps) {
       <ProductSheet />
     </div>
     </ClienteAtivoProvider>
+    </PublicLangWrapper>
   );
 }

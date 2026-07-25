@@ -4,17 +4,20 @@ import { LogIn, Loader2 } from "lucide-react"
 import { Button } from "~/components/ui/button"
 import { Input } from "~/components/ui/input"
 import { supabase } from "~/lib/supabase"
+import { useTranslation } from "react-i18next"
+import { PublicLangWrapper } from "./PublicLangWrapper"
 
 interface ClienteLoginProps {
   slug: string
 }
 
-export function ClienteLogin({ slug }: ClienteLoginProps) {
+function ClienteLoginForm({ slug }: ClienteLoginProps) {
   const [email, setEmail] = useState("")
   const [senha, setSenha] = useState("")
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
   const navigate = useNavigate()
+  const { t } = useTranslation()
 
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault()
@@ -30,14 +33,13 @@ export function ClienteLogin({ slug }: ClienteLoginProps) {
       })
 
       if (authError) {
-        setError("Email ou senha incorretos.")
+        setError(t("catalogo.login.errorCredentials"))
         return
       }
 
-      // Verifica se é um catalogo_cliente ativo
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) {
-        setError("Erro ao autenticar.")
+        setError(t("catalogo.login.errorAuth"))
         return
       }
 
@@ -50,14 +52,13 @@ export function ClienteLogin({ slug }: ClienteLoginProps) {
 
       if (!cliente) {
         await supabase.auth.signOut()
-        setError("Acesso não autorizado. Solicite acesso à empresa.")
+        setError(t("catalogo.login.errorUnauthorized"))
         return
       }
 
-      // Redireciona para a loja
       navigate({ to: `/loja/${slug}` })
     } catch {
-      setError("Erro ao fazer login. Tente novamente.")
+      setError(t("catalogo.login.errorGeneric"))
     } finally {
       setLoading(false)
     }
@@ -67,15 +68,15 @@ export function ClienteLogin({ slug }: ClienteLoginProps) {
     <div className="min-h-screen flex items-center justify-center bg-[#0a0e1a]">
       <div className="w-full max-w-md p-8">
         <div className="text-center mb-8">
-          <h1 className="text-2xl font-bold text-white mb-2">Acessar Catálogo</h1>
+          <h1 className="text-2xl font-bold text-white mb-2">{t("catalogo.login.title")}</h1>
           <p className="text-[var(--color-text-muted)]">
-            Faça login para ver preços e realizar pedidos
+            {t("catalogo.login.subtitle")}
           </p>
         </div>
 
         <form onSubmit={handleLogin} className="space-y-4">
           <div>
-            <label className="text-sm font-medium text-white">Email</label>
+            <label className="text-sm font-medium text-white">{t("catalogo.login.email")}</label>
             <Input
               type="email"
               value={email}
@@ -87,7 +88,7 @@ export function ClienteLogin({ slug }: ClienteLoginProps) {
           </div>
 
           <div>
-            <label className="text-sm font-medium text-white">Senha</label>
+            <label className="text-sm font-medium text-white">{t("catalogo.login.password")}</label>
             <Input
               type="password"
               value={senha}
@@ -112,7 +113,7 @@ export function ClienteLogin({ slug }: ClienteLoginProps) {
             ) : (
               <LogIn className="w-4 h-4 mr-2" />
             )}
-            Entrar
+            {t("catalogo.login.submit")}
           </Button>
         </form>
 
@@ -121,10 +122,18 @@ export function ClienteLogin({ slug }: ClienteLoginProps) {
             href={`/loja/${slug}`}
             className="text-sm text-[var(--color-text-muted)] hover:text-white transition-colors"
           >
-            ← Voltar à loja
+            ← {t("catalogo.login.backToStore")}
           </a>
         </div>
       </div>
     </div>
+  )
+}
+
+export function ClienteLogin({ slug }: ClienteLoginProps) {
+  return (
+    <PublicLangWrapper>
+      <ClienteLoginForm slug={slug} />
+    </PublicLangWrapper>
   )
 }

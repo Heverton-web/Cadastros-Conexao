@@ -28,12 +28,11 @@ function entryMatches(
 }
 
 export function MaintenanceGate({ children }: { children: ReactNode }) {
-  const { profile, empresa } = useAuth();
+  const { profile } = useAuth();
   const location = useLocation();
   const pathname = location.pathname;
 
   const isSuper = profile?.is_super_admin === true;
-  const empresaId = empresa?.id ?? null;
 
   const { ativas, isLoading } = useManutencao();
 
@@ -41,15 +40,11 @@ export function MaintenanceGate({ children }: { children: ReactNode }) {
     return <>{children}</>;
   }
   if (isSuper) return <>{children}</>;
-  if (!empresaId) return <>{children}</>;
   if (isLoading) return <>{children}</>;
 
   const activeModule = resolveActiveModule(pathname);
 
   for (const entry of ativas) {
-    const isAdminDaEmpresa =
-      profile?.role === "admin" && entry.empresa_id === empresaId;
-    if (isAdminDaEmpresa) continue;
 
     if (entryMatches(entry, pathname, activeModule)) {
       const escopoLabel = entry.rota

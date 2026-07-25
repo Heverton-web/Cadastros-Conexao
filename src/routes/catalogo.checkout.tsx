@@ -11,6 +11,7 @@ import { useCatalogoCliente } from "~/features/catalogo/hooks/useCatalogoCliente
 import { useCriarPedidoCatalogo } from "~/features/catalogo/hooks/useCatalogo"
 import type { CatalogoCupom, CatalogoFrete } from "~/features/catalogo/types"
 import { CheckCircle, Truck, MapPin, Tag, ShieldCheck, ArrowLeft } from "lucide-react"
+import { useTranslation } from "react-i18next"
 export const catalogoCheckoutRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/catalogo/checkout",
@@ -34,6 +35,7 @@ function CheckoutPage() {
   const [protocolo, setProtocolo] = useState<string | null>(null)
   const [buscandoCep, setBuscandoCep] = useState(false)
   const [processando, setProcessando] = useState(false)
+  const { t } = useTranslation()
 
   async function handleBuscarCep() {
     setBuscandoCep(true)
@@ -95,7 +97,7 @@ function CheckoutPage() {
           <div className="w-24 h-24 bg-gradient-to-br from-green-400 to-emerald-600 rounded-full flex items-center justify-center mx-auto mb-8 shadow-[0_0_50px_rgba(52,211,153,0.3)]">
             <CheckCircle className="w-12 h-12 text-white" />
           </div>
-          <h1 className="text-4xl font-black mb-4 text-white">Pedido Confirmado!</h1>
+          <h1 className="text-4xl font-black mb-4 text-white">{t("catalogo.checkout.orderSuccess")}</h1>
           <p className="text-lg text-[var(--color-text-muted)] mb-8">
             Seu pedido foi recebido e está sendo processado. O protocolo de acompanhamento é:
           </p>
@@ -156,7 +158,7 @@ function CheckoutPage() {
                 <input 
                   value={cep} 
                   onChange={(e) => setCep(e.target.value)} 
-                  placeholder="Digite seu CEP..." 
+                  placeholder={t("catalogo.checkout.cepPlaceholder")} 
                   className="flex-1 px-4 py-3 rounded-xl bg-[var(--color-input-bg)] border border-[var(--color-input-border)] text-sm focus:border-[var(--color-accent)] focus:outline-none transition-all text-white placeholder-[var(--color-text-muted)]"
                 />
                 <button 
@@ -164,7 +166,7 @@ function CheckoutPage() {
                   disabled={buscandoCep} 
                   className="px-6 py-3 rounded-xl font-bold text-sm bg-[var(--color-surface-hover)] text-white hover:text-[var(--color-accent)] disabled:opacity-50 transition-colors"
                 >
-                  {buscandoCep ? "Buscando..." : "Buscar CEP"}
+                  {buscandoCep ? t("common.loading") : t("catalogo.checkout.searchCep")}
                 </button>
               </div>
               {endereco && (
@@ -185,7 +187,7 @@ function CheckoutPage() {
                 <div className="w-10 h-10 rounded-full bg-[var(--color-input-bg)] flex items-center justify-center border border-[var(--color-border-subtle)]">
                   <Tag className="w-5 h-5 text-[var(--color-accent)]" />
                 </div>
-                <h3 className="text-xl font-bold text-white">Cupom de Desconto</h3>
+                <h3 className="text-xl font-bold text-white">{t("catalogo.checkout.coupon")}</h3>
               </div>
               
               <div className="flex gap-4">
@@ -211,7 +213,7 @@ function CheckoutPage() {
           {/* Resumo Final */}
           <div className="lg:col-span-5">
             <div className="sticky top-28 rounded-3xl border border-[var(--color-border-subtle)] bg-[var(--color-surface)]/80 p-8 backdrop-blur-xl shadow-2xl">
-              <h3 className="text-lg font-black uppercase tracking-widest text-white mb-6 border-b border-[var(--color-border-subtle)] pb-4">Resumo da Compra</h3>
+              <h3 className="text-lg font-black uppercase tracking-widest text-white mb-6 border-b border-[var(--color-border-subtle)] pb-4">{t("catalogo.checkout.summary")}</h3>
               
               <div className="space-y-4 mb-6 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
                 {items.map((item) => (
@@ -248,7 +250,7 @@ function CheckoutPage() {
               </div>
 
               <div className="flex justify-between items-end mb-8">
-                <span className="text-sm font-bold uppercase tracking-widest text-[var(--color-text-muted)]">Total a Pagar</span>
+                <span className="text-sm font-bold uppercase tracking-widest text-[var(--color-text-muted)]">{t("catalogo.checkout.total")}</span>
                 <span className="text-4xl font-black text-gradient-gold">{formatBRL(totalFinal)}</span>
               </div>
 
@@ -258,7 +260,7 @@ function CheckoutPage() {
                 className="w-full flex items-center justify-center gap-3 py-4 rounded-xl font-black text-sm uppercase tracking-widest transition-all hover:scale-105 hover:shadow-[0_0_30px_rgba(201,166,85,0.3)] disabled:opacity-50 disabled:hover:scale-100 disabled:cursor-not-allowed"
                 style={{ background: "linear-gradient(135deg, #c9a655, #e8d48b)", color: "#0f172a" }}
               >
-                <ShieldCheck className="w-5 h-5" /> {processando ? "Processando..." : "Confirmar Compra"}
+                <ShieldCheck className="w-5 h-5" /> {processando ? t("catalogo.checkout.processing") : t("catalogo.checkout.placeOrder")}
               </button>
             </div>
           </div>

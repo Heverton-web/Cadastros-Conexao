@@ -10,6 +10,7 @@ import { Badge } from "~/components/ui/badge"
 import {
   Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
 } from "~/components/ui/table"
+import { useTranslation } from "react-i18next"
 
 export const catalogoLojaPedidosRoute = createRoute({
   getParentRoute: () => rootRoute,
@@ -22,6 +23,7 @@ function LojaPedidosPage() {
   const { cliente, isLogado, loading: authLoading } = useCatalogoCliente()
   const [pedidos, setPedidos] = useState<CatalogoPedido[]>([])
   const [loading, setLoading] = useState(true)
+  const { t } = useTranslation()
 
   useEffect(() => {
     if (!isLogado || !cliente) return
@@ -40,7 +42,7 @@ function LojaPedidosPage() {
   if (authLoading || loading) {
     return (
       <StoreLayout>
-        <div className="p-8 text-center text-[var(--color-text-muted)]">Carregando...</div>
+        <div className="p-8 text-center text-[var(--color-text-muted)]">{t("common.loading")}</div>
       </StoreLayout>
     )
   }
@@ -49,9 +51,9 @@ function LojaPedidosPage() {
     return (
       <StoreLayout>
         <div className="p-8 text-center">
-          <p className="text-[var(--color-text-muted)]">Faça login para ver seus pedidos.</p>
+          <p className="text-[var(--color-text-muted)]">{t("catalogo.orders.loginRequired")}</p>
           <a href={`/loja/${slug}/login`} className="text-[var(--color-accent)] hover:underline mt-2 inline-block">
-            Entrar
+            {t("catalogo.login.submit")}
           </a>
         </div>
       </StoreLayout>
@@ -65,26 +67,26 @@ function LojaPedidosPage() {
   return (
     <StoreLayout>
       <div className="p-4 lg:p-8 space-y-4">
-        <h1 className="text-2xl font-bold text-white">Meus Pedidos</h1>
+        <h1 className="text-2xl font-bold text-white">{t("catalogo.orders.title")}</h1>
 
         {pedidos.length === 0 ? (
-          <p className="text-[var(--color-text-muted)]">Nenhum pedido encontrado.</p>
+          <p className="text-[var(--color-text-muted)]">{t("catalogo.orders.empty")}</p>
         ) : (
           <Table>
             <TableHeader>
               <TableRow>
                 <TableHead>#</TableHead>
-                <TableHead>Itens</TableHead>
-                <TableHead>Total</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Data</TableHead>
+                <TableHead>{t("catalogo.orders.items")}</TableHead>
+                <TableHead>{t("catalogo.quote.total")}</TableHead>
+                <TableHead>{t("catalogo.quote.product")}</TableHead>
+                <TableHead>{t("catalogo.orders.date")}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {pedidos.map((p) => (
                 <TableRow key={p.id}>
                   <TableCell className="font-mono text-xs">{p.id.slice(0, 8)}</TableCell>
-                  <TableCell>{p.itens?.length ?? 0} itens</TableCell>
+                  <TableCell>{p.itens?.length ?? 0} {t("catalogo.orders.items")}</TableCell>
                   <TableCell>{formatBRL(p.valor_total)}</TableCell>
                   <TableCell>
                     <Badge className={STATUS_PEDIDO_COLOR[p.status]}>

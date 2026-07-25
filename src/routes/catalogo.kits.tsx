@@ -10,6 +10,7 @@ import { useMemo, useEffect, useState } from "react"
 import { ShoppingBag, PackageOpen, ArrowLeft } from "lucide-react"
 import { cn } from "~/lib/utils"
 import type { CatalogoImagemProduto } from "~/features/catalogo/types"
+import { useTranslation } from "react-i18next"
 
 // Etapa 1: /catalogo/kits — Escolher Tipo de Kit
 export const catalogoKitsRoute = createRoute({
@@ -31,6 +32,7 @@ function CatalogoKitsPage() {
   const navigate = useNavigate()
   const params = useParams({ strict: false }) as Record<string, string | undefined>
   const tipoKitId = params.tipoKitId ?? null
+  const { t } = useTranslation()
 
   // Contagem de kits por tipo
   const countByTipo = useMemo(() => {
@@ -125,22 +127,22 @@ function KitsList({ tipoKitId, onBack }: { tipoKitId: string; onBack: () => void
                 <div key={i} className={cn("h-1.5 rounded-full transition-all duration-500", i < 2 ? "w-8 bg-[var(--color-accent)]" : "w-2 bg-[var(--color-border-subtle)]")} />
               ))}
             </div>
-            <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-accent)] ml-2">Etapa 2 de 2</span>
+            <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-accent)] ml-2">{t("catalogo.step", { current: 2, total: 2 })}</span>
           </div>
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-black leading-tight text-white tracking-tighter text-balance">Selecione o Kit</h1>
-          <p className="text-sm sm:text-lg mt-1 sm:mt-2 text-[var(--color-text-muted)] text-balance">{kits.length} kit(s) encontrado(s).</p>
+          <p className="text-sm sm:text-lg mt-1 sm:mt-2 text-[var(--color-text-muted)] text-balance">{kits.length} {t("catalogo.categories.productsFound")}</p>
         </div>
       </div>
 
       {/* Count */}
       <p className="text-xs font-bold uppercase tracking-widest text-[var(--color-text-muted)] border-b border-[var(--color-border-subtle)] pb-4">
-        {kits.length} resultado(s)
+        {kits.length} {t("catalogo.categories.results")}
       </p>
 
       {kits.length === 0 ? (
         <div className="text-center py-24 rounded-3xl border border-[var(--color-border-subtle)] bg-[var(--color-surface)]/30 backdrop-blur-md">
           <PackageOpen className="h-14 w-14 mx-auto mb-6 opacity-20 text-white" />
-          <p className="text-xl font-black text-white tracking-tight">Nenhum kit encontrado</p>
+          <p className="text-xl font-black text-white tracking-tight">{t("catalogo.categories.noImplants")}</p>
           <p className="text-sm text-[var(--color-text-muted)] mt-2 max-w-sm mx-auto">Este tipo não possui kits cadastrados. Volte e selecione outro tipo.</p>
         </div>
       ) : (

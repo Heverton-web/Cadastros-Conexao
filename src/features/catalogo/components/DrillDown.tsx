@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router"
 import { ChevronRight, ArrowLeft, PackageOpen } from "lucide-react"
 import { cn } from "~/lib/utils"
+import { useTranslation } from "react-i18next"
 
 interface DrillDownOption {
   id: string
@@ -24,6 +25,7 @@ interface DrillDownProps {
 }
 
 export function DrillDown({ title, subtitle, step, totalSteps, options, onSelect, onBack, backLabel, isLoading }: DrillDownProps) {
+  const { t } = useTranslation()
   return (
     <div className="space-y-8 sm:space-y-12">
       {/* Header Premium */}
@@ -46,7 +48,7 @@ export function DrillDown({ title, subtitle, step, totalSteps, options, onSelect
                 />
               ))}
             </div>
-            <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-accent)] ml-2">Etapa {step} de {totalSteps}</span>
+            <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-accent)] ml-2">{t("catalogo.step", { current: step, total: totalSteps })}</span>
           </div>
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-black leading-tight text-white tracking-tighter text-balance">{title}</h1>
           <p className="text-sm sm:text-lg mt-1 sm:mt-2 text-[var(--color-text-muted)] text-balance">{subtitle}</p>
@@ -56,7 +58,7 @@ export function DrillDown({ title, subtitle, step, totalSteps, options, onSelect
       {/* Count */}
       {!isLoading && (
         <p className="text-xs font-bold uppercase tracking-widest text-[var(--color-text-muted)] border-b border-[var(--color-border-subtle)] pb-4">
-          {options.length} opção(ões) disponíveis
+          {options.length} {t("catalogo.categories.results")}
         </p>
       )}
 
@@ -69,8 +71,8 @@ export function DrillDown({ title, subtitle, step, totalSteps, options, onSelect
       ) : options.length === 0 ? (
         <div className="text-center py-24 rounded-3xl border border-[var(--color-border-subtle)] bg-[var(--color-surface)]/30 backdrop-blur-md">
           <PackageOpen className="h-14 w-14 mx-auto mb-6 opacity-20 text-white" />
-          <p className="text-xl font-black text-white tracking-tight">Nenhuma opção disponível</p>
-          <p className="text-sm text-[var(--color-text-muted)] mt-2 max-w-sm mx-auto">Não há registros para esta etapa. Volte e selecione outra opção anterior.</p>
+          <p className="text-xl font-black text-white tracking-tight">{t("catalogo.categories.noImplants")}</p>
+          <p className="text-sm text-[var(--color-text-muted)] mt-2 max-w-sm mx-auto">{t("catalogo.categories.noImplantsLine")}</p>
         </div>
       ) : (
       /* Options Grid */

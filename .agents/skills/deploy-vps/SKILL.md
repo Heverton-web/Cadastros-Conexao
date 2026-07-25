@@ -50,6 +50,9 @@ Seguir diretrizes de economia de tokens do AGENTS.md.
 ### Step 1: Verificar e Commitar mudanças locais
 
 ```bash
+# Sincronizar docs antes de commit
+node scripts/sync-docs.mjs
+
 git status --porcelain
 ```
 

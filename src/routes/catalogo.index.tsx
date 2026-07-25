@@ -5,6 +5,7 @@ import { Loader2, Crosshair, ShieldCheck, Box, Tag, Package, Layers, ShoppingBag
 import { useCatalogoDesign } from "~/features/catalogo/hooks/useCatalogo"
 import { WatermarkShape } from "~/features/catalogo/components/WatermarkShape"
 import { IconImplante, IconComponente, IconKit, IconPromocao } from "~/features/catalogo/components/IconsOdonto"
+import { useTranslation } from "react-i18next"
 
 const ICON_MAP: Record<string, any> = {
   IconImplante, IconComponente, IconKit, IconPromocao,
@@ -49,6 +50,7 @@ function CatalogoIndexPage() {
 
 function CatalogoStoreContent() {
   const { data: config } = useCatalogoDesign()
+  const { t } = useTranslation()
 
   if (!config) {
     return (
@@ -140,7 +142,7 @@ function CatalogoStoreContent() {
                         <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#0f172a] opacity-60" />
                         <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-[#0f172a]" />
                       </span>
-                      Ofertas
+                      {t("catalogo.categories.promotions")}
                     </span>
                   )}
                   <div className="absolute top-0 inset-x-0 h-1/2 bg-gradient-to-b from-[var(--color-accent-muted)] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />

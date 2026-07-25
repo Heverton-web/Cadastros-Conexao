@@ -35,6 +35,7 @@ import { manutencaoModule } from "~/features/manutencao/module";
 import { agentesModule } from "~/features/agentes/module";
 import { initSentry } from "~/core/monitoring/sentry";
 import "~/styles/globals.css";
+import "~/core/i18n";
 
 initSentry();
 

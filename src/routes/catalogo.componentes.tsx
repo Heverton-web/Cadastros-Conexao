@@ -10,6 +10,7 @@ import { useMemo, useEffect, useState } from "react"
 import { ArrowLeft, PackageOpen } from "lucide-react"
 import { cn } from "~/lib/utils"
 import type { CatalogoImagemProduto } from "~/features/catalogo/types"
+import { useTranslation } from "react-i18next"
 
 // Etapa 1: /catalogo/componentes — Escolher Família
 export const catalogoComponentesRoute = createRoute({
@@ -47,6 +48,7 @@ function CatalogoComponentesPage() {
   const familiaId = params.familiaId ?? null
   const tipoReabId = params.tipoReabId ?? null
   const tipoAbutmentId = params.tipoAbutmentId ?? null
+  const { t } = useTranslation()
 
   // Contagem por família
   const countByFamilia = useMemo(() => {
@@ -127,8 +129,8 @@ function CatalogoComponentesPage() {
     <StoreLayout>
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
         <DrillDown
-          title="Componentes"
-          subtitle="família anatômica"
+          title={t("catalogo.categories.components")}
+          subtitle={t("catalogo.categories.familySubtitle")}
           step={1}
           totalSteps={4}
           options={(familias ?? [])

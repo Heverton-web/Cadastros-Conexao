@@ -1,145 +1,160 @@
-# AGENTS.md — ERP Odonto
+# CLAUDE.md — ERP Odonto
 
 **Idioma:** PT-BR. **Sem greetings.** Direto ao ponto.
 
+## Fable Family
+
+- Tarefa multi-step não trivial → aplicar `fable-method`.
+- Tarefa unattended / subagents em paralelo → `fable-loop`.
+- Trabalho concluído → `fable-judge` antes de declarar pronto.
+
 ## Estrutura
 
-- `proj_erp/` → ERP (TanStack Start + React Router + Vite + Supabase)
-- `supabase-mcp-server/` → MCP server para Supabase
+```
+proj_erp/
+├── src/
+│   ├── features/       # Módulos de negócio (25 módulos)
+│   ├── shared/         # Dados compartilhados (empresas, form-schema)
+│   ├── core/           # Infra: auth, permissions, services, store, theme
+│   ├── components/     # UI genérica (ui/, shared/, layout/, guards/)
+│   ├── design-system/  # Tokens, presets, hooks, provider
+│   ├── registry/       # Registro de módulos, nav items, permissões
+│   ├── routes/         # ~196 rotas (TanStack Router file-based)
+│   ├── lib/            # Utilitários genéricos (format, utils)
+│   └── hooks/          # Hooks compartilhados
+├── supabase/           # Migrations SQL
+├── supabase-mcp-server/# MCP server (Supabase)
+├── docs-projeto/       # Documentação (docs-design-system/, specs/, etc.)
+└── .agents/skills/     # 39 skills de automação
+```
+
+**Config unificada:** `.claude/` contém symlinks (`.lnk`) para `.agents/` — skills, hooks, commands, rules, specs, workflows. Editar em `.agents/`, symlink atualiza automaticamente.
 
 ## Comandos
 
 ```bash
-npm run dev      # dev server
-npm run build    # build produção (RODAR APÓS QUALQUER ALTERAÇÃO)
-npm run format   # Prettier
-npm run lint     # ESLint
+dev  # dev server
+build  # build produção (RODAR APÓS QUALQUER ALTERAÇÃO)
+preview  # preview produção
+format  # Prettier
+lint  # ESLint
+test  # vitest run
+test:watch  # vitest watch
+test:coverage  # vitest com coverage
+storybook  # Storybook dev
+build-storybook  # Storybook build
+test:safe  # testes com headroom filter
+deploy:safe  # deploy com headroom filter
+check:types  # type-check (tsc --noEmit)
+check:guards  # verificar guards de rota
+validate:all  # types + testes
 ```
 
-## MCP Supabase
+## Arquitetura
 
-Server em `supabase-mcp-server/`. Tools: `supabase_execute_sql`, `supabase_list_tables`, `supabase_describe_table`, `supabase_apply_migration`.
+- **Single-tenant:** `empresa_id` removido de ~71 tabelas (migration `20260721000000`). RLS aberta (`USING true`). Não injetar `empresa_id` em código novo. Exceção: `agentes_usage_log`.
+- **Módulos:** self-contained em `src/features/<modulo>/`. Única conexão = banco.
+- **Imports:** módulo só importa de `shared/`, `lib/`, `components/ui/`, `core/`. Nunca de outro módulo.
+- **Eventos:** todo módulo DEVE ter `events[]` no `module.ts` (min 2) + `dispararEventoModulo(moduloKey, eventoKey, payload)` — 3 args, fire-and-forget com `.catch(() => {})`.
+- **Permissões:** rota → `RequirePermission` ou `RequireSuperAdmin`. Botões → `permissoes?.chave`.
+- **Detalhes:** ver `ARCHITECTURE.md`.
 
 ## Regras de UI
 
 - **PROIBIDO** `window.confirm()`, `window.alert()`, `window.prompt()`
 - **OBRIGATÓRIO** `AlertDialog` (exclusões) ou `Dialog` (conteúdo) de `~/components/ui/`
-- Dialogs com scroll: `DialogContent flex flex-col max-h-[85vh] overflow-hidden` + body `overflow-y-auto flex-1 min-h-0`
-- Referência existente em `~/components/ui/alert-dialog` e `~/components/ui/dialog` para padrão
+- Dialog scroll: `DialogContent flex flex-col max-h-[85vh] overflow-hidden` + body `overflow-y-auto flex-1 min-h-0`
+- Design system: `src/design-system/` (tokens, presets, hooks). Docs em `docs-projeto/docs-design-system/`
 
-## Arquitetura
+## Skills
 
-- **Single-tenant**: `empresa_id` foi removido de praticamente todas as tabelas em `20260721000000_remove_empresa_id_all_tables.sql`. RLS hoje é aberta (`USING (true)`). Não injetar `empresa_id` em código novo. Exceção: `agentes_usage_log` (uso/billing) manteve a coluna.
-- **Módulos**: self-contained em `src/features/<modulo>/`. Única conexão = banco de dados.
-- **Eventos**: todo módulo DEVE ter `events[]` no `module.ts` (min 2) + `dispararEventoModulo()` fire-and-forget.
-- **Permissões**: toda rota → `RequirePermission` ou `RequireSuperAdmin`. Botões → check `permissoes?.chave`.
-- **Build**: `npm run build` DEVE passar após qualquer alteração.
-
-## Economia de Tokens (RIGOROSO)
-
-### O que fazer
-- **Skill-first**: ler `.agents/skills/<nome>/SKILL.md` antes de tarefa complexa
-- **Lean-CTX**: `grep` antes de `read`. Assinaturas antes de corpos. Nunca ler arquivo inteiro sem necessidade
-- **Headroom**: comprimir logs/erros antes de reportar. Saída > 7 linhas = headroom obrigatório
-- **Caveman**: respostas telegráficas. Sem re-emitir arquivos inteiros. Só diffs/chunks cirúrgicos
-- **Pre-flight-check**: `types → testes → build` ANTES de qualquer deploy ou commit estrutural
-- **RTK-Memory**: registrar erros novos e padrões descobertos no `## RTK SCRATCHPAD` do AGENTS.md
-- **Subagents**: delegar tarefas paralelas via `task` — 5 tarefas independentes = 5 subagents, não 5 turnos inline
-- **Cache interno**: consolidar edits em `write`/`edit` único, não troca incremental
-- **`/clear`**: ao finalizar tarefas longas para limpar contexto acumulado
-
-### O que NÃO fazer
-- Nunca ler arquivo "só pra ver" — ter objetivo claro
-- Nunca ler mais de 3 arquivos grandes sem consolidar (lean-ctx)
-- Nunca fazer `read` de diretório grande — usar `glob`/`grep`
-- Nunca ocultar erros principais em logs (headroom preserva sempre)
-- Nunca declarar tarefa concluída sem pre-flight-check
-- Nunca re-analisar erro já registrado no RTK SCRATCHPAD
-- Nunca gerar explicações longas sem pedido explícito
-- Nunca delegar design inicial a subagent (escopo é seu, execução é dele)
-- Nunca spawnar subagent sem tarefa autocontida e verificável
-
-### Pipeline de economia (ordem de aplicação)
-```
-1. lean-ctx    → inspecionar código (mínimo tokens de input)
-2. headroom    → comprimir logs/erros (mínimo tokens de contexto)
-3. caveman     → comprimir resposta (mínimo tokens de output)
-4. rtk-memory  → registrar aprendizado (evitar re-análise futura)
-5. pre-flight  → validar antes de commit/deploy (evitar retrabalho)
-```
-
-### Skills de economia de tokens
-| Skill | Pasta | Trigger | O que faz |
-|---|---|---|---|
-| `caveman` | `.agents/skills/caveman/` | "caveman mode", "/caveman", "menos tokens" | Comunicação ultra-condensada (-75% output) |
-| `headroom` | `.agents/skills/headroom/` | "headroom", "compactar logs" | Compacta logs/erros, preserva contexto acionável |
-| `lean-ctx` | `.agents/skills/lean-ctx/` | "lean-ctx", "inspecionar código" | Leitura seletiva: assinaturas > corpos (-60% input) |
-| `pre-flight-check` | `.agents/skills/pre-flight-check/` | "pre-flight", "validar antes de deploy" | Validação types → testes → build obrigatória |
-| `rtk-memory` | `.agents/skills/rtk-memory/` | "rtk-memory", "registrar erro" | Aprendizado persistente no RTK SCRATCHPAD |
-
-### Outras skills
+### Economia de Tokens
 | Skill | Trigger |
 |---|---|
-| `deploy-vps` | "deploy", "/deploy" |
-| `calcular-gastos-sessao` | "quanto gastei", "custo sessão" |
-| `criar-migration` | "criar migration", "criar tabela", "migration supabase" |
-| `criar-form-multitipo` | "form modal com tipos", "modal com abas de tipo de produto" |
+| `caveman` | Modo ultra-condensado de comunicação e geração de código. Co |
+| `headroom` | Intercepta e compacta logs de erro, stack traces e saídas de |
+| `lean-ctx` | Protocolo de inspeção de código que minimiza tokens de conte |
+| `pre-flight-check` | Validação local obrigatória antes de qualquer modificação es |
+| `rtk-memory` | Gerencia aprendizado persistente para evitar repetição de an |
+
+### Módulo (criar/estilizar/validar)
+| Skill | Trigger |
+|---|---|
+| `aplicar-design-modulo` | Aplica o design system a um módulo inteiro do ERP Odonto a p |
+| `criar-componente-modulo` | criar componente |
+| `criar-design-modulo` | criar design do módulo |
+| `criar-form-multitipo` | criar formulário multi-tipo |
+| `criar-migration` | criar migration |
+| `criar-modulo` | criar módulo |
+| `criar-rota` | criar rota |
+| `design-frontend` |  |
+| `documentar-modulo` | documentar módulo |
+| `gerenciar-nav-items` | adicionar nav item |
+| `validar-modulo` | validar módulo |
+
+### CRUD e UI
+| Skill | Trigger |
+|---|---|
+| `adicionar-permissao` |  |
+| `gerar-crud` | gerar crud |
+| `gerar-formulario` | gerar formulário |
+| `gerar-modal` | gerar modal |
+| `gerar-pagina` | gerar página |
+| `responsividade` | /responsividade <nome_modulo> Use quando o usuario quiser analisar e corrigir a responsividade de qualquer modulo do projeto. |
+
+### Deploy e Operação
+| Skill | Trigger |
+|---|---|
+| `calcular-gastos-sessao` |  |
+| `deploy-vps` | ativar SOMENTE quando o usuário disser deploy |
+| `implementar-plan` |  |
+| `master-skill` | Orquestrador mestre de frameworks e skills de desenvolviment |
+
+### Conhecimento e Referência
+| Skill | Trigger |
+|---|---|
+| `ai-agents-mcp` |  |
+| `ai-engineering` |  |
+| `clean-architecture` |  |
+| `clean-code` |  |
+| `fable-domain` |  |
+| `fable-judge` |  |
+| `fable-loop` |  |
+| `fable-method` |  |
+| `google-maps-platform` |  |
+| `implementar-mapa-dark-premium` |  |
+| `loop` | Conduz uma entrevista curta e ESCREVE a especificação de um  |
+| `planejar-modulo-repo-externo` | quando o usuário fornecer um link de repo externo e pedir para criar/planejar um novo módulo no ERP. |
+| `sync-docs` | sincronizar docs |
+
+
+## Economia de Tokens
+
+```
+1. lean-ctx    → grep antes de read, assinaturas antes de corpos
+2. headroom    → comprimir logs > 7 linhas
+3. caveman     → respostas telegráficas, só diffs cirúrgicos
+4. rtk-memory  → registrar erro/padrão no RTK SCRATCHPAD
+5. pre-flight  → types → testes → build ANTES de commit/deploy
+```
+
+**O que NÃO fazer:** ler arquivo "só pra ver"; ler >3 arquivos grandes sem consolidar; read de diretório grande (usar glob/grep); declarar tarefa concluída sem pre-flight; re-analisar erro registrado no RTK SCRATCHPAD; gerar explicações longas sem pedido.
 
 ## Deploy
 
-Só executar quando usuário disser "deploy" ou "/deploy". Usar skill `deploy-vps`. Build DEVE passar antes do push.
+Só quando usuário disser "deploy" ou "/deploy". Usar skill `deploy-vps`. Build DEVE passar antes do push.
 
 ## Gastos
 
-Ao final de cada ação, exibir `[💰 Ação: R$ X | Sessão: R$ Y]`. Detalhes na skill `calcular-gastos-sessao`.
-
-## Bubble Reverse Engineering
-
-Pipeline via `/bubble-tech-lead` + skills em `.agents/skills/`.
+Exibir `[💰 Ação: R$ X | Sessão: R$ Y]` ao final de cada ação. Detalhes: `calcular-gastos-sessao`.
 
 ## RTK SCRATCHPAD
 
-> Registro persistente de erros resolvidos, decisões arquiteturais e padrões descobertos.
-> Gerenciado pela skill `rtk-memory`. Nunca re-analisar o que já está aqui.
+> Erros resolvidos e padrões descobertos. Gerenciado por `rtk-memory`. Não re-analisar o que já está aqui.
 
-### 2026-07-23 — Sistema é single-tenant, não multi-tenant (drift entre skills e schema real)
-- **Descoberta**: 6 skills (`criar-modulo`, `gerar-crud`, `planejar-modulo-repo-externo`, `documentar-modulo`, `validar-modulo`) + este CLAUDE.md exigiam `empresa_id` obrigatório como se o ERP fosse multi-tenant
-- **Realidade**: `supabase/migrations/20260721000000_remove_empresa_id_all_tables.sql` removeu `empresa_id` de ~71 tabelas. RLS atual é aberta (`USING (true)`). Sistema é single-tenant
-- **Exceção**: `agentes_usage_log` manteve `empresa_id` (uso/billing, criada em `00084_agentes_usage_log.sql`) — não generalizar essa exceção para outras tabelas
-- **Fix**: skills e CLAUDE.md corrigidos para não exigir/injetar `empresa_id`
-- **Padrão**: antes de confiar em uma skill que menciona multi-tenant/empresa_id, checar a migration mais recente que toque a tabela — não assumir que a doc da skill reflete o schema atual
-
-### 2026-07-23 — `dispararEventoModulo()` tem 3 args, não 4
-- **Arquivo real**: `src/core/services/webhooks.ts:379` — assinatura `(moduloKey, eventoKey, payload)`
-- **Templates desatualizados**: `criar-modulo`/`gerar-crud` passavam um 4º arg (`empresaId`) que é silenciosamente ignorado pela implementação real
-- **Fix**: templates corrigidos para 3 args
-- **Padrão**: sempre chamar fire-and-forget com `.catch(() => {})`, nunca `await`
-
-### 2026-07-23 — Correção completa: bug crítico em shared/empresas + shadow EMPRESA_ID em 6 módulos
-- **Bug crítico corrigido**: `shared/empresas/service.ts` usava `EMPRESA_ID` global fixo em vez do parâmetro recebido em `buscarEmpresaDesign`, `salvarEmpresaDesign`, `listarModulosEmpresa`, `upsertModuloEmpresa`, `ativarModulosParaEmpresa` — quebrava `/global/empresas/$id` (super-admin) e preview de tema NPS por empresa. Fix: usar o parâmetro recebido
-- **form-schema movido**: `src/features/form-schema` (não era módulo registrado, sem module.ts) → `src/shared/form-schema`, seguindo o mesmo padrão de `shared/empresas`. Resolve o único import direto feature→feature encontrado (`precadastro` → `form-schema`)
-- **Rotas corrigidas**: 8 arquivos de rota trocaram `~/features/empresas` (shim de compat) por `~/shared/empresas` (caminho direto documentado)
-- **Shadow de `EMPRESA_ID` renomeado para `empresaId`** em ~20 arquivos de `funis`, `hub`, `linktree`, `manutencao`, `nps`, `rotas` (parâmetro local com o mesmo nome do import global — funcionava por shadow, mas era risco de regressão futura)
-- **Bug correlato em `rotas.service.ts`**: 4 chamadas de `dispararEventoModulo` passavam um 4º argumento indevido (assinatura real tem 3) — removido
-- **Método**: 6 subagents em paralelo para o rename mecânico; 4 falharam por limite de sessão da API a meio caminho, mas o trabalho já feito por eles ficou salvo — verificado via grep e completado manualmente o que faltou (só `rotas.service.ts`)
-- **Padrão**: ao usar múltiplos subagents em paralelo para edições mecânicas, sempre validar com grep pós-execução — falha de agent não é falha de escrita, o arquivo pode já estar correto
-
-### 2026-07-24 — `modulos_manutencao` ficou de fora da limpeza multi-tenant → empresa_id
-- **Erro**: `400` no console ao carregar `modulos_manutencao?select=*&or=(empresa_id.is.null,empresa_id.eq.null)` — coluna `empresa_id` já não existia mais na tabela (removida manualmente/fora do fluxo de migrations), mas o código do módulo `manutencao` (`service.ts`, `hooks.ts`, `ManutencaoContext.tsx`, `ManutencaoPanel.tsx`) ainda filtrava/inseria por ela
-- **Causa raiz dupla**: (1) a migration `20260721000000_remove_empresa_id_all_tables.sql` não incluiu `modulos_manutencao` na lista explícita de tabelas; (2) o filtro `.or(\`empresa_id.is.null,empresa_id.eq.${target}\`)` também gerava sintaxe inválida (`eq.null`) quando `target` era `null`
-- **Fix**: removido `empresa_id` de `Manutencao`/`ManutencaoInput` (types.ts), das funções do service (agora sem parâmetro `empresaId`), dos hooks e do `ManutencaoPanel` (removido prop `scope`/seletor de empresa — painel único, sem escopo). Também removido o 4º argumento (`target`) das chamadas de `dispararEventoModulo`, que já não existe na assinatura real (3 args)
-- **Migration**: `20260724000000_modulos_manutencao_single_tenant.sql` — `DROP COLUMN IF EXISTS empresa_id`, troca das 4 policies antigas por uma única `USING (true)`, aplicada via `supabase db push`
-- **Padrão**: antes de confiar que a migration de remoção de `empresa_id` (`20260721000000`) cobriu uma tabela, `grep` o nome da tabela nesse arquivo — a lista é explícita, não um loop sobre todas as tabelas com a coluna. Tabelas fora da lista (como `modulos_manutencao`) podem ter sido limpas manualmente no banco sem o código/migrations acompanhar
-
-### 2026-07-23 — `ativo` não definido no update de tipo workflow
-- **Arquivo**: `src/routes/catalogo.admin.workflows.tsx:147`
-- **Erro**: `ReferenceError: ativo is not defined` ao editar tipo de workflow
-- **Causa**: `.update({ ... ativo })` usava variável solta em vez de `tipoAtivo` (state)
-- **Fix**: trocar `ativo` por `ativo: tipoAtivo`
-- **Padrão**: em handlers com destructuring de state, sempre usar o nome explícito do state, nunca apropa variável genérica sem prefixo
-
-### 2026-07-24 — Módulo `catalogo/import` (wizard de import CSV/XLSX) estava 100% desatualizado e quebrado
-- **Descoberta**: `src/features/catalogo/import/` (parser/mapper/validator/executor + wizard de UI) só era usado em `catalogo.admin.produtos.tsx`. `constants.ts` (`IMPORT_FIELD_CONFIGS`) apontava para tabelas de um modelo de dados anterior à migração single-tenant e à remodelagem do catálogo em tabelas por entidade — nomes como `catalogo_categorias`/`catalogo_familias` sem prefixo `ips_`, `catalogo_chaves_ferramental`, `catalogo_instrumentais_gerais`, `catalogo_workflows`/`catalogo_guias_reabilitacao` não existem mais
-- **Bugs adicionais achados**: `validator.ts` tinha `Promise.all([])` vazio + variável `data` fora de escopo (não compilava a lógica real); `executor.ts` tinha ~10 funções `resolveXId`/`createX` hardcoded por `importType` com queries Supabase incompletas (sem `.eq()`/`.single()`); `useImportExecutor`/`useRowValidator` passavam `empresaId` para interfaces que não o declaravam
-- **Fix**: reescrita completa como engine orientada a config — `IMPORT_FIELD_CONFIGS` ganhou `fkResolvers`/`listPivots`/`buildRecord` genéricos (substitui as funções hardcoded), cobrindo agora as 16 entidades reais do catálogo (implantes, abutments, componentes, parafusos, cicatrizadores, chaves, fresas, complementares, opcionais, kits, tipos de osso, protocolos de fresagem, tipos/etapas de workflow, promocionais + hierarquia). `empresaId` removido de toda a cadeia (single-tenant). Adicionado modo GLOBAL (1 XLSX multi-aba, `GLOBAL_IMPORT_ORDER` respeita dependências)
-- **Padrão**: antes de estender um módulo com "engine genérica" (parser/validator/executor), rodar `git log` nos arquivos e comparar nomes de tabela contra os `services/*.ts` atuais via grep — desalinhamento de schema não aparece no build (`vite build` não type-checka por padrão, só `npm run check:types` pega). Sempre rodar `npm run check:types` além do build ao mexer em módulos com muita tipagem dinâmica de Supabase (`.select(variável)` retorna `GenericStringError`, precisa `as unknown as Record<string, unknown>`, não `as Record<string, unknown>` direto)
+### Padrões consolidados
+- **Single-tenant:** não injetar `empresa_id`. Migration `20260721000000` removeu de ~71 tabelas. Checar `grep` na migration antes de confiar que uma tabela foi coberta.
+- **dispararEventoModulo:** 3 args `(moduloKey, eventoKey, payload)`. Nunca passar 4º arg. Sempre `.catch(() => {})`, nunca `await`.
+- **State em handlers:** usar nome explícito do state (ex: `tipoAtivo`), nunca variável genérica sem prefixo.
+- **Cross-feature imports:** proibidos. Mover lógica compartilhada para `shared/` ou `lib/utils/`.
+- **Vite não type-checka por padrão:** rodar `npm run check:types` além do build ao mexer com tipagem dinâmica de Supabase.

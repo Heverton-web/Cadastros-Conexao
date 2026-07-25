@@ -7,6 +7,7 @@ import { listarImagensBatch } from "~/features/catalogo/services/imagens.service
 import { Tag, Clock, ArrowLeft, Zap } from "lucide-react"
 import { useEffect, useState } from "react"
 import type { CatalogoImagemProduto } from "~/features/catalogo/types"
+import { useTranslation } from "react-i18next"
 
 export const catalogoPromocionaisRoute = createRoute({
   getParentRoute: () => rootRoute,
@@ -17,6 +18,7 @@ export const catalogoPromocionaisRoute = createRoute({
 function CatalogoPromocionaisPage() {
   const { data: promos, isLoading } = usePromocionaisAtivos()
   const [imagensMap, setImagensMap] = useState<Map<string, CatalogoImagemProduto[]>>(new Map())
+  const { t } = useTranslation()
 
   useEffect(() => {
     if (!promos || promos.length === 0) return
@@ -114,7 +116,7 @@ function CatalogoPromocionaisPage() {
           {promos?.length === 0 && !isLoading && (
             <div className="col-span-full text-center py-16 rounded-2xl border border-[var(--color-border-subtle)] bg-[var(--color-surface)]/30">
               <Tag className="h-12 w-12 mx-auto mb-4 text-[var(--color-text-muted)] opacity-40" />
-              <p className="text-lg text-[var(--color-text-muted)] font-semibold">Nenhuma promoção ativa.</p>
+              <p className="text-lg text-[var(--color-text-muted)] font-semibold">{t("catalogo.categories.noImplants")}</p>
             </div>
           )}
         </div>

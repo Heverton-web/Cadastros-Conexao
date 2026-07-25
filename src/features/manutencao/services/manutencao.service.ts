@@ -35,12 +35,18 @@ export async function salvarManutencao(
   const { data: authData } = await supabase.auth.getUser();
   const criadoPor = authData.user?.id ?? null;
 
-  const { error: desativaErr } = await supabase
+  let desativarQuery = supabase
     .from("modulos_manutencao")
     .update({ ativo: false })
-    .eq("modulo_key", input.modulo_key)
-    .is("rota", input.rota as any);
+    .eq("modulo_key", input.modulo_key);
 
+  if (input.rota === null) {
+    desativarQuery = desativarQuery.is("rota", null);
+  } else {
+    desativarQuery = desativarQuery.eq("rota", input.rota);
+  }
+
+  const { error: desativaErr } = await desativarQuery;
   if (desativaErr) throw desativaErr;
 
   const { data, error } = await supabase

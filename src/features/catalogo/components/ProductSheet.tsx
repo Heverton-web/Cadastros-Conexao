@@ -5,6 +5,7 @@ import { addToCart, formatBRL, mockPreco } from "../services/carrinho.service"
 import { Link } from "@tanstack/react-router"
 import { useEffect, useState } from "react"
 import { ProductThumb } from "./ProductThumb"
+import { useTranslation } from "react-i18next"
 
 export function ProductSheet() {
   const { productSheet } = useUIState()
@@ -19,7 +20,6 @@ export function ProductSheet() {
 
   if (!productSheet.isOpen || !productSheet.tipo) return null
 
-  // Touch Handlers for Bottom Sheet Drag to dismiss
   const handleTouchStart = (e: React.TouchEvent) => setStartY(e.touches[0].clientY)
   const handleTouchMove = (e: React.TouchEvent) => {
     const delta = e.touches[0].clientY - startY
@@ -32,10 +32,8 @@ export function ProductSheet() {
 
   return (
     <div className="fixed inset-0 z-[60] flex flex-col justify-end lg:justify-center lg:items-center">
-      {/* Backdrop */}
       <div className="absolute inset-0 bg-[#0f172a]/70 backdrop-blur-md transition-opacity" onClick={closeProductSheet} />
 
-      {/* Sheet Content */}
       <div 
         className="relative w-full max-w-2xl bg-[var(--color-background)] lg:rounded-3xl rounded-t-3xl border border-[var(--color-border-subtle)] shadow-[0_-20px_50px_rgba(0,0,0,0.5)] lg:shadow-2xl overflow-hidden flex flex-col max-h-[90vh] transition-transform"
         style={{ transform: `translateY(${translateY}px)` }}
@@ -43,7 +41,6 @@ export function ProductSheet() {
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
       >
-        {/* Mobile drag handle */}
         <div className="w-full h-8 flex items-center justify-center lg:hidden">
           <div className="w-12 h-1.5 rounded-full bg-white/20" />
         </div>
@@ -67,6 +64,7 @@ function SheetContent({ sku, tipo }: { sku: string; tipo: string }) {
   const ab = useAbutmentDetalhe(tipo === "abutment" ? sku : "")
   const kit = useKitDetalhe(tipo === "kit" ? sku : "")
   const promo = usePromocionalDetalhe(tipo === "promocional" ? sku : "")
+  const { t } = useTranslation()
 
   let data: any = null
   let cor = "#c9a655"
@@ -87,19 +85,15 @@ function SheetContent({ sku, tipo }: { sku: string; tipo: string }) {
     data = promo.data; nome = data.nome
   }
 
-  // Falha silenciosa ou fake mock para peças avulsas (fresa, instrumental, etc) que ainda nao tem hook de detalhe. 
-  // No mundo real, você faria um `usePecaAvulsaDetalhe(sku)`. Vamos mockar caso falte os dados da peça genérica
   if (!data && (tipo === 'fresa' || tipo === 'chave' || tipo === 'instrumental' || tipo === 'acessorio')) {
     data = { sku, nome: `Peça ${sku}`, diametro_mm: tipo === 'fresa' ? '2.0' : null }
     nome = `Peça ${sku}`
     cor = tipo === 'fresa' ? '#3b82f6' : tipo === 'instrumental' ? '#8b5cf6' : '#eab308'
   }
 
-  if (!data) return <div className="h-64 flex items-center justify-center font-bold text-[var(--color-accent)] animate-pulse">CARREGANDO...</div>
+  if (!data) return <div className="h-64 flex items-center justify-center font-bold text-[var(--color-accent)] animate-pulse">{t("catalogo.product.loading")}</div>
 
   const preco = tipo === "promocional" ? data.preco : mockPreco(tipo as any, sku)
-
-  // Pegar primeira imagem do produto (se houver)
   const imagemPrincipal = data?.imagens?.[0]?.url_imagem
 
   return (
@@ -125,8 +119,8 @@ function SheetContent({ sku, tipo }: { sku: string; tipo: string }) {
               </div>
             )}
             <div className="p-3 rounded-lg bg-[var(--color-surface)] border border-transparent">
-               <span className="block text-[10px] uppercase font-bold text-[var(--color-text-muted)]">Venda Avulsa</span>
-               <span className="text-sm font-semibold text-white">Sim</span>
+               <span className="block text-[10px] uppercase font-bold text-[var(--color-text-muted)]">{t("catalogo.product.singleSale")}</span>
+               <span className="text-sm font-semibold text-white">{t("catalogo.product.yes")}</span>
             </div>
           </div>
         </div>
@@ -138,13 +132,13 @@ function SheetContent({ sku, tipo }: { sku: string; tipo: string }) {
           className="flex-1 w-full flex items-center justify-center gap-2 py-4 rounded-xl font-bold text-sm text-[#0f172a] hover:opacity-90 transition-opacity"
           style={{ background: "linear-gradient(135deg, #e8d48b, #c9a655)" }}
         >
-          <ShoppingCart className="w-5 h-5" /> Adicionar - {formatBRL(preco)}
+          <ShoppingCart className="w-5 h-5" /> {t("catalogo.product.addToCart")} - {formatBRL(preco)}
         </button>
         <button
           onClick={closeProductSheet}
           className="w-full md:w-32 py-4 rounded-xl border border-white/10 font-bold text-sm text-[var(--color-text-muted)] hover:text-white transition-colors"
         >
-          Fechar
+          {t("catalogo.product.close")}
         </button>
       </div>
 

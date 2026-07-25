@@ -10,6 +10,7 @@ import { useMemo, useEffect, useState } from "react"
 import { ArrowLeft, PackageOpen } from "lucide-react"
 import { cn } from "~/lib/utils"
 import type { CatalogoImagemProduto } from "~/features/catalogo/types"
+import { useTranslation } from "react-i18next"
 
 // Etapa 1: /catalogo/implantes — Escolher Conexão
 export const catalogoImplantesRoute = createRoute({
@@ -49,6 +50,7 @@ function CatalogoImplantesPage() {
   const conexaoId = params.conexaoId ?? null
   const familiaId = params.familiaId ?? null
   const linhaId = params.linhaId ?? null
+  const { t } = useTranslation()
 
   // Contagem de implantes por linha
   const countByLinha = useMemo(() => {
@@ -127,8 +129,8 @@ function CatalogoImplantesPage() {
     <StoreLayout>
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
         <DrillDown
-          title="Implantes"
-          subtitle="tipo de conexão do implante (Cone Morse, HE…)"
+          title={t("catalogo.categories.implants")}
+          subtitle={t("catalogo.categories.connectionType")}
           step={1}
           totalSteps={4}
           options={(conexoes ?? [])
@@ -150,6 +152,7 @@ function CatalogoImplantesPage() {
 
 function FamiliasList({ conexaoId, onSelect, onBack, countLinhasByFamilia }: { conexaoId: string; onSelect: (id: string) => void; onBack: () => void; countLinhasByFamilia: Record<string, number> }) {
   const { data: familias, isLoading } = useFamilias(conexaoId)
+  const { t } = useTranslation()
 
   const options = (familias ?? [])
     .filter((f) => (countLinhasByFamilia[f.id] ?? 0) > 0)
@@ -163,8 +166,8 @@ function FamiliasList({ conexaoId, onSelect, onBack, countLinhasByFamilia }: { c
 
   return (
     <DrillDown
-      title="Famílias"
-      subtitle="família anatômica do implante"
+      title={t("catalogo.categories.family")}
+      subtitle={t("catalogo.categories.familySubtitle")}
       step={2}
       totalSteps={4}
       options={options}
@@ -181,6 +184,7 @@ function LinhasList({ familiaId, onSelect, onBack }: { familiaId: string; onSele
   const { data: familias } = useFamilias()
   const familia = (familias ?? []).find((f) => f.id === familiaId)
   const corFamilia = familia?.cor_identificacao ?? "#c9a655"
+  const { t } = useTranslation()
   const countByLinha = useMemo(() => {
     const m: Record<string, number> = {}
     for (const i of implantesAtivos ?? []) {
@@ -202,8 +206,8 @@ function LinhasList({ familiaId, onSelect, onBack }: { familiaId: string; onSele
 
   return (
     <DrillDown
-      title="Linhas"
-      subtitle="linha/marca do implante"
+      title={t("catalogo.categories.lines")}
+      subtitle={t("catalogo.categories.linesSubtitle")}
       step={3}
       totalSteps={4}
       options={options}
@@ -224,6 +228,7 @@ function ImplantList({ linhaId, conexaoId, familiaId, onBack }: { linhaId: strin
   const empresaId = useCatalogoEmpresaId()
   const [imagensMap, setImagensMap] = useState<Map<string, CatalogoImagemProduto[]>>(new Map())
   const [diametroFiltro, setDiametroFiltro] = useState<number | null>(null)
+  const { t } = useTranslation()
 
   // Diâmetros únicos desta linha
   const diametrosUnicos = useMemo(() => {
@@ -275,22 +280,22 @@ function ImplantList({ linhaId, conexaoId, familiaId, onBack }: { linhaId: strin
                 <div key={i} className={cn("h-1.5 rounded-full transition-all duration-500", i < 4 ? "w-8 bg-[var(--color-accent)]" : "w-2 bg-[var(--color-border-subtle)]") } />
               ))}
             </div>
-            <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-accent)] ml-2">Etapa 4 de 4</span>
+            <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-accent)] ml-2">{t("catalogo.step", { current: 4, total: 4 })}</span>
           </div>
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-black leading-tight text-white tracking-tighter text-balance">Selecione o Implante</h1>
-          <p className="text-sm sm:text-lg mt-1 sm:mt-2 text-[var(--color-text-muted)] text-balance">{implantes?.length ?? 0} produto(s) compatível(is) encontrado(s).</p>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-black leading-tight text-white tracking-tighter text-balance">{t("catalogo.categories.selectImplant")}</h1>
+          <p className="text-sm sm:text-lg mt-1 sm:mt-2 text-[var(--color-text-muted)] text-balance">{implantes?.length ?? 0} {t("catalogo.categories.productsFound")}</p>
         </div>
       </div>
 
       {/* Count */}
       <p className="text-xs font-bold uppercase tracking-widest text-[var(--color-text-muted)] border-b border-[var(--color-border-subtle)] pb-4">
-        {implantesFiltrados.length} resultado(s)
+        {implantesFiltrados.length} {t("catalogo.categories.results")}
       </p>
 
       {/* Filtro por Diâmetro */}
       {diametrosUnicos.length > 1 && (
         <div className="space-y-3">
-          <p className="text-xs font-bold uppercase tracking-widest text-[var(--color-accent)]">Selecione o Diâmetro</p>
+          <p className="text-xs font-bold uppercase tracking-widest text-[var(--color-accent)]">{t("catalogo.categories.selectDiameter")}</p>
           <div className="flex flex-wrap gap-2">
             <button
               onClick={() => setDiametroFiltro(null)}
@@ -301,7 +306,7 @@ function ImplantList({ linhaId, conexaoId, familiaId, onBack }: { linhaId: strin
                   : "bg-transparent text-[var(--color-text-muted)] border-[var(--color-border-subtle)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
               )}
             >
-              Todos
+              {t("catalogo.categories.all")}
             </button>
             {diametrosUnicos.map((d) => (
               <button
@@ -324,8 +329,8 @@ function ImplantList({ linhaId, conexaoId, familiaId, onBack }: { linhaId: strin
       {implantesFiltrados.length === 0 ? (
         <div className="text-center py-24 rounded-3xl border border-[var(--color-border-subtle)] bg-[var(--color-surface)]/30 backdrop-blur-md">
           <PackageOpen className="h-14 w-14 mx-auto mb-6 opacity-20 text-white" />
-          <p className="text-xl font-black text-white tracking-tight">Nenhum implante encontrado</p>
-          <p className="text-sm text-[var(--color-text-muted)] mt-2 max-w-sm mx-auto">{diametroFiltro !== null ? `Nenhum implante com diâmetro Ø ${diametroFiltro} mm nesta linha.` : 'Esta linha não possui implantes cadastrados. Volte e selecione outra linha.'}</p>
+          <p className="text-xl font-black text-white tracking-tight">{t("catalogo.categories.noImplants")}</p>
+          <p className="text-sm text-[var(--color-text-muted)] mt-2 max-w-sm mx-auto">{diametroFiltro !== null ? `Nenhum implante com diâmetro Ø ${diametroFiltro} mm nesta linha.` : t("catalogo.categories.noImplantsLine")}</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
