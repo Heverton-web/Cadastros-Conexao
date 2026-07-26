@@ -9,7 +9,7 @@ import { listarAbutmentChaves, listarAbutmentKits, listarAbutmentParafusos, salv
 import { listarKitsDeCicatrizador, salvarKitsDeCicatrizador } from "~/features/catalogo/services/kits.service"
 import { listarSeqProteticasAbutment } from "~/features/catalogo/services/sequencia-protetica.service"
 import { CompositionSection } from "~/features/catalogo/components/admin/produtos/CompositionSection"
-import { useFamilias, useTiposReabilitacao, useTiposAbutment, useTiposComponente, useTiposParafuso, useTiposCicatrizador, useAbutments, useComponentes, useParafusosList, useChavesList, useReabFamilias, useTodasSequencias, useTodosKits, useTodosImplantes, useToggleTipoReabilitacaoAtivo, useToggleTipoAbutmentAtivo, useToggleTipoComponenteAtivo, useToggleTipoParafusoAtivo, useToggleTipoCicatrizadorAtivo, useToggleAbutmentAtivo, useToggleComponenteAtivo, useToggleParafusoAtivo, useToggleCicatrizadorAtivo, useCriarTipoReabilitacao, useAtualizarTipoReabilitacao, useRemoverTipoReabilitacao, useSalvarReabFamilias, useCriarTipoAbutment, useAtualizarTipoAbutment, useRemoverTipoAbutment, useCriarTipoComponente, useAtualizarTipoComponente, useRemoverTipoComponente, useCriarTipoParafuso, useAtualizarTipoParafuso, useRemoverTipoParafuso, useCriarTipoCicatrizador, useAtualizarTipoCicatrizador, useRemoverTipoCicatrizador, useCriarAbutment, useAtualizarAbutment, useRemoverAbutment, useCriarComponenteProduto, useAtualizarComponenteProduto, useRemoverComponenteProduto, useCriarParafuso, useAtualizarParafuso, useRemoverParafuso, useCriarCicatrizador, useAtualizarCicatrizador, useRemoverCicatrizador, useSalvarAbutmentSeqs } from "~/features/catalogo/hooks/useCatalogo"
+import { useFamilias, useTiposReabilitacao, useTiposAbutment, useTiposComponente, useTiposParafuso, useTiposCicatrizador, useAbutments, useComponentes, useParafusosList, useChavesList, useReabFamilias, useTodasSequencias, useTodosKits, useTodosImplantes, useToggleTipoReabilitacaoAtivo, useToggleTipoAbutmentAtivo, useToggleTipoComponenteAtivo, useToggleTipoParafusoAtivo, useToggleTipoCicatrizadorAtivo, useToggleAbutmentAtivo, useToggleComponenteAtivo, useToggleParafusoAtivo, useToggleCicatrizadorAtivo, useCriarTipoReabilitacao, useAtualizarTipoReabilitacao, useRemoverTipoReabilitacao, useSalvarReabFamilias, useCriarTipoAbutment, useAtualizarTipoAbutment, useRemoverTipoAbutment, useCriarTipoComponente, useAtualizarTipoComponente, useRemoverTipoComponente, useCriarTipoParafuso, useAtualizarTipoParafuso, useRemoverTipoParafuso, useCriarTipoCicatrizador, useAtualizarTipoCicatrizador, useRemoverTipoCicatrizador, useCriarAbutment, useAtualizarAbutment, useRemoverAbutment, useCriarComponenteProduto, useAtualizarComponenteProduto, useRemoverComponenteProduto, useCriarParafuso, useAtualizarParafuso, useRemoverParafuso, useCriarCicatrizador, useAtualizarCicatrizador, useRemoverCicatrizador, useSalvarAbutmentSeqs, useCicatrizadores } from "~/features/catalogo/hooks/useCatalogo"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from "~/components/ui/dialog"
 import { Switch } from "~/components/ui/switch"
 import { ImageUploader } from "~/features/catalogo/components/admin/produtos/ImageUploader"
@@ -192,6 +192,9 @@ function AdminComponentesPage() {
     toast.success(parEditing ? "Parafuso atualizado!" : "Parafuso criado!")
     setParModalOpen(false)
   }
+  const [cicModalOpen, setCicModalOpen] = useState(false)
+  const [cicEditing, setCicEditing] = useState<any>(null)
+  const [cicData, setCicData] = useState({ sku: "", nome: "", sigla: "", descricao: "", implante_id: "", chave_id: "", diametro_plataforma_mm: 0, altura_transmucoso_mm: 0, altura_corpo_mm: 0, torque_ncm: 0, material: "", preco: 0, ativo: true })
   const [cicError, setCicError] = useState("")
   const [cicKitsIds, setCicKitsIds] = useState<string[]>([])
 
@@ -510,7 +513,7 @@ function AdminComponentesPage() {
                 {["SKU", "Nome", "Tipo", "Torque", "Ativo", "Ações"].map(h => <TableHead key={h} className="bg-gradient-to-r from-[#c9a655]/10 to-transparent text-[#c9a655] font-black uppercase tracking-wider text-[10px]">{h}</TableHead>)}
               </TableRow></TableHeader>
               <TableBody>
-                {(parafusosProdutos ?? []).map((item: any, i: number) => (
+                {(parafusosList ?? []).map((item: any, i: number) => (
                   <TableRow key={item.sku} className={`${i%2===0?"bg-[var(--color-surface)]/30":""} hover:bg-[#c9a655]/5 border-b border-[var(--color-border-subtle)]/50`}>
                     <TableCell className="text-sm font-mono">{item.sku}</TableCell>
                     <TableCell className="text-sm font-medium text-white">{item.nome}</TableCell>
@@ -520,7 +523,7 @@ function AdminComponentesPage() {
                     <TableCell><div className="flex items-center gap-2"><button onClick={() => openEditPar(item)} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-[#c9a655]/20 text-[var(--color-text-muted)] hover:text-[#c9a655]"><Pencil className="h-3.5 w-3.5"/></button><button onClick={() => setDeleteItem({ id: item.sku, label: item.nome, table: "catalogo_parafusos", pkColumn: "sku" })} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-red-500/20 text-[var(--color-text-muted)] hover:text-red-400"><Trash2 className="h-3.5 w-3.5"/></button></div></TableCell>
                   </TableRow>
                 ))}
-                {(parafusosProdutos ?? []).length === 0 && <TableRow><TableCell colSpan={6} className="p-4 text-center text-text-muted">Nenhum parafuso cadastrado</TableCell></TableRow>}
+                {(parafusosList ?? []).length === 0 && <TableRow><TableCell colSpan={6} className="p-4 text-center text-text-muted">Nenhum parafuso cadastrado</TableCell></TableRow>}
               </TableBody>
             </Table>
           )}

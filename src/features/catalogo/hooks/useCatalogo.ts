@@ -488,7 +488,7 @@ export function useAbutmentSeqs(abutmentSku: string) {
 export function useCriarTipoReabilitacao() {
   const qc = useQueryClient()
   return useMutation({
-    mutationFn: (input: Parameters<typeof componentes.criarTipoReabilitacao>[1]) => componentes.criarTipoReabilitacao(input),
+    mutationFn: (input: Parameters<typeof componentes.criarTipoReabilitacao>[0]) => componentes.criarTipoReabilitacao(input),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "tipos-reabilitacao"] }),
   })
 }
@@ -520,7 +520,7 @@ export function useSalvarReabFamilias() {
 export function useCriarTipoAbutment() {
   const qc = useQueryClient()
   return useMutation({
-    mutationFn: (input: Parameters<typeof componentes.criarTipoAbutment>[1]) => componentes.criarTipoAbutment(input),
+    mutationFn: (input: Parameters<typeof componentes.criarTipoAbutment>[0]) => componentes.criarTipoAbutment(input),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "tipos-abutment"] }),
   })
 }
@@ -544,7 +544,7 @@ export function useRemoverTipoAbutment() {
 export function useCriarTipoComponente() {
   const qc = useQueryClient()
   return useMutation({
-    mutationFn: (input: Parameters<typeof componentes.criarTipoComponente>[1]) => componentes.criarTipoComponente(input),
+    mutationFn: (input: Parameters<typeof componentes.criarTipoComponente>[0]) => componentes.criarTipoComponente(input),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "tipos-componente"] }),
   })
 }
@@ -568,7 +568,7 @@ export function useRemoverTipoComponente() {
 export function useCriarTipoParafuso() {
   const qc = useQueryClient()
   return useMutation({
-    mutationFn: (input: Parameters<typeof componentes.criarTipoParafuso>[1]) => componentes.criarTipoParafuso(input),
+    mutationFn: (input: Parameters<typeof componentes.criarTipoParafuso>[0]) => componentes.criarTipoParafuso(input),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "tipos-parafuso"] }),
   })
 }
@@ -592,7 +592,7 @@ export function useRemoverTipoParafuso() {
 export function useCriarTipoCicatrizador() {
   const qc = useQueryClient()
   return useMutation({
-    mutationFn: (input: Parameters<typeof componentes.criarTipoCicatrizador>[1]) => componentes.criarTipoCicatrizador(input),
+    mutationFn: (input: Parameters<typeof componentes.criarTipoCicatrizador>[0]) => componentes.criarTipoCicatrizador(input),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "tipos-cicatrizador"] }),
   })
 }
@@ -678,7 +678,7 @@ export function useToggleTipoCicatrizadorAtivo() {
 export function useCriarParafuso() {
   const qc = useQueryClient()
   return useMutation({
-    mutationFn: (input: Parameters<typeof parafusos.criarParafuso>[1]) => parafusos.criarParafuso(input),
+    mutationFn: (input: Parameters<typeof parafusos.criarParafuso>[0]) => parafusos.criarParafuso(input),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "parafusos"] }),
   })
 }
@@ -686,7 +686,7 @@ export function useCriarParafuso() {
 export function useAtualizarParafuso() {
   const qc = useQueryClient()
   return useMutation({
-    mutationFn: ({ sku, input }: { sku: string; input: Parameters<typeof parafusos.atualizarParafuso>[2] }) => parafusos.atualizarParafuso(sku, input),
+    mutationFn: ({ sku, input }: { sku: string; input: Parameters<typeof parafusos.atualizarParafuso>[1] }) => parafusos.atualizarParafuso(sku, input),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "parafusos"] }),
   })
 }
@@ -723,7 +723,7 @@ export function useToggleParafusoAtivo() {
 export function useCriarComponenteProduto() {
   const qc = useQueryClient()
   return useMutation({
-    mutationFn: (input: Parameters<typeof componentes.criarComponente>[1]) => componentes.criarComponente(input),
+    mutationFn: (input: Parameters<typeof componentes.criarComponente>[0]) => componentes.criarComponente(input),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "componentes"] }),
   })
 }
@@ -731,7 +731,7 @@ export function useCriarComponenteProduto() {
 export function useAtualizarComponenteProduto() {
   const qc = useQueryClient()
   return useMutation({
-    mutationFn: ({ sku, input }: { sku: string; input: Parameters<typeof componentes.atualizarComponente>[2] }) => componentes.atualizarComponente(sku, input),
+    mutationFn: ({ sku, input }: { sku: string; input: Parameters<typeof componentes.atualizarComponente>[1] }) => componentes.atualizarComponente(sku, input),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "componentes"] }),
   })
 }

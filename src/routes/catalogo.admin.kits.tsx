@@ -24,6 +24,7 @@ export const catalogoAdminKitsRoute = createRoute({
 const SUB_TABS = ["Tipos de Kit", "Kits"]
 const inputCls = "w-full bg-[var(--color-surface)] border border-white/10 rounded-lg p-3 text-white"
 const selectCls = "w-full bg-[var(--color-surface)] border border-white/10 rounded-lg p-3 text-white"
+const labelCls = "text-xs font-bold uppercase tracking-widest text-gray-400"
 function AdminKitsPage() {
   const [subTab, setSubTab] = useState("Tipos de Kit")
   const empresaId = useCatalogoEmpresaId()
@@ -300,20 +301,20 @@ function AdminKitsPage() {
             <div className="rounded-xl bg-[var(--color-surface)] border border-white/5 p-4 space-y-3">
               <p className="text-xs font-bold uppercase tracking-widest text-gray-400">Kits Complementares</p>
               <div className="flex gap-2">
-                <select value={selKitComplementar} onChange={e=>setSelKitComplementar(e.target.value)} className={selectCls+" flex-1"}><option value="">Selecione um kit...</option>{todosKits?.filter((k:any)=>k.sku!==kitData.sku && !kitKitsComplementares.includes(k.sku)).map((k:any)=><option key={k.sku} value={k.sku}>{k.nome}</option>)}</select>
+                <select value={selKitComplementar} onChange={e=>setSelKitComplementar(e.target.value)} className={selectCls+" flex-1"}><option value="">Selecione um kit...</option>{kitsList?.filter((k:any)=>k.sku!==kitData.sku && !kitKitsComplementares.includes(k.sku)).map((k:any)=><option key={k.sku} value={k.sku}>{k.nome}</option>)}</select>
                 <button onClick={()=>{if(selKitComplementar){setKitKitsComplementares([...kitKitsComplementares,selKitComplementar]);setSelKitComplementar("")}}} disabled={!selKitComplementar} className="px-4 py-2 rounded-lg bg-[#c9a655]/20 text-[#c9a655] font-bold text-sm hover:bg-[#c9a655]/30 transition-colors disabled:opacity-30 shrink-0">Adicionar</button>
               </div>
-              {kitKitsComplementares.map((sku,i)=><div key={i} className="flex items-center justify-between bg-[var(--color-background)] rounded-lg px-3 py-2 border border-white/5"><span className="text-sm text-white">{todosKits?.find((k:any)=>k.sku===sku)?.nome??sku}</span><button onClick={()=>setKitKitsComplementares(kitKitsComplementares.filter(s=>s!==sku))} className="text-red-400 hover:text-red-300"><X className="h-4 w-4"/></button></div>)}
+              {kitKitsComplementares.map((sku,i)=><div key={i} className="flex items-center justify-between bg-[var(--color-background)] rounded-lg px-3 py-2 border border-white/5"><span className="text-sm text-white">{kitsList?.find((k:any)=>k.sku===sku)?.nome??sku}</span><button onClick={()=>setKitKitsComplementares(kitKitsComplementares.filter(s=>s!==sku))} className="text-red-400 hover:text-red-300"><X className="h-4 w-4"/></button></div>)}
             </div>
 
             {/* Kits Relacionados */}
             <div className="rounded-xl bg-[var(--color-surface)] border border-white/5 p-4 space-y-3">
               <p className="text-xs font-bold uppercase tracking-widest text-gray-400">Kits Relacionados</p>
               <div className="flex gap-2">
-                <select value={selKitRelacionado} onChange={e=>setSelKitRelacionado(e.target.value)} className={selectCls+" flex-1"}><option value="">Selecione um kit...</option>{todosKits?.filter((k:any)=>k.sku!==kitData.sku && !kitKitsRelacionados.includes(k.sku)).map((k:any)=><option key={k.sku} value={k.sku}>{k.nome}</option>)}</select>
+                <select value={selKitRelacionado} onChange={e=>setSelKitRelacionado(e.target.value)} className={selectCls+" flex-1"}><option value="">Selecione um kit...</option>{kitsList?.filter((k:any)=>k.sku!==kitData.sku && !kitKitsRelacionados.includes(k.sku)).map((k:any)=><option key={k.sku} value={k.sku}>{k.nome}</option>)}</select>
                 <button onClick={()=>{if(selKitRelacionado){setKitKitsRelacionados([...kitKitsRelacionados,selKitRelacionado]);setSelKitRelacionado("")}}} disabled={!selKitRelacionado} className="px-4 py-2 rounded-lg bg-[#c9a655]/20 text-[#c9a655] font-bold text-sm hover:bg-[#c9a655]/30 transition-colors disabled:opacity-30 shrink-0">Adicionar</button>
               </div>
-              {kitKitsRelacionados.map((sku,i)=><div key={i} className="flex items-center justify-between bg-[var(--color-background)] rounded-lg px-3 py-2 border border-white/5"><span className="text-sm text-white">{todosKits?.find((k:any)=>k.sku===sku)?.nome??sku}</span><button onClick={()=>setKitKitsRelacionados(kitKitsRelacionados.filter(s=>s!==sku))} className="text-red-400 hover:text-red-300"><X className="h-4 w-4"/></button></div>)}
+              {kitKitsRelacionados.map((sku,i)=><div key={i} className="flex items-center justify-between bg-[var(--color-background)] rounded-lg px-3 py-2 border border-white/5"><span className="text-sm text-white">{kitsList?.find((k:any)=>k.sku===sku)?.nome??sku}</span><button onClick={()=>setKitKitsRelacionados(kitKitsRelacionados.filter(s=>s!==sku))} className="text-red-400 hover:text-red-300"><X className="h-4 w-4"/></button></div>)}
             </div>
 
             {/* ─── 4. COMPATIBILIDADE ─── */}

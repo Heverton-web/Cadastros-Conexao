@@ -32,7 +32,7 @@ export async function getConfiguracoes(): Promise<CatalogoConfiguracoes> {
   const { data, error } = await supabase
     .from("catalogo_configuracoes")
     .select("*")
-    .single()
+    .maybeSingle()
 
   if (error || !data) {
     // Se não existir, retorna defaults

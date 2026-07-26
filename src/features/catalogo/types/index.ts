@@ -685,8 +685,6 @@ export const CATALOGO_TIPO_LABEL: Record<ProductSheetTipo, string> = {
   acessorio: "Acessório",
   instrumental: "Instrumental",
   promocional: "Promocional",
-  acessorio: "Acessório",
-  instrumental: "Instrumental",
 }
 
 // ============================================================

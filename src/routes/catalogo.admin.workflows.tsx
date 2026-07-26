@@ -8,9 +8,9 @@ import { Plus, Pencil, Trash2, ToggleRight, ToggleLeft, ChevronDown, ChevronRigh
 import {
   useWorkflows, useEtapas, useTodasSeqProteticas, useAbutments, useComponentes,
   useToggleWorkflowAtivo, useToggleEtapaAtivo, useToggleSeqProteticaAtivo,
-  useCriarTipoWorkflow, useAtualizarTipoWorkflow,
-  useCriarEtapa, useAtualizarEtapa,
-  useCriarSeqProtetica, useAtualizarSeqProtetica, useSalvarComposicaoSeq,
+  useCriarTipoWorkflow, useAtualizarTipoWorkflow, useRemoverTipoWorkflow,
+  useCriarEtapa, useAtualizarEtapa, useRemoverEtapa,
+  useCriarSeqProtetica, useAtualizarSeqProtetica, useSalvarComposicaoSeq, useRemoverSeqProtetica,
   useRemoverWorkflowsItem,
 } from "~/features/catalogo/hooks/useCatalogo"
 import { listarAbutmentsDaSeq, listarEtapasComponentesDaSeq } from "~/features/catalogo/services/sequencia-protetica.service"
