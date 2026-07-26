@@ -3,8 +3,7 @@ import type {
   ImportType, ImportProgress, ImportResult,
   ImportResultDetail, ImportError, ValidatedRow
 } from "../types"
-import { BOM_FK_MAP } from "../constants"
-import type { BOMItemTipo } from "../../types"
+import { BOM_FK_MAP, type ImportBOMItemTipo } from "../constants"
 import { loadExistingDataCache, type ExistingDataCache } from "./validator"
 
 const BATCH_SIZE = 50
@@ -314,6 +313,7 @@ async function insertHierarquiaBatch(
   }
 
   const { data: catRows } = await supabase
+    .from("catalogo_categorias").select("id, nome")
   const catIdMap = new Map(catRows?.map((r) => [r.nome.toLowerCase(), r.id]) ?? [])
 
   for (const [, con] of conexoes) {
@@ -334,6 +334,7 @@ async function insertHierarquiaBatch(
   }
 
   const { data: conRows } = await supabase
+    .from("catalogo_conexoes").select("id, nome")
   const conIdMap = new Map(conRows?.map((r) => [r.nome.toLowerCase(), r.id]) ?? [])
 
   for (const [, fam] of familias) {
@@ -354,6 +355,7 @@ async function insertHierarquiaBatch(
   }
 
   const { data: famRows } = await supabase
+    .from("catalogo_familias").select("id, nome")
   const famIdMap = new Map(famRows?.map((r) => [r.nome.toLowerCase(), r.id]) ?? [])
 
   for (const [, lin] of linhas) {
@@ -437,6 +439,7 @@ async function insertKitsBatch(
 
       if (kit.familiaNomes.length > 0) {
         const { data: allFam } = await supabase
+          .from("catalogo_familias").select("id, nome")
         const famMap = new Map(allFam?.map((f) => [f.nome.toLowerCase(), f.id]) ?? [])
 
         const kitFamiliaRows = kit.familiaNomes
@@ -454,7 +457,7 @@ async function insertKitsBatch(
         await supabase.from("catalogo_kit_composicao").delete()
 
         for (const bom of kit.bomItems) {
-          const fkColumn = BOM_FK_MAP[bom.tipo as BOMItemTipo]
+          const fkColumn = BOM_FK_MAP[bom.tipo as ImportBOMItemTipo]
           if (!fkColumn) {
             errors.push({ rowIndex: -1, data: bom, error: `Tipo BOM invalido: ${bom.tipo}`, errorCode: "INVALID_BOM_TYPE", recoverable: false })
             continue
@@ -568,6 +571,7 @@ async function insertWorkflowsBatch(
           if (guia.familia_nome) {
             const { data: fam } = await supabase
               .from("catalogo_familias").select("id")
+              .ilike("nome", guia.familia_nome).single()
             familiaId = fam?.id ?? null
           }
 
@@ -618,9 +622,11 @@ async function resolveLinhaId(familiaNome?: string, linhaNome?: string): Promise
   if (!familiaNome || !linhaNome) return null
   const { data: familia } = await supabase
     .from("catalogo_familias").select("id")
+    .ilike("nome", familiaNome).single()
   if (!familia) return null
   const { data: linha } = await supabase
     .from("catalogo_linhas").select("id")
+    .eq("familia_id", familia.id).ilike("nome", linhaNome).single()
   return linha?.id ?? null
 }
 
@@ -628,6 +634,7 @@ async function resolveFamiliaId(familiaNome?: string): Promise<string | null> {
   if (!familiaNome) return null
   const { data } = await supabase
     .from("catalogo_familias").select("id")
+    .ilike("nome", familiaNome).single()
   return data?.id ?? null
 }
 
@@ -635,6 +642,7 @@ async function resolveTipoReabilitacaoId(nome: string): Promise<string | null> {
   if (!nome) return null
   const { data } = await supabase
     .from("catalogo_tipos_reabilitacao").select("id")
+    .ilike("nome", nome).single()
   return data?.id ?? null
 }
 
@@ -652,6 +660,7 @@ async function resolveTipoAbutmentId(nome: string): Promise<string | null> {
   if (!nome) return null
   const { data } = await supabase
     .from("catalogo_tipos_abutment").select("id")
+    .ilike("nome", nome).single()
   return data?.id ?? null
 }
 
@@ -670,6 +679,7 @@ async function resolveCategoriaId(importType: ImportType, nome: string): Promise
   const table = importType === "acessorios" ? "catalogo_categorias_acessorio" : "catalogo_categorias_instrumental"
   const { data } = await supabase
     .from(table).select("id")
+    .ilike("nome", nome).single()
   return data?.id ?? null
 }
 

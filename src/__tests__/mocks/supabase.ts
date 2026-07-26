@@ -65,10 +65,23 @@ export class MockQueryBuilder {
   }
 }
 
+export interface MockSupabaseClient {
+  from: (table: string) => MockQueryBuilder;
+  auth: {
+    getUser: () => Promise<{
+      data: { user: { id: string } };
+      error: null;
+    }>;
+    onAuthStateChange: () => {
+      data: { subscription: { unsubscribe: () => void } };
+    };
+  };
+}
+
 export function createMockSupabase(
-  overrides?: Partial<ReturnType<typeof createMockSupabase>>,
-) {
-  const mock = {
+  overrides?: Partial<MockSupabaseClient>,
+): MockSupabaseClient {
+  const mock: MockSupabaseClient = {
     from: vi.fn((table: string) => new MockQueryBuilder(table)),
     auth: {
       getUser: vi

@@ -56,7 +56,6 @@ export function useImportExecutor({ empresaId, onImportComplete }: UseImportExec
         importType,
         validRows,
         editedRows,
-        empresaId,
         onProgress: setProgress,
       })
 

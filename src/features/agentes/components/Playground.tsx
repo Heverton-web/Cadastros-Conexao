@@ -29,7 +29,7 @@ export function Playground({ agente, onVoltar }: Props) {
     setMessages((prev) => [...prev, { role: "user", content: userMsg }]);
 
     try {
-      const resposta = await enviar.mutateAsync({
+      const { resposta } = await enviar.mutateAsync({
         agenteId: agente.id,
         mensagem: userMsg,
         historico: messages,

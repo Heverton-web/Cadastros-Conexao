@@ -134,7 +134,7 @@ export function ClientesAdmin() {
 
   function openEdit(c: CatalogoCliente) {
     setEditing(c)
-    setCadastroVinculado(c.cadastro as CadastroDisponivel | null ?? null)
+    setCadastroVinculado((c.cadastro as unknown as CadastroDisponivel | null) ?? null)
     setForm({
       nome: c.nome,
       email: c.email,

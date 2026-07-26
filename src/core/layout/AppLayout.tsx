@@ -53,7 +53,7 @@ export function AppLayout() {
       }
       if (cadastroId) {
         setShowNotifs(false);
-        navigate({ to: "/clientes/$id", params: { id: cadastroId } });
+        navigate({ to: "/crm/cliente/$id", params: { id: cadastroId } });
       }
     } catch (e) {
       console.error(e);

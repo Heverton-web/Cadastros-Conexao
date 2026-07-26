@@ -19,7 +19,7 @@ export function usePeriodos(overrideEmpresaId?: string) {
 
   return useQuery({
     queryKey: ["despesas-periodos", empresa_id],
-    queryFn: () => listarPeriodos(empresa_id),
+    queryFn: () => listarPeriodos(),
     enabled: !!empresa_id,
   });
 }
@@ -30,7 +30,7 @@ export function usePeriodosAbertos(overrideEmpresaId?: string) {
 
   return useQuery({
     queryKey: ["despesas-periodos-abertos", empresa_id],
-    queryFn: () => listarPeriodosAbertos(empresa_id),
+    queryFn: () => listarPeriodosAbertos(),
     enabled: !!empresa_id,
   });
 }
@@ -120,7 +120,7 @@ export function useExcluirPeriodo(overrideEmpresaId?: string) {
   const empresa_id = overrideEmpresaId || EMPRESA_ID;
 
   return useMutation({
-    mutationFn: (id: string) => excluirPeriodo(id, empresa_id),
+    mutationFn: (id: string) => excluirPeriodo(id),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["despesas-periodos", empresa_id],
@@ -144,7 +144,7 @@ export function useGerarPeriodos(overrideEmpresaId?: string) {
     }: {
       frequencia: Frequencia;
       meses: string[];
-    }) => gerarPeriodos(empresa_id, frequencia, meses),
+    }) => gerarPeriodos(frequencia, meses),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["despesas-periodos", empresa_id],

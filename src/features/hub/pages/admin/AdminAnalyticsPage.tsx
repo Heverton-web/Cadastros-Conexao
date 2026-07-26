@@ -72,17 +72,17 @@ export function AdminAnalyticsPage() {
   });
   const { data: collections = [] } = useQuery({
     queryKey: ["hub-collections", empresa?.id],
-    queryFn: () => fetchHubCollections(empresa!.id),
+    queryFn: () => fetchHubCollections(),
     enabled: !!empresa?.id,
   });
   const { data: ranking = [] } = useQuery({
     queryKey: ["hub-ranking", empresa?.id],
-    queryFn: () => fetchHubRanking(empresa!.id),
+    queryFn: () => fetchHubRanking(),
     enabled: !!empresa?.id,
   });
   const { data: badges = [] } = useQuery({
     queryKey: ["hub-badges", empresa?.id],
-    queryFn: () => fetchHubBadges(empresa!.id),
+    queryFn: () => fetchHubBadges(),
     enabled: !!empresa?.id,
   });
 

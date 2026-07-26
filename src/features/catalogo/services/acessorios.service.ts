@@ -74,10 +74,12 @@ export async function criarAcessorio(input: {
 }
 
 export async function toggleAcessorioAtivo(sku: string, ativo: boolean): Promise<void> {
+  const { error } = await supabase.from("catalogo_acessorios").update({ ativo }).eq("sku", sku)
   if (error) throw error
 }
 
 export async function removerAcessorio(sku: string): Promise<void> {
+  const { error } = await supabase.from("catalogo_acessorios").delete().eq("sku", sku)
   if (error) throw error
 }
 
@@ -102,10 +104,12 @@ export async function criarChaveFerramental(input: { sku: string; nome: string; 
 }
 
 export async function toggleChaveFerramentalAtivo(sku: string, ativo: boolean): Promise<void> {
+  const { error } = await supabase.from("catalogo_chaves_ferramental").update({ ativo }).eq("sku", sku)
   if (error) throw error
 }
 
 export async function removerChaveFerramental(sku: string): Promise<void> {
+  const { error } = await supabase.from("catalogo_chaves_ferramental").delete().eq("sku", sku)
   if (error) throw error
 }
 
@@ -184,9 +188,11 @@ export async function toggleCategoriaInstrumentalAtivo(id: string, ativo: boolea
 }
 
 export async function toggleInstrumentalAtivo(sku: string, ativo: boolean): Promise<void> {
+  const { error } = await supabase.from("catalogo_instrumentais_gerais").update({ ativo }).eq("sku", sku)
   if (error) throw error
 }
 
 export async function removerInstrumental(sku: string): Promise<void> {
+  const { error } = await supabase.from("catalogo_instrumentais_gerais").delete().eq("sku", sku)
   if (error) throw error
 }

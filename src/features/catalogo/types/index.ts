@@ -13,6 +13,8 @@ export type ProductSheetTipo =
   | "parafuso"
   | "cicatrizador"
   | "promocional"
+  | "acessorio"
+  | "instrumental"
 
 export type ProdutoTipoImagem =
   | "implante"
@@ -206,6 +208,26 @@ export interface CatalogoProtocoloFresaItem {
   ordem: number
   created_at: string
   fresa?: CatalogoFresa
+}
+
+/**
+ * Formato achatado de item de fresagem, retornado por
+ * `implantes.service.getProtocoloFresagem` e consumido por `FresagemTimeline`.
+ * Difere de `CatalogoProtocoloFresagem` (linha de protocolo) por já trazer
+ * a fresa e a ordem de uso no nível do item.
+ */
+export interface CatalogoProtocoloFresagemFlat {
+  id: string
+  nome: string
+  tipo_osso: string
+  sigla: string | null
+  diametro_mm_aplicavel: number | null
+  ativo: boolean
+  created_at: string
+  updated_at: string
+  ordem_uso: number
+  fresa_sku: string
+  fresa: CatalogoFresa | null
 }
 
 // ============================================================
@@ -644,6 +666,8 @@ export const CATALOGO_TIPO_LABEL: Record<ProductSheetTipo, string> = {
   parafuso: "Parafuso",
   cicatrizador: "Cicatrizador",
   promocional: "Promocional",
+  acessorio: "Acessório",
+  instrumental: "Instrumental",
 }
 
 // ============================================================

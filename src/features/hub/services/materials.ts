@@ -94,7 +94,6 @@ export async function logHubAccess(log: {
     MODULO_KEY,
     "material.acessado",
     { material_id: log.material_id, material_title: log.material_title, usuario_id: log.user_id, empresa_id: log.empresa_id },
-    log.empresa_id,
   ).catch(() => {});
 }
 

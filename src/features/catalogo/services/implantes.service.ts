@@ -1,6 +1,6 @@
 import { supabase } from "~/core/supabase"
 import { dispararEventoModulo } from "~/core/services/webhooks"
-import type { CatalogoImplante, CatalogoProtocoloFresagem, CatalogoProtocoloFresaItem, CatalogoFresa, CatalogoChave, CatalogoCicatrizador, CatalogoAbutment, CatalogoKit } from "../types"
+import type { CatalogoImplante, CatalogoProtocoloFresagem, CatalogoProtocoloFresaItem, CatalogoProtocoloFresagemFlat, CatalogoFresa, CatalogoChave, CatalogoCicatrizador, CatalogoAbutment, CatalogoKit } from "../types"
 
 const MODULO_KEY = "catalogo"
 
@@ -145,7 +145,7 @@ export async function listarFresasProtocolo(protocoloId: string): Promise<{ orde
 // Protocolo de Fresagem (LEGADO - mantido para compatibilidade)
 // ============================================================
 
-export async function getProtocoloFresagem(implanteSku: string): Promise<CatalogoProtocoloFresagem[]> {
+export async function getProtocoloFresagem(implanteSku: string): Promise<CatalogoProtocoloFresagemFlat[]> {
   // 1. Busca osso_soft / osso_hard do implante
   const { data: impl } = await supabase
     .from("catalogo_implantes")
@@ -198,7 +198,7 @@ export async function getProtocoloFresagem(implanteSku: string): Promise<Catalog
       ordem_uso: item.ordem,
       fresa_sku: item.fresa_id,
       fresa: fresa ?? null,
-    } as unknown as CatalogoProtocoloFresagem
+    } as CatalogoProtocoloFresagemFlat
   })
 }
 
@@ -260,7 +260,7 @@ export async function listarImplanteChaves(implanteSku: string): Promise<string[
     .select("chave:catalogo_chaves(sku)")
     .eq("implante_sku", implanteSku)
   if (error) throw error
-  return (data as { chave: { sku: string } | null }[] | null)
+  return (data as unknown as { chave: { sku: string } | null }[] | null)
     ?.map((r) => r.chave?.sku)
     .filter(Boolean) as string[] ?? []
 }
@@ -341,7 +341,7 @@ export async function listarChavesDoImplante(implanteSku: string): Promise<Catal
     .select("chave_id, chave:catalogo_chaves(*, tipo_chave:catalogo_tipos_chaves(*))")
     .eq("implante_sku", implanteSku)
   if (error) throw error
-  return (data as { chave: CatalogoChave }[]).map((r) => r.chave).filter(Boolean)
+  return (data as unknown as { chave: CatalogoChave }[]).map((r) => r.chave).filter(Boolean)
 }
 
 /** Lista cicatrizadores que referenciam este implante (FK implante_id) */
@@ -374,7 +374,7 @@ export async function listarAbutmentsDoImplante(implanteSku: string): Promise<Ca
     .select("abutment:catalogo_abutments(*, tipo_abutment:catalogo_cps_tipos_abutments(*), familia:catalogo_ips_familias(*), parafuso:catalogo_parafusos(*), chave:catalogo_chaves(*))")
     .eq("implante_sku", implanteSku)
   if (error) throw error
-  return (data as { abutment: CatalogoAbutment }[]).map((r) => r.abutment).filter(Boolean)
+  return (data as unknown as { abutment: CatalogoAbutment }[]).map((r) => r.abutment).filter(Boolean)
 }
 
 /** Lista kits vinculados ao implante via pivot catalogo_implante_kit */
@@ -384,7 +384,7 @@ export async function listarKitsDoImplante(implanteSku: string): Promise<Catalog
     .select("kit:catalogo_kits(*, tipo_kit:catalogo_tipos_kits(*))")
     .eq("implante_sku", implanteSku)
   if (error) throw error
-  return (data as { kit: CatalogoKit }[]).map((r) => r.kit).filter(Boolean)
+  return (data as unknown as { kit: CatalogoKit }[]).map((r) => r.kit).filter(Boolean)
 }
 
 
@@ -440,9 +440,11 @@ export async function criarFresa(input: { sku: string; nome: string; tipo_fresa_
 }
 
 export async function toggleFresaAtivo(sku: string, ativo: boolean): Promise<void> {
+  const { error } = await supabase.from("catalogo_fresas").update({ ativo }).eq("sku", sku)
   if (error) throw error
 }
 
 export async function removerFresa(sku: string): Promise<void> {
+  const { error } = await supabase.from("catalogo_fresas").delete().eq("sku", sku)
   if (error) throw error
 }

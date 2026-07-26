@@ -26,7 +26,7 @@ import { Layers, Scissors, Stethoscope, Package, Plus, Pencil, Trash2, ToggleRig
 import { supabase } from "~/core/supabase"
 import { useQueryClient } from "@tanstack/react-query"
 import { CadastroFormDialog } from "~/features/catalogo/components/admin/CadastroFormDialog"
-import type { FieldConfig } from "~/features/catalogo/types/cadastros"
+import type { FieldConfig, CadastroSubTabConfig } from "~/features/catalogo/types/cadastros"
 
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "~/components/ui/alert-dialog"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "~/components/ui/table"
@@ -173,7 +173,7 @@ function CadastroContent({ tab, subTab }: { tab: string; subTab: string }) {
     setDeleteItem(null)
   }
 
-  function getSubTabConfig() {
+  function getSubTabConfig(): CadastroSubTabConfig | null {
     if (tab === "estrutura") {
       if (subTab === "Categorias") return {
         headers: ["Nome", "Sigla", "Pré-definido", "Ativo", "Ações"],
@@ -466,7 +466,6 @@ function CadastroContent({ tab, subTab }: { tab: string; subTab: string }) {
         table={config.table}
         pk={config.pk}
         editingItem={editingItem}
-        empresaId={empresaId}
         onSuccess={() => qc.invalidateQueries({ queryKey: ["catalogo"] })}
       />
 

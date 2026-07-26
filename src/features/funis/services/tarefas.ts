@@ -41,7 +41,7 @@ export async function criarTarefa(
     .single();
   if (error) throw error;
   const tarefa = data as FunilTarefa;
-  dispararEventoModulo(MODULO_KEY, "tarefa.criada", { tarefa }, null).catch(
+  dispararEventoModulo(MODULO_KEY, "tarefa.criada", { tarefa }).catch(
     () => {},
   );
   return tarefa;
@@ -67,12 +67,9 @@ export async function atualizarTarefa(
   if (error) throw error;
   const tarefa = data as FunilTarefa;
   if (!before?.completed_at && tarefa.completed_at) {
-    dispararEventoModulo(
-      MODULO_KEY,
-      "tarefa.concluida",
-      { tarefa },
-      null,
-    ).catch(() => {});
+    dispararEventoModulo(MODULO_KEY, "tarefa.concluida", { tarefa }).catch(
+      () => {},
+    );
   }
   return tarefa;
 }
@@ -96,12 +93,10 @@ export async function moverTarefa(
   if (error) throw error;
   const tarefa = data as FunilTarefa;
   if (before?.coluna_id !== novaColunaId) {
-    dispararEventoModulo(
-      MODULO_KEY,
-      "tarefa.movida",
-      { tarefa, colunaAnterior: before?.coluna_id },
-      null,
-    ).catch(() => {});
+    dispararEventoModulo(MODULO_KEY, "tarefa.movida", {
+      tarefa,
+      colunaAnterior: before?.coluna_id,
+    }).catch(() => {});
   }
   return tarefa;
 }

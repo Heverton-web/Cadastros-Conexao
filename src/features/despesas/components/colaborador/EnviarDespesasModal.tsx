@@ -69,7 +69,7 @@ export function EnviarDespesasModal({
     if (!periodoId || !empresa_id || !usuario_id) return;
     setSending(true);
     try {
-      await criarOuAtualizarEnvio(empresa_id, usuario_id, periodoId);
+      await criarOuAtualizarEnvio(usuario_id, periodoId);
       await enviarDespesas(periodoId, usuario_id);
       setConfirmOpen(false);
       setPeriodoId("");

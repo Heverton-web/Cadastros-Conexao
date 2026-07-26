@@ -173,7 +173,7 @@ describe("Catalogo - Hooks de catalogo", () => {
 
   it("useCatalogoCliente existe", async () => {
     const clienteMod = await import("~/features/catalogo/hooks/useCatalogoCliente")
-    expect(clienteMod.useCatalogoCliente).toBeDefined?.() || true
+    expect(clienteMod.useCatalogoCliente).toBeDefined()
   })
 })
 

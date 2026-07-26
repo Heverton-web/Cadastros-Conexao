@@ -9,8 +9,8 @@ import {
   ArrowRight,
   CheckCircle,
   AlertTriangle,
+  Loader2,
 } from "lucide-react";
-import { EMPRESA_ID } from "~/config/empresa";
 
 export const consultorClientesRoute = createRoute({
   getParentRoute: () => authLayout,
@@ -33,8 +33,7 @@ function ConsultorClientes() {
     if (!user?.id) return;
     setLoading(true);
     try {
-      if (!EMPRESA_ID) return;
-      const data = await listarCadastros(EMPRESA_ID, {
+      const data = await listarCadastros({
         status: "aprovado",
         created_by: user.id,
       });

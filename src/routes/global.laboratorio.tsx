@@ -4,7 +4,8 @@ import { useState, useEffect, useCallback } from "react";
 import {
   Link2, Plus, Trash2, ExternalLink, Check, X, Loader2,
   FlaskConical, Copy, Download, Clock, Database, FileText,
-  Play, RefreshCw, AlertTriangle, Search, Beaker, RotateCcw
+  Play, RefreshCw, AlertTriangle, Search, Beaker, RotateCcw,
+  ShieldCheck, Lock, CheckCircle2
 } from "lucide-react";
 import { useAuth } from "~/lib/auth";
 import { supabase } from "~/lib/supabase";
@@ -572,13 +573,17 @@ function HistoricoTab() {
   const [limpando, setLimpando] = useState(false);
   const [deletando, setDeletando] = useState<string | null>(null);
 
-  function carregar() {
+  async function carregar() {
     setLoading(true);
-    supabase.rpc("listar_tokens_teste_lab").then(({ data, error }) => {
+    try {
+      const { data, error } = await supabase.rpc("listar_tokens_teste_lab");
       if (!error && data) setTokens(Array.isArray(data) ? data : []);
       else toast.error("Erro ao carregar histórico");
+    } catch {
+      toast.error("Erro ao carregar histórico");
+    } finally {
       setLoading(false);
-    }).catch(() => { setLoading(false); toast.error("Erro ao carregar histórico"); });
+    }
   }
 
   useEffect(() => { carregar(); }, []);

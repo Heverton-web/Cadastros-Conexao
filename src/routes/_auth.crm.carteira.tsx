@@ -44,11 +44,11 @@ const COLUNAS: { key: Temperatura; label: string; color: string }[] = [
 ];
 
 function Carteira() {
-  const { perfil } = useAuth();
+  const { user } = useAuth();
 
   const { data, isLoading } = useQuery({
-    queryKey: ["carteira", perfil?.id],
-    enabled: !!perfil,
+    queryKey: ["carteira", user?.id],
+    enabled: !!user,
     queryFn: async () => {
       const { data: clientes } = await supabase
         .from("clientes")
@@ -161,7 +161,7 @@ function Carteira() {
 }
 
 function NovoClienteButton() {
-  const { perfil } = useAuth();
+  const { user } = useAuth();
   const qc = useQueryClient();
   const [open, setOpen] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -179,8 +179,7 @@ function NovoClienteButton() {
         nome_doutor: form.nome_doutor,
         nome_clinica: form.nome_clinica || null,
         telefone_contato: form.telefone_contato || null,
-        consultor_atual_id: perfil?.id,
-        empresa_id: perfil?.empresa_id,
+        consultor_atual_id: user?.id,
       }).select().single();
       if (error) throw error;
       toast.success("Cliente adicionado");

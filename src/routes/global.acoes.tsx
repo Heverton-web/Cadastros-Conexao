@@ -4,10 +4,12 @@ import { useState, useEffect } from "react";
 import { useAuth } from "~/lib/auth";
 import { supabase } from "~/lib/supabase";
 import {
+  getAppConfig,
   updateAppConfig,
   type AppConfig,
 } from "~/features/admin";
 import {
+  listarCredenciais,
   criarCredencial,
   atualizarCredencial,
   toggleCredencial,
@@ -36,6 +38,7 @@ import {
   Bell,
   FormInput,
   Lightbulb,
+  Loader2,
 } from "lucide-react";
 import toast from "react-hot-toast";
 import {
@@ -52,13 +55,13 @@ import { DemosTab } from "~/components/admin/DemosTab";
 import { CentralAcoesTab } from "~/components/admin/CentralAcoesTab";
 import { FormBuilderTab } from "~/components/admin/FormBuilderTab";
 import {
+  listarIntegracoes,
   salvarIntegracao,
   testarConexaoEvolution,
   type IntegracaoConfig,
 } from "~/features/integracoes";
 import { PasswordInput } from "~/components/ui/password-input";
 import { RequireSuperAdmin } from "~/components/guards";
-import { EMPRESA_ID } from "~/config/empresa";
 type Tab =
   | "supabase"
   | "credenciais"
@@ -367,16 +370,12 @@ function CredenciaisTab() {
       } else {
         await criarCredencial(form);
         try {
-          await dispararWebhooks(
-            "criacao_credencial",
-            {
-              nome: form.nome_completo,
-              email: form.email_corporativo,
-              whatsapp: form.whatsapp_corporativo || "",
-              departamento: form.departamento || "",
-            },
-            EMPRESA_ID,
-          );
+          await dispararWebhooks("criacao_credencial", {
+            nome: form.nome_completo,
+            email: form.email_corporativo,
+            whatsapp: form.whatsapp_corporativo || "",
+            departamento: form.departamento || "",
+          });
         } catch (err) {
           console.error("Erro ao disparar webhook de credencial:", err);
         }
@@ -870,7 +869,7 @@ function CredenciaisTab() {
                         {group.label}
                       </p>
                       <div className="flex flex-col gap-2">
-                        {group.keys.map((key) => {
+                        {group.keys.map((key: string) => {
                           const isChecked = editPerms ? editPerms[key] : false;
                           return (
                             <label

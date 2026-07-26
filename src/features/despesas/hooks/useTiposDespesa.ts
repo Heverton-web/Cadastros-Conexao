@@ -16,7 +16,7 @@ export function useTiposDespesa(overrideEmpresaId?: string) {
 
   return useQuery({
     queryKey: ["despesas-tipos", empresa_id],
-    queryFn: () => listarTiposDespesa(empresa_id),
+    queryFn: () => listarTiposDespesa(),
     enabled: !!empresa_id,
   });
 }
@@ -27,7 +27,7 @@ export function useTiposDespesaAtivos(overrideEmpresaId?: string) {
 
   return useQuery({
     queryKey: ["despesas-tipos-ativos", empresa_id],
-    queryFn: () => listarTiposDespesaAtivos(empresa_id),
+    queryFn: () => listarTiposDespesaAtivos(),
     enabled: !!empresa_id,
   });
 }
@@ -81,7 +81,7 @@ export function useExcluirTipoDespesa(overrideEmpresaId?: string) {
   const empresa_id = overrideEmpresaId || EMPRESA_ID;
 
   return useMutation({
-    mutationFn: (id: string) => excluirTipoDespesa(id, empresa_id),
+    mutationFn: (id: string) => excluirTipoDespesa(id),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["despesas-tipos", empresa_id],

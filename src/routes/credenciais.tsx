@@ -84,7 +84,7 @@ function CredenciaisPage() {
   async function carregar() {
     setLoading(true);
     try {
-      setCredenciais(await listarCredenciaisPorEmpresa(selectedEmpresaId));
+      setCredenciais(await listarCredenciaisPorEmpresa());
     } catch (e) {
       console.error(e);
     }
@@ -473,7 +473,7 @@ function CredenciaisPage() {
                         {group.label}
                       </p>
                       <div className="flex flex-col gap-2">
-                        {group.keys.map((key) => (
+                        {group.keys.map((key: string) => (
                           <label
                             key={key}
                             className="flex items-center gap-3 cursor-pointer group"

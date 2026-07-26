@@ -83,10 +83,12 @@ export async function atualizarProtocolo(id: string, input: Partial<{
 }
 
 export async function toggleProtocoloAtivo(id: string, ativo: boolean): Promise<void> {
+  const { error } = await supabase.from("catalogo_protocolos_fresagens").update({ ativo }).eq("id", id)
   if (error) throw error
 }
 
 export async function removerProtocolo(id: string): Promise<void> {
+  const { error } = await supabase.from("catalogo_protocolos_fresagens").delete().eq("id", id)
   if (error) throw error
 }
 

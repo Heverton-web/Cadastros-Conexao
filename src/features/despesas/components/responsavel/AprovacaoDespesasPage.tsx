@@ -123,7 +123,6 @@ export function AprovacaoDespesasPage() {
       <PageHeader
         title="Aprovação de Despesas"
         description="Analise e aprove/reprove os envios de despesas da equipe."
-        icon={FileText}
       />
 
       {isSuperAdmin && empresas.length > 0 && (

@@ -77,9 +77,11 @@ export async function atualizarOpcional(sku: string, input: Partial<{
 }
 
 export async function toggleOpcionalAtivo(sku: string, ativo: boolean): Promise<void> {
+  const { error } = await supabase.from("catalogo_opcionais").update({ ativo }).eq("sku", sku)
   if (error) throw error
 }
 
 export async function removerOpcional(sku: string): Promise<void> {
+  const { error } = await supabase.from("catalogo_opcionais").delete().eq("sku", sku)
   if (error) throw error
 }

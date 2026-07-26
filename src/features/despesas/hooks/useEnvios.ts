@@ -22,7 +22,7 @@ export function useEnviosEmpresa(
 
   return useQuery({
     queryKey: ["despesas-envios", empresa_id, filtros],
-    queryFn: () => listarEnviosEmpresa(empresa_id, filtros),
+    queryFn: () => listarEnviosEmpresa(filtros),
     enabled: !!empresa_id,
   });
 }
@@ -33,7 +33,7 @@ export function useEnviosPendentes(overrideEmpresaId?: string) {
 
   return useQuery({
     queryKey: ["despesas-envios-pendentes", empresa_id],
-    queryFn: () => listarEnviosPendentes(empresa_id),
+    queryFn: () => listarEnviosPendentes(),
     enabled: !!empresa_id,
   });
 }
@@ -45,7 +45,7 @@ export function useMeusEnvios(overrideEmpresaId?: string) {
 
   return useQuery({
     queryKey: ["despesas-meus-envios", empresa_id, usuario_id],
-    queryFn: () => listarMeusEnvios(empresa_id, usuario_id),
+    queryFn: () => listarMeusEnvios(usuario_id),
     enabled: !!empresa_id && !!usuario_id,
   });
 }
@@ -66,7 +66,7 @@ export function useCriarOuAtualizarEnvio() {
 
   return useMutation({
     mutationFn: (periodo_id: string) =>
-      criarOuAtualizarEnvio(empresa_id, usuario_id, periodo_id),
+      criarOuAtualizarEnvio(usuario_id, periodo_id),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["despesas-envios", empresa_id],
@@ -85,7 +85,7 @@ export function useAprovarEnvio() {
   const aprovador_id = profile?.id ?? "";
 
   return useMutation({
-    mutationFn: (id: string) => aprovarEnvio(id, aprovador_id, empresa_id),
+    mutationFn: (id: string) => aprovarEnvio(id, aprovador_id),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["despesas-envios", empresa_id],
@@ -108,7 +108,7 @@ export function useReprovarEnvio() {
 
   return useMutation({
     mutationFn: ({ id, comentario }: { id: string; comentario: string }) =>
-      reprovarEnvio(id, aprovador_id, comentario, empresa_id),
+      reprovarEnvio(id, aprovador_id, comentario),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["despesas-envios", empresa_id],
@@ -141,7 +141,7 @@ export function useAprovarEnvioParcial() {
       reprovadas: string[];
       comentario: string;
     }) =>
-      aprovarEnvioParcial(id, aprovador_id, aprovadas, reprovadas, comentario, empresa_id),
+      aprovarEnvioParcial(id, aprovador_id, aprovadas, reprovadas, comentario),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["despesas-envios", empresa_id],

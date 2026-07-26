@@ -384,7 +384,7 @@ function NpsTemaPage() {
   async function handleRemoveLogo() {
     if (!selectedEmpresaId) return;
     try {
-      await salvarEmpresaConfig(selectedEmpresaId, { logo_app_url: null });
+      await salvarEmpresaConfig(selectedEmpresaId, { logo_app_url: undefined });
       setLogoUrl(null);
       toast.success("Logo removido!");
     } catch (e: any) {

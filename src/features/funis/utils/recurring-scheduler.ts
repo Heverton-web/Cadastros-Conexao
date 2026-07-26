@@ -82,7 +82,12 @@ export async function verificarTarefasAtrasadas() {
       }
     }
 
-    dispararEventoModulo(MODULO_KEY, "tarefa.atrasada", { tarefa_id: tarefa.id, titulo: tarefa.titulo, funil_id: tarefa.funil_id, data_fim: tarefa.data_fim }, null).catch(() => {});
+    dispararEventoModulo(MODULO_KEY, "tarefa.atrasada", {
+      tarefa_id: tarefa.id,
+      titulo: tarefa.titulo,
+      funil_id: tarefa.funil_id,
+      data_fim: tarefa.data_fim,
+    }).catch(() => {});
   }
 }
 

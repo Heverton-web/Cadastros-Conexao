@@ -32,8 +32,8 @@ vi.mock("@tanstack/react-start", () => ({
           context: { supabase: any; userId: string };
         }) => unknown,
       ) => {
-        return async (input: unknown) => {
-          const data = validator(input);
+        return async (opts: { data?: unknown } = {}) => {
+          const data = validator(opts.data);
           return fn({
             data,
             context: { supabase: mockSupabase.supabase, userId: "test-user" },
@@ -46,7 +46,7 @@ vi.mock("@tanstack/react-start", () => ({
 }));
 
 vi.mock("~/integrations/supabase/auth-middleware", () => ({
-  requireSupabaseAuth: vi.fn(),
+  requireSupabaseAuthMiddleware: vi.fn(),
 }));
 
 import {
@@ -87,12 +87,12 @@ describe("CRM - Visitas Server Functions", () => {
             .mockResolvedValue({ data: { id: "cli-1" }, error: null }),
         }),
       );
-      const result = await criarCliente(clienteInput);
+      const result = await criarCliente({ data: clienteInput });
       expect(result).toHaveProperty("id", "cli-1");
     });
 
     it("rejeita dados invalidos", async () => {
-      await expect(criarCliente({} as any)).rejects.toThrow();
+      await expect(criarCliente({ data: {} as any })).rejects.toThrow();
     });
   });
 
@@ -116,7 +116,7 @@ describe("CRM - Visitas Server Functions", () => {
         interesse_escala: 3,
         temperatura_vendedor: "Morno" as const,
       };
-      const result = await registrarVisita(visitaInput);
+      const result = await registrarVisita({ data: visitaInput });
       expect(result).toHaveProperty("visita");
       expect(result.visita).toHaveProperty("id", "vis-1");
     });

@@ -29,7 +29,7 @@ import type {
 export function useFunis() {
   return useQuery({
     queryKey: ["funis", EMPRESA_ID],
-    queryFn: () => listarFunis(EMPRESA_ID),
+    queryFn: () => listarFunis(),
     staleTime: 30_000,
   });
 }
@@ -46,7 +46,7 @@ export function useFunil(id: string | null) {
 export function useCriarFunil() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: (input: FunilInput) => criarFunil(input, EMPRESA_ID),
+    mutationFn: (input: FunilInput) => criarFunil(input),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["funis"] }),
   });
 }

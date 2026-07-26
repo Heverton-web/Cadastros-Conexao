@@ -85,7 +85,6 @@ export async function salvarManutencao(
       empresa_id: target,
       tem_fim: !!input.data_fim,
     },
-    target,
   ).catch(() => {});
 
   return data as Manutencao;
@@ -123,7 +122,6 @@ export async function desativarManutencao(
       rota: (atual as Manutencao)?.rota,
       empresa_id: target,
     },
-    target,
   ).catch(() => {});
 }
 

@@ -10,7 +10,7 @@ export function useHubLevels() {
   const { empresa } = useAuth();
   return useQuery({
     queryKey: ["hub-levels", empresa?.id],
-    queryFn: () => fetchHubLevels(empresa!.id),
+    queryFn: () => fetchHubLevels(),
     enabled: !!empresa?.id,
   });
 }
@@ -19,7 +19,7 @@ export function useHubRanking() {
   const { empresa } = useAuth();
   return useQuery({
     queryKey: ["hub-ranking", empresa?.id],
-    queryFn: () => fetchHubRanking(empresa!.id),
+    queryFn: () => fetchHubRanking(),
     enabled: !!empresa?.id,
   });
 }

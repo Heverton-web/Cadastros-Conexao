@@ -52,7 +52,6 @@ export function MinhasDespesasPage() {
       <PageHeader
         title="Minhas Despesas"
         description="Lance e acompanhe suas despesas em rota."
-        icon={Receipt}
       />
 
       {isSuperAdmin && empresas.length > 0 && (

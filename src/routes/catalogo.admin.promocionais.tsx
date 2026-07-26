@@ -116,7 +116,7 @@ function AdminPromocionaisPage() {
     ...(fresas ?? []).map((p) => ({ sku: p.sku, tipo: "fresa" as const, nome: p.nome })),
     ...(chaves ?? []).map((p) => ({ sku: p.sku, tipo: "chave" as const, nome: p.nome })),
     ...(acessorios ?? []).map((p) => ({ sku: p.sku, tipo: "acessorio" as const, nome: p.nome })),
-    ...(instrumentais ?? []).map((p) => ({ sku: p.sku, tipo: "instrumental" as const, nome: p.nome })),
+    ...(instrumentais ?? []).map((p) => ({ sku: String(p.sku), tipo: "instrumental" as const, nome: String(p.nome ?? p.sku ?? "") })),
     ...(kits ?? []).map((p) => ({ sku: p.sku, tipo: "kit" as const, nome: p.nome })),
   ]
 

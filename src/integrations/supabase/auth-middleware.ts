@@ -1,20 +1,18 @@
+import { createMiddleware } from "@tanstack/react-start";
 import { supabase } from "~/core/supabase";
 
-export async function requireSupabaseAuth(ctx: {
-  data: unknown;
-  context: Record<string, unknown>;
-}) {
+export const requireSupabaseAuthMiddleware = createMiddleware({
+  type: "function",
+}).server(async ({ next }) => {
   const {
     data: { user },
     error,
   } = await supabase.auth.getUser();
   if (error || !user) throw new Error("Não autenticado");
-  return {
-    ...ctx,
+  return next({
     context: {
-      ...ctx.context,
       supabase,
       userId: user.id,
     },
-  };
-}
+  });
+});

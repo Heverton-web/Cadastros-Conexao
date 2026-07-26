@@ -9,12 +9,14 @@ import { Input } from "~/components/ui/input";
 import { Skeleton } from "~/components/ui/skeleton";
 import { EmptyState } from "~/components/ui/empty-state";
 import {
+  Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
 } from "~/components/ui/select";
 import {
+  AlertDialog,
   AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
@@ -24,6 +26,7 @@ import {
   AlertDialogTitle,
 } from "~/components/ui/alert-dialog";
 import {
+  Dialog,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -366,7 +369,7 @@ export function UtmHistory() {
 
       <AlertDialog
         open={!!itemParaDeletar}
-        onOpenChange={(o) => !o && setItemParaDeletar(null)}
+        onOpenChange={(o: boolean) => !o && setItemParaDeletar(null)}
       >
         <AlertDialogContent className="bg-card border-border">
           <AlertDialogHeader>

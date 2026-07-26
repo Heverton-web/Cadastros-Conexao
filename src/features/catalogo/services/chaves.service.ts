@@ -77,9 +77,11 @@ export async function atualizarChave(sku: string, input: Partial<{
 }
 
 export async function toggleChaveAtivo(sku: string, ativo: boolean): Promise<void> {
+  const { error } = await supabase.from("catalogo_chaves").update({ ativo }).eq("sku", sku)
   if (error) throw error
 }
 
 export async function removerChave(sku: string): Promise<void> {
+  const { error } = await supabase.from("catalogo_chaves").delete().eq("sku", sku)
   if (error) throw error
 }

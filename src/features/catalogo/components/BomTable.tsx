@@ -3,7 +3,7 @@ import { Check, FileText } from "lucide-react"
 import toast from "react-hot-toast"
 import { addToCart, formatBRL, getPrecoFromDB } from "~/features/catalogo/services/carrinho.service"
 import { playCoinSound } from "~/features/catalogo/services/audio.service"
-import type { ProductSheetTipo } from "~/features/catalogo/types"
+import type { ProductSheetTipo, CatalogoImagemProduto } from "~/features/catalogo/types"
 import { ProductThumb } from "./ProductThumb"
 import { openImageViewer } from "~/features/catalogo/services/ui.service"
 import { useImagensBatch } from "~/features/catalogo/hooks/useCatalogo"
@@ -39,7 +39,6 @@ export function BomTable({ items }: BomTableProps) {
   const tipoEntries = Object.entries(skusByTipo)
   const fresaImgs = useImagensBatch("fresa", skusByTipo["fresa"] ?? [])
   const chaveImgs = useImagensBatch("chave", skusByTipo["chave"] ?? [])
-  const acessorioImgs = useImagensBatch("acessorio", skusByTipo["acessorio"] ?? [])
   const implanteImgs = useImagensBatch("implante", skusByTipo["implante"] ?? [])
   const cicatrizadorImgs = useImagensBatch("cicatrizador", skusByTipo["cicatrizador"] ?? [])
   const componenteImgs = useImagensBatch("componente", skusByTipo["componente"] ?? [])
@@ -47,11 +46,12 @@ export function BomTable({ items }: BomTableProps) {
 
   useEffect(() => {
     const map = new Map<string, string>()
-    for (const [tipo, data] of [
-      ["fresa", fresaImgs.data], ["chave", chaveImgs.data], ["acessorio", acessorioImgs.data],
+    const sources: Array<[string, Map<string, CatalogoImagemProduto[]> | undefined]> = [
+      ["fresa", fresaImgs.data], ["chave", chaveImgs.data],
       ["implante", implanteImgs.data], ["cicatrizador", cicatrizadorImgs.data],
       ["componente", componenteImgs.data], ["parafuso", parafusoImgs.data],
-    ]) {
+    ]
+    for (const [tipo, data] of sources) {
       if (data) {
         for (const [sku, imgs] of data) {
           if (imgs?.[0]?.url_imagem) map.set(`${tipo}:${sku}`, imgs[0].url_imagem)
@@ -59,7 +59,7 @@ export function BomTable({ items }: BomTableProps) {
       }
     }
     setImagensMap(map)
-  }, [fresaImgs.data, chaveImgs.data, acessorioImgs.data, implanteImgs.data, cicatrizadorImgs.data, componenteImgs.data, parafusoImgs.data])
+  }, [fresaImgs.data, chaveImgs.data, implanteImgs.data, cicatrizadorImgs.data, componenteImgs.data, parafusoImgs.data])
 
   const getColor = (tipo: string) => {
     switch(tipo) {

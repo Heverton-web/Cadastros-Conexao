@@ -586,7 +586,6 @@ function PreCadastroPage() {
           contato: contatoFormatado,
           pin,
         },
-        empresaId,
       );
 
       // PIN logging removed for security — PIN is sent via SMS only
@@ -750,7 +749,6 @@ function PreCadastroPage() {
       dispararWebhooks(
         "dados_enviados",
         { cadastro_id: cadastroId, token },
-        empresaId,
       );
       dispararWebhooks(
         "em_analise",
@@ -761,7 +759,6 @@ function PreCadastroPage() {
             form.pf.email_comunicacao ||
             form.pj.email_comunicacao,
         },
-        empresaId,
       );
 
       // Dispara notificação com template para o consultor comercial

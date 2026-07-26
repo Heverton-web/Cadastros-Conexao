@@ -9,9 +9,28 @@ export const npsDiagnosticPlan: DiagnosticPlan = {
   key: "nps",
   nome: "NPS",
   dadosTeste: () => ({
-    pergunta: { titulo: "[DIAG] Como avalia nosso serviço?", tipo_pergunta: "nps" as const, active: true, order_index: 0, config: {} },
-    resposta: { nota: 9, comentario: "[DIAG] Ótimo serviço!", vendor_name: "Vendedor A", origem: "diagnostico" },
-    respostaRuim: { nota: 3, comentario: "[DIAG] Precisa melhorar", vendor_name: "Vendedor B", origem: "diagnostico" },
+    pergunta: {
+      key: "diag_recomendaria",
+      order_index: 0,
+      type: "nps" as const,
+      question_text: "[DIAG] Como avalia nosso serviço?",
+      options: [] as string[],
+      required: true,
+      active: true,
+      is_system: false,
+    },
+    resposta: {
+      nps_score: 9,
+      nps_comment: "[DIAG] Ótimo serviço!",
+      vendor_name: "Vendedor A",
+      source: "diagnostico",
+    },
+    respostaRuim: {
+      nps_score: 3,
+      nps_comment: "[DIAG] Precisa melhorar",
+      vendor_name: "Vendedor B",
+      source: "diagnostico",
+    },
   }),
 
   crud: {
@@ -19,7 +38,7 @@ export const npsDiagnosticPlan: DiagnosticPlan = {
       ctx.log("info", "criando pergunta NPS...");
       const dados = ctx.dadosTeste() as any;
       const pergunta = await perguntasService.criarPergunta(ctx.empresaId, dados.pergunta);
-      ctx.log("success", `pergunta: id=${pergunta.id}, "${pergunta.titulo}"`);
+      ctx.log("success", `pergunta: id=${pergunta.id}, "${pergunta.question_text}"`);
       ctx.salvarId("perguntaId", pergunta.id);
     },
     read: async (ctx) => {
@@ -31,7 +50,7 @@ export const npsDiagnosticPlan: DiagnosticPlan = {
       const id = ctx.recuperarId("perguntaId");
       if (!id) throw new Error("Execute 'Criar' primeiro");
       ctx.log("info", `atualizando pergunta id=${id}...`);
-      await perguntasService.atualizarPergunta(id, { titulo: "[DIAG] Pergunta Atualizada?" });
+      await perguntasService.atualizarPergunta(id, { question_text: "[DIAG] Pergunta Atualizada?" });
       ctx.log("success", "pergunta atualizada");
     },
     delete: async (ctx) => {
@@ -56,21 +75,25 @@ export const npsDiagnosticPlan: DiagnosticPlan = {
         ctx.salvarId("perguntaId", pergunta.id);
 
         ctx.log("info", "2) Registrando resposta positiva...");
-        const r1 = await respostasService.criarResposta({ empresa_id: ctx.empresaId, pergunta_id: pergunta.id, ...dados.resposta });
-        ctx.log("success", `resposta positiva: id=${r1.id}, nota=${r1.nota}`);
+        const r1 = await respostasService.criarResposta(ctx.empresaId, dados.resposta);
+        ctx.log("success", `resposta positiva: id=${r1.id}, nota=${r1.nps_score}`);
 
         ctx.log("info", "3) Registrando resposta negativa...");
-        const r2 = await respostasService.criarResposta({ empresa_id: ctx.empresaId, pergunta_id: pergunta.id, ...dados.respostaRuim });
-        ctx.log("success", `resposta negativa: id=${r2.id}, nota=${r2.nota}`);
+        const r2 = await respostasService.criarResposta(ctx.empresaId, dados.respostaRuim);
+        ctx.log("success", `resposta negativa: id=${r2.id}, nota=${r2.nps_score}`);
 
         ctx.log("info", "4) Calculando NPS score...");
-        const score = await respostasService.calcularNpsScore(ctx.empresaId);
-        ctx.log("success", `NPS score: ${score}`);
+        const todas = await respostasService.listarRespostas(ctx.empresaId);
+        const scoreInfo = respostasService.calcularNpsScore(todas);
+        ctx.log("success", `NPS score: ${scoreInfo.score}`);
 
         ctx.log("info", "5) Verificando distribuição NPS...");
-        const dist = await respostasService.distribuicaoNps(ctx.empresaId);
-        const total = (dist as any)?.promoters ?? 0 + (dist as any)?.passives ?? 0 + (dist as any)?.detractors ?? 0;
-        ctx.log("success", `distribuição: P=${(dist as any)?.promoters ?? 0} Pa=${(dist as any)?.passives ?? 0} D=${(dist as any)?.detractors ?? 0}`);
+        const dist = respostasService.distribuicaoNps(todas);
+        const notasComRespostas = dist.filter((d) => d.count > 0).length;
+        ctx.log(
+          "success",
+          `distribuição: P=${scoreInfo.promoters} Pa=${scoreInfo.passives} D=${scoreInfo.detractors} (${notasComRespostas} nota(s) distintas)`,
+        );
 
         ctx.salvarId("respostaIds", JSON.stringify([r1.id, r2.id]));
       },
@@ -92,16 +115,27 @@ export const npsDiagnosticPlan: DiagnosticPlan = {
         ctx.salvarId("perguntaId", pergunta.id);
 
         ctx.log("info", "2) Registrando respostas para 2 vendedores...");
-        const r1 = await respostasService.criarResposta({ empresa_id: ctx.empresaId, pergunta_id: pergunta.id, nota: 10, comentario: "Excelente!", vendor_name: "Vendedor A", origem: "diagnostico" });
-        const r2 = await respostasService.criarResposta({ empresa_id: ctx.empresaId, pergunta_id: pergunta.id, nota: 2, comentario: "Ruim", vendor_name: "Vendedor B", origem: "diagnostico" });
+        const r1 = await respostasService.criarResposta(ctx.empresaId, {
+          ...dados.resposta,
+          nps_score: 10,
+          nps_comment: "Excelente!",
+          vendor_name: "Vendedor A",
+        });
+        const r2 = await respostasService.criarResposta(ctx.empresaId, {
+          ...dados.resposta,
+          nps_score: 2,
+          nps_comment: "Ruim",
+          vendor_name: "Vendedor B",
+        });
         ctx.log("success", `respostas registradas: A nota=10, B nota=2`);
         ctx.salvarId("respostaIds", JSON.stringify([r1.id, r2.id]));
 
         ctx.log("info", "3) Calculando métricas por vendedor...");
-        const metrics = await calcularMetricasVendedor(ctx.empresaId);
-        ctx.log("success", `${Object.keys(metrics).length} vendedor(es) com métricas`);
-        for (const [vendor, m] of Object.entries(metrics as any)) {
-          ctx.log("info", `  ${vendor}: NPS=${m.nps ?? "N/A"}`);
+        const todas = await respostasService.listarRespostas(ctx.empresaId);
+        const metrics = calcularMetricasVendedor(todas);
+        ctx.log("success", `${metrics.length} vendedor(es) com métricas`);
+        for (const m of metrics) {
+          ctx.log("info", `  ${m.vendor}: NPS=${m.nps}`);
         }
       },
       cleanup: async (ctx) => {
@@ -127,13 +161,14 @@ export const npsDiagnosticPlan: DiagnosticPlan = {
         ctx.log("success", `${webhooks.length} webhook(s) configurado(s)`);
 
         ctx.log("info", "3) Criando webhook de teste...");
-        const wh = await webhooksService.salvarWebhook(ctx.empresaId, { url: "https://httpbin.org/post", eventos: ["nova_resposta"], ativo: false });
-        ctx.log("success", `webhook salvo: id=${wh?.id ?? "N/A"}`);
-        ctx.salvarId("webhookId", wh?.id);
+        const wh = await webhooksService.salvarWebhook(ctx.empresaId, "https://httpbin.org/post", false);
+        ctx.log("success", `webhook salvo: id=${wh.id}`);
+        ctx.salvarId("webhookId", wh.id);
 
         ctx.log("info", "4) Testando CSAT matrix...");
-        const csat = await respostasService.distribuicaoCsat(ctx.empresaId);
-        ctx.log("success", `CSAT distribuição obtida`);
+        const todas = await respostasService.listarRespostas(ctx.empresaId);
+        const csat = respostasService.distribuicaoCsat(todas);
+        ctx.log("success", `CSAT distribuição obtida: ${csat.length} categoria(s)`);
       },
       cleanup: async (ctx) => {
         const wid = ctx.recuperarId("webhookId");

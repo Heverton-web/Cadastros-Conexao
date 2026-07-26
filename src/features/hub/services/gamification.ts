@@ -89,7 +89,6 @@ export async function awardHubBadge(
     MODULO_KEY,
     "badge.conquistado",
     { badge_id: badgeId, badge_nome: badge?.nome, usuario_id: userId, empresa_id: empresaId },
-    empresaId,
   ).catch(() => {});
 
   return data as HubUserBadge;
@@ -127,7 +126,6 @@ export async function addHubPoints(userId: string, points: number) {
     MODULO_KEY,
     "gamification.level_up",
     { usuario_id: userId, pontos: newPoints, pontos_adicionados: points, empresa_id: profile.empresa_id },
-    profile.empresa_id,
   ).catch(() => {});
 
   return data.hub_points;

@@ -15,7 +15,7 @@ export async function registrarClique(linkId: string) {
     p_ref: ref,
   });
   if (error) throw error;
-  dispararEventoModulo(MODULO_KEY, "link.clicado", { link_id: linkId }, null).catch(() => {});
+  dispararEventoModulo(MODULO_KEY, "link.clicado", { link_id: linkId }).catch(() => {});
   return data as { redirect_url: string; tipo_link: string }[];
 }
 

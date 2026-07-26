@@ -24,12 +24,18 @@ export function CollectionFormModal({
   onSave,
   collection,
 }: CollectionFormModalProps) {
-  const [title, setTitle] = useState<Record<HubLanguage, string>>(
-    collection?.title || { "pt-br": "", "en-us": "", "es-es": "" },
-  );
-  const [description, setDescription] = useState<Record<HubLanguage, string>>(
-    collection?.description || { "pt-br": "", "en-us": "", "es-es": "" },
-  );
+  const [title, setTitle] = useState<Record<HubLanguage, string>>({
+    "pt-br": "",
+    "en-us": "",
+    "es-es": "",
+    ...collection?.title,
+  });
+  const [description, setDescription] = useState<Record<HubLanguage, string>>({
+    "pt-br": "",
+    "en-us": "",
+    "es-es": "",
+    ...collection?.description,
+  });
   const [points, setPoints] = useState(collection?.points || 50);
   const [coverImage, setCoverImage] = useState(collection?.cover_image || "");
 

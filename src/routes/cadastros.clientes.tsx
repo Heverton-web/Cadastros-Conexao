@@ -94,7 +94,7 @@ function ClientesPage() {
       };
       if (permissoes?.ver_todos_cadastros !== true)
         filters.created_by = profile.id;
-      const res = await listarCadastros(profile!.empresa_id!, filters);
+      const res = await listarCadastros(filters);
       setData(res);
     } catch (e) {
       console.error(e);

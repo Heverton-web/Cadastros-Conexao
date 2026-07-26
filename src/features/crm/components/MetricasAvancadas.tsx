@@ -79,7 +79,7 @@ export function MetricasAvancadas({ periodo = "mes" }: Props) {
       const { data: visitas, count: totalVisitas } = await supabase
         .from("visitas")
         .select(
-          "id, valor_estimado, gerou_pedido, gerou_orcamento, temperatura_vendedor",
+          "id, valor_estimado, gerou_pedido, gerou_orcamento, temperatura_vendedor, data_visita",
           { count: "exact" },
         )
         .eq("consultor_executor_id", userId)

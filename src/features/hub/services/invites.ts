@@ -31,7 +31,6 @@ export async function createHubInvite(
     MODULO_KEY,
     "convite.gerado",
     { invite_id: data.id, role, created_by: createdBy, empresa_id: empresaId },
-    empresaId,
   ).catch(() => {});
 
   return data as HubInviteToken;
@@ -76,7 +75,6 @@ export async function useHubInvite(token: string, userId: string) {
     MODULO_KEY,
     "usuario.registrado",
     { invite_id: data.id, usuario_id: userId, role: data.role, empresa_id: data.empresa_id },
-    data.empresa_id,
   ).catch(() => {});
 
   return data as HubInviteToken;

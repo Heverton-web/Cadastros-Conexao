@@ -18,7 +18,7 @@ export function AdminChatbotPage() {
   const queryClient = useQueryClient();
   const { data: config } = useQuery({
     queryKey: ["hub-chatbot", empresa?.id],
-    queryFn: () => fetchHubChatbotConfig(empresa!.id),
+    queryFn: () => fetchHubChatbotConfig(),
     enabled: !!empresa?.id,
   });
 

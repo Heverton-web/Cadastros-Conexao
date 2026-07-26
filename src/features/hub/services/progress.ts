@@ -50,7 +50,6 @@ export async function completeHubMaterial(
     MODULO_KEY,
     "material.concluido",
     { material_id: materialId, usuario_id: userId, empresa_id: empresaId },
-    empresaId,
   ).catch(() => {});
 
   return data as HubUserProgress;
@@ -105,7 +104,6 @@ export async function completeHubCollection(
     MODULO_KEY,
     "trilha.concluida",
     { collection_id: collectionId, usuario_id: userId, empresa_id: empresaId },
-    empresaId,
   ).catch(() => {});
 
   return data as HubUserProgress;

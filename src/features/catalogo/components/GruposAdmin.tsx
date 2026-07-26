@@ -67,7 +67,7 @@ export function GruposAdmin() {
     if (!empresaId) return
     setLoading(true)
     try {
-      setGrupos(await listarGrupos(empresaId))
+      setGrupos(await listarGrupos())
     } finally {
       setLoading(false)
     }
@@ -80,7 +80,7 @@ export function GruposAdmin() {
     if (!empresaId) return
     setLoadingProdutos(true)
     try {
-      setProdutosEmpresa(await listarProdutosEmpresa(empresaId))
+      setProdutosEmpresa(await listarProdutosEmpresa())
     } finally {
       setLoadingProdutos(false)
     }

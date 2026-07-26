@@ -75,12 +75,12 @@ export async function adicionarLabelTarefa(
     .eq("id", labelId)
     .single();
 
-  dispararEventoModulo(
-    MODULO_KEY,
-    "tarefa.label_adicionado",
-    { tarefa_id: tarefaId, label_id: labelId, label_nome: label?.nome, label_cor: label?.cor },
-    label?.empresa_id,
-  ).catch(() => {});
+  dispararEventoModulo(MODULO_KEY, "tarefa.label_adicionado", {
+    tarefa_id: tarefaId,
+    label_id: labelId,
+    label_nome: label?.nome,
+    label_cor: label?.cor,
+  }).catch(() => {});
 }
 
 export async function removerLabelTarefa(

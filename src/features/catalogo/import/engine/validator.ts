@@ -18,6 +18,13 @@ export interface ExistingDataCache {
 
 export async function loadExistingDataCache(): Promise<ExistingDataCache> {
   const [catRes, catKitRes, conRes, famRes, linRes, tipoReabRes, tipoAbtRes] = await Promise.all([
+    supabase.from("catalogo_categorias").select("id, nome"),
+    supabase.from("catalogo_categorias_kit").select("id, nome"),
+    supabase.from("catalogo_conexoes").select("id, nome"),
+    supabase.from("catalogo_familias").select("id, nome"),
+    supabase.from("catalogo_linhas").select("id, nome"),
+    supabase.from("catalogo_tipos_reabilitacao").select("id, nome"),
+    supabase.from("catalogo_tipos_abutment").select("id, nome"),
   ])
 
   const skuTables = [
@@ -27,6 +34,7 @@ export async function loadExistingDataCache(): Promise<ExistingDataCache> {
   ]
   const allSkus = new Set<string>()
   for (const table of skuTables) {
+    const { data } = await supabase.from(table).select("sku")
     data?.forEach((r) => allSkus.add(r.sku))
   }
 

@@ -52,7 +52,6 @@ export function MeusRelatoriosPage() {
       <PageHeader
         title="Meus Relatórios"
         description="Acompanhe o resumo das suas despesas."
-        icon={BarChart3}
       />
 
       {isSuperAdmin && empresas.length > 0 && (

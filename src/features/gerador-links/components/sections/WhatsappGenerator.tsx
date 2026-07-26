@@ -8,7 +8,6 @@ import { useCriarLink } from "../../hooks/useLinks";
 import { useTemplates } from "../../hooks/useTemplates";
 import { LinkSavedDialog } from "../LinkSavedDialog";
 import { useAuth } from "~/lib/auth";
-import { EMPRESA_ID } from "~/config/empresa";
 import { dispararEventoModulo } from "~/core/services/webhooks";
 
 const MODULO_KEY = "gerador-links";
@@ -50,7 +49,7 @@ export function WhatsappGenerator() {
         params: { telefone, mensagem: mensagem || "" },
       });
       setLinkSalvoId(saved.id);
-      dispararEventoModulo(MODULO_KEY, "link.gerado_whatsapp", { link_id: saved.id, telefone }, EMPRESA_ID).catch(() => {});
+      dispararEventoModulo(MODULO_KEY, "link.gerado_whatsapp", { link_id: saved.id, telefone }).catch(() => {});
     } catch {
       toast.error("Erro ao salvar");
     }

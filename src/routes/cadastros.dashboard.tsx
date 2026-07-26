@@ -46,7 +46,7 @@ function DashboardPage() {
 
   useEffect(() => {
     if (!profile) return;
-    listarCadastros(profile.empresa_id!)
+    listarCadastros()
       .then(async (res) => {
         setData(res);
         const status = await getDocumentosStatusMap(

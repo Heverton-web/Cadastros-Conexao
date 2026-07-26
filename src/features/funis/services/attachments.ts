@@ -34,12 +34,10 @@ export async function criarAnexo(input: AttachmentInput): Promise<Attachment> {
   if (error) throw error;
   const anexo = data as Attachment;
 
-  dispararEventoModulo(
-    MODULO_KEY,
-    "tarefa.anexo_adicionado",
-    { anexo, tarefa_id: input.tarefa_id },
-    null,
-  ).catch(() => {});
+  dispararEventoModulo(MODULO_KEY, "tarefa.anexo_adicionado", {
+    anexo,
+    tarefa_id: input.tarefa_id,
+  }).catch(() => {});
   return anexo;
 }
 

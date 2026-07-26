@@ -8,6 +8,7 @@ import { Button } from "~/components/ui/button";
 import { Skeleton } from "~/components/ui/skeleton";
 import { EmptyState } from "~/components/ui/empty-state";
 import {
+  AlertDialog,
   AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
@@ -17,6 +18,7 @@ import {
   AlertDialogTitle,
 } from "~/components/ui/alert-dialog";
 import {
+  Dialog,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -25,6 +27,7 @@ import {
 } from "~/components/ui/dialog";
 import { Input } from "~/components/ui/input";
 import {
+  Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
@@ -84,7 +87,7 @@ export function PixelsList() {
       if (data) {
         setPixels((prev) => [data, ...prev]);
         toast.success("Pixel adicionado com sucesso!");
-        dispararEventoModulo(MODULO_KEY, "evento.registrado", { pixel_id: data.id, nome: formNome, tipo: formTipo, empresa_id: EMPRESA_ID }, EMPRESA_ID).catch(() => {});
+        dispararEventoModulo(MODULO_KEY, "evento.registrado", { pixel_id: data.id, nome: formNome, tipo: formTipo, empresa_id: EMPRESA_ID }).catch(() => {});
       }
       setNovoPixelOpen(false);
       setFormNome("");
@@ -104,7 +107,7 @@ export function PixelsList() {
       prev.map((p) => (p.id === pixel.id ? { ...p, ativo: novoAtivo } : p))
     );
     toast.success(novoAtivo ? "Pixel ativado" : "Pixel desativado");
-    dispararEventoModulo(MODULO_KEY, "evento.registrado", { pixel_id: pixel.id, nome: pixel.nome, ativo: novoAtivo, empresa_id: pixel.empresa_id }, pixel.empresa_id).catch(() => {});
+    dispararEventoModulo(MODULO_KEY, "evento.registrado", { pixel_id: pixel.id, nome: pixel.nome, ativo: novoAtivo, empresa_id: pixel.empresa_id }).catch(() => {});
   }
 
   async function handleCopiar(id: string) {
@@ -273,7 +276,7 @@ export function PixelsList() {
         </DialogContent>
       </Dialog>
 
-      <AlertDialog open={!!paraExcluir} onOpenChange={(o) => !o && setParaExcluir(null)}>
+      <AlertDialog open={!!paraExcluir} onOpenChange={(o: boolean) => !o && setParaExcluir(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
             <div className="flex items-center gap-3">

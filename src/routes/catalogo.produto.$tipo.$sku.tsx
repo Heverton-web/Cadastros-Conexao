@@ -679,13 +679,17 @@ function AbutmentDetail({ sku }: { sku: string }) {
   const [fichaModal, setFichaModal] = useState<{ open: boolean; nome: string; sku: string; imagemUrl?: string | null; tipo?: ProductSheetTipo; preco?: number | null; onVerCompleto?: () => void; sections: Array<{ title: string; specs: Array<{ label: string; value: string | number | null | undefined }> }>; vinculacoes?: Array<{ nome: string; sku: string; valor?: number | null; tipo?: ProductSheetTipo }> }>({ open: false, nome: "", sku: "", sections: [] })
   useEffect(() => {
     if (!sku) return
-    supabase.from("catalogo_seq_protetica_abutments").select("seq_id", { count: "exact", head: true }).eq("abutment_sku", sku)
+    Promise.resolve(
+      supabase.from("catalogo_seq_protetica_abutments").select("seq_id", { count: "exact", head: true }).eq("abutment_sku", sku)
+    )
       .then(({ count }) => setSeqCount(count ?? 0))
       .catch(() => setSeqCount(0))
   }, [sku])
   useEffect(() => {
     if (!sku) return
-    supabase.from("catalogo_abutment_chaves").select("chave_id").eq("abutment_sku", sku)
+    Promise.resolve(
+      supabase.from("catalogo_abutment_chaves").select("chave_id").eq("abutment_sku", sku)
+    )
       .then(async ({ data, error }) => {
         if (error) { console.error("Erro chaves:", error); return }
         const ids = (data ?? []).map((r: any) => r.chave_id)
@@ -702,7 +706,9 @@ function AbutmentDetail({ sku }: { sku: string }) {
             })
         }
       }).catch((e) => console.error("Erro chaves:", e))
-    supabase.from("catalogo_abutment_parafusos").select("parafuso_sku").eq("abutment_sku", sku)
+    Promise.resolve(
+      supabase.from("catalogo_abutment_parafusos").select("parafuso_sku").eq("abutment_sku", sku)
+    )
       .then(async ({ data, error }) => {
         if (error) { console.error("Erro parafusos:", error); return }
         const skus = (data ?? []).map((r: any) => r.parafuso_sku)
@@ -746,11 +752,11 @@ function AbutmentDetail({ sku }: { sku: string }) {
   const imageUrl = imagens?.[0]?.url_imagem ?? null
 
   // ── Filtra dados nulos/vazios ──
-  const specs: Array<{ label: string; value: string | null }> = [
-    { label: "Plataforma", value: ab.diametro_plataforma ? `${ab.diametro_plataforma} mm` : null },
+  const specs = [
+    { label: "Plataforma", value: ab.diametro_plataforma_mm ? `${ab.diametro_plataforma_mm} mm` : null },
     { label: "Angulação", value: ab.angulacao_graus != null ? `${ab.angulacao_graus}°` : null },
-    { label: "Transmucoso", value: ab.altura_transmucoso != null ? `${ab.altura_transmucoso} mm` : null },
-    { label: "Altura Corpo", value: ab.altura_corpo != null ? `${ab.altura_corpo} mm` : null },
+    { label: "Transmucoso", value: ab.altura_transmucoso_mm != null ? `${ab.altura_transmucoso_mm} mm` : null },
+    { label: "Altura Corpo", value: ab.altura_corpo_mm != null ? `${ab.altura_corpo_mm} mm` : null },
     { label: "Torque", value: ab.torque_ncm != null ? `${ab.torque_ncm} N·cm` : null },
   ].filter((s): s is { label: string; value: string } => s.value != null)
   // ── Filtra kits ativos ──
@@ -926,7 +932,7 @@ function AbutmentDetail({ sku }: { sku: string }) {
           <div className="rounded-2xl border border-[var(--color-border-subtle)] bg-[var(--color-surface)]/30 p-4 sm:p-6 shadow-lg shadow-black/20 backdrop-blur-sm">
             <Suspense fallback={null}>
               <SequenciaProtetica
-                familiaId={ab.familia_id}
+                familiaId={ab.familia_id ?? ""}
                 tipoAbutmentId={ab.tipo_abutment_id}
                 familiaNome={ab.familia?.nome ?? ""}
                 tipoAbutmentNome={ab.tipo_abutment?.nome ?? ""}

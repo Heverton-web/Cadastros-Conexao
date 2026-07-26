@@ -33,7 +33,7 @@ import { fetchHubUserProgress } from "../services/progress";
 import { MaterialCard } from "../components/materials/MaterialCard";
 import { CollectionCard } from "../components/collections/CollectionCard";
 import { getHubUserLevel, getHubNextLevelThreshold } from "../types";
-import type { HubMaterialType } from "../types";
+import type { HubMaterialType, HubRole } from "../types";
 
 interface HubDashboardPageProps {
   roleFilter?: "admin" | "manager" | "consultant" | "distributor" | "client";
@@ -41,7 +41,7 @@ interface HubDashboardPageProps {
   rankingPath?: string;
 }
 
-const ROLE_ALLOWED_MAP: Record<string, string> = {
+const ROLE_ALLOWED_MAP: Record<string, HubRole> = {
   manager: "manager",
   consultant: "consultant",
   distributor: "distributor",
@@ -84,7 +84,7 @@ export function HubDashboardPage({
   });
   const { data: collections = [] } = useQuery({
     queryKey: ["hub-collections", activeEmpresaId],
-    queryFn: () => fetchHubCollections(activeEmpresaId!),
+    queryFn: () => fetchHubCollections(),
     enabled: isSuperAdmin || !!activeEmpresaId,
   });
   const { data: progress = [] } = useQuery({
@@ -98,7 +98,7 @@ export function HubDashboardPage({
   const filteredMaterials = useMemo(
     () =>
       materials.filter((m) => {
-        if (roleMapped && m.allowed_roles && !m.allowed_roles.includes(roleMapped)) return false;
+        if (roleMapped && m.allowedRoles && !m.allowedRoles.includes(roleMapped)) return false;
         const t = m.title?.["pt-br"] || "";
         return (
           t.toLowerCase().includes(searchTerm.toLowerCase()) &&

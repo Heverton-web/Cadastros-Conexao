@@ -12,9 +12,8 @@ function buildSchema(fields: FieldConfig[]) {
   const shape: Record<string, z.ZodTypeAny> = {}
   for (const f of fields) {
     if (f.type === "number") {
-      let s = z.coerce.number()
-      if (f.required) s = s.nonnegative(`${f.label} deve ser válido`)
-      else s = s.optional().or(z.literal(""))
+      const base = z.coerce.number()
+      const s: z.ZodTypeAny = f.required ? base.nonnegative(`${f.label} deve ser válido`) : base.optional().or(z.literal(""))
       shape[f.key] = s
     } else if (f.type === "toggle") {
       shape[f.key] = z.boolean()
@@ -136,13 +135,13 @@ export function CadastroFormDialog({
                   <div className="flex items-center gap-3">
                     <input
                       type="color"
-                      value={watch(field.key) || "#c9a655"}
+                      value={(watch(field.key) as string | undefined) || "#c9a655"}
                       onChange={(e) => setValue(field.key, e.target.value, { shouldDirty: true })}
                       className="w-12 h-10 rounded-lg cursor-pointer border-0"
                     />
                     <input
                       type="text"
-                      value={watch(field.key) || ""}
+                      value={(watch(field.key) as string | undefined) || ""}
                       onChange={(e) => setValue(field.key, e.target.value, { shouldDirty: true })}
                       className="flex-1 bg-[var(--color-surface)] border border-white/10 rounded-lg p-3 text-white font-mono text-sm"
                       placeholder="#c9a655"
@@ -159,7 +158,7 @@ export function CadastroFormDialog({
                       <p className="text-xs text-gray-400">{field.label}</p>
                     </div>
                     <Switch
-                      checked={watch(field.key)}
+                      checked={!!watch(field.key)}
                       onCheckedChange={(v) => setValue(field.key, v, { shouldDirty: true })}
                     />
                   </div>

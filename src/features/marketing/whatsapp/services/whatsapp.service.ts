@@ -57,6 +57,6 @@ export async function dispararWhatsApp(input: {
     .select()
     .single();
   if (error) throw error;
-  dispararEventoModulo(MODULO_KEY, "mensagem.enviada", { campanha_id: data.id, nome: input.nome, total_contatos: input.total_contatos, empresa_id: input.empresa_id }, input.empresa_id).catch(() => {});
+  dispararEventoModulo(MODULO_KEY, "mensagem.enviada", { campanha_id: data.id, nome: input.nome, total_contatos: input.total_contatos, empresa_id: input.empresa_id }).catch(() => {});
   return data as WhatsAppCampanha;
 }

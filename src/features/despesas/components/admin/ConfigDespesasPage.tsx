@@ -29,7 +29,6 @@ export function ConfigDespesasPage() {
       <PageHeader
         title="Configurações de Despesas"
         description="Gerencie os tipos de despesa, valores máximos e períodos de envio."
-        icon={Settings}
       />
 
       {isSuperAdmin && empresas.length > 0 && (

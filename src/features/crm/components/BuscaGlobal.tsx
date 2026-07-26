@@ -145,7 +145,7 @@ export function BuscaGlobal({ aberto, onFechar }: Props) {
       case "Enter":
         e.preventDefault();
         if (resultados[selecionado]) {
-          navigate(resultados[selecionado].link);
+          navigate({ to: resultados[selecionado].link });
           onFechar();
         }
         break;
@@ -158,7 +158,7 @@ export function BuscaGlobal({ aberto, onFechar }: Props) {
 
   // Navegar para resultado
   function navegarParaResultado(resultado: ResultadoBusca) {
-    navigate(resultado.link);
+    navigate({ to: resultado.link });
     onFechar();
   }
 
@@ -195,14 +195,14 @@ export function BuscaGlobal({ aberto, onFechar }: Props) {
             <div className="max-h-[400px] overflow-y-auto p-2">
               {resultados.map((resultado, index) => {
                 const Icon = resultado.icone;
-                const selecionado = index === selecionado;
+                const isSelecionado = index === selecionado;
                 return (
                   <button
                     key={`${resultado.tipo}-${resultado.id}`}
                     onClick={() => navegarParaResultado(resultado)}
                     className={cn(
                       "w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left transition",
-                      selecionado
+                      isSelecionado
                         ? "bg-primary/10 text-primary"
                         : "hover:bg-muted",
                     )}
@@ -210,7 +210,7 @@ export function BuscaGlobal({ aberto, onFechar }: Props) {
                     <div
                       className={cn(
                         "p-2 rounded-lg",
-                        selecionado ? "bg-primary/20" : "bg-muted",
+                        isSelecionado ? "bg-primary/20" : "bg-muted",
                       )}
                     >
                       <Icon className="h-4 w-4" />

@@ -23,7 +23,6 @@ function HubClienteLayout() {
         open={open}
         onOpenChange={setOpen}
         steps={HUB_CLIENTE_ONBOARDING_STEPS}
-        moduleKey="hub-cliente"
         onDismiss={dismiss}
       />
     </>

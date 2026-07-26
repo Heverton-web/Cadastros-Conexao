@@ -232,7 +232,7 @@ export function PeriodosTable({ empresaId }: { empresaId?: string }) {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancelar</AlertDialogCancel>
-            <AlertDialogAction onClick={handleExcluir} variant="destructive">
+            <AlertDialogAction onClick={handleExcluir}>
               Excluir
             </AlertDialogAction>
           </AlertDialogFooter>

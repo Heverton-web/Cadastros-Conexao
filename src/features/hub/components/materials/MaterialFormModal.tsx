@@ -26,7 +26,12 @@ import {
   upsertHubMaterialAsset,
   deleteHubMaterialAsset,
 } from "../../services/materials";
-import type { HubMaterial, HubLanguage, HubMaterialType } from "../../types";
+import type {
+  HubMaterial,
+  HubLanguage,
+  HubMaterialType,
+  HubRole,
+} from "../../types";
 
 const TYPES = [
   { value: "pdf", label: "PDF" },
@@ -67,14 +72,17 @@ export function MaterialFormModal({
   const [active, setActive] = useState(material?.active ?? true);
   const [points, setPoints] = useState(material?.points || 10);
   const [allowedRoles, setAllowedRoles] = useState<string[]>(
-    material?.allowed_roles || ["client"],
+    material?.allowedRoles || ["client"],
   );
   const [category, setCategory] = useState(material?.category || "");
   const [tags, setTags] = useState(material?.tags?.join(", ") || "");
 
-  const [titles, setTitles] = useState<Record<HubLanguage, string>>(
-    material?.title || { "pt-br": "", "en-us": "", "es-es": "" },
-  );
+  const [titles, setTitles] = useState<Record<HubLanguage, string>>({
+    "pt-br": "",
+    "en-us": "",
+    "es-es": "",
+    ...material?.title,
+  });
   const [urls, setUrls] = useState<Record<HubLanguage, string>>({
     "pt-br": "",
     "en-us": "",
@@ -137,7 +145,7 @@ export function MaterialFormModal({
             type,
             active,
             points,
-            allowed_roles: allowedRoles as any,
+            allowedRoles: allowedRoles as HubRole[],
             category: category || undefined,
             tags: tags
               .split(",")
@@ -167,7 +175,7 @@ export function MaterialFormModal({
         type,
         active,
         points,
-        allowed_roles: allowedRoles as any,
+        allowedRoles: allowedRoles as HubRole[],
         category: category || undefined,
         tags: tags
           .split(",")

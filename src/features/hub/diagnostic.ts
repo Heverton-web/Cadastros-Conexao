@@ -12,10 +12,10 @@ export const hubDiagnosticPlan: DiagnosticPlan = {
   key: "hub",
   nome: "Hub de Treinamento",
   dadosTeste: () => ({
-    material: { empresa_id: "", titulo: "[DIAG] Material de Teste", descricao: "Conteúdo diagnóstico", tipo: "video" as const, url: "https://example.com/diag", active: true },
-    colecao: { empresa_id: "", nome: "[DIAG] Coleção Teste", descricao: "Coleção criada pelo diagnóstico" },
-    nivel: { nome: "Iniciante", pontos_min: 0, cor: "#22c55e" },
-    badge: { nome: "[DIAG] Badge Teste", icone: "star", descricao: "Badge diagnóstico", pontos: 100 },
+    material: { empresa_id: "", title: { "pt-br": "[DIAG] Material de Teste" }, type: "video" as const, active: true, points: 0 },
+    colecao: { empresa_id: "", title: { "pt-br": "[DIAG] Coleção Teste" }, active: true, points: 0 },
+    nivel: { name: "Iniciante", min_points: 0, order_index: 0, color: "#22c55e" },
+    badge: { name: "[DIAG] Badge Teste", icon_name: "star", description: "Badge diagnóstico", points_reward: 100, trigger_type: "material_completed" as const, trigger_value: 1, color: "#000000" },
   }),
 
   crud: {
@@ -23,12 +23,12 @@ export const hubDiagnosticPlan: DiagnosticPlan = {
       ctx.log("info", "criando material...");
       const dados = ctx.dadosTeste() as any;
       const material = await materialsService.createHubMaterial({ ...dados.material, empresa_id: ctx.empresaId });
-      ctx.log("success", `material: id=${material.id}, "${material.titulo}"`);
+      ctx.log("success", `material: id=${material.id}, "${material.title?.["pt-br"] ?? ""}"`);
       ctx.salvarId("materialId", material.id);
 
       ctx.log("info", "criando coleção...");
       const colecao = await collectionsService.createHubCollection({ ...dados.colecao, empresa_id: ctx.empresaId });
-      ctx.log("success", `coleção: id=${colecao.id}, "${colecao.nome}"`);
+      ctx.log("success", `coleção: id=${colecao.id}, "${colecao.title?.["pt-br"] ?? ""}"`);
       ctx.salvarId("colecaoId", colecao.id);
     },
     read: async (ctx) => {
@@ -36,13 +36,13 @@ export const hubDiagnosticPlan: DiagnosticPlan = {
       if (!id) throw new Error("Execute 'Criar' primeiro");
       ctx.log("info", `buscando material id=${id}...`);
       const material = await materialsService.fetchHubMaterialById(id);
-      ctx.log("success", `material: "${material.titulo}", tipo=${material.tipo}`);
+      ctx.log("success", `material: "${material.title?.["pt-br"] ?? ""}", tipo=${material.type}`);
     },
     update: async (ctx) => {
       const id = ctx.recuperarId("materialId");
       if (!id) throw new Error("Execute 'Criar' primeiro");
       ctx.log("info", `atualizando material id=${id}...`);
-      await materialsService.updateHubMaterial(id, { titulo: "[DIAG] Material Atualizado" });
+      await materialsService.updateHubMaterial(id, { title: { "pt-br": "[DIAG] Material Atualizado" } });
       ctx.log("success", "material atualizado");
     },
     delete: async (ctx) => {
@@ -90,21 +90,21 @@ export const hubDiagnosticPlan: DiagnosticPlan = {
       steps: async (ctx) => {
         ctx.log("info", "1) Criando nível de gamificação...");
         const dados = ctx.dadosTeste() as any;
-        const nivel = await gamificationService.upsertHubLevel(ctx.empresaId, dados.nivel);
-        ctx.log("success", `nível: "${nivel.nome}", pontos_min=${nivel.pontos_min}`);
-        ctx.salvarId("nivelNivel", nivel.nome);
+        const nivel = await gamificationService.upsertHubLevel(dados.nivel);
+        ctx.log("success", `nível: "${nivel.name}", min_points=${nivel.min_points}`);
+        ctx.salvarId("nivelNivel", nivel.name);
 
         ctx.log("info", "2) Listando níveis...");
-        const niveis = await gamificationService.fetchHubLevels(ctx.empresaId);
+        const niveis = await gamificationService.fetchHubLevels();
         ctx.log("success", `${niveis.length} nível(is) configurado(s)`);
 
         ctx.log("info", "3) Criando badge...");
-        const badge = await gamificationService.createHubBadge(ctx.empresaId, dados.badge);
-        ctx.log("success", `badge: id=${badge.id}, "${badge.nome}"`);
+        const badge = await gamificationService.createHubBadge({ ...dados.badge, empresa_id: ctx.empresaId });
+        ctx.log("success", `badge: id=${badge.id}, "${badge.name}"`);
         ctx.salvarId("badgeId", badge.id);
 
         ctx.log("info", "4) Listando badges da empresa...");
-        const badges = await gamificationService.fetchHubBadges(ctx.empresaId);
+        const badges = await gamificationService.fetchHubBadges();
         ctx.log("success", `${badges.length} badge(s) disponíveis`);
       },
       cleanup: async (ctx) => {
@@ -118,12 +118,12 @@ export const hubDiagnosticPlan: DiagnosticPlan = {
       descricao: "Cria convite → valida → limpa",
       steps: async (ctx) => {
         ctx.log("info", "1) Criando convite...");
-        const invite = await invitesService.createHubInvite(ctx.empresaId, { type: "email", value: "diag@teste.com", max_uses: 1, expires_at: new Date(Date.now() + 86400000).toISOString() });
+        const invite = await invitesService.createHubInvite("client", ctx.usuarioId, ctx.empresaId, new Date(Date.now() + 86400000).toISOString());
         ctx.log("success", `convite: id=${invite.id}, token=${invite.token?.slice(0, 12)}…`);
         ctx.salvarId("inviteId", invite.id);
 
         ctx.log("info", "2) Listando convites...");
-        const invites = await invitesService.fetchHubInvites(ctx.empresaId);
+        const invites = await invitesService.fetchHubInvites();
         ctx.log("success", `${invites.length} convite(s) existentes`);
       },
       cleanup: async (ctx) => {
@@ -137,12 +137,12 @@ export const hubDiagnosticPlan: DiagnosticPlan = {
       descricao: "Verifica config chatbot e status integrações → limpa",
       steps: async (ctx) => {
         ctx.log("info", "1) Buscando config do chatbot...");
-        const config = await chatbotService.fetchHubChatbotConfig(ctx.empresaId);
+        const config = await chatbotService.fetchHubChatbotConfig();
         ctx.log("success", config ? "chatbot configurado" : "chatbot sem configuração (padrão)");
 
         ctx.log("info", "2) Buscando integrações ativas...");
-        const integracoes = await integrationsService.fetchHubIntegrations(ctx.empresaId);
-        ctx.log("success", `${integracoes.length} integração(ões) configurada(s)`);
+        const integracoes = await integrationsService.fetchHubIntegrations();
+        ctx.log("success", integracoes ? "integrações configuradas" : "nenhuma integração configurada");
 
         ctx.log("info", "3) Verificando assets de material...");
         const { data: assets } = await supabase.from("hub_material_assets").select("id, material_id, locale").limit(5);

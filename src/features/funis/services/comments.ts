@@ -35,12 +35,10 @@ export async function criarComentario(
   if (error) throw error;
   const comment = data as unknown as Comment;
 
-  dispararEventoModulo(
-    MODULO_KEY,
-    "tarefa.comentario_adicionado",
-    { comentario: comment, tarefa_id: tarefaId },
-    null,
-  ).catch(() => {});
+  dispararEventoModulo(MODULO_KEY, "tarefa.comentario_adicionado", {
+    comentario: comment,
+    tarefa_id: tarefaId,
+  }).catch(() => {});
   return comment;
 }
 

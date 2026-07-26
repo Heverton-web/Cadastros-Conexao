@@ -1,5 +1,4 @@
 import { supabase } from "~/core/supabase";
-import { EMPRESA_ID } from "~/config/empresa";
 import { dispararEventoModulo } from "~/core/services/webhooks";
 import type { ClienteCsvRow, ClienteValidation, ClienteImportProgress } from "../types";
 
@@ -68,7 +67,6 @@ export async function importarClientesEmLote(
       "cadastros",
       "clientes.importados",
       { count: inserted },
-      EMPRESA_ID,
     ).catch(() => {});
   }
 

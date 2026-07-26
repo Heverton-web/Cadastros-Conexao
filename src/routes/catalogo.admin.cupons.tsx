@@ -78,7 +78,7 @@ function AdminCuponsPage() {
           <p className="text-sm mt-1" style={{ color: "var(--color-text-muted, #94a3b8)" }}>Gerencie cupons percentuais ou de valor fixo.</p>
         </div>
         
-        <Dialog open={formOpen} onOpenChange={(o) => { if (!o) { setEditingItem(null); setForm({ codigo: "", tipo: "percentual", valor: 0, validade: "" }) } setFormOpen(o) }}>
+        <Dialog open={formOpen} onOpenChange={(o) => { if (!o) { setEditingItem(null); setForm(FORM_INICIAL) } setFormOpen(o) }}>
           <DialogTrigger asChild>
             <button onClick={openNew} className="flex items-center gap-2 px-6 py-3 rounded-xl font-black text-sm transition-transform hover:scale-105" style={{ background: "linear-gradient(135deg, #c9a655, #e8d48b)", color: "#0f172a" }}>
               <Plus className="h-4 w-4" /> NOVO CUPOM

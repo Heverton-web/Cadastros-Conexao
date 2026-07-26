@@ -53,30 +53,30 @@ describe("Despesas Services", () => {
   describe("listarMinhasDespesas", () => {
     it("retorna lista quando Supabase responde com dados", async () => {
       const { supabase } = await import("~/core/supabase");
-      supabase.from.mockReturnValue(
+      vi.mocked(supabase.from).mockReturnValue(
         mockQueryBuilder({
           then: vi.fn((resolve: (v: unknown) => void) =>
             resolve({
-              data: [{ id: "1", nome: "Despesa Teste" }],
+              data: [{ id: "1", descricao: "Despesa Teste" }],
               error: null,
             }),
           ),
-        }),
+        }) as unknown as ReturnType<typeof supabase.from>,
       );
-      const result = await listarMinhasDespesas(empresaId, usuarioId);
+      const result = await listarMinhasDespesas(usuarioId);
       expect(result).toHaveLength(1);
     });
 
     it("lança erro quando Supabase falha", async () => {
       const { supabase } = await import("~/core/supabase");
-      supabase.from.mockReturnValue(
+      vi.mocked(supabase.from).mockReturnValue(
         mockQueryBuilder({
           then: vi.fn((resolve: (v: unknown) => void) =>
             resolve({ data: null, error: new Error("DB Error") }),
           ),
-        }),
+        }) as unknown as ReturnType<typeof supabase.from>,
       );
-      await expect(listarMinhasDespesas(empresaId, usuarioId)).rejects.toThrow(
+      await expect(listarMinhasDespesas(usuarioId)).rejects.toThrow(
         "DB Error",
       );
     });
@@ -85,7 +85,7 @@ describe("Despesas Services", () => {
   describe("criarDespesa", () => {
     it("cria despesa com status rascunho", async () => {
       const { supabase } = await import("~/core/supabase");
-      supabase.from.mockReturnValue(
+      vi.mocked(supabase.from).mockReturnValue(
         mockQueryBuilder({
           single: vi
             .fn()
@@ -93,10 +93,15 @@ describe("Despesas Services", () => {
               data: { id: "new-1", status: "rascunho" },
               error: null,
             }),
-        }),
+        }) as unknown as ReturnType<typeof supabase.from>,
       );
-      const result = await criarDespesa(empresaId, usuarioId, {
-        nome: "Teste",
+      const result = await criarDespesa(usuarioId, {
+        tipo_id: "tipo-1",
+        data_despesa: "2026-01-01",
+        valor: 100,
+        descricao: "Teste",
+        comprovante_url: "",
+        comprovante_tipo: "upload",
       });
       expect(result.status).toBe("rascunho");
     });
@@ -105,26 +110,28 @@ describe("Despesas Services", () => {
   describe("atualizarDespesa", () => {
     it("atualiza e retorna despesa modificada", async () => {
       const { supabase } = await import("~/core/supabase");
-      supabase.from.mockReturnValue(
+      vi.mocked(supabase.from).mockReturnValue(
         mockQueryBuilder({
           single: vi
             .fn()
             .mockResolvedValue({
-              data: { id: "1", nome: "Atualizado" },
+              data: { id: "1", descricao: "Atualizado" },
               error: null,
             }),
-        }),
+        }) as unknown as ReturnType<typeof supabase.from>,
       );
-      const result = await atualizarDespesa("1", { nome: "Atualizado" });
-      expect(result.nome).toBe("Atualizado");
+      const result = await atualizarDespesa("1", { descricao: "Atualizado" });
+      expect(result.descricao).toBe("Atualizado");
     });
   });
 
   describe("excluirDespesa", () => {
     it("exclui sem retorno", async () => {
       const { supabase } = await import("~/core/supabase");
-      supabase.from.mockReturnValue(mockQueryBuilder());
-      await expect(excluirDespesa("1", "emp-1")).resolves.toBeUndefined();
+      vi.mocked(supabase.from).mockReturnValue(
+        mockQueryBuilder() as unknown as ReturnType<typeof supabase.from>,
+      );
+      await expect(excluirDespesa("1")).resolves.toBeUndefined();
     });
   });
 });

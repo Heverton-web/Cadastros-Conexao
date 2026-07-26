@@ -1,5 +1,4 @@
 import type { ImportType } from "./types"
-import type { BOMItemTipo } from "../types"
 
 export interface TargetFieldConfig {
   key: string
@@ -271,9 +270,11 @@ export const IMPORT_TYPE_LABELS: Record<ImportType, string> = {
   workflows: "Workflows",
 }
 
-export const BOM_ITEM_TIPOS: BOMItemTipo[] = ["fresa", "chave", "acessorio", "instrumental", "implante"]
+export type ImportBOMItemTipo = "fresa" | "chave" | "acessorio" | "instrumental" | "implante"
 
-export const BOM_FK_MAP: Record<BOMItemTipo, string> = {
+export const BOM_ITEM_TIPOS: ImportBOMItemTipo[] = ["fresa", "chave", "acessorio", "instrumental", "implante"]
+
+export const BOM_FK_MAP: Record<ImportBOMItemTipo, string> = {
   fresa: "fresa_sku",
   chave: "chave_sku",
   acessorio: "acessorio_sku",

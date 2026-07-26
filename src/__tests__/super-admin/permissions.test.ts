@@ -1,8 +1,9 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { getPermissoes, getModulosAcesso } from "~/core/permissions/services";
 
+const { mockFrom } = vi.hoisted(() => ({ mockFrom: vi.fn() }));
+
 vi.mock("~/core/supabase", () => {
-  const mockFrom = vi.fn();
   return {
     supabase: {
       from: mockFrom,
@@ -43,8 +44,7 @@ describe("Super Admin - Permissions", () => {
     });
 
     it("retorna undefined quando supabase retorna dados null (isSuperAdmin=false)", async () => {
-      const { supabase } = await import("~/core/supabase");
-      supabase.from.mockImplementationOnce(() => ({
+      mockFrom.mockImplementationOnce(() => ({
         select: vi.fn().mockReturnThis(),
         eq: vi.fn().mockReturnThis(),
         single: vi.fn().mockResolvedValue({ data: null, error: null }),

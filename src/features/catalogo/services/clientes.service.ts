@@ -173,7 +173,7 @@ export async function listarCadastrosDisponiveis(
 
   const { data, error } = await query
   if (error) throw error
-  return data as CadastroDisponivel[]
+  return data as unknown as CadastroDisponivel[]
 }
 
 // ============================================================

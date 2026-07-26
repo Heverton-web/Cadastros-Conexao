@@ -166,7 +166,7 @@ export function useFresas() {
 export function useCriarImplante() {
   const qc = useQueryClient()
   return useMutation({
-    mutationFn: (input: Parameters<typeof implantes.criarImplante>[1]) => implantes.criarImplante(input),
+    mutationFn: (input: Parameters<typeof implantes.criarImplante>[0]) => implantes.criarImplante(input),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "implantes"] }),
   })
 }
@@ -174,7 +174,7 @@ export function useCriarImplante() {
 export function useAtualizarImplante() {
   const qc = useQueryClient()
   return useMutation({
-    mutationFn: ({ sku, input }: { sku: string; input: Parameters<typeof implantes.atualizarImplante>[2] }) => implantes.atualizarImplante(sku, input),
+    mutationFn: ({ sku, input }: { sku: string; input: Parameters<typeof implantes.atualizarImplante>[1] }) => implantes.atualizarImplante(sku, input),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "implantes"] }),
   })
 }
@@ -219,7 +219,7 @@ export function useTiposAbutment() {
 }
 
 export function useAbutments(familiaId?: string) {
-  return useQuery({ queryKey: ["catalogo", "abutments", familiaId], queryFn: () => componentes.listarAbutments(familiaId) })
+  return useQuery({ queryKey: ["catalogo", "abutments", familiaId], queryFn: () => componentes.listarAbutments() })
 }
 
 export function useAbutmentDetalhe(sku: string) {
@@ -229,7 +229,7 @@ export function useAbutmentDetalhe(sku: string) {
 export function useCriarAbutment() {
   const qc = useQueryClient()
   return useMutation({
-    mutationFn: (input: Parameters<typeof componentes.criarAbutment>[1]) => componentes.criarAbutment(input),
+    mutationFn: (input: Parameters<typeof componentes.criarAbutment>[0]) => componentes.criarAbutment(input),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "abutments"] }),
   })
 }
@@ -237,7 +237,7 @@ export function useCriarAbutment() {
 export function useAtualizarAbutment() {
   const qc = useQueryClient()
   return useMutation({
-    mutationFn: ({ sku, input }: { sku: string; input: Parameters<typeof componentes.atualizarAbutment>[2] }) => componentes.atualizarAbutment(sku, input),
+    mutationFn: ({ sku, input }: { sku: string; input: Parameters<typeof componentes.atualizarAbutment>[1] }) => componentes.atualizarAbutment(sku, input),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "abutments"] }),
   })
 }
@@ -651,7 +651,7 @@ export function useCatalogoDesign() {
 }
 
 export function useGuias(filters?: { familia_id?: string; workflow_id?: string }) {
-  return useQuery({ queryKey: ["catalogo", "guias", filters], queryFn: () => workflows.listarGuias(filters) })
+  return useQuery({ queryKey: ["catalogo", "guias", filters], queryFn: () => workflows.listarGuias() })
 }
 
 export function useWorkflowDetalhe(workflowId: string) {
@@ -704,7 +704,7 @@ export function useCategoriasKit() {
 export function useCriarKit() {
   const qc = useQueryClient()
   return useMutation({
-    mutationFn: (input: Parameters<typeof kits.criarKit>[1]) => kits.criarKit(input),
+    mutationFn: (input: Parameters<typeof kits.criarKit>[0]) => kits.criarKit(input),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "kits"] }),
   })
 }
@@ -712,7 +712,7 @@ export function useCriarKit() {
 export function useAtualizarKit() {
   const qc = useQueryClient()
   return useMutation({
-    mutationFn: ({ sku, input }: { sku: string; input: Parameters<typeof kits.atualizarKit>[2] }) => kits.atualizarKit(sku, input),
+    mutationFn: ({ sku, input }: { sku: string; input: Parameters<typeof kits.atualizarKit>[1] }) => kits.atualizarKit(sku, input),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "kits"] }),
   })
 }
@@ -784,7 +784,7 @@ export function useFretes() {
 export function useCriarFrete() {
   const qc = useQueryClient()
   return useMutation({
-    mutationFn: (input: Parameters<typeof frete.criarFrete>[1]) => frete.criarFrete(input),
+    mutationFn: (input: Parameters<typeof frete.criarFrete>[0]) => frete.criarFrete(input),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "fretes"] }),
   })
 }
@@ -829,7 +829,7 @@ export function useItensPromocionalDetalhado(tipo: string | undefined, skus: str
 export function useCriarPromocional() {
   const qc = useQueryClient()
   return useMutation({
-    mutationFn: (input: Parameters<typeof promocionais.criarPromocional>[1]) => promocionais.criarPromocional(input),
+    mutationFn: (input: Parameters<typeof promocionais.criarPromocional>[0]) => promocionais.criarPromocional(input),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "promocionais"] }),
   })
 }
@@ -981,7 +981,7 @@ export function useParafusosRetensao() {
 export function useCriarParafusoRetencao() {
   const qc = useQueryClient()
   return useMutation({
-    mutationFn: (input: Parameters<typeof parafusosRetensao.criarParafusoRetencao>[1]) =>
+    mutationFn: (input: Parameters<typeof parafusosRetensao.criarParafusoRetencao>[0]) =>
       parafusosRetensao.criarParafusoRetencao(input),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "parafusos-retensao"] }),
   })
@@ -990,7 +990,7 @@ export function useCriarParafusoRetencao() {
 export function useAtualizarParafusoRetencao() {
   const qc = useQueryClient()
   return useMutation({
-    mutationFn: ({ sku, input }: { sku: string; input: Parameters<typeof parafusosRetensao.atualizarParafusoRetencao>[2] }) =>
+    mutationFn: ({ sku, input }: { sku: string; input: Parameters<typeof parafusosRetensao.atualizarParafusoRetencao>[1] }) =>
       parafusosRetensao.atualizarParafusoRetencao(sku, input),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "parafusos-retensao"] }),
   })
@@ -1026,7 +1026,7 @@ export function useCicatrizadores() {
 export function useCriarCicatrizador() {
   const qc = useQueryClient()
   return useMutation({
-    mutationFn: (input: Parameters<typeof cicatrizadores.criarCicatrizador>[1]) =>
+    mutationFn: (input: Parameters<typeof cicatrizadores.criarCicatrizador>[0]) =>
       cicatrizadores.criarCicatrizador(input),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "cicatrizadores"] }),
   })
@@ -1035,7 +1035,7 @@ export function useCriarCicatrizador() {
 export function useAtualizarCicatrizador() {
   const qc = useQueryClient()
   return useMutation({
-    mutationFn: ({ sku, input }: { sku: string; input: Parameters<typeof cicatrizadores.atualizarCicatrizador>[2] }) =>
+    mutationFn: ({ sku, input }: { sku: string; input: Parameters<typeof cicatrizadores.atualizarCicatrizador>[1] }) =>
       cicatrizadores.atualizarCicatrizador(sku, input),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "cicatrizadores"] }),
   })

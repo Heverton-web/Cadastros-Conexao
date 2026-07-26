@@ -80,7 +80,7 @@ function TransferenciaPage() {
     toast.success("Cliente transferido");
     qc.invalidateQueries({ queryKey: ["clientes-origem", origem] });
     qc.invalidateQueries({ queryKey: ["logs-transfer"] });
-    dispararEventoModulo("crm", "cliente.transferido", { cliente_id: clienteId, empresa_id: EMPRESA_ID }, EMPRESA_ID).catch(() => {});
+    dispararEventoModulo("crm", "cliente.transferido", { cliente_id: clienteId, empresa_id: EMPRESA_ID }).catch(() => {});
   }
 
   return (

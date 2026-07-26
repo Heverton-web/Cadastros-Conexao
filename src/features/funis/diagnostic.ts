@@ -22,7 +22,7 @@ export const funisDiagnosticPlan: DiagnosticPlan = {
     create: async (ctx) => {
       ctx.log("info", "criando funil...");
       const dados = ctx.dadosTeste() as any;
-      const funil = await funisService.criarFunil(dados.funil, ctx.empresaId);
+      const funil = await funisService.criarFunil(dados.funil);
       ctx.log("success", `funil criado: id=${funil.id}, titulo="${funil.titulo}"`);
       ctx.salvarId("funilId", funil.id);
     },
@@ -57,7 +57,7 @@ export const funisDiagnosticPlan: DiagnosticPlan = {
       steps: async (ctx) => {
         ctx.log("info", "1) Criando funil com colunas...");
         const dados = ctx.dadosTeste() as any;
-        const funil = await funisService.criarFunil(dados.funil, ctx.empresaId);
+        const funil = await funisService.criarFunil(dados.funil);
         ctx.log("success", `funil: id=${funil.id}, colunas=${funil.colunas?.length ?? 0}`);
         ctx.salvarId("funilId", funil.id);
 
@@ -70,7 +70,7 @@ export const funisDiagnosticPlan: DiagnosticPlan = {
         ctx.log("info", "2) Criando tarefa...");
         const tarefa = await tarefasService.criarTarefa({
           funil_id: funil.id, coluna_id: primeiraColuna.id, titulo: dados.tarefa.titulo,
-          descricao: dados.tarefa.descricao, posicao: 0,
+          descricao: dados.tarefa.descricao,
         });
         ctx.log("success", `tarefa: id=${tarefa.id}`);
         ctx.salvarId("tarefaId", tarefa.id);
@@ -91,27 +91,27 @@ export const funisDiagnosticPlan: DiagnosticPlan = {
       steps: async (ctx) => {
         ctx.log("info", "1) Criando funil e tarefa...");
         const dados = ctx.dadosTeste() as any;
-        const funil = await funisService.criarFunil(dados.funil, ctx.empresaId);
+        const funil = await funisService.criarFunil(dados.funil);
         ctx.salvarId("funilId", funil.id);
         const colunas = await colunasService.listarColunas(funil.id);
         const tarefa = await tarefasService.criarTarefa({
-          funil_id: funil.id, coluna_id: colunas[0]!.id, titulo: dados.tarefa.titulo + " [Comentários]", descricao: dados.tarefa.descricao, posicao: 0,
+          funil_id: funil.id, coluna_id: colunas[0]!.id, titulo: dados.tarefa.titulo + " [Comentários]", descricao: dados.tarefa.descricao,
         });
         ctx.log("success", `tarefa criada: id=${tarefa.id}`);
         ctx.salvarId("tarefaId", tarefa.id);
 
         ctx.log("info", "2) Adicionando comentário...");
-        const comentario = await comentariosService.criarComentario({ tarefa_id: tarefa.id, conteudo: "[DIAG] Comentário de teste", autor_id: ctx.usuarioId });
+        const comentario = await comentariosService.criarComentario(tarefa.id, "[DIAG] Comentário de teste");
         ctx.log("success", `comentário criado: id=${comentario.id}`);
         ctx.salvarId("comentarioId", comentario.id);
 
         ctx.log("info", "3) Criando label e associando à tarefa...");
-        const label = await labelsService.criarLabel(funil.id, dados.label);
+        const label = await labelsService.criarLabel({ funil_id: funil.id, ...dados.label });
         ctx.log("success", `label criada: id=${label.id}, "${label.nome}"`);
         await labelsService.adicionarLabelTarefa(tarefa.id, label.id);
         ctx.log("success", "label associada à tarefa");
 
-        ctx.log("info,4) Listando labels da tarefa...");
+        ctx.log("info", "4) Listando labels da tarefa...");
         const labelsTarefa = await labelsService.listarLabelsTarefa(tarefa.id);
         ctx.log("success", `${labelsTarefa.length} label(s) na tarefa`);
       },
@@ -151,7 +151,7 @@ export const funisDiagnosticPlan: DiagnosticPlan = {
       steps: async (ctx) => {
         ctx.log("info", "1) Criando funil...");
         const dados = ctx.dadosTeste() as any;
-        const funil = await funisService.criarFunil(dados.funil, ctx.empresaId);
+        const funil = await funisService.criarFunil(dados.funil);
         ctx.log("success", `funil: id=${funil.id}`);
         ctx.salvarId("funilId", funil.id);
 
@@ -159,9 +159,9 @@ export const funisDiagnosticPlan: DiagnosticPlan = {
         const permissoes = await permissoesService.listarPermissoesFunil(funil.id);
         ctx.log("success", `${permissoes.length} permissões no funil`);
 
-        ctx.log("info", "3) Buscando todos os funis da empresa...");
-        const todos = await funisService.listarFunis(ctx.empresaId);
-        ctx.log("success", `total funis empresa: ${todos.length}`);
+        ctx.log("info", "3) Buscando todos os funis...");
+        const todos = await funisService.listarFunis();
+        ctx.log("success", `total funis: ${todos.length}`);
       },
       cleanup: async (ctx) => {
         const fid = ctx.recuperarId("funilId");

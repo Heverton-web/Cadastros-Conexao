@@ -106,7 +106,10 @@ export const linktreeDiagnosticPlan: DiagnosticPlan = {
         ctx.log("success", "config + seção + 2 links criados");
 
         ctx.log("info", "3) Reordenando links...");
-        await empresaService.reordenarLinks([l2.id, l1.id]);
+        await empresaService.reordenarLinks([
+          { id: l2.id, ordem: 0 },
+          { id: l1.id, ordem: 1 },
+        ]);
         ctx.log("success", "links reordenados");
 
         ctx.log("info", "4) Buscando URL pública...");

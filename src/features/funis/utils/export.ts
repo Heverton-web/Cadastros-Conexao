@@ -66,7 +66,6 @@ export function exportToJSON(funil: Funil): string {
         data_fim: t.data_fim,
         completed_at: t.completed_at,
         tools: t.tools,
-        custom_fields: t.custom_fields,
       })),
     },
     null,

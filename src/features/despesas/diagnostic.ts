@@ -12,7 +12,7 @@ export const despesasDiagnosticPlan: DiagnosticPlan = {
     tipo: { empresa_id: "", nome: "[DIAG] Alimentação", ativo: true },
     periodo: { empresa_id: "", data_inicio: new Date().toISOString().slice(0, 10), data_fim: new Date(Date.now() + 7 * 86400000).toISOString().slice(0, 10), status: "aberto" as const },
     despesa: { tipo_id: "", valor: 42.50, descricao: "[DIAG] Despesa de teste", data_despesa: new Date().toISOString().slice(0, 10) },
-    pagamento: { valor_pago: 42.50, forma_pagamento: "pix" as const },
+    pagamento: { valor: 42.50, forma_pagamento: "pix" as const },
   }),
 
   crud: {
@@ -29,7 +29,7 @@ export const despesasDiagnosticPlan: DiagnosticPlan = {
       ctx.salvarId("periodoId", periodo.id);
 
       ctx.log("info", "criando despesa...");
-      const despesa = await despesasService.criarDespesa(ctx.empresaId, ctx.usuarioId, { ...dados.despesa, tipo_id: tipo.id, periodo_id: periodo.id });
+      const despesa = await despesasService.criarDespesa(ctx.usuarioId, { ...dados.despesa, tipo_id: tipo.id, periodo_id: periodo.id });
       ctx.log("success", `despesa: id=${despesa.id}, valor=${despesa.valor}, status=${despesa.status}`);
       ctx.salvarId("despesaId", despesa.id);
     },
@@ -52,9 +52,9 @@ export const despesasDiagnosticPlan: DiagnosticPlan = {
         const id = ctx.recuperarId(k);
         if (!id) continue;
         ctx.log("info", `excluindo ${k}=${id}...`);
-        if (k === "despesaId") await despesasService.excluirDespesa(id, ctx.empresaId).catch(() => {});
-        if (k === "periodoId") await periodosService.excluirPeriodo(id, ctx.empresaId).catch(() => {});
-        if (k === "tipoId") await tiposService.excluirTipoDespesa(id, ctx.empresaId).catch(() => {});
+        if (k === "despesaId") await despesasService.excluirDespesa(id).catch(() => {});
+        if (k === "periodoId") await periodosService.excluirPeriodo(id).catch(() => {});
+        if (k === "tipoId") await tiposService.excluirTipoDespesa(id).catch(() => {});
         ctx.log("success", `${k} excluído`);
       }
     },
@@ -78,7 +78,7 @@ export const despesasDiagnosticPlan: DiagnosticPlan = {
         ctx.salvarId("periodoId", periodo.id);
 
         ctx.log("info", "3) Criando despesa...");
-        const despesa = await despesasService.criarDespesa(ctx.empresaId, ctx.usuarioId, { ...dados.despesa, tipo_id: tipo.id, periodo_id: periodo.id });
+        const despesa = await despesasService.criarDespesa(ctx.usuarioId, { ...dados.despesa, tipo_id: tipo.id, periodo_id: periodo.id });
         ctx.log("success", `despesa: id=${despesa.id}, status=rascunho`);
         ctx.salvarId("despesaId", despesa.id);
 
@@ -91,9 +91,9 @@ export const despesasDiagnosticPlan: DiagnosticPlan = {
         ctx.log("success", `despesa aprovada: status=${aprovada.status}`);
       },
       cleanup: async (ctx) => {
-        const did = ctx.recuperarId("despesaId"); if (did) { await despesasService.excluirDespesa(did, ctx.empresaId).catch(() => {}); }
-        const pid = ctx.recuperarId("periodoId"); if (pid) { await periodosService.excluirPeriodo(pid, ctx.empresaId).catch(() => {}); }
-        const tid = ctx.recuperarId("tipoId"); if (tid) { await tiposService.excluirTipoDespesa(tid, ctx.empresaId).catch(() => {}); }
+        const did = ctx.recuperarId("despesaId"); if (did) { await despesasService.excluirDespesa(did).catch(() => {}); }
+        const pid = ctx.recuperarId("periodoId"); if (pid) { await periodosService.excluirPeriodo(pid).catch(() => {}); }
+        const tid = ctx.recuperarId("tipoId"); if (tid) { await tiposService.excluirTipoDespesa(tid).catch(() => {}); }
       },
     },
     {
@@ -107,11 +107,13 @@ export const despesasDiagnosticPlan: DiagnosticPlan = {
         ctx.salvarId("tipoId", tipo.id);
         const periodo = await periodosService.criarPeriodo({ ...dados.periodo, empresa_id: ctx.empresaId });
         ctx.salvarId("periodoId", periodo.id);
-        const despesa = await despesasService.criarDespesa(ctx.empresaId, ctx.usuarioId, { ...dados.despesa, tipo_id: tipo.id, periodo_id: periodo.id });
+        const despesa = await despesasService.criarDespesa(ctx.usuarioId, { ...dados.despesa, tipo_id: tipo.id, periodo_id: periodo.id });
         ctx.log("success", `despesa: id=${despesa.id}`);
         ctx.salvarId("despesaId", despesa.id);
 
         ctx.log("info", "2) Enviando despesa...");
+        const envio = await enviosService.criarOuAtualizarEnvio(ctx.usuarioId, periodo.id);
+        ctx.salvarId("envioId", envio.id);
         await despesasService.enviarDespesas(periodo.id, ctx.usuarioId);
         ctx.log("success", "despesa enviada");
 
@@ -120,8 +122,13 @@ export const despesasDiagnosticPlan: DiagnosticPlan = {
         ctx.log("success", `despesa reprovada: status=${reprovada.status}`);
 
         ctx.log("info", "4) Criando pagamento manual...");
-        const pagamento = await pagamentosService.criarPagamento(despesa.id, { ...dados.pagamento, empresa_id: ctx.empresaId });
-        ctx.log("success", `pagamento criado: id=${pagamento.id}, valor=${pagamento.valor_pago}`);
+        const pagamento = await pagamentosService.criarPagamento({
+          envio_id: envio.id,
+          valor: dados.pagamento.valor,
+          forma_pagamento: dados.pagamento.forma_pagamento,
+          data_pagamento: new Date().toISOString().slice(0, 10),
+        });
+        ctx.log("success", `pagamento criado: id=${pagamento.id}, valor=${pagamento.valor}`);
         ctx.salvarId("pagamentoId", pagamento.id);
 
         ctx.log("info", "5) Marcando como pago...");
@@ -130,9 +137,9 @@ export const despesasDiagnosticPlan: DiagnosticPlan = {
       },
       cleanup: async (ctx) => {
         const paid = ctx.recuperarId("pagamentoId"); if (paid) { await pagamentosService.cancelarPagamento(paid).catch(() => {}); }
-        const did = ctx.recuperarId("despesaId"); if (did) { await despesasService.excluirDespesa(did, ctx.empresaId).catch(() => {}); }
-        const pid = ctx.recuperarId("periodoId"); if (pid) { await periodosService.excluirPeriodo(pid, ctx.empresaId).catch(() => {}); }
-        const tid = ctx.recuperarId("tipoId"); if (tid) { await tiposService.excluirTipoDespesa(tid, ctx.empresaId).catch(() => {}); }
+        const did = ctx.recuperarId("despesaId"); if (did) { await despesasService.excluirDespesa(did).catch(() => {}); }
+        const pid = ctx.recuperarId("periodoId"); if (pid) { await periodosService.excluirPeriodo(pid).catch(() => {}); }
+        const tid = ctx.recuperarId("tipoId"); if (tid) { await tiposService.excluirTipoDespesa(tid).catch(() => {}); }
       },
     },
   ],

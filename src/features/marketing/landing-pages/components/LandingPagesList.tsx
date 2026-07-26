@@ -85,7 +85,7 @@ export function LandingPagesList() {
       if (data) {
         setPages((prev) => [data, ...prev]);
         toast.success("Landing page criada!");
-        dispararEventoModulo(MODULO_KEY, "pagina.criada", { lp_id: data.id, titulo: formTitulo, slug: formSlug }, EMPRESA_ID).catch(() => {});
+        dispararEventoModulo(MODULO_KEY, "pagina.criada", { lp_id: data.id, titulo: formTitulo, slug: formSlug }).catch(() => {});
       }
       setNovaPgOpen(false);
       setFormTitulo("");

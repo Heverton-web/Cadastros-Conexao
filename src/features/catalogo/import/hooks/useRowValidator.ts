@@ -28,7 +28,7 @@ export function useRowValidator({ importType, rows, empresaId, enabled }: UseRow
 
       if (!cacheRef.current) {
         try {
-          cacheRef.current = await loadExistingDataCache(empresaId)
+          cacheRef.current = await loadExistingDataCache()
           if (!cancelled) setExistingData(cacheRef.current)
         } catch {
           // proceed without cache
@@ -40,7 +40,6 @@ export function useRowValidator({ importType, rows, empresaId, enabled }: UseRow
       const result = validateRows({
         importType: importType!,
         rows,
-        empresaId,
         existingData: cacheRef.current ?? undefined,
       })
 
@@ -68,7 +67,6 @@ export function useRowValidator({ importType, rows, empresaId, enabled }: UseRow
     const result = validateRows({
       importType,
       rows: finalRows,
-      empresaId,
       existingData: cacheRef.current ?? undefined,
     })
 

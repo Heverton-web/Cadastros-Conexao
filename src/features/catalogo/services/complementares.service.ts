@@ -77,9 +77,11 @@ export async function atualizarComplementar(sku: string, input: Partial<{
 }
 
 export async function toggleComplementarAtivo(sku: string, ativo: boolean): Promise<void> {
+  const { error } = await supabase.from("catalogo_complementares").update({ ativo }).eq("sku", sku)
   if (error) throw error
 }
 
 export async function removerComplementar(sku: string): Promise<void> {
+  const { error } = await supabase.from("catalogo_complementares").delete().eq("sku", sku)
   if (error) throw error
 }

@@ -124,7 +124,21 @@ const EMPTY: Filters = {
 
 function BIPage() {
   const search = crmBiRoute.useSearch();
-  const { isDiretor, isDev } = useAuth();
+  const { user, profile } = useAuth();
+  const isDev = profile?.is_super_admin === true;
+  const { data: usuarioAtual } = useQuery({
+    queryKey: ["usuario-atual-crm", user?.id],
+    enabled: !!user?.id && !isDev,
+    queryFn: async () => {
+      const { data } = await supabase
+        .from("usuarios")
+        .select("role")
+        .eq("id", user!.id)
+        .maybeSingle();
+      return data;
+    },
+  });
+  const isDiretor = usuarioAtual?.role === "diretor_comercial";
   const showGestorFilter = isDiretor || isDev;
   const [filters, setFilters] = useState<Filters>({
     ...EMPTY,

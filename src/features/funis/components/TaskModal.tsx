@@ -63,6 +63,7 @@ export function TaskModal({
 }: Props) {
   const criar = useCriarTarefa();
   const atualizar = useAtualizarTarefa();
+  const deletar = useDeletarTarefa();
 
   const [profiles, setProfiles] = useState<any[]>([]);
   useEffect(() => {

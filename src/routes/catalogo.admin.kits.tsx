@@ -82,7 +82,7 @@ function AdminKitsPage() {
     setTipoError("")
     if (!tipoNome.trim()) { setTipoError("Nome é obrigatório"); return }
     const payload = { nome: tipoNome.trim(), sigla: tipoSigla.trim() || null, ativo: tipoAtivo }
-    if (tipoEditing) { const { error } = await supabase.from("catalogo_tipos_kits").update({ nome: payload.nome, sigla: payload.sigla, ativo }).eq("id", tipoEditing.id); if (error) { setTipoError(error.message); return } }
+    if (tipoEditing) { const { error } = await supabase.from("catalogo_tipos_kits").update({ nome: payload.nome, sigla: payload.sigla, ativo: payload.ativo }).eq("id", tipoEditing.id); if (error) { setTipoError(error.message); return } }
     else { const { error } = await supabase.from("catalogo_tipos_kits").insert(payload); if (error) { setTipoError(error.message); return } }
     toast.success(tipoEditing ? "Atualizado!" : "Criado!")
     setTipoModalOpen(false); qc.invalidateQueries({ queryKey: ["catalogo"] })
@@ -368,7 +368,7 @@ function AdminKitsPage() {
 
             {/* ─── 5. IMAGENS DO PRODUTO ─── */}
             <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655] pt-2">Imagens do Produto</h3>
-            <ImageUploader produtoTipo="kit" produtoSku={kitData.sku} empresaId={empresaId} />
+            <ImageUploader produtoTipo="kit" produtoSku={kitData.sku} />
 
             {/* ─── 6. COMERCIAL ─── */}
             <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655] pt-2">Comercial</h3>

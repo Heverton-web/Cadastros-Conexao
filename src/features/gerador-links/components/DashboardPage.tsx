@@ -27,6 +27,7 @@ import {
 import { useDashboardStats } from "../hooks/useDashboard";
 import { useLinks } from "../hooks/useLinks";
 import { TIPO_LINK_LABEL } from "../permissions";
+import type { TipoLink } from "../types";
 import { Skeleton } from "~/components/ui/skeleton";
 import { Button } from "~/components/ui/button";
 import { downloadCSV } from "../utils/csv";
@@ -169,29 +170,31 @@ export function DashboardPage() {
       <PageHeader
         title="Dashboard"
         description="Acompanhe o desempenho dos links gerados"
-      >
-        <div className="flex items-center gap-2">
-          {isSuperAdmin && empresas.length > 0 && (
-            <EmpresaSuperAdminSelector
-              empresas={empresas}
-              value={empresaSelecionada}
-              onChange={setEmpresaSelecionada}
-            />
-          )}            <select
-            value={periodo}
-            onChange={(e) => setPeriodo(e.target.value)}
-            className="h-11 rounded-xl border border-border bg-input-bg px-4 text-sm text-text-main font-medium focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent transition-all duration-200"
-          >
-            <option value="7">Últimos 7 dias</option>
-            <option value="30">Últimos 30 dias</option>
-            <option value="90">Últimos 90 dias</option>
-            <option value="all">Todo período</option>
-          </select>
-          <Button variant="outline" size="sm" onClick={handleExportCSV}>
-            <Download className="w-4 h-4" /> Exportar
-          </Button>
-        </div>
-      </PageHeader>
+        actions={
+          <div className="flex items-center gap-2">
+            {isSuperAdmin && empresas.length > 0 && (
+              <EmpresaSuperAdminSelector
+                empresas={empresas}
+                value={empresaSelecionada}
+                onChange={setEmpresaSelecionada}
+              />
+            )}
+            <select
+              value={periodo}
+              onChange={(e) => setPeriodo(e.target.value)}
+              className="h-11 rounded-xl border border-border bg-input-bg px-4 text-sm text-text-main font-medium focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent transition-all duration-200"
+            >
+              <option value="7">Últimos 7 dias</option>
+              <option value="30">Últimos 30 dias</option>
+              <option value="90">Últimos 90 dias</option>
+              <option value="all">Todo período</option>
+            </select>
+            <Button variant="outline" size="sm" onClick={handleExportCSV}>
+              <Download className="w-4 h-4" /> Exportar
+            </Button>
+          </div>
+        }
+      />
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {cards.map((card) => (
@@ -221,7 +224,10 @@ export function DashboardPage() {
               <ResponsiveContainer width="100%" height={260}>
                 <PieChart>
                   <Pie data={pieData} dataKey="total" nameKey="tipo" cx="50%" cy="50%" outerRadius={90}
-                    label={({ tipo, percent }) => `${TIPO_LINK_LABEL[tipo] ?? tipo} (${(percent * 100).toFixed(0)}%)`}
+                    label={({ payload, percent }) => {
+                      const tipo = (payload as { tipo: TipoLink }).tipo;
+                      return `${TIPO_LINK_LABEL[tipo] ?? tipo} (${((percent ?? 0) * 100).toFixed(0)}%)`;
+                    }}
                   >
                     {pieData.map((_, i) => <Cell key={i} fill={CORES[i % CORES.length]} />)}
                   </Pie>
@@ -263,7 +269,7 @@ export function DashboardPage() {
               <ResponsiveContainer width="100%" height={220}>
                 <PieChart>
                   <Pie data={deviceData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={70}
-                    label={({ name, percent }) => `${name} (${(percent * 100).toFixed(0)}%)`}
+                    label={({ name, percent }) => `${name} (${((percent ?? 0) * 100).toFixed(0)}%)`}
                   >
                     {deviceData.map((_, i) => <Cell key={i} fill={CORES[i % CORES.length]} />)}
                   </Pie>
@@ -284,7 +290,7 @@ export function DashboardPage() {
               <ResponsiveContainer width="100%" height={220}>
                 <PieChart>
                   <Pie data={browserData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={70}
-                    label={({ name, percent }) => `${name} (${(percent * 100).toFixed(0)}%)`}
+                    label={({ name, percent }) => `${name} (${((percent ?? 0) * 100).toFixed(0)}%)`}
                   >
                     {browserData.map((_, i) => <Cell key={i} fill={CORES[i % CORES.length]} />)}
                   </Pie>

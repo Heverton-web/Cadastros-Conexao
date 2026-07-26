@@ -2,6 +2,7 @@ import { createRoute } from "@tanstack/react-router";
 import { authLayout } from "./_auth";
 import { useMemo, useState, useEffect } from "react";
 import {
+  useMapasDistributors,
   useUpsertDistributor,
   useDeleteDistributor,
 } from "~/features/mapas/hooks/useMapasData";
@@ -11,6 +12,7 @@ import { Plus, Pencil, Trash2, Search, Loader2, Building2 } from "lucide-react";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import {
+  Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
@@ -18,12 +20,14 @@ import {
   DialogFooter,
 } from "~/components/ui/dialog";
 import {
+  Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
 } from "~/components/ui/select";
 import {
+  AlertDialog,
   AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
@@ -110,7 +114,7 @@ function MapasAdminDistribuidoresPage() {
   const rows = useMemo(() => {
     const s = search.toLowerCase().trim();
     return (distQ.data ?? []).filter(
-      (r) =>
+      (r: MapasDistributor) =>
         !s ||
         r.name.toLowerCase().includes(s) ||
         (r.city ?? "").toLowerCase().includes(s) ||
@@ -178,7 +182,7 @@ function MapasAdminDistribuidoresPage() {
           </div>
         ) : (
           <ul className="divide-y divide-border/50">
-            {rows.map((r) => (
+            {rows.map((r: MapasDistributor) => (
               <li
                 key={r.id}
                 className="group grid grid-cols-1 gap-1 px-4 py-3 md:grid-cols-[1fr_120px_140px_100px_140px_120px] md:items-center hover:bg-surface-hover/20 transition-colors"
@@ -224,7 +228,7 @@ function MapasAdminDistribuidoresPage() {
         )}
       </div>
 
-      <Dialog open={!!editing} onOpenChange={(o) => !o && setEditing(null)}>
+      <Dialog open={!!editing} onOpenChange={(o: boolean) => !o && setEditing(null)}>
         <DialogContent className="max-w-lg">
           <DialogHeader>
             <div className="flex items-center gap-3">
@@ -289,7 +293,7 @@ function MapasAdminDistribuidoresPage() {
                       </label>
                       <Select
                         value={editing.category}
-                        onValueChange={(v) =>
+                        onValueChange={(v: string) =>
                           setEditing({
                             ...editing,
                             category: v as MapasDistributor["category"],
@@ -323,7 +327,7 @@ function MapasAdminDistribuidoresPage() {
                     </label>
                     <Select
                       value={editing.state}
-                      onValueChange={(v) =>
+                      onValueChange={(v: string) =>
                         setEditing({ ...editing, state: v, city: "" })
                       }
                     >
@@ -387,7 +391,7 @@ function MapasAdminDistribuidoresPage() {
 
       <AlertDialog
         open={!!toDelete}
-        onOpenChange={(o) => !o && setToDelete(null)}
+        onOpenChange={(o: boolean) => !o && setToDelete(null)}
       >
         <AlertDialogContent className="max-w-sm">
           <AlertDialogHeader>

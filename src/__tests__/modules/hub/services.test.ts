@@ -51,15 +51,15 @@ describe("Hub Services - Materials", () => {
   describe("fetchHubMaterials", () => {
     it("retorna lista quando Supabase responde com dados", async () => {
       const { supabase } = await import("~/core/supabase/client");
-      supabase.from.mockReturnValue(
+      vi.mocked(supabase.from).mockReturnValue(
         mockQueryBuilder({
           then: vi.fn((resolve: (v: unknown) => void) =>
             resolve({
-              data: [{ id: "1", titulo: "Material Teste" }],
+              data: [{ id: "1", title: { "pt-br": "Material Teste" } }],
               error: null,
             }),
           ),
-        }),
+        }) as unknown as ReturnType<typeof supabase.from>,
       );
       const result = await fetchHubMaterials(empresaId);
       expect(result).toHaveLength(1);
@@ -67,12 +67,12 @@ describe("Hub Services - Materials", () => {
 
     it("lança erro quando Supabase falha", async () => {
       const { supabase } = await import("~/core/supabase/client");
-      supabase.from.mockReturnValue(
+      vi.mocked(supabase.from).mockReturnValue(
         mockQueryBuilder({
           then: vi.fn((resolve: (v: unknown) => void) =>
             resolve({ data: null, error: new Error("DB Error") }),
           ),
-        }),
+        }) as unknown as ReturnType<typeof supabase.from>,
       );
       await expect(fetchHubMaterials(empresaId)).rejects.toThrow("DB Error");
     });
@@ -81,17 +81,17 @@ describe("Hub Services - Materials", () => {
   describe("createHubMaterial", () => {
     it("cria material e retorna com id", async () => {
       const { supabase } = await import("~/core/supabase/client");
-      supabase.from.mockReturnValue(
+      vi.mocked(supabase.from).mockReturnValue(
         mockQueryBuilder({
           single: vi
             .fn()
             .mockResolvedValue({
-              data: { id: "new-1", titulo: "Novo Material" },
+              data: { id: "new-1", title: { "pt-br": "Novo Material" } },
               error: null,
             }),
-        }),
+        }) as unknown as ReturnType<typeof supabase.from>,
       );
-      const result = await createHubMaterial({ titulo: "Novo Material" });
+      const result = await createHubMaterial({ title: { "pt-br": "Novo Material" } });
       expect(result.id).toBe("new-1");
     });
   });
@@ -99,10 +99,10 @@ describe("Hub Services - Materials", () => {
   describe("deleteHubMaterial", () => {
     it("exclui sem retorno", async () => {
       const { supabase } = await import("~/core/supabase/client");
-      supabase.from.mockReturnValue(
+      vi.mocked(supabase.from).mockReturnValue(
         mockQueryBuilder({
           eq: vi.fn().mockResolvedValue({ data: null, error: null }),
-        }),
+        }) as unknown as ReturnType<typeof supabase.from>,
       );
       await expect(deleteHubMaterial("1")).resolves.toBeUndefined();
     });

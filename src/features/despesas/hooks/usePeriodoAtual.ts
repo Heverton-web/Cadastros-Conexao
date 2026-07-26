@@ -9,7 +9,7 @@ export function usePeriodoAtual(overrideEmpresaId?: string) {
 
   return useQuery({
     queryKey: ["despesa-periodo-atual", empresa_id],
-    queryFn: () => buscarPeriodoAtual(empresa_id),
+    queryFn: () => buscarPeriodoAtual(),
     enabled: !!empresa_id,
   });
 }

@@ -95,7 +95,7 @@ function AdminComponentesPage() {
     listarAbutmentChaves(item.sku).then(setAbtChavesIds).catch(() => setAbtChavesIds([]))
     listarAbutmentKits(item.sku).then(setAbtKitsIds).catch(() => setAbtKitsIds([]))
     listarAbutmentParafusos(item.sku).then(setAbtParafusosIds).catch(() => setAbtParafusosIds([]))
-    supabase.from("catalogo_seq_protetica_abutments").select("seq_id").eq("abutment_sku", item.sku).then(({ data }) => setAbtSeqsIds((data ?? []).map((r: any) => r.seq_id))).catch(() => setAbtSeqsIds([]))
+    Promise.resolve(supabase.from("catalogo_seq_protetica_abutments").select("seq_id").eq("abutment_sku", item.sku)).then(({ data }) => setAbtSeqsIds((data ?? []).map((r: any) => r.seq_id))).catch(() => setAbtSeqsIds([]))
     setAbutModalOpen(true)
   }
 
@@ -117,8 +117,8 @@ function AdminComponentesPage() {
     await salvarAbutmentChaves(sku, abtChavesIds).catch(() => {})
     await salvarAbutmentKits(sku, abtKitsIds).catch(() => {})
     await salvarAbutmentParafusos(sku, abtParafusosIds).catch(() => {})
-    await supabase.from("catalogo_seq_protetica_abutments").delete().eq("abutment_sku", sku).then(() => {}).catch(() => {})
-    if (abtSeqsIds.length > 0) { await supabase.from("catalogo_seq_protetica_abutments").insert(abtSeqsIds.map((seqId) => ({ seq_id: seqId, abutment_sku: sku }))).then(() => {}).catch(() => {}) }
+    await Promise.resolve(supabase.from("catalogo_seq_protetica_abutments").delete().eq("abutment_sku", sku)).then(() => {}).catch(() => {})
+    if (abtSeqsIds.length > 0) { await Promise.resolve(supabase.from("catalogo_seq_protetica_abutments").insert(abtSeqsIds.map((seqId) => ({ seq_id: seqId, abutment_sku: sku })))).then(() => {}).catch(() => {}) }
     toast.success(abutEditing ? "Abutment atualizado!" : "Abutment criado!")
     setAbutModalOpen(false); qc.invalidateQueries({ queryKey: ["catalogo"] })
   }

@@ -11,10 +11,10 @@ function colorMix(c1: string, w: number, c2: string) {
 }
 
 export function HubLayout() {
-  const { user, logout, empresa } = useAuth();
+  const { user, logout, empresa, profile } = useAuth();
   const { data: levels = [] } = useQuery({
     queryKey: ["hub-levels", empresa?.id],
-    queryFn: () => fetchHubLevels(empresa!.id),
+    queryFn: () => fetchHubLevels(),
     enabled: !!empresa?.id,
   });
 
@@ -123,14 +123,14 @@ export function HubLayout() {
                       color: "var(--color-accent-fg)",
                     }}
                   >
-                    {user?.nome?.charAt(0) || "U"}
+                    {profile?.nome?.charAt(0) || "U"}
                   </div>
                   <div className="hidden md:block leading-none">
                     <p
                       className="text-xs font-bold"
                       style={{ color: "var(--color-text-main)" }}
                     >
-                      {user?.nome?.split(" ")[0]}
+                      {profile?.nome?.split(" ")[0]}
                     </p>
                     <p
                       className="text-[9px] uppercase tracking-wide font-semibold mt-0.5 flex items-center gap-1"
