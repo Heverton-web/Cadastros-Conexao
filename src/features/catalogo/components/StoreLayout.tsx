@@ -12,7 +12,8 @@ import { useTranslation } from 'react-i18next';
 import { ProductSheet } from './ProductSheet';
 import { ClienteAtivoProvider } from '../context/cliente-ativo';
 import { ClienteAtivoBar } from './ClienteAtivoBar';
-import { PublicLangWrapper } from './PublicLangWrapper';
+import { CatalogoLangProvider, useCatalogoLang } from '../contexts/language-context';
+import { LanguageSplash } from './LanguageSplash';
 
 export const CatalogoVisibilityContext = createContext({ showPrices: true, showSearchBar: true });
 export const useCatalogoVisibility = () => useContext(CatalogoVisibilityContext);
@@ -26,10 +27,6 @@ interface StoreLayoutProps {
   zoom?: number;
 }
 
-/**
- * Aplica CSS vars no :root (document.documentElement) para garantir
- * prioridade máxima sobre as defs hardcoded do theme.css.
- */
 function applyDesignToRoot(config: ReturnType<typeof mergeWithDefaults>) {
   const root = document.documentElement;
   const cssMap: Record<string, string> = {
@@ -56,7 +53,6 @@ function applyDesignToRoot(config: ReturnType<typeof mergeWithDefaults>) {
   for (const [k, v] of Object.entries(cssMap)) {
     root.style.setProperty(k, v);
   }
-  // Aplica fonte no body
   document.body.style.fontFamily = config.typography.fontFamily || "'Inter', sans-serif";
 }
 
@@ -75,7 +71,16 @@ const SOCIAL_ICON_MAP: Record<string, typeof Instagram> = {
 };
 
 export function StoreLayout({ children, fullHeight, zoom }: StoreLayoutProps) {
+  return (
+    <CatalogoLangProvider>
+      <StoreLayoutInner fullHeight={fullHeight} zoom={zoom}>{children}</StoreLayoutInner>
+    </CatalogoLangProvider>
+  );
+}
+
+function StoreLayoutInner({ children, fullHeight, zoom }: StoreLayoutProps) {
   const { t } = useTranslation();
+  const { language } = useCatalogoLang();
   const [searchQuery, setSearchQuery] = useState('');
   const [isBackVisible, setIsBackVisible] = useState(false);
   const [visibility, setVisibility] = useState({ showPrices: true, showSearchBar: true, showFooter: true });
@@ -86,13 +91,10 @@ export function StoreLayout({ children, fullHeight, zoom }: StoreLayoutProps) {
   const { qtd } = useMemo(() => cartTotais(cart), [cart]);
   const { profile } = useAuth();
 
-  // Isola o carrinho por usuário logado (single-tenant: empresa fixa).
   useEffect(() => {
     setCarrinhoScope(profile?.id ?? null);
   }, [profile?.id]);
-  // empresaId resolution removed (single-tenant)
 
-  // Check admin
   useEffect(() => {
     async function checkAdmin() {
       const { data: { user } } = await supabase.auth.getUser();
@@ -109,33 +111,23 @@ export function StoreLayout({ children, fullHeight, zoom }: StoreLayoutProps) {
     checkAdmin();
   }, []);
 
-  // Design config vem do cache do React Query (deduplica fetch entre StoreLayout e páginas que também o consomem)
   const { data: designConfig } = useCatalogoDesign();
 
-  // Aplica o design config no :root sempre que ele mudar (fetch inicial ou invalidação após save no admin)
   useEffect(() => {
     if (!designConfig) return;
     const config = designConfig;
-
-    // Aplica no :root para prioridade máxima
     applyDesignToRoot(config);
-
-    // Atualiza visibilidade
     setVisibility({
       showPrices: config.visibility.showPrices,
       showSearchBar: config.visibility.showSearchBar,
       showFooter: config.visibility.showFooter,
     });
-
-    // Background da página
     if (config.images.pageBackgroundUrl) {
       document.body.style.backgroundImage = `url(${config.images.pageBackgroundUrl})`;
       document.body.style.backgroundSize = 'cover';
       document.body.style.backgroundPosition = 'center';
       document.body.style.backgroundAttachment = 'fixed';
     }
-
-    // Favicon: usa config do catalogo_design_config
     const faviconSrc = config.images.faviconUrl;
     if (faviconSrc) {
       const links = document.querySelectorAll<HTMLLinkElement>("link[rel*='icon']");
@@ -148,25 +140,19 @@ export function StoreLayout({ children, fullHeight, zoom }: StoreLayoutProps) {
         document.head.appendChild(newLink);
       }
     }
-
-    // Título da página
     if (config.texts?.storeName) {
       document.title = config.texts.storeName;
     }
-
-    // Logo
     if (config.images.logoUrl) {
       setLogoUrl(config.images.logoUrl);
     } else {
       setLogoUrl('');
     }
-    // Footer config (aba "rodapé")
     if (config.footer) {
       setFooterConfig(config.footer);
     }
   }, [designConfig]);
 
-  // Cleanup: remove CSS vars customizadas ao desmontar
   useEffect(() => {
     return () => {
       const root = document.documentElement;
@@ -180,12 +166,19 @@ export function StoreLayout({ children, fullHeight, zoom }: StoreLayoutProps) {
       vars.forEach(v => root.style.removeProperty(v));
       document.body.style.backgroundImage = '';
       document.body.style.fontFamily = '';
-      // Não resetamos favicon/title aqui — useFavicon/usePageTitle no __root.tsx cuidam disso
     };
   }, []);
 
+  // Splash: se nenhum idioma selecionado, mostra tela de seleção
+  if (!language) {
+    return (
+      <ClienteAtivoProvider>
+        <LanguageSplash />
+      </ClienteAtivoProvider>
+    );
+  }
+
   return (
-    <PublicLangWrapper>
     <ClienteAtivoProvider>
     <div
       className={`catalogo-theme flex flex-col relative bg-[var(--color-bg)] ${fullHeight ? 'h-dvh' : 'min-h-dvh'}`}
@@ -257,7 +250,6 @@ export function StoreLayout({ children, fullHeight, zoom }: StoreLayoutProps) {
           {children}
         </CatalogoVisibilityContext.Provider>
       </main>
-      {/* Footer (aba "rodapé") */}
       {visibility.showFooter && footerConfig && (
         <footer
           className="py-4 px-6 border-t flex items-center justify-center gap-3"
@@ -268,7 +260,6 @@ export function StoreLayout({ children, fullHeight, zoom }: StoreLayoutProps) {
           }}
         >
           <p className="text-xs">{footerConfig.text}</p>
-          {/* Social Links */}
           {footerConfig.socialLinks && (
             <div className="flex items-center gap-2">
               {Object.entries(footerConfig.socialLinks).map(([key, url]) => {
@@ -294,13 +285,11 @@ export function StoreLayout({ children, fullHeight, zoom }: StoreLayoutProps) {
         </footer>
       )}
 
-      {/* Global Modals */}
       <CartDrawer />
       <NavDrawer />
       <ImageViewer />
       <ProductSheet />
     </div>
     </ClienteAtivoProvider>
-    </PublicLangWrapper>
   );
 }

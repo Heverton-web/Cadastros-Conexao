@@ -3,8 +3,7 @@ import { CatalogoLangProvider, useCatalogoLang } from "../contexts/language-cont
 import { LanguageSplash } from "./LanguageSplash";
 
 function LangGate({ children }: { children: ReactNode }) {
-  const { language, ready } = useCatalogoLang();
-  if (!ready) return null;
+  const { language } = useCatalogoLang();
   if (!language) return <LanguageSplash />;
   return <>{children}</>;
 }

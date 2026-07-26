@@ -6,6 +6,8 @@ import { useCatalogoDesign } from "~/features/catalogo/hooks/useCatalogo"
 import { WatermarkShape } from "~/features/catalogo/components/WatermarkShape"
 import { IconImplante, IconComponente, IconKit, IconPromocao } from "~/features/catalogo/components/IconsOdonto"
 import { useTranslation } from "react-i18next"
+import { useCatalogoLang } from "~/features/catalogo/contexts/language-context"
+import { getTranslatedText, getTranslatedCard } from "~/features/catalogo/services/design.service"
 
 const ICON_MAP: Record<string, any> = {
   IconImplante, IconComponente, IconKit, IconPromocao,
@@ -14,11 +16,6 @@ const ICON_MAP: Record<string, any> = {
   Star, Heart, Diamond, Circle,
   Hexagon, Pentagon, Triangle, Square,
   Zap, Target, Award, Gem,
-}
-
-function withProtocol(url: string): string {
-  if (!/^https?:\/\//i.test(url)) return `https://${url}`
-  return url
 }
 
 function handleCardTilt(e: React.MouseEvent<HTMLAnchorElement>) {
@@ -51,6 +48,7 @@ function CatalogoIndexPage() {
 function CatalogoStoreContent() {
   const { data: config } = useCatalogoDesign()
   const { t } = useTranslation()
+  const { language } = useCatalogoLang()
 
   if (!config) {
     return (
@@ -62,7 +60,7 @@ function CatalogoStoreContent() {
     )
   }
 
-  const { texts, cards, visibility, effects, footer } = config
+  const { cards, visibility, effects } = config
   const cardKeys = ["implantes", "componentes", "kits", "promocionais"] as const
   const visibleCards = cardKeys.filter((key) => cards[key]?.enabled)
   const visibleCount = visibleCards.length
@@ -75,11 +73,13 @@ function CatalogoStoreContent() {
         ? "grid-cols-2 sm:grid-cols-3 max-w-3xl mx-auto"
         : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 max-w-5xl mx-auto"
 
+  const heroTagline = getTranslatedText(config, language, "storeTagline")
+  const heroTitle = getTranslatedText(config, language, "heroTitle")
+  const heroSubtitle = getTranslatedText(config, language, "heroSubtitle")
+
   return (
     <StoreLayout>
-      {/* Wrapper flex-1 para empurrar footer ao fundo e alinhar verticalmente o centro */}
       <div className="flex-1 flex flex-col justify-center relative">
-      {/* Hero */}
       {visibility.showHeroSection && (
         <div className="relative shrink-0 z-0">
           {config.images.heroBackgroundUrl && (
@@ -103,20 +103,19 @@ function CatalogoStoreContent() {
             <div className="inline-flex items-center gap-2 px-3 py-1 sm:px-4 sm:py-1.5 rounded-full border border-[var(--color-accent-muted)] bg-[var(--color-surface)]/50 backdrop-blur-md mb-4 sm:mb-4 lg:mb-4">
               <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[var(--color-accent)] animate-pulse" />
               <span className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-[var(--color-accent)]">
-                {texts.storeTagline}
+                {heroTagline}
               </span>
             </div>
             <h2 className="text-4xl sm:text-5xl lg:text-7xl font-black mb-3 sm:mb-3 lg:mb-4 uppercase tracking-tighter text-transparent bg-clip-text bg-gradient-to-br from-white via-slate-200 to-slate-500 leading-[1.1]">
-              {texts.heroTitle}
+              {heroTitle}
             </h2>
             <p className="text-sm sm:text-base lg:text-lg text-[var(--color-text-muted)] max-w-2xl leading-relaxed">
-              {texts.heroSubtitle}
+              {heroSubtitle}
             </p>
           </div>
         </div>
       )}
 
-      {/* Cards */}
       {visibility.showCategoryCards && visibleCount > 0 && (
         <div className="px-4 sm:px-6 lg:px-16 pt-4 pb-8 sm:pt-6 sm:pb-12 lg:pt-8 lg:pb-16 max-w-7xl mx-auto w-full">
           <div className={`grid ${gridColsClass} gap-3 sm:gap-5 lg:gap-8 auto-rows-fr w-full`}>
@@ -124,6 +123,7 @@ function CatalogoStoreContent() {
               const card = cards[key]
               const Icon = ICON_MAP[card!.icon]
               const isPromo = key === "promocionais"
+              const translated = getTranslatedCard(config, language, key)
               return (
                 <Link
                   key={key}
@@ -161,9 +161,9 @@ function CatalogoStoreContent() {
                     {Icon && <Icon size={28} className="hidden sm:block lg:hidden" />}
                     {Icon && <Icon size={32} className="hidden lg:block" />}
                   </div>
-                  <h3 className="text-sm sm:text-lg lg:text-2xl font-bold relative z-10 text-center leading-tight mb-1 sm:mb-2" style={{ color: card!.titleColor }}>{card!.title}</h3>
+                  <h3 className="text-sm sm:text-lg lg:text-2xl font-bold relative z-10 text-center leading-tight mb-1 sm:mb-2" style={{ color: card!.titleColor }}>{translated.title}</h3>
                   <div className="h-8 sm:h-10 flex items-start justify-center px-1">
-                    <p className="text-[10px] sm:text-xs lg:text-sm relative z-10 group-hover:opacity-80 transition-colors text-center leading-snug line-clamp-2" style={{ color: card!.descColor }}>{card!.description}</p>
+                    <p className="text-[10px] sm:text-xs lg:text-sm relative z-10 group-hover:opacity-80 transition-colors text-center leading-snug line-clamp-2" style={{ color: card!.descColor }}>{translated.description}</p>
                   </div>
                 </Link>
               )
@@ -172,7 +172,7 @@ function CatalogoStoreContent() {
         </div>
       )}
 
-    </div>{/* end flex-1 wrapper */}
+    </div>
     </StoreLayout>
   )
 }

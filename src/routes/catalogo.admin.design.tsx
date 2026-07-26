@@ -16,6 +16,7 @@ import { EffectsSection } from "~/features/catalogo/components/design/EffectsSec
 import { CardsSection } from "~/features/catalogo/components/design/CardsSection"
 import { FooterSection } from "~/features/catalogo/components/design/FooterSection"
 import { ThemesSection } from "~/features/catalogo/components/design/ThemesSection"
+import { TranslationsSection } from "~/features/catalogo/components/design/TranslationsSection"
 import {
   getCatalogoDesign,
   saveCatalogoDesign,
@@ -34,7 +35,7 @@ export const catalogoAdminDesignRoute = createRoute({
   ),
 })
 
-type TabKey = "colors" | "typography" | "texts" | "visibility" | "images" | "effects" | "cards" | "themes" | "footer"
+type TabKey = "colors" | "typography" | "texts" | "visibility" | "images" | "effects" | "cards" | "themes" | "footer" | "translations"
 
 const TABS: { key: TabKey; label: string }[] = [
   { key: "themes", label: "Temas" },
@@ -42,6 +43,7 @@ const TABS: { key: TabKey; label: string }[] = [
   { key: "cards", label: "Cards" },
   { key: "typography", label: "Tipografia" },
   { key: "texts", label: "Textos" },
+  { key: "translations", label: "Traduções" },
   { key: "visibility", label: "Visibilidade" },
   { key: "images", label: "Logos" },
   { key: "effects", label: "Efeitos" },
@@ -218,6 +220,13 @@ function AdminDesignPage() {
                 <ThemesSection
                   config={config}
                   onApply={(newConfig) => setConfig(newConfig)}
+                />
+              )}
+              {activeTab === "translations" && (
+                <TranslationsSection
+                  config={config}
+                  translations={config.translations}
+                  onChange={(translations) => setConfig({ ...config, translations })}
                 />
               )}
             </div>

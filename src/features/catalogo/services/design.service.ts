@@ -30,6 +30,20 @@ export interface CatalogoDesignTexts {
   footerText: string
 }
 
+export interface CatalogoDesignTranslationTexts {
+  storeTagline: string
+  heroTitle: string
+  heroSubtitle: string
+  cards: {
+    implantes: { title: string; description: string }
+    componentes: { title: string; description: string }
+    kits: { title: string; description: string }
+    promocionais: { title: string; description: string }
+  }
+}
+
+export type CatalogoDesignTranslations = Record<string, CatalogoDesignTranslationTexts>
+
 export interface CatalogoDesignFooter {
   text: string
   bgColor: string
@@ -124,6 +138,7 @@ export interface CatalogoDesignConfig {
   effects: CatalogoDesignEffects
   cards: CatalogoDesignCards
   footer: CatalogoDesignFooter
+  translations?: CatalogoDesignTranslations
 }
 
 export const DEFAULT_COLORS: CatalogoDesignColors = {
@@ -446,6 +461,70 @@ function deepMerge(target: Record<string, any>, source: Record<string, any>): Re
 export function mergeWithDefaults(saved: Record<string, any> | null): CatalogoDesignConfig {
   if (!saved) return DEFAULT_CATALOGO_CONFIG
   return deepMerge(DEFAULT_CATALOGO_CONFIG as Record<string, any>, saved) as CatalogoDesignConfig
+}
+
+export function getTranslatedText(
+  config: CatalogoDesignConfig,
+  lang: string | null,
+  key: "storeTagline" | "heroTitle" | "heroSubtitle",
+): string {
+  if (!lang || lang === "pt-BR" || !config.translations?.[lang]) return config.texts[key]
+  return config.translations[lang][key] || config.texts[key]
+}
+
+export function getTranslatedCard(
+  config: CatalogoDesignConfig,
+  lang: string | null,
+  cardKey: "implantes" | "componentes" | "kits" | "promocionais",
+): { title: string; description: string } {
+  const card = config.cards[cardKey]
+  if (!lang || lang === "pt-BR" || !config.translations?.[lang]) {
+    return { title: card.title, description: card.description }
+  }
+  const t = config.translations[lang].cards?.[cardKey]
+  return { title: t?.title || card.title, description: t?.description || card.description }
+}
+
+const MYMEMORY_ENDPOINT = "https://api.mymemory.translated.net/get"
+const TRANSLATABLE_CARD_KEYS = ["implantes", "componentes", "kits", "promocionais"] as const
+
+async function traduzirTexto(texto: string, targetLang: "en-US" | "es-ES"): Promise<string> {
+  const textoTrim = texto.trim()
+  if (!textoTrim) return ""
+  try {
+    const url = `${MYMEMORY_ENDPOINT}?q=${encodeURIComponent(textoTrim)}&langpair=pt-BR|${targetLang}`
+    const res = await fetch(url)
+    if (!res.ok) return ""
+    const data = await res.json()
+    const traduzido = data?.responseData?.translatedText
+    if (!traduzido || /MYMEMORY WARNING|QUERY LENGTH LIMIT/i.test(traduzido)) return ""
+    return traduzido
+  } catch {
+    return ""
+  }
+}
+
+/** Traduz os textos do hero/cards via MyMemory (API pública, gratuita, sem chave). Campos que falharem voltam vazios — quem consome já cai no fallback PT-BR. */
+export async function traduzirTextosDesign(
+  config: CatalogoDesignConfig,
+  targetLang: "en-US" | "es-ES",
+): Promise<CatalogoDesignTranslationTexts> {
+  const [storeTagline, heroTitle, heroSubtitle, ...cardTextos] = await Promise.all([
+    traduzirTexto(config.texts.storeTagline, targetLang),
+    traduzirTexto(config.texts.heroTitle, targetLang),
+    traduzirTexto(config.texts.heroSubtitle, targetLang),
+    ...TRANSLATABLE_CARD_KEYS.flatMap((key) => [
+      traduzirTexto(config.cards[key].title, targetLang),
+      traduzirTexto(config.cards[key].description, targetLang),
+    ]),
+  ])
+
+  const cards = {} as CatalogoDesignTranslationTexts["cards"]
+  TRANSLATABLE_CARD_KEYS.forEach((key, i) => {
+    cards[key] = { title: cardTextos[i * 2], description: cardTextos[i * 2 + 1] }
+  })
+
+  return { storeTagline, heroTitle, heroSubtitle, cards }
 }
 
 export async function getCatalogoDesign(): Promise<CatalogoDesignConfig> {
