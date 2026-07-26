@@ -9,6 +9,8 @@ import { openImageViewer } from "~/features/catalogo/services/ui.service"
 import { useImagensBatch } from "~/features/catalogo/hooks/useCatalogo"
 import { listarKitsRelacionadosDeChave, listarKitsRelacionadosDeFresa, listarKitsRelacionadosDeCicatrizador } from "~/features/catalogo/services/kits.service"
 import { FichaTecnicaModal } from "./FichaTecnicaModal"
+import { EstoqueBadge } from "./admin/produtos/EstoqueBadge"
+import { PackageX } from "lucide-react"
 
 async function buscarKitsRelacionados(tipo: string, sku: string) {
   const kits = tipo === "chave" ? await listarKitsRelacionadosDeChave(sku)
@@ -30,7 +32,7 @@ const TIPO_LABEL: Record<string, string> = {
 }
 
 interface BomTableProps {
-  items: { tipo: string; sku: string; nome: string; quantidade: number; preco?: number }[]
+  items: { tipo: string; sku: string; nome: string; quantidade: number; preco?: number; qtd_disponivel?: number | null; qtd_minima_aviso?: number | null }[]
 }
 
 export function BomTable({ items }: BomTableProps) {
@@ -136,6 +138,7 @@ export function BomTable({ items }: BomTableProps) {
                   const color = getColor(item.tipo)
                   const preco = getPrecoFromDB(item.preco, item.tipo as ProductSheetTipo, item.sku)
                   const img = imagensMap.get(`${item.tipo}:${item.sku}`)
+                  const semEstoque = item.qtd_disponivel != null && item.qtd_disponivel <= 0
                   return (
                     <div
                       key={`${item.tipo}-${item.sku}`}
@@ -162,9 +165,12 @@ export function BomTable({ items }: BomTableProps) {
                             </span>
                           </div>
                           <p className="font-mono text-[10px] text-[var(--color-text-muted)]">SKU: {item.sku}</p>
-                          <span className="inline-flex items-center px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-[var(--color-accent)]/10 text-[var(--color-accent)]">
-                            {TIPO_LABEL[item.tipo] ?? item.tipo}
-                          </span>
+                          <div className="flex flex-wrap items-center gap-1.5">
+                            <EstoqueBadge qtdDisponivel={item.qtd_disponivel} qtdMinimaAviso={item.qtd_minima_aviso} compacto />
+                            <span className="inline-flex items-center px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-[var(--color-accent)]/10 text-[var(--color-accent)]">
+                              {TIPO_LABEL[item.tipo] ?? item.tipo}
+                            </span>
+                          </div>
                         </div>
                       </div>
                       {/* CTA */}
@@ -199,7 +205,12 @@ export function BomTable({ items }: BomTableProps) {
                           Ver Ficha
                         </button>
                         <div className="flex flex-col items-center gap-1">
-                          {Number(preco) > 0 && (
+                          {semEstoque ? (
+                            <div className="w-full rounded-xl border border-red-500/30 bg-red-500/10 px-5 py-2 min-h-[36px] flex items-center justify-center gap-2 cursor-not-allowed opacity-70">
+                              <PackageX className="h-3.5 w-3.5 text-red-400" />
+                              <span className="text-xs font-bold text-red-400">Sem Estoque</span>
+                            </div>
+                          ) : Number(preco) > 0 ? (
                             <button
                               onClick={() => {
                                 addToCart({ sku: item.sku, nome: item.nome, tipo: item.tipo as ProductSheetTipo, cor: "#c9a655", preco })
@@ -220,7 +231,7 @@ export function BomTable({ items }: BomTableProps) {
                             >
                               Add {formatBRL(preco)}
                             </button>
-                          )}
+                          ) : null}
                           <span className="text-[9px] italic text-[var(--color-text-muted)]/60 text-center">Valor Unitário</span>
                         </div>
                       </div>

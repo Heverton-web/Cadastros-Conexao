@@ -297,7 +297,8 @@ function RelatedProductCard({
         <div className="sm:order-2 flex-1 min-w-0 space-y-1">
           <h4 className="text-sm font-bold text-white truncate">{nome}</h4>
           <p className="font-mono text-[10px] text-[var(--color-text-muted)]">SKU: {sku}</p>
-          {children}
+          <EstoqueBadge qtdDisponivel={qtdDisponivel} qtdMinimaAviso={qtdMinimaAviso} compacto />
+          <div className="flex flex-wrap items-center gap-1.5 mt-1">{children}</div>
         </div>
       </div>
       {/* CTA */}
@@ -339,7 +340,7 @@ function ImplanteDetail({ sku }: { sku: string }) {
   const { data: abutments } = useAbutmentsDoImplante(sku)
   const { data: kits } = useKitsDoImplante(sku)
   const [activeTab, setActiveTab] = useState("ficha")
-  const [fichaModal, setFichaModal] = useState<{ open: boolean; nome: string; sku: string; imagemUrl?: string | null; tipo?: ProductSheetTipo; preco?: number | null; onVerCompleto?: () => void; sections: Array<{ title: string; specs: Array<{ label: string; value: string | number | null | undefined }> }>; vinculacoes?: Array<{ nome: string; sku: string; valor?: number | null; tipo?: ProductSheetTipo }> }>({ open: false, nome: "", sku: "", sections: [] })
+  const [fichaModal, setFichaModal] = useState<{ open: boolean; nome: string; sku: string; imagemUrl?: string | null; tipo?: ProductSheetTipo; preco?: number | null; onVerCompleto?: () => void; sections: Array<{ title: string; specs: Array<{ label: string; value: string | number | null | undefined }> }>; vinculacoes?: Array<{ nome: string; sku: string; valor?: number | null; tipo?: ProductSheetTipo }>; qtdDisponivel?: number | null; qtdMinimaAviso?: number | null }>({ open: false, nome: "", sku: "", sections: [] })
   const chavesSkus = (chaves ?? []).map((c) => c.sku)
   const cicSkus = (cicatrizadores ?? []).map((c) => c.sku)
   const abSkus = (abutments ?? []).map((a) => a.sku)
@@ -501,6 +502,8 @@ function ImplanteDetail({ sku }: { sku: string }) {
                   tipo="chave"
                   imageUrl={img}
                   onImageClick={() => openImageViewer(img ?? "", chave.nome)}
+                  qtdDisponivel={chave.qtd_disponivel}
+                  qtdMinimaAviso={chave.qtd_minima_aviso}
                   onVerFicha={async () => {
                     setFichaModal({ open: true, nome: chave.nome, sku: chave.sku, imagemUrl: img, tipo: "chave", preco: chave.preco, sections: [
                       { title: "Identificação", specs: [
@@ -549,6 +552,8 @@ function ImplanteDetail({ sku }: { sku: string }) {
                   tipo="kit"
                   imageUrl={img}
                   onImageClick={() => openImageViewer(img ?? "", kit.nome)}
+                  qtdDisponivel={kit.qtd_disponivel}
+                  qtdMinimaAviso={kit.qtd_minima_aviso}
                   onVerFicha={() => setFichaModal({ open: true, nome: kit.nome, sku: kit.sku, imagemUrl: img, tipo: "kit", preco: kit.preco, onVerCompleto: () => navigate({ to: "/catalogo/produto/$tipo/$sku", params: { tipo: "kit", sku: kit.sku } }), sections: [
                     { title: "Identificação", specs: [
                       { label: "SKU", value: kit.sku },
@@ -590,6 +595,8 @@ function ImplanteDetail({ sku }: { sku: string }) {
                   tipo="cicatrizador"
                   imageUrl={img}
                   onImageClick={() => openImageViewer(img ?? "", cic.nome)}
+                  qtdDisponivel={cic.qtd_disponivel}
+                  qtdMinimaAviso={cic.qtd_minima_aviso}
                   onVerFicha={async () => {
                     const vinculacoesBase = [
                       ...(cic.implante ? [{ nome: cic.implante.nome ?? cic.implante.sku, sku: cic.implante.sku, valor: getPrecoFromDB(cic.implante.preco, "implante", cic.implante.sku), tipo: "implante" as ProductSheetTipo }] : []),
@@ -643,6 +650,8 @@ function ImplanteDetail({ sku }: { sku: string }) {
                   tipo="abutment"
                   imageUrl={img}
                   onImageClick={() => openImageViewer(img ?? "", ab.nome ?? ab.sku)}
+                  qtdDisponivel={ab.qtd_disponivel}
+                  qtdMinimaAviso={ab.qtd_minima_aviso}
                   onSeqProtetica={() => navigate({ to: "/catalogo/produto/$tipo/$sku", params: { tipo: "abutment", sku: ab.sku }, search: { tab: "sequencia" } })}
                   onVerFicha={() => setFichaModal({ open: true, nome: `${ab.tipo_abutment?.nome ?? ""} ${ab.familia?.nome ?? ""}`.trim(), sku: ab.sku, imagemUrl: img, tipo: "abutment", preco: ab.preco, onVerCompleto: () => navigate({ to: "/catalogo/produto/$tipo/$sku", params: { tipo: "abutment", sku: ab.sku } }), sections: [
                     { title: "Identificação", specs: [
@@ -696,6 +705,8 @@ function ImplanteDetail({ sku }: { sku: string }) {
         onVerCompleto={fichaModal.onVerCompleto}
         sections={fichaModal.sections}
         vinculacoes={fichaModal.vinculacoes}
+        qtdDisponivel={fichaModal.qtdDisponivel}
+        qtdMinimaAviso={fichaModal.qtdMinimaAviso}
       />
     </Suspense>
     </>
@@ -745,7 +756,7 @@ function AbutmentDetail({ sku }: { sku: string }) {
   const [seqCount, setSeqCount] = useState(0)
   const kitSkus = kits.map((k: any) => k.sku)
   const { data: imagensKits } = useImagensBatch("kit", kitSkus)
-  const [fichaModal, setFichaModal] = useState<{ open: boolean; nome: string; sku: string; imagemUrl?: string | null; tipo?: ProductSheetTipo; preco?: number | null; onVerCompleto?: () => void; sections: Array<{ title: string; specs: Array<{ label: string; value: string | number | null | undefined }> }>; vinculacoes?: Array<{ nome: string; sku: string; valor?: number | null; tipo?: ProductSheetTipo }> }>({ open: false, nome: "", sku: "", sections: [] })
+  const [fichaModal, setFichaModal] = useState<{ open: boolean; nome: string; sku: string; imagemUrl?: string | null; tipo?: ProductSheetTipo; preco?: number | null; onVerCompleto?: () => void; sections: Array<{ title: string; specs: Array<{ label: string; value: string | number | null | undefined }> }>; vinculacoes?: Array<{ nome: string; sku: string; valor?: number | null; tipo?: ProductSheetTipo }>; qtdDisponivel?: number | null; qtdMinimaAviso?: number | null }>({ open: false, nome: "", sku: "", sections: [] })
   useEffect(() => {
     if (!sku) return
     Promise.resolve(
@@ -959,6 +970,8 @@ function AbutmentDetail({ sku }: { sku: string }) {
                     if (kits.length > 0) setFichaModal((p) => ({ ...p, vinculacoes: kits.map((k) => ({ nome: k.nome, sku: k.sku, valor: k.preco, tipo: "kit" as ProductSheetTipo })) }))
                   }}
                   fichaData={{ sigla: chave.sigla }}
+                  qtdDisponivel={chave.qtd_disponivel}
+                  qtdMinimaAviso={chave.qtd_minima_aviso}
                 />
               )
             }) : <EmptyState msg="Nenhuma chave vinculada" hint="Vincule chaves na edição do abutment." />}
@@ -996,6 +1009,8 @@ function AbutmentDetail({ sku }: { sku: string }) {
                     ...(parafuso.chave ? [{ nome: parafuso.chave.nome, sku: parafuso.chave.sku, valor: getPrecoFromDB(parafuso.chave.preco, "chave", parafuso.chave.sku), tipo: "chave" as ProductSheetTipo }] : []),
                   ] })}
                   fichaData={{ torque: parafuso.torque_ncm, material: parafuso.material }}
+                  qtdDisponivel={parafuso.qtd_disponivel}
+                  qtdMinimaAviso={parafuso.qtd_minima_aviso}
                 />
               )
             }) : <EmptyState msg="Nenhum parafuso vinculado" hint="Vincule parafusos na edição do abutment." />}
@@ -1045,6 +1060,8 @@ function AbutmentDetail({ sku }: { sku: string }) {
                     ]},
                   ] })}
                   fichaData={{ tipo: kit.tipo_kit?.nome }}
+                  qtdDisponivel={kit.qtd_disponivel}
+                  qtdMinimaAviso={kit.qtd_minima_aviso}
                 >
                   {kit.tipo_kit?.nome && (
                     <span className="inline-flex items-center px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-[var(--color-accent)]/10 text-[var(--color-accent)]">
@@ -1097,6 +1114,8 @@ function AbutmentDetail({ sku }: { sku: string }) {
                         onImageClick={() => openImageViewer(img ?? "", impl.nome)}
                         onVerFicha={() => navigate({ to: "/catalogo/produto/$tipo/$sku", params: { tipo: "implante", sku: impl.sku } })}
                         fichaData={{ diametro: `${impl.diametro_mm}×${impl.comprimento_mm}mm` }}
+                        qtdDisponivel={impl.qtd_disponivel}
+                        qtdMinimaAviso={impl.qtd_minima_aviso}
                       />
                     )
                   })}
@@ -1110,7 +1129,7 @@ function AbutmentDetail({ sku }: { sku: string }) {
         )}
       </div>
       <Suspense fallback={null}>
-        <FichaTecnicaModal open={fichaModal.open} onClose={() => setFichaModal({ ...fichaModal, open: false })} nome={fichaModal.nome} sku={fichaModal.sku} cor={cor} imagemUrl={fichaModal.imagemUrl} tipo={fichaModal.tipo} preco={fichaModal.preco} onVerCompleto={fichaModal.onVerCompleto} sections={fichaModal.sections} vinculacoes={fichaModal.vinculacoes} />
+        <FichaTecnicaModal open={fichaModal.open} onClose={() => setFichaModal({ ...fichaModal, open: false })} nome={fichaModal.nome} sku={fichaModal.sku} cor={cor} imagemUrl={fichaModal.imagemUrl} tipo={fichaModal.tipo} preco={fichaModal.preco} onVerCompleto={fichaModal.onVerCompleto} sections={fichaModal.sections} vinculacoes={fichaModal.vinculacoes} qtdDisponivel={fichaModal.qtdDisponivel} qtdMinimaAviso={fichaModal.qtdMinimaAviso} />
       </Suspense>
     </div>
   )
@@ -1129,15 +1148,29 @@ function KitDetail({ sku }: { sku: string }) {
   const [complementKits, setComplementKits] = useState<any[]>([])
   const { data: relatedImagens } = useImagensBatch("kit", relatedKits.map((k) => k.sku))
   const { data: complementImagens } = useImagensBatch("kit", complementKits.map((k) => k.sku))
-  const [fichaModal, setFichaModal] = useState<{ open: boolean; nome: string; sku: string; imagemUrl?: string | null; tipo?: ProductSheetTipo; preco?: number | null; onVerCompleto?: () => void; sections: Array<{ title: string; specs: Array<{ label: string; value: string | number | null | undefined }> }>; vinculacoes?: Array<{ nome: string; sku: string; valor?: number | null; tipo?: ProductSheetTipo }> }>({ open: false, nome: "", sku: "", sections: [] })
+  const [fichaModal, setFichaModal] = useState<{ open: boolean; nome: string; sku: string; imagemUrl?: string | null; tipo?: ProductSheetTipo; preco?: number | null; onVerCompleto?: () => void; sections: Array<{ title: string; specs: Array<{ label: string; value: string | number | null | undefined }> }>; vinculacoes?: Array<{ nome: string; sku: string; valor?: number | null; tipo?: ProductSheetTipo }>; qtdDisponivel?: number | null; qtdMinimaAviso?: number | null }>({ open: false, nome: "", sku: "", sections: [] })
 
   // Buscar dados de compatibilidade e relacionados
   useEffect(() => {
     if (!kit?.sku) return
 
-    // Compatibilidade: implantes vinculados ao kit (com linha/família aninhadas p/ agrupamento)
-    supabase.from("catalogo_kit_implantes").select("*, implante:catalogo_implantes(sku, nome, preco, ativo, linha:catalogo_ips_linhas(*, familia:catalogo_ips_familias(*)))").eq("kit_sku", sku)
-      .then(({ data }) => setCompatData(data ?? []))
+    // Compatibilidade: buscar sentinela "todos_diametros" E implantes específicos separadamente
+    Promise.all([
+      supabase.from("catalogo_kit_implantes").select("implante_sku, todos_diametros").eq("kit_sku", sku),
+      supabase.from("catalogo_kit_implantes").select("implante_sku, implante:catalogo_implantes(sku, nome, preco, ativo, linha:catalogo_ips_linhas(*, familia:catalogo_ips_familias(*)))").eq("kit_sku", sku).neq("implante_sku", "*"),
+    ]).then(([{ data: allRows }, { data: specificRows }]) => {
+      const isAll = (allRows ?? []).some((r: any) => r.todos_diametros || r.implante_sku === "*")
+      if (isAll) {
+        // Buscar todos os implantes ativos
+        supabase.from("catalogo_implantes").select("sku, nome, preco, ativo, linha:catalogo_ips_linhas(*, familia:catalogo_ips_familias(*))").eq("ativo", true).order("nome")
+          .then(({ data: allImpls }) => {
+            const wrapped = (allImpls ?? []).map((impl: any) => ({ implante_sku: impl.sku, todos_diametros: true, implante: impl }))
+            setCompatData(wrapped)
+          })
+      } else {
+        setCompatData(specificRows ?? [])
+      }
+    })
 
     // Kits relacionados: vínculo explícito (catalogo_kit_kits_relacionados) + kits que compartilham chaves
     Promise.all([
@@ -1234,7 +1267,7 @@ function KitDetail({ sku }: { sku: string }) {
       return true
     })
     .map((item) => resolveBOMItem(item as Parameters<typeof resolveBOMItem>[0]))
-    .filter(Boolean) as { tipo: string; sku: string; nome: string; quantidade: number; preco?: number }[]
+    .filter(Boolean) as { tipo: string; sku: string; nome: string; quantidade: number; preco?: number; qtd_disponivel?: number | null; qtd_minima_aviso?: number | null }[]
 
   // ── Verificar se é "todos os diâmetros" ──
   const isAllDiametros = compatData.some((d: any) => d.todos_diametros)
@@ -1404,6 +1437,8 @@ function KitDetail({ sku }: { sku: string }) {
                             onImageClick={() => openImageViewer(img ?? "", impl.nome ?? impl.sku)}
                             onVerFicha={() => navigate({ to: "/catalogo/produto/$tipo/$sku", params: { tipo: "implante", sku: impl.sku } })}
                             fichaData={{ tipo: "Implante" }}
+                            qtdDisponivel={impl.qtd_disponivel}
+                            qtdMinimaAviso={impl.qtd_minima_aviso}
                           />
                         )
                       })}
@@ -1457,6 +1492,8 @@ function KitDetail({ sku }: { sku: string }) {
                           ],
                         })}
                         fichaData={{ tipo: rk.tipo_kit?.nome ?? "Kit" }}
+                        qtdDisponivel={rk.qtd_disponivel}
+                        qtdMinimaAviso={rk.qtd_minima_aviso}
                       >
                         {rk.tipo_kit?.nome && (
                           <span className="inline-flex items-center px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-[#c9a655]/10 text-[#c9a655]">
@@ -1514,6 +1551,8 @@ function KitDetail({ sku }: { sku: string }) {
                           ],
                         })}
                         fichaData={{ tipo: ck.tipo_kit?.nome ?? "Kit" }}
+                        qtdDisponivel={ck.qtd_disponivel}
+                        qtdMinimaAviso={ck.qtd_minima_aviso}
                       >
                         {ck.tipo_kit?.nome && (
                           <span className="inline-flex items-center px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-[#c9a655]/10 text-[#c9a655]">
@@ -1545,6 +1584,8 @@ function KitDetail({ sku }: { sku: string }) {
           sections={fichaModal.sections}
           vinculacoes={fichaModal.vinculacoes}
           composicao={fichaModal.sku === kit.sku ? bomItems.map((item) => ({ nome: item.nome, quantidade: item.quantidade, sku: item.sku, tipo: item.tipo as ProductSheetTipo, preco: getPrecoFromDB(item.preco, item.tipo as ProductSheetTipo, item.sku) })) : undefined}
+          qtdDisponivel={fichaModal.qtdDisponivel}
+          qtdMinimaAviso={fichaModal.qtdMinimaAviso}
         />
       </Suspense>
     </div>
@@ -1611,7 +1652,7 @@ function PromocionalDetail({ id }: { id: string }) {
   const { data: promo } = usePromocionalDetalhe(id)
   const { data: imagensPromo } = useImagensBatch("promocional", [id])
   const [activeTab, setActiveTab] = useState("ficha")
-  const [fichaModal, setFichaModal] = useState<{ open: boolean; nome: string; sku: string; imagemUrl?: string | null; tipo?: ProductSheetTipo; sections: Array<{ title: string; specs: Array<{ label: string; value: string | number | null | undefined }> }> }>({ open: false, nome: "", sku: "", sections: [] })
+  const [fichaModal, setFichaModal] = useState<{ open: boolean; nome: string; sku: string; imagemUrl?: string | null; tipo?: ProductSheetTipo; sections: Array<{ title: string; specs: Array<{ label: string; value: string | number | null | undefined }> }>; qtdDisponivel?: number | null; qtdMinimaAviso?: number | null }>({ open: false, nome: "", sku: "", sections: [] })
 
   const itens = promo?.itens ?? []
   const skusByTipo = itens.reduce((acc, item) => {
@@ -1672,6 +1713,8 @@ function PromocionalDetail({ id }: { id: string }) {
       nomeResolvido: nomeReal ?? `${nomeTipo} — ${item.sku}`,
       imagemUrl: getImagemItem(item.tipo, item.sku),
       specs: extrairSpecsProduto(detalhe),
+      qtdDisponivel: (detalhe as Record<string, unknown>)?.qtd_disponivel as number | null,
+      qtdMinimaAviso: (detalhe as Record<string, unknown>)?.qtd_minima_aviso as number | null,
     }
   })
   const totalItens = itensResolvidos.reduce((acc, i) => acc + i.precoResolvido, 0)
@@ -1762,6 +1805,8 @@ function PromocionalDetail({ id }: { id: string }) {
                   imageUrl={item.imagemUrl}
                   onImageClick={() => openImageViewer(item.imagemUrl ?? "", item.nomeResolvido)}
                   fichaData={{ tipo: TIPO_NOME_MAP[item.tipo] ?? item.tipo }}
+                  qtdDisponivel={item.qtdDisponivel}
+                  qtdMinimaAviso={item.qtdMinimaAviso}
                   onVerFicha={() => setFichaModal({
                     open: true,
                     nome: item.nomeResolvido,
@@ -1801,6 +1846,8 @@ function PromocionalDetail({ id }: { id: string }) {
         imagemUrl={fichaModal.imagemUrl}
         tipo={fichaModal.tipo}
         sections={fichaModal.sections}
+        qtdDisponivel={fichaModal.qtdDisponivel}
+        qtdMinimaAviso={fichaModal.qtdMinimaAviso}
       />
     </Suspense>
     </>

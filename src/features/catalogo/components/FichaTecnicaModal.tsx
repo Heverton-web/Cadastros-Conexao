@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react"
-import { X, FileText, Package, Link2, Copy, Check, ShoppingCart, ArrowUpRight } from "lucide-react"
+import { X, FileText, Package, Link2, Copy, Check, ShoppingCart, ArrowUpRight, PackageX } from "lucide-react"
 import { createPortal } from "react-dom"
 import toast from "react-hot-toast"
 import { addToCart, formatBRL } from "~/features/catalogo/services/carrinho.service"
@@ -45,13 +45,16 @@ interface FichaTecnicaModalProps {
   preco?: number | null
   /** Ex.: navegar para a página completa do produto. Omitir esconde o link. */
   onVerCompleto?: () => void
+  /** Estoque disponível. Se <= 0, botão "Add" é desabilitado. */
+  qtdDisponivel?: number | null
+  qtdMinimaAviso?: number | null
 }
 
 const LONG_VALUE_THRESHOLD = 24
 
 export function FichaTecnicaModal({
   open, onClose, nome, sku, cor, imagemUrl, sections, vinculacoes, composicao,
-  tipo, preco, onVerCompleto,
+  tipo, preco, onVerCompleto, qtdDisponivel, qtdMinimaAviso,
 }: FichaTecnicaModalProps) {
   const dialogRef = useRef<HTMLDivElement>(null)
   const [copied, setCopied] = useState(false)
@@ -103,9 +106,9 @@ export function FichaTecnicaModal({
       setTimeout(() => setCopied(false), 1500)
     }).catch(() => {})
   }
-
+  const semEstoque = qtdDisponivel != null && qtdDisponivel <= 0
   function handleAdd() {
-    if (!tipo) return
+    if (!tipo || semEstoque) return
     addToCart({ sku, nome, tipo, cor, preco: precoNum })
     playCoinSound()
     setAdded(true)
@@ -311,26 +314,33 @@ export function FichaTecnicaModal({
               </button>
             )}
             {hasAddCta && (
-              <button
-                onClick={handleAdd}
-                className={`ml-auto flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl font-bold text-sm transition-all duration-300 ${
-                  added
-                    ? "bg-[var(--color-success)] text-white shadow-[0_0_20px_rgba(34,197,94,0.2)]"
-                    : "border border-[var(--color-accent)]/40 bg-[var(--color-accent)]/10 text-[var(--color-accent)] hover:bg-[var(--color-accent)] hover:text-[var(--color-accent-fg)]"
-                }`}
-              >
-                {added ? (
-                  <>
-                    <Check className="h-4 w-4" />
-                    ADICIONADO
-                  </>
-                ) : (
-                  <>
-                    <ShoppingCart className="h-4 w-4" />
-                    Add {formatBRL(precoNum)}
-                  </>
-                )}
-              </button>
+              semEstoque ? (
+                <div className="ml-auto flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl border border-red-500/30 bg-red-500/10 cursor-not-allowed opacity-70">
+                  <PackageX className="h-4 w-4 text-red-400" />
+                  <span className="font-bold text-sm text-red-400">Sem Estoque</span>
+                </div>
+              ) : (
+                <button
+                  onClick={handleAdd}
+                  className={`ml-auto flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl font-bold text-sm transition-all duration-300 ${
+                    added
+                      ? "bg-[var(--color-success)] text-white shadow-[0_0_20px_rgba(34,197,94,0.2)]"
+                      : "border border-[var(--color-accent)]/40 bg-[var(--color-accent)]/10 text-[var(--color-accent)] hover:bg-[var(--color-accent)] hover:text-[var(--color-accent-fg)]"
+                  }`}
+                >
+                  {added ? (
+                    <>
+                      <Check className="h-4 w-4" />
+                      ADICIONADO
+                    </>
+                  ) : (
+                    <>
+                      <ShoppingCart className="h-4 w-4" />
+                      Add {formatBRL(precoNum)}
+                    </>
+                  )}
+                </button>
+              )
             )}
           </div>
         )}

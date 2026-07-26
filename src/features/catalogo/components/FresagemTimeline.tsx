@@ -8,6 +8,7 @@ import { listarKitsRelacionadosDeFresa } from "~/features/catalogo/services/kits
 import type { CatalogoProtocoloFresagemFlat, ProductSheetTipo } from "~/features/catalogo/types"
 import { openImageViewer } from "~/features/catalogo/services/ui.service"
 import { FichaTecnicaModal } from "./FichaTecnicaModal"
+import { EstoqueBadge } from "./admin/produtos/EstoqueBadge"
 
 interface FresagemTimelineProps {
   implanteSku: string
@@ -80,6 +81,8 @@ export function FresagemTimeline({ implanteSku, protocolos }: FresagemTimelinePr
               diametroMm={p.fresa?.diametro_mm}
               imageUrl={img}
               onImageClick={() => openImageViewer(img ?? "", nome)}
+              qtdDisponivel={p.fresa?.qtd_disponivel}
+              qtdMinimaAviso={p.fresa?.qtd_minima_aviso}
               onVerFicha={async () => {
                 setFichaModal({
                   open: true,
@@ -132,14 +135,15 @@ export function FresagemTimeline({ implanteSku, protocolos }: FresagemTimelinePr
   )
 }
 
-function FresaCard({ ordem, nome, sku, preco, diametroMm, imageUrl, onImageClick, onVerFicha }: {
+function FresaCard({ ordem, nome, sku, preco, diametroMm, imageUrl, onImageClick, onVerFicha, qtdDisponivel, qtdMinimaAviso }: {
   ordem: number; nome: string; sku: string; preco: number; diametroMm?: number | null
-  imageUrl?: string | null; onImageClick: () => void; onVerFicha: () => void
+  imageUrl?: string | null; onImageClick: () => void; onVerFicha: () => void; qtdDisponivel?: number | null; qtdMinimaAviso?: number | null
 }) {
   const [added, setAdded] = useState(false)
 
+  const semEstoque = qtdDisponivel != null && qtdDisponivel <= 0
   const handleAdd = () => {
-    if (!preco || preco <= 0) return
+    if (!preco || preco <= 0 || semEstoque) return
     addToCart({ sku, nome, tipo: "fresa", cor: "#c9a655", preco })
     playCoinSound()
     setAdded(true)
@@ -183,6 +187,7 @@ function FresaCard({ ordem, nome, sku, preco, diametroMm, imageUrl, onImageClick
           </div>
           <h4 className="text-sm font-bold text-white truncate">{nome}</h4>
           <p className="font-mono text-[10px] text-[var(--color-text-muted)]">SKU: {sku}</p>
+          <EstoqueBadge qtdDisponivel={qtdDisponivel} qtdMinimaAviso={qtdMinimaAviso} compacto />
         </div>
       </div>
       {/* CTA */}
@@ -194,7 +199,12 @@ function FresaCard({ ordem, nome, sku, preco, diametroMm, imageUrl, onImageClick
           <FileText className="w-3 h-3" />
           Ver Ficha
         </button>
-        {preco > 0 && (
+        {semEstoque ? (
+          <div className="w-full sm:w-auto rounded-xl border border-red-500/30 bg-red-500/10 px-5 py-2.5 min-h-[44px] flex items-center justify-center gap-2.5 cursor-not-allowed opacity-70">
+            <PackageX className="h-4 w-4 text-red-400" />
+            <span className="text-sm font-bold text-red-400">Sem Estoque</span>
+          </div>
+        ) : preco > 0 ? (
           <button
             onClick={handleAdd}
             className={`group relative overflow-hidden rounded-xl font-bold text-sm transition-all duration-300 min-h-[44px] px-5 py-2.5 ${
@@ -217,7 +227,7 @@ function FresaCard({ ordem, nome, sku, preco, diametroMm, imageUrl, onImageClick
               )}
             </span>
           </button>
-        )}
+        ) : null}
       </div>
     </div>
   )

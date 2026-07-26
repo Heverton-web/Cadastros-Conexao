@@ -110,16 +110,16 @@ export function cartTotais(list: CartItem[]): { qtd: number; total: number } {
   )
 }
 
-export function resolveBOMItem(row: { fresa_sku?: string | null; chave_sku?: string | null; acessorio_sku?: string | null; instrumental_sku?: string | null; implante_sku?: string | null; fresa?: { nome?: string; preco?: number } | null; chave?: { nome?: string; preco?: number } | null; acessorio?: { nome?: string; preco?: number } | null; instrumental?: { nome?: string; preco?: number } | null; implante?: { diametro_mm?: number; comprimento_mm?: number; preco?: number } | null; quantidade?: number }): { tipo: string; sku: string; nome: string; quantidade: number; preco?: number } | null {
-  const checks: [string, string | null | undefined, string | undefined, number | undefined][] = [
-    ["fresa", row.fresa_sku, row.fresa?.nome, row.fresa?.preco],
-    ["chave", row.chave_sku, row.chave?.nome, row.chave?.preco],
-    ["acessorio", row.acessorio_sku, row.acessorio?.nome, row.acessorio?.preco],
-    ["instrumental", row.instrumental_sku, row.instrumental?.nome, row.instrumental?.preco],
-    ["implante", row.implante_sku, row.implante ? `${row.implante.diametro_mm}×${row.implante.comprimento_mm}mm` : undefined, row.implante?.preco],
+export function resolveBOMItem(row: { fresa_sku?: string | null; chave_sku?: string | null; acessorio_sku?: string | null; instrumental_sku?: string | null; implante_sku?: string | null; fresa?: { nome?: string; preco?: number; qtd_disponivel?: number | null; qtd_minima_aviso?: number | null } | null; chave?: { nome?: string; preco?: number; qtd_disponivel?: number | null; qtd_minima_aviso?: number | null } | null; acessorio?: { nome?: string; preco?: number; qtd_disponivel?: number | null; qtd_minima_aviso?: number | null } | null; instrumental?: { nome?: string; preco?: number; qtd_disponivel?: number | null; qtd_minima_aviso?: number | null } | null; implante?: { diametro_mm?: number; comprimento_mm?: number; preco?: number; qtd_disponivel?: number | null; qtd_minima_aviso?: number | null } | null; quantidade?: number }): { tipo: string; sku: string; nome: string; quantidade: number; preco?: number; qtd_disponivel?: number | null; qtd_minima_aviso?: number | null } | null {
+  const checks: [string, string | null | undefined, string | undefined, number | undefined, number | null | undefined, number | null | undefined][] = [
+    ["fresa", row.fresa_sku, row.fresa?.nome, row.fresa?.preco, row.fresa?.qtd_disponivel, row.fresa?.qtd_minima_aviso],
+    ["chave", row.chave_sku, row.chave?.nome, row.chave?.preco, row.chave?.qtd_disponivel, row.chave?.qtd_minima_aviso],
+    ["acessorio", row.acessorio_sku, row.acessorio?.nome, row.acessorio?.preco, row.acessorio?.qtd_disponivel, row.acessorio?.qtd_minima_aviso],
+    ["instrumental", row.instrumental_sku, row.instrumental?.nome, row.instrumental?.preco, row.instrumental?.qtd_disponivel, row.instrumental?.qtd_minima_aviso],
+    ["implante", row.implante_sku, row.implante ? `${row.implante.diametro_mm}×${row.implante.comprimento_mm}mm` : undefined, row.implante?.preco, row.implante?.qtd_disponivel, row.implante?.qtd_minima_aviso],
   ]
-  for (const [tipo, sku, nome, preco] of checks) {
-    if (sku) return { tipo, sku, nome: nome ?? sku, quantidade: row.quantidade ?? 1, preco }
+  for (const [tipo, sku, nome, preco, qtdDisponivel, qtdMinimaAviso] of checks) {
+    if (sku) return { tipo, sku, nome: nome ?? sku, quantidade: row.quantidade ?? 1, preco, qtd_disponivel: qtdDisponivel, qtd_minima_aviso: qtdMinimaAviso }
   }
   return null
 }

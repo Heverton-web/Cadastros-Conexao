@@ -1,5 +1,5 @@
-import { X, ExternalLink, ShoppingCart } from "lucide-react"
-import { useUIState, closeProductSheet, openImageViewer } from "../services/ui.service"
+import { X, ExternalLink, ShoppingCart, Box, PackageX } from "lucide-react"
+import { useUIState, closeProductSheet } from "../services/ui.service"
 import { useImplanteDetalhe, useAbutmentDetalhe, useKitDetalhe, usePromocionalDetalhe } from "../hooks/useCatalogo"
 import { addToCart, formatBRL, mockPreco } from "../services/carrinho.service"
 import { Link } from "@tanstack/react-router"
@@ -94,6 +94,7 @@ function SheetContent({ sku, tipo }: { sku: string; tipo: string }) {
   if (!data) return <div className="h-64 flex items-center justify-center font-bold text-[var(--color-accent)] animate-pulse">{t("catalogo.product.loading")}</div>
 
   const preco = tipo === "promocional" ? data.preco : mockPreco(tipo as any, sku)
+  const semEstoque = data?.qtd_disponivel != null && data.qtd_disponivel <= 0
   const imagemPrincipal = data?.imagens?.[0]?.url_imagem
 
   return (
@@ -127,13 +128,20 @@ function SheetContent({ sku, tipo }: { sku: string; tipo: string }) {
       </div>
 
       <div className="mt-auto pt-6 flex flex-col md:flex-row gap-3">
-        <button
-          onClick={() => addToCart({ sku, nome, tipo: tipo as any, cor, preco })}
-          className="flex-1 w-full flex items-center justify-center gap-2 py-4 rounded-xl font-bold text-sm text-[#0f172a] hover:opacity-90 transition-opacity"
-          style={{ background: "linear-gradient(135deg, #e8d48b, #c9a655)" }}
-        >
-          <ShoppingCart className="w-5 h-5" /> {t("catalogo.product.addToCart")} - {formatBRL(preco)}
-        </button>
+        {semEstoque ? (
+          <div className="flex-1 w-full flex items-center justify-center gap-2 py-4 rounded-xl border border-red-500/30 bg-red-500/10 cursor-not-allowed opacity-70">
+            <PackageX className="w-5 h-5 text-red-400" />
+            <span className="font-bold text-sm text-red-400">Sem Estoque</span>
+          </div>
+        ) : (
+          <button
+            onClick={() => addToCart({ sku, nome, tipo: tipo as any, cor, preco })}
+            className="flex-1 w-full flex items-center justify-center gap-2 py-4 rounded-xl font-bold text-sm text-[#0f172a] hover:opacity-90 transition-opacity"
+            style={{ background: "linear-gradient(135deg, #e8d48b, #c9a655)" }}
+          >
+            <ShoppingCart className="w-5 h-5" /> {t("catalogo.product.addToCart")} - {formatBRL(preco)}
+          </button>
+        )}
         <button
           onClick={closeProductSheet}
           className="w-full md:w-32 py-4 rounded-xl border border-white/10 font-bold text-sm text-[var(--color-text-muted)] hover:text-white transition-colors"

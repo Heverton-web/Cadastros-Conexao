@@ -1,9 +1,10 @@
 import { supabase } from "~/lib/supabase"
 import { useState, useEffect, useMemo } from "react"
 import toast from "react-hot-toast"
-import { Check, Box, ShoppingCart, FileText, ChevronDown } from "lucide-react"
+import { Check, Box, ShoppingCart, FileText, ChevronDown, PackageX } from "lucide-react"
 import { addToCart, formatBRL, getPrecoFromDB } from "~/features/catalogo/services/carrinho.service"
 import { playCoinSound } from "~/features/catalogo/services/audio.service"
+import { EstoqueBadge } from "./admin/produtos/EstoqueBadge"
 import { openImageViewer } from "~/features/catalogo/services/ui.service"
 import { useCatalogoEmpresaId } from "~/features/catalogo/hooks/useCatalogoEmpresa"
 import { FichaTecnicaModal } from "./FichaTecnicaModal"
@@ -17,7 +18,7 @@ interface SequenciaProteticaProps {
   abutmentSku?: string
 }
 
-interface CompItem { sku: string; nome: string; preco?: number; descricao?: string; parafuso?: { sku: string; nome: string; preco?: number } | null; chave?: { sku: string; nome: string; preco?: number } | null; tipo_componente?: { nome: string } | null; tipo_abutment?: { nome: string } | null }
+interface CompItem { sku: string; nome: string; preco?: number; descricao?: string; qtd_disponivel?: number | null; qtd_minima_aviso?: number | null; parafuso?: { sku: string; nome: string; preco?: number; qtd_disponivel?: number | null; qtd_minima_aviso?: number | null } | null; chave?: { sku: string; nome: string; preco?: number; qtd_disponivel?: number | null; qtd_minima_aviso?: number | null } | null; tipo_componente?: { nome: string } | null; tipo_abutment?: { nome: string } | null }
 
 interface EtapaItem {
   id: string
@@ -86,8 +87,10 @@ export function SequenciaProtetica({ familiaId, tipoAbutmentId, familiaNome, tip
               nome: comp?.nome ?? "",
               preco: Number(comp?.preco) || undefined,
               descricao: comp?.descricao ?? undefined,
-              parafuso: comp?.parafuso ? { sku: comp.parafuso.sku, nome: comp.parafuso.nome, preco: comp.parafuso.preco ?? undefined } : undefined,
-              chave: comp?.chave ? { sku: comp.chave.sku, nome: comp.chave.nome, preco: comp.chave.preco ?? undefined } : undefined,
+              qtd_disponivel: comp?.qtd_disponivel ?? null,
+              qtd_minima_aviso: comp?.qtd_minima_aviso ?? null,
+              parafuso: comp?.parafuso ? { sku: comp.parafuso.sku, nome: comp.parafuso.nome, preco: comp.parafuso.preco ?? undefined, qtd_disponivel: comp.parafuso.qtd_disponivel ?? null, qtd_minima_aviso: comp.parafuso.qtd_minima_aviso ?? null } : undefined,
+              chave: comp?.chave ? { sku: comp.chave.sku, nome: comp.chave.nome, preco: comp.chave.preco ?? undefined, qtd_disponivel: comp.chave.qtd_disponivel ?? null, qtd_minima_aviso: comp.chave.qtd_minima_aviso ?? null } : undefined,
               tipo_componente: comp?.tipo_componente ?? undefined,
               tipo_abutment: comp?.tipo_abutment ?? undefined,
             })
@@ -108,6 +111,25 @@ export function SequenciaProtetica({ familiaId, tipoAbutmentId, familiaNome, tip
             if (!map.has(img.produto_sku)) map.set(img.produto_sku, img.url_imagem)
           }
           setImagensMap(map)
+          // Buscar estoque dos componentes
+          const { data: estoqueData } = await supabase.from("catalogo_componentes").select("sku, qtd_disponivel, qtd_minima_aviso").in("sku", allCompSkus)
+          const estoqueMap = new Map<string, { qtd_disponivel: number | null; qtd_minima_aviso: number | null }>()
+          for (const e of estoqueData ?? []) {
+            estoqueMap.set(e.sku, { qtd_disponivel: e.qtd_disponivel, qtd_minima_aviso: e.qtd_minima_aviso })
+          }
+          // Aplicar estoque aos componentes
+          for (const g of Object.values(groups)) {
+            for (const etapa of g.etapas) {
+              for (const comp of etapa.componentes) {
+                const est = estoqueMap.get(comp.sku)
+                if (est) {
+                  comp.qtd_disponivel = est.qtd_disponivel
+                  comp.qtd_minima_aviso = est.qtd_minima_aviso
+                }
+              }
+            }
+          }
+          setWorkflows(Object.values(groups))
         }
       })
       .catch(() => setWorkflows([]))
@@ -216,6 +238,7 @@ export function SequenciaProtetica({ familiaId, tipoAbutmentId, familiaNome, tip
             const preco = Number(comp.preco)
             const temPreco = Number.isFinite(preco) && preco > 0
             const img = imagensMap.get(comp.sku)
+            const semEstoque = comp.qtd_disponivel != null && comp.qtd_disponivel <= 0
             return (
               <div key={comp.sku} className="w-full box-border flex flex-col sm:flex-row items-stretch gap-3 sm:gap-4 p-3 sm:p-4 rounded-xl border border-[var(--color-border-subtle)] bg-[var(--color-surface)]/40 hover:border-[var(--color-accent)]/40 transition-all duration-200">
                 <div className="flex gap-3 sm:contents">
@@ -232,8 +255,10 @@ export function SequenciaProtetica({ familiaId, tipoAbutmentId, familiaNome, tip
                   </div>
                   {/* Info */}
                   <div className="flex-1 min-w-0 flex flex-col justify-center gap-1">
-                    <h4 className="text-sm font-bold text-white truncate">{comp.nome}</h4>
                     <p className="font-mono text-[10px] text-[var(--color-text-muted)]">SKU: {comp.sku}</p>
+                    <div className="flex flex-wrap items-center gap-1.5">
+                      <EstoqueBadge qtdDisponivel={comp.qtd_disponivel} qtdMinimaAviso={comp.qtd_minima_aviso} compacto />
+                    </div>
                   </div>
                 </div>
                 {/* CTA — largura fixa para consistência */}
@@ -259,7 +284,12 @@ export function SequenciaProtetica({ familiaId, tipoAbutmentId, familiaNome, tip
                     <FileText className="w-3 h-3" />
                     Ver Ficha
                   </button>
-                  {temPreco && (
+                  {semEstoque ? (
+                    <div className="w-full rounded-xl border border-red-500/30 bg-red-500/10 px-5 py-2 min-h-[36px] flex items-center justify-center gap-2 cursor-not-allowed opacity-70">
+                      <PackageX className="h-3.5 w-3.5 text-red-400" />
+                      <span className="text-xs font-bold text-red-400">Sem Estoque</span>
+                    </div>
+                  ) : temPreco && (
                     <button
                       onClick={() => {
                         addToCart({ sku: comp.sku, nome: comp.nome, tipo: "acessorio", cor: "#c9a655", preco })
