@@ -3,23 +3,32 @@ import { AlertTriangle, Package, PackageX } from "lucide-react"
 /**
  * Badge visual de estoque para exibição em cards/listas.
  * Mostra a quantidade disponível e um indicador de alerta quando estoque baixo.
+ *
+ * Regra de override: quando qtdDisponivel < 1, o badge "Sem Estoque" é SEMPRE
+ * renderizado, mesmo que exibirEstoque seja false.
  */
 export function EstoqueBadge({
   qtdDisponivel,
   qtdMinimaAviso,
   compacto = false,
+  exibirEstoque = true,
 }: {
   qtdDisponivel: number | null | undefined
   qtdMinimaAviso: number | null | undefined
   /** Modo compacto: mostra só ícone + número, sem texto extra */
   compacto?: boolean
+  /** Controla exibição do badge. Quando false, só renderiza se estoque < 1 (override). */
+  exibirEstoque?: boolean
 }) {
   const qtd = qtdDisponivel ?? 0
   const minima = qtdMinimaAviso ?? 0
 
-  const isZerado = qtd === 0
+  const isZerado = qtd < 1
   const isBaixo = qtd > 0 && minima > 0 && qtd <= minima
   const isOk = !isZerado && !isBaixo
+
+  // Regra: se exibirEstoque=false e estoque > 0, NÃO renderiza
+  if (!exibirEstoque && !isZerado) return null
 
   const bgColor = isZerado
     ? "bg-red-500/15 border-red-500/30"

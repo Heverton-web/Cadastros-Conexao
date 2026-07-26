@@ -4,6 +4,7 @@ import { useImplanteDetalhe, useAbutmentDetalhe, useKitDetalhe, usePromocionalDe
 import { addToCart, formatBRL, mockPreco } from "../services/carrinho.service"
 import { Link } from "@tanstack/react-router"
 import { useEffect, useState } from "react"
+import toast from "react-hot-toast"
 import { ProductThumb } from "./ProductThumb"
 import { useTranslation } from "react-i18next"
 
@@ -135,7 +136,24 @@ function SheetContent({ sku, tipo }: { sku: string; tipo: string }) {
           </div>
         ) : (
           <button
-            onClick={() => addToCart({ sku, nome, tipo: tipo as any, cor, preco })}
+            onClick={() => {
+              const result = addToCart({
+                sku,
+                nome,
+                tipo: tipo as any,
+                cor,
+                preco,
+                qtd_disponivel: data?.qtd_disponivel ?? null,
+                qtd_minima_aviso: data?.qtd_minima_aviso ?? null,
+              })
+              if (result.success && result.error === "quantidade_excedida") {
+                toast(`Adicionado ${result.adicionado} un. (máx. disponível)`, { icon: "📦" })
+              } else if (result.success) {
+                toast("Adicionado ao carrinho", { icon: "✅" })
+              } else if (result.error === "sem_estoque") {
+                toast("Produto sem estoque", { icon: "❌" })
+              }
+            }}
             className="flex-1 w-full flex items-center justify-center gap-2 py-4 rounded-xl font-bold text-sm text-[#0f172a] hover:opacity-90 transition-opacity"
             style={{ background: "linear-gradient(135deg, #e8d48b, #c9a655)" }}
           >

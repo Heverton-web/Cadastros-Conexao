@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { Eye } from "lucide-react"
+import { Eye, Package, Truck, CheckCircle, XCircle } from "lucide-react"
 import { Badge } from "~/components/ui/badge"
 import {
   Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
@@ -7,12 +7,14 @@ import {
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle,
 } from "~/components/ui/dialog"
+import toast from "react-hot-toast"
 import { useAuth } from "~/lib/auth"
 import { useEmpresaCrudId } from "../contexts/EmpresaCrudContext"
 import { listarPedidos, atualizarStatusPedido } from "../services/pedidos.service"
+import { confirmarPagamento, estornarPagamento } from "../services/pagamentos.service"
 import type { CatalogoPedido, StatusPedido } from "../types/pedidos"
 import { STATUS_PEDIDO_LABEL, STATUS_PEDIDO_COLOR } from "../types/pedidos"
-
+import { invalidateStockCache } from "../services/carrinho.service"
 export function PedidosAdmin() {
   const { profile } = useAuth()
   const empresaId = useEmpresaCrudId()
@@ -160,6 +162,53 @@ export function PedidosAdmin() {
                       ))}
                     </TableBody>
                   </Table>
+                </div>
+              )}
+
+              {/* Ações de pagamento */}
+              {detailPedido.status === "pendente" && (
+                <div className="p-4 rounded-lg bg-amber-500/10 border border-amber-500/30">
+                  <p className="text-sm text-amber-400 font-bold mb-3">Pagamento Pendente</p>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={async () => {
+                        try {
+                          await confirmarPagamento(detailPedido.id)
+                          toast.success("Pagamento confirmado! Estoque baixado.")
+                          load()
+                          setDetailPedido({ ...detailPedido, status: "pago" })
+                        } catch (err) {
+                          toast.error(err instanceof Error ? err.message : "Erro ao confirmar pagamento")
+                        }
+                      }}
+                      className="flex items-center gap-2 px-4 py-2 rounded-lg bg-green-500/20 text-green-400 hover:bg-green-500/30 transition-colors text-sm font-bold"
+                    >
+                      <CheckCircle className="w-4 h-4" /> Confirmar Pagamento
+                    </button>
+                    <button
+                      onClick={async () => {
+                        try {
+                          await estornarPagamento(detailPedido.id)
+                          toast.success("Pagamento estornado!")
+                          load()
+                          setDetailPedido({ ...detailPedido, status: "cancelado" })
+                        } catch (err) {
+                          toast.error(err instanceof Error ? err.message : "Erro ao estornar pagamento")
+                        }
+                      }}
+                      className="flex items-center gap-2 px-4 py-2 rounded-lg bg-red-500/20 text-red-400 hover:bg-red-500/30 transition-colors text-sm font-bold"
+                    >
+                      <XCircle className="w-4 h-4" /> Estornar
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* Tracking code */}
+              {detailPedido.status === "enviado" && (
+                <div className="p-4 rounded-lg bg-cyan-500/10 border border-cyan-500/30">
+                  <p className="text-sm text-cyan-400 font-bold mb-2">Código de Rastreio</p>
+                  <p className="text-white font-mono">{detailPedido.tracking_code ?? "Não informado"}</p>
                 </div>
               )}
 

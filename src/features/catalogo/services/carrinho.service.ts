@@ -1,5 +1,73 @@
 import { useSyncExternalStore } from "react"
+import { supabase } from "~/lib/supabase"
 import type { CartItem, ProductSheetTipo } from "../types"
+
+// ============================================================
+// Stock Cache (sessão)
+// ============================================================
+const stockCache = new Map<string, { qtd_disponivel: number | null; qtd_minima_aviso: number | null; ts: number }>()
+const STOCK_CACHE_TTL = 30_000 // 30s
+
+/** Mapeamento tipo → tabela do banco */
+const TIPO_TABELA: Record<string, string> = {
+  implante: "catalogo_implantes",
+  abutment: "catalogo_abutments",
+  kit: "catalogo_kits",
+  fresa: "catalogo_fresas",
+  chave: "catalogo_chaves",
+  complementar: "catalogo_complementares",
+  opcional: "catalogo_opcionais",
+  componente: "catalogo_componentes",
+  parafuso: "catalogo_parafusos",
+  cicatrizador: "catalogo_cicatrizadores",
+  acessorio: "catalogo_acessorios",
+  instrumental: "catalogo_instrumentais",
+  promocional: "catalogo_promocionais",
+}
+
+/**
+ * Busca estoque de um SKU em todas as tabelas de produto.
+ * Resultado cacheado por 30s para evitar queries repetidas.
+ */
+export async function getStockForSku(
+  sku: string,
+): Promise<{ qtd_disponivel: number | null; qtd_minima_aviso: number | null }> {
+  const cached = stockCache.get(sku)
+  if (cached && Date.now() - cached.ts < STOCK_CACHE_TTL) {
+    return { qtd_disponivel: cached.qtd_disponivel, qtd_minima_aviso: cached.qtd_minima_aviso }
+  }
+
+  // Busca em paralelo nas tabelas mais comuns
+  const tabelas = Object.values(TIPO_TABELA)
+  const queries = tabelas.map((tabela) =>
+    supabase
+      .from(tabela)
+      .select("qtd_disponivel, qtd_minima_aviso")
+      .eq("sku", sku)
+      .maybeSingle(),
+  )
+
+  const results = await Promise.allSettled(queries)
+  for (const r of results) {
+    if (r.status === "fulfilled" && r.value.data) {
+      const { qtd_disponivel, qtd_minima_aviso } = r.value.data
+      const entry = { qtd_disponivel: qtd_disponivel ?? 0, qtd_minima_aviso: qtd_minima_aviso ?? 0, ts: Date.now() }
+      stockCache.set(sku, entry)
+      return { qtd_disponivel: entry.qtd_disponivel, qtd_minima_aviso: entry.qtd_minima_aviso }
+    }
+  }
+
+  // Não encontrado — retorna 0 (sem estoque)
+  const fallback = { qtd_disponivel: 0, qtd_minima_aviso: 0, ts: Date.now() }
+  stockCache.set(sku, fallback)
+  return { qtd_disponivel: fallback.qtd_disponivel, qtd_minima_aviso: fallback.qtd_minima_aviso }
+}
+
+/** Invalida cache de estoque (chamar após baixa/alteração) */
+export function invalidateStockCache(sku?: string): void {
+  if (sku) stockCache.delete(sku)
+  else stockCache.clear()
+}
 
 const STORAGE_PREFIX = "conexao_cart_v1"
 
@@ -71,14 +139,55 @@ export function useCarrinho(): CartItem[] {
   return useSyncExternalStore(subscribe, getSnapshot)
 }
 
-export function addToCart(item: Omit<CartItem, "quantidade"> & { quantidade?: number }): void {
+/** Resultado da operação de adicionar ao carrinho */
+export interface AddToCartResult {
+  success: boolean
+  error?: "sem_estoque" | "quantidade_excedida"
+  maxPermitido?: number
+  adicionado?: number
+}
+
+export function addToCart(
+  item: Omit<CartItem, "quantidade" | "qtd_disponivel" | "qtd_minima_aviso"> & {
+    quantidade?: number
+    qtd_disponivel?: number | null
+    qtd_minima_aviso?: number | null
+  },
+): AddToCartResult {
+  const qtd = item.quantidade ?? 1
+  const estoque = item.qtd_disponivel ?? null
   const existing = items.find((i) => i.sku === item.sku)
+  const qtdAtual = existing?.quantidade ?? 0
+
+  // Validação: sem estoque
+  if (estoque !== null && estoque < 1) {
+    return { success: false, error: "sem_estoque" }
+  }
+
+  // Validação: quantidade excede estoque
+  if (estoque !== null && qtdAtual + qtd > estoque) {
+    const maxPermitido = Math.max(0, estoque - qtdAtual)
+    if (maxPermitido <= 0) {
+      return { success: false, error: "quantidade_excedida", maxPermitido: 0 }
+    }
+    // Adiciona apenas o que cabe
+    if (existing) {
+      existing.quantidade = estoque
+    } else {
+      items.push({ ...item, quantidade: maxPermitido, qtd_disponivel: item.qtd_disponivel ?? null, qtd_minima_aviso: item.qtd_minima_aviso ?? null })
+    }
+    persist()
+    return { success: true, error: "quantidade_excedida", maxPermitido, adicionado: maxPermitido }
+  }
+
+  // OK — adiciona normalmente
   if (existing) {
-    existing.quantidade += item.quantidade ?? 1
+    existing.quantidade += qtd
   } else {
-    items.push({ ...item, quantidade: item.quantidade ?? 1 })
+    items.push({ ...item, quantidade: qtd, qtd_disponivel: item.qtd_disponivel ?? null, qtd_minima_aviso: item.qtd_minima_aviso ?? null })
   }
   persist()
+  return { success: true, adicionado: qtd }
 }
 
 export function removeFromCart(sku: string): void {
@@ -86,16 +195,32 @@ export function removeFromCart(sku: string): void {
   persist()
 }
 
-export function setQuantidade(sku: string, quantidade: number): void {
+/** Resultado da operação de atualizar quantidade */
+export interface SetQuantidadeResult {
+  success: boolean
+  limitado?: boolean
+  quantidadeFinal?: number
+}
+
+export function setQuantidade(sku: string, quantidade: number): SetQuantidadeResult {
   if (quantidade <= 0) {
     removeFromCart(sku)
-    return
+    return { success: true }
   }
   const item = items.find((i) => i.sku === sku)
-  if (item) {
-    item.quantidade = quantidade
+  if (!item) return { success: false }
+
+  // Limita pela quantidade disponível em estoque
+  const estoque = item.qtd_disponivel ?? null
+  if (estoque !== null && quantidade > estoque) {
+    item.quantidade = estoque
     persist()
+    return { success: true, limitado: true, quantidadeFinal: estoque }
   }
+
+  item.quantidade = quantidade
+  persist()
+  return { success: true, quantidadeFinal: quantidade }
 }
 
 export function clearCart(): void {

@@ -23,6 +23,8 @@ import * as complementaresService from "../services/complementares.service"
 import * as opcionaisService from "../services/opcionais.service"
 import * as seqProteticaService from "../services/sequencia-protetica.service"
 import { getCatalogoDesign } from "../services/design.service"
+import { getConfiguracoes } from "../services/configuracoes.service"
+import * as estoqueService from "../services/estoque.service"
 import toast from "react-hot-toast"
 import type { CatalogoImplante, CatalogoKit, CatalogoAbutment, CatalogoCategoria, CatalogoConexao, CatalogoLinha, CatalogoFamilia, CatalogoFresa, CatalogoTipoReabilitacao, CatalogoTipoAbutment, CatalogoCategoriaAcessorio, CatalogoAcessorio, CatalogoChaveFerramental, CatalogoCategoriaInstrumental, CatalogoInstrumentalGeral, CatalogoCategoriaKit, CatalogoWorkflow, CatalogoEtapaWorkflow, CatalogoParafusoRetencao, CatalogoCicatrizador, CatalogoTipoChave, CatalogoTipoFresa, CatalogoTipoComplementar, CatalogoTipoOpcional, ProdutoTipoImagem, CatalogoImagemProduto, CatalogoCpsTipoComponente, CatalogoCpsTipoParafuso, CatalogoCpsTipoCicatrizador, CatalogoParafuso, CatalogoChave, CatalogoComponente } from "../types"
 
@@ -2095,5 +2097,43 @@ export function useKitsDoImplante(implanteSku: string) {
     queryKey: ["catalogo", "implante-kits-pivot", implanteSku],
     queryFn: () => implantes.listarKitsDoImplante(implanteSku),
     enabled: !!implanteSku,
+  })
+}
+// --- Configurações ---
+export function useCatalogoConfig() {
+  return useQuery({
+    queryKey: ["catalogo", "configuracoes"],
+    queryFn: getConfiguracoes,
+    staleTime: 5 * 60_000,
+  })
+}
+// --- Estoque ---
+export function useListaEstoque(tipo?: string) {
+  return useQuery({
+    queryKey: ["catalogo", "estoque", tipo],
+    queryFn: () => estoqueService.listarEstoque(tipo),
+  })
+}
+
+export function useAtualizarEstoque() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: ({ sku, tipo, qtdDisponivel, qtdMinimaAviso }: {
+      sku: string
+      tipo: string
+      qtdDisponivel: number
+      qtdMinimaAviso: number
+    }) => estoqueService.atualizarEstoque(sku, tipo, qtdDisponivel, qtdMinimaAviso),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["catalogo", "estoque"] })
+      toast.success("Estoque atualizado!")
+    },
+  })
+}
+
+export function useEstoqueBaixo() {
+  return useQuery({
+    queryKey: ["catalogo", "estoque-baixo"],
+    queryFn: estoqueService.listarEstoqueBaixo,
   })
 }

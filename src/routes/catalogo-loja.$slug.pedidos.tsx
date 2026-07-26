@@ -1,4 +1,4 @@
-import { createRoute, useParams, redirect } from "@tanstack/react-router"
+import { createRoute, useParams, redirect, Link } from "@tanstack/react-router"
 import { rootRoute } from "./__root"
 import { StoreLayout } from "~/features/catalogo/components/StoreLayout"
 import { useCatalogoCliente } from "~/features/catalogo/hooks/useCatalogoCliente"
@@ -11,7 +11,7 @@ import {
   Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
 } from "~/components/ui/table"
 import { useTranslation } from "react-i18next"
-
+import { Eye } from "lucide-react"
 export const catalogoLojaPedidosRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/loja/$slug/pedidos",
@@ -78,13 +78,14 @@ function LojaPedidosPage() {
                 <TableHead>#</TableHead>
                 <TableHead>{t("catalogo.orders.items")}</TableHead>
                 <TableHead>{t("catalogo.quote.total")}</TableHead>
-                <TableHead>{t("catalogo.quote.product")}</TableHead>
+                <TableHead>Status</TableHead>
                 <TableHead>{t("catalogo.orders.date")}</TableHead>
+                <TableHead></TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {pedidos.map((p) => (
-                <TableRow key={p.id}>
+                <TableRow key={p.id} className="hover:bg-white/5 transition-colors">
                   <TableCell className="font-mono text-xs">{p.id.slice(0, 8)}</TableCell>
                   <TableCell>{p.itens?.length ?? 0} {t("catalogo.orders.items")}</TableCell>
                   <TableCell>{formatBRL(p.valor_total)}</TableCell>
@@ -95,6 +96,15 @@ function LojaPedidosPage() {
                   </TableCell>
                   <TableCell className="text-sm text-[var(--color-text-muted)]">
                     {new Date(p.created_at).toLocaleDateString("pt-BR")}
+                  </TableCell>
+                  <TableCell>
+                    <Link
+                      to={`/loja/${slug}/pedidos/$pedidoId`}
+                      params={{ pedidoId: p.id }}
+                      className="p-2 rounded-lg hover:bg-white/10 text-[var(--color-text-muted)] hover:text-white transition-colors inline-flex"
+                    >
+                      <Eye className="w-4 h-4" />
+                    </Link>
                   </TableCell>
                 </TableRow>
               ))}

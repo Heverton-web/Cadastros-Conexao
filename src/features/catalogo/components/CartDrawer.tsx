@@ -4,6 +4,7 @@ import { useCarrinho, removeFromCart, setQuantidade, cartTotais, formatBRL } fro
 import { Link } from "@tanstack/react-router"
 import { useEffect, useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
+import toast from "react-hot-toast"
 import { CATALOGO_TIPO_LABEL, type ProductSheetTipo } from "../types"
 
 export function CartDrawer() {
@@ -113,19 +114,51 @@ export function CartDrawer() {
                         
                         <div className="flex items-center justify-between pt-3 border-t border-[var(--color-border-subtle)]/50">
                           <div className="flex items-center gap-3 bg-[var(--color-surface)] rounded-lg p-1 border border-[var(--color-border-subtle)]">
-                            <button onClick={() => setQuantidade(item.sku, item.quantidade - 1)} className="p-1 rounded-md hover:bg-white/10">
+                            <button
+                              onClick={() => {
+                                const result = setQuantidade(item.sku, item.quantidade - 1)
+                                if (result.limitado) {
+                                  toast("Quantidade ajustada para o máximo disponível", { icon: "📦" })
+                                }
+                              }}
+                              className="p-1 rounded-md hover:bg-white/10"
+                            >
                               <Minus className="w-3 h-3" />
                             </button>
                             <span className="text-sm font-bold w-6 text-center">{item.quantidade}</span>
-                            <button onClick={() => setQuantidade(item.sku, item.quantidade + 1)} className="p-1 rounded-md hover:bg-white/10">
+                            <button
+                              onClick={() => {
+                                const result = setQuantidade(item.sku, item.quantidade + 1)
+                                if (result.limitado) {
+                                  toast(`Estoque máximo: ${result.quantidadeFinal} unidades`, { icon: "⚠️" })
+                                }
+                              }}
+                              disabled={item.qtd_disponivel != null && item.quantidade >= item.qtd_disponivel}
+                              className={`p-1 rounded-md transition-colors ${
+                                item.qtd_disponivel != null && item.quantidade >= item.qtd_disponivel
+                                  ? "opacity-30 cursor-not-allowed"
+                                  : "hover:bg-white/10"
+                              }`}
+                            >
                               <Plus className="w-3 h-3" />
                             </button>
                           </div>
+                          {item.qtd_disponivel != null && (
+                            <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                              item.qtd_disponivel < 1
+                                ? "bg-red-500/15 text-red-400"
+                                : item.qtd_minima_aviso != null && item.qtd_disponivel <= item.qtd_minima_aviso
+                                  ? "bg-amber-500/15 text-amber-400"
+                                  : "bg-emerald-500/15 text-emerald-400"
+                            }`}>
+                              {item.qtd_disponivel < 1 ? "Sem estoque" : `${item.qtd_disponivel} disp.`}
+                            </span>
+                          )}
                           <button onClick={() => removeFromCart(item.sku)} className="p-2 text-red-400 hover:bg-red-400/10 rounded-lg transition-colors">
                             <Trash2 className="w-4 h-4" />
                           </button>
                         </div>
-                      </div>
+                    </div>
                     ))}
                   </div>
                 )}

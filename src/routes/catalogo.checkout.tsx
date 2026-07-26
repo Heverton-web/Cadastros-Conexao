@@ -3,12 +3,14 @@ import { rootRoute } from "./__root"
 import { StoreLayout } from "~/features/catalogo/components/StoreLayout"
 import { useCarrinho, cartTotais, formatBRL, clearCart } from "~/features/catalogo/services/carrinho.service"
 import { useState } from "react"
+import toast from "react-hot-toast"
 import { consultarViaCEP, consultarFrete } from "~/features/catalogo/services/frete.service"
 import { validarCupom, aplicarCupom } from "~/features/catalogo/services/cupons.service"
 import { useAuth } from "~/lib/auth"
 import { useClienteAtivo } from "~/features/catalogo/context/cliente-ativo"
 import { useCatalogoCliente } from "~/features/catalogo/hooks/useCatalogoCliente"
 import { useCriarPedidoCatalogo } from "~/features/catalogo/hooks/useCatalogo"
+import { criarPagamento, confirmarPagamento } from "~/features/catalogo/services/pagamentos.service"
 import type { CatalogoCupom, CatalogoFrete } from "~/features/catalogo/types"
 import { CheckCircle, Truck, MapPin, Tag, ShieldCheck, ArrowLeft } from "lucide-react"
 import { useTranslation } from "react-i18next"
@@ -60,7 +62,8 @@ function CheckoutPage() {
     if (freteErro) return
     setProcessando(true)
     try {
-      const result = await criarPedido.mutateAsync({
+      // 1. Criar pedido
+      const pedido = await criarPedido.mutateAsync({
         cliente_id: isConsultor ? null : catalogoCliente?.id ?? null,
         cliente_crm_id: isConsultor ? clienteAtivo?.id ?? null : null,
         colaborador_id: profile.id,
@@ -75,19 +78,23 @@ function CheckoutPage() {
           preco_unitario: item.preco,
         })),
       })
-      setProtocolo(result.id)
+
+      // 2. Criar registro de pagamento (manual por enquanto)
+      await criarPagamento(pedido.id, "manual", totalFinal)
+
+      // 3. Confirmar pagamento → baixa estoque
+      await confirmarPagamento(pedido.id)
+
+      setProtocolo(pedido.id)
       clearCart()
-    } catch {
-      setFreteErro("Erro ao finalizar pedido. Tente novamente.")
+      toast.success("Pedido realizado com sucesso!", { icon: "✅" })
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "Erro ao finalizar pedido"
+      setFreteErro(msg)
+      toast.error(msg)
     } finally {
       setProcessando(false)
     }
-  }
-
-  function handleFinalizar() {
-    if (!profile) return
-    setProtocolo(`CX-${Math.random().toString(36).substring(2, 8).toUpperCase()}`)
-    clearCart()
   }
 
   if (protocolo) {

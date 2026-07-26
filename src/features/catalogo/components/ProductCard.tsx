@@ -2,6 +2,7 @@ import React from 'react';
 import { ArrowRight, Box } from 'lucide-react';
 import '../styles/theme.css';
 import { CATALOGO_TIPO_LABEL, type ProductSheetTipo } from '../types';
+import { useCatalogoConfig } from '../hooks/useCatalogo';
 import { EstoqueBadge } from './admin/produtos/EstoqueBadge';
 
 interface Props {
@@ -22,6 +23,8 @@ export function ProductCard({ sku, nome, corIdentificacao, tipo, badge, imageUrl
   const badgeLabel = badge || CATALOGO_TIPO_LABEL[tipo as ProductSheetTipo] || tipo;
   const semEstoque = qtdDisponivel != null && qtdDisponivel <= 0;
   const effectiveOnClick = semEstoque ? undefined : onClick;
+  const { data: config } = useCatalogoConfig();
+  const exibirEstoque = config?.exibir_estoque ?? true;
 
   return (
     <div
@@ -64,7 +67,7 @@ export function ProductCard({ sku, nome, corIdentificacao, tipo, badge, imageUrl
             >
               {badgeLabel}
             </span>
-            <EstoqueBadge qtdDisponivel={qtdDisponivel} qtdMinimaAviso={qtdMinimaAviso} compacto />
+            <EstoqueBadge qtdDisponivel={qtdDisponivel} qtdMinimaAviso={qtdMinimaAviso} compacto exibirEstoque={exibirEstoque} />
           </div>
         </div>
 

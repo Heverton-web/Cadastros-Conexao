@@ -685,6 +685,10 @@ export interface CartItem {
   cor: string
   preco: number
   quantidade: number
+  /** Quantidade disponível em estoque (null = sem controle) */
+  qtd_disponivel: number | null
+  /** Quantidade mínima para exibir alerta de estoque baixo */
+  qtd_minima_aviso: number | null
   meta?: Record<string, unknown>
 }
 
