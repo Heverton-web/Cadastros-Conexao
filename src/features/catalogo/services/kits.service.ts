@@ -135,6 +135,8 @@ export async function getKitDetalhe(sku: string): Promise<CatalogoKit | null> {
 export async function criarKit(input: {
   sku: string; tipo_kit_id?: string; nome: string
   sigla?: string; descricao?: string; preco?: number
+  preco_euro?: number; preco_dolar?: number
+  qtd_disponivel?: number; qtd_minima_aviso?: number
 }): Promise<CatalogoKit> {
   const { data, error } = await supabase
     .from("catalogo_kits")
@@ -148,6 +150,8 @@ export async function criarKit(input: {
 
 export async function atualizarKit(sku: string, input: Partial<{
   nome: string; tipo_kit_id: string; sigla: string; descricao: string; preco: number; ativo: boolean
+  preco_euro: number; preco_dolar: number
+  qtd_disponivel: number; qtd_minima_aviso: number
 }>): Promise<CatalogoKit> {
   const { data, error } = await supabase
     .from("catalogo_kits")

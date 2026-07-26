@@ -77,6 +77,10 @@ export async function criarPromocional(input: {
   nome: string
   descricao?: string
   preco: number
+  preco_euro?: number
+  preco_dolar?: number
+  qtd_disponivel?: number
+  qtd_minima_aviso?: number
   expira_em?: string
   itens?: { sku: string; tipo: string }[]
 }): Promise<CatalogoPromocional> {
@@ -101,6 +105,10 @@ export async function atualizarPromocional(id: string, input: Partial<{
   nome: string
   descricao: string
   preco: number
+  preco_euro: number
+  preco_dolar: number
+  qtd_disponivel: number
+  qtd_minima_aviso: number
   expira_em: string
   ativo: boolean
   itens: { sku: string; tipo: string }[]

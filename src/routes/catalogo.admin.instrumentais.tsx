@@ -99,7 +99,7 @@ function AdminInstrumentaisPage() {
   // Product modal state
   const [prodModalOpen, setProdModalOpen] = useState(false)
   const [prodEditing, setProdEditing] = useState<any>(null)
-  const [prodData, setProdData] = useState({ sku: "", nome: "", sigla: "", descricao: "", tipo_chave_id: "", tipo_fresa_id: "", tipo_complementar_id: "", tipo_opcional_id: "", tipo: "", comprimento: "", diametro_mm: 0, material: "", preco: 0, ativo: true })
+  const [prodData, setProdData] = useState({ sku: "", nome: "", sigla: "", descricao: "", tipo_chave_id: "", tipo_fresa_id: "", tipo_complementar_id: "", tipo_opcional_id: "", tipo: "", comprimento: "", diametro_mm: 0, material: "", preco: 0, preco_euro: 0, preco_dolar: 0, qtd_disponivel: 0, qtd_minima_aviso: 0, ativo: true })
   const [prodError, setProdError] = useState("")
   const [prodKitsIds, setProdKitsIds] = useState<string[]>([])
 
@@ -123,7 +123,7 @@ function AdminInstrumentaisPage() {
   async function handleSave() {
     setError("")
     if (!nome.trim()) { setError("Nome é obrigatório"); return }
-    const payload = { nome: nome.trim(), sigla: sigla.trim() || null }
+    const payload = { nome: nome.trim(), sigla: sigla.trim() || undefined }
     try {
       if (editing) {
         if (activeModal === "tipo_chave") await atualizarTipoChave.mutateAsync({ id: editing.id, input: { ...payload, ativo } })
@@ -162,12 +162,12 @@ function AdminInstrumentaisPage() {
 
   // Product handlers
   function openNewProd() {
-    if (subTab === "Chaves" || subTab === "Fresas" || subTab === "Complementares" || subTab === "Opcionais") { setProdEditing(null); setProdData({ sku: "", nome: "", sigla: "", descricao: "", tipo_chave_id: "", tipo_fresa_id: "", tipo_complementar_id: "", tipo_opcional_id: "", tipo: "", comprimento: "", diametro_mm: 0, material: "", preco: 0, ativo: true }); setProdKitsIds([]); setProdError(""); setProdModalOpen(true) }
+    if (subTab === "Chaves" || subTab === "Fresas" || subTab === "Complementares" || subTab === "Opcionais") { setProdEditing(null); setProdData({ sku: "", nome: "", sigla: "", descricao: "", tipo_chave_id: "", tipo_fresa_id: "", tipo_complementar_id: "", tipo_opcional_id: "", tipo: "", comprimento: "", diametro_mm: 0, material: "", preco: 0, preco_euro: 0, preco_dolar: 0, qtd_disponivel: 0, qtd_minima_aviso: 0, ativo: true }); setProdKitsIds([]); setProdError(""); setProdModalOpen(true) }
   }
 
   async function openEditProd(item: any) {
     setProdEditing(item)
-    setProdData({ sku: item.sku, nome: item.nome ?? "", sigla: item.sigla ?? "", descricao: item.descricao ?? "", tipo_chave_id: item.tipo_chave_id ?? "", tipo_fresa_id: item.tipo_fresa_id ?? "", tipo_complementar_id: item.tipo_complementar_id ?? "", tipo_opcional_id: item.tipo_opcional_id ?? "", tipo: item.tipo ?? "", comprimento: item.comprimento ?? "", diametro_mm: item.diametro_mm ?? 0, material: item.material ?? "", preco: item.preco ?? 0, ativo: item.ativo !== false })
+    setProdData({ sku: item.sku, nome: item.nome ?? "", sigla: item.sigla ?? "", descricao: item.descricao ?? "", tipo_chave_id: item.tipo_chave_id ?? "", tipo_fresa_id: item.tipo_fresa_id ?? "", tipo_complementar_id: item.tipo_complementar_id ?? "", tipo_opcional_id: item.tipo_opcional_id ?? "", tipo: item.tipo ?? "", comprimento: item.comprimento ?? "", diametro_mm: item.diametro_mm ?? 0, material: item.material ?? "", preco: item.preco ?? 0, preco_euro: item.preco_euro ?? 0, preco_dolar: item.preco_dolar ?? 0, qtd_disponivel: item.qtd_disponivel ?? 0, qtd_minima_aviso: item.qtd_minima_aviso ?? 0, ativo: item.ativo !== false })
     setProdError("")
     setProdModalOpen(true)
     if (subTab === "Chaves") setProdKitsIds(await listarKitsDeChave(item.sku))
@@ -180,42 +180,43 @@ function AdminInstrumentaisPage() {
     if (!prodData.sku.trim()) { setProdError("SKU é obrigatório"); return }
     if (!prodData.nome.trim()) { setProdError("Nome é obrigatório"); return }
 
-    const payload: any = {
-      sku: prodData.sku.trim(),
-      nome: prodData.nome.trim(),
-      sigla: prodData.sigla?.trim() || null,
-      descricao: prodData.descricao?.trim() || null,
-      tipo: prodData.tipo?.trim() || null,
-      comprimento: prodData.comprimento?.trim() || null,
-      diametro_mm: prodData.diametro_mm || null,
-      material: prodData.material?.trim() || null,
+    const base = {
+      sigla: prodData.sigla?.trim() || undefined,
+      descricao: prodData.descricao?.trim() || undefined,
+      tipo: prodData.tipo?.trim() || undefined,
+      comprimento: prodData.comprimento?.trim() || undefined,
+      diametro_mm: prodData.diametro_mm || undefined,
+      material: prodData.material?.trim() || undefined,
       preco: prodData.preco || 0,
-      ativo: prodData.ativo
+      preco_euro: prodData.preco_euro || 0,
+      preco_dolar: prodData.preco_dolar || 0,
+      qtd_disponivel: prodData.qtd_disponivel || 0,
+      qtd_minima_aviso: prodData.qtd_minima_aviso || 0,
+      ativo: prodData.ativo,
     }
-
     try {
       if (subTab === "Chaves") {
-        if (prodData.tipo_chave_id) payload.tipo_chave_id = prodData.tipo_chave_id
-        if (prodEditing) await atualizarChave.mutateAsync({ sku: prodEditing.sku, input: payload })
-        else await criarChave.mutateAsync(payload)
-        await salvarKitsDeChave(payload.sku, prodKitsIds)
+        const input = { ...base, sku: prodData.sku.trim(), nome: prodData.nome.trim(), tipo_chave_id: prodData.tipo_chave_id || undefined }
+        if (prodEditing) await atualizarChave.mutateAsync({ sku: prodEditing.sku, input })
+        else await criarChave.mutateAsync(input)
+        await salvarKitsDeChave(prodData.sku.trim(), prodKitsIds)
       } else if (subTab === "Fresas") {
-        if (prodData.tipo_fresa_id) payload.tipo_fresa_id = prodData.tipo_fresa_id
-        if (prodEditing) await atualizarFresa.mutateAsync({ sku: prodEditing.sku, input: payload })
-        else await criarFresa.mutateAsync(payload)
-        await salvarKitsDeFresa(payload.sku, prodKitsIds)
+        const input = { ...base, sku: prodData.sku.trim(), nome: prodData.nome.trim(), tipo_fresa_id: prodData.tipo_fresa_id || undefined }
+        if (prodEditing) await atualizarFresa.mutateAsync({ sku: prodEditing.sku, input })
+        else await criarFresa.mutateAsync(input)
+        await salvarKitsDeFresa(prodData.sku.trim(), prodKitsIds)
       } else if (subTab === "Complementares") {
-        if (prodData.tipo_complementar_id) payload.tipo_complementar_id = prodData.tipo_complementar_id
-        if (prodEditing) await atualizarComplementar.mutateAsync({ sku: prodEditing.sku, input: payload })
-        else await criarComplementar.mutateAsync(payload)
+        const input = { ...base, sku: prodData.sku.trim(), nome: prodData.nome.trim(), tipo_complementar_id: prodData.tipo_complementar_id || undefined }
+        if (prodEditing) await atualizarComplementar.mutateAsync({ sku: prodEditing.sku, input })
+        else await criarComplementar.mutateAsync(input)
       } else {
-        if (prodData.tipo_opcional_id) payload.tipo_opcional_id = prodData.tipo_opcional_id
-        if (prodEditing) await atualizarOpcional.mutateAsync({ sku: prodEditing.sku, input: payload })
-        else await criarOpcional.mutateAsync(payload)
+        const input = { ...base, sku: prodData.sku.trim(), nome: prodData.nome.trim(), tipo_opcional_id: prodData.tipo_opcional_id || undefined }
+        if (prodEditing) await atualizarOpcional.mutateAsync({ sku: prodEditing.sku, input })
+        else await criarOpcional.mutateAsync(input)
       }
       toast.success(prodEditing ? "Atualizado!" : "Criado!")
       setProdModalOpen(false)
-    } catch (e: any) { setProdError(e.message) }
+    } catch (e: unknown) { setProdError(e instanceof Error ? e.message : "Erro ao salvar") }
   }
 
   async function toggleProdAtivo(sku: string, val: boolean) {
@@ -404,15 +405,22 @@ function AdminInstrumentaisPage() {
               <div className="space-y-2"><label className={labelCls}>Ø (mm)</label><input type="number" step="0.1" value={prodData.diametro_mm} onChange={e=>setProdData({...prodData,diametro_mm:Number(e.target.value)})} className={inputCls} /></div>
               <div className="space-y-2"><label className={labelCls}>Material</label><input type="text" value={prodData.material} onChange={e=>setProdData({...prodData,material:e.target.value})} className={inputCls} /></div>
             </div>
+            <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655] pt-2">Estoque na Loja</h3>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2"><label className={labelCls}>Qtd Disponível</label><input type="number" min="0" value={prodData.qtd_disponivel} onChange={e=>setProdData({...prodData,qtd_disponivel:Number(e.target.value)})} className={inputCls} /></div>
+              <div className="space-y-2"><label className={labelCls}>Qtd Mínima (Aviso)</label><input type="number" min="0" value={prodData.qtd_minima_aviso} onChange={e=>setProdData({...prodData,qtd_minima_aviso:Number(e.target.value)})} className={inputCls} /></div>
+            </div>
             <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655]">Imagens do Produto</h3>
             <ImageUploader produtoTipo={subTab==="Chaves"?"chave":subTab==="Fresas"?"fresa":subTab==="Complementares"?"complementar":"opcional"} produtoSku={prodData.sku} />
             <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655]">Comercial</h3>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-3 gap-4">
               <div className="space-y-2"><label className={labelCls}>Preço (R$)</label><input type="number" step="0.01" min="0" value={prodData.preco} onChange={e=>setProdData({...prodData,preco:Number(e.target.value)})} className={inputCls} /></div>
-              <div className="flex items-center justify-between px-4 py-3 rounded-xl bg-[var(--color-surface)] border border-white/5 mt-6">
-                <div><p className="text-sm font-bold text-white">{prodData.ativo?"Ativo":"Inativo"}</p></div>
-                <Switch checked={prodData.ativo} onCheckedChange={v=>setProdData({...prodData,ativo:v})} />
-              </div>
+              <div className="space-y-2"><label className={labelCls}>Preço (€)</label><input type="number" step="0.01" min="0" value={prodData.preco_euro} onChange={e=>setProdData({...prodData,preco_euro:Number(e.target.value)})} className={inputCls} /></div>
+              <div className="space-y-2"><label className={labelCls}>Preço ($)</label><input type="number" step="0.01" min="0" value={prodData.preco_dolar} onChange={e=>setProdData({...prodData,preco_dolar:Number(e.target.value)})} className={inputCls} /></div>
+            </div>
+            <div className="flex items-center justify-between px-4 py-3 rounded-xl bg-[var(--color-surface)] border border-white/5">
+              <div><p className="text-sm font-bold text-white">{prodData.ativo?"Ativo":"Inativo"}</p></div>
+              <Switch checked={prodData.ativo} onCheckedChange={v=>setProdData({...prodData,ativo:v})} />
             </div>
             {prodError&&<p className="text-sm text-red-400 text-center">{prodError}</p>}
           </div>

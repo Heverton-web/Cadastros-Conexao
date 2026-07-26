@@ -60,12 +60,17 @@ function CatalogoPromocionaisPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {(promos ?? []).map((promo) => {
             const imagemUrl = imagensMap.get(promo.id)?.[0]?.url_imagem
+            const semEstoque = (promo as unknown as Record<string, unknown>).qtd_disponivel != null && Number((promo as unknown as Record<string, unknown>).qtd_disponivel) <= 0
             return (
             <Link
               key={promo.id}
               to="/catalogo/produto/$tipo/$sku"
               params={{ tipo: "promocional", sku: promo.id }}
-              className="group rounded-2xl border border-[var(--color-border-subtle)] bg-[var(--color-surface)]/50 overflow-hidden transition-all duration-300 hover:border-[var(--color-accent)]/40 hover:shadow-[0_8px_30px_rgba(201,166,85,0.08)]"
+              className={`group rounded-2xl border border-[var(--color-border-subtle)] bg-[var(--color-surface)]/50 overflow-hidden transition-all duration-300 ${
+                semEstoque
+                  ? "opacity-60 grayscale cursor-not-allowed pointer-events-none"
+                  : "hover:border-[var(--color-accent)]/40 hover:shadow-[0_8px_30px_rgba(201,166,85,0.08)]"
+              }`}
             >
               {/* Imagem — 30% */}
               <div className="relative h-32 bg-gradient-to-br from-[var(--color-surface)] to-[#0f172a] overflow-hidden">
@@ -86,6 +91,13 @@ function CatalogoPromocionaisPage() {
                   <Tag className="h-3 w-3 text-[var(--color-accent)]" />
                   <span className="text-[10px] font-bold uppercase tracking-widest text-[var(--color-accent)]">Pacote</span>
                 </div>
+                {semEstoque && (
+                  <div className="absolute inset-0 flex items-center justify-center bg-[#0f172a]/70 backdrop-blur-sm">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-black uppercase tracking-widest border border-red-500/30 bg-red-500/20 text-red-400">
+                      <Tag className="h-3 w-3" /> Sem Estoque
+                    </span>
+                  </div>
+                )}
               </div>
 
               {/* Info — 70% */}

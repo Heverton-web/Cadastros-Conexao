@@ -86,6 +86,7 @@ function KitsList({ tipoKitId, onBack }: { tipoKitId: string; onBack: () => void
   const { data: tiposKit } = useTiposKit()
   const tipoKit = (tiposKit ?? []).find((t) => t.id === tipoKitId)
   const empresaId = useCatalogoEmpresaId()
+  const { t } = useTranslation()
   const [imagensMap, setImagensMap] = useState<Map<string, CatalogoImagemProduto[]>>(new Map())
 
   const kits = useMemo(() => {
@@ -161,6 +162,7 @@ function KitsList({ tipoKitId, onBack }: { tipoKitId: string; onBack: () => void
                 badge={tipoKit?.nome}
                 corIdentificacao="#c9a655"
                 imageUrl={imagensMap.get(kit.sku)?.[0]?.url_imagem}
+                qtdDisponivel={kit.qtd_disponivel}
               />
             </Link>
           ))}

@@ -314,6 +314,10 @@ export interface CatalogoImplante {
   superficie: string | null
   detalhes_extras: Record<string, unknown>
   preco: number
+  preco_euro: number
+  preco_dolar: number
+  qtd_disponivel: number
+  qtd_minima_aviso: number
   ativo: boolean
   created_at: string
   updated_at: string
@@ -325,10 +329,6 @@ export interface CatalogoImplante {
   protocolo_soft?: CatalogoProtocoloFresagem
   protocolo_hard?: CatalogoProtocoloFresagem
 }
-
-// ============================================================
-// PRODUTOS - Abutments
-// ============================================================
 
 export interface CatalogoAbutment {
   sku: string
@@ -347,6 +347,10 @@ export interface CatalogoAbutment {
   torque_ncm: number | null
   material: string | null
   preco: number
+  preco_euro: number
+  preco_dolar: number
+  qtd_disponivel: number
+  qtd_minima_aviso: number
   ativo: boolean
   created_at: string
   updated_at: string
@@ -356,10 +360,6 @@ export interface CatalogoAbutment {
   chave?: CatalogoChave
   imagens?: CatalogoImagemProduto[]
 }
-
-// ============================================================
-// PRODUTOS - Componentes
-// ============================================================
 
 export interface CatalogoComponente {
   sku: string
@@ -378,6 +378,10 @@ export interface CatalogoComponente {
   tipo_travamento: string | null
   material: string | null
   preco: number
+  preco_euro: number
+  preco_dolar: number
+  qtd_disponivel: number
+  qtd_minima_aviso: number
   ativo: boolean
   created_at: string
   updated_at: string
@@ -387,10 +391,6 @@ export interface CatalogoComponente {
   chave?: CatalogoChave
   imagens?: CatalogoImagemProduto[]
 }
-
-// ============================================================
-// PRODUTOS - Parafusos
-// ============================================================
 
 export interface CatalogoParafuso {
   sku: string
@@ -402,6 +402,10 @@ export interface CatalogoParafuso {
   torque_ncm: number | null
   material: string | null
   preco: number
+  preco_euro: number
+  preco_dolar: number
+  qtd_disponivel: number
+  qtd_minima_aviso: number
   ativo: boolean
   created_at: string
   updated_at: string
@@ -412,10 +416,6 @@ export interface CatalogoParafuso {
 
 /** @deprecated Use CatalogoParafuso */
 export type CatalogoParafusoRetencao = CatalogoParafuso
-
-// ============================================================
-// PRODUTOS - Cicatrizadores
-// ============================================================
 
 export interface CatalogoCicatrizador {
   sku: string
@@ -430,6 +430,10 @@ export interface CatalogoCicatrizador {
   torque_ncm: number | null
   material: string | null
   preco: number
+  preco_euro: number
+  preco_dolar: number
+  qtd_disponivel: number
+  qtd_minima_aviso: number
   ativo: boolean
   created_at: string
   updated_at: string
@@ -437,10 +441,6 @@ export interface CatalogoCicatrizador {
   chave?: CatalogoChave
   imagens?: CatalogoImagemProduto[]
 }
-
-// ============================================================
-// INSTRUMENTAIS - Produtos
-// ============================================================
 
 export interface CatalogoChave {
   sku: string
@@ -454,16 +454,16 @@ export interface CatalogoChave {
   diametro_mm: number | null
   material: string | null
   preco: number
+  preco_euro: number
+  preco_dolar: number
+  qtd_disponivel: number
+  qtd_minima_aviso: number
   ativo: boolean
   created_at: string
   updated_at: string
   tipo_chave?: CatalogoTipoChave
   imagens?: CatalogoImagemProduto[]
 }
-
-/** @deprecated Use CatalogoChave */
-export type CatalogoChaveFerramental = CatalogoChave
-
 export interface CatalogoFresa {
   sku: string
   tipo_fresa_id: string | null
@@ -476,13 +476,16 @@ export interface CatalogoFresa {
   diametro_mm: number | null
   material: string | null
   preco: number
+  preco_euro: number
+  preco_dolar: number
+  qtd_disponivel: number
+  qtd_minima_aviso: number
   ativo: boolean
   created_at: string
   updated_at: string
   tipo_fresa?: CatalogoTipoFresa
   imagens?: CatalogoImagemProduto[]
 }
-
 export interface CatalogoComplementar {
   sku: string
   tipo_complementar_id: string | null
@@ -495,13 +498,16 @@ export interface CatalogoComplementar {
   diametro_mm: number | null
   material: string | null
   preco: number
+  preco_euro: number
+  preco_dolar: number
+  qtd_disponivel: number
+  qtd_minima_aviso: number
   ativo: boolean
   created_at: string
   updated_at: string
   tipo_complementar?: CatalogoTipoComplementar
   imagens?: CatalogoImagemProduto[]
 }
-
 export interface CatalogoOpcional {
   sku: string
   tipo_opcional_id: string | null
@@ -514,6 +520,10 @@ export interface CatalogoOpcional {
   diametro_mm: number | null
   material: string | null
   preco: number
+  preco_euro: number
+  preco_dolar: number
+  qtd_disponivel: number
+  qtd_minima_aviso: number
   ativo: boolean
   created_at: string
   updated_at: string
@@ -524,7 +534,6 @@ export interface CatalogoOpcional {
 // ============================================================
 // KITS - Produto
 // ============================================================
-
 export interface CatalogoKit {
   sku: string
   tipo_kit_id: string | null
@@ -532,6 +541,10 @@ export interface CatalogoKit {
   sigla: string | null
   descricao: string | null
   preco: number
+  preco_euro: number
+  preco_dolar: number
+  qtd_disponivel: number
+  qtd_minima_aviso: number
   ativo: boolean
   created_at: string
   updated_at: string
@@ -631,6 +644,10 @@ export interface CatalogoPromocional {
   nome: string
   descricao: string | null
   preco: number
+  preco_euro: number
+  preco_dolar: number
+  qtd_disponivel: number
+  qtd_minima_aviso: number
   expira_em: string | null
   ativo: boolean
   created_at: string
@@ -710,11 +727,33 @@ export type CatalogoSequenciaProtetica = Record<string, unknown>
 /** @deprecated Removed */
 export type CatalogoCategoriaAcessorio = Record<string, unknown>
 /** @deprecated Placeholder — campos mínimos p/ AbutmentForm */
-export type CatalogoAcessorio = { id?: string; sku: string; nome: string } & Record<string, unknown>
+export type CatalogoAcessorio = {
+  id?: string
+  sku: string
+  nome: string
+  preco: number
+  preco_euro: number
+  preco_dolar: number
+  qtd_disponivel: number
+  qtd_minima_aviso: number
+  ativo: boolean
+} & Record<string, unknown>
 /** @deprecated Removed */
 export type CatalogoAcessorioFerramental = Record<string, unknown>
 /** @deprecated Removed */
 export type CatalogoCategoriaInstrumental = Record<string, unknown>
+/** @deprecated Placeholder — campos mínimos p/ picker de produtos */
+export type CatalogoInstrumentalGeral = {
+  id?: string
+  sku: string
+  nome: string
+  preco: number
+  preco_euro: number
+  preco_dolar: number
+  qtd_disponivel: number
+  qtd_minima_aviso: number
+  ativo: boolean
+} & Record<string, unknown>
 /** @deprecated Placeholder — campos mínimos p/ picker de produtos */
 export type CatalogoInstrumentalGeral = { id?: string; sku: string; nome: string } & Record<string, unknown>
 /** @deprecated Removed */

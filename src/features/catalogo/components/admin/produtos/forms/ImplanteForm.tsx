@@ -34,8 +34,13 @@ const implanteSchema = z.object({
   diametro_plataforma_mm: z.coerce.number().optional(),
   // Chaves
   chaves_ids: z.array(z.string()).optional(),
+  // Estoque
+  qtd_disponivel: z.coerce.number().int().min(0).optional(),
+  qtd_minima_aviso: z.coerce.number().int().min(0).optional(),
   // Comercial
   preco: z.coerce.number().min(0, "Preço não pode ser negativo").optional(),
+  preco_euro: z.coerce.number().min(0).optional(),
+  preco_dolar: z.coerce.number().min(0).optional(),
   ativo: z.boolean(),
 })
 
@@ -290,28 +295,52 @@ export function ImplanteForm({
         </div>
       </div>
 
-      {/* ─── 5. Comercial ─── */}
-      <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655] pt-2">Comercial</h3>
+      {/* ─── 5. Estoque ─── */}
+      <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655] pt-2">Estoque na Loja</h3>
       <div className="grid grid-cols-2 gap-4">
+        <div className="space-y-2">
+          <label className={labelCls}>Qtd Disponível</label>
+          <input type="number" step="1" min="0" {...register("qtd_disponivel")} value={data.qtd_disponivel ?? 0} onChange={(e) => onChange({ ...data, qtd_disponivel: Number(e.target.value) })} className={inputCls} placeholder="0" />
+          {data.qtd_disponivel != null && data.qtd_minima_aviso != null && data.qtd_disponivel > 0 && data.qtd_disponivel <= data.qtd_minima_aviso && (
+            <p className="text-xs text-amber-400 font-medium">⚠ Estoque baixo!</p>
+          )}
+        </div>
+        <div className="space-y-2">
+          <label className={labelCls}>Qtd Mínima (aviso)</label>
+          <input type="number" step="1" min="0" {...register("qtd_minima_aviso")} value={data.qtd_minima_aviso ?? 0} onChange={(e) => onChange({ ...data, qtd_minima_aviso: Number(e.target.value) })} className={inputCls} placeholder="0" />
+        </div>
+      </div>
+
+      {/* ─── 6. Comercial ─── */}
+      <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655] pt-2">Comercial</h3>
+      <div className="grid grid-cols-3 gap-4">
         <div className="space-y-2">
           <label className={labelCls}>Preço (R$)</label>
           <input type="number" step="0.01" min="0" {...register("preco")} value={data.preco} onChange={(e) => onChange({ ...data, preco: Number(e.target.value) })} className={inputCls} placeholder="0,00" />
           {errors.preco && <p className="text-xs text-red-400">{errors.preco.message}</p>}
         </div>
         <div className="space-y-2">
-          <label className={labelCls}>Ativo</label>
-          <button
-            type="button"
-            onClick={() => onChange({ ...data, ativo: !data.ativo })}
-            className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-              data.ativo ? "bg-[#c9a655]" : "bg-white/10"
-            }`}
-          >
-            <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-              data.ativo ? "translate-x-6" : "translate-x-1"
-            }`} />
-          </button>
+          <label className={labelCls}>Preço (€ Euro)</label>
+          <input type="number" step="0.01" min="0" {...register("preco_euro")} value={data.preco_euro ?? 0} onChange={(e) => onChange({ ...data, preco_euro: Number(e.target.value) })} className={inputCls} placeholder="0,00" />
         </div>
+        <div className="space-y-2">
+          <label className={labelCls}>Preço ($ Dólar)</label>
+          <input type="number" step="0.01" min="0" {...register("preco_dolar")} value={data.preco_dolar ?? 0} onChange={(e) => onChange({ ...data, preco_dolar: Number(e.target.value) })} className={inputCls} placeholder="0,00" />
+        </div>
+      </div>
+      <div className="flex items-center gap-3 pt-2">
+        <label className={labelCls}>Ativo</label>
+        <button
+          type="button"
+          onClick={() => onChange({ ...data, ativo: !data.ativo })}
+          className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+            data.ativo ? "bg-[#c9a655]" : "bg-white/10"
+          }`}
+        >
+          <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+            data.ativo ? "translate-x-6" : "translate-x-1"
+          }`} />
+        </button>
       </div>
     </div>
   )

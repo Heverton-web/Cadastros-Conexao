@@ -12,20 +12,28 @@ interface Props {
   badge?: string;
   imageUrl?: string;
   onClick?: () => void;
+  /** Quantidade disponível em estoque — quando 0, exibe badge "Sem Estoque" e desativa navegação */
+  qtdDisponivel?: number | null;
 }
 
-export function ProductCard({ sku, nome, corIdentificacao, tipo, badge, imageUrl, onClick }: Props) {
+export function ProductCard({ sku, nome, corIdentificacao, tipo, badge, imageUrl, onClick, qtdDisponivel }: Props) {
   const cor = corIdentificacao || '#c9a655';
   const badgeLabel = badge || CATALOGO_TIPO_LABEL[tipo as ProductSheetTipo] || tipo;
+  const semEstoque = qtdDisponivel != null && qtdDisponivel <= 0;
+  const effectiveOnClick = semEstoque ? undefined : onClick;
 
   return (
     <div
-      className="group relative h-full rounded-2xl bg-[var(--color-surface)]/50 backdrop-blur-md border border-[var(--color-border-subtle)] hover:border-[var(--card-color,var(--color-accent))]/40 transition-all duration-300 overflow-hidden p-5 min-h-[88px]"
+      className={`group relative h-full rounded-2xl bg-[var(--color-surface)]/50 backdrop-blur-md border border-[var(--color-border-subtle)] transition-all duration-300 overflow-hidden p-5 min-h-[88px] ${
+        semEstoque
+          ? "opacity-60 grayscale cursor-not-allowed"
+          : "hover:border-[var(--card-color,var(--color-accent))]/40 cursor-pointer"
+      }`}
       style={{ "--card-color": cor, borderWidth: "0.5px" } as React.CSSProperties}
-      onClick={onClick}
-      role={onClick ? "button" : undefined}
-      tabIndex={onClick ? 0 : undefined}
-      onKeyDown={onClick ? (e) => { if (e.key === 'Enter' || e.key === ' ') onClick() } : undefined}
+      onClick={effectiveOnClick}
+      role={effectiveOnClick ? "button" : undefined}
+      tabIndex={effectiveOnClick ? 0 : undefined}
+      onKeyDown={effectiveOnClick ? (e) => { if (e.key === 'Enter' || e.key === ' ') effectiveOnClick() } : undefined}
     >
       <div
         className="absolute inset-0 pointer-events-none"
@@ -48,17 +56,26 @@ export function ProductCard({ sku, nome, corIdentificacao, tipo, badge, imageUrl
           <p className="text-[10px] font-mono text-[var(--color-text-muted)] tracking-widest truncate mb-1.5">
             SKU: {sku}
           </p>
-          <span
-            className="inline-block px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-widest border"
-            style={{ color: cor, borderColor: `${cor}40`, backgroundColor: `${cor}10` }}
-          >
-            {badgeLabel}
-          </span>
+          <div className="flex flex-wrap items-center gap-1.5">
+            <span
+              className="inline-block px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-widest border"
+              style={{ color: cor, borderColor: `${cor}40`, backgroundColor: `${cor}10` }}
+            >
+              {badgeLabel}
+            </span>
+            {semEstoque && (
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-widest border border-red-500/30 bg-red-500/15 text-red-400">
+                <Box className="h-2.5 w-2.5" /> Sem Estoque
+              </span>
+            )}
+          </div>
         </div>
 
-        <div className="flex items-center gap-2 shrink-0">
-           <ArrowRight className="w-4 h-4 text-[var(--color-text-muted)] group-hover:text-white group-hover:translate-x-1 transition-all" />
-        </div>
+        {!semEstoque && (
+          <div className="flex items-center gap-2 shrink-0">
+             <ArrowRight className="w-4 h-4 text-[var(--color-text-muted)] group-hover:text-white group-hover:translate-x-1 transition-all" />
+          </div>
+        )}
       </div>
     </div>
   );

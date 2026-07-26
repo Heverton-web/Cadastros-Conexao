@@ -62,7 +62,7 @@ function AdminKitsPage() {
   // Kit modal
   const [kitModalOpen, setKitModalOpen] = useState(false)
   const [kitEditing, setKitEditing] = useState<any>(null)
-  const [kitData, setKitData] = useState({ sku: "", nome: "", sigla: "", descricao: "", tipo_kit_id: "", preco: 0, ativo: true })
+  const [kitData, setKitData] = useState({ sku: "", nome: "", sigla: "", descricao: "", tipo_kit_id: "", preco: 0, preco_euro: 0, preco_dolar: 0, qtd_disponivel: 0, qtd_minima_aviso: 0, ativo: true })
   const [kitChaves, setKitChaves] = useState<string[]>([])
   const [kitFresas, setKitFresas] = useState<string[]>([])
   const [kitComplementares, setKitComplementares] = useState<string[]>([])
@@ -99,10 +99,10 @@ function AdminKitsPage() {
   }
 
   // Kit handlers
-  function openNewKit() { setKitEditing(null); setKitData({ sku: "", nome: "", sigla: "", descricao: "", tipo_kit_id: "", preco: 0, ativo: true }); setKitChaves([]); setKitFresas([]); setKitComplementares([]); setKitOpcionais([]); setKitImplantes([]); setKitTodosDiametros(false); setKitKitsComplementares([]); setKitKitsRelacionados([]); setKitError(""); setSelChave(""); setSelFresa(""); setSelComplementar(""); setSelOpcional(""); setSelImplante(""); setSelKitComplementar(""); setSelKitRelacionado(""); setKitModalOpen(true) }
+  function openNewKit() { setKitEditing(null); setKitData({ sku: "", nome: "", sigla: "", descricao: "", tipo_kit_id: "", preco: 0, preco_euro: 0, preco_dolar: 0, qtd_disponivel: 0, qtd_minima_aviso: 0, ativo: true }); setKitChaves([]); setKitFresas([]); setKitComplementares([]); setKitOpcionais([]); setKitImplantes([]); setKitTodosDiametros(false); setKitKitsComplementares([]); setKitKitsRelacionados([]); setKitError(""); setSelChave(""); setSelFresa(""); setSelComplementar(""); setSelOpcional(""); setSelImplante(""); setSelKitComplementar(""); setSelKitRelacionado(""); setKitModalOpen(true) }
 
   async function openEditKit(item: any) {
-    setKitEditing(item); setKitData({ sku: item.sku, nome: item.nome ?? "", sigla: item.sigla ?? "", descricao: item.descricao ?? "", tipo_kit_id: item.tipo_kit_id ?? "", preco: item.preco ?? 0, ativo: item.ativo !== false }); setKitError("")
+    setKitEditing(item); setKitData({ sku: item.sku, nome: item.nome ?? "", sigla: item.sigla ?? "", descricao: item.descricao ?? "", tipo_kit_id: item.tipo_kit_id ?? "", preco: item.preco ?? 0, preco_euro: (item as Record<string, unknown>).preco_euro as number ?? 0, preco_dolar: (item as Record<string, unknown>).preco_dolar as number ?? 0, qtd_disponivel: (item as Record<string, unknown>).qtd_disponivel as number ?? 0, qtd_minima_aviso: (item as Record<string, unknown>).qtd_minima_aviso as number ?? 0, ativo: item.ativo !== false }); setKitError("")
     // Load composition via service methods
     const [chaves, fresas, complementares, opcionais, implantesDetalhe, kc, kr] = await Promise.all([
       kits.listarKitChaves(item.sku),
@@ -200,14 +200,14 @@ function AdminKitsPage() {
           {/* Kits */}
           {subTab === "Kits" && (
             <Table><TableHeader><TableRow className="border-b border-[#c9a655]/20">{["SKU","Nome","Tipo","Preço","Ativo","Ações"].map(h=><TableHead key={h} className="bg-gradient-to-r from-[#c9a655]/10 to-transparent text-[#c9a655] font-black uppercase tracking-wider text-[10px]">{h}</TableHead>)}</TableRow></TableHeader>
-            <TableBody>{(kits??[]).map((item:any,i:number)=><TableRow key={item.sku} className={`${i%2===0?"bg-[var(--color-surface)]/30":""} hover:bg-[#c9a655]/5 border-b border-[var(--color-border-subtle)]/50`}>
+            <TableBody>{(kitsList??[]).map((item:any,i:number)=><TableRow key={item.sku} className={`${i%2===0?"bg-[var(--color-surface)]/30":""} hover:bg-[#c9a655]/5 border-b border-[var(--color-border-subtle)]/50`}>
               <TableCell className="text-sm font-mono">{item.sku}</TableCell>
               <TableCell className="text-sm font-medium text-white">{item.nome}</TableCell>
               <TableCell className="text-sm text-gray-300">{item.tipo_kit?.nome??"—"}</TableCell>
               <TableCell className="text-sm text-gray-300">R$ {item.preco?.toFixed(2) ?? "0,00"}</TableCell>
               <TableCell><button onClick={()=>toggleKitMut.mutate({sku:item.sku,ativo:!item.ativo})}>{item.ativo?<ToggleRight className="h-7 w-7 text-green-400"/>:<ToggleLeft className="h-7 w-7 text-gray-500"/>}</button></TableCell>
               <TableCell><div className="flex items-center gap-2"><button onClick={()=>openEditKit(item)} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-[#c9a655]/20 text-[var(--color-text-muted)] hover:text-[#c9a655]"><Pencil className="h-3.5 w-3.5"/></button><button onClick={()=>setDeleteItem({id:item.sku,label:item.nome,table:"catalogo_kits"})} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-red-500/20 text-[var(--color-text-muted)] hover:text-red-400"><Trash2 className="h-3.5 w-3.5"/></button></div></TableCell>
-            </TableRow>)}{(kits??[]).length===0&&<TableRow><TableCell colSpan={6} className="p-4 text-center text-text-muted">Nenhum kit cadastrado</TableCell></TableRow>}</TableBody></Table>
+            </TableRow>)}{(kitsList??[]).length===0&&<TableRow><TableCell colSpan={6} className="p-4 text-center text-text-muted">Nenhum kit cadastrado</TableCell></TableRow>}</TableBody></Table>
           )}
         </div>
       </div>
@@ -369,14 +369,41 @@ function AdminKitsPage() {
             <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655] pt-2">Imagens do Produto</h3>
             <ImageUploader produtoTipo="kit" produtoSku={kitData.sku} />
 
-            {/* ─── 6. COMERCIAL ─── */}
-            <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655] pt-2">Comercial</h3>
+            {/* ─── 6. ESTOQUE NA LOJA ─── */}
+            <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655] pt-2">Estoque na Loja</h3>
             <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2"><label className={labelCls}>Preço (R$)</label><input type="number" step="0.01" min="0" value={kitData.preco} onChange={e=>setKitData({...kitData,preco:Number(e.target.value)})} className={inputCls} /></div>
-              <div className="flex items-center justify-between px-4 py-3 rounded-xl bg-[var(--color-surface)] border border-white/5 mt-6">
-                <div><p className="text-sm font-bold text-white">{kitData.ativo?"Ativo":"Inativo"}</p></div>
-                <Switch checked={kitData.ativo} onCheckedChange={v=>setKitData({...kitData,ativo:v})} />
+              <div className="space-y-2">
+                <label className={labelCls}>Qtd Disponível</label>
+                <input type="number" step="1" min="0" value={kitData.qtd_disponivel} onChange={e=>setKitData({...kitData,qtd_disponivel:Number(e.target.value)})} className={inputCls} placeholder="0" />
+                {kitData.qtd_disponivel > 0 && kitData.qtd_minima_aviso > 0 && kitData.qtd_disponivel <= kitData.qtd_minima_aviso && (
+                  <p className="text-xs text-amber-400 font-medium">⚠ Estoque baixo!</p>
+                )}
               </div>
+              <div className="space-y-2">
+                <label className={labelCls}>Qtd Mínima (aviso)</label>
+                <input type="number" step="1" min="0" value={kitData.qtd_minima_aviso} onChange={e=>setKitData({...kitData,qtd_minima_aviso:Number(e.target.value)})} className={inputCls} placeholder="0" />
+              </div>
+            </div>
+
+            {/* ─── 7. COMERCIAL ─── */}
+            <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655] pt-2">Comercial</h3>
+            <div className="grid grid-cols-3 gap-4">
+              <div className="space-y-2">
+                <label className={labelCls}>Preço Fixo (R$)</label>
+                <input type="number" step="0.01" min="0" value={kitData.preco} onChange={e=>setKitData({...kitData,preco:Number(e.target.value)})} className={inputCls} />
+              </div>
+              <div className="space-y-2">
+                <label className={labelCls}>Preço (€ Euro)</label>
+                <input type="number" step="0.01" min="0" value={kitData.preco_euro} onChange={e=>setKitData({...kitData,preco_euro:Number(e.target.value)})} className={inputCls} placeholder="0,00" />
+              </div>
+              <div className="space-y-2">
+                <label className={labelCls}>Preço ($ Dólar)</label>
+                <input type="number" step="0.01" min="0" value={kitData.preco_dolar} onChange={e=>setKitData({...kitData,preco_dolar:Number(e.target.value)})} className={inputCls} placeholder="0,00" />
+              </div>
+            </div>
+            <div className="flex items-center justify-between px-4 py-3 rounded-xl bg-[var(--color-surface)] border border-white/5">
+              <div><p className="text-sm font-bold text-white">{kitData.ativo?"Ativo":"Inativo"}</p></div>
+              <Switch checked={kitData.ativo} onCheckedChange={v=>setKitData({...kitData,ativo:v})} />
             </div>
             {kitError&&<p className="text-sm text-red-400 text-center">{kitError}</p>}
           </div>

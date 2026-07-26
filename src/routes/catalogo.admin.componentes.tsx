@@ -99,17 +99,17 @@ function AdminComponentesPage() {
   // Abutment modal
   const [abutModalOpen, setAbutModalOpen] = useState(false)
   const [abutEditing, setAbutEditing] = useState<any>(null)
-  const [abutData, setAbutData] = useState({ sku: "", nome: "", sigla: "", descricao: "", familia_id: "", tipo_reabilitacao_id: "", tipo_abutment_id: "", parafuso_id: "", chave_id: "", diametro_plataforma: 0, altura_transmucoso: 0, altura_corpo: 0, angulacao_graus: 0, torque_ncm: 0, preco: 0, ativo: true })
+  const [abutData, setAbutData] = useState({ sku: "", nome: "", sigla: "", descricao: "", familia_id: "", tipo_reabilitacao_id: "", tipo_abutment_id: "", parafuso_id: "", chave_id: "", diametro_plataforma: 0, altura_transmucoso: 0, altura_corpo: 0, angulacao_graus: 0, torque_ncm: 0, preco: 0, preco_euro: 0, preco_dolar: 0, qtd_disponivel: 0, qtd_minima_aviso: 0, ativo: true })
   const [abutError, setAbutError] = useState("")
   const [abtChavesIds, setAbtChavesIds] = useState<string[]>([])
   const [abtParafusosIds, setAbtParafusosIds] = useState<string[]>([])
   const [abtKitsIds, setAbtKitsIds] = useState<string[]>([])
   const [abtSeqsIds, setAbtSeqsIds] = useState<string[]>([])
-  function openNewAbut() { setAbutEditing(null); setAbutData({ sku: "", nome: "", sigla: "", descricao: "", familia_id: "", tipo_reabilitacao_id: "", tipo_abutment_id: "", parafuso_id: "", chave_id: "", diametro_plataforma: 0, altura_transmucoso: 0, altura_corpo: 0, angulacao_graus: 0, torque_ncm: 0, preco: 0, ativo: true }); setAbutError(""); setAbtChavesIds([]); setAbtParafusosIds([]); setAbtKitsIds([]); setAbtSeqsIds([]); setAbutModalOpen(true) }
+  function openNewAbut() { setAbutEditing(null); setAbutData({ sku: "", nome: "", sigla: "", descricao: "", familia_id: "", tipo_reabilitacao_id: "", tipo_abutment_id: "", parafuso_id: "", chave_id: "", diametro_plataforma: 0, altura_transmucoso: 0, altura_corpo: 0, angulacao_graus: 0, torque_ncm: 0, preco: 0, preco_euro: 0, preco_dolar: 0, qtd_disponivel: 0, qtd_minima_aviso: 0, ativo: true }); setAbutError(""); setAbtChavesIds([]); setAbtParafusosIds([]); setAbtKitsIds([]); setAbtSeqsIds([]); setAbutModalOpen(true) }
 
   function openEditAbut(item: any) {
     setAbutEditing(item)
-    setAbutData({ sku: item.sku, nome: item.nome ?? "", sigla: item.sigla ?? "", descricao: item.descricao ?? "", familia_id: item.familia_id ?? "", tipo_reabilitacao_id: item.tipo_reabilitacao_id ?? "", tipo_abutment_id: item.tipo_abutment_id ?? "", parafuso_id: item.parafuso_id ?? "", chave_id: item.chave_id ?? "", diametro_plataforma: item.diametro_plataforma ?? 0, altura_transmucoso: item.altura_transmucoso ?? 0, altura_corpo: item.altura_corpo ?? 0, angulacao_graus: item.angulacao_graus ?? 0, torque_ncm: item.torque_ncm ?? 0, preco: item.preco ?? 0, ativo: item.ativo !== false })
+    setAbutData({ sku: item.sku, nome: item.nome ?? "", sigla: item.sigla ?? "", descricao: item.descricao ?? "", familia_id: item.familia_id ?? "", tipo_reabilitacao_id: item.tipo_reabilitacao_id ?? "", tipo_abutment_id: item.tipo_abutment_id ?? "", parafuso_id: item.parafuso_id ?? "", chave_id: item.chave_id ?? "", diametro_plataforma: item.diametro_plataforma ?? 0, altura_transmucoso: item.altura_transmucoso ?? 0, altura_corpo: item.altura_corpo ?? 0, angulacao_graus: item.angulacao_graus ?? 0, torque_ncm: item.torque_ncm ?? 0, preco: item.preco ?? 0, preco_euro: item.preco_euro ?? 0, preco_dolar: item.preco_dolar ?? 0, qtd_disponivel: item.qtd_disponivel ?? 0, qtd_minima_aviso: item.qtd_minima_aviso ?? 0, ativo: item.ativo !== false })
     setAbutError("")
     listarAbutmentChaves(item.sku).then(setAbtChavesIds).catch(() => setAbtChavesIds([]))
     listarAbutmentKits(item.sku).then(setAbtKitsIds).catch(() => setAbtKitsIds([]))
@@ -144,11 +144,11 @@ function AdminComponentesPage() {
   // Componente modal
   const [compModalOpen, setCompModalOpen] = useState(false)
   const [compEditing, setCompEditing] = useState<any>(null)
-  const [compData, setCompData] = useState({ sku: "", nome: "", sigla: "", descricao: "", tipo_componente_id: "", tipo_abutment_id: "", parafuso_id: "", chave_id: "", diametro_plataforma_mm: 0, altura_transmucoso_mm: 0, altura_corpo_mm: 0, angulacao_graus: 0, tipo: "", tipo_travamento: "", material: "", preco: 0, ativo: true })
+  const [compData, setCompData] = useState({ sku: "", nome: "", sigla: "", descricao: "", tipo_componente_id: "", tipo_abutment_id: "", parafuso_id: "", chave_id: "", diametro_plataforma_mm: 0, altura_transmucoso_mm: 0, altura_corpo_mm: 0, angulacao_graus: 0, tipo: "", tipo_travamento: "", material: "", preco: 0, preco_euro: 0, preco_dolar: 0, qtd_disponivel: 0, qtd_minima_aviso: 0, ativo: true })
   const [compError, setCompError] = useState("")
 
-  function openNewComp() { setCompEditing(null); setCompData({ sku: "", nome: "", sigla: "", descricao: "", tipo_componente_id: "", tipo_abutment_id: "", parafuso_id: "", chave_id: "", diametro_plataforma_mm: 0, altura_transmucoso_mm: 0, altura_corpo_mm: 0, angulacao_graus: 0, tipo: "", tipo_travamento: "", material: "", preco: 0, ativo: true }); setCompError(""); setCompModalOpen(true) }
-  function openEditComp(item: any) { setCompEditing(item); setCompData({ sku: item.sku, nome: item.nome ?? "", sigla: item.sigla ?? "", descricao: item.descricao ?? "", tipo_componente_id: item.tipo_componente_id ?? "", tipo_abutment_id: item.tipo_abutment_id ?? "", parafuso_id: item.parafuso_id ?? "", chave_id: item.chave_id ?? "", diametro_plataforma_mm: item.diametro_plataforma_mm ?? 0, altura_transmucoso_mm: item.altura_transmucoso_mm ?? 0, altura_corpo_mm: item.altura_corpo_mm ?? 0, angulacao_graus: item.angulacao_graus ?? 0, tipo: item.tipo ?? "", tipo_travamento: item.tipo_travamento ?? "", material: item.material ?? "", preco: item.preco ?? 0, ativo: item.ativo !== false }); setCompError(""); setCompModalOpen(true) }
+  function openNewComp() { setCompEditing(null); setCompData({ sku: "", nome: "", sigla: "", descricao: "", tipo_componente_id: "", tipo_abutment_id: "", parafuso_id: "", chave_id: "", diametro_plataforma_mm: 0, altura_transmucoso_mm: 0, altura_corpo_mm: 0, angulacao_graus: 0, tipo: "", tipo_travamento: "", material: "", preco: 0, preco_euro: 0, preco_dolar: 0, qtd_disponivel: 0, qtd_minima_aviso: 0, ativo: true }); setCompError(""); setCompModalOpen(true) }
+  function openEditComp(item: unknown) { const it = item as Record<string, unknown>; setCompEditing(item); setCompData({ sku: (it.sku as string) ?? "", nome: (it.nome as string) ?? "", sigla: (it.sigla as string) ?? "", descricao: (it.descricao as string) ?? "", tipo_componente_id: (it.tipo_componente_id as string) ?? "", tipo_abutment_id: (it.tipo_abutment_id as string) ?? "", parafuso_id: (it.parafuso_id as string) ?? "", chave_id: (it.chave_id as string) ?? "", diametro_plataforma_mm: (it.diametro_plataforma_mm as number) ?? 0, altura_transmucoso_mm: (it.altura_transmucoso_mm as number) ?? 0, altura_corpo_mm: (it.altura_corpo_mm as number) ?? 0, angulacao_graus: (it.angulacao_graus as number) ?? 0, tipo: (it.tipo as string) ?? "", tipo_travamento: (it.tipo_travamento as string) ?? "", material: (it.material as string) ?? "", preco: (it.preco as number) ?? 0, preco_euro: (it.preco_euro as number) ?? 0, preco_dolar: (it.preco_dolar as number) ?? 0, qtd_disponivel: (it.qtd_disponivel as number) ?? 0, qtd_minima_aviso: (it.qtd_minima_aviso as number) ?? 0, ativo: it.ativo !== false }); setCompError(""); setCompModalOpen(true) }
 
   async function handleSaveComp() {
     setCompError("")
@@ -170,11 +170,11 @@ function AdminComponentesPage() {
   // Parafuso modal
   const [parModalOpen, setParModalOpen] = useState(false)
   const [parEditing, setParEditing] = useState<any>(null)
-  const [parData, setParData] = useState({ sku: "", nome: "", sigla: "", descricao: "", tipo_parafuso_id: "", chave_id: "", torque_ncm: 0, material: "", preco: 0, ativo: true })
+  const [parData, setParData] = useState({ sku: "", nome: "", sigla: "", descricao: "", tipo_parafuso_id: "", chave_id: "", torque_ncm: 0, material: "", preco: 0, preco_euro: 0, preco_dolar: 0, qtd_disponivel: 0, qtd_minima_aviso: 0, ativo: true })
   const [parError, setParError] = useState("")
 
-  function openNewPar() { setParEditing(null); setParData({ sku: "", nome: "", sigla: "", descricao: "", tipo_parafuso_id: "", chave_id: "", torque_ncm: 0, material: "", preco: 0, ativo: true }); setParError(""); setParModalOpen(true) }
-  function openEditPar(item: any) { setParEditing(item); setParData({ sku: item.sku, nome: item.nome ?? "", sigla: item.sigla ?? "", descricao: item.descricao ?? "", tipo_parafuso_id: item.tipo_parafuso_id ?? "", chave_id: item.chave_id ?? "", torque_ncm: item.torque_ncm ?? 0, material: item.material ?? "", preco: item.preco ?? 0, ativo: item.ativo !== false }); setParError(""); setParModalOpen(true) }
+  function openNewPar() { setParEditing(null); setParData({ sku: "", nome: "", sigla: "", descricao: "", tipo_parafuso_id: "", chave_id: "", torque_ncm: 0, material: "", preco: 0, preco_euro: 0, preco_dolar: 0, qtd_disponivel: 0, qtd_minima_aviso: 0, ativo: true }); setParError(""); setParModalOpen(true) }
+  function openEditPar(item: unknown) { const it = item as Record<string, unknown>; setParEditing(item); setParData({ sku: (it.sku as string) ?? "", nome: (it.nome as string) ?? "", sigla: (it.sigla as string) ?? "", descricao: (it.descricao as string) ?? "", tipo_parafuso_id: (it.tipo_parafuso_id as string) ?? "", chave_id: (it.chave_id as string) ?? "", torque_ncm: (it.torque_ncm as number) ?? 0, material: (it.material as string) ?? "", preco: (it.preco as number) ?? 0, preco_euro: (it.preco_euro as number) ?? 0, preco_dolar: (it.preco_dolar as number) ?? 0, qtd_disponivel: (it.qtd_disponivel as number) ?? 0, qtd_minima_aviso: (it.qtd_minima_aviso as number) ?? 0, ativo: it.ativo !== false }); setParError(""); setParModalOpen(true) }
 
   async function handleSavePar() {
     setParError("")
@@ -194,17 +194,18 @@ function AdminComponentesPage() {
   }
   const [cicModalOpen, setCicModalOpen] = useState(false)
   const [cicEditing, setCicEditing] = useState<any>(null)
-  const [cicData, setCicData] = useState({ sku: "", nome: "", sigla: "", descricao: "", implante_id: "", chave_id: "", diametro_plataforma_mm: 0, altura_transmucoso_mm: 0, altura_corpo_mm: 0, torque_ncm: 0, material: "", preco: 0, ativo: true })
+  const [cicData, setCicData] = useState({ sku: "", nome: "", sigla: "", descricao: "", implante_id: "", chave_id: "", diametro_plataforma_mm: 0, altura_transmucoso_mm: 0, altura_corpo_mm: 0, torque_ncm: 0, material: "", preco: 0, preco_euro: 0, preco_dolar: 0, qtd_disponivel: 0, qtd_minima_aviso: 0, ativo: true })
   const [cicError, setCicError] = useState("")
   const [cicKitsIds, setCicKitsIds] = useState<string[]>([])
 
-  function openNewCic() { setCicEditing(null); setCicData({ sku: "", nome: "", sigla: "", descricao: "", implante_id: "", chave_id: "", diametro_plataforma_mm: 0, altura_transmucoso_mm: 0, altura_corpo_mm: 0, torque_ncm: 0, material: "", preco: 0, ativo: true }); setCicKitsIds([]); setCicError(""); setCicModalOpen(true) }
-  async function openEditCic(item: any) {
+  function openNewCic() { setCicEditing(null); setCicData({ sku: "", nome: "", sigla: "", descricao: "", implante_id: "", chave_id: "", diametro_plataforma_mm: 0, altura_transmucoso_mm: 0, altura_corpo_mm: 0, torque_ncm: 0, material: "", preco: 0, preco_euro: 0, preco_dolar: 0, qtd_disponivel: 0, qtd_minima_aviso: 0, ativo: true }); setCicKitsIds([]); setCicError(""); setCicModalOpen(true) }
+  async function openEditCic(item: unknown) {
     setCicEditing(item)
-    setCicData({ sku: item.sku, nome: item.nome ?? "", sigla: item.sigla ?? "", descricao: item.descricao ?? "", implante_id: item.implante_id ?? "", chave_id: item.chave_id ?? "", diametro_plataforma_mm: item.diametro_plataforma_mm ?? 0, altura_transmucoso_mm: item.altura_transmucoso_mm ?? 0, altura_corpo_mm: item.altura_corpo_mm ?? 0, torque_ncm: item.torque_ncm ?? 0, material: item.material ?? "", preco: item.preco ?? 0, ativo: item.ativo !== false })
+    const it = item as Record<string, unknown>
+    setCicData({ sku: (it.sku as string) ?? "", nome: (it.nome as string) ?? "", sigla: (it.sigla as string) ?? "", descricao: (it.descricao as string) ?? "", implante_id: (it.implante_id as string) ?? "", chave_id: (it.chave_id as string) ?? "", diametro_plataforma_mm: (it.diametro_plataforma_mm as number) ?? 0, altura_transmucoso_mm: (it.altura_transmucoso_mm as number) ?? 0, altura_corpo_mm: (it.altura_corpo_mm as number) ?? 0, torque_ncm: (it.torque_ncm as number) ?? 0, material: (it.material as string) ?? "", preco: (it.preco as number) ?? 0, preco_euro: (it.preco_euro as number) ?? 0, preco_dolar: (it.preco_dolar as number) ?? 0, qtd_disponivel: (it.qtd_disponivel as number) ?? 0, qtd_minima_aviso: (it.qtd_minima_aviso as number) ?? 0, ativo: it.ativo !== false })
     setCicError("")
     setCicModalOpen(true)
-    setCicKitsIds(await listarKitsDeCicatrizador(item.sku))
+    setCicKitsIds(await listarKitsDeCicatrizador(it.sku as string))
   }
 
   async function handleSaveCic() {
@@ -657,13 +658,20 @@ function AdminComponentesPage() {
             <CompositionSection label="Sequências Protéticas" selectedIds={abtSeqsIds} options={todasSequencias?.map((s:any)=>({id:s.id,label:`${s.nome}${s.sigla?` (${s.sigla})`:""}`}))??[]} placeholder="Selecione uma sequência..." onChange={setAbtSeqsIds} />
             <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655] pt-2">Imagens do Produto</h3>
             <ImageUploader produtoTipo="abutment" produtoSku={abutData.sku} />
-            <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655] pt-2">Comercial</h3>
+            <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655] pt-2">Estoque na Loja</h3>
             <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2"><label className={labelCls}>Qtd Disponível</label><input type="number" min="0" value={abutData.qtd_disponivel} onChange={e=>setAbutData({...abutData,qtd_disponivel:Number(e.target.value)})} className={inputCls} /></div>
+              <div className="space-y-2"><label className={labelCls}>Qtd Mínima Aviso</label><input type="number" min="0" value={abutData.qtd_minima_aviso} onChange={e=>setAbutData({...abutData,qtd_minima_aviso:Number(e.target.value)})} className={inputCls} /></div>
+            </div>
+            <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655] pt-2">Comercial</h3>
+            <div className="grid grid-cols-3 gap-4">
               <div className="space-y-2"><label className={labelCls}>Preço (R$)</label><input type="number" step="0.01" min="0" value={abutData.preco} onChange={e=>setAbutData({...abutData,preco:Number(e.target.value)})} className={inputCls} /></div>
-              <div className="flex items-center justify-between px-4 py-3 rounded-xl bg-[var(--color-surface)] border border-white/5 mt-6">
-                <div><p className="text-sm font-bold text-white">{abutData.ativo ? "Ativo" : "Inativo"}</p></div>
-                <Switch checked={abutData.ativo} onCheckedChange={v=>setAbutData({...abutData,ativo:v})} />
-              </div>
+              <div className="space-y-2"><label className={labelCls}>Preço (€)</label><input type="number" step="0.01" min="0" value={abutData.preco_euro} onChange={e=>setAbutData({...abutData,preco_euro:Number(e.target.value)})} className={inputCls} /></div>
+              <div className="space-y-2"><label className={labelCls}>Preço ($)</label><input type="number" step="0.01" min="0" value={abutData.preco_dolar} onChange={e=>setAbutData({...abutData,preco_dolar:Number(e.target.value)})} className={inputCls} /></div>
+            </div>
+            <div className="flex items-center justify-between px-4 py-3 rounded-xl bg-[var(--color-surface)] border border-white/5">
+              <div><p className="text-sm font-bold text-white">{abutData.ativo ? "Ativo" : "Inativo"}</p></div>
+              <Switch checked={abutData.ativo} onCheckedChange={v=>setAbutData({...abutData,ativo:v})} />
             </div>
             {abutError && <p className="text-sm text-red-400 text-center">{abutError}</p>}
           </div>
@@ -705,13 +713,20 @@ function AdminComponentesPage() {
             </div>
             <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655]">Imagens do Produto</h3>
             <ImageUploader produtoTipo="componente" produtoSku={compData.sku} />
-            <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655]">Comercial</h3>
+            <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655]">Estoque na Loja</h3>
             <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2"><label className={labelCls}>Qtd Disponível</label><input type="number" min="0" value={compData.qtd_disponivel} onChange={e=>setCompData({...compData,qtd_disponivel:Number(e.target.value)})} className={inputCls} /></div>
+              <div className="space-y-2"><label className={labelCls}>Qtd Mínima Aviso</label><input type="number" min="0" value={compData.qtd_minima_aviso} onChange={e=>setCompData({...compData,qtd_minima_aviso:Number(e.target.value)})} className={inputCls} /></div>
+            </div>
+            <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655]">Comercial</h3>
+            <div className="grid grid-cols-3 gap-4">
               <div className="space-y-2"><label className={labelCls}>Preço (R$)</label><input type="number" step="0.01" min="0" value={compData.preco} onChange={e=>setCompData({...compData,preco:Number(e.target.value)})} className={inputCls} /></div>
-              <div className="flex items-center justify-between px-4 py-3 rounded-xl bg-[var(--color-surface)] border border-white/5 mt-6">
-                <div><p className="text-sm font-bold text-white">{compData.ativo ? "Ativo" : "Inativo"}</p></div>
-                <Switch checked={compData.ativo} onCheckedChange={v=>setCompData({...compData,ativo:v})} />
-              </div>
+              <div className="space-y-2"><label className={labelCls}>Preço (€)</label><input type="number" step="0.01" min="0" value={compData.preco_euro} onChange={e=>setCompData({...compData,preco_euro:Number(e.target.value)})} className={inputCls} /></div>
+              <div className="space-y-2"><label className={labelCls}>Preço ($)</label><input type="number" step="0.01" min="0" value={compData.preco_dolar} onChange={e=>setCompData({...compData,preco_dolar:Number(e.target.value)})} className={inputCls} /></div>
+            </div>
+            <div className="flex items-center justify-between px-4 py-3 rounded-xl bg-[var(--color-surface)] border border-white/5">
+              <div><p className="text-sm font-bold text-white">{compData.ativo ? "Ativo" : "Inativo"}</p></div>
+              <Switch checked={compData.ativo} onCheckedChange={v=>setCompData({...compData,ativo:v})} />
             </div>
             {compError && <p className="text-sm text-red-400 text-center">{compError}</p>}
           </div>
@@ -746,13 +761,20 @@ function AdminComponentesPage() {
             </div>
             <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655]">Imagens do Produto</h3>
             <ImageUploader produtoTipo="parafuso" produtoSku={parData.sku} />
-            <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655]">Comercial</h3>
+            <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655]">Estoque na Loja</h3>
             <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2"><label className={labelCls}>Qtd Disponível</label><input type="number" min="0" value={parData.qtd_disponivel} onChange={e=>setParData({...parData,qtd_disponivel:Number(e.target.value)})} className={inputCls} /></div>
+              <div className="space-y-2"><label className={labelCls}>Qtd Mínima Aviso</label><input type="number" min="0" value={parData.qtd_minima_aviso} onChange={e=>setParData({...parData,qtd_minima_aviso:Number(e.target.value)})} className={inputCls} /></div>
+            </div>
+            <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655]">Comercial</h3>
+            <div className="grid grid-cols-3 gap-4">
               <div className="space-y-2"><label className={labelCls}>Preço (R$)</label><input type="number" step="0.01" min="0" value={parData.preco} onChange={e=>setParData({...parData,preco:Number(e.target.value)})} className={inputCls} /></div>
-              <div className="flex items-center justify-between px-4 py-3 rounded-xl bg-[var(--color-surface)] border border-white/5 mt-6">
-                <div><p className="text-sm font-bold text-white">{parData.ativo ? "Ativo" : "Inativo"}</p></div>
-                <Switch checked={parData.ativo} onCheckedChange={v=>setParData({...parData,ativo:v})} />
-              </div>
+              <div className="space-y-2"><label className={labelCls}>Preço (€)</label><input type="number" step="0.01" min="0" value={parData.preco_euro} onChange={e=>setParData({...parData,preco_euro:Number(e.target.value)})} className={inputCls} /></div>
+              <div className="space-y-2"><label className={labelCls}>Preço ($)</label><input type="number" step="0.01" min="0" value={parData.preco_dolar} onChange={e=>setParData({...parData,preco_dolar:Number(e.target.value)})} className={inputCls} /></div>
+            </div>
+            <div className="flex items-center justify-between px-4 py-3 rounded-xl bg-[var(--color-surface)] border border-white/5">
+              <div><p className="text-sm font-bold text-white">{parData.ativo ? "Ativo" : "Inativo"}</p></div>
+              <Switch checked={parData.ativo} onCheckedChange={v=>setParData({...parData,ativo:v})} />
             </div>
             {parError && <p className="text-sm text-red-400 text-center">{parError}</p>}
           </div>
@@ -793,13 +815,20 @@ function AdminComponentesPage() {
             {/* Imagens do Produto */}
             <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655]">Imagens do Produto</h3>
             <ImageUploader produtoTipo="cicatrizador" produtoSku={cicData.sku} />
-            <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655]">Comercial</h3>
+            <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655]">Estoque na Loja</h3>
             <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2"><label className={labelCls}>Qtd Disponível</label><input type="number" min="0" value={cicData.qtd_disponivel} onChange={e=>setCicData({...cicData,qtd_disponivel:Number(e.target.value)})} className={inputCls} /></div>
+              <div className="space-y-2"><label className={labelCls}>Qtd Mínima Aviso</label><input type="number" min="0" value={cicData.qtd_minima_aviso} onChange={e=>setCicData({...cicData,qtd_minima_aviso:Number(e.target.value)})} className={inputCls} /></div>
+            </div>
+            <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655]">Comercial</h3>
+            <div className="grid grid-cols-3 gap-4">
               <div className="space-y-2"><label className={labelCls}>Preço (R$)</label><input type="number" step="0.01" min="0" value={cicData.preco} onChange={e=>setCicData({...cicData,preco:Number(e.target.value)})} className={inputCls} /></div>
-              <div className="flex items-center justify-between px-4 py-3 rounded-xl bg-[var(--color-surface)] border border-white/5 mt-6">
-                <div><p className="text-sm font-bold text-white">{cicData.ativo ? "Ativo" : "Inativo"}</p></div>
-                <Switch checked={cicData.ativo} onCheckedChange={v=>setCicData({...cicData,ativo:v})} />
-              </div>
+              <div className="space-y-2"><label className={labelCls}>Preço (€)</label><input type="number" step="0.01" min="0" value={cicData.preco_euro} onChange={e=>setCicData({...cicData,preco_euro:Number(e.target.value)})} className={inputCls} /></div>
+              <div className="space-y-2"><label className={labelCls}>Preço ($)</label><input type="number" step="0.01" min="0" value={cicData.preco_dolar} onChange={e=>setCicData({...cicData,preco_dolar:Number(e.target.value)})} className={inputCls} /></div>
+            </div>
+            <div className="flex items-center justify-between px-4 py-3 rounded-xl bg-[var(--color-surface)] border border-white/5">
+              <div><p className="text-sm font-bold text-white">{cicData.ativo ? "Ativo" : "Inativo"}</p></div>
+              <Switch checked={cicData.ativo} onCheckedChange={v=>setCicData({...cicData,ativo:v})} />
             </div>
             {cicError && <p className="text-sm text-red-400 text-center">{cicError}</p>}
           </div>

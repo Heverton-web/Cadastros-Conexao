@@ -61,6 +61,7 @@ export async function criarOpcional(input: {
   sku: string; nome: string; tipo_opcional_id?: string
   sigla?: string; descricao?: string; tipo?: string
   comprimento?: string; diametro_mm?: number; material?: string; preco?: number
+  preco_euro?: number; preco_dolar?: number; qtd_disponivel?: number; qtd_minima_aviso?: number
 }): Promise<CatalogoOpcional> {
   const { data, error } = await supabase
     .from("catalogo_opcionais")
@@ -74,7 +75,8 @@ export async function criarOpcional(input: {
 export async function atualizarOpcional(sku: string, input: Partial<{
   nome: string; tipo_opcional_id: string; sigla: string; descricao: string
   tipo: string; comprimento: string; diametro_mm: number; material: string
-  preco: number; ativo: boolean
+  preco: number; preco_euro: number; preco_dolar: number
+  qtd_disponivel: number; qtd_minima_aviso: number; ativo: boolean
 }>): Promise<CatalogoOpcional> {
   const { data, error } = await supabase
     .from("catalogo_opcionais")

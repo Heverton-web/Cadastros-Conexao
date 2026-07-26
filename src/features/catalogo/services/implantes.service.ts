@@ -61,6 +61,8 @@ export async function criarImplante(input: {
   diametro_mm: number; comprimento_mm: number
   rosca_interna?: string; regiao_apical?: string; regiao_cervical?: string
   torque_insercao?: number; preco?: number
+  preco_euro?: number; preco_dolar?: number
+  qtd_disponivel?: number; qtd_minima_aviso?: number
   sigla?: string; descricao?: string
   macrogeometria?: string; material?: string; superficie?: string
   diametro_plataforma_mm?: number; ativo?: boolean
@@ -74,13 +76,14 @@ export async function criarImplante(input: {
   dispararEventoModulo(MODULO_KEY, "produto.criado", { sku: data.sku, tipo: "implante" }).catch(() => {})
   return data as CatalogoImplante
 }
-
 export async function atualizarImplante(sku: string, input: Partial<{
   nome: string; linha_id: string; conexao_id: string; familia_id: string
   osso_soft: string; osso_hard: string
   diametro_mm: number; comprimento_mm: number
   rosca_interna: string; regiao_apical: string; regiao_cervical: string
   torque_insercao: number; preco: number
+  preco_euro: number; preco_dolar: number
+  qtd_disponivel: number; qtd_minima_aviso: number
   sigla: string; descricao: string
   macrogeometria: string; material: string; superficie: string
   diametro_plataforma_mm: number
@@ -433,6 +436,7 @@ export async function criarFresa(input: {
   sku: string; nome: string; tipo_fresa_id?: string
   sigla?: string; descricao?: string; tipo?: string
   comprimento?: string; diametro_mm?: number; material?: string; preco?: number
+  preco_euro?: number; preco_dolar?: number; qtd_disponivel?: number; qtd_minima_aviso?: number
 }): Promise<CatalogoFresa> {
   const { data, error } = await supabase
     .from("catalogo_fresas")
@@ -446,7 +450,8 @@ export async function criarFresa(input: {
 export async function atualizarFresa(sku: string, input: Partial<{
   nome: string; tipo_fresa_id: string; sigla: string; descricao: string
   tipo: string; comprimento: string; diametro_mm: number; material: string
-  preco: number; ativo: boolean
+  preco: number; preco_euro: number; preco_dolar: number
+  qtd_disponivel: number; qtd_minima_aviso: number; ativo: boolean
 }>): Promise<CatalogoFresa> {
   const { data, error } = await supabase
     .from("catalogo_fresas")

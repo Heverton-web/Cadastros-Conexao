@@ -61,6 +61,7 @@ export async function criarChave(input: {
   sku: string; nome: string; tipo_chave_id?: string
   sigla?: string; descricao?: string; tipo?: string
   comprimento?: string; diametro_mm?: number; material?: string; preco?: number
+  preco_euro?: number; preco_dolar?: number; qtd_disponivel?: number; qtd_minima_aviso?: number
 }): Promise<CatalogoChave> {
   const { data, error } = await supabase
     .from("catalogo_chaves")
@@ -74,7 +75,8 @@ export async function criarChave(input: {
 export async function atualizarChave(sku: string, input: Partial<{
   nome: string; tipo_chave_id: string; sigla: string; descricao: string
   tipo: string; comprimento: string; diametro_mm: number; material: string
-  preco: number; ativo: boolean
+  preco: number; preco_euro: number; preco_dolar: number
+  qtd_disponivel: number; qtd_minima_aviso: number; ativo: boolean
 }>): Promise<CatalogoChave> {
   const { data, error } = await supabase
     .from("catalogo_chaves")

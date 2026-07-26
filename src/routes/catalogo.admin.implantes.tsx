@@ -52,7 +52,7 @@ function AdminImplantesPage() {
   // Implante modal state
   const [implModalOpen, setImplModalOpen] = useState(false)
   const [implEditing, setImplEditing] = useState<CatalogoImplante | null>(null)
-  const [implData, setImplData] = useState({ categoria_id: "", conexao_id: "", familia_id: "", linha_id: "", sku: "", nome: "", sigla: "", descricao: "", osso_soft: "", osso_hard: "", diametro_mm: 0, comprimento_mm: 0, rosca_interna: "", macrogeometria: "", torque_insercao: 0, material: "", superficie: "", preco: 0, ativo: true })
+  const [implData, setImplData] = useState({ categoria_id: "", conexao_id: "", familia_id: "", linha_id: "", sku: "", nome: "", sigla: "", descricao: "", osso_soft: "", osso_hard: "", diametro_mm: 0, comprimento_mm: 0, rosca_interna: "", macrogeometria: "", torque_insercao: 0, material: "", superficie: "", preco: 0, preco_euro: 0, preco_dolar: 0, qtd_disponivel: 0, qtd_minima_aviso: 0, ativo: true })
   const [implChaves, setImplChaves] = useState<string[]>([])
   const [implKits, setImplKits] = useState<string[]>([])
   const [implAbutments, setImplAbutments] = useState<string[]>([])
@@ -86,12 +86,12 @@ function AdminImplantesPage() {
 
   function openNewImpl() {
     setImplEditing(null)
-    setImplData({ categoria_id: categorias?.[0]?.id ?? "", conexao_id: "", familia_id: "", linha_id: "", sku: "", nome: "", sigla: "", descricao: "", osso_soft: "", osso_hard: "", diametro_mm: 0, comprimento_mm: 0, rosca_interna: "", macrogeometria: "", torque_insercao: 0, material: "", superficie: "", preco: 0, ativo: true })
+    setImplData({ categoria_id: categorias?.[0]?.id ?? "", conexao_id: "", familia_id: "", linha_id: "", sku: "", nome: "", sigla: "", descricao: "", osso_soft: "", osso_hard: "", diametro_mm: 0, comprimento_mm: 0, rosca_interna: "", macrogeometria: "", torque_insercao: 0, material: "", superficie: "", preco: 0, preco_euro: 0, preco_dolar: 0, qtd_disponivel: 0, qtd_minima_aviso: 0, ativo: true })
     setImplChaves([]); setImplKits([]); setImplAbutments([]); setImplCicatrizadores([]); setImplError(""); setImplModalOpen(true)
   }
   function openEditImpl(impl: CatalogoImplante) {
     setImplEditing(impl)
-    setImplData({ categoria_id: impl.categoria_id ?? "", conexao_id: impl.conexao_id ?? "", familia_id: impl.familia_id ?? "", linha_id: impl.linha_id ?? "", sku: impl.sku, nome: impl.nome ?? "", sigla: impl.sigla ?? "", descricao: impl.descricao ?? "", osso_soft: impl.osso_soft ?? "", osso_hard: impl.osso_hard ?? "", diametro_mm: impl.diametro_mm ?? 0, comprimento_mm: impl.comprimento_mm ?? 0, rosca_interna: impl.rosca_interna ?? "", macrogeometria: impl.macrogeometria ?? "", torque_insercao: impl.torque_insercao ?? 0, material: impl.material ?? "", superficie: impl.superficie ?? "", preco: impl.preco ?? 0, ativo: impl.ativo !== false })
+    setImplData({ categoria_id: impl.categoria_id ?? "", conexao_id: impl.conexao_id ?? "", familia_id: impl.familia_id ?? "", linha_id: impl.linha_id ?? "", sku: impl.sku, nome: impl.nome ?? "", sigla: impl.sigla ?? "", descricao: impl.descricao ?? "", osso_soft: impl.osso_soft ?? "", osso_hard: impl.osso_hard ?? "", diametro_mm: impl.diametro_mm ?? 0, comprimento_mm: impl.comprimento_mm ?? 0, rosca_interna: impl.rosca_interna ?? "", macrogeometria: impl.macrogeometria ?? "", torque_insercao: impl.torque_insercao ?? 0, material: impl.material ?? "", superficie: impl.superficie ?? "", preco: impl.preco ?? 0, preco_euro: impl.preco_euro ?? 0, preco_dolar: impl.preco_dolar ?? 0, qtd_disponivel: impl.qtd_disponivel ?? 0, qtd_minima_aviso: impl.qtd_minima_aviso ?? 0, ativo: impl.ativo !== false })
     setImplChaves([]); setImplKits([]); setImplAbutments([]); setImplCicatrizadores([]); setImplError(""); setImplModalOpen(true)
     // Carregar dados vinculados
     import("~/features/catalogo/services/implantes.service").then((svc) => {
@@ -354,14 +354,23 @@ function AdminImplantesPage() {
             <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655]">Imagens do Produto</h3>
             <ImageUploader produtoTipo="implante" produtoSku={implData.sku} />
 
+            {/* Estoque na Loja */}
+            <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655]">Estoque na Loja</h3>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2"><label className={labelCls}>Qtd Disponível</label><input type="number" min="0" value={implData.qtd_disponivel} onChange={e=>setImplData({...implData,qtd_disponivel:Number(e.target.value)})} className={inputCls} placeholder="0" /></div>
+              <div className="space-y-2"><label className={labelCls}>Qtd Mínima (Aviso)</label><input type="number" min="0" value={implData.qtd_minima_aviso} onChange={e=>setImplData({...implData,qtd_minima_aviso:Number(e.target.value)})} className={inputCls} placeholder="0" /></div>
+            </div>
+
             {/* Comercial */}
             <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655]">Comercial</h3>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-3 gap-4">
               <div className="space-y-2"><label className={labelCls}>Preço (R$)</label><input type="number" step="0.01" min="0" value={implData.preco} onChange={e=>setImplData({...implData,preco:Number(e.target.value)})} className={inputCls} placeholder="0,00" /></div>
-              <div className="flex items-center justify-between px-4 py-3 rounded-xl bg-[var(--color-surface)] border border-white/5 mt-6">
-                <div><p className="text-sm font-bold text-white">{implData.ativo ? "Ativo" : "Inativo"}</p><p className="text-xs text-gray-400">Produto visível no catálogo</p></div>
-                <Switch checked={implData.ativo} onCheckedChange={v=>setImplData({...implData,ativo:v})} />
-              </div>
+              <div className="space-y-2"><label className={labelCls}>Preço (€)</label><input type="number" step="0.01" min="0" value={implData.preco_euro} onChange={e=>setImplData({...implData,preco_euro:Number(e.target.value)})} className={inputCls} placeholder="0,00" /></div>
+              <div className="space-y-2"><label className={labelCls}>Preço ($)</label><input type="number" step="0.01" min="0" value={implData.preco_dolar} onChange={e=>setImplData({...implData,preco_dolar:Number(e.target.value)})} className={inputCls} placeholder="0,00" /></div>
+            </div>
+            <div className="flex items-center justify-between px-4 py-3 rounded-xl bg-[var(--color-surface)] border border-white/5 mt-2">
+              <div><p className="text-sm font-bold text-white">{implData.ativo ? "Ativo" : "Inativo"}</p><p className="text-xs text-gray-400">Produto visível no catálogo</p></div>
+              <Switch checked={implData.ativo} onCheckedChange={v=>setImplData({...implData,ativo:v})} />
             </div>
 
             {implError && <p className="text-sm text-red-400 text-center">{implError}</p>}

@@ -122,7 +122,7 @@ function ProductHeader({ cor, badge, nome, sku }: { cor: string; badge?: string;
   )
 }
 
-function AddButton({ tipo, sku, nome, cor, precoDB }: { tipo: ProductSheetTipo; sku: string; nome: string; cor: string; precoDB?: number | null }) {
+function AddButton({ tipo, sku, nome, cor, precoDB, qtdDisponivel }: { tipo: ProductSheetTipo; sku: string; nome: string; cor: string; precoDB?: number | null; qtdDisponivel?: number | null }) {
   const [added, setAdded] = useState(false)
   const { showPrices } = useCatalogoVisibility()
   const { isConsultor, clienteAtivo } = useClienteAtivo()
@@ -146,6 +146,7 @@ function AddButton({ tipo, sku, nome, cor, precoDB }: { tipo: ProductSheetTipo; 
     }
   }, [precoBase, isConsultor, clienteAtivo?.id, sku, tipo])
 
+  if (qtdDisponivel != null && qtdDisponivel <= 0) return null
   if (!Number.isFinite(precoBase) || precoBase <= 0) return null
 
   const handleAdd = () => {
@@ -252,11 +253,11 @@ function EmptyState({ msg, hint }: { msg: string; hint?: string }) {
 
 /** Small product card for related items in tabs (cicatrizadores, abutments, kits, chaves) */
 function RelatedProductCard({
-  nome, sku, cor, preco, tipo, imageUrl, onImageClick, onVerFicha, onSeqProtetica, fichaData, children,
+  nome, sku, cor, preco, tipo, imageUrl, onImageClick, onVerFicha, onSeqProtetica, fichaData, qtdDisponivel, children,
 }: {
   nome: string; sku: string; cor: string; preco?: number | null
   tipo: ProductSheetTipo; imageUrl?: string | null
-  onImageClick: () => void; onVerFicha?: () => void; onSeqProtetica?: () => void; fichaData?: Record<string, string | number | null | undefined>; children?: React.ReactNode
+  onImageClick: () => void; onVerFicha?: () => void; onSeqProtetica?: () => void; fichaData?: Record<string, string | number | null | undefined>; qtdDisponivel?: number | null; children?: React.ReactNode
 }) {
   return (
     <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 p-3 sm:p-4 rounded-xl border border-[var(--color-border-subtle)] bg-[var(--color-surface)]/40 hover:border-[var(--color-accent)]/40 transition-all duration-200">
@@ -300,7 +301,7 @@ function RelatedProductCard({
               Seq. Protética
             </button>
           )}
-          <AddButton tipo={tipo} sku={sku} nome={nome} cor={cor} precoDB={preco} />
+          <AddButton tipo={tipo} sku={sku} nome={nome} cor={cor} precoDB={preco} qtdDisponivel={qtdDisponivel} />
         </div>
       )}
     </div>
@@ -392,7 +393,7 @@ function ImplanteDetail({ sku }: { sku: string }) {
             </div>
           )}
           <div className="hidden lg:block">
-            <AddButton tipo="implante" sku={impl.sku} nome={nome} cor={cor} precoDB={impl.preco} />
+            <AddButton tipo="implante" sku={impl.sku} nome={nome} cor={cor} precoDB={impl.preco} qtdDisponivel={impl.qtd_disponivel} />
           </div>
         </div>
       </div>
@@ -402,7 +403,7 @@ function ImplanteDetail({ sku }: { sku: string }) {
         <ProductHeader cor={cor} badge={impl.linha?.familia?.nome} nome={nome} sku={impl.sku} />
 
         <div className="lg:hidden">
-          <AddButton tipo="implante" sku={impl.sku} nome={nome} cor={cor} precoDB={impl.preco} />
+          <AddButton tipo="implante" sku={impl.sku} nome={nome} cor={cor} precoDB={impl.preco} qtdDisponivel={impl.qtd_disponivel} />
         </div>
 
         {/* Tabs */}
@@ -847,7 +848,7 @@ function AbutmentDetail({ sku }: { sku: string }) {
             </div>
           )}
           <div className="hidden lg:block">
-            <AddButton tipo="abutment" sku={ab.sku} nome={nome} cor={cor} precoDB={ab.preco} />
+            <AddButton tipo="abutment" sku={ab.sku} nome={nome} cor={cor} precoDB={ab.preco} qtdDisponivel={ab.qtd_disponivel} />
           </div>
         </div>
       </div>
@@ -857,7 +858,7 @@ function AbutmentDetail({ sku }: { sku: string }) {
         <ProductHeader cor={cor} badge={ab.familia?.nome} nome={nome} sku={ab.sku} />
 
         <div className="lg:hidden">
-          <AddButton tipo="abutment" sku={ab.sku} nome={nome} cor={cor} precoDB={ab.preco} />
+          <AddButton tipo="abutment" sku={ab.sku} nome={nome} cor={cor} precoDB={ab.preco} qtdDisponivel={ab.qtd_disponivel} />
         </div>
 
         {/* Tabs */}
@@ -1247,7 +1248,7 @@ function KitDetail({ sku }: { sku: string }) {
             </div>
           )}
           <div className="hidden lg:block">
-            <AddButton tipo="kit" sku={kit.sku} nome={nome} cor={cor} precoDB={kit.preco} />
+            <AddButton tipo="kit" sku={kit.sku} nome={nome} cor={cor} precoDB={kit.preco} qtdDisponivel={kit.qtd_disponivel} />
           </div>
         </div>
       </div>
@@ -1257,7 +1258,7 @@ function KitDetail({ sku }: { sku: string }) {
         <ProductHeader cor={cor} badge={kit.tipo_kit?.nome} nome={nome} sku={kit.sku} />
 
         <div className="lg:hidden">
-          <AddButton tipo="kit" sku={kit.sku} nome={nome} cor={cor} precoDB={kit.preco} />
+          <AddButton tipo="kit" sku={kit.sku} nome={nome} cor={cor} precoDB={kit.preco} qtdDisponivel={kit.qtd_disponivel} />
         </div>
 
         {/* Tabs */}
@@ -1684,7 +1685,7 @@ function PromocionalDetail({ id }: { id: string }) {
         <div className="lg:sticky lg:top-24 space-y-4 sm:space-y-5">
           <ProductImage cor={cor} nome={promo.nome} imageUrl={imagemUrl} onClick={() => openImageViewer(imagemUrl ?? "", promo.nome)} />
           <div className="hidden lg:block">
-            <AddButton tipo={"promocional" as ProductSheetTipo} sku={promo.id} nome={promo.nome} cor={cor} precoDB={promo.preco} />
+            <AddButton tipo={"promocional" as ProductSheetTipo} sku={promo.id} nome={promo.nome} cor={cor} precoDB={promo.preco} qtdDisponivel={(promo as unknown as Record<string, unknown>).qtd_disponivel as number} />
           </div>
         </div>
       </div>
@@ -1694,7 +1695,7 @@ function PromocionalDetail({ id }: { id: string }) {
         <ProductHeader cor={cor} badge="Oferta Especial" nome={promo.nome} />
 
         <div className="lg:hidden">
-          <AddButton tipo={"promocional" as ProductSheetTipo} sku={promo.id} nome={promo.nome} cor={cor} precoDB={promo.preco} />
+          <AddButton tipo={"promocional" as ProductSheetTipo} sku={promo.id} nome={promo.nome} cor={cor} precoDB={promo.preco} qtdDisponivel={(promo as unknown as Record<string, unknown>).qtd_disponivel as number} />
         </div>
 
         {/* Tabs */}

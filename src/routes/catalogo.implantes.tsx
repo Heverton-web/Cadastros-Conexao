@@ -349,6 +349,7 @@ function ImplantList({ linhaId, conexaoId, familiaId, onBack }: { linhaId: strin
                 badge={linha?.nome}
                 corIdentificacao={impl.linha?.familia?.cor_identificacao || corFamilia}
                 imageUrl={imagensMap.get(impl.sku)?.[0]?.url_imagem}
+                qtdDisponivel={impl.qtd_disponivel}
               />
             </Link>
           ))}

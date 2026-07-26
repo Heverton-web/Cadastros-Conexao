@@ -14,8 +14,9 @@ import { ProdutoPickerInline, type PickerItem } from "~/features/catalogo/compon
 import type { CatalogoPromocional } from "~/features/catalogo/types"
 import { CATALOGO_TIPO_LABEL } from "~/features/catalogo/types"
 import { ImportTrigger, TemplatesDropdown, GlobalImportTrigger, IMPORT_TYPE_GROUPS } from "~/features/catalogo/import"
+import { EstoqueBadge } from "~/features/catalogo/components/admin/produtos/EstoqueBadge"
 
-const FORM_INICIAL = { nome: "", descricao: "", preco: 0, expira_em: "" }
+const FORM_INICIAL = { nome: "", descricao: "", preco: 0, preco_euro: 0, preco_dolar: 0, qtd_disponivel: 0, qtd_minima_aviso: 0, expira_em: "" }
 
 export const catalogoAdminPromocionaisRoute = createRoute({
   getParentRoute: () => authLayout,
@@ -79,7 +80,16 @@ function AdminPromocionaisPage() {
 
   function openEdit(item: CatalogoPromocional) {
     setEditingItem(item)
-    setForm({ nome: item.nome, descricao: item.descricao ?? "", preco: item.preco, expira_em: item.expira_em ?? "" })
+    setForm({
+      nome: item.nome,
+      descricao: item.descricao ?? "",
+      preco: item.preco,
+      preco_euro: (item as unknown as Record<string, unknown>).preco_euro as number ?? 0,
+      preco_dolar: (item as unknown as Record<string, unknown>).preco_dolar as number ?? 0,
+      qtd_disponivel: (item as unknown as Record<string, unknown>).qtd_disponivel as number ?? 0,
+      qtd_minima_aviso: (item as unknown as Record<string, unknown>).qtd_minima_aviso as number ?? 0,
+      expira_em: item.expira_em ?? "",
+    })
     setItens(item.itens?.map((i) => {
       const produto = todosProdutos.find((p) => p.sku === i.sku && p.tipo === i.tipo)
       return { sku: i.sku, tipo: i.tipo as PickerItem["tipo"], nome: produto?.nome ?? i.sku }
@@ -97,6 +107,10 @@ function AdminPromocionaisPage() {
       nome: form.nome,
       descricao: form.descricao || undefined,
       preco: form.preco,
+      preco_euro: form.preco_euro || undefined,
+      preco_dolar: form.preco_dolar || undefined,
+      qtd_disponivel: form.qtd_disponivel || undefined,
+      qtd_minima_aviso: form.qtd_minima_aviso || undefined,
       expira_em: form.expira_em || undefined,
       itens: itens.map((i) => ({ sku: i.sku, tipo: i.tipo })),
     }
@@ -141,20 +155,43 @@ function AdminPromocionaisPage() {
                 <input value={form.nome} onChange={(e) => setForm({ ...form, nome: e.target.value })} placeholder="Ex: Combo Implante + Componente" className="w-full bg-[var(--color-surface)] border border-white/10 rounded-lg p-3 text-white" />
               </div>
               <div className="space-y-2">
-                <label className="text-xs font-bold uppercase tracking-widest text-gray-400">Descrição Comercial</label>
-                <textarea value={form.descricao} onChange={(e) => setForm({ ...form, descricao: e.target.value })} placeholder="Breve descritivo..." className="w-full bg-[var(--color-surface)] border border-white/10 rounded-lg p-3 text-white" rows={2} />
+                <label className="text-xs font-black uppercase tracking-widest text-[#c9a655]">Estoque na Loja</label>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <label className="text-xs font-bold uppercase tracking-widest text-gray-400">Qtd Disponível</label>
+                    <input type="number" step="1" min="0" value={form.qtd_disponivel} onChange={(e) => setForm({ ...form, qtd_disponivel: Number(e.target.value) })} className="w-full bg-[var(--color-surface)] border border-white/10 rounded-lg p-3 text-white" placeholder="0" />
+                    {form.qtd_disponivel > 0 && form.qtd_minima_aviso > 0 && form.qtd_disponivel <= form.qtd_minima_aviso && (
+                      <p className="text-xs text-amber-400 font-medium">⚠ Estoque baixo!</p>
+                    )}
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-xs font-bold uppercase tracking-widest text-gray-400">Qtd Mínima (aviso)</label>
+                    <input type="number" step="1" min="0" value={form.qtd_minima_aviso} onChange={(e) => setForm({ ...form, qtd_minima_aviso: Number(e.target.value) })} className="w-full bg-[var(--color-surface)] border border-white/10 rounded-lg p-3 text-white" placeholder="0" />
+                  </div>
+                </div>
               </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <label className="text-xs font-bold uppercase tracking-widest text-gray-400">Preço Fixo (R$)</label>
-                  <input type="number" step="0.01" min="0" value={form.preco} onChange={(e) => setForm({ ...form, preco: Number(e.target.value) })} className="w-full bg-[var(--color-surface)] border border-white/10 rounded-lg p-3 text-white" />
-                  {precoInvalido && <p className="text-xs text-red-400">Preço não pode ser negativo.</p>}
+              <div className="space-y-2">
+                <label className="text-xs font-black uppercase tracking-widest text-[#c9a655]">Comercial</label>
+                <div className="grid grid-cols-3 gap-4">
+                  <div className="space-y-2">
+                    <label className="text-xs font-bold uppercase tracking-widest text-gray-400">Preço Fixo (R$)</label>
+                    <input type="number" step="0.01" min="0" value={form.preco} onChange={(e) => setForm({ ...form, preco: Number(e.target.value) })} className="w-full bg-[var(--color-surface)] border border-white/10 rounded-lg p-3 text-white" />
+                    {precoInvalido && <p className="text-xs text-red-400">Preço não pode ser negativo.</p>}
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-xs font-bold uppercase tracking-widest text-gray-400">Preço (€ Euro)</label>
+                    <input type="number" step="0.01" min="0" value={form.preco_euro} onChange={(e) => setForm({ ...form, preco_euro: Number(e.target.value) })} className="w-full bg-[var(--color-surface)] border border-white/10 rounded-lg p-3 text-white" placeholder="0,00" />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-xs font-bold uppercase tracking-widest text-gray-400">Preço ($ Dólar)</label>
+                    <input type="number" step="0.01" min="0" value={form.preco_dolar} onChange={(e) => setForm({ ...form, preco_dolar: Number(e.target.value) })} className="w-full bg-[var(--color-surface)] border border-white/10 rounded-lg p-3 text-white" placeholder="0,00" />
+                  </div>
                 </div>
-                <div className="space-y-2">
-                  <label className="text-xs font-bold uppercase tracking-widest text-gray-400">Expiração</label>
-                  <input type="date" value={form.expira_em} onChange={(e) => setForm({ ...form, expira_em: e.target.value })} className="w-full bg-[var(--color-surface)] border border-white/10 rounded-lg p-3 text-white [color-scheme:dark]" />
-                  {dataExpiradaAviso && <p className="text-xs text-amber-400">Data já passou — o pacote ficará expirado.</p>}
-                </div>
+              </div>
+              <div className="space-y-2">
+                <label className="text-xs font-bold uppercase tracking-widest text-gray-400">Expiração</label>
+                <input type="date" value={form.expira_em} onChange={(e) => setForm({ ...form, expira_em: e.target.value })} className="w-full bg-[var(--color-surface)] border border-white/10 rounded-lg p-3 text-white [color-scheme:dark]" />
+                {dataExpiradaAviso && <p className="text-xs text-amber-400">Data já passou — o pacote ficará expirado.</p>}
               </div>
 
               <ProdutoPickerInline
@@ -212,6 +249,8 @@ function PromocionalCard({ promo, isSuperAdmin, onEdit, onDelete }: {
   onEdit: (p: CatalogoPromocional) => void
   onDelete: (id: string) => void
 }) {
+  const qtd = (promo as unknown as Record<string, unknown>).qtd_disponivel as number ?? 0
+  const minima = (promo as unknown as Record<string, unknown>).qtd_minima_aviso as number ?? 0
   return (
     <div className="flex flex-col gap-4 rounded-xl bg-[var(--color-surface)]/50 backdrop-blur-md border border-[var(--color-border-subtle)] p-5 shadow-sm hover:border-[var(--color-accent)]/50 transition-colors">
       <div className="flex items-start justify-between">
@@ -245,17 +284,20 @@ function PromocionalCard({ promo, isSuperAdmin, onEdit, onDelete }: {
         </div>
       )}
 
-      <div className="pt-3 border-t border-white/5 flex items-end justify-between">
-        <div>
-           <p className="text-xs uppercase tracking-widest text-[var(--color-text-muted)] font-bold mb-1">Preço do Pacote</p>
-           <p className="text-xl font-black text-gradient-gold leading-none">{formatBRL(promo.preco)}</p>
-        </div>
-        {promo.expira_em && (
-          <div className="text-right">
-             <p className="text-[10px] uppercase tracking-widest text-red-400/70 mb-0.5">Expira em</p>
-             <p className="text-xs font-mono text-red-400">{new Date(promo.expira_em).toLocaleDateString("pt-BR")}</p>
+      <div className="pt-3 border-t border-white/5 space-y-2">
+        <div className="flex items-end justify-between">
+          <div>
+             <p className="text-xs uppercase tracking-widest text-[var(--color-text-muted)] font-bold mb-1">Preço do Pacote</p>
+             <p className="text-xl font-black text-gradient-gold leading-none">{formatBRL(promo.preco)}</p>
           </div>
-        )}
+          {promo.expira_em && (
+            <div className="text-right">
+               <p className="text-[10px] uppercase tracking-widest text-red-400/70 mb-0.5">Expira em</p>
+               <p className="text-xs font-mono text-red-400">{new Date(promo.expira_em).toLocaleDateString("pt-BR")}</p>
+            </div>
+          )}
+        </div>
+        <EstoqueBadge qtdDisponivel={qtd} qtdMinimaAviso={minima} />
       </div>
     </div>
   )

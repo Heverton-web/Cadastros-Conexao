@@ -61,6 +61,7 @@ export async function criarComplementar(input: {
   sku: string; nome: string; tipo_complementar_id?: string
   sigla?: string; descricao?: string; tipo?: string
   comprimento?: string; diametro_mm?: number; material?: string; preco?: number
+  preco_euro?: number; preco_dolar?: number; qtd_disponivel?: number; qtd_minima_aviso?: number
 }): Promise<CatalogoComplementar> {
   const { data, error } = await supabase
     .from("catalogo_complementares")
@@ -74,7 +75,8 @@ export async function criarComplementar(input: {
 export async function atualizarComplementar(sku: string, input: Partial<{
   nome: string; tipo_complementar_id: string; sigla: string; descricao: string
   tipo: string; comprimento: string; diametro_mm: number; material: string
-  preco: number; ativo: boolean
+  preco: number; preco_euro: number; preco_dolar: number
+  qtd_disponivel: number; qtd_minima_aviso: number; ativo: boolean
 }>): Promise<CatalogoComplementar> {
   const { data, error } = await supabase
     .from("catalogo_complementares")

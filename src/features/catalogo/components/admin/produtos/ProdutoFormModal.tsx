@@ -97,6 +97,7 @@ export function ProdutoFormModal({
     diametro_mm: 0, comprimento_mm: 0, torque_insercao: 0,
     rosca_interna: "", regiao_apical: "", regiao_cervical: "",
     material: "", superficie: "", tratamento: "", chave_sku: "", preco: 0,
+    preco_euro: 0, preco_dolar: 0, qtd_disponivel: 0, qtd_minima_aviso: 0,
     macrogeometria: "", osso_soft: "", osso_hard: "",
     diametro_plataforma_mm: 0, ativo: true,
   })
@@ -105,20 +106,24 @@ export function ProdutoFormModal({
     familia_id: "", tipo_reabilitacao_id: "", tipo_abutment_id: "",
     sku: "", diametro_plataforma: "", angulacao_graus: 0,
     altura_transmucoso: 0, altura_corpo: 0, torque_ncm: 0, preco: 0,
+    preco_euro: 0, preco_dolar: 0, qtd_disponivel: 0, qtd_minima_aviso: 0,
   })
 
   const [kit, setKit] = useState({
     tipo_kit_id: "", sku: "", nome: "", sigla: "", descricao: "", preco: 0,
+    preco_euro: 0, preco_dolar: 0, qtd_disponivel: 0, qtd_minima_aviso: 0,
   })
 
   const [parafusoRetencao, setParafusoRetencao] = useState({
     sku: "", nome: "", torque_ncm: 0, vinculo_tipo: "" as "abutment" | "componente" | "",
     vinculo_sku: "", chave_sku: "", preco: 0,
+    preco_euro: 0, preco_dolar: 0, qtd_disponivel: 0, qtd_minima_aviso: 0,
   })
 
   const [cicatrizador, setCicatrizador] = useState({
     sku: "", nome: "", altura_transmucoso: 0, diametro_plataforma: "",
     torque_ncm: 0, familia_id: "", chave_sku: "", preco: 0,
+    preco_euro: 0, preco_dolar: 0, qtd_disponivel: 0, qtd_minima_aviso: 0,
   })
 
   const [seqProteticasIds, setSeqProteticasIds] = useState<string[]>([])
@@ -144,11 +149,11 @@ export function ProdutoFormModal({
   }
 
   function resetForms() {
-    setImplante({ categoria_id: "", conexao_id: "", familia_id: "", linha_id: "", sku: "", nome: "", sigla: "", descricao: "", diametro_mm: 0, comprimento_mm: 0, torque_insercao: 0, rosca_interna: "", regiao_apical: "", regiao_cervical: "", material: "", superficie: "", tratamento: "", chave_sku: "", preco: 0, macrogeometria: "", osso_soft: "", osso_hard: "", diametro_plataforma_mm: 0, ativo: true })
-    setAbutment({ familia_id: "", tipo_reabilitacao_id: "", tipo_abutment_id: "", sku: "", diametro_plataforma: "", angulacao_graus: 0, altura_transmucoso: 0, altura_corpo: 0, torque_ncm: 0, preco: 0 })
-    setKit({ tipo_kit_id: "", sku: "", nome: "", sigla: "", descricao: "", preco: 0 })
-    setParafusoRetencao({ sku: "", nome: "", torque_ncm: 0, vinculo_tipo: "", vinculo_sku: "", chave_sku: "", preco: 0 })
-    setCicatrizador({ sku: "", nome: "", altura_transmucoso: 0, diametro_plataforma: "", torque_ncm: 0, familia_id: "", chave_sku: "", preco: 0 })
+    setImplante({ categoria_id: "", conexao_id: "", familia_id: "", linha_id: "", sku: "", nome: "", sigla: "", descricao: "", diametro_mm: 0, comprimento_mm: 0, torque_insercao: 0, rosca_interna: "", regiao_apical: "", regiao_cervical: "", material: "", superficie: "", tratamento: "", chave_sku: "", preco: 0, preco_euro: 0, preco_dolar: 0, qtd_disponivel: 0, qtd_minima_aviso: 0, macrogeometria: "", osso_soft: "", osso_hard: "", diametro_plataforma_mm: 0, ativo: true })
+    setAbutment({ familia_id: "", tipo_reabilitacao_id: "", tipo_abutment_id: "", sku: "", diametro_plataforma: "", angulacao_graus: 0, altura_transmucoso: 0, altura_corpo: 0, torque_ncm: 0, preco: 0, preco_euro: 0, preco_dolar: 0, qtd_disponivel: 0, qtd_minima_aviso: 0 })
+    setKit({ tipo_kit_id: "", sku: "", nome: "", sigla: "", descricao: "", preco: 0, preco_euro: 0, preco_dolar: 0, qtd_disponivel: 0, qtd_minima_aviso: 0 })
+    setParafusoRetencao({ sku: "", nome: "", torque_ncm: 0, vinculo_tipo: "", vinculo_sku: "", chave_sku: "", preco: 0, preco_euro: 0, preco_dolar: 0, qtd_disponivel: 0, qtd_minima_aviso: 0 })
+    setCicatrizador({ sku: "", nome: "", altura_transmucoso: 0, diametro_plataforma: "", torque_ncm: 0, familia_id: "", chave_sku: "", preco: 0, preco_euro: 0, preco_dolar: 0, qtd_disponivel: 0, qtd_minima_aviso: 0 })
     setSeqProteticasIds([])
     setImagens([])
     setChavesIds([])
@@ -216,6 +221,10 @@ export function ProdutoFormModal({
         tratamento: extras.tratamento ?? "",
         chave_sku: extras.chave_sku ?? "",
         preco: d.preco ?? 0,
+        preco_euro: (d as any).preco_euro ?? 0,
+        preco_dolar: (d as any).preco_dolar ?? 0,
+        qtd_disponivel: (d as any).qtd_disponivel ?? 0,
+        qtd_minima_aviso: (d as any).qtd_minima_aviso ?? 0,
         macrogeometria: (d as unknown as Record<string, unknown>).macrogeometria as string ?? "",
         osso_soft: (d as any).osso_soft ?? extras.osso_soft ?? "",
         osso_hard: (d as any).osso_hard ?? extras.osso_hard ?? "",
@@ -252,6 +261,10 @@ export function ProdutoFormModal({
         altura_corpo: d.altura_corpo_mm ?? 0,
         torque_ncm: d.torque_ncm ?? 0,
         preco: d.preco ?? 0,
+        preco_euro: d.preco_euro ?? 0,
+        preco_dolar: d.preco_dolar ?? 0,
+        qtd_disponivel: d.qtd_disponivel ?? 0,
+        qtd_minima_aviso: d.qtd_minima_aviso ?? 0,
       })
       // Carregar composição do abutment
       listarAbutmentChaves(d.sku)
@@ -279,6 +292,10 @@ export function ProdutoFormModal({
         sigla: d.sigla ?? "",
         descricao: d.descricao ?? "",
         preco: d.preco ?? 0,
+        preco_euro: d.preco_euro ?? 0,
+        preco_dolar: d.preco_dolar ?? 0,
+        qtd_disponivel: d.qtd_disponivel ?? 0,
+        qtd_minima_aviso: d.qtd_minima_aviso ?? 0,
       })
       listarKitChaves(d.sku).then(setKitChaves).catch(() => setKitChaves([]))
       listarKitFresas(d.sku).then(setKitFresas).catch(() => setKitFresas([]))
@@ -340,6 +357,10 @@ export function ProdutoFormModal({
       regiao_apical: implante.regiao_apical || undefined,
       regiao_cervical: implante.regiao_cervical || undefined,
       preco: implante.preco || undefined,
+      preco_euro: implante.preco_euro || undefined,
+      preco_dolar: implante.preco_dolar || undefined,
+      qtd_disponivel: implante.qtd_disponivel || undefined,
+      qtd_minima_aviso: implante.qtd_minima_aviso || undefined,
       macrogeometria: implante.macrogeometria || undefined,
       sigla: implante.sigla || undefined,
       descricao: implante.descricao || undefined,
@@ -360,7 +381,6 @@ export function ProdutoFormModal({
   }
 
   function makeAbutmentPayload() {
-    // Abutment não tem campo "nome" próprio no form; deriva do tipo de abutment + família
     const tipoAb = tiposAbutment?.find((t) => t.id === abutment.tipo_abutment_id)
     const fam = familias?.find((f) => f.id === abutment.familia_id)
     const nome = tipoAb ? (fam ? `${tipoAb.nome} ${fam.nome}` : tipoAb.nome) : abutment.sku
@@ -374,6 +394,10 @@ export function ProdutoFormModal({
       altura_corpo_mm: abutment.altura_corpo || undefined,
       torque_ncm: abutment.torque_ncm || undefined,
       preco: abutment.preco || undefined,
+      preco_euro: abutment.preco_euro || undefined,
+      preco_dolar: abutment.preco_dolar || undefined,
+      qtd_disponivel: abutment.qtd_disponivel || undefined,
+      qtd_minima_aviso: abutment.qtd_minima_aviso || undefined,
     }
   }
 
@@ -385,8 +409,13 @@ export function ProdutoFormModal({
       sigla: kit.sigla || undefined,
       descricao: kit.descricao || undefined,
       preco: kit.preco || undefined,
+      preco_euro: kit.preco_euro || undefined,
+      preco_dolar: kit.preco_dolar || undefined,
+      qtd_disponivel: kit.qtd_disponivel || undefined,
+      qtd_minima_aviso: kit.qtd_minima_aviso || undefined,
     }
   }
+
 
   async function handleSave() {
     const erro = validateRequired()
@@ -424,7 +453,6 @@ export function ProdutoFormModal({
         await salvarAbutmentParafusos(abutment.sku, abtParafusosIds)
         await salvarAbutmentImplantes(abutment.sku, abtImplantesIds)
       } else if (tipo === "parafuso_retensao") {
-        // validateRequired já garantiu vinculo_tipo/vinculo_sku preenchidos
         if (!parafusoRetencao.vinculo_tipo || !parafusoRetencao.vinculo_sku) {
           throw new Error("Vínculo é obrigatório")
         }
@@ -436,6 +464,10 @@ export function ProdutoFormModal({
           vinculo_sku: parafusoRetencao.vinculo_sku,
           chave_sku: parafusoRetencao.chave_sku || undefined,
           preco: parafusoRetencao.preco || undefined,
+          preco_euro: parafusoRetencao.preco_euro || undefined,
+          preco_dolar: parafusoRetencao.preco_dolar || undefined,
+          qtd_disponivel: parafusoRetencao.qtd_disponivel || undefined,
+          qtd_minima_aviso: parafusoRetencao.qtd_minima_aviso || undefined,
         }
         if (editingItem) {
           await atualizarParafusoRetencao.mutateAsync({ sku: editingItem.sku, input: payload })
@@ -452,6 +484,10 @@ export function ProdutoFormModal({
           familia_id: cicatrizador.familia_id || undefined,
           chave_sku: cicatrizador.chave_sku || undefined,
           preco: cicatrizador.preco || undefined,
+          preco_euro: cicatrizador.preco_euro || undefined,
+          preco_dolar: cicatrizador.preco_dolar || undefined,
+          qtd_disponivel: cicatrizador.qtd_disponivel || undefined,
+          qtd_minima_aviso: cicatrizador.qtd_minima_aviso || undefined,
         }
         if (editingItem) {
           await atualizarCicatrizador.mutateAsync({ sku: editingItem.sku, input: payload })
