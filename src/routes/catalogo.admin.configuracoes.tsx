@@ -16,6 +16,7 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "~/components/ui/alert-dialog"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "~/components/ui/table"
 import { getConfiguracoes, saveConfiguracoes, DEFAULT_CONFIGURACOES, type CatalogoConfiguracoes } from "~/features/catalogo/services/configuracoes.service"
+import type { CatalogoCategoria, CatalogoIpsConexao } from "~/features/catalogo/types"
 
 export const catalogoAdminConfiguracoesRoute = createRoute({
   getParentRoute: () => authLayout,
@@ -272,16 +273,16 @@ function CategoriasConexoesSection() {
     setFormOpen(true)
   }
 
-  function openEditCategoria(item: Record<string, unknown>) {
+  function openEditCategoria(item: CatalogoCategoria) {
     setFormType("categoria")
-    setEditingItem(item)
+    setEditingItem(item as unknown as Record<string, unknown>)
     setFormNome(String(item.nome ?? ""))
     setFormOpen(true)
   }
 
-  function openEditConexao(item: Record<string, unknown>) {
+  function openEditConexao(item: CatalogoIpsConexao) {
     setFormType("conexao")
-    setEditingItem(item)
+    setEditingItem(item as unknown as Record<string, unknown>)
     setFormNome(String(item.nome ?? ""))
     setFormSigla(String(item.sigla ?? ""))
     setFormCategoriaId(String(item.categoria_id ?? ""))

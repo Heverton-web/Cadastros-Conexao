@@ -424,7 +424,7 @@ export function ThemeEditorPanel() {
 
   const { data: config } = useQuery({
     queryKey: ["hub-config", empresa?.id],
-    queryFn: () => fetchHubConfig(empresa!.id),
+    queryFn: () => fetchHubConfig(),
     enabled: !!empresa?.id,
   });
 

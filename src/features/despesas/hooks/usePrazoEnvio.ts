@@ -30,7 +30,7 @@ export function usePrazoEnvio(
 
   const { data: config, isLoading: configLoading } = useQuery({
     queryKey: ["despesa-config", empresa_id],
-    queryFn: () => buscarConfig(empresa_id),
+    queryFn: () => buscarConfig(),
     enabled: !!empresa_id,
   });
 

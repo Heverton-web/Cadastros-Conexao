@@ -366,7 +366,7 @@ function AdminKitsPage() {
 
             {/* ─── 5. IMAGENS DO PRODUTO ─── */}
             <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655] pt-2">Imagens do Produto</h3>
-            <ImageUploader produtoTipo="kit" produtoSku={kitData.sku} empresaId={empresaId} />
+            <ImageUploader produtoTipo="kit" produtoSku={kitData.sku} />
 
             {/* ─── 6. COMERCIAL ─── */}
             <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655] pt-2">Comercial</h3>

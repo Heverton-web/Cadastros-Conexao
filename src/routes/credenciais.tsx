@@ -68,7 +68,7 @@ function CredenciaisPage() {
   async function carregar() {
     setLoading(true);
     try {
-      setCredenciais(await listarCredenciaisPorEmpresa(selectedEmpresaId));
+      setCredenciais(await listarCredenciaisPorEmpresa());
     } catch (e) {
       console.error(e);
     }

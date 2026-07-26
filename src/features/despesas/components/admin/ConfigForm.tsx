@@ -23,7 +23,7 @@ export function ConfigForm({ empresaId }: { empresaId: string }) {
   useEffect(() => {
     if (!empresaId) return;
     setLoading(true);
-    buscarConfig(empresaId)
+    buscarConfig()
       .then((data) => {
         if (data) {
           setFrequencia(data.frequencia as Frequencia);
@@ -39,7 +39,7 @@ export function ConfigForm({ empresaId }: { empresaId: string }) {
     setSaving(true);
     setSaved(false);
 
-    await criarOuAtualizarConfig(empresaId, {
+    await criarOuAtualizarConfig({
       frequencia,
       dia_envio: diaEnvio,
       dias_aviso: diasAviso,

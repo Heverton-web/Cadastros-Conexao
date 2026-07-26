@@ -234,6 +234,8 @@ export const routeTree = rootRoute.addChildren([
   catalogoBuscaRoute,
   catalogoProdutoRoute,
   catalogoLinkTesteRoute,
+  catalogoCarrinhoRoute,
+  catalogoCheckoutRoute,
   // Loja pública (acesso externo)
   catalogoLojaIndexRoute,
   catalogoLojaLoginRoute,

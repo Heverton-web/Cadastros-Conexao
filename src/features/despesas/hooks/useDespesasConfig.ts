@@ -2,6 +2,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "~/lib/auth";
 import { EMPRESA_ID } from "~/config/empresa";
 import { buscarConfig, criarOuAtualizarConfig } from "../services/config.service";
+import type { Frequencia } from "../types";
 
 export function useDespesasConfig(overrideEmpresaId?: string) {
   const { profile } = useAuth();
@@ -9,7 +10,7 @@ export function useDespesasConfig(overrideEmpresaId?: string) {
 
   return useQuery({
     queryKey: ["despesa-config", empresa_id],
-    queryFn: () => buscarConfig(empresa_id),
+    queryFn: () => buscarConfig(),
     enabled: !!empresa_id,
   });
 }
@@ -21,10 +22,10 @@ export function useSalvarConfig() {
 
   return useMutation({
     mutationFn: async (config: {
-      frequencia: string;
+      frequencia: Frequencia;
       dia_envio: number;
       dias_aviso: number;
-    }) => criarOuAtualizarConfig(empresa_id, config),
+    }) => criarOuAtualizarConfig(config),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["despesa-config", empresa_id],

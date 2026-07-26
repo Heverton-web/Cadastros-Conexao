@@ -3,6 +3,7 @@ import { authLayout } from "./_auth";
 import { useState, useEffect } from "react";
 import { useAuth, useCan } from "~/lib/auth";
 import {
+  buscarCadastroCompleto,
   aprovarCadastro,
   reprovarCadastro,
   solicitarCorrecao,
@@ -12,6 +13,7 @@ import {
   type CadastroStatus,
 } from "~/features/clientes";
 import {
+  listarDocumentos,
   aprovarDocumento,
   reprovarDocumento,
   solicitarCorrecaoDocumento,
@@ -27,6 +29,7 @@ import { logAtividade } from "~/core/services";
 import { dispararWebhooks } from "~/lib/webhooks";
 import { DocList } from "~/components/ui/doc-viewer";
 import {
+  getRevisoes,
   setRevisaoCampo,
   setRevisoesMassa,
   STATUS_REVISAO_LABEL,
@@ -48,6 +51,7 @@ import {
   RotateCcw,
   Eye,
   Shield,
+  ArrowLeft,
 } from "lucide-react";
 import toast from "react-hot-toast";
 import { enviarNotificacaoComTemplate } from "~/core/services";

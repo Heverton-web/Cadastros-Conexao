@@ -59,6 +59,22 @@ export function NovaDespesaModal({
   const [ocrLoading, setOcrLoading] = useState(false);
   const [ocrFeito, setOcrFeito] = useState(false);
 
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    reset,
+    formState: { errors },
+  } = useForm<FormData>({
+    resolver: zodResolver(schema),
+    defaultValues: {
+      comprovante_tipo: "upload",
+      comprovante_url: "",
+      descricao: "",
+      periodo_id: "",
+    },
+  });
+
   async function handleOcr() {
     if (!file || !tipos) return;
     setOcrLoading(true);
@@ -82,22 +98,6 @@ export function NovaDespesaModal({
       setValue("periodo_id", periodoAtual.id);
     }
   }, [periodoAtual, setValue]);
-
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    reset,
-    formState: { errors },
-  } = useForm<FormData>({
-    resolver: zodResolver(schema),
-    defaultValues: {
-      comprovante_tipo: "upload",
-      comprovante_url: "",
-      descricao: "",
-      periodo_id: "",
-    },
-  });
 
   async function onSubmit(data: FormData) {
     if (!periodoAtual) return;

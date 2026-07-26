@@ -44,7 +44,7 @@ export function SequenciaProtetica({ familiaId, tipoAbutmentId, familiaNome, tip
   useEffect(() => {
     if (!abutmentSku || !empresaId) return
     setLoading(true)
-    supabase.from("catalogo_seq_protetica_abutments").select("seq_id").eq("abutment_sku", abutmentSku)
+    Promise.resolve(supabase.from("catalogo_seq_protetica_abutments").select("seq_id").eq("abutment_sku", abutmentSku))
       .then(async ({ data: pivots }) => {
         const seqIds = (pivots ?? []).map((r: { seq_id: string }) => r.seq_id)
         if (seqIds.length === 0) { setWorkflows([]); return }
@@ -62,7 +62,7 @@ export function SequenciaProtetica({ familiaId, tipoAbutmentId, familiaNome, tip
         }
         for (const e of etapasData ?? []) {
           const seqId = (e as { seq_id: string }).seq_id
-          const etapa = (e as { etapa: { id: string; nome: string; ordem: number; tipo_workflow: { nome: string } | null } | null }).etapa
+          const etapa = (e as unknown as { etapa: { id: string; nome: string; ordem: number; tipo_workflow: { nome: string } | null } | null }).etapa
           if (!groups[seqId]) {
             const wfName = etapa?.tipo_workflow?.nome ?? "Workflow"
             groups[seqId] = { id: seqId, nome: wfName, etapas: [] }
@@ -74,14 +74,23 @@ export function SequenciaProtetica({ familiaId, tipoAbutmentId, familiaNome, tip
         for (const c of etapaCompData ?? []) {
           const seqId = (c as { seq_id: string }).seq_id
           const etapaId = (c as { etapa_id: string }).etapa_id
-          const comp = (c as { componente: { sku: string; nome: string; preco: number | null; descricao: string | null } | null }).componente
+          const comp = (c as unknown as { componente: { sku: string; nome: string; preco: number | null; descricao: string | null; parafuso: { sku: string; nome: string; preco: number | null } | null; chave: { sku: string; nome: string; preco: number | null } | null; tipo_componente: { nome: string } | null; tipo_abutment: { nome: string } | null } | null }).componente
           if (!groups[seqId]) {
             const wfName = seqInfo?.find((s: { id: string }) => s.id === seqId)?.nome ?? "Workflow"
             groups[seqId] = { id: seqId, nome: wfName, etapas: [] }
           }
           const etapa = groups[seqId].etapas.find((e) => e.id === etapaId)
           if (etapa) {
-            etapa.componentes.push({ sku: comp?.sku ?? (c as { componente_sku: string }).componente_sku, nome: comp?.nome ?? "", preco: Number(comp?.preco) || undefined, descricao: comp?.descricao ?? undefined, parafuso: comp?.parafuso ?? undefined, chave: comp?.chave ?? undefined, tipo_componente: comp?.tipo_componente ?? undefined, tipo_abutment: comp?.tipo_abutment ?? undefined })
+            etapa.componentes.push({
+              sku: comp?.sku ?? (c as { componente_sku: string }).componente_sku,
+              nome: comp?.nome ?? "",
+              preco: Number(comp?.preco) || undefined,
+              descricao: comp?.descricao ?? undefined,
+              parafuso: comp?.parafuso ? { sku: comp.parafuso.sku, nome: comp.parafuso.nome, preco: comp.parafuso.preco ?? undefined } : undefined,
+              chave: comp?.chave ? { sku: comp.chave.sku, nome: comp.chave.nome, preco: comp.chave.preco ?? undefined } : undefined,
+              tipo_componente: comp?.tipo_componente ?? undefined,
+              tipo_abutment: comp?.tipo_abutment ?? undefined,
+            })
           }
         }
 

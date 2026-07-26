@@ -155,10 +155,9 @@ export async function executarAutomacao(
     }
   }
 
-  dispararEventoModulo(
-    MODULO_KEY,
-    "automacao.executada",
-    { automation, tarefa_id: tarefaId, dados },
-    null,
-  ).catch(() => {});
+  dispararEventoModulo(MODULO_KEY, "automacao.executada", {
+    automation,
+    tarefa_id: tarefaId,
+    dados,
+  }).catch(() => {});
 }

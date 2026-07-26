@@ -414,7 +414,7 @@ function CredenciaisTab({ empresaId }: { empresaId: string }) {
 
   async function carregar() {
     setLoading(true);
-    const list = await listarCredenciaisPorEmpresa(empresaId);
+    const list = await listarCredenciaisPorEmpresa();
     setCredenciais(list);
     setLoading(false);
   }
@@ -777,7 +777,7 @@ function CredenciaisTab({ empresaId }: { empresaId: string }) {
                         {group.label}
                       </p>
                       <div className="flex flex-col gap-2">
-                        {group.keys.map((key) => (
+                        {group.keys.map((key: string) => (
                           <label
                             key={key}
                             className="flex items-center gap-3 cursor-pointer group"

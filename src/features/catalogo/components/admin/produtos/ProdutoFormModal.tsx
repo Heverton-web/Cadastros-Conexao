@@ -246,10 +246,10 @@ export function ProdutoFormModal({
         tipo_reabilitacao_id: d.tipo_reabilitacao_id ?? "",
         tipo_abutment_id: d.tipo_abutment_id ?? "",
         sku: d.sku ?? "",
-        diametro_plataforma: d.diametro_plataforma ?? "",
+        diametro_plataforma: d.diametro_plataforma_mm != null ? String(d.diametro_plataforma_mm) : "",
         angulacao_graus: d.angulacao_graus ?? 0,
-        altura_transmucoso: d.altura_transmucoso ?? 0,
-        altura_corpo: d.altura_corpo ?? 0,
+        altura_transmucoso: d.altura_transmucoso_mm ?? 0,
+        altura_corpo: d.altura_corpo_mm ?? 0,
         torque_ncm: d.torque_ncm ?? 0,
         preco: d.preco ?? 0,
       })
@@ -314,6 +314,8 @@ export function ProdutoFormModal({
     } else if (tipo === "parafuso_retensao") {
       if (!parafusoRetencao.sku) return "SKU é obrigatório"
       if (!parafusoRetencao.nome) return "Nome é obrigatório"
+      if (!parafusoRetencao.vinculo_tipo) return "Tipo de vínculo é obrigatório"
+      if (!parafusoRetencao.vinculo_sku) return "SKU do vínculo é obrigatório"
     } else if (tipo === "cicatrizador") {
       if (!cicatrizador.sku) return "SKU é obrigatório"
       if (!cicatrizador.nome) return "Nome é obrigatório"
@@ -358,15 +360,18 @@ export function ProdutoFormModal({
   }
 
   function makeAbutmentPayload() {
+    // Abutment não tem campo "nome" próprio no form; deriva do tipo de abutment + família
+    const tipoAb = tiposAbutment?.find((t) => t.id === abutment.tipo_abutment_id)
+    const fam = familias?.find((f) => f.id === abutment.familia_id)
+    const nome = tipoAb ? (fam ? `${tipoAb.nome} ${fam.nome}` : tipoAb.nome) : abutment.sku
     return {
       sku: abutment.sku,
-      familia_id: abutment.familia_id,
-      tipo_reabilitacao_id: abutment.tipo_reabilitacao_id,
+      nome,
       tipo_abutment_id: abutment.tipo_abutment_id,
-      diametro_plataforma: abutment.diametro_plataforma || undefined,
+      diametro_plataforma_mm: abutment.diametro_plataforma ? Number(abutment.diametro_plataforma) : undefined,
       angulacao_graus: abutment.angulacao_graus || undefined,
-      altura_transmucoso: abutment.altura_transmucoso || undefined,
-      altura_corpo: abutment.altura_corpo || undefined,
+      altura_transmucoso_mm: abutment.altura_transmucoso || undefined,
+      altura_corpo_mm: abutment.altura_corpo || undefined,
       torque_ncm: abutment.torque_ncm || undefined,
       preco: abutment.preco || undefined,
     }
@@ -419,12 +424,16 @@ export function ProdutoFormModal({
         await salvarAbutmentParafusos(abutment.sku, abtParafusosIds)
         await salvarAbutmentImplantes(abutment.sku, abtImplantesIds)
       } else if (tipo === "parafuso_retensao") {
+        // validateRequired já garantiu vinculo_tipo/vinculo_sku preenchidos
+        if (!parafusoRetencao.vinculo_tipo || !parafusoRetencao.vinculo_sku) {
+          throw new Error("Vínculo é obrigatório")
+        }
         const payload = {
           sku: parafusoRetencao.sku,
           nome: parafusoRetencao.nome,
           torque_ncm: parafusoRetencao.torque_ncm || undefined,
-          vinculo_tipo: parafusoRetencao.vinculo_tipo || undefined,
-          vinculo_sku: parafusoRetencao.vinculo_sku || undefined,
+          vinculo_tipo: parafusoRetencao.vinculo_tipo,
+          vinculo_sku: parafusoRetencao.vinculo_sku,
           chave_sku: parafusoRetencao.chave_sku || undefined,
           preco: parafusoRetencao.preco || undefined,
         }
@@ -524,7 +533,7 @@ export function ProdutoFormModal({
           {tipo === "implante" && (
             <ImplanteForm
               data={implante}
-              onChange={(d) => setImplante(d)}
+              onChange={(d) => setImplante((prev) => ({ ...prev, ...d }))}
               categorias={categorias}
               conexoes={conexoes}
               familias={familias}
@@ -551,7 +560,7 @@ export function ProdutoFormModal({
           {tipo === "abutment" && (
             <AbutmentForm
               data={abutment}
-              onChange={(d) => setAbutment(d)}
+              onChange={(d) => setAbutment((prev) => ({ ...prev, ...d }))}
               familias={familias}
               tiposReab={tiposReab}
               tiposAbutment={tiposAbutment}
@@ -577,7 +586,7 @@ export function ProdutoFormModal({
           {tipo === "kit" && (
             <KitForm
               data={kit}
-              onChange={(d) => setKit(d)}
+              onChange={(d) => setKit((prev) => ({ ...prev, ...d }))}
               tiposKit={tiposKit}
               fresas={fresas}
               chaves={chaves}
@@ -604,8 +613,8 @@ export function ProdutoFormModal({
 
           {tipo === "parafuso_retensao" && (
             <ParafusoRetencaoForm
-              data={parafusoRetencao}
-              onChange={(d) => setParafusoRetencao(d)}
+              data={{ ...parafusoRetencao, vinculo_tipo: parafusoRetencao.vinculo_tipo as "abutment" | "componente" }}
+              onChange={(d) => setParafusoRetencao((prev) => ({ ...prev, ...d }))}
               chaves={chaves}
             />
           )}
@@ -613,7 +622,7 @@ export function ProdutoFormModal({
           {tipo === "cicatrizador" && (
             <CicatrizadorForm
               data={cicatrizador}
-              onChange={(d) => setCicatrizador(d)}
+              onChange={(d) => setCicatrizador((prev) => ({ ...prev, ...d }))}
               familias={familias}
               chaves={chaves}
             />
@@ -621,8 +630,7 @@ export function ProdutoFormModal({
 
           {/* ─── Imagens do produto ─── */}
           <ImageUploader
-            empresaId={empresaId}
-            produtoTipo={tipo}
+            produtoTipo={tipo === "parafuso_retensao" ? "parafuso" : tipo}
             produtoSku={editingItem?.sku || implante.sku || abutment.sku || kit.sku || parafusoRetencao.sku || cicatrizador.sku}
             imagensExistentes={imagens}
             onImagensChange={setImagens}

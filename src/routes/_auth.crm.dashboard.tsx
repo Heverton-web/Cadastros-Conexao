@@ -43,9 +43,25 @@ export const crmDashboardRoute = createRoute({
 });
 
 function Dashboard() {
-  const { perfil } = useAuth();
-  const role = perfil?.role;
-  const isSuperAdmin = perfil?.is_super_admin === true;
+  const { user, profile } = useAuth();
+  const isSuperAdmin = profile?.is_super_admin === true;
+  const { data: usuarioAtual } = useQuery({
+    queryKey: ["usuario-atual-crm", user?.id],
+    enabled: !!user?.id && !isSuperAdmin,
+    queryFn: async () => {
+      const { data } = await supabase
+        .from("usuarios")
+        .select("role")
+        .eq("id", user!.id)
+        .maybeSingle();
+      return data;
+    },
+  });
+  const role = usuarioAtual?.role as
+    | "consultor"
+    | "gestor"
+    | "diretor_comercial"
+    | undefined;
   const [pickerOpen, setPickerOpen] = useState(false);
   const [clienteSelecionado, setClienteSelecionado] = useState<string | null>(
     null,
@@ -92,7 +108,7 @@ function Dashboard() {
         <div>
           <p className="text-xs uppercase tracking-[0.2em] text-gold">{tag}</p>
           <h1 className="text-2xl font-bold mt-1">
-            Olá, {perfil?.nome_completo?.split(" ")[0] ?? "—"}
+            Olá, {profile?.nome?.split(" ")[0] ?? "—"}
           </h1>
           <p className="text-sm text-muted-foreground">{subtitle}</p>
         </div>
@@ -127,7 +143,7 @@ function Dashboard() {
         </div>
       </header>
 
-      {painelEfetivo === "consultor" && <ConsultorPanel uid={perfil!.id} />}
+      {painelEfetivo === "consultor" && <ConsultorPanel uid={user!.id} />}
       {painelEfetivo === "gestor" && <GestorPanel />}
       {painelEfetivo === "diretor_comercial" && <DiretorPanel />}
       {painelEfetivo === "dev" && (
@@ -136,12 +152,12 @@ function Dashboard() {
         />
       )}
 
-      {painelEfetivo === "consultor" && perfil && (
+      {painelEfetivo === "consultor" && user && (
         <>
           <ClientePickerModal
             open={pickerOpen}
             onOpenChange={setPickerOpen}
-            consultorId={perfil.id}
+            consultorId={user.id}
             onSelect={(id) => {
               setPickerOpen(false);
               setClienteSelecionado(id);

@@ -119,7 +119,6 @@ function ClientesPage() {
       if (podeVerTodos !== true)
         filters.created_by = profile.id;
       const res = await listarCadastros(
-        profile!.empresa_id!,
         Object.keys(filters).length ? filters : undefined,
       );
       setData(res);

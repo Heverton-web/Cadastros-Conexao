@@ -194,8 +194,8 @@ export function LinktreeColaboradorModal({
       telefone_fixo:
         encodeTelefone({ kind: telKind, phone: telFixo, ramal }) || null,
       foto_url: foto || null,
-      credencial_id: selectedCredencialId || null,
-      empresa_id: empresaId,
+      credencial_id: selectedCredencialId || undefined,
+      empresa_id: empresaId || undefined,
       created_by: user?.id,
     };
 

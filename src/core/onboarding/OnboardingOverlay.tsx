@@ -95,7 +95,6 @@ export function OnboardingOverlay() {
         open={open}
         onOpenChange={setOpen}
         steps={walkthroughConfig.steps}
-        moduleKey={walkthroughKey}
         onDismiss={dismiss}
       />
     </>

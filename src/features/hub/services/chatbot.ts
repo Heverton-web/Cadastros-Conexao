@@ -23,7 +23,7 @@ export async function upsertHubChatbotConfig(
 }
 
 export async function sendHubChatMessage(message: string, empresaId: string) {
-  const config = await fetchHubChatbotConfig(empresaId);
+  const config = await fetchHubChatbotConfig();
   if (!config || !config.enabled || !config.webhook_url) {
     return { reply: "Chatbot não configurado nesta empresa." };
   }

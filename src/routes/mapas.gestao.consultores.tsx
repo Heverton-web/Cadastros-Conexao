@@ -2,6 +2,7 @@ import { createRoute } from "@tanstack/react-router";
 import { authLayout } from "./_auth";
 import { useMemo, useState, useEffect } from "react";
 import {
+  useMapasConsultants,
   useUpsertConsultant,
   useDeleteConsultant,
 } from "~/features/mapas/hooks/useMapasData";
@@ -11,6 +12,7 @@ import { Plus, Pencil, Trash2, Search, Loader2, Users } from "lucide-react";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import {
+  Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
@@ -18,12 +20,14 @@ import {
   DialogFooter,
 } from "~/components/ui/dialog";
 import {
+  Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
 } from "~/components/ui/select";
 import {
+  AlertDialog,
   AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
@@ -108,7 +112,7 @@ function MapasAdminConsultoresPage() {
   const rows = useMemo(() => {
     const s = search.toLowerCase().trim();
     return (consQ.data ?? []).filter(
-      (r) =>
+      (r: MapasConsultant) =>
         !s ||
         r.name.toLowerCase().includes(s) ||
         (r.region ?? "").toLowerCase().includes(s) ||
@@ -176,7 +180,7 @@ function MapasAdminConsultoresPage() {
           </div>
         ) : (
           <ul className="divide-y divide-border/50">
-            {rows.map((r) => (
+            {rows.map((r: MapasConsultant) => (
               <li
                 key={r.id}
                 className="group grid grid-cols-1 gap-1 px-4 py-3 md:grid-cols-[1fr_120px_140px_100px_140px_120px] md:items-center hover:bg-surface-hover/20 transition-colors"
@@ -222,7 +226,7 @@ function MapasAdminConsultoresPage() {
         )}
       </div>
 
-      <Dialog open={!!editing} onOpenChange={(o) => !o && setEditing(null)}>
+      <Dialog open={!!editing} onOpenChange={(o: boolean) => !o && setEditing(null)}>
         <DialogContent className="max-w-lg">
           <DialogHeader>
             <div className="flex items-center gap-3">
@@ -307,7 +311,7 @@ function MapasAdminConsultoresPage() {
                     </label>
                     <Select
                       value={editing.state}
-                      onValueChange={(v) =>
+                      onValueChange={(v: string) =>
                         setEditing({ ...editing, state: v, region: "" })
                       }
                     >
@@ -363,7 +367,7 @@ function MapasAdminConsultoresPage() {
 
       <AlertDialog
         open={!!toDelete}
-        onOpenChange={(o) => !o && setToDelete(null)}
+        onOpenChange={(o: boolean) => !o && setToDelete(null)}
       >
         <AlertDialogContent className="max-w-sm">
           <AlertDialogHeader>

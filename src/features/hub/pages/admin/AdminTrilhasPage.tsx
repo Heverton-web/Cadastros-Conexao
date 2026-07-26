@@ -36,7 +36,7 @@ export function AdminTrilhasPage() {
 
   const { data: collections = [], isLoading } = useQuery({
     queryKey: ["hub-collections", empresa?.id],
-    queryFn: () => fetchHubCollections(empresa!.id),
+    queryFn: () => fetchHubCollections(),
     enabled: !!empresa?.id,
   });
 

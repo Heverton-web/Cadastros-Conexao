@@ -5,13 +5,13 @@ import { addToCart, formatBRL, getPrecoFromDB } from "~/features/catalogo/servic
 import { playCoinSound } from "~/features/catalogo/services/audio.service"
 import { useImagensBatch, useTiposOsso } from "~/features/catalogo/hooks/useCatalogo"
 import { listarKitsRelacionadosDeFresa } from "~/features/catalogo/services/kits.service"
-import type { CatalogoProtocoloFresagem, ProductSheetTipo } from "~/features/catalogo/types"
+import type { CatalogoProtocoloFresagemFlat, ProductSheetTipo } from "~/features/catalogo/types"
 import { openImageViewer } from "~/features/catalogo/services/ui.service"
 import { FichaTecnicaModal } from "./FichaTecnicaModal"
 
 interface FresagemTimelineProps {
   implanteSku: string
-  protocolos: CatalogoProtocoloFresagem[]
+  protocolos: CatalogoProtocoloFresagemFlat[]
 }
 
 export function FresagemTimeline({ implanteSku, protocolos }: FresagemTimelineProps) {

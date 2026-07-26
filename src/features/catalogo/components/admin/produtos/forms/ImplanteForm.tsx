@@ -36,7 +36,7 @@ const implanteSchema = z.object({
   chaves_ids: z.array(z.string()).optional(),
   // Comercial
   preco: z.coerce.number().min(0, "Preço não pode ser negativo").optional(),
-  ativo: z.boolean().default(true),
+  ativo: z.boolean(),
 })
 
 export type ImplanteFormData = z.infer<typeof implanteSchema>
@@ -53,7 +53,7 @@ interface Props {
   chavesIds: string[]
   onChavesChange: (ids: string[]) => void
   protocolos: CatalogoProtocoloFresagem[] | undefined
-  tiposOsso: { sigla: string; categoria: string }[] | undefined
+  tiposOsso: { sigla: string | null; categoria: string }[] | undefined
   onGerarSku: () => void
   // Composição
   kits: CatalogoKit[] | undefined
@@ -108,7 +108,7 @@ export function ImplanteForm({
           <label className={labelCls}>Categoria</label>
           <select {...register("categoria_id")} value={data.categoria_id} onChange={(e) => onChange({ ...data, categoria_id: e.target.value })} className={selectCls}>
             <option value="">Nenhuma</option>
-            {categorias?.filter((cat) => !cat.tipo || cat.tipo === "implante").map((cat) => <option key={cat.id} value={cat.id}>{cat.nome}</option>)}
+            {categorias?.map((cat) => <option key={cat.id} value={cat.id}>{cat.nome}</option>)}
           </select>
         </div>
         <div className="space-y-2">
@@ -216,7 +216,7 @@ export function ImplanteForm({
       <CompositionSection
         label="Chaves"
         selectedIds={chavesIds}
-        options={chaves?.map((c) => ({ id: c.id, label: `${c.nome} (${c.sigla ?? c.sku})` })) ?? []}
+        options={chaves?.map((c) => ({ id: c.sku, label: `${c.nome} (${c.sigla ?? c.sku})` })) ?? []}
         placeholder="Selecione uma chave..."
         onChange={onChavesChange}
       />

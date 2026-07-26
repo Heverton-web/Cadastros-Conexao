@@ -37,7 +37,7 @@ export function HubConquistasPage() {
   const { user, empresa } = useAuth();
   const { data: allBadges = [] } = useQuery({
     queryKey: ["hub-badges", empresa?.id],
-    queryFn: () => fetchHubBadges(empresa!.id),
+    queryFn: () => fetchHubBadges(),
     enabled: !!empresa?.id,
   });
   const { data: userBadges = [] } = useQuery({

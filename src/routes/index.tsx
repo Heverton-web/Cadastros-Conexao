@@ -347,7 +347,6 @@ function ResetSenhaPopup({ onClose }: { onClose: () => void }) {
               </p>
               <Input
                 id="reset-email"
-                label="Email"
                 type="email"
                 placeholder="seu@email.com"
                 value={email}

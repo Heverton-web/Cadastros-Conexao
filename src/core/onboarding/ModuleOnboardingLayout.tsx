@@ -33,7 +33,6 @@ export function ModuleOnboardingLayout({ moduleKey, steps, accentColor = "#c9a65
         open={open}
         onOpenChange={setOpen}
         steps={steps}
-        moduleKey={moduleKey}
         onDismiss={dismiss}
       />
     </div>

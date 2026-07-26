@@ -46,12 +46,10 @@ export async function criarPergunta(
 
   if (error) throw error;
 
-  dispararEventoModulo(
-    MODULO_KEY,
-    "nps.pergunta_criada",
-    { pergunta_id: data.id, empresa_id: empresaId },
-    empresaId,
-  ).catch(() => {});
+  dispararEventoModulo(MODULO_KEY, "nps.pergunta_criada", {
+    pergunta_id: data.id,
+    empresa_id: empresaId,
+  }).catch(() => {});
 
   return data as NpsPergunta;
 }

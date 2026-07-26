@@ -9,6 +9,7 @@ import { Input } from "~/components/ui/input";
 import { Skeleton } from "~/components/ui/skeleton";
 import { EmptyState } from "~/components/ui/empty-state";
 import {
+  AlertDialog,
   AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
@@ -18,6 +19,7 @@ import {
   AlertDialogTitle,
 } from "~/components/ui/alert-dialog";
 import {
+  Dialog,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -25,6 +27,7 @@ import {
   DialogTitle,
 } from "~/components/ui/dialog";
 import {
+  Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
@@ -32,6 +35,7 @@ import {
 } from "~/components/ui/select";
 import { Textarea } from "~/components/ui/textarea";
 import { useMetaPosts, useCriarMetaPost, useDeletarMetaPost } from "../hooks/useMetaBm";
+import type { MetaPost } from "../types";
 import { EMPRESA_ID } from "~/config/empresa";
 const STATUS_COLORS: Record<string, string> = {
   rascunho: "bg-yellow-500/10 text-yellow-400 border-yellow-500/20",
@@ -53,7 +57,7 @@ export function MetaPostsList() {
   const deletarPost = useDeletarMetaPost();
 
   const [busca, setBusca] = useState("");
-  const [paraExcluir, setParaExcluir] = useState<{ id: string; nome: string } | null>(null);
+  const [paraExcluir, setParaExcluir] = useState<MetaPost | null>(null);
 
   const [novoPostOpen, setNovoPostOpen] = useState(false);
   const [formConteudo, setFormConteudo] = useState("");
@@ -224,7 +228,7 @@ export function MetaPostsList() {
             </div>
             <div className="space-y-1">
               <label className="text-xs text-text-muted font-medium">Plataforma</label>
-              <Select value={formPlataforma} onValueChange={(v) => setFormPlataforma(v as "facebook" | "instagram" | "both")}>
+              <Select value={formPlataforma} onValueChange={(v: string) => setFormPlataforma(v as "facebook" | "instagram" | "both")}>
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
@@ -248,7 +252,7 @@ export function MetaPostsList() {
         </DialogContent>
       </Dialog>
 
-      <AlertDialog open={!!paraExcluir} onOpenChange={(o) => !o && setParaExcluir(null)}>
+      <AlertDialog open={!!paraExcluir} onOpenChange={(o: boolean) => !o && setParaExcluir(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
             <div className="flex items-center gap-3">

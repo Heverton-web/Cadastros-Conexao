@@ -1,6 +1,6 @@
 import React from "react";
 
-import { createFileRoute } from "@tanstack/react-router";
+import { createRootRoute } from "@tanstack/react-router";
 
 import { Header } from "./Header";
 
@@ -8,7 +8,7 @@ type User = {
   name: string;
 };
 
-export const Route = createFileRoute("/")({
+export const Route = createRootRoute({
   component: () => <Page />,
 });
 

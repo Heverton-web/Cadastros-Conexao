@@ -191,7 +191,7 @@ export function EmpresaLinktreeCard({
             className="grid size-9 shrink-0 place-items-center rounded-full"
             style={{ background: theme.icons.bgColor }}
           >
-            <DynamicIcon name={link.icone} size={18} color={theme.icons.pathColor} strokeWidth={theme.icons.strokeWidth} />
+            <DynamicIcon name={link.icone} size={18} color={theme.icons.pathColor} />
           </span>
         ) : (
           <span

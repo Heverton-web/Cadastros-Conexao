@@ -27,12 +27,27 @@ export const crmEquipeRoute = createRoute({
 });
 
 function EquipePage() {
-  const { perfil, isGestor, isDiretor, isDev } = useAuth();
+  const { user, profile } = useAuth();
+  const isDev = profile?.is_super_admin === true;
+  const { data: usuarioAtual } = useQuery({
+    queryKey: ["usuario-atual-crm", user?.id],
+    enabled: !!user?.id && !isDev,
+    queryFn: async () => {
+      const { data } = await supabase
+        .from("usuarios")
+        .select("role")
+        .eq("id", user!.id)
+        .maybeSingle();
+      return data;
+    },
+  });
+  const isGestor = usuarioAtual?.role === "gestor";
+  const isDiretor = usuarioAtual?.role === "diretor_comercial";
   const canEditMeta = isGestor || isDiretor || isDev;
 
   const { data } = useQuery({
-    queryKey: ["equipe", perfil?.id],
-    enabled: !!perfil,
+    queryKey: ["equipe", user?.id],
+    enabled: !!user,
     queryFn: async () => {
       const { data: consultores } = await supabase
         .from("usuarios")
@@ -45,7 +60,6 @@ function EquipePage() {
       const { data: clientes } = await supabase
         .from("clientes")
         .select("id, consultor_atual_id")
-        .eq("empresa_id", perfil?.empresa_id)
         .in(
           "consultor_atual_id",
           ids.length ? ids : ["00000000-0000-0000-0000-000000000000"],
@@ -55,7 +69,6 @@ function EquipePage() {
         .select(
           "id, consultor_executor_id, valor_estimado, gerou_pedido, temperatura_vendedor",
         )
-        .eq("empresa_id", perfil?.empresa_id)
         .in(
           "consultor_executor_id",
           ids.length ? ids : ["00000000-0000-0000-0000-000000000000"],

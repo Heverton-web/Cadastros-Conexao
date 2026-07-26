@@ -100,7 +100,13 @@ export function useIniciarRota() {
   const qc = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ rotaId }: { rotaId: string }) => iniciarRota(rotaId),
+    mutationFn: ({
+      rotaId,
+      localizacao,
+    }: {
+      rotaId: string;
+      localizacao: { lat: number; lng: number };
+    }) => iniciarRota(rotaId, localizacao),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["rotas"] });
     },
@@ -113,11 +119,18 @@ export function useFinalizarRota() {
   return useMutation({
     mutationFn: ({
       rotaId,
-      status,
+      localizacao,
+      stats,
     }: {
       rotaId: string;
-      status: RotaStatus;
-    }) => finalizarRota(rotaId, status),
+      localizacao: { lat: number; lng: number };
+      stats: {
+        total_visitas: number;
+        total_km: number;
+        total_tempo_trajeto_min: number;
+        valor_reembolso: number;
+      };
+    }) => finalizarRota(rotaId, localizacao, stats),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["rotas"] });
     },

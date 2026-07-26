@@ -62,7 +62,7 @@ export function AdminBadgesPage() {
 
   const { data: badges = [], isLoading } = useQuery({
     queryKey: ["hub-badges", empresa?.id],
-    queryFn: () => fetchHubBadges(empresa!.id),
+    queryFn: () => fetchHubBadges(),
     enabled: !!empresa?.id,
   });
 

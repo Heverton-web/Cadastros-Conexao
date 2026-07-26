@@ -69,7 +69,7 @@ function wrapProxy(builder: any, t: QueryTracker, onLog: (e: LogEntry) => void):
           if (args[0] !== undefined) t.data = args[0];
         }
         if (FILTER_METHODS.has(prop as string)) {
-          t.filters.push(`${prop}(${args.map((a: any) => JSON.stringify(a)).join(", ")})`);
+          t.filters.push(`${String(prop)}(${args.map((a: any) => JSON.stringify(a)).join(", ")})`);
         }
         if (prop === "single" || prop === "maybeSingle") {
           t.filters.push(prop as string);

@@ -52,12 +52,12 @@ describe("NPS Services", () => {
   describe("listarRespostas", () => {
     it("retorna lista quando Supabase responde com dados", async () => {
       const { supabase } = await import("~/core/supabase");
-      supabase.from.mockReturnValue(
+      vi.mocked(supabase.from).mockReturnValue(
         mockQueryBuilder({
           then: vi.fn((resolve: (v: unknown) => void) =>
             resolve({ data: [{ id: "1", nps_score: 9 }], error: null }),
           ),
-        }),
+        }) as unknown as ReturnType<typeof supabase.from>,
       );
       const result = await listarRespostas(empresaId);
       expect(result).toHaveLength(1);
@@ -65,12 +65,12 @@ describe("NPS Services", () => {
 
     it("lança erro quando Supabase falha", async () => {
       const { supabase } = await import("~/core/supabase");
-      supabase.from.mockReturnValue(
+      vi.mocked(supabase.from).mockReturnValue(
         mockQueryBuilder({
           then: vi.fn((resolve: (v: unknown) => void) =>
             resolve({ data: null, error: new Error("DB Error") }),
           ),
-        }),
+        }) as unknown as ReturnType<typeof supabase.from>,
       );
       await expect(listarRespostas(empresaId)).rejects.toThrow("DB Error");
     });
@@ -84,12 +84,12 @@ describe("NPS Services", () => {
         nps_score: 10,
         empresa_id: empresaId,
       };
-      supabase.from.mockReturnValue(
+      vi.mocked(supabase.from).mockReturnValue(
         mockQueryBuilder({
           single: vi
             .fn()
             .mockResolvedValue({ data: mockResposta, error: null }),
-        }),
+        }) as unknown as ReturnType<typeof supabase.from>,
       );
       const result = await criarResposta(empresaId, { nps_score: 10 } as any);
       expect(result.id).toBe("new-1");
@@ -99,7 +99,7 @@ describe("NPS Services", () => {
   describe("listarPerguntas", () => {
     it("retorna perguntas ordenadas por order_index", async () => {
       const { supabase } = await import("~/core/supabase");
-      supabase.from.mockReturnValue(
+      vi.mocked(supabase.from).mockReturnValue(
         mockQueryBuilder({
           then: vi.fn((resolve: (v: unknown) => void) =>
             resolve({
@@ -107,7 +107,7 @@ describe("NPS Services", () => {
               error: null,
             }),
           ),
-        }),
+        }) as unknown as ReturnType<typeof supabase.from>,
       );
       const result = await listarPerguntas(empresaId);
       expect(result).toHaveLength(1);
@@ -117,7 +117,7 @@ describe("NPS Services", () => {
   describe("criarPergunta", () => {
     it("cria e retorna pergunta", async () => {
       const { supabase } = await import("~/core/supabase");
-      supabase.from.mockReturnValue(
+      vi.mocked(supabase.from).mockReturnValue(
         mockQueryBuilder({
           single: vi
             .fn()
@@ -125,7 +125,7 @@ describe("NPS Services", () => {
               data: { id: "p-1", pergunta: "Teste", empresa_id: empresaId },
               error: null,
             }),
-        }),
+        }) as unknown as ReturnType<typeof supabase.from>,
       );
       const result = await criarPergunta(empresaId, {
         pergunta: "Teste",

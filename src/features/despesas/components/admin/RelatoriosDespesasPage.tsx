@@ -112,7 +112,6 @@ export function RelatoriosDespesasPage() {
       <PageHeader
         title="Dashboard de Despesas"
         description="Visão geral das despesas de todos os colaboradores."
-        icon={BarChart3}
       />
 
       {isSuperAdmin && empresas.length > 0 && (

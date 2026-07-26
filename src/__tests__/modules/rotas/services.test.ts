@@ -55,12 +55,12 @@ describe("Rotas Services", () => {
   describe("listarRotas", () => {
     it("retorna lista quando Supabase responde com dados", async () => {
       const { supabase } = await import("~/core/supabase");
-      supabase.from.mockReturnValue(
+      vi.mocked(supabase.from).mockReturnValue(
         mockQueryBuilder({
           then: vi.fn((resolve: (v: unknown) => void) =>
             resolve({ data: [{ id: "1", titulo: "Rota Teste" }], error: null }),
           ),
-        }),
+        }) as unknown as ReturnType<typeof supabase.from>,
       );
       const result = await listarRotas(empresaId, usuarioId);
       expect(result).toHaveLength(1);
@@ -68,12 +68,12 @@ describe("Rotas Services", () => {
 
     it("lança erro quando Supabase falha", async () => {
       const { supabase } = await import("~/core/supabase");
-      supabase.from.mockReturnValue(
+      vi.mocked(supabase.from).mockReturnValue(
         mockQueryBuilder({
           then: vi.fn((resolve: (v: unknown) => void) =>
             resolve({ data: null, error: new Error("DB Error") }),
           ),
-        }),
+        }) as unknown as ReturnType<typeof supabase.from>,
       );
       await expect(listarRotas(empresaId, usuarioId)).rejects.toThrow(
         "DB Error",
@@ -84,7 +84,7 @@ describe("Rotas Services", () => {
   describe("buscarRota", () => {
     it("retorna rota por id", async () => {
       const { supabase } = await import("~/core/supabase");
-      supabase.from.mockReturnValue(
+      vi.mocked(supabase.from).mockReturnValue(
         mockQueryBuilder({
           single: vi
             .fn()
@@ -92,7 +92,7 @@ describe("Rotas Services", () => {
               data: { id: "1", titulo: "Rota Unica" },
               error: null,
             }),
-        }),
+        }) as unknown as ReturnType<typeof supabase.from>,
       );
       const result = await buscarRota("1");
       expect(result.id).toBe("1");
@@ -102,7 +102,7 @@ describe("Rotas Services", () => {
   describe("criarRota", () => {
     it("cria rota com status planejada", async () => {
       const { supabase } = await import("~/core/supabase");
-      supabase.from.mockReturnValue(
+      vi.mocked(supabase.from).mockReturnValue(
         mockQueryBuilder({
           single: vi
             .fn()
@@ -110,12 +110,12 @@ describe("Rotas Services", () => {
               data: { id: "new-1", titulo: "Nova Rota", status: "planejada" },
               error: null,
             }),
-        }),
+        }) as unknown as ReturnType<typeof supabase.from>,
       );
       const result = await criarRota(empresaId, usuarioId, {
         titulo: "Nova Rota",
         data_rota: "2025-01-01",
-        tipo: "visita",
+        tipo: "diaria",
         cliente_ids: [],
       });
       expect(result.status).toBe("planejada");
@@ -125,7 +125,7 @@ describe("Rotas Services", () => {
   describe("atualizarRota", () => {
     it("atualiza e retorna rota modificada", async () => {
       const { supabase } = await import("~/core/supabase");
-      supabase.from.mockReturnValue(
+      vi.mocked(supabase.from).mockReturnValue(
         mockQueryBuilder({
           single: vi
             .fn()
@@ -133,7 +133,7 @@ describe("Rotas Services", () => {
               data: { id: "1", titulo: "Atualizado" },
               error: null,
             }),
-        }),
+        }) as unknown as ReturnType<typeof supabase.from>,
       );
       const result = await atualizarRota("1", { titulo: "Atualizado" });
       expect(result.titulo).toBe("Atualizado");
@@ -143,10 +143,10 @@ describe("Rotas Services", () => {
   describe("excluirRota", () => {
     it("exclui sem retorno", async () => {
       const { supabase } = await import("~/core/supabase");
-      supabase.from.mockReturnValue(
+      vi.mocked(supabase.from).mockReturnValue(
         mockQueryBuilder({
           eq: vi.fn().mockResolvedValue({ data: null, error: null }),
-        }),
+        }) as unknown as ReturnType<typeof supabase.from>,
       );
       await expect(excluirRota("1")).resolves.toBeUndefined();
     });

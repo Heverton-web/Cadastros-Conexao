@@ -239,9 +239,9 @@ export function AdminMateriaisPage() {
                     {m.points} XP
                   </span>
                   <span>
-                    {Array.isArray(m.allowed_roles)
-                      ? m.allowed_roles.join(", ")
-                      : m.allowed_roles}
+                    {Array.isArray(m.allowedRoles)
+                      ? m.allowedRoles.join(", ")
+                      : m.allowedRoles}
                   </span>
                   {m.tags?.length > 0 && (
                     <span>{m.tags.slice(0, 3).join(", ")}</span>

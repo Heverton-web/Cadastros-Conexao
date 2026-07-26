@@ -92,7 +92,12 @@ export const geradorLinksDiagnosticPlan: DiagnosticPlan = {
         ctx.log("success", `WhatsApp: ${wa}`);
 
         ctx.log("info", "2) Testando gerador UTM...");
-        const utm = geradoresService.gerarUtm("https://exemplo.com", "diagnostico", "teste");
+        const utm = geradoresService.gerarUtm({
+          url: "https://exemplo.com",
+          utm_source: "diagnostico",
+          utm_medium: "teste",
+          utm_campaign: "diagnostico",
+        });
         ctx.log("success", `UTM: ${utm}`);
 
         ctx.log("info", "3) Testando gerador Google Review...");
@@ -100,11 +105,11 @@ export const geradorLinksDiagnosticPlan: DiagnosticPlan = {
         ctx.log("success", `Review: ${review}`);
 
         ctx.log("info", "4) Testando gerador Google Maps...");
-        const maps = geradoresService.gerarGoogleMaps(-23.5505, -46.6333);
+        const maps = geradoresService.gerarGoogleMaps("-23.5505", "-46.6333");
         ctx.log("success", `Maps: ${maps}`);
 
         ctx.log("info", "5) Testando gerador Waze...");
-        const waze = geradoresService.gerarWaze(-23.5505, -46.6333);
+        const waze = geradoresService.gerarWaze("-23.5505", "-46.6333");
         ctx.log("success", `Waze: ${waze}`);
 
         ctx.log("success", "todos os 5 geradores funcionando");

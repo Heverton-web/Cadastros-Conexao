@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 import { useAuth } from "~/lib/auth";
 import { Button } from "~/components/ui/button";
 import {
+  Card,
   CardContent,
   CardDescription,
   CardHeader,

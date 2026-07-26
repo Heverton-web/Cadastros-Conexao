@@ -35,6 +35,9 @@ const LUCIDE_REGISTRY: Record<string, LucideIcon> = {
 
 export type TabIconKey = keyof typeof LUCIDE_REGISTRY
 
+// "dental:<chave>" para ícones customizados odontológicos, ou uma chave Lucide direta
+type IconRef = `dental:${string}` | TabIconKey
+
 // ── Default tab icons ────────────────────────────────────────
 // "dental:" prefix = custom icon; bare key = Lucide
 const DEFAULT_TAB_ICONS: Record<string, IconRef> = {

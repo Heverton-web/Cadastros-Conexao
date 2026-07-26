@@ -25,7 +25,7 @@ export function useMinhasDespesas(
 
   return useQuery({
     queryKey: ["minhas-despesas", empresa_id, usuario_id, filtros],
-    queryFn: () => listarMinhasDespesas(empresa_id, usuario_id, filtros),
+    queryFn: () => listarMinhasDespesas(usuario_id, filtros),
     enabled: !!empresa_id && !!usuario_id,
   });
 }
@@ -39,7 +39,7 @@ export function useDespesasEmpresa(
 
   return useQuery({
     queryKey: ["despesas-empresa", empresa_id, filtros],
-    queryFn: () => listarDespesasEmpresa(empresa_id, filtros),
+    queryFn: () => listarDespesasEmpresa(filtros),
     enabled: !!empresa_id,
   });
 }
@@ -71,14 +71,13 @@ export function useCriarDespesa() {
       if (file && despesa.comprovante_tipo === "upload") {
         const tempId = crypto.randomUUID();
         comprovante_url = await uploadComprovante(
-          empresa_id,
           usuario_id,
           tempId,
           file,
         );
       }
 
-      return criarDespesa(empresa_id, usuario_id, {
+      return criarDespesa(usuario_id, {
         ...despesa,
         comprovante_url,
       });
@@ -113,7 +112,7 @@ export function useExcluirDespesa() {
   const empresa_id = EMPRESA_ID;
 
   return useMutation({
-    mutationFn: (id: string) => excluirDespesa(id, empresa_id),
+    mutationFn: (id: string) => excluirDespesa(id),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["minhas-despesas", empresa_id],

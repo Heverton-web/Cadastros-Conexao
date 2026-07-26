@@ -48,6 +48,7 @@ export type Cadastro = {
   created_at: string;
   updated_at: string;
   profiles?: { nome: string } | null;
+  campos_correcao?: string[] | null;
 };
 
 export type CadastroInput = {

@@ -144,6 +144,8 @@ const PRECO_BASE: Record<ProductSheetTipo, number> = {
   acessorio: 95,
   instrumental: 95,
   promocional: 0,
+  acessorio: 95,
+  instrumental: 150,
 }
 
 function hashSku(sku: string): number {

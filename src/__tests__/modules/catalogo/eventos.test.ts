@@ -14,8 +14,6 @@ vi.mock("~/core/services/webhooks", () => ({
   dispararEventoModulo: vi.fn().mockResolvedValue(undefined),
 }))
 
-const empresaId = "emp-123"
-
 function mockSingleResolve(data: unknown) {
   return {
     select: vi.fn().mockReturnThis(),
@@ -37,12 +35,11 @@ describe("Catalogo - Eventos da Central de Acoes", () => {
       const { criarImplante } = await import("~/features/catalogo/services/implantes.service")
       const { supabase } = await import("~/core/supabase")
       const { dispararEventoModulo } = await import("~/core/services/webhooks")
-      supabase.from.mockReturnValue(mockSingleResolve({ sku: "IMP-001", linha_id: "lin-1", diametro_mm: 4, comprimento_mm: 10 }))
-      await criarImplante(empresaId, { sku: "IMP-001", linha_id: "lin-1", diametro_mm: 4, comprimento_mm: 10 })
+      vi.mocked(supabase.from).mockReturnValue(mockSingleResolve({ sku: "IMP-001", linha_id: "lin-1", diametro_mm: 4, comprimento_mm: 10 }) as unknown as ReturnType<typeof supabase.from>)
+      await criarImplante({ sku: "IMP-001", nome: "Implante Teste", linha_id: "lin-1", diametro_mm: 4, comprimento_mm: 10 })
       expect(dispararEventoModulo).toHaveBeenCalledWith(
         "catalogo", "produto.criado",
-        { sku: "IMP-001", tipo: "implante", empresa_id: empresaId },
-        empresaId,
+        { sku: "IMP-001", tipo: "implante" },
       )
     })
 
@@ -50,12 +47,11 @@ describe("Catalogo - Eventos da Central de Acoes", () => {
       const { atualizarImplante } = await import("~/features/catalogo/services/implantes.service")
       const { supabase } = await import("~/core/supabase")
       const { dispararEventoModulo } = await import("~/core/services/webhooks")
-      supabase.from.mockReturnValue(mockSingleResolve({ sku: "IMP-001" }))
-      await atualizarImplante(empresaId, "IMP-001", { diametro_mm: 5 })
+      vi.mocked(supabase.from).mockReturnValue(mockSingleResolve({ sku: "IMP-001" }) as unknown as ReturnType<typeof supabase.from>)
+      await atualizarImplante("IMP-001", { diametro_mm: 5 })
       expect(dispararEventoModulo).toHaveBeenCalledWith(
         "catalogo", "produto.atualizado",
-        { sku: "IMP-001", tipo: "implante", empresa_id: empresaId },
-        empresaId,
+        { sku: "IMP-001", tipo: "implante" },
       )
     })
 
@@ -63,12 +59,11 @@ describe("Catalogo - Eventos da Central de Acoes", () => {
       const { removerImplante } = await import("~/features/catalogo/services/implantes.service")
       const { supabase } = await import("~/core/supabase")
       const { dispararEventoModulo } = await import("~/core/services/webhooks")
-      supabase.from.mockReturnValue({ delete: vi.fn().mockReturnThis(), eq: vi.fn().mockReturnThis() })
-      await removerImplante(empresaId, "IMP-001")
+      vi.mocked(supabase.from).mockReturnValue({ delete: vi.fn().mockReturnThis(), eq: vi.fn().mockReturnThis() } as unknown as ReturnType<typeof supabase.from>)
+      await removerImplante("IMP-001")
       expect(dispararEventoModulo).toHaveBeenCalledWith(
         "catalogo", "produto.removido",
-        { sku: "IMP-001", tipo: "implante", empresa_id: empresaId },
-        empresaId,
+        { sku: "IMP-001", tipo: "implante" },
       )
     })
   })
@@ -78,12 +73,11 @@ describe("Catalogo - Eventos da Central de Acoes", () => {
       const { criarAbutment } = await import("~/features/catalogo/services/componentes.service")
       const { supabase } = await import("~/core/supabase")
       const { dispararEventoModulo } = await import("~/core/services/webhooks")
-      supabase.from.mockReturnValue(mockSingleResolve({ sku: "ABT-001" }))
-      await criarAbutment(empresaId, { sku: "ABT-001", familia_id: "fam-1", tipo_reabilitacao_id: "tr-1", tipo_abutment_id: "ta-1" })
+      vi.mocked(supabase.from).mockReturnValue(mockSingleResolve({ sku: "ABT-001" }) as unknown as ReturnType<typeof supabase.from>)
+      await criarAbutment({ sku: "ABT-001", nome: "Abutment Teste", tipo_abutment_id: "ta-1" })
       expect(dispararEventoModulo).toHaveBeenCalledWith(
         "catalogo", "produto.criado",
-        { sku: "ABT-001", tipo: "abutment", empresa_id: empresaId },
-        empresaId,
+        { sku: "ABT-001", tipo: "abutment" },
       )
     })
 
@@ -91,12 +85,11 @@ describe("Catalogo - Eventos da Central de Acoes", () => {
       const { atualizarAbutment } = await import("~/features/catalogo/services/componentes.service")
       const { supabase } = await import("~/core/supabase")
       const { dispararEventoModulo } = await import("~/core/services/webhooks")
-      supabase.from.mockReturnValue(mockSingleResolve({ sku: "ABT-001" }))
-      await atualizarAbutment(empresaId, "ABT-001", { altura_corpo: 5 })
+      vi.mocked(supabase.from).mockReturnValue(mockSingleResolve({ sku: "ABT-001" }) as unknown as ReturnType<typeof supabase.from>)
+      await atualizarAbutment("ABT-001", { altura_corpo_mm: 5 })
       expect(dispararEventoModulo).toHaveBeenCalledWith(
         "catalogo", "produto.atualizado",
-        { sku: "ABT-001", tipo: "abutment", empresa_id: empresaId },
-        empresaId,
+        { sku: "ABT-001", tipo: "abutment" },
       )
     })
 
@@ -104,12 +97,11 @@ describe("Catalogo - Eventos da Central de Acoes", () => {
       const { removerAbutment } = await import("~/features/catalogo/services/componentes.service")
       const { supabase } = await import("~/core/supabase")
       const { dispararEventoModulo } = await import("~/core/services/webhooks")
-      supabase.from.mockReturnValue({ delete: vi.fn().mockReturnThis(), eq: vi.fn().mockReturnThis() })
-      await removerAbutment(empresaId, "ABT-001")
+      vi.mocked(supabase.from).mockReturnValue({ delete: vi.fn().mockReturnThis(), eq: vi.fn().mockReturnThis() } as unknown as ReturnType<typeof supabase.from>)
+      await removerAbutment("ABT-001")
       expect(dispararEventoModulo).toHaveBeenCalledWith(
         "catalogo", "produto.removido",
-        { sku: "ABT-001", tipo: "abutment", empresa_id: empresaId },
-        empresaId,
+        { sku: "ABT-001", tipo: "abutment" },
       )
     })
   })
@@ -119,12 +111,11 @@ describe("Catalogo - Eventos da Central de Acoes", () => {
       const { criarKit } = await import("~/features/catalogo/services/kits.service")
       const { supabase } = await import("~/core/supabase")
       const { dispararEventoModulo } = await import("~/core/services/webhooks")
-      supabase.from.mockReturnValue(mockSingleResolve({ sku: "KIT-001" }))
-      await criarKit(empresaId, { sku: "KIT-001", categoria_id: "cat-1", nome: "Kit Teste" })
+      vi.mocked(supabase.from).mockReturnValue(mockSingleResolve({ sku: "KIT-001" }) as unknown as ReturnType<typeof supabase.from>)
+      await criarKit({ sku: "KIT-001", nome: "Kit Teste" })
       expect(dispararEventoModulo).toHaveBeenCalledWith(
         "catalogo", "produto.criado",
-        { sku: "KIT-001", tipo: "kit", empresa_id: empresaId },
-        empresaId,
+        { sku: "KIT-001", tipo: "kit" },
       )
     })
 
@@ -132,12 +123,11 @@ describe("Catalogo - Eventos da Central de Acoes", () => {
       const { atualizarKit } = await import("~/features/catalogo/services/kits.service")
       const { supabase } = await import("~/core/supabase")
       const { dispararEventoModulo } = await import("~/core/services/webhooks")
-      supabase.from.mockReturnValue(mockSingleResolve({ sku: "KIT-001" }))
-      await atualizarKit(empresaId, "KIT-001", { nome: "Atualizado" })
+      vi.mocked(supabase.from).mockReturnValue(mockSingleResolve({ sku: "KIT-001" }) as unknown as ReturnType<typeof supabase.from>)
+      await atualizarKit("KIT-001", { nome: "Atualizado" })
       expect(dispararEventoModulo).toHaveBeenCalledWith(
         "catalogo", "produto.atualizado",
-        { sku: "KIT-001", tipo: "kit", empresa_id: empresaId },
-        empresaId,
+        { sku: "KIT-001", tipo: "kit" },
       )
     })
 
@@ -145,35 +135,34 @@ describe("Catalogo - Eventos da Central de Acoes", () => {
       const { removerKit } = await import("~/features/catalogo/services/kits.service")
       const { supabase } = await import("~/core/supabase")
       const { dispararEventoModulo } = await import("~/core/services/webhooks")
-      supabase.from.mockReturnValue({ delete: vi.fn().mockReturnThis(), eq: vi.fn().mockReturnThis() })
-      await removerKit(empresaId, "KIT-001")
+      vi.mocked(supabase.from).mockReturnValue({ delete: vi.fn().mockReturnThis(), eq: vi.fn().mockReturnThis() } as unknown as ReturnType<typeof supabase.from>)
+      await removerKit("KIT-001")
       expect(dispararEventoModulo).toHaveBeenCalledWith(
         "catalogo", "produto.removido",
-        { sku: "KIT-001", tipo: "kit", empresa_id: empresaId },
-        empresaId,
+        { sku: "KIT-001", tipo: "kit" },
       )
     })
   })
 
-  describe("Payload dos eventos inclui empresa_id", () => {
-    it("payload do evento produto.criado contem empresa_id", async () => {
+  describe("Payload dos eventos inclui sku e tipo do produto", () => {
+    it("payload do evento produto.criado contem sku e tipo", async () => {
       const { criarImplante } = await import("~/features/catalogo/services/implantes.service")
       const { supabase } = await import("~/core/supabase")
       const { dispararEventoModulo } = await import("~/core/services/webhooks")
-      supabase.from.mockReturnValue(mockSingleResolve({ sku: "IMP-001" }))
-      await criarImplante(empresaId, { sku: "IMP-001", linha_id: "lin-1", diametro_mm: 4, comprimento_mm: 10 })
-      const payload = dispararEventoModulo.mock.calls[0][2]
-      expect(payload).toHaveProperty("empresa_id", empresaId)
+      vi.mocked(supabase.from).mockReturnValue(mockSingleResolve({ sku: "IMP-001" }) as unknown as ReturnType<typeof supabase.from>)
+      await criarImplante({ sku: "IMP-001", nome: "Implante Teste", linha_id: "lin-1", diametro_mm: 4, comprimento_mm: 10 })
+      const payload = vi.mocked(dispararEventoModulo).mock.calls[0][2]
+      expect(payload).toEqual({ sku: "IMP-001", tipo: "implante" })
     })
 
-    it("payload do evento produto.removido contem empresa_id", async () => {
+    it("payload do evento produto.removido contem sku e tipo", async () => {
       const { removerImplante } = await import("~/features/catalogo/services/implantes.service")
       const { supabase } = await import("~/core/supabase")
       const { dispararEventoModulo } = await import("~/core/services/webhooks")
-      supabase.from.mockReturnValue({ delete: vi.fn().mockReturnThis(), eq: vi.fn().mockReturnThis() })
-      await removerImplante(empresaId, "IMP-001")
-      const payload = dispararEventoModulo.mock.calls[0][2]
-      expect(payload).toHaveProperty("empresa_id", empresaId)
+      vi.mocked(supabase.from).mockReturnValue({ delete: vi.fn().mockReturnThis(), eq: vi.fn().mockReturnThis() } as unknown as ReturnType<typeof supabase.from>)
+      await removerImplante("IMP-001")
+      const payload = vi.mocked(dispararEventoModulo).mock.calls[0][2]
+      expect(payload).toEqual({ sku: "IMP-001", tipo: "implante" })
     })
   })
 
@@ -182,9 +171,9 @@ describe("Catalogo - Eventos da Central de Acoes", () => {
       const { removerImplante } = await import("~/features/catalogo/services/implantes.service")
       const { supabase } = await import("~/core/supabase")
       const { dispararEventoModulo } = await import("~/core/services/webhooks")
-      dispararEventoModulo.mockRejectedValue(new Error("Webhook error"))
-      supabase.from.mockReturnValue({ delete: vi.fn().mockReturnThis(), eq: vi.fn().mockReturnThis() })
-      await expect(removerImplante(empresaId, "IMP-001")).resolves.not.toThrow()
+      vi.mocked(dispararEventoModulo).mockRejectedValue(new Error("Webhook error"))
+      vi.mocked(supabase.from).mockReturnValue({ delete: vi.fn().mockReturnThis(), eq: vi.fn().mockReturnThis() } as unknown as ReturnType<typeof supabase.from>)
+      await expect(removerImplante("IMP-001")).resolves.not.toThrow()
     })
   })
 })

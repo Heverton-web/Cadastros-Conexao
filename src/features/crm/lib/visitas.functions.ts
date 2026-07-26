@@ -1,5 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
-import { requireSupabaseAuth } from "~/integrations/supabase/auth-middleware";
+import { requireSupabaseAuthMiddleware } from "~/integrations/supabase/auth-middleware";
 import { dispararEventoModulo } from "~/core/services/webhooks";
 import { z } from "zod";
 
@@ -30,7 +30,7 @@ const visitaSchema = z.object({
 });
 
 export const registrarVisita = createServerFn({ method: "POST" })
-  .middleware([requireSupabaseAuth])
+  .middleware([requireSupabaseAuthMiddleware])
   .inputValidator((input: unknown) => visitaSchema.parse(input))
   .handler(async ({ data, context }) => {
     const { supabase, userId } = context;
@@ -115,7 +115,7 @@ const clienteSchema = z.object({
 });
 
 export const criarCliente = createServerFn({ method: "POST" })
-  .middleware([requireSupabaseAuth])
+  .middleware([requireSupabaseAuthMiddleware])
   .inputValidator((input: unknown) => clienteSchema.parse(input))
   .handler(async ({ data, context }) => {
     const { supabase, userId } = context;

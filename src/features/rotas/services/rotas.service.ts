@@ -157,7 +157,7 @@ export async function atualizarStatusClienteRota(
     .single();
   if (error) throw error;
 
-  if (status === "realizada") {
+  if (status === "visitado") {
     dispararEventoModulo(MODULO_KEY, "visita.registrada", { rota_cliente_id: rotaClienteId, empresa_id: data.empresa_id }).catch(() => {});
   }
 

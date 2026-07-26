@@ -17,3 +17,13 @@ export * from "./services/parafusos.service"
 export * from "./services/fresagens.service"
 export * from "./schemas"
 export * from "./hooks/useCatalogo"
+
+// Reexportação explícita para resolver ambiguidade: parafusos.service.ts é a
+// fonte canônica de Tipos de Parafuso (componentes.service.ts mantém uma cópia
+// legada com o mesmo nome de export).
+export {
+  listarTiposParafusos,
+  criarTipoParafuso,
+  toggleTipoParafusoAtivo,
+  removerTipoParafuso,
+} from "./services/parafusos.service"

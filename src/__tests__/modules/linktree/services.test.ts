@@ -58,12 +58,12 @@ describe("LinkTree Services", () => {
   describe("listarColaboradores", () => {
     it("retorna lista quando Supabase responde com dados", async () => {
       const { supabase } = await import("~/core/supabase");
-      supabase.from.mockReturnValue(
+      vi.mocked(supabase.from).mockReturnValue(
         mockQueryBuilder({
           then: vi.fn((resolve: (v: unknown) => void) =>
             resolve({ data: [{ id: "1", nome: "João" }], error: null }),
           ),
-        }),
+        }) as unknown as ReturnType<typeof supabase.from>,
       );
       const result = await listarColaboradores(empresaId);
       expect(result).toHaveLength(1);
@@ -71,12 +71,12 @@ describe("LinkTree Services", () => {
 
     it("lança erro quando Supabase falha", async () => {
       const { supabase } = await import("~/core/supabase");
-      supabase.from.mockReturnValue(
+      vi.mocked(supabase.from).mockReturnValue(
         mockQueryBuilder({
           then: vi.fn((resolve: (v: unknown) => void) =>
             resolve({ data: null, error: new Error("DB Error") }),
           ),
-        }),
+        }) as unknown as ReturnType<typeof supabase.from>,
       );
       await expect(listarColaboradores(empresaId)).rejects.toThrow("DB Error");
     });
@@ -85,7 +85,7 @@ describe("LinkTree Services", () => {
   describe("criarColaborador", () => {
     it("cria colaborador e retorna com id", async () => {
       const { supabase } = await import("~/core/supabase");
-      supabase.from.mockReturnValue(
+      vi.mocked(supabase.from).mockReturnValue(
         mockQueryBuilder({
           single: vi
             .fn()
@@ -93,7 +93,7 @@ describe("LinkTree Services", () => {
               data: { id: "new-1", nome: "Maria" },
               error: null,
             }),
-        }),
+        }) as unknown as ReturnType<typeof supabase.from>,
       );
       const result = await criarColaborador({ nome: "Maria" } as any);
       expect(result.id).toBe("new-1");
@@ -103,10 +103,10 @@ describe("LinkTree Services", () => {
   describe("deletarColaborador", () => {
     it("exclui sem retorno", async () => {
       const { supabase } = await import("~/core/supabase");
-      supabase.from.mockReturnValue(
+      vi.mocked(supabase.from).mockReturnValue(
         mockQueryBuilder({
           eq: vi.fn().mockResolvedValue({ data: null, error: null }),
-        }),
+        }) as unknown as ReturnType<typeof supabase.from>,
       );
       await expect(deletarColaborador("1")).resolves.toBeUndefined();
     });
@@ -115,7 +115,7 @@ describe("LinkTree Services", () => {
   describe("listarEmpresaConfig", () => {
     it("retorna config quando encontrada", async () => {
       const { supabase } = await import("~/core/supabase");
-      supabase.from.mockReturnValue(
+      vi.mocked(supabase.from).mockReturnValue(
         mockQueryBuilder({
           maybeSingle: vi
             .fn()
@@ -123,7 +123,7 @@ describe("LinkTree Services", () => {
               data: { id: "cfg-1", slug: "minha-empresa" },
               error: null,
             }),
-        }),
+        }) as unknown as ReturnType<typeof supabase.from>,
       );
       const result = await listarEmpresaConfig(empresaId);
       expect(result?.slug).toBe("minha-empresa");
@@ -133,10 +133,10 @@ describe("LinkTree Services", () => {
   describe("verificarSlugDisponivel", () => {
     it("retorna true quando slug nao existe", async () => {
       const { supabase } = await import("~/core/supabase");
-      supabase.from.mockReturnValue(
+      vi.mocked(supabase.from).mockReturnValue(
         mockQueryBuilder({
           maybeSingle: vi.fn().mockResolvedValue({ data: null, error: null }),
-        }),
+        }) as unknown as ReturnType<typeof supabase.from>,
       );
       const result = await verificarSlugDisponivel("slug-livre");
       expect(result).toBe(true);
@@ -144,12 +144,12 @@ describe("LinkTree Services", () => {
 
     it("retorna false quando slug ja existe", async () => {
       const { supabase } = await import("~/core/supabase");
-      supabase.from.mockReturnValue(
+      vi.mocked(supabase.from).mockReturnValue(
         mockQueryBuilder({
           maybeSingle: vi
             .fn()
             .mockResolvedValue({ data: { empresa_id: "outra" }, error: null }),
-        }),
+        }) as unknown as ReturnType<typeof supabase.from>,
       );
       const result = await verificarSlugDisponivel("slug-ocupado");
       expect(result).toBe(false);

@@ -34,7 +34,7 @@ export function PedidosAdmin() {
   useEffect(() => { load() }, [empresaId, search])
 
   async function handleStatusChange(id: string, status: StatusPedido) {
-    await atualizarStatusPedido(id, status, empresaId)
+    await atualizarStatusPedido(id, status)
     load()
     if (detailPedido?.id === id) {
       setDetailPedido({ ...detailPedido!, status })

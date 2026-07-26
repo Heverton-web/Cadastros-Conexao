@@ -62,20 +62,20 @@ export async function criarResposta(
 
   if (error) throw error;
 
-  dispararEventoModulo(
-    MODULO_KEY,
-    "nps.resposta_recebida",
-    { resposta_id: data.id, nps_score: data.nps_score, csat: data.csat, empresa_id: empresaId },
-    empresaId,
-  ).catch(() => {});
+  dispararEventoModulo(MODULO_KEY, "nps.resposta_recebida", {
+    resposta_id: data.id,
+    nps_score: data.nps_score,
+    csat: data.csat,
+    empresa_id: empresaId,
+  }).catch(() => {});
 
   if (data.nps_score !== null && data.nps_score <= 6) {
-    dispararEventoModulo(
-      MODULO_KEY,
-      "nps.detrator_detectado",
-      { resposta_id: data.id, nps_score: data.nps_score, comentario: data.nps_comment, empresa_id: empresaId },
-      empresaId,
-    ).catch(() => {});
+    dispararEventoModulo(MODULO_KEY, "nps.detrator_detectado", {
+      resposta_id: data.id,
+      nps_score: data.nps_score,
+      comentario: data.nps_comment,
+      empresa_id: empresaId,
+    }).catch(() => {});
   }
 
   return data as NpsResposta;

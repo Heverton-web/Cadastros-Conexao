@@ -8,6 +8,7 @@ import { Button } from "~/components/ui/button";
 import { Skeleton } from "~/components/ui/skeleton";
 import { EmptyState } from "~/components/ui/empty-state";
 import {
+  AlertDialog,
   AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
@@ -17,6 +18,7 @@ import {
   AlertDialogTitle,
 } from "~/components/ui/alert-dialog";
 import {
+  Dialog,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -25,6 +27,7 @@ import {
 } from "~/components/ui/dialog";
 import { Input } from "~/components/ui/input";
 import {
+  Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
@@ -273,7 +276,7 @@ export function PixelsList() {
         </DialogContent>
       </Dialog>
 
-      <AlertDialog open={!!paraExcluir} onOpenChange={(o) => !o && setParaExcluir(null)}>
+      <AlertDialog open={!!paraExcluir} onOpenChange={(o: boolean) => !o && setParaExcluir(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
             <div className="flex items-center gap-3">

@@ -27,6 +27,7 @@ import {
 } from "~/components/ui/select";
 import { EMPRESA_ID } from "~/config/empresa";
 import { useLead, useAtualizarLead } from "../hooks/useLeads";
+import type { MktgLead } from "../types";
 
 const STATUS_LABELS: Record<string, string> = {
   novo: "Novo",
@@ -80,10 +81,10 @@ export function LeadDetail() {
         id,
         updates: {
           nome: formNome.trim(),
-          email: formEmail.trim() || null,
+          email: formEmail.trim(),
           telefone: formTelefone.trim() || null,
           origem: formOrigem.trim() || null,
-          status: formStatus,
+          status: formStatus as MktgLead["status"],
           score: formScore,
         },
       });

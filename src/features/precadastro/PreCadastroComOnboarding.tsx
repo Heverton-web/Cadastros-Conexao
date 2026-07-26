@@ -21,7 +21,6 @@ export function PreCadastroComOnboarding({ children }: { children: React.ReactNo
         open={open}
         onOpenChange={setOpen}
         steps={PRE_CADASTRO_ONBOARDING_STEPS}
-        moduleKey="pre-cadastro"
         onDismiss={dismiss}
       />
     </>

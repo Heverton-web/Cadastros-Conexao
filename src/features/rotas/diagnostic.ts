@@ -96,7 +96,7 @@ export const rotasDiagnosticPlan: DiagnosticPlan = {
         ctx.log("success", `${todos.length} cliente(s) base na empresa`);
 
         ctx.log("info", "3) Filtrando por cidade...");
-        const filtrados = await clientesBaseService.listarClientesBase(ctx.empresaId, { cidade: "São Paulo" });
+        const filtrados = await clientesBaseService.listarClientesBase(ctx.empresaId, undefined, { cidade: "São Paulo" });
         ctx.log("success", `${filtrados.length} cliente(s) em São Paulo`);
 
         ctx.log("info", "4) Buscando por ID...");

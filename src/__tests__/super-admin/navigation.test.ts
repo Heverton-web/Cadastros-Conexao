@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, beforeAll } from "vitest";
 import { registerModule, registerNavItem } from "~/registry";
 import { getNavItems } from "~/registry/nav-items";
 import { createAllTruePermissions } from "~/__tests__/mocks/auth";

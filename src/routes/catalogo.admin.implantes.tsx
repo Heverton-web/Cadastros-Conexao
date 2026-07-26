@@ -156,9 +156,9 @@ function AdminImplantesPage() {
   const filteredLinhas = linhas?.filter(l => l.familia_id === implData.familia_id) ?? []
 
   function getSimpleConfig() {
-    if (subTab === "Conexões") return { headers: ["Nome", "Sigla", "Categoria", "Ativo", "Ações"], rows: (conexoes ?? []) as Record<string,unknown>[], table: "catalogo_ips_conexoes", pk: "id" as const, toggle: (row: Record<string,unknown>) => toggleConexao.mutate({ id: row.id as string, ativo: !row.ativo }) }
-    if (subTab === "Famílias") return { headers: ["Nome", "Cor", "Conexão", "Ativo", "Ações"], rows: (familias ?? []) as Record<string,unknown>[], table: "catalogo_ips_familias", pk: "id" as const, toggle: (row: Record<string,unknown>) => toggleFamilia.mutate({ id: row.id as string, ativo: !row.ativo }) }
-    if (subTab === "Linhas") return { headers: ["Nome", "Família", "Ativo", "Ações"], rows: (linhas ?? []) as Record<string,unknown>[], table: "catalogo_ips_linhas", pk: "id" as const, toggle: (row: Record<string,unknown>) => toggleLinha.mutate({ id: row.id as string, ativo: !row.ativo }) }
+    if (subTab === "Conexões") return { headers: ["Nome", "Sigla", "Categoria", "Ativo", "Ações"], rows: (conexoes ?? []) as unknown as Record<string,unknown>[], table: "catalogo_ips_conexoes", pk: "id" as const, toggle: (row: Record<string,unknown>) => toggleConexao.mutate({ id: row.id as string, ativo: !row.ativo }) }
+    if (subTab === "Famílias") return { headers: ["Nome", "Cor", "Conexão", "Ativo", "Ações"], rows: (familias ?? []) as unknown as Record<string,unknown>[], table: "catalogo_ips_familias", pk: "id" as const, toggle: (row: Record<string,unknown>) => toggleFamilia.mutate({ id: row.id as string, ativo: !row.ativo }) }
+    if (subTab === "Linhas") return { headers: ["Nome", "Família", "Ativo", "Ações"], rows: (linhas ?? []) as unknown as Record<string,unknown>[], table: "catalogo_ips_linhas", pk: "id" as const, toggle: (row: Record<string,unknown>) => toggleLinha.mutate({ id: row.id as string, ativo: !row.ativo }) }
     return null
   }
 
@@ -352,7 +352,7 @@ function AdminImplantesPage() {
 
             {/* Imagens do Produto */}
             <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655]">Imagens do Produto</h3>
-            <ImageUploader produtoTipo="implante" produtoSku={implData.sku} empresaId={empresaId} />
+            <ImageUploader produtoTipo="implante" produtoSku={implData.sku} />
 
             {/* Comercial */}
             <h3 className="text-sm font-black uppercase tracking-widest text-[#c9a655]">Comercial</h3>
