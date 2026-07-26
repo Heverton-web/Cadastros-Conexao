@@ -285,6 +285,7 @@ function AbutmentList({ familiaId, tipoAbutmentId, tipoReabId, onBack }: { famil
             imageUrl={imagensMap.get(a.sku)?.[0]?.url_imagem}
             onClick={() => navigate({ to: '/catalogo/produto/$tipo/$sku', params: { tipo: 'abutment', sku: a.sku }, search: { familia: familiaId, tipoAbutment: tipoAbutmentId, tipoReab: tipoReabId } })}
             qtdDisponivel={a.qtd_disponivel}
+            qtdMinimaAviso={a.qtd_minima_aviso}
           />
         ))}
       </div>

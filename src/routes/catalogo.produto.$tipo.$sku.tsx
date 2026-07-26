@@ -9,6 +9,7 @@ import { useClienteAtivo } from "~/features/catalogo/context/cliente-ativo"
 import { playCoinSound } from "~/features/catalogo/services/audio.service"
 import { listarKitsRelacionadosDeChave, listarKitsRelacionadosDeCicatrizador } from "~/features/catalogo/services/kits.service"
 import type { ProductSheetTipo } from "~/features/catalogo/types"
+import { EstoqueBadge } from "~/features/catalogo/components/admin/produtos/EstoqueBadge"
 import { useState, useEffect, lazy, Suspense } from "react"
 
 // Componentes pesados (timeline de fresagem, sequência protética, modal de ficha técnica,
@@ -19,7 +20,7 @@ const SequenciaProtetica = lazy(() => import("~/features/catalogo/components/Seq
 const FichaTecnicaModal = lazy(() => import("~/features/catalogo/components/FichaTecnicaModal").then((m) => ({ default: m.FichaTecnicaModal })))
 const BomTable = lazy(() => import("~/features/catalogo/components/BomTable").then((m) => ({ default: m.BomTable })))
 import toast from "react-hot-toast"
-import { ArrowLeft, ShoppingCart, Box, Zap, ExternalLink, Check, TrendingDown, X, FileText, ListOrdered, ChevronDown } from "lucide-react"
+import { ArrowLeft, ShoppingCart, Box, Zap, ExternalLink, Check, TrendingDown, X, FileText, ListOrdered, ChevronDown, PackageX } from "lucide-react"
 import { openImageViewer } from "~/features/catalogo/services/ui.service"
 import { useTabIcons, TabIconsProvider } from "~/features/catalogo/contexts/TabIconsContext"
 
@@ -106,14 +107,17 @@ function ProductImage({ cor, nome, onClick, imageUrl }: { cor: string; nome: str
   )
 }
 
-function ProductHeader({ cor, badge, nome, sku }: { cor: string; badge?: string; nome: string; sku?: string }) {
+function ProductHeader({ cor, badge, nome, sku, qtdDisponivel, qtdMinimaAviso }: { cor: string; badge?: string; nome: string; sku?: string; qtdDisponivel?: number | null; qtdMinimaAviso?: number | null }) {
   return (
     <div className="space-y-3 sm:space-y-4 rounded-2xl bg-gradient-to-br from-[var(--color-surface)]/40 to-transparent border border-[var(--color-border-subtle)]/60 p-4 sm:p-6 backdrop-blur-sm">
-      {badge && (
-        <div className="inline-flex items-center px-3 sm:px-4 py-1 sm:py-1.5 rounded-full border shadow-lg" style={{ borderColor: cor, backgroundColor: `${cor}1a`, color: cor, boxShadow: `0 0 24px ${cor}22` }}>
-          <span className="text-[10px] font-black uppercase tracking-[0.2em]">{badge}</span>
-        </div>
-      )}
+      <div className="flex flex-wrap items-center gap-2">
+        {badge && (
+          <div className="inline-flex items-center px-3 sm:px-4 py-1 sm:py-1.5 rounded-full border shadow-lg" style={{ borderColor: cor, backgroundColor: `${cor}1a`, color: cor, boxShadow: `0 0 24px ${cor}22` }}>
+            <span className="text-[10px] font-black uppercase tracking-[0.2em]">{badge}</span>
+          </div>
+        )}
+        <EstoqueBadge qtdDisponivel={qtdDisponivel} qtdMinimaAviso={qtdMinimaAviso} />
+      </div>
       <h1 className="text-xl sm:text-3xl lg:text-4xl font-black leading-snug sm:leading-[0.95] text-white tracking-tight sm:tracking-tighter text-balance">{nome}</h1>
       {sku && (
         <p className="font-mono text-xs sm:text-sm text-[var(--color-text-muted)]">SKU: <span className="text-white/80">{sku}</span></p>
@@ -122,7 +126,7 @@ function ProductHeader({ cor, badge, nome, sku }: { cor: string; badge?: string;
   )
 }
 
-function AddButton({ tipo, sku, nome, cor, precoDB, qtdDisponivel }: { tipo: ProductSheetTipo; sku: string; nome: string; cor: string; precoDB?: number | null; qtdDisponivel?: number | null }) {
+function AddButton({ tipo, sku, nome, cor, precoDB, qtdDisponivel, qtdMinimaAviso }: { tipo: ProductSheetTipo; sku: string; nome: string; cor: string; precoDB?: number | null; qtdDisponivel?: number | null; qtdMinimaAviso?: number | null }) {
   const [added, setAdded] = useState(false)
   const { showPrices } = useCatalogoVisibility()
   const { isConsultor, clienteAtivo } = useClienteAtivo()
@@ -146,9 +150,16 @@ function AddButton({ tipo, sku, nome, cor, precoDB, qtdDisponivel }: { tipo: Pro
     }
   }, [precoBase, isConsultor, clienteAtivo?.id, sku, tipo])
 
-  if (qtdDisponivel != null && qtdDisponivel <= 0) return null
+  const semEstoque = qtdDisponivel != null && qtdDisponivel <= 0
+  if (semEstoque) {
+    return (
+      <div className="w-full rounded-xl border border-red-500/30 bg-red-500/10 px-5 py-2.5 min-h-[44px] flex items-center justify-center gap-2.5 cursor-not-allowed opacity-70">
+        <PackageX className="h-4 w-4 text-red-400 transition-transform group-hover:scale-110" />
+        <span className="text-sm font-bold text-red-400">Sem Estoque</span>
+      </div>
+    )
+  }
   if (!Number.isFinite(precoBase) || precoBase <= 0) return null
-
   const handleAdd = () => {
     addToCart({ sku, nome, tipo, cor, preco })
     playCoinSound()
@@ -165,6 +176,15 @@ function AddButton({ tipo, sku, nome, cor, precoDB, qtdDisponivel }: { tipo: Pro
       duration: 2500,
     })
     setTimeout(() => setAdded(false), 2000)
+  }
+
+  if (semEstoque) {
+    return (
+      <div className="w-full rounded-xl border border-red-500/30 bg-red-500/10 px-5 py-2.5 min-h-[44px] flex items-center justify-center gap-2.5 cursor-not-allowed opacity-70">
+        <PackageX className="h-4 w-4 text-red-400" />
+        <span className="text-sm font-bold text-red-400">Sem Estoque</span>
+      </div>
+    )
   }
 
   return (
@@ -253,11 +273,11 @@ function EmptyState({ msg, hint }: { msg: string; hint?: string }) {
 
 /** Small product card for related items in tabs (cicatrizadores, abutments, kits, chaves) */
 function RelatedProductCard({
-  nome, sku, cor, preco, tipo, imageUrl, onImageClick, onVerFicha, onSeqProtetica, fichaData, qtdDisponivel, children,
+  nome, sku, cor, preco, tipo, imageUrl, onImageClick, onVerFicha, onSeqProtetica, fichaData, qtdDisponivel, qtdMinimaAviso, children,
 }: {
   nome: string; sku: string; cor: string; preco?: number | null
   tipo: ProductSheetTipo; imageUrl?: string | null
-  onImageClick: () => void; onVerFicha?: () => void; onSeqProtetica?: () => void; fichaData?: Record<string, string | number | null | undefined>; qtdDisponivel?: number | null; children?: React.ReactNode
+  onImageClick: () => void; onVerFicha?: () => void; onSeqProtetica?: () => void; fichaData?: Record<string, string | number | null | undefined>; qtdDisponivel?: number | null; qtdMinimaAviso?: number | null; children?: React.ReactNode
 }) {
   return (
     <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 p-3 sm:p-4 rounded-xl border border-[var(--color-border-subtle)] bg-[var(--color-surface)]/40 hover:border-[var(--color-accent)]/40 transition-all duration-200">
@@ -301,7 +321,7 @@ function RelatedProductCard({
               Seq. Protética
             </button>
           )}
-          <AddButton tipo={tipo} sku={sku} nome={nome} cor={cor} precoDB={preco} qtdDisponivel={qtdDisponivel} />
+          <AddButton tipo={tipo} sku={sku} nome={nome} cor={cor} precoDB={preco} qtdDisponivel={qtdDisponivel} qtdMinimaAviso={qtdMinimaAviso} />
         </div>
       )}
     </div>
@@ -400,7 +420,7 @@ function ImplanteDetail({ sku }: { sku: string }) {
 
       {/* Conteúdo */}
       <div className="lg:col-span-8 xl:col-span-7 space-y-6 sm:space-y-8">
-        <ProductHeader cor={cor} badge={impl.linha?.familia?.nome} nome={nome} sku={impl.sku} />
+        <ProductHeader cor={cor} badge={impl.linha?.familia?.nome} nome={nome} sku={impl.sku} qtdDisponivel={impl.qtd_disponivel} qtdMinimaAviso={impl.qtd_minima_aviso} />
 
         <div className="lg:hidden">
           <AddButton tipo="implante" sku={impl.sku} nome={nome} cor={cor} precoDB={impl.preco} qtdDisponivel={impl.qtd_disponivel} />
@@ -855,7 +875,7 @@ function AbutmentDetail({ sku }: { sku: string }) {
 
       {/* Conteúdo */}
       <div className="lg:col-span-8 xl:col-span-7 space-y-6 sm:space-y-8">
-        <ProductHeader cor={cor} badge={ab.familia?.nome} nome={nome} sku={ab.sku} />
+        <ProductHeader cor={cor} badge={ab.familia?.nome} nome={nome} sku={ab.sku} qtdDisponivel={ab.qtd_disponivel} qtdMinimaAviso={ab.qtd_minima_aviso} />
 
         <div className="lg:hidden">
           <AddButton tipo="abutment" sku={ab.sku} nome={nome} cor={cor} precoDB={ab.preco} qtdDisponivel={ab.qtd_disponivel} />
@@ -1255,7 +1275,7 @@ function KitDetail({ sku }: { sku: string }) {
 
       {/* Conteúdo */}
       <div className="lg:col-span-8 xl:col-span-7 space-y-6 sm:space-y-8">
-        <ProductHeader cor={cor} badge={kit.tipo_kit?.nome} nome={nome} sku={kit.sku} />
+        <ProductHeader cor={cor} badge={kit.tipo_kit?.nome} nome={nome} sku={kit.sku} qtdDisponivel={kit.qtd_disponivel} qtdMinimaAviso={kit.qtd_minima_aviso} />
 
         <div className="lg:hidden">
           <AddButton tipo="kit" sku={kit.sku} nome={nome} cor={cor} precoDB={kit.preco} qtdDisponivel={kit.qtd_disponivel} />
@@ -1692,7 +1712,7 @@ function PromocionalDetail({ id }: { id: string }) {
 
       {/* Conteúdo */}
       <div className="lg:col-span-8 xl:col-span-7 space-y-6 sm:space-y-8">
-        <ProductHeader cor={cor} badge="Oferta Especial" nome={promo.nome} />
+        <ProductHeader cor={cor} badge="Oferta Especial" nome={promo.nome} qtdDisponivel={(promo as unknown as Record<string, unknown>).qtd_disponivel as number} qtdMinimaAviso={(promo as unknown as Record<string, unknown>).qtd_minima_aviso as number} />
 
         <div className="lg:hidden">
           <AddButton tipo={"promocional" as ProductSheetTipo} sku={promo.id} nome={promo.nome} cor={cor} precoDB={promo.preco} qtdDisponivel={(promo as unknown as Record<string, unknown>).qtd_disponivel as number} />

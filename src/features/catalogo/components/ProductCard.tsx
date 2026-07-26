@@ -2,6 +2,7 @@ import React from 'react';
 import { ArrowRight, Box } from 'lucide-react';
 import '../styles/theme.css';
 import { CATALOGO_TIPO_LABEL, type ProductSheetTipo } from '../types';
+import { EstoqueBadge } from './admin/produtos/EstoqueBadge';
 
 interface Props {
   sku: string;
@@ -12,11 +13,11 @@ interface Props {
   badge?: string;
   imageUrl?: string;
   onClick?: () => void;
-  /** Quantidade disponível em estoque — quando 0, exibe badge "Sem Estoque" e desativa navegação */
   qtdDisponivel?: number | null;
+  qtdMinimaAviso?: number | null;
 }
 
-export function ProductCard({ sku, nome, corIdentificacao, tipo, badge, imageUrl, onClick, qtdDisponivel }: Props) {
+export function ProductCard({ sku, nome, corIdentificacao, tipo, badge, imageUrl, onClick, qtdDisponivel, qtdMinimaAviso }: Props) {
   const cor = corIdentificacao || '#c9a655';
   const badgeLabel = badge || CATALOGO_TIPO_LABEL[tipo as ProductSheetTipo] || tipo;
   const semEstoque = qtdDisponivel != null && qtdDisponivel <= 0;
@@ -63,11 +64,7 @@ export function ProductCard({ sku, nome, corIdentificacao, tipo, badge, imageUrl
             >
               {badgeLabel}
             </span>
-            {semEstoque && (
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-widest border border-red-500/30 bg-red-500/15 text-red-400">
-                <Box className="h-2.5 w-2.5" /> Sem Estoque
-              </span>
-            )}
+            <EstoqueBadge qtdDisponivel={qtdDisponivel} qtdMinimaAviso={qtdMinimaAviso} compacto />
           </div>
         </div>
 

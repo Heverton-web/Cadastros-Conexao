@@ -163,6 +163,7 @@ function KitsList({ tipoKitId, onBack }: { tipoKitId: string; onBack: () => void
                 corIdentificacao="#c9a655"
                 imageUrl={imagensMap.get(kit.sku)?.[0]?.url_imagem}
                 qtdDisponivel={kit.qtd_disponivel}
+                qtdMinimaAviso={kit.qtd_minima_aviso}
               />
             </Link>
           ))}
