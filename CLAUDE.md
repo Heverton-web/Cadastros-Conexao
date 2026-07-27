@@ -19,7 +19,7 @@ proj_erp/
 │   ├── components/     # UI genérica (ui/, shared/, layout/, guards/)
 │   ├── design-system/  # Tokens, presets, hooks, provider
 │   ├── registry/       # Registro de módulos, nav items, permissões
-│   ├── routes/         # ~196 rotas (TanStack Router file-based)
+│   ├── routes/         # ~198 rotas (TanStack Router file-based)
 │   ├── lib/            # Utilitários genéricos (format, utils)
 │   └── hooks/          # Hooks compartilhados
 ├── supabase/           # Migrations SQL
@@ -71,61 +71,61 @@ validate:all  # types + testes
 ### Economia de Tokens
 | Skill | Trigger |
 |---|---|
-| `caveman` | Modo ultra-condensado de comunicação e geração de código. Co |
-| `headroom` | Intercepta e compacta logs de erro, stack traces e saídas de |
-| `lean-ctx` | Protocolo de inspeção de código que minimiza tokens de conte |
-| `pre-flight-check` | Validação local obrigatória antes de qualquer modificação es |
-| `rtk-memory` | Gerencia aprendizado persistente para evitar repetição de an |
+| `pre-flight-check` |  |
+| `rtk-memory` |  |
 
 ### Módulo (criar/estilizar/validar)
 | Skill | Trigger |
 |---|---|
-| `aplicar-design-modulo` | Aplica o design system a um módulo inteiro do ERP Odonto a p |
+| `aplicar-design-modulo` |  |
 | `criar-componente-modulo` | criar componente |
-| `criar-design-modulo` | criar design do módulo |
-| `criar-form-multitipo` | criar formulário multi-tipo |
-| `criar-migration` | criar migration |
-| `criar-modulo` | criar módulo |
-| `criar-rota` | criar rota |
+| `criar-design-modulo` |  |
+| `criar-form-multitipo` |  |
+| `criar-migration` |  |
+| `criar-modulo` |  |
+| `criar-rota` |  |
 | `design-frontend` |  |
-| `documentar-modulo` | documentar módulo |
-| `gerenciar-nav-items` | adicionar nav item |
-| `validar-modulo` | validar módulo |
+| `documentar-modulo` |  |
+| `gerenciar-nav-items` |  |
+| `validar-modulo` |  |
 
 ### CRUD e UI
 | Skill | Trigger |
 |---|---|
 | `adicionar-permissao` |  |
-| `gerar-crud` | gerar crud |
-| `gerar-formulario` | gerar formulário |
-| `gerar-modal` | gerar modal |
-| `gerar-pagina` | gerar página |
-| `responsividade` | /responsividade <nome_modulo> Use quando o usuario quiser analisar e corrigir a responsividade de qualquer modulo do projeto. |
+| `gerar-crud` |  |
+| `gerar-formulario` |  |
+| `gerar-modal` |  |
+| `gerar-pagina` |  |
+| `responsividade` |  |
 
 ### Deploy e Operação
 | Skill | Trigger |
 |---|---|
 | `calcular-gastos-sessao` |  |
-| `deploy-vps` | ativar SOMENTE quando o usuário disser deploy |
+| `deploy-vps` |  |
 | `implementar-plan` |  |
-| `master-skill` | Orquestrador mestre de frameworks e skills de desenvolviment |
+| `master-skill` |  |
 
 ### Conhecimento e Referência
 | Skill | Trigger |
 |---|---|
 | `ai-agents-mcp` |  |
 | `ai-engineering` |  |
+| `auditoria-fix-adversarial` |  |
 | `clean-architecture` |  |
 | `clean-code` |  |
 | `fable-domain` |  |
 | `fable-judge` |  |
 | `fable-loop` |  |
 | `fable-method` |  |
+| `fix-squad-paralelo` |  |
 | `google-maps-platform` |  |
 | `implementar-mapa-dark-premium` |  |
-| `loop` | Conduz uma entrevista curta e ESCREVE a especificação de um  |
-| `planejar-modulo-repo-externo` | quando o usuário fornecer um link de repo externo e pedir para criar/planejar um novo módulo no ERP. |
-| `sync-docs` | sincronizar docs |
+| `loop` |  |
+| `planejar-modulo-repo-externo` |  |
+| `sync-docs` |  |
+| `triagem-erros-massa` |  |
 
 
 ## Economia de Tokens
