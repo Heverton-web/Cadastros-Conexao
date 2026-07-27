@@ -2,7 +2,7 @@ import { supabase } from "~/core/supabase"
 import { createRoute, useParams, useNavigate, useSearch } from "@tanstack/react-router"
 import { rootRoute } from "./__root"
 import { StoreLayout, useCatalogoVisibility } from "~/features/catalogo/components/StoreLayout"
-import { useImplanteDetalhe, useAbutmentDetalhe, useKitDetalhe, usePromocionalDetalhe, useItensPromocionalDetalhado, useProtocoloFresagem, useGuias, useImagensProduto, useImagensBatch, useChavesDoImplante, useCicatrizadoresDoImplante, useAbutmentsDoImplante, useKitsDoImplante, useKitsComChavesEmComum, useImplantesDoAbutment } from "~/features/catalogo/hooks/useCatalogo"
+import { useImplanteDetalhe, useAbutmentDetalhe, useKitDetalhe, usePromocionalDetalhe, useItensPromocionalDetalhado, useProtocoloFresagem, useGuias, useImagensProduto, useImagensBatch, useChavesDoImplante, useCicatrizadoresDoImplante, useAbutmentsDoImplante, useKitsDoImplante, useKitsComChavesEmComum, useImplantesDoAbutment, useCatalogoConfig } from "~/features/catalogo/hooks/useCatalogo"
 import { addToCart, formatBRL, getPrecoFromDB, mockPreco, resolveBOMItem } from "~/features/catalogo/services/carrinho.service"
 import { resolvePreco } from "~/features/catalogo/services/precos-grupo.service"
 import { useClienteAtivo } from "~/features/catalogo/context/cliente-ativo"
@@ -116,7 +116,7 @@ function ProductHeader({ cor, badge, nome, sku, qtdDisponivel, qtdMinimaAviso }:
             <span className="text-[10px] font-black uppercase tracking-[0.2em]">{badge}</span>
           </div>
         )}
-        <EstoqueBadge qtdDisponivel={qtdDisponivel} qtdMinimaAviso={qtdMinimaAviso} />
+        <EstoqueBadge qtdDisponivel={qtdDisponivel} qtdMinimaAviso={qtdMinimaAviso} exibirEstoque={useCatalogoConfig().data?.exibir_estoque ?? true} />
       </div>
       <h1 className="text-xl sm:text-3xl lg:text-4xl font-black leading-snug sm:leading-[0.95] text-white tracking-tight sm:tracking-tighter text-balance">{nome}</h1>
       {sku && (
@@ -150,7 +150,7 @@ function AddButton({ tipo, sku, nome, cor, precoDB, qtdDisponivel, qtdMinimaAvis
     }
   }, [precoBase, isConsultor, clienteAtivo?.id, sku, tipo])
 
-  const semEstoque = qtdDisponivel != null && qtdDisponivel <= 0
+  const semEstoque = (qtdDisponivel ?? 0) <= 0
   if (semEstoque) {
     return (
       <div className="w-full rounded-xl border border-red-500/30 bg-red-500/10 px-5 py-2.5 min-h-[44px] flex items-center justify-center gap-2.5 cursor-not-allowed opacity-70">
@@ -297,7 +297,7 @@ function RelatedProductCard({
         <div className="sm:order-2 flex-1 min-w-0 space-y-1">
           <h4 className="text-sm font-bold text-white truncate">{nome}</h4>
           <p className="font-mono text-[10px] text-[var(--color-text-muted)]">SKU: {sku}</p>
-          <EstoqueBadge qtdDisponivel={qtdDisponivel} qtdMinimaAviso={qtdMinimaAviso} compacto />
+          <EstoqueBadge qtdDisponivel={qtdDisponivel} qtdMinimaAviso={qtdMinimaAviso} compacto exibirEstoque={useCatalogoConfig().data?.exibir_estoque ?? true} />
           <div className="flex flex-wrap items-center gap-1.5 mt-1">{children}</div>
         </div>
       </div>
@@ -366,7 +366,7 @@ function ImplanteDetail({ sku }: { sku: string }) {
     { label: "Comprimento", value: `${impl.comprimento_mm} mm` },
     impl.diametro_plataforma_mm != null ? { label: "Ø Plataforma", value: `${impl.diametro_plataforma_mm} mm` } : null,
     impl.rosca_interna ? { label: "Rosca Interna", value: impl.rosca_interna } : null,
-    impl.torque_insercao != null ? { label: "Torque Max", value: `${impl.torque_insercao} N·cm` } : null,
+    impl.torque_insercao != null ? { label: "Torque Recomendado", value: `${impl.torque_insercao} N·cm` } : null,
     impl.regiao_apical ? { label: "Região Apical", value: impl.regiao_apical } : null,
     impl.regiao_cervical ? { label: "Região Cervical", value: impl.regiao_cervical } : null,
     impl.macrogeometria ? { label: "Macrogeometria", value: impl.macrogeometria } : null,

@@ -144,7 +144,6 @@ export interface AddToCartResult {
   success: boolean
   error?: "sem_estoque" | "quantidade_excedida"
   maxPermitido?: number
-  adicionado?: number
 }
 
 export function addToCart(
@@ -164,20 +163,9 @@ export function addToCart(
     return { success: false, error: "sem_estoque" }
   }
 
-  // Validação: quantidade excede estoque
+  // Validação: quantidade excede estoque — BLOQUEIA, não adiciona parcialmente
   if (estoque !== null && qtdAtual + qtd > estoque) {
-    const maxPermitido = Math.max(0, estoque - qtdAtual)
-    if (maxPermitido <= 0) {
-      return { success: false, error: "quantidade_excedida", maxPermitido: 0 }
-    }
-    // Adiciona apenas o que cabe
-    if (existing) {
-      existing.quantidade = estoque
-    } else {
-      items.push({ ...item, quantidade: maxPermitido, qtd_disponivel: item.qtd_disponivel ?? null, qtd_minima_aviso: item.qtd_minima_aviso ?? null })
-    }
-    persist()
-    return { success: true, error: "quantidade_excedida", maxPermitido, adicionado: maxPermitido }
+    return { success: false, error: "quantidade_excedida", maxPermitido: estoque }
   }
 
   // OK — adiciona normalmente
@@ -187,7 +175,7 @@ export function addToCart(
     items.push({ ...item, quantidade: qtd, qtd_disponivel: item.qtd_disponivel ?? null, qtd_minima_aviso: item.qtd_minima_aviso ?? null })
   }
   persist()
-  return { success: true, adicionado: qtd }
+  return { success: true }
 }
 
 export function removeFromCart(sku: string): void {
@@ -212,7 +200,8 @@ export function setQuantidade(sku: string, quantidade: number): SetQuantidadeRes
 
   // Limita pela quantidade disponível em estoque
   const estoque = item.qtd_disponivel ?? null
-  if (estoque !== null && quantidade > estoque) {
+  // Estoque conhecido e positivo → valida limite
+  if (estoque !== null && estoque > 0 && quantidade > estoque) {
     item.quantidade = estoque
     persist()
     return { success: true, limitado: true, quantidadeFinal: estoque }

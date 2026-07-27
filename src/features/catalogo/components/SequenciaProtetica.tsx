@@ -7,6 +7,7 @@ import { playCoinSound } from "~/features/catalogo/services/audio.service"
 import { EstoqueBadge } from "./admin/produtos/EstoqueBadge"
 import { openImageViewer } from "~/features/catalogo/services/ui.service"
 import { useCatalogoEmpresaId } from "~/features/catalogo/hooks/useCatalogoEmpresa"
+import { useCatalogoConfig } from "~/features/catalogo/hooks/useCatalogo"
 import { FichaTecnicaModal } from "./FichaTecnicaModal"
 import type { ProductSheetTipo } from "~/features/catalogo/types"
 
@@ -41,6 +42,8 @@ export function SequenciaProtetica({ familiaId, tipoAbutmentId, familiaNome, tip
   const [loading, setLoading] = useState(false)
   const [imagensMap, setImagensMap] = useState<Map<string, string>>(new Map())
   const [fichaModal, setFichaModal] = useState<{ open: boolean; nome: string; sku: string; imagemUrl?: string | null; tipo?: ProductSheetTipo; preco?: number; sections: Array<{ title: string; specs: Array<{ label: string; value: string | number | null | undefined }> }>; vinculacoes?: Array<{ nome: string; sku: string; valor?: number | null; tipo?: ProductSheetTipo }> }>({ open: false, nome: "", sku: "", sections: [] })
+  const { data: config } = useCatalogoConfig()
+  const exibirEstoque = config?.exibir_estoque ?? true
 
   useEffect(() => {
     if (!abutmentSku || !empresaId) return
@@ -52,7 +55,7 @@ export function SequenciaProtetica({ familiaId, tipoAbutmentId, familiaNome, tip
 
         const [{ data: etapasData }, { data: etapaCompData }, { data: seqInfo }] = await Promise.all([
           supabase.from("catalogo_seq_protetica_etapas").select("seq_id, etapa_id, etapa:catalogo_cps_etapas_workflows(id, nome, ordem, tipo_workflow:catalogo_cps_tipos_workflows(nome))").in("seq_id", seqIds),
-          supabase.from("catalogo_seq_protetica_etapa_componentes").select("seq_id, etapa_id, componente_sku, componente:catalogo_componentes(sku, nome, preco, descricao, parafuso:catalogo_parafusos(sku, nome, preco), chave:catalogo_chaves(sku, nome, preco), tipo_componente:catalogo_cps_tipos_componentes(nome), tipo_abutment:catalogo_cps_tipos_abutments(nome))").in("seq_id", seqIds),
+          supabase.from("catalogo_seq_protetica_etapa_componentes").select("seq_id, etapa_id, componente_sku, componente:catalogo_componentes(sku, nome, preco, descricao, qtd_disponivel, qtd_minima_aviso, parafuso:catalogo_parafusos(sku, nome, preco, qtd_disponivel, qtd_minima_aviso), chave:catalogo_chaves(sku, nome, preco, qtd_disponivel, qtd_minima_aviso), tipo_componente:catalogo_cps_tipos_componentes(nome), tipo_abutment:catalogo_cps_tipos_abutments(nome))").in("seq_id", seqIds),
           supabase.from("catalogo_seq_proteticas").select("id, nome").in("id", seqIds),
         ])
 
@@ -111,25 +114,6 @@ export function SequenciaProtetica({ familiaId, tipoAbutmentId, familiaNome, tip
             if (!map.has(img.produto_sku)) map.set(img.produto_sku, img.url_imagem)
           }
           setImagensMap(map)
-          // Buscar estoque dos componentes
-          const { data: estoqueData } = await supabase.from("catalogo_componentes").select("sku, qtd_disponivel, qtd_minima_aviso").in("sku", allCompSkus)
-          const estoqueMap = new Map<string, { qtd_disponivel: number | null; qtd_minima_aviso: number | null }>()
-          for (const e of estoqueData ?? []) {
-            estoqueMap.set(e.sku, { qtd_disponivel: e.qtd_disponivel, qtd_minima_aviso: e.qtd_minima_aviso })
-          }
-          // Aplicar estoque aos componentes
-          for (const g of Object.values(groups)) {
-            for (const etapa of g.etapas) {
-              for (const comp of etapa.componentes) {
-                const est = estoqueMap.get(comp.sku)
-                if (est) {
-                  comp.qtd_disponivel = est.qtd_disponivel
-                  comp.qtd_minima_aviso = est.qtd_minima_aviso
-                }
-              }
-            }
-          }
-          setWorkflows(Object.values(groups))
         }
       })
       .catch(() => setWorkflows([]))
@@ -238,7 +222,7 @@ export function SequenciaProtetica({ familiaId, tipoAbutmentId, familiaNome, tip
             const preco = Number(comp.preco)
             const temPreco = Number.isFinite(preco) && preco > 0
             const img = imagensMap.get(comp.sku)
-            const semEstoque = comp.qtd_disponivel != null && comp.qtd_disponivel <= 0
+            const semEstoque = (comp.qtd_disponivel ?? 0) <= 0
             return (
               <div key={comp.sku} className="w-full box-border flex flex-col sm:flex-row items-stretch gap-3 sm:gap-4 p-3 sm:p-4 rounded-xl border border-[var(--color-border-subtle)] bg-[var(--color-surface)]/40 hover:border-[var(--color-accent)]/40 transition-all duration-200">
                 <div className="flex gap-3 sm:contents">
@@ -257,7 +241,7 @@ export function SequenciaProtetica({ familiaId, tipoAbutmentId, familiaNome, tip
                   <div className="flex-1 min-w-0 flex flex-col justify-center gap-1">
                     <p className="font-mono text-[10px] text-[var(--color-text-muted)]">SKU: {comp.sku}</p>
                     <div className="flex flex-wrap items-center gap-1.5">
-                      <EstoqueBadge qtdDisponivel={comp.qtd_disponivel} qtdMinimaAviso={comp.qtd_minima_aviso} compacto />
+                      <EstoqueBadge qtdDisponivel={comp.qtd_disponivel} qtdMinimaAviso={comp.qtd_minima_aviso} compacto exibirEstoque={exibirEstoque} />
                     </div>
                   </div>
                 </div>
@@ -292,7 +276,11 @@ export function SequenciaProtetica({ familiaId, tipoAbutmentId, familiaNome, tip
                   ) : temPreco && (
                     <button
                       onClick={() => {
-                        addToCart({ sku: comp.sku, nome: comp.nome, tipo: "acessorio", cor: "#c9a655", preco })
+                        const result = addToCart({ sku: comp.sku, nome: comp.nome, tipo: "acessorio", cor: "#c9a655", preco })
+                        if (!result.success) {
+                          if (result.error === "quantidade_excedida") toast.error(`Máx: ${result.maxPermitido} un.`)
+                          return
+                        }
                         playCoinSound()
                         setAddedSkus((prev) => new Set(prev).add(comp.sku))
                         toast.success(`${comp.nome} adicionado ao carrinho`, { icon: <Check className="w-4 h-4" />, duration: 2500 })

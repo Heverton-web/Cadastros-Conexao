@@ -55,11 +55,34 @@ function CheckoutPage() {
     setBuscandoCep(false)
   }
 
+  async function handleAplicarCupom() {
+    if (!cupomCodigo.trim()) return
+    setCupomErro("")
+    try {
+      const valido = await validarCupom(cupomCodigo.trim())
+      if (!valido) {
+        setCupomErro("Cupom inválido ou expirado")
+        return
+      }
+      setCupom(valido as CatalogoCupom)
+      toast.success("Cupom aplicado!", { icon: "✅" })
+    } catch {
+      setCupomErro("Erro ao validar cupom")
+    }
+  }
+
   async function handleFinalizar() {
     if (!profile) return
     if (isConsultor && !clienteAtivo) return
     if (!isConsultor && !catalogoCliente) return
     if (freteErro) return
+    // Validar estoque antes de finalizar
+    const semEstoque = items.filter((item) => item.qtd_disponivel != null && item.quantidade > item.qtd_disponivel)
+    if (semEstoque.length > 0) {
+      const nomes = semEstoque.map((i) => `${i.nome} (máx: ${i.qtd_disponivel})`).join(', ')
+      toast.error(`Estoque insuficiente: ${nomes}`)
+      return
+    }
     setProcessando(true)
     try {
       // 1. Criar pedido

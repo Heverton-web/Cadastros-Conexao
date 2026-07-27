@@ -71,6 +71,7 @@ export const catalogoModule: ModuleDefinition = {
     { key: "pedido.criado", label: "Pedido Criado", descricao: "Quando um novo pedido é criado", type: "status_change" },
     { key: "pedido.pago", label: "Pedido Pago", descricao: "Quando o pagamento do pedido é confirmado", type: "status_change" },
     { key: "pedido.confirmado", label: "Pedido Confirmado", descricao: "Quando a empresa confirma o pedido", type: "status_change" },
+    { key: "pedido.separando", label: "Separando", descricao: "Quando o pedido está sendo separado", type: "status_change" },
     { key: "pedido.enviado", label: "Pedido Enviado", descricao: "Quando o pedido é enviado ao cliente", type: "status_change" },
     { key: "pedido.entregue", label: "Pedido Entregue", descricao: "Quando o pedido é entregue ao cliente", type: "status_change" },
     { key: "pedido.cancelado", label: "Pedido Cancelado", descricao: "Quando um pedido é cancelado", type: "status_change" },

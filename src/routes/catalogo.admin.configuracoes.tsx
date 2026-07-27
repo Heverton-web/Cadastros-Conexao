@@ -201,7 +201,7 @@ function AdminConfiguracoesPage() {
           <div className="space-y-3">
             {[
               { key: "exibir_precos" as const, label: "Exibir Preços", desc: "Mostra preços na vitrine pública" },
-              { key: "exibir_estoque" as const, label: "Exibir Estoque", desc: "Mostra quantidade em estoque" },
+              { key: "exibir_estoque" as const, label: "Exibir Estoque", desc: "Mostra badge de quantidade. Badge \"Sem Estoque\" SEMPRE visível, independente desta opção." },
               { key: "checkout_habilitado" as const, label: "Checkout Habilitado", desc: "Permite finalização de compras" },
               { key: "cupons_habilitado" as const, label: "Cupons Habilitado", desc: "Permite aplicação de cupons de desconto" },
             ].map((item) => (

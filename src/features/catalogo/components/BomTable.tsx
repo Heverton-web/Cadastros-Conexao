@@ -6,7 +6,7 @@ import { playCoinSound } from "~/features/catalogo/services/audio.service"
 import type { ProductSheetTipo, CatalogoImagemProduto } from "~/features/catalogo/types"
 import { ProductThumb } from "./ProductThumb"
 import { openImageViewer } from "~/features/catalogo/services/ui.service"
-import { useImagensBatch } from "~/features/catalogo/hooks/useCatalogo"
+import { useImagensBatch, useCatalogoConfig } from "~/features/catalogo/hooks/useCatalogo"
 import { listarKitsRelacionadosDeChave, listarKitsRelacionadosDeFresa, listarKitsRelacionadosDeCicatrizador } from "~/features/catalogo/services/kits.service"
 import { FichaTecnicaModal } from "./FichaTecnicaModal"
 import { EstoqueBadge } from "./admin/produtos/EstoqueBadge"
@@ -54,6 +54,8 @@ export function BomTable({ items }: BomTableProps) {
   const gruposKey = grupos.map((g) => g.tipo).join("|")
 
   const [expandedTipos, setExpandedTipos] = useState<Set<string>>(() => new Set(grupos[0] ? [grupos[0].tipo] : []))
+  const { data: config } = useCatalogoConfig()
+  const exibirEstoque = config?.exibir_estoque ?? true
   // Ao trocar de kit (novo conjunto de categorias), volta ao padrão: só a primeira expandida
   useEffect(() => {
     setExpandedTipos(new Set(grupos[0] ? [grupos[0].tipo] : []))
@@ -138,7 +140,7 @@ export function BomTable({ items }: BomTableProps) {
                   const color = getColor(item.tipo)
                   const preco = getPrecoFromDB(item.preco, item.tipo as ProductSheetTipo, item.sku)
                   const img = imagensMap.get(`${item.tipo}:${item.sku}`)
-                  const semEstoque = item.qtd_disponivel != null && item.qtd_disponivel <= 0
+                  const semEstoque = (item.qtd_disponivel ?? 0) <= 0
                   return (
                     <div
                       key={`${item.tipo}-${item.sku}`}
@@ -166,7 +168,7 @@ export function BomTable({ items }: BomTableProps) {
                           </div>
                           <p className="font-mono text-[10px] text-[var(--color-text-muted)]">SKU: {item.sku}</p>
                           <div className="flex flex-wrap items-center gap-1.5">
-                            <EstoqueBadge qtdDisponivel={item.qtd_disponivel} qtdMinimaAviso={item.qtd_minima_aviso} compacto />
+                            <EstoqueBadge qtdDisponivel={item.qtd_disponivel} qtdMinimaAviso={item.qtd_minima_aviso} compacto exibirEstoque={exibirEstoque} />
                             <span className="inline-flex items-center px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-[var(--color-accent)]/10 text-[var(--color-accent)]">
                               {TIPO_LABEL[item.tipo] ?? item.tipo}
                             </span>
@@ -213,7 +215,11 @@ export function BomTable({ items }: BomTableProps) {
                           ) : Number(preco) > 0 ? (
                             <button
                               onClick={() => {
-                                addToCart({ sku: item.sku, nome: item.nome, tipo: item.tipo as ProductSheetTipo, cor: "#c9a655", preco })
+                                const result = addToCart({ sku: item.sku, nome: item.nome, tipo: item.tipo as ProductSheetTipo, cor: "#c9a655", preco })
+                                if (!result.success) {
+                                  if (result.error === "quantidade_excedida") toast.error(`Máx: ${result.maxPermitido} un.`)
+                                  return
+                                }
                                 playCoinSound()
                                 toast.success(`${item.nome} adicionado`, {
                                   icon: <Check className="w-4 h-4" />,

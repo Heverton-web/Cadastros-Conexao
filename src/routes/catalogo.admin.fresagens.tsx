@@ -4,7 +4,7 @@ import { authLayout } from "./_auth"
 import { EmpresaCrudGuard } from "~/features/catalogo/components/EmpresaCrudGuard"
 import { AdminLayout } from "~/features/catalogo/components/AdminLayout"
 import { useState, useEffect } from "react"
-import { Plus, Pencil, Trash2, ToggleRight, ToggleLeft, X, ChevronUp, ChevronDown } from "lucide-react"
+import { Plus, Pencil, Trash2, ToggleRight, ToggleLeft, X, ChevronUp, ChevronDown, Package, PackageX } from "lucide-react"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "~/components/ui/dialog"
 import { Switch } from "~/components/ui/switch"
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "~/components/ui/alert-dialog"
@@ -159,26 +159,30 @@ function AdminFresagensPage() {
 
           {/* Tipos de Osso */}
           {subTab === "Tipos de Osso" && (
-            <Table><TableHeader><TableRow className="border-b border-[#c9a655]/20">{["Nome","Sigla","Categoria","Ativo","Ações"].map(h=><TableHead key={h} className="bg-gradient-to-r from-[#c9a655]/10 to-transparent text-[#c9a655] font-black uppercase tracking-wider text-[10px]">{h}</TableHead>)}</TableRow></TableHeader>
+            <Table><TableHeader><TableRow className="border-b border-[#c9a655]/20">{["Nome","Sigla","Categoria","Estoque","Mín. Aviso","Ativo","Ações"].map(h=><TableHead key={h} className="bg-gradient-to-r from-[#c9a655]/10 to-transparent text-[#c9a655] font-black uppercase tracking-wider text-[10px]">{h}</TableHead>)}</TableRow></TableHeader>
             <TableBody>{(tiposOsso??[]).map((item:any,i:number)=><TableRow key={item.id} className={`${i%2===0?"bg-[var(--color-surface)]/30":""} hover:bg-[#c9a655]/5 border-b border-[var(--color-border-subtle)]/50`}>
               <TableCell className="text-sm font-medium text-white">{item.nome}</TableCell>
               <TableCell className="text-sm text-gray-300">{item.sigla??"—"}</TableCell>
               <TableCell><span className={`inline-flex px-2 py-0.5 rounded-full text-[10px] font-bold uppercase ${item.categoria==="hard"?"bg-blue-500/20 text-blue-400":"bg-emerald-500/20 text-emerald-400"}`}>{item.categoria==="hard"?"Hard":"Soft"}</span></TableCell>
+              <TableCell><span className="text-[var(--color-text-muted)] text-sm">—</span></TableCell>
+              <TableCell><span className="text-[var(--color-text-muted)] text-sm">—</span></TableCell>
               <TableCell><button onClick={()=>toggleTipoOssoAtivo.mutate({ id: item.id, ativo: !item.ativo })}>{item.ativo?<ToggleRight className="h-7 w-7 text-green-400"/>:<ToggleLeft className="h-7 w-7 text-gray-500"/>}</button></TableCell>
               <TableCell><div className="flex items-center gap-2"><button onClick={()=>openEditTipo(item)} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-[#c9a655]/20 text-[var(--color-text-muted)] hover:text-[#c9a655]"><Pencil className="h-3.5 w-3.5"/></button><button onClick={()=>setDeleteItem({id:item.id,label:item.nome,table:"catalogo_tipos_ossos"})} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-red-500/20 text-[var(--color-text-muted)] hover:text-red-400"><Trash2 className="h-3.5 w-3.5"/></button></div></TableCell>
-            </TableRow>)}{(tiposOsso??[]).length===0&&<TableRow><TableCell colSpan={5} className="p-4 text-center text-text-muted">Nenhum tipo cadastrado</TableCell></TableRow>}</TableBody></Table>
+            </TableRow>)}{(tiposOsso??[]).length===0&&<TableRow><TableCell colSpan={7} className="p-4 text-center text-text-muted">Nenhum tipo cadastrado</TableCell></TableRow>}</TableBody></Table>
           )}
 
           {/* Protocolos de Fresagens */}
           {subTab === "Protocolos de Fresagens" && (
-            <Table><TableHeader><TableRow className="border-b border-[#c9a655]/20">{["Nome","Tipo Osso","Sigla","Ativo","Ações"].map(h=><TableHead key={h} className="bg-gradient-to-r from-[#c9a655]/10 to-transparent text-[#c9a655] font-black uppercase tracking-wider text-[10px]">{h}</TableHead>)}</TableRow></TableHeader>
+            <Table><TableHeader><TableRow className="border-b border-[#c9a655]/20">{["Nome","Tipo Osso","Sigla","Estoque","Mín. Aviso","Ativo","Ações"].map(h=><TableHead key={h} className="bg-gradient-to-r from-[#c9a655]/10 to-transparent text-[#c9a655] font-black uppercase tracking-wider text-[10px]">{h}</TableHead>)}</TableRow></TableHeader>
             <TableBody>{(protocolos??[]).map((item:any,i:number)=><TableRow key={item.id} className={`${i%2===0?"bg-[var(--color-surface)]/30":""} hover:bg-[#c9a655]/5 border-b border-[var(--color-border-subtle)]/50`}>
               <TableCell className="text-sm font-medium text-white">{item.nome}</TableCell>
               <TableCell className="text-sm text-gray-300">{item.tipo_osso??"—"}</TableCell>
               <TableCell className="text-sm text-gray-300">{item.sigla??"—"}</TableCell>
+              <TableCell><span className="text-[var(--color-text-muted)] text-sm">—</span></TableCell>
+              <TableCell><span className="text-[var(--color-text-muted)] text-sm">—</span></TableCell>
               <TableCell><button onClick={()=>toggleProtocoloAtivo.mutate({ id: item.id, ativo: !item.ativo })}>{item.ativo?<ToggleRight className="h-7 w-7 text-green-400"/>:<ToggleLeft className="h-7 w-7 text-gray-500"/>}</button></TableCell>
               <TableCell><div className="flex items-center gap-2"><button onClick={()=>openEditProto(item)} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-[#c9a655]/20 text-[var(--color-text-muted)] hover:text-[#c9a655]"><Pencil className="h-3.5 w-3.5"/></button><button onClick={()=>setDeleteItem({id:item.id,label:item.nome,table:"catalogo_protocolos_fresagens"})} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-red-500/20 text-[var(--color-text-muted)] hover:text-red-400"><Trash2 className="h-3.5 w-3.5"/></button></div></TableCell>
-            </TableRow>)}{(protocolos??[]).length===0&&<TableRow><TableCell colSpan={5} className="p-4 text-center text-text-muted">Nenhum protocolo cadastrado</TableCell></TableRow>}</TableBody></Table>
+            </TableRow>)}{(protocolos??[]).length===0&&<TableRow><TableCell colSpan={7} className="p-4 text-center text-text-muted">Nenhum protocolo cadastrado</TableCell></TableRow>}</TableBody></Table>
           )}
         </div>
       </div>

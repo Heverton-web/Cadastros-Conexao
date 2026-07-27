@@ -21,23 +21,17 @@ interface Props {
 export function ProductCard({ sku, nome, corIdentificacao, tipo, badge, imageUrl, onClick, qtdDisponivel, qtdMinimaAviso }: Props) {
   const cor = corIdentificacao || '#c9a655';
   const badgeLabel = badge || CATALOGO_TIPO_LABEL[tipo as ProductSheetTipo] || tipo;
-  const semEstoque = qtdDisponivel != null && qtdDisponivel <= 0;
-  const effectiveOnClick = semEstoque ? undefined : onClick;
-  const { data: config } = useCatalogoConfig();
+const { data: config } = useCatalogoConfig();
   const exibirEstoque = config?.exibir_estoque ?? true;
 
   return (
     <div
-      className={`group relative h-full rounded-2xl bg-[var(--color-surface)]/50 backdrop-blur-md border border-[var(--color-border-subtle)] transition-all duration-300 overflow-hidden p-5 min-h-[88px] ${
-        semEstoque
-          ? "opacity-60 grayscale cursor-not-allowed"
-          : "hover:border-[var(--card-color,var(--color-accent))]/40 cursor-pointer"
-      }`}
+      className="group relative h-full rounded-2xl bg-[var(--color-surface)]/50 backdrop-blur-md border border-[var(--color-border-subtle)] transition-all duration-300 overflow-hidden p-5 min-h-[88px] hover:border-[var(--card-color,var(--color-accent))]/40 cursor-pointer"
       style={{ "--card-color": cor, borderWidth: "0.5px" } as React.CSSProperties}
-      onClick={effectiveOnClick}
-      role={effectiveOnClick ? "button" : undefined}
-      tabIndex={effectiveOnClick ? 0 : undefined}
-      onKeyDown={effectiveOnClick ? (e) => { if (e.key === 'Enter' || e.key === ' ') effectiveOnClick() } : undefined}
+      onClick={onClick}
+      role={onClick ? "button" : undefined}
+      tabIndex={onClick ? 0 : undefined}
+      onKeyDown={onClick ? (e) => { if (e.key === 'Enter' || e.key === ' ') onClick?.() } : undefined}
     >
       <div
         className="absolute inset-0 pointer-events-none"
@@ -71,11 +65,9 @@ export function ProductCard({ sku, nome, corIdentificacao, tipo, badge, imageUrl
           </div>
         </div>
 
-        {!semEstoque && (
-          <div className="flex items-center gap-2 shrink-0">
-             <ArrowRight className="w-4 h-4 text-[var(--color-text-muted)] group-hover:text-white group-hover:translate-x-1 transition-all" />
-          </div>
-        )}
+        <div className="flex items-center gap-2 shrink-0">
+           <ArrowRight className="w-4 h-4 text-[var(--color-text-muted)] group-hover:text-white group-hover:translate-x-1 transition-all" />
+        </div>
       </div>
     </div>
   );

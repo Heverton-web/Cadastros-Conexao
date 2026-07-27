@@ -95,7 +95,7 @@ function SheetContent({ sku, tipo }: { sku: string; tipo: string }) {
   if (!data) return <div className="h-64 flex items-center justify-center font-bold text-[var(--color-accent)] animate-pulse">{t("catalogo.product.loading")}</div>
 
   const preco = tipo === "promocional" ? data.preco : mockPreco(tipo as any, sku)
-  const semEstoque = data?.qtd_disponivel != null && data.qtd_disponivel <= 0
+  const semEstoque = (data?.qtd_disponivel ?? 0) <= 0
   const imagemPrincipal = data?.imagens?.[0]?.url_imagem
 
   return (
@@ -146,10 +146,10 @@ function SheetContent({ sku, tipo }: { sku: string; tipo: string }) {
                 qtd_disponivel: data?.qtd_disponivel ?? null,
                 qtd_minima_aviso: data?.qtd_minima_aviso ?? null,
               })
-              if (result.success && result.error === "quantidade_excedida") {
-                toast(`Adicionado ${result.adicionado} un. (máx. disponível)`, { icon: "📦" })
-              } else if (result.success) {
+              if (result.success) {
                 toast("Adicionado ao carrinho", { icon: "✅" })
+              } else if (result.error === "quantidade_excedida") {
+                toast.error(`Quantidade máxima permitida: ${result.maxPermitido} unidades (estoque disponível)`)
               } else if (result.error === "sem_estoque") {
                 toast("Produto sem estoque", { icon: "❌" })
               }

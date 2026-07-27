@@ -4,7 +4,7 @@ import { authLayout } from "./_auth"
 import { EmpresaCrudGuard } from "~/features/catalogo/components/EmpresaCrudGuard"
 import { AdminLayout } from "~/features/catalogo/components/AdminLayout"
 import { useState } from "react"
-import { Plus, Pencil, Trash2, ToggleRight, ToggleLeft } from "lucide-react"
+import { Plus, Pencil, Trash2, ToggleRight, ToggleLeft, Package, PackageX } from "lucide-react"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "~/components/ui/dialog"
 import { Switch } from "~/components/ui/switch"
 import { ImageUploader } from "~/features/catalogo/components/admin/produtos/ImageUploader"
@@ -281,26 +281,30 @@ function AdminInstrumentaisPage() {
 
           {/* Opcionais */}
           {subTab === "Opcionais" && (
-            <Table><TableHeader><TableRow className="border-b border-[#c9a655]/20">{["SKU","Nome","Tipo","Ativo","Ações"].map(h=><TableHead key={h} className="bg-gradient-to-r from-[#c9a655]/10 to-transparent text-[#c9a655] font-black uppercase tracking-wider text-[10px]">{h}</TableHead>)}</TableRow></TableHeader>
+            <Table><TableHeader><TableRow className="border-b border-[#c9a655]/20">{["SKU","Nome","Tipo","Estoque","Mín. Aviso","Ativo","Ações"].map(h=><TableHead key={h} className="bg-gradient-to-r from-[#c9a655]/10 to-transparent text-[#c9a655] font-black uppercase tracking-wider text-[10px]">{h}</TableHead>)}</TableRow></TableHeader>
             <TableBody>{(opcionais??[]).map((item:any,i:number)=><TableRow key={item.sku} className={`${i%2===0?"bg-[var(--color-surface)]/30":""} hover:bg-[#c9a655]/5 border-b border-[var(--color-border-subtle)]/50`}>
               <TableCell className="text-sm font-mono">{item.sku}</TableCell>
               <TableCell className="text-sm font-medium text-white">{item.nome}</TableCell>
               <TableCell className="text-sm text-gray-300">{item.tipo_opcional?.nome??"—"}</TableCell>
+              <TableCell><span className={`inline-flex items-center gap-1 font-bold text-sm ${(item.qtd_disponivel ?? 0) < 1 ? "text-red-400" : (item.qtd_disponivel ?? 0) <= (item.qtd_minima_aviso ?? 0) ? "text-amber-400" : "text-emerald-400"}`}>{(item.qtd_disponivel ?? 0) < 1 ? <PackageX className="h-3.5 w-3.5" /> : <Package className="h-3.5 w-3.5" />}{item.qtd_disponivel ?? 0}</span></TableCell>
+              <TableCell><span className="text-[var(--color-text-muted)] text-sm">{item.qtd_minima_aviso ?? 0}</span></TableCell>
               <TableCell><button onClick={()=>toggleProdAtivo(item.sku,!item.ativo)}>{item.ativo?<ToggleRight className="h-7 w-7 text-green-400"/>:<ToggleLeft className="h-7 w-7 text-gray-500"/>}</button></TableCell>
               <TableCell><div className="flex items-center gap-2"><button onClick={()=>openEditProd(item)} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-[#c9a655]/20 text-[var(--color-text-muted)] hover:text-[#c9a655]"><Pencil className="h-3.5 w-3.5"/></button><button onClick={()=>setDeleteItem({id:item.sku,label:item.nome,table:"catalogo_opcionais"})} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-red-500/20 text-[var(--color-text-muted)] hover:text-red-400"><Trash2 className="h-3.5 w-3.5"/></button></div></TableCell>
-            </TableRow>)}{(opcionais??[]).length===0&&<TableRow><TableCell colSpan={5} className="p-4 text-center text-text-muted">Nenhum opcional cadastrado</TableCell></TableRow>}</TableBody></Table>
+            </TableRow>)}{(opcionais??[]).length===0&&<TableRow><TableCell colSpan={7} className="p-4 text-center text-text-muted">Nenhum opcional cadastrado</TableCell></TableRow>}</TableBody></Table>
           )}
 
           {/* Chaves */}
           {subTab === "Chaves" && (
-            <Table><TableHeader><TableRow className="border-b border-[#c9a655]/20">{["SKU","Nome","Tipo","Ativo","Ações"].map(h=><TableHead key={h} className="bg-gradient-to-r from-[#c9a655]/10 to-transparent text-[#c9a655] font-black uppercase tracking-wider text-[10px]">{h}</TableHead>)}</TableRow></TableHeader>
+            <Table><TableHeader><TableRow className="border-b border-[#c9a655]/20">{["SKU","Nome","Tipo","Estoque","Mín. Aviso","Ativo","Ações"].map(h=><TableHead key={h} className="bg-gradient-to-r from-[#c9a655]/10 to-transparent text-[#c9a655] font-black uppercase tracking-wider text-[10px]">{h}</TableHead>)}</TableRow></TableHeader>
             <TableBody>{(chaves??[]).map((item:any,i:number)=><TableRow key={item.sku} className={`${i%2===0?"bg-[var(--color-surface)]/30":""} hover:bg-[#c9a655]/5 border-b border-[var(--color-border-subtle)]/50`}>
               <TableCell className="text-sm font-mono">{item.sku}</TableCell>
               <TableCell className="text-sm font-medium text-white">{item.nome}</TableCell>
               <TableCell className="text-sm text-gray-300">{item.tipo_chave?.nome??"—"}</TableCell>
+              <TableCell><span className={`inline-flex items-center gap-1 font-bold text-sm ${(item.qtd_disponivel ?? 0) < 1 ? "text-red-400" : (item.qtd_disponivel ?? 0) <= (item.qtd_minima_aviso ?? 0) ? "text-amber-400" : "text-emerald-400"}`}>{(item.qtd_disponivel ?? 0) < 1 ? <PackageX className="h-3.5 w-3.5" /> : <Package className="h-3.5 w-3.5" />}{item.qtd_disponivel ?? 0}</span></TableCell>
+              <TableCell><span className="text-[var(--color-text-muted)] text-sm">{item.qtd_minima_aviso ?? 0}</span></TableCell>
               <TableCell><button onClick={()=>toggleProdAtivo(item.sku,!item.ativo)}>{item.ativo?<ToggleRight className="h-7 w-7 text-green-400"/>:<ToggleLeft className="h-7 w-7 text-gray-500"/>}</button></TableCell>
               <TableCell><div className="flex items-center gap-2"><button onClick={()=>openEditProd(item)} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-[#c9a655]/20 text-[var(--color-text-muted)] hover:text-[#c9a655]"><Pencil className="h-3.5 w-3.5"/></button><button onClick={()=>setDeleteItem({id:item.sku,label:item.nome,table:"catalogo_chaves"})} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-red-500/20 text-[var(--color-text-muted)] hover:text-red-400"><Trash2 className="h-3.5 w-3.5"/></button></div></TableCell>
-            </TableRow>)}{(chaves??[]).length===0&&<TableRow><TableCell colSpan={5} className="p-4 text-center text-text-muted">Nenhuma chave cadastrada</TableCell></TableRow>}</TableBody></Table>
+            </TableRow>)}{(chaves??[]).length===0&&<TableRow><TableCell colSpan={7} className="p-4 text-center text-text-muted">Nenhuma chave cadastrada</TableCell></TableRow>}</TableBody></Table>
           )}
 
           {/* Tipos de Fresas */}
@@ -327,27 +331,31 @@ function AdminInstrumentaisPage() {
 
           {/* Complementares */}
           {subTab === "Complementares" && (
-            <Table><TableHeader><TableRow className="border-b border-[#c9a655]/20">{["SKU","Nome","Tipo","Ativo","Ações"].map(h=><TableHead key={h} className="bg-gradient-to-r from-[#c9a655]/10 to-transparent text-[#c9a655] font-black uppercase tracking-wider text-[10px]">{h}</TableHead>)}</TableRow></TableHeader>
+            <Table><TableHeader><TableRow className="border-b border-[#c9a655]/20">{["SKU","Nome","Tipo","Estoque","Mín. Aviso","Ativo","Ações"].map(h=><TableHead key={h} className="bg-gradient-to-r from-[#c9a655]/10 to-transparent text-[#c9a655] font-black uppercase tracking-wider text-[10px]">{h}</TableHead>)}</TableRow></TableHeader>
             <TableBody>{(complementares??[]).map((item:any,i:number)=><TableRow key={item.sku} className={`${i%2===0?"bg-[var(--color-surface)]/30":""} hover:bg-[#c9a655]/5 border-b border-[var(--color-border-subtle)]/50`}>
               <TableCell className="text-sm font-mono">{item.sku}</TableCell>
               <TableCell className="text-sm font-medium text-white">{item.nome}</TableCell>
               <TableCell className="text-sm text-gray-300">{item.tipo_complementar?.nome??"—"}</TableCell>
+              <TableCell><span className={`inline-flex items-center gap-1 font-bold text-sm ${(item.qtd_disponivel ?? 0) < 1 ? "text-red-400" : (item.qtd_disponivel ?? 0) <= (item.qtd_minima_aviso ?? 0) ? "text-amber-400" : "text-emerald-400"}`}>{(item.qtd_disponivel ?? 0) < 1 ? <PackageX className="h-3.5 w-3.5" /> : <Package className="h-3.5 w-3.5" />}{item.qtd_disponivel ?? 0}</span></TableCell>
+              <TableCell><span className="text-[var(--color-text-muted)] text-sm">{item.qtd_minima_aviso ?? 0}</span></TableCell>
               <TableCell><button onClick={()=>toggleProdAtivo(item.sku,!item.ativo)}>{item.ativo?<ToggleRight className="h-7 w-7 text-green-400"/>:<ToggleLeft className="h-7 w-7 text-gray-500"/>}</button></TableCell>
               <TableCell><div className="flex items-center gap-2"><button onClick={()=>openEditProd(item)} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-[#c9a655]/20 text-[var(--color-text-muted)] hover:text-[#c9a655]"><Pencil className="h-3.5 w-3.5"/></button><button onClick={()=>setDeleteItem({id:item.sku,label:item.nome,table:"catalogo_complementares"})} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-red-500/20 text-[var(--color-text-muted)] hover:text-red-400"><Trash2 className="h-3.5 w-3.5"/></button></div></TableCell>
-            </TableRow>)}{(complementares??[]).length===0&&<TableRow><TableCell colSpan={5} className="p-4 text-center text-text-muted">Nenhum complementar cadastrado</TableCell></TableRow>}</TableBody></Table>
+            </TableRow>)}{(complementares??[]).length===0&&<TableRow><TableCell colSpan={7} className="p-4 text-center text-text-muted">Nenhum complementar cadastrado</TableCell></TableRow>}</TableBody></Table>
           )}
 
           {/* Fresas */}
           {subTab === "Fresas" && (
-            <Table><TableHeader><TableRow className="border-b border-[#c9a655]/20">{["SKU","Nome","Tipo","Ø (mm)","Ativo","Ações"].map(h=><TableHead key={h} className="bg-gradient-to-r from-[#c9a655]/10 to-transparent text-[#c9a655] font-black uppercase tracking-wider text-[10px]">{h}</TableHead>)}</TableRow></TableHeader>
+            <Table><TableHeader><TableRow className="border-b border-[#c9a655]/20">{["SKU","Nome","Tipo","Ø (mm)","Estoque","Mín. Aviso","Ativo","Ações"].map(h=><TableHead key={h} className="bg-gradient-to-r from-[#c9a655]/10 to-transparent text-[#c9a655] font-black uppercase tracking-wider text-[10px]">{h}</TableHead>)}</TableRow></TableHeader>
             <TableBody>{(fresas??[]).map((item:any,i:number)=><TableRow key={item.sku} className={`${i%2===0?"bg-[var(--color-surface)]/30":""} hover:bg-[#c9a655]/5 border-b border-[var(--color-border-subtle)]/50`}>
               <TableCell className="text-sm font-mono">{item.sku}</TableCell>
               <TableCell className="text-sm font-medium text-white">{item.nome}</TableCell>
               <TableCell className="text-sm text-gray-300">{item.tipo_fresa?.nome??"—"}</TableCell>
               <TableCell className="text-sm text-gray-300">{item.diametro_mm??"—"}</TableCell>
+              <TableCell><span className={`inline-flex items-center gap-1 font-bold text-sm ${(item.qtd_disponivel ?? 0) < 1 ? "text-red-400" : (item.qtd_disponivel ?? 0) <= (item.qtd_minima_aviso ?? 0) ? "text-amber-400" : "text-emerald-400"}`}>{(item.qtd_disponivel ?? 0) < 1 ? <PackageX className="h-3.5 w-3.5" /> : <Package className="h-3.5 w-3.5" />}{item.qtd_disponivel ?? 0}</span></TableCell>
+              <TableCell><span className="text-[var(--color-text-muted)] text-sm">{item.qtd_minima_aviso ?? 0}</span></TableCell>
               <TableCell><button onClick={()=>toggleProdAtivo(item.sku,!item.ativo)}>{item.ativo?<ToggleRight className="h-7 w-7 text-green-400"/>:<ToggleLeft className="h-7 w-7 text-gray-500"/>}</button></TableCell>
               <TableCell><div className="flex items-center gap-2"><button onClick={()=>openEditProd(item)} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-[#c9a655]/20 text-[var(--color-text-muted)] hover:text-[#c9a655]"><Pencil className="h-3.5 w-3.5"/></button><button onClick={()=>setDeleteItem({id:item.sku,label:item.nome,table:"catalogo_fresas"})} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-red-500/20 text-[var(--color-text-muted)] hover:text-red-400"><Trash2 className="h-3.5 w-3.5"/></button></div></TableCell>
-            </TableRow>)}{(fresas??[]).length===0&&<TableRow><TableCell colSpan={6} className="p-4 text-center text-text-muted">Nenhuma fresa cadastrada</TableCell></TableRow>}</TableBody></Table>
+            </TableRow>)}{(fresas??[]).length===0&&<TableRow><TableCell colSpan={8} className="p-4 text-center text-text-muted">Nenhuma fresa cadastrada</TableCell></TableRow>}</TableBody></Table>
           )}
         </div>
       </div>

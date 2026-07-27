@@ -4,7 +4,7 @@ import { authLayout } from "./_auth"
 import { EmpresaCrudGuard } from "~/features/catalogo/components/EmpresaCrudGuard"
 import { AdminLayout } from "~/features/catalogo/components/AdminLayout"
 import { useState } from "react"
-import { Plus, Pencil, Trash2, ToggleRight, ToggleLeft, X, CheckSquare, Square } from "lucide-react"
+import { Plus, Pencil, Trash2, ToggleRight, ToggleLeft, X, CheckSquare, Square, Package, PackageX } from "lucide-react"
 import { useCatalogoEmpresaId } from "~/features/catalogo/hooks/useCatalogoEmpresa"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from "~/components/ui/dialog"
 import { Switch } from "~/components/ui/switch"
@@ -199,15 +199,17 @@ function AdminKitsPage() {
 
           {/* Kits */}
           {subTab === "Kits" && (
-            <Table><TableHeader><TableRow className="border-b border-[#c9a655]/20">{["SKU","Nome","Tipo","Preço","Ativo","Ações"].map(h=><TableHead key={h} className="bg-gradient-to-r from-[#c9a655]/10 to-transparent text-[#c9a655] font-black uppercase tracking-wider text-[10px]">{h}</TableHead>)}</TableRow></TableHeader>
-            <TableBody>{(kitsList??[]).map((item:any,i:number)=><TableRow key={item.sku} className={`${i%2===0?"bg-[var(--color-surface)]/30":""} hover:bg-[#c9a655]/5 border-b border-[var(--color-border-subtle)]/50`}>
+            <Table><TableHeader><TableRow className="border-b border-[#c9a655]/20">{["SKU","Nome","Tipo","Preço","Estoque","Mín. Aviso","Ativo","Ações"].map(h=><TableHead key={h} className="bg-gradient-to-r from-[#c9a655]/10 to-transparent text-[#c9a655] font-black uppercase tracking-wider text-[10px]">{h}</TableHead>)}</TableRow></TableHeader>
+            <TableBody>{(kitsList??[]).map((item:any,i:number)=>{ const estoque=item.qtd_disponivel??0; const minAviso=item.qtd_minima_aviso??0; const estoqueCor=estoque===0?"text-red-400":estoque<=minAviso&&minAviso>0?"text-amber-400":"text-green-400"; return <TableRow key={item.sku} className={`${i%2===0?"bg-[var(--color-surface)]/30":""} hover:bg-[#c9a655]/5 border-b border-[var(--color-border-subtle)]/50`}>
               <TableCell className="text-sm font-mono">{item.sku}</TableCell>
               <TableCell className="text-sm font-medium text-white">{item.nome}</TableCell>
               <TableCell className="text-sm text-gray-300">{item.tipo_kit?.nome??"—"}</TableCell>
               <TableCell className="text-sm text-gray-300">R$ {item.preco?.toFixed(2) ?? "0,00"}</TableCell>
+              <TableCell className="text-sm"><div className={`flex items-center gap-1.5 ${estoqueCor}`}>{estoque===0?<PackageX className="h-4 w-4"/>:<Package className="h-4 w-4"/>}<span className="font-mono font-bold">{estoque}</span></div></TableCell>
+              <TableCell className="text-sm"><span className="font-mono font-bold text-gray-300">{minAviso}</span></TableCell>
               <TableCell><button onClick={()=>toggleKitMut.mutate({sku:item.sku,ativo:!item.ativo})}>{item.ativo?<ToggleRight className="h-7 w-7 text-green-400"/>:<ToggleLeft className="h-7 w-7 text-gray-500"/>}</button></TableCell>
               <TableCell><div className="flex items-center gap-2"><button onClick={()=>openEditKit(item)} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-[#c9a655]/20 text-[var(--color-text-muted)] hover:text-[#c9a655]"><Pencil className="h-3.5 w-3.5"/></button><button onClick={()=>setDeleteItem({id:item.sku,label:item.nome,table:"catalogo_kits"})} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-red-500/20 text-[var(--color-text-muted)] hover:text-red-400"><Trash2 className="h-3.5 w-3.5"/></button></div></TableCell>
-            </TableRow>)}{(kitsList??[]).length===0&&<TableRow><TableCell colSpan={6} className="p-4 text-center text-text-muted">Nenhum kit cadastrado</TableCell></TableRow>}</TableBody></Table>
+            </TableRow>})}{(kitsList??[]).length===0&&<TableRow><TableCell colSpan={8} className="p-4 text-center text-text-muted">Nenhum kit cadastrado</TableCell></TableRow>}</TableBody></Table>
           )}
         </div>
       </div>

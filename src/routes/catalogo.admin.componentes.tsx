@@ -4,7 +4,7 @@ import { authLayout } from "./_auth"
 import { EmpresaCrudGuard } from "~/features/catalogo/components/EmpresaCrudGuard"
 import { AdminLayout } from "~/features/catalogo/components/AdminLayout"
 import { useState } from "react"
-import { Plus, Pencil, Trash2, ToggleRight, ToggleLeft } from "lucide-react"
+import { Plus, Pencil, Trash2, ToggleRight, ToggleLeft, Package, PackageX } from "lucide-react"
 import { listarAbutmentChaves, listarAbutmentKits, listarAbutmentParafusos, salvarAbutmentChaves, salvarAbutmentKits, salvarAbutmentParafusos } from "~/features/catalogo/services/componentes.service"
 import { listarKitsDeCicatrizador, salvarKitsDeCicatrizador } from "~/features/catalogo/services/kits.service"
 import { listarSeqProteticasAbutment } from "~/features/catalogo/services/sequencia-protetica.service"
@@ -466,7 +466,7 @@ function AdminComponentesPage() {
           {subTab === "Abutments" && (
             <Table>
               <TableHeader><TableRow className="border-b border-[#c9a655]/20">
-                {["SKU", "Nome", "Tipo", "Ø (mm)", "Ativo", "Ações"].map(h => <TableHead key={h} className="bg-gradient-to-r from-[#c9a655]/10 to-transparent text-[#c9a655] font-black uppercase tracking-wider text-[10px]">{h}</TableHead>)}
+                {["SKU", "Nome", "Tipo", "Ø (mm)", "Estoque", "Mín. Aviso", "Ativo", "Ações"].map(h => <TableHead key={h} className="bg-gradient-to-r from-[#c9a655]/10 to-transparent text-[#c9a655] font-black uppercase tracking-wider text-[10px]">{h}</TableHead>)}
               </TableRow></TableHeader>
               <TableBody>
                 {(abutments ?? []).map((item: any, i: number) => (
@@ -475,11 +475,13 @@ function AdminComponentesPage() {
                     <TableCell className="text-sm font-medium text-white">{item.nome}</TableCell>
                     <TableCell className="text-sm text-gray-300">{item.tipo_abutment?.nome ?? "—"}</TableCell>
                     <TableCell className="text-sm text-gray-300">{item.diametro_plataforma ?? "—"}</TableCell>
+                    <TableCell className="text-sm"><span className={`flex items-center gap-1 ${(item.qtd_disponivel ?? 0) < 1 ? "text-red-400" : (item.qtd_disponivel ?? 0) <= (item.qtd_minima_aviso ?? 0) ? "text-amber-400" : "text-emerald-400"}`}>{(item.qtd_disponivel ?? 0) < 1 ? <PackageX className="h-4 w-4" /> : <Package className="h-4 w-4" />}{item.qtd_disponivel ?? 0}</span></TableCell>
+                    <TableCell className="text-sm text-[var(--color-text-muted)]">{item.qtd_minima_aviso ?? 0}</TableCell>
                     <TableCell><button onClick={() => toggleAbut.mutate({ sku: item.sku, ativo: !item.ativo })}>{item.ativo ? <ToggleRight className="h-7 w-7 text-green-400" /> : <ToggleLeft className="h-7 w-7 text-gray-500" />}</button></TableCell>
                     <TableCell><div className="flex items-center gap-2"><button onClick={() => openEditAbut(item)} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-[#c9a655]/20 text-[var(--color-text-muted)] hover:text-[#c9a655]"><Pencil className="h-3.5 w-3.5"/></button><button onClick={() => setDeleteItem({ id: item.sku, label: item.nome, table: "catalogo_abutments", pkColumn: "sku" })} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-red-500/20 text-[var(--color-text-muted)] hover:text-red-400"><Trash2 className="h-3.5 w-3.5"/></button></div></TableCell>
                   </TableRow>
                 ))}
-                {(abutments ?? []).length === 0 && <TableRow><TableCell colSpan={6} className="p-4 text-center text-text-muted">Nenhum abutment cadastrado</TableCell></TableRow>}
+                {(abutments ?? []).length === 0 && <TableRow><TableCell colSpan={8} className="p-4 text-center text-text-muted">Nenhum abutment cadastrado</TableCell></TableRow>}
               </TableBody>
             </Table>
           )}
@@ -488,7 +490,7 @@ function AdminComponentesPage() {
           {subTab === "Componentes" && (
             <Table>
               <TableHeader><TableRow className="border-b border-[#c9a655]/20">
-                {["SKU", "Nome", "Tipo Comp.", "Tipo Abut.", "Ø (mm)", "Ativo", "Ações"].map(h => <TableHead key={h} className="bg-gradient-to-r from-[#c9a655]/10 to-transparent text-[#c9a655] font-black uppercase tracking-wider text-[10px]">{h}</TableHead>)}
+                {["SKU", "Nome", "Tipo Comp.", "Tipo Abut.", "Ø (mm)", "Estoque", "Mín. Aviso", "Ativo", "Ações"].map(h => <TableHead key={h} className="bg-gradient-to-r from-[#c9a655]/10 to-transparent text-[#c9a655] font-black uppercase tracking-wider text-[10px]">{h}</TableHead>)}
               </TableRow></TableHeader>
               <TableBody>
                 {(componentesList ?? []).map((item: any, i: number) => (
@@ -498,11 +500,13 @@ function AdminComponentesPage() {
                     <TableCell className="text-sm text-gray-300">{item.tipo_componente?.nome ?? "—"}</TableCell>
                     <TableCell className="text-sm text-gray-300">{item.tipo_abutment?.nome ?? "—"}</TableCell>
                     <TableCell className="text-sm text-gray-300">{item.diametro_plataforma_mm ?? "—"}</TableCell>
+                    <TableCell className="text-sm"><span className={`flex items-center gap-1 ${(item.qtd_disponivel ?? 0) < 1 ? "text-red-400" : (item.qtd_disponivel ?? 0) <= (item.qtd_minima_aviso ?? 0) ? "text-amber-400" : "text-emerald-400"}`}>{(item.qtd_disponivel ?? 0) < 1 ? <PackageX className="h-4 w-4" /> : <Package className="h-4 w-4" />}{item.qtd_disponivel ?? 0}</span></TableCell>
+                    <TableCell className="text-sm text-[var(--color-text-muted)]">{item.qtd_minima_aviso ?? 0}</TableCell>
                     <TableCell><button onClick={() => toggleComp.mutate({ sku: item.sku, ativo: !item.ativo })}>{item.ativo ? <ToggleRight className="h-7 w-7 text-green-400" /> : <ToggleLeft className="h-7 w-7 text-gray-500" />}</button></TableCell>
                     <TableCell><div className="flex items-center gap-2"><button onClick={() => openEditComp(item)} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-[#c9a655]/20 text-[var(--color-text-muted)] hover:text-[#c9a655]"><Pencil className="h-3.5 w-3.5"/></button><button onClick={() => setDeleteItem({ id: item.sku, label: item.nome, table: "catalogo_componentes", pkColumn: "sku" })} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-red-500/20 text-[var(--color-text-muted)] hover:text-red-400"><Trash2 className="h-3.5 w-3.5"/></button></div></TableCell>
                   </TableRow>
                 ))}
-                {(componentesList ?? []).length === 0 && <TableRow><TableCell colSpan={7} className="p-4 text-center text-text-muted">Nenhum componente cadastrado</TableCell></TableRow>}
+                {(componentesList ?? []).length === 0 && <TableRow><TableCell colSpan={9} className="p-4 text-center text-text-muted">Nenhum componente cadastrado</TableCell></TableRow>}
               </TableBody>
             </Table>
           )}
@@ -511,7 +515,7 @@ function AdminComponentesPage() {
           {subTab === "Parafusos" && (
             <Table>
               <TableHeader><TableRow className="border-b border-[#c9a655]/20">
-                {["SKU", "Nome", "Tipo", "Torque", "Ativo", "Ações"].map(h => <TableHead key={h} className="bg-gradient-to-r from-[#c9a655]/10 to-transparent text-[#c9a655] font-black uppercase tracking-wider text-[10px]">{h}</TableHead>)}
+                {["SKU", "Nome", "Tipo", "Torque", "Estoque", "Mín. Aviso", "Ativo", "Ações"].map(h => <TableHead key={h} className="bg-gradient-to-r from-[#c9a655]/10 to-transparent text-[#c9a655] font-black uppercase tracking-wider text-[10px]">{h}</TableHead>)}
               </TableRow></TableHeader>
               <TableBody>
                 {(parafusosList ?? []).map((item: any, i: number) => (
@@ -520,11 +524,13 @@ function AdminComponentesPage() {
                     <TableCell className="text-sm font-medium text-white">{item.nome}</TableCell>
                     <TableCell className="text-sm text-gray-300">{item.tipo_parafuso?.nome ?? "—"}</TableCell>
                     <TableCell className="text-sm text-gray-300">{item.torque_ncm ?? "—"}</TableCell>
+                    <TableCell className="text-sm"><span className={`flex items-center gap-1 ${(item.qtd_disponivel ?? 0) < 1 ? "text-red-400" : (item.qtd_disponivel ?? 0) <= (item.qtd_minima_aviso ?? 0) ? "text-amber-400" : "text-emerald-400"}`}>{(item.qtd_disponivel ?? 0) < 1 ? <PackageX className="h-4 w-4" /> : <Package className="h-4 w-4" />}{item.qtd_disponivel ?? 0}</span></TableCell>
+                    <TableCell className="text-sm text-[var(--color-text-muted)]">{item.qtd_minima_aviso ?? 0}</TableCell>
                     <TableCell><button onClick={() => togglePar.mutate({ sku: item.sku, ativo: !item.ativo })}>{item.ativo ? <ToggleRight className="h-7 w-7 text-green-400" /> : <ToggleLeft className="h-7 w-7 text-gray-500" />}</button></TableCell>
                     <TableCell><div className="flex items-center gap-2"><button onClick={() => openEditPar(item)} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-[#c9a655]/20 text-[var(--color-text-muted)] hover:text-[#c9a655]"><Pencil className="h-3.5 w-3.5"/></button><button onClick={() => setDeleteItem({ id: item.sku, label: item.nome, table: "catalogo_parafusos", pkColumn: "sku" })} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-red-500/20 text-[var(--color-text-muted)] hover:text-red-400"><Trash2 className="h-3.5 w-3.5"/></button></div></TableCell>
                   </TableRow>
                 ))}
-                {(parafusosList ?? []).length === 0 && <TableRow><TableCell colSpan={6} className="p-4 text-center text-text-muted">Nenhum parafuso cadastrado</TableCell></TableRow>}
+                {(parafusosList ?? []).length === 0 && <TableRow><TableCell colSpan={8} className="p-4 text-center text-text-muted">Nenhum parafuso cadastrado</TableCell></TableRow>}
               </TableBody>
             </Table>
           )}
@@ -533,7 +539,7 @@ function AdminComponentesPage() {
           {subTab === "Cicatrizadores" && (
             <Table>
               <TableHeader><TableRow className="border-b border-[#c9a655]/20">
-                {["SKU", "Nome", "Implante", "Ø (mm)", "Ativo", "Ações"].map(h => <TableHead key={h} className="bg-gradient-to-r from-[#c9a655]/10 to-transparent text-[#c9a655] font-black uppercase tracking-wider text-[10px]">{h}</TableHead>)}
+                {["SKU", "Nome", "Implante", "Ø (mm)", "Estoque", "Mín. Aviso", "Ativo", "Ações"].map(h => <TableHead key={h} className="bg-gradient-to-r from-[#c9a655]/10 to-transparent text-[#c9a655] font-black uppercase tracking-wider text-[10px]">{h}</TableHead>)}
               </TableRow></TableHeader>
               <TableBody>
                 {(cicatrizadoresProdutos ?? []).map((item: any, i: number) => (
@@ -542,11 +548,13 @@ function AdminComponentesPage() {
                     <TableCell className="text-sm font-medium text-white">{item.nome}</TableCell>
                     <TableCell className="text-sm text-gray-300">{item.implante?.nome ?? item.implante?.sku ?? "—"}</TableCell>
                     <TableCell className="text-sm text-gray-300">{item.diametro_plataforma_mm ?? "—"}</TableCell>
+                    <TableCell className="text-sm"><span className={`flex items-center gap-1 ${(item.qtd_disponivel ?? 0) < 1 ? "text-red-400" : (item.qtd_disponivel ?? 0) <= (item.qtd_minima_aviso ?? 0) ? "text-amber-400" : "text-emerald-400"}`}>{(item.qtd_disponivel ?? 0) < 1 ? <PackageX className="h-4 w-4" /> : <Package className="h-4 w-4" />}{item.qtd_disponivel ?? 0}</span></TableCell>
+                    <TableCell className="text-sm text-[var(--color-text-muted)]">{item.qtd_minima_aviso ?? 0}</TableCell>
                     <TableCell><button onClick={() => toggleCic.mutate({ sku: item.sku, ativo: !item.ativo })}>{item.ativo ? <ToggleRight className="h-7 w-7 text-green-400" /> : <ToggleLeft className="h-7 w-7 text-gray-500" />}</button></TableCell>
                     <TableCell><div className="flex items-center gap-2"><button onClick={() => openEditCic(item)} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-[#c9a655]/20 text-[var(--color-text-muted)] hover:text-[#c9a655]"><Pencil className="h-3.5 w-3.5"/></button><button onClick={() => setDeleteItem({ id: item.sku, label: item.nome, table: "catalogo_cicatrizadores", pkColumn: "sku" })} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-red-500/20 text-[var(--color-text-muted)] hover:text-red-400"><Trash2 className="h-3.5 w-3.5"/></button></div></TableCell>
                   </TableRow>
                 ))}
-                {(cicatrizadoresProdutos ?? []).length === 0 && <TableRow><TableCell colSpan={6} className="p-4 text-center text-text-muted">Nenhum cicatrizador cadastrado</TableCell></TableRow>}
+                {(cicatrizadoresProdutos ?? []).length === 0 && <TableRow><TableCell colSpan={8} className="p-4 text-center text-text-muted">Nenhum cicatrizador cadastrado</TableCell></TableRow>}
               </TableBody>
             </Table>
           )}

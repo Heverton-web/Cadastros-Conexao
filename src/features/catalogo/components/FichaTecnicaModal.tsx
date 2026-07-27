@@ -106,10 +106,14 @@ export function FichaTecnicaModal({
       setTimeout(() => setCopied(false), 1500)
     }).catch(() => {})
   }
-  const semEstoque = qtdDisponivel != null && qtdDisponivel <= 0
+  const semEstoque = (qtdDisponivel ?? 0) <= 0
   function handleAdd() {
     if (!tipo || semEstoque) return
-    addToCart({ sku, nome, tipo, cor, preco: precoNum })
+    const result = addToCart({ sku, nome, tipo, cor, preco: precoNum })
+    if (!result.success) {
+      if (result.error === "quantidade_excedida") toast.error(`Máx: ${result.maxPermitido} un.`)
+      return
+    }
     playCoinSound()
     setAdded(true)
     toast.success(`${nome} adicionado`, {
@@ -130,7 +134,11 @@ export function FichaTecnicaModal({
     if (!rowTipo) return
     const rowPrecoNum = Number(rowPreco)
     if (!Number.isFinite(rowPrecoNum) || rowPrecoNum <= 0) return
-    addToCart({ sku: rowSku, nome: rowNome, tipo: rowTipo, cor, preco: rowPrecoNum })
+    const result = addToCart({ sku: rowSku, nome: rowNome, tipo: rowTipo, cor, preco: rowPrecoNum })
+    if (!result.success) {
+      if (result.error === "quantidade_excedida") toast.error(`Máx: ${result.maxPermitido} un.`)
+      return
+    }
     playCoinSound()
     setAddedRowSkus((prev) => new Set(prev).add(rowSku))
     toast.success(`${rowNome} adicionado`, {

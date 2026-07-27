@@ -5,7 +5,7 @@ import { EmpresaCrudGuard } from "~/features/catalogo/components/EmpresaCrudGuar
 import { useAuth } from "~/core/auth/useAuth"
 import { usePromocionais, useCriarPromocional, useAtualizarPromocional, useRemoverPromocional, useTodosImplantes, useAbutments, useKitsAtivos, useFresas, useChavesFerramental, useAcessorios, useInstrumentais, useComponentes } from "~/features/catalogo/hooks/useCatalogo"
 import { useMemo, useState } from "react"
-import { Tag, Trash2, Plus, Pencil } from "lucide-react"
+import { Tag, Trash2, Plus, Pencil, Package } from "lucide-react"
 import { formatBRL } from "~/features/catalogo/services/carrinho.service"
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "~/components/ui/alert-dialog"
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "~/components/ui/dialog"
@@ -285,6 +285,17 @@ function PromocionalCard({ promo, isSuperAdmin, onEdit, onDelete }: {
       )}
 
       <div className="pt-3 border-t border-white/5 space-y-2">
+        <div className="flex items-center gap-4 text-xs">
+          <span className="inline-flex items-center gap-1.5">
+            <Package className="h-3 w-3 text-[var(--color-text-muted)]" />
+            <span className="text-[var(--color-text-muted)] font-bold uppercase tracking-widest">Estoque</span>
+            <span className={`font-bold ${qtd < 1 ? "text-red-400" : qtd <= minima ? "text-amber-400" : "text-emerald-400"}`}>{qtd}</span>
+          </span>
+          <span className="inline-flex items-center gap-1.5">
+            <span className="text-[var(--color-text-muted)] font-bold uppercase tracking-widest">Mín. Aviso</span>
+            <span className="text-[var(--color-text-muted)]">{minima}</span>
+          </span>
+        </div>
         <div className="flex items-end justify-between">
           <div>
              <p className="text-xs uppercase tracking-widest text-[var(--color-text-muted)] font-bold mb-1">Preço do Pacote</p>

@@ -60,17 +60,12 @@ function CatalogoPromocionaisPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {(promos ?? []).map((promo) => {
             const imagemUrl = imagensMap.get(promo.id)?.[0]?.url_imagem
-            const semEstoque = (promo as unknown as Record<string, unknown>).qtd_disponivel != null && Number((promo as unknown as Record<string, unknown>).qtd_disponivel) <= 0
             return (
             <Link
               key={promo.id}
               to="/catalogo/produto/$tipo/$sku"
               params={{ tipo: "promocional", sku: promo.id }}
-              className={`group rounded-2xl border border-[var(--color-border-subtle)] bg-[var(--color-surface)]/50 overflow-hidden transition-all duration-300 ${
-                semEstoque
-                  ? "opacity-60 grayscale cursor-not-allowed pointer-events-none"
-                  : "hover:border-[var(--color-accent)]/40 hover:shadow-[0_8px_30px_rgba(201,166,85,0.08)]"
-              }`}
+              className="group rounded-2xl border border-[var(--color-border-subtle)] bg-[var(--color-surface)]/50 overflow-hidden transition-all duration-300 hover:border-[var(--color-accent)]/40 hover:shadow-[0_8px_30px_rgba(201,166,85,0.08)]"
             >
               {/* Imagem — 30% */}
               <div className="relative h-32 bg-gradient-to-br from-[var(--color-surface)] to-[#0f172a] overflow-hidden">

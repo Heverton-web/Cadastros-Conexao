@@ -1,9 +1,9 @@
 import { useState, useMemo } from "react"
 import toast from "react-hot-toast"
-import { Check, ShoppingCart, FileText, Box } from "lucide-react"
+import { Check, ShoppingCart, FileText, Box, PackageX } from "lucide-react"
 import { addToCart, formatBRL, getPrecoFromDB } from "~/features/catalogo/services/carrinho.service"
 import { playCoinSound } from "~/features/catalogo/services/audio.service"
-import { useImagensBatch, useTiposOsso } from "~/features/catalogo/hooks/useCatalogo"
+import { useImagensBatch, useTiposOsso, useCatalogoConfig } from "~/features/catalogo/hooks/useCatalogo"
 import { listarKitsRelacionadosDeFresa } from "~/features/catalogo/services/kits.service"
 import type { CatalogoProtocoloFresagemFlat, ProductSheetTipo } from "~/features/catalogo/types"
 import { openImageViewer } from "~/features/catalogo/services/ui.service"
@@ -141,10 +141,14 @@ function FresaCard({ ordem, nome, sku, preco, diametroMm, imageUrl, onImageClick
 }) {
   const [added, setAdded] = useState(false)
 
-  const semEstoque = qtdDisponivel != null && qtdDisponivel <= 0
+  const semEstoque = (qtdDisponivel ?? 0) <= 0
   const handleAdd = () => {
     if (!preco || preco <= 0 || semEstoque) return
-    addToCart({ sku, nome, tipo: "fresa", cor: "#c9a655", preco })
+    const result = addToCart({ sku, nome, tipo: "fresa", cor: "#c9a655", preco })
+    if (!result.success) {
+      if (result.error === "quantidade_excedida") toast.error(`Máx: ${result.maxPermitido} un.`)
+      return
+    }
     playCoinSound()
     setAdded(true)
     toast.success(`${nome} adicionado ao carrinho`, {
@@ -187,7 +191,7 @@ function FresaCard({ ordem, nome, sku, preco, diametroMm, imageUrl, onImageClick
           </div>
           <h4 className="text-sm font-bold text-white truncate">{nome}</h4>
           <p className="font-mono text-[10px] text-[var(--color-text-muted)]">SKU: {sku}</p>
-          <EstoqueBadge qtdDisponivel={qtdDisponivel} qtdMinimaAviso={qtdMinimaAviso} compacto />
+          <EstoqueBadge qtdDisponivel={qtdDisponivel} qtdMinimaAviso={qtdMinimaAviso} compacto exibirEstoque={useCatalogoConfig().data?.exibir_estoque ?? true} />
         </div>
       </div>
       {/* CTA */}

@@ -4,7 +4,7 @@ import { authLayout } from "./_auth"
 import { EmpresaCrudGuard } from "~/features/catalogo/components/EmpresaCrudGuard"
 import { AdminLayout } from "~/features/catalogo/components/AdminLayout"
 import { useState, useEffect } from "react"
-import { Plus, Pencil, Trash2, ToggleRight, ToggleLeft, ExternalLink } from "lucide-react"
+import { Plus, Pencil, Trash2, ToggleRight, ToggleLeft, ExternalLink, Package, PackageX } from "lucide-react"
 import { useQueryClient } from "@tanstack/react-query"
 import { useCategorias, useConexoes, useFamilias, useLinhas, useToggleConexaoAtivo, useToggleFamiliaAtivo, useToggleLinhaAtivo, useTodosKits, useAbutments, useCicatrizadores, useTodosImplantes, useChavesFerramental, useProtocolos, useTiposOsso, useCriarImplante, useAtualizarImplante, useToggleImplanteAtivo, useRemoverImplante, useRemoverConexao, useRemoverFamilia, useRemoverLinha, useCriarConexao, useAtualizarConexao, useCriarFamilia, useAtualizarFamilia, useCriarLinha, useAtualizarLinha } from "~/features/catalogo/hooks/useCatalogo"
 import { useCatalogoEmpresaId } from "~/features/catalogo/hooks/useCatalogoEmpresa"
@@ -212,7 +212,7 @@ function AdminImplantesPage() {
           {subTab === "Implantes" && (
             <Table>
               <TableHeader><TableRow className="border-b border-[#c9a655]/20">
-                {["SKU","Nome","Ø (mm)","Comp. mm","Conexão","Família","Linha","Ativo","Ações"].map(h => <TableHead key={h} className="bg-gradient-to-r from-[#c9a655]/10 to-transparent text-[#c9a655] font-black uppercase tracking-wider text-[10px]">{h}</TableHead>)}
+                {["SKU","Nome","Ø (mm)","Comp. mm","Conexão","Família","Linha","Estoque","Mín. Aviso","Ativo","Ações"].map(h => <TableHead key={h} className="bg-gradient-to-r from-[#c9a655]/10 to-transparent text-[#c9a655] font-black uppercase tracking-wider text-[10px]">{h}</TableHead>)}
               </TableRow></TableHeader>
               <TableBody>
                 {(implantes ?? []).map((impl,i) => (
@@ -224,11 +224,13 @@ function AdminImplantesPage() {
                     <TableCell className="text-sm">{impl.linha?.familia?.conexao?.nome ?? ""}</TableCell>
                     <TableCell className="text-sm">{impl.linha?.familia?.nome ?? ""}</TableCell>
                     <TableCell className="text-sm">{impl.linha?.nome ?? ""}</TableCell>
+                    <TableCell className="text-sm"><div className="flex items-center gap-1.5">{(impl.qtd_disponivel ?? 0) === 0 ? <PackageX className="h-4 w-4 text-red-400" /> : <Package className="h-4 w-4 text-green-400" />}<span className={(impl.qtd_disponivel ?? 0) === 0 ? "text-red-400" : (impl.qtd_disponivel ?? 0) <= (impl.qtd_minima_aviso ?? 0) ? "text-amber-400" : "text-green-400"}>{impl.qtd_disponivel ?? 0}</span></div></TableCell>
+                    <TableCell className="text-sm text-[var(--color-text-muted)]">{impl.qtd_minima_aviso ?? 0}</TableCell>
                     <TableCell><button onClick={()=>toggleImplanteAtivo.mutate({ sku: impl.sku, ativo: !impl.ativo })}>{impl.ativo?<ToggleRight className="h-7 w-7 text-green-400"/>:<ToggleLeft className="h-7 w-7 text-gray-500"/>}</button></TableCell>
                     <TableCell><div className="flex items-center gap-2"><button onClick={()=>window.open(`/catalogo/produto/implante/${impl.sku}?empresa=${empresaId}`,'_blank')} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-green-500/20 text-[var(--color-text-muted)] hover:text-green-400" title="Ver Ficha Técnica"><ExternalLink className="h-3.5 w-3.5"/></button><button onClick={()=>openEditImpl(impl)} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-[#c9a655]/20 text-[var(--color-text-muted)] hover:text-[#c9a655]"><Pencil className="h-3.5 w-3.5"/></button><button onClick={()=>setDeleteItem({id:impl.sku,label:impl.nome??impl.sku,table:"catalogo_implantes",pkColumn:"sku"})} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-red-500/20 text-[var(--color-text-muted)] hover:text-red-400"><Trash2 className="h-3.5 w-3.5"/></button></div></TableCell>
                   </TableRow>
                 ))}
-                {(!implantes||implantes.length===0)&&<TableRow><TableCell colSpan={9} className="p-4 text-center text-text-muted">Nenhum implante</TableCell></TableRow>}
+                {(!implantes||implantes.length===0)&&<TableRow><TableCell colSpan={11} className="p-4 text-center text-text-muted">Nenhum implante</TableCell></TableRow>}
               </TableBody>
             </Table>
           )}

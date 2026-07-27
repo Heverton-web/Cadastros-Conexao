@@ -133,9 +133,9 @@ export function CartDrawer() {
                                   toast(`Estoque máximo: ${result.quantidadeFinal} unidades`, { icon: "⚠️" })
                                 }
                               }}
-                              disabled={item.qtd_disponivel != null && item.quantidade >= item.qtd_disponivel}
+                              disabled={item.qtd_disponivel != null && item.qtd_disponivel > 0 && item.quantidade >= item.qtd_disponivel}
                               className={`p-1 rounded-md transition-colors ${
-                                item.qtd_disponivel != null && item.quantidade >= item.qtd_disponivel
+                                item.qtd_disponivel != null && item.qtd_disponivel > 0 && item.quantidade >= item.qtd_disponivel
                                   ? "opacity-30 cursor-not-allowed"
                                   : "hover:bg-white/10"
                               }`}
