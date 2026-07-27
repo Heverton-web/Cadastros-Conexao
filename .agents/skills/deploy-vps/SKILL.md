@@ -23,11 +23,16 @@ Commit → Migrations → Push → Merge (se branch) → Build → Deploy VPS
 
 ## Pré-requisitos
 
-- `vps.env` no raiz do projeto
+- `.env` no raiz do projeto
 - `.env` no raiz com:
   - `VITE_SUPABASE_URL` e `VITE_SUPABASE_ANON_KEY` (frontend)
   - `SUPABASE_ACCESS_TOKEN` (Edge Functions via CLI)
   - `SUPABASE_DB_PASSWORD` (migrations via `pg`)
+  - `DOCKER_HUB_USERNAME`
+  - `DOCKER_HUB_PASSWORD`
+  - `VPS_IP`
+  - `VPS_USER`
+  - `VPS_PASSWORD`
 - **Node + `pg`** disponíveis (migrations via conexão direta)
 - Build local deve passar
 
@@ -190,7 +195,7 @@ npx supabase functions deploy <NOME_FUNCAO> --project-ref <PROJECT_REF>
 ### Step 7: Ler credenciais VPS
 
 ```bash
-source vps.env
+source .env
 ```
 
 Variáveis necessárias:

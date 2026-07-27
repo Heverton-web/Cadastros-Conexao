@@ -758,8 +758,6 @@ export type CatalogoInstrumentalGeral = {
   qtd_minima_aviso: number
   ativo: boolean
 } & Record<string, unknown>
-/** @deprecated Placeholder — campos mínimos p/ picker de produtos */
-export type CatalogoInstrumentalGeral = { id?: string; sku: string; nome: string } & Record<string, unknown>
 /** @deprecated Removed */
 export type CatalogoGuiaReabilitacao = Record<string, unknown>
 /** @deprecated Removed */
