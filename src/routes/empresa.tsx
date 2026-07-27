@@ -117,12 +117,18 @@ function AdminEmpresa() {
 
   async function loadData(eid: string) {
     setLoading(true);
-    const [emp, cfg] = await Promise.all([
-      buscarEmpresa(eid),
-      buscarEmpresaConfig(eid),
-    ]);
-    setEmpresa(emp);
-    setConfig(cfg);
+    try {
+      const [emp, cfg] = await Promise.all([
+        buscarEmpresa(eid),
+        buscarEmpresaConfig(eid),
+      ]);
+      setEmpresa(emp);
+      setConfig(cfg);
+    } catch (e: unknown) {
+      const msg = e instanceof Error ? e.message : String(e);
+      console.error('[empresa] loadData error:', e);
+      toast.error('Erro ao carregar empresa: ' + msg);
+    }
     setLoading(false);
   }
 

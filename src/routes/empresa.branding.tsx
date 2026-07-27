@@ -45,10 +45,16 @@ function AdminEmpresaConfigBranding() {
 
   async function loadConfig() {
     setLoading(true);
-    const cfg: EmpresaDesign | null = await buscarEmpresaDesign(empresaId);
-    setLogoIndex(cfg?.logo_index_url || "");
-    setLogoApp(cfg?.logo_app_url || "");
-    setFavicon(cfg?.favicon_url || "");
+    try {
+      const cfg: EmpresaDesign | null = await buscarEmpresaDesign(empresaId);
+      setLogoIndex(cfg?.logo_index_url || "");
+      setLogoApp(cfg?.logo_app_url || "");
+      setFavicon(cfg?.favicon_url || "");
+    } catch (e: unknown) {
+      const msg = e instanceof Error ? e.message : String(e);
+      console.error('[branding] loadConfig error:', e);
+      toast.error('Erro ao carregar branding: ' + msg);
+    }
     setLoading(false);
   }
 
