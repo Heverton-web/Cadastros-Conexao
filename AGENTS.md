@@ -153,6 +153,7 @@ Exibir `[💰 Ação: R$ X | Sessão: R$ Y]` ao final de cada ação. Detalhes: 
 > Erros resolvidos e padrões descobertos. Gerenciado por `rtk-memory`. Não re-analisar o que já está aqui.
 
 ### Padrões consolidados
+- **Deploy Docker:** imagem `hevertonperes/erp-odonto`, tags `v2.X` (v2.1, v2.2, ...). Service: `erp-odonto_app`. Credenciais em `.env` (DH_USER, DH_PASS, VPS_IP, VPS_USER, VPS_PASSWORD).
 - **Single-tenant:** não injetar `empresa_id`. Migration `20260721000000` removeu de ~71 tabelas. Checar `grep` na migration antes de confiar que uma tabela foi coberta.
 - **dispararEventoModulo:** 3 args `(moduloKey, eventoKey, payload)`. Nunca passar 4º arg. Sempre `.catch(() => {})`, nunca `await`.
 - **State em handlers:** usar nome explícito do state (ex: `tipoAtivo`), nunca variável genérica sem prefixo.

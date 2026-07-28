@@ -23,13 +23,12 @@ Commit → Migrations → Push → Merge (se branch) → Build → Deploy VPS
 
 ## Pré-requisitos
 
-- `.env` no raiz do projeto
-- `.env` no raiz com:
+- `.env` no raiz do projeto com:
   - `VITE_SUPABASE_URL` e `VITE_SUPABASE_ANON_KEY` (frontend)
   - `SUPABASE_ACCESS_TOKEN` (Edge Functions via CLI)
   - `SUPABASE_DB_PASSWORD` (migrations via `pg`)
-  - `DOCKER_HUB_USERNAME`
-  - `DOCKER_HUB_PASSWORD`
+  - `DH_USER` (Docker Hub username)
+  - `DH_PASS` (Docker Hub password)
   - `VPS_IP`
   - `VPS_USER`
   - `VPS_PASSWORD`
@@ -199,19 +198,24 @@ source .env
 ```
 
 Variáveis necessárias:
-- `DOCKER_HUB_USERNAME`
-- `DOCKER_HUB_PASSWORD`
+- `DH_USER` (Docker Hub username)
+- `DH_PASS` (Docker Hub password)
 - `VPS_IP`
 - `VPS_USER`
 - `VPS_PASSWORD`
 
 ### Step 8: Determinar versão
 
+**Formato:** `v2.X` onde X é o número do deploy (v2.1, v2.2, v2.3, ...)
+
 ```bash
-# Última tag ou incrementar
-LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0")
-echo "Última tag: $LAST_TAG"
+# Descobrir última tag existente no Docker Hub e incrementar
+# Consultar tags remotas: docker images hevertonperes/erp-odonto --format "{{.Tag}}"
+# Ou usar git tags: git tag -l "v2.*" | sort -V | tail -1
+# Incrementar o último número: v2.1 → v2.2 → v2.3
 ```
+
+**Exemplo:** Se última tag é `v2.1`, próximo deploy será `v2.2`.
 
 ### Step 9: SSH na VPS + Backup
 
