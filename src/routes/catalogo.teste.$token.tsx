@@ -3,7 +3,7 @@ import { rootRoute } from "./__root"
 import { useAuth } from "~/lib/auth"
 import { useEffect, useRef, useState } from "react"
 import { validarLinkTeste, registrarAcessoLinkTeste, type ValidacaoLinkTeste } from "~/features/catalogo/services/links-teste.service"
-import { marcarModoVisitanteForcado } from "~/features/catalogo/context/cliente-ativo"
+import { marcarModoVisitanteForcado } from "~/features/catalogo/contexts/cliente-ativo"
 import { Loader2, ShieldAlert } from "lucide-react"
 
 export const catalogoLinkTesteRoute = createRoute({

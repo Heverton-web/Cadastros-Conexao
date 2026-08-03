@@ -59,8 +59,10 @@ test-*.py
 # Arquivos de teste temporários
 test-*.py
 
-# Pasta docs
-docs
+# Pasta docs — ignorada, EXCETO docs/agents/ (documentação de agentes,
+# referenciada pelo AGENTS.md e lida sob demanda)
+docs/*
+!docs/agents/
 
 # Pasta docs-projeto
 docs-projeto

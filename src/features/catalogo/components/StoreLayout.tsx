@@ -10,7 +10,7 @@ import { NavDrawer } from './NavDrawer';
 import { ImageViewer } from './ImageViewer';
 import { useTranslation } from 'react-i18next';
 import { ProductSheet } from './ProductSheet';
-import { ClienteAtivoProvider } from '../context/cliente-ativo';
+import { ClienteAtivoProvider } from '../contexts/cliente-ativo';
 import { ClienteAtivoBar } from './ClienteAtivoBar';
 import { CatalogoLangProvider, useCatalogoLang } from '../contexts/language-context';
 import { LanguageSplash } from './LanguageSplash';

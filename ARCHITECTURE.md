@@ -77,18 +77,8 @@ import { useRotas } from "~/features/rotas/hooks/useRotas"; // ❌
 
 ## Template de Módulo
 
-Todo módulo novo deve seguir esta estrutura:
-
-```
-src/features/meu-modulo/
-├── index.ts          ← barrel público (o que o módulo expõe, se algo)
-├── module.ts         ← registro: registerModule() + nav items
-├── permissions.ts    ← constantes de permissão do módulo
-├── types.ts          ← tipos internos do módulo
-├── components/       ← páginas e componentes React
-├── hooks/            ← hooks React (apenas dados do próprio módulo)
-└── services/         ← acesso ao Supabase (apenas tabelas do módulo)
-```
+Anatomia, os 3 tipos de módulo e o checklist de criação estão em
+[docs/agents/modulos.md](docs/agents/modulos.md).
 
 ### Regra de ouro para `services/`
 
@@ -124,33 +114,29 @@ export function formatCPF(cpf: string): string { ... }
 
 ---
 
-## Estado atual de conformidade
+## Barrel público — a única porta entre módulos
 
-| Módulo      | Status          | Observação                                                   |
-| ----------- | --------------- | ------------------------------------------------------------ |
-| `cadastros` | ✅ Auto-contido |                                                              |
-| `crm`       | ✅ Auto-contido | `formatBRL/formatDate` re-exportados de `~/lib/utils/format` |
-| `nps`       | ✅ Auto-contido | Usa `~/shared/empresas`                                      |
-| `despesas`  | ✅ Auto-contido | Usa `~/shared/empresas`                                      |
-| `rotas`     | ✅ Auto-contido | Usa `~/lib/utils/format` e `~/components/shared`             |
-| `funis`     | ✅ Auto-contido |                                                              |
-| `hub`       | ✅ Auto-contido |                                                              |
-| `linktree`  | ✅ Auto-contido |                                                              |
-| `mapas`     | ✅ Auto-contido |                                                              |
-| `empresas`  | ✅ Infra-UI     | Re-exporta de `~/shared/empresas`                            |
+Consumir o barrel de outro módulo (`~/features/<outro>`, resolvido pelo `index.ts`)
+é permitido; é assim que rotas e módulos usam os módulos-serviço (`clientes`,
+`documentos`, `credenciais`, `api-connectors`, …).
+
+Proibido é alcançar **internals**: `~/features/<outro>/components/...`,
+`/hooks/...`, `/services/...`, `/lib/...`.
 
 ---
 
-## Verificação rápida
-
-Para checar se há violações novas, rode no terminal:
+## Verificação
 
 ```bash
-# Listar imports cross-feature (deve retornar vazio)
-rg "from \"~/features/[^\"]+\"" src/features --type-add "tsx:*.tsx" --type ts --type tsx
+npm run check:isolation
 ```
 
-Se retornar resultados, verifique se o import é:
+O script separa os 3 casos e falha só no terceiro:
 
-1. Do **próprio módulo** (intra) → OK
-2. De **outro módulo** (inter) → Violação → mover para `shared/` ou `lib/utils/`
+1. Import do **próprio módulo** → ignorado
+2. Barrel de outro módulo (`~/features/<outro>` sem subpath) → listado como ok
+3. Internals de outro módulo → **violação** (exit 1) → mover o compartilhado para
+   `~/shared/`, `~/lib/utils/` ou `~/components/shared/`, ou expor pelo barrel
+
+Violações abertas hoje estão listadas em
+[docs/agents/debitos.md](docs/agents/debitos.md).

@@ -11,10 +11,8 @@ import { cadastrosClientesRoute } from "./routes/cadastros.clientes";
 import { relatoriosRoute } from "./routes/cadastros.relatorios";
 import { credenciaisRoute } from "./routes/credenciais";
 import { adminConfigRoute } from "./routes/global.acoes";
-import { adminSuperEmpresasRoute } from "./routes/global.empresas";
 import { adminSuperEmpresaDetailRoute } from "./routes/global.empresas.$id";
 import { globalCatalogoLinksTesteRoute } from "./routes/global.catalogo-links-teste";
-import { adminSuperPermissoesRoute } from "./routes/global.permissoes";
 import { adminPermissoesRoute } from "./routes/empresa.permissoes";
 import { empresaPerfisRoute } from "./routes/empresa.perfis";
 import { adminSuperModulosRoute } from "./routes/global.modulos";
@@ -214,7 +212,6 @@ export const routeTree = rootRoute.addChildren([
   npsSurveyRoute,
   linktreePublicRoute,
   empresaLinktreePublicRoute,
-  hubClienteDashboardRoute,
   crmAceitarConviteRoute,
   linkRedirectRoute,
   // Catálogo — rotas públicas (sem login)
@@ -243,6 +240,7 @@ export const routeTree = rootRoute.addChildren([
   catalogoLojaFavoritosRoute,
   catalogoLojaOrcamentoRoute,
   authLayout.addChildren([
+    hubClienteDashboardRoute,
     dashboardRoute,
     clientesRoute,
     clienteDetailRoute,
@@ -252,10 +250,8 @@ export const routeTree = rootRoute.addChildren([
     relatoriosRoute,
     credenciaisRoute,
     adminConfigRoute,
-    adminSuperEmpresasRoute,
     adminSuperEmpresaDetailRoute,
     globalCatalogoLinksTesteRoute,
-    adminSuperPermissoesRoute,
     adminPermissoesRoute,
     empresaPerfisRoute,
     adminSuperModulosRoute,

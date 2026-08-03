@@ -1,23 +1,30 @@
-# AGENTS.md — Módulo Revisões
+# AGENTS.md — `revisoes`
 
-**Idioma:** PT-BR. **Sem greetings.** Direto ao ponto.
+**PT-BR. Sem greetings.** Regras globais em [AGENTS.md](../../../AGENTS.md) da raiz — este arquivo cobre só o que é específico deste módulo.
 
-## Visão Geral
+<!-- sync:fatos -->
 
-Gestão de revisões de cadastro. Biblioteca utilitária.
+**Módulo-serviço** — sem `module.ts`: não tem rotas, permissões nem eventos próprios. Exporta tipos e funções Supabase por `~/features/revisoes`, consumido por rotas e outros módulos.
+
+Tipo: **serviço** · 1 arquivo
 
 ## Estrutura
 
 ```
 src/features/revisoes/
-└── index.ts    # Service functions e tipos
+└── index.ts
 ```
 
-## Tabelas
+## API pública
 
-- `cadastros` (campo JSON `revisoes`)
+`STATUS_REVISAO_LABEL` · `STATUS_REVISAO_COLOR` · `getRevisoes` · `setRevisaoCampo` · `setRevisoesMassa`
 
-## Regras
+## Tabelas e RPCs
 
-- Sem permissões, rotas ou eventos
-- Biblioteca pura
+Tabelas: `cadastros`
+
+<!-- /sync:fatos -->
+
+## Notas
+
+- Guarda o estado de revisão **por campo** do cadastro (`setRevisaoCampo`, `setRevisoesMassa`), consumido pelo fluxo de correção de `cadastros`.

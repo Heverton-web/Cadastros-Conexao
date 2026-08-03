@@ -5,7 +5,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "~
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "~/components/ui/dialog"
 import { useAuth, useCan } from "~/lib/auth"
 import { useCarrinho, cartTotais, formatBRL, clearCart } from "../services/carrinho.service"
-import { useClienteAtivo } from "../context/cliente-ativo"
+import { useClienteAtivo } from "../contexts/cliente-ativo"
 import {
   useMeusOrcamentosCatalogo,
   useCriarOrcamentoCatalogo,

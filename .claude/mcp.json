@@ -4,7 +4,7 @@
     "supabase-mcp-server": {
       "command": "node",
       "args": [
-        "c:/Users/trcnologia/Desktop/PROJETOS/proj_erp/supabase-mcp-server/dist/index.js"
+        "./supabase-mcp-server/dist/index.js"
       ],
       "env": {}
     },

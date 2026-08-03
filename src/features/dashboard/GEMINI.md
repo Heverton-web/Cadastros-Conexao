@@ -1,14 +1,5 @@
-# GEMINI.md — Módulo Dashboard
+# GEMINI.md → AGENTS.md
 
-## Context
+Redirecionamento. A fonte única de instruções deste projeto é `AGENTS.md`.
 
-Dashboard onboarding walkthrough (KPIs, Navigation, Shortcuts). Lightweight module.
-
-## Key Files
-
-- `onboarding.tsx` — Onboarding steps
-
-## Notes
-
-- No formal module.ts, permissions, routes, or events
-- Pure onboarding walkthrough
+@AGENTS.md

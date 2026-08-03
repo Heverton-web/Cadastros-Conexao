@@ -1,36 +1,58 @@
-# AGENTS.md — Módulo Cadastros
+# AGENTS.md — `cadastros`
 
-**Idioma:** PT-BR. **Sem greetings.** Direto ao ponto.
+**PT-BR. Sem greetings.** Regras globais em [AGENTS.md](../../../AGENTS.md) da raiz — este arquivo cobre só o que é específico deste módulo.
 
-## Visão Geral
+<!-- sync:fatos -->
 
-Gestão de cadastro de clientes PF/PJ com fluxo de aprovação, documentos, revisões e credenciais.
+**Cadastros** — Gestao de cadastro de clientes PF/PJ
+
+Tipo: **registrado** · `key: "cadastros"` · 13 arquivos
 
 ## Estrutura
 
 ```
 src/features/cadastros/
-├── module.ts              # 8 rotas, 17 eventos, 16 permissões
-├── permissions.ts         # Workflow de aprovação
-├── types.ts               # Tipos
-├── services/              # Supabase
-├── hooks/                 # React Query
-├── components/            # UI (admin + import)
-└── lib/                   # Utilitários
+├── diagnostic.ts
+├── module.ts
+├── onboarding.tsx
+├── permissions.ts
+└── import/  (9 arquivos)
 ```
 
 ## Rotas
 
-`/cadastros/dashboard`, `/cadastros/solicitacoes`, `/cadastros/clientes`, `/cadastros/consultor`, `/cadastros/relatorios`, `/cadastros/previsualizacao`, `/global/acoes`, `/empresa/tema`
+`/cadastros/dashboard` · `/cadastros/solicitacoes` · `/cadastros/clientes` · `/cadastros/consultor` · `/cadastros/relatorios` · `/cadastros/previsualizacao` · `/global/acoes` · `/empresa/tema`
 
 ## Permissões
 
-`ver_todos_cadastros`, `aprovar_cadastro`, `reprovar_cadastro`, `solicitar_correcao_cadastro`, `aprovar_documento`, `reprovar_documento`, `gerenciar_credenciais`, `excluir_cadastro`, `gerar_links`
+`ver_todos_cadastros` · `ver_relatorios` · `visualizar_documento` · `aprovar_cadastro` · `reprovar_cadastro` · `solicitar_correcao_cadastro` · `aprovar_documento` · `reprovar_documento` · `solicitar_correcao_documento` · `aprovar_campo` · `reprovar_campo` · `solicitar_correcao_campo` · `gerenciar_credenciais` · `gerenciar_credenciais_admin` · `excluir_cadastro` · `gerenciar_config` · `gerar_links`
 
 ## Eventos
 
-`cadastro.criado`, `cadastro.aprovado`, `cadastro.reprovado`, `documento.aprovado`, `documento.reprovado`, `link.gerado`, `criacao_credencial`
+`cadastro.criado` · `cadastro.aprovado` · `cadastro.reprovado` · `documento.aprovado` · `documento.reprovado` · `link.gerado` · `link_gerado` · `dados_enviados` · `em_analise` · `em_correcao` · `aprovado` · `reprovado` · `botao_compartilhar_link` · `botao_aprovar` · `botao_reprovar` · `botao_corrigir` · `criacao_credencial`
 
-## Tabelas
+Disparos no código: 1. Sempre `dispararEventoModulo("cadastros", <evento>, payload).catch(() => {})`.
 
-`cadastros`, `cadastros_pf`, `cadastros_pj`, `cadastros_enderecos`, `clientes`, `documentos`, `convites_acesso`
+## Registro
+
+- Ambientes: `cadastro` · `consultor` · `tecnologia` · `suporte`
+- Abas de config: `geral` · `permissoes` · `credenciais` · `eventos` · `laboratorio` · `acoes` · `formularios` · `apis`
+- Flags: `hasFormulario` · `hasDiagnostico` · `hasDesignConfig`
+- Rota de design: `/empresa/cadastros/design`
+
+## Tabelas e RPCs
+
+Tabelas: `clientes`
+
+<!-- /sync:fatos -->
+
+## Notas
+
+- Os 17 eventos são a **união de três famílias intencionais** — não é bagunça:
+  1. `entidade.acao` (6): `cadastro.criado/aprovado/reprovado`, `documento.aprovado/reprovado`, `link.gerado` — convenção padrão do projeto.
+  2. **Status do cadastro** (6): `link_gerado`, `dados_enviados`, `em_analise`, `em_correcao`, `aprovado`, `reprovado` — espelham os valores da coluna `status` de `clientes`/`cadastros` e o catálogo `EVENTOS_STATUS_CHANGE` de `~/core/services/webhooks`. O nome **é** o valor do status, de propósito.
+  3. **Ação de botão** (5): `botao_compartilhar_link/aprovar/reprovar/corrigir`, `criacao_credencial` — espelham `EVENTOS_BUTTON_ACTION`.
+- ⚠ `link.gerado` **não é duplicata** de `link_gerado`: o primeiro é `button_action` (clique em gerar link), o segundo é `status_change` (cadastro entrou no status `link_gerado`, usado em ~20 pontos do código). Não unifique.
+- Evento **novo** usa `entidade.acao`. Renomear os existentes é breaking change: `webhooks`, `notificacoes_modelos` e `conectores_api` guardam `evento_key` como texto, e `dispararEventoModulo` falha em silêncio quando não encontra configuração.
+- As permissões são as únicas do projeto **sem prefixo de módulo** (`aprovar_cadastro`, `ver_relatorios`, …). Permissão nova segue o padrão global `cadastros_*`.
+- Fluxo de aprovação é compartilhado com os módulos-serviço `documentos` e `revisoes` (aprovação por campo/documento).

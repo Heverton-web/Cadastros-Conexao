@@ -1,19 +1,22 @@
-# AGENTS.md — Módulo Dashboard
+# AGENTS.md — `dashboard`
 
-**Idioma:** PT-BR. **Sem greetings.** Direto ao ponto.
+**PT-BR. Sem greetings.** Regras globais em [AGENTS.md](../../../AGENTS.md) da raiz — este arquivo cobre só o que é específico deste módulo.
 
-## Visão Geral
+<!-- sync:fatos -->
 
-Onboarding walkthrough do dashboard.
+**Módulo-serviço** — sem `module.ts`: não tem rotas, permissões nem eventos próprios. Exporta tipos e funções Supabase por `~/features/dashboard`, consumido por rotas e outros módulos.
+
+Tipo: **serviço** · 1 arquivo
 
 ## Estrutura
 
 ```
 src/features/dashboard/
-└── onboarding.tsx    # Steps de onboarding
+└── onboarding.tsx
 ```
 
-## Regras
+<!-- /sync:fatos -->
 
-- Sem permissões, rotas ou eventos
-- Apenas walkthrough
+## Notas
+
+- Só passos de onboarding (`DASHBOARD_ONBOARDING_STEPS`). O dashboard renderizado é o de cada módulo (`/cadastros/dashboard`, `/crm/dashboard`, …).

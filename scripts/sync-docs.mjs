@@ -1,385 +1,498 @@
 #!/usr/bin/env node
 /**
- * sync-docs.mjs — Sincroniza AGENTS.md, CLAUDE.md, GEMINI.md com o estado atual do projeto.
+ * sync-docs.mjs — Mantém a documentação de agentes sincronizada com o código.
+ *
+ * O que faz:
+ *   1. Preenche os blocos <!-- sync:X --> ... <!-- /sync:X --> em
+ *      AGENTS.md, docs/agents/modulos.md e docs/agents/skills.md.
+ *   2. Gera/atualiza src/features/<modulo>/AGENTS.md — bloco de fatos entre
+ *      marcadores; o texto fora deles é preservado.
+ *   3. Garante que CLAUDE.md / GEMINI.md (raiz, .gemini/ e por módulo) sejam
+ *      apenas stubs de redirecionamento para o AGENTS.md correspondente.
+ *
+ * Texto fora dos marcadores é escrito à mão e NUNCA sobrescrito.
  *
  * Uso:
- *   node scripts/sync-docs.mjs          # gera os 3 arquivos
- *   node scripts/sync-docs.mjs --check  # verifica se estão sincronizados (exit 1 = desatualizado)
+ *   node scripts/sync-docs.mjs           # aplica
+ *   node scripts/sync-docs.mjs --check   # exit 1 se algo estiver desatualizado
  */
 
-import { readFileSync, writeFileSync, readdirSync, existsSync, statSync } from "fs"
-import { join, basename } from "path"
+import {
+  readFileSync,
+  writeFileSync,
+  readdirSync,
+  existsSync,
+  statSync,
+  mkdirSync,
+} from "fs";
+import { join, relative, dirname } from "path";
 
-const ROOT = process.cwd()
-const CHECK_MODE = process.argv.includes("--check")
+const ROOT = process.cwd();
+const CHECK = process.argv.includes("--check");
+const FEATURES = join(ROOT, "src", "features");
 
-// ─── Coleta de dados do projeto ───────────────────────────────────────────────
+let outOfSync = false;
 
-function getSkills() {
-  const skillsDir = join(ROOT, ".agents", "skills")
-  if (!existsSync(skillsDir)) return []
+// ─── Utilidades ───────────────────────────────────────────────────────────────
 
-  const skills = []
-  for (const name of readdirSync(skillsDir)) {
-    const skillFile = join(skillsDir, name, "SKILL.md")
-    if (!existsSync(skillFile)) continue
-
-    const content = readFileSync(skillFile, "utf-8")
-    const frontmatter = parseFrontmatter(content)
-
-    // Extrair triggers do frontmatter ou do corpo
-    let triggers = []
-    if (frontmatter.triggers) {
-      triggers = Array.isArray(frontmatter.triggers) ? frontmatter.triggers : [frontmatter.triggers]
-    }
-    if (frontmatter.trigger) {
-      triggers = Array.isArray(frontmatter.trigger) ? frontmatter.trigger : [frontmatter.trigger]
-    }
-
-    // Se não tem trigger no frontmatter, tentar extrair do corpo
-    if (triggers.length === 0) {
-      const triggerMatch = content.match(/## Trigger\s*\n([\s\S]*?)(?=\n##|\n---|\n#|$)/i)
-      if (triggerMatch) {
-        const lines = triggerMatch[1].split("\n").filter(l => l.trim().startsWith("-"))
-        triggers = lines.map(l => l.replace(/^-\s*/, "").replace(/[""]/g, "").trim()).slice(0, 3)
-      }
-    }
-
-    // Fallback: extrair triggers do campo description (algumas skills colocam triggers lá)
-    if (triggers.length === 0 && frontmatter.description) {
-      const desc = frontmatter.description
-      // Procurar padrão "Trigger: X, Y, Z" no final da description
-      const triggerInDesc = desc.match(/(?:Trigger|trigger|DISPARO|disparo):\s*(.+?)$/i)
-      if (triggerInDesc) {
-        triggers = triggerInDesc[1].split(",").map(t => t.trim().replace(/[""]/g, "")).filter(Boolean)
-      }
-    }
-
-    skills.push({
-      name: frontmatter.name || name,
-      description: frontmatter.description || "",
-      triggers: triggers.map(t => t.replace(/[""]/g, "").trim()),
-    })
-  }
-
-  return skills.sort((a, b) => a.name.localeCompare(b.name))
+/**
+ * Lê normalizando CRLF -> LF. O git converte as pontas de linha no checkout
+ * (`core.autocrlf`), e ler cru quebrava duas coisas: a comparação de
+ * idempotência (todo arquivo aparecia como alterado) e o regex que preserva a
+ * seção `## Notas` — que passava a não casar e reescrevia o placeholder,
+ * apagando texto escrito à mão.
+ */
+function read(path) {
+  return existsSync(path)
+    ? readFileSync(path, "utf-8").replace(/\r\n/g, "\n")
+    : null;
 }
 
-function parseFrontmatter(content) {
-  const match = content.match(/^---\n([\s\S]*?)\n---/)
-  if (!match) return {}
+function emit(path, content) {
+  const rel = relative(ROOT, path).replace(/\\/g, "/");
+  const before = read(path);
+  if (before === content) {
+    if (!CHECK) console.log(`  ok   ${rel}`);
+    return;
+  }
+  if (CHECK) {
+    console.log(`OUTDATED: ${rel}`);
+    outOfSync = true;
+    return;
+  }
+  mkdirSync(dirname(path), { recursive: true });
+  writeFileSync(path, content, "utf-8");
+  console.log(`  ${before === null ? "new " : "upd "} ${rel}`);
+}
 
-  const fm = {}
-  const lines = match[1].split("\n")
-  let i = 0
+/** Substitui o conteúdo entre <!-- sync:name --> e <!-- /sync:name -->. */
+function fillBlock(source, name, body) {
+  const re = new RegExp(
+    `(<!-- sync:${name} -->)[\\s\\S]*?(<!-- /sync:${name} -->)`,
+  );
+  if (!re.test(source)) return source;
+  return source.replace(re, `$1\n${body.trim()}\n$2`);
+}
 
-  while (i < lines.length) {
-    const line = lines[i]
-    const kvMatch = line.match(/^(\w[\w-]*):\s*(.*)$/)
+function walk(dir, acc = []) {
+  if (!existsSync(dir)) return acc;
+  for (const e of readdirSync(dir, { withFileTypes: true })) {
+    const p = join(dir, e.name);
+    if (e.isDirectory()) walk(p, acc);
+    else acc.push(p);
+  }
+  return acc;
+}
 
-    if (kvMatch) {
-      const key = kvMatch[1]
-      let value = kvMatch[2].trim()
+const code = (f) => /\.(ts|tsx)$/.test(f);
+const esc = (s) => String(s).replace(/\|/g, "\\|").replace(/\n/g, " ");
+const list = (arr) => (arr.length ? arr.map((x) => `\`${x}\``).join(" · ") : "—");
+const plural = (n, s) => `${n} ${s}${n === 1 ? "" : "s"}`;
 
-      if (value === ">" || value === "|" || value === ">-" || value === "|-") {
-        // YAML folded/literal scalar — collect indented continuation lines
-        const indicator = value
-        const fold = indicator.startsWith(">")
-        const lines_arr = []
-        i++
-        while (i < lines.length && (lines[i].startsWith("  ") || lines[i].startsWith("\t") || lines[i].trim() === "")) {
-          if (lines[i].trim() !== "") {
-            lines_arr.push(lines[i].trim())
-          }
-          i++
+/** Extrai o array literal que segue `key:` no topo de um objeto. */
+function arrayLiteral(src, key) {
+  const i = src.search(new RegExp(`\\n\\s{2}${key}:\\s*\\[`));
+  if (i === -1) return null;
+  const start = src.indexOf("[", i);
+  let depth = 0;
+  for (let j = start; j < src.length; j++) {
+    if (src[j] === "[") depth++;
+    else if (src[j] === "]" && --depth === 0) return src.slice(start, j + 1);
+  }
+  return null;
+}
+
+const strings = (lit) =>
+  lit ? [...lit.matchAll(/"([^"]+)"/g)].map((m) => m[1]) : [];
+const objKeys = (lit) =>
+  lit ? [...lit.matchAll(/key:\s*"([^"]+)"/g)].map((m) => m[1]) : [];
+
+// ─── Coleta ───────────────────────────────────────────────────────────────────
+
+function parseModuleTs(file) {
+  const s = readFileSync(file, "utf-8");
+  const one = (re) => (s.match(re) || [])[1] || null;
+  return {
+    key: one(/\n\s{2}key:\s*"([^"]+)"/),
+    nome: one(/\n\s{2}nome:\s*"([^"]+)"/),
+    descricao: one(/\n\s{2}descricao:\s*\n?\s*"([^"]+)"/),
+    routes: strings(arrayLiteral(s, "routes")),
+    ambientes: strings(arrayLiteral(s, "ambientes")),
+    abas: objKeys(arrayLiteral(s, "abas")),
+    events: objKeys(arrayLiteral(s, "events")),
+    flags: [...s.matchAll(/\n\s{2}(has[A-Za-z]+):\s*true/g)].map((m) => m[1]),
+    designRoute: one(/\n\s{2}designRoute:\s*"([^"]+)"/),
+    permissionsInline: strings(arrayLiteral(s, "permissions")),
+  };
+}
+
+function parsePermissions(dir) {
+  const f = join(dir, "permissions.ts");
+  if (!existsSync(f)) return [];
+  const s = readFileSync(f, "utf-8");
+  const keys = [...s.matchAll(/key:\s*"([^"]+)"/g)].map((m) => m[1]);
+  if (keys.length) return keys;
+  return [
+    ...new Set(
+      [...s.matchAll(/^\s{2}([a-z][a-z0-9_]*):\s*(?:true|false)/gm)].map(
+        (m) => m[1],
+      ),
+    ),
+  ];
+}
+
+function collectModule(name) {
+  const dir = join(FEATURES, name);
+  const files = walk(dir).filter(code);
+  const rel = (p) => relative(dir, p).replace(/\\/g, "/");
+
+  const tables = new Set();
+  const rpcs = new Set();
+  const cross = new Set();
+  let dispatches = 0;
+
+  for (const f of files) {
+    const s = readFileSync(f, "utf-8");
+    for (const m of s.matchAll(/\.from\(\s*"([a-z0-9_]+)"/g)) tables.add(m[1]);
+    for (const m of s.matchAll(/\.rpc\(\s*"([a-z0-9_]+)"/g)) rpcs.add(m[1]);
+    for (const m of s.matchAll(/from "~\/features\/([a-z0-9-]+)/g))
+      if (m[1] !== name) cross.add(`${rel(f)} → ${m[1]}`);
+    dispatches += (s.match(/dispararEventoModulo\(/g) || []).length;
+  }
+
+  // Superfície pública: funções/constantes exportadas na raiz do módulo
+  const api = [];
+  for (const f of ["index.ts", "index.tsx"]) {
+    const p = join(dir, f);
+    if (!existsSync(p)) continue;
+    const s = readFileSync(p, "utf-8");
+    for (const mm of s.matchAll(
+      /export\s+(?:async\s+)?(?:function|const)\s+([A-Za-z_][A-Za-z0-9_]*)/g,
+    ))
+      api.push(mm[1]);
+  }
+
+  const modTs = join(dir, "module.ts");
+  const def = existsSync(modTs) ? parseModuleTs(modTs) : null;
+  const perms = parsePermissions(dir);
+
+  const entries = readdirSync(dir, { withFileTypes: true });
+  const dirs = entries
+    .filter((e) => e.isDirectory())
+    .map((e) => e.name)
+    .sort();
+
+  // submódulos: diretórios filhos que têm o próprio module.ts
+  const submodules = dirs
+    .filter((d) => existsSync(join(dir, d, "module.ts")))
+    .map((d) => ({ dir: d, ...parseModuleTs(join(dir, d, "module.ts")) }));
+
+  return {
+    name,
+    dir,
+    def,
+    permissions: perms.length ? perms : (def?.permissionsInline ?? []),
+    api: [...new Set(api)],
+    tables: [...tables].sort(),
+    rpcs: [...rpcs].sort(),
+    cross: [...cross],
+    dispatches,
+    dirs,
+    counts: Object.fromEntries(
+      dirs.map((d) => [d, walk(join(dir, d)).filter(code).length]),
+    ),
+    rootFiles: entries
+      .filter((e) => e.isFile() && code(e.name))
+      .map((e) => e.name)
+      .sort(),
+    fileCount: files.length,
+    submodules,
+    tipo: existsSync(modTs)
+      ? submodules.length
+        ? "meta-módulo"
+        : "registrado"
+      : "serviço",
+  };
+}
+
+function collectSkills() {
+  const dir = join(ROOT, ".agents", "skills");
+  if (!existsSync(dir)) return [];
+  const out = [];
+  for (const name of readdirSync(dir)) {
+    const f = join(dir, name, "SKILL.md");
+    if (!existsSync(f)) continue;
+    const lines = readFileSync(f, "utf-8").split(/\r?\n/);
+    const i = lines.findIndex((l) => /^description:/.test(l));
+    let desc = "";
+    if (i >= 0) {
+      desc = lines[i].replace(/^description:\s*/, "").replace(/^[>|][-+]?$/, "");
+      for (
+        let j = i + 1;
+        j < lines.length &&
+        desc.length < 200 &&
+        lines[j].trim() &&
+        !/^[a-z_-]+:/.test(lines[j]) &&
+        !/^---/.test(lines[j]);
+        j++
+      )
+        desc += " " + lines[j].trim();
+    }
+    desc = desc.replace(/\s+/g, " ").replace(/["']/g, "").trim();
+
+    // Sem description no frontmatter: usa o 1º parágrafo depois do título H1.
+    if (!desc) {
+      const body = lines.slice(lines.indexOf("---", 1) + 1);
+      const h1 = body.findIndex((l) => /^#\s/.test(l));
+      const from = h1 >= 0 ? h1 + 1 : 0;
+      const para = [];
+      for (let j = from; j < body.length; j++) {
+        const t = body[j].trim();
+        if (!t) {
+          if (para.length) break;
+          continue;
         }
-        // Join: folded replaces newlines with spaces, literal preserves them
-        fm[key] = fold ? lines_arr.join(" ").replace(/["']/g, "") : lines_arr.join("\n").replace(/["']/g, "")
-        continue
-      } else if (value === "") {
-        // Could be array or block — peek next line
-        if (i + 1 < lines.length && lines[i + 1].trim().startsWith("-")) {
-          // Array
-          fm[key] = []
-          i++
-          while (i < lines.length && lines[i].trim().startsWith("-")) {
-            fm[key].push(lines[i].trim().replace(/^-\s*/, "").replace(/^["']|["']$/g, ""))
-            i++
-          }
-          continue
-        } else {
-          fm[key] = ""
-          i++
-          continue
+        if (/^[#>|`\-*]/.test(t)) {
+          if (para.length) break;
+          continue;
         }
-      } else if (value.startsWith("[")) {
-        try { fm[key] = JSON.parse(value) } catch { fm[key] = [value] }
-      } else {
-        fm[key] = value.replace(/^["']|["']$/g, "")
+        para.push(t);
       }
+      desc =
+        para.join(" ").replace(/\s+/g, " ").replace(/["']/g, "").trim() ||
+        (h1 >= 0 ? body[h1].replace(/^#\s*(Skill:\s*)?/, "").trim() : "");
     }
-    i++
+
+    // corta no bloco de disparo e na primeira frase
+    desc = desc.split(/\s(?:DISPARO|Trigger|TRIGGER):/)[0];
+    const dot = desc.indexOf(". ");
+    if (dot > 40) desc = desc.slice(0, dot + 1);
+    out.push({ name, desc: desc.slice(0, 160) });
+  }
+  return out.sort((a, b) => a.name.localeCompare(b.name));
+}
+
+// ─── Blocos gerados ───────────────────────────────────────────────────────────
+
+function blocoModulos(mods) {
+  const rows = mods.map((m) => {
+    const d = m.def;
+    const nums = d
+      ? `${d.routes.length} · ${m.permissions.length} · ${d.events.length}`
+      : "— · — · —";
+    return `| [\`${m.name}\`](src/features/${m.name}/AGENTS.md) | ${m.tipo} | ${esc(d?.nome ?? "—")} | ${nums} |`;
+  });
+  return [
+    "| Módulo | Tipo | Nome | Rotas · Perms · Eventos |",
+    "| --- | --- | --- | --- |",
+    ...rows,
+  ].join("\n");
+}
+
+function blocoModulosDocs(mods) {
+  return blocoModulos(mods).replace(
+    /\]\(src\/features\//g,
+    "](../../src/features/",
+  );
+}
+
+function blocoSkills(skills) {
+  return [
+    `${skills.length} skills em \`.agents/skills/\`.`,
+    "",
+    "| Skill | Para quê |",
+    "| --- | --- |",
+    ...skills.map((s) => `| \`${s.name}\` | ${esc(s.desc) || "—"} |`),
+  ].join("\n");
+}
+
+// ─── AGENTS.md do módulo ──────────────────────────────────────────────────────
+
+function moduloAgentsMd(m, existing) {
+  const d = m.def;
+  const L = [];
+
+  L.push(`# AGENTS.md — \`${m.name}\``);
+  L.push("");
+  L.push(
+    "**PT-BR. Sem greetings.** Regras globais em [AGENTS.md](../../../AGENTS.md) da raiz — " +
+      "este arquivo cobre só o que é específico deste módulo.",
+  );
+  L.push("");
+  L.push("<!-- sync:fatos -->");
+  L.push("");
+
+  if (d) {
+    L.push(`**${d.nome}** — ${d.descricao || "sem descrição em `module.ts`"}`);
+    L.push("");
+    L.push(`Tipo: **${m.tipo}** · \`key: "${d.key}"\` · ${plural(m.fileCount, "arquivo")}`);
+  } else {
+    L.push(
+      "**Módulo-serviço** — sem `module.ts`: não tem rotas, permissões nem eventos próprios. " +
+        `Exporta tipos e funções Supabase por \`~/features/${m.name}\`, consumido por rotas e outros módulos.`,
+    );
+    L.push("");
+    L.push(`Tipo: **serviço** · ${plural(m.fileCount, "arquivo")}`);
+  }
+  L.push("");
+
+  // Estrutura
+  L.push("## Estrutura");
+  L.push("");
+  L.push("```");
+  L.push(`src/features/${m.name}/`);
+  const tree = [
+    ...m.rootFiles,
+    ...m.dirs.map((dd) => `${dd}/  (${plural(m.counts[dd], "arquivo")})`),
+  ];
+  tree.forEach((line, i) =>
+    L.push(`${i === tree.length - 1 ? "└──" : "├──"} ${line}`),
+  );
+  L.push("```");
+  L.push("");
+
+  if (!d && m.api.length) {
+    L.push("## API pública");
+    L.push("");
+    L.push(list(m.api));
+    L.push("");
   }
 
-  return fm
-}
-
-function getModules() {
-  const featuresDir = join(ROOT, "src", "features")
-  if (!existsSync(featuresDir)) return []
-  return readdirSync(featuresDir).filter(f => {
-    const stat = statSync(join(featuresDir, f))
-    return stat.isDirectory()
-  }).sort()
-}
-
-function getRoutes() {
-  const routesDir = join(ROOT, "src", "routes")
-  if (!existsSync(routesDir)) return []
-  return readdirSync(routesDir).filter(f => f.endsWith(".tsx") || f.endsWith(".ts"))
-}
-
-function getCommands() {
-  const pkgPath = join(ROOT, "package.json")
-  if (!existsSync(pkgPath)) return {}
-  const pkg = JSON.parse(readFileSync(pkgPath, "utf-8"))
-  return pkg.scripts || {}
-}
-
-function getExistingRTK() {
-  const agentsPath = join(ROOT, "AGENTS.md")
-  if (!existsSync(agentsPath)) return ""
-
-  const content = readFileSync(agentsPath, "utf-8")
-  const rtkMatch = content.match(/## RTK SCRATCHPAD\n([\s\S]*?)$/)
-  return rtkMatch ? rtkMatch[1].trim() : ""
-}
-
-// ─── Categorização de skills ─────────────────────────────────────────────────
-
-function categorizeSkills(skills) {
-  const categories = {
-    token: { label: "Economia de Tokens", skills: [] },
-    modulo: { label: "Módulo (criar/estilizar/validar)", skills: [] },
-    crud: { label: "CRUD e UI", skills: [] },
-    deploy: { label: "Deploy e Operação", skills: [] },
-    knowledge: { label: "Conhecimento e Referência", skills: [] },
-  }
-
-  const tokenNames = ["caveman", "headroom", "lean-ctx", "pre-flight-check", "rtk-memory"]
-  const moduloNames = ["criar-modulo", "criar-rota", "criar-migration", "criar-componente-modulo", "criar-form-multitipo", "criar-design-modulo", "aplicar-design-modulo", "design-frontend", "gerenciar-nav-items", "validar-modulo", "documentar-modulo"]
-  const crudNames = ["gerar-crud", "gerar-formulario", "gerar-modal", "gerar-pagina", "adicionar-permissao", "responsividade"]
-  const deployNames = ["deploy-vps", "calcular-gastos-sessao", "implementar-plan", "master-skill"]
-
-  for (const skill of skills) {
-    const id = skill.name.toLowerCase().replace(/\s+/g, "-")
-    if (tokenNames.includes(id)) categories.token.skills.push(skill)
-    else if (moduloNames.includes(id)) categories.modulo.skills.push(skill)
-    else if (crudNames.includes(id)) categories.crud.skills.push(skill)
-    else if (deployNames.includes(id)) categories.deploy.skills.push(skill)
-    else categories.knowledge.skills.push(skill)
-  }
-
-  return categories
-}
-
-// ─── Geração de conteúdo ──────────────────────────────────────────────────────
-
-function generateContent(title, skills, modules, routes, commands, rtkSection) {
-  const categories = categorizeSkills(skills)
-
-  let skillsTable = ""
-  for (const [, cat] of Object.entries(categories)) {
-    if (cat.skills.length === 0) continue
-    skillsTable += `\n### ${cat.label}\n`
-    skillsTable += `| Skill | Trigger |\n|---|---|\n`
-    for (const s of cat.skills) {
-      const trigger = s.triggers.length > 0 ? s.triggers[0] : s.description.slice(0, 60)
-      skillsTable += `| \`${s.name}\` | ${escapeMarkdown(trigger)} |\n`
+  if (d) {
+    if (d.routes.length) {
+      L.push("## Rotas");
+      L.push("");
+      L.push(list(d.routes));
+      L.push("");
+    }
+    if (m.permissions.length) {
+      L.push("## Permissões");
+      L.push("");
+      L.push(list(m.permissions));
+      L.push("");
+    }
+    if (d.events.length) {
+      L.push("## Eventos");
+      L.push("");
+      L.push(list(d.events));
+      L.push("");
+      L.push(
+        `Disparos no código: ${m.dispatches}. Sempre \`dispararEventoModulo("${d.key}", <evento>, payload).catch(() => {})\`.`,
+      );
+      L.push("");
+    }
+    const meta = [];
+    if (d.ambientes.length) meta.push(`Ambientes: ${list(d.ambientes)}`);
+    if (d.abas.length) meta.push(`Abas de config: ${list(d.abas)}`);
+    if (d.flags.length) meta.push(`Flags: ${list(d.flags)}`);
+    if (d.designRoute) meta.push(`Rota de design: \`${d.designRoute}\``);
+    if (meta.length) {
+      L.push("## Registro");
+      L.push("");
+      for (const x of meta) L.push(`- ${x}`);
+      L.push("");
     }
   }
 
-  const commandsList = Object.entries(commands)
-    .filter(([k]) => !k.startsWith("preinstall") && !k.startsWith("postinstall"))
-    .map(([k, v]) => {
-      const desc = describeCommand(k)
-      return `${k}${desc ? "  # " + desc : ""}`
-    })
-    .join("\n")
-
-  const content = `# ${title} — ERP Odonto
-
-**Idioma:** PT-BR. **Sem greetings.** Direto ao ponto.
-
-## Fable Family
-
-- Tarefa multi-step não trivial → aplicar \`fable-method\`.
-- Tarefa unattended / subagents em paralelo → \`fable-loop\`.
-- Trabalho concluído → \`fable-judge\` antes de declarar pronto.
-
-## Estrutura
-
-\`\`\`
-proj_erp/
-├── src/
-│   ├── features/       # Módulos de negócio (${modules.length} módulos)
-│   ├── shared/         # Dados compartilhados (empresas, form-schema)
-│   ├── core/           # Infra: auth, permissions, services, store, theme
-│   ├── components/     # UI genérica (ui/, shared/, layout/, guards/)
-│   ├── design-system/  # Tokens, presets, hooks, provider
-│   ├── registry/       # Registro de módulos, nav items, permissões
-│   ├── routes/         # ~${routes.length} rotas (TanStack Router file-based)
-│   ├── lib/            # Utilitários genéricos (format, utils)
-│   └── hooks/          # Hooks compartilhados
-├── supabase/           # Migrations SQL
-├── supabase-mcp-server/# MCP server (Supabase)
-├── docs-projeto/       # Documentação (docs-design-system/, specs/, etc.)
-└── .agents/skills/     # ${skills.length} skills de automação
-\`\`\`
-
-**Config unificada:** \`.claude/\` contém symlinks (\`.lnk\`) para \`.agents/\` — skills, hooks, commands, rules, specs, workflows. Editar em \`.agents/\`, symlink atualiza automaticamente.
-
-## Comandos
-
-\`\`\`bash
-${commandsList.split("\n").map(l => l.trim()).filter(Boolean).join("\n")}
-\`\`\`
-
-## Arquitetura
-
-- **Single-tenant:** \`empresa_id\` removido de ~71 tabelas (migration \`20260721000000\`). RLS aberta (\`USING true\`). Não injetar \`empresa_id\` em código novo. Exceção: \`agentes_usage_log\`.
-- **Módulos:** self-contained em \`src/features/<modulo>/\`. Única conexão = banco.
-- **Imports:** módulo só importa de \`shared/\`, \`lib/\`, \`components/ui/\`, \`core/\`. Nunca de outro módulo.
-- **Eventos:** todo módulo DEVE ter \`events[]\` no \`module.ts\` (min 2) + \`dispararEventoModulo(moduloKey, eventoKey, payload)\` — 3 args, fire-and-forget com \`.catch(() => {})\`.
-- **Permissões:** rota → \`RequirePermission\` ou \`RequireSuperAdmin\`. Botões → \`permissoes?.chave\`.
-- **Detalhes:** ver \`ARCHITECTURE.md\`.
-
-## Regras de UI
-
-- **PROIBIDO** \`window.confirm()\`, \`window.alert()\`, \`window.prompt()\`
-- **OBRIGATÓRIO** \`AlertDialog\` (exclusões) ou \`Dialog\` (conteúdo) de \`~/components/ui/\`
-- Dialog scroll: \`DialogContent flex flex-col max-h-[85vh] overflow-hidden\` + body \`overflow-y-auto flex-1 min-h-0\`
-- Design system: \`src/design-system/\` (tokens, presets, hooks). Docs em \`docs-projeto/docs-design-system/\`
-
-## Skills
-${skillsTable}
-
-## Economia de Tokens
-
-\`\`\`
-1. lean-ctx    → grep antes de read, assinaturas antes de corpos
-2. headroom    → comprimir logs > 7 linhas
-3. caveman     → respostas telegráficas, só diffs cirúrgicos
-4. rtk-memory  → registrar erro/padrão no RTK SCRATCHPAD
-5. pre-flight  → types → testes → build ANTES de commit/deploy
-\`\`\`
-
-**O que NÃO fazer:** ler arquivo "só pra ver"; ler >3 arquivos grandes sem consolidar; read de diretório grande (usar glob/grep); declarar tarefa concluída sem pre-flight; re-analisar erro registrado no RTK SCRATCHPAD; gerar explicações longas sem pedido.
-
-## Deploy
-
-Só quando usuário disser "deploy" ou "/deploy". Usar skill \`deploy-vps\`. Build DEVE passar antes do push.
-
-## Gastos
-
-Exibir \`[💰 Ação: R$ X | Sessão: R$ Y]\` ao final de cada ação. Detalhes: \`calcular-gastos-sessao\`.
-
-## RTK SCRATCHPAD
-
-${rtkSection}
-`
-
-  return content
-}
-
-function describeCommand(cmd) {
-  const descriptions = {
-    dev: "dev server",
-    build: "build produção (RODAR APÓS QUALQUER ALTERAÇÃO)",
-    preview: "preview produção",
-    format: "Prettier",
-    lint: "ESLint",
-    test: "vitest run",
-    "test:watch": "vitest watch",
-    "test:coverage": "vitest com coverage",
-    storybook: "Storybook dev",
-    "build-storybook": "Storybook build",
-    "test:safe": "testes com headroom filter",
-    "deploy:safe": "deploy com headroom filter",
-    "check:types": "type-check (tsc --noEmit)",
-    "check:guards": "verificar guards de rota",
-    "validate:all": "types + testes",
+  if (m.submodules.length) {
+    L.push("## Submódulos");
+    L.push("");
+    L.push("| Diretório | key | Nome | Rotas | Eventos |");
+    L.push("| --- | --- | --- | --- | --- |");
+    for (const s of m.submodules) {
+      L.push(
+        `| \`${s.dir}/\` | \`${s.key}\` | ${esc(s.nome)} | ${list(s.routes)} | ${list(s.events)} |`,
+      );
+    }
+    L.push("");
   }
-  return descriptions[cmd] || ""
+
+  if (m.tables.length || m.rpcs.length) {
+    L.push("## Tabelas e RPCs");
+    L.push("");
+    if (m.tables.length) L.push(`Tabelas: ${list(m.tables)}`);
+    if (m.rpcs.length) {
+      L.push("");
+      L.push(`RPCs: ${list(m.rpcs)}`);
+    }
+    L.push("");
+  }
+
+  if (m.cross.length) {
+    L.push("## ⚠ Imports cross-feature (violação a corrigir)");
+    L.push("");
+    for (const c of m.cross) L.push(`- \`${c}\``);
+    L.push("");
+  }
+
+  L.push("<!-- /sync:fatos -->");
+
+  const generated = L.join("\n");
+
+  // Preserva a seção "## Notas" escrita à mão, se existir.
+  const notas = existing?.match(/## Notas\r?\n[\s\S]*$/);
+  return (
+    generated +
+    "\n\n" +
+    (notas
+      ? notas[0].replace(/\s+$/, "")
+      : "## Notas\n\n_Regras de negócio e decisões específicas deste módulo. Escrito à mão — o `sync-docs` não sobrescreve._") +
+    "\n"
+  );
 }
 
-function escapeMarkdown(str) {
-  return str.replace(/\|/g, "\\|").replace(/\n/g, " ")
-}
+const STUB = (titulo, alvo) =>
+  `# ${titulo} → AGENTS.md\n\nRedirecionamento. A fonte única de instruções deste projeto é \`${alvo}\`.\n\n@${alvo}\n`;
 
 // ─── Main ─────────────────────────────────────────────────────────────────────
 
-function main() {
-  const skills = getSkills()
-  const modules = getModules()
-  const routes = getRoutes()
-  const commands = getCommands()
-  const rtkContent = getExistingRTK()
+const moduleNames = readdirSync(FEATURES)
+  .filter((f) => statSync(join(FEATURES, f)).isDirectory())
+  .sort();
 
-  // Monta seção RTK preservada
-  let rtkSection = ""
-  if (rtkContent) {
-    rtkSection = rtkContent
-  } else {
-    rtkSection = `> Erros resolvidos e padrões descobertos. Gerenciado por \`rtk-memory\`. Não re-analisar o que já está aqui.
+const mods = moduleNames.map(collectModule);
+const skills = collectSkills();
 
-### Padrões consolidados
-- **Single-tenant:** não injetar \`empresa_id\`. Migration \`20260721000000\` removeu de ~71 tabelas. Checar \`grep\` na migration antes de confiar que uma tabela foi coberta.
-- **dispararEventoModulo:** 3 args \`(moduloKey, eventoKey, payload)\`. Nunca passar 4º arg. Sempre \`.catch(() => {})\`, nunca \`await\`.
-- **State em handlers:** usar nome explícito do state (ex: \`tipoAtivo\`), nunca variável genérica sem prefixo.
-- **Cross-feature imports:** proibidos. Mover lógica compartilhada para \`shared/\` ou \`lib/utils/\`.
-- **Vite não type-checka por padrão:** rodar \`npm run check:types\` além do build ao mexer com tipagem dinâmica de Supabase.`
+console.log(
+  CHECK ? "Verificando docs de agentes…" : "Sincronizando docs de agentes…",
+);
+
+// 1. Blocos nos arquivos escritos à mão
+for (const [file, blocks] of [
+  [join(ROOT, "AGENTS.md"), { modulos: blocoModulos(mods) }],
+  [join(ROOT, "docs", "agents", "modulos.md"), { modulos: blocoModulosDocs(mods) }],
+  [join(ROOT, "docs", "agents", "skills.md"), { skills: blocoSkills(skills) }],
+]) {
+  if (!existsSync(file)) {
+    console.log(`AUSENTE: ${relative(ROOT, file)}`);
+    outOfSync = true;
+    continue;
   }
-
-  const files = [
-    { path: join(ROOT, "AGENTS.md"), title: "AGENTS.md" },
-    { path: join(ROOT, "CLAUDE.md"), title: "CLAUDE.md" },
-    { path: join(ROOT, "GEMINI.md"), title: "GEMINI.md" },
-    { path: join(ROOT, ".gemini", "GEMINI.md"), title: "GEMINI.md" },
-  ]
-
-  const generated = generateContent("AGENTS.md", skills, modules, routes, commands, rtkSection)
-
-  if (CHECK_MODE) {
-    let outOfSync = false
-    for (const file of files) {
-      if (!existsSync(file.path)) {
-        console.log(`OUTDATED: ${file.path} does not exist`)
-        outOfSync = true
-        continue
-      }
-      const existing = readFileSync(file.path, "utf-8")
-      // Normaliza o título para comparação
-      const normalized = existing.replace(/^# (AGENTS|CLAUDE|GEMINI)\.md/m, "# AGENTS.md")
-      const normalizedGenerated = generated
-      if (normalized.trim() !== normalizedGenerated.trim()) {
-        console.log(`OUTDATED: ${file.path}`)
-        outOfSync = true
-      } else {
-        console.log(`OK: ${file.path}`)
-      }
-    }
-    process.exit(outOfSync ? 1 : 0)
-  }
-
-  // Gera arquivos
-  for (const file of files) {
-    const content = generated.replace(/^# AGENTS\.md/m, `# ${file.title}`)
-    writeFileSync(file.path, content, "utf-8")
-    console.log(`✓ ${file.path}`)
-  }
-
-  console.log(`\nSynced: ${skills.length} skills, ${modules.length} modules, ${routes.length} routes`)
+  let content = read(file);
+  for (const [name, body] of Object.entries(blocks))
+    content = fillBlock(content, name, body);
+  emit(file, content);
 }
 
-main()
+// 2. Stubs de redirecionamento na raiz
+emit(join(ROOT, "CLAUDE.md"), STUB("CLAUDE.md", "AGENTS.md"));
+emit(join(ROOT, "GEMINI.md"), STUB("GEMINI.md", "AGENTS.md"));
+if (existsSync(join(ROOT, ".gemini")))
+  emit(join(ROOT, ".gemini", "GEMINI.md"), STUB("GEMINI.md", "../AGENTS.md"));
+
+// 3. AGENTS.md + stubs por módulo
+for (const m of mods) {
+  const target = join(m.dir, "AGENTS.md");
+  const existing = read(target);
+  emit(target, moduloAgentsMd(m, existing));
+  emit(join(m.dir, "CLAUDE.md"), STUB("CLAUDE.md", "AGENTS.md"));
+  emit(join(m.dir, "GEMINI.md"), STUB("GEMINI.md", "AGENTS.md"));
+}
+
+if (CHECK) {
+  console.log(outOfSync ? "\nDesatualizado." : "\nTudo sincronizado.");
+  process.exit(outOfSync ? 1 : 0);
+}
+console.log(
+  `\n${mods.length} módulos · ${skills.length} skills · ${mods.reduce((a, m) => a + (m.def?.routes.length ?? 0), 0)} rotas registradas`,
+);

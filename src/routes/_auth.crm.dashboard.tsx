@@ -5,7 +5,7 @@ import { useAuth } from "~/lib/auth";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "~/core/supabase";
 import { Button } from "~/components/ui/button";
-import { ClientePickerModal } from "~/features/crm/components/ClientePickerModal";
+import { ClientePickerModal } from "~/components/shared/ClientePickerModal";
 import { NovaVisitaModal } from "~/features/crm/components/NovaVisitaModal";
 import {
   Select,

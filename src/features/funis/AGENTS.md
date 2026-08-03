@@ -1,36 +1,57 @@
-# AGENTS.md — Módulo Funis
+# AGENTS.md — `funis`
 
-**Idioma:** PT-BR. **Sem greetings.** Direto ao ponto.
+**PT-BR. Sem greetings.** Regras globais em [AGENTS.md](../../../AGENTS.md) da raiz — este arquivo cobre só o que é específico deste módulo.
 
-## Visão Geral
+<!-- sync:fatos -->
 
-Gerenciamento de funis Kanban para fluxos de trabalho. Colunas, tarefas, automações, templates.
+**Funis** — Gerenciamento de funis Kanban para fluxos de trabalho
+
+Tipo: **registrado** · `key: "funis"` · 50 arquivos
 
 ## Estrutura
 
 ```
 src/features/funis/
-├── module.ts              # 4 rotas, 12 eventos, 18 permissões
-├── permissions.ts         # Permissões de funis
-├── types.ts               # Tipos
-├── services/              # 12 services
-├── hooks/                 # 12 hooks
-├── components/            # 16 componentes
-└── utils/                 # 3 utilitários
+├── diagnostic.ts
+├── index.ts
+├── module.ts
+├── onboarding.tsx
+├── permissions.ts
+├── types.ts
+├── components/  (17 arquivos)
+├── hooks/  (11 arquivos)
+├── services/  (13 arquivos)
+└── utils/  (3 arquivos)
 ```
 
 ## Rotas
 
-`/funis/dashboard`, `/funis/funil/$funilId`, `/funis/templates`, `/funis/funil/$funilId/automations`
+`/funis/dashboard` · `/funis/funil/$funilId` · `/funis/templates` · `/funis/funil/$funilId/automations`
 
 ## Permissões
 
-`funis_ver_dashboard`, `funis_criar_funil`, `funis_editar_funil`, `funis_excluir_funil`, `funis_gerir_colunas`, `funis_gerir_tarefas`, `funis_compartilhar`, `funis_ver_relatorios`
+`funis_ver_dashboard` · `funis_criar_funil` · `funis_editar_funil` · `funis_excluir_funil` · `funis_gerir_colunas` · `funis_gerir_tarefas` · `funis_compartilhar` · `funis_ver_relatorios`
 
 ## Eventos
 
-`funil.criado`, `funil.atualizado`, `funil.excluido`, `tarefa.criada`, `tarefa.concluida`, `tarefa.movida`, `tarefa.comentario_adicionado`, `tarefa.anexo_adicionado`, `tarefa.label_adicionado`, `tarefa.atrasada`, `funil.criado_template`, `automacao.executada`
+`funil.criado` · `funil.atualizado` · `funil.excluido` · `tarefa.criada` · `tarefa.concluida` · `tarefa.movida` · `tarefa.comentario_adicionado` · `tarefa.anexo_adicionado` · `tarefa.label_adicionado` · `tarefa.atrasada` · `funil.criado_template` · `automacao.executada`
 
-## Tabelas
+Disparos no código: 11. Sempre `dispararEventoModulo("funis", <evento>, payload).catch(() => {})`.
 
-`funis`, `funis_colunas`, `funis_tarefas`, `funis_permissoes`, `funis_templates`, `funis_template_cols`, `funis_template_tasks`
+## Registro
+
+- Ambientes: `cadastro` · `consultor` · `tecnologia`
+- Abas de config: `geral` · `permissoes` · `credenciais` · `eventos`
+- Flags: `hasDiagnostico` · `hasCredentialScopes` · `hasDesignConfig`
+- Rota de design: `/empresa/funis/design`
+
+## Tabelas e RPCs
+
+Tabelas: `funis` · `funis_anexos` · `funis_automacoes` · `funis_colunas` · `funis_colunas_modelo` · `funis_comentarios` · `funis_etiquetas` · `funis_etiquetas_tarefa` · `funis_log_atividades` · `funis_modelos` · `funis_notificacoes` · `funis_permissoes` · `funis_recorrentes` · `funis_tarefas` · `funis_tarefas_modelo` · `profiles` · `users`
+
+<!-- /sync:fatos -->
+
+## Notas
+
+- **Débito `empresa_id` (real):** `funis` e `profiles` **foram** limpas pela migration `20260721000000`, mas o módulo ainda envia/filtra o campo (14 ocorrências). Insert/update nessas tabelas falha no PostgREST. Em código novo não passe o campo; ao tocar num arquivo que usa, remova. Ver A1 em `docs/agents/plano-correcao-auditoria.md`.
+- As demais `funis_*` mantêm a coluna — nelas o uso é correto.

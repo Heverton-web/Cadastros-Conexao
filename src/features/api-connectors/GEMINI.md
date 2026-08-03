@@ -1,18 +1,5 @@
-# GEMINI.md — Módulo API Connectors
+# GEMINI.md → AGENTS.md
 
-## Context
+Redirecionamento. A fonte única de instruções deste projeto é `AGENTS.md`.
 
-API/webhook connector CRUD and execution. Pure service library.
-
-## Key Files
-
-- `index.ts` — Service functions and types
-
-## Database
-
-- `api_connectors` (formerly `conectores_api`) — API/webhook connectors
-
-## Notes
-
-- No formal module.ts, permissions, routes, or events
-- Consumed by Central de Ações module
+@AGENTS.md

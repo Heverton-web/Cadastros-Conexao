@@ -1,23 +1,30 @@
-# AGENTS.md — Módulo Integrações
+# AGENTS.md — `integracoes`
 
-**Idioma:** PT-BR. **Sem greetings.** Direto ao ponto.
+**PT-BR. Sem greetings.** Regras globais em [AGENTS.md](../../../AGENTS.md) da raiz — este arquivo cobre só o que é específico deste módulo.
 
-## Visão Geral
+<!-- sync:fatos -->
 
-Serviços utilitários de integrações externas (CEP, Evolution API). Biblioteca pura.
+**Módulo-serviço** — sem `module.ts`: não tem rotas, permissões nem eventos próprios. Exporta tipos e funções Supabase por `~/features/integracoes`, consumido por rotas e outros módulos.
+
+Tipo: **serviço** · 1 arquivo
 
 ## Estrutura
 
 ```
 src/features/integracoes/
-└── index.ts    # Funções utilitárias
+└── index.ts
 ```
 
-## Tabelas
+## API pública
 
-- `config_integracoes` — Configurações de integrações
+`listarIntegracoes` · `salvarIntegracao` · `buscarCepResiliente` · `testarConexaoEvolution`
 
-## Regras
+## Tabelas e RPCs
 
-- Sem permissões, rotas ou eventos
-- Biblioteca pura
+Tabelas: `config_integracoes`
+
+<!-- /sync:fatos -->
+
+## Notas
+
+- `buscarCepResiliente` faz fallback entre provedores de CEP; use-o em vez de chamar ViaCEP direto.

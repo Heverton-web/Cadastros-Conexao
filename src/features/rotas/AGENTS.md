@@ -1,36 +1,57 @@
-# AGENTS.md — Módulo Rotas de Visitas
+# AGENTS.md — `rotas`
 
-**Idioma:** PT-BR. **Sem greetings.** Direto ao ponto.
+**PT-BR. Sem greetings.** Regras globais em [AGENTS.md](../../../AGENTS.md) da raiz — este arquivo cobre só o que é específico deste módulo.
 
-## Visão Geral
+<!-- sync:fatos -->
 
-Planejamento e execução de rotas de visitas a clientes. Upload base, formulário, relatórios.
+**Rotas de Visitas** — Planejamento e execução de rotas de visitas a clientes
+
+Tipo: **registrado** · `key: "rotas"` · 22 arquivos
 
 ## Estrutura
 
 ```
 src/features/rotas/
-├── module.ts              # 3 rotas, 4 eventos, 6 permissões
-├── permissions.ts         # Permissões de rotas
-├── types.ts               # Tipos
-├── services/              # Services
-├── hooks/                 # Hooks
-├── components/            # Componentes
-└── lib/                   # Utilitários
+├── diagnostic.ts
+├── index.ts
+├── module.ts
+├── onboarding.tsx
+├── permissions.ts
+├── types.ts
+├── components/  (6 arquivos)
+├── hooks/  (3 arquivos)
+├── lib/  (1 arquivo)
+└── services/  (6 arquivos)
 ```
 
 ## Rotas
 
-`/rotas`, `/rotas/$id`, `/rotas/design`
+`/rotas` · `/rotas/$id` · `/rotas/design`
 
 ## Permissões
 
-`rotas_planejar`, `rotas_executar`, `rotas_configurar`, `rotas_upload_base`, `rotas_ver_relatorios`, `rotas_form_config`
+`rotas_planejar` · `rotas_executar` · `rotas_configurar` · `rotas_upload_base` · `rotas_ver_relatorios` · `rotas_form_config`
 
 ## Eventos
 
-`rota.criada`, `rota.iniciada`, `rota.finalizada`, `visita.registrada`
+`rota.criada` · `rota.iniciada` · `rota.finalizada` · `visita.registrada`
 
-## Tabelas
+Disparos no código: 4. Sempre `dispararEventoModulo("rotas", <evento>, payload).catch(() => {})`.
 
-`rotas_config`, `rotas_clientes_base`, `rotas`, `rotas_clientes`, `rotas_trajetos`, `rotas_visitas`, `rotas_form_perguntas`
+## Registro
+
+- Ambientes: `cadastro` · `consultor` · `tecnologia`
+- Abas de config: `geral` · `permissoes` · `eventos`
+- Flags: `hasDesignConfig` · `hasDiagnostico`
+- Rota de design: `/empresa/rotas/design`
+
+## Tabelas e RPCs
+
+Tabelas: `rotas` · `rotas_clientes` · `rotas_clientes_base` · `rotas_config` · `rotas_form_perguntas` · `rotas_trajetos` · `rotas_visitas`
+
+<!-- /sync:fatos -->
+
+## Notas
+
+- **Débito `empresa_id` (real):** `rotas` e `rotas_trajetos` **foram** limpas pela migration `20260721000000`, mas o módulo ainda envia/filtra o campo (44 ocorrências). Insert/update nessas tabelas falha no PostgREST. Em código novo não passe o campo; ao tocar num arquivo que usa, remova. Ver A1 em `docs/agents/plano-correcao-auditoria.md`.
+- `rotas_clientes`, `rotas_clientes_base`, `rotas_config`, `rotas_form_perguntas` e `rotas_visitas` mantêm a coluna.

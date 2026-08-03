@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useAuth } from "~/lib/auth";
 import { KanbanAvancado } from "~/features/crm/components/KanbanAvancado";
 import { NovaVisitaModal } from "~/features/crm/components/NovaVisitaModal";
-import { ClientePickerModal } from "~/features/crm/components/ClientePickerModal";
+import { ClientePickerModal } from "~/components/shared/ClientePickerModal";
 import { BuscaGlobal } from "~/features/crm/components/BuscaGlobal";
 import { Button } from "~/components/ui/button";
 import { Plus, Search, Filter } from "lucide-react";

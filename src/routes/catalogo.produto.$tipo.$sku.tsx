@@ -5,7 +5,7 @@ import { StoreLayout, useCatalogoVisibility } from "~/features/catalogo/componen
 import { useImplanteDetalhe, useAbutmentDetalhe, useKitDetalhe, usePromocionalDetalhe, useItensPromocionalDetalhado, useProtocoloFresagem, useGuias, useImagensProduto, useImagensBatch, useChavesDoImplante, useCicatrizadoresDoImplante, useAbutmentsDoImplante, useKitsDoImplante, useKitsComChavesEmComum, useImplantesDoAbutment, useCatalogoConfig } from "~/features/catalogo/hooks/useCatalogo"
 import { addToCart, formatBRL, getPrecoFromDB, mockPreco, resolveBOMItem } from "~/features/catalogo/services/carrinho.service"
 import { resolvePreco } from "~/features/catalogo/services/precos-grupo.service"
-import { useClienteAtivo } from "~/features/catalogo/context/cliente-ativo"
+import { useClienteAtivo } from "~/features/catalogo/contexts/cliente-ativo"
 import { playCoinSound } from "~/features/catalogo/services/audio.service"
 import { listarKitsRelacionadosDeChave, listarKitsRelacionadosDeCicatrizador } from "~/features/catalogo/services/kits.service"
 import type { ProductSheetTipo } from "~/features/catalogo/types"

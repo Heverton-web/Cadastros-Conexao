@@ -1,23 +1,33 @@
-# AGENTS.md — Módulo API Connectors
+# AGENTS.md — `api-connectors`
 
-**Idioma:** PT-BR. **Sem greetings.** Direto ao ponto.
+**PT-BR. Sem greetings.** Regras globais em [AGENTS.md](../../../AGENTS.md) da raiz — este arquivo cobre só o que é específico deste módulo.
 
-## Visão Geral
+<!-- sync:fatos -->
 
-CRUD e execução de conectores API/webhook. Biblioteca utilitária.
+**Módulo-serviço** — sem `module.ts`: não tem rotas, permissões nem eventos próprios. Exporta tipos e funções Supabase por `~/features/api-connectors`, consumido por rotas e outros módulos.
+
+Tipo: **serviço** · 1 arquivo
 
 ## Estrutura
 
 ```
 src/features/api-connectors/
-└── index.ts    # Service functions e tipos
+└── index.ts
 ```
 
-## Tabelas
+## API pública
 
-- `api_connectors` — Conectores API/webhook
+`listApiConnectors` · `createApiConnector` · `updateApiConnector` · `deleteApiConnector` · `executeApiConnector`
 
-## Regras
+## Tabelas e RPCs
 
-- Sem permissões, rotas ou eventos
-- Biblioteca consumida pela Central de Ações
+Tabelas: `conectores_api`
+
+RPCs: `executar_api_connector_server`
+
+<!-- /sync:fatos -->
+
+## Notas
+
+- `executeApiConnector` roda a chamada pela RPC `executar_api_connector_server` (server-side, para não expor credencial no browser).
+- É o terceiro destino de `dispararEventoModulo` (junto de `webhooks` e `notificacoes_modelos`) — ver `docs/agents/eventos.md`.

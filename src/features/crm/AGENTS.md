@@ -1,36 +1,55 @@
-# AGENTS.md — Módulo CRM
+# AGENTS.md — `crm`
 
-**Idioma:** PT-BR. **Sem greetings.** Direto ao ponto.
+**PT-BR. Sem greetings.** Regras globais em [AGENTS.md](../../../AGENTS.md) da raiz — este arquivo cobre só o que é específico deste módulo.
 
-## Visão Geral
+<!-- sync:fatos -->
 
-Gestão de relacionamento com clientes e equipe comercial. Pipeline Kanban, carteira, tarefas, transferência e BI.
+**CRM** — Gestão de relacionamento com clientes e equipe comercial
+
+Tipo: **registrado** · `key: "crm"` · 19 arquivos
 
 ## Estrutura
 
 ```
 src/features/crm/
-├── module.ts              # 13 rotas, 5 eventos, 10 permissões
-├── permissions.ts         # Permissões CRM
-├── types.ts               # Tipos
-├── services/              # Supabase
-├── hooks/                 # React Query
-├── components/            # UI (admin, consultor, diretoria)
-└── lib/                   # Utilitários
+├── diagnostic.ts
+├── index.ts
+├── module.ts
+├── onboarding.tsx
+├── permissions.ts
+├── components/  (8 arquivos)
+├── hooks/  (1 arquivo)
+└── lib/  (5 arquivos)
 ```
 
 ## Rotas
 
-`/crm/dashboard`, `/crm/carteira`, `/crm/pipeline`, `/crm/tarefas`, `/crm/metricas`, `/crm/cliente/$id`, `/crm/equipe`, `/crm/bi`, `/crm/transferencia`, `/crm/diretoria`
+`/crm/dashboard` · `/crm/carteira` · `/crm/pipeline` · `/crm/tarefas` · `/crm/metricas` · `/crm/cliente/$id` · `/crm/equipe` · `/crm/bi` · `/crm/transferencia` · `/crm/transferencia/consultores` · `/crm/diretoria` · `/crm/diretoria/gestor/$id` · `/crm/aceitar-convite/$token`
 
 ## Permissões
 
-`crm_dashboard`, `crm_carteira`, `crm_pipeline`, `crm_tarefas`, `crm_cliente_detalhe`, `crm_equipe`, `crm_metricas`, `crm_bi`, `crm_transferencia`, `crm_diretoria`
+`crm_dashboard` · `crm_carteira` · `crm_pipeline` · `crm_tarefas` · `crm_cliente_detalhe` · `crm_equipe` · `crm_metricas` · `crm_bi` · `crm_transferencia` · `crm_diretoria`
 
 ## Eventos
 
-`cliente.criado`, `cliente.transferido`, `visita.realizada`, `tarefa.excluida`, `consultor.transferido`
+`cliente.criado` · `cliente.transferido` · `visita.realizada` · `tarefa.excluida` · `consultor.transferido`
 
-## Tabelas
+Disparos no código: 3. Sempre `dispararEventoModulo("crm", <evento>, payload).catch(() => {})`.
 
-`clientes`, `visitas`, `tarefas`, `pipeline_estagios`, `logs_transferencia`, `logs_transferencia_consultor`
+## Registro
+
+- Ambientes: `cadastro` · `consultor` · `tecnologia`
+- Abas de config: `geral` · `permissoes` · `eventos`
+- Flags: `hasDiagnostico` · `hasDesignConfig`
+- Rota de design: `/empresa/crm/design`
+
+## Tabelas e RPCs
+
+Tabelas: `clientes` · `pipeline_estagios` · `tarefas` · `usuarios` · `visitas`
+
+<!-- /sync:fatos -->
+
+## Notas
+
+- `clientes` é compartilhada com o módulo-serviço `~/features/clientes` e com `cadastros`. Não crie leitura duplicada: consuma o barrel `~/features/clientes`.
+- `/crm/aceitar-convite/$token` e `/crm/cliente/$id` são rotas com param; `aceitar-convite` roda sem permissão de CRM (fluxo de convite).

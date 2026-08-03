@@ -16,17 +16,19 @@ erro ou re-descobrir o mesmo padrão.
 
 | Situação | O que registrar | Onde |
 |----------|----------------|------|
-| Bug de compilação resolvido | Causa raiz + fix | RTK SCRATCHPAD (AGENTS.md) |
-| Padrão arquitetural descoberto | Regra + exemplo | RTK SCRATCHPAD |
-| Configuração não óbvia | Chave + valor + por quê | RTK SCRATCHPAD |
-| Erro de runtime recorrente | Sintoma + solução | RTK SCRATCHPAD |
+| Bug de compilação resolvido | Causa raiz + fix | `docs/agents/debitos.md` |
+| Padrão arquitetural descoberto | Regra + exemplo | `docs/agents/debitos.md` |
+| Configuração não óbvia | Chave + valor + por quê | `docs/agents/debitos.md` |
+| Erro de runtime recorrente | Sintoma + solução | `docs/agents/debitos.md` |
+| Regra específica de um módulo | Regra + por quê | seção `## Notas` do `src/features/<modulo>/AGENTS.md` |
 | Decisão de design tomada | Opção escolhida + rejeitada + motivo | Notas da sessão |
 
 ## Passo a passo
 
 1. **Detectar**: erros resolvidos, padrões novos, configurações surpresa.
 2. **Avaliar**: é duradouro? Vai aparecer de novo? Outro agente precisaria saber?
-3. **Registrar**: adicionar ao `## RTK SCRATCHPAD` do `AGENTS.md`.
+3. **Registrar**: adicionar em `docs/agents/debitos.md` (armadilha global) ou na
+   seção `## Notas` do `AGENTS.md` do módulo (regra local).
 4. **Formatar**: usar o template abaixo.
 5. **Verificar**: não duplicar entradas existentes.
 
@@ -47,26 +49,27 @@ erro ou re-descobrir o mesmo padrão.
 - `CONFIG`: configurações não óbvias
 - `PADRAO`: padrões arquiteturais
 - `RLS`: erros de Row Level Security
-- `MULTI-TENANT`: problemas de empresa_id
+- `SINGLE-TENANT`: resquícios de `empresa_id`
 
 ## Local de escrita
 
-**Sempre** adicionar ao `## RTK SCRATCHPAD` no `AGENTS.md` na raiz do projeto.
+| Escopo | Arquivo |
+| --- | --- |
+| Armadilha ou débito que afeta o projeto | `docs/agents/debitos.md` |
+| Regra de negócio ou pegadinha de um módulo | `## Notas` em `src/features/<modulo>/AGENTS.md` |
+| Padrão de código, banco, UI, rota | o doc correspondente em `docs/agents/` |
+
+⚠ **Nunca** escreva dentro de um bloco `<!-- sync:... -->` — `sync-docs` sobrescreve.
+O `AGENTS.md` da raiz não tem mais seção de scratchpad.
+
+Exemplo em `docs/agents/debitos.md`:
 
 ```markdown
-## RTK SCRATCHPAD
-
-### [2025-01-15] TIPO: UUID vs string
-- **Causa**: Supabase retorna UUID como string, mas tipos esperam UUID
-- **Fix**: usar `as UUID` ou validar com regex
-- **Arquivo**: service.ts:24
-- **Prevenção**: sempre tipar empresa_id como UUID nos types
-
-### [2025-01-15] RLS: empresa_id obrigatório
-- **Causa**: INSERT sem empresa_id é bloqueado pelo RLS
-- **Fix**: sempre incluir empresa_id do useAuth()
-- **Arquivo**: todos os service.ts
-- **Prevenção**: hook useAuth() sempre chamado antes de mutations
+### [2026-08-03] SINGLE-TENANT: insert quebrando em hub_materiais
+- **Causa**: service enviava `empresa_id`, coluna removida na migration 20260721000000
+- **Fix**: remover o campo do payload
+- **Arquivo**: src/features/hub/services/materials.service.ts
+- **Prevenção**: grepar a migration antes de assumir que a coluna existe
 ```
 
 ## NUNCA fazer

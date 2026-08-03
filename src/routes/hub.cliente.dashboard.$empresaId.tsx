@@ -1,5 +1,6 @@
 import { createRoute } from "@tanstack/react-router";
-import { rootRoute } from "./__root";
+import { authLayout } from "./_auth";
+import { RequirePermission } from "~/components/guards";
 import { HubDashboardPage } from "~/features/hub/pages/HubDashboardPage";
 import { WalkthroughDialog } from "~/core/onboarding/WalkthroughDialog";
 import { useWalkthrough } from "~/core/onboarding/useWalkthrough";
@@ -29,8 +30,16 @@ function HubClienteLayout() {
   );
 }
 
+// O param $empresaId não é lido pelo componente (single-tenant); mantido apenas
+// para compatibilidade de URL. HubDashboardPage depende de useAuth(), então esta
+// rota nunca funcionou fora da árvore autenticada — era a única das 17 rotas do
+// hub em rootRoute. Ver A3 em docs/agents/plano-correcao-auditoria.md.
 export const hubClienteDashboardRoute = createRoute({
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => authLayout,
   path: "/hub/cliente/dashboard/$empresaId",
-  component: HubClienteLayout,
+  component: () => (
+    <RequirePermission modulo="hub">
+      <HubClienteLayout />
+    </RequirePermission>
+  ),
 });

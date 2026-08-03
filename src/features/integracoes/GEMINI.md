@@ -1,24 +1,5 @@
-# GEMINI.md — Módulo Integrações
+# GEMINI.md → AGENTS.md
 
-## Context
+Redirecionamento. A fonte única de instruções deste projeto é `AGENTS.md`.
 
-External integration utility services (CEP lookup, Evolution API). Pure service library.
-
-## Key Files
-
-- `index.ts` — Utility functions
-
-## Database
-
-- `config_integracoes` — External integration settings
-
-## Functions
-
-- `listarIntegracoes()` / `salvarIntegracao()` — CRUD
-- `buscarCepResiliente()` — CEP via BrasilAPI + ViaCEP fallback
-- `testarConexaoEvolution()` — WhatsApp Evolution API connection test
-
-## Notes
-
-- No formal module.ts, permissions, routes, or events
-- Pure utility library
+@AGENTS.md

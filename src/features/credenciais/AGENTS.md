@@ -1,23 +1,31 @@
-# AGENTS.md — Módulo Credenciais
+# AGENTS.md — `credenciais`
 
-**Idioma:** PT-BR. **Sem greetings.** Direto ao ponto.
+**PT-BR. Sem greetings.** Regras globais em [AGENTS.md](../../../AGENTS.md) da raiz — este arquivo cobre só o que é específico deste módulo.
 
-## Visão Geral
+<!-- sync:fatos -->
 
-Gestão de credenciais de acesso ao sistema. Biblioteca utilitária.
+**Módulo-serviço** — sem `module.ts`: não tem rotas, permissões nem eventos próprios. Exporta tipos e funções Supabase por `~/features/credenciais`, consumido por rotas e outros módulos.
+
+Tipo: **serviço** · 1 arquivo
 
 ## Estrutura
 
 ```
 src/features/credenciais/
-└── index.ts    # Service functions e tipos
+└── index.ts
 ```
 
-## Tabelas
+## API pública
 
-- `credenciais` — Credenciais de acesso
+`listarCredenciais` · `listarCredenciaisPorEmpresa` · `criarCredencial` · `toggleCredencial` · `deletarCredencial` · `atualizarCredencial`
 
-## Regras
+## Tabelas e RPCs
 
-- Sem permissões, rotas ou eventos
-- Consumido por cadastros, catálogo, admin
+Tabelas: `credenciais`
+
+<!-- /sync:fatos -->
+
+## Notas
+
+- Credenciais de acesso por escopo. `listarCredenciaisPorEmpresa` é resquício multi-tenant: em código novo use `listarCredenciais`.
+- **Débito `empresa_id` (real):** a tabela `credenciais` **foi** limpa pela migration `20260721000000`, mas `index.ts` ainda referencia o campo (2 ocorrências). É o menor caso do projeto — bom ponto de partida para validar o padrão de limpeza. Ver A1 em `docs/agents/plano-correcao-auditoria.md`.

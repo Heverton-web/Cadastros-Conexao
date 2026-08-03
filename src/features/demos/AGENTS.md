@@ -1,23 +1,32 @@
-# AGENTS.md — Módulo Demos
+# AGENTS.md — `demos`
 
-**Idioma:** PT-BR. **Sem greetings.** Direto ao ponto.
+**PT-BR. Sem greetings.** Regras globais em [AGENTS.md](../../../AGENTS.md) da raiz — este arquivo cobre só o que é específico deste módulo.
 
-## Visão Geral
+<!-- sync:fatos -->
 
-Lab de demos: links de teste e credenciais demo. Biblioteca pura.
+**Módulo-serviço** — sem `module.ts`: não tem rotas, permissões nem eventos próprios. Exporta tipos e funções Supabase por `~/features/demos`, consumido por rotas e outros módulos.
+
+Tipo: **serviço** · 1 arquivo
 
 ## Estrutura
 
 ```
 src/features/demos/
-└── index.ts    # Service functions
+└── index.ts
 ```
 
-## Tabelas
+## API pública
 
-- `links_testes`, `credenciais_demo`, `cadastros`
+`listarLinksTestes` · `criarLinkTeste` · `excluirLinkTeste` · `listarDemoCredentials` · `criarDemoCredential` · `excluirDemoCredential` · `atualizarExpiraLink` · `atualizarInicioPreenchimento` · `resetar2FA`
 
-## Regras
+## Tabelas e RPCs
 
-- Sem permissões, rotas ou eventos
-- Biblioteca pura
+Tabelas: `cadastros` · `credenciais_demo` · `links_testes`
+
+RPCs: `create_demo_user` · `excluir_usuario_demo`
+
+<!-- /sync:fatos -->
+
+## Notas
+
+- Cria usuários e links de teste descartáveis (`create_demo_user`, `excluir_usuario_demo`). Só deve ser acionado por rota de super admin.

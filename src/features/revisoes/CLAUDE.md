@@ -1,28 +1,5 @@
-# CLAUDE.md — Módulo Revisões
+# CLAUDE.md → AGENTS.md
 
-## Visão Geral
+Redirecionamento. A fonte única de instruções deste projeto é `AGENTS.md`.
 
-Gestão de revisões de cadastro. Biblioteca utilitária — sem module.ts formal.
-
-## Estrutura
-
-```
-src/features/revisoes/
-└── index.ts    # Service functions e tipos
-```
-
-## Funções
-
-- `getRevisoes()` — Obter revisões do cadastro
-- `setRevisaoCampo()` — Definir revisão de campo
-- `setRevisoesMassa()` — Definir revisões em massa
-
-## Tabelas
-
-- `cadastros` (campo JSON `revisoes`)
-
-## Tipos
-
-- `RevisaoStatus`: pendente | ok | reprovado | em_correcao
-- `CampoRevisao`: Campo com status de revisão
-- `Revisoes`: Mapa de campos revisados
+@AGENTS.md

@@ -1,20 +1,5 @@
-# CLAUDE.md — Módulo Pré-Cadastro
+# CLAUDE.md → AGENTS.md
 
-## Visão Geral
+Redirecionamento. A fonte única de instruções deste projeto é `AGENTS.md`.
 
-Fluxo de pré-cadastro com onboarding walkthrough (2FA, PF/PJ, documentos). Fluxo standalone sem module.ts formal.
-
-## Estrutura
-
-```
-src/features/precadastro/
-├── onboarding.tsx              # Walkthrough de onboarding
-├── PreCadastroComOnboarding.tsx # Wrapper com onboarding
-└── PrevisualizacaoPage.tsx     # Pré-visualização
-```
-
-## Notas
-
-- Fluxo standalone conectado à tabela `cadastros`
-- Sem permissões, rotas ou eventos registrados
-- Walkthrough: 2FA → PF/PJ → Documentos
+@AGENTS.md

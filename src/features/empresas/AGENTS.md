@@ -1,35 +1,43 @@
-# AGENTS.md — Módulo Empresas
+# AGENTS.md — `empresas`
 
-**Idioma:** PT-BR. **Sem greetings.** Direto ao ponto.
+**PT-BR. Sem greetings.** Regras globais em [AGENTS.md](../../../AGENTS.md) da raiz — este arquivo cobre só o que é específico deste módulo.
 
-## Visão Geral
+<!-- sync:fatos -->
 
-Gerenciamento de empresas. Módulo admin sem permissões granulares.
+**Empresa** — Gerenciamento de empresas
+
+Tipo: **registrado** · `key: "empresas-core"` · 6 arquivos
 
 ## Estrutura
 
 ```
 src/features/empresas/
-├── module.ts              # 22 rotas, 0 eventos, 0 permissões
-├── permissions.ts         # Array vazio
-├── index.ts               # Barrel exports
-├── hooks/                 # React Query
-├── components/            # UI
-└── contexts/              # React contexts
+├── components.tsx
+├── diagnostic.ts
+├── index.ts
+├── module.ts
+├── onboarding.tsx
+└── services/  (1 arquivo)
 ```
 
 ## Rotas
 
-`/global/empresas`, `/empresa`, `/empresa/design`, `/empresa/despesas-config`, `/empresa/clientes-import`, `/empresa/rotas/config`, `/empresa/nps/tema`, `/empresa/linktree/tema`, `/empresa/hub/chatbot`, `/empresa/mapas/design`, `/empresa/funis/design`, `/empresa/crm/design`, `/empresa/cadastros/design`, `/empresa/onboarding`, `/empresa/agentes`
+`/global/empresas` · `/empresa` · `/empresa/design` · `/empresa/despesas-config` · `/empresa/clientes-import` · `/empresa/rotas/config` · `/empresa/nps/tema` · `/empresa/nps/design` · `/empresa/linktree/tema` · `/empresa/linktree/design` · `/empresa/hub/chatbot` · `/empresa/hub/design` · `/empresa/mapas/design` · `/empresa/funis/design` · `/empresa/crm/design` · `/empresa/cadastros/design` · `/empresa/cadastros/formulario` · `/empresa/despesas/design` · `/empresa/rotas/design` · `/empresa/onboarding` · `/empresa/agentes` · `/global/agentes`
 
-## Permissões
+## Registro
 
-Nenhuma — acesso liberado para todos.
+- Abas de config: `empresa-banco` · `empresa-dados` · `empresa-permissoes` · `empresa-design` · `empresa-branding` · `formularios`
+- Flags: `hasDiagnostico` · `hasDesignConfig` · `hasFormulario`
+- Rota de design: `/empresa/design`
 
-## Eventos
+## Tabelas e RPCs
 
-Nenhum.
+Tabelas: `empresas` · `profiles`
 
-## Tabelas
+<!-- /sync:fatos -->
 
-`empresas`, `empresas_config`, `empresa_design_system`, `empresa_modulos`, `empresa_modulo_limits`, `empresa_role_limits`
+## Notas
+
+- Módulo de **infra-UI**, não de negócio: não tem `permissions.ts` nem eventos. Re-exporta `~/shared/empresas` — é a única bridge de módulo para `shared/` permitida pela regra de isolamento.
+- Concentra as 22 rotas `/empresa/*` e `/global/empresas` de configuração **de outros módulos** (`/empresa/crm/design`, `/empresa/nps/tema`, `/empresa/hub/chatbot`, …). Alterar layout ou guard aqui afeta a tela de configuração de vários módulos ao mesmo tempo.
+- A rota de design de um módulo é declarada no `designRoute` do `module.ts` **dele**, não aqui.

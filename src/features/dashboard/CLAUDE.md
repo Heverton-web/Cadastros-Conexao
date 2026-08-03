@@ -1,17 +1,5 @@
-# CLAUDE.md — Módulo Dashboard
+# CLAUDE.md → AGENTS.md
 
-## Visão Geral
+Redirecionamento. A fonte única de instruções deste projeto é `AGENTS.md`.
 
-Onboarding walkthrough do dashboard (KPIs, Navegação, Atalhos). Sem module.ts formal.
-
-## Estrutura
-
-```
-src/features/dashboard/
-└── onboarding.tsx    # Steps de onboarding
-```
-
-## Notas
-
-- Módulo leve: apenas walkthrough de onboarding
-- Sem permissões, rotas ou eventos registrados
+@AGENTS.md

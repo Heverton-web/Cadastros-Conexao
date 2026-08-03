@@ -1,30 +1,47 @@
-# AGENTS.md — Módulo Manutenção
+# AGENTS.md — `manutencao`
 
-**Idioma:** PT-BR. **Sem greetings.** Direto ao ponto.
+**PT-BR. Sem greetings.** Regras globais em [AGENTS.md](../../../AGENTS.md) da raiz — este arquivo cobre só o que é específico deste módulo.
 
-## Visão Geral
+<!-- sync:fatos -->
 
-Painel de manutenção de módulos e rotas.
+**Manutenção** — Painel de manutenção de módulos e rotas
+
+Tipo: **registrado** · `key: "manutencao"` · 8 arquivos
 
 ## Estrutura
 
 ```
 src/features/manutencao/
-├── module.ts              # 2 rotas, 2 eventos, 0 permissões
-├── types.ts               # Tipos
-├── hooks.ts               # Hooks
-├── services/              # 1 service
-└── components/            # ManutencaoPanel, ManutencaoContext
+├── ManutencaoContext.tsx
+├── hooks.ts
+├── index.ts
+├── module.ts
+├── onboarding.tsx
+├── types.ts
+├── components/  (1 arquivo)
+└── services/  (1 arquivo)
 ```
 
 ## Rotas
 
-`/global/manutencao`, `/empresa/manutencao`
+`/global/manutencao` · `/empresa/manutencao`
 
 ## Eventos
 
-`manutencao.ativada`, `manutencao.desativada`
+`manutencao.ativada` · `manutencao.desativada`
 
-## Tabelas
+Disparos no código: 2. Sempre `dispararEventoModulo("manutencao", <evento>, payload).catch(() => {})`.
 
-`modulos_manutencao`
+## Registro
+
+- Abas de config: `eventos`
+
+## Tabelas e RPCs
+
+Tabelas: `modulos_manutencao`
+
+<!-- /sync:fatos -->
+
+## Notas
+
+- Sem `permissions.ts`: o acesso é por `RequireSuperAdmin` em `/global/manutencao`. Controla flags em `modulos_manutencao` que bloqueiam rotas de outros módulos.

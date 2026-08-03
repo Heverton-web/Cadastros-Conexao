@@ -1,36 +1,60 @@
-# AGENTS.md — Módulo Hub
+# AGENTS.md — `hub`
 
-**Idioma:** PT-BR. **Sem greetings.** Direto ao ponto.
+**PT-BR. Sem greetings.** Regras globais em [AGENTS.md](../../../AGENTS.md) da raiz — este arquivo cobre só o que é específico deste módulo.
 
-## Visão Geral
+<!-- sync:fatos -->
 
-Plataforma de treinamento e gamificação. Materiais, trilhas, rankings, conquistas e chatbot.
+**Hub** — Plataforma de treinamento e gamificação
+
+Tipo: **registrado** · `key: "hub"` · 37 arquivos
 
 ## Estrutura
 
 ```
 src/features/hub/
-├── module.ts              # 18 rotas, 8 eventos, 27 permissões
-├── permissions.ts         # 27 permissões (5 grupos)
-├── types.ts               # Tipos
-├── services/              # 8 services
-├── hooks/                 # 1 hook
-├── components/            # 11 componentes
-└── pages/                 # 8 páginas
+├── constants.ts
+├── diagnostic.ts
+├── index.ts
+├── module.ts
+├── onboarding-cliente.tsx
+├── onboarding.tsx
+├── permissions.ts
+├── types.ts
+├── components/  (12 arquivos)
+├── hooks/  (1 arquivo)
+├── lib/  (0 arquivos)
+├── pages/  (8 arquivos)
+└── services/  (8 arquivos)
 ```
 
 ## Rotas
 
-`/global/hub`, `/hub/admin/dashboard`, `/hub/admin/materiais`, `/hub/admin/trilhas`, `/hub/admin/analytics`, `/hub/admin/badges`, `/hub/gestor/dashboard`, `/hub/gestor/ranking`, `/hub/gestor/conquistas`, `/hub/consultor/dashboard`, `/hub/distribuidor/dashboard`
+`/global/hub` · `/empresa/hub/tema` · `/hub/admin/dashboard` · `/hub/admin/materiais` · `/hub/admin/trilhas` · `/hub/admin/analytics` · `/hub/admin/badges` · `/empresa/hub/chatbot` · `/hub/gestor/dashboard` · `/hub/gestor/analytics` · `/hub/gestor/ranking` · `/hub/gestor/conquistas` · `/hub/consultor/dashboard` · `/hub/consultor/ranking` · `/hub/consultor/conquistas` · `/hub/distribuidor/dashboard` · `/hub/distribuidor/conquistas` · `/hub/cliente/dashboard/$empresaId`
 
 ## Permissões
 
-27 permissões: materiais (8), trilhas (6), gamificação (4), usuários (4), admin (5)
+`hub_ver_materiais` · `hub_criar_material` · `hub_editar_material` · `hub_excluir_material` · `hub_gerenciar_assets` · `hub_publicar_material` · `hub_ver_acessos_material` · `hub_exportar_materiais` · `hub_ver_trilhas` · `hub_criar_trilha` · `hub_editar_trilha` · `hub_excluir_trilha` · `hub_gerenciar_itens_trilha` · `hub_compartilhar_trilha` · `hub_ver_ranking` · `hub_gerenciar_badges` · `hub_gerenciar_niveis` · `hub_ver_conquistas` · `hub_ver_usuarios` · `hub_editar_usuario` · `hub_aprovar_usuario` · `hub_gerenciar_convites` · `hub_ver_analytics` · `hub_gerenciar_config` · `hub_gerenciar_integracoes` · `hub_gerenciar_chatbot` · `hub_gerenciar_webhooks_hub`
 
 ## Eventos
 
-`material.acessado`, `material.concluido`, `trilha.concluida`, `gamification.level_up`, `badge.conquistado`, `convite.gerado`, `usuario.registrado`, `usuario.status_alterado`
+`material.acessado` · `material.concluido` · `trilha.concluida` · `gamification.level_up` · `badge.conquistado` · `convite.gerado` · `usuario.registrado` · `usuario.status_alterado`
 
-## Tabelas
+Disparos no código: 7. Sempre `dispararEventoModulo("hub", <evento>, payload).catch(() => {})`.
 
-`hub_materiais`, `hub_collections`, `hub_user_progress`, `hub_badges`, `hub_gamification_levels`, `hub_invite_tokens`, `hub_chatbot_config`
+## Registro
+
+- Ambientes: `cadastro` · `consultor` · `tecnologia`
+- Abas de config: `geral` · `permissoes` · `credenciais` · `eventos` · `integracoes` · `chatbot`
+- Flags: `hasDiagnostico` · `hasCredentialScopes` · `hasDesignConfig`
+- Rota de design: `/empresa/hub/design`
+
+## Tabelas e RPCs
+
+Tabelas: `empresas` · `hub_ativos_material` · `hub_colecoes` · `hub_config_chatbot` · `hub_config_sistema` · `hub_emblemas` · `hub_emblemas_usuario` · `hub_integracoes_sistema` · `hub_itens_colecao` · `hub_logs_acesso` · `hub_materiais` · `hub_material_assets` · `hub_niveis_gamificacao` · `hub_progresso_colecao` · `hub_progresso_usuario` · `hub_tokens_convite` · `profiles`
+
+<!-- /sync:fatos -->
+
+## Notas
+
+- **`empresa_id` aqui ainda funciona, mas é transitório:** as 12 tabelas `hub_*` **não** foram limpas — a migration `20260721000000` usou os nomes antigos, renomeados 16 dias antes pela `20260705000000`, e o `IF EXISTS` transformou o `DROP` em no-op. As 44 ocorrências funcionam hoje, mas saem na fase 2 (decisão de 2026-08-03: empresa_id não tem uso multi-tenant). Não remova pontualmente: a limpeza é coordenada com a migration de fase 2. Confirme o estado com `npm run audit:empresa-id`.
+- Exceção: `profiles` **foi** limpa. O uso de `empresa_id` sobre `profiles` (se houver) é bug.

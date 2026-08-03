@@ -2,8 +2,8 @@ import { useState } from "react"
 import { User, ChevronDown, X } from "lucide-react"
 import { useAuth } from "~/lib/auth"
 import { supabase } from "~/lib/supabase"
-import { ClientePickerModal } from "~/features/crm/components/ClientePickerModal"
-import { useClienteAtivo } from "../context/cliente-ativo"
+import { ClientePickerModal } from "~/components/shared/ClientePickerModal"
+import { useClienteAtivo } from "../contexts/cliente-ativo"
 import { useTranslation } from "react-i18next"
 
 export function ClienteAtivoBar() {

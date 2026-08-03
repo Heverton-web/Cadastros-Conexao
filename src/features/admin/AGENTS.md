@@ -1,24 +1,30 @@
-# AGENTS.md — Módulo Admin
+# AGENTS.md — `admin`
 
-**Idioma:** PT-BR. **Sem greetings.** Direto ao ponto.
+**PT-BR. Sem greetings.** Regras globais em [AGENTS.md](../../../AGENTS.md) da raiz — este arquivo cobre só o que é específico deste módulo.
 
-## Visão Geral
+<!-- sync:fatos -->
 
-Módulo utilitário de configurações globais do app. Sem module.ts formal.
+**Módulo-serviço** — sem `module.ts`: não tem rotas, permissões nem eventos próprios. Exporta tipos e funções Supabase por `~/features/admin`, consumido por rotas e outros módulos.
+
+Tipo: **serviço** · 1 arquivo
 
 ## Estrutura
 
 ```
 src/features/admin/
-└── index.ts    # Funções utilitárias
+└── index.ts
 ```
 
-## Tabelas
+## API pública
 
-- `config_app` — Configurações gerais
-- `credenciais_mock` — Credenciais de teste
+`getAppConfig` · `updateAppConfig` · `listMockCredentials` · `createMockCredential` · `updateMockCredential` · `toggleMockCredential` · `deleteMockCredential`
 
-## Regras
+## Tabelas e RPCs
 
-- Sem permissões, rotas ou eventos
-- Biblioteca pura de service functions
+Tabelas: `config_app` · `credenciais_mock`
+
+<!-- /sync:fatos -->
+
+## Notas
+
+- `config_app` guarda configuração global do app e `credenciais_mock` credenciais falsas de teste. Acesso só por rota de super admin.

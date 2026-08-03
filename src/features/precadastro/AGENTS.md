@@ -1,21 +1,24 @@
-# AGENTS.md — Módulo Pré-Cadastro
+# AGENTS.md — `precadastro`
 
-**Idioma:** PT-BR. **Sem greetings.** Direto ao ponto.
+**PT-BR. Sem greetings.** Regras globais em [AGENTS.md](../../../AGENTS.md) da raiz — este arquivo cobre só o que é específico deste módulo.
 
-## Visão Geral
+<!-- sync:fatos -->
 
-Fluxo de pré-cadastro com onboarding walkthrough. Standalone.
+**Módulo-serviço** — sem `module.ts`: não tem rotas, permissões nem eventos próprios. Exporta tipos e funções Supabase por `~/features/precadastro`, consumido por rotas e outros módulos.
+
+Tipo: **serviço** · 3 arquivos
 
 ## Estrutura
 
 ```
 src/features/precadastro/
-├── onboarding.tsx              # Walkthrough
-├── PreCadastroComOnboarding.tsx # Wrapper
-└── PrevisualizacaoPage.tsx     # Pré-visualização
+├── PreCadastroComOnboarding.tsx
+├── PrevisualizacaoPage.tsx
+└── onboarding.tsx
 ```
 
-## Regras
+<!-- /sync:fatos -->
 
-- Sem permissões, rotas ou eventos
-- Fluxo standalone conectado a `cadastros`
+## Notas
+
+- Fluxo **público** (sem login): `/pre-cadastro/$token`. Componentes de página moram aqui, não em `src/routes/`, por causa do onboarding embutido.

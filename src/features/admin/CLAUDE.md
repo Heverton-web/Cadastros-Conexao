@@ -1,22 +1,5 @@
-# CLAUDE.md — Módulo Admin
+# CLAUDE.md → AGENTS.md
 
-## Visão Geral
+Redirecionamento. A fonte única de instruções deste projeto é `AGENTS.md`.
 
-Módulo utilitário de configurações globais do app. Sem module.ts formal — funções exportadas diretamente.
-
-## Estrutura
-
-```
-src/features/admin/
-└── index.ts    # Funções utilitárias
-```
-
-## Tabelas
-
-- `config_app` — Configurações gerais da aplicação
-- `credenciais_mock` — Credenciais de teste/demo
-
-## Notas
-
-- Sem permissões, rotas ou eventos registrados
-- Biblioteca pura de service functions
+@AGENTS.md

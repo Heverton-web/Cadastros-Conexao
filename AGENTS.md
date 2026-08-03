@@ -1,161 +1,128 @@
-# AGENTS.md — ERP Odonto
+# AGENTS.md — ERP Conexão
 
-**Idioma:** PT-BR. **Sem greetings.** Direto ao ponto.
+**PT-BR. Sem greetings. Direto ao ponto.** Este arquivo é a fonte única;
+`CLAUDE.md` e `GEMINI.md` apenas redirecionam para cá.
 
-## Fable Family
+## Como usar esta documentação
 
-- Tarefa multi-step não trivial → aplicar `fable-method`.
-- Tarefa unattended / subagents em paralelo → `fable-loop`.
-- Trabalho concluído → `fable-judge` antes de declarar pronto.
+Leia **este arquivo sempre**. Os demais, só quando a tarefa exigir:
 
-## Estrutura
+| Vai mexer em… | Leia |
+| --- | --- |
+| Um módulo específico | `src/features/<modulo>/AGENTS.md` |
+| Estrutura, stack, comandos, env | [docs/agents/stack.md](docs/agents/stack.md) |
+| Criar/alterar módulo | [docs/agents/modulos.md](docs/agents/modulos.md) · [ARCHITECTURE.md](ARCHITECTURE.md) |
+| Rota, guard, permissão | [docs/agents/rotas-permissoes.md](docs/agents/rotas-permissoes.md) |
+| Service, hook, API externa, form | [docs/agents/dados.md](docs/agents/dados.md) |
+| Migration, RLS, schema | [docs/agents/banco.md](docs/agents/banco.md) |
+| Componente, dialog, design system | [docs/agents/ui.md](docs/agents/ui.md) |
+| Evento, webhook, notificação | [docs/agents/eventos.md](docs/agents/eventos.md) |
+| Nomenclatura, TS, erros, testes | [docs/agents/codigo.md](docs/agents/codigo.md) |
+| Skills, rules, specs, MCPs | [docs/agents/skills.md](docs/agents/skills.md) |
+| Deploy | [docs/agents/deploy.md](docs/agents/deploy.md) |
+| Bug estranho / armadilha conhecida | [docs/agents/debitos.md](docs/agents/debitos.md) |
+| Economia de tokens e gastos | [docs/agents/tokens.md](docs/agents/tokens.md) |
 
-```
-proj_erp/
-├── src/
-│   ├── features/       # Módulos de negócio (25 módulos)
-│   ├── shared/         # Dados compartilhados (empresas, form-schema)
-│   ├── core/           # Infra: auth, permissions, services, store, theme
-│   ├── components/     # UI genérica (ui/, shared/, layout/, guards/)
-│   ├── design-system/  # Tokens, presets, hooks, provider
-│   ├── registry/       # Registro de módulos, nav items, permissões
-│   ├── routes/         # ~198 rotas (TanStack Router file-based)
-│   ├── lib/            # Utilitários genéricos (format, utils)
-│   └── hooks/          # Hooks compartilhados
-├── supabase/           # Migrations SQL
-├── supabase-mcp-server/# MCP server (Supabase)
-├── docs-projeto/       # Documentação (docs-design-system/, specs/, etc.)
-└── .agents/skills/     # 39 skills de automação
-```
+## O projeto em 6 linhas
 
-**Config unificada:** `.claude/` contém symlinks (`.lnk`) para `.agents/` — skills, hooks, commands, rules, specs, workflows. Editar em `.agents/`, symlink atualiza automaticamente.
+ERP single-tenant. React + Vite + TypeScript strict, TanStack Router/Query,
+Supabase, Tailwind + shadcn/ui, Zustand. 25 módulos em `src/features/`,
+198 arquivos de rota em `src/routes/` (132 paths declarados nos `module.ts`),
+167 migrations em `supabase/migrations/`.
+A empresa é fixa (`VITE_EMPRESA_ID`); RLS é aberta e a autorização acontece na
+aplicação, por permissões. Módulos são ilhas: só se comunicam por dados
+(`~/shared/`) e pelo barrel público de cada um.
+
+## Invioláveis
+
+1. **Isolamento de módulo** — nunca importar internals de outro módulo
+   (`~/features/<outro>/components/...`). Só `~/core`, `~/shared`, `~/lib`,
+   `~/components`, `~/registry`, o próprio módulo e o barrel `~/features/<outro>`.
+2. **Sem `window.confirm/alert/prompt`** — use `AlertDialog`, `Dialog` ou `toast`.
+3. **`empresa_id` está sendo eliminado** — decisão de 2026-08-03: não será mais
+   usado para multi-tenant, em nenhuma tabela. A empresa vem de `~/config/empresa`.
+   Nunca em código novo; em código existente, remova ao tocar no arquivo. Não
+   confie na migration para saber onde a coluna ainda existe (19 dos 71 `DROP`
+   foram no-op) — use `npm run audit:empresa-id`. Ver
+   [docs/agents/banco.md](docs/agents/banco.md).
+4. **Eventos**: módulo registrado declara ≥2 eventos em `module.ts` e dispara com
+   `dispararEventoModulo(moduloKey, eventoKey, payload)` — 3 args, sem `await`,
+   sempre `.catch(() => {})`.
+5. **Rota protegida** — `RequirePermission` (módulo) ou `RequireSuperAdmin`
+   (`/global/*`). Registrar a rota nos 3 lugares: arquivo, `routeTree.gen.ts`, `module.ts`.
+6. **Pre-flight antes de commit/deploy** — `npm run validate:all` (types + guards +
+   isolation + testes) e `npm run build`. Build verde não prova tipos: Vite não
+   type-checka. `check:types` e `test` **já falham hoje** por débito pré-existente e
+   a suíte é instável — compare com o baseline em
+   [docs/agents/debitos.md](docs/agents/debitos.md), não exija saída limpa.
+7. **Deploy só quando o usuário pedir** "deploy" / "/deploy". Skill `deploy-vps`.
 
 ## Comandos
 
 ```bash
-dev  # dev server
-build  # build produção (RODAR APÓS QUALQUER ALTERAÇÃO)
-preview  # preview produção
-format  # Prettier
-lint  # ESLint
-test  # vitest run
-test:watch  # vitest watch
-test:coverage  # vitest com coverage
-storybook  # Storybook dev
-build-storybook  # Storybook build
-test:safe  # testes com headroom filter
-deploy:safe  # deploy com headroom filter
-check:types  # type-check (tsc --noEmit)
-check:guards  # verificar guards de rota
-validate:all  # types + testes
+npm run dev            # dev server
+npm run build          # build produção
+npm run check:types    # tsc --noEmit
+npm run check:guards   # guards de rota
+npm run check:isolation # imports entre módulos
+npm run validate:all   # pre-flight completo
+npm run test           # vitest run
+npm run lint           # ESLint
+npm run format         # Prettier
 ```
 
-## Arquitetura
+Lista completa em [docs/agents/stack.md](docs/agents/stack.md).
 
-- **Single-tenant:** `empresa_id` removido de ~71 tabelas (migration `20260721000000`). RLS aberta (`USING true`). Não injetar `empresa_id` em código novo. Exceção: `agentes_usage_log`.
-- **Módulos:** self-contained em `src/features/<modulo>/`. Única conexão = banco.
-- **Imports:** módulo só importa de `shared/`, `lib/`, `components/ui/`, `core/`. Nunca de outro módulo.
-- **Eventos:** todo módulo DEVE ter `events[]` no `module.ts` (min 2) + `dispararEventoModulo(moduloKey, eventoKey, payload)` — 3 args, fire-and-forget com `.catch(() => {})`.
-- **Permissões:** rota → `RequirePermission` ou `RequireSuperAdmin`. Botões → `permissoes?.chave`.
-- **Detalhes:** ver `ARCHITECTURE.md`.
+## Método de trabalho
 
-## Regras de UI
+- Tarefa multi-step não trivial → skill `fable-method`.
+- Tarefa unattended / subagents em paralelo → skill `fable-loop`.
+- Antes de declarar pronto → skill `fable-judge`.
+- Muitos erros de uma vez → `triagem-erros-massa` → `fix-squad-paralelo` →
+  `auditoria-fix-adversarial`.
+- Economize tokens conforme [docs/agents/tokens.md](docs/agents/tokens.md) e exiba
+  `[💰 Ação: R$ X | Sessão: R$ Y]` ao final de cada ação.
 
-- **PROIBIDO** `window.confirm()`, `window.alert()`, `window.prompt()`
-- **OBRIGATÓRIO** `AlertDialog` (exclusões) ou `Dialog` (conteúdo) de `~/components/ui/`
-- Dialog scroll: `DialogContent flex flex-col max-h-[85vh] overflow-hidden` + body `overflow-y-auto flex-1 min-h-0`
-- Design system: `src/design-system/` (tokens, presets, hooks). Docs em `docs-projeto/docs-design-system/`
+## Manutenção destes arquivos
 
-## Skills
-
-### Economia de Tokens
-| Skill | Trigger |
-|---|---|
-| `pre-flight-check` |  |
-| `rtk-memory` |  |
-
-### Módulo (criar/estilizar/validar)
-| Skill | Trigger |
-|---|---|
-| `aplicar-design-modulo` |  |
-| `criar-componente-modulo` | criar componente |
-| `criar-design-modulo` |  |
-| `criar-form-multitipo` |  |
-| `criar-migration` |  |
-| `criar-modulo` |  |
-| `criar-rota` |  |
-| `design-frontend` |  |
-| `documentar-modulo` |  |
-| `gerenciar-nav-items` |  |
-| `validar-modulo` |  |
-
-### CRUD e UI
-| Skill | Trigger |
-|---|---|
-| `adicionar-permissao` |  |
-| `gerar-crud` |  |
-| `gerar-formulario` |  |
-| `gerar-modal` |  |
-| `gerar-pagina` |  |
-| `responsividade` |  |
-
-### Deploy e Operação
-| Skill | Trigger |
-|---|---|
-| `calcular-gastos-sessao` |  |
-| `deploy-vps` |  |
-| `implementar-plan` |  |
-| `master-skill` |  |
-
-### Conhecimento e Referência
-| Skill | Trigger |
-|---|---|
-| `ai-agents-mcp` |  |
-| `ai-engineering` |  |
-| `auditoria-fix-adversarial` |  |
-| `clean-architecture` |  |
-| `clean-code` |  |
-| `fable-domain` |  |
-| `fable-judge` |  |
-| `fable-loop` |  |
-| `fable-method` |  |
-| `fix-squad-paralelo` |  |
-| `google-maps-platform` |  |
-| `implementar-mapa-dark-premium` |  |
-| `loop` |  |
-| `planejar-modulo-repo-externo` |  |
-| `sync-docs` |  |
-| `triagem-erros-massa` |  |
-
-
-## Economia de Tokens
-
-```
-1. lean-ctx    → grep antes de read, assinaturas antes de corpos
-2. headroom    → comprimir logs > 7 linhas
-3. caveman     → respostas telegráficas, só diffs cirúrgicos
-4. rtk-memory  → registrar erro/padrão no RTK SCRATCHPAD
-5. pre-flight  → types → testes → build ANTES de commit/deploy
+```bash
+node scripts/sync-docs.mjs           # regenera índices e AGENTS.md dos módulos
+node scripts/sync-docs.mjs --check   # falha se algo estiver desatualizado
 ```
 
-**O que NÃO fazer:** ler arquivo "só pra ver"; ler >3 arquivos grandes sem consolidar; read de diretório grande (usar glob/grep); declarar tarefa concluída sem pre-flight; re-analisar erro registrado no RTK SCRATCHPAD; gerar explicações longas sem pedido.
+O script só reescreve os blocos entre marcadores `<!-- sync:… -->`. Texto fora deles
+é escrito à mão e preservado.
 
-## Deploy
+## Módulos
 
-Só quando usuário disser "deploy" ou "/deploy". Usar skill `deploy-vps`. Build DEVE passar antes do push.
+Cada módulo tem seu `AGENTS.md`. Leia o do módulo em que vai trabalhar — não os 25.
 
-## Gastos
-
-Exibir `[💰 Ação: R$ X | Sessão: R$ Y]` ao final de cada ação. Detalhes: `calcular-gastos-sessao`.
-
-## RTK SCRATCHPAD
-
-> Erros resolvidos e padrões descobertos. Gerenciado por `rtk-memory`. Não re-analisar o que já está aqui.
-
-### Padrões consolidados
-- **Deploy Docker:** imagem `hevertonperes/erp-odonto`, tags `v2.X` (v2.1, v2.2, ...). Service: `erp-odonto_app`. Credenciais em `.env` (DH_USER, DH_PASS, VPS_IP, VPS_USER, VPS_PASSWORD).
-- **Single-tenant:** não injetar `empresa_id`. Migration `20260721000000` removeu de ~71 tabelas. Checar `grep` na migration antes de confiar que uma tabela foi coberta.
-- **dispararEventoModulo:** 3 args `(moduloKey, eventoKey, payload)`. Nunca passar 4º arg. Sempre `.catch(() => {})`, nunca `await`.
-- **State em handlers:** usar nome explícito do state (ex: `tipoAtivo`), nunca variável genérica sem prefixo.
-- **Cross-feature imports:** proibidos. Mover lógica compartilhada para `shared/` ou `lib/utils/`.
-- **Vite não type-checka por padrão:** rodar `npm run check:types` além do build ao mexer com tipagem dinâmica de Supabase.
+<!-- sync:modulos -->
+| Módulo | Tipo | Nome | Rotas · Perms · Eventos |
+| --- | --- | --- | --- |
+| [`admin`](src/features/admin/AGENTS.md) | serviço | — | — · — · — |
+| [`agentes`](src/features/agentes/AGENTS.md) | registrado | Agentes IA | 2 · 6 · 7 |
+| [`api-connectors`](src/features/api-connectors/AGENTS.md) | serviço | — | — · — · — |
+| [`cadastros`](src/features/cadastros/AGENTS.md) | registrado | Cadastros | 8 · 17 · 17 |
+| [`catalogo`](src/features/catalogo/AGENTS.md) | registrado | Catálogo | 31 · 26 · 23 |
+| [`clientes`](src/features/clientes/AGENTS.md) | serviço | — | — · — · — |
+| [`credenciais`](src/features/credenciais/AGENTS.md) | serviço | — | — · — · — |
+| [`crm`](src/features/crm/AGENTS.md) | registrado | CRM | 13 · 10 · 5 |
+| [`dashboard`](src/features/dashboard/AGENTS.md) | serviço | — | — · — · — |
+| [`demos`](src/features/demos/AGENTS.md) | serviço | — | — · — · — |
+| [`despesas`](src/features/despesas/AGENTS.md) | registrado | Despesas em Rota | 4 · 8 · 7 |
+| [`documentos`](src/features/documentos/AGENTS.md) | serviço | — | — · — · — |
+| [`empresas`](src/features/empresas/AGENTS.md) | registrado | Empresa | 22 · 0 · 0 |
+| [`funis`](src/features/funis/AGENTS.md) | registrado | Funis | 4 · 8 · 12 |
+| [`gerador-links`](src/features/gerador-links/AGENTS.md) | registrado | Links | 9 · 6 · 3 |
+| [`hub`](src/features/hub/AGENTS.md) | registrado | Hub | 18 · 27 · 8 |
+| [`integracoes`](src/features/integracoes/AGENTS.md) | serviço | — | — · — · — |
+| [`linktree`](src/features/linktree/AGENTS.md) | registrado | LinkTree | 2 · 13 · 3 |
+| [`manutencao`](src/features/manutencao/AGENTS.md) | registrado | Manutenção | 2 · 0 · 2 |
+| [`mapas`](src/features/mapas/AGENTS.md) | registrado | Mapas | 7 · 5 · 8 |
+| [`marketing`](src/features/marketing/AGENTS.md) | meta-módulo | Marketing | 1 · 0 · 0 |
+| [`nps`](src/features/nps/AGENTS.md) | registrado | NPS | 6 · 7 · 3 |
+| [`precadastro`](src/features/precadastro/AGENTS.md) | serviço | — | — · — · — |
+| [`revisoes`](src/features/revisoes/AGENTS.md) | serviço | — | — · — · — |
+| [`rotas`](src/features/rotas/AGENTS.md) | registrado | Rotas de Visitas | 3 · 6 · 4 |
+<!-- /sync:modulos -->
