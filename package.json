@@ -19,7 +19,10 @@
     "check:guards": "node scripts/check-route-guards.mjs",
     "validate:all": "npm run check:types && npm run check:guards && npm run check:isolation && npm run test:safe",
     "audit:empresa-id": "node scripts/audit-empresa-id.mjs",
-    "check:isolation": "node scripts/check-module-isolation.mjs"
+    "check:isolation": "node scripts/check-module-isolation.mjs",
+    "db:status": "node scripts/db-migrations-status.mjs",
+    "db:query": "node scripts/db-query.mjs",
+    "db:verificar": "node scripts/db-verificar-efeito.mjs"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",

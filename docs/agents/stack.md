@@ -39,7 +39,10 @@ npm run lint           # ESLint
 npm run format         # Prettier
 npm run storybook      # Storybook :6006
 npm run validate:all   # types + guards + isolation + testes
-npm run audit:empresa-id # tabelas que ainda têm empresa_id (precisa de credencial de banco)
+npm run db:status      # repo × schema_migrations: migrations pendentes
+npm run db:verificar   # migrations "aplicadas" cujo efeito não existe no schema
+npm run db:query       # SQL ad-hoc pela Management API (acesso de produção)
+npm run audit:empresa-id # tabelas que ainda têm empresa_id
 ```
 
 Deploy é pela skill `deploy-vps` — não há script npm para isso.
@@ -54,6 +57,18 @@ VITE_SUPABASE_ANON_KEY
 VITE_EMPRESA_ID      # single-tenant: id fixo da empresa
 VITE_EMPRESA_SLUG
 ```
+
+Para as ferramentas de banco e o deploy, também:
+`VITE_SUPABASE_SERVICE_ROLE`, `SUPABASE_ACCESS_TOKEN` (`sbp_…`),
+`SUPABASE_DB_PASSWORD`, `DOCKER_HUB_USERNAME`, `DOCKER_HUB_PASSWORD`,
+`VPS_IP`, `VPS_USER`, `VPS_PASSWORD`.
+
+Use sempre `KEY=value` **sem espaços** em volta do `=`: o `source .env` do bash e
+o parser da skill `deploy-vps` não leem `KEY = value`.
+
+⚠ A skill `deploy-vps` documenta `DH_USER`/`DH_PASS`, mas o `.env` usa
+`DOCKER_HUB_USERNAME`/`DOCKER_HUB_PASSWORD` (igual ao `.env.example`). Alinhar
+antes do próximo deploy.
 
 Lidas por `src/config/empresa.ts` → `EMPRESA_ID`, `EMPRESA_SLUG`.
 

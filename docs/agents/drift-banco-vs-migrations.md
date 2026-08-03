@@ -1,104 +1,148 @@
 # Banco de produção × `supabase/migrations/` — drift
 
-**Levantado em 2026-08-03**, contra o projeto `cluuqzhizeqvkgvfdisx`
-(`VITE_SUPABASE_URL` do `.env`). Método: OpenAPI do PostgREST (186 tabelas
-expostas, service_role) + `GET /rest/v1/<tabela>` para confirmar caso a caso.
+**Medido em 2026-08-03** contra `cluuqzhizeqvkgvfdisx` (`sa-east-1`,
+`ACTIVE_HEALTHY`), pela Management API. Ferramentas:
 
-> Confirme que este `.env` aponta para **produção** e não para um projeto de
-> desenvolvimento. Se for dev, o drift descrito aqui é de dev — mas a conclusão
-> sobre a ordem das migrations continua valendo.
+```bash
+npm run db:status      # repo × schema_migrations: o que está pendente
+npm run db:verificar   # migrations marcadas como aplicadas cujo efeito NÃO existe
+npm run audit:empresa-id
+npm run db:query -- "select ..."   # SQL ad-hoc pela Management API
+```
 
-## Resumo
+## Causa raiz: o ledger de migrations mente
 
-O banco está **muito atrás** do diretório de migrations.
+`supabase_migrations.schema_migrations` diz **159 aplicadas** de 166. Mas o
+`statements[1]` de cada registro mostra como foram registradas:
 
-| Fato | Evidência |
+| Como foi registrada | Qtd | Rodou de fato? |
+| --- | --- | --- |
+| SQL real registrado | 55 | sim |
+| `-- Applied via deploy workflow` | 16 | sim (script grava placeholder) |
+| `-- pre-applied` | **33** | **não — inserida à mão** |
+| `-- Obsoleta: empresa_id ja removida, single-tenant ativo` | **6** | **não — inserida à mão** |
+| `-- Applied` / `-- Applied via Management API previously` | 10 | provavelmente sim |
+
+As 39 marcadas à mão nunca foram executadas. Entre elas:
+
+- **`20260705000000_normalizar_tabelas.sql`** (`-- pre-applied`) — as 46
+  renomeações EN→PT. **32 ainda pendentes.**
+- **`20260721000000_remove_empresa_id_all_tables.sql`** (`-- Obsoleta`) — o
+  marcador afirma que `empresa_id` já havia sido removido. Não havia: **83
+  tabelas ainda têm a coluna**, `NOT NULL`.
+
+## Efeito ausente: 12 migrations
+
+`npm run db:verificar` compara o que cada migration deveria criar com o schema:
+
+| Migration | Efeito faltando |
 | --- | --- |
-| A renomeação EN→PT nunca rodou | `hub_materiais` → HTTP **404**; `hub_materials` → HTTP **200**. Idem `mapas_distribuidores`/`mapas_distributors`, `conectores_api`/`api_connectors` |
-| A remoção de `empresa_id` nunca rodou | **83 tabelas** ainda têm a coluna, incluindo `despesas`, `rotas`, `funis`, `credenciais`, `cadastros`, `profiles`, `nps_*`, `linktree_*` |
-| `empresa_id` continua `NOT NULL` | `POST /rest/v1/despesas` com `{}` → Postgres `23502` (not_null_violation). Idem `rotas` |
-| **52 tabelas que o código consulta não existem** | ver tabela abaixo |
+| `00078_catalogo.sql` | 18/28 tabelas |
+| `00080_catalogo_clientes.sql` | 1/10 (`catalogo_grupo_precos`) |
+| `00084_agentes_usage_log.sql` | 1/1 |
+| `20260705000000_normalizar_tabelas.sql` | **42/46 renomeações** |
+| `20260711000000_catalogo_precos.sql` | 3/7 colunas de preço |
+| `20260712000001_catalogo_grupo_precos_tipo.sql` | 2/2 colunas |
+| `20260712000002_catalogo_seed_default_categories.sql` | 1/2 |
+| `20260713000000_catalogo_sequencia_protetica.sql` | 1/1 tabela |
+| `20260713000001_add_locked_conexoes.sql` | 1/1 coluna |
+| `20260713110000_catalogo_add_ativo_all_tables.sql` | 10/11 colunas |
+| `20260713120000_fix_add_ativo_all_catalogo_tables.sql` | 13/16 |
+| `20260721000000_remove_empresa_id_all_tables.sql` | 40/71 `DROP COLUMN` |
 
-## Impacto: 52 tabelas ausentes
+Além dessas, **6 genuinamente pendentes** (nem registradas):
+`20260725000000_provedores_ia`, `20260726000000_catalogo_add_estoque_precos`,
+`20260726010000_add_todos_diametros_kit_implantes`,
+`20260726180000_catalogo_pagamentos`, `20260726180100_catalogo_pedido_tracking`,
+`20260726180200_catalogo_baixa_estoque`.
+
+## Consequência: 52 tabelas que o código consulta não existem
 
 | Módulo | Tabelas ausentes |
 | --- | --- |
-| `hub` | 14 — todas as `hub_*` em português (`hub_materiais`, `hub_colecoes`, `hub_progresso_usuario`, `hub_config_sistema`, …) |
-| `funis` | 12 — `funis_anexos`, `funis_automacoes`, `funis_comentarios`, `funis_etiquetas`, `funis_modelos`, `funis_notificacoes`, `funis_recorrentes`, … + `users` |
-| `catalogo` | 9 — `catalogo_acessorios`, `catalogo_grupo_precos`, `catalogo_pagamentos`, `catalogo_instrumentais_gerais`, `logos`, … |
-| **`core`** | 3 — `conectores_api`, `logs_webhook`, `notificacoes_modelos` |
-| `agentes` | 2 — `provedores_ia`, `agentes_usage_log` |
-| `mapas` | 2 — `mapas_consultores`, `mapas_distribuidores` |
-| `admin` | 2 — `config_app`, `credenciais_mock` |
-| `nps` | 2 — `dashboard_perfis`, `nps_perguntas_pesquisa` |
-| `despesas` · `integracoes` · `demos` · `marketing` · `gerador-links` | 1 cada — `comprovantes`, `config_integracoes`, `credenciais_demo`, `empresa_limites_modulo`, `gerador_modelos` |
+| `hub` | 14 — todas as `hub_*` em português |
+| `funis` | 12 — `funis_anexos`, `funis_automacoes`, `funis_comentarios`, … |
+| `catalogo` | 9 — `catalogo_acessorios`, `catalogo_grupo_precos`, `catalogo_pagamentos`, … |
+| `core` | 3 — `conectores_api`, `logs_webhook`, `notificacoes_modelos` |
+| `agentes` · `mapas` · `admin` · `nps` | 2 cada |
+| `despesas` · `integracoes` · `demos` · `marketing` · `gerador-links` | 1 cada |
 
-**O caso mais grave é `core`:** `dispararEventoModulo` consulta `webhooks`,
-`notificacoes_modelos` e `conectores_api` em paralelo. `webhooks` existe — então
-**webhook HTTP continua sendo entregue**. As outras duas não existem (no banco
-ainda se chamam `notificacoes_templates` e `api_connectors`), logo
-**notificação in-app/e-mail e conector de API nunca disparam**. O código faz
-`console.error` e segue com lista vazia, então a falha é silenciosa para o
-usuário. Ver [eventos.md](eventos.md).
+Em `core`: `dispararEventoModulo` consulta 3 tabelas. `webhooks` existe, então
+**webhook HTTP continua entregando**; `notificacoes_modelos` e `conectores_api`
+não existem, então **notificação e conector de API nunca disparam** — em silêncio,
+porque o código só faz `console.error`.
 
-`comprovantes`, `logos` e `users` são consultadas pelo código e **não têm
-`CREATE TABLE` em nenhuma migration** — nunca existiram no repositório.
+`comprovantes`, `logos` e `users` são consultadas e **não têm `CREATE TABLE` em
+nenhuma migration** — nunca existiram no repositório.
 
-## Migrations não aplicadas (identificadas pelas tabelas que criariam)
+## Três bloqueios para reconciliar (verificados)
+
+Reconciliar **não** é re-rodar as 12. Cada bloqueio abaixo foi confirmado:
+
+### 1. A renomeação quebraria 6 funções
+
+`ALTER TABLE … RENAME TO` preserva policies e FKs (referência por OID), mas
+**não** reescreve o corpo de funções, que referenciam tabela por nome. Estas 6
+mencionam nomes antigos:
 
 ```
-00078_catalogo.sql                      7 tabelas de catálogo
-00080_catalogo_clientes.sql             catalogo_grupo_precos
-00084_agentes_usage_log.sql             agentes_usage_log
-20260705000000_normalizar_tabelas.sql   38 renomeações EN->PT
-20260725000000_provedores_ia.sql        provedores_ia
-20260726180000_catalogo_pagamentos.sql  catalogo_pagamentos
+check_empresa_modulo_limit    check_empresa_role_limit
+enviar_whatsapp_evolution     excluir_usuario_demo
+executar_api_connector_server obter_esquema_banco
 ```
 
-Provavelmente há mais — estas são só as detectáveis por tabela ausente. Para a
-lista exata, consulte `supabase_migrations.schema_migrations` (precisa de conexão
-direta ao banco; a senha em `SUPABASE_DB_PASSWORD` foi recusada para o usuário
-`postgres`, então talvez o projeto exija o pooler).
+`executar_api_connector_server` é justamente o RPC do caminho de conectores de
+API. A `20260705000000` não recria nenhuma delas → precisa de migration
+companheira com `CREATE OR REPLACE FUNCTION` para as 6.
 
-## Por que a limpeza de `empresa_id` está bloqueada
+### 2. `20260711000000_catalogo_precos.sql` sobrescreve preço de produto
 
-Circularidade, com o banco no estado atual:
+```sql
+UPDATE catalogo_implantes SET preco = 480 WHERE preco = 0 OR preco IS NULL;
+UPDATE catalogo_kits      SET preco = 3200 WHERE preco = 0 OR preco IS NULL;
+-- … 7 tabelas, valores fixos
+```
 
-- Remover `empresa_id` dos payloads de insert → **quebra**, porque a coluna existe
-  e é `NOT NULL`.
-- Aplicar `20260721000000` (dropa a coluna) sem limpar o código → **quebra**,
-  porque o código continua enviando a coluna.
+Qualquer produto hoje com `preco = 0` receberia um valor inventado, numa loja em
+produção. Os `ADD COLUMN` dela também **não** têm `IF NOT EXISTS`, então
+re-executar aborta nas 4 tabelas onde a coluna já existe. **Não re-executar como
+está** — separar o `ADD COLUMN` do seed de preço.
 
-Só a fase 1 (`ALTER COLUMN … DROP NOT NULL`) rompe o ciclo, e ela pressupõe que o
-banco corresponda ao repositório — o que não é verdade hoje.
+### 3. Não há ponto de restauração
 
-Por isso **as três migrations novas ficam em `supabase/migrations-pendentes/`**,
-fora do alcance do runner do `deploy-vps`.
+```
+GET /v1/projects/<ref>/database/backups
+→ { "pitr_enabled": false, "backups": [] }
+```
+
+Sem PITR e sem backup listado. Antes de qualquer DDL em massa: habilitar PITR ou
+tirar um dump. Existem 5 projetos `INACTIVE` na organização que poderiam servir
+de staging para um ensaio.
 
 ## Ordem correta
 
-1. **Reconciliar o banco com o repositório.** Aplicar o backlog de migrations
-   ausentes **exceto** `20260721000000`. Isso restaura as 52 tabelas e volta a
-   entregar eventos de módulo. Fazer em ambiente de teste primeiro: a
-   `20260705000000` renomeia 38 tabelas.
-2. Descobrir o conjunto real de migrations pendentes em
-   `supabase_migrations.schema_migrations`, e resolver o acesso direto ao banco
-   (pooler ou senha correta) para que `npm run audit:empresa-id` funcione.
-3. `migrations-pendentes/…fase1_relaxar_empresa_id.sql` — tira `NOT NULL` de 57
-   tabelas. Segura isolada.
-4. Limpar `empresa_id` do código (470 ocorrências, 132 arquivos) e deployar.
-5. `…fase2a_remover_empresa_id.sql` — dropa de 74 tabelas.
-6. `…fase2b_upsert_conflict_target.sql` — as 4 tabelas cujo `upsert` usa
-   `empresa_id` como conflict target (`hub_config_chatbot`, `hub_config_sistema`,
-   `hub_integracoes_sistema`, `rotas_config`). Exige trocar o índice único
-   **antes** de dropar a coluna, senão o upsert passa a duplicar linha — bug já
-   vivido neste projeto, corrigido pela `20260720030000` em
-   `catalogo_design_config`.
+1. **Habilitar PITR ou tirar dump.** Nada de DDL em massa sem ponto de retorno.
+2. **Ensaiar em staging** (ativar um dos projetos inativos, restaurar o dump).
+3. **Migration companheira** com `CREATE OR REPLACE` das 6 funções, usando os
+   nomes novos, aplicada **junto** de `20260705000000`.
+4. **Aplicar o grupo aditivo**, em ordem cronológica, verificando com
+   `npm run db:verificar` após cada uma: `00078`, `00080`, `00084`,
+   `20260712000001`, `20260712000002`, `20260713000000`, `20260713000001`,
+   `20260713110000`, `20260713120000`, e as 6 genuinamente pendentes.
+5. **`20260705000000` + companheira das funções.** Reversível pelo rename inverso.
+6. **`20260711000000` reescrita** — só o `ADD COLUMN IF NOT EXISTS`, sem o seed
+   de preço (ou com o seed revisado por quem conhece a tabela de preços).
+7. Só então o trilho de `empresa_id`:
+   `migrations-pendentes/…fase1` → limpar as 470 ocorrências no código → deploy →
+   `…fase2a` → `…fase2b`.
+8. **Nunca** re-executar `20260721000000` — o `-- Obsoleta` foi o erro que gerou
+   tudo isto. As fases 1/2a/2b a substituem.
 
-Nenhum passo depois do 1 faz sentido antes dele.
+## Corrigir o processo, não só o schema
 
-## Não deployar antes de resolver o passo 1
+O `-- pre-applied` e o `-- Obsoleta` são inserções manuais no ledger. Enquanto
+isso for possível sem verificação, o drift volta. Duas mudanças mínimas:
 
-Um `deploy-vps` hoje aplicaria os 6+ migrations atrasados de uma vez, incluindo a
-renomeação de 38 tabelas e a remoção de `empresa_id` de 71 — sem verificação
-intermediária, contra um banco cujo estado ninguém tinha medido até agora.
+- Rodar `npm run db:status && npm run db:verificar` no pre-flight de deploy.
+- Nunca inserir em `schema_migrations` sem executar o SQL; se uma migration é
+  realmente obsoleta, **apagar o arquivo** em vez de marcá-la como aplicada.
