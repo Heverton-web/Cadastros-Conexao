@@ -54,5 +54,4 @@ Tabelas: `dashboard_perfis` · `empresas` · `nps_perguntas` · `nps_perguntas_p
 
 ## Notas
 
-- **Débito `empresa_id` (real):** `nps_perguntas`, `nps_respostas`, `nps_relatorios_envio` e `nps_webhook_config` **foram** limpas pela migration `20260721000000`, mas o módulo ainda envia/filtra o campo (23 ocorrências). Insert/update nessas tabelas falha no PostgREST. Em código novo não passe o campo; ao tocar num arquivo que usa, remova. Ver A1 em `docs/agents/plano-correcao-auditoria.md`.
-- `nps_perguntas_pesquisa`, `dashboard_perfis` e `empresas` mantêm a coluna.
+- **`empresa_id`:** a coluna existe e é `NOT NULL` no banco real — a migration `20260721000000` nunca foi aplicada. Não remova o campo dos payloads até a fase 1 rodar. Ver `docs/agents/drift-banco-vs-migrations.md`.

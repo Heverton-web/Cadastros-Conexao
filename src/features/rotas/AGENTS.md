@@ -53,5 +53,4 @@ Tabelas: `rotas` · `rotas_clientes` · `rotas_clientes_base` · `rotas_config` 
 
 ## Notas
 
-- **Débito `empresa_id` (real):** `rotas` e `rotas_trajetos` **foram** limpas pela migration `20260721000000`, mas o módulo ainda envia/filtra o campo (44 ocorrências). Insert/update nessas tabelas falha no PostgREST. Em código novo não passe o campo; ao tocar num arquivo que usa, remova. Ver A1 em `docs/agents/plano-correcao-auditoria.md`.
-- `rotas_clientes`, `rotas_clientes_base`, `rotas_config`, `rotas_form_perguntas` e `rotas_visitas` mantêm a coluna.
+- **`empresa_id`:** a coluna existe e é `NOT NULL` no banco real — a migration `20260721000000` nunca foi aplicada. Não remova o campo dos payloads até a fase 1 rodar. Ver `docs/agents/drift-banco-vs-migrations.md`.

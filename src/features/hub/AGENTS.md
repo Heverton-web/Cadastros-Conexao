@@ -56,5 +56,4 @@ Tabelas: `empresas` · `hub_ativos_material` · `hub_colecoes` · `hub_config_ch
 
 ## Notas
 
-- **`empresa_id` aqui ainda funciona, mas é transitório:** as 12 tabelas `hub_*` **não** foram limpas — a migration `20260721000000` usou os nomes antigos, renomeados 16 dias antes pela `20260705000000`, e o `IF EXISTS` transformou o `DROP` em no-op. As 44 ocorrências funcionam hoje, mas saem na fase 2 (decisão de 2026-08-03: empresa_id não tem uso multi-tenant). Não remova pontualmente: a limpeza é coordenada com a migration de fase 2. Confirme o estado com `npm run audit:empresa-id`.
-- Exceção: `profiles` **foi** limpa. O uso de `empresa_id` sobre `profiles` (se houver) é bug.
+- **`empresa_id`:** a coluna existe e é `NOT NULL` no banco real. Sai na fase 2, depois de o banco ser reconciliado — ver `docs/agents/drift-banco-vs-migrations.md`. Não use em código novo.

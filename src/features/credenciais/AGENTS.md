@@ -28,4 +28,4 @@ Tabelas: `credenciais`
 ## Notas
 
 - Credenciais de acesso por escopo. `listarCredenciaisPorEmpresa` é resquício multi-tenant: em código novo use `listarCredenciais`.
-- **Débito `empresa_id` (real):** a tabela `credenciais` **foi** limpa pela migration `20260721000000`, mas `index.ts` ainda referencia o campo (2 ocorrências). É o menor caso do projeto — bom ponto de partida para validar o padrão de limpeza. Ver A1 em `docs/agents/plano-correcao-auditoria.md`.
+- **`empresa_id`:** a coluna existe e é `NOT NULL` no banco real — a migration `20260721000000` nunca foi aplicada. Não remova o campo dos payloads até a fase 1 rodar. Ver `docs/agents/drift-banco-vs-migrations.md`.

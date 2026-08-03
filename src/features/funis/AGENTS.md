@@ -53,5 +53,4 @@ Tabelas: `funis` · `funis_anexos` · `funis_automacoes` · `funis_colunas` · `
 
 ## Notas
 
-- **Débito `empresa_id` (real):** `funis` e `profiles` **foram** limpas pela migration `20260721000000`, mas o módulo ainda envia/filtra o campo (14 ocorrências). Insert/update nessas tabelas falha no PostgREST. Em código novo não passe o campo; ao tocar num arquivo que usa, remova. Ver A1 em `docs/agents/plano-correcao-auditoria.md`.
-- As demais `funis_*` mantêm a coluna — nelas o uso é correto.
+- **`empresa_id`:** a coluna existe e é `NOT NULL` no banco real — a migration `20260721000000` nunca foi aplicada. Não remova o campo dos payloads até a fase 1 rodar. Ver `docs/agents/drift-banco-vs-migrations.md`.

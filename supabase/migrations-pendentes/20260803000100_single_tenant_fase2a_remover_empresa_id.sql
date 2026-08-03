@@ -1,5 +1,5 @@
 -- ============================================================
--- Migration: Single-tenant fase 2 — remover empresa_id de TODAS as tabelas
+-- Migration: Single-tenant fase 2a — remover empresa_id (tabelas sem upsert por empresa_id)
 -- Data: 2026-08-03
 -- Decisão: empresa_id NÃO será mais usado para multi-tenant. O sistema é
 --          single-tenant (VITE_EMPRESA_ID). Sem exceções: a coluna sai de todas
@@ -9,6 +9,11 @@
 --            alcançou (nomes renomeados antes pela 20260705000000, IF EXISTS virou
 --            no-op silencioso) e as que antes eram tratadas como exceção (mktg_*,
 --            agentes_ia, empresa_limites_modulo) — a decisão removeu as exceções.
+-- ESCOPO:     NÃO inclui as 8 tabelas cujo upsert usa empresa_id como conflict
+--             target — essas ficam para a fase 2b, que precisa trocar o índice
+--             único antes (ver 20260803000200). Dropar a coluna sem isso faz o
+--             upsert duplicar linha: foi o bug corrigido pela 20260720030000 em
+--             catalogo_design_config.
 -- AVISO:      aplicar SOMENTE junto do deploy que remove empresa_id do código.
 --            A verificação no fim FALHA (RAISE EXCEPTION), diferente da
 --            20260721000000 que só emitia WARNING e por isso passou despercebida.
@@ -56,11 +61,8 @@ ALTER TABLE IF EXISTS funis_modelos DROP COLUMN IF EXISTS empresa_id;  -- no-op 
 ALTER TABLE IF EXISTS gerador_links DROP COLUMN IF EXISTS empresa_id;
 ALTER TABLE IF EXISTS gerador_modelos DROP COLUMN IF EXISTS empresa_id;  -- no-op na 20260721 (renomeada antes)
 ALTER TABLE IF EXISTS hub_colecoes DROP COLUMN IF EXISTS empresa_id;  -- no-op na 20260721 (renomeada antes)
-ALTER TABLE IF EXISTS hub_config_chatbot DROP COLUMN IF EXISTS empresa_id;  -- no-op na 20260721 (renomeada antes)
-ALTER TABLE IF EXISTS hub_config_sistema DROP COLUMN IF EXISTS empresa_id;  -- no-op na 20260721 (renomeada antes)
 ALTER TABLE IF EXISTS hub_emblemas DROP COLUMN IF EXISTS empresa_id;  -- no-op na 20260721 (renomeada antes)
 ALTER TABLE IF EXISTS hub_emblemas_usuario DROP COLUMN IF EXISTS empresa_id;  -- no-op na 20260721 (renomeada antes)
-ALTER TABLE IF EXISTS hub_integracoes_sistema DROP COLUMN IF EXISTS empresa_id;  -- no-op na 20260721 (renomeada antes)
 ALTER TABLE IF EXISTS hub_logs_acesso DROP COLUMN IF EXISTS empresa_id;  -- no-op na 20260721 (renomeada antes)
 ALTER TABLE IF EXISTS hub_materiais DROP COLUMN IF EXISTS empresa_id;  -- no-op na 20260721 (renomeada antes)
 ALTER TABLE IF EXISTS hub_niveis_gamificacao DROP COLUMN IF EXISTS empresa_id;  -- no-op na 20260721 (renomeada antes)
@@ -90,7 +92,6 @@ ALTER TABLE IF EXISTS notificacoes_modelos DROP COLUMN IF EXISTS empresa_id;  --
 ALTER TABLE IF EXISTS pipeline_estagios DROP COLUMN IF EXISTS empresa_id;
 ALTER TABLE IF EXISTS rotas_clientes DROP COLUMN IF EXISTS empresa_id;
 ALTER TABLE IF EXISTS rotas_clientes_base DROP COLUMN IF EXISTS empresa_id;
-ALTER TABLE IF EXISTS rotas_config DROP COLUMN IF EXISTS empresa_id;
 ALTER TABLE IF EXISTS rotas_form_perguntas DROP COLUMN IF EXISTS empresa_id;
 ALTER TABLE IF EXISTS rotas_visitas DROP COLUMN IF EXISTS empresa_id;
 ALTER TABLE IF EXISTS schema_formulario DROP COLUMN IF EXISTS empresa_id;  -- no-op na 20260721 (renomeada antes)
@@ -104,7 +105,19 @@ DECLARE restantes text;
 BEGIN
   SELECT string_agg(table_name, ', ' ORDER BY table_name) INTO restantes
   FROM information_schema.columns
-  WHERE table_schema = 'public' AND column_name = 'empresa_id';
+  WHERE table_schema = 'public'
+    AND column_name = 'empresa_id'
+    -- as 8 abaixo saem na fase 2b (upsert por empresa_id)
+    AND table_name NOT IN (
+      'empresa_design_system',
+      'design_sistema_modulo',
+      'hub_config_chatbot',
+      'hub_config_sistema',
+      'hub_integracoes_sistema',
+      'linktree_empresa_config',
+      'rotas_config',
+      'empresa_modulos'
+    );
 
   IF restantes IS NOT NULL THEN
     RAISE EXCEPTION 'empresa_id ainda presente em: %', restantes;

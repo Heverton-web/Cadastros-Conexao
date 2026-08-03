@@ -63,4 +63,4 @@ Tabelas: `empresa_limites_modulo` · `mktg_calendario` · `mktg_campanhas_email`
 
 - Meta-módulo: o `module.ts` da raiz registra apenas `/marketing/dashboard`. Cada submódulo tem seu próprio `module.ts` e é registrado separadamente em `src/main.tsx`.
 - Só `whatsapp/` declara permissões (`mktg_wpp_ver`, `mktg_wpp_enviar`). Os outros submódulos hoje não têm permissão própria — ao criar, siga o prefixo `mktg_*`.
-- **`empresa_id` aqui ainda funciona, mas é transitório:** as tabelas `mktg_*` e `empresa_limites_modulo` ficaram fora da migration `20260721000000`, então a coluna ainda existe. O filtro funciona hoje (94 ocorrências), mas sai na fase 2 — não escreva código novo com o campo.
+- **`empresa_id`:** a coluna existe e é `NOT NULL` no banco real. Sai na fase 2, depois de o banco ser reconciliado — ver `docs/agents/drift-banco-vs-migrations.md`. Não use em código novo.

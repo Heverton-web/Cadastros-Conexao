@@ -9,57 +9,47 @@ A empresa é fixa (`VITE_EMPRESA_ID`, via `~/config/empresa`).
 - **Não crie** coluna `empresa_id` em tabela nova.
 - **Não filtre** por `empresa_id` em código novo.
 
-## ⚠ Quais tabelas ainda têm `empresa_id`: não confie na migration
+## ⚠ O banco NÃO corresponde a este diretório de migrations
 
-`20260721000000_remove_empresa_id_all_tables.sql` tem 71 `ALTER TABLE IF EXISTS …
-DROP COLUMN IF EXISTS empresa_id`, mas **19 deles foram no-op**: usam nomes que
-`20260705000000_normalizar_tabelas.sql` já havia renomeado 16 dias antes
-(`hub_materials` → `hub_materiais`, `mapas_distributors` → `mapas_distribuidores`,
-`api_connectors` → `conectores_api`, …). Outros 7 alvos nunca existiram com aquele
-nome. O `IF EXISTS` engoliu tudo em silêncio, e a verificação final da migration só
-faz `RAISE WARNING` — nunca falhou.
+Medido em 2026-08-03 contra o schema real: a renomeação EN→PT
+(`20260705000000`) e a remoção de `empresa_id` (`20260721000000`) **nunca foram
+aplicadas**, e **52 tabelas que o código consulta não existem**. Relatório com
+evidência: [drift-banco-vs-migrations.md](drift-banco-vs-migrations.md).
 
-**Consequência: grep na migration dá resposta errada.** A única fonte de verdade é o
-schema:
+Consequências práticas ao escrever código hoje:
 
-```sql
-SELECT table_name FROM information_schema.columns
-WHERE table_schema = 'public' AND column_name = 'empresa_id'
-ORDER BY table_name;
-```
+- **`empresa_id` existe e é `NOT NULL` em 83 tabelas.** Insert sem o campo falha
+  com Postgres `23502`. Não remova o campo de payload existente até a fase 1 rodar.
+- **Nomes de tabela no banco estão em inglês**: `hub_materials`, não
+  `hub_materiais`; `mapas_distributors`, não `mapas_distribuidores`;
+  `api_connectors`, não `conectores_api`. O código usa os nomes em português e
+  por isso vários módulos consultam tabela inexistente.
+- **Grep na migration não responde nada** sobre o estado do banco. Nem o
+  diretório de migrations responde. Só o schema.
 
-**Decisão de 2026-08-03: `empresa_id` não será mais usado para multi-tenant.**
-Não há exceção — a coluna sai de todas as tabelas. Em 152 de 154 definições ela
-era FK para `empresas(id)`, isto é, sempre o discriminador de tenant.
-
-Estado atual, até a fase 2 rodar:
-
-- **Ainda com a coluna** (~78 tabelas): `hub_*`, `mktg_*`, `mapas_*`, `agentes_*`,
-  `conectores_api`, `empresa_limites_modulo`, `notificacoes_modelos`, `logs_webhook`,
-  `schema_formulario`, `config_integracoes`, entre outras. O código que ainda a
-  envia **funciona hoje**, mas é transitório — não escreva código novo assim.
-- **Já limpas** (código que ainda envia o campo está quebrado): `despesas`,
-  `despesas_periodos`, `rotas`, `rotas_trajetos`, `funis`, `credenciais`,
-  `profiles`, `cadastros`, `clientes`, `linktree_*` (6), `nps_perguntas`,
-  `nps_respostas`, `nps_relatorios_envio`, `nps_webhook_config`.
-
-Para saber o estado real:
+Para medir:
 
 ```bash
-npm run audit:empresa-id
+npm run audit:empresa-id     # precisa de acesso direto ao banco
 ```
 
-Convergência já escrita, em duas fases (aplicar na ordem, fase 2 junto do deploy
-que limpa o código): `20260803000000_single_tenant_fase1_relaxar_empresa_id.sql`
-(tira `NOT NULL` de 57 tabelas, segura isolada) e
-`supabase/migrations-pendentes/20260803000100_single_tenant_fase2_remover_empresa_id.sql`
-(dropa de 78 e **falha** se sobrar qualquer uma — fica fora de
-`supabase/migrations/` de propósito, para o deploy não aplicá-la antes da limpeza
-do código; ver o README daquela pasta). Contexto: A1 em
-[plano-correcao-auditoria.md](plano-correcao-auditoria.md).
+Se o acesso direto falhar (hoje falha: senha recusada para `postgres`), o
+OpenAPI do PostgREST serve como alternativa read-only:
 
-Ao criar migration nova que remove coluna, faça a verificação **falhar**
-(`RAISE EXCEPTION`), não avisar — foi o `RAISE WARNING` que deixou isso passar.
+```bash
+curl -s -H "apikey: $KEY" "$VITE_SUPABASE_URL/rest/v1/" | jq '.definitions | keys'
+```
+
+## Decisão: `empresa_id` sai de todas as tabelas
+
+Decisão de 2026-08-03 — não haverá uso multi-tenant, sem exceção. Em 152 de 154
+definições a coluna era FK para `empresas(id)`, isto é, sempre o discriminador de
+tenant.
+
+Não escreva código novo com `empresa_id`. A remoção do código existente é
+coordenada com as migrations em `supabase/migrations-pendentes/` (fase 1 → limpeza
+do código → fase 2a → fase 2b), e **depende de o banco ser reconciliado primeiro**.
+Ordem completa no relatório de drift.
 
 ## RLS
 

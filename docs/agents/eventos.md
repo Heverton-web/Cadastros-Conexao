@@ -66,6 +66,13 @@ Busca em paralelo, filtrando por `modulo_key` + `evento_key` + ativo:
 
 Se nenhum dos três estiver configurado, retorna sem efeito.
 
+> ⚠ **Hoje isso está quebrado em produção.** `notificacoes_modelos` e
+> `conectores_api` não existem no banco (a renomeação `20260705000000` nunca foi
+> aplicada — as tabelas ainda se chamam `notificacoes_templates` e
+> `api_connectors`). Como o disparo é fire-and-forget com `.catch(() => {})`,
+> nenhum evento é entregue e nada aparece na UI. Ver
+> [drift-banco-vs-migrations.md](drift-banco-vs-migrations.md).
+
 ## Referência
 
 Catálogos `EVENTOS_STATUS_CHANGE` e `EVENTOS_BUTTON_ACTION` em

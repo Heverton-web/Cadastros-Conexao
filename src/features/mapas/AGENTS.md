@@ -51,4 +51,4 @@ Tabelas: `mapas_consultores` · `mapas_distribuidores`
 
 ## Notas
 
-- **`empresa_id` aqui ainda funciona, mas é transitório:** `mapas_consultores` e `mapas_distribuidores` **não** foram limpas — a migration `20260721000000` usou os nomes antigos, renomeados 16 dias antes pela `20260705000000`, e o `IF EXISTS` transformou o `DROP` em no-op. As 25 ocorrências funcionam hoje, mas saem na fase 2 (decisão de 2026-08-03: empresa_id não tem uso multi-tenant). Não remova pontualmente: a limpeza é coordenada com a migration de fase 2. Confirme o estado com `npm run audit:empresa-id`.
+- **`empresa_id`:** a coluna existe e é `NOT NULL` no banco real. Sai na fase 2, depois de o banco ser reconciliado — ver `docs/agents/drift-banco-vs-migrations.md`. Não use em código novo.

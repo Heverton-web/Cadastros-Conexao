@@ -39,7 +39,8 @@ function dbUrl() {
   if (!existsSync(envPath)) return null;
   const env = {};
   for (const line of readFileSync(envPath, "utf8").split("\n")) {
-    const m = line.match(/^([A-Z0-9_]+)=(.*)$/);
+    // tolera `KEY = value`, espaços e CRLF — o .env do projeto mistura os formatos
+    const m = line.match(/^\s*([A-Za-z_][A-Za-z0-9_]*)\s*=\s*(.*)$/);
     if (m) env[m[1]] = m[2].trim().replace(/^["']|["']$/g, "");
   }
   if (!env.VITE_SUPABASE_URL || !env.SUPABASE_DB_PASSWORD) return null;

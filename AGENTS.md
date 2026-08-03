@@ -15,6 +15,7 @@ Leia **este arquivo sempre**. Os demais, só quando a tarefa exigir:
 | Rota, guard, permissão | [docs/agents/rotas-permissoes.md](docs/agents/rotas-permissoes.md) |
 | Service, hook, API externa, form | [docs/agents/dados.md](docs/agents/dados.md) |
 | Migration, RLS, schema | [docs/agents/banco.md](docs/agents/banco.md) |
+| Tabela que "não existe", evento que não dispara | [docs/agents/drift-banco-vs-migrations.md](docs/agents/drift-banco-vs-migrations.md) |
 | Componente, dialog, design system | [docs/agents/ui.md](docs/agents/ui.md) |
 | Evento, webhook, notificação | [docs/agents/eventos.md](docs/agents/eventos.md) |
 | Nomenclatura, TS, erros, testes | [docs/agents/codigo.md](docs/agents/codigo.md) |
@@ -39,12 +40,12 @@ aplicação, por permissões. Módulos são ilhas: só se comunicam por dados
    (`~/features/<outro>/components/...`). Só `~/core`, `~/shared`, `~/lib`,
    `~/components`, `~/registry`, o próprio módulo e o barrel `~/features/<outro>`.
 2. **Sem `window.confirm/alert/prompt`** — use `AlertDialog`, `Dialog` ou `toast`.
-3. **`empresa_id` está sendo eliminado** — decisão de 2026-08-03: não será mais
-   usado para multi-tenant, em nenhuma tabela. A empresa vem de `~/config/empresa`.
-   Nunca em código novo; em código existente, remova ao tocar no arquivo. Não
-   confie na migration para saber onde a coluna ainda existe (19 dos 71 `DROP`
-   foram no-op) — use `npm run audit:empresa-id`. Ver
-   [docs/agents/banco.md](docs/agents/banco.md).
+3. **`empresa_id` está sendo eliminado, mas ainda não** — decisão de 2026-08-03:
+   sem uso multi-tenant, em nenhuma tabela. Nunca em código novo (a empresa vem de
+   `~/config/empresa`). **Não remova de código existente**: a coluna é `NOT NULL`
+   no banco real e a remoção depende das migrations em
+   `supabase/migrations-pendentes/`, que por sua vez dependem de reconciliar o
+   banco. Ver [docs/agents/drift-banco-vs-migrations.md](docs/agents/drift-banco-vs-migrations.md).
 4. **Eventos**: módulo registrado declara ≥2 eventos em `module.ts` e dispara com
    `dispararEventoModulo(moduloKey, eventoKey, payload)` — 3 args, sem `await`,
    sempre `.catch(() => {})`.
@@ -56,6 +57,8 @@ aplicação, por permissões. Módulos são ilhas: só se comunicam por dados
    a suíte é instável — compare com o baseline em
    [docs/agents/debitos.md](docs/agents/debitos.md), não exija saída limpa.
 7. **Deploy só quando o usuário pedir** "deploy" / "/deploy". Skill `deploy-vps`.
+   ⚠ Hoje o deploy aplicaria 6+ migrations atrasadas de uma vez, incluindo a
+   renomeação de 38 tabelas — ver o relatório de drift antes.
 
 ## Comandos
 

@@ -52,5 +52,4 @@ Tabelas: `comprovantes` · `despesas` · `despesas_config` · `despesas_envios` 
 
 ## Notas
 
-- **Débito `empresa_id` (real):** `despesas` e `despesas_periodos` **foram** limpas pela migration `20260721000000`, mas o módulo ainda envia/filtra o campo (129 ocorrências). Insert/update nessas tabelas falha no PostgREST. Em código novo não passe o campo; ao tocar num arquivo que usa, remova. Ver A1 em `docs/agents/plano-correcao-auditoria.md`.
-- `comprovantes`, `despesas_config`, `despesas_envios`, `despesas_pagamentos` e `despesas_tipos` mantêm a coluna — nessas, o uso é correto.
+- **`empresa_id`:** a coluna existe e é `NOT NULL` no banco real — a migration `20260721000000` nunca foi aplicada. Não remova o campo dos payloads até a fase 1 rodar. Ver `docs/agents/drift-banco-vs-migrations.md`.

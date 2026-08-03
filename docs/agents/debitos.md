@@ -31,6 +31,17 @@
 /g, "
 ")`) ao ler.
 
+## 🔴 Drift banco × migrations (2026-08-03)
+
+O banco de produção está muito atrás de `supabase/migrations/`: a renomeação
+EN→PT e a remoção de `empresa_id` nunca rodaram, e **52 tabelas que o código
+consulta não existem** — o que deixa `hub`, `funis`, `mapas`, `agentes`, parte de
+`catalogo` e **o disparo de eventos de todos os módulos** sem funcionar.
+Evidência, impacto e ordem de correção:
+[drift-banco-vs-migrations.md](drift-banco-vs-migrations.md).
+
+Bloqueia: a limpeza de `empresa_id` no código e qualquer deploy.
+
 ## Auditoria de 2026-08-03 — estado
 
 Plano com evidência, ação e verificação por item:
@@ -38,7 +49,7 @@ Plano com evidência, ação e verificação por item:
 
 | # | Item | Estado |
 | --- | --- | --- |
-| A1 | Migration single-tenant aplicada só em parte (19 dos 71 `DROP` foram no-op por usarem nomes renomeados antes) | ⏳ **parcial** — migrations de fase 1 e 2 escritas + `npm run audit:empresa-id`. Falta aplicar e limpar o código: exige credencial de banco |
+| A1 | Migration single-tenant nunca aplicada (o diagnóstico por migration era otimista: no banco real a coluna existe em 83 tabelas, `NOT NULL`) | ⏳ **bloqueado** — fases 1/2a/2b escritas em `supabase/migrations-pendentes/`, fora do runner de deploy. Depende de reconciliar o banco primeiro |
 | A2 | 2 rotas mortas (`<div>Route Removed</div>`) em `authLayout` | ✅ removidas de `src/routes/`, `routeTree.gen.ts` e `empresas/module.ts` |
 | A3 | `check:guards` com 30 falsos positivos em 32 | ✅ checker reescrito (FALHA/AVISO/INFO, reconhece redirect-shim, guard herdado e árvore pública). Exit 0 com 0 falhas; validado com caso negativo |
 | A3b | `hub.cliente.dashboard.$empresaId` — única das 17 rotas do hub em `rootRoute`, sem `useAuth` nem guard, renderizando `HubDashboardPage` | ✅ **corrigido** — movida para `authLayout` + `RequirePermission modulo="hub"` |
