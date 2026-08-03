@@ -26,7 +26,7 @@ Build local **tem que passar** antes do push. Migration que falha aborta o deplo
 ## Segredos (`.env`, nunca commitado)
 
 `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`, `VITE_EMPRESA_ID`, `VITE_EMPRESA_SLUG`,
-`SUPABASE_ACCESS_TOKEN`, `SUPABASE_DB_PASSWORD`, `DH_USER`, `DH_PASS`,
+`SUPABASE_ACCESS_TOKEN`, `SUPABASE_DB_PASSWORD`, `DOCKER_HUB_USERNAME`, `DOCKER_HUB_PASSWORD`,
 `VPS_IP`, `VPS_USER`, `VPS_PASSWORD`.
 
 ## Migrations em produção

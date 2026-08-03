@@ -8,8 +8,8 @@ import time
 VPS_IP = os.environ.get("VPS_IP", "")
 VPS_USER = os.environ.get("VPS_USER", "root")
 VPS_PASSWORD = os.environ.get("VPS_PASSWORD", "")
-DH_USER = os.environ.get("DOCKER_HUB_USERNAME", "")
-DH_PASS = os.environ.get("DOCKER_HUB_PASSWORD", "")
+DOCKER_HUB_USERNAME = os.environ.get("DOCKER_HUB_USERNAME", "")
+DOCKER_HUB_PASSWORD = os.environ.get("DOCKER_HUB_PASSWORD", "")
 
 SUPABASE_URL = os.environ.get("VITE_SUPABASE_URL", "")
 SUPABASE_ANON = os.environ.get("VITE_SUPABASE_ANON_KEY", "")
@@ -36,7 +36,7 @@ def run_cmd(ssh, cmd, timeout=300):
 
 def main():
     # Validate required env vars
-    missing = [k for k, v in {"VPS_IP": VPS_IP, "VPS_PASSWORD": VPS_PASSWORD, "DOCKER_HUB_PASSWORD": DH_PASS, "VITE_SUPABASE_URL": SUPABASE_URL}.items() if not v]
+    missing = [k for k, v in {"VPS_IP": VPS_IP, "VPS_PASSWORD": VPS_PASSWORD, "DOCKER_HUB_PASSWORD": DOCKER_HUB_PASSWORD, "VITE_SUPABASE_URL": SUPABASE_URL}.items() if not v]
     if missing:
         print(f"ERROR: Missing required env vars: {', '.join(missing)}", flush=True)
         sys.exit(1)
@@ -88,7 +88,7 @@ def main():
         sys.exit(1)
 
     # 4. Docker login
-    login_cmd = f"docker login -u {DH_USER} -p '{DH_PASS}'"
+    login_cmd = f"docker login -u {DOCKER_HUB_USERNAME} -p '{DOCKER_HUB_PASSWORD}'"
     status, _ = run_cmd(ssh, login_cmd)
     if status != 0:
         print("Docker login failed.", flush=True)

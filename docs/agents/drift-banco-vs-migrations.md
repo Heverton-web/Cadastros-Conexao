@@ -138,6 +138,40 @@ de staging para um ensaio.
 8. **Nunca** re-executar `20260721000000` — o `-- Obsoleta` foi o erro que gerou
    tudo isto. As fases 1/2a/2b a substituem.
 
+## Opção C — reconciliação aditiva (preparada, não executada)
+
+Restaura tabelas e colunas ausentes **sem** tocar na renomeação, nas 6 funções
+nem em preço. 14 migrations, todas aditivas, verificadas em dry-run.
+
+```bash
+# 1. dry-run — mostra as transformações, não toca no banco
+node scripts/db-aplicar-migrations.mjs --lista supabase/migrations-pendentes/lote-reconciliacao-aditiva.txt
+
+# 2. aplicar, uma a uma, parando no primeiro erro
+node scripts/db-aplicar-migrations.mjs --aplicar --lista supabase/migrations-pendentes/lote-reconciliacao-aditiva.txt
+
+# 3. conferir o efeito
+npm run db:verificar && npm run db:status
+
+# 4. opcional: a coluna `locked` (usada por schemas/estrutura.ts e useCatalogo.ts).
+#    Tem UPDATE que marca 3 conexões padrão como locked — inofensivo, mas exige flag.
+node scripts/db-aplicar-migrations.mjs --aplicar --permitir-dml 20260713000001_add_locked_conexoes.sql
+```
+
+`db-aplicar-migrations.mjs` torna cada migration idempotente **em memória** —
+`CREATE TABLE`/`INDEX`/`ADD COLUMN` ganham `IF NOT EXISTS`, `CREATE POLICY` e
+`CREATE TRIGGER` ganham `DROP … IF EXISTS` antes — sem editar os arquivos
+originais. E **recusa** qualquer arquivo com `DROP TABLE`, `DROP COLUMN`,
+`TRUNCATE`, `DELETE`, `RENAME TO` ou `ALTER COLUMN TYPE`, para que nada
+destrutivo passe por ele sem revisão.
+
+Ao aplicar, o ledger é corrigido: o marcador falso (`-- pre-applied`,
+`-- Obsoleta`) é substituído por `-- Reaplicada idempotente em 2026-08-03`.
+
+O que a opção C **não** resolve: as 14 tabelas `hub_*`, as 12 de `funis`,
+`mapas_*`, `conectores_api`, `logs_webhook` e `notificacoes_modelos` — todas
+dependem da renomeação (passos 1–5 acima).
+
 ## Corrigir o processo, não só o schema
 
 O `-- pre-applied` e o `-- Obsoleta` são inserções manuais no ledger. Enquanto

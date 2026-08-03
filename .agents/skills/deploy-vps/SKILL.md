@@ -27,8 +27,8 @@ Commit → Migrations → Push → Merge (se branch) → Build → Deploy VPS
   - `VITE_SUPABASE_URL` e `VITE_SUPABASE_ANON_KEY` (frontend)
   - `SUPABASE_ACCESS_TOKEN` (Edge Functions via CLI)
   - `SUPABASE_DB_PASSWORD` (migrations via `pg`)
-  - `DH_USER` (Docker Hub username)
-  - `DH_PASS` (Docker Hub password)
+  - `DOCKER_HUB_USERNAME` (Docker Hub username)
+  - `DOCKER_HUB_PASSWORD` (Docker Hub password)
   - `VPS_IP`
   - `VPS_USER`
   - `VPS_PASSWORD`
@@ -105,6 +105,24 @@ Se já estiver em `main`, pular.
 
 ### Step 5: Aplicar Migrations (se houver SQL novo)
 
+**Gate obrigatório antes de qualquer migration:**
+
+```bash
+npm run db:status      # repo x schema_migrations
+npm run db:verificar   # migrations "aplicadas" cujo efeito NAO existe no schema
+```
+
+O ledger `supabase_migrations.schema_migrations` já mentiu neste projeto: 39
+migrations foram inseridas à mão (`-- pre-applied`, `-- Obsoleta: ...`) sem que o
+SQL rodasse, e o resultado foi 52 tabelas ausentes em produção. Ver
+`docs/agents/drift-banco-vs-migrations.md`.
+
+Se `db:verificar` apontar migration sem efeito, **INTERROMPER** e tratar o drift
+antes de deployar.
+
+**PROIBIDO:** inserir em `schema_migrations` sem executar o SQL. Se uma migration
+é realmente obsoleta, **apagar o arquivo** — não marcá-la como aplicada.
+
 Verificar se há migrations não aplicadas:
 ```bash
 # Listar migrations locais
@@ -122,7 +140,7 @@ const path = require('path');
 // Ler .env
 const env = {};
 for (const line of fs.readFileSync('.env', 'utf8').split('\n')) {
-  const m = line.match(/^([A-Z0-9_]+)=(.*)$/);
+  const m = line.match(/^\s*([A-Za-z_][A-Za-z0-9_]*)\s*=\s*(.*)$/); // tolera `KEY = value`
   if (m) env[m[1]] = m[2].trim().replace(/^["']|["']$/g, '');
 }
 
@@ -198,8 +216,8 @@ source .env
 ```
 
 Variáveis necessárias:
-- `DH_USER` (Docker Hub username)
-- `DH_PASS` (Docker Hub password)
+- `DOCKER_HUB_USERNAME` (Docker Hub username)
+- `DOCKER_HUB_PASSWORD` (Docker Hub password)
 - `VPS_IP`
 - `VPS_USER`
 - `VPS_PASSWORD`

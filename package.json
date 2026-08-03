@@ -22,7 +22,8 @@
     "check:isolation": "node scripts/check-module-isolation.mjs",
     "db:status": "node scripts/db-migrations-status.mjs",
     "db:query": "node scripts/db-query.mjs",
-    "db:verificar": "node scripts/db-verificar-efeito.mjs"
+    "db:verificar": "node scripts/db-verificar-efeito.mjs",
+    "db:aplicar": "node scripts/db-aplicar-migrations.mjs"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",

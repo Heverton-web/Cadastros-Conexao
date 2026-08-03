@@ -66,7 +66,7 @@ Para as ferramentas de banco e o deploy, também:
 Use sempre `KEY=value` **sem espaços** em volta do `=`: o `source .env` do bash e
 o parser da skill `deploy-vps` não leem `KEY = value`.
 
-⚠ A skill `deploy-vps` documenta `DH_USER`/`DH_PASS`, mas o `.env` usa
+⚠ A skill `deploy-vps` documenta `DOCKER_HUB_USERNAME`/`DOCKER_HUB_PASSWORD`, mas o `.env` usa
 `DOCKER_HUB_USERNAME`/`DOCKER_HUB_PASSWORD` (igual ao `.env.example`). Alinhar
 antes do próximo deploy.
 
