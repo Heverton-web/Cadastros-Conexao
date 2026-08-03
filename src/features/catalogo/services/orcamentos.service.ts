@@ -109,15 +109,16 @@ export async function criarOrcamento(
   }
 
   // Busca dados do cliente da carteira do CRM se tem cliente_crm_id
+  // `clientes` não tem coluna de e-mail no schema atual — clienteEmail fica null
   if (input.cliente_crm_id && !clienteNome) {
-    const { data: cliente } = await supabase
+    const { data: cliente, error: clienteError } = await supabase
       .from("clientes")
-      .select("nome_doutor, lead_email, telefone_contato")
+      .select("nome_doutor, telefone_contato")
       .eq("id", input.cliente_crm_id)
       .single()
+    if (clienteError) console.error("Erro ao buscar cliente CRM:", clienteError)
     if (cliente) {
       clienteNome = cliente.nome_doutor
-      clienteEmail = cliente.lead_email
       clienteTelefone = cliente.telefone_contato
     }
   }

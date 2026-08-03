@@ -133,7 +133,9 @@ de staging para um ensaio.
 6. **`20260711000000` reescrita** — só o `ADD COLUMN IF NOT EXISTS`, sem o seed
    de preço (ou com o seed revisado por quem conhece a tabela de preços).
 7. Só então o trilho de `empresa_id`:
-   `migrations-pendentes/…fase1` → limpar as 470 ocorrências no código → deploy →
+   `migrations-pendentes/…fase1` → limpar as ~480 ocorrências no código (medido
+   em 2026-08-03 via `grep -r empresa_id src/`; ver
+   [varredura-2026-08-03.md](varredura-2026-08-03.md) item g) → deploy →
    `…fase2a` → `…fase2b`.
 8. **Nunca** re-executar `20260721000000` — o `-- Obsoleta` foi o erro que gerou
    tudo isto. As fases 1/2a/2b a substituem.

@@ -55,7 +55,7 @@ function AdminSuperBanco() {
   async function carregarTabelas() {
     setLoadingTabelas(true);
     const { data: raw } = await supabase.rpc("get_table_info" as any);
-    if ((raw as any[])?.[0]?.table_name) {
+    if ((raw as any[])?.[0]?.nome) {
       setTabelas((raw as any[]).sort((a, b) => b.linhas - a.linhas));
     } else {
       const { data: tables } = await supabase
