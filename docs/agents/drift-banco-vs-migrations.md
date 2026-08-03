@@ -34,10 +34,12 @@ O banco está **muito atrás** do diretório de migrations.
 | `despesas` · `integracoes` · `demos` · `marketing` · `gerador-links` | 1 cada — `comprovantes`, `config_integracoes`, `credenciais_demo`, `empresa_limites_modulo`, `gerador_modelos` |
 
 **O caso mais grave é `core`:** `dispararEventoModulo` consulta `webhooks`,
-`notificacoes_modelos` e `conectores_api` em paralelo. Duas das três não existem.
-Como o disparo é fire-and-forget com `.catch(() => {})`, **todo evento de módulo
-falha em silêncio** — nenhum webhook, notificação ou conector é entregue.
-Ver [eventos.md](eventos.md).
+`notificacoes_modelos` e `conectores_api` em paralelo. `webhooks` existe — então
+**webhook HTTP continua sendo entregue**. As outras duas não existem (no banco
+ainda se chamam `notificacoes_templates` e `api_connectors`), logo
+**notificação in-app/e-mail e conector de API nunca disparam**. O código faz
+`console.error` e segue com lista vazia, então a falha é silenciosa para o
+usuário. Ver [eventos.md](eventos.md).
 
 `comprovantes`, `logos` e `users` são consultadas pelo código e **não têm
 `CREATE TABLE` em nenhuma migration** — nunca existiram no repositório.

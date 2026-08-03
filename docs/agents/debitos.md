@@ -36,7 +36,8 @@
 O banco de produção está muito atrás de `supabase/migrations/`: a renomeação
 EN→PT e a remoção de `empresa_id` nunca rodaram, e **52 tabelas que o código
 consulta não existem** — o que deixa `hub`, `funis`, `mapas`, `agentes`, parte de
-`catalogo` e **o disparo de eventos de todos os módulos** sem funcionar.
+`catalogo`, e **notificações + conectores de API de todos os módulos** sem
+funcionar (webhook HTTP ainda funciona).
 Evidência, impacto e ordem de correção:
 [drift-banco-vs-migrations.md](drift-banco-vs-migrations.md).
 
