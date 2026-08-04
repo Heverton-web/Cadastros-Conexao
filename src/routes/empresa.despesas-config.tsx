@@ -1,6 +1,7 @@
 import { lazy, Suspense } from "react";
 import { createRoute } from "@tanstack/react-router";
 import { authLayout } from "./_auth";
+import { RouteFallback } from "~/components/ui/route-fallback";
 const ConfigDespesasPage = lazy(() =>
   import("~/features/despesas/components/admin/ConfigDespesasPage").then((m) => ({
     default: m.ConfigDespesasPage,
@@ -13,7 +14,7 @@ export const empresaDespesasConfigRoute = createRoute({
   path: "/empresa/despesas-config",
   component: () => (
     <RequirePermission modulo="empresas-core">
-      <Suspense fallback={null}>
+      <Suspense fallback={<RouteFallback />}>
         <ConfigDespesasPage />
       </Suspense>
     </RequirePermission>

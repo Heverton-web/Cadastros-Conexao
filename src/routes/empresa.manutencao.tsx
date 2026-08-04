@@ -2,6 +2,7 @@ import { lazy, Suspense } from "react";
 import { createRoute } from "@tanstack/react-router";
 import { authLayout } from "./_auth";
 import { RequireEmpresaAdmin } from "~/components/guards";
+import { RouteFallback } from "~/components/ui/route-fallback";
 const ManutencaoPanel = lazy(() =>
   import("~/features/manutencao/components/ManutencaoPanel").then((m) => ({ default: m.ManutencaoPanel })),
 );
@@ -11,7 +12,7 @@ export const empresaManutencaoRoute = createRoute({
   path: "/empresa/manutencao",
   component: () => (
     <RequireEmpresaAdmin>
-      <Suspense fallback={null}>
+      <Suspense fallback={<RouteFallback />}>
         <ManutencaoPanel />
       </Suspense>
     </RequireEmpresaAdmin>

@@ -2,6 +2,7 @@ import { lazy, Suspense } from "react";
 import { createRoute } from "@tanstack/react-router";
 import { authLayout } from "./_auth";
 import { RequirePermission } from "~/components/guards";
+import { RouteFallback } from "~/components/ui/route-fallback";
 
 const LandingPagesList = lazy(() =>
   import("~/features/marketing/landing-pages/components/LandingPagesList").then((m) => ({
@@ -14,7 +15,7 @@ export const marketingLandingPagesRoute = createRoute({
   path: "/marketing/landing-pages",
   component: () => (
     <RequirePermission modulo="marketing" permissions={["mktg_lp_ver"]}>
-      <Suspense fallback={null}>
+      <Suspense fallback={<RouteFallback />}>
         <LandingPagesList />
       </Suspense>
     </RequirePermission>

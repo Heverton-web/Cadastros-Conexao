@@ -5,6 +5,7 @@ import { DesignSystemProvider } from "~/design-system";
 import { usePageTitle } from "~/hooks/usePageTitle";
 import { useFavicon } from "~/hooks/useFavicon";
 import { AgenteWidget } from "~/features/agentes/components/AgenteWidget";
+import { GlobalLoadingBar } from "~/components/ui/global-loading-bar";
 
 registerSW();
 
@@ -18,6 +19,7 @@ function RootLayout() {
 
   return (
     <DesignSystemProvider>
+        <GlobalLoadingBar />
         <Outlet />
         <AgenteWidget />
       <Toaster

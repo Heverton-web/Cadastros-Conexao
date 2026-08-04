@@ -2,6 +2,7 @@ import { createRoute } from "@tanstack/react-router";
 import { lazy, Suspense } from "react";
 import { authLayout } from "./_auth";
 import { RequireSuperAdmin } from "~/components/guards";
+import { RouteFallback } from "~/components/ui/route-fallback";
 
 const GlobalNpsDashboardPage = lazy(() =>
   import("~/features/nps/components/dashboard/GlobalNpsDashboardPage").then((m) => ({ default: m.GlobalNpsDashboardPage })),
@@ -12,7 +13,7 @@ export const globalNpsDashboardRoute = createRoute({
   path: "/global/nps",
   component: () => (
     <RequireSuperAdmin>
-      <Suspense fallback={null}>
+      <Suspense fallback={<RouteFallback />}>
         <GlobalNpsDashboardPage />
       </Suspense>
     </RequireSuperAdmin>

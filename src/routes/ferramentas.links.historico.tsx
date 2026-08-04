@@ -2,6 +2,7 @@ import { lazy, Suspense } from "react";
 import { createRoute } from "@tanstack/react-router";
 import { authLayout } from "./_auth";
 import { RequirePermission } from "~/components/guards";
+import { RouteFallback } from "~/components/ui/route-fallback";
 
 const HistoricoList = lazy(() =>
   import("~/features/gerador-links/components/HistoricoList").then((m) => ({
@@ -14,7 +15,7 @@ export const ferramentasLinksHistoricoRoute = createRoute({
   path: "/ferramentas/links/historico",
   component: () => (
     <RequirePermission modulo="gerador-links" permissions={["lk_ver"]}>
-      <Suspense fallback={null}>
+      <Suspense fallback={<RouteFallback />}>
         <HistoricoList />
       </Suspense>
     </RequirePermission>

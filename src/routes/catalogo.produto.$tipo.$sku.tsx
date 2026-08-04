@@ -11,6 +11,7 @@ import { listarKitsRelacionadosDeChave, listarKitsRelacionadosDeCicatrizador } f
 import type { ProductSheetTipo } from "~/features/catalogo/types"
 import { EstoqueBadge } from "~/features/catalogo/components/admin/produtos/EstoqueBadge"
 import { useState, useEffect, lazy, Suspense } from "react"
+import { RouteFallback } from "~/components/ui/route-fallback";
 
 // Componentes pesados (timeline de fresagem, sequência protética, modal de ficha técnica,
 // tabela de BOM) só são necessários dentro de tabs específicas do detalhe — carregados sob demanda
@@ -478,7 +479,7 @@ function ImplanteDetail({ sku }: { sku: string }) {
         {activeTab === "fresagem" && (
           <div className="rounded-2xl border border-[var(--color-border-subtle)] bg-[var(--color-surface)]/30 p-4 sm:p-6 shadow-lg shadow-black/20 backdrop-blur-sm">
             {protocolos && protocolos.length > 0 ? (
-              <Suspense fallback={null}>
+              <Suspense fallback={<RouteFallback />}>
                 <FresagemTimeline implanteSku={impl.sku} protocolos={protocolos} />
               </Suspense>
             ) : (
@@ -692,7 +693,7 @@ function ImplanteDetail({ sku }: { sku: string }) {
     </div>
 
     {/* Modal Ficha Tecnica */}
-    <Suspense fallback={null}>
+    <Suspense fallback={<RouteFallback />}>
       <FichaTecnicaModal
         open={fichaModal.open}
         onClose={() => setFichaModal((p) => ({ ...p, open: false }))}
@@ -1019,7 +1020,7 @@ function AbutmentDetail({ sku }: { sku: string }) {
         {/* ─── Sequência Protética ─── */}
         {activeTab === "sequencia" && (
           <div className="rounded-2xl border border-[var(--color-border-subtle)] bg-[var(--color-surface)]/30 p-4 sm:p-6 shadow-lg shadow-black/20 backdrop-blur-sm">
-            <Suspense fallback={null}>
+            <Suspense fallback={<RouteFallback />}>
               <SequenciaProtetica
                 familiaId={ab.familia_id ?? ""}
                 tipoAbutmentId={ab.tipo_abutment_id}
@@ -1128,7 +1129,7 @@ function AbutmentDetail({ sku }: { sku: string }) {
           </div>
         )}
       </div>
-      <Suspense fallback={null}>
+      <Suspense fallback={<RouteFallback />}>
         <FichaTecnicaModal open={fichaModal.open} onClose={() => setFichaModal({ ...fichaModal, open: false })} nome={fichaModal.nome} sku={fichaModal.sku} cor={cor} imagemUrl={fichaModal.imagemUrl} tipo={fichaModal.tipo} preco={fichaModal.preco} onVerCompleto={fichaModal.onVerCompleto} sections={fichaModal.sections} vinculacoes={fichaModal.vinculacoes} qtdDisponivel={fichaModal.qtdDisponivel} qtdMinimaAviso={fichaModal.qtdMinimaAviso} />
       </Suspense>
     </div>
@@ -1379,7 +1380,7 @@ function KitDetail({ sku }: { sku: string }) {
         {activeTab === "composicao" && (
           <div className="rounded-2xl border border-[var(--color-border-subtle)] bg-[var(--color-surface)]/30 p-4 sm:p-6 shadow-lg shadow-black/20 backdrop-blur-sm">
             {bomItems.length > 0 ? (
-              <Suspense fallback={null}>
+              <Suspense fallback={<RouteFallback />}>
                 <BomTable items={bomItems} />
               </Suspense>
             ) : (
@@ -1570,7 +1571,7 @@ function KitDetail({ sku }: { sku: string }) {
           </div>
         )}
       </div>
-      <Suspense fallback={null}>
+      <Suspense fallback={<RouteFallback />}>
         <FichaTecnicaModal
           open={fichaModal.open}
           onClose={() => setFichaModal((p) => ({ ...p, open: false }))}
@@ -1836,7 +1837,7 @@ function PromocionalDetail({ id }: { id: string }) {
         )}
       </div>
     </div>
-    <Suspense fallback={null}>
+    <Suspense fallback={<RouteFallback />}>
       <FichaTecnicaModal
         open={fichaModal.open}
         onClose={() => setFichaModal((p) => ({ ...p, open: false }))}
