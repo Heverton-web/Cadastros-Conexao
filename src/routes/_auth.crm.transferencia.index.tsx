@@ -41,8 +41,7 @@ function TransferenciaPage() {
       const { data } = await supabase
         .from("clientes")
         .select("id, nome_doutor, nome_clinica")
-        .eq("consultor_atual_id", origem)
-        .eq("empresa_id", EMPRESA_ID);
+        .eq("consultor_atual_id", origem);
       return data ?? [];
     },
   });

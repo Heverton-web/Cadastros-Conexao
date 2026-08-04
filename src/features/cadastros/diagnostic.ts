@@ -1,43 +1,56 @@
 import type { DiagnosticPlan } from "~/core/diagnostic";
 import { supabase } from "~/core/supabase";
+import {
+  criarCadastro,
+  buscarCadastro,
+  atualizarCadastro,
+  deletarCadastro,
+  aprovarCadastro,
+  reprovarCadastro,
+  solicitarCorrecao,
+  listarCadastros,
+} from "~/features/clientes";
 
 export const cadastrosDiagnosticPlan: DiagnosticPlan = {
   key: "cadastros",
   nome: "Cadastros",
-  dadosTeste: () => ({ nome: "[DIAG] Cliente Teste", tipo: "PF", telefone: "11999999999" }),
+  dadosTeste: () => ({
+    nome_temporario: "[DIAG] Cadastro Teste",
+    tipo_acao: "solicitar_cadastro",
+    forma_compartilhamento: "whatsapp",
+    lead_nome: "[DIAG] Lead Teste",
+    lead_email: "diag@teste.com",
+    lead_whatsapp: "11999999999",
+  }),
 
   crud: {
     create: async (ctx) => {
-      ctx.log("info", "criando cliente via supabase...");
+      ctx.log("info", "criando cadastro via criarCadastro...");
       const dados = ctx.dadosTeste() as any;
-      const { data, error } = await supabase.from("clientes").insert({ nome_doutor: dados.nome, tipo_pessoa: dados.tipo, telefone: dados.telefone, status: "link_gerado" }).select().single();
-      if (error) throw error;
-      ctx.log("success", `cliente criado: id=${data.id}, nome="${data.nome_doutor}", status=${data.status}`);
-      ctx.salvarId("clienteId", data.id);
+      const cadastro = await criarCadastro(dados);
+      ctx.log("success", `cadastro criado: id=${cadastro.id}, status=${cadastro.status}`);
+      ctx.salvarId("cadastroId", cadastro.id);
     },
     read: async (ctx) => {
-      const id = ctx.recuperarId("clienteId");
+      const id = ctx.recuperarId("cadastroId");
       if (!id) throw new Error("Execute 'Criar' primeiro");
-      ctx.log("info", `buscando cliente id=${id}...`);
-      const { data, error } = await supabase.from("clientes").select("*").eq("id", id).single();
-      if (error) throw error;
-      ctx.log("success", `cliente: "${data.nome_doutor}", tipo=${data.tipo_pessoa}, status=${data.status}`);
+      ctx.log("info", `buscando cadastro id=${id}...`);
+      const cadastro = await buscarCadastro(id);
+      ctx.log("success", `cadastro: nome_temporario="${cadastro.nome_temporario}", status=${cadastro.status}`);
     },
     update: async (ctx) => {
-      const id = ctx.recuperarId("clienteId");
+      const id = ctx.recuperarId("cadastroId");
       if (!id) throw new Error("Execute 'Criar' primeiro");
-      ctx.log("info", `atualizando cliente id=${id}...`);
-      const { data, error } = await supabase.from("clientes").update({ nome_doutor: "[DIAG] Cliente Atualizado" }).eq("id", id).select().single();
-      if (error) throw error;
-      ctx.log("success", `cliente atualizado: "${data.nome_doutor}"`);
+      ctx.log("info", `atualizando cadastro id=${id}...`);
+      const atualizado = await atualizarCadastro(id, { nome_temporario: "[DIAG] Cadastro Atualizado" });
+      ctx.log("success", `cadastro atualizado: "${atualizado.nome_temporario}"`);
     },
     delete: async (ctx) => {
-      const id = ctx.recuperarId("clienteId");
+      const id = ctx.recuperarId("cadastroId");
       if (!id) throw new Error("Execute 'Criar' primeiro");
-      ctx.log("info", `excluindo cliente id=${id}...`);
-      const { error } = await supabase.from("clientes").delete().eq("id", id);
-      if (error) throw error;
-      ctx.log("success", `cliente ${id} excluído`);
+      ctx.log("info", `excluindo cadastro id=${id}...`);
+      await deletarCadastro(id);
+      ctx.log("success", `cadastro ${id} excluído`);
     },
   },
 
@@ -45,32 +58,36 @@ export const cadastrosDiagnosticPlan: DiagnosticPlan = {
     {
       key: "pipeline_completo",
       label: "Pipeline Completo",
-      descricao: "Simula pipeline: link_gerado → dados_enviados → em_analise → aprovado",
+      descricao: "Simula pipeline: link_gerado → dados_enviados → em_analise → aprovado (cria cliente de verdade)",
       steps: async (ctx) => {
-        ctx.log("info", "1) Criando cliente com status=link_gerado...");
-        const { data: c, error: e1 } = await supabase.from("clientes").insert({ nome_doutor: "[DIAG] Pipeline Teste", tipo_pessoa: "PF", telefone: "11988887777", status: "link_gerado" }).select().single();
-        if (e1) throw e1;
-        ctx.log("success", `cliente: id=${c.id}, status=${c.status}`);
-        ctx.salvarId("clienteId", c.id);
+        ctx.log("info", "1) Criando cadastro com status=link_gerado...");
+        const cadastro = await criarCadastro({
+          nome_temporario: "[DIAG] Pipeline Teste",
+          lead_nome: "[DIAG] Pipeline Lead",
+        });
+        ctx.log("success", `cadastro: id=${cadastro.id}, status=${cadastro.status}`);
+        ctx.salvarId("cadastroId", cadastro.id);
 
         ctx.log("info", "2) Avançando para dados_enviados...");
-        await supabase.from("clientes").update({ status: "dados_enviados" }).eq("id", c.id);
-        const { data: c2 } = await supabase.from("clientes").select("status").eq("id", c.id).single();
-        ctx.log("success", `status agora: ${c2?.status}`);
+        await atualizarCadastro(cadastro.id, { status: "dados_enviados" });
+        const c2 = await buscarCadastro(cadastro.id);
+        ctx.log("success", `status agora: ${c2.status}`);
 
         ctx.log("info", "3) Avançando para em_analise...");
-        await supabase.from("clientes").update({ status: "em_analise" }).eq("id", c.id);
-        const { data: c3 } = await supabase.from("clientes").select("status").eq("id", c.id).single();
-        ctx.log("success", `status agora: ${c3?.status}`);
+        await atualizarCadastro(cadastro.id, { status: "em_analise" });
+        const c3 = await buscarCadastro(cadastro.id);
+        ctx.log("success", `status agora: ${c3.status}`);
 
         ctx.log("info", "4) Aprovando cadastro...");
-        await supabase.from("clientes").update({ status: "aprovado" }).eq("id", c.id);
-        const { data: c4 } = await supabase.from("clientes").select("status").eq("id", c.id).single();
-        ctx.log("success", `status final: ${c4?.status}`);
+        const aprovado = await aprovarCadastro(cadastro.id, `DIAG-${cadastro.id.slice(0, 8)}`);
+        ctx.log("success", `status final: ${aprovado.status}, codigo_cliente=${aprovado.codigo_cliente}`);
       },
       cleanup: async (ctx) => {
-        const id = ctx.recuperarId("clienteId");
-        if (id) { await supabase.from("clientes").delete().eq("id", id); }
+        const id = ctx.recuperarId("cadastroId");
+        if (id) {
+          await supabase.from("clientes").delete().eq("cadastro_id", id);
+          await supabase.from("cadastros").delete().eq("id", id);
+        }
       },
     },
     {
@@ -78,50 +95,50 @@ export const cadastrosDiagnosticPlan: DiagnosticPlan = {
       label: "Reprovação e Correção",
       descricao: "Simula pipeline com correção e reprovação",
       steps: async (ctx) => {
-        ctx.log("info", "1) Criando cliente em análise...");
-        const { data: c, error: e1 } = await supabase.from("clientes").insert({ nome_doutor: "[DIAG] Reprovação Teste", tipo_pessoa: "PJ", telefone: "11977776666", status: "em_analise" }).select().single();
-        if (e1) throw e1;
-        ctx.log("success", `cliente: id=${c.id}, status=${c.status}`);
-        ctx.salvarId("clienteId", c.id);
+        ctx.log("info", "1) Criando cadastro em análise...");
+        const cadastro = await criarCadastro({
+          nome_temporario: "[DIAG] Reprovação Teste",
+          lead_nome: "[DIAG] Reprovação Lead",
+        });
+        await atualizarCadastro(cadastro.id, { status: "em_analise" });
+        ctx.log("success", `cadastro: id=${cadastro.id}`);
+        ctx.salvarId("cadastroId", cadastro.id);
 
         ctx.log("info", "2) Solicitando correção (em_correcao)...");
-        await supabase.from("clientes").update({ status: "em_correcao" }).eq("id", c.id);
-        ctx.log("success", "status alterado para em_correcao");
+        const emCorrecao = await solicitarCorrecao(cadastro.id, "Documento ilegível", ["cpf", "endereco"]);
+        ctx.log("success", `status alterado para ${emCorrecao.status}`);
 
         ctx.log("info", "3) Reprovando cadastro...");
-        await supabase.from("clientes").update({ status: "reprovado" }).eq("id", c.id);
-        const { data: c3 } = await supabase.from("clientes").select("status").eq("id", c.id).single();
-        ctx.log("success", `status final: ${c3?.status}`);
+        const reprovado = await reprovarCadastro(cadastro.id, "Documento ilegível");
+        ctx.log("success", `status final: ${reprovado.status}`);
       },
       cleanup: async (ctx) => {
-        const id = ctx.recuperarId("clienteId");
-        if (id) { await supabase.from("clientes").delete().eq("id", id); }
+        const id = ctx.recuperarId("cadastroId");
+        if (id) { await supabase.from("cadastros").delete().eq("id", id); }
       },
     },
     {
       key: "ciclo_cadastro",
       label: "Ciclo Básico Cadastro",
-      descricao: "Cria cliente → lê → atualiza → lista → exclui",
+      descricao: "Cria cadastro → lê → atualiza → lista → exclui",
       steps: async (ctx) => {
-        ctx.log("info", "1) Criando cliente...");
+        ctx.log("info", "1) Criando cadastro...");
         const dados = ctx.dadosTeste() as any;
-        const { data: c, error: e1 } = await supabase.from("clientes").insert({ nome_doutor: dados.nome, tipo_pessoa: dados.tipo, telefone: dados.telefone, status: "link_gerado" }).select().single();
-        if (e1) throw e1;
-        ctx.log("success", `cliente: id=${c.id}`);
-        ctx.salvarId("clienteId", c.id);
+        const cadastro = await criarCadastro(dados);
+        ctx.log("success", `cadastro: id=${cadastro.id}`);
+        ctx.salvarId("cadastroId", cadastro.id);
 
-        ctx.log("info", "2) Buscando cliente...");
-        const { data: c2 } = await supabase.from("clientes").select("*").eq("id", c.id).single();
-        ctx.log("success", `encontrado: "${c2?.nome_doutor}", status=${c2?.status}`);
+        ctx.log("info", "2) Buscando cadastro...");
+        const encontrado = await buscarCadastro(cadastro.id);
+        ctx.log("success", `encontrado: "${encontrado.nome_temporario}", status=${encontrado.status}`);
 
-        ctx.log("info", "3) Listando clientes da empresa...");
-        const { data: lista } = await supabase.from("clientes").select("id, status").limit(5);
-        ctx.log("success", `clientes na empresa: ${lista?.length ?? 0}`);
-        for (const cl of lista ?? []) ctx.log("info", `  ${cl.id?.slice(0, 8)}… status=${cl.status}`);
+        ctx.log("info", "3) Listando cadastros...");
+        const lista = await listarCadastros({ search: dados.nome_temporario });
+        ctx.log("success", `cadastros encontrados: ${lista.length}`);
 
-        ctx.log("info", "4) Excluindo cliente...");
-        await supabase.from("clientes").delete().eq("id", c.id);
-        ctx.log("success", "cliente excluído no próprio ciclo");
+        ctx.log("info", "4) Excluindo cadastro...");
+        await deletarCadastro(cadastro.id);
+        ctx.log("success", "cadastro excluído no próprio ciclo");
       },
       cleanup: async () => {},
     },
