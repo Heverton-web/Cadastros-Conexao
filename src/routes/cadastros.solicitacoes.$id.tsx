@@ -28,6 +28,7 @@ import {
 import { logAtividade } from "~/core/services";
 import { dispararWebhooks } from "~/lib/webhooks";
 import { DocList } from "~/components/ui/doc-viewer";
+import { Skeleton } from "~/components/ui/skeleton";
 import {
   getRevisoes,
   setRevisaoCampo,
@@ -39,7 +40,6 @@ import {
 } from "~/features/revisoes";
 import { formatPhone } from "~/lib/utils";
 import {
-  Loader2,
   CheckCircle,
   XCircle,
   AlertTriangle,
@@ -199,6 +199,7 @@ function ClienteDetailPage() {
       setRevisoes(r);
     } catch (e) {
       console.error(e);
+      toast.error("Erro ao carregar dados do cadastro");
     } finally {
       setLoading(false);
     }
@@ -274,6 +275,7 @@ function ClienteDetailPage() {
       carregar();
     } catch (e) {
       console.error(e);
+      toast.error("Erro ao aprovar cadastro");
     } finally {
       setSubmitting(false);
     }
@@ -346,6 +348,7 @@ function ClienteDetailPage() {
       carregar();
     } catch (e) {
       console.error(e);
+      toast.error("Erro ao reprovar cadastro");
     } finally {
       setSubmitting(false);
     }
@@ -429,6 +432,7 @@ function ClienteDetailPage() {
       carregar();
     } catch (e) {
       console.error(e);
+      toast.error("Erro ao solicitar correção");
     } finally {
       setSubmitting(false);
     }
@@ -455,6 +459,7 @@ function ClienteDetailPage() {
       setRevisoes(r);
     } catch (e) {
       console.error(e);
+      toast.error("Erro ao revisar campo");
     }
   }
 
@@ -512,8 +517,30 @@ function ClienteDetailPage() {
 
   if (loading)
     return (
-      <div className="flex min-h-[60vh] items-center justify-center">
-        <Loader2 size={24} className="animate-spin text-accent" />
+      <div className="flex flex-col gap-6 p-4 pb-28 lg:p-8 lg:pb-8 lg:gap-8">
+        {/* Header skeleton */}
+        <div className="flex items-center gap-3">
+          <Skeleton className="h-8 w-8 rounded-lg" />
+          <Skeleton className="h-6 w-48" />
+        </div>
+        <div className="flex items-center gap-2">
+          <Skeleton className="h-6 w-32 rounded-full" />
+          <Skeleton className="h-6 w-32 rounded-full" />
+        </div>
+        {/* Action buttons skeleton */}
+        <div className="flex gap-2">
+          <Skeleton className="h-11 w-24 rounded-xl" />
+          <Skeleton className="h-11 w-24 rounded-xl" />
+          <Skeleton className="h-11 w-24 rounded-xl" />
+        </div>
+        {/* Mobile tabs skeleton */}
+        <Skeleton className="h-10 w-full rounded-xl lg:hidden" />
+        {/* 3-column content skeleton */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+          {Array.from({ length: 3 }).map((_, i) => (
+            <Skeleton key={i} className="h-96 rounded-xl" />
+          ))}
+        </div>
       </div>
     );
   if (!data)
@@ -666,6 +693,7 @@ function ClienteDetailPage() {
       setMotivo("");
     } catch (e) {
       console.error(e);
+      toast.error("Erro ao executar ação em massa");
     } finally {
       setSubmitting(false);
     }
@@ -683,7 +711,7 @@ function ClienteDetailPage() {
         <div className="flex flex-col gap-3">
           <div className="flex items-center gap-3">
             <button
-              onClick={() => window.history.back()}
+              onClick={() => navigate({ to: "/cadastros/solicitacoes" })}
               className="text-text-muted hover:text-text-main"
             >
               <ArrowLeft size={20} />
@@ -1227,6 +1255,7 @@ function ClienteDetailPage() {
                 setDocs(d);
               } catch (e) {
                 console.error(e);
+                toast.error("Erro ao aprovar documento");
               }
             }}
             onReprovar={async (docId, motivo) => {
@@ -1248,6 +1277,7 @@ function ClienteDetailPage() {
                 setDocs(d);
               } catch (e) {
                 console.error(e);
+                toast.error("Erro ao reprovar documento");
               }
             }}
             onCorrigir={async (docId, comentario) => {
@@ -1269,6 +1299,7 @@ function ClienteDetailPage() {
                 setDocs(d);
               } catch (e) {
                 console.error(e);
+                toast.error("Erro ao solicitar correção de documento");
               }
             }}
           />
@@ -1440,7 +1471,7 @@ function ClienteDetailPage() {
           <div
             className={`rounded-xl p-4 border ${c.status === "reprovado" ? "bg-red-500/5 border-red-500/20" : "bg-orange-500/5 border-orange-500/20"}`}
           >
-            <p className="text-sm whitespace-pre-wrap text-text-main font-mono leading-relaxed">
+            <p className="text-sm whitespace-pre-wrap text-text-main leading-relaxed">
               {c.comentario_reprovacao}
             </p>
           </div>

@@ -64,7 +64,7 @@ export async function buscarOrcamentoPorToken(token: string): Promise<CatalogoOr
 
   // Busca itens separadamente via RPC
   const { data: itens } = await supabase
-    .rpc("buscar_itens_orcamento", { p_orcamento_id: orcamento.id })
+    .rpc("buscar_itens_orcamento", { p_orcamento_id: (orcamento as CatalogoOrcamento).id })
 
   return { ...orcamento, itens: itens ?? [] } as CatalogoOrcamento
 }

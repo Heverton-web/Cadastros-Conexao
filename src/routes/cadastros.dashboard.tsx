@@ -1,4 +1,4 @@
-import { createRoute } from "@tanstack/react-router";
+import { createRoute, Link, useNavigate } from "@tanstack/react-router";
 import { authLayout } from "./_auth";
 import { useState, useEffect } from "react";
 import {
@@ -12,7 +12,6 @@ import {
   type DocStatus,
 } from "~/features/documentos";
 import { useAuth } from "~/lib/auth";
-import { Link } from "@tanstack/react-router";
 import {
   CheckCircle,
   XCircle,
@@ -29,6 +28,12 @@ import { Skeleton } from "~/components/ui/skeleton";
 import { EmptyState } from "~/components/ui/empty-state";
 import toast from "react-hot-toast";
 import { RequirePermission } from "~/components/guards";
+import {
+  KPICard,
+  KPI_PRESETS,
+  StatusBreakdown,
+  CadastroCard,
+} from "~/features/cadastros/components";
 
 export const dashboardRoute = createRoute({
   getParentRoute: () => authLayout,
@@ -48,6 +53,7 @@ export const dashboardRoute = createRoute({
 
 function DashboardPage() {
   const { profile } = useAuth();
+  const navigate = useNavigate();
   const [data, setData] = useState<
     (Cadastro & { profiles: { nome: string } | null })[]
   >([]);
@@ -61,7 +67,7 @@ function DashboardPage() {
       .then(async (res) => {
         setData(res);
         const status = await getDocumentosStatusMap(
-          res.map((c: any) => ({ id: c.id, tipo_pessoa: c.tipo_pessoa })),
+          res.map((c) => ({ id: c.id, tipo_pessoa: c.tipo_pessoa })),
         );
         setDocsStatus(status);
       })
@@ -114,72 +120,48 @@ function DashboardPage() {
       ) : (
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           {/* Total */}
-          <div className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-accent/20 via-accent/10 to-transparent border border-accent/20 p-5 transition-all duration-300 hover:shadow-lg hover:shadow-accent/10 hover:border-accent/40">
-            <div className="absolute top-4 right-4 flex items-center justify-center w-12 h-12 rounded-xl bg-accent/15 text-accent group-hover:scale-110 transition-transform duration-300">
-              <Users size={22} />
-            </div>
-            <p className="text-xs font-semibold text-accent/80 uppercase tracking-wider">
-              Total
-            </p>
-            <p className="text-3xl sm:text-4xl font-bold text-text-main mt-2">
-              {stats.total}
-            </p>
-            <p className="text-xs text-text-muted mt-2">Clientes cadastrados</p>
-          </div>
+          <KPICard
+            icon={Users}
+            label="Total"
+            value={stats.total}
+            subtitle="Clientes cadastrados"
+            colorClass={KPI_PRESETS.total}
+          />
 
           {/* Pendentes */}
-          <div className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-yellow-500/20 via-yellow-500/10 to-transparent border border-yellow-500/20 p-5 transition-all duration-300 hover:shadow-lg hover:shadow-yellow-500/10 hover:border-yellow-500/40">
-            <div className="absolute top-4 right-4 flex items-center justify-center w-12 h-12 rounded-xl bg-yellow-500/15 text-yellow-400 group-hover:scale-110 transition-transform duration-300">
-              <Clock size={22} />
-            </div>
-            <p className="text-xs font-semibold text-yellow-400/80 uppercase tracking-wider">
-              Pendentes
-            </p>
-            <p className="text-3xl sm:text-4xl font-bold text-text-main mt-2">
-              {pendentes}
-            </p>
-            <p className="text-xs text-text-muted mt-2">Aguardando ação</p>
-          </div>
+          <KPICard
+            icon={Clock}
+            label="Pendentes"
+            value={pendentes}
+            subtitle="Aguardando ação"
+            colorClass={KPI_PRESETS.pendentes}
+          />
 
           {/* Aprovados */}
-          <div className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-green-500/20 via-green-500/10 to-transparent border border-green-500/20 p-5 transition-all duration-300 hover:shadow-lg hover:shadow-green-500/10 hover:border-green-500/40">
-            <div className="absolute top-4 right-4 flex items-center justify-center w-12 h-12 rounded-xl bg-green-500/15 text-green-400 group-hover:scale-110 transition-transform duration-300">
-              <CheckCircle size={22} />
-            </div>
-            <p className="text-xs font-semibold text-green-400/80 uppercase tracking-wider">
-              Aprovados
-            </p>
-            <p className="text-3xl sm:text-4xl font-bold text-text-main mt-2">
-              {stats.aprovados}
-            </p>
-            <p className="text-xs text-text-muted mt-2">Cadastros ativos</p>
-          </div>
+          <KPICard
+            icon={CheckCircle}
+            label="Aprovados"
+            value={stats.aprovados}
+            subtitle="Cadastros ativos"
+            colorClass={KPI_PRESETS.aprovados}
+          />
 
           {/* Taxa de Aprovação */}
-          <div className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-blue-500/20 via-blue-500/10 to-transparent border border-blue-500/20 p-5 transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/10 hover:border-blue-500/40">
-            <div className="absolute top-4 right-4 flex items-center justify-center w-12 h-12 rounded-xl bg-blue-500/15 text-blue-400 group-hover:scale-110 transition-transform duration-300">
-              <TrendingUp size={22} />
-            </div>
-            <p className="text-xs font-semibold text-blue-400/80 uppercase tracking-wider">
-              Taxa Aprovação
-            </p>
-            <p className="text-3xl sm:text-4xl font-bold text-text-main mt-2">
-              {taxaAprovacao}%
-            </p>
-            <div className="mt-2 h-1.5 w-full rounded-full bg-blue-500/10 overflow-hidden">
-              <div
-                className="h-full rounded-full bg-gradient-to-r from-blue-500 to-blue-400 transition-all duration-1000"
-                style={{ width: `${taxaAprovacao}%` }}
-              />
-            </div>
-          </div>
+          <KPICard
+            icon={TrendingUp}
+            label="Taxa Aprovação"
+            value={`${taxaAprovacao}%`}
+            subtitle="Taxa de aprovação"
+            colorClass={KPI_PRESETS.taxa}
+          />
         </div>
       )}
 
       {/* Status Breakdown */}
       {!loading && (
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-3">
-          {[
+        <StatusBreakdown
+          cols="6"
+          items={[
             {
               label: "Links",
               value: stats.link_gerado,
@@ -228,27 +210,8 @@ function DashboardPage() {
               bg: "bg-red-500/10",
               border: "border-red-500/20",
             },
-          ].map((item) => (
-            <div
-              key={item.label}
-              className={`flex items-center gap-3 rounded-xl ${item.bg} border ${item.border} p-3 transition-all duration-200 hover:scale-[1.02]`}
-            >
-              <div
-                className={`flex items-center justify-center w-9 h-9 rounded-lg ${item.bg}`}
-              >
-                <item.icon size={16} className={item.color} />
-              </div>
-              <div>
-                <p className={`text-lg font-bold ${item.color}`}>
-                  {item.value}
-                </p>
-                <p className="text-[11px] text-text-muted font-medium">
-                  {item.label}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
+          ]}
+        />
       )}
 
       {/* Solicitações Recentes */}
@@ -280,41 +243,23 @@ function DashboardPage() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
             {recentes.map((c, i) => (
-              <Link
+              <CadastroCard
                 key={c.id}
-                to="/cadastros/solicitacoes/$id"
-                params={{ id: c.id }}
-                className="group flex items-center gap-4 rounded-xl bg-surface border border-border p-4 transition-all duration-200 hover:border-accent/30 hover:shadow-lg hover:shadow-accent/5 hover:-translate-y-0.5"
-                style={{ animationDelay: `${i * 50}ms` }}
-              >
-                {/* Avatar */}
-                <div className="flex items-center justify-center w-10 h-10 rounded-full bg-accent/10 text-accent font-bold text-sm shrink-0 group-hover:bg-accent/20 transition-colors">
-                  {(c.lead_nome || c.nome_temporario || "S")[0].toUpperCase()}
-                </div>
-
-                {/* Info */}
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-semibold text-text-main truncate group-hover:text-accent transition-colors">
-                    {c.lead_nome || c.nome_temporario || "Sem nome"}
-                  </p>
-                  <div className="flex items-center gap-2 mt-1">
-                    {c.profiles?.nome && (
-                      <span className="text-xs text-text-muted">
-                        Por: {c.profiles.nome}
-                      </span>
-                    )}
-                  </div>
-                </div>
-
-                {/* Status */}
-                <div className="flex flex-col items-end gap-1 shrink-0">
-                  <span
-                    className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold ${STATUS_COLOR[c.status]}`}
-                  >
-                    {STATUS_LABEL[c.status]}
-                  </span>
-                </div>
-              </Link>
+                nome={c.lead_nome || c.nome_temporario || "Sem nome"}
+                statusColor={STATUS_COLOR[c.status]}
+                statusLabel={STATUS_LABEL[c.status]}
+                tipoPessoa={c.tipo_pessoa ?? undefined}
+                codigoCliente={c.codigo_cliente ?? undefined}
+                createdAt={c.created_at}
+                createdBy={c.profiles?.nome ?? undefined}
+                onClick={() =>
+                  navigate({
+                    to: "/cadastros/solicitacoes/$id",
+                    params: { id: c.id },
+                  })
+                }
+                index={i}
+              />
             ))}
           </div>
         )}

@@ -18,7 +18,7 @@ export async function listarCategorias(): Promise<CatalogoCategoria[]> {
   return data as CatalogoCategoria[]
 }
 
-export async function criarCategoria(input: { nome: string; sigla?: string; locked?: boolean }): Promise<CatalogoCategoria> {
+export async function criarCategoria(input: { nome: string; sigla?: string; locked?: boolean; ativo?: boolean }): Promise<CatalogoCategoria> {
   const { data, error } = await supabase
     .from(TABLE_CATEGORIAS)
     .insert({ ...input })
@@ -28,7 +28,7 @@ export async function criarCategoria(input: { nome: string; sigla?: string; lock
   return data as CatalogoCategoria
 }
 
-export async function atualizarCategoria(id: string, input: Partial<{ nome: string; sigla: string }>): Promise<CatalogoCategoria> {
+export async function atualizarCategoria(id: string, input: Partial<{ nome: string; sigla: string | null }>): Promise<CatalogoCategoria> {
   const { data, error } = await supabase
     .from(TABLE_CATEGORIAS)
     .update(input)

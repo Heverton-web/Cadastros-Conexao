@@ -102,13 +102,13 @@ function ConsultorClientes() {
               onClick={() =>
                 navigate({ to: "/cadastros/solicitacoes/$id", params: { id: c.id } })
               }
-              className="flex items-center gap-4 rounded-2xl bg-card p-5 shadow-lg transition-all active:scale-[0.98] w-full text-left hover:ring-2 hover:ring-accent/30 hover:-translate-y-1"
+              className="group flex items-center gap-4 rounded-2xl bg-surface border border-border/60 p-5 transition-all duration-300 active:scale-[0.98] w-full text-left hover:border-accent/30 hover:shadow-lg hover:shadow-accent/5 hover:-translate-y-0.5"
             >
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-accent/10">
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-accent/10 group-hover:bg-accent/20 transition-colors">
                 <CheckCircle size={20} className="text-green-400" />
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-base font-semibold text-text-main truncate">
+                <p className="text-base font-semibold text-text-main truncate group-hover:text-accent transition-colors">
                   {c.nome}
                 </p>
                 <div className="flex items-center gap-2 mt-0.5">

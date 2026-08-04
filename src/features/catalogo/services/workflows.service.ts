@@ -14,7 +14,7 @@ export async function listarTiposWorkflow(): Promise<CatalogoCpsTipoWorkflow[]> 
   return (data as CatalogoCpsTipoWorkflow[]) ?? []
 }
 
-export async function criarTipoWorkflow(input: { nome: string; sigla?: string }): Promise<CatalogoCpsTipoWorkflow> {
+export async function criarTipoWorkflow(input: { nome: string; sigla?: string | null }): Promise<CatalogoCpsTipoWorkflow> {
   const { data, error } = await supabase
     .from("catalogo_cps_tipos_workflows")
     .insert({ ...input })

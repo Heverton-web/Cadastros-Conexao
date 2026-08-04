@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
-import type { CatalogoFamilia, CatalogoChaveFerramental } from "~/features/catalogo/types"
+import type { CatalogoFamilia, CatalogoChave } from "~/features/catalogo/types"
 
 const cicatrizadorSchema = z.object({
   sku: z.string().min(1, "SKU é obrigatório"),
@@ -26,7 +26,7 @@ interface Props {
   data: CicatrizadorFormData
   onChange: (data: CicatrizadorFormData) => void
   familias: CatalogoFamilia[] | undefined
-  chaves: CatalogoChaveFerramental[] | undefined
+  chaves: CatalogoChave[] | undefined
 }
 
 export function CicatrizadorForm({ data, onChange, familias, chaves }: Props) {

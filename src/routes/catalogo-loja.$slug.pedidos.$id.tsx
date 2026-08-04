@@ -65,7 +65,7 @@ function LojaPedidoDetalhePage() {
       <StoreLayout>
         <div className="p-8 text-center">
           <p className="text-[var(--color-text-muted)] mb-4">Faça login para acompanhar seus pedidos.</p>
-          <Link to={`/loja/${slug}/login`} className="text-[var(--color-accent)] hover:underline">
+          <Link to="/loja/$slug/login" params={{ slug }} className="text-[var(--color-accent)] hover:underline">
             Entrar
           </Link>
         </div>
@@ -78,7 +78,7 @@ function LojaPedidoDetalhePage() {
       <StoreLayout>
         <div className="p-8 text-center">
           <p className="text-red-400 mb-4">{error || "Pedido não encontrado"}</p>
-          <Link to={`/loja/${slug}/pedidos`} className="text-[var(--color-accent)] hover:underline">
+          <Link to="/loja/$slug/pedidos" params={{ slug }} className="text-[var(--color-accent)] hover:underline">
             ← Voltar para meus pedidos
           </Link>
         </div>
@@ -99,7 +99,8 @@ function LojaPedidoDetalhePage() {
         {/* Header */}
         <div className="flex items-center gap-4">
           <Link
-            to={`/loja/${slug}/pedidos`}
+            to="/loja/$slug/pedidos"
+            params={{ slug }}
             className="p-2 rounded-lg hover:bg-white/10 text-[var(--color-text-muted)] hover:text-white transition-colors"
           >
             <ArrowLeft className="w-5 h-5" />

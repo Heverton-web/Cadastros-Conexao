@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type CSSProperties } from "react";
 import {
   Plus,
   Edit2,
@@ -18,6 +18,7 @@ import {
   Eye,
   EyeOff,
 } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import {
   useProvedores,
   useCriarProvedor,
@@ -35,20 +36,20 @@ import { Switch } from "~/components/ui/switch";
 import { toast } from "react-hot-toast";
 import type { ProvedorIA, CriarProvedorInput, UpdateProvedorInput } from "../types";
 
-const ICONES_LUCIDE: Record<string, string> = {
-  cpu: "Cpu",
-  zap: "Zap",
-  brain: "Brain",
-  globe: "Globe",
-  sparkles: "Sparkles",
-  server: "Server",
-  network: "Network",
-  palette: "Palette",
+const ICONES_LUCIDE: Record<string, LucideIcon> = {
+  cpu: Cpu,
+  zap: Zap,
+  brain: Brain,
+  globe: Globe,
+  sparkles: Sparkles,
+  server: Server,
+  network: Network,
+  palette: Palette,
 };
 
-function IconeLucide({ nome, className = "" }: { nome: string; className?: string }) {
-  const IconComponent = (ICONES_LUCIDE as Record<string, React.ComponentType<React.SVGProps<SVGSVGElement>>>)[nome] || Cpu;
-  return <IconComponent className={className} size={16} />;
+function IconeLucide({ nome, className, style, size = 16 }: { nome: string; className?: string; style?: CSSProperties; size?: number }) {
+  const IconComponent = ICONES_LUCIDE[nome] || Cpu;
+  return <IconComponent className={className} style={style} size={size} />;
 }
 
 interface ProvedorFormProps {
@@ -233,11 +234,11 @@ function ProvedorForm({ provedor, onClose }: ProvedorFormProps) {
                   <SelectValue placeholder="Selecione" />
                 </SelectTrigger>
                 <SelectContent>
-                  {Object.entries(ICONES_LUCIDE).map(([key, label]) => (
+                  {Object.entries(ICONES_LUCIDE).map(([key]) => (
                     <SelectItem key={key} value={key}>
                       <div className="flex items-center gap-2">
                         <IconeLucide nome={key} className="text-text-muted" />
-                        <span className="capitalize">{label}</span>
+                        <span className="capitalize">{key}</span>
                       </div>
                     </SelectItem>
                   ))}
@@ -444,7 +445,7 @@ export function ProvedoresTab() {
                         </div>
                         <div>
                           <p className="font-medium text-text-main">{p.nome}</p>
-                          <p className="text-[10px] text-text-muted capitalize">{ICONES_LUCIDE[p.icone] || p.icone}</p>
+                          <p className="text-[10px] text-text-muted capitalize">{p.icone}</p>
                         </div>
                       </div>
                     </td>

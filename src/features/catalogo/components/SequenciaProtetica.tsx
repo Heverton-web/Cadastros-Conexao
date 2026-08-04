@@ -78,7 +78,7 @@ export function SequenciaProtetica({ familiaId, tipoAbutmentId, familiaNome, tip
         for (const c of etapaCompData ?? []) {
           const seqId = (c as { seq_id: string }).seq_id
           const etapaId = (c as { etapa_id: string }).etapa_id
-          const comp = (c as unknown as { componente: { sku: string; nome: string; preco: number | null; descricao: string | null; parafuso: { sku: string; nome: string; preco: number | null } | null; chave: { sku: string; nome: string; preco: number | null } | null; tipo_componente: { nome: string } | null; tipo_abutment: { nome: string } | null } | null }).componente
+          const comp = (c as unknown as { componente: { sku: string; nome: string; preco: number | null; descricao: string | null; qtd_disponivel: number | null; qtd_minima_aviso: number | null; parafuso: { sku: string; nome: string; preco: number | null; qtd_disponivel: number | null; qtd_minima_aviso: number | null } | null; chave: { sku: string; nome: string; preco: number | null; qtd_disponivel: number | null; qtd_minima_aviso: number | null } | null; tipo_componente: { nome: string } | null; tipo_abutment: { nome: string } | null } | null }).componente
           if (!groups[seqId]) {
             const wfName = seqInfo?.find((s: { id: string }) => s.id === seqId)?.nome ?? "Workflow"
             groups[seqId] = { id: seqId, nome: wfName, etapas: [] }

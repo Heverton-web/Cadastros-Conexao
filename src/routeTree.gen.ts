@@ -204,7 +204,9 @@ import { catalogoLojaLoginRoute } from "./routes/catalogo-loja.$slug.login";
 import { catalogoLojaPedidosRoute } from "./routes/catalogo-loja.$slug.pedidos";
 import { catalogoLojaFavoritosRoute } from "./routes/catalogo-loja.$slug.favoritos";
 import { catalogoLojaOrcamentoRoute } from "./routes/catalogo-loja.$slug.orcamento.$token";
+import { catalogoLojaPedidoDetalheRoute } from "./routes/catalogo-loja.$slug.pedidos.$id";
 import { catalogoLinkTesteRoute } from "./routes/catalogo.teste.$token";
+
 
 export const routeTree = rootRoute.addChildren([
   loginRoute,
@@ -230,12 +232,13 @@ export const routeTree = rootRoute.addChildren([
   catalogoPromocionaisRoute,
   catalogoBuscaRoute,
   catalogoProdutoRoute,
-  catalogoLinkTesteRoute,
   catalogoCarrinhoRoute,
+  catalogoLinkTesteRoute,
   catalogoCheckoutRoute,
   // Loja pública (acesso externo)
   catalogoLojaIndexRoute,
   catalogoLojaLoginRoute,
+  catalogoLojaPedidoDetalheRoute,
   catalogoLojaPedidosRoute,
   catalogoLojaFavoritosRoute,
   catalogoLojaOrcamentoRoute,

@@ -58,7 +58,7 @@ function AdminWorkflowsPage() {
 
   // Seq Protetica modal
   const [seqModalOpen, setSeqModalOpen] = useState(false)
-  const [seqEditing, setSeqEditing] = useState<{ id: string; nome: string; sigla: string | null; ativo: boolean } | null>(null)
+  const [seqEditing, setSeqEditing] = useState<{ id: string; nome: string; sigla?: string | null; ativo?: boolean } | null>(null)
   const [seqData, setSeqData] = useState({ nome: "", sigla: "", ativo: true })
   const [seqError, setSeqError] = useState("")
   const [seqAbutmentSku, setSeqAbutmentSku] = useState("")
@@ -91,7 +91,7 @@ function AdminWorkflowsPage() {
     setSeqModalOpen(true)
   }
 
-  async function openEditSeq(item: { id: string; nome: string; sigla: string | null; ativo: boolean }) {
+  async function openEditSeq(item: { id: string; nome: string; sigla?: string | null; ativo?: boolean }) {
     setSeqEditing(item)
     setSeqData({ nome: item.nome ?? "", sigla: item.sigla ?? "", ativo: item.ativo !== false })
     setSeqError("")

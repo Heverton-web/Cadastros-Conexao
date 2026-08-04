@@ -1,4 +1,4 @@
-import { createRoute, useNavigate } from "@tanstack/react-router";
+import { createRoute } from "@tanstack/react-router";
 import { authLayout } from "./_auth";
 import { useAuth } from "~/lib/auth";
 import {
@@ -63,7 +63,6 @@ const CORES_INICIAIS = {
 
 function AdminSuperEmpresaDetail() {
   const { profile } = useAuth();
-  const navigate = useNavigate();
   const { id } = adminSuperEmpresaDetailRoute.useParams();
 
   const [empresa, setEmpresa] = useState<Empresa | null>(null);
@@ -276,7 +275,7 @@ function AdminSuperEmpresaDetail() {
       {/* Header */}
       <div className="flex items-center gap-3 mb-6">
         <button
-          onClick={() => navigate({ to: "/global/empresas" })}
+          onClick={() => window.history.back()}
           className="p-1.5 rounded-lg text-text-muted hover:text-text-main hover:bg-surface-hover transition-colors"
         >
           <ArrowLeft size={18} />

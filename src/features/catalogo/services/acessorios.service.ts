@@ -1,6 +1,6 @@
 import { supabase } from "~/core/supabase"
 import type {
-  CatalogoAcessorio, CatalogoCategoriaAcessorio, CatalogoChaveFerramental,
+  CatalogoAcessorio, CatalogoCategoriaAcessorio, CatalogoChave,
   CatalogoAcessorioFerramental, CatalogoCategoriaInstrumental, CatalogoInstrumentalGeral,
 } from "../types"
 
@@ -84,23 +84,23 @@ export async function removerAcessorio(sku: string): Promise<void> {
 }
 
 // Chaves Ferramentais
-export async function listarChavesFerramental(): Promise<CatalogoChaveFerramental[]> {
+export async function listarChavesFerramental(): Promise<CatalogoChave[]> {
   const { data, error } = await supabase
     .from("catalogo_chaves_ferramental")
     .select("*")
     .order("nome")
   if (error) throw error
-  return data as CatalogoChaveFerramental[]
+  return data as CatalogoChave[]
 }
 
-export async function criarChaveFerramental(input: { sku: string; nome: string; tipo_ferramenta: string }): Promise<CatalogoChaveFerramental> {
+export async function criarChaveFerramental(input: { sku: string; nome: string; tipo_ferramenta: string }): Promise<CatalogoChave> {
   const { data, error } = await supabase
     .from("catalogo_chaves_ferramental")
     .insert({ ...input })
     .select()
     .single()
   if (error) throw error
-  return data as CatalogoChaveFerramental
+  return data as CatalogoChave
 }
 
 export async function toggleChaveFerramentalAtivo(sku: string, ativo: boolean): Promise<void> {

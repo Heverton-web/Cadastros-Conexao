@@ -14,7 +14,7 @@ export async function listarTiposOsso(): Promise<CatalogoTipoOsso[]> {
   return data as CatalogoTipoOsso[]
 }
 
-export async function criarTipoOsso(input: { nome: string; sigla?: string; categoria?: "hard" | "soft"; ativo?: boolean }): Promise<CatalogoTipoOsso> {
+export async function criarTipoOsso(input: { nome: string; sigla?: string | null; categoria?: "hard" | "soft"; ativo?: boolean }): Promise<CatalogoTipoOsso> {
   const { data, error } = await supabase
     .from("catalogo_tipos_ossos")
     .insert({ ...input })
@@ -104,7 +104,7 @@ export async function removerProtocolo(id: string): Promise<void> {
 export async function listarDiametrosImplantes(): Promise<number[]> {
   const { data, error } = await supabase.from("catalogo_implantes").select("diametro_mm")
   if (error) throw error
-  const unique = Array.from(new Set((data ?? []).map((i: { diametro_mm: number | null }) => i.diametro_mm).filter(Boolean)))
+  const unique = Array.from(new Set((data ?? []).map((i: { diametro_mm: number | null }) => i.diametro_mm).filter((v): v is number => v != null)))
   return unique.sort((a: number, b: number) => a - b)
 }
 

@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
-import type { CatalogoChaveFerramental } from "~/features/catalogo/types"
+import type { CatalogoChave } from "~/features/catalogo/types"
 
 const parafusoSchema = z.object({
   sku: z.string().min(1, "SKU é obrigatório"),
@@ -24,7 +24,7 @@ export type ParafusoRetencaoFormData = z.infer<typeof parafusoSchema>
 interface Props {
   data: ParafusoRetencaoFormData
   onChange: (data: ParafusoRetencaoFormData) => void
-  chaves: CatalogoChaveFerramental[] | undefined
+  chaves: CatalogoChave[] | undefined
 }
 
 export function ParafusoRetencaoForm({ data, onChange, chaves }: Props) {

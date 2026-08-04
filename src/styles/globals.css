@@ -219,25 +219,6 @@ body {
   background: var(--color-accent-hover);
 }
 
-/* ── Focus ring global ── */
-*:focus-visible {
-  outline: 2px solid var(--color-accent);
-  outline-offset: 2px;
-  border-radius: var(--radius-sm);
-}
-
-/* ── Modal inputs: focus suave ── */
-[role="dialog"] input:focus-visible,
-[role="dialog"] textarea:focus-visible,
-[role="dialog"] select:focus-visible,
-[role="alertdialog"] input:focus-visible,
-[role="alertdialog"] textarea:focus-visible,
-[role="alertdialog"] select:focus-visible {
-  outline: none;
-  box-shadow: 0 0 0 0.5px var(--color-accent);
-  border-color: var(--color-accent);
-}
-
 /* ── Modal scrollbar suave (cinza) ── */
 .scrollbar-modal {
   scrollbar-width: thin;

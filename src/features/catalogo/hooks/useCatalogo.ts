@@ -26,7 +26,7 @@ import { getCatalogoDesign } from "../services/design.service"
 import { getConfiguracoes } from "../services/configuracoes.service"
 import * as estoqueService from "../services/estoque.service"
 import toast from "react-hot-toast"
-import type { CatalogoImplante, CatalogoKit, CatalogoAbutment, CatalogoCategoria, CatalogoConexao, CatalogoLinha, CatalogoFamilia, CatalogoFresa, CatalogoTipoReabilitacao, CatalogoTipoAbutment, CatalogoCategoriaAcessorio, CatalogoAcessorio, CatalogoChaveFerramental, CatalogoCategoriaInstrumental, CatalogoInstrumentalGeral, CatalogoCategoriaKit, CatalogoWorkflow, CatalogoEtapaWorkflow, CatalogoParafusoRetencao, CatalogoCicatrizador, CatalogoTipoChave, CatalogoTipoFresa, CatalogoTipoComplementar, CatalogoTipoOpcional, ProdutoTipoImagem, CatalogoImagemProduto, CatalogoCpsTipoComponente, CatalogoCpsTipoParafuso, CatalogoCpsTipoCicatrizador, CatalogoParafuso, CatalogoChave, CatalogoComponente } from "../types"
+import type { CatalogoImplante, CatalogoKit, CatalogoAbutment, CatalogoCategoria, CatalogoConexao, CatalogoLinha, CatalogoFamilia, CatalogoFresa, CatalogoTipoReabilitacao, CatalogoTipoAbutment, CatalogoCategoriaAcessorio, CatalogoAcessorio, CatalogoChave, CatalogoCategoriaInstrumental, CatalogoInstrumentalGeral, CatalogoCategoriaKit, CatalogoTipoKit, CatalogoWorkflow, CatalogoEtapaWorkflow, CatalogoParafusoRetencao, CatalogoCicatrizador, CatalogoTipoChave, CatalogoTipoFresa, CatalogoTipoComplementar, CatalogoTipoOpcional, ProdutoTipoImagem, CatalogoImagemProduto, CatalogoCpsTipoComponente, CatalogoCpsTipoParafuso, CatalogoCpsTipoCicatrizador, CatalogoParafuso, CatalogoComponente } from "../types"
 
 
 // --- Hierarquia ---
@@ -62,7 +62,7 @@ export function useToggleCategoriaAtivo() {
 export function useCriarCategoria() {
   const qc = useQueryClient()
   return useMutation({
-    mutationFn: (input: { nome: string; sigla?: string; locked?: boolean }) => hierarquia.criarCategoria(input),
+    mutationFn: (input: { nome: string; sigla?: string; locked?: boolean; ativo?: boolean }) => hierarquia.criarCategoria(input),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "categorias"] }),
   })
 }
@@ -70,7 +70,7 @@ export function useCriarCategoria() {
 export function useAtualizarCategoria() {
   const qc = useQueryClient()
   return useMutation({
-    mutationFn: ({ id, input }: { id: string; input: Partial<{ nome: string; sigla: string }> }) => hierarquia.atualizarCategoria(id, input),
+    mutationFn: ({ id, input }: { id: string; input: Partial<{ nome: string; sigla: string | null }> }) => hierarquia.atualizarCategoria(id, input),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "categorias"] }),
   })
 }
@@ -271,7 +271,7 @@ export function useImplantesDiametros() {
 export function useCriarTipoOsso() {
   const qc = useQueryClient()
   return useMutation({
-    mutationFn: (input: { nome: string; sigla?: string; categoria?: "hard" | "soft"; ativo?: boolean }) => fresagensService.criarTipoOsso(input),
+    mutationFn: (input: { nome: string; sigla?: string | null; categoria?: "hard" | "soft"; ativo?: boolean }) => fresagensService.criarTipoOsso(input),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["catalogo", "tipos-osso"] }),
   })
 }
@@ -915,8 +915,8 @@ export function useToggleChaveFerramentalAtivo() {
     mutationFn: ({ sku, ativo }: { sku: string; ativo: boolean }) => acessorios.toggleChaveFerramentalAtivo(sku, ativo),
     onMutate: async ({ sku, ativo }) => {
       await qc.cancelQueries({ queryKey: ["catalogo", "chaves"] })
-      const prev = qc.getQueryData<CatalogoChaveFerramental[]>(["catalogo", "chaves"])
-      qc.setQueryData<CatalogoChaveFerramental[]>(["catalogo", "chaves"], (old) =>
+      const prev = qc.getQueryData<CatalogoChave[]>(["catalogo", "chaves"])
+      qc.setQueryData<CatalogoChave[]>(["catalogo", "chaves"], (old) =>
         old?.map((c) => (c.sku === sku ? { ...c, ativo } : c)) ?? []
       )
       return { prev }

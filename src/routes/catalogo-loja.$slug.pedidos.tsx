@@ -99,8 +99,8 @@ function LojaPedidosPage() {
                   </TableCell>
                   <TableCell>
                     <Link
-                      to={`/loja/${slug}/pedidos/$pedidoId`}
-                      params={{ pedidoId: p.id }}
+                      to="/loja/$slug/pedidos/$pedidoId"
+                      params={{ slug, pedidoId: p.id }}
                       className="p-2 rounded-lg hover:bg-white/10 text-[var(--color-text-muted)] hover:text-white transition-colors inline-flex"
                     >
                       <Eye className="w-4 h-4" />

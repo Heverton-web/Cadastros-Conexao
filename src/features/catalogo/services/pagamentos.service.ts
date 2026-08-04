@@ -114,15 +114,6 @@ export async function confirmarPagamento(pedidoId: string): Promise<void> {
     const tabela = TIPO_TABELA[item.produto_tipo]
     if (!tabela) continue
 
-    const { error: updateErr } = await supabase
-      .from(tabela)
-      .update({
-        qtd_disponivel: supabase.rpc ? undefined : undefined, // fallback abaixo
-      })
-      .eq("sku", item.produto_sku)
-
-    // Usa query direta via update com cálculo
-    // Busca estoque atual e decrementa
     const { data: atual } = await supabase
       .from(tabela)
       .select("qtd_disponivel")

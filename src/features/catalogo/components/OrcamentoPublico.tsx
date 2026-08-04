@@ -6,7 +6,7 @@ import {
   Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
 } from "~/components/ui/table"
 import { buscarOrcamentoPorToken, atualizarStatusOrcamentoPorToken } from "../services/orcamentos.service"
-import { STATUS_ORCAMENTO_LABEL, STATUS_ORCAMENTO_COLOR } from "../types/orcamentos"
+import { STATUS_ORCAMENTO_LABEL, STATUS_ORCAMENTO_COLOR, type CatalogoOrcamento, type StatusOrcamento } from "../types/orcamentos"
 import { useTranslation } from "react-i18next"
 import { PublicLangWrapper } from "./PublicLangWrapper"
 

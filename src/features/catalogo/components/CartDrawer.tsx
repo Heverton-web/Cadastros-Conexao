@@ -16,7 +16,7 @@ export function CartDrawer() {
 
   const grouped = useMemo(() => {
     if (cart.length === 0) return []
-    const grouped = Object.groupBy(cart, item => item.tipo) as Record<ProductSheetTipo, typeof cart>
+    const grouped = Object.groupBy(cart, (item: { tipo: ProductSheetTipo }) => item.tipo) as Record<ProductSheetTipo, typeof cart>
     const tipoOrder: ProductSheetTipo[] = [
       "implante", "abutment", "kit", "fresa", "chave",
       "complementar", "opcional", "componente", "parafuso",
@@ -42,7 +42,7 @@ export function CartDrawer() {
   useEffect(() => {
     if (cartDrawerOpen) {
       document.body.style.overflow = "hidden"
-      setExpandedCategories(new Set(grouped.map(([tipo]) => tipo)))
+      setExpandedCategories(new Set(grouped.map(([tipo]) => tipo as ProductSheetTipo)))
     } else {
       document.body.style.overflow = "auto"
     }
@@ -79,91 +79,94 @@ export function CartDrawer() {
               <p className="text-[var(--color-text-muted)] font-medium">{t("catalogo.cart.empty")}</p>
             </div>
           ) : (
-            grouped.map(([tipo, items]) => (
-              <div key={tipo} className="border border-[var(--color-border-subtle)] rounded-xl overflow-hidden">
-                <button
-                  onClick={() => toggleCategory(tipo)}
-                  className="w-full flex items-center justify-between p-4 bg-[var(--color-surface)] hover:bg-[var(--color-surface)]/80 transition-colors"
-                >
-                  <div className="flex items-center gap-3">
-                    {expandedCategories.has(tipo) ? (
-                      <ChevronDown className="w-4 h-4 text-[var(--color-accent)]" />
-                    ) : (
-                      <ChevronRight className="w-4 h-4 text-[var(--color-text-muted)]" />
-                    )}
-                    <span className="text-xs font-bold uppercase tracking-widest text-[var(--color-accent)]">
-                      {CATALOGO_TIPO_LABEL[tipo]}
-                    </span>
-                  </div>
-                  <span className="text-xs text-[var(--color-text-muted)] bg-[var(--color-surface)]/50 px-2 py-1 rounded-full">
-                    {items.length} {items.length === 1 ? 'item' : 'itens'}
-                  </span>
-                </button>
-                
-                {expandedCategories.has(tipo) && (
-                  <div className="p-4 space-y-3 bg-[var(--color-surface)]/30">
-                    {items.map(item => (
-                      <div key={item.sku} className="p-4 rounded-xl border border-[var(--color-border-subtle)] bg-[var(--color-surface)]/50 flex flex-col gap-4">
-                        <div className="flex justify-between items-start gap-4">
-                          <div>
-                            <h4 className="font-semibold text-white leading-snug">{item.nome}</h4>
-                            <p className="text-xs text-[var(--color-text-muted)] mt-1 font-mono">SKU: {item.sku}</p>
-                          </div>
-                          <p className="font-bold text-[#c9a655] whitespace-nowrap">{formatBRL(item.preco)}</p>
-                        </div>
-                        
-                        <div className="flex items-center justify-between pt-3 border-t border-[var(--color-border-subtle)]/50">
-                          <div className="flex items-center gap-3 bg-[var(--color-surface)] rounded-lg p-1 border border-[var(--color-border-subtle)]">
-                            <button
-                              onClick={() => {
-                                const result = setQuantidade(item.sku, item.quantidade - 1)
-                                if (result.limitado) {
-                                  toast("Quantidade ajustada para o máximo disponível", { icon: "📦" })
-                                }
-                              }}
-                              className="p-1 rounded-md hover:bg-white/10"
-                            >
-                              <Minus className="w-3 h-3" />
-                            </button>
-                            <span className="text-sm font-bold w-6 text-center">{item.quantidade}</span>
-                            <button
-                              onClick={() => {
-                                const result = setQuantidade(item.sku, item.quantidade + 1)
-                                if (result.limitado) {
-                                  toast(`Estoque máximo: ${result.quantidadeFinal} unidades`, { icon: "⚠️" })
-                                }
-                              }}
-                              disabled={item.qtd_disponivel != null && item.qtd_disponivel > 0 && item.quantidade >= item.qtd_disponivel}
-                              className={`p-1 rounded-md transition-colors ${
-                                item.qtd_disponivel != null && item.qtd_disponivel > 0 && item.quantidade >= item.qtd_disponivel
-                                  ? "opacity-30 cursor-not-allowed"
-                                  : "hover:bg-white/10"
-                              }`}
-                            >
-                              <Plus className="w-3 h-3" />
-                            </button>
-                          </div>
-                          {item.qtd_disponivel != null && (
-                            <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
-                              item.qtd_disponivel < 1
-                                ? "bg-red-500/15 text-red-400"
-                                : item.qtd_minima_aviso != null && item.qtd_disponivel <= item.qtd_minima_aviso
-                                  ? "bg-amber-500/15 text-amber-400"
-                                  : "bg-emerald-500/15 text-emerald-400"
-                            }`}>
-                              {item.qtd_disponivel < 1 ? "Sem estoque" : `${item.qtd_disponivel} disp.`}
-                            </span>
-                          )}
-                          <button onClick={() => removeFromCart(item.sku)} className="p-2 text-red-400 hover:bg-red-400/10 rounded-lg transition-colors">
-                            <Trash2 className="w-4 h-4" />
-                          </button>
-                        </div>
+            grouped.map(([tipo, items]) => {
+              const tipoItem = tipo as ProductSheetTipo
+              return (
+                <div key={tipoItem} className="border border-[var(--color-border-subtle)] rounded-xl overflow-hidden">
+                  <button
+                    onClick={() => toggleCategory(tipoItem)}
+                    className="w-full flex items-center justify-between p-4 bg-[var(--color-surface)] hover:bg-[var(--color-surface)]/80 transition-colors"
+                  >
+                    <div className="flex items-center gap-3">
+                      {expandedCategories.has(tipoItem) ? (
+                        <ChevronDown className="w-4 h-4 text-[var(--color-accent)]" />
+                      ) : (
+                        <ChevronRight className="w-4 h-4 text-[var(--color-text-muted)]" />
+                      )}
+                      <span className="text-xs font-bold uppercase tracking-widest text-[var(--color-accent)]">
+                        {CATALOGO_TIPO_LABEL[tipoItem]}
+                      </span>
                     </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            ))
+                    <span className="text-xs text-[var(--color-text-muted)] bg-[var(--color-surface)]/50 px-2 py-1 rounded-full">
+                      {items.length} {items.length === 1 ? 'item' : 'itens'}
+                    </span>
+                  </button>
+
+                  {expandedCategories.has(tipoItem) && (
+                    <div className="p-4 space-y-3 bg-[var(--color-surface)]/30">
+                      {items.map(item => (
+                        <div key={item.sku} className="p-4 rounded-xl border border-[var(--color-border-subtle)] bg-[var(--color-surface)]/50 flex flex-col gap-4">
+                          <div className="flex justify-between items-start gap-4">
+                            <div>
+                              <h4 className="font-semibold text-white leading-snug">{item.nome}</h4>
+                              <p className="text-xs text-[var(--color-text-muted)] mt-1 font-mono">SKU: {item.sku}</p>
+                            </div>
+                            <p className="font-bold text-[#c9a655] whitespace-nowrap">{formatBRL(item.preco)}</p>
+                          </div>
+
+                          <div className="flex items-center justify-between pt-3 border-t border-[var(--color-border-subtle)]/50">
+                            <div className="flex items-center gap-3 bg-[var(--color-surface)] rounded-lg p-1 border border-[var(--color-border-subtle)]">
+                              <button
+                                onClick={() => {
+                                  const result = setQuantidade(item.sku, item.quantidade - 1)
+                                  if (result.limitado) {
+                                    toast("Quantidade ajustada para o máximo disponível", { icon: "📦" })
+                                  }
+                                }}
+                                className="p-1 rounded-md hover:bg-white/10"
+                              >
+                                <Minus className="w-3 h-3" />
+                              </button>
+                              <span className="text-sm font-bold w-6 text-center">{item.quantidade}</span>
+                              <button
+                                onClick={() => {
+                                  const result = setQuantidade(item.sku, item.quantidade + 1)
+                                  if (result.limitado) {
+                                    toast(`Estoque máximo: ${result.quantidadeFinal} unidades`, { icon: "⚠️" })
+                                  }
+                                }}
+                                disabled={item.qtd_disponivel != null && item.qtd_disponivel > 0 && item.quantidade >= item.qtd_disponivel}
+                                className={`p-1 rounded-md transition-colors ${
+                                  item.qtd_disponivel != null && item.qtd_disponivel > 0 && item.quantidade >= item.qtd_disponivel
+                                    ? "opacity-30 cursor-not-allowed"
+                                    : "hover:bg-white/10"
+                                }`}
+                              >
+                                <Plus className="w-3 h-3" />
+                              </button>
+                            </div>
+                            {item.qtd_disponivel != null && (
+                              <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                                item.qtd_disponivel < 1
+                                  ? "bg-red-500/15 text-red-400"
+                                  : item.qtd_minima_aviso != null && item.qtd_disponivel <= item.qtd_minima_aviso
+                                    ? "bg-amber-500/15 text-amber-400"
+                                    : "bg-emerald-500/15 text-emerald-400"
+                              }`}>
+                                {item.qtd_disponivel < 1 ? "Sem estoque" : `${item.qtd_disponivel} disp.`}
+                              </span>
+                            )}
+                            <button onClick={() => removeFromCart(item.sku)} className="p-2 text-red-400 hover:bg-red-400/10 rounded-lg transition-colors">
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )
+            })
           )}
         </div>
 

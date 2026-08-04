@@ -42,6 +42,22 @@ import { Button } from "~/components/ui/button";
 import { EmptyState } from "~/components/ui/empty-state";
 import { Skeleton } from "~/components/ui/skeleton";
 import { RequirePermission } from "~/components/guards";
+import { CadastroCard, usePagination } from "~/features/cadastros/components";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "~/components/ui/select";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationPrevious,
+  PaginationNext,
+  PaginationLink,
+} from "~/components/ui/pagination";
 
 export const cadastrosClientesRoute = createRoute({
   getParentRoute: () => authLayout,
@@ -159,6 +175,12 @@ function ClientesPage() {
     );
   });
 
+  const { paginatedItems, currentPage, totalPages, canPrev, canNext, nextPage, prevPage, goTo } = usePagination(filtered, 12);
+
+  useEffect(() => {
+    goTo(1);
+  }, [search, filtroConsultor]);
+
   return (
     <div className="space-y-8 animate-fade-in">
       {/* Header */}
@@ -197,18 +219,22 @@ function ClientesPage() {
           )}
         </div>
         {podeVerTodos && (
-          <select
+          <Select
             value={filtroConsultor}
-            onChange={(e) => setFiltroConsultor(e.target.value)}
-            className="w-full lg:w-56 h-12 rounded-xl border border-border bg-input-bg px-4 text-sm text-text-main font-medium focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent transition-all duration-200"
+            onValueChange={(v) => setFiltroConsultor(v)}
           >
-            <option value="">Todos os consultores</option>
-            {consultores.map((nome) => (
-              <option key={nome} value={nome!}>
-                {nome}
-              </option>
-            ))}
-          </select>
+            <SelectTrigger className="w-full lg:w-56 h-12">
+              <SelectValue placeholder="Todos os consultores" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="">Todos os consultores</SelectItem>
+              {consultores.map((nome) => (
+                <SelectItem key={nome} value={nome!}>
+                  {nome}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         )}
       </div>
 
@@ -226,98 +252,86 @@ function ClientesPage() {
           description="Tente ajustar seus filtros ou termos de busca."
         />
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {filtered.map((c, i) => (
-            <button
-              key={c.id}
-              onClick={() =>
-                navigate({
-                  to: "/cadastros/solicitacoes/$id",
-                  params: { id: c.id },
-                })
-              }
-              className="group flex flex-col gap-4 rounded-2xl bg-surface border border-border/60 p-5 text-left transition-all duration-300 hover:border-accent/30 hover:shadow-lg hover:shadow-accent/5 hover:-translate-y-0.5 active:scale-[0.99]"
-              style={{ animationDelay: `${i * 30}ms` }}
-            >
-              {/* Top row: avatar + name + actions */}
-              <div className="flex items-start justify-between gap-3">
-                <div className="flex items-center gap-3 min-w-0">
-                  <div className="w-10 h-10 rounded-full bg-green-500/15 flex items-center justify-center shrink-0 group-hover:bg-green-500/25 transition-colors">
-                    <span className="text-sm font-bold text-green-400">
-                      {(c.lead_nome ||
-                        c.nome_temporario ||
-                        "S")[0].toUpperCase()}
-                    </span>
-                  </div>
-                  <div className="min-w-0">
-                    <p className="text-sm font-semibold text-text-main truncate group-hover:text-accent transition-colors">
-                      {c.lead_nome || c.nome_temporario || "Sem nome"}
-                    </p>
-                    {c.profiles?.nome && (
-                      <p className="text-xs text-text-muted mt-0.5">
-                        Por: {c.profiles.nome}
-                      </p>
-                    )}
-                  </div>
-                </div>
-                {podeExcluir && (
-                  <div className="flex items-center gap-0.5 md:opacity-0 md:group-hover:opacity-100 transition-opacity shrink-0">
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setEditTarget(c);
-                      }}
-                      className="p-2 rounded-lg text-blue-400 hover:bg-blue-500/10 transition-colors"
-                      title="Editar"
-                    >
-                      <Pencil size={14} />
-                    </button>
-                    {profile?.is_super_admin && (
+        <>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {paginatedItems.map((c, i) => (
+              <CadastroCard
+                key={c.id}
+                nome={c.lead_nome || c.nome_temporario || "Sem nome"}
+                statusColor={STATUS_COLOR[c.status]}
+                statusLabel={STATUS_LABEL[c.status]}
+                tipoPessoa={c.tipo_pessoa}
+                codigoCliente={c.codigo_cliente}
+                createdBy={c.profiles?.nome}
+                createdAt={c.created_at}
+                onClick={() =>
+                  navigate({
+                    to: "/cadastros/solicitacoes/$id",
+                    params: { id: c.id },
+                  })
+                }
+                actions={
+                  podeExcluir ? (
+                    <>
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
-                          setDeleteConfirm(c.id);
+                          setEditTarget(c);
                         }}
-                        className="p-2 rounded-lg text-error hover:bg-error/10 transition-colors"
-                        title="Excluir"
+                        className="p-2 rounded-lg text-blue-400 hover:bg-blue-500/10 transition-colors"
+                        title="Editar"
                       >
-                        <Trash2 size={14} />
+                        <Pencil size={14} />
                       </button>
-                    )}
-                  </div>
-                )}
-              </div>
-
-              {/* Status badge */}
-              <div className="flex items-center gap-2 flex-wrap">
-                <span
-                  className={`inline-flex items-center rounded-lg px-2.5 py-1 text-xs font-semibold ${STATUS_COLOR[c.status]}`}
-                >
-                  {STATUS_LABEL[c.status]}
-                </span>
-              </div>
-
-              {/* Footer */}
-              <div className="flex items-center justify-between pt-2 border-t border-border/30">
-                <div className="flex items-center gap-2">
-                  {c.tipo_pessoa && (
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-accent/60">
-                      {c.tipo_pessoa}
-                    </span>
-                  )}
-                  {c.codigo_cliente && (
-                    <span className="text-[10px] text-text-muted">
-                      Cód: {c.codigo_cliente}
-                    </span>
-                  )}
-                </div>
-                <span className="text-[10px] text-text-muted/60">
-                  {new Date(c.created_at).toLocaleDateString("pt-BR")}
-                </span>
-              </div>
-            </button>
-          ))}
-        </div>
+                      {profile?.is_super_admin && (
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setDeleteConfirm(c.id);
+                          }}
+                          className="p-2 rounded-lg text-error hover:bg-error/10 transition-colors"
+                          title="Excluir"
+                        >
+                          <Trash2 size={14} />
+                        </button>
+                      )}
+                    </>
+                  ) : undefined
+                }
+                avatarColor="green"
+                index={i}
+              />
+            ))}
+          </div>
+          {totalPages > 1 && (
+            <Pagination>
+              <PaginationContent>
+                <PaginationItem>
+                  <PaginationPrevious
+                    onClick={() => prevPage()}
+                    className={canPrev ? "" : "pointer-events-none opacity-50"}
+                  />
+                </PaginationItem>
+                {Array.from({ length: totalPages }).map((_, i) => (
+                  <PaginationItem key={i}>
+                    <PaginationLink
+                      isActive={currentPage === i + 1}
+                      onClick={() => goTo(i + 1)}
+                    >
+                      {i + 1}
+                    </PaginationLink>
+                  </PaginationItem>
+                ))}
+                <PaginationItem>
+                  <PaginationNext
+                    onClick={() => nextPage()}
+                    className={canNext ? "" : "pointer-events-none opacity-50"}
+                  />
+                </PaginationItem>
+              </PaginationContent>
+            </Pagination>
+          )}
+        </>
       )}
 
       {/* Delete AlertDialog */}
