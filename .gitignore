@@ -76,3 +76,5 @@ docs-projeto
 # Graphify output
 graphify-out/
 src/graphify-out/
+# Added by code-review-graph
+.code-review-graph/

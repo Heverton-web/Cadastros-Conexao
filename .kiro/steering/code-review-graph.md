@@ -1,9 +1,3 @@
-# GEMINI.md → AGENTS.md
-
-Redirecionamento. A fonte única de instruções deste projeto é `AGENTS.md`.
-
-@AGENTS.md
-
 <!-- code-review-graph MCP tools -->
 ## MCP Tools: code-review-graph
 
