@@ -2,6 +2,7 @@ import { lazy, Suspense } from "react";
 import { createRoute } from "@tanstack/react-router";
 import { authLayout } from "./_auth";
 import { RequirePermission } from "~/components/guards";
+import { RouteFallback } from "~/components/ui/route-fallback";
 
 const FunilDetallePage = lazy(() =>
   import("~/features/funis/components/FunilDetallePage").then((m) => ({
@@ -14,7 +15,7 @@ export const funilDetalleRoute = createRoute({
   path: "/funis/funil/$funilId",
   component: () => (
     <RequirePermission modulo="funis" permissions={["funis_ver_dashboard"]}>
-      <Suspense fallback={null}>
+      <Suspense fallback={<RouteFallback />}>
         <FunilDetallePage />
       </Suspense>
     </RequirePermission>

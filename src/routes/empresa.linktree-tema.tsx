@@ -1,6 +1,7 @@
 import { lazy, Suspense } from "react";
 import { createRoute } from "@tanstack/react-router";
 import { authLayout } from "./_auth";
+import { RouteFallback } from "~/components/ui/route-fallback";
 const LinktreeTemaPage = lazy(() =>
   import("~/features/linktree/components/LinktreeTemaPage").then((m) => ({ default: m.LinktreeTemaPage })),
 );
@@ -11,7 +12,7 @@ export const empresaLinktreeTemaRoute = createRoute({
   path: "/empresa/linktree/tema",
   component: () => (
     <RequirePermission modulo="empresas-core">
-      <Suspense fallback={null}>
+      <Suspense fallback={<RouteFallback />}>
         <LinktreeTemaPage />
       </Suspense>
     </RequirePermission>

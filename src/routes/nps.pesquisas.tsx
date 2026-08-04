@@ -2,6 +2,7 @@ import { lazy, Suspense } from "react";
 import { createRoute } from "@tanstack/react-router";
 import { authLayout } from "./_auth";
 import { RequirePermission } from "~/components/guards";
+import { RouteFallback } from "~/components/ui/route-fallback";
 
 const NpsPesquisasPage = lazy(() =>
   import("~/features/nps/components/dashboard/NpsPesquisasPage").then(
@@ -14,7 +15,7 @@ export const npsPesquisasRoute = createRoute({
   path: "/nps/pesquisas",
   component: () => (
     <RequirePermission modulo="nps" permissions={["nps_gerenciar_perguntas"]}>
-      <Suspense fallback={null}>
+      <Suspense fallback={<RouteFallback />}>
         <NpsPesquisasPage />
       </Suspense>
     </RequirePermission>

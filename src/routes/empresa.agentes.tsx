@@ -2,6 +2,7 @@ import { lazy, Suspense } from "react";
 import { createRoute } from "@tanstack/react-router";
 import { authLayout } from "./_auth";
 import { RequirePermission } from "~/components/guards";
+import { RouteFallback } from "~/components/ui/route-fallback";
 const AgentesPage = lazy(() =>
   import("~/features/agentes/components/AgentesPage").then((m) => ({ default: m.AgentesPage })),
 );
@@ -11,7 +12,7 @@ export const empresaAgentesRoute = createRoute({
   path: "/empresa/agentes",
   component: () => (
     <RequirePermission modulo="agentes-ia" permissions={["agentes_ver"]}>
-      <Suspense fallback={null}>
+      <Suspense fallback={<RouteFallback />}>
         <AgentesPage />
       </Suspense>
     </RequirePermission>

@@ -2,6 +2,7 @@ import { lazy, Suspense } from "react";
 import { createRoute } from "@tanstack/react-router";
 import { authLayout } from "./_auth";
 import { RequirePermission } from "~/components/guards";
+import { RouteFallback } from "~/components/ui/route-fallback";
 
 const HubDashboardPage = lazy(() =>
   import("~/features/hub/pages/HubDashboardPage").then((m) => ({
@@ -14,7 +15,7 @@ export const hubDistribuidorDashboardRoute = createRoute({
   path: "/hub/distribuidor/dashboard",
   component: () => (
     <RequirePermission modulo="hub" permissions={["hub_ver_materiais"]}>
-      <Suspense fallback={null}>
+      <Suspense fallback={<RouteFallback />}>
         <HubDashboardPage
           roleFilter="distributor"
           conquistasPath="/hub/distribuidor/conquistas"

@@ -2,6 +2,7 @@ import { lazy, Suspense } from "react";
 import { createRoute } from "@tanstack/react-router";
 import { authLayout } from "./_auth";
 import { RequirePermission } from "~/components/guards";
+import { RouteFallback } from "~/components/ui/route-fallback";
 
 const MetaCampanhasList = lazy(() =>
   import("~/features/marketing/meta-bm/components/MetaCampanhasList").then((m) => ({
@@ -14,7 +15,7 @@ export const marketingMetaBmCampanhasRoute = createRoute({
   path: "/marketing/meta-bm/campanhas",
   component: () => (
     <RequirePermission modulo="marketing" permissions={["mktg_meta_ver_campanhas"]}>
-      <Suspense fallback={null}>
+      <Suspense fallback={<RouteFallback />}>
         <MetaCampanhasList />
       </Suspense>
     </RequirePermission>
